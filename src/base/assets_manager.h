@@ -23,6 +23,7 @@
 #define TK_ASSETS_MANAGER_H
 
 #include "tkc/darray.h"
+#include "base/types_def.h"
 
 BEGIN_C_DECLS
 
@@ -132,7 +133,10 @@ typedef enum _asset_image_type_t {
   ASSET_TYPE_IMAGE_PNG,
   ASSET_TYPE_IMAGE_JPG,
   ASSET_TYPE_IMAGE_BSVG,
-  ASSET_TYPE_IMAGE_GIF
+  ASSET_TYPE_IMAGE_GIF,
+  ASSET_TYPE_IMAGE_WEBP,
+  ASSET_TYPE_IMAGE_LZ4,
+  ASSET_TYPE_IMAGE_OTHER,
 } asset_image_type_t;
 
 /**
@@ -233,11 +237,14 @@ typedef struct _asset_info_t {
  * ```
  *
  */
-typedef struct _assets_manager_t {
+struct _assets_manager_t {
   darray_t assets;
 
+  /*private*/
   char* res_root;
-} assets_manager_t;
+  locale_info_t* locale_info;
+  system_info_t* system_info;
+};
 
 /**
  * @method assets_manager
@@ -288,6 +295,26 @@ assets_manager_t* assets_manager_init(assets_manager_t* am, uint32_t init_nr);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t assets_manager_set_res_root(assets_manager_t* am, const char* res_root);
+
+/**
+ * @method assets_manager_set_system_info
+ * 设置system_info对象。
+ * @param {assets_manager_t*} am asset manager对象。
+ * @param {system_info_t*} system_info system_info对象。。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t assets_manager_set_system_info(assets_manager_t* am, system_info_t* system_info);
+
+/**
+ * @method assets_manager_set_locale_info
+ * 设置locale_info对象。
+ * @param {assets_manager_t*} am asset manager对象。
+ * @param {locale_info_t*} locale_info locale_info对象。。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t assets_manager_set_locale_info(assets_manager_t* am, locale_info_t* locale_info);
 
 /**
  * @method assets_manager_add

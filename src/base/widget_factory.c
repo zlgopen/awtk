@@ -27,6 +27,7 @@
 #include "widgets/image.h"
 #include "widgets/label.h"
 #include "tkc/value.h"
+#include "widgets/overlay.h"
 #include "widgets/window.h"
 #include "widgets/button.h"
 #include "widgets/dialog.h"
@@ -73,6 +74,7 @@ static const creator_item_t s_builtin_creators[] = {
     {WIDGET_TYPE_DIALOG, dialog_create},
     {WIDGET_TYPE_DIALOG_TITLE, dialog_title_create},
     {WIDGET_TYPE_DIALOG_CLIENT, dialog_client_create},
+    {WIDGET_TYPE_OVERLAY, overlay_create},
     {WIDGET_TYPE_NORMAL_WINDOW, window_create},
     {WIDGET_TYPE_IMAGE, image_create},
     {WIDGET_TYPE_BUTTON, button_create},

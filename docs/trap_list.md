@@ -48,3 +48,12 @@
 
 * 趋长(吉)避短(凶)，平安幸福。
 
+#### 4.widget\_move/widget\_resize/widget\_move\_resizes操作无效。
+
+**原因**
+
+* 通常是设置layout参数，只要layout参数存在，widget\_layout被触发时，就会用该参数重新布局。
+
+**绕坑**
+
+* 如果你需要调用widget\_move/widget\_resize/widget\_move\_resizes修改控件的大小和位置，就不要设置layout参数。

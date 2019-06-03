@@ -122,6 +122,7 @@ typedef struct _slide_menu_t {
   int32_t xdown;
   int32_t xoffset;
   bool_t dragged;
+  bool_t pressed;
   velocity_t velocity;
   widget_animator_t* wa;
 } slide_menu_t;

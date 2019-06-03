@@ -229,15 +229,29 @@ static ret_t slide_view_on_event(widget_t* widget, event_t* e) {
 
   switch (type) {
     case EVT_POINTER_DOWN:
+      slide_view->pressed = TRUE;
       widget_grab(widget->parent, widget);
       slide_view_on_pointer_down(slide_view, (pointer_event_t*)e);
       break;
     case EVT_POINTER_UP: {
-      if (slide_view->dragged) {
-        slide_view_on_pointer_up(slide_view, (pointer_event_t*)e);
+      if (slide_view->pressed) {
+        if (slide_view->dragged) {
+          slide_view_on_pointer_up(slide_view, (pointer_event_t*)e);
+        }
+        slide_view->dragged = FALSE;
+        slide_view->pressed = FALSE;
+        widget_ungrab(widget->parent, widget);
       }
-      slide_view->dragged = FALSE;
-      widget_ungrab(widget->parent, widget);
+      break;
+    }
+    case EVT_POINTER_DOWN_ABORT: {
+      if (slide_view->pressed) {
+        slide_view->xoffset = 0;
+        slide_view->yoffset = 0;
+        slide_view->pressed = FALSE;
+        slide_view->dragged = FALSE;
+        widget_ungrab(widget->parent, widget);
+      }
       break;
     }
     case EVT_POINTER_MOVE: {
@@ -245,7 +259,7 @@ static ret_t slide_view_on_event(widget_t* widget, event_t* e) {
       if (slide_view->dragged) {
         slide_view_on_pointer_move(slide_view, evt);
         slide_view_invalidate(slide_view);
-      } else if (evt->pressed) {
+      } else if (evt->pressed && slide_view->pressed) {
         int32_t delta = 0;
 
         if (slide_view->vertical) {
@@ -254,11 +268,10 @@ static ret_t slide_view_on_event(widget_t* widget, event_t* e) {
           delta = evt->x - slide_view->down.x;
         }
 
-        if (tk_abs(delta) >= TK_DRAG_THRESHOLD) {
-          pointer_event_t abort = *evt;
-          abort.e.type = EVT_POINTER_DOWN_ABORT;
-
-          widget_dispatch_event_to_target_recursive(widget->target, (event_t*)(&abort));
+        if (tk_abs(delta) > TK_DRAG_THRESHOLD) {
+          pointer_event_t abort;
+          pointer_event_init(&abort, EVT_POINTER_DOWN_ABORT, widget, evt->x, evt->y);
+          widget_dispatch_event_to_target_recursive(widget, (event_t*)(&abort));
           slide_view->dragged = TRUE;
         }
       }
@@ -761,7 +774,9 @@ static const char* s_slide_view_properties[] = {WIDGET_PROP_VALUE,     WIDGET_PR
                                                 WIDGET_PROP_VERTICAL,  WIDGET_PROP_ANIM_HINT,
                                                 WIDGET_PROP_AUTO_PLAY, NULL};
 TK_DECL_VTABLE(slide_view) = {.size = sizeof(slide_view_t),
+                              .inputable = TRUE,
                               .type = WIDGET_TYPE_SLIDE_VIEW,
+                              .only_active_child_visible = TRUE,
                               .clone_properties = s_slide_view_properties,
                               .persistent_properties = s_slide_view_properties,
                               .parent = TK_PARENT_VTABLE(widget),
@@ -785,6 +800,7 @@ ret_t slide_view_set_active(widget_t* widget, uint32_t active) {
     evt = event_init(EVT_VALUE_CHANGED, widget);
     widget_dispatch(widget, &evt);
     widget_invalidate(widget, NULL);
+    widget_set_as_key_target(widget_get_child(widget, slide_view->active));
   }
 
   return RET_OK;

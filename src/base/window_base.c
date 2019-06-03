@@ -21,6 +21,7 @@
 
 #include "tkc/mem.h"
 #include "tkc/utils.h"
+#include "base/keys.h"
 #include "base/enums.h"
 #include "base/window_base.h"
 #include "base/font_manager.h"
@@ -107,6 +108,12 @@ ret_t window_base_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_CLOSABLE)) {
     value_set_int(v, window_base->closable);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_MOVE_FOCUS_PREV_KEY)) {
+    value_set_int(v, window_base->move_focus_prev_key);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_MOVE_FOCUS_NEXT_KEY)) {
+    value_set_int(v, window_base->move_focus_next_key);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -128,6 +135,30 @@ ret_t window_base_set_prop(widget_t* widget, const char* name, const value_t* v)
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_THEME)) {
     window_base->theme = tk_str_copy(window_base->theme, value_str(v));
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_MOVE_FOCUS_PREV_KEY)) {
+    if (v->type == VALUE_TYPE_STRING) {
+      const key_type_value_t* kv = keys_type_find(value_str(v));
+      if (kv != NULL) {
+        window_base->move_focus_prev_key = kv->value;
+      } else {
+        log_debug("invalid key: %s\n", value_str(v));
+      }
+    } else {
+      window_base->move_focus_prev_key = value_int(v);
+    }
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_MOVE_FOCUS_NEXT_KEY)) {
+    if (v->type == VALUE_TYPE_STRING) {
+      const key_type_value_t* kv = keys_type_find(value_str(v));
+      if (kv != NULL) {
+        window_base->move_focus_next_key = kv->value;
+      } else {
+        log_debug("invalid key: %s\n", value_str(v));
+      }
+    } else {
+      window_base->move_focus_next_key = value_int(v);
+    }
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_CLOSABLE)) {
     if (v->type == VALUE_TYPE_STRING) {
@@ -199,7 +230,8 @@ widget_t* window_base_create(widget_t* parent, const widget_vtable_t* vt, xy_t x
 
   return_value_if_fail(window_manager_open_window(parent, widget) == RET_OK, NULL);
   win->stage = WINDOW_STAGE_NONE;
-
+  win->move_focus_next_key = TK_KEY_MOVE_FOCUS_NEXT;
+  win->move_focus_prev_key = TK_KEY_MOVE_FOCUS_PREV;
 #ifdef ENABLE_MEM_LEAK_CHECK
   tk_mem_dump();
 #endif /*ENABLE_MEM_LEAK_CHECK*/
@@ -208,12 +240,14 @@ widget_t* window_base_create(widget_t* parent, const widget_vtable_t* vt, xy_t x
 }
 
 ret_t window_close_force(widget_t* widget) {
+  widget = widget_get_window(widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   return window_manager_close_window_force(widget->parent, widget);
 }
 
 ret_t window_close(widget_t* widget) {
+  widget = widget_get_window(widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   return window_manager_close_window(widget->parent, widget);

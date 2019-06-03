@@ -119,6 +119,10 @@ static ret_t window_manager_dispatch_window_event(widget_t* window, event_type_t
     window_manager_dispatch_top_window_changed(window->parent);
   }
 
+  if (type == EVT_WINDOW_TO_FOREGROUND) {
+    window->parent->key_target = window;
+  }
+
   return widget_dispatch(window->parent, (event_t*)&(evt));
 }
 
@@ -327,6 +331,10 @@ static ret_t window_manager_check_if_need_open_animation(const idle_info_t* info
   window_manager_dispatch_window_event(curr_win, EVT_WINDOW_WILL_OPEN);
 
   if (window_manager_create_animator(wm, curr_win, TRUE) != RET_OK) {
+    widget_t* prev_win = window_manager_find_prev_window(WIDGET(wm));
+    if (prev_win != NULL) {
+      window_manager_dispatch_window_event(prev_win, EVT_WINDOW_TO_BACKGROUND);
+    }
     window_manager_dispatch_window_event(curr_win, EVT_WINDOW_OPEN);
     widget_add_timer(curr_win, on_idle_invalidate, 100);
   }
@@ -353,9 +361,9 @@ static ret_t window_manager_check_if_need_close_animation(window_manager_t* wm,
 
 static ret_t window_manager_do_open_window(widget_t* widget, widget_t* window) {
   if (widget->children != NULL && widget->children->size > 0) {
-    idle_add((idle_func_t)window_manager_check_if_need_open_animation, window);
+    widget_add_idle(window, (idle_func_t)window_manager_check_if_need_open_animation);
   } else {
-    idle_add((idle_func_t)window_manager_idle_dispatch_window_open, window);
+    widget_add_idle(window, (idle_func_t)window_manager_idle_dispatch_window_open);
   }
 
   return RET_OK;
@@ -392,6 +400,10 @@ ret_t window_manager_open_window(widget_t* widget, widget_t* window) {
 
   window->dirty = FALSE;
   widget->target = window;
+
+  if (!widget_is_keyboard(window)) {
+    widget->key_target = window;
+  }
   widget_invalidate(window, NULL);
 
   if (is_system_bar(window)) {
@@ -457,6 +469,10 @@ ret_t window_manager_close_window(widget_t* widget, widget_t* window) {
 
   window_manager_dispatch_window_event(window, EVT_WINDOW_CLOSE);
   if (window_manager_check_if_need_close_animation(wm, window) != RET_OK) {
+    widget_t* prev_win = window_manager_find_prev_window(WIDGET(wm));
+    if (prev_win != NULL) {
+      window_manager_dispatch_window_event(prev_win, EVT_WINDOW_TO_FOREGROUND);
+    }
     widget_remove_child(widget, window);
     idle_add(window_manager_idle_destroy_window, window);
   }
@@ -609,6 +625,7 @@ static ret_t window_manager_paint_animation(widget_t* widget, canvas_t* c) {
 
   if (ret == RET_DONE) {
     bool_t is_open = wm->animator->open;
+    widget_t* prev_win = wm->animator->prev_win;
     widget_t* curr_win = wm->animator->curr_win;
     window_animator_destroy(wm->animator);
 
@@ -617,7 +634,10 @@ static ret_t window_manager_paint_animation(widget_t* widget, canvas_t* c) {
     wm->ignore_user_input = FALSE;
 
     if (is_open) {
+      window_manager_dispatch_window_event(prev_win, EVT_WINDOW_TO_BACKGROUND);
       window_manager_dispatch_window_event(curr_win, EVT_WINDOW_OPEN);
+    } else {
+      window_manager_dispatch_window_event(prev_win, EVT_WINDOW_TO_FOREGROUND);
     }
 
     if (wm->pending_close_window != NULL) {
@@ -891,6 +911,11 @@ static ret_t window_manager_layout_child(widget_t* widget, widget_t* window) {
   } else if (is_dialog(window)) {
     x = (widget->w - window->w) >> 1;
     y = (widget->h - window->h) >> 1;
+  } else {
+    x = window->x;
+    y = window->y;
+    w = window->w;
+    h = window->h;
   }
 
   widget_move_resize(window, x, y, w, h);

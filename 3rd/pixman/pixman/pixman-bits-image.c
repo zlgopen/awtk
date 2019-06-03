@@ -432,29 +432,38 @@ bits_image_fetch_pixel_filtered (bits_image_t  *image,
 
     case PIXMAN_FILTER_CONVOLUTION:
 	if (wide)
+	{
 	    bits_image_fetch_pixel_convolution (image, x, y,
 						get_pixel, out,
 						accum_float,
 						reduce_float);
+	}
 	else
+	{
 	    bits_image_fetch_pixel_convolution (image, x, y,
 						get_pixel, out,
 						accum_32, reduce_32);
+	}
 	break;
 
     case PIXMAN_FILTER_SEPARABLE_CONVOLUTION:
 	if (wide)
+	{
 	    bits_image_fetch_pixel_separable_convolution (image, x, y,
 							  get_pixel, out,
 							  accum_float,
 							  reduce_float);
+	}
 	else
+	{
 	    bits_image_fetch_pixel_separable_convolution (image, x, y,
 							  get_pixel, out,
 							  accum_32, reduce_32);
+	}
         break;
 
     default:
+	assert (0);
         break;
     }
 }

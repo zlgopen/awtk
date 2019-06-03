@@ -1,4 +1,5 @@
 const fs = require('fs')
+const path = require('path')
 
 const graphviz_default_style = `
     rankdir  = BT
@@ -466,82 +467,47 @@ class ApiGenerator {
     this.genJsonAll(JSON.parse(fs.readFileSync(filename).toString()));
   }
 
-  static gen() {
-    const gen = new ApiGenerator();
-    const input = '../idl_gen/idl.json';
-
-    gen.genAll(input);
-  }
-
-  testSplitAll() {
-    let result = this.splitAll('123```code```abc');
-    assertEq(result.length, 3);
-    assertEq(result[0].type, 'text');
-    assertEq(result[0].data, '123');
-    assertEq(result[1].type, 'code');
-    assertEq(result[1].data, '```code```');
-    assertEq(result[2].type, 'text');
-    assertEq(result[2].data, 'abc');
-
-    result = this.splitAll('123\ndigraph G {\na\n}\nabc');
-    assertEq(result.length, 3);
-    assertEq(result[0].type, 'text');
-    assertEq(result[0].data, '123\n');
-    assertEq(result[1].type, 'graphviz');
-    assertEq(result[1].data, 'digraph G {\na\n}\n');
-    assertEq(result[2].type, 'text');
-    assertEq(result[2].data, 'abc');
-
-    result = this.splitAll('```code```abc');
-    assertEq(result.length, 2);
-    assertEq(result[0].type, 'code');
-    assertEq(result[0].data, '```code```');
-    assertEq(result[1].type, 'text');
-    assertEq(result[1].data, 'abc');
-
-    result = this.splitAll('```code```');
-    assertEq(result.length, 1);
-    assertEq(result[0].type, 'code');
-    assertEq(result[0].data, '```code```');
-
-    result = this.splitAll('123\ndigraph G {\na\n}\nabc```code```abc@startumluml@enduml');
-    assertEq(result.length, 6);
-    assertEq(result[0].type, 'text');
-    assertEq(result[0].data, '123\n');
-    assertEq(result[1].type, 'graphviz');
-    assertEq(result[1].data, 'digraph G {\na\n}\n');
-    assertEq(result[2].type, 'text');
-    assertEq(result[2].data, 'abc');
-    assertEq(result[3].type, 'code');
-    assertEq(result[3].data, '```code```');
-    assertEq(result[4].type, 'text');
-    assertEq(result[4].data, 'abc');
-    assertEq(result[5].type, 'uml');
-    assertEq(result[5].data, '@startumluml@enduml');
-  }
-
-  testPreprocess() {
-    this.imageIndex = 0;
-    let result = this.preprocess('a_t', 'test');
-    assertEq(result, 'a\\_t');
-
-    result = this.preprocess('digraph G {\na\n}\n', 'test');
-    assertEq(result, '![image](images/test_0.png)\n');
-
-    result = this.preprocess('@startumluml@enduml', 'test');
-    assertEq(result, '![image](images/test_1.png)\n');
-  }
-
-  static test() {
+  static gen(inputIDL) {
     const gen = new ApiGenerator();
 
-    gen.testSplitAll();
-    gen.testPreprocess();
+    gen.genAll(inputIDL);
+
+    console.log(`${inputIDL} => docs`);
   }
 }
 
-if (process.argv.length > 2) {
-  ApiGenerator.test();
-} else {
-  ApiGenerator.gen();
+function rimraf(dir_path) {
+    if (fs.existsSync(dir_path)) {
+        fs.readdirSync(dir_path).forEach(function(entry) {
+            var entry_path = path.join(dir_path, entry);
+            if (fs.lstatSync(entry_path).isDirectory()) {
+                rimraf(entry_path);
+            } else {
+                fs.unlinkSync(entry_path);
+            }
+        });
+        fs.rmdirSync(dir_path);
+    }
 }
+
+let inputIDL = path.normalize(path.join(__dirname, '../idl_gen/idl.json'));
+
+if(process.argv.length >= 3) {
+  inputIDL = process.argv[2] || inputIDL;
+}
+
+if(inputIDL === '-h' || inputIDL === '--help') {
+  console.log('Usage: node index.js inputIDL');
+  process.exit(0);
+}
+
+['docs', 'dots', 'umls', 'docs/images'].forEach(iter => {
+  if(fs.existsSync(iter)) {
+    rimraf(iter);
+  }
+  fs.mkdirSync(iter);
+  console.log(`mkdir ${iter}`);
+});
+
+ApiGenerator.gen(inputIDL);
+

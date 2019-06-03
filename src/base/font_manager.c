@@ -20,6 +20,7 @@
  */
 
 #include "tkc/mem.h"
+#include "base/system_info.h"
 #include "base/font_manager.h"
 
 static font_manager_t* s_font_manager = NULL;
@@ -102,7 +103,7 @@ font_t* font_manager_load(font_manager_t* fm, const char* name, uint32_t size) {
 font_t* font_manager_get_font(font_manager_t* fm, const char* name, font_size_t size) {
   font_t* font = NULL;
 
-  name = name != NULL ? name : TK_DEFAULT_FONT;
+  name = system_info_fix_font_name(name);
   return_value_if_fail(fm != NULL, NULL);
 
   font = font_manager_lookup(fm, name, size);
@@ -124,7 +125,7 @@ font_t* font_manager_get_font(font_manager_t* fm, const char* name, font_size_t 
 ret_t font_manager_unload_font(font_manager_t* fm, const char* name, font_size_t size) {
   font_t* font = NULL;
 
-  name = name != NULL ? name : TK_DEFAULT_FONT;
+  name = system_info_fix_font_name(name);
   return_value_if_fail(fm != NULL, RET_FAIL);
 
   font = font_manager_lookup(fm, name, size);

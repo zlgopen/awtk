@@ -260,6 +260,16 @@ static ret_t scroll_view_on_pointer_up(scroll_view_t* scroll_view, pointer_event
   return RET_OK;
 }
 
+static ret_t scroll_view_notify_scrolled(scroll_view_t* scroll_view) {
+  widget_t* widget = WIDGET(scroll_view);
+
+  if (scroll_view->on_scroll) {
+    scroll_view->on_scroll(widget, scroll_view->xoffset, scroll_view->yoffset);
+  }
+
+  return RET_OK;
+}
+
 static ret_t scroll_view_on_pointer_move(scroll_view_t* scroll_view, pointer_event_t* e) {
   widget_t* widget = WIDGET(scroll_view);
   velocity_t* v = &(scroll_view->velocity);
@@ -276,9 +286,7 @@ static ret_t scroll_view_on_pointer_move(scroll_view_t* scroll_view, pointer_eve
       scroll_view->yoffset = scroll_view->yoffset_save - dy;
     }
 
-    if (scroll_view->on_scroll) {
-      scroll_view->on_scroll(widget, scroll_view->xoffset, scroll_view->yoffset);
-    }
+    scroll_view_notify_scrolled(scroll_view);
   }
   scroll_view->first_move_after_down = FALSE;
 
@@ -286,6 +294,7 @@ static ret_t scroll_view_on_pointer_move(scroll_view_t* scroll_view, pointer_eve
 }
 
 static ret_t scroll_view_on_event(widget_t* widget, event_t* e) {
+  ret_t ret = RET_OK;
   uint16_t type = e->type;
   scroll_view_t* scroll_view = SCROLL_VIEW(widget);
   return_value_if_fail(scroll_view != NULL, RET_BAD_PARAMS);
@@ -339,13 +348,15 @@ static ret_t scroll_view_on_event(widget_t* widget, event_t* e) {
           scroll_view->dragged = TRUE;
         }
       }
+
+      ret = scroll_view->dragged ? RET_STOP : RET_OK;
       break;
     }
     default:
       break;
   }
 
-  return RET_OK;
+  return ret;
 }
 
 static ret_t scroll_view_on_paint_children(widget_t* widget, canvas_t* c) {
@@ -439,10 +450,12 @@ static ret_t scroll_view_set_prop(widget_t* widget, const char* name, const valu
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_XOFFSET)) {
     scroll_view->xoffset = value_int(v);
+    scroll_view_notify_scrolled(scroll_view);
     scroll_view_invalidate_self(widget);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_YOFFSET)) {
     scroll_view->yoffset = value_int(v);
+    scroll_view_notify_scrolled(scroll_view);
     scroll_view_invalidate_self(widget);
     return RET_OK;
   }

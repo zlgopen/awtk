@@ -1,10 +1,13 @@
 ﻿
 #include "base/canvas.h"
 #include "base/widget.h"
+#include "widgets/view.h"
 #include "widgets/button.h"
 #include "widgets/label.h"
 #include "widgets/group_box.h"
+#include "widgets/button_group.h"
 #include "widgets/window.h"
+#include "widgets/pages.h"
 #include "base/style_const.h"
 #include "font_dummy.h"
 #include "lcd_log.h"
@@ -262,7 +265,27 @@ static ret_t on_button_events(void* ctx, event_t* e) {
       s_event_log += value_str(evt->value);
       s_event_log += " ";
       break;
-    } break;
+    }
+    case EVT_POINTER_MOVE: {
+      s_event_log += "EVT_POINTER_MOVE";
+      break;
+    }
+    case EVT_POINTER_DOWN: {
+      s_event_log += "EVT_POINTER_DOWN";
+      break;
+    }
+    case EVT_POINTER_UP: {
+      s_event_log += "EVT_POINTER_UP";
+      break;
+    }
+    case EVT_KEY_DOWN: {
+      s_event_log += "EVT_KEY_DOWN";
+      break;
+    }
+    case EVT_KEY_UP: {
+      s_event_log += "EVT_KEY_UP";
+      break;
+    }
   }
   return RET_OK;
 }
@@ -349,9 +372,7 @@ TEST(Widget, grab) {
   widget_grab(b1, l1);
   ASSERT_EQ(b1->grab_widget, l1);
   ASSERT_EQ(w->grab_widget, b1);
-  widget_ungrab(b1, l2);
-  ASSERT_EQ(b1->grab_widget, l1);
-  ASSERT_EQ(w->grab_widget, b1);
+  widget_ungrab(b1, l1);
 
   widget_grab(b1, l2);
   ASSERT_EQ(b1->grab_widget, l2);
@@ -606,13 +627,405 @@ TEST(Widget, get_window) {
   widget_destroy(w);
 }
 
+static ret_t on_button_events_stop(void* ctx, event_t* e) {
+  switch (e->type) {
+    case EVT_POINTER_MOVE_BEFORE_CHILDREN: {
+      s_event_log += "EVT_POINTER_MOVE_BEFORE_CHILDREN";
+      break;
+    }
+    case EVT_POINTER_DOWN_BEFORE_CHILDREN: {
+      s_event_log += "EVT_POINTER_DOWN_BEFORE_CHILDREN";
+      break;
+    }
+    case EVT_POINTER_UP_BEFORE_CHILDREN: {
+      s_event_log += "EVT_POINTER_UP_BEFORE_CHILDREN";
+      break;
+    }
+    case EVT_KEY_DOWN_BEFORE_CHILDREN: {
+      s_event_log += "EVT_KEY_DOWN_BEFORE_CHILDREN";
+      break;
+    }
+    case EVT_KEY_UP_BEFORE_CHILDREN: {
+      s_event_log += "EVT_KEY_UP_BEFORE_CHILDREN";
+      break;
+    }
+    default:
+      break;
+  }
+
+  return RET_STOP;
+}
+
+TEST(Widget, EVT_POINTER_DOWN_BEFORE_CHILDREN) {
+  pointer_event_t evt;
+  widget_t* w = button_create(NULL, 0, 0, 0, 0);
+
+  s_event_log = "";
+  pointer_event_init(&evt, EVT_POINTER_DOWN, w, 1, 2);
+  widget_on(w, EVT_POINTER_DOWN_BEFORE_CHILDREN, on_button_events_stop, NULL);
+  widget_on(w, EVT_POINTER_DOWN, on_button_events, NULL);
+  widget_on_pointer_down(w, &evt);
+
+  ASSERT_EQ(s_event_log, string("EVT_POINTER_DOWN_BEFORE_CHILDREN"));
+
+  widget_destroy(w);
+}
+
+TEST(Widget, EVT_POINTER_UP_BEFORE_CHILDREN) {
+  pointer_event_t evt;
+  widget_t* w = button_create(NULL, 0, 0, 0, 0);
+
+  s_event_log = "";
+  pointer_event_init(&evt, EVT_POINTER_UP, w, 1, 2);
+  widget_on(w, EVT_POINTER_UP_BEFORE_CHILDREN, on_button_events_stop, NULL);
+  widget_on(w, EVT_POINTER_UP, on_button_events, NULL);
+  widget_on_pointer_up(w, &evt);
+
+  ASSERT_EQ(s_event_log, string("EVT_POINTER_UP_BEFORE_CHILDREN"));
+
+  widget_destroy(w);
+}
+
+TEST(Widget, EVT_POINTER_MOVE_BEFORE_CHILDREN) {
+  pointer_event_t evt;
+  widget_t* w = button_create(NULL, 0, 0, 0, 0);
+
+  s_event_log = "";
+  pointer_event_init(&evt, EVT_POINTER_MOVE, w, 1, 2);
+  widget_on(w, EVT_POINTER_MOVE_BEFORE_CHILDREN, on_button_events_stop, NULL);
+  widget_on(w, EVT_POINTER_MOVE, on_button_events, NULL);
+  widget_on_pointer_move(w, &evt);
+
+  ASSERT_EQ(s_event_log, string("EVT_POINTER_MOVE_BEFORE_CHILDREN"));
+
+  widget_destroy(w);
+}
+
+TEST(Widget, EVT_KEY_DOWN_BEFORE_CHILDREN) {
+  key_event_t evt;
+  widget_t* w = button_create(NULL, 0, 0, 0, 0);
+
+  s_event_log = "";
+  key_event_init(&evt, EVT_KEY_DOWN, w, 1);
+  widget_on(w, EVT_KEY_DOWN_BEFORE_CHILDREN, on_button_events_stop, NULL);
+  widget_on(w, EVT_KEY_DOWN, on_button_events, NULL);
+  widget_on_keydown(w, &evt);
+
+  ASSERT_EQ(s_event_log, string("EVT_KEY_DOWN_BEFORE_CHILDREN"));
+
+  widget_destroy(w);
+}
+
+TEST(Widget, EVT_KEY_UP_BEFORE_CHILDREN) {
+  key_event_t evt;
+  widget_t* w = button_create(NULL, 0, 0, 0, 0);
+
+  s_event_log = "";
+  key_event_init(&evt, EVT_KEY_UP, w, 1);
+  widget_on(w, EVT_KEY_UP_BEFORE_CHILDREN, on_button_events_stop, NULL);
+  widget_on(w, EVT_KEY_UP, on_button_events, NULL);
+  widget_on_keyup(w, &evt);
+
+  ASSERT_EQ(s_event_log, string("EVT_KEY_UP_BEFORE_CHILDREN"));
+
+  widget_destroy(w);
+}
+
 #include "base/ui_loader.h"
 
 TEST(Widget, load_widget) {
+  paint_event_t e;
+  widget_t* win = window_create(NULL, 0, 0, 200, 200);
   widget_t* w = ui_loader_load_widget("test_view");
+  widget_t* button = widget_child(w, "ok");
 
   ASSERT_EQ(w != NULL, TRUE);
   ASSERT_STREQ(w->name, "test_view");
 
+  widget_add_child(win, w);
+  widget_dispatch(button, paint_event_init(&e, EVT_BEFORE_PAINT, w, NULL));
+  ASSERT_STREQ(button->text.str, L"确定");
+
+  widget_destroy(win);
+}
+
+TEST(Widget, calc_icon_text_rect_icon) {
+  rect_t ir = rect_init(10, 20, 200, 40);
+  rect_t r_icon;
+
+  widget_calc_icon_text_rect(&ir, 10, ICON_AT_TOP, 2, NULL, &r_icon);
+
+  ASSERT_EQ(r_icon.x, ir.x);
+  ASSERT_EQ(r_icon.y, ir.y);
+  ASSERT_EQ(r_icon.w, ir.w);
+  ASSERT_EQ(r_icon.h, ir.h);
+}
+
+TEST(Widget, calc_icon_text_rect_text) {
+  rect_t ir = rect_init(10, 20, 200, 40);
+  rect_t r_text;
+
+  widget_calc_icon_text_rect(&ir, 10, ICON_AT_TOP, 2, &r_text, NULL);
+
+  ASSERT_EQ(r_text.x, ir.x);
+  ASSERT_EQ(r_text.y, ir.y);
+  ASSERT_EQ(r_text.w, ir.w);
+  ASSERT_EQ(r_text.h, ir.h);
+}
+
+TEST(Widget, calc_icon_text_rect_icon_top) {
+  rect_t r_icon;
+  rect_t r_text;
+  int32_t spacer = 2;
+  int32_t font_size = 20;
+  rect_t ir = rect_init(10, 20, 200, 80);
+
+  widget_calc_icon_text_rect(&ir, font_size, ICON_AT_TOP, spacer, &r_text, &r_icon);
+
+  ASSERT_EQ(r_icon.x, ir.x);
+  ASSERT_EQ(r_icon.y, ir.y);
+  ASSERT_EQ(r_icon.w, ir.w);
+  ASSERT_EQ(r_icon.h, ir.h - font_size - spacer);
+
+  ASSERT_EQ(r_text.x, ir.x);
+  ASSERT_EQ(r_text.y, r_icon.h + spacer);
+  ASSERT_EQ(r_text.w, ir.w);
+  ASSERT_EQ(r_text.h, font_size);
+}
+
+TEST(Widget, calc_icon_text_rect_icon_left) {
+  rect_t r_icon;
+  rect_t r_text;
+  int32_t spacer = 2;
+  int32_t font_size = 20;
+  rect_t ir = rect_init(10, 20, 200, 80);
+
+  widget_calc_icon_text_rect(&ir, font_size, ICON_AT_LEFT, spacer, &r_text, &r_icon);
+
+  ASSERT_EQ(r_icon.x, ir.x);
+  ASSERT_EQ(r_icon.y, ir.y);
+  ASSERT_EQ(r_icon.w, ir.h);
+  ASSERT_EQ(r_icon.h, ir.h);
+
+  ASSERT_EQ(r_text.x, ir.x + ir.h + spacer);
+  ASSERT_EQ(r_text.y, ir.y);
+  ASSERT_EQ(r_text.w, ir.w - ir.h - spacer);
+  ASSERT_EQ(r_text.h, ir.h);
+}
+
+TEST(Widget, calc_icon_text_rect_icon_right) {
+  rect_t r_icon;
+  rect_t r_text;
+  int32_t spacer = 2;
+  int32_t font_size = 20;
+  rect_t ir = rect_init(10, 20, 200, 80);
+
+  widget_calc_icon_text_rect(&ir, font_size, ICON_AT_RIGHT, spacer, &r_text, &r_icon);
+
+  ASSERT_EQ(r_icon.x, ir.x + ir.w - ir.h);
+  ASSERT_EQ(r_icon.y, ir.y);
+  ASSERT_EQ(r_icon.w, ir.h);
+  ASSERT_EQ(r_icon.h, ir.h);
+
+  ASSERT_EQ(r_text.x, ir.x);
+  ASSERT_EQ(r_text.y, ir.y);
+  ASSERT_EQ(r_text.w, ir.w - ir.h - spacer);
+  ASSERT_EQ(r_text.h, ir.h);
+}
+
+static ret_t on_visit_count(void* ctx, const void* data) {
+  int32_t* count = (int32_t*)ctx;
+  widget_t* widget = WIDGET(data);
+  const char* type = widget->vt->type;
+
+  if (tk_str_eq(type, WIDGET_TYPE_BUTTON_GROUP)) {
+    return RET_SKIP;
+  } else if (tk_str_eq(type, WIDGET_TYPE_BUTTON)) {
+    *count = (*count) + 1;
+    return RET_OK;
+  } else if (tk_str_eq(type, WIDGET_TYPE_LABEL)) {
+    return RET_STOP;
+  }
+
+  return RET_OK;
+}
+
+TEST(Widget, foreach_normal) {
+  int32_t count = 0;
+  widget_t* w = view_create(NULL, 0, 0, 400, 300);
+  button_create(w, 0, 0, 0, 0);
+  button_create(w, 0, 0, 0, 0);
+  button_create(w, 0, 0, 0, 0);
+
+  ASSERT_EQ(widget_foreach(w, on_visit_count, &count), RET_OK);
+  ASSERT_EQ(count, 3);
+
+  widget_destroy(w);
+}
+
+TEST(Widget, foreach_stop) {
+  int32_t count = 0;
+  widget_t* w = view_create(NULL, 0, 0, 400, 300);
+  button_create(w, 0, 0, 0, 0);
+  button_create(w, 0, 0, 0, 0);
+  label_create(w, 0, 0, 0, 0);
+  button_create(w, 0, 0, 0, 0);
+
+  ASSERT_EQ(widget_foreach(w, on_visit_count, &count), RET_STOP);
+  ASSERT_EQ(count, 2);
+
+  widget_destroy(w);
+}
+
+TEST(Widget, foreach_skip) {
+  int32_t count = 0;
+  widget_t* w = view_create(NULL, 0, 0, 400, 300);
+  button_create(w, 0, 0, 0, 0);
+  button_create(w, 0, 0, 0, 0);
+
+  widget_t* g = button_group_create(w, 0, 0, 400, 300);
+  button_create(g, 0, 0, 0, 0);
+  button_create(g, 0, 0, 0, 0);
+  label_create(g, 0, 0, 0, 0);
+  button_create(g, 0, 0, 0, 0);
+
+  ASSERT_EQ(widget_foreach(w, on_visit_count, &count), RET_OK);
+  ASSERT_EQ(count, 2);
+
+  widget_destroy(w);
+}
+
+TEST(Widget, move_focus) {
+  int32_t count = 0;
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* b1 = button_create(w, 0, 0, 0, 0);
+  widget_t* b2 = button_create(w, 0, 0, 0, 0);
+  widget_t* b3 = button_create(w, 0, 0, 0, 0);
+
+  widget_set_prop_bool(b1, WIDGET_PROP_FOCUSABLE, TRUE);
+  widget_set_prop_bool(b2, WIDGET_PROP_FOCUSABLE, TRUE);
+  widget_set_prop_bool(b3, WIDGET_PROP_FOCUSABLE, TRUE);
+
+  widget_set_focused(b1, TRUE);
+  ASSERT_EQ(b1->focused, TRUE);
+  ASSERT_EQ(widget_move_focus(b1, TRUE), RET_OK);
+  ASSERT_EQ(b1->focused, FALSE);
+  ASSERT_EQ(b2->focused, TRUE);
+
+  ASSERT_EQ(widget_move_focus(b2, TRUE), RET_OK);
+  ASSERT_EQ(b2->focused, FALSE);
+  ASSERT_EQ(b3->focused, TRUE);
+
+  ASSERT_EQ(widget_move_focus(b3, FALSE), RET_OK);
+  ASSERT_EQ(b3->focused, FALSE);
+  ASSERT_EQ(b2->focused, TRUE);
+
+  widget_destroy(w);
+}
+
+TEST(Widget, move_focus_skip_invisible) {
+  int32_t count = 0;
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* b1 = button_create(w, 0, 0, 0, 0);
+  widget_t* b2 = button_create(w, 0, 0, 0, 0);
+  widget_t* view = view_create(w, 0, 0, 0, 0);
+  widget_t* b3 = button_create(w, 0, 0, 0, 0);
+  widget_t* b4 = button_create(view, 0, 0, 0, 0);
+  widget_t* b5 = button_create(view, 0, 0, 0, 0);
+
+  widget_set_prop_bool(b1, WIDGET_PROP_FOCUSABLE, TRUE);
+  widget_set_prop_bool(b2, WIDGET_PROP_FOCUSABLE, TRUE);
+  widget_set_prop_bool(b3, WIDGET_PROP_FOCUSABLE, TRUE);
+  widget_set_prop_bool(b4, WIDGET_PROP_FOCUSABLE, TRUE);
+  widget_set_prop_bool(b5, WIDGET_PROP_FOCUSABLE, TRUE);
+
+  widget_set_visible(view, FALSE, FALSE);
+
+  widget_set_focused(b1, TRUE);
+  ASSERT_EQ(b1->focused, TRUE);
+  ASSERT_EQ(widget_move_focus(b1, TRUE), RET_OK);
+  ASSERT_EQ(b1->focused, FALSE);
+  ASSERT_EQ(b2->focused, TRUE);
+
+  ASSERT_EQ(widget_move_focus(b2, TRUE), RET_OK);
+  ASSERT_EQ(b2->focused, FALSE);
+  ASSERT_EQ(b3->focused, TRUE);
+
+  ASSERT_EQ(widget_move_focus(b3, FALSE), RET_OK);
+  ASSERT_EQ(b3->focused, FALSE);
+  ASSERT_EQ(b2->focused, TRUE);
+
+  widget_destroy(w);
+}
+
+TEST(Widget, move_focus_first) {
+  int32_t count = 0;
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* b1 = button_create(w, 0, 0, 0, 0);
+  widget_t* b2 = button_create(w, 0, 0, 0, 0);
+  widget_t* view = view_create(w, 0, 0, 0, 0);
+  widget_t* b3 = button_create(w, 0, 0, 0, 0);
+  widget_t* b4 = button_create(view, 0, 0, 0, 0);
+  widget_t* b5 = button_create(view, 0, 0, 0, 0);
+
+  widget_set_prop_bool(b1, WIDGET_PROP_FOCUSABLE, TRUE);
+  widget_set_prop_bool(b2, WIDGET_PROP_FOCUSABLE, TRUE);
+  widget_set_prop_bool(b3, WIDGET_PROP_FOCUSABLE, TRUE);
+  widget_set_prop_bool(b4, WIDGET_PROP_FOCUSABLE, TRUE);
+  widget_set_prop_bool(b5, WIDGET_PROP_FOCUSABLE, TRUE);
+
+  widget_set_visible(view, FALSE, FALSE);
+
+  ASSERT_EQ(widget_has_focused_widget_in_window(w), FALSE);
+  widget_focus_first(w);
+  ASSERT_EQ(widget_has_focused_widget_in_window(w), TRUE);
+  ASSERT_EQ(b1->focused, TRUE);
+  ASSERT_EQ(widget_move_focus(b1, TRUE), RET_OK);
+  ASSERT_EQ(b1->focused, FALSE);
+  ASSERT_EQ(b2->focused, TRUE);
+
+  widget_destroy(w);
+}
+
+TEST(Widget, move_focus_pages) {
+  int32_t count = 0;
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* b0 = button_create(w, 0, 0, 0, 0);
+
+  widget_t* pages = pages_create(w, 0, 0, 400, 300);
+
+  widget_t* p1 = view_create(pages, 0, 0, 400, 300);
+  widget_t* p2 = view_create(pages, 0, 0, 400, 300);
+  widget_t* p3 = view_create(pages, 0, 0, 400, 300);
+
+  widget_t* b1 = button_create(p1, 0, 0, 0, 0);
+  widget_t* b2 = button_create(p2, 0, 0, 0, 0);
+  widget_t* b3 = button_create(p3, 0, 0, 0, 0);
+
+  widget_set_prop_bool(b0, WIDGET_PROP_FOCUSABLE, TRUE);
+  widget_set_prop_bool(b1, WIDGET_PROP_FOCUSABLE, TRUE);
+  widget_set_prop_bool(b2, WIDGET_PROP_FOCUSABLE, TRUE);
+  widget_set_prop_bool(b3, WIDGET_PROP_FOCUSABLE, TRUE);
+
+  widget_focus_first(w);
+  ASSERT_EQ(b0->focused, TRUE);
+  ASSERT_EQ(widget_move_focus(b0, TRUE), RET_OK);
+  ASSERT_EQ(b0->focused, FALSE);
+  ASSERT_EQ(b1->focused, TRUE);
+
+  ASSERT_EQ(widget_move_focus(b1, TRUE), RET_OK);
+  ASSERT_EQ(b1->focused, FALSE);
+  ASSERT_EQ(b0->focused, TRUE);
+
+  pages_set_active(pages, 1);
+  widget_focus_first(w);
+  ASSERT_EQ(b0->focused, TRUE);
+  ASSERT_EQ(widget_move_focus(b0, TRUE), RET_OK);
+  ASSERT_EQ(b0->focused, FALSE);
+  ASSERT_EQ(b2->focused, TRUE);
+
+  ASSERT_EQ(widget_move_focus(b2, TRUE), RET_OK);
+  ASSERT_EQ(b2->focused, FALSE);
+  ASSERT_EQ(b0->focused, TRUE);
   widget_destroy(w);
 }

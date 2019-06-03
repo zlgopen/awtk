@@ -72,7 +72,9 @@ typedef struct _color_picker_t {
    */
   char value[TK_COLOR_HEX_LEN + 1];
 
+  /*private*/
   color_t c;
+  bool_t inited;
   color_t init_c;
   widget_t* trigger_child;
 } color_picker_t;

@@ -20,24 +20,6 @@
  */
 
 #include "awtk.h"
-#include "tkc/mem.h"
-#include "widgets/label.h"
-#include "base/idle.h"
-#include "base/timer.h"
-#include "widgets/button.h"
-#include "widgets/dialog.h"
-#include "widgets/image.h"
-#include "tkc/utils.h"
-#include "widgets/window.h"
-#include "tkc/time_now.h"
-#include "base/main_loop.h"
-#include "base/locale_info.h"
-#include "widgets/check_button.h"
-#include "widgets/progress_bar.h"
-#include "base/image_manager.h"
-#include "base/window_manager.h"
-#include "base/widget_factory.h"
-#include "ui_loader/ui_builder_default.h"
 #include "ext_widgets.h"
 
 static void install_click_hander(widget_t* widget);
@@ -86,8 +68,23 @@ uint32_t tk_mem_speed_test(void* buffer, uint32_t length, uint32_t* pmemcpy_spee
   return total_cost;
 }
 
+static ret_t window_to_background(void* ctx, event_t* e) {
+  widget_t* win = WIDGET(e->target);
+  log_debug("%s to_background\n", win->name);
+  return RET_OK;
+}
+
+static ret_t window_to_foreground(void* ctx, event_t* e) {
+  widget_t* win = WIDGET(e->target);
+  log_debug("%s to_foreground\n", win->name);
+  return RET_OK;
+}
+
 static void open_window(const char* name, widget_t* to_close) {
   widget_t* win = to_close ? window_open_and_close(name, to_close) : window_open(name);
+
+  widget_on(win, EVT_WINDOW_TO_BACKGROUND, window_to_background, win);
+  widget_on(win, EVT_WINDOW_TO_FOREGROUND, window_to_foreground, win);
 
   install_click_hander(win);
 
@@ -255,11 +252,11 @@ static ret_t on_open_window(void* ctx, event_t* e) {
   if (tk_str_eq(name, "toast")) {
     dialog_toast("Hello AWTK!\nThis is a toast!", 3000);
   } else if (tk_str_eq(name, "info")) {
-    dialog_info("Hello AWTK!\nThis is info dialog!");
+    dialog_info(NULL, "Hello AWTK!\nThis is info dialog!");
   } else if (tk_str_eq(name, "warn")) {
-    dialog_warn("Hello AWTK!\nDanger!!!");
+    dialog_warn(NULL, "Hello AWTK!\nDanger!!!");
   } else if (tk_str_eq(name, "confirm")) {
-    dialog_confirm("Hello AWTK!\nAre you sure to close?");
+    dialog_confirm(NULL, "Hello AWTK!\nAre you sure to close?");
   } else {
     open_window(name, NULL);
   }
@@ -429,7 +426,6 @@ static ret_t on_change_font_size(void* ctx, event_t* e) {
     font_scale = 1.1;
   }
   system_info_set_font_scale(system_info(), font_scale);
-
   widget_invalidate_force(win, NULL);
 
   return RET_OK;

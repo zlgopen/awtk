@@ -4,7 +4,7 @@
   </style>
 </label>
 
-<dialog_title icon="question" text_color="black">
+<dialog_title icon="question" text_color="black" text_align_h="left">
   <style name="default">
     <normal bg_color="#a9a9a0" />
   </style>

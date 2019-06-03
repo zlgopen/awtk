@@ -149,12 +149,14 @@ static ret_t list_view_on_scroll_view_scroll(widget_t* widget, int32_t xoffset, 
   list_view_t* list_view = LIST_VIEW(widget->parent);
   return_value_if_fail(list_view != NULL, RET_BAD_PARAMS);
 
-  if (scroll_bar_is_mobile(list_view->scroll_bar)) {
+  if (list_view->scroll_bar != NULL) {
     int32_t value = scroll_view_to_scroll_bar(list_view, yoffset);
-
     scroll_bar_set_value_only(list_view->scroll_bar, value);
-    widget_set_opacity(list_view->scroll_bar, 0xff);
-    widget_set_visible(list_view->scroll_bar, TRUE, FALSE);
+
+    if (scroll_bar_is_mobile(list_view->scroll_bar)) {
+      widget_set_opacity(list_view->scroll_bar, 0xff);
+      widget_set_visible(list_view->scroll_bar, TRUE, FALSE);
+    }
   }
 
   return RET_OK;
@@ -179,105 +181,12 @@ static ret_t list_view_on_scroll_view_scroll_to(widget_t* widget, int32_t xoffse
 }
 
 static ret_t list_view_on_scroll_view_layout_children(widget_t* widget) {
-  int32_t virtual_h = 0;
-  int32_t item_height = 0;
-  int32_t default_item_height = 0;
-  list_view_t* list_view = NULL;
-  widget_t* scroll_bar = NULL;
-  scroll_view_t* scroll_view = SCROLL_VIEW(widget);
-  return_value_if_fail(widget != NULL && scroll_view != NULL, RET_BAD_PARAMS);
-
-  virtual_h = widget->h;
-  list_view = LIST_VIEW(widget->parent);
-  return_value_if_fail(list_view != NULL, RET_BAD_PARAMS);
-
-  scroll_bar = list_view->scroll_bar;
-  item_height = list_view->item_height;
-  default_item_height = list_view->default_item_height;
-
-  if (widget->children != NULL) {
-    int32_t i = 0;
-    int32_t n = 0;
-    int32_t x = 0;
-    int32_t y = 0;
-    int32_t w = widget->w;
-    int32_t h = item_height;
-    widget_t** children = (widget_t**)(widget->children->elms);
-
-    n = widget->children->size;
-    for (i = 0; i < n; i++) {
-      widget_t* iter = children[i];
-
-      if (item_height <= 0) {
-        h = iter->h;
-      }
-
-      if (h <= 0) {
-        h = default_item_height;
-      }
-
-      y = y + (h > 0 ? h : iter->h);
-      if (y > virtual_h) {
-        virtual_h = y;
-      }
-    }
-
-    scroll_view->widget.w = list_view->widget.w;
-    if (scroll_bar != NULL) {
-      if (!scroll_bar_is_mobile(scroll_bar)) {
-        if (list_view->auto_hide_scroll_bar) {
-          if (virtual_h <= widget->h) {
-            widget_set_visible(scroll_bar, FALSE, FALSE);
-            widget_set_enable(scroll_bar, FALSE);
-          } else {
-            scroll_view->widget.w = list_view->widget.w - scroll_bar->w;
-            widget_set_visible(scroll_bar, TRUE, FALSE);
-            widget_set_enable(scroll_bar, TRUE);
-          }
-        }
-      }
-    }
-
-    y = 0;
-    w = scroll_view->widget.w;
-
-    for (i = 0; i < n; i++) {
-      widget_t* iter = children[i];
-
-      if (item_height <= 0) {
-        h = iter->h;
-      }
-
-      if (h <= 0) {
-        h = default_item_height;
-      }
-
-      widget_move_resize(iter, x, y, w, h);
-      widget_layout(iter);
-
-      y = iter->y + iter->h;
-    }
-
-    if (scroll_bar != NULL && (SCROLL_BAR(scroll_bar)->value) >= y) {
-      int32_t offset = tk_max(0, (y - widget->h + item_height));
-      scroll_bar_set_value(scroll_bar, offset);
-      scroll_view_set_offset(WIDGET(scroll_view), 0, offset);
-    }
-  } else {
-    scroll_bar_set_value(scroll_bar, 0);
-    scroll_view_set_offset(WIDGET(scroll_view), 0, 0);
+  if (widget->children_layout == NULL) {
+    widget_set_children_layout(widget, "list_view(m=0,s=0)");
   }
+  return_value_if_fail(widget->children_layout != NULL, RET_BAD_PARAMS);
 
-  scroll_view_set_virtual_h(list_view->scroll_view, virtual_h);
-  item_height = tk_max(item_height, default_item_height);
-  scroll_bar_set_params(list_view->scroll_bar, virtual_h, item_height);
-
-  scroll_view_set_xslidable(list_view->scroll_view, FALSE);
-  if (scroll_bar_is_mobile(list_view->scroll_bar)) {
-    scroll_view_set_yslidable(list_view->scroll_view, TRUE);
-    widget_set_visible(list_view->scroll_bar, FALSE, FALSE);
-  }
-
+  children_layouter_layout(widget->children_layout, widget);
   return RET_OK;
 }
 

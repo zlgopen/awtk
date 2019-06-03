@@ -32,6 +32,8 @@
 #include "tkc/emitter.h"
 
 #include "base/types_def.h"
+#include "base/keys.h"
+#include "base/idle.h"
 #include "base/timer.h"
 #include "base/events.h"
 #include "base/canvas.h"
@@ -42,12 +44,14 @@
 #include "base/image_manager.h"
 #include "base/widget_consts.h"
 #include "base/self_layouter.h"
+#include "base/widget_animator.h"
 #include "base/children_layouter.h"
 
 BEGIN_C_DECLS
 
 typedef ret_t (*widget_invalidate_t)(widget_t* widget, rect_t* r);
 typedef ret_t (*widget_on_event_t)(widget_t* widget, event_t* e);
+typedef ret_t (*widget_on_event_before_children_t)(widget_t* widget, event_t* e);
 typedef ret_t (*widget_on_paint_background_t)(widget_t* widget, canvas_t* c);
 typedef ret_t (*widget_on_paint_self_t)(widget_t* widget, canvas_t* c);
 typedef ret_t (*widget_on_paint_children_t)(widget_t* widget, canvas_t* c);
@@ -90,6 +94,21 @@ struct _widget_vtable_t {
    *>如编辑器。
    */
   uint32_t focusable : 1;
+  /**
+   * 收到空格键触发click事件。
+   *
+   */
+  uint32_t space_key_to_activate : 1;
+  /**
+   * 收到回车键触发click事件。
+   *
+   */
+  uint32_t return_key_to_activate : 1;
+  /**
+   * 只有active的子控件时可见的。如slide view和pages。
+   *
+   */
+  uint32_t only_active_child_visible : 1;
   /**
    * 是否是窗口。
    */
@@ -137,6 +156,7 @@ struct _widget_vtable_t {
   widget_on_add_child_t on_add_child;
   widget_on_remove_child_t on_remove_child;
   widget_on_event_t on_event;
+  widget_on_event_before_children_t on_event_before_children;
   widget_find_target_t find_target;
   widget_on_destroy_t on_destroy;
 };
@@ -345,19 +365,25 @@ struct _widget_t {
   widget_t* parent;
   /**
    * @property {widget_t*} target
-   * @annotation ["readable"]
+   * @annotation ["private"]
    * 接收事件的子控件。
    */
   widget_t* target;
   /**
    * @property {widget_t*} grab_widget
-   * @annotation ["readable"]
+   * @annotation ["private"]
    * grab事件的子控件。
    */
   widget_t* grab_widget;
   /**
+   * @property {int32_t} grab_widget_count
+   * @annotation ["private"]
+   * 有时子控件和控件自己都会grab widget，所需要grab的计数。
+   */
+  int32_t grab_widget_count;
+  /**
    * @property {widget_t*} key_target
-   * @annotation ["readable"]
+   * @annotation ["private"]
    * 接收按键事件的子控件。
    */
   widget_t* key_target;
@@ -823,6 +849,18 @@ ret_t widget_set_animator_time_scale(widget_t* widget, const char* name, float_t
 ret_t widget_pause_animator(widget_t* widget, const char* name);
 
 /**
+ * @method widget_find_animator
+ * 查找指定名称的动画。
+ *
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {char*} name 动画名称。
+ *
+ * @return {widget_animator_t*} 成功返回动画对象，失败返回NULL。
+ */
+widget_animator_t* widget_find_animator(widget_t* widget, const char* name);
+
+/**
  * @method widget_stop_animator
  * 停止动画(控件的相应属性回归原位)。
  * 请参考[控件动画](https://github.com/zlgopen/awtk/blob/master/docs/widget_animator.md)
@@ -902,8 +940,11 @@ ret_t widget_set_state(widget_t* widget, const char* state);
 /**
  * @method widget_set_opacity
  * 设置控件的不透明度。
+ *
+ *>在嵌入式平台，半透明效果会使性能大幅下降，请谨慎使用。
+ *
  * @param {widget_t*} widget 控件对象。
- * @param {uint8_t} opacity 不透明度。
+ * @param {uint8_t} opacity 不透明度(取值0-255，0表示完全透明，255表示完全不透明)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -1396,6 +1437,18 @@ bool_t widget_equal(widget_t* widget, widget_t* other);
 uint32_t widget_add_timer(widget_t* widget, timer_func_t on_timer, uint32_t duration_ms);
 
 /**
+ * @method widget_add_idle
+ * 创建idle。
+ * 该idle在控件销毁时自动销毁，**idle\_info\_t**的ctx为widget。
+ * 如果idle的生命周期与控件无关，请直接调用**idle_add**，以避免不必要的内存开销。
+ * @param {widget_t*} widget 控件对象。
+ * @param {idle_func_t} on_idle idle回调函数。
+ *
+ * @return {uint32_t} 返回idle的ID，TK_INVALID_ID表示失败。
+ */
+uint32_t widget_add_idle(widget_t* widget, idle_func_t on_idle);
+
+/**
  * @method widget_load_image
  * 加载图片。
  * 返回的bitmap对象只在当前调用有效，请不保存对bitmap对象的引用。
@@ -1855,11 +1908,20 @@ bool_t widget_is_instance_of(widget_t* widget, const widget_vtable_t* vt);
 /*public for subclass*/
 TK_EXTERN_VTABLE(widget);
 
+ret_t widget_set_need_relayout_children(widget_t* widget);
+ret_t widget_ensure_visible_in_viewport(widget_t* widget);
+
 /*public for test*/
+ret_t widget_focus_first(widget_t* widget);
+ret_t widget_move_focus(widget_t* widget, bool_t next);
 locale_info_t* widget_get_locale_info(widget_t* widget);
 image_manager_t* widget_get_image_manager(widget_t* widget);
 assets_manager_t* widget_get_assets_manager(widget_t* widget);
 font_manager_t* widget_get_font_manager(widget_t* widget);
+uint32_t widget_add_idle(widget_t* widget, idle_func_t on_idle);
+bool_t widget_has_focused_widget_in_window(widget_t* widget);
+ret_t widget_calc_icon_text_rect(const rect_t* ir, int32_t font_size, int32_t icon_at,
+                                 int32_t spacer, rect_t* r_text, rect_t* r_icon);
 
 END_C_DECLS
 

@@ -46,6 +46,17 @@
 #include "progress_circle/progress_circle.h"
 #include "image_animation/image_animation.h"
 #include "mutable_image/mutable_image.h"
+#include "base/children_layouter_factory.h"
+#include "scroll_view/children_layouter_list_view.h"
+
+static ret_t children_layouter_register_ext_builtins(void) {
+  children_layouter_factory_t* f = children_layouter_factory();
+
+  children_layouter_factory_register(f, CHILDREN_LAYOUTER_LIST_VIEW,
+                                     children_layouter_list_view_create);
+
+  return RET_OK;
+}
 
 ret_t tk_ext_widgets_init() {
   widget_factory_register(widget_factory(), WIDGET_TYPE_RICH_TEXT, rich_text_create);
@@ -77,6 +88,8 @@ ret_t tk_ext_widgets_init() {
   widget_factory_register(widget_factory(), WIDGET_TYPE_IMAGE_VALUE, image_value_create);
   widget_factory_register(widget_factory(), WIDGET_TYPE_SLIDE_MENU, slide_menu_create);
   widget_factory_register(widget_factory(), WIDGET_TYPE_MUTABLE_IMAGE, mutable_image_create);
+
+  children_layouter_register_ext_builtins();
 
   return RET_OK;
 }

@@ -215,16 +215,16 @@ ret_t fs_os_get_exe(fs_t* fs, char path[MAX_PATH + 1]) {
 }
 
 static ret_t fs_os_get_cwd(fs_t* fs, char path[MAX_PATH + 1]) {
-  const char* p = NULL;
+  return_value_if_fail(fs != NULL && path != NULL, RET_BAD_PARAMS);
 
-  (void)fs;
-  *path = '\0';
-  p = getcwd(path, MAX_PATH);
-  if (p != NULL) {
-    return RET_OK;
-  } else {
-    return RET_FAIL;
-  }
+  memset(path, 0x00, MAX_PATH + 1);
+#if defined(WIN32)
+  GetCurrentDirectory(MAX_PATH, path);
+#else
+  getcwd(path, MAX_PATH);
+#endif /*WIN32*/
+
+  return RET_OK;
 }
 
 static const fs_t s_os_fs = {.open_file = fs_os_open_file,

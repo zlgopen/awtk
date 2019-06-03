@@ -551,3 +551,12 @@ ret_t str_expand_vars(str_t* str, const char* src, const object_t* obj) {
 
   return RET_OK;
 }
+
+ret_t str_pop(str_t* str) {
+  return_value_if_fail(str != NULL && str->size > 0, RET_BAD_PARAMS);
+
+  str->size--;
+  str->str[str->size] = '\0';
+
+  return RET_OK;
+}

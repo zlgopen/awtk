@@ -102,3 +102,58 @@ ret_t widget_set_self_layout_params(widget_t* widget, const char* x, const char*
 
   return widget_set_self_layout(widget, params);
 }
+
+ret_t widget_layout_floating_children(widget_t* widget) {
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  if (widget->children != NULL) {
+    uint32_t i = 0;
+    uint32_t n = widget->children->size;
+    widget_t** children = (widget_t**)(widget->children->elms);
+
+    for (i = 0; i < n; i++) {
+      widget_t* iter = children[i];
+      if (iter->floating) {
+        widget_layout(iter);
+      }
+    }
+  }
+
+  return RET_OK;
+}
+
+ret_t widget_get_children_for_layout(widget_t* widget, darray_t* result, bool_t keep_disable,
+                                     bool_t keep_invisible) {
+  return_value_if_fail(widget != NULL && result != NULL, RET_BAD_PARAMS);
+
+  result->size = 0;
+  if (widget->children != NULL) {
+    uint32_t i = 0;
+    uint32_t n = widget->children->size;
+    widget_t** children = (widget_t**)(widget->children->elms);
+
+    for (i = 0; i < n; i++) {
+      widget_t* iter = children[i];
+
+      if (iter->floating) {
+        continue;
+      }
+
+      if (!(iter->enable)) {
+        if (!keep_disable) {
+          continue;
+        }
+      }
+
+      if (!(iter->visible)) {
+        if (!keep_invisible) {
+          continue;
+        }
+      }
+
+      darray_push(result, iter);
+    }
+  }
+
+  return RET_OK;
+}

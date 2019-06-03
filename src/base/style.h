@@ -135,10 +135,40 @@ BEGIN_C_DECLS
 #define STYLE_ID_FG_IMAGE_DRAW_TYPE "fg_image_draw_type"
 
 /**
+ * @const STYLE_ID_SPACER
+ * 间距。
+ */
+#define STYLE_ID_SPACER "spacer"
+
+/**
  * @const STYLE_ID_MARGIN
  * 边距。
  */
 #define STYLE_ID_MARGIN "margin"
+
+/**
+ * @const STYLE_ID_MARGIN_LEFT
+ * 左边距。
+ */
+#define STYLE_ID_MARGIN_LEFT "margin_left"
+
+/**
+ * @const STYLE_ID_MARGIN_RIGHT
+ * 右边距。
+ */
+#define STYLE_ID_MARGIN_RIGHT "margin_right"
+
+/**
+ * @const STYLE_ID_MARGIN_TOP
+ * 顶边距。
+ */
+#define STYLE_ID_MARGIN_TOP "margin_top"
+
+/**
+ * @const STYLE_ID_MARGIN_BOTTOM
+ * 底边距。
+ */
+#define STYLE_ID_MARGIN_BOTTOM "margin_bottom"
 
 /**
  * @const STYLE_ID_ICON_AT

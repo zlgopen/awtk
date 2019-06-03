@@ -21,24 +21,11 @@
 
 #include "awtk.h"
 #include "assets.h"
-#include "tkc/mem.h"
-#include "tkc/path.h"
-#include "widgets/window.h"
-#include "widgets/label.h"
-#include "widgets/edit.h"
-#include "base/system_info.h"
+#include "ext_widgets.h"
 
 ret_t application_init(void) {
-  widget_t* win = window_create(NULL, 0, 0, 0, 0);
-  widget_t* label = label_create(win, 0, 0, 0, 0);
-  widget_t* edit = edit_create(win, 0, 0, 0, 0);
-
-  widget_set_text(label, L"hello awtk!");
-  widget_set_self_layout_params(label, "0", "middle", "30%", "30");
-
-  widget_set_self_layout_params(edit, "30%", "middle", "60%", "30");
-
-  widget_layout(win);
+  tk_ext_widgets_init();
+  window_open("edit");
 
   return RET_OK;
 }

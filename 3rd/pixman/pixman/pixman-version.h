@@ -1,7 +1,7 @@
 /*
  * Copyright © 2008 Red Hat, Inc.
  *
- * Permission is hereby granted, free of charge, to any person
+ * Permission is hereby granted, px_free of charge, to any person
  * obtaining a copy of this software and associated documentation
  * files (the "Software"), to deal in the Software without
  * restriction, including without limitation the rights to use, copy,
@@ -32,10 +32,10 @@
 #endif
 
 #define PIXMAN_VERSION_MAJOR 0
-#define PIXMAN_VERSION_MINOR 38
+#define PIXMAN_VERSION_MINOR 34
 #define PIXMAN_VERSION_MICRO 0
 
-#define PIXMAN_VERSION_STRING "0.38.0"
+#define PIXMAN_VERSION_STRING "0.34.0"
 
 #define PIXMAN_VERSION_ENCODE(major, minor, micro) (	\
 	  ((major) * 10000)				\

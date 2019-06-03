@@ -22,6 +22,7 @@
 #include "tkc/mem.h"
 #include "tkc/rect.h"
 #include "tkc/utils.h"
+#include "base/keys.h"
 #include "widgets/slider.h"
 #include "base/widget_vtable.h"
 #include "base/image_manager.h"
@@ -67,7 +68,7 @@ static ret_t slider_paint_dragger(widget_t* widget, canvas_t* c) {
 
   image_name = style_get_str(style, STYLE_ID_ICON, NULL);
   if (image_name && image_manager_get_bitmap(image_manager(), image_name, &img) == RET_OK) {
-    canvas_draw_image_ex(c, &img, IMAGE_DRAW_CENTER, &r);
+    canvas_draw_image_ex(c, &img, IMAGE_DRAW_SCALE_AUTO, &r);
   }
 
   return RET_OK;
@@ -163,12 +164,61 @@ static ret_t slider_pointer_up_cleanup(widget_t* widget) {
 
   return RET_OK;
 }
+
+static ret_t slider_add_value(widget_t* widget, int16_t delta) {
+  int32_t new_value = 0;
+  slider_t* slider = SLIDER(widget);
+  return_value_if_fail(widget != NULL && slider != NULL, RET_BAD_PARAMS);
+
+  new_value = slider->value + delta;
+
+  if (new_value < slider->min) {
+    new_value = slider->min;
+  }
+
+  if (new_value > slider->max) {
+    new_value = slider->max;
+  }
+
+  return slider_set_value(widget, new_value);
+}
+
+ret_t slider_inc(widget_t* widget) {
+  ret_t ret = RET_OK;
+  slider_t* slider = SLIDER(widget);
+  return_value_if_fail(widget != NULL && slider != NULL, RET_BAD_PARAMS);
+
+  if (slider->step) {
+    ret = slider_add_value(widget, slider->step);
+  } else {
+    ret = slider_add_value(widget, 1);
+  }
+
+  return ret;
+}
+
+ret_t slider_dec(widget_t* widget) {
+  ret_t ret = RET_OK;
+  slider_t* slider = SLIDER(widget);
+  return_value_if_fail(widget != NULL && slider != NULL, RET_BAD_PARAMS);
+
+  if (slider->step) {
+    ret = slider_add_value(widget, -slider->step);
+  } else {
+    ret = slider_add_value(widget, -1);
+  }
+
+  return ret;
+}
+
 static ret_t slider_on_event(widget_t* widget, event_t* e) {
   rect_t r;
+  ret_t ret = RET_OK;
   uint16_t type = e->type;
   slider_t* slider = SLIDER(widget);
   return_value_if_fail(widget != NULL && slider != NULL, RET_BAD_PARAMS);
 
+  ret = slider->dragging ? RET_STOP : RET_OK;
   switch (type) {
     case EVT_POINTER_DOWN: {
       pointer_event_t* evt = (pointer_event_t*)e;
@@ -182,6 +232,7 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
         widget_grab(widget->parent, widget);
         widget_invalidate(widget, NULL);
       }
+      ret = slider->dragging ? RET_STOP : RET_OK;
       break;
     }
     case EVT_POINTER_DOWN_ABORT: {
@@ -226,11 +277,30 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
     case EVT_POINTER_ENTER:
       widget_set_state(widget, slider->dragging ? WIDGET_STATE_PRESSED : WIDGET_STATE_OVER);
       break;
-    default:
+    case EVT_KEY_DOWN: {
+      key_event_t* evt = (key_event_t*)e;
+      if (slider->vertical) {
+        if (evt->key == TK_KEY_UP) {
+          slider_inc(widget);
+        } else if (evt->key == TK_KEY_DOWN) {
+          slider_dec(widget);
+        }
+      } else {
+        if (evt->key == TK_KEY_LEFT) {
+          slider_dec(widget);
+        } else if (evt->key == TK_KEY_RIGHT) {
+          slider_inc(widget);
+        }
+      }
       break;
+    }
+    default: {
+      ret = RET_OK;
+      break;
+    }
   }
 
-  return RET_OK;
+  return ret;
 }
 
 ret_t slider_set_value_internal(widget_t* widget, uint16_t value, event_type_t etype,

@@ -44,12 +44,47 @@ struct _image_loader_t {
 /**
  * @method image_loader_load
  * 加载图片。
+ *
  * @param {image_loader_t*} loader loader对象。
  * @param {const asset_info_t*} asset 资源。
  * @param {bitmap_t*} bitmap 用于返回位图对象。
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t image_loader_load(image_loader_t* loader, const asset_info_t* asset, bitmap_t* bitmap);
+
+/**
+ * @method image_loader_register
+ * 注册图片加载器。
+ *
+ * @annotation ["static"]
+ * @param {image_loader_t*} loader loader对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t image_loader_register(image_loader_t* loader);
+
+/**
+ * @method image_loader_unregister
+ * 注销图片加载器。
+ *
+ * @annotation ["static"]
+ * @param {image_loader_t*} loader loader对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t image_loader_unregister(image_loader_t* loader);
+
+/**
+ * @method image_loader_load_image
+ * 查找满足条件加载器并加载图片。
+ *
+ * @annotation ["static"]
+ * @param {const asset_info_t*} asset 资源。
+ * @param {bitmap_t*} bitmap 用于返回位图对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t image_loader_load_image(const asset_info_t* asset, bitmap_t* bitmap);
 
 END_C_DECLS
 

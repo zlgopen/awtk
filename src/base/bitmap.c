@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   bitmap.c
  * Author: AWTK Develop Team
  * Brief:  bitmap interface
@@ -373,6 +373,70 @@ uint32_t bitmap_get_line_length(bitmap_t* bitmap) {
   }
 
   return bitmap->line_length;
+}
+
+ret_t rgba_data_premulti_alpha(const uint8_t* data, uint8_t a_index, uint32_t w, uint32_t h) {
+  uint32_t i = 0;
+  uint32_t k = 0;
+  uint32_t n = w * h;
+  uint8_t* s = (uint8_t*)data;
+  return_value_if_fail(data != NULL && a_index < 4, RET_BAD_PARAMS);
+
+  for (i = 0; i < n; i++) {
+    uint8_t a = s[a_index];
+    for (k = 0; k < 4; k++) {
+      if (k != a_index) {
+        s[k] = (s[k] * a) >> 8;
+      }
+    }
+    s += 4;
+  }
+
+  return RET_OK;
+}
+
+ret_t bitmap_premulti_alpha(bitmap_t* bitmap) {
+  ret_t ret = RET_FAIL;
+
+  return_value_if_fail(bitmap != NULL && bitmap->data != NULL, RET_BAD_PARAMS);
+
+  if (bitmap->flags & BITMAP_FLAG_PREMULTI_ALPHA) {
+    return RET_OK;
+  }
+
+  switch (bitmap->format) {
+    case BITMAP_FMT_RGBA8888:
+    case BITMAP_FMT_BGRA8888: {
+      ret = rgba_data_premulti_alpha(bitmap->data, 3, bitmap->w, bitmap->h);
+      break;
+    }
+    case BITMAP_FMT_ABGR8888:
+    case BITMAP_FMT_ARGB8888: {
+      ret = rgba_data_premulti_alpha(bitmap->data, 0, bitmap->w, bitmap->h);
+      break;
+    }
+  }
+
+  if (ret == RET_OK) {
+    bitmap->flags = bitmap->flags | BITMAP_FLAG_PREMULTI_ALPHA;
+  }
+
+  return ret;
+}
+
+bitmap_t* bitmap_clone(bitmap_t* bitmap) {
+  bitmap_t* b = NULL;
+  return_value_if_fail(bitmap != NULL, NULL);
+
+  b = bitmap_create_ex(bitmap->w, bitmap->h, bitmap->line_length,
+                       (bitmap_format_t)(bitmap->format));
+  return_value_if_fail(b != NULL, NULL);
+
+  if (b->data != NULL) {
+    memcpy((char*)(b->data), bitmap->data, b->line_length * b->h);
+  }
+
+  return b;
 }
 
 #if defined(WITH_SDL) || defined(LINUX)

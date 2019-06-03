@@ -154,6 +154,7 @@ static ret_t input_type_open_keyboard(input_method_t* im, int32_t input_type, bo
     win->y = im->keyboard->y - win->h;
     widget_invalidate_force(im->win, NULL);
   } else if (p.y < 0) {
+    im->win = win;
     im->win->y += im->win_delta_y;
     im->win_delta_y = 0;
     widget_invalidate_force(im->win, NULL);

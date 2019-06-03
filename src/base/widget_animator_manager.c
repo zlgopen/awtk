@@ -194,6 +194,8 @@ ret_t widget_animator_manager_remove_all(widget_animator_manager_t* am, widget_t
         widget_animator_destroy(iter);
         iter = prev->next;
       }
+
+      ret = RET_OK;
     } else {
       prev = iter;
       iter = prev->next;
@@ -288,4 +290,20 @@ uint32_t widget_animator_manager_count(widget_animator_manager_t* am) {
   }
 
   return count;
+}
+
+widget_animator_t* widget_animator_manager_find(widget_animator_manager_t* am, widget_t* widget,
+                                                const char* name) {
+  widget_animator_t* iter = NULL;
+  return_value_if_fail(am != NULL && widget != NULL && name != NULL, NULL);
+
+  iter = am->first;
+  while (iter != NULL) {
+    if (animator_is_equal(iter, widget, name)) {
+      return iter;
+    }
+    iter = iter->next;
+  }
+
+  return NULL;
 }

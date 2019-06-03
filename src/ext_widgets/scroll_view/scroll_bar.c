@@ -339,7 +339,7 @@ static ret_t scroll_bar_create_children(widget_t* widget) {
   }
 
   scroll_bar->dragger = dragger;
-  widget->need_relayout_children = TRUE;
+  widget_set_need_relayout_children(widget);
 
   return RET_OK;
 }
@@ -349,7 +349,7 @@ ret_t scroll_bar_set_params(widget_t* widget, int32_t virtual_size, int32_t row)
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
   return_value_if_fail(scroll_bar != NULL, RET_BAD_PARAMS);
 
-  widget->need_relayout_children = TRUE;
+  widget_set_need_relayout_children(widget);
   scroll_bar->virtual_size = virtual_size;
   scroll_bar->row = row;
 
@@ -408,6 +408,7 @@ static const char* s_scroll_bar_clone_properties[] = {
 static const char* s_scroll_bar_persitent_properties[] = {WIDGET_PROP_ANIMATABLE, NULL};
 
 TK_DECL_VTABLE(scroll_bar_mobile) = {.size = sizeof(scroll_bar_t),
+                                     .inputable = TRUE,
                                      .type = WIDGET_TYPE_SCROLL_BAR_MOBILE,
                                      .clone_properties = s_scroll_bar_clone_properties,
                                      .parent = TK_PARENT_VTABLE(widget),
@@ -418,6 +419,7 @@ TK_DECL_VTABLE(scroll_bar_mobile) = {.size = sizeof(scroll_bar_t),
                                      .on_paint_self = scroll_bar_mobile_on_paint_self};
 
 TK_DECL_VTABLE(scroll_bar_desktop) = {.size = sizeof(scroll_bar_t),
+                                      .inputable = TRUE,
                                       .type = WIDGET_TYPE_SCROLL_BAR_DESKTOP,
                                       .clone_properties = s_scroll_bar_clone_properties,
                                       .persistent_properties = s_scroll_bar_persitent_properties,
@@ -538,7 +540,7 @@ ret_t scroll_bar_set_value_only(widget_t* widget, int32_t value) {
   scroll_bar->value = value;
 
   if (!scroll_bar_is_mobile(widget)) {
-    widget->need_relayout_children = TRUE;
+    widget_set_need_relayout_children(widget);
   }
 
   return RET_OK;

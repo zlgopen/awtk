@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const glob = require('glob')
 
 class IDLGenerator {
@@ -338,8 +339,7 @@ class IDLGenerator {
           cls.level += updateLevel(parent);
         } else {
           cls.level += 1;
-          console.log('not found class:' + cls.parent);
-          process.exit(0);
+          console.log('Warnning: not found class ' + cls.parent);
         }
       }
 
@@ -362,19 +362,38 @@ class IDLGenerator {
     this.sort();
   }
 
-  saveResult() {
+  saveResult(filename) {
     const str = JSON.stringify(this.result, null, '  ');
-    fs.writeFileSync('idl.json', str);
+    fs.writeFileSync(filename, str);
   }
 
-  static gen() {
+  static gen(sourcesPath, outputIDL) {
     let gen = new IDLGenerator();
     
     gen.result = []
-    gen.parseFolder('../../src/**/*.h');
+    gen.parseFolder(sourcesPath + '/**/*.h');
+
     gen.postProcess();
-    gen.saveResult('idl.json');
+    gen.saveResult(outputIDL);
+    console.log('\n==============================================');
+    console.log(`${sourcesPath} ==> ${outputIDL}`);
+    console.log('==============================================');
   }
 }
 
-IDLGenerator.gen()
+let outputIDL = 'idl.json';
+let sourcesPath = path.normalize(path.join(__dirname, '../../src'));
+
+if(process.argv.length == 3) {
+  outputIDL = process.argv[2];
+} else if(process.argv.length > 3) {
+  outputIDL = process.argv[2];
+  sourcesPath = path.normalize(process.argv[3]);
+}
+
+if(sourcesPath === '-h' || sourcesPath === '--help') {
+  console.log('Usage: node index.js outputIDL sourcesPath');
+  process.exit(0);
+}
+
+IDLGenerator.gen(sourcesPath, outputIDL)

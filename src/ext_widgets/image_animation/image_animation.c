@@ -26,6 +26,8 @@
 #include "base/image_manager.h"
 #include "image_animation/image_animation.h"
 
+static ret_t image_animation_start_init_if_not_inited(widget_t* widget);
+
 ret_t image_animation_get_image_name(image_animation_t* image_animation,
                                      char name[TK_NAME_LEN + 1]) {
   memset(name, 0x00, TK_NAME_LEN + 1);
@@ -80,6 +82,8 @@ static ret_t image_animation_on_paint_self(widget_t* widget, canvas_t* c) {
   image_animation_t* image_animation = IMAGE_ANIMATION(widget);
   return_value_if_fail(widget != NULL && image_animation != NULL && image_animation->image != NULL,
                        RET_BAD_PARAMS);
+
+  image_animation_start_init_if_not_inited(widget);
 
   if (image_animation->index >= 0) {
     bitmap_t bitmap;
@@ -214,25 +218,27 @@ static ret_t image_animation_delay_play(const timer_info_t* info) {
   return RET_REMOVE;
 }
 
-static ret_t image_animation_on_open(void* ctx, event_t* e) {
-  widget_t* widget = WIDGET(ctx);
+static ret_t image_animation_start_init_if_not_inited(widget_t* widget) {
   image_animation_t* image_animation = IMAGE_ANIMATION(widget);
-  return_value_if_fail(widget != NULL && image_animation != NULL, RET_REMOVE);
+  return_value_if_fail(widget != NULL && image_animation != NULL, RET_BAD_PARAMS);
 
-  if (image_animation->auto_play) {
-    if (image_animation->delay > 0) {
-      image_animation->timer_id =
-          timer_add(image_animation_delay_play, widget, image_animation->delay);
-    } else {
-      image_animation_play(widget);
+  if (!(image_animation->inited)) {
+    if (image_animation->auto_play) {
+      if (image_animation->delay > 0) {
+        image_animation->timer_id =
+            timer_add(image_animation_delay_play, widget, image_animation->delay);
+      } else {
+        image_animation_play(widget);
+      }
     }
+
+    image_animation->inited = TRUE;
   }
 
-  return RET_REMOVE;
+  return RET_OK;
 }
 
 widget_t* image_animation_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  widget_t* win = widget_get_window(parent);
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(image_animation), x, y, w, h);
   image_animation_t* image_animation = IMAGE_ANIMATION(widget);
 
@@ -244,7 +250,6 @@ widget_t* image_animation_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t 
   image_animation->interval = 16;
   image_animation->loop = TRUE;
   image_animation->auto_play = FALSE;
-  widget_on(win, EVT_WINDOW_WILL_OPEN, image_animation_on_open, image_animation);
 
   return widget;
 }

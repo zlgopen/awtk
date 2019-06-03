@@ -94,10 +94,12 @@ const uint8_t* theme_find_style(theme_t* t, const char* widget_type, const char*
 
   iter = (const theme_item_t*)(t->data + sizeof(theme_header_t));
   for (i = 0; i < header->nr; i++) {
-    if (tk_str_eq(iter->state, widget_state) && tk_str_eq(iter->name, name) &&
-        tk_str_eq(widget_type, iter->widget_type)) {
-      return t->data + iter->offset;
+    if (tk_str_eq(widget_type, iter->widget_type)) {
+      if (tk_str_eq(iter->state, widget_state) && tk_str_eq(iter->name, name)) {
+        return t->data + iter->offset;
+      }
     }
+
     iter++;
   }
 

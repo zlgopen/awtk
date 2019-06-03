@@ -108,6 +108,7 @@ typedef struct _text_selector_t {
   int32_t ydown;
   int32_t yoffset;
   int32_t yoffset_save;
+  bool_t pressed;
   velocity_t velocity;
   widget_animator_t* wa;
   text_selector_option_t* option_items;

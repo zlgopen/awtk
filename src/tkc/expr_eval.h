@@ -34,7 +34,11 @@ BEGIN_C_DECLS
 #define EVAL_MAX_STACK_DEPTH 8
 #define EVAL_MAX_NAME_LENGTH 32
 
-typedef enum _ExprValueType { EXPR_VALUE_TYPE_NUMBER = 0, EXPR_VALUE_TYPE_STRING } ExprValueType;
+typedef enum _ExprValueType {
+  EXPR_VALUE_TYPE_NUMBER = 0,
+  EXPR_VALUE_TYPE_STRING,
+  EXPR_VALUE_TYPE_NONE
+} ExprValueType;
 
 typedef struct _ExprStr {
   size_t size;
@@ -52,6 +56,7 @@ typedef struct _ExprValue {
 
 typedef enum {
   EVAL_RESULT_OK,
+  EVAL_RESULT_BAD_PARAMS,
   EVAL_RESULT_ILLEGAL_CHARACTER,
   EVAL_RESULT_INVALID_LITERAL,
   EVAL_RESULT_LITERAL_OUT_OF_RANGE,

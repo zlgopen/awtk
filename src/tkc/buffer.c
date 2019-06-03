@@ -59,7 +59,7 @@ static ret_t wbuffer_extend_delta(wbuffer_t* wbuffer, uint32_t delta) {
   uint32_t capacity = 0;
   return_value_if_fail(wbuffer != NULL, RET_BAD_PARAMS);
 
-  capacity = wbuffer->cursor + delta;
+  capacity = wbuffer->cursor + delta + 1;
 
   return wbuffer_extend_capacity(wbuffer, capacity);
 }

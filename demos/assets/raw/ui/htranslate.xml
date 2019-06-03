@@ -1,7 +1,7 @@
 <window anim_hint="htranslate" children_layout="default(c=1,r=2,s=5)">
   <view children_layout="default(c=1,h=24,m=5,s=5)">
     <slider value="10" bar_size="5"/>
-    <slider style="img" value="20" />
+    <slider style="img" value="20" focus="true"/>
     <slider style="img" value="30" min="5" max="50" step="5"/>
 
     <progress_bar value="10" show_text="true" 

@@ -78,6 +78,20 @@ typedef struct _guage_pointer_t {
    */
   char* image;
 
+  /**
+   * @property {float_t} anchor_x
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 旋转锚点x坐标。
+   */
+  float_t anchor_x;
+
+  /**
+   * @property {float_t} anchor_y
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 旋转锚点y坐标。
+   */
+  float_t anchor_y;
+
   /*private*/
   const asset_info_t* bsvg_asset;
 } guage_pointer_t;
@@ -128,12 +142,27 @@ ret_t guage_pointer_set_angle(widget_t* widget, int32_t angle);
  */
 ret_t guage_pointer_set_image(widget_t* widget, const char* image);
 
+/**
+ * @method guage_pointer_set_image
+ * 设置指针的旋转锚点。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} anchor_x 指针的锚点坐标x。(后面加上px为像素点，不加px为相对百分比坐标)
+ * @param {const char*} anchor_y 指针的锚点坐标y。(后面加上px为像素点，不加px为相对百分比坐标)
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t guage_pointer_set_anchor(widget_t* widget, const char* anchor_x, const char* anchor_y);
+
 #define GUAGE_POINTER_PROP_ANGLE "angle"
 #define WIDGET_TYPE_GUAGE_POINTER "guage_pointer"
 #define GUAGE_POINTER(widget) ((guage_pointer_t*)(guage_pointer_cast(WIDGET(widget))))
 
 /*public for subclass and runtime type check*/
 TK_EXTERN_VTABLE(guage_pointer);
+
+/*public for test*/
+ret_t guage_pointer_set_anchor_for_str(widget_t* widget, const char* anchor, bool_t is_x);
 
 END_C_DECLS
 

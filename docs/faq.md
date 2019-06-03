@@ -85,3 +85,31 @@ Ubuntu 14上的OpenGL有问题，请使用AGGE软件渲染。修改awtk_config.p
 NANOVG_BACKEND='AGGE'
 ```
 
+#### 7.如何实现半透明效果
+
+* 在style中，使用rgba格式可以指定半透明填充颜色。如：
+
+```xml
+<normal     bg_color="rgba(200,200,200,0.1)" />
+```
+
+* 图片半透明。在制作图片时，使用PNG格式，保留alpha通道。
+
+* 整个控件(包括子控件)半透明。可以使用函数widget\_set\_opacity设置不透明度。
+
+```c
+/**
+ * @method widget_set_opacity
+ * 设置控件的不透明度。
+ * 
+ *>在嵌入式平台，半透明效果会使性能大幅下降，请谨慎使用。
+ * 
+ * @param {widget_t*} widget 控件对象。
+ * @param {uint8_t} opacity 不透明度(取值0-255，0表示完全透明，255表示完全不透明)。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_opacity(widget_t* widget, uint8_t opacity);
+```
+
+> opacity会影响包括字体在内的全部元素，通常只适用于实现淡入淡出的动态效果。

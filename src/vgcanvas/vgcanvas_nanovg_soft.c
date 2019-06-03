@@ -54,7 +54,9 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_form
   nanovg->base.h = h;
   nanovg->base.vt = &vt;
   nanovg->base.ratio = 1;
+  nanovg->base.format = format;
   nanovg->base.buff = (uint32_t*)data;
+
 #if defined(WITH_NANOVG_AGG)
   nanovg->vg = nvgCreateAGG(w, h, stride, f, (uint8_t*)data);
 #elif defined(WITH_NANOVG_AGGE)

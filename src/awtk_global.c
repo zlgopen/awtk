@@ -39,7 +39,11 @@
 #include "base/window_animator_factory.h"
 #include "window_animators/window_animator_builtins.h"
 
+#include "base/self_layouter_factory.h"
+#include "base/children_layouter_factory.h"
 #include "base/dialog_highlighter_factory.h"
+#include "layouters/self_layouter_builtins.h"
+#include "layouters/children_layouter_builtins.h"
 #include "dialog_highlighters/dialog_highlighter_builtins.h"
 
 #ifdef WITH_SDL
@@ -99,13 +103,12 @@ ret_t tk_init_assets() {
 
 ret_t tk_init_internal(void) {
   font_loader_t* font_loader = NULL;
-  image_loader_t* image_loader = NULL;
 #ifdef WITH_STB_IMAGE
-  image_loader = image_loader_stb();
+  image_loader_register(image_loader_stb());
 #endif /*WITH_STB_IMAGE*/
 
 #ifdef AWTK_WEB
-  image_loader = image_loader_web();
+  image_loader_register(image_loader_web());
 #endif /*AWTK_WEB*/
 
 #ifdef WITH_TRUETYPE_FONT
@@ -126,11 +129,15 @@ ret_t tk_init_internal(void) {
   return_value_if_fail(assets_manager_set(assets_manager_create(30)) == RET_OK, RET_FAIL);
   return_value_if_fail(locale_info_set(locale_info_create(NULL, NULL)) == RET_OK, RET_FAIL);
   return_value_if_fail(font_manager_set(font_manager_create(font_loader)) == RET_OK, RET_FAIL);
-  return_value_if_fail(image_manager_set(image_manager_create(image_loader)) == RET_OK, RET_FAIL);
+  return_value_if_fail(image_manager_set(image_manager_create()) == RET_OK, RET_FAIL);
   return_value_if_fail(window_animator_factory_set(window_animator_factory_create()) == RET_OK,
                        RET_FAIL);
   return_value_if_fail(
       dialog_highlighter_factory_set(dialog_highlighter_factory_create()) == RET_OK, RET_FAIL);
+  return_value_if_fail(children_layouter_factory_set(children_layouter_factory_create()) == RET_OK,
+                       RET_FAIL);
+  return_value_if_fail(self_layouter_factory_set(self_layouter_factory_create()) == RET_OK,
+                       RET_FAIL);
   return_value_if_fail(widget_animator_manager_set(widget_animator_manager_create()) == RET_OK,
                        RET_FAIL);
   return_value_if_fail(window_manager_set(window_manager_create()) == RET_OK, RET_FAIL);
@@ -140,6 +147,9 @@ ret_t tk_init_internal(void) {
   window_animator_register_builtins();
   dialog_highlighter_register_builtins();
 #endif /*WITH_WINDOW_ANIMATORS*/
+
+  self_layouter_register_builtins();
+  children_layouter_register_builtins();
 
   return RET_OK;
 }
@@ -170,6 +180,12 @@ ret_t tk_deinit_internal(void) {
 
   dialog_highlighter_factory_destroy(dialog_highlighter_factory());
   dialog_highlighter_factory_set(NULL);
+
+  children_layouter_factory_destroy(children_layouter_factory());
+  children_layouter_factory_set(NULL);
+
+  children_layouter_factory_destroy(children_layouter_factory());
+  children_layouter_factory_set(NULL);
 
   widget_animator_manager_destroy(widget_animator_manager());
   widget_animator_manager_set(NULL);

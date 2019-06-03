@@ -42,20 +42,19 @@ static ret_t check_button_on_event(widget_t* widget, event_t* e) {
       widget_set_state(widget, WIDGET_STATE_NORMAL);
       break;
     }
+    case EVT_CLICK: {
+      if (check_button->radio) {
+        check_button_set_value(widget, TRUE);
+      } else {
+        check_button_set_value(widget, !(check_button->value));
+      }
+      break;
+    }
     case EVT_POINTER_UP: {
       pointer_event_t* evt = (pointer_event_t*)e;
-
       if (check_button->pressed && widget_is_point_in(widget, evt->x, evt->y, FALSE)) {
-        pointer_event_t click = *evt;
-        click.e.type = EVT_CLICK;
-
-        if (check_button->radio) {
-          check_button_set_value(widget, TRUE);
-        } else {
-          check_button_set_value(widget, !(check_button->value));
-        }
-
-        widget_dispatch(widget, (event_t*)&click);
+        pointer_event_t click;
+        widget_dispatch(widget, pointer_event_init(&click, EVT_CLICK, widget, evt->x, evt->y));
       }
 
       check_button->pressed = FALSE;
@@ -144,8 +143,11 @@ static ret_t check_button_set_prop(widget_t* widget, const char* name, const val
 
 static const char* s_check_button_properties[] = {WIDGET_PROP_VALUE, NULL};
 TK_DECL_VTABLE(check_button) = {
+    .inputable = TRUE,
     .size = sizeof(check_button_t),
     .type = WIDGET_TYPE_CHECK_BUTTON,
+    .space_key_to_activate = TRUE,
+    .return_key_to_activate = TRUE,
     .clone_properties = s_check_button_properties,
     .persistent_properties = s_check_button_properties,
     .parent = TK_PARENT_VTABLE(widget),
@@ -157,8 +159,11 @@ TK_DECL_VTABLE(check_button) = {
 };
 
 TK_DECL_VTABLE(radio_button) = {
+    .inputable = TRUE,
     .size = sizeof(check_button_t),
     .type = WIDGET_TYPE_RADIO_BUTTON,
+    .space_key_to_activate = TRUE,
+    .return_key_to_activate = TRUE,
     .clone_properties = s_check_button_properties,
     .parent = TK_PARENT_VTABLE(widget),
     .create = check_button_create_radio,

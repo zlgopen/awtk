@@ -31,10 +31,18 @@ BEGIN_C_DECLS
  * 输入设备状态管理器。本类仅供窗口管理器内部使用。
  */
 typedef struct _input_device_status_t {
-  uint8_t ctrl : 1;
-  uint8_t alt : 1;
-  uint8_t shift : 1;
-  uint8_t capslock : 1;
+  uint32_t ctrl : 1;
+  uint32_t alt : 1;
+  uint32_t shift : 1;
+  uint32_t lctrl : 1;
+  uint32_t lalt : 1;
+  uint32_t lshift : 1;
+  uint32_t rctrl : 1;
+  uint32_t ralt : 1;
+  uint32_t rshift : 1;
+  uint32_t cmd : 1;
+  uint32_t menu : 1;
+  uint32_t capslock : 1;
 
   xy_t last_x;
   xy_t last_y;

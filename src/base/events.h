@@ -42,25 +42,40 @@ typedef enum _event_type_t {
    */
   EVT_POINTER_DOWN = 0xff,
   /**
-   * @const EVT_POINTER_DOWN_ABORT
-   * 取消前一个指针按下事件名(pointer_event_t)。
+   * @const EVT_POINTER_DOWN_BEFORE_CHILDREN
+   * 指针按下事件名，在子控件处理之前触发(pointer_event_t)。
    */
-  EVT_POINTER_DOWN_ABORT,
+  EVT_POINTER_DOWN_BEFORE_CHILDREN,
   /**
    * @const EVT_POINTER_MOVE
    * 指针移动事件名(pointer_event_t)。
    */
   EVT_POINTER_MOVE,
   /**
+   * @const EVT_POINTER_MOVE_BEFORE_CHILDREN
+   * 指针移动事件名，在子控件处理之前触发(pointer_event_t)。
+   */
+  EVT_POINTER_MOVE_BEFORE_CHILDREN,
+  /**
    * @const EVT_POINTER_UP
    * 指针抬起事件名(pointer_event_t)。
    */
   EVT_POINTER_UP,
   /**
+   * @const EVT_POINTER_UP_BEFORE_CHILDREN
+   * 指针抬起事件名，在子控件处理之前触发(pointer_event_t)。
+   */
+  EVT_POINTER_UP_BEFORE_CHILDREN,
+  /**
    * @const EVT_WHEEL
    * 滚轮事件名(pointer_event_t)。
    */
   EVT_WHEEL,
+  /**
+   * @const EVT_POINTER_DOWN_ABORT
+   * 取消前一个指针按下事件名(pointer_event_t)。
+   */
+  EVT_POINTER_DOWN_ABORT,
   /**
    * @const EVT_CONTEXT_MENU
    * 右键/长按弹出上下文菜单的事件名(pointer_event_t)。
@@ -102,6 +117,11 @@ typedef enum _event_type_t {
    */
   EVT_KEY_DOWN,
   /**
+   * @const EVT_KEY_DOWN_BEFORE_CHILDREN
+   * 键按下事件名，在子控件处理之前触发(key_event_t)。
+   */
+  EVT_KEY_DOWN_BEFORE_CHILDREN,
+  /**
    * @const EVT_KEY_REPEAT
    * 按键repeat事件名(key_event_t)。
    */
@@ -111,6 +131,11 @@ typedef enum _event_type_t {
    * 键抬起事件名(key_event_t)。
    */
   EVT_KEY_UP,
+  /**
+   * @const EVT_KEY_UP_BEFORE_CHILDREN
+   * 键抬起事件名，在子控件处理之前触发(key_event_t)。
+   */
+  EVT_KEY_UP_BEFORE_CHILDREN,
   /**
    * @const EVT_WILL_MOVE
    * 即将移动Widget的事件名(event_t)。
@@ -223,6 +248,18 @@ typedef enum _event_type_t {
    * 如果有窗口动画，在窗口动画完成时触发。如果没有窗口动画，在窗口被加载后的下一次循环中触发。
    */
   EVT_WINDOW_OPEN,
+  /**
+   * @const EVT_WINDOW_TO_BACKGROUND
+   * 窗口被切换到后台事件(event_t)。
+   * 打开新窗口时，当前窗口被切换到后台时，对当前窗口触发本事件。
+   */
+  EVT_WINDOW_TO_BACKGROUND,
+  /**
+   * @const EVT_WINDOW_TO_FOREGROUND
+   * 窗口被切换到前台事件(event_t)。
+   * 关闭当前窗口时，前一个窗口被切换到前台时，对前一个窗口触发本事件。
+   */
+  EVT_WINDOW_TO_FOREGROUND,
   /**
    * @const EVT_WINDOW_CLOSE
    * 窗口关闭事件。
@@ -392,6 +429,18 @@ typedef struct _pointer_event_t {
    */
   uint8_t ctrl : 1;
   /**
+   * @property {bool_t} cmd
+   * @annotation ["readable", "scriptable"]
+   * cmd键是否按下。
+   */
+  uint8_t cmd : 1;
+  /**
+   * @property {bool_t} menu
+   * @annotation ["readable", "scriptable"]
+   * menu键是否按下。
+   */
+  uint8_t menu : 1;
+  /**
    * @property {bool_t} shift
    * @annotation ["readable", "scriptable"]
    * shift键是否按下。
@@ -440,27 +489,78 @@ typedef struct _key_event_t {
   /**
    * @property {bool_t} alt
    * @annotation ["readable", "scriptable"]
+   * 键值。
    * alt键是否按下。
    */
-  uint8_t alt : 1;
+  uint32_t alt : 1;
+  /**
+   * @property {bool_t} lalt
+   * @annotation ["readable", "scriptable"]
+   * left alt键是否按下。
+   */
+  uint32_t lalt : 1;
+  /**
+   * @property {bool_t} ralt
+   * @annotation ["readable", "scriptable"]
+   * right alt键是否按下。
+   */
+  uint32_t ralt : 1;
   /**
    * @property {bool_t} ctrl
    * @annotation ["readable", "scriptable"]
+   * right alt键是否按下。
    * ctrl键是否按下。
    */
-  uint8_t ctrl : 1;
+  uint32_t ctrl : 1;
+  /**
+   * @property {bool_t} lctrl
+   * @annotation ["readable", "scriptable"]
+   * left ctrl键是否按下。
+   */
+  uint32_t lctrl : 1;
+  /**
+   * @property {bool_t} rctrl
+   * @annotation ["readable", "scriptable"]
+   * right ctrl键是否按下。
+   */
+  uint32_t rctrl : 1;
   /**
    * @property {bool_t} shift
    * @annotation ["readable", "scriptable"]
    * shift键是否按下。
    */
-  uint8_t shift : 1;
+  uint32_t shift : 1;
+  /**
+   * @property {bool_t} lshift
+   * @annotation ["readable", "scriptable"]
+   * left shift键是否按下。
+   */
+  uint32_t lshift : 1;
+  /**
+   * @property {bool_t} rshift
+   * @annotation ["readable", "scriptable"]
+   * right shift键是否按下。
+   */
+  uint32_t rshift : 1;
+  /**
+   * @property {bool_t} cmd
+   * @annotation ["readable", "scriptable"]
+   * left shift键是否按下。
+   * cmd/win键是否按下。
+   */
+  uint32_t cmd : 1;
+  /**
+   * @property {bool_t} menu
+   * @annotation ["readable", "scriptable"]
+   * menu键是否按下。
+   */
+  uint32_t menu : 1;
   /**
    * @property {bool_t} capslock
    * @annotation ["readable", "scriptable"]
    * capslock键是否按下。
    */
-  uint8_t capslock : 1;
+  uint32_t capslock : 1;
 } key_event_t;
 
 /**

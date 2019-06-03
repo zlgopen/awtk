@@ -51,6 +51,10 @@ int main(int argc, char** argv) {
     output_res_c_source(out_filename, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_JPG, input_buff, size);
   } else if (end_with(in_filename, ".gif")) {
     output_res_c_source(out_filename, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_GIF, input_buff, size);
+  } else if (end_with(in_filename, ".lz4")) {
+    output_res_c_source(out_filename, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_LZ4, input_buff, size);
+  } else if (end_with(in_filename, ".webp")) {
+    output_res_c_source(out_filename, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_WEBP, input_buff, size);
   } else if (end_with(in_filename, ".js")) {
     output_res_c_source(out_filename, ASSET_TYPE_SCRIPT, ASSET_TYPE_SCRIPT_JS, input_buff, size);
   } else if (end_with(in_filename, ".lua")) {
@@ -60,6 +64,8 @@ int main(int argc, char** argv) {
                         size);
   } else if (end_with(in_filename, ".xml")) {
     output_res_c_source(out_filename, ASSET_TYPE_XML, 0, input_buff, size);
+  } else if (strstr(in_filename, "images") != NULL) {
+    output_res_c_source(out_filename, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_OTHER, input_buff, size);
   } else {
     const char* name = strrchr(in_filename, '/');
     if (name == NULL) {

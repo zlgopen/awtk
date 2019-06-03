@@ -35,6 +35,8 @@ BEGIN_C_DECLS
  *
  * AWTK中的对话框可以是模态的，也可以是非模态的。
  *
+ * 如果dialog有透明或半透效果则不支持窗口动画。
+ *
  *> 由于浏览器中无法实现主循环嵌套，因此无法实现模态对话框。
  * 如果希望自己写的AWTK应用程序可以在浏览器(包括各种小程序)中运行或演示，
  * 请避免使用模态对话框。
@@ -297,11 +299,12 @@ ret_t dialog_toast(const char* text, uint32_t duration);
  * 主题由dialog_info.xml文件决定。
  *
  * @annotation ["static", "scriptable"]
+ * @param {const char*} title 标题。
  * @param {const char*} text 文本内容。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t dialog_info(const char* text);
+ret_t dialog_info(const char* title, const char* text);
 
 /**
  * @method dialog_warn
@@ -310,11 +313,12 @@ ret_t dialog_info(const char* text);
  * 主题由dialog_warn.xml文件决定。
  *
  * @annotation ["static", "scriptable"]
+ * @param {const char*} title 标题。
  * @param {const char*} text 文本内容。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t dialog_warn(const char* text);
+ret_t dialog_warn(const char* title, const char* text);
 
 /**
  * @method dialog_confirm
@@ -323,11 +327,12 @@ ret_t dialog_warn(const char* text);
  * 主题由dialog_confirm.xml文件决定。
  *
  * @annotation ["static", "scriptable"]
+ * @param {const char*} title 标题。
  * @param {const char*} text 文本内容。
  *
  * @return {ret_t} 返回RET_OK表示确认，否则表示取消。
  */
-ret_t dialog_confirm(const char* text);
+ret_t dialog_confirm(const char* title, const char* text);
 
 #define DIALOG(widget) ((dialog_t*)(dialog_cast(WIDGET(widget))))
 

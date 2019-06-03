@@ -102,18 +102,18 @@
 | -------- | ----- | ------------ | 
 | <a href="#vgcanvas_t_anti_alias">anti\_alias</a> | bool\_t | 是否启用反走样功能。 |
 | <a href="#vgcanvas_t_fill_color">fill\_color</a> | color\_t | 填充颜色 |
-| <a href="#vgcanvas_t_font">font</a> | char* | 字体。 |
+| <a href="#vgcanvas_t_font">font</a> | const char* | 字体。 |
 | <a href="#vgcanvas_t_font_size">font\_size</a> | float\_t | 字体大小。 |
 | <a href="#vgcanvas_t_global_alpha">global\_alpha</a> | float\_t | 全局alpha。 |
 | <a href="#vgcanvas_t_h">h</a> | wh\_t | canvas的高度 |
-| <a href="#vgcanvas_t_line_cap">line\_cap</a> | char* | line\_cap。 |
-| <a href="#vgcanvas_t_line_join">line\_join</a> | char* | line\_join。 |
+| <a href="#vgcanvas_t_line_cap">line\_cap</a> | const char* | line\_cap。 |
+| <a href="#vgcanvas_t_line_join">line\_join</a> | const char* | line\_join。 |
 | <a href="#vgcanvas_t_line_width">line\_width</a> | float\_t | 线宽。 |
 | <a href="#vgcanvas_t_miter_limit">miter\_limit</a> | float\_t | miter\_limit。 |
 | <a href="#vgcanvas_t_ratio">ratio</a> | float\_t | 显示比例。 |
 | <a href="#vgcanvas_t_stroke_color">stroke\_color</a> | color\_t | 线条颜色 |
-| <a href="#vgcanvas_t_text_align">text\_align</a> | char* | 文本对齐方式。 |
-| <a href="#vgcanvas_t_text_baseline">text\_baseline</a> | char* | 文本基线。 |
+| <a href="#vgcanvas_t_text_align">text\_align</a> | const char* | 文本对齐方式。 |
+| <a href="#vgcanvas_t_text_baseline">text\_baseline</a> | const char* | 文本基线。 |
 | <a href="#vgcanvas_t_w">w</a> | wh\_t | canvas的宽度 |
 #### vgcanvas\_arc 函数
 -----------------------
@@ -1532,7 +1532,7 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 
 
 
-* 类型：char*
+* 类型：const char*
 
 | 特性 | 是否支持 |
 | -------- | ----- |
@@ -1585,7 +1585,7 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 
 
 
-* 类型：char*
+* 类型：const char*
 
 | 特性 | 是否支持 |
 | -------- | ----- |
@@ -1599,7 +1599,7 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 
 
 
-* 类型：char*
+* 类型：const char*
 
 | 特性 | 是否支持 |
 | -------- | ----- |
@@ -1666,7 +1666,7 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 
 
 
-* 类型：char*
+* 类型：const char*
 
 | 特性 | 是否支持 |
 | -------- | ----- |
@@ -1681,7 +1681,7 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 
 
 
-* 类型：char*
+* 类型：const char*
 
 | 特性 | 是否支持 |
 | -------- | ----- |

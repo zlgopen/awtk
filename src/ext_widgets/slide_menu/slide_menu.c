@@ -69,14 +69,16 @@ static widget_t* slide_menu_find_target(widget_t* widget, xy_t x, xy_t y) {
   int32_t b = 0;
   int32_t xx = 0;
   int32_t yy = 0;
+  point_t p = {x, y};
   slide_menu_t* slide_menu = SLIDE_MENU(widget);
   return_value_if_fail(widget != NULL && slide_menu != NULL, NULL);
 
+  widget_to_local(widget, &p);
   current = slide_menu_get_child(widget, slide_menu->value);
   r = current->x + current->w;
   b = current->y + current->h;
-  xx = x - widget->x;
-  yy = y - widget->y;
+  xx = p.x;
+  yy = p.y;
 
   if (current->enable && xx >= current->x && yy >= current->y && xx <= r && yy <= b) {
     return current;
@@ -512,51 +514,68 @@ static ret_t slide_menu_on_pointer_up(slide_menu_t* slide_menu, pointer_event_t*
 }
 
 static ret_t slide_menu_on_event(widget_t* widget, event_t* e) {
+  ret_t ret = RET_OK;
   uint16_t type = e->type;
   slide_menu_t* slide_menu = SLIDE_MENU(widget);
   return_value_if_fail(widget != NULL && slide_menu != NULL, RET_BAD_PARAMS);
 
   if (slide_menu->wa != NULL) {
-    return RET_OK;
+    return RET_STOP;
   }
 
   switch (type) {
     case EVT_POINTER_DOWN:
       slide_menu->dragged = FALSE;
+      slide_menu->pressed = TRUE;
       widget_grab(widget->parent, widget);
       slide_menu_on_pointer_down(slide_menu, (pointer_event_t*)e);
       break;
     case EVT_POINTER_UP: {
-      slide_menu_on_pointer_up(slide_menu, (pointer_event_t*)e);
-      widget_ungrab(widget->parent, widget);
-      slide_menu->dragged = FALSE;
+      if (slide_menu->pressed) {
+        slide_menu_on_pointer_up(slide_menu, (pointer_event_t*)e);
+        ret = slide_menu->dragged ? RET_STOP : RET_OK;
+        widget_ungrab(widget->parent, widget);
+        slide_menu->pressed = FALSE;
+        slide_menu->dragged = FALSE;
+      }
+      break;
+    }
+    case EVT_POINTER_DOWN_ABORT: {
+      if (slide_menu->pressed) {
+        slide_menu->xoffset = 0;
+        slide_menu->pressed = FALSE;
+        slide_menu->dragged = FALSE;
+        widget_ungrab(widget->parent, widget);
+        log_debug("slide menu: EVT_POINTER_DOWN_ABORT\n");
+      }
       break;
     }
     case EVT_POINTER_MOVE: {
       pointer_event_t* evt = (pointer_event_t*)e;
       if (slide_menu->dragged) {
         slide_menu_on_pointer_move(slide_menu, evt);
-      } else if (evt->pressed) {
+      } else if (evt->pressed && slide_menu->pressed) {
         int32_t delta = evt->x - slide_menu->xdown;
 
         if (tk_abs(delta) >= TK_DRAG_THRESHOLD) {
-          pointer_event_t abort = *evt;
-          abort.e.type = EVT_POINTER_DOWN_ABORT;
-
+          pointer_event_t abort;
+          pointer_event_init(&abort, EVT_POINTER_DOWN_ABORT, widget, evt->x, evt->y);
           widget_dispatch_event_to_target_recursive(widget, (event_t*)(&abort));
           slide_menu->dragged = TRUE;
         }
       }
+      ret = slide_menu->dragged ? RET_STOP : RET_OK;
       break;
     }
     default:
       break;
   }
 
-  return RET_OK;
+  return ret;
 }
 
 TK_DECL_VTABLE(slide_menu) = {.size = sizeof(slide_menu_t),
+                              .inputable = TRUE,
                               .type = WIDGET_TYPE_SLIDE_MENU,
                               .clone_properties = s_slide_menu_properties,
                               .persistent_properties = s_slide_menu_properties,

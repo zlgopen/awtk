@@ -672,6 +672,18 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_FOCUSABLE "focusable"
 
 /**
+ * @const WIDGET_PROP_MOVE_FOCUS_NEXT_KEY
+ * 将焦点移到下一个的键值。
+ */
+#define WIDGET_PROP_MOVE_FOCUS_NEXT_KEY "move_focus_next_key"
+
+/**
+ * @const WIDGET_PROP_MOVE_FOCUS_PREV_KEY
+ * 将焦点移到下一个的键值。
+ */
+#define WIDGET_PROP_MOVE_FOCUS_PREV_KEY "move_focus_prev_key"
+
+/**
  * @enum widget_type_t
  * @annotation ["scriptable", "string"]
  * @prefix WIDGET_TYPE_
@@ -695,6 +707,12 @@ BEGIN_C_DECLS
  * 普通窗口。
  */
 #define WIDGET_TYPE_NORMAL_WINDOW "window"
+
+/**
+ * @const WIDGET_TYPE_OVERLAY
+ * overlay窗口。
+ */
+#define WIDGET_TYPE_OVERLAY "overlay"
 
 /**
  * @const WIDGET_TYPE_TOOL_BAR
@@ -1093,6 +1111,12 @@ typedef enum _window_closable_t {
 #define WIDGET_STATE_EMPTY "empty"
 
 /**
+ * @const WIDGET_STATE_EMPTY_FOCUS
+ * 编辑器无内容同时聚焦的状态。
+ */
+#define WIDGET_STATE_EMPTY_FOCUS "empty_focus"
+
+/**
  * @const WIDGET_STATE_ERROR
  * 输入错误状态。
  */
@@ -1124,6 +1148,12 @@ typedef enum _window_closable_t {
 #define WIDGET_STATE_OVER_OF_CHECKED "over_of_checked"
 
 /**
+ * @const WIDGET_STATE_FOCUSED_OF_CHECKED
+ * 焦点状态(选中项)。
+ */
+#define WIDGET_STATE_FOCUSED_OF_CHECKED "focused_of_checked"
+
+/**
  * @const WIDGET_STATE_NORMAL_OF_ACTIVE
  * 正常状态(当前项)。
  */
@@ -1140,6 +1170,12 @@ typedef enum _window_closable_t {
  * 指针悬浮状态(当前项)。
  */
 #define WIDGET_STATE_OVER_OF_ACTIVE "over_of_active"
+
+/**
+ * @const WIDGET_STATE_FOCUSED_OF_ACTIVE
+ * 焦点状态(当前项)。
+ */
+#define WIDGET_STATE_FOCUSED_OF_ACTIVE "focused_of_active"
 
 END_C_DECLS
 

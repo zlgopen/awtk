@@ -53,9 +53,14 @@ typedef uint8_t bool_t;
 
 typedef int32_t xy_t;
 typedef int32_t wh_t;
-typedef float float_t;
 typedef void* pointer_t;
 typedef uint16_t font_size_t;
+
+#if defined(WITH_DOUBLE_FLOAT)
+typedef long double float_t;
+#else
+typedef float float_t;
+#endif /*WITH_DOUBLE_FLOAT*/
 
 struct _value_t;
 typedef struct _value_t value_t;
@@ -129,6 +134,11 @@ typedef enum _ret_t {
    * 停止后续操作。
    */
   RET_STOP,
+  /**
+   * @const RET_SKIP
+   * 跳过当前项。
+   */
+  RET_SKIP,
   /**
    * @const RET_CONTINUE
    * 继续后续操作。

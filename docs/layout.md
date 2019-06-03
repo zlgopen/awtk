@@ -35,5 +35,6 @@ AWTK提供了灵活的扩展机制，可以方便的扩展新的布局方式，�
 ![children_layouter](images/layout_children_layouter.png)
 
 * 1.[缺省子控件布局器介绍](children_layouter_default.md)
+* 2.[ListView子控件布局器介绍](children_layouter_list_view.md)
 
 > 目前仅仅实现了缺省布局方式，以后陆续实现css flex等布局方式。

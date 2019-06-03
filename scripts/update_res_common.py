@@ -222,7 +222,7 @@ def gen_res_all_font():
         res = res.replace('.ttf', '.res')
         raw = raw.replace(INPUT_DIR, '.')
         resgen(raw, res)
-    fontgen('fonts/default.ttf', 'fonts/text.txt', 'fonts/default.data', 18)
+    fontgen('fonts/default_full.ttf', 'fonts/text.txt', 'fonts/default.data', 18)
 
 
 def gen_res_all_script():
@@ -296,11 +296,7 @@ def gen_add_assets(files):
         basename = basename.replace('.data', '')
         basename = basename.replace('.bsvg', '')
         if basename == 'font_default':
-            result += "#if defined(WITH_MINI_FONT) && (defined(WITH_STB_FONT) || defined(WITH_FT_FONT))\n"
-            result += '  assets_manager_add(rm, font_default_mini);\n'
-            result += "#else/*WITH_MINI_FONT*/\n"
             result += '  assets_manager_add(rm, font_default);\n'
-            result += '#endif/*WITH_MINI_FONT*/\n'
         else:
             result += '  assets_manager_add(rm, '+basename+');\n'
     return result
@@ -333,13 +329,8 @@ def gen_res_c():
     result += '#endif/*WITH_VGCANVAS*/\n'
 
     result += "#if defined(WITH_STB_FONT) || defined(WITH_FT_FONT)\n"
-    result += "#if defined(WITH_MINI_FONT)\n"
-    files = glob.glob(joinPath(OUTPUT_DIR, 'fonts/default_mini.res'))
-    result += genIncludes(files)
-    result += "#else/*WITH_MINI_FONT*/\n"
     files = glob.glob(joinPath(OUTPUT_DIR, 'fonts/default.res'))
     result += genIncludes(files)
-    result += '#endif/*WITH_MINI_FONT*/\n'
     result += "#else/*WITH_STB_FONT or WITH_FT_FONT*/\n"
     files = glob.glob(joinPath(OUTPUT_DIR, 'fonts/*.data'))
     result += genIncludes(files)
@@ -353,11 +344,7 @@ def gen_res_c():
     result += ''
 
     result += '#ifdef WITH_FS_RES\n'
-    result += "#if defined(WITH_MINI_FONT)\n"
-    result += '  assets_manager_preload(rm, ASSET_TYPE_FONT, "default_mini");\n'
-    result += "#else/*WITH_MINI_FONT*/\n"
     result += '  assets_manager_preload(rm, ASSET_TYPE_FONT, "default");\n'
-    result += '#endif/*WITH_MINI_FONT*/\n'
     result += '  assets_manager_preload(rm, ASSET_TYPE_STYLE, "default");\n'
     result += '#else\n'
 

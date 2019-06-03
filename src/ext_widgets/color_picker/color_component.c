@@ -140,6 +140,7 @@ static ret_t color_component_on_destroy(widget_t* widget) {
 }
 
 TK_DECL_VTABLE(color_component) = {.size = sizeof(color_component_t),
+                                   .inputable = TRUE,
                                    .type = WIDGET_TYPE_COLOR_COMPONENT,
                                    .parent = TK_PARENT_VTABLE(widget),
                                    .create = color_component_create,

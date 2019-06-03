@@ -215,14 +215,6 @@ typedef enum _app_type_t {
 #define WITH_VGCANVAS 1
 #endif /*defined(WITH_NANOVG_SOFT) || defined(WITH_NANOVG_GPU)*/
 
-#ifndef TK_DEFAULT_FONT
-#ifdef WITH_MINI_FONT
-#define TK_DEFAULT_FONT "default_mini"
-#else
-#define TK_DEFAULT_FONT "default"
-#endif /*WITH_MINI_FONT*/
-#endif /*TK_DEFAULT_FONT*/
-
 #ifndef TK_DEFAULT_FONT_SIZE
 #define TK_DEFAULT_FONT_SIZE 18
 #endif /*TK_DEFAULT_FONT_SIZE*/
@@ -242,6 +234,12 @@ typedef struct _widget_t widget_t;
 
 struct _widget_vtable_t;
 typedef struct _widget_vtable_t widget_vtable_t;
+
+struct _widget_animator_manager_t;
+typedef struct _widget_animator_manager_t widget_animator_manager_t;
+
+struct _widget_animator_t;
+typedef struct _widget_animator_t widget_animator_t;
 
 #define fix_xywh(x, y, w, h) \
   if (w < 0) {               \
@@ -274,5 +272,22 @@ typedef struct _widget_vtable_t widget_vtable_t;
 #ifdef WITH_VGCANVAS
 #define WITH_WINDOW_ANIMATORS 1
 #endif /*WITH_VGCANVAS*/
+
+#ifndef TK_KEY_MOVE_FOCUS_NEXT
+#define TK_KEY_MOVE_FOCUS_NEXT TK_KEY_TAB
+#endif /*TK_KEY_MOVE_FOCUS_NEXT*/
+
+#ifndef TK_KEY_MOVE_FOCUS_PREV
+#define TK_KEY_MOVE_FOCUS_PREV TK_KEY_UNKNOWN
+#endif /*TK_KEY_MOVE_FOCUS_PREV*/
+
+struct _locale_info_t;
+typedef struct _locale_info_t locale_info_t;
+
+struct _assets_manager_t;
+typedef struct _assets_manager_t assets_manager_t;
+
+struct _system_info_t;
+typedef struct _system_info_t system_info_t;
 
 #endif /*TK_TYPES_DEF_H*/

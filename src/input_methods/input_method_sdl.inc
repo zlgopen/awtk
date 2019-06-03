@@ -24,19 +24,6 @@
 #include "base/input_method.h"
 #include "main_loop/main_loop_simple.h"
 
-static SDL_Rect* to_sdl_global(SDL_Rect* r) {
-  int x = 0;
-  int y = 0;
-  main_loop_simple_t* loop = (main_loop_simple_t*)(main_loop());
-  SDL_Window* win = (SDL_Window*)(loop->user1);
-
-  SDL_GetWindowPosition(win, &x, &y);
-  r->x += x;
-  r->y += y;
-
-  return r;
-}
-
 static ret_t input_method_sdl_request(input_method_t* im, widget_t* widget) {
   im->widget = widget;
 
@@ -51,7 +38,7 @@ static ret_t input_method_sdl_request(input_method_t* im, widget_t* widget) {
     r.h = widget->h;
 
     SDL_StartTextInput();
-    SDL_SetTextInputRect(to_sdl_global(&r));
+    SDL_SetTextInputRect(&r);
   } else {
     SDL_StopTextInput();
   }

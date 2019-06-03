@@ -28,6 +28,8 @@
 #include "base/image_manager.h"
 #include "base/assets_manager.h"
 
+#define ANCHOR_PX_STR_LEN 2
+
 ret_t guage_pointer_set_angle(widget_t* widget, int32_t angle) {
   guage_pointer_t* guage_pointer = GUAGE_POINTER(widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
@@ -44,11 +46,69 @@ ret_t guage_pointer_set_angle(widget_t* widget, int32_t angle) {
   return RET_OK;
 }
 
-ret_t guage_pointer_set_image(widget_t* widget, const char* image) {
-  guage_pointer_t* guage_pointer = GUAGE_POINTER(widget);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+bool_t guage_pointer_value_is_anchor_px(const char* value) {
+  const char* tmp = NULL;
+  size_t len = strlen(value);
+  return_value_if_fail(len > ANCHOR_PX_STR_LEN, FALSE);
 
-  guage_pointer->image = tk_str_copy(guage_pointer->image, image);
+  tmp = value + len - ANCHOR_PX_STR_LEN;
+  if (tk_str_eq(tmp, "px") != 0 || tk_str_eq(tmp, "PX") != 0) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+ret_t guage_pointer_set_anchor_for_str(widget_t* widget, const char* anchor, bool_t is_x) {
+  float_t max_size = 0.0f;
+  float_t anchor_tmp = 0.0f;
+  bool_t is_anchor_px = TRUE;
+  guage_pointer_t* guage_pointer = GUAGE_POINTER(widget);
+
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(anchor != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(guage_pointer != NULL, RET_BAD_PARAMS);
+
+  anchor_tmp = tk_atof(anchor);
+  max_size = is_x ? widget->w : widget->h;
+  is_anchor_px = guage_pointer_value_is_anchor_px(anchor);
+
+  if (is_anchor_px) {
+    return_value_if_fail(0 <= anchor_tmp && anchor_tmp <= max_size, RET_BAD_PARAMS);
+  } else {
+    return_value_if_fail(0 <= anchor_tmp && anchor_tmp <= 1.0f, RET_BAD_PARAMS);
+  }
+
+  if (is_x) {
+    guage_pointer->anchor_x = is_anchor_px ? anchor_tmp : anchor_tmp * max_size;
+  } else {
+    guage_pointer->anchor_y = is_anchor_px ? anchor_tmp : anchor_tmp * max_size;
+  }
+
+  return RET_OK;
+}
+
+ret_t guage_pointer_set_anchor(widget_t* widget, const char* anchor_x, const char* anchor_y) {
+  float tmp = 0.0f;
+  guage_pointer_t* guage_pointer = GUAGE_POINTER(widget);
+  return_value_if_fail(guage_pointer != NULL, RET_BAD_PARAMS);
+
+  tmp = guage_pointer->anchor_x;
+
+  return_value_if_fail(guage_pointer_set_anchor_for_str(widget, anchor_x, TRUE) == RET_OK,
+                       RET_BAD_PARAMS);
+
+  if (guage_pointer_set_anchor_for_str(widget, anchor_y, FALSE) != RET_OK) {
+    guage_pointer->anchor_x = tmp;
+    return RET_BAD_PARAMS;
+  }
+
+  return RET_OK;
+}
+
+static ret_t guage_pointer_load_svg_asset(void* ctx, event_t* e) {
+  widget_t* widget = WIDGET(ctx);
+  guage_pointer_t* guage_pointer = GUAGE_POINTER(widget);
+
   if (guage_pointer->image != NULL) {
     const asset_info_t* asset = widget_load_asset(widget, ASSET_TYPE_IMAGE, guage_pointer->image);
 
@@ -58,6 +118,24 @@ ret_t guage_pointer_set_image(widget_t* widget, const char* image) {
       } else {
         widget_unload_asset(widget, asset);
       }
+    }
+  }
+
+  return RET_REMOVE;
+}
+
+ret_t guage_pointer_set_image(widget_t* widget, const char* image) {
+  widget_t* win = widget_get_window(widget);
+  guage_pointer_t* guage_pointer = GUAGE_POINTER(widget);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(image != NULL, RET_BAD_PARAMS);
+  guage_pointer->image = tk_str_copy(guage_pointer->image, image);
+
+  if (guage_pointer->image != NULL) {
+    if (win != NULL) {
+      guage_pointer_load_svg_asset(widget, NULL);
+    } else {
+      widget_on(widget, EVT_BEFORE_PAINT, guage_pointer_load_svg_asset, widget);
     }
   }
 
@@ -74,6 +152,12 @@ static ret_t guage_pointer_get_prop(widget_t* widget, const char* name, value_t*
   } else if (tk_str_eq(name, WIDGET_PROP_IMAGE)) {
     value_set_str(v, guage_pointer->image);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_ANCHOR_X)) {
+    value_set_int(v, guage_pointer->anchor_x);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_ANCHOR_Y)) {
+    value_set_int(v, guage_pointer->anchor_y);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -86,6 +170,10 @@ static ret_t guage_pointer_set_prop(widget_t* widget, const char* name, const va
     return guage_pointer_set_angle(widget, value_int(v));
   } else if (tk_str_eq(name, WIDGET_PROP_IMAGE)) {
     return guage_pointer_set_image(widget, value_str(v));
+  } else if (tk_str_eq(name, WIDGET_PROP_ANCHOR_X)) {
+    return guage_pointer_set_anchor_for_str(widget, value_str(v), TRUE);
+  } else if (tk_str_eq(name, WIDGET_PROP_ANCHOR_Y)) {
+    return guage_pointer_set_anchor_for_str(widget, value_str(v), FALSE);
   }
 
   return RET_NOT_FOUND;
@@ -137,8 +225,9 @@ static ret_t guage_pointer_on_paint_self(widget_t* widget, canvas_t* c) {
   guage_pointer_t* guage_pointer = GUAGE_POINTER(widget);
   rect_t dst = rect_init(0, 0, widget->w, widget->h);
 
-  anchor_x = dst.w * 0.5f;
-  anchor_y = dst.h * 0.5f;
+  anchor_x = guage_pointer->anchor_x;
+  anchor_y = guage_pointer->anchor_y;
+
   rotation = TK_D2R(guage_pointer->angle);
 
   vgcanvas_save(vg);
@@ -172,8 +261,8 @@ static ret_t guage_pointer_on_paint_self(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-static const char* s_guage_pointer_properties[] = {GUAGE_POINTER_PROP_ANGLE, WIDGET_PROP_IMAGE,
-                                                   NULL};
+static const char* s_guage_pointer_properties[] = {
+    GUAGE_POINTER_PROP_ANGLE, WIDGET_PROP_IMAGE, WIDGET_PROP_ANCHOR_X, WIDGET_PROP_ANCHOR_Y, NULL};
 
 TK_DECL_VTABLE(guage_pointer) = {.size = sizeof(guage_pointer_t),
                                  .type = WIDGET_TYPE_GUAGE_POINTER,
@@ -188,7 +277,11 @@ TK_DECL_VTABLE(guage_pointer) = {.size = sizeof(guage_pointer_t),
                                  .on_destroy = guage_pointer_on_destroy};
 
 widget_t* guage_pointer_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  return widget_create(parent, TK_REF_VTABLE(guage_pointer), x, y, w, h);
+  guage_pointer_t* guage_pointer =
+      GUAGE_POINTER(widget_create(parent, TK_REF_VTABLE(guage_pointer), x, y, w, h));
+  guage_pointer->anchor_x = w * 0.5f;
+  guage_pointer->anchor_y = h * 0.5f;
+  return (widget_t*)guage_pointer;
 }
 
 widget_t* guage_pointer_cast(widget_t* widget) {

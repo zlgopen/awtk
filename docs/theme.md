@@ -63,7 +63,12 @@ AWTK的主题按控件进行分类，每种控件可以有多种不同的风格�
 * icon\_at 图标的位置，取值为left/right/top/bottom。
 * x\_offset 在X坐标方向上的偏移(可用来实现按下的效果)。 
 * y\_offset 在Y坐标方向上的偏移(可用来实现按下的效果)。
-* margin 边距。
+* margin 边距(边距目前只影响icon/text，不影响子控件，子控件的边距由布局算法参数决定)。
+* margin_top 上边距。
+* margin_bottom 下边距。
+* margin_left 左边距。
+* margin_right 右边距。
+* spacer 间距(目前仅用于文本和图标之间)。
 * round\_radius 背景和边框的圆角半径(仅在定义WITH\_VGCANVAS时有效)。
 
 > 颜色可使用标准名称，#开头的16进制值和rgba合成的值。
@@ -137,5 +142,8 @@ resource_manager_add(theme_default);
 
 > 参考: dialog1.xml
 
+### 六、相关文档
+
+* [AWTK中的颜色格式](color_format.md)
 
 

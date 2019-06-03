@@ -25,6 +25,7 @@
 #include "widgets/button.h"
 #include "keyboard/candidates.h"
 #include "base/input_method.h"
+#include "base/system_info.h"
 #include "base/widget_vtable.h"
 
 static ret_t candidates_on_button_click(void* ctx, event_t* e) {
@@ -96,22 +97,25 @@ static ret_t candidates_relayout_children(widget_t* widget) {
   widget_t** children = (widget_t**)(widget->children->elms);
   canvas_t* c = candidates->canvas;
   style_t* style = children[0]->astyle;
+  const char* font = system_info_fix_font_name(NULL);
   uint16_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
 
-  canvas_set_font(c, TK_DEFAULT_FONT, font_size);
+  canvas_set_font(c, font, font_size);
   for (i = 0; i < nr; i++) {
     iter = children[i];
     child_w = candidates_calc_child_width(candidates->canvas, iter);
-    if ((child_x + child_w + margin) < w && iter->text.size > 0) {
+    if (iter->text.size) {
       widget_set_visible(iter, TRUE, FALSE);
-      widget_move_resize(iter, child_x, child_y, child_w, child_h);
     } else {
+      child_w = 0;
       widget_set_visible(iter, FALSE, FALSE);
-      widget_move_resize(iter, 0, 0, 0, 0);
     }
-
+    widget_move_resize(iter, child_x, child_y, child_w, child_h);
     child_x += child_w + margin;
   }
+
+  hscrollable_set_xoffset(candidates->hscrollable, 0);
+  hscrollable_set_virtual_w(candidates->hscrollable, child_x);
 
   return RET_OK;
 }
@@ -148,6 +152,7 @@ static ret_t candidates_on_destroy_default(widget_t* widget) {
   candidates_t* candidates = CANDIDATES(widget);
   return_value_if_fail(widget != NULL && candidates != NULL, RET_BAD_PARAMS);
 
+  hscrollable_destroy(candidates->hscrollable);
   input_method_off(input_method(), candidates->event_id);
 
   return RET_OK;
@@ -161,11 +166,52 @@ static ret_t candidates_on_paint_self(widget_t* widget, canvas_t* c) {
   return widget_paint_helper(widget, c, NULL, NULL);
 }
 
+static ret_t candidates_on_event(widget_t* widget, event_t* e) {
+  candidates_t* candidates = CANDIDATES(widget);
+  return_value_if_fail(candidates != NULL, RET_BAD_PARAMS);
+
+  return hscrollable_on_event(candidates->hscrollable, e);
+}
+
+static ret_t candidates_invalidate(widget_t* widget, rect_t* r) {
+  candidates_t* candidates = CANDIDATES(widget);
+  return_value_if_fail(candidates != NULL, RET_BAD_PARAMS);
+
+  return hscrollable_invalidate(candidates->hscrollable, r);
+}
+
+static ret_t candidates_on_paint_children(widget_t* widget, canvas_t* c) {
+  candidates_t* candidates = CANDIDATES(widget);
+  return_value_if_fail(candidates != NULL, RET_BAD_PARAMS);
+
+  return hscrollable_on_paint_children(candidates->hscrollable, c);
+}
+
+static ret_t candidates_get_prop(widget_t* widget, const char* name, value_t* v) {
+  candidates_t* candidates = CANDIDATES(widget);
+  return_value_if_fail(candidates != NULL, RET_BAD_PARAMS);
+
+  return hscrollable_get_prop(candidates->hscrollable, name, v);
+}
+
+static ret_t candidates_set_prop(widget_t* widget, const char* name, const value_t* v) {
+  candidates_t* candidates = CANDIDATES(widget);
+  return_value_if_fail(candidates != NULL, RET_BAD_PARAMS);
+
+  return hscrollable_set_prop(candidates->hscrollable, name, v);
+}
+
 TK_DECL_VTABLE(candidates) = {.size = sizeof(candidates_t),
+                              .scrollable = TRUE,
                               .type = WIDGET_TYPE_CANDIDATES,
                               .parent = TK_PARENT_VTABLE(widget),
                               .create = candidates_create,
+                              .on_event = candidates_on_event,
+                              .invalidate = candidates_invalidate,
                               .on_paint_self = candidates_on_paint_self,
+                              .on_paint_children = candidates_on_paint_children,
+                              .get_prop = candidates_get_prop,
+                              .set_prop = candidates_set_prop,
                               .on_destroy = candidates_on_destroy_default};
 
 static ret_t candidates_on_im_candidates_event(void* ctx, event_t* e) {
@@ -180,8 +226,11 @@ widget_t* candidates_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   candidates_t* candidates = CANDIDATES(widget);
   return_value_if_fail(candidates != NULL, NULL);
 
+  candidates->hscrollable = hscrollable_create(widget);
   candidates->event_id = input_method_on(input_method(), EVT_IM_SHOW_CANDIDATES,
                                          candidates_on_im_candidates_event, candidates);
+
+  ENSURE(candidates->hscrollable != NULL);
 
   return widget;
 }

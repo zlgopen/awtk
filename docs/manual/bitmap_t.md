@@ -28,7 +28,7 @@
 | <a href="#bitmap_t_format">format</a> | uint16\_t | 格式。请参考{bitmap_format_t}。 |
 | <a href="#bitmap_t_h">h</a> | wh\_t | 高度。 |
 | <a href="#bitmap_t_line_length">line\_length</a> | uint32\_t | 每一行实际占用的内存(也称为stride或pitch)，一般情况下为w*bpp。 |
-| <a href="#bitmap_t_name">name</a> | char* | 名称。 |
+| <a href="#bitmap_t_name">name</a> | const char* | 名称。 |
 | <a href="#bitmap_t_w">w</a> | wh\_t | 宽度。 |
 #### bitmap\_create 函数
 -----------------------
@@ -312,7 +312,7 @@ ret_t bitmap_set_line_length (bitmap_t* bitmap, uint32_t line_length);
 
 
 
-* 类型：char*
+* 类型：const char*
 
 | 特性 | 是否支持 |
 | -------- | ----- |

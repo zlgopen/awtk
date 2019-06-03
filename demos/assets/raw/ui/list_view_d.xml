@@ -1,6 +1,6 @@
 <window anim_hint="htranslate">
   <list_view x="0"  y="0" w="100%" h="-50" item_height="60">
-    <scroll_view name="view" x="0"  y="0" w="-12" h="100%">
+    <scroll_view name="view" x="0"  y="0" w="-12" h="100%" children_layout="list_view(x_margin=5,spacing=10)">
       <list_item style="odd_clickable" children_layout="default(r=1,c=0)">
         <image draw_type="icon" w="30" image="earth"/>
         <label w="-30" text="1.Hello AWTK !"/>
