@@ -94,8 +94,8 @@ ret_t widget_resize(widget_t* widget, wh_t w, wh_t h) {
     widget_invalidate_force(widget, NULL);
     widget->w = w;
     widget->h = h;
-    widget->need_relayout_children = TRUE;
     widget_invalidate_force(widget, NULL);
+    widget_set_need_relayout_children(widget);
 
     e.type = EVT_RESIZE;
     widget_dispatch(widget, &e);
@@ -116,8 +116,8 @@ ret_t widget_move_resize(widget_t* widget, xy_t x, xy_t y, wh_t w, wh_t h) {
     widget->y = y;
     widget->w = w;
     widget->h = h;
-    widget->need_relayout_children = TRUE;
     widget_invalidate_force(widget, NULL);
+    widget_set_need_relayout_children(widget);
 
     e.type = EVT_MOVE_RESIZE;
     widget_dispatch(widget, &e);
@@ -516,7 +516,10 @@ ret_t widget_add_child(widget_t* widget, widget_t* child) {
   return_value_if_fail(widget != NULL && child != NULL && child->parent == NULL, RET_BAD_PARAMS);
 
   child->parent = widget;
-  widget->need_relayout_children = TRUE;
+  if (!widget_is_window_manager(widget)) {
+    widget_set_need_relayout_children(widget);
+  }
+
   if (widget->children == NULL) {
     widget->children = darray_create(4, NULL, NULL);
   }
@@ -539,7 +542,10 @@ ret_t widget_add_child(widget_t* widget, widget_t* child) {
 ret_t widget_remove_child(widget_t* widget, widget_t* child) {
   return_value_if_fail(widget != NULL && child != NULL, RET_BAD_PARAMS);
 
-  widget->need_relayout_children = TRUE;
+  if (!widget_is_window_manager(widget)) {
+    widget_set_need_relayout_children(widget);
+  }
+
   widget_invalidate_force(child, NULL);
   if (widget->target == child) {
     widget->target = NULL;
@@ -2727,4 +2733,11 @@ bool_t widget_is_window_manager(widget_t* widget) {
   return_value_if_fail(widget != NULL && widget->vt != NULL, FALSE);
 
   return widget->vt->is_window_manager;
+}
+
+ret_t widget_set_need_relayout_children(widget_t* widget) {
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  widget->need_relayout_children = TRUE;
+
+  return RET_OK;
 }

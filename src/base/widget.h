@@ -1908,6 +1908,7 @@ bool_t widget_is_instance_of(widget_t* widget, const widget_vtable_t* vt);
 /*public for subclass*/
 TK_EXTERN_VTABLE(widget);
 
+ret_t widget_set_need_relayout_children(widget_t* widget);
 ret_t widget_ensure_visible_in_viewport(widget_t* widget);
 
 /*public for test*/

@@ -339,7 +339,7 @@ static ret_t scroll_bar_create_children(widget_t* widget) {
   }
 
   scroll_bar->dragger = dragger;
-  widget->need_relayout_children = TRUE;
+  widget_set_need_relayout_children(widget);
 
   return RET_OK;
 }
@@ -349,7 +349,7 @@ ret_t scroll_bar_set_params(widget_t* widget, int32_t virtual_size, int32_t row)
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
   return_value_if_fail(scroll_bar != NULL, RET_BAD_PARAMS);
 
-  widget->need_relayout_children = TRUE;
+  widget_set_need_relayout_children(widget);
   scroll_bar->virtual_size = virtual_size;
   scroll_bar->row = row;
 
@@ -540,7 +540,7 @@ ret_t scroll_bar_set_value_only(widget_t* widget, int32_t value) {
   scroll_bar->value = value;
 
   if (!scroll_bar_is_mobile(widget)) {
-    widget->need_relayout_children = TRUE;
+    widget_set_need_relayout_children(widget);
   }
 
   return RET_OK;
