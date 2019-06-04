@@ -24,7 +24,10 @@
 #include "tkc/utils.h"
 #include "base/hscrollable.h"
 #include "base/widget_vtable.h"
+
+#ifndef WITHOUT_WIDGET_ANIMATOR
 #include "widget_animators/widget_animator_scroll.h"
+#endif /*WITHOUT_WIDGET_ANIMATOR*/
 
 static widget_t* hscrollable_get_widget(hscrollable_t* hscrollable) {
   return hscrollable != NULL ? hscrollable->widget : NULL;
@@ -103,6 +106,7 @@ ret_t hscrollable_scroll_to(hscrollable_t* hscrollable, int32_t xoffset_end, int
     return RET_OK;
   }
 
+#ifndef WITHOUT_WIDGET_ANIMATOR
   hscrollable->xoffset_end = xoffset_end;
   xoffset_end = hscrollable->xoffset_end;
 
@@ -112,6 +116,9 @@ ret_t hscrollable_scroll_to(hscrollable_t* hscrollable, int32_t xoffset_end, int
   widget_animator_scroll_set_params(hscrollable->wa, xoffset, 0, xoffset_end, 0);
   widget_animator_on(hscrollable->wa, EVT_ANIM_END, hscrollable_on_scroll_done, hscrollable);
   widget_animator_start(hscrollable->wa);
+#else
+  hscrollable->xoffset = xoffset_end;
+#endif /*WITHOUT_WIDGET_ANIMATOR*/
 
   return RET_OK;
 }
