@@ -27,10 +27,16 @@
 #include "xml/xml_parser.h"
 #include "ui_loader/ui_loader_xml.h"
 
+#define TAG_PROPERTY "property"
+
 typedef struct _xml_builder_t {
   XmlBuilder builder;
   ui_builder_t* ui_builder;
   str_t str;
+
+  bool_t is_property;
+  bool_t is_properties_end;
+  char property_name[TK_NAME_LEN + 1];
 } xml_builder_t;
 
 /*FIXME: it is not a good solution to hardcode*/
@@ -66,7 +72,7 @@ static bool_t is_valid_self_layout(const char* x, const char* y, const char* w, 
          is_valid_layout_param(h);
 }
 
-static void xml_loader_on_start(XmlBuilder* thiz, const char* tag, const char** attrs) {
+static void xml_loader_on_start_widget(XmlBuilder* thiz, const char* tag, const char** attrs) {
   char c = '\0';
   uint32_t i = 0;
   const char* x = "0";
@@ -189,24 +195,69 @@ static void xml_loader_on_start(XmlBuilder* thiz, const char* tag, const char** 
     i += 2;
   }
 
-  ui_builder_on_widget_prop_end(b->ui_builder);
+  b->is_properties_end = FALSE;
 
   return;
+}
+
+static void xml_loader_on_start_property(XmlBuilder* thiz, const char* tag, const char** attrs) {
+  uint32_t i = 0;
+  xml_builder_t* b = (xml_builder_t*)thiz;
+
+  while (attrs[i] != NULL) {
+    const char* key = attrs[i];
+    const char* value = attrs[i + 1];
+    if (tk_str_eq(key, "name")) {
+      tk_strncpy(b->property_name, value, TK_NAME_LEN);
+      break;
+    }
+  }
+}
+
+static void xml_loader_on_start(XmlBuilder* thiz, const char* tag, const char** attrs) {
+  xml_builder_t* b = (xml_builder_t*)thiz;
+
+  if (tk_str_eq(tag, TAG_PROPERTY)) {
+    b->is_property = TRUE;
+    xml_loader_on_start_property(thiz, tag, attrs);
+  } else {
+    b->is_property = FALSE;
+
+    if (!(b->is_properties_end)) {
+      b->is_properties_end = TRUE;
+      ui_builder_on_widget_prop_end(b->ui_builder);
+    }
+    xml_loader_on_start_widget(thiz, tag, attrs);
+  }
 }
 
 static void xml_loader_on_end(XmlBuilder* thiz, const char* tag) {
   xml_builder_t* b = (xml_builder_t*)thiz;
   (void)thiz;
   (void)tag;
-  ui_builder_on_widget_end(b->ui_builder);
+  if (tk_str_eq(tag, TAG_PROPERTY)) {
+    b->is_property = FALSE;
+  } else {
+    if (!(b->is_properties_end)) {
+      b->is_properties_end = TRUE;
+      ui_builder_on_widget_prop_end(b->ui_builder);
+    }
+    ui_builder_on_widget_end(b->ui_builder);
+  }
 
   return;
 }
 
 static void xml_loader_on_text(XmlBuilder* thiz, const char* text, size_t length) {
-  (void)thiz;
-  (void)text;
-  (void)length;
+  xml_builder_t* b = (xml_builder_t*)thiz;
+
+  if (b->is_property) {
+    assert(!(b->is_properties_end));
+
+    str_set_with_len(&(b->str), text, length);
+    ui_builder_on_widget_prop(b->ui_builder, b->property_name, b->str.str);
+  }
+
   return;
 }
 

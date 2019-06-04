@@ -3,6 +3,7 @@
   * 修改 widget_clone 支持拷贝 mutable style。
   * windows 平台缺省 BACKEND 使用 GLES2。
   * 修改 hscrollable 适用于没有 widget animator 的情况。
+  * 控件的属性支持放到property标签中，详情请参考UI描述文档。
 
 * 2019/06/3
   * 修改 add\_child/remove\_child，窗口管理器特殊处理。

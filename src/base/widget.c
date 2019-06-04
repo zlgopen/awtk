@@ -47,6 +47,7 @@
 static ret_t widget_do_destroy(widget_t* widget);
 static ret_t widget_destroy_sync(widget_t* widget);
 static ret_t widget_destroy_async(widget_t* widget);
+static ret_t widget_ensure_style_mutable(widget_t* widget);
 static ret_t widget_destroy_in_idle(const idle_info_t* info);
 static ret_t widget_on_paint_done(widget_t* widget, canvas_t* c);
 

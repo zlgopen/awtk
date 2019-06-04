@@ -1,28 +1,34 @@
-# AWTK中的界面描述数据
+# AWTK 中的界面描述数据
 
-AWTK可以直接加载XML格式的和二进制格式的界面描述数据，从性能和资源开销的角度考虑，二进制格式是更好的选择，AWTK提供了工具将XML格式转换成二进制格式的界面描述数据，也提供了将QT的UI文件和微软的RC文件转换成AWTK XML格式的界面描述文件的工具，其工作流程如下：
+AWTK 可以直接加载 XML 格式的和二进制格式的界面描述数据，从性能和资源开销的角度考虑，二进制格式是更好的选择，AWTK 提供了工具将 XML 格式转换成二进制格式的界面描述数据，也提供了将 QT 的 UI 文件转换成 AWTK XML 格式的界面描述文件的工具，其工作流程如下：
 
 ![](images/ui_desc.png)
 
-> AWTK的UI Builder还在意淫之中，打算用AWTK本身来开发，可能需要等到2018年底了，目前可以使用Qt Designer或微软的VC来做界面(主要生成各个控件的坐标)，再转换成AWTK XML UI文件，适当的编辑之后，转换成AWTK二进制的UI数据。
+> AWStudio 在开发之中...
 
 ## 一、界面描述数据的使用方法
 
-### 1.创建XML格式的界面描述文件
+### 1. 创建 XML 格式的界面描述文件
 
-AWTK XML界面描述数据非常紧凑和直观：
+AWTK XML 界面描述数据非常紧凑和直观。标签的名称对应控件的类型，标签的属性对应控件的属性。常见的属性有：
 
-* name 是控件的名称，创建完成之后可以用widget\_look\_up函数找到指定名称的控件。
-* x x坐标
-* y y坐标
+* x x 坐标
+* y y 坐标
 * w 宽度
 * h 高度
 * text 文本
 * value 值
+* name 是控件的名称，创建完成之后可以用 widget\_look\_up 函数找到指定名称的控件。
 
-x/y/w/h 可以使用[AWTK的layout参数](layout.md)。
+> 控件的属性请参考控件的文档。
 
-```
+> 用户可以定义自己的需要的属性。
+
+> x/y/w/h 可以使用 [AWTK 的 layout 参数](layout.md)。
+
+示例：
+
+```xml
 <window name="main" x="0" y="0" w="320" h="480">
   <button name="inc" x="10" y="5" w="40%" h="30" text="Inc"/>
   <button name="dec" x="right:10" y="5" w="40%" h="30" text="Dec"/>
@@ -42,17 +48,32 @@ x/y/w/h 可以使用[AWTK的layout参数](layout.md)。
 </window>
 ```
 
-### 2.预览XML格式的界面描述文件
+有时 text 或其它属性中出现了<>"等特殊字符，需要转义成 entity 才符合 XML 规范，此时使用起来比较麻烦。可以把它放到 property 标签中，并用 CDATA 把它括起来。如：
 
-XML UI文件写好后，可以用预览工具预览。如：
+示例:
+
+```xml
+  <rich_text x="0" y="0" w="100%" h="60">
+    <property name="text">
+      <![CDATA[<image name="bricks"/><font align_v="middle">hello awtk!</font><font color="red" size="32">ZLG</font>]]>
+    </property>
+  </rich_text>
+```
+> property 标签必须放在第一个控件之前。
+
+> 除了x、y、w和h的任何属性都可以放到 property TAG 中，请根据实际情况决定。
+
+### 2. 预览 XML 格式的界面描述文件
+
+XML UI 文件写好后，可以用预览工具预览。如：
 
 ```
 ./bin/preview_ui demos/assets/raw/ui/main.xml
 ```
 
-### 3.转换成二进制格式的界面描述文件
+### 3. 转换成二进制格式的界面描述文件
 
-对XML预览的效果满意之后，把它转换成二进制的格式：
+对 XML 预览的效果满意之后，把它转换成二进制的格式：
 
 ```
  ./bin/xml_to_ui window1.xml window1.data
@@ -102,7 +123,7 @@ XML UI文件写好后，可以用预览工具预览。如：
  39 0x65,0x78,0x74,0x00,0x44,0x69,0x61,0x6c,0x6f,0x67,0x32,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,};
 ```
 
-### 4.使用二进制格式的界面描述文件
+### 4. 使用二进制格式的界面描述文件
 
 在程序中引用，并放入资源管理器中：
 
@@ -113,7 +134,7 @@ XML UI文件写好后，可以用预览工具预览。如：
 assets_manager_add((const asset_info_t*)ui_window1);
 ```
 
-在需要打开该窗口时，调用window\_open函数(对话框用dialog\_open):
+在需要打开该窗口时，调用 window\_open 函数（对话框用 dialog\_open):
 
 ```
   widget_t* win = window_open(name);
@@ -122,12 +143,11 @@ assets_manager_add((const asset_info_t*)ui_window1);
   widget_child_on(win, "cancel", EVT_CLICK, on_cancel, win);
 ```
 
-## 二、将Qt的UI文件转成AWTK UI XML文件(目前不成熟)。
+## 二、将 Qt 的 UI 文件转成 AWTK UI XML 文件（目前不成熟）。
 
-转换工具在bin/qt\_to\_xml目录下，使用方法：
+转换工具在 bin/qt\_to\_xml 目录下，使用方法：
 
 ```
 Usage: ./bin/qt_to_xml in_filename out_filename
    Ex: ./bin/qt_to_xml demo1.ui demo1.xml
 ```
-

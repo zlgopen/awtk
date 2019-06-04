@@ -1,8 +1,30 @@
 <window anim_hint="htranslate" >
-    <rich_text x="0" y="0" w="100%" h="60" text="<image name=&quota;bricks&quota;/><font align_v=&quota;middle&quota;>hello awtk!</font><font color=&quota;red&quota; size=&quota;32&quota;>ZLG</font>" />
-    <rich_text x="0" y="70" w="100%" h="60" text="<image name=&quota;bricks&quota;/><font align_v=&quota;top&quota;>hello awtk!</font><font color=&quota;green&quota; size=&quota;32&quota;>ZLG</font>" />
-    <rich_text x="0" y="140" w="100%" h="60" text="<image name=&quota;bricks&quota;/><font align_v=&quota;bottom&quota;>hello awtk!</font><font color=&quota;blue&quota; size=&quota;32&quota;>ZLG</font>" />
-    <rich_text line_gap="5" x="0" y="210" w="100%" h="200" text="<image name=&quota;bricks&quota;/><font color=&quota;gold&quota; align_v=&quota;bottom&quota; size=&quota;24&quota;>hello awtk!</font><font color=&quota;green&quota; size=&quota;20&quota;>ProTip! The feed shows you events from people you follow and repositories you watch. 
-hello world. </font><font color=&quota;red&quota; size=&quota;20&quota;>确定取消中文字符测试。确定。取消。中文字符测试。</font>" />
+  <rich_text x="0" y="0" w="100%" h="60">
+    <property name="text">
+      <![CDATA[<image name="bricks"/><font align_v="middle">hello awtk!</font><font color="red" size="32">ZLG</font>]]>
+    </property>
+  </rich_text>
+
+  <rich_text x="0" y="70" w="100%" h="60">
+    <property name="text">
+      <![CDATA[<image name="bricks"/><font align_v="top">hello awtk!</font><font color="green" size="32">ZLG</font>" />]]>
+    </property>
+  </rich_text>
+
+  <rich_text x="0" y="140" w="100%" h="60">
+    <property name="text">
+      <![CDATA[<image name="bricks"/><font align_v="bottom">hello awtk!</font><font color="blue" size="32">ZLG</font>]]>
+    </property>
+  </rich_text>
+
+  <rich_text line_gap="5" x="0" y="210" w="100%" h="200">
+    <property name="text">
+      <![CDATA[
+ <image name="bricks"/><font color="gold" align_v="bottom" size="24">hello awtk!</font><font color="green" size="20">ProTip! The feed shows you events from people you follow and repositories you watch. 
+ hello world!
+ </font><font color="red" size="20">确定取消中文字符测试。确定。取消。中文字符测试。</font>"
+      ]]>
+    </property>
+  </rich_text>
     <button name="close" text="Close" x="c" y="bottom:10" w="25%" h="40" />
 </window>
