@@ -10,7 +10,7 @@ sample
     </property>
   </label>
 
-  <label style="center" text="it\nis\na\nmulti-line\nsample\n(center)"/>
+  <label style="center" tr_text="multi line text"/>
   <label style="right" text="it\nis\na\nmulti-line\nsample\n(right)"/>
   
   <label style="center_top"  text="it\nis\na\nmulti-line\nsample\n(center_top)"/>

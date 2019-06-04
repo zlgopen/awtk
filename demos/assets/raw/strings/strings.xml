@@ -22,3 +22,14 @@
 <language name="en_US">English</language>
 <language name="zh_CN">英文</language>
 </string>
+
+<string name="multi line text">
+  <language name="en_US">
+it
+is
+a
+multi-line
+Translate text 
+(center)
+  </language>
+</string>
