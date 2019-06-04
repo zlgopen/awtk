@@ -34,7 +34,7 @@ INPUT_ENGINE='pinyin'
 VGCANVAS='NANOVG'
 if OS_NAME == 'Windows':
   TK_ROOT=TK_ROOT.replace('\\', '\\\\');
-  NANOVG_BACKEND='AGGE'
+  NANOVG_BACKEND='GLES2'
 else:
   NANOVG_BACKEND='GL3'
 
