@@ -28,7 +28,6 @@
 
 typedef struct _style_item_t {
   char name[TK_NAME_LEN + 1];
-  ;
   value_t value;
 
   struct _style_item_t* next;
