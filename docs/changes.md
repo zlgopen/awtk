@@ -1,115 +1,117 @@
 # 最新动态
+* 2019/06/4
+  * 修改 widget_clone 支持拷贝 mutable style。
+  * windows 平台缺省 BACKEND 使用 GLES2。
+  * 修改 hscrollable 适用于没有 widget animator 的情况。
+
 * 2019/06/3
-  * 修改add\_child/remove\_child，窗口管理器特殊处理。
-  * 缺省启用style mutable，具体用法请参考主题文档。
+  * 修改 add\_child/remove\_child，窗口管理器特殊处理。
+  * 缺省启用 style mutable，具体用法请参考主题文档。
 
 * 2019/06/2
-  * 完善expr eval的函数调用支持多个参数。
+  * 完善 expr eval 的函数调用支持多个参数。
 
 * 2019/05/31
-  * 修改cairo显示图片的问题(cairo需要alpha预乘的图片)。
-  * 修改cairo SVG动画的问题(cairo不支持scale时，xy为0的情况)
+  * 修改 cairo 显示图片的问题 (cairo 需要 alpha 预乘的图片）。
+  * 修改 cairo SVG 动画的问题 (cairo 不支持 scale 时，xy 为 0 的情况）
   * 增加输入事件处理流程文档。
-  * children\_layouter\_default 增加keep\_disable和keep\_invisible参数。
-  * children\_layouter\_list\_view 增加keep\_disable和keep\_invisible参数。
+  * children\_layouter\_default 增加 keep\_disable 和 keep\_invisible 参数。
+  * children\_layouter\_list\_view 增加 keep\_disable 和 keep\_invisible 参数。
 
 * 2019/05/30
   * 增加颜色格式描述文档。
-  * FAQ增加半透明相关的问答。
-  * tab button放在scrollview中，激活时自动滚动到可见区域。
+  * FAQ 增加半透明相关的问答。
+  * tab button 放在 scrollview 中，激活时自动滚动到可见区域。
   * 候选字支持左右滚动。
-  * 资源管理可以设置自己的system info和locale info，方便IDE区分自己的窗口和被设计的窗口。
+  * 资源管理可以设置自己的 system info 和 locale info，方便 IDE 区分自己的窗口和被设计的窗口。
 
 * 2019/05/29
-  * 增加overlay窗口
-  * 完善expr\_eval
-  * 去掉TK\_DEFAULT\_FONT宏定义，提供函数system\_info\_set\_default\_font设置缺省字体(一般不用调用)。
+  * 增加 overlay 窗口
+  * 完善 expr\_eval
+  * 去掉 TK\_DEFAULT\_FONT 宏定义，提供函数 system\_info\_set\_default\_font 设置缺省字体（一般不用调用）。
    
 * 2019/05/28
-  * 修改enums.c 编译问题(感谢陈潭提供补丁)。
-  * 修改vgcanvas\_reinit的问题(感谢陈潭提供补丁)。
-  * 合并bgfx补丁(感谢大恒提供补丁)。
-  * 完善shortcut。
-  * 完善shortcut。
+  * 修改 enums.c 编译问题（感谢陈潭提供补丁）。
+  * 修改 vgcanvas\_reinit 的问题（感谢陈潭提供补丁）。
+  * 合并 bgfx 补丁（感谢大恒提供补丁）。
+  * 完善 shortcut。
   * 完善事件处理流程。
 
 * 2019/05/27
-    * 窗口在切换到前台和后台时分别触发事件EVT\_WINDOW\_TO\_FOREGROUND和EVT\_WINDOW\_TO\_BACKGROUND
-    * 窗口被切换到前台时，把窗口管理器的key\_target设置到当前窗口。
-    * pages切换当前页时，自动切换key\_target到当前页面。
-    * slide view切换当前页时，自动切换key\_target到当前页面。
-    * 增加shortcut
+    * 窗口在切换到前台和后台时分别触发事件 EVT\_WINDOW\_TO\_FOREGROUND 和 EVT\_WINDOW\_TO\_BACKGROUND
+    * 窗口被切换到前台时，把窗口管理器的 key\_target 设置到当前窗口。
+    * pages 切换当前页时，自动切换 key\_target 到当前页面。
+    * slide view 切换当前页时，自动切换 key\_target 到当前页面。
+    * 增加 shortcut
     * 完善按键处理
 
 * 2019/05/25
-  * 修改窗口中存在pages/slideview时焦点切换的问题。
+  * 修改窗口中存在 pages/slideview 时焦点切换的问题。
 
 * 2019/05/24
-  * 部分控件增加inputable属性。
-  * 修改progress circle半径的问题(感谢均权提供补丁)。
+  * 部分控件增加 inputable 属性。
+  * 修改 progress circle 半径的问题（感谢均权提供补丁）。
   * 完善字符串翻译文，增加数字时钟中星期和月份的处理。
 
 * 2019/05/23
-  * 修改edit在scrollview中的问题。
-  * resize后设置need\_relayout\_children标志(感谢朝泽提供补丁)。
-  * 修改slide menu中find target的bug(感谢朝泽提供补丁)。
-  * move focus时跳过不可见和不可用的widget。
-  * 当前没有焦点控件时，窗口收到tab键时，让第一个focusable控件得到焦点。
-  * 修改guage pointer 在load widget时的警告信息。
+  * 修改 edit 在 scrollview 中的问题。
+  * resize 后设置 need\_relayout\_children 标志（感谢朝泽提供补丁）。
+  * 修改 slide menu 中 find target 的 bug（感谢朝泽提供补丁）。
+  * move focus 时跳过不可见和不可用的 widget。
+  * 当前没有焦点控件时，窗口收到 tab 键时，让第一个 focusable 控件得到焦点。
+  * 修改 guage pointer 在 load widget 时的警告信息。
   * 增加控件焦点相关问题的文档。  
    
 * 2019/05/22
-  * 完善事件处理流程，修改slide menu放在slide view中的问题。
-  * 窗口增加move\_focus\_next\_key/move\_focus\_prev\_key两个属性，用于设置焦点的键值。具体用法请参考：demos/assets/raw/ui/basic.xml。
-  * 将ListView的布局策略放到children\_layouter\_list\_view中，并支持边距和间距等参数。
+  * 完善事件处理流程，修改 slide menu 放在 slide view 中的问题。
+  * 窗口增加 move\_focus\_next\_key/move\_focus\_prev\_key 两个属性，用于设置焦点的键值。具体用法请参考：demos/assets/raw/ui/basic.xml。
+  * 将 ListView 的布局策略放到 children\_layouter\_list\_view 中，并支持边距和间距等参数。
   *   
 * 2019/05/21
-  * button/check\_button在收到回车和空格键时触发click事件。
-  * 支持用tab键切换任意控件的焦点。
-  * 支持用focusable属性将控件设置可获得焦点，实现tab stop类似的效果。focusable的控件，其style必须具有focused状态，否则无法显示。
-
+  * button/check\_button 在收到回车和空格键时触发 click 事件。
+  * 支持用 tab 键切换任意控件的焦点。
+  * 支持用 focusable 属性将控件设置可获得焦点，实现 tab stop 类似的效果。focusable 的控件，其 style 必须具有 focused 状态，否则无法显示。
 
 * 2019/05/20
-  * 修改ui\_loader\_load\_widget因为无窗口导致set\_tr\_text失败的问题。
+  * 修改 ui\_loader\_load\_widget 因为无窗口导致 set\_tr\_text 失败的问题。
 
 * 2019/05/18
-  * 修改window\_manager\_open\_window将key\target设置为新窗口。
-  * 合并text selector的补丁(感谢智明提供补丁)。
-  * slider支持上下左右键盘。
+  * 修改 window\_manager\_open\_window 将 key\target 设置为新窗口。
+  * 合并 text selector 的补丁（感谢智明提供补丁）。
+  * slider 支持上下左右键盘。
 
 * 2019/05/16
-  * 去掉slist\_remove中一个警告。
-  * 完善slider。垂直slider过宽或水平slider过高时缩放图标，否则显示有些怪异。
-  * image animitioin的自动播放放到第一次绘制时启动。
-  * color picker的对子控件的hook放到第一次绘制时处理。
-  * slide view支持list view作为子控件。
+  * 去掉 slist\_remove 中一个警告。
+  * 完善 slider。垂直 slider 过宽或水平 slider 过高时缩放图标，否则显示有些怪异。
+  * image animitioin 的自动播放放到第一次绘制时启动。
+  * color picker 的对子控件的 hook 放到第一次绘制时处理。
+  * slide view 支持 list view 作为子控件。
 
 * 2019/05/15
-  * 合并guage pointer支持锚点的补丁(感谢智明提供补丁)。
-  * 完善color\_hex\_str(感谢朝泽提供补丁)。
-  * 修改guage pointer中文档错误(感谢朝泽提供补丁)。
-  * 增加vgcanvas\_cairo。cairo速度快功能全，但代码体积稍大，请酌情使用。
+  * 合并 guage pointer 支持锚点的补丁（感谢智明提供补丁）。
+  * 完善 color\_hex\_str（感谢朝泽提供补丁）。
+  * 修改 guage pointer 中文档错误（感谢朝泽提供补丁）。
+  * 增加 vgcanvas\_cairo。cairo 速度快功能全，但代码体积稍大，请酌情使用。
 
    
 * 2019/05/14
-  * style增加margin\_left/margin\_right/margin\_top/margin\_bottom几个参数用于细化之前的margin参数。 这个只影响icon/text，不影响子控件(子控件由布局算法决定)
+  * style 增加 margin\_left/margin\_right/margin\_top/margin\_bottom 几个参数用于细化之前的 margin 参数。 这个只影响 icon/text，不影响子控件（子控件由布局算法决定）
   
 * 2019/05/13
-  * 增加widget\_add\_idle。
-  * 完善window\_manager\_do\_open\_window。
+  * 增加 widget\_add\_idle。
+  * 完善 window\_manager\_do\_open\_window。
   * 子控件布局算法和控件自身算法支持注册自定义算法。
-  * 增加函数widget\_find\_animator(感谢均权提供补丁)。
+  * 增加函数 widget\_find\_animator（感谢均权提供补丁）。
 
 * 2019/05/11
-  * guage pointer支持锚点(感谢智明提供补丁)。
-  * 修改在Ubuntu 18 32bit上编译的问题(感谢[hardyun](http://www.hardyun.com/)提供补丁)。
-  * 增加条件变量tk\_cond\_var。
+  * guage pointer 支持锚点（感谢智明提供补丁）。
+  * 修改在 Ubuntu 18 32bit 上编译的问题（感谢 [hardyun](http://www.hardyun.com/) 提供补丁）。
+  * 增加条件变量 tk\_cond\_var。
 
 * 2019/05/10
-  * 修改SDL输入法位置的BUG。
+  * 修改 SDL 输入法位置的 BUG。
   * 增加下列事件，在子控件处理之前触发，让用户注册的事件处理函数，有机会拦截这些事件。
      * EVT\_POINTER\_DOWN\_BEFORE\_CHILDREN
-     * EVT\_POINTER\_UP\_BEFORE\_CHILDREN
      * EVT\_POINTER\_UP\_BEFORE\_CHILDREN
      * EVT\_KEY\_DOWN\_BEFORE\_CHILDREN
      * EVT\_KEY\_UP\_BEFORE\_CHILDREN

@@ -2300,9 +2300,24 @@ static ret_t widget_copy_props(widget_t* clone, widget_t* widget, const char** p
   return RET_OK;
 }
 
+static ret_t widget_copy_style(widget_t* clone, widget_t* widget) {
+  if (style_is_mutable(widget->astyle) && style_mutable_cast(widget->astyle) != NULL) {
+    if (!style_is_mutable(clone->astyle)) {
+      widget_ensure_style_mutable(clone);
+    }
+
+    if (style_mutable_cast(clone->astyle) != NULL) {
+      style_mutable_copy(clone->astyle, widget->astyle);
+    }
+  }
+
+  return RET_OK;
+}
+
 static ret_t widget_copy(widget_t* clone, widget_t* widget) {
   clone->state = widget->state;
   clone->focused = widget->focused;
+  widget_copy_style(clone, widget);
   widget_copy_props(clone, widget, s_widget_persistent_props);
   widget_copy_props(clone, widget, widget->vt->clone_properties);
 

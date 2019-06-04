@@ -581,6 +581,36 @@ TEST(Widget, clone_custom_props) {
   widget_destroy(w);
 }
 
+TEST(Widget, clone_const_style) {
+  widget_t* clone = NULL;
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* b = button_create(w, 1, 0, 10, 20);
+
+  clone = widget_clone(b, b->parent);
+  ASSERT_EQ(style_is_mutable(b->astyle), FALSE);
+  ASSERT_EQ(style_is_mutable(clone->astyle), FALSE);
+
+  widget_destroy(w);
+}
+
+TEST(Widget, clone_mutable_style) {
+  widget_t* clone = NULL;
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* b = button_create(w, 1, 0, 10, 20);
+
+  ASSERT_EQ(widget_set_style_int(b, "font_size", 123), RET_OK);
+  ASSERT_EQ(widget_set_style_str(b, "icon", "icon1"), RET_OK);
+
+  clone = widget_clone(b, b->parent);
+  ASSERT_EQ(style_is_mutable(b->astyle), TRUE);
+  ASSERT_EQ(style_is_mutable(clone->astyle), TRUE);
+
+  ASSERT_EQ(style_get_int(clone->astyle, "font_size", 0), 123);
+  ASSERT_STREQ(style_get_str(clone->astyle, "icon", NULL), "icon1");
+
+  widget_destroy(w);
+}
+
 TEST(Widget, is_keyboard) {
   widget_t* w = window_create(NULL, 0, 0, 400, 300);
   widget_t* group = group_box_create(w, 1, 0, 10, 20);

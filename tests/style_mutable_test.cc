@@ -92,3 +92,32 @@ TEST(StyleMutable, cast) {
   style_destroy(style_mutable);
   widget_destroy(w);
 }
+
+TEST(StyleMutable, copy) {
+  color_t c1 = color_init(1, 2, 3, 4);
+  color_t c2 = color_init(2, 2, 3, 4);
+  style_t* m1 = style_mutable_create(NULL, NULL);
+  style_t* m2 = style_mutable_create(NULL, NULL);
+
+  style_mutable_set_int(m1, "normal", "font_size", 123);
+  style_mutable_set_str(m1, "normal", "font", "foo");
+  style_mutable_set_color(m1, "normal", "text_color", c1);
+
+  style_mutable_set_int(m1, "focused", "font_size", 321);
+  style_mutable_set_str(m1, "focused", "font", "foo2");
+  style_mutable_set_color(m1, "focused", "text_color", c2);
+  style_mutable_copy(m2, m1);
+
+  string str1;
+  style_mutable_foreach(m1, on_style_item, &str1);
+  string str2;
+  style_mutable_foreach(m2, on_style_item, &str2);
+
+  ASSERT_EQ(str1, str2);
+  ASSERT_EQ(str1,
+            string("normal,font_size,123;normal,font,\"foo\";normal,text_color,67305985;focused,"
+                   "font_size,321;focused,font,\"foo2\";focused,text_color,67305986;"));
+
+  style_destroy(m1);
+  style_destroy(m2);
+}

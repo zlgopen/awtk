@@ -362,7 +362,24 @@ ret_t style_mutable_register(void) {
 }
 
 style_t* style_mutable_cast(style_t* s) {
-  return_value_if_fail(s != NULL && s->vt == &style_mutable_vt, s);
+  return_value_if_fail(s != NULL && s->vt == &style_mutable_vt, NULL);
 
   return s;
+}
+
+static ret_t visit_and_clone(void* ctx, const char* widget_state, const char* name,
+                             const value_t* val) {
+  style_set((style_t*)ctx, widget_state, name, val);
+
+  return RET_OK;
+}
+
+ret_t style_mutable_copy(style_t* s, style_t* other) {
+  return_value_if_fail(STYLE_MUTABLE(s) != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(STYLE_MUTABLE(other) != NULL, RET_BAD_PARAMS);
+
+  style_mutable_reset(s);
+  style_mutable_foreach(other, visit_and_clone, s);
+
+  return RET_OK;
 }
