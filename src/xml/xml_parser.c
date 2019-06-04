@@ -20,6 +20,7 @@
  */
 #include "tkc/fs.h"
 #include "tkc/mem.h"
+#include "tkc/str.h"
 #include "tkc/utils.h"
 #include "xml/xml_parser.h"
 #ifndef isspace
@@ -31,7 +32,7 @@
 
 struct _XmlParser {
   const char* read_ptr;
-
+  const char* end;
   int attrs_nr;
   char* attrs[2 * MAX_ATTR_NR + 1];
 
@@ -40,6 +41,7 @@ struct _XmlParser {
   int capacity;
 
   XmlBuilder* builder;
+  str_t text;
 };
 
 static const char* strtrim(char* str);
@@ -53,7 +55,12 @@ static void xml_parser_parse_text(XmlParser* thiz);
 static void xml_parser_reset_buffer(XmlParser* thiz);
 
 XmlParser* xml_parser_create(void) {
-  return TKMEM_ZALLOC(XmlParser);
+  XmlParser* p = TKMEM_ZALLOC(XmlParser);
+  return_value_if_fail(p != NULL, NULL);
+
+  str_init(&(p->text), 100);
+
+  return p;
 }
 
 void xml_parser_set_builder(XmlParser* thiz, XmlBuilder* builder) {
@@ -78,6 +85,7 @@ void xml_parser_parse(XmlParser* thiz, const char* xml, int length) {
   } state = STAT_NONE;
 
   thiz->read_ptr = xml;
+  thiz->end = xml + length;
 
   for (; *thiz->read_ptr != '\0' && (thiz->read_ptr - xml) < length; thiz->read_ptr++, i++) {
     char c = thiz->read_ptr[0];
@@ -131,6 +139,10 @@ void xml_parser_parse(XmlParser* thiz, const char* xml, int length) {
           state = STAT_PRE_COMMENT2;
         } else if (c == 'D' || c == 'd') {
           state = STAT_DOCTYPE;
+        } else if (c == '[' && tk_str_start_with(thiz->read_ptr, "[CDATA[")) {
+          thiz->read_ptr--;
+          xml_parser_parse_text(thiz);
+          state = STAT_NONE;
         } else {
           xml_builder_on_error(thiz->builder, 0, 0, "expected \'-\'");
         }
@@ -421,25 +433,57 @@ static void xml_parser_parse_pi(XmlParser* thiz) {
   return;
 }
 
+static void xml_parser_on_text(XmlParser* thiz) {
+  if (thiz->text.size > 0) {
+    char* start = thiz->text.str;
+    char* end = thiz->text.str + thiz->text.size - 1;
+
+    while (isspace(*start) && *start) {
+      start++;
+    }
+
+    while (isspace(*end) && end > start) {
+      *end = '\0';
+      end--;
+    }
+
+    if (end >= start) {
+      xml_builder_on_text(thiz->builder, start, end - start + 1);
+    }
+  }
+}
+
 static void xml_parser_parse_text(XmlParser* thiz) {
-  const char* start = thiz->read_ptr - 1;
+  str_t* s = &(thiz->text);
+
+  s->size = 0;
+  s->str[0] = '\0';
+  thiz->read_ptr--;
+
   for (; *thiz->read_ptr != '\0'; thiz->read_ptr++) {
     char c = *thiz->read_ptr;
 
     if (c == '<') {
-      if (thiz->read_ptr > start) {
-        xml_builder_on_text(thiz->builder, start, thiz->read_ptr - start);
+      if (tk_str_start_with(thiz->read_ptr, "<![CDATA[")) {
+        const char* start = thiz->read_ptr + 9;
+        thiz->read_ptr = strstr(start, "]]>");
+        if (thiz->read_ptr != NULL) {
+          str_append_with_len(s, start, thiz->read_ptr - start);
+          thiz->read_ptr += 2;
+        } else {
+          log_warn("invalid cdata\n");
+          thiz->read_ptr = thiz->end;
+        }
+      } else {
+        thiz->read_ptr--;
+        break;
       }
-      thiz->read_ptr--;
-      return;
-    } else if (c == '&') {
-      xml_parser_parse_entity(thiz);
+    } else {
+      str_append_char(s, c);
     }
   }
 
-  if (thiz->read_ptr > start) {
-    xml_builder_on_text(thiz->builder, start, thiz->read_ptr - start);
-  }
+  xml_parser_on_text(thiz);
 
   return;
 }
@@ -452,6 +496,7 @@ static void xml_parser_parse_entity(XmlParser* thiz) {
 
 void xml_parser_destroy(XmlParser* thiz) {
   if (thiz != NULL) {
+    str_reset(&(thiz->text));
     TKMEM_FREE(thiz->buffer);
     TKMEM_FREE(thiz);
   }

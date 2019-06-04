@@ -50,11 +50,39 @@ static void test_str(XmlParser* p, const char* str) {
   ASSERT_EQ(s_log, str);
 }
 
+static void test_str_ex(XmlParser* p, const char* str, const char* expected) {
+  s_log = "";
+  xml_parser_parse(p, str, strlen(str));
+  ASSERT_EQ(s_log, expected);
+}
+
+TEST(XmlParser, cdata) {
+  XmlBuilder b;
+  XmlParser* p = xml_parser_create();
+  xml_parser_set_builder(p, builder_init(b));
+
+  test_str_ex(p, "<a><![CDATA[123]]></a>", "<a>123</a>");
+  test_str_ex(p, "<a><![CDATA[<abc>]]></a>", "<a><abc></a>");
+  test_str_ex(p, "<a>123<![CDATA[<abc>]]></a>", "<a>123<abc></a>");
+  test_str_ex(p, "<a>123<![CDATA[<abc>]]></a>", "<a>123<abc></a>");
+  test_str_ex(p, "<a>123<![CDATA[<abc>]]>1</a>", "<a>123<abc>1</a>");
+  test_str_ex(p, "<a>123<![CDATA[<abc>]]>123</a>", "<a>123<abc>123</a>");
+  test_str_ex(p, "<a>   <![CDATA[123]]>  </a>", "<a>123</a>");
+  test_str_ex(p, "<a>  \n <![CDATA[123]]>  </a>", "<a>123</a>");
+  test_str_ex(p, "<a>  \n <![CDATA[123]]> \n </a>", "<a>123</a>");
+
+  xml_parser_destroy(p);
+}
+
 TEST(XmlParser, basic) {
   XmlBuilder b;
   XmlParser* p = xml_parser_create();
   xml_parser_set_builder(p, builder_init(b));
 
+  test_str(p, "<a></a>");
+  test_str_ex(p, "<a>   </a>", "<a></a>");
+  test_str_ex(p, "<a> \n  </a>", "<a></a>");
+  test_str_ex(p, "<a> \n123\n  </a>", "<a>123</a>");
   test_str(p, "<a>test</a>");
   test_str(p, "<a><b>test</b></a>");
   test_str(p, "<a><b>test</b><c>test1</c></a>");
