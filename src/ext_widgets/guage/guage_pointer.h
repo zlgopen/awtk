@@ -143,7 +143,7 @@ ret_t guage_pointer_set_angle(widget_t* widget, int32_t angle);
 ret_t guage_pointer_set_image(widget_t* widget, const char* image);
 
 /**
- * @method guage_pointer_set_image
+ * @method guage_pointer_set_anchor
  * 设置指针的旋转锚点。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
