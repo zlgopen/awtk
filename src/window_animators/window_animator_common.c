@@ -27,7 +27,6 @@ ret_t window_animator_to_bottom_draw_curr(window_animator_t* wa) {
   float_t percent = wa->percent;
 
   int32_t h = tk_roundi(win->h * percent);
-  int32_t y = win->h - h;
   rect_t src = rect_init(win->x, win->y + win->h - h, win->w, h);
   rect_t dst = rect_init(win->x, tk_roundi(win->y * percent), win->w, h);
 
@@ -66,7 +65,6 @@ ret_t window_animator_to_right_draw_curr(window_animator_t* wa) {
   float_t percent = wa->percent;
 
   int32_t w = tk_roundi(win->w * percent);
-  int32_t x = win->w - w;
   rect_t src = rect_init(win->x + win->w - w, win->y, w, win->h);
   rect_t dst = rect_init(tk_roundi(win->x * percent), win->y, w, win->h);
 

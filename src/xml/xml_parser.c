@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   xml_parse.c
  * Author: AWTK Develop Team
  * Brief:  simple xml parser
@@ -485,12 +485,6 @@ static void xml_parser_parse_text(XmlParser* thiz) {
 
   xml_parser_on_text(thiz);
 
-  return;
-}
-
-static void xml_parser_parse_entity(XmlParser* thiz) {
-  /*TODO*/
-  (void)thiz;
   return;
 }
 

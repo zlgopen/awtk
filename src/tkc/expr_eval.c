@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Eval - Simple numerical expression evaluator
  *
  * https://github.com/mattbucknall/eval
@@ -292,8 +292,6 @@ static EvalResult expr_value_copy(ExprValue* v, const ExprValue* from) {
   } else {
     return expr_value_set_number(v, expr_value_get_number(from));
   }
-
-  return EVAL_RESULT_OK;
 }
 
 double expr_value_get_number(const ExprValue* v) {
