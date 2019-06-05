@@ -29,13 +29,19 @@
 
 #define TAG_PROPERTY "property"
 
+typedef enum _props_state_t {
+  PROPS_STATE_NONE = 0,
+  PROPS_STATE_START,
+  PROPS_STATE_END
+} props_state_t;
+
 typedef struct _xml_builder_t {
   XmlBuilder builder;
   ui_builder_t* ui_builder;
   str_t str;
 
   bool_t is_property;
-  bool_t is_properties_end;
+  props_state_t properties_state;
   char property_name[TK_NAME_LEN + 1];
 } xml_builder_t;
 
@@ -195,7 +201,7 @@ static void xml_loader_on_start_widget(XmlBuilder* thiz, const char* tag, const 
     i += 2;
   }
 
-  b->is_properties_end = FALSE;
+  b->properties_state = PROPS_STATE_START;
 
   return;
 }
@@ -214,6 +220,15 @@ static void xml_loader_on_start_property(XmlBuilder* thiz, const char* tag, cons
   }
 }
 
+static void xml_loader_on_prop_end(XmlBuilder* thiz) {
+  xml_builder_t* b = (xml_builder_t*)thiz;
+
+  if (b->properties_state == PROPS_STATE_START) {
+    b->properties_state = PROPS_STATE_END;
+    ui_builder_on_widget_prop_end(b->ui_builder);
+  }
+}
+
 static void xml_loader_on_start(XmlBuilder* thiz, const char* tag, const char** attrs) {
   xml_builder_t* b = (xml_builder_t*)thiz;
 
@@ -223,10 +238,7 @@ static void xml_loader_on_start(XmlBuilder* thiz, const char* tag, const char** 
   } else {
     b->is_property = FALSE;
 
-    if (!(b->is_properties_end)) {
-      b->is_properties_end = TRUE;
-      ui_builder_on_widget_prop_end(b->ui_builder);
-    }
+    xml_loader_on_prop_end(thiz);
     xml_loader_on_start_widget(thiz, tag, attrs);
   }
 }
@@ -238,10 +250,7 @@ static void xml_loader_on_end(XmlBuilder* thiz, const char* tag) {
   if (tk_str_eq(tag, TAG_PROPERTY)) {
     b->is_property = FALSE;
   } else {
-    if (!(b->is_properties_end)) {
-      b->is_properties_end = TRUE;
-      ui_builder_on_widget_prop_end(b->ui_builder);
-    }
+    xml_loader_on_prop_end(thiz);
     ui_builder_on_widget_end(b->ui_builder);
   }
 
@@ -252,7 +261,7 @@ static void xml_loader_on_text(XmlBuilder* thiz, const char* text, size_t length
   xml_builder_t* b = (xml_builder_t*)thiz;
 
   if (b->is_property) {
-    assert(!(b->is_properties_end));
+    assert(b->properties_state == PROPS_STATE_START);
 
     str_set_with_len(&(b->str), text, length);
     ui_builder_on_widget_prop(b->ui_builder, b->property_name, b->str.str);
@@ -288,6 +297,8 @@ static void xml_loader_destroy(XmlBuilder* thiz) {
 }
 
 static XmlBuilder* builder_init(xml_builder_t* b, ui_builder_t* ui_builder) {
+  memset(b, 0x00, sizeof(xml_builder_t));
+
   b->builder.on_start = xml_loader_on_start;
   b->builder.on_end = xml_loader_on_end;
   b->builder.on_text = xml_loader_on_text;
