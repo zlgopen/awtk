@@ -209,11 +209,11 @@ ret_t widget_set_style_str(widget_t* widget, const char* state_and_name, const c
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {const char*} state_and_name 状态和名字，用英文的冒号分隔。
- * @param {color_t} value 值。
+ * @param {uint32_t} value 值。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t widget_set_style_color(widget_t* widget, const char* state_and_name, color_t value);
+
 ```
 
 示例：

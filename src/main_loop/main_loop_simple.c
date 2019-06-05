@@ -152,17 +152,25 @@ static ret_t main_loop_dispatch_input(main_loop_simple_t* loop) {
   return RET_OK;
 }
 
+static ret_t main_loop_simple_step(main_loop_t* l) {
+  main_loop_simple_t* loop = (main_loop_simple_t*)l;
+
+  timer_dispatch();
+  main_loop_dispatch_input(loop);
+  main_loop_dispatch_events(loop);
+  idle_dispatch();
+
+  window_manager_paint(loop->base.wm, &(loop->base.canvas));
+
+  return RET_OK;
+}
+
 static ret_t main_loop_simple_run(main_loop_t* l) {
   main_loop_simple_t* loop = (main_loop_simple_t*)l;
 
   loop->pressed = FALSE;
   while (l->running) {
-    timer_dispatch();
-    main_loop_dispatch_input(loop);
-    main_loop_dispatch_events(loop);
-    idle_dispatch();
-
-    window_manager_paint(loop->base.wm, &(loop->base.canvas));
+    main_loop_step(l);
     main_loop_sleep(l);
   }
 
@@ -187,6 +195,7 @@ main_loop_simple_t* main_loop_simple_init(int w, int h) {
   return_value_if_fail(loop->mutex != NULL, NULL);
 
   loop->base.run = main_loop_simple_run;
+  loop->base.step = main_loop_simple_step;
   loop->base.queue_event = main_loop_simple_queue_event;
 
   window_manager_resize(loop->base.wm, w, h);

@@ -121,3 +121,11 @@ ret_t main_loop_sleep(main_loop_t* l) {
 
   return main_loop_sleep_default(l);
 }
+
+ret_t main_loop_step(main_loop_t* l) {
+  if (l->step != NULL) {
+    return l->step(l);
+  }
+
+  return RET_OK;
+}
