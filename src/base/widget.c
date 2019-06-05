@@ -2823,11 +2823,11 @@ ret_t widget_set_style_int(widget_t* widget, const char* state_and_name, int32_t
   return widget_set_style(widget, state_and_name, &v);
 }
 
-ret_t widget_set_style_color(widget_t* widget, const char* state_and_name, color_t value) {
+ret_t widget_set_style_color(widget_t* widget, const char* state_and_name, uint32_t value) {
   value_t v;
   return_value_if_fail(widget != NULL && state_and_name != NULL, RET_BAD_PARAMS);
 
-  value_set_int(&v, value.color);
+  value_set_int(&v, value);
   return widget_set_style(widget, state_and_name, &v);
 }
 
