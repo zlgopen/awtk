@@ -251,7 +251,7 @@ typedef enum _ret_t {
 #endif
 
 #define tk_min(a, b) ((a) < (b) ? (a) : (b))
-#define tk_abs(a) ((a) < (0) ? (-a) : (a))
+#define tk_abs(a) ((a) < (0) ? (-(a)) : (a))
 #define tk_max(a, b) ((a) > (b) ? (a) : (b))
 #define tk_roundi(a) (int32_t)(((a) >= 0) ? ((a) + 0.5f) : ((a)-0.5f))
 #define tk_clampi(a, mn, mx) ((a) < (mn) ? (mn) : ((a) > (mx) ? (mx) : (a)))

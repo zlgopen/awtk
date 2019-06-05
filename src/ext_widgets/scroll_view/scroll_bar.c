@@ -434,12 +434,20 @@ bool_t scroll_bar_is_mobile(widget_t* widget) {
   return widget && widget->vt == TK_REF_VTABLE(scroll_bar_mobile);
 }
 
-static ret_t scroll_bar_on_animate_end(void* ctx, event_t* e) {
+static ret_t scroll_bar_on_value_animate_end(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   scroll_bar_t* scroll_bar = SCROLL_BAR(ctx);
   return_value_if_fail(widget != NULL && scroll_bar != NULL, RET_REMOVE);
 
   scroll_bar->wa_value = NULL;
+  return RET_REMOVE;
+}
+
+static ret_t scroll_bar_on_opactiy_animate_end(void* ctx, event_t* e) {
+  widget_t* widget = WIDGET(ctx);
+  scroll_bar_t* scroll_bar = SCROLL_BAR(ctx);
+  return_value_if_fail(widget != NULL && scroll_bar != NULL, RET_REMOVE);
+
   scroll_bar->wa_opactiy = NULL;
 
   if (scroll_bar_is_mobile(widget)) {
@@ -460,7 +468,7 @@ ret_t scroll_bar_scroll_to(widget_t* widget, int32_t value, int32_t duration) {
 
   if (scroll_bar->wa_opactiy != NULL) {
     widget_animator_destroy(scroll_bar->wa_opactiy);
-    scroll_bar->wa_value = NULL;
+    scroll_bar->wa_opactiy = NULL;
   }
 
   widget_set_opacity(widget, 0xff);
@@ -470,8 +478,8 @@ ret_t scroll_bar_scroll_to(widget_t* widget, int32_t value, int32_t duration) {
   if (scroll_bar->value == value) {
     if (scroll_bar_is_mobile(widget)) {
       scroll_bar->wa_opactiy =
-          widget_animator_opacity_create(widget, duration, 0, EASING_SIN_INOUT);
-      widget_animator_on(scroll_bar->wa_opactiy, EVT_ANIM_END, scroll_bar_on_animate_end,
+          widget_animator_opacity_create(widget, duration, duration, EASING_SIN_INOUT);
+      widget_animator_on(scroll_bar->wa_opactiy, EVT_ANIM_END, scroll_bar_on_opactiy_animate_end,
                          scroll_bar);
       widget_animator_opacity_set_params(scroll_bar->wa_opactiy, 0xff, 0);
       widget_animator_start(scroll_bar->wa_opactiy);
@@ -484,10 +492,14 @@ ret_t scroll_bar_scroll_to(widget_t* widget, int32_t value, int32_t duration) {
   return_value_if_fail(scroll_bar->wa_value != NULL, RET_OOM);
   widget_animator_value_set_params(scroll_bar->wa_value, scroll_bar->value, value);
   widget_animator_start(scroll_bar->wa_value);
-  widget_animator_on(scroll_bar->wa_value, EVT_ANIM_END, scroll_bar_on_animate_end, scroll_bar);
+  widget_animator_on(scroll_bar->wa_value, EVT_ANIM_END, scroll_bar_on_value_animate_end,
+                     scroll_bar);
 
   if (scroll_bar_is_mobile(widget)) {
-    scroll_bar->wa_opactiy = widget_animator_opacity_create(widget, duration, 0, EASING_SIN_INOUT);
+    scroll_bar->wa_opactiy =
+        widget_animator_opacity_create(widget, duration, duration, EASING_SIN_INOUT);
+    widget_animator_on(scroll_bar->wa_opactiy, EVT_ANIM_END, scroll_bar_on_opactiy_animate_end,
+                       scroll_bar);
     widget_animator_opacity_set_params(scroll_bar->wa_opactiy, 0xff, 0);
     widget_animator_start(scroll_bar->wa_opactiy);
   } else {

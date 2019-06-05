@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   scroll_view.c
  * Author: AWTK Develop Team
  * Brief:  scroll_view
@@ -159,21 +159,14 @@ ret_t scroll_view_scroll_to(widget_t* widget, int32_t xoffset_end, int32_t yoffs
 
   xoffset = scroll_view->xoffset;
   yoffset = scroll_view->yoffset;
-  if ((!scroll_view->yslidable && xoffset == xoffset_end) ||
-      (!scroll_view->xslidable && yoffset == yoffset_end)) {
-    return RET_OK;
-  }
-
-  scroll_view->xoffset_end = xoffset_end;
-  scroll_view->yoffset_end = yoffset_end;
-  if (scroll_view->fix_end_offset) {
-    scroll_view->fix_end_offset(widget);
-    xoffset_end = scroll_view->xoffset_end;
-    yoffset_end = scroll_view->yoffset_end;
-  }
 
   if (scroll_view->on_scroll_to) {
     scroll_view->on_scroll_to(widget, xoffset_end, yoffset_end, duration);
+  }
+
+  if ((!scroll_view->yslidable && xoffset == xoffset_end) ||
+      (!scroll_view->xslidable && yoffset == yoffset_end)) {
+    return RET_OK;
   }
 
   if (scroll_view->wa != NULL) {
@@ -217,6 +210,22 @@ ret_t scroll_view_scroll_to(widget_t* widget, int32_t xoffset_end, int32_t yoffs
 #define SPEED_SCALE 2
 #define MIN_DELTA 10
 
+static ret_t scroll_view_on_pointer_down_abort(scroll_view_t* scroll_view, pointer_event_t* e) {
+  widget_t* widget = WIDGET(scroll_view);
+  (void)e;
+
+  if (scroll_view->xslidable || scroll_view->yslidable) {
+    if (scroll_view->fix_end_offset) {
+      scroll_view->fix_end_offset(widget);
+    }
+
+    scroll_view_scroll_to(widget, scroll_view->xoffset_end, scroll_view->yoffset_end,
+                          TK_ANIMATING_TIME);
+  }
+
+  return RET_OK;
+}
+
 static ret_t scroll_view_on_pointer_up(scroll_view_t* scroll_view, pointer_event_t* e) {
   widget_t* widget = WIDGET(scroll_view);
   velocity_t* v = &(scroll_view->velocity);
@@ -253,6 +262,10 @@ static ret_t scroll_view_on_pointer_up(scroll_view_t* scroll_view, pointer_event
       }
     }
 
+    if (scroll_view->fix_end_offset) {
+      scroll_view->fix_end_offset(widget);
+    }
+
     scroll_view_scroll_to(widget, scroll_view->xoffset_end, scroll_view->yoffset_end,
                           TK_ANIMATING_TIME);
   }
@@ -271,6 +284,7 @@ static ret_t scroll_view_notify_scrolled(scroll_view_t* scroll_view) {
 }
 
 static ret_t scroll_view_on_pointer_move(scroll_view_t* scroll_view, pointer_event_t* e) {
+  widget_t* widget = WIDGET(scroll_view);
   velocity_t* v = &(scroll_view->velocity);
   int32_t dx = e->x - scroll_view->down.x;
   int32_t dy = e->y - scroll_view->down.y;
@@ -304,6 +318,11 @@ static ret_t scroll_view_on_event(widget_t* widget, event_t* e) {
       widget_grab(widget->parent, widget);
       scroll_view->first_move_after_down = TRUE;
       scroll_view_on_pointer_down(scroll_view, (pointer_event_t*)e);
+      break;
+    case EVT_POINTER_DOWN_ABORT:
+      scroll_view_on_pointer_down_abort(scroll_view, (pointer_event_t*)e);
+      scroll_view->dragged = FALSE;
+      widget_ungrab(widget->parent, widget);
       break;
     case EVT_POINTER_UP: {
       pointer_event_t* evt = (pointer_event_t*)e;

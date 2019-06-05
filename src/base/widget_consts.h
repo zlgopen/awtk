@@ -847,6 +847,18 @@ BEGIN_C_DECLS
 #define WIDGET_TYPE_SLIDE_VIEW "slide_view"
 
 /**
+ * @const WIDGET_TYPE_SLIDE_VIEW
+ * 滑动视图的指示器控件。
+ */
+#define WIDGET_TYPE_SLIDE_INDICATOR "slide_indicator"
+
+/**
+ * @const WIDGET_TYPE_SLIDE_VIEW
+ * 滑动视图的指示器控件（圆弧显示）。
+ */
+#define WIDGET_TYPE_SLIDE_INDICATOR_ARC "slide_indicator_arc"
+
+/**
  * @const WIDGET_TYPE_PAGES
  * 多页控件。
  */

@@ -3,4 +3,5 @@
     anim_hint="overlap">
     <?include filename="slide_view_images.inc" ?>
   </slide_view>
+  <slide_indicator x="l" y="0" w="20" h="100%" default_paint="fill_rect" auto_hide="2000"/>
 </window>

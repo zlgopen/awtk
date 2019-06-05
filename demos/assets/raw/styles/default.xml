@@ -188,8 +188,8 @@
 </label>
 
 <progress_bar>
-  <style>
-    <normal text_color="gold" bg_color="#c0c0c0" fg_color="green" border_color="#333333" />
+  <style name="default">
+    <normal text_color="gold" bg_color="#c0c0c0" fg_color="green" border_color="#333333" margin_left="20" margin_top="20"/>
   </style>
   
   <style name="round">
@@ -480,14 +480,29 @@
   </style>
 </switch>
 
-<slide_view>
+<slide_indicator>
   <style name="default">
-    <normal  fg_color="red" />
+    <normal  fg_color="#ff000040" selected_fg_color="#ff0000"/>
   </style>
-  <style name="dot">
+  <style name="blue">
+    <normal  fg_color="#338fff40" selected_fg_color="#338fff"/>
+  </style>
+  <style name="icon">
     <normal  icon="dot" active_icon="active_dot"/>
   </style>
-</slide_view>
+</slide_indicator>
+
+<slide_indicator_arc>
+  <style name="default">
+    <normal  fg_color="#ff000040" selected_fg_color="#ff0000"/>
+  </style>
+  <style name="blue">
+    <normal  fg_color="#338fff40" selected_fg_color="#338fff"/>
+  </style>
+  <style name="icon">
+    <normal  icon="dot" active_icon="active_dot"/>
+  </style>
+</slide_indicator_arc>
 
 <progress_circle>
   <style name="default">

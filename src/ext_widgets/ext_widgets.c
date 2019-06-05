@@ -36,6 +36,7 @@
 #include "scroll_view/list_item.h"
 #include "scroll_view/list_view.h"
 #include "slide_view/slide_view.h"
+#include "slide_view/slide_indicator.h"
 #include "scroll_view/scroll_bar.h"
 #include "scroll_view/scroll_view.h"
 #include "scroll_view/list_view_h.h"
@@ -72,6 +73,9 @@ ret_t tk_ext_widgets_init() {
   widget_factory_register(widget_factory(), WIDGET_TYPE_SCROLL_BAR_MOBILE,
                           scroll_bar_create_mobile);
   widget_factory_register(widget_factory(), WIDGET_TYPE_SLIDE_VIEW, slide_view_create);
+  widget_factory_register(widget_factory(), WIDGET_TYPE_SLIDE_INDICATOR, slide_indicator_create);
+  widget_factory_register(widget_factory(), WIDGET_TYPE_SLIDE_INDICATOR_ARC,
+                          slide_indicator_create_arc);
   widget_factory_register(widget_factory(), WIDGET_TYPE_KEYBOARD, keyboard_create);
   widget_factory_register(widget_factory(), WIDGET_TYPE_CANDIDATES, candidates_create);
   widget_factory_register(widget_factory(), WIDGET_TYPE_TIME_CLOCK, time_clock_create);

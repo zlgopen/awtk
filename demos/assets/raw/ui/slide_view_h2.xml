@@ -3,4 +3,5 @@
     anim_hint="overlap_with_alpha">
     <?include filename="slide_view_images.inc" ?>
   </slide_view>
+  <slide_indicator x="0" y="t" w="100%" h="20" default_paint="stroke_rect"/>
 </window>

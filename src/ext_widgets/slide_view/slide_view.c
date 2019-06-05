@@ -653,74 +653,6 @@ static ret_t slide_view_paint_children_h_lt(slide_view_t* slide_view, canvas_t* 
   }
 }
 
-static ret_t slide_view_paint_indicator_one(widget_t* widget, canvas_t* c, rect_t* r,
-                                            uint32_t index, bool_t is_active) {
-  bitmap_t img;
-  style_t* style = widget->astyle;
-  color_t trans = color_init(0, 0, 0, 0);
-  color_t fg = style_get_color(style, STYLE_ID_FG_COLOR, trans);
-  const char* icon = style_get_str(style, STYLE_ID_ICON, NULL);
-  const char* active_icon = style_get_str(style, STYLE_ID_ACTIVE_ICON, NULL);
-
-  if (is_active) {
-    if (active_icon && widget_load_image(widget, active_icon, &img) == RET_OK) {
-      int32_t x = r->x + (r->w >> 1);
-      int32_t y = r->y + (r->h >> 1);
-      canvas_draw_icon(c, &img, x, y);
-    } else if (fg.rgba.a) {
-      canvas_set_fill_color(c, fg);
-      canvas_fill_rect(c, r->x, r->y, r->w, r->h);
-    }
-  } else {
-    if (icon && widget_load_image(widget, icon, &img) == RET_OK) {
-      int32_t x = r->x + (r->w >> 1);
-      int32_t y = r->y + (r->h >> 1);
-      canvas_draw_icon(c, &img, x, y);
-    } else if (fg.rgba.a) {
-      canvas_set_stroke_color(c, fg);
-      canvas_stroke_rect(c, r->x, r->y, r->w, r->h);
-    }
-  }
-
-  return RET_OK;
-}
-
-static ret_t slide_view_paint_indicator(widget_t* widget, canvas_t* c) {
-  rect_t r;
-  uint32_t i = 0;
-  uint32_t size = 8;
-  uint32_t offset = 0;
-  int32_t cx = widget->w >> 1;
-  int32_t cy = widget->h >> 1;
-  uint32_t half_size = size >> 1;
-  uint32_t double_size = size << 1;
-  uint32_t nr = widget_count_children(widget);
-  slide_view_t* slide_view = SLIDE_VIEW(widget);
-
-  if (nr % 2) {
-    offset = ((nr / 2) * double_size + half_size);
-  } else {
-    offset = ((nr / 2 - 1) * double_size + half_size);
-  }
-
-  if (slide_view->vertical) {
-    r = rect_init(tk_max(10, widget->w * 0.1), cy - offset, size, size);
-  } else {
-    r = rect_init(cx - offset, tk_min(widget->h - double_size, widget->h * 0.9), size, size);
-  }
-
-  for (i = 0; i < nr; i++) {
-    slide_view_paint_indicator_one(widget, c, &r, i, i == slide_view->active);
-    if (slide_view->vertical) {
-      r.y += double_size;
-    } else {
-      r.x += double_size;
-    }
-  }
-
-  return RET_OK;
-}
-
 static ret_t slide_view_on_paint_children(widget_t* widget, canvas_t* c) {
   rect_t save_r;
   widget_t* active = NULL;
@@ -752,7 +684,6 @@ static ret_t slide_view_on_paint_children(widget_t* widget, canvas_t* c) {
   }
   canvas_set_clip_rect(c, &save_r);
   canvas_set_global_alpha(c, save_a);
-  slide_view_paint_indicator(widget, c);
 
   return RET_OK;
 }

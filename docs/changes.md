@@ -1,9 +1,23 @@
 # 最新动态
 * 2019/06/4
+   * 修复 tk_abs 的 bug
+   * 修改 guage_pointer_set_anchor 的注释错误
+   * 修改 widget_animator_manager_find 的 name 可以为空（默认返回第一个有效元素），主要是为了判断控件是否有动画
+   * 添加 slide_indicator 控件，默认作为 slide_view 的指示器
+   * 修复 scroll_view 的 bug（scroll_bar_m 不会自动隐藏的问题，比如 list_view 中拖动单位高度后）
+   * 修复 scroll_view 的 fix_end_offset 失败的问题（比如在 list_view 中上下拖动直到有空白后，横向移动，松开鼠标 list_view 不会恢复）
+
+> 感谢朝泽提供以上补丁。
+    
+    * 增加main_loop_step，方便与IOTJS集成。
+    * 修改ui_loader_xml中的昨天引入的BUG。
+    * 修改stm32编译警告。
+
+* 2019/06/4
   * 修改 widget_clone 支持拷贝 mutable style。
   * windows 平台缺省 BACKEND 使用 GLES2。
   * 修改 hscrollable 适用于没有 widget animator 的情况。
-  * 控件的属性支持放到property标签中，详情请参考UI描述文档。
+  * 控件的属性支持放到 property 标签中，详情请参考 UI 描述文档。
 
 * 2019/06/3
   * 修改 add\_child/remove\_child，窗口管理器特殊处理。
