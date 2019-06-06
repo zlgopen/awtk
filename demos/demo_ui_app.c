@@ -71,12 +71,14 @@ uint32_t tk_mem_speed_test(void* buffer, uint32_t length, uint32_t* pmemcpy_spee
 static ret_t window_to_background(void* ctx, event_t* e) {
   widget_t* win = WIDGET(e->target);
   log_debug("%s to_background\n", win->name);
+	(void)win;
   return RET_OK;
 }
 
 static ret_t window_to_foreground(void* ctx, event_t* e) {
   widget_t* win = WIDGET(e->target);
   log_debug("%s to_foreground\n", win->name);
+	(void)win;
   return RET_OK;
 }
 

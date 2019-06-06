@@ -45,7 +45,6 @@ struct _XmlParser {
 };
 
 static const char* strtrim(char* str);
-static void xml_parser_parse_entity(XmlParser* thiz);
 static void xml_parser_parse_start_tag(XmlParser* thiz);
 static void xml_parser_parse_end_tag(XmlParser* thiz);
 static void xml_parser_parse_comment(XmlParser* thiz);

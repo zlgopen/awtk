@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   assets_manager.h
  * Author: AWTK Develop Team
  * Brief:  asset manager
@@ -42,12 +42,6 @@ static int asset_cache_cmp_type(const void* a, const void* b) {
 
 static assets_manager_t* s_assets_manager = NULL;
 
-static system_info_t* assets_manager_get_system_info(assets_manager_t* am) {
-  return_value_if_fail(am != NULL, NULL);
-
-  return am->system_info != NULL ? am->system_info : system_info();
-}
-
 static locale_info_t* assets_manager_get_locale_info(assets_manager_t* am) {
   return_value_if_fail(am != NULL, NULL);
 
@@ -71,6 +65,12 @@ asset_info_t* assets_manager_load(assets_manager_t* am, asset_type_t type, const
 }
 #elif defined(WITH_FS_RES)
 #include "tkc/fs.h"
+
+static system_info_t* assets_manager_get_system_info(assets_manager_t* am) {
+  return_value_if_fail(am != NULL, NULL);
+
+  return am->system_info != NULL ? am->system_info : system_info();
+}
 
 static const char* assets_manager_get_res_root(assets_manager_t* am) {
   if (am->res_root != NULL) {
@@ -478,6 +478,7 @@ const asset_info_t* assets_manager_ref(assets_manager_t* am, asset_type_t type, 
     const key_type_value_t* kv = asset_type_find_by_value(type);
     const char* asset_type = kv != NULL ? kv->name : "unknown";
     log_warn("!!!Asset [name=%s type=%s] not exist!!!\n", name, asset_type);
+		(void)asset_type;
   }
 
   return info;
