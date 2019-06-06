@@ -164,6 +164,7 @@ static ret_t main_loop_sdl2_dispatch_window_event(main_loop_simple_t* loop, SDL_
       loop->user1 = NULL;
       loop->user2 = NULL;
       main_loop_quit(&(loop->base));
+      ((main_loop_t*)(loop))->app_quited = TRUE;
       break;
 #if SDL_VERSION_ATLEAST(2, 0, 5)
     case SDL_WINDOWEVENT_TAKE_FOCUS:

@@ -229,6 +229,7 @@ ret_t tk_deinit_internal(void) {
 
 ret_t tk_exit(void) {
   main_loop_destroy(main_loop());
+  main_loop_set(NULL);
 
   return tk_deinit_internal();
 }
