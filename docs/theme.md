@@ -70,6 +70,7 @@ AWTK的主题按控件进行分类，每种控件可以有多种不同的风格�
 * margin_right 右边距。
 * spacer 间距(目前仅用于文本和图标之间)。
 * round\_radius 背景和边框的圆角半径(仅在定义WITH\_VGCANVAS时有效)。
+* border\_width 边框线宽(仅在定义WITH\_VGCANVAS时有效)。
 
 > 颜色可使用标准名称，#开头的16进制值和rgba合成的值。
 
