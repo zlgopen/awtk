@@ -974,6 +974,7 @@ ret_t widget_stroke_border_rect(widget_t* widget, canvas_t* c, rect_t* r) {
   color_t bd = style_get_color(style, STYLE_ID_BORDER_COLOR, trans);
   uint32_t radius = style_get_int(style, STYLE_ID_ROUND_RADIUS, 0);
   int32_t border = style_get_int(style, STYLE_ID_BORDER, BORDER_ALL);
+  uint32_t border_width = style_get_int(style, STYLE_ID_BORDER_WIDTH, 1);
 
   if (bd.rgba.a) {
     wh_t w = r->w;
@@ -981,13 +982,14 @@ ret_t widget_stroke_border_rect(widget_t* widget, canvas_t* c, rect_t* r) {
 
     canvas_set_stroke_color(c, bd);
     if (border == BORDER_ALL) {
-      if (radius > 3) {
+      if (radius > 3 || border_width > 1) {
         vgcanvas_t* vg = canvas_get_vgcanvas(c);
         if (vg != NULL) {
           xy_t x = r->x + 0.5;
           xy_t y = r->y + 0.5;
           vgcanvas_set_stroke_color(vg, bd);
           vgcanvas_translate(vg, c->ox, c->oy);
+          vgcanvas_set_line_width(vg, border_width);
           vgcanvas_rounded_rect(vg, x, y, r->w, r->h, radius);
           vgcanvas_translate(vg, -c->ox, -c->oy);
           vgcanvas_stroke(vg);

@@ -99,6 +99,12 @@ BEGIN_C_DECLS
 #define STYLE_ID_BORDER_COLOR "border_color"
 
 /**
+ * @const STYLE_ID_BORDER_WIDTH
+ * 边框线宽。
+ */
+#define STYLE_ID_BORDER_WIDTH "border_width"
+
+/**
  * @const STYLE_ID_BORDER
  * 边框类型。
  */

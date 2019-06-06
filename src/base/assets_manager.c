@@ -478,7 +478,7 @@ const asset_info_t* assets_manager_ref(assets_manager_t* am, asset_type_t type, 
     const key_type_value_t* kv = asset_type_find_by_value(type);
     const char* asset_type = kv != NULL ? kv->name : "unknown";
     log_warn("!!!Asset [name=%s type=%s] not exist!!!\n", name, asset_type);
-		(void)asset_type;
+    (void)asset_type;
   }
 
   return info;

@@ -2,6 +2,7 @@
 * 2019/06/5
   * 更新stm32工程，修改了一些警告。
   * main loop增加app\_quited标志，方便awtk-iotjs退出程序。
+  * 增加style border\_width
 
 * 2019/06/4
    * 修复 tk\_abs 的 bug
