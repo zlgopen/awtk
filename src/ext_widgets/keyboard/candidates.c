@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   candidates.c
  * Author: AWTK Develop Team
  * Brief:  candidates
@@ -87,7 +87,6 @@ static ret_t candidates_relayout_children(widget_t* widget) {
   uint32_t i = 0;
   xy_t margin = 2;
   wh_t child_w = 0;
-  wh_t w = widget->w;
   xy_t child_x = margin;
   xy_t child_y = margin;
   widget_t* iter = NULL;

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   slide_indicator.h
  * Author: AWTK Develop Team
  * Brief:  slide_indicator
@@ -22,6 +22,7 @@
 #include "tkc/mem.h"
 #include "tkc/utils.h"
 #include "base/timer.h"
+#include "base/layout.h"
 #include "base/enums.h"
 #include "tkc/easing.h"
 #include "tkc/func_call_parser.h"
@@ -285,9 +286,8 @@ static ret_t slide_indicator_paint_arc(widget_t* widget, canvas_t* c) {
   float_t cy = slide_indicator->anchor_y;
   uint32_t nr = slide_indicator->max;
   float_t margin = slide_indicator->margin;
-  float_t spacing = (slide_indicator->spacing / 180.0 * M_PI);
+  float_t spacing = (slide_indicator->spacing / 180.0f * M_PI);
   uint32_t size = slide_indicator->size;
-  uint32_t half_size = size >> 1;
   float_t radius = _DISTANCE(cx, cy, widget->w / 2, widget->h / 2) - margin - size / 2;
   float_t center = _RADIAN(cx, cy, widget->w / 2, widget->h / 2);
   float_t offset = 0;

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   scroll_view.c
  * Author: AWTK Develop Team
  * Brief:  scroll_view
@@ -284,7 +284,6 @@ static ret_t scroll_view_notify_scrolled(scroll_view_t* scroll_view) {
 }
 
 static ret_t scroll_view_on_pointer_move(scroll_view_t* scroll_view, pointer_event_t* e) {
-  widget_t* widget = WIDGET(scroll_view);
   velocity_t* v = &(scroll_view->velocity);
   int32_t dx = e->x - scroll_view->down.x;
   int32_t dy = e->y - scroll_view->down.y;
