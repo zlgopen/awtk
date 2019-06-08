@@ -88,6 +88,20 @@ static widget_t* tab_button_get_pages(widget_t* widget) {
   return pages;
 }
 
+static ret_t tab_button_sync_pages(void* ctx, event_t* e) {
+  widget_t* widget = WIDGET(ctx);
+
+  widget_t* pages = tab_button_get_pages(widget);
+  if (pages != NULL) {
+    uint32_t index = widget_index_of(widget);
+    widget_set_value(pages, index);
+
+    return RET_REMOVE;
+  } else {
+    return RET_OK;
+  }
+}
+
 ret_t tab_button_set_value(widget_t* widget, bool_t value) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
@@ -108,6 +122,8 @@ ret_t tab_button_set_value(widget_t* widget, bool_t value) {
     if (pages != NULL) {
       index = widget_index_of(widget);
       widget_set_value(pages, index);
+    } else {
+      widget_on(widget, EVT_BEFORE_PAINT, tab_button_sync_pages, widget);
     }
 
     if (value) {
