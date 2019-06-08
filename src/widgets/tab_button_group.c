@@ -93,40 +93,58 @@ static ret_t tab_button_group_on_paint_active_button(widget_t* widget, widget_t*
   color_t bd = style_get_color(style, STYLE_ID_BORDER_COLOR, trans);
   color_t fg = style_get_color(style, STYLE_ID_FG_COLOR, trans);
   widget_t* pages = tab_button_group_get_pages(widget);
+  widget_t* last_child = widget_get_child(widget, widget_count_children(widget) - 1);
 
   if (pages != NULL) {
-    int32_t x = button->x;
-    int32_t w = button->w;
-    int32_t y = button->y;
+    int32_t y = 0;
+    int32_t delta = 0;
+    int32_t x = button->x + 1;
+    int32_t w = button->w - 2;
+    tab_button_group_t* tab_button_group = TAB_BUTTON_GROUP(widget);
 
-    if ((pages->y + pages->h) <= widget->y) {
-      if (fg.rgba.a) {
-        canvas_set_stroke_color(c, fg);
-        canvas_draw_hline(c, x, y, w);
-        canvas_draw_hline(c, x + 1, y + 1, w - 2);
-      }
-
-      canvas_set_stroke_color(c, bd);
-      if (x > 0) {
-        canvas_draw_hline(c, 0, y, x);
-      }
-      if (widget->w > (x + w)) {
-        canvas_draw_hline(c, x + w, y, widget->w - x - w);
-      }
+    if ((pages->y + pages->h) > widget->y) {
+      y = button->y + button->h;
+      delta = -1;
     } else {
-      y += button->h;
-      if (fg.rgba.a) {
-        canvas_set_stroke_color(c, fg);
-        canvas_draw_hline(c, x, y, w);
-        canvas_draw_hline(c, x + 1, y - 1, w - 2);
-      }
+      delta = 1;
+      y = button->y;
+    }
 
+    canvas_set_stroke_color(c, fg);
+    if (fg.rgba.a) {
+#ifdef WITH_NANOVG_GPU
+      vgcanvas_t* vg = canvas_get_vgcanvas(c);
+      vgcanvas_translate(vg, c->ox, c->oy);
+      vgcanvas_set_fill_color(vg, fg);
+      vgcanvas_begin_path(vg);
+      vgcanvas_rect(vg, x - 0.5, y - 1, w + 1, 2);
+      vgcanvas_fill(vg);
+      vgcanvas_begin_path(vg);
+      vgcanvas_translate(vg, -c->ox, -c->oy);
+#else
+      canvas_draw_hline(c, x, y, w);
+      canvas_draw_hline(c, x, y + delta, w);
+#endif
+    }
+
+    if (bd.rgba.a) {
       canvas_set_stroke_color(c, bd);
-      if (x > 0) {
-        canvas_draw_hline(c, 0, y, x);
-      }
-      if (widget->w > (x + w)) {
-        canvas_draw_hline(c, x + w, y, widget->w - x - w);
+
+      if (tab_button_group->compact) {
+        if (last_child != NULL) {
+          int32_t right = last_child->x + last_child->w;
+          if (widget->w > right) {
+            canvas_draw_hline(c, right, y, widget->w - right);
+          }
+        }
+      } else {
+        if (x > 1) {
+          canvas_draw_hline(c, 0, y, x);
+        }
+
+        if (widget->w > (x + w)) {
+          canvas_draw_hline(c, x + w, y, widget->w - x - w);
+        }
       }
     }
   }
