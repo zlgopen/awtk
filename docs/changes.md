@@ -1,4 +1,8 @@
 # 最新动态
+* 2019/06/8
+  * 修改tab\_button\_group\_on\_paint\_active\_button中的BUG。
+  * 修改tab\_button\_set\_value时pages还没创建的问题。
+  
 * 2019/06/5
   * 更新stm32工程，修改了一些警告。
   * main loop增加app\_quited标志，方便awtk-iotjs退出程序。
