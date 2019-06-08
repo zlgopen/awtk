@@ -7,7 +7,7 @@
 
   <rich_text x="0" y="70" w="100%" h="60">
     <property name="text">
-      <![CDATA[<image name="bricks"/><font align_v="top">hello awtk!</font><font color="green" size="32">ZLG</font>" />]]>
+      <![CDATA[<image name="bricks"/><font align_v="top">hello awtk!</font><font color="green" size="32">ZLG</font>]]>
     </property>
   </rich_text>
 
