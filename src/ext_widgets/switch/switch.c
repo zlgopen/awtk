@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   switch.c
  * Author: AWTK Develop Team
  * Brief:  switch
@@ -193,6 +193,9 @@ static ret_t switch_on_paint_background_img(widget_t* widget, canvas_t* c, bitma
     int32_t y = (widget->h - ih) >> 1;
     rect_t src = rect_init(xoffset, 0, w, ih);
     rect_t dst = rect_init(x, y, w, ih);
+
+    dst.y = tk_max(0, y);
+    dst.h = tk_min(dst.h, widget->h);
 
     return canvas_draw_image(c, img, &src, &dst);
   }

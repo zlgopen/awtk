@@ -1,4 +1,7 @@
 # 最新动态
+* 2019/06/10
+    * 修改switch控件，在启用脏矩形而且图片高度大于控件高度时，渲染残留的问题。
+
 * 2019/06/8
   * 修改tab\_button\_group\_on\_paint\_active\_button中的BUG。
   * 修改tab\_button\_set\_value时pages还没创建的问题。
