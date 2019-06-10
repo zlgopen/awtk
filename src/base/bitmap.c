@@ -433,6 +433,7 @@ bitmap_t* bitmap_clone(bitmap_t* bitmap) {
   return_value_if_fail(b != NULL, NULL);
 
   if (b->data != NULL) {
+    b->name = bitmap->name;
     memcpy((char*)(b->data), bitmap->data, b->line_length * b->h);
   }
 

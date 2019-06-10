@@ -124,7 +124,10 @@ static ret_t lcd_sdl2_end_frame(lcd_t* lcd) {
 
 static ret_t lcd_sdl2_destroy(lcd_t* lcd) {
   lcd_sdl2_t* sdl = (lcd_sdl2_t*)lcd;
+
+  lcd_destroy((lcd_t*)(sdl->lcd_mem));
   SDL_DestroyTexture(sdl->texture);
+  memset(sdl, 0x00, sizeof(lcd_sdl2_t));
 
   return RET_OK;
 }
@@ -161,7 +164,7 @@ static ret_t lcd_sdl2_take_snapshot(lcd_t* lcd, bitmap_t* img, bool_t auto_rotat
   return lcd_take_snapshot((lcd_t*)(sdl->lcd_mem), img, auto_rotate);
 }
 
-static ret_t lcd_sdl2_get_desired_bitmap_format(lcd_t* lcd) {
+static bitmap_format_t lcd_sdl2_get_desired_bitmap_format(lcd_t* lcd) {
   lcd_sdl2_t* sdl = (lcd_sdl2_t*)lcd;
 
   return lcd_get_desired_bitmap_format((lcd_t*)(sdl->lcd_mem));

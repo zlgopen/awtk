@@ -26,6 +26,7 @@
 #include "base/vgcanvas.h"
 #include "cairo.h"
 #include "tkc/mem.h"
+#include "tkc/darray.h"
 
 typedef enum _cairo_source_type_t {
   CAIRO_SOURCE_NONE = 0,
@@ -33,6 +34,7 @@ typedef enum _cairo_source_type_t {
   CAIRO_SOURCE_IMAGE,
   CAIRO_SOURCE_GRADIENT,
 } cairo_source_type_t;
+
 typedef struct _vgcanvas_cairo_t {
   vgcanvas_t base;
 
@@ -42,6 +44,8 @@ typedef struct _vgcanvas_cairo_t {
 
   cairo_source_type_t stroke_source_type;
   cairo_source_type_t fill_source_type;
+
+  darray_t images;
 } vgcanvas_cairo_t;
 
 ret_t vgcanvas_cairo_begin_frame(vgcanvas_t* vgcanvas, rect_t* dirty_rect) {
@@ -426,17 +430,27 @@ static ret_t cairo_on_bitmap_destroy(bitmap_t* img) {
   return RET_OK;
 }
 
-static cairo_surface_t* vgcanvas_cairo_ensure_image(bitmap_t* img) {
-  cairo_surface_t* surface = (cairo_surface_t*)img->specific;
+static cairo_surface_t* vgcanvas_cairo_ensure_image(vgcanvas_cairo_t* vg, bitmap_t* img) {
+  cairo_surface_t* surface = NULL;
+  darray_t* images = &(vg->images);
+  bitmap_t* cairo_img = (bitmap_t*)darray_find(images, img);
 
+  if (cairo_img == NULL) {
+    cairo_img = bitmap_clone(img);
+    return_value_if_fail(cairo_img != NULL, NULL);
+    darray_push(images, cairo_img);
+    bitmap_premulti_alpha(cairo_img);
+  }
+
+  surface = (cairo_surface_t*)(cairo_img->specific);
   if (surface == NULL) {
-    bitmap_premulti_alpha(img);
-    surface = create_surface(img->w, img->h, img->format, (void*)(img->data));
+    surface =
+        create_surface(cairo_img->w, cairo_img->h, cairo_img->format, (void*)(cairo_img->data));
 
     if (surface != NULL) {
-      img->specific = surface;
-      img->specific_ctx = NULL;
-      img->specific_destroy = cairo_on_bitmap_destroy;
+      cairo_img->specific = surface;
+      cairo_img->specific_ctx = NULL;
+      cairo_img->specific_destroy = cairo_on_bitmap_destroy;
     }
   }
 
@@ -450,7 +464,7 @@ static ret_t vgcanvas_cairo_draw_image(vgcanvas_t* vgcanvas, bitmap_t* img, floa
   float fy = (float)dh / sh;
   float_t global_alpha = 1;
   cairo_t* vg = ((vgcanvas_cairo_t*)vgcanvas)->vg;
-  cairo_surface_t* surface = vgcanvas_cairo_ensure_image(img);
+  cairo_surface_t* surface = vgcanvas_cairo_ensure_image((vgcanvas_cairo_t*)vgcanvas, img);
 
   cairo_save(vg);
 
@@ -608,6 +622,8 @@ static ret_t vgcanvas_cairo_destroy(vgcanvas_t* vgcanvas) {
     cairo_pattern_destroy(canvas->fill_gradient);
   }
 
+  darray_deinit(&(canvas->images));
+
   return RET_OK;
 }
 
@@ -728,7 +744,7 @@ static ret_t vgcanvas_cairo_reinit(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h,
 
 static ret_t vgcanvas_cairo_paint(vgcanvas_t* vgcanvas, bool_t stroke, bitmap_t* img) {
   cairo_t* vg = ((vgcanvas_cairo_t*)vgcanvas)->vg;
-  cairo_surface_t* surface = vgcanvas_cairo_ensure_image(img);
+  cairo_surface_t* surface = vgcanvas_cairo_ensure_image((vgcanvas_cairo_t*)vgcanvas, img);
 
   cairo_set_source_surface(vg, surface, 0, 0);
   cairo_pattern_set_filter(cairo_get_source(vg), CAIRO_FILTER_BEST);
@@ -796,6 +812,16 @@ static const vgcanvas_vtable_t vt = {
     .unbind_fbo = vgcanvas_cairo_unbind_fbo,
     .destroy = vgcanvas_cairo_destroy};
 
+static int cairo_bitmap_cmp(const bitmap_t* a, bitmap_t* b) {
+  return_value_if_fail(a != NULL && a->name != NULL && b != NULL && b->name != NULL, -1);
+
+  if (tk_str_eq(a->name, b->name)) {
+    return 0;
+  } else {
+    return 1;
+  }
+}
+
 vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_format_t format,
                             void* data) {
   cairo_surface_t* surface = NULL;
@@ -814,6 +840,7 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_form
 
   cairo->vg = cairo_create(surface);
   return_value_if_fail(cairo->vg, NULL);
+  darray_init(&(cairo->images), 10, (tk_destroy_t)bitmap_destroy, (tk_compare_t)cairo_bitmap_cmp);
 
   log_debug("vgcanvas_cairo created\n");
   return &(cairo->base);

@@ -35,6 +35,7 @@ typedef struct _lcd_mem_t {
 
   uint32_t line_length;
   bitmap_format_t format;
+  bool_t own_offline_fb;
 } lcd_mem_t;
 
 #define lcd_mem_set_line_length(lcd, value) ((lcd_mem_t*)lcd)->line_length = value;

@@ -208,6 +208,7 @@ ret_t main_loop_simple_reset(main_loop_simple_t* loop) {
   return_value_if_fail(loop != NULL, RET_BAD_PARAMS);
   event_queue_destroy(loop->queue);
   tk_mutex_destroy(loop->mutex);
+  lcd_destroy(loop->base.lcd);
 
   memset(loop, 0x00, sizeof(main_loop_simple_t));
 
