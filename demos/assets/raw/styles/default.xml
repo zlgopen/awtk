@@ -189,7 +189,7 @@
 
 <progress_bar>
   <style name="default">
-    <normal text_color="gold" bg_color="#c0c0c0" fg_color="green" border_color="#333333" margin_left="20" margin_top="20"/>
+    <normal text_color="gold" bg_color="#c0c0c0" fg_color="green" border_color="#333333"/>
   </style>
   
   <style name="round">
