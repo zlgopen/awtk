@@ -1,15 +1,19 @@
 # 最新动态
+* 2019/06/12
+  * 修改全局字体缩放的问题。
+  * 修改 scroll\_view\_on\_layout\_children 在特殊情况的 BUG。
+
 * 2019/06/10
-    * 修改switch控件，在启用脏矩形而且图片高度大于控件高度时，渲染残留的问题。
+  * 修改 switch 控件，在启用脏矩形而且图片高度大于控件高度时，渲染残留的问题。
 
 * 2019/06/8
-  * 修改tab\_button\_group\_on\_paint\_active\_button中的BUG。
-  * 修改tab\_button\_set\_value时pages还没创建的问题。
+  * 修改 tab\_button\_group\_on\_paint\_active\_button 中的 BUG。
+  * 修改 tab\_button\_set\_value 时 pages 还没创建的问题。
   
 * 2019/06/5
-  * 更新stm32工程，修改了一些警告。
-  * main loop增加app\_quited标志，方便awtk-iotjs退出程序。
-  * 增加style border\_width
+  * 更新 stm32 工程，修改了一些警告。
+  * main loop 增加 app\_quited 标志，方便 awtk-iotjs 退出程序。
+  * 增加 style border\_width
 
 * 2019/06/4
    * 修复 tk\_abs 的 bug
@@ -21,9 +25,9 @@
 
 > 感谢朝泽提供以上补丁。
     
-    * 增加main\_loop\_step，方便与IOTJS集成。
-    * 修改ui\_loader\_xml中的昨天引入的BUG。
-    * 修改stm32编译警告。
+    * 增加 main\_loop\_step，方便与 IOTJS 集成。
+    * 修改 ui\_loader\_xml 中的昨天引入的 BUG。
+    * 修改 stm32 编译警告。
 
 * 2019/06/4
   * 修改 widget\_clone 支持拷贝 mutable style。
