@@ -3,5 +3,9 @@
   "app_type":"c",
   "version":"1.0",
   "assets" : "assets",
-  "sources":["demo_ui_app.c"]
+  "sources":["demo_ui_app.c"],
+  "config" : {
+    "fontScale":"0.8",
+    "defaultFont":"sans"
+  }
 }

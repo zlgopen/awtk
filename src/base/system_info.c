@@ -26,6 +26,10 @@
 #include "base/system_info.h"
 #include "base/locale_info.h"
 
+#ifdef AWTK_WEB
+#include <emscripten.h>
+#endif /*AWTK_WEB*/
+
 static system_info_t* s_system_info = NULL;
 
 system_info_t* system_info() {
@@ -44,6 +48,7 @@ ret_t system_info_set_app_info(system_info_t* info, app_type_t app_type, const c
 }
 
 ret_t system_info_init(app_type_t app_type, const char* app_name, const char* app_root) {
+  float_t font_scale = 1;
   if (s_system_info == NULL) {
     s_system_info = system_info_create(app_type, app_name, app_root);
     system_info_set_default_font(s_system_info, "default");
@@ -51,6 +56,12 @@ ret_t system_info_init(app_type_t app_type, const char* app_name, const char* ap
   } else {
     system_info_set_app_info(s_system_info, app_type, app_name, app_root);
   }
+
+#ifdef AWTK_WEB
+  font_scale = EM_ASM_DOUBLE({ return (TBrowser.config.fontScale || 1); }, 0);
+  system_info_set_font_scale(s_system_info, font_scale);
+  log_debug("system_info_init: font_scale=%lf\n", font_scale);
+#endif /*AWTK_WEB*/
 
   return RET_OK;
 }

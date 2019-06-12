@@ -890,8 +890,8 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
   }
 
   widget_prepare_text_style(widget, c);
-  font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
 
+  font_size = c->font_size;
   if (icon_at == ICON_AT_RIGHT || icon_at == ICON_AT_LEFT) {
     align_v = style_get_int(style, STYLE_ID_TEXT_ALIGN_V, ALIGN_V_MIDDLE);
     align_h = style_get_int(style, STYLE_ID_TEXT_ALIGN_H, ALIGN_H_LEFT);

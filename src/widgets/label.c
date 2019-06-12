@@ -109,14 +109,13 @@ static ret_t label_paint_text_mlines(widget_t* widget, canvas_t* c, const wchar_
   ctx_info_t ctx;
   style_t* style = widget->astyle;
   int32_t margin = style_get_int(style, STYLE_ID_MARGIN, 2);
-  uint32_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
   align_v_t align_v = (align_v_t)style_get_int(style, STYLE_ID_TEXT_ALIGN_V, ALIGN_V_MIDDLE);
 
   ctx.c = c;
   ctx.y = 0;
   ctx.x = margin;
   ctx.widget = widget;
-  ctx.line_height = font_size;
+  ctx.line_height = c->font_size;
   ctx.w = widget->w - 2 * margin;
 
   switch (align_v) {
@@ -158,6 +157,7 @@ static ret_t label_paint_text(widget_t* widget, canvas_t* c, const wchar_t* str,
 
 static ret_t label_on_paint_self(widget_t* widget, canvas_t* c) {
   if (widget->text.size > 0 && style_is_valid(widget->astyle)) {
+    widget_prepare_text_style(widget, c);
     label_paint_text(widget, c, widget->text.str, widget->text.size);
   }
 
@@ -182,7 +182,6 @@ ret_t label_resize_to_content(widget_t* widget, uint32_t min_w, uint32_t max_w, 
   canvas_t* c = NULL;
   int32_t margin = 0;
   style_t* style = NULL;
-  uint32_t font_size = 0;
   label_t* label = LABEL(widget);
 
   return_value_if_fail(label != NULL, RET_BAD_PARAMS);
@@ -190,16 +189,15 @@ ret_t label_resize_to_content(widget_t* widget, uint32_t min_w, uint32_t max_w, 
   style = widget->astyle;
   c = WINDOW_MANAGER(window_manager())->canvas;
   margin = style_get_int(style, STYLE_ID_MARGIN, 2);
-  font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
+  widget_prepare_text_style(widget, c);
 
   ctx.c = c;
   ctx.w = 0;
   ctx.y = margin;
   ctx.x = margin;
   ctx.widget = widget;
-  ctx.line_height = font_size;
+  ctx.line_height = c->font_size;
 
-  widget_prepare_text_style(widget, c);
   line_breaker_break(widget->text.str, label_on_line_measure, &ctx);
 
   w = ctx.w;
