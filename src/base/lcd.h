@@ -71,6 +71,8 @@ typedef vgcanvas_t* (*lcd_get_vgcanvas_t)(lcd_t* lcd);
 typedef ret_t (*lcd_take_snapshot_t)(lcd_t* lcd, bitmap_t* img, bool_t auto_rotate);
 typedef bitmap_format_t (*lcd_get_desired_bitmap_format_t)(lcd_t* lcd);
 
+typedef wh_t (*lcd_get_width_t)(lcd_t* lcd);
+typedef wh_t (*lcd_get_height_t)(lcd_t* lcd);
 typedef ret_t (*lcd_swap_t)(lcd_t* lcd);
 typedef ret_t (*lcd_flush_t)(lcd_t* lcd);
 typedef ret_t (*lcd_end_frame_t)(lcd_t* lcd);
@@ -165,6 +167,8 @@ struct _lcd_t {
   lcd_draw_points_t draw_points;
   lcd_get_point_color_t get_point_color;
   lcd_swap_t swap; /*适用于double fb，可选*/
+  lcd_get_width_t get_width;
+  lcd_get_height_t get_height;
   lcd_flush_t flush;
   lcd_end_frame_t end_frame;
   lcd_get_vgcanvas_t get_vgcanvas;
@@ -527,6 +531,24 @@ bitmap_format_t lcd_get_desired_bitmap_format(lcd_t* lcd);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t lcd_swap(lcd_t* lcd);
+
+/**
+ * @method lcd_get_width
+ * 获取宽度。
+ * @param {lcd_t*} lcd lcd对象。
+ *
+ * @return {wh_t} 返回宽度。
+ */
+wh_t lcd_get_width(lcd_t* lcd);
+
+/**
+ * @method lcd_get_height
+ * 获取高度。
+ * @param {lcd_t*} lcd lcd对象。
+ *
+ * @return {wh_t} 返回高度。
+ */
+wh_t lcd_get_height(lcd_t* lcd);
 
 /**
  * @method lcd_flush

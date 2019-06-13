@@ -82,13 +82,13 @@ canvas_t* canvas_init(canvas_t* c, lcd_t* lcd, font_manager_t* font_manager) {
 wh_t canvas_get_width(canvas_t* c) {
   return_value_if_fail(c != NULL, 0);
 
-  return c->lcd->w;
+  return lcd_get_width(c->lcd);
 }
 
 wh_t canvas_get_height(canvas_t* c) {
   return_value_if_fail(c != NULL, 0);
 
-  return c->lcd->h;
+  return lcd_get_height(c->lcd);
 }
 
 ret_t canvas_set_font_manager(canvas_t* c, font_manager_t* font_manager) {
@@ -121,8 +121,8 @@ ret_t canvas_set_clip_rect(canvas_t* c, const rect_t* r_in) {
 
   return_value_if_fail(c != NULL, RET_BAD_PARAMS);
 
-  lcd_w = c->lcd->w;
-  lcd_h = c->lcd->h;
+  lcd_w = lcd_get_width(c->lcd);
+  lcd_h = lcd_get_height(c->lcd);
 
   if (r) {
     c->clip_left = tk_max(0, r->x);
@@ -132,8 +132,8 @@ ret_t canvas_set_clip_rect(canvas_t* c, const rect_t* r_in) {
   } else {
     c->clip_left = 0;
     c->clip_top = 0;
-    c->clip_right = c->lcd->w - 1;
-    c->clip_bottom = c->lcd->h - 1;
+    c->clip_right = lcd_w - 1;
+    c->clip_bottom = lcd_h - 1;
   }
 
   if (c->clip_left < 0) {

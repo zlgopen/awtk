@@ -450,3 +450,23 @@ ret_t fbo_to_img(framebuffer_object_t* fbo, bitmap_t* img) {
 
   return RET_OK;
 }
+
+wh_t vgcanvas_get_width(vgcanvas_t* vgcanvas) {
+  return_value_if_fail(vgcanvas != NULL && vgcanvas->vt != NULL, 0);
+
+  if (vgcanvas->vt->get_width != NULL) {
+    return vgcanvas->vt->get_width(vgcanvas);
+  } else {
+    return vgcanvas->w;
+  }
+}
+
+wh_t vgcanvas_get_height(vgcanvas_t* vgcanvas) {
+  return_value_if_fail(vgcanvas != NULL && vgcanvas->vt != NULL, 0);
+
+  if (vgcanvas->vt->get_height != NULL) {
+    return vgcanvas->vt->get_height(vgcanvas);
+  } else {
+    return vgcanvas->h;
+  }
+}

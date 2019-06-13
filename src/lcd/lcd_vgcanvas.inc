@@ -206,6 +206,18 @@ static ret_t lcd_vgcanvas_draw_text(lcd_t* lcd, const wchar_t* str, uint32_t nr,
   return vgcanvas_fill_text(canvas, text, x, y, 0xffff);
 }
 
+wh_t lcd_vgcanvas_get_width(lcd_t* lcd) {
+  vgcanvas_t* canvas = LCD(lcd)->canvas;
+
+  return vgcanvas_get_width(canvas);
+}
+
+wh_t lcd_vgcanvas_get_height(lcd_t* lcd) {
+  vgcanvas_t* canvas = LCD(lcd)->canvas;
+
+  return vgcanvas_get_height(canvas);
+}
+
 static ret_t lcd_vgcanvas_end_frame(lcd_t* lcd) {
   return vgcanvas_end_frame(LCD(lcd)->canvas);
 }
@@ -253,6 +265,8 @@ lcd_t* lcd_vgcanvas_init(wh_t w, wh_t h, vgcanvas_t* canvas) {
   base->set_global_alpha = lcd_vgcanvas_set_global_alpha;
   base->get_desired_bitmap_format = lcd_vgcanvas_get_desired_bitmap_format;
   base->resize = lcd_vgcanvas_resize;
+  base->get_width = lcd_vgcanvas_get_width;
+  base->get_height = lcd_vgcanvas_get_height;
   base->destroy = lcd_vgcanvas_destroy;
 
   base->w = (wh_t)w;

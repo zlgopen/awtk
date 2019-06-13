@@ -269,3 +269,23 @@ ret_t lcd_resize(lcd_t* lcd, wh_t w, wh_t h, uint32_t line_length) {
 
   return RET_OK;
 }
+
+wh_t lcd_get_width(lcd_t* lcd) {
+  return_value_if_fail(lcd != NULL, 0);
+
+  if (lcd->get_width != NULL) {
+    return lcd->get_width(lcd);
+  } else {
+    return lcd->w;
+  }
+}
+
+wh_t lcd_get_height(lcd_t* lcd) {
+  return_value_if_fail(lcd != NULL, 0);
+
+  if (lcd->get_height != NULL) {
+    return lcd->get_height(lcd);
+  } else {
+    return lcd->h;
+  }
+}

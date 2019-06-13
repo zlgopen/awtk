@@ -114,6 +114,9 @@ typedef ret_t (*vgcanvas_set_line_cap_t)(vgcanvas_t* vg, const char* value);
 typedef ret_t (*vgcanvas_set_line_join_t)(vgcanvas_t* vg, const char* value);
 typedef ret_t (*vgcanvas_set_miter_limit_t)(vgcanvas_t* vg, float_t value);
 
+typedef wh_t (*vgcanvas_get_width_t)(vgcanvas_t* vg);
+typedef wh_t (*vgcanvas_get_height_t)(vgcanvas_t* vg);
+
 typedef ret_t (*vgcanvas_save_t)(vgcanvas_t* vg);
 typedef ret_t (*vgcanvas_restore_t)(vgcanvas_t* vg);
 
@@ -180,6 +183,8 @@ typedef struct _vgcanvas_vtable_t {
   vgcanvas_restore_t restore;
   vgcanvas_end_frame_t end_frame;
 
+  vgcanvas_get_width_t get_width;
+  vgcanvas_get_height_t get_height;
   vgcanvas_create_fbo_t create_fbo;
   vgcanvas_destroy_fbo_t destroy_fbo;
   vgcanvas_bind_fbo_t bind_fbo;
@@ -1083,6 +1088,24 @@ ret_t vgcanvas_restore(vgcanvas_t* vg);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t vgcanvas_end_frame(vgcanvas_t* vg);
+
+/**
+ * @method vgcanvas_get_width
+ * 获取宽度。
+ * @param {vgcanvas_t*} vgcanvas vgcanvas对象。
+ *
+ * @return {wh_t} 返回宽度。
+ */
+wh_t vgcanvas_get_width(vgcanvas_t* vgcanvas);
+
+/**
+ * @method vgcanvas_get_height
+ * 获取高度。
+ * @param {vgcanvas_t*} vgcanvas vgcanvas对象。
+ *
+ * @return {wh_t} 返回高度。
+ */
+wh_t vgcanvas_get_height(vgcanvas_t* vgcanvas);
 
 /**
  * @method vgcanvas_destroy
