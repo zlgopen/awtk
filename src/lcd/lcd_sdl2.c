@@ -136,7 +136,7 @@ static ret_t lcd_sdl2_resize(lcd_t* lcd, wh_t w, wh_t h, uint32_t line_length) {
   lcd_sdl2_t* sdl = (lcd_sdl2_t*)lcd;
   if (w <= sdl->lcd_mem->base.w && h <= sdl->lcd_mem->base.h) return RET_OK;
 
-  lcd_sdl2_destroy(lcd);
+  SDL_DestroyTexture(sdl->texture);
   sdl->lcd_mem->base.w = w;
   sdl->lcd_mem->base.h = h;
 #ifdef WITH_FB_BGRA8888
