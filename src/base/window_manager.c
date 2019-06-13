@@ -864,6 +864,7 @@ static ret_t wm_on_locale_changed(void* ctx, event_t* e) {
   widget_re_translate_text(iter);
   widget_dispatch(iter, e);
   WIDGET_FOR_EACH_CHILD_END();
+  widget_invalidate(widget, NULL);
 
   return RET_OK;
 }
