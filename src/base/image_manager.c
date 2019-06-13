@@ -27,7 +27,7 @@
 
 typedef struct _bitmap_cache_t {
   bitmap_t image;
-  char name[TK_NAME_LEN + 1];
+  char* name;
   uint32_t access_count;
   uint32_t created_time;
   uint32_t last_access_time;
@@ -49,6 +49,7 @@ static ret_t bitmap_cache_destroy(bitmap_cache_t* cache) {
   return_value_if_fail(cache != NULL, RET_BAD_PARAMS);
 
   bitmap_destroy(&(cache->image));
+  TKMEM_FREE(cache->name);
   TKMEM_FREE(cache);
 
   return RET_OK;
@@ -92,10 +93,9 @@ ret_t image_manager_add(image_manager_t* imm, const char* name, const bitmap_t* 
   cache->access_count = 1;
   cache->created_time = time_now_s();
   cache->image.should_free_handle = FALSE;
-
-  tk_strncpy(cache->name, name, TK_NAME_LEN);
-  cache->last_access_time = cache->created_time;
+  cache->name = tk_strdup(name);
   cache->image.name = cache->name;
+  cache->last_access_time = cache->created_time;
 
   return darray_push(&(imm->images), cache);
 }
@@ -105,7 +105,9 @@ ret_t image_manager_lookup(image_manager_t* imm, const char* name, bitmap_t* ima
   bitmap_cache_t* iter = NULL;
   return_value_if_fail(imm != NULL && name != NULL && image != NULL, RET_BAD_PARAMS);
 
-  tk_strncpy(info.name, name, TK_NAME_LEN);
+  memset(&info, 0x00, sizeof(info));
+
+  info.name = (char*)name;
   imm->images.compare = (tk_compare_t)bitmap_cache_cmp_name;
   iter = darray_find(&(imm->images), &info);
 

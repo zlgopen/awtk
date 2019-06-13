@@ -78,3 +78,15 @@ TEST(ImageManager, locale) {
   assets_manager_destroy(am);
   image_manager_destroy(imm);
 }
+
+#ifdef WITH_FS_RES
+TEST(ImageManager, fs) {
+  bitmap_t bmp;
+  const char* filename = "file://./demos/assets/raw/images/xx/flag_CN.png";
+
+  memset(&bmp, 0x00, sizeof(bmp));
+  ASSERT_EQ(image_manager_get_bitmap(image_manager(), filename, &bmp), RET_OK);
+  ASSERT_EQ(image_manager_lookup(image_manager(), filename, &bmp), RET_OK);
+  ASSERT_EQ(image_manager_unload_bitmap(image_manager(), &bmp), RET_OK);
+}
+#endif /*WITH_FS_RES*/

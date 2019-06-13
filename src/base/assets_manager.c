@@ -208,7 +208,44 @@ static asset_info_t* try_load_assets(assets_manager_t* am, const char* name, con
   return NULL;
 }
 
-asset_info_t* assets_manager_load(assets_manager_t* am, asset_type_t type, const char* name) {
+static uint16_t subtype_from_extname(const char* extname) {
+  uint16_t subtype = 0;
+  return_value_if_fail(extname != NULL, 0);
+
+  if(tk_str_ieq(extname, ".gif")) {
+    subtype = ASSET_TYPE_IMAGE_GIF;
+  } else if(tk_str_ieq(extname, ".png")) {
+    subtype = ASSET_TYPE_IMAGE_PNG;
+  } else if(tk_str_ieq(extname, ".bmp")) {
+    subtype = ASSET_TYPE_IMAGE_BMP;
+  } else if(tk_str_ieq(extname, ".bsvg")) {
+    subtype = ASSET_TYPE_IMAGE_BSVG;
+  } else if(tk_str_ieq(extname, ".jpg")) {
+    subtype = ASSET_TYPE_IMAGE_JPG;
+  } else if(tk_str_ieq(extname, ".jpeg")) {
+    subtype = ASSET_TYPE_IMAGE_JPG;
+  } else if(tk_str_ieq(extname, "ttf")) {
+    subtype = ASSET_TYPE_FONT_TTF;
+  } else {
+    log_debug("not supported %s\n", extname);
+  }
+
+  return subtype;
+}
+
+asset_info_t* assets_manager_load_file(assets_manager_t* am, asset_type_t type, const char* path) {
+  if (file_exist(path)) {
+    int32_t size = file_get_size(path);
+    const char* extname = strrchr(path, '.');
+    uint16_t subtype = subtype_from_extname(extname);
+
+    return load_asset(type, subtype, size, path, path);
+  }
+
+  return NULL;
+}
+
+asset_info_t* assets_manager_load_asset(assets_manager_t* am, asset_type_t type, const char* name) {
   asset_info_t* info = NULL;
   switch (type) {
     case ASSET_TYPE_FONT: {
@@ -302,6 +339,14 @@ asset_info_t* assets_manager_load(assets_manager_t* am, asset_type_t type, const
   }
 
   return info;
+}
+
+asset_info_t* assets_manager_load(assets_manager_t* am, asset_type_t type, const char* name) {
+  if(strncmp(name, STR_SCHEMA_FILE, strlen(STR_SCHEMA_FILE)) == 0) {
+    return assets_manager_load_file(am, type, name + strlen(STR_SCHEMA_FILE));
+  } else {
+    return assets_manager_load_asset(am, type, name);
+  }
 }
 #else
 asset_info_t* assets_manager_load(assets_manager_t* am, asset_type_t type, const char* name) {

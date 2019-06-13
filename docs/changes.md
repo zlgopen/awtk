@@ -1,4 +1,8 @@
 # 最新动态
+* 2019/06/13
+  * 修改lcd\_sdl2\_resize的bug(感谢尧燊提供补丁)。
+  * image/svg/gif支持从文件系统中加载图片。
+
 * 2019/06/12
   * 修改全局字体缩放的问题。
   * 修改 scroll\_view\_on\_layout\_children 在特殊情况的 BUG。
