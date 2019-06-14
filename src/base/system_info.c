@@ -21,6 +21,7 @@
 
 #include "tkc/str.h"
 #include "tkc/mem.h"
+#include "tkc/path.h"
 #include "tkc/utils.h"
 #include "tkc/object.h"
 #include "base/system_info.h"
@@ -36,19 +37,74 @@ system_info_t* system_info() {
   return s_system_info;
 }
 
+#ifdef WITH_FS_RES
+static bool_t app_root_is_valid(const char* app_root) {
+  char res_root[MAX_PATH + 1];
+  return_value_if_fail(app_root != NULL, FALSE);
+
+  path_build(res_root, MAX_PATH, app_root, "assets", NULL);
+
+  return path_exist(res_root);
+}
+
+static ret_t system_info_set_app_root(system_info_t* info, const char* app_root) {
+  if (app_root != NULL) {
+    info->app_root = tk_strdup(app_root);
+    log_debug("app_root=%s\n", app_root);
+  }
+
+  return RET_OK;
+}
+
+static ret_t system_info_normalize_app_root(system_info_t* info, const char* app_root_default) {
+  if (app_root_is_valid(app_root_default)) {
+    return system_info_set_app_root(info, app_root_default);
+  } else {
+    char* last = NULL;
+    char cwd[MAX_PATH + 1];
+    char app_root[MAX_PATH + 1];
+
+    path_cwd(cwd);
+    last = strrchr(cwd, PATH_SEP);
+    if (last != NULL) {
+      if (tk_str_eq(last + 1, "bin")) {
+        *last = '\0';
+      }
+    }
+
+    if (!app_root_is_valid(cwd)) {
+      path_build(app_root, MAX_PATH, cwd, "demos", NULL);
+      if (app_root_is_valid(app_root)) {
+        return system_info_set_app_root(info, app_root);
+      } else {
+        log_warn("invalid app root\n");
+        return RET_FAIL;
+      }
+    } else {
+      return system_info_set_app_root(info, cwd);
+    }
+  }
+}
+#else
+static ret_t system_info_normalize_app_root(system_info_t* info, const char* app_root_default) {
+  info->app_root = app_root_default;
+
+  return RET_OK;
+}
+#endif /*WITH_FS_RES*/
+
 ret_t system_info_set_app_info(system_info_t* info, app_type_t app_type, const char* app_name,
                                const char* app_root) {
   return_value_if_fail(info != NULL, RET_BAD_PARAMS);
 
   info->app_type = app_type;
-  info->app_root = app_root ? app_root : "./";
+  system_info_normalize_app_root(info, app_root);
   info->app_name = app_name ? app_name : "AWTK Simulator";
 
   return RET_OK;
 }
 
 ret_t system_info_init(app_type_t app_type, const char* app_name, const char* app_root) {
-  float_t font_scale = 1;
   if (s_system_info == NULL) {
     s_system_info = system_info_create(app_type, app_name, app_root);
     system_info_set_default_font(s_system_info, "default");
@@ -58,9 +114,11 @@ ret_t system_info_init(app_type_t app_type, const char* app_name, const char* ap
   }
 
 #ifdef AWTK_WEB
-  font_scale = EM_ASM_DOUBLE({ return (TBrowser.config.fontScale || 1); }, 0);
-  system_info_set_font_scale(s_system_info, font_scale);
-  log_debug("system_info_init: font_scale=%lf\n", font_scale);
+  {
+    float_t font_scale = EM_ASM_DOUBLE({ return (TBrowser.config.fontScale || 1); }, 0);
+    system_info_set_font_scale(s_system_info, font_scale);
+    log_debug("system_info_init: font_scale=%lf\n", font_scale);
+  }
 #endif /*AWTK_WEB*/
 
   return RET_OK;
@@ -115,10 +173,20 @@ static ret_t system_info_get_prop(object_t* obj, const char* name, value_t* v) {
   return RET_OK;
 }
 
+static ret_t system_info_on_destroy(object_t* obj) {
+  system_info_t* info = SYSTEM_INFO(obj);
+  return_value_if_fail(info != NULL, RET_FAIL);
+
+  TKMEM_FREE(info->app_root);
+
+  return RET_OK;
+}
+
 static const object_vtable_t s_system_info_vtable = {.type = "system_info",
                                                      .desc = "system_info",
                                                      .size = sizeof(system_info_t),
-                                                     .get_prop = system_info_get_prop};
+                                                     .get_prop = system_info_get_prop,
+                                                     .on_destroy = system_info_on_destroy};
 
 system_info_t* system_info_create(app_type_t app_type, const char* app_name, const char* app_root) {
   object_t* obj = object_create(&s_system_info_vtable);

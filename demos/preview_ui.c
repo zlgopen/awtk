@@ -162,13 +162,7 @@ int main(int argc, char* argv[]) {
   }
 
   log_debug("%s %s %d %d\n", argv[0], argv[1], w, h);
-  if (path_exist("./demos/assets/raw")) {
-    tk_init(w, h, APP_SIMULATOR, NULL, "./demos");
-  } else if (path_exist("./assets/raw")) {
-    tk_init(w, h, APP_SIMULATOR, NULL, "./");
-  } else {
-    assert(!"not found assets!");
-  }
+  tk_init(w, h, APP_SIMULATOR, NULL, NULL);
 
   assets_init();
   tk_ext_widgets_init();

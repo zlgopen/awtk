@@ -127,7 +127,7 @@ struct _system_info_t {
    * @annotation ["readable"]
    * 应用程序的根目录，用于定位资源文件。
    */
-  const char* app_root;
+  char* app_root;
 };
 
 /**
