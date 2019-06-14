@@ -87,7 +87,7 @@ static ret_t system_info_normalize_app_root(system_info_t* info, const char* app
 }
 #else
 static ret_t system_info_normalize_app_root(system_info_t* info, const char* app_root_default) {
-  info->app_root = app_root_default;
+  info->app_root = tk_strdup(app_root_default);
 
   return RET_OK;
 }
