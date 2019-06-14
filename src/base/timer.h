@@ -106,6 +106,17 @@ ret_t timer_remove(uint32_t timer_id);
 ret_t timer_reset(uint32_t timer_id);
 
 /**
+ * @method timer_modify
+ * 修改指定的timer的duration，修改之后定时器重新开始计时。
+ * @annotation ["scriptable", "static"]
+ * @param {uint32_t} timer_id timerID。
+ * @param {uint32_t} duration 新的时间。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t timer_modify(uint32_t timer_id, uint32_t duration);
+
+/**
  * @method timer_set_on_destroy
  * 设置一个回调函数，在timer被销毁时调用(方便脚本语言去释放回调函数)。
  * @param {uint32_t} timer_id timerID。

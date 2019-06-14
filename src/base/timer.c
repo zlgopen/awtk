@@ -49,6 +49,16 @@ ret_t timer_dispatch(void) {
   return timer_manager_dispatch(timer_manager());
 }
 
+ret_t timer_modify(uint32_t timer_id, uint32_t duration) {
+  timer_info_t* info = (timer_info_t*)timer_manager_find(timer_manager(), timer_id);
+  return_value_if_fail(info != NULL, RET_NOT_FOUND);
+
+  info->duration = duration;
+  info->start = timer_now();
+
+  return RET_OK;
+}
+
 uint32_t timer_count(void) {
   return timer_manager_count(timer_manager());
 }
