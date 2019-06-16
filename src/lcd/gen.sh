@@ -11,8 +11,13 @@ function gen() {
   sed -e "s/{fmt}/$fmt/" -e "s/{FMT}/$FMT/" -e "s/{date}/$DATE/" template/lcd_mem_c.tmpl > lcd_mem_$fmt.c 
 }
 
+if [ "$1" == "" ]; then
+  FMT="rgb565 bgr565 bgra5551 bgr888 bgra8888 rgba8888"
+else
+  FMT="$1"
+fi
 #supproted formats: rgb565 bgr565 rgb888 bgr888 rgba8888 abgr8888 bgra8888 argb8888
-for fmt in rgb565 bgr565 bgr888 bgra8888 rgba8888
+for fmt in ${FMT}
 do
   gen $fmt
 done
