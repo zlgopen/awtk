@@ -26,7 +26,13 @@ function gen_rotate_fill() {
 
 #supported formats: rgb565 bgr565 rgb888 bgr888 rgba8888 abgr8888 bgra8888 argb8888
 
-for dst in rgb565 bgr565 bgr888 bgra8888 rgba8888
+if [ "$1" == "" ]; then
+  DST="rgb565 bgr565 bgr888 bgra8888 rgba8888"
+else
+  DST="$1"
+fi
+
+for dst in ${DST}
 do
   gen_rotate_fill $dst
   for src in bgr565 rgba8888 bgra8888
