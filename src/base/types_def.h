@@ -290,8 +290,8 @@ typedef struct _assets_manager_t assets_manager_t;
 struct _system_info_t;
 typedef struct _system_info_t system_info_t;
 
-#define STR_SCHEMA_FILE   "file://"
-#define STR_SCHEMA_HTTP   "http://"
+#define STR_SCHEMA_FILE "file://"
+#define STR_SCHEMA_HTTP "http://"
 #define STR_SCHEMA_HTTPS "https://"
 
 #endif /*TK_TYPES_DEF_H*/

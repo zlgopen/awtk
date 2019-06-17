@@ -19,169 +19,105 @@
  *
  */
 
+#include "tkc/mem.h"
 #include "lcd/lcd_sdl2.h"
-#include "lcd/lcd_mem_bgr565.h"
-#include "lcd/lcd_mem_bgr888.h"
-#include "lcd/lcd_mem_bgra8888.h"
+#include "blend/image_g2d.h"
+#include "lcd/lcd_mem_special.h"
 
-typedef struct _lcd_sdl2_t {
-  lcd_t base;
+typedef struct _special_info_t {
   SDL_Renderer* render;
-  lcd_mem_t* lcd_mem;
   SDL_Texture* texture;
-} lcd_sdl2_t;
+  bitmap_format_t format;
+} special_info_t;
 
-static ret_t lcd_sdl2_begin_frame(lcd_t* lcd, rect_t* dr) {
-  int pitch = 0;
-  lcd_sdl2_t* sdl = (lcd_sdl2_t*)lcd;
+static special_info_t* special_info_create(SDL_Renderer* render) {
+  special_info_t* info = TKMEM_ZALLOC(special_info_t);
+  return_value_if_fail(info != NULL, NULL);
 
-  SDL_LockTexture(sdl->texture, NULL, (void**)&(sdl->lcd_mem->offline_fb), &pitch);
-  lcd_mem_set_line_length(sdl->lcd_mem, pitch);
+  info->render = render;
+
+  return info;
+}
+
+static ret_t special_info_create_texture(special_info_t* info, wh_t w, wh_t h) {
+  int flags = SDL_TEXTUREACCESS_STREAMING;
+
+#ifdef WITH_FB_BGRA8888
+  /*SDL ABGR is rgba from low address to high address*/
+  info->format = BITMAP_FMT_BGRA8888;
+  info->texture = SDL_CreateTexture(info->render, SDL_PIXELFORMAT_ARGB8888, flags, w, h);
+  log_debug("WITH_FB_BGRA8888\n");
+#else
+  /*SDL ABGR is rgba from low address to high address*/
+  info->format = BITMAP_FMT_BGR565;
+  info->texture = SDL_CreateTexture(info->render, SDL_PIXELFORMAT_RGB565, flags, w, h);
+  log_debug("WITH_FB_BGR565\n");
+#endif
+
+  return info->texture != NULL ? RET_OK : RET_FAIL;
+}
+
+static ret_t special_info_destroy(special_info_t* info) {
+  return_value_if_fail(info != NULL, RET_BAD_PARAMS);
+
+  SDL_DestroyTexture(info->texture);
+  TKMEM_FREE(info);
 
   return RET_OK;
 }
 
-static ret_t lcd_sdl2_draw_hline(lcd_t* lcd, xy_t x, xy_t y, wh_t w) {
-  lcd_sdl2_t* sdl = (lcd_sdl2_t*)lcd;
-  lcd_t* mem = (lcd_t*)(sdl->lcd_mem);
-  mem->stroke_color = lcd->stroke_color;
-
-  return lcd_draw_hline(mem, x, y, w);
-}
-
-static ret_t lcd_sdl2_draw_vline(lcd_t* lcd, xy_t x, xy_t y, wh_t h) {
-  lcd_sdl2_t* sdl = (lcd_sdl2_t*)lcd;
-  lcd_t* mem = (lcd_t*)(sdl->lcd_mem);
-  mem->stroke_color = lcd->stroke_color;
-
-  return lcd_draw_vline(mem, x, y, h);
-}
-
-static ret_t lcd_sdl2_draw_points(lcd_t* lcd, point_t* points, uint32_t nr) {
-  lcd_sdl2_t* sdl = (lcd_sdl2_t*)lcd;
-  lcd_t* mem = (lcd_t*)(sdl->lcd_mem);
-  mem->stroke_color = lcd->stroke_color;
-
-  return lcd_draw_points(mem, points, nr);
-}
-
-static color_t lcd_sdl2_get_point_color(lcd_t* lcd, xy_t x, xy_t y) {
-  lcd_sdl2_t* sdl = (lcd_sdl2_t*)lcd;
-  lcd_t* mem = (lcd_t*)(sdl->lcd_mem);
-
-  return lcd_get_point_color(mem, x, y);
-}
-
-static ret_t lcd_sdl2_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
-  lcd_sdl2_t* sdl = (lcd_sdl2_t*)lcd;
-  lcd_t* mem = (lcd_t*)(sdl->lcd_mem);
-  mem->fill_color = lcd->fill_color;
-
-  return lcd_fill_rect(mem, x, y, w, h);
-}
-
-static ret_t lcd_sdl2_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x, xy_t y) {
-  lcd_sdl2_t* sdl = (lcd_sdl2_t*)lcd;
-  lcd_t* mem = (lcd_t*)(sdl->lcd_mem);
-  mem->text_color = lcd->text_color;
-  mem->fill_color = lcd->fill_color;
-
-  return lcd_draw_glyph(mem, glyph, src, x, y);
-}
-
-static ret_t lcd_sdl2_draw_image_matrix(lcd_t* lcd, draw_image_info_t* info) {
-  lcd_sdl2_t* sdl = (lcd_sdl2_t*)lcd;
-  lcd_t* mem = (lcd_t*)(sdl->lcd_mem);
-
-  return lcd_draw_image_matrix(mem, info);
-}
-
-static ret_t lcd_sdl2_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
-  lcd_sdl2_t* sdl = (lcd_sdl2_t*)lcd;
-  lcd_t* mem = (lcd_t*)(sdl->lcd_mem);
-
-  return lcd_draw_image(mem, img, src, dst);
-}
-
-static ret_t lcd_sdl2_end_frame(lcd_t* lcd) {
-  lcd_sdl2_t* sdl = (lcd_sdl2_t*)lcd;
+static ret_t lcd_sdl2_flush(lcd_t* lcd) {
+  bitmap_t src;
+  bitmap_t dst;
+  int pitch = 0;
+  void* addr = NULL;
   rect_t* dr = &(lcd->dirty_rect);
   rect_t* fps_r = &(lcd->fps_rect);
+  rect_t r = rect_init(0, 0, lcd->w, lcd->h);
+  lcd_mem_special_t* special = (lcd_mem_special_t*)lcd;
+  special_info_t* info = (special_info_t*)(special->ctx);
 
-  SDL_UnlockTexture(sdl->texture);
+  memset(&src, 0x00, sizeof(src));
+  memset(&dst, 0x00, sizeof(dst));
+
   if ((dr->w > 0 && dr->h > 0) || (fps_r->w > 0 && fps_r->h > 0)) {
     SDL_Rect sr = {0, 0, lcd->w, lcd->h};
 
-    SDL_RenderCopy(sdl->render, sdl->texture, &sr, &sr);
+    SDL_LockTexture(info->texture, NULL, (void**)&(addr), &pitch);
+    bitmap_init(&dst, lcd->w, lcd->h, special->format, addr);
+    bitmap_set_line_length(&dst, pitch);
+    bitmap_init(&src, lcd->w, lcd->h, special->format, special->lcd_mem->offline_fb);
+    image_copy(&dst, &src, dr, dr->x, dr->y);
+    SDL_UnlockTexture(info->texture);
+    log_debug("dirty_rect: %d %d %d %d\n", dr->x, dr->y, dr->w, dr->h);
+
+    SDL_RenderCopy(info->render, info->texture, &sr, &sr);
   }
 
   if (lcd->draw_mode != LCD_DRAW_OFFLINE) {
-    SDL_RenderPresent(sdl->render);
+    SDL_RenderPresent(info->render);
   }
-
-  return RET_OK;
-}
-
-static ret_t lcd_sdl2_destroy(lcd_t* lcd) {
-  lcd_sdl2_t* sdl = (lcd_sdl2_t*)lcd;
-
-  lcd_destroy((lcd_t*)(sdl->lcd_mem));
-  SDL_DestroyTexture(sdl->texture);
-  memset(sdl, 0x00, sizeof(lcd_sdl2_t));
 
   return RET_OK;
 }
 
 static ret_t lcd_sdl2_resize(lcd_t* lcd, wh_t w, wh_t h, uint32_t line_length) {
-  lcd_sdl2_t* sdl = (lcd_sdl2_t*)lcd;
-  if (w <= sdl->lcd_mem->base.w && h <= sdl->lcd_mem->base.h) return RET_OK;
+  lcd_mem_special_t* special = (lcd_mem_special_t*)lcd;
+  special_info_t* info = (special_info_t*)(special->ctx);
 
-  SDL_DestroyTexture(sdl->texture);
-  sdl->lcd_mem->base.w = w;
-  sdl->lcd_mem->base.h = h;
-#ifdef WITH_FB_BGRA8888
-  /*SDL ABGR is rgba from low address to high address*/
-  sdl->texture =
-      SDL_CreateTexture(sdl->render, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, w, h);
-  log_debug("WITH_FB_BGRA8888\n");
-#elif defined(WITH_FB_BGR888)
-  /*SDL ABGR is rgba from low address to high address*/
-  sdl->texture =
-      SDL_CreateTexture(sdl->render, SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_STREAMING, w, h);
-  log_debug("WITH_FB_BGR888\n");
-#else
-  /*SDL ABGR is rgba from low address to high address*/
-  sdl->texture =
-      SDL_CreateTexture(sdl->render, SDL_PIXELFORMAT_RGB565, SDL_TEXTUREACCESS_STREAMING, w, h);
-  log_debug("WITH_FB_BGR565\n");
-#endif
+  SDL_DestroyTexture(info->texture);
+
+  info->texture = NULL;
+  special_info_create_texture(info, w, h);
+
   return RET_OK;
 }
 
-static ret_t lcd_sdl2_take_snapshot(lcd_t* lcd, bitmap_t* img, bool_t auto_rotate) {
-  lcd_sdl2_t* sdl = (lcd_sdl2_t*)lcd;
+static ret_t lcd_sdl2_destroy(lcd_t* lcd) {
+  lcd_mem_special_t* special = (lcd_mem_special_t*)lcd;
 
-  return lcd_take_snapshot((lcd_t*)(sdl->lcd_mem), img, auto_rotate);
-}
-
-static bitmap_format_t lcd_sdl2_get_desired_bitmap_format(lcd_t* lcd) {
-  lcd_sdl2_t* sdl = (lcd_sdl2_t*)lcd;
-
-  return lcd_get_desired_bitmap_format((lcd_t*)(sdl->lcd_mem));
-}
-
-static vgcanvas_t* lcd_sdl2_get_vgcanvas(lcd_t* lcd) {
-  lcd_sdl2_t* sdl = (lcd_sdl2_t*)lcd;
-
-  return lcd_get_vgcanvas((lcd_t*)(sdl->lcd_mem));
-}
-
-static ret_t lcd_sdl2_set_global_alpha(lcd_t* lcd, uint8_t alpha) {
-  lcd_sdl2_t* sdl = (lcd_sdl2_t*)lcd;
-  lcd_t* mem = (lcd_t*)(sdl->lcd_mem);
-
-  lcd->global_alpha = alpha;
-  mem->global_alpha = alpha;
+  special_info_destroy((special_info_t*)(special->ctx));
+  special->ctx = NULL;
 
   return RET_OK;
 }
@@ -189,58 +125,15 @@ static ret_t lcd_sdl2_set_global_alpha(lcd_t* lcd, uint8_t alpha) {
 lcd_t* lcd_sdl2_init(SDL_Renderer* render) {
   int w = 0;
   int h = 0;
-  static lcd_sdl2_t lcd;
-  lcd_t* base = &(lcd.base);
+  special_info_t* info = NULL;
   return_value_if_fail(render != NULL, NULL);
 
-  memset(&lcd, 0x00, sizeof(lcd_sdl2_t));
-
-  lcd.render = render;
-  base->begin_frame = lcd_sdl2_begin_frame;
-  base->draw_vline = lcd_sdl2_draw_vline;
-  base->draw_hline = lcd_sdl2_draw_hline;
-  base->fill_rect = lcd_sdl2_fill_rect;
-  base->draw_image = lcd_sdl2_draw_image;
-  base->draw_image_matrix = lcd_sdl2_draw_image_matrix;
-  base->draw_glyph = lcd_sdl2_draw_glyph;
-  base->draw_points = lcd_sdl2_draw_points;
-  base->get_point_color = lcd_sdl2_get_point_color;
-  base->end_frame = lcd_sdl2_end_frame;
-  base->get_vgcanvas = lcd_sdl2_get_vgcanvas;
-  base->take_snapshot = lcd_sdl2_take_snapshot;
-  base->get_desired_bitmap_format = lcd_sdl2_get_desired_bitmap_format;
-  base->set_global_alpha = lcd_sdl2_set_global_alpha;
-  base->resize = lcd_sdl2_resize;
-  base->destroy = lcd_sdl2_destroy;
-
   SDL_GetRendererOutputSize(render, &w, &h);
+  info = special_info_create(render);
+  return_value_if_fail(info != NULL, NULL);
 
-  base->ratio = 1;
-  base->w = (wh_t)w;
-  base->h = (wh_t)h;
+  ENSURE(special_info_create_texture(info, w, h) == RET_OK);
 
-#ifdef WITH_FB_BGRA8888
-  /*SDL ABGR is rgba from low address to high address*/
-  lcd.lcd_mem = (lcd_mem_t*)lcd_mem_bgra8888_create(w, h, FALSE);
-  lcd.texture =
-      SDL_CreateTexture(render, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, w, h);
-  log_debug("WITH_FB_BGRA8888\n");
-#elif defined(WITH_FB_BGR888)
-  /*SDL ABGR is rgba from low address to high address*/
-  lcd.lcd_mem = (lcd_mem_t*)lcd_mem_bgr888_create(w, h, FALSE);
-  lcd.texture =
-      SDL_CreateTexture(render, SDL_PIXELFORMAT_RGB888, SDL_TEXTUREACCESS_STREAMING, w, h);
-  log_debug("WITH_FB_BGR888\n");
-#else
-  /*SDL ABGR is rgba from low address to high address*/
-  lcd.lcd_mem = (lcd_mem_t*)lcd_mem_bgr565_create(w, h, FALSE);
-  lcd.texture =
-      SDL_CreateTexture(render, SDL_PIXELFORMAT_RGB565, SDL_TEXTUREACCESS_STREAMING, w, h);
-  log_debug("WITH_FB_BGR565\n");
-#endif
-
-  base->type = lcd.lcd_mem->base.type;
-  base->support_dirty_rect = FALSE;
-
-  return base;
+  return lcd_mem_special_create(w, h, info->format, lcd_sdl2_flush, lcd_sdl2_resize,
+                                lcd_sdl2_destroy, info);
 }

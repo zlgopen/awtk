@@ -146,7 +146,9 @@ static asset_info_t* try_load_image(assets_manager_t* am, const char* name,
       subpath = "assets/raw/images/svg";
       break;
     }
-    default: { return NULL; }
+    default: {
+      return NULL;
+    }
   }
 
   return_value_if_fail(build_path(am, path, MAX_PATH, ratio, subpath, name, extname) == RET_OK,
@@ -195,7 +197,9 @@ static asset_info_t* try_load_assets(assets_manager_t* am, const char* name, con
       subpath = "assets/raw/data";
       break;
     }
-    default: { return NULL; }
+    default: {
+      return NULL;
+    }
   }
 
   return_value_if_fail(build_path(am, path, MAX_PATH, FALSE, subpath, name, extname) == RET_OK,
@@ -212,19 +216,19 @@ static uint16_t subtype_from_extname(const char* extname) {
   uint16_t subtype = 0;
   return_value_if_fail(extname != NULL, 0);
 
-  if(tk_str_ieq(extname, ".gif")) {
+  if (tk_str_ieq(extname, ".gif")) {
     subtype = ASSET_TYPE_IMAGE_GIF;
-  } else if(tk_str_ieq(extname, ".png")) {
+  } else if (tk_str_ieq(extname, ".png")) {
     subtype = ASSET_TYPE_IMAGE_PNG;
-  } else if(tk_str_ieq(extname, ".bmp")) {
+  } else if (tk_str_ieq(extname, ".bmp")) {
     subtype = ASSET_TYPE_IMAGE_BMP;
-  } else if(tk_str_ieq(extname, ".bsvg")) {
+  } else if (tk_str_ieq(extname, ".bsvg")) {
     subtype = ASSET_TYPE_IMAGE_BSVG;
-  } else if(tk_str_ieq(extname, ".jpg")) {
+  } else if (tk_str_ieq(extname, ".jpg")) {
     subtype = ASSET_TYPE_IMAGE_JPG;
-  } else if(tk_str_ieq(extname, ".jpeg")) {
+  } else if (tk_str_ieq(extname, ".jpeg")) {
     subtype = ASSET_TYPE_IMAGE_JPG;
-  } else if(tk_str_ieq(extname, "ttf")) {
+  } else if (tk_str_ieq(extname, "ttf")) {
     subtype = ASSET_TYPE_FONT_TTF;
   } else {
     log_debug("not supported %s\n", extname);
@@ -342,7 +346,7 @@ asset_info_t* assets_manager_load_asset(assets_manager_t* am, asset_type_t type,
 }
 
 asset_info_t* assets_manager_load(assets_manager_t* am, asset_type_t type, const char* name) {
-  if(strncmp(name, STR_SCHEMA_FILE, strlen(STR_SCHEMA_FILE)) == 0) {
+  if (strncmp(name, STR_SCHEMA_FILE, strlen(STR_SCHEMA_FILE)) == 0) {
     return assets_manager_load_file(am, type, name + strlen(STR_SCHEMA_FILE));
   } else {
     return assets_manager_load_asset(am, type, name);
