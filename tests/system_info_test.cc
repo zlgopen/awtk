@@ -5,13 +5,11 @@
 using std::string;
 
 TEST(SystemInfo, basic) {
-  system_info_t* info = system_info_create(APP_DESKTOP, "awtk", "awtk_dir");
-  ASSERT_STREQ(info->app_name, "awtk");
-  ASSERT_STREQ(info->app_root, "awtk_dir");
+  system_info_t* info = system_info_create(APP_DESKTOP, "awtk", "./");
 
   ASSERT_EQ(info->app_type, APP_DESKTOP);
   ASSERT_STREQ(info->app_name, "awtk");
-  ASSERT_STREQ(info->app_root, "awtk_dir");
+  ASSERT_NE(strstr(info->app_root, "demos") != NULL, TRUE);
 
   ASSERT_EQ(system_info_set_lcd_w(info, 100), RET_OK);
   ASSERT_EQ(info->lcd_w, 100);
