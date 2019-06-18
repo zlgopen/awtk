@@ -1,4 +1,8 @@
 # 最新动态
+* 2019/06/18
+  * 修改window\_manager\_update\_cursor的BUG(感谢智明提供补丁)
+  * 修改main\_loop\_post\_pointer\_event的BUG(感谢朝泽提供补丁)
+
 * 2019/06/17
   * SDL FB模式启用脏矩形。
   * 增加lcd\_mem\_special用于实现一些特殊的FB格式。

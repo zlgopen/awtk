@@ -556,16 +556,14 @@ static ret_t window_manager_update_cursor(widget_t* widget, int32_t x, int32_t y
     int32_t oldy = wm->r_cursor.y;
     rect_t r = rect_init(oldx - hw, oldy - hh, w, h);
 
-    widget->dirty = FALSE;
-    widget_invalidate(widget, &r);
+    window_manager_invalidate(widget, &r);
 
     wm->r_cursor.x = x;
     wm->r_cursor.y = y;
 
     r = rect_init(x - hw, y - hh, w, h);
 
-    widget->dirty = FALSE;
-    widget_invalidate(widget, &r);
+    window_manager_invalidate(widget, &r);
   }
 
   return RET_OK;
