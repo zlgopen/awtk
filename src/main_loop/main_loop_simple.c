@@ -72,12 +72,13 @@ ret_t main_loop_post_pointer_event(main_loop_t* l, bool_t pressed, xy_t x, xy_t 
     return main_loop_queue_event(l, &r);
   } else {
     if (loop->pressed) {
-      loop->pressed = FALSE;
       event.e.type = EVT_POINTER_UP;
       event.pressed = loop->pressed;
       event.x = loop->last_x;
       event.y = loop->last_y;
       r.pointer_event = event;
+
+      loop->pressed = FALSE;
 
       return main_loop_queue_event(l, &r);
     }
