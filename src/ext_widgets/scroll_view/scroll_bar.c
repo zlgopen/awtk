@@ -515,7 +515,7 @@ static ret_t scroll_bar_update_dragger(widget_t* widget) {
   return_value_if_fail(scroll_bar != NULL, RET_BAD_PARAMS);
 
   if (!scroll_bar_is_mobile(widget)) {
-    rect_t r = rect_ini(0, 0, 0, 0);
+    rect_t r = rect_init(0, 0, 0, 0);
     return_value_if_fail(scroll_bar_destop_get_dragger_size(widget, &r) == RET_OK, RET_FAIL);
     widget_move_resize(scroll_bar->dragger, r.x, r.y, r.w, r.h);
   }
