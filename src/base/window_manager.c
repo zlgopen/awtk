@@ -33,6 +33,8 @@
 #include "base/window_manager.h"
 #include "base/dialog_highlighter_factory.h"
 
+static ret_t window_manager_invalidate(widget_t* widget, rect_t* r);
+
 static ret_t window_manager_inc_fps(widget_t* widget);
 static ret_t window_manager_update_fps(widget_t* widget);
 static ret_t window_manager_do_open_window(widget_t* wm, widget_t* window);
