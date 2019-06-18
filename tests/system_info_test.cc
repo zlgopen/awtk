@@ -9,7 +9,7 @@ TEST(SystemInfo, basic) {
 
   ASSERT_EQ(info->app_type, APP_DESKTOP);
   ASSERT_STREQ(info->app_name, "awtk");
-  ASSERT_NE(strstr(info->app_root, "demos") != NULL, TRUE);
+  ASSERT_EQ(strstr(info->app_root, "demos") != NULL, TRUE);
 
   ASSERT_EQ(system_info_set_lcd_w(info, 100), RET_OK);
   ASSERT_EQ(info->lcd_w, 100);
