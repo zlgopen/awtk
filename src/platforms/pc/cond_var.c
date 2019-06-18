@@ -78,6 +78,10 @@ ret_t tk_cond_var_destroy(tk_cond_var_t* cond_var) {
 }
 
 #else
+#ifndef _POSIX_C_SOURCE
+#define _POSIX_C_SOURCE 199309L
+#endif/*_POSIX_C_SOURCE*/
+
 #include <pthread.h>
 #include <sys/time.h>
 
