@@ -308,15 +308,17 @@ static ret_t lcd_mem_end_frame(lcd_t* lcd) {
   }
 
   if (lcd_is_swappable(lcd)) {
-    return lcd_swap(lcd);
+    lcd_swap(lcd);
   } else {
 #if !defined(LINUX)
     if (lcd->draw_mode == LCD_DRAW_ANIMATION) {
       return RET_OK;
     }
 #endif /*LINUX*/
-    return lcd_flush(lcd);
+    lcd_flush(lcd);
   }
+
+  return lcd_sync(lcd);
 }
 
 static ret_t lcd_mem_destroy(lcd_t* lcd) {

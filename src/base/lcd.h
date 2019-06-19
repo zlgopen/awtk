@@ -75,6 +75,7 @@ typedef wh_t (*lcd_get_width_t)(lcd_t* lcd);
 typedef wh_t (*lcd_get_height_t)(lcd_t* lcd);
 typedef ret_t (*lcd_swap_t)(lcd_t* lcd);
 typedef ret_t (*lcd_flush_t)(lcd_t* lcd);
+typedef ret_t (*lcd_sync_t)(lcd_t* lcd);
 typedef ret_t (*lcd_end_frame_t)(lcd_t* lcd);
 typedef ret_t (*lcd_destroy_t)(lcd_t* lcd);
 
@@ -170,6 +171,7 @@ struct _lcd_t {
   lcd_get_width_t get_width;
   lcd_get_height_t get_height;
   lcd_flush_t flush;
+  lcd_sync_t sync;
   lcd_end_frame_t end_frame;
   lcd_get_vgcanvas_t get_vgcanvas;
   lcd_take_snapshot_t take_snapshot;
@@ -256,6 +258,8 @@ struct _lcd_t {
 
   rect_t fps_rect;
   rect_t dirty_rect;
+
+  void* impl_data;
 };
 
 /**
@@ -559,6 +563,16 @@ wh_t lcd_get_height(lcd_t* lcd);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t lcd_flush(lcd_t* lcd);
+
+/**
+ * @method lcd_sync
+ * sync。
+ * @annotation ["private"]
+ * @param {lcd_t*} lcd lcd对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t lcd_sync(lcd_t* lcd);
 
 /**
  * @method lcd_is_swappable
