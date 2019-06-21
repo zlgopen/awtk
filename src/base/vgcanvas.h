@@ -299,11 +299,11 @@ struct _vgcanvas_t {
    */
   const char* line_join;
   /**
-   * @property {const char*} font
+   * @property {char*} font
    * @annotation ["readable", "scriptable"]
    * 字体。
    */
-  const char* font;
+  char* font;
   /**
    * @property {float_t} font_size
    * @annotation ["readable", "scriptable"]

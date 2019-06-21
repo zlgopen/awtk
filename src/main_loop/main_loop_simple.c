@@ -211,6 +211,7 @@ ret_t main_loop_simple_reset(main_loop_simple_t* loop) {
   tk_mutex_destroy(loop->mutex);
   lcd_destroy(loop->base.lcd);
 
+  canvas_reset(&(loop->base.canvas));
   memset(loop, 0x00, sizeof(main_loop_simple_t));
 
   return RET_OK;

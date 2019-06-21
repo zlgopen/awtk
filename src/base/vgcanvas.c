@@ -197,9 +197,9 @@ ret_t vgcanvas_set_font(vgcanvas_t* vg, const char* font) {
   return_value_if_fail(vg != NULL && vg->vt->set_font != NULL, RET_BAD_PARAMS);
 
   font = system_info_fix_font_name(font);
-  vg->font = font;
+  vg->font = tk_str_copy(vg->font, font);
 
-  return vg->vt->set_font(vg, font);
+  return vg->vt->set_font(vg, vg->font);
 }
 
 ret_t vgcanvas_set_font_size(vgcanvas_t* vg, float_t size) {

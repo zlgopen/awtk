@@ -60,7 +60,7 @@ struct _canvas_t {
   lcd_t* lcd;
   font_t* font;
   font_size_t font_size;
-  const char* font_name;
+  char* font_name;
 
   align_v_t text_align_v;
   align_h_t text_align_h;
@@ -487,6 +487,17 @@ vgcanvas_t* canvas_get_vgcanvas(canvas_t* c);
  * @return {canvas_t*} canvas对象。
  */
 canvas_t* canvas_cast(canvas_t* c);
+
+/**
+ * @method canvas_reset
+ * 释放相关资源。
+ *
+ * @annotation ["scriptable"]
+ * @param {canvas_t*} c canvas对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t canvas_reset(canvas_t* c);
 
 /*private*/
 ret_t canvas_draw_image_ex(canvas_t* c, bitmap_t* img, image_draw_type_t draw_type,
