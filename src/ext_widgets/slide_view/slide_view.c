@@ -339,6 +339,11 @@ static ret_t widget_calc_children_rect(widget_t* widget, rect_t* r) {
     rect_merge(r, &rc);
   }
 
+  if(widget != NULL) {
+    r->x += widget->x;
+    r->y += widget->y;
+  }
+
   return RET_OK;
 }
 

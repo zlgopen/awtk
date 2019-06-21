@@ -579,7 +579,7 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
 
   if (wm->show_fps) {
     rect_t fps_rect = rect_init(0, 0, 60, 30);
-    widget_invalidate(widget, &fps_rect);
+    window_manager_invalidate(widget, &fps_rect);
   }
 
   if (dr->w && dr->h) {

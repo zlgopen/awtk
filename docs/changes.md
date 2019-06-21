@@ -1,4 +1,8 @@
 # 最新动态
+* 2019/06/21
+  * 修改slide view/fps 脏矩形计算的BUG(感谢陈潭提供补丁)。
+  * 修改idle文档的问题(感谢俊杰提供补丁)。
+
 * 2019/06/18
   * 修改window\_manager\_update\_cursor的BUG(感谢智明提供补丁)
   * 修改main\_loop\_post\_pointer\_event的BUG(感谢朝泽提供补丁)
