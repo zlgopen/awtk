@@ -1,29 +1,33 @@
 # 最新动态
+* 2019/06/24
+  * 用 stb\_text\_edit 重新实现 edit 控件，支持取消、重做、全选、拷贝、剪切、粘贴和键盘选择等功能。
+  * 增加多行编辑控件 (mledit)。
+
 * 2019/06/22
-  * 修改canvas\_set\_font/vgcanvas\_set\_font脚本绑定的问题(感谢尧燊提供补丁)。
+  * 修改 canvas\_set\_font/vgcanvas\_set\_font 脚本绑定的问题（感谢尧燊提供补丁）。
 
 * 2019/06/21
-  * 修改slide view/fps 脏矩形计算的BUG(感谢陈潭提供补丁)。
-  * 修改idle文档的问题(感谢俊杰提供补丁)。
+  * 修改 slide view/fps 脏矩形计算的 BUG（感谢陈潭提供补丁）。
+  * 修改 idle 文档的问题（感谢俊杰提供补丁）。
 
 * 2019/06/18
-  * 修改window\_manager\_update\_cursor的BUG(感谢智明提供补丁)
-  * 修改main\_loop\_post\_pointer\_event的BUG(感谢朝泽提供补丁)
+  * 修改 window\_manager\_update\_cursor 的 BUG（感谢智明提供补丁）
+  * 修改 main\_loop\_post\_pointer\_event 的 BUG（感谢朝泽提供补丁）
 
 * 2019/06/17
-  * SDL FB模式启用脏矩形。
-  * 增加lcd\_mem\_special用于实现一些特殊的FB格式。
+  * SDL FB 模式启用脏矩形。
+  * 增加 lcd\_mem\_special 用于实现一些特殊的 FB 格式。
 
 * 2019/06/15
-  * 增加timer_modify
+  * 增加 timer_modify
   * 支持动态修改屏保时间。
 
 * 2019/06/14
-  * 增加app_root自动检测。
+  * 增加 app_root 自动检测。
 
 * 2019/06/13
-  * 修改lcd\_sdl2\_resize的bug(感谢尧燊提供补丁)。
-  * image/svg/gif支持从文件系统中加载图片。
+  * 修改 lcd\_sdl2\_resize 的 bug（感谢尧燊提供补丁）。
+  * image/svg/gif 支持从文件系统中加载图片。
 
 * 2019/06/12
   * 修改全局字体缩放的问题。

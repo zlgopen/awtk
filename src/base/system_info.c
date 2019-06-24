@@ -307,5 +307,5 @@ ret_t system_info_set_default_font(system_info_t* info, const char* default_font
 const char* system_info_fix_font_name(const char* name) {
   return_value_if_fail(system_info() != NULL, name);
 
-  return name != NULL ? name : system_info()->default_font;
+  return (name && *name) ? name : system_info()->default_font;
 }

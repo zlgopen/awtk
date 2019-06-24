@@ -111,6 +111,15 @@ ret_t rich_text_render_node_tune_row(rich_text_render_node_t* row_first_node, in
   }                                                                    \
   row_h = 0;
 
+break_type_t rich_text_line_break_check(wchar_t c1, wchar_t c2) {
+  break_type_t break_type = line_break_check(c1, c2);
+  if (break_type == LINE_BREAK_NO) {
+    break_type = word_break_check(c1, c2);
+  }
+
+  return break_type;
+}
+
 rich_text_render_node_t* rich_text_render_node_layout(widget_t* widget, rich_text_node_t* node,
                                                       canvas_t* c, int32_t w, int32_t h,
                                                       int32_t margin, int32_t line_gap) {
@@ -196,7 +205,7 @@ rich_text_render_node_t* rich_text_render_node_layout(widget_t* widget, rich_tex
         for (i = 0; str[i]; i++) {
           cw = canvas_measure_text(c, str + i, 1);
           if (i > 0) {
-            break_type = line_break_check(str[i - 1], str[i]);
+            break_type = rich_text_line_break_check(str[i - 1], str[i]);
           }
 
           if ((x + tw + cw) > right || break_type == LINE_BREAK_MUST) {
@@ -239,7 +248,7 @@ rich_text_render_node_t* rich_text_render_node_layout(widget_t* widget, rich_tex
             row_h = font_size;
           } else {
             if (i > 0) {
-              if (line_break_check(str[i - 1], str[i]) == LINE_BREAK_ALLOW) {
+              if (rich_text_line_break_check(str[i - 1], str[i]) == LINE_BREAK_ALLOW) {
                 last_breakable = i;
               }
             }

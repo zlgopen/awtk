@@ -132,9 +132,7 @@ ret_t bsvg_to_svg_path(str_t* str, const svg_path_t* path) {
       break;
     }
     case SVG_PATH_NULL:
-    default: {
-      break;
-    }
+    default: { break; }
   }
 
   return str_append(str, buff);

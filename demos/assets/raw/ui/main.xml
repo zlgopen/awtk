@@ -40,6 +40,7 @@
       <button name="open:radial_gradient" text="Radial Gradient"/>
       <button name="open:stroke_gradient" text="Stroke Gradient"/>
       <button name="open:overlay" text="Overlay"/>
+      <button name="open:mledit" text="MultiLine Edit"/>
     </view>
     <view x="0" y="0" w="100%" h="100%" children_layout="default(c=1,r=8,m=5,s=5)">
       <button name="open:memtest" text="MemTest"/>

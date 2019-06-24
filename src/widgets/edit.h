@@ -24,6 +24,7 @@
 #define TK_EDIT_H
 
 #include "base/widget.h"
+#include "base/text_edit.h"
 #include "base/input_method.h"
 
 BEGIN_C_DECLS
@@ -195,20 +196,10 @@ typedef struct _edit_t {
    */
 
   /*private*/
-  uint16_t visible_end;
-  uint16_t visible_start;
-  uint16_t selected_start;
-  uint16_t selected_end;
-
-  int32_t cursor_pre;
-  int32_t cursor_pos;
-  xy_t offset_x;
-  xy_t caret_x;
-  bool_t caret_visible;
-
-  uint32_t timer_id;
   uint32_t idle_id;
+  uint32_t timer_id;
   input_limit_t limit;
+  text_edit_t* model;
 } edit_t;
 
 /**

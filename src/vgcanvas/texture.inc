@@ -1,3 +1,4 @@
+#include "tkc/utils.h"
 
 static ret_t nanovg_on_bitmap_destroy(bitmap_t* img) {
   int32_t id = tk_pointer_to_int(img->specific);

@@ -271,6 +271,16 @@ ret_t wstr_add_float(wstr_t* str, double delta);
 ret_t wstr_trim_float_zero(wstr_t* str);
 
 /**
+ * @method wstr_normalize_newline
+ * 规范化换行符。
+ * @param {wstr_t*} str str对象。
+ * @param {wchar_t} newline 换行符。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t wstr_normalize_newline(wstr_t* str, wchar_t newline);
+
+/**
  * @method wstr_reset
  * 重置字符串为空。
  * @param {wstr_t*} str str对象。

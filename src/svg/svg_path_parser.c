@@ -248,9 +248,7 @@ static ret_t svg_path_parser_parse_cmd(svg_path_parser_t* parser, char c) {
       }
       break;
     }
-    default: {
-      assert(!"not supported path!");
-    } break;
+    default: { assert(!"not supported path!"); } break;
   }
 
   return RET_OK;

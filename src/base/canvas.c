@@ -217,6 +217,7 @@ ret_t canvas_set_global_alpha(canvas_t* c, uint8_t alpha) {
 ret_t canvas_set_font(canvas_t* c, const char* name, font_size_t size) {
   return_value_if_fail(c != NULL && c->lcd != NULL, RET_BAD_PARAMS);
 
+  name = system_info_fix_font_name(name);
   c->font_name = tk_str_copy(c->font_name, name);
   c->font_size = system_info()->font_scale * size;
 

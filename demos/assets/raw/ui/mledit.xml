@@ -1,0 +1,4 @@
+<window anim_hint="htranslate" >
+ <mledit x="c" y="10" h="40%" w="90%" focus="true" wrap_word="true"> </mledit>
+ <mledit x="c" y="b:10" h="40%" w="90%" wrap_word="false"> </mledit>
+</window>

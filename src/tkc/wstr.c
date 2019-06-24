@@ -426,3 +426,28 @@ ret_t wstr_reset(wstr_t* str) {
 
   return RET_OK;
 }
+
+ret_t wstr_normalize_newline(wstr_t* str, wchar_t newline) {
+  wchar_t* s = str->str;
+  wchar_t* d = str->str;
+
+  while (*s) {
+    if (*s == '\r') {
+      if (s[1] == '\n') {
+        s++;
+      }
+      s++;
+      *d++ = newline;
+    } else if (*s == '\n') {
+      s++;
+      *d++ = newline;
+    } else {
+      *d++ = *s++;
+    }
+  }
+
+  *d = '\0';
+  str->size = d - str->str;
+
+  return RET_OK;
+}

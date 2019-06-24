@@ -76,6 +76,7 @@
 #include "assets/inc/ui/lua.data"
 #include "assets/inc/ui/main.data"
 #include "assets/inc/ui/memtest.data"
+#include "assets/inc/ui/mledit.data"
 #include "assets/inc/ui/overlay.data"
 #include "assets/inc/ui/popdown.data"
 #include "assets/inc/ui/popup.data"
@@ -596,6 +597,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_lua);
   assets_manager_add(rm, ui_main);
   assets_manager_add(rm, ui_memtest);
+  assets_manager_add(rm, ui_mledit);
   assets_manager_add(rm, ui_overlay);
   assets_manager_add(rm, ui_popdown);
   assets_manager_add(rm, ui_popup);

@@ -410,9 +410,7 @@ static cairo_surface_t* create_surface(uint32_t w, uint32_t h, bitmap_format_t f
       cairo_format = CAIRO_FORMAT_RGB16_565;
       break;
     }
-    default: {
-      return NULL;
-    }
+    default: { return NULL; }
   }
 
   return cairo_image_surface_create_for_data(fbuff, cairo_format, w, h, w * bpp);
