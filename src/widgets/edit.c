@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   edit.h
  * Author: AWTK Develop Team
  * Brief:  edit
@@ -318,7 +318,7 @@ static ret_t edit_auto_fix(widget_t* widget) {
       break;
   }
 
-  text_edit_set_cursor(edit->model, -1);
+  text_edit_set_cursor(edit->model, 0xffffffff);
 
   return RET_OK;
 }
@@ -801,7 +801,7 @@ ret_t edit_set_password_visible(widget_t* widget, bool_t password_visible) {
   edit->password_visible = password_visible;
   text_edit_set_mask(edit->model, !password_visible);
   text_edit_set_mask_char(edit->model, PASSWORD_MASK_CHAR);
-  text_edit_set_cursor(edit->model, -1);
+  text_edit_set_cursor(edit->model, 0xffffffff);
   widget_invalidate(widget, NULL);
 
   return RET_OK;
@@ -936,7 +936,7 @@ ret_t edit_inc(edit_t* edit) {
     default:
       break;
   }
-  text_edit_set_cursor(edit->model, -1);
+  text_edit_set_cursor(edit->model, 0xffffffff);
 
   return widget_invalidate_force(widget, NULL);
 }
@@ -974,7 +974,7 @@ ret_t edit_dec(edit_t* edit) {
       break;
   }
 
-  text_edit_set_cursor(edit->model, -1);
+  text_edit_set_cursor(edit->model, 0xffffffff);
   return widget_invalidate_force(widget, NULL);
 }
 
@@ -983,7 +983,7 @@ ret_t edit_clear(edit_t* edit) {
   return_value_if_fail(widget != NULL && edit != NULL, RET_BAD_PARAMS);
 
   widget->text.size = 0;
-  text_edit_set_cursor(edit->model, -1);
+  text_edit_set_cursor(edit->model, 0xffffffff);
 
   return widget_invalidate_force(widget, NULL);
 }

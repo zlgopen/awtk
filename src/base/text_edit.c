@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   text_edit.c
  * Author: AWTK Develop Team
  * Brief:  text_edit
@@ -85,7 +85,7 @@ typedef struct _text_edit_impl_t {
 
 #define DECL_IMPL(te) text_edit_impl_t* impl = (text_edit_impl_t*)(te)
 
-static ret_t text_edit_calc_x(text_edit_t* text_edit, row_info_t* iter);
+static int32_t text_edit_calc_x(text_edit_t* text_edit, row_info_t* iter);
 
 static align_h_t widget_get_text_align_h(widget_t* widget) {
   return (align_h_t)style_get_int(widget->astyle, STYLE_ID_TEXT_ALIGN_H, ALIGN_H_LEFT);
@@ -219,10 +219,8 @@ static uint32_t text_edit_measure_text(canvas_t* c, wchar_t* str, wchar_t mask_c
 static row_info_t* text_edit_single_line_layout_line(text_edit_t* text_edit, uint32_t row_num,
                                                      uint32_t offset) {
   uint32_t y = 0;
-  uint32_t char_w = 0;
   uint32_t caret_x = 0;
   DECL_IMPL(text_edit);
-  rows_t* rows = impl->rows;
   canvas_t* c = text_edit->c;
   wstr_t* text = &(text_edit->widget->text);
   STB_TexteditState* state = &(impl->state);
@@ -261,7 +259,6 @@ static row_info_t* text_edit_multi_line_layout_line(text_edit_t* text_edit, uint
   uint32_t i = 0;
   uint32_t x = 0;
   DECL_IMPL(text_edit);
-  rows_t* rows = impl->rows;
   canvas_t* c = text_edit->c;
   wstr_t* text = &(text_edit->widget->text);
   STB_TexteditState* state = &(impl->state);
@@ -366,7 +363,6 @@ ret_t text_edit_layout(text_edit_t* text_edit) {
 static void text_edit_layout_for_stb(StbTexteditRow* row, STB_TEXTEDIT_STRING* str, int offset) {
   DECL_IMPL(str);
   uint32_t font_size = str->c->font_size;
-  text_layout_info_t* layout_info = &(impl->layout_info);
   row_info_t* info = rows_find_by_offset(impl->rows, offset);
 
   if (info != NULL) {
@@ -425,7 +421,7 @@ static ret_t text_edit_paint_tips_text(text_edit_t* text_edit, canvas_t* c) {
   return RET_OK;
 }
 
-static ret_t text_edit_calc_x(text_edit_t* text_edit, row_info_t* iter) {
+static int32_t text_edit_calc_x(text_edit_t* text_edit, row_info_t* iter) {
   DECL_IMPL(text_edit);
   canvas_t* c = text_edit->c;
   widget_t* widget = text_edit->widget;
@@ -514,19 +510,14 @@ static ret_t text_edit_paint_line(text_edit_t* text_edit, canvas_t* c, row_info_
 static ret_t text_edit_paint_real_text(text_edit_t* text_edit, canvas_t* c) {
   uint32_t i = 0;
   uint32_t y = 0;
-  widget_t* widget = text_edit->widget;
-
   DECL_IMPL(text_edit);
   rows_t* rows = impl->rows;
-  wstr_t* text = &(widget->text);
-  STB_TexteditState* state = &(impl->state);
   uint32_t line_height = c->font_size * FONT_BASELINE;
   text_layout_info_t* layout_info = &(impl->layout_info);
   uint32_t view_top = layout_info->oy + layout_info->margin_t;
   uint32_t view_bottom = layout_info->oy + layout_info->margin_t + layout_info->h;
 
   for (i = 0; i < rows->size; i++) {
-    uint32_t k = 0;
     row_info_t* iter = rows->info + i;
 
     if (impl->single_line) {
