@@ -107,6 +107,7 @@ ret_t vgcanvas_paint(vgcanvas_t* vg, bool_t stroke, bitmap_t* img) {
 ret_t vgcanvas_destroy(vgcanvas_t* vg) {
   return_value_if_fail(vg != NULL && vg->vt->destroy != NULL, RET_BAD_PARAMS);
 
+  TKMEM_FREE(vg->font);
   TKMEM_FREE(vg->text_baseline);
   TKMEM_FREE(vg->text_align);
 

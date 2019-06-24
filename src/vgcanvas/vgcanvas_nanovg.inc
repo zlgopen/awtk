@@ -231,8 +231,8 @@ static ret_t vgcanvas_nanovg_set_font(vgcanvas_t* vgcanvas, const char* name) {
   int font_id = 0;
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
+  return_value_if_fail(name && *name, RET_BAD_PARAMS);
 
-  name = system_info_fix_font_name(name);
   font_id = nvgFindFont(vg, name);
   if (font_id < 0) {
     const asset_info_t* r = assets_manager_ref(assets_manager(), ASSET_TYPE_FONT, name);
@@ -253,7 +253,6 @@ static ret_t vgcanvas_nanovg_set_font(vgcanvas_t* vgcanvas, const char* name) {
 
   return_value_if_fail(font_id >= 0, RET_FAIL);
 
-  vgcanvas->font = name;
   canvas->font_id = font_id;
   nvgFontFaceId(vg, font_id);
 
