@@ -2032,6 +2032,7 @@ static int nvg__expandStroke(NVGcontext* ctx, float w, float fringe, int lineCap
 		NVGpoint* p0;
 		NVGpoint* p1;
 		int s, e, loop;
+		float dx, dy;
 
 		path->fill = 0;
 		path->nfill = 0;
@@ -2109,6 +2110,7 @@ static int nvg__expandFill(NVGcontext* ctx, float w, int lineJoin, float miterLi
 	for (i = 0; i < cache->npaths; i++) {
 		NVGpath* path = &cache->paths[i];
 		NVGpoint* pts = &cache->points[path->first];
+		NVGpoint* p0;
 		NVGpoint* p1;
 		float rw, lw, woff;
 		float ru, lu;
@@ -2120,9 +2122,11 @@ static int nvg__expandFill(NVGcontext* ctx, float w, int lineJoin, float miterLi
 
 		if (fringe) {
 			// Looping
+			p0 = &pts[path->count-1];
 			p1 = &pts[0];
 			for (j = 0; j < path->count; ++j) {
 				nvg__vset(dst, p1->x + (p1->dmx * woff), p1->y + (p1->dmy * woff), 0.5f,1); dst++;
+				p0 = p1++;
 			}
 		} else {
 			for (j = 0; j < path->count; ++j) {
@@ -2151,11 +2155,13 @@ static int nvg__expandFill(NVGcontext* ctx, float w, int lineJoin, float miterLi
 			}
 
 			// Looping
+			p0 = &pts[path->count-1];
 			p1 = &pts[0];
 
 			for (j = 0; j < path->count; ++j) {
 				nvg__vset(dst, p1->x + (p1->dmx * lw), p1->y + (p1->dmy * lw), lu,1); dst++;
 				nvg__vset(dst, p1->x - (p1->dmx * rw), p1->y - (p1->dmy * rw), ru,1); dst++;
+				p0 = p1++;
 			}
 
 			// Loop it
