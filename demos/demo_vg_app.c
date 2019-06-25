@@ -336,6 +336,39 @@ static ret_t on_paint_vg(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t on_paint_global_alpha(void* ctx, event_t* e) {
+  bitmap_t img;
+  paint_event_t* evt = (paint_event_t*)e;
+  canvas_t* c = evt->c;
+  vgcanvas_t* vg = canvas_get_vgcanvas(c);
+  color_t fill = color_init(0x00, 0xff, 0x00,  0xff);
+  color_t stroke = color_init(0x00, 0x00, 0xff,  0xff);
+
+  vgcanvas_save(vg);
+
+  image_manager_get_bitmap(image_manager(), "bricks", &img);
+  vgcanvas_set_global_alpha(vg, 1);
+  vgcanvas_draw_image(vg, &img, 0, 0, img.w, img.h, 0, 0, img.w, img.h);
+  
+  vgcanvas_set_global_alpha(vg, 0.5);
+
+  vgcanvas_set_fill_color(vg, fill);
+  vgcanvas_rect(vg, 0, 0, 20, 20);
+  vgcanvas_fill(vg);
+  
+  vgcanvas_set_stroke_color(vg, stroke);
+  vgcanvas_set_line_width(vg, 5);
+  vgcanvas_rect(vg, 20, 20, 20, 20);
+  vgcanvas_stroke(vg);
+
+  vgcanvas_translate(vg, 15, 15);
+  vgcanvas_draw_image(vg, &img, 0, 0, img.w, img.h, 0, 0, img.w, img.h);
+
+  vgcanvas_restore(vg);
+
+  return RET_OK;
+}
+
 static ret_t on_paint_vg_simple(void* ctx, event_t* e) {
   bitmap_t img;
   paint_event_t* evt = (paint_event_t*)e;
@@ -417,6 +450,7 @@ ret_t application_init() {
 
   // widget_on(canvas, EVT_PAINT, on_paint_vg_simple, NULL);
   widget_on(canvas, EVT_PAINT, on_paint_vg, NULL);
+  //widget_on(canvas, EVT_PAINT, on_paint_global_alpha, NULL);
 
   timer_add(on_timer, win, 500);
 

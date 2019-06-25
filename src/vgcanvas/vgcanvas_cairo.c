@@ -58,7 +58,7 @@ ret_t vgcanvas_cairo_begin_frame(vgcanvas_t* vgcanvas, rect_t* dirty_rect) {
   cairo_clip(vg);
   cairo_new_path(vg);
   cairo_save(vg);
-  vgcanvas->global_alpha = 0xff;
+  vgcanvas->global_alpha = 1;
 
   return RET_OK;
 }
@@ -301,8 +301,10 @@ static ret_t vgcanvas_cairo_fill(vgcanvas_t* vgcanvas) {
   vgcanvas_cairo_t* canvas = (vgcanvas_cairo_t*)vgcanvas;
 
   if (canvas->fill_source_type == CAIRO_SOURCE_GRADIENT) {
+    /*not support global alpha yet*/
     cairo_set_source(vg, canvas->fill_gradient);
   } else {
+    c.rgba.a = c.rgba.a * vgcanvas->global_alpha;
     cairo_set_source_color(vg, c);
   }
 
@@ -328,8 +330,10 @@ static ret_t vgcanvas_cairo_stroke(vgcanvas_t* vgcanvas) {
   vgcanvas_cairo_t* canvas = (vgcanvas_cairo_t*)vgcanvas;
 
   if (canvas->stroke_source_type == CAIRO_SOURCE_GRADIENT) {
+    /*not support global alpha yet*/
     cairo_set_source(vg, canvas->stroke_gradient);
   } else {
+    c.rgba.a = c.rgba.a * vgcanvas->global_alpha;
     cairo_set_source_color(vg, c);
   }
 
@@ -462,7 +466,7 @@ static ret_t vgcanvas_cairo_draw_image(vgcanvas_t* vgcanvas, bitmap_t* img, floa
                                        float_t dh) {
   float fx = (float)dw / sw;
   float fy = (float)dh / sh;
-  float_t global_alpha = 1;
+  float_t global_alpha = vgcanvas->global_alpha;
   cairo_t* vg = ((vgcanvas_cairo_t*)vgcanvas)->vg;
   cairo_surface_t* surface = vgcanvas_cairo_ensure_image((vgcanvas_cairo_t*)vgcanvas, img);
 
@@ -506,10 +510,6 @@ static ret_t vgcanvas_cairo_set_line_width(vgcanvas_t* vgcanvas, float_t value) 
 }
 
 static ret_t vgcanvas_cairo_set_global_alpha(vgcanvas_t* vgcanvas, float_t value) {
-  cairo_t* vg = ((vgcanvas_cairo_t*)vgcanvas)->vg;
-
-  cairo_paint_with_alpha(vg, value);
-
   return RET_OK;
 }
 
@@ -841,7 +841,8 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_form
   cairo->vg = cairo_create(surface);
   return_value_if_fail(cairo->vg, NULL);
   darray_init(&(cairo->images), 10, (tk_destroy_t)bitmap_destroy, (tk_compare_t)cairo_bitmap_cmp);
-
+  vgcanvas_set_global_alpha((vgcanvas_t*)cairo, 1);
+  
   log_debug("vgcanvas_cairo created\n");
   return &(cairo->base);
 }
