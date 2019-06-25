@@ -44,7 +44,7 @@ typedef struct _bitmap_header_t {
  * @annotation ["scriptable"]
  * 图片管理器。负责加载，解码和缓存图片。
  */
-typedef struct _image_manager_t {
+struct _image_manager_t {
   /**
    * @property {darray_t} images
    * @annotation ["private"]
@@ -58,7 +58,7 @@ typedef struct _image_manager_t {
    * 资源管理器。
    */
   assets_manager_t* assets_manager;
-} image_manager_t;
+};
 
 /**
  * @method image_manager

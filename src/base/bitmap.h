@@ -201,6 +201,8 @@ struct _bitmap_t {
 
   /*virtual functions*/
   bitmap_destroy_t destroy;
+
+  image_manager_t* image_manager;
 };
 
 /**

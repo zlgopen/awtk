@@ -114,6 +114,7 @@ ret_t image_manager_lookup(image_manager_t* imm, const char* name, bitmap_t* ima
   if (iter != NULL) {
     *image = iter->image;
     image->destroy = NULL;
+    image->image_manager = imm;
     image->specific_destroy = NULL;
     image->should_free_data = FALSE;
 
@@ -130,6 +131,10 @@ ret_t image_manager_update_specific(image_manager_t* imm, bitmap_t* image) {
   bitmap_cache_t info;
   bitmap_cache_t* iter = NULL;
   return_value_if_fail(imm != NULL && image != NULL, RET_BAD_PARAMS);
+
+  if (image->image_manager != NULL) {
+    imm = image->image_manager;
+  }
 
   info.image.data = image->data;
   imm->images.compare = (tk_compare_t)bitmap_cache_cmp_data;
@@ -172,7 +177,7 @@ static ret_t image_manager_get_bitmap_impl(image_manager_t* imm, const char* nam
     image->format = header->format;
     image->name = res->name;
     image->data = header->data;
-
+    image->image_manager = imm;
 #if defined(WITH_NANOVG_GPU) || defined(WITH_NANOVG_SOFT)
     image_manager_add(imm, name, image);
 #endif

@@ -1,4 +1,8 @@
 # 最新动态
+* 2019/06/25
+  * 完善 slider。dragger 以实际 icon 为准。
+  * 让 bitmap 引用 image\_manager 以区分 bitmap 是由哪个 image\_manager 加载的。
+
 * 2019/06/24
   * 用 stb\_text\_edit 重新实现 edit 控件，支持取消、重做、全选、拷贝、剪切、粘贴和键盘选择等功能。
   * 增加多行编辑控件 (mledit)。

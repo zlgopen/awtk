@@ -287,6 +287,9 @@ typedef struct _locale_info_t locale_info_t;
 struct _assets_manager_t;
 typedef struct _assets_manager_t assets_manager_t;
 
+struct _image_manager_t;
+typedef struct _image_manager_t image_manager_t;
+
 struct _system_info_t;
 typedef struct _system_info_t system_info_t;
 
