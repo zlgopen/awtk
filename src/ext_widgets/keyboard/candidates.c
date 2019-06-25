@@ -114,7 +114,7 @@ static ret_t candidates_relayout_children(widget_t* widget) {
   }
 
   hscrollable_set_xoffset(candidates->hscrollable, 0);
-  hscrollable_set_virtual_w(candidates->hscrollable, child_x);
+  hscrollable_set_virtual_w(candidates->hscrollable, child_x + 30);
 
   return RET_OK;
 }
