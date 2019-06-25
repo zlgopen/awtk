@@ -281,8 +281,8 @@ ret_t widget_set_tr_text(widget_t* widget, const char* text) {
   } else {
     widget_set_prop_str(widget, WIDGET_PROP_TEXT, text);
     widget_on(widget, EVT_BEFORE_PAINT, widget_apply_tr_text_before_paint, widget);
-		
-		return RET_OK;
+
+    return RET_OK;
   }
 }
 
@@ -939,7 +939,7 @@ ret_t widget_fill_rect(widget_t* widget, canvas_t* c, rect_t* r, bool_t bg,
   color_t color = style_get_color(style, color_key, trans);
   const char* image_name = style_get_str(style, image_key, NULL);
 
-  if (color.rgba.a) {
+  if (color.rgba.a && r->w > 0 && r->h > 0) {
     canvas_set_fill_color(c, color);
     if (radius > 3) {
       vgcanvas_t* vg = canvas_get_vgcanvas(c);
@@ -959,7 +959,7 @@ ret_t widget_fill_rect(widget_t* widget, canvas_t* c, rect_t* r, bool_t bg,
     }
   }
 
-  if (image_name != NULL) {
+  if (image_name != NULL && r->w > 0 && r->h > 0) {
     if (widget_load_image(widget, image_name, &img) == RET_OK) {
       draw_type = (image_draw_type_t)style_get_int(style, draw_type_key, draw_type);
       canvas_draw_image_ex(c, &img, draw_type, r);

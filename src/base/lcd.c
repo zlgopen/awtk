@@ -120,23 +120,38 @@ ret_t lcd_set_font_size(lcd_t* lcd, uint32_t size) {
 ret_t lcd_draw_vline(lcd_t* lcd, xy_t x, xy_t y, wh_t h) {
   return_value_if_fail(lcd != NULL && lcd->draw_vline != NULL, RET_BAD_PARAMS);
 
+  if (h == 0) {
+    return RET_BAD_PARAMS;
+  }
+
   return lcd->draw_vline(lcd, x, y, h);
 }
 
 ret_t lcd_draw_hline(lcd_t* lcd, xy_t x, xy_t y, wh_t w) {
   return_value_if_fail(lcd != NULL && lcd->draw_hline != NULL, RET_BAD_PARAMS);
 
+  if (w == 0) {
+    return RET_BAD_PARAMS;
+  }
+
   return lcd->draw_hline(lcd, x, y, w);
 }
 
 ret_t lcd_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
   return_value_if_fail(lcd != NULL && lcd->fill_rect != NULL, RET_BAD_PARAMS);
+  if (w == 0 || h == 0) {
+    return RET_BAD_PARAMS;
+  }
 
   return lcd->fill_rect(lcd, x, y, w, h);
 }
 
 ret_t lcd_stroke_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
   return_value_if_fail(lcd != NULL && lcd->stroke_rect != NULL, RET_BAD_PARAMS);
+
+  if (w == 0 || h == 0) {
+    return RET_BAD_PARAMS;
+  }
 
   return lcd->stroke_rect(lcd, x, y, w, h);
 }

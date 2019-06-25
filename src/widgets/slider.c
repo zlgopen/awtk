@@ -38,13 +38,19 @@ static ret_t slider_get_dragger_rect(widget_t* widget, rect_t* r) {
   range = slider->max - slider->min;
   fvalue = (float)value / (float)range;
 
-  r->w = tk_min(widget->w, widget->h);
-  r->h = r->w;
+  if (r->w == 0) {
+    r->w = tk_min(widget->w, widget->h);
+  }
+
+  if (r->h == 0) {
+    r->h = r->w;
+  }
+
   if (slider->vertical) {
-    r->x = 0;
+    r->x = (widget->w - r->w) / 2;
     r->y = (widget->h - r->h) * (1 - fvalue);
   } else {
-    r->y = 0;
+    r->y = (widget->h - r->h) / 2;
     r->x = (widget->w - r->w) * fvalue;
   }
 
@@ -59,16 +65,19 @@ static ret_t slider_paint_dragger(widget_t* widget, canvas_t* c) {
   style_t* style = widget->astyle;
   color_t trans = color_init(0, 0, 0, 0);
 
+  r = rect_init(0, 0, 0, 0);
   slider_get_dragger_rect(widget, &r);
   color = style_get_color(style, STYLE_ID_BORDER_COLOR, trans);
   if (color.rgba.a) {
     canvas_set_fill_color(c, color);
     canvas_fill_rect(c, r.x, r.y, r.w, r.h);
-  }
-
-  image_name = style_get_str(style, STYLE_ID_ICON, NULL);
-  if (image_name && image_manager_get_bitmap(image_manager(), image_name, &img) == RET_OK) {
-    canvas_draw_image_ex(c, &img, IMAGE_DRAW_SCALE_AUTO, &r);
+  } else {
+    image_name = style_get_str(style, STYLE_ID_ICON, NULL);
+    if (image_name && image_manager_get_bitmap(image_manager(), image_name, &img) == RET_OK) {
+      r = rect_init(0, 0, img.w, img.h);
+      slider_get_dragger_rect(widget, &r);
+      canvas_draw_image_ex(c, &img, IMAGE_DRAW_CENTER, &r);
+    }
   }
 
   return RET_OK;
@@ -224,6 +233,7 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
       pointer_event_t* evt = (pointer_event_t*)e;
       point_t p = {evt->x, evt->y};
 
+      r = rect_init(0, 0, 0, 0);
       slider_get_dragger_rect(widget, &r);
       widget_to_local(widget, &p);
       if (rect_contains(&r, p.x, p.y)) {

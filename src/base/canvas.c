@@ -1429,4 +1429,3 @@ ret_t canvas_reset(canvas_t* c) {
 
   return RET_OK;
 }
-
