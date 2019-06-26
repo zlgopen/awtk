@@ -245,27 +245,13 @@ TEST(Utils, str_append) {
 
 TEST(Utils, tk_str_copy) {
   char* p = NULL;
-  char* str = (char*)TKMEM_ALLOC(6);
+  p = tk_str_copy(p, "abc");
+  ASSERT_STREQ(p, "abc");
 
-  p = tk_str_copy(str, "abc");
-  ASSERT_EQ(str, p);
+  p = tk_str_copy(p, "abc123");
+  ASSERT_STREQ(p, "abc123");
 
-  p = tk_str_copy(str, "abcdef");
-  ASSERT_NE(str, p);
-  ASSERT_EQ(string(p), "abcdef");
-  str = p;
-
-  p = tk_str_copy(str, "abcdef");
-  ASSERT_EQ(str, p);
-  ASSERT_EQ(string(p), "abcdef");
-  str = p;
-
-  p = tk_str_copy(str, "abcdef123");
-  ASSERT_NE(str, p);
-  ASSERT_EQ(string(p), "abcdef123");
-  str = p;
-
-  TKMEM_FREE(str);
+  TKMEM_FREE(p);
 }
 
 TEST(Utils, tk_strdup) {

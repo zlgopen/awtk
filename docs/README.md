@@ -26,6 +26,7 @@
 * [控件焦点相关问题](widget_focus.md)
 * [AWTK中的颜色格式](color_format.md)
 * [AWTK输入事件处理流程](input_event_flow.md)
+* [内存耗尽处理流程](out_of_memory.md)
 
 ### 2.HowTos
 * [AWTK 调试技巧](debug_tips.md)

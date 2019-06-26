@@ -29,78 +29,38 @@ static void* tk_calloc_impl(uint32_t nmemb, uint32_t size);
 
 #ifdef HAS_STD_MALLOC
 
-#define MEM_MAGIC 0x11223344
-typedef struct _mem_block_t {
-  uint32_t magic;
-  uint32_t size;
-} mem_block_t;
+#define MAX_BLOCK_SIZE 0xffff0000
 
 static mem_stat_t s_mem_stat;
 mem_stat_t tk_mem_stat(void) {
   return s_mem_stat;
 }
 
-ret_t tk_mem_init(void* buffer, uint32_t size) {
-  (void)buffer;
-  (void)size;
-
-  return RET_OK;
-}
-
 static void* tk_alloc_impl(uint32_t size) {
-  uint32_t s = size + sizeof(mem_block_t);
-  void* ptr = malloc(s);
-
-  if (ptr != NULL) {
-    mem_block_t* head = (mem_block_t*)ptr;
-
-    head->size = s;
-    head->magic = MEM_MAGIC;
-
-    s_mem_stat.used_bytes += head->size;
-    s_mem_stat.used_block_nr++;
-
-    return (char*)ptr + sizeof(mem_block_t);
-  } else {
-    log_warn("out of memory: size=%u\n", size);
-    return NULL;
+  void* ptr = NULL;
+  if (size > MAX_BLOCK_SIZE) {
+    return ptr;
   }
+
+  ptr = malloc(size);
+  if (ptr != NULL) {
+    s_mem_stat.used_block_nr++;
+  }
+
+  return ptr;
 }
 
 static void* tk_realloc_impl(void* ptr, uint32_t size) {
-  if (ptr != NULL) {
-    mem_block_t* head = (mem_block_t*)((char*)ptr - sizeof(mem_block_t));
-    uint32_t old_size = head->size - sizeof(mem_block_t);
-
-    if (size <= old_size) {
-      return ptr;
-    } else {
-      void* newptr = tk_alloc_impl(size);
-      if (newptr) {
-        memcpy(newptr, ptr, tk_min(size, old_size));
-        tk_free_impl(ptr);
-
-        return newptr;
-      } else {
-        return ptr;
-      }
-    }
-
-  } else {
-    return tk_alloc_impl(size);
+  if (size > MAX_BLOCK_SIZE) {
+    return NULL;
   }
+
+  return realloc(ptr, size);
 }
 
 static void tk_free_impl(void* ptr) {
-  if (ptr != NULL) {
-    mem_block_t* head = (mem_block_t*)((char*)ptr - sizeof(mem_block_t));
-
-    assert(head->magic == MEM_MAGIC);
-    s_mem_stat.used_bytes -= head->size;
-    s_mem_stat.used_block_nr--;
-
-    free(head);
-  }
+  s_mem_stat.used_block_nr--;
+  free(ptr);
 }
 
 #else /*non std memory manager*/
@@ -336,152 +296,80 @@ static void* tk_calloc_impl(uint32_t nmemb, uint32_t s) {
   return ptr;
 }
 
-#ifdef ENABLE_MEM_LEAK_CHECK
-#include "tkc/time_now.h"
+#define TRY_MAX_TIMES 5
+static void* s_on_out_of_memory_ctx;
+static tk_mem_on_out_of_memory_t s_on_out_of_memory;
 
-typedef struct _mem_record_t {
-  void* ptr;
-  const char* func;
-  uint32_t line;
-  uint32_t size;
-  uint32_t time;
-} mem_record_t;
-
-#ifndef MEM_MAX_RECORDS
-#define MEM_MAX_RECORDS 4 * 1024
-#endif /*MEM_MAX_RECORDS*/
-
-static mem_record_t s_records[MEM_MAX_RECORDS];
-
-static void tk_remove_record(void* ptr) {
-  uint32_t i = 0;
-
-  for (i = 0; i < MEM_MAX_RECORDS; i++) {
-    mem_record_t* r = (mem_record_t*)s_records + i;
-
-    if (r->ptr == ptr) {
-      memset(r, 0x00, sizeof(mem_record_t));
-      break;
-    }
+ret_t tk_mem_on_out_of_memory(uint32_t tried_times, uint32_t need_size) {
+  if (s_on_out_of_memory != NULL) {
+    return s_on_out_of_memory(s_on_out_of_memory_ctx, tried_times, need_size);
   }
+
+  return RET_NOT_IMPL;
 }
 
-static void* tk_add_record(void* ptr, uint32_t size, const char* func, uint32_t line) {
-  uint32_t i = 0;
+ret_t tk_mem_set_on_out_of_memory(tk_mem_on_out_of_memory_t on_out_of_memory, void* ctx) {
+  s_on_out_of_memory = on_out_of_memory;
+  s_on_out_of_memory_ctx = ctx;
 
-  for (i = 0; i < MEM_MAX_RECORDS; i++) {
-    mem_record_t* r = (mem_record_t*)s_records + i;
-
-    if (r->ptr == NULL) {
-      r->ptr = ptr;
-      r->func = func;
-      r->line = line;
-      r->size = size;
-      r->time = time_now_s();
-
-      break;
-    }
-  }
-
-  return ptr;
-}
-
-void tk_mem_dump(void) {
-  uint32_t i = 0;
-  uint32_t size = 0;
-  uint32_t big_size = 10240;
-  uint32_t time = time_now_s();
-  mem_stat_t s = tk_mem_stat();
-
-  log_debug("===============large=========================\n");
-  for (i = 0; i < MEM_MAX_RECORDS; i++) {
-    mem_record_t* r = (mem_record_t*)s_records + i;
-
-    if (r->ptr != NULL) {
-      if (r->size >= big_size) {
-        log_debug("%p size=%u time=%d, %s:%u\n", r->ptr, r->size, r->time, r->func, r->line);
-        size += r->size;
-      }
-    }
-  }
-  log_debug("large blocks size: %d\n", size);
-  log_debug("================small========================\n");
-  for (i = 0, size = 0; i < MEM_MAX_RECORDS; i++) {
-    mem_record_t* r = (mem_record_t*)s_records + i;
-
-    if (r->ptr != NULL) {
-      if (r->size < big_size) {
-        log_debug("%p size=%u time=%d, %s:%u\n", r->ptr, r->size, r->time, r->func, r->line);
-        size += r->size;
-      }
-    }
-  }
-  log_debug("small blocks size: %d\n", size);
-
-  log_debug("================recent========================\n");
-  for (i = 0, size = 0; i < MEM_MAX_RECORDS; i++) {
-    mem_record_t* r = (mem_record_t*)s_records + i;
-
-    if (r->ptr != NULL) {
-      if ((time - r->time) < 10) {
-        log_debug("%p size=%u time=%d, %s:%u\n", r->ptr, r->size, r->time, r->func, r->line);
-        size += r->size;
-      }
-    }
-  }
-  log_debug("recent blocks size: %d\n", size);
-
-  log_debug("used: %d bytes %d blocks\n", s.used_bytes, s.used_block_nr);
+  return RET_OK;
 }
 
 void* tk_calloc(uint32_t nmemb, uint32_t size, const char* func, uint32_t line) {
-  return tk_add_record(tk_calloc_impl(nmemb, size), nmemb * size, func, line);
+  void* addr = NULL;
+  uint32_t tried_times = 0;
+
+  (void)func;
+  (void)line;
+
+  do {
+    addr = tk_calloc_impl(nmemb, size);
+    if (addr != NULL) {
+      break;
+    }
+
+    tk_mem_on_out_of_memory(++tried_times, nmemb * size);
+  } while (tried_times < TRY_MAX_TIMES);
+
+  return addr;
 }
 
 void* tk_realloc(void* ptr, uint32_t size, const char* func, uint32_t line) {
-  void* newptr = tk_realloc_impl(ptr, size);
+  void* addr = NULL;
+  uint32_t tried_times = 0;
 
-  if (newptr == ptr) {
-    return newptr;
-  }
+  (void)func;
+  (void)line;
 
-  if (ptr != NULL) {
-    tk_remove_record(ptr);
-  }
+  do {
+    addr = tk_realloc_impl(ptr, size);
+    if (addr != NULL) {
+      break;
+    }
 
-  return tk_add_record(newptr, size, func, line);
+    tk_mem_on_out_of_memory(++tried_times, size);
+  } while (tried_times < TRY_MAX_TIMES);
+
+  return addr;
 }
 
 void* tk_alloc(uint32_t size, const char* func, uint32_t line) {
-  return tk_add_record(tk_alloc_impl(size), size, func, line);
-}
+  void* addr = NULL;
+  uint32_t tried_times = 0;
 
-void tk_free(void* ptr) {
-  if (ptr != NULL) {
-    tk_remove_record(ptr);
-    tk_free_impl(ptr);
-  }
-}
-#else
-void* tk_calloc(uint32_t nmemb, uint32_t size, const char* func, uint32_t line) {
   (void)func;
   (void)line;
 
-  return tk_calloc_impl(nmemb, size);
-}
+  do {
+    addr = tk_alloc_impl(size);
+    if (addr != NULL) {
+      break;
+    }
 
-void* tk_realloc(void* ptr, uint32_t size, const char* func, uint32_t line) {
-  (void)func;
-  (void)line;
+    tk_mem_on_out_of_memory(++tried_times, size);
+  } while (tried_times < TRY_MAX_TIMES);
 
-  return tk_realloc_impl(ptr, size);
-}
-
-void* tk_alloc(uint32_t size, const char* func, uint32_t line) {
-  (void)func;
-  (void)line;
-
-  return tk_alloc_impl(size);
+  return addr;
 }
 
 void tk_free(void* ptr) {
@@ -494,5 +382,3 @@ void tk_mem_dump(void) {
   mem_stat_t s = tk_mem_stat();
   log_debug("used: %d bytes %d blocks\n", s.used_bytes, s.used_block_nr);
 }
-
-#endif /*ENABLE_MEM_LEAK_CHECK*/

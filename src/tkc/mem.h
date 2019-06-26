@@ -29,6 +29,7 @@ BEGIN_C_DECLS
 #ifdef HAS_STD_MALLOC
 #define TKMEM_INIT(size)
 #else
+ret_t tk_mem_init(void* buffer, uint32_t length);
 #define TKMEM_INIT(size)               \
   {                                    \
     static uint32_t mheap[size >> 2];  \
@@ -36,7 +37,9 @@ BEGIN_C_DECLS
   }
 #endif /*HAS_STD_MALLOC*/
 
-ret_t tk_mem_init(void* buffer, uint32_t length);
+typedef ret_t (*tk_mem_on_out_of_memory_t)(void* ctx, uint32_t tried_times, uint32_t need_size);
+ret_t tk_mem_set_on_out_of_memory(tk_mem_on_out_of_memory_t on_out_of_memory, void* ctx);
+
 void* tk_calloc(uint32_t nmemb, uint32_t size, const char* func, uint32_t line);
 void* tk_realloc(void* ptr, uint32_t size, const char* func, uint32_t line);
 void* tk_alloc(uint32_t size, const char* func, uint32_t line);

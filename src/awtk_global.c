@@ -101,6 +101,22 @@ ret_t tk_init_assets() {
   return RET_OK;
 }
 
+static ret_t awtk_mem_on_out_of_memory(void* ctx, uint32_t tried_times, uint32_t need_size) {
+  if (tried_times == 1) {
+    image_manager_unload_unused(image_manager(), 10);
+  } else if (tried_times == 2) {
+    image_manager_unload_unused(image_manager(), 0);
+  } else if (tried_times == 3) {
+    event_t e = event_init(EVT_LOW_MEMORY, NULL);
+    widget_dispatch(window_manager(), &e);
+  } else {
+    event_t e = event_init(EVT_OUT_OF_MEMORY, NULL);
+    widget_dispatch(window_manager(), &e);
+  }
+
+  return RET_OK;
+}
+
 ret_t tk_init_internal(void) {
   font_loader_t* font_loader = NULL;
 #ifdef WITH_STB_IMAGE
@@ -150,6 +166,8 @@ ret_t tk_init_internal(void) {
 
   self_layouter_register_builtins();
   children_layouter_register_builtins();
+
+  tk_mem_set_on_out_of_memory(awtk_mem_on_out_of_memory, NULL);
 
   return RET_OK;
 }

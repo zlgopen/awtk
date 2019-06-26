@@ -316,6 +316,16 @@ typedef enum _event_type_t {
    */
   EVT_SCREEN_SAVER,
   /**
+   * @const EVT_LOW_MEMORY
+   * 内存不足。
+   */
+  EVT_LOW_MEMORY,
+  /**
+   * @const EVT_OUT_OF_MEMORY
+   * 内存耗尽。
+   */
+  EVT_OUT_OF_MEMORY,
+  /**
    * @const EVT_REQ_START
    * event queue其它请求编号起始值。
    */

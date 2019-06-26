@@ -842,7 +842,7 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_form
   return_value_if_fail(cairo->vg, NULL);
   darray_init(&(cairo->images), 10, (tk_destroy_t)bitmap_destroy, (tk_compare_t)cairo_bitmap_cmp);
   vgcanvas_set_global_alpha((vgcanvas_t*)cairo, 1);
-  
+
   log_debug("vgcanvas_cairo created\n");
   return &(cairo->base);
 }
