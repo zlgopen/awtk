@@ -73,6 +73,10 @@ static widget_t* slide_menu_find_target(widget_t* widget, xy_t x, xy_t y) {
   slide_menu_t* slide_menu = SLIDE_MENU(widget);
   return_value_if_fail(widget != NULL && slide_menu != NULL, NULL);
 
+  if (widget->grab_widget != NULL) {
+    return widget->grab_widget;
+  }
+
   widget_to_local(widget, &p);
   current = slide_menu_get_child(widget, slide_menu->value);
   r = current->x + current->w;

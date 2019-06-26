@@ -618,12 +618,12 @@ static ret_t wm_on_after_paint(void* ctx, event_t* e) {
 }
 
 static ret_t wm_on_low_memory(void* ctx, event_t* evt) {
-  log_debug("low memory\n"); 
+  log_debug("low memory\n");
   return RET_OK;
 }
 
 static ret_t wm_on_out_of_memory(void* ctx, event_t* evt) {
-  log_debug("out of memory\n"); 
+  log_debug("out of memory\n");
   return RET_OK;
 }
 
