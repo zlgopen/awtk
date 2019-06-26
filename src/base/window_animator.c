@@ -146,6 +146,10 @@ static ret_t window_animator_begin_frame_overlap(window_animator_t* wa) {
     w = wa->curr_win->parent;
   }
 
+  if (dialog_highlighter_is_dynamic(wa->dialog_highlighter)) {
+    w = wa->curr_win->parent;
+  }
+
   r = rect_init(w->x, w->y, w->w, w->h);
   ENSURE(canvas_begin_frame(wa->canvas, &r, LCD_DRAW_ANIMATION_OVERLAP) == RET_OK);
 #endif

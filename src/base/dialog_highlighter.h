@@ -31,6 +31,7 @@ typedef struct _dialog_highlighter_t dialog_highlighter_t;
 
 typedef ret_t (*dialog_highlighter_prepare_t)(dialog_highlighter_t* h, canvas_t* c);
 typedef ret_t (*dialog_highlighter_draw_t)(dialog_highlighter_t* h, float_t percent);
+typedef bool_t (*dialog_highlighter_is_dynamic_t)(dialog_highlighter_t* h);
 typedef ret_t (*dialog_highlighter_on_destroy_t)(dialog_highlighter_t* h);
 
 typedef dialog_highlighter_t* (*dialog_highlighter_create_t)(object_t* args);
@@ -41,6 +42,7 @@ typedef struct _dialog_highlighter_vtable_t {
   uint32_t size;
   dialog_highlighter_draw_t draw;
   dialog_highlighter_prepare_t prepare;
+  dialog_highlighter_is_dynamic_t is_dynamic;
   dialog_highlighter_on_destroy_t on_destroy;
 } dialog_highlighter_vtable_t;
 
@@ -128,6 +130,15 @@ ret_t dialog_highlighter_prepare(dialog_highlighter_t* h, canvas_t* c);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t dialog_highlighter_draw(dialog_highlighter_t* h, float_t percent);
+
+/**
+ * @method dialog_highlighter_is_dynamic
+ * 是否是动态绘制(方便外层优化)。
+ * @param {dialog_highlighter_t*} h 对话框高亮策略对象。
+ *
+ * @return {bool_t} 返回TRUE表示动态绘制，否则表示不是动态绘制。
+ */
+bool_t dialog_highlighter_is_dynamic(dialog_highlighter_t* h);
 
 /**
  * @method dialog_highlighter_destroy

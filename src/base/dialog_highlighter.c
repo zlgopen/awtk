@@ -69,6 +69,14 @@ ret_t dialog_highlighter_draw(dialog_highlighter_t* h, float_t percent) {
   return RET_NOT_IMPL;
 }
 
+bool_t dialog_highlighter_is_dynamic(dialog_highlighter_t* h) {
+  if (h != NULL && h->vt != NULL && h->vt->is_dynamic != NULL) {
+    return h->vt->is_dynamic(h);
+  } else {
+    return FALSE;
+  }
+}
+
 static ret_t dialog_highlighter_on_destroy(dialog_highlighter_t* h) {
   return_value_if_fail(h != NULL && h->vt != NULL, RET_BAD_PARAMS);
 

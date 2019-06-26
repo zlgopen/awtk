@@ -78,11 +78,18 @@ static ret_t dialog_highlighter_default_draw(dialog_highlighter_t* h, float_t pe
   return RET_OK;
 }
 
+static bool_t dialog_highlighter_default_is_dynamic(dialog_highlighter_t* h) {
+  dialog_highlighter_default_t* dh = (dialog_highlighter_default_t*)h;
+
+  return (dh->start_alpha != dh->end_alpha);
+}
+
 static const dialog_highlighter_vtable_t s_dialog_highlighter_default_vt = {
     .type = "dialog_highlighter_default_t",
     .desc = "dialog_highlighter_default_t",
     .size = sizeof(dialog_highlighter_default_t),
     .prepare = dialog_highlighter_default_prepare,
+    .is_dynamic = dialog_highlighter_default_is_dynamic,
     .draw = dialog_highlighter_default_draw};
 
 dialog_highlighter_t* dialog_highlighter_default_create(object_t* args) {
