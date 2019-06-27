@@ -17,18 +17,18 @@ NANOVG_BACKEND=os.environ['NANOVG_BACKEND'];
 if NANOVG_BACKEND == 'AGG':
   env.Library(os.path.join(LIB_DIR, 'nanovg-agg'), Glob('agg/*.cpp'))
 
-  env['LIBS'] = ['nanovg-agg', 'agg', 'nanovg'] + env['LIBS']
-  env.Program(os.path.join(BIN_DIR, 'agg_stroke'), Glob('demos/agg_stroke.c'));
-  env.Program(os.path.join(BIN_DIR, 'agg_fill'), Glob('demos/agg_fill.c'));
-  env.Program(os.path.join(BIN_DIR, 'agg_draw_image'), Glob('demos/agg_draw_image.c'));
+#  env['LIBS'] = ['nanovg-agg', 'agg', 'nanovg'] + env['LIBS']
+#  env.Program(os.path.join(BIN_DIR, 'agg_stroke'), Glob('demos/agg_stroke.c'));
+#  env.Program(os.path.join(BIN_DIR, 'agg_fill'), Glob('demos/agg_fill.c'));
+#  env.Program(os.path.join(BIN_DIR, 'agg_draw_image'), Glob('demos/agg_draw_image.c'));
 
 elif NANOVG_BACKEND == 'AGGE':
   env.Library(os.path.join(LIB_DIR, 'nanovg-agge'), Glob('agge/*.cpp'))
   
-  env['LIBS'] = ['nanovg-agge', 'agge', 'nanovg'] + env['LIBS']
-  env.Program(os.path.join(BIN_DIR, 'agge_stroke'), Glob('demos/agge_stroke.c'));
-  env.Program(os.path.join(BIN_DIR, 'agge_fill'), Glob('demos/agge_fill.c'));
-  env.Program(os.path.join(BIN_DIR, 'agge_draw_image'), Glob('demos/agge_draw_image.c'));
+#  env['LIBS'] = ['nanovg-agge', 'agge', 'nanovg'] + env['LIBS']
+#  env.Program(os.path.join(BIN_DIR, 'agge_stroke'), Glob('demos/agge_stroke.c'));
+#  env.Program(os.path.join(BIN_DIR, 'agge_fill'), Glob('demos/agge_fill.c'));
+#  env.Program(os.path.join(BIN_DIR, 'agge_draw_image'), Glob('demos/agge_draw_image.c'));
 elif NANOVG_BACKEND == 'BGFX':
   CPPPATH = [
       joinPath(TK_3RD_ROOT, 'nanovg/base'), 
