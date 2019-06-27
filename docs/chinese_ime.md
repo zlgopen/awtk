@@ -6,5 +6,5 @@
 * 加入src/input\_engines/input\_engine\_pinyin.cpp。
 * 去掉src/input\_engines/input\_engine\_null.cpp。
 * include路径加入3rd/gpinyin/include。
-* 把default_full.ttf拷贝到default.tff，重新生成资源并编译。
+* 把default\_full.ttf拷贝到default.tff，重新生成资源并编译(defualt.ttf中没有汉字，default\_full.ttf里才有，所以需要切换字体，否则输入的字符无法显示)。
 
