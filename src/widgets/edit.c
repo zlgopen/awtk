@@ -525,11 +525,13 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       prop_change_event_t* evt = (prop_change_event_t*)e;
       if (tk_str_eq(evt->name, WIDGET_PROP_TEXT) || tk_str_eq(evt->name, WIDGET_PROP_VALUE)) {
         edit_update_status(widget);
+        text_edit_set_cursor(edit->model, 0xffffffff);
       }
       break;
     }
     case EVT_VALUE_CHANGING: {
       edit_update_status(widget);
+      text_edit_set_cursor(edit->model, 0xffffffff);
       break;
     }
     default:
