@@ -422,8 +422,9 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
     if (key == TK_KEY_v) {
       edit_paste(widget);
     } else {
-      return text_edit_key_down(edit->model, (key_event_t*)e);
+      text_edit_key_down(edit->model, (key_event_t*)e);
     }
+    edit_dispatch_event(widget, EVT_VALUE_CHANGING);
   } else if (system_info()->app_type != APP_DESKTOP && key < 128 && isprint(key)) {
     edit_input_char(widget, (wchar_t)key);
   }
