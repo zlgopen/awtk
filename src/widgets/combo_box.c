@@ -85,7 +85,7 @@ ret_t combo_box_parse_options(widget_t* widget, const char* str) {
   tokenizer_t tokenizer;
   tokenizer_t* t = &tokenizer;
   combo_box_t* combo_box = COMBO_BOX(widget);
-  return_value_if_fail(combo_box != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(combo_box != NULL && str != NULL, RET_BAD_PARAMS);
 
   combo_box_reset_options(widget);
   combo_box->options = tk_strdup(str);
