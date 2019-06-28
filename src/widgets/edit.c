@@ -437,6 +437,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
   return_value_if_fail(widget != NULL && edit != NULL, RET_BAD_PARAMS);
 
   if (edit->readonly) {
+    text_edit_set_cursor(edit->model, 0xffffffff);
     return RET_OK;
   }
 
