@@ -48,13 +48,12 @@ TEST(Edit, set_text) {
   text_edit_state_t state;
   widget_t* b = edit_create(NULL, 10, 20, 30, 40);
   widget_set_text_utf8(b, "hello");
-  
+
   ASSERT_EQ(text_edit_get_state(EDIT(b)->model, &state), RET_OK);
   ASSERT_EQ(state.cursor, 5);
 
   widget_destroy(b);
 }
-
 
 TEST(Edit, inputable) {
   widget_t* b = edit_create(NULL, 10, 20, 30, 40);

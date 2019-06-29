@@ -47,6 +47,7 @@ typedef struct _children_layouter_default_t {
   uint8_t rows_is_height : 1;
   uint8_t keep_invisible : 1;
   uint8_t keep_disable : 1;
+  align_h_t align_h; /*for hbox*/
 } children_layouter_default_t;
 
 /**

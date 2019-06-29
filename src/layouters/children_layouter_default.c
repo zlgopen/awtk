@@ -70,6 +70,12 @@ static const char* children_layouter_default_to_string(children_layouter_t* layo
     str_append(str, "keep_invisible=true,");
   }
 
+  if (layout->align_h == ALIGN_H_CENTER) {
+    str_append(str, "align_h=center,");
+  } else if (layout->align_h == ALIGN_H_RIGHT) {
+    str_append(str, "align_h=right,");
+  }
+
   str_trim_right(str, ",");
   str_append(str, ")");
 
@@ -118,6 +124,18 @@ static ret_t children_layouter_default_set_param(children_layouter_t* layouter, 
     case 's': {
       l->spacing = val;
       break;
+    }
+    case 'a': {
+      const char* align_h = value_str(v);
+      return_value_if_fail(align_h != NULL, RET_BAD_PARAMS);
+
+      if (*align_h == 'r') {
+        l->align_h = ALIGN_H_RIGHT;
+      } else if (*align_h == 'c') {
+        l->align_h = ALIGN_H_CENTER;
+      } else {
+        l->align_h = ALIGN_H_LEFT;
+      }
     }
     case 'k': {
       if (strstr(name, "invisible") != NULL || name[1] == 'i') {
@@ -185,6 +203,10 @@ static ret_t children_layouter_default_get_param(children_layouter_t* layouter, 
     }
     case 's': {
       value_set_int(v, l->spacing);
+      return RET_OK;
+    }
+    case 'a': {
+      value_set_int(v, l->align_h);
       return RET_OK;
     }
     case 'k': {
@@ -266,6 +288,8 @@ static ret_t children_layouter_default_layout(children_layouter_t* layouter, wid
   }
 
   if (rows == 1 && cols == 0) { /*hbox*/
+    uint32_t xoffset = 0;
+    uint32_t children_w = 0;
     h = layout_h - 2 * y_margin;
     w = layout_w - 2 * x_margin - (n - 1) * spacing;
 
@@ -279,6 +303,28 @@ static ret_t children_layouter_default_layout(children_layouter_t* layouter, wid
       }
     }
 
+    for (i = 0; i < n; i++) {
+      iter = children[i];
+      children_w += iter->w + spacing;
+      if (x > layout_w) {
+        break;
+      }
+    }
+
+    switch (layout->align_h) {
+      case ALIGN_H_RIGHT: {
+        xoffset = layout_w - children_w;
+        break;
+      }
+      case ALIGN_H_CENTER: {
+        xoffset = (layout_w - children_w) / 2;
+        break;
+      }
+      default:
+        break;
+    }
+
+    x = xoffset;
     for (i = 0; i < n; i++) {
       iter = children[i];
       widget_move_resize(iter, x, y, iter->w, h);
