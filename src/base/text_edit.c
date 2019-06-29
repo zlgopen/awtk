@@ -462,6 +462,9 @@ static ret_t text_edit_paint_line(text_edit_t* text_edit, canvas_t* c, row_info_
   color_t black = color_init(0, 0, 0, 0xff);
   color_t white = color_init(0xf0, 0xf0, 0xf0, 0xff);
 
+  uint32_t select_start = tk_min(state->select_start, state->select_end);
+  uint32_t select_end = tk_max(state->select_start, state->select_end);
+
   if (impl->single_line) {
     x = layout_info->margin_l + text_edit_calc_x(text_edit, iter);
   } else {
@@ -486,7 +489,7 @@ static ret_t text_edit_paint_line(text_edit_t* text_edit, canvas_t* c, row_info_
       uint32_t rx = x - layout_info->ox;
       uint32_t ry = y - layout_info->oy;
 
-      if (offset >= state->select_start && offset < state->select_end) {
+      if (offset >= select_start && offset < select_end) {
         color_t select_bg_color = style_get_color(style, STYLE_ID_SELECTED_BG_COLOR, white);
         color_t select_text_color = style_get_color(style, STYLE_ID_SELECTED_TEXT_COLOR, black);
 
@@ -875,16 +878,21 @@ ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
 ret_t text_edit_copy(text_edit_t* text_edit) {
   DECL_IMPL(text_edit);
   wstr_t* text = NULL;
+  uint32_t select_end = 0;
+  uint32_t select_start = 0;
   STB_TexteditState* state = NULL;
   return_value_if_fail(text_edit != NULL, RET_BAD_PARAMS);
 
   state = &(impl->state);
   text = &(text_edit->widget->text);
-  if (state->select_end > state->select_start) {
+  select_start = tk_min(state->select_start, state->select_end);
+  select_end = tk_max(state->select_start, state->select_end);
+
+  if (select_end > select_start) {
     str_t str;
     wstr_t wstr;
-    wchar_t* start = text->str + state->select_start;
-    uint32_t size = state->select_end - state->select_start;
+    wchar_t* start = text->str + select_start;
+    uint32_t size = select_end - select_start;
 
     wstr_init(&wstr, size + 1);
     wstr_append_with_len(&wstr, start, size);
@@ -1018,8 +1026,8 @@ ret_t text_edit_get_state(text_edit_t* text_edit, text_edit_state_t* state) {
   state->cursor = impl->state.cursor;
   state->max_rows = impl->rows->capacity;
 
-  state->select_start = impl->state.select_start;
-  state->select_end = impl->state.select_end;
+  state->select_start = tk_min(impl->state.select_start, impl->state.select_end);
+  state->select_end = tk_max(impl->state.select_start, impl->state.select_end);
 
   state->mask = impl->mask;
   state->wrap_word = impl->wrap_word;
