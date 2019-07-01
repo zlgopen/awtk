@@ -390,6 +390,8 @@ ret_t window_manager_open_window(widget_t* widget, widget_t* window) {
     return_value_if_fail(wm->system_bar == NULL, RET_BAD_PARAMS);
   }
 
+  wm->prev_win = window_manager_get_top_window(widget);
+
   if (wm->animator != NULL) {
     wm->pending_open_window = window;
   } else {

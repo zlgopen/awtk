@@ -29,6 +29,9 @@
   <style name="default" border_color="#a0a0a0">
     <normal bg_color="#f0f0f0"/>
   </style>
+  <style name="dark">
+    <normal bg_color="#808080"/>
+  </style>
 </popup>
 
 <button>

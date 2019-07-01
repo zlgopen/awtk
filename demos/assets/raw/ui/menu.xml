@@ -1,0 +1,21 @@
+<window children_layout="default(c=3,r=5,m=5,s=5,keep_invisible=true)">
+  <button name="open:menu_down_left" text="DownLeft" visible="true"/>
+  <button name="open:menu_down_center" text="DownCenter"  visible="true"/>
+  <button name="open:menu_down_right" text="DownRight" visible="true"/>
+
+  <button name="open:menu_right_top" text="RightTop" visible="true"/>
+  <button name="open:menu_point" text="Point" visible="true"/>
+  <button name="open:menu_left_top" text="LeftTop" visible="true"/>
+
+  <button name="open:menu_right_middle" text="RightMiddle" visible="true"/>
+  <button name="open:menu_point" text="Point" visible="true"/>
+  <button name="open:menu_left_middle" text="LeftMiddle" visible="true"/>
+
+  <button name="open:menu_right_bottom" text="LeftBottom" visible="true"/>
+  <button name="open:menu_point" text="Point" visible="true"/>
+  <button name="open:menu_left_bottom" text="LeftBottom" visible="true"/>
+  
+  <button name="open:menu_up_left" text="UpLeft" visible="true"/>
+  <button name="open:menu_up_center" text="UpCenter" visible="true"/>
+  <button name="open:menu_up_right" text="UpRight" visible="true"/>
+</window>

@@ -76,6 +76,20 @@
 #include "assets/inc/ui/lua.data"
 #include "assets/inc/ui/main.data"
 #include "assets/inc/ui/memtest.data"
+#include "assets/inc/ui/menu.data"
+#include "assets/inc/ui/menu_down_center.data"
+#include "assets/inc/ui/menu_down_left.data"
+#include "assets/inc/ui/menu_down_right.data"
+#include "assets/inc/ui/menu_left_bottom.data"
+#include "assets/inc/ui/menu_left_middle.data"
+#include "assets/inc/ui/menu_left_top.data"
+#include "assets/inc/ui/menu_point.data"
+#include "assets/inc/ui/menu_right_bottom.data"
+#include "assets/inc/ui/menu_right_middle.data"
+#include "assets/inc/ui/menu_right_top.data"
+#include "assets/inc/ui/menu_up_center.data"
+#include "assets/inc/ui/menu_up_left.data"
+#include "assets/inc/ui/menu_up_right.data"
 #include "assets/inc/ui/mledit.data"
 #include "assets/inc/ui/overlay.data"
 #include "assets/inc/ui/popdown.data"
@@ -597,6 +611,20 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_lua);
   assets_manager_add(rm, ui_main);
   assets_manager_add(rm, ui_memtest);
+  assets_manager_add(rm, ui_menu);
+  assets_manager_add(rm, ui_menu_down_center);
+  assets_manager_add(rm, ui_menu_down_left);
+  assets_manager_add(rm, ui_menu_down_right);
+  assets_manager_add(rm, ui_menu_left_bottom);
+  assets_manager_add(rm, ui_menu_left_middle);
+  assets_manager_add(rm, ui_menu_left_top);
+  assets_manager_add(rm, ui_menu_point);
+  assets_manager_add(rm, ui_menu_right_bottom);
+  assets_manager_add(rm, ui_menu_right_middle);
+  assets_manager_add(rm, ui_menu_right_top);
+  assets_manager_add(rm, ui_menu_up_center);
+  assets_manager_add(rm, ui_menu_up_left);
+  assets_manager_add(rm, ui_menu_up_right);
   assets_manager_add(rm, ui_mledit);
   assets_manager_add(rm, ui_overlay);
   assets_manager_add(rm, ui_popdown);

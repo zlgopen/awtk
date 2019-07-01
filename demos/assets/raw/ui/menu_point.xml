@@ -1,0 +1,3 @@
+<popup style="dark" self_layout="menu(w=128,h=90)" close_when_click_outside="true">
+  <?include filename="menu.inc" ?>
+</popup>
