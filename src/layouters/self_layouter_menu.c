@@ -158,8 +158,6 @@ static ret_t widget_layout_calc(self_layouter_menu_t* layout, rect_t* r, wh_t pa
                                 wh_t parent_h) {
   xy_t x = r->x;
   xy_t y = r->y;
-  uint8_t x_attr = layout->x_attr;
-  uint8_t y_attr = layout->y_attr;
   uint8_t w_attr = layout->w_attr;
   uint8_t h_attr = layout->h_attr;
   wh_t w = w_attr == W_ATTR_UNDEF ? r->w : layout->w;
