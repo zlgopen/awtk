@@ -201,7 +201,7 @@ static ret_t text_edit_set_caret_pos(text_edit_impl_t* impl, uint32_t x, uint32_
   }
 
   if (impl->wrap_word) {
-    layout_info->oy = 0;
+    layout_info->ox = 0;
   }
 
   return RET_OK;

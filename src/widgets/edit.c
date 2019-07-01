@@ -536,7 +536,6 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
     }
     case EVT_VALUE_CHANGING: {
       edit_update_status(widget);
-      text_edit_set_cursor(edit->model, 0xffffffff);
       break;
     }
     default:

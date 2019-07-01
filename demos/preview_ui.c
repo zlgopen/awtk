@@ -163,6 +163,9 @@ int main(int argc, char* argv[]) {
 
   log_debug("%s %s %d %d\n", argv[0], argv[1], w, h);
   tk_init(w, h, APP_SIMULATOR, NULL, NULL);
+#ifdef WITH_FS_RES
+  system_info_set_default_font(system_info(), "default_full");
+#endif /*WITH_FS_RES*/
 
   assets_init();
   tk_ext_widgets_init();
