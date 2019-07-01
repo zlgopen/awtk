@@ -424,7 +424,10 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
     } else {
       text_edit_key_down(edit->model, (key_event_t*)e);
     }
-    edit_dispatch_event(widget, EVT_VALUE_CHANGING);
+
+    if (key != TK_KEY_LEFT && key != TK_KEY_RIGHT && key != TK_KEY_HOME && key != TK_KEY_END) {
+      edit_dispatch_event(widget, EVT_VALUE_CHANGING);
+    }
   } else if (system_info()->app_type != APP_DESKTOP && key < 128 && isprint(key)) {
     edit_input_char(widget, (wchar_t)key);
   }

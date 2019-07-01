@@ -35,6 +35,11 @@
 #define STB_TEXTEDIT_NEWLINE (wchar_t)('\n')
 #define STB_TEXTEDIT_STRING text_edit_t
 
+#if !defined(WITH_SDL)
+#define STB_TEXTEDIT_UNDOSTATECOUNT 10
+#define STB_TEXTEDIT_UNDOCHARCOUNT 32
+#endif /*WITH_SDL*/
+
 #include "stb/stb_textedit.h"
 
 typedef struct _text_layout_info_t {
