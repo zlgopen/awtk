@@ -47,6 +47,31 @@ static ret_t main_loop_sdl_gpu_destroy(main_loop_t* l) {
   return RET_OK;
 }
 
+#ifdef WITH_NANOVG_GL
+#include "glad/glad.h"
+#include <SDL_opengl.h>
+#include <SDL_opengl_glext.h>
+
+static ret_t sdl_init_gl(void) {
+  SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
+  SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+  SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
+
+#ifdef WITH_NANOVG_GL2
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+#elif defined(WITH_NANOVG_GL3)
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+#endif
+
+  log_debug("Init opengl done.\n");
+  return RET_OK;
+}
+#endif /*WITH_NANOVG_GL*/
+
 static ret_t main_loop_sdl_gpu_create_window(main_loop_simple_t* l) {
   int32_t x = SDL_WINDOWPOS_UNDEFINED;
   int32_t y = SDL_WINDOWPOS_UNDEFINED;
@@ -66,6 +91,9 @@ static ret_t main_loop_sdl_gpu_create_window(main_loop_simple_t* l) {
     exit(0);
     return RET_FAIL;
   }
+#ifdef WITH_NANOVG_GL
+  sdl_init_gl();
+#endif /*WITH_NANOVG_GL*/
 
   LOOP_SDL_WINDOW_SET(l, SDL_CreateWindow(title, x, y, l->w, l->h, flags));
   return_value_if_fail(LOOP_SDL_WINDOW(l) != NULL, RET_FAIL);

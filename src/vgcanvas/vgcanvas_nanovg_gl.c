@@ -63,20 +63,6 @@ typedef struct _vgcanvas_nanovg_t {
 #include "vgcanvas_nanovg.inc"
 
 static ret_t vgcanvas_init_gl(vgcanvas_nanovg_t* nanovg, SDL_Window* win) {
-  SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
-  SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-  SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
-
-#ifdef WITH_NANOVG_GL2
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
-#elif defined(WITH_NANOVG_GL3)
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG);
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
-#endif
-
   nanovg->context = SDL_GL_CreateContext(win);
   SDL_GL_MakeCurrent(win, nanovg->context);
   SDL_GL_SetSwapInterval(1);
