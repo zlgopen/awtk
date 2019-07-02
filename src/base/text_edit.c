@@ -39,6 +39,7 @@
 #define STB_TEXTEDIT_UNDOSTATECOUNT 10
 #define STB_TEXTEDIT_UNDOCHARCOUNT 32
 #endif /*WITH_SDL*/
+#define STB_TEXTEDIT_GETWIDTH_NEWLINE 0xffff
 
 #include "stb/stb_textedit.h"
 
@@ -80,16 +81,21 @@ typedef struct _text_edit_impl_t {
   bool_t wrap_word;
   bool_t single_line;
   bool_t caret_visible;
+  uint32_t line_height;
   text_layout_info_t layout_info;
 
   /*for single line edit*/
   wchar_t mask_char;
   bool_t mask;
   wstr_t tips;
+
+  void* on_state_changed_ctx;
+  text_edit_on_state_changed_t on_state_changed;
 } text_edit_impl_t;
 
 #define DECL_IMPL(te) text_edit_impl_t* impl = (text_edit_impl_t*)(te)
 
+static ret_t text_edit_notify(text_edit_t* text_edit);
 static int32_t text_edit_calc_x(text_edit_t* text_edit, row_info_t* iter);
 
 static align_h_t widget_get_text_align_h(widget_t* widget) {
@@ -361,6 +367,9 @@ ret_t text_edit_layout(text_edit_t* text_edit) {
     i++;
   }
   impl->rows->size = i;
+  impl->line_height = text_edit->c->font_size * FONT_BASELINE;
+
+  text_edit_notify(text_edit);
 
   return RET_OK;
 }
@@ -620,8 +629,13 @@ static int text_edit_remove(STB_TEXTEDIT_STRING* str, int pos, int num) {
 
 static int text_edit_get_char_width(STB_TEXTEDIT_STRING* str, int pos, int offset) {
   wstr_t* text = &(str->widget->text);
+  wchar_t chr = text->str[pos + offset];
 
-  return canvas_measure_text(str->c, text->str + pos + offset, 1) + CHAR_SPACING;
+  if (chr == STB_TEXTEDIT_NEWLINE) {
+    return STB_TEXTEDIT_GETWIDTH_NEWLINE;
+  } else {
+    return canvas_measure_text(str->c, &chr, 1) + CHAR_SPACING;
+  }
 }
 
 static int text_edit_insert(STB_TEXTEDIT_STRING* str, int pos, STB_TEXTEDIT_CHARTYPE* newtext,
@@ -1025,8 +1039,11 @@ ret_t text_edit_get_state(text_edit_t* text_edit, text_edit_state_t* state) {
 
   state->ox = impl->layout_info.ox;
   state->oy = impl->layout_info.oy;
+  state->virtual_w = impl->layout_info.virtual_w;
+  state->virtual_h = impl->layout_info.virtual_h;
   state->rows = impl->rows->size;
   state->caret = impl->caret;
+  state->line_height = impl->line_height;
 
   state->cursor = impl->state.cursor;
   state->max_rows = impl->rows->capacity;
@@ -1050,6 +1067,38 @@ ret_t text_edit_destroy(text_edit_t* text_edit) {
   wstr_reset(&(impl->tips));
   rows_destroy(impl->rows);
   TKMEM_FREE(text_edit);
+
+  return RET_OK;
+}
+
+ret_t text_edit_set_offset(text_edit_t* text_edit, int32_t ox, int32_t oy) {
+  DECL_IMPL(text_edit);
+  return_value_if_fail(text_edit != NULL, RET_BAD_PARAMS);
+
+  impl->layout_info.ox = ox;
+  impl->layout_info.oy = oy;
+
+  return RET_OK;
+}
+
+static ret_t text_edit_notify(text_edit_t* text_edit) {
+  DECL_IMPL(text_edit);
+  if (impl->on_state_changed != NULL) {
+    text_edit_state_t state = {0};
+    text_edit_get_state(text_edit, &state);
+    impl->on_state_changed(impl->on_state_changed_ctx, &state);
+  }
+
+  return RET_OK;
+}
+
+ret_t text_edit_set_on_state_changed(text_edit_t* text_edit,
+                                     text_edit_on_state_changed_t on_state_changed, void* ctx) {
+  DECL_IMPL(text_edit);
+  return_value_if_fail(text_edit != NULL, RET_BAD_PARAMS);
+
+  impl->on_state_changed = on_state_changed;
+  impl->on_state_changed_ctx = ctx;
 
   return RET_OK;
 }

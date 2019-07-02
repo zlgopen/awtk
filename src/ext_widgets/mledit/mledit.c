@@ -25,6 +25,7 @@
 #include "base/events.h"
 #include "mledit/mledit.h"
 #include "base/input_method.h"
+#include "scroll_view/scroll_bar.h"
 
 static ret_t mledit_update_status(widget_t* widget);
 
@@ -283,7 +284,9 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
     case EVT_POINTER_MOVE: {
       if (widget->parent && widget->parent->grab_widget == widget) {
         pointer_event_t evt = *(pointer_event_t*)e;
-        text_edit_drag(mledit->model, evt.x, evt.y);
+        if (widget->target == NULL) {
+          text_edit_drag(mledit->model, evt.x, evt.y);
+        }
       }
       break;
     }
@@ -353,6 +356,43 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
   return RET_OK;
 }
 
+static ret_t mledit_on_text_edit_state_changed(void* ctx, text_edit_state_t* state) {
+  mledit_t* mledit = MLEDIT(ctx);
+  widget_t* vscroll_bar = mledit->vscroll_bar;
+
+  if (vscroll_bar != NULL) {
+    scroll_bar_set_params(vscroll_bar, state->virtual_h - vscroll_bar->h + state->line_height,
+                          state->line_height);
+    scroll_bar_set_value_only(vscroll_bar, state->oy);
+  }
+
+  return RET_OK;
+}
+
+static ret_t mledit_on_scroll_bar_value_changed(void* ctx, event_t* e) {
+  mledit_t* mledit = MLEDIT(ctx);
+  int32_t value = widget_get_value(mledit->vscroll_bar);
+
+  text_edit_set_offset(mledit->model, 0, value);
+  widget_invalidate_force(WIDGET(mledit), NULL);
+
+  return RET_OK;
+}
+
+static ret_t mledit_on_add_child(widget_t* widget, widget_t* child) {
+  mledit_t* mledit = MLEDIT(widget);
+  const char* type = widget_get_type(child);
+  return_value_if_fail(mledit != NULL && widget != NULL && child != NULL, RET_BAD_PARAMS);
+
+  if (tk_str_eq(type, WIDGET_TYPE_SCROLL_BAR_DESKTOP)) {
+    mledit->vscroll_bar = child;
+    widget_on(child, EVT_VALUE_CHANGED, mledit_on_scroll_bar_value_changed, widget);
+    text_edit_set_on_state_changed(mledit->model, mledit_on_text_edit_state_changed, widget);
+  }
+
+  return RET_CONTINUE;
+}
+
 const char* s_mledit_properties[] = {
     WIDGET_PROP_READONLY,     WIDGET_PROP_MARGIN,     WIDGET_PROP_LEFT_MARGIN,
     WIDGET_PROP_RIGHT_MARGIN, WIDGET_PROP_TOP_MARGIN, WIDGET_PROP_BOTTOM_MARGIN,
@@ -368,6 +408,7 @@ TK_DECL_VTABLE(mledit) = {.size = sizeof(mledit_t),
                           .set_prop = mledit_set_prop,
                           .get_prop = mledit_get_prop,
                           .on_event = mledit_on_event,
+                          .on_add_child = mledit_on_add_child,
                           .on_destroy = mledit_on_destroy};
 
 widget_t* mledit_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {

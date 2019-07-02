@@ -32,7 +32,10 @@ BEGIN_C_DECLS
 typedef struct _text_edit_state_t {
   int32_t ox;
   int32_t oy;
+  int32_t virtual_w;
+  int32_t virtual_h;
   uint32_t rows;
+  uint32_t line_height;
   point_t caret;
   uint32_t cursor;
   uint32_t max_rows;
@@ -46,12 +49,15 @@ typedef struct _text_edit_state_t {
   bool_t single_line;
 } text_edit_state_t;
 
+typedef ret_t (*text_edit_on_state_changed_t)(void* ctx, text_edit_state_t* state);
+
 /**
  * @class text_edit_t
  */
 typedef struct _text_edit_t {
   canvas_t* c;
   widget_t* widget;
+
 } text_edit_t;
 
 /**
@@ -253,6 +259,11 @@ ret_t text_edit_set_mask_char(text_edit_t* text_edit, wchar_t mask_char);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t text_edit_paint(text_edit_t* text_edit, canvas_t* c);
+
+ret_t text_edit_set_offset(text_edit_t* text_edit, int32_t ox, int32_t oy);
+
+ret_t text_edit_set_on_state_changed(text_edit_t* text_edit,
+                                     text_edit_on_state_changed_t on_state_changed, void* ctx);
 
 /**
  * @method text_edit_destroy
