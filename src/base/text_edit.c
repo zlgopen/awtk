@@ -210,6 +210,10 @@ static ret_t text_edit_set_caret_pos(text_edit_impl_t* impl, uint32_t x, uint32_
     layout_info->ox = 0;
   }
 
+  if (impl->single_line) {
+    layout_info->oy = 0;
+  }
+
   return RET_OK;
 }
 
@@ -435,11 +439,6 @@ static ret_t text_edit_paint_tips_text(text_edit_t* text_edit, canvas_t* c) {
   text_layout_info_t* layout_info = &(impl->layout_info);
 
   if (text->size > 0) {
-    /*
-        uint32_t x = layout_info->margin_l;
-        uint32_t y = (layout_info->h - c->font_size) / 2 + layout_info->margin_t;
-        canvas_draw_text_in_rect(c, text->str, text->size, &r);
-    */
     rect_t r =
         rect_init(layout_info->margin_l, layout_info->margin_t, layout_info->w, layout_info->h);
     canvas_draw_text_in_rect(c, text->str, text->size, &r);
@@ -1127,6 +1126,7 @@ ret_t text_edit_set_offset(text_edit_t* text_edit, int32_t ox, int32_t oy) {
 
   impl->layout_info.ox = ox;
   impl->layout_info.oy = oy;
+  text_edit_notify(text_edit);
 
   return RET_OK;
 }

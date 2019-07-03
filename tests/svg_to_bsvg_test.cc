@@ -294,7 +294,8 @@ TEST(SVGToBSVG, polygon_no_stroke2) {
   uint32_t* out = NULL;
   uint32_t out_length = 0;
   const svg_shape_polygon_t* shape = NULL;
-  const char* content = "<polygon points=\"10 \n20 \r\n30 \t40\" stroke=\"none\" stroke-width=\"5\"/>";
+  const char* content =
+      "<polygon points=\"10 \n20 \r\n30 \t40\" stroke=\"none\" stroke-width=\"5\"/>";
 
   tk_snprintf(s_buff, sizeof(s_buff) - 1, s_template, content);
   svg_to_bsvg(s_buff, strlen(s_buff), &out, &out_length);

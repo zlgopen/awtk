@@ -24,6 +24,7 @@
 #include "tkc/utils.h"
 #include "base/events.h"
 #include "mledit/mledit.h"
+#include "mledit/line_number.h"
 #include "base/input_method.h"
 #include "scroll_view/scroll_bar.h"
 
@@ -372,25 +373,52 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
   return RET_OK;
 }
 
-static ret_t mledit_on_text_edit_state_changed(void* ctx, text_edit_state_t* state) {
-  mledit_t* mledit = MLEDIT(ctx);
-  widget_t* vscroll_bar = mledit->vscroll_bar;
+static ret_t mledit_sync_line_number(widget_t* widget, text_edit_state_t* state) {
+  mledit_t* mledit = MLEDIT(widget);
+  widget_t* line_number = widget_lookup_by_type(widget, WIDGET_TYPE_LINE_NUMBER, TRUE);
+
+  if (line_number != NULL) {
+    line_number_set_yoffset(line_number, state->oy);
+    line_number_set_line_height(line_number, state->line_height);
+    line_number_set_top_margin(line_number, mledit->top_margin);
+    line_number_set_bottom_margin(line_number, mledit->bottom_margin);
+
+    widget_invalidate_force(line_number, NULL);
+  }
+
+  return RET_BAD_PARAMS;
+}
+
+static ret_t mledit_sync_scrollbar(widget_t* widget, text_edit_state_t* state) {
+  widget_t* vscroll_bar = widget_lookup_by_type(widget, WIDGET_TYPE_SCROLL_BAR_DESKTOP, TRUE);
 
   if (vscroll_bar != NULL) {
     scroll_bar_set_params(vscroll_bar, state->virtual_h - vscroll_bar->h + state->line_height,
                           state->line_height);
     scroll_bar_set_value_only(vscroll_bar, state->oy);
+    widget_invalidate_force(vscroll_bar, NULL);
   }
+
+  return RET_OK;
+}
+
+static ret_t mledit_on_text_edit_state_changed(void* ctx, text_edit_state_t* state) {
+  widget_t* widget = WIDGET(ctx);
+
+  mledit_sync_line_number(widget, state);
+  mledit_sync_scrollbar(widget, state);
+
+  widget_invalidate_force(widget, NULL);
 
   return RET_OK;
 }
 
 static ret_t mledit_on_scroll_bar_value_changed(void* ctx, event_t* e) {
   mledit_t* mledit = MLEDIT(ctx);
-  int32_t value = widget_get_value(mledit->vscroll_bar);
+  widget_t* vscroll_bar = WIDGET(e->target);
 
+  int32_t value = widget_get_value(vscroll_bar);
   text_edit_set_offset(mledit->model, 0, value);
-  widget_invalidate_force(WIDGET(mledit), NULL);
 
   return RET_OK;
 }
@@ -401,10 +429,10 @@ static ret_t mledit_on_add_child(widget_t* widget, widget_t* child) {
   return_value_if_fail(mledit != NULL && widget != NULL && child != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(type, WIDGET_TYPE_SCROLL_BAR_DESKTOP)) {
-    mledit->vscroll_bar = child;
     widget_on(child, EVT_VALUE_CHANGED, mledit_on_scroll_bar_value_changed, widget);
-    text_edit_set_on_state_changed(mledit->model, mledit_on_text_edit_state_changed, widget);
   }
+  
+  text_edit_set_on_state_changed(mledit->model, mledit_on_text_edit_state_changed, widget);
 
   return RET_CONTINUE;
 }

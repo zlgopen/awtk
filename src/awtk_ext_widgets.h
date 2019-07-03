@@ -49,6 +49,7 @@
 #include "image_animation/image_animation.h"
 #include "mutable_image/mutable_image.h"
 #include "mledit/mledit.h"
+#include "mledit/line_number.h"
 
 #include "ext_widgets/ext_widgets.h"
 

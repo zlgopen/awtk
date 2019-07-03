@@ -23,6 +23,7 @@
 #include "switch/switch.h"
 #include "guage/guage.h"
 #include "mledit/mledit.h"
+#include "mledit/line_number.h"
 #include "guage/guage_pointer.h"
 #include "gif_image/gif_image.h"
 #include "svg_image/svg_image.h"
@@ -94,6 +95,7 @@ ret_t tk_ext_widgets_init() {
   widget_factory_register(widget_factory(), WIDGET_TYPE_SLIDE_MENU, slide_menu_create);
   widget_factory_register(widget_factory(), WIDGET_TYPE_MUTABLE_IMAGE, mutable_image_create);
   widget_factory_register(widget_factory(), WIDGET_TYPE_MLEDIT, mledit_create);
+  widget_factory_register(widget_factory(), WIDGET_TYPE_LINE_NUMBER, line_number_create);
 
   children_layouter_register_ext_builtins();
 

@@ -1,6 +1,8 @@
 <window anim_hint="htranslate" >
- <mledit x="c" y="10" h="40%" w="90%" focus="true" margin_right="16" wrap_word="true"> 
-   <scroll_bar_d name="bar" x="right" y="0" w="14" h="100%" value="0"/>
+  <mledit x="c" y="10" h="40%" w="90%" focus="true" 
+    left_margin="33" top_margin="2" bottom_margin="2" right_margin="16" wrap_word="true" max_lines="100"> 
+   <line_number x="0" y="0" w="32" h="100%" value="0"/>
+   <scroll_bar_d x="right" y="0" w="14" h="100%" value="0"/>
  </mledit>
  <mledit x="c" y="b:10" h="40%" w="90%" wrap_word="false"> 
  </mledit>

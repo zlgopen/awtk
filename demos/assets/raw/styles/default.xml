@@ -552,3 +552,9 @@
     <empty_focus bg_color="#f0f0f0" text_color="#a0a0a0" border_color="black"/>
   </style>
 </mledit>
+
+<line_number>
+  <style name="default">
+    <normal text_color="black" bg_color="#d0d0d0" text_align_h="right"/>
+  </style>
+</line_number>
