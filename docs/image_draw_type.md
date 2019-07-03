@@ -28,18 +28,20 @@ image_set_draw_type(img, IMAGE_DRAW_CENTER);
 
 ```
 <window name="main" x="0" y="0" w="320" h="480">
-  <image style="1:border" x="0" y="0" w="50%" h="50%" image="earth" draw_type="center"/>
-  <image style="1:border" x="0" y="50%" w="100%" h="50%" image="earth" draw_type="repeat"/>
+  <image style="border" x="0" y="0" w="50%" h="50%" image="earth" draw_type="center"/>
+  <image style="border" x="0" y="50%" w="100%" h="50%" image="earth" draw_type="repeat"/>
 </window>
 ```
 
 ## 四、在主题中使用(适用于所有控件的背景)
 
 ```
-<window style-type="1:bricks" bg-image="bricks"  bg-image-draw-type="repeat"/>
-<button style-type="1:blue_img" state="normal"   bg-image="btn_blue_n" bg-image-draw-type="3patch_x" text-color="white"/>
-<button style-type="1:blue_img" state="pressed"  bg-image="btn_blue_p" bg-image-draw-type="3patch_x" text-color="white"/>
-<button style-type="1:blue_img" state="over"     bg-image="btn_blue_o" bg-image-draw-type="3patch_x" text-color="white"/>
+<progress_bar>
+  <style name="img_v"  bg_image="slider_v_bg" fg_image="slider_v_fg" text_color="black" 
+    bg_image_draw_type="patch3_y" fg_image_draw_type="patch3_y">
+    <normal/>
+  </style>
+</progress_bar>
 ```
 
 ## 五、查看实际效果
