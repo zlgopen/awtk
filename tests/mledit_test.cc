@@ -21,13 +21,11 @@ TEST(MLEdit, int) {
   ASSERT_EQ(widget_set_prop(b, MLEDIT_PROP_WRAP_WORD, &v1), RET_OK);
   ASSERT_EQ(widget_get_prop(b, MLEDIT_PROP_WRAP_WORD, &v2), RET_OK);
   ASSERT_EQ(value_bool(&v1), value_bool(&v2));
-  
+
   value_set_bool(&v1, false);
   ASSERT_EQ(widget_set_prop(b, MLEDIT_PROP_WRAP_WORD, &v1), RET_OK);
   ASSERT_EQ(widget_get_prop(b, MLEDIT_PROP_WRAP_WORD, &v2), RET_OK);
   ASSERT_EQ(value_bool(&v1), value_bool(&v2));
 
-
   widget_destroy(b);
 }
-

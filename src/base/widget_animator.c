@@ -156,6 +156,7 @@ ret_t widget_animator_stop(widget_animator_t* animator) {
   if (animator->state == ANIMATOR_RUNNING) {
     animator->now = 0;
     animator->start_time = 0;
+    animator->reversed = FALSE;
     animator->state = ANIMATOR_STOPPED;
     emitter_dispatch(&(animator->emitter), &e);
     widget_animator_update(animator, 0);

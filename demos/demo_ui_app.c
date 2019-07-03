@@ -280,6 +280,27 @@ static ret_t on_close(void* ctx, event_t* e) {
   return window_close(win);
 }
 
+static ret_t on_start(void* ctx, event_t* e) {
+  widget_t* win = WIDGET(ctx);
+  widget_start_animator(NULL, NULL);
+
+  return RET_OK;
+}
+
+static ret_t on_pause(void* ctx, event_t* e) {
+  widget_t* win = WIDGET(ctx);
+  widget_pause_animator(NULL, NULL);
+
+  return RET_OK;
+}
+
+static ret_t on_stop(void* ctx, event_t* e) {
+  widget_t* win = WIDGET(ctx);
+  widget_stop_animator(NULL, NULL);
+
+  return RET_OK;
+}
+
 static ret_t on_send_key(void* ctx, event_t* e) {
   widget_t* button = WIDGET(e->target);
   char text[2];
@@ -447,6 +468,7 @@ static ret_t on_change_locale(void* ctx, event_t* e) {
 
 static ret_t install_one(void* ctx, const void* iter) {
   widget_t* widget = WIDGET(iter);
+  widget_t* win = widget_get_window(widget);
 
   if (widget->name != NULL) {
     const char* name = widget->name;
@@ -485,10 +507,13 @@ static ret_t install_one(void* ctx, const void* iter) {
       widget_t* win = widget_get_window(widget);
       widget_on(widget, EVT_CLICK, on_dec, win);
     } else if (tk_str_eq(name, "close")) {
-      widget_t* win = widget_get_window(widget);
-      if (win) {
-        widget_on(widget, EVT_CLICK, on_close, win);
-      }
+      widget_on(widget, EVT_CLICK, on_close, win);
+    } else if (tk_str_eq(name, "start")) {
+      widget_on(widget, EVT_CLICK, on_start, win);
+    } else if (tk_str_eq(name, "pause")) {
+      widget_on(widget, EVT_CLICK, on_pause, win);
+    } else if (tk_str_eq(name, "stop")) {
+      widget_on(widget, EVT_CLICK, on_stop, win);
     } else if (tk_str_eq(name, "key")) {
       widget_on(widget, EVT_CLICK, on_send_key, NULL);
     } else if (tk_str_eq(name, "backspace")) {

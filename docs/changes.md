@@ -1,4 +1,10 @@
 # 最新动态
+* 2019/07/03
+  * mledit增加max_lines属性。
+  * mledit支持pageup/pagedown
+  * 动画停止时reversed设置为FALSE。
+  * 更新demoui
+  
 * 2019/07/02
   * 修改OpenGL模式下SVG无法绘制的问题(感谢智明提供补丁)。
   * mledit 支持垂直滚动条。
