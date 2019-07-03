@@ -87,13 +87,13 @@ static void svg_init_shape(bsvg_builder_t* svg, svg_shape_t* shape, const char**
     } else if (tk_str_eq(k, "stroke-width")) {
       shape->stroke_width = tk_atoi(v);
     } else if (tk_str_eq(k, "stroke")) {
-      if (tk_str_eq(v, "transparent") || tk_str_eq(v, "none") || tk_str_eq(v, "")) {
+      if (tk_str_eq(v, "transparent") || tk_str_eq(v, "none")) {
         shape->no_stroke = TRUE;
       } else {
         shape->stroke = color_parse(v);
       }
     } else if (tk_str_eq(k, "fill")) {
-      if (tk_str_eq(v, "transparent") || tk_str_eq(v, "none") || tk_str_eq(v, "")) {
+      if (tk_str_eq(v, "transparent") || tk_str_eq(v, "none")) {
         shape->no_fill = TRUE;
       } else {
         shape->fill = color_parse(v);

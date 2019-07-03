@@ -4,7 +4,8 @@
   * mledit支持pageup/pagedown
   * 动画停止时reversed设置为FALSE。
   * 更新demoui
-  
+  * 修改svg图片fill=""时的问题。
+
 * 2019/07/02
   * 修改OpenGL模式下SVG无法绘制的问题(感谢智明提供补丁)。
   * mledit 支持垂直滚动条。
@@ -18,7 +19,7 @@
 * 2019/06/29
   * 子控件缺省布局方式增加align_h的参数，
 
-* 2019/06/28
+* 2019q/06/28
   * 完善edit。
   * 完善combobox
 
