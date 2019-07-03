@@ -222,6 +222,9 @@ TEST(Widget, children) {
 static string s_event_log;
 
 static ret_t on_button_events(void* ctx, event_t* e) {
+  widget_t* widget = WIDGET(e->target);
+  assert(widget->can_not_destroy > 0);
+
   (void)ctx;
   switch (e->type) {
     case EVT_MOVE: {
@@ -301,6 +304,7 @@ TEST(Widget, move) {
   ASSERT_EQ(w->x, 100);
   ASSERT_EQ(w->y, 200);
   ASSERT_EQ(s_event_log, string("will_move move "));
+  ASSERT_EQ(w->can_not_destroy, 0);
 
   widget_destroy(w);
 }
@@ -316,6 +320,7 @@ TEST(Widget, resize) {
   ASSERT_EQ(w->w, 100);
   ASSERT_EQ(w->h, 200);
   ASSERT_EQ(s_event_log, string("will_resize resize "));
+  ASSERT_EQ(w->can_not_destroy, 0);
 
   widget_destroy(w);
 }
@@ -333,6 +338,7 @@ TEST(Widget, move_resize) {
   ASSERT_EQ(w->w, 300);
   ASSERT_EQ(w->h, 400);
   ASSERT_EQ(s_event_log, string("will_move_resize move_resize "));
+  ASSERT_EQ(w->can_not_destroy, 0);
 
   widget_destroy(w);
 }

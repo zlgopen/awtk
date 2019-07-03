@@ -752,11 +752,9 @@ ret_t widget_on_event_before_children(widget_t* widget, event_t* e) {
   ret_t ret = RET_OK;
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
 
-  widget->can_not_destroy++;
   if (widget->vt && widget->vt->on_event_before_children) {
     ret = widget->vt->on_event_before_children(widget, e);
   }
-  widget->can_not_destroy--;
 
   return ret;
 }
@@ -1503,7 +1501,7 @@ static bool_t widget_is_move_focus_next_key(widget_t* widget, key_event_t* e) {
   return e->key == key;
 }
 
-ret_t widget_on_keydown(widget_t* widget, key_event_t* e) {
+static ret_t widget_on_keydown_impl(widget_t* widget, key_event_t* e) {
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
@@ -1530,6 +1528,17 @@ ret_t widget_on_keydown(widget_t* widget, key_event_t* e) {
   }
 
   return RET_OK;
+}
+
+ret_t widget_on_keydown(widget_t* widget, key_event_t* e) {
+  ret_t ret = RET_OK;
+  return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
+
+  widget->can_not_destroy++;
+  ret = widget_on_keydown_impl(widget, e);
+  widget->can_not_destroy--;
+
+  return ret;
 }
 
 static ret_t widget_on_keyup_before_children(widget_t* widget, key_event_t* e) {
@@ -1565,7 +1574,7 @@ static ret_t widget_on_keyup_after_children(widget_t* widget, key_event_t* e) {
   return ret;
 }
 
-ret_t widget_on_keyup(widget_t* widget, key_event_t* e) {
+static ret_t widget_on_keyup_impl(widget_t* widget, key_event_t* e) {
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
@@ -1584,6 +1593,17 @@ ret_t widget_on_keyup(widget_t* widget, key_event_t* e) {
   }
 
   return RET_OK;
+}
+
+ret_t widget_on_keyup(widget_t* widget, key_event_t* e) {
+  ret_t ret = RET_OK;
+  return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
+
+  widget->can_not_destroy++;
+  ret = widget_on_keyup_impl(widget, e);
+  widget->can_not_destroy--;
+
+  return ret;
 }
 
 static ret_t widget_dispatch_leave_event(widget_t* widget, pointer_event_t* e) {
@@ -1674,7 +1694,7 @@ static ret_t widget_on_pointer_down_after_children(widget_t* widget, pointer_eve
   return ret;
 }
 
-ret_t widget_on_pointer_down(widget_t* widget, pointer_event_t* e) {
+static ret_t widget_on_pointer_down_impl(widget_t* widget, pointer_event_t* e) {
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
@@ -1685,6 +1705,17 @@ ret_t widget_on_pointer_down(widget_t* widget, pointer_event_t* e) {
   return_if_equal(widget_on_pointer_down_after_children(widget, e), RET_STOP);
 
   return RET_OK;
+}
+
+ret_t widget_on_pointer_down(widget_t* widget, pointer_event_t* e) {
+  ret_t ret = RET_OK;
+  return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
+
+  widget->can_not_destroy++;
+  ret = widget_on_pointer_down_impl(widget, e);
+  widget->can_not_destroy--;
+
+  return ret;
 }
 
 static ret_t widget_on_pointer_move_before_children(widget_t* widget, pointer_event_t* e) {
@@ -1736,7 +1767,7 @@ static ret_t widget_on_pointer_move_after_children(widget_t* widget, pointer_eve
   return ret;
 }
 
-ret_t widget_on_pointer_move(widget_t* widget, pointer_event_t* e) {
+static ret_t widget_on_pointer_move_impl(widget_t* widget, pointer_event_t* e) {
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
@@ -1752,6 +1783,17 @@ ret_t widget_on_pointer_move(widget_t* widget, pointer_event_t* e) {
   } else {
     return widget_on_pointer_move_after_children(widget, e);
   }
+}
+
+ret_t widget_on_pointer_move(widget_t* widget, pointer_event_t* e) {
+  ret_t ret = RET_OK;
+  return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
+
+  widget->can_not_destroy++;
+  ret = widget_on_pointer_move_impl(widget, e);
+  widget->can_not_destroy--;
+
+  return ret;
 }
 
 static ret_t widget_on_pointer_up_before_children(widget_t* widget, pointer_event_t* e) {
@@ -1788,7 +1830,7 @@ static ret_t widget_on_pointer_up_after_children(widget_t* widget, pointer_event
   return ret;
 }
 
-ret_t widget_on_pointer_up(widget_t* widget, pointer_event_t* e) {
+static ret_t widget_on_pointer_up_impl(widget_t* widget, pointer_event_t* e) {
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
@@ -1804,6 +1846,17 @@ ret_t widget_on_pointer_up(widget_t* widget, pointer_event_t* e) {
   } else {
     return widget_on_pointer_up_after_children(widget, e);
   }
+}
+
+ret_t widget_on_pointer_up(widget_t* widget, pointer_event_t* e) {
+  ret_t ret = RET_OK;
+  return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
+
+  widget->can_not_destroy++;
+  ret = widget_on_pointer_up_impl(widget, e);
+  widget->can_not_destroy--;
+
+  return ret;
 }
 
 ret_t widget_grab(widget_t* widget, widget_t* child) {

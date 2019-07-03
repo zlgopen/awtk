@@ -5,6 +5,7 @@
   * 动画停止时reversed设置为FALSE。
   * 更新demoui
   * 修改svg图片fill=""时的问题。
+  * widget的pointer/key事件处理增加can\_not\_destroy保护。
 
 * 2019/07/02
   * 修改OpenGL模式下SVG无法绘制的问题(感谢智明提供补丁)。
