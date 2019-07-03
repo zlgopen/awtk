@@ -109,6 +109,13 @@ typedef struct _mledit_t {
    */
   bool_t wrap_word;
 
+  /**
+   * @property {uint32_t} max_lines
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 最大行数。
+   */
+  uint32_t max_lines;
+
   /*private*/
   text_edit_t* model;
   uint32_t timer_id;
@@ -153,6 +160,17 @@ ret_t mledit_set_readonly(widget_t* widget, bool_t readonly);
 ret_t mledit_set_wrap_word(widget_t* widget, bool_t wrap_word);
 
 /**
+ * @method mledit_set_max_lines
+ * 设置编辑器的最大行数。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {uint32_t} max_lines 最大行数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t mledit_set_max_lines(widget_t* widget, uint32_t max_lines);
+
+/**
  * @method mledit_set_input_tips
  * 设置编辑器的输入提示。
  * @annotation ["scriptable"]
@@ -175,6 +193,7 @@ widget_t* mledit_cast(widget_t* widget);
 
 #define WIDGET_TYPE_MLEDIT "mledit"
 
+#define MLEDIT_PROP_MAX_LINES "max_lines"
 #define MLEDIT_PROP_WRAP_WORD "wrap_word"
 #define MLEDIT(widget) ((mledit_t*)(mledit_cast(WIDGET(widget))))
 

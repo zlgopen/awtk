@@ -351,6 +351,7 @@ ret_t text_edit_layout(text_edit_t* text_edit) {
   uint32_t offset = 0;
   DECL_IMPL(text_edit);
   uint32_t max_rows = impl->rows->capacity;
+  wstr_t* text = &(text_edit->widget->text);
   uint32_t size = text_edit->widget->text.size;
   text_layout_info_t* layout_info = &(impl->layout_info);
 
@@ -372,6 +373,12 @@ ret_t text_edit_layout(text_edit_t* text_edit) {
     offset += iter->length;
     i++;
   }
+
+  if (offset < size) {
+    text->size = offset;
+    text->str[offset] = 0;
+  }
+
   impl->rows->size = i;
   impl->line_height = text_edit->c->font_size * FONT_BASELINE;
 
@@ -730,7 +737,7 @@ ret_t text_edit_set_max_rows(text_edit_t* text_edit, uint32_t max_rows) {
   DECL_IMPL(text_edit);
   return_value_if_fail(text_edit != NULL && max_rows >= 1, RET_BAD_PARAMS);
 
-  if (impl->rows != NULL && impl->rows->capacity < max_rows) {
+  if (impl->rows != NULL) {
     rows_destroy(impl->rows);
     impl->rows = NULL;
   }

@@ -76,6 +76,16 @@ ret_t mledit_set_wrap_word(widget_t* widget, bool_t wrap_word) {
   return RET_OK;
 }
 
+ret_t mledit_set_max_lines(widget_t* widget, uint32_t max_lines) {
+  mledit_t* mledit = MLEDIT(widget);
+  return_value_if_fail(mledit != NULL, RET_BAD_PARAMS);
+
+  mledit->max_lines = max_lines;
+  text_edit_set_max_rows(mledit->model, max_lines);
+
+  return RET_OK;
+}
+
 static ret_t mledit_get_prop(widget_t* widget, const char* name, value_t* v) {
   mledit_t* mledit = MLEDIT(widget);
   return_value_if_fail(mledit != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
@@ -84,6 +94,9 @@ static ret_t mledit_get_prop(widget_t* widget, const char* name, value_t* v) {
     return RET_OK;
   } else if (tk_str_eq(name, MLEDIT_PROP_WRAP_WORD)) {
     value_set_bool(v, mledit->wrap_word);
+    return RET_OK;
+  } else if (tk_str_eq(name, MLEDIT_PROP_MAX_LINES)) {
+    value_set_bool(v, mledit->max_lines);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_LEFT_MARGIN)) {
     value_set_int(v, mledit->left_margin);
@@ -126,6 +139,9 @@ static ret_t mledit_set_prop(widget_t* widget, const char* name, const value_t* 
     return RET_OK;
   } else if (tk_str_eq(name, MLEDIT_PROP_WRAP_WORD)) {
     mledit_set_wrap_word(widget, value_bool(v));
+    return RET_OK;
+  } else if (tk_str_eq(name, MLEDIT_PROP_MAX_LINES)) {
+    mledit_set_max_lines(widget, value_int(v));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_MARGIN)) {
     int margin = value_int(v);
