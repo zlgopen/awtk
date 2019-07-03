@@ -270,6 +270,7 @@ static row_info_t* text_edit_multi_line_layout_line(text_edit_t* text_edit, uint
   uint32_t i = 0;
   uint32_t x = 0;
   DECL_IMPL(text_edit);
+  wchar_t last_char = 0;
   canvas_t* c = text_edit->c;
   wstr_t* text = &(text_edit->widget->text);
   STB_TexteditState* state = &(impl->state);
@@ -292,6 +293,7 @@ static row_info_t* text_edit_multi_line_layout_line(text_edit_t* text_edit, uint
       text_edit_set_caret_pos(impl, x, y, c->font_size);
     }
 
+    last_char = *p;
     line_break = line_break_check(*p, p[1]);
     if (line_break == LINE_BREAK_MUST) {
       i++;
@@ -319,7 +321,11 @@ static row_info_t* text_edit_multi_line_layout_line(text_edit_t* text_edit, uint
   }
 
   if (i == state->cursor && state->cursor == text->size) {
-    text_edit_set_caret_pos(impl, x, y, c->font_size);
+    if (last_char == STB_TEXTEDIT_NEWLINE) {
+      text_edit_set_caret_pos(impl, 0, y + line_height, c->font_size);
+    } else {
+      text_edit_set_caret_pos(impl, x, y, c->font_size);
+    }
   }
 
   row->text_w = x;
@@ -386,7 +392,7 @@ static void text_edit_layout_for_stb(StbTexteditRow* row, STB_TEXTEDIT_STRING* s
   } else {
     row->x0 = 0;
     row->x1 = 0;
-    row->num_chars = 0;
+    row->num_chars = 1;
   }
 
   row->ymin = 0;
@@ -787,11 +793,13 @@ ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
   wstr_t* text = NULL;
   DECL_IMPL(text_edit);
   STB_TexteditState* state = NULL;
+  text_layout_info_t* layout_info = NULL;
   return_value_if_fail(impl != NULL, RET_BAD_PARAMS);
 
   key = evt->key;
   state = &(impl->state);
   text = &(text_edit->widget->text);
+  layout_info = &(impl->layout_info);
 
   switch (key) {
     case TK_KEY_RETURN: {
@@ -834,6 +842,41 @@ ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
       key = STB_TEXTEDIT_K_INSERT;
       break;
     }
+    case TK_KEY_PAGEDOWN: {
+      if (impl->single_line) {
+        key = STB_TEXTEDIT_K_LINEEND;
+      } else {
+        int32_t lines = layout_info->h / impl->line_height;
+        if ((layout_info->virtual_h - layout_info->oy) > layout_info->h) {
+          key = STB_TEXTEDIT_K_DOWN;
+          while (lines-- > 0) {
+            stb_textedit_key(text_edit, state, key);
+          }
+          text_edit_layout(text_edit);
+        }
+
+        return RET_OK;
+      }
+      break;
+    }
+    case TK_KEY_PAGEUP: {
+      if (impl->single_line) {
+        key = STB_TEXTEDIT_K_LINESTART;
+      } else {
+        int32_t lines = tk_min(layout_info->oy, layout_info->h) / impl->line_height;
+
+        if (lines > 0) {
+          key = STB_TEXTEDIT_K_UP;
+          while (lines-- > 0) {
+            stb_textedit_key(text_edit, state, key);
+          }
+          text_edit_layout(text_edit);
+        }
+
+        return RET_OK;
+      }
+      break;
+    }
     case TK_KEY_LSHIFT:
     case TK_KEY_RSHIFT:
     case TK_KEY_LCTRL:
@@ -853,7 +896,7 @@ ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
   }
 
   if (evt->ctrl) {
-    char c = key;
+    char c = tolower(key);
     if (c == 'z') {
       stb_textedit_key(text_edit, state, STB_TEXTEDIT_K_UNDO);
     } else if (c == 'y') {
