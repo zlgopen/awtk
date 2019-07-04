@@ -60,7 +60,7 @@ void exit_if_need_not_update(const char* in, const char* out) {
 }
 
 char* read_file(const char* file_name, uint32_t* length) {
-  return file_read(file_name, length);
+  return (char*)file_read(file_name, length);
 }
 
 ret_t write_file(const char* file_name, const void* buff, uint32_t length) {
