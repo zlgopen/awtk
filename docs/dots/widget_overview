@@ -74,6 +74,5 @@ digraph G {
    scroll_view_t -> widget_t[arrowhead=empty]
    mledit_t -> widget_t[arrowhead=empty]
    slide_indicator_t -> widget_t[arrowhead=empty]
-   overlay_t -> widget_t[arrowhead=empty]
    line_number_t -> widget_t[arrowhead=empty]
  }

@@ -11,6 +11,9 @@ digraph G {
         width = 0.4 
     ]   
 
+   subgraph clusterFontManager{
+    self_layouter_default -> self_layouter[constraint=false arrowhead=normal]
+   }
 
    self_layouter_default -> self_layouter[style=dashed arrowhead=empty]
    self_layouter_menu -> self_layouter[style=dashed arrowhead=empty]
