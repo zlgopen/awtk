@@ -53,7 +53,7 @@ string normalPath(const char* str) {
 
   for (i = 0; i < n; i++) {
     if (s[i] == '/') {
-      s[i] = PATH_SEP;
+      s[i] = TK_PATH_SEP;
     }
   }
 

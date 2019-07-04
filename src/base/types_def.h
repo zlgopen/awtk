@@ -307,8 +307,8 @@ typedef struct _system_info_t system_info_t;
 #define TK_GLYPH_CACHE_NR 4096
 #else
 #define TK_GLYPH_CACHE_NR 256
-#endif/*WITH_SDL*/
+#endif /*WITH_SDL*/
 
-#endif/*TK_GLYPH_CACHE_NR*/
+#endif /*TK_GLYPH_CACHE_NR*/
 
 #endif /*TK_TYPES_DEF_H*/

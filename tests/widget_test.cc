@@ -932,7 +932,6 @@ TEST(Widget, foreach_skip) {
 }
 
 TEST(Widget, move_focus) {
-  int32_t count = 0;
   widget_t* w = window_create(NULL, 0, 0, 400, 300);
   widget_t* b1 = button_create(w, 0, 0, 0, 0);
   widget_t* b2 = button_create(w, 0, 0, 0, 0);
@@ -960,7 +959,6 @@ TEST(Widget, move_focus) {
 }
 
 TEST(Widget, move_focus_skip_invisible) {
-  int32_t count = 0;
   widget_t* w = window_create(NULL, 0, 0, 400, 300);
   widget_t* b1 = button_create(w, 0, 0, 0, 0);
   widget_t* b2 = button_create(w, 0, 0, 0, 0);
@@ -995,7 +993,6 @@ TEST(Widget, move_focus_skip_invisible) {
 }
 
 TEST(Widget, move_focus_first) {
-  int32_t count = 0;
   widget_t* w = window_create(NULL, 0, 0, 400, 300);
   widget_t* b1 = button_create(w, 0, 0, 0, 0);
   widget_t* b2 = button_create(w, 0, 0, 0, 0);
@@ -1024,7 +1021,6 @@ TEST(Widget, move_focus_first) {
 }
 
 TEST(Widget, move_focus_pages) {
-  int32_t count = 0;
   widget_t* w = window_create(NULL, 0, 0, 400, 300);
   widget_t* b0 = button_create(w, 0, 0, 0, 0);
 
@@ -1093,8 +1089,6 @@ TEST(Widget, mutable_style) {
 }
 
 TEST(Widget, mutable_style1) {
-  color_t c = color_init(0, 0, 0, 0);
-  color_t black = color_init(0, 0, 0, 0xff);
   widget_t* w = window_create(NULL, 0, 0, 400, 300);
   widget_t* b = button_create(w, 0, 0, 0, 0);
 

@@ -188,10 +188,10 @@ typedef enum _ret_t {
 #endif /*MAX_PATH*/
 
 #if defined(WIN32)
-#define PATH_SEP '\\'
+#define TK_PATH_SEP '\\'
 #else
-#define PATH_SEP '/'
-#endif /*PATH_SEP*/
+#define TK_PATH_SEP '/'
+#endif /*TK_PATH_SEP*/
 
 #if defined(NDEBUG) || defined(SYLIXOS)
 #define ENSURE(p) (void)(p)

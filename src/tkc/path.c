@@ -32,9 +32,9 @@ ret_t path_basename(const char* path, char* result, int32_t size) {
   return_value_if_fail(path != NULL && result != NULL, RET_BAD_PARAMS);
 
   memset(result, 0x00, size);
-  p = strrchr(path, PATH_SEP);
+  p = strrchr(path, TK_PATH_SEP);
   if (p == NULL) {
-    p = strrchr(path, PATH_SEP == '/' ? '\\' : '/');
+    p = strrchr(path, TK_PATH_SEP == '/' ? '\\' : '/');
   }
   if (p == NULL) {
     p = path;
@@ -74,9 +74,9 @@ ret_t path_dirname(const char* path, char* result, int32_t size) {
   return_value_if_fail(path != NULL && result != NULL, RET_BAD_PARAMS);
 
   memset(result, 0x00, size);
-  p = strrchr(path, PATH_SEP);
+  p = strrchr(path, TK_PATH_SEP);
   if (p == NULL) {
-    p = strrchr(path, PATH_SEP == '/' ? '\\' : '/');
+    p = strrchr(path, TK_PATH_SEP == '/' ? '\\' : '/');
   }
 
   if (p != NULL) {
@@ -109,10 +109,10 @@ ret_t path_app_root(char path[MAX_PATH + 1]) {
 
   if (fs_get_exe(os_fs(), exe_path) == RET_OK) {
     path_normalize(exe_path, path, MAX_PATH + 1);
-    p = strrchr(path, PATH_SEP);
+    p = strrchr(path, TK_PATH_SEP);
     if (p != NULL) {
       *p = '\0';
-      p = strrchr(path, PATH_SEP);
+      p = strrchr(path, TK_PATH_SEP);
       if (p != NULL) {
         if (strcmp(p + 1, "bin") == 0) {
           *p = '\0';
@@ -136,7 +136,7 @@ ret_t path_normalize(const char* path, char* result, int32_t size) {
     switch (*s) {
       case '/':
       case '\\': {
-        *d++ = PATH_SEP;
+        *d++ = TK_PATH_SEP;
         while (IS_PATH_SEP(*s)) {
           s++;
         }
@@ -151,7 +151,7 @@ ret_t path_normalize(const char* path, char* result, int32_t size) {
 
           d--;
           *d = '\0';
-          p = strrchr(result, PATH_SEP);
+          p = strrchr(result, TK_PATH_SEP);
           if (p != NULL) {
             d = p + 1;
           } else {
@@ -195,7 +195,7 @@ ret_t path_build(char* result, int32_t size, ...) {
       return_value_if_fail(((new_size + 1) < avail_size), RET_FAIL);
 
       if (d != result) {
-        *d++ = PATH_SEP;
+        *d++ = TK_PATH_SEP;
       }
 
       memcpy(d, p, new_size);
