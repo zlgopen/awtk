@@ -157,7 +157,7 @@ font_t* font_manager_get_font (font_manager_t* fm, char* name, font_size_t size)
 | -------- | ----- | --------- |
 | 返回值 | font\_t* | 返回字体对象。 |
 | fm | font\_manager\_t* | 字体管理器对象。 |
-| name | char* | 字体名，为NULL时使用TK\_DEFAULT\_FONT。 |
+| name | char* | 字体名，为NULL时使用缺省字体。 |
 | size | font\_size\_t | 字体的大小。 |
 #### font\_manager\_init 函数
 -----------------------
@@ -257,5 +257,5 @@ ret_t font_manager_unload_font (font_manager_t* fm, char* name, font_size_t size
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | fm | font\_manager\_t* | 字体管理器对象。 |
-| name | char* | 字体名，为NULL时使用TK\_DEFAULT\_FONT。 |
+| name | char* | 字体名，为NULL时使用缺省字体。 |
 | size | font\_size\_t | 字体的大小(矢量字体指定为0即可)。 |

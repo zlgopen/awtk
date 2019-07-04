@@ -1,7 +1,7 @@
 ## idle\_t
 ### 概述
 
- idle可以看作是duration为0的定时器，不同的是idle函数在主循环中paint之后执行。
+ idle可以看作是duration为0的定时器。
 
  > idle可以用来实现一些异步处理。
 

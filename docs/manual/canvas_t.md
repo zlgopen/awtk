@@ -26,6 +26,7 @@
 | <a href="#canvas_t_canvas_init">canvas\_init</a> | 初始化，系统内部调用。 |
 | <a href="#canvas_t_canvas_measure_text">canvas\_measure\_text</a> | 计算文本所占的宽度。 |
 | <a href="#canvas_t_canvas_measure_utf8">canvas\_measure\_utf8</a> | 计算文本所占的宽度。 |
+| <a href="#canvas_t_canvas_reset">canvas\_reset</a> | 释放相关资源。 |
 | <a href="#canvas_t_canvas_set_clip_rect">canvas\_set\_clip\_rect</a> | 设置裁剪区。 |
 | <a href="#canvas_t_canvas_set_clip_rect_ex">canvas\_set\_clip\_rect\_ex</a> | 设置裁剪区。 |
 | <a href="#canvas_t_canvas_set_fill_color">canvas\_set\_fill\_color</a> | 设置填充颜色。 |
@@ -486,6 +487,28 @@ float_t canvas_measure_utf8 (canvas_t* c, const char* str);
 | 返回值 | float\_t | 返回文本所占的宽度。 |
 | c | canvas\_t* | canvas对象。 |
 | str | const char* | 字符串。 |
+#### canvas\_reset 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="canvas_t_canvas_reset"> 释放相关资源。
+
+
+
+
+* 函数原型：
+
+```
+ret_t canvas_reset (canvas_t* c);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| c | canvas\_t* | canvas对象。 |
 #### canvas\_set\_clip\_rect 函数
 -----------------------
 

@@ -16,7 +16,29 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#input_method_sdl_t_children_layouter_register_builtins">children\_layouter\_register\_builtins</a> | 注册内置的子控件布局算法。 |
 | <a href="#input_method_sdl_t_input_method_sdl_create">input\_method\_sdl\_create</a> |  |
+#### children\_layouter\_register\_builtins 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="input_method_sdl_t_children_layouter_register_builtins"> 注册内置的子控件布局算法。
+
+
+
+
+* 函数原型：
+
+```
+ret_t children_layouter_register_builtins ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 #### input\_method\_sdl\_create 函数
 -----------------------
 

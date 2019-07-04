@@ -13,7 +13,9 @@
 | -------- | ------------ | 
 | <a href="#system_info_t_system_info">system\_info</a> | 获取system_info对象。 |
 | <a href="#system_info_t_system_info_deinit">system\_info\_deinit</a> | 释放system_info对象。 |
+| <a href="#system_info_t_system_info_fix_font_name">system\_info\_fix\_font\_name</a> | 修正字体名称，如果为NULL，返回缺省字体。 |
 | <a href="#system_info_t_system_info_init">system\_info\_init</a> | 初始化system_info对象。 |
+| <a href="#system_info_t_system_info_set_default_font">system\_info\_set\_default\_font</a> | 设置缺省字体。 |
 | <a href="#system_info_t_system_info_set_device_pixel_ratio">system\_info\_set\_device\_pixel\_ratio</a> | 设置LCD密度。 |
 | <a href="#system_info_t_system_info_set_font_scale">system\_info\_set\_font\_scale</a> | 设置字体缩放比例。 |
 | <a href="#system_info_t_system_info_set_lcd_h">system\_info\_set\_lcd\_h</a> | 设置LCD高度。 |
@@ -29,6 +31,7 @@
 | <a href="#system_info_t_app_root">app\_root</a> | const char* | 应用程序的根目录，用于定位资源文件。 |
 | <a href="#system_info_t_app_type">app\_type</a> | app\_type\_t | 应用程序的类型。 |
 | <a href="#system_info_t_country">country</a> | const char* | locale中的国家。 |
+| <a href="#system_info_t_default_font">default\_font</a> | const char* | 缺省字体。 |
 | <a href="#system_info_t_device_orientation">device\_orientation</a> | const char* | 显示屏的方向名称，可选值："portrait"表示竖屏，"landscape"表示横屏。 |
 | <a href="#system_info_t_device_pixel_ratio">device\_pixel\_ratio</a> | float\_t | 显示屏的密度。 |
 | <a href="#system_info_t_font_scale">font\_scale</a> | float\_t | 字体缩放比例，用于实现字体整体放大。 |
@@ -78,6 +81,29 @@ ret_t system_info_deinit ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+#### system\_info\_fix\_font\_name 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="system_info_t_system_info_fix_font_name"> 修正字体名称，如果为NULL，返回缺省字体。
+
+
+
+
+
+* 函数原型：
+
+```
+const char* system_info_fix_font_name (const char* name);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const char* | 返回有效的字体名称。 |
+| name | const char* | 字体名称。 |
 #### system\_info\_init 函数
 -----------------------
 
@@ -102,6 +128,30 @@ ret_t system_info_init (app_type_t app_type, const char* app_name, const char* a
 | app\_type | app\_type\_t | 应用程序的类型。 |
 | app\_name | const char* | 应用程序的名称。 |
 | app\_root | const char* | 应用程序的根目录，用于定位资源文件。 |
+#### system\_info\_set\_default\_font 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="system_info_t_system_info_set_default_font"> 设置缺省字体。
+
+
+
+
+
+* 函数原型：
+
+```
+ret_t system_info_set_default_font (system_info_t* info info, const char* default_font);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| info | system\_info\_t* info | system\_info对象。 |
+| default\_font | const char* | 缺省字体。 |
 #### system\_info\_set\_device\_pixel\_ratio 函数
 -----------------------
 
@@ -287,6 +337,18 @@ ret_t system_info_set_lcd_w (system_info_t* info info, uint32_t lcd_w);
 > <p id="system_info_t_country"> locale中的国家。
 
  > 只能通过object\_get\_prop函数访问。
+
+
+
+* 类型：const char*
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+#### default\_font 属性
+-----------------------
+> <p id="system_info_t_default_font"> 缺省字体。
 
 
 

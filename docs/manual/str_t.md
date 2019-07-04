@@ -41,6 +41,7 @@
 | <a href="#str_t_str_init">str\_init</a> | 初始化字符串对象。 |
 | <a href="#str_t_str_insert">str\_insert</a> | 插入子字符串。 |
 | <a href="#str_t_str_insert_with_len">str\_insert\_with\_len</a> | 插入子字符串。 |
+| <a href="#str_t_str_pop">str\_pop</a> | 删除最后一个字符。 |
 | <a href="#str_t_str_remove">str\_remove</a> | 删除子字符串。 |
 | <a href="#str_t_str_replace">str\_replace</a> | 字符串替换。 |
 | <a href="#str_t_str_reset">str\_reset</a> | 重置字符串为空。 |
@@ -464,6 +465,28 @@ ret_t str_insert_with_len (str_t* str, uint32_t offset, char* text, uint32_t len
 | offset | uint32\_t | 偏移量。 |
 | text | char* | 要插入的字符串。 |
 | len | uint32\_t | 字符串长度。 |
+#### str\_pop 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_pop"> 删除最后一个字符。
+
+
+
+
+* 函数原型：
+
+```
+ret_t str_pop (str_t* str);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | str\_t* | str对象。 |
 #### str\_remove 函数
 -----------------------
 

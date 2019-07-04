@@ -29,6 +29,7 @@
 | -------- | ------------ | 
 | <a href="#timer_t_timer_add">timer\_add</a> | 增加一个timer。 |
 | <a href="#timer_t_timer_count">timer\_count</a> | 返回timer的个数。 |
+| <a href="#timer_t_timer_modify">timer\_modify</a> | 修改指定的timer的duration，修改之后定时器重新开始计时。 |
 | <a href="#timer_t_timer_next_time">timer\_next\_time</a> | 返回最近的timer到期时间。 |
 | <a href="#timer_t_timer_now">timer\_now</a> | 获取当前时间(ms)。 |
 | <a href="#timer_t_timer_queue">timer\_queue</a> | 用于非GUI线程增加一个timer，本函数向主循环的事件队列中发送一个增加timer的请求。 |
@@ -80,6 +81,29 @@ uint32_t timer_count ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | uint32\_t | 返回timer的个数。 |
+#### timer\_modify 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="timer_t_timer_modify"> 修改指定的timer的duration，修改之后定时器重新开始计时。
+
+
+
+
+* 函数原型：
+
+```
+ret_t timer_modify (uint32_t timer_id, uint32_t duration);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| timer\_id | uint32\_t | timerID。 |
+| duration | uint32\_t | 新的时间。 |
 #### timer\_next\_time 函数
 -----------------------
 

@@ -10,12 +10,14 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#window_manager_t_dialog_highlighter_register_builtins">dialog\_highlighter\_register\_builtins</a> | 注册内置的对话框高亮策略。 |
 | <a href="#window_manager_t_window_manager">window\_manager</a> | 获取全局window_manager对象 |
 | <a href="#window_manager_t_window_manager_back">window\_manager\_back</a> | 请求关闭顶层窗口。 |
 | <a href="#window_manager_t_window_manager_back_to_home">window\_manager\_back\_to\_home</a> | 回到主窗口，关闭之上的全部窗口。 |
 | <a href="#window_manager_t_window_manager_cast">window\_manager\_cast</a> | 转换为window_manager对象(供脚本语言使用)。 |
 | <a href="#window_manager_t_window_manager_create">window\_manager\_create</a> | 创建窗口管理器。 |
 | <a href="#window_manager_t_window_manager_get_top_main_window">window\_manager\_get\_top\_main\_window</a> | 获取最上面的主窗口。 |
+| <a href="#window_manager_t_window_manager_get_top_window">window\_manager\_get\_top\_window</a> | 获取最上面的窗口。 |
 | <a href="#window_manager_t_window_manager_init">window\_manager\_init</a> | 初始化窗口管理器。 |
 | <a href="#window_manager_t_window_manager_set">window\_manager\_set</a> | 设置缺省的窗口管理器。 |
 | <a href="#window_manager_t_window_manager_set_cursor">window\_manager\_set\_cursor</a> | 设置鼠标指针。 |
@@ -27,6 +29,27 @@
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#window_manager_t_show_fps">show\_fps</a> | bool\_t | 是否显示fps。 |
+#### dialog\_highlighter\_register\_builtins 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_manager_t_dialog_highlighter_register_builtins"> 注册内置的对话框高亮策略。
+
+
+
+
+* 函数原型：
+
+```
+ret_t dialog_highlighter_register_builtins ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 #### window\_manager 函数
 -----------------------
 
@@ -146,6 +169,27 @@ window_manager_t* window_manager_create ();
 
 ```
 widget_t* window_manager_get_top_main_window (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | widget\_t* | 返回窗口对象。 |
+| widget | widget\_t* | 窗口管理器对象。 |
+#### window\_manager\_get\_top\_window 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_manager_t_window_manager_get_top_window"> 获取最上面的窗口。
+
+
+
+* 函数原型：
+
+```
+widget_t* window_manager_get_top_window (widget_t* widget);
 ```
 
 * 参数说明：

@@ -24,6 +24,8 @@
 | WIDGET\_STATE\_NORMAL\_OF\_CHECKED | 正常状态(选中项)。 |
 | WIDGET\_STATE\_PRESSED\_OF\_CHECKED | 指针按下状态(选中项)。 |
 | WIDGET\_STATE\_OVER\_OF\_CHECKED | 指针悬浮状态(选中项)。 |
+| WIDGET\_STATE\_FOCUSED\_OF\_CHECKED | 焦点状态(选中项)。 |
 | WIDGET\_STATE\_NORMAL\_OF\_ACTIVE | 正常状态(当前项)。 |
 | WIDGET\_STATE\_PRESSED\_OF\_ACTIVE | 指针按下状态(当前项)。 |
 | WIDGET\_STATE\_OVER\_OF\_ACTIVE | 指针悬浮状态(当前项)。 |
+| WIDGET\_STATE\_FOCUSED\_OF\_ACTIVE | 焦点状态(当前项)。 |

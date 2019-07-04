@@ -58,7 +58,7 @@ image_manager_t* image_manager ();
 * 函数原型：
 
 ```
-image_manager_t* image_manager_create (image_loader_t* loader);
+image_manager_t* image_manager_create ();
 ```
 
 * 参数说明：
@@ -66,7 +66,6 @@ image_manager_t* image_manager_create (image_loader_t* loader);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | image\_manager\_t* | 返回图片管理器对象。 |
-| loader | image\_loader\_t* | 图片加载器。 |
 #### image\_manager\_deinit 函数
 -----------------------
 
@@ -150,7 +149,7 @@ ret_t image_manager_get_bitmap (image_manager_t* imm, char* name, bitmap_t* imag
 * 函数原型：
 
 ```
-image_manager_t* image_manager_init (image_manager_t* imm, image_loader_t* loader);
+image_manager_t* image_manager_init (image_manager_t* imm);
 ```
 
 * 参数说明：
@@ -159,7 +158,6 @@ image_manager_t* image_manager_init (image_manager_t* imm, image_loader_t* loade
 | -------- | ----- | --------- |
 | 返回值 | image\_manager\_t* | 返回图片管理器对象。 |
 | imm | image\_manager\_t* | 图片管理器对象。 |
-| loader | image\_loader\_t* | 图片加载器。 |
 #### image\_manager\_set 函数
 -----------------------
 

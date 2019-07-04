@@ -59,6 +59,8 @@
 | <a href="#vgcanvas_t_vgcanvas_fill">vgcanvas\_fill</a> | 填充多边形。 |
 | <a href="#vgcanvas_t_vgcanvas_fill_text">vgcanvas\_fill\_text</a> | 绘制文本。 |
 | <a href="#vgcanvas_t_vgcanvas_flush">vgcanvas\_flush</a> | flush |
+| <a href="#vgcanvas_t_vgcanvas_get_height">vgcanvas\_get\_height</a> | 获取高度。 |
+| <a href="#vgcanvas_t_vgcanvas_get_width">vgcanvas\_get\_width</a> | 获取宽度。 |
 | <a href="#vgcanvas_t_vgcanvas_is_point_in_path">vgcanvas\_is\_point\_in\_path</a> | 检查点是否在当前路径中。 |
 | <a href="#vgcanvas_t_vgcanvas_line_to">vgcanvas\_line\_to</a> | 生成一条线段(从当前点到目标点)。 |
 | <a href="#vgcanvas_t_vgcanvas_measure_text">vgcanvas\_measure\_text</a> | 测量文本的宽度。 |
@@ -102,7 +104,7 @@
 | -------- | ----- | ------------ | 
 | <a href="#vgcanvas_t_anti_alias">anti\_alias</a> | bool\_t | 是否启用反走样功能。 |
 | <a href="#vgcanvas_t_fill_color">fill\_color</a> | color\_t | 填充颜色 |
-| <a href="#vgcanvas_t_font">font</a> | const char* | 字体。 |
+| <a href="#vgcanvas_t_font">font</a> | char* | 字体。 |
 | <a href="#vgcanvas_t_font_size">font\_size</a> | float\_t | 字体大小。 |
 | <a href="#vgcanvas_t_global_alpha">global\_alpha</a> | float\_t | 全局alpha。 |
 | <a href="#vgcanvas_t_h">h</a> | wh\_t | canvas的高度 |
@@ -586,6 +588,50 @@ ret_t vgcanvas_flush (vgcanvas_t* vg);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
+#### vgcanvas\_get\_height 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="vgcanvas_t_vgcanvas_get_height"> 获取高度。
+
+
+
+
+* 函数原型：
+
+```
+wh_t vgcanvas_get_height (vgcanvas_t* vgcanvas);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | wh\_t | 返回高度。 |
+| vgcanvas | vgcanvas\_t* | vgcanvas对象。 |
+#### vgcanvas\_get\_width 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="vgcanvas_t_vgcanvas_get_width"> 获取宽度。
+
+
+
+
+* 函数原型：
+
+```
+wh_t vgcanvas_get_width (vgcanvas_t* vgcanvas);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | wh\_t | 返回宽度。 |
+| vgcanvas | vgcanvas\_t* | vgcanvas对象。 |
 #### vgcanvas\_is\_point\_in\_path 函数
 -----------------------
 
@@ -1532,7 +1578,7 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 
 
 
-* 类型：const char*
+* 类型：char*
 
 | 特性 | 是否支持 |
 | -------- | ----- |

@@ -30,6 +30,7 @@
 
 
 
+
 ----------------------------------
 ### 函数
 <p id="guage_pointer_t_methods">
@@ -38,6 +39,7 @@
 | -------- | ------------ | 
 | <a href="#guage_pointer_t_guage_pointer_cast">guage\_pointer\_cast</a> | 转换为guage_pointer对象(供脚本语言使用)。 |
 | <a href="#guage_pointer_t_guage_pointer_create">guage\_pointer\_create</a> | 创建guage_pointer对象 |
+| <a href="#guage_pointer_t_guage_pointer_set_anchor">guage\_pointer\_set\_anchor</a> | 设置指针的旋转锚点。 |
 | <a href="#guage_pointer_t_guage_pointer_set_angle">guage\_pointer\_set\_angle</a> | 设置指针角度。12点钟方向为0度，顺时钟方向为正，单位为度。 |
 | <a href="#guage_pointer_t_guage_pointer_set_image">guage\_pointer\_set\_image</a> | 设置指针的图片。 |
 ### 属性
@@ -45,6 +47,8 @@
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
+| <a href="#guage_pointer_t_anchor_x">anchor\_x</a> | float\_t | 旋转锚点x坐标。 |
+| <a href="#guage_pointer_t_anchor_y">anchor\_y</a> | float\_t | 旋转锚点y坐标。 |
 | <a href="#guage_pointer_t_angle">angle</a> | int32\_t | 指针角度。12点钟方向为0度，顺时钟方向为正，单位为度。 |
 | <a href="#guage_pointer_t_image">image</a> | char* | 指针图片。 |
 #### guage\_pointer\_cast 函数
@@ -53,6 +57,7 @@
 * 函数功能：
 
 > <p id="guage_pointer_t_guage_pointer_cast"> 转换为guage_pointer对象(供脚本语言使用)。
+
 
 
 
@@ -77,6 +82,7 @@ widget_t* guage_pointer_cast (widget_t* widget);
 
 
 
+
 * 函数原型：
 
 ```
@@ -93,12 +99,37 @@ widget_t* guage_pointer_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### guage\_pointer\_set\_anchor 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="guage_pointer_t_guage_pointer_set_anchor"> 设置指针的旋转锚点。
+
+
+
+
+* 函数原型：
+
+```
+ret_t guage_pointer_set_anchor (widget_t* widget, const char* anchor_x, const char* anchor_y);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| anchor\_x | const char* | 指针的锚点坐标x。(后面加上px为像素点，不加px为相对百分比坐标) |
+| anchor\_y | const char* | 指针的锚点坐标y。(后面加上px为像素点，不加px为相对百分比坐标) |
 #### guage\_pointer\_set\_angle 函数
 -----------------------
 
 * 函数功能：
 
 > <p id="guage_pointer_t_guage_pointer_set_angle"> 设置指针角度。12点钟方向为0度，顺时钟方向为正，单位为度。
+
 
 
 
@@ -124,6 +155,7 @@ ret_t guage_pointer_set_angle (widget_t* widget, int32_t angle);
 
 
 
+
 * 函数原型：
 
 ```
@@ -137,9 +169,46 @@ ret_t guage_pointer_set_image (widget_t* widget, const char* image);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | image | const char* | 指针的图片。 |
+#### anchor\_x 属性
+-----------------------
+> <p id="guage_pointer_t_anchor_x"> 旋转锚点x坐标。
+
+
+
+* 类型：float\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### anchor\_y 属性
+-----------------------
+> <p id="guage_pointer_t_anchor_y"> 旋转锚点y坐标。
+
+
+
+* 类型：float\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### angle 属性
 -----------------------
 > <p id="guage_pointer_t_angle"> 指针角度。12点钟方向为0度，顺时钟方向为正，单位为度。
+
 
 
 * 类型：int32\_t
@@ -159,6 +228,7 @@ ret_t guage_pointer_set_image (widget_t* widget, const char* image);
 > <p id="guage_pointer_t_image"> 指针图片。
 
  图片须垂直向上，图片的中心点为旋转方向。
+
 
 
 

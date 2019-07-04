@@ -18,6 +18,7 @@
 | RET\_NOT\_FOUND | 没找到。 |
 | RET\_DONE | 操作完成。 |
 | RET\_STOP | 停止后续操作。 |
+| RET\_SKIP | 跳过当前项。 |
 | RET\_CONTINUE | 继续后续操作。 |
 | RET\_OBJECT\_CHANGED | 对象属性变化。 |
 | RET\_ITEMS\_CHANGED | 集合数目变化。 |

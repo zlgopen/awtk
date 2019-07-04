@@ -20,8 +20,10 @@
 | <a href="#lcd_t_lcd_fill_rect">lcd\_fill\_rect</a> | 绘制实心矩形。 |
 | <a href="#lcd_t_lcd_get_clip_rect">lcd\_get\_clip\_rect</a> | 获取裁剪区域。 |
 | <a href="#lcd_t_lcd_get_desired_bitmap_format">lcd\_get\_desired\_bitmap\_format</a> | 获取期望的位图格式。绘制期望的位图格式可以提高绘制性能。 |
+| <a href="#lcd_t_lcd_get_height">lcd\_get\_height</a> | 获取高度。 |
 | <a href="#lcd_t_lcd_get_point_color">lcd\_get\_point\_color</a> | 获取指定点的颜色，对于基于非FrameBuffer的LCD，返回当前的fill_color。 |
 | <a href="#lcd_t_lcd_get_vgcanvas">lcd\_get\_vgcanvas</a> | 获取矢量图canvas。 |
+| <a href="#lcd_t_lcd_get_width">lcd\_get\_width</a> | 获取宽度。 |
 | <a href="#lcd_t_lcd_is_swappable">lcd\_is\_swappable</a> | 判读lcd是否支持swap。 |
 | <a href="#lcd_t_lcd_measure_text">lcd\_measure\_text</a> | 测量字符串占用的宽度。 |
 | <a href="#lcd_t_lcd_resize">lcd\_resize</a> | 基于SDL的PC软件，在SDL窗口resize时，需要调用本函数resize lcd。 |
@@ -330,6 +332,27 @@ bitmap_format_t lcd_get_desired_bitmap_format (lcd_t* lcd);
 | -------- | ----- | --------- |
 | 返回值 | bitmap\_format\_t | 返回期望的位图格式。 |
 | lcd | lcd\_t* | lcd对象。 |
+#### lcd\_get\_height 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="lcd_t_lcd_get_height"> 获取高度。
+
+
+
+* 函数原型：
+
+```
+wh_t lcd_get_height (lcd_t* lcd);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | wh\_t | 返回高度。 |
+| lcd | lcd\_t* | lcd对象。 |
 #### lcd\_get\_point\_color 函数
 -----------------------
 
@@ -373,6 +396,27 @@ vgcanvas_t* lcd_get_vgcanvas (lcd_t* lcd);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | vgcanvas\_t* | 返回矢量图canvas。 |
+| lcd | lcd\_t* | lcd对象。 |
+#### lcd\_get\_width 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="lcd_t_lcd_get_width"> 获取宽度。
+
+
+
+* 函数原型：
+
+```
+wh_t lcd_get_width (lcd_t* lcd);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | wh\_t | 返回宽度。 |
 | lcd | lcd\_t* | lcd对象。 |
 #### lcd\_is\_swappable 函数
 -----------------------

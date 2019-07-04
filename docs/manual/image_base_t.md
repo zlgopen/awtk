@@ -11,6 +11,13 @@
 
  > 本类是一个抽象类，不能进行实例化。请在应用程序中使用具体的类，如image\_t。
 
+ 如果需要显示文件系统中的图片，只需将图片名称换成实际的文件名，并加上"file://"前缀即可。如：
+
+```
+  <image draw_type="center" image="file://./demos/assets/raw/images/xx/flag_CN.png" />
+  <gif image="file://./demos/assets/raw/images/x2/bee.gif" />
+  <svg image="file://./demos/assets/raw/images/svg/china.bsvg" />
+ ```
 
 ----------------------------------
 ### 函数
@@ -112,6 +119,9 @@ ret_t image_base_set_clickable (widget_t* widget, bool_t clickable);
 * 函数功能：
 
 > <p id="image_base_t_image_base_set_image"> 设置控件的图片名称。
+
+> 如果需要显示文件系统中的图片，只需将图片名称换成实际的文件名，并加上"file://"前缀即可。
+
 
 
 

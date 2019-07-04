@@ -113,3 +113,5 @@
 | WIDGET\_PROP\_IS\_KEYBOARD | 是否为键盘。 |
 | WIDGET\_PROP\_FOCUS | 设置为输入焦点。 |
 | WIDGET\_PROP\_FOCUSABLE | 是否支持焦点停留。 |
+| WIDGET\_PROP\_MOVE\_FOCUS\_NEXT\_KEY | 将焦点移到下一个的键值。 |
+| WIDGET\_PROP\_MOVE\_FOCUS\_PREV\_KEY | 将焦点移到下一个的键值。 |

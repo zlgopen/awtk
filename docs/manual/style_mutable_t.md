@@ -15,8 +15,8 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#style_mutable_t_dialog_highlighter_register_builtins">dialog\_highlighter\_register\_builtins</a> | 注册内置的对话框高亮策略。 |
 | <a href="#style_mutable_t_style_mutable_cast">style\_mutable\_cast</a> | 转换为style_mutable对象。 |
+| <a href="#style_mutable_t_style_mutable_copy">style\_mutable\_copy</a> | 将other对象的数据拷贝到s对象。 |
 | <a href="#style_mutable_t_style_mutable_create">style\_mutable\_create</a> | 创建style\_mutable对象。 |
 | <a href="#style_mutable_t_style_mutable_foreach">style\_mutable\_foreach</a> | 遍历。对每项调用回调函数on\_style\_item。 |
 | <a href="#style_mutable_t_style_mutable_get_name">style\_mutable\_get\_name</a> | 获取style的名称。 |
@@ -33,27 +33,6 @@
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#style_mutable_t_name">name</a> | char* | 名称。 |
-#### dialog\_highlighter\_register\_builtins 函数
------------------------
-
-* 函数功能：
-
-> <p id="style_mutable_t_dialog_highlighter_register_builtins"> 注册内置的对话框高亮策略。
-
-
-
-
-* 函数原型：
-
-```
-ret_t dialog_highlighter_register_builtins ();
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 #### style\_mutable\_cast 函数
 -----------------------
 
@@ -76,6 +55,29 @@ style_t* style_mutable_cast (style_t* s);
 | -------- | ----- | --------- |
 | 返回值 | style\_t* | style对象。 |
 | s | style\_t* | style对象。 |
+#### style\_mutable\_copy 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="style_mutable_t_style_mutable_copy"> 将other对象的数据拷贝到s对象。
+
+
+
+
+* 函数原型：
+
+```
+ret_t style_mutable_copy (style_t* s, style_t* other);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| s | style\_t* | style对象。 |
+| other | style\_t* | style对象。 |
 #### style\_mutable\_create 函数
 -----------------------
 
@@ -92,7 +94,7 @@ style_t* style_mutable_cast (style_t* s);
 * 函数原型：
 
 ```
-style_t* style_mutable_create (widget_t* widget);
+style_t* style_mutable_create (widget_t* widget, style_t* default_style);
 ```
 
 * 参数说明：
@@ -101,6 +103,7 @@ style_t* style_mutable_create (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | style\_t* | style对象。 |
 | widget | widget\_t* | 控件 |
+| default\_style | style\_t* | 缺省的style。 |
 #### style\_mutable\_foreach 函数
 -----------------------
 

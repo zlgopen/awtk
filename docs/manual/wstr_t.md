@@ -34,6 +34,7 @@
 | <a href="#wstr_t_wstr_get_utf8">wstr\_get\_utf8</a> | 获取UTF8字符串。 |
 | <a href="#wstr_t_wstr_init">wstr\_init</a> | 初始化字符串对象。 |
 | <a href="#wstr_t_wstr_insert">wstr\_insert</a> | 在指定位置插入字符串。 |
+| <a href="#wstr_t_wstr_normalize_newline">wstr\_normalize\_newline</a> | 规范化换行符。 |
 | <a href="#wstr_t_wstr_pop">wstr\_pop</a> | 删除尾部字符。 |
 | <a href="#wstr_t_wstr_push">wstr\_push</a> | 追加一个字符。 |
 | <a href="#wstr_t_wstr_push_int">wstr\_push\_int</a> | 追加一个整数。 |
@@ -308,6 +309,29 @@ ret_t wstr_insert (wstr_t* str, uint32_t offset, wchar_t* text, uint32_t nr);
 | offset | uint32\_t | 指定的位置。 |
 | text | wchar\_t* | 待插入的文本。 |
 | nr | uint32\_t | 要插入的字符数。 |
+#### wstr\_normalize\_newline 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="wstr_t_wstr_normalize_newline"> 规范化换行符。
+
+
+
+
+* 函数原型：
+
+```
+ret_t wstr_normalize_newline (wstr_t* str, wchar_t newline);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | wstr\_t* | str对象。 |
+| newline | wchar\_t | 换行符。 |
 #### wstr\_pop 函数
 -----------------------
 

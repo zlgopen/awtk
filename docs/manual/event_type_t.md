@@ -8,10 +8,13 @@
 | 名称 | 说明 | 
 | -------- | ------- | 
 | EVT\_POINTER\_DOWN | 指针按下事件名(pointer\_event\_t)。 |
-| EVT\_POINTER\_DOWN\_ABORT | 取消前一个指针按下事件名(pointer\_event\_t)。 |
+| EVT\_POINTER\_DOWN\_BEFORE\_CHILDREN | 指针按下事件名，在子控件处理之前触发(pointer\_event\_t)。 |
 | EVT\_POINTER\_MOVE | 指针移动事件名(pointer\_event\_t)。 |
+| EVT\_POINTER\_MOVE\_BEFORE\_CHILDREN | 指针移动事件名，在子控件处理之前触发(pointer\_event\_t)。 |
 | EVT\_POINTER\_UP | 指针抬起事件名(pointer\_event\_t)。 |
+| EVT\_POINTER\_UP\_BEFORE\_CHILDREN | 指针抬起事件名，在子控件处理之前触发(pointer\_event\_t)。 |
 | EVT\_WHEEL | 滚轮事件名(pointer\_event\_t)。 |
+| EVT\_POINTER\_DOWN\_ABORT | 取消前一个指针按下事件名(pointer\_event\_t)。 |
 | EVT\_CONTEXT\_MENU | 右键/长按弹出上下文菜单的事件名(pointer\_event\_t)。 |
 | EVT\_POINTER\_ENTER | 指针进入事件名(pointer\_event\_t)。 |
 | EVT\_POINTER\_LEAVE | 指针离开事件名(pointer\_event\_t)。 |
@@ -20,8 +23,10 @@
 | EVT\_FOCUS | 得到焦点事件名(event\_t)。 |
 | EVT\_BLUR | 失去焦点事件名(event\_t)。 |
 | EVT\_KEY\_DOWN | 键按下事件名(key\_event\_t)。 |
+| EVT\_KEY\_DOWN\_BEFORE\_CHILDREN | 键按下事件名，在子控件处理之前触发(key\_event\_t)。 |
 | EVT\_KEY\_REPEAT | 按键repeat事件名(key\_event\_t)。 |
 | EVT\_KEY\_UP | 键抬起事件名(key\_event\_t)。 |
+| EVT\_KEY\_UP\_BEFORE\_CHILDREN | 键抬起事件名，在子控件处理之前触发(key\_event\_t)。 |
 | EVT\_WILL\_MOVE | 即将移动Widget的事件名(event\_t)。 |
 | EVT\_MOVE | 移动Widget的事件名(event\_t)。 |
 | EVT\_WILL\_RESIZE | 即将调整Widget大小的事件名(event\_t)。 |
@@ -46,6 +51,10 @@
  如果有窗口动画，在窗口动画开始前触发。如果没有窗口动画，在窗口被加载后的下一次循环中触发。 |
 | EVT\_WINDOW\_OPEN | 窗口打开事件(event\_t)。
  如果有窗口动画，在窗口动画完成时触发。如果没有窗口动画，在窗口被加载后的下一次循环中触发。 |
+| EVT\_WINDOW\_TO\_BACKGROUND | 窗口被切换到后台事件(event\_t)。
+ 打开新窗口时，当前窗口被切换到后台时，对当前窗口触发本事件。 |
+| EVT\_WINDOW\_TO\_FOREGROUND | 窗口被切换到前台事件(event\_t)。
+ 关闭当前窗口时，前一个窗口被切换到前台时，对前一个窗口触发本事件。 |
 | EVT\_WINDOW\_CLOSE | 窗口关闭事件。 |
 | EVT\_REQUEST\_CLOSE\_WINDOW | 请求关闭窗口的事件(event\_t)。 |
 | EVT\_TOP\_WINDOW\_CHANGED | 顶层窗口改变的事件(window\_event\_t)。 |
@@ -57,5 +66,7 @@
 | EVT\_DRAG | 拖动(event\_t)。 |
 | EVT\_DRAG\_END | 结束拖动(event\_t)。 |
 | EVT\_SCREEN\_SAVER | 在指定的时间内(WITH\_SCREEN\_SAVER\_TIME)，没有用户输入事件，由窗口管理器触发。 |
+| EVT\_LOW\_MEMORY | 内存不足。 |
+| EVT\_OUT\_OF\_MEMORY | 内存耗尽。 |
 | EVT\_REQ\_START | event queue其它请求编号起始值。 |
 | EVT\_USER\_START | 用户定义事件起始值。 |

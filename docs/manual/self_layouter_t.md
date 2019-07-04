@@ -11,6 +11,7 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#self_layouter_t_self_layouter_create">self\_layouter\_create</a> | 创建layouter对象。 |
 | <a href="#self_layouter_t_self_layouter_destroy">self\_layouter\_destroy</a> | 销毁layouter对象。 |
 | <a href="#self_layouter_t_self_layouter_get_param">self\_layouter\_get\_param</a> | 获取指定的参数。 |
 | <a href="#self_layouter_t_self_layouter_get_param_float">self\_layouter\_get\_param\_float</a> | 获取指定的浮点格式的参数。 |
@@ -19,6 +20,28 @@
 | <a href="#self_layouter_t_self_layouter_set_param">self\_layouter\_set\_param</a> | 获取指定的参数。 |
 | <a href="#self_layouter_t_self_layouter_set_param_str">self\_layouter\_set\_param\_str</a> | 设置字符串格式的参数。 |
 | <a href="#self_layouter_t_self_layouter_to_string">self\_layouter\_to\_string</a> | 获取全部参数。 |
+#### self\_layouter\_create 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="self_layouter_t_self_layouter_create"> 创建layouter对象。
+
+
+
+
+* 函数原型：
+
+```
+self_layouter_t* self_layouter_create (const char* params);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | self\_layouter\_t* | 返回layouter对象。 |
+| params | const char* | 参数。 |
 #### self\_layouter\_destroy 函数
 -----------------------
 

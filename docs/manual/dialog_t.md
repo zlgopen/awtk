@@ -7,6 +7,8 @@
 
  AWTK中的对话框可以是模态的，也可以是非模态的。
 
+ 如果dialog有透明或半透效果则不支持窗口动画。
+
 > 由于浏览器中无法实现主循环嵌套，因此无法实现模态对话框。
  如果希望自己写的AWTK应用程序可以在浏览器(包括各种小程序)中运行或演示，
  请避免使用模态对话框。
@@ -160,7 +162,7 @@ widget_t* dialog_cast (widget_t* widget);
 * 函数原型：
 
 ```
-ret_t dialog_confirm (const char* text);
+ret_t dialog_confirm (const char* title, const char* text);
 ```
 
 * 参数说明：
@@ -168,6 +170,7 @@ ret_t dialog_confirm (const char* text);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示确认，否则表示取消。 |
+| title | const char* | 标题。 |
 | text | const char* | 文本内容。 |
 #### dialog\_create 函数
 -----------------------
@@ -276,7 +279,7 @@ widget_t* dialog_get_title (widget_t* widget);
 * 函数原型：
 
 ```
-ret_t dialog_info (const char* text);
+ret_t dialog_info (const char* title, const char* text);
 ```
 
 * 参数说明：
@@ -284,6 +287,7 @@ ret_t dialog_info (const char* text);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| title | const char* | 标题。 |
 | text | const char* | 文本内容。 |
 #### dialog\_is\_modal 函数
 -----------------------
@@ -462,7 +466,7 @@ ret_t dialog_toast (const char* text, uint32_t duration);
 * 函数原型：
 
 ```
-ret_t dialog_warn (const char* text);
+ret_t dialog_warn (const char* title, const char* text);
 ```
 
 * 参数说明：
@@ -470,6 +474,7 @@ ret_t dialog_warn (const char* text);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| title | const char* | 标题。 |
 | text | const char* | 文本内容。 |
 #### highlight 属性
 -----------------------

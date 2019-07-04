@@ -25,8 +25,10 @@
 | <a href="#style_t_style_get_color">style\_get\_color</a> | 获取指定name的颜色值。 |
 | <a href="#style_t_style_get_int">style\_get\_int</a> | 获取指定name的整数格式的值。 |
 | <a href="#style_t_style_get_str">style\_get\_str</a> | 获取指定name的字符串格式的值。 |
+| <a href="#style_t_style_is_mutable">style\_is\_mutable</a> | 检查style是否是mutable的。 |
 | <a href="#style_t_style_is_valid">style\_is\_valid</a> | 检查style对象是否有效 |
 | <a href="#style_t_style_notify_widget_state_changed">style\_notify\_widget\_state\_changed</a> | widget状态改变时，通知style更新数据。 |
+| <a href="#style_t_style_set">style\_set</a> | 设置指定状态的指定属性的值(仅仅对mutable的style有效)。 |
 #### style\_destroy 函数
 -----------------------
 
@@ -121,6 +123,28 @@ const char* style_get_str (style_t* s, const char* name, const char* defval);
 | s | style\_t* | style对象。 |
 | name | const char* | 属性名。 |
 | defval | const char* | 缺省值。 |
+#### style\_is\_mutable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="style_t_style_is_mutable"> 检查style是否是mutable的。
+
+
+
+
+* 函数原型：
+
+```
+bool_t style_is_mutable (style_t* s);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示是，否则表示不是。 |
+| s | style\_t* | style对象。 |
 #### style\_is\_valid 函数
 -----------------------
 
@@ -166,3 +190,28 @@ ret_t style_notify_widget_state_changed (style_t* s, widget_t* widget);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | s | style\_t* | style对象。 |
 | widget | widget\_t* | 控件对象。 |
+#### style\_set 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="style_t_style_set"> 设置指定状态的指定属性的值(仅仅对mutable的style有效)。
+
+
+
+
+* 函数原型：
+
+```
+ret_t style_set (style_t* s, const char* state, const char* name, const value_t* value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| s | style\_t* | style对象。 |
+| state | const char* | 状态。 |
+| name | const char* | 属性名。 |
+| value | const value\_t* | 值。 |

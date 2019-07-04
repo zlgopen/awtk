@@ -53,6 +53,7 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#widget_t_widget_add_child">widget\_add\_child</a> | 加入一个子控件。 |
+| <a href="#widget_t_widget_add_idle">widget\_add\_idle</a> | 创建idle。 |
 | <a href="#widget_t_widget_add_timer">widget\_add\_timer</a> | 创建定时器。 |
 | <a href="#widget_t_widget_add_value">widget\_add\_value</a> | 增加控件的值。 |
 | <a href="#widget_t_widget_animate_value_to">widget\_animate\_value\_to</a> | 设置控件的值(以动画形式变化到指定的值)。 |
@@ -67,6 +68,7 @@
 | <a href="#widget_t_widget_destroy_children">widget\_destroy\_children</a> | 销毁全部子控件。 |
 | <a href="#widget_t_widget_dispatch">widget\_dispatch</a> | 分发一个事件。 |
 | <a href="#widget_t_widget_equal">widget\_equal</a> | 判断两个widget是否相同。 |
+| <a href="#widget_t_widget_find_animator">widget\_find\_animator</a> | 查找指定名称的动画。 |
 | <a href="#widget_t_widget_foreach">widget\_foreach</a> | 遍历当前控件及子控件。 |
 | <a href="#widget_t_widget_get_child">widget\_get\_child</a> | 获取指定索引的子控件。 |
 | <a href="#widget_t_widget_get_prop">widget\_get\_prop</a> | 获取控件指定属性的值。 |
@@ -122,6 +124,9 @@
 | <a href="#widget_t_widget_set_self_layout_params">widget\_set\_self\_layout\_params</a> | 设置控件自己的布局(缺省布局器)参数(过时，请用widget\_set\_self\_layout)。 |
 | <a href="#widget_t_widget_set_sensitive">widget\_set\_sensitive</a> | 设置控件是否接受用户事件。 |
 | <a href="#widget_t_widget_set_state">widget\_set\_state</a> | 设置控件的状态。 |
+| <a href="#widget_t_widget_set_style_color">widget\_set\_style\_color</a> | 设置颜色类型的style。 |
+| <a href="#widget_t_widget_set_style_int">widget\_set\_style\_int</a> | 设置整数类型的style。 |
+| <a href="#widget_t_widget_set_style_str">widget\_set\_style\_str</a> | 设置字符串类型的style。 |
 | <a href="#widget_t_widget_set_text">widget\_set\_text</a> | 设置控件的文本。 |
 | <a href="#widget_t_widget_set_text_utf8">widget\_set\_text\_utf8</a> | 设置控件的文本。 |
 | <a href="#widget_t_widget_set_tr_text">widget\_set\_tr\_text</a> | 获取翻译之后的文本，然后调用widget_set_text。 |
@@ -154,10 +159,8 @@
 | <a href="#widget_t_enable">enable</a> | bool\_t | 启用/禁用状态。 |
 | <a href="#widget_t_floating">floating</a> | bool\_t | 标识控件是否启用浮动布局，不受父控件的children_layout的控制。 |
 | <a href="#widget_t_focused">focused</a> | bool\_t | 是否得到焦点。 |
-| <a href="#widget_t_grab_widget">grab\_widget</a> | widget\_t* | grab事件的子控件。 |
 | <a href="#widget_t_h">h</a> | wh\_t | 高度。 |
 | <a href="#widget_t_initializing">initializing</a> | bool\_t | 标识控件正在初始化。 |
-| <a href="#widget_t_key_target">key\_target</a> | widget\_t* | 接收按键事件的子控件。 |
 | <a href="#widget_t_name">name</a> | char* | 控件名字。 |
 | <a href="#widget_t_need_relayout_children">need\_relayout\_children</a> | bool\_t | 标识控件是否需要重新layout子控件。 |
 | <a href="#widget_t_opacity">opacity</a> | uint8\_t | 不透明度(0-255)，0完全透明，255完全不透明。 |
@@ -166,7 +169,6 @@
 | <a href="#widget_t_sensitive">sensitive</a> | bool\_t | 是否接受用户事件。 |
 | <a href="#widget_t_state">state</a> | uint8\_t | 控件的状态(取值参考widget_state_t)。 |
 | <a href="#widget_t_style">style</a> | char* | style的名称。 |
-| <a href="#widget_t_target">target</a> | widget\_t* | 接收事件的子控件。 |
 | <a href="#widget_t_text">text</a> | wstr\_t | 文本。用途视具体情况而定。 |
 | <a href="#widget_t_tr_text">tr\_text</a> | char* | 保存用于翻译的字符串。 |
 | <a href="#widget_t_visible">visible</a> | bool\_t | 是否可见。 |
@@ -224,6 +226,31 @@ ret_t widget_add_child (widget_t* widget, widget_t* child);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | child | widget\_t* | 子控件对象。 |
+#### widget\_add\_idle 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_add_idle"> 创建idle。
+ 该idle在控件销毁时自动销毁，**idle\_info\_t**的ctx为widget。
+ 如果idle的生命周期与控件无关，请直接调用**idle_add**，以避免不必要的内存开销。
+
+
+
+
+* 函数原型：
+
+```
+uint32_t widget_add_idle (widget_t* widget, idle_func_t on_idle);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint32\_t | 返回idle的ID，TK\_INVALID\_ID表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| on\_idle | idle\_func\_t | idle回调函数。 |
 #### widget\_add\_timer 函数
 -----------------------
 
@@ -577,6 +604,30 @@ bool_t widget_equal (widget_t* widget, widget_t* other);
 | 返回值 | bool\_t | 返回TRUE表示相同，否则表示不同。 |
 | widget | widget\_t* | 控件对象。 |
 | other | widget\_t* | 要比较的控件对象。 |
+#### widget\_find\_animator 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_find_animator"> 查找指定名称的动画。
+
+
+
+
+
+* 函数原型：
+
+```
+widget_animator_t* widget_find_animator (widget_t* widget, char* name);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | widget\_animator\_t* | 成功返回动画对象，失败返回NULL。 |
+| widget | widget\_t* | 控件对象。 |
+| name | char* | 动画名称。 |
 #### widget\_foreach 函数
 -----------------------
 
@@ -1670,6 +1721,9 @@ ret_t widget_set_name (widget_t* widget, char* name);
 
 > <p id="widget_t_widget_set_opacity"> 设置控件的不透明度。
 
+>在嵌入式平台，半透明效果会使性能大幅下降，请谨慎使用。
+
+
 
 
 
@@ -1685,7 +1739,7 @@ ret_t widget_set_opacity (widget_t* widget, uint8_t opacity);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
-| opacity | uint8\_t | 不透明度。 |
+| opacity | uint8\_t | 不透明度(取值0-255，0表示完全透明，255表示完全不透明)。 |
 #### widget\_set\_prop 函数
 -----------------------
 
@@ -1901,6 +1955,78 @@ ret_t widget_set_state (widget_t* widget, const char* state);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | state | const char* | 状态(必须为真正的常量字符串，在widget的整个生命周期有效)。 |
+#### widget\_set\_style\_color 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_set_style_color"> 设置颜色类型的style。
+
+
+
+
+* 函数原型：
+
+```
+ret_t widget_set_style_color (widget_t* widget, const char* state_and_name, uint32_t value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| state\_and\_name | const char* | 状态和名字，用英文的冒号分隔。 |
+| value | uint32\_t | 值。 |
+#### widget\_set\_style\_int 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_set_style_int"> 设置整数类型的style。
+
+
+
+
+* 函数原型：
+
+```
+ret_t widget_set_style_int (widget_t* widget, const char* state_and_name, int32_t value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| state\_and\_name | const char* | 状态和名字，用英文的冒号分隔。 |
+| value | int32\_t | 值。 |
+#### widget\_set\_style\_str 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_set_style_str"> 设置字符串类型的style。
+
+
+
+
+* 函数原型：
+
+```
+ret_t widget_set_style_str (widget_t* widget, const char* state_and_name, const char* value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| state\_and\_name | const char* | 状态和名字，用英文的冒号分隔。 |
+| value | const char* | 值。 |
 #### widget\_set\_text 函数
 -----------------------
 
@@ -2427,18 +2553,6 @@ ret_t widget_use_style (widget_t* widget, char* style);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-#### grab\_widget 属性
------------------------
-> <p id="widget_t_grab_widget"> grab事件的子控件。
-
-
-
-* 类型：widget\_t*
-
-| 特性 | 是否支持 |
-| -------- | ----- |
-| 可直接读取 | 是 |
-| 可直接修改 | 否 |
 #### h 属性
 -----------------------
 > <p id="widget_t_h"> 高度。
@@ -2464,18 +2578,6 @@ ret_t widget_use_style (widget_t* widget, char* style);
 
 
 * 类型：bool\_t
-
-| 特性 | 是否支持 |
-| -------- | ----- |
-| 可直接读取 | 是 |
-| 可直接修改 | 否 |
-#### key\_target 属性
------------------------
-> <p id="widget_t_key_target"> 接收按键事件的子控件。
-
-
-
-* 类型：widget\_t*
 
 | 特性 | 是否支持 |
 | -------- | ----- |
@@ -2598,18 +2700,6 @@ ret_t widget_use_style (widget_t* widget, char* style);
 | 可在XML中设置 | 是 |
 | 可通过widget\_get\_prop读取 | 是 |
 | 可通过widget\_set\_prop修改 | 是 |
-#### target 属性
------------------------
-> <p id="widget_t_target"> 接收事件的子控件。
-
-
-
-* 类型：widget\_t*
-
-| 特性 | 是否支持 |
-| -------- | ----- |
-| 可直接读取 | 是 |
-| 可直接修改 | 否 |
 #### text 属性
 -----------------------
 > <p id="widget_t_text"> 文本。用途视具体情况而定。
