@@ -65,6 +65,7 @@
 * [rich\_text](manual/rich_text_t.md) 图文混排控件。
 * [slide\_menu](manual/slide_menu_t.md) 左右滑动菜单控件。
 * [slide\_view](manual/slide_view_t.md) 滑动视图控件。
+* [slide\_view\_indicator](manual/slide_indicator_t.md) 滑动视图的指示器控件。
 * [svg\_image](manual/svg_image_t.md) SVG图片控件。
 * [switch](manual/switch_t.md) 开关控件。
 * [text\_selector](manual/text_selector_t.md) 文本选择器控件。
@@ -75,6 +76,8 @@
 * [list\_item](manual/list_item_t.md) 列表项控件。
 * [scroll\_bar](manual/scroll_bar_t.md) 滚动条控件。
 * [scroll\_view](manual/scroll_view_t.md) 滚动视图控件。
+* [mledit](manual/mledit_t.md) 多行编辑器控件。
+* [line_number](manual/line_number_t.md) 多行编辑器的行号控件。
 * [mutable\_image](manual/mutable_image_t.md) mutable图片控件(用于辅助实现camera/video)。
 
 ### 画布
@@ -181,9 +184,17 @@
 
 * [children\_layouter](manual/children_layouter_t.md) 子控件排版布局器的接口
 
+* [self\_layouter\_factory](manual/self_layouter_factory_t.md) 控件自身排版布局器的工厂。
+
+* [children\_layouter\_factory](manual/children_layouter_factory_t.md) 子控件排版布局器的的工厂。
+
 * [self\_layouter\_default](manual/self_layouter_default_t.md) 缺省的控件自身布局算法实现。
 
+* [self\_layouter\_menu](manual/self_layouter_menu_t.md) 菜单控件自身布局算法实现。
+
 * [children\_layouter\_default](manual/children_layouter_default_t.md) 缺省的子控件布局算法实现。
+
+* [children\_layouter\_list\_view](manual/children_layouter_list_view_t.md) 列表视图的子控件布局算法实现。
 
 ### 杂项
 
@@ -206,5 +217,6 @@
 * [event](manual/event_t.md) 事件基类。
 * [tk\_thread](manual/tk_thread_t.md) 线程。
 * [tk\_mutex](manual/tk_mutex_t.md) 互斥锁。
+* [tk\_cond\_var](manual/tk_cond_var_t.md) 简化版条件变量。
 
 

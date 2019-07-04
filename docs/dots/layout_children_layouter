@@ -12,7 +12,12 @@ digraph G {
     ]   
 
 
+   subgraph clusterFontManager{
+    children_layouter_factory -> children_layouter[constraint=false arrowhead=normal]
+   }
+
    children_layouter_default -> children_layouter[style=dashed arrowhead=empty]
+   children_layouter_list_view -> children_layouter[style=dashed arrowhead=empty]
    children_layouter_flex -> children_layouter[style=dashed arrowhead=empty]
    children_layouter_xxx -> children_layouter[style=dashed arrowhead=empty]
  }
