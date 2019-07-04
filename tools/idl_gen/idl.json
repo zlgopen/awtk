@@ -11708,11 +11708,11 @@
       },
       {
         "desc": " 滑动视图的指示器控件。\n\n",
-        "name": "WIDGET_TYPE_SLIDE_VIEW"
+        "name": "WIDGET_TYPE_SLIDE_INDICATOR"
       },
       {
         "desc": " 滑动视图的指示器控件（圆弧显示）。\n\n",
-        "name": "WIDGET_TYPE_SLIDE_VIEW"
+        "name": "WIDGET_TYPE_SLIDE_INDICATOR_ARC"
       },
       {
         "desc": " 多页控件。\n\n",
