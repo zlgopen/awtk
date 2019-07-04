@@ -4,7 +4,7 @@
 
 ### 控件
 
-![widget\_overview](images/widget_overview.svg)
+![widget\_overview](images/widget_overview.png)
 
 #### widget
 

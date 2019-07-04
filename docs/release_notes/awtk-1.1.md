@@ -18,13 +18,13 @@
 
 #### 运行效果截图：
 
-![CleanAir-Demo](http://zlgawtk.bceapp.com/images/cleanair_main.png)
+![CleanAir-Demo](../images/cleanair_main.png)
 
-![Meter-Demo](http://zlgawtk.bceapp.com/images/meter_main.png)
+![Meter-Demo](../images/meter_main.png)
 
-![Chart-Demo](http://zlgawtk.bceapp.com/images/chart_main.png)
+![Chart-Demo](../images/chart_main.png)
 
-![MusicPlayer-Demo](http://zlgawtk.bceapp.com/images/musicplayer_main.png)
+![MusicPlayer-Demo](../images/musicplayer_main.png)
 
 ## 二、最终目标：
 
