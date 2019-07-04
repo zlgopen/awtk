@@ -279,7 +279,7 @@ static row_info_t* text_edit_multi_line_layout_line(text_edit_t* text_edit, uint
   wstr_t* text = &(text_edit->widget->text);
   STB_TexteditState* state = &(impl->state);
   row_info_t* row = impl->rows->info + row_num;
-  uint32_t line_height = c->font_size * FONT_BASELINE;
+  uint32_t line_height = impl->line_height;
   uint32_t y = line_height * row_num;
   uint32_t last_breakable_i = 0;
   uint32_t last_breakable_x = 0;
@@ -368,6 +368,8 @@ ret_t text_edit_layout(text_edit_t* text_edit) {
   }
 
   widget_prepare_text_style(text_edit->widget, text_edit->c);
+  impl->line_height = text_edit->c->font_size * FONT_BASELINE;
+
   widget_get_text_layout_info(text_edit->widget, layout_info);
   while ((offset < size || size == 0) && i < max_rows) {
     row_info_t* iter = text_edit_layout_line(text_edit, i, offset);
@@ -384,7 +386,6 @@ ret_t text_edit_layout(text_edit_t* text_edit) {
   }
 
   impl->rows->size = i;
-  impl->line_height = text_edit->c->font_size * FONT_BASELINE;
 
   text_edit_notify(text_edit);
 
@@ -408,7 +409,7 @@ static void text_edit_layout_for_stb(StbTexteditRow* row, STB_TEXTEDIT_STRING* s
 
   row->ymin = 0;
   row->ymax = font_size;
-  row->baseline_y_delta = font_size * FONT_BASELINE;
+  row->baseline_y_delta = impl->line_height;
 
   return;
 }
@@ -541,7 +542,7 @@ static ret_t text_edit_paint_real_text(text_edit_t* text_edit, canvas_t* c) {
   uint32_t y = 0;
   DECL_IMPL(text_edit);
   rows_t* rows = impl->rows;
-  uint32_t line_height = c->font_size * FONT_BASELINE;
+  uint32_t line_height = impl->line_height;
   text_layout_info_t* layout_info = &(impl->layout_info);
   uint32_t view_top = layout_info->oy + layout_info->margin_t;
   uint32_t view_bottom = layout_info->oy + layout_info->margin_t + layout_info->h;
@@ -580,6 +581,7 @@ static ret_t text_edit_paint_text(text_edit_t* text_edit, canvas_t* c) {
 }
 
 static ret_t text_edit_do_paint(text_edit_t* text_edit, canvas_t* c) {
+  DECL_IMPL(text_edit);
   return_value_if_fail(text_edit != NULL && c != NULL, RET_BAD_PARAMS);
 
   if (text_edit->c != NULL) {
@@ -590,6 +592,8 @@ static ret_t text_edit_do_paint(text_edit_t* text_edit, canvas_t* c) {
   }
 
   widget_prepare_text_style(text_edit->widget, c);
+  impl->line_height = c->font_size * FONT_BASELINE;
+
   if (text_edit_paint_text(text_edit, c) == RET_OK) {
     DECL_IMPL(text_edit);
     STB_TexteditState* state = &(impl->state);

@@ -431,7 +431,7 @@ static ret_t mledit_on_add_child(widget_t* widget, widget_t* child) {
   if (tk_str_eq(type, WIDGET_TYPE_SCROLL_BAR_DESKTOP)) {
     widget_on(child, EVT_VALUE_CHANGED, mledit_on_scroll_bar_value_changed, widget);
   }
-  
+
   text_edit_set_on_state_changed(mledit->model, mledit_on_text_edit_state_changed, widget);
 
   return RET_CONTINUE;
