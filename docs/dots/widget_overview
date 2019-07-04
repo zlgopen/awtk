@@ -38,6 +38,7 @@ digraph G {
    dialog_t -> window_base_t[arrowhead=empty]
    calibration_win_t -> window_base_t[arrowhead=empty]
    system_bar_t -> window_base_t[arrowhead=empty]
+   overlay_t -> window_base_t[arrowhead=empty]
 
    image_t -> image_base_t[arrowhead=empty]
    gif_image_t -> image_base_t[arrowhead=empty]
