@@ -703,6 +703,7 @@ static ret_t widget_set_visible_self(widget_t* widget, bool_t visible) {
     widget->visible = visible;
     widget_update_style(widget);
     widget_invalidate_force(widget, NULL);
+    widget_set_need_relayout_children(widget->parent);
   }
 
   return RET_OK;
@@ -720,6 +721,8 @@ static ret_t widget_set_visible_recursive(widget_t* widget, bool_t visible) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   widget->visible = visible;
+  widget_set_need_relayout_children(widget->parent);
+
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
   widget_set_visible_recursive(iter, visible);
   WIDGET_FOR_EACH_CHILD_END()

@@ -4,6 +4,7 @@
   * 增加TK\_GLYPH\_CACHE\_NR宏，允许开发者自行定义。
   * 更新文档(感谢俊杰提供补丁)。
   * 修改软件键盘删除键无效的问题。
+  * set visible后设置relayout标志。
 
 * 2019/07/03
   * 更新demoui
