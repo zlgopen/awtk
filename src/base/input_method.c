@@ -101,8 +101,8 @@ ret_t input_method_dispatch_action(input_method_t* im) {
 
 static ret_t input_method_dispatch_key_only(input_method_t* im, uint32_t key) {
   key_event_t e;
-  e.key = key;
-  e.e.type = EVT_KEY_DOWN;
+  key_event_init(&e, EVT_KEY_DOWN, NULL, key);
+  
   input_method_dispatch_to_widget(input_method(), (event_t*)&e);
   e.e.type = EVT_KEY_UP;
   input_method_dispatch_to_widget(input_method(), (event_t*)&e);
