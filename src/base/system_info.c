@@ -56,34 +56,62 @@ static ret_t system_info_set_app_root(system_info_t* info, const char* app_root)
   return RET_OK;
 }
 
+static ret_t system_info_normalize_app_root_try_path(system_info_t* info, char* path) {
+  char* last = NULL;
+  char app_root[MAX_PATH + 1] = {0};
+
+  log_debug("try %s\n", path);
+  last = strrchr(path, TK_PATH_SEP);
+  if (last != NULL) {
+    if (tk_str_eq(last + 1, "bin")) {
+      *last = '\0';
+    }
+  }
+
+  if (!app_root_is_valid(path)) {
+    path_build(app_root, MAX_PATH, path, "demos", NULL);
+    if (app_root_is_valid(app_root)) {
+      return system_info_set_app_root(info, app_root);
+    } else {
+      return RET_FAIL;
+    }
+  } else {
+    return system_info_set_app_root(info, path);
+  }
+}
+
+static ret_t system_info_normalize_app_root_try_cwd(system_info_t* info) {
+  char path[MAX_PATH + 1] = {0};
+  return_value_if_fail(path_cwd(path) == RET_OK, RET_FAIL);
+
+  return system_info_normalize_app_root_try_path(info, path);
+}
+
+static ret_t system_info_normalize_app_root_try_exe(system_info_t* info) {
+  char* last = NULL;
+  char path[MAX_PATH + 1] = {0};
+  return_value_if_fail(path_exe(path) == RET_OK, RET_FAIL);
+
+  last = strrchr(path, TK_PATH_SEP);
+  if (last != NULL) {
+    *last = '\0';
+  }
+
+  return system_info_normalize_app_root_try_path(info, path);
+}
+
 static ret_t system_info_normalize_app_root(system_info_t* info, const char* app_root_default) {
   if (app_root_is_valid(app_root_default)) {
     return system_info_set_app_root(info, app_root_default);
-  } else {
-    char* last = NULL;
-    char cwd[MAX_PATH + 1];
-    char app_root[MAX_PATH + 1];
-
-    path_cwd(cwd);
-    last = strrchr(cwd, PATH_SEP);
-    if (last != NULL) {
-      if (tk_str_eq(last + 1, "bin")) {
-        *last = '\0';
-      }
-    }
-
-    if (!app_root_is_valid(cwd)) {
-      path_build(app_root, MAX_PATH, cwd, "demos", NULL);
-      if (app_root_is_valid(app_root)) {
-        return system_info_set_app_root(info, app_root);
-      } else {
-        log_warn("invalid app root\n");
-        return RET_FAIL;
-      }
-    } else {
-      return system_info_set_app_root(info, cwd);
-    }
+  } else if (system_info_normalize_app_root_try_cwd(info) == RET_OK) {
+    return RET_OK;
+  } else if (system_info_normalize_app_root_try_exe(info) == RET_OK) {
+    return RET_OK;
   }
+
+  log_debug("Not found valid assets folder!\n");
+
+  return RET_FAIL;
 }
 #else
 static ret_t system_info_normalize_app_root(system_info_t* info, const char* app_root_default) {
