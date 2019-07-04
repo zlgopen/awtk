@@ -249,7 +249,7 @@ static ret_t on_paint_vgcanvas(void* ctx, event_t* e) {
 }
 
 static ret_t on_open_window(void* ctx, event_t* e) {
-  const char* name = ctx;
+  const char* name = (const char*)ctx;
 
   if (tk_str_eq(name, "toast")) {
     dialog_toast("Hello AWTK!\nThis is a toast!", 3000);
@@ -493,9 +493,9 @@ static ret_t install_one(void* ctx, const void* iter) {
     } else if (tk_str_eq(name, "remove_self")) {
       widget_on(widget, EVT_CLICK, on_remove_self, widget);
     } else if (tk_str_eq(name, "chinese")) {
-      widget_on(widget, EVT_CLICK, on_change_locale, "zh_CN");
+      widget_on(widget, EVT_CLICK, on_change_locale, (void*)"zh_CN");
     } else if (tk_str_eq(name, "english")) {
-      widget_on(widget, EVT_CLICK, on_change_locale, "en_US");
+      widget_on(widget, EVT_CLICK, on_change_locale, (void*)"en_US");
     } else if (tk_str_eq(name, "font_small") || tk_str_eq(name, "font_normal") ||
                tk_str_eq(name, "font_big")) {
       widget_t* win = widget_get_window(widget);

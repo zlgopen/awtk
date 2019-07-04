@@ -93,12 +93,12 @@ ret_t application_init() {
 
   radio_button = check_button_create_radio(win, 10, 200, 80, 30);
   widget_set_tr_text(radio_button, "English");
-  widget_on(radio_button, EVT_VALUE_CHANGED, change_locale, "en_US");
+  widget_on(radio_button, EVT_VALUE_CHANGED, change_locale, (void*)"en_US");
   widget_set_value(radio_button, 1);
 
   radio_button = check_button_create_radio(win, 100, 200, 80, 30);
   widget_set_tr_text(radio_button, "Chinese");
-  widget_on(radio_button, EVT_VALUE_CHANGED, change_locale, "zh_CN");
+  widget_on(radio_button, EVT_VALUE_CHANGED, change_locale, (void*)"zh_CN");
 
   return RET_OK;
 }
