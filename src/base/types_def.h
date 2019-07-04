@@ -302,4 +302,13 @@ typedef struct _system_info_t system_info_t;
 #define WITH_NANOVG_GL 1
 #endif
 
+#ifndef TK_GLYPH_CACHE_NR
+#ifdef WITH_SDL
+#define TK_GLYPH_CACHE_NR 4096
+#else
+#define TK_GLYPH_CACHE_NR 256
+#endif/*WITH_SDL*/
+
+#endif/*TK_GLYPH_CACHE_NR*/
+
 #endif /*TK_TYPES_DEF_H*/

@@ -127,7 +127,7 @@ font_t* font_stb_create(const char* name, const uint8_t* buff, uint32_t buff_siz
   f->base.get_baseline = font_stb_get_baseline;
   f->base.destroy = font_stb_destroy;
 
-  glyph_cache_init(&(f->cache), 256, destroy_glyph);
+  glyph_cache_init(&(f->cache), TK_GLYPH_CACHE_NR, destroy_glyph);
   stbtt_InitFont(&(f->stb_font), buff, stbtt_GetFontOffsetForIndex(buff, 0));
   stbtt_GetFontVMetrics(&(f->stb_font), &(f->ascent), &(f->descent), &(f->lineGap));
 

@@ -154,7 +154,7 @@ font_t* font_ft_create(const char* name, const uint8_t* buff, uint32_t size) {
   f->base.get_baseline = font_ft_get_baseline;
   f->base.destroy = font_ft_destroy;
 
-  glyph_cache_init(&(f->cache), 256, destroy_glyph);
+  glyph_cache_init(&(f->cache), TK_GLYPH_CACHE_NR, destroy_glyph);
 
   return &(f->base);
 }
