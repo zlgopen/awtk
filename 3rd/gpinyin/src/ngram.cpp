@@ -106,6 +106,7 @@ void iterate_codes(double freqs[], unsigned num, double code_book[], CODEBOOK_TY
     double delta = recalculate_kernel(freqs, num, code_book, code_idx);
 
     iter_num++;
+    (void)changed;
 
     if (iter_num > 1 && (delta == 0 || fabs(delta_last - delta) / fabs(delta) < 0.000000001)) break;
     delta_last = delta;

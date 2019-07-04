@@ -20,6 +20,7 @@
  */
 
 #include "tkc/mem.h"
+#include "tkc/utils.h"
 #include "mledit/line_number.h"
 #include "base/widget_vtable.h"
 #include "base/window_manager.h"

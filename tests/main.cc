@@ -48,9 +48,9 @@ GTEST_API_ int main(int argc, char** argv) {
   tk_init_assets();
   tk_ext_widgets_init();
 
-  RUN_ALL_TESTS();
+  int ret = RUN_ALL_TESTS();
 
   tk_deinit_internal();
 
-  return 0;
+  return ret;
 }

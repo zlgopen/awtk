@@ -106,12 +106,12 @@ ret_t text_edit_drag(text_edit_t* text_edit, xy_t x, xy_t y);
  * @method text_edit_paste
  * 粘贴文本。
  * @param {text_edit_t*} text_edit text_edit对象。
- * @param {wchar_t*} str 文本。
+ * @param {const wchar_t*} str 文本。
  * @param {uint32_t} size 文本长度。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t text_edit_paste(text_edit_t* text_edit, wchar_t* str, uint32_t size);
+ret_t text_edit_paste(text_edit_t* text_edit, const wchar_t* str, uint32_t size);
 
 /**
  * @method text_edit_cut

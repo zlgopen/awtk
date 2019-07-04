@@ -291,7 +291,6 @@ static row_info_t* text_edit_multi_line_layout_line(text_edit_t* text_edit, uint
     break_type_t word_break = LINE_BREAK_NO;
     break_type_t line_break = LINE_BREAK_NO;
     uint32_t char_w = canvas_measure_text(c, p, 1) + CHAR_SPACING;
-    uint32_t next_char_w = canvas_measure_text(c, p + 1, 1) + CHAR_SPACING;
 
     if (i == state->cursor) {
       text_edit_set_caret_pos(impl, x, y, c->font_size);
@@ -991,7 +990,7 @@ ret_t text_edit_cut(text_edit_t* text_edit) {
   return RET_OK;
 }
 
-ret_t text_edit_paste(text_edit_t* text_edit, wchar_t* str, uint32_t size) {
+ret_t text_edit_paste(text_edit_t* text_edit, const wchar_t* str, uint32_t size) {
   DECL_IMPL(text_edit);
   return_value_if_fail(text_edit != NULL && str != NULL, RET_BAD_PARAMS);
 

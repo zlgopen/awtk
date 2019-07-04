@@ -223,7 +223,6 @@ static ret_t guage_pointer_on_paint_self(widget_t* widget, canvas_t* c) {
   float_t anchor_y = 0;
   vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
   guage_pointer_t* guage_pointer = GUAGE_POINTER(widget);
-  rect_t dst = rect_init(0, 0, widget->w, widget->h);
 
   anchor_x = guage_pointer->anchor_x;
   anchor_y = guage_pointer->anchor_y;

@@ -13,7 +13,6 @@ TEST(ChildrenLayoutDefault, basic) {
   widget_t* b2 = button_create(w, 0, 0, 0, 0);
   const char* layout_params = "default(c=2,r=1,x=3,y=4,s=14)";
   children_layouter_t* layouter = children_layouter_create(layout_params);
-  children_layouter_default_t* l = (children_layouter_default_t*)layouter;
 
   ASSERT_EQ(children_layouter_get_param_int(layouter, "r", 0), 1);
   ASSERT_EQ(children_layouter_get_param_int(layouter, "c", 0), 2);

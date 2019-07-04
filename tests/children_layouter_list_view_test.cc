@@ -33,7 +33,6 @@ TEST(ChildrenLayoutListView, basic) {
 TEST(ChildrenLayoutListView, keep_invisible) {
   const char* layout_params = "list_view(x=3,y=4,s=14,i=30,d=40,keep_invisible=true)";
   children_layouter_t* layouter = children_layouter_create(layout_params);
-  children_layouter_list_view_t* l = (children_layouter_list_view_t*)layouter;
 
   ASSERT_EQ(children_layouter_get_param_int(layouter, "ki", 0), 1);
   ASSERT_EQ(children_layouter_get_param_int(layouter, "kd", 0), 1);
@@ -46,7 +45,6 @@ TEST(ChildrenLayoutListView, keep_invisible) {
 TEST(ChildrenLayoutListView, keep_invisible1) {
   const char* layout_params = "list_view(x=3,y=4,s=14,i=30,d=40,ki=true)";
   children_layouter_t* layouter = children_layouter_create(layout_params);
-  children_layouter_list_view_t* l = (children_layouter_list_view_t*)layouter;
 
   ASSERT_EQ(children_layouter_get_param_int(layouter, "ki", 0), 1);
   ASSERT_EQ(children_layouter_get_param_int(layouter, "kd", 0), 1);
@@ -59,7 +57,6 @@ TEST(ChildrenLayoutListView, keep_invisible1) {
 TEST(ChildrenLayoutListView, keep_disable) {
   const char* layout_params = "list_view(x=3,y=4,s=14,i=30,d=40,keep_disable=true)";
   children_layouter_t* layouter = children_layouter_create(layout_params);
-  children_layouter_list_view_t* l = (children_layouter_list_view_t*)layouter;
 
   ASSERT_EQ(children_layouter_get_param_int(layouter, "ki", 0), 0);
   ASSERT_EQ(children_layouter_get_param_int(layouter, "kd", 0), 1);
@@ -72,7 +69,6 @@ TEST(ChildrenLayoutListView, keep_disable) {
 TEST(ChildrenLayoutListView, keep_disable1) {
   const char* layout_params = "list_view(x=3,y=4,s=14,i=30,d=40,kd=false)";
   children_layouter_t* layouter = children_layouter_create(layout_params);
-  children_layouter_list_view_t* l = (children_layouter_list_view_t*)layouter;
 
   ASSERT_EQ(children_layouter_get_param_int(layouter, "ki", 0), 0);
   ASSERT_EQ(children_layouter_get_param_int(layouter, "kd", 0), 0);

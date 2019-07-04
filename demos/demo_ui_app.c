@@ -281,21 +281,18 @@ static ret_t on_close(void* ctx, event_t* e) {
 }
 
 static ret_t on_start(void* ctx, event_t* e) {
-  widget_t* win = WIDGET(ctx);
   widget_start_animator(NULL, NULL);
 
   return RET_OK;
 }
 
 static ret_t on_pause(void* ctx, event_t* e) {
-  widget_t* win = WIDGET(ctx);
   widget_pause_animator(NULL, NULL);
 
   return RET_OK;
 }
 
 static ret_t on_stop(void* ctx, event_t* e) {
-  widget_t* win = WIDGET(ctx);
   widget_stop_animator(NULL, NULL);
 
   return RET_OK;
