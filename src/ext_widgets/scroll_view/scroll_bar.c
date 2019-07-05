@@ -452,7 +452,7 @@ static ret_t scroll_bar_on_opactiy_animate_end(void* ctx, event_t* e) {
   scroll_bar->wa_opactiy = NULL;
 
   if (scroll_bar_is_mobile(widget)) {
-    widget_set_visible(widget, FALSE, FALSE);
+    widget_set_visible_only(widget, FALSE);
   }
 
   return RET_REMOVE;
@@ -473,7 +473,7 @@ ret_t scroll_bar_scroll_to(widget_t* widget, int32_t value, int32_t duration) {
   }
 
   widget_set_opacity(widget, 0xff);
-  widget_set_visible(widget, TRUE, FALSE);
+  widget_set_visible_only(widget, TRUE);
   widget_invalidate_force(widget, NULL);
 
   if (scroll_bar->value == value) {

@@ -730,6 +730,14 @@ static ret_t widget_set_visible_recursive(widget_t* widget, bool_t visible) {
   return RET_OK;
 }
 
+ret_t widget_set_visible_only(widget_t* widget, bool_t visible) {
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  widget->visible = visible;
+
+  return RET_OK;
+}
+
 ret_t widget_set_visible(widget_t* widget, bool_t visible, bool_t recursive) {
   if (recursive) {
     return widget_set_visible_recursive(widget, visible);

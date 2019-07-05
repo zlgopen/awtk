@@ -1048,6 +1048,17 @@ widget_t* widget_lookup_by_type(widget_t* widget, const char* type, bool_t recur
 ret_t widget_set_visible(widget_t* widget, bool_t visible, bool_t recursive);
 
 /**
+ * @method widget_set_visible_only
+ * 设置控件的可见性(不触发repaint和relayout)。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {bool_t} visible 是否可见。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_visible_only(widget_t* widget, bool_t visible);
+
+/**
  * @method widget_set_sensitive
  * 设置控件是否接受用户事件。
  * @annotation ["scriptable"]

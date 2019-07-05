@@ -240,11 +240,11 @@ static ret_t children_layouter_list_view_layout(children_layouter_t* layouter, w
       if (!scroll_bar_is_mobile(scroll_bar)) {
         if (list_view->auto_hide_scroll_bar) {
           if (virtual_h <= widget->h) {
-            widget_set_visible(scroll_bar, FALSE, FALSE);
+            widget_set_visible_only(scroll_bar, FALSE);
             widget_set_enable(scroll_bar, FALSE);
           } else {
             scroll_view->widget.w = list_view->widget.w - scroll_bar->w;
-            widget_set_visible(scroll_bar, TRUE, FALSE);
+            widget_set_visible_only(scroll_bar, TRUE);
             widget_set_enable(scroll_bar, TRUE);
           }
         }
@@ -290,7 +290,7 @@ static ret_t children_layouter_list_view_layout(children_layouter_t* layouter, w
   scroll_view_set_xslidable(list_view->scroll_view, FALSE);
   if (scroll_bar_is_mobile(list_view->scroll_bar)) {
     scroll_view_set_yslidable(list_view->scroll_view, TRUE);
-    widget_set_visible(list_view->scroll_bar, FALSE, FALSE);
+    widget_set_visible_only(list_view->scroll_bar, FALSE);
   }
 
   return RET_OK;

@@ -155,7 +155,7 @@ static ret_t list_view_on_scroll_view_scroll(widget_t* widget, int32_t xoffset, 
 
     if (scroll_bar_is_mobile(list_view->scroll_bar)) {
       widget_set_opacity(list_view->scroll_bar, 0xff);
-      widget_set_visible(list_view->scroll_bar, TRUE, FALSE);
+      widget_set_visible_only(list_view->scroll_bar, TRUE);
     }
   }
 
