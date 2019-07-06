@@ -31,7 +31,7 @@ BEGIN_C_DECLS
  * @parent widget_t
  * @annotation ["scriptable","design","widget"]
  *
- * 可以水平滚动的label。
+ * 可水平滚动的文本控件，方便实现长文本滚动。
  *
  * hscroll\_label\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于hscroll\_label\_t控件。
  *
@@ -46,6 +46,10 @@ BEGIN_C_DECLS
  * 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：
  *
  * ```xml
+  <style name="default" text_color="black">
+    <normal   />
+    <focused  />
+  </style>
  * ```
  *
  * > 更多用法请参考：
@@ -76,7 +80,7 @@ typedef struct _hscroll_label_t {
    * @property {bool_t} yoyo
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    *
-   * 滚动全部文本或只是超出的文本(缺省FALSE)。
+   * 是否往返滚动(缺省FALSE)。
    */
   bool_t yoyo;
 
@@ -187,7 +191,7 @@ ret_t hscroll_label_set_loop(widget_t* widget, bool_t loop);
  * 设置yoyo。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {bool_t}  yoyo 是否滚动全部文本或只是超出的文本。
+ * @param {bool_t}  yoyo 是否往返滚动。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -198,7 +202,7 @@ ret_t hscroll_label_set_yoyo(widget_t* widget, bool_t yoyo);
  * 设置ellipses。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {bool_t}  ellipses 是否滚动全部文本或只是超出的文本。
+ * @param {bool_t}  ellipses 是否在文本超长时在行尾显示"..."。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -206,7 +210,7 @@ ret_t hscroll_label_set_ellipses(widget_t* widget, bool_t ellipses);
 
 /**
  * @method hscroll_label_set_xoffset
- * 设置x偏移。
+ * 设置x偏移(一般无需用户调用)。。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {int32_t}  xoffset x偏移。
@@ -217,7 +221,7 @@ ret_t hscroll_label_set_xoffset(widget_t* widget, int32_t xoffset);
 
 /**
  * @method hscroll_label_start
- * 启动。
+ * 启动(一般无需用户调用)。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  *
@@ -227,7 +231,7 @@ ret_t hscroll_label_start(widget_t* widget);
 
 /**
  * @method hscroll_label_stop
- * 停止。
+ * 停止(一般无需用户调用)。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  *
@@ -245,11 +249,11 @@ ret_t hscroll_label_stop(widget_t* widget);
  */
 widget_t* hscroll_label_cast(widget_t* widget);
 
+#define HSCROLL_LABEL_PROP_YOYO "yoyo"
 #define HSCROLL_LABEL_PROP_LOOP "loop"
 #define HSCROLL_LABEL_PROP_LULL "lull"
 #define HSCROLL_LABEL_PROP_XOFFSET "xoffset"
 #define HSCROLL_LABEL_PROP_DURATION "duration"
-#define HSCROLL_LABEL_PROP_YOYO "yoyo"
 #define HSCROLL_LABEL_PROP_ELLIPSES "ellipses"
 #define HSCROLL_LABEL_PROP_ONLY_FOCUS "only_focus"
 
