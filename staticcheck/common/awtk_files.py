@@ -48,7 +48,7 @@ def getWebFiles():
     return WEB_FILES;
 
 def getIncludes():
-    return '-I' + AWTK_ROOT_DIR + ' -I' + AWTK_SRC_DIR +' -I' + AWTK_SRC_DIR +'/ext_widgets';
+    return '-I' + AWTK_ROOT_DIR + '/3rd ' + '-I' + AWTK_ROOT_DIR + ' -I' + AWTK_SRC_DIR +' -I' + AWTK_SRC_DIR +'/ext_widgets';
 
 def toExe(name):
     if OS_NAME == 'Windows':
