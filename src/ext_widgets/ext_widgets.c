@@ -38,11 +38,12 @@
 #include "scroll_view/list_item.h"
 #include "scroll_view/list_view.h"
 #include "slide_view/slide_view.h"
-#include "slide_view/slide_indicator.h"
 #include "scroll_view/scroll_bar.h"
 #include "scroll_view/scroll_view.h"
 #include "scroll_view/list_view_h.h"
 #include "color_picker/color_picker.h"
+#include "scroll_label/hscroll_label.h"
+#include "slide_view/slide_indicator.h"
 #include "canvas_widget/canvas_widget.h"
 #include "text_selector/text_selector.h"
 #include "color_picker/color_component.h"
@@ -96,6 +97,7 @@ ret_t tk_ext_widgets_init() {
   widget_factory_register(widget_factory(), WIDGET_TYPE_MUTABLE_IMAGE, mutable_image_create);
   widget_factory_register(widget_factory(), WIDGET_TYPE_MLEDIT, mledit_create);
   widget_factory_register(widget_factory(), WIDGET_TYPE_LINE_NUMBER, line_number_create);
+  widget_factory_register(widget_factory(), WIDGET_TYPE_HSCROLL_LABEL, hscroll_label_create);
 
   children_layouter_register_ext_builtins();
 

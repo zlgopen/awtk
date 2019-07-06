@@ -1,4 +1,8 @@
 # 最新动态
+* 2019/07/06
+  * 增加hscroll\_label控件。
+  * 修改mledit获取max\_lines的BUG。
+
 * 2019/07/05
   * 修改一些编译警告。
   * 修改MacOS上双击启动时找不到资源的问题。
@@ -13,7 +17,7 @@
 
 * 2019/07/03
   * 更新demoui
-  * mledit增加max_lines属性。
+  * mledit增加max\_lines属性。
   * mledit支持pageup/pagedown
   * 动画停止时reversed设置为FALSE。
   * 修改svg图片fill=""时的问题。

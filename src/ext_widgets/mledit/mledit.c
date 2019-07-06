@@ -97,7 +97,7 @@ static ret_t mledit_get_prop(widget_t* widget, const char* name, value_t* v) {
     value_set_bool(v, mledit->wrap_word);
     return RET_OK;
   } else if (tk_str_eq(name, MLEDIT_PROP_MAX_LINES)) {
-    value_set_bool(v, mledit->max_lines);
+    value_set_int(v, mledit->max_lines);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_LEFT_MARGIN)) {
     value_set_int(v, mledit->left_margin);

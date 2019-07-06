@@ -558,3 +558,16 @@
     <normal text_color="black" bg_color="#d0d0d0" text_align_h="right"/>
   </style>
 </line_number>
+
+<hscroll_label>
+  <style name="default" text_color="black">
+    <normal   />
+    <focused  />
+  </style>
+
+  <style name="foo">
+    <normal   text_color="black" />
+    <focused  bg_color="#e0e0e0" text_color="black" />
+  </style>
+</hscroll_label>
+

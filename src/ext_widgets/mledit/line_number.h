@@ -33,9 +33,9 @@ BEGIN_C_DECLS
  *
  * 行号。多行编辑器的行号。
  *
- * line_number\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于line_number\_t控件。
+ * line\_number\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于line\_number\_t控件。
  *
- * 在xml中使用"line_number"标签创建行号控件，一般配合mledit使用。如：
+ * 在xml中使用"lin\e_number"标签创建行号控件，一般配合mledit使用。如：
  *
  * ```xml
  * <mledit x="c" y="10" h="40%" w="90%" focus="true" left_margin="36" right_margin="16"

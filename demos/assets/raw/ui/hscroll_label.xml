@@ -1,0 +1,32 @@
+<window anim_hint="htranslate" text="hscroll_label" children_layout="default(c=1,h=30,xm=10,s=5)">
+  <hscroll_label text="炫酷的 GUI 引擎。" /> 
+
+  <hscroll_label 
+    lull="1000"
+    loop="true"
+    yoyo="true"
+    ellipses="true"
+    focusable="true"
+    text="(always ellipses loop yoyo)为用户提供一个功能强大、高效可靠、简单易用、可轻松做出炫酷效果的 GUI 引擎。" /> 
+
+  <hscroll_label 
+    focusable="true"
+    only_focus="true"
+    text="(only_focus noloop)为用户提供一个功能强大、高效可靠、简单易用、可轻松做出炫酷效果的 GUI 引擎。" /> 
+
+  <hscroll_label 
+    loop="true"
+    ellipses="true"
+    focusable="true"
+    only_focus="true"
+    text="(only_focus ellipses loop)为用户提供一个功能强大、高效可靠、简单易用、可轻松做出炫酷效果的 GUI 引擎。" /> 
+
+  <hscroll_label 
+    loop="true"
+    yoyo="true"
+    ellipses="true"
+    focusable="true"
+    only_focus="true"
+    text="(only_focus ellipses loop yoyo)为用户提供一个功能强大、高效可靠、简单易用、可轻松做出炫酷效果的 GUI 引擎。" /> 
+
+</window>
