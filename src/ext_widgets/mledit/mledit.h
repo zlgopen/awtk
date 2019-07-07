@@ -119,6 +119,8 @@ typedef struct _mledit_t {
   /*private*/
   text_edit_t* model;
   uint32_t timer_id;
+
+  wstr_t temp;
 } mledit_t;
 
 /**

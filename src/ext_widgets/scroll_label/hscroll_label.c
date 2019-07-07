@@ -47,7 +47,6 @@ static ret_t hscroll_label_do_paint_self_ellipses(widget_t* widget, canvas_t* c,
 
     if ((x + ellipses_w) >= right) {
       x = last_x;
-      i = i;
       break;
     }
 
