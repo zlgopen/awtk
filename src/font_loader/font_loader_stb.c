@@ -121,11 +121,12 @@ font_t* font_stb_create(const char* name, const uint8_t* buff, uint32_t buff_siz
   f = TKMEM_ZALLOC(font_stb_t);
   return_value_if_fail(f != NULL, NULL);
 
-  f->base.name = name;
   f->base.match = font_stb_match;
+  f->base.destroy = font_stb_destroy;
   f->base.get_glyph = font_stb_get_glyph;
   f->base.get_baseline = font_stb_get_baseline;
-  f->base.destroy = font_stb_destroy;
+
+  tk_strncpy(f->base.name, name, TK_NAME_LEN);
 
   glyph_cache_init(&(f->cache), TK_GLYPH_CACHE_NR, destroy_glyph);
   stbtt_InitFont(&(f->stb_font), buff, stbtt_GetFontOffsetForIndex(buff, 0));

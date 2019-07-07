@@ -92,12 +92,13 @@ font_t* font_bitmap_init(font_bitmap_t* f, const char* name, const uint8_t* buff
   return_value_if_fail(f != NULL && buff != NULL, NULL);
 
   f->buff = buff;
-  f->base.name = name;
   f->buff_size = buff_size;
   f->base.match = font_bitmap_match;
   f->base.get_baseline = font_bitmap_get_baseline;
   f->base.get_glyph = font_bitmap_get_glyph;
   f->base.destroy = font_bitmap_destroy;
+  
+  tk_strncpy(f->base.name, name, TK_NAME_LEN);
 
   return &(f->base);
 }

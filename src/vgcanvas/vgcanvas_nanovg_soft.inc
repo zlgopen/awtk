@@ -128,6 +128,9 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
 }
 
 static ret_t vgcanvas_nanovg_destroy(vgcanvas_t* vgcanvas) {
+  vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
+
+  nvgDeleteInternal(canvas->vg);
   TKMEM_FREE(vgcanvas);
 
   return RET_OK;

@@ -115,7 +115,7 @@ typedef ret_t (*font_destroy_t)(font_t* f);
  *
  */
 struct _font_t {
-  const char* name;
+  char name[TK_NAME_LEN + 1];
   font_match_t match;
   font_get_baseline_t get_baseline;
   font_get_glyph_t get_glyph;
