@@ -1042,7 +1042,7 @@ static ret_t edit_hook_button(void* ctx, const void* iter) {
   return RET_OK;
 }
 
-static ret_t edit_on_destroy(widget_t* widget) {
+ret_t edit_on_destroy(widget_t* widget) {
   edit_t* edit = EDIT(widget);
   return_value_if_fail(widget != NULL && edit != NULL, RET_BAD_PARAMS);
 

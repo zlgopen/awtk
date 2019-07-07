@@ -56,6 +56,8 @@ static ret_t combo_box_on_destroy(widget_t* widget) {
   combo_box_reset_options(widget);
   TKMEM_FREE(combo_box->open_window);
 
+  edit_on_destroy(widget);
+
   return RET_OK;
 }
 
