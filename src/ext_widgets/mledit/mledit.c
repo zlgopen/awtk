@@ -182,7 +182,7 @@ static ret_t mledit_on_destroy(widget_t* widget) {
   mledit_t* mledit = MLEDIT(widget);
   return_value_if_fail(widget != NULL && mledit != NULL, RET_BAD_PARAMS);
 
-  if(mledit->timer_id != TK_INVALID_ID) {
+  if (mledit->timer_id != TK_INVALID_ID) {
     timer_remove(mledit->timer_id);
   }
 

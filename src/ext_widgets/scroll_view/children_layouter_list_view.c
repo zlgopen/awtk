@@ -182,8 +182,7 @@ static ret_t children_layouter_list_view_layout(children_layouter_t* layouter, w
   widget_t* scroll_bar = NULL;
   scroll_view_t* scroll_view = SCROLL_VIEW(widget);
   children_layouter_list_view_t* l = (children_layouter_list_view_t*)layouter;
-  return_value_if_fail(l != NULL && widget != NULL && scroll_view != NULL && l != NULL,
-                       RET_BAD_PARAMS);
+  return_value_if_fail(widget != NULL && scroll_view != NULL && l != NULL, RET_BAD_PARAMS);
 
   virtual_h = widget->h;
   list_view = LIST_VIEW(widget->parent);
