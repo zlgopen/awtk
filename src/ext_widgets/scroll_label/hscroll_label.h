@@ -33,7 +33,8 @@ BEGIN_C_DECLS
  *
  * 可水平滚动的文本控件，方便实现长文本滚动。
  *
- * hscroll\_label\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于hscroll\_label\_t控件。
+ *
+ hscroll\_label\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于hscroll\_label\_t控件。
  *
  * 在xml中使用"hscroll\_label"标签创建行号控件，一般配合mledit使用。如：
  *

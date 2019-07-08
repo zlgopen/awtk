@@ -50,30 +50,32 @@ static bool_t font_dummy_match(font_t* f, const char* name, uint16_t font_size) 
 
 static font_dummy_t s_font0;
 font_t* font_dummy_0(const char* name, uint16_t size) {
-  s_font0.base.name = name;
   s_font0.font_size = size;
   s_font0.base.match = font_dummy_match;
   s_font0.base.get_glyph = font_dummy_get_glyph;
+
+  tk_strncpy(s_font0.base.name, name, TK_NAME_LEN);
 
   return &s_font0.base;
 }
 
 static font_dummy_t s_font1;
 font_t* font_dummy_1(const char* name, uint16_t size) {
-  s_font1.base.name = name;
   s_font1.font_size = size;
   s_font1.base.match = font_dummy_match;
   s_font1.base.get_glyph = font_dummy_get_glyph;
+
+  tk_strncpy(s_font1.base.name, name, TK_NAME_LEN);
 
   return &s_font1.base;
 }
 
 static font_dummy_t s_font2;
 font_t* font_dummy_2(const char* name, uint16_t size) {
-  s_font2.base.name = name;
   s_font2.font_size = size;
   s_font2.base.match = font_dummy_match;
   s_font2.base.get_glyph = font_dummy_get_glyph;
+  tk_strncpy(s_font2.base.name, name, TK_NAME_LEN);
 
   return &s_font2.base;
 }
