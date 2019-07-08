@@ -1,45 +1,53 @@
 # 最新动态
+
+* 2019/07/08
+  * 表达式支持条件运算。
+
+* 2019/07/07
+  * 完善 mledit(awtk-web 支持 mledit)。
+  * 修改 valgrind 发现的问题。
+
 * 2019/07/06
-  * 增加hscroll\_label控件。
-  * 修改mledit获取max\_lines的BUG。
+  * 增加 hscroll\_label 控件。
+  * 修改 mledit 获取 max\_lines 的 BUG。
 
 * 2019/07/05
   * 修改一些编译警告。
-  * 修改MacOS上双击启动时找不到资源的问题。
-  * 修改scrollbar隐藏导致listview relayout的问题。
+  * 修改 MacOS 上双击启动时找不到资源的问题。
+  * 修改 scrollbar 隐藏导致 listview relayout 的问题。
 
 * 2019/07/04
   * 修改多行编辑器鼠标选择文本时的坐标偏差。
-  * 增加TK\_GLYPH\_CACHE\_NR宏，允许开发者自行定义。
-  * 更新文档(感谢俊杰提供补丁)。
+  * 增加 TK\_GLYPH\_CACHE\_NR 宏，允许开发者自行定义。
+  * 更新文档（感谢俊杰提供补丁）。
   * 修改软件键盘删除键无效的问题。
-  * set visible后设置relayout标志。
+  * set visible 后设置 relayout 标志。
 
 * 2019/07/03
-  * 更新demoui
-  * mledit增加max\_lines属性。
-  * mledit支持pageup/pagedown
-  * 动画停止时reversed设置为FALSE。
-  * 修改svg图片fill=""时的问题。
-  * widget的pointer/key事件处理增加can\_not\_destroy保护。
-  * 增加行号控件，配合mledit控件使用。
+  * 更新 demoui
+  * mledit 增加 max\_lines 属性。
+  * mledit 支持 pageup/pagedown
+  * 动画停止时 reversed 设置为 FALSE。
+  * 修改 svg 图片 fill=""时的问题。
+  * widget 的 pointer/key 事件处理增加 can\_not\_destroy 保护。
+  * 增加行号控件，配合 mledit 控件使用。
 
 * 2019/07/02
-  * 修改OpenGL模式下SVG无法绘制的问题(感谢智明提供补丁)。
+  * 修改 OpenGL 模式下 SVG 无法绘制的问题（感谢智明提供补丁）。
   * mledit 支持垂直滚动条。
 
 * 2019/07/01
-  * 增加self\_layouter\_menu文档和示例。
+  * 增加 self\_layouter\_menu 文档和示例。
 
 * 2019/06/30
-  * 增加self\_layouter\_menu方便实现弹出菜单。
+  * 增加 self\_layouter\_menu 方便实现弹出菜单。
 
 * 2019/06/29
-  * 子控件缺省布局方式增加align_h的参数，
+  * 子控件缺省布局方式增加 align_h 的参数，
 
 * 2019q/06/28
-  * 完善edit。
-  * 完善combobox
+  * 完善 edit。
+  * 完善 combobox
 
 * 2019/06/26
   * 新增内存耗尽处理。

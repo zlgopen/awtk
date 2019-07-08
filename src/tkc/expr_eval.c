@@ -58,7 +58,9 @@ typedef enum {
   EVAL_TOKEN_TYPE_NUMBER,
   EVAL_TOKEN_TYPE_FUNC,
   EVAL_TOKEN_TYPE_STRING,
-  EVAL_TOKEN_TYPE_VARIABLE
+  EVAL_TOKEN_TYPE_VARIABLE,
+  EVAL_TOKEN_TYPE_QUESTION,
+  EVAL_TOKEN_TYPE_COLON,
 
 } EvalTokenType;
 
@@ -282,7 +284,8 @@ static EvalResult expr_value_to_number(ExprValue* v) {
 static EvalResult expr_value_copy(ExprValue* v, const ExprValue* from) {
   return_value_if_fail(v != NULL && from != NULL, EVAL_RESULT_OK);
 
-  if (v->type == EXPR_VALUE_TYPE_STRING) {
+  expr_value_clear(v);
+  if (from->type == EXPR_VALUE_TYPE_STRING) {
     const char* str = expr_value_get_string(from);
     if (str != NULL) {
       return expr_value_set_string(v, str, strlen(str));
@@ -721,6 +724,12 @@ static EvalResult get_token(EvalContext* ctx) {
         case ')':
           ctx->token.type = EVAL_TOKEN_TYPE_CLOSE_BRACKET;
           break;
+        case '?':
+          ctx->token.type = EVAL_TOKEN_TYPE_QUESTION;
+          break;
+        case ':':
+          ctx->token.type = EVAL_TOKEN_TYPE_COLON;
+          break;
 
         default:
           return EVAL_RESULT_ILLEGAL_CHARACTER;
@@ -1009,6 +1018,31 @@ static EvalResult parse_expr(EvalContext* ctx, ExprValue* output) {
 
   ctx->stack_level++;
   result = parse_logic(ctx, output);
+
+  if (ctx->token.type == EVAL_TOKEN_TYPE_QUESTION) {
+    ExprValue v1 = {0};
+    ExprValue v2 = {0};
+    expr_value_init(&v1);
+    expr_value_init(&v2);
+
+    result = get_token(ctx);
+    result = parse_logic(ctx, &v1);
+
+    if (ctx->token.type == EVAL_TOKEN_TYPE_COLON) {
+      result = get_token(ctx);
+      result = parse_logic(ctx, &v2);
+    }
+
+    if (expr_value_get_number(output)) {
+      expr_value_copy(output, &v1);
+    } else {
+      expr_value_copy(output, &v2);
+    }
+
+    expr_value_clear(&v1);
+    expr_value_clear(&v2);
+  }
+
   ctx->stack_level--;
 
   return result;
