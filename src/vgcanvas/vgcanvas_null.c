@@ -22,11 +22,11 @@
 #include "tkc/mem.h"
 #include "base/vgcanvas.h"
 
-vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, int32_t stride, bitmap_format_t format,
-                            void* buff) {
+vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_format_t format,
+                            void* data) {
   (void)w;
   (void)h;
   (void)format;
-  (void)buff;
+  (void)data;
   return NULL;
 }
