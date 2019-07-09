@@ -203,6 +203,7 @@ TEST(Canvas, draw_glyph) {
   canvas_end_frame(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
+  canvas_reset(&c);
 }
 
 TEST(Canvas, draw_image) {
@@ -276,6 +277,7 @@ TEST(Canvas, draw_image) {
   canvas_end_frame(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
+  canvas_reset(&c);
 }
 
 TEST(Canvas, draw_image_patch3_x_scale_y) {
@@ -320,6 +322,7 @@ TEST(Canvas, draw_image_patch3_x_scale_y) {
   canvas_end_frame(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
+  canvas_reset(&c);
 }
 
 TEST(Canvas, draw_image_patch3_y_scale_x) {
@@ -364,6 +367,7 @@ TEST(Canvas, draw_image_patch3_y_scale_x) {
   canvas_end_frame(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
+  canvas_reset(&c);
 }
 
 TEST(Canvas, draw_image_patch9) {
@@ -416,6 +420,7 @@ TEST(Canvas, draw_image_patch9) {
   canvas_end_frame(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
+  canvas_reset(&c);
 }
 
 TEST(Canvas, draw_image_repeat_x) {
@@ -461,6 +466,7 @@ TEST(Canvas, draw_image_repeat_x) {
   canvas_end_frame(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
+  canvas_reset(&c);
 }
 
 TEST(Canvas, draw_image_repeat_y) {
@@ -507,6 +513,7 @@ TEST(Canvas, draw_image_repeat_y) {
   canvas_end_frame(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
+  canvas_reset(&c);
 }
 
 TEST(Canvas, draw_image_repeat) {
@@ -554,6 +561,7 @@ TEST(Canvas, draw_image_repeat) {
   canvas_end_frame(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
+  canvas_reset(&c);
 }
 
 TEST(Canvas, draw_image_scale_w) {
@@ -598,6 +606,7 @@ TEST(Canvas, draw_image_scale_w) {
   canvas_end_frame(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
+  canvas_reset(&c);
 }
 
 TEST(Canvas, draw_image_scale_h) {
@@ -642,6 +651,7 @@ TEST(Canvas, draw_image_scale_h) {
   canvas_end_frame(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
+  canvas_reset(&c);
 }
 
 TEST(Canvas, draw_image_scale) {
@@ -686,6 +696,7 @@ TEST(Canvas, draw_image_scale) {
   canvas_end_frame(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
+  canvas_reset(&c);
 }
 
 TEST(Canvas, draw_image_center) {
@@ -730,4 +741,5 @@ TEST(Canvas, draw_image_center) {
   canvas_end_frame(&c);
   font_manager_deinit(&font_manager);
   lcd_destroy(lcd);
+  canvas_reset(&c);
 }

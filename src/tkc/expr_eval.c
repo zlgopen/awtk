@@ -1351,9 +1351,13 @@ const char* eval_result_to_string(EvalResult result) {
 double tk_expr_eval(const char* expr) {
   ExprValue v;
   EvalResult res;
+  double ret = 0;
 
   expr_value_init(&v);
   res = eval_execute(expr, eval_default_hooks(), NULL, &v);
 
-  return res == EVAL_RESULT_OK ? expr_value_get_number(&v) : 0;
+  ret = res == EVAL_RESULT_OK ? expr_value_get_number(&v) : 0;
+  expr_value_clear(&v);
+
+  return ret;
 }
