@@ -124,6 +124,7 @@ font_t* font_manager_get_font(font_manager_t* fm, const char* name, font_size_t 
 
 ret_t font_manager_unload_font(font_manager_t* fm, const char* name, font_size_t size) {
   font_t* font = NULL;
+  font_cmp_info_t info = {name, size};
 
   name = system_info_fix_font_name(name);
   return_value_if_fail(fm != NULL, RET_FAIL);
@@ -131,7 +132,7 @@ ret_t font_manager_unload_font(font_manager_t* fm, const char* name, font_size_t
   font = font_manager_lookup(fm, name, size);
   return_value_if_fail(font != NULL, RET_NOT_FOUND);
 
-  return darray_remove(&(fm->fonts), font);
+  return darray_remove(&(fm->fonts), &info);
 }
 
 ret_t font_manager_deinit(font_manager_t* fm) {
