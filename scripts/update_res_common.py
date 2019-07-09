@@ -169,6 +169,7 @@ def gen_res_png_jpg():
         inc = joinPath(OUTPUT_DIR, 'images/'+basename)
         inc = inc.replace('.png', '.data')
         inc = inc.replace('.jpg', '.data')
+        inc = inc.replace('.bmp', '.data')
         inc = inc.replace('.gif', '.data')
         inc = fix_output_file_name(inc)
         imagegen(raw, inc)

@@ -47,6 +47,8 @@ int main(int argc, char** argv) {
     output_res_c_source(out_filename, ASSET_TYPE_FONT, ASSET_TYPE_FONT_TTF, input_buff, size);
   } else if (end_with(in_filename, ".png")) {
     output_res_c_source(out_filename, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_PNG, input_buff, size);
+  } else if (end_with(in_filename, ".bmp")) {
+    output_res_c_source(out_filename, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_BMP, input_buff, size);
   } else if (end_with(in_filename, ".jpg")) {
     output_res_c_source(out_filename, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_JPG, input_buff, size);
   } else if (end_with(in_filename, ".gif")) {

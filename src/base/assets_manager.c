@@ -141,6 +141,10 @@ static asset_info_t* try_load_image(assets_manager_t* am, const char* name,
       extname = ".gif";
       break;
     }
+    case ASSET_TYPE_IMAGE_BMP: {
+      extname = ".bmp";
+      break;
+    }
     case ASSET_TYPE_IMAGE_BSVG: {
       extname = ".bsvg";
       subpath = "assets/raw/images/svg";
@@ -285,6 +289,10 @@ asset_info_t* assets_manager_load_asset(assets_manager_t* am, asset_type_t type,
         return info;
       }
 
+      if ((info = try_load_image(am, name, ASSET_TYPE_IMAGE_BMP, TRUE)) != NULL) {
+        return info;
+      }
+
       if ((info = try_load_image(am, name, ASSET_TYPE_IMAGE_JPG, TRUE)) != NULL) {
         return info;
       }
@@ -295,6 +303,10 @@ asset_info_t* assets_manager_load_asset(assets_manager_t* am, asset_type_t type,
 
       /*try ratio-insensitive image.*/
       if ((info = try_load_image(am, name, ASSET_TYPE_IMAGE_PNG, FALSE)) != NULL) {
+        return info;
+      }
+
+      if ((info = try_load_image(am, name, ASSET_TYPE_IMAGE_BMP, FALSE)) != NULL) {
         return info;
       }
 
