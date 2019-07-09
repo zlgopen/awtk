@@ -1,3 +1,3 @@
-<popup style="dark" self_layout="menu(position=down,x=right,w=128,h=90)" close_when_click="true">
+<popup anim_hint="popdown" style="dark" self_layout="menu(position=down,x=right,w=128,h=90)" close_when_click="true">
   <?include filename="menu.inc" ?>
 </popup>
