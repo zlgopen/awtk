@@ -1,0 +1,35 @@
+{
+  "name":"widget_buzzer",
+  "date":"2019-07-09",
+  "team":"AWTK Develop Team",
+  "author":"xxx <xxx@zlg.cn>",
+  "desc":"wrap buzzer device to a widget",
+  "copyright":"Guangzhou ZHIYUAN Electronics Co.,Ltd.",
+  "includes":[],
+  "props": [
+    {
+      "name":"freq",
+      "desc":"频率",
+      "init_value":3200,
+      "type":"int32_t"
+    },
+    {
+      "name":"volume",
+      "desc":"音量(0-100)",
+      "init_value":50,
+      "type":"int32_t"
+    },
+    {
+      "name":"duration",
+      "desc":"持续时间(毫秒)",
+      "init_value":500,
+      "type":"int32_t"
+    },
+    {
+      "name":"enable",
+      "desc":"打开或关闭",
+      "init_value":0,
+      "type":"bool_t"
+    }
+  ]
+}
