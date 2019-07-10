@@ -46,7 +46,7 @@ wchar_t* wcs_cpy(wchar_t* s1, const wchar_t* s2) {
   return s1;
 }
 
-int wcs_cmp(wchar_t* s1, const wchar_t* s2) {
+int wcs_cmp(const wchar_t* s1, const wchar_t* s2) {
   uint32_t i = 0;
   return_value_if_fail(s1 != NULL && s2 != NULL, -1);
 
@@ -83,7 +83,7 @@ size_t wcslen(const wchar_t* s) {
   return wcs_len(s);
 }
 
-int wcscmp(wchar_t* s1, const wchar_t* s2) {
+int wcscmp(const wchar_t* s1, const wchar_t* s2) {
   return wcs_cmp(s1, s2);
 }
 
