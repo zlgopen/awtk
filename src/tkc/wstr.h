@@ -291,7 +291,7 @@ ret_t wstr_reset(wstr_t* str);
 
 const wchar_t* wcs_chr(const wchar_t* s, wchar_t c);
 wchar_t* wcs_cpy(wchar_t* s1, const wchar_t* s2);
-int wcs_cmp(wchar_t* s1, const wchar_t* s2);
+int wcs_cmp(const wchar_t* s1, const wchar_t* s2);
 size_t wcs_len(const wchar_t* s);
 wchar_t* wcs_dup(const wchar_t* s);
 
