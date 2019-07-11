@@ -49,6 +49,8 @@ typedef struct _input_limit_t {
   } u;
 } input_limit_t;
 
+typedef bool_t (*edit_is_valid_char_t)(widget_t* widget, wchar_t c);
+
 /**
  * @class edit_t
  * @parent widget_t
@@ -200,6 +202,7 @@ typedef struct _edit_t {
   uint32_t timer_id;
   input_limit_t limit;
   text_edit_t* model;
+  edit_is_valid_char_t is_valid_char;
 } edit_t;
 
 /**
@@ -376,11 +379,23 @@ ret_t edit_set_password_visible(widget_t* widget, bool_t password_visible);
  * 设置为焦点。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
- * @param {bool_t} focus 是否为焦点。。
+ * @param {bool_t} focus 是否为焦点。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t edit_set_focus(widget_t* widget, bool_t focus);
+
+/**
+ * @method edit_set_is_valid_char
+ * 设置输入字符检查函数。
+ *> 如果内置检查函数不能满足需求时，可以设置自定义的检查函数。
+ *
+ * @param {widget_t*} widget widget对象。
+ * @param {edit_is_valid_char_t} is_valid_char 检查输入字符是否有效的回调函数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t edit_set_is_valid_char(widget_t* widget, edit_is_valid_char_t is_valid_char);
 
 #define EDIT(widget) ((edit_t*)(edit_cast(WIDGET(widget))))
 
@@ -401,6 +416,8 @@ ret_t edit_inc(edit_t* edit);
 ret_t edit_dec(edit_t* edit);
 ret_t edit_clear(edit_t* edit);
 bool_t edit_is_valid_value(widget_t* widget);
+ret_t edit_input_char(widget_t* widget, wchar_t c);
+bool_t edit_is_valid_char(widget_t* widget, wchar_t c);
 
 END_C_DECLS
 

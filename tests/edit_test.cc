@@ -233,3 +233,172 @@ TEST(Edit, focus_prev) {
 
   widget_destroy(w);
 }
+
+TEST(Edit, is_valid_chr_4_str) {
+  widget_t* e = edit_create(NULL, 10, 20, 30, 40);
+
+  edit_set_text_limit(e, 0, 3);
+  ASSERT_EQ(edit_input_char(e, L'a'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'b'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'c'), RET_OK);
+  ASSERT_NE(edit_input_char(e, L'd'), RET_OK);
+  ASSERT_EQ(e->text.size, 3);
+
+  widget_destroy(e);
+}
+
+TEST(Edit, is_valid_chr_4_int) {
+  widget_t* e = edit_create(NULL, 10, 20, 30, 40);
+
+  edit_set_input_type(e, INPUT_INT);
+  edit_set_int_limit(e, -1000, 1000, 10);
+  ASSERT_NE(edit_input_char(e, L'd'), RET_OK);
+
+  ASSERT_EQ(edit_input_char(e, L'-'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'1'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'0'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'0'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'0'), RET_OK);
+
+  ASSERT_NE(edit_input_char(e, L'd'), RET_OK);
+
+  ASSERT_EQ(e->text.size, 5);
+
+  widget_destroy(e);
+}
+
+TEST(Edit, is_valid_chr_4_uint) {
+  widget_t* e = edit_create(NULL, 10, 20, 30, 40);
+
+  edit_set_input_type(e, INPUT_UINT);
+  edit_set_int_limit(e, 0, 1000, 10);
+  ASSERT_NE(edit_input_char(e, L'd'), RET_OK);
+
+  ASSERT_NE(edit_input_char(e, L'-'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'1'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'0'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'0'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'0'), RET_OK);
+
+  ASSERT_NE(edit_input_char(e, L'd'), RET_OK);
+
+  ASSERT_EQ(e->text.size, 4);
+
+  widget_destroy(e);
+}
+
+TEST(Edit, is_valid_chr_4_float) {
+  widget_t* e = edit_create(NULL, 10, 20, 30, 40);
+
+  edit_set_input_type(e, INPUT_FLOAT);
+  edit_set_float_limit(e, -1000, 1000, 10);
+  ASSERT_NE(edit_input_char(e, L'd'), RET_OK);
+
+  ASSERT_EQ(edit_input_char(e, L'-'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'1'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'0'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'.'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'0'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'0'), RET_OK);
+
+  ASSERT_NE(edit_input_char(e, L'd'), RET_OK);
+  ASSERT_NE(edit_input_char(e, L'.'), RET_OK);
+
+  widget_destroy(e);
+}
+
+TEST(Edit, is_valid_chr_4_ufloat) {
+  widget_t* e = edit_create(NULL, 10, 20, 30, 40);
+
+  edit_set_input_type(e, INPUT_UFLOAT);
+  edit_set_float_limit(e, 0, 1000, 10);
+  ASSERT_NE(edit_input_char(e, L'd'), RET_OK);
+
+  ASSERT_NE(edit_input_char(e, L'-'), RET_OK);
+  ASSERT_NE(edit_input_char(e, L'+'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'1'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'.'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'0'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'0'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'0'), RET_OK);
+
+  ASSERT_NE(edit_input_char(e, L'.'), RET_OK);
+  ASSERT_NE(edit_input_char(e, L'd'), RET_OK);
+
+  widget_destroy(e);
+}
+
+TEST(Edit, is_valid_chr_4_email) {
+  widget_t* e = edit_create(NULL, 10, 20, 30, 40);
+
+  edit_set_input_type(e, INPUT_EMAIL);
+  ASSERT_NE(edit_input_char(e, L'a'), RET_OK);
+  ASSERT_NE(edit_input_char(e, L'a'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'a'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'@'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'0'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'0'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'0'), RET_OK);
+
+  ASSERT_NE(edit_input_char(e, L'@'), RET_OK);
+
+  widget_destroy(e);
+}
+
+TEST(Edit, is_valid_chr_4_hex) {
+  widget_t* e = edit_create(NULL, 10, 20, 30, 40);
+
+  edit_set_input_type(e, INPUT_HEX);
+  ASSERT_EQ(edit_input_char(e, L'0'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'x'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'1'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'2'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'3'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'4'), RET_OK);
+
+  ASSERT_NE(edit_input_char(e, L'x'), RET_OK);
+
+  widget_destroy(e);
+}
+
+TEST(Edit, is_valid_chr_4_phone) {
+  widget_t* e = edit_create(NULL, 10, 20, 30, 40);
+
+  edit_set_input_type(e, INPUT_PHONE);
+  ASSERT_EQ(edit_input_char(e, L'0'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'1'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'1'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'2'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'3'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'4'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'-'), RET_OK);
+
+  ASSERT_NE(edit_input_char(e, L'x'), RET_OK);
+  ASSERT_NE(edit_input_char(e, L'a'), RET_OK);
+
+  widget_destroy(e);
+}
+
+static bool_t any_char_is_valid(widget_t* widget, wchar_t c) {
+  return TRUE;
+}
+
+TEST(Edit, is_valid_chr_4_custom) {
+  widget_t* e = edit_create(NULL, 10, 20, 30, 40);
+
+  edit_set_input_type(e, INPUT_PHONE);
+  edit_set_is_valid_char(e, any_char_is_valid);
+
+  ASSERT_EQ(edit_input_char(e, L'0'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'1'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'1'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'2'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'3'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'4'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'-'), RET_OK);
+
+  ASSERT_EQ(edit_input_char(e, L'x'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'a'), RET_OK);
+
+  widget_destroy(e);
+}

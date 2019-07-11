@@ -72,14 +72,14 @@ static ret_t edit_do_input_char(widget_t* widget, wchar_t c) {
   return text_edit_paste(EDIT(widget)->model, &c, 1);
 }
 
-static ret_t edit_input_char(widget_t* widget, wchar_t c) {
+static bool_t edit_is_valid_char_default(widget_t* widget, wchar_t c) {
+  bool_t ret = FALSE;
   wstr_t* text = NULL;
-  ret_t ret = RET_FAIL;
   edit_t* edit = EDIT(widget);
   input_type_t input_type = (input_type_t)0;
   uint32_t cursor_pos = text_edit_get_cursor(edit->model);
 
-  return_value_if_fail(widget != NULL && edit != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget != NULL && edit != NULL, FALSE);
 
   text = &(widget->text);
   input_type = edit->limit.type;
@@ -88,15 +88,13 @@ static ret_t edit_input_char(widget_t* widget, wchar_t c) {
     case INPUT_INT:
     case INPUT_UINT: {
       if (text->size >= TK_NUM_MAX_LEN) {
-        return RET_FAIL;
-      }
-
-      if (c >= '0' && c <= '9') {
-        ret = edit_do_input_char(widget, c);
+        break;
+      } else if (c >= '0' && c <= '9') {
+        ret = TRUE;
         break;
       } else if (c == '+' || (c == '-' && input_type == INPUT_INT)) {
         if (cursor_pos == 0) {
-          ret = edit_do_input_char(widget, c);
+          ret = TRUE;
         }
         break;
       }
@@ -105,19 +103,18 @@ static ret_t edit_input_char(widget_t* widget, wchar_t c) {
     case INPUT_FLOAT:
     case INPUT_UFLOAT: {
       if (text->size >= TK_NUM_MAX_LEN) {
-        return RET_FAIL;
-      }
-      if (c >= '0' && c <= '9') {
-        ret = edit_do_input_char(widget, c);
+        break;
+      } else if (c >= '0' && c <= '9') {
+        ret = TRUE;
         break;
       } else if (c == '+' || (c == '-' && input_type == INPUT_FLOAT)) {
         if (cursor_pos == 0) {
-          ret = edit_do_input_char(widget, c);
+          ret = TRUE;
         }
         break;
       } else if (c == '.' || c == 'e') {
         if (cursor_pos > 0 && wcs_chr(text->str, c) == NULL) {
-          ret = edit_do_input_char(widget, c);
+          ret = TRUE;
         }
       }
       break;
@@ -125,10 +122,10 @@ static ret_t edit_input_char(widget_t* widget, wchar_t c) {
     case INPUT_EMAIL: {
       if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '-' ||
           c == '.' || c == '_') {
-        ret = edit_do_input_char(widget, c);
+        ret = TRUE;
       } else if (c == '@') {
         if (cursor_pos > 0 && wcs_chr(text->str, c) == NULL) {
-          ret = edit_do_input_char(widget, c);
+          ret = TRUE;
         }
       }
       break;
@@ -136,35 +133,55 @@ static ret_t edit_input_char(widget_t* widget, wchar_t c) {
     case INPUT_HEX: {
       if (text->size > 10) {
         break;
-      }
-      if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f')) {
-        ret = edit_do_input_char(widget, c);
+      } else if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f')) {
+        ret = TRUE;
       } else if (c == 'X' || c == 'x') {
         if (cursor_pos == 1 && text->str[0] == '0') {
-          ret = edit_do_input_char(widget, c);
+          ret = TRUE;
         }
       }
       break;
     }
     case INPUT_PHONE: {
       if (c >= '0' && c <= '9') {
-        ret = edit_do_input_char(widget, c);
+        ret = TRUE;
         break;
       } else if (c == '-') {
         if (cursor_pos > 0 && wcs_chr(text->str, c) == NULL) {
-          ret = edit_do_input_char(widget, c);
+          ret = TRUE;
         }
       }
       break;
     }
     default: {
       if (widget->text.size < edit->limit.u.t.max) {
-        ret = edit_do_input_char(widget, c);
+        ret = TRUE;
       }
     }
   }
 
-  edit_dispatch_event(widget, EVT_VALUE_CHANGING);
+  return ret;
+}
+
+bool_t edit_is_valid_char(widget_t* widget, wchar_t c) {
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(edit != NULL, FALSE);
+
+  if (edit->is_valid_char != NULL) {
+    return edit->is_valid_char(widget, c);
+  } else {
+    return edit_is_valid_char_default(widget, c);
+  }
+}
+
+ret_t edit_input_char(widget_t* widget, wchar_t c) {
+  ret_t ret = RET_BAD_PARAMS;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  if (edit_is_valid_char(widget, c)) {
+    ret = edit_do_input_char(widget, c);
+    edit_dispatch_event(widget, EVT_VALUE_CHANGING);
+  }
 
   return ret;
 }
@@ -563,7 +580,9 @@ ret_t edit_set_int_limit(widget_t* widget, int32_t min, int32_t max, uint32_t st
   edit->limit.u.i.min = min;
   edit->limit.u.i.max = max;
   edit->limit.u.i.step = step;
-  edit->limit.type = INPUT_INT;
+  if (edit->limit.type != INPUT_UINT) {
+    edit->limit.type = INPUT_INT;
+  }
 
   return RET_OK;
 }
@@ -575,7 +594,10 @@ ret_t edit_set_float_limit(widget_t* widget, double min, double max, double step
   edit->limit.u.f.min = min;
   edit->limit.u.f.max = max;
   edit->limit.u.f.step = step;
-  edit->limit.type = INPUT_FLOAT;
+
+  if (edit->limit.type != INPUT_UFLOAT) {
+    edit->limit.type = INPUT_FLOAT;
+  }
 
   return RET_OK;
 }
@@ -1134,4 +1156,13 @@ widget_t* edit_cast(widget_t* widget) {
   return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, edit), NULL);
 
   return widget;
+}
+
+ret_t edit_set_is_valid_char(widget_t* widget, edit_is_valid_char_t is_valid_char) {
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
+
+  edit->is_valid_char = is_valid_char;
+
+  return RET_OK;
 }
