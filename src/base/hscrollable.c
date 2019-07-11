@@ -59,9 +59,20 @@ static ret_t hscrollable_on_pointer_down(hscrollable_t* hscrollable, pointer_eve
 static ret_t hscrollable_on_pointer_move(hscrollable_t* hscrollable, pointer_event_t* e) {
   velocity_t* v = &(hscrollable->velocity);
   int32_t dx = e->x - hscrollable->down.x;
+
   velocity_update(v, e->e.time, e->x, e->y);
 
   hscrollable->xoffset = hscrollable->xoffset_save - dx;
+
+  if (!(hscrollable->always_scrollable)) {
+    widget_t* widget = hscrollable_get_widget(hscrollable);
+    if ((hscrollable->xoffset + widget->w) > hscrollable->virtual_w) {
+      hscrollable->xoffset = hscrollable->virtual_w - widget->w;
+    }
+    if (hscrollable->xoffset < 0) {
+      hscrollable->xoffset = 0;
+    }
+  }
 
   return RET_OK;
 }

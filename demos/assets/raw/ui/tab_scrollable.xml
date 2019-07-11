@@ -1,0 +1,41 @@
+<window anim_hint="htranslate" theme="tab_top_compact">
+  <tab_button_group style="scrollable" x="c" y="12" w="90%" h="30" compact="true" scrollable="true">
+    <tab_button text="General"/>
+    <tab_button text="Network" value="true" />
+    <tab_button text="Security"/>
+    <tab_button text="Security1"/>
+    <tab_button text="Security2"/>
+    <tab_button text="Security3"/>
+    <tab_button text="Security4"/>
+  </tab_button_group>
+  <pages x="c" y="42" w="90%" h="-60" value="1">
+    <view w="100%" h="100%">
+      <label x="c" y="m" w="100%" h="60" text="General" /> 
+      <button name="close" x="c" y="bottom:100" w="80" h="40" text="Close" />
+    </view>
+    <view w="100%" h="100%">
+      <label x="c" y="m" w="100%" h="60" text="Network" /> 
+      <button name="close" x="c" y="bottom:100" w="80" h="40" text="Close" />
+    </view>
+    <view w="100%" h="100%">
+      <label x="c" y="m" w="100%" h="60" text="Security" /> 
+      <button name="close" x="c" y="bottom:100" w="80" h="40" text="Close" />
+    </view>
+    <view w="100%" h="100%">
+      <label x="c" y="m" w="100%" h="60" text="Security1" /> 
+      <button name="close" x="c" y="bottom:100" w="80" h="40" text="Close" />
+    </view>
+    <view w="100%" h="100%">
+      <label x="c" y="m" w="100%" h="60" text="Security2" /> 
+      <button name="close" x="c" y="bottom:100" w="80" h="40" text="Close" />
+    </view>
+    <view w="100%" h="100%">
+      <label x="c" y="m" w="100%" h="60" text="Security3" /> 
+      <button name="close" x="c" y="bottom:100" w="80" h="40" text="Close" />
+    </view>
+    <view w="100%" h="100%">
+      <label x="c" y="m" w="100%" h="60" text="Security4" /> 
+      <button name="close" x="c" y="bottom:100" w="80" h="40" text="Close" />
+    </view>
+  </pages>
+</window>

@@ -576,6 +576,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_COMPACT "compact"
 
 /**
+ * @const WIDGET_PROP_SCROLLABLE
+ * 是否支持滚动。
+ */
+#define WIDGET_PROP_SCROLLABLE "scrollable"
+
+/**
  * @const WIDGET_PROP_ICON
  * 图标名称。
  */

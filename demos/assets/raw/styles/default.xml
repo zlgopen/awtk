@@ -442,7 +442,11 @@
 </tab_button>
 
 <tab_button_group>
-  <style name="default">
+  <style name="default" >
+    <normal/>
+  </style>
+
+  <style name="scrollable" border_color="#a0a0a0" border="left|right">
     <normal/>
   </style>
 </tab_button_group>
