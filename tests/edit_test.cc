@@ -315,7 +315,7 @@ TEST(Edit, is_valid_chr_4_ufloat) {
   ASSERT_NE(edit_input_char(e, L'd'), RET_OK);
 
   ASSERT_NE(edit_input_char(e, L'-'), RET_OK);
-  ASSERT_NE(edit_input_char(e, L'+'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'+'), RET_OK);
   ASSERT_EQ(edit_input_char(e, L'1'), RET_OK);
   ASSERT_EQ(edit_input_char(e, L'.'), RET_OK);
   ASSERT_EQ(edit_input_char(e, L'0'), RET_OK);
@@ -332,8 +332,8 @@ TEST(Edit, is_valid_chr_4_email) {
   widget_t* e = edit_create(NULL, 10, 20, 30, 40);
 
   edit_set_input_type(e, INPUT_EMAIL);
-  ASSERT_NE(edit_input_char(e, L'a'), RET_OK);
-  ASSERT_NE(edit_input_char(e, L'a'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'a'), RET_OK);
+  ASSERT_EQ(edit_input_char(e, L'a'), RET_OK);
   ASSERT_EQ(edit_input_char(e, L'a'), RET_OK);
   ASSERT_EQ(edit_input_char(e, L'@'), RET_OK);
   ASSERT_EQ(edit_input_char(e, L'0'), RET_OK);
