@@ -11,7 +11,6 @@
  控件可以通过vt->enable\_pool参数决定该类控件是否启用缓存。
 
 
-
 ----------------------------------
 ### 函数
 <p id="widget_pool_t_methods">
@@ -35,7 +34,6 @@
 
 
 
-
 * 函数原型：
 
 ```
@@ -53,7 +51,6 @@ widget_pool_t* widget_pool ();
 * 函数功能：
 
 > <p id="widget_pool_t_widget_pool_clear_cache"> 清除全部缓存控件。
-
 
 
 
@@ -75,7 +72,6 @@ ret_t widget_pool_clear_cache (widget_pool_t* pool);
 * 函数功能：
 
 > <p id="widget_pool_t_widget_pool_count"> 计算缓存控件个数。
-
 
 
 
@@ -101,7 +97,6 @@ int32_t widget_pool_count (widget_pool_t* pool);
 
 
 
-
 * 函数原型：
 
 ```
@@ -120,7 +115,6 @@ widget_pool_t* widget_pool_create (uint32_t max_cache_nr);
 * 函数功能：
 
 > <p id="widget_pool_t_widget_pool_create_widget"> 创建widget对象。
-
 
 
 
@@ -148,7 +142,6 @@ widget_t widget_pool_create_widget (widget_pool_t* pool, const widget_vtable_t* 
 
 
 
-
 * 函数原型：
 
 ```
@@ -167,7 +160,6 @@ ret_t widget_pool_destroy (widget_pool_t* pool);
 * 函数功能：
 
 > <p id="widget_pool_t_widget_pool_destroy_widget"> 销毁或回收widget对象。
-
 
 
 
@@ -191,7 +183,6 @@ ret_t widget_pool_destroy_widget (widget_pool_t* pool, widget_t* widget);
 * 函数功能：
 
 > <p id="widget_pool_t_widget_pool_set"> 设置缺省widget pool对象。
-
 
 
 

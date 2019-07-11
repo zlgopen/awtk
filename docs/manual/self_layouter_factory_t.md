@@ -3,7 +3,6 @@
  控件自身布局算法工厂。
 
 
-
 ----------------------------------
 ### 函数
 <p id="self_layouter_factory_t_methods">
@@ -22,7 +21,6 @@
 * 函数功能：
 
 > <p id="self_layouter_factory_t_self_layouter_factory"> 获取缺省的控件自身布局算法工厂对象。
-
 
 
 * 函数原型：
@@ -45,7 +43,6 @@ self_layouter_factory_t* self_layouter_factory ();
 
 
 
-
 * 函数原型：
 
 ```
@@ -63,7 +60,6 @@ self_layouter_factory_t* self_layouter_factory_create ();
 * 函数功能：
 
 > <p id="self_layouter_factory_t_self_layouter_factory_create_layouter"> 创建指定类型的控件自身布局算法对象。
-
 
 
 
@@ -89,7 +85,6 @@ self_layouter_t* self_layouter_factory_create_layouter (self_layouter_factory_t*
 
 
 
-
 * 函数原型：
 
 ```
@@ -108,7 +103,6 @@ ret_t self_layouter_factory_destroy (self_layouter_factory_t* factory);
 * 函数功能：
 
 > <p id="self_layouter_factory_t_self_layouter_factory_register"> 注册控件自身布局算法创建函数。
-
 
 
 
@@ -132,7 +126,6 @@ ret_t self_layouter_factory_register (self_layouter_factory_t* factory, const ch
 * 函数功能：
 
 > <p id="self_layouter_factory_t_self_layouter_factory_set"> 设置缺省的控件自身布局算法工厂对象。
-
 
 
 

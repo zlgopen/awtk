@@ -4,7 +4,6 @@
 
  按键事件。
 
-
 ----------------------------------
 ### 函数
 <p id="key_event_t_methods">
@@ -40,7 +39,6 @@
 
 
 
-
 * 函数原型：
 
 ```
@@ -59,7 +57,6 @@ key_event_t* key_event_cast (event_t* event);
 * 函数功能：
 
 > <p id="key_event_t_key_event_init"> 初始化事件。
-
 
 
 
@@ -84,7 +81,6 @@ event_t* key_event_init (key_event_t* event, void* target, uint32_t type, int32_
  alt键是否按下。
 
 
-
 * 类型：bool\_t
 
 | 特性 | 是否支持 |
@@ -95,7 +91,6 @@ event_t* key_event_init (key_event_t* event, void* target, uint32_t type, int32_
 #### capslock 属性
 -----------------------
 > <p id="key_event_t_capslock"> capslock键是否按下。
-
 
 
 * 类型：bool\_t
@@ -111,7 +106,6 @@ event_t* key_event_init (key_event_t* event, void* target, uint32_t type, int32_
  cmd/win键是否按下。
 
 
-
 * 类型：bool\_t
 
 | 特性 | 是否支持 |
@@ -123,7 +117,6 @@ event_t* key_event_init (key_event_t* event, void* target, uint32_t type, int32_
 -----------------------
 > <p id="key_event_t_ctrl"> right alt键是否按下。
  ctrl键是否按下。
-
 
 
 * 类型：bool\_t
@@ -138,7 +131,6 @@ event_t* key_event_init (key_event_t* event, void* target, uint32_t type, int32_
 > <p id="key_event_t_key"> 键值。
 
 
-
 * 类型：uint32\_t
 
 | 特性 | 是否支持 |
@@ -149,7 +141,6 @@ event_t* key_event_init (key_event_t* event, void* target, uint32_t type, int32_
 #### lalt 属性
 -----------------------
 > <p id="key_event_t_lalt"> left alt键是否按下。
-
 
 
 * 类型：bool\_t
@@ -164,7 +155,6 @@ event_t* key_event_init (key_event_t* event, void* target, uint32_t type, int32_
 > <p id="key_event_t_lctrl"> left ctrl键是否按下。
 
 
-
 * 类型：bool\_t
 
 | 特性 | 是否支持 |
@@ -175,7 +165,6 @@ event_t* key_event_init (key_event_t* event, void* target, uint32_t type, int32_
 #### lshift 属性
 -----------------------
 > <p id="key_event_t_lshift"> left shift键是否按下。
-
 
 
 * 类型：bool\_t
@@ -190,7 +179,6 @@ event_t* key_event_init (key_event_t* event, void* target, uint32_t type, int32_
 > <p id="key_event_t_menu"> menu键是否按下。
 
 
-
 * 类型：bool\_t
 
 | 特性 | 是否支持 |
@@ -201,7 +189,6 @@ event_t* key_event_init (key_event_t* event, void* target, uint32_t type, int32_
 #### ralt 属性
 -----------------------
 > <p id="key_event_t_ralt"> right alt键是否按下。
-
 
 
 * 类型：bool\_t
@@ -216,7 +203,6 @@ event_t* key_event_init (key_event_t* event, void* target, uint32_t type, int32_
 > <p id="key_event_t_rctrl"> right ctrl键是否按下。
 
 
-
 * 类型：bool\_t
 
 | 特性 | 是否支持 |
@@ -229,7 +215,6 @@ event_t* key_event_init (key_event_t* event, void* target, uint32_t type, int32_
 > <p id="key_event_t_rshift"> right shift键是否按下。
 
 
-
 * 类型：bool\_t
 
 | 特性 | 是否支持 |
@@ -240,7 +225,6 @@ event_t* key_event_init (key_event_t* event, void* target, uint32_t type, int32_
 #### shift 属性
 -----------------------
 > <p id="key_event_t_shift"> shift键是否按下。
-
 
 
 * 类型：bool\_t

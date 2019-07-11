@@ -76,6 +76,7 @@ default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/def
 | <a href="#edit_t_edit_set_input_type">edit\_set\_input\_type</a> | 设置编辑器的输入类型。 |
 | <a href="#edit_t_edit_set_int">edit\_set\_int</a> | 设置int类型的值。 |
 | <a href="#edit_t_edit_set_int_limit">edit\_set\_int\_limit</a> | 设置为整数输入及取值范围。 |
+| <a href="#edit_t_edit_set_is_valid_char">edit\_set\_is\_valid\_char</a> | 设置输入字符检查函数。 |
 | <a href="#edit_t_edit_set_password_visible">edit\_set\_password\_visible</a> | 当编辑器输入类型为密码时，设置密码是否可见。 |
 | <a href="#edit_t_edit_set_readonly">edit\_set\_readonly</a> | 设置编辑器是否为只读。 |
 | <a href="#edit_t_edit_set_text_limit">edit\_set\_text\_limit</a> | 设置为文本输入及其长度限制，不允许输入超过max个字符，少于min个字符时进入error状态。 |
@@ -281,7 +282,7 @@ ret_t edit_set_focus (widget_t* widget, bool_t focus);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
-| focus | bool\_t | 是否为焦点。。 |
+| focus | bool\_t | 是否为焦点。 |
 #### edit\_set\_input\_tips 函数
 -----------------------
 
@@ -372,6 +373,30 @@ ret_t edit_set_int_limit (widget_t* widget, int32_t min, int32_t max, int32_t st
 | min | int32\_t | 最小值。 |
 | max | int32\_t | 最大值。 |
 | step | int32\_t | 步长。 |
+#### edit\_set\_is\_valid\_char 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="edit_t_edit_set_is_valid_char"> 设置输入字符检查函数。
+> 如果内置检查函数不能满足需求时，可以设置自定义的检查函数。
+
+
+
+
+* 函数原型：
+
+```
+ret_t edit_set_is_valid_char (widget_t* widget, edit_is_valid_char_t is_valid_char);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | widget对象。 |
+| is\_valid\_char | edit\_is\_valid\_char\_t | 检查输入字符是否有效的回调函数。 |
 #### edit\_set\_password\_visible 函数
 -----------------------
 

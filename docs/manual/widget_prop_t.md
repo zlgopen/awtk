@@ -1,7 +1,6 @@
 ## widget\_prop\_t
 ### 概述
  控件的属性。
-
 ### 常量
 <p id="widget_prop_t_consts">
 
@@ -97,6 +96,7 @@
 | WIDGET\_PROP\_ANCHOR\_Y | y锚点。 |
 | WIDGET\_PROP\_ROTATION | 选中角度(幅度) |
 | WIDGET\_PROP\_COMPACT | 紧凑模式。 |
+| WIDGET\_PROP\_SCROLLABLE | 是否支持滚动。 |
 | WIDGET\_PROP\_ICON | 图标名称。 |
 | WIDGET\_PROP\_OPTIONS | 选项集合。 |
 | WIDGET\_PROP\_SELECTED | 是否被选中。 |

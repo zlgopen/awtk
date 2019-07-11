@@ -15,7 +15,6 @@
 
 
 
-
 ----------------------------------
 ### 函数
 <p id="ui_loader_t_methods">
@@ -30,7 +29,6 @@
 * 函数功能：
 
 > <p id="ui_loader_t_ui_loader_load"> 加载界面描述数据，然后分发给ui\_builder，由ui\_builder进一步处理。
-
 
 
 
@@ -60,7 +58,6 @@ ret_t ui_loader_load (ui_loader_t* loader, const uint8_t* data, uint32_t size, u
  从指定的资源加载widget对象，通常用于加载非窗口的widget。
 
 >需要自己将widget加入窗口后，再调用widget\_layout。
-
 
 
 

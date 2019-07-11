@@ -3,7 +3,6 @@
  对话框高亮策略工厂。
 
 
-
 ----------------------------------
 ### 函数
 <p id="dialog_highlighter_factory_t_methods">
@@ -22,7 +21,6 @@
 * 函数功能：
 
 > <p id="dialog_highlighter_factory_t_dialog_highlighter_factory"> 获取缺省的对话框高亮策略工厂对象。
-
 
 
 * 函数原型：
@@ -45,7 +43,6 @@ dialog_highlighter_factory_t* dialog_highlighter_factory ();
 
 
 
-
 * 函数原型：
 
 ```
@@ -63,7 +60,6 @@ dialog_highlighter_factory_t* dialog_highlighter_factory_create ();
 * 函数功能：
 
 > <p id="dialog_highlighter_factory_t_dialog_highlighter_factory_create_highlighter"> 创建指定类型的对话框高亮策略对象。
-
 
 
 
@@ -90,7 +86,6 @@ dialog_highlighter_t* dialog_highlighter_factory_create_highlighter (dialog_high
 
 
 
-
 * 函数原型：
 
 ```
@@ -109,7 +104,6 @@ ret_t dialog_highlighter_factory_destroy (dialog_highlighter_factory_t* factory)
 * 函数功能：
 
 > <p id="dialog_highlighter_factory_t_dialog_highlighter_factory_register"> 注册对话框高亮策略创建函数。
-
 
 
 
@@ -133,7 +127,6 @@ ret_t dialog_highlighter_factory_register (dialog_highlighter_factory_t* factory
 * 函数功能：
 
 > <p id="dialog_highlighter_factory_t_dialog_highlighter_factory_set"> 设置缺省的对话框高亮策略工厂对象。
-
 
 
 

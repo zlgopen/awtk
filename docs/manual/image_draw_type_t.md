@@ -1,7 +1,6 @@
 ## image\_draw\_type\_t
 ### 概述
  图片绘制方法常量定义。
-
 ### 常量
 <p id="image_draw_type_t_consts">
 

@@ -5,9 +5,9 @@
 
  行号。多行编辑器的行号。
 
- line_number\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于line_number\_t控件。
+ line\_number\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于line\_number\_t控件。
 
- 在xml中使用"line_number"标签创建行号控件，一般配合mledit使用。如：
+ 在xml中使用"lin\e_number"标签创建行号控件，一般配合mledit使用。如：
 
  ```xml
  <mledit x="c" y="10" h="40%" w="90%" focus="true" left_margin="36" right_margin="16"
@@ -35,7 +35,6 @@ https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/mledit.xml)
 https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L556)
 
 
-
 ----------------------------------
 ### 函数
 <p id="line_number_t_methods">
@@ -57,7 +56,6 @@ https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#
 
 
 
-
 * 函数原型：
 
 ```
@@ -76,7 +74,6 @@ widget_t* line_number_cast (widget_t* widget);
 * 函数功能：
 
 > <p id="line_number_t_line_number_create"> 创建line_number对象
-
 
 
 
@@ -105,7 +102,6 @@ widget_t* line_number_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 
 
-
 * 函数原型：
 
 ```
@@ -125,7 +121,6 @@ ret_t line_number_set_bottom_margin (widget_t* widget, int32_t bottom_margin);
 * 函数功能：
 
 > <p id="line_number_t_line_number_set_line_height"> 设置行高。
-
 
 
 
@@ -151,7 +146,6 @@ ret_t line_number_set_line_height (widget_t* widget, int32_t line_height);
 
 
 
-
 * 函数原型：
 
 ```
@@ -171,7 +165,6 @@ ret_t line_number_set_top_margin (widget_t* widget, int32_t top_margin);
 * 函数功能：
 
 > <p id="line_number_t_line_number_set_yoffset"> 设置y偏移。
-
 
 
 
