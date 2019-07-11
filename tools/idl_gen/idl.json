@@ -97,6 +97,48 @@
         }
       },
       {
+        "params": [],
+        "annotation": {
+          "static": true,
+          "scriptable": true
+        },
+        "desc": " 获取全局指针的X坐标。\r\n\r\n",
+        "name": "tk_get_pointer_x",
+        "alias": "global_get_pointer_x",
+        "return": {
+          "type": "int32_t",
+          "desc": "返回全局指针的X坐标。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {
+          "static": true,
+          "scriptable": true
+        },
+        "desc": " 获取全局指针的Y坐标。\r\n\r\n",
+        "name": "tk_get_pointer_y",
+        "alias": "global_get_pointer_y",
+        "return": {
+          "type": "int32_t",
+          "desc": "返回全局指针的X坐标。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {
+          "static": true,
+          "scriptable": true
+        },
+        "desc": " 获取全局指针是否按下。\r\n\r\n",
+        "name": "tk_is_pointer_pressed",
+        "alias": "global_is_pointer_pressed",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回全局指针是否按下。"
+        }
+      },
+      {
         "params": [
           {
             "type": "int",
@@ -34360,7 +34402,7 @@
           {
             "type": "bool_t",
             "name": "focus",
-            "desc": "是否为焦点。。"
+            "desc": "是否为焦点。"
           }
         ],
         "annotation": {
@@ -34368,6 +34410,27 @@
         },
         "desc": " 设置为焦点。\r\n\r\n",
         "name": "edit_set_focus",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          },
+          {
+            "type": "edit_is_valid_char_t",
+            "name": "is_valid_char",
+            "desc": "检查输入字符是否有效的回调函数。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 设置输入字符检查函数。\r\n> 如果内置检查函数不能满足需求时，可以设置自定义的检查函数。\r\n\r\n\r\n",
+        "name": "edit_set_is_valid_char",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"

@@ -64,6 +64,36 @@ ret_t tk_run(void);
 ret_t tk_quit(void);
 
 /**
+ * @method tk_get_pointer_x
+ * 获取全局指针的X坐标。
+ * @alias global_get_pointer_x
+ * @annotation ["static", "scriptable"]
+ *
+ * @return {int32_t} 返回全局指针的X坐标。
+ */
+int32_t tk_get_pointer_x(void);
+
+/**
+ * @method tk_get_pointer_y
+ * 获取全局指针的Y坐标。
+ * @alias global_get_pointer_y
+ * @annotation ["static", "scriptable"]
+ *
+ * @return {int32_t} 返回全局指针的X坐标。
+ */
+int32_t tk_get_pointer_y(void);
+
+/**
+ * @method tk_is_pointer_pressed
+ * 获取全局指针是否按下。
+ * @alias global_is_pointer_pressed
+ * @annotation ["static", "scriptable"]
+ *
+ * @return {bool_t} 返回全局指针是否按下。
+ */
+bool_t tk_is_pointer_pressed(void);
+
+/**
  * @method tk_set_lcd_orientation
  * 设置屏幕的旋转方向(XXX:目前仅支持0度和90度)。
  * @param {int} orientation 旋转方向。

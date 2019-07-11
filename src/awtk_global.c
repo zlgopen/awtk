@@ -293,3 +293,24 @@ ret_t tk_set_lcd_orientation(lcd_orientation_t orientation) {
 
   return RET_OK;
 }
+
+int32_t tk_get_pointer_x(void) {
+  window_manager_t* wm = WINDOW_MANAGER(window_manager());
+  return_value_if_fail(wm != NULL, 0);
+
+  return wm->input_device_status.last_x;
+}
+
+int32_t tk_get_pointer_y(void) {
+  window_manager_t* wm = WINDOW_MANAGER(window_manager());
+  return_value_if_fail(wm != NULL, 0);
+
+  return wm->input_device_status.last_y;
+}
+
+bool_t tk_is_pointer_pressed(void) {
+  window_manager_t* wm = WINDOW_MANAGER(window_manager());
+  return_value_if_fail(wm != NULL, 0);
+
+  return wm->input_device_status.pressed;
+}

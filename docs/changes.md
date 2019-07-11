@@ -1,9 +1,10 @@
 # 最新动态
 
 * 2019/07/11
-  * tab button group 支持 scrollable 属性。
   * edit 支持自定义的字符有效性检查函数。
-  
+  * tab button group 支持 scrollable 属性。
+  * 增加获取全局鼠标状态的函数。tk_get\_pointer\_x/tk\_get\_pointer\_y/tk\_is\_pointer\_pressed
+
 * 2019/07/10
   * 修改 wcs 几处编译警告（感谢陈谭提供补丁）。
   * 增加生成控件模板的代码生成器。
