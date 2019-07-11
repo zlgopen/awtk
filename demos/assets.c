@@ -132,6 +132,7 @@
 #include "assets/inc/ui/tab_bottom_compact.data"
 #include "assets/inc/ui/tab_control.data"
 #include "assets/inc/ui/tab_list.data"
+#include "assets/inc/ui/tab_scrollable.data"
 #include "assets/inc/ui/tab_top.data"
 #include "assets/inc/ui/tab_top_compact.data"
 #include "assets/inc/ui/test_view.data"
@@ -668,6 +669,7 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_tab_bottom_compact);
   assets_manager_add(rm, ui_tab_control);
   assets_manager_add(rm, ui_tab_list);
+  assets_manager_add(rm, ui_tab_scrollable);
   assets_manager_add(rm, ui_tab_top);
   assets_manager_add(rm, ui_tab_top_compact);
   assets_manager_add(rm, ui_test_view);

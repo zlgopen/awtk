@@ -226,6 +226,7 @@ widget_t* candidates_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   return_value_if_fail(candidates != NULL, NULL);
 
   candidates->hscrollable = hscrollable_create(widget);
+  hscrollable_set_always_scrollable(candidates->hscrollable, TRUE);
   candidates->event_id = input_method_on(input_method(), EVT_IM_SHOW_CANDIDATES,
                                          candidates_on_im_candidates_event, candidates);
 

@@ -4,5 +4,6 @@
     <button name="open:tab_top_compact" text="Top Compact"/>
     <button name="open:tab_bottom_compact" text="Bottom Compact"/>
     <button name="open:tab_list" text="List"/>
+    <button name="open:tab_scrollable" text="Scrollable"/>
     <button name="close" text="Close"/>
 </window>
