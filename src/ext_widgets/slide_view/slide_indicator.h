@@ -324,7 +324,7 @@ ret_t slide_indicator_set_anchor(widget_t* widget, const char* anchor_x, const c
  * 设置指示器指示的目标。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget slide_indicator对象。
- * @param {const char**} indicated_target 指示器指示的目标
+ * @param {const char*} indicated_target 指示器指示的目标
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
