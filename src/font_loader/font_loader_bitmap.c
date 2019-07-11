@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   font.h
  * Author: AWTK Develop Team
  * Brief:  font interface
@@ -20,6 +20,7 @@
  */
 
 #include "tkc/mem.h"
+#include "tkc/utils.h"
 #include "font_loader/font_loader_bitmap.h"
 
 typedef struct _font_bitmap_t {
