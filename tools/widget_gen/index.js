@@ -22,7 +22,7 @@ class CodeGen {
 
   genPropDecls(json) {
     let result = '';
-    if (!json.props) {
+    if (!json.props || !json.props.length) {
       return result;
     }
 
@@ -43,7 +43,7 @@ class CodeGen {
 
   genPropSetterDecls(json) {
     let result = '';
-    if (!json.props) {
+    if (!json.props || !json.props.length) {
       return result;
     }
 
@@ -69,7 +69,7 @@ ret_t ${className}_set_${iter.name}(widget_t* widget, ${iter.type} ${iter.name})
 
   genPropDefines(json) {
     let result = '';
-    if (!json.props) {
+    if (!json.props || !json.props.length) {
       return result;
     }
 
@@ -196,7 +196,7 @@ END_C_DECLS
 
   genPropSetterImpls(json) {
     let result = '';
-    if (!json.props) {
+    if (!json.props || !json.props.length) {
       return result;
     }
 
@@ -222,7 +222,7 @@ ret_t ${className}_set_${iter.name}(widget_t* widget, ${iter.type} ${iter.name})
 
   genPropList(json) {
     let result = '';
-    if (!json.props) {
+    if (!json.props || !json.props.length) {
       return result;
     }
 
@@ -303,7 +303,7 @@ ret_t ${className}_set_${iter.name}(widget_t* widget, ${iter.type} ${iter.name})
 
   genSetPropDispatch(json) {
     let result = '';
-    if (!json.props) {
+    if (!json.props || !json.props.length) {
       return result;
     }
 
@@ -331,7 +331,7 @@ ret_t ${className}_set_${iter.name}(widget_t* widget, ${iter.type} ${iter.name})
 
   genPropInits(json) {
     let result = '';
-    if (!json.props) {
+    if (!json.props || !json.props.length) {
       return result;
     }
 
@@ -347,7 +347,8 @@ ret_t ${className}_set_${iter.name}(widget_t* widget, ${iter.type} ${iter.name})
 
   genGetPropDispatch(json) {
     let result = '';
-    if (!json.props) {
+    if (!json.props || !json.props.length) {
+      return result;
       return result;
     }
 

@@ -138,6 +138,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_NAME "name"
 
 /**
+ * @const WIDGET_PROP_TYPE
+ * 类型。
+ */
+#define WIDGET_PROP_TYPE "type"
+
+/**
  * @const WIDGET_PROP_CLOSABLE
  * 是否可以关闭。
  */

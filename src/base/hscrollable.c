@@ -87,7 +87,7 @@ static ret_t hscrollable_on_scroll_done(void* ctx, event_t* e) {
 
   return RET_REMOVE;
 }
-#endif/*WITHOUT_WIDGET_ANIMATOR*/
+#endif /*WITHOUT_WIDGET_ANIMATOR*/
 
 static ret_t hscrollable_fix_end_offset_default(hscrollable_t* hscrollable) {
   int32_t xoffset_end = 0;
