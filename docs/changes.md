@@ -1,5 +1,9 @@
 # 最新动态
 
+* 2019/07/12
+  * 改进 widget\_get\_type 通过属性获取。
+  * 完善 scrollbar 子控件布局。
+
 * 2019/07/11
   * edit 支持自定义的字符有效性检查函数。
   * tab button group 支持 scrollable 属性。

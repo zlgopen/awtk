@@ -28,6 +28,10 @@
 #include "widget_animators/widget_animator_value.h"
 #include "widget_animators/widget_animator_opacity.h"
 
+#define CHILD_UP "up"
+#define CHILD_DOWN "down"
+#define CHILD_DRAGGER "dragger"
+
 static ret_t scroll_bar_update_dragger(widget_t* widget);
 widget_t* scroll_bar_create_desktop_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
@@ -268,6 +272,26 @@ static ret_t scroll_bar_on_layout_children(widget_t* widget) {
   rect_t r = rect_init(0, 0, 0, 0);
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
   widget_t* dragger = scroll_bar->dragger;
+  widget_t* up = widget_lookup(widget, CHILD_UP, FALSE);
+  widget_t* down = widget_lookup(widget, CHILD_DOWN, FALSE);
+
+  if (widget->w > widget->h) {
+    if (up != NULL) {
+      widget_move_resize(up, 0, 0, widget->h, widget->h);
+    }
+
+    if (down != NULL) {
+      widget_move_resize(down, widget->w - widget->h, 0, widget->h, widget->h);
+    }
+  } else {
+    if (up != NULL) {
+      widget_move_resize(up, 0, 0, widget->w, widget->w);
+    }
+
+    if (down != NULL) {
+      widget_move_resize(down, 0, widget->h - widget->w, widget->w, widget->w);
+    }
+  }
 
   if (scroll_bar->virtual_size <= 0) {
     return RET_OK;
@@ -285,14 +309,13 @@ static ret_t scroll_bar_on_layout_children(widget_t* widget) {
 
     widget_move_resize(WIDGET(dragger), r.x, r.y, r.w, r.h);
   }
-  widget_layout_children_default(widget);
+
   widget_invalidate_force(widget, NULL);
 
   return RET_OK;
 }
 
 static ret_t scroll_bar_create_children(widget_t* widget) {
-  char str[16];
   widget_t* up = NULL;
   widget_t* down = NULL;
   widget_t* dragger = NULL;
@@ -306,37 +329,27 @@ static ret_t scroll_bar_create_children(widget_t* widget) {
   up = button_create(widget, 0, 0, 0, 0);
   up->auto_created = TRUE;
   button_set_repeat(up, 300);
-  widget_set_name(up, "up");
+  widget_set_name(up, CHILD_UP);
   widget_on(up, EVT_CLICK, scroll_bar_on_up_button_clicked, widget);
 
   down = button_create(widget, 0, 0, 0, 0);
   down->auto_created = TRUE;
   button_set_repeat(down, 300);
-  widget_set_name(down, "down");
+  widget_set_name(down, CHILD_DOWN);
   widget_on(down, EVT_CLICK, scroll_bar_on_down_button_clicked, widget);
 
   dragger = dragger_create(widget, 0, 0, 0, 0);
   dragger->auto_created = TRUE;
-  widget_set_name(dragger, "dragger");
+  widget_set_name(dragger, CHILD_DRAGGER);
   widget_use_style(dragger, "scroll_bar");
   widget_on(dragger, EVT_DRAG, scroll_bar_on_drag, widget);
 
   if (widget->w > widget->h) {
-    tk_snprintf(str, sizeof(str) - 1, "%d", (int)(widget->h));
-
     widget_use_style(up, "scroll_left");
-    widget_set_self_layout_params(up, "0", "0", str, "100%");
-
     widget_use_style(down, "scroll_right");
-    widget_set_self_layout_params(down, "right", "0", str, "100%");
   } else {
-    tk_snprintf(str, sizeof(str) - 1, "%d", (int)(widget->w));
-
     widget_use_style(up, "scroll_up");
-    widget_set_self_layout_params(up, "0", "0", "100%", str);
-
     widget_use_style(down, "scroll_down");
-    widget_set_self_layout_params(down, "0", "bottom", "100%", str);
   }
 
   scroll_bar->dragger = dragger;
