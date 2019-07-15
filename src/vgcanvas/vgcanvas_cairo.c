@@ -51,10 +51,10 @@ typedef struct _vgcanvas_cairo_t {
 } vgcanvas_cairo_t;
 
 typedef struct _vg_cairo_cache_t {
-	void* fb_data;
+  void* fb_data;
   cairo_t* vg;
-	cairo_surface_t* surface;
-}vg_cairo_cache_t;
+  cairo_surface_t* surface;
+} vg_cairo_cache_t;
 
 static darray_t vg_cairo_cache;
 
@@ -740,30 +740,25 @@ static ret_t vgcanvas_cairo_reinit(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h,
 
   tmp.fb_data = data;
   vg_cache = darray_find(&vg_cairo_cache, &tmp);
-  if(vg_cache == NULL)
-  {
+  if (vg_cache == NULL) {
     vg_cache = (vg_cairo_cache_t*)TKMEM_ZALLOC(vg_cairo_cache_t);
     vg_cache->surface = create_surface(w, h, format, data);
-    if(vg_cache->surface != NULL)
-    {
+    if (vg_cache->surface != NULL) {
       vg_cache->vg = cairo_create(vg_cache->surface);
     }
-    
-    if(vg_cache->vg == NULL)
-    {
-      if (vg_cache->surface != NULL)
-      {
+
+    if (vg_cache->vg == NULL) {
+      if (vg_cache->surface != NULL) {
         cairo_surface_destroy(vg_cache->surface);
       }
       TKMEM_FREE(vg_cache);
       return RET_OOM;
     }
-      
-    if (vg_cairo_cache.size >= VG_CAIRO_CACHE_MAX_NUMBER)
-    {
+
+    if (vg_cairo_cache.size >= VG_CAIRO_CACHE_MAX_NUMBER) {
       darray_remove_index(&vg_cairo_cache, random() % vg_cairo_cache.size);
     }
-	  vg_cache->fb_data = data;
+    vg_cache->fb_data = data;
     darray_push(&vg_cairo_cache, vg_cache);
   }
 
@@ -855,26 +850,21 @@ static int cairo_bitmap_cmp(const bitmap_t* a, bitmap_t* b) {
   }
 }
 
-static int vg_cairo_cache_cmp(const vg_cairo_cache_t* a, const vg_cairo_cache_t* b)
-{
-  if(a->fb_data == b->fb_data)
-  {
+static int vg_cairo_cache_cmp(const vg_cairo_cache_t* a, const vg_cairo_cache_t* b) {
+  if (a->fb_data == b->fb_data) {
     return 0;
   }
   return 1;
 }
 
-static ret_t vg_cairo_cache_destroy(vg_cairo_cache_t* cache)
-{
-  if (cache->vg != NULL)
-  {
+static ret_t vg_cairo_cache_destroy(vg_cairo_cache_t* cache) {
+  if (cache->vg != NULL) {
     cairo_destroy(cache->vg);
-	cache->vg = NULL;
+    cache->vg = NULL;
   }
-  if (cache->surface != NULL)
-  {
+  if (cache->surface != NULL) {
     cairo_surface_destroy(cache->surface);
-	cache->surface = NULL;
+    cache->surface = NULL;
   }
   TKMEM_FREE(cache);
   return RET_OK;
@@ -902,7 +892,8 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_form
   darray_init(&(cairo->images), 10, (tk_destroy_t)bitmap_destroy, (tk_compare_t)cairo_bitmap_cmp);
   vgcanvas_set_global_alpha((vgcanvas_t*)cairo, 1);
 
-  darray_init(&vg_cairo_cache, VG_CAIRO_CACHE_MAX_NUMBER, (tk_destroy_t)vg_cairo_cache_destroy, (tk_compare_t)vg_cairo_cache_cmp);
+  darray_init(&vg_cairo_cache, VG_CAIRO_CACHE_MAX_NUMBER, (tk_destroy_t)vg_cairo_cache_destroy,
+              (tk_compare_t)vg_cairo_cache_cmp);
 
   vg_cache = (vg_cairo_cache_t*)TKMEM_ZALLOC(vg_cairo_cache_t);
   vg_cache->fb_data = data;

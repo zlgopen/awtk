@@ -1,4 +1,5 @@
-﻿#include "font_dummy.h"
+﻿#include "tkc/utils.h"
+#include "font_dummy.h"
 
 static glyph_t s_glyph_0;
 static glyph_t s_glyph_1;

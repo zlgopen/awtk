@@ -1020,8 +1020,8 @@ static EvalResult parse_expr(EvalContext* ctx, ExprValue* output) {
   result = parse_logic(ctx, output);
 
   if (ctx->token.type == EVAL_TOKEN_TYPE_QUESTION) {
-    ExprValue v1 = {EXPR_VALUE_TYPE_NONE, 0};
-    ExprValue v2 = {EXPR_VALUE_TYPE_NONE, 0};
+    ExprValue v1;
+    ExprValue v2;
     expr_value_init(&v1);
     expr_value_init(&v2);
 

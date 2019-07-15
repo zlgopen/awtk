@@ -19,6 +19,7 @@
  *
  */
 
+#include "tkc/utils.h"
 #include "base/types_def.h"
 
 #ifdef WITH_STB_FONT
