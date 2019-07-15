@@ -61,7 +61,7 @@ _cairo_surface_snapshot_get_target (cairo_surface_t *surface)
 static inline cairo_bool_t
 _cairo_surface_is_snapshot (cairo_surface_t *surface)
 {
-    return surface->backend->type == (cairo_surface_type_t)CAIRO_INTERNAL_SURFACE_TYPE_SNAPSHOT;
+    return (int)surface->backend->type == (int)CAIRO_INTERNAL_SURFACE_TYPE_SNAPSHOT;
 }
 
 #endif /* CAIRO_SURFACE_SNAPSHOT_INLINE_H */

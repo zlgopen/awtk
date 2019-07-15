@@ -28,6 +28,8 @@
 #include "tkc/mem.h"
 #include "tkc/darray.h"
 
+#define VG_CAIRO_CACHE_MAX_NUMBER 5
+
 typedef enum _cairo_source_type_t {
   CAIRO_SOURCE_NONE = 0,
   CAIRO_SOURCE_COLOR,
@@ -47,6 +49,14 @@ typedef struct _vgcanvas_cairo_t {
 
   darray_t images;
 } vgcanvas_cairo_t;
+
+typedef struct _vg_cairo_cache_t {
+	void* fb_data;
+  cairo_t* vg;
+	cairo_surface_t* surface;
+}vg_cairo_cache_t;
+
+static darray_t vg_cairo_cache;
 
 ret_t vgcanvas_cairo_begin_frame(vgcanvas_t* vgcanvas, rect_t* dirty_rect) {
   rect_t* r = dirty_rect;
@@ -610,10 +620,6 @@ static ret_t vgcanvas_cairo_unbind_fbo(vgcanvas_t* vgcanvas, framebuffer_object_
 static ret_t vgcanvas_cairo_destroy(vgcanvas_t* vgcanvas) {
   vgcanvas_cairo_t* canvas = (vgcanvas_cairo_t*)vgcanvas;
 
-  if (canvas->vg != NULL) {
-    cairo_destroy(canvas->vg);
-  }
-
   if (canvas->stroke_gradient != NULL) {
     cairo_pattern_destroy(canvas->stroke_gradient);
   }
@@ -623,7 +629,8 @@ static ret_t vgcanvas_cairo_destroy(vgcanvas_t* vgcanvas) {
   }
 
   darray_deinit(&(canvas->images));
-
+  darray_deinit(&vg_cairo_cache);
+  TKMEM_FREE(canvas);
   return RET_OK;
 }
 
@@ -721,7 +728,8 @@ static ret_t vgcanvas_cairo_set_fill_linear_gradient(vgcanvas_t* vgcanvas, float
 
 static ret_t vgcanvas_cairo_reinit(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h, uint32_t stride,
                                    bitmap_format_t format, void* data) {
-  cairo_surface_t* surface = NULL;
+  vg_cairo_cache_t tmp;
+  vg_cairo_cache_t* vg_cache = NULL;
   vgcanvas_cairo_t* canvas = (vgcanvas_cairo_t*)vgcanvas;
 
   vgcanvas->w = w;
@@ -730,11 +738,36 @@ static ret_t vgcanvas_cairo_reinit(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h,
   vgcanvas->format = format;
   vgcanvas->buff = (uint32_t*)data;
 
-  surface = create_surface(w, h, format, data);
-  return_value_if_fail(surface != NULL, RET_OOM);
+  tmp.fb_data = data;
+  vg_cache = darray_find(&vg_cairo_cache, &tmp);
+  if(vg_cache == NULL)
+  {
+    vg_cache = (vg_cairo_cache_t*)TKMEM_ZALLOC(vg_cairo_cache_t);
+    vg_cache->surface = create_surface(w, h, format, data);
+    if(vg_cache->surface != NULL)
+    {
+      vg_cache->vg = cairo_create(vg_cache->surface);
+    }
+    
+    if(vg_cache->vg == NULL)
+    {
+      if (vg_cache->surface != NULL)
+      {
+        cairo_surface_destroy(vg_cache->surface);
+      }
+      TKMEM_FREE(vg_cache);
+      return RET_OOM;
+    }
+      
+    if (vg_cairo_cache.size >= VG_CAIRO_CACHE_MAX_NUMBER)
+    {
+      darray_remove_index(&vg_cairo_cache, random() % vg_cairo_cache.size);
+    }
+	  vg_cache->fb_data = data;
+    darray_push(&vg_cairo_cache, vg_cache);
+  }
 
-  cairo_destroy(canvas->vg);
-  canvas->vg = cairo_create(surface);
+  canvas->vg = vg_cache->vg;
   return_value_if_fail(canvas->vg, RET_OOM);
 
   log_debug("resize to w=%u h=%u format=%d\n", w, h, format);
@@ -822,9 +855,35 @@ static int cairo_bitmap_cmp(const bitmap_t* a, bitmap_t* b) {
   }
 }
 
+static int vg_cairo_cache_cmp(const vg_cairo_cache_t* a, const vg_cairo_cache_t* b)
+{
+  if(a->fb_data == b->fb_data)
+  {
+    return 0;
+  }
+  return 1;
+}
+
+static ret_t vg_cairo_cache_destroy(vg_cairo_cache_t* cache)
+{
+  if (cache->vg != NULL)
+  {
+    cairo_destroy(cache->vg);
+	cache->vg = NULL;
+  }
+  if (cache->surface != NULL)
+  {
+    cairo_surface_destroy(cache->surface);
+	cache->surface = NULL;
+  }
+  TKMEM_FREE(cache);
+  return RET_OK;
+}
+
 vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_format_t format,
                             void* data) {
   cairo_surface_t* surface = NULL;
+  vg_cairo_cache_t* vg_cache = NULL;
   vgcanvas_cairo_t* cairo = (vgcanvas_cairo_t*)TKMEM_ZALLOC(vgcanvas_cairo_t);
   return_value_if_fail(cairo != NULL, NULL);
 
@@ -842,6 +901,14 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_form
   return_value_if_fail(cairo->vg, NULL);
   darray_init(&(cairo->images), 10, (tk_destroy_t)bitmap_destroy, (tk_compare_t)cairo_bitmap_cmp);
   vgcanvas_set_global_alpha((vgcanvas_t*)cairo, 1);
+
+  darray_init(&vg_cairo_cache, VG_CAIRO_CACHE_MAX_NUMBER, (tk_destroy_t)vg_cairo_cache_destroy, (tk_compare_t)vg_cairo_cache_cmp);
+
+  vg_cache = (vg_cairo_cache_t*)TKMEM_ZALLOC(vg_cairo_cache_t);
+  vg_cache->fb_data = data;
+  vg_cache->vg = cairo->vg;
+  vg_cache->surface = surface;
+  darray_push(&vg_cairo_cache, vg_cache);
 
   log_debug("vgcanvas_cairo created\n");
   return &(cairo->base);
