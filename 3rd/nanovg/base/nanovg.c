@@ -701,12 +701,20 @@ void nvgLineCap(NVGcontext* ctx, int cap)
 {
 	NVGstate* state = nvg__getState(ctx);
 	state->lineCap = cap;
+	if(ctx->params.setLineJoin != NULL)
+	{
+		ctx->params.setLineCap(ctx->params.userPtr, cap);
+	}
 }
 
 void nvgLineJoin(NVGcontext* ctx, int join)
 {
 	NVGstate* state = nvg__getState(ctx);
 	state->lineJoin = join;
+	if(ctx->params.setLineJoin != NULL)
+	{
+		ctx->params.setLineJoin(ctx->params.userPtr, join);
+	}
 }
 
 void nvgGlobalAlpha(NVGcontext* ctx, float alpha)

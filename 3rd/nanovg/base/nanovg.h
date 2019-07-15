@@ -653,6 +653,10 @@ typedef struct NVGpath NVGpath;
 struct NVGparams {
 	void* userPtr;
 	int edgeAntiAlias;
+
+	void (*setLineCap)(void* uptr, int lineCap);
+	void (*setLineJoin)(void* uptr, int lineJoin);
+
 	int (*renderCreate)(void* uptr);
 	int (*renderCreateTexture)(void* uptr, int type, int w, int h, int imageFlags, const unsigned char* data);
 	int (*renderDeleteTexture)(void* uptr, int image);

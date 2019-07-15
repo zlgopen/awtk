@@ -85,6 +85,28 @@ static int aggenvg__maxi(int a, int b) {
   return a > b ? a : b;
 }
 
+static void aggenvg__setLineJoin(void* uptr, int lineCap)
+{
+    AGGENVGcontext* agge = (AGGENVGcontext*)uptr;
+    if(lineCap == NVG_MITER)
+      agge->line_style.set_join(agge::joins::miter());
+    else if(lineCap == NVG_ROUND)
+      agge->line_style.set_join(agge::joins::round());
+    else if(lineCap == NVG_BEVEL)
+      agge->line_style.set_join(agge::joins::bevel());
+}
+
+static void aggenvg__setLineCap(void* uptr, int lineCap)
+{
+    AGGENVGcontext* agge = (AGGENVGcontext*)uptr;
+    if(lineCap == NVG_BUTT)
+      agge->line_style.set_cap(agge::caps::butt());
+    else if(lineCap == NVG_ROUND)
+      agge->line_style.set_cap(agge::caps::round());
+    else if(lineCap == NVG_SQUARE)
+      agge->line_style.set_cap(agge::caps::square());
+}
+
 static AGGENVGtexture* aggenvg__allocTexture(AGGENVGcontext* agge) {
   int i;
   AGGENVGtexture* tex = NULL;
@@ -331,6 +353,7 @@ template <typename PixelT>
 void renderStroke(void* uptr, NVGpaint* paint, NVGcompositeOperationState compositeOperation,
                   NVGscissor* scissor, float fringe, float strokeWidth, const NVGpath* paths,
                   int npaths) {
+  if(paths->count <= 0) return; 
   AGGENVGcontext* agge = (AGGENVGcontext*)uptr;
   agge::stroke& line_style = agge->line_style;
   agge::rasterizer<agge::clipper<int> >& ras = agge->ras;
@@ -426,6 +449,8 @@ NVGcontext* nvgCreateAGGE(uint32_t w, uint32_t h, uint32_t stride, enum NVGtextu
   if (agge == NULL) goto error;
 
   memset(&params, 0, sizeof(params));
+  params.setLineJoin = aggenvg__setLineJoin;
+  params.setLineCap = aggenvg__setLineCap;
   params.renderCreate = aggenvg__renderCreate;
   params.renderCreateTexture = aggenvg__renderCreateTexture;
   params.renderDeleteTexture = aggenvg__renderDeleteTexture;
