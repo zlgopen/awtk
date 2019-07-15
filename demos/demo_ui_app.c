@@ -374,6 +374,24 @@ static ret_t on_clone_self(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t on_clone_tab(void* ctx, event_t* e) {
+  char text[32];
+  widget_t* widget = WIDGET(ctx);
+  widget_t* button = widget_lookup(widget, "clone_button", TRUE);
+  widget_t* view = widget_lookup(widget, "clone_view", TRUE);
+  widget_t* new_button = widget_clone(button, button->parent);
+
+  widget_t* new_view = widget_clone(view, view->parent);
+  tk_snprintf(text, sizeof(text), "Clone(%d)", widget_index_of(new_button));
+  widget_set_text_utf8(new_button, text);
+  widget_set_value(new_button, TRUE);
+
+  widget_child_on(new_view, "clone_tab", EVT_CLICK, on_clone_tab, widget_get_window(widget));
+  widget_set_text_utf8(widget_lookup_by_type(new_view, WIDGET_TYPE_LABEL, TRUE), text);
+
+  return RET_OK;
+}
+
 static ret_t on_show_fps(void* ctx, event_t* e) {
   widget_t* button = WIDGET(ctx);
   widget_t* widget = window_manager();
@@ -487,6 +505,9 @@ static ret_t install_one(void* ctx, const void* iter) {
       widget_on(widget, EVT_CLICK, on_show_fps, widget);
     } else if (tk_str_eq(name, "clone_self")) {
       widget_on(widget, EVT_CLICK, on_clone_self, widget);
+    } else if (tk_str_eq(name, "clone_tab")) {
+      widget_t* win = widget_get_window(widget);
+      widget_on(widget, EVT_CLICK, on_clone_tab, win);
     } else if (tk_str_eq(name, "remove_self")) {
       widget_on(widget, EVT_CLICK, on_remove_self, widget);
     } else if (tk_str_eq(name, "chinese")) {
