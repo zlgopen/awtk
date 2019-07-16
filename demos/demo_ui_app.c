@@ -22,6 +22,8 @@
 #include "awtk.h"
 #include "ext_widgets.h"
 
+static ret_t on_clone_tab(void* ctx, event_t* e);
+static ret_t widget_clone_tab(widget_t* widget) ;
 static void install_click_hander(widget_t* widget);
 
 uint32_t tk_mem_speed_test(void* buffer, uint32_t length, uint32_t* pmemcpy_speed,
@@ -89,6 +91,13 @@ static void open_window(const char* name, widget_t* to_close) {
   widget_on(win, EVT_WINDOW_TO_FOREGROUND, window_to_foreground, win);
 
   install_click_hander(win);
+
+  if(tk_str_eq(name, "tab_scrollable")) {
+    widget_clone_tab(win);
+    widget_clone_tab(win);
+    widget_clone_tab(win);
+    widget_clone_tab(win);
+  }
 
   if (tk_str_eq(widget_get_type(win), WIDGET_TYPE_DIALOG)) {
     int32_t ret = dialog_modal(win);
@@ -374,9 +383,8 @@ static ret_t on_clone_self(void* ctx, event_t* e) {
   return RET_OK;
 }
 
-static ret_t on_clone_tab(void* ctx, event_t* e) {
+static ret_t widget_clone_tab(widget_t* widget) {
   char text[32];
-  widget_t* widget = WIDGET(ctx);
   widget_t* button = widget_lookup(widget, "clone_button", TRUE);
   widget_t* view = widget_lookup(widget, "clone_view", TRUE);
   widget_t* new_button = widget_clone(button, button->parent);
@@ -390,6 +398,10 @@ static ret_t on_clone_tab(void* ctx, event_t* e) {
   widget_set_text_utf8(widget_lookup_by_type(new_view, WIDGET_TYPE_LABEL, TRUE), text);
 
   return RET_OK;
+}
+
+static ret_t on_clone_tab(void* ctx, event_t* e) {
+  return widget_clone_tab(WIDGET(ctx));
 }
 
 static ret_t on_show_fps(void* ctx, event_t* e) {

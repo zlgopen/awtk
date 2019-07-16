@@ -30,13 +30,20 @@ ret_t pages_set_active(widget_t* widget, uint32_t index) {
   return_value_if_fail(pages != NULL, RET_BAD_PARAMS);
 
   if (pages->active != index) {
+    widget_t* active = NULL;
     event_t evt = event_init(EVT_VALUE_WILL_CHANGE, widget);
     widget_dispatch(widget, &evt);
     pages->active = index;
     evt = event_init(EVT_VALUE_CHANGED, widget);
     widget_dispatch(widget, &evt);
     widget_invalidate(widget, NULL);
-    widget_set_as_key_target(widget_get_child(widget, pages->active));
+
+    if (index < widget_count_children(widget)) {
+      active = widget_get_child(widget, pages->active);
+      if (active != NULL) {
+        widget_set_as_key_target(active);
+      }
+    }
   }
 
   return RET_OK;

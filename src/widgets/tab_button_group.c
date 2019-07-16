@@ -52,6 +52,7 @@ static ret_t tab_button_group_on_layout_children_compact(widget_t* widget) {
   int32_t y = 0;
   int32_t w = 0;
   int32_t h = widget->h;
+  widget_t* active = NULL;
   tab_button_group_t* tab_button_group = TAB_BUTTON_GROUP(widget);
 
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
@@ -65,11 +66,18 @@ static ret_t tab_button_group_on_layout_children_compact(widget_t* widget) {
   widget_move_resize(iter, x, y, w, h);
   widget_layout_children(iter);
   x += w;
+  if (widget_get_value(iter)) {
+    active = iter;
+  }
   WIDGET_FOR_EACH_CHILD_END();
 
   hscrollable_set_xoffset(tab_button_group->hscrollable, 0);
   hscrollable_set_virtual_w(tab_button_group->hscrollable, x - 1);
   hscrollable_set_always_scrollable(tab_button_group->hscrollable, FALSE);
+
+  if (active != NULL) {
+    widget_ensure_visible_in_viewport(active);
+  }
 
   return RET_OK;
 }
