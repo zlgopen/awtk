@@ -485,6 +485,12 @@
   <style name="default">
     <normal  bg_image="switch" />
   </style>
+  <style name="rounded">
+    <normal  bg_image="switch" round_radius="11"/>
+  </style>
+  <style name="no_image">
+    <normal  bg_color="#828282" selected_bg_color="#338fff" fg_color="#ffffff" round_radius="11"/>
+  </style>
 </switch>
 
 <slide_indicator>

@@ -74,6 +74,7 @@ static ret_t switch_scroll_to(widget_t* widget, int32_t xoffset_end) {
 
   xoffset = aswitch->xoffset;
   if (xoffset == xoffset_end) {
+    switch_set_value(widget, aswitch->xoffset == 0);
     return RET_OK;
   }
 
@@ -162,6 +163,44 @@ static ret_t switch_on_event(widget_t* widget, event_t* e) {
   return RET_OK;
 }
 
+ret_t switch_fill_rect_color(widget_t* widget, canvas_t* c, rect_t* r, bool_t bg) {
+  style_t* style = widget->astyle;
+  switch_t* aswitch = SWITCH(widget);
+  color_t trans = color_init(0, 0, 0, 0);
+  uint32_t radius = style_get_int(style, STYLE_ID_ROUND_RADIUS, 0);
+  const char* color_key = bg ? (aswitch->value ? STYLE_ID_SELECTED_BG_COLOR : STYLE_ID_BG_COLOR)
+                             : (aswitch->value ? STYLE_ID_SELECTED_FG_COLOR : STYLE_ID_FG_COLOR);
+
+  color_t color = style_get_color(style, color_key, trans);
+
+  if (color.rgba.a == 0 && aswitch->value) {
+    color_key = bg ? STYLE_ID_BG_COLOR : STYLE_ID_FG_COLOR;
+    color = style_get_color(style, color_key, trans);
+  }
+
+  if (color.rgba.a && r->w > 0 && r->h > 0) {
+    canvas_set_fill_color(c, color);
+    if (radius > 3) {
+      vgcanvas_t* vg = canvas_get_vgcanvas(c);
+      if (vg != NULL) {
+        xy_t x = r->x + 0.5;
+        xy_t y = r->y + 0.5;
+        vgcanvas_set_fill_color(vg, color);
+        vgcanvas_translate(vg, c->ox, c->oy);
+        vgcanvas_rounded_rect(vg, x, y, r->w, r->h, radius);
+        vgcanvas_translate(vg, -c->ox, -c->oy);
+        vgcanvas_fill(vg);
+      } else {
+        canvas_fill_rect(c, r->x, r->y, r->w, r->h);
+      }
+    } else {
+      canvas_fill_rect(c, r->x, r->y, r->w, r->h);
+    }
+  }
+
+  return RET_OK;
+}
+
 static ret_t switch_on_paint_background_img(widget_t* widget, canvas_t* c, bitmap_t* img) {
   int32_t w = 0;
   int32_t h = 0;
@@ -181,7 +220,7 @@ static ret_t switch_on_paint_background_img(widget_t* widget, canvas_t* c, bitma
   wscale = (float_t)(widget->w) / (float_t)iw;
   hscale = (float_t)(widget->h) / (float_t)ih;
   xoffset = (float_t)(aswitch->xoffset) / wscale;
-  round_radius = aswitch->round_radius / hscale;
+  round_radius = style_get_int(widget->astyle, STYLE_ID_ROUND_RADIUS, 0) / hscale;
 
   h = ih;
   w = iw * (1 - aswitch->max_xoffset_ratio);
@@ -215,19 +254,74 @@ static ret_t switch_on_paint_background_img(widget_t* widget, canvas_t* c, bitma
 static ret_t switch_on_paint_background(widget_t* widget, canvas_t* c) {
   style_t* style = NULL;
   const char* image_name = NULL;
-  return_value_if_fail(widget != NULL && widget->astyle != NULL, RET_BAD_PARAMS);
+  switch_t* aswitch = SWITCH(widget);
+  return_value_if_fail(aswitch != NULL && widget->astyle != NULL, RET_BAD_PARAMS);
 
   style = widget->astyle;
-  image_name = style_get_str(style, STYLE_ID_BG_IMAGE, "switch");
+  image_name = style_get_str(style, STYLE_ID_BG_IMAGE, NULL);
 
   if (image_name != NULL) {
     bitmap_t img;
     if (widget_load_image(widget, image_name, &img) == RET_OK) {
       return switch_on_paint_background_img(widget, c, &img);
     }
+  } else {
+    int32_t w = tk_roundi(widget->w * 1.5 * (1 - aswitch->max_xoffset_ratio));
+    rect_t r = rect_init((widget->w - w) / 2.0f, 0, w, widget->h);
+    return switch_fill_rect_color(widget, c, &r, TRUE);
   }
 
   return RET_FAIL;
+}
+
+static ret_t switch_on_paint_self(widget_t* widget, canvas_t* c) {
+  float_t xoffset, xoffset_ratio;
+  int32_t max_xoffset;
+  int32_t bar_size;
+  int32_t w;
+  rect_t r = rect_init(0, 0, 0, 0);
+  int32_t margin = 0;
+  int32_t margin_left = 0;
+  int32_t margin_right = 0;
+  int32_t margin_top = 0;
+  int32_t margin_bottom = 0;
+  style_t* style = NULL;
+  const char* image_name = NULL;
+  const char* image_key = NULL;
+  switch_t* aswitch = SWITCH(widget);
+  return_value_if_fail(aswitch != NULL && widget->astyle != NULL, RET_BAD_PARAMS);
+
+  style = widget->astyle;
+  image_key = STYLE_ID_FG_IMAGE;
+  image_name = style_get_str(style, image_key, NULL);
+  margin = style_get_int(style, STYLE_ID_MARGIN, 0);
+  margin_top = style_get_int(style, STYLE_ID_MARGIN_TOP, margin);
+  margin_left = style_get_int(style, STYLE_ID_MARGIN_LEFT, margin);
+  margin_right = style_get_int(style, STYLE_ID_MARGIN_RIGHT, margin);
+  margin_bottom = style_get_int(style, STYLE_ID_MARGIN_BOTTOM, margin);
+
+  w = tk_roundi(widget->w * 1.5 * (1 - aswitch->max_xoffset_ratio));
+  bar_size = tk_roundi(w / 2);
+  max_xoffset = aswitch->max_xoffset_ratio * widget->w;
+  xoffset_ratio = (float_t)(w - bar_size) / max_xoffset;
+  xoffset = (float_t)(aswitch->xoffset) * xoffset_ratio;
+  r.x = widget->w / 2.0 - xoffset + margin_left;
+  r.y = margin_top;
+  r.w = bar_size - margin_left - margin_right;
+  r.h = widget->h - margin_top - margin_bottom;
+
+  if (image_name == NULL) {
+    switch_fill_rect_color(widget, c, &r, FALSE);
+  } else {
+    bitmap_t img;
+    if (widget_load_image(widget, image_name, &img) == RET_OK) {
+      image_draw_type_t draw_type =
+          (image_draw_type_t)style_get_int(style, STYLE_ID_FG_IMAGE_DRAW_TYPE, IMAGE_DRAW_CENTER);
+      canvas_draw_image_ex(c, &img, draw_type, &r);
+    }
+  }
+
+  return RET_OK;
 }
 
 ret_t switch_set_value(widget_t* widget, bool_t value) {
@@ -266,9 +360,6 @@ static ret_t switch_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_XOFFSET)) {
     value_set_int(v, aswitch->xoffset);
     return RET_OK;
-  } else if (tk_str_eq(name, SWITCH_PROP_ROUND_RADIUS)) {
-    value_set_int(v, aswitch->round_radius);
-    return RET_OK;
   } else if (tk_str_eq(name, SWITCH_PROP_MAX_XOFFSET_RATIO)) {
     value_set_float(v, aswitch->max_xoffset_ratio);
     return RET_OK;
@@ -288,9 +379,6 @@ static ret_t switch_set_prop(widget_t* widget, const char* name, const value_t* 
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_YOFFSET)) {
     return RET_OK;
-  } else if (tk_str_eq(name, SWITCH_PROP_ROUND_RADIUS)) {
-    aswitch->round_radius = value_int(v);
-    return RET_OK;
   } else if (tk_str_eq(name, SWITCH_PROP_MAX_XOFFSET_RATIO)) {
     aswitch->max_xoffset_ratio = value_float(v);
     return RET_OK;
@@ -300,8 +388,7 @@ static ret_t switch_set_prop(widget_t* widget, const char* name, const value_t* 
 }
 
 static const char* s_switch_properties[] = {WIDGET_PROP_VALUE, WIDGET_PROP_XOFFSET,
-                                            SWITCH_PROP_ROUND_RADIUS, SWITCH_PROP_MAX_XOFFSET_RATIO,
-                                            NULL};
+                                            SWITCH_PROP_MAX_XOFFSET_RATIO, NULL};
 
 TK_DECL_VTABLE(switch) = {
     .inputable = TRUE,
@@ -313,6 +400,7 @@ TK_DECL_VTABLE(switch) = {
     .create = switch_create,
     .on_event = switch_on_event,
     .on_paint_background = switch_on_paint_background,
+    .on_paint_self = switch_on_paint_self,
     .get_prop = switch_get_prop,
     .set_prop = switch_set_prop,
 };
@@ -323,7 +411,6 @@ widget_t* switch_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   return_value_if_fail(aswitch != NULL, NULL);
 
   aswitch->value = TRUE;
-  aswitch->round_radius = 0;
   aswitch->max_xoffset_ratio = 0.34f;
 
   return widget;

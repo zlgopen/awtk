@@ -1,6 +1,7 @@
 <window anim_hint="htranslate">
   <switch x="10" y="60" w="60" h="22" />
-  <switch x="200" y="60" w="60" h="22" round_radius="10" />
+  <switch x="200" y="60" w="60" h="22" style="rounded"/>
+  <switch x="20" y="120" w="44" h="22" style="no_image"/>
 
   <button name="close" x="center" y="middle" w="50%" h="30" text="close"/>
 </window>

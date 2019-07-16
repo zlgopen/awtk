@@ -83,13 +83,6 @@ typedef struct _switch_t {
    */
   float_t max_xoffset_ratio;
 
-  /**
-   * @property {int32_t} round_radius
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 图片的圆角半径。
-   */
-  int32_t round_radius;
-
   /*private*/
   int32_t xdown;
   int32_t xoffset;
@@ -144,7 +137,6 @@ ret_t switch_set_value(widget_t* widget, bool_t value);
  */
 widget_t* switch_cast(widget_t* widget);
 
-#define SWITCH_PROP_ROUND_RADIUS "round_radius"
 #define SWITCH_PROP_MAX_XOFFSET_RATIO "max_xoffset_ratio"
 
 #define WIDGET_TYPE_SWITCH "switch"

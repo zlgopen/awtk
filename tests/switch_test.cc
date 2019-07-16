@@ -22,11 +22,6 @@ TEST(Switch, basic) {
   ASSERT_EQ(widget_get_prop(w, WIDGET_PROP_VALUE, &v2), RET_OK);
   ASSERT_EQ(value_bool(&v1), value_bool(&v2));
 
-  value_set_int(&v1, 10);
-  ASSERT_EQ(widget_set_prop(w, SWITCH_PROP_ROUND_RADIUS, &v1), RET_OK);
-  ASSERT_EQ(widget_get_prop(w, SWITCH_PROP_ROUND_RADIUS, &v2), RET_OK);
-  ASSERT_EQ(value_int(&v1), value_int(&v2));
-
   value_set_float(&v1, 0.4);
   ASSERT_EQ(widget_set_prop(w, SWITCH_PROP_MAX_XOFFSET_RATIO, &v1), RET_OK);
   ASSERT_EQ(widget_get_prop(w, SWITCH_PROP_MAX_XOFFSET_RATIO, &v2), RET_OK);
