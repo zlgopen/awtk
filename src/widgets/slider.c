@@ -61,6 +61,7 @@ static ret_t slider_paint_dragger(widget_t* widget, canvas_t* c) {
   rect_t r;
   bitmap_t img;
   color_t color;
+  float_t ratio = c->lcd->ratio;
   const char* image_name = NULL;
   style_t* style = widget->astyle;
   color_t trans = color_init(0, 0, 0, 0);
@@ -74,9 +75,9 @@ static ret_t slider_paint_dragger(widget_t* widget, canvas_t* c) {
   } else {
     image_name = style_get_str(style, STYLE_ID_ICON, NULL);
     if (image_name && image_manager_get_bitmap(image_manager(), image_name, &img) == RET_OK) {
-      r = rect_init(0, 0, img.w, img.h);
+      r = rect_init(0, 0, img.w/ratio, img.h/ratio);
       slider_get_dragger_rect(widget, &r);
-      canvas_draw_image_ex(c, &img, IMAGE_DRAW_CENTER, &r);
+      canvas_draw_image_ex(c, &img, IMAGE_DRAW_ICON, &r);
     }
   }
 
