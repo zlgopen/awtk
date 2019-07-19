@@ -24,18 +24,42 @@
 
 static widget_animator_manager_t* s_animator_manager;
 
+static ret_t widget_animator_manager_set_to_dispatch(widget_animator_manager_t* am) {
+  widget_animator_t* iter = am->first;
+
+  while (iter != NULL) {
+    iter->to_dispatch = TRUE;
+    iter = iter->next;
+  }
+
+  return RET_OK;
+}
+
+static widget_animator_t* widget_animator_manager_get_to_dispatch(widget_animator_manager_t* am) {
+  widget_animator_t* iter = am->first;
+
+  while (iter != NULL) {
+    if (iter->to_dispatch) {
+      return iter;
+    }
+    iter = iter->next;
+  }
+
+  return NULL;
+}
+
 ret_t widget_animator_manager_time_elapse(widget_animator_manager_t* am, uint32_t delta_time) {
   widget_animator_t* iter = NULL;
   return_value_if_fail(am != NULL, RET_BAD_PARAMS);
 
   delta_time = delta_time * am->time_scale;
+  widget_animator_manager_set_to_dispatch(am);
 
-  iter = am->first;
+  iter = widget_animator_manager_get_to_dispatch(am);
   while (iter != NULL) {
-    widget_animator_t* next = iter->next;
-
+    iter->to_dispatch = FALSE;
     widget_animator_time_elapse(iter, delta_time);
-    iter = next;
+    iter = widget_animator_manager_get_to_dispatch(am);
   }
 
   return RET_OK;

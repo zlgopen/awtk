@@ -170,6 +170,7 @@ struct _widget_animator_t {
   widget_animator_destroy_t destroy;
 
   /*private*/
+  bool_t to_dispatch;
   struct _widget_animator_t* next;
   widget_animator_manager_t* widget_animator_manager;
 };
