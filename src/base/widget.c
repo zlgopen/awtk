@@ -55,18 +55,19 @@ static bool_t widget_is_scrollable(widget_t* widget) {
   return widget != NULL && widget->vt != NULL && widget->vt->scrollable;
 }
 
-static bool_t widget_is_focusable(widget_t* widget) {
+static bool_t widget_with_focus_state(widget_t* widget) {
   value_t v;
   return_value_if_fail(widget != NULL && widget->vt != NULL, FALSE);
+  value_set_bool(&v, FALSE);
+  widget_get_prop(widget, WIDGET_PROP_WITH_FOCUS_STATE, &v);
 
-  if (widget->vt->focusable) {
-    return TRUE;
-  } else {
-    value_set_bool(&v, FALSE);
-    widget_get_prop(widget, WIDGET_PROP_FOCUSABLE, &v);
+  return value_bool(&v);
+}
 
-    return value_bool(&v);
-  }
+static bool_t widget_is_focusable(widget_t* widget) {
+  return_value_if_fail(widget != NULL && widget->vt != NULL, FALSE);
+
+  return widget->focusable || widget->vt->focusable;
 }
 
 ret_t widget_move(widget_t* widget, xy_t x, xy_t y) {
@@ -457,7 +458,7 @@ const char* widget_get_state_for_style(widget_t* widget, bool_t active, bool_t c
     return WIDGET_STATE_DISABLE;
   }
 
-  if (widget_is_focusable(widget)) {
+  if (widget_is_focusable(widget) || widget_with_focus_state(widget)) {
     if (widget->focused) {
       if (tk_str_eq(state, WIDGET_STATE_NORMAL)) {
         state = WIDGET_STATE_FOCUSED;
@@ -1141,6 +1142,10 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
     widget->sensitive = value_bool(v);
   } else if (tk_str_eq(name, WIDGET_PROP_FLOATING)) {
     widget->floating = value_bool(v);
+  } else if (tk_str_eq(name, WIDGET_PROP_FOCUSABLE)) {
+    widget->focusable = value_bool(v);
+  } else if (tk_str_eq(name, WIDGET_PROP_WITH_FOCUS_STATE)) {
+    widget->with_focus_state = value_bool(v);
   } else if (tk_str_eq(name, WIDGET_PROP_STYLE)) {
     const char* name = value_str(v);
     return widget_use_style(widget, name);
@@ -1213,6 +1218,10 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
     value_set_bool(v, widget->sensitive);
   } else if (tk_str_eq(name, WIDGET_PROP_FLOATING)) {
     value_set_bool(v, widget->floating);
+  } else if (tk_str_eq(name, WIDGET_PROP_FOCUSABLE)) {
+    value_set_bool(v, widget_is_focusable(widget));
+  } else if (tk_str_eq(name, WIDGET_PROP_WITH_FOCUS_STATE)) {
+    value_set_bool(v, widget->with_focus_state);
   } else if (tk_str_eq(name, WIDGET_PROP_STYLE)) {
     value_set_str(v, widget->style);
   } else if (tk_str_eq(name, WIDGET_PROP_ENABLE)) {
@@ -2170,6 +2179,9 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t*
   widget->key_target = NULL;
   widget->grab_widget = NULL;
   widget->grab_widget_count = 0;
+  widget->focused = FALSE;
+  widget->focusable = FALSE;
+  widget->with_focus_state = FALSE;
 
   if (parent) {
     widget_add_child(parent, widget);
@@ -2215,6 +2227,10 @@ ret_t widget_get_prop_default_value(widget_t* widget, const char* name, value_t*
   } else if (tk_str_eq(name, WIDGET_PROP_SENSITIVE)) {
     value_set_bool(v, TRUE);
   } else if (tk_str_eq(name, WIDGET_PROP_FLOATING)) {
+    value_set_bool(v, FALSE);
+  } else if (tk_str_eq(name, WIDGET_PROP_FOCUSABLE)) {
+    value_set_bool(v, FALSE);
+  } else if (tk_str_eq(name, WIDGET_PROP_WITH_FOCUS_STATE)) {
     value_set_bool(v, FALSE);
   } else if (tk_str_eq(name, WIDGET_PROP_STYLE)) {
     value_set_str(v, NULL);
@@ -2338,12 +2354,22 @@ ret_t widget_prepare_text_style(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-static const char* s_widget_persistent_props[] = {
-    WIDGET_PROP_NAME,        WIDGET_PROP_STYLE,     WIDGET_PROP_TR_TEXT,
-    WIDGET_PROP_TEXT,        WIDGET_PROP_ANIMATION, WIDGET_PROP_ENABLE,
-    WIDGET_PROP_VISIBLE,     WIDGET_PROP_FLOATING,  WIDGET_PROP_CHILDREN_LAYOUT,
-    WIDGET_PROP_SELF_LAYOUT, WIDGET_PROP_OPACITY,   WIDGET_PROP_FOCUS,
-    WIDGET_PROP_FOCUSABLE,   WIDGET_PROP_SENSITIVE, NULL};
+static const char* s_widget_persistent_props[] = {WIDGET_PROP_NAME,
+                                                  WIDGET_PROP_STYLE,
+                                                  WIDGET_PROP_TR_TEXT,
+                                                  WIDGET_PROP_TEXT,
+                                                  WIDGET_PROP_ANIMATION,
+                                                  WIDGET_PROP_ENABLE,
+                                                  WIDGET_PROP_VISIBLE,
+                                                  WIDGET_PROP_FLOATING,
+                                                  WIDGET_PROP_CHILDREN_LAYOUT,
+                                                  WIDGET_PROP_SELF_LAYOUT,
+                                                  WIDGET_PROP_OPACITY,
+                                                  WIDGET_PROP_FOCUS,
+                                                  WIDGET_PROP_FOCUSABLE,
+                                                  WIDGET_PROP_WITH_FOCUS_STATE,
+                                                  WIDGET_PROP_SENSITIVE,
+                                                  NULL};
 
 const char** widget_get_persistent_props(void) {
   return s_widget_persistent_props;

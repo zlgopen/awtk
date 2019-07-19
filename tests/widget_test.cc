@@ -1106,3 +1106,13 @@ TEST(Widget, mutable_style1) {
 
   widget_destroy(w);
 }
+
+TEST(Widget, with_focus_state) {
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+
+  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_WITH_FOCUS_STATE, FALSE), FALSE);
+  ASSERT_EQ(widget_set_prop_str(w, WIDGET_PROP_WITH_FOCUS_STATE, "true"), RET_OK);
+  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_WITH_FOCUS_STATE, FALSE), TRUE);
+
+  widget_destroy(w);
+}

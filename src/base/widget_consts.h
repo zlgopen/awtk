@@ -684,6 +684,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_FOCUSABLE "focusable"
 
 /**
+ * @const WIDGET_PROP_WITH_FOCUS_STATE
+ * 是否支持焦点状态(如果希望style支持焦点状态，但有不希望焦点停留，可用本属性)。
+ */
+#define WIDGET_PROP_WITH_FOCUS_STATE "with_focus_state"
+
+/**
  * @const WIDGET_PROP_MOVE_FOCUS_NEXT_KEY
  * 将焦点移到下一个的键值。
  */

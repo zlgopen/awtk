@@ -275,6 +275,7 @@ ret_t widget_animator_destroy(widget_animator_t* animator) {
   if (animator->destroy != NULL) {
     return animator->destroy(animator);
   } else {
+    memset(animator, 0x00, sizeof(widget_animator_t));
     TKMEM_FREE(animator);
   }
 

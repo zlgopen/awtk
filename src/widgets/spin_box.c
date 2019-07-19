@@ -30,6 +30,7 @@ widget_t* spin_box_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
 TK_DECL_VTABLE(spin_box) = {.size = sizeof(spin_box_t),
                             .type = WIDGET_TYPE_SPIN_BOX,
                             .inputable = TRUE,
+                            .focusable = TRUE,
                             .clone_properties = s_edit_properties,
                             .persistent_properties = s_edit_properties,
                             .parent = TK_PARENT_VTABLE(edit),

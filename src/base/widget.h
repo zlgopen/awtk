@@ -292,6 +292,21 @@ struct _widget_t {
    */
   uint8_t sensitive : 1;
   /**
+   * @property {bool_t} focusable
+   * @annotation ["set_prop","get_prop","readable","writable","persitent","design","scriptable"]
+   * 是否支持焦点停留。
+   */
+  uint8_t focusable : 1;
+
+  /**
+   * @property {bool_t} with_focus_state
+   * @annotation ["set_prop","get_prop","readable","writable","persitent","design","scriptable"]
+   * 是否支持焦点状态。
+   * > 如果希望style支持焦点状态，但有不希望焦点停留，可用本属性。
+   */
+  uint8_t with_focus_state : 1;
+
+  /**
    * @property {bool_t} focused
    * @annotation ["readable"]
    * 是否得到焦点。
