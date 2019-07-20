@@ -62,20 +62,8 @@ static ret_t list_view_h_set_prop(widget_t* widget, const char* name, const valu
 }
 
 static ret_t list_view_h_on_event(widget_t* widget, event_t* e) {
-  uint16_t type = e->type;
   list_view_h_t* list_view = LIST_VIEW_H(widget);
   return_value_if_fail(list_view != NULL, RET_BAD_PARAMS);
-
-  switch (type) {
-    case EVT_POINTER_DOWN:
-      widget_layout(list_view->scroll_view);
-      break;
-    case EVT_POINTER_UP:
-      widget_layout(list_view->scroll_view);
-      break;
-    default:
-      break;
-  }
 
   return RET_OK;
 }
