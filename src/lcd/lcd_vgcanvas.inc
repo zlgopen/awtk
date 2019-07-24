@@ -108,7 +108,7 @@ static ret_t lcd_vgcanvas_stroke_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h
   vgcanvas_t* canvas = LCD(lcd)->canvas;
 
   vgcanvas_begin_path(canvas);
-  vgcanvas_rect(canvas, x + 0.5f, y + 0.5f, w, h);
+  vgcanvas_rect(canvas, x + 0.5f, y + 0.5f, w - 1, h - 1);
   vgcanvas_set_line_width(canvas, 1);
   vgcanvas_set_stroke_color(canvas, lcd->stroke_color);
   vgcanvas_stroke(canvas);
