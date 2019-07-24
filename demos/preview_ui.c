@@ -136,11 +136,13 @@ int main(int argc, char* argv[]) {
   int32_t w = 320;
   int32_t h = 480;
   const char* filename = DEFAULT_UI;
+  char res_root[MAX_PATH + 1];
+  memset(res_root, 0x00, sizeof(res_root));
 
   if (argc > 1) {
     filename = argv[1];
   } else {
-    log_debug("%s ui_file [w] [h]\n", argv[0]);
+    log_debug("%s ui_file [w] [h] [res root]\n", argv[0]);
 #ifdef WIN32
     assert(!"no ui file provided");
 #endif /*WIN32*/
@@ -161,8 +163,19 @@ int main(int argc, char* argv[]) {
     }
   }
 
-  log_debug("%s %s %d %d\n", argv[0], argv[1], w, h);
-  tk_init(w, h, APP_SIMULATOR, NULL, NULL);
+  if (argc > 5) {
+    memcpy(res_root, argv[4], strlen(argv[4]));
+  } else {
+    char* p = NULL;
+    memcpy(res_root, filename, strlen(filename));
+    p = strstr(res_root, "assets");
+    if (p != NULL) {
+      *p = '\0';
+    }
+  }
+
+  log_debug("%s %s %d %d %s\n", argv[0], argv[1], w, h, res_root);
+  tk_init(w, h, APP_SIMULATOR, NULL, res_root);
 #ifdef WITH_FS_RES
   system_info_set_default_font(system_info(), "default_full");
 #endif /*WITH_FS_RES*/
