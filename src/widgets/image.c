@@ -42,12 +42,16 @@ static ret_t image_on_paint_self(widget_t* widget, canvas_t* c) {
 
   if (vg != NULL) {
     if (image_need_transform(widget)) {
-      vgcanvas_save(vg);
-      image_transform(widget, c);
-      vgcanvas_draw_icon(vg, &bitmap, 0, 0, bitmap.w, bitmap.h, 0, 0, widget->w, widget->h);
-      vgcanvas_restore(vg);
+      if(image->draw_type == IMAGE_DRAW_ICON) {
+        vgcanvas_save(vg);
+        image_transform(widget, c);
+        vgcanvas_draw_icon(vg, &bitmap, 0, 0, bitmap.w, bitmap.h, 0, 0, widget->w, widget->h);
+        vgcanvas_restore(vg);
 
-      return RET_OK;
+        return RET_OK;
+      } else {
+        log_warn("only draw_type == icon supports transformation.\n");
+      }
     }
   }
 
@@ -114,7 +118,7 @@ widget_t* image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   return_value_if_fail(image != NULL, NULL);
 
   image_base_init(widget);
-  image->draw_type = IMAGE_DRAW_DEFAULT;
+  image->draw_type = IMAGE_DRAW_ICON;
 
   return widget;
 }
