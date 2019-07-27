@@ -628,8 +628,11 @@ ret_t text_edit_paint(text_edit_t* text_edit, canvas_t* c) {
                      layout_info->h);
   clip_r = rect_intersect(&save_r, &edit_r);
 
+  canvas_save(c);
   canvas_set_clip_rect(c, &clip_r);
   text_edit_do_paint(text_edit, c);
+  canvas_restore(c);
+
   canvas_set_clip_rect(c, &save_r);
 
   return RET_OK;
