@@ -221,11 +221,11 @@ ret_t hscrollable_invalidate(hscrollable_t* hscrollable, rect_t* r) {
 
   r_self = rect_init(0, 0, widget->w, widget->h);
 
-  r->x += widget->x;
   r->x -= hscrollable->xoffset;
-
   *r = rect_intersect(r, &r_self);
 
+  r->x += widget->x;
+  r->y += widget->y;
   if (r->w <= 0 || r->h <= 0) {
     return RET_OK;
   }
