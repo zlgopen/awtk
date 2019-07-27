@@ -1145,6 +1145,8 @@ widget_t* edit_create_ex(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy
   edit->model = text_edit_create(widget, TRUE);
   ENSURE(edit->model != NULL);
 
+  widget_set_text(widget, L"");
+
   return widget;
 }
 

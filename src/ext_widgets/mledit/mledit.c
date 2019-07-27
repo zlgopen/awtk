@@ -484,6 +484,7 @@ widget_t* mledit_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   mledit->right_margin = 1;
   mledit->bottom_margin = 1;
   wstr_init(&(mledit->temp), 0);
+  widget_set_text(widget, L"");
 
   return widget;
 }
