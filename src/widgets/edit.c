@@ -828,11 +828,13 @@ ret_t edit_set_password_visible(widget_t* widget, bool_t password_visible) {
   edit_t* edit = EDIT(widget);
   return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
 
-  edit->password_visible = password_visible;
-  text_edit_set_mask(edit->model, !password_visible);
-  text_edit_set_mask_char(edit->model, PASSWORD_MASK_CHAR);
-  text_edit_set_cursor(edit->model, 0xffffffff);
-  widget_invalidate(widget, NULL);
+  if (edit->password_visible != password_visible) {
+    edit->password_visible = password_visible;
+    text_edit_set_mask(edit->model, !password_visible);
+    text_edit_set_mask_char(edit->model, PASSWORD_MASK_CHAR);
+    text_edit_set_cursor(edit->model, 0xffffffff);
+    widget_invalidate(widget, NULL);
+  }
 
   return RET_OK;
 }
