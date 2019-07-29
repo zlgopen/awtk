@@ -48,7 +48,6 @@ static ret_t main_loop_sdl_gpu_destroy(main_loop_t* l) {
 }
 
 #ifdef WITH_NANOVG_GL
-#include "glad/glad.h"
 #include <SDL_opengl.h>
 #include <SDL_opengl_glext.h>
 

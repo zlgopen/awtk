@@ -1,7 +1,3 @@
-#include "glad/glad.h"
-#include <SDL_opengl.h>
-#include <SDL_opengl_glext.h>
-
 static ret_t vgcanvas_nanovg_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h, uint32_t stride,
                                     bitmap_format_t format, void* data) {
   (void)vg;
