@@ -31,7 +31,17 @@
 #define NANOVG_GLES3_IMPLEMENTATION
 #endif
 
+#include <SDL.h>
+
+#ifndef WITHOUT_GLAD
 #include "glad/glad.h"
+#include <SDL_opengl.h>
+#include <SDL_opengl_glext.h>
+#else
+#include "GLES/gl.h"
+#include "GLES2/gl2.h"
+#include "GLES2/gl2ext.h"
+#endif/*WITHOUT_GLAD*/
 
 #include "nanovg.h"
 #include "tkc/utf8.h"
@@ -40,10 +50,7 @@
 #include "base/image_manager.h"
 #include "base/assets_manager.h"
 
-#include <SDL.h>
 #include "nanovg_gl.h"
-#include <SDL_opengl.h>
-#include <SDL_opengl_glext.h>
 #include "nanovg_gl_utils.h"
 
 typedef struct _vgcanvas_nanovg_t {
@@ -66,8 +73,10 @@ static ret_t vgcanvas_init_gl(vgcanvas_nanovg_t* nanovg, SDL_Window* win) {
   nanovg->context = SDL_GL_CreateContext(win);
   SDL_GL_MakeCurrent(win, nanovg->context);
   SDL_GL_SetSwapInterval(1);
-
+#ifndef WITHOUT_GLAD
   gladLoadGL();
+#endif/*WITHOUT_GLAD*/
+
   glEnable(GL_ALPHA_TEST);
   glEnable(GL_STENCIL_TEST);
   glEnable(GL_DEPTH_TEST);
