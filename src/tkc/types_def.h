@@ -162,10 +162,11 @@ typedef enum _ret_t {
 } ret_t;
 
 #ifdef ANDROID
-#define log_debug(format, ...) __android_log_print(ANDROID_LOG_DEBUG, "AWTK", format, __VA_ARGS__)
-#define log_info(format, ...) __android_log_print(ANDROID_LOG_INFO, "AWTK", format, __VA_ARGS__)
-#define log_warn(format, ...) __android_log_print(ANDROID_LOG_WARN, "AWTK", format, __VA_ARGS__) 
-#define log_error(format, ...) __android_log_print(ANDROID_LOG_ERROR, "AWTK", format, __VA_ARGS__)
+#include "android/log.h"
+#define log_debug(...) __android_log_print(ANDROID_LOG_DEBUG, "AWTK", __VA_ARGS__)
+#define log_info(...) __android_log_print(ANDROID_LOG_INFO, "AWTK", __VA_ARGS__)
+#define log_warn(...) __android_log_print(ANDROID_LOG_WARN, "AWTK", __VA_ARGS__) 
+#define log_error(...) __android_log_print(ANDROID_LOG_ERROR, "AWTK", __VA_ARGS__)
 #elif defined(WIN32)
 #include <windows.h>
 #define random rand
