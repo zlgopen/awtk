@@ -41,7 +41,7 @@
 #include "GLES/gl.h"
 #include "GLES2/gl2.h"
 #include "GLES2/gl2ext.h"
-#endif/*WITHOUT_GLAD*/
+#endif /*WITHOUT_GLAD*/
 
 #include "nanovg.h"
 #include "tkc/utf8.h"
@@ -75,7 +75,7 @@ static ret_t vgcanvas_init_gl(vgcanvas_nanovg_t* nanovg, SDL_Window* win) {
   SDL_GL_SetSwapInterval(1);
 #ifndef WITHOUT_GLAD
   gladLoadGL();
-#endif/*WITHOUT_GLAD*/
+#endif /*WITHOUT_GLAD*/
 
   glEnable(GL_ALPHA_TEST);
   glEnable(GL_STENCIL_TEST);
