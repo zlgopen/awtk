@@ -45,9 +45,22 @@ static canvas_t* native_window_raw_get_canvas(native_window_t* win) {
   return &(raw->canvas);
 }
 
+static ret_t native_window_raw_get_info(native_window_t* win, native_window_info_t* info) {
+  native_window_raw_t* raw = NATIVE_WINDOW_RAW(win);
+
+  info->x = 0;
+  info->y = 0;
+  info->ratio = 1;
+  info->w = win->rect.w;
+  info->h = win->rect.h;
+
+  return RET_OK;
+}
+
 static const native_window_vtable_t s_native_window_vtable = {
     .type = "native_window_raw",
     .move = native_window_raw_move,
+    .get_info = native_window_raw_get_info,
     .resize = native_window_raw_resize,
     .get_canvas = native_window_raw_get_canvas};
 

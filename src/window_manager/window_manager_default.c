@@ -979,11 +979,13 @@ ret_t window_manager_paint_system_bar(widget_t* widget, canvas_t* c) {
 }
 
 static ret_t window_manager_native_native_window_resized(widget_t* widget, void* handle) {
+  native_window_info_t info;
   native_window_t* nw = WINDOW_MANAGER_DEFAULT(widget)->native_window;
-  rect_t* r = (rect_t*)object_get_prop_pointer(OBJECT(nw), NATIVE_WINDOW_PROP_SIZE);
 
-  window_manager_default_resize(widget, r->w, r->h);
-  native_window_on_resized(nw, r->w, r->h);
+  return_value_if_fail(native_window_get_info(nw, &info) == RET_OK, RET_BAD_PARAMS);
+
+  window_manager_default_resize(widget, info.w, info.h);
+  native_window_on_resized(nw, info.w, info.h);
 
   return RET_OK;
 }
