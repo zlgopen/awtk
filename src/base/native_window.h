@@ -46,6 +46,7 @@ typedef ret_t (*native_window_move_t)(native_window_t* win, xy_t x, xy_t y);
 typedef ret_t (*native_window_resize_t)(native_window_t* win, wh_t w, wh_t h);
 typedef ret_t (*native_window_gl_make_current_t)(native_window_t* win);
 typedef ret_t (*native_window_swap_buffer_t)(native_window_t* win);
+typedef ret_t (*native_window_preprocess_event_t)(native_window_t* win, event_t* e);
 typedef ret_t (*native_window_get_info_t)(native_window_t* win, native_window_info_t* info);
 
 typedef struct _native_window_vtable_t {
@@ -56,6 +57,7 @@ typedef struct _native_window_vtable_t {
   native_window_get_canvas_t get_canvas;
   native_window_swap_buffer_t swap_buffer;
   native_window_gl_make_current_t gl_make_current;
+  native_window_preprocess_event_t preprocess_event;
 } native_window_vtable_t;
 
 /**
@@ -71,6 +73,8 @@ struct _native_window_t {
   bool_t shared;
 
   rect_t rect;
+  float_t ratio;
+
   bool_t dirty;
   rect_t dirty_rect;
   rect_t last_dirty_rect;
@@ -135,6 +139,7 @@ ret_t native_window_invalidate(native_window_t* win, rect_t* r);
 
 ret_t native_window_swap_buffer(native_window_t* win);
 ret_t native_window_gl_make_current(native_window_t* win);
+ret_t native_window_preprocess_event(native_window_t* win, event_t* e);
 ret_t native_window_get_info(native_window_t* win, native_window_info_t* info);
 
 /*public for window manager only*/

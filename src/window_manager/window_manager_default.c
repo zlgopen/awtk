@@ -564,6 +564,7 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
+#ifdef WITH_WINDOW_ANIMATORS
 static ret_t window_manager_paint_animation(widget_t* widget, canvas_t* c) {
   paint_event_t e;
   uint32_t start_time = time_now_ms();
@@ -616,6 +617,7 @@ static ret_t window_manager_paint_animation(widget_t* widget, canvas_t* c) {
 
   return RET_OK;
 }
+#endif/*WITH_WINDOW_ANIMATORS*/
 
 static ret_t window_manager_default_inc_fps(widget_t* widget) {
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
@@ -653,12 +655,15 @@ static ret_t window_manager_default_paint(widget_t* widget) {
   canvas_set_global_alpha(c, 0xff);
   window_manager_default_update_fps(widget);
 
+#ifdef WITH_WINDOW_ANIMATORS
   if (wm->animator != NULL) {
     ret = window_manager_paint_animation(widget, c);
   } else {
     ret = window_manager_paint_normal(widget, c);
   }
-
+#else
+  ret = window_manager_paint_normal(widget, c);
+#endif/*WITH_WINDOW_ANIMATORS*/
   return ret;
 }
 
@@ -920,6 +925,7 @@ static ret_t window_manager_default_dispatch_input_event(widget_t* widget, event
 
   window_manager_start_or_reset_screen_saver_timer(wm);
 
+  native_window_preprocess_event(wm->native_window, e);
   ids = &(wm->input_device_status);
   if (wm->ignore_user_input) {
     if (ids->pressed && e->type == EVT_POINTER_UP) {

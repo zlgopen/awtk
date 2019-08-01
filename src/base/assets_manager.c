@@ -183,13 +183,7 @@ static asset_info_t* try_load_image(assets_manager_t* am, const char* name,
   return_value_if_fail(build_path(am, path, MAX_PATH, ratio, subpath, name, extname) == RET_OK,
                        NULL);
 
-  if (file_exist(path)) {
-    asset_info_t* info = load_asset(ASSET_TYPE_IMAGE, subtype, path, name);
-
-    return info;
-  }
-
-  return NULL;
+  return load_asset(ASSET_TYPE_IMAGE, subtype, path, name);
 }
 
 static asset_info_t* try_load_assets(assets_manager_t* am, const char* name, const char* extname,

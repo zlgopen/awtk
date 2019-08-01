@@ -20,6 +20,7 @@
  */
 
 #include <SDL.h>
+#include "base/window_manager.h"
 
 #ifdef WITH_NANOVG_GL
 #ifndef WITHOUT_GLAD
@@ -76,9 +77,9 @@ static ret_t native_window_sdl_resize(native_window_t* win, wh_t w, wh_t h) {
   h = info.h;
   win->rect.w = w;
   win->rect.h = h;
-  SDL_GetWindowSize(sdl->window, &oldw, &oldh);
 
 #ifndef ANDROID
+  SDL_GetWindowSize(sdl->window, &oldw, &oldh);
   if (w != oldw || h != oldh) {
     SDL_SetWindowSize(sdl->window, w, h);
   }
@@ -147,6 +148,26 @@ static ret_t native_window_sdl_swap_buffer(native_window_t* win) {
   return RET_OK;
 }
 
+static ret_t native_window_sdl_preprocess_event(native_window_t* win, event_t* e) {
+#ifdef ANDROID
+  if(e->type == EVT_POINTER_DOWN 
+      || e->type == EVT_POINTER_MOVE 
+      || e->type == EVT_CLICK
+      || e->type == EVT_POINTER_UP) {
+    pointer_event_t* evt = pointer_event_cast(e);
+    evt->x /= win->ratio;
+    evt->y /= win->ratio;
+  } else if(e->type == EVT_KEY_DOWN) {
+    key_event_t* evt = key_event_cast(e);
+    if(evt->key == TK_KEY_AC_BACK) {
+      window_manager_back(window_manager());
+    }
+  }
+#endif/*ANDROID*/
+
+  return RET_OK;
+}
+
 static ret_t native_window_sdl_get_info(native_window_t* win, native_window_info_t* info) {
   int ww = 0;
   int wh = 0;
@@ -181,6 +202,12 @@ static ret_t native_window_sdl_get_info(native_window_t* win, native_window_info
   info->ratio = (float_t)fw / (float_t)ww;
 #endif/**/
 
+  win->rect.x = info->x;
+  win->rect.y = info->y;
+  win->rect.w = info->w;
+  win->rect.h = info->h;
+  win->ratio = info->ratio;
+
   return RET_OK;
 }
 
@@ -189,6 +216,7 @@ static const native_window_vtable_t s_native_window_vtable = {
     .move = native_window_sdl_move,
     .resize = native_window_sdl_resize,
     .get_info = native_window_sdl_get_info,
+    .preprocess_event = native_window_sdl_preprocess_event,
     .swap_buffer = native_window_sdl_swap_buffer,
     .gl_make_current = native_window_sdl_gl_make_current,
     .get_canvas = native_window_sdl_get_canvas};
