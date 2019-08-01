@@ -1,7 +1,3 @@
-#include "glad/glad.h"
-#include <SDL_opengl.h>
-#include <SDL_opengl_glext.h>
-
 static ret_t vgcanvas_nanovg_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h, uint32_t stride,
                                     bitmap_format_t format, void* data) {
   (void)vg;
@@ -13,35 +9,23 @@ static ret_t vgcanvas_nanovg_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h, uint
 }
 
 static ret_t vgcanvas_nanovg_begin_frame(vgcanvas_t* vgcanvas, rect_t* dirty_rect) {
-  int ww = 0;
-  int wh = 0;
-  int fw = 0;
-  int fh = 0;
-
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
-  SDL_Window* sdl_window = canvas->sdl_window;
-  NVGcontext* vg = canvas->vg;
 
-  SDL_GL_MakeCurrent(sdl_window, canvas->context);
-  SDL_GetWindowSize(sdl_window, &ww, &wh);
-  SDL_GL_GetDrawableSize(sdl_window, &fw, &fh);
+  native_window_info_t info;
+  return_value_if_fail(native_window_get_info(canvas->window, &info) == RET_OK, RET_BAD_PARAMS);
 
-  glViewport(0, 0, fw, fh);
-  glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-
-  nvgBeginFrame(vg, ww, wh, vgcanvas->ratio);
+  native_window_gl_make_current(canvas->window);
+  nvgBeginFrame(canvas->vg, info.w, info.h, info.ratio);
 
   return RET_OK;
 }
 
 static ret_t vgcanvas_nanovg_end_frame(vgcanvas_t* vgcanvas) {
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
-  SDL_Window* sdl_window = canvas->sdl_window;
   NVGcontext* vg = canvas->vg;
 
   nvgEndFrame(vg);
-  SDL_GL_SwapWindow(sdl_window);
+  native_window_swap_buffer(canvas->window);
 
   return RET_OK;
 }
@@ -102,7 +86,6 @@ static ret_t vgcanvas_nanovg_destroy(vgcanvas_t* vgcanvas) {
 #elif defined(WITH_NANOVG_GLES3)
   nvgDeleteGLES3(vg);
 #endif
-  SDL_GL_DeleteContext(((vgcanvas_nanovg_t*)vgcanvas)->context);
 
   TKMEM_FREE(vgcanvas);
 

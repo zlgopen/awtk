@@ -24,19 +24,14 @@
 #include "lcd/lcd_nanovg.h"
 #include "lcd_vgcanvas.inc"
 
-#include <SDL.h>
-#include <SDL_opengl.h>
-#include <SDL_opengl_glext.h>
-
-lcd_t* lcd_nanovg_init(SDL_Window* sdl_window) {
-  int w = 0;
-  int h = 0;
+lcd_t* lcd_nanovg_init(native_window_t* window) {
   vgcanvas_t* vg = NULL;
-  return_value_if_fail(sdl_window != NULL, NULL);
+  native_window_info_t info;
+  return_value_if_fail(window != NULL, NULL);
+  return_value_if_fail(native_window_get_info(window, &info) == RET_OK, NULL);
 
-  SDL_GetWindowSize(sdl_window, &w, &h);
-  vg = vgcanvas_create(w, h, 0, 0, sdl_window);
+  vg = vgcanvas_create(info.w, info.h, 0, 0, window);
   return_value_if_fail(vg != NULL, NULL);
 
-  return lcd_vgcanvas_init(w, h, vg);
+  return lcd_vgcanvas_init(info.w, info.h, vg);
 }

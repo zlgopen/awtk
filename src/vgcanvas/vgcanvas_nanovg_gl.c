@@ -31,19 +31,21 @@
 #define NANOVG_GLES3_IMPLEMENTATION
 #endif
 
+#ifndef WITHOUT_GLAD
 #include "glad/glad.h"
+#endif /*WITHOUT_GLAD*/
+#include <SDL_opengl.h>
+#include <SDL_opengl_glext.h>
 
 #include "nanovg.h"
 #include "tkc/utf8.h"
 #include "tkc/mem.h"
 #include "base/vgcanvas.h"
 #include "base/image_manager.h"
+#include "base/native_window.h"
 #include "base/assets_manager.h"
 
-#include <SDL.h>
 #include "nanovg_gl.h"
-#include <SDL_opengl.h>
-#include <SDL_opengl_glext.h>
 #include "nanovg_gl_utils.h"
 
 typedef struct _vgcanvas_nanovg_t {
@@ -54,46 +56,29 @@ typedef struct _vgcanvas_nanovg_t {
   uint32_t text_align_v;
   uint32_t text_align_h;
 
-  SDL_Window* sdl_window;
-  SDL_GLContext context;
+  native_window_t* window;
 } vgcanvas_nanovg_t;
 
 #include "texture.inc"
 #include "vgcanvas_nanovg_gl.inc"
 #include "vgcanvas_nanovg.inc"
 
-static ret_t vgcanvas_init_gl(vgcanvas_nanovg_t* nanovg, SDL_Window* win) {
-  nanovg->context = SDL_GL_CreateContext(win);
-  SDL_GL_SetSwapInterval(1);
-
-  gladLoadGL();
-  glEnable(GL_ALPHA_TEST);
-  glEnable(GL_STENCIL_TEST);
-  glEnable(GL_DEPTH_TEST);
-
-  return RET_OK;
-}
-
 vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_format_t format,
-                            void* sdl_window) {
-  int ww = 0;
-  int wh = 0;
-  int fw = 0;
-  int fh = 0;
+                            void* win) {
+  native_window_info_t info;
+  native_window_t* window = NATIVE_WINDOW(win);
+  return_value_if_fail(native_window_get_info(win, &info) == RET_OK, NULL);
   vgcanvas_nanovg_t* nanovg = (vgcanvas_nanovg_t*)TKMEM_ZALLOC(vgcanvas_nanovg_t);
   return_value_if_fail(nanovg != NULL, NULL);
 
   (void)format;
 
-  SDL_GetWindowSize((SDL_Window*)sdl_window, &ww, &wh);
-  SDL_GL_GetDrawableSize((SDL_Window*)sdl_window, &fw, &fh);
-
   nanovg->base.w = w;
   nanovg->base.h = h;
   nanovg->base.vt = &vt;
-  nanovg->base.ratio = (float)fw / (float)ww;
-  nanovg->sdl_window = (SDL_Window*)sdl_window;
-  vgcanvas_init_gl(nanovg, nanovg->sdl_window);
+  nanovg->window = window;
+  nanovg->base.ratio = info.ratio;
+
 #if defined(WITH_NANOVG_GL3)
   nanovg->vg = nvgCreateGL3(NVG_ANTIALIAS | NVG_STENCIL_STROKES);
 #elif defined(WITH_NANOVG_GLES2)

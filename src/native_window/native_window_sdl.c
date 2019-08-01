@@ -20,6 +20,18 @@
  */
 
 #include <SDL.h>
+
+#ifdef WITH_NANOVG_GL
+#ifndef WITHOUT_GLAD
+#include "glad/glad.h"
+#define loadGL gladLoadGL
+#else
+#define loadGL()
+#endif /*WITHOUT_GLAD*/
+#include <SDL_opengl.h>
+#include <SDL_opengl_glext.h>
+#endif /*WITH_NANOVG_GL*/
+
 #include "lcd/lcd_sdl2.h"
 #include "lcd/lcd_nanovg.h"
 #include "base/native_window.h"
@@ -27,6 +39,7 @@
 typedef struct _native_window_sdl_t {
   native_window_t native_window;
 
+  SDL_GLContext context;
   SDL_Renderer* render;
   SDL_Window* window;
   canvas_t canvas;
@@ -82,8 +95,13 @@ static ret_t native_window_sdl_close(native_window_t* win) {
     SDL_DestroyWindow(sdl->window);
   }
 
+  if (sdl->context != NULL) {
+    SDL_GL_DeleteContext(sdl->context);
+  }
+
   sdl->render = NULL;
   sdl->window = NULL;
+  sdl->context = NULL;
 
   return RET_OK;
 }
@@ -94,10 +112,64 @@ static canvas_t* native_window_sdl_get_canvas(native_window_t* win) {
   return &(sdl->canvas);
 }
 
+static ret_t native_window_sdl_gl_make_current(native_window_t* win) {
+#ifdef WITH_NANOVG_GL
+  int fw = 0;
+  int fh = 0;
+  native_window_sdl_t* sdl = NATIVE_WINDOW_SDL(win);
+  SDL_Window* window = sdl->window;
+
+  SDL_GL_MakeCurrent(window, sdl->context);
+  SDL_GL_GetDrawableSize(window, &fw, &fh);
+
+  glViewport(0, 0, fw, fh);
+  glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+#endif /*WITH_NANOVG_GL*/
+  return RET_OK;
+}
+
+static ret_t native_window_sdl_swap_buffer(native_window_t* win) {
+  native_window_sdl_t* sdl = NATIVE_WINDOW_SDL(win);
+
+#ifdef WITH_NANOVG_GL
+  SDL_GL_SwapWindow(sdl->window);
+#else
+#endif /*WITH_NANOVG_GL*/
+
+  return RET_OK;
+}
+
+static ret_t native_window_sdl_get_info(native_window_t* win, native_window_info_t* info) {
+  int ww = 0;
+  int wh = 0;
+  int fw = 0;
+  int fh = 0;
+  int x = 0;
+  int y = 0;
+  native_window_sdl_t* sdl = NATIVE_WINDOW_SDL(win);
+  SDL_Window* window = sdl->window;
+
+  SDL_GetWindowPosition(window, &x, &y);
+  SDL_GetWindowSize(window, &ww, &wh);
+  SDL_GL_GetDrawableSize(window, &fw, &fh);
+
+  info->x = x;
+  info->y = y;
+  info->w = ww;
+  info->h = wh;
+  info->ratio = (float_t)fw / (float_t)ww;
+
+  return RET_OK;
+}
+
 static const native_window_vtable_t s_native_window_vtable = {
     .type = "native_window_sdl",
     .move = native_window_sdl_move,
     .resize = native_window_sdl_resize,
+    .get_info = native_window_sdl_get_info,
+    .swap_buffer = native_window_sdl_swap_buffer,
+    .gl_make_current = native_window_sdl_gl_make_current,
     .get_canvas = native_window_sdl_get_canvas};
 
 static ret_t native_window_sdl_set_prop(object_t* obj, const char* name, const value_t* v) {
@@ -181,10 +253,20 @@ static native_window_t* native_window_create_internal(const char* title, uint32_
   win->rect = rect_init(x, y, w, h);
   win->vt = &s_native_window_vtable;
 
+#ifdef WITH_NANOVG_GL
+  sdl->context = SDL_GL_CreateContext(sdl->window);
+  SDL_GL_SetSwapInterval(1);
+
+  loadGL();
+  glEnable(GL_ALPHA_TEST);
+  glEnable(GL_STENCIL_TEST);
+  glEnable(GL_DEPTH_TEST);
+#endif /*WITH_NANOVG_GL*/
+
 #ifdef WITH_NANOVG_SOFT
   lcd = lcd_sdl2_init(sdl->render);
 #else
-  lcd = lcd_nanovg_init(sdl->window);
+  lcd = lcd_nanovg_init(win);
 #endif /*WITH_NANOVG_SOFT*/
 
   canvas_init(c, lcd, font_manager());
@@ -218,10 +300,6 @@ native_window_t* native_window_create(widget_t* widget) {
 }
 
 #ifdef WITH_NANOVG_GL
-#include "glad/glad.h"
-#include <SDL_opengl.h>
-#include <SDL_opengl_glext.h>
-
 static ret_t sdl_init_gl(void) {
   SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);

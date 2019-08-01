@@ -106,6 +106,27 @@ ret_t native_window_on_resized(native_window_t* win, wh_t w, wh_t h) {
   return RET_OK;
 }
 
+ret_t native_window_gl_make_current(native_window_t* win) {
+  return_value_if_fail(win != NULL && win->vt != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(win->vt->gl_make_current != NULL, RET_BAD_PARAMS);
+
+  return win->vt->gl_make_current(win);
+}
+
+ret_t native_window_swap_buffer(native_window_t* win) {
+  return_value_if_fail(win != NULL && win->vt != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(win->vt->swap_buffer != NULL, RET_BAD_PARAMS);
+
+  return win->vt->swap_buffer(win);
+}
+
+ret_t native_window_get_info(native_window_t* win, native_window_info_t* info) {
+  return_value_if_fail(win != NULL && win->vt != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(win->vt->get_info != NULL && info != NULL, RET_BAD_PARAMS);
+
+  return win->vt->get_info(win, info);
+}
+
 ret_t native_window_begin_frame(native_window_t* win, lcd_draw_mode_t mode) {
   return_value_if_fail(win != NULL, RET_BAD_PARAMS);
 

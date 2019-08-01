@@ -2195,6 +2195,7 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t*
 
   if (widget->astyle == NULL) {
     widget->astyle = style_factory_create_style(style_factory(), widget);
+    ENSURE(widget->astyle != NULL);
   }
 
   if (parent != NULL && widget_is_window_opened(widget)) {

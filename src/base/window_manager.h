@@ -49,8 +49,12 @@ typedef ret_t (*window_manager_get_pointer_t)(widget_t* widget, xy_t* x, xy_t* y
 typedef ret_t (*window_manager_dispatch_native_window_event_t)(widget_t* widget, event_t* e,
                                                                void* handle);
 
-typedef ret_t (*window_manager_snap_curr_window_t)(widget_t* widget, widget_t* curr_win, bitmap_t* img, framebuffer_object_t* fbo, bool_t auto_rotate);
-typedef ret_t (*window_manager_snap_prev_window_t)(widget_t* widget, widget_t* prev_win, bitmap_t* img, framebuffer_object_t* fbo, bool_t auto_rotate);
+typedef ret_t (*window_manager_snap_curr_window_t)(widget_t* widget, widget_t* curr_win,
+                                                   bitmap_t* img, framebuffer_object_t* fbo,
+                                                   bool_t auto_rotate);
+typedef ret_t (*window_manager_snap_prev_window_t)(widget_t* widget, widget_t* prev_win,
+                                                   bitmap_t* img, framebuffer_object_t* fbo,
+                                                   bool_t auto_rotate);
 typedef dialog_highlighter_t* (*window_manager_get_dialog_highlighter_t)(widget_t* widget);
 
 typedef struct _window_manager_vtable_t {
@@ -320,11 +324,11 @@ ret_t window_manager_back_to_home(widget_t* widget);
 ret_t window_manager_dispatch_native_window_event(widget_t* widget, event_t* e, void* handle);
 
 /*public for animators*/
-ret_t window_manager_snap_curr_window(widget_t* widget, 
-    widget_t* curr_win, bitmap_t* img, framebuffer_object_t* fbo, bool_t auto_rotate);
+ret_t window_manager_snap_curr_window(widget_t* widget, widget_t* curr_win, bitmap_t* img,
+                                      framebuffer_object_t* fbo, bool_t auto_rotate);
 
-ret_t window_manager_snap_prev_window(widget_t* widget, 
-    widget_t* prev_win, bitmap_t* img, framebuffer_object_t* fbo, bool_t auto_rotate);
+ret_t window_manager_snap_prev_window(widget_t* widget, widget_t* prev_win, bitmap_t* img,
+                                      framebuffer_object_t* fbo, bool_t auto_rotate);
 
 dialog_highlighter_t* window_manager_get_dialog_highlighter(widget_t* widget);
 
@@ -336,7 +340,6 @@ widget_t* window_manager_init(window_manager_t* wm, const widget_vtable_t* wvt,
 
 widget_t* window_manager_find_target_by_win(widget_t* widget, void* native_win);
 widget_t* window_manager_find_target(widget_t* widget, void* native_win, xy_t x, xy_t y);
-
 
 #define WINDOW_MANAGER(widget) ((window_manager_t*)(widget))
 

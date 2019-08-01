@@ -32,15 +32,30 @@ BEGIN_C_DECLS
 struct _native_window_t;
 typedef struct _native_window_t native_window_t;
 
+typedef struct _native_window_info_t {
+  void* handle;
+  int32_t x;
+  int32_t y;
+  uint32_t w;
+  uint32_t h;
+  float_t ratio;
+} native_window_info_t;
+
 typedef canvas_t* (*native_window_get_canvas_t)(native_window_t* win);
 typedef ret_t (*native_window_move_t)(native_window_t* win, xy_t x, xy_t y);
 typedef ret_t (*native_window_resize_t)(native_window_t* win, wh_t w, wh_t h);
+typedef ret_t (*native_window_gl_make_current_t)(native_window_t* win);
+typedef ret_t (*native_window_swap_buffer_t)(native_window_t* win);
+typedef ret_t (*native_window_get_info_t)(native_window_t* win, native_window_info_t* info);
 
 typedef struct _native_window_vtable_t {
   const char* type;
   native_window_move_t move;
   native_window_resize_t resize;
+  native_window_get_info_t get_info;
   native_window_get_canvas_t get_canvas;
+  native_window_swap_buffer_t swap_buffer;
+  native_window_gl_make_current_t gl_make_current;
 } native_window_vtable_t;
 
 /**
@@ -59,7 +74,7 @@ struct _native_window_t {
   bool_t dirty;
   rect_t dirty_rect;
   rect_t last_dirty_rect;
-  
+
   const native_window_vtable_t* vt;
 };
 
@@ -117,6 +132,10 @@ native_window_t* native_window_create(widget_t* widget);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t native_window_invalidate(native_window_t* win, rect_t* r);
+
+ret_t native_window_swap_buffer(native_window_t* win);
+ret_t native_window_gl_make_current(native_window_t* win);
+ret_t native_window_get_info(native_window_t* win, native_window_info_t* info);
 
 /*public for window manager only*/
 ret_t native_window_begin_frame(native_window_t* win, lcd_draw_mode_t mode);

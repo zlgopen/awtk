@@ -199,7 +199,7 @@ ret_t tk_deinit_internal(void) {
 
   children_layouter_factory_destroy(children_layouter_factory());
   children_layouter_factory_set(NULL);
-  
+
   image_manager_destroy(image_manager());
   image_manager_set(NULL);
 
@@ -208,7 +208,7 @@ ret_t tk_deinit_internal(void) {
 
   widget_animator_manager_destroy(widget_animator_manager());
   widget_animator_manager_set(NULL);
-  
+
   idle_manager_destroy(idle_manager());
   idle_manager_set(NULL);
 
@@ -217,7 +217,7 @@ ret_t tk_deinit_internal(void) {
 
   widget_factory_destroy(widget_factory());
   widget_factory_set(NULL);
-  
+
   input_method_destroy(input_method());
   input_method_set(NULL);
 
