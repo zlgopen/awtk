@@ -80,8 +80,8 @@ static const char* assets_manager_get_res_root(assets_manager_t* am) {
   }
 }
 
-static asset_info_t* load_asset(uint16_t type, uint16_t subtype, uint32_t size, const char* path,
-                                const char* name) {
+static asset_info_t* asset_info_create(uint16_t type, uint16_t subtype, const char* name,
+                                       int32_t size) {
   asset_info_t* info = TKMEM_ALLOC(sizeof(asset_info_t) + size);
   return_value_if_fail(info != NULL, NULL);
 
@@ -93,10 +93,37 @@ static asset_info_t* load_asset(uint16_t type, uint16_t subtype, uint32_t size, 
   info->is_in_rom = FALSE;
   strncpy(info->name, name, TK_NAME_LEN);
 
+  return info;
+}
+
+#ifdef WITH_SDL
+#include <SDL.h>
+static asset_info_t* load_asset(uint16_t type, uint16_t subtype, const char* path,
+                                const char* name) {
+  SDL_RWops* rwops = SDL_RWFromFile(path, "r");
+  return_value_if_fail(rwops != NULL, NULL);
+
+  int32_t size = rwops->size(rwops);
+  asset_info_t* info = asset_info_create(type, subtype, name, size);
+  if (info != NULL) {
+    rwops->read(rwops, info->data, size, 1);
+  }
+  rwops->close(rwops);
+
+  return info;
+}
+#else
+static asset_info_t* load_asset(uint16_t type, uint16_t subtype, const char* path,
+                                const char* name) {
+  int32_t size = file_get_size(path);
+  asset_info_t* info = asset_info_create(type, subtype, name, size);
+  return_value_if_fail(info != NULL, NULL);
+
   ENSURE(file_read_part(path, info->data, size, 0) == size);
 
   return info;
 }
+#endif /*WITH_SDL*/
 
 static ret_t build_path(assets_manager_t* am, char* path, uint32_t size, bool_t ratio_sensitive,
                         const char* subpath, const char* name, const char* extname) {
@@ -157,8 +184,7 @@ static asset_info_t* try_load_image(assets_manager_t* am, const char* name,
                        NULL);
 
   if (file_exist(path)) {
-    size_t size = file_get_size(path);
-    asset_info_t* info = load_asset(ASSET_TYPE_IMAGE, subtype, size, path, name);
+    asset_info_t* info = load_asset(ASSET_TYPE_IMAGE, subtype, path, name);
 
     return info;
   }
@@ -204,12 +230,8 @@ static asset_info_t* try_load_assets(assets_manager_t* am, const char* name, con
 
   return_value_if_fail(build_path(am, path, MAX_PATH, FALSE, subpath, name, extname) == RET_OK,
                        NULL);
-  if (file_exist(path)) {
-    int32_t size = file_get_size(path);
-    return load_asset(type, subtype, size, path, name);
-  }
 
-  return NULL;
+  return load_asset(type, subtype, path, name);
 }
 
 static uint16_t subtype_from_extname(const char* extname) {
@@ -239,11 +261,10 @@ static uint16_t subtype_from_extname(const char* extname) {
 
 asset_info_t* assets_manager_load_file(assets_manager_t* am, asset_type_t type, const char* path) {
   if (file_exist(path)) {
-    int32_t size = file_get_size(path);
     const char* extname = strrchr(path, '.');
     uint16_t subtype = subtype_from_extname(extname);
 
-    return load_asset(type, subtype, size, path, path);
+    return load_asset(type, subtype, path, path);
   }
 
   return NULL;

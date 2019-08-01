@@ -3,6 +3,9 @@
   * window manager抽象成接口。
   * 引入native\_window接口。
 
+* 2019/07/29
+  * fix edit clone的问题。
+
 * 2019/07/26
   * 完善text edit(感谢智明提供补丁)
 
