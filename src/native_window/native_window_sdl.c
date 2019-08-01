@@ -67,15 +67,22 @@ static ret_t native_window_sdl_move(native_window_t* win, xy_t x, xy_t y) {
 static ret_t native_window_sdl_resize(native_window_t* win, wh_t w, wh_t h) {
   int oldw = 0;
   int oldh = 0;
+  native_window_info_t info;
   native_window_sdl_t* sdl = NATIVE_WINDOW_SDL(win);
 
+  native_window_get_info(win, &info);
+
+  w = info.w;
+  h = info.h;
   win->rect.w = w;
   win->rect.h = h;
   SDL_GetWindowSize(sdl->window, &oldw, &oldh);
 
+#ifndef ANDROID
   if (w != oldw || h != oldh) {
     SDL_SetWindowSize(sdl->window, w, h);
   }
+#endif/*ANDROID*/
 
   return RET_OK;
 }
@@ -154,11 +161,25 @@ static ret_t native_window_sdl_get_info(native_window_t* win, native_window_info
   SDL_GetWindowSize(window, &ww, &wh);
   SDL_GL_GetDrawableSize(window, &fw, &fh);
 
+  memset(info, 0x00, sizeof(*info));
+
+#ifdef ANDROID
+  float dpi = 1;
+  SDL_GetDisplayDPI(0, &dpi, NULL, NULL);
+  float_t ratio = dpi/160;
+
+  info->x = x;
+  info->y = y;
+  info->w = ww/ratio;
+  info->h = wh/ratio;
+  info->ratio = ratio;
+#else
   info->x = x;
   info->y = y;
   info->w = ww;
   info->h = wh;
   info->ratio = (float_t)fw / (float_t)ww;
+#endif/**/
 
   return RET_OK;
 }
@@ -229,6 +250,7 @@ static const object_vtable_t s_native_window_sdl_vtable = {
 static native_window_t* native_window_create_internal(const char* title, uint32_t flags, int32_t x,
                                                       int32_t y, uint32_t w, uint32_t h) {
   lcd_t* lcd = NULL;
+  native_window_info_t info;
   object_t* obj = object_create(&s_native_window_sdl_vtable);
   native_window_t* win = NATIVE_WINDOW(obj);
   native_window_sdl_t* sdl = NATIVE_WINDOW_SDL(win);
@@ -250,9 +272,13 @@ static native_window_t* native_window_create_internal(const char* title, uint32_
 #endif /*WITH_NANOVG_SOFT*/
 
   win->handle = sdl->window;
-  win->rect = rect_init(x, y, w, h);
   win->vt = &s_native_window_vtable;
 
+    if(native_window_get_info(win, &info) == RET_OK) {
+        w = info.w;
+        h = info.h;
+    }
+    win->rect = rect_init(x, y, w, h);
 #ifdef WITH_NANOVG_GL
   sdl->context = SDL_GL_CreateContext(sdl->window);
   SDL_GL_SetSwapInterval(1);
