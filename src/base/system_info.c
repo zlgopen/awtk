@@ -107,6 +107,8 @@ static ret_t system_info_normalize_app_root(system_info_t* info, const char* app
     return RET_OK;
   } else if (system_info_normalize_app_root_try_exe(info) == RET_OK) {
     return RET_OK;
+  } else {
+    system_info_set_app_root(info, "");
   }
 
   log_debug("Not found valid assets folder!\n");

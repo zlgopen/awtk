@@ -895,12 +895,19 @@ static ret_t window_manager_default_resize(widget_t* widget, wh_t w, wh_t h) {
 }
 
 static ret_t window_manager_default_post_init(widget_t* widget, wh_t w, wh_t h) {
+  native_window_info_t info;
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
   return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
 
   wm->lcd_w = w;
   wm->lcd_h = h;
   wm->native_window = native_window_create(widget);
+
+  if(native_window_get_info(wm->native_window, &info) == RET_OK) {
+    w = info.w;
+    h = info.h;
+  }
+
   window_manager_default_resize(widget, w, h);
 
   return RET_OK;
