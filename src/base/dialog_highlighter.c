@@ -29,6 +29,7 @@ dialog_highlighter_t* dialog_highlighter_create(const dialog_highlighter_vtable_
   return_value_if_fail(h != NULL, NULL);
 
   memset(h, 0x00, vt->size);
+  emitter_init(EMITTER(h));
   h->vt = vt;
 
   return h;
@@ -91,6 +92,7 @@ ret_t dialog_highlighter_destroy(dialog_highlighter_t* h) {
   vgcanvas_t* vg = NULL;
   return_value_if_fail(h != NULL && h->vt != NULL, RET_BAD_PARAMS);
 
+  emitter_dispatch_simple_event(EMITTER(h), EVT_DESTROY);
   dialog_highlighter_on_destroy(h);
 
   if (h->fbo.handle) {
@@ -100,6 +102,7 @@ ret_t dialog_highlighter_destroy(dialog_highlighter_t* h) {
     bitmap_destroy(&(h->img));
   }
 
+  emitter_deinit(EMITTER(h));
   memset(h, 0x00, h->vt->size);
   TKMEM_FREE(h);
 

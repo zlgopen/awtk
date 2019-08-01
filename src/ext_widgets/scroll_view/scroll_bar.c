@@ -80,7 +80,7 @@ static ret_t scroll_bar_mobile_get_dragger_size(widget_t* widget, rect_t* r) {
 }
 
 static ret_t scroll_bar_mobile_on_paint_self(widget_t* widget, canvas_t* c) {
-  rect_t r;
+  rect_t r = rect_init(0, 0, 0, 0);
   style_t* style = widget->astyle;
   color_t trans = color_init(80, 80, 80, 0xff);
   color_t fg = style_get_color(style, STYLE_ID_FG_COLOR, trans);

@@ -64,7 +64,6 @@ typedef struct _vgcanvas_nanovg_t {
 
 static ret_t vgcanvas_init_gl(vgcanvas_nanovg_t* nanovg, SDL_Window* win) {
   nanovg->context = SDL_GL_CreateContext(win);
-  SDL_GL_MakeCurrent(win, nanovg->context);
   SDL_GL_SetSwapInterval(1);
 
   gladLoadGL();

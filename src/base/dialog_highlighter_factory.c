@@ -79,11 +79,7 @@ ret_t dialog_highlighter_factory_register(dialog_highlighter_factory_t* factory,
 
 static ret_t dialog_highlighter_on_dialog_destroy(void* ctx, event_t* e) {
   dialog_highlighter_t* h = (dialog_highlighter_t*)ctx;
-  window_manager_t* wm = WINDOW_MANAGER(window_manager());
 
-  if (wm->dialog_highlighter == h) {
-    window_manager_set_dialog_highlighter(WIDGET(wm), NULL);
-  }
   dialog_highlighter_destroy(h);
 
   log_debug("dialog_highlighter_on_dialog_destroy\n");

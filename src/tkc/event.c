@@ -26,6 +26,8 @@
 event_t event_init(uint32_t type, void* target) {
   event_t e;
 
+  memset(&e, 0x00, sizeof(e));
+
   e.type = type;
   e.target = target;
   e.time = time_now_ms();

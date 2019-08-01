@@ -326,6 +326,16 @@ typedef enum _event_type_t {
    */
   EVT_OUT_OF_MEMORY,
   /**
+   * @const EVT_ORIENTATION_WILL_CHANGED
+   * 屏幕即将旋转。
+   */
+  EVT_ORIENTATION_WILL_CHANGED,
+  /**
+   * @const EVT_ORIENTATION_CHANGED
+   * 屏幕旋转。
+   */
+  EVT_ORIENTATION_CHANGED,
+  /**
    * @const EVT_REQ_START
    * event queue其它请求编号起始值。
    */
@@ -372,6 +382,22 @@ typedef struct _wheel_event_t {
 } wheel_event_t;
 
 /**
+ * @class orientation_event_t
+ * @annotation ["scriptable"]
+ * @parent event_t
+ * 滚轮事件。
+ */
+typedef struct _orientation_event_t {
+  event_t e;
+  /**
+   * @property {int32_t} orientation
+   * @annotation ["readable", "scriptable"]
+   * 屏幕方向。
+   */
+  lcd_orientation_t orientation;
+} orientation_event_t;
+
+/**
  * @method wheel_event_cast
  * @annotation ["cast", "scriptable"]
  * 把event对象转wheel_event_t对象，主要给脚本语言使用。
@@ -392,6 +418,29 @@ wheel_event_t* wheel_event_cast(event_t* event);
  * @return {event_t*} event对象。
  */
 event_t* wheel_event_init(wheel_event_t* event, uint32_t type, void* target, int32_t dy);
+
+/**
+ * @method orientation_event_cast
+ * @annotation ["cast", "scriptable"]
+ * 把event对象转orientation_event_t对象，主要给脚本语言使用。
+ * @param {event_t*} event event对象。
+ *
+ * @return {orientation_event_t*} event对象。
+ */
+orientation_event_t* orientation_event_cast(event_t* event);
+
+/**
+ * @method orientation_event_init
+ * 初始化事件。
+ * @param {orientation_event_t*} event event对象。
+ * @param {void*} target 事件目标。
+ * @param {uint32_t} type 事件类型。
+ * @param {int32_t} dy 滚轮的y值。
+ *
+ * @return {event_t*} event对象。
+ */
+event_t* orientation_event_init(orientation_event_t* event, uint32_t type, void* target,
+                                lcd_orientation_t orientation);
 
 /**
  * @class pointer_event_t
