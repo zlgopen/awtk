@@ -230,11 +230,8 @@ static asset_info_t* try_load_assets(assets_manager_t* am, const char* name, con
 
   return_value_if_fail(build_path(am, path, MAX_PATH, FALSE, subpath, name, extname) == RET_OK,
                        NULL);
-  if (file_exist(path)) {
-    return load_asset(type, subtype, path, name);
-  }
 
-  return NULL;
+  return load_asset(type, subtype, path, name);
 }
 
 static uint16_t subtype_from_extname(const char* extname) {
