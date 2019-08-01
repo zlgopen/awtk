@@ -18,6 +18,7 @@ static ret_t vgcanvas_nanovg_begin_frame(vgcanvas_t* vgcanvas, rect_t* dirty_rec
   SDL_Window* sdl_window = canvas->sdl_window;
   NVGcontext* vg = canvas->vg;
 
+  SDL_GL_MakeCurrent(sdl_window, canvas->context);
   SDL_GetWindowSize(sdl_window, &ww, &wh);
   SDL_GL_GetDrawableSize(sdl_window, &fw, &fh);
 

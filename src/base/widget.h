@@ -1946,6 +1946,14 @@ ret_t widget_set_style_str(widget_t* widget, const char* state_and_name, const c
  */
 ret_t widget_set_style_color(widget_t* widget, const char* state_and_name, uint32_t value);
 
+/**
+ * @method widget_get_canvas
+ * 获取canvas对象。
+ *
+ * @return {canvas_t*} 返回canvas对象。
+ */
+canvas_t* widget_get_canvas(widget_t* widget);
+
 /*虚函数的包装*/
 ret_t widget_on_paint(widget_t* widget, canvas_t* c);
 ret_t widget_on_keydown(widget_t* widget, key_event_t* e);
@@ -1966,6 +1974,14 @@ const char** widget_get_persistent_props(void);
 
 bool_t widget_is_instance_of(widget_t* widget, const widget_vtable_t* vt);
 #define WIDGET_IS_INSTANCE_OF(widget, name) widget_is_instance_of(widget, TK_REF_VTABLE(name))
+
+bool_t widget_is_system_bar(widget_t* widget);
+
+bool_t widget_is_normal_window(widget_t* widget);
+
+bool_t widget_is_dialog(widget_t* widget);
+
+bool_t widget_is_popup(widget_t* widget);
 
 /*public for subclass*/
 TK_EXTERN_VTABLE(widget);

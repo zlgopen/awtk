@@ -30,6 +30,51 @@
 
 BEGIN_C_DECLS
 
+typedef widget_t* (*window_manager_get_top_window_t)(widget_t* widget);
+typedef widget_t* (*window_manager_get_prev_window_t)(widget_t* widget);
+typedef widget_t* (*window_manager_get_top_main_window_t)(widget_t* widget);
+typedef ret_t (*window_manager_open_window_t)(widget_t* widget, widget_t* window);
+typedef ret_t (*window_manager_close_window_t)(widget_t* widget, widget_t* window);
+typedef ret_t (*window_manager_close_window_force_t)(widget_t* widget, widget_t* window);
+typedef ret_t (*window_manager_paint_t)(widget_t* widget);
+typedef ret_t (*window_manager_dispatch_input_event_t)(widget_t* widget, event_t* e);
+typedef ret_t (*window_manager_set_show_fps_t)(widget_t* widget, bool_t show_fps);
+typedef ret_t (*window_manager_set_screen_saver_time_t)(widget_t* widget, uint32_t time);
+typedef ret_t (*window_manager_set_cursor_t)(widget_t* widget, const char* cursor);
+typedef ret_t (*window_manager_post_init_t)(widget_t* widget, wh_t w, wh_t h);
+typedef ret_t (*window_manager_back_t)(widget_t* widget);
+typedef ret_t (*window_manager_back_to_home_t)(widget_t* widget);
+typedef ret_t (*window_manager_get_pointer_t)(widget_t* widget, xy_t* x, xy_t* y, bool_t* pressed);
+
+typedef ret_t (*window_manager_dispatch_native_window_event_t)(widget_t* widget, event_t* e,
+                                                               void* handle);
+
+typedef ret_t (*window_manager_snap_curr_window_t)(widget_t* widget, widget_t* curr_win, bitmap_t* img, framebuffer_object_t* fbo, bool_t auto_rotate);
+typedef ret_t (*window_manager_snap_prev_window_t)(widget_t* widget, widget_t* prev_win, bitmap_t* img, framebuffer_object_t* fbo, bool_t auto_rotate);
+typedef dialog_highlighter_t* (*window_manager_get_dialog_highlighter_t)(widget_t* widget);
+
+typedef struct _window_manager_vtable_t {
+  window_manager_back_t back;
+  window_manager_paint_t paint;
+  window_manager_post_init_t post_init;
+  window_manager_set_cursor_t set_cursor;
+  window_manager_open_window_t open_window;
+  window_manager_close_window_t close_window;
+  window_manager_set_show_fps_t set_show_fps;
+  window_manager_back_to_home_t back_to_home;
+  window_manager_get_top_window_t get_top_window;
+  window_manager_get_prev_window_t get_prev_window;
+  window_manager_close_window_force_t close_window_force;
+  window_manager_get_top_main_window_t get_top_main_window;
+  window_manager_dispatch_input_event_t dispatch_input_event;
+  window_manager_dispatch_native_window_event_t dispatch_native_window_event;
+  window_manager_set_screen_saver_time_t set_screen_saver_time;
+  window_manager_get_pointer_t get_pointer;
+  window_manager_snap_curr_window_t snap_curr_window;
+  window_manager_snap_prev_window_t snap_prev_window;
+  window_manager_get_dialog_highlighter_t get_dialog_highlighter;
+} window_manager_vtable_t;
+
 /**
  * @class window_manager_t
  * @parent widget_t
@@ -39,40 +84,8 @@ BEGIN_C_DECLS
 typedef struct _window_manager_t {
   widget_t widget;
 
-  /**
-   * @property {bool_t} show_fps
-   * @annotation ["readable", "scriptable"]
-   * 是否显示fps。
-   */
   bool_t show_fps;
-
-  /*private*/
-  rect_t dirty_rect;
-  rect_t last_dirty_rect;
-
-  bool_t animating;
-  bool_t ignore_user_input;
-  window_animator_t* animator;
-  canvas_t* canvas;
-  uint32_t last_paint_cost;
-
-  uint32_t fps;
-  uint32_t fps_time;
-  uint32_t fps_count;
-
-  widget_t* pending_close_window;
-  widget_t* pending_open_window;
-
-  char* cursor;
-  rect_t r_cursor;
-
-  widget_t* system_bar;
-  input_device_status_t input_device_status;
-  uint32_t screen_saver_timer_id;
-  uint32_t screen_saver_time;
-
-  dialog_highlighter_t* dialog_highlighter;
-  widget_t* prev_win;
+  const window_manager_vtable_t* vt;
 } window_manager_t;
 
 /**
@@ -105,25 +118,6 @@ widget_t* window_manager_cast(widget_t* widget);
 ret_t window_manager_set(widget_t* widget);
 
 /**
- * @method window_manager_create
- * 创建窗口管理器。
- * @annotation ["constructor"]
- *
- * @return {window_manager_t*} 返回窗口管理器对象。
- */
-widget_t* window_manager_create(void);
-
-/**
- * @method window_manager_init
- * 初始化窗口管理器。
- * @annotation ["constructor"]
- * @param {window_manager_t*} widget 窗口管理器对象。
- *
- * @return {widget_t*} 返回窗口管理器对象。
- */
-widget_t* window_manager_init(window_manager_t* widget);
-
-/**
  * @method window_manager_get_top_main_window
  * 获取最上面的主窗口。
  * @annotation ["scriptable"]
@@ -144,8 +138,48 @@ widget_t* window_manager_get_top_main_window(widget_t* widget);
 widget_t* window_manager_get_top_window(widget_t* widget);
 
 /**
- * @method window_manager_resize
- * 调整窗口管理器的大小。
+ * @method window_manager_get_prev_window
+ * 获取前一个的窗口。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 窗口管理器对象。
+ *
+ * @return {widget_t*} 返回窗口对象。
+ */
+widget_t* window_manager_get_prev_window(widget_t* widget);
+
+/**
+ * @method window_manager_get_pointer_x
+ * 获取指针当前的X坐标。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 窗口管理器对象。
+ *
+ * @return {xy_t} 返回指针当前的X坐标。
+ */
+xy_t window_manager_get_pointer_x(widget_t* widget);
+
+/**
+ * @method window_manager_get_pointer_y
+ * 获取指针当前的Y坐标。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 窗口管理器对象。
+ *
+ * @return {xy_t} 返回指针当前的X坐标。
+ */
+xy_t window_manager_get_pointer_y(widget_t* widget);
+
+/**
+ * @method window_manager_get_pointer_pressed
+ * 获取指针当前是否按下。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 窗口管理器对象。
+ *
+ * @return {bool_t} 返回指针当前是否按下。
+ */
+bool_t window_manager_get_pointer_pressed(widget_t* widget);
+
+/**
+ * @method window_manager_post_init
+ * post init。
  * @annotation ["private"]
  * @param {widget_t*} widget 窗口管理器对象。
  * @param {wh_t}   w 宽度
@@ -153,7 +187,7 @@ widget_t* window_manager_get_top_window(widget_t* widget);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t window_manager_resize(widget_t* widget, wh_t w, wh_t h);
+ret_t window_manager_post_init(widget_t* widget, wh_t w, wh_t h);
 
 /**
  * @method window_manager_open_window
@@ -198,11 +232,10 @@ ret_t window_manager_close_window_force(widget_t* widget, widget_t* window);
  *
  * @annotation ["private"]
  * @param {widget_t*} widget 窗口管理器对象。
- * @param {canvas_t*} c 画布。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t window_manager_paint(widget_t* widget, canvas_t* c);
+ret_t window_manager_paint(widget_t* widget);
 
 /**
  * @method window_manager_dispatch_input_event
@@ -274,22 +307,38 @@ ret_t window_manager_back(widget_t* widget);
  */
 ret_t window_manager_back_to_home(widget_t* widget);
 
-ret_t window_manager_paint_system_bar(widget_t* widget, canvas_t* c);
-ret_t window_manager_set_dialog_highlighter(widget_t* widget, dialog_highlighter_t* highlighter);
+/**
+ * @method window_manager_dispatch_native_window_event
+ * 处理native window事件。
+ *
+ * @param {widget_t*} widget 窗口管理器对象。
+ * @param {event_t*} e 事件。
+ * @param {void*} handle native window句柄。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t window_manager_dispatch_native_window_event(widget_t* widget, event_t* e, void* handle);
+
+/*public for animators*/
+ret_t window_manager_snap_curr_window(widget_t* widget, 
+    widget_t* curr_win, bitmap_t* img, framebuffer_object_t* fbo, bool_t auto_rotate);
+
+ret_t window_manager_snap_prev_window(widget_t* widget, 
+    widget_t* prev_win, bitmap_t* img, framebuffer_object_t* fbo, bool_t auto_rotate);
+
+dialog_highlighter_t* window_manager_get_dialog_highlighter(widget_t* widget);
+
+widget_t* window_manager_create(void);
+
+/*helper for sub class*/
+widget_t* window_manager_init(window_manager_t* wm, const widget_vtable_t* wvt,
+                              const window_manager_vtable_t* vt);
+
+widget_t* window_manager_find_target_by_win(widget_t* widget, void* native_win);
+widget_t* window_manager_find_target(widget_t* widget, void* native_win, xy_t x, xy_t y);
+
+
 #define WINDOW_MANAGER(widget) ((window_manager_t*)(widget))
-
-/*for compatible*/
-#define window_manager_request_close_top_window window_manager_back
-
-/*public for window*/
-ret_t window_manager_layout_children(widget_t* widget);
-
-/*public for window animator*/
-ret_t window_manager_snap_curr_window(widget_t* widget, widget_t* curr_win, bitmap_t* img,
-                                      framebuffer_object_t* fbo, bool_t auto_rotate);
-
-ret_t window_manager_snap_prev_window(widget_t* widget, widget_t* prev_win, bitmap_t* img,
-                                      framebuffer_object_t* fbo, bool_t auto_rotate);
 
 END_C_DECLS
 

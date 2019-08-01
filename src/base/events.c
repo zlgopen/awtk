@@ -29,6 +29,14 @@ wheel_event_t* wheel_event_cast(event_t* event) {
   return (wheel_event_t*)event;
 }
 
+orientation_event_t* orientation_event_cast(event_t* event) {
+  return_value_if_fail(event != NULL, NULL);
+  return_value_if_fail(
+      event->type == EVT_ORIENTATION_CHANGED || event->type == EVT_ORIENTATION_WILL_CHANGED, NULL);
+
+  return (orientation_event_t*)event;
+}
+
 pointer_event_t* pointer_event_cast(event_t* event) {
   return_value_if_fail(event != NULL, NULL);
   return_value_if_fail(event->type >= EVT_POINTER_DOWN && event->type <= EVT_CLICK, NULL);
@@ -85,6 +93,17 @@ event_t* wheel_event_init(wheel_event_t* event, uint32_t type, void* target, int
 
   event->e = event_init(type, target);
   event->dy = dy;
+
+  return (event_t*)event;
+}
+
+event_t* orientation_event_init(orientation_event_t* event, uint32_t type, void* target,
+                                lcd_orientation_t orientation) {
+  return_value_if_fail(event != NULL, NULL);
+  memset(event, 0x00, sizeof(orientation_event_t));
+
+  event->e = event_init(type, target);
+  event->orientation = orientation;
 
   return (event_t*)event;
 }

@@ -196,7 +196,7 @@ static EvalResult expr_str_append_char(ExprStr* str, char c) {
 }
 
 static const char* number_to_string(double v, char* str, size_t capacity) {
-  if (ceill(v) == v) {
+  if (ceil(v) == v) {
     tk_snprintf(str, capacity, "%u", (unsigned int)v);
   } else {
     tk_snprintf(str, capacity, "%lf", v);

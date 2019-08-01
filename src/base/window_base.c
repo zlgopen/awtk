@@ -24,6 +24,7 @@
 #include "base/keys.h"
 #include "base/enums.h"
 #include "base/window_base.h"
+#include "base/native_window.h"
 #include "base/font_manager.h"
 #include "base/image_manager.h"
 #include "base/assets_manager.h"
@@ -81,6 +82,9 @@ ret_t window_base_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_CLOSE_ANIM_HINT)) {
     value_set_str(v, window_base->close_anim_hint);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_NATIVE_WINDOW)) {
+    value_set_pointer(v, window_base->native_window);
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_THEME)) {
     value_set_str(v, window_base->theme);
     return RET_OK;
@@ -129,6 +133,9 @@ ret_t window_base_set_prop(widget_t* widget, const char* name, const value_t* v)
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_OPEN_ANIM_HINT)) {
     window_base->open_anim_hint = tk_str_copy(window_base->open_anim_hint, value_str(v));
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_NATIVE_WINDOW)) {
+    window_base->native_window = (native_window_t*)value_pointer(v);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_CLOSE_ANIM_HINT)) {
     window_base->close_anim_hint = tk_str_copy(window_base->close_anim_hint, value_str(v));
@@ -190,6 +197,22 @@ ret_t window_base_on_destroy(widget_t* widget) {
   if (window_base->res_theme != NULL) {
     assets_manager_t* am = widget_get_assets_manager(widget);
     assets_manager_unref(am, window_base->res_theme);
+  }
+
+  return RET_OK;
+}
+
+ret_t window_base_invalidate(widget_t* widget, rect_t* r) {
+  native_window_t* nw = NULL;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  nw = (native_window_t*)widget_get_prop_pointer(widget, WIDGET_PROP_NATIVE_WINDOW);
+  if (nw != NULL) {
+    if (nw->shared) {
+      r->x += widget->x;
+      r->y += widget->y;
+    }
+    native_window_invalidate(nw, r);
   }
 
   return RET_OK;

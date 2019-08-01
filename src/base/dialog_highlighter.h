@@ -67,6 +67,8 @@ typedef struct _dialog_highlighter_vtable_t {
  *
  */
 struct _dialog_highlighter_t {
+  emitter_t emitter;
+
   /**
    * @property {bitmap_t} img
    * 底层窗口的截图。

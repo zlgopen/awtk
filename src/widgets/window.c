@@ -63,7 +63,7 @@ ret_t window_set_fullscreen(widget_t* widget, bool_t fullscreen) {
 
   if (window->fullscreen != fullscreen) {
     window->fullscreen = fullscreen;
-    window_manager_layout_children(window_manager());
+    widget_layout_children(widget->parent);
     widget_invalidate_force(widget, NULL);
   }
 
@@ -81,6 +81,7 @@ TK_DECL_VTABLE(window) = {.type = WIDGET_TYPE_NORMAL_WINDOW,
                           .on_paint_self = window_base_on_paint_self,
                           .on_paint_begin = window_base_on_paint_begin,
                           .on_paint_end = window_base_on_paint_end,
+                          .invalidate = window_base_invalidate,
                           .set_prop = window_set_prop,
                           .get_prop = window_get_prop,
                           .on_destroy = window_base_on_destroy};

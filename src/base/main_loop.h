@@ -51,8 +51,6 @@ struct _main_loop_t {
   bool_t app_quited;
   uint32_t last_loop_time;
   widget_t* wm;
-  canvas_t canvas;
-  lcd_t* lcd;
 };
 
 main_loop_t* main_loop_init(int w, int h);

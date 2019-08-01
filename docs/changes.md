@@ -1,4 +1,7 @@
 # 最新动态
+* 2019/07/20-8/1
+  * window manager抽象成接口。
+  * 引入native\_window接口。
 
 * 2019/07/29
   * fix edit clone的问题。

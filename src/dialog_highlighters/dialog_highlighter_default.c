@@ -19,9 +19,9 @@
  *
  */
 
-#include "base/window_manager.h"
 #include "base/dialog_highlighter.h"
 #include "dialog_highlighters/dialog_highlighter_default.h"
+#include "window_manager/window_manager_default.h"
 
 static ret_t dialog_highlighter_default_draw_mask(canvas_t* c, uint8_t alpha) {
   if (alpha > 1) {

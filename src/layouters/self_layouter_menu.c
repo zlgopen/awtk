@@ -21,6 +21,7 @@
 
 #include "tkc/utils.h"
 #include "base/widget.h"
+#include "awtk_global.h"
 #include "tkc/tokenizer.h"
 #include "base/window_manager.h"
 #include "tkc/func_call_parser.h"
@@ -309,11 +310,10 @@ static ret_t widget_layout_self_get_trigger(self_layouter_t* layouter, point_t* 
                                             rect_t* widget_rect) {
   point_t p = {0, 0};
   widget_t* iter = NULL;
-  window_manager_t* wm = WINDOW_MANAGER(window_manager());
-  pressed->x = wm->input_device_status.last_x;
-  pressed->y = wm->input_device_status.last_y;
+  pressed->x = tk_get_pointer_x();
+  pressed->y = tk_get_pointer_y();
 
-  iter = wm->prev_win;
+  iter = window_manager_get_prev_window(window_manager());
   return_value_if_fail(iter != NULL, RET_BAD_PARAMS);
 
   while (iter->key_target != NULL) {

@@ -94,6 +94,8 @@ typedef struct _event_t {
    * 事件发生的目标对象。
    */
   void* target;
+
+  void* native_window_handle;
 } event_t;
 
 /*事件处理函数原型*/

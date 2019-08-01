@@ -179,15 +179,14 @@ ret_t label_resize_to_content(widget_t* widget, uint32_t min_w, uint32_t max_w, 
   wh_t w = 0;
   wh_t h = 0;
   ctx_info_t ctx;
-  canvas_t* c = NULL;
   int32_t margin = 0;
   style_t* style = NULL;
   label_t* label = LABEL(widget);
+  canvas_t* c = widget_get_canvas(widget);
 
   return_value_if_fail(label != NULL, RET_BAD_PARAMS);
 
   style = widget->astyle;
-  c = WINDOW_MANAGER(window_manager())->canvas;
   margin = style_get_int(style, STYLE_ID_MARGIN, 2);
   widget_prepare_text_style(widget, c);
 

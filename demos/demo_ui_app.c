@@ -283,6 +283,21 @@ static ret_t on_open_window(void* ctx, event_t* e) {
 #endif
 }
 
+static ret_t on_fullscreen(void* ctx, event_t* e) {
+  widget_t* btn = WIDGET(ctx);
+  window_t* win = WINDOW(widget_get_window(btn));
+
+  if (win->fullscreen) {
+    window_set_fullscreen(WIDGET(win), FALSE);
+    widget_set_text_utf8(btn, "Fullscreen");
+  } else {
+    window_set_fullscreen(WIDGET(win), TRUE);
+    widget_set_text_utf8(btn, "Unfullscreen");
+  }
+
+  return RET_OK;
+}
+
 static ret_t on_close(void* ctx, event_t* e) {
   widget_t* win = WIDGET(ctx);
   (void)e;
@@ -538,6 +553,8 @@ static ret_t install_one(void* ctx, const void* iter) {
       widget_on(widget, EVT_CLICK, on_dec, win);
     } else if (tk_str_eq(name, "close")) {
       widget_on(widget, EVT_CLICK, on_close, win);
+    } else if (tk_str_eq(name, "fullscreen")) {
+      widget_on(widget, EVT_CLICK, on_fullscreen, widget);
     } else if (tk_str_eq(name, "start")) {
       widget_on(widget, EVT_CLICK, on_start, win);
     } else if (tk_str_eq(name, "pause")) {
@@ -594,7 +611,10 @@ static ret_t timer_preload(const timer_info_t* timer) {
   widget_t* status = widget_lookup(win, "status", TRUE);
 
   if (s_preload_nr == total) {
+#ifndef MULTI_NATIVE_WINDOW
     window_open("system_bar");
+#endif /*MULTI_NATIVE_WINDOW*/
+
     open_window("main", win);
 
     return RET_REMOVE;

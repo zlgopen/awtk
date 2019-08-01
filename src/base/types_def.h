@@ -269,7 +269,7 @@ typedef struct _widget_animator_t widget_animator_t;
 #define TK_EXTERN_VTABLE(vt)
 #endif /*WITH_WIDGET_TYPE_CHECK*/
 
-#ifdef WITH_VGCANVAS
+#if defined(WITH_VGCANVAS)
 #define WITH_WINDOW_ANIMATORS 1
 #endif /*WITH_VGCANVAS*/
 

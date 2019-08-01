@@ -11,7 +11,7 @@ TEST(TextEdit, basic) {
   text_edit_state_t state;
   widget_t* w = mledit_create(NULL, 10, 20, 30, 40);
   text_edit_t* text_edit = text_edit_create(w, FALSE);
-  text_edit_set_canvas(text_edit, WINDOW_MANAGER(window_manager())->canvas);
+  text_edit_set_canvas(text_edit, widget_get_canvas(w));
 
   str_init(&str, 0);
 

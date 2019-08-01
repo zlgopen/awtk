@@ -33,6 +33,7 @@
 #include "base/main_loop.h"
 #include "base/widget_pool.h"
 #include "base/system_info.h"
+#include "base/window_manager.h"
 #include "base/widget_vtable.h"
 #include "base/style_mutable.h"
 #include "base/style_factory.h"
@@ -1962,7 +1963,7 @@ widget_t* widget_get_window_manager(widget_t* widget) {
     iter = iter->parent;
   }
 
-  return iter;
+  return window_manager();
 }
 
 static ret_t widget_remove_timer_on_destroy(void* ctx, event_t* e) {
@@ -2536,7 +2537,7 @@ bool_t widget_equal(widget_t* widget, widget_t* other) {
 }
 
 float_t widget_measure_text(widget_t* widget, const wchar_t* text) {
-  canvas_t* c = &(main_loop()->canvas);
+  canvas_t* c = widget_get_canvas(widget);
   return_value_if_fail(widget != NULL && text != NULL && c != NULL, 0);
 
   widget_prepare_text_style(widget, c);
@@ -2933,4 +2934,34 @@ ret_t widget_set_style_str(widget_t* widget, const char* state_and_name, const c
 
   value_set_str(&v, value);
   return widget_set_style(widget, state_and_name, &v);
+}
+
+canvas_t* widget_get_canvas(widget_t* widget) {
+  canvas_t* c = NULL;
+  widget_t* win = widget_get_window(widget);
+  return_value_if_fail(widget != NULL, NULL);
+
+  c = (canvas_t*)widget_get_prop_pointer(win, WIDGET_PROP_CANVAS);
+  if (c == NULL) {
+    widget_t* wm = window_manager();
+    c = (canvas_t*)widget_get_prop_pointer(wm, WIDGET_PROP_CANVAS);
+  }
+
+  return c;
+}
+
+bool_t widget_is_system_bar(widget_t* widget) {
+  return tk_str_eq(widget->vt->type, WIDGET_TYPE_SYSTEM_BAR);
+}
+
+bool_t widget_is_normal_window(widget_t* widget) {
+  return tk_str_eq(widget->vt->type, WIDGET_TYPE_NORMAL_WINDOW);
+}
+
+bool_t widget_is_dialog(widget_t* widget) {
+  return tk_str_eq(widget->vt->type, WIDGET_TYPE_DIALOG);
+}
+
+bool_t widget_is_popup(widget_t* widget) {
+  return tk_str_eq(widget->vt->type, WIDGET_TYPE_POPUP);
 }
