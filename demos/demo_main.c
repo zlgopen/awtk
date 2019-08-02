@@ -39,6 +39,10 @@ int gui_app_start(int lcd_w, int lcd_h) {
 int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline, int ncmdshow) {
   int32_t lcd_w = 320;
   int32_t lcd_h = 480;
+#elif defined(ANDROID)
+int SDL_main(int argc, char* argv[]) {
+  int32_t lcd_w = 320;
+  int32_t lcd_h = 480;
 #else
 int main(int argc, char* argv[]) {
   int32_t lcd_w = 320;
