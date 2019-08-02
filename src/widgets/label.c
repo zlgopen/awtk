@@ -245,7 +245,6 @@ static ret_t label_set_prop(widget_t* widget, const char* name, const value_t* v
 
 TK_DECL_VTABLE(label) = {.size = sizeof(label_t),
                          .type = WIDGET_TYPE_LABEL,
-                         .enable_pool = TRUE,
                          .parent = TK_PARENT_VTABLE(widget),
                          .create = label_create,
                          .set_prop = label_set_prop,

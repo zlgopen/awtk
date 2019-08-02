@@ -22,6 +22,7 @@
     text="(only_focus ellipses loop)为用户提供一个功能强大、高效可靠、简单易用、可轻松做出炫酷效果的 GUI 引擎。" /> 
 
   <hscroll_label 
+    style="green"
     loop="true"
     yoyo="true"
     ellipses="true"

@@ -102,7 +102,6 @@ static const char* s_image_clone_properties[] = {WIDGET_PROP_IMAGE,      WIDGET_
 
 TK_DECL_VTABLE(image) = {.size = sizeof(image_t),
                          .type = WIDGET_TYPE_IMAGE,
-                         .enable_pool = TRUE,
                          .clone_properties = s_image_clone_properties,
                          .parent = TK_PARENT_VTABLE(image_base),
                          .create = image_create,

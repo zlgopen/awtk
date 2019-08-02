@@ -378,7 +378,6 @@ static ret_t hscroll_label_on_event(widget_t* widget, event_t* e) {
 
 TK_DECL_VTABLE(hscroll_label) = {.size = sizeof(hscroll_label_t),
                                  .type = WIDGET_TYPE_HSCROLL_LABEL,
-                                 .enable_pool = TRUE,
                                  .parent = TK_PARENT_VTABLE(widget),
                                  .create = hscroll_label_create,
                                  .on_destroy = hscroll_label_on_destroy,
