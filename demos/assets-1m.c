@@ -126,15 +126,12 @@
 #include "assets/inc/data/test_json.data"
 #include "assets/inc/data/a_b_c_any.data"
 #ifdef WITH_STB_IMAGE
-#include "assets/inc/images/ani6.res"
 #include "assets/inc/images/checked.res"
 #include "assets/inc/images/num_7.res"
 #include "assets/inc/images/close_p.res"
 #include "assets/inc/images/num_6.res"
 #include "assets/inc/images/shift.res"
-#include "assets/inc/images/ani7.res"
 #include "assets/inc/images/earth.res"
-#include "assets/inc/images/ani5.res"
 #include "assets/inc/images/bee.res"
 #include "assets/inc/images/contact.res"
 #include "assets/inc/images/battery_4.res"
@@ -285,7 +282,6 @@
 #include "assets/inc/images/arrow_up_o.data"
 #include "assets/inc/images/clock.data"
 #include "assets/inc/images/empty.data"
-#include "assets/inc/images/ani5.data"
 #include "assets/inc/images/ani4.data"
 #include "assets/inc/images/left_off.data"
 #include "assets/inc/images/radio_unchecked.data"
@@ -307,7 +303,6 @@
 #include "assets/inc/images/contact.data"
 #include "assets/inc/images/bricks.data"
 #include "assets/inc/images/dialog_title.data"
-#include "assets/inc/images/ani7.data"
 #include "assets/inc/images/play_p.data"
 #include "assets/inc/images/battery_5.data"
 #include "assets/inc/images/green_btn_p.data"
@@ -320,7 +315,6 @@
 #include "assets/inc/images/contact_active.data"
 #include "assets/inc/images/slider_drag_o.data"
 #include "assets/inc/images/battery_4.data"
-#include "assets/inc/images/ani6.data"
 #include "assets/inc/images/message.data"
 #include "assets/inc/images/edit_clear_o.data"
 #include "assets/inc/images/ani1.data"
@@ -517,7 +511,6 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_arrow_up_o);
   assets_manager_add(rm, image_clock);
   assets_manager_add(rm, image_empty);
-  assets_manager_add(rm, image_ani5);
   assets_manager_add(rm, image_ani4);
   assets_manager_add(rm, image_left_off);
   assets_manager_add(rm, image_radio_unchecked);
@@ -539,7 +532,6 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_contact);
   assets_manager_add(rm, image_bricks);
   assets_manager_add(rm, image_dialog_title);
-  assets_manager_add(rm, image_ani7);
   assets_manager_add(rm, image_play_p);
   assets_manager_add(rm, image_battery_5);
   assets_manager_add(rm, image_green_btn_p);
@@ -552,7 +544,6 @@ ret_t assets_init(void) {
   assets_manager_add(rm, image_contact_active);
   assets_manager_add(rm, image_slider_drag_o);
   assets_manager_add(rm, image_battery_4);
-  assets_manager_add(rm, image_ani6);
   assets_manager_add(rm, image_message);
   assets_manager_add(rm, image_edit_clear_o);
   assets_manager_add(rm, image_ani1);
