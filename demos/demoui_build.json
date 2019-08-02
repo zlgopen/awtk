@@ -1,0 +1,17 @@
+{
+  "name":"demoui",
+  "version":"1.0",
+  "assets" : "assets",
+  "web": {
+    "app_type":"c",
+    "sources":["demo_ui_app.c"],
+    "config" : {
+      "fontScale":"0.8",
+      "defaultFont":"sans"
+    }
+  },
+  "android" : {
+    "app_name":"org.zlgopen.demoui",
+    "sources":["assets.c",	"assets.h",	"demo_main.c", "demo_ui_app.c",	"vg_common.inc"]
+  }
+}
