@@ -6,6 +6,9 @@
 * 2019/07/29
   * fix edit clone的问题。
 
+* 2019/08/02
+  * 禁用label/button/image/hscroll\_label的缓存。
+
 * 2019/07/26
   * 完善text edit(感谢智明提供补丁)
 
