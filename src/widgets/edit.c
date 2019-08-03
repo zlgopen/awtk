@@ -445,8 +445,11 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
     if (key != TK_KEY_LEFT && key != TK_KEY_RIGHT && key != TK_KEY_HOME && key != TK_KEY_END) {
       edit_dispatch_event(widget, EVT_VALUE_CHANGING);
     }
-  } else if (system_info()->app_type != APP_DESKTOP && key < 128 && isprint(key)) {
-    edit_input_char(widget, (wchar_t)key);
+  } else if (key < 128 && isprint(key)) {
+    app_type_t app_type = system_info()->app_type;
+    if (app_type != APP_DESKTOP && app_type != APP_MOBILE) {
+      edit_input_char(widget, (wchar_t)key);
+    }
   }
 
   return RET_OK;
