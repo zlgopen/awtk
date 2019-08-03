@@ -178,7 +178,7 @@ ret_t native_window_clear_dirty_rect(native_window_t* win) {
 ret_t native_window_preprocess_event(native_window_t* win, event_t* e) {
   return_value_if_fail(win != NULL && win->vt != NULL && e != NULL, RET_BAD_PARAMS);
 
-  if(win->vt->preprocess_event != NULL) {
+  if (win->vt->preprocess_event != NULL) {
     win->vt->preprocess_event(win, e);
   }
 

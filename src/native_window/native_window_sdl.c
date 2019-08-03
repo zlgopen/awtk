@@ -83,7 +83,7 @@ static ret_t native_window_sdl_resize(native_window_t* win, wh_t w, wh_t h) {
   if (w != oldw || h != oldh) {
     SDL_SetWindowSize(sdl->window, w, h);
   }
-#endif/*ANDROID*/
+#endif /*ANDROID*/
 
   return RET_OK;
 }
@@ -150,20 +150,18 @@ static ret_t native_window_sdl_swap_buffer(native_window_t* win) {
 
 static ret_t native_window_sdl_preprocess_event(native_window_t* win, event_t* e) {
 #ifdef ANDROID
-  if(e->type == EVT_POINTER_DOWN 
-      || e->type == EVT_POINTER_MOVE 
-      || e->type == EVT_CLICK
-      || e->type == EVT_POINTER_UP) {
+  if (e->type == EVT_POINTER_DOWN || e->type == EVT_POINTER_MOVE || e->type == EVT_CLICK ||
+      e->type == EVT_POINTER_UP) {
     pointer_event_t* evt = pointer_event_cast(e);
     evt->x /= win->ratio;
     evt->y /= win->ratio;
-  } else if(e->type == EVT_KEY_DOWN) {
+  } else if (e->type == EVT_KEY_DOWN) {
     key_event_t* evt = key_event_cast(e);
-    if(evt->key == TK_KEY_AC_BACK) {
+    if (evt->key == TK_KEY_AC_BACK) {
       window_manager_back(window_manager());
     }
   }
-#endif/*ANDROID*/
+#endif /*ANDROID*/
 
   return RET_OK;
 }
@@ -187,12 +185,12 @@ static ret_t native_window_sdl_get_info(native_window_t* win, native_window_info
 #ifdef ANDROID
   float dpi = 1;
   SDL_GetDisplayDPI(0, &dpi, NULL, NULL);
-  float_t ratio = dpi/160;
+  float_t ratio = dpi / 160;
 
   info->x = x;
   info->y = y;
-  info->w = ww/ratio;
-  info->h = wh/ratio;
+  info->w = ww / ratio;
+  info->h = wh / ratio;
   info->ratio = ratio;
 #else
   info->x = x;
@@ -200,7 +198,7 @@ static ret_t native_window_sdl_get_info(native_window_t* win, native_window_info
   info->w = ww;
   info->h = wh;
   info->ratio = (float_t)fw / (float_t)ww;
-#endif/**/
+#endif /**/
 
   win->rect.x = info->x;
   win->rect.y = info->y;
@@ -302,11 +300,11 @@ static native_window_t* native_window_create_internal(const char* title, uint32_
   win->handle = sdl->window;
   win->vt = &s_native_window_vtable;
 
-    if(native_window_get_info(win, &info) == RET_OK) {
-        w = info.w;
-        h = info.h;
-    }
-    win->rect = rect_init(x, y, w, h);
+  if (native_window_get_info(win, &info) == RET_OK) {
+    w = info.w;
+    h = info.h;
+  }
+  win->rect = rect_init(x, y, w, h);
 #ifdef WITH_NANOVG_GL
   sdl->context = SDL_GL_CreateContext(sdl->window);
   SDL_GL_SetSwapInterval(1);

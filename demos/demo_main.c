@@ -32,15 +32,17 @@ ret_t application_init(void);
 #ifdef USE_GUI_MAIN
 int gui_app_start(int lcd_w, int lcd_h) {
   tk_init(lcd_w, lcd_h, APP_MOBILE, NULL, NULL);
+#elif defined(MOBILE_APP)
+int SDL_main(int argc, char* argv[]) {
+  int32_t lcd_w = 320;
+  int32_t lcd_h = 480;
+  tk_init(lcd_w, lcd_h, APP_MOBILE, "", "");
+  system_info_set_default_font(system_info(), "default_full");
 #else
 
 #if defined(WIN32)
 #include <windows.h>
 int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline, int ncmdshow) {
-  int32_t lcd_w = 320;
-  int32_t lcd_h = 480;
-#elif defined(ANDROID)
-int SDL_main(int argc, char* argv[]) {
   int32_t lcd_w = 320;
   int32_t lcd_h = 480;
 #else

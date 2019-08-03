@@ -22,7 +22,7 @@
 #include "base/system_info.h"
 #include "input_method_null.inc"
 
-#if !defined(WITH_NULL_IM)
+#if !defined(WITH_NULL_IM) && !defined(MOBILE_APP)
 #include "input_method_default.inc"
 #endif /**/
 
@@ -42,11 +42,15 @@ input_method_t* input_method_create(void) {
 #elif defined(AWTK_WEB)
   im = input_method_web_create();
 #elif defined(WITH_SDL)
-  if (system_info()->app_type == APP_DESKTOP) {
-    im = input_method_sdl_create();
-  } else {
+#if defined(MOBILE_APP)
+  im = input_method_sdl_create();
+#else
+  if (system_info()->app_type == APP_SIMULATOR) {
     im = input_method_default_create();
+  } else {
+    im = input_method_sdl_create();
   }
+#endif /*MOBILE_APP*/
 #else
   im = input_method_default_create();
 #endif /*WITH_SDL*/

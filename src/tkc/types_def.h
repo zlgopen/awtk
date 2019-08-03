@@ -165,7 +165,7 @@ typedef enum _ret_t {
 #include "android/log.h"
 #define log_debug(...) __android_log_print(ANDROID_LOG_DEBUG, "AWTK", __VA_ARGS__)
 #define log_info(...) __android_log_print(ANDROID_LOG_INFO, "AWTK", __VA_ARGS__)
-#define log_warn(...) __android_log_print(ANDROID_LOG_WARN, "AWTK", __VA_ARGS__) 
+#define log_warn(...) __android_log_print(ANDROID_LOG_WARN, "AWTK", __VA_ARGS__)
 #define log_error(...) __android_log_print(ANDROID_LOG_ERROR, "AWTK", __VA_ARGS__)
 #elif defined(WIN32)
 #include <windows.h>

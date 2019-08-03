@@ -1,13 +1,16 @@
 # 最新动态
+* 2019/08/03
+  * 完善Android移植。
+
 * 2019/07/20-8/1
   * window manager抽象成接口。
   * 引入native\_window接口。
 
-* 2019/07/29
-  * fix edit clone的问题。
-
 * 2019/08/02
   * 禁用label/button/image/hscroll\_label的缓存。
+
+* 2019/07/29
+  * fix edit clone的问题。
 
 * 2019/07/26
   * 完善text edit(感谢智明提供补丁)

@@ -617,7 +617,7 @@ static ret_t window_manager_paint_animation(widget_t* widget, canvas_t* c) {
 
   return RET_OK;
 }
-#endif/*WITH_WINDOW_ANIMATORS*/
+#endif /*WITH_WINDOW_ANIMATORS*/
 
 static ret_t window_manager_default_inc_fps(widget_t* widget) {
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
@@ -663,7 +663,7 @@ static ret_t window_manager_default_paint(widget_t* widget) {
   }
 #else
   ret = window_manager_paint_normal(widget, c);
-#endif/*WITH_WINDOW_ANIMATORS*/
+#endif /*WITH_WINDOW_ANIMATORS*/
   return ret;
 }
 
@@ -908,7 +908,7 @@ static ret_t window_manager_default_post_init(widget_t* widget, wh_t w, wh_t h) 
   wm->lcd_h = h;
   wm->native_window = native_window_create(widget);
 
-  if(native_window_get_info(wm->native_window, &info) == RET_OK) {
+  if (native_window_get_info(wm->native_window, &info) == RET_OK) {
     w = info.w;
     h = info.h;
   }
