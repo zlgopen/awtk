@@ -900,8 +900,11 @@ ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
       return RET_OK;
     }
     default: {
-      if (!isprint((char)key)) {
-        return RET_OK;
+      if (key < 128 && isprint(key)) {
+        app_type_t app_type = system_info()->app_type;
+        if (app_type == APP_DESKTOP || app_type == APP_MOBILE) {
+          return RET_OK;
+        }
       }
       break;
     }
