@@ -50,9 +50,11 @@ static ret_t native_window_raw_get_info(native_window_t* win, native_window_info
 
   info->x = 0;
   info->y = 0;
-  info->ratio = 1;
-  info->w = win->rect.w;
-  info->h = win->rect.h;
+  info->ratio = raw->canvas.lcd->ratio;
+  info->w = lcd_get_width(raw->canvas.lcd);
+  info->h = lcd_get_height(raw->canvas.lcd);
+
+  log_debug("ratio=%f %d %d\n", info->ratio, info->w, info->h);
 
   return RET_OK;
 }
