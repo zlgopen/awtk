@@ -2,5 +2,5 @@
   <button name="open:toast" text="Toast"/>
   <button name="open:confirm" text="Confirm"/>
   <button name="open:info" text="Information"/>
-  <button name="open:warn" text="Warnning"/>
+  <button name="open:warn" text="Warning"/>
 </window>
