@@ -310,9 +310,10 @@ static native_window_t* native_window_create_internal(const char* title, uint32_
   SDL_GL_SetSwapInterval(1);
 
   loadGL();
-  glEnable(GL_ALPHA_TEST);
-  glEnable(GL_STENCIL_TEST);
-  glEnable(GL_DEPTH_TEST);
+  glDisable(GL_STENCIL_TEST);
+  glDisable(GL_ALPHA_TEST);
+  glDisable(GL_DEPTH_TEST);
+  glDisable(GL_SCISSOR_TEST);
 #endif /*WITH_NANOVG_GL*/
 
 #ifdef WITH_NANOVG_SOFT

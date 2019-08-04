@@ -136,10 +136,12 @@ ret_t native_window_begin_frame(native_window_t* win, lcd_draw_mode_t mode) {
       canvas_t* c = native_window_get_canvas(win);
       canvas_begin_frame(c, &r, mode);
       win->dirty = TRUE;
+
+      return RET_OK;
     }
   }
 
-  return RET_OK;
+  return RET_FAIL;
 }
 
 ret_t native_window_paint(native_window_t* win, widget_t* widget) {
