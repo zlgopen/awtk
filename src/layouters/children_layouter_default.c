@@ -276,13 +276,13 @@ static ret_t children_layouter_default_layout(children_layouter_t* layouter, wid
   spacing = layout->spacing;
 
   if (layout->rows_is_height) {
-    rows = tk_roundi((layout_h - 2.0f * y_margin) / (layout->rows + spacing));
+    rows = tk_roundi((layout_h - 2.0f * y_margin + spacing) / (layout->rows + spacing));
   } else {
     rows = layout->rows;
   }
 
   if (layout->cols_is_width) {
-    cols = tk_roundi((layout_w - 2.0f * x_margin) / (layout->cols + spacing));
+    cols = tk_roundi((layout_w - 2.0f * x_margin + spacing) / (layout->cols + spacing));
   } else {
     cols = layout->cols;
   }
