@@ -302,7 +302,7 @@ ret_t style_mutable_reset(style_t* s) {
 
     witer = wnext;
   }
-
+  style->styles = NULL;
   return RET_OK;
 }
 
