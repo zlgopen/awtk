@@ -101,6 +101,11 @@ static int is_digit(char c) {
   return (c >= '0') && (c <= '9');
 }
 
+static int is_xdigit(char c) {
+  char lc = tolower(c);
+  return ((c >= '0') && (c <= '9')) || ((lc >= 'a') && (lc <= 'f')) || lc == 'x';
+}
+
 static int is_name_start(char c) {
   return ((c >= 'A') && (c <= 'Z')) || ((c >= 'a') && (c <= 'z')) || (c == '_');
 }
@@ -109,12 +114,12 @@ static int is_name(char c) {
   return is_name_start(c) || is_digit(c);
 }
 
-static int is_exp(char c) {
-  return (c == 'e') || (c == 'E');
-}
-
 static int is_dp(char c) {
   return (c == '.');
+}
+
+static int is_number(char c) {
+  return is_xdigit(c) || is_dp(c);
 }
 
 static char get_char(EvalContext* ctx) {
@@ -475,96 +480,35 @@ void expr_value_clear(ExprValue* v) {
 }
 
 static EvalResult get_number(EvalContext* ctx) {
-  char c;
-  double value;
-  long exp;
-  double power;
+  int i = 0;
+  char c = 0;
+  double value = 0;
+  bool_t has_dot = FALSE;
+  char snum[TK_NUM_MAX_LEN + 1];
 
-  value = 0.0f;
-  exp = 0;
-
-  c = get_char(ctx);
-
-  if (!is_dp(c)) {
-    if (!is_digit(c)) return EVAL_RESULT_INVALID_LITERAL;
-
-    do {
-      value = (value * 10.0f) + (c - '0');
-      c = get_char(ctx);
-
-    } while (is_digit(c));
-  }
-
-  if (is_dp(c)) {
+  for (i = 0; i < TK_NUM_MAX_LEN; i++) {
     c = get_char(ctx);
-    if (!is_digit(c)) return EVAL_RESULT_INVALID_LITERAL;
-
-    do {
-      value = (value * 10.0f) + (c - '0');
-      exp--;
-
-      c = get_char(ctx);
-
-    } while (is_digit(c));
-  }
-
-  if (is_exp(c)) {
-    int exp_neg;
-    int int_val;
-
-    exp_neg = 0;
-
-    c = get_char(ctx);
-
-    switch (c) {
-      case '-':
-        exp_neg = 1;
-        /* fall through */
-
-      case '+':
-        c = get_char(ctx);
-        /* fall through */
-
-      default:
-        break;
+    if (is_dp(c)) {
+      has_dot = TRUE;
     }
 
-    int_val = 0;
-
-    if (!is_digit(c)) return EVAL_RESULT_INVALID_LITERAL;
-
-    do {
-      int_val = (int_val * 10) + (c - '0');
-      c = get_char(ctx);
-
-    } while (is_digit(c));
-
-    if (exp_neg)
-      exp -= int_val;
-    else
-      exp += int_val;
+    if (is_number(c)) {
+      snum[i] = c;
+    } else {
+      snum[i] = '\0';
+      break;
+    }
   }
 
-  power = 10.0f;
-
-  if (exp < 0) {
-    exp = -exp;
-
-    while (exp) {
-      if (exp & 1) value /= power;
-      exp >>= 1;
-      power *= power;
-    }
+  if (has_dot) {
+    value = tk_atof(snum);
+  } else if (tolower(snum[1]) == 'x') {
+    value = strtol(snum, NULL, 16);
   } else {
-    while (exp) {
-      if (exp & 1) value *= power;
-      exp >>= 1;
-      power *= power;
-    }
+    value = tk_atoi(snum);
   }
 
   put_char(ctx);
-
   ctx->token.type = EVAL_TOKEN_TYPE_NUMBER;
   ctx->token.value.number = value;
 
