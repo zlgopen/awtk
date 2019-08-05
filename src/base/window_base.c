@@ -54,7 +54,7 @@ static ret_t window_base_load_theme_obj(widget_t* widget) {
 
   const char* theme_name = widget->name;
 
-  if (window_base->theme != NULL) {
+  if (window_base->theme != NULL && window_base->theme[0] != 0) {
     theme_name = window_base->theme;
   }
 
