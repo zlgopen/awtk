@@ -76,7 +76,7 @@ static ret_t ui_builder_default_on_end(ui_builder_t* b) {
     widget_t* widget = b->root;
 
     widget_invalidate_force(widget, NULL);
-    if (widget && widget->name == NULL) {
+    if (widget && (widget->name == NULL || widget->name[0] == 0)) {
       widget_set_name(widget, b->name);
     }
 
