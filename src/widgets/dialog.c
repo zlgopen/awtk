@@ -364,7 +364,7 @@ ret_t dialog_info(const char* title, const char* text) {
 }
 
 ret_t dialog_warn(const char* title, const char* text) {
-  title = title != NULL ? title : "Warnning";
+  title = title != NULL ? title : "Warning";
   return dialog_info_ex(text, title, "dialog_warn");
 }
 

@@ -553,7 +553,7 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
     window_manager_default_invalidate(widget, &fps_rect);
   }
 
-  if(native_window_begin_frame(wm->native_window, LCD_DRAW_NORMAL) == RET_OK) {
+  if (native_window_begin_frame(wm->native_window, LCD_DRAW_NORMAL) == RET_OK) {
     ENSURE(widget_paint(WIDGET(wm), c) == RET_OK);
     window_manager_paint_cursor(widget, c);
     native_window_end_frame(wm->native_window);
