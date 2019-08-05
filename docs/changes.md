@@ -1,4 +1,8 @@
 # 最新动态
+* 2019/08/04-05
+  * 优化nanovg GL fragment shader。
+  * 完善Android移植。
+
 * 2019/08/03
   * 完善Android移植。
 
