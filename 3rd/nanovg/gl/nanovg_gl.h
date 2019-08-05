@@ -612,7 +612,10 @@ static int glnvg__renderCreate(void* uptr) {
       "	} else if(type == 7) {			// fill color\n"
       "	  strokeAlpha = strokeMask();\n"
       "	  if (strokeAlpha < strokeThr) discard;\n"
-      "		result = innerCol * strokeAlpha;\n"
+      " 	float scissor = scissorMask(fpos);\n"
+      "		vec4 color = innerCol;\n"
+      "		color *= strokeAlpha * scissor;\n"
+      "		result = color;\n"
       "	} else if (type == 0) {		// gradient\n"
       "	  strokeAlpha = strokeMask();\n"
       "	  if (strokeAlpha < strokeThr) discard;\n"
@@ -621,8 +624,8 @@ static int glnvg__renderCreate(void* uptr) {
       "		float d = clamp((sdroundrect(pt, extent, radius) + feather*0.5) / feather, 0.0, 1.0);\n"
       "		vec4 color = mix(innerCol,outerCol,d);\n"
       "		// Combine alpha\n"
-		  " 	float scissor = scissorMask(fpos);\n"
-		  "		color *= strokeAlpha * scissor;\n"
+      " 	float scissor = scissorMask(fpos);\n"
+      "		color *= strokeAlpha * scissor;\n"
       "		result = color;\n"
       "	} else if (type == 1) {		// Image\n"
       "	  strokeAlpha = strokeMask();\n"
@@ -639,8 +642,8 @@ static int glnvg__renderCreate(void* uptr) {
       "		// Apply color tint and alpha.\n"
       "		color *= innerCol;\n"
       "		// Combine alpha\n"
-		  " 	float scissor = scissorMask(fpos);\n"
-		  "		color *= strokeAlpha * scissor;\n"
+      " 	float scissor = scissorMask(fpos);\n"
+      "		color *= strokeAlpha * scissor;\n"
       "		result = color;\n"
       "	} else if (type == 2) {		// Stencil fill\n"
       "		result = vec4(1,1,1,1);\n"
@@ -1083,7 +1086,7 @@ static void glnvg__stroke(GLNVGcontext* gl, GLNVGcall* call) {
     glDisable(GL_STENCIL_TEST);
 
     //		glnvg__convertPaint(gl, nvg__fragUniformPtr(gl, call->uniformOffset + gl->fragSize),
-    //paint, scissor, strokeWidth, fringe, 1.0f - 0.5f/255.0f);
+    // paint, scissor, strokeWidth, fringe, 1.0f - 0.5f/255.0f);
 
   } else {
     glnvg__setUniforms(gl, call->uniformOffset, call->image);
@@ -1310,24 +1313,51 @@ static void glnvg__vset(NVGvertex* vtx, float x, float y, float u, float v) {
 }
 
 static int glnvg__pathIsRect(const NVGpath* path) {
+  const NVGvertex* verts = path->fill;
   if (path->nfill == 4) {
-    const NVGvertex* verts = path->fill;
     int ret1 = (verts[0].y == verts[1].y && verts[1].x == verts[2].x && verts[2].y == verts[3].y &&
                 verts[3].x == verts[0].x);
 
     int ret2 = (verts[0].x == verts[1].x && verts[1].y == verts[2].y && verts[2].x == verts[3].x &&
                 verts[3].y == verts[0].y);
 
-    return ret1 || ret2;
+    if (ret1 || ret2) {
+      return 1;
+    }
   }
 
   return 0;
 }
 
+static int glnvg__pathInScissor(const NVGpath* path, NVGscissor* scissor) {
+  int32_t i = 0;
+  float cx = scissor->xform[4];
+  float cy = scissor->xform[5];
+  float hw = scissor->extent[0];
+  float hh = scissor->extent[1];
+
+  float l = cx - hw;
+  float t = cy - hh;
+  float r = l + 2 * hw - 1;
+  float b = t + 2 * hh - 1;
+
+  const NVGvertex* verts = path->fill;
+  for (i = 0; i < path->nfill; i++) {
+    const NVGvertex* iter = verts + i;
+    int x = iter->x;
+    int y = iter->y;
+    if (x < l || x > r || y < t || y > b) {
+      return 0;
+    }
+  }
+
+  return 1;
+}
+
 static void glnvg__renderFill(void* uptr, NVGpaint* paint,
                               NVGcompositeOperationState compositeOperation, NVGscissor* scissor,
                               float fringe, const float* bounds, const NVGpath* paths, int npaths) {
-  int is_rect = 0;
+  int support_fast_draw = 0;
   int is_gradient = memcmp(&(paint->innerColor), &(paint->outerColor), sizeof(paint->outerColor));
 
   GLNVGcontext* gl = (GLNVGcontext*)uptr;
@@ -1365,7 +1395,9 @@ static void glnvg__renderFill(void* uptr, NVGpaint* paint,
       copy->fillCount = path->nfill;
       memcpy(&gl->verts[offset], path->fill, sizeof(NVGvertex) * path->nfill);
       offset += path->nfill;
-      is_rect = npaths == 1 && glnvg__pathIsRect(path);
+      if (npaths == 1) {
+        support_fast_draw = glnvg__pathIsRect(path) && glnvg__pathInScissor(path, scissor);
+      }
     }
     if (path->nstroke > 0) {
       copy->strokeOffset = offset;
@@ -1405,7 +1437,7 @@ static void glnvg__renderFill(void* uptr, NVGpaint* paint,
                         fringe, -1.0f);
   }
 
-  if (is_rect) {
+  if (support_fast_draw) {
     if (paint->image != 0) {
       frag->type = NSVG_SHADER_FAST_FILLIMG;
     } else if (!is_gradient) {
