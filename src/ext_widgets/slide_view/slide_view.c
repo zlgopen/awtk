@@ -282,7 +282,7 @@ static ret_t slide_view_on_event(widget_t* widget, event_t* e) {
       break;
   }
 
-  return RET_OK;
+  return slide_view->dragged ? RET_STOP : RET_OK;
 }
 
 static widget_t* slide_view_find_target(widget_t* widget, xy_t x, xy_t y) {

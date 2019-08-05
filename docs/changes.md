@@ -2,6 +2,7 @@
 * 2019/08/04-05
   * 优化nanovg GL fragment shader。
   * 完善Android移植。
+  * 完善slide view控件(感谢朝泽提供补丁)
 
 * 2019/08/03
   * 完善Android移植。
