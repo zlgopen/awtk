@@ -1,4 +1,7 @@
 # 最新动态
+* 2019/08/06
+  * 优化nanovg GL fragment shader(draw text)。
+
 * 2019/08/05
   * 修改uiloader/window base/style mutable/layouter等BUG（感谢尧燊提供补丁）。
 
