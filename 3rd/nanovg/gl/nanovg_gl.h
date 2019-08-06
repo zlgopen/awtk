@@ -1461,10 +1461,6 @@ static void glnvg__renderFill(void* uptr, NVGpaint* paint,
     }
   }
 
-  if (frag->type < 5) {
-    printf("fill frag->type=%d\n", (int)(frag->type));
-  }
-
   return;
 
 error:
@@ -1561,10 +1557,6 @@ static void glnvg__renderTriangles(void* uptr, NVGpaint* paint,
     frag->type = NSVG_SHADER_FAST_FILLGLYPH;
   } else {
     frag->type = NSVG_SHADER_IMG;
-  }
-
-  if(frag->type != NSVG_SHADER_FAST_FILLGLYPH) {
-    printf("draw text: frag->type=%d\n", (int)frag->type);
   }
 
   return;

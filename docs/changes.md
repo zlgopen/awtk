@@ -2,6 +2,7 @@
 * 2019/08/06
   * 优化nanovg GL fragment shader(draw text)。
   * 禁用点击scrollview中控件时自动滚动到可视区的功能。
+  * 完善slider拖动效果。
 
 * 2019/08/05
   * 修改uiloader/window base/style mutable/layouter等BUG（感谢尧燊提供补丁）。

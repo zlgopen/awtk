@@ -117,6 +117,9 @@ typedef struct _slider_t {
 
   /*private*/
   bool_t dragging;
+
+  uint16_t saved_value;
+  point_t down;
 } slider_t;
 
 /**

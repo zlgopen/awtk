@@ -243,6 +243,8 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
         widget_grab(widget->parent, widget);
         widget_invalidate(widget, NULL);
       }
+      slider->down = p;
+      slider->saved_value = slider->value;
       ret = slider->dragging ? RET_STOP : RET_OK;
       break;
     }
@@ -253,24 +255,21 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
     case EVT_POINTER_MOVE: {
       pointer_event_t* evt = (pointer_event_t*)e;
       point_t p = {evt->x, evt->y};
-      uint16_t value = 0;
+      int32_t value = 0;
       if (slider->dragging) {
-        float fvalue = 0;
+        int32_t delta = 0;
         widget_to_local(widget, &p);
+        int32_t range = slider->max - slider->min;
 
         if (slider->vertical) {
-          fvalue = 1 - (float)(p.y) / widget->h;
+          delta = range * (slider->down.y - p.y) / widget->h;
         } else {
-          fvalue = (float)(p.x) / widget->w;
+          delta = range * (p.x - slider->down.x) / widget->w;
         }
-        if (fvalue < 0) {
-          fvalue = 0;
-        }
-        if (fvalue > 1) {
-          fvalue = 1;
-        }
-        value = fvalue * (slider->max - slider->min) + slider->min;
-        slider_set_value_internal(widget, value, EVT_VALUE_CHANGING, FALSE);
+
+        value = slider->saved_value + delta;
+        value = tk_clampi(value, slider->min, slider->max);
+        slider_set_value_internal(widget, (uint16_t)value, EVT_VALUE_CHANGING, FALSE);
       }
 
       break;

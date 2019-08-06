@@ -441,7 +441,7 @@ ret_t widget_set_focused(widget_t* widget, bool_t focused) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   widget_set_focused_internal(widget, focused);
-  if(focused) {
+  if (focused) {
     widget_ensure_visible_in_viewport(widget);
   }
 
