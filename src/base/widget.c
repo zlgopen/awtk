@@ -413,7 +413,7 @@ ret_t widget_set_floating(widget_t* widget, bool_t floating) {
   return RET_OK;
 }
 
-ret_t widget_set_focused(widget_t* widget, bool_t focused) {
+static ret_t widget_set_focused_internal(widget_t* widget, bool_t focused) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   if (widget->focused != focused) {
@@ -432,6 +432,17 @@ ret_t widget_set_focused(widget_t* widget, bool_t focused) {
     }
 
     widget_invalidate(widget, NULL);
+  }
+
+  return RET_OK;
+}
+
+ret_t widget_set_focused(widget_t* widget, bool_t focused) {
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  widget_set_focused_internal(widget, focused);
+  if(focused) {
+    widget_ensure_visible_in_viewport(widget);
   }
 
   return RET_OK;
@@ -1691,7 +1702,7 @@ static ret_t widget_on_pointer_down_children(widget_t* widget, pointer_event_t* 
   if (target != NULL && target->enable) {
     if (!(widget_is_keyboard(target))) {
       if (!target->focused) {
-        widget_set_focused(target, TRUE);
+        widget_set_focused_internal(target, TRUE);
       } else {
         widget->key_target = target;
       }
@@ -2689,9 +2700,6 @@ ret_t widget_set_as_key_target(widget_t* widget) {
         widget_dispatch_blur_event(widget->parent->key_target);
       }
       parent->key_target = widget;
-      if (widget_is_scrollable(parent)) {
-        widget_ensure_visible_in_scroll_view(widget, parent);
-      }
       widget_set_as_key_target(parent);
     }
   }
