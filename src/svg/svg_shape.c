@@ -42,12 +42,12 @@ uint32_t svg_shape_size(const svg_shape_t* shape) {
     }
     case SVG_SHAPE_POLYGON: {
       svg_shape_polygon_t* s = (svg_shape_polygon_t*)shape;
-      size = sizeof(svg_shape_polygon_t) + s->nr * 2 * sizeof(float_t) - sizeof(s->data);
+      size = sizeof(svg_shape_polygon_t) + s->nr * sizeof(float_t) - sizeof(s->data);
       break;
     }
     case SVG_SHAPE_POLYLINE: {
       svg_shape_polyline_t* s = (svg_shape_polyline_t*)shape;
-      size = sizeof(svg_shape_polyline_t) + s->nr * 2 * sizeof(float_t) - sizeof(s->data);
+      size = sizeof(svg_shape_polyline_t) + s->nr * sizeof(float_t) - sizeof(s->data);
       break;
     }
     case SVG_SHAPE_PATH: {
