@@ -174,6 +174,7 @@ static ret_t main_loop_sdl2_dispatch_window_event(main_loop_simple_t* loop, SDL_
       break;
     case SDL_WINDOWEVENT_RESTORED:
       log_debug("Window %d restored\n", event->window.windowID);
+      widget_invalidate_force(l->wm, NULL);
       break;
     case SDL_WINDOWEVENT_ENTER:
       log_debug("Mouse entered window %d\n", event->window.windowID);
@@ -204,8 +205,6 @@ static ret_t main_loop_sdl2_dispatch_window_event(main_loop_simple_t* loop, SDL_
       log_debug("Window %d got unknown event %d\n", event->window.windowID, event->window.event);
       break;
   }
-
-  //  widget_invalidate_force(loop->base.wm, NULL);
 
   return RET_OK;
 }
