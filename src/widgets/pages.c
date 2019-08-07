@@ -65,6 +65,10 @@ static widget_t* pages_find_target(widget_t* widget, xy_t x, xy_t y) {
   pages_t* pages = PAGES(widget);
   return_value_if_fail(pages != NULL, NULL);
 
+  if (widget->children == NULL) {
+    return NULL;
+  }
+
   return widget_get_child(widget, pages->active);
 }
 
@@ -72,6 +76,10 @@ static ret_t pages_on_paint_children(widget_t* widget, canvas_t* c) {
   widget_t* active = NULL;
   pages_t* pages = PAGES(widget);
   return_value_if_fail(widget != NULL && pages != NULL, RET_BAD_PARAMS);
+
+  if (widget->children == NULL) {
+    return RET_OK;
+  }
 
   active = widget_get_child(widget, pages->active);
   return_value_if_fail(active != NULL, RET_BAD_PARAMS);

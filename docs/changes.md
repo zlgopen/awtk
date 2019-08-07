@@ -2,6 +2,9 @@
 * 2019/08/07
   * 修改valgrind发现的问题。
   * 修改shortcut的BUG。
+  * 完善SDL事件处理(感谢朝泽提供补丁)
+  * 完善pages控件(感谢朝泽提供补丁)
+  * 修改event文档的BUG(感谢朝泽提供补丁)
 
 * 2019/08/06
   * 优化nanovg GL fragment shader(draw text)。
