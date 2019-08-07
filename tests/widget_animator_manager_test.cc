@@ -40,6 +40,7 @@ TEST(AnimatorManager, basic) {
   ASSERT_EQ(widget_animator_manager_count(am), 1);
   widget_destroy(WIDGET(image));
   ASSERT_EQ(widget_animator_manager_count(am), 0);
+  idle_dispatch();
 }
 
 static ret_t on_anim_done(void* ctx, event_t* e) {
@@ -64,4 +65,5 @@ TEST(AnimatorManager, elapse) {
   widget_animator_manager_time_elapse(am, 1000);
 
   ASSERT_EQ(widget_animator_manager_count(am), 0);
+  idle_dispatch();
 }
