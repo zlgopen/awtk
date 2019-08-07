@@ -382,22 +382,6 @@ typedef struct _wheel_event_t {
 } wheel_event_t;
 
 /**
- * @class orientation_event_t
- * @annotation ["scriptable"]
- * @parent event_t
- * 滚轮事件。
- */
-typedef struct _orientation_event_t {
-  event_t e;
-  /**
-   * @property {int32_t} orientation
-   * @annotation ["readable", "scriptable"]
-   * 屏幕方向。
-   */
-  lcd_orientation_t orientation;
-} orientation_event_t;
-
-/**
  * @method wheel_event_cast
  * @annotation ["cast", "scriptable"]
  * 把event对象转wheel_event_t对象，主要给脚本语言使用。
@@ -418,6 +402,22 @@ wheel_event_t* wheel_event_cast(event_t* event);
  * @return {event_t*} event对象。
  */
 event_t* wheel_event_init(wheel_event_t* event, uint32_t type, void* target, int32_t dy);
+
+/**
+ * @class orientation_event_t
+ * @annotation ["scriptable"]
+ * @parent event_t
+ * 滚轮事件。
+ */
+typedef struct _orientation_event_t {
+  event_t e;
+  /**
+   * @property {int32_t} orientation
+   * @annotation ["readable", "scriptable"]
+   * 屏幕方向。
+   */
+  lcd_orientation_t orientation;
+} orientation_event_t;
 
 /**
  * @method orientation_event_cast
