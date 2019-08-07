@@ -1,5 +1,8 @@
 # 最新动态
 * 2019/08/06
+  * 修改valgrind发现的问题。
+
+* 2019/08/06
   * 优化nanovg GL fragment shader(draw text)。
   * 禁用点击scrollview中控件时自动滚动到可视区的功能。
   * 完善slider拖动效果。
