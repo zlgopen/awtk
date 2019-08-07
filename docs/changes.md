@@ -1,6 +1,7 @@
 # 最新动态
-* 2019/08/06
+* 2019/08/07
   * 修改valgrind发现的问题。
+  * 修改shortcut的BUG。
 
 * 2019/08/06
   * 优化nanovg GL fragment shader(draw text)。

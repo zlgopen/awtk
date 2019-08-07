@@ -194,6 +194,7 @@ TEST(ShortCut, lctrl_match) {
   shortcut_t filter;
 
   shortcut_init(&event, TK_KEY_a);
+  event.ctrl = TRUE;
   event.lctrl = TRUE;
 
   shortcut_init_with_str(&filter, "ctrl+a");
@@ -208,6 +209,7 @@ TEST(ShortCut, rctrl_match) {
   shortcut_t filter;
 
   shortcut_init(&event, TK_KEY_a);
+  event.ctrl = TRUE;
   event.rctrl = TRUE;
 
   shortcut_init_with_str(&filter, "ctrl+a");
@@ -222,6 +224,7 @@ TEST(ShortCut, lalt_match) {
   shortcut_t filter;
 
   shortcut_init(&event, TK_KEY_a);
+  event.alt = TRUE;
   event.lalt = TRUE;
 
   shortcut_init_with_str(&filter, "alt+a");
@@ -236,6 +239,7 @@ TEST(ShortCut, ralt_match) {
   shortcut_t filter;
 
   shortcut_init(&event, TK_KEY_a);
+  event.alt = TRUE;
   event.ralt = TRUE;
 
   shortcut_init_with_str(&filter, "alt+a");
@@ -250,6 +254,7 @@ TEST(ShortCut, lshift_match) {
   shortcut_t filter;
 
   shortcut_init(&event, TK_KEY_a);
+  event.shift = TRUE;
   event.lshift = TRUE;
 
   shortcut_init_with_str(&filter, "shift+a");
@@ -264,6 +269,7 @@ TEST(ShortCut, rshift_match) {
   shortcut_t filter;
 
   shortcut_init(&event, TK_KEY_a);
+  event.shift = TRUE;
   event.rshift = TRUE;
 
   shortcut_init_with_str(&filter, "shift+a");
