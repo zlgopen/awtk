@@ -258,8 +258,28 @@ ret_t widget_animator_set_destroy_when_done(widget_animator_t* animator, bool_t 
   return RET_OK;
 }
 
+static ret_t widget_animator_do_destroy(widget_animator_t* animator) {
+  TKMEM_FREE(animator->name);
+  emitter_deinit(&(animator->emitter));
+
+  if (animator->destroy != NULL) {
+    return animator->destroy(animator);
+  } else {
+    memset(animator, 0x00, sizeof(widget_animator_t));
+    TKMEM_FREE(animator);
+  }
+
+  return RET_OK;
+}
+
+static ret_t widget_animator_do_destroy_async(const idle_info_t* info) {
+  widget_animator_do_destroy((widget_animator_t*)(info->ctx));
+
+  return RET_REMOVE;
+}
+
 ret_t widget_animator_destroy(widget_animator_t* animator) {
-  return_value_if_fail(animator != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(animator != NULL && animator->update != NULL, RET_BAD_PARAMS);
 
   if (animator->widget_destroy_id != TK_INVALID_ID) {
     widget_off(animator->widget, animator->widget_destroy_id);
@@ -270,14 +290,8 @@ ret_t widget_animator_destroy(widget_animator_t* animator) {
     widget_animator_manager_remove(animator->widget_animator_manager, animator);
   }
 
-  TKMEM_FREE(animator->name);
-  emitter_deinit(&(animator->emitter));
-  if (animator->destroy != NULL) {
-    return animator->destroy(animator);
-  } else {
-    memset(animator, 0x00, sizeof(widget_animator_t));
-    TKMEM_FREE(animator);
-  }
+  animator->update = NULL;
+  idle_add(widget_animator_do_destroy_async, animator);
 
   return RET_OK;
 }
