@@ -503,7 +503,7 @@ static EvalResult get_number(EvalContext* ctx) {
   if (has_dot) {
     value = tk_atof(snum);
   } else if (tolower(snum[1]) == 'x') {
-    value = strtol(snum, NULL, 16);
+    value = strtoul(snum, NULL, 16);
   } else {
     value = tk_atoi(snum);
   }

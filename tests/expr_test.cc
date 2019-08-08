@@ -63,4 +63,7 @@ TEST(ExprEval, hex) {
   ASSERT_EQ(0xffff, tk_expr_eval("0xffff"));
   ASSERT_EQ(0xffff, tk_expr_eval("0xFFFF"));
   ASSERT_EQ(0xaaaaffff, tk_expr_eval("0xaaaaFFFF"));
+  ASSERT_EQ(0xffffffff, tk_expr_eval("0xffffFFFF"));
+  ASSERT_EQ(0xfffffffa, tk_expr_eval("0xffffFFFa"));
+  ASSERT_EQ(0xfffafffa, tk_expr_eval("0xfffaFFFa"));
 }

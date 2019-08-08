@@ -137,6 +137,8 @@ widget_t* mutable_image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
 widget_t* mutable_image_init(widget_t* widget) {
   image_base_init(widget);
   widget_add_timer(widget, mutable_image_invalidate, 16);
+
+  return widget;
 }
 
 ret_t mutable_image_set_prepare_image(widget_t* widget, mutable_image_prepare_image_t prepare_image,
