@@ -1,7 +1,7 @@
 /**
- * File:   demo_main.c
+ * File:   preview_ui.c
  * Author: AWTK Develop Team
- * Brief:  demo main
+ * Brief:  preview ui
  *
  * Copyright (c) 2018 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
@@ -20,7 +20,6 @@
  */
 
 #include "awtk.h"
-#include "ext_widgets.h"
 #include "tkc/fs.h"
 #include "tkc/mem.h"
 #include "tkc/utils.h"

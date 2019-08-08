@@ -26,7 +26,6 @@
 #include "base/canvas.h"
 #include "tkc/time_now.h"
 #include "tkc/color_parser.h"
-#include "base/wuxiaolin.inc"
 #include "base/system_info.h"
 
 #include "base/lcd_profile.h"

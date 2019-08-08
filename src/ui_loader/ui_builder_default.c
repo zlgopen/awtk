@@ -19,7 +19,6 @@
  *
  */
 
-#include "widgets/view.h"
 #include "tkc/utf8.h"
 #include "base/enums.h"
 #include "widgets/dialog.h"

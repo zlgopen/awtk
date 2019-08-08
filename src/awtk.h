@@ -26,7 +26,6 @@
 #include "awtk_base.h"
 #include "awtk_global.h"
 #include "awtk_widgets.h"
-#include "blend/image_g2d.h"
 
 #ifndef WITHOUT_EXT_WIDGETS
 #include "awtk_ext_widgets.h"

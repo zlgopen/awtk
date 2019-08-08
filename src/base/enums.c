@@ -23,7 +23,7 @@
 #include "base/keys.h"
 #include "base/enums.h"
 #include "base/widget.h"
-#include "widgets/edit.h"
+#include "base/input_method.h"
 #include "base/window_animator.h"
 #include "base/assets_manager.h"
 
