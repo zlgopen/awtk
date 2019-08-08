@@ -336,7 +336,9 @@ static ret_t window_manager_check_if_need_open_animation(const idle_info_t* info
   if (window_manager_create_animator(wm, curr_win, TRUE) != RET_OK) {
     widget_t* prev_win = window_manager_find_prev_window(WIDGET(wm));
     if (prev_win != NULL) {
-      window_manager_dispatch_window_event(prev_win, EVT_WINDOW_TO_BACKGROUND);
+      if (!widget_is_keyboard(curr_win)) {
+        window_manager_dispatch_window_event(prev_win, EVT_WINDOW_TO_BACKGROUND);
+      }
     }
     window_manager_dispatch_window_event(curr_win, EVT_WINDOW_OPEN);
     widget_add_timer(curr_win, on_idle_invalidate, 100);
@@ -477,7 +479,9 @@ static ret_t window_manager_default_close_window(widget_t* widget, widget_t* win
   if (window_manager_check_if_need_close_animation(wm, window) != RET_OK) {
     widget_t* prev_win = window_manager_find_prev_window(WIDGET(wm));
     if (prev_win != NULL) {
-      window_manager_dispatch_window_event(prev_win, EVT_WINDOW_TO_FOREGROUND);
+      if (!widget_is_keyboard(window)) {
+        window_manager_dispatch_window_event(prev_win, EVT_WINDOW_TO_FOREGROUND);
+      }
     }
     widget_remove_child(widget, window);
     idle_add(window_manager_idle_destroy_window, window);
@@ -569,6 +573,7 @@ static ret_t window_manager_paint_animation(widget_t* widget, canvas_t* c) {
   paint_event_t e;
   uint32_t start_time = time_now_ms();
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+  bool_t curr_win_is_keyboard = widget_is_keyboard(wm->animator->curr_win);
 
   ENSURE(window_animator_begin_frame(wm->animator) == RET_OK);
 
@@ -594,10 +599,14 @@ static ret_t window_manager_paint_animation(widget_t* widget, canvas_t* c) {
     wm->ignore_user_input = FALSE;
 
     if (is_open) {
-      window_manager_dispatch_window_event(prev_win, EVT_WINDOW_TO_BACKGROUND);
+      if (!curr_win_is_keyboard) {
+        window_manager_dispatch_window_event(prev_win, EVT_WINDOW_TO_BACKGROUND);
+      }
       window_manager_dispatch_window_event(curr_win, EVT_WINDOW_OPEN);
     } else {
-      window_manager_dispatch_window_event(prev_win, EVT_WINDOW_TO_FOREGROUND);
+      if (!curr_win_is_keyboard) {
+        window_manager_dispatch_window_event(prev_win, EVT_WINDOW_TO_FOREGROUND);
+      }
     }
 
     if (wm->pending_close_window != NULL) {
