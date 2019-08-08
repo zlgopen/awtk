@@ -119,6 +119,7 @@ typedef struct _slider_t {
   bool_t dragging;
 
   uint16_t saved_value;
+  uint16_t dragger_size;
   point_t down;
 } slider_t;
 

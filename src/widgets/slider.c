@@ -64,6 +64,7 @@ static ret_t slider_paint_dragger(widget_t* widget, canvas_t* c) {
   float_t ratio = c->lcd->ratio;
   const char* image_name = NULL;
   style_t* style = widget->astyle;
+  slider_t* slider = SLIDER(widget);
   color_t trans = color_init(0, 0, 0, 0);
 
   r = rect_init(0, 0, 0, 0);
@@ -80,6 +81,8 @@ static ret_t slider_paint_dragger(widget_t* widget, canvas_t* c) {
       canvas_draw_image_ex(c, &img, IMAGE_DRAW_ICON, &r);
     }
   }
+
+  slider->dragger_size = slider->vertical ? r.h : r.w;
 
   return RET_OK;
 }
@@ -262,9 +265,9 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
         int32_t range = slider->max - slider->min;
 
         if (slider->vertical) {
-          delta = range * (slider->down.y - p.y) / widget->h;
+          delta = range * (slider->down.y - p.y) / (widget->h - slider->dragger_size);
         } else {
-          delta = range * (p.x - slider->down.x) / widget->w;
+          delta = range * (p.x - slider->down.x) / (widget->w - slider->dragger_size);
         }
 
         value = slider->saved_value + delta;
