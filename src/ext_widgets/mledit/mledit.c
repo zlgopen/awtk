@@ -205,6 +205,7 @@ static ret_t mledit_commit_str(widget_t* widget, const char* str) {
   wstr_set_utf8(&(mledit->temp), str);
 
   text_edit_paste(mledit->model, mledit->temp.str, mledit->temp.size);
+  mledit_dispatch_event(widget, EVT_VALUE_CHANGING);
 
   return RET_OK;
 }
@@ -326,7 +327,14 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_KEY_DOWN: {
+      key_event_t* evt = (key_event_t*)e;
+      int32_t key = evt->key;
+
       text_edit_key_down(mledit->model, (key_event_t*)e);
+      if (key < 128 && isprint(key)) {
+        mledit_dispatch_event(widget, EVT_VALUE_CHANGING);
+      }
+
       mledit_update_status(widget);
       break;
     }

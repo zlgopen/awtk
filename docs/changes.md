@@ -3,6 +3,7 @@
   * 重构
   * 完善mutable image(感谢智明提供补丁)
   * 完善expr eval，支持十六进制数。
+  * mledit支持value changing事件。
 
 * 2019/08/07
   * 修改valgrind发现的问题。
