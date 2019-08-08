@@ -21,6 +21,7 @@
 
 #include "tkc/mem.h"
 #include "base/idle.h"
+#include "base/enums.h"
 #include "widgets/window.h"
 #include "keyboard/keyboard.h"
 #include "suggest_words.inc"
@@ -170,16 +171,31 @@ static ret_t input_type_open_keyboard(input_method_t* im, int32_t input_type, bo
   return RET_OK;
 }
 
+static int32_t widget_get_input_type(widget_t* widget) {
+  value_t v;
+  int32_t input_type = 0;
+
+  value_set_int(&v, INPUT_TEXT);
+  widget_get_prop(widget, WIDGET_PROP_INPUT_TYPE, &v);
+
+  if (v.type == VALUE_TYPE_STRING) {
+    const key_type_value_t* kv = input_type_find(value_str(&v));
+    if (kv != NULL) {
+      input_type = kv->value;
+    }
+  } else {
+    input_type = value_int(&v);
+  }
+
+  return input_type;
+}
+
 static ret_t input_method_default_show_keyboard(input_method_t* im) {
   value_t v;
   point_t p = {0, 0};
-  int32_t input_type = 0;
   bool_t open_anim = TRUE;
   widget_t* widget = im->widget;
-
-  value_set_int(&v, 0);
-  widget_get_prop(im->widget, WIDGET_PROP_INPUT_TYPE, &v);
-  input_type = value_int(&v);
+  int32_t input_type = widget_get_input_type(widget);
 
   widget_to_screen(widget, &p);
   if (im->keyboard != NULL) {
