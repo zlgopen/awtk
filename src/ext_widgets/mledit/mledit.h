@@ -159,6 +159,17 @@ widget_t* mledit_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 ret_t mledit_set_readonly(widget_t* widget, bool_t readonly);
 
 /**
+ * @method mledit_set_focus
+ * 设置为焦点。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {bool_t} focus 是否为焦点。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t mledit_set_focus(widget_t* widget, bool_t focus);
+
+/**
  * @method mledit_set_wrap_word
  * 设置编辑器是否自动折行。
  * @annotation ["scriptable"]
