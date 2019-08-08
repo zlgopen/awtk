@@ -138,7 +138,7 @@ ret_t window_manager_default_snap_curr_window(widget_t* widget, widget_t* curr_w
   return_value_if_fail(img != NULL && fbo != NULL, RET_BAD_PARAMS);
   return_value_if_fail(wm != NULL && curr_win != NULL, RET_BAD_PARAMS);
 
-  c = wm->canvas;
+  c = native_window_get_canvas(wm->native_window);
 
 #ifdef WITH_NANOVG_GPU
   vg = lcd_get_vgcanvas(c->lcd);
@@ -178,7 +178,7 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
   return_value_if_fail(img != NULL && fbo != NULL, RET_BAD_PARAMS);
   return_value_if_fail(wm != NULL && prev_win != NULL, RET_BAD_PARAMS);
 
-  c = wm->canvas;
+  c = native_window_get_canvas(wm->native_window);
   dialog_highlighter = wm->dialog_highlighter;
 
 #ifdef WITH_NANOVG_GPU
@@ -298,11 +298,12 @@ static ret_t window_manager_create_animator(window_manager_default_t* wm, widget
   }
 
   if (anim_hint && *anim_hint) {
+    canvas_t* c = native_window_get_canvas(wm->native_window);
     window_manager_default_create_dialog_highlighter(WIDGET(wm), curr_win);
     if (open) {
-      wm->animator = window_animator_create_for_open(anim_hint, wm->canvas, prev_win, curr_win);
+      wm->animator = window_animator_create_for_open(anim_hint, c, prev_win, curr_win);
     } else {
-      wm->animator = window_animator_create_for_close(anim_hint, wm->canvas, prev_win, curr_win);
+      wm->animator = window_animator_create_for_close(anim_hint, c, prev_win, curr_win);
     }
 
     wm->animating = wm->animator != NULL;
@@ -627,6 +628,7 @@ static ret_t window_manager_default_inc_fps(widget_t* widget) {
 }
 
 static ret_t window_manager_default_update_fps(widget_t* widget) {
+  canvas_t* c = NULL;
   uint32_t elapse = 0;
   uint32_t now = time_now_ms();
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
@@ -639,7 +641,8 @@ static ret_t window_manager_default_update_fps(widget_t* widget) {
     wm->fps_count = 0;
   }
 
-  canvas_set_fps(wm->canvas, WINDOW_MANAGER(wm)->show_fps, wm->fps);
+  c = native_window_get_canvas(wm->native_window);
+  canvas_set_fps(c, WINDOW_MANAGER(wm)->show_fps, wm->fps);
 
   return RET_OK;
 }
@@ -650,7 +653,6 @@ static ret_t window_manager_default_paint(widget_t* widget) {
   canvas_t* c = native_window_get_canvas(wm->native_window);
   return_value_if_fail(wm != NULL && c != NULL, RET_BAD_PARAMS);
 
-  wm->canvas = c;
   canvas_set_global_alpha(c, 0xff);
   window_manager_default_update_fps(widget);
 
@@ -750,7 +752,8 @@ static ret_t window_manager_default_get_prop(widget_t* widget, const char* name,
     value_set_str(v, wm->cursor);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_CANVAS)) {
-    value_set_pointer(v, wm->canvas);
+    canvas_t* c = native_window_get_canvas(wm->native_window);
+    value_set_pointer(v, c);
     return RET_OK;
   }
 
@@ -758,14 +761,10 @@ static ret_t window_manager_default_get_prop(widget_t* widget, const char* name,
 }
 
 static ret_t window_manager_default_set_prop(widget_t* widget, const char* name, const value_t* v) {
-  window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_CURSOR)) {
     return window_manager_set_cursor(widget, value_str(v));
-  } else if (tk_str_eq(name, WIDGET_PROP_CANVAS)) {
-    wm->canvas = (canvas_t*)value_pointer(v);
-    return RET_OK;
   }
 
   return RET_NOT_FOUND;

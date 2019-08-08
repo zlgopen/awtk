@@ -103,4 +103,4 @@ ret_t self_layouter_destroy(self_layouter_t* layouter) {
 self_layouter_t* self_layouter_create(const char* params) {
   return NULL;
 }
-#endif/*WITHOUT_LAYOUTER*/
+#endif /*WITHOUT_LAYOUTER*/

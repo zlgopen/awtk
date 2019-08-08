@@ -117,4 +117,4 @@ ret_t children_layouter_destroy(children_layouter_t* layouter) {
 children_layouter_t* children_layouter_create(const char* params) {
   return NULL;
 }
-#endif/*WITHOUT_LAYOUTER*/
+#endif /*WITHOUT_LAYOUTER*/

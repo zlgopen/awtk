@@ -37,7 +37,6 @@ typedef struct _window_manager_default_t {
   window_manager_t window_manager;
 
   /*private*/
-  canvas_t* canvas;
   bool_t animating;
   bool_t ignore_user_input;
   window_animator_t* animator;
