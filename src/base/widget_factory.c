@@ -27,7 +27,7 @@
 #include "widgets/dialog.h"
 #include "base/widget_factory.h"
 
-#ifndef AWTK_NOGUI    
+#ifndef AWTK_NOGUI
 #include "widgets/row.h"
 #include "widgets/grid.h"
 #include "widgets/view.h"
@@ -58,7 +58,7 @@
 #include "widgets/color_tile.h"
 #include "widgets/combo_box_item.h"
 #include "widgets/calibration_win.h"
-#endif/*AWTK_NOGUI*/
+#endif /*AWTK_NOGUI*/
 
 static widget_factory_t* widget_factory_init(widget_factory_t* factory);
 static ret_t widget_factory_deinit(widget_factory_t* factory);
@@ -76,7 +76,7 @@ static int32_t creator_item_cmp(const creator_item_t* iter, const char* type) {
 static const creator_item_t s_builtin_creators[] = {
     {WIDGET_TYPE_DIALOG, dialog_create},
     {WIDGET_TYPE_NORMAL_WINDOW, window_create},
-#ifndef AWTK_NOGUI    
+#ifndef AWTK_NOGUI
     {WIDGET_TYPE_DIALOG_TITLE, dialog_title_create},
     {WIDGET_TYPE_DIALOG_CLIENT, dialog_client_create},
     {WIDGET_TYPE_OVERLAY, overlay_create},
@@ -108,7 +108,7 @@ static const creator_item_t s_builtin_creators[] = {
     {WIDGET_TYPE_SYSTEM_BAR, system_bar_create},
     {WIDGET_TYPE_CALIBRATION_WIN, calibration_win_create},
     {WIDGET_TYPE_COLOR_TILE, color_tile_create}
-#endif/**AWTK_NOGUI*/
+#endif /**AWTK_NOGUI*/
 };
 
 static const creator_item_t* widget_factory_find_builtin_creator(const char* type) {

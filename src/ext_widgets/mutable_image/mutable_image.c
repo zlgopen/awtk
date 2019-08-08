@@ -53,7 +53,7 @@ static bitmap_t* mutable_image_prepare_image(widget_t* widget, canvas_t* c) {
   return mutable_image->image;
 }
 
-static ret_t mutable_image_on_paint_self(widget_t* widget, canvas_t* canvas) {
+ret_t mutable_image_on_paint_self(widget_t* widget, canvas_t* canvas) {
   mutable_image_t* mutable_image = MUTABLE_IMAGE(widget);
   bitmap_t* bitmap = mutable_image_prepare_image(widget, canvas);
 
@@ -89,15 +89,19 @@ static const char* s_mutable_image_clone_properties[] = {WIDGET_PROP_SCALE_X,  W
                                                          WIDGET_PROP_ANCHOR_X, WIDGET_PROP_ANCHOR_Y,
                                                          WIDGET_PROP_ROTATION, NULL};
 
-static ret_t mutable_image_on_destroy(widget_t* widget) {
+ret_t mutable_image_on_destroy(widget_t* widget) {
   mutable_image_t* mutable_image = MUTABLE_IMAGE(widget);
   return_value_if_fail(widget != NULL && mutable_image != NULL, RET_BAD_PARAMS);
 
   if (mutable_image->fb != NULL) {
     bitmap_destroy(mutable_image->fb);
+    mutable_image->fb = NULL;
   }
 
-  bitmap_destroy(mutable_image->image);
+  if (mutable_image->image != NULL) {
+    bitmap_destroy(mutable_image->image);
+    mutable_image->image = NULL;
+  }
 
   return image_base_on_destroy(widget);
 }
@@ -125,10 +129,14 @@ widget_t* mutable_image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
   mutable_image_t* mutable_image = MUTABLE_IMAGE(widget);
   return_value_if_fail(mutable_image != NULL, NULL);
 
-  image_base_init(widget);
-  widget_add_timer(widget, mutable_image_invalidate, 16);
+  mutable_image_init(widget);
 
   return widget;
+}
+
+widget_t* mutable_image_init(widget_t* widget) {
+  image_base_init(widget);
+  widget_add_timer(widget, mutable_image_invalidate, 16);
 }
 
 ret_t mutable_image_set_prepare_image(widget_t* widget, mutable_image_prepare_image_t prepare_image,

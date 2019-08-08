@@ -136,7 +136,6 @@ widget_t* dialog_get_client(widget_t* widget) {
   return dialog->client;
 }
 
-
 uint32_t dialog_modal(widget_t* widget) {
 #ifdef AWTK_WEB
   log_debug("awtk web not support dialog_modal\n");
@@ -204,4 +203,3 @@ widget_t* dialog_cast(widget_t* widget) {
 
   return widget;
 }
-
