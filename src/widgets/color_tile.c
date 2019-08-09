@@ -31,7 +31,7 @@ static ret_t color_tile_on_paint_self(widget_t* widget, canvas_t* c) {
   canvas_set_fill_color(c, color_tile->bg);
   canvas_fill_rect(c, 0, 0, widget->w, widget->h);
 
-  canvas_set_fill_color(c, color_tile->border);
+  canvas_set_stroke_color(c, color_tile->border);
   canvas_stroke_rect(c, 0, 0, widget->w, widget->h);
 
   return RET_OK;
