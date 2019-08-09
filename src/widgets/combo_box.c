@@ -427,6 +427,7 @@ static ret_t combo_box_set_selected_index_ex(widget_t* widget, uint32_t index, w
     event_t e = event_init(EVT_VALUE_WILL_CHANGE, widget);
     widget_dispatch(widget, &e);
 
+    emitter_disable(widget->emitter);
     combo_box->selected_index = index;
     if (item != NULL) {
       combo_box->value = COMBO_BOX_ITEM(item)->value;
@@ -438,6 +439,7 @@ static ret_t combo_box_set_selected_index_ex(widget_t* widget, uint32_t index, w
     } else {
       combo_box_sync_index_to_value(widget, index);
     }
+    emitter_enable(widget->emitter);
 
     e = event_init(EVT_VALUE_CHANGED, widget);
     widget_dispatch(widget, &e);

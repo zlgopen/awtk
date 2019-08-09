@@ -546,14 +546,6 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       }
       break;
     }
-    case EVT_PROP_CHANGED: {
-      prop_change_event_t* evt = (prop_change_event_t*)e;
-      if (tk_str_eq(evt->name, WIDGET_PROP_TEXT) || tk_str_eq(evt->name, WIDGET_PROP_VALUE)) {
-        edit_update_status(widget);
-        text_edit_set_cursor(edit->model, 0xffffffff);
-      }
-      break;
-    }
     case EVT_VALUE_CHANGING: {
       edit_update_status(widget);
       break;
@@ -726,6 +718,25 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
   return RET_NOT_FOUND;
 }
 
+static ret_t edit_set_text(widget_t* widget, const value_t* v) {
+  wstr_t str;
+  wstr_init(&str, 0);
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(wstr_from_value(&str, v) == RET_OK, RET_BAD_PARAMS);
+
+  if (!wstr_equal(&(widget->text), &str)) {
+    wstr_set(&(widget->text), str.str);
+
+    text_edit_set_cursor(edit->model, widget->text.size);
+    edit_dispatch_event(widget, EVT_VALUE_CHANGED);
+    edit_update_status(widget);
+  }
+
+  wstr_reset(&str);
+
+  return RET_OK;
+}
+
 ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
   edit_t* edit = EDIT(widget);
   input_type_t input_type = INPUT_TEXT;
@@ -813,12 +824,8 @@ ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_TIPS)) {
     edit_set_input_tips(widget, value_str(v));
     return RET_OK;
-  } else if (tk_str_eq(name, WIDGET_PROP_TEXT)) {
-    edit_update_status(widget);
-    return RET_OK;
-  } else if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
-    wstr_from_value(&(widget->text), v);
-    edit_update_status(widget);
+  } else if (tk_str_eq(name, WIDGET_PROP_VALUE) || tk_str_eq(name, WIDGET_PROP_TEXT)) {
+    edit_set_text(widget, v);
     return RET_OK;
   }
 

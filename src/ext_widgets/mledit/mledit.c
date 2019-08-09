@@ -128,13 +128,30 @@ static ret_t mledit_get_prop(widget_t* widget, const char* name, value_t* v) {
   return RET_NOT_FOUND;
 }
 
+static ret_t mledit_set_text(widget_t* widget, const value_t* v) {
+  wstr_t str;
+  wstr_init(&str, 0);
+  mledit_t* mledit = MLEDIT(widget);
+  return_value_if_fail(wstr_from_value(&str, v) == RET_OK, RET_BAD_PARAMS);
+
+  if (!wstr_equal(&(widget->text), &str)) {
+    wstr_set(&(widget->text), str.str);
+
+    text_edit_set_cursor(mledit->model, widget->text.size);
+    mledit_dispatch_event(widget, EVT_VALUE_CHANGED);
+  }
+
+  wstr_reset(&str);
+
+  return RET_OK;
+}
 static ret_t mledit_set_prop(widget_t* widget, const char* name, const value_t* v) {
   mledit_t* mledit = MLEDIT(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (tk_str_eq(name, WIDGET_PROP_TEXT)) {
-    wstr_from_value(&(widget->text), v);
-    text_edit_set_cursor(mledit->model, widget->text.size);
+  if (tk_str_eq(name, WIDGET_PROP_TEXT) || tk_str_eq(name, WIDGET_PROP_VALUE)) {
+    mledit_set_text(widget, v);
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_READONLY)) {
     mledit->readonly = value_bool(v);
     return RET_OK;
@@ -377,13 +394,6 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       } else if (delta < 0) {
         key_event_init(&kevt, EVT_KEY_DOWN, widget, TK_KEY_UP);
         text_edit_key_down(mledit->model, (key_event_t*)e);
-      }
-      break;
-    }
-    case EVT_PROP_CHANGED: {
-      prop_change_event_t* evt = (prop_change_event_t*)e;
-      if (tk_str_eq(evt->name, WIDGET_PROP_TEXT) || tk_str_eq(evt->name, WIDGET_PROP_VALUE)) {
-        mledit_update_status(widget);
       }
       break;
     }

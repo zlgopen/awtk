@@ -97,13 +97,14 @@ TEST(ComboBox, event) {
   combo_box_set_options(w, str);
   combo_box_set_selected_index(w, 0);
 
-  s_log = "";
   widget_on(w, EVT_VALUE_WILL_CHANGE, on_change_events, NULL);
   widget_on(w, EVT_VALUE_CHANGED, on_change_events, NULL);
 
+  s_log = "";
   combo_box_set_selected_index(w, 0);
   ASSERT_EQ(s_log, "");
 
+  s_log = "";
   combo_box_set_selected_index(w, 1);
   ASSERT_EQ(s_log, "will_change;change;");
 

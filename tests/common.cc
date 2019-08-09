@@ -61,3 +61,84 @@ void assert_str_eq(const wchar_t* wstr, const char* utf8) {
   utf8_from_utf16(wstr, str, sizeof(str));
   ASSERT_EQ(string(str), string(utf8));
 }
+
+ret_t widget_log_events(void* ctx, event_t* e) {
+  string& event_log = *(string*)ctx;
+  widget_t* widget = WIDGET(e->target);
+  assert(widget->can_not_destroy > 0);
+
+  (void)ctx;
+  switch (e->type) {
+    case EVT_VALUE_CHANGED: {
+      event_log += "value_changed";
+      break;
+    }
+    case EVT_VALUE_CHANGING: {
+      event_log += "value_changing";
+      break;
+    }
+    case EVT_MOVE: {
+      event_log += "move ";
+      break;
+    }
+    case EVT_WILL_MOVE: {
+      event_log += "will_move ";
+      break;
+    }
+    case EVT_RESIZE: {
+      event_log += "resize ";
+      break;
+    }
+    case EVT_WILL_RESIZE: {
+      event_log += "will_resize ";
+      break;
+    }
+    case EVT_MOVE_RESIZE: {
+      event_log += "move_resize ";
+      break;
+    }
+    case EVT_WILL_MOVE_RESIZE: {
+      event_log += "will_move_resize ";
+      break;
+    }
+    case EVT_PROP_WILL_CHANGE: {
+      prop_change_event_t* evt = (prop_change_event_t*)e;
+
+      event_log += "prop_will_change ";
+      event_log += evt->name;
+      event_log += value_str(evt->value);
+      event_log += " ";
+      break;
+    }
+    case EVT_PROP_CHANGED: {
+      prop_change_event_t* evt = (prop_change_event_t*)e;
+
+      event_log += "prop_changed ";
+      event_log += evt->name;
+      event_log += value_str(evt->value);
+      event_log += " ";
+      break;
+    }
+    case EVT_POINTER_MOVE: {
+      event_log += "EVT_POINTER_MOVE";
+      break;
+    }
+    case EVT_POINTER_DOWN: {
+      event_log += "EVT_POINTER_DOWN";
+      break;
+    }
+    case EVT_POINTER_UP: {
+      event_log += "EVT_POINTER_UP";
+      break;
+    }
+    case EVT_KEY_DOWN: {
+      event_log += "EVT_KEY_DOWN";
+      break;
+    }
+    case EVT_KEY_UP: {
+      event_log += "EVT_KEY_UP";
+      break;
+    }
+  }
+  return RET_OK;
+}
