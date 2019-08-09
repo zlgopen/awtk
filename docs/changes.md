@@ -4,7 +4,7 @@
   * 完善缺省输入法。
   * 当前窗口为keyboard时，不触发TO\_BACKGROUND/TO\_FOREGROUND。
   * 修改slider资源加载的问题(感谢朝泽提供补丁)
-
+  * 修改fill rect坐标的问题(感谢智明提供补丁)
 * 2019/08/08
   * 重构
   * 完善mutable image(感谢智明提供补丁)
