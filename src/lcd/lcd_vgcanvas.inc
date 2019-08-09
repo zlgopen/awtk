@@ -98,7 +98,7 @@ static ret_t lcd_vgcanvas_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) 
   vgcanvas_t* canvas = LCD(lcd)->canvas;
 
   vgcanvas_begin_path(canvas);
-  vgcanvas_rect(canvas, x, y, w, h);
+  vgcanvas_rect(canvas, x + 0.5f, y + 0.5f, w - 1, h - 1);
   vgcanvas_set_fill_color(canvas, lcd->fill_color);
   vgcanvas_fill(canvas);
 
