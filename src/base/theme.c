@@ -85,9 +85,10 @@ const uint8_t* theme_find_style(theme_t* t, const char* widget_type, const char*
                                 const char* widget_state) {
   uint32_t i = 0;
   const theme_item_t* iter = NULL;
-  const theme_header_t* header = (const theme_header_t*)(t->data);
+  const theme_header_t* header = NULL;
   return_value_if_fail(t != NULL && t->data != NULL, NULL);
 
+  header = (const theme_header_t*)(t->data);
   if (name == NULL) {
     name = TK_DEFAULT_STYLE;
   }
