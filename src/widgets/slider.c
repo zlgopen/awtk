@@ -13,8 +13,7 @@
  */
 
 /**
- * History:
- * ================================================================
+ * History:aod
  * 2018-04-02 Li XianJing <xianjimli@hotmail.com> created
  *
  */
@@ -75,7 +74,7 @@ static ret_t slider_paint_dragger(widget_t* widget, canvas_t* c) {
     canvas_fill_rect(c, r.x, r.y, r.w, r.h);
   } else {
     image_name = style_get_str(style, STYLE_ID_ICON, NULL);
-    if (image_name && image_manager_get_bitmap(image_manager(), image_name, &img) == RET_OK) {
+    if (image_name && widget_load_image(widget, image_name, &img) == RET_OK) {
       r = rect_init(0, 0, img.w / ratio, img.h / ratio);
       slider_get_dragger_rect(widget, &r);
       canvas_draw_image_ex(c, &img, IMAGE_DRAW_ICON, &r);
