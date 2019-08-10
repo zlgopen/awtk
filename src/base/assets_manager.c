@@ -115,11 +115,14 @@ static asset_info_t* load_asset(uint16_t type, uint16_t subtype, const char* pat
 #else
 static asset_info_t* load_asset(uint16_t type, uint16_t subtype, const char* path,
                                 const char* name) {
-  int32_t size = file_get_size(path);
-  asset_info_t* info = asset_info_create(type, subtype, name, size);
-  return_value_if_fail(info != NULL, NULL);
+  asset_info_t* info = NULL;
+  if(file_exist(path)) {
+    int32_t size = file_get_size(path);
+    info = asset_info_create(type, subtype, name, size);
+    return_value_if_fail(info != NULL, NULL);
 
-  ENSURE(file_read_part(path, info->data, size, 0) == size);
+    ENSURE(file_read_part(path, info->data, size, 0) == size);
+  }
 
   return info;
 }
