@@ -116,7 +116,7 @@ static asset_info_t* load_asset(uint16_t type, uint16_t subtype, const char* pat
 static asset_info_t* load_asset(uint16_t type, uint16_t subtype, const char* path,
                                 const char* name) {
   asset_info_t* info = NULL;
-  if(file_exist(path)) {
+  if (file_exist(path)) {
     int32_t size = file_get_size(path);
     info = asset_info_create(type, subtype, name, size);
     return_value_if_fail(info != NULL, NULL);

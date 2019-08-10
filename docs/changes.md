@@ -1,6 +1,7 @@
 # 最新动态
 * 2019/08/10
   * edit/mledit set\_text 触发EVT\_VALUE\_CHANGED。
+  * 增加lcd mono。
 
 * 2019/08/09
   * 重构窗口管理器。

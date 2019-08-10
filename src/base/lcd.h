@@ -139,7 +139,12 @@ typedef enum _lcd_type_t {
    * @const LCD_VGCANVAS
    * 基于VGCANVS的LCD。仅在支持OpenGL时，用nanovg实现。
    */
-  LCD_VGCANVAS
+  LCD_VGCANVAS,
+  /**
+   * @const LCD_MONO
+   * 单色LCD。
+   */
+  LCD_MONO
 } lcd_type_t;
 
 /**

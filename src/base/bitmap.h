@@ -83,7 +83,17 @@ typedef enum _bitmap_format_t {
    * @const BITMAP_FMT_BGR888
    * 一个像素占用3个字节，RGB占一个字节，按内存地址递增。
    */
-  BITMAP_FMT_BGR888
+  BITMAP_FMT_BGR888,
+  /**
+   * @const BITMAP_FMT_GRAY
+   * 一个像素占用1个字节。
+   */
+  BITMAP_FMT_GRAY,
+  /**
+   * @const BITMAP_FMT_MONO
+   * 一个像素占用1比特。
+   */
+  BITMAP_FMT_MONO,
 } bitmap_format_t;
 
 /**
