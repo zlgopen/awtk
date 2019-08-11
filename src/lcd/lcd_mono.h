@@ -28,6 +28,13 @@ BEGIN_C_DECLS
 
 lcd_t* lcd_mono_create(wh_t w, wh_t h, lcd_flush_t flush);
 
+#define MONO_ROW_SIZE(w) (((w) + 7) >> 3)
+
+uint8_t* bitmap_mono_create_data(uint32_t w, uint32_t h);
+bool_t bitmap_mono_get_pixel(const uint8_t* buff, uint32_t w, uint32_t h, uint32_t x, uint32_t y);
+ret_t bitmap_mono_set_pixel(uint8_t* buff, uint32_t w, uint32_t h, uint32_t x, uint32_t y,
+                            bool_t pixel);
+
 END_C_DECLS
 
 #endif /*LCD_MONO_H*/
