@@ -440,6 +440,13 @@ ret_t bitmap_premulti_alpha(bitmap_t* bitmap);
 bool_t bitmap_save_png(bitmap_t* bitmap, const char* filename);
 #endif /*defined(WITH_SDL) || defined(LINUX)*/
 
+#define TK_BITMAP_MONO_LINE_LENGTH(w) (((w + 15) >> 4) << 1)
+
+uint8_t* bitmap_mono_create_data(uint32_t w, uint32_t h);
+bool_t bitmap_mono_get_pixel(const uint8_t* buff, uint32_t w, uint32_t h, uint32_t x, uint32_t y);
+ret_t bitmap_mono_set_pixel(uint8_t* buff, uint32_t w, uint32_t h, uint32_t x, uint32_t y,
+                            bool_t pixel);
+ret_t bitmap_mono_dump(const uint8_t* buff, uint32_t w, uint32_t h);
 END_C_DECLS
 
 #endif /*TK_BITMAP_H*/

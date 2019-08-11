@@ -61,11 +61,23 @@ typedef struct _glyph_t {
    */
   uint8_t h;
   /**
-   * @property {int32_t} advance
+   * @property {uint16_t} advance
    * @annotation ["readable"]
    * 占位宽度。
    */
-  uint32_t advance;
+  uint16_t advance : 16;
+  /**
+   * @property {uint8_t} format
+   * @annotation ["readable"]
+   * 格式。
+   */
+  uint8_t format : 8;
+  /**
+   * @property {uint8_t} pitch
+   * @annotation ["readable"]
+   * pitch。
+   */
+  uint8_t pitch : 8;
   /**
    * @property {const uint8_t*} data
    * @annotation ["readable"]
@@ -74,6 +86,30 @@ typedef struct _glyph_t {
   const uint8_t* data;
 } glyph_t;
 #pragma pack(pop)
+
+/**
+ * @enum glyph_format_t
+ * @prefix GLYPH_FMT_
+ * @annotation ["scriptable"]
+ * 字模格式常量定义。
+ */
+typedef enum _glyph_format_t {
+  /**
+   * @const GLYPH_FMT_ALPHA
+   * 每个像素占用1个字节(缺省)。
+   */
+  GLYPH_FMT_ALPHA,
+  /**
+   * @const GLYPH_FMT_MONO
+   * 每个像素占用1个比特。
+   */
+  GLYPH_FMT_MONO,
+  /**
+   * @const GLYPH_FMT_RGBA
+   * 每个像素占用4个字节。
+   */
+  GLYPH_FMT_RGBA
+} glyph_format_t;
 
 /**
  * @method glyph_create

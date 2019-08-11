@@ -13,6 +13,7 @@
 BEGIN_C_DECLS
 
 font_t* font_ft_create(const char* name, const uint8_t* buff, uint32_t size);
+font_t* font_ft_mono_create(const char* name, const uint8_t* buff, uint32_t size);
 
 /**
  * @class font_loader_ft_t
@@ -34,6 +35,8 @@ font_t* font_ft_create(const char* name, const uint8_t* buff, uint32_t size);
  * @return {font_loader_t*} 返回字体加载器对象。
  */
 font_loader_t* font_loader_ft(void);
+
+font_loader_t* font_loader_ft_mono(void);
 
 END_C_DECLS
 

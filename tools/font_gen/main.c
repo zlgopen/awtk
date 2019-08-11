@@ -25,8 +25,13 @@
 #include "font_loader/font_loader_bitmap.h"
 #include "font_loader/font_loader_truetype.h"
 
+#if defined(LINUX) || defined(MACOS)
+#include "font_loader/font_loader_ft.h"
+#endif
+
 int main(int argc, char** argv) {
   uint32_t size = 0;
+  bool_t mono = FALSE;
   font_t* font = NULL;
   char* str_buff = NULL;
   uint8_t* ttf_buff = NULL;
@@ -37,8 +42,8 @@ int main(int argc, char** argv) {
 
   TKMEM_INIT(4 * 1024 * 1024);
 
-  if (argc != 5) {
-    printf("Usage: %s ttf_filename str_filename out_filename font_size\n", argv[0]);
+  if (argc < 5) {
+    printf("Usage: %s ttf_filename str_filename out_filename font_size [mono]\n", argv[0]);
 
     return 0;
   }
@@ -48,13 +53,24 @@ int main(int argc, char** argv) {
   out_filename = argv[3];
   font_size = atoi(argv[4]);
 
+  if (argc == 6) {
+    mono = TRUE;
+  }
+
   exit_if_need_not_update(ttf_filename, out_filename);
   exit_if_need_not_update(str_filename, out_filename);
 
   ttf_buff = (uint8_t*)read_file(ttf_filename, &size);
   return_value_if_fail(ttf_buff != NULL, 0);
-
+#if defined(LINUX) || defined(MACOS)
+  if (mono) {
+    font = font_ft_mono_create("default", ttf_buff, size);
+  } else {
+    font = font_truetype_create("default", ttf_buff, size);
+  }
+#else
   font = font_truetype_create("default", ttf_buff, size);
+#endif /*LINUX/MACOS*/
 
   str_buff = read_file(str_filename, &size);
   return_value_if_fail(str_buff != NULL, 0);

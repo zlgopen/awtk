@@ -475,3 +475,65 @@ bool_t bitmap_save_png(bitmap_t* bitmap, const char* filename) {
 }
 
 #endif /*defined(WITH_SDL) || defined(LINUX)*/
+
+/*helper*/
+#define BIT_OFFSET(xx) (7 - ((xx) % 8))
+
+ret_t bitmap_mono_set_pixel(uint8_t* buff, uint32_t w, uint32_t h, uint32_t x, uint32_t y,
+                            bool_t pixel) {
+  uint32_t offset = y * TK_BITMAP_MONO_LINE_LENGTH(w) + (x >> 3);
+  uint8_t* data = buff + offset;
+  uint32_t offset_bit = BIT_OFFSET(x);
+
+  ENSURE(x < w && y < h && buff != NULL);
+
+  if (pixel) {
+    *data |= (1 << offset_bit);
+  } else {
+    *data &= ~(1 << offset_bit);
+  }
+
+  return RET_OK;
+}
+
+bool_t bitmap_mono_get_pixel(const uint8_t* buff, uint32_t w, uint32_t h, uint32_t x, uint32_t y) {
+  uint32_t offset = y * TK_BITMAP_MONO_LINE_LENGTH(w) + (x >> 3);
+  const uint8_t* data = buff + offset;
+  uint32_t offset_bit = BIT_OFFSET(x);
+
+  ENSURE(x < w && y < h && buff != NULL);
+
+  return (*data >> offset_bit) & 0x1;
+}
+
+uint8_t* bitmap_mono_create_data(uint32_t w, uint32_t h) {
+  uint8_t* buff = NULL;
+  uint32_t size = TK_BITMAP_MONO_LINE_LENGTH(w) * h;
+  return_value_if_fail(w > 0 && h > 0, NULL);
+
+  buff = TKMEM_ALLOC(size);
+  return_value_if_fail(buff != NULL, NULL);
+
+  memset(buff, 0x00, size);
+
+  return buff;
+}
+
+ret_t bitmap_mono_dump(const uint8_t* buff, uint32_t w, uint32_t h) {
+  uint32_t j = 0;
+  uint32_t i = 0;
+  return_value_if_fail(buff != NULL, RET_BAD_PARAMS);
+
+  for (j = 0; j < h; j++) {
+    for (i = 0; i < w; i++) {
+      bool_t pixel = bitmap_mono_get_pixel(buff, w, h, i, j);
+      if (pixel) {
+        log_debug("O");
+      } else {
+        log_debug(" ");
+      }
+    }
+    log_debug("\n");
+  }
+  return RET_OK;
+}

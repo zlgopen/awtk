@@ -23,6 +23,7 @@
 #include "tkc/mem.h"
 #include "tkc/utf8.h"
 #include "tkc/buffer.h"
+#include "base/bitmap.h"
 #include "common/utils.h"
 #include "font_gen/font_gen.h"
 #include "base/assets_manager.h"
@@ -83,19 +84,27 @@ uint32_t font_gen_buff(font_t* font, uint16_t font_size, const char* str, uint8_
     if (iswspace(c)) {
       continue;
     }
+
     printf("%d/%d: 0x%04x\n", i, size, c);
     if (font_get_glyph(font, c, font_size, &g) == RET_OK) {
-      uint32_t data_size = g.w * g.h;
+      uint32_t data_size = (g.pitch ? g.pitch : g.w) * g.h;
       return_value_if_fail(buff_size > (iter->offset + data_size + 4), 0);
 
       save_uint8(p, g.x);
       save_uint8(p, g.y);
       save_uint8(p, g.w);
       save_uint8(p, g.h);
-      save_uint32(p, g.advance);
+      save_uint16(p, g.advance);
+      save_uint8(p, g.format);
+      save_uint8(p, g.pitch);
 
       memcpy(p, g.data, data_size);
       p += data_size;
+
+      if (g.format == GLYPH_FMT_MONO) {
+        bitmap_mono_dump(g.data, g.w, g.h);
+      }
+
     } else if (c > 32) {
       printf("not found %d\n", c);
       exit(0);

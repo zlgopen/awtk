@@ -11,49 +11,6 @@ static ret_t lcd_log_flush(lcd_t* lcd) {
   return RET_OK;
 }
 
-TEST(LcdMono, row_size) {
-  ASSERT_EQ(MONO_ROW_SIZE(8), 1);
-  ASSERT_EQ(MONO_ROW_SIZE(9), 2);
-  ASSERT_EQ(MONO_ROW_SIZE(13), 2);
-  ASSERT_EQ(MONO_ROW_SIZE(15), 2);
-  ASSERT_EQ(MONO_ROW_SIZE(16), 2);
-  ASSERT_EQ(MONO_ROW_SIZE(17), 3);
-  ASSERT_EQ(MONO_ROW_SIZE(23), 3);
-  ASSERT_EQ(MONO_ROW_SIZE(24), 3);
-  ASSERT_EQ(MONO_ROW_SIZE(25), 4);
-}
-
-static void test_get_set(uint32_t w, uint32_t h) {
-  uint32_t i = 0;
-  uint32_t j = 0;
-  uint8_t* buff = bitmap_mono_create_data(w, h);
-
-  for (j = 0; j < h; j++) {
-    for (i = 0; i < w; i++) {
-      ASSERT_EQ(bitmap_mono_get_pixel(buff, w, h, i, j), FALSE);
-      ASSERT_EQ(bitmap_mono_set_pixel(buff, w, h, i, j, TRUE), RET_OK);
-      ASSERT_EQ(bitmap_mono_get_pixel(buff, w, h, i, j), TRUE);
-    }
-  }
-  TKMEM_FREE(buff);
-}
-
-TEST(LcdMono, set_get) {
-  test_get_set(8, 1);
-  test_get_set(8, 2);
-  test_get_set(8, 3);
-  test_get_set(8, 4);
-  test_get_set(9, 1);
-  test_get_set(9, 2);
-  test_get_set(9, 3);
-  test_get_set(9, 4);
-  test_get_set(24, 1);
-  test_get_set(24, 2);
-  test_get_set(24, 3);
-  test_get_set(24, 4);
-  test_get_set(32, 16);
-}
-
 TEST(LcdMono, draw_points) {
   uint32_t i = 0;
   uint32_t w = 128;
