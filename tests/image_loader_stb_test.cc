@@ -75,7 +75,7 @@ static ret_t add_image_res(const char* filename, const char* name) {
   r->is_in_rom = TRUE;
   r->type = ASSET_TYPE_IMAGE;
   r->subtype = ASSET_TYPE_IMAGE_RAW;
-  r->size = image_gen_buff(&image, r->data, sizeof(buff) - sizeof(asset_info_t));
+  r->size = image_gen_buff(&image, r->data, sizeof(buff) - sizeof(asset_info_t), FALSE);
   bitmap_destroy(&image);
 
   return assets_manager_add(assets_manager(), buff);

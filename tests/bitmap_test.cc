@@ -62,3 +62,70 @@ TEST(Bitmap, set_get) {
   test_get_set(24, 4);
   test_get_set(32, 16);
 }
+
+static uint8_t* gen_rgba_data(uint32_t w, uint32_t h) {
+  uint32_t i = 0;
+  uint32_t j = 0;
+  uint32_t size = w * h * 4;
+  uint8_t* data = (uint8_t*)TKMEM_ALLOC(size);
+  uint8_t* p = data;
+
+  for (j = 0; j < h; j++) {
+    for (i = 0; i < w; i++) {
+      if (j % 2) {
+        p[0] = 0xff;
+        p[1] = 0xff;
+        p[2] = 0xff;
+        p[3] = 0xff;
+      } else {
+        p[0] = 0;
+        p[1] = 0;
+        p[2] = 0;
+        p[3] = 0xff;
+      }
+      p += 4;
+    }
+  }
+
+  return data;
+}
+
+static void check_bitmap_mono(bitmap_t* b) {
+  uint32_t i = 0;
+  uint32_t j = 0;
+  uint32_t w = b->w;
+  uint32_t h = b->h;
+
+  for (j = 0; j < h; j++) {
+    for (i = 0; i < w; i++) {
+      if (j % 2) {
+        ASSERT_EQ(bitmap_mono_get_pixel(b->data, w, h, i, j), TRUE);
+      } else {
+        ASSERT_EQ(bitmap_mono_get_pixel(b->data, w, h, i, j), FALSE);
+      }
+    }
+  }
+
+  return;
+}
+
+static void test_bitmap_mono(uint32_t w, uint32_t h) {
+  bitmap_t b;
+  uint8_t* data = gen_rgba_data(w, h);
+  bitmap_init_from_rgba(&b, w, h, BITMAP_FMT_MONO, data, 4);
+  check_bitmap_mono(&b);
+  bitmap_destroy(&b);
+  TKMEM_FREE(data);
+}
+
+TEST(Bitmap, mono_from_rgba) {
+  test_bitmap_mono(1, 1);
+  test_bitmap_mono(2, 2);
+  test_bitmap_mono(7, 2);
+  test_bitmap_mono(8, 2);
+  test_bitmap_mono(15, 2);
+  test_bitmap_mono(16, 2);
+  test_bitmap_mono(17, 2);
+  test_bitmap_mono(23, 2);
+  test_bitmap_mono(24, 24);
+}

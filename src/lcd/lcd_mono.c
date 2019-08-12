@@ -20,6 +20,7 @@
  */
 
 #include "tkc/mem.h"
+#include "base/pixel.h"
 #include "lcd/lcd_mono.h"
 #include "base/system_info.h"
 
@@ -30,8 +31,10 @@ typedef struct _lcd_mono_t {
 } lcd_mono_t;
 
 #define LCD_MONO(lcd) ((lcd_mono_t*)(lcd))
-#define color_to_pixel(c) (((c).rgba.r) & 0x01)
-#define color_from_pixel(p) color_init(p, 0, 0, 0xff)
+
+#undef color_to_pixel
+#define color_to_pixel(c) color_to_mono(c)
+#define color_from_pixel(p) color_from_mono(p)
 
 static ret_t inline lcd_mono_set_pixel(lcd_t* lcd, uint16_t x, uint16_t y, bool_t pixel) {
   lcd_mono_t* mono = LCD_MONO(lcd);

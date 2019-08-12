@@ -163,6 +163,13 @@ ret_t bitmap_get_pixel(bitmap_t* bitmap, uint32_t x, uint32_t y, rgba_t* rgba) {
   data = bitmap->data + bitmap_get_line_length(bitmap) * y + x * bpp;
 
   switch (bitmap->format) {
+    case BITMAP_FMT_MONO: {
+      bool_t pixel = bitmap_mono_get_pixel(bitmap->data, bitmap->w, bitmap->h, x, y);
+      color_t c = color_from_mono(pixel);
+      *rgba = c.rgba;
+
+      return RET_OK;
+    }
     case BITMAP_FMT_RGBA8888: {
       pixel_rgba8888_t* p = (pixel_rgba8888_t*)data;
       rgba_t t = pixel_rgba8888_to_rgba((*p));
@@ -289,6 +296,36 @@ ret_t bitmap_init_bgr565(bitmap_t* b, uint32_t w, uint32_t h, const uint8_t* dat
   return RET_OK;
 }
 
+ret_t bitmap_init_mono(bitmap_t* b, uint32_t w, uint32_t h, const uint8_t* data, uint32_t comp) {
+  uint32_t i = 0;
+  uint32_t j = 0;
+  bool_t pixel = FALSE;
+  const uint8_t* s = data;
+  uint8_t* d = (uint8_t*)(b->data);
+
+  for (j = 0; j < h; j++) {
+    for (i = 0; i < w; i++) {
+      uint8_t r = s[0];
+      uint8_t g = s[1];
+      uint8_t b = s[2];
+
+      if (comp == 4) {
+        uint8_t a = s[3];
+        r = (r * a) >> 8;
+        g = (g * a) >> 8;
+        b = (b * a) >> 8;
+      }
+
+      pixel = rgb_to_gray(r, g, b) > 10;
+      bitmap_mono_set_pixel(d, w, h, i, j, pixel);
+
+      s += comp;
+    }
+  }
+
+  return RET_OK;
+}
+
 bool_t rgba_data_is_opaque(const uint8_t* data, uint32_t w, uint32_t h, uint8_t comp) {
   if (comp == 4) {
     uint32_t i = 0;
@@ -329,6 +366,8 @@ ret_t bitmap_init_from_rgba(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_for
     return bitmap_init_rgba8888(bitmap, w, h, data, comp);
   } else if (format == BITMAP_FMT_BGR565) {
     return bitmap_init_bgr565(bitmap, w, h, data, comp);
+  } else if (format == BITMAP_FMT_MONO) {
+    return bitmap_init_mono(bitmap, w, h, data, comp);
   } else {
     return RET_NOT_IMPL;
   }
@@ -357,10 +396,14 @@ ret_t bitmap_init(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t form
 }
 
 ret_t bitmap_set_line_length(bitmap_t* bitmap, uint32_t line_length) {
-  uint32_t bpp = bitmap_get_bpp(bitmap);
   return_value_if_fail(bitmap != NULL, RET_BAD_PARAMS);
 
-  bitmap->line_length = tk_max(bitmap->w * bpp, line_length);
+  if (bitmap->format == BITMAP_FMT_MONO) {
+    bitmap->line_length = TK_BITMAP_MONO_LINE_LENGTH(bitmap->w);
+  } else {
+    uint32_t bpp = bitmap_get_bpp(bitmap);
+    bitmap->line_length = tk_max(bitmap->w * bpp, line_length);
+  }
 
   return RET_OK;
 }
@@ -368,7 +411,7 @@ ret_t bitmap_set_line_length(bitmap_t* bitmap, uint32_t line_length) {
 uint32_t bitmap_get_line_length(bitmap_t* bitmap) {
   return_value_if_fail(bitmap != NULL, 0);
 
-  if (bitmap->line_length < bitmap->w) {
+  if (bitmap->line_length == 0) {
     bitmap_set_line_length(bitmap, 0);
   }
 

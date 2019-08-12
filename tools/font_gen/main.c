@@ -53,7 +53,7 @@ int main(int argc, char** argv) {
   out_filename = argv[3];
   font_size = atoi(argv[4]);
 
-  if (argc == 6) {
+  if (argc == 6 && tk_str_eq(argv[5], "mono")) {
     mono = TRUE;
   }
 

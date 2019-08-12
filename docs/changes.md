@@ -1,4 +1,10 @@
 # 最新动态
+* 2019/08/12
+  * 增加mono图片生成工具。
+
+* 2019/08/11
+  * 增加mono字体生成工具。
+
 * 2019/08/10
   * edit/mledit set\_text 触发EVT\_VALUE\_CHANGED。
   * 增加lcd mono。
