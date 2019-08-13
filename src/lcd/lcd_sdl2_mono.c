@@ -98,7 +98,6 @@ static ret_t lcd_sdl2_mono_flush(lcd_t* lcd) {
     }
 
     SDL_UnlockTexture(info->texture);
-    log_debug("dirty_rect: %d %d %d %d\n", dr->x, dr->y, dr->w, dr->h);
 
     SDL_RenderCopy(info->render, info->texture, &sr, &sr);
   }

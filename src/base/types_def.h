@@ -313,7 +313,7 @@ typedef struct _system_info_t system_info_t;
 
 #if defined(WITH_STB_FONT) || defined(WITH_FT_FONT)
 #define WITH_TRUETYPE_FONT 1
-#endif/*WITH_STB_FONT or WITH_FT_FONT*/
+#endif /*WITH_STB_FONT or WITH_FT_FONT*/
 
 #if defined(WITH_LCD_MONO)
 #undef WITH_FS_RES
@@ -322,6 +322,6 @@ typedef struct _system_info_t system_info_t;
 #undef WITH_TRUETYPE_FONT
 #undef WITH_WINDOW_ANIMATORS
 #define WITH_BITMAP_FONT 1
-#endif/*WITH_LCD_MONO*/
+#endif /*WITH_LCD_MONO*/
 
 #endif /*TK_TYPES_DEF_H*/

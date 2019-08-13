@@ -24,8 +24,8 @@
 #include "lcd/lcd_mono.h"
 #include "base/system_info.h"
 
-typedef uint8_t pixel_t;
 #undef color_to_pixel
+typedef uint8_t pixel_t;
 #define color_to_pixel(c) color_to_mono(c)
 #define color_from_pixel(p) color_from_mono(p)
 
@@ -122,7 +122,7 @@ static ret_t lcd_mono_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x
   return lcd_mono_draw_data(lcd, glyph->data, glyph->w, glyph->h, src, x, y);
 }
 
-static ret_t lcd_mono_draw_image_gray(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
+static ret_t lcd_mono_draw_image_mono(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
   const uint8_t* data = (const uint8_t*)(img->data);
   return_value_if_fail(src->w == dst->w && src->h == dst->h, RET_OK);
 
@@ -133,11 +133,11 @@ static ret_t lcd_mono_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t*
   return_value_if_fail(img->format == BITMAP_FMT_MONO, RET_NOT_IMPL);
   return_value_if_fail(src->w == dst->w && src->h == dst->h, RET_NOT_IMPL);
 
-  return lcd_mono_draw_image_gray(lcd, img, src, dst);
+  return lcd_mono_draw_image_mono(lcd, img, src, dst);
 }
 
 static ret_t lcd_mono_end_frame(lcd_t* lcd) {
-  if (lcd->flush) {
+  if (lcd->flush != NULL) {
     lcd->flush(lcd);
   }
 

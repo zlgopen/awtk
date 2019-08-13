@@ -1,7 +1,7 @@
 ﻿/**
  * File:   lcd_sdl2_mono.h
  * Author: AWTK Develop Team
- * Brief:  sdl2 implemented lcd interface/
+ * Brief:  mono lcd on sdl2
  *
  * Copyright (c) 2018 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
@@ -15,15 +15,15 @@
 /**
  * History:
  * ================================================================
- * 2018-01-13 Li XianJing <xianjimli@hotmail.com> created
+ * 2010-08-13 Li XianJing <xianjimli@hotmail.com> created
  *
  */
 
 #ifndef LCD_SDL_MONO_H
 #define LCD_SDL_MONO_H
 
-#include "base/lcd.h"
 #include <SDL.h>
+#include "base/lcd.h"
 
 BEGIN_C_DECLS
 
