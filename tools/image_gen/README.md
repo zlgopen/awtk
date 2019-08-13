@@ -5,10 +5,11 @@
 用法说明：
 
 ```
-./bin/imagegen in_filename out_filename bgra+bgr565
+./bin/imagegen in_filename out_filename bgra+bgr565|mono
 ```
 
 * in\_filename png/jpg 文件的文件名。
 * out\_filename 位图数据文件的文件名。
 * bgra 表示输出BITMAP\_FMT\_BGRA8888格式的图片。
 * bgr565 表示把不透明的图片转成BITMAP\_FMT\_BGR565格式的图片。
+* mono 是否生成单色图片。
