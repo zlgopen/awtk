@@ -14,8 +14,8 @@ static ret_t main_loop_raw_destroy(main_loop_t* l) {
   return RET_OK;
 }
 
-static ret_t main_loop_raw_init_canvas(main_loop_simple_t* loop) {
-  lcd_t* lcd = platform_create_lcd(loop->w, loop->h);
+static ret_t main_loop_raw_init_canvas(uint32_t w, uint32_t h) {
+  lcd_t* lcd = platform_create_lcd(w, h);
 
   return_value_if_fail(lcd != NULL, RET_OOM);
   native_window_raw_init(lcd);
@@ -24,11 +24,14 @@ static ret_t main_loop_raw_init_canvas(main_loop_simple_t* loop) {
 }
 
 main_loop_t* main_loop_init(int w, int h) {
-  main_loop_simple_t* loop = main_loop_simple_init(w, h);
+  main_loop_simple_t* loop = NULL;
+  return_value_if_fail(main_loop_raw_init_canvas(w, h) == RET_OK, NULL)
+  
+  loop = main_loop_simple_init(w, h);
+  return_value_if_fail(loop != NULL, NULL);
 
   loop->base.destroy = main_loop_raw_destroy;
   loop->dispatch_input = main_loop_raw_dispatch;
-  main_loop_raw_init_canvas(loop);
 
   return (main_loop_t*)loop;
 }
