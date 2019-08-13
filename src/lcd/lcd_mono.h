@@ -26,7 +26,14 @@
 
 BEGIN_C_DECLS
 
-lcd_t* lcd_mono_create(wh_t w, wh_t h, lcd_flush_t flush);
+typedef struct _lcd_mono_t {
+  lcd_t lcd;
+  uint8_t* data;
+  void* ctx;
+  lcd_destroy_t on_destroy;
+} lcd_mono_t;
+
+lcd_t* lcd_mono_create(wh_t w, wh_t h, lcd_flush_t flush, lcd_destroy_t on_destroy, void* ctx);
 
 END_C_DECLS
 

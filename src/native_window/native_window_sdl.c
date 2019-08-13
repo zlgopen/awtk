@@ -34,6 +34,7 @@
 #endif /*WITH_NANOVG_GL*/
 
 #include "lcd/lcd_sdl2.h"
+#include "lcd/lcd_sdl2_mono.h"
 #include "lcd/lcd_nanovg.h"
 #include "base/native_window.h"
 
@@ -317,7 +318,11 @@ static native_window_t* native_window_create_internal(const char* title, uint32_
 #endif /*WITH_NANOVG_GL*/
 
 #ifdef WITH_NANOVG_SOFT
+#ifdef WITH_LCD_MONO
+  lcd = lcd_sdl2_mono_init(sdl->render);
+#else
   lcd = lcd_sdl2_init(sdl->render);
+#endif /*WITH_LCD_MONO*/
 #else
   lcd = lcd_nanovg_init(win);
 #endif /*WITH_NANOVG_SOFT*/

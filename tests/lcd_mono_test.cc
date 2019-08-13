@@ -16,7 +16,7 @@ TEST(LcdMono, draw_points) {
   uint32_t w = 128;
   uint32_t h = 64;
 
-  lcd_t* lcd = lcd_mono_create(w, h, lcd_log_flush);
+  lcd_t* lcd = lcd_mono_create(w, h, lcd_log_flush, NULL, NULL);
 
   for (i = 0; i < 10000; i++) {
     point_t p;
@@ -48,7 +48,7 @@ TEST(LcdMono, draw_hline) {
   uint32_t x = 1;
   uint32_t line_size = w - x;
 
-  lcd_t* lcd = lcd_mono_create(w, h, lcd_log_flush);
+  lcd_t* lcd = lcd_mono_create(w, h, lcd_log_flush, NULL, NULL);
 
   for (i = 0; i < h; i++) {
     color_t c = color_init(1, 0, 0, 0xff);
@@ -71,7 +71,7 @@ TEST(LcdMono, draw_vline) {
   uint32_t y = 1;
   uint32_t line_size = h - y;
 
-  lcd_t* lcd = lcd_mono_create(w, h, lcd_log_flush);
+  lcd_t* lcd = lcd_mono_create(w, h, lcd_log_flush, NULL, NULL);
 
   for (i = 0; i < w; i++) {
     color_t c = color_init(1, 0, 0, 0xff);
@@ -104,7 +104,7 @@ TEST(LcdMono, fill_rect) {
   uint32_t h = 64;
   color_t bg = color_init(0, 0, 0, 0xff);
   color_t fg = color_init(1, 0, 0, 0xff);
-  lcd_t* lcd = lcd_mono_create(w, h, lcd_log_flush);
+  lcd_t* lcd = lcd_mono_create(w, h, lcd_log_flush, NULL, NULL);
 
   test_fill_rect(lcd, 0, 0, w, h, fg);
   test_fill_rect(lcd, 0, 0, w, h, bg);
@@ -175,7 +175,7 @@ static void test_draw_glyph(lcd_t* lcd, uint32_t x, uint32_t y, uint32_t w, uint
 TEST(LcdMono, draw_glyph) {
   uint32_t w = 128;
   uint32_t h = 64;
-  lcd_t* lcd = lcd_mono_create(w, h, lcd_log_flush);
+  lcd_t* lcd = lcd_mono_create(w, h, lcd_log_flush, NULL, NULL);
 
   test_draw_glyph(lcd, 0, 0, 2, 2);
   test_draw_glyph(lcd, 0, 0, 10, 10);
@@ -214,7 +214,7 @@ static void test_draw_bitmap(lcd_t* lcd, uint32_t x, uint32_t y, uint32_t w, uin
 TEST(LcdMono, draw_bitmap) {
   uint32_t w = 128;
   uint32_t h = 64;
-  lcd_t* lcd = lcd_mono_create(w, h, lcd_log_flush);
+  lcd_t* lcd = lcd_mono_create(w, h, lcd_log_flush, NULL, NULL);
 
   test_draw_bitmap(lcd, 0, 0, 2, 2);
   test_draw_bitmap(lcd, 0, 0, 10, 10);

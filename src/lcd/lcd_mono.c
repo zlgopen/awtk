@@ -25,26 +25,19 @@
 #include "base/system_info.h"
 
 typedef uint8_t pixel_t;
-typedef struct _lcd_mono_t {
-  lcd_t lcd;
-  uint8_t* data;
-} lcd_mono_t;
-
-#define LCD_MONO(lcd) ((lcd_mono_t*)(lcd))
-
 #undef color_to_pixel
 #define color_to_pixel(c) color_to_mono(c)
 #define color_from_pixel(p) color_from_mono(p)
 
 static ret_t inline lcd_mono_set_pixel(lcd_t* lcd, uint16_t x, uint16_t y, bool_t pixel) {
-  lcd_mono_t* mono = LCD_MONO(lcd);
+  lcd_mono_t* mono = (lcd_mono_t*)(lcd);
 
   return bitmap_mono_set_pixel(mono->data, lcd->w, lcd->h, x, y, pixel);
 }
 
 static color_t lcd_mono_get_point_color(lcd_t* lcd, xy_t x, xy_t y) {
   color_t c;
-  lcd_mono_t* mono = LCD_MONO(lcd);
+  lcd_mono_t* mono = (lcd_mono_t*)(lcd);
   pixel_t pixel = bitmap_mono_get_pixel(mono->data, lcd->w, lcd->h, x, y);
 
   c = color_from_pixel(pixel);
@@ -144,18 +137,25 @@ static ret_t lcd_mono_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t*
 }
 
 static ret_t lcd_mono_end_frame(lcd_t* lcd) {
+  if (lcd->flush) {
+    lcd->flush(lcd);
+  }
+
   return RET_OK;
 }
 
 static ret_t lcd_mono_destroy(lcd_t* lcd) {
-  lcd_mono_t* mono = LCD_MONO(lcd);
+  lcd_mono_t* mono = (lcd_mono_t*)(lcd);
+  if (mono->on_destroy) {
+    mono->on_destroy(lcd);
+  }
   TKMEM_FREE(mono->data);
   TKMEM_FREE(lcd);
 
   return RET_OK;
 }
 
-lcd_t* lcd_mono_create(wh_t w, wh_t h, lcd_flush_t flush) {
+lcd_t* lcd_mono_create(wh_t w, wh_t h, lcd_flush_t flush, lcd_destroy_t on_destroy, void* ctx) {
   lcd_mono_t* mono = TKMEM_ZALLOC(lcd_mono_t);
   system_info_t* info = system_info();
   lcd_t* lcd = (lcd_t*)mono;
@@ -166,6 +166,8 @@ lcd_t* lcd_mono_create(wh_t w, wh_t h, lcd_flush_t flush) {
   lcd->ratio = 1;
   lcd->type = LCD_MONO;
   mono->data = bitmap_mono_create_data(w, h);
+  mono->on_destroy = on_destroy;
+  mono->ctx = ctx;
 
   ENSURE(mono->data != NULL);
 

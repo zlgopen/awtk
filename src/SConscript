@@ -41,6 +41,9 @@ if os.environ['LCD'] == 'SDL_GPU':
 elif os.environ['LCD'] == 'SDL_FB':
   sources += ['lcd/lcd_sdl2.c', 'main_loop/main_loop_sdl.c']
   sources += Glob('platforms/pc/*.c')
+elif os.environ['LCD'] == 'SDL_FB_MONO':
+  sources += ['lcd/lcd_sdl2_mono.c', 'main_loop/main_loop_sdl.c']
+  sources += Glob('platforms/pc/*.c')
 elif os.environ['LCD'] == 'LINUX_FB':
   sources += Glob('platforms/pc/*.c')
 
