@@ -45,6 +45,12 @@
 #define SWP_NOCOPYBITS 0
 #endif
 
+#if !defined(_MSC_VER)
+struct _OSVERSIONINFOEXW;
+typedef struct _OSVERSIONINFOEXW *PRTL_OSVERSIONINFOEXW;
+typedef struct _OSVERSIONINFOEXW RTL_OSVERSIONINFOEXW;
+#endif
+
 /* Fake window to help with DirectInput events. */
 HWND SDL_HelperWindow = NULL;
 static WCHAR *SDL_HelperWindowClassName = TEXT("SDLHelperWindowInputCatcher");
@@ -1018,8 +1024,8 @@ SDL_bool
 GetOSVersionGreater8_1()
 {
 	SDL_bool bIsGreater8_1 = SDL_FALSE;
-	SYSTEM_INFO info;                                   //ÓÃSYSTEM_INFO½á¹¹ÅĞ¶Ï64Î»AMD´¦ÀíÆ÷ 
-	GetSystemInfo(&info);                               //µ÷ÓÃGetSystemInfoº¯ÊıÌî³ä½á¹¹ 
+	SYSTEM_INFO info;                                   //ç”¨SYSTEM_INFOç»“æ„åˆ¤æ–­64ä½AMDå¤„ç†å™¨ 
+	GetSystemInfo(&info);                               //è°ƒç”¨GetSystemInfoå‡½æ•°å¡«å……ç»“æ„ 
 	SDL_memset(&g_osverinfo, 0, sizeof(RTL_OSVERSIONINFOEXW));
 
 	enum { BUFF_SIZE = 30 };
@@ -1206,8 +1212,8 @@ WIN_GetWindowDpiRatio(SDL_Window *window)
 		HDC hdc = GetDC(NULL);
 		if (hdc)
 		{
-			x = GetDeviceCaps(hdc, LOGPIXELSX);//Ã¿Ó¢´çÂß¼­ÏñËØÊı Ë®Æ½
-			y = GetDeviceCaps(hdc, LOGPIXELSY);//Ã¿Ó¢´çÂß¼­ÏñËØÊı ´¹Ö±    
+			x = GetDeviceCaps(hdc, LOGPIXELSX);//æ¯è‹±å¯¸é€»è¾‘åƒç´ æ•° æ°´å¹³
+			y = GetDeviceCaps(hdc, LOGPIXELSY);//æ¯è‹±å¯¸é€»è¾‘åƒç´ æ•° å‚ç›´    
 			ReleaseDC(NULL, hdc);
 		}
 	}

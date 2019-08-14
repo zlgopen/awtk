@@ -18,6 +18,12 @@
 
 #include "tkc/types_def.h"
 
+#ifdef __GNUC__
+
+#include "errno.h"
+
+#endif
+
 struct dirent {
   long d_ino;
   uint8_t d_type;
