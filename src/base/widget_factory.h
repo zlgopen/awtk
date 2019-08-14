@@ -23,12 +23,14 @@
 #define TK_WIDGET_FACTORY_H
 
 #include "tkc/darray.h"
+#include "tkc/emitter.h"
 #include "base/widget.h"
 
 BEGIN_C_DECLS
 
 /**
  * @class widget_factory_t
+ * @parent emitter
  * 控件工厂对象。
  *
  * 提供通过类型创建控件的能力。
@@ -36,6 +38,7 @@ BEGIN_C_DECLS
  *
  */
 typedef struct _widget_factory_t {
+  emitter_t emitter;
   /*private*/
   darray_t creators;
 } widget_factory_t;

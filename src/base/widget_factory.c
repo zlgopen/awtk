@@ -137,6 +137,7 @@ widget_factory_t* widget_factory_create(void) {
 static widget_factory_t* widget_factory_init(widget_factory_t* factory) {
   return_value_if_fail(factory != NULL, NULL);
 
+  emitter_init(EMITTER(factory));
   darray_init(&(factory->creators), 0, default_destroy, (tk_compare_t)creator_item_cmp);
 
   return factory;
@@ -163,7 +164,11 @@ widget_t* widget_factory_create_widget(widget_factory_t* factory, const char* ty
 
   iter = widget_factory_find_builtin_creator(type);
   if (iter != NULL) {
-    return iter->create(parent, x, y, w, h);
+    widget_t* widget = iter->create(parent, x, y, w, h);
+    event_t e = event_init(EVT_WIDGET_CREATED, widget);
+    emitter_dispatch(EMITTER(factory), &e);
+
+    return widget;
   }
 
   iter = darray_find(&(factory->creators), (void*)type);
@@ -182,6 +187,7 @@ static ret_t widget_factory_deinit(widget_factory_t* factory) {
   return_value_if_fail(factory != NULL, RET_BAD_PARAMS);
 
   darray_deinit(&(factory->creators));
+  emitter_deinit(EMITTER(factory));
 
   return RET_OK;
 }

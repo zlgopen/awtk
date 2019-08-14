@@ -336,6 +336,11 @@ typedef enum _event_type_t {
    */
   EVT_ORIENTATION_CHANGED,
   /**
+   * @const EVT_WIDGET_CREATED
+   * 控件创建事件。
+   */
+  EVT_WIDGET_CREATED,
+  /**
    * @const EVT_REQ_START
    * event queue其它请求编号起始值。
    */
