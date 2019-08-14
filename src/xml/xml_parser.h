@@ -26,7 +26,11 @@
 
 BEGIN_C_DECLS
 
-#define MAX_ATTR_NR 24
+#ifndef TK_XML_MAX_ATTRS
+#define TK_XML_MAX_ATTRS 24
+#endif /*TK_XML_MAX_ATTRS*/
+
+#define MAX_ATTR_KEY_VALUE_NR (TK_XML_MAX_ATTRS * 2)
 
 struct _XmlParser;
 typedef struct _XmlParser XmlParser;

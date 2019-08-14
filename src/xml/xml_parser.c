@@ -34,7 +34,7 @@ struct _XmlParser {
   const char* read_ptr;
   const char* end;
   int attrs_nr;
-  char* attrs[2 * MAX_ATTR_NR + 1];
+  char* attrs[MAX_ATTR_KEY_VALUE_NR + 1];
 
   char* buffer;
   int buffer_used;
@@ -223,7 +223,7 @@ static void xml_parser_parse_attrs(XmlParser* thiz, char end_char) {
   const char* start = thiz->read_ptr;
 
   thiz->attrs_nr = 0;
-  for (; *thiz->read_ptr != '\0' && thiz->attrs_nr < MAX_ATTR_NR; thiz->read_ptr++) {
+  for (; *thiz->read_ptr != '\0' && thiz->attrs_nr < MAX_ATTR_KEY_VALUE_NR; thiz->read_ptr++) {
     char c = *thiz->read_ptr;
 
     switch (state) {

@@ -7,7 +7,19 @@ using std::string;
 static string s_log;
 
 static void xml_gen_on_start(XmlBuilder* thiz, const char* tag, const char** attrs) {
-  s_log += "<" + string(tag) + ">";
+  uint32_t i = 0;
+  s_log += "<" + string(tag);
+
+  while (attrs[i] != NULL) {
+    if (i == 0) {
+      s_log += ' ';
+    }
+    s_log += attrs[i];
+    s_log += string("=\"") + attrs[i + 1] + string("\" ");
+    i += 2;
+  }
+
+  s_log += ">";
 
   return;
 }
@@ -86,6 +98,24 @@ TEST(XmlParser, basic) {
   test_str(p, "<a>test</a>");
   test_str(p, "<a><b>test</b></a>");
   test_str(p, "<a><b>test</b><c>test1</c></a>");
+
+  xml_parser_destroy(p);
+}
+
+TEST(XmlParser, max_attrs) {
+  XmlBuilder b;
+  XmlParser* p = xml_parser_create();
+  xml_parser_set_builder(p, builder_init(b));
+
+  test_str_ex(p,
+              "<test a1=\"1\" a2=\"2\" a3=\"3\" a4=\"4\" a5=\"5\" a6=\"6\" a7=\"7\" a8=\"8\" "
+              "a9=\"9\" a10=\"10\" a11=\"11\" a12=\"12\" a13=\"13\" a14=\"14\" a15=\"15\" "
+              "a16=\"16\" a17=\"17\" a18=\"18\" a19=\"19\" a20=\"20\" a21=\"21\" a22=\"22\" "
+              "a23=\"23\" a24=\"24\" a25=\"25\" ></test>",
+              "<test a1=\"1\" a2=\"2\" a3=\"3\" a4=\"4\" a5=\"5\" a6=\"6\" a7=\"7\" a8=\"8\" "
+              "a9=\"9\" a10=\"10\" a11=\"11\" a12=\"12\" a13=\"13\" a14=\"14\" a15=\"15\" "
+              "a16=\"16\" a17=\"17\" a18=\"18\" a19=\"19\" a20=\"20\" a21=\"21\" a22=\"22\" "
+              "a23=\"23\" a24=\"24\" ></test>");
 
   xml_parser_destroy(p);
 }
