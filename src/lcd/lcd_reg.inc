@@ -179,13 +179,13 @@ static ret_t lcd_reg_8888(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
     for (j = 0; j < dh; j++) {
       for (i = 0; i < dw; i++) {
         src_color = src_p[i];
-        if(format == BITMAP_FMT_BGRA8888) {
+        if (format == BITMAP_FMT_BGRA8888) {
           uint8_t r = src_color.rgba.r;
           src_color.rgba.r = src_color.rgba.b;
           src_color.rgba.b = r;
         }
         a = src_color.rgba.a;
-        
+
         if (a >= TK_OPACITY_ALPHA) {
           write_data_func(color_to_pixel(src_color));
         } else if (a >= TK_TRANSPARENT_ALPHA) {
@@ -212,7 +212,7 @@ static ret_t lcd_reg_8888(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
       for (i = 0, x = dst->x; x < r; i++, x++) {
         uint32_t s = (i * scale_x) >> 16;
         src_color = src_p[s];
-        if(format == BITMAP_FMT_BGRA8888) {
+        if (format == BITMAP_FMT_BGRA8888) {
           uint8_t r = src_color.rgba.r;
           src_color.rgba.r = src_color.rgba.b;
           src_color.rgba.b = r;
