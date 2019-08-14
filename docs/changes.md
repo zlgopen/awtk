@@ -3,6 +3,8 @@
   * 完善文档。
   * 增加宏TK\_XML\_MAX\_ATTRS用于控制XML属性的最大个数(缺省24)。
   * 通过widget factory触发EVT\_WIDGET\_CREATED事件。
+  * 修改在stm32f103上的问题。
+  * 完善window\_animator(感谢智明提供补丁)
 
 * 2019/08/13
   * 模拟器支持单色屏。
