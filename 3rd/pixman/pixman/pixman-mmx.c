@@ -30,7 +30,7 @@
  */
 
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+#include "config.h"
 #endif
 
 #if defined USE_X86_MMX || defined USE_ARM_IWMMXT || defined USE_LOONGSON_MMI

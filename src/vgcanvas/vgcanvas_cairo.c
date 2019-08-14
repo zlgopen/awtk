@@ -24,7 +24,7 @@
 #include "tkc/utf8.h"
 
 #include "base/vgcanvas.h"
-#include "cairo.h"
+#include "cairo/cairo.h"
 #include "tkc/mem.h"
 #include "tkc/darray.h"
 

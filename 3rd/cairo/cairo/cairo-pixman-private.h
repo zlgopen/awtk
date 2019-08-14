@@ -40,7 +40,7 @@
 
 #include "cairo-pixman-private.h" /* keep make check happy */
 
-#include <pixman.h>
+#include <pixman/pixman.h>
 
 #if PIXMAN_VERSION < PIXMAN_VERSION_ENCODE(0,22,0)
 #define pixman_image_composite32 pixman_image_composite

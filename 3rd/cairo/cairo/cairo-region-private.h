@@ -42,7 +42,7 @@
 #include "cairo-types-private.h"
 #include "cairo-reference-count-private.h"
 
-#include <pixman.h>
+#include <pixman/pixman.h>
 
 CAIRO_BEGIN_DECLS
 

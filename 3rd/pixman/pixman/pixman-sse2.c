@@ -27,7 +27,7 @@
  * Based on work by Owen Taylor and Søren Sandmann
  */
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+#include "config.h"
 #endif
 
 /* PSHUFD is slow on a lot of old processors, and new processors have SSSE3 */

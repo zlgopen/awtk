@@ -38,7 +38,7 @@ if OS_NAME == 'Windows':
 else:
   NANOVG_BACKEND='GL3'
 
-#VGCANVAS='CAIRO'
+VGCANVAS='CAIRO'
 #NANOVG_BACKEND='GLES2'
 #NANOVG_BACKEND='GLES3'
 #NANOVG_BACKEND='AGG'
@@ -178,8 +178,7 @@ CPPPATH=[TK_ROOT,
   TK_3RD_ROOT, 
   joinPath(TK_SRC, 'ext_widgets'), 
   joinPath(TK_3RD_ROOT, 'pixman'), 
-  joinPath(TK_3RD_ROOT, 'pixman/pixman'), 
-  joinPath(TK_3RD_ROOT, 'cairo/cairo'), 
+  joinPath(TK_3RD_ROOT, 'cairo'),
   joinPath(TK_3RD_ROOT, 'bgfx/bgfx/include'), 
   joinPath(TK_3RD_ROOT, 'bgfx/bx/include'), 
   joinPath(TK_3RD_ROOT, 'bgfx/bimg/include'), 

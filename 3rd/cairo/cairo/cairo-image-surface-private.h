@@ -41,7 +41,7 @@
 #include "cairo-surface-private.h"
 
 #include <stddef.h>
-#include <pixman.h>
+#include <pixman/pixman.h>
 
 CAIRO_BEGIN_DECLS
 
