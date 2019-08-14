@@ -27,7 +27,7 @@
 BEGIN_C_DECLS
 
 /**
- * @class lcd_mono_t 
+ * @class lcd_mono_t
  * @parent lcd_t
  *
  * 单色LCD。
@@ -40,7 +40,7 @@ BEGIN_C_DECLS
  */
 typedef struct _lcd_mono_t {
   lcd_t lcd;
-  
+
   /**
    * @property {uint8_t*} data
    * @annotation ["readable"]
@@ -51,10 +51,10 @@ typedef struct _lcd_mono_t {
   /**
    * @property {void*} on_destroy_ctx
    * @annotation ["private"]
-   * on_destroy回调函数的上下文信息。 
+   * on_destroy回调函数的上下文信息。
    */
   void* on_destroy_ctx;
-  
+
   /**
    * @property {lcd_destroy_t} on_destroy
    * @annotation ["private"]
@@ -76,7 +76,8 @@ typedef struct _lcd_mono_t {
  *
  * @return {lcd_t*} lcd对象。
  */
-lcd_t* lcd_mono_create(wh_t w, wh_t h, lcd_flush_t flush, lcd_destroy_t on_destroy, void* on_destroy_ctx);
+lcd_t* lcd_mono_create(wh_t w, wh_t h, lcd_flush_t flush, lcd_destroy_t on_destroy,
+                       void* on_destroy_ctx);
 
 END_C_DECLS
 
