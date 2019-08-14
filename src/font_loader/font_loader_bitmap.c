@@ -123,7 +123,7 @@ static font_t* font_bitmap_load(font_loader_t* loader, const char* name, const u
 
 font_loader_t* font_loader_bitmap(void) {
   static font_loader_t loader;
-  loader.type = ASSET_TYPE_FONT_TTF;
+  loader.type = ASSET_TYPE_FONT_BMP;
   loader.load = font_bitmap_load;
 
   return &loader;

@@ -116,7 +116,7 @@ static ret_t lcd_reg_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x,
   return RET_OK;
 }
 
-static ret_t lcd_reg_draw_image_rgb565(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
+static ret_t lcd_reg_draw_image_bgr565(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
   wh_t i = 0;
   wh_t j = 0;
   xy_t x = dst->x;
@@ -158,13 +158,16 @@ static ret_t lcd_reg_draw_image_rgb565(lcd_t* lcd, bitmap_t* img, rect_t* src, r
   return RET_OK;
 }
 
-static ret_t lcd_reg_draw_image_rgba(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
+static ret_t lcd_reg_8888(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
   wh_t i = 0;
   wh_t j = 0;
+  uint8_t a = 0;
   xy_t x = dst->x;
   xy_t y = dst->y;
   wh_t dw = dst->w;
   wh_t dh = dst->h;
+  color_t src_color;
+  uint32_t format = img->format;
   color_t fill_color = lcd->fill_color;
   pixel_t fill_pixel = color_to_pixel(fill_color);
   const color_t* data = (color_t*)img->data;
@@ -175,9 +178,14 @@ static ret_t lcd_reg_draw_image_rgba(lcd_t* lcd, bitmap_t* img, rect_t* src, rec
 
     for (j = 0; j < dh; j++) {
       for (i = 0; i < dw; i++) {
-        color_t src_color = src_p[i];
-        uint8_t a = src_color.rgba.a;
-
+        src_color = src_p[i];
+        if(format == BITMAP_FMT_BGRA8888) {
+          uint8_t r = src_color.rgba.r;
+          src_color.rgba.r = src_color.rgba.b;
+          src_color.rgba.b = r;
+        }
+        a = src_color.rgba.a;
+        
         if (a >= TK_OPACITY_ALPHA) {
           write_data_func(color_to_pixel(src_color));
         } else if (a >= TK_TRANSPARENT_ALPHA) {
@@ -203,8 +211,13 @@ static ret_t lcd_reg_draw_image_rgba(lcd_t* lcd, bitmap_t* img, rect_t* src, rec
       const color_t* src_p = data + iw * (sy + ((j * scale_y) >> 16)) + sx;
       for (i = 0, x = dst->x; x < r; i++, x++) {
         uint32_t s = (i * scale_x) >> 16;
-        color_t src_color = src_p[s];
-        uint8_t a = src_color.rgba.a;
+        src_color = src_p[s];
+        if(format == BITMAP_FMT_BGRA8888) {
+          uint8_t r = src_color.rgba.r;
+          src_color.rgba.r = src_color.rgba.b;
+          src_color.rgba.b = r;
+        }
+        a = src_color.rgba.a;
 
         if (a >= TK_OPACITY_ALPHA) {
           write_data_func(color_to_pixel(src_color));
@@ -221,10 +234,10 @@ static ret_t lcd_reg_draw_image_rgba(lcd_t* lcd, bitmap_t* img, rect_t* src, rec
 }
 
 static ret_t lcd_reg_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
-  if (img->format == BITMAP_FMT_RGB565) {
-    return lcd_reg_draw_image_rgb565(lcd, img, src, dst);
-  } else if (img->format == BITMAP_FMT_RGBA8888) {
-    return lcd_reg_draw_image_rgba(lcd, img, src, dst);
+  if (img->format == BITMAP_FMT_BGR565) {
+    return lcd_reg_draw_image_bgr565(lcd, img, src, dst);
+  } else if (img->format == BITMAP_FMT_RGBA8888 || img->format == BITMAP_FMT_BGRA8888) {
+    return lcd_reg_8888(lcd, img, src, dst);
   } else {
     assert(!"not supported format");
     return RET_FAIL;
