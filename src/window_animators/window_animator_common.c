@@ -50,10 +50,8 @@ ret_t window_animator_to_top_draw_curr(window_animator_t* wa) {
   canvas_t* c = wa->canvas;
   widget_t* win = wa->curr_win;
   float_t percent = wa->percent;
-  int32_t h = tk_roundi(win->h * percent);
   int32_t y = win->y + tk_roundi(win->h * (1 - percent));
-
-  h = win->y + win->h - y;
+  int32_t h = win->y + win->h - y;
 
   rect_t src = rect_init(win->x, win->y, win->w, h);
   rect_t dst = rect_init(win->x, y, win->w, h);
@@ -69,10 +67,8 @@ ret_t window_animator_to_left_draw_curr(window_animator_t* wa) {
   canvas_t* c = wa->canvas;
   widget_t* win = wa->curr_win;
   float_t percent = wa->percent;
-  int32_t w = tk_roundi(win->w * percent);
   int32_t x = win->x + tk_roundi(win->w * (1 - percent));
-
-  w = win->x + win->w - x;
+  int32_t w = win->x + win->w - x;
 
   rect_t src = rect_init(win->x, win->y, w, win->h);
   rect_t dst = rect_init(x, win->y, w, win->h);
