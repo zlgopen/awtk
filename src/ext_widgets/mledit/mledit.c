@@ -348,7 +348,7 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       int32_t key = evt->key;
 
       text_edit_key_down(mledit->model, (key_event_t*)e);
-      if (key < 128 && isprint(key) || key == TK_KEY_BACKSPACE || key == TK_KEY_DELETE) {
+      if ((key < 128 && isprint(key)) || key == TK_KEY_BACKSPACE || key == TK_KEY_DELETE) {
         mledit_dispatch_event(widget, EVT_VALUE_CHANGING);
       }
 
