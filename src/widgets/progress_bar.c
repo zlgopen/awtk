@@ -65,11 +65,6 @@ static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
   widget_fill_fg_rect(widget, c, &r, draw_type);
 
   if (progress_bar->show_text) {
-    char str[TK_NUM_MAX_LEN + 1];
-
-    tk_snprintf(str, TK_NUM_MAX_LEN, "%d%%", progress_bar->value);
-    widget_set_text_utf8(widget, str);
-
     return widget_paint_helper(widget, c, NULL, NULL);
   }
 
@@ -90,6 +85,13 @@ ret_t progress_bar_set_value(widget_t* widget, uint8_t value) {
     e = event_init(EVT_VALUE_CHANGED, widget);
     widget_dispatch(widget, &e);
     widget_invalidate(widget, NULL);
+  
+    if (progress_bar->show_text) {
+      char str[TK_NUM_MAX_LEN + 1];
+
+      tk_snprintf(str, TK_NUM_MAX_LEN, "%d%%", progress_bar->value);
+      widget_set_text_utf8(widget, str);
+    }
   }
 
   return RET_OK;
