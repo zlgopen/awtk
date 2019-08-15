@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   lcd_profile.c
  * Author: AWTK Develop Team
  * Brief:  wrap lcd for performance profile.

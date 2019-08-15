@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   enums.c
  * Author: AWTK Develop Team
  * Brief:  enumerations

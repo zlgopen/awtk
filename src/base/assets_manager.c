@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   assets_manager.h
  * Author: AWTK Develop Team
  * Brief:  asset manager

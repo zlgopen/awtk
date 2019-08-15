@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   image_base.h
  * Author: AWTK Develop Team
  * Brief:  image base

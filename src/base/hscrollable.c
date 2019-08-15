@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   hscrollable.c
  * Author: AWTK Develop Team
  * Brief:  hscrollable

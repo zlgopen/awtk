@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   rect.c
  * Author: AWTK Develop Team
  * Brief:  rect struct and utils functions.

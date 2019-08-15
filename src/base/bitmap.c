@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   bitmap.c
  * Author: AWTK Develop Team
  * Brief:  bitmap interface

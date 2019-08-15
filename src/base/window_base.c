@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   window_base.h
  * Author: AWTK Develop Team
  * Brief:  window_base

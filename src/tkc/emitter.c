@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   emitter.c
  * Author: AWTK Develop Team
  * Brief:  emitter dispatcher

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   value.h
  * Author: AWTK Develop Team
  * Brief:  generic value type

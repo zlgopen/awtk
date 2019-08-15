@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   timer.c
  * Author: AWTK Develop Team
  * Brief:  timer manager

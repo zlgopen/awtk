@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   system_info.h
  * Author: AWTK Develop Team
  * Brief:  system info

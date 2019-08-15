@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   object_default.c
  * Author: AWTK Develop Team
  * Brief:  default object

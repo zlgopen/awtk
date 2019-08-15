@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   shortcut.c
  * Author: AWTK Develop Team
  * Brief:  shortcut
