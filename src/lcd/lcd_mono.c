@@ -156,7 +156,7 @@ static ret_t lcd_mono_destroy(lcd_t* lcd) {
 }
 
 lcd_t* lcd_mono_create(wh_t w, wh_t h, lcd_flush_t flush, lcd_destroy_t on_destroy,
-                       void* on_destroy_ctx) {
+                       void* ctx) {
   lcd_mono_t* mono = TKMEM_ZALLOC(lcd_mono_t);
   system_info_t* info = system_info();
   lcd_t* lcd = (lcd_t*)mono;
@@ -168,7 +168,7 @@ lcd_t* lcd_mono_create(wh_t w, wh_t h, lcd_flush_t flush, lcd_destroy_t on_destr
   lcd->type = LCD_MONO;
   mono->data = bitmap_mono_create_data(w, h);
   mono->on_destroy = on_destroy;
-  mono->on_destroy_ctx = on_destroy_ctx;
+  mono->ctx = ctx;
 
   ENSURE(mono->data != NULL);
 

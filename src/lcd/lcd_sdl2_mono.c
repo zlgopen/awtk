@@ -23,13 +23,13 @@
 #include "lcd/lcd_mono.h"
 #include "lcd/lcd_sdl2_mono.h"
 
-typedef struct _special_info_t {
+typedef struct _mono_info_t {
   SDL_Renderer* render;
   SDL_Texture* texture;
-} special_info_t;
+} mono_info_t;
 
-static special_info_t* special_info_create(SDL_Renderer* render) {
-  special_info_t* info = TKMEM_ZALLOC(special_info_t);
+static mono_info_t* mono_info_create(SDL_Renderer* render) {
+  mono_info_t* info = TKMEM_ZALLOC(mono_info_t);
   return_value_if_fail(info != NULL, NULL);
 
   info->render = render;
@@ -37,7 +37,7 @@ static special_info_t* special_info_create(SDL_Renderer* render) {
   return info;
 }
 
-static ret_t special_info_create_texture(special_info_t* info, wh_t w, wh_t h) {
+static ret_t mono_info_create_texture(mono_info_t* info, wh_t w, wh_t h) {
   int flags = SDL_TEXTUREACCESS_STREAMING;
 
   /*SDL ABGR is rgba from low address to high address*/
@@ -47,7 +47,7 @@ static ret_t special_info_create_texture(special_info_t* info, wh_t w, wh_t h) {
   return info->texture != NULL ? RET_OK : RET_FAIL;
 }
 
-static ret_t special_info_destroy(special_info_t* info) {
+static ret_t mono_info_destroy(mono_info_t* info) {
   return_value_if_fail(info != NULL, RET_BAD_PARAMS);
 
   SDL_DestroyTexture(info->texture);
@@ -64,8 +64,7 @@ static ret_t lcd_sdl2_mono_flush(lcd_t* lcd) {
   lcd_mono_t* mono = (lcd_mono_t*)(lcd);
   rect_t* dr = &(lcd->dirty_rect);
   rect_t* fps_r = &(lcd->fps_rect);
-  lcd_mono_t* special = (lcd_mono_t*)lcd;
-  special_info_t* info = (special_info_t*)(special->ctx);
+  mono_info_t* info = (mono_info_t*)(mono->ctx);
 
   memset(&src, 0x00, sizeof(src));
   memset(&dst, 0x00, sizeof(dst));
@@ -110,10 +109,10 @@ static ret_t lcd_sdl2_mono_flush(lcd_t* lcd) {
 }
 
 static ret_t lcd_sdl2_mono_destroy(lcd_t* lcd) {
-  lcd_mono_t* special = (lcd_mono_t*)lcd;
+  lcd_mono_t* mono = (lcd_mono_t*)lcd;
 
-  special_info_destroy((special_info_t*)(special->ctx));
-  special->ctx = NULL;
+  mono_info_destroy((mono_info_t*)(mono->ctx));
+  mono->ctx = NULL;
 
   return RET_OK;
 }
@@ -121,14 +120,14 @@ static ret_t lcd_sdl2_mono_destroy(lcd_t* lcd) {
 lcd_t* lcd_sdl2_mono_init(SDL_Renderer* render) {
   int w = 0;
   int h = 0;
-  special_info_t* info = NULL;
+  mono_info_t* info = NULL;
   return_value_if_fail(render != NULL, NULL);
 
   SDL_GetRendererOutputSize(render, &w, &h);
-  info = special_info_create(render);
+  info = mono_info_create(render);
   return_value_if_fail(info != NULL, NULL);
 
-  ENSURE(special_info_create_texture(info, w, h) == RET_OK);
+  ENSURE(mono_info_create_texture(info, w, h) == RET_OK);
 
   return lcd_mono_create(w, h, lcd_sdl2_mono_flush, lcd_sdl2_mono_destroy, info);
 }

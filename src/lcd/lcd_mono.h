@@ -49,11 +49,11 @@ typedef struct _lcd_mono_t {
   uint8_t* data;
 
   /**
-   * @property {void*} on_destroy_ctx
+   * @property {void*} ctx
    * @annotation ["private"]
-   * on_destroy回调函数的上下文信息。
+   * flush/on_destroy回调函数的上下文信息。
    */
-  void* on_destroy_ctx;
+  void* ctx;
 
   /**
    * @property {lcd_destroy_t} on_destroy
@@ -72,12 +72,12 @@ typedef struct _lcd_mono_t {
  * @param {wh_t} h 高度。
  * @param {lcd_flush_t} flush 用于刷新数据到硬件的回调函数。
  * @param {lcd_destroy_t} on_destroy 销毁lcd时的回调函数。
- * @param {void*} on_destroy_ctx 销毁lcd时的回调函数的上下文。
+ * @param {void*} ctx flush/on_destroy回调函数的上下文。
  *
  * @return {lcd_t*} lcd对象。
  */
 lcd_t* lcd_mono_create(wh_t w, wh_t h, lcd_flush_t flush, lcd_destroy_t on_destroy,
-                       void* on_destroy_ctx);
+                       void* ctx);
 
 END_C_DECLS
 

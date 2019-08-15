@@ -40,6 +40,7 @@
 * [如何实现"back"键和"home"键](how_to_impl_back_and_home_key.md)
 * [如何实现自定义的软键盘](how_to_impl_custom_soft_keyboard.md)
 * [如何编译Windows 32位版本](how_to_build_windows_32bit_version.md)
+* [如何支持单色LCD](how_to_support_mono_lcd.md)
 
 ### 3.内部原理
 * [AWTK脚本绑定原理](script_binding.md)

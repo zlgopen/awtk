@@ -1,101 +1,102 @@
 # 最新动态
 * 2019/08/15
-  * 修改cairo/pixman config.h冲突的问题(感谢陈谭提供补丁)
-  * 由于生成单色字体需要freetype，而且freetype的效果比stb稍微好一点，所以PC版本采用freetype作为字体引擎。
+  * 修改 cairo/pixman config.h 冲突的问题（感谢陈谭提供补丁）
+  * 由于生成单色字体需要 freetype，而且 freetype 的效果比 stb 稍微好一点，所以 PC 版本采用 freetype 作为字体引擎。
+  * 增加单色 LCD 的文档。
 
 * 2019/08/14
   * 完善文档。
-  * 增加宏TK\_XML\_MAX\_ATTRS用于控制XML属性的最大个数(缺省24)。
-  * 通过widget factory触发EVT\_WIDGET\_CREATED事件。
-  * 修改在stm32f103上的问题。
-  * 完善window\_animator(感谢智明提供补丁)
+  * 增加宏 TK\_XML\_MAX\_ATTRS 用于控制 XML 属性的最大个数（缺省 24)。
+  * 通过 widget factory 触发 EVT\_WIDGET\_CREATED 事件。
+  * 修改在 stm32f103 上的问题。
+  * 完善 window\_animator（感谢智明提供补丁）
 
 * 2019/08/13
   * 模拟器支持单色屏。
-  * 修复native window初始化顺序的BUG(感谢智明提供补丁)
+  * 修复 native window 初始化顺序的 BUG（感谢智明提供补丁）
 
 * 2019/08/12
-  * 增加mono图片生成工具。
+  * 增加 mono 图片生成工具。
 
 * 2019/08/11
-  * 增加mono字体生成工具。
+  * 增加 mono 字体生成工具。
 
 * 2019/08/10
-  * edit/mledit set\_text 触发EVT\_VALUE\_CHANGED。
-  * 增加lcd mono。
+  * edit/mledit set\_text 触发 EVT\_VALUE\_CHANGED。
+  * 增加 lcd mono。
 
 * 2019/08/09
   * 重构窗口管理器。
   * 完善缺省输入法。
-  * 当前窗口为keyboard时，不触发TO\_BACKGROUND/TO\_FOREGROUND。
-  * 修改slider资源加载的问题(感谢朝泽提供补丁)
-  * 修改fill rect坐标的问题(感谢智明提供补丁)
-  * 修改color tile边框颜色的问题(感谢智明提供补丁)
+  * 当前窗口为 keyboard 时，不触发 TO\_BACKGROUND/TO\_FOREGROUND。
+  * 修改 slider 资源加载的问题（感谢朝泽提供补丁）
+  * 修改 fill rect 坐标的问题（感谢智明提供补丁）
+  * 修改 color tile 边框颜色的问题（感谢智明提供补丁）
 
 * 2019/08/08
   * 重构
-  * 完善mutable image(感谢智明提供补丁)
-  * 完善expr eval，支持十六进制数。
-  * mledit支持value changing事件。
-  * 完善slider拖动效果。
+  * 完善 mutable image（感谢智明提供补丁）
+  * 完善 expr eval，支持十六进制数。
+  * mledit 支持 value changing 事件。
+  * 完善 slider 拖动效果。
 
 * 2019/08/07
-  * 修改valgrind发现的问题。
-  * 修改shortcut的BUG。
-  * 完善SDL事件处理(感谢朝泽提供补丁)
-  * 完善pages控件(感谢朝泽提供补丁)
-  * 修改event文档的BUG(感谢朝泽提供补丁)
+  * 修改 valgrind 发现的问题。
+  * 修改 shortcut 的 BUG。
+  * 完善 SDL 事件处理（感谢朝泽提供补丁）
+  * 完善 pages 控件（感谢朝泽提供补丁）
+  * 修改 event 文档的 BUG（感谢朝泽提供补丁）
 
 * 2019/08/06
-  * 优化nanovg GL fragment shader(draw text)。
-  * 禁用点击scrollview中控件时自动滚动到可视区的功能。
-  * 完善slider拖动效果。
+  * 优化 nanovg GL fragment shader(draw text)。
+  * 禁用点击 scrollview 中控件时自动滚动到可视区的功能。
+  * 完善 slider 拖动效果。
 
 * 2019/08/05
-  * 修改uiloader/window base/style mutable/layouter等BUG（感谢尧燊提供补丁）。
+  * 修改 uiloader/window base/style mutable/layouter 等 BUG（感谢尧燊提供补丁）。
 
 * 2019/08/04-05
-  * 优化nanovg GL fragment shader。
-  * 完善Android移植。
-  * 完善slide view控件(感谢朝泽提供补丁)
+  * 优化 nanovg GL fragment shader。
+  * 完善 Android 移植。
+  * 完善 slide view 控件（感谢朝泽提供补丁）
 
 * 2019/08/03
-  * 完善Android移植。
+  * 完善 Android 移植。
 
 * 2019/07/20-8/1
-  * window manager抽象成接口。
-  * 引入native\_window接口。
+  * window manager 抽象成接口。
+  * 引入 native\_window 接口。
 
 * 2019/08/02
-  * 禁用label/button/image/hscroll\_label的缓存。
+  * 禁用 label/button/image/hscroll\_label 的缓存。
 
 * 2019/07/29
-  * fix edit clone的问题。
+  * fix edit clone 的问题。
 
 * 2019/07/26
-  * 完善text edit(感谢智明提供补丁)
+  * 完善 text edit（感谢智明提供补丁）
 
 * 2019/07/24
-  * 完善preview\_ui(感谢俊杰提供补丁)
+  * 完善 preview\_ui（感谢俊杰提供补丁）
 
 * 2019/07/20
-  * 完善list\_view\_h。
+  * 完善 list\_view\_h。
 
 * 2019/07/19
-  * Slider的图标用ICON方式绘制。
-  * 增加属性with\_focus\_state，如果希望控件具有焦点状态，有不希望焦点停留，可以用本属性代替focusable属性。
+  * Slider 的图标用 ICON 方式绘制。
+  * 增加属性 with\_focus\_state，如果希望控件具有焦点状态，有不希望焦点停留，可以用本属性代替 focusable 属性。
   * 完善控件动画。
 
 * 2019/07/18
-  * gles的canvas画直线和画矩形边框的线宽问题，gles统一和agge一样为1线宽(感谢智明提供补丁)。
+  * gles 的 canvas 画直线和画矩形边框的线宽问题，gles 统一和 agge 一样为 1 线宽（感谢智明提供补丁）。
 
 * 2019/07/17
-  * 完善switch控件(感谢朝泽提供补丁)
+  * 完善 switch 控件（感谢朝泽提供补丁）
 
 * 2019/07/15
-  * 完善agge后端(感谢智明提供补丁)
-  * 完善cairo后端(感谢智明提供补丁)
-  * 完善demoui。
+  * 完善 agge 后端（感谢智明提供补丁）
+  * 完善 cairo 后端（感谢智明提供补丁）
+  * 完善 demoui。
 
 * 2019/07/12
   * 改进 widget\_get\_type 通过属性获取。
