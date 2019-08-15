@@ -1,6 +1,7 @@
 # 最新动态
 * 2019/08/15
   * 修改cairo/pixman config.h冲突的问题(感谢陈谭提供补丁)
+  * 由于生成单色字体需要freetype，而且freetype的效果比stb稍微好一点，所以PC版本采用freetype作为字体引擎。
 
 * 2019/08/14
   * 完善文档。

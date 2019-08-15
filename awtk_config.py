@@ -1,6 +1,7 @@
 import os
 import os.path
 import platform
+from shutil import copyfile
 
 OS_NAME = platform.system()
 ARCH = platform.architecture();
@@ -146,26 +147,32 @@ elif OS_NAME == 'Linux':
   COMMON_CCFLAGS=COMMON_CCFLAGS+' -DWITH_FT_FONT '
 
 elif OS_NAME == 'Windows':
-  OS_LIBS=['gdi32', 'user32','winmm.lib','imm32.lib','version.lib','shell32.lib','ole32.lib','Oleaut32.lib','Advapi32.lib','DelayImp.lib','psapi.lib']
+  OS_LIBS=['freetype.lib', 'gdi32', 'user32','winmm.lib','imm32.lib','version.lib','shell32.lib','ole32.lib','Oleaut32.lib','Advapi32.lib','DelayImp.lib','psapi.lib']
   OS_FLAGS='-DWIN32 -D_WIN32 -DWINDOWS /EHsc -D_CONSOLE  /DEBUG /Od  /FS /Z7 '
   #OS_FLAGS='-DWIN32 -D_WIN32 -DWINDOWS /EHsc -D_CONSOLE  /DEBUG /Od  /FS /Z7 -D_DEBUG /MDd '
   COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DSDL_REAL_API -DSDL_HAPTIC_DISABLED -DSDL_SENSOR_DISABLED -DSDL_JOYSTICK_DISABLED '
   COMMON_CCFLAGS = COMMON_CCFLAGS + '-D__STDC_LIMIT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_CONSTANT_MACROS -D_HAS_EXCEPTIONS=0 -D_HAS_ITERATOR_DEBUGGING=0 -D_ITERATOR_DEBUG_LEVEL=0 -D_SCL_SECURE=0'
   COMMON_CCFLAGS = COMMON_CCFLAGS + '-D_SECURE_SCL=0 -D_SCL_SECURE_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -D_CRT_SECURE_NO_DEPRECATE '
   OS_PROJECTS=['3rd/SDL/SConscript']
+  OS_CPPPATH = [joinPath(TK_3RD_ROOT, 'freetype-windows/include')]
+  COMMON_CCFLAGS=COMMON_CCFLAGS+' -DWITH_FT_FONT -DUSE_SYSTEM_FREETYPE '
+
   if TARGET_ARCH == 'x86':
     OS_FLAGS += OS_FLAGS + ' /MD '
     OS_LINKFLAGS='/MACHINE:X86 /DEBUG'
     OS_SUBSYSTEM_CONSOLE='/SUBSYSTEM:CONSOLE,5.01  '
     OS_SUBSYSTEM_WINDOWS='/SUBSYSTEM:WINDOWS,5.01  '
     COMMON_CCFLAGS = COMMON_CCFLAGS + ' -D_WIN32 '
+    copyfile(joinPath(TK_3RD_ROOT, 'freetype-windows/win32/freetype.lib'), joinPath(TK_LIB_DIR, 'freetype.lib')); 
+    copyfile(joinPath(TK_3RD_ROOT, 'freetype-windows/win32/freetype.dll'), joinPath(TK_BIN_DIR, 'freetype.dll')); 
   else:
     OS_FLAGS = OS_FLAGS + ' -DWITH_64BIT_CPU '
     OS_LINKFLAGS='/MACHINE:X64 /DEBUG'
     OS_SUBSYSTEM_CONSOLE='/SUBSYSTEM:CONSOLE  '
     OS_SUBSYSTEM_WINDOWS='/SUBSYSTEM:WINDOWS  '
     COMMON_CCFLAGS = COMMON_CCFLAGS + ' -D_WIN64 '
-  COMMON_CCFLAGS=COMMON_CCFLAGS+' -DWITH_STB_FONT '
+    copyfile(joinPath(TK_3RD_ROOT, 'freetype-windows/win64/freetype.lib'), joinPath(TK_LIB_DIR, 'freetype.lib')); 
+    copyfile(joinPath(TK_3RD_ROOT, 'freetype-windows/win64/freetype.dll'), joinPath(TK_BIN_DIR, 'freetype.dll')); 
 
 CFLAGS=COMMON_CFLAGS
 LINKFLAGS=OS_LINKFLAGS;
