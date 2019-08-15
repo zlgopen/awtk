@@ -65,7 +65,7 @@ NANOVG_BACKEND_PROJS=[];
 
 NATIVE_WINDOW='sdl'
 TOOLS_NAME = ''
-#TOOLS_NAME = 'mingw'
+# TOOLS_NAME = 'mingw'
 
 COMMON_CCFLAGS=' -DTK_ROOT=\\\"'+TK_ROOT+'\\\" ' 
 #COMMON_CCFLAGS=COMMON_CCFLAGS+' -DENABLE_PERFORMANCE_PROFILE=1 '
@@ -179,7 +179,7 @@ elif OS_NAME == 'Windows':
     OS_LIBS=['freetype','kernel32', 'gdi32', 'user32', 'winmm','imm32','version','shell32','ole32','Oleaut32','Advapi32','oleaut32','uuid','stdc++']
     OS_FLAGS='-DWINDOWS -D_CONSOLE -g -Wall'
     COMMON_CFLAGS=COMMON_CFLAGS+' -std=gnu99 '
-    COMMON_CCFLAGS=COMMON_CCFLAGS+' -D__FLT_EVAL_METHOD__=0 -DUNICODE ' 
+    COMMON_CCFLAGS=COMMON_CCFLAGS+' -DWITH_DOUBLE_FLOAT -DUNICODE ' 
     copyfile(joinPath(TK_3RD_ROOT, 'freetype-windows/mingw32/libfreetype.a'), joinPath(TK_LIB_DIR, 'libfreetype.a'));
     copyfile(joinPath(TK_3RD_ROOT, 'freetype-windows/mingw32/freetype6.dll'), joinPath(TK_BIN_DIR, 'freetype6.dll'));
     
