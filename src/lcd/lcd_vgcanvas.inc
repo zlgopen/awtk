@@ -95,10 +95,26 @@ static ret_t lcd_vgcanvas_draw_hline(lcd_t* lcd, xy_t x, xy_t y, wh_t w) {
 }
 
 static ret_t lcd_vgcanvas_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
+  float_t rect_w = 0;
+  float_t rect_h = 0;
   vgcanvas_t* canvas = LCD(lcd)->canvas;
 
+  if(w <= 1) {
+    rect_w = 0.5f;
+  }
+  else {
+    rect_w = w - 1;
+  }
+
+  if(h <= 1) {
+    rect_h = 0.5f;
+  }
+  else {
+    rect_h = h - 1;
+  }
+
   vgcanvas_begin_path(canvas);
-  vgcanvas_rect(canvas, x + 0.5f, y + 0.5f, w - 1, h - 1);
+  vgcanvas_rect(canvas, x + 0.5f, y + 0.5f, rect_w, rect_h);
   vgcanvas_set_fill_color(canvas, lcd->fill_color);
   vgcanvas_fill(canvas);
 
