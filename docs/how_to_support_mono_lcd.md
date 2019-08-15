@@ -39,7 +39,7 @@ imagegen.exe in_filename out_filename (bgra|bgr565|mono)
 生成资源时需要加上 mono 参数，该参数会被传递给 fontgen 和 imagegen。
 
 ```
-python scripts/update_res.py all mono
+python scripts/update_res.py all x1 mono
 w_to_support_mono_lcd
 
 ## 应用程序
