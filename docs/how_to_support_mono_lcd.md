@@ -40,7 +40,7 @@ imagegen.exe in_filename out_filename (bgra|bgr565|mono)
 
 ```
 python scripts/update_res.py all x1 mono
-w_to_support_mono_lcd
+```
 
 ## 应用程序
 
