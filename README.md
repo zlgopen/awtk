@@ -172,11 +172,23 @@ scons
 
 （请先安装 python，scons 和 Visual Studio C++（版本 >=2017)
 
+> 如果没有安装pywin32，请pip安装：
+
+```
+pip install pywin32
+```
+
 编译运行 （在命令行模式下，进入 awtk 所在的目录，并运行下列命令）：
 
 ```
 scons
 bin\demoui
+```
+
+> 如果没有安装PIL，请用pip安装。
+
+```
+pip install Pillow
 ```
 
 ## 五、在线演示

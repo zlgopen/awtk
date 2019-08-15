@@ -167,20 +167,22 @@ typedef enum _ret_t {
 #define log_info(...) __android_log_print(ANDROID_LOG_INFO, "AWTK", __VA_ARGS__)
 #define log_warn(...) __android_log_print(ANDROID_LOG_WARN, "AWTK", __VA_ARGS__)
 #define log_error(...) __android_log_print(ANDROID_LOG_ERROR, "AWTK", __VA_ARGS__)
-#elif defined(__GNUC__)
-#define log_debug(format, args...) printf(format, ##args)
-#define log_info(format, args...) printf(format, ##args)
-#define log_warn(format, args...) printf(format, ##args)
-#define log_error(format, args...) printf(format, ##args)
 #elif defined(WIN32)
 #include <windows.h>
 #define random rand
 #define srandom srand
 #define strcasecmp stricmp
+#if defined(__GNUC__)
+#define log_debug(format, args...) printf(format, ##args)
+#define log_info(format, args...) printf(format, ##args)
+#define log_warn(format, args...) printf(format, ##args)
+#define log_error(format, args...) printf(format, ##args)
+#else
 #define log_debug(format, ...) printf(format, __VA_ARGS__)
 #define log_info(format, ...) printf(format, __VA_ARGS__)
 #define log_warn(format, ...) printf(format, __VA_ARGS__)
 #define log_error(format, ...) printf(format, __VA_ARGS__)
+#endif
 #define snprintf _snprintf
 #elif defined(HAS_STDIO) || defined(AWTK_WEB)
 #define log_debug(format, args...) printf(format, ##args)

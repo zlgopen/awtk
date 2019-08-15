@@ -1,15 +1,29 @@
 import os
 import awtk_config as awtk
 
-DefaultEnvironment(CCFLAGS = awtk.CCFLAGS, 
-  LIBS = awtk.LIBS,
-  LIBPATH = awtk.LIBPATH,
-  CPPPATH = awtk.CPPPATH,
-  LINKFLAGS = awtk.LINKFLAGS,
-  TARGET_ARCH=awtk.TARGET_ARCH,
-  OS_SUBSYSTEM_CONSOLE=awtk.OS_SUBSYSTEM_CONSOLE,
-  OS_SUBSYSTEM_WINDOWS=awtk.OS_SUBSYSTEM_WINDOWS
-)
+if awtk.TOOLS_NAME == '' :
+  DefaultEnvironment(CCFLAGS = awtk.CCFLAGS, 
+    LIBS = awtk.LIBS,
+    LIBPATH = awtk.LIBPATH,
+    CPPPATH = awtk.CPPPATH,
+    LINKFLAGS = awtk.LINKFLAGS,
+    TARGET_ARCH=awtk.TARGET_ARCH,
+    OS_SUBSYSTEM_CONSOLE=awtk.OS_SUBSYSTEM_CONSOLE,
+    OS_SUBSYSTEM_WINDOWS=awtk.OS_SUBSYSTEM_WINDOWS
+  )
+else :
+  tool_name_list = [];
+  tool_name_list.append(awtk.TOOLS_NAME);
+  DefaultEnvironment(CCFLAGS = awtk.CCFLAGS, 
+    LIBS = awtk.LIBS,  
+    LIBPATH = awtk.LIBPATH,
+    CPPPATH = awtk.CPPPATH,
+    TOOLS = tool_name_list,
+    LINKFLAGS = awtk.LINKFLAGS,
+    TARGET_ARCH=awtk.TARGET_ARCH,
+    OS_SUBSYSTEM_CONSOLE=awtk.OS_SUBSYSTEM_CONSOLE,
+    OS_SUBSYSTEM_WINDOWS=awtk.OS_SUBSYSTEM_WINDOWS
+  )
 
 SConscriptFiles=awtk.NANOVG_BACKEND_PROJS + [
   '3rd/nanovg/SConscript',

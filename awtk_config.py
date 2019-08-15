@@ -64,6 +64,8 @@ NANOVG_BACKEND_LIBS=[];
 NANOVG_BACKEND_PROJS=[];
 
 NATIVE_WINDOW='sdl'
+TOOLS_NAME = ''
+#TOOLS_NAME = 'mingw'
 
 COMMON_CCFLAGS=' -DTK_ROOT=\\\"'+TK_ROOT+'\\\" ' 
 #COMMON_CCFLAGS=COMMON_CCFLAGS+' -DENABLE_PERFORMANCE_PROFILE=1 '
@@ -123,6 +125,7 @@ OS_SUBSYSTEM_WINDOWS=''
 OS_PROJECTS=[]
 
 if OS_NAME == 'Darwin':
+  TOOLS_NAME = ''
   OS_FLAGS='-g -Wall'
   OS_LIBS = ['stdc++', 'pthread', 'm', 'dl']
   OS_LINKFLAGS='-framework Cocoa -framework QuartzCore -framework OpenGL -weak_framework Metal -weak_framework MetalKit'
@@ -132,6 +135,7 @@ if OS_NAME == 'Darwin':
   COMMON_CCFLAGS=COMMON_CCFLAGS+' -DWITH_FT_FONT '
 
 elif OS_NAME == 'Linux':
+  TOOLS_NAME = ''
   OS_FLAGS='-g -Wall'
   OS_LIBS = ['GL', 'gtk-3','gdk-3','Xext', 'X11', 'sndio','stdc++', 'pthread', 'm', 'dl']
   COMMON_CFLAGS=COMMON_CFLAGS+' -std=gnu99 '
@@ -148,8 +152,37 @@ elif OS_NAME == 'Linux':
   COMMON_CCFLAGS=COMMON_CCFLAGS+' -DWITH_FT_FONT '
 
 elif OS_NAME == 'Windows':
-  OS_LIBS=['freetype.lib', 'gdi32', 'user32','winmm.lib','imm32.lib','version.lib','shell32.lib','ole32.lib','Oleaut32.lib','Advapi32.lib','DelayImp.lib','psapi.lib']
-  OS_FLAGS='-DWIN32 -D_WIN32 -DWINDOWS /EHsc -D_CONSOLE  /DEBUG /Od  /FS /Z7 '
+  if not os.path.exists(os.path.abspath(TK_BIN_DIR)) :
+    os.makedirs(os.path.abspath(TK_BIN_DIR))
+  if not os.path.exists(os.path.abspath(TK_LIB_DIR)) :
+    os.makedirs(os.path.abspath(TK_LIB_DIR))
+  if TOOLS_NAME == '' :
+    OS_LIBS=['freetype.lib', 'gdi32', 'user32','winmm.lib','imm32.lib','version.lib','shell32.lib','ole32.lib','Oleaut32.lib','Advapi32.lib','DelayImp.lib','psapi.lib']
+    OS_FLAGS='-DWIN32 -D_WIN32 -DWINDOWS /EHsc -D_CONSOLE  /DEBUG /Od  /FS /Z7 '
+    if TARGET_ARCH == 'x86':
+      OS_FLAGS += OS_FLAGS + ' /MD '
+      OS_LINKFLAGS='/MACHINE:X86 /DEBUG'
+      OS_SUBSYSTEM_CONSOLE='/SUBSYSTEM:CONSOLE,5.01  '
+      OS_SUBSYSTEM_WINDOWS='/SUBSYSTEM:WINDOWS,5.01  '
+      COMMON_CCFLAGS = COMMON_CCFLAGS + ' -D_WIN32 '
+      copyfile(joinPath(TK_3RD_ROOT, 'freetype-windows/win32/freetype.lib'), joinPath(TK_LIB_DIR, 'freetype.lib')); 
+      copyfile(joinPath(TK_3RD_ROOT, 'freetype-windows/win32/freetype.dll'), joinPath(TK_BIN_DIR, 'freetype.dll')); 
+    else:
+      OS_FLAGS = OS_FLAGS + ' -DWITH_64BIT_CPU '
+      OS_LINKFLAGS='/MACHINE:X64 /DEBUG'
+      OS_SUBSYSTEM_CONSOLE='/SUBSYSTEM:CONSOLE  '
+      OS_SUBSYSTEM_WINDOWS='/SUBSYSTEM:WINDOWS  '
+      COMMON_CCFLAGS = COMMON_CCFLAGS + ' -D_WIN64 '
+      copyfile(joinPath(TK_3RD_ROOT, 'freetype-windows/win64/freetype.lib'), joinPath(TK_LIB_DIR, 'freetype.lib')); 
+      copyfile(joinPath(TK_3RD_ROOT, 'freetype-windows/win64/freetype.dll'), joinPath(TK_BIN_DIR, 'freetype.dll')); 
+  elif TOOLS_NAME == 'mingw' :
+    OS_LIBS=['freetype','kernel32', 'gdi32', 'user32', 'winmm','imm32','version','shell32','ole32','Oleaut32','Advapi32','oleaut32','uuid','stdc++']
+    OS_FLAGS='-DWINDOWS -D_CONSOLE -g -Wall'
+    COMMON_CFLAGS=COMMON_CFLAGS+' -std=gnu99 '
+    COMMON_CCFLAGS=COMMON_CCFLAGS+' -D__FLT_EVAL_METHOD__=0 -DUNICODE ' 
+    copyfile(joinPath(TK_3RD_ROOT, 'freetype-windows/mingw32/libfreetype.a'), joinPath(TK_LIB_DIR, 'libfreetype.a'));
+    copyfile(joinPath(TK_3RD_ROOT, 'freetype-windows/mingw32/freetype6.dll'), joinPath(TK_BIN_DIR, 'freetype6.dll'));
+    
   #OS_FLAGS='-DWIN32 -D_WIN32 -DWINDOWS /EHsc -D_CONSOLE  /DEBUG /Od  /FS /Z7 -D_DEBUG /MDd '
   COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DSDL_REAL_API -DSDL_HAPTIC_DISABLED -DSDL_SENSOR_DISABLED -DSDL_JOYSTICK_DISABLED '
   COMMON_CCFLAGS = COMMON_CCFLAGS + '-D__STDC_LIMIT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_CONSTANT_MACROS -D_HAS_EXCEPTIONS=0 -D_HAS_ITERATOR_DEBUGGING=0 -D_ITERATOR_DEBUG_LEVEL=0 -D_SCL_SECURE=0'
@@ -158,23 +191,7 @@ elif OS_NAME == 'Windows':
   OS_CPPPATH = [joinPath(TK_3RD_ROOT, 'freetype-windows/include')]
   COMMON_CCFLAGS=COMMON_CCFLAGS+' -DWITH_FT_FONT -DUSE_SYSTEM_FREETYPE '
 
-  if TARGET_ARCH == 'x86':
-    OS_FLAGS += OS_FLAGS + ' /MD '
-    OS_LINKFLAGS='/MACHINE:X86 /DEBUG'
-    OS_SUBSYSTEM_CONSOLE='/SUBSYSTEM:CONSOLE,5.01  '
-    OS_SUBSYSTEM_WINDOWS='/SUBSYSTEM:WINDOWS,5.01  '
-    COMMON_CCFLAGS = COMMON_CCFLAGS + ' -D_WIN32 '
-    copyfile(joinPath(TK_3RD_ROOT, 'freetype-windows/win32/freetype.lib'), joinPath(TK_LIB_DIR, 'freetype.lib')); 
-    copyfile(joinPath(TK_3RD_ROOT, 'freetype-windows/win32/freetype.dll'), joinPath(TK_BIN_DIR, 'freetype.dll')); 
-  else:
-    OS_FLAGS = OS_FLAGS + ' -DWITH_64BIT_CPU '
-    OS_LINKFLAGS='/MACHINE:X64 /DEBUG'
-    OS_SUBSYSTEM_CONSOLE='/SUBSYSTEM:CONSOLE  '
-    OS_SUBSYSTEM_WINDOWS='/SUBSYSTEM:WINDOWS  '
-    COMMON_CCFLAGS = COMMON_CCFLAGS + ' -D_WIN64 '
-    copyfile(joinPath(TK_3RD_ROOT, 'freetype-windows/win64/freetype.lib'), joinPath(TK_LIB_DIR, 'freetype.lib')); 
-    copyfile(joinPath(TK_3RD_ROOT, 'freetype-windows/win64/freetype.dll'), joinPath(TK_BIN_DIR, 'freetype.dll')); 
-
+  
 CFLAGS=COMMON_CFLAGS
 LINKFLAGS=OS_LINKFLAGS;
 LIBPATH=[TK_LIB_DIR] + OS_LIBPATH
@@ -209,6 +226,7 @@ os.environ['LCD'] = LCD
 os.environ['TK_ROOT'] = TK_ROOT
 os.environ['CCFLAGS'] = CCFLAGS;
 os.environ['VGCANVAS'] = VGCANVAS 
+os.environ['TOOLS_NAME'] = TOOLS_NAME;
 os.environ['GTEST_ROOT'] = GTEST_ROOT;
 os.environ['TK_3RD_ROOT'] = TK_3RD_ROOT;
 os.environ['INPUT_ENGINE'] = INPUT_ENGINE;
