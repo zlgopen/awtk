@@ -99,17 +99,15 @@ static ret_t lcd_vgcanvas_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) 
   float_t rect_h = 0;
   vgcanvas_t* canvas = LCD(lcd)->canvas;
 
-  if(w <= 1) {
+  if (w <= 1) {
     rect_w = 0.5f;
-  }
-  else {
+  } else {
     rect_w = w - 1;
   }
 
-  if(h <= 1) {
+  if (h <= 1) {
     rect_h = 0.5f;
-  }
-  else {
+  } else {
     rect_h = h - 1;
   }
 

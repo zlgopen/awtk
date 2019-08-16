@@ -76,8 +76,7 @@ typedef struct _lcd_mono_t {
  *
  * @return {lcd_t*} lcd对象。
  */
-lcd_t* lcd_mono_create(wh_t w, wh_t h, lcd_flush_t flush, lcd_destroy_t on_destroy,
-                       void* ctx);
+lcd_t* lcd_mono_create(wh_t w, wh_t h, lcd_flush_t flush, lcd_destroy_t on_destroy, void* ctx);
 
 END_C_DECLS
 

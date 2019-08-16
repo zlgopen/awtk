@@ -34,24 +34,23 @@
 
 typedef PVOID SRWLOCK, *PSRWLOCK;
 
-void WINAPI InitializeSRWLock (PSRWLOCK);
-void WINAPI AcquireSRWLockExclusive (PSRWLOCK);
-void WINAPI AcquireSRWLockShared (PSRWLOCK);
-void WINAPI ReleaseSRWLockExclusive (PSRWLOCK);
-void WINAPI ReleaseSRWLockShared (PSRWLOCK);
+void WINAPI InitializeSRWLock(PSRWLOCK);
+void WINAPI AcquireSRWLockExclusive(PSRWLOCK);
+void WINAPI AcquireSRWLockShared(PSRWLOCK);
+void WINAPI ReleaseSRWLockExclusive(PSRWLOCK);
+void WINAPI ReleaseSRWLockShared(PSRWLOCK);
 
 typedef PVOID CONDITION_VARIABLE, *PCONDITION_VARIABLE;
 
-void WINAPI InitializeConditionVariable (PCONDITION_VARIABLE);
-BOOL WINAPI SleepConditionVariableCS (PCONDITION_VARIABLE, PCRITICAL_SECTION, DWORD);
-BOOL WINAPI SleepConditionVariableSRW (PCONDITION_VARIABLE, PSRWLOCK, DWORD, ULONG);
-void WINAPI WakeAllConditionVariable (PCONDITION_VARIABLE);
-void WINAPI WakeConditionVariable (PCONDITION_VARIABLE);
+void WINAPI InitializeConditionVariable(PCONDITION_VARIABLE);
+BOOL WINAPI SleepConditionVariableCS(PCONDITION_VARIABLE, PCRITICAL_SECTION, DWORD);
+BOOL WINAPI SleepConditionVariableSRW(PCONDITION_VARIABLE, PSRWLOCK, DWORD, ULONG);
+void WINAPI WakeAllConditionVariable(PCONDITION_VARIABLE);
+void WINAPI WakeConditionVariable(PCONDITION_VARIABLE);
 
 #else
 #error not found Condition Variable
 #endif
-
 
 struct _tk_cond_var_t {
   bool_t inited;

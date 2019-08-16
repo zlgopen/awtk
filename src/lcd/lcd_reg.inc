@@ -24,20 +24,20 @@
 
 #ifndef FRAGMENT_FRAME_BUFFER_SIZE
 #define FRAGMENT_FRAME_BUFFER_SIZE 8192
-#endif/*FRAGMENT_FRAME_BUFFER_SIZE*/
-	
+#endif /*FRAGMENT_FRAME_BUFFER_SIZE*/
+
 typedef struct _lcd_reg_t {
   lcd_t lcd;
   fragment_frame_buffer_t affb;
   fragment_frame_buffer_t* ffb;
   pixel_t buff[FRAGMENT_FRAME_BUFFER_SIZE];
-}lcd_reg_t;
+} lcd_reg_t;
 
 static inline ret_t lcd_reg_set_window(lcd_t* lcd, int sx, int sy, int ex, int ey) {
   lcd_reg_t* reg = (lcd_reg_t*)lcd;
 
-  if(reg->ffb != NULL) {
-    fragment_frame_buffer_set_window(reg->ffb, sx, sy, ex-sx+1, ey-sy+1);
+  if (reg->ffb != NULL) {
+    fragment_frame_buffer_set_window(reg->ffb, sx, sy, ex - sx + 1, ey - sy + 1);
   } else {
     set_window_func(sx, sy, ex, ey);
   }
@@ -48,7 +48,7 @@ static inline ret_t lcd_reg_set_window(lcd_t* lcd, int sx, int sy, int ex, int e
 static inline ret_t lcd_reg_write_data(lcd_t* lcd, pixel_t data) {
   lcd_reg_t* reg = (lcd_reg_t*)lcd;
 
-  if(reg->ffb != NULL) {
+  if (reg->ffb != NULL) {
     fragment_frame_buffer_write_data(reg->ffb, data);
   } else {
     write_data_func(data);
@@ -62,7 +62,7 @@ static ret_t lcd_reg_begin_frame(lcd_t* lcd, rect_t* dirty_rect) {
   lcd->dirty_rect = *dirty_rect;
 
   reg->ffb = fragment_frame_buffer_begin_frame(&(reg->affb), dirty_rect);
-  
+
   return RET_OK;
 }
 
@@ -280,7 +280,7 @@ static ret_t lcd_reg_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
 static ret_t lcd_reg_end_frame(lcd_t* lcd) {
   lcd_reg_t* reg = (lcd_reg_t*)lcd;
 
-  if(reg->ffb != NULL) {
+  if (reg->ffb != NULL) {
     fragment_frame_buffer_end_frame(reg->ffb);
   }
 
@@ -304,7 +304,7 @@ lcd_t* lcd_reg_create(wh_t w, wh_t h) {
   return_value_if_fail(lcd != NULL, NULL);
 
   memset(&reg, 0x00, size);
-  
+
   lcd->w = w;
   lcd->h = h;
   lcd->ratio = 1;

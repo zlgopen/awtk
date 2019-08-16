@@ -85,7 +85,7 @@ ret_t progress_bar_set_value(widget_t* widget, uint8_t value) {
     e = event_init(EVT_VALUE_CHANGED, widget);
     widget_dispatch(widget, &e);
     widget_invalidate(widget, NULL);
-  
+
     if (progress_bar->show_text) {
       char str[TK_NUM_MAX_LEN + 1];
 

@@ -5,7 +5,6 @@
 
 using std::string;
 
-
 #define pixel_t uint16_t
 
 static string s_log;
@@ -21,14 +20,13 @@ static void write_data_func(pixel_t pixel) {
   s_log += buff;
 }
 
-
 #include "lcd/fragment_frame_buffer.h"
 
 TEST(FragmentFrameBuffer, basic) {
   pixel_t data[4 * 4];
   fragment_frame_buffer_t affb;
   fragment_frame_buffer_init(&affb, data, ARRAY_SIZE(data));
- 
+
   rect_t r = rect_init(4, 4, 3, 2);
 
   s_log = "";
@@ -71,7 +69,7 @@ TEST(FragmentFrameBuffer, set) {
   pixel_t data[4 * 4];
   fragment_frame_buffer_t affb;
   fragment_frame_buffer_init(&affb, data, ARRAY_SIZE(data));
- 
+
   rect_t r = rect_init(4, 4, 3, 2);
 
   s_log = "";
@@ -84,22 +82,22 @@ TEST(FragmentFrameBuffer, set) {
 
   ASSERT_EQ(fragment_frame_buffer_set_pixel(ffb, 4, 4, 1), RET_OK);
   ASSERT_EQ(fragment_frame_buffer_get_pixel(ffb, 4, 4), 1);
-  
+
   ASSERT_EQ(fragment_frame_buffer_set_pixel(ffb, 5, 4, 2), RET_OK);
   ASSERT_EQ(fragment_frame_buffer_get_pixel(ffb, 5, 4), 2);
-  
+
   ASSERT_EQ(fragment_frame_buffer_set_pixel(ffb, 6, 4, 3), RET_OK);
   ASSERT_EQ(fragment_frame_buffer_get_pixel(ffb, 6, 4), 3);
-  
+
   ASSERT_EQ(fragment_frame_buffer_set_pixel(ffb, 4, 5, 4), RET_OK);
   ASSERT_EQ(fragment_frame_buffer_get_pixel(ffb, 4, 5), 4);
-  
+
   ASSERT_EQ(fragment_frame_buffer_set_pixel(ffb, 5, 5, 5), RET_OK);
   ASSERT_EQ(fragment_frame_buffer_get_pixel(ffb, 5, 5), 5);
-  
+
   ASSERT_EQ(fragment_frame_buffer_set_pixel(ffb, 6, 5, 6), RET_OK);
   ASSERT_EQ(fragment_frame_buffer_get_pixel(ffb, 6, 5), 6);
-  
+
   fragment_frame_buffer_end_frame(ffb);
 
   ASSERT_EQ(s_log, "win(4 4 3 2):01 02 03 04 05 06 ");

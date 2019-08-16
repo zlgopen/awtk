@@ -41,11 +41,11 @@ static uint8_t* convert_2_to_4(uint8_t* src, uint32_t w, uint32_t h) {
   return_value_if_fail(data != NULL, NULL);
 
   d = data;
-  for(i = 0; i < size; i++) {
-    d[0] = s[0]; 
-    d[1] = s[0]; 
-    d[2] = s[0]; 
-    d[3] = s[1]; 
+  for (i = 0; i < size; i++) {
+    d[0] = s[0];
+    d[1] = s[0];
+    d[2] = s[0];
+    d[3] = s[1];
 
     d += 4;
     s += 2;
@@ -66,7 +66,7 @@ ret_t stb_load_image(int32_t subtype, const uint8_t* buff, uint32_t buff_size, b
     uint8_t* stb_data = stbi_load_from_memory(buff, buff_size, &w, &h, &n, 0);
     return_value_if_fail(stb_data != NULL, RET_FAIL);
 
-    if(n == 2) {
+    if (n == 2) {
       n = 4;
       data = convert_2_to_4(stb_data, w, h);
     } else {
@@ -82,7 +82,7 @@ ret_t stb_load_image(int32_t subtype, const uint8_t* buff, uint32_t buff_size, b
     }
 
     stbi_image_free((uint8_t*)(stb_data));
-    if(stb_data != data) {
+    if (stb_data != data) {
       TKMEM_FREE(data);
     }
   } else {
