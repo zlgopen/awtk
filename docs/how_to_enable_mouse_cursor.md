@@ -12,7 +12,7 @@
 
 ## 二、自己的应用程序启用鼠标指针
 
-* 如果自己的应用程序没有走demo_main的流程，可以自己调用window\_manager\_set\_cursor或widget\_cursor。
+* 如果自己的应用程序没有走demo_main的流程，可以自己调用window\_manager\_set\_cursor或widget\_set\_cursor。
 
 * 在任何时候，可以根据需要切换鼠标指针。
 
