@@ -40,6 +40,11 @@ TEST(FragmentFrameBuffer, basic) {
   ASSERT_EQ(ffb->h, r.h);
 
   fragment_frame_buffer_set_window(ffb, 4, 4, 3, 2);
+  ASSERT_EQ(ffb->win.x, 4);
+  ASSERT_EQ(ffb->win.y, 4);
+  ASSERT_EQ(ffb->win.w, 3);
+  ASSERT_EQ(ffb->win.h, 2);
+
   fragment_frame_buffer_write_data(ffb, 1);
   fragment_frame_buffer_write_data(ffb, 2);
   fragment_frame_buffer_write_data(ffb, 3);

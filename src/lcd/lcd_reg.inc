@@ -20,16 +20,49 @@
  */
 
 #include "base/system_info.h"
+#include "fragment_frame_buffer.h"
 
-static ret_t lcd_reg_set_window(int sx, int sy, int ex, int ey) {
-  set_window_func(sx, sy, ex, ey);
+#ifndef FRAGMENT_FRAME_BUFFER_SIZE
+#define FRAGMENT_FRAME_BUFFER_SIZE 8192
+#endif/*FRAGMENT_FRAME_BUFFER_SIZE*/
+	
+typedef struct _lcd_reg_t {
+  lcd_t lcd;
+  fragment_frame_buffer_t affb;
+  fragment_frame_buffer_t* ffb;
+  pixel_t buff[FRAGMENT_FRAME_BUFFER_SIZE];
+}lcd_reg_t;
+
+static inline ret_t lcd_reg_set_window(lcd_t* lcd, int sx, int sy, int ex, int ey) {
+  lcd_reg_t* reg = (lcd_reg_t*)lcd;
+
+  if(reg->ffb != NULL) {
+    fragment_frame_buffer_set_window(reg->ffb, sx, sy, ex-sx+1, ey-sy+1);
+  } else {
+    set_window_func(sx, sy, ex, ey);
+  }
+
+  return RET_OK;
+}
+
+static inline ret_t lcd_reg_write_data(lcd_t* lcd, pixel_t data) {
+  lcd_reg_t* reg = (lcd_reg_t*)lcd;
+
+  if(reg->ffb != NULL) {
+    fragment_frame_buffer_write_data(reg->ffb, data);
+  } else {
+    write_data_func(data);
+  }
 
   return RET_OK;
 }
 
 static ret_t lcd_reg_begin_frame(lcd_t* lcd, rect_t* dirty_rect) {
+  lcd_reg_t* reg = (lcd_reg_t*)lcd;
   lcd->dirty_rect = *dirty_rect;
 
+  reg->ffb = fragment_frame_buffer_begin_frame(&(reg->affb), dirty_rect);
+  
   return RET_OK;
 }
 
@@ -37,9 +70,9 @@ static ret_t lcd_reg_draw_hline(lcd_t* lcd, xy_t x, xy_t y, wh_t w) {
   wh_t i = 0;
   pixel_t color = color_to_pixel(lcd->stroke_color);
 
-  lcd_reg_set_window(x, y, x + w, y);
+  lcd_reg_set_window(lcd, x, y, x + w, y);
   for (i = 0; i < w; i++) {
-    write_data_func(color);
+    lcd_reg_write_data(lcd, color);
   }
 
   return RET_OK;
@@ -49,9 +82,9 @@ static ret_t lcd_reg_draw_vline(lcd_t* lcd, xy_t x, xy_t y, wh_t h) {
   wh_t i = 0;
   pixel_t color = color_to_pixel(lcd->stroke_color);
 
-  lcd_reg_set_window(x, y, x, y + h);
+  lcd_reg_set_window(lcd, x, y, x, y + h);
   for (i = 0; i < h; i++) {
-    write_data_func(color);
+    lcd_reg_write_data(lcd, color);
   }
 
   return RET_OK;
@@ -63,8 +96,8 @@ static ret_t lcd_reg_draw_points(lcd_t* lcd, point_t* points, uint32_t nr) {
 
   for (i = 0; i < nr; i++) {
     point_t* point = points + i;
-    lcd_reg_set_window(point->x, point->y, point->x, point->y);
-    write_data_func(color);
+    lcd_reg_set_window(lcd, point->x, point->y, point->x, point->y);
+    lcd_reg_write_data(lcd, color);
   }
 
   return RET_OK;
@@ -75,10 +108,10 @@ static ret_t lcd_reg_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
   uint32_t size = w * h;
   pixel_t color = color_to_pixel(lcd->fill_color);
 
-  lcd_reg_set_window(x, y, x + w - 1, y + h - 1);
+  lcd_reg_set_window(lcd, x, y, x + w - 1, y + h - 1);
 
   for (i = 0; i < size; i++) {
-    write_data_func(color);
+    lcd_reg_write_data(lcd, color);
   }
 
   return RET_OK;
@@ -96,18 +129,18 @@ static ret_t lcd_reg_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x,
   const uint8_t* src_p = glyph->data + glyph->w * sy + sx;
   pixel_t fill_pixel = color_to_pixel(fill_color);
   pixel_t text_pixel = color_to_pixel(text_color);
-  lcd_reg_set_window(x, y, x + sw - 1, y + sh - 1);
+  lcd_reg_set_window(lcd, x, y, x + sw - 1, y + sh - 1);
   for (j = 0; j < sh; j++) {
     for (i = 0; i < sw; i++) {
       uint8_t a = src_p[i];
 
       if (a >= TK_OPACITY_ALPHA) {
-        write_data_func(text_pixel);
+        lcd_reg_write_data(lcd, text_pixel);
       } else if (a >= TK_TRANSPARENT_ALPHA) {
         pixel_t color = blend_color(fill_color, text_color, a);
-        write_data_func(color);
+        lcd_reg_write_data(lcd, color);
       } else {
-        write_data_func(fill_pixel);
+        lcd_reg_write_data(lcd, fill_pixel);
       }
     }
     src_p += glyph->w;
@@ -125,13 +158,13 @@ static ret_t lcd_reg_draw_image_bgr565(lcd_t* lcd, bitmap_t* img, rect_t* src, r
   wh_t dh = dst->h;
   const uint16_t* data = (uint16_t*)img->data;
 
-  lcd_reg_set_window(x, y, x + dw - 1, y + dh - 1);
+  lcd_reg_set_window(lcd, x, y, x + dw - 1, y + dh - 1);
   if (src->w == dst->w && src->h == dst->h) {
     const uint16_t* src_p = data + img->w * src->y + src->x;
 
     for (j = 0; j < dh; j++) {
       for (i = 0; i < dw; i++) {
-        write_data_func(src_p[i]);
+        lcd_reg_write_data(lcd, src_p[i]);
       }
       src_p += img->w;
     }
@@ -150,7 +183,7 @@ static ret_t lcd_reg_draw_image_bgr565(lcd_t* lcd, bitmap_t* img, rect_t* src, r
       const uint16_t* src_p = data + iw * (sy + ((j * scale_y) >> 16)) + sx;
       for (i = 0, x = dst->x; x < r; i++, x++) {
         uint32_t s = (i * scale_x) >> 16;
-        write_data_func(src_p[s]);
+        lcd_reg_write_data(lcd, src_p[s]);
       }
     }
   }
@@ -172,7 +205,7 @@ static ret_t lcd_reg_8888(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
   pixel_t fill_pixel = color_to_pixel(fill_color);
   const color_t* data = (color_t*)img->data;
 
-  lcd_reg_set_window(x, y, x + dw - 1, y + dh - 1);
+  lcd_reg_set_window(lcd, x, y, x + dw - 1, y + dh - 1);
   if (src->w == dst->w && src->h == dst->h) {
     const color_t* src_p = data + img->w * src->y + src->x;
 
@@ -187,11 +220,11 @@ static ret_t lcd_reg_8888(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
         a = src_color.rgba.a;
 
         if (a >= TK_OPACITY_ALPHA) {
-          write_data_func(color_to_pixel(src_color));
+          lcd_reg_write_data(lcd, color_to_pixel(src_color));
         } else if (a >= TK_TRANSPARENT_ALPHA) {
-          write_data_func(blend_color(fill_color, src_color, a));
+          lcd_reg_write_data(lcd, blend_color(fill_color, src_color, a));
         } else {
-          write_data_func(fill_pixel);
+          lcd_reg_write_data(lcd, fill_pixel);
         }
       }
       src_p += img->w;
@@ -220,11 +253,11 @@ static ret_t lcd_reg_8888(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
         a = src_color.rgba.a;
 
         if (a >= TK_OPACITY_ALPHA) {
-          write_data_func(color_to_pixel(src_color));
+          lcd_reg_write_data(lcd, color_to_pixel(src_color));
         } else if (a >= TK_TRANSPARENT_ALPHA) {
-          write_data_func(blend_color(fill_color, src_color, a));
+          lcd_reg_write_data(lcd, blend_color(fill_color, src_color, a));
         } else {
-          write_data_func(fill_pixel);
+          lcd_reg_write_data(lcd, fill_pixel);
         }
       }
     }
@@ -245,32 +278,33 @@ static ret_t lcd_reg_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
 }
 
 static ret_t lcd_reg_end_frame(lcd_t* lcd) {
+  lcd_reg_t* reg = (lcd_reg_t*)lcd;
+
+  if(reg->ffb != NULL) {
+    fragment_frame_buffer_end_frame(reg->ffb);
+  }
+
   return RET_OK;
 }
 
 static ret_t lcd_reg_destroy(lcd_t* lcd) {
-  TKMEM_FREE(lcd);
-
   return RET_OK;
 }
 
 static bitmap_format_t lcd_reg_get_desired_bitmap_format(lcd_t* lcd) {
-#ifdef LCD_FORMAT
   return LCD_FORMAT;
-#else
-  if (sizeof(pixel_t) == 2) {
-    return BITMAP_FMT_BGR565;
-  } else {
-    return BITMAP_FMT_RGBA8888;
-  }
-#endif /*LCD_FORMAT*/
 }
 
 lcd_t* lcd_reg_create(wh_t w, wh_t h) {
-  lcd_t* lcd = TKMEM_ZALLOC(lcd_t);
+  static lcd_reg_t reg;
+
+  lcd_t* lcd = (lcd_t*)(&reg);
+  uint32_t size = sizeof(reg);
   system_info_t* info = system_info();
   return_value_if_fail(lcd != NULL, NULL);
 
+  memset(&reg, 0x00, size);
+  
   lcd->w = w;
   lcd->h = h;
   lcd->ratio = 1;
@@ -292,6 +326,8 @@ lcd_t* lcd_reg_create(wh_t w, wh_t h) {
   lcd->destroy = lcd_reg_destroy;
   lcd->support_dirty_rect = TRUE;
   lcd->get_desired_bitmap_format = lcd_reg_get_desired_bitmap_format;
+
+  fragment_frame_buffer_init(&(reg.affb), reg.buff, FRAGMENT_FRAME_BUFFER_SIZE);
 
   return lcd;
 }

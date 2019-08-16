@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   fragment_frame_buffer
  * Author: AWTK Develop Team
  * Brief:  fragment_frame_buffer
@@ -18,7 +18,6 @@
  * 2019-08-16 li xianjing <xianjimli@hotmail.com> created
  *
  */
-
 
 typedef struct _fragment_frame_buffer_t {
   uint32_t x;
@@ -92,7 +91,7 @@ static inline ret_t fragment_frame_buffer_end_frame(fragment_frame_buffer_t* ffb
   pixel_t* p = ffb->data;
   uint32_t nr = ffb->w * ffb->h;
 
-  set_window_func(ffb->x, ffb->y, ffb->w, ffb->h);
+  set_window_func(ffb->x, ffb->y, ffb->x + ffb->w - 1, ffb->y + ffb->h - 1);
   for(i = 0; i < nr; i++, p++) {
     write_data_func(*p);
   }
@@ -106,7 +105,7 @@ static inline ret_t fragment_frame_buffer_set_window(fragment_frame_buffer_t* ff
   ffb->win.x = x;
   ffb->win.y = y;
   ffb->win.w = w;
-  ffb->win.h = y;
+  ffb->win.h = h;
   ffb->cursor_x = 0;
   ffb->cursor_y = 0;
 
@@ -115,7 +114,7 @@ static inline ret_t fragment_frame_buffer_set_window(fragment_frame_buffer_t* ff
 
 static inline ret_t fragment_frame_buffer_write_data(fragment_frame_buffer_t* ffb, pixel_t pixel) { 
   uint32_t x = ffb->win.x + ffb->cursor_x;
-  uint32_t y = ffb->win.x + ffb->cursor_y;
+  uint32_t y = ffb->win.y + ffb->cursor_y;
   ret_t ret = fragment_frame_buffer_set_pixel(ffb, x, y, pixel);
   
   ffb->cursor_x++;
