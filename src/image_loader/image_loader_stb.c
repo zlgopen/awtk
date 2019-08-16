@@ -29,6 +29,31 @@
 #include "stb/stb_image.h"
 #include "image_loader/image_loader_stb.h"
 
+static uint8_t* convert_2_to_4(uint8_t* src, uint32_t w, uint32_t h) {
+  uint32_t i = 0;
+  uint8_t* s = src;
+  uint8_t* d = NULL;
+  uint8_t* data = NULL;
+  uint32_t size = w * h;
+  return_value_if_fail(src != NULL, NULL);
+
+  data = TKMEM_ALLOC(size * 4);
+  return_value_if_fail(data != NULL, NULL);
+
+  d = data;
+  for(i = 0; i < size; i++) {
+    d[0] = s[0]; 
+    d[1] = s[0]; 
+    d[2] = s[0]; 
+    d[3] = s[1]; 
+
+    d += 4;
+    s += 2;
+  }
+
+  return data;
+}
+
 ret_t stb_load_image(int32_t subtype, const uint8_t* buff, uint32_t buff_size, bitmap_t* image,
                      bool_t require_bgra, bool_t enable_bgr565) {
   int w = 0;
@@ -37,8 +62,16 @@ ret_t stb_load_image(int32_t subtype, const uint8_t* buff, uint32_t buff_size, b
   ret_t ret = RET_FAIL;
 
   if (subtype != ASSET_TYPE_IMAGE_GIF) {
-    uint8_t* data = stbi_load_from_memory(buff, buff_size, &w, &h, &n, 0);
-    return_value_if_fail(data != NULL, RET_FAIL);
+    uint8_t* data = NULL;
+    uint8_t* stb_data = stbi_load_from_memory(buff, buff_size, &w, &h, &n, 0);
+    return_value_if_fail(stb_data != NULL, RET_FAIL);
+
+    if(n == 2) {
+      n = 4;
+      data = convert_2_to_4(stb_data, w, h);
+    } else {
+      data = stb_data;
+    }
 
     if (enable_bgr565 && rgba_data_is_opaque(data, w, h, n)) {
       ret = bitmap_init_from_rgba(image, w, h, BITMAP_FMT_BGR565, data, n);
@@ -48,7 +81,10 @@ ret_t stb_load_image(int32_t subtype, const uint8_t* buff, uint32_t buff_size, b
       ret = bitmap_init_from_rgba(image, w, h, BITMAP_FMT_RGBA8888, data, n);
     }
 
-    stbi_image_free((uint8_t*)(data));
+    stbi_image_free((uint8_t*)(stb_data));
+    if(stb_data != data) {
+      TKMEM_FREE(data);
+    }
   } else {
     int z = 0;
     int total_h = 0;

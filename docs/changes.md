@@ -1,6 +1,7 @@
 # 最新动态
 * 2019/08/16
   * 引入片段帧缓存(Fragment Frame Buffer)，部分解决STMF103上由于没足够内存做FrameBuffer导致闪烁的问题。
+  * 支持8bit gray+alpha png
 
 * 2019/08/15
   * 增加单色 LCD 的文档。
