@@ -51,7 +51,7 @@ TEST(FragmentFrameBuffer, basic) {
   fragment_frame_buffer_write_data(ffb, 6);
   fragment_frame_buffer_end_frame(ffb);
 
-  ASSERT_EQ(s_log, "win(4 4 3 2):01 02 03 04 05 06 ");
+  ASSERT_EQ(s_log, "win(4 4 6 5):01 02 03 04 05 06 ");
 }
 
 TEST(FragmentFrameBuffer, not_large_enough) {
@@ -100,5 +100,5 @@ TEST(FragmentFrameBuffer, set) {
 
   fragment_frame_buffer_end_frame(ffb);
 
-  ASSERT_EQ(s_log, "win(4 4 3 2):01 02 03 04 05 06 ");
+  ASSERT_EQ(s_log, "win(4 4 6 5):01 02 03 04 05 06 ");
 }

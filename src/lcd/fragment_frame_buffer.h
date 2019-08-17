@@ -119,10 +119,10 @@ static inline ret_t fragment_frame_buffer_write_data(fragment_frame_buffer_t* ff
   ret_t ret = fragment_frame_buffer_set_pixel(ffb, x, y, pixel);
 
   ffb->cursor_x++;
+  assert(ffb->cursor_y < ffb->win.h);
   if (ffb->cursor_x >= ffb->win.w) {
     ffb->cursor_x = 0;
     ffb->cursor_y++;
-    assert(ffb->cursor_y < ffb->win.h);
   }
 
   return ret;
