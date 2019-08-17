@@ -1,6 +1,7 @@
 # 最新动态
 * 2019/08/16
   * slider 支持非正方形的icon（感谢俊杰提供补丁）
+  * edit/mledit处理resize事件。
 
 * 2019/08/16
   * 引入片段帧缓存(Fragment Frame Buffer)，部分解决STMF103上由于没足够内存做FrameBuffer导致闪烁的问题。

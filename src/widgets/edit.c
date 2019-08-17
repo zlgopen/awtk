@@ -546,6 +546,11 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       }
       break;
     }
+    case EVT_RESIZE:
+    case EVT_MOVE_RESIZE: {
+      text_edit_layout(edit->model);
+      break;
+    }
     case EVT_VALUE_CHANGING: {
       edit_update_status(widget);
       break;

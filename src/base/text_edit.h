@@ -260,8 +260,35 @@ ret_t text_edit_set_mask_char(text_edit_t* text_edit, wchar_t mask_char);
  */
 ret_t text_edit_paint(text_edit_t* text_edit, canvas_t* c);
 
+/**
+ * @method text_edit_layout
+ * 重新排版。
+ * @param {text_edit_t*} text_edit text_edit对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t text_edit_layout(text_edit_t* text_edit);
+
+/**
+ * @method text_edit_set_offset
+ * 设置滚动偏移。
+ * @param {text_edit_t*} text_edit text_edit对象。
+ * @param {int32_t} ox x偏移量。
+ * @param {int32_t} oy y偏移量。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t text_edit_set_offset(text_edit_t* text_edit, int32_t ox, int32_t oy);
 
+/**
+ * @method text_edit_set_on_state_changed
+ * 设置状态改变回调函数。
+ * @param {text_edit_t*} text_edit text_edit对象。
+ * @param {text_edit_on_state_changed_t} on_state_changed 回调函数。
+ * @param {void*} ctx 回调函数上下文。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t text_edit_set_on_state_changed(text_edit_t* text_edit,
                                      text_edit_on_state_changed_t on_state_changed, void* ctx);
 

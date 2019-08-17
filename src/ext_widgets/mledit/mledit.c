@@ -397,6 +397,11 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       }
       break;
     }
+    case EVT_RESIZE:
+    case EVT_MOVE_RESIZE: {
+      text_edit_layout(mledit->model);
+      break;
+    }
     case EVT_VALUE_CHANGING: {
       mledit_update_status(widget);
       break;
