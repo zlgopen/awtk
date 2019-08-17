@@ -83,15 +83,18 @@
 * 参考手册
 * 高亮对话框(背景模糊)
 * 窗口动画支持自定义。
+* android移植
+* 在浏览器中运行
+* WEB版本
+* 键盘导航
+* text editor
 
 ## 短期计划(顺序不定)
-* 优化
-* WEB版本/小程序版本
+* 小程序版本
 * 多进程支持
 * tree view
 * property sheet
 * file browser
-* text editor
 * port code editor
 * calendar
 * chart
@@ -99,18 +102,15 @@
 * drag & drop
 * tableview
 * 音频接口。
-* 键盘导航
 * 事件录制与重放。
 * Accessibility
 
 ## 长期计划
 * ios移植
-* android移植
 * 支持vue.js
 * 支持粒子产生器
 * 支持骨骼动画
 * flash播放器支持
-* 在浏览器中运行
 * 用AWTK实现界面编辑器
 * 微信小程序类似的开发方法
 
