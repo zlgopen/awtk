@@ -48,7 +48,7 @@ static int image_to_rgb565(const char* ifilename, const char* ofilename) {
     printf("load %s failed.\n", ifilename);
   }
 
-  return 0;
+  return ret;
 }
 
 int main(int argc, char* argv[]) {
