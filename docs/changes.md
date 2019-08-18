@@ -1,4 +1,7 @@
 # 最新动态
+* 2019/08/18
+  * 去掉widget pool。
+
 * 2019/08/17
   * slider 支持非正方形的icon（感谢俊杰提供补丁）
   * edit/mledit处理resize事件。
