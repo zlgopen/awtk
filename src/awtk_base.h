@@ -81,7 +81,6 @@
 #include "base/widget_animator_manager.h"
 #include "base/widget_consts.h"
 #include "base/widget_factory.h"
-#include "base/widget_pool.h"
 #include "base/widget_vtable.h"
 #include "base/window_animator.h"
 #include "base/window_animator_factory.h"

@@ -23,6 +23,7 @@
 #include "tkc/utf8.h"
 #include "tkc/utils.h"
 #include "tkc/color_parser.h"
+#include "tkc/object_default.h"
 
 #include "base/keys.h"
 #include "base/enums.h"
@@ -31,7 +32,6 @@
 #include "base/widget.h"
 #include "base/layout.h"
 #include "base/main_loop.h"
-#include "base/widget_pool.h"
 #include "base/system_info.h"
 #include "base/window_manager.h"
 #include "base/widget_vtable.h"
@@ -51,6 +51,32 @@ static ret_t widget_destroy_async(widget_t* widget);
 static ret_t widget_ensure_style_mutable(widget_t* widget);
 static ret_t widget_destroy_in_idle(const idle_info_t* info);
 static ret_t widget_on_paint_done(widget_t* widget, canvas_t* c);
+
+static ret_t widget_real_destroy(widget_t* widget) {
+  if (widget->vt->on_destroy) {
+    widget->vt->on_destroy(widget);
+  }
+
+  TKMEM_FREE(widget->name);
+  TKMEM_FREE(widget->style);
+  TKMEM_FREE(widget->tr_text);
+  TKMEM_FREE(widget->animation);
+
+  memset(widget, 0x00, sizeof(widget_t));
+  TKMEM_FREE(widget);
+
+  return RET_OK;
+}
+
+static widget_t* widget_real_create(const widget_vtable_t* vt) {
+  widget_t* widget = TKMEM_ALLOC(vt->size);
+  return_value_if_fail(widget != NULL, NULL);
+
+  memset(widget, 0x00, vt->size);
+  widget->vt = vt;
+
+  return widget;
+}
 
 static bool_t widget_is_scrollable(widget_t* widget) {
   return widget != NULL && widget->vt != NULL && widget->vt->scrollable;
@@ -2050,14 +2076,14 @@ static ret_t widget_destroy_sync(widget_t* widget) {
 
   widget->destroying = FALSE;
 
-  return widget_pool_destroy_widget(widget_pool(), widget);
+  return widget_real_destroy(widget);
 }
 
 widget_t* widget_create(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_t y, wh_t w,
                         wh_t h) {
   return_value_if_fail(vt != NULL, NULL);
 
-  return widget_init(widget_pool_create_widget(widget_pool(), vt), parent, vt, x, y, w, h);
+  return widget_init(widget_real_create(vt), parent, vt, x, y, w, h);
 }
 
 static ret_t widget_destroy_in_idle(const idle_info_t* info) {

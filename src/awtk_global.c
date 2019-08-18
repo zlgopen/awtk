@@ -33,7 +33,6 @@
 #include "base/window_manager.h"
 #include "base/widget_factory.h"
 #include "base/assets_manager.h"
-#include "base/widget_pool.h"
 #include "base/widget_animator_manager.h"
 #include "font_loader/font_loader_bitmap.h"
 #include "base/window_animator_factory.h"
@@ -133,9 +132,6 @@ ret_t tk_init_internal(void) {
   font_loader = font_loader_bitmap();
 #endif /*WITH_TRUETYPE_FONT*/
 
-#ifdef WITH_WIDGET_POOL
-  return_value_if_fail(widget_pool_set(widget_pool_create(WITH_WIDGET_POOL)) == RET_OK, RET_FAIL);
-#endif /*WITH_WIDGET_POOL*/
   return_value_if_fail(timer_init(time_now_ms) == RET_OK, RET_FAIL);
   return_value_if_fail(idle_manager_set(idle_manager_create()) == RET_OK, RET_FAIL);
   return_value_if_fail(input_method_set(input_method_create()) == RET_OK, RET_FAIL);
@@ -229,11 +225,6 @@ ret_t tk_deinit_internal(void) {
 
   locale_info_destroy(locale_info());
   locale_info_set(NULL);
-
-#ifdef WITH_WIDGET_POOL
-  widget_pool_destroy(widget_pool());
-  widget_pool_set(NULL);
-#endif /*WITH_WIDGET_POOL*/
 
   assets_manager_destroy(assets_manager());
   assets_manager_set(NULL);
