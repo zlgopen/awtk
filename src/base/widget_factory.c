@@ -28,36 +28,39 @@
 #include "base/widget_factory.h"
 
 #ifndef AWTK_NOGUI
-#include "widgets/row.h"
-#include "widgets/grid.h"
-#include "widgets/view.h"
 #include "widgets/image.h"
 #include "widgets/label.h"
-#include "widgets/overlay.h"
 #include "widgets/button.h"
 #include "widgets/slider.h"
-#include "widgets/edit.h"
 #include "widgets/pages.h"
 #include "widgets/popup.h"
-#include "widgets/column.h"
-#include "widgets/app_bar.h"
-#include "widgets/dragger.h"
-#include "widgets/grid_item.h"
-#include "widgets/system_bar.h"
-#include "widgets/tab_button.h"
-#include "widgets/tab_control.h"
 #include "widgets/button_group.h"
-#include "widgets/tab_button_group.h"
-#include "widgets/spin_box.h"
 #include "widgets/group_box.h"
 #include "widgets/dialog_title.h"
 #include "widgets/dialog_client.h"
 #include "widgets/check_button.h"
 #include "widgets/progress_bar.h"
-#include "widgets/combo_box.h"
 #include "widgets/color_tile.h"
-#include "widgets/combo_box_item.h"
+
+#ifndef AWTK_LITE
+#include "widgets/system_bar.h"
 #include "widgets/calibration_win.h"
+#include "widgets/dragger.h"
+#include "widgets/tab_button.h"
+#include "widgets/tab_control.h"
+#include "widgets/row.h"
+#include "widgets/grid.h"
+#include "widgets/view.h"
+#include "widgets/overlay.h"
+#include "widgets/edit.h"
+#include "widgets/column.h"
+#include "widgets/app_bar.h"
+#include "widgets/grid_item.h"
+#include "widgets/combo_box.h"
+#include "widgets/combo_box_item.h"
+#include "widgets/tab_button_group.h"
+#include "widgets/spin_box.h"
+#endif/*AWTK_LITE*/
 #endif /*AWTK_NOGUI*/
 
 static widget_factory_t* widget_factory_init(widget_factory_t* factory);
@@ -79,35 +82,37 @@ static const creator_item_t s_builtin_creators[] = {
 #ifndef AWTK_NOGUI
     {WIDGET_TYPE_DIALOG_TITLE, dialog_title_create},
     {WIDGET_TYPE_DIALOG_CLIENT, dialog_client_create},
-    {WIDGET_TYPE_OVERLAY, overlay_create},
     {WIDGET_TYPE_IMAGE, image_create},
     {WIDGET_TYPE_BUTTON, button_create},
     {WIDGET_TYPE_LABEL, label_create},
-    {WIDGET_TYPE_EDIT, edit_create},
     {WIDGET_TYPE_PROGRESS_BAR, progress_bar_create},
     {WIDGET_TYPE_SLIDER, slider_create},
-    {WIDGET_TYPE_GROUP_BOX, group_box_create},
-    {WIDGET_TYPE_VIEW, view_create},
     {WIDGET_TYPE_CHECK_BUTTON, check_button_create},
     {WIDGET_TYPE_RADIO_BUTTON, check_button_create_radio},
     {WIDGET_TYPE_PAGES, pages_create},
+    {WIDGET_TYPE_BUTTON_GROUP, button_group_create},
+    {WIDGET_TYPE_POPUP, popup_create},
+    {WIDGET_TYPE_COLOR_TILE, color_tile_create},
+    {WIDGET_TYPE_GROUP_BOX, group_box_create},
+#ifndef AWTK_LITE
+    {WIDGET_TYPE_SYSTEM_BAR, system_bar_create},
+    {WIDGET_TYPE_CALIBRATION_WIN, calibration_win_create},
+    {WIDGET_TYPE_VIEW, view_create},
+    {WIDGET_TYPE_OVERLAY, overlay_create},
+    {WIDGET_TYPE_EDIT, edit_create},
     {WIDGET_TYPE_TAB_CONTROL, tab_control_create},
     {WIDGET_TYPE_TAB_BUTTON, tab_button_create},
     {WIDGET_TYPE_TAB_BUTTON_GROUP, tab_button_group_create},
-    {WIDGET_TYPE_BUTTON_GROUP, button_group_create},
     {WIDGET_TYPE_SPIN_BOX, spin_box_create},
     {WIDGET_TYPE_DRAGGER, dragger_create},
     {WIDGET_TYPE_COMBO_BOX, combo_box_create},
     {WIDGET_TYPE_COMBO_BOX_ITEM, combo_box_item_create},
-    {WIDGET_TYPE_POPUP, popup_create},
     {WIDGET_TYPE_GRID, grid_create},
     {WIDGET_TYPE_GRID_ITEM, grid_item_create},
     {WIDGET_TYPE_ROW, row_create},
     {WIDGET_TYPE_COLUMN, column_create},
     {WIDGET_TYPE_APP_BAR, app_bar_create},
-    {WIDGET_TYPE_SYSTEM_BAR, system_bar_create},
-    {WIDGET_TYPE_CALIBRATION_WIN, calibration_win_create},
-    {WIDGET_TYPE_COLOR_TILE, color_tile_create}
+#endif/*AWTK_LITE*/
 #endif /**AWTK_NOGUI*/
 };
 
@@ -200,3 +205,4 @@ ret_t widget_factory_destroy(widget_factory_t* factory) {
 
   return RET_OK;
 }
+

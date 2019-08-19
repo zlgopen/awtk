@@ -134,7 +134,9 @@ ret_t tk_init_internal(void) {
 
   return_value_if_fail(timer_init(time_now_ms) == RET_OK, RET_FAIL);
   return_value_if_fail(idle_manager_set(idle_manager_create()) == RET_OK, RET_FAIL);
+#ifndef WITHOUT_INPUT_METHOD
   return_value_if_fail(input_method_set(input_method_create()) == RET_OK, RET_FAIL);
+#endif/*WITHOUT_INPUT_METHOD*/
   return_value_if_fail(widget_factory_set(widget_factory_create()) == RET_OK, RET_FAIL);
 
   return_value_if_fail(theme_set(theme_create(NULL)) == RET_OK, RET_FAIL);
@@ -142,26 +144,38 @@ ret_t tk_init_internal(void) {
   return_value_if_fail(locale_info_set(locale_info_create(NULL, NULL)) == RET_OK, RET_FAIL);
   return_value_if_fail(font_manager_set(font_manager_create(font_loader)) == RET_OK, RET_FAIL);
   return_value_if_fail(image_manager_set(image_manager_create()) == RET_OK, RET_FAIL);
+#ifndef WITHOUT_WINDOW_ANIMATORS
   return_value_if_fail(window_animator_factory_set(window_animator_factory_create()) == RET_OK,
                        RET_FAIL);
+  window_animator_register_builtins();
+#endif/*WITHOUT_WIDGET_ANIMATORS*/
+
+#ifndef WITHOUT_DIALOG_HIGHLIGHTER
   return_value_if_fail(
       dialog_highlighter_factory_set(dialog_highlighter_factory_create()) == RET_OK, RET_FAIL);
+#endif/*WITHOUT_DIALOG_HIGHLIGHTER*/
+
+#ifndef WITHOUT_LAYOUT 
   return_value_if_fail(children_layouter_factory_set(children_layouter_factory_create()) == RET_OK,
                        RET_FAIL);
   return_value_if_fail(self_layouter_factory_set(self_layouter_factory_create()) == RET_OK,
                        RET_FAIL);
-  return_value_if_fail(widget_animator_manager_set(widget_animator_manager_create()) == RET_OK,
-                       RET_FAIL);
+  
+  self_layouter_register_builtins();
+  children_layouter_register_builtins();
+#endif/*WITHOUT_LAYOUT*/
+
   return_value_if_fail(window_manager_set(window_manager_create()) == RET_OK, RET_FAIL);
   return_value_if_fail(clip_board_set(clip_board_create()) == RET_OK, RET_FAIL);
 
-#ifdef WITH_WINDOW_ANIMATORS
-  window_animator_register_builtins();
-  dialog_highlighter_register_builtins();
-#endif /*WITH_WINDOW_ANIMATORS*/
+#ifndef WITHOUT_WIDGET_ANIMATORS
+  return_value_if_fail(widget_animator_manager_set(widget_animator_manager_create()) == RET_OK,
+                       RET_FAIL);
+#endif/*WITHOUT_WIDGET_ANIMATORS*/
 
-  self_layouter_register_builtins();
-  children_layouter_register_builtins();
+#ifndef WITHOUT_DIALOG_HIGHLIGHTER
+  dialog_highlighter_register_builtins();
+#endif/*WITHOUT_DIALOG_HIGHLIGHTER*/
 
   tk_mem_set_on_out_of_memory(awtk_mem_on_out_of_memory, NULL);
 
@@ -184,26 +198,34 @@ ret_t tk_deinit_internal(void) {
   clip_board_destroy(clip_board());
   clip_board_set(NULL);
 
+#ifndef WITHOUT_WINDOW_ANIMATORS
   window_animator_factory_destroy(window_animator_factory());
   window_animator_factory_set(NULL);
+#endif/*WITHOUT_WINDOW_ANIMATORS*/
+  
+#ifndef WITHOUT_WIDGET_ANIMATORS
+  widget_animator_manager_destroy(widget_animator_manager());
+  widget_animator_manager_set(NULL);
+#endif/*WITHOUT_WIDGET_ANIMATORS*/
 
+#ifndef WITHOUT_DIALOG_HIGHLIGHTER
   dialog_highlighter_factory_destroy(dialog_highlighter_factory());
   dialog_highlighter_factory_set(NULL);
+#endif/*WITHOUT_DIALOG_HIGHLIGHTER*/
 
+#ifndef WITHOUT_LAYOUT
   children_layouter_factory_destroy(children_layouter_factory());
   children_layouter_factory_set(NULL);
 
   children_layouter_factory_destroy(children_layouter_factory());
   children_layouter_factory_set(NULL);
+#endif/*WITHOUT_LAYOUT*/
 
   image_manager_destroy(image_manager());
   image_manager_set(NULL);
 
   widget_destroy(window_manager());
   window_manager_set(NULL);
-
-  widget_animator_manager_destroy(widget_animator_manager());
-  widget_animator_manager_set(NULL);
 
   idle_manager_destroy(idle_manager());
   idle_manager_set(NULL);
@@ -214,8 +236,10 @@ ret_t tk_deinit_internal(void) {
   widget_factory_destroy(widget_factory());
   widget_factory_set(NULL);
 
+#ifndef WITHOUT_INPUT_METHOD
   input_method_destroy(input_method());
   input_method_set(NULL);
+#endif/*WITHOUT_INPUT_METHOD*/
 
   theme_destroy(theme());
   theme_set(NULL);
@@ -286,3 +310,4 @@ int32_t tk_get_pointer_y(void) {
 bool_t tk_is_pointer_pressed(void) {
   return window_manager_get_pointer_pressed(window_manager());
 }
+

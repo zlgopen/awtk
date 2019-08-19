@@ -324,4 +324,13 @@ typedef struct _system_info_t system_info_t;
 #define WITH_BITMAP_FONT 1
 #endif /*WITH_LCD_MONO*/
 
+#ifdef AWTK_LITE
+#define WITHOUT_LAYOUT 1
+#define WITHOUT_EXT_WIDGETS 1
+#define WITHOUT_INPUT_METHOD 1
+#define WITHOUT_WINDOW_ANIMATORS 
+#define WITHOUT_WIDGET_ANIMATORS 1
+#define WITHOUT_DIALOG_HIGHLIGHTER 1 
+#endif/*AWTK_LITE*/
+
 #endif /*TK_TYPES_DEF_H*/

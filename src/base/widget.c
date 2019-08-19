@@ -358,6 +358,7 @@ ret_t widget_set_cursor(widget_t* widget, const char* cursor) {
   return widget_set_prop_str(wm, WIDGET_PROP_CURSOR, cursor);
 }
 
+#ifndef WITHOUT_WINDOW_ANIMATORS
 ret_t widget_set_animation(widget_t* widget, const char* animation) {
   return_value_if_fail(widget != NULL && animation != NULL, RET_BAD_PARAMS);
 
@@ -418,6 +419,32 @@ ret_t widget_stop_animator(widget_t* widget, const char* name) {
 ret_t widget_destroy_animator(widget_t* widget, const char* name) {
   return widget_animator_manager_remove_all(widget_animator_manager(), widget, name);
 }
+#else
+ret_t widget_start_animator(widget_t* widget, const char* name) {
+  return RET_OK;
+}
+ret_t widget_create_animator(widget_t* widget, const char* animation) {
+  return RET_OK;
+}
+ret_t widget_set_animation(widget_t* widget, const char* animation) {
+  return RET_OK;
+}
+ret_t widget_set_animator_time_scale(widget_t* widget, const char* name, float_t time_scale) {
+  return RET_OK;
+}
+ret_t widget_pause_animator(widget_t* widget, const char* name) {
+  return RET_OK;
+}
+widget_animator_t* widget_find_animator(widget_t* widget, const char* name) {
+  return NULL;
+}
+ret_t widget_stop_animator(widget_t* widget, const char* name) {
+  return RET_OK;
+}
+ret_t widget_destroy_animator(widget_t* widget, const char* name) {
+  return RET_OK;
+}
+#endif/*WITHOUT_WIDGET_ANIMATORS*/
 
 ret_t widget_set_enable(widget_t* widget, bool_t enable) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
@@ -3001,3 +3028,4 @@ bool_t widget_is_dialog(widget_t* widget) {
 bool_t widget_is_popup(widget_t* widget) {
   return tk_str_eq(widget->vt->type, WIDGET_TYPE_POPUP);
 }
+
