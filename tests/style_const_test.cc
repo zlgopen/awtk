@@ -1,6 +1,6 @@
 ﻿#include "gtest/gtest.h"
 #include "widgets/button.h"
-#include "widgets/window.h"
+#include "base/window.h"
 #include "base/style_const.h"
 #include "widgets/combo_box_item.h"
 #include <string>

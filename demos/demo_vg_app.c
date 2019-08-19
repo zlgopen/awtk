@@ -20,7 +20,7 @@
  */
 
 #include "base/timer.h"
-#include "widgets/window.h"
+#include "base/window.h"
 #include "base/image_manager.h"
 #include "canvas_widget/canvas_widget.h"
 

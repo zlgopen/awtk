@@ -20,7 +20,7 @@
  */
 #include "tkc/utils.h"
 #include "widgets/label.h"
-#include "widgets/dialog.h"
+#include "base/dialog.h"
 #include "widgets/button.h"
 #include "widgets/dialog_title.h"
 #include "widgets/dialog_client.h"

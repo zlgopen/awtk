@@ -1,11 +1,11 @@
-﻿#include "widgets/dialog.h"
+﻿#include "base/dialog.h"
 #include "base/canvas.h"
 #include "base/widget.h"
 #include "font_dummy.h"
 #include "lcd_log.h"
 #include "gtest/gtest.h"
 #include <stdlib.h>
-#include "widgets/window.h"
+#include "base/window.h"
 
 TEST(Dialog, basic) {
   value_t v1;

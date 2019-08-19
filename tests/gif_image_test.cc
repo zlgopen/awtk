@@ -1,4 +1,4 @@
-﻿#include "widgets/window.h"
+﻿#include "base/window.h"
 #include "gif_image/gif_image.h"
 #include "gtest/gtest.h"
 

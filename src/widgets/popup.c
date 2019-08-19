@@ -21,12 +21,12 @@
 
 #include "tkc/mem.h"
 #include "base/idle.h"
+#include "base/window.h"
 #include "widgets/label.h"
 #include "base/enums.h"
 #include "tkc/utils.h"
 #include "base/layout.h"
 #include "widgets/popup.h"
-#include "widgets/window.h"
 #include "base/image_manager.h"
 #include "base/window_manager.h"
 

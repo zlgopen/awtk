@@ -8,7 +8,7 @@
 #include "font_dummy.h"
 #include "lcd_log.h"
 #include "widgets/view.h"
-#include "widgets/window.h"
+#include "base/window.h"
 #include "gtest/gtest.h"
 #include <stdlib.h>
 

@@ -26,7 +26,7 @@
 #include "widgets/button.h"
 #include "base/layout.h"
 #include "widgets/popup.h"
-#include "widgets/window.h"
+#include "base/window.h"
 #include "tkc/tokenizer.h"
 #include "text_selector/text_selector.h"
 #include "widget_animators/widget_animator_scroll.h"

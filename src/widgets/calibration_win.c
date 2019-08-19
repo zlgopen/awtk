@@ -20,7 +20,7 @@
  */
 
 #include "tkc/mem.h"
-#include "widgets/window.h"
+#include "base/window.h"
 #include "base/window_manager.h"
 #include "widgets/calibration_win.h"
 

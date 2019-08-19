@@ -6,7 +6,7 @@
 #include "widgets/label.h"
 #include "widgets/group_box.h"
 #include "widgets/button_group.h"
-#include "widgets/window.h"
+#include "base/window.h"
 #include "widgets/pages.h"
 #include "base/style_const.h"
 #include "font_dummy.h"

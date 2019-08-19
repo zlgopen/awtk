@@ -7,17 +7,13 @@ NANOVG_BACKEND=os.environ['NANOVG_BACKEND'];
 VGCANVAS=os.environ['VGCANVAS'];
 NATIVE_WINDOW = os.environ['NATIVE_WINDOW'];
 
-sources=Glob('base/*.c') + \
-  Glob('layouters/*.c') + \
-  Glob('widgets/*.c') + \
+sources=Glob('layouters/*.c') + \
   Glob('ui_loader/*.c') + \
   Glob('xml/*.c') + \
   Glob('svg/*.c') + \
   Glob('clip_board/*.c') + \
   Glob('font_loader/*.c') + \
   Glob('blend/*.c') + \
-  Glob('ext_widgets/*.c') + \
-  Glob('ext_widgets/*/*.c') + \
   Glob('image_loader/*.c') + \
   Glob('designer_support/*.c') + \
   Glob('widget_animators/*.c') + \
@@ -92,4 +88,8 @@ if env['PLATFORM'] == 'win32' and os.environ['TOOLS_NAME'] != '':
   env['SPAWN'] = buf.ourspawn
   
 env.Library(os.path.join(LIB_DIR, 'tkc'), Glob('tkc/*.c'), LIBS=[])
+env.Library(os.path.join(LIB_DIR, 'base'), Glob('base/*.c'), LIBS=[])
+env.Library(os.path.join(LIB_DIR, 'widgets'), Glob('widgets/*.c'), LIBS=[])
+env.Library(os.path.join(LIB_DIR, 'exwidgets'), Glob('ext_widgets/*.c') + Glob('ext_widgets/*/*.c'), LIBS=[])
 env.Library(os.path.join(LIB_DIR, 'awtk'), sources, LIBS=[])
+

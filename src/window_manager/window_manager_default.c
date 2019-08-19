@@ -26,7 +26,7 @@
 #include "base/timer.h"
 #include "base/layout.h"
 #include "tkc/time_now.h"
-#include "widgets/dialog.h"
+#include "base/dialog.h"
 #include "base/locale_info.h"
 #include "base/system_info.h"
 #include "base/image_manager.h"

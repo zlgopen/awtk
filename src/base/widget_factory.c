@@ -23,45 +23,7 @@
 
 #include "tkc/value.h"
 #include "tkc/utils.h"
-#include "widgets/window.h"
-#include "widgets/dialog.h"
 #include "base/widget_factory.h"
-
-#ifndef AWTK_NOGUI
-#include "widgets/image.h"
-#include "widgets/label.h"
-#include "widgets/button.h"
-#include "widgets/slider.h"
-#include "widgets/pages.h"
-#include "widgets/popup.h"
-#include "widgets/button_group.h"
-#include "widgets/group_box.h"
-#include "widgets/dialog_title.h"
-#include "widgets/dialog_client.h"
-#include "widgets/check_button.h"
-#include "widgets/progress_bar.h"
-#include "widgets/color_tile.h"
-
-#ifndef AWTK_LITE
-#include "widgets/system_bar.h"
-#include "widgets/calibration_win.h"
-#include "widgets/dragger.h"
-#include "widgets/tab_button.h"
-#include "widgets/tab_control.h"
-#include "widgets/row.h"
-#include "widgets/grid.h"
-#include "widgets/view.h"
-#include "widgets/overlay.h"
-#include "widgets/edit.h"
-#include "widgets/column.h"
-#include "widgets/app_bar.h"
-#include "widgets/grid_item.h"
-#include "widgets/combo_box.h"
-#include "widgets/combo_box_item.h"
-#include "widgets/tab_button_group.h"
-#include "widgets/spin_box.h"
-#endif/*AWTK_LITE*/
-#endif /*AWTK_NOGUI*/
 
 static widget_factory_t* widget_factory_init(widget_factory_t* factory);
 static ret_t widget_factory_deinit(widget_factory_t* factory);
@@ -74,58 +36,6 @@ typedef struct _creator_item_t {
 
 static int32_t creator_item_cmp(const creator_item_t* iter, const char* type) {
   return strcmp(iter->type, type);
-}
-
-static const creator_item_t s_builtin_creators[] = {
-    {WIDGET_TYPE_DIALOG, dialog_create},
-    {WIDGET_TYPE_NORMAL_WINDOW, window_create},
-#ifndef AWTK_NOGUI
-    {WIDGET_TYPE_DIALOG_TITLE, dialog_title_create},
-    {WIDGET_TYPE_DIALOG_CLIENT, dialog_client_create},
-    {WIDGET_TYPE_IMAGE, image_create},
-    {WIDGET_TYPE_BUTTON, button_create},
-    {WIDGET_TYPE_LABEL, label_create},
-    {WIDGET_TYPE_PROGRESS_BAR, progress_bar_create},
-    {WIDGET_TYPE_SLIDER, slider_create},
-    {WIDGET_TYPE_CHECK_BUTTON, check_button_create},
-    {WIDGET_TYPE_RADIO_BUTTON, check_button_create_radio},
-    {WIDGET_TYPE_PAGES, pages_create},
-    {WIDGET_TYPE_BUTTON_GROUP, button_group_create},
-    {WIDGET_TYPE_POPUP, popup_create},
-    {WIDGET_TYPE_COLOR_TILE, color_tile_create},
-    {WIDGET_TYPE_GROUP_BOX, group_box_create},
-#ifndef AWTK_LITE
-    {WIDGET_TYPE_SYSTEM_BAR, system_bar_create},
-    {WIDGET_TYPE_CALIBRATION_WIN, calibration_win_create},
-    {WIDGET_TYPE_VIEW, view_create},
-    {WIDGET_TYPE_OVERLAY, overlay_create},
-    {WIDGET_TYPE_EDIT, edit_create},
-    {WIDGET_TYPE_TAB_CONTROL, tab_control_create},
-    {WIDGET_TYPE_TAB_BUTTON, tab_button_create},
-    {WIDGET_TYPE_TAB_BUTTON_GROUP, tab_button_group_create},
-    {WIDGET_TYPE_SPIN_BOX, spin_box_create},
-    {WIDGET_TYPE_DRAGGER, dragger_create},
-    {WIDGET_TYPE_COMBO_BOX, combo_box_create},
-    {WIDGET_TYPE_COMBO_BOX_ITEM, combo_box_item_create},
-    {WIDGET_TYPE_GRID, grid_create},
-    {WIDGET_TYPE_GRID_ITEM, grid_item_create},
-    {WIDGET_TYPE_ROW, row_create},
-    {WIDGET_TYPE_COLUMN, column_create},
-    {WIDGET_TYPE_APP_BAR, app_bar_create},
-#endif/*AWTK_LITE*/
-#endif /**AWTK_NOGUI*/
-};
-
-static const creator_item_t* widget_factory_find_builtin_creator(const char* type) {
-  uint32_t i = 0;
-  for (i = 0; i < ARRAY_SIZE(s_builtin_creators); i++) {
-    const creator_item_t* iter = s_builtin_creators + i;
-    if (tk_str_eq(iter->type, type)) {
-      return iter;
-    }
-  }
-
-  return NULL;
 }
 
 widget_factory_t* widget_factory(void) {
@@ -164,22 +74,21 @@ ret_t widget_factory_register(widget_factory_t* factory, const char* type, widge
 
 widget_t* widget_factory_create_widget(widget_factory_t* factory, const char* type,
                                        widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
+
+  widget_t* widget = NULL;
   const creator_item_t* iter = NULL;
   return_value_if_fail(factory != NULL && type != NULL, NULL);
-
-  iter = widget_factory_find_builtin_creator(type);
-  if (iter != NULL) {
-    widget_t* widget = iter->create(parent, x, y, w, h);
-    event_t e = event_init(EVT_WIDGET_CREATED, widget);
-    emitter_dispatch(EMITTER(factory), &e);
-
-    return widget;
-  }
 
   iter = darray_find(&(factory->creators), (void*)type);
   return_value_if_fail(iter != NULL, NULL);
 
-  return iter->create(parent, x, y, w, h);
+  widget = iter->create(parent, x, y, w, h);
+  if(widget != NULL) {
+    event_t e = event_init(EVT_WIDGET_CREATED, widget);
+    emitter_dispatch(EMITTER(factory), &e);
+  }
+
+  return widget;
 }
 
 ret_t widget_factory_set(widget_factory_t* factory) {

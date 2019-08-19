@@ -21,10 +21,10 @@
 
 #include "tkc/mem.h"
 #include "tkc/utils.h"
-#include "widgets/button.h"
 #include "base/layout.h"
+#include "base/window.h"
+#include "widgets/button.h"
 #include "widgets/popup.h"
-#include "widgets/window.h"
 #include "widgets/combo_box.h"
 #include "tkc/tokenizer.h"
 #include "widgets/combo_box_item.h"

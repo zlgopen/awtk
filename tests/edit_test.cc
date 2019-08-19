@@ -5,7 +5,7 @@
 #include "gtest/gtest.h"
 #include <stdlib.h>
 #include "widgets/edit.h"
-#include "widgets/window.h"
+#include "base/window.h"
 #include "widgets/group_box.h"
 #include "common.h"
 

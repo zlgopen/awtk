@@ -22,6 +22,9 @@
 #ifndef AWTK_WIDGETS_H
 #define AWTK_WIDGETS_H
 
+#include "base/dialog.h"
+#include "base/window.h"
+
 #include "widgets/app_bar.h"
 #include "widgets/button.h"
 #include "widgets/button_group.h"
@@ -31,7 +34,6 @@
 #include "widgets/column.h"
 #include "widgets/combo_box.h"
 #include "widgets/combo_box_item.h"
-#include "widgets/dialog.h"
 #include "widgets/dialog_client.h"
 #include "widgets/dialog_title.h"
 #include "widgets/dragger.h"
@@ -53,6 +55,5 @@
 #include "widgets/tab_button_group.h"
 #include "widgets/tab_control.h"
 #include "widgets/view.h"
-#include "widgets/window.h"
 
 #endif /*AWTK_WIDGETS_H*/

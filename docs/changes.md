@@ -1,6 +1,6 @@
 # 最新动态
 * 2019/08/19
-  * tkc 编译成独立的库。
+  * awtk编译成tkc/base/widgets/extwidgets/awtk几个独立的库，并调整部分文件的位置。
 
 * 2019/08/18
   * 去掉widget pool。

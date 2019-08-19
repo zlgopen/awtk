@@ -21,7 +21,7 @@
 
 #include "base/widget.h"
 #include "base/canvas.h"
-#include "widgets/dialog.h"
+#include "base/dialog.h"
 #include "base/dialog_highlighter.h"
 #include "base/input_device_status.h"
 #include "base/window_manager.h"

@@ -22,7 +22,7 @@
 #include "tkc/mem.h"
 #include "base/idle.h"
 #include "base/enums.h"
-#include "widgets/window.h"
+#include "base/window.h"
 #include "keyboard/keyboard.h"
 #include "suggest_words.inc"
 #include "base/input_method.h"

@@ -1,5 +1,5 @@
 ﻿#include "tkc/mem.h"
-#include "widgets/window.h"
+#include "base/window.h"
 #include "blend/image_g2d.h"
 #include "mutable_image/mutable_image.h"
 #include "gtest/gtest.h"

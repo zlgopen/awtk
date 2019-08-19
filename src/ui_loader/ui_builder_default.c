@@ -21,7 +21,7 @@
 
 #include "tkc/utf8.h"
 #include "base/enums.h"
-#include "widgets/dialog.h"
+#include "base/dialog.h"
 #include "base/widget_factory.h"
 #include "ui_loader/ui_builder_default.h"
 #include "ui_loader/ui_loader_default.h"

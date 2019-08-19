@@ -29,7 +29,7 @@
 #include "tkc/mem.h"
 #include "tkc/utils.h"
 #include "tkc/utf8.h"
-#include "widgets/window.h"
+#include "base/window.h"
 #include "base/image_manager.h"
 #include "widgets/progress_bar.h"
 

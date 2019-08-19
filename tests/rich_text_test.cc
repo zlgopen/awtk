@@ -1,4 +1,4 @@
-﻿#include "widgets/window.h"
+﻿#include "base/window.h"
 #include "rich_text/rich_text.h"
 #include "gtest/gtest.h"
 

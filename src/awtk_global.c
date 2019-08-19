@@ -38,6 +38,7 @@
 #include "base/window_animator_factory.h"
 #include "window_animators/window_animator_builtins.h"
 
+#include "widgets/widgets.h"
 #include "base/self_layouter_factory.h"
 #include "base/children_layouter_factory.h"
 #include "base/dialog_highlighter_factory.h"
@@ -177,6 +178,7 @@ ret_t tk_init_internal(void) {
   dialog_highlighter_register_builtins();
 #endif/*WITHOUT_DIALOG_HIGHLIGHTER*/
 
+  tk_widgets_init();
   tk_mem_set_on_out_of_memory(awtk_mem_on_out_of_memory, NULL);
 
   return RET_OK;

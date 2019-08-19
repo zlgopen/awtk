@@ -22,8 +22,8 @@
 #include "tkc/mem.h"
 #include "tkc/utils.h"
 #include "base/enums.h"
+#include "base/window.h"
 #include "base/window_manager.h"
-#include "widgets/window.h"
 
 static const char* s_window_properties[] = {WIDGET_PROP_ANIM_HINT,
                                             WIDGET_PROP_OPEN_ANIM_HINT,

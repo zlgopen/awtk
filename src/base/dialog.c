@@ -24,7 +24,7 @@
 #include "base/enums.h"
 #include "tkc/utils.h"
 #include "base/layout.h"
-#include "widgets/dialog.h"
+#include "base/dialog.h"
 #include "base/main_loop.h"
 #include "base/image_manager.h"
 #include "base/window_manager.h"

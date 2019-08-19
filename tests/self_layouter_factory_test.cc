@@ -1,7 +1,7 @@
 ﻿#include <string>
 #include "gtest/gtest.h"
 #include "widgets/button.h"
-#include "widgets/window.h"
+#include "base/window.h"
 #include "layouters/self_layouter_default.h"
 #include "base/self_layouter_factory.h"
 

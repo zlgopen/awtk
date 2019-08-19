@@ -5,7 +5,7 @@
 #include "gtest/gtest.h"
 #include <stdlib.h>
 #include "mledit/mledit.h"
-#include "widgets/window.h"
+#include "base/window.h"
 #include "common.h"
 
 TEST(MLEdit, int) {

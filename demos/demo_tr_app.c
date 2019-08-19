@@ -24,7 +24,7 @@
 #include "widgets/button.h"
 #include "base/locale_info.h"
 #include "widgets/check_button.h"
-#include "widgets/dialog.h"
+#include "base/dialog.h"
 #include "widgets/image.h"
 #include "base/image_manager.h"
 #include "widgets/label.h"
@@ -32,7 +32,7 @@
 #include "widgets/progress_bar.h"
 #include "tkc/utils.h"
 #include "tkc/utf8.h"
-#include "widgets/window.h"
+#include "base/window.h"
 #include "widgets/slider.h"
 #include "widgets/group_box.h"
 
