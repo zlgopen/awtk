@@ -210,7 +210,7 @@ static ret_t input_method_default_show_keyboard(input_method_t* im) {
       value_set_str(&v, "");
       widget_set_prop(im->keyboard, WIDGET_PROP_OPEN_ANIM_HINT, &v);
       widget_set_prop(im->keyboard, WIDGET_PROP_CLOSE_ANIM_HINT, &v);
-      keyboard_close(im->keyboard);
+      window_close(im->keyboard);
       im->keyboard = NULL;
 
       open_anim = FALSE;
@@ -233,7 +233,7 @@ static ret_t on_idle_close_keyboard(const idle_info_t* idle) {
 
   if (im->keyboard == info->keyboard && im->widget == info->widget) {
     input_method_default_restore_win_position(im);
-    keyboard_close(im->keyboard);
+    window_close(im->keyboard);
     im->keyboard = NULL;
     im->widget = NULL;
   }
@@ -264,7 +264,7 @@ static ret_t input_method_default_request(input_method_t* im, widget_t* widget) 
 
         idle_add(on_idle_close_keyboard, info);
       } else {
-        keyboard_close(im->keyboard);
+        window_close(im->keyboard);
         im->keyboard = NULL;
         im->widget = NULL;
       }
