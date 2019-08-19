@@ -42,12 +42,12 @@ uint32_t svg_shape_size(const svg_shape_t* shape) {
     }
     case SVG_SHAPE_POLYGON: {
       svg_shape_polygon_t* s = (svg_shape_polygon_t*)shape;
-      size = sizeof(svg_shape_polygon_t) + s->nr * sizeof(float_t) - sizeof(s->data);
+      size = sizeof(svg_shape_polygon_t) + s->nr * sizeof(float) - sizeof(s->data);
       break;
     }
     case SVG_SHAPE_POLYLINE: {
       svg_shape_polyline_t* s = (svg_shape_polyline_t*)shape;
-      size = sizeof(svg_shape_polyline_t) + s->nr * sizeof(float_t) - sizeof(s->data);
+      size = sizeof(svg_shape_polyline_t) + s->nr * sizeof(float) - sizeof(s->data);
       break;
     }
     case SVG_SHAPE_PATH: {
@@ -67,8 +67,8 @@ uint32_t svg_shape_size(const svg_shape_t* shape) {
   return size;
 }
 
-svg_shape_t* svg_shape_rect_init(svg_shape_rect_t* s, float_t x, float_t y, float_t w, float_t h,
-                                 float_t r) {
+svg_shape_t* svg_shape_rect_init(svg_shape_rect_t* s, float x, float y, float w, float h,
+                                 float r) {
   return_value_if_fail(s != NULL, NULL);
 
   memset(s, 0x00, sizeof(*s));
@@ -83,7 +83,7 @@ svg_shape_t* svg_shape_rect_init(svg_shape_rect_t* s, float_t x, float_t y, floa
   return (svg_shape_t*)s;
 }
 
-svg_shape_t* svg_shape_circle_init(svg_shape_circle_t* s, float_t cx, float_t cy, float_t r) {
+svg_shape_t* svg_shape_circle_init(svg_shape_circle_t* s, float cx, float cy, float r) {
   return_value_if_fail(s != NULL, NULL);
 
   memset(s, 0x00, sizeof(*s));
@@ -96,8 +96,8 @@ svg_shape_t* svg_shape_circle_init(svg_shape_circle_t* s, float_t cx, float_t cy
   return (svg_shape_t*)s;
 }
 
-svg_shape_t* svg_shape_ellipse_init(svg_shape_ellipse_t* s, float_t cx, float_t cy, float_t rx,
-                                    float_t ry) {
+svg_shape_t* svg_shape_ellipse_init(svg_shape_ellipse_t* s, float cx, float cy, float rx,
+                                    float ry) {
   return_value_if_fail(s != NULL, NULL);
 
   memset(s, 0x00, sizeof(*s));
@@ -111,8 +111,8 @@ svg_shape_t* svg_shape_ellipse_init(svg_shape_ellipse_t* s, float_t cx, float_t 
   return (svg_shape_t*)s;
 }
 
-svg_shape_t* svg_shape_line_init(svg_shape_line_t* s, float_t x1, float_t y1, float_t x2,
-                                 float_t y2) {
+svg_shape_t* svg_shape_line_init(svg_shape_line_t* s, float x1, float y1, float x2,
+                                 float y2) {
   return_value_if_fail(s != NULL, NULL);
 
   memset(s, 0x00, sizeof(*s));

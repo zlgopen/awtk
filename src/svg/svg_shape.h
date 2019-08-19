@@ -52,46 +52,46 @@ typedef struct _svg_shape_t {
 
 typedef struct _svg_shape_rect_t {
   svg_shape_t shape;
-  float_t x;
-  float_t y;
-  float_t w;
-  float_t h;
-  float_t r;
+  float x;
+  float y;
+  float w;
+  float h;
+  float r;
 } svg_shape_rect_t;
 
 typedef struct _svg_shape_circle_t {
   svg_shape_t shape;
-  float_t cx;
-  float_t cy;
-  float_t r;
+  float cx;
+  float cy;
+  float r;
 } svg_shape_circle_t;
 
 typedef struct _svg_shape_ellipse_t {
   svg_shape_t shape;
-  float_t cx;
-  float_t cy;
-  float_t rx;
-  float_t ry;
+  float cx;
+  float cy;
+  float rx;
+  float ry;
 } svg_shape_ellipse_t;
 
 typedef struct _svg_shape_line_t {
   svg_shape_t shape;
-  float_t x1;
-  float_t y1;
-  float_t x2;
-  float_t y2;
+  float x1;
+  float y1;
+  float x2;
+  float y2;
 } svg_shape_line_t;
 
 typedef struct _svg_shape_polyline_t {
   svg_shape_t shape;
   uint32_t nr;
-  float_t data[1];
+  float data[1];
 } svg_shape_polyline_t;
 
 typedef struct _svg_shape_polygon_t {
   svg_shape_t shape;
   uint32_t nr;
-  float_t data[1];
+  float data[1];
 } svg_shape_polygon_t;
 
 typedef struct _svg_shape_path_t {
@@ -103,13 +103,13 @@ typedef struct _svg_shape_path_t {
 
 uint32_t svg_shape_size(const svg_shape_t* shape);
 
-svg_shape_t* svg_shape_rect_init(svg_shape_rect_t* s, float_t x, float_t y, float_t w, float_t h,
-                                 float_t r);
-svg_shape_t* svg_shape_circle_init(svg_shape_circle_t* s, float_t cx, float_t cy, float_t r);
-svg_shape_t* svg_shape_ellipse_init(svg_shape_ellipse_t* s, float_t cx, float_t cy, float_t rx,
-                                    float_t ry);
-svg_shape_t* svg_shape_line_init(svg_shape_line_t* s, float_t x1, float_t y1, float_t x2,
-                                 float_t y2);
+svg_shape_t* svg_shape_rect_init(svg_shape_rect_t* s, float x, float y, float w, float h,
+                                 float r);
+svg_shape_t* svg_shape_circle_init(svg_shape_circle_t* s, float cx, float cy, float r);
+svg_shape_t* svg_shape_ellipse_init(svg_shape_ellipse_t* s, float cx, float cy, float rx,
+                                    float ry);
+svg_shape_t* svg_shape_line_init(svg_shape_line_t* s, float x1, float y1, float x2,
+                                 float y2);
 svg_shape_t* svg_shape_polygon_init(svg_shape_polygon_t* s);
 svg_shape_t* svg_shape_polyline_init(svg_shape_polyline_t* s);
 svg_shape_t* svg_shape_path_init(svg_shape_path_t* s);

@@ -126,10 +126,10 @@ static void svg_on_shape_path(bsvg_builder_t* svg, const char** attrs) {
 }
 
 static void svg_on_shape_line(bsvg_builder_t* svg, const char** attrs) {
-  float_t x1 = 0;
-  float_t y1 = 0;
-  float_t x2 = 0;
-  float_t y2 = 0;
+  float x1 = 0;
+  float y1 = 0;
+  float x2 = 0;
+  float y2 = 0;
   uint32_t i = 0;
   svg_shape_line_t s;
 
@@ -156,11 +156,11 @@ static void svg_on_shape_line(bsvg_builder_t* svg, const char** attrs) {
 }
 
 static void svg_on_shape_rect(bsvg_builder_t* svg, const char** attrs) {
-  float_t x = 0;
-  float_t y = 0;
-  float_t w = 0;
-  float_t h = 0;
-  float_t r = 0;
+  float x = 0;
+  float y = 0;
+  float w = 0;
+  float h = 0;
+  float r = 0;
   uint32_t i = 0;
   svg_shape_rect_t s;
 
@@ -189,9 +189,9 @@ static void svg_on_shape_rect(bsvg_builder_t* svg, const char** attrs) {
 }
 
 static void svg_on_shape_circle(bsvg_builder_t* svg, const char** attrs) {
-  float_t x = 0;
-  float_t y = 0;
-  float_t r = 0;
+  float x = 0;
+  float y = 0;
+  float r = 0;
   uint32_t i = 0;
   svg_shape_circle_t s;
 
@@ -216,10 +216,10 @@ static void svg_on_shape_circle(bsvg_builder_t* svg, const char** attrs) {
 }
 
 static void svg_on_shape_ellipse(bsvg_builder_t* svg, const char** attrs) {
-  float_t x = 0;
-  float_t y = 0;
-  float_t rx = 0;
-  float_t ry = 0;
+  float x = 0;
+  float y = 0;
+  float rx = 0;
+  float ry = 0;
   uint32_t i = 0;
   svg_shape_ellipse_t s;
 
@@ -250,7 +250,7 @@ typedef struct _svg_number_parser_t {
   const char* str;
   uint32_t max_nr;
   uint32_t nr;
-  float_t* numbers;
+  float* numbers;
 } svg_number_parser_t;
 
 static bool_t svg_number_parser_has_more(svg_number_parser_t* parser) {
@@ -261,7 +261,7 @@ static bool_t svg_number_parser_has_more(svg_number_parser_t* parser) {
   return parser->p[0];
 }
 
-static float_t svg_number_parser_get_number(svg_number_parser_t* parser) {
+static float svg_number_parser_get_number(svg_number_parser_t* parser) {
   uint32_t i = 0;
   const char* p = NULL;
   char token[TK_NUM_MAX_LEN + 1];
@@ -293,7 +293,7 @@ static uint32_t svg_number_count(const char* str) {
   return max_nr + 1;
 }
 
-static ret_t svg_number_parser_init(svg_number_parser_t* parser, const char* str, float_t* out,
+static ret_t svg_number_parser_init(svg_number_parser_t* parser, const char* str, float* out,
                                     uint32_t max_nr) {
   parser->nr = 0;
   parser->p = str;
@@ -304,7 +304,7 @@ static ret_t svg_number_parser_init(svg_number_parser_t* parser, const char* str
   return RET_OK;
 }
 
-uint32_t svg_parse_numbers(const char* str, float_t* out, uint32_t max_nr) {
+uint32_t svg_parse_numbers(const char* str, float* out, uint32_t max_nr) {
   svg_number_parser_t parser;
 
   return_value_if_fail(str != NULL && out != NULL, 0);
@@ -326,7 +326,7 @@ static void svg_on_shape_polygon(bsvg_builder_t* svg, const char** attrs) {
     const char* v = attrs[i + 1];
     if (tk_str_eq(k, "points")) {
       uint32_t max_nr = svg_number_count(v);
-      s = TKMEM_ALLOC(sizeof(svg_shape_polygon_t) + sizeof(float_t) * max_nr);
+      s = TKMEM_ALLOC(sizeof(svg_shape_polygon_t) + sizeof(float) * max_nr);
       return_if_fail(s != NULL);
 
       svg_shape_polygon_init(s);
@@ -355,7 +355,7 @@ static void svg_on_shape_polyline(bsvg_builder_t* svg, const char** attrs) {
     const char* v = attrs[i + 1];
     if (tk_str_eq(k, "points")) {
       uint32_t max_nr = svg_number_count(v);
-      s = TKMEM_ALLOC(sizeof(svg_shape_polyline_t) + sizeof(float_t) * max_nr);
+      s = TKMEM_ALLOC(sizeof(svg_shape_polyline_t) + sizeof(float) * max_nr);
       return_if_fail(s != NULL);
 
       svg_shape_polyline_init(s);

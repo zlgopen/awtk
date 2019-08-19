@@ -24,19 +24,19 @@
 /*https://www.w3.org/TR/SVG11/implnote.html#ArcImplementationNotes*/
 
 typedef struct _draw_ctx_t {
-  float_t x;
-  float_t y;
+  float x;
+  float y;
   bsvg_t* bsvg;
   vgcanvas_t* canvas;
   const svg_shape_t* shape;
 
   /*for S/S_REL*/
-  float_t last_x2;
-  float_t last_y2;
+  float last_x2;
+  float last_y2;
 
   /*for T/T_REL*/
-  float_t last_x1;
-  float_t last_y1;
+  float last_x1;
+  float last_y1;
 } draw_ctx_t;
 
 static ret_t bsvg_draw_arc_path(draw_ctx_t* ctx, const svg_path_arc_t* arc);
@@ -119,12 +119,12 @@ ret_t bsvg_draw_path(draw_ctx_t* ctx, const svg_path_t* path) {
     }
     case SVG_PATH_C_REL: {
       const svg_path_curve_to_t* p = (const svg_path_curve_to_t*)path;
-      float_t x1 = ctx->x + p->x1;
-      float_t y1 = ctx->y + p->y1;
-      float_t x2 = ctx->x + p->x2;
-      float_t y2 = ctx->y + p->y2;
-      float_t x = ctx->x + p->x;
-      float_t y = ctx->y + p->y;
+      float x1 = ctx->x + p->x1;
+      float y1 = ctx->y + p->y1;
+      float x2 = ctx->x + p->x2;
+      float y2 = ctx->y + p->y2;
+      float x = ctx->x + p->x;
+      float y = ctx->y + p->y;
 
       vgcanvas_bezier_to(canvas, x1, y1, x2, y2, x, y);
       ctx->x = x;
@@ -135,8 +135,8 @@ ret_t bsvg_draw_path(draw_ctx_t* ctx, const svg_path_t* path) {
     }
     case SVG_PATH_S: {
       const svg_path_scurve_to_t* p = (const svg_path_scurve_to_t*)path;
-      float_t x1 = 2 * ctx->x - ctx->last_x2;
-      float_t y1 = 2 * ctx->y - ctx->last_y2;
+      float x1 = 2 * ctx->x - ctx->last_x2;
+      float y1 = 2 * ctx->y - ctx->last_y2;
 
       vgcanvas_bezier_to(canvas, x1, y1, p->x2, p->y2, p->x, p->y);
 
@@ -148,12 +148,12 @@ ret_t bsvg_draw_path(draw_ctx_t* ctx, const svg_path_t* path) {
     }
     case SVG_PATH_S_REL: {
       const svg_path_scurve_to_t* p = (const svg_path_scurve_to_t*)path;
-      float_t x1 = 2 * ctx->x - ctx->last_x2;
-      float_t y1 = 2 * ctx->y - ctx->last_y2;
-      float_t x2 = ctx->x + p->x2;
-      float_t y2 = ctx->y + p->y2;
-      float_t x = ctx->x + p->x;
-      float_t y = ctx->y + p->y;
+      float x1 = 2 * ctx->x - ctx->last_x2;
+      float y1 = 2 * ctx->y - ctx->last_y2;
+      float x2 = ctx->x + p->x2;
+      float y2 = ctx->y + p->y2;
+      float x = ctx->x + p->x;
+      float y = ctx->y + p->y;
 
       vgcanvas_bezier_to(canvas, x1, y1, x2, y2, x, y);
 
@@ -174,10 +174,10 @@ ret_t bsvg_draw_path(draw_ctx_t* ctx, const svg_path_t* path) {
     }
     case SVG_PATH_Q_REL: {
       const svg_path_qcurve_to_t* p = (const svg_path_qcurve_to_t*)path;
-      float_t x1 = ctx->x + p->x1;
-      float_t y1 = ctx->y + p->y1;
-      float_t x = ctx->x + p->x;
-      float_t y = ctx->y + p->y;
+      float x1 = ctx->x + p->x1;
+      float y1 = ctx->y + p->y1;
+      float x = ctx->x + p->x;
+      float y = ctx->y + p->y;
 
       vgcanvas_quad_to(canvas, x1, y1, x, y);
       ctx->x = x;
@@ -188,8 +188,8 @@ ret_t bsvg_draw_path(draw_ctx_t* ctx, const svg_path_t* path) {
     }
     case SVG_PATH_T: {
       const svg_path_tcurve_to_t* p = (const svg_path_tcurve_to_t*)path;
-      float_t x1 = 2 * ctx->x - ctx->last_x1;
-      float_t y1 = 2 * ctx->y - ctx->last_y1;
+      float x1 = 2 * ctx->x - ctx->last_x1;
+      float y1 = 2 * ctx->y - ctx->last_y1;
 
       vgcanvas_quad_to(canvas, x1, y1, p->x, p->y);
 
@@ -201,10 +201,10 @@ ret_t bsvg_draw_path(draw_ctx_t* ctx, const svg_path_t* path) {
     }
     case SVG_PATH_T_REL: {
       const svg_path_tcurve_to_t* p = (const svg_path_tcurve_to_t*)path;
-      float_t x1 = 2 * ctx->x - ctx->last_x1;
-      float_t y1 = 2 * ctx->y - ctx->last_y1;
-      float_t x = ctx->x + p->x;
-      float_t y = ctx->y + p->y;
+      float x1 = 2 * ctx->x - ctx->last_x1;
+      float y1 = 2 * ctx->y - ctx->last_y1;
+      float x = ctx->x + p->x;
+      float y = ctx->y + p->y;
 
       vgcanvas_quad_to(canvas, x1, y1, x, y);
 
@@ -339,8 +339,8 @@ ret_t bsvg_draw_shape(draw_ctx_t* ctx, const svg_shape_t* shape) {
       svg_shape_polygon_t* s = (svg_shape_polygon_t*)shape;
 
       for (i = 0; i < s->nr; i += 2) {
-        float_t x = s->data[i];
-        float_t y = s->data[i + 1];
+        float x = s->data[i];
+        float y = s->data[i + 1];
 
         if (i == 0) {
           vgcanvas_move_to(canvas, x, y);
@@ -355,8 +355,8 @@ ret_t bsvg_draw_shape(draw_ctx_t* ctx, const svg_shape_t* shape) {
       uint32_t i = 0;
       svg_shape_polygon_t* s = (svg_shape_polygon_t*)shape;
       for (i = 0; i < s->nr; i += 2) {
-        float_t x = s->data[i];
-        float_t y = s->data[i + 1];
+        float x = s->data[i];
+        float y = s->data[i + 1];
 
         if (i == 0) {
           vgcanvas_move_to(canvas, x, y);
@@ -407,8 +407,8 @@ static ret_t bsvg_draw_on_shape(void* ctx, const void* data) {
 }
 
 ret_t bsvg_draw(bsvg_t* svg, vgcanvas_t* canvas) {
-  float_t sx = 1;
-  float_t sy = 1;
+  float sx = 1;
+  float sy = 1;
   draw_ctx_t ctx;
   bsvg_header_t* header = svg->header;
   return_value_if_fail(header != NULL && svg != NULL && canvas != NULL, RET_BAD_PARAMS);
@@ -421,8 +421,8 @@ ret_t bsvg_draw(bsvg_t* svg, vgcanvas_t* canvas) {
 
   vgcanvas_save(canvas);
   if (header->w && header->h && header->viewport.w && header->viewport.h) {
-    sx = (float_t)(header->w) / (float_t)(header->viewport.w);
-    sy = (float_t)(header->h) / (float_t)(header->viewport.h);
+    sx = (float)(header->w) / (float)(header->viewport.w);
+    sy = (float)(header->h) / (float)(header->viewport.h);
   }
 
   vgcanvas_scale(canvas, sx, sy);
@@ -437,28 +437,28 @@ ret_t bsvg_draw(bsvg_t* svg, vgcanvas_t* canvas) {
 typedef struct _arc_info_t {
   uint32_t seg_index;
   uint32_t num_segs;
-  float_t rx;
-  float_t ry;
-  float_t sin_phi;
-  float_t cos_phi;
+  float rx;
+  float ry;
+  float sin_phi;
+  float cos_phi;
   pointf_t c;
-  float_t delta;
+  float delta;
   pointf_t from;
-  float_t t;
-  float_t theta;
+  float t;
+  float theta;
 } arc_info_t;
 
-static float_t calc_vector_angle(float_t ux, float_t uy, float_t vx, float_t vy) {
-  float_t ta = atan2(uy, ux);
-  float_t tb = atan2(vy, vx);
+static float calc_vector_angle(float ux, float uy, float vx, float vy) {
+  float ta = atan2(uy, ux);
+  float tb = atan2(vy, vx);
   if (tb >= ta) return tb - ta;
 
   return 2 * M_PI - (ta - tb);
 }
 
 static ret_t arc_info_init(arc_info_t* info, pointf_t from, pointf_t to, pointf_t radii,
-                           float_t angle, bool_t largeArcFlag, bool_t sweepFlag) {
-  const float_t radPerDeg = M_PI / 180.0f;
+                           float angle, bool_t largeArcFlag, bool_t sweepFlag) {
+  const float radPerDeg = M_PI / 180.0f;
   info->seg_index = 0;
 
   if (from.x == to.x && from.y == to.y) {
@@ -475,11 +475,11 @@ static ret_t arc_info_init(arc_info_t* info, pointf_t from, pointf_t to, pointf_
   info->sin_phi = sin(angle * radPerDeg);
   info->cos_phi = cos(angle * radPerDeg);
 
-  float_t x1dash = info->cos_phi * (from.x - to.x) / 2.0f + info->sin_phi * (from.y - to.y) / 2.0f;
-  float_t y1dash = -info->sin_phi * (from.x - to.x) / 2.0f + info->cos_phi * (from.y - to.y) / 2.0f;
+  float x1dash = info->cos_phi * (from.x - to.x) / 2.0f + info->sin_phi * (from.y - to.y) / 2.0f;
+  float y1dash = -info->sin_phi * (from.x - to.x) / 2.0f + info->cos_phi * (from.y - to.y) / 2.0f;
 
-  float_t root;
-  float_t numerator = info->rx * info->rx * info->ry * info->ry -
+  float root;
+  float numerator = info->rx * info->rx * info->ry * info->ry -
                       info->rx * info->rx * y1dash * y1dash - info->ry * info->ry * x1dash * x1dash;
 
   if (numerator < 0.0f) {
@@ -492,7 +492,7 @@ static ret_t arc_info_init(arc_info_t* info, pointf_t from, pointf_t to, pointf_
     // -> find factor s, such that numerator' with info->rx'=s*info->rx and
     //    info->ry'=s*info->ry becomes 0 :
     */
-    float_t s = sqrt(1.0f - numerator / (info->rx * info->rx * info->ry * info->ry));
+    float s = sqrt(1.0f - numerator / (info->rx * info->rx * info->ry * info->ry));
 
     info->rx *= s;
     info->ry *= s;
@@ -504,14 +504,14 @@ static ret_t arc_info_init(arc_info_t* info, pointf_t from, pointf_t to, pointf_
                 (info->rx * info->rx * y1dash * y1dash + info->ry * info->ry * x1dash * x1dash));
   }
 
-  float_t cxdash = root * info->rx * y1dash / info->ry;
-  float_t cydash = -root * info->ry * x1dash / info->rx;
+  float cxdash = root * info->rx * y1dash / info->ry;
+  float cydash = -root * info->ry * x1dash / info->rx;
 
   info->c.x = info->cos_phi * cxdash - info->sin_phi * cydash + (from.x + to.x) / 2.0f;
   info->c.y = info->sin_phi * cxdash + info->cos_phi * cydash + (from.y + to.y) / 2.0f;
   info->theta =
       calc_vector_angle(1.0f, 0.0f, (x1dash - cxdash) / info->rx, (y1dash - cydash) / info->ry);
-  float_t dtheta = calc_vector_angle((x1dash - cxdash) / info->rx, (y1dash - cydash) / info->ry,
+  float dtheta = calc_vector_angle((x1dash - cxdash) / info->rx, (y1dash - cydash) / info->ry,
                                      (-x1dash - cxdash) / info->rx, (-y1dash - cydash) / info->ry);
   if (!sweepFlag && dtheta > 0)
     dtheta -= 2.0f * M_PI;
@@ -534,11 +534,11 @@ bool_t arc_info_next(arc_info_t* info, pointf_t* cp1, pointf_t* cp2, pointf_t* t
     return FALSE;
   }
 
-  float_t cosTheta1 = cos(info->theta);
-  float_t sinTheta1 = sin(info->theta);
-  float_t theta2 = info->theta + info->delta;
-  float_t cosTheta2 = cos(theta2);
-  float_t sinTheta2 = sin(theta2);
+  float cosTheta1 = cos(info->theta);
+  float sinTheta1 = sin(info->theta);
+  float theta2 = info->theta + info->delta;
+  float cosTheta2 = cos(theta2);
+  float sinTheta2 = sin(theta2);
 
   /* a) calculate endpoint of the segment:*/
   to->x = info->cos_phi * info->rx * cosTheta2 - info->sin_phi * info->ry * sinTheta2 + info->c.x;

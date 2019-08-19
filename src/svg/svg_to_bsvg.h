@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 ret_t svg_to_bsvg(const char* xml, uint32_t size, uint32_t** out, uint32_t* out_size);
 
 /*public for test*/
-uint32_t svg_parse_numbers(const char* str, float_t* out, uint32_t max_nr);
+uint32_t svg_parse_numbers(const char* str, float* out, uint32_t max_nr);
 
 END_C_DECLS
 
