@@ -196,7 +196,7 @@ CFLAGS=COMMON_CFLAGS
 LINKFLAGS=OS_LINKFLAGS;
 LIBPATH=[TK_LIB_DIR] + OS_LIBPATH
 CCFLAGS=OS_FLAGS + COMMON_CCFLAGS 
-LIBS=['awtk', 'gpinyin', 'awtk', 'linebreak'] + NANOVG_BACKEND_LIBS + ['SDL2', 'glad'] + OS_LIBS
+LIBS=['awtk', 'gpinyin', 'tkc', 'linebreak'] + NANOVG_BACKEND_LIBS + ['SDL2', 'glad'] + OS_LIBS
 
 CPPPATH=[TK_ROOT, 
   TK_SRC, 

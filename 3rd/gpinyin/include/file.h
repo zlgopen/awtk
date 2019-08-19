@@ -8,7 +8,7 @@
 #include <stdio.h>
 #else
 #include "tkc/utils.h"
-#include "base/rom_fs.h"
+#include "tkc/rom_fs.h"
 #define fopen rom_fopen
 #define fread rom_fread
 #define fwrite rom_fwrite

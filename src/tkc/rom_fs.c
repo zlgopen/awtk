@@ -19,6 +19,8 @@
  *
  */
 
+#include "tkc/asset_info.h"
+
 #ifndef SEEK_SET
 #define SEEK_SET 0 /* set file offset to offset */
 #endif
@@ -30,8 +32,7 @@
 #endif
 
 #include "tkc/mem.h"
-#include "base/rom_fs.h"
-#include "base/assets_manager.h"
+#include "tkc/rom_fs.h"
 
 rom_file_t* rom_fopen(const char* name, const char* mode) {
   const asset_info_t* res = (const asset_info_t*)(name);

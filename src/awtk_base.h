@@ -57,7 +57,6 @@
 #include "base/main_loop.h"
 #include "base/pixel.h"
 #include "base/pixel_pack_unpack.h"
-#include "base/rom_fs.h"
 #include "base/self_layouter.h"
 #include "base/self_layouter_factory.h"
 #include "base/shortcut.h"

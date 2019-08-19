@@ -7,8 +7,7 @@ NANOVG_BACKEND=os.environ['NANOVG_BACKEND'];
 VGCANVAS=os.environ['VGCANVAS'];
 NATIVE_WINDOW = os.environ['NATIVE_WINDOW'];
 
-sources=Glob('tkc/*.c') +\
-  Glob('base/*.c') + \
+sources=Glob('base/*.c') + \
   Glob('layouters/*.c') + \
   Glob('widgets/*.c') + \
   Glob('ui_loader/*.c') + \
@@ -92,4 +91,5 @@ if env['PLATFORM'] == 'win32' and os.environ['TOOLS_NAME'] != '':
   buf.ourenv = env
   env['SPAWN'] = buf.ourspawn
   
-env.Library(os.path.join(LIB_DIR, 'awtk'), sources)
+env.Library(os.path.join(LIB_DIR, 'tkc'), Glob('tkc/*.c'), LIBS=[])
+env.Library(os.path.join(LIB_DIR, 'awtk'), sources, LIBS=[])

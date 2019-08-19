@@ -22,7 +22,7 @@
 #ifndef TK_ROM_FS_H
 #define TK_ROM_FS_H
 
-#include "base/types_def.h"
+#include "tkc/types_def.h"
 
 BEGIN_C_DECLS
 
