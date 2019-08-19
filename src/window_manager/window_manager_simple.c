@@ -30,7 +30,7 @@
 #include "base/locale_info.h"
 #include "base/system_info.h"
 #include "base/image_manager.h"
-#include "window_manager/window_manager_default.h"
+#include "window_manager/window_manager_simple.h"
 
 static ret_t window_manager_default_invalidate(widget_t* widget, rect_t* r);
 static ret_t window_manager_default_do_open_window(widget_t* wm, widget_t* window);
