@@ -26,6 +26,31 @@
 
 BEGIN_C_DECLS
 
+/**
+ * @enum glyph_format_t
+ * @prefix GLYPH_FMT_
+ * @annotation ["scriptable"]
+ * 字模格式常量定义。
+ */
+typedef enum _glyph_format_t {
+  /**
+   * @const GLYPH_FMT_ALPHA
+   * 每个像素占用1个字节(缺省)。
+   */
+  GLYPH_FMT_ALPHA,
+  /**
+   * @const GLYPH_FMT_MONO
+   * 每个像素占用1个比特。
+   */
+  GLYPH_FMT_MONO,
+  /**
+   * @const GLYPH_FMT_RGBA
+   * 每个像素占用4个字节。
+   */
+  GLYPH_FMT_RGBA
+} glyph_format_t;
+
+
 struct _font_t;
 typedef struct _font_t font_t;
 
@@ -86,30 +111,6 @@ typedef struct _glyph_t {
   const uint8_t* data;
 } glyph_t;
 #pragma pack(pop)
-
-/**
- * @enum glyph_format_t
- * @prefix GLYPH_FMT_
- * @annotation ["scriptable"]
- * 字模格式常量定义。
- */
-typedef enum _glyph_format_t {
-  /**
-   * @const GLYPH_FMT_ALPHA
-   * 每个像素占用1个字节(缺省)。
-   */
-  GLYPH_FMT_ALPHA,
-  /**
-   * @const GLYPH_FMT_MONO
-   * 每个像素占用1个比特。
-   */
-  GLYPH_FMT_MONO,
-  /**
-   * @const GLYPH_FMT_RGBA
-   * 每个像素占用4个字节。
-   */
-  GLYPH_FMT_RGBA
-} glyph_format_t;
 
 /**
  * @method glyph_create
