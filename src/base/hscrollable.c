@@ -25,9 +25,9 @@
 #include "base/hscrollable.h"
 #include "base/widget_vtable.h"
 
-#ifndef WITHOUT_WIDGET_ANIMATOR
+#ifndef WITHOUT_WIDGET_ANIMATORS
 #include "widget_animators/widget_animator_scroll.h"
-#endif /*WITHOUT_WIDGET_ANIMATOR*/
+#endif /*WITHOUT_WIDGET_ANIMATORS*/
 
 static widget_t* hscrollable_get_widget(hscrollable_t* hscrollable) {
   return hscrollable != NULL ? hscrollable->widget : NULL;
@@ -77,7 +77,7 @@ static ret_t hscrollable_on_pointer_move(hscrollable_t* hscrollable, pointer_eve
   return RET_OK;
 }
 
-#ifndef WITHOUT_WIDGET_ANIMATOR
+#ifndef WITHOUT_WIDGET_ANIMATORS
 static ret_t hscrollable_on_scroll_done(void* ctx, event_t* e) {
   hscrollable_t* hscrollable = (hscrollable_t*)(ctx);
   return_value_if_fail(hscrollable != NULL, RET_BAD_PARAMS);
@@ -87,7 +87,7 @@ static ret_t hscrollable_on_scroll_done(void* ctx, event_t* e) {
 
   return RET_REMOVE;
 }
-#endif /*WITHOUT_WIDGET_ANIMATOR*/
+#endif /*WITHOUT_WIDGET_ANIMATORS*/
 
 static ret_t hscrollable_fix_end_offset_default(hscrollable_t* hscrollable) {
   int32_t xoffset_end = 0;
@@ -119,7 +119,7 @@ ret_t hscrollable_scroll_to(hscrollable_t* hscrollable, int32_t xoffset_end, int
     return RET_OK;
   }
 
-#ifndef WITHOUT_WIDGET_ANIMATOR
+#ifndef WITHOUT_WIDGET_ANIMATORS
   hscrollable->xoffset_end = xoffset_end;
   xoffset_end = hscrollable->xoffset_end;
 
@@ -131,7 +131,7 @@ ret_t hscrollable_scroll_to(hscrollable_t* hscrollable, int32_t xoffset_end, int
   widget_animator_start(hscrollable->wa);
 #else
   hscrollable->xoffset = xoffset_end;
-#endif /*WITHOUT_WIDGET_ANIMATOR*/
+#endif /*WITHOUT_WIDGET_ANIMATORS*/
 
   return RET_OK;
 }
