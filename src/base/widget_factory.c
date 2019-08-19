@@ -74,7 +74,6 @@ ret_t widget_factory_register(widget_factory_t* factory, const char* type, widge
 
 widget_t* widget_factory_create_widget(widget_factory_t* factory, const char* type,
                                        widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-
   widget_t* widget = NULL;
   const creator_item_t* iter = NULL;
   return_value_if_fail(factory != NULL && type != NULL, NULL);
@@ -83,7 +82,7 @@ widget_t* widget_factory_create_widget(widget_factory_t* factory, const char* ty
   return_value_if_fail(iter != NULL, NULL);
 
   widget = iter->create(parent, x, y, w, h);
-  if(widget != NULL) {
+  if (widget != NULL) {
     event_t e = event_init(EVT_WIDGET_CREATED, widget);
     emitter_dispatch(EMITTER(factory), &e);
   }
@@ -114,4 +113,3 @@ ret_t widget_factory_destroy(widget_factory_t* factory) {
 
   return RET_OK;
 }
-

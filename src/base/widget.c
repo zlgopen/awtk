@@ -444,7 +444,7 @@ ret_t widget_stop_animator(widget_t* widget, const char* name) {
 ret_t widget_destroy_animator(widget_t* widget, const char* name) {
   return RET_OK;
 }
-#endif/*WITHOUT_WIDGET_ANIMATORS*/
+#endif /*WITHOUT_WIDGET_ANIMATORS*/
 
 ret_t widget_set_enable(widget_t* widget, bool_t enable) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
@@ -3028,4 +3028,3 @@ bool_t widget_is_dialog(widget_t* widget) {
 bool_t widget_is_popup(widget_t* widget) {
   return tk_str_eq(widget->vt->type, WIDGET_TYPE_POPUP);
 }
-

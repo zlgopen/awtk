@@ -138,20 +138,20 @@ svg_path_t* svg_path_vline_rel_init(svg_path_vline_t* path, float y);
 svg_path_t* svg_path_curve_to_init(svg_path_curve_to_t* path, float x1, float y1, float x2,
                                    float y2, float x, float y);
 
-svg_path_t* svg_path_curve_to_rel_init(svg_path_curve_to_t* path, float x1, float y1,
-                                       float x2, float y2, float x, float y);
+svg_path_t* svg_path_curve_to_rel_init(svg_path_curve_to_t* path, float x1, float y1, float x2,
+                                       float y2, float x, float y);
 
 svg_path_t* svg_path_scurve_to_init(svg_path_scurve_to_t* path, float x2, float y2, float x,
                                     float y);
 
-svg_path_t* svg_path_scurve_to_rel_init(svg_path_scurve_to_t* path, float x2, float y2,
-                                        float x, float y);
+svg_path_t* svg_path_scurve_to_rel_init(svg_path_scurve_to_t* path, float x2, float y2, float x,
+                                        float y);
 
 svg_path_t* svg_path_qcurve_to_init(svg_path_qcurve_to_t* path, float x1, float y1, float x,
                                     float y);
 
-svg_path_t* svg_path_qcurve_to_rel_init(svg_path_qcurve_to_t* path, float x1, float y1,
-                                        float x, float y);
+svg_path_t* svg_path_qcurve_to_rel_init(svg_path_qcurve_to_t* path, float x1, float y1, float x,
+                                        float y);
 
 svg_path_t* svg_path_tcurve_to_init(svg_path_tcurve_to_t* path, float x, float y);
 

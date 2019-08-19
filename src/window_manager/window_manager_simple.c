@@ -290,25 +290,25 @@ static ret_t window_manager_default_on_paint_children(widget_t* widget, canvas_t
   }
   WIDGET_FOR_EACH_CHILD_END()
 
-    /*paint normal windows*/
-    WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
-    if (i >= start && iter->visible) {
-      if (widget_is_normal_window(iter)) {
-        widget_paint(iter, c);
+  /*paint normal windows*/
+  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+  if (i >= start && iter->visible) {
+    if (widget_is_normal_window(iter)) {
+      widget_paint(iter, c);
 
-        if (!has_fullscreen_win) {
-          has_fullscreen_win = window_is_fullscreen(iter);
-        }
-        start = i + 1;
-        break;
+      if (!has_fullscreen_win) {
+        has_fullscreen_win = window_is_fullscreen(iter);
       }
+      start = i + 1;
+      break;
     }
-    WIDGET_FOR_EACH_CHILD_END()
+  }
+  WIDGET_FOR_EACH_CHILD_END()
 
-    /*paint system_bar*/
-    if (!has_fullscreen_win) {
-      window_manager_paint_system_bar(widget, c);
-    }
+  /*paint system_bar*/
+  if (!has_fullscreen_win) {
+    window_manager_paint_system_bar(widget, c);
+  }
   /*paint dialog and other*/
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
   if (i >= start && iter->visible) {
@@ -545,7 +545,7 @@ static window_manager_vtable_t s_window_manager_self_vtable = {
     .close_window_force = window_manager_default_close_window_force,
     .dispatch_input_event = window_manager_default_dispatch_input_event,
     .dispatch_native_window_event = window_manager_native_dispatch_native_window_event,
-  };
+};
 
 static const widget_vtable_t s_window_manager_vtable = {
     .size = sizeof(window_manager_t),

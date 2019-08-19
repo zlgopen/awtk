@@ -480,7 +480,7 @@ static ret_t arc_info_init(arc_info_t* info, pointf_t from, pointf_t to, pointf_
 
   float root;
   float numerator = info->rx * info->rx * info->ry * info->ry -
-                      info->rx * info->rx * y1dash * y1dash - info->ry * info->ry * x1dash * x1dash;
+                    info->rx * info->rx * y1dash * y1dash - info->ry * info->ry * x1dash * x1dash;
 
   if (numerator < 0.0f) {
     /*
@@ -512,7 +512,7 @@ static ret_t arc_info_init(arc_info_t* info, pointf_t from, pointf_t to, pointf_
   info->theta =
       calc_vector_angle(1.0f, 0.0f, (x1dash - cxdash) / info->rx, (y1dash - cydash) / info->ry);
   float dtheta = calc_vector_angle((x1dash - cxdash) / info->rx, (y1dash - cydash) / info->ry,
-                                     (-x1dash - cxdash) / info->rx, (-y1dash - cydash) / info->ry);
+                                   (-x1dash - cxdash) / info->rx, (-y1dash - cydash) / info->ry);
   if (!sweepFlag && dtheta > 0)
     dtheta -= 2.0f * M_PI;
   else if (sweepFlag && dtheta < 0)

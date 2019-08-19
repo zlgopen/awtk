@@ -328,9 +328,9 @@ typedef struct _system_info_t system_info_t;
 #define WITHOUT_LAYOUT 1
 #define WITHOUT_EXT_WIDGETS 1
 #define WITHOUT_INPUT_METHOD 1
-#define WITHOUT_WINDOW_ANIMATORS 
+#define WITHOUT_WINDOW_ANIMATORS
 #define WITHOUT_WIDGET_ANIMATORS 1
-#define WITHOUT_DIALOG_HIGHLIGHTER 1 
-#endif/*AWTK_LITE*/
+#define WITHOUT_DIALOG_HIGHLIGHTER 1
+#endif /*AWTK_LITE*/
 
 #endif /*TK_TYPES_DEF_H*/

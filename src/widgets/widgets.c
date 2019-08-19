@@ -55,7 +55,7 @@
 #include "widgets/combo_box_item.h"
 #include "widgets/tab_button_group.h"
 #include "widgets/spin_box.h"
-#endif/*AWTK_LITE*/
+#endif /*AWTK_LITE*/
 #endif /*AWTK_NOGUI*/
 
 ret_t tk_widgets_init(void) {
@@ -95,7 +95,7 @@ ret_t tk_widgets_init(void) {
   widget_factory_register(f, WIDGET_TYPE_ROW, row_create);
   widget_factory_register(f, WIDGET_TYPE_COLUMN, column_create);
   widget_factory_register(f, WIDGET_TYPE_APP_BAR, app_bar_create);
-#endif/*AWTK_LITE*/
+#endif /*AWTK_LITE*/
 #endif /**AWTK_NOGUI*/
   return RET_OK;
 }

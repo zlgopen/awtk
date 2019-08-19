@@ -103,13 +103,10 @@ typedef struct _svg_shape_path_t {
 
 uint32_t svg_shape_size(const svg_shape_t* shape);
 
-svg_shape_t* svg_shape_rect_init(svg_shape_rect_t* s, float x, float y, float w, float h,
-                                 float r);
+svg_shape_t* svg_shape_rect_init(svg_shape_rect_t* s, float x, float y, float w, float h, float r);
 svg_shape_t* svg_shape_circle_init(svg_shape_circle_t* s, float cx, float cy, float r);
-svg_shape_t* svg_shape_ellipse_init(svg_shape_ellipse_t* s, float cx, float cy, float rx,
-                                    float ry);
-svg_shape_t* svg_shape_line_init(svg_shape_line_t* s, float x1, float y1, float x2,
-                                 float y2);
+svg_shape_t* svg_shape_ellipse_init(svg_shape_ellipse_t* s, float cx, float cy, float rx, float ry);
+svg_shape_t* svg_shape_line_init(svg_shape_line_t* s, float x1, float y1, float x2, float y2);
 svg_shape_t* svg_shape_polygon_init(svg_shape_polygon_t* s);
 svg_shape_t* svg_shape_polyline_init(svg_shape_polyline_t* s);
 svg_shape_t* svg_shape_path_init(svg_shape_path_t* s);

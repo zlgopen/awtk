@@ -73,14 +73,11 @@ ret_t tk_ext_widgets_init() {
   widget_factory_register(f, WIDGET_TYPE_LIST_VIEW_H, list_view_h_create);
   widget_factory_register(f, WIDGET_TYPE_LIST_ITEM, list_item_create);
   widget_factory_register(f, WIDGET_TYPE_SCROLL_BAR, scroll_bar_create);
-  widget_factory_register(f, WIDGET_TYPE_SCROLL_BAR_DESKTOP,
-                          scroll_bar_create_desktop);
-  widget_factory_register(f, WIDGET_TYPE_SCROLL_BAR_MOBILE,
-                          scroll_bar_create_mobile);
+  widget_factory_register(f, WIDGET_TYPE_SCROLL_BAR_DESKTOP, scroll_bar_create_desktop);
+  widget_factory_register(f, WIDGET_TYPE_SCROLL_BAR_MOBILE, scroll_bar_create_mobile);
   widget_factory_register(f, WIDGET_TYPE_SLIDE_VIEW, slide_view_create);
   widget_factory_register(f, WIDGET_TYPE_SLIDE_INDICATOR, slide_indicator_create);
-  widget_factory_register(f, WIDGET_TYPE_SLIDE_INDICATOR_ARC,
-                          slide_indicator_create_arc);
+  widget_factory_register(f, WIDGET_TYPE_SLIDE_INDICATOR_ARC, slide_indicator_create_arc);
   widget_factory_register(f, WIDGET_TYPE_KEYBOARD, keyboard_create);
   widget_factory_register(f, WIDGET_TYPE_CANDIDATES, candidates_create);
   widget_factory_register(f, WIDGET_TYPE_TIME_CLOCK, time_clock_create);

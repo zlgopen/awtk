@@ -23,6 +23,7 @@ TEST(WidgetFactory, button) {
   widget_t* button = NULL;
   widget_factory_t* factory = widget_factory_create();
 
+  widget_factory_register(factory, "button", button_create);
   button = widget_factory_create_widget(factory, "button", NULL, 10, 20, 30, 40);
   ASSERT_EQ(button != NULL, true);
   ASSERT_EQ(button->x, 10);

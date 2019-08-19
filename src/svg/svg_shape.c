@@ -67,8 +67,7 @@ uint32_t svg_shape_size(const svg_shape_t* shape) {
   return size;
 }
 
-svg_shape_t* svg_shape_rect_init(svg_shape_rect_t* s, float x, float y, float w, float h,
-                                 float r) {
+svg_shape_t* svg_shape_rect_init(svg_shape_rect_t* s, float x, float y, float w, float h, float r) {
   return_value_if_fail(s != NULL, NULL);
 
   memset(s, 0x00, sizeof(*s));
@@ -111,8 +110,7 @@ svg_shape_t* svg_shape_ellipse_init(svg_shape_ellipse_t* s, float cx, float cy, 
   return (svg_shape_t*)s;
 }
 
-svg_shape_t* svg_shape_line_init(svg_shape_line_t* s, float x1, float y1, float x2,
-                                 float y2) {
+svg_shape_t* svg_shape_line_init(svg_shape_line_t* s, float x1, float y1, float x2, float y2) {
   return_value_if_fail(s != NULL, NULL);
 
   memset(s, 0x00, sizeof(*s));

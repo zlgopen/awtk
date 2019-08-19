@@ -50,7 +50,6 @@ typedef enum _glyph_format_t {
   GLYPH_FMT_RGBA
 } glyph_format_t;
 
-
 struct _font_t;
 typedef struct _font_t font_t;
 
