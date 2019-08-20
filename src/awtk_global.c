@@ -36,15 +36,24 @@
 #include "base/widget_animator_manager.h"
 #include "font_loader/font_loader_bitmap.h"
 #include "base/window_animator_factory.h"
-#include "window_animators/window_animator_builtins.h"
 
 #include "widgets/widgets.h"
 #include "base/self_layouter_factory.h"
 #include "base/children_layouter_factory.h"
 #include "base/dialog_highlighter_factory.h"
+
+#ifndef WITHOUT_LAYOUT
 #include "layouters/self_layouter_builtins.h"
 #include "layouters/children_layouter_builtins.h"
+#endif /*WITHOUT_LAYOUT*/
+
+#ifndef WITHOUT_WINDOW_ANIMATORS
+#include "window_animators/window_animator_builtins.h"
+#endif /*WITHOUT_WINDOW_ANIMATORS*/
+
+#ifndef WITHOUT_WIDGET_ANIMATORS
 #include "dialog_highlighters/dialog_highlighter_builtins.h"
+#endif /*WITHOUT_WIDGET_ANIMATORS*/
 
 #ifdef WITH_SDL
 #include "clip_board/clip_board_sdl.h"
@@ -54,7 +63,9 @@
 #define clip_board_create clip_board_default_create
 #endif /*WITH_SDL*/
 
+#ifdef WITH_TRUETYPE_FONT
 #include "font_loader/font_loader_truetype.h"
+#endif /*WITH_TRUETYPE_FONT*/
 
 #ifdef WITH_STB_IMAGE
 #include "image_loader/image_loader_stb.h"

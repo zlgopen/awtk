@@ -32,6 +32,7 @@
 #include "base/image_manager.h"
 #include "window_manager/window_manager_simple.h"
 
+ret_t window_manager_paint_system_bar(widget_t* widget, canvas_t* c);
 static ret_t window_manager_simple_invalidate(widget_t* widget, rect_t* r);
 static ret_t window_manager_simple_do_open_window(widget_t* wm, widget_t* window);
 static ret_t window_manager_simple_layout_child(widget_t* widget, widget_t* window);
@@ -128,7 +129,7 @@ static ret_t wm_on_destroy_child(void* ctx, event_t* e) {
 
 static ret_t window_manager_simple_open_window(widget_t* widget, widget_t* window) {
   ret_t ret = RET_OK;
-  window_manager_simple_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+  window_manager_simple_t* wm = WINDOW_MANAGER_SIMPLE(widget);
   return_value_if_fail(widget != NULL && window != NULL, RET_BAD_PARAMS);
 
   if (widget_is_system_bar(window)) {
@@ -170,7 +171,7 @@ static ret_t window_manager_idle_destroy_window(const idle_info_t* info) {
 }
 
 static ret_t window_manager_prepare_close_window(widget_t* widget, widget_t* window) {
-  window_manager_simple_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+  window_manager_simple_t* wm = WINDOW_MANAGER_SIMPLE(widget);
   return_value_if_fail(widget != NULL && window != NULL, RET_BAD_PARAMS);
 
   if (widget->target == window) {
@@ -195,7 +196,7 @@ static ret_t window_manager_prepare_close_window(widget_t* widget, widget_t* win
 }
 
 static ret_t window_manager_simple_close_window(widget_t* widget, widget_t* window) {
-  window_manager_simple_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+  window_manager_simple_t* wm = WINDOW_MANAGER_SIMPLE(widget);
 
   return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget_is_window(window), RET_BAD_PARAMS);
@@ -218,7 +219,7 @@ static ret_t window_manager_simple_close_window(widget_t* widget, widget_t* wind
 }
 
 static ret_t window_manager_simple_close_window_force(widget_t* widget, widget_t* window) {
-  window_manager_simple_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+  window_manager_simple_t* wm = WINDOW_MANAGER_SIMPLE(widget);
 
   return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget_is_window(window), RET_BAD_PARAMS);
@@ -237,7 +238,7 @@ static widget_t* window_manager_simple_find_target(widget_t* widget, xy_t x, xy_
 
 static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
   uint32_t start_time = time_now_ms();
-  window_manager_simple_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+  window_manager_simple_t* wm = WINDOW_MANAGER_SIMPLE(widget);
 
   if (native_window_begin_frame(wm->native_window, LCD_DRAW_NORMAL) == RET_OK) {
     ENSURE(widget_paint(WIDGET(wm), c) == RET_OK);
@@ -250,7 +251,7 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
 
 static ret_t window_manager_simple_paint(widget_t* widget) {
   ret_t ret = RET_OK;
-  window_manager_simple_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+  window_manager_simple_t* wm = WINDOW_MANAGER_SIMPLE(widget);
   canvas_t* c = native_window_get_canvas(wm->native_window);
   return_value_if_fail(wm != NULL && c != NULL, RET_BAD_PARAMS);
 
@@ -262,7 +263,7 @@ static ret_t window_manager_simple_paint(widget_t* widget) {
 }
 
 static ret_t window_manager_simple_invalidate(widget_t* widget, rect_t* r) {
-  window_manager_simple_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+  window_manager_simple_t* wm = WINDOW_MANAGER_SIMPLE(widget);
 
   if (wm->native_window != NULL) {
     native_window_invalidate(wm->native_window, r);
@@ -272,7 +273,7 @@ static ret_t window_manager_simple_invalidate(widget_t* widget, rect_t* r) {
 }
 
 static widget_t* window_manager_simple_get_prev_window(widget_t* widget) {
-  window_manager_simple_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+  window_manager_simple_t* wm = WINDOW_MANAGER_SIMPLE(widget);
 
   return wm->prev_win;
 }
@@ -280,7 +281,7 @@ static widget_t* window_manager_simple_get_prev_window(widget_t* widget) {
 static ret_t window_manager_simple_on_paint_children(widget_t* widget, canvas_t* c) {
   int32_t start = 0;
   bool_t has_fullscreen_win = FALSE;
-  window_manager_simple_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+  window_manager_simple_t* wm = WINDOW_MANAGER_SIMPLE(widget);
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
 
   WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
@@ -334,7 +335,7 @@ static ret_t window_manager_simple_on_remove_child(widget_t* widget, widget_t* w
 }
 
 static ret_t window_manager_simple_get_prop(widget_t* widget, const char* name, value_t* v) {
-  window_manager_simple_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+  window_manager_simple_t* wm = WINDOW_MANAGER_SIMPLE(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_CANVAS)) {
@@ -353,7 +354,7 @@ static ret_t window_manager_simple_set_prop(widget_t* widget, const char* name, 
 }
 
 static ret_t window_manager_simple_on_destroy(widget_t* widget) {
-  window_manager_simple_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+  window_manager_simple_t* wm = WINDOW_MANAGER_SIMPLE(widget);
   object_unref(OBJECT(wm->native_window));
 
   return RET_OK;
@@ -374,8 +375,8 @@ static ret_t window_manager_simple_post_init(widget_t* widget, wh_t w, wh_t h);
 static ret_t window_manager_simple_dispatch_input_event(widget_t* widget, event_t* e);
 
 static ret_t window_manager_simple_get_pointer(widget_t* widget, xy_t* x, xy_t* y,
-                                                bool_t* pressed) {
-  window_manager_simple_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+                                               bool_t* pressed) {
+  window_manager_simple_t* wm = WINDOW_MANAGER_SIMPLE(widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   if (x != NULL) {
@@ -395,7 +396,7 @@ static ret_t window_manager_simple_on_event(widget_t* widget, event_t* e) {
   if (e->type == EVT_ORIENTATION_WILL_CHANGED) {
     orientation_event_t* evt = orientation_event_cast(e);
     lcd_orientation_t orientation = evt->orientation;
-    window_manager_simple_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+    window_manager_simple_t* wm = WINDOW_MANAGER_SIMPLE(widget);
     lcd_t* lcd = native_window_get_canvas(wm->native_window)->lcd;
 
     wh_t w = wm->lcd_w;
@@ -420,7 +421,7 @@ static ret_t window_manager_simple_layout_child(widget_t* widget, widget_t* wind
   xy_t y = window->y;
   wh_t w = window->w;
   wh_t h = window->h;
-  window_manager_simple_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+  window_manager_simple_t* wm = WINDOW_MANAGER_SIMPLE(widget);
   rect_t client_r = rect_init(0, 0, widget->w, widget->h);
 
   if (wm->system_bar != NULL) {
@@ -462,7 +463,7 @@ static ret_t window_manager_simple_layout_child(widget_t* widget, widget_t* wind
 
 static ret_t window_manager_simple_resize(widget_t* widget, wh_t w, wh_t h) {
   rect_t r = rect_init(0, 0, w, h);
-  window_manager_simple_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+  window_manager_simple_t* wm = WINDOW_MANAGER_SIMPLE(widget);
   return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
 
   widget_move_resize(widget, 0, 0, w, h);
@@ -476,7 +477,7 @@ static ret_t window_manager_simple_resize(widget_t* widget, wh_t w, wh_t h) {
 
 static ret_t window_manager_simple_post_init(widget_t* widget, wh_t w, wh_t h) {
   native_window_info_t info;
-  window_manager_simple_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+  window_manager_simple_t* wm = WINDOW_MANAGER_SIMPLE(widget);
   return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
 
   wm->lcd_w = w;
@@ -494,7 +495,7 @@ static ret_t window_manager_simple_post_init(widget_t* widget, wh_t w, wh_t h) {
 }
 
 static ret_t window_manager_simple_dispatch_input_event(widget_t* widget, event_t* e) {
-  window_manager_simple_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+  window_manager_simple_t* wm = WINDOW_MANAGER_SIMPLE(widget);
   return_value_if_fail(wm != NULL && e != NULL, RET_BAD_PARAMS);
 
   native_window_preprocess_event(wm->native_window, e);
@@ -504,7 +505,7 @@ static ret_t window_manager_simple_dispatch_input_event(widget_t* widget, event_
 }
 
 ret_t window_manager_paint_system_bar(widget_t* widget, canvas_t* c) {
-  window_manager_simple_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+  window_manager_simple_t* wm = WINDOW_MANAGER_SIMPLE(widget);
   return_value_if_fail(wm != NULL && c != NULL, RET_BAD_PARAMS);
 
   if (wm->system_bar != NULL && wm->system_bar->visible) {
@@ -516,7 +517,7 @@ ret_t window_manager_paint_system_bar(widget_t* widget, canvas_t* c) {
 
 static ret_t window_manager_native_native_window_resized(widget_t* widget, void* handle) {
   native_window_info_t info;
-  native_window_t* nw = WINDOW_MANAGER_DEFAULT(widget)->native_window;
+  native_window_t* nw = WINDOW_MANAGER_SIMPLE(widget)->native_window;
 
   return_value_if_fail(native_window_get_info(nw, &info) == RET_OK, RET_BAD_PARAMS);
 
