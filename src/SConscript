@@ -86,5 +86,5 @@ env.Library(os.path.join(LIB_DIR, 'base'), sources, LIBS=[])
 env.Library(os.path.join(LIB_DIR, 'awtk'), ['awtk_global.c'], LIBS=[])
 env.Library(os.path.join(LIB_DIR, 'widgets'), Glob('widgets/*.c'), LIBS=[])
 env.Library(os.path.join(LIB_DIR, 'tkc'), Glob('tkc/*.c') + Glob('platforms/pc/*.c'), LIBS=[])
-env.Library(os.path.join(LIB_DIR, 'exwidgets'), Glob('ext_widgets/*.c') + Glob('ext_widgets/*/*.c'), LIBS=[])
+env.Library(os.path.join(LIB_DIR, 'extwidgets'), Glob('ext_widgets/*.c') + Glob('ext_widgets/*/*.c'), LIBS=[])
 
