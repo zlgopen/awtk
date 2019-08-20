@@ -269,7 +269,13 @@ static ret_t combo_box_on_button_click(void* ctx, event_t* e) {
   combo_box_t* combo_box = COMBO_BOX(ctx);
   return_value_if_fail(widget != NULL && combo_box != NULL, RET_BAD_PARAMS);
 
-  if (combo_box->open_window) {
+  if (combo_box->open_popup) {
+    win = combo_box->open_popup(widget);
+    return_value_if_fail(win != NULL, RET_FAIL);
+
+    widget_resize(win, widget->w, win->h);
+    widget_layout_children(win);
+  } else if (combo_box->open_window) {
     win = window_open(combo_box->open_window);
     return_value_if_fail(win != NULL, RET_FAIL);
 
@@ -501,3 +507,13 @@ widget_t* combo_box_cast(widget_t* widget) {
 
   return widget;
 }
+
+ret_t combo_box_set_custom_open_popup(widget_t* widget, combo_box_custom_open_popup_t open_popup) {
+  combo_box_t* combo_box = COMBO_BOX(widget);
+  return_value_if_fail(combo_box != NULL, RET_BAD_PARAMS);
+
+  combo_box->open_popup = open_popup;
+
+  return RET_OK;
+}
+

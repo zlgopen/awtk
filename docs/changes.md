@@ -5,6 +5,7 @@
   * 更新awtk-mvvm/awtk-nogui/awtk-linux-fb/awtk-iotjs
   * 增加awtk-lite
   * combobox 处理resize事件。
+  * combobox 支持自定义打开弹出窗口。
 
 * 2019/08/19
   * awtk编译成tkc/base/widgets/extwidgets/awtk几个独立的库，并调整部分文件的位置。
