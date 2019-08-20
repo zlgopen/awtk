@@ -308,6 +308,7 @@ ret_t object_copy_prop(object_t* obj, object_t* src, const char* name) {
   return ret;
 }
 
+#ifndef AWTK_LITE
 static EvalFunc obj_get_func(const char* name, void* user_data) {
   const EvalHooks* hooks = eval_default_hooks();
 
@@ -369,6 +370,18 @@ ret_t object_eval(object_t* obj, const char* expr, value_t* v) {
     }
   }
 }
+#else
+ret_t object_eval(object_t* obj, const char* expr, value_t* v) {
+  return_value_if_fail(expr != NULL && v != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(obj != NULL && obj->vt != NULL && obj->ref_count >= 0, RET_BAD_PARAMS);
+
+  if (tk_is_valid_name(expr)) {
+    return object_get_prop(obj, expr, v);
+  } else {
+      return RET_FAIL;
+  }
+}
+#endif/*AWTK_LITE*/
 
 const char* object_get_type(object_t* obj) {
   return_value_if_fail(obj != NULL && obj->vt != NULL, NULL);
@@ -393,3 +406,4 @@ uint32_t object_get_size(object_t* obj) {
 
   return obj->vt->size;
 }
+

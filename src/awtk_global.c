@@ -55,6 +55,7 @@
 #include "dialog_highlighters/dialog_highlighter_builtins.h"
 #endif /*WITHOUT_WIDGET_ANIMATORS*/
 
+#ifndef WITHOUT_CLIPBOARD
 #ifdef WITH_SDL
 #include "clip_board/clip_board_sdl.h"
 #define clip_board_create clip_board_sdl_create
@@ -62,6 +63,7 @@
 #include "clip_board/clip_board_default.h"
 #define clip_board_create clip_board_default_create
 #endif /*WITH_SDL*/
+#endif/*WITHOUT_CLIPBOARD*/
 
 #ifdef WITH_TRUETYPE_FONT
 #include "font_loader/font_loader_truetype.h"
@@ -178,7 +180,10 @@ ret_t tk_init_internal(void) {
 #endif /*WITHOUT_LAYOUT*/
 
   return_value_if_fail(window_manager_set(window_manager_create()) == RET_OK, RET_FAIL);
+
+#ifndef WITHOUT_CLIPBOARD
   return_value_if_fail(clip_board_set(clip_board_create()) == RET_OK, RET_FAIL);
+#endif/*WITHOUT_CLIPBOARD*/
 
 #ifndef WITHOUT_WIDGET_ANIMATORS
   return_value_if_fail(widget_animator_manager_set(widget_animator_manager_create()) == RET_OK,
@@ -208,8 +213,10 @@ ret_t tk_init(wh_t w, wh_t h, app_type_t app_type, const char* app_name, const c
 }
 
 ret_t tk_deinit_internal(void) {
+#ifndef WITHOUT_CLIPBOARD
   clip_board_destroy(clip_board());
   clip_board_set(NULL);
+#endif/*WITHOUT_CLIPBOARD*/
 
 #ifndef WITHOUT_WINDOW_ANIMATORS
   window_animator_factory_destroy(window_animator_factory());
@@ -323,3 +330,4 @@ int32_t tk_get_pointer_y(void) {
 bool_t tk_is_pointer_pressed(void) {
   return window_manager_get_pointer_pressed(window_manager());
 }
+
