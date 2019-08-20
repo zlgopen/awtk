@@ -1,6 +1,10 @@
 # 最新动态
 * 2019/08/20
   * svg中float\_t改为float。
+  * 更新stm32相关项目。
+  * 更新awtk-mvvm/awtk-nogui/awtk-linux-fb/awtk-iotjs
+  * 增加awtk-lite
+  * combobox 处理resize事件。
 
 * 2019/08/19
   * awtk编译成tkc/base/widgets/extwidgets/awtk几个独立的库，并调整部分文件的位置。

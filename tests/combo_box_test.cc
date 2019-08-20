@@ -119,3 +119,25 @@ TEST(ComboBox, cast) {
 
   widget_destroy(w);
 }
+
+TEST(ComboBox, resize) {
+  widget_t* w = combo_box_create(NULL, 0, 0, 100, 100);
+  edit_t* edit = EDIT(w);
+
+  ASSERT_EQ(edit->right_margin, 100);
+  
+  widget_resize(w, 200, 30);
+  ASSERT_EQ(edit->right_margin, 30);
+
+  widget_destroy(w);
+}
+
+TEST(ComboBox, move_resize) {
+  widget_t* w = combo_box_create(NULL, 0, 0, 100, 100);
+  edit_t* edit = EDIT(w);
+
+  widget_move_resize(w, 10, 10, 200, 50);
+  ASSERT_EQ(edit->right_margin, 50);
+
+  widget_destroy(w);
+}

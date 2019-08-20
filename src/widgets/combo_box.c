@@ -145,6 +145,23 @@ static ret_t combo_box_on_layout_children(widget_t* widget) {
   return RET_OK;
 }
 
+static ret_t combo_box_on_event(widget_t* widget, event_t* e) {
+  combo_box_t* combo_box = COMBO_BOX(widget);
+  edit_t* edit = EDIT(WIDGET(combo_box));
+  return_value_if_fail(combo_box != NULL, RET_BAD_PARAMS);
+
+  switch(e->type) {
+    case EVT_RESIZE:
+    case EVT_MOVE_RESIZE:
+      edit->right_margin = widget->h;
+      edit->left_margin = 4;
+      break;
+    default:break;
+  }
+
+  return edit_on_event(widget, e);
+}
+
 TK_DECL_VTABLE(combo_box) = {.size = sizeof(combo_box_t),
                              .inputable = TRUE,
                              .type = WIDGET_TYPE_COMBO_BOX,
@@ -157,7 +174,7 @@ TK_DECL_VTABLE(combo_box) = {.size = sizeof(combo_box_t),
                              .get_prop = combo_box_get_prop,
                              .on_layout_children = combo_box_on_layout_children,
                              .on_destroy = combo_box_on_destroy,
-                             .on_event = edit_on_event};
+                             .on_event = combo_box_on_event};
 
 widget_t* combo_box_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = edit_create_ex(parent, TK_REF_VTABLE(combo_box), x, y, w, h);
