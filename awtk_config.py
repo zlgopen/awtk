@@ -4,12 +4,16 @@ import platform
 from shutil import copyfile
 
 TOOLS_PREFIX=''
-OS_NAME = platform.system()
+OS_NAME = platform.system();
+MACH = platform.machine();
 ARCH = platform.architecture();
 is32bit = (ARCH[0] == '32bit');
 
 if is32bit:
-  TARGET_ARCH='x86'
+  if MACH == 'i686' or MACH == 'i386':
+    TARGET_ARCH='x86'
+  else:
+    TARGET_ARCH='arm'
 else:
   TARGET_ARCH=''
 
