@@ -88,7 +88,7 @@ ret_t system_bar_on_event(widget_t* widget, event_t* e) {
 static ret_t system_bar_on_destroy(widget_t* widget) {
   widget_t* wm = window_manager();
 
-  if (wm != NULL) {
+  if (wm != NULL && wm->emitter != NULL) {
     emitter_off_by_ctx(wm->emitter, widget);
   }
 

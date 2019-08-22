@@ -218,6 +218,28 @@ ret_t tk_deinit_internal(void) {
   clip_board_set(NULL);
 #endif/*WITHOUT_CLIPBOARD*/
 
+#ifndef WITHOUT_LAYOUT
+  children_layouter_factory_destroy(children_layouter_factory());
+  children_layouter_factory_set(NULL);
+
+  self_layouter_factory_destroy(self_layouter_factory());
+  self_layouter_factory_set(NULL);
+#endif /*WITHOUT_LAYOUT*/
+
+  image_manager_destroy(image_manager());
+  image_manager_set(NULL);
+
+  widget_destroy(window_manager());
+  window_manager_set(NULL);
+
+  widget_factory_destroy(widget_factory());
+  widget_factory_set(NULL);
+
+#ifndef WITHOUT_INPUT_METHOD
+  input_method_destroy(input_method());
+  input_method_set(NULL);
+#endif /*WITHOUT_INPUT_METHOD*/
+
 #ifndef WITHOUT_WINDOW_ANIMATORS
   window_animator_factory_destroy(window_animator_factory());
   window_animator_factory_set(NULL);
@@ -233,34 +255,6 @@ ret_t tk_deinit_internal(void) {
   dialog_highlighter_factory_set(NULL);
 #endif /*WITHOUT_DIALOG_HIGHLIGHTER*/
 
-#ifndef WITHOUT_LAYOUT
-  children_layouter_factory_destroy(children_layouter_factory());
-  children_layouter_factory_set(NULL);
-
-  children_layouter_factory_destroy(children_layouter_factory());
-  children_layouter_factory_set(NULL);
-#endif /*WITHOUT_LAYOUT*/
-
-  image_manager_destroy(image_manager());
-  image_manager_set(NULL);
-
-  widget_destroy(window_manager());
-  window_manager_set(NULL);
-
-  idle_manager_destroy(idle_manager());
-  idle_manager_set(NULL);
-
-  timer_manager_destroy(timer_manager());
-  timer_manager_set(NULL);
-
-  widget_factory_destroy(widget_factory());
-  widget_factory_set(NULL);
-
-#ifndef WITHOUT_INPUT_METHOD
-  input_method_destroy(input_method());
-  input_method_set(NULL);
-#endif /*WITHOUT_INPUT_METHOD*/
-
   theme_destroy(theme());
   theme_set(NULL);
 
@@ -272,6 +266,13 @@ ret_t tk_deinit_internal(void) {
 
   assets_manager_destroy(assets_manager());
   assets_manager_set(NULL);
+  
+  idle_manager_destroy(idle_manager());
+  idle_manager_set(NULL);
+
+  timer_manager_destroy(timer_manager());
+  timer_manager_set(NULL);
+
 
   system_info_deinit();
 
