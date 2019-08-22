@@ -2939,6 +2939,33 @@ static ret_t widget_ensure_style_mutable(widget_t* widget) {
   return RET_OK;
 }
 
+static uint32_t border_from_str(const char* str) {
+   uint32_t border = 0;
+   return_value_if_fail(str != NULL, border);
+
+   if(strstr(str, "top") != NULL) {
+     border |= BORDER_TOP;
+   }
+
+   if(strstr(str, "bottom") != NULL) {
+     border |= BORDER_BOTTOM;
+   }
+   
+   if(strstr(str, "left") != NULL) {
+     border |= BORDER_LEFT;
+   }
+   
+   if(strstr(str, "right") != NULL) {
+     border |= BORDER_RIGHT;
+   }
+   
+   if(strstr(str, "all") != NULL) {
+     border = BORDER_ALL;
+   }
+
+   return border;
+}
+
 ret_t widget_set_style(widget_t* widget, const char* state_and_name, const value_t* value) {
   char str[256];
   uint32_t len = 0;
@@ -2969,6 +2996,11 @@ ret_t widget_set_style(widget_t* widget, const char* state_and_name, const value
     color_t c = color_parse(value_str(value));
     value_set_uint32(&v, c.color);
 
+    return style_set(widget->astyle, state, name, &v);
+  } else if(tk_str_eq(name, STYLE_ID_BORDER) && value->type == VALUE_TYPE_STRING) {
+    value_t v;
+    value_set_uint32(&v, border_from_str(value_str(value)));
+    
     return style_set(widget->astyle, state, name, &v);
   } else {
     return style_set(widget->astyle, state, name, value);
