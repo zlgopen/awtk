@@ -5,10 +5,10 @@
 ### 一、编辑器设置input_type为"custom"(它会禁止内置的软键盘)。
 
 ```
-<edit x="c" y="10" w="90%" h="30" focus="true" input_type="custom" text="" />
+<edit x="c" y="10" w="90%" h="30" focused="true" input_type="custom" text="" />
 ```
 
-> 如果希望初始化时编辑器自动获的焦点，可以设置focus为true。
+> 如果希望初始化时编辑器自动获的焦点，可以设置focused为true。
 
 ### 二、软键盘的按钮放入一个view(任何容器控件均可)中，并将view的is\_keyboard设置为true。
 

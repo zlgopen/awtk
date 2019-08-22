@@ -1238,7 +1238,7 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
   }
 
   if (ret == RET_NOT_FOUND) {
-    if (tk_str_eq(name, WIDGET_PROP_FOCUS)) {
+    if (tk_str_eq(name, WIDGET_PROP_FOCUSED) || tk_str_eq(name, WIDGET_PROP_FOCUS)) {
       widget_set_focused(widget, value_bool(v));
       ret = RET_OK;
     } else if (tk_str_eq(name, WIDGET_PROP_TEXT)) {
@@ -1286,6 +1286,8 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
     value_set_bool(v, widget->floating);
   } else if (tk_str_eq(name, WIDGET_PROP_FOCUSABLE)) {
     value_set_bool(v, widget_is_focusable(widget));
+  } else if (tk_str_eq(name, WIDGET_PROP_FOCUSED)) {
+    value_set_bool(v, widget->focused);
   } else if (tk_str_eq(name, WIDGET_PROP_WITH_FOCUS_STATE)) {
     value_set_bool(v, widget->with_focus_state);
   } else if (tk_str_eq(name, WIDGET_PROP_STYLE)) {
@@ -2313,7 +2315,7 @@ ret_t widget_get_prop_default_value(widget_t* widget, const char* name, value_t*
     value_set_str(v, NULL);
   } else if (tk_str_eq(name, WIDGET_PROP_CHILDREN_LAYOUT)) {
     value_set_str(v, NULL);
-  } else if (tk_str_eq(name, WIDGET_PROP_FOCUS)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_FOCUSED)) {
     value_set_bool(v, FALSE);
   } else {
     if (widget->vt->get_prop_default_value) {
@@ -2432,7 +2434,7 @@ static const char* s_widget_persistent_props[] = {WIDGET_PROP_NAME,
                                                   WIDGET_PROP_CHILDREN_LAYOUT,
                                                   WIDGET_PROP_SELF_LAYOUT,
                                                   WIDGET_PROP_OPACITY,
-                                                  WIDGET_PROP_FOCUS,
+                                                  WIDGET_PROP_FOCUSED,
                                                   WIDGET_PROP_FOCUSABLE,
                                                   WIDGET_PROP_WITH_FOCUS_STATE,
                                                   WIDGET_PROP_SENSITIVE,
@@ -2844,7 +2846,7 @@ ret_t widget_focus_first(widget_t* widget) {
   widget_t* first = widget_get_first_focusable_widget_in_window(widget);
 
   if (first != NULL) {
-    widget_set_prop_bool(first, WIDGET_PROP_FOCUS, TRUE);
+    widget_set_prop_bool(first, WIDGET_PROP_FOCUSED, TRUE);
   }
 
   return RET_OK;
@@ -2878,8 +2880,8 @@ ret_t widget_move_focus(widget_t* widget, bool_t next) {
         }
 
         iter = WIDGET(all_focusable.elms[focus]);
-        widget_set_prop_bool(widget, WIDGET_PROP_FOCUS, FALSE);
-        widget_set_prop_bool(iter, WIDGET_PROP_FOCUS, TRUE);
+        widget_set_prop_bool(widget, WIDGET_PROP_FOCUSED, FALSE);
+        widget_set_prop_bool(iter, WIDGET_PROP_FOCUSED, TRUE);
         break;
       }
     }

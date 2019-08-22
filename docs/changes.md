@@ -1,7 +1,8 @@
 # 最新动态
 * 2019/08/22
   * 增加combo\_box\_ex控件(感谢大恒提供)
-  
+  * 增加属性WIDGET\_PROP\_FOCUSED表示当前的焦点状态，WIDGET\_PROP\_FOCUS属性为过时。
+
 * 2019/08/20
   * svg 中 float\_t 改为 float。
   * 更新 stm32 相关项目。

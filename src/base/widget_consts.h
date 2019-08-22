@@ -684,8 +684,14 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_IS_KEYBOARD "is_keyboard"
 
 /**
+ * @const WIDGET_PROP_FOCUSED
+ * 是否为焦点控件。
+ */
+#define WIDGET_PROP_FOCUSED "focused"
+
+/**
  * @const WIDGET_PROP_FOCUS
- * 设置为输入焦点。
+ * (过时请用focused)。
  */
 #define WIDGET_PROP_FOCUS "focus"
 

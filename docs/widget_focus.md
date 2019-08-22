@@ -59,16 +59,16 @@
 
 ## 三、设置初始焦点
 
-可以指定控件的 focus 属性为 true 将控件设置为初始焦点控件。
+可以指定控件的 focused 属性为 true 将控件设置为初始焦点控件。
 
 在 XML 中，可以这样指定：
 
 ```
- <button ... focus="true"/>
+ <button ... focused="true"/>
 ```
 
 在 C 中，可以这样指定：
 
 ```
- widget_get_prop_bool(widget, WIDGET_PROP_FOCUS, TRUE);
+ widget_get_prop_bool(widget, WIDGET_PROP_FOCUSED, TRUE);
 ```

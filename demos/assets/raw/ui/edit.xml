@@ -3,7 +3,7 @@
     <scroll_view name="view" x="0"  y="0" w="-12" h="100%">
      <list_item style="empty" children_layout="default(r=1,c=0,ym=1)">
       <label w="30%" text="Age"/>
-      <edit w="70%" right_margin="16" tips="uint(0-150) auto_fix" input_type="uint" min="0" max="150" step="1" auto_fix="true" style="number" focus="true">
+      <edit w="70%" right_margin="16" tips="uint(0-150) auto_fix" input_type="uint" min="0" max="150" step="1" auto_fix="true" style="number" focused="true">
         <button name="inc" repeat="300" style="spinbox_up" x="right" y="0" w="15" h="50%" />
         <button name="dec" repeat="300" style="spinbox_down" x="right" y="bottom" w="15" h="50%" />
       </edit>

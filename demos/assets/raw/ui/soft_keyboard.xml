@@ -1,6 +1,6 @@
 
 <window text="Custom Soft Keyboard" anim_hint="htranslate" >
-  <edit x="c" y="10" w="90%" h="30" focus="true" input_type="custom" text="" tips="custom"/>
+  <edit x="c" y="10" w="90%" h="30" focused="true" input_type="custom" text="" tips="custom"/>
 
   <view y="60" x="c" w="90%" h="-60" is_keyboard="true" 
     children_layout="default(r=4,c=4,m=5,s=5)" >

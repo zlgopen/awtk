@@ -379,7 +379,6 @@ static ret_t edit_pointer_up_cleanup(widget_t* widget) {
   edit_t* edit = EDIT(widget);
   return_value_if_fail(edit != NULL && widget != NULL, RET_BAD_PARAMS);
 
-  edit->focus = FALSE;
   widget->focused = FALSE;
   widget_ungrab(widget->parent, widget);
   widget_set_state(widget, WIDGET_STATE_NORMAL);
@@ -706,9 +705,6 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_PASSWORD_VISIBLE)) {
     value_set_bool(v, edit->password_visible);
     return RET_OK;
-  } else if (tk_str_eq(name, WIDGET_PROP_FOCUS)) {
-    value_set_bool(v, edit->focus);
-    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_TIPS)) {
     value_set_str(v, edit->tips);
     return RET_OK;
@@ -823,7 +819,7 @@ ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_PASSWORD_VISIBLE)) {
     edit_set_password_visible(widget, value_bool(v));
     return RET_OK;
-  } else if (tk_str_eq(name, WIDGET_PROP_FOCUS)) {
+  } else if (tk_str_eq(name, WIDGET_PROP_FOCUS) || tk_str_eq(name, WIDGET_PROP_FOCUSED)) {
     edit_set_focus(widget, value_bool(v));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_TIPS)) {
@@ -858,7 +854,6 @@ ret_t edit_set_focus(widget_t* widget, bool_t focus) {
   edit_t* edit = EDIT(widget);
   return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
 
-  edit->focus = focus;
   widget_set_focused(widget, focus);
   edit_update_status(widget);
 
@@ -1126,7 +1121,6 @@ const char* s_edit_properties[] = {WIDGET_PROP_MIN,
                                    WIDGET_PROP_TOP_MARGIN,
                                    WIDGET_PROP_BOTTOM_MARGIN,
                                    WIDGET_PROP_TIPS,
-                                   WIDGET_PROP_FOCUS,
                                    WIDGET_PROP_PASSWORD_VISIBLE,
                                    NULL};
 TK_DECL_VTABLE(edit) = {.size = sizeof(edit_t),

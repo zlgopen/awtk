@@ -95,12 +95,6 @@ typedef struct _mledit_t {
    * 输入提示。
    */
   char* tips;
-  /**
-   * @property {bool_t} focus
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 设置为焦点(通常用于在XML中缺省设置为焦点控件)。
-   */
-  bool_t focus;
 
   /**
    * @property {bool_t} wrap_word
