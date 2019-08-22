@@ -215,6 +215,8 @@ CPPPATH=[TK_ROOT,
   joinPath(TK_3RD_ROOT, 'agge/include'), 
   joinPath(TK_3RD_ROOT, 'gpinyin/include'), 
   joinPath(TK_3RD_ROOT, 'libunibreak'), 
+  joinPath(TK_3RD_ROOT, 'gtest/googletest'), 
+  joinPath(TK_3RD_ROOT, 'gtest/googletest/include'), 
   TK_TOOLS_ROOT] + OS_CPPPATH
 
 os.environ['LCD'] = LCD

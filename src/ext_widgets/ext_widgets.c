@@ -41,6 +41,7 @@
 #include "scroll_view/scroll_bar.h"
 #include "scroll_view/scroll_view.h"
 #include "scroll_view/list_view_h.h"
+#include "combo_box_ex/combo_box_ex.h"
 #include "color_picker/color_picker.h"
 #include "scroll_label/hscroll_label.h"
 #include "slide_view/slide_indicator.h"
@@ -97,6 +98,7 @@ ret_t tk_ext_widgets_init() {
   widget_factory_register(f, WIDGET_TYPE_MLEDIT, mledit_create);
   widget_factory_register(f, WIDGET_TYPE_LINE_NUMBER, line_number_create);
   widget_factory_register(f, WIDGET_TYPE_HSCROLL_LABEL, hscroll_label_create);
+  widget_factory_register(f, WIDGET_TYPE_COMBO_BOX_EX, combo_box_ex_create);
 
   children_layouter_register_ext_builtins();
 

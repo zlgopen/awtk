@@ -48,8 +48,9 @@
 #include "progress_circle/progress_circle.h"
 #include "image_animation/image_animation.h"
 #include "mutable_image/mutable_image.h"
-#include "mledit/mledit.h"
+#include "combo_box_ex/combo_box_ex.h"
 #include "mledit/line_number.h"
+#include "mledit/mledit.h"
 
 #include "ext_widgets/ext_widgets.h"
 

@@ -1,29 +1,32 @@
 # 最新动态
+* 2019/08/22
+  * 增加combo_box_ex控件(感谢大恒提供)
+  
 * 2019/08/20
-  * svg中float\_t改为float。
-  * 更新stm32相关项目。
-  * 更新awtk-mvvm/awtk-nogui/awtk-linux-fb/awtk-iotjs
-  * 增加awtk-lite
-  * combobox 处理resize事件。
+  * svg 中 float\_t 改为 float。
+  * 更新 stm32 相关项目。
+  * 更新 awtk-mvvm/awtk-nogui/awtk-linux-fb/awtk-iotjs
+  * 增加 awtk-lite
+  * combobox 处理 resize 事件。
   * combobox 支持自定义打开弹出窗口。
 
 * 2019/08/19
-  * awtk编译成tkc/base/widgets/extwidgets/awtk几个独立的库，并调整部分文件的位置。
+  * awtk 编译成 tkc/base/widgets/extwidgets/awtk 几个独立的库，并调整部分文件的位置。
 
 * 2019/08/18
-  * 去掉widget pool。
+  * 去掉 widget pool。
 
 * 2019/08/17
-  * slider 支持非正方形的icon（感谢俊杰提供补丁）
-  * edit/mledit处理resize事件。
+  * slider 支持非正方形的 icon（感谢俊杰提供补丁）
+  * edit/mledit 处理 resize 事件。
 
 * 2019/08/16
-  * 引入片段帧缓存(Fragment Frame Buffer)，部分解决STMF103上由于没足够内存做FrameBuffer导致闪烁的问题。
-  * 支持8bit gray+alpha png
+  * 引入片段帧缓存 (Fragment Frame Buffer)，部分解决 STMF103 上由于没足够内存做 FrameBuffer 导致闪烁的问题。
+  * 支持 8bit gray+alpha png
 
 * 2019/08/15
   * 增加单色 LCD 的文档。
-  * 支持mingw编译（感谢智明提供补丁）
+  * 支持 mingw 编译（感谢智明提供补丁）
   * 修改 cairo/pixman config.h 冲突的问题（感谢陈谭提供补丁）
   * 由于生成单色字体需要 freetype，而且 freetype 的效果比 stb 稍微好一点，所以 PC 版本采用 freetype 作为字体引擎。
 
