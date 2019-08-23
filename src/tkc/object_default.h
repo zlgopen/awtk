@@ -104,7 +104,21 @@ object_t* object_default_clone(object_default_t* o);
  */
 ret_t object_default_unref(object_t* obj);
 
-#define OBJECT_DEFAULT(obj) ((object_default_t*)(obj))
+/**
+ * @method object_default_clear_props
+ *
+ * 清除全部属性。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj 对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ *
+ */
+ret_t object_default_clear_props(object_t* obj);
+
+object_default_t* object_default_cast(object_t* obj);
+#define OBJECT_DEFAULT(obj) object_default_cast(obj)
 
 END_C_DECLS
 
