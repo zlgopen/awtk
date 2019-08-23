@@ -94,7 +94,6 @@ ret_t object_get_prop(object_t* obj, const char* name, value_t* v) {
   ret_t ret = RET_NOT_FOUND;
   return_value_if_fail(name != NULL && v != NULL, RET_BAD_PARAMS);
   return_value_if_fail(obj != NULL && obj->vt != NULL && obj->ref_count >= 0, RET_BAD_PARAMS);
-  return_value_if_fail(!(obj->visiting), RET_BUSY);
 
   value_set_int(v, 0);
   if (obj->vt->get_prop != NULL) {
