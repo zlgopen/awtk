@@ -224,12 +224,22 @@ static ret_t mledit_commit_str(widget_t* widget, const char* str) {
 }
 
 static ret_t mledit_request_input_method_on_window_open(void* ctx, event_t* e) {
-  input_method_request(input_method(), WIDGET(ctx));
+  mledit_t* mledit = MLEDIT(ctx);
+
+  if (!mledit->readonly) {
+    input_method_request(input_method(), WIDGET(ctx));
+  }
 
   return RET_REMOVE;
 }
 
 static ret_t mledit_request_input_method(widget_t* widget) {
+  mledit_t* mledit = MLEDIT(widget);
+
+  if (mledit->readonly) {
+    return RET_OK;
+  }
+
   if (widget_is_window_opened(widget)) {
     input_method_request(input_method(), widget);
   } else {
@@ -250,6 +260,10 @@ static ret_t mledit_update_caret(const timer_info_t* timer) {
   mledit = MLEDIT(timer->ctx);
   widget = WIDGET(timer->ctx);
   return_value_if_fail(mledit != NULL && widget != NULL, RET_REMOVE);
+
+  if (mledit->readonly) {
+    return RET_REMOVE;
+  }
 
   widget_invalidate_force(widget, NULL);
   text_edit_invert_caret_visible(mledit->model);
@@ -315,7 +329,7 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       }
 
       if (widget->target == NULL) {
-        input_method_request(input_method(), widget);
+        mledit_request_input_method(widget);
       }
       mledit_update_status(widget);
 
@@ -341,7 +355,13 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
     case EVT_KEY_DOWN: {
       key_event_t* evt = (key_event_t*)e;
       int32_t key = evt->key;
-
+      if (mledit->readonly) {
+        if (evt->ctrl && (key == TK_KEY_C || key == TK_KEY_c)) {
+          log_debug("copy\n");
+        } else {
+          break;
+        }
+      }
       text_edit_key_down(mledit->model, (key_event_t*)e);
       if ((key < 128 && isprint(key)) || key == TK_KEY_BACKSPACE || key == TK_KEY_DELETE) {
         mledit_dispatch_event(widget, EVT_VALUE_CHANGING);
@@ -352,6 +372,9 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
     }
     case EVT_IM_COMMIT: {
       im_commit_event_t* evt = (im_commit_event_t*)e;
+      if (mledit->readonly) {
+        break;
+      }
       if (evt->replace) {
         mledit_clear(mledit);
       }
@@ -385,10 +408,10 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       int32_t delta = evt->dy;
       if (delta > 0) {
         key_event_init(&kevt, EVT_KEY_DOWN, widget, TK_KEY_DOWN);
-        text_edit_key_down(mledit->model, (key_event_t*)e);
+        text_edit_key_down(mledit->model, (key_event_t*)&kevt);
       } else if (delta < 0) {
         key_event_init(&kevt, EVT_KEY_DOWN, widget, TK_KEY_UP);
-        text_edit_key_down(mledit->model, (key_event_t*)e);
+        text_edit_key_down(mledit->model, (key_event_t*)&kevt);
       }
       break;
     }
@@ -472,10 +495,10 @@ static ret_t mledit_on_add_child(widget_t* widget, widget_t* child) {
   return RET_CONTINUE;
 }
 
-const char* s_mledit_properties[] = {
-    WIDGET_PROP_READONLY,     WIDGET_PROP_MARGIN,     WIDGET_PROP_LEFT_MARGIN,
-    WIDGET_PROP_RIGHT_MARGIN, WIDGET_PROP_TOP_MARGIN, WIDGET_PROP_BOTTOM_MARGIN,
-    WIDGET_PROP_TIPS,         NULL};
+const char* s_mledit_properties[] = {WIDGET_PROP_READONLY,    WIDGET_PROP_MARGIN,
+                                     WIDGET_PROP_LEFT_MARGIN, WIDGET_PROP_RIGHT_MARGIN,
+                                     WIDGET_PROP_TOP_MARGIN,  WIDGET_PROP_BOTTOM_MARGIN,
+                                     WIDGET_PROP_TIPS,        NULL};
 
 TK_DECL_VTABLE(mledit) = {.size = sizeof(mledit_t),
                           .type = WIDGET_TYPE_MLEDIT,
