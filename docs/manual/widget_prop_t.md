@@ -1,6 +1,7 @@
 ## widget\_prop\_t
 ### 概述
  控件的属性。
+
 ### 常量
 <p id="widget_prop_t_consts">
 
@@ -10,6 +11,8 @@
 | WIDGET\_PROP\_Y | Y坐标。 |
 | WIDGET\_PROP\_W | 宽度。 |
 | WIDGET\_PROP\_H | 高度。 |
+| WIDGET\_PROP\_CANVAS | Canvas。 |
+| WIDGET\_PROP\_NATIVE\_WINDOW | Native Window。 |
 | WIDGET\_PROP\_HIGHLIGHT | dialog highlight。 |
 | WIDGET\_PROP\_BAR\_SIZE | slider中的bar的的宽度或高度。 |
 | WIDGET\_PROP\_OPACITY | 不透明度。 |
@@ -23,6 +26,7 @@
 | WIDGET\_PROP\_VIRTUAL\_W | 虚拟宽度。 |
 | WIDGET\_PROP\_VIRTUAL\_H | 虚拟高度。 |
 | WIDGET\_PROP\_NAME | 名称。 |
+| WIDGET\_PROP\_TYPE | 类型。 |
 | WIDGET\_PROP\_CLOSABLE | 是否可以关闭。 |
 | WIDGET\_PROP\_CURSOR | 鼠标指针。 |
 | WIDGET\_PROP\_VALUE | 值。 |
@@ -111,7 +115,9 @@
 | WIDGET\_PROP\_BORDER\_COLOR | 边框颜色(仅仅使用于color tile)。 |
 | WIDGET\_PROP\_DELAY | 延迟时间(毫秒) |
 | WIDGET\_PROP\_IS\_KEYBOARD | 是否为键盘。 |
-| WIDGET\_PROP\_FOCUS | 设置为输入焦点。 |
+| WIDGET\_PROP\_FOCUSED | 是否为焦点控件。 |
+| WIDGET\_PROP\_FOCUS | (过时请用focused)。 |
 | WIDGET\_PROP\_FOCUSABLE | 是否支持焦点停留。 |
+| WIDGET\_PROP\_WITH\_FOCUS\_STATE | 是否支持焦点状态(如果希望style支持焦点状态，但有不希望焦点停留，可用本属性)。 |
 | WIDGET\_PROP\_MOVE\_FOCUS\_NEXT\_KEY | 将焦点移到下一个的键值。 |
 | WIDGET\_PROP\_MOVE\_FOCUS\_PREV\_KEY | 将焦点移到下一个的键值。 |

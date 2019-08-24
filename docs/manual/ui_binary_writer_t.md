@@ -6,6 +6,7 @@
  生成二进制格式的UI描述数据。
 
 
+
 ----------------------------------
 ### 函数
 <p id="ui_binary_writer_t_methods">
@@ -20,6 +21,7 @@
 
 > <p id="ui_binary_writer_t_ui_binary_writer_init">
  初始化ui\_binary\_writer对象。
+
 
 
 

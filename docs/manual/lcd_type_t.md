@@ -9,3 +9,4 @@
 | LCD\_FRAMEBUFFER | 基于FrameBuffer的LCD。 |
 | LCD\_REGISTER | 基于寄存器的LCD。 |
 | LCD\_VGCANVAS | 基于VGCANVS的LCD。仅在支持OpenGL时，用nanovg实现。 |
+| LCD\_MONO | 单色LCD。 |

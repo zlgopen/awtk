@@ -553,7 +553,6 @@ typedef struct _key_event_t {
   /**
    * @property {bool_t} alt
    * @annotation ["readable", "scriptable"]
-   * 键值。
    * alt键是否按下。
    */
   uint32_t alt : 1;

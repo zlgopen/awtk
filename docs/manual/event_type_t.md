@@ -1,6 +1,7 @@
 ## event\_type\_t
 ### 概述
  类型常量定义。
+
 ### 常量
 <p id="event_type_t_consts">
 
@@ -67,5 +68,8 @@
 | EVT\_SCREEN\_SAVER | 在指定的时间内(WITH\_SCREEN\_SAVER\_TIME)，没有用户输入事件，由窗口管理器触发。 |
 | EVT\_LOW\_MEMORY | 内存不足。 |
 | EVT\_OUT\_OF\_MEMORY | 内存耗尽。 |
+| EVT\_ORIENTATION\_WILL\_CHANGED | 屏幕即将旋转。 |
+| EVT\_ORIENTATION\_CHANGED | 屏幕旋转。 |
+| EVT\_WIDGET\_CREATED | 控件创建事件。 |
 | EVT\_REQ\_START | event queue其它请求编号起始值。 |
 | EVT\_USER\_START | 用户定义事件起始值。 |

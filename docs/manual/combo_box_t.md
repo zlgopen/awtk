@@ -89,6 +89,7 @@ default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/def
 | <a href="#combo_box_t_combo_box_get_text">combo\_box\_get\_text</a> | 获取combo_box的文本。 |
 | <a href="#combo_box_t_combo_box_get_value">combo\_box\_get\_value</a> | 获取combo_box的值。 |
 | <a href="#combo_box_t_combo_box_reset_options">combo\_box\_reset\_options</a> | 重置所有选项。 |
+| <a href="#combo_box_t_combo_box_set_custom_open_popup">combo\_box\_set\_custom\_open\_popup</a> | 设置自定义的打开弹出窗口的函数。 |
 | <a href="#combo_box_t_combo_box_set_open_window">combo\_box\_set\_open\_window</a> | 点击按钮时可以打开popup窗口，本函数可设置窗口的名称。 |
 | <a href="#combo_box_t_combo_box_set_options">combo\_box\_set\_options</a> | 设置选项。 |
 | <a href="#combo_box_t_combo_box_set_selected_index">combo\_box\_set\_selected\_index</a> | 设置第index个选项为当前选中的选项。 |
@@ -284,6 +285,28 @@ ret_t combo_box_reset_options (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | combo\_box对象。 |
+#### combo\_box\_set\_custom\_open\_popup 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="combo_box_t_combo_box_set_custom_open_popup"> 设置自定义的打开弹出窗口的函数。
+
+
+
+* 函数原型：
+
+```
+ret_t combo_box_set_custom_open_popup (widget_t* widget, combo_box_custom_open_popup_t open_popup);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | combo\_box对象。 |
+| open\_popup | combo\_box\_custom\_open\_popup\_t | 回调函数。 |
 #### combo\_box\_set\_open\_window 函数
 -----------------------
 

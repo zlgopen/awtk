@@ -4,6 +4,7 @@
 
  输入法提交输入的文本事件。
 
+
 ----------------------------------
 ### 属性
 <p id="im_commit_event_t_properties">
@@ -17,6 +18,7 @@
 > <p id="im_commit_event_t_replace;"> 是否替换原来的文本。
 
 
+
 * 类型：bool\_t
 
 | 特性 | 是否支持 |
@@ -26,6 +28,7 @@
 #### text 属性
 -----------------------
 > <p id="im_commit_event_t_text"> 提交的文本。
+
 
 
 * 类型：char*

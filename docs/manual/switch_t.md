@@ -52,7 +52,6 @@
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#switch_t_max_xoffset_ratio">max\_xoffset\_ratio</a> | float\_t | 当开关处于关闭时，图片偏移相对于图片宽度的比例(缺省为1/3)。 |
-| <a href="#switch_t_round_radius">round\_radius</a> | int32\_t | 图片的圆角半径。 |
 | <a href="#switch_t_value">value</a> | bool\_t | 值。 |
 ### 事件
 <p id="switch_t_events">
@@ -135,23 +134,6 @@ ret_t switch_set_value (widget_t* widget, bool_t value);
 
 
 * 类型：float\_t
-
-| 特性 | 是否支持 |
-| -------- | ----- |
-| 可直接读取 | 是 |
-| 可直接修改 | 否 |
-| 可持久化   | 是 |
-| 可脚本化   | 是 |
-| 可在IDE中设置 | 是 |
-| 可在XML中设置 | 是 |
-| 可通过widget\_get\_prop读取 | 是 |
-| 可通过widget\_set\_prop修改 | 是 |
-#### round\_radius 属性
------------------------
-> <p id="switch_t_round_radius"> 图片的圆角半径。
-
-
-* 类型：int32\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

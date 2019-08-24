@@ -9,6 +9,7 @@
 
 
 
+
 ----------------------------------
 ### 函数
 <p id="input_method_sdl_t_methods">
@@ -23,6 +24,7 @@
 * 函数功能：
 
 > <p id="input_method_sdl_t_children_layouter_register_builtins"> 注册内置的子控件布局算法。
+
 
 
 
@@ -44,6 +46,7 @@ ret_t children_layouter_register_builtins ();
 
 > <p id="input_method_sdl_t_input_method_sdl_create">
  创建SDL输入法对象。
+
 
 
 

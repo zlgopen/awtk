@@ -1,9 +1,12 @@
 ## widget\_factory\_t
 ### 概述
+![image](images/widget_factory_t_0.png)
+
  控件工厂对象。
 
  提供通过类型创建控件的能力。
  用户注册自定义控件，可以获得内置控件同等待遇。
+
 
 
 ----------------------------------
@@ -26,6 +29,7 @@
 > <p id="widget_factory_t_widget_factory"> 获取缺省的控件工厂对象。
 
 
+
 * 函数原型：
 
 ```
@@ -46,6 +50,7 @@ widget_factory_t* widget_factory ();
 
 
 
+
 * 函数原型：
 
 ```
@@ -63,6 +68,7 @@ widget_factory_t* widget_factory_create ();
 * 函数功能：
 
 > <p id="widget_factory_t_widget_factory_create_widget"> 创建指定类型的控件。
+
 
 
 
@@ -92,6 +98,7 @@ widget_t* widget_factory_create_widget (widget_factory_t* factory, const char* t
 
 
 
+
 * 函数原型：
 
 ```
@@ -110,6 +117,7 @@ ret_t widget_factory_destroy (widget_factory_t* factory);
 * 函数功能：
 
 > <p id="widget_factory_t_widget_factory_register"> 注册控件创建函数。
+
 
 
 
@@ -133,6 +141,7 @@ ret_t widget_factory_register (widget_factory_t* factory, const char* type, widg
 * 函数功能：
 
 > <p id="widget_factory_t_widget_factory_set"> 设置缺省的控件工厂对象。
+
 
 
 

@@ -2,6 +2,7 @@
 ### 概述
  输入法联想字词。
 
+
 ----------------------------------
 ### 函数
 <p id="suggest_words_t_methods">
@@ -22,6 +23,7 @@
 * 函数功能：
 
 > <p id="suggest_words_t_suggest_words_create"> 创建联想字对象。
+
 
 
 
@@ -47,6 +49,7 @@ suggest_words_t* suggest_words_create (asset_info_t* res);
 
 
 
+
 * 函数原型：
 
 ```
@@ -65,6 +68,7 @@ ret_t suggest_words_destroy (suggest_words_t* suggest_words);
 * 函数功能：
 
 > <p id="suggest_words_t_suggest_words_find"> 查找prefix对应的联想字列表，成功后会更新words/words_nr。
+
 
 
 

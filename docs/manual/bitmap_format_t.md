@@ -1,6 +1,7 @@
 ## bitmap\_format\_t
 ### 概述
  位图格式常量定义。
+
 ### 常量
 <p id="bitmap_format_t_consts">
 
@@ -15,3 +16,5 @@
 | BITMAP\_FMT\_BGR565 | 一个像素占用2个字节，BGR分别占用5,6,5位, 按内存地址递增。 |
 | BITMAP\_FMT\_RGB888 | 一个像素占用3个字节，RGB占一个字节，按内存地址递增。 |
 | BITMAP\_FMT\_BGR888 | 一个像素占用3个字节，RGB占一个字节，按内存地址递增。 |
+| BITMAP\_FMT\_GRAY | 一个像素占用1个字节。 |
+| BITMAP\_FMT\_MONO | 一个像素占用1比特。 |

@@ -2,6 +2,7 @@
 ### 概述
  线程对象。
 
+
 ----------------------------------
 ### 函数
 <p id="tk_thread_t_methods">
@@ -18,6 +19,7 @@
 * 函数功能：
 
 > <p id="tk_thread_t_tk_thread_create"> 创建thread对象。
+
 
 
 
@@ -38,6 +40,7 @@ tk_thread_t* tk_thread_create ();
 * 函数功能：
 
 > <p id="tk_thread_t_tk_thread_destroy"> 销毁thread对象。
+
 
 
 
@@ -62,6 +65,7 @@ ret_t tk_thread_destroy (tk_thread_t* thread);
 
 
 
+
 * 函数原型：
 
 ```
@@ -80,6 +84,7 @@ ret_t tk_thread_join (tk_thread_t* thread);
 * 函数功能：
 
 > <p id="tk_thread_t_tk_thread_start"> 启动线程。
+
 
 
 

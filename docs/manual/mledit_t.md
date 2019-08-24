@@ -27,6 +27,7 @@
  time\_clock一般不需要设置style。
 
 
+
 ----------------------------------
 ### 函数
 <p id="mledit_t_methods">
@@ -35,6 +36,7 @@
 | -------- | ------------ | 
 | <a href="#mledit_t_mledit_cast">mledit\_cast</a> | 转换为mledit对象(供脚本语言使用)。 |
 | <a href="#mledit_t_mledit_create">mledit\_create</a> | 创建mledit对象 |
+| <a href="#mledit_t_mledit_set_focus">mledit\_set\_focus</a> | 设置为焦点。 |
 | <a href="#mledit_t_mledit_set_input_tips">mledit\_set\_input\_tips</a> | 设置编辑器的输入提示。 |
 | <a href="#mledit_t_mledit_set_max_lines">mledit\_set\_max\_lines</a> | 设置编辑器的最大行数。 |
 | <a href="#mledit_t_mledit_set_readonly">mledit\_set\_readonly</a> | 设置编辑器是否为只读。 |
@@ -45,7 +47,6 @@
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#mledit_t_bottom_margin">bottom\_margin</a> | uint8\_t | 下边距。 |
-| <a href="#mledit_t_focus">focus</a> | bool\_t | 设置为焦点(通常用于在XML中缺省设置为焦点控件)。 |
 | <a href="#mledit_t_left_margin">left\_margin</a> | uint8\_t | 左边距。 |
 | <a href="#mledit_t_max_lines">max\_lines</a> | uint32\_t | 最大行数。 |
 | <a href="#mledit_t_readonly">readonly</a> | bool\_t | 编辑器是否为只读。 |
@@ -53,12 +54,20 @@
 | <a href="#mledit_t_tips">tips</a> | char* | 输入提示。 |
 | <a href="#mledit_t_top_margin">top\_margin</a> | uint8\_t | 上边距。 |
 | <a href="#mledit_t_wrap_word">wrap\_word</a> | bool\_t | 是否自动折行。 |
+### 事件
+<p id="mledit_t_events">
+
+| 事件名称 | 类型  | 说明 | 
+| -------- | ----- | ------- | 
+| EVT\_VALUE\_CHANGING | event\_t | 文本正在改变事件(编辑中)。 |
+| EVT\_VALUE\_CHANGED | event\_t | 文本改变事件。 |
 #### mledit\_cast 函数
 -----------------------
 
 * 函数功能：
 
 > <p id="mledit_t_mledit_cast"> 转换为mledit对象(供脚本语言使用)。
+
 
 
 
@@ -83,6 +92,7 @@ widget_t* mledit_cast (widget_t* widget);
 
 
 
+
 * 函数原型：
 
 ```
@@ -99,12 +109,36 @@ widget_t* mledit_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### mledit\_set\_focus 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="mledit_t_mledit_set_focus"> 设置为焦点。
+
+
+
+
+* 函数原型：
+
+```
+ret_t mledit_set_focus (widget_t* widget, bool_t focus);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | widget对象。 |
+| focus | bool\_t | 是否为焦点。 |
 #### mledit\_set\_input\_tips 函数
 -----------------------
 
 * 函数功能：
 
 > <p id="mledit_t_mledit_set_input_tips"> 设置编辑器的输入提示。
+
 
 
 
@@ -130,6 +164,7 @@ ret_t mledit_set_input_tips (widget_t* widget, char* tips);
 
 
 
+
 * 函数原型：
 
 ```
@@ -149,6 +184,7 @@ ret_t mledit_set_max_lines (widget_t* widget, uint32_t max_lines);
 * 函数功能：
 
 > <p id="mledit_t_mledit_set_readonly"> 设置编辑器是否为只读。
+
 
 
 
@@ -174,6 +210,7 @@ ret_t mledit_set_readonly (widget_t* widget, bool_t readonly);
 
 
 
+
 * 函数原型：
 
 ```
@@ -192,24 +229,8 @@ ret_t mledit_set_wrap_word (widget_t* widget, bool_t wrap_word);
 > <p id="mledit_t_bottom_margin"> 下边距。
 
 
+
 * 类型：uint8\_t
-
-| 特性 | 是否支持 |
-| -------- | ----- |
-| 可直接读取 | 是 |
-| 可直接修改 | 否 |
-| 可持久化   | 是 |
-| 可脚本化   | 是 |
-| 可在IDE中设置 | 是 |
-| 可在XML中设置 | 是 |
-| 可通过widget\_get\_prop读取 | 是 |
-| 可通过widget\_set\_prop修改 | 是 |
-#### focus 属性
------------------------
-> <p id="mledit_t_focus"> 设置为焦点(通常用于在XML中缺省设置为焦点控件)。
-
-
-* 类型：bool\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |
@@ -224,6 +245,7 @@ ret_t mledit_set_wrap_word (widget_t* widget, bool_t wrap_word);
 #### left\_margin 属性
 -----------------------
 > <p id="mledit_t_left_margin"> 左边距。
+
 
 
 * 类型：uint8\_t
@@ -243,6 +265,7 @@ ret_t mledit_set_wrap_word (widget_t* widget, bool_t wrap_word);
 > <p id="mledit_t_max_lines"> 最大行数。
 
 
+
 * 类型：uint32\_t
 
 | 特性 | 是否支持 |
@@ -258,6 +281,7 @@ ret_t mledit_set_wrap_word (widget_t* widget, bool_t wrap_word);
 #### readonly 属性
 -----------------------
 > <p id="mledit_t_readonly"> 编辑器是否为只读。
+
 
 
 * 类型：bool\_t
@@ -277,6 +301,7 @@ ret_t mledit_set_wrap_word (widget_t* widget, bool_t wrap_word);
 > <p id="mledit_t_right_margin"> 右边距。
 
 
+
 * 类型：uint8\_t
 
 | 特性 | 是否支持 |
@@ -292,6 +317,7 @@ ret_t mledit_set_wrap_word (widget_t* widget, bool_t wrap_word);
 #### tips 属性
 -----------------------
 > <p id="mledit_t_tips"> 输入提示。
+
 
 
 * 类型：char*
@@ -311,6 +337,7 @@ ret_t mledit_set_wrap_word (widget_t* widget, bool_t wrap_word);
 > <p id="mledit_t_top_margin"> 上边距。
 
 
+
 * 类型：uint8\_t
 
 | 特性 | 是否支持 |
@@ -326,6 +353,7 @@ ret_t mledit_set_wrap_word (widget_t* widget, bool_t wrap_word);
 #### wrap\_word 属性
 -----------------------
 > <p id="mledit_t_wrap_word"> 是否自动折行。
+
 
 
 * 类型：bool\_t

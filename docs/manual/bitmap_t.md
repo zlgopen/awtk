@@ -2,6 +2,7 @@
 ### 概述
  位图。
 
+
 ----------------------------------
 ### 函数
 <p id="bitmap_t_methods">
@@ -37,6 +38,7 @@
 > <p id="bitmap_t_bitmap_create"> 创建图片对象(一般供脚本语言中使用)。
 
 
+
 * 函数原型：
 
 ```
@@ -54,6 +56,7 @@ bitmap_t* bitmap_create ();
 * 函数功能：
 
 > <p id="bitmap_t_bitmap_create_ex"> 创建图片对象。
+
 
 
 
@@ -80,6 +83,7 @@ bitmap_t* bitmap_create_ex (uint32_t w, uint32_t h, uint32_t line_length, bitmap
 > <p id="bitmap_t_bitmap_destroy"> 销毁图片。
 
 
+
 * 函数原型：
 
 ```
@@ -98,6 +102,7 @@ ret_t bitmap_destroy (bitmap_t* bitmap);
 * 函数功能：
 
 > <p id="bitmap_t_bitmap_get_bpp"> 获取图片一个像素占用的字节数。
+
 
 
 
@@ -122,6 +127,7 @@ uint32_t bitmap_get_bpp (bitmap_t* bitmap);
 
 
 
+
 * 函数原型：
 
 ```
@@ -140,6 +146,7 @@ ret_t bitmap_get_line_length (bitmap_t* bitmap);
 * 函数功能：
 
 > <p id="bitmap_t_bitmap_get_pixel"> 获取图片指定像素的rgba颜色值(主要用于测试程序)。
+
 
 
 
@@ -164,6 +171,7 @@ ret_t bitmap_get_pixel (bitmap_t* bitmap, uint32_t x, uint32_t y, rgba_t* rgba);
 * 函数功能：
 
 > <p id="bitmap_t_bitmap_init"> 初始化图片。
+
 
 
 
@@ -193,6 +201,7 @@ ret_t bitmap_init (bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t for
 
 
 
+
 * 函数原型：
 
 ```
@@ -219,6 +228,7 @@ ret_t bitmap_init_from_rgba (bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_fo
 
 
 
+
 * 函数原型：
 
 ```
@@ -237,6 +247,7 @@ ret_t bitmap_set_line_length (bitmap_t* bitmap, uint32_t line_length);
 > <p id="bitmap_t_data"> 图片数据。
 
 
+
 * 类型：uint8\_t*
 
 | 特性 | 是否支持 |
@@ -246,6 +257,7 @@ ret_t bitmap_set_line_length (bitmap_t* bitmap, uint32_t line_length);
 #### flags 属性
 -----------------------
 > <p id="bitmap_t_flags"> 标志。请参考{bitmap_flag_t}。
+
 
 
 * 类型：uint16\_t
@@ -260,6 +272,7 @@ ret_t bitmap_set_line_length (bitmap_t* bitmap, uint32_t line_length);
 > <p id="bitmap_t_format"> 格式。请参考{bitmap_format_t}。
 
 
+
 * 类型：uint16\_t
 
 | 特性 | 是否支持 |
@@ -270,6 +283,7 @@ ret_t bitmap_set_line_length (bitmap_t* bitmap, uint32_t line_length);
 #### h 属性
 -----------------------
 > <p id="bitmap_t_h"> 高度。
+
 
 
 * 类型：wh\_t
@@ -284,6 +298,7 @@ ret_t bitmap_set_line_length (bitmap_t* bitmap, uint32_t line_length);
 > <p id="bitmap_t_line_length"> 每一行实际占用的内存(也称为stride或pitch)，一般情况下为w*bpp。
 
 
+
 * 类型：uint32\_t
 
 | 特性 | 是否支持 |
@@ -296,6 +311,7 @@ ret_t bitmap_set_line_length (bitmap_t* bitmap, uint32_t line_length);
 > <p id="bitmap_t_name"> 名称。
 
 
+
 * 类型：const char*
 
 | 特性 | 是否支持 |
@@ -306,6 +322,7 @@ ret_t bitmap_set_line_length (bitmap_t* bitmap, uint32_t line_length);
 #### w 属性
 -----------------------
 > <p id="bitmap_t_w"> 宽度。
+
 
 
 * 类型：wh\_t

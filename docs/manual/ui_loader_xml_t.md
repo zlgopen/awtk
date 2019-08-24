@@ -7,6 +7,7 @@
 
 
 
+
 ----------------------------------
 ### 函数
 <p id="ui_loader_xml_t_methods">
@@ -21,6 +22,7 @@
 
 > <p id="ui_loader_xml_t_xml_ui_loader">
  获取XML格式的UI资源加载器对象。
+
 
 
 

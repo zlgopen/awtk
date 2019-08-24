@@ -30,6 +30,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#include <limits.h>
 
 #if defined(HAS_STDIO) || defined(AWTK_WEB)
 #include <stdio.h>

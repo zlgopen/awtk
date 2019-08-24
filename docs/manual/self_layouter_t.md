@@ -4,6 +4,7 @@
 
  按特定算法对控件进行排版布局，子类需要实现vtable中的函数。
 
+
 ----------------------------------
 ### 函数
 <p id="self_layouter_t_methods">
@@ -28,6 +29,7 @@
 
 
 
+
 * 函数原型：
 
 ```
@@ -49,6 +51,7 @@ self_layouter_t* self_layouter_create (const char* params);
 
 
 
+
 * 函数原型：
 
 ```
@@ -67,6 +70,7 @@ ret_t self_layouter_destroy (self_layouter_t* layouter);
 * 函数功能：
 
 > <p id="self_layouter_t_self_layouter_get_param"> 获取指定的参数。
+
 
 
 
@@ -93,6 +97,7 @@ ret_t self_layouter_get_param (self_layouter_t* layouter, const char* name, valu
 
 
 
+
 * 函数原型：
 
 ```
@@ -113,6 +118,7 @@ ret_t self_layouter_get_param_float (self_layouter_t* layouter, const char* name
 * 函数功能：
 
 > <p id="self_layouter_t_self_layouter_get_param_int"> 获取指定的整数格式的参数。
+
 
 
 
@@ -139,6 +145,7 @@ ret_t self_layouter_get_param_int (self_layouter_t* layouter, const char* name, 
 
 
 
+
 * 函数原型：
 
 ```
@@ -159,6 +166,7 @@ ret_t self_layouter_layout (self_layouter_t* layouter, widget_t* widget, rect_t*
 * 函数功能：
 
 > <p id="self_layouter_t_self_layouter_set_param"> 获取指定的参数。
+
 
 
 
@@ -185,6 +193,7 @@ ret_t self_layouter_set_param (self_layouter_t* layouter, const char* name, cons
 
 
 
+
 * 函数原型：
 
 ```
@@ -205,6 +214,7 @@ ret_t self_layouter_set_param_str (self_layouter_t* layouter, const char* name, 
 * 函数功能：
 
 > <p id="self_layouter_t_self_layouter_to_string"> 获取全部参数。
+
 
 
 
