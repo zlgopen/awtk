@@ -21,7 +21,7 @@
 
 #include "tkc/mem.h"
 #include "tkc/time_now.h"
-#include "base/idle_manager.h"
+#include "tkc/idle_manager.h"
 
 static idle_manager_t* s_idle_manager;
 

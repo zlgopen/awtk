@@ -19,8 +19,8 @@
  *
  */
 
-#include "base/idle_info.h"
-#include "base/idle_manager.h"
+#include "tkc/idle_info.h"
+#include "tkc/idle_manager.h"
 
 #ifdef AWTK_WEB_JS
 #include <emscripten.h>

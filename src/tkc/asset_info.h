@@ -22,8 +22,7 @@
 #ifndef TK_ASSET_INFO_H
 #define TK_ASSET_INFO_H
 
-#include "tkc/darray.h"
-#include "base/types_def.h"
+#include "tkc/types_def.h"
 
 BEGIN_C_DECLS
 

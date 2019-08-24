@@ -21,7 +21,7 @@
 
 #include "tkc/mem.h"
 #include "base/idle.h"
-#include "base/idle_manager.h"
+#include "tkc/idle_manager.h"
 
 uint32_t idle_add(idle_func_t on_idle, void* ctx) {
   return idle_manager_add(idle_manager(), on_idle, ctx);

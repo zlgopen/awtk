@@ -19,8 +19,8 @@
  *
  */
 
-#include "base/timer_info.h"
-#include "base/timer_manager.h"
+#include "tkc/timer_info.h"
+#include "tkc/timer_manager.h"
 
 #ifdef AWTK_WEB_JS
 #include <emscripten.h>

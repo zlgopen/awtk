@@ -23,7 +23,7 @@
 #define TK_TIMER_MANAGER_H
 
 #include "tkc/slist.h"
-#include "base/timer_info.h"
+#include "tkc/timer_info.h"
 
 BEGIN_C_DECLS
 

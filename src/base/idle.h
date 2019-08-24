@@ -22,7 +22,7 @@
 #ifndef TK_IDLE_H
 #define TK_IDLE_H
 
-#include "base/idle_manager.h"
+#include "tkc/idle_manager.h"
 
 BEGIN_C_DECLS
 

@@ -23,7 +23,7 @@
 #define TK_IDLE_MANAGER_H
 
 #include "tkc/slist.h"
-#include "base/idle_info.h"
+#include "tkc/idle_info.h"
 
 BEGIN_C_DECLS
 

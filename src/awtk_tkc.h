@@ -47,5 +47,9 @@
 #include "tkc/value.h"
 #include "tkc/wstr.h"
 #include "tkc/expr_eval.h"
+#include "tkc/idle_info.h"
+#include "tkc/idle_manager.h"
+#include "tkc/timer_info.h"
+#include "tkc/timer_manager.h"
 
 #endif /*TK_TKC_H*/
