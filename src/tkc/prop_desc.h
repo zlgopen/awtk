@@ -62,6 +62,11 @@ typedef enum _prop_desc_type_t {
    */
   PROP_DESC_TYPE_DOUBLE,
   /**
+   * @const PROP_DESC_TYPE_BOOL
+   * 布尔类型。
+   */
+  PROP_DESC_TYPE_BOOL,
+  /**
    * @const PROP_DESC_TYPE_STRING
    * 字符串类型。
    */
@@ -141,7 +146,13 @@ typedef struct _prop_desc_t {
    * @annotation ["readable"]
    * 范围。
    */
-  uint8_t scope;
+  uint8_t scope : 1;
+  /**
+   * @property {uint8_t} persistent
+   * @annotation ["readable"]
+   * 需要存储。
+   */
+  uint8_t persistent : 1;
   /**
    * @property {uint16_t} reserved
    * @annotation ["readable"]
@@ -329,6 +340,22 @@ typedef struct _prop_desc_double_t {
    */
   double max;
 } prop_desc_double_t;
+
+/**
+ * @class prop_desc_bool_t
+ * @parent prop_desc_t
+ * 布尔类型属性描述。
+ */
+typedef struct _prop_desc_bool_t {
+  prop_desc_t prop_desc;
+
+  /**
+   * @property {bool_t} defvalue
+   * @annotation ["readable"]
+   * 缺省值。
+   */
+  bool_t defvalue;
+} prop_desc_bool_t;
 
 /**
  * @class prop_desc_string_t

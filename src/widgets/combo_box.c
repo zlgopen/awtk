@@ -150,13 +150,14 @@ static ret_t combo_box_on_event(widget_t* widget, event_t* e) {
   edit_t* edit = EDIT(WIDGET(combo_box));
   return_value_if_fail(combo_box != NULL, RET_BAD_PARAMS);
 
-  switch(e->type) {
+  switch (e->type) {
     case EVT_RESIZE:
     case EVT_MOVE_RESIZE:
       edit->right_margin = widget->h;
       edit->left_margin = 4;
       break;
-    default:break;
+    default:
+      break;
   }
 
   return edit_on_event(widget, e);
@@ -516,4 +517,3 @@ ret_t combo_box_set_custom_open_popup(widget_t* widget, combo_box_custom_open_po
 
   return RET_OK;
 }
-

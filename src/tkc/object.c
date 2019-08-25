@@ -377,10 +377,10 @@ ret_t object_eval(object_t* obj, const char* expr, value_t* v) {
   if (tk_is_valid_name(expr)) {
     return object_get_prop(obj, expr, v);
   } else {
-      return RET_FAIL;
+    return RET_FAIL;
   }
 }
-#endif/*AWTK_LITE*/
+#endif /*AWTK_LITE*/
 
 const char* object_get_type(object_t* obj) {
   return_value_if_fail(obj != NULL && obj->vt != NULL, NULL);
@@ -405,4 +405,3 @@ uint32_t object_get_size(object_t* obj) {
 
   return obj->vt->size;
 }
-

@@ -63,7 +63,7 @@
 #include "clip_board/clip_board_default.h"
 #define clip_board_create clip_board_default_create
 #endif /*WITH_SDL*/
-#endif/*WITHOUT_CLIPBOARD*/
+#endif /*WITHOUT_CLIPBOARD*/
 
 #ifdef WITH_TRUETYPE_FONT
 #include "font_loader/font_loader_truetype.h"
@@ -183,7 +183,7 @@ ret_t tk_init_internal(void) {
 
 #ifndef WITHOUT_CLIPBOARD
   return_value_if_fail(clip_board_set(clip_board_create()) == RET_OK, RET_FAIL);
-#endif/*WITHOUT_CLIPBOARD*/
+#endif /*WITHOUT_CLIPBOARD*/
 
 #ifndef WITHOUT_WIDGET_ANIMATORS
   return_value_if_fail(widget_animator_manager_set(widget_animator_manager_create()) == RET_OK,
@@ -216,7 +216,7 @@ ret_t tk_deinit_internal(void) {
 #ifndef WITHOUT_CLIPBOARD
   clip_board_destroy(clip_board());
   clip_board_set(NULL);
-#endif/*WITHOUT_CLIPBOARD*/
+#endif /*WITHOUT_CLIPBOARD*/
 
 #ifndef WITHOUT_LAYOUT
   children_layouter_factory_destroy(children_layouter_factory());
@@ -266,13 +266,12 @@ ret_t tk_deinit_internal(void) {
 
   assets_manager_destroy(assets_manager());
   assets_manager_set(NULL);
-  
+
   idle_manager_destroy(idle_manager());
   idle_manager_set(NULL);
 
   timer_manager_destroy(timer_manager());
   timer_manager_set(NULL);
-
 
   system_info_deinit();
 
@@ -331,4 +330,3 @@ int32_t tk_get_pointer_y(void) {
 bool_t tk_is_pointer_pressed(void) {
   return window_manager_get_pointer_pressed(window_manager());
 }
-

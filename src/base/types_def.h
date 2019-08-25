@@ -336,4 +336,3 @@ typedef struct _system_info_t system_info_t;
 #endif /*AWTK_LITE*/
 
 #endif /*TK_TYPES_DEF_H*/
-
