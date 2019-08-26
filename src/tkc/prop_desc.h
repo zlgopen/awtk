@@ -150,9 +150,15 @@ typedef struct _prop_desc_t {
   /**
    * @property {uint8_t} persistent
    * @annotation ["readable"]
-   * 需要存储。
+   * 是否需要存储。
    */
   uint8_t persistent : 1;
+  /**
+   * @property {uint8_t} configurable
+   * @annotation ["readable"]
+   * 是否用户可配置。
+   */
+  uint8_t configurable: 1;
   /**
    * @property {uint16_t} reserved
    * @annotation ["readable"]
