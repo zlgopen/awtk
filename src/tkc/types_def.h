@@ -170,8 +170,6 @@ typedef enum _ret_t {
 #define log_error(...) __android_log_print(ANDROID_LOG_ERROR, "AWTK", __VA_ARGS__)
 #elif defined(WIN32)
 #include <windows.h>
-#define random rand
-#define srandom srand
 #define strcasecmp stricmp
 #if defined(__GNUC__)
 #define log_debug(format, args...) printf(format, ##args)
@@ -196,6 +194,11 @@ typedef enum _ret_t {
 #define log_warn(format, args...)
 #define log_error(format, args...)
 #endif
+
+#if defined(WIN32) || defined(__ARMCC_VERSION)
+#define random rand
+#define srandom srand
+#endif/*WIN32||__ARMCC_VERSION*/
 
 #if !defined(WIN32) && !defined(MAX_PATH)
 #define MAX_PATH 255
