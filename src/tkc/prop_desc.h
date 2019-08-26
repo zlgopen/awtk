@@ -32,10 +32,30 @@ BEGIN_C_DECLS
  */
 typedef enum _prop_desc_type_t {
   /**
+   * @const PROP_DESC_TYPE_INT8
+   * 有符号8位整数类型。
+   */
+  PROP_DESC_TYPE_INT8,
+  /**
+   * @const PROP_DESC_TYPE_UINT8
+   * 无符号8位整数类型。
+   */
+  PROP_DESC_TYPE_UINT8,
+  /**
+   * @const PROP_DESC_TYPE_INT16
+   * 有符号16位整数类型。
+   */
+  PROP_DESC_TYPE_INT16,
+  /**
+   * @const PROP_DESC_TYPE_UINT16
+   * 无符号16位整数类型。
+   */
+  PROP_DESC_TYPE_UINT16,
+  /**
    * @const PROP_DESC_TYPE_INT32
    * 有符号32位整数类型。
    */
-  PROP_DESC_TYPE_INT32 = 0,
+  PROP_DESC_TYPE_INT32,
   /**
    * @const PROP_DESC_TYPE_UINT32
    * 无符号32位整数类型。
@@ -72,31 +92,6 @@ typedef enum _prop_desc_type_t {
    */
   PROP_DESC_TYPE_STRING,
   /**
-   * @const PROP_DESC_TYPE_PHONE
-   * 手机号码类型。
-   */
-  PROP_DESC_TYPE_PHONE,
-  /**
-   * @const PROP_DESC_TYPE_PHONE
-   * 邮件类型。
-   */
-  PROP_DESC_TYPE_EMAIL,
-  /**
-   * @const PROP_DESC_TYPE_IP4_ADDRESS
-   * ip4地址类型。
-   */
-  PROP_DESC_TYPE_IP4_ADDRESS,
-  /**
-   * @const PROP_DESC_TYPE_DOMAIN_NAME
-   * 域名类型。
-   */
-  PROP_DESC_TYPE_DOMAIN_NAME,
-  /**
-   * @const PROP_DESC_TYPE_URL
-   * URL类型。
-   */
-  PROP_DESC_TYPE_URL,
-  /**
    * @const PROP_DESC_TYPE_INT_ENUMS
    * 整数枚举类型。
    */
@@ -107,6 +102,53 @@ typedef enum _prop_desc_type_t {
    */
   PROP_DESC_TYPE_STRING_ENUMS
 } prop_desc_type_t;
+
+/**
+ * @enum prop_format_type_t
+ * 属性描述格式常量定义。
+ */
+typedef enum _prop_format_type_t {
+  /**
+   * @const PROP_FORMAT_TYPE_NONE
+   * 无特殊格式。
+   */
+  PROP_FORMAT_TYPE_NONE,
+  /**
+   * @const PROP_FORMAT_TYPE_HEX
+   * 16进制格式。
+   */
+  PROP_FORMAT_TYPE_HEX,
+  /**
+   * @const PROP_FORMAT_TYPE_HEX
+   * 非负格式(用于进一步限制float/double)。
+   */
+  PROP_FORMAT_TYPE_UNSIGNED,
+  /**
+   * @const PROP_FORMAT_TYPE_PHONE
+   * 手机号码格式。
+   */
+  PROP_FORMAT_TYPE_PHONE,
+  /**
+   * @const PROP_FORMAT_TYPE_PHONE
+   * 邮件格式。
+   */
+  PROP_FORMAT_TYPE_EMAIL,
+  /**
+   * @const PROP_FORMAT_TYPE_IP4_ADDRESS
+   * ip4地址格式。
+   */
+  PROP_FORMAT_TYPE_IP4_ADDRESS,
+  /**
+   * @const PROP_FORMAT_TYPE_DOMAIN_NAME
+   * 域名格式。
+   */
+  PROP_FORMAT_TYPE_DOMAIN_NAME,
+  /**
+   * @const PROP_FORMAT_TYPE_URL
+   * URL格式。
+   */
+  PROP_FORMAT_TYPE_URL
+} prop_format_type_t;
 
 /**
  * @enum prop_desc_scope_t
@@ -142,6 +184,12 @@ typedef struct _prop_desc_t {
    */
   uint8_t type;
   /**
+   * @property {uint8_t} format
+   * @annotation ["readable"]
+   * 格式。
+   */
+  uint8_t format;
+  /**
    * @property {uint8_t} scope
    * @annotation ["readable"]
    * 范围。
@@ -160,11 +208,11 @@ typedef struct _prop_desc_t {
    */
   uint8_t configurable: 1;
   /**
-   * @property {uint16_t} reserved
+   * @property {uint8_t} reserved
    * @annotation ["readable"]
    * 保留。
    */
-  uint16_t reserved;
+  uint8_t reserved;
   /**
    * @property {const char*} name
    * @annotation ["readable"]
@@ -178,6 +226,118 @@ typedef struct _prop_desc_t {
    */
   const char* desc;
 } prop_desc_t;
+
+/**
+ * @class prop_desc_int8_t
+ * @parent prop_desc_t
+ * 有符号8位整数类型属性描述。
+ */
+typedef struct _prop_desc_int8_t {
+  prop_desc_t prop_desc;
+
+  /**
+   * @property {int8_t} defvalue
+   * @annotation ["readable"]
+   * 缺省值。
+   */
+  int8_t defvalue;
+  /**
+   * @property {int8_t} min
+   * @annotation ["readable"]
+   * 最小值。
+   */
+  int8_t min;
+  /**
+   * @property {int8_t} max
+   * @annotation ["readable"]
+   * 最大值。
+   */
+  int8_t max;
+} prop_desc_int8_t;
+
+/**
+ * @class prop_desc_uint8_t
+ * @parent prop_desc_t
+ * 无符号8位整数类型属性描述。
+ */
+typedef struct _prop_desc_uint8_t {
+  prop_desc_t prop_desc;
+
+  /**
+   * @property {uint8_t} defvalue
+   * @annotation ["readable"]
+   * 缺省值。
+   */
+  uint8_t defvalue;
+  /**
+   * @property {uint8_t} min
+   * @annotation ["readable"]
+   * 最小值。
+   */
+  uint8_t min;
+  /**
+   * @property {uint8_t} max
+   * @annotation ["readable"]
+   * 最大值。
+   */
+  uint8_t max;
+} prop_desc_uint8_t;
+
+/**
+ * @class prop_desc_int16_t
+ * @parent prop_desc_t
+ * 有符号16位整数类型属性描述。
+ */
+typedef struct _prop_desc_int16_t {
+  prop_desc_t prop_desc;
+
+  /**
+   * @property {int16_t} defvalue
+   * @annotation ["readable"]
+   * 缺省值。
+   */
+  int16_t defvalue;
+  /**
+   * @property {int16_t} min
+   * @annotation ["readable"]
+   * 最小值。
+   */
+  int16_t min;
+  /**
+   * @property {int16_t} max
+   * @annotation ["readable"]
+   * 最大值。
+   */
+  int16_t max;
+} prop_desc_int16_t;
+
+/**
+ * @class prop_desc_uint16_t
+ * @parent prop_desc_t
+ * 无符号16位整数类型属性描述。
+ */
+typedef struct _prop_desc_uint16_t {
+  prop_desc_t prop_desc;
+
+  /**
+   * @property {uint16_t} defvalue
+   * @annotation ["readable"]
+   * 缺省值。
+   */
+  uint16_t defvalue;
+  /**
+   * @property {uint16_t} min
+   * @annotation ["readable"]
+   * 最小值。
+   */
+  uint16_t min;
+  /**
+   * @property {uint16_t} max
+   * @annotation ["readable"]
+   * 最大值。
+   */
+  uint16_t max;
+} prop_desc_uint16_t;
 
 /**
  * @class prop_desc_int32_t
@@ -392,51 +552,6 @@ typedef struct _prop_desc_string_t {
 } prop_desc_string_t;
 
 /**
- * @class prop_desc_phone_t
- * @parent prop_desc_string_t
- * 电话号码类型属性描述。
- */
-typedef struct _prop_desc_phone_t {
-  prop_desc_string_t prop_desc_string;
-} prop_desc_phone_t;
-
-/**
- * @class prop_desc_email_t
- * @parent prop_desc_string_t
- * 邮箱地址类型属性描述。
- */
-typedef struct _prop_desc_email_t {
-  prop_desc_string_t prop_desc_string;
-} prop_desc_email_t;
-
-/**
- * @class prop_desc_ip4_address_t
- * @parent prop_desc_string_t
- * ip4地址类型属性描述。
- */
-typedef struct _prop_desc_ip4_address_t {
-  prop_desc_string_t prop_desc_string;
-} prop_desc_ip4_address_t;
-
-/**
- * @class prop_desc_domain_name_t
- * @parent prop_desc_string_t
- * 域名类型属性描述。
- */
-typedef struct _prop_desc_domain_name_t {
-  prop_desc_string_t prop_desc_string;
-} prop_desc_domain_name_t;
-
-/**
- * @class prop_desc_url_t
- * @parent prop_desc_string_t
- * URL类型属性描述。
- */
-typedef struct _prop_desc_url_t {
-  prop_desc_string_t prop_desc_string;
-} prop_desc_url_t;
-
-/**
  * @class prop_desc_int_enums_t
  * @parent prop_desc_t
  * 整数枚举类型属性描述。
@@ -456,7 +571,7 @@ typedef struct _prop_desc_int_enums_t {
    * @annotation ["readable"]
    * 枚举值（每一项用英文冒号分隔值和名称）。
    */
-  const char** enums;
+  const char* enums[];
 } prop_desc_int_enums_t;
 
 /**
@@ -478,7 +593,7 @@ typedef struct _prop_desc_string_enums_t {
    * @annotation ["readable"]
    * 枚举值。
    */
-  const char** enums;
+  const char* enums[];
 } prop_desc_string_enums_t;
 
 END_C_DECLS
