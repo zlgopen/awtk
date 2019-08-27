@@ -198,7 +198,7 @@ typedef enum _ret_t {
 #if defined(WIN32) || defined(__ARMCC_VERSION)
 #define random rand
 #define srandom srand
-#endif/*WIN32||__ARMCC_VERSION*/
+#endif /*WIN32||__ARMCC_VERSION*/
 
 #if !defined(WIN32) && !defined(MAX_PATH)
 #define MAX_PATH 255
@@ -327,6 +327,6 @@ enum { TK_NAME_LEN = 31 };
 
 typedef uint32_t (*tk_get_time_t)();
 typedef uint32_t (*tk_get_time_ms_t)();
-typedef void     (*tk_sleep_ms_t)(uint32_t ms);
+typedef void (*tk_sleep_ms_t)(uint32_t ms);
 
 #endif /*TYPES_DEF_H*/

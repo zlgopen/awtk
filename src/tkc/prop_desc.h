@@ -206,7 +206,7 @@ typedef struct _prop_desc_t {
    * @annotation ["readable"]
    * 是否用户可配置。
    */
-  uint8_t configurable: 1;
+  uint8_t configurable : 1;
   /**
    * @property {uint8_t} reserved
    * @annotation ["readable"]

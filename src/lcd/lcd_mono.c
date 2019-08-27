@@ -111,7 +111,7 @@ static ret_t lcd_mono_draw_data(lcd_t* lcd, const uint8_t* buff, uint32_t w, uin
   for (j = 0; j < sh; j++) {
     for (i = 0; i < sw; i++) {
       pixel_t pixel = bitmap_mono_get_pixel(buff, w, h, sx + i, sy + j);
-      if(revert_pixel) {
+      if (revert_pixel) {
         pixel = !pixel;
       }
       lcd_mono_set_pixel(lcd, x + i, y + j, pixel);

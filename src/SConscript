@@ -19,6 +19,7 @@ sources=Glob('layouters/*.c') + \
   Glob('designer_support/*.c') + \
   Glob('widget_animators/*.c') + \
   Glob('misc/*.cpp') + \
+  Glob('streams/*.c') + \
   Glob('window_animators/*.c') + \
   Glob('dialog_highlighters/*.c') + \
   Glob('window_manager/window_manager_default.c') 
