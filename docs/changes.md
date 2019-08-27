@@ -1,7 +1,8 @@
 # 最新动态
 * 2019/08/27
   * 完善lcd mono(感谢智明提供补丁)。
-  
+  * 完善wuxiaolin draw line(感谢培煌提供补丁)。 
+
 * 2019/08/24
   * 更新文档。
   * 完善mledit，支持readonly属性。

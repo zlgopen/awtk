@@ -23,7 +23,7 @@
     b = tmp;              \
   } while (0)
 
-void draw_line(canvas_t* c, unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2) {
+void draw_line(canvas_t* c, int x1, int y1, int x2, int y2) {
   point_t p;
   lcd_t* lcd = c->lcd;
   xy_t xmin = c->clip_left;
