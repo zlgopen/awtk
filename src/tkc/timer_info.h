@@ -32,7 +32,7 @@ typedef struct _timer_info_t timer_info_t;
 struct _timer_manager_t;
 typedef struct _timer_manager_t timer_manager_t;
 
-typedef uint32_t (*timer_get_time_t)();
+typedef tk_get_time_ms_t timer_get_time_t;
 typedef ret_t (*timer_func_t)(const timer_info_t* timer);
 
 /**
