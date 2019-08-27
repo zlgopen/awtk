@@ -100,7 +100,7 @@ static ret_t lcd_mono_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
 }
 
 static ret_t lcd_mono_draw_data(lcd_t* lcd, const uint8_t* buff, uint32_t w, uint32_t h,
-                                rect_t* src, xy_t x, xy_t y) {
+                                rect_t* src, xy_t x, xy_t y, bool_t revert_pixel) {
   wh_t i = 0;
   wh_t j = 0;
   wh_t sx = src->x;
@@ -111,6 +111,9 @@ static ret_t lcd_mono_draw_data(lcd_t* lcd, const uint8_t* buff, uint32_t w, uin
   for (j = 0; j < sh; j++) {
     for (i = 0; i < sw; i++) {
       pixel_t pixel = bitmap_mono_get_pixel(buff, w, h, sx + i, sy + j);
+      if(revert_pixel) {
+        pixel = !pixel;
+      }
       lcd_mono_set_pixel(lcd, x + i, y + j, pixel);
     }
   }
@@ -119,14 +122,16 @@ static ret_t lcd_mono_draw_data(lcd_t* lcd, const uint8_t* buff, uint32_t w, uin
 }
 
 static ret_t lcd_mono_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x, xy_t y) {
-  return lcd_mono_draw_data(lcd, glyph->data, glyph->w, glyph->h, src, x, y);
+  pixel_t pixel = color_to_pixel(lcd->text_color);
+
+  return lcd_mono_draw_data(lcd, glyph->data, glyph->w, glyph->h, src, x, y, !pixel);
 }
 
 static ret_t lcd_mono_draw_image_mono(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
   const uint8_t* data = (const uint8_t*)(img->data);
   return_value_if_fail(src->w == dst->w && src->h == dst->h, RET_OK);
 
-  return lcd_mono_draw_data(lcd, data, img->w, img->h, src, dst->x, dst->y);
+  return lcd_mono_draw_data(lcd, data, img->w, img->h, src, dst->x, dst->y, FALSE);
 }
 
 static ret_t lcd_mono_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
