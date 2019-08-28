@@ -266,12 +266,27 @@ static ret_t native_window_sdl_on_destroy(object_t* obj) {
   return RET_OK;
 }
 
+static ret_t native_window_sdl_exec(object_t* obj, const char* cmd, const char* args) {
+  native_window_sdl_t* sdl = NATIVE_WINDOW_SDL(obj);
+
+  if (tk_str_eq(cmd, "reset_canvas")) {
+    canvas_t* c = &(sdl->canvas);
+    lcd_destroy(c->lcd);
+    c->lcd = lcd_nanovg_init(NATIVE_WINDOW(sdl));
+
+    return RET_OK;
+  }
+
+  return RET_NOT_FOUND;
+}
+
 static const object_vtable_t s_native_window_sdl_vtable = {
     .type = "native_window_sdl",
     .desc = "native_window_sdl",
     .size = sizeof(native_window_sdl_t),
     .get_prop = native_window_sdl_get_prop,
     .set_prop = native_window_sdl_set_prop,
+    .exec = native_window_sdl_exec,
     .on_destroy = native_window_sdl_on_destroy};
 
 static native_window_t* native_window_create_internal(const char* title, uint32_t flags, int32_t x,

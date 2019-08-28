@@ -1,4 +1,7 @@
 # 最新动态
+* 2019/08/28
+    * 增加widget_reset_canvas用于designer打开新工程时清除vgcanvas中的资源。
+
 * 2019/08/27
   * 完善lcd mono(感谢智明提供补丁)。
   * 完善wuxiaolin draw line(感谢培煌提供补丁)。 

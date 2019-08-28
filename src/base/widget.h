@@ -1954,6 +1954,9 @@ ret_t widget_set_style_color(widget_t* widget, const char* state_and_name, uint3
  */
 canvas_t* widget_get_canvas(widget_t* widget);
 
+/*for designer only*/
+ret_t widget_reset_canvas(widget_t* widget);
+
 /*虚函数的包装*/
 ret_t widget_on_paint(widget_t* widget, canvas_t* c);
 ret_t widget_on_keydown(widget_t* widget, key_event_t* e);
