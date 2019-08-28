@@ -99,6 +99,19 @@ ret_t canvas_set_font_manager(canvas_t* c, font_manager_t* font_manager) {
   return RET_OK;
 }
 
+ret_t canvas_set_assets_manager(canvas_t* c, assets_manager_t* assets_manager) {
+  vgcanvas_t* vgcanvas = NULL;
+  return_value_if_fail(c != NULL && assets_manager != NULL, RET_BAD_PARAMS);
+
+  vgcanvas = lcd_get_vgcanvas(c->lcd);
+  c->assets_manager = assets_manager;
+  if(vgcanvas != NULL) {
+    vgcanvas_set_assets_manager(vgcanvas, assets_manager);
+  }
+
+  return RET_OK;
+}
+
 ret_t canvas_get_clip_rect(canvas_t* c, rect_t* r) {
   return_value_if_fail(c != NULL && r != NULL, RET_BAD_PARAMS);
 

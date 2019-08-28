@@ -65,6 +65,7 @@ struct _canvas_t {
   align_v_t text_align_v;
   align_h_t text_align_h;
   font_manager_t* font_manager;
+  assets_manager_t* assets_manager;
   uint8_t global_alpha;
 
   bool_t began_frame;
@@ -528,6 +529,7 @@ ret_t canvas_draw_char(canvas_t* c, wchar_t chr, xy_t x, xy_t y);
 ret_t canvas_draw_image_matrix(canvas_t* c, bitmap_t* img, matrix_t* matrix);
 ret_t canvas_set_fps(canvas_t* c, bool_t show_fps, uint32_t fps);
 ret_t canvas_set_font_manager(canvas_t* c, font_manager_t* font_manager);
+ret_t canvas_set_assets_manager(canvas_t* c, assets_manager_t* assets_manager);
 
 ret_t canvas_begin_frame(canvas_t* c, rect_t* dirty_rect, lcd_draw_mode_t draw_mode);
 ret_t canvas_end_frame(canvas_t* c);

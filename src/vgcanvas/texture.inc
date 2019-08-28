@@ -35,7 +35,7 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
     img->specific = tk_pointer_from_int(i);
     img->specific_ctx = canvas->vg;
     img->specific_destroy = nanovg_on_bitmap_destroy;
-    image_manager_update_specific(image_manager(), img);
+    image_manager_update_specific(img->image_manager, img);
   }
 
   return i;

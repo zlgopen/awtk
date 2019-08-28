@@ -356,6 +356,7 @@ struct _vgcanvas_t {
 
   rect_t clip_rect;
   const vgcanvas_vtable_t* vt;
+  assets_manager_t* assets_manager;
 };
 
 /**
@@ -1121,6 +1122,7 @@ ret_t vgcanvas_destroy_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo);
 ret_t vgcanvas_bind_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo);
 ret_t vgcanvas_unbind_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo);
 ret_t fbo_to_img(framebuffer_object_t* fbo, bitmap_t* img);
+ret_t vgcanvas_set_assets_manager(vgcanvas_t* vg, assets_manager_t* assets_manager);
 
 END_C_DECLS
 

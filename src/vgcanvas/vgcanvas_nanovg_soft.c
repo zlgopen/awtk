@@ -24,7 +24,6 @@
 #include "tkc/mem.h"
 #include "base/vgcanvas.h"
 #include "base/image_manager.h"
-#include "base/assets_manager.h"
 
 #ifdef WITH_NANOVG_AGGE
 #include "agge/nanovg_agge.h"

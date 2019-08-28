@@ -235,7 +235,9 @@ static ret_t vgcanvas_nanovg_set_font(vgcanvas_t* vgcanvas, const char* name) {
 
   font_id = nvgFindFont(vg, name);
   if (font_id < 0) {
-    const asset_info_t* r = assets_manager_ref(assets_manager(), ASSET_TYPE_FONT, name);
+    assets_manager_t* am = vgcanvas->assets_manager ? vgcanvas->assets_manager : assets_manager();
+    const asset_info_t* r = assets_manager_ref(am, ASSET_TYPE_FONT, name);
+
     if (r == NULL || r->subtype != ASSET_TYPE_FONT_TTF) {
       font_id = nvgFindFont(vg, name);
       if (font_id >= 0) {
@@ -243,11 +245,15 @@ static ret_t vgcanvas_nanovg_set_font(vgcanvas_t* vgcanvas, const char* name) {
         return RET_OK;
       }
 
-      r = assets_manager_ref(assets_manager(), ASSET_TYPE_FONT, name);
+      r = assets_manager_ref(am, ASSET_TYPE_FONT, name);
     }
 
     if (r != NULL && r->subtype == ASSET_TYPE_FONT_TTF) {
       font_id = nvgCreateFontMem(vg, name, (unsigned char*)r->data, r->size, 0);
+    }
+    
+    if(r != NULL) {
+      assets_manager_unref(am, r);
     }
   }
 

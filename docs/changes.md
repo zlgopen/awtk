@@ -3,7 +3,8 @@
     * 增加widget_reset_canvas用于designer打开新工程时清除vgcanvas中的资源。
     * hscroll_label 支持右对齐(感谢智明提供补丁)。
     * 修改密码编辑器的BUG(感谢俊杰提供补丁)。
-
+    * vgcanvas 支持设置assets manager, 以便从指定的assets manager加载字体。
+    
 * 2019/08/27
   * 完善lcd mono(感谢智明提供补丁)。
   * 完善wuxiaolin draw line(感谢培煌提供补丁)。 

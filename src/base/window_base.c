@@ -37,8 +37,12 @@ ret_t window_base_on_paint_self(widget_t* widget, canvas_t* c) {
 }
 
 ret_t window_base_on_paint_begin(widget_t* widget, canvas_t* c) {
-  (void)widget;
-  (void)c;
+  assets_manager_t* am = widget_get_assets_manager(widget);
+  font_manager_t* fm = widget_get_font_manager(widget);
+
+  canvas_set_font_manager(c, fm);
+  canvas_set_assets_manager(c, am);
+
   return RET_OK;
 }
 

@@ -19,7 +19,6 @@
  *
  */
 
-#include "base/assets_manager.h"
 #include "base/image_manager.h"
 #include "tkc/utf8.h"
 

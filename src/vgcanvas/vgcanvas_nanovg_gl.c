@@ -43,7 +43,6 @@
 #include "base/vgcanvas.h"
 #include "base/image_manager.h"
 #include "base/native_window.h"
-#include "base/assets_manager.h"
 
 #include "nanovg_gl.h"
 #include "nanovg_gl_utils.h"
