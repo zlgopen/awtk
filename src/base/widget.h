@@ -1955,6 +1955,7 @@ ret_t widget_set_style_color(widget_t* widget, const char* state_and_name, uint3
 canvas_t* widget_get_canvas(widget_t* widget);
 
 /*for designer only*/
+/*调用者需要unload全部图片*/
 ret_t widget_reset_canvas(widget_t* widget);
 
 /*虚函数的包装*/

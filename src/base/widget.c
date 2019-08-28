@@ -3067,9 +3067,6 @@ ret_t widget_reset_canvas(widget_t* widget) {
   widget_t* win = widget_get_window(widget);
   return_value_if_fail(win != NULL, RET_BAD_PARAMS);
 
-  image_manager_unload_unused(image_manager(), 0xffffffff);
-  image_manager_unload_unused(widget_get_image_manager(win), 0xffffffff);
-
   return object_exec(OBJECT(widget_get_prop_pointer(win, WIDGET_PROP_NATIVE_WINDOW)),
                      "reset_canvas", "");
 }
