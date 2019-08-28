@@ -2,6 +2,7 @@
 * 2019/08/28
     * 增加widget_reset_canvas用于designer打开新工程时清除vgcanvas中的资源。
     * hscroll_label 支持右对齐(感谢智明提供补丁)。
+    * 修改密码编辑器的BUG(感谢俊杰提供补丁)。
 
 * 2019/08/27
   * 完善lcd mono(感谢智明提供补丁)。
