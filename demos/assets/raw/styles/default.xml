@@ -579,5 +579,10 @@
     <normal   />
     <focused  />
   </style>
+  
+  <style name="right" text_color="green" text_align_h="right">
+    <normal   />
+    <focused  />
+  </style>
 </hscroll_label>
 

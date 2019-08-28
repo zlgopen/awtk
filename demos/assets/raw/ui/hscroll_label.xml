@@ -1,5 +1,6 @@
 <window anim_hint="htranslate" text="hscroll_label" children_layout="default(c=1,h=30,xm=10,s=5)">
   <hscroll_label text="炫酷的 GUI 引擎。" /> 
+  <hscroll_label text="炫酷的 GUI 引擎。" style="right"/> 
 
   <hscroll_label 
     lull="1000"
