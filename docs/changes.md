@@ -3,6 +3,8 @@
   * 修改重载new的问题(感谢陈谭提供补丁)。
   * 修改combox在dialog上焦点设置错误的问题。
   * 优化数字时钟，时间没变时不重绘。
+  * 修改 widget 焦点切换的 BUG（感谢尧燊提供补丁）。
+  * 修改 children layouter的 BUG（感谢尧燊提供补丁）。
 
 * 2019/08/28
   * 增加widget_reset_canvas用于designer打开新工程时清除vgcanvas中的资源。
