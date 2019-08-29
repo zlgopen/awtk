@@ -97,6 +97,7 @@ typedef struct _digit_clock_t {
    */
   char* format;
 
+  wstr_t last_time;
 } digit_clock_t;
 
 /**

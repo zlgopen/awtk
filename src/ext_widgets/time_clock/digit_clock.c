@@ -192,13 +192,19 @@ static ret_t digit_clock_set_prop(widget_t* widget, const char* name, const valu
 
 static ret_t digit_clock_on_timer(const timer_info_t* info) {
   widget_t* widget = NULL;
+  digit_clock_t* digit_clock = NULL;
   return_value_if_fail(info != NULL, RET_REMOVE);
 
   widget = WIDGET(info->ctx);
+  digit_clock = DIGIT_CLOCK(widget);
   return_value_if_fail(widget != NULL, RET_REMOVE);
 
+  wstr_set(&(digit_clock->last_time), widget->text.str);
   digit_clock_update_time(widget);
-  widget_invalidate(widget, NULL);
+
+  if(!wstr_equal(&(digit_clock->last_time), &(widget->text))) {
+    widget_invalidate(widget, NULL);
+  }
 
   return RET_REPEAT;
 }
@@ -208,6 +214,7 @@ static ret_t digit_clock_on_destroy(widget_t* widget) {
   return_value_if_fail(widget != NULL && digit_clock != NULL, RET_BAD_PARAMS);
 
   TKMEM_FREE(digit_clock->format);
+  wstr_reset(&(digit_clock->last_time));
 
   return RET_OK;
 }
@@ -233,6 +240,7 @@ widget_t* digit_clock_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 
   digit_clock_update_time(widget);
   widget_add_timer(widget, digit_clock_on_timer, 1000);
+  wstr_init(&(digit_clock->last_time), 32);
 
   return widget;
 }
