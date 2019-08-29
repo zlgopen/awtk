@@ -58,15 +58,7 @@ int main(int argc, char* argv[]) {
   }
 #endif
 
-#if defined(WIN32)
-#if !defined(NDEBUG)
-  {
-    AllocConsole();
-    FILE* fp = NULL;
-    freopen_s(&fp, "CONOUT$", "w+t", stdout);
-  }
-#endif /*NDEBUG*/
-#endif /*WIN32*/
+  TK_ENABLE_CONSOLE();
 
   tk_init(lcd_w, lcd_h, APP_SIMULATOR, NULL, NULL);
 #endif
