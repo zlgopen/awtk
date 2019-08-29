@@ -1,4 +1,7 @@
 # 最新动态
+* 2019/08/30
+  * 修改windows下使用单头文件freetype的问题(感谢陈谭提供补丁)。
+
 * 2019/08/29
   * 修改重载new的问题(感谢陈谭提供补丁)。
   * 修改combox在dialog上焦点设置错误的问题。
@@ -7,8 +10,8 @@
   * 修改 children layouter的 BUG（感谢尧燊提供补丁）。
 
 * 2019/08/28
-  * 增加widget_reset_canvas用于designer打开新工程时清除vgcanvas中的资源。
-  * hscroll_label 支持右对齐(感谢智明提供补丁)。
+  * 增加widget\_reset\_canvas用于designer打开新工程时清除vgcanvas中的资源。
+  * hscroll\_label 支持右对齐(感谢智明提供补丁)。
   * 修改密码编辑器的BUG(感谢俊杰提供补丁)。
   * vgcanvas 支持设置assets manager, 以便从指定的assets manager加载字体。
     

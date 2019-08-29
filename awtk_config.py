@@ -162,7 +162,7 @@ elif OS_NAME == 'Windows':
   if not os.path.exists(os.path.abspath(TK_LIB_DIR)) :
     os.makedirs(os.path.abspath(TK_LIB_DIR))
   if TOOLS_NAME == '' :
-    OS_LIBS=['freetype.lib', 'gdi32', 'user32','winmm.lib','imm32.lib','version.lib','shell32.lib','ole32.lib','Oleaut32.lib','Advapi32.lib','DelayImp.lib','psapi.lib']
+    OS_LIBS=['gdi32', 'user32','winmm.lib','imm32.lib','version.lib','shell32.lib','ole32.lib','Oleaut32.lib','Advapi32.lib','DelayImp.lib','psapi.lib']
     OS_FLAGS='-DWIN32 -D_WIN32 -DWINDOWS /EHsc -D_CONSOLE  /DEBUG /Od  /FS /Z7 '
     if TARGET_ARCH == 'x86':
       OS_FLAGS += OS_FLAGS + ' /MD '
@@ -177,7 +177,7 @@ elif OS_NAME == 'Windows':
       OS_SUBSYSTEM_WINDOWS='/SUBSYSTEM:WINDOWS  '
       COMMON_CCFLAGS = COMMON_CCFLAGS + ' -D_WIN64 '
   elif TOOLS_NAME == 'mingw' :
-    OS_LIBS=['freetype','kernel32', 'gdi32', 'user32', 'winmm','imm32','version','shell32','ole32','Oleaut32','Advapi32','oleaut32','uuid','stdc++']
+    OS_LIBS=['kernel32', 'gdi32', 'user32', 'winmm','imm32','version','shell32','ole32','Oleaut32','Advapi32','oleaut32','uuid','stdc++']
     OS_FLAGS='-DWINDOWS -D_CONSOLE -g -Wall'
     COMMON_CFLAGS=COMMON_CFLAGS+' -std=gnu99 '
     COMMON_CCFLAGS=COMMON_CCFLAGS+' -DWITH_DOUBLE_FLOAT -DUNICODE ' 
@@ -187,8 +187,7 @@ elif OS_NAME == 'Windows':
   COMMON_CCFLAGS = COMMON_CCFLAGS + '-D__STDC_LIMIT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_CONSTANT_MACROS -D_HAS_EXCEPTIONS=0 -D_HAS_ITERATOR_DEBUGGING=0 -D_ITERATOR_DEBUG_LEVEL=0 -D_SCL_SECURE=0'
   COMMON_CCFLAGS = COMMON_CCFLAGS + '-D_SECURE_SCL=0 -D_SCL_SECURE_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -D_CRT_SECURE_NO_DEPRECATE '
   OS_PROJECTS=['3rd/SDL/SConscript']
-  OS_CPPPATH = [joinPath(TK_3RD_ROOT, 'freetype-windows/include')]
-  COMMON_CCFLAGS=COMMON_CCFLAGS+' -DWITH_FT_FONT -DUSE_SYSTEM_FREETYPE '
+  COMMON_CCFLAGS=COMMON_CCFLAGS+' -DWITH_FT_FONT '
 
   
 CFLAGS=COMMON_CFLAGS
@@ -235,21 +234,3 @@ os.environ['NANOVG_BACKEND'] = NANOVG_BACKEND;
 os.environ['NATIVE_WINDOW'] = NATIVE_WINDOW;
 os.environ['FRAME_BUFFER_FORMAT'] = FRAME_BUFFER_FORMAT;
 
-def copy_freetype_after_build():
-  TARGET_LIB_DIR=TK_LIB_DIR
-  TARGET_BIN_DIR=os.environ['BIN_DIR']
-  if OS_NAME == 'Windows':
-    if TOOLS_NAME == '' :
-      if TARGET_ARCH == 'x86':
-        copyfile(joinPath(TK_3RD_ROOT, 'freetype-windows/win32/freetype.lib'), joinPath(TARGET_LIB_DIR, 'freetype.lib')); 
-        copyfile(joinPath(TK_3RD_ROOT, 'freetype-windows/win32/freetype.dll'), joinPath(TARGET_BIN_DIR, 'freetype.dll')); 
-      else:
-        copyfile(joinPath(TK_3RD_ROOT, 'freetype-windows/win64/freetype.lib'), joinPath(TARGET_LIB_DIR, 'freetype.lib')); 
-        copyfile(joinPath(TK_3RD_ROOT, 'freetype-windows/win64/freetype.dll'), joinPath(TARGET_BIN_DIR, 'freetype.dll')); 
-    elif TOOLS_NAME == 'mingw' :
-      copyfile(joinPath(TK_3RD_ROOT, 'freetype-windows/mingw32/libfreetype.a'), joinPath(TARGET_LIB_DIR, 'libfreetype.a'));
-      copyfile(joinPath(TK_3RD_ROOT, 'freetype-windows/mingw32/freetype6.dll'), joinPath(TARGET_BIN_DIR, 'freetype6.dll'));
-    print('copy_freetype_after_build: TARGET_BIN_DIR=' + TARGET_BIN_DIR + " TARGET_LIB_DIR=" + TARGET_LIB_DIR);
-
-import atexit
-atexit.register(copy_freetype_after_build)
