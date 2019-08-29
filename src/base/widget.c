@@ -480,8 +480,8 @@ static ret_t widget_set_focused_internal(widget_t* widget, bool_t focused) {
       widget_dispatch(widget, &e);
     } else {
       event_t e = event_init(EVT_BLUR, widget);
-
       widget_dispatch(widget, &e);
+      widget_dispatch_blur_event(widget);
     }
 
     widget_invalidate(widget, NULL);
@@ -628,6 +628,7 @@ ret_t widget_remove_child(widget_t* widget, widget_t* child) {
   }
 
   if (widget->key_target == child) {
+    widget_dispatch_blur_event(widget->key_target);
     widget->key_target = NULL;
   }
 
@@ -1718,7 +1719,12 @@ static ret_t widget_dispatch_blur_event(widget_t* widget) {
 
   while (target != NULL) {
     if (target->focused) {
-      widget_set_focused(target, FALSE);
+      target->focused = FALSE;
+      event_t e = event_init(EVT_BLUR, target);
+      widget_dispatch(target, &e);
+    }
+    if (target->parent && target->parent->key_target == target) {
+      target->parent->key_target = NULL;
     }
     target = target->key_target;
   }
@@ -1763,6 +1769,8 @@ static ret_t widget_on_pointer_down_children(widget_t* widget, pointer_event_t* 
         widget->key_target = target;
       }
     }
+  } else if (widget->key_target) {
+    widget_set_focused_internal(widget->key_target, FALSE);
   }
   return_if_equal(ret, RET_STOP);
 
@@ -2753,7 +2761,7 @@ ret_t widget_set_as_key_target(widget_t* widget) {
     if (parent != NULL) {
       parent->focused = TRUE;
       if (parent->key_target != NULL && parent->key_target != widget) {
-        widget_dispatch_blur_event(widget->parent->key_target);
+        widget_set_focused_internal(widget->parent->key_target, FALSE);
       }
       parent->key_target = widget;
       widget_set_as_key_target(parent);
