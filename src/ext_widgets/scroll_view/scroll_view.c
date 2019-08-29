@@ -88,14 +88,15 @@ static ret_t scroll_view_on_layout_children(widget_t* widget) {
   scroll_view_t* scroll_view = SCROLL_VIEW(widget);
   return_value_if_fail(widget != NULL && scroll_view != NULL, RET_BAD_PARAMS);
 
-  scroll_view_set_offset(widget, 0, 0);
   if (scroll_view->on_layout_children) {
     scroll_view->on_layout_children(widget);
   } else {
+    scroll_view_set_offset(widget, 0, 0);
     widget_layout_children_default(widget);
+    scroll_view_update_virtual_size(widget);
   }
 
-  return scroll_view_update_virtual_size(widget);
+  return RET_OK;
 }
 
 static ret_t scroll_view_on_pointer_down(scroll_view_t* scroll_view, pointer_event_t* e) {
