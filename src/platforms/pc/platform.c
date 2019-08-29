@@ -24,6 +24,7 @@
 #include "base/timer.h"
 #include "tkc/platform.h"
 #include "tkc/date_time.h"
+#include "tkc/mem.h"
 
 #ifdef WIN32
 #include <windows.h>
