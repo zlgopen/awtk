@@ -327,9 +327,9 @@ static ret_t children_layouter_default_layout(children_layouter_t* layouter, wid
     x = xoffset;
     for (i = 0; i < n; i++) {
       iter = children[i];
+      return_value_if_fail(x <= layout_w, RET_BAD_PARAMS);
       widget_move_resize(iter, x, y, iter->w, h);
       x += iter->w + spacing;
-      return_value_if_fail(x <= layout_w, RET_BAD_PARAMS);
     }
 
     for (i = 0; i < n; i++) {
