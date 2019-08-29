@@ -1,6 +1,7 @@
 # 最新动态
 * 2019/08/29
   * 修改重载new的问题(感谢陈谭提供补丁)。
+  * 修改combox在dialog上焦点设置错误的问题。
 
 * 2019/08/28
   * 增加widget_reset_canvas用于designer打开新工程时清除vgcanvas中的资源。
