@@ -269,6 +269,7 @@ static ret_t native_window_sdl_on_destroy(object_t* obj) {
 static ret_t native_window_sdl_exec(object_t* obj, const char* cmd, const char* args) {
   native_window_sdl_t* sdl = NATIVE_WINDOW_SDL(obj);
 
+#ifdef WITH_NANOVG_GPU
   if (tk_str_eq(cmd, "reset_canvas")) {
     canvas_t* c = &(sdl->canvas);
     lcd_destroy(c->lcd);
@@ -276,6 +277,7 @@ static ret_t native_window_sdl_exec(object_t* obj, const char* cmd, const char* 
 
     return RET_OK;
   }
+#endif/*WITH_NANOVG_GPU*/
 
   return RET_NOT_FOUND;
 }
