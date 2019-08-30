@@ -1,7 +1,8 @@
 # 最新动态
 * 2019/08/30
   * 修改windows下使用单头文件freetype的问题(感谢陈谭提供补丁)。
-
+  * 修改 list view children layouter的 BUG（感谢尧燊提供补丁）。
+  
 * 2019/08/29
   * 修改重载new的问题(感谢陈谭提供补丁)。
   * 修改combox在dialog上焦点设置错误的问题。

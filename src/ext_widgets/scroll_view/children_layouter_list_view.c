@@ -285,6 +285,14 @@ static ret_t children_layouter_list_view_layout(children_layouter_t* layouter, w
   scroll_view_set_virtual_h(list_view->scroll_view, virtual_h);
   item_height = tk_max(item_height, default_item_height);
   scroll_bar_set_params(list_view->scroll_bar, virtual_h, item_height);
+  scroll_view->xoffset = 0;
+  if (scroll_view->yoffset + widget->h > scroll_view->virtual_h) {
+    scroll_view->yoffset = scroll_view->virtual_h - widget->h;
+    scroll_view->yoffset = scroll_view->yoffset > 0 ? scroll_view->yoffset : 0;
+  }
+  if (scroll_view->on_scroll) {
+    scroll_view->on_scroll(widget, scroll_view->xoffset, scroll_view->yoffset);
+  }
 
   scroll_view_set_xslidable(list_view->scroll_view, FALSE);
   if (scroll_bar_is_mobile(list_view->scroll_bar)) {
