@@ -41,6 +41,7 @@ typedef struct _children_layouter_list_view_t {
   uint8_t x_margin;
   uint8_t y_margin;
   uint16_t spacing;
+  uint16_t cols;
   uint16_t item_height;
   uint16_t default_item_height;
   uint8_t keep_invisible : 1;
