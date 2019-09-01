@@ -14,7 +14,7 @@ static const char* s_template =
 static char s_buff[1024];
 
 TEST(SVGToBSVG, parseNumbers) {
-  float_t numbers[5] = {0, 0, 0, 0, 0};
+  float numbers[5] = {0, 0, 0, 0, 0};
   ASSERT_EQ(svg_parse_numbers("1.0 2.0", numbers, 5), 2);
   ASSERT_EQ(numbers[0], 1.0);
   ASSERT_EQ(numbers[1], 2.0);

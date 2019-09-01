@@ -1,5 +1,8 @@
 # 最新动态
-* 2019/01/01
+* 2019/09/02
+  * merge patch issue #224(感谢陈谭提供补丁)。
+
+* 2019/09/01
   * children layouter list view 增加cols参数。
 
 * 2019/08/30
