@@ -253,6 +253,12 @@ typedef struct _prop_desc_int8_t {
    * 最大值。
    */
   int8_t max;
+  /**
+   * @property {int8_t} step
+   * @annotation ["readable"]
+   * 步长。
+   */
+  int8_t step;
 } prop_desc_int8_t;
 
 /**
@@ -281,6 +287,12 @@ typedef struct _prop_desc_uint8_t {
    * 最大值。
    */
   uint8_t max;
+  /**
+   * @property {uint8_t} step
+   * @annotation ["readable"]
+   * 步长。
+   */
+  uint8_t step;
 } prop_desc_uint8_t;
 
 /**
@@ -309,6 +321,12 @@ typedef struct _prop_desc_int16_t {
    * 最大值。
    */
   int16_t max;
+  /**
+   * @property {int16_t} step
+   * @annotation ["readable"]
+   * 步长。
+   */
+  int16_t step;
 } prop_desc_int16_t;
 
 /**
@@ -337,6 +355,12 @@ typedef struct _prop_desc_uint16_t {
    * 最大值。
    */
   uint16_t max;
+  /**
+   * @property {uint16_t} step
+   * @annotation ["readable"]
+   * 步长。
+   */
+  uint16_t step;
 } prop_desc_uint16_t;
 
 /**
@@ -365,6 +389,12 @@ typedef struct _prop_desc_int32_t {
    * 最大值。
    */
   int32_t max;
+  /**
+   * @property {int32_t} step
+   * @annotation ["readable"]
+   * 步长。
+   */
+  int32_t step;
 } prop_desc_int32_t;
 
 /**
@@ -393,6 +423,12 @@ typedef struct _prop_desc_uint32_t {
    * 最大值。
    */
   uint32_t max;
+  /**
+   * @property {uint32_t} step
+   * @annotation ["readable"]
+   * 步长。
+   */
+  uint32_t step;
 } prop_desc_uint32_t;
 
 /**
@@ -421,6 +457,12 @@ typedef struct _prop_desc_int64_t {
    * 最大值。
    */
   int64_t max;
+  /**
+   * @property {int64_t} step
+   * @annotation ["readable"]
+   * 步长。
+   */
+  int64_t step;
 } prop_desc_int64_t;
 
 /**
@@ -449,6 +491,12 @@ typedef struct _prop_desc_uint64_t {
    * 最大值。
    */
   uint64_t max;
+  /**
+   * @property {uint64_t} step
+   * @annotation ["readable"]
+   * 步长。
+   */
+  uint64_t step;
 } prop_desc_uint64_t;
 
 /**
@@ -477,6 +525,12 @@ typedef struct _prop_desc_float_t {
    * 最大值。
    */
   float max;
+  /**
+   * @property {float_t} step
+   * @annotation ["readable"]
+   * 步长。
+   */
+  float_t step;
 } prop_desc_float_t;
 
 /**
@@ -505,6 +559,12 @@ typedef struct _prop_desc_double_t {
    * 最大值。
    */
   double max;
+  /**
+   * @property {double_t} step
+   * @annotation ["readable"]
+   * 步长。
+   */
+  double_t step;
 } prop_desc_double_t;
 
 /**
