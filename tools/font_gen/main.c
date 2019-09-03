@@ -23,7 +23,11 @@
 #include "common/utils.h"
 #include "font_gen.h"
 #include "font_loader/font_loader_bitmap.h"
+#ifdef WITH_STB_FONT
+#include "font_loader/font_loader_stb.h"
+#else
 #include "font_loader/font_loader_ft.h"
+#endif/*WITH_STB_FONT*/
 
 int main(int argc, char** argv) {
   uint32_t size = 0;
@@ -58,11 +62,19 @@ int main(int argc, char** argv) {
 
   ttf_buff = (uint8_t*)read_file(ttf_filename, &size);
   return_value_if_fail(ttf_buff != NULL, 0);
+#ifdef WITH_STB_FONT
+  if (mono) {
+    assert(!"not support mono font");
+  } else {
+    font = font_stb_create("default", ttf_buff, size);
+  }
+#else
   if (mono) {
     font = font_ft_mono_create("default", ttf_buff, size);
   } else {
     font = font_ft_create("default", ttf_buff, size);
   }
+#endif/*WITH_STB_FONT*/
 
   str_buff = read_file(str_filename, &size);
   return_value_if_fail(str_buff != NULL, 0);
