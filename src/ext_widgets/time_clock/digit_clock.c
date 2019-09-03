@@ -202,7 +202,7 @@ static ret_t digit_clock_on_timer(const timer_info_t* info) {
   wstr_set(&(digit_clock->last_time), widget->text.str);
   digit_clock_update_time(widget);
 
-  if(!wstr_equal(&(digit_clock->last_time), &(widget->text))) {
+  if (!wstr_equal(&(digit_clock->last_time), &(widget->text))) {
     widget_invalidate(widget, NULL);
   }
 

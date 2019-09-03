@@ -105,7 +105,7 @@ ret_t canvas_set_assets_manager(canvas_t* c, assets_manager_t* assets_manager) {
 
   vgcanvas = lcd_get_vgcanvas(c->lcd);
   c->assets_manager = assets_manager;
-  if(vgcanvas != NULL) {
+  if (vgcanvas != NULL) {
     vgcanvas_set_assets_manager(vgcanvas, assets_manager);
   }
 

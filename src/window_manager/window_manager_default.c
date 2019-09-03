@@ -478,10 +478,10 @@ static ret_t window_manager_default_close_window(widget_t* widget, widget_t* win
   window_manager_dispatch_window_event(window, EVT_WINDOW_CLOSE);
   if (window_manager_check_if_need_close_animation(wm, window) != RET_OK) {
     widget_t* prev_win = NULL;
-    
+
     widget_remove_child(widget, window);
     idle_add(window_manager_idle_destroy_window, window);
-    
+
     prev_win = window_manager_get_top_window(widget);
     if (prev_win != NULL) {
       if (!widget_is_keyboard(window)) {

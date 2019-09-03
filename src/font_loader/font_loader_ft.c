@@ -18,7 +18,7 @@
 #else
 #ifdef WIN32
 #undef interface
-#endif/*WIN32*/
+#endif /*WIN32*/
 /*3rd/freetype_single_header/freetype.h*/
 #include "freetype_single_header/freetype.h"
 #endif /*USE_SYSTEM_FREETYPE*/

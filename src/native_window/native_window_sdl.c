@@ -277,7 +277,7 @@ static ret_t native_window_sdl_exec(object_t* obj, const char* cmd, const char* 
 
     return RET_OK;
   }
-#endif/*WITH_NANOVG_GPU*/
+#endif /*WITH_NANOVG_GPU*/
 
   return RET_NOT_FOUND;
 }

@@ -62,7 +62,7 @@ static const char* children_layouter_list_view_to_string(children_layouter_t* la
     tk_snprintf(temp, sizeof(temp) - 1, "spacing=%d,", (int)(layout->spacing));
     str_append(str, temp);
   }
-  
+
   if (layout->cols > 1) {
     tk_snprintf(temp, sizeof(temp) - 1, "cols=%d,", (int)(layout->cols));
     str_append(str, temp);
@@ -231,7 +231,7 @@ static ret_t children_layouter_list_view_layout(children_layouter_t* layouter, w
     n = children_for_layout.size;
     children = (widget_t**)(children_for_layout.elms);
 
-    if(cols <= 1) {
+    if (cols <= 1) {
       for (i = 0; i < n; i++) {
         widget_t* iter = children[i];
 
@@ -249,7 +249,7 @@ static ret_t children_layouter_list_view_layout(children_layouter_t* layouter, w
         }
       }
     } else {
-      uint32_t rows = (n % cols)  ? (n / cols) + 1 : (n /cols);
+      uint32_t rows = (n % cols) ? (n / cols) + 1 : (n / cols);
       y = (item_height + spacing) * rows;
       if (y > virtual_h) {
         virtual_h = y;
@@ -277,10 +277,10 @@ static ret_t children_layouter_list_view_layout(children_layouter_t* layouter, w
     y = y_margin;
     w = scroll_view->widget.w - 2 * x_margin;
 
-    if(cols <= 1) {
+    if (cols <= 1) {
       for (i = 0; i < n; i++) {
         widget_t* iter = children[i];
-        
+
         if (item_height <= 0) {
           h = iter->h;
         }
@@ -297,7 +297,7 @@ static ret_t children_layouter_list_view_layout(children_layouter_t* layouter, w
     } else {
       uint32_t row = 0;
       uint32_t col = 0;
-      uint32_t item_w = (w - (cols - 1) * spacing)/ cols;
+      uint32_t item_w = (w - (cols - 1) * spacing) / cols;
 
       h = item_height;
       for (i = 0; i < n; i++) {
@@ -308,7 +308,7 @@ static ret_t children_layouter_list_view_layout(children_layouter_t* layouter, w
         x = col * (item_w + spacing);
         y = row * (item_height + spacing);
 
-        widget_move_resize(iter, x, y, item_w , h);
+        widget_move_resize(iter, x, y, item_w, h);
         widget_layout(iter);
       }
     }

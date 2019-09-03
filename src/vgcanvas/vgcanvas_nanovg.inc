@@ -251,8 +251,8 @@ static ret_t vgcanvas_nanovg_set_font(vgcanvas_t* vgcanvas, const char* name) {
     if (r != NULL && r->subtype == ASSET_TYPE_FONT_TTF) {
       font_id = nvgCreateFontMem(vg, name, (unsigned char*)r->data, r->size, 0);
     }
-    
-    if(r != NULL) {
+
+    if (r != NULL) {
       assets_manager_unref(am, r);
     }
   }

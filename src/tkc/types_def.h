@@ -330,10 +330,14 @@ typedef uint32_t (*tk_get_time_ms_t)();
 typedef void (*tk_sleep_ms_t)(uint32_t ms);
 
 #if defined(WIN32) && !defined(NDEBUG)
-#define TK_ENABLE_CONSOLE()  {AllocConsole(); FILE* fp = NULL; freopen_s(&fp, "CONOUT$", "w+t", stdout);}
+#define TK_ENABLE_CONSOLE()                   \
+  {                                           \
+    AllocConsole();                           \
+    FILE* fp = NULL;                          \
+    freopen_s(&fp, "CONOUT$", "w+t", stdout); \
+  }
 #else
 #define TK_ENABLE_CONSOLE()
 #endif /*WIN32 && !NDEBUG*/
-
 
 #endif /*TYPES_DEF_H*/
