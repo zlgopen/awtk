@@ -153,6 +153,15 @@ ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt);
 ret_t text_edit_set_select(text_edit_t* text_edit, uint32_t start, uint32_t end);
 
 /**
+ * @method text_edit_unselect
+ * 取消选择。
+ * @param {text_edit_t*} text_edit text_edit对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t text_edit_unselect(text_edit_t* text_edit);
+
+/**
  * @method text_edit_set_cursor
  * 设置光标位置。
  * @param {text_edit_t*} text_edit text_edit对象。

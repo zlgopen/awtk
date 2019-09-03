@@ -389,6 +389,7 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       input_method_request(input_method(), NULL);
 
       mledit_update_status(widget);
+      text_edit_unselect(mledit->model);
       mledit_dispatch_event(widget, EVT_VALUE_CHANGED);
       break;
     }

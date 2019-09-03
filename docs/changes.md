@@ -1,4 +1,7 @@
 # 最新动态
+* 2019/09/03
+  * edit/mledit失去焦点时，unselect当前选中的文本。
+
 * 2019/09/02
   * merge patch issue #224(感谢陈谭提供补丁)。
 

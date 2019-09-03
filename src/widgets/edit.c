@@ -522,6 +522,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
           widget_set_state(widget, WIDGET_STATE_ERROR);
         }
       }
+      text_edit_unselect(edit->model);
       edit_dispatch_event(widget, EVT_VALUE_CHANGED);
       break;
     }

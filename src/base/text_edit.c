@@ -1082,7 +1082,17 @@ ret_t text_edit_set_select(text_edit_t* text_edit, uint32_t start, uint32_t end)
 
   impl->state.select_start = start;
   impl->state.select_end = tk_min(end, text_edit->widget->text.size);
-  ;
+
+  text_edit_layout(text_edit);
+
+  return RET_OK;
+}
+
+ret_t text_edit_unselect(text_edit_t* text_edit) {
+  DECL_IMPL(text_edit);
+  return_value_if_fail(text_edit != NULL, RET_BAD_PARAMS);
+
+  impl->state.select_end = impl->state.select_start;
 
   text_edit_layout(text_edit);
 
