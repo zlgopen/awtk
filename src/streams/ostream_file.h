@@ -37,11 +37,11 @@ typedef struct _tk_ostream_file_t tk_ostream_file_t;
  * input stream base on fileory
  *
  */
-typedef struct _tk_ostream_file_t {
+struct _tk_ostream_file_t {
   tk_ostream_t ostream;
 
   fs_file_t* file;
-} tk_ostream_file_t;
+};
 
 /**
  * @method tk_ostream_file_create

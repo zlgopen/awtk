@@ -40,12 +40,12 @@ typedef tk_ostream_t* (*tk_iostream_get_ostream_t)(tk_iostream_t* stream);
  * input/output stream interface
  *
  */
-typedef struct _tk_iostream_t {
+struct _tk_iostream_t {
   object_t object;
 
   tk_iostream_get_istream_t get_istream;
   tk_iostream_get_ostream_t get_ostream;
-} tk_iostream_t;
+};
 
 /**
  * @method tk_iostream_get_istream

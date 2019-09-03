@@ -39,12 +39,12 @@ typedef ret_t (*tk_istream_seek_t)(tk_istream_t* stream, uint32_t offset);
  * input stream interface
  *
  */
-typedef struct _tk_istream_t {
+struct _tk_istream_t {
   object_t object;
 
   tk_istream_read_t read;
   tk_istream_seek_t seek;
-} tk_istream_t;
+};
 
 /**
  * @method tk_istream_read

@@ -40,13 +40,13 @@ typedef ret_t (*tk_ostream_seek_t)(tk_ostream_t* stream, uint32_t offset);
  * input stream interface
  *
  */
-typedef struct _tk_ostream_t {
+struct _tk_ostream_t {
   object_t object;
 
   tk_ostream_flush_t flush;
   tk_ostream_write_t write;
   tk_ostream_seek_t seek;
-} tk_ostream_t;
+};
 
 /**
  * @method tk_ostream_write

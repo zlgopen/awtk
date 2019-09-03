@@ -36,7 +36,7 @@ typedef struct _tk_ostream_mem_t tk_ostream_mem_t;
  * input stream base on memory
  *
  */
-typedef struct _tk_ostream_mem_t {
+struct _tk_ostream_mem_t {
   tk_ostream_t ostream;
 
   bool_t own_the_buff;
@@ -44,7 +44,7 @@ typedef struct _tk_ostream_mem_t {
   uint32_t size;
   uint32_t cursor;
   uint32_t packet_size;
-} tk_ostream_mem_t;
+};
 
 /**
  * @method tk_ostream_mem_create
