@@ -2,6 +2,7 @@
 * 2019/09/04
   * 修改freetype字体大小的问题(感谢智明提供补丁)。
   * change time to uint64
+  * 修改PC版本获取系统时间的函数(感谢陈谭提供补丁)。
 
 * 2019/09/03
   * edit/mledit失去焦点时，unselect当前选中的文本。
