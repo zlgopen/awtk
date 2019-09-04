@@ -143,7 +143,7 @@ static ret_t timer_manager_dispatch_one(timer_manager_t* timer_manager, uint64_t
     return_value_if_fail(timer != NULL, RET_BAD_PARAMS);
 
     timer->now = now;
-    if ((timer->start + timer->duration) <= now) {
+    if ((timer->start + timer->duration) <= now || now < timer->start) {
       if (timer->on_timer(timer) != RET_REPEAT) {
         timer_manager_remove(timer_manager, timer->id);
       } else {
