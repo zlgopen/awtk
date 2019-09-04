@@ -13,7 +13,6 @@
 #include "assets/inc/styles/calibration.data"
 #include "assets/inc/styles/tab_list.data"
 #include "assets/inc/styles/default.data"
-#include "assets/inc/styles/big_font.data"
 #include "assets/inc/styles/tab_top_compact.data"
 #include "assets/inc/styles/dialog_info.data"
 #include "assets/inc/styles/guage.data"
@@ -26,7 +25,6 @@
 #include "assets/inc/styles/dialog_warn.data"
 #include "assets/inc/ui/kb_ascii.data"
 #include "assets/inc/ui/vgcanvas.data"
-#include "assets/inc/ui/rich_text1.data"
 #include "assets/inc/ui/slide_menu.data"
 #include "assets/inc/ui/radial_gradient.data"
 #include "assets/inc/ui/auto_play_landscape.data"
@@ -82,11 +80,9 @@
 #include "assets/inc/ui/gif_image.data"
 #include "assets/inc/ui/auto_play_portrait.data"
 #include "assets/inc/ui/text_selector.data"
-#include "assets/inc/ui/big_font.data"
 #include "assets/inc/ui/tab_top_compact.data"
 #include "assets/inc/ui/slide_view_h.data"
 #include "assets/inc/ui/dialogs.data"
-#include "assets/inc/ui/selectm.data"
 #include "assets/inc/ui/list_view.data"
 #include "assets/inc/ui/stroke_gradient.data"
 #include "assets/inc/ui/slide_view_h1.data"
@@ -121,10 +117,6 @@
 #include "assets/inc/ui/kb_uint.data"
 #include "assets/inc/ui/scroll_view_v.data"
 #include "assets/inc/xml/test.data"
-#include "assets/inc/data/com_zlg_app_json.data"
-#include "assets/inc/data/test_dat.data"
-#include "assets/inc/data/test_json.data"
-#include "assets/inc/data/a_b_c_any.data"
 #ifdef WITH_STB_IMAGE
 #include "assets/inc/images/checked.res"
 #include "assets/inc/images/num_7.res"
@@ -369,7 +361,6 @@ ret_t assets_init(void) {
 #else
   assets_manager_add(rm, ui_kb_ascii);
   assets_manager_add(rm, ui_vgcanvas);
-  assets_manager_add(rm, ui_rich_text1);
   assets_manager_add(rm, ui_slide_menu);
   assets_manager_add(rm, ui_radial_gradient);
   assets_manager_add(rm, ui_auto_play_landscape);
@@ -425,11 +416,9 @@ ret_t assets_init(void) {
   assets_manager_add(rm, ui_gif_image);
   assets_manager_add(rm, ui_auto_play_portrait);
   assets_manager_add(rm, ui_text_selector);
-  assets_manager_add(rm, ui_big_font);
   assets_manager_add(rm, ui_tab_top_compact);
   assets_manager_add(rm, ui_slide_view_h);
   assets_manager_add(rm, ui_dialogs);
-  assets_manager_add(rm, ui_selectm);
   assets_manager_add(rm, ui_list_view);
   assets_manager_add(rm, ui_stroke_gradient);
   assets_manager_add(rm, ui_slide_view_h1);
@@ -585,7 +574,6 @@ ret_t assets_init(void) {
   assets_manager_add(rm, style_calibration);
   assets_manager_add(rm, style_tab_list);
   assets_manager_add(rm, style_default);
-  assets_manager_add(rm, style_big_font);
   assets_manager_add(rm, style_tab_top_compact);
   assets_manager_add(rm, style_dialog_info);
   assets_manager_add(rm, style_guage);
