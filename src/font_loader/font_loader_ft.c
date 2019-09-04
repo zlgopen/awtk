@@ -81,7 +81,7 @@ static ret_t font_ft_get_glyph(font_t* f, wchar_t c, font_size_t font_size, glyp
     flags |= FT_LOAD_TARGET_MONO;
   }
 
-  FT_Set_Char_Size(sf->face, 0, font_size * 64, 0, 50);
+  FT_Set_Char_Size(sf->face, 0, font_size * 72, 0, 50);
   if (!FT_Load_Char(sf->face, c, flags)) {
     glyf = sf->face->glyph;
     FT_Get_Glyph(glyf, &glyph);
@@ -119,7 +119,7 @@ static int32_t font_ft_get_baseline(font_t* f, font_size_t font_size) {
   font_ft_t* font = (font_ft_t*)f;
   ft_fontinfo* sf = &(font->ft_font);
 
-  FT_Set_Char_Size(sf->face, 0, font_size * 64, 0, 50);
+  FT_Set_Char_Size(sf->face, 0, font_size * 72, 0, 50);
 
   int ascender = FT_MulFix(sf->face->ascender, sf->face->size->metrics.y_scale);
 
