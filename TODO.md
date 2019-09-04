@@ -98,9 +98,7 @@
 * port code editor
 * calendar
 * chart
-* menu
 * drag & drop
-* tableview
 * 音频接口。
 * 事件录制与重放。
 * Accessibility

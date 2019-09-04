@@ -201,6 +201,10 @@ pip install Pillow
 
 #### 官方支持平台 
 
+* [awtk-web](https://github.com/zlgopen/awtk-web)
+
+* [awtk-android](https://github.com/zlgopen/awtk-android)
+
 * [awtk-aworks-rt1052](https://github.com/zlgopen/awtk-aworks-rt1052)
 
 #### 移植示例 （不定期更新）
@@ -228,8 +232,6 @@ pip install Pillow
 * [C 示例代码](https://github.com/zlgopen/awtk-c-demos)
 
 * [精彩示例](https://github.com/zlgopen/awtk-examples)
-
-* [AWTK-WEB](https://github.com/zlgopen/awtk-web)
 
 * [AWTK-MVVM](https://github.com/zlgopen/awtk-mvvm)
 
