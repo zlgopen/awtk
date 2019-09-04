@@ -130,7 +130,7 @@ static ret_t timer_manager_update_time(timer_manager_t* timer_manager, uint32_t 
   return RET_OK;
 }
 
-static ret_t timer_manager_dispatch_one(timer_manager_t* timer_manager, uint32_t now,
+static ret_t timer_manager_dispatch_one(timer_manager_t* timer_manager, uint64_t now,
                                         int32_t delta_time) {
   slist_node_t* iter = timer_manager->timers.first;
 
@@ -161,7 +161,7 @@ static ret_t timer_manager_dispatch_one(timer_manager_t* timer_manager, uint32_t
 }
 
 ret_t timer_manager_dispatch(timer_manager_t* timer_manager) {
-  uint32_t now = 0;
+  uint64_t now = 0;
   int32_t delta_time = 0;
   return_value_if_fail(timer_manager != NULL, RET_BAD_PARAMS);
 
@@ -169,7 +169,7 @@ ret_t timer_manager_dispatch(timer_manager_t* timer_manager) {
   delta_time = now - timer_manager->last_dispatch_time;
   if (delta_time > 3000 || delta_time < 0) {
     timer_manager_update_time(timer_manager, now, delta_time);
-    log_debug("User change time: %u => %u\n", timer_manager->last_dispatch_time, now);
+    log_debug("User change time: %lu => %lu\n", timer_manager->last_dispatch_time, now);
   }
 
   if (timer_manager->timers.first == NULL) {
@@ -193,9 +193,9 @@ uint32_t timer_manager_count(timer_manager_t* timer_manager) {
   return slist_size(&(timer_manager->timers));
 }
 
-uint32_t timer_manager_next_time(timer_manager_t* timer_manager) {
+uint64_t timer_manager_next_time(timer_manager_t* timer_manager) {
   slist_node_t* iter = NULL;
-  uint32_t t = timer_manager->get_time() + 0xffff;
+  uint64_t t = timer_manager->get_time() + 0xffff;
   return_value_if_fail(timer_manager != NULL, t);
 
   iter = timer_manager->timers.first;

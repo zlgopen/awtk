@@ -86,7 +86,7 @@ ret_t main_loop_queue_event(main_loop_t* l, const event_queue_req_t* e) {
 
 ret_t main_loop_sleep_default(main_loop_t* l) {
   uint32_t sleep_time = 0;
-  uint32_t now = time_now_ms();
+  uint64_t now = time_now_ms();
   uint32_t gap = now - l->last_loop_time;
   int32_t least_sleep_time = gap > TK_MAX_SLEEP_TIME ? 0 : (TK_MAX_SLEEP_TIME - gap);
 

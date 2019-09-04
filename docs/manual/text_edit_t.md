@@ -32,6 +32,7 @@
 | <a href="#text_edit_t_text_edit_set_select">text\_edit\_set\_select</a> | 选择指定范围的文本。 |
 | <a href="#text_edit_t_text_edit_set_tips">text\_edit\_set\_tips</a> | 设置提示信息。 |
 | <a href="#text_edit_t_text_edit_set_wrap_word">text\_edit\_set\_wrap\_word</a> | 设置是否自动折行。 |
+| <a href="#text_edit_t_text_edit_unselect">text\_edit\_unselect</a> | 取消选择。 |
 #### text\_edit\_click 函数
 -----------------------
 
@@ -584,3 +585,25 @@ ret_t text_edit_set_wrap_word (text_edit_t* text_edit, bool_t wrap_word);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | text\_edit | text\_edit\_t* | text\_edit对象。 |
 | wrap\_word | bool\_t | 是否自动折行。 |
+#### text\_edit\_unselect 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="text_edit_t_text_edit_unselect"> 取消选择。
+
+
+
+
+* 函数原型：
+
+```
+ret_t text_edit_unselect (text_edit_t* text_edit);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| text\_edit | text\_edit\_t* | text\_edit对象。 |

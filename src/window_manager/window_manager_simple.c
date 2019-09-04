@@ -237,7 +237,7 @@ static widget_t* window_manager_simple_find_target(widget_t* widget, xy_t x, xy_
 }
 
 static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
-  uint32_t start_time = time_now_ms();
+  uint64_t start_time = time_now_ms();
   window_manager_simple_t* wm = WINDOW_MANAGER_SIMPLE(widget);
 
   if (native_window_begin_frame(wm->native_window, LCD_DRAW_NORMAL) == RET_OK) {

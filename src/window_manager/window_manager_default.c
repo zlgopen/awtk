@@ -551,7 +551,7 @@ static ret_t window_manager_update_cursor(widget_t* widget, int32_t x, int32_t y
 }
 
 static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
-  uint32_t start_time = time_now_ms();
+  uint64_t start_time = time_now_ms();
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
 
   window_manager_default_inc_fps(widget);
@@ -574,7 +574,7 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
 #ifdef WITH_WINDOW_ANIMATORS
 static ret_t window_manager_paint_animation(widget_t* widget, canvas_t* c) {
   paint_event_t e;
-  uint32_t start_time = time_now_ms();
+  uint64_t start_time = time_now_ms();
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
   bool_t curr_win_is_keyboard = widget_is_keyboard(wm->animator->curr_win);
 
@@ -642,7 +642,7 @@ static ret_t window_manager_default_inc_fps(widget_t* widget) {
 static ret_t window_manager_default_update_fps(widget_t* widget) {
   canvas_t* c = NULL;
   uint32_t elapse = 0;
-  uint32_t now = time_now_ms();
+  uint64_t now = time_now_ms();
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
 
   elapse = now - wm->fps_time;

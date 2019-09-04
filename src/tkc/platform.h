@@ -26,7 +26,7 @@
 
 BEGIN_C_DECLS
 
-uint32_t get_time_ms(void);
+uint64_t get_time_ms(void);
 void sleep_ms(uint32_t ms);
 
 ret_t platform_prepare(void);

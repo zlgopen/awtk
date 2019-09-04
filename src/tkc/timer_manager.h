@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 
 struct _timer_manager_t {
   uint32_t next_timer_id;
-  uint32_t last_dispatch_time;
+  uint64_t last_dispatch_time;
   timer_get_time_t get_time;
 
   slist_t timers;
@@ -52,7 +52,7 @@ ret_t timer_manager_reset(timer_manager_t* timer_manager, uint32_t timer_id);
 const timer_info_t* timer_manager_find(timer_manager_t* timer_manager, uint32_t timer_id);
 ret_t timer_manager_dispatch(timer_manager_t* timer_manager);
 uint32_t timer_manager_count(timer_manager_t* timer_manager);
-uint32_t timer_manager_next_time(timer_manager_t* timer_manager);
+uint64_t timer_manager_next_time(timer_manager_t* timer_manager);
 ret_t timer_manager_append(timer_manager_t* timer_manager, timer_info_t* timer);
 
 END_C_DECLS

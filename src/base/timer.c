@@ -54,7 +54,7 @@ ret_t timer_modify(uint32_t timer_id, uint32_t duration) {
   return_value_if_fail(info != NULL, RET_NOT_FOUND);
 
   info->duration = duration;
-  info->start = timer_now();
+  info->start = timer_manager()->get_time();
 
   return RET_OK;
 }
@@ -65,10 +65,6 @@ uint32_t timer_count(void) {
 
 uint32_t timer_next_time(void) {
   return timer_manager_next_time(timer_manager());
-}
-
-uint32_t timer_now(void) {
-  return timer_manager()->get_time();
 }
 
 #include "base/main_loop.h"

@@ -39,18 +39,18 @@ BEGIN_C_DECLS
  * 获取当前时间(秒)。
  * @annotation ["scriptable", "static"]
  *
- * @return {uint32_t} 返回当前时间(秒)。
+ * @return {uint64_t} 返回当前时间(秒)。
  */
-uint32_t time_now_s(void);
+uint64_t time_now_s(void);
 
 /**
  * @method time_now_ms
  * 获取当前时间(毫秒)。
  * @annotation ["scriptable", "static"]
  *
- * @return {uint32_t} 返回当前时间(毫秒)。
+ * @return {uint64_t} 返回当前时间(毫秒)。
  */
-uint32_t time_now_ms(void);
+uint64_t time_now_ms(void);
 
 END_C_DECLS
 

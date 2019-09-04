@@ -325,8 +325,8 @@ enum { TK_NAME_LEN = 31 };
 #define TK_CONST_DATA_ALIGN(v) v __attribute__((aligned(8)))
 #endif /*_MSC_VER*/
 
-typedef uint32_t (*tk_get_time_t)();
-typedef uint32_t (*tk_get_time_ms_t)();
+typedef uint64_t (*tk_get_time_t)();
+typedef uint64_t (*tk_get_time_ms_t)();
 typedef void (*tk_sleep_ms_t)(uint32_t ms);
 
 #if defined(WIN32) && !defined(NDEBUG)

@@ -68,7 +68,6 @@ static ret_t font_bitmap_get_glyph(font_t* f, wchar_t c, font_size_t font_size, 
 
 static bool_t font_bitmap_match(font_t* f, const char* name, font_size_t font_size) {
   font_bitmap_t* font = (font_bitmap_t*)f;
-  font_bitmap_header_t* header = (font_bitmap_header_t*)(font->buff);
   if (name == NULL || strcmp(name, font->base.name) == 0) {
     return TRUE;
   }

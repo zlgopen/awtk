@@ -543,7 +543,7 @@ static ret_t canvas_draw_text_impl(canvas_t* c, const wchar_t* str, uint32_t nr,
   glyph_t g;
   uint32_t i = 0;
   xy_t left = x;
-  uint32_t start_time = time_now_ms();
+  uint64_t start_time = time_now_ms();
   font_size_t font_size = c->font_size;
 
   y -= font_size * 1 / 3;

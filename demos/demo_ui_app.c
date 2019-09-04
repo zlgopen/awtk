@@ -34,7 +34,7 @@ uint32_t tk_mem_speed_test(void* buffer, uint32_t length, uint32_t* pmemcpy_spee
   uint32_t memcpy_speed;
   uint32_t memset_speed;
   uint32_t max_size = 100 * 1024 * 1024;
-  uint32_t start = time_now_ms();
+  uint64_t start = time_now_ms();
   uint32_t nr = max_size / length;
 
   for (i = 0; i < nr; i++) {

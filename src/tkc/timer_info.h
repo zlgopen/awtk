@@ -70,20 +70,20 @@ struct _timer_info_t {
   uint32_t id;
 
   /**
-   * @property {uint32_t} now
+   * @property {uint64_t} now
    * @annotation ["readable", "scriptable"]
    * 当前时间(相对时间，单位为毫秒)。
    *
    */
-  uint32_t now;
+  uint64_t now;
 
   /**
-   * @property {uint32_t} start
+   * @property {uint64_t} start
    * @annotation ["readable"]
    * 起始时间(相对时间，单位为毫秒)。
    *
    */
-  uint32_t start;
+  uint64_t start;
 
   /**
    * @property {uint32_t} duration
@@ -115,7 +115,7 @@ struct _timer_info_t {
   bool_t user_changed_time;
 
   /*private*/
-  uint32_t last_dispatch_time;
+  uint64_t last_dispatch_time;
   timer_manager_t* timer_manager;
 };
 
