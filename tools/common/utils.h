@@ -28,6 +28,7 @@
 BEGIN_C_DECLS
 
 void exit_if_need_not_update(const char* in, const char* out);
+void exit_if_need_not_update_for_infiles(const char* out, int infiles_number, ...);
 
 int unique(wchar_t* str, int size);
 char* read_file(const char* file_name, uint32_t* length);

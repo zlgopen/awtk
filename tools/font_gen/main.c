@@ -57,8 +57,7 @@ int main(int argc, char** argv) {
     mono = TRUE;
   }
 
-  exit_if_need_not_update(ttf_filename, out_filename);
-  exit_if_need_not_update(str_filename, out_filename);
+  exit_if_need_not_update_for_infiles(out_filename, 2, ttf_filename, str_filename);
 
   ttf_buff = (uint8_t*)read_file(ttf_filename, &size);
   return_value_if_fail(ttf_buff != NULL, 0);

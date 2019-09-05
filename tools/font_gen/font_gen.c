@@ -105,7 +105,7 @@ uint32_t font_gen_buff(font_t* font, uint16_t font_size, const char* str, uint8_
         bitmap_mono_dump(g.data, g.w, g.h);
       }
 
-    } else if (c > 32) {
+    } else if (c > 32 && c != 65279) {
       printf("not found %d\n", c);
       exit(0);
     } else {
