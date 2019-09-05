@@ -36,7 +36,8 @@ ret_t tk_istream_seek(tk_istream_t* stream, uint32_t offset) {
   return stream->seek(stream, offset);
 }
 
-int32_t tk_istream_read_len(tk_istream_t* stream, uint8_t* buff, uint32_t max_size, uint32_t timeout_ms) {
+int32_t tk_istream_read_len(tk_istream_t* stream, uint8_t* buff, uint32_t max_size,
+                            uint32_t timeout_ms) {
   uint32_t start = 0;
   uint32_t end = 0;
   int32_t offset = 0;
@@ -45,7 +46,7 @@ int32_t tk_istream_read_len(tk_istream_t* stream, uint8_t* buff, uint32_t max_si
   return_value_if_fail(stream != NULL && stream->read != NULL, -1);
   return_value_if_fail(buff != NULL, 0);
 
-  start = time_now_ms(); 
+  start = time_now_ms();
   end = start + timeout_ms;
 
   do {
@@ -57,7 +58,7 @@ int32_t tk_istream_read_len(tk_istream_t* stream, uint8_t* buff, uint32_t max_si
 
     offset += read_bytes;
     remain_bytes -= read_bytes;
-    if(time_now_ms() > end) {
+    if (time_now_ms() > end) {
       log_debug("read timeout\n");
       break;
     }

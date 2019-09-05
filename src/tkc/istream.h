@@ -87,7 +87,8 @@ ret_t tk_istream_seek(tk_istream_t* stream, uint32_t offset);
  * @return {int32_t} 返回负数表示读取失败，否则返回实际读取数据的长度。
  *
  */
-int32_t tk_istream_read_len(tk_istream_t* stream, uint8_t* buff, uint32_t max_size, uint32_t timeout_ms);
+int32_t tk_istream_read_len(tk_istream_t* stream, uint8_t* buff, uint32_t max_size,
+                            uint32_t timeout_ms);
 
 #define TK_ISTREAM(obj) ((tk_istream_t*)(obj))
 

@@ -19,6 +19,10 @@
  *
  */
 
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN 1
+#endif /*WIN32_LEAN_AND_MEAN*/
+
 #include "tkc/mem.h"
 #include "streams/socket_helper.h"
 #include "streams/istream_socket.h"
@@ -28,7 +32,7 @@ static int32_t tk_istream_socket_read(tk_istream_t* stream, uint8_t* buff, uint3
   tk_istream_socket_t* istream_socket = TK_ISTREAM_SOCKET(stream);
 
   ret = recv(istream_socket->sock, buff, max_size, 0);
-  if(ret <= 0) {
+  if (ret <= 0) {
     istream_socket->is_broken = TRUE;
   }
 
@@ -37,11 +41,10 @@ static int32_t tk_istream_socket_read(tk_istream_t* stream, uint8_t* buff, uint3
 
 static ret_t tk_istream_socket_get_prop(object_t* obj, const char* name, value_t* v) {
   tk_istream_socket_t* istream_socket = TK_ISTREAM_SOCKET(obj);
-  if(tk_str_eq(name, TK_STREAM_PROP_FD)) {
-   
+  if (tk_str_eq(name, TK_STREAM_PROP_FD)) {
     value_set_int(v, istream_socket->sock);
     return RET_OK;
-  } else if(tk_str_eq(name, TK_STREAM_PROP_IS_OK)) {
+  } else if (tk_str_eq(name, TK_STREAM_PROP_IS_OK)) {
     bool_t is_ok = istream_socket->sock >= 0 && istream_socket->is_broken == FALSE;
     value_set_bool(v, is_ok);
     return RET_OK;
@@ -51,9 +54,9 @@ static ret_t tk_istream_socket_get_prop(object_t* obj, const char* name, value_t
 }
 
 static const object_vtable_t s_tk_istream_socket_vtable = {.type = "tk_istream_socket",
-                                                         .desc = "tk_istream_socket",
-                                                         .size = sizeof(tk_istream_socket_t),
-                                                         .get_prop = tk_istream_socket_get_prop};
+                                                           .desc = "tk_istream_socket",
+                                                           .size = sizeof(tk_istream_socket_t),
+                                                           .get_prop = tk_istream_socket_get_prop};
 
 tk_istream_t* tk_istream_socket_create(int sock) {
   object_t* obj = NULL;

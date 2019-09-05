@@ -89,7 +89,8 @@ ret_t tk_ostream_seek(tk_ostream_t* stream, uint32_t offset);
  * @return {int32_t} 返回负数表示写入失败，否则返回实际写入数据的长度。
  *
  */
-int32_t tk_ostream_write_len(tk_ostream_t* stream, const uint8_t* buff, uint32_t max_size, uint32_t timeout_ms);
+int32_t tk_ostream_write_len(tk_ostream_t* stream, const uint8_t* buff, uint32_t max_size,
+                             uint32_t timeout_ms);
 
 /**
  * @method tk_ostream_flush

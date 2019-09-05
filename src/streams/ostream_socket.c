@@ -19,16 +19,21 @@
  *
  */
 
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN 1
+#endif /*WIN32_LEAN_AND_MEAN*/
+
 #include "tkc/mem.h"
 #include "streams/socket_helper.h"
 #include "streams/ostream_socket.h"
 
-static int32_t tk_ostream_socket_write(tk_ostream_t* stream, const uint8_t* buff, uint32_t max_size) {
+static int32_t tk_ostream_socket_write(tk_ostream_t* stream, const uint8_t* buff,
+                                       uint32_t max_size) {
   int32_t ret = 0;
   tk_ostream_socket_t* ostream_socket = TK_OSTREAM_SOCKET(stream);
 
   ret = send(ostream_socket->sock, buff, max_size, 0);
-  if(ret <= 0) {
+  if (ret <= 0) {
     ostream_socket->is_broken = TRUE;
   }
 
@@ -37,11 +42,10 @@ static int32_t tk_ostream_socket_write(tk_ostream_t* stream, const uint8_t* buff
 
 static ret_t tk_ostream_socket_get_prop(object_t* obj, const char* name, value_t* v) {
   tk_ostream_socket_t* ostream_socket = TK_OSTREAM_SOCKET(obj);
-  if(tk_str_eq(name, TK_STREAM_PROP_FD)) {
-   
+  if (tk_str_eq(name, TK_STREAM_PROP_FD)) {
     value_set_int(v, ostream_socket->sock);
     return RET_OK;
-  } else if(tk_str_eq(name, TK_STREAM_PROP_IS_OK)) {
+  } else if (tk_str_eq(name, TK_STREAM_PROP_IS_OK)) {
     bool_t is_ok = ostream_socket->sock >= 0 && ostream_socket->is_broken == FALSE;
     value_set_bool(v, is_ok);
     return RET_OK;
@@ -51,9 +55,9 @@ static ret_t tk_ostream_socket_get_prop(object_t* obj, const char* name, value_t
 }
 
 static const object_vtable_t s_tk_ostream_socket_vtable = {.type = "tk_ostream_socket",
-                                                         .desc = "tk_ostream_socket",
-                                                         .size = sizeof(tk_ostream_socket_t),
-                                                         .get_prop = tk_ostream_socket_get_prop};
+                                                           .desc = "tk_ostream_socket",
+                                                           .size = sizeof(tk_ostream_socket_t),
+                                                           .get_prop = tk_ostream_socket_get_prop};
 
 tk_ostream_t* tk_ostream_socket_create(int sock) {
   object_t* obj = NULL;

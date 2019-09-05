@@ -22,17 +22,13 @@
 #ifndef TK_SOCKET_HELPER_H
 #define TK_SOCKET_HELPER_H
 
-#include "tkc/fs.h"
-#include "tkc/iostream.h"
-
 BEGIN_C_DECLS
 
 #ifdef WIN32
+#include "windows.h"
 #include <winsock2.h>
 #include <ws2tcpip.h>
 typedef int socklen_t;
-
-#pragma comment(lib, "Ws2_32.lib")
 #else
 #include <unistd.h>
 #include <sys/socket.h>
@@ -45,7 +41,10 @@ typedef int socklen_t;
 #include <sys/time.h>
 #include <sys/types.h>
 
-#endif/*WIN32*/
+#endif /*WIN32*/
+
+#include "tkc/fs.h"
+#include "tkc/iostream.h"
 
 void socket_init();
 void socket_deinit();

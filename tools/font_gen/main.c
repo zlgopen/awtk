@@ -27,7 +27,7 @@
 #include "font_loader/font_loader_stb.h"
 #else
 #include "font_loader/font_loader_ft.h"
-#endif/*WITH_STB_FONT*/
+#endif /*WITH_STB_FONT*/
 
 int main(int argc, char** argv) {
   uint32_t size = 0;
@@ -73,7 +73,7 @@ int main(int argc, char** argv) {
   } else {
     font = font_ft_create("default", ttf_buff, size);
   }
-#endif/*WITH_STB_FONT*/
+#endif /*WITH_STB_FONT*/
 
   str_buff = read_file(str_filename, &size);
   return_value_if_fail(str_buff != NULL, 0);

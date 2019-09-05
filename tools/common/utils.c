@@ -59,7 +59,6 @@ void exit_if_need_not_update(const char* in, const char* out) {
   }
 }
 
-
 void exit_if_need_not_update_for_infiles(const char* out, int infiles_number, ...) {
   int i = 0;
   va_list va;
@@ -68,22 +67,22 @@ void exit_if_need_not_update_for_infiles(const char* out, int infiles_number, ..
   bool_t is_not_need_update = TRUE;
 
   if (out == NULL) {
-      log_debug("invalid params: %s \n", out);
-      exit(-1);
+    log_debug("invalid params: %s \n", out);
+    exit(-1);
   }
 
   memset(&st_out, 0x00, sizeof(st_out));
   if (stat(out, &st_out) < 0) {
-      return;
+    return;
   }
 
   va_start(va, infiles_number);
-  
-  for(i = 0; i < infiles_number; i++) {
+
+  for (i = 0; i < infiles_number; i++) {
     char* in = va_arg(va, char*);
     memset(&st_in, 0x00, sizeof(st_in));
-    
-    if(in == NULL) {
+
+    if (in == NULL) {
       continue;
     }
     if (stat(in, &st_in) < 0) {
@@ -91,7 +90,7 @@ void exit_if_need_not_update_for_infiles(const char* out, int infiles_number, ..
       is_not_need_update = TRUE;
       break;
     }
-    if(st_in.st_mtime > st_out.st_mtime) {
+    if (st_in.st_mtime > st_out.st_mtime) {
       is_not_need_update = FALSE;
       break;
     }
