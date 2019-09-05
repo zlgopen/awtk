@@ -27,7 +27,9 @@ uint64_t time_now_ms(void) {
   uint64_t now = get_time_ms();
 
   if(now < last) {
-    now += 0xffffffff;
+    if(now < 0xffffffff) {
+      now += 0xffffffff;
+    }
   }
 
   last = now;
