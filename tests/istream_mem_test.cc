@@ -48,7 +48,7 @@ TEST(IStreamMem, read_len) {
   const char* str = "111122223333";
   tk_istream_t* is = tk_istream_mem_create((uint8_t*)str, strlen(str), 4, FALSE);
 
-  ASSERT_EQ(tk_istream_read_len(is, buff, 12), 12);
+  ASSERT_EQ(tk_istream_read_len(is, buff, 12, 3000), 12);
   ASSERT_EQ(memcmp(buff, str, 12), 0);
 
   object_unref(OBJECT(is));
