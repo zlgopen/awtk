@@ -1,7 +1,7 @@
 ﻿/**
- * File:   tk_istream_file.h
+ * File:   tk_istream_socket.h
  * Author: AWTK Develop Team
- * Brief:  input stream base on file
+ * Brief:  input stream base on socket
  *
  * Copyright (c) 2019 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
@@ -15,48 +15,49 @@
 /**
  * History:
  * ================================================================
- * 2019-08-27 Li XianJing <xianjimli@hotmail.com> created
+ * 2019-09-05 Li XianJing <xianjimli@hotmail.com> created
  *
  */
 
-#ifndef TK_ISTREAM_FILE_H
-#define TK_ISTREAM_FILE_H
+#ifndef TK_ISTREAM_SOCKET_H
+#define TK_ISTREAM_SOCKET_H
 
 #include "tkc/fs.h"
 #include "tkc/istream.h"
 
 BEGIN_C_DECLS
 
-struct _tk_istream_file_t;
-typedef struct _tk_istream_file_t tk_istream_file_t;
+struct _tk_istream_socket_t;
+typedef struct _tk_istream_socket_t tk_istream_socket_t;
 
 /**
- * @class tk_istream_file_t
+ * @class tk_istream_socket_t
  * @parent tk_istream_t
  *
- * input stream base on file
+ * input stream base on socket
  *
  */
-struct _tk_istream_file_t {
+struct _tk_istream_socket_t {
   tk_istream_t istream;
 
-  fs_file_t* file;
+  int sock;
+  bool_t is_broken;
 };
 
 /**
- * @method tk_istream_file_create
+ * @method tk_istream_socket_create
  *
  * 创建istream对象。
  *
- * @param {const char*} filename 文件名。
+ * @param {int} sock socket。
  *
  * @return {tk_istream_t*} 返回istream对象。
  *
  */
-tk_istream_t* tk_istream_file_create(const char* filename);
+tk_istream_t* tk_istream_socket_create(int sock);
 
-#define TK_ISTREAM_FILE(obj) ((tk_istream_file_t*)(obj))
+#define TK_ISTREAM_SOCKET(obj) ((tk_istream_socket_t*)(obj))
 
 END_C_DECLS
 
-#endif /*TK_ISTREAM_FILE_H*/
+#endif /*TK_ISTREAM_SOCKET_H*/

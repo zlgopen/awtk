@@ -250,6 +250,19 @@ object_t* object_get_prop_object(object_t* obj, const char* name);
 int32_t object_get_prop_int(object_t* obj, const char* name, int32_t defval);
 
 /**
+ * @method object_get_prop_bool
+ * 获取指定属性的bool类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ * @param {bool_t} defval 缺省值。
+ *
+ * @return {bool_t} 返回指定属性的bool类型的值。
+ */
+bool_t object_get_prop_bool(object_t* obj, const char* name, bool_t defval);
+
+/**
  * @method object_get_prop_float
  * 获取指定属性的浮点数类型的值。
  *
@@ -338,6 +351,19 @@ ret_t object_set_prop_object(object_t* obj, const char* name, object_t* value);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t object_set_prop_int(object_t* obj, const char* name, int32_t value);
+
+/**
+ * @method object_set_prop_bool
+ * 设置指定属性的bool类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ * @param {bool_t} value 属性的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_set_prop_bool(object_t* obj, const char* name, bool_t value);
 
 /**
  * @method object_set_prop_float

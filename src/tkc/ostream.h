@@ -19,10 +19,11 @@
  *
  */
 
-#ifndef TK_TK_OSTREAM_H
-#define TK_TK_OSTREAM_H
+#ifndef TK_OSTREAM_H
+#define TK_OSTREAM_H
 
 #include "tkc/object.h"
+#include "tkc/stream_const.h"
 
 BEGIN_C_DECLS
 
@@ -83,11 +84,12 @@ ret_t tk_ostream_seek(tk_ostream_t* stream, uint32_t offset);
  * @param {tk_ostream_t*} stream ostream对象。
  * @param {const uint8_t*} buff 返回数据的缓冲区。
  * @param {uint32_t} max_size 缓冲区的大小。
+ * @param {uint32_t} timeout_ms timeout.
  *
  * @return {int32_t} 返回负数表示写入失败，否则返回实际写入数据的长度。
  *
  */
-int32_t tk_ostream_write_len(tk_ostream_t* stream, const uint8_t* buff, uint32_t max_size);
+int32_t tk_ostream_write_len(tk_ostream_t* stream, const uint8_t* buff, uint32_t max_size, uint32_t timeout_ms);
 
 /**
  * @method tk_ostream_flush
@@ -101,10 +103,8 @@ int32_t tk_ostream_write_len(tk_ostream_t* stream, const uint8_t* buff, uint32_t
  */
 ret_t tk_ostream_flush(tk_ostream_t* stream);
 
-#define TK_OSTREAM_PROP_FD "fd"
-
 #define TK_OSTREAM(obj) ((tk_ostream_t*)(obj))
 
 END_C_DECLS
 
-#endif /*TK_TK_OSTREAM_H*/
+#endif /*TK_OSTREAM_H*/

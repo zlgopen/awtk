@@ -139,6 +139,15 @@ int32_t object_get_prop_int(object_t* obj, const char* name, int32_t defval) {
   }
 }
 
+bool_t object_get_prop_bool(object_t* obj, const char* name, bool_t defval) {
+  value_t v;
+  if (object_get_prop(obj, name, &v) == RET_OK) {
+    return value_bool(&v);
+  } else {
+    return defval;
+  }
+}
+
 float_t object_get_prop_float(object_t* obj, const char* name, float_t defval) {
   value_t v;
   if (object_get_prop(obj, name, &v) == RET_OK) {
@@ -203,6 +212,13 @@ ret_t object_set_prop_object(object_t* obj, const char* name, object_t* value) {
 ret_t object_set_prop_int(object_t* obj, const char* name, int32_t value) {
   value_t v;
   value_set_int(&v, value);
+
+  return object_set_prop(obj, name, &v);
+}
+
+ret_t object_set_prop_bool(object_t* obj, const char* name, bool_t value) {
+  value_t v;
+  value_set_bool(&v, value);
 
   return object_set_prop(obj, name, &v);
 }

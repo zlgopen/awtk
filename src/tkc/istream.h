@@ -19,10 +19,11 @@
  *
  */
 
-#ifndef TK_TK_ISTREAM_H
-#define TK_TK_ISTREAM_H
+#ifndef TK_ISTREAM_H
+#define TK_ISTREAM_H
 
 #include "tkc/object.h"
+#include "tkc/stream_const.h"
 
 BEGIN_C_DECLS
 
@@ -81,16 +82,15 @@ ret_t tk_istream_seek(tk_istream_t* stream, uint32_t offset);
  * @param {tk_istream_t*} stream istream对象。
  * @param {uint8_t*} buff 返回数据的缓冲区。
  * @param {uint32_t} max_size 缓冲区的大小。
+ * @param {uint32_t} timeout_ms timeout.
  *
  * @return {int32_t} 返回负数表示读取失败，否则返回实际读取数据的长度。
  *
  */
-int32_t tk_istream_read_len(tk_istream_t* stream, uint8_t* buff, uint32_t max_size);
-
-#define TK_ISTREAM_PROP_FD "fd"
+int32_t tk_istream_read_len(tk_istream_t* stream, uint8_t* buff, uint32_t max_size, uint32_t timeout_ms);
 
 #define TK_ISTREAM(obj) ((tk_istream_t*)(obj))
 
 END_C_DECLS
 
-#endif /*TK_TK_ISTREAM_H*/
+#endif /*TK_ISTREAM_H*/

@@ -1,7 +1,7 @@
 ﻿/**
- * File:   tk_ostream_file.h
+ * File:   tk_ostream_socket.h
  * Author: AWTK Develop Team
- * Brief:  input stream base on file
+ * Brief:  input stream base on socket
  *
  * Copyright (c) 2019 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
@@ -15,48 +15,49 @@
 /**
  * History:
  * ================================================================
- * 2019-08-27 Li XianJing <xianjimli@hotmail.com> created
+ * 2019-09-05 Li XianJing <xianjimli@hotmail.com> created
  *
  */
 
-#ifndef TK_OSTREAM_FILE_H
-#define TK_OSTREAM_FILE_H
+#ifndef TK_OSTREAM_SOCKET_H
+#define TK_OSTREAM_SOCKET_H
 
 #include "tkc/fs.h"
 #include "tkc/ostream.h"
 
 BEGIN_C_DECLS
 
-struct _tk_ostream_file_t;
-typedef struct _tk_ostream_file_t tk_ostream_file_t;
+struct _tk_ostream_socket_t;
+typedef struct _tk_ostream_socket_t tk_ostream_socket_t;
 
 /**
- * @class tk_ostream_file_t
+ * @class tk_ostream_socket_t
  * @parent tk_ostream_t
  *
- * input stream base on file
+ * input stream base on socket
  *
  */
-struct _tk_ostream_file_t {
+struct _tk_ostream_socket_t {
   tk_ostream_t ostream;
 
-  fs_file_t* file;
+  int sock;
+  bool_t is_broken;
 };
 
 /**
- * @method tk_ostream_file_create
+ * @method tk_ostream_socket_create
  *
  * 创建ostream对象。
  *
- * @param {const char*} filename 文件名。
+ * @param {int} sock socket.
  *
  * @return {tk_ostream_t*} 返回ostream对象。
  *
  */
-tk_ostream_t* tk_ostream_file_create(const char* filename);
+tk_ostream_t* tk_ostream_socket_create(int sock);
 
-#define TK_OSTREAM_FILE(obj) ((tk_ostream_file_t*)(obj))
+#define TK_OSTREAM_SOCKET(obj) ((tk_ostream_socket_t*)(obj))
 
 END_C_DECLS
 
-#endif /*TK_OSTREAM_FILE_H*/
+#endif /*TK_OSTREAM_SOCKET_H*/

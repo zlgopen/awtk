@@ -24,6 +24,7 @@
 
 #include "tkc/istream.h"
 #include "tkc/ostream.h"
+#include "tkc/stream_const.h"
 
 BEGIN_C_DECLS
 
