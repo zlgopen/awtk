@@ -151,6 +151,7 @@ static ret_t main_loop_sdl2_dispatch_window_event(main_loop_simple_t* loop, SDL_
       break;
     case SDL_WINDOWEVENT_EXPOSED:
       log_debug("Window %d exposed\n", event->window.windowID);
+      widget_invalidate_force(l->wm, NULL);
       break;
     case SDL_WINDOWEVENT_MOVED:
       log_debug("Window %d moved to %d,%d\n", event->window.windowID, event->window.data1,
@@ -174,7 +175,6 @@ static ret_t main_loop_sdl2_dispatch_window_event(main_loop_simple_t* loop, SDL_
       break;
     case SDL_WINDOWEVENT_RESTORED:
       log_debug("Window %d restored\n", event->window.windowID);
-      widget_invalidate_force(l->wm, NULL);
       break;
     case SDL_WINDOWEVENT_ENTER:
       log_debug("Mouse entered window %d\n", event->window.windowID);

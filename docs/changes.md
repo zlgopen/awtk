@@ -1,6 +1,8 @@
 # 最新动态
 * 2019/09/05
   * 完善fontgen(感谢智明提供补丁)。
+  * 完善sdl main loop(感谢朝泽提供补丁)。
+
 * 2019/09/04
   * 修改freetype字体大小的问题(感谢智明提供补丁)。
   * change time to uint64
