@@ -239,6 +239,12 @@ typedef struct _value_desc_t {
    */
   const char* name;
   /**
+   * @property {const char*} display_name 
+   * @annotation ["readable"]
+   * 显示名称。
+   */
+  const char* display_name;
+  /**
    * @property {const char*} desc
    * @annotation ["readable"]
    * 描述。
@@ -278,6 +284,12 @@ typedef struct _value_desc_int8_t {
    * 步长。
    */
   int8_t step;
+  /**
+   * @property {const char*} unit
+   * @annotation ["readable"]
+   * 单位。
+   */
+  const char* unit;
 } value_desc_int8_t, prop_desc_int8_t, arg_desc_int8_t;
 
 /**
@@ -312,6 +324,12 @@ typedef struct _value_desc_uint8_t {
    * 步长。
    */
   uint8_t step;
+  /**
+   * @property {const char*} unit
+   * @annotation ["readable"]
+   * 单位。
+   */
+  const char* unit;
 } value_desc_uint8_t, prop_desc_uint8_t, arg_desc_uint8_t;
 
 /**
@@ -346,6 +364,12 @@ typedef struct _value_desc_int16_t {
    * 步长。
    */
   int16_t step;
+  /**
+   * @property {const char*} unit
+   * @annotation ["readable"]
+   * 单位。
+   */
+  const char* unit;
 } value_desc_int16_t, prop_desc_int16_t, arg_desc_int16_t;
 
 /**
@@ -380,6 +404,12 @@ typedef struct _value_desc_uint16_t {
    * 步长。
    */
   uint16_t step;
+  /**
+   * @property {const char*} unit
+   * @annotation ["readable"]
+   * 单位。
+   */
+  const char* unit;
 } value_desc_uint16_t, prop_desc_uint16_t, arg_desc_uint16_t;
 
 /**
@@ -414,6 +444,12 @@ typedef struct _value_desc_int32_t {
    * 步长。
    */
   int32_t step;
+  /**
+   * @property {const char*} unit
+   * @annotation ["readable"]
+   * 单位。
+   */
+  const char* unit;
 } value_desc_int32_t, prop_desc_int32_t, arg_desc_int32_t;
 
 /**
@@ -448,6 +484,12 @@ typedef struct _value_desc_uint32_t {
    * 步长。
    */
   uint32_t step;
+  /**
+   * @property {const char*} unit
+   * @annotation ["readable"]
+   * 单位。
+   */
+  const char* unit;
 } value_desc_uint32_t, prop_desc_uint32_t, arg_desc_uint32_t;
 
 /**
@@ -482,6 +524,12 @@ typedef struct _value_desc_int64_t {
    * 步长。
    */
   int64_t step;
+  /**
+   * @property {const char*} unit
+   * @annotation ["readable"]
+   * 单位。
+   */
+  const char* unit;
 } value_desc_int64_t, prop_desc_int64_t, arg_desc_int64_t;
 
 /**
@@ -516,6 +564,12 @@ typedef struct _value_desc_uint64_t {
    * 步长。
    */
   uint64_t step;
+  /**
+   * @property {const char*} unit
+   * @annotation ["readable"]
+   * 单位。
+   */
+  const char* unit;
 } value_desc_uint64_t, prop_desc_uint64_t, arg_desc_uint64_t;
 
 /**
@@ -550,6 +604,12 @@ typedef struct _value_desc_float_t {
    * 步长。
    */
   float_t step;
+  /**
+   * @property {const char*} unit
+   * @annotation ["readable"]
+   * 单位。
+   */
+  const char* unit;
 } value_desc_float_t, prop_desc_float_t, arg_desc_float_t;
 
 /**
@@ -584,6 +644,12 @@ typedef struct _value_desc_double_t {
    * 步长。
    */
   double_t step;
+  /**
+   * @property {const char*} unit
+   * @annotation ["readable"]
+   * 单位。
+   */
+  const char* unit;
 } value_desc_double_t, prop_desc_double_t, arg_desc_double_t;
 
 /**
