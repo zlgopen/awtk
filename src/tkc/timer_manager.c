@@ -169,7 +169,6 @@ ret_t timer_manager_dispatch(timer_manager_t* timer_manager) {
   delta_time = now - timer_manager->last_dispatch_time;
   if (delta_time > 3000 || delta_time < 0) {
     timer_manager_update_time(timer_manager, now, delta_time);
-    log_debug("User change time: %lu => %lu\n", timer_manager->last_dispatch_time, now);
   }
 
   if (timer_manager->timers.first == NULL) {

@@ -22,6 +22,8 @@
 #ifndef TK_SOCKET_HELPER_H
 #define TK_SOCKET_HELPER_H
 
+#include "tkc/types_def.h"
+
 BEGIN_C_DECLS
 
 #ifdef WIN32
@@ -40,7 +42,6 @@ typedef int socklen_t;
 #include <sys/select.h>
 #include <sys/time.h>
 #include <sys/types.h>
-
 #endif /*WIN32*/
 
 #include "tkc/fs.h"
