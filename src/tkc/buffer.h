@@ -108,6 +108,16 @@ wbuffer_t* wbuffer_init(wbuffer_t* wbuffer, uint8_t* data, uint32_t capacity);
 wbuffer_t* wbuffer_init_extendable(wbuffer_t* wbuffer);
 
 /**
+ * @method wbuffer_extend_capacity
+ * 扩展内存至指定的大小。
+ * @param {wbuffer_t*} wbuffer wbuffer对象。
+ * @param {uint32_t} capacity 内存大小。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t wbuffer_extend_capacity(wbuffer_t* wbuffer, uint32_t capacity);
+
+/**
  * @method wbuffer_deinit
  * 释放资源。
  * @param {wbuffer_t*} wbuffer wbuffer对象。

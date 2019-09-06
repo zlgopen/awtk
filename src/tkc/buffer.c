@@ -33,7 +33,7 @@ wbuffer_t* wbuffer_init(wbuffer_t* wbuffer, uint8_t* data, uint32_t capacity) {
   return wbuffer;
 }
 
-static ret_t wbuffer_extend_capacity(wbuffer_t* wbuffer, uint32_t capacity) {
+ret_t wbuffer_extend_capacity(wbuffer_t* wbuffer, uint32_t capacity) {
   uint8_t* data = NULL;
   return_value_if_fail(wbuffer != NULL, RET_BAD_PARAMS);
 
