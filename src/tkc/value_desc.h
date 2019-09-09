@@ -250,7 +250,7 @@ typedef struct _value_desc_t {
    * 描述。
    */
   const char* desc;
-} value_desc_t, prop_desc_t, arg_desc_t;
+} value_desc_t, prop_desc_t, arg_desc_t, ret_desc_t;
 
 /**
  * @class value_desc_int8_t
