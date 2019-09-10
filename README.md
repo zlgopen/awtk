@@ -193,9 +193,18 @@ pip install Pillow
 
 ## 五、在线演示
 
-* [基本控件在线演示](http://zlgawtk.bceapp.com/awtk/demos/demoui/index.html)
 
-> 目前 AWTK-WEB 还处于测试阶段，部分功能不能正常工作。如有兴趣请在 PC 上自行编译运行。
+* [图表演示] (http://zlgawtk.bceapp.com/awtk/demos/Chart-Demo/index.html)
+
+* [仪表演示] (http://zlgawtk.bceapp.com/awtk/demos/Meter-Demo/index.html)
+
+* [智能手表演示] (http://zlgawtk.bceapp.com/awtk/demos/SmartWatch-Demo/index.html)
+
+* [清风系统演示](http://zlgawtk.bceapp.com/awtk/demos/CleanAir-Demo/index.html)
+
+* [音乐播放器演示] (http://zlgawtk.bceapp.com/awtk/demos/MusicPlayer-Demo/index.html)
+
+* [基本控件在线演示](http://zlgawtk.bceapp.com/awtk/demos/demoui/index.html)
 
 ## 六、各个平台的移植
 
@@ -221,9 +230,13 @@ pip install Pillow
 
 ## 七、各语言的绑定
 
-* [awtk-lua](https://github.com/zlgopen/awtk-lua)
+* [AWTK 绑定代码生成器](https://github.com/zlgopen/awtk-binding)
 
-* [awtk-js](https://github.com/zlgopen/awtk-js)
+* [LUA绑定(awtk-lua)](https://github.com/zlgopen/awtk-lua)
+
+* [JS绑定之QuickJS(awtk-quickjs)](https://github.com/zlgopen/awtk-quickjs)
+
+* [JS绑定之JerryScript(awtk-jerryscript)](https://github.com/zlgopen/awtk-jerryscript)
 
 ## 八、相关工程
 
