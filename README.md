@@ -232,11 +232,11 @@ pip install Pillow
 
 * [AWTK 绑定代码生成器](https://github.com/zlgopen/awtk-binding)
 
-* [LUA绑定(awtk-lua)](https://github.com/zlgopen/awtk-lua)
+* [LUA绑定](https://github.com/zlgopen/awtk-lua)
 
-* [JS绑定之QuickJS(awtk-quickjs)](https://github.com/zlgopen/awtk-quickjs)
+* [JS绑定之QuickJS](https://github.com/zlgopen/awtk-quickjs)
 
-* [JS绑定之JerryScript(awtk-jerryscript)](https://github.com/zlgopen/awtk-jerryscript)
+* [JS绑定之JerryScript](https://github.com/zlgopen/awtk-jerryscript)
 
 ## 八、相关工程
 
