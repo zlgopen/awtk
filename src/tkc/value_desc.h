@@ -239,7 +239,7 @@ typedef struct _value_desc_t {
    */
   const char* name;
   /**
-   * @property {const char*} display_name 
+   * @property {const char*} display_name
    * @annotation ["readable"]
    * 显示名称。
    */
