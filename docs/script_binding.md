@@ -17,12 +17,14 @@
 
 基于以上这些原因，我决定自己实现[AWTK](https://github.com/zlgopen/awtk)的脚本绑定机制。它的实现原理如下：用特定格式的API注释来描述要脚本化的API，用一个名为gen\_idl的工具把注释提取出来生成JSON的接口描述文件，然后用不同的代码产生器生成对应语言的绑定：
 
-![1](images/script_binding.png) 
+![1](images/api_idl_usage.png) 
 
 ### 参考
 
 1.[API注释格式](api_doc.md)
 
-2.[JS绑定](https://github.com/zlgopen/awtk-js)
+2.[JerryScript绑定](https://github.com/zlgopen/awtk-jerryscript)
 
-3.[Lua绑定](https://github.com/zlgopen/awtk-lua)
+3.[QuickJS绑定](https://github.com/zlgopen/awtk-quickjs)
+
+4.[Lua绑定](https://github.com/zlgopen/awtk-lua)

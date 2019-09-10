@@ -1,0 +1,26 @@
+digraph G {
+  ratio = fill;
+  node [style=filled  height=0.4 width=2 fontname="serif" ];
+  edge [fontname="serif" ];
+
+  rankdir="LR";
+
+
+  idl[color="0.408 0.498 1.000" label="JSON格式的IDL"];
+  comment[color="0.650 0.200 1.000" label="API 注释"];
+  quickjs[color="0.201 0.753 1.000" label="QuickJS 绑定"];
+  jerryscript[color="0.201 0.753 1.000" label="JerryScript 绑定"];
+  lua[color="0.201 0.753 1.000" label="LUA 绑定"];
+  web[color="0.201 0.753 1.000" label="WEB API"];
+  other[color="0.201 0.753 1.000" label="其它语言绑定"];
+  doc[color="0.650 0.700 0.700" label="文档"];
+
+  comment -> idl[label="注释提取工具" ]
+  idl -> jerryscript[label="jerryscript代码生成器"]
+  idl -> quickjs[label="quickjs代码生成器"]
+  idl -> lua[label="lua代码生成器"]
+  idl -> web[label="web代码生成器"]
+  idl -> other[label="其它代码生成器"]
+  idl -> doc[label="文档生成工具"]
+}
+

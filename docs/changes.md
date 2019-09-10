@@ -1,59 +1,62 @@
 # 最新动态
+* 2019/09/10
+  * 更新文档。
+
 * 2019/09/05
-  * 完善fontgen(感谢智明提供补丁)。
-  * 完善sdl main loop(感谢朝泽提供补丁)。
-  * 增加socket stream实现。
+  * 完善 fontgen（感谢智明提供补丁）。
+  * 完善 sdl main loop（感谢朝泽提供补丁）。
+  * 增加 socket stream 实现。
 
 * 2019/09/04
-  * 修改freetype字体大小的问题(感谢智明提供补丁)。
+  * 修改 freetype 字体大小的问题（感谢智明提供补丁）。
   * change time to uint64
-  * 修改PC版本获取系统时间的函数(感谢陈谭提供补丁)。
+  * 修改 PC 版本获取系统时间的函数（感谢陈谭提供补丁）。
 
 * 2019/09/03
-  * edit/mledit失去焦点时，unselect当前选中的文本。
-  * 缺省使用stb 字体加载器。
+  * edit/mledit 失去焦点时，unselect 当前选中的文本。
+  * 缺省使用 stb 字体加载器。
 
 * 2019/09/02
-  * merge patch issue #224(感谢陈谭提供补丁)。
+  * merge patch issue #224（感谢陈谭提供补丁）。
 
 * 2019/09/01
-  * children layouter list view 增加cols参数。
+  * children layouter list view 增加 cols 参数。
 
 * 2019/08/30
-  * 修改windows下使用单头文件freetype的问题(感谢陈谭提供补丁)。
-  * 修改 list view children layouter的 BUG（感谢尧燊提供补丁）。
-  * 完善《硬件资源需求评估》(感谢智明提供补丁)。  
-  * 位图字体比较时，忽略字体大小(感谢智明提供补丁)。  
+  * 修改 windows 下使用单头文件 freetype 的问题（感谢陈谭提供补丁）。
+  * 修改 list view children layouter 的 BUG（感谢尧燊提供补丁）。
+  * 完善《硬件资源需求评估》（感谢智明提供补丁）。  
+  * 位图字体比较时，忽略字体大小（感谢智明提供补丁）。  
 
 * 2019/08/29
-  * 修改重载new的问题(感谢陈谭提供补丁)。
-  * 修改combox在dialog上焦点设置错误的问题。
+  * 修改重载 new 的问题（感谢陈谭提供补丁）。
+  * 修改 combox 在 dialog 上焦点设置错误的问题。
   * 优化数字时钟，时间没变时不重绘。
   * 修改 widget 焦点切换的 BUG（感谢尧燊提供补丁）。
-  * 修改 children layouter的 BUG（感谢尧燊提供补丁）。
+  * 修改 children layouter 的 BUG（感谢尧燊提供补丁）。
 
 * 2019/08/28
-  * 增加widget\_reset\_canvas用于designer打开新工程时清除vgcanvas中的资源。
-  * hscroll\_label 支持右对齐(感谢智明提供补丁)。
-  * 修改密码编辑器的BUG(感谢俊杰提供补丁)。
-  * vgcanvas 支持设置assets manager, 以便从指定的assets manager加载字体。
+  * 增加 widget\_reset\_canvas 用于 designer 打开新工程时清除 vgcanvas 中的资源。
+  * hscroll\_label 支持右对齐（感谢智明提供补丁）。
+  * 修改密码编辑器的 BUG（感谢俊杰提供补丁）。
+  * vgcanvas 支持设置 assets manager, 以便从指定的 assets manager 加载字体。
     
 * 2019/08/27
-  * 完善lcd mono(感谢智明提供补丁)。
-  * 完善wuxiaolin draw line(感谢培煌提供补丁)。 
-  * 增加stream接口，以及基于内存和文件的实现。
+  * 完善 lcd mono（感谢智明提供补丁）。
+  * 完善 wuxiaolin draw line（感谢培煌提供补丁）。 
+  * 增加 stream 接口，以及基于内存和文件的实现。
 
 * 2019/08/24
   * 更新文档。
-  * 完善mledit，支持readonly属性。
+  * 完善 mledit，支持 readonly 属性。
 
 * 2019/08/23
-  * 增加prop desc结构。
-  * 完善object/object default
+  * 增加 prop desc 结构。
+  * 完善 object/object default
 
 * 2019/08/22
-  * 增加combo\_box\_ex控件(感谢大恒提供)
-  * 增加属性WIDGET\_PROP\_FOCUSED表示当前的焦点状态，WIDGET\_PROP\_FOCUS属性为过时。
+  * 增加 combo\_box\_ex 控件（感谢大恒提供）
+  * 增加属性 WIDGET\_PROP\_FOCUSED 表示当前的焦点状态，WIDGET\_PROP\_FOCUS 属性为过时。
 
 * 2019/08/20
   * svg 中 float\_t 改为 float。
