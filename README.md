@@ -194,15 +194,15 @@ pip install Pillow
 ## 五、在线演示
 
 
-* [图表演示] (http://zlgawtk.bceapp.com/awtk/demos/Chart-Demo/index.html)
+* [图表演示](http://zlgawtk.bceapp.com/awtk/demos/Chart-Demo/index.html)
 
-* [仪表演示] (http://zlgawtk.bceapp.com/awtk/demos/Meter-Demo/index.html)
+* [仪表演示](http://zlgawtk.bceapp.com/awtk/demos/Meter-Demo/index.html)
 
-* [智能手表演示] (http://zlgawtk.bceapp.com/awtk/demos/SmartWatch-Demo/index.html)
+* [智能手表演示](http://zlgawtk.bceapp.com/awtk/demos/SmartWatch-Demo/index.html)
 
 * [清风系统演示](http://zlgawtk.bceapp.com/awtk/demos/CleanAir-Demo/index.html)
 
-* [音乐播放器演示] (http://zlgawtk.bceapp.com/awtk/demos/MusicPlayer-Demo/index.html)
+* [音乐播放器演示](http://zlgawtk.bceapp.com/awtk/demos/MusicPlayer-Demo/index.html)
 
 * [基本控件在线演示](http://zlgawtk.bceapp.com/awtk/demos/demoui/index.html)
 
