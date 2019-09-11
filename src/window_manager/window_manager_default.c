@@ -282,6 +282,10 @@ static ret_t window_manager_create_animator(window_manager_default_t* wm, widget
   widget_t* prev_win = window_manager_find_prev_window(WIDGET(wm));
   const char* key = open ? WIDGET_PROP_OPEN_ANIM_HINT : WIDGET_PROP_CLOSE_ANIM_HINT;
 
+  if (prev_win == curr_win || prev_win == NULL) {
+    return RET_FAIL;
+  }
+
   return_value_if_fail(wm != NULL && prev_win != NULL && curr_win != NULL, RET_BAD_PARAMS);
 
   if (wm->animator != NULL) {
