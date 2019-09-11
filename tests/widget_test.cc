@@ -482,6 +482,9 @@ TEST(Widget, update_style1) {
   ASSERT_EQ(style->data, (const unsigned char*)NULL);
 
   widget_add_child(w, b);
+  ASSERT_EQ(b->need_update_style, TRUE);
+  ASSERT_EQ(widget_update_style(b), RET_OK);
+  ASSERT_EQ(b->need_update_style, FALSE);
   ASSERT_NE(style->data, (const unsigned char*)NULL);
 
   widget_destroy(w);
@@ -499,6 +502,9 @@ TEST(Widget, update_style2) {
 
   widget_add_child(w, g);
 
+  ASSERT_EQ(b->need_update_style, TRUE);
+  ASSERT_EQ(widget_update_style(b), RET_OK);
+  ASSERT_EQ(b->need_update_style, FALSE);
   ASSERT_NE(style->data, (const unsigned char*)NULL);
 
   widget_destroy(w);

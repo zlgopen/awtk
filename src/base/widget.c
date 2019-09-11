@@ -53,6 +53,35 @@ static ret_t widget_destroy_in_idle(const idle_info_t* info);
 static ret_t widget_dispatch_blur_event(widget_t* widget);
 static ret_t widget_on_paint_done(widget_t* widget, canvas_t* c);
 
+static ret_t widget_set_need_update_style(widget_t* widget) {
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  if(!widget->need_update_style) {
+    widget_invalidate_force(widget, NULL);
+  }
+
+  widget->need_update_style = TRUE;
+
+  return RET_OK;
+}
+
+static ret_t widget_set_need_update_style_recursive(widget_t* widget) {
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  widget_set_need_update_style(widget);
+  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+  widget_set_need_update_style_recursive(iter);
+  WIDGET_FOR_EACH_CHILD_END();
+
+  return RET_OK;
+}
+
+ret_t widget_update_style(widget_t* widget) {
+  widget->need_update_style = FALSE;
+
+  return style_notify_widget_state_changed(widget->astyle, widget);
+}
+
 static ret_t widget_real_destroy(widget_t* widget) {
   if (widget->vt->on_destroy) {
     widget->vt->on_destroy(widget);
@@ -452,7 +481,7 @@ ret_t widget_set_enable(widget_t* widget, bool_t enable) {
 
   if (widget->enable != enable) {
     widget->enable = enable;
-    widget_update_style(widget);
+    widget_set_need_update_style(widget);
     widget_invalidate(widget, NULL);
   }
 
@@ -472,7 +501,7 @@ static ret_t widget_set_focused_internal(widget_t* widget, bool_t focused) {
 
   if (widget->focused != focused) {
     widget->focused = focused;
-    widget_update_style(widget);
+    widget_set_need_update_style(widget);
 
     if (focused) {
       event_t e = event_init(EVT_FOCUS, widget);
@@ -508,7 +537,7 @@ ret_t widget_set_state(widget_t* widget, const char* state) {
   if (!tk_str_eq(widget->state, state)) {
     widget_invalidate_force(widget, NULL);
     widget->state = state;
-    widget_update_style(widget);
+    widget_set_need_update_style(widget);
     widget_invalidate_force(widget, NULL);
   }
 
@@ -605,7 +634,7 @@ ret_t widget_add_child(widget_t* widget, widget_t* child) {
   ENSURE(darray_push(widget->children, child) == RET_OK);
 
   if (!(child->initializing) && widget_get_window(child) != NULL) {
-    widget_update_style_recursive(child);
+    widget_set_need_update_style_recursive(child);
   }
 
   return RET_OK;
@@ -769,7 +798,7 @@ static ret_t widget_set_visible_self(widget_t* widget, bool_t visible) {
   if (widget->visible != visible) {
     widget_invalidate_force(widget, NULL);
     widget->visible = visible;
-    widget_update_style(widget);
+    widget_set_need_update_style(widget);
     widget_invalidate_force(widget, NULL);
     widget_set_need_relayout_children(widget->parent);
   }
@@ -1171,6 +1200,10 @@ ret_t widget_paint(widget_t* widget, canvas_t* c) {
 
   if (widget->need_relayout_children) {
     widget_layout_children(widget);
+  }
+
+  if (widget->need_update_style) {
+    widget_update_style(widget);
   }
 
   canvas_save(c);
@@ -1723,7 +1756,9 @@ static ret_t widget_dispatch_blur_event(widget_t* widget) {
       target->focused = FALSE;
       event_t e = event_init(EVT_BLUR, target);
       widget_dispatch(target, &e);
+      widget_set_need_update_style(target);
     }
+
     if (target->parent && target->parent->key_target == target) {
       target->parent->key_target = NULL;
     }
@@ -2219,21 +2254,6 @@ ret_t widget_invalidate_force(widget_t* widget, rect_t* r) {
   return widget_invalidate(widget, NULL);
 }
 
-ret_t widget_update_style(widget_t* widget) {
-  return style_notify_widget_state_changed(widget->astyle, widget);
-}
-
-ret_t widget_update_style_recursive(widget_t* widget) {
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
-
-  widget_update_style(widget);
-  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
-  widget_update_style_recursive(iter);
-  WIDGET_FOR_EACH_CHILD_END();
-
-  return RET_OK;
-}
-
 widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_t y,
                       wh_t w, wh_t h) {
   return_value_if_fail(widget != NULL && vt != NULL, NULL);
@@ -2259,6 +2279,8 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t*
   widget->focused = FALSE;
   widget->focusable = FALSE;
   widget->with_focus_state = FALSE;
+  widget->need_relayout_children = TRUE;
+  widget->need_update_style = TRUE;
 
   if (parent) {
     widget_add_child(parent, widget);
@@ -2275,7 +2297,7 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t*
   }
 
   if (parent != NULL && widget_is_window_opened(widget)) {
-    widget_update_style(widget);
+    widget_set_need_update_style(widget);
   }
 
   widget_invalidate_force(widget, NULL);
@@ -2511,7 +2533,7 @@ widget_t* widget_clone(widget_t* widget, widget_t* parent) {
   return_value_if_fail(clone != NULL, NULL);
 
   widget_copy(clone, widget);
-  widget_update_style(clone);
+  widget_set_need_update_style(clone);
 
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
   widget_clone(iter, clone);
@@ -2759,6 +2781,7 @@ ret_t widget_set_as_key_target(widget_t* widget) {
 
   if (widget != NULL) {
     widget_t* parent = widget->parent;
+
     if (parent != NULL) {
       parent->focused = TRUE;
       if (parent->key_target != NULL && parent->key_target != widget) {
@@ -2767,6 +2790,7 @@ ret_t widget_set_as_key_target(widget_t* widget) {
       parent->key_target = widget;
       widget_set_as_key_target(parent);
     }
+    widget_set_need_update_style(widget);
   }
 
   return RET_OK;

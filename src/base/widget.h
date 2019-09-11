@@ -337,6 +337,12 @@ struct _widget_t {
    */
   uint8_t need_relayout_children : 1;
   /**
+   * @property {bool_t} need_update_style
+   * @annotation ["readable"]
+   * 标识控件是否需要update style。
+   */
+  uint8_t need_update_style : 1;
+  /**
    * @property {uint16_t} can_not_destroy
    * @annotation ["readable"]
    * 标识控件目前不能被销毁(比如正在分发事件)，如果此时调用widget\_destroy，自动异步处理。
@@ -1843,16 +1849,6 @@ ret_t widget_focus_prev(widget_t* widget);
  * @return {const char*} 返回状态值。
  */
 const char* widget_get_state_for_style(widget_t* widget, bool_t active, bool_t checked);
-
-/**
- * @method widget_update_style_recursive
- * 让控件及其全部子控件根据自己当前状态更新style。
- * @annotation ["private"]
- * @param {widget_t*} widget widget对象。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t widget_update_style_recursive(widget_t* widget);
 
 /**
  * @method widget_layout
