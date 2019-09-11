@@ -1,7 +1,8 @@
 # 最新动态
 * 2019/09/11
   * 优化update style的处理流程。
-  * 修改style和state不一致的BUG（感谢王程提供补丁）
+  * 修改style和state不一致的BUG（感谢王程提供补丁）。
+  * 修改window\_manager\_create\_animator，只有一个窗口时不创建动画（感谢王程提供补丁）。
 
 * 2019/09/10
   * 更新文档。
