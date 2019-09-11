@@ -165,7 +165,9 @@ static void test_draw_glyph(lcd_t* lcd, uint32_t x, uint32_t y, uint32_t w, uint
   glyph_t g;
   glyph_gen(&g, w, h);
   rect_t r = rect_init(0, 0, w, h);
+  color_t c = color_init(0xff, 0xff, 0xff, 0xff);
 
+  lcd_set_text_color(lcd, c);
   ASSERT_EQ(lcd_draw_glyph(lcd, &g, &r, x, y), RET_OK);
   lcd_check_data(lcd, (uint8_t*)(g.data), x, y, w, h);
 
