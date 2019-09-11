@@ -19,7 +19,6 @@ sources=Glob('layouters/*.c') + \
   Glob('designer_support/*.c') + \
   Glob('widget_animators/*.c') + \
   Glob('misc/*.cpp') + \
-  Glob('streams/*.c') + \
   Glob('window_animators/*.c') + \
   Glob('dialog_highlighters/*.c') + \
   Glob('window_manager/window_manager_default.c') 
@@ -89,3 +88,5 @@ env.Library(os.path.join(LIB_DIR, 'widgets'), Glob('widgets/*.c'), LIBS=[])
 env.Library(os.path.join(LIB_DIR, 'tkc'), Glob('tkc/*.c') + Glob('platforms/pc/*.c'), LIBS=[])
 env.Library(os.path.join(LIB_DIR, 'extwidgets'), Glob('ext_widgets/*.c') + Glob('ext_widgets/*/*.c'), LIBS=[])
 
+sources = Glob('streams/*.c')
+env.Library(os.path.join(LIB_DIR, 'streams'), sources, LIBS=[])
