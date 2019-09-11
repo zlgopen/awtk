@@ -27,6 +27,7 @@
 
 static ret_t color_component_update_h(widget_t* widget);
 static ret_t color_component_update_sv(widget_t* widget);
+static ret_t color_component_ensure_image(widget_t* widget);
 static ret_t color_component_set_type(widget_t* widget, const char* type);
 
 static ret_t color_component_update_pressed(widget_t* widget, pointer_event_t* e) {
