@@ -424,6 +424,11 @@ static ret_t text_selector_on_event(widget_t* widget, event_t* e) {
       }
       break;
     }
+    case EVT_RESIZE:
+    case EVT_MOVE_RESIZE: {
+      text_selector_sync_yoffset_with_selected_index(text_selector);
+      break;
+    }
     default:
       break;
   }
@@ -585,7 +590,6 @@ ret_t text_selector_set_selected_index(widget_t* widget, uint32_t index) {
   return_value_if_fail(option != NULL, RET_BAD_PARAMS);
 
   text_selector_set_selected_index_only(text_selector, index);
-  text_selector_sync_yoffset_with_selected_index(text_selector);
 
   return widget_invalidate(widget, NULL);
 }
@@ -595,7 +599,6 @@ ret_t text_selector_set_visible_nr(widget_t* widget, uint32_t visible_nr) {
   return_value_if_fail(text_selector != NULL, RET_BAD_PARAMS);
 
   text_selector->visible_nr = visible_nr == 3 ? 3 : 5;
-  text_selector_sync_yoffset_with_selected_index(text_selector);
 
   return widget_invalidate(widget, NULL);
 }

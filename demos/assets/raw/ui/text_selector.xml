@@ -1,8 +1,8 @@
 <window anim_hint="htranslate">
   <row  x="10" y="30" w="100%" h="150" children_layout="default(row=1,col=3)">
-    <text_selector style="dark" options="2000-2050" text="2018"/>
-    <text_selector options="1-12-%02d" text="1"/>
-    <text_selector options="1-31-%02d" text="1"/>
+    <text_selector style="dark" options="2000-2050" selected_index="9"/>
+    <text_selector options="1-12-%02d" selected_index="8"/>
+    <text_selector options="1-31-%02d" selected_index="9"/>
   </row>
   <button name="close" x="center" y="middle" w="50%" h="30" text="close"/>
   <row  x="10" y="bottom:30" w="100%" h="90" children_layout="default(row=1,col=3)">
