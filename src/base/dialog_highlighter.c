@@ -21,6 +21,20 @@
 
 #include "base/dialog_highlighter.h"
 
+ret_t dialog_highlighter_clear_image(dialog_highlighter_t* h) {
+  vgcanvas_t* vg = NULL;
+  if (h->fbo.handle != NULL) {
+    vg = canvas_get_vgcanvas(h->canvas);
+    vgcanvas_destroy_fbo(vg, &(h->fbo));
+    memset(&(h->fbo), 0x00, sizeof(h->fbo));
+  } else if (h->img.data != NULL) {
+    bitmap_destroy(&(h->img));
+    memset(&(h->img), 0x00, sizeof(h->img));
+  }
+
+  return RET_OK;
+}
+
 dialog_highlighter_t* dialog_highlighter_create(const dialog_highlighter_vtable_t* vt) {
   dialog_highlighter_t* h = NULL;
   return_value_if_fail(vt != NULL && vt->size >= sizeof(dialog_highlighter_t), NULL);
@@ -48,6 +62,8 @@ ret_t dialog_highlighter_prepare(dialog_highlighter_t* h, canvas_t* c) {
 
 ret_t dialog_highlighter_set_bg(dialog_highlighter_t* h, bitmap_t* img, framebuffer_object_t* fbo) {
   return_value_if_fail(h != NULL && h->vt != NULL, RET_BAD_PARAMS);
+
+  dialog_highlighter_clear_image(h);
 
   if (img != NULL) {
     h->img = *img;
@@ -89,18 +105,11 @@ static ret_t dialog_highlighter_on_destroy(dialog_highlighter_t* h) {
 }
 
 ret_t dialog_highlighter_destroy(dialog_highlighter_t* h) {
-  vgcanvas_t* vg = NULL;
   return_value_if_fail(h != NULL && h->vt != NULL, RET_BAD_PARAMS);
 
   emitter_dispatch_simple_event(EMITTER(h), EVT_DESTROY);
   dialog_highlighter_on_destroy(h);
-
-  if (h->fbo.handle) {
-    vg = canvas_get_vgcanvas(h->canvas);
-    vgcanvas_destroy_fbo(vg, &(h->fbo));
-  } else {
-    bitmap_destroy(&(h->img));
-  }
+  dialog_highlighter_clear_image(h);
 
   emitter_deinit(EMITTER(h));
   memset(h, 0x00, h->vt->size);

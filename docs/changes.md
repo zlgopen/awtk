@@ -1,13 +1,15 @@
 # 最新动态
+
 * 2019/09/11
-  * 优化update style的处理流程。
-  * 修改style和state不一致的BUG（感谢王程提供补丁）。
-  * 修改window\_manager\_create\_animator，只有一个窗口时不创建动画（感谢王程提供补丁）。
-  * 修改text selector设置selected index的BUG。
-  
+  * 优化 update style 的处理流程。
+  * 修改 style 和 state 不一致的 BUG（感谢王程提供补丁）。
+  * 修改 window\_manager\_create\_animator，只有一个窗口时不创建动画（感谢王程提供补丁）。
+  * 修改 text selector 设置 selected index 的 BUG。
+  * 完善 dialog highligher 对 native window resize 事件的处理。
+
 * 2019/09/10
   * 更新文档。
-  * 修改color picker控件动态调整大小的问题。
+  * 修改 color picker 控件动态调整大小的问题。
 
 * 2019/09/05
   * 完善 fontgen（感谢智明提供补丁）。

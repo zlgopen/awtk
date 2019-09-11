@@ -1005,8 +1005,9 @@ ret_t window_manager_paint_system_bar(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-static ret_t window_manager_native_native_window_resized(widget_t* widget, void* handle) {
+static ret_t window_manager_default_native_window_resized(widget_t* widget, void* handle) {
   native_window_info_t info;
+  window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
   native_window_t* nw = WINDOW_MANAGER_DEFAULT(widget)->native_window;
 
   return_value_if_fail(native_window_get_info(nw, &info) == RET_OK, RET_BAD_PARAMS);
@@ -1014,13 +1015,26 @@ static ret_t window_manager_native_native_window_resized(widget_t* widget, void*
   window_manager_default_resize(widget, info.w, info.h);
   native_window_on_resized(nw, info.w, info.h);
 
+  if (wm->dialog_highlighter != NULL) {
+    bitmap_t img;
+    framebuffer_object_t fbo;
+    widget_t* prev = window_manager_get_prev_window(widget);
+
+    memset(&img, 0x00, sizeof(img));
+    memset(&fbo, 0x00, sizeof(fbo));
+    if (prev != NULL) {
+      dialog_highlighter_clear_image(wm->dialog_highlighter);
+      window_manager_default_snap_prev_window(widget, prev, &img, &fbo, FALSE);
+    }
+  }
+
   return RET_OK;
 }
 
-static ret_t window_manager_native_dispatch_native_window_event(widget_t* widget, event_t* e,
-                                                                void* handle) {
+static ret_t window_manager_default_dispatch_native_window_event(widget_t* widget, event_t* e,
+                                                                 void* handle) {
   if (e->type == EVT_NATIVE_WINDOW_RESIZED) {
-    window_manager_native_native_window_resized(widget, handle);
+    window_manager_default_native_window_resized(widget, handle);
   }
 
   return RET_OK;
@@ -1037,7 +1051,7 @@ static window_manager_vtable_t s_window_manager_self_vtable = {
     .get_prev_window = window_manager_default_get_prev_window,
     .close_window_force = window_manager_default_close_window_force,
     .dispatch_input_event = window_manager_default_dispatch_input_event,
-    .dispatch_native_window_event = window_manager_native_dispatch_native_window_event,
+    .dispatch_native_window_event = window_manager_default_dispatch_native_window_event,
     .snap_curr_window = window_manager_default_snap_curr_window,
     .snap_prev_window = window_manager_default_snap_prev_window,
     .get_dialog_highlighter = window_manager_default_get_dialog_highlighter,

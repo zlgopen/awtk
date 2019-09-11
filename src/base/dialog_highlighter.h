@@ -151,6 +151,9 @@ bool_t dialog_highlighter_is_dynamic(dialog_highlighter_t* h);
  */
 ret_t dialog_highlighter_destroy(dialog_highlighter_t* h);
 
+/*for window manager*/
+ret_t dialog_highlighter_clear_image(dialog_highlighter_t* h);
+
 END_C_DECLS
 
 #endif /*TK_DIALOG_HIGHLIGHTER_H*/
