@@ -27,6 +27,9 @@ BEGIN_C_DECLS
 #define TK_STREAM_PROP_FD "fd"
 #define TK_STREAM_PROP_IS_OK "is_ok"
 
+#define TK_STREAM_CMD_IFLUSH "iflush"
+#define TK_STREAM_CMD_OFLUSH "oflush"
+
 END_C_DECLS
 
 #endif /*TK_IOSTREAM_CONST_H*/

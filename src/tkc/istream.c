@@ -36,6 +36,16 @@ ret_t tk_istream_seek(tk_istream_t* stream, uint32_t offset) {
   return stream->seek(stream, offset);
 }
 
+ret_t tk_istream_flush(tk_istream_t* stream) {
+  return_value_if_fail(stream != NULL, RET_BAD_PARAMS);
+
+  if (stream->flush != NULL) {
+    return stream->flush(stream);
+  }
+
+  return RET_OK;
+}
+
 int32_t tk_istream_read_len(tk_istream_t* stream, uint8_t* buff, uint32_t max_size,
                             uint32_t timeout_ms) {
   uint32_t start = 0;
