@@ -111,7 +111,9 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
       f = NVG_TEXTURE_RGB;
       break;
     }
-    default: { assert(!"not supported format"); }
+    default: {
+      assert(!"not supported format");
+    }
   }
 
   i = nvgCreateImageRaw(canvas->vg, img->w, img->h, f, NVG_IMAGE_NEAREST, img->data);

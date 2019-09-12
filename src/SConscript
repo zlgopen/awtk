@@ -88,5 +88,3 @@ env.Library(os.path.join(LIB_DIR, 'widgets'), Glob('widgets/*.c'), LIBS=[])
 env.Library(os.path.join(LIB_DIR, 'tkc'), Glob('tkc/*.c') + Glob('platforms/pc/*.c'), LIBS=[])
 env.Library(os.path.join(LIB_DIR, 'extwidgets'), Glob('ext_widgets/*.c') + Glob('ext_widgets/*/*.c'), LIBS=[])
 
-sources = Glob('streams/*.c')
-env.Library(os.path.join(LIB_DIR, 'streams'), sources, LIBS=[])
