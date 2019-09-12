@@ -28,7 +28,7 @@ static ret_t tk_iostream_serial_get_prop(object_t* obj, const char* name, value_
   tk_iostream_serial_t* iostream_serial = TK_IOSTREAM_SERIAL(obj);
 
   if (tk_str_eq(name, TK_STREAM_PROP_FD)) {
-    value_set_int(v, iostream_serial->fd);
+    value_set_int(v, (int32_t)(iostream_serial->fd));
     return RET_OK;
   } else if (tk_str_eq(name, TK_IOSTREAM_SERIAL_PROP_PARITY)) {
     value_set_int(v, iostream_serial->parity);
@@ -130,8 +130,8 @@ static tk_ostream_t* tk_iostream_serial_get_ostream(tk_iostream_t* stream) {
 }
 
 tk_iostream_t* tk_iostream_serial_create(const char* port) {
-  int fd = 0;
   object_t* obj = NULL;
+  serial_handle_t fd = 0;
   tk_iostream_serial_t* iostream_serial = NULL;
   return_value_if_fail(port != NULL, NULL);
 

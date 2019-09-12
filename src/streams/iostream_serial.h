@@ -41,7 +41,7 @@ typedef struct _tk_iostream_serial_t tk_iostream_serial_t;
 struct _tk_iostream_serial_t {
   tk_iostream_t iostream;
 
-  int fd;
+  serial_handle_t fd;
   parity_t parity;
   int32_t baudrate;
   bytesize_t bytesize;

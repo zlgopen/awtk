@@ -24,6 +24,7 @@
 
 #include "tkc/fs.h"
 #include "tkc/istream.h"
+#include "streams/serial_helper.h"
 
 BEGIN_C_DECLS
 
@@ -40,7 +41,7 @@ typedef struct _tk_istream_serial_t tk_istream_serial_t;
 struct _tk_istream_serial_t {
   tk_istream_t istream;
 
-  int fd;
+  serial_handle_t fd;
   bool_t is_broken;
 };
 
@@ -54,7 +55,7 @@ struct _tk_istream_serial_t {
  * @return {tk_istream_t*} 返回istream对象。
  *
  */
-tk_istream_t* tk_istream_serial_create(int fd);
+tk_istream_t* tk_istream_serial_create(serial_handle_t fd);
 
 #define TK_ISTREAM_SERIAL(obj) ((tk_istream_serial_t*)(obj))
 

@@ -28,12 +28,14 @@ BEGIN_C_DECLS
 
 #ifdef WIN32
 #include "windows.h"
+#define serial_handle_t HANDLE
 #else
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/select.h>
 #include <sys/time.h>
 #include <sys/types.h>
+#define serial_handle_t int
 #endif /*WIN32*/
 
 #include "tkc/fs.h"
@@ -53,17 +55,17 @@ typedef enum { stopbits_one = 1, stopbits_two = 2, stopbits_one_point_five } sto
 
 typedef enum { flowcontrol_none = 0, flowcontrol_software, flowcontrol_hardware } flowcontrol_t;
 
-int serial_open(const char* port);
+serial_handle_t serial_open(const char* port);
 
-ret_t serial_iflush(int fd);
-ret_t serial_oflush(int fd);
+ret_t serial_iflush(serial_handle_t fd);
+ret_t serial_oflush(serial_handle_t fd);
 
-int32_t serial_read(int fd, uint8_t* buff, uint32_t max_size);
-int32_t serial_write(int fd, const uint8_t* buff, uint32_t max_size);
+int32_t serial_read(serial_handle_t fd, uint8_t* buff, uint32_t max_size);
+int32_t serial_write(serial_handle_t fd, const uint8_t* buff, uint32_t max_size);
 
-int serial_close(int fd);
+int serial_close(serial_handle_t fd);
 
-ret_t serial_config(int fd, uint32_t baudrate, bytesize_t bytesize, stopbits_t stopbits,
+ret_t serial_config(serial_handle_t fd, uint32_t baudrate, bytesize_t bytesize, stopbits_t stopbits,
                     flowcontrol_t flowcontrol, parity_t parity);
 
 END_C_DECLS

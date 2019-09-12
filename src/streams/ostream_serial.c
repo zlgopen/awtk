@@ -69,7 +69,7 @@ static const object_vtable_t s_tk_ostream_serial_vtable = {.type = "tk_ostream_s
                                                            .exec = tk_ostream_serial_exec,
                                                            .get_prop = tk_ostream_serial_get_prop};
 
-tk_ostream_t* tk_ostream_serial_create(int fd) {
+tk_ostream_t* tk_ostream_serial_create(serial_handle_t fd) {
   object_t* obj = NULL;
   tk_ostream_serial_t* ostream_serial = NULL;
   return_value_if_fail(fd >= 0, NULL);

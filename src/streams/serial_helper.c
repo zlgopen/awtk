@@ -33,8 +33,8 @@
 #ifdef WIN32
 #define prefix L"\\\\.\\"
 
-int serial_open(const char* port) {
-  int fd = 0;
+serial_handle_t serial_open(const char* port) {
+  HANDLE fd = 0;
   wstr_t str;
   return_value_if_fail(port != NULL && *port != '\0', INVALID_HANDLE_VALUE);
 
@@ -44,14 +44,14 @@ int serial_open(const char* port) {
     wstr_insert(&str, 0, prefix, wcslen(prefix));
   }
 
-  fd = CreateFileW(str.str GENERIC_READ | GENERIC_WRITE, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL,
+  fd = CreateFileW(str.str, GENERIC_READ | GENERIC_WRITE, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL,
                    0);
   wstr_reset(&str);
 
   return fd;
 }
 
-ret_t serial_config(int fd, uint32_t baudrate, bytesize_t bytesize, stopbits_t stopbits,
+ret_t serial_config(serial_handle_t fd, uint32_t baudrate, bytesize_t bytesize, stopbits_t stopbits,
                     flowcontrol_t flowcontrol, parity_t parity) {
   DCB dcbSerialParams = {0};
   return_value_if_fail(fd != INVALID_HANDLE_VALUE, RET_BAD_PARAMS);
@@ -278,34 +278,34 @@ ret_t serial_config(int fd, uint32_t baudrate, bytesize_t bytesize, stopbits_t s
 
   // Setup timeouts
   COMMTIMEOUTS timeouts = {0};
-  timeouts.ReadIntervalTimeout = timeout_.inter_byte_timeout;
-  timeouts.ReadTotalTimeoutConstant = timeout_.read_timeout_constant;
-  timeouts.ReadTotalTimeoutMultiplier = timeout_.read_timeout_multiplier;
-  timeouts.WriteTotalTimeoutConstant = timeout_.write_timeout_constant;
-  timeouts.WriteTotalTimeoutMultiplier = timeout_.write_timeout_multiplier;
+  timeouts.ReadIntervalTimeout = 1000;
+  timeouts.ReadTotalTimeoutConstant = 10000;
+  timeouts.ReadTotalTimeoutMultiplier = 1;
+  timeouts.WriteTotalTimeoutConstant = 1000;
+  timeouts.WriteTotalTimeoutMultiplier = 1000;
   if (!SetCommTimeouts(fd, &timeouts)) {
     log_debug("Error setting timeouts.");
     return RET_FAIL;
   }
 }
 
-ret_t serial_iflush(int fd) {
+ret_t serial_iflush(serial_handle_t fd) {
   PurgeComm(fd, PURGE_RXCLEAR);
 
   return RET_OK;
 }
 
-ret_t serial_oflush(int fd) {
+ret_t serial_oflush(serial_handle_t fd) {
   PurgeComm(fd, PURGE_TXCLEAR);
 
   return RET_OK;
 }
 
-int32_t serial_read(int fd, uint8_t* buff, uint32_t max_size) {
+int32_t serial_read(serial_handle_t fd, uint8_t* buff, uint32_t max_size) {
   int32_t ret = 0;
   DWORD bytes_read = 0;
 
-  if (!ReadFile(fd, buff, (DWORD)(size), &bytes_read, NULL)) {
+  if (!ReadFile(fd, buff, (DWORD)(max_size), &bytes_read, NULL)) {
     ret = -1;
   } else {
     ret = bytes_read; 
@@ -314,11 +314,11 @@ int32_t serial_read(int fd, uint8_t* buff, uint32_t max_size) {
   return ret;
 }
 
-int32_t serial_write(int fd, const uint8_t* buff, uint32_t max_size) {
+int32_t serial_write(serial_handle_t fd, const uint8_t* buff, uint32_t max_size) {
   int32_t ret = 0;
-  DWORD bytes_read = 0;
+  DWORD bytes_write = 0;
 
-  if (!WriteFile(fd, buff, (DWORD)(size), &bytes_write, NULL)) {
+  if (!WriteFile(fd, buff, (DWORD)(max_size), &bytes_write, NULL)) {
     ret = -1;
   } else {
     ret = bytes_write; 
@@ -327,7 +327,7 @@ int32_t serial_write(int fd, const uint8_t* buff, uint32_t max_size) {
   return ret;
 }
 
-int serial_close(int fd) {
+int serial_close(serial_handle_t fd) {
   CloseHandle(fd);
   return 0;
 }
@@ -372,12 +372,12 @@ int serial_close(int fd) {
 #include <IOKit/serial/ioss.h>
 #endif
 
-int serial_open(const char* port) {
+serial_handle_t serial_open(const char* port) {
   return_value_if_fail(port != NULL && *port != '\0', -1);
   return open(port, O_RDWR | O_NOCTTY | O_NONBLOCK);
 }
 
-ret_t serial_config(int fd, uint32_t baudrate, bytesize_t bytesize, stopbits_t stopbits,
+ret_t serial_config(serial_handle_t fd, uint32_t baudrate, bytesize_t bytesize, stopbits_t stopbits,
                     flowcontrol_t flowcontrol, parity_t parity) {
   bool_t xonxoff = FALSE;
   bool_t rtscts = FALSE;
@@ -743,23 +743,23 @@ ret_t serial_config(int fd, uint32_t baudrate, bytesize_t bytesize, stopbits_t s
   return RET_OK;
 }
 
-ret_t serial_iflush(int fd) {
+ret_t serial_iflush(serial_handle_t fd) {
   return tcflush(fd, TCIFLUSH) == 0 ? RET_OK : RET_FAIL;
 }
 
-ret_t serial_oflush(int fd) {
+ret_t serial_oflush(serial_handle_t fd) {
   return tcflush(fd, TCOFLUSH) == 0 ? RET_OK : RET_FAIL;
 }
 
-int32_t serial_read(int fd, uint8_t* buff, uint32_t max_size) {
+int32_t serial_read(serial_handle_t fd, uint8_t* buff, uint32_t max_size) {
   return read(fd, buff, max_size);
 }
 
-int32_t serial_write(int fd, const uint8_t* buff, uint32_t max_size) {
+int32_t serial_write(serial_handle_t fd, const uint8_t* buff, uint32_t max_size) {
   return write(fd, buff, max_size);
 }
 
-int serial_close(int fd) {
+int serial_close(serial_handle_t fd) {
   serial_iflush(fd);
   serial_oflush(fd);
   close(fd);
