@@ -56,7 +56,7 @@ static ret_t tk_istream_serial_flush(tk_istream_t* stream) {
 
 static ret_t tk_istream_serial_exec(object_t* obj, const char* name, const char* args) {
   if (tk_str_eq(name, TK_STREAM_CMD_IFLUSH)) {
-    return tk_istream_serial_flush(TK_ISTREAM_SERIAL(obj));
+    return tk_istream_serial_flush(TK_ISTREAM(obj));
   }
   
   return RET_NOT_IMPL;
