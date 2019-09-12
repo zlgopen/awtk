@@ -97,6 +97,9 @@ int32_t tk_istream_read_line(tk_istream_t* stream, uint8_t* buff, uint32_t max_s
       break;
     }
 
+    if(read_bytes == 1) {
+      log_debug("%c", buff[offset]);
+    }
     offset += read_bytes;
     remain_bytes -= read_bytes;
     if (time_now_ms() > end) {
