@@ -13,3 +13,4 @@ env.Library(os.path.join(LIB_DIR, 'streams'), sources, LIBS=[])
 LIBS=['streams'] + env['LIBS']
 env.Program(os.path.join(BIN_DIR, 'serial_echo'), ['tools/serial_echo.c'], LIBS=LIBS);
 env.Program(os.path.join(BIN_DIR, 'serial_send'), ['tools/serial_send.c'], LIBS=LIBS);
+env.Program(os.path.join(BIN_DIR, 'serial_at'), ['tools/serial_at.c'], LIBS=LIBS);

@@ -76,3 +76,38 @@ int32_t tk_istream_read_len(tk_istream_t* stream, uint8_t* buff, uint32_t max_si
 
   return offset;
 }
+
+int32_t tk_istream_read_line(tk_istream_t* stream, uint8_t* buff, uint32_t max_size,
+                            uint32_t timeout_ms) {
+  uint32_t start = 0;
+  uint32_t end = 0;
+  int32_t offset = 0;
+  int32_t read_bytes = 0;
+  int32_t remain_bytes = max_size;
+  return_value_if_fail(stream != NULL && stream->read != NULL, -1);
+  return_value_if_fail(buff != NULL, 0);
+
+  start = time_now_ms();
+  end = start + timeout_ms;
+
+  do {
+    read_bytes = tk_istream_read(stream, buff + offset, 1);
+
+    if (read_bytes < 0) {
+      break;
+    }
+
+    offset += read_bytes;
+    remain_bytes -= read_bytes;
+    if (time_now_ms() > end) {
+      log_debug("read timeout\n");
+      break;
+    }
+
+    if(buff[offset] == '\n') {
+      break;
+    }
+  } while (remain_bytes > 0);
+
+  return offset;
+}
