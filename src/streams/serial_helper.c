@@ -354,10 +354,9 @@ int serial_close(serial_handle_t fd) {
 #include <sys/select.h>
 #include <sys/time.h>
 #include <time.h>
+
 #ifdef __MACH__
 #include <AvailabilityMacros.h>
-#include <mach/clock.h>
-#include <mach/mach.h>
 #endif
 
 #ifndef TIOCINQ

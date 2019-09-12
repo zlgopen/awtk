@@ -1,3 +1,4 @@
+#include "tkc/utils.h"
 #include "tkc/platform.h"
 #include "streams/iostream_serial.h"
 #include "streams/serial_helper.h"
