@@ -1,5 +1,5 @@
 ﻿/**
- * File:   tk_ostream_socket.h
+ * File:   ostream_socket.h
  * Author: AWTK Develop Team
  * Brief:  input stream base on socket
  *

@@ -1,5 +1,5 @@
 ﻿/**
- * File:   tk_ostream_file.h
+ * File:   ostream_file.c
  * Author: AWTK Develop Team
  * Brief:  input stream base on file
  *

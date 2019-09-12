@@ -1,7 +1,7 @@
 ﻿/**
- * File:   tk_iostream_serial.h
+ * File:   iostream_serial.c
  * Author: AWTK Develop Team
- * Brief:  input stream base on serial
+ * Brief:  input stream base on serial port
  *
  * Copyright (c) 2019 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
@@ -31,19 +31,19 @@ static ret_t tk_iostream_serial_get_prop(object_t* obj, const char* name, value_
     value_set_int(v, (int32_t)(iostream_serial->fd));
     return RET_OK;
   } else if (tk_str_eq(name, TK_IOSTREAM_SERIAL_PROP_PARITY)) {
-    value_set_int(v, iostream_serial->parity);
+    value_set_uint8(v, iostream_serial->parity);
     return RET_OK;
   } else if (tk_str_eq(name, TK_IOSTREAM_SERIAL_PROP_STOPBITS)) {
-    value_set_int(v, iostream_serial->stopbits);
+    value_set_uint8(v, iostream_serial->stopbits);
     return RET_OK;
   } else if (tk_str_eq(name, TK_IOSTREAM_SERIAL_PROP_BYTESIZE)) {
-    value_set_int(v, iostream_serial->bytesize);
+    value_set_uint8(v, iostream_serial->bytesize);
     return RET_OK;
   } else if (tk_str_eq(name, TK_IOSTREAM_SERIAL_PROP_BAUDRATE)) {
     value_set_int(v, iostream_serial->baudrate);
     return RET_OK;
   } else if (tk_str_eq(name, TK_IOSTREAM_SERIAL_PROP_FLOWCONTROL)) {
-    value_set_int(v, iostream_serial->flowcontrol);
+    value_set_uint8(v, iostream_serial->flowcontrol);
     return RET_OK;
   } else if (tk_str_eq(name, TK_STREAM_PROP_IS_OK)) {
     bool_t is_ok1 =
@@ -136,7 +136,7 @@ tk_iostream_t* tk_iostream_serial_create(const char* port) {
   return_value_if_fail(port != NULL, NULL);
 
   fd = serial_open(port);
-  return_value_if_fail(fd >= 0, NULL);
+  return_value_if_fail(fd > 0, NULL);
 
   obj = object_create(&s_tk_iostream_serial_vtable);
   iostream_serial = TK_IOSTREAM_SERIAL(obj);

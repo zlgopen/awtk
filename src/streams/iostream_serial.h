@@ -1,5 +1,5 @@
 ﻿/**
- * File:   tk_iostream_serial.h
+ * File:   iostream_serial.h
  * Author: AWTK Develop Team
  * Brief:  input stream base on serial port
  *
@@ -35,7 +35,7 @@ typedef struct _tk_iostream_serial_t tk_iostream_serial_t;
  * @class tk_iostream_serial_t
  * @parent tk_iostream_t
  *
- * input stream base on fd
+ * input stream base on serial port
  *
  */
 struct _tk_iostream_serial_t {

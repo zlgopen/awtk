@@ -1,5 +1,5 @@
 ﻿/**
- * File:   tk_iostream_socket.h
+ * File:   iostream_socket.h
  * Author: AWTK Develop Team
  * Brief:  input stream base on socket
  *
@@ -50,7 +50,7 @@ struct _tk_iostream_socket_t {
  *
  * 创建iostream对象。
  *
- * @param {int} sock 文件名。
+ * @param {int} sock socket。
  *
  * @return {tk_iostream_t*} 返回iostream对象。
  *

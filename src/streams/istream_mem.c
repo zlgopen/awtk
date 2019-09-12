@@ -1,5 +1,5 @@
 ﻿/**
- * File:   tk_istream_mem.h
+ * File:   istream_mem.c
  * Author: AWTK Develop Team
  * Brief:  input stream base on memory
  *

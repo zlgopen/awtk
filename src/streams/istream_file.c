@@ -1,5 +1,5 @@
 ﻿/**
- * File:   tk_istream_file.h
+ * File:   istream_file.h
  * Author: AWTK Develop Team
  * Brief:  input stream base on file
  *

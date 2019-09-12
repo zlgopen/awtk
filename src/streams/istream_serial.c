@@ -1,5 +1,5 @@
 ﻿/**
- * File:   tk_istream_serial.h
+ * File:   istream_serial.c
  * Author: AWTK Develop Team
  * Brief:  input stream base on serial
  *
