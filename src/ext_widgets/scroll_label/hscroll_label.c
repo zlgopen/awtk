@@ -408,7 +408,7 @@ widget_t* hscroll_label_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
   hscroll_label->ellipses = FALSE;
   hscroll_label->only_focus = FALSE;
 
-  hscroll_label->timer_id = timer_add(hscroll_label_on_timer_start, widget, 100);
+  hscroll_label->timer_id = timer_add(hscroll_label_on_timer_start, widget, 10);
 
   return widget;
 }
