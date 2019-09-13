@@ -58,7 +58,7 @@ static ret_t tk_istream_serial_exec(object_t* obj, const char* name, const char*
   if (tk_str_eq(name, TK_STREAM_CMD_IFLUSH)) {
     return tk_istream_serial_flush(TK_ISTREAM(obj));
   }
-  
+
   return RET_NOT_IMPL;
 }
 
@@ -67,6 +67,12 @@ static const object_vtable_t s_tk_istream_serial_vtable = {.type = "tk_istream_s
                                                            .size = sizeof(tk_istream_serial_t),
                                                            .exec = tk_istream_serial_exec,
                                                            .get_prop = tk_istream_serial_get_prop};
+
+ret_t tk_istream_wait_for_data(tk_istream_t* stream, uint32_t timeout_ms) {
+  tk_istream_serial_t* s = TK_ISTREAM_SERIAL(stream);
+
+  return serial_wait_for_data(s->fd, timeout_ms);
+}
 
 tk_istream_t* tk_istream_serial_create(serial_handle_t fd) {
   object_t* obj = NULL;
@@ -79,6 +85,7 @@ tk_istream_t* tk_istream_serial_create(serial_handle_t fd) {
 
   istream_serial->fd = fd;
   TK_ISTREAM(obj)->read = tk_istream_serial_read;
+  TK_ISTREAM(obj)->flush = tk_istream_serial_flush;
 
   return TK_ISTREAM(obj);
 }

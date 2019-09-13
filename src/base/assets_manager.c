@@ -180,9 +180,7 @@ static asset_info_t* try_load_image(assets_manager_t* am, const char* name,
       subpath = "assets/raw/images/svg";
       break;
     }
-    default: {
-      return NULL;
-    }
+    default: { return NULL; }
   }
 
   return_value_if_fail(build_path(am, path, MAX_PATH, ratio, subpath, name, extname) == RET_OK,
@@ -224,9 +222,7 @@ static asset_info_t* try_load_assets(assets_manager_t* am, const char* name, con
       subpath = "assets/raw/data";
       break;
     }
-    default: {
-      return NULL;
-    }
+    default: { return NULL; }
   }
 
   return_value_if_fail(build_path(am, path, MAX_PATH, FALSE, subpath, name, extname) == RET_OK,

@@ -44,8 +44,8 @@ serial_handle_t serial_open(const char* port) {
     wstr_insert(&str, 0, prefix, wcslen(prefix));
   }
 
-  fd = CreateFileW(str.str, GENERIC_READ | GENERIC_WRITE, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL,
-                   0);
+  fd = CreateFileW(str.str, GENERIC_READ | GENERIC_WRITE, 0, 0, OPEN_EXISTING,
+                   FILE_ATTRIBUTE_NORMAL, 0);
   wstr_reset(&str);
 
   return fd;
@@ -308,7 +308,7 @@ int32_t serial_read(serial_handle_t fd, uint8_t* buff, uint32_t max_size) {
   if (!ReadFile(fd, buff, (DWORD)(max_size), &bytes_read, NULL)) {
     ret = -1;
   } else {
-    ret = bytes_read; 
+    ret = bytes_read;
   }
 
   return ret;
@@ -321,10 +321,15 @@ int32_t serial_write(serial_handle_t fd, const uint8_t* buff, uint32_t max_size)
   if (!WriteFile(fd, buff, (DWORD)(max_size), &bytes_write, NULL)) {
     ret = -1;
   } else {
-    ret = bytes_write; 
+    ret = bytes_write;
   }
 
   return ret;
+}
+
+ret_t serial_wait_for_data(serial_handle_t fd, uint32_t timeout_ms) {
+  /*TODO*/
+  return RET_NOT_IMPL;
 }
 
 int serial_close(serial_handle_t fd) {

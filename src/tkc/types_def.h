@@ -159,7 +159,12 @@ typedef enum _ret_t {
    * @const RET_BAD_PARAMS
    * 无效参数。
    */
-  RET_BAD_PARAMS
+  RET_BAD_PARAMS,
+  /**
+   * @const RET_TIMEOUT
+   * 超时。
+   */
+  RET_TIMEOUT
 } ret_t;
 
 #ifdef ANDROID

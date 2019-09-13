@@ -59,6 +59,7 @@ serial_handle_t serial_open(const char* port);
 
 ret_t serial_iflush(serial_handle_t fd);
 ret_t serial_oflush(serial_handle_t fd);
+ret_t serial_wait_for_data(serial_handle_t fd, uint32_t timeout_ms);
 
 int32_t serial_read(serial_handle_t fd, uint8_t* buff, uint32_t max_size);
 int32_t serial_write(serial_handle_t fd, const uint8_t* buff, uint32_t max_size);

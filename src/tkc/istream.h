@@ -33,6 +33,7 @@ typedef struct _tk_istream_t tk_istream_t;
 typedef int32_t (*tk_istream_read_t)(tk_istream_t* stream, uint8_t* buff, uint32_t max_size);
 typedef ret_t (*tk_istream_flush_t)(tk_istream_t* stream);
 typedef ret_t (*tk_istream_seek_t)(tk_istream_t* stream, uint32_t offset);
+typedef ret_t (*tk_istream_wait_for_data_t)(tk_istream_t* stream, uint32_t timeout_ms);
 
 /**
  * @class tk_istream_t
@@ -47,6 +48,7 @@ struct _tk_istream_t {
   tk_istream_read_t read;
   tk_istream_seek_t seek;
   tk_istream_flush_t flush;
+  tk_istream_wait_for_data_t wait_for_data;
 };
 
 /**
@@ -75,6 +77,19 @@ int32_t tk_istream_read(tk_istream_t* stream, uint8_t* buff, uint32_t max_size);
  *
  */
 ret_t tk_istream_seek(tk_istream_t* stream, uint32_t offset);
+
+/**
+ * @method tk_istream_wait_for_data
+ *
+ * 等待数据。
+ *
+ * @param {tk_istream_t*} stream istream对象。
+ * @param {uint32_t} timeout_ms 超时时间。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ *
+ */
+ret_t tk_istream_wait_for_data(tk_istream_t* stream, uint32_t timeout_ms);
 
 /**
  * @method tk_istream_flush
@@ -118,7 +133,7 @@ int32_t tk_istream_read_len(tk_istream_t* stream, uint8_t* buff, uint32_t max_si
  *
  */
 int32_t tk_istream_read_line(tk_istream_t* stream, uint8_t* buff, uint32_t max_size,
-                            uint32_t timeout_ms);
+                             uint32_t timeout_ms);
 
 #define TK_ISTREAM(obj) ((tk_istream_t*)(obj))
 

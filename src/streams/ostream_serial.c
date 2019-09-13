@@ -59,7 +59,7 @@ static ret_t tk_ostream_serial_exec(object_t* obj, const char* name, const char*
   if (tk_str_eq(name, TK_STREAM_CMD_OFLUSH)) {
     return tk_ostream_serial_flush(TK_OSTREAM(obj));
   }
-  
+
   return RET_NOT_IMPL;
 }
 

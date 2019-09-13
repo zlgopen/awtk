@@ -7,7 +7,7 @@ void do_echo(tk_iostream_t* iostream) {
   int32_t ret = 0;
   tk_istream_t* istream = tk_iostream_get_istream(iostream);
   tk_ostream_t* ostream = tk_iostream_get_ostream(iostream);
-  
+
   while (ret == 0) {
     ret = tk_istream_read(istream, (uint8_t*)buff, sizeof(buff));
     sleep_ms(1000);

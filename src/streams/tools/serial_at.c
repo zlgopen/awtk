@@ -38,7 +38,7 @@ int main(int argc, char* argv[]) {
     printf("Usage: %s port msg\n", argv[0]);
     return 0;
   }
-  
+
   TK_ENABLE_CONSOLE();
   do_send(tk_iostream_serial_create(argv[1]), argv[2]);
 
