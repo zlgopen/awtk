@@ -98,9 +98,9 @@ static ret_t window_manager_dispatch_window_event(widget_t* window, event_type_t
 
   if (type == EVT_WINDOW_OPEN) {
     window_manager_dispatch_top_window_changed(window->parent);
-  }
-
-  if (type == EVT_WINDOW_TO_FOREGROUND) {
+  } else if (type == EVT_WINDOW_TO_BACKGROUND) {
+    widget_set_focused(window, FALSE);
+  } else if (type == EVT_WINDOW_TO_FOREGROUND) {
     window->parent->key_target = window;
   }
 
