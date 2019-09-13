@@ -299,9 +299,9 @@ def gen_add_assets(files):
         basename = basename.replace('.data', '')
         basename = basename.replace('.bsvg', '')
         if basename == 'font_default':
-            result += '  assets_manager_add(rm, font_default);\n'
+            result += '  assets_manager_add(am, font_default);\n'
         else:
-            result += '  assets_manager_add(rm, '+basename+');\n'
+            result += '  assets_manager_add(am, '+basename+');\n'
     return result
 
 
@@ -343,12 +343,12 @@ def gen_res_c():
 
     result += '\n'
     result += 'ret_t assets_init(void) {\n'
-    result += '  assets_manager_t* rm = assets_manager();\n\n'
+    result += '  assets_manager_t* am = assets_manager();\n\n'
     result += ''
 
     result += '#ifdef WITH_FS_RES\n'
-    result += '  assets_manager_preload(rm, ASSET_TYPE_FONT, "default");\n'
-    result += '  assets_manager_preload(rm, ASSET_TYPE_STYLE, "default");\n'
+    result += '  assets_manager_preload(am, ASSET_TYPE_FONT, "default");\n'
+    result += '  assets_manager_preload(am, ASSET_TYPE_STYLE, "default");\n'
     result += '#else\n'
 
     files = glob.glob(joinPath(OUTPUT_DIR, '**/*.data'))
@@ -383,7 +383,7 @@ def gen_res_web_c():
 
     result += '\n'
     result += 'ret_t assets_init(void) {\n'
-    result += '  assets_manager_t* rm = assets_manager();\n\n'
+    result += '  assets_manager_t* am = assets_manager();\n\n'
     result += ''
 
     result += gen_add_assets(files)
