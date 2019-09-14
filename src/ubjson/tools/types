@@ -1,0 +1,16 @@
+null	 1	 Z	 No	 No
+no-op	 1	 N	 No	 No
+true	 1	 T	 No	 No
+false	 1	 F	 No	 No
+int8	 2	 i	 No	 Yes
+uint8	 2	 U	 No	 Yes
+int16	 3	 I	 No	 Yes
+int32	 5	 l	 No	 Yes
+int64	 9	 L	 No	 Yes
+float32	 5	 d	 No	 Yes
+float64	 9	 D	 No	 Yes
+char	 2	 C	 No	 Yes
+high-precision number	 1-byte + int num val + string byte len	 H	 Yes	 Yes (if non-empty)
+string	 1 + int num val + string byte len	 S	 Yes	 Yes (if non-empty)
+array**	 2+ bytes	 [ and ]	 Optional	 Yes (if non-empty)
+object**	 2+ bytes	 { and }	 Optional	 Yes (if non-empty)

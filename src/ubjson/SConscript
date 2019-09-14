@@ -1,0 +1,14 @@
+import os
+import copy
+
+BIN_DIR=os.environ['BIN_DIR'];
+LIB_DIR=os.environ['LIB_DIR'];
+
+sources = Glob('*.c')
+
+env=DefaultEnvironment().Clone()
+
+env.Library(os.path.join(LIB_DIR, 'ubjson'), sources, LIBS=[])
+
+LIBS=['ubjson'] + env['LIBS']
+env.Program(os.path.join(BIN_DIR, 'ubjson_dump'), ['tools/ubjson_dump.c'], LIBS=LIBS);
