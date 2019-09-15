@@ -184,7 +184,7 @@ TEST(UBJsonWriter, string) {
   wbuffer_init(&wb, buff, sizeof(buff));
   ubjson_writer_init(&ub, (ubjson_write_callback_t)wbuffer_write_binary, &wb);
 
-  ASSERT_EQ(ubjson_writer_write_string(&ub, "a"), RET_OK);
+  ASSERT_EQ(ubjson_writer_write_str(&ub, "a"), RET_OK);
 
   ASSERT_EQ(buff[0], UBJSON_MARKER_STRING);
   ASSERT_EQ(buff[1], UBJSON_MARKER_INT8);

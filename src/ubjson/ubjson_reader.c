@@ -137,6 +137,7 @@ ret_t ubjson_reader_read(ubjson_reader_t* reader, value_t* v) {
       return_value_if_fail(str_extend(str, len + 1) == RET_OK, RET_OOM);
       return_value_if_fail(ubjson_reader_read_data(reader, str->str, len) == RET_OK, RET_FAIL);
 
+      str->str[len] = '\0';
       value_set_str(v, str->str);
       break;
     }

@@ -139,7 +139,7 @@ ret_t ubjson_writer_write_char(ubjson_writer_t* writer, char value) {
   return RET_OK;
 }
 
-ret_t ubjson_writer_write_string(ubjson_writer_t* writer, const char* value) {
+ret_t ubjson_writer_write_str(ubjson_writer_t* writer, const char* value) {
   uint32_t len = 0;
   return_value_if_fail(writer != NULL && value != NULL, RET_BAD_PARAMS);
   return_value_if_fail(ubjson_writer_write_marker(writer, UBJSON_MARKER_STRING) == RET_OK, RET_OOM);

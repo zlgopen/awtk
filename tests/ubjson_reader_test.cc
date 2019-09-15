@@ -180,7 +180,7 @@ TEST(UBJsonReader, double) {
 TEST(UBJsonReader, string) {
   PREPARE_TEST();
 
-  ASSERT_EQ(ubjson_writer_write_string(&ub, "a"), RET_OK);
+  ASSERT_EQ(ubjson_writer_write_str(&ub, "a"), RET_OK);
 
   rb.capacity = wb.cursor;
   ASSERT_EQ(ubjson_reader_read(&ur, &v), RET_OK);
