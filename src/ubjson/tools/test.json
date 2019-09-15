@@ -1,0 +1,24 @@
+{
+  "name":"foo_input",
+  "category":"pump",
+  "desc":"foo_input",
+  "order" : 10,
+  "version":"0.1.0",
+  "icon" : "debug.png",
+  "help" : "help message",
+  "keywords":["foo_input", "pump"],
+  "author": {
+        "name": "Li XianJing",
+        "email": "lixianjing@zlg.cn",
+        "url": "http://www.zlg.com"
+  },
+  "props": 
+    {
+      "name":"foo_bool",
+      "type":"bool_t",
+      "desc":"foo bool",
+      "defvalue":"FALSE",
+      "persistent":true,
+      "configurable":true
+    }
+}

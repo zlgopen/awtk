@@ -49,7 +49,11 @@ ret_t ubjson_reader_read(ubjson_reader_t* reader, value_t* v) {
   ret_t ret = RET_OK;
   uint8_t marker = 0;
   return_value_if_fail(reader != NULL && reader->read != NULL && v != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(ubjson_reader_read_data(reader, &marker, 1) == RET_OK, RET_DONE);
+  ret = ubjson_reader_read_data(reader, &marker, 1);
+
+  if (ret != RET_OK) {
+    return RET_DONE;
+  }
 
   switch (marker) {
     case UBJSON_MARKER_NULL: {

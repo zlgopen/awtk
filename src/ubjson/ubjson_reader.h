@@ -23,7 +23,7 @@
 #define TK_UBJSON_READER_H
 
 #include "tkc/str.h"
-#include "ubjson/ubjson_common.h"
+#include "ubjson/ubjson_const.h"
 
 BEGIN_C_DECLS
 
@@ -49,3 +49,4 @@ ret_t ubjson_reader_reset(ubjson_reader_t* reader);
 END_C_DECLS
 
 #endif /*TK_UBJSON_READER_H*/
+
