@@ -15,7 +15,6 @@ TEST(UBJsonWriter, null) {
   ASSERT_EQ(wb.cursor, 1);
 }
 
-
 TEST(UBJsonWriter, noop) {
   uint8_t buff[256];
   wbuffer_t wb;

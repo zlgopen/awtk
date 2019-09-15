@@ -1,7 +1,7 @@
 ﻿/**
- * File:   ubjson_const.h
+ * File:   ubjson_writer.h
  * Author: AWTK Develop Team
- * Brief:  ubjson const
+ * Brief:  ubjson writer
  *
  * Copyright (c) 2019 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
@@ -37,7 +37,8 @@ struct _ubjson_writer_t {
   ubjson_write_callback_t write;
 };
 
-ubjson_writer_t* ubjson_writer_init(ubjson_writer_t* writer, ubjson_write_callback_t write, void* ctx);
+ubjson_writer_t* ubjson_writer_init(ubjson_writer_t* writer, ubjson_write_callback_t write,
+                                    void* ctx);
 
 ret_t ubjson_writer_write_null(ubjson_writer_t* writer);
 ret_t ubjson_writer_write_noop(ubjson_writer_t* writer);

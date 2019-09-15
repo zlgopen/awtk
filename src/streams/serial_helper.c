@@ -287,6 +287,8 @@ ret_t serial_config(serial_handle_t fd, uint32_t baudrate, bytesize_t bytesize, 
     log_debug("Error setting timeouts.");
     return RET_FAIL;
   }
+
+  return RET_OK;
 }
 
 ret_t serial_iflush(serial_handle_t fd) {

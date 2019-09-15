@@ -39,7 +39,7 @@ static inline bool_t is_little_endian(void) {
   return *((uint8_t*)&val) == 0x22;
 }
 
-static inline int16_t  int16_endian_invert(int16_t value) {                                                                                                     
+static inline int16_t int16_endian_invert(int16_t value) {
   int16_t ret = value;
   uint8_t* p = (uint8_t*)&ret;
 
@@ -47,94 +47,93 @@ static inline int16_t  int16_endian_invert(int16_t value) {
   p[1] = value & 0xff;
 
   return ret;
-}                                                                                                                                                        
+}
 
-static inline int16_t  int16_to_big_endian(int16_t value) {                                                                                                     
+static inline int16_t int16_to_big_endian(int16_t value) {
   return is_little_endian() ? int16_endian_invert(value) : value;
 }
 
-static inline int16_t  int16_from_big_endian(int16_t value) {                                                                                                     
+static inline int16_t int16_from_big_endian(int16_t value) {
   return is_little_endian() ? int16_endian_invert(value) : value;
 }
 
-static inline int32_t  int32_endian_invert(int32_t value) {                                                                                                     
+static inline int32_t int32_endian_invert(int32_t value) {
   int32_t ret = value;
   uint8_t* p = (uint8_t*)&ret;
 
-  swap_uint8(p, p+3);
-  swap_uint8(p+1, p+2);
+  swap_uint8(p, p + 3);
+  swap_uint8(p + 1, p + 2);
 
   return ret;
-}                                                                                                                                                        
+}
 
-static inline int32_t  int32_to_big_endian(int32_t value) {                                                                                                     
+static inline int32_t int32_to_big_endian(int32_t value) {
   return is_little_endian() ? int32_endian_invert(value) : value;
 }
 
-static inline int32_t  int32_from_big_endian(int32_t value) {                                                                                                     
+static inline int32_t int32_from_big_endian(int32_t value) {
   return is_little_endian() ? int32_endian_invert(value) : value;
 }
-                                                                                                                                                         
-static inline int64_t  int64_endian_invert(int64_t value) {                                                                                                     
+
+static inline int64_t int64_endian_invert(int64_t value) {
   int64_t ret = value;
   uint8_t* p = (uint8_t*)&ret;
 
-  swap_uint8(p, p+7);
-  swap_uint8(p+1, p+6);
-  swap_uint8(p+2, p+5);
-  swap_uint8(p+3, p+4);
+  swap_uint8(p, p + 7);
+  swap_uint8(p + 1, p + 6);
+  swap_uint8(p + 2, p + 5);
+  swap_uint8(p + 3, p + 4);
 
   return ret;
-}                                                                                                                                                        
+}
 
-static inline int64_t  int64_to_big_endian(int64_t value) {                                                                                                     
+static inline int64_t int64_to_big_endian(int64_t value) {
   return is_little_endian() ? int64_endian_invert(value) : value;
 }
 
-static inline int64_t  int64_from_big_endian(int64_t value) {                                                                                                     
+static inline int64_t int64_from_big_endian(int64_t value) {
   return is_little_endian() ? int64_endian_invert(value) : value;
 }
 
-static inline float  float_endian_invert(float value) {                                                                                                       
+static inline float float_endian_invert(float value) {
   float ret = value;
   uint8_t* p = (uint8_t*)&ret;
 
-  swap_uint8(p, p+3);
-  swap_uint8(p+1, p+2);
+  swap_uint8(p, p + 3);
+  swap_uint8(p + 1, p + 2);
 
   return ret;
-}                                                                                                                                                        
+}
 
-static inline float  float_to_big_endian(float value) {                                                                                                     
+static inline float float_to_big_endian(float value) {
   return is_little_endian() ? float_endian_invert(value) : value;
 }
 
-static inline float  float_from_big_endian(float value) {                                                                                                     
+static inline float float_from_big_endian(float value) {
   return is_little_endian() ? float_endian_invert(value) : value;
 }
-                                                                                                                                                         
-static inline double  double_endian_invert(double value) {                                                                                                     
+
+static inline double double_endian_invert(double value) {
   double ret = value;
   uint8_t* p = (uint8_t*)&ret;
   assert(sizeof(value) == 8);
 
-  swap_uint8(p, p+7);
-  swap_uint8(p+1, p+6);
-  swap_uint8(p+2, p+5);
-  swap_uint8(p+3, p+4);
+  swap_uint8(p, p + 7);
+  swap_uint8(p + 1, p + 6);
+  swap_uint8(p + 2, p + 5);
+  swap_uint8(p + 3, p + 4);
 
   return ret;
-}                                                                                                                                                        
+}
 
-static inline double  double_to_big_endian(double value) {                                                                                                     
+static inline double double_to_big_endian(double value) {
   return is_little_endian() ? double_endian_invert(value) : value;
 }
 
-static inline double  double_from_big_endian(double value) {                                                                                                     
+static inline double double_from_big_endian(double value) {
   return is_little_endian() ? double_endian_invert(value) : value;
 }
 
 END_C_DECLS
 
 #endif /*TK_ENDIAN_H*/
-

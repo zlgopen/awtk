@@ -30,9 +30,10 @@ TEST(Endian, float) {
   ASSERT_EQ(float_from_big_endian(float_to_big_endian(a)), a);
 }
 
-
 TEST(Endian, double) {
   double_t a = 1122.3344;
   ASSERT_EQ(double_from_big_endian(double_to_big_endian(a)), a);
-}
 
+  a = 12;
+  ASSERT_EQ(double_from_big_endian(double_to_big_endian(a)), a);
+}

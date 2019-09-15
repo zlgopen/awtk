@@ -190,6 +190,33 @@ TEST(ValueTest, str) {
   ASSERT_EQ(strcmp(value_str(&v), "str"), 0);
 }
 
+TEST(ValueTest, sized_str) {
+  value_t v;
+  const char* str = "str";
+  sized_str_t* sized_str = NULL;
+  ASSERT_EQ(&v, value_set_sized_str(&v, (char*)str, 2));
+  sized_str = value_sized_str(&v);
+  ASSERT_EQ(sized_str != NULL, true);
+  ASSERT_EQ(sized_str->size, 2);
+}
+
+TEST(ValueTest, binary_data) {
+  value_t v;
+  const char* str = "str";
+  binary_data_t* binary_data = NULL;
+  ASSERT_EQ(&v, value_set_binary_data(&v, (void*)str, 2));
+  binary_data = value_binary_data(&v);
+  ASSERT_EQ(binary_data != NULL, true);
+  ASSERT_EQ(binary_data->size, 2);
+}
+
+TEST(ValueTest, token) {
+  value_t v;
+
+  ASSERT_EQ(&v, value_set_token(&v, 123));
+  ASSERT_EQ(value_token(&v), 123);
+}
+
 TEST(ValueTest, wstr) {
   value_t v;
   const wchar_t* str = L"str";

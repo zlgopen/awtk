@@ -15,6 +15,23 @@ class CodeGen {
     }
   }
 
+  genRead(ojson) {
+    let result = '';
+    ojson.forEach(iter => {
+      result += `    case UBJSON_MARKER_${iter.type.toUpperCase()}: {\n`
+      if(iter.payload) {
+        result += `      ${this.getType(iter)} value = 0;\n`;
+        result += `      return_value_if_fail(ubjson_reader_read(reader, &value, sizeof(value)) == RET_OK, RET_FAIL);\n`;
+      } else {
+      }
+      result += `      break;\n`; 
+      result += `    };\n`; 
+
+    });
+
+    console.log(result);
+  }
+  
   genWriteDecl(ojson) {
     let result = '';
     ojson.forEach(iter => {
@@ -70,10 +87,12 @@ class CodeGen {
 
     console.log(result);
   }
+
   genJsonAll(ojson) {
-    console.log(ojson);
-    this.genWriteDecl(ojson);
-    this.genWriteImpl(ojson);
+    //console.log(ojson);
+    //this.genWriteDecl(ojson);
+    //this.genWriteImpl(ojson);
+    this.genRead(ojson);
   }
 
   genAll(filename) {
