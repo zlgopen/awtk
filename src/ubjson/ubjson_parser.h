@@ -27,7 +27,12 @@
 
 BEGIN_C_DECLS
 
-object_t* ubjson_parse(void* data, uint32_t size);
+object_t* object_from_ubjson(void* data, uint32_t size);
+
+typedef ret_t (*ubjson_on_key_value_t)(void* ctx, const char* key, value_t* value);
+
+ret_t ubjson_dump(void* data, uint32_t size) ;
+ret_t ubjson_parse(void* data, uint32_t size, ubjson_on_key_value_t on_key_value, void* ctx);
 
 END_C_DECLS
 

@@ -42,6 +42,7 @@ ubjson_reader_t* ubjson_reader_init(ubjson_reader_t* reader, ubjson_read_callbac
                                     void* ctx);
 
 ret_t ubjson_reader_read(ubjson_reader_t* reader, value_t* v);
+ret_t ubjson_reader_read_data(ubjson_reader_t* reader, void* data, uint32_t size);
 
 ret_t ubjson_reader_reset(ubjson_reader_t* reader);
 

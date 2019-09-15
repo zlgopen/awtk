@@ -33,7 +33,7 @@ ubjson_reader_t* ubjson_reader_init(ubjson_reader_t* reader, ubjson_read_callbac
   return reader;
 }
 
-static ret_t ubjson_reader_read_data(ubjson_reader_t* reader, void* data, uint32_t size) {
+ret_t ubjson_reader_read_data(ubjson_reader_t* reader, void* data, uint32_t size) {
   return reader->read(reader->ctx, data, size);
 }
 

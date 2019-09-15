@@ -18,7 +18,7 @@ TEST(UBJsonWriter, basic) {
   ASSERT_EQ(ubjson_writer_write_int32(&ub, 100), RET_OK);
   ASSERT_EQ(ubjson_writer_write_object_end(&ub), RET_OK);
 
-  obj = ubjson_parse(wb.data, wb.cursor);
+  obj = object_from_ubjson(wb.data, wb.cursor);
   ASSERT_STREQ(object_get_prop_str(obj, "name"), "aaa");
   ASSERT_EQ(object_get_prop_int(obj, "age", 0), 100);
 
@@ -50,7 +50,7 @@ TEST(UBJsonWriter, embedded) {
 
   ASSERT_EQ(ubjson_writer_write_object_end(&ub), RET_OK);
 
-  obj = ubjson_parse(wb.data, wb.cursor);
+  obj = object_from_ubjson(wb.data, wb.cursor);
   ASSERT_STREQ(object_get_prop_str(obj, "name"), "aaa");
   ASSERT_EQ(object_get_prop_int(obj, "age", 0), 100);
   addr = object_get_prop_object(obj, "addr");

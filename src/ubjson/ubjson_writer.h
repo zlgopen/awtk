@@ -53,6 +53,7 @@ ret_t ubjson_writer_write_float32(ubjson_writer_t* writer, float value);
 ret_t ubjson_writer_write_float64(ubjson_writer_t* writer, double value);
 ret_t ubjson_writer_write_char(ubjson_writer_t* writer, char value);
 ret_t ubjson_writer_write_str(ubjson_writer_t* writer, const char* value);
+ret_t ubjson_writer_write_key(ubjson_writer_t* writer, const char* value);
 ret_t ubjson_writer_write_array_begin(ubjson_writer_t* writer);
 ret_t ubjson_writer_write_array_end(ubjson_writer_t* writer);
 ret_t ubjson_writer_write_object_begin(ubjson_writer_t* writer);

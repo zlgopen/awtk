@@ -765,6 +765,11 @@ int32_t serial_write(serial_handle_t fd, const uint8_t* buff, uint32_t max_size)
   return write(fd, buff, max_size);
 }
 
+ret_t serial_wait_for_data(serial_handle_t fd, uint32_t timeout_ms) {
+  /*TODO*/
+  return RET_NOT_IMPL;
+}
+
 int serial_close(serial_handle_t fd) {
   serial_iflush(fd);
   serial_oflush(fd);
