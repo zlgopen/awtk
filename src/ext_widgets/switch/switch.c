@@ -156,6 +156,15 @@ static ret_t switch_on_event(widget_t* widget, event_t* e) {
         widget_invalidate(widget, NULL);
       }
     }
+    case EVT_RESIZE:
+    case EVT_MOVE_RESIZE: {
+      if (aswitch->value) {
+        aswitch->xoffset = 0;
+      } else {
+        aswitch->xoffset = aswitch->max_xoffset_ratio * widget->w;
+      }
+      break;
+    }
     default:
       break;
   }
