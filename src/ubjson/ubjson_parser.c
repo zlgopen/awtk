@@ -35,7 +35,6 @@ typedef struct _ubjson_parser_t {
 } ubjson_parser_t;
 
 static ret_t ubjson_do_parse_object(ubjson_parser_t* parser);
-static ret_t ubjson_do_parse_value(ubjson_parser_t* parser);
 static ret_t ubjson_do_parse_array(ubjson_parser_t* parser);
 static ret_t ubjson_do_parse_key_value(ubjson_parser_t* parser, int32_t len);
 
@@ -118,18 +117,6 @@ static ret_t ubjson_on_key_value_object(void* ctx, const char* key, value_t* v) 
   return ret;
 }
 
-static ret_t ubjson_do_parse_value(ubjson_parser_t* parser) {
-  value_t value;
-  value_t* v = &value;
-
-  if (ubjson_parser_read(parser, &value) != RET_OK) {
-    return RET_DONE;
-  }
-
-  parser->on_key_value(parser->ctx, NULL, v);
-
-  return RET_OK;
-}
 
 static ret_t ubjson_do_parse_key_value(ubjson_parser_t* parser, int32_t len) {
   value_t value;
@@ -217,7 +204,7 @@ static ret_t ubjson_do_parse_array(ubjson_parser_t* parser) {
       }
     }
 
-    return_value_if_fail(ubjson_do_parse_value(parser) == RET_OK, RET_FAIL);
+    parser->on_key_value(parser->ctx, NULL, v);
   }
 
   return RET_OK;
