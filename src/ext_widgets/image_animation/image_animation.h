@@ -75,7 +75,7 @@ typedef struct _image_animation_t {
   /**
    * @property {char*} sequence
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 播放的序列，字符可选值为:0-9,a-z,A-Z。
+   * 播放的序列，字符可选值为数字和英文大小写字母。
    *
    */
   char* sequence;
