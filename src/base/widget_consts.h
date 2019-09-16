@@ -204,6 +204,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_ENABLE "enable"
 
 /**
+ * @const WIDGET_PROP_FEEDBACK
+ * 是否启用按键音等反馈。
+ */
+#define WIDGET_PROP_FEEDBACK "feedback"
+
+/**
  * @const WIDGET_PROP_FLOATING
  * 是否启用floating布局。
  */

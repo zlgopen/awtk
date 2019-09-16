@@ -280,6 +280,12 @@ struct _widget_t {
    */
   uint8_t enable : 1;
   /**
+   * @property {bool_t} feedback
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 是否启用按键音、触屏音和震动等反馈。
+   */
+  uint8_t feedback : 1;
+  /**
    * @property {bool_t} visible
    * @annotation ["set_prop","get_prop","readable","writable","persitent","design","scriptable"]
    * 是否可见。
@@ -925,6 +931,17 @@ ret_t widget_destroy_animator(widget_t* widget, const char* name);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_set_enable(widget_t* widget, bool_t enable);
+
+/**
+ * @method widget_set_feedback
+ * 设置控件是否启用反馈。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {bool_t} feedback 是否启用反馈。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_feedback(widget_t* widget, bool_t feedback);
 
 /**
  * @method widget_set_floating

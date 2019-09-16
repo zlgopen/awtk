@@ -32,6 +32,7 @@
 #include "base/widget.h"
 #include "base/layout.h"
 #include "base/main_loop.h"
+#include "base/ui_feedback.h"
 #include "base/system_info.h"
 #include "base/window_manager.h"
 #include "base/widget_vtable.h"
@@ -484,6 +485,14 @@ ret_t widget_set_enable(widget_t* widget, bool_t enable) {
     widget_set_need_update_style(widget);
     widget_invalidate(widget, NULL);
   }
+
+  return RET_OK;
+}
+
+ret_t widget_set_feedback(widget_t* widget, bool_t feedback) {
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  widget->feedback = feedback;
 
   return RET_OK;
 }
@@ -1251,6 +1260,8 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
     return widget_use_style(widget, name);
   } else if (tk_str_eq(name, WIDGET_PROP_ENABLE)) {
     widget->enable = value_bool(v);
+  } else if (tk_str_eq(name, WIDGET_PROP_FEEDBACK)) {
+    widget->feedback = value_bool(v);
   } else if (tk_str_eq(name, WIDGET_PROP_NAME)) {
     widget_set_name(widget, value_str(v));
   } else if (tk_str_eq(name, WIDGET_PROP_TR_TEXT)) {
@@ -1329,6 +1340,8 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
     value_set_str(v, widget->style);
   } else if (tk_str_eq(name, WIDGET_PROP_ENABLE)) {
     value_set_bool(v, widget->enable);
+  } else if (tk_str_eq(name, WIDGET_PROP_FEEDBACK)) {
+    value_set_bool(v, widget->feedback);
   } else if (tk_str_eq(name, WIDGET_PROP_NAME)) {
     value_set_str(v, widget->name);
   } else if (tk_str_eq(name, WIDGET_PROP_TEXT)) {
@@ -1662,6 +1675,9 @@ ret_t widget_on_keydown(widget_t* widget, key_event_t* e) {
 
   widget->can_not_destroy++;
   ret = widget_on_keydown_impl(widget, e);
+  if (widget->feedback) {
+    ui_feedback_request(widget, (event_t*)e);
+  }
   widget->can_not_destroy--;
 
   return ret;
@@ -1727,6 +1743,9 @@ ret_t widget_on_keyup(widget_t* widget, key_event_t* e) {
 
   widget->can_not_destroy++;
   ret = widget_on_keyup_impl(widget, e);
+  if (widget->feedback) {
+    ui_feedback_request(widget, (event_t*)e);
+  }
   widget->can_not_destroy--;
 
   return ret;
@@ -1848,6 +1867,9 @@ ret_t widget_on_pointer_down(widget_t* widget, pointer_event_t* e) {
 
   widget->can_not_destroy++;
   ret = widget_on_pointer_down_impl(widget, e);
+  if (widget->feedback) {
+    ui_feedback_request(widget, (event_t*)e);
+  }
   widget->can_not_destroy--;
 
   return ret;
@@ -1989,6 +2011,9 @@ ret_t widget_on_pointer_up(widget_t* widget, pointer_event_t* e) {
 
   widget->can_not_destroy++;
   ret = widget_on_pointer_up_impl(widget, e);
+  if (widget->feedback) {
+    ui_feedback_request(widget, (event_t*)e);
+  }
   widget->can_not_destroy--;
 
   return ret;
@@ -2267,6 +2292,7 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t*
   widget->opacity = 0xff;
   widget->enable = TRUE;
   widget->visible = TRUE;
+  widget->feedback = FALSE;
   widget->sensitive = TRUE;
   widget->emitter = NULL;
   widget->children = NULL;

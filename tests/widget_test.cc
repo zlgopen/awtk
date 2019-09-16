@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "gtest/gtest.h"
+#include "base/ui_feedback.h"
 
 using std::string;
 #include "common.h"
@@ -1056,6 +1057,49 @@ TEST(Widget, with_focus_state) {
   ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_WITH_FOCUS_STATE, FALSE), FALSE);
   ASSERT_EQ(widget_set_prop_str(w, WIDGET_PROP_WITH_FOCUS_STATE, "true"), RET_OK);
   ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_WITH_FOCUS_STATE, FALSE), TRUE);
+
+  widget_destroy(w);
+}
+
+TEST(Widget, feedback) {
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+
+  ASSERT_EQ(w->feedback, FALSE);
+  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_FEEDBACK, TRUE), FALSE);
+  ASSERT_EQ(widget_set_prop_str(w, WIDGET_PROP_FEEDBACK, "true"), RET_OK);
+  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_FEEDBACK, FALSE), TRUE);
+  ASSERT_EQ(w->feedback, TRUE);
+
+  widget_destroy(w);
+}
+
+static ret_t ui_on_feedback_test(void* ctx, widget_t* widget, event_t* evt) {
+  int32_t* count = (int32_t*)ctx;
+
+  if (evt->type == EVT_KEY_UP) {
+    *count = *count + 1;
+  }
+
+  return RET_OK;
+}
+
+TEST(Widget, feedback1) {
+  int32_t count = 0;
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  key_event_t e;
+
+  ui_feedback_init(ui_on_feedback_test, &count);
+
+  widget_dispatch(w, key_event_init(&e, EVT_KEY_DOWN, w, TK_KEY_z));
+  ASSERT_EQ(count, 0);
+  widget_dispatch(w, key_event_init(&e, EVT_KEY_UP, w, TK_KEY_z));
+  ASSERT_EQ(count, 0);
+
+  widget_set_feedback(w, TRUE);
+  widget_on_keydown(w, (key_event_t*)key_event_init(&e, EVT_KEY_DOWN, w, TK_KEY_z));
+  ASSERT_EQ(count, 0);
+  widget_on_keyup(w, (key_event_t*)key_event_init(&e, EVT_KEY_UP, w, TK_KEY_z));
+  ASSERT_EQ(count, 1);
 
   widget_destroy(w);
 }
