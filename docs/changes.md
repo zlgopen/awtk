@@ -1,5 +1,11 @@
 # 最新动态
 
+* 2019/09/16
+  * 重构ubjson parser
+  * 完善switch（感谢朝泽提供补丁）。
+  * 完善color component（感谢朝泽提供补丁）。
+  * 完善main loop sdl（感谢朝泽提供补丁）。
+
 * 2019/09/15
   * ubjson reader
   * ubjson parser
