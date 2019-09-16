@@ -177,7 +177,7 @@ static ret_t color_component_ensure_image(widget_t* widget) {
     color_component_set_type(widget, widget->name);
   }
 
-  if (color_component->need_update) {
+  if (color_component->need_update && color_component->update != NULL) {
     bitmap_t* image = color_component->image;
 
     color_component->update(widget);
