@@ -90,7 +90,9 @@ static ret_t ubjson_on_key_value_object(void* ctx, const char* key, value_t* v) 
       if (key == NULL) {
         parser->obj = object_default_create();
         return_value_if_fail(parser->obj != NULL, RET_OOM);
-        parser->root = parser->obj;
+        if(parser->root != NULL) {
+          parser->root = parser->obj;
+        }
       } else {
         object_t* obj = object_default_create();
         return_value_if_fail(obj != NULL, RET_OOM);
@@ -131,6 +133,8 @@ static ret_t ubjson_parser_on_value(ubjson_parser_t* parser, value_t* v) {
     case STATE_KEY: {
       if (v->type == VALUE_TYPE_TOKEN) {
         if (value_token(v) == UBJSON_MARKER_OBJECT_END) {
+          parser->on_key_value(parser->ctx, NULL, v);
+        } else if (value_token(v) == UBJSON_MARKER_ARRAY_END) {
           parser->on_key_value(parser->ctx, NULL, v);
         } else {
           assert(!"invalid format");
@@ -175,6 +179,9 @@ static ret_t ubjson_parser_on_value(ubjson_parser_t* parser, value_t* v) {
     case STATE_ARRAY: {
       if (v->type == VALUE_TYPE_TOKEN) {
         if (value_token(v) == UBJSON_MARKER_ARRAY_END) {
+          parser->state = STATE_KEY;
+          parser->on_key_value(parser->ctx, NULL, v);
+        } else if (value_token(v) == UBJSON_MARKER_OBJECT_BEGIN) {
           parser->state = STATE_KEY;
           parser->on_key_value(parser->ctx, NULL, v);
         }
