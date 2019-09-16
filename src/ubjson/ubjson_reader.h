@@ -49,4 +49,3 @@ ret_t ubjson_reader_reset(ubjson_reader_t* reader);
 END_C_DECLS
 
 #endif /*TK_UBJSON_READER_H*/
-

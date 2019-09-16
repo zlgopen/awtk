@@ -26,7 +26,7 @@ typedef struct _ubjson_parser_t {
   str_t temp;
   rbuffer_t rb;
   ubjson_reader_t reader;
-  
+
   object_t* obj;
   object_t* root;
 
@@ -116,7 +116,6 @@ static ret_t ubjson_on_key_value_object(void* ctx, const char* key, value_t* v) 
 
   return ret;
 }
-
 
 static ret_t ubjson_do_parse_key_value(ubjson_parser_t* parser, int32_t len) {
   value_t value;
