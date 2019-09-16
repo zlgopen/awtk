@@ -235,7 +235,10 @@ static ret_t main_loop_sdl2_dispatch(main_loop_simple_t* loop) {
         break;
       }
       case SDL_QUIT: {
-        ret = main_loop_quit(&(loop->base));
+        widget_t* top = window_manager_get_top_window(loop->base.wm);
+        if (top == NULL || !widget_is_dialog(top) || !dialog_is_modal(top)) {
+          ret = main_loop_quit(&(loop->base));
+        }
         break;
       }
       case SDL_MOUSEWHEEL: {
