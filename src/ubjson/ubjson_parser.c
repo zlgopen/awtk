@@ -22,19 +22,22 @@
 #include "tkc/buffer.h"
 #include "ubjson/ubjson_parser.h"
 
-typedef enum _parse_state_t { STATE_NONE, STATE_KEY, STATE_VALUE, STATE_ARRAY } parse_state_t;
-
 typedef struct _ubjson_parser_t {
   str_t temp;
   rbuffer_t rb;
+  ubjson_reader_t reader;
+  
   object_t* obj;
   object_t* root;
-  parse_state_t state;
-  ubjson_reader_t reader;
 
   void* ctx;
   ubjson_on_key_value_t on_key_value;
 } ubjson_parser_t;
+
+static ret_t ubjson_do_parse_object(ubjson_parser_t* parser);
+static ret_t ubjson_do_parse_value(ubjson_parser_t* parser);
+static ret_t ubjson_do_parse_array(ubjson_parser_t* parser);
+static ret_t ubjson_do_parse_key_value(ubjson_parser_t* parser, int32_t len);
 
 #define PROP_PARENT "__parent__"
 
@@ -57,7 +60,6 @@ static ubjson_parser_t* ubjson_parser_init(ubjson_parser_t* parser, void* data, 
 
   str_init(temp, 64);
   rbuffer_init(rb, data, size);
-  parser->state = STATE_NONE;
   ubjson_reader_init(reader, (ubjson_read_callback_t)rbuffer_read_binary_if_has_more, rb);
 
   return parser;
@@ -90,7 +92,7 @@ static ret_t ubjson_on_key_value_object(void* ctx, const char* key, value_t* v) 
       if (key == NULL) {
         parser->obj = object_default_create();
         return_value_if_fail(parser->obj != NULL, RET_OOM);
-        if(parser->root != NULL) {
+        if (parser->root != NULL) {
           parser->root = parser->obj;
         }
       } else {
@@ -116,99 +118,131 @@ static ret_t ubjson_on_key_value_object(void* ctx, const char* key, value_t* v) 
   return ret;
 }
 
-static ret_t ubjson_parser_on_value(ubjson_parser_t* parser, value_t* v) {
+static ret_t ubjson_do_parse_value(ubjson_parser_t* parser) {
+  value_t value;
+  value_t* v = &value;
+
+  if (ubjson_parser_read(parser, &value) != RET_OK) {
+    return RET_DONE;
+  }
+
+  parser->on_key_value(parser->ctx, NULL, v);
+
+  return RET_OK;
+}
+
+static ret_t ubjson_do_parse_key_value(ubjson_parser_t* parser, int32_t len) {
+  value_t value;
+  value_t* v = &value;
   str_t* str = &(parser->temp);
+  ubjson_reader_t* reader = &(parser->reader);
 
-  switch (parser->state) {
-    case STATE_NONE: {
-      if (v->type == VALUE_TYPE_TOKEN && value_token(v) == UBJSON_MARKER_OBJECT_BEGIN) {
+  str_extend(str, len + 1);
+  return_value_if_fail(ubjson_reader_read_data(reader, str->str, len) == RET_OK, RET_FAIL);
+  str->str[len] = '\0';
+
+  if (ubjson_parser_read(parser, &value) != RET_OK) {
+    return RET_DONE;
+  }
+
+  if (v->type == VALUE_TYPE_TOKEN) {
+    uint32_t token = value_token(v);
+    if (token == UBJSON_MARKER_ARRAY_BEGIN) {
+      parser->on_key_value(parser->ctx, str->str, v);
+      return ubjson_do_parse_array(parser);
+    } else if (token == UBJSON_MARKER_OBJECT_BEGIN) {
+      parser->on_key_value(parser->ctx, str->str, v);
+      return ubjson_do_parse_object(parser);
+    } else {
+      assert(!"invalid format");
+      return RET_BAD_PARAMS;
+    }
+  } else {
+    parser->on_key_value(parser->ctx, str->str, v);
+  }
+
+  return RET_OK;
+}
+
+static ret_t ubjson_do_parse_object(ubjson_parser_t* parser) {
+  value_t value;
+
+  while (TRUE) {
+    value_t* v = &value;
+    if (ubjson_parser_read(parser, &value) != RET_OK) {
+      break;
+    }
+
+    if (v->type == VALUE_TYPE_TOKEN) {
+      if (value_token(v) == UBJSON_MARKER_OBJECT_END) {
         parser->on_key_value(parser->ctx, NULL, v);
-        parser->state = STATE_KEY;
+        return RET_OK;
+      }
+
+      assert(!"invalid format");
+      return RET_BAD_PARAMS;
+    }
+
+    return_value_if_fail(v->type == VALUE_TYPE_UINT8 || v->type == VALUE_TYPE_INT8 ||
+                             v->type == VALUE_TYPE_INT16 || v->type == VALUE_TYPE_INT32,
+                         RET_BAD_PARAMS);
+
+    return_value_if_fail(ubjson_do_parse_key_value(parser, value_int(v)) == RET_OK, RET_FAIL);
+  }
+
+  return RET_OK;
+}
+
+static ret_t ubjson_do_parse_array(ubjson_parser_t* parser) {
+  value_t value;
+
+  while (TRUE) {
+    value_t* v = &value;
+    if (ubjson_parser_read(parser, &value) != RET_OK) {
+      break;
+    }
+
+    if (v->type == VALUE_TYPE_TOKEN) {
+      uint32_t token = value_token(v);
+      if (token == UBJSON_MARKER_ARRAY_END) {
+        parser->on_key_value(parser->ctx, NULL, v);
+        return RET_OK;
+      } else if (token == UBJSON_MARKER_OBJECT_BEGIN) {
+        parser->on_key_value(parser->ctx, NULL, v);
+        return_value_if_fail(ubjson_do_parse_object(parser) == RET_OK, RET_FAIL);
+        continue;
       } else {
         assert(!"invalid format");
         return RET_BAD_PARAMS;
       }
-      break;
     }
-    case STATE_KEY: {
-      if (v->type == VALUE_TYPE_TOKEN) {
-        if (value_token(v) == UBJSON_MARKER_OBJECT_END) {
-          parser->on_key_value(parser->ctx, NULL, v);
-        } else if (value_token(v) == UBJSON_MARKER_ARRAY_END) {
-          parser->on_key_value(parser->ctx, NULL, v);
-        } else {
-          assert(!"invalid format");
-          return RET_BAD_PARAMS;
-        }
-      } else if (v->type == VALUE_TYPE_STRING) {
-        return_value_if_fail(str_set(str, value_str(v)) == RET_OK, RET_OOM);
-        parser->state = STATE_VALUE;
-      } else if (v->type == VALUE_TYPE_INT8 || v->type == VALUE_TYPE_INT16 ||
-                 v->type == VALUE_TYPE_UINT8 || v->type == VALUE_TYPE_INT32) {
-        int32_t len = value_int(v);
-        ubjson_reader_t* reader = &(parser->reader);
 
-        str_extend(str, len + 1);
-        parser->state = STATE_VALUE;
-        return_value_if_fail(ubjson_reader_read_data(reader, str->str, len) == RET_OK, RET_FAIL);
-        str->str[len] = '\0';
-      } else {
-        assert(!"invalid format");
-        return RET_BAD_PARAMS;
-      }
-      break;
-    }
-    case STATE_VALUE: {
-      if (v->type == VALUE_TYPE_TOKEN) {
-        if (value_token(v) == UBJSON_MARKER_OBJECT_BEGIN) {
-          parser->state = STATE_KEY;
-          parser->on_key_value(parser->ctx, str->str, v);
-        } else if (value_token(v) == UBJSON_MARKER_ARRAY_BEGIN) {
-          parser->state = STATE_ARRAY;
-          parser->on_key_value(parser->ctx, str->str, v);
-        } else {
-          assert(!"invalid format");
-          return RET_BAD_PARAMS;
-        }
-      } else {
-        parser->state = STATE_KEY;
-        parser->on_key_value(parser->ctx, str->str, v);
-      }
-      break;
-    }
-    case STATE_ARRAY: {
-      if (v->type == VALUE_TYPE_TOKEN) {
-        if (value_token(v) == UBJSON_MARKER_ARRAY_END) {
-          parser->state = STATE_KEY;
-          parser->on_key_value(parser->ctx, NULL, v);
-        } else if (value_token(v) == UBJSON_MARKER_OBJECT_BEGIN) {
-          parser->state = STATE_KEY;
-          parser->on_key_value(parser->ctx, NULL, v);
-        }
-      } else {
-        parser->on_key_value(parser->ctx, NULL, v);
-      }
-      break;
-    }
-    default:
-      break;
+    return_value_if_fail(ubjson_do_parse_value(parser) == RET_OK, RET_FAIL);
   }
 
   return RET_OK;
 }
 
 ret_t ubjson_do_parse(ubjson_parser_t* parser) {
-  value_t v;
+  value_t value;
+  value_t* v = &value;
 
-  while (TRUE) {
-    if (ubjson_parser_read(parser, &v) != RET_OK) {
-      break;
-    }
-
-    ubjson_parser_on_value(parser, &v);
+  if (ubjson_parser_read(parser, &value) != RET_OK) {
+    return RET_DONE;
   }
 
-  return RET_OK;
+  if (v->type == VALUE_TYPE_TOKEN) {
+    if (value_token(v) == UBJSON_MARKER_OBJECT_BEGIN) {
+      parser->on_key_value(parser->ctx, NULL, v);
+      return ubjson_do_parse_object(parser);
+    } else if (value_token(v) == UBJSON_MARKER_ARRAY_BEGIN) {
+      parser->on_key_value(parser->ctx, NULL, v);
+      return ubjson_do_parse_array(parser);
+    }
+  }
+
+  assert(!"invalid format");
+  return RET_BAD_PARAMS;
 }
 
 object_t* object_from_ubjson(void* data, uint32_t size) {

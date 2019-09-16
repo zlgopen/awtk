@@ -3,7 +3,7 @@
 #include "ubjson/ubjson_writer.h"
 #include "ubjson/ubjson_parser.h"
 
-TEST(UBJsonWriter, basic) {
+TEST(UBJsonParser, basic) {
   uint8_t buff[256];
   wbuffer_t wb;
   ubjson_writer_t ub;
@@ -12,9 +12,9 @@ TEST(UBJsonWriter, basic) {
   ubjson_writer_init(&ub, (ubjson_write_callback_t)wbuffer_write_binary, &wb);
 
   ASSERT_EQ(ubjson_writer_write_object_begin(&ub), RET_OK);
-  ASSERT_EQ(ubjson_writer_write_str(&ub, "name"), RET_OK);
+  ASSERT_EQ(ubjson_writer_write_key(&ub, "name"), RET_OK);
   ASSERT_EQ(ubjson_writer_write_str(&ub, "aaa"), RET_OK);
-  ASSERT_EQ(ubjson_writer_write_str(&ub, "age"), RET_OK);
+  ASSERT_EQ(ubjson_writer_write_key(&ub, "age"), RET_OK);
   ASSERT_EQ(ubjson_writer_write_int32(&ub, 100), RET_OK);
   ASSERT_EQ(ubjson_writer_write_object_end(&ub), RET_OK);
 
@@ -25,7 +25,7 @@ TEST(UBJsonWriter, basic) {
   object_unref(obj);
 }
 
-TEST(UBJsonWriter, embedded) {
+TEST(UBJsonParser, embedded) {
   uint8_t buff[256];
   wbuffer_t wb;
   ubjson_writer_t ub;
@@ -35,16 +35,16 @@ TEST(UBJsonWriter, embedded) {
   ubjson_writer_init(&ub, (ubjson_write_callback_t)wbuffer_write_binary, &wb);
 
   ASSERT_EQ(ubjson_writer_write_object_begin(&ub), RET_OK);
-  ASSERT_EQ(ubjson_writer_write_str(&ub, "name"), RET_OK);
+  ASSERT_EQ(ubjson_writer_write_key(&ub, "name"), RET_OK);
   ASSERT_EQ(ubjson_writer_write_str(&ub, "aaa"), RET_OK);
-  ASSERT_EQ(ubjson_writer_write_str(&ub, "age"), RET_OK);
+  ASSERT_EQ(ubjson_writer_write_key(&ub, "age"), RET_OK);
   ASSERT_EQ(ubjson_writer_write_int32(&ub, 100), RET_OK);
 
-  ASSERT_EQ(ubjson_writer_write_str(&ub, "addr"), RET_OK);
+  ASSERT_EQ(ubjson_writer_write_key(&ub, "addr"), RET_OK);
   ASSERT_EQ(ubjson_writer_write_object_begin(&ub), RET_OK);
-  ASSERT_EQ(ubjson_writer_write_str(&ub, "city"), RET_OK);
+  ASSERT_EQ(ubjson_writer_write_key(&ub, "city"), RET_OK);
   ASSERT_EQ(ubjson_writer_write_str(&ub, "shenzhen"), RET_OK);
-  ASSERT_EQ(ubjson_writer_write_str(&ub, "post"), RET_OK);
+  ASSERT_EQ(ubjson_writer_write_key(&ub, "post"), RET_OK);
   ASSERT_EQ(ubjson_writer_write_str(&ub, "518000"), RET_OK);
   ASSERT_EQ(ubjson_writer_write_object_end(&ub), RET_OK);
 
