@@ -92,6 +92,11 @@ typedef enum _value_desc_type_t {
    */
   VALUE_DESC_TYPE_STRING,
   /**
+   * @const VALUE_DESC_TYPE_BINARY
+   * 二进制类型。
+   */
+  VALUE_DESC_TYPE_BINARY,
+  /**
    * @const VALUE_DESC_TYPE_INT_ENUMS
    * 整数枚举类型。
    */
@@ -147,7 +152,22 @@ typedef enum _value_format_type_t {
    * @const VALUE_FORMAT_TYPE_URL
    * URL格式。
    */
-  VALUE_FORMAT_TYPE_URL
+  VALUE_FORMAT_TYPE_URL,
+  /**
+   * @const VALUE_FORMAT_TYPE_JSON
+   * JSON格式。
+   */
+  VALUE_FORMAT_TYPE_JSON,
+  /**
+   * @const VALUE_FORMAT_TYPE_XML
+   * XML格式。
+   */
+  VALUE_FORMAT_TYPE_XML,
+  /**
+   * @const VALUE_FORMAT_TYPE_UBJSON
+   * UBJSON格式。
+   */
+  VALUE_FORMAT_TYPE_UBJSON
 } value_format_type_t;
 
 /**
@@ -695,6 +715,27 @@ typedef struct _value_desc_string_t {
    */
   uint32_t max;
 } value_desc_string_t, prop_desc_string_t, arg_desc_string_t;
+
+/**
+ * @class value_desc_binary_t
+ * @parent value_desc_t
+ * 二进制类型属性描述。
+ */
+typedef struct _value_desc_binary_t {
+  value_desc_t value_desc;
+  /**
+   * @property {uint32_t} min
+   * @annotation ["readable"]
+   * 最小长度。
+   */
+  uint32_t min;
+  /**
+   * @property {uint32_t} max
+   * @annotation ["readable"]
+   * 最大长度。
+   */
+  uint32_t max;
+} value_desc_binary_t, prop_desc_binary_t, arg_desc_binary_t;
 
 /**
  * @class value_desc_int_enums_t
