@@ -4,6 +4,7 @@
   * 修改LinuxCPU占用高的问题（感谢俊杰提供补丁）。
   * 修改edit快捷键在DESKTOP模式下无效的问题（感谢朝泽提供补丁）。
   * 增加《如何开启按键音》的[文档](docs/how_to_enable_key_touch_sound.md)。
+  * 完善image\_manager\_update\_specific（感谢尧燊提供补丁）。
 
 * 2019/09/16
   * 重构ubjson parser

@@ -146,6 +146,7 @@ ret_t image_manager_update_specific(image_manager_t* imm, bitmap_t* image) {
     iter->image.specific_ctx = image->specific_ctx;
     iter->image.specific_destroy = image->specific_destroy;
 
+    image->specific_destroy = NULL;
     return RET_OK;
   }
 
