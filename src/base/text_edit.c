@@ -800,6 +800,47 @@ ret_t text_edit_drag(text_edit_t* text_edit, xy_t x, xy_t y) {
   return RET_OK;
 }
 
+static ret_t text_edit_handle_shortcut(text_edit_t* text_edit, key_event_t* evt, STB_TexteditState* state, wstr_t* text) {
+#ifdef MACOS
+  if (evt->cmd) {
+#else
+  if (evt->ctrl) {
+#endif
+    uint32_t key = evt->key;
+    char c = tolower(key);
+    if (c == 'z') {
+      stb_textedit_key(text_edit, state, STB_TEXTEDIT_K_UNDO);
+    } else if (c == 'y') {
+      stb_textedit_key(text_edit, state, STB_TEXTEDIT_K_REDO);
+    } else if (c == 'c') {
+      text_edit_copy(text_edit);
+    } else if (c == 'x') {
+      text_edit_cut(text_edit);
+    } else if (c == 'a') {
+      state->select_start = 0;
+      state->select_end = text->size;
+    } else if (c == 'v') {
+      value_t v;
+      wstr_t str;
+      const char* data = clip_board_get_text();
+      if (data != NULL) {
+        value_set_str(&v, data);
+        wstr_init(&str, 0);
+        wstr_from_value(&str, &v);
+        wstr_normalize_newline(&str, STB_TEXTEDIT_NEWLINE);
+        text_edit_paste(text_edit, str.str, str.size);
+        wstr_reset(&str);
+      }
+    }
+
+    text_edit_layout(text_edit);
+
+    return RET_OK;
+  }
+
+  return RET_FAIL;
+}
+
 ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
   uint32_t key = 0;
   wstr_t* text = NULL;
@@ -903,6 +944,7 @@ ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
       if (key < 128 && isprint(key)) {
         app_type_t app_type = system_info()->app_type;
         if (app_type == APP_DESKTOP || app_type == APP_MOBILE) {
+          text_edit_handle_shortcut(text_edit, evt, state, text);
           return RET_OK;
         }
       }
@@ -910,35 +952,7 @@ ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
     }
   }
 
-  if (evt->ctrl) {
-    char c = tolower(key);
-    if (c == 'z') {
-      stb_textedit_key(text_edit, state, STB_TEXTEDIT_K_UNDO);
-    } else if (c == 'y') {
-      stb_textedit_key(text_edit, state, STB_TEXTEDIT_K_REDO);
-    } else if (c == 'c') {
-      text_edit_copy(text_edit);
-    } else if (c == 'x') {
-      text_edit_cut(text_edit);
-    } else if (c == 'a') {
-      state->select_start = 0;
-      state->select_end = text->size;
-    } else if (c == 'v') {
-      value_t v;
-      wstr_t str;
-      const char* data = clip_board_get_text();
-      if (data != NULL) {
-        value_set_str(&v, data);
-        wstr_init(&str, 0);
-        wstr_from_value(&str, &v);
-        wstr_normalize_newline(&str, STB_TEXTEDIT_NEWLINE);
-        text_edit_paste(text_edit, str.str, str.size);
-        wstr_reset(&str);
-      }
-    }
-
-    text_edit_layout(text_edit);
-
+  if(text_edit_handle_shortcut(text_edit, evt, state, text) == RET_OK) {
     return RET_OK;
   }
 
