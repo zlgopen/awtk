@@ -27,6 +27,8 @@
 #define MIME_TYPE_APPLICATION_FRACTALS "application/fractals"
 #define MIME_TYPE_APPLICATION_FUTURESPLASH "application/futuresplash"
 #define MIME_TYPE_APPLICATION_HTA "application/hta"
+#define MIME_TYPE_APPLICATION_JSON "application/json"
+#define MIME_TYPE_APPLICATION_UBJSON "application/ubjson"
 #define MIME_TYPE_APPLICATION_MAC_BINHEX40 "application/mac-binhex40"
 #define MIME_TYPE_APPLICATION_MSWORD "application/msword"
 #define MIME_TYPE_APPLICATION_OCTET_STREAM "application/octet-stream"
