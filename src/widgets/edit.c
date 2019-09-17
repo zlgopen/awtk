@@ -420,7 +420,7 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
     } else {
       edit_dec(edit);
     }
-    return RET_OK;
+    return RET_STOP;
   } else if (key == TK_KEY_UP) {
     if (!edit_is_number(widget)) {
       widget_focus_prev(widget);
@@ -428,7 +428,7 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
     } else {
       edit_inc(edit);
     }
-    return RET_OK;
+    return RET_STOP;
   }
 
   if (key == TK_KEY_BACKSPACE || key == TK_KEY_DELETE || key == TK_KEY_LEFT ||
@@ -451,10 +451,11 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
     }
   }
 
-  return RET_OK;
+  return RET_STOP;
 }
 
 ret_t edit_on_event(widget_t* widget, event_t* e) {
+  ret_t ret = RET_OK;
   uint32_t type = e->type;
   edit_t* edit = EDIT(widget);
   return_value_if_fail(widget != NULL && edit != NULL, RET_BAD_PARAMS);
@@ -497,7 +498,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_KEY_DOWN: {
-      edit_on_key_down(widget, (key_event_t*)e);
+      ret = edit_on_key_down(widget, (key_event_t*)e);
       edit_update_status(widget);
       break;
     }
@@ -559,7 +560,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       break;
   }
 
-  return RET_OK;
+  return ret;
 }
 
 ret_t edit_set_text_limit(widget_t* widget, uint32_t min, uint32_t max) {

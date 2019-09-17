@@ -315,6 +315,7 @@ ret_t mledit_clear(mledit_t* mledit) {
 }
 
 static ret_t mledit_on_event(widget_t* widget, event_t* e) {
+  ret_t ret = RET_OK;
   uint32_t type = e->type;
   mledit_t* mledit = MLEDIT(widget);
   return_value_if_fail(widget != NULL && mledit != NULL, RET_BAD_PARAMS);
@@ -368,6 +369,7 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       }
 
       mledit_update_status(widget);
+      ret = RET_STOP;
       break;
     }
     case EVT_IM_COMMIT: {
@@ -429,7 +431,7 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       break;
   }
 
-  return RET_OK;
+  return ret;
 }
 
 static ret_t mledit_sync_line_number(widget_t* widget, text_edit_state_t* state) {
