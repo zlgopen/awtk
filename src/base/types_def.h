@@ -220,7 +220,11 @@ typedef enum _app_type_t {
 #endif /*TK_DEFAULT_FONT_SIZE*/
 
 #ifndef TK_MAX_FPS
+#if defined(LINUX) || defined(MACOS) || defined(WIN32)
+#define TK_MAX_FPS 60
+#else
 #define TK_MAX_FPS 100
+#endif
 #endif /*TK_MAX_FPS*/
 
 #define TK_OPACITY_ALPHA 0xfa

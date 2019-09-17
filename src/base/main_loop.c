@@ -85,16 +85,10 @@ ret_t main_loop_queue_event(main_loop_t* l, const event_queue_req_t* e) {
 #define TK_MAX_SLEEP_TIME (1000 / TK_MAX_FPS)
 
 ret_t main_loop_sleep_default(main_loop_t* l) {
-  uint32_t sleep_time = 0;
   uint64_t now = time_now_ms();
   uint32_t gap = now - l->last_loop_time;
+  uint32_t sleep_time = TK_MAX_SLEEP_TIME;
   int32_t least_sleep_time = gap > TK_MAX_SLEEP_TIME ? 0 : (TK_MAX_SLEEP_TIME - gap);
-
-#ifdef WITH_SDL
-  if (gap <= 8) {
-    sleep_time = 8;
-  }
-#endif /*WITH_SDL*/
 
   sleep_time = tk_min(least_sleep_time, sleep_time);
   if (sleep_time > 0) {
