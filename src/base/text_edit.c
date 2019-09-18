@@ -800,7 +800,8 @@ ret_t text_edit_drag(text_edit_t* text_edit, xy_t x, xy_t y) {
   return RET_OK;
 }
 
-static ret_t text_edit_handle_shortcut(text_edit_t* text_edit, key_event_t* evt, STB_TexteditState* state, wstr_t* text) {
+static ret_t text_edit_handle_shortcut(text_edit_t* text_edit, key_event_t* evt,
+                                       STB_TexteditState* state, wstr_t* text) {
 #ifdef MACOS
   if (evt->cmd) {
 #else
@@ -952,7 +953,7 @@ ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
     }
   }
 
-  if(text_edit_handle_shortcut(text_edit, evt, state, text) == RET_OK) {
+  if (text_edit_handle_shortcut(text_edit, evt, state, text) == RET_OK) {
     return RET_OK;
   }
 
