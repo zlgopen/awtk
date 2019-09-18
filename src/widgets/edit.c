@@ -121,7 +121,7 @@ static bool_t edit_is_valid_char_default(widget_t* widget, wchar_t c) {
     }
     case INPUT_EMAIL: {
       if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '-' ||
-          c == '.' || c == '_') {
+          c == '.' || c == '_' || c == ' ') {
         ret = TRUE;
       } else if (c == '@') {
         if (cursor_pos > 0 && wcs_chr(text->str, c) == NULL) {
