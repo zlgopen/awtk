@@ -359,6 +359,9 @@ bool_t style_is_mutable(style_t* s);
  */
 ret_t style_destroy(style_t* s);
 
+/*helper functions*/
+ret_t style_normalize_value(const char* name, const char* value, value_t* out);
+
 END_C_DECLS
 
 #endif /*TK_STYLE_H*/

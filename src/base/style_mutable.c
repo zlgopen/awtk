@@ -33,14 +33,31 @@ typedef struct _style_item_t {
   struct _style_item_t* next;
 } style_item_t;
 
+static ret_t style_item_set_value(style_item_t* item, const value_t* value) {
+  const char* name = item->name;
+  value_t* v = &(item->value);
+
+  value_reset(v);
+  if (value->type == VALUE_TYPE_STRING) {
+    return style_normalize_value(name, value_str(value), v);
+  } else {
+    value_set_int(v, value_int(value));
+    return RET_OK;
+  }
+}
+
+static ret_t style_item_init(style_item_t* item, const char* name, const value_t* value) {
+  tk_strncpy(item->name, name, TK_NAME_LEN);
+
+  return style_item_set_value(item, value);
+}
+
 static style_item_t* style_item_add(style_item_t* first, const char* name, const value_t* value) {
   style_item_t* iter = first;
   style_item_t* item = TKMEM_ZALLOC(style_item_t);
   return_value_if_fail(item != NULL, NULL);
 
-  tk_strncpy(item->name, name, TK_NAME_LEN);
-  value_reset(&(item->value));
-  value_deep_copy(&(item->value), value);
+  style_item_init(item, name, value);
 
   if (first != NULL) {
     while (iter->next) {
@@ -60,8 +77,7 @@ static ret_t style_item_set(style_item_t* first, const char* name, const value_t
   if (first != NULL) {
     while (iter) {
       if (tk_str_eq(iter->name, name)) {
-        value_reset(&(iter->value));
-        value_deep_copy(&(iter->value), value);
+        style_item_set_value(iter, value);
         return RET_OK;
       }
       iter = iter->next;

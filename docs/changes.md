@@ -2,6 +2,9 @@
 
 * 2019/09/18
   * 增加iostream\_mem。
+  * 重构theme gen。
+  * 完善style_mutable，set value时和theme gen保持一致。
+  * edit 输入类型为email时允许输入空格（感谢俊杰提供补丁）。
 
 * 2019/09/17
   * 修改LinuxCPU占用高的问题（感谢俊杰提供补丁）。

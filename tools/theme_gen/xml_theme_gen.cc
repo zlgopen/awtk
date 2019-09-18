@@ -22,6 +22,7 @@
 #include "theme_gen.h"
 #include "base/enums.h"
 #include "base/theme.h"
+#include "base/style.h"
 #include "base/widget.h"
 #include "common/utils.h"
 #include "xml_theme_gen.h"
@@ -40,82 +41,23 @@ typedef struct _xml_builder_t {
   string widget_type;
 } xml_builder_t;
 
-static color_t parse_color(const char* name) {
-  color_t c = color_parse(name);
-
-  return c;
-}
-
-static uint32_t to_border(const char* value) {
-  uint32_t border = 0;
-  if (strstr(value, "left")) {
-    border |= BORDER_LEFT;
-  }
-  if (strstr(value, "right")) {
-    border |= BORDER_RIGHT;
-  }
-  if (strstr(value, "top")) {
-    border |= BORDER_TOP;
-  }
-  if (strstr(value, "bottom")) {
-    border |= BORDER_BOTTOM;
-  }
-  if (strstr(value, "all")) {
-    border |= BORDER_ALL;
-  }
-
-  return border;
-}
-
-static uint32_t to_icon_at(const char* value) {
-  uint32_t icon_at = ICON_AT_AUTO;
-
-  if (strstr(value, "left")) {
-    icon_at = ICON_AT_LEFT;
-  }
-  if (strstr(value, "right")) {
-    icon_at = ICON_AT_RIGHT;
-  }
-  if (strstr(value, "top")) {
-    icon_at = ICON_AT_TOP;
-  }
-  if (strstr(value, "bottom")) {
-    icon_at = ICON_AT_BOTTOM;
-  }
-
-  return icon_at;
-}
-
 static void xml_gen_style(xml_builder_t* b, Style& s, const char** attrs) {
+  value_t v;
   uint32_t i = 0;
 
+  value_set_int(&v, 0);
   while (attrs[i]) {
     const char* name = attrs[i];
     const char* value = attrs[i + 1];
+    ENSURE(style_normalize_value(name, value, &v) == RET_OK);
 
-    if (strcmp(name, "name") == 0) {
-    } else if (strcmp(name, "bg_image_draw_type") == 0 || strcmp(name, "fg_image_draw_type") == 0) {
-      const key_type_value_t* dt = image_draw_type_find(value);
-      s.AddInt(name, dt->value);
-    } else if (strcmp(name, "text_align_h") == 0) {
-      const key_type_value_t* dt = align_h_type_find(value);
-      s.AddInt(name, dt->value);
-    } else if (strcmp(name, "text_align_v") == 0) {
-      const key_type_value_t* dt = align_v_type_find(value);
-      s.AddInt(name, dt->value);
-    } else if (strcmp(name, "border") == 0) {
-      uint32_t border = to_border(value);
-      s.AddInt(name, border);
-    } else if (strcmp(name, "icon_at") == 0) {
-      uint32_t icon_at = to_icon_at(value);
-      s.AddInt(name, icon_at);
-    } else if (strstr(name, "color") != NULL) {
-      s.AddInt(name, parse_color(value).color);
-    } else if (strstr(name, "image") != NULL || strstr(name, "name") != NULL ||
-               strstr(name, "icon") != NULL) {
-      s.AddString(name, value);
-    } else {
-      s.AddInt(name, tk_atoi(value));
+    if (strcmp(name, "name") != 0) {
+      if (v.type == VALUE_TYPE_STRING) {
+        s.AddString(name, value_str(&v));
+      } else {
+        s.AddInt(name, value_int(&v));
+      }
+      value_reset(&v);
     }
 
     i += 2;

@@ -74,3 +74,83 @@ bool_t style_is_mutable(style_t* s) {
 
   return s->vt->is_mutable;
 }
+
+#include "base/enums.h"
+#include "tkc/color_parser.h"
+
+static uint32_t to_border(const char* value) {
+  uint32_t border = 0;
+  if (strstr(value, "left")) {
+    border |= BORDER_LEFT;
+  }
+  if (strstr(value, "right")) {
+    border |= BORDER_RIGHT;
+  }
+  if (strstr(value, "top")) {
+    border |= BORDER_TOP;
+  }
+  if (strstr(value, "bottom")) {
+    border |= BORDER_BOTTOM;
+  }
+  if (strstr(value, "all")) {
+    border |= BORDER_ALL;
+  }
+
+  return border;
+}
+
+static uint32_t to_icon_at(const char* value) {
+  uint32_t icon_at = ICON_AT_AUTO;
+
+  if (strstr(value, "left")) {
+    icon_at = ICON_AT_LEFT;
+  }
+  if (strstr(value, "right")) {
+    icon_at = ICON_AT_RIGHT;
+  }
+  if (strstr(value, "top")) {
+    icon_at = ICON_AT_TOP;
+  }
+  if (strstr(value, "bottom")) {
+    icon_at = ICON_AT_BOTTOM;
+  }
+
+  return icon_at;
+}
+
+ret_t style_normalize_value(const char* name, const char* value, value_t* out) {
+  value_t* v = out;
+  const key_type_value_t* dt = NULL;
+  return_value_if_fail(name != NULL && value != NULL && out != NULL, RET_BAD_PARAMS);
+
+  value_set_int(v, 0);
+  if (strstr(name, "image_draw_type") != NULL) {
+    dt = image_draw_type_find(value);
+  } else if (strcmp(name, "text_align_h") == 0) {
+    dt = align_h_type_find(value);
+  } else if (strcmp(name, "text_align_v") == 0) {
+    dt = align_v_type_find(value);
+  } else if (strcmp(name, "border") == 0) {
+    value_set_int(v, to_border(value));
+  } else if (strcmp(name, "icon_at") == 0) {
+    value_set_int(v, to_icon_at(value));
+  } else if (strstr(name, "color") != NULL) {
+    color_t c = color_parse(value);
+    value_set_int(v, c.color);
+  } else if (strstr(name, "image") != NULL || strstr(name, "name") != NULL ||
+             strstr(name, "icon") != NULL) {
+    value_dup_str(v, value);
+  } else {
+    if (isdigit(*value)) {
+      value_set_int(v, tk_atoi(value));
+    } else {
+      value_dup_str(v, value);
+    }
+  }
+
+  if (dt != NULL) {
+    value_set_int(v, dt->value);
+  }
+
+  return RET_OK;
+}
