@@ -341,6 +341,12 @@ typedef enum _event_type_t {
    */
   EVT_WIDGET_CREATED,
   /**
+   * @const EVT_REQUEST_QUIT_APP
+   * 请求退出应用程序事件。
+   * 点击原生窗口关闭按钮时，通过窗口管理器触发，注册该事件并返回RET_STOP，可以阻止窗口关闭。
+   */
+  EVT_REQUEST_QUIT_APP,
+  /**
    * @const EVT_REQ_START
    * event queue其它请求编号起始值。
    */

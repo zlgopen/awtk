@@ -6,7 +6,8 @@
   * 增加 object\_get\_prop\_by\_path
   * 完善 children\_layouter\_list\_view（感谢尧燊提供补丁）。
   * 完善 children\_layouter\_default（感谢尧燊提供补丁）。
-
+  * 增加 EVT\_REQUEST\_QUIT\_APP 事件，点击原生窗口关闭按钮时，通过窗口管理器触发，注册该事件并返回RET_STOP，可以阻止窗口关闭。
+  
 * 2019/09/18
   * 增加 iostream\_mem。
   * 重构 theme gen。

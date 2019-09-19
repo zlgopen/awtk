@@ -702,6 +702,16 @@ static ret_t wm_on_out_of_memory(void* ctx, event_t* evt) {
   return RET_OK;
 }
 
+static ret_t wm_on_request_quit(void* ctx, event_t* evt) {
+  /*
+   * do some cleanup work here
+   * return RET_STOP to ignore the request
+   */
+  /*return RET_STOP;*/
+
+  return RET_OK;
+}
+
 ret_t application_init() {
   widget_t* wm = window_manager();
 
@@ -716,6 +726,7 @@ ret_t application_init() {
   widget_on(wm, EVT_AFTER_PAINT, wm_on_after_paint, wm);
   widget_on(wm, EVT_LOW_MEMORY, wm_on_low_memory, wm);
   widget_on(wm, EVT_OUT_OF_MEMORY, wm_on_out_of_memory, wm);
+  widget_on(wm, EVT_REQUEST_QUIT_APP, wm_on_request_quit, wm);
 
   return show_preload_res_window();
 }

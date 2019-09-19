@@ -189,9 +189,15 @@ static ret_t main_loop_sdl2_dispatch_window_event(main_loop_simple_t* loop, SDL_
       log_debug("Window %d lost keyboard focus\n", event->window.windowID);
       break;
     case SDL_WINDOWEVENT_CLOSE: {
-      event_t e = event_init(EVT_NATIVE_WINDOW_DESTROY, NULL);
-      SDL_Window* win = SDL_GetWindowFromID(event->window.windowID);
-      window_manager_dispatch_native_window_event(l->wm, &e, win);
+      event_t e = event_init(EVT_REQUEST_QUIT_APP, NULL);
+      if(widget_dispatch(window_manager(), &e) == RET_OK) {
+        SDL_Window* win = SDL_GetWindowFromID(event->window.windowID);
+
+        e = event_init(EVT_NATIVE_WINDOW_DESTROY, NULL);
+        window_manager_dispatch_native_window_event(l->wm, &e, win);
+
+        main_loop_quit(&(loop->base));
+      }
     } break;
 #if SDL_VERSION_ATLEAST(2, 0, 5)
     case SDL_WINDOWEVENT_TAKE_FOCUS:
@@ -232,13 +238,6 @@ static ret_t main_loop_sdl2_dispatch(main_loop_simple_t* loop) {
       }
       case SDL_TEXTEDITING: {
         ret = main_loop_sdl2_dispatch_text_editing(loop, &event);
-        break;
-      }
-      case SDL_QUIT: {
-        widget_t* top = window_manager_get_top_window(loop->base.wm);
-        if (top == NULL || !widget_is_dialog(top) || !dialog_is_modal(top)) {
-          ret = main_loop_quit(&(loop->base));
-        }
         break;
       }
       case SDL_MOUSEWHEEL: {
