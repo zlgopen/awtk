@@ -33,6 +33,7 @@ typedef ret_t (*color_component_update_t)(widget_t* widget);
 /**
  * @class color_component_t
  * @parent widget_t
+ * @annotation ["scriptable","design","widget"]
  * 颜色选择器的颜色分量。
  * 控件的名称有严格规定：
  * COLOR_PICKER_CHILD_SV: 水平为Value/Brightness(递增)，垂直为Saturation(递减)。

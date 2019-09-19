@@ -30,7 +30,7 @@ BEGIN_C_DECLS
 /**
  * @class digit_clock_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","design","widget"]
  * 数字时钟控件。
  *
  * digit\_clock\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于digit\_clock\_t控件。

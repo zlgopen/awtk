@@ -32,6 +32,7 @@ typedef ret_t (*mutable_image_prepare_image_t)(void* ctx, bitmap_t* image);
 /**
  * @class mutable_image_t
  * @parent image_base_t
+ * @annotation ["scriptable","design","widget"]
  *
  * mutable图片控件。
  *
