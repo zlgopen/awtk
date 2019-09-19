@@ -20,7 +20,10 @@
  */
 
 #include "tkc/buffer.h"
+#include "tkc/object_array.h"
 #include "ubjson/ubjson_parser.h"
+
+#define MAX_LEVEL 10
 
 typedef struct _ubjson_parser_t {
   str_t temp;
@@ -32,13 +35,25 @@ typedef struct _ubjson_parser_t {
 
   void* ctx;
   ubjson_on_key_value_t on_key_value;
+
+  bool_t error;
+  uint32_t level;
+  object_t* stack[MAX_LEVEL + 1];
 } ubjson_parser_t;
 
 static ret_t ubjson_do_parse_object(ubjson_parser_t* parser);
 static ret_t ubjson_do_parse_array(ubjson_parser_t* parser);
 static ret_t ubjson_do_parse_key_value(ubjson_parser_t* parser, int32_t len);
 
-#define PROP_PARENT "__parent__"
+static ubjson_parser_on_key_value(ubjson_parser_t* parser, const char* key, value_t* v) {
+  ret_t ret = parser->on_key_value(parser->ctx, key, v);
+
+  if (ret != RET_OK) {
+    parser->error = TRUE;
+  }
+
+  return ret;
+}
 
 static ret_t rbuffer_read_binary_if_has_more(rbuffer_t* rbuffer, void* data, uint32_t size) {
   if (rbuffer_has_more(rbuffer)) {
@@ -48,11 +63,38 @@ static ret_t rbuffer_read_binary_if_has_more(rbuffer_t* rbuffer, void* data, uin
   return RET_DONE;
 }
 
+static ret_t ubjson_parser_push(ubjson_parser_t* parser, object_t* obj) {
+  return_value_if_fail(parser->level < MAX_LEVEL, RET_BAD_PARAMS);
+
+  parser->obj = obj;
+  parser->stack[parser->level] = obj;
+  parser->level++;
+
+  return RET_OK;
+}
+
+static ret_t ubjson_parser_pop(ubjson_parser_t* parser) {
+  return_value_if_fail(parser->level > 0, RET_BAD_PARAMS);
+
+  parser->level--;
+  parser->stack[parser->level] = NULL;
+
+  if (parser->level > 0) {
+    parser->obj = parser->stack[parser->level - 1];
+  } else {
+    parser->obj = NULL;
+  }
+
+  return RET_OK;
+}
+
 static ubjson_parser_t* ubjson_parser_init(ubjson_parser_t* parser, void* data, uint32_t size,
                                            ubjson_on_key_value_t on_key_value, void* ctx) {
   str_t* temp = &(parser->temp);
   rbuffer_t* rb = &(parser->rb);
   ubjson_reader_t* reader = &(parser->reader);
+
+  memset(parser, 0x00, sizeof(ubjson_parser_t));
 
   parser->ctx = ctx;
   parser->on_key_value = on_key_value;
@@ -76,6 +118,7 @@ static ret_t ubjson_parser_deinit(ubjson_parser_t* parser) {
 
 static ret_t ubjson_parser_read(ubjson_parser_t* parser, value_t* v) {
   ubjson_reader_t* reader = &(parser->reader);
+  return_value_if_fail(parser->error == FALSE, RET_FAIL);
 
   return ubjson_reader_read(reader, v);
 }
@@ -84,28 +127,31 @@ static ret_t ubjson_on_key_value_object(void* ctx, const char* key, value_t* v) 
   ret_t ret = RET_OK;
   ubjson_parser_t* parser = (ubjson_parser_t*)ctx;
 
+  if (key == NULL) {
+    /*for array append*/
+    key = "-1";
+  }
+
   if (v->type == VALUE_TYPE_TOKEN) {
     uint32_t token = value_token(v);
+    if (token == UBJSON_MARKER_OBJECT_BEGIN || token == UBJSON_MARKER_ARRAY_BEGIN) {
+      object_t* obj =
+          token == UBJSON_MARKER_OBJECT_BEGIN ? object_default_create() : object_array_create();
+      return_value_if_fail(obj != NULL, RET_OOM);
 
-    if (token == UBJSON_MARKER_OBJECT_BEGIN) {
-      if (key == NULL) {
-        parser->obj = object_default_create();
-        return_value_if_fail(parser->obj != NULL, RET_OOM);
-        if (parser->root != NULL) {
-          parser->root = parser->obj;
-        }
-      } else {
-        object_t* obj = object_default_create();
-        return_value_if_fail(obj != NULL, RET_OOM);
-
-        object_set_prop_object(parser->obj, key, obj);
-        object_set_prop_pointer(obj, PROP_PARENT, parser->obj);
-        parser->obj = obj;
-        object_unref(obj);
+      if (parser->root == NULL) {
+        object_ref(obj);
+        parser->root = obj;
       }
-    } else if (token == UBJSON_MARKER_OBJECT_END) {
-      object_t* parent = (object_t*)object_get_prop_pointer(parser->obj, PROP_PARENT);
-      parser->obj = parent;
+
+      if (parser->obj != NULL) {
+        ret = object_set_prop_object(parser->obj, key, obj);
+      }
+
+      ret = ubjson_parser_push(parser, obj);
+      object_unref(obj);
+    } else if (token == UBJSON_MARKER_OBJECT_END || token == UBJSON_MARKER_ARRAY_END) {
+      ret = ubjson_parser_pop(parser);
     } else {
       assert(!"not supported");
       ret = RET_NOT_IMPL;
@@ -134,17 +180,17 @@ static ret_t ubjson_do_parse_key_value(ubjson_parser_t* parser, int32_t len) {
   if (v->type == VALUE_TYPE_TOKEN) {
     uint32_t token = value_token(v);
     if (token == UBJSON_MARKER_ARRAY_BEGIN) {
-      parser->on_key_value(parser->ctx, str->str, v);
+      ubjson_parser_on_key_value(parser, str->str, v);
       return ubjson_do_parse_array(parser);
     } else if (token == UBJSON_MARKER_OBJECT_BEGIN) {
-      parser->on_key_value(parser->ctx, str->str, v);
+      ubjson_parser_on_key_value(parser, str->str, v);
       return ubjson_do_parse_object(parser);
     } else {
       assert(!"invalid format");
       return RET_BAD_PARAMS;
     }
   } else {
-    parser->on_key_value(parser->ctx, str->str, v);
+    ubjson_parser_on_key_value(parser, str->str, v);
   }
 
   return RET_OK;
@@ -161,7 +207,7 @@ static ret_t ubjson_do_parse_object(ubjson_parser_t* parser) {
 
     if (v->type == VALUE_TYPE_TOKEN) {
       if (value_token(v) == UBJSON_MARKER_OBJECT_END) {
-        parser->on_key_value(parser->ctx, NULL, v);
+        ubjson_parser_on_key_value(parser, NULL, v);
         return RET_OK;
       }
 
@@ -191,10 +237,10 @@ static ret_t ubjson_do_parse_array(ubjson_parser_t* parser) {
     if (v->type == VALUE_TYPE_TOKEN) {
       uint32_t token = value_token(v);
       if (token == UBJSON_MARKER_ARRAY_END) {
-        parser->on_key_value(parser->ctx, NULL, v);
+        ubjson_parser_on_key_value(parser, NULL, v);
         return RET_OK;
       } else if (token == UBJSON_MARKER_OBJECT_BEGIN) {
-        parser->on_key_value(parser->ctx, NULL, v);
+        ubjson_parser_on_key_value(parser, NULL, v);
         return_value_if_fail(ubjson_do_parse_object(parser) == RET_OK, RET_FAIL);
         continue;
       } else {
@@ -203,7 +249,7 @@ static ret_t ubjson_do_parse_array(ubjson_parser_t* parser) {
       }
     }
 
-    parser->on_key_value(parser->ctx, NULL, v);
+    ubjson_parser_on_key_value(parser, NULL, v);
   }
 
   return RET_OK;
@@ -219,10 +265,10 @@ ret_t ubjson_do_parse(ubjson_parser_t* parser) {
 
   if (v->type == VALUE_TYPE_TOKEN) {
     if (value_token(v) == UBJSON_MARKER_OBJECT_BEGIN) {
-      parser->on_key_value(parser->ctx, NULL, v);
+      ubjson_parser_on_key_value(parser, NULL, v);
       return ubjson_do_parse_object(parser);
     } else if (value_token(v) == UBJSON_MARKER_ARRAY_BEGIN) {
-      parser->on_key_value(parser->ctx, NULL, v);
+      ubjson_parser_on_key_value(parser, NULL, v);
       return ubjson_do_parse_array(parser);
     }
   }
