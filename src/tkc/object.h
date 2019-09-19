@@ -477,6 +477,81 @@ ret_t object_notify_changed(object_t* obj);
  */
 ret_t object_get_prop_by_path(object_t* obj, const char* path, value_t* v);
 
+/**
+ * @method object_get_prop_str_by_path
+ * 获取指定属性的字符串类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} path 属性的path。
+ *
+ * @return {const char*} 返回指定属性的字符串类型的值。
+ */
+const char* object_get_prop_str_by_path(object_t* obj, const char* path);
+
+/**
+ * @method object_get_prop_pointer_by_path
+ * 获取指定属性的指针类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} path 属性的path。
+ *
+ * @return {void*} 返回指定属性的指针类型的值。
+ */
+void* object_get_prop_pointer_by_path(object_t* obj, const char* path);
+
+/**
+ * @method object_get_prop_object_by_path
+ * 获取指定属性的object类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} path 属性的path。
+ *
+ * @return {object_t*} 返回指定属性的object类型的值。
+ */
+object_t* object_get_prop_object_by_path(object_t* obj, const char* path);
+
+/**
+ * @method object_get_prop_int_by_path
+ * 获取指定属性的整数类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} path 属性的path。
+ * @param {int32_t} defval 缺省值。
+ *
+ * @return {int32_t} 返回指定属性的整数类型的值。
+ */
+int32_t object_get_prop_int_by_path(object_t* obj, const char* path, int32_t defval);
+
+/**
+ * @method object_get_prop_bool_by_path
+ * 获取指定属性的bool类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} path 属性的path。
+ * @param {bool_t} defval 缺省值。
+ *
+ * @return {bool_t} 返回指定属性的bool类型的值。
+ */
+bool_t object_get_prop_bool_by_path(object_t* obj, const char* path, bool_t defval);
+
+/**
+ * @method object_get_prop_float_by_path
+ * 获取指定属性的浮点数类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} path 属性的path。
+ * @param {float_t} defval 缺省值。
+ *
+ * @return {float_t} 返回指定属性的浮点数类型的值。
+ */
+float_t object_get_prop_float_by_path(object_t* obj, const char* path, float_t defval);
+
 #define OBJECT(obj) ((object_t*)(obj))
 
 END_C_DECLS

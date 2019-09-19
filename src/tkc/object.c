@@ -466,3 +466,57 @@ uint32_t object_get_size(object_t* obj) {
 
   return obj->vt->size;
 }
+
+const char* object_get_prop_str_by_path(object_t* obj, const char* path) {
+  value_t v;
+  if (object_get_prop_by_path(obj, path, &v) == RET_OK) {
+    return value_str(&v);
+  } else {
+    return NULL;
+  }
+}
+
+void* object_get_prop_pointer_by_path(object_t* obj, const char* path) {
+  value_t v;
+  if (object_get_prop_by_path(obj, path, &v) == RET_OK) {
+    return value_pointer(&v);
+  } else {
+    return NULL;
+  }
+}
+
+object_t* object_get_prop_object_by_path(object_t* obj, const char* path) {
+  value_t v;
+  if (object_get_prop_by_path(obj, path, &v) == RET_OK) {
+    return value_object(&v);
+  } else {
+    return NULL;
+  }
+}
+
+int32_t object_get_prop_int_by_path(object_t* obj, const char* path, int32_t defval) {
+  value_t v;
+  if (object_get_prop_by_path(obj, path, &v) == RET_OK) {
+    return value_int(&v);
+  } else {
+    return defval;
+  }
+}
+
+bool_t object_get_prop_bool_by_path(object_t* obj, const char* path, bool_t defval) {
+  value_t v;
+  if (object_get_prop_by_path(obj, path, &v) == RET_OK) {
+    return value_bool(&v);
+  } else {
+    return defval;
+  }
+}
+
+float_t object_get_prop_float_by_path(object_t* obj, const char* path, float_t defval) {
+  value_t v;
+  if (object_get_prop_by_path(obj, path, &v) == RET_OK) {
+    return value_float(&v);
+  } else {
+    return defval;
+  }
+}
