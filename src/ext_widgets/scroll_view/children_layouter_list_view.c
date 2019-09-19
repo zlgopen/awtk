@@ -34,7 +34,8 @@ static const char* children_layouter_list_view_to_string(children_layouter_t* la
   str_t* str = &(layouter->params);
   children_layouter_list_view_t* layout = (children_layouter_list_view_t*)layouter;
 
-  str_set(str, "listview(");
+  memset(temp, 0, sizeof(temp));
+  str_set(str, "list_view(");
   str_append(str, temp);
 
   if (layout->item_height) {
@@ -359,7 +360,7 @@ static ret_t children_layouter_list_view_destroy(children_layouter_t* layouter) 
 }
 
 static const children_layouter_vtable_t s_children_layouter_list_view_vtable = {
-    .type = "listview",
+    .type = CHILDREN_LAYOUTER_LIST_VIEW,
     .to_string = children_layouter_list_view_to_string,
     .get_param = children_layouter_list_view_get_param,
     .set_param = children_layouter_list_view_set_param,
