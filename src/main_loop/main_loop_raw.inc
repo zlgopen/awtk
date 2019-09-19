@@ -25,9 +25,9 @@ static ret_t main_loop_raw_init_canvas(uint32_t w, uint32_t h) {
 
 main_loop_t* main_loop_init(int w, int h) {
   main_loop_simple_t* loop = NULL;
-  return_value_if_fail(main_loop_raw_init_canvas(w, h) == RET_OK, NULL)
+  return_value_if_fail(main_loop_raw_init_canvas(w, h) == RET_OK, NULL);
 
-      loop = main_loop_simple_init(w, h);
+  loop = main_loop_simple_init(w, h);
   return_value_if_fail(loop != NULL, NULL);
 
   loop->base.destroy = main_loop_raw_destroy;
