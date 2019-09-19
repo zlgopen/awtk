@@ -1,9 +1,12 @@
 # 最新动态
 
+* 2019/09/19
+  * 修改"color\_component" "digit\_clock" "mutable\_image"的注释，支持designer编辑（感谢大恒提供补丁）。
+
 * 2019/09/18
   * 增加iostream\_mem。
   * 重构theme gen。
-  * 完善style_mutable，set value时和theme gen保持一致。
+  * 完善style\_mutable，set value时和theme gen保持一致。
   * edit 输入类型为email时允许输入空格（感谢俊杰提供补丁）。
 
 * 2019/09/17
