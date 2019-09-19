@@ -1,4 +1,5 @@
 ﻿#include "tkc/utils.h"
+#include "tkc/object_default.h"
 #include "tkc/object_array.h"
 #include "gtest/gtest.h"
 #include <stdlib.h>
@@ -126,7 +127,7 @@ TEST(ObjectArray, dup) {
   ASSERT_EQ(object_set_prop(obj, "-1", value_set_int(&v, 3)), RET_OK);
 
   dup = object_array_clone(OBJECT_ARRAY(obj));
-  
+
   log = "";
   object_foreach_prop(dup, visit_dump, &log);
   ASSERT_EQ(log, "0123");
@@ -135,3 +136,49 @@ TEST(ObjectArray, dup) {
   object_unref(dup);
 }
 
+TEST(ObjectArray, path) {
+  value_t v;
+  object_t* clone = NULL;
+  object_t* root = object_default_create();
+  object_t* obja = object_array_create();
+  object_t* obja1 = object_default_create();
+  object_t* obja2 = object_default_create();
+  object_t* objb = object_array_create();
+  object_t* objb1 = object_default_create();
+  object_t* objb2 = object_default_create();
+
+  ASSERT_EQ(object_set_prop_object(root, "a", obja), RET_OK);
+  ASSERT_EQ(object_set_prop_object(root, "b", objb), RET_OK);
+
+  ASSERT_EQ(object_set_prop_object(obja, "-1", obja1), RET_OK);
+  ASSERT_EQ(object_set_prop_int(obja1, "value", 456), RET_OK);
+  ASSERT_EQ(object_get_prop_by_path(root, "a.0.value", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 456);
+
+  ASSERT_EQ(object_set_prop_object(obja, "-1", obja2), RET_OK);
+  ASSERT_EQ(object_set_prop_int(obja2, "value", 56), RET_OK);
+  ASSERT_EQ(object_get_prop_by_path(root, "a.1.value", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 56);
+
+  ASSERT_EQ(object_set_prop_object(objb, "-1", objb1), RET_OK);
+  ASSERT_EQ(object_set_prop_int(objb1, "value", 56), RET_OK);
+  ASSERT_EQ(object_get_prop_by_path(root, "b.0.value", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 56);
+
+  ASSERT_EQ(object_set_prop_object(objb, "-1", objb2), RET_OK);
+  ASSERT_EQ(object_set_prop_int(objb2, "value", 156), RET_OK);
+  ASSERT_EQ(object_get_prop_by_path(root, "b.1.value", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 156);
+
+  ASSERT_NE(object_get_prop_by_path(root, "a.a.value", &v), RET_OK);
+  ASSERT_NE(object_get_prop_by_path(root, "b.a.value", &v), RET_OK);
+  ASSERT_NE(object_get_prop_by_path(root, "c.value", &v), RET_OK);
+
+  object_unref(root);
+  object_unref(obja);
+  object_unref(obja1);
+  object_unref(obja2);
+  object_unref(objb);
+  object_unref(objb1);
+  object_unref(objb2);
+}

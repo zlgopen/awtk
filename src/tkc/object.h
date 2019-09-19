@@ -465,6 +465,18 @@ ret_t object_exec(object_t* obj, const char* name, const char* args);
  */
 ret_t object_notify_changed(object_t* obj);
 
+/**
+ * @method object_get_prop_by_path
+ * 获取指定path属性的值。
+ *
+ * @param {object_t*} obj object对象。
+ * @param {const char*} path 属性的path，各级之间用.分隔。
+ * @param {value_t*} v 返回属性的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_get_prop_by_path(object_t* obj, const char* path, value_t* v);
+
 #define OBJECT(obj) ((object_t*)(obj))
 
 END_C_DECLS

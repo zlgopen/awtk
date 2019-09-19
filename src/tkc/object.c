@@ -90,10 +90,10 @@ object_t* object_ref(object_t* obj) {
   return obj;
 }
 
-ret_t object_get_prop(object_t* obj, const char* name, value_t* v) {
+static ret_t object_get_prop_by_name(object_t* obj, const char* name, value_t* v) {
   ret_t ret = RET_NOT_FOUND;
+  return_value_if_fail(obj != NULL && obj->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(name != NULL && v != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(obj != NULL && obj->vt != NULL && obj->ref_count >= 0, RET_BAD_PARAMS);
 
   value_set_int(v, 0);
   if (obj->vt->get_prop != NULL) {
@@ -101,6 +101,51 @@ ret_t object_get_prop(object_t* obj, const char* name, value_t* v) {
   }
 
   return ret;
+}
+
+ret_t object_get_prop_by_path(object_t* obj, const char* name, value_t* v) {
+  char* p = NULL;
+  uint32_t len = 0;
+  char path[MAX_PATH + 1];
+  ret_t ret = RET_NOT_FOUND;
+  return_value_if_fail(obj != NULL && obj->vt != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(name != NULL && v != NULL, RET_BAD_PARAMS);
+
+  len = strlen(name);
+  return_value_if_fail(len <= MAX_PATH, RET_BAD_PARAMS);
+
+  memcpy(path, name, len + 1);
+
+  name = path;
+  do {
+    p = strchr(name, '.');
+    if (p != NULL) {
+      *p = '\0';
+    }
+
+    if (object_get_prop_by_name(obj, name, v) != RET_OK) {
+      break;
+    }
+
+    if (p == NULL) {
+      ret = RET_OK;
+      break;
+    }
+
+    if (v->type == VALUE_TYPE_OBJECT) {
+      obj = value_object(v);
+    } else {
+      break;
+    }
+
+    name = p + 1;
+  } while (p != NULL);
+
+  return ret;
+}
+
+ret_t object_get_prop(object_t* obj, const char* name, value_t* v) {
+  return object_get_prop_by_name(obj, name, v);
 }
 
 const char* object_get_prop_str(object_t* obj, const char* name) {

@@ -29,7 +29,7 @@ static ret_t visit_dump(void* ctx, const void* data) {
   return RET_OK;
 }
 
-TEST(ObejectDefault, events) {
+TEST(ObjectDefault, events) {
   value_t v;
   string log;
   object_t* obj = object_default_create();
@@ -47,7 +47,7 @@ TEST(ObejectDefault, events) {
   ASSERT_EQ(log, "6:6:8:8:destroy:");
 }
 
-TEST(ObejectDefault, basic) {
+TEST(ObjectDefault, basic) {
   value_t v;
   string log;
   object_t* obj = object_default_create();
@@ -189,7 +189,7 @@ static ret_t visit_test_busy(void* ctx, const void* data) {
   return RET_OK;
 }
 
-TEST(ObejectDefault, visis_remove) {
+TEST(ObjectDefault, visis_remove) {
   value_t v;
   string log;
   object_t* obj = object_default_create();
@@ -226,7 +226,7 @@ TEST(ObejectDefault, visis_remove) {
   object_unref(obj);
 }
 
-TEST(ObejectDefault, random) {
+TEST(ObjectDefault, random) {
   value_t v;
   string log;
   char name[32];
@@ -248,7 +248,7 @@ TEST(ObejectDefault, random) {
   object_unref(obj);
 }
 
-TEST(ObejectDefault, set_name) {
+TEST(ObjectDefault, set_name) {
   object_t* obj = object_default_create();
 
   object_set_name(obj, "abc");
@@ -260,7 +260,7 @@ TEST(ObejectDefault, set_name) {
   object_unref(obj);
 }
 
-TEST(ObejectDefault, set_prop_int) {
+TEST(ObjectDefault, set_prop_int) {
   object_t* obj = object_default_create();
 
   ASSERT_EQ(object_set_prop_int(obj, "int", 123), RET_OK);
@@ -269,7 +269,7 @@ TEST(ObejectDefault, set_prop_int) {
   object_unref(obj);
 }
 
-TEST(ObejectDefault, set_prop_float) {
+TEST(ObjectDefault, set_prop_float) {
   object_t* obj = object_default_create();
 
   ASSERT_EQ(object_set_prop_float(obj, "float", 123), RET_OK);
@@ -278,7 +278,7 @@ TEST(ObejectDefault, set_prop_float) {
   object_unref(obj);
 }
 
-TEST(ObejectDefault, copy_prop) {
+TEST(ObjectDefault, copy_prop) {
   object_t* src = object_default_create();
   object_t* obj = object_default_create();
 
@@ -294,7 +294,7 @@ TEST(ObejectDefault, copy_prop) {
   object_unref(obj);
 }
 
-TEST(ObejectDefault, set_prop_str) {
+TEST(ObjectDefault, set_prop_str) {
   object_t* obj = object_default_create();
 
   ASSERT_EQ(object_set_prop_str(obj, "str", "123"), RET_OK);
@@ -303,7 +303,7 @@ TEST(ObejectDefault, set_prop_str) {
   object_unref(obj);
 }
 
-TEST(ObejectDefault, exec) {
+TEST(ObjectDefault, exec) {
   object_t* obj = object_default_create();
 
   ASSERT_EQ(object_can_exec(obj, "test", "123"), FALSE);
@@ -312,7 +312,7 @@ TEST(ObejectDefault, exec) {
   object_unref(obj);
 }
 
-TEST(ObejectDefault, has_prop) {
+TEST(ObjectDefault, has_prop) {
   object_t* obj = object_default_create();
 
   ASSERT_EQ(object_set_prop_float(obj, "a", 123), RET_OK);
@@ -322,7 +322,7 @@ TEST(ObejectDefault, has_prop) {
   object_unref(obj);
 }
 
-TEST(ObejectDefault, expr_number) {
+TEST(ObjectDefault, expr_number) {
   value_t v;
   object_t* obj = object_default_create();
 
@@ -337,7 +337,7 @@ TEST(ObejectDefault, expr_number) {
   object_unref(obj);
 }
 
-TEST(ObejectDefault, expr_str) {
+TEST(ObjectDefault, expr_str) {
   value_t v;
   object_t* obj = object_default_create();
 
@@ -350,7 +350,7 @@ TEST(ObejectDefault, expr_str) {
   object_unref(obj);
 }
 
-TEST(ObejectDefault, clone) {
+TEST(ObjectDefault, clone) {
   value_t v;
   object_t* clone = NULL;
   object_t* obj = object_default_create();
@@ -365,4 +365,59 @@ TEST(ObejectDefault, clone) {
   value_reset(&v);
   object_unref(obj);
   object_unref(clone);
+}
+
+TEST(ObjectDefault, path) {
+  value_t v;
+  object_t* clone = NULL;
+  object_t* root = object_default_create();
+  object_t* obja = object_default_create();
+  object_t* obja1 = object_default_create();
+  object_t* obja2 = object_default_create();
+  object_t* objb = object_default_create();
+  object_t* objb1 = object_default_create();
+  object_t* objb2 = object_default_create();
+
+  ASSERT_EQ(object_set_prop_object(root, "a", obja), RET_OK);
+  ASSERT_EQ(object_set_prop_object(root, "b", objb), RET_OK);
+
+  ASSERT_EQ(object_set_prop_int(obja, "value", 123), RET_OK);
+  ASSERT_EQ(object_get_prop_by_path(root, "a.value", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 123);
+
+  ASSERT_EQ(object_set_prop_int(objb, "value", 123), RET_OK);
+  ASSERT_EQ(object_get_prop_by_path(root, "b.value", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 123);
+
+  ASSERT_EQ(object_set_prop_object(obja, "1", obja1), RET_OK);
+  ASSERT_EQ(object_set_prop_int(obja1, "value", 456), RET_OK);
+  ASSERT_EQ(object_get_prop_by_path(root, "a.1.value", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 456);
+
+  ASSERT_EQ(object_set_prop_object(obja, "2", obja2), RET_OK);
+  ASSERT_EQ(object_set_prop_int(obja2, "value", 56), RET_OK);
+  ASSERT_EQ(object_get_prop_by_path(root, "a.2.value", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 56);
+
+  ASSERT_EQ(object_set_prop_object(objb, "1", objb1), RET_OK);
+  ASSERT_EQ(object_set_prop_int(objb1, "value", 56), RET_OK);
+  ASSERT_EQ(object_get_prop_by_path(root, "b.1.value", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 56);
+
+  ASSERT_EQ(object_set_prop_object(objb, "2", objb2), RET_OK);
+  ASSERT_EQ(object_set_prop_int(objb2, "value", 156), RET_OK);
+  ASSERT_EQ(object_get_prop_by_path(root, "b.2.value", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 156);
+
+  ASSERT_NE(object_get_prop_by_path(root, "a.a.value", &v), RET_OK);
+  ASSERT_NE(object_get_prop_by_path(root, "b.a.value", &v), RET_OK);
+  ASSERT_NE(object_get_prop_by_path(root, "c.value", &v), RET_OK);
+
+  object_unref(root);
+  object_unref(obja);
+  object_unref(obja1);
+  object_unref(obja2);
+  object_unref(objb);
+  object_unref(objb1);
+  object_unref(objb2);
 }

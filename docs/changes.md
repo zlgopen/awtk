@@ -2,6 +2,8 @@
 
 * 2019/09/19
   * 修改"color\_component" "digit\_clock" "mutable\_image"的注释，支持designer编辑（感谢大恒提供补丁）。
+  * 增加object\_array
+  * 增加object\_get\_prop\_by\_path
 
 * 2019/09/18
   * 增加iostream\_mem。
