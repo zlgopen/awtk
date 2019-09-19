@@ -1,29 +1,31 @@
 # 最新动态
 
 * 2019/09/19
-  * 修改"color\_component" "digit\_clock" "mutable\_image"的注释，支持designer编辑（感谢大恒提供补丁）。
-  * 增加object\_array
-  * 增加object\_get\_prop\_by\_path
+  * 修改"color\_component" "digit\_clock" "mutable\_image"的注释，支持 designer 编辑（感谢大恒提供补丁）。
+  * 增加 object\_array
+  * 增加 object\_get\_prop\_by\_path
+  * 完善 children\_layouter\_list\_view（感谢尧燊提供补丁）。
+  * 完善 children\_layouter\_default（感谢尧燊提供补丁）。
 
 * 2019/09/18
-  * 增加iostream\_mem。
-  * 重构theme gen。
-  * 完善style\_mutable，set value时和theme gen保持一致。
-  * edit 输入类型为email时允许输入空格（感谢俊杰提供补丁）。
+  * 增加 iostream\_mem。
+  * 重构 theme gen。
+  * 完善 style\_mutable，set value 时和 theme gen 保持一致。
+  * edit 输入类型为 email 时允许输入空格（感谢俊杰提供补丁）。
 
 * 2019/09/17
-  * 修改LinuxCPU占用高的问题（感谢俊杰提供补丁）。
-  * 修改edit快捷键在DESKTOP模式下无效的问题（感谢朝泽提供补丁）。
-  * 增加《如何开启按键音》的[文档](docs/how_to_enable_key_touch_sound.md)。
-  * 完善image\_manager\_update\_specific（感谢尧燊提供补丁）。
-  * edit keydown 事件处理后返回RET\_STOP（感谢朝泽提供补丁）。
-  * mledit keydown 事件处理后返回RET\_STOP。
+  * 修改 LinuxCPU 占用高的问题（感谢俊杰提供补丁）。
+  * 修改 edit 快捷键在 DESKTOP 模式下无效的问题（感谢朝泽提供补丁）。
+  * 增加《如何开启按键音》的 [文档](docs/how_to_enable_key_touch_sound.md)。
+  * 完善 image\_manager\_update\_specific（感谢尧燊提供补丁）。
+  * edit keydown 事件处理后返回 RET\_STOP（感谢朝泽提供补丁）。
+  * mledit keydown 事件处理后返回 RET\_STOP。
 
 * 2019/09/16
-  * 重构ubjson parser
-  * 完善switch（感谢朝泽提供补丁）。
-  * 完善color component（感谢朝泽提供补丁）。
-  * 完善main loop sdl（感谢朝泽提供补丁）。
+  * 重构 ubjson parser
+  * 完善 switch（感谢朝泽提供补丁）。
+  * 完善 color component（感谢朝泽提供补丁）。
+  * 完善 main loop sdl（感谢朝泽提供补丁）。
 
 * 2019/09/15
   * ubjson reader
