@@ -288,7 +288,7 @@ static ret_t children_layouter_default_layout(children_layouter_t* layouter, wid
   }
 
   if (rows == 1 && cols == 0) { /*hbox*/
-    uint32_t xoffset = 0;
+    uint32_t xoffset = x;
     uint32_t children_w = 0;
     h = layout_h - 2 * y_margin;
     w = layout_w - 2 * x_margin - (n - 1) * spacing;
@@ -306,14 +306,15 @@ static ret_t children_layouter_default_layout(children_layouter_t* layouter, wid
     for (i = 0; i < n; i++) {
       iter = children[i];
       children_w += iter->w + spacing;
-      if (x > layout_w) {
+      if (children_w > (layout_w - 2 * x_margin)) {
         break;
       }
     }
+    children_w -= spacing;
 
     switch (layout->align_h) {
       case ALIGN_H_RIGHT: {
-        xoffset = layout_w - children_w;
+        xoffset = layout_w - x_margin - children_w;
         break;
       }
       case ALIGN_H_CENTER: {
