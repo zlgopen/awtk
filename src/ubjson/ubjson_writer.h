@@ -60,6 +60,10 @@ ret_t ubjson_writer_write_array_end(ubjson_writer_t* writer);
 ret_t ubjson_writer_write_object_begin(ubjson_writer_t* writer);
 ret_t ubjson_writer_write_object_end(ubjson_writer_t* writer);
 
+ret_t ubjson_writer_write_kv_int(ubjson_writer_t* writer, const char* key, int32_t value);
+ret_t ubjson_writer_write_kv_bool(ubjson_writer_t* writer, const char* key, bool_t value);
+ret_t ubjson_writer_write_kv_str(ubjson_writer_t* writer, const char* key, const char* value);
+
 END_C_DECLS
 
 #endif /*TK_UBJSON_WRITER_H*/
