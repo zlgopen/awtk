@@ -177,15 +177,23 @@ ret_t ubjson_writer_write_kv_int(ubjson_writer_t* writer, const char* key, int32
   return ubjson_writer_write_int32(writer, value);
 }
 
+ret_t ubjson_writer_write_kv_object(ubjson_writer_t* writer, const char* key) {
+  return_value_if_fail(writer != NULL && key != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(ubjson_writer_write_key(writer, key) == RET_OK, RET_OOM);
+
+  return ubjson_writer_write_object_begin(writer);
+}
+
+
 ret_t ubjson_writer_write_kv_str(ubjson_writer_t* writer, const char* key, const char* value) {
-  return_value_if_fail(writer != NULL && key != NULL && value != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(writer != NULL && key != NULL, RET_BAD_PARAMS);
   return_value_if_fail(ubjson_writer_write_key(writer, key) == RET_OK, RET_OOM);
 
   return ubjson_writer_write_str(writer, value);
 }
 
 ret_t ubjson_writer_write_str(ubjson_writer_t* writer, const char* value) {
-  uint32_t len = 0;
+  value = value != NULL ? value : "";
   return_value_if_fail(writer != NULL && value != NULL, RET_BAD_PARAMS);
   return_value_if_fail(ubjson_writer_write_marker(writer, UBJSON_MARKER_STRING) == RET_OK, RET_OOM);
 
