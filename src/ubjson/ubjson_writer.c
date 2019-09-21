@@ -21,6 +21,7 @@
 
 #include "tkc/value.h"
 #include "tkc/endian.h"
+#include "tkc/named_value.h"
 #include "ubjson/ubjson_writer.h"
 
 ubjson_writer_t* ubjson_writer_init(ubjson_writer_t* writer, ubjson_write_callback_t write,
@@ -187,7 +188,7 @@ ret_t ubjson_writer_write_kv_int(ubjson_writer_t* writer, const char* key, int32
   return ubjson_writer_write_int(writer, value);
 }
 
-ret_t ubjson_writer_write_kv_object(ubjson_writer_t* writer, const char* key) {
+ret_t ubjson_writer_write_kv_object_begin(ubjson_writer_t* writer, const char* key) {
   return_value_if_fail(writer != NULL && key != NULL, RET_BAD_PARAMS);
   return_value_if_fail(ubjson_writer_write_key(writer, key) == RET_OK, RET_OOM);
 
@@ -202,6 +203,26 @@ ret_t ubjson_writer_write_kv_str(ubjson_writer_t* writer, const char* key, const
   return ubjson_writer_write_str(writer, value);
 }
 
+static ret_t on_prop_write_ubjson(void* ctx, const void* data) {
+  named_value_t* nv = (named_value_t*)data;
+  ubjson_writer_t* writer = (ubjson_writer_t*)ctx;
+
+  return ubjson_writer_write_kv_value(writer, nv->name, &(nv->value));
+}
+
+static ret_t ubjson_writer_write_object(ubjson_writer_t* writer, object_t* obj) {
+  return object_foreach_prop(obj, on_prop_write_ubjson, writer);
+}
+
+ret_t ubjson_writer_write_kv_object(ubjson_writer_t* writer, const char* key, object_t* value) {
+  return_value_if_fail(writer != NULL && key != NULL && value != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(ubjson_writer_write_kv_object_begin(writer, key) == RET_OK, RET_OOM);
+
+  return_value_if_fail(ubjson_writer_write_object(writer, value) == RET_OK, RET_OOM);
+  
+  return ubjson_writer_write_object_end(writer);
+}
+
 ret_t ubjson_writer_write_kv_value(ubjson_writer_t* writer, const char* key, value_t* value) {
   return_value_if_fail(writer != NULL && key != NULL && value != NULL, RET_BAD_PARAMS);
   return_value_if_fail(ubjson_writer_write_key(writer, key) == RET_OK, RET_OOM);
@@ -214,6 +235,8 @@ ret_t ubjson_writer_write_kv_value(ubjson_writer_t* writer, const char* key, val
     }
   } else if(value->type == VALUE_TYPE_STRING) {
     return ubjson_writer_write_str(writer, value_str(value));
+  } else if(value->type == VALUE_TYPE_OBJECT) {
+    return ubjson_writer_write_object_end(writer, value_object(value));
   } else {
     return ubjson_writer_write_int(writer, value_int(value));
   }
