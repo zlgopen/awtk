@@ -19,6 +19,7 @@
  *
  */
 
+#include "tkc/value.h"
 #include "tkc/endian.h"
 #include "ubjson/ubjson_writer.h"
 
@@ -102,6 +103,15 @@ ret_t ubjson_writer_write_int32(ubjson_writer_t* writer, int32_t value) {
   return RET_OK;
 }
 
+ret_t ubjson_writer_write_int(ubjson_writer_t* writer, int32_t value) {
+  if(value < 128) {
+    return ubjson_writer_write_int8(writer, (int8_t)value);
+  } else if(value < 0xefff) {
+    return ubjson_writer_write_int16(writer, (int16_t)value);
+  } else {
+    return ubjson_writer_write_int32(writer, value);
+  }
+}
 ret_t ubjson_writer_write_int64(ubjson_writer_t* writer, int64_t value) {
   return_value_if_fail(writer != NULL, RET_BAD_PARAMS);
   return_value_if_fail(ubjson_writer_write_marker(writer, UBJSON_MARKER_INT64) == RET_OK, RET_OOM);
@@ -174,7 +184,7 @@ ret_t ubjson_writer_write_kv_int(ubjson_writer_t* writer, const char* key, int32
   return_value_if_fail(writer != NULL && key != NULL, RET_BAD_PARAMS);
   return_value_if_fail(ubjson_writer_write_key(writer, key) == RET_OK, RET_OOM);
 
-  return ubjson_writer_write_int32(writer, value);
+  return ubjson_writer_write_int(writer, value);
 }
 
 ret_t ubjson_writer_write_kv_object(ubjson_writer_t* writer, const char* key) {
@@ -190,6 +200,23 @@ ret_t ubjson_writer_write_kv_str(ubjson_writer_t* writer, const char* key, const
   return_value_if_fail(ubjson_writer_write_key(writer, key) == RET_OK, RET_OOM);
 
   return ubjson_writer_write_str(writer, value);
+}
+
+ret_t ubjson_writer_write_kv_value(ubjson_writer_t* writer, const char* key, value_t* value) {
+  return_value_if_fail(writer != NULL && key != NULL && value != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(ubjson_writer_write_key(writer, key) == RET_OK, RET_OOM);
+
+  if(value->type == VALUE_TYPE_BOOL) {
+    if(value_bool(value)) {
+      return ubjson_writer_write_true(writer);
+    } else {
+      return ubjson_writer_write_false(writer);
+    }
+  } else if(value->type == VALUE_TYPE_STRING) {
+    return ubjson_writer_write_str(writer, value_str(value));
+  } else {
+    return ubjson_writer_write_int(writer, value_int(value));
+  }
 }
 
 ret_t ubjson_writer_write_str(ubjson_writer_t* writer, const char* value) {
