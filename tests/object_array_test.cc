@@ -23,12 +23,14 @@ static ret_t event_dump(void* ctx, event_t* e) {
 
 static ret_t visit_dump(void* ctx, const void* data) {
   string& str = *(string*)ctx;
-  const value_t* nv = (value_t*)data;
-  if (nv->type == VALUE_TYPE_STRING) {
-    str += value_str(nv);
+  const named_value_t* nv = (named_value_t*)data;
+  const value_t* v = &(nv->value);
+
+  if (v->type == VALUE_TYPE_STRING) {
+    str += value_str(v);
   } else {
     char num[32];
-    tk_snprintf(num, sizeof(num), "%d", value_int(nv));
+    tk_snprintf(num, sizeof(num), "%d", value_int(v));
     str += num;
   }
 

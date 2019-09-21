@@ -22,6 +22,7 @@
 #include "tkc/mem.h"
 #include "tkc/value.h"
 #include "tkc/utils.h"
+#include "tkc/named_value.h"
 #include "tkc/object_array.h"
 
 static ret_t object_array_clean_invalid_props(object_t* obj) {
@@ -167,10 +168,16 @@ static ret_t object_array_foreach_prop(object_t* obj, tk_visit_t on_prop, void* 
 
   if (o->props_size > 0) {
     uint32_t i = 0;
+    named_value_t nv;
+    char name[TK_NAME_LEN + 1];
 
+    nv.name = name;
     for (i = 0; i < o->props_size; i++) {
       value_t* iter = o->props + i;
-      ret = on_prop(ctx, iter);
+      tk_snprintf(name, TK_NAME_LEN, "%u", i);
+      
+      value_copy(&(nv.value), iter);
+      ret = on_prop(ctx, &nv);
 
       if (ret == RET_REMOVE) {
         value_reset(iter);
