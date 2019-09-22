@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   style.c
  * Author: AWTK Develop Team
  * Brief:  style interface
@@ -19,6 +19,8 @@
  *
  */
 
+#include "tkc/utils.h"
+#include "tkc/value.h"
 #include "base/style.h"
 
 ret_t style_notify_widget_state_changed(style_t* s, widget_t* widget) {

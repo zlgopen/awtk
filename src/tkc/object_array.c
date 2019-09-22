@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   object_array.c
  * Author: AWTK Develop Team
  * Brief:  object array
@@ -127,7 +127,6 @@ static ret_t object_array_remove_prop(object_t* obj, const char* name) {
 static ret_t object_array_set_prop(object_t* obj, const char* name, const value_t* v) {
   ret_t ret = RET_NOT_FOUND;
   object_array_t* o = OBJECT_ARRAY(obj);
-  value_t* iter = NULL;
   int32_t index = tk_atoi(name);
   return_value_if_fail(object_array_extend(obj) == RET_OK, RET_OOM);
 
@@ -224,7 +223,6 @@ object_t* object_array_create(void) {
 }
 
 object_t* object_array_clone(object_array_t* o) {
-  uint32_t size = 0;
   object_t* dup = NULL;
   return_value_if_fail(o != NULL, NULL);
 

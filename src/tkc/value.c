@@ -630,7 +630,7 @@ sized_str_t* value_sized_str(const value_t* v) {
   return_value_if_fail(v != NULL, NULL);
   return_value_if_fail(v->type == VALUE_TYPE_SIZED_STRING, NULL);
 
-  return &(v->value.sized_str);
+  return (sized_str_t*)&(v->value.sized_str);
 }
 
 value_t* value_set_binary_data(value_t* v, void* data, uint32_t size) {
@@ -646,7 +646,7 @@ binary_data_t* value_binary_data(const value_t* v) {
   return_value_if_fail(v != NULL, NULL);
   return_value_if_fail(v->type == VALUE_TYPE_BINARY, NULL);
 
-  return &(v->value.binary_data);
+  return (binary_data_t*)&(v->value.binary_data);
 }
 
 value_t* value_set_ubjson(value_t* v, void* data, uint32_t size) {
@@ -662,5 +662,5 @@ binary_data_t* value_ubjson(const value_t* v) {
   return_value_if_fail(v != NULL, NULL);
   return_value_if_fail(v->type == VALUE_TYPE_BINARY, NULL);
 
-  return &(v->value.binary_data);
+  return (binary_data_t*)&(v->value.binary_data);
 }

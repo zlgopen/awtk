@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   ubjson_reader.c
  * Author: AWTK Develop Team
  * Brief:  ubjson reader
@@ -34,7 +34,7 @@ ubjson_reader_t* ubjson_reader_init(ubjson_reader_t* reader, ubjson_read_callbac
 }
 
 ret_t ubjson_reader_read_data(ubjson_reader_t* reader, void* data, uint32_t size) {
-  return reader->read(reader->ctx, data, size);
+  return reader->read(reader->ctx, data, size) == size ? RET_OK : RET_FAIL;
 }
 
 ret_t ubjson_reader_reset(ubjson_reader_t* reader) {
@@ -142,7 +142,6 @@ ret_t ubjson_reader_read(ubjson_reader_t* reader, value_t* v) {
     case UBJSON_MARKER_STRING: {
       int len = 0;
       value_t vlen;
-      const char* value = 0;
       str_t* str = &(reader->str);
 
       value_set_int(&vlen, 0);

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   ubjson_parser.c
  * Author: AWTK Develop Team
  * Brief:  ubjson parser
@@ -45,7 +45,7 @@ static ret_t ubjson_do_parse_object(ubjson_parser_t* parser);
 static ret_t ubjson_do_parse_array(ubjson_parser_t* parser);
 static ret_t ubjson_do_parse_key_value(ubjson_parser_t* parser, int32_t len);
 
-static ubjson_parser_on_key_value(ubjson_parser_t* parser, const char* key, value_t* v) {
+static ret_t ubjson_parser_on_key_value(ubjson_parser_t* parser, const char* key, value_t* v) {
   ret_t ret = parser->on_key_value(parser->ctx, key, v);
 
   if (ret != RET_OK) {
@@ -292,7 +292,6 @@ static ret_t ubjson_on_key_value_dump(void* ctx, const char* key, value_t* v) {
   int32_t i = 0;
   ret_t ret = RET_OK;
   int32_t* level = (int32_t*)ctx;
-  ubjson_parser_t* parser = (ubjson_parser_t*)ctx;
 
   if (v->type == VALUE_TYPE_TOKEN) {
     uint32_t token = value_token(v);

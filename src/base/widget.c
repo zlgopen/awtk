@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   widget.c
  * Author: AWTK Develop Team
  * Brief:  basic class of all widget
@@ -2998,33 +2998,6 @@ static ret_t widget_ensure_style_mutable(widget_t* widget) {
   }
 
   return RET_OK;
-}
-
-static uint32_t border_from_str(const char* str) {
-  uint32_t border = 0;
-  return_value_if_fail(str != NULL, border);
-
-  if (strstr(str, "top") != NULL) {
-    border |= BORDER_TOP;
-  }
-
-  if (strstr(str, "bottom") != NULL) {
-    border |= BORDER_BOTTOM;
-  }
-
-  if (strstr(str, "left") != NULL) {
-    border |= BORDER_LEFT;
-  }
-
-  if (strstr(str, "right") != NULL) {
-    border |= BORDER_RIGHT;
-  }
-
-  if (strstr(str, "all") != NULL) {
-    border = BORDER_ALL;
-  }
-
-  return border;
 }
 
 ret_t widget_set_style(widget_t* widget, const char* state_and_name, const value_t* value) {
