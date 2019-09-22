@@ -34,7 +34,7 @@ ubjson_writer_t* ubjson_writer_init(ubjson_writer_t* writer, ubjson_write_callba
   return writer;
 }
 
-static ret_t ubjson_writer_write_data(ubjson_writer_t* writer, const void* data, uint32_t size) {
+ret_t ubjson_writer_write_data(ubjson_writer_t* writer, const void* data, uint32_t size) {
   return writer->write(writer->ctx, data, size);
 }
 
