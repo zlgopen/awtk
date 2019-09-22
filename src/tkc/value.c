@@ -635,3 +635,19 @@ binary_data_t* value_binary_data(const value_t* v) {
 
   return &(v->value.binary_data);
 }
+
+value_t* value_set_ubjson(value_t* v, void* data, uint32_t size) {
+  return_value_if_fail(v != NULL, NULL);
+
+  v->value.binary_data.data = data;
+  v->value.binary_data.size = size;
+
+  return value_init(v, VALUE_TYPE_BINARY);
+}
+
+binary_data_t* value_ubjson(const value_t* v) {
+  return_value_if_fail(v != NULL, NULL);
+  return_value_if_fail(v->type == VALUE_TYPE_BINARY, NULL);
+
+  return &(v->value.binary_data);
+}

@@ -128,6 +128,11 @@ typedef enum _value_type_t {
    */
   VALUE_TYPE_BINARY,
   /**
+   * @const VALUE_TYPE_UBJSON
+   * 二进制数据(UBJSON)。
+   */
+  VALUE_TYPE_UBJSON,
+  /**
    * @const VALUE_TYPE_TOKEN
    * 特殊用途。
    */
@@ -636,6 +641,28 @@ value_t* value_set_binary_data(value_t* v, void* data, uint32_t size);
  * @return {binary_data_t*} 值。
  */
 binary_data_t* value_binary_data(const value_t* v);
+
+/**
+ * @method value_set_ubjson
+ * 设置类型为ubjson的值。
+ * @annotation ["scriptable"]
+ * @param {value_t*} v  value对象。
+ * @param {void*}  value 待设置的值。
+ * @param {uint32_t}  size 长度。
+ *
+ * @return {value_t*} value对象本身。
+ */
+value_t* value_set_ubjson(value_t* v, void* data, uint32_t size);
+
+/**
+ * @method value_ubjson
+ * 获取为ubjson的值。
+ * @annotation ["scriptable"]
+ * @param {value_t*} v value对象。
+ *
+ * @return {binary_data_t*} 值。
+ */
+binary_data_t* value_ubjson(const value_t* v);
 
 /**
  * @method value_copy

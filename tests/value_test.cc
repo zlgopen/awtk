@@ -280,3 +280,13 @@ TEST(ValueTest, copy_str) {
   value_reset(&v);
   value_reset(&other);
 }
+
+TEST(ValueTest, ubjson) {
+  value_t v;
+  const char* str = "str";
+  binary_data_t* ubjson = NULL;
+  ASSERT_EQ(&v, value_set_ubjson(&v, (void*)str, 2));
+  ubjson = value_ubjson(&v);
+  ASSERT_EQ(ubjson != NULL, true);
+  ASSERT_EQ(ubjson->size, 2);
+}
