@@ -30,7 +30,7 @@ BEGIN_C_DECLS
 struct _ubjson_reader_t;
 typedef struct _ubjson_reader_t ubjson_reader_t;
 
-typedef int32_t (*ubjson_read_callback_t)(void* ctx, void* data, uint32_t size);
+typedef ret_t (*ubjson_read_callback_t)(void* ctx, void* data, uint32_t size);
 
 struct _ubjson_reader_t {
   void* ctx;

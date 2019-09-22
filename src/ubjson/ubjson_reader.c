@@ -34,7 +34,7 @@ ubjson_reader_t* ubjson_reader_init(ubjson_reader_t* reader, ubjson_read_callbac
 }
 
 ret_t ubjson_reader_read_data(ubjson_reader_t* reader, void* data, uint32_t size) {
-  return reader->read(reader->ctx, data, size) == size ? RET_OK : RET_FAIL;
+  return reader->read(reader->ctx, data, size);
 }
 
 ret_t ubjson_reader_reset(ubjson_reader_t* reader) {

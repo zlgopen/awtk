@@ -30,7 +30,7 @@ BEGIN_C_DECLS
 struct _ubjson_writer_t;
 typedef struct _ubjson_writer_t ubjson_writer_t;
 
-typedef int32_t (*ubjson_write_callback_t)(void* ctx, const void* data, uint32_t size);
+typedef ret_t (*ubjson_write_callback_t)(void* ctx, const void* data, uint32_t size);
 
 struct _ubjson_writer_t {
   void* ctx;
