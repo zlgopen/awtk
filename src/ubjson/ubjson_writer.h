@@ -56,6 +56,8 @@ ret_t ubjson_writer_write_float32(ubjson_writer_t* writer, float value);
 ret_t ubjson_writer_write_float64(ubjson_writer_t* writer, double value);
 ret_t ubjson_writer_write_char(ubjson_writer_t* writer, char value);
 ret_t ubjson_writer_write_str(ubjson_writer_t* writer, const char* value);
+ret_t ubjson_writer_write_str_len(ubjson_writer_t* writer, const char* value, uint32_t len);
+ret_t ubjson_writer_write_object(ubjson_writer_t* writer, object_t* obj);
 ret_t ubjson_writer_write_array_begin(ubjson_writer_t* writer);
 ret_t ubjson_writer_write_array_end(ubjson_writer_t* writer);
 ret_t ubjson_writer_write_object_begin(ubjson_writer_t* writer);
@@ -67,6 +69,8 @@ ret_t ubjson_writer_write_kv_object(ubjson_writer_t* writer, const char* key, ob
 ret_t ubjson_writer_write_kv_int(ubjson_writer_t* writer, const char* key, int32_t value);
 ret_t ubjson_writer_write_kv_bool(ubjson_writer_t* writer, const char* key, bool_t value);
 ret_t ubjson_writer_write_kv_str(ubjson_writer_t* writer, const char* key, const char* value);
+ret_t ubjson_writer_write_kv_str_len(ubjson_writer_t* writer, const char* key, const char* value,
+                                     uint32_t len);
 ret_t ubjson_writer_write_kv_value(ubjson_writer_t* writer, const char* key, value_t* value);
 
 END_C_DECLS

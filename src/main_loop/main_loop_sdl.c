@@ -190,7 +190,7 @@ static ret_t main_loop_sdl2_dispatch_window_event(main_loop_simple_t* loop, SDL_
       break;
     case SDL_WINDOWEVENT_CLOSE: {
       event_t e = event_init(EVT_REQUEST_QUIT_APP, NULL);
-      if(widget_dispatch(window_manager(), &e) == RET_OK) {
+      if (widget_dispatch(window_manager(), &e) == RET_OK) {
         SDL_Window* win = SDL_GetWindowFromID(event->window.windowID);
 
         e = event_init(EVT_NATIVE_WINDOW_DESTROY, NULL);

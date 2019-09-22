@@ -175,7 +175,7 @@ static ret_t object_array_foreach_prop(object_t* obj, tk_visit_t on_prop, void* 
     for (i = 0; i < o->props_size; i++) {
       value_t* iter = o->props + i;
       tk_snprintf(name, TK_NAME_LEN, "%u", i);
-      
+
       value_copy(&(nv.value), iter);
       ret = on_prop(ctx, &nv);
 

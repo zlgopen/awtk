@@ -1,5 +1,6 @@
 ﻿#include "gtest/gtest.h"
 #include "tkc/buffer.h"
+#include "tkc/object_default.h"
 #include "ubjson/ubjson_writer.h"
 #include "ubjson/ubjson_parser.h"
 
@@ -21,6 +22,53 @@ TEST(UBJsonParser, basic) {
   obj = object_from_ubjson(wb.data, wb.cursor);
   ASSERT_STREQ(object_get_prop_str(obj, "name"), "aaa");
   ASSERT_EQ(object_get_prop_int(obj, "age", 0), 100);
+
+  object_unref(obj);
+}
+
+TEST(UBJsonParser, object) {
+  uint8_t buff[256];
+  wbuffer_t wb;
+  ubjson_writer_t ub;
+  object_t* obj = object_default_create();
+  wbuffer_init(&wb, buff, sizeof(buff));
+  ubjson_writer_init(&ub, (ubjson_write_callback_t)wbuffer_write_binary, &wb);
+
+  object_set_prop_str(obj, "name", "aaa");
+  object_set_prop_int(obj, "age", 100);
+
+  ASSERT_EQ(ubjson_writer_write_object(&ub, obj), RET_OK);
+  object_unref(obj);
+
+  obj = object_from_ubjson(wb.data, wb.cursor);
+  ASSERT_STREQ(object_get_prop_str(obj, "name"), "aaa");
+  ASSERT_EQ(object_get_prop_int(obj, "age", 0), 100);
+
+  object_unref(obj);
+}
+
+TEST(UBJsonParser, value) {
+  uint8_t buff[256];
+  wbuffer_t wb;
+  value_t v;
+  ubjson_writer_t ub;
+  object_t* obj = object_default_create();
+  wbuffer_init(&wb, buff, sizeof(buff));
+  ubjson_writer_init(&ub, (ubjson_write_callback_t)wbuffer_write_binary, &wb);
+
+  object_set_prop_str(obj, "name", "aaa");
+  object_set_prop_int(obj, "age", 100);
+
+  value_set_object(&v, obj);
+  ASSERT_EQ(ubjson_writer_write_object_begin(&ub), RET_OK);
+  ASSERT_EQ(ubjson_writer_write_kv_value(&ub, "person", &v), RET_OK);
+  ASSERT_EQ(ubjson_writer_write_object_end(&ub), RET_OK);
+  object_unref(obj);
+  value_reset(&v);
+
+  obj = object_from_ubjson(wb.data, wb.cursor);
+  ASSERT_STREQ(object_get_prop_str_by_path(obj, "person.name"), "aaa");
+  ASSERT_EQ(object_get_prop_int_by_path(obj, "person.age", 0), 100);
 
   object_unref(obj);
 }
