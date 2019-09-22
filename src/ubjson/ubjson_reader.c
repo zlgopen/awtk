@@ -45,6 +45,17 @@ ret_t ubjson_reader_reset(ubjson_reader_t* reader) {
   return RET_OK;
 }
 
+static bool_t is_binary(const char* str, uint32_t len) {
+  uint32_t i = 0;
+  for (i = 0; i < len; i++) {
+    if (str[i] == '\0') {
+      return TRUE;
+    }
+  }
+
+  return FALSE;
+}
+
 ret_t ubjson_reader_read(ubjson_reader_t* reader, value_t* v) {
   ret_t ret = RET_OK;
   uint8_t marker = 0;
@@ -141,8 +152,14 @@ ret_t ubjson_reader_read(ubjson_reader_t* reader, value_t* v) {
       return_value_if_fail(str_extend(str, len + 1) == RET_OK, RET_OOM);
       return_value_if_fail(ubjson_reader_read_data(reader, str->str, len) == RET_OK, RET_FAIL);
 
-      str->str[len] = '\0';
-      value_set_str(v, str->str);
+      if (is_binary(str->str, len)) {
+        str->str[len] = '\0';
+        value_set_binary_data(v, str->str, len);
+      } else {
+        str->str[len] = '\0';
+        value_set_str(v, str->str);
+      }
+
       break;
     }
     case UBJSON_MARKER_ARRAY_BEGIN: {
