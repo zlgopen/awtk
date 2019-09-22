@@ -381,6 +381,19 @@ ret_t value_deep_copy(value_t* dst, const value_t* src) {
       dst->free_handle = dst->value.str != NULL;
       break;
     }
+    case VALUE_TYPE_BINARY:
+    case VALUE_TYPE_UBJSON: {
+      if (src->value.binary_data.data != NULL) {
+        dst->value.binary_data.data = TKMEM_ALLOC(src->value.binary_data.size);
+        return_value_if_fail(dst->value.binary_data.data != NULL, RET_OOM);
+        memcpy(dst->value.binary_data.data, src->value.binary_data.data,
+               src->value.binary_data.size);
+        dst->free_handle = TRUE;
+      } else {
+        dst->free_handle = FALSE;
+      }
+      break;
+    }
     case VALUE_TYPE_WSTRING: {
       dst->value.wstr = tk_wstrdup(src->value.wstr);
       dst->free_handle = dst->value.wstr != NULL;
