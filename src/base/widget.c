@@ -54,7 +54,7 @@ static ret_t widget_destroy_in_idle(const idle_info_t* info);
 static ret_t widget_dispatch_blur_event(widget_t* widget);
 static ret_t widget_on_paint_done(widget_t* widget, canvas_t* c);
 
-static ret_t widget_set_need_update_style(widget_t* widget) {
+ret_t widget_set_need_update_style(widget_t* widget) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   if (!widget->need_update_style) {

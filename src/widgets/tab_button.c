@@ -70,7 +70,7 @@ static ret_t tab_button_set_value_only(widget_t* widget, bool_t value) {
     tab_button->value = value;
     e = event_init(EVT_VALUE_CHANGED, widget);
     widget_dispatch(widget, &e);
-    widget_update_style(widget);
+    widget_set_need_update_style(widget);
   }
 
   return RET_OK;

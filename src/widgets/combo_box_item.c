@@ -133,7 +133,7 @@ static ret_t combo_box_item_set_checked_only(widget_t* widget, bool_t checked) {
     widget_dispatch(widget, &e);
   }
 
-  widget_update_style(widget);
+  widget_set_need_update_style(widget);
 
   return RET_OK;
 }
