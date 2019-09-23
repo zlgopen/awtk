@@ -660,7 +660,7 @@ value_t* value_set_ubjson(value_t* v, void* data, uint32_t size) {
 
 binary_data_t* value_ubjson(const value_t* v) {
   return_value_if_fail(v != NULL, NULL);
-  return_value_if_fail(v->type == VALUE_TYPE_BINARY, NULL);
+  return_value_if_fail(v->type == VALUE_TYPE_UBJSON, NULL);
 
   return (binary_data_t*)&(v->value.binary_data);
 }
