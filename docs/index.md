@@ -2,7 +2,8 @@
 ### 0.参考手册
 
 * [参考手册](manual.md)
-* [开发实践](https://github.com/zlgopen/awtk-examples/blob/master/docs/AWTK%E5%BC%80%E5%8F%91%E5%AE%9E%E8%B7%B5.pdf)
+* [参考手册(chm)](https://github.com/zlgopen/awtk-docs/tree/master/AWTK-API手册)
+* [开发实践](https://github.com/zlgopen/awtk-docs/tree/master/AWTK开发实践)
 
 ### 1.使用文档
 * [避坑指南](trap_list.md)
@@ -26,6 +27,8 @@
 * [控件焦点相关问题](widget_focus.md)
 * [AWTK中的颜色格式](color_format.md)
 * [AWTK输入事件处理流程](input_event_flow.md)
+* [内存耗尽处理流程](out_of_memory.md)
+* [如何开启按键音](docs/how_to_enable_key_touch_sound.md)
 
 ### 2.HowTos
 * [AWTK 调试技巧](debug_tips.md)
@@ -39,6 +42,7 @@
 * [如何实现"back"键和"home"键](how_to_impl_back_and_home_key.md)
 * [如何实现自定义的软键盘](how_to_impl_custom_soft_keyboard.md)
 * [如何编译Windows 32位版本](how_to_build_windows_32bit_version.md)
+* [如何支持单色LCD](how_to_support_mono_lcd.md)
 
 ### 3.内部原理
 * [AWTK脚本绑定原理](script_binding.md)
