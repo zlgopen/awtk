@@ -655,7 +655,7 @@ value_t* value_set_ubjson(value_t* v, void* data, uint32_t size) {
   v->value.binary_data.data = data;
   v->value.binary_data.size = size;
 
-  return value_init(v, VALUE_TYPE_BINARY);
+  return value_init(v, VALUE_TYPE_UBJSON);
 }
 
 binary_data_t* value_ubjson(const value_t* v) {
