@@ -286,7 +286,7 @@ TEST(ValueTest, ubjson) {
   const char* str = "str";
   binary_data_t* ubjson = NULL;
   ASSERT_EQ(&v, value_set_ubjson(&v, (void*)str, 2));
-  ASSERT_EQ(v.type == VALUE_TYPE_UBJSON);
+  ASSERT_EQ(v.type, VALUE_TYPE_UBJSON);
 
   ubjson = value_ubjson(&v);
   ASSERT_EQ(ubjson != NULL, true);
