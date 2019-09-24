@@ -38,7 +38,7 @@ ret_t tk_ostream_seek(tk_ostream_t* stream, uint32_t offset) {
 
 int32_t tk_ostream_write_len(tk_ostream_t* stream, const uint8_t* buff, uint32_t max_size,
                              uint32_t timeout_ms) {
-  uint32_t start = 0;
+  uint32_t now = 0;
   uint32_t end = 0;
   int32_t offset = 0;
   int32_t write_bytes = 0;
@@ -46,8 +46,8 @@ int32_t tk_ostream_write_len(tk_ostream_t* stream, const uint8_t* buff, uint32_t
   return_value_if_fail(stream != NULL && stream->write != NULL, -1);
   return_value_if_fail(buff != NULL, 0);
 
-  start = time_now_ms();
-  end = start + timeout_ms;
+  now = time_now_ms();
+  end = now + timeout_ms;
   do {
     write_bytes = tk_ostream_write(stream, buff + offset, remain_bytes);
 
@@ -57,8 +57,13 @@ int32_t tk_ostream_write_len(tk_ostream_t* stream, const uint8_t* buff, uint32_t
 
     offset += write_bytes;
     remain_bytes -= write_bytes;
+    
+    if(remain_bytes == 0)  {
+      break;
+    }
 
-    if (time_now_ms() > end) {
+    now = time_now_ms();
+    if (now > end) {
       log_debug("write timeout\n");
       break;
     }
