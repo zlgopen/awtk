@@ -73,7 +73,7 @@ ret_t widget_animator_time_elapse(widget_animator_t* animator, uint32_t delta_ti
       animator->delay = delay;
       return RET_OK;
     } else {
-      animator->now = 0;
+      animator->now = -elapsed_time;
       animator->delay = 0;
       animator->start_time = 0;
     }
