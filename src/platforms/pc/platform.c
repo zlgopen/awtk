@@ -79,20 +79,15 @@ static ret_t date_time_get_now_impl(date_time_t* dt) {
 
   return RET_OK;
 }
+
 #endif
 
-#if defined(WIN32)
 uint64_t get_time_ms() {
-  return GetTickCount();
-}
-#else
-uint64_t get_time_ms() {
-  struct timespec ts;
-  clock_gettime(CLOCK_MONOTONIC, &ts);
+  struct timeval tv;
+  gettimeofday(&tv, NULL);
 
-  return ts.tv_sec * 1000 + ts.tv_nsec / 1000000;
+  return (uint64_t)(tv.tv_sec) * 1000 + (uint64_t)(tv.tv_usec) / 1000;
 }
-#endif /**/
 
 void sleep_ms(uint32_t ms) {
 #ifdef WIN32
