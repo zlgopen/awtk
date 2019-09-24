@@ -228,6 +228,11 @@ pip install Pillow
 
 * [linux-framebuffer （嵌入式 Linux 请用本项目）](https://github.com/zlgopen/awtk-linux-fb)
 
+#### 芯片原厂移植
+
+* [君正](https://github.com/zlgopen/awtk-port-ingenic`)
+
+
 ## 七、各语言的绑定
 
 * [AWTK 绑定代码生成器](https://github.com/zlgopen/awtk-binding)
