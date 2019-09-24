@@ -117,6 +117,20 @@ ret_t object_default_unref(object_t* obj);
  */
 ret_t object_default_clear_props(object_t* obj);
 
+/**
+ * @method object_default_find_prop
+ *
+ * 查找满足条件的属性，并返回它的值。
+ *
+ * @param {object_t*} obj 对象。
+ * @param {tk_compare_t} cmp 比较函数。
+ * @param {const void*} data 要比较的数据。
+ *
+ * @return {value_t*} 返回属性的值。
+ *
+ */
+value_t* object_default_find_prop(object_t* obj, tk_compare_t cmp, const void* data);
+
 object_default_t* object_default_cast(object_t* obj);
 #define OBJECT_DEFAULT(obj) object_default_cast(obj)
 
