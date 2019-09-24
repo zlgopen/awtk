@@ -1,5 +1,9 @@
 # 最新动态
 
+* 2019/09/13
+  * 完善ubjson/value
+  * 修改前几天修改widget\_update\_style留下的问题。
+
 * 2019/09/19
   * 修改"color\_component" "digit\_clock" "mutable\_image"的注释，支持 designer 编辑（感谢大恒提供补丁）。
   * 增加 object\_array
