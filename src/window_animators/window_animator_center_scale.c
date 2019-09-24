@@ -24,6 +24,9 @@
 static ret_t window_animator_center_scale_update_percent(window_animator_t* wa) {
   if (wa->open) {
     wa->percent = 0.9f + 0.1f * wa->easing(wa->time_percent);
+    if(wa->easing(wa->time_percent) == 0){
+        wa->percent = 0;
+    }
   } else {
     wa->percent = 1.0f - 0.1f * wa->easing(wa->time_percent);
   }
