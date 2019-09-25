@@ -1,7 +1,7 @@
 ﻿/**
- * File:   prop_desc.h
+ * File:   value_desc.h
  * Author: AWTK Develop Team
- * Brief:  prop_desc
+ * Brief:  value_desc
  *
  * Copyright (c) 2019 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
@@ -22,6 +22,7 @@
 #ifndef TK_VALUE_DESC_H
 #define TK_VALUE_DESC_H
 
+#include "value.h"
 #include "tkc/types_def.h"
 
 BEGIN_C_DECLS
@@ -781,6 +782,8 @@ typedef struct _value_desc_string_enums_t {
    */
   const char* enums[];
 } value_desc_string_enums_t, prop_desc_string_enums_t, arg_desc_string_enums_t;
+
+ret_t value_desc_validate(value_desc_t* schema, value_t* v);
 
 END_C_DECLS
 
