@@ -50,8 +50,8 @@ static ret_t progress_circle_on_paint_self(widget_t* widget, canvas_t* c) {
 
     if (ccw) {
       end_angle = start_angle - angle + M_PI * 2;
-      if(fabs(end_angle - start_angle) < 0.001){
-          end_angle = start_angle + 0.001;
+      if (fabs(end_angle - start_angle) < 0.001) {
+        end_angle = start_angle + 0.001;
       }
     } else {
       end_angle = start_angle + angle;

@@ -270,7 +270,7 @@ value_t* object_default_find_prop(object_t* obj, tk_compare_t cmp, const void* c
     uint32_t i = 0;
     for (i = 0; i < o->props_size; i++) {
       named_value_t* iter = o->props + i;
-      if(cmp(iter, ctx) == 0) {
+      if (cmp(iter, ctx) == 0) {
         return &(iter->value);
       }
     }

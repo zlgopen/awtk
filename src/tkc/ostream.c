@@ -57,8 +57,8 @@ int32_t tk_ostream_write_len(tk_ostream_t* stream, const uint8_t* buff, uint32_t
 
     offset += write_bytes;
     remain_bytes -= write_bytes;
-    
-    if(remain_bytes == 0)  {
+
+    if (remain_bytes == 0) {
       break;
     }
 

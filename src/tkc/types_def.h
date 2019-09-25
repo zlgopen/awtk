@@ -164,7 +164,12 @@ typedef enum _ret_t {
    * @const RET_TIMEOUT
    * 超时。
    */
-  RET_TIMEOUT
+  RET_TIMEOUT,
+  /**
+   * @const RET_IO
+   * IO错误。
+   */
+  RET_IO
 } ret_t;
 
 #ifdef ANDROID

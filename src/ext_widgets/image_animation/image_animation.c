@@ -94,8 +94,8 @@ static ret_t image_animation_on_paint_self(widget_t* widget, canvas_t* c) {
       canvas_draw_image_scale_down(c, &bitmap, &s, &d);
 
       if (image_animation->unload_after_paint) {
-          image_animation->image_data = bitmap.data;
-          idle_add(on_idle_unload_image, widget);
+        image_animation->image_data = (uint8_t*)(bitmap.data);
+        idle_add(on_idle_unload_image, widget);
       }
     }
   }
