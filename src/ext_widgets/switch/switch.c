@@ -155,6 +155,7 @@ static ret_t switch_on_event(widget_t* widget, event_t* e) {
         switch_on_pointer_move(aswitch, evt);
         widget_invalidate(widget, NULL);
       }
+      break;
     }
     case EVT_RESIZE:
     case EVT_MOVE_RESIZE: {

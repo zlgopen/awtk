@@ -1,5 +1,9 @@
 # 最新动态
 
+* 2019/09/26
+  * rename stream\_socket to stream\_tcp。
+  * 修改switch的BUG（感谢朝泽提供补丁）。
+
 * 2019/09/24
   * 合并君正提供的部分补丁。
 
