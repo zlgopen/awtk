@@ -1,5 +1,5 @@
 ﻿/**
- * File:   ostream_socket.h
+ * File:   ostream_tcp.h
  * Author: AWTK Develop Team
  * Brief:  input stream base on socket
  *
@@ -19,25 +19,25 @@
  *
  */
 
-#ifndef TK_OSTREAM_SOCKET_H
-#define TK_OSTREAM_SOCKET_H
+#ifndef TK_OSTREAM_TCP_H
+#define TK_OSTREAM_TCP_H
 
 #include "tkc/fs.h"
 #include "tkc/ostream.h"
 
 BEGIN_C_DECLS
 
-struct _tk_ostream_socket_t;
-typedef struct _tk_ostream_socket_t tk_ostream_socket_t;
+struct _tk_ostream_tcp_t;
+typedef struct _tk_ostream_tcp_t tk_ostream_tcp_t;
 
 /**
- * @class tk_ostream_socket_t
+ * @class tk_ostream_tcp_t
  * @parent tk_ostream_t
  *
  * input stream base on socket
  *
  */
-struct _tk_ostream_socket_t {
+struct _tk_ostream_tcp_t {
   tk_ostream_t ostream;
 
   int sock;
@@ -45,7 +45,7 @@ struct _tk_ostream_socket_t {
 };
 
 /**
- * @method tk_ostream_socket_create
+ * @method tk_ostream_tcp_create
  *
  * 创建ostream对象。
  *
@@ -54,10 +54,10 @@ struct _tk_ostream_socket_t {
  * @return {tk_ostream_t*} 返回ostream对象。
  *
  */
-tk_ostream_t* tk_ostream_socket_create(int sock);
+tk_ostream_t* tk_ostream_tcp_create(int sock);
 
-#define TK_OSTREAM_SOCKET(obj) ((tk_ostream_socket_t*)(obj))
+#define TK_OSTREAM_TCP(obj) ((tk_ostream_tcp_t*)(obj))
 
 END_C_DECLS
 
-#endif /*TK_OSTREAM_SOCKET_H*/
+#endif /*TK_OSTREAM_TCP_H*/
