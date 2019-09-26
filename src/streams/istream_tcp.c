@@ -54,9 +54,9 @@ static ret_t tk_istream_tcp_get_prop(object_t* obj, const char* name, value_t* v
 }
 
 static const object_vtable_t s_tk_istream_tcp_vtable = {.type = "tk_istream_tcp",
-                                                           .desc = "tk_istream_tcp",
-                                                           .size = sizeof(tk_istream_tcp_t),
-                                                           .get_prop = tk_istream_tcp_get_prop};
+                                                        .desc = "tk_istream_tcp",
+                                                        .size = sizeof(tk_istream_tcp_t),
+                                                        .get_prop = tk_istream_tcp_get_prop};
 
 tk_istream_t* tk_istream_tcp_create(int sock) {
   object_t* obj = NULL;

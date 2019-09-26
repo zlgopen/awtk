@@ -27,8 +27,7 @@
 #include "streams/socket_helper.h"
 #include "streams/ostream_tcp.h"
 
-static int32_t tk_ostream_tcp_write(tk_ostream_t* stream, const uint8_t* buff,
-                                       uint32_t max_size) {
+static int32_t tk_ostream_tcp_write(tk_ostream_t* stream, const uint8_t* buff, uint32_t max_size) {
   int32_t ret = 0;
   tk_ostream_tcp_t* ostream_tcp = TK_OSTREAM_TCP(stream);
 
@@ -55,9 +54,9 @@ static ret_t tk_ostream_tcp_get_prop(object_t* obj, const char* name, value_t* v
 }
 
 static const object_vtable_t s_tk_ostream_tcp_vtable = {.type = "tk_ostream_tcp",
-                                                           .desc = "tk_ostream_tcp",
-                                                           .size = sizeof(tk_ostream_tcp_t),
-                                                           .get_prop = tk_ostream_tcp_get_prop};
+                                                        .desc = "tk_ostream_tcp",
+                                                        .size = sizeof(tk_ostream_tcp_t),
+                                                        .get_prop = tk_ostream_tcp_get_prop};
 
 tk_ostream_t* tk_ostream_tcp_create(int sock) {
   object_t* obj = NULL;

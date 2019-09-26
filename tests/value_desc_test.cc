@@ -15,10 +15,10 @@ TEST(ValueDesc, int8) {
 
   value_set_int8(&v, 19);
   ASSERT_EQ(value_desc_validate(&(desc.value_desc), &v), RET_OK);
-  
+
   value_set_int8(&v, 10);
   ASSERT_EQ(value_desc_validate(&(desc.value_desc), &v), RET_OK);
-  
+
   value_set_int8(&v, 30);
   ASSERT_EQ(value_desc_validate(&(desc.value_desc), &v), RET_OK);
 }
@@ -37,10 +37,10 @@ TEST(ValueDesc, int16) {
 
   value_set_int16(&v, 19);
   ASSERT_EQ(value_desc_validate(&(desc.value_desc), &v), RET_OK);
-  
+
   value_set_int16(&v, 10);
   ASSERT_EQ(value_desc_validate(&(desc.value_desc), &v), RET_OK);
-  
+
   value_set_int16(&v, 30);
   ASSERT_EQ(value_desc_validate(&(desc.value_desc), &v), RET_OK);
 }
@@ -59,10 +59,10 @@ TEST(ValueDesc, int32) {
 
   value_set_int32(&v, 19);
   ASSERT_EQ(value_desc_validate(&(desc.value_desc), &v), RET_OK);
-  
+
   value_set_int32(&v, 10);
   ASSERT_EQ(value_desc_validate(&(desc.value_desc), &v), RET_OK);
-  
+
   value_set_int32(&v, 30);
   ASSERT_EQ(value_desc_validate(&(desc.value_desc), &v), RET_OK);
 }
@@ -81,10 +81,10 @@ TEST(ValueDesc, int64) {
 
   value_set_int64(&v, 19);
   ASSERT_EQ(value_desc_validate(&(desc.value_desc), &v), RET_OK);
-  
+
   value_set_int64(&v, 10);
   ASSERT_EQ(value_desc_validate(&(desc.value_desc), &v), RET_OK);
-  
+
   value_set_int64(&v, 30);
   ASSERT_EQ(value_desc_validate(&(desc.value_desc), &v), RET_OK);
 }
@@ -103,10 +103,10 @@ TEST(ValueDesc, uint8) {
 
   value_set_uint8(&v, 19);
   ASSERT_EQ(value_desc_validate(&(desc.value_desc), &v), RET_OK);
-  
+
   value_set_uint8(&v, 10);
   ASSERT_EQ(value_desc_validate(&(desc.value_desc), &v), RET_OK);
-  
+
   value_set_uint8(&v, 30);
   ASSERT_EQ(value_desc_validate(&(desc.value_desc), &v), RET_OK);
 }
@@ -125,10 +125,10 @@ TEST(ValueDesc, uint16) {
 
   value_set_uint16(&v, 19);
   ASSERT_EQ(value_desc_validate(&(desc.value_desc), &v), RET_OK);
-  
+
   value_set_uint16(&v, 10);
   ASSERT_EQ(value_desc_validate(&(desc.value_desc), &v), RET_OK);
-  
+
   value_set_uint16(&v, 30);
   ASSERT_EQ(value_desc_validate(&(desc.value_desc), &v), RET_OK);
 }
@@ -147,10 +147,10 @@ TEST(ValueDesc, uint32) {
 
   value_set_uint32(&v, 19);
   ASSERT_EQ(value_desc_validate(&(desc.value_desc), &v), RET_OK);
-  
+
   value_set_uint32(&v, 10);
   ASSERT_EQ(value_desc_validate(&(desc.value_desc), &v), RET_OK);
-  
+
   value_set_uint32(&v, 30);
   ASSERT_EQ(value_desc_validate(&(desc.value_desc), &v), RET_OK);
 }
@@ -169,10 +169,10 @@ TEST(ValueDesc, uint64) {
 
   value_set_uint64(&v, 19);
   ASSERT_EQ(value_desc_validate(&(desc.value_desc), &v), RET_OK);
-  
+
   value_set_uint64(&v, 10);
   ASSERT_EQ(value_desc_validate(&(desc.value_desc), &v), RET_OK);
-  
+
   value_set_uint64(&v, 30);
   ASSERT_EQ(value_desc_validate(&(desc.value_desc), &v), RET_OK);
 }

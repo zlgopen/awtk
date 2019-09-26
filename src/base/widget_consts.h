@@ -66,6 +66,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_CANVAS "canvas"
 
 /**
+ * @const WIDGET_PROP_LOCALIZE_OPTIONS
+ * Canvas。
+ */
+#define WIDGET_PROP_LOCALIZE_OPTIONS "localize_options"
+
+/**
  * @const WIDGET_PROP_NATIVE_WINDOW
  * Native Window。
  */

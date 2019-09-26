@@ -74,6 +74,9 @@ static ret_t combo_box_get_prop(widget_t* widget, const char* name, value_t* v) 
   } else if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     value_set_int(v, combo_box->value);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_LOCALIZE_OPTIONS)) {
+    value_set_bool(v, combo_box->localize_options);
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_OPTIONS)) {
     value_set_str(v, combo_box->options);
     return RET_OK;
@@ -128,6 +131,9 @@ static ret_t combo_box_set_prop(widget_t* widget, const char* name, const value_
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     combo_box_set_value(widget, value_int(v));
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_LOCALIZE_OPTIONS)) {
+    combo_box_set_localize_options(widget, value_bool(v));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_OPTIONS)) {
     combo_box_parse_options(widget, value_str(v));
@@ -186,6 +192,7 @@ widget_t* combo_box_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h
   edit->right_margin = h;
   edit->left_margin = 4;
   str_init(&(combo_box->text), 32);
+  combo_box->localize_options = TRUE;
 
   return widget;
 }
@@ -231,7 +238,11 @@ static ret_t combo_box_create_popup_items(combo_box_t* combo_box, widget_t* pare
     widget_t* item = combo_box_item_create(parent, 0, 0, 0, 0);
 
     widget_set_value(item, iter->value);
-    widget_set_tr_text(item, iter->text);
+    if (combo_box->localize_options) {
+      widget_set_tr_text(item, iter->text);
+    } else {
+      widget_set_text_utf8(item, iter->text);
+    }
 
     iter = iter->next;
   }
@@ -436,7 +447,11 @@ static ret_t combo_box_sync_index_to_value(widget_t* widget, uint32_t index) {
 
     if (option != NULL) {
       combo_box->value = option->value;
-      widget_set_tr_text(widget, option->text);
+      if (combo_box->localize_options) {
+        widget_set_tr_text(widget, option->text);
+      } else {
+        widget_set_text_utf8(widget, option->text);
+      }
     }
   }
 
@@ -489,6 +504,15 @@ int32_t combo_box_get_value(widget_t* widget) {
   return_value_if_fail(combo_box != NULL, 0);
 
   return combo_box->value;
+}
+
+ret_t combo_box_set_localize_options(widget_t* widget, bool_t localize_options) {
+  combo_box_t* combo_box = COMBO_BOX(widget);
+  return_value_if_fail(combo_box != NULL, RET_BAD_PARAMS);
+
+  combo_box->localize_options = localize_options;
+
+  return RET_OK;
 }
 
 const char* combo_box_get_text(widget_t* widget) {

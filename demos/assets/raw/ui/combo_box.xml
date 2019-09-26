@@ -2,8 +2,12 @@
   <combo_box left_margin="6" readonly="true" x="10" y="5" w="200" h="30" text="left" options="left;center;right;"/>
   <combo_box open_window="color" readonly="true" x="10" y="50" w="200" h="30" text="red"/>
 
-  <combo_box readonly="true" x="10" y="bottom:5" w="200" h="30" tr_text="ok" options="1:ok;2:cancel;"/>
-  <combo_box open_window="language" readonly="true" x="10" y="bottom:50" w="200" h="30" tr_text="english"/>
+  <combo_box readonly="true" x="5" y="bottom:5" w="45%" h="30" tr_text="ok" options="1:ok;2:cancel;"/>
+  <combo_box open_window="language" readonly="true" x="5" y="bottom:50" w="45%" h="30" tr_text="english"/>
+  
+  <combo_box readonly="true" x="right:5" y="bottom:5" w="45%" h="30" text="ok" 
+    localize_options="false"
+    options="1:ok;2:cancel;"/>
 
   <label name="old_value" x="center" y="middle:-20" w="50%" h="30" text=""/>
   <label name="value" x="center" y="middle:20" w="50%" h="30" text=""/>

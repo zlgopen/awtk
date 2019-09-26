@@ -136,6 +136,13 @@ typedef struct _combo_box_t {
   int32_t value;
 
   /**
+   * @property {bool_t} localize_options
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 是否本地化(翻译)选项(缺省为TRUE)。
+   */
+  bool_t localize_options;
+
+  /**
    * @property {char*} options
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 设置可选项(冒号分隔值和文本，分号分隔选项，如:1:red;2:green;3:blue)。
@@ -223,6 +230,17 @@ int32_t combo_box_count_options(widget_t* widget);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t combo_box_set_selected_index(widget_t* widget, uint32_t index);
+
+/**
+ * @method combo_box_set_localize_options
+ * 设置是否本地化(翻译)选项。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget combo_box对象。
+ * @param {bool_t} localize_options 是否本地化(翻译)选项。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t combo_box_set_localize_options(widget_t* widget, bool_t localize_options);
 
 /**
  * @method combo_box_set_value
