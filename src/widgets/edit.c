@@ -454,6 +454,13 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
   return RET_STOP;
 }
 
+static ret_t edit_select_all_async(const idle_info_t* info) {
+  edit_t* edit = EDIT(info->ctx);
+  text_edit_select_all(edit->model);
+
+  return RET_REMOVE;
+}
+
 ret_t edit_on_event(widget_t* widget, event_t* e) {
   ret_t ret = RET_OK;
   uint32_t type = e->type;
@@ -534,6 +541,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
 
       if (widget->target == NULL) {
         edit_request_input_method(widget);
+        idle_add(edit_select_all_async, edit);
       }
       break;
     }

@@ -1103,6 +1103,12 @@ ret_t text_edit_set_select(text_edit_t* text_edit, uint32_t start, uint32_t end)
   return RET_OK;
 }
 
+ret_t text_edit_select_all(text_edit_t* text_edit) {
+  return_value_if_fail(text_edit != NULL, RET_BAD_PARAMS);
+
+  return text_edit_set_select(text_edit, 0, text_edit->widget->text.size);
+}
+
 ret_t text_edit_unselect(text_edit_t* text_edit) {
   DECL_IMPL(text_edit);
   return_value_if_fail(text_edit != NULL, RET_BAD_PARAMS);
