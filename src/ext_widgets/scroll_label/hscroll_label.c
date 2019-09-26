@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   hscroll_label.h
  * Author: AWTK Develop Team
  * Brief:  hscroll_label
@@ -74,7 +74,7 @@ static ret_t hscroll_label_do_paint_self(widget_t* widget, canvas_t* c, uint32_t
   if (w > hscroll_label->text_w) {
     int32_t align_v = style_get_int(widget->astyle, STYLE_ID_TEXT_ALIGN_V, ALIGN_V_MIDDLE);
     int32_t align_h = style_get_int(widget->astyle, STYLE_ID_TEXT_ALIGN_H, ALIGN_H_LEFT);
-    canvas_set_text_align(c, align_h, align_v);
+    canvas_set_text_align(c, (align_h_t)align_h, (align_v_t)align_v);
   } else {
     canvas_set_text_align(c, ALIGN_H_LEFT, ALIGN_V_MIDDLE);
   }
