@@ -96,7 +96,6 @@ TEST(TimeClock, basic) {
   ASSERT_EQ(string(value_str(&v1)), string(value_str(&v2)));
   ASSERT_EQ(string(value_str(&v1)), string(t->second_anchor_y));
 
-
   widget_destroy(w);
 }
 
@@ -138,5 +137,4 @@ TEST(TimeClock, set_anchor_for_str) {
 
   ASSERT_EQ(time_clock_set_anchor_for_str(100.0f, "20", &image_anchor), RET_BAD_PARAMS);
   ASSERT_EQ(image_anchor, 0.0f);
-
 }

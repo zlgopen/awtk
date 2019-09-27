@@ -2,7 +2,7 @@
 
 static inline ret_t on_timer(const timer_info_t* timer) {
   widget_t* progress_bar = (widget_t*)timer->ctx;
-  uint8_t value = (PROGRESS_BAR(progress_bar)->value + 5) % 100;
+  float_t value = ((int)(PROGRESS_BAR(progress_bar)->value + 5)) % 100;
   progress_bar_set_value(progress_bar, value);
 
   return RET_REPEAT;
@@ -10,7 +10,7 @@ static inline ret_t on_timer(const timer_info_t* timer) {
 
 static inline ret_t on_inc(void* ctx, event_t* e) {
   widget_t* progress_bar = (widget_t*)ctx;
-  uint8_t value = (PROGRESS_BAR(progress_bar)->value + 10) % 100;
+  float_t value = ((int)(PROGRESS_BAR(progress_bar)->value + 10)) % 100;
   progress_bar_set_value(progress_bar, value);
   (void)e;
   return RET_OK;
@@ -18,7 +18,7 @@ static inline ret_t on_inc(void* ctx, event_t* e) {
 
 static inline ret_t on_dec(void* ctx, event_t* e) {
   widget_t* progress_bar = (widget_t*)ctx;
-  uint8_t value = (PROGRESS_BAR(progress_bar)->value + 90) % 100;
+  float_t value = ((int)(PROGRESS_BAR(progress_bar)->value + 90)) % 100;
   progress_bar_set_value(progress_bar, value);
   (void)e;
   return RET_OK;

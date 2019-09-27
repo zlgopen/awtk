@@ -19,6 +19,24 @@ TEST(progress_bar, basic) {
   widget_destroy(s);
 }
 
+TEST(progress_bar, max) {
+  value_t v1;
+  value_t v2;
+  widget_t* s = progress_bar_create(NULL, 10, 20, 30, 40);
+
+  ASSERT_EQ(widget_get_prop_int(s, WIDGET_PROP_MAX, 0), 100);
+
+  value_set_int(&v1, 1000);
+  ASSERT_EQ(widget_set_prop(s, WIDGET_PROP_MAX, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(s, WIDGET_PROP_MAX, &v2), RET_OK);
+  ASSERT_EQ(value_int(&v1), value_int(&v2));
+
+  ASSERT_EQ(progress_bar_set_value(s, 500), RET_OK);
+  ASSERT_EQ(progress_bar_get_percent(s), 50);
+
+  widget_destroy(s);
+}
+
 #include "log_change_events.inc"
 
 TEST(ProgressBar, event) {

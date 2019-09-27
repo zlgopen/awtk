@@ -5,6 +5,7 @@
   * edit/mledit 获得焦点时选中文本。
   * combo\_box 增加localize\_options选项
   * edit min/max/step/type支持脚本绑定。
+  * progress bar支持max属性。
 
 * 2019/09/26
   * rename stream\_socket to stream\_tcp。

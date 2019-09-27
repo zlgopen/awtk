@@ -21,9 +21,25 @@
 
 #include "tkc/mem.h"
 #include "tkc/utils.h"
-#include "widgets/progress_bar.h"
 #include "base/widget_vtable.h"
 #include "base/image_manager.h"
+#include "widgets/progress_bar.h"
+
+static float_t progress_bar_get_progress(widget_t* widget) {
+  progress_bar_t* progress_bar = PROGRESS_BAR(widget);
+  return_value_if_fail(progress_bar != NULL, 0);
+  float_t range = progress_bar->max > 0 ? progress_bar->max : 100;
+
+  range = tk_max(range, progress_bar->value);
+
+  return progress_bar->value / range;
+}
+
+uint32_t progress_bar_get_percent(widget_t* widget) {
+  float_t percent = progress_bar_get_progress(widget) * 100;
+
+  return tk_roundi(percent);
+}
 
 static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
   rect_t r;
@@ -32,16 +48,19 @@ static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
   uint32_t radius = style_get_int(style, STYLE_ID_ROUND_RADIUS, 0);
   const char* bg_image = style_get_str(style, STYLE_ID_BG_IMAGE, NULL);
   image_draw_type_t draw_type = progress_bar->vertical ? IMAGE_DRAW_PATCH3_Y : IMAGE_DRAW_PATCH3_X;
+  float_t progress = progress_bar_get_progress(widget);
+  uint32_t progress_w = widget->w * progress;
+  uint32_t progress_h = widget->h * progress;
 
   if (progress_bar->vertical) {
     r.x = 0;
     r.y = 0;
     r.w = widget->w;
-    r.h = widget->h - (widget->h * progress_bar->value) / 100;
+    r.h = widget->h - progress_h;
   } else {
     r.y = 0;
     r.h = widget->h;
-    r.w = widget->w - (widget->w * progress_bar->value) / 100;
+    r.w = widget->w - progress_w;
     r.x = widget->w - r.w;
   }
 
@@ -54,11 +73,11 @@ static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
   if (progress_bar->vertical) {
     r.x = 0;
     r.w = widget->w;
-    r.h = (widget->h * progress_bar->value) / 100;
+    r.h = progress_h;
     r.y = widget->h - r.h;
   } else {
     r.h = widget->h;
-    r.w = (widget->w * progress_bar->value) / 100;
+    r.w = progress_w;
     r.y = 0;
     r.x = 0;
   }
@@ -74,9 +93,9 @@ static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-ret_t progress_bar_set_value(widget_t* widget, uint8_t value) {
+ret_t progress_bar_set_value(widget_t* widget, float_t value) {
   progress_bar_t* progress_bar = PROGRESS_BAR(widget);
-  return_value_if_fail(progress_bar != NULL && value <= 100, RET_BAD_PARAMS);
+  return_value_if_fail(progress_bar != NULL, RET_BAD_PARAMS);
 
   if (progress_bar->value != value) {
     char str[TK_NUM_MAX_LEN + 1];
@@ -88,7 +107,7 @@ ret_t progress_bar_set_value(widget_t* widget, uint8_t value) {
     widget_dispatch(widget, &e);
     widget_invalidate(widget, NULL);
 
-    tk_snprintf(str, TK_NUM_MAX_LEN, "%d%%", progress_bar->value);
+    tk_snprintf(str, TK_NUM_MAX_LEN, "%d%%", progress_bar_get_percent(widget));
     widget_set_text_utf8(widget, str);
   }
 
@@ -120,6 +139,9 @@ static ret_t progress_bar_get_prop(widget_t* widget, const char* name, value_t* 
   if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     value_set_uint8(v, progress_bar->value);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_MAX)) {
+    value_set_uint32(v, progress_bar->max);
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_VERTICAL)) {
     value_set_bool(v, progress_bar->vertical);
     return RET_OK;
@@ -136,6 +158,8 @@ static ret_t progress_bar_set_prop(widget_t* widget, const char* name, const val
 
   if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     return progress_bar_set_value(widget, value_int(v));
+  } else if (tk_str_eq(name, WIDGET_PROP_MAX)) {
+    return progress_bar_set_max(widget, value_float(v));
   } else if (tk_str_eq(name, WIDGET_PROP_VERTICAL)) {
     return progress_bar_set_vertical(widget, value_bool(v));
   } else if (tk_str_eq(name, WIDGET_PROP_SHOW_TEXT)) {
@@ -145,8 +169,8 @@ static ret_t progress_bar_set_prop(widget_t* widget, const char* name, const val
   return RET_NOT_FOUND;
 }
 
-static const char* s_progress_bar_clone_properties[] = {WIDGET_PROP_VALUE, WIDGET_PROP_VERTICAL,
-                                                        WIDGET_PROP_SHOW_TEXT, NULL};
+static const char* s_progress_bar_clone_properties[] = {
+    WIDGET_PROP_VALUE, WIDGET_PROP_MAX, WIDGET_PROP_VERTICAL, WIDGET_PROP_SHOW_TEXT, NULL};
 TK_DECL_VTABLE(progress_bar) = {.size = sizeof(progress_bar_t),
                                 .type = WIDGET_TYPE_PROGRESS_BAR,
                                 .clone_properties = s_progress_bar_clone_properties,
@@ -162,6 +186,7 @@ widget_t* progress_bar_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) 
   progress_bar_t* progress_bar = PROGRESS_BAR(widget);
   return_value_if_fail(progress_bar != NULL, NULL);
 
+  progress_bar->max = 100;
   progress_bar->value = 0;
   progress_bar->vertical = FALSE;
   progress_bar->show_text = FALSE;
@@ -173,4 +198,13 @@ widget_t* progress_bar_cast(widget_t* widget) {
   return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, progress_bar), NULL);
 
   return widget;
+}
+
+ret_t progress_bar_set_max(widget_t* widget, float_t max) {
+  progress_bar_t* progress_bar = PROGRESS_BAR(widget);
+  return_value_if_fail(progress_bar != NULL, RET_BAD_PARAMS);
+
+  progress_bar->max = max;
+
+  return widget_invalidate(widget, NULL);
 }
