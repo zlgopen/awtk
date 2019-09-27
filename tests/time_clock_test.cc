@@ -60,6 +60,43 @@ TEST(TimeClock, basic) {
   ASSERT_EQ(string(value_str(&v1)), string(value_str(&v2)));
   ASSERT_EQ(string(value_str(&v1)), string(t->image));
 
+  value_set_str(&v1, "0.5");
+  ASSERT_EQ(widget_set_prop(w, TIME_CLOCK_PROP_HOUR_ANCHOR_X, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(w, TIME_CLOCK_PROP_HOUR_ANCHOR_X, &v2), RET_OK);
+  ASSERT_EQ(string(value_str(&v1)), string(value_str(&v2)));
+  ASSERT_EQ(string(value_str(&v1)), string(t->hour_anchor_x));
+
+  value_set_str(&v1, "0.5");
+  ASSERT_EQ(widget_set_prop(w, TIME_CLOCK_PROP_HOUR_ANCHOR_Y, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(w, TIME_CLOCK_PROP_HOUR_ANCHOR_Y, &v2), RET_OK);
+  ASSERT_EQ(string(value_str(&v1)), string(value_str(&v2)));
+  ASSERT_EQ(string(value_str(&v1)), string(t->hour_anchor_y));
+
+  value_set_str(&v1, "0.5");
+  ASSERT_EQ(widget_set_prop(w, TIME_CLOCK_PROP_MINUTE_ANCHOR_X, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(w, TIME_CLOCK_PROP_MINUTE_ANCHOR_X, &v2), RET_OK);
+  ASSERT_EQ(string(value_str(&v1)), string(value_str(&v2)));
+  ASSERT_EQ(string(value_str(&v1)), string(t->minute_anchor_x));
+
+  value_set_str(&v1, "0.5");
+  ASSERT_EQ(widget_set_prop(w, TIME_CLOCK_PROP_MINUTE_ANCHOR_Y, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(w, TIME_CLOCK_PROP_MINUTE_ANCHOR_Y, &v2), RET_OK);
+  ASSERT_EQ(string(value_str(&v1)), string(value_str(&v2)));
+  ASSERT_EQ(string(value_str(&v1)), string(t->minute_anchor_y));
+
+  value_set_str(&v1, "0.5");
+  ASSERT_EQ(widget_set_prop(w, TIME_CLOCK_PROP_SECOND_ANCHOR_X, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(w, TIME_CLOCK_PROP_SECOND_ANCHOR_X, &v2), RET_OK);
+  ASSERT_EQ(string(value_str(&v1)), string(value_str(&v2)));
+  ASSERT_EQ(string(value_str(&v1)), string(t->second_anchor_x));
+
+  value_set_str(&v1, "0.5");
+  ASSERT_EQ(widget_set_prop(w, TIME_CLOCK_PROP_SECOND_ANCHOR_Y, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(w, TIME_CLOCK_PROP_SECOND_ANCHOR_Y, &v2), RET_OK);
+  ASSERT_EQ(string(value_str(&v1)), string(value_str(&v2)));
+  ASSERT_EQ(string(value_str(&v1)), string(t->second_anchor_y));
+
+
   widget_destroy(w);
 }
 
@@ -69,4 +106,37 @@ TEST(TimeClock, cast) {
   ASSERT_EQ(w, time_clock_cast(w));
 
   widget_destroy(w);
+}
+
+TEST(TimeClock, set_anchor_for_str) {
+  float_t image_anchor = 0.0f;
+
+  ASSERT_EQ(time_clock_set_anchor_for_str(100.0f, "0.3f", &image_anchor), RET_OK);
+  ASSERT_EQ(image_anchor, 100.0f * 0.3f);
+
+  ASSERT_EQ(time_clock_set_anchor_for_str(100.0f, "50px", &image_anchor), RET_OK);
+  ASSERT_EQ(image_anchor, 50.0f);
+
+  ASSERT_EQ(time_clock_set_anchor_for_str(100.0f, "50PX", &image_anchor), RET_OK);
+  ASSERT_EQ(image_anchor, 50.0f);
+
+  image_anchor = 0.0f;
+  ASSERT_EQ(time_clock_set_anchor_for_str(100.0f, "150PX", &image_anchor), RET_BAD_PARAMS);
+  ASSERT_EQ(image_anchor, 0.0f);
+
+  ASSERT_EQ(time_clock_set_anchor_for_str(100.0f, "150px", &image_anchor), RET_BAD_PARAMS);
+  ASSERT_EQ(image_anchor, 0.0f);
+
+  ASSERT_EQ(time_clock_set_anchor_for_str(100.0f, "-150PX", &image_anchor), RET_BAD_PARAMS);
+  ASSERT_EQ(image_anchor, 0.0f);
+
+  ASSERT_EQ(time_clock_set_anchor_for_str(100.0f, "-150px", &image_anchor), RET_BAD_PARAMS);
+  ASSERT_EQ(image_anchor, 0.0f);
+
+  ASSERT_EQ(time_clock_set_anchor_for_str(100.0f, "-10", &image_anchor), RET_BAD_PARAMS);
+  ASSERT_EQ(image_anchor, 0.0f);
+
+  ASSERT_EQ(time_clock_set_anchor_for_str(100.0f, "20", &image_anchor), RET_BAD_PARAMS);
+  ASSERT_EQ(image_anchor, 0.0f);
+
 }

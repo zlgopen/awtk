@@ -1,4 +1,8 @@
 <window anim_hint="htranslate" >
   <time_clock x="c" y="m" w="300" h="300" bg_image="clock_bg" image="clock" 
-    hour_image="clock_hour" minute_image="clock_minute" second_image="clock_second"/>
+    hour_image="clock_hour" minute_image="clock_minute" second_image="clock_second" 
+    hour_anchor_x="0.5" hour_anchor_y="72px"
+    minute_anchor_x="0.5" minute_anchor_y="129px"
+    second_anchor_x="0.5" second_anchor_y="148px"
+/>
 </window>

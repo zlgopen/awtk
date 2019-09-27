@@ -29,6 +29,89 @@
 
 static ret_t time_clock_reset_time(time_clock_t* time_clock);
 
+static bool_t time_clock_value_is_anchor_px(const char* value) {
+  const char* tmp = NULL;
+  size_t len = strlen(value);
+  return_value_if_fail(len > 2, FALSE);
+
+  tmp = value + len - 2;
+  if (tk_str_eq(tmp, "px") != 0 || tk_str_eq(tmp, "PX") != 0) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+ret_t time_clock_set_anchor_for_str(float_t max_size, const char* anchor, float_t* image_anchor) {
+  float_t anchor_tmp = 0.0f;
+  bool_t is_anchor_px = TRUE;
+
+  return_value_if_fail(anchor != NULL, RET_BAD_PARAMS);
+
+  anchor_tmp = tk_atof(anchor);
+  is_anchor_px = time_clock_value_is_anchor_px(anchor);
+
+  if (is_anchor_px) {
+    return_value_if_fail(0 <= anchor_tmp && anchor_tmp <= max_size, RET_BAD_PARAMS);
+  } else {
+    return_value_if_fail(0 <= anchor_tmp && anchor_tmp <= 1.0f, RET_BAD_PARAMS);
+  }
+
+  *image_anchor = is_anchor_px ? anchor_tmp : anchor_tmp * max_size;
+
+  return RET_OK;
+}
+
+ret_t time_clock_set_hour_anchor(widget_t* widget, const char* anchor_x, const char* anchor_y) {
+  ret_t ret = RET_OK;
+  float_t tmp = 0.0f;
+  time_clock_t* time_clock = TIME_CLOCK(widget);
+
+  return_value_if_fail(time_clock != NULL, RET_BAD_PARAMS);
+
+  if(anchor_x != NULL) {
+    time_clock->hour_anchor_x = tk_str_copy(time_clock->hour_anchor_x, anchor_x);
+  }
+  if(anchor_y != NULL) {
+    time_clock->hour_anchor_y = tk_str_copy(time_clock->hour_anchor_y, anchor_y);
+  }
+
+  return RET_OK;
+}
+
+ret_t time_clock_set_minute_anchor(widget_t* widget, const char* anchor_x, const char* anchor_y) {
+  ret_t ret = RET_OK;
+  float_t tmp = 0.0f;
+  time_clock_t* time_clock = TIME_CLOCK(widget);
+
+  return_value_if_fail(time_clock != NULL, RET_BAD_PARAMS);
+
+  if(anchor_x != NULL) {
+    time_clock->minute_anchor_x = tk_str_copy(time_clock->minute_anchor_x, anchor_x);
+  }
+  if(anchor_y != NULL) {
+    time_clock->minute_anchor_y = tk_str_copy(time_clock->minute_anchor_y, anchor_y);
+  }
+
+  return RET_OK;
+}
+
+ret_t time_clock_set_second_anchor(widget_t* widget, const char* anchor_x, const char* anchor_y) {
+  ret_t ret = RET_OK;
+  float_t tmp = 0.0f;
+  time_clock_t* time_clock = TIME_CLOCK(widget);
+
+  return_value_if_fail(time_clock != NULL, RET_BAD_PARAMS);
+
+  if(anchor_x != NULL) {
+    time_clock->second_anchor_x = tk_str_copy(time_clock->second_anchor_x, anchor_x);
+  }
+  if(anchor_y != NULL) {
+    time_clock->second_anchor_y = tk_str_copy(time_clock->second_anchor_y, anchor_y);
+  }
+
+  return RET_OK;
+}
+
 ret_t time_clock_set_hour(widget_t* widget, int32_t hour) {
   time_clock_t* time_clock = TIME_CLOCK(widget);
   return_value_if_fail(time_clock != NULL, RET_BAD_PARAMS);
@@ -129,6 +212,24 @@ static ret_t time_clock_get_prop(widget_t* widget, const char* name, value_t* v)
   } else if (tk_str_eq(name, TIME_CLOCK_PROP_IMAGE)) {
     value_set_str(v, time_clock->image);
     return RET_OK;
+  } else if (tk_str_eq(name, TIME_CLOCK_PROP_HOUR_ANCHOR_X)) {
+    value_set_str(v, time_clock->hour_anchor_x);
+    return RET_OK;
+  } else if (tk_str_eq(name, TIME_CLOCK_PROP_HOUR_ANCHOR_Y)) {
+    value_set_str(v, time_clock->hour_anchor_y);
+    return RET_OK;
+  } else if (tk_str_eq(name, TIME_CLOCK_PROP_MINUTE_ANCHOR_X)) {
+    value_set_str(v, time_clock->minute_anchor_x);
+    return RET_OK;
+  } else if (tk_str_eq(name, TIME_CLOCK_PROP_MINUTE_ANCHOR_Y)) {
+    value_set_str(v, time_clock->minute_anchor_y);
+    return RET_OK;
+  } else if (tk_str_eq(name, TIME_CLOCK_PROP_SECOND_ANCHOR_X)) {
+    value_set_str(v, time_clock->second_anchor_x);
+    return RET_OK;
+  } else if (tk_str_eq(name, TIME_CLOCK_PROP_SECOND_ANCHOR_Y)) {
+    value_set_str(v, time_clock->second_anchor_y);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -153,6 +254,18 @@ static ret_t time_clock_set_prop(widget_t* widget, const char* name, const value
     return time_clock_set_bg_image(widget, value_str(v));
   } else if (tk_str_eq(name, TIME_CLOCK_PROP_IMAGE)) {
     return time_clock_set_image(widget, value_str(v));
+  } else if (tk_str_eq(name, TIME_CLOCK_PROP_HOUR_ANCHOR_X)) {
+    return time_clock_set_hour_anchor( widget, value_str(v), NULL);
+  } else if (tk_str_eq(name, TIME_CLOCK_PROP_HOUR_ANCHOR_Y)) {
+    return time_clock_set_hour_anchor( widget, NULL, value_str(v));
+  } else if (tk_str_eq(name, TIME_CLOCK_PROP_MINUTE_ANCHOR_X)) {
+     return time_clock_set_minute_anchor( widget, value_str(v), NULL);
+  } else if (tk_str_eq(name, TIME_CLOCK_PROP_MINUTE_ANCHOR_Y)) {
+     return time_clock_set_minute_anchor( widget, NULL, value_str(v));
+  } else if (tk_str_eq(name, TIME_CLOCK_PROP_SECOND_ANCHOR_X)) {
+     return time_clock_set_second_anchor( widget, value_str(v), NULL);
+  } else if (tk_str_eq(name, TIME_CLOCK_PROP_SECOND_ANCHOR_Y)) {
+    return time_clock_set_second_anchor( widget, NULL, value_str(v));
   }
 
   return RET_NOT_FOUND;
@@ -198,6 +311,13 @@ static ret_t time_clock_on_destroy(widget_t* widget) {
   TKMEM_FREE(time_clock->minute_image);
   TKMEM_FREE(time_clock->second_image);
 
+  TKMEM_FREE(time_clock->hour_anchor_x);
+  TKMEM_FREE(time_clock->hour_anchor_y);
+  TKMEM_FREE(time_clock->minute_anchor_x);
+  TKMEM_FREE(time_clock->minute_anchor_y);
+  TKMEM_FREE(time_clock->second_anchor_x);
+  TKMEM_FREE(time_clock->second_anchor_y);
+
   return RET_OK;
 }
 
@@ -237,37 +357,40 @@ static ret_t time_clock_on_paint_self(widget_t* widget, canvas_t* c) {
     canvas_draw_image_ex(c, &bitmap, IMAGE_DRAW_CENTER, &dst);
   }
 
-  if (time_clock_load_image(widget, time_clock->hour_image, &bitmap) == RET_OK) {
-    float_t dx = (dst.w - bitmap.w) / 2;
-    float_t dy = dst.h / 2 + bitmap.w / 2 - bitmap.h;
+  if (time_clock_load_image(widget, time_clock->hour_image, &bitmap) == RET_OK &&
+      time_clock_set_anchor_for_str(bitmap.w, time_clock->hour_anchor_x, &anchor_x) == RET_OK &&
+      time_clock_set_anchor_for_str(bitmap.h, time_clock->hour_anchor_y, &anchor_y) == RET_OK) {
+
+    float_t dx = dst.w / 2 - anchor_x;
+    float_t dy = dst.h / 2 - anchor_y;
     float_t hour = time_clock->hour + time_clock->minute / 60.0f;
 
     rotation = (2 * M_PI * hour) / 12.0f;
-    anchor_x = bitmap.w / 2;
-    anchor_y = bitmap.h - bitmap.w / 2;
 
     time_clock_draw_image(widget, c, &bitmap, dx, dy, anchor_x, anchor_y, rotation);
   }
 
-  if (time_clock_load_image(widget, time_clock->minute_image, &bitmap) == RET_OK) {
-    float_t dx = (dst.w - bitmap.w) / 2;
-    float_t dy = dst.h / 2 + bitmap.w / 2 - bitmap.h;
+  if (time_clock_load_image(widget, time_clock->minute_image, &bitmap) == RET_OK &&
+      time_clock_set_anchor_for_str(bitmap.w, time_clock->minute_anchor_x, &anchor_x) == RET_OK &&
+      time_clock_set_anchor_for_str(bitmap.h, time_clock->minute_anchor_y, &anchor_y) == RET_OK ) {
+
+    float_t dx = dst.w / 2 - anchor_x;
+    float_t dy = dst.h / 2 - anchor_y;
     float_t minute = time_clock->minute + time_clock->second / 60.0f;
 
     rotation = (2 * M_PI * minute) / 60.0f;
-    anchor_x = bitmap.w / 2;
-    anchor_y = bitmap.h - bitmap.w / 2;
 
     time_clock_draw_image(widget, c, &bitmap, dx, dy, anchor_x, anchor_y, rotation);
   }
 
-  if (time_clock_load_image(widget, time_clock->second_image, &bitmap) == RET_OK) {
-    float_t dx = (dst.w - bitmap.w) / 2;
-    float_t dy = 2;
+  if (time_clock_load_image(widget, time_clock->second_image, &bitmap) == RET_OK &&
+      time_clock_set_anchor_for_str(bitmap.w, time_clock->second_anchor_x, &anchor_x) == RET_OK &&
+      time_clock_set_anchor_for_str(bitmap.h, time_clock->second_anchor_y, &anchor_y) == RET_OK) {
+
+    float_t dx = dst.w / 2 - anchor_x;
+    float_t dy = dst.h / 2 - anchor_y;
 
     rotation = (2 * M_PI * time_clock->second) / 60.0f;
-    anchor_x = bitmap.w / 2;
-    anchor_y = dst.h / 2 - 2;
 
     time_clock_draw_image(widget, c, &bitmap, dx, dy, anchor_x, anchor_y, rotation);
   }
@@ -280,9 +403,11 @@ static ret_t time_clock_on_paint_self(widget_t* widget, canvas_t* c) {
 }
 
 static const char* s_time_clock_properties[] = {
-    TIME_CLOCK_PROP_HOUR,         TIME_CLOCK_PROP_MINUTE,       TIME_CLOCK_PROP_SECOND,
-    TIME_CLOCK_PROP_IMAGE,        TIME_CLOCK_PROP_BG_IMAGE,     TIME_CLOCK_PROP_HOUR_IMAGE,
-    TIME_CLOCK_PROP_MINUTE_IMAGE, TIME_CLOCK_PROP_SECOND_IMAGE, NULL};
+    TIME_CLOCK_PROP_HOUR,             TIME_CLOCK_PROP_MINUTE,           TIME_CLOCK_PROP_SECOND,
+    TIME_CLOCK_PROP_IMAGE,            TIME_CLOCK_PROP_BG_IMAGE,         TIME_CLOCK_PROP_HOUR_IMAGE,
+    TIME_CLOCK_PROP_MINUTE_IMAGE,     TIME_CLOCK_PROP_SECOND_IMAGE,     TIME_CLOCK_PROP_HOUR_ANCHOR_X
+    TIME_CLOCK_PROP_HOUR_ANCHOR_Y,    TIME_CLOCK_PROP_MINUTE_ANCHOR_X,  TIME_CLOCK_PROP_MINUTE_ANCHOR_Y
+    TIME_CLOCK_PROP_SECOND_ANCHOR_X,  TIME_CLOCK_PROP_SECOND_ANCHOR_Y,  NULL};
 
 TK_DECL_VTABLE(time_clock) = {.size = sizeof(time_clock_t),
                               .type = WIDGET_TYPE_TIME_CLOCK,
@@ -313,6 +438,13 @@ widget_t* time_clock_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 
   time_clock_reset_time(time_clock);
   widget_add_timer(widget, time_clock_on_timer, 1000);
+
+  time_clock->hour_anchor_x = tk_str_copy(NULL, "0.5");
+  time_clock->hour_anchor_y = tk_str_copy(NULL, "0.5");
+  time_clock->minute_anchor_x = tk_str_copy(NULL, "0.5");
+  time_clock->minute_anchor_y = tk_str_copy(NULL, "0.5");
+  time_clock->second_anchor_x = tk_str_copy(NULL, "0.5");
+  time_clock->second_anchor_y = tk_str_copy(NULL, "0.5");
 
   return widget;
 }
