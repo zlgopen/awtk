@@ -56,6 +56,11 @@ int tcp_listen(int port);
 int tcp_accept(int sock);
 int tcp_connect(const char* host, int port);
 
+ret_t socket_wait_for_data(int sock, uint32_t timeout_ms);
+
+int udp_listen(int port);
+struct sockaddr* socket_resolve(const char* host, int port, struct sockaddr_in* addr);
+
 END_C_DECLS
 
 #endif /*TK_SOCKET_HELPER_H*/

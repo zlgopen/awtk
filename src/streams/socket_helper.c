@@ -27,6 +27,7 @@
 #include "streams/socket_helper.h"
 
 #ifdef WIN32
+#pragma comment(lib,"ws2_32")
 void socket_init() {
   int iResult;
   WSADATA wsaData;
@@ -64,9 +65,10 @@ int tcp_listen(int port) {
   int on = 1;
 
   if ((sock = (int)socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0) {
-    log_debug("socket error\n");
+    perror("socket error\n");
     return -1;
   }
+
   if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, (char*)&on, sizeof(on)) < 0) {
     log_debug("setsockopt error\n");
     return -1;
@@ -88,26 +90,63 @@ int tcp_listen(int port) {
   return (sock);
 }
 
+int udp_listen(int port) {
+  int sock;
+  int on = 1;
+  struct sockaddr_in s;
+
+  if ((sock = (int)socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
+    perror("socket error\n");
+    return -1;
+  }
+
+  if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, (char*)&on, sizeof(on)) < 0) {
+    log_debug("setsockopt error\n");
+    return -1;
+  }
+
+  memset(&s, 0, sizeof(s));
+  s.sin_family = AF_INET;
+  s.sin_port = htons(port);
+  s.sin_addr.s_addr = htonl(INADDR_ANY);
+
+  if (bind(sock, (struct sockaddr*)&s, sizeof(s)) < 0) {
+    log_debug("bind error\n");
+    return -1;
+  }
+
+  return (sock);
+}
+
 #define h_addr h_addr_list[0]
+
+struct sockaddr* socket_resolve(const char* host, int port,   struct sockaddr_in* addr) {
+  struct hostent* h = NULL;
+  return_value_if_fail(host != NULL && addr != NULL, NULL);
+
+  h = gethostbyname(host);
+  return_value_if_fail(h != NULL, NULL);
+
+  memset(addr, 0x00, sizeof(*addr));
+  addr->sin_family = AF_INET;
+  addr->sin_port = htons(port);
+  memcpy(&(addr->sin_addr.s_addr), h->h_addr, h->h_length);
+
+  return (struct sockaddr*)addr;
+}
+
 int tcp_connect(const char* host, int port) {
   int sock;
   struct sockaddr_in s_in;
-
-  memset(&s_in, 0, sizeof(s_in));
-
-  s_in.sin_family = AF_INET;
-  struct hostent* h = gethostbyname(host);
-  return_value_if_fail(h != NULL, -1);
-
-  memcpy(&s_in.sin_addr.s_addr, h->h_addr, h->h_length);
-  s_in.sin_port = htons(port);
+  struct sockaddr* addr = socket_resolve(host, port, &s_in);
+  return_value_if_fail(addr != NULL, -1);
 
   if ((sock = (int)socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0) {
     log_debug("socket error\n");
     return -1;
   }
 
-  if (connect(sock, (struct sockaddr*)&s_in, sizeof(s_in)) < 0) {
+  if (connect(sock, addr, sizeof(s_in)) < 0) {
     log_debug("connect error\n");
     return -1;
   }
@@ -144,3 +183,21 @@ bool_t socket_set_blocking(int sock, bool_t blocking) {
   return (fcntl(sock, F_SETFL, flags) == 0) ? TRUE : FALSE;
 #endif
 }
+
+ret_t socket_wait_for_data(int sock, uint32_t timeout_ms) {
+  fd_set fdsr;
+  int ret = 0;
+  struct timeval tv = {0, 0};
+ 
+  FD_ZERO(&fdsr);
+  FD_SET(sock, &fdsr);
+
+  tv.tv_sec = timeout_ms/1000;
+  tv.tv_usec = (timeout_ms%1000) * 1000;
+
+  FD_SET(sock, &fdsr);
+  ret = select(sock + 1, &fdsr, NULL, NULL, &tv);
+
+  return ret > 0 ? RET_OK : RET_TIMEOUT;
+}
+
