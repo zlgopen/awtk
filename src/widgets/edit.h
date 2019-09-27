@@ -29,26 +29,6 @@
 
 BEGIN_C_DECLS
 
-typedef struct _input_limit_t {
-  input_type_t type;
-  union {
-    struct {
-      uint32_t min;
-      uint32_t max;
-    } t;
-    struct {
-      int32_t min;
-      int32_t max;
-      uint32_t step;
-    } i;
-    struct {
-      double min;
-      double max;
-      double step;
-    } f;
-  } u;
-} input_limit_t;
-
 typedef bool_t (*edit_is_valid_char_t)(widget_t* widget, wchar_t c);
 
 /**
@@ -166,34 +146,36 @@ typedef struct _edit_t {
 
   /**
    * @property {input_type_t} input_type
-   * @annotation ["set_prop","get_prop","persitent","design"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 输入类型。
-   * XXX：需要在min/max/step之前设置。
    */
+  input_type_t input_type;
 
   /**
-   * @property {float_t} min
-   * @annotation ["set_prop","get_prop","persitent","design"]
+   * @property {double} min
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 最小值或最小长度。
    */
+  double min;
 
   /**
-   * @property {float_t} max
-   * @annotation ["set_prop","get_prop","persitent","design"]
+   * @property {double} max
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 最大值或最大长度。
    */
+  double max;
 
   /**
-   * @property {float_t} step
-   * @annotation ["set_prop","get_prop","persitent","design"]
+   * @property {double} step
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 步长。
    * 作为数值型编辑器时，一次增加和减少时的数值。
    */
+  double step;
 
   /*private*/
   uint32_t idle_id;
   uint32_t timer_id;
-  input_limit_t limit;
   text_edit_t* model;
   edit_is_valid_char_t is_valid_char;
 } edit_t;
