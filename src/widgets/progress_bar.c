@@ -79,19 +79,17 @@ ret_t progress_bar_set_value(widget_t* widget, uint8_t value) {
   return_value_if_fail(progress_bar != NULL && value <= 100, RET_BAD_PARAMS);
 
   if (progress_bar->value != value) {
+    char str[TK_NUM_MAX_LEN + 1];
     event_t e = event_init(EVT_VALUE_WILL_CHANGE, widget);
+
     widget_dispatch(widget, &e);
     progress_bar->value = value;
     e = event_init(EVT_VALUE_CHANGED, widget);
     widget_dispatch(widget, &e);
     widget_invalidate(widget, NULL);
 
-    if (progress_bar->show_text) {
-      char str[TK_NUM_MAX_LEN + 1];
-
-      tk_snprintf(str, TK_NUM_MAX_LEN, "%d%%", progress_bar->value);
-      widget_set_text_utf8(widget, str);
-    }
+    tk_snprintf(str, TK_NUM_MAX_LEN, "%d%%", progress_bar->value);
+    widget_set_text_utf8(widget, str);
   }
 
   return RET_OK;
