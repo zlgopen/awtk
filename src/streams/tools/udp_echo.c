@@ -33,6 +33,8 @@ int main() {
       if(ret < 0) {
         continue;
       }
+      
+      socket_wait_for_data(sockfd, 5000);
       return_value_if_fail(ret == sizeof(size), 0);
       return_value_if_fail(wbuffer_extend_capacity(&wb, size) == RET_OK, 0);
       ret = recvfrom(sockfd, (char *)wb.data, size, MSG_WAITALL, ( struct sockaddr *) &cliaddr, &addr_size);
