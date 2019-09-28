@@ -37,6 +37,7 @@ int main(int argc, char* argv[]) {
   }
 
   socket_init();
+  TK_ENABLE_CONSOLE();
 
   host = argv[1];
   port = tk_atoi(argv[2]);

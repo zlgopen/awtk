@@ -42,6 +42,7 @@ int main(int argc, char* argv[]) {
   }
 
   socket_init();
+  TK_ENABLE_CONSOLE();
 
   port = tk_atoi(argv[1]);
   do_recv(tk_iostream_udp_create_server(port));
