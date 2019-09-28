@@ -7,20 +7,26 @@
 #include "streams/iostream_udp.h"
 #include "streams/socket_helper.h"
 
-void do_recv(tk_iostream_t* iostream) {
+void do_recv(int port) {
   int32_t n = 10;
   int32_t ret = 0;
   char buff[1024];
-  tk_istream_t* istream = tk_iostream_get_istream(iostream);
-  tk_ostream_t* ostream = tk_iostream_get_ostream(iostream);
+  socklen_t len = 0;
+  struct sockaddr_in addr;
+  int sock = socket(AF_INET, SOCK_DGRAM, 0);
+
+  socket_bind(sock, port);
 
   while (n > 0) {
     memset(buff, 0x00, sizeof(buff));
-    ret = tk_istream_read(istream, (uint8_t*)buff, sizeof(buff));
+    memset(&addr, 0x00, sizeof(addr));
+
+    len = sizeof(addr);
+    ret = recvfrom(sock, (uint8_t*)buff, sizeof(buff), 0, (struct sockaddr*)&addr, &len);
     log_debug("read ret=%d %s\n", ret, buff);
 
     if (ret > 0) {
-      ret = tk_ostream_write(ostream, (uint8_t*)buff, ret);
+      ret = sendto(sock, (uint8_t*)buff, ret, 0, (struct sockaddr*)&addr, len);
       log_debug("write %d: %s\n", ret, buff);
     }
 
@@ -28,7 +34,7 @@ void do_recv(tk_iostream_t* iostream) {
     log_debug("remain %d times\n", n);
   }
 
-  object_unref(OBJECT(iostream));
+  socket_close(sock);
 
   return;
 }
@@ -45,7 +51,7 @@ int main(int argc, char* argv[]) {
   TK_ENABLE_CONSOLE();
 
   port = tk_atoi(argv[1]);
-  do_recv(tk_iostream_udp_create_server(port));
+  do_recv(port);
 
   socket_deinit();
 

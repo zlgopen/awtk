@@ -45,18 +45,6 @@ struct _tk_iostream_udp_t {
   tk_ostream_t* ostream;
 };
 
-/**
- * @method tk_iostream_udp_create_server
- *
- * 创建iostream对象(server端)。
- *
- * @param {const char*} host 服务器地址。
- * @param {int} port 端口。
- *
- * @return {tk_iostream_t*} 返回iostream对象。
- *
- */
-tk_iostream_t* tk_iostream_udp_create_server(int port);
 
 /**
  * @method tk_iostream_udp_create_client
