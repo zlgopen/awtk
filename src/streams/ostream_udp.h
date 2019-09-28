@@ -60,7 +60,7 @@ tk_ostream_t* tk_ostream_udp_create(int sock);
 /**
  * @method tk_ostream_udp_set_target_with_host
  *
- * 设置目标。 
+ * 设置目标。
  *
  * @param {tk_ostream_t*} stream ostream对象。
  * @param {const char*} host 主机或IP。
@@ -74,7 +74,7 @@ ret_t tk_ostream_udp_set_target_with_host(tk_ostream_t* stream, const char* host
 /**
  * @method tk_ostream_udp_set_target_with_addr
  *
- * 设置目标。 
+ * 设置目标。
  *
  * @param {tk_ostream_t*} stream ostream对象。
  * @param {struct sockaddr_in} addr 地址。

@@ -56,6 +56,7 @@ int tcp_listen(int port);
 int tcp_accept(int sock);
 int tcp_connect(const char* host, int port);
 
+ret_t socket_bind(int sock, int port);
 ret_t socket_wait_for_data(int sock, uint32_t timeout_ms);
 
 int udp_listen(int port);

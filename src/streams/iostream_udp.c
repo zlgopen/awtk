@@ -75,18 +75,10 @@ static tk_ostream_t* tk_iostream_udp_get_ostream(tk_iostream_t* stream) {
   return iostream_udp->ostream;
 }
 
-tk_iostream_t* tk_iostream_udp_create(const char* host, int port) {
-  int sock = 0;
-  object_t* obj = NULL;
-  struct sockaddr_in addr_in;
-  tk_iostream_udp_t* iostream_udp = NULL;
-  return_value_if_fail(socket_resolve(host, port, &addr_in) != NULL, NULL);
+tk_iostream_t* tk_iostream_udp_create(int sock) {
+  object_t* obj = object_create(&s_tk_iostream_udp_vtable);
+  tk_iostream_udp_t* iostream_udp = TK_IOSTREAM_UDP(obj);
 
-  sock = socket(AF_INET, SOCK_DGRAM, 0);
-  return_value_if_fail(sock >= 0, NULL);
-
-  obj = object_create(&s_tk_iostream_udp_vtable);
-  iostream_udp = TK_IOSTREAM_UDP(obj);
   if (iostream_udp == NULL) {
     socket_close(sock);
     return_value_if_fail(iostream_udp != NULL, NULL);
@@ -96,11 +88,45 @@ tk_iostream_t* tk_iostream_udp_create(const char* host, int port) {
   iostream_udp->istream = tk_istream_udp_create(sock);
   iostream_udp->ostream = tk_ostream_udp_create(sock);
 
-  tk_istream_udp_set_target_with_addr(iostream_udp->istream, addr_in);
-  tk_ostream_udp_set_target_with_addr(iostream_udp->ostream, addr_in);
-
   TK_IOSTREAM(obj)->get_istream = tk_iostream_udp_get_istream;
   TK_IOSTREAM(obj)->get_ostream = tk_iostream_udp_get_ostream;
 
   return TK_IOSTREAM(obj);
+}
+
+tk_iostream_t* tk_iostream_udp_create_server(int port) {
+  int sock = socket(AF_INET, SOCK_DGRAM, 0);
+  return_value_if_fail(sock >= 0, NULL);
+
+  if (socket_bind(sock, port) != RET_OK) {
+    socket_close(sock);
+
+    return NULL;
+  }
+
+  return tk_iostream_udp_create(sock);
+}
+
+tk_iostream_t* tk_iostream_udp_create_client(const char* host, int port) {
+  int sock = 0;
+  struct sockaddr_in addr_in;
+  tk_iostream_udp_t* iostream_udp = NULL;
+  return_value_if_fail(socket_resolve(host, port, &addr_in) != NULL, NULL);
+
+  sock = socket(AF_INET, SOCK_DGRAM, 0);
+  return_value_if_fail(sock >= 0, NULL);
+
+  if (connect(sock, (struct sockaddr*)&addr_in, sizeof(addr_in)) < 0) {
+    perror("connect");
+    socket_close(sock);
+    return NULL;
+  }
+
+  iostream_udp = TK_IOSTREAM_UDP(tk_iostream_udp_create(sock));
+  return_value_if_fail(iostream_udp != NULL, NULL);
+
+  tk_istream_udp_set_target_with_addr(iostream_udp->istream, addr_in);
+  tk_ostream_udp_set_target_with_addr(iostream_udp->ostream, addr_in);
+
+  return TK_IOSTREAM(iostream_udp);
 }

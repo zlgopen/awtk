@@ -27,7 +27,7 @@
 #include "streams/socket_helper.h"
 
 #ifdef WIN32
-#pragma comment(lib,"ws2_32")
+#pragma comment(lib, "ws2_32")
 void socket_init() {
   int iResult;
   WSADATA wsaData;
@@ -59,9 +59,25 @@ void socket_close(int sock) {
 }
 #endif /**/
 
+ret_t socket_bind(int sock, int port) {
+  struct sockaddr_in s;
+  return_value_if_fail(sock >= 0 && port > 0, RET_BAD_PARAMS);
+
+  memset(&s, 0, sizeof(s));
+  s.sin_family = AF_INET;
+  s.sin_port = htons(port);
+  s.sin_addr.s_addr = htonl(INADDR_ANY);
+
+  if (bind(sock, (struct sockaddr*)&s, sizeof(s)) < 0) {
+    log_debug("bind error\n");
+    return RET_FAIL;
+  }
+
+  return RET_OK;
+}
+
 int tcp_listen(int port) {
   int sock;
-  struct sockaddr_in s;
   int on = 1;
 
   if ((sock = (int)socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0) {
@@ -74,14 +90,8 @@ int tcp_listen(int port) {
     return -1;
   }
 
-  memset(&s, 0, sizeof(s));
-  s.sin_family = AF_INET;
-  s.sin_port = htons(port);
-  s.sin_addr.s_addr = htonl(INADDR_ANY);
-  if (bind(sock, (struct sockaddr*)&s, sizeof(s)) < 0) {
-    log_debug("bind error\n");
-    return -1;
-  }
+  return_value_if_fail(socket_bind(sock, port) == RET_OK, -1);
+
   if (listen(sock, 1) < 0) {
     log_debug("listen error\n");
     return -1;
@@ -120,7 +130,7 @@ int udp_listen(int port) {
 
 #define h_addr h_addr_list[0]
 
-struct sockaddr* socket_resolve(const char* host, int port,   struct sockaddr_in* addr) {
+struct sockaddr* socket_resolve(const char* host, int port, struct sockaddr_in* addr) {
   struct hostent* h = NULL;
   return_value_if_fail(host != NULL && addr != NULL, NULL);
 
@@ -188,16 +198,15 @@ ret_t socket_wait_for_data(int sock, uint32_t timeout_ms) {
   fd_set fdsr;
   int ret = 0;
   struct timeval tv = {0, 0};
- 
+
   FD_ZERO(&fdsr);
   FD_SET(sock, &fdsr);
 
-  tv.tv_sec = timeout_ms/1000;
-  tv.tv_usec = (timeout_ms%1000) * 1000;
+  tv.tv_sec = timeout_ms / 1000;
+  tv.tv_usec = (timeout_ms % 1000) * 1000;
 
   FD_SET(sock, &fdsr);
   ret = select(sock + 1, &fdsr, NULL, NULL, &tv);
 
   return ret > 0 ? RET_OK : RET_TIMEOUT;
 }
-

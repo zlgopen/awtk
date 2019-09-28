@@ -31,7 +31,8 @@ static int32_t tk_ostream_udp_write(tk_ostream_t* stream, const uint8_t* buff, u
   int32_t ret = 0;
   tk_ostream_udp_t* ostream_udp = TK_OSTREAM_UDP(stream);
 
-  ret = sendto(ostream_udp->sock, buff, max_size, 0, &(ostream_udp->addr), sizeof(ostream_udp->addr));
+  ret =
+      sendto(ostream_udp->sock, buff, max_size, 0, &(ostream_udp->addr), sizeof(ostream_udp->addr));
 
   if (ret <= 0) {
     ostream_udp->is_broken = TRUE;
@@ -91,4 +92,3 @@ ret_t tk_ostream_udp_set_target_with_host(tk_ostream_t* stream, const char* host
 
   return tk_ostream_udp_set_target_with_addr(stream, addr_in);
 }
-
