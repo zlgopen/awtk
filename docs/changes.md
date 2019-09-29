@@ -1,7 +1,10 @@
 # 最新动态
 
+* 2019/09/29
+  * 修改combo\_box\_ex获取type的问题（感谢尧燊提供补丁）。
+
 * 2019/09/27
-  * time clock支持指针支持锚点（感谢智明提供补丁）。·
+  * time clock支持指针支持锚点（感谢智明提供补丁）。
   * edit/mledit 获得焦点时选中文本。
   * combo\_box 增加localize\_options选项
   * edit min/max/step/type支持脚本绑定。
