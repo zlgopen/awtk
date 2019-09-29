@@ -1376,9 +1376,6 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
     } else if (tk_str_eq(name, WIDGET_PROP_LAYOUT_H)) {
       value_set_int32(v, widget->h);
       ret = RET_OK;
-    } else if (tk_str_eq(name, WIDGET_PROP_TYPE)) {
-      value_set_str(v, widget->vt->type);
-      ret = RET_OK;
     } else if (tk_str_eq(name, WIDGET_PROP_STATE_FOR_STYLE)) {
       value_set_str(v, widget_get_state_for_style(widget, FALSE, FALSE));
       ret = RET_OK;
@@ -1388,6 +1385,13 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
   if (ret == RET_NOT_FOUND) {
     if (widget->custom_props != NULL) {
       ret = object_get_prop(widget->custom_props, name, v);
+    }
+  }
+    
+  if (ret == RET_NOT_FOUND) {
+    if (tk_str_eq(name, WIDGET_PROP_TYPE)) {
+      value_set_str(v, widget->vt->type);
+      ret = RET_OK;
     }
   }
 
