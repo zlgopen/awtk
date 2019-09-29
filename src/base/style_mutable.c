@@ -117,7 +117,6 @@ widget_state_style_t* widget_state_style_add(widget_state_style_t* first, const 
   return_value_if_fail(item != NULL, NULL);
 
   tk_strncpy(item->state, state, TK_NAME_LEN);
-  ;
   if (first != NULL) {
     while (iter->next) {
       iter = iter->next;
