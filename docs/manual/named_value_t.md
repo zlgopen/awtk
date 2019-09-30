@@ -3,7 +3,6 @@
  命名的值。
 
 
-
 ----------------------------------
 ### 函数
 <p id="named_value_t_methods">
@@ -36,7 +35,6 @@
 
 
 
-
 * 函数原型：
 
 ```
@@ -56,7 +54,6 @@ named_value_t* named_value_cast (named_value_t* nv);
 
 > <p id="named_value_t_named_value_create">
  创建named_value对象。
-
 
 
 
@@ -82,7 +79,6 @@ named_value_t* named_value_create ();
 
 
 
-
 * 函数原型：
 
 ```
@@ -102,7 +98,6 @@ ret_t named_value_deinit (named_value_t* nv);
 
 > <p id="named_value_t_named_value_destroy">
  销毁named_value对象。
-
 
 
 
@@ -131,7 +126,6 @@ ret_t named_value_destroy (named_value_t* nv);
 
 
 
-
 * 函数原型：
 
 ```
@@ -151,7 +145,6 @@ value_t* named_value_get_value (named_value_t* nv);
 
 > <p id="named_value_t_named_value_init">
  初始化。
-
 
 
 
@@ -181,7 +174,6 @@ ret_t named_value_init (named_value_t* nv, const char* name, const value_t* valu
 
 
 
-
 * 函数原型：
 
 ```
@@ -206,7 +198,6 @@ ret_t named_value_set_name (named_value_t* nv, const char* name);
 
 
 
-
 * 函数原型：
 
 ```
@@ -225,7 +216,6 @@ ret_t named_value_set_value (named_value_t* nv, const value_t* value);
 > <p id="named_value_t_name"> 名称。
 
 
-
 * 类型：char*
 
 | 特性 | 是否支持 |
@@ -236,7 +226,6 @@ ret_t named_value_set_value (named_value_t* nv, const value_t* value);
 #### value 属性
 -----------------------
 > <p id="named_value_t_value"> 值。
-
 
 
 * 类型：value\_t

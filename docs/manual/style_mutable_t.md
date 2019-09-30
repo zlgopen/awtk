@@ -8,7 +8,6 @@
  style\_mutable也对style\_const进行了包装，当用户没修改某个值时，便从style\_const中获取。
 
 
-
 ----------------------------------
 ### 函数
 <p id="style_mutable_t_methods">
@@ -42,7 +41,6 @@
 
 
 
-
 * 函数原型：
 
 ```
@@ -61,7 +59,6 @@ style_t* style_mutable_cast (style_t* s);
 * 函数功能：
 
 > <p id="style_mutable_t_style_mutable_copy"> 将other对象的数据拷贝到s对象。
-
 
 
 
@@ -90,7 +87,6 @@ ret_t style_mutable_copy (style_t* s, style_t* other);
 
 
 
-
 * 函数原型：
 
 ```
@@ -110,7 +106,6 @@ style_t* style_mutable_create (widget_t* widget, style_t* default_style);
 * 函数功能：
 
 > <p id="style_mutable_t_style_mutable_foreach"> 遍历。对每项调用回调函数on\_style\_item。
-
 
 
 
@@ -137,7 +132,6 @@ ret_t style_mutable_foreach (style_t* s, tk_on_style_item_t on_style_item, void*
 
 
 
-
 * 函数原型：
 
 ```
@@ -156,7 +150,6 @@ const char* style_mutable_get_name (style_t* s);
 * 函数功能：
 
 > <p id="style_mutable_t_style_mutable_get_value"> 获取指定名称的值。
-
 
 
 
@@ -184,7 +177,6 @@ ret_t style_mutable_get_value (style_t* s, const char* state, const char* name, 
 
 
 
-
 * 函数原型：
 
 ```
@@ -202,7 +194,6 @@ ret_t style_mutable_register ();
 * 函数功能：
 
 > <p id="style_mutable_t_style_mutable_set_color"> 设置指定名称的颜色值。
-
 
 
 
@@ -230,7 +221,6 @@ ret_t style_mutable_set_color (style_t* s, const char* state, const char* name, 
 
 
 
-
 * 函数原型：
 
 ```
@@ -255,7 +245,6 @@ ret_t style_mutable_set_int (style_t* s, const char* state, const char* name, in
 
 
 
-
 * 函数原型：
 
 ```
@@ -275,7 +264,6 @@ ret_t style_mutable_set_name (style_t* s, const char* name);
 * 函数功能：
 
 > <p id="style_mutable_t_style_mutable_set_str"> 设置指定名称字符串的值。
-
 
 
 
@@ -303,7 +291,6 @@ ret_t style_mutable_set_str (style_t* s, const char* state, const char* name, co
 
 
 
-
 * 函数原型：
 
 ```
@@ -322,7 +309,6 @@ ret_t style_mutable_set_value (style_t* s, const char* state, const char* name, 
 #### name 属性
 -----------------------
 > <p id="style_mutable_t_name"> 名称。
-
 
 
 * 类型：char*

@@ -9,7 +9,6 @@
 https://github.com/zlgopen/awtk/blob/master/docs/children_layouter_default.md)
 
 
-
 ----------------------------------
 ### 函数
 <p id="children_layouter_default_t_methods">
@@ -25,7 +24,6 @@ https://github.com/zlgopen/awtk/blob/master/docs/children_layouter_default.md)
 
 > <p id="children_layouter_default_t_children_layouter_default_create">
  创建子控件布局对象。
-
 
 
 
@@ -47,7 +45,6 @@ children_layouter_t* children_layouter_default_create ();
 * 函数功能：
 
 > <p id="children_layouter_default_t_self_layouter_register_builtins"> 注册内置的控件自身布局算法。
-
 
 
 

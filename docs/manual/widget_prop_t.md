@@ -1,7 +1,6 @@
 ## widget\_prop\_t
 ### 概述
  控件的属性。
-
 ### 常量
 <p id="widget_prop_t_consts">
 
@@ -12,6 +11,7 @@
 | WIDGET\_PROP\_W | 宽度。 |
 | WIDGET\_PROP\_H | 高度。 |
 | WIDGET\_PROP\_CANVAS | Canvas。 |
+| WIDGET\_PROP\_LOCALIZE\_OPTIONS | Canvas。 |
 | WIDGET\_PROP\_NATIVE\_WINDOW | Native Window。 |
 | WIDGET\_PROP\_HIGHLIGHT | dialog highlight。 |
 | WIDGET\_PROP\_BAR\_SIZE | slider中的bar的的宽度或高度。 |
@@ -35,6 +35,7 @@
 | WIDGET\_PROP\_TR\_TEXT | 待翻译文本。 |
 | WIDGET\_PROP\_STYLE | style。 |
 | WIDGET\_PROP\_ENABLE | 是否启用。 |
+| WIDGET\_PROP\_FEEDBACK | 是否启用按键音等反馈。 |
 | WIDGET\_PROP\_FLOATING | 是否启用floating布局。 |
 | WIDGET\_PROP\_MARGIN | 边距。 |
 | WIDGET\_PROP\_SPACING | 间距。 |

@@ -6,7 +6,6 @@
 >对于性能不高的平台，建议将start\_alpha和end\_alpha设为相同。
 
 
-
 ----------------------------------
 ### 函数
 <p id="dialog_highlighter_default_t_methods">
@@ -30,7 +29,6 @@
 
 
 
-
 * 函数原型：
 
 ```
@@ -48,13 +46,11 @@ dialog_highlighter_t* dialog_highlighter_default_create (object_t* args);
 > <p id="dialog_highlighter_default_t_end_alpha"> 结束alpha，打开对话框的动画结束(直到对话框被关闭)时的alpha值。
 
 
-
 * 类型：uint8\_t
 
 #### start\_alpha 属性
 -----------------------
 > <p id="dialog_highlighter_default_t_start_alpha"> 起始alpha，打开对话框的动画开始时的alpha值。
-
 
 
 * 类型：uint8\_t

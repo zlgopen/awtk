@@ -2,7 +2,6 @@
 ### 概述
  剪切板接口。
 
-
 ----------------------------------
 ### 函数
 <p id="clip_board_t_methods">
@@ -26,7 +25,6 @@
 
 
 
-
 * 函数原型：
 
 ```
@@ -44,7 +42,6 @@ ret_t clip_board ();
 * 函数功能：
 
 > <p id="clip_board_t_clip_board_clear"> 清空剪切板中的数据。
-
 
 
 
@@ -69,7 +66,6 @@ ret_t clip_board_clear (clip_board_t* cl);
 
 
 
-
 * 函数原型：
 
 ```
@@ -88,7 +84,6 @@ ret_t clip_board_destroy (clip_board_t* cl);
 * 函数功能：
 
 > <p id="clip_board_t_clip_board_get_data"> 从剪切板中获取数据。
-
 
 
 
@@ -116,7 +111,6 @@ ret_t clip_board_get_data (clip_board_t* cl, clip_board_data_type_t* type, void*
 
 
 
-
 * 函数原型：
 
 ```
@@ -134,7 +128,6 @@ const char* clip_board_get_text ();
 * 函数功能：
 
 > <p id="clip_board_t_clip_board_set"> 设置缺省的剪切板对象。
-
 
 
 
@@ -159,7 +152,6 @@ ret_t clip_board_set (clip_board_t* cl);
 
 
 
-
 * 函数原型：
 
 ```
@@ -181,7 +173,6 @@ ret_t clip_board_set_data (clip_board_t* cl, clip_board_data_type_t type, const 
 * 函数功能：
 
 > <p id="clip_board_t_clip_board_set_text"> 设置文本(UTF8)数据到剪切板。
-
 
 
 

@@ -17,7 +17,6 @@
  > 先调str\_init进行初始化，最后调用str\_reset释放内存。
 
 
-
 ----------------------------------
 ### 函数
 <p id="str_t_methods">
@@ -73,7 +72,6 @@
 
 
 
-
 * 函数原型：
 
 ```
@@ -96,7 +94,6 @@ ret_t str_append (str_t* str, char* text);
 
 
 
-
 * 函数原型：
 
 ```
@@ -116,7 +113,6 @@ ret_t str_append_char (str_t* str, char c);
 * 函数功能：
 
 > <p id="str_t_str_append_with_len"> 追加字符串。
-
 
 
 
@@ -143,7 +139,6 @@ ret_t str_append_with_len (str_t* str, char* text, uint32_t len);
 
 
 
-
 * 函数原型：
 
 ```
@@ -162,7 +157,6 @@ ret_t str_clear (str_t* str);
 * 函数功能：
 
 > <p id="str_t_str_decode_xml_entity"> 对XML基本的entity进行解码，目前仅支持&lt;&gt;&quota;&amp;。
-
 
 
 
@@ -185,7 +179,6 @@ ret_t str_decode_xml_entity (str_t* str, char* text);
 * 函数功能：
 
 > <p id="str_t_str_decode_xml_entity_with_len"> 对XML基本的entity进行解码，目前仅支持&lt;&gt;&quota;&amp;。
-
 
 
 
@@ -212,7 +205,6 @@ ret_t str_decode_xml_entity_with_len (str_t* str, char* text, uint32_t len);
 
 
 
-
 * 函数原型：
 
 ```
@@ -232,7 +224,6 @@ bool_t str_end_with (str_t* str, char* text);
 * 函数功能：
 
 > <p id="str_t_str_eq"> 判断两个字符串是否相等。
-
 
 
 
@@ -265,7 +256,6 @@ bool_t str_eq (str_t* str, char* text);
 
 
 
-
 * 函数原型：
 
 ```
@@ -284,7 +274,6 @@ ret_t str_expand_vars (str_t* str);
 * 函数功能：
 
 > <p id="str_t_str_extend"> 扩展字符串到指定的容量。
-
 
 
 
@@ -310,7 +299,6 @@ ret_t str_extend (str_t* str, uint32_t capacity);
 
 
 
-
 * 函数原型：
 
 ```
@@ -330,7 +318,6 @@ ret_t str_from_float (str_t* str, double v);
 * 函数功能：
 
 > <p id="str_t_str_from_int"> 用整数初始化字符串。
-
 
 
 
@@ -356,7 +343,6 @@ ret_t str_from_int (str_t* str, int32_t v);
 
 
 
-
 * 函数原型：
 
 ```
@@ -376,7 +362,6 @@ ret_t str_from_value (str_t* str, value_t v);
 * 函数功能：
 
 > <p id="str_t_str_from_wstr"> 用value初始化字符串。
-
 
 
 
@@ -402,7 +387,6 @@ ret_t str_from_wstr (str_t* str, wchar_t* wstr);
 
 
 
-
 * 函数原型：
 
 ```
@@ -422,7 +406,6 @@ str_t* str_init (str_t* str, uint32_t capacity);
 * 函数功能：
 
 > <p id="str_t_str_insert"> 插入子字符串。
-
 
 
 
@@ -446,7 +429,6 @@ ret_t str_insert (str_t* str, uint32_t offset, char* text);
 * 函数功能：
 
 > <p id="str_t_str_insert_with_len"> 插入子字符串。
-
 
 
 
@@ -474,7 +456,6 @@ ret_t str_insert_with_len (str_t* str, uint32_t offset, char* text, uint32_t len
 
 
 
-
 * 函数原型：
 
 ```
@@ -493,7 +474,6 @@ ret_t str_pop (str_t* str);
 * 函数功能：
 
 > <p id="str_t_str_remove"> 删除子字符串。
-
 
 
 
@@ -520,7 +500,6 @@ ret_t str_remove (str_t* str, uint32_t offset, uint32_t len);
 
 
 
-
 * 函数原型：
 
 ```
@@ -541,7 +520,6 @@ ret_t str_replace (str_t* str, char* text, char* new_text);
 * 函数功能：
 
 > <p id="str_t_str_reset"> 重置字符串为空。
-
 
 
 
@@ -566,7 +544,6 @@ ret_t str_reset (str_t* str);
 
 
 
-
 * 函数原型：
 
 ```
@@ -586,7 +563,6 @@ ret_t str_set (str_t* str, char* text);
 * 函数功能：
 
 > <p id="str_t_str_set_with_len"> 设置字符串。
-
 
 
 
@@ -613,7 +589,6 @@ ret_t str_set_with_len (str_t* str, char* text, uint32_t len);
 
 
 
-
 * 函数原型：
 
 ```
@@ -633,7 +608,6 @@ bool_t str_start_with (str_t* str, char* text);
 * 函数功能：
 
 > <p id="str_t_str_to_float"> 将字符串转成浮点数。
-
 
 
 
@@ -659,7 +633,6 @@ ret_t str_to_float (str_t* str, double* v);
 
 
 
-
 * 函数原型：
 
 ```
@@ -679,7 +652,6 @@ ret_t str_to_int (str_t* str, int32_t* v);
 * 函数功能：
 
 > <p id="str_t_str_to_lower"> 将字符串转成小写。
-
 
 
 
@@ -704,7 +676,6 @@ ret_t str_to_lower (str_t* str);
 
 
 
-
 * 函数原型：
 
 ```
@@ -723,7 +694,6 @@ ret_t str_to_upper (str_t* str);
 * 函数功能：
 
 > <p id="str_t_str_trim"> 去除首尾指定的字符。
-
 
 
 
@@ -749,7 +719,6 @@ ret_t str_trim (str_t* str, char* text);
 
 
 
-
 * 函数原型：
 
 ```
@@ -769,7 +738,6 @@ ret_t str_trim_left (str_t* str, char* text);
 * 函数功能：
 
 > <p id="str_t_str_trim_right"> 去除尾部指定的字符。
-
 
 
 
@@ -795,7 +763,6 @@ ret_t str_trim_right (str_t* str, char* text);
 
 
 
-
 * 函数原型：
 
 ```
@@ -813,7 +780,6 @@ ret_t str_unescape (str_t* str);
 > <p id="str_t_capacity"> 容量。
 
 
-
 * 类型：uint32\_t
 
 | 特性 | 是否支持 |
@@ -825,7 +791,6 @@ ret_t str_unescape (str_t* str);
 > <p id="str_t_size"> 长度。
 
 
-
 * 类型：uint32\_t
 
 | 特性 | 是否支持 |
@@ -835,7 +800,6 @@ ret_t str_unescape (str_t* str);
 #### str 属性
 -----------------------
 > <p id="str_t_str"> 字符串。
-
 
 
 * 类型：char*

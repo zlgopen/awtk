@@ -9,7 +9,6 @@
 https://github.com/zlgopen/awtk/blob/master/docs/children_layouter_list_view.md)
 
 
-
 ----------------------------------
 ### 函数
 <p id="children_layouter_list_view_t_methods">
@@ -24,7 +23,6 @@ https://github.com/zlgopen/awtk/blob/master/docs/children_layouter_list_view.md)
 
 > <p id="children_layouter_list_view_t_children_layouter_list_view_create">
  创建子控件布局对象。
-
 
 
 

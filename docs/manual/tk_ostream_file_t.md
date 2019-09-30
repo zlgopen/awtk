@@ -3,8 +3,7 @@
 ![image](images/tk_ostream_file_t_0.png)
 
 
- input stream base on fileory
-
+ input stream base on file
 
 
 ----------------------------------
@@ -21,7 +20,6 @@
 
 > <p id="tk_ostream_file_t_tk_ostream_file_create">
  创建ostream对象。
-
 
 
 

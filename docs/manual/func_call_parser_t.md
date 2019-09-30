@@ -11,7 +11,6 @@
  如:move(x=10, y=20)
  如:rename(old_name=aa, new_name=bb)
 
-
 ----------------------------------
 ### 函数
 <p id="func_call_parser_t_methods">
@@ -41,7 +40,6 @@
 
 
 
-
 * 函数原型：
 
 ```
@@ -60,7 +58,6 @@ ret_t func_call_parser_deinit (func_call_parser_t* parser);
 * 函数功能：
 
 > <p id="func_call_parser_t_func_call_parser_init"> 初始化parser对象。
-
 
 
 
@@ -87,7 +84,6 @@ func_call_parser_t* func_call_parser_init (func_call_parser_t* parser, const cha
 
 
 
-
 * 函数原型：
 
 ```
@@ -111,7 +107,6 @@ ret_t func_call_parser_parse (func_call_parser_t* parser);
 
 
 
-
 * 函数原型：
 
 ```
@@ -130,7 +125,6 @@ object_t* func_call_parser_parse (const char* str, uint32_t size);
 > <p id="func_call_parser_t_args"> 函数参数描述。
 
 
-
 * 类型：arg\_desc\_t**
 
 | 特性 | 是否支持 |
@@ -140,7 +134,6 @@ object_t* func_call_parser_parse (const char* str, uint32_t size);
 #### desc 属性
 -----------------------
 > <p id="func_call_parser_t_desc"> 描述。
-
 
 
 * 类型：const char*
@@ -154,7 +147,6 @@ object_t* func_call_parser_parse (const char* str, uint32_t size);
 > <p id="func_call_parser_t_exec"> 函数指针。
 
 
-
 * 类型：func\_exec\_t
 
 | 特性 | 是否支持 |
@@ -166,7 +158,6 @@ object_t* func_call_parser_parse (const char* str, uint32_t size);
 > <p id="func_call_parser_t_name"> 名称。
 
 
-
 * 类型：const char*
 
 | 特性 | 是否支持 |
@@ -176,7 +167,6 @@ object_t* func_call_parser_parse (const char* str, uint32_t size);
 #### return\_value 属性
 -----------------------
 > <p id="func_call_parser_t_return_value"> 函数返回值描述。
-
 
 
 * 类型：value\_desc\_t*

@@ -6,7 +6,6 @@
  input stream base on memory
 
 
-
 ----------------------------------
 ### 函数
 <p id="tk_ostream_mem_t_methods">
@@ -21,7 +20,6 @@
 
 > <p id="tk_ostream_mem_t_tk_ostream_mem_create">
  创建ostream对象。
-
 
 
 

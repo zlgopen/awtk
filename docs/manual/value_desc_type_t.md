@@ -1,7 +1,6 @@
 ## value\_desc\_type\_t
 ### 概述
  属性描述类型常量定义。
-
 ### 常量
 <p id="value_desc_type_t_consts">
 
@@ -19,5 +18,6 @@
 | VALUE\_DESC\_TYPE\_DOUBLE | 双精度浮点数类型。 |
 | VALUE\_DESC\_TYPE\_BOOL | 布尔类型。 |
 | VALUE\_DESC\_TYPE\_STRING | 字符串类型。 |
+| VALUE\_DESC\_TYPE\_BINARY | 二进制类型。 |
 | VALUE\_DESC\_TYPE\_INT\_ENUMS | 整数枚举类型。 |
 | VALUE\_DESC\_TYPE\_STRING\_ENUMS | 字符串枚举类型。 |

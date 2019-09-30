@@ -1,7 +1,6 @@
 ## clip\_board\_data\_type\_t
 ### 概述
  剪切板数据类型定义。
-
 ### 常量
 <p id="clip_board_data_type_t_consts">
 

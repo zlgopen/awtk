@@ -8,7 +8,6 @@
  tools/theme_gen用于把XML的主题数据转换成常量数据。
 
 
-
 ----------------------------------
 ### 函数
 <p id="style_const_t_methods">
@@ -23,7 +22,6 @@
 
 > <p id="style_const_t_style_const_create">
  创建只读的style对象。
-
 
 
 

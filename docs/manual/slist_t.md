@@ -20,7 +20,6 @@
  ```
 
 
-
 ----------------------------------
 ### 函数
 <p id="slist_t_methods">
@@ -56,7 +55,6 @@
 
 
 
-
 * 函数原型：
 
 ```
@@ -76,7 +74,6 @@ ret_t slist_append (slist_t* slist, void* data);
 * 函数功能：
 
 > <p id="slist_t_slist_count"> 返回满足条件元素的个数。
-
 
 
 
@@ -102,7 +99,6 @@ int32_t slist_count (slist_t* slist, void* ctx);
 
 
 
-
 * 函数原型：
 
 ```
@@ -122,7 +118,6 @@ slist_t* slist_create (tk_destroy_t destroy, tk_compare_t compare);
 * 函数功能：
 
 > <p id="slist_t_slist_deinit"> 清除单向链表中的元素。
-
 
 
 
@@ -148,7 +143,6 @@ ret_t slist_deinit (slist_t* slist);
 
 
 
-
 * 函数原型：
 
 ```
@@ -167,7 +161,6 @@ ret_t slist_destroy (slist_t* slist);
 * 函数功能：
 
 > <p id="slist_t_slist_find"> 查找第一个满足条件的元素。
-
 
 
 
@@ -190,7 +183,6 @@ void* slist_find (slist_t* slist, void* ctx);
 * 函数功能：
 
 > <p id="slist_t_slist_foreach"> 遍历元素。
-
 
 
 
@@ -217,7 +209,6 @@ ret_t slist_foreach (slist_t* slist, tk_visit_t visit, void* ctx);
 
 
 
-
 * 函数原型：
 
 ```
@@ -238,7 +229,6 @@ slist_t* slist_init (slist_t* slist, tk_destroy_t destroy, tk_compare_t compare)
 * 函数功能：
 
 > <p id="slist_t_slist_prepend"> 在头部追加一个元素。
-
 
 
 
@@ -264,7 +254,6 @@ ret_t slist_prepend (slist_t* slist, void* data);
 
 
 
-
 * 函数原型：
 
 ```
@@ -284,7 +273,6 @@ ret_t slist_remove (slist_t* slist, void* ctx);
 * 函数功能：
 
 > <p id="slist_t_slist_remove_all"> 删除全部元素。
-
 
 
 
@@ -309,7 +297,6 @@ ret_t slist_remove_all (slist_t* slist);
 
 
 
-
 * 函数原型：
 
 ```
@@ -327,7 +314,6 @@ int32_t slist_size (slist_t* slist);
 > <p id="slist_t_compare"> 元素比较函数。
 
 
-
 * 类型：tk\_compare\_t
 
 | 特性 | 是否支持 |
@@ -339,7 +325,6 @@ int32_t slist_size (slist_t* slist);
 > <p id="slist_t_destroy"> 元素销毁函数。
 
 
-
 * 类型：tk\_destroy\_t
 
 | 特性 | 是否支持 |
@@ -349,7 +334,6 @@ int32_t slist_size (slist_t* slist);
 #### first 属性
 -----------------------
 > <p id="slist_t_first"> 首节点。
-
 
 
 * 类型：slist\_node\_t*

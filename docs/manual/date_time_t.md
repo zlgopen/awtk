@@ -5,7 +5,6 @@
 > 在嵌入式平台中，在系统初始时，需要调用date\_time\_set\_impl设置实际获取系统时间的函数。
 
 
-
 ----------------------------------
 ### 函数
 <p id="date_time_t_methods">
@@ -37,7 +36,6 @@
 
 
 
-
 * 函数原型：
 
 ```
@@ -55,7 +53,6 @@ date_time_t* date_time_create ();
 * 函数功能：
 
 > <p id="date_time_t_date_time_destroy"> 销毁date_time对象(一般供脚本语言中使用)。
-
 
 
 
@@ -78,7 +75,6 @@ ret_t date_time_destroy (date_time_t* dt);
 * 函数功能：
 
 > <p id="date_time_t_date_time_init"> 初始为当前日期和时间。
-
 
 
 
@@ -106,7 +102,6 @@ date_time_t* date_time_init (date_time_t* dt);
 
 
 
-
 * 函数原型：
 
 ```
@@ -124,7 +119,6 @@ ret_t date_time_set_impl (date_time_get_now_t date_time_get_now);
 > <p id="date_time_t_day"> 日(1-31)。
 
 
-
 * 类型：int32\_t
 
 | 特性 | 是否支持 |
@@ -135,7 +129,6 @@ ret_t date_time_set_impl (date_time_get_now_t date_time_get_now);
 #### hour 属性
 -----------------------
 > <p id="date_time_t_hour"> 时(0 - 23)。
-
 
 
 * 类型：int32\_t
@@ -150,7 +143,6 @@ ret_t date_time_set_impl (date_time_get_now_t date_time_get_now);
 > <p id="date_time_t_minute"> 分(0 - 59)。
 
 
-
 * 类型：int32\_t
 
 | 特性 | 是否支持 |
@@ -161,7 +153,6 @@ ret_t date_time_set_impl (date_time_get_now_t date_time_get_now);
 #### month 属性
 -----------------------
 > <p id="date_time_t_month"> 月(1-12)。
-
 
 
 * 类型：int32\_t
@@ -176,7 +167,6 @@ ret_t date_time_set_impl (date_time_get_now_t date_time_get_now);
 > <p id="date_time_t_second"> 秒(0 - 59)。
 
 
-
 * 类型：int32\_t
 
 | 特性 | 是否支持 |
@@ -189,7 +179,6 @@ ret_t date_time_set_impl (date_time_get_now_t date_time_get_now);
 > <p id="date_time_t_wday"> 星期几(0-6, Sunday = 0)。
 
 
-
 * 类型：int32\_t
 
 | 特性 | 是否支持 |
@@ -200,7 +189,6 @@ ret_t date_time_set_impl (date_time_get_now_t date_time_get_now);
 #### year 属性
 -----------------------
 > <p id="date_time_t_year"> 年。
-
 
 
 * 类型：int32\_t

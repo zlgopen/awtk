@@ -67,7 +67,7 @@
 | <a href="#image_animation_t_image">image</a> | char* | 图片名称的前缀。 |
 | <a href="#image_animation_t_interval">interval</a> | uint32\_t | 每张图片播放的时间(毫秒)。 |
 | <a href="#image_animation_t_loop">loop</a> | bool\_t | 是否循环播放。 |
-| <a href="#image_animation_t_sequence">sequence</a> | char* | 播放的序列，字符可选值为:0-9,a-z,A-Z。 |
+| <a href="#image_animation_t_sequence">sequence</a> | char* | 播放的序列，字符可选值为数字和英文大小写字母，字符可以重复。如：0123456789或者123123abcd。 |
 | <a href="#image_animation_t_start_index">start\_index</a> | uint32\_t | 图片起始序数。 |
 | <a href="#image_animation_t_unload_after_paint">unload\_after\_paint</a> | bool\_t | 绘制完成后unload图片，以释放内存空间。 |
 #### image\_animation\_cast 函数
@@ -512,7 +512,7 @@ ret_t image_animation_stop (widget_t* widget);
 | 可通过widget\_set\_prop修改 | 是 |
 #### sequence 属性
 -----------------------
-> <p id="image_animation_t_sequence"> 播放的序列，字符可选值为:0-9,a-z,A-Z。
+> <p id="image_animation_t_sequence"> 播放的序列，字符可选值为数字和英文大小写字母，字符可以重复。如：0123456789或者123123abcd。
 
 
 

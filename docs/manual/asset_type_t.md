@@ -1,7 +1,6 @@
 ## asset\_type\_t
 ### 概述
  资源类型常量定义。
-
 ### 常量
 <p id="asset_type_t_consts">
 

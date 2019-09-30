@@ -1,7 +1,6 @@
 ## bitmap\_format\_t
 ### 概述
  位图格式常量定义。
-
 ### 常量
 <p id="bitmap_format_t_consts">
 

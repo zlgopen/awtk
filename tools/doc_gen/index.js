@@ -341,7 +341,9 @@ class ApiGenerator {
       result += '| -------- | ------- | \n';
 
       cls.consts.forEach(iter => {
-        result += `| ${encodeStr(iter.name)} | ${encodeStr(iter.desc.trim())} |\n`;
+        let desc = iter.desc.trim();
+        desc = desc.split('\n')[0];
+        result += `| ${encodeStr(iter.name)} | ${encodeStr(desc)} |\n`;
       });
     }
 

@@ -1,7 +1,6 @@
 ## value\_type\_t
 ### 概述
  类型常量定义。
-
 ### 常量
 <p id="value_type_t_consts">
 
@@ -24,3 +23,7 @@
 | VALUE\_TYPE\_STRING | char*类型。 |
 | VALUE\_TYPE\_WSTRING | wchar\_t*类型。 |
 | VALUE\_TYPE\_OBJECT | object\_t*类型。 |
+| VALUE\_TYPE\_SIZED\_STRING | 带长度的字符串。 |
+| VALUE\_TYPE\_BINARY | 二进制数据。 |
+| VALUE\_TYPE\_UBJSON | 二进制数据(UBJSON)。 |
+| VALUE\_TYPE\_TOKEN | 特殊用途。 |

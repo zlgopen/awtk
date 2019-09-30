@@ -20,7 +20,6 @@
  ```
 
 
-
 ----------------------------------
 ### 函数
 <p id="darray_t_methods">
@@ -62,7 +61,6 @@
 
 
 
-
 * 函数原型：
 
 ```
@@ -81,7 +79,6 @@ ret_t darray_clear (darray_t* darray);
 * 函数功能：
 
 > <p id="darray_t_darray_count"> 返回满足条件元素的个数。
-
 
 
 
@@ -104,7 +101,6 @@ int32_t darray_count (darray_t* darray, void* ctx);
 * 函数功能：
 
 > <p id="darray_t_darray_create"> 创建darray对象。
-
 
 
 
@@ -132,7 +128,6 @@ darray_t* darray_create (uint32_t* capacity, tk_destroy_t destroy, tk_compare_t 
 
 
 
-
 * 函数原型：
 
 ```
@@ -154,7 +149,6 @@ ret_t darray_deinit (darray_t* darray);
 
 
 
-
 * 函数原型：
 
 ```
@@ -173,7 +167,6 @@ ret_t darray_destroy (darray_t* darray);
 * 函数功能：
 
 > <p id="darray_t_darray_find"> 查找第一个满足条件的元素。
-
 
 
 
@@ -199,7 +192,6 @@ void* darray_find (darray_t* darray, void* ctx);
 
 
 
-
 * 函数原型：
 
 ```
@@ -219,7 +211,6 @@ int darray_find_index (darray_t* darray, void* ctx);
 * 函数功能：
 
 > <p id="darray_t_darray_foreach"> 遍历元素。
-
 
 
 
@@ -246,7 +237,6 @@ ret_t darray_foreach (darray_t* darray, tk_visit_t visit, void* ctx);
 
 
 
-
 * 函数原型：
 
 ```
@@ -265,7 +255,6 @@ void* darray_head (darray_t* darray);
 * 函数功能：
 
 > <p id="darray_t_darray_init"> 初始化darray对象。
-
 
 
 
@@ -294,7 +283,6 @@ darray_t* darray_init (darray_t* darray, uint32_t* capacity, tk_destroy_t destro
 
 
 
-
 * 函数原型：
 
 ```
@@ -313,7 +301,6 @@ void* darray_pop (darray_t* darray);
 * 函数功能：
 
 > <p id="darray_t_darray_push"> 在尾巴追加一个元素。
-
 
 
 
@@ -339,7 +326,6 @@ ret_t darray_push (darray_t* darray, void* data);
 
 
 
-
 * 函数原型：
 
 ```
@@ -359,7 +345,6 @@ ret_t darray_remove (darray_t* darray, void* ctx);
 * 函数功能：
 
 > <p id="darray_t_darray_remove_all"> 删除全部满足条件的元素。
-
 
 
 
@@ -385,7 +370,6 @@ ret_t darray_remove_all (darray_t* darray, void* ctx);
 
 
 
-
 * 函数原型：
 
 ```
@@ -408,7 +392,6 @@ ret_t darray_remove_index (darray_t* darray, uint32_t index);
 
 
 
-
 * 函数原型：
 
 ```
@@ -426,7 +409,6 @@ void* darray_tail (darray_t* darray);
 > <p id="darray_t_capacity"> 数组的容量大小。
 
 
-
 * 类型：uint32\_t
 
 | 特性 | 是否支持 |
@@ -436,7 +418,6 @@ void* darray_tail (darray_t* darray);
 #### compare 属性
 -----------------------
 > <p id="darray_t_compare"> 元素比较函数。
-
 
 
 * 类型：tk\_compare\_t
@@ -450,7 +431,6 @@ void* darray_tail (darray_t* darray);
 > <p id="darray_t_destroy"> 元素销毁函数。
 
 
-
 * 类型：tk\_destroy\_t
 
 | 特性 | 是否支持 |
@@ -462,7 +442,6 @@ void* darray_tail (darray_t* darray);
 > <p id="darray_t_elms"> 数组中的元素。
 
 
-
 * 类型：void**
 
 | 特性 | 是否支持 |
@@ -472,7 +451,6 @@ void* darray_tail (darray_t* darray);
 #### size 属性
 -----------------------
 > <p id="darray_t_size"> 数组中元素的个数。
-
 
 
 * 类型：uint32\_t

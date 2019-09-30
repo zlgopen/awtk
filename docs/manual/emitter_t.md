@@ -3,7 +3,6 @@
 
  事件分发器, 用于实现观察者模式。
 
-
 ----------------------------------
 ### 函数
 <p id="emitter_t_methods">
@@ -43,7 +42,6 @@
 
 
 
-
 * 函数原型：
 
 ```
@@ -62,7 +60,6 @@ emitter_t* emitter_cast (emitter_t* emitter);
 * 函数功能：
 
 > <p id="emitter_t_emitter_create"> 创建emitter对象。
-
 
 
 
@@ -87,7 +84,6 @@ emitter_t* emitter_create ();
 
 
 
-
 * 函数原型：
 
 ```
@@ -106,7 +102,6 @@ ret_t emitter_deinit (emitter_t* emitter);
 * 函数功能：
 
 > <p id="emitter_t_emitter_destroy"> 销毁。
-
 
 
 
@@ -135,7 +130,6 @@ ret_t emitter_destroy (emitter_t* emitter);
 
 
 
-
 * 函数原型：
 
 ```
@@ -156,7 +150,6 @@ ret_t emitter_disable (emitter_t* emitter);
 > <p id="emitter_t_emitter_dispatch"> 分发事件。如果当前分发的回调函数返回RET_REMOVE，该回调函数将被移出。
  禁用状态下，本函数不做任何事情。
   如果当前分发的回调函数返回RET_STOP，dispatch中断分发，并返回RET_STOP，否则返回RET_OK。
-
 
 
 * 函数原型：
@@ -182,7 +175,6 @@ ret_t emitter_dispatch (emitter_t* emitter, event_t* e);
   如果当前分发的回调函数返回RET_STOP，dispatch中断分发，并返回RET_STOP，否则返回RET_OK。
 
 
-
 * 函数原型：
 
 ```
@@ -205,7 +197,6 @@ ret_t emitter_dispatch_simple_event (emitter_t* emitter, uint32_t type);
 
 
 
-
 * 函数原型：
 
 ```
@@ -224,7 +215,6 @@ ret_t emitter_enable (emitter_t* emitter);
 * 函数功能：
 
 > <p id="emitter_t_emitter_find"> 通过ID查找emitter_item_t，主要用于辅助测试。
-
 
 
 
@@ -250,7 +240,6 @@ ret_t emitter_find (emitter_t* emitter, uint32_t id);
 
 
 
-
 * 函数原型：
 
 ```
@@ -269,7 +258,6 @@ emitter_t* emitter_init (emitter_t* emitter);
 * 函数功能：
 
 > <p id="emitter_t_emitter_off"> 注销指定事件的处理函数。
-
 
 
 
@@ -295,7 +283,6 @@ ret_t emitter_off (emitter_t* emitter, uint32_t id);
 
 
 
-
 * 函数原型：
 
 ```
@@ -315,7 +302,6 @@ ret_t emitter_off_by_ctx (emitter_t* emitter, void* ctx);
 * 函数功能：
 
 > <p id="emitter_t_emitter_off_by_func"> 注销指定事件的处理函数。
-
 
 
 
@@ -343,7 +329,6 @@ ret_t emitter_off_by_func (emitter_t* emitter, uint32_t type, event_func_t on_ev
 
 
 
-
 * 函数原型：
 
 ```
@@ -365,7 +350,6 @@ uint32_t emitter_on (emitter_t* emitter, uint32_t type, event_func_t on_event, v
 * 函数功能：
 
 > <p id="emitter_t_emitter_set_on_destroy"> 设置一个回调函数，在emitter被销毁时调用(方便脚本语言去释放回调函数)。
-
 
 
 
@@ -393,7 +377,6 @@ ret_t emitter_set_on_destroy (emitter_t* emitter, uint32_t id, tk_destroy_t on_d
 
 
 
-
 * 函数原型：
 
 ```
@@ -409,7 +392,6 @@ uint32_t emitter_size (emitter_t* emitter);
 #### enable 属性
 -----------------------
 > <p id="emitter_t_enable"> 禁用标志。禁用时dispatch无效。
-
 
 
 * 类型：bool\_t

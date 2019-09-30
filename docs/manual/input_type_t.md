@@ -1,7 +1,6 @@
 ## input\_type\_t
 ### 概述
  输入类型常量定义。
-
 ### 常量
 <p id="input_type_t_consts">
 

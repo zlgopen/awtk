@@ -1,7 +1,6 @@
 ## widget\_type\_t
 ### 概述
  控件的类型。
-
 ### 常量
 <p id="widget_type_t_consts">
 

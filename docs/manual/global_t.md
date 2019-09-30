@@ -2,7 +2,6 @@
 ### 概述
  TK全局对象。
 
-
 ----------------------------------
 ### 函数
 <p id="global_t_methods">
@@ -22,7 +21,6 @@
 * 函数功能：
 
 > <p id="global_t_tk_get_pointer_x"> 获取全局指针的X坐标。
-
 
 
 
@@ -46,7 +44,6 @@ int32_t tk_get_pointer_x ();
 
 
 
-
 * 函数原型：
 
 ```
@@ -64,7 +61,6 @@ int32_t tk_get_pointer_y ();
 * 函数功能：
 
 > <p id="global_t_tk_init"> 初始化TK。
-
 
 
 
@@ -93,7 +89,6 @@ ret_t tk_init (wh_t w, wh_t h, app_type_t app_type, const char* app_name, const 
 
 
 
-
 * 函数原型：
 
 ```
@@ -111,7 +106,6 @@ bool_t tk_is_pointer_pressed ();
 * 函数功能：
 
 > <p id="global_t_tk_quit"> 退出TK事件主循环。
-
 
 
 
@@ -135,7 +129,6 @@ ret_t tk_quit ();
 
 
 
-
 * 函数原型：
 
 ```
@@ -153,7 +146,6 @@ ret_t tk_run ();
 * 函数功能：
 
 > <p id="global_t_tk_set_lcd_orientation"> 设置屏幕的旋转方向(XXX:目前仅支持0度和90度)。
-
 
 
 

@@ -16,7 +16,6 @@
  > 输入类型请参考：[input\_type](input_type_t.md)
 
 
-
 ----------------------------------
 ### 函数
 <p id="input_method_t_methods">
@@ -55,7 +54,6 @@
 
 
 
-
 * 函数原型：
 
 ```
@@ -73,7 +71,6 @@ input_method_t* input_method ();
 * 函数功能：
 
 > <p id="input_method_t_input_method_commit_text"> 提交输入文本。
-
 
 
 
@@ -96,7 +93,6 @@ ret_t input_method_commit_text (input_method_t* im, char* text);
 * 函数功能：
 
 > <p id="input_method_t_input_method_commit_text_ex"> 提交输入文本。
-
 
 
 
@@ -123,7 +119,6 @@ ret_t input_method_commit_text_ex (input_method_t* im, bool_t replace, char* tex
 
 
 
-
 * 函数原型：
 
 ```
@@ -141,7 +136,6 @@ input_method_t* input_method_create ();
 * 函数功能：
 
 > <p id="input_method_t_input_method_destroy"> 销毁输入法对象。在具体实现中实现。
-
 
 
 
@@ -163,7 +157,6 @@ ret_t input_method_destroy (input_method_t* im);
 * 函数功能：
 
 > <p id="input_method_t_input_method_dispatch"> 分发一个事件。
-
 
 
 
@@ -189,7 +182,6 @@ ret_t input_method_dispatch (input_method_t* im, event_t* e);
 
 
 
-
 * 函数原型：
 
 ```
@@ -208,7 +200,6 @@ ret_t input_method_dispatch_action (input_method_t* im);
 * 函数功能：
 
 > <p id="input_method_t_input_method_dispatch_candidates"> 请求显示候选字。
-
 
 
 
@@ -235,7 +226,6 @@ ret_t input_method_dispatch_candidates (input_method_t* im, char* strs, uint32_t
 
 
 
-
 * 函数原型：
 
 ```
@@ -255,7 +245,6 @@ ret_t input_method_dispatch_key (input_method_t* im, uint32_t key);
 * 函数功能：
 
 > <p id="input_method_t_input_method_dispatch_to_widget"> 分发一个事件当前焦点控件。
-
 
 
 
@@ -281,7 +270,6 @@ ret_t input_method_dispatch_to_widget (input_method_t* im, event_t* e);
 
 
 
-
 * 函数原型：
 
 ```
@@ -301,7 +289,6 @@ ret_t input_method_off (input_method_t* im, uint32_t id);
 * 函数功能：
 
 > <p id="input_method_t_input_method_on"> 注册指定事件的处理函数。
-
 
 
 
@@ -329,7 +316,6 @@ uint32_t input_method_on (input_method_t* im, event_type_t type, event_func_t on
 
 
 
-
 * 函数原型：
 
 ```
@@ -349,7 +335,6 @@ ret_t input_method_request (input_method_t* im, widget_t* widget);
 * 函数功能：
 
 > <p id="input_method_t_input_method_set"> 设置全局输入法对象。
-
 
 
 
@@ -374,7 +359,6 @@ ret_t input_method_set (input_method_t* im);
 
 
 
-
 * 函数原型：
 
 ```
@@ -394,7 +378,6 @@ ret_t input_method_update_action_button_info (input_method_t* im, char* text, bo
 > <p id="input_method_t_action_button_enable"> 软键盘的上的action按钮是否可用。
 
 
-
 * 类型：bool\_t
 
 | 特性 | 是否支持 |
@@ -406,7 +389,6 @@ ret_t input_method_update_action_button_info (input_method_t* im, char* text, bo
 > <p id="input_method_t_action_button_enable"> 软键盘的上的action按钮文本。
 
 
-
 * 类型：bool\_t
 
 | 特性 | 是否支持 |
@@ -416,7 +398,6 @@ ret_t input_method_update_action_button_info (input_method_t* im, char* text, bo
 #### input\_type 属性
 -----------------------
 > <p id="input_method_t_input_type"> 当前输入的类型。
-
 
 
 * 类型：input\_type\_t

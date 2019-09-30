@@ -39,6 +39,9 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#time_clock_t_guage_pointer_set_anchor">guage\_pointer\_set\_anchor</a> | 设置秒钟指针的旋转锚点。 |
+| <a href="#time_clock_t_guage_pointer_set_anchor">guage\_pointer\_set\_anchor</a> | 设置分钟指针的旋转锚点。 |
+| <a href="#time_clock_t_guage_pointer_set_anchor">guage\_pointer\_set\_anchor</a> | 设置小时指针的旋转锚点。 |
 | <a href="#time_clock_t_time_clock_cast">time\_clock\_cast</a> | 转换为time_clock对象(供脚本语言使用)。 |
 | <a href="#time_clock_t_time_clock_create">time\_clock\_create</a> | 创建time_clock对象 |
 | <a href="#time_clock_t_time_clock_set_bg_image">time\_clock\_set\_bg\_image</a> | 设置背景图片。 |
@@ -54,6 +57,12 @@
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
+| <a href="#time_clock_t_anchor_x">anchor\_x</a> | float\_t | 秒针图片旋转锚点x坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f) |
+| <a href="#time_clock_t_anchor_x">anchor\_x</a> | float\_t | 分针图片旋转锚点x坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f) |
+| <a href="#time_clock_t_anchor_x">anchor\_x</a> | float\_t | 时针图片旋转锚点x坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f) |
+| <a href="#time_clock_t_anchor_y">anchor\_y</a> | float\_t | 秒针图片旋转锚点y坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f) |
+| <a href="#time_clock_t_anchor_y">anchor\_y</a> | float\_t | 分针图片旋转锚点y坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f) |
+| <a href="#time_clock_t_anchor_y">anchor\_y</a> | float\_t | 时针图片旋转锚点y坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f) |
 | <a href="#time_clock_t_bg_image">bg\_image</a> | char* | 背景图片。 |
 | <a href="#time_clock_t_hour">hour</a> | int32\_t | 小时。 |
 | <a href="#time_clock_t_hour_image">hour\_image</a> | char* | 时针图片。 |
@@ -62,6 +71,81 @@
 | <a href="#time_clock_t_minute_image">minute\_image</a> | char* | 分针图片。 |
 | <a href="#time_clock_t_second">second</a> | int32\_t | 秒。 |
 | <a href="#time_clock_t_second_image">second\_image</a> | char* | 秒针图片。 |
+#### guage\_pointer\_set\_anchor 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="time_clock_t_guage_pointer_set_anchor"> 设置秒钟指针的旋转锚点。
+ 指针的锚点坐标x。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
+ 指针的锚点坐标y。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
+
+
+
+* 函数原型：
+
+```
+ret_t guage_pointer_set_anchor (widget_t* widget, const char* , const char* );
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+|  | const char* | x |
+|  | const char* | y |
+#### guage\_pointer\_set\_anchor 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="time_clock_t_guage_pointer_set_anchor"> 设置分钟指针的旋转锚点。
+ 指针的锚点坐标x。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
+ 指针的锚点坐标y。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
+
+
+
+* 函数原型：
+
+```
+ret_t guage_pointer_set_anchor (widget_t* widget, const char* , const char* );
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+|  | const char* | x |
+|  | const char* | y |
+#### guage\_pointer\_set\_anchor 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="time_clock_t_guage_pointer_set_anchor"> 设置小时指针的旋转锚点。
+ 指针的锚点坐标x。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
+ 指针的锚点坐标y。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
+
+
+
+* 函数原型：
+
+```
+ret_t guage_pointer_set_anchor (widget_t* widget, const char* , const char* );
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+|  | const char* | x |
+|  | const char* | y |
 #### time\_clock\_cast 函数
 -----------------------
 
@@ -284,6 +368,108 @@ ret_t time_clock_set_second_image (widget_t* widget, const char* second_image);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | second\_image | const char* | 秒的图片。 |
+#### anchor\_x 属性
+-----------------------
+> <p id="time_clock_t_anchor_x"> 秒针图片旋转锚点x坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
+
+
+* 类型：float\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### anchor\_x 属性
+-----------------------
+> <p id="time_clock_t_anchor_x"> 分针图片旋转锚点x坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
+
+
+* 类型：float\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### anchor\_x 属性
+-----------------------
+> <p id="time_clock_t_anchor_x"> 时针图片旋转锚点x坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
+
+
+* 类型：float\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### anchor\_y 属性
+-----------------------
+> <p id="time_clock_t_anchor_y"> 秒针图片旋转锚点y坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
+
+
+* 类型：float\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### anchor\_y 属性
+-----------------------
+> <p id="time_clock_t_anchor_y"> 分针图片旋转锚点y坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
+
+
+* 类型：float\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### anchor\_y 属性
+-----------------------
+> <p id="time_clock_t_anchor_y"> 时针图片旋转锚点y坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
+
+
+* 类型：float\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### bg\_image 属性
 -----------------------
 > <p id="time_clock_t_bg_image"> 背景图片。

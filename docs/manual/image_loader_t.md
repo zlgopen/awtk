@@ -2,7 +2,6 @@
 ### 概述
  图片加载接口。
 
-
 ----------------------------------
 ### 函数
 <p id="image_loader_t_methods">
@@ -19,7 +18,6 @@
 * 函数功能：
 
 > <p id="image_loader_t_image_loader_load"> 加载图片。
-
 
 
 
@@ -47,7 +45,6 @@ ret_t image_loader_load (image_loader_t* loader, const asset_info_t* asset, bitm
 
 
 
-
 * 函数原型：
 
 ```
@@ -71,7 +68,6 @@ ret_t image_loader_load_image (const asset_info_t* asset, bitmap_t* bitmap);
 
 
 
-
 * 函数原型：
 
 ```
@@ -90,7 +86,6 @@ ret_t image_loader_register (image_loader_t* loader);
 * 函数功能：
 
 > <p id="image_loader_t_image_loader_unregister"> 注销图片加载器。
-
 
 
 

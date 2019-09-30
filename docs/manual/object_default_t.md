@@ -8,7 +8,6 @@
  内部使用有序数组保存所有属性，可以快速查找指定名称的属性。
 
 
-
 ----------------------------------
 ### 函数
 <p id="object_default_t_methods">
@@ -18,6 +17,7 @@
 | <a href="#object_default_t_object_default_clear_props">object\_default\_clear\_props</a> |  |
 | <a href="#object_default_t_object_default_create">object\_default\_create</a> |  |
 | <a href="#object_default_t_object_default_create">object\_default\_create</a> |  |
+| <a href="#object_default_t_object_default_find_prop">object\_default\_find\_prop</a> |  |
 | <a href="#object_default_t_object_default_unref">object\_default\_unref</a> |  |
 ### 属性
 <p id="object_default_t_properties">
@@ -34,7 +34,6 @@
 
 > <p id="object_default_t_object_default_clear_props">
  清除全部属性。
-
 
 
 
@@ -64,7 +63,6 @@ ret_t object_default_clear_props (object_t* obj);
 
 
 
-
 * 函数原型：
 
 ```
@@ -88,7 +86,6 @@ object_t* object_default_create ();
 
 
 
-
 * 函数原型：
 
 ```
@@ -101,6 +98,32 @@ object_t* object_default_create (object_default_t* o);
 | -------- | ----- | --------- |
 | 返回值 | object\_t* | 返回object对象。 |
 | o | object\_default\_t* | 被克隆的对象。 |
+#### object\_default\_find\_prop 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_default_t_object_default_find_prop">
+ 查找满足条件的属性，并返回它的值。
+
+
+
+
+
+* 函数原型：
+
+```
+value_t* object_default_find_prop (object_t* obj, tk_compare_t cmp, const void* data);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | value\_t* | 返回属性的值。 |
+| obj | object\_t* | 对象。 |
+| cmp | tk\_compare\_t | 比较函数。 |
+| data | const void* | 要比较的数据。 |
 #### object\_default\_unref 函数
 -----------------------
 
@@ -108,7 +131,6 @@ object_t* object_default_create (object_default_t* o);
 
 > <p id="object_default_t_object_default_unref">
  for script gc
-
 
 
 
@@ -132,7 +154,6 @@ ret_t object_default_unref (object_t* obj);
 
 
 
-
 * 类型：named\_value\_t
 
 | 特性 | 是否支持 |
@@ -145,7 +166,6 @@ ret_t object_default_unref (object_t* obj);
 
 
 
-
 * 类型：uint32\_t
 
 | 特性 | 是否支持 |
@@ -155,7 +175,6 @@ ret_t object_default_unref (object_t* obj);
 #### props\_size 属性
 -----------------------
 > <p id="object_default_t_props_size"> 属性个数。
-
 
 
 
