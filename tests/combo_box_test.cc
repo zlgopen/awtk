@@ -147,8 +147,6 @@ TEST(ComboBox, resize) {
   widget_t* w = combo_box_create(NULL, 0, 0, 100, 100);
   edit_t* edit = EDIT(w);
 
-  ASSERT_EQ(edit->right_margin, 100);
-
   widget_resize(w, 200, 30);
   ASSERT_EQ(edit->right_margin, 30);
 

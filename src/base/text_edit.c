@@ -104,7 +104,8 @@ static align_h_t widget_get_text_align_h(widget_t* widget) {
 
 static ret_t widget_get_text_layout_info(widget_t* widget, text_layout_info_t* info) {
   value_t v;
-  return_value_if_fail(widget != NULL && info != NULL, RET_BAD_PARAMS);
+  style_t* style = widget->astyle;
+  return_value_if_fail(widget != NULL && info != NULL && style != NULL, RET_BAD_PARAMS);
 
   value_set_int(&v, 0);
   info->widget_w = widget->w;
@@ -114,26 +115,50 @@ static ret_t widget_get_text_layout_info(widget_t* widget, text_layout_info_t* i
 
   if (widget_get_prop(widget, WIDGET_PROP_LEFT_MARGIN, &v) == RET_OK) {
     info->margin_l = value_int(&v);
-  } else {
-    info->margin_l = 1;
+  }
+
+  if (info->margin_l == 0) {
+    info->margin_l = style_get_int(style, STYLE_ID_MARGIN_LEFT, 1);
+  }
+
+  if (info->margin_l == 0) {
+    info->margin_l = style_get_int(style, STYLE_ID_MARGIN, 1);
   }
 
   if (widget_get_prop(widget, WIDGET_PROP_RIGHT_MARGIN, &v) == RET_OK) {
     info->margin_r = value_int(&v);
-  } else {
-    info->margin_r = 1;
+  }
+
+  if (info->margin_r == 0) {
+    info->margin_r = style_get_int(style, STYLE_ID_MARGIN_RIGHT, 1);
+  }
+
+  if (info->margin_r == 0) {
+    info->margin_r = style_get_int(style, STYLE_ID_MARGIN, 1);
   }
 
   if (widget_get_prop(widget, WIDGET_PROP_TOP_MARGIN, &v) == RET_OK) {
     info->margin_t = value_int(&v);
-  } else {
-    info->margin_t = 1;
+  }
+
+  if (info->margin_t == 0) {
+    info->margin_t = style_get_int(style, STYLE_ID_MARGIN_TOP, 1);
+  }
+
+  if (info->margin_t == 0) {
+    info->margin_t = style_get_int(style, STYLE_ID_MARGIN, 1);
   }
 
   if (widget_get_prop(widget, WIDGET_PROP_BOTTOM_MARGIN, &v) == RET_OK) {
     info->margin_b = value_int(&v);
-  } else {
-    info->margin_b = 1;
+  }
+
+  if (info->margin_b == 0) {
+    info->margin_b = style_get_int(style, STYLE_ID_MARGIN_BOTTOM, 1);
+  }
+
+  if (info->margin_b == 0) {
+    info->margin_b = style_get_int(style, STYLE_ID_MARGIN, 1);
   }
 
   info->w = info->widget_w - info->margin_l - info->margin_r;

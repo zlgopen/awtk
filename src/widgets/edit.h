@@ -114,25 +114,25 @@ typedef struct _edit_t {
   bool_t auto_fix;
   /**
    * @property {uint8_t} top_margin
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * @annotation ["set_prop","get_prop","readable"]
    * 上边距。
    */
   uint8_t top_margin;
   /**
    * @property {uint8_t} bottom_margin
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * @annotation ["set_prop","get_prop","readable"]
    * 下边距。
    */
   uint8_t bottom_margin;
   /**
    * @property {uint8_t} left_margin
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * @annotation ["set_prop","get_prop","readable"]
    * 左边距。
    */
   uint8_t left_margin;
   /**
    * @property {uint8_t} right_margin
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * @annotation ["set_prop","get_prop","readable"]
    * 右边距。
    */
   uint8_t right_margin;
