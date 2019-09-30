@@ -87,7 +87,6 @@ ret_t tk_istream_udp_set_target_with_addr(tk_istream_t* stream, struct sockaddr_
 
 ret_t tk_istream_udp_set_target_with_host(tk_istream_t* stream, const char* host, int port) {
   struct sockaddr_in addr_in;
-  tk_istream_udp_t* istream_udp = TK_ISTREAM_UDP(stream);
   return_value_if_fail(stream != NULL, RET_BAD_PARAMS);
   return_value_if_fail(socket_resolve(host, port, &addr_in) != NULL, RET_BAD_PARAMS);
 
