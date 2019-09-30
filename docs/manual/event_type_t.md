@@ -46,10 +46,10 @@
 | EVT\_ANIM\_ONCE | 控件动画yoyo/repeat时，完成一次的事件(event\_t)。 |
 | EVT\_ANIM\_END | 控件动画完成事件(event\_t)。 |
 | EVT\_WINDOW\_LOAD | 窗口加载完成事件(event\_t)。 |
-| EVT\_WINDOW\_WILL\_OPEN | 窗口即将打开事件(event\_t)。 |
-| EVT\_WINDOW\_OPEN | 窗口打开事件(event\_t)。 |
-| EVT\_WINDOW\_TO\_BACKGROUND | 窗口被切换到后台事件(event\_t)。 |
-| EVT\_WINDOW\_TO\_FOREGROUND | 窗口被切换到前台事件(event\_t)。 |
+| EVT\_WINDOW\_WILL\_OPEN | 窗口即将打开事件(event\_t)。 如果有窗口动画，在窗口动画开始前触发。如果没有窗口动画，在窗口被加载后的下一次循环中触发。 |
+| EVT\_WINDOW\_OPEN | 窗口打开事件(event\_t)。 如果有窗口动画，在窗口动画完成时触发。如果没有窗口动画，在窗口被加载后的下一次循环中触发。 |
+| EVT\_WINDOW\_TO\_BACKGROUND | 窗口被切换到后台事件(event\_t)。 打开新窗口时，当前窗口被切换到后台时，对当前窗口触发本事件。 |
+| EVT\_WINDOW\_TO\_FOREGROUND | 窗口被切换到前台事件(event\_t)。 关闭当前窗口时，前一个窗口被切换到前台时，对前一个窗口触发本事件。 |
 | EVT\_WINDOW\_CLOSE | 窗口关闭事件。 |
 | EVT\_REQUEST\_CLOSE\_WINDOW | 请求关闭窗口的事件(event\_t)。 |
 | EVT\_TOP\_WINDOW\_CHANGED | 顶层窗口改变的事件(window\_event\_t)。 |
@@ -66,6 +66,6 @@
 | EVT\_ORIENTATION\_WILL\_CHANGED | 屏幕即将旋转。 |
 | EVT\_ORIENTATION\_CHANGED | 屏幕旋转。 |
 | EVT\_WIDGET\_CREATED | 控件创建事件。 |
-| EVT\_REQUEST\_QUIT\_APP | 请求退出应用程序事件。 |
+| EVT\_REQUEST\_QUIT\_APP | 请求退出应用程序事件。 点击原生窗口关闭按钮时，通过窗口管理器触发，注册该事件并返回RET\_STOP，可以阻止窗口关闭。 |
 | EVT\_REQ\_START | event queue其它请求编号起始值。 |
 | EVT\_USER\_START | 用户定义事件起始值。 |
