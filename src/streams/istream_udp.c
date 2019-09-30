@@ -30,7 +30,7 @@
 static int32_t tk_istream_udp_read(tk_istream_t* stream, uint8_t* buff, uint32_t max_size) {
   int32_t ret = 0;
   tk_istream_udp_t* istream_udp = TK_ISTREAM_UDP(stream);
-  int addr_size = sizeof(istream_udp->addr);
+  socklen_t addr_size = sizeof(istream_udp->addr);
 
   ret = recvfrom(istream_udp->sock, buff, max_size, 0, (struct sockaddr*)&(istream_udp->addr),
                  &addr_size);

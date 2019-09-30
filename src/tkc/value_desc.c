@@ -100,31 +100,27 @@ ret_t value_desc_validate(value_desc_t* schema, value_t* v) {
       return RET_OK;
     }
     case VALUE_DESC_TYPE_STRING_ENUMS: {
+      uint32_t i = 0;
       const char* value = value_str(v);
       const value_desc_string_enums_t* desc = (const value_desc_string_enums_t*)schema;
       return_value_if_fail(desc->enums != NULL && value != NULL, RET_FAIL);
-      if (desc->enums != NULL) {
-        uint32_t i = 0;
-        for (i = 0; desc->enums[i] != NULL; i++) {
-          if (tk_str_eq(desc->enums[i], value)) {
-            return RET_OK;
-          }
+      for (i = 0; desc->enums[i] != NULL; i++) {
+        if (tk_str_eq(desc->enums[i], value)) {
+          return RET_OK;
         }
       }
       break;
     }
 
     case VALUE_DESC_TYPE_INT_ENUMS: {
+      uint32_t i = 0;
       int32_t value = value_int(v);
       const value_desc_int_enums_t* desc = (const value_desc_int_enums_t*)schema;
       return_value_if_fail(desc->enums != NULL, RET_FAIL);
 
-      if (desc->enums != NULL) {
-        uint32_t i = 0;
-        for (i = 0; desc->enums[i] != NULL; i++) {
-          if (tk_atoi(desc->enums[i]) == value) {
-            return RET_OK;
-          }
+      for (i = 0; desc->enums[i] != NULL; i++) {
+        if (tk_atoi(desc->enums[i]) == value) {
+          return RET_OK;
         }
       }
       break;

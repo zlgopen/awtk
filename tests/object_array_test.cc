@@ -140,7 +140,6 @@ TEST(ObjectArray, dup) {
 
 TEST(ObjectArray, path) {
   value_t v;
-  object_t* clone = NULL;
   object_t* root = object_default_create();
   object_t* obja = object_array_create();
   object_t* obja1 = object_default_create();

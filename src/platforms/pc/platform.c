@@ -26,9 +26,6 @@
 #include "tkc/date_time.h"
 #include "tkc/mem.h"
 
-#define SOKOL_IMPL
-#include "sokol/sokol_time.h"
-
 #ifdef WIN32
 #include <windows.h>
 #pragma comment(lib, "Ws2_32.lib")
@@ -85,6 +82,10 @@ static ret_t date_time_get_now_impl(date_time_t* dt) {
 
 #endif
 
+
+uint64_t stm_now_ms();
+void stm_time_init(void);
+
 uint64_t get_time_ms() {
 #if 0
 /*  
@@ -93,8 +94,7 @@ uint64_t get_time_ms() {
   return (uint64_t)(tv.tv_sec) * 1000 + (uint64_t)(tv.tv_usec) / 1000;
 */
 #else
-  uint64_t now = stm_now();
-  return now/1000000;
+  return stm_now_ms();
 #endif  
 }
 
@@ -111,7 +111,7 @@ static uint32_t s_heap_mem[1024 * 1024];
 #endif /*HAS_STD_MALLOC*/
 
 ret_t platform_prepare(void) {
-  stm_setup();
+  stm_time_init();
 
 #ifndef HAS_STD_MALLOC
   tk_mem_init(s_heap_mem, sizeof(s_heap_mem));
