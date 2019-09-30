@@ -350,4 +350,8 @@ typedef void (*tk_sleep_ms_t)(uint32_t ms);
 #define TK_ENABLE_CONSOLE()
 #endif /*WIN32 && !NDEBUG*/
 
+#if defined(WIN32) || defined(LINUX) || defined(MACOS)
+#define WITH_SOCKET 1
+#endif
+
 #endif /*TYPES_DEF_H*/

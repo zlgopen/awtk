@@ -1387,7 +1387,7 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
       ret = object_get_prop(widget->custom_props, name, v);
     }
   }
-    
+
   if (ret == RET_NOT_FOUND) {
     if (tk_str_eq(name, WIDGET_PROP_TYPE)) {
       value_set_str(v, widget->vt->type);

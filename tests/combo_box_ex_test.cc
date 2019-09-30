@@ -39,4 +39,3 @@ TEST(ComboBoxEx, localize) {
 
   widget_destroy(w);
 }
-

@@ -45,7 +45,6 @@ struct _tk_iostream_udp_t {
   tk_ostream_t* ostream;
 };
 
-
 /**
  * @method tk_iostream_udp_create_client
  *
