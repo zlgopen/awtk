@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   event_source.c
  * Author: AWTK Develop Team
  * Brief:  event source interface.
@@ -34,13 +34,13 @@ ret_t event_source_dispatch(event_source_t* source) {
 }
 
 ret_t event_source_check(event_source_t* source) {
-  return_value_if_fail(source != NULL, -1);
+  return_value_if_fail(source != NULL, RET_BAD_PARAMS);
 
   return source->check != NULL ? source->check(source) : RET_FAIL;
 }
 
 uint32_t event_source_get_wakeup_time(event_source_t* source) {
-  return_value_if_fail(source != NULL, -1);
+  return_value_if_fail(source != NULL, 0);
 
-  return source->get_wakeup_time != NULL ? source->get_wakeup_time(source) : -1;
+  return source->get_wakeup_time != NULL ? source->get_wakeup_time(source) : 0;
 }

@@ -19,7 +19,8 @@
  *
  */
 
-#include "value_desc.h"
+#include "tkc/utils.h"
+#include "tkc/value_desc.h"
 
 ret_t value_desc_validate(value_desc_t* schema, value_t* v) {
   return_value_if_fail(v != NULL && schema != NULL, RET_BAD_PARAMS);

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   event_source_manager_default.c
  * Author: AWTK Develop Team
  * Brief:  event manager_default manager_default
@@ -23,6 +23,12 @@
 #define WIN32_LEAN_AND_MEAN 1
 #endif /*WIN32_LEAN_AND_MEAN*/
 
+#include "tkc/mem.h"
+#include "tkc/platform.h"
+#include "tkc/event_source_manager_default.h"
+
+#ifdef WITH_SOCKET
+
 #ifdef WIN32
 #include "windows.h"
 #include <winsock2.h>
@@ -35,10 +41,6 @@ typedef int socklen_t;
 #include <sys/types.h>
 #endif /*WIN32*/
 
-#include "tkc/mem.h"
-#include "tkc/event_source_manager_default.h"
-
-#ifdef WITH_SOCKET
 static ret_t event_source_manager_default_dispatch_fds(event_source_manager_t* manager,
                                                        uint32_t sleep_time) {
   fd_set fdsr;
@@ -112,12 +114,9 @@ static ret_t event_source_manager_default_dispatch_no_fd(event_source_manager_t*
   uint32_t i = 0;
   uint32_t n = 0;
   int32_t fd = 0;
-  int32_t ret = 0;
-  int32_t max_fd = 0;
-  struct timeval tv = {0, 0};
   event_source_t* iter = NULL;
   event_source_t** sources = NULL;
-  return_value_if_fail(manager != NULL, 0);
+  return_value_if_fail(manager != NULL, RET_BAD_PARAMS);
 
   n = manager->dispatching_sources.size;
   sources = (event_source_t**)(manager->dispatching_sources.elms);
