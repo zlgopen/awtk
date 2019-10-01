@@ -27,7 +27,6 @@
 
 BEGIN_C_DECLS
 
-
 typedef ret_t (*event_source_manager_dispatch_t)(event_source_manager_t* manager);
 typedef ret_t (*event_source_manager_destroy_t)(event_source_manager_t* manager);
 

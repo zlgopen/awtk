@@ -72,7 +72,7 @@ int32_t tk_istream_read_len(tk_istream_t* stream, uint8_t* buff, uint32_t max_si
     read_bytes = tk_istream_read(stream, buff + offset, remain_bytes);
 
     if (read_bytes <= 0) {
-      if(errno == EAGAIN) {
+      if (errno == EAGAIN) {
         sleep_ms(10);
         continue;
       } else {

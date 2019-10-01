@@ -33,8 +33,10 @@ static int32_t tk_istream_tcp_read(tk_istream_t* stream, uint8_t* buff, uint32_t
 
   ret = recv(istream_tcp->sock, buff, max_size, 0);
   if (ret <= 0) {
-    if(errno != EAGAIN) {
-      perror("recv");
+    if (errno != EAGAIN) {
+      if (errno != 0) {
+        perror("recv");
+      }
       istream_tcp->is_broken = TRUE;
     }
   }

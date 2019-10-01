@@ -361,5 +361,4 @@ typedef struct _event_source_t event_source_t;
 struct _event_source_manager_t;
 typedef struct _event_source_manager_t event_source_manager_t;
 
-
 #endif /*TYPES_DEF_H*/

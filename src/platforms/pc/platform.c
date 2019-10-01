@@ -82,7 +82,6 @@ static ret_t date_time_get_now_impl(date_time_t* dt) {
 
 #endif
 
-
 uint64_t stm_now_ms();
 void stm_time_init(void);
 
@@ -95,7 +94,7 @@ uint64_t get_time_ms() {
 */
 #else
   return stm_now_ms();
-#endif  
+#endif
 }
 
 void sleep_ms(uint32_t ms) {
