@@ -23,6 +23,7 @@
 #define TK_SOCKET_HELPER_H
 
 #include "tkc/types_def.h"
+#include <errno.h>
 
 BEGIN_C_DECLS
 

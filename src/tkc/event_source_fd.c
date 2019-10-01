@@ -44,7 +44,7 @@ uint32_t event_source_fd_get_wakeup_time(event_source_t* source) {
   return 0xffff;
 }
 
-event_source_t* event_source_fd_create(int fd, event_source_dispatch_t on_event, void* ctx) {
+event_source_t* event_source_fd_create(int fd, event_source_on_event_t on_event, void* ctx) {
   object_t* obj = NULL;
   event_source_t* event_source = NULL;
   event_source_fd_t* event_source_fd = NULL;

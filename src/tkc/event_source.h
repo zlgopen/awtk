@@ -26,13 +26,11 @@
 
 BEGIN_C_DECLS
 
-struct _event_source_t;
-typedef struct _event_source_t event_source_t;
-
 typedef int32_t (*event_source_get_fd_t)(event_source_t* source);
 typedef uint32_t (*event_source_get_wakeup_time_t)(event_source_t* source);
 typedef ret_t (*event_source_check_t)(event_source_t* source);
 typedef ret_t (*event_source_dispatch_t)(event_source_t* source);
+typedef ret_t (*event_source_on_event_t)(event_source_t* source);
 
 /**
  * @class event_source_t
@@ -53,6 +51,8 @@ struct _event_source_t {
   event_source_get_fd_t get_fd;
   event_source_dispatch_t dispatch;
   event_source_get_wakeup_time_t get_wakeup_time;
+
+  event_source_manager_t* manager;
 };
 
 /**

@@ -25,6 +25,7 @@
 #include <math.h>
 #include <ctype.h>
 #include <wchar.h>
+#include <errno.h>
 #include <assert.h>
 #include <stdarg.h>
 #include <stdint.h>
@@ -353,5 +354,12 @@ typedef void (*tk_sleep_ms_t)(uint32_t ms);
 #if defined(WIN32) || defined(LINUX) || defined(MACOS)
 #define WITH_SOCKET 1
 #endif
+
+struct _event_source_t;
+typedef struct _event_source_t event_source_t;
+
+struct _event_source_manager_t;
+typedef struct _event_source_manager_t event_source_manager_t;
+
 
 #endif /*TYPES_DEF_H*/

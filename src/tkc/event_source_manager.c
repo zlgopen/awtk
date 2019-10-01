@@ -69,6 +69,7 @@ ret_t event_source_manager_dispatch(event_source_manager_t* manager) {
 ret_t event_source_manager_add(event_source_manager_t* manager, event_source_t* source) {
   return_value_if_fail(manager != NULL && source != NULL, RET_BAD_PARAMS);
   object_ref(OBJECT(source));
+  source->manager = manager;
 
   return darray_push(&(manager->sources), source);
 }
@@ -82,6 +83,7 @@ bool_t event_source_manager_exist(event_source_manager_t* manager, event_source_
 ret_t event_source_manager_remove(event_source_manager_t* manager, event_source_t* source) {
   return_value_if_fail(manager != NULL && source != NULL, RET_BAD_PARAMS);
 
+  source->manager = NULL;
   return darray_remove(&(manager->sources), source);
 }
 

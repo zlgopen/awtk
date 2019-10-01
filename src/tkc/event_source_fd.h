@@ -42,7 +42,7 @@ struct _event_source_fd_t {
   int fd;
   void* ctx;
   void* ctx2;
-  event_source_dispatch_t on_event;
+  event_source_on_event_t on_event;
 };
 
 /**
@@ -51,13 +51,13 @@ struct _event_source_fd_t {
  * 创建fd事件源。
  *
  * @param {int} fd 可以用select等待的文件描述符。
- * @param {event_source_dispatch_t} on_event 用户的事件处理函数。
+ * @param {event_source_on_event_t} on_event 用户的事件处理函数。
  * @param {void*} ctx on_event函数的上下文。
  *
  * @return {event_source_t*} 返回事件源对象。
  *
  */
-event_source_t* event_source_fd_create(int fd, event_source_dispatch_t on_event, void* ctx);
+event_source_t* event_source_fd_create(int fd, event_source_on_event_t on_event, void* ctx);
 
 #define EVENT_SOURCE_FD(obj) ((event_source_fd_t*)(obj))
 

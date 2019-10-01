@@ -23,6 +23,8 @@
 #define TK_SERIAL_HELPER_H
 
 #include "tkc/types_def.h"
+#include <errno.h>
+#include <string.h>
 
 BEGIN_C_DECLS
 
