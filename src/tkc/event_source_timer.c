@@ -41,10 +41,10 @@ static ret_t event_source_timer_dispatch(event_source_t* source) {
 
 uint32_t event_source_timer_get_wakeup_time(event_source_t* source) {
   event_source_timer_t* event_source_timer = EVENT_SOURCE_TIMER(source);
-  uint32_t next_time = timer_manager_next_time(event_source_timer->timer_manager);
-  uint32_t ret = next_time - event_source_timer->timer_manager->get_time();
+  uint64_t next_time = timer_manager_next_time(event_source_timer->timer_manager);
+  int64_t ret = next_time - event_source_timer->timer_manager->get_time();
 
-  return ret;
+  return ret > 0 ? ret : 0;
 }
 
 event_source_t* event_source_timer_create(timer_manager_t* timer_manager) {
