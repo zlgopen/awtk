@@ -36,7 +36,10 @@ static int32_t tk_istream_udp_read(tk_istream_t* stream, uint8_t* buff, uint32_t
                  &addr_size);
 
   if (ret <= 0) {
-    istream_udp->is_broken = TRUE;
+    if (errno != EAGAIN && errno != 0) {
+      perror("recvfrom");
+      istream_udp->is_broken = TRUE;
+    }
   }
 
   return ret;
