@@ -76,6 +76,7 @@ int32_t tk_istream_read_len(tk_istream_t* stream, uint8_t* buff, uint32_t max_si
         sleep_ms(10);
         continue;
       } else {
+        log_debug("errno=%d\n", errno);
         break;
       }
     }
