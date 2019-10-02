@@ -146,7 +146,7 @@ ret_t ubjson_writer_write_int32(ubjson_writer_t* writer, int32_t value) {
 ret_t ubjson_writer_write_int(ubjson_writer_t* writer, int32_t value) {
   if (value < 128) {
     return ubjson_writer_write_int8(writer, (int8_t)value);
-  } else if (value < 0xefff) {
+  } else if (value < 30000) {
     return ubjson_writer_write_int16(writer, (int16_t)value);
   } else {
     return ubjson_writer_write_int32(writer, value);
