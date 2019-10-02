@@ -61,6 +61,7 @@ ret_t socket_bind(int sock, int port);
 ret_t socket_wait_for_data(int sock, uint32_t timeout_ms);
 
 int udp_listen(int port);
+int udp_connect(const char* host, int port);
 struct sockaddr* socket_resolve(const char* host, int port, struct sockaddr_in* addr);
 
 END_C_DECLS

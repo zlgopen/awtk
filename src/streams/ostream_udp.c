@@ -35,6 +35,7 @@ static int32_t tk_ostream_udp_write(tk_ostream_t* stream, const uint8_t* buff, u
       sendto(ostream_udp->sock, buff, max_size, 0, &(ostream_udp->addr), sizeof(ostream_udp->addr));
 
   if (ret <= 0) {
+    perror("send to");
     ostream_udp->is_broken = TRUE;
   }
 

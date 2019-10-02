@@ -146,7 +146,7 @@ struct sockaddr* socket_resolve(const char* host, int port, struct sockaddr_in* 
 }
 
 int tcp_connect(const char* host, int port) {
-  int sock;
+  int sock = 0;
   struct sockaddr_in s_in;
   struct sockaddr* addr = socket_resolve(host, port, &s_in);
   return_value_if_fail(addr != NULL, -1);
@@ -158,6 +158,27 @@ int tcp_connect(const char* host, int port) {
 
   if (connect(sock, addr, sizeof(s_in)) < 0) {
     log_debug("connect error\n");
+    socket_close(sock);
+    return -1;
+  }
+
+  return sock;
+}
+
+int udp_connect(const char* host, int port) {
+  int sock = 0;
+  struct sockaddr_in s_in;
+  struct sockaddr* addr = socket_resolve(host, port, &s_in);
+  return_value_if_fail(addr != NULL, -1);
+
+  if ((sock = (int)socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
+    log_debug("socket error\n");
+    return -1;
+  }
+
+  if (connect(sock, addr, sizeof(s_in)) < 0) {
+    log_debug("connect error\n");
+    socket_close(sock);
     return -1;
   }
 

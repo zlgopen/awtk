@@ -58,6 +58,18 @@ struct _tk_iostream_udp_t {
  */
 tk_iostream_t* tk_iostream_udp_create_client(const char* host, int port);
 
+/**
+ * @method tk_iostream_udp_create
+ *
+ * 创建iostream对象(客户端)。
+ *
+ * @param {int} sock socket
+ *
+ * @return {tk_iostream_t*} 返回iostream对象。
+ *
+ */
+tk_iostream_t* tk_iostream_udp_create(int sock);
+
 #define TK_IOSTREAM_UDP(obj) ((tk_iostream_udp_t*)(obj))
 
 END_C_DECLS

@@ -98,16 +98,11 @@ tk_iostream_t* tk_iostream_udp_create_client(const char* host, int port) {
   int sock = 0;
   struct sockaddr_in addr_in;
   tk_iostream_udp_t* iostream_udp = NULL;
-  return_value_if_fail(socket_resolve(host, port, &addr_in) != NULL, NULL);
+  struct sockaddr* addr = socket_resolve(host, port, &addr_in);
+  return_value_if_fail(addr != NULL, NULL);
 
-  sock = socket(AF_INET, SOCK_DGRAM, 0);
+  sock = (int)socket(AF_INET, SOCK_DGRAM, 0);
   return_value_if_fail(sock >= 0, NULL);
-
-  if (connect(sock, (struct sockaddr*)&addr_in, sizeof(addr_in)) < 0) {
-    perror("connect");
-    socket_close(sock);
-    return NULL;
-  }
 
   iostream_udp = TK_IOSTREAM_UDP(tk_iostream_udp_create(sock));
   return_value_if_fail(iostream_udp != NULL, NULL);
