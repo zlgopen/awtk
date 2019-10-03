@@ -37,7 +37,7 @@ static int32_t tk_istream_serial_read(tk_istream_t* stream, uint8_t* buff, uint3
 static ret_t tk_istream_serial_get_prop(object_t* obj, const char* name, value_t* v) {
   tk_istream_serial_t* istream_serial = TK_ISTREAM_SERIAL(obj);
   if (tk_str_eq(name, TK_STREAM_PROP_FD)) {
-    value_set_int(v, (int)(istream_serial->fd));
+    value_set_int(v, (int)(serial_handle_get_fd(istream_serial->fd)));
     return RET_OK;
   } else if (tk_str_eq(name, TK_STREAM_PROP_IS_OK)) {
     bool_t is_ok = istream_serial->fd >= 0 && istream_serial->is_broken == FALSE;

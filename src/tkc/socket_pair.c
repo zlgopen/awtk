@@ -36,7 +36,7 @@
 #include <sys/socket.h>
 #endif
 
-#ifdef _WIN32
+#ifdef WIN32
 
 /* dumb_socketpair:
  *   If make_overlapped is nonzero, both sockets created will be usable for

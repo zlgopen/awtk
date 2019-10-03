@@ -27,16 +27,76 @@
  * Additional Contributors: Christopher Baker @bakercp
  */
 
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN 1
+#endif /*WIN32_LEAN_AND_MEAN*/
+
+#include "tkc/mem.h"
 #include "tkc/wstr.h"
+#include "tkc/thread.h"
+#include "tkc/socket_pair.h"
+#include "streams/socket_helper.h"
 #include "streams/serial_helper.h"
 
 #ifdef WIN32
 #define prefix L"\\\\.\\"
+#pragma comment(lib, "ws2_32")
+
+int serial_handle_get_fd(serial_handle_t handle) {
+  return handle->client_fd;
+}
+
+serial_dev_t serial_handle_get_dev(serial_handle_t handle) {
+  return handle->dev;
+}
+
+static void* serial_thread_entry(void* args) {
+  int ret = 0;
+  DWORD err = 0;
+  BOOL b = FALSE;
+  char buff[1024];
+  DWORD bytes = 0;
+  serial_handle_t handle = (serial_handle_t)args;
+
+  int fd = handle->server_fd;
+  serial_dev_t dev = serial_handle_get_dev(handle);
+
+  handle->quited = FALSE;
+  while (!handle->closed) {
+    if (socket_wait_for_data(fd, 100) == RET_OK) {
+      ret = recv(fd, buff, sizeof(buff), 0);
+      if (ret > 0) {
+        bytes = 0;
+        b = WriteFile(dev, buff, (DWORD)(ret), &bytes, NULL);
+        if (!b) {
+          err = GetLastError();
+        }
+      }
+    }
+
+    bytes = 0;
+    b = ReadFile(dev, buff, sizeof(buff), &bytes, NULL);
+    if (b && bytes > 0) {
+      ret = send(fd, buff, bytes, 0);
+    }
+  }
+
+  handle->quited = TRUE;
+
+  return NULL;
+}
 
 serial_handle_t serial_open(const char* port) {
-  HANDLE fd = 0;
   wstr_t str;
-  return_value_if_fail(port != NULL && *port != '\0', INVALID_HANDLE_VALUE);
+  serial_dev_t dev = 0;
+  int socks[2] = {0, 0};
+  serial_handle_t handle = TKMEM_ZALLOC(serial_info_t);
+  return_value_if_fail(handle != NULL && port != NULL && *port != '\0', NULL);
+
+  if (tk_socketpair(socks) < 0) {
+    TKMEM_FREE(handle);
+    return NULL;
+  }
 
   wstr_init(&str, 256);
   wstr_set_utf8(&str, port);
@@ -44,21 +104,27 @@ serial_handle_t serial_open(const char* port) {
     wstr_insert(&str, 0, prefix, wcslen(prefix));
   }
 
-  fd = CreateFileW(str.str, GENERIC_READ | GENERIC_WRITE, 0, 0, OPEN_EXISTING,
-                   FILE_ATTRIBUTE_NORMAL, 0);
+  dev = CreateFileW(str.str, GENERIC_READ | GENERIC_WRITE, 0, 0, OPEN_EXISTING, 0, 0);
   wstr_reset(&str);
 
-  return fd;
+  handle->dev = dev;
+  handle->client_fd = socks[0];
+  handle->server_fd = socks[1];
+  handle->thread = tk_thread_create(serial_thread_entry, handle);
+  tk_thread_start(handle->thread);
+
+  return handle;
 }
 
-ret_t serial_config(serial_handle_t fd, uint32_t baudrate, bytesize_t bytesize, stopbits_t stopbits,
-                    flowcontrol_t flowcontrol, parity_t parity) {
+ret_t serial_config(serial_handle_t handle, uint32_t baudrate, bytesize_t bytesize,
+                    stopbits_t stopbits, flowcontrol_t flowcontrol, parity_t parity) {
   DCB dcbSerialParams = {0};
-  return_value_if_fail(fd != INVALID_HANDLE_VALUE, RET_BAD_PARAMS);
+  serial_dev_t dev = serial_handle_get_dev(handle);
+  return_value_if_fail(handle != NULL, RET_BAD_PARAMS);
 
   dcbSerialParams.DCBlength = sizeof(dcbSerialParams);
 
-  if (!GetCommState(fd, &dcbSerialParams)) {
+  if (!GetCommState(dev, &dcbSerialParams)) {
     // error getting state
     log_debug("Error getting the serial port state.");
 
@@ -270,20 +336,20 @@ ret_t serial_config(serial_handle_t fd, uint32_t baudrate, bytesize_t bytesize, 
   }
 
   // activate settings
-  if (!SetCommState(fd, &dcbSerialParams)) {
-    CloseHandle(fd);
+  if (!SetCommState(dev, &dcbSerialParams)) {
+    CloseHandle(dev);
     log_debug("Error setting serial port settings.");
     return RET_FAIL;
   }
 
   // Setup timeouts
   COMMTIMEOUTS timeouts = {0};
-  timeouts.ReadIntervalTimeout = 1000;
-  timeouts.ReadTotalTimeoutConstant = 10000;
+  timeouts.ReadIntervalTimeout = 100;
+  timeouts.ReadTotalTimeoutConstant = 100;
   timeouts.ReadTotalTimeoutMultiplier = 1;
-  timeouts.WriteTotalTimeoutConstant = 1000;
-  timeouts.WriteTotalTimeoutMultiplier = 1000;
-  if (!SetCommTimeouts(fd, &timeouts)) {
+  timeouts.WriteTotalTimeoutConstant = 100;
+  timeouts.WriteTotalTimeoutMultiplier = 100;
+  if (!SetCommTimeouts(dev, &timeouts)) {
     log_debug("Error setting timeouts.");
     return RET_FAIL;
   }
@@ -291,52 +357,52 @@ ret_t serial_config(serial_handle_t fd, uint32_t baudrate, bytesize_t bytesize, 
   return RET_OK;
 }
 
-ret_t serial_iflush(serial_handle_t fd) {
-  PurgeComm(fd, PURGE_RXCLEAR);
+ret_t serial_iflush(serial_handle_t handle) {
+  serial_dev_t dev = serial_handle_get_dev(handle);
+
+  PurgeComm(dev, PURGE_RXCLEAR);
 
   return RET_OK;
 }
 
-ret_t serial_oflush(serial_handle_t fd) {
-  PurgeComm(fd, PURGE_TXCLEAR);
+ret_t serial_oflush(serial_handle_t handle) {
+  serial_dev_t dev = serial_handle_get_dev(handle);
+
+  PurgeComm(dev, PURGE_TXCLEAR);
 
   return RET_OK;
 }
 
-int32_t serial_read(serial_handle_t fd, uint8_t* buff, uint32_t max_size) {
-  int32_t ret = 0;
-  DWORD bytes_read = 0;
+int serial_close(serial_handle_t handle) {
+  serial_dev_t dev = serial_handle_get_dev(handle);
 
-  if (!ReadFile(fd, buff, (DWORD)(max_size), &bytes_read, NULL)) {
-    ret = -1;
-  } else {
-    ret = bytes_read;
-  }
+  serial_iflush(handle);
+  serial_oflush(handle);
+  CloseHandle(dev);
 
-  return ret;
-}
+  handle->closed = TRUE;
+  tk_thread_join(handle->thread);
 
-int32_t serial_write(serial_handle_t fd, const uint8_t* buff, uint32_t max_size) {
-  int32_t ret = 0;
-  DWORD bytes_write = 0;
+  socket_close(handle->client_fd);
+  socket_close(handle->server_fd);
 
-  if (!WriteFile(fd, buff, (DWORD)(max_size), &bytes_write, NULL)) {
-    ret = -1;
-  } else {
-    ret = bytes_write;
-  }
+  TKMEM_FREE(handle);
 
-  return ret;
-}
-
-ret_t serial_wait_for_data(serial_handle_t fd, uint32_t timeout_ms) {
-  /*TODO*/
-  return RET_NOT_IMPL;
-}
-
-int serial_close(serial_handle_t fd) {
-  CloseHandle(fd);
   return 0;
+}
+
+int32_t serial_read(serial_handle_t handle, uint8_t* buff, uint32_t max_size) {
+  int fd = serial_handle_get_fd(handle);
+  int ret = recv(fd, buff, max_size, 0);
+
+  return ret;
+}
+
+int32_t serial_write(serial_handle_t handle, const uint8_t* buff, uint32_t max_size) {
+  int fd = serial_handle_get_fd(handle);
+  int ret = send(fd, buff, max_size, 0);
+
+  return ret;
 }
 
 #else
@@ -379,19 +445,23 @@ int serial_close(serial_handle_t fd) {
 #endif
 
 serial_handle_t serial_open(const char* port) {
-  return_value_if_fail(port != NULL && *port != '\0', -1);
-  return open(port, O_RDWR | O_NOCTTY | O_NONBLOCK);
+  serial_handle_t handle = TKMEM_ZALLOC(serial_info_t);
+  return_value_if_fail(handle != NULL && port != NULL && *port != '\0', -1);
+  handle->dev = open(port, O_RDWR | O_NOCTTY | O_NONBLOCK);
+
+  return handle;
 }
 
-ret_t serial_config(serial_handle_t fd, uint32_t baudrate, bytesize_t bytesize, stopbits_t stopbits,
-                    flowcontrol_t flowcontrol, parity_t parity) {
+ret_t serial_config(serial_handle_t handle, uint32_t baudrate, bytesize_t bytesize,
+                    stopbits_t stopbits, flowcontrol_t flowcontrol, parity_t parity) {
   bool_t xonxoff = FALSE;
   bool_t rtscts = FALSE;
   int32_t byte_time_ns = 0;
   struct termios options;
-  return_value_if_fail(fd >= 0, RET_BAD_PARAMS);
+  serial_dev_t dev = serial_handle_get_dev(handle);
+  return_value_if_fail(dev >= 0, RET_BAD_PARAMS);
 
-  return_value_if_fail(tcgetattr(fd, &options) >= 0, RET_BAD_PARAMS);
+  return_value_if_fail(tcgetattr(dev, &options) >= 0, RET_BAD_PARAMS);
 
   options.c_cflag |= (tcflag_t)(CLOCAL | CREAD);
   options.c_lflag &=
@@ -610,12 +680,12 @@ ret_t serial_config(serial_handle_t fd, uint32_t baudrate, bytesize_t bytesize, 
       // ultimately determines which baud rates can be used. This ioctl sets both the input
       // and output speed.
       speed_t new_baud = (speed_t)(baudrate);
-      return_value_if_fail(ioctl(fd, IOSSIOSPEED, &new_baud, 1) >= 0, RET_FAIL);
+      return_value_if_fail(ioctl(dev, IOSSIOSPEED, &new_baud, 1) >= 0, RET_FAIL);
       // Linux Support
 #elif defined(__linux__) && defined(TIOCSSERIAL)
       struct serial_struct ser;
 
-      return_value_if_fail(ioctl(fd, TIOCGSERIAL, &ser) >= 0, RET_FAIL);
+      return_value_if_fail(ioctl(dev, TIOCGSERIAL, &ser) >= 0, RET_FAIL);
 
       // set custom divisor
       ser.custom_divisor = ser.baud_base / (int)(baudrate);
@@ -623,7 +693,7 @@ ret_t serial_config(serial_handle_t fd, uint32_t baudrate, bytesize_t bytesize, 
       ser.flags &= ~ASYNC_SPD_MASK;
       ser.flags |= ASYNC_SPD_CUST;
 
-      return_value_if_fail(ioctl(fd, TIOCSSERIAL, &ser) >= 0, RET_FAIL);
+      return_value_if_fail(ioctl(dev, TIOCSSERIAL, &ser) >= 0, RET_FAIL);
 #else
       log_debug("OS does not currently support custom bauds");
       return RET_FAIL;
@@ -734,7 +804,7 @@ ret_t serial_config(serial_handle_t fd, uint32_t baudrate, bytesize_t bytesize, 
   options.c_cc[VTIME] = 0;
 
   // activate settings
-  tcsetattr(fd, TCSANOW, &options);
+  tcsetattr(dev, TCSANOW, &options);
 
   // Update byte_time based on the new settings.
   uint32_t bit_time_ns = 1e9 / baudrate;
@@ -749,32 +819,50 @@ ret_t serial_config(serial_handle_t fd, uint32_t baudrate, bytesize_t bytesize, 
   return RET_OK;
 }
 
-ret_t serial_iflush(serial_handle_t fd) {
-  return tcflush(fd, TCIFLUSH) == 0 ? RET_OK : RET_FAIL;
+ret_t serial_iflush(serial_handle_t handle) {
+  serial_dev_t dev = serial_handle_get_dev(handle);
+  return tcflush(dev, TCIFLUSH) == 0 ? RET_OK : RET_FAIL;
 }
 
-ret_t serial_oflush(serial_handle_t fd) {
-  return tcflush(fd, TCOFLUSH) == 0 ? RET_OK : RET_FAIL;
+ret_t serial_oflush(serial_handle_t handle) {
+  serial_dev_t dev = serial_handle_get_dev(handle);
+  return tcflush(dev, TCOFLUSH) == 0 ? RET_OK : RET_FAIL;
 }
 
-int32_t serial_read(serial_handle_t fd, uint8_t* buff, uint32_t max_size) {
-  return read(fd, buff, max_size);
-}
+int serial_close(serial_handle_t handle) {
+  serial_dev_t dev = serial_handle_get_dev(handle);
 
-int32_t serial_write(serial_handle_t fd, const uint8_t* buff, uint32_t max_size) {
-  return write(fd, buff, max_size);
-}
-
-ret_t serial_wait_for_data(serial_handle_t fd, uint32_t timeout_ms) {
-  /*TODO*/
-  return RET_NOT_IMPL;
-}
-
-int serial_close(serial_handle_t fd) {
-  serial_iflush(fd);
-  serial_oflush(fd);
-  close(fd);
+  serial_iflush(dev);
+  serial_oflush(dev);
+  close(dev);
+  TKMEM_FREE(handle);
 
   return 0;
 }
+
+int serial_handle_get_fd(serial_handle_t handle) {
+  return handle->dev;
+}
+
+serial_dev_t serial_handle_get_dev(serial_handle_t handle) {
+  return handle->dev;
+}
+
+int32_t serial_read(serial_handle_t handle, uint8_t* buff, uint32_t max_size) {
+  int fd = serial_handle_get_fd(handle);
+
+  return read(fd, buff, max_size);
+}
+
+int32_t serial_write(serial_handle_t handle, const uint8_t* buff, uint32_t max_size) {
+  int fd = serial_handle_get_fd(handle);
+
+  return write(fd, buff, max_size);
+}
 #endif /*WIN32*/
+
+ret_t serial_wait_for_data(serial_handle_t handle, uint32_t timeout_ms) {
+  int fd = serial_handle_get_fd(handle);
+
+  return socket_wait_for_data(fd, timeout_ms);
+}

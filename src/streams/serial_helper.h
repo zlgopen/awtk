@@ -22,7 +22,8 @@
 #ifndef TK_SERIAL_HELPER_H
 #define TK_SERIAL_HELPER_H
 
-#include "tkc/types_def.h"
+#include "tkc/thread.h"
+
 #include <errno.h>
 #include <string.h>
 
@@ -30,15 +31,35 @@ BEGIN_C_DECLS
 
 #ifdef WIN32
 #include "windows.h"
-#define serial_handle_t HANDLE
+
+typedef HANDLE serial_dev_t;
+
+typedef struct _serial_info_t {
+  int client_fd;
+  int server_fd;
+  bool_t closed;
+  bool_t quited;
+  serial_dev_t dev;
+  tk_thread_t* thread;
+} serial_info_t;
+
 #else
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/select.h>
 #include <sys/time.h>
 #include <sys/types.h>
-#define serial_handle_t int
+typedef int serial_dev_t;
+
+typedef struct _serial_info_t {
+  serial_dev_t dev;
+} serial_info_t;
 #endif /*WIN32*/
+
+typedef struct _serial_info_t* serial_handle_t;
+
+int serial_handle_get_fd(serial_handle_t handle);
+serial_dev_t serial_handle_get_dev(serial_handle_t handle);
 
 #include "tkc/fs.h"
 #include "tkc/iostream.h"
@@ -59,17 +80,17 @@ typedef enum { flowcontrol_none = 0, flowcontrol_software, flowcontrol_hardware 
 
 serial_handle_t serial_open(const char* port);
 
-ret_t serial_iflush(serial_handle_t fd);
-ret_t serial_oflush(serial_handle_t fd);
-ret_t serial_wait_for_data(serial_handle_t fd, uint32_t timeout_ms);
+ret_t serial_iflush(serial_handle_t handle);
+ret_t serial_oflush(serial_handle_t handle);
+ret_t serial_wait_for_data(serial_handle_t handle, uint32_t timeout_ms);
 
-int32_t serial_read(serial_handle_t fd, uint8_t* buff, uint32_t max_size);
-int32_t serial_write(serial_handle_t fd, const uint8_t* buff, uint32_t max_size);
+int32_t serial_read(serial_handle_t handle, uint8_t* buff, uint32_t max_size);
+int32_t serial_write(serial_handle_t handle, const uint8_t* buff, uint32_t max_size);
 
-int serial_close(serial_handle_t fd);
+int serial_close(serial_handle_t handle);
 
-ret_t serial_config(serial_handle_t fd, uint32_t baudrate, bytesize_t bytesize, stopbits_t stopbits,
-                    flowcontrol_t flowcontrol, parity_t parity);
+ret_t serial_config(serial_handle_t handle, uint32_t baudrate, bytesize_t bytesize,
+                    stopbits_t stopbits, flowcontrol_t flowcontrol, parity_t parity);
 
 END_C_DECLS
 

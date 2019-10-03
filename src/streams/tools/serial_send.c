@@ -1,5 +1,10 @@
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN 1
+#endif /*WIN32_LEAN_AND_MEAN*/
+
 #include "tkc/platform.h"
 #include "streams/iostream_serial.h"
+#include "streams/socket_helper.h"
 #include "streams/serial_helper.h"
 
 void do_send(tk_iostream_t* iostream, const char* msg) {
@@ -37,7 +42,12 @@ int main(int argc, char* argv[]) {
     return 0;
   }
 
+  TK_ENABLE_CONSOLE();
+
+  socket_init();
+  platform_prepare();
   do_send(tk_iostream_serial_create(argv[1]), argv[2]);
+  socket_deinit();
 
   return 0;
 }
