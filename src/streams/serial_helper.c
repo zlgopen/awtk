@@ -446,7 +446,7 @@ int32_t serial_write(serial_handle_t handle, const uint8_t* buff, uint32_t max_s
 
 serial_handle_t serial_open(const char* port) {
   serial_handle_t handle = TKMEM_ZALLOC(serial_info_t);
-  return_value_if_fail(handle != NULL && port != NULL && *port != '\0', -1);
+  return_value_if_fail(handle != NULL && port != NULL && *port != '\0', NULL);
   handle->dev = open(port, O_RDWR | O_NOCTTY | O_NONBLOCK);
 
   return handle;
@@ -832,8 +832,9 @@ ret_t serial_oflush(serial_handle_t handle) {
 int serial_close(serial_handle_t handle) {
   serial_dev_t dev = serial_handle_get_dev(handle);
 
-  serial_iflush(dev);
-  serial_oflush(dev);
+  serial_iflush(handle);
+  serial_oflush(handle);
+
   close(dev);
   TKMEM_FREE(handle);
 
