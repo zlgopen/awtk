@@ -1,4 +1,7 @@
 # 最新动态
+* 2019/10/07
+  * 增加ostream\_buffered。
+
 * 2019/10/06
   * 增加ring buffer。
 

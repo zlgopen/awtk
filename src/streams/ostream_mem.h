@@ -1,7 +1,7 @@
 ﻿/**
  * File:   ostream_mem.h
  * Author: AWTK Develop Team
- * Brief:  input stream base on memory
+ * Brief:  output stream base on memory
  *
  * Copyright (c) 2019 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
@@ -33,7 +33,7 @@ typedef struct _tk_ostream_mem_t tk_ostream_mem_t;
  * @class tk_ostream_mem_t
  * @parent tk_ostream_t
  *
- * input stream base on memory
+ * output stream base on memory
  *
  */
 struct _tk_ostream_mem_t {

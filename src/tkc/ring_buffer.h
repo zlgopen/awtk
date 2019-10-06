@@ -26,9 +26,8 @@
 
 BEGIN_C_DECLS
 
-
 /**
- * @class ring_buffer_t 
+ * @class ring_buffer_t
  * 循环缓存区。
  */
 typedef struct _ring_buffer_t {
@@ -78,7 +77,7 @@ ring_buffer_t* ring_buffer_create(uint32_t capacity);
 /**
  * @method ring_buffer_is_full
  * 检查ring_buffer是否满。
- * 
+ *
  * @param {ring_buffer_t*} ring_buffer ring_buffer对象。
  *
  * @return {bool_t} 是否满。
@@ -88,7 +87,7 @@ bool_t ring_buffer_is_full(ring_buffer_t* ring_buffer);
 /**
  * @method ring_buffer_is_empty
  * 检查ring_buffer是否空。
- * 
+ *
  * @param {ring_buffer_t*} ring_buffer ring_buffer对象。
  *
  * @return {bool_t} 是否空。
@@ -98,7 +97,7 @@ bool_t ring_buffer_is_empty(ring_buffer_t* ring_buffer);
 /**
  * @method ring_buffer_size
  * 获取数据长度。
- * 
+ *
  * @param {ring_buffer_t*} ring_buffer ring_buffer对象。
  *
  * @return {uint32_t} 数据长度。
@@ -108,7 +107,7 @@ uint32_t ring_buffer_size(ring_buffer_t* ring_buffer);
 /**
  * @method ring_buffer_free_size
  * 获取空闲空间的长度。
- * 
+ *
  * @param {ring_buffer_t*} ring_buffer ring_buffer对象。
  *
  * @return {uint32_t} 空闲空间的长度。
@@ -118,7 +117,7 @@ uint32_t ring_buffer_free_size(ring_buffer_t* ring_buffer);
 /**
  * @method ring_buffer_capacity
  * 获取容量。
- * 
+ *
  * @param {ring_buffer_t*} ring_buffer ring_buffer对象。
  *
  * @return {uint32_t} 容量。
@@ -128,7 +127,7 @@ uint32_t ring_buffer_capacity(ring_buffer_t* ring_buffer);
 /**
  * @method ring_buffer_read
  * 读取数据。
- * 
+ *
  * @param {ring_buffer_t*} ring_buffer ring_buffer对象。
  * @param {void*} buff 缓冲区。
  * @param {uint32_t} size 最大长度。
@@ -140,7 +139,7 @@ uint32_t ring_buffer_read(ring_buffer_t* ring_buffer, void* buff, uint32_t size)
 /**
  * @method ring_buffer_peek
  * 读取数据(不修改读取位置)。
- * 
+ *
  * @param {ring_buffer_t*} ring_buffer ring_buffer对象。
  * @param {void*} buff 缓冲区。
  * @param {uint32_t} size 最大长度。
@@ -150,10 +149,10 @@ uint32_t ring_buffer_read(ring_buffer_t* ring_buffer, void* buff, uint32_t size)
 uint32_t ring_buffer_peek(ring_buffer_t* ring_buffer, void* buff, uint32_t size);
 
 /**
- * 
+ *
  * @method ring_buffer_write
  * 写入数据。
- * 
+ *
  * @param {ring_buffer_t*} ring_buffer ring_buffer对象。
  * @param {const void*} buff 缓冲区。
  * @param {uint32_t} size 最大长度。
@@ -165,7 +164,7 @@ uint32_t ring_buffer_write(ring_buffer_t* ring_buffer, const void* buff, uint32_
 /**
  * @method ring_buffer_read_len
  * 读取指定长度数据，要么成功要么失败。
- * 
+ *
  * @param {ring_buffer_t*} ring_buffer ring_buffer对象。
  * @param {void*} buff 缓冲区。
  * @param {uint32_t} size 最大长度。
@@ -177,7 +176,7 @@ ret_t ring_buffer_read_len(ring_buffer_t* ring_buffer, void* buff, uint32_t size
 /**
  * @method ring_buffer_write_len
  * 写入指定长度数据，要么成功要么失败。
- * 
+ *
  * @param {ring_buffer_t*} ring_buffer ring_buffer对象。
  * @param {const void*} buff 缓冲区。
  * @param {uint32_t} size 最大长度。
@@ -189,7 +188,7 @@ ret_t ring_buffer_write_len(ring_buffer_t* ring_buffer, const void* buff, uint32
 /**
  * @method ring_buffer_reset
  * 重置ring_buffer为空。
- * 
+ *
  * @param {ring_buffer_t*} ring_buffer ring_buffer对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -199,7 +198,7 @@ ret_t ring_buffer_reset(ring_buffer_t* ring_buffer);
 /**
  * @method ring_buffer_destroy
  * 销毁ring_buffer。
- * 
+ *
  * @param {ring_buffer_t*} ring_buffer ring_buffer对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

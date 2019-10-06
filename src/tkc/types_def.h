@@ -363,6 +363,6 @@ typedef struct _event_source_manager_t event_source_manager_t;
 
 #ifndef EAGAIN
 #define EAGAIN 11
-#endif/*EAGAIN*/
+#endif /*EAGAIN*/
 
 #endif /*TYPES_DEF_H*/

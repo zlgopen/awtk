@@ -1,7 +1,7 @@
 ﻿/**
  * File:   ostream_mem.c
  * Author: AWTK Develop Team
- * Brief:  input stream base on memory
+ * Brief:  output stream base on memory
  *
  * Copyright (c) 2019 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
