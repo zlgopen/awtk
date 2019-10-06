@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   types_def.h
  * Author: AWTK Develop Team
  * Brief:  basic types definitions.
@@ -360,5 +360,9 @@ typedef struct _event_source_t event_source_t;
 
 struct _event_source_manager_t;
 typedef struct _event_source_manager_t event_source_manager_t;
+
+#ifndef EAGAIN
+#define EAGAIN 11
+#endif/*EAGAIN*/
 
 #endif /*TYPES_DEF_H*/

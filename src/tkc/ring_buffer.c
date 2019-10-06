@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   ring_buffer.c
  * Author: AWTK Develop Team
  * Brief:  ring_buffer
@@ -50,7 +50,6 @@ bool_t ring_buffer_is_empty(ring_buffer_t* ring_buffer) {
 }
 
 uint32_t ring_buffer_size(ring_buffer_t* ring_buffer) {
-  uint32_t size = 0;
   return_value_if_fail(ring_buffer != NULL, 0);
 
   if (ring_buffer->full) {

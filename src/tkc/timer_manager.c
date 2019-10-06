@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   timer.c
  * Author: AWTK Develop Team
  * Brief:  timer manager
@@ -112,22 +112,6 @@ const timer_info_t* timer_manager_find(timer_manager_t* timer_manager, uint32_t 
   return_value_if_fail(timer_manager != NULL, NULL);
 
   return slist_find(&(timer_manager->timers), timer_info_init_dummy(&timer, timer_id));
-}
-
-static ret_t timer_manager_update_time(timer_manager_t* timer_manager, uint32_t now,
-                                       int32_t delta_time) {
-  slist_node_t* iter = timer_manager->timers.first;
-
-  while (iter != NULL) {
-    timer_info_t* timer = (timer_info_t*)(iter->data);
-
-    timer->start += delta_time;
-    timer->user_changed_time = TRUE;
-
-    iter = iter->next;
-  }
-
-  return RET_OK;
 }
 
 static ret_t timer_manager_dispatch_one(timer_manager_t* timer_manager, uint64_t now,
