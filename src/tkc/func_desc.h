@@ -28,6 +28,10 @@ BEGIN_C_DECLS
 
 typedef ret_t (*func_exec_t)(void* obj, value_t* ret, object_t* args);
 
+/**
+ * @class func_desc_t
+ * 函数描述。
+ */
 typedef struct _func_desc_t {
   /**
    * @property {const char*} name

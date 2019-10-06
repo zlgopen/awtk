@@ -33,7 +33,7 @@ TEST(Widget, basic1) {
   ASSERT_EQ(w->h, 400);
 
   ASSERT_EQ(widget_set_state(w, WIDGET_STATE_PRESSED), RET_OK);
-  ASSERT_EQ(w->state, WIDGET_STATE_PRESSED);
+  ASSERT_STREQ(w->state, WIDGET_STATE_PRESSED);
 
   ASSERT_EQ(widget_set_enable(w, TRUE), RET_OK);
   ASSERT_EQ(w->enable, TRUE);

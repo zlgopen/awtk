@@ -87,7 +87,7 @@ typedef struct _darray_t {
  * @annotation ["constructor"]
  * 创建darray对象。
  *
- * @param {uint32_t*} capacity 数组的初始容量。
+ * @param {uint32_t} capacity 数组的初始容量。
  * @param {tk_destroy_t} destroy 元素销毁函数。
  * @param {tk_compare_t} compare 元素比较函数。
  *
