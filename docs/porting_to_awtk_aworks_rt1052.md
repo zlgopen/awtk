@@ -12,7 +12,7 @@ AWTK的可移植性很高，在移植时只需要实现平台初始化、lcd和m
 #include "base/mem.h"
 #include "base/timer.h"
 
-uint32_t get_time_ms() {
+uint32_t get_time_ms64() {
   return aw_sys_tick_get();
 }
 
