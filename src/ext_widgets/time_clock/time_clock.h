@@ -115,42 +115,42 @@ typedef struct _time_clock_t {
   char* second_image;
 
   /**
-   * @property {float_t} anchor_x
+   * @property {char*} hour_anchor_x
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 时针图片旋转锚点x坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
    */
   char* hour_anchor_x;
 
   /**
-   * @property {float_t} anchor_y
+   * @property {char*} hour_anchor_y
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 时针图片旋转锚点y坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
    */
   char* hour_anchor_y;
 
   /**
-   * @property {float_t} anchor_x
+   * @property {char*} minute_anchor_x
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 分针图片旋转锚点x坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
    */
   char* minute_anchor_x;
 
   /**
-   * @property {float_t} anchor_y
+   * @property {char*} minute_anchor_y
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 分针图片旋转锚点y坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
    */
   char* minute_anchor_y;
 
   /**
-   * @property {float_t} anchor_x
+   * @property {char*} second_anchor_x
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 秒针图片旋转锚点x坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
    */
   char* second_anchor_x;
 
   /**
-   * @property {float_t} anchor_y
+   * @property {char*} second_anchor_y
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 秒针图片旋转锚点y坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
    */
@@ -271,42 +271,36 @@ ret_t time_clock_set_bg_image(widget_t* widget, const char* bg_image);
 ret_t time_clock_set_image(widget_t* widget, const char* image);
 
 /**
- * @method guage_pointer_set_anchor
+ * @method time_clock_set_hour_anchor
  * 设置小时指针的旋转锚点。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {const char*} anchor_x
- * 指针的锚点坐标x。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
- * @param {const char*} anchor_y
- * 指针的锚点坐标y。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
+ * @param {const char*} anchor_x 指针的锚点坐标x。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
+ * @param {const char*} anchor_y 指针的锚点坐标y。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t time_clock_set_hour_anchor(widget_t* widget, const char* anchor_x, const char* anchor_y);
 
 /**
- * @method guage_pointer_set_anchor
+ * @method time_clock_set_minute_anchor
  * 设置分钟指针的旋转锚点。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {const char*} anchor_x
- * 指针的锚点坐标x。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
- * @param {const char*} anchor_y
- * 指针的锚点坐标y。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
+ * @param {const char*} anchor_x 指针的锚点坐标x。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
+ * @param {const char*} anchor_y 指针的锚点坐标y。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t time_clock_set_minute_anchor(widget_t* widget, const char* anchor_x, const char* anchor_y);
 
 /**
- * @method guage_pointer_set_anchor
+ * @method time_clock_set_second_anchor
  * 设置秒钟指针的旋转锚点。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {const char*} anchor_x
- * 指针的锚点坐标x。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
- * @param {const char*} anchor_y
- * 指针的锚点坐标y。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
+ * @param {const char*} anchor_x 指针的锚点坐标x。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
+ * @param {const char*} anchor_y 指针的锚点坐标y。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
