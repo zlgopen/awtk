@@ -85,7 +85,7 @@ static ret_t date_time_get_now_impl(date_time_t* dt) {
 uint64_t stm_now_ms();
 void stm_time_init(void);
 
-uint64_t get_time_ms() {
+uint64_t get_time_ms64() {
 #if 0
 /*  
   struct timeval tv;

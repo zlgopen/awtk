@@ -1,6 +1,7 @@
 # 最新动态
 * 2019/10/07
   * 增加ostream\_buffered。
+  * 按issue 241，把get\_time\_ms改名为get\_time\_ms64。
 
 * 2019/10/06
   * 增加ring buffer。

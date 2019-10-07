@@ -24,7 +24,7 @@
 
 uint64_t time_now_ms(void) {
   static uint64_t last = 0;
-  uint64_t now = get_time_ms();
+  uint64_t now = get_time_ms64();
 
   if (now < last) {
     if (now < 0xffffffff) {
@@ -38,5 +38,5 @@ uint64_t time_now_ms(void) {
 }
 
 uint64_t time_now_s(void) {
-  return get_time_ms() / 1000;
+  return get_time_ms64() / 1000;
 }
