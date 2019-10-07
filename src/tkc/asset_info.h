@@ -93,20 +93,52 @@ typedef enum _asset_type_t {
  * 字体资源类型定义。
  */
 typedef enum _asset_font_type_t {
+  /**
+   * @const ASSET_TYPE_FONT_NONE
+   * 无效字体。
+   */
   ASSET_TYPE_FONT_NONE,
+  /**
+   * @const ASSET_TYPE_FONT_TTF
+   * TTF字体。
+   */
   ASSET_TYPE_FONT_TTF,
+  /**
+   * @const ASSET_TYPE_FONT_BMP
+   * 位图字体。
+   */
   ASSET_TYPE_FONT_BMP
 } asset_font_type_t;
 
 /**
  * @enum asset_data_type_t
- * 字体资源类型定义。
+ * 数据资源类型定义。
  */
 typedef enum _asset_data_type_t {
+  /**
+   * @const ASSET_TYPE_DATA_NONE
+   * 未知数据类型。
+   */
   ASSET_TYPE_DATA_NONE,
+  /**
+   * @const ASSET_TYPE_DATA_TEXT
+   * 文本数据类型。
+   */
   ASSET_TYPE_DATA_TEXT,
+  /**
+   * @const ASSET_TYPE_DATA_BIN
+   * 二进制数据类型。
+   */
   ASSET_TYPE_DATA_BIN,
+  /**
+   * @const ASSET_TYPE_DATA_JSON
+   * JSON数据类型。
+   */
   ASSET_TYPE_DATA_JSON,
+  /**
+   * @const ASSET_TYPE_DATA_DAT
+   * 通用数据类型。
+   */
   ASSET_TYPE_DATA_DAT
 } asset_data_type_t;
 
@@ -115,9 +147,25 @@ typedef enum _asset_data_type_t {
  * 脚本资源类型定义。
  */
 typedef enum _asset_script_type_t {
+  /**
+   * @const ASSET_TYPE_SCRIPT_NONE
+   * 未知脚本类型。
+   */
   ASSET_TYPE_SCRIPT_NONE,
+  /**
+   * @const ASSET_TYPE_SCRIPT_JS
+   * JS脚本类型。
+   */
   ASSET_TYPE_SCRIPT_JS,
+  /**
+   * @const ASSET_TYPE_SCRIPT_LUA
+   * LUA脚本类型。
+   */
   ASSET_TYPE_SCRIPT_LUA,
+  /**
+   * @const ASSET_TYPE_SCRIPT_PYTHON
+   * Python脚本类型。
+   */
   ASSET_TYPE_SCRIPT_PYTHON
 } asset_script_type_t;
 
@@ -126,16 +174,56 @@ typedef enum _asset_script_type_t {
  * 图片资源类型定义。
  */
 typedef enum _asset_image_type_t {
+  /**
+   * @const ASSET_TYPE_IMAGE_NONE
+   * 未知图片类型。
+   */
   ASSET_TYPE_IMAGE_NONE,
+  /**
+   * @const ASSET_TYPE_IMAGE_RAW
+   * Raw图片类型。
+   */
   ASSET_TYPE_IMAGE_RAW,
+  /**
+   * @const ASSET_TYPE_IMAGE_BMP
+   * 位图图片类型。
+   */
   ASSET_TYPE_IMAGE_BMP,
+  /**
+   * @const ASSET_TYPE_IMAGE_PNG
+   * PNG图片类型。
+   */
   ASSET_TYPE_IMAGE_PNG,
+  /**
+   * @const ASSET_TYPE_IMAGE_JPG
+   * JPG图片类型。
+   */
   ASSET_TYPE_IMAGE_JPG,
+  /**
+   * @const ASSET_TYPE_IMAGE_BSVG
+   * BSVG图片类型。
+   */
   ASSET_TYPE_IMAGE_BSVG,
+  /**
+   * @const ASSET_TYPE_IMAGE_GIF
+   * GIF图片类型。
+   */
   ASSET_TYPE_IMAGE_GIF,
+  /**
+   * @const ASSET_TYPE_IMAGE_WEBP
+   * WEBP图片类型。
+   */
   ASSET_TYPE_IMAGE_WEBP,
+  /**
+   * @const ASSET_TYPE_IMAGE_LZ4
+   * LZ4压缩的图片类型。
+   */
   ASSET_TYPE_IMAGE_LZ4,
-  ASSET_TYPE_IMAGE_OTHER,
+  /**
+   * @const ASSET_TYPE_IMAGE_OTHER
+   * 其它图片类型。
+   */
+  ASSET_TYPE_IMAGE_OTHER
 } asset_image_type_t;
 
 /**
@@ -143,8 +231,20 @@ typedef enum _asset_image_type_t {
  * UI资源类型定义。
  */
 typedef enum _asset_ui_type_t {
+  /**
+   * @const ASSET_TYPE_UI_NONE
+   * 无效UI类型。
+   */
   ASSET_TYPE_UI_NONE,
+  /**
+   * @const ASSET_TYPE_UI_BIN
+   * 二进制的UI类型。
+   */
   ASSET_TYPE_UI_BIN,
+  /**
+   * @const ASSET_TYPE_UI_XML
+   * XML格式的UI类型。
+   */
   ASSET_TYPE_UI_XML
 } asset_ui_type_t;
 

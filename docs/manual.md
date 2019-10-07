@@ -207,17 +207,84 @@
 * [slist](manual/slist_t.md) 单向链表。
 * [memory](manual/tk_mem_t.md) 内存管理相关函数和宏。
 * [rgba](manual/rgba_t.md) RGBA颜色值。
-* [color](manual/color_t.md) 颜色对象。
+
 * [color\_parse](manual/color_parser_t.md) 颜色解析对象。
 * [value](manual/value_t.md) 通用值对象。
 * [str](manual/str_t.md) UTF-8字符串对象。
 * [wstr](manual/wstr_t.md) Unicode字符串对象。
-* [wbuffer](manual/wbuffer_t.md) Write Buffer。
-* [rbuffer](manual/rbuffer_t.md) Read Buffer。
+
 * [date\_time](manual/date_time_t.md) 时间日期函数。
 * [event](manual/event_t.md) 事件基类。
 * [tk\_thread](manual/tk_thread_t.md) 线程。
 * [tk\_mutex](manual/tk_mutex_t.md) 互斥锁。
+。
+--------------------------
+
+* [asset_info](manual/asset_info_t.md) 资源类型定义。
+* [wbuffer](manual/wbuffer_t.md) Write Buffer。
+* [rbuffer](manual/rbuffer_t.md) Read Buffer。
+* [color](manual/color_t.md) 颜色对象。
+* [color\_parse](manual/color_parser_t.md) 颜色解析器。
 * [tk\_cond\_var](manual/tk_cond_var_t.md) 简化版条件变量。
+* [darray](manual/darray_t.md) 动态数组。
+
+* [date\_time](manual/date_time_t.md) 时间日期函数。
+* [easing](manual/easing_type_t.md) 缓动作常量定义。
+* [emitter](manual/emitter_t.md)事件分发器, 用于实现观察者模式。
+
+* endian 大端/小端相关函数。
+
+* [event](manual/emitter_t.md) 事件基类。
+
+* [event_source](manual/event_source_t.md) 事件源接口。
+
+* [event_source_fd](manual/event_source_fd_t.md) 基于文件描述符的事件源实现。
+
+* [event_source_idle](manual/event_source_idle_t.md) 基于IDLE的事件源实现。
+
+* [event_source_manager](manual/event_source_manager_t.md) 事件源管理器的接口。
+
+* [event_source_manager_default](manual/event_source_manager_default_t.md) 事件源管理器的缺省实现。
+
+* [event_source_timer](manual/event_source_timer_t.md) 基于Time的事件源实现。
+
+* fs.h
+* func_call_parser.h
+* func_desc.h
+* idle_info.h
+* idle_manager.h
+* int_str.h
+* iostream.h
+* istream.h
+* matrix.h
+* mem.h
+* mime_types.h
+* mutex.h
+* named_value.h
+* object.h
+* object_array.h
+* object_default.h
+* ostream.h
+* path.h
+* platform.h
+* rect.h
+* ring_buffer.h
+* rom_fs.h
+* slist.h
+* socket_pair.h
+* str.h
+* str_str.h
+* stream_const.h
+* thread.h
+* time_now.h
+* timer_info.h
+* timer_manager.h
+* tokenizer.h
+* types_def.h
+* utf8.h
+* utils.h
+* value.h
+* value_desc.h
+* wstr.h
 
 
