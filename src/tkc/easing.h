@@ -74,10 +74,10 @@ typedef enum _easing_type_t {
    */
   EASING_SIN_OUT,
   /**
-   * @const EASING_SIN_OUT
+   * @const EASING_SIN_INOUT
    * EASING_SIN_OUT
    */
-  EASING_SIN_OUT,
+  EASING_SIN_INOUT,
   /**
    * @const EASING_POW_IN
    * EASING_POW_IN
