@@ -52,15 +52,22 @@ typedef struct _ring_buffer_t {
   /**
    * @property {uint32_t} capacity
    * @annotation ["readable"]
-   * 容量。
+   * 当前容量。
    */
   uint32_t capacity;
+  /**
+   * @property {uint32_t} max_capacity
+   * @annotation ["readable"]
+   * 最大容量。
+   */
+  uint32_t max_capacity;
   /**
    * @property {uint8_t*} data
    * @annotation ["readable"]
    * 数据。
    */
-  uint8_t data[4];
+  uint8_t* data;
+
 } ring_buffer_t;
 
 /**
@@ -68,11 +75,12 @@ typedef struct _ring_buffer_t {
  * @annotation ["constructor"]
  * 创建ring_buffer对象。
  *
- * @param {uint32_t} capacity 容量。
+ * @param {uint32_t} init_capacity 初始容量。
+ * @param {uint32_t} max_capacity 最大容量。
  *
  * @return {ring_buffer_t*} ring_buffer对象。
  */
-ring_buffer_t* ring_buffer_create(uint32_t capacity);
+ring_buffer_t* ring_buffer_create(uint32_t init_capacity, uint32_t max_capacity);
 
 /**
  * @method ring_buffer_is_full

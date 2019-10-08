@@ -22,17 +22,24 @@
 #include "tkc/mem.h"
 #include "tkc/ring_buffer.h"
 
-ring_buffer_t* ring_buffer_create(uint32_t capacity) {
-  uint32_t size = 0;
-  ring_buffer_t* ring_buffer = NULL;
-  return_value_if_fail(capacity >= 32, NULL);
+static ret_t ring_buffer_extend(ring_buffer_t* ring_buffer, uint32_t size);
 
-  size = sizeof(ring_buffer_t) + capacity;
-  ring_buffer = (ring_buffer_t*)TKMEM_ALLOC(size);
+ring_buffer_t* ring_buffer_create(uint32_t init_capacity, uint32_t max_capacity) {
+  ring_buffer_t* ring_buffer = NULL;
+  return_value_if_fail(init_capacity >= 32, NULL);
+
+  ring_buffer = TKMEM_ZALLOC(ring_buffer_t);
   return_value_if_fail(ring_buffer != NULL, NULL);
 
-  memset(ring_buffer, 0x00, size);
-  ring_buffer->capacity = capacity;
+  ring_buffer->data = (uint8_t*)TKMEM_ALLOC(init_capacity);
+  if (ring_buffer->data != NULL) {
+    ring_buffer->capacity = init_capacity;
+    memset(ring_buffer->data, 0x00, init_capacity);
+    ring_buffer->max_capacity = tk_max(init_capacity, max_capacity);
+  } else {
+    TKMEM_FREE(ring_buffer);
+    ring_buffer = NULL;
+  }
 
   return ring_buffer;
 }
@@ -85,6 +92,30 @@ ret_t ring_buffer_reset(ring_buffer_t* ring_buffer) {
   return RET_OK;
 }
 
+static ret_t ring_buffer_move_r(ring_buffer_t* ring_buffer, uint32_t r) {
+  ring_buffer->r = r % ring_buffer->capacity;
+  ring_buffer->full = FALSE;
+
+  return RET_OK;
+}
+
+static uint32_t ring_buffer_move_r_delta(ring_buffer_t* ring_buffer, uint32_t r_delta) {
+  return ring_buffer_move_r(ring_buffer, ring_buffer->r + r_delta);
+}
+
+static ret_t ring_buffer_move_w(ring_buffer_t* ring_buffer, uint32_t w) {
+  ring_buffer->w = w % ring_buffer->capacity;
+  if (ring_buffer->r == ring_buffer->w) {
+    ring_buffer->full = TRUE;
+  }
+
+  return RET_OK;
+}
+
+static uint32_t ring_buffer_move_w_delta(ring_buffer_t* ring_buffer, uint32_t w_delta) {
+  return ring_buffer_move_w(ring_buffer, ring_buffer->w + w_delta);
+}
+
 uint32_t ring_buffer_read(ring_buffer_t* ring_buffer, void* buff, uint32_t size) {
   return_value_if_fail(ring_buffer != NULL && buff != NULL, 0);
 
@@ -103,17 +134,17 @@ uint32_t ring_buffer_read(ring_buffer_t* ring_buffer, void* buff, uint32_t size)
       rsize = ring_buffer->w - ring_buffer->r;
       rsize = tk_min(rsize, size);
 
-      memcpy(d, s, rsize);
-      ring_buffer->r += rsize;
-
       ret = rsize;
+      memcpy(d, s, rsize);
+      ring_buffer_move_r_delta(ring_buffer, rsize);
     } else {
       rsize = ring_buffer->capacity - ring_buffer->r;
       rsize = tk_min(rsize, size);
-      memcpy(d, s, rsize);
-      ring_buffer->r += rsize;
 
       ret = rsize;
+      memcpy(d, s, rsize);
+      ring_buffer_move_r_delta(ring_buffer, rsize);
+
       if (rsize < size) {
         size -= rsize;
         d += rsize;
@@ -124,12 +155,11 @@ uint32_t ring_buffer_read(ring_buffer_t* ring_buffer, void* buff, uint32_t size)
           memcpy(d, s, rsize);
           ret += rsize;
         }
-        ring_buffer->r = rsize;
+
+        ring_buffer_move_r(ring_buffer, rsize);
       }
     }
-    if (ring_buffer->r == ring_buffer->capacity) {
-      ring_buffer->r = 0;
-    }
+
     return ret;
   }
 
@@ -151,7 +181,8 @@ uint32_t ring_buffer_peek(ring_buffer_t* ring_buffer, void* buff, uint32_t size)
 uint32_t ring_buffer_write(ring_buffer_t* ring_buffer, const void* buff, uint32_t size) {
   return_value_if_fail(ring_buffer != NULL && buff != NULL, 0);
 
-  if (size == 0) {
+  ring_buffer_extend(ring_buffer, size);
+  if (size == 0 || ring_buffer_free_size(ring_buffer) == 0) {
     return 0;
   }
 
@@ -164,18 +195,18 @@ uint32_t ring_buffer_write(ring_buffer_t* ring_buffer, const void* buff, uint32_
     if (ring_buffer->w < ring_buffer->r) {
       rsize = ring_buffer->r - ring_buffer->w;
       rsize = tk_min(rsize, size);
-      memcpy(d, s, rsize);
-
-      ring_buffer->w += rsize;
 
       ret = rsize;
+      memcpy(d, s, rsize);
+      ring_buffer_move_w_delta(ring_buffer, rsize);
     } else {
       rsize = ring_buffer->capacity - ring_buffer->w;
       rsize = tk_min(rsize, size);
-      memcpy(d, s, rsize);
-      ring_buffer->w += rsize;
 
       ret = rsize;
+      memcpy(d, s, rsize);
+      ring_buffer_move_w_delta(ring_buffer, rsize);
+
       if (rsize < size) {
         size -= rsize;
         s += rsize;
@@ -186,11 +217,9 @@ uint32_t ring_buffer_write(ring_buffer_t* ring_buffer, const void* buff, uint32_
           memcpy(d, s, rsize);
           ret += rsize;
         }
-        ring_buffer->w = rsize;
+
+        ring_buffer_move_w(ring_buffer, rsize);
       }
-    }
-    if (ring_buffer->r == ring_buffer->w) {
-      ring_buffer->full = TRUE;
     }
 
     return ret;
@@ -209,10 +238,36 @@ ret_t ring_buffer_read_len(ring_buffer_t* ring_buffer, void* buff, uint32_t size
   }
 }
 
+static ret_t ring_buffer_extend(ring_buffer_t* ring_buffer, uint32_t size) {
+  uint32_t free_size = ring_buffer_free_size(ring_buffer);
+  if (free_size >= size) {
+    return RET_OK;
+  } else if (ring_buffer->capacity == ring_buffer->max_capacity) {
+    return RET_FAIL;
+  } else {
+    uint8_t* data = NULL;
+    uint32_t old_size = ring_buffer_size(ring_buffer);
+    uint32_t capacity = ring_buffer->capacity + (size - free_size);
+    return_value_if_fail(capacity <= ring_buffer->max_capacity, RET_FAIL);
+
+    data = (uint8_t*)TKMEM_ALLOC(capacity);
+    return_value_if_fail(data != NULL, RET_OOM);
+    return_value_if_fail(ring_buffer_read_len(ring_buffer, data, old_size) == RET_OK, RET_FAIL);
+
+    TKMEM_FREE(ring_buffer->data);
+    ring_buffer->r = 0;
+    ring_buffer->w = old_size;
+    ring_buffer->data = data;
+    ring_buffer->capacity = capacity;
+
+    return RET_OK;
+  }
+}
+
 ret_t ring_buffer_write_len(ring_buffer_t* ring_buffer, const void* buff, uint32_t size) {
   return_value_if_fail(ring_buffer != NULL && buff != NULL, RET_BAD_PARAMS);
 
-  if (ring_buffer_free_size(ring_buffer) >= size) {
+  if (ring_buffer_extend(ring_buffer, size) == RET_OK) {
     return ring_buffer_write(ring_buffer, buff, size) == size ? RET_OK : RET_FAIL;
   } else {
     return RET_FAIL;
@@ -221,8 +276,10 @@ ret_t ring_buffer_write_len(ring_buffer_t* ring_buffer, const void* buff, uint32
 
 ret_t ring_buffer_destroy(ring_buffer_t* ring_buffer) {
   return_value_if_fail(ring_buffer != NULL, RET_BAD_PARAMS);
-  memset(ring_buffer, 0x00, sizeof(ring_buffer_t));
 
+  TKMEM_FREE(ring_buffer->data);
+
+  memset(ring_buffer, 0x00, sizeof(ring_buffer_t));
   TKMEM_FREE(ring_buffer);
 
   return RET_OK;

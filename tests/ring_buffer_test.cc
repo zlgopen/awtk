@@ -2,7 +2,7 @@
 #include "tkc/ring_buffer.h"
 
 TEST(RingBuffer, basic) {
-  ring_buffer_t* rb = ring_buffer_create(32);
+  ring_buffer_t* rb = ring_buffer_create(32, 32);
 
   ASSERT_EQ(ring_buffer_is_empty(rb), TRUE);
   ASSERT_EQ(ring_buffer_is_full(rb), FALSE);
@@ -11,7 +11,7 @@ TEST(RingBuffer, basic) {
 }
 
 TEST(RingBuffer, write) {
-  ring_buffer_t* rb = ring_buffer_create(32);
+  ring_buffer_t* rb = ring_buffer_create(32, 32);
 
   ASSERT_EQ(ring_buffer_write(rb, "1234", 4), 4);
   ASSERT_EQ(ring_buffer_size(rb), 4);
@@ -41,7 +41,7 @@ TEST(RingBuffer, write) {
 
 TEST(RingBuffer, write_read) {
   char buff[32];
-  ring_buffer_t* rb = ring_buffer_create(32);
+  ring_buffer_t* rb = ring_buffer_create(32, 32);
 
   memset(buff, 0x00, sizeof(buff));
   ASSERT_EQ(ring_buffer_write(rb, "1234", 4), 4);
@@ -83,7 +83,7 @@ TEST(RingBuffer, write_read) {
 
 TEST(RingBuffer, write_peek) {
   char buff[32];
-  ring_buffer_t* rb = ring_buffer_create(32);
+  ring_buffer_t* rb = ring_buffer_create(32, 32);
 
   memset(buff, 0x00, sizeof(buff));
   ASSERT_EQ(ring_buffer_write(rb, "1234", 4), 4);
@@ -100,7 +100,7 @@ TEST(RingBuffer, write_peek) {
 
 TEST(RingBuffer, write_reset) {
   char buff[32];
-  ring_buffer_t* rb = ring_buffer_create(32);
+  ring_buffer_t* rb = ring_buffer_create(32, 32);
 
   memset(buff, 0x00, sizeof(buff));
   ASSERT_EQ(ring_buffer_write(rb, "1234", 4), 4);
@@ -119,7 +119,7 @@ TEST(RingBuffer, random) {
   char buff[32];
   uint32_t i = 0;
   uint32_t n = 10240;
-  ring_buffer_t* rb = ring_buffer_create(32);
+  ring_buffer_t* rb = ring_buffer_create(32, 32);
 
   memset(buff, 0x00, sizeof(buff));
 
@@ -136,6 +136,37 @@ TEST(RingBuffer, random) {
     uint32_t size = random() % ring_buffer_size(rb);
     ASSERT_EQ(ring_buffer_read(rb, buff, size), size);
   }
+
+  ring_buffer_destroy(rb);
+}
+
+TEST(RingBuffer, extendable) {
+  char buff[64 + 1];
+  ring_buffer_t* rb = ring_buffer_create(32, 64);
+
+  memset(buff, 0x00, sizeof(buff));
+  ASSERT_EQ(ring_buffer_write(rb, "12345678abcdefgh", 16), 16);
+  ASSERT_EQ(ring_buffer_size(rb), 16);
+
+  ASSERT_EQ(ring_buffer_write(rb, "12345678abcdefgh", 16), 16);
+  ASSERT_EQ(ring_buffer_size(rb), 32);
+
+  ASSERT_EQ(ring_buffer_write(rb, "12345678abcdefgh", 16), 16);
+  ASSERT_EQ(ring_buffer_size(rb), 48);
+
+  ASSERT_EQ(ring_buffer_write(rb, "12345678abcdefgh", 16), 16);
+  ASSERT_EQ(ring_buffer_size(rb), 64);
+
+  ASSERT_EQ(ring_buffer_write(rb, "12345678abcdefgh", 16), 0);
+  ASSERT_EQ(ring_buffer_size(rb), 64);
+  ASSERT_EQ(ring_buffer_is_full(rb), TRUE);
+
+  ASSERT_EQ(ring_buffer_read_len(rb, buff, 64), RET_OK);
+  ASSERT_EQ(ring_buffer_size(rb), 0);
+  ASSERT_EQ(ring_buffer_is_empty(rb), TRUE);
+
+  ASSERT_EQ(ring_buffer_write(rb, "12345678abcdefgh", 16), 16);
+  ASSERT_EQ(ring_buffer_size(rb), 16);
 
   ring_buffer_destroy(rb);
 }
