@@ -259,10 +259,10 @@ pip install Pillow
 
 ## 九、文档
 
-* [AWTK 生态共建计划](docs/AWTK_ecology.md)
+* [开发文档](docs/README.md)
 
-* [文档](docs/README.md)
+* [最新动态](docs/changes.md)
 
 * [任务完成情况](TODO.md)
 
-* [最新动态](docs/changes.md)
+* [生态共建计划](docs/AWTK_ecology.md)
