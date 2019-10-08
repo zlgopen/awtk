@@ -37,9 +37,9 @@ typedef ret_t (*fs_file_close_t)(fs_file_t* file);
 
 /**
  * @class fs_file_t
- * 
+ *
  * 文件接口。
- * 
+ *
  */
 struct _fs_file_t {
   fs_file_read_t read;
@@ -130,9 +130,9 @@ typedef ret_t (*fs_dir_close_t)(fs_dir_t* dir);
 
 /**
  * @class fs_dir_t
- * 
+ *
  * 文件夹接口。
- * 
+ *
  */
 struct _fs_dir_t {
   fs_dir_rewind_t rewind;
@@ -199,9 +199,9 @@ typedef ret_t (*fs_get_cwd_t)(fs_t* fs, char path[MAX_PATH + 1]);
 
 /**
  * @class fs_t
- * 
+ *
  * 文件系统接口。
- * 
+ *
  */
 struct _fs_t {
   fs_open_file_t open_file;

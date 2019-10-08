@@ -17,7 +17,6 @@
     along with Protocol Library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #ifndef TK_CRC_H
 #define TK_CRC_H
 
@@ -30,26 +29,26 @@ BEGIN_C_DECLS
 #define CONFIG_ENABLE_CHECKSUM
 
 #ifdef CONFIG_ENABLE_CHECKSUM
-#define INITCHECKSUM    0x0000
-#define GOODCHECKSUM    0x0000
+#define INITCHECKSUM 0x0000
+#define GOODCHECKSUM 0x0000
 uint16_t tk_chksum_byte(uint16_t sum, uint8_t data);
 uint16_t tk_chksum(uint16_t sum, const uint8_t* data, int data_length);
 #endif
 
 #ifdef CONFIG_ENABLE_FCS16
-#define PPPINITFCS16    0xffff       /* Initial FCS value */
-#define PPPGOODFCS16    0xf0b8       /* Good final FCS value */
+#define PPPINITFCS16 0xffff /* Initial FCS value */
+#define PPPGOODFCS16 0xf0b8 /* Good final FCS value */
 uint16_t tk_crc16_byte(uint16_t crc, uint8_t data);
 uint16_t tk_crc16(uint16_t crc, const uint8_t* data, int data_length);
 #endif
 
 #ifdef CONFIG_ENABLE_FCS32
-#define PPPINITFCS32    0xffffffff   /* Initial FCS value */
-#define PPPGOODFCS32    0xdebb20e3   /* Good final FCS value */
+#define PPPINITFCS32 0xffffffff /* Initial FCS value */
+#define PPPGOODFCS32 0xdebb20e3 /* Good final FCS value */
 uint32_t tk_crc32_byte(uint32_t crc, uint8_t data);
-uint32_t tk_crc32(uint32_t crc, const uint8_t *buf, int size);
+uint32_t tk_crc32(uint32_t crc, const uint8_t* buf, int size);
 #endif
 
 END_C_DECLS
 
-#endif/*TK_CRC_H*/
+#endif /*TK_CRC_H*/

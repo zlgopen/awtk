@@ -275,8 +275,10 @@ ret_t time_clock_set_image(widget_t* widget, const char* image);
  * 设置小时指针的旋转锚点。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {const char*} anchor_x 指针的锚点坐标x。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
- * @param {const char*} anchor_y 指针的锚点坐标y。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
+ * @param {const char*} anchor_x
+ * 指针的锚点坐标x。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
+ * @param {const char*} anchor_y
+ * 指针的锚点坐标y。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -287,8 +289,10 @@ ret_t time_clock_set_hour_anchor(widget_t* widget, const char* anchor_x, const c
  * 设置分钟指针的旋转锚点。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {const char*} anchor_x 指针的锚点坐标x。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
- * @param {const char*} anchor_y 指针的锚点坐标y。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
+ * @param {const char*} anchor_x
+ * 指针的锚点坐标x。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
+ * @param {const char*} anchor_y
+ * 指针的锚点坐标y。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -299,8 +303,10 @@ ret_t time_clock_set_minute_anchor(widget_t* widget, const char* anchor_x, const
  * 设置秒钟指针的旋转锚点。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {const char*} anchor_x 指针的锚点坐标x。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
- * @param {const char*} anchor_y 指针的锚点坐标y。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
+ * @param {const char*} anchor_x
+ * 指针的锚点坐标x。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
+ * @param {const char*} anchor_y
+ * 指针的锚点坐标y。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
