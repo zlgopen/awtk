@@ -92,18 +92,18 @@ ret_t ring_buffer_reset(ring_buffer_t* ring_buffer) {
   return RET_OK;
 }
 
-static ret_t ring_buffer_move_r(ring_buffer_t* ring_buffer, uint32_t r) {
+ret_t ring_buffer_set_read_cursor(ring_buffer_t* ring_buffer, uint32_t r) {
   ring_buffer->r = r % ring_buffer->capacity;
   ring_buffer->full = FALSE;
 
   return RET_OK;
 }
 
-static ret_t ring_buffer_move_r_delta(ring_buffer_t* ring_buffer, uint32_t r_delta) {
-  return ring_buffer_move_r(ring_buffer, ring_buffer->r + r_delta);
+ret_t ring_buffer_set_read_cursor_delta(ring_buffer_t* ring_buffer, uint32_t r_delta) {
+  return ring_buffer_set_read_cursor(ring_buffer, ring_buffer->r + r_delta);
 }
 
-static ret_t ring_buffer_move_w(ring_buffer_t* ring_buffer, uint32_t w) {
+ret_t ring_buffer_set_write_cursor(ring_buffer_t* ring_buffer, uint32_t w) {
   ring_buffer->w = w % ring_buffer->capacity;
   if (ring_buffer->r == ring_buffer->w) {
     ring_buffer->full = TRUE;
@@ -112,8 +112,8 @@ static ret_t ring_buffer_move_w(ring_buffer_t* ring_buffer, uint32_t w) {
   return RET_OK;
 }
 
-static ret_t ring_buffer_move_w_delta(ring_buffer_t* ring_buffer, uint32_t w_delta) {
-  return ring_buffer_move_w(ring_buffer, ring_buffer->w + w_delta);
+ret_t ring_buffer_set_write_cursor_delta(ring_buffer_t* ring_buffer, uint32_t w_delta) {
+  return ring_buffer_set_write_cursor(ring_buffer, ring_buffer->w + w_delta);
 }
 
 uint32_t ring_buffer_read(ring_buffer_t* ring_buffer, void* buff, uint32_t size) {
@@ -136,14 +136,14 @@ uint32_t ring_buffer_read(ring_buffer_t* ring_buffer, void* buff, uint32_t size)
 
       ret = rsize;
       memcpy(d, s, rsize);
-      ring_buffer_move_r_delta(ring_buffer, rsize);
+      ring_buffer_set_read_cursor_delta(ring_buffer, rsize);
     } else {
       rsize = ring_buffer->capacity - ring_buffer->r;
       rsize = tk_min(rsize, size);
 
       ret = rsize;
       memcpy(d, s, rsize);
-      ring_buffer_move_r_delta(ring_buffer, rsize);
+      ring_buffer_set_read_cursor_delta(ring_buffer, rsize);
 
       if (rsize < size) {
         size -= rsize;
@@ -156,7 +156,7 @@ uint32_t ring_buffer_read(ring_buffer_t* ring_buffer, void* buff, uint32_t size)
           ret += rsize;
         }
 
-        ring_buffer_move_r(ring_buffer, rsize);
+        ring_buffer_set_read_cursor(ring_buffer, rsize);
       }
     }
 
@@ -198,14 +198,14 @@ uint32_t ring_buffer_write(ring_buffer_t* ring_buffer, const void* buff, uint32_
 
       ret = rsize;
       memcpy(d, s, rsize);
-      ring_buffer_move_w_delta(ring_buffer, rsize);
+      ring_buffer_set_write_cursor_delta(ring_buffer, rsize);
     } else {
       rsize = ring_buffer->capacity - ring_buffer->w;
       rsize = tk_min(rsize, size);
 
       ret = rsize;
       memcpy(d, s, rsize);
-      ring_buffer_move_w_delta(ring_buffer, rsize);
+      ring_buffer_set_write_cursor_delta(ring_buffer, rsize);
 
       if (rsize < size) {
         size -= rsize;
@@ -218,7 +218,7 @@ uint32_t ring_buffer_write(ring_buffer_t* ring_buffer, const void* buff, uint32_
           ret += rsize;
         }
 
-        ring_buffer_move_w(ring_buffer, rsize);
+        ring_buffer_set_write_cursor(ring_buffer, rsize);
       }
     }
 

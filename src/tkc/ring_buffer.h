@@ -204,6 +204,50 @@ ret_t ring_buffer_write_len(ring_buffer_t* ring_buffer, const void* buff, uint32
 ret_t ring_buffer_reset(ring_buffer_t* ring_buffer);
 
 /**
+ * @method ring_buffer_set_read_cursor
+ * 设置读取光标的位置。
+ *
+ * @param {ring_buffer_t*} ring_buffer ring_buffer对象。
+ * @param {uint32_t} r 读取光标的位置。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t ring_buffer_set_read_cursor(ring_buffer_t* ring_buffer, uint32_t r);
+
+/**
+ * @method ring_buffer_set_read_cursor_delta
+ * 设置读取光标的位置(delta)。
+ *
+ * @param {ring_buffer_t*} ring_buffer ring_buffer对象。
+ * @param {uint32_t} r_delta 读取光标的位置(delta)。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t ring_buffer_set_read_cursor_delta(ring_buffer_t* ring_buffer, uint32_t r_delta);
+
+/**
+ * @method ring_buffer_set_write_cursor
+ * 设置写入光标的位置。
+ *
+ * @param {ring_buffer_t*} ring_buffer ring_buffer对象。
+ * @param {uint32_t} w 写入光标的位置。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t ring_buffer_set_write_cursor(ring_buffer_t* ring_buffer, uint32_t w);
+
+/**
+ * @method ring_buffer_set_write_cursor_delta
+ * 设置写入光标的位置(delta)。
+ *
+ * @param {ring_buffer_t*} ring_buffer ring_buffer对象。
+ * @param {uint32_t} w_delta 写入光标的位置(delta)。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t ring_buffer_set_write_cursor_delta(ring_buffer_t* ring_buffer, uint32_t w_delta);
+
+/**
  * @method ring_buffer_destroy
  * 销毁ring_buffer。
  *
