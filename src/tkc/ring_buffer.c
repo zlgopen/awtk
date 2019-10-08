@@ -99,7 +99,7 @@ static ret_t ring_buffer_move_r(ring_buffer_t* ring_buffer, uint32_t r) {
   return RET_OK;
 }
 
-static uint32_t ring_buffer_move_r_delta(ring_buffer_t* ring_buffer, uint32_t r_delta) {
+static ret_t ring_buffer_move_r_delta(ring_buffer_t* ring_buffer, uint32_t r_delta) {
   return ring_buffer_move_r(ring_buffer, ring_buffer->r + r_delta);
 }
 
@@ -112,7 +112,7 @@ static ret_t ring_buffer_move_w(ring_buffer_t* ring_buffer, uint32_t w) {
   return RET_OK;
 }
 
-static uint32_t ring_buffer_move_w_delta(ring_buffer_t* ring_buffer, uint32_t w_delta) {
+static ret_t ring_buffer_move_w_delta(ring_buffer_t* ring_buffer, uint32_t w_delta) {
   return ring_buffer_move_w(ring_buffer, ring_buffer->w + w_delta);
 }
 
