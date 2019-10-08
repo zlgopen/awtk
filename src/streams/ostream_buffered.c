@@ -62,7 +62,10 @@ static ret_t tk_ostream_buffered_set_prop(object_t* obj, const char* name, const
 }
 
 static ret_t tk_ostream_buffered_get_prop(object_t* obj, const char* name, value_t* v) {
-  return RET_NOT_FOUND;
+  tk_ostream_buffered_t* ostream_buffered = TK_OSTREAM_BUFFERED(obj);
+  tk_ostream_t* real_ostream = ostream_buffered->real_ostream;
+
+  return object_get_prop(OBJECT(real_ostream), name, v);
 }
 
 static ret_t tk_ostream_buffered_on_destroy(object_t* obj) {
