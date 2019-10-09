@@ -54,7 +54,7 @@ static widget_t* combo_box_create_scroll_popup(combo_box_t* combo_box) {
   value_t v;
   widget_t* widget = WIDGET(combo_box);
   int32_t margin = 2;
-  int32_t item_height = 30;
+  int32_t item_height = combo_box->item_height;
   int32_t nr = combo_box_count_options(widget);
   int32_t w = widget->w;
   int32_t h = nr * item_height + 2 * margin;

@@ -1,6 +1,7 @@
 # 最新动态
 * 2019/10/09
   * slider 的min/max/value/step使用浮动数。
+  * combo\_box 增加item\_height属性(感谢朝泽提供补丁)。
 
 * 2019/10/08
   * 增加istream buffered。

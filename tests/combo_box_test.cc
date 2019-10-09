@@ -26,6 +26,21 @@ TEST(ComboBox, basic) {
   widget_destroy(w);
 }
 
+TEST(ComboBox, item_height) {
+  value_t v1;
+  value_t v2;
+  widget_t* w = combo_box_create(NULL, 10, 20, 30, 40);
+  combo_box_t* combo_box = COMBO_BOX(w);
+
+  value_set_int(&v1, 32);
+  ASSERT_EQ(widget_set_prop(w, WIDGET_PROP_ITEM_HEIGHT, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(w, WIDGET_PROP_ITEM_HEIGHT, &v2), RET_OK);
+  ASSERT_EQ(value_int(&v1), value_int(&v2));
+  ASSERT_EQ(value_int(&v1), combo_box->item_height);
+
+  widget_destroy(w);
+}
+
 TEST(ComboBox, localize) {
   value_t v1;
   value_t v2;

@@ -80,6 +80,9 @@ static ret_t combo_box_get_prop(widget_t* widget, const char* name, value_t* v) 
   } else if (tk_str_eq(name, WIDGET_PROP_OPTIONS)) {
     value_set_str(v, combo_box->options);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_ITEM_HEIGHT)) {
+    value_set_int(v, combo_box->item_height);
+    return RET_OK;
   } else {
     return edit_get_prop(widget, name, v);
   }
@@ -137,6 +140,9 @@ static ret_t combo_box_set_prop(widget_t* widget, const char* name, const value_
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_OPTIONS)) {
     combo_box_parse_options(widget, value_str(v));
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_ITEM_HEIGHT)) {
+    combo_box_set_item_height(widget, value_uint32(v));
     return RET_OK;
   } else {
     return edit_set_prop(widget, name, v);
@@ -272,9 +278,9 @@ static ret_t combo_box_create_popup_items(combo_box_t* combo_box, widget_t* pare
 static widget_t* combo_box_create_popup(combo_box_t* combo_box) {
   value_t v;
   char params[128];
-  widget_t* widget = WIDGET(combo_box);
   int32_t margin = 2;
-  int32_t item_height = 30;
+  widget_t* widget = WIDGET(combo_box);
+  int32_t item_height = combo_box->item_height;
   int32_t nr = combo_box_count_options(widget);
   int32_t w = widget->w;
   int32_t h = nr * item_height + 2 * margin;
@@ -334,17 +340,18 @@ static ret_t combo_box_on_button_click(void* ctx, event_t* e) {
 
 widget_t* combo_box_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* popup = NULL;
-  widget_t* combo_box = combo_box_create_self(parent, x, y, w, h);
-  return_value_if_fail(combo_box != NULL, NULL);
+  widget_t* widget = combo_box_create_self(parent, x, y, w, h);
+  return_value_if_fail(widget != NULL, NULL);
 
-  popup = button_create(combo_box, 0, 0, 0, 0);
+  popup = button_create(widget, 0, 0, 0, 0);
   popup->auto_created = TRUE;
+  combo_box_set_item_height(widget, 30);
   widget_set_name(popup, "popup");
   widget_use_style(popup, "combobox_down");
 
-  widget_on(popup, EVT_CLICK, combo_box_on_button_click, combo_box);
+  widget_on(popup, EVT_CLICK, combo_box_on_button_click, widget);
 
-  return combo_box;
+  return widget;
 }
 
 ret_t combo_box_reset_options(widget_t* widget) {
@@ -523,6 +530,15 @@ int32_t combo_box_get_value(widget_t* widget) {
   return_value_if_fail(combo_box != NULL, 0);
 
   return combo_box->value;
+}
+
+ret_t combo_box_set_item_height(widget_t* widget, uint32_t item_height) {
+  combo_box_t* combo_box = COMBO_BOX(widget);
+  return_value_if_fail(combo_box != NULL, RET_BAD_PARAMS);
+
+  combo_box->item_height = item_height;
+
+  return RET_OK;
 }
 
 ret_t combo_box_set_localize_options(widget_t* widget, bool_t localize_options) {

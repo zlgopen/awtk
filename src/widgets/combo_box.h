@@ -149,6 +149,13 @@ typedef struct _combo_box_t {
    */
   char* options;
 
+  /**
+   * @property {int32_t} item_height
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 下拉选项的高度。如果open_window为空，则使用缺省高度。
+   */
+  int32_t item_height;
+
   /*private*/
   str_t text;
   combo_box_option_t* option_items;
@@ -252,6 +259,17 @@ ret_t combo_box_set_localize_options(widget_t* widget, bool_t localize_options);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t combo_box_set_value(widget_t* widget, int32_t value);
+
+/**
+ * @method combo_box_set_item_height
+ * 设置item高度。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget combo_box对象。
+ * @param {uint32_t} item_height item的高度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t combo_box_set_item_height(widget_t* widget, uint32_t item_height);
 
 /**
  * @method combo_box_append_option

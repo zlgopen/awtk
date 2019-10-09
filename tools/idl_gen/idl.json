@@ -26008,6 +26008,29 @@
             "desc": "combo_box对象。"
           },
           {
+            "type": "uint32_t",
+            "name": "item_height",
+            "desc": "item的高度。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置item高度。\r\n\r\n",
+        "name": "combo_box_set_item_height",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "combo_box对象。"
+          },
+          {
             "type": "int32_t",
             "name": "value",
             "desc": "值。"
@@ -26199,6 +26222,19 @@
         "name": "options",
         "desc": " 设置可选项(冒号分隔值和文本，分号分隔选项，如:1:red;2:green;3:blue)。\r\n",
         "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "item_height",
+        "desc": " 下拉选项的高度。如果open_window为空，则使用缺省高度。\r\n",
+        "type": "int32_t",
         "annotation": {
           "set_prop": true,
           "get_prop": true,

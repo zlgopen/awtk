@@ -85,7 +85,7 @@ ObjCSpaceAfterProperty: false
 ObjCSpaceBeforeProtocolList: false
 PenaltyBreakAssignment: 2
 PenaltyBreakBeforeFirstCallParameter: 1
-PenaltyBreakComment: 300
+PenaltyBreakComment: 600
 PenaltyBreakFirstLessLess: 100
 PenaltyBreakString: 1000
 PenaltyExcessCharacter: 1000000
