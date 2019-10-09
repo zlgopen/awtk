@@ -34,7 +34,7 @@ typedef struct _tk_iostream_mem_t tk_iostream_mem_t;
  * @class tk_iostream_mem_t
  * @parent tk_iostream_t
  *
- * input stream base on mem
+ * iostream base on mem
  *
  */
 struct _tk_iostream_mem_t {

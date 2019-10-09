@@ -90,7 +90,7 @@ ret_t input_method_dispatch_action(input_method_t* im) {
 
   input_method_dispatch(im, &e);
 
-  if (im->engine != NULL && im->action_buton_text[0] == '\0') {
+  if (im->engine != NULL && im->engine->keys.size > 0) {
     char text[64];
     tk_strncpy(text, im->engine->keys.str, sizeof(text) - 1);
     input_method_commit_text(im, text);
