@@ -74,32 +74,32 @@ BEGIN_C_DECLS
 typedef struct _slider_t {
   widget_t widget;
   /**
-   * @property {uint16_t} value
+   * @property {double} value
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 值。
    */
-  uint16_t value;
+  double value;
 
   /**
-   * @property {uint16_t} min
+   * @property {double} min
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 最小值。
    */
-  uint16_t min;
+  double min;
 
   /**
-   * @property {uint16_t} max
+   * @property {double} max
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 最大值。
    */
-  uint16_t max;
+  double max;
 
   /**
-   * @property {uint16_t} step
+   * @property {double} step
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 拖动的最小单位。
    */
-  uint16_t step;
+  double step;
 
   /**
    * @property {bool_t} vertical
@@ -118,8 +118,8 @@ typedef struct _slider_t {
   /*private*/
   bool_t dragging;
 
-  uint16_t saved_value;
-  uint16_t dragger_size;
+  double saved_value;
+  double dragger_size;
   point_t down;
   rect_t dragger_rect;
 
@@ -169,44 +169,44 @@ widget_t* slider_cast(widget_t* widget);
  * 设置滑块的值。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {uint16_t}  value 值
+ * @param {double}  value 值
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t slider_set_value(widget_t* widget, uint16_t value);
+ret_t slider_set_value(widget_t* widget, double value);
 
 /**
  * @method slider_set_min
  * 设置滑块的最小值。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {uint16_t}  min 最小值
+ * @param {double}  min 最小值
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t slider_set_min(widget_t* widget, uint16_t min);
+ret_t slider_set_min(widget_t* widget, double min);
 
 /**
  * @method slider_set_max
  * 设置滑块的最大值。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {uint16_t}  max 最大值
+ * @param {double}  max 最大值
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t slider_set_max(widget_t* widget, uint16_t max);
+ret_t slider_set_max(widget_t* widget, double max);
 
 /**
  * @method slider_set_step
  * 设置滑块的拖动的最小单位。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {uint16_t}  step 拖动的最小单位。
+ * @param {double}  step 拖动的最小单位。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t slider_set_step(widget_t* widget, uint16_t step);
+ret_t slider_set_step(widget_t* widget, double step);
 
 /**
  * @method slider_set_bar_size
@@ -238,7 +238,7 @@ TK_EXTERN_VTABLE(slider);
 /*public for test*/
 ret_t slider_dec(widget_t* widget);
 ret_t slider_inc(widget_t* widget);
-ret_t slider_set_value_internal(widget_t* widget, uint16_t value, event_type_t etype, bool_t force);
+ret_t slider_set_value_internal(widget_t* widget, double value, event_type_t etype, bool_t force);
 
 END_C_DECLS
 
