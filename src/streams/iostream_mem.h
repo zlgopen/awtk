@@ -1,7 +1,7 @@
 ﻿/**
  * File:   iostream_mem.h
  * Author: AWTK Develop Team
- * Brief:  input stream base on mem
+ * Brief:  iostream base on mem
  *
  * Copyright (c) 2019 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
