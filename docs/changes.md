@@ -1,4 +1,10 @@
 # 最新动态
+* 2019/10/09
+  * slider 的min/max/value/step使用浮动数。
+
+* 2019/10/08
+  * 增加istream buffered。
+
 * 2019/10/07
   * 增加ostream\_buffered。
   * 按issue 241，把get\_time\_ms改名为get\_time\_ms64。

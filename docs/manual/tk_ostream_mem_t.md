@@ -3,7 +3,7 @@
 ![image](images/tk_ostream_mem_t_0.png)
 
 
- input stream base on memory
+ output stream base on memory
 
 
 ----------------------------------

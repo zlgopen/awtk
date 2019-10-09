@@ -108,7 +108,7 @@ int32_t darray_count (darray_t* darray, void* ctx);
 * 函数原型：
 
 ```
-darray_t* darray_create (uint32_t* capacity, tk_destroy_t destroy, tk_compare_t compare);
+darray_t* darray_create (uint32_t capacity, tk_destroy_t destroy, tk_compare_t compare);
 ```
 
 * 参数说明：
@@ -116,7 +116,7 @@ darray_t* darray_create (uint32_t* capacity, tk_destroy_t destroy, tk_compare_t 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | darray\_t* | 数组对象。 |
-| capacity | uint32\_t* | 数组的初始容量。 |
+| capacity | uint32\_t | 数组的初始容量。 |
 | destroy | tk\_destroy\_t | 元素销毁函数。 |
 | compare | tk\_compare\_t | 元素比较函数。 |
 #### darray\_deinit 函数

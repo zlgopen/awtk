@@ -28,7 +28,7 @@
 * 函数原型：
 
 ```
-event_source_t* event_source_fd_create (int fd, event_source_dispatch_t on_event, void* ctx);
+event_source_t* event_source_fd_create (int fd, event_source_on_event_t on_event, void* ctx);
 ```
 
 * 参数说明：
@@ -37,5 +37,5 @@ event_source_t* event_source_fd_create (int fd, event_source_dispatch_t on_event
 | -------- | ----- | --------- |
 | 返回值 | event\_source\_t* | 返回事件源对象。 |
 | fd | int | 可以用select等待的文件描述符。 |
-| on\_event | event\_source\_dispatch\_t | 用户的事件处理函数。 |
+| on\_event | event\_source\_on\_event\_t | 用户的事件处理函数。 |
 | ctx | void* | on\_event函数的上下文。 |

@@ -63,10 +63,10 @@
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#slider_t_bar_size">bar\_size</a> | uint32\_t | bar的宽度或高度。 |
-| <a href="#slider_t_max">max</a> | uint16\_t | 最大值。 |
-| <a href="#slider_t_min">min</a> | uint16\_t | 最小值。 |
-| <a href="#slider_t_step">step</a> | uint16\_t | 拖动的最小单位。 |
-| <a href="#slider_t_value">value</a> | uint16\_t | 值。 |
+| <a href="#slider_t_max">max</a> | double | 最大值。 |
+| <a href="#slider_t_min">min</a> | double | 最小值。 |
+| <a href="#slider_t_step">step</a> | double | 拖动的最小单位。 |
+| <a href="#slider_t_value">value</a> | double | 值。 |
 | <a href="#slider_t_vertical">vertical</a> | bool\_t | 滑块的是否为垂直方向。 |
 ### 事件
 <p id="slider_t_events">
@@ -156,7 +156,7 @@ ret_t slider_set_bar_size (widget_t* widget, uint32_t bar_size);
 * 函数原型：
 
 ```
-ret_t slider_set_max (widget_t* widget, uint16_t max);
+ret_t slider_set_max (widget_t* widget, double max);
 ```
 
 * 参数说明：
@@ -165,7 +165,7 @@ ret_t slider_set_max (widget_t* widget, uint16_t max);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
-| max | uint16\_t | 最大值 |
+| max | double | 最大值 |
 #### slider\_set\_min 函数
 -----------------------
 
@@ -178,7 +178,7 @@ ret_t slider_set_max (widget_t* widget, uint16_t max);
 * 函数原型：
 
 ```
-ret_t slider_set_min (widget_t* widget, uint16_t min);
+ret_t slider_set_min (widget_t* widget, double min);
 ```
 
 * 参数说明：
@@ -187,7 +187,7 @@ ret_t slider_set_min (widget_t* widget, uint16_t min);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
-| min | uint16\_t | 最小值 |
+| min | double | 最小值 |
 #### slider\_set\_step 函数
 -----------------------
 
@@ -200,7 +200,7 @@ ret_t slider_set_min (widget_t* widget, uint16_t min);
 * 函数原型：
 
 ```
-ret_t slider_set_step (widget_t* widget, uint16_t step);
+ret_t slider_set_step (widget_t* widget, double step);
 ```
 
 * 参数说明：
@@ -209,7 +209,7 @@ ret_t slider_set_step (widget_t* widget, uint16_t step);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
-| step | uint16\_t | 拖动的最小单位。 |
+| step | double | 拖动的最小单位。 |
 #### slider\_set\_value 函数
 -----------------------
 
@@ -222,7 +222,7 @@ ret_t slider_set_step (widget_t* widget, uint16_t step);
 * 函数原型：
 
 ```
-ret_t slider_set_value (widget_t* widget, uint16_t value);
+ret_t slider_set_value (widget_t* widget, double value);
 ```
 
 * 参数说明：
@@ -231,7 +231,7 @@ ret_t slider_set_value (widget_t* widget, uint16_t value);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
-| value | uint16\_t | 值 |
+| value | double | 值 |
 #### slider\_set\_vertical 函数
 -----------------------
 
@@ -276,7 +276,7 @@ ret_t slider_set_vertical (widget_t* widget, bool_t vertical);
 > <p id="slider_t_max"> 最大值。
 
 
-* 类型：uint16\_t
+* 类型：double
 
 | 特性 | 是否支持 |
 | -------- | ----- |
@@ -293,7 +293,7 @@ ret_t slider_set_vertical (widget_t* widget, bool_t vertical);
 > <p id="slider_t_min"> 最小值。
 
 
-* 类型：uint16\_t
+* 类型：double
 
 | 特性 | 是否支持 |
 | -------- | ----- |
@@ -310,7 +310,7 @@ ret_t slider_set_vertical (widget_t* widget, bool_t vertical);
 > <p id="slider_t_step"> 拖动的最小单位。
 
 
-* 类型：uint16\_t
+* 类型：double
 
 | 特性 | 是否支持 |
 | -------- | ----- |
@@ -327,7 +327,7 @@ ret_t slider_set_vertical (widget_t* widget, bool_t vertical);
 > <p id="slider_t_value"> 值。
 
 
-* 类型：uint16\_t
+* 类型：double
 
 | 特性 | 是否支持 |
 | -------- | ----- |
