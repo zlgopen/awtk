@@ -554,7 +554,11 @@ float_t object_get_prop_float_by_path(object_t* obj, const char* path, float_t d
 
 #define OBJECT(obj) ((object_t*)(obj))
 
-#define OBJECT_UNREF(obj) if((obj) != NULL) { object_unref((object_t*)(obj)); (obj) = NULL; }
+#define OBJECT_UNREF(obj)           \
+  if ((obj) != NULL) {              \
+    object_unref((object_t*)(obj)); \
+    (obj) = NULL;                   \
+  }
 
 END_C_DECLS
 

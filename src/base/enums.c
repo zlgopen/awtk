@@ -65,6 +65,7 @@ static const key_type_value_t image_draw_type_name_value[] = {
     {"repeat", 0, IMAGE_DRAW_REPEAT},
     {"repeat_x", 0, IMAGE_DRAW_REPEAT_X},
     {"repeat_y", 0, IMAGE_DRAW_REPEAT_Y},
+    {"repeat_y_inverse", 0, IMAGE_DRAW_REPEAT_Y_INVERSE},
     {"patch9", 0, IMAGE_DRAW_PATCH9},
     {"patch3_x", 0, IMAGE_DRAW_PATCH3_X},
     {"patch3_y", 0, IMAGE_DRAW_PATCH3_Y},

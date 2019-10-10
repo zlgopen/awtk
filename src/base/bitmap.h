@@ -386,6 +386,11 @@ typedef enum _image_draw_type_t {
    * 垂直方向平铺显示，水平方向缩放。
    */
   IMAGE_DRAW_REPEAT_Y,
+  /**
+   * @const IMAGE_DRAW_REPEAT_Y_INVERSE
+   * 垂直方向平铺显示，水平方向缩放(从底部到顶部)。
+   */
+  IMAGE_DRAW_REPEAT_Y_INVERSE,
 
   /**
    * @const IMAGE_DRAW_PATCH9

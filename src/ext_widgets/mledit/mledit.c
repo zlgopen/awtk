@@ -391,7 +391,7 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       mledit_update_status(widget);
       break;
     }
-    case EVT_IM_ACTION : {
+    case EVT_IM_ACTION: {
       mledit_commit_str(widget, "\n");
       break;
     }
