@@ -60,6 +60,7 @@ static ret_t scroll_bar_mobile_get_dragger_size(widget_t* widget, rect_t* r) {
     h = widget_h - 2;
     w = (widget_w * widget_w) / virtual_size;
     w = tk_max(w, 20);
+    w = tk_min(w, widget_w);
     x = (widget_w - w) * value / virtual_size;
   } else {
     /*vertical*/
@@ -68,6 +69,7 @@ static ret_t scroll_bar_mobile_get_dragger_size(widget_t* widget, rect_t* r) {
     w = widget_w - 2;
     h = (widget_h * widget_h) / virtual_size;
     h = tk_max(h, 20);
+    h = tk_min(h, widget_h);
     y = (widget_h - h) * value / virtual_size;
   }
 
