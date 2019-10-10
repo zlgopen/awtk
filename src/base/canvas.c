@@ -676,10 +676,10 @@ ret_t canvas_draw_image_repeat(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
       s.w = w;
       s.h = h;
 
-      d.x = x + dst->x;
-      d.y = y + dst->y;
       d.w = w;
       d.h = h;
+      d.x = x + dst->x;
+      d.y = y + dst->y;
       canvas_draw_image(c, img, &s, &d);
       x += w;
     }
@@ -709,8 +709,8 @@ ret_t canvas_draw_image_repeat_x(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
   while (x < dst->w) {
     w = tk_min(img->w, dst->w - x);
     s.w = w;
-    d.x = x;
     d.w = w;
+    d.x = dst->x + x;
     canvas_draw_image(c, img, &s, &d);
     x += w;
   }
@@ -737,8 +737,8 @@ ret_t canvas_draw_image_repeat_y(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
   while (y < dst->h) {
     h = tk_min(img->h, dst->h - y);
     s.h = h;
-    d.y = y;
     d.h = h;
+    d.y = dst->y + y;
     canvas_draw_image(c, img, &s, &d);
     y += h;
   }
