@@ -1,6 +1,7 @@
 # 最新动态
 * 2019/10/10
   * 修改canvas draw image repeatx/repeaty的问题（感谢俊杰提供补丁）。
+  * canvas增加repeat\_y\_inverse图片绘制方式。
 
 * 2019/10/09
   * slider 的min/max/value/step使用浮动数。

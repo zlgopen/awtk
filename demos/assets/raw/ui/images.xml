@@ -16,10 +16,13 @@
       <image style="border" image="1" draw_type="scale_h"><label w="100%" h="100%" text="scale_h" /></image>
       <image style="border" image="1" draw_type="scale"><label w="100%" h="100%" text="scale" /></image>
      </list_item>
-     <list_item style="empty" children_layout="default(r=1,c=3,s=2,m=2)">
+     <list_item style="empty" children_layout="default(r=1,c=2,s=2,m=2)">
       <image style="border" image="bricks" draw_type="repeat"><label w="100%" h="100%" text="repeat" /></image>
       <image style="border" image="bricks" draw_type="repeat_x"><label w="100%" h="100%" text="repeat_x" /></image>
+     </list_item>
+     <list_item style="empty" children_layout="default(r=1,c=2,s=2,m=2)">
       <image style="border" image="bricks" draw_type="repeat_y"><label w="100%" h="100%" text="repeat_y" /></image>
+      <image style="border" image="bricks" draw_type="repeat_y_inverse"><label w="100%" h="100%" text="repeat_y_inverse" /></image>
      </list_item>
      <list_item style="empty" children_layout="default(r=1,c=3,s=2,m=2)">
       <image style="border" image="green_btn_n" draw_type="patch9"><label w="100%" h="100%" text="patch9" /></image>
