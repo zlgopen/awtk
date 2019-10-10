@@ -2247,29 +2247,8 @@ static ret_t widget_set_dirty(widget_t* widget) {
   return RET_OK;
 }
 
-ret_t widget_invalidate(widget_t* widget, rect_t* r) {
-  rect_t rself;
-  if (r == NULL) {
-    rself = rect_init(0, 0, widget->w, widget->h);
-    r = &rself;
-  }
-
-  return_value_if_fail(widget != NULL && r != NULL, RET_BAD_PARAMS);
-
-  if (widget->dirty) {
-    return RET_OK;
-  }
-
-  widget_set_dirty(widget);
-  if (widget->vt && widget->vt->invalidate) {
-    return widget->vt->invalidate(widget, r);
-  } else {
-    return widget_invalidate_default(widget, r);
-  }
-}
-
-ret_t widget_invalidate_force(widget_t* widget, rect_t* r) {
-  widget_t* iter = widget;
+static ret_t widget_set_parent_not_dirty(widget_t* widget) {
+  widget_t* iter = widget->parent;
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   while (iter != NULL) {
@@ -2280,6 +2259,36 @@ ret_t widget_invalidate_force(widget_t* widget, rect_t* r) {
     iter = iter->parent;
   }
 
+  return RET_OK;
+}
+
+ret_t widget_invalidate(widget_t* widget, rect_t* r) {
+  rect_t rself;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  if (widget->dirty) {
+    return RET_OK;
+  }
+
+  if (r == NULL) {
+    rself = rect_init(0, 0, widget->w, widget->h);
+    r = &rself;
+  }
+
+  widget_set_dirty(widget);
+  widget_set_parent_not_dirty(widget);
+
+  if (widget->vt && widget->vt->invalidate) {
+    return widget->vt->invalidate(widget, r);
+  } else {
+    return widget_invalidate_default(widget, r);
+  }
+}
+
+ret_t widget_invalidate_force(widget_t* widget, rect_t* r) {
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  widget->dirty = FALSE;
   return widget_invalidate(widget, NULL);
 }
 
