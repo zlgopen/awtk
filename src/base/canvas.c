@@ -746,6 +746,41 @@ ret_t canvas_draw_image_repeat_y(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
   return RET_OK;
 }
 
+ret_t canvas_draw_image_repeat_y_inverse(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
+  rect_t s;
+  rect_t d;
+  xy_t y = 0;
+  wh_t h = 0;
+  rect_t r_fix;
+  rect_t* dst = canvas_fix_rect(dst_in, &r_fix);
+  return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
+
+  s.x = 0;
+  s.y = 0;
+  s.w = img->w;
+  s.h = img->h;
+
+  d = *dst;
+
+  while (y < dst->h) {
+    h = tk_min(img->h, dst->h - y);
+    s.h = h;
+    d.h = h;
+    y += h;
+    d.y = dst->y + (dst->h - y);
+
+    if (s.h < img->h) {
+      s.y = img->h - s.h;
+      canvas_draw_image(c, img, &s, &d);
+    } else {
+      s.y = 0;
+      canvas_draw_image(c, img, &s, &d);
+    }
+  }
+
+  return RET_OK;
+}
+
 ret_t canvas_draw_image_patch3_y_scale_x(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
   rect_t s;
   rect_t d;
@@ -1190,6 +1225,8 @@ ret_t canvas_draw_image_ex(canvas_t* c, bitmap_t* img, image_draw_type_t draw_ty
       return canvas_draw_image_repeat_x(c, img, dst);
     case IMAGE_DRAW_REPEAT_Y:
       return canvas_draw_image_repeat_y(c, img, dst);
+    case IMAGE_DRAW_REPEAT_Y_INVERSE:
+      return canvas_draw_image_repeat_y_inverse(c, img, dst);
     case IMAGE_DRAW_PATCH9:
       return canvas_draw_image_patch9(c, img, dst);
     case IMAGE_DRAW_PATCH3_X:

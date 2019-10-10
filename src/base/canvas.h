@@ -519,6 +519,7 @@ ret_t canvas_draw_image_patch9(canvas_t* c, bitmap_t* img, rect_t* dst);
 ret_t canvas_draw_image_repeat(canvas_t* c, bitmap_t* img, rect_t* dst);
 ret_t canvas_draw_image_repeat_x(canvas_t* c, bitmap_t* img, rect_t* dst);
 ret_t canvas_draw_image_repeat_y(canvas_t* c, bitmap_t* img, rect_t* dst);
+ret_t canvas_draw_image_repeat_y_inverse(canvas_t* c, bitmap_t* img, rect_t* dst_in);
 ret_t canvas_draw_image_scale(canvas_t* c, bitmap_t* img, rect_t* dst);
 ret_t canvas_draw_image_scale_w(canvas_t* c, bitmap_t* img, rect_t* dst);
 ret_t canvas_draw_image_scale_h(canvas_t* c, bitmap_t* img, rect_t* dst);
