@@ -167,6 +167,11 @@ typedef enum _ret_t {
    */
   RET_TIMEOUT,
   /**
+   * @const RET_CRC
+   * CRC错误。
+   */
+  RET_CRC,
+  /**
    * @const RET_IO
    * IO错误。
    */

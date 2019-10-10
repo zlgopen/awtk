@@ -2236,17 +2236,6 @@ ret_t widget_destroy(widget_t* widget) {
   return widget_do_destroy(widget);
 }
 
-static ret_t widget_set_dirty(widget_t* widget) {
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
-
-  widget->dirty = TRUE;
-  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
-  widget_set_dirty(iter);
-  WIDGET_FOR_EACH_CHILD_END();
-
-  return RET_OK;
-}
-
 static ret_t widget_set_parent_not_dirty(widget_t* widget) {
   widget_t* iter = widget->parent;
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
@@ -2275,7 +2264,7 @@ ret_t widget_invalidate(widget_t* widget, rect_t* r) {
     r = &rself;
   }
 
-  widget_set_dirty(widget);
+  widget->dirty = TRUE;
   widget_set_parent_not_dirty(widget);
 
   if (widget->vt && widget->vt->invalidate) {
