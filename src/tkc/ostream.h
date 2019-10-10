@@ -82,7 +82,7 @@ ret_t tk_ostream_seek(tk_ostream_t* stream, uint32_t offset);
  * 写入指定长度的数据。
  *
  * @param {tk_ostream_t*} stream ostream对象。
- * @param {const uint8_t*} buff 返回数据的缓冲区。
+ * @param {const uint8_t*} buff 数据的缓冲区。
  * @param {uint32_t} max_size 缓冲区的大小。
  * @param {uint32_t} timeout_ms timeout.
  *
@@ -91,6 +91,19 @@ ret_t tk_ostream_seek(tk_ostream_t* stream, uint32_t offset);
  */
 int32_t tk_ostream_write_len(tk_ostream_t* stream, const uint8_t* buff, uint32_t max_size,
                              uint32_t timeout_ms);
+
+/**
+ * @method tk_ostream_write_byte
+ *
+ * 写入一个字节的数据。
+ *
+ * @param {tk_ostream_t*} stream ostream对象。
+ * @param {uint8_t} byte 数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ *
+ */
+ret_t tk_ostream_write_byte(tk_ostream_t* stream, uint8_t byte);
 
 /**
  * @method tk_ostream_flush
