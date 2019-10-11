@@ -241,7 +241,7 @@ static ret_t window_manager_default_create_dialog_highlighter(widget_t* widget,
   ret_t ret = RET_FAIL;
   dialog_highlighter_t* dialog_highlighter = NULL;
 
-  if (widget_is_dialog(curr_win) &&
+  if ((widget_is_dialog(curr_win) || widget_is_popup(curr_win))&&
       widget_get_prop(curr_win, WIDGET_PROP_HIGHLIGHT, &v) == RET_OK) {
     const char* args = value_str(&v);
     if (args != NULL) {
