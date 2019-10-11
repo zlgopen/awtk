@@ -37,6 +37,8 @@ static int32_t tk_istream_mem_read(tk_istream_t* stream, uint8_t* buff, uint32_t
   if (size > 0) {
     memcpy(buff, istream_mem->buff + istream_mem->cursor, size);
     istream_mem->cursor += size;
+  } else {
+    errno = EIO;
   }
 
   return size;
