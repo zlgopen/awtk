@@ -1,0 +1,11 @@
+import os
+import platform
+
+env=DefaultEnvironment().Clone()
+LIB_DIR=os.environ['LIB_DIR'];
+BIN_DIR=os.environ['BIN_DIR'];
+
+SOURCES=["miniz.c", "miniz_tdef.c", "miniz_tinfl.c", "miniz_zip.c"]
+
+env.Library(os.path.join(LIB_DIR, 'miniz'), SOURCES)
+

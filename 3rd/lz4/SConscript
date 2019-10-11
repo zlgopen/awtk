@@ -1,0 +1,11 @@
+import os
+import platform
+
+env=DefaultEnvironment().Clone()
+LIB_DIR=os.environ['LIB_DIR'];
+BIN_DIR=os.environ['BIN_DIR'];
+
+SOURCES=["lz4.c", "lz4frame.c", "lz4hc.c","xxhash.c"]
+
+env.Library(os.path.join(LIB_DIR, 'lz4'), SOURCES)
+
