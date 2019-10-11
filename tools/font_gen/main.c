@@ -20,6 +20,7 @@
  */
 
 #include "tkc/mem.h"
+#include "tkc/platform.h"
 #include "common/utils.h"
 #include "font_gen.h"
 #include "font_loader/font_loader_bitmap.h"
@@ -40,7 +41,7 @@ int main(int argc, char** argv) {
   const char* str_filename = NULL;
   const char* out_filename = NULL;
 
-  TKMEM_INIT(4 * 1024 * 1024);
+  platform_prepare();
 
   if (argc < 5) {
     printf("Usage: %s ttf_filename str_filename out_filename font_size [mono]\n", argv[0]);
