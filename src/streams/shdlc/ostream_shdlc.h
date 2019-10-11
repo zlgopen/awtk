@@ -23,7 +23,7 @@
 #define TK_OSTREAM_SHDLC_H
 
 #include "tkc/buffer.h"
-#include "streams/iostream_shdlc.h"
+#include "streams/shdlc/iostream_shdlc.h"
 
 BEGIN_C_DECLS
 

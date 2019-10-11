@@ -20,10 +20,10 @@
  */
 
 #include "tkc/mem.h"
-#include "streams/istream_shdlc.h"
-#include "streams/ostream_shdlc.h"
-#include "streams/iostream_shdlc.h"
-#include "streams/istream_buffered.h"
+#include "streams/shdlc/istream_shdlc.h"
+#include "streams/shdlc/ostream_shdlc.h"
+#include "streams/shdlc/iostream_shdlc.h"
+#include "streams/buffered/istream_buffered.h"
 
 static ret_t tk_iostream_shdlc_on_destroy(object_t* obj) {
   tk_iostream_shdlc_t* iostream_shdlc = TK_IOSTREAM_SHDLC(obj);

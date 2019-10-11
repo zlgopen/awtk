@@ -20,8 +20,8 @@
  */
 
 #include "tkc/mem.h"
-#include "streams/shdlc_helper.h"
-#include "streams/ostream_shdlc.h"
+#include "streams/shdlc/shdlc_helper.h"
+#include "streams/shdlc/ostream_shdlc.h"
 
 static int32_t tk_ostream_shdlc_write(tk_ostream_t* stream, const uint8_t* buff, uint32_t size) {
   ret_t ret = 0;

@@ -20,7 +20,7 @@
  */
 
 #include "tkc/buffer.h"
-#include "streams/ostream_buffered.h"
+#include "streams/buffered/ostream_buffered.h"
 
 static int32_t tk_ostream_buffered_write(tk_ostream_t* stream, const uint8_t* buff,
                                          uint32_t max_size) {

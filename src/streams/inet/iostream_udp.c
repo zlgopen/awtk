@@ -24,10 +24,10 @@
 #endif /*WIN32_LEAN_AND_MEAN*/
 
 #include "tkc/mem.h"
-#include "streams/socket_helper.h"
-#include "streams/istream_udp.h"
-#include "streams/ostream_udp.h"
-#include "streams/iostream_udp.h"
+#include "streams/inet/socket_helper.h"
+#include "streams/inet/istream_udp.h"
+#include "streams/inet/ostream_udp.h"
+#include "streams/inet/iostream_udp.h"
 
 static ret_t tk_iostream_udp_get_prop(object_t* obj, const char* name, value_t* v) {
   tk_iostream_udp_t* iostream_udp = TK_IOSTREAM_UDP(obj);

@@ -20,8 +20,8 @@
  */
 
 #include "tkc/mem.h"
-#include "streams/serial_helper.h"
-#include "streams/ostream_serial.h"
+#include "streams/serial/serial_helper.h"
+#include "streams/serial/ostream_serial.h"
 
 static int32_t tk_ostream_serial_write(tk_ostream_t* stream, const uint8_t* buff,
                                        uint32_t max_size) {

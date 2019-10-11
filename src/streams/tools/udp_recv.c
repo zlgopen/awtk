@@ -4,8 +4,8 @@
 
 #include "tkc/utils.h"
 #include "tkc/platform.h"
-#include "streams/iostream_udp.h"
-#include "streams/socket_helper.h"
+#include "streams/inet/iostream_udp.h"
+#include "streams/inet/socket_helper.h"
 
 void do_recv(int port) {
   int32_t n = 10;

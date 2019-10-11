@@ -20,7 +20,7 @@
  */
 
 #include "tkc/crc.h"
-#include "streams/shdlc_helper.h"
+#include "streams/shdlc/shdlc_helper.h"
 
 static inline uint8_t shdlc_escape(uint8_t c) {
   return c ^ 0x20;

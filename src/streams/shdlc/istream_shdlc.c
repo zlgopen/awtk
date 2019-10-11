@@ -20,8 +20,8 @@
  */
 
 #include "tkc/mem.h"
-#include "streams/shdlc_helper.h"
-#include "streams/istream_shdlc.h"
+#include "streams/shdlc/shdlc_helper.h"
+#include "streams/shdlc/istream_shdlc.h"
 
 static ret_t tk_istream_shdlc_send_ack(tk_istream_t* stream, bool_t ok, uint8_t seqno) {
   wbuffer_t wb;

@@ -20,9 +20,9 @@
  */
 
 #include "tkc/mem.h"
-#include "streams/istream_serial.h"
-#include "streams/ostream_serial.h"
-#include "streams/iostream_serial.h"
+#include "streams/serial/istream_serial.h"
+#include "streams/serial/ostream_serial.h"
+#include "streams/serial/iostream_serial.h"
 
 static ret_t tk_iostream_serial_get_prop(object_t* obj, const char* name, value_t* v) {
   tk_iostream_serial_t* iostream_serial = TK_IOSTREAM_SERIAL(obj);

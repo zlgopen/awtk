@@ -24,7 +24,7 @@
 
 #include "tkc/fs.h"
 #include "tkc/ostream.h"
-#include "streams/serial_helper.h"
+#include "streams/serial/serial_helper.h"
 
 BEGIN_C_DECLS
 

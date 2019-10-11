@@ -1,6 +1,6 @@
 ﻿#include "gtest/gtest.h"
-#include "streams/istream_mem.h"
-#include "streams/istream_buffered.h"
+#include "streams/mem/istream_mem.h"
+#include "streams/buffered/istream_buffered.h"
 
 TEST(IStreamBuffered, basic) {
   char c = 0;

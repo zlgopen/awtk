@@ -20,7 +20,7 @@
  */
 
 #include "tkc/mem.h"
-#include "streams/ostream_file.h"
+#include "streams/file/ostream_file.h"
 
 static int32_t tk_ostream_file_write(tk_ostream_t* stream, const uint8_t* buff, uint32_t max_size) {
   tk_ostream_file_t* ostream_file = TK_OSTREAM_FILE(stream);

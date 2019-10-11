@@ -1,6 +1,6 @@
 ﻿#include "gtest/gtest.h"
-#include "streams/shdlc_helper.h"
-#include "streams/istream_mem.h"
+#include "streams/shdlc/shdlc_helper.h"
+#include "streams/mem/istream_mem.h"
 
 TEST(SHDLC, header) {
   shdlc_header_t header = {0};

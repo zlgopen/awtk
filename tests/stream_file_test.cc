@@ -1,5 +1,5 @@
-﻿#include "streams/ostream_file.h"
-#include "streams/istream_file.h"
+﻿#include "streams/file/ostream_file.h"
+#include "streams/file/istream_file.h"
 #include "gtest/gtest.h"
 
 static void test_write(const char* filename) {

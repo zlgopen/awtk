@@ -1,7 +1,7 @@
 #include "tkc/utils.h"
 #include "tkc/platform.h"
-#include "streams/iostream_serial.h"
-#include "streams/serial_helper.h"
+#include "streams/serial/iostream_serial.h"
+#include "streams/serial/serial_helper.h"
 
 void do_send(tk_iostream_t* iostream, const char* msg) {
   char buff[128];

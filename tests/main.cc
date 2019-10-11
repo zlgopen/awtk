@@ -40,7 +40,7 @@
 #include "ext_widgets/ext_widgets.h"
 #include "gtest/gtest.h"
 #include "demos/assets.h"
-#include "streams/socket_helper.h"
+#include "streams/inet/socket_helper.h"
 
 GTEST_API_ int main(int argc, char** argv) {
   printf("Running main() from gtest_main.cc\n");

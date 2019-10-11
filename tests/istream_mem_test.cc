@@ -1,4 +1,4 @@
-﻿#include "streams/istream_mem.h"
+﻿#include "streams/mem/istream_mem.h"
 #include "gtest/gtest.h"
 
 TEST(IStreamMem, basic) {

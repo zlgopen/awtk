@@ -20,7 +20,7 @@
  */
 
 #include "tkc/mem.h"
-#include "streams/istream_mem.h"
+#include "streams/mem/istream_mem.h"
 
 static int32_t tk_istream_mem_read(tk_istream_t* stream, uint8_t* buff, uint32_t max_size) {
   int32_t size = max_size;

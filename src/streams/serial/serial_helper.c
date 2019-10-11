@@ -35,8 +35,8 @@
 #include "tkc/wstr.h"
 #include "tkc/thread.h"
 #include "tkc/socket_pair.h"
-#include "streams/socket_helper.h"
-#include "streams/serial_helper.h"
+#include "streams/inet/socket_helper.h"
+#include "streams/serial/serial_helper.h"
 
 #ifdef WIN32
 #define prefix L"\\\\.\\"

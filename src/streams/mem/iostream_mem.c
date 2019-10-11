@@ -20,9 +20,9 @@
  */
 
 #include "tkc/mem.h"
-#include "streams/istream_mem.h"
-#include "streams/ostream_mem.h"
-#include "streams/iostream_mem.h"
+#include "streams/mem/istream_mem.h"
+#include "streams/mem/ostream_mem.h"
+#include "streams/mem/iostream_mem.h"
 
 static ret_t tk_iostream_mem_on_destroy(object_t* obj) {
   tk_iostream_mem_t* iostream_mem = TK_IOSTREAM_MEM(obj);

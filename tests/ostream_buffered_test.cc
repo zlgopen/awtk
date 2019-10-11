@@ -1,6 +1,6 @@
 ﻿#include "gtest/gtest.h"
-#include "streams/ostream_mem.h"
-#include "streams/ostream_buffered.h"
+#include "streams/mem/ostream_mem.h"
+#include "streams/buffered/ostream_buffered.h"
 
 TEST(OStreamBuffered, basic) {
   char buff[32];

@@ -2,8 +2,8 @@
 
 #include "tkc/thread.h"
 #include "tkc/socket_pair.h"
-#include "streams/iostream_shdlc.h"
-#include "streams/iostream_tcp.h"
+#include "streams/shdlc/iostream_shdlc.h"
+#include "streams/inet/iostream_tcp.h"
 
 static uint8_t rbuff[7];
 static uint8_t sbuff[7] = {1, 2, 3, 4, 5, 6, 7};

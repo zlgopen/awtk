@@ -24,7 +24,7 @@
 
 #include "tkc/buffer.h"
 #include "tkc/ring_buffer.h"
-#include "streams/iostream_shdlc.h"
+#include "streams/shdlc/iostream_shdlc.h"
 
 BEGIN_C_DECLS
 

@@ -24,10 +24,10 @@
 #endif /*WIN32_LEAN_AND_MEAN*/
 
 #include "tkc/mem.h"
-#include "streams/socket_helper.h"
-#include "streams/istream_tcp.h"
-#include "streams/ostream_tcp.h"
-#include "streams/iostream_tcp.h"
+#include "streams/inet/socket_helper.h"
+#include "streams/inet/istream_tcp.h"
+#include "streams/inet/ostream_tcp.h"
+#include "streams/inet/iostream_tcp.h"
 
 static ret_t tk_iostream_tcp_get_prop(object_t* obj, const char* name, value_t* v) {
   tk_iostream_tcp_t* iostream_tcp = TK_IOSTREAM_TCP(obj);

@@ -24,7 +24,7 @@
 #endif /*WIN32_LEAN_AND_MEAN*/
 
 #include "tkc/mem.h"
-#include "streams/socket_helper.h"
+#include "streams/inet/socket_helper.h"
 
 #ifdef WIN32
 #pragma comment(lib, "ws2_32")
