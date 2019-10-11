@@ -31,7 +31,7 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
   }
 
   if (bpp * img->w == img->line_length) {
-    data = img->data;
+    data = (char*)(img->data);
   } else {
     uint32_t size = 0;
     size = bpp * img->w * img->h;
