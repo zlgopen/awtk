@@ -12,26 +12,79 @@ static ret_t rotate_image(bitmap_t* dst, bitmap_t* src, rect_t* src_r, lcd_orien
   uint32_t dst_line_length = bitmap_get_line_length(dst);
   uint32_t src_line_length = bitmap_get_line_length(src);
 
-  dx = src_r->y;
-  dy = src->w - src_r->x - src_r->w;
+  switch (o) {
+    case LCD_ORIENTATION_90: {
+      dx = src_r->y;
+      dy = src->w - src_r->x - src_r->w;
+      break;
+    }
+    case LCD_ORIENTATION_180: {
+      dy = src->h - src_r->y - 1;
+      dx = src->w - src_r->x - 1;
+      break;
+    }
+    case LCD_ORIENTATION_270: {
+      dx = src->h - src_r->y;
+      dy = src_r->x;
+      break;
+    }
+    default:
+        break;
+  }
   dst_p = (pixel_dst_t*)(dst->data + dy * dst_line_length + dx * fb_bpp);
   src_p = (pixel_dst_t*)(src->data + src_r->y * src_line_length + src_r->x * img_bpp);
 
   w = src_r->w;
   h = src_r->h;
 
-  for (i = 0; i < h; i++) {
-    pixel_dst_t* s = src_p + w - 1;
-    pixel_dst_t* d = dst_p;
+  switch (o) {
+      case LCD_ORIENTATION_90:{
+          for (i = 0; i < h; i++) {
+              pixel_dst_t* s = src_p + w - 1;
+              pixel_dst_t* d = dst_p;
 
-    for (k = 0; k < w; k++) {
-      *d = *s--;
-      d = (pixel_dst_t*)(((char*)d) + dst_line_length);
+              for (k = 0; k < w; k++) {
+                  *d = *s--;
+                  d = (pixel_dst_t*)(((char*)d) + dst_line_length);
+              }
+
+              dst_p++;
+              src_p = (pixel_dst_t*)(((char*)src_p) + src_line_length);
+          }
+        break;
+      }
+      case LCD_ORIENTATION_180: {
+          for (i = 0; i < h; i++) {
+              pixel_dst_t* s = src_p;
+              pixel_dst_t* d = dst_p;
+
+              for (k = 0; k < w; k++) {
+                  *d = *s++;
+                  d--;
+              }
+              dst_p = (pixel_dst_t*)(((char*)dst_p) - dst_line_length);
+              src_p = (pixel_dst_t*)(((char*)src_p) + src_line_length);
+          }
+        break;
+      }
+      case LCD_ORIENTATION_270: {
+          for (i = 0; i < h; i++) {
+              pixel_dst_t* s = src_p;
+              pixel_dst_t* d = dst_p;
+
+              for (k = 0; k < w; k++) {
+                  *d = *s++;
+                  d = (pixel_dst_t*)(((char*)d) + dst_line_length);
+              }
+
+              dst_p--;
+              src_p = (pixel_dst_t*)(((char*)src_p) + src_line_length);
+          }
+        break;
+      }
+      default:
+          break;
     }
-
-    dst_p++;
-    src_p = (pixel_dst_t*)(((char*)src_p) + src_line_length);
-  }
 
   return RET_OK;
 }

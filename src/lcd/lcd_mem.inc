@@ -34,12 +34,6 @@ static pixel_t* lcd_mem_init_drawing_fb(lcd_t* lcd, bitmap_t* fb) {
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
   uint8_t* fbuff = mem->offline_fb;
 
-#if !defined(LINUX)
-  if (lcd->draw_mode == LCD_DRAW_ANIMATION && mem->online_fb && !lcd_is_swappable(lcd)) {
-    fbuff = mem->online_fb;
-  }
-#endif /*LINUX*/
-
   if (fb != NULL) {
     bitmap_init(fb, lcd->w, lcd->h, mem->format, fbuff);
     bitmap_set_line_length(fb, lcd_mem_get_line_length(mem));
@@ -204,36 +198,15 @@ static ret_t lcd_mem_draw_image_matrix(lcd_t* lcd, draw_image_info_t* info) {
 static ret_t lcd_mem_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
   bitmap_t fb;
   ret_t ret = RET_OK;
-  system_info_t* info = system_info();
-  lcd_orientation_t o = info->lcd_orientation;
   bool_t is_opaque = (img->flags & BITMAP_FLAG_OPAQUE || img->format == BITMAP_FMT_RGB565);
 
   lcd_mem_init_drawing_fb(lcd, &fb);
 
   if (img->format == fb.format && is_opaque && src->w == dst->w && src->h == dst->h &&
       lcd->global_alpha >= TK_OPACITY_ALPHA) {
-    rect_t r;
-    xy_t dx = 0;
-    xy_t dy = 0;
-
-    if (o == LCD_ORIENTATION_90 && lcd->draw_mode == LCD_DRAW_ANIMATION) {
-      fb.w = lcd->h;
-      fb.h = lcd->w;
-      fb.line_length = fb.w * bitmap_get_bpp_of_format(LCD_FORMAT);
-
-      r.w = src->h;
-      r.h = src->w;
-      r.x = src->y;
-      r.y = img->h - src->x - src->w;
-
-      dx = dst->y;
-      dy = fb.h - dst->x - dst->w;
-    } else {
-      r = *src;
-      dx = dst->x;
-      dy = dst->y;
-    }
-
+    rect_t r = *src;
+    xy_t dx = dst->x;
+    xy_t dy = dst->y;
     ret = image_copy(&fb, img, &r, dx, dy);
   } else {
     ret = image_blend(&fb, img, dst, src, lcd->global_alpha);
@@ -262,24 +235,14 @@ static vgcanvas_t* lcd_mem_get_vgcanvas(lcd_t* lcd) {
 
 static ret_t lcd_mem_take_snapshot(lcd_t* lcd, bitmap_t* img, bool_t auto_rotate) {
   bitmap_t fb;
-  lcd_orientation_t orientation = system_info()->lcd_orientation;
-
   lcd_mem_init_drawing_fb(lcd, &fb);
-  if (auto_rotate && orientation == LCD_ORIENTATION_90) {
-    rect_t r = rect_init(0, 0, fb.w, fb.h);
-    return_value_if_fail(bitmap_init(img, fb.h, fb.w, (bitmap_format_t)(fb.format), NULL) == RET_OK,
-                         RET_OOM);
 
-    img->flags = BITMAP_FLAG_OPAQUE;
-    return image_rotate(img, &fb, &r, orientation);
-  } else {
-    rect_t r = rect_init(0, 0, fb.w, fb.h);
-    return_value_if_fail(bitmap_init(img, fb.w, fb.h, (bitmap_format_t)(fb.format), NULL) == RET_OK,
-                         RET_OOM);
+  rect_t r = rect_init(0, 0, fb.w, fb.h);
+  return_value_if_fail(bitmap_init(img, fb.w, fb.h, (bitmap_format_t)(fb.format), NULL) == RET_OK,
+                        RET_OOM);
 
-    img->flags = BITMAP_FLAG_OPAQUE;
-    return image_copy(img, &fb, &r, 0, 0);
-  }
+  img->flags = BITMAP_FLAG_OPAQUE;
+  return image_copy(img, &fb, &r, 0, 0);
 }
 
 static ret_t lcd_mem_flush(lcd_t* lcd) {
@@ -288,9 +251,6 @@ static ret_t lcd_mem_flush(lcd_t* lcd) {
   rect_t* r = &(lcd->dirty_rect);
   system_info_t* info = system_info();
   lcd_orientation_t o = info->lcd_orientation;
-
-  assert(o == LCD_ORIENTATION_0 || o == LCD_ORIENTATION_90);
-  return_value_if_fail(o == LCD_ORIENTATION_0 || o == LCD_ORIENTATION_90, RET_NOT_IMPL);
 
   lcd_mem_init_drawing_fb(lcd, &offline_fb);
   lcd_mem_init_online_fb(lcd, &online_fb, o);
@@ -310,11 +270,6 @@ static ret_t lcd_mem_end_frame(lcd_t* lcd) {
   if (lcd_is_swappable(lcd)) {
     lcd_swap(lcd);
   } else {
-#if !defined(LINUX)
-    if (lcd->draw_mode == LCD_DRAW_ANIMATION) {
-      return RET_OK;
-    }
-#endif /*LINUX*/
     lcd_flush(lcd);
   }
 

@@ -304,9 +304,6 @@ ret_t tk_set_lcd_orientation(lcd_orientation_t orientation) {
   main_loop_t* loop = main_loop();
   system_info_t* info = system_info();
   return_value_if_fail(loop != NULL && info != NULL, RET_OK);
-  assert(orientation == LCD_ORIENTATION_90 || orientation == LCD_ORIENTATION_0);
-  return_value_if_fail(orientation == LCD_ORIENTATION_90 || orientation == LCD_ORIENTATION_0,
-                       RET_NOT_IMPL);
 
   if (info->lcd_orientation != orientation) {
     orientation_event_t e;

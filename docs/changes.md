@@ -1,4 +1,7 @@
 # 最新动态
+* 2019/10/11
+  * 合并君正提供的屏幕旋转补丁(感谢君正提供补丁，感谢智明在各个平台验证）。
+
 * 2019/10/10
   * 修改canvas draw image repeatx/repeaty的问题（感谢俊杰提供补丁）。
   * canvas增加repeat\_y\_inverse图片绘制方式。

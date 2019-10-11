@@ -153,10 +153,8 @@ ret_t soft_fill_rect(bitmap_t* dst, rect_t* dst_r, color_t c) {
 }
 
 ret_t soft_rotate_image(bitmap_t* dst, bitmap_t* src, rect_t* src_r, lcd_orientation_t o) {
-  return_value_if_fail(o == LCD_ORIENTATION_90, RET_NOT_IMPL);
   return_value_if_fail(dst != NULL && src != NULL && src_r != NULL, RET_BAD_PARAMS);
   return_value_if_fail(dst->format == src->format, RET_BAD_PARAMS);
-  return_value_if_fail(dst->w == src->h && dst->h == src->w, RET_BAD_PARAMS);
 
   switch (dst->format) {
     case BITMAP_FMT_RGB565: {

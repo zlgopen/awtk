@@ -180,9 +180,7 @@ static ret_t window_animator_paint_system_bar(window_animator_t* wa) {
     rect_t dst = rect_init(system_bar->x, system_bar->y, system_bar->w, system_bar->h);
     canvas_draw_image(wa->canvas, &(wa->prev_img), rect_scale(&src, wa->ratio), &dst);
 #else
-    if (!(wa->canvas->lcd->support_dirty_rect)) {
-      widget_paint(system_bar, wa->canvas);
-    }
+    widget_paint(system_bar, wa->canvas);
 #endif /*AWTK_WEB*/
   }
 
