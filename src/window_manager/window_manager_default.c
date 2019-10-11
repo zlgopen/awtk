@@ -116,7 +116,7 @@ static widget_t* window_manager_find_prev_window(widget_t* widget) {
     nr = widget->children->size;
     for (i = nr - 2; i >= 0; i--) {
       widget_t* iter = (widget_t*)(widget->children->elms[i]);
-      if (widget_is_normal_window(iter)) {
+      if (widget_is_normal_window(iter) || widget_is_dialog(iter) || widget_is_popup(iter)) {
         return iter;
       }
     }
