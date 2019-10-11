@@ -15,7 +15,6 @@ static ret_t nanovg_on_bitmap_destroy(bitmap_t* img) {
 }
 
 static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img) {
-  
   int32_t i = 0;
   uint8_t* data = NULL;
   uint32_t bpp = bitmap_get_bpp(img);
@@ -31,8 +30,8 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
     return i;
   }
 
-  if(bpp * img->w == img->line_length) {
-      data = img->data;
+  if (bpp * img->w == img->line_length) {
+    data = img->data;
   } else {
     uint32_t size = 0;
     size = bpp * img->w * img->h;
@@ -41,16 +40,14 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
     memset(data, 0x00, size);
     int j;
     for (j = 0; j < img->h; j++) {
-        memcpy(data + j * img->w * bpp ,
-                img->data + j * img->line_length,
-                img->w * bpp);
+      memcpy(data + j * img->w * bpp, img->data + j * img->line_length, img->w * bpp);
     }
   }
 
   i = nvgCreateImageRGBA(canvas->vg, img->w, img->h, NVG_IMAGE_NEAREST, img->data);
 
-  if(data != img->data) {
-      TKMEM_FREE(data);
+  if (data != img->data) {
+    TKMEM_FREE(data);
   }
 
   if (i >= 0) {

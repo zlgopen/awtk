@@ -240,15 +240,13 @@ ret_t bitmap_init_rgba8888(bitmap_t* b, uint32_t w, uint32_t h, const uint8_t* d
 
   if (comp == 4) {
     for (i = 0; i < h; i++) {
-        memcpy((uint8_t*)(b->data) + i * b->line_length ,
-                data + i * w * 4,
-                w * 4);
+      memcpy((uint8_t*)(b->data) + i * b->line_length, data + i * w * 4, w * 4);
     }
   } else {
     const uint8_t* s = data;
     uint8_t* d = (uint8_t*)(b->data);
-    for(j = 0; j < h ;j++) {
-      d = (uint8_t*)(b->data)+j*b->line_length;
+    for (j = 0; j < h; j++) {
+      d = (uint8_t*)(b->data) + j * b->line_length;
       for (i = 0; i < w; i++) {
         *d++ = *s++;
         *d++ = *s++;
@@ -269,16 +267,16 @@ ret_t bitmap_init_bgra8888(bitmap_t* b, uint32_t w, uint32_t h, const uint8_t* d
   uint8_t* d = (uint8_t*)(b->data);
 
   /*bgra=rgba*/
-  for(j = 0; j < h ;j++){
-      d = (uint8_t*)(b->data)+j*b->line_length;
-      for (i = 0; i < w; i++) {
-          d[0] = s[2];
-          d[1] = s[1];
-          d[2] = s[0];
-          d[3] = (comp == 3) ? 0xff : s[3];
-          d += 4;
-          s += comp;
-      }
+  for (j = 0; j < h; j++) {
+    d = (uint8_t*)(b->data) + j * b->line_length;
+    for (i = 0; i < w; i++) {
+      d[0] = s[2];
+      d[1] = s[1];
+      d[2] = s[0];
+      d[3] = (comp == 3) ? 0xff : s[3];
+      d += 4;
+      s += comp;
+    }
   }
 
   return RET_OK;
@@ -290,17 +288,17 @@ ret_t bitmap_init_bgr565(bitmap_t* b, uint32_t w, uint32_t h, const uint8_t* dat
   const uint8_t* s = data;
   uint16_t* d = (uint16_t*)(b->data);
 
-  for(j = 0; j < h ;j++){
-      d = (uint16_t*)((b->data)+j*b->line_length);
-      for (i = 0; i < w; i++) {
-          uint8_t r = s[0];
-          uint8_t g = s[1];
-          uint8_t b = s[2];
+  for (j = 0; j < h; j++) {
+    d = (uint16_t*)((b->data) + j * b->line_length);
+    for (i = 0; i < w; i++) {
+      uint8_t r = s[0];
+      uint8_t g = s[1];
+      uint8_t b = s[2];
 
-          *d++ = rgb_to_bgr565(r, g, b);
+      *d++ = rgb_to_bgr565(r, g, b);
 
-          s += comp;
-      }
+      s += comp;
+    }
   }
 
   return RET_OK;
@@ -515,7 +513,7 @@ bool_t bitmap_save_png(bitmap_t* bitmap, const char* filename) {
 
   p = (uint32_t*)(t->data);
   for (y = 0; y < bitmap->h; y++) {
-    p = (uint32_t*)((t->data)+y*t->line_length);
+    p = (uint32_t*)((t->data) + y * t->line_length);
     for (x = 0; x < bitmap->w; x++) {
       bitmap_get_pixel(bitmap, x, y, &(c.rgba));
       *p++ = c.color;

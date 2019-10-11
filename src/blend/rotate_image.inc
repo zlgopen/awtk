@@ -29,7 +29,7 @@ static ret_t rotate_image(bitmap_t* dst, bitmap_t* src, rect_t* src_r, lcd_orien
       break;
     }
     default:
-        break;
+      break;
   }
   dst_p = (pixel_dst_t*)(dst->data + dy * dst_line_length + dx * fb_bpp);
   src_p = (pixel_dst_t*)(src->data + src_r->y * src_line_length + src_r->x * img_bpp);
@@ -38,53 +38,53 @@ static ret_t rotate_image(bitmap_t* dst, bitmap_t* src, rect_t* src_r, lcd_orien
   h = src_r->h;
 
   switch (o) {
-      case LCD_ORIENTATION_90:{
-          for (i = 0; i < h; i++) {
-              pixel_dst_t* s = src_p + w - 1;
-              pixel_dst_t* d = dst_p;
+    case LCD_ORIENTATION_90: {
+      for (i = 0; i < h; i++) {
+        pixel_dst_t* s = src_p + w - 1;
+        pixel_dst_t* d = dst_p;
 
-              for (k = 0; k < w; k++) {
-                  *d = *s--;
-                  d = (pixel_dst_t*)(((char*)d) + dst_line_length);
-              }
+        for (k = 0; k < w; k++) {
+          *d = *s--;
+          d = (pixel_dst_t*)(((char*)d) + dst_line_length);
+        }
 
-              dst_p++;
-              src_p = (pixel_dst_t*)(((char*)src_p) + src_line_length);
-          }
-        break;
+        dst_p++;
+        src_p = (pixel_dst_t*)(((char*)src_p) + src_line_length);
       }
-      case LCD_ORIENTATION_180: {
-          for (i = 0; i < h; i++) {
-              pixel_dst_t* s = src_p;
-              pixel_dst_t* d = dst_p;
-
-              for (k = 0; k < w; k++) {
-                  *d = *s++;
-                  d--;
-              }
-              dst_p = (pixel_dst_t*)(((char*)dst_p) - dst_line_length);
-              src_p = (pixel_dst_t*)(((char*)src_p) + src_line_length);
-          }
-        break;
-      }
-      case LCD_ORIENTATION_270: {
-          for (i = 0; i < h; i++) {
-              pixel_dst_t* s = src_p;
-              pixel_dst_t* d = dst_p;
-
-              for (k = 0; k < w; k++) {
-                  *d = *s++;
-                  d = (pixel_dst_t*)(((char*)d) + dst_line_length);
-              }
-
-              dst_p--;
-              src_p = (pixel_dst_t*)(((char*)src_p) + src_line_length);
-          }
-        break;
-      }
-      default:
-          break;
+      break;
     }
+    case LCD_ORIENTATION_180: {
+      for (i = 0; i < h; i++) {
+        pixel_dst_t* s = src_p;
+        pixel_dst_t* d = dst_p;
+
+        for (k = 0; k < w; k++) {
+          *d = *s++;
+          d--;
+        }
+        dst_p = (pixel_dst_t*)(((char*)dst_p) - dst_line_length);
+        src_p = (pixel_dst_t*)(((char*)src_p) + src_line_length);
+      }
+      break;
+    }
+    case LCD_ORIENTATION_270: {
+      for (i = 0; i < h; i++) {
+        pixel_dst_t* s = src_p;
+        pixel_dst_t* d = dst_p;
+
+        for (k = 0; k < w; k++) {
+          *d = *s++;
+          d = (pixel_dst_t*)(((char*)d) + dst_line_length);
+        }
+
+        dst_p--;
+        src_p = (pixel_dst_t*)(((char*)src_p) + src_line_length);
+      }
+      break;
+    }
+    default:
+      break;
+  }
 
   return RET_OK;
 }

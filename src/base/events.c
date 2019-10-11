@@ -84,7 +84,7 @@ ret_t pointer_event_rotate(pointer_event_t* evt, system_info_t* info) {
       evt->y = info->lcd_h - y - 1;
       evt->x = info->lcd_w - x - 1;
       break;
-    }   
+    }
     case LCD_ORIENTATION_270: {
       evt->y = info->lcd_w - x - 1;
       evt->x = y;
