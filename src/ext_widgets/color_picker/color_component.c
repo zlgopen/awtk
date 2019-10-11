@@ -214,6 +214,7 @@ static ret_t color_component_update_sv(widget_t* widget) {
   convertRGBtoHSV(rgba.r, rgba.g, rgba.b, &H, &S, &V);
 
   for (y = 0; y < h; y++) {
+    dst = (uint32_t*)(image->data + y * image->line_length);
     for (x = 0; x < w; x++) {
       V = (float)x / (float)w;
       S = 1 - (float)y / (float)h;
@@ -249,6 +250,7 @@ static ret_t color_component_update_h(widget_t* widget) {
   dst = (uint32_t*)(image->data);
 
   for (y = 0; y < h; y++) {
+    dst = (uint32_t*)(image->data + y * image->line_length);
     H = (1 - (float)y / (float)h) * 360;
     convertHSVtoRGB(H, S, V, &r, &g, &b);
     v = rgb_to_image8888(r, g, b);
