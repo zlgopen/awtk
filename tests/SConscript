@@ -20,7 +20,7 @@ INCLUDE_PATH = [TK_ROOT,
   os.path.join(GTEST_ROOT, 'make')]
 
 env['CPPPATH'] = INCLUDE_PATH
-env['LIBS'] = ['assets', 'image_gen', 'theme_gen', 'font_gen', 'str_gen', 'common', 'streams', 'ubjson'] + env['LIBS']
+env['LIBS'] = ['assets', 'image_gen', 'theme_gen', 'font_gen', 'str_gen', 'common', 'streams', 'ubjson', 'compressors', 'miniz'] + env['LIBS']
 env['LINKFLAGS'] = env['OS_SUBSYSTEM_CONSOLE'] + env['LINKFLAGS'];
 
 SOURCES = [
