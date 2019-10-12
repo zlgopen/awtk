@@ -49,7 +49,7 @@ static ret_t shdlc_write_uint16(wbuffer_t* wb, uint16_t v) {
 
 static ret_t shdlc_write(wbuffer_t* wb, shdlc_header_t header, const uint8_t* data, uint32_t len) {
   uint32_t i = 0;
-  uint16_t fcs = 0;
+  uint16_t fcs = PPPINITFCS16;
   return_value_if_fail(wb != NULL && header.s.type != SHDLC_INVALID, RET_BAD_PARAMS);
 
   wb->cursor = 0;
@@ -62,7 +62,8 @@ static ret_t shdlc_write(wbuffer_t* wb, shdlc_header_t header, const uint8_t* da
     }
   }
 
-  fcs = tk_crc16(PPPINITFCS16, wb->data + 1, wb->cursor - 1);
+  fcs = tk_crc16_byte(fcs, header.data);
+  fcs = tk_crc16(fcs, data, len);
   return_value_if_fail(shdlc_write_uint16(wb, fcs) == RET_OK, RET_OOM);
   return_value_if_fail(wbuffer_write_uint8(wb, SHDLC_FLAG) == RET_OK, RET_OOM);
 
@@ -74,6 +75,7 @@ ret_t shdlc_write_ack(wbuffer_t* wb, uint8_t seqno) {
   header.s.reserve = 0;
   header.s.seqno = seqno;
   header.s.type = SHDLC_ACK;
+  header.s.compressed = FALSE;
 
   return shdlc_write(wb, header, NULL, 0);
 }
@@ -83,17 +85,20 @@ ret_t shdlc_write_nack(wbuffer_t* wb, uint8_t seqno) {
   header.s.reserve = 0;
   header.s.seqno = seqno;
   header.s.type = SHDLC_NACK;
+  header.s.compressed = FALSE;
 
   return shdlc_write(wb, header, NULL, 0);
 }
 
-ret_t shdlc_write_data(wbuffer_t* wb, uint8_t seqno, const void* data, uint32_t len) {
+ret_t shdlc_write_data(wbuffer_t* wb, uint8_t seqno, bool_t compressed, const void* data,
+                       uint32_t len) {
   shdlc_header_t header = {0};
   return_value_if_fail(data != NULL && len > 0, RET_BAD_PARAMS);
 
   header.s.reserve = 0;
   header.s.seqno = seqno;
   header.s.type = SHDLC_DATA;
+  header.s.compressed = compressed;
 
   return shdlc_write(wb, header, (const uint8_t*)data, len);
 }
@@ -138,14 +143,17 @@ ret_t shdlc_read_data(tk_istream_t* istream, wbuffer_t* wb, uint32_t timeout) {
       return_value_if_fail(fcs == fcs_real, RET_CRC);
       break;
     } else if (c == SHDLC_ESCAPE) {
+      last_c = c;
     } else {
       if (last_c == SHDLC_ESCAPE) {
+        last_c = c;
         c = shdlc_unescape(c);
+      } else {
+        last_c = c;
       }
       return_value_if_fail(wbuffer_write_uint8(wb, c) == RET_OK, RET_OOM);
     }
 
-    last_c = c;
   } while (1);
 
   return RET_OK;

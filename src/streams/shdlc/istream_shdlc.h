@@ -23,6 +23,7 @@
 #define TK_ISTREAM_SHDLC_H
 
 #include "tkc/buffer.h"
+#include "tkc/compressor.h"
 #include "tkc/ring_buffer.h"
 #include "streams/shdlc/iostream_shdlc.h"
 
@@ -50,6 +51,8 @@ struct _tk_istream_shdlc_t {
   wbuffer_t wb;
   ring_buffer_t* rb;
   uint8_t last_seqno;
+  wbuffer_t wb_compress;
+  compressor_t* compressor;
   tk_iostream_shdlc_t* iostream;
 };
 

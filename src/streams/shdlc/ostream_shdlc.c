@@ -20,6 +20,7 @@
  */
 
 #include "tkc/mem.h"
+#include "compressors/compressor_miniz.h"
 #include "streams/shdlc/shdlc_helper.h"
 #include "streams/shdlc/ostream_shdlc.h"
 
@@ -33,7 +34,14 @@ static int32_t tk_ostream_shdlc_write(tk_ostream_t* stream, const uint8_t* buff,
   tk_ostream_t* real_ostream = ostream_shdlc->iostream->real_ostream;
 
   wbuffer_t* wb = &(ostream_shdlc->wb);
-  return_value_if_fail(shdlc_write_data(wb, seqno, buff, size) == RET_OK, 0);
+  if (ostream_shdlc->compress_threshold <= size) {
+    compressor_t* c = ostream_shdlc->compressor;
+    wbuffer_t* wb_c = &(ostream_shdlc->wb_compress);
+    return_value_if_fail(compressor_compress(c, buff, size, wb_c) == RET_OK, 0);
+    return_value_if_fail(shdlc_write_data(wb, seqno, TRUE, wb_c->data, wb_c->cursor) == RET_OK, 0);
+  } else {
+    return_value_if_fail(shdlc_write_data(wb, seqno, FALSE, buff, size) == RET_OK, 0);
+  }
 
   while (retry_times) {
     return_value_if_fail(
@@ -95,6 +103,8 @@ static ret_t tk_ostream_shdlc_get_prop(object_t* obj, const char* name, value_t*
 static ret_t tk_ostream_shdlc_on_destroy(object_t* obj) {
   tk_ostream_shdlc_t* ostream_shdlc = TK_OSTREAM_SHDLC(obj);
   ENSURE(wbuffer_deinit(&(ostream_shdlc->wb)) == RET_OK);
+  ENSURE(wbuffer_deinit(&(ostream_shdlc->wb_compress)) == RET_OK);
+  ENSURE(compressor_destroy(ostream_shdlc->compressor) == RET_OK);
 
   return RET_OK;
 }
@@ -118,7 +128,10 @@ tk_ostream_t* tk_ostream_shdlc_create(tk_iostream_shdlc_t* iostream) {
   ostream_shdlc->timeout = 3000;
   ostream_shdlc->retry_times = 10;
   ostream_shdlc->iostream = iostream;
+  ostream_shdlc->compress_threshold = 512;
+  ostream_shdlc->compressor = compressor_miniz_create(COMPRESSOR_RATIO_FIRST);
   ENSURE(wbuffer_init_extendable(&(ostream_shdlc->wb)) != NULL);
+  ENSURE(wbuffer_init_extendable(&(ostream_shdlc->wb_compress)) != NULL);
   TK_OSTREAM(obj)->write = tk_ostream_shdlc_write;
 
   return TK_OSTREAM(obj);

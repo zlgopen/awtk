@@ -20,6 +20,7 @@
  */
 
 #include "tkc/mem.h"
+#include "compressors/compressor_miniz.h"
 #include "streams/shdlc/shdlc_helper.h"
 #include "streams/shdlc/istream_shdlc.h"
 
@@ -66,8 +67,18 @@ static ret_t tk_istream_shdlc_save_data_frame(tk_istream_t* stream, wbuffer_t* w
   header.data = wb->data[0];
   ENSURE(header.s.type == SHDLC_DATA);
   if (istream_shdlc->last_seqno != header.s.seqno) {
-    return_value_if_fail(ring_buffer_write_len(rb, wb->data + 1, wb->cursor - 1) == RET_OK,
-                         RET_OOM);
+    const uint8_t* data = wb->data + 1;
+    uint32_t size = wb->cursor - 1;
+
+    if (header.s.compressed) {
+      compressor_t* c = istream_shdlc->compressor;
+      wbuffer_t* wb_c = &(istream_shdlc->wb_compress);
+      return_value_if_fail(compressor_uncompress(c, data, size, wb_c) == RET_OK, 0);
+      data = wb_c->data;
+      size = wb_c->cursor;
+    }
+
+    return_value_if_fail(ring_buffer_write_len(rb, data, size) == RET_OK, RET_OOM);
     istream_shdlc->last_seqno = header.s.seqno;
   } else {
     log_debug("dicard duplicated packet: %d\n", (int)(header.s.seqno));
@@ -130,7 +141,8 @@ static ret_t tk_istream_shdlc_get_prop(object_t* obj, const char* name, value_t*
   tk_istream_t* real_istream = tk_iostream_get_istream(istream_shdlc->iostream->real_iostream);
 
   if (tk_str_eq(name, TK_STREAM_PROP_TIMEOUT)) {
-    istream_shdlc->timeout = value_uint32(v);
+    value_set_uint32(v, istream_shdlc->timeout);
+
     return RET_OK;
   }
 
@@ -142,6 +154,7 @@ static ret_t tk_istream_shdlc_on_destroy(object_t* obj) {
 
   ENSURE(ring_buffer_destroy(istream_shdlc->rb) == RET_OK);
   ENSURE(wbuffer_deinit(&(istream_shdlc->wb)) == RET_OK);
+  ENSURE(compressor_destroy(istream_shdlc->compressor) == RET_OK);
 
   return RET_OK;
 }
@@ -164,10 +177,12 @@ tk_istream_t* tk_istream_shdlc_create(tk_iostream_shdlc_t* iostream) {
 
   istream_shdlc->rb = ring_buffer_create(1024, 32 * 1024);
   ENSURE(wbuffer_init_extendable(&(istream_shdlc->wb)) != NULL);
+  ENSURE(wbuffer_init_extendable(&(istream_shdlc->wb_compress)) != NULL);
 
   istream_shdlc->timeout = 3000;
   istream_shdlc->last_seqno = 0xff;
   istream_shdlc->iostream = iostream;
+  istream_shdlc->compressor = compressor_miniz_create(COMPRESSOR_RATIO_FIRST);
   TK_ISTREAM(obj)->read = tk_istream_shdlc_read;
 
   return TK_ISTREAM(obj);

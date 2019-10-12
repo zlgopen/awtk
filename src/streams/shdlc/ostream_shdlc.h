@@ -23,6 +23,7 @@
 #define TK_OSTREAM_SHDLC_H
 
 #include "tkc/buffer.h"
+#include "tkc/compressor.h"
 #include "streams/shdlc/iostream_shdlc.h"
 
 BEGIN_C_DECLS
@@ -58,6 +59,8 @@ struct _tk_ostream_shdlc_t {
 
   wbuffer_t wb;
   uint8_t seqno;
+  wbuffer_t wb_compress;
+  compressor_t* compressor;
   tk_iostream_shdlc_t* iostream;
 };
 

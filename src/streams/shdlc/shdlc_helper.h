@@ -57,7 +57,8 @@ typedef union _shdlc_header_t {
 ret_t shdlc_write_ack(wbuffer_t* wb, uint8_t seqno);
 ret_t shdlc_write_nack(wbuffer_t* wb, uint8_t seqno);
 ret_t shdlc_read_data(tk_istream_t* istream, wbuffer_t* wb, uint32_t timeout);
-ret_t shdlc_write_data(wbuffer_t* wb, uint8_t seqno, const void* data, uint32_t len);
+ret_t shdlc_write_data(wbuffer_t* wb, uint8_t seqno, bool_t compressed, const void* data,
+                       uint32_t len);
 uint8_t shdlc_seqno_inc(uint8_t seqno);
 
 END_C_DECLS
