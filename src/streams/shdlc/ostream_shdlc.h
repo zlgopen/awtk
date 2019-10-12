@@ -40,10 +40,24 @@ typedef struct _tk_ostream_shdlc_t tk_ostream_shdlc_t;
 struct _tk_ostream_shdlc_t {
   tk_ostream_t ostream;
 
+  /**
+   * @property {uint32_t} timeout
+   * 读写超时时间(ms)
+   */
+  uint32_t timeout;
+  /**
+   * @property {uint32_t} retry_times
+   * 失败重传次数。
+   */
+  uint8_t retry_times;
+  /**
+   * @property {uint32_t} compress_threshold
+   * 激活压缩的阈值。
+   */
+  uint32_t compress_threshold;
+
   wbuffer_t wb;
   uint8_t seqno;
-  uint32_t timeout;
-  uint8_t retry_times;
   tk_iostream_shdlc_t* iostream;
 };
 

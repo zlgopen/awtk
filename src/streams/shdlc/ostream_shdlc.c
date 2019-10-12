@@ -60,12 +60,34 @@ static ret_t tk_ostream_shdlc_set_prop(object_t* obj, const char* name, const va
   tk_ostream_shdlc_t* ostream_shdlc = TK_OSTREAM_SHDLC(obj);
   tk_ostream_t* real_ostream = tk_iostream_get_ostream(ostream_shdlc->iostream->real_iostream);
 
+  if (tk_str_eq(name, TK_STREAM_PROP_TIMEOUT)) {
+    ostream_shdlc->timeout = value_uint32(v);
+    return RET_OK;
+  } else if (tk_str_eq(name, TK_STREAM_PROP_RETRY_TIMES)) {
+    ostream_shdlc->retry_times = value_uint32(v);
+    return RET_OK;
+  } else if (tk_str_eq(name, TK_STREAM_PROP_COMPRESS_THRESHOLD)) {
+    ostream_shdlc->compress_threshold = value_uint32(v);
+    return RET_OK;
+  }
+
   return object_set_prop(OBJECT(real_ostream), name, v);
 }
 
 static ret_t tk_ostream_shdlc_get_prop(object_t* obj, const char* name, value_t* v) {
   tk_ostream_shdlc_t* ostream_shdlc = TK_OSTREAM_SHDLC(obj);
   tk_ostream_t* real_ostream = tk_iostream_get_ostream(ostream_shdlc->iostream->real_iostream);
+
+  if (tk_str_eq(name, TK_STREAM_PROP_TIMEOUT)) {
+    value_set_uint32(v, ostream_shdlc->timeout);
+    return RET_OK;
+  } else if (tk_str_eq(name, TK_STREAM_PROP_RETRY_TIMES)) {
+    value_set_uint32(v, ostream_shdlc->retry_times);
+    return RET_OK;
+  } else if (tk_str_eq(name, TK_STREAM_PROP_COMPRESS_THRESHOLD)) {
+    value_set_uint32(v, ostream_shdlc->compress_threshold);
+    return RET_OK;
+  }
 
   return object_get_prop(OBJECT(real_ostream), name, v);
 }

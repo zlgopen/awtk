@@ -117,12 +117,22 @@ static ret_t tk_istream_shdlc_set_prop(object_t* obj, const char* name, const va
   tk_istream_shdlc_t* istream_shdlc = TK_ISTREAM_SHDLC(obj);
   tk_istream_t* real_istream = tk_iostream_get_istream(istream_shdlc->iostream->real_iostream);
 
+  if (tk_str_eq(name, TK_STREAM_PROP_TIMEOUT)) {
+    istream_shdlc->timeout = value_uint32(v);
+    return RET_OK;
+  }
+
   return object_set_prop(OBJECT(real_istream), name, v);
 }
 
 static ret_t tk_istream_shdlc_get_prop(object_t* obj, const char* name, value_t* v) {
   tk_istream_shdlc_t* istream_shdlc = TK_ISTREAM_SHDLC(obj);
   tk_istream_t* real_istream = tk_iostream_get_istream(istream_shdlc->iostream->real_iostream);
+
+  if (tk_str_eq(name, TK_STREAM_PROP_TIMEOUT)) {
+    istream_shdlc->timeout = value_uint32(v);
+    return RET_OK;
+  }
 
   return object_get_prop(OBJECT(real_istream), name, v);
 }

@@ -70,7 +70,7 @@ static ret_t shdlc_write(wbuffer_t* wb, shdlc_header_t header, const uint8_t* da
 }
 
 ret_t shdlc_write_ack(wbuffer_t* wb, uint8_t seqno) {
-  shdlc_header_t header;
+  shdlc_header_t header = {0};
   header.s.reserve = 0;
   header.s.seqno = seqno;
   header.s.type = SHDLC_ACK;
@@ -79,7 +79,7 @@ ret_t shdlc_write_ack(wbuffer_t* wb, uint8_t seqno) {
 }
 
 ret_t shdlc_write_nack(wbuffer_t* wb, uint8_t seqno) {
-  shdlc_header_t header;
+  shdlc_header_t header = {0};
   header.s.reserve = 0;
   header.s.seqno = seqno;
   header.s.type = SHDLC_NACK;
@@ -88,7 +88,7 @@ ret_t shdlc_write_nack(wbuffer_t* wb, uint8_t seqno) {
 }
 
 ret_t shdlc_write_data(wbuffer_t* wb, uint8_t seqno, const void* data, uint32_t len) {
-  shdlc_header_t header;
+  shdlc_header_t header = {0};
   return_value_if_fail(data != NULL && len > 0, RET_BAD_PARAMS);
 
   header.s.reserve = 0;

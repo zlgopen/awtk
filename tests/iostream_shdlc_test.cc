@@ -29,6 +29,19 @@ TEST(IOStreamSHDLC, basic) {
   tk_ostream_t* os = tk_iostream_get_ostream(a_io);
   tk_thread_t* t = tk_thread_create(server_thread_entry1, b_io);
 
+  ASSERT_EQ(object_get_prop_int(OBJECT(is), TK_STREAM_PROP_FD, 0), socks[0]);
+  ASSERT_EQ(object_get_prop_int(OBJECT(os), TK_STREAM_PROP_FD, 0), socks[0]);
+
+  ASSERT_EQ(object_set_prop_int(OBJECT(is), TK_STREAM_PROP_TIMEOUT, 1234), RET_OK);
+  ASSERT_EQ(object_set_prop_int(OBJECT(os), TK_STREAM_PROP_TIMEOUT, 1235), RET_OK);
+  ASSERT_EQ(object_set_prop_int(OBJECT(os), TK_STREAM_PROP_COMPRESS_THRESHOLD, 2048), RET_OK);
+  ASSERT_EQ(object_set_prop_int(OBJECT(os), TK_STREAM_PROP_RETRY_TIMES, 12), RET_OK);
+
+  ASSERT_EQ(object_get_prop_int(OBJECT(is), TK_STREAM_PROP_TIMEOUT, 0), 1234);
+  ASSERT_EQ(object_get_prop_int(OBJECT(os), TK_STREAM_PROP_TIMEOUT, 0), 1235);
+  ASSERT_EQ(object_get_prop_int(OBJECT(os), TK_STREAM_PROP_COMPRESS_THRESHOLD, 0), 2048);
+  ASSERT_EQ(object_get_prop_int(OBJECT(os), TK_STREAM_PROP_RETRY_TIMES, 0), 12);
+
   tk_thread_start(t);
   ASSERT_EQ(tk_istream_read_len(is, rbuff, sizeof(rbuff), 30000), sizeof(rbuff));
   tk_thread_join(t);

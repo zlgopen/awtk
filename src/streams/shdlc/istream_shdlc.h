@@ -41,10 +41,15 @@ typedef struct _tk_istream_shdlc_t tk_istream_shdlc_t;
 struct _tk_istream_shdlc_t {
   tk_istream_t istream;
 
+  /**
+   * @property {uint32_t} timeout
+   * 读写超时时间(ms)
+   */
+  uint32_t timeout;
+
   wbuffer_t wb;
   ring_buffer_t* rb;
   uint8_t last_seqno;
-  uint32_t timeout;
   tk_iostream_shdlc_t* iostream;
 };
 

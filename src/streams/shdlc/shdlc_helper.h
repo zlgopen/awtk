@@ -39,7 +39,8 @@ typedef union _shdlc_header_t {
   struct {
     uint8_t type : 3;
     uint8_t seqno : 3;
-    uint8_t reserve : 2;
+    uint8_t compressed : 1;
+    uint8_t reserve : 1;
   } s;
 } shdlc_header_t;
 #pragma pack(pop)
