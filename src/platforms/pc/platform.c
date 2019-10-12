@@ -86,15 +86,7 @@ uint64_t stm_now_ms();
 void stm_time_init(void);
 
 uint64_t get_time_ms64() {
-#if 0
-/*  
-  struct timeval tv;
-  gettimeofday(&tv, NULL);
-  return (uint64_t)(tv.tv_sec) * 1000 + (uint64_t)(tv.tv_usec) / 1000;
-*/
-#else
   return stm_now_ms();
-#endif
 }
 
 void sleep_ms(uint32_t ms) {
