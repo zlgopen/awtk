@@ -193,7 +193,7 @@ ret_t widget_set_value(widget_t* widget, int32_t value) {
   value_t v;
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  return widget_set_prop(widget, WIDGET_PROP_VALUE, value_set_uint32(&v, value));
+  return widget_set_prop(widget, WIDGET_PROP_VALUE, value_set_int(&v, value));
 }
 
 ret_t widget_add_value(widget_t* widget, int32_t delta) {
