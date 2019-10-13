@@ -64,7 +64,7 @@ TEST(SHDLC, nack) {
   ASSERT_EQ(header.s.seqno, 1);
   ASSERT_EQ(header.s.reserve, 0);
 
-  ASSERT_EQ(wb->data[2], 171);
+  ASSERT_EQ(wb->data[2], 0xab);
   ASSERT_EQ(wb->data[3], 0x4e);
   ASSERT_EQ(wb->data[4], SHDLC_FLAG);
 
