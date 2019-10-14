@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class keyboard_t
  * @parent widget_t
- * @annotation ["design","widget","window"]
+ * @annotation ["design","widget","window", "scriptable"]
  * 软键盘。
  *
  * 软键盘是一个特殊的窗口，由编辑器通过输入法自动打开和关闭。
@@ -81,7 +81,7 @@ typedef struct _keyboard_t {
 /**
  * @method keyboard_create
  * 创建keyboard对象
- * @annotation ["constructor"]
+ * @annotation ["constructor", "scriptable"]
  * @param {widget_t*} parent 父控件
  * @param {xy_t} x x坐标
  * @param {xy_t} y y坐标
