@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   text_edit.c
  * Author: AWTK Develop Team
  * Brief:  text_edit
@@ -635,8 +635,6 @@ ret_t text_edit_paint(text_edit_t* text_edit, canvas_t* c) {
   rect_t clip_r;
   rect_t edit_r;
   DECL_IMPL(text_edit);
-  point_t p = {.x = 0, .y = 0};
-  widget_t* widget = text_edit->widget;
   text_layout_info_t* layout_info = &(impl->layout_info);
 
   if (text_edit->c != NULL) {
