@@ -51,7 +51,7 @@ static ret_t self_layouter_parser_on_param(func_call_parser_t* parser, const cha
 self_layouter_t* self_layouter_create(const char* params) {
   self_layouter_t* layouter = NULL;
   self_layouter_parser_t parser;
-  return_value_if_fail(params != NULL, NULL);
+  return_value_if_fail(params != NULL && params[0], NULL);
 
   memset(&parser, 0x00, sizeof(parser));
   return_value_if_fail(func_call_parser_init(&(parser.base), params, strlen(params)) != NULL, NULL);
