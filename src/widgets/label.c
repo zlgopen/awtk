@@ -81,6 +81,7 @@ typedef struct _ctx_info_t {
   uint32_t x;
   int32_t y;
   uint32_t w;
+  uint32_t pre_line_w;
   canvas_t* c;
   widget_t* widget;
   uint32_t line_height;
@@ -169,6 +170,8 @@ static ret_t label_on_line_measure(void* ctx, uint32_t index, const wchar_t* str
   float_t text_w = canvas_measure_text(info->c, str, size);
 
   info->w = tk_max(info->w, text_w);
+  info->w = tk_max(info->w, info->pre_line_w);
+  info->pre_line_w = info->w;
   info->y += info->line_height;
 
   return RET_OK;
@@ -192,6 +195,7 @@ ret_t label_resize_to_content(widget_t* widget, uint32_t min_w, uint32_t max_w, 
 
   ctx.c = c;
   ctx.w = 0;
+  ctx.pre_line_w = 0;
   ctx.y = margin;
   ctx.x = margin;
   ctx.widget = widget;
