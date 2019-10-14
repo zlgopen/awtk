@@ -941,16 +941,22 @@ double edit_get_double(widget_t* widget) {
 }
 
 ret_t edit_set_int(widget_t* widget, int32_t value) {
+  edit_t* edit = EDIT(widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   wstr_from_int(&(widget->text), value);
+  text_edit_layout(edit->model);
+
   return RET_OK;
 }
 
 ret_t edit_set_double(widget_t* widget, double value) {
+  edit_t* edit = EDIT(widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   wstr_from_float(&(widget->text), value);
+  text_edit_layout(edit->model);
+
   return RET_OK;
 }
 

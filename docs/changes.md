@@ -2,6 +2,7 @@
 
 * 2019/10/14
   * 修改widget\_set\_value把value当uint32的BUG.
+  * edit\_set\_int/double后调用text layout（感谢俊杰提供补丁）。
 
 * 2019/10/13
   * 增加stream\_shdlc文档。
