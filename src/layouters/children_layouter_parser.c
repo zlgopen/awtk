@@ -93,7 +93,7 @@ children_layouter_t* children_layouter_create_old(const char* params) {
 }
 
 children_layouter_t* children_layouter_create(const char* params) {
-  return_value_if_fail(params != NULL, NULL);
+  return_value_if_fail(params != NULL && params[0], NULL);
   if (strchr(params, '(')) {
     return children_layouter_create_new(params);
   } else {
