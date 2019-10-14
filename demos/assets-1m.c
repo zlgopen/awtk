@@ -134,7 +134,6 @@
 #include "assets/inc/images/dialog_title.res"
 #include "assets/inc/images/battery_5.res"
 #include "assets/inc/images/num_5.res"
-#include "assets/inc/images/ani4.res"
 #include "assets/inc/images/me_active.res"
 #include "assets/inc/images/arrow_up_n.res"
 #include "assets/inc/images/left_on.res"
@@ -274,7 +273,6 @@
 #include "assets/inc/images/arrow_up_o.data"
 #include "assets/inc/images/clock.data"
 #include "assets/inc/images/empty.data"
-#include "assets/inc/images/ani4.data"
 #include "assets/inc/images/left_off.data"
 #include "assets/inc/images/radio_unchecked.data"
 #include "assets/inc/images/rgba.data"
@@ -500,7 +498,6 @@ ret_t assets_init(void) {
   assets_manager_add(am, image_arrow_up_o);
   assets_manager_add(am, image_clock);
   assets_manager_add(am, image_empty);
-  assets_manager_add(am, image_ani4);
   assets_manager_add(am, image_left_off);
   assets_manager_add(am, image_radio_unchecked);
   assets_manager_add(am, image_rgba);
