@@ -244,6 +244,7 @@ static ret_t combo_box_visit_item(void* ctx, const void* data) {
     if (index == combo_box->selected_index) {
       COMBO_BOX_ITEM(iter)->checked = TRUE;
       widget_set_need_update_style(iter);
+      widget_set_focused(iter, TRUE);
     }
   }
 
