@@ -647,9 +647,8 @@ ret_t text_edit_paint(text_edit_t* text_edit, canvas_t* c) {
   }
 
   canvas_get_clip_rect(c, &save_r);
-  widget_to_screen(widget, &p);
 
-  edit_r = rect_init(p.x + layout_info->margin_l, p.y + layout_info->margin_t, layout_info->w,
+  edit_r = rect_init(c->ox + layout_info->margin_l, c->oy + layout_info->margin_t, layout_info->w,
                      layout_info->h);
   clip_r = rect_intersect(&save_r, &edit_r);
 
