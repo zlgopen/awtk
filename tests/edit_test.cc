@@ -56,6 +56,14 @@ TEST(Edit, set_text) {
   widget_destroy(b);
 }
 
+TEST(Edit, set_int) {
+  widget_t* b = edit_create(NULL, 10, 20, 30, 40);
+  ASSERT_EQ(edit_set_int(b, -10), RET_OK);
+  ASSERT_EQ(edit_get_int(b), -10);
+
+  widget_destroy(b);
+}
+
 TEST(Edit, inputable) {
   widget_t* b = edit_create(NULL, 10, 20, 30, 40);
   ASSERT_EQ(b->vt->inputable, TRUE);

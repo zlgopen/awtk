@@ -53,3 +53,14 @@ TEST(SpinBox, cast) {
 
   widget_destroy(w);
 }
+
+TEST(SpinBox, set_value) {
+  widget_t* w = spin_box_create(NULL, 10, 20, 30, 40);
+
+  edit_set_int_limit(w, -100, 100, 1);
+
+  ASSERT_EQ(widget_set_value(w, -50), RET_OK);
+  ASSERT_EQ(widget_get_value(w), -50);
+
+  widget_destroy(w);
+}
