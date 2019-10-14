@@ -3,6 +3,10 @@
 * 2019/10/14
   * 修改widget\_set\_value把value当uint32的BUG.
   * edit\_set\_int/double后调用text layout（感谢俊杰提供补丁）。
+  * 窗口被切换到后台后更新grab\_widget（感谢尧燊提供补丁）。
+  * 完善combo box（感谢尧燊提供补丁）。
+  * 完善layouters（感谢尧燊提供补丁）。
+  * 修改edit在slide view中的问题（感谢培煌提供补丁）。
 
 * 2019/10/13
   * 增加stream\_shdlc文档。
