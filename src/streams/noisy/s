@@ -1,0 +1,4 @@
+:%s/shdlc/noisy/g
+:%s/SHDLC/NOISY/g
+:wq
+
