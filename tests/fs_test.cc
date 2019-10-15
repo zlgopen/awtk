@@ -16,3 +16,20 @@ TEST(Fs, basic) {
   file_remove(filename);
   TKMEM_FREE(ret);
 }
+
+TEST(Fs, eof) {
+  char buff[128];
+  uint32_t size = 0;
+  const char* str = "hello world";
+  const char* filename = "test.bin";
+
+  file_write(filename, str, strlen(str));
+
+  fs_file_t* f = fs_open_file(os_fs(), filename, "r");
+  fs_file_read(f, buff, sizeof(buff));
+  ASSERT_STREQ(buff, str);
+  ASSERT_EQ(fs_file_eof(f), TRUE);
+  fs_file_close(f);
+
+  file_remove(filename);
+}

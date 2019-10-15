@@ -46,6 +46,12 @@ ret_t fs_os_file_truncate(fs_file_t* file, int32_t size) {
   return ftruncate(fileno(fp), size) == 0 ? RET_OK : RET_FAIL;
 }
 
+bool_t fs_os_file_eof(fs_file_t* file) {
+  FILE* fp = (FILE*)(file->data);
+
+  return feof(fp) != 0;
+}
+
 ret_t fs_os_file_close(fs_file_t* file) {
   FILE* fp = (FILE*)(file->data);
   fclose(fp);
@@ -97,6 +103,7 @@ static fs_file_t* fs_file_create(FILE* fp) {
     f->write = fs_os_file_write;
     f->seek = fs_os_file_seek;
     f->truncate = fs_os_file_truncate;
+    f->eof = fs_os_file_eof;
     f->close = fs_os_file_close;
     f->data = fp;
   } else {

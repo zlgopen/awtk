@@ -26,6 +26,7 @@ BEGIN_C_DECLS
 
 #define TK_STREAM_PROP_FD "fd"
 #define TK_STREAM_PROP_IS_OK "is_ok"
+#define TK_STREAM_PROP_IS_EOS "is_eos"
 #define TK_STREAM_PROP_TIMEOUT "timeout"
 #define TK_STREAM_PROP_RETRY_TIMES "retry_times"
 #define TK_STREAM_PROP_COMPRESS_THRESHOLD "compress_threshold"

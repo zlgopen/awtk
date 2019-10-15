@@ -46,6 +46,12 @@ ret_t fs_file_truncate(fs_file_t* file, int32_t offset) {
   return file->truncate(file, offset);
 }
 
+bool_t fs_file_eof(fs_file_t* file) {
+  return_value_if_fail(file != NULL && file->eof != NULL, RET_BAD_PARAMS);
+
+  return file->eof(file);
+}
+
 ret_t fs_file_close(fs_file_t* file) {
   return_value_if_fail(file != NULL && file->close != NULL, RET_BAD_PARAMS);
 

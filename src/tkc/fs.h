@@ -33,6 +33,7 @@ typedef int32_t (*fs_file_read_t)(fs_file_t* file, void* buffer, uint32_t size);
 typedef int32_t (*fs_file_write_t)(fs_file_t* file, const void* buffer, uint32_t size);
 typedef ret_t (*fs_file_seek_t)(fs_file_t* file, int32_t offset);
 typedef ret_t (*fs_file_truncate_t)(fs_file_t* file, int32_t offset);
+typedef bool_t (*fs_file_eof_t)(fs_file_t* file);
 typedef ret_t (*fs_file_close_t)(fs_file_t* file);
 
 /**
@@ -46,6 +47,7 @@ struct _fs_file_t {
   fs_file_write_t write;
   fs_file_seek_t seek;
   fs_file_truncate_t truncate;
+  fs_file_eof_t eof;
   fs_file_close_t close;
   void* data;
 };
@@ -114,6 +116,18 @@ ret_t fs_file_truncate(fs_file_t* file, int32_t offset);
  *
  */
 ret_t fs_file_close(fs_file_t* file);
+
+/**
+ * @method fs_file_eof
+ *
+ * 判断文件是否结束。
+ *
+ * @param {fs_file_t*} file 文件对象。
+ *
+ * @return {bool_t} 返回TRUE表示结束，否则表示没结束。
+ *
+ */
+bool_t fs_file_eof(fs_file_t* file);
 
 typedef struct _fs_item_t {
   uint32_t is_dir : 1;
