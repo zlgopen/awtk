@@ -228,7 +228,9 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
 static ret_t window_manager_on_highlighter_destroy(void* ctx, event_t* e) {
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(ctx);
 
-  wm->dialog_highlighter = NULL;
+  if (wm->dialog_highlighter == e->target) {
+    wm->dialog_highlighter = NULL;
+  }
 
   return RET_OK;
 }
