@@ -61,29 +61,29 @@ typedef struct _font_t font_t;
 #pragma pack(push, 1)
 typedef struct _glyph_t {
   /**
-   * @property {int8_t} x
+   * @property {int16_t} x
    * @annotation ["readable"]
    * x坐标。
    */
-  int8_t x;
+  int16_t x;
   /**
-   * @property {int8_t} y
+   * @property {int16_t} y
    * @annotation ["readable"]
    * y坐标。
    */
-  int8_t y;
+  int16_t y;
   /**
-   * @property {uint8_t} w
+   * @property {uint16_t} w
    * @annotation ["readable"]
    * 宽度。
    */
-  uint8_t w;
+  uint16_t w;
   /**
-   * @property {uint8_t} h
+   * @property {uint16_t} h
    * @annotation ["readable"]
    * 高度。
    */
-  uint8_t h;
+  uint16_t h;
   /**
    * @property {uint16_t} advance
    * @annotation ["readable"]

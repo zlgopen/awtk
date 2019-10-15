@@ -90,10 +90,10 @@ uint32_t font_gen_buff(font_t* font, uint16_t font_size, const char* str, uint8_
       uint32_t data_size = (g.pitch ? g.pitch : g.w) * g.h;
       return_value_if_fail(buff_size > (iter->offset + data_size + 4), 0);
 
-      save_uint8(p, g.x);
-      save_uint8(p, g.y);
-      save_uint8(p, g.w);
-      save_uint8(p, g.h);
+      save_uint16(p, g.x);
+      save_uint16(p, g.y);
+      save_uint16(p, g.w);
+      save_uint16(p, g.h);
       save_uint16(p, g.advance);
       save_uint8(p, g.format);
       save_uint8(p, g.pitch);

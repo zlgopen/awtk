@@ -5,6 +5,7 @@
   * 增加tk\_iostream\_noisy。
   * 完善窗口管理器（感谢大恒提供补丁）
   * 前一个窗口为normal window时才支持窗口动画。
+  * glyph的x/y/w/h改为16位，以防超大字体溢出问题。
 
 * 2019/10/14
   * 修改widget\_set\_value把value当uint32的BUG.
