@@ -1,5 +1,10 @@
 # 最新动态
 
+* 2019/10/15
+  * 完善窗口管理器（感谢大恒提供补丁）
+  * 增加fs\_file\_eof。
+  * 增加tk\_iostream\_noisy。
+
 * 2019/10/14
   * 修改widget\_set\_value把value当uint32的BUG.
   * 完善label换行（感谢俊杰提供补丁）。
