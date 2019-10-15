@@ -42,7 +42,8 @@ struct _tk_ostream_noisy_t {
 
   /**
    * @property {uint32_t} error_level
-   * 错误等级。0-9。0:无错，9:全错。
+   * error level.
+   *
    */
   uint32_t error_level;
   /**

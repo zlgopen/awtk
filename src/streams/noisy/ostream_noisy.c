@@ -25,21 +25,25 @@
 static int32_t tk_ostream_noisy_write(tk_ostream_t* stream, const uint8_t* buff, uint32_t size) {
   tk_ostream_noisy_t* ostream_noisy = TK_OSTREAM_NOISY(stream);
 
-  ostream_noisy->write_count++;
+  if (ostream_noisy->error_level && size > 0) {
+    wbuffer_t* wb = &(ostream_noisy->wb);
+    bool_t should_inject = ostream_noisy->write_count % ostream_noisy->error_level == 0;
 
-  if(ostream_noisy->error_level && size > 0) {
-    if(((ostream_noisy->error_count * 10)/ostream_noisy->write_count) < ostream_noisy->error_level) {
-      uint32_t i = random()/size;
-      wbuffer_t* wb = &(ostream_noisy->wb);
-      wb->cursor = 0;
+    wb->cursor = 0;
+    if (should_inject) {
+      uint32_t i = random() % size;
       wbuffer_write_binary(wb, buff, size);
 
       wb->data[i] = ~buff[i];
-      ostream_noisy->error_count++; 
+
+      ostream_noisy->error_count++;
+      ostream_noisy->write_count++;
+
       return tk_ostream_write(ostream_noisy->real_ostream, wb->data, size);
     }
   }
 
+  ostream_noisy->write_count++;
   return tk_ostream_write(ostream_noisy->real_ostream, buff, size);
 }
 
