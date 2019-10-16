@@ -77,6 +77,11 @@ int32_t tk_istream_read_len(tk_istream_t* stream, uint8_t* buff, uint32_t max_si
         break;
       }
 
+      if (object_get_prop_bool(OBJECT(stream), TK_STREAM_PROP_IS_EOS, FALSE)) {
+        log_debug("stream is end\n");
+        break;
+      }
+
       if (errno == EAGAIN || errno == 0) {
         sleep_ms(10);
         continue;
@@ -90,6 +95,11 @@ int32_t tk_istream_read_len(tk_istream_t* stream, uint8_t* buff, uint32_t max_si
     remain_bytes -= read_bytes;
 
     if (remain_bytes == 0) {
+      break;
+    }
+
+    if (object_get_prop_bool(OBJECT(stream), TK_STREAM_PROP_IS_EOS, FALSE)) {
+      log_debug("stream is end\n");
       break;
     }
 
