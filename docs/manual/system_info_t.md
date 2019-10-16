@@ -4,6 +4,7 @@
 
  当前系统的信息。
 
+
 ----------------------------------
 ### 函数
 <p id="system_info_t_methods">
@@ -47,6 +48,7 @@
 > <p id="system_info_t_system_info"> 获取system_info对象。
 
 
+
 * 函数原型：
 
 ```
@@ -64,6 +66,7 @@ system_info_t* system_info ();
 * 函数功能：
 
 > <p id="system_info_t_system_info_deinit"> 释放system_info对象。
+
 
 
 
@@ -88,6 +91,7 @@ ret_t system_info_deinit ();
 
 
 
+
 * 函数原型：
 
 ```
@@ -106,6 +110,7 @@ const char* system_info_fix_font_name (const char* name);
 * 函数功能：
 
 > <p id="system_info_t_system_info_init"> 初始化system_info对象。
+
 
 
 
@@ -133,6 +138,7 @@ ret_t system_info_init (app_type_t app_type, const char* app_name, const char* a
 
 
 
+
 * 函数原型：
 
 ```
@@ -152,6 +158,7 @@ ret_t system_info_set_default_font (system_info_t* info info, const char* defaul
 * 函数功能：
 
 > <p id="system_info_t_system_info_set_device_pixel_ratio"> 设置LCD密度。
+
 
 
 
@@ -179,6 +186,7 @@ ret_t system_info_set_device_pixel_ratio (system_info_t* info info, float_t devi
 
 
 
+
 * 函数原型：
 
 ```
@@ -198,6 +206,7 @@ ret_t system_info_set_font_scale (system_info_t* info info, float_t font_scale);
 * 函数功能：
 
 > <p id="system_info_t_system_info_set_lcd_h"> 设置LCD高度。
+
 
 
 
@@ -225,6 +234,7 @@ ret_t system_info_set_lcd_h (system_info_t* info info, uint32_t lcd_h);
 
 
 
+
 * 函数原型：
 
 ```
@@ -244,6 +254,7 @@ ret_t system_info_set_lcd_orientation (system_info_t* info info, lcd_orientation
 * 函数功能：
 
 > <p id="system_info_t_system_info_set_lcd_type"> 设置LCD类型。
+
 
 
 
@@ -271,6 +282,7 @@ ret_t system_info_set_lcd_type (system_info_t* info info, lcd_type_t lcd_type);
 
 
 
+
 * 函数原型：
 
 ```
@@ -289,6 +301,7 @@ ret_t system_info_set_lcd_w (system_info_t* info info, uint32_t lcd_w);
 > <p id="system_info_t_app_name"> 应用程序的名称。
 
 
+
 * 类型：const char*
 
 | 特性 | 是否支持 |
@@ -300,6 +313,7 @@ ret_t system_info_set_lcd_w (system_info_t* info info, uint32_t lcd_w);
 > <p id="system_info_t_app_root"> 应用程序的根目录，用于定位资源文件。
 
 
+
 * 类型：const char*
 
 | 特性 | 是否支持 |
@@ -309,6 +323,7 @@ ret_t system_info_set_lcd_w (system_info_t* info info, uint32_t lcd_w);
 #### app\_type 属性
 -----------------------
 > <p id="system_info_t_app_type"> 应用程序的类型。
+
 
 
 * 类型：app\_type\_t
@@ -324,6 +339,7 @@ ret_t system_info_set_lcd_w (system_info_t* info info, uint32_t lcd_w);
  > 只能通过object\_get\_prop函数访问。
 
 
+
 * 类型：const char*
 
 | 特性 | 是否支持 |
@@ -333,6 +349,7 @@ ret_t system_info_set_lcd_w (system_info_t* info info, uint32_t lcd_w);
 #### default\_font 属性
 -----------------------
 > <p id="system_info_t_default_font"> 缺省字体。
+
 
 
 * 类型：const char*
@@ -348,6 +365,7 @@ ret_t system_info_set_lcd_w (system_info_t* info info, uint32_t lcd_w);
  > 只能通过object\_get\_prop函数访问。
 
 
+
 * 类型：const char*
 
 | 特性 | 是否支持 |
@@ -359,6 +377,7 @@ ret_t system_info_set_lcd_w (system_info_t* info info, uint32_t lcd_w);
 > <p id="system_info_t_device_pixel_ratio"> 显示屏的密度。
 
 
+
 * 类型：float\_t
 
 | 特性 | 是否支持 |
@@ -368,6 +387,7 @@ ret_t system_info_set_lcd_w (system_info_t* info info, uint32_t lcd_w);
 #### font\_scale 属性
 -----------------------
 > <p id="system_info_t_font_scale"> 字体缩放比例，用于实现字体整体放大。
+
 
 
 * 类型：float\_t
@@ -383,6 +403,7 @@ ret_t system_info_set_lcd_w (system_info_t* info info, uint32_t lcd_w);
  > 只能通过object\_get\_prop函数访问。
 
 
+
 * 类型：const char*
 
 | 特性 | 是否支持 |
@@ -392,6 +413,7 @@ ret_t system_info_set_lcd_w (system_info_t* info info, uint32_t lcd_w);
 #### lcd\_h 属性
 -----------------------
 > <p id="system_info_t_lcd_h"> 显示屏的高度。
+
 
 
 * 类型：uint32\_t
@@ -405,6 +427,7 @@ ret_t system_info_set_lcd_w (system_info_t* info info, uint32_t lcd_w);
 > <p id="system_info_t_lcd_orientation"> 显示屏的旋转角度。
 
 
+
 * 类型：lcd\_orientation\_t
 
 | 特性 | 是否支持 |
@@ -416,6 +439,7 @@ ret_t system_info_set_lcd_w (system_info_t* info info, uint32_t lcd_w);
 > <p id="system_info_t_lcd_type"> 显示屏的类型。
 
 
+
 * 类型：lcd\_type\_t
 
 | 特性 | 是否支持 |
@@ -425,6 +449,7 @@ ret_t system_info_set_lcd_w (system_info_t* info info, uint32_t lcd_w);
 #### lcd\_w 属性
 -----------------------
 > <p id="system_info_t_lcd_w"> 显示屏的宽度。
+
 
 
 * 类型：uint32\_t

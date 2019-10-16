@@ -6,6 +6,7 @@
  idle事件源。
 
 
+
 ----------------------------------
 ### 函数
 <p id="event_source_idle_t_methods">
@@ -21,6 +22,7 @@
 
 > <p id="event_source_idle_t_event_source_idle_create">
  创建idle事件源。
+
 
 
 
@@ -45,6 +47,7 @@ event_source_t* event_source_idle_create (idle_manager_t* idle_manager);
 
 > <p id="event_source_idle_t_event_source_manager_default_create">
  创建事件源管理器。
+
 
 
 

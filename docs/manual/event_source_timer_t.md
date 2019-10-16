@@ -6,6 +6,7 @@
  timer事件源。
 
 
+
 ----------------------------------
 ### 函数
 <p id="event_source_timer_t_methods">
@@ -20,6 +21,7 @@
 
 > <p id="event_source_timer_t_event_source_timer_create">
  创建timer事件源。
+
 
 
 

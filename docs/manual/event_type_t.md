@@ -1,6 +1,7 @@
 ## event\_type\_t
 ### 概述
  类型常量定义。
+
 ### 常量
 <p id="event_type_t_consts">
 

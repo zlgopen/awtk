@@ -2,6 +2,7 @@
 ### 概述
  互斥锁。
 
+
 ----------------------------------
 ### 函数
 <p id="tk_mutex_t_methods">
@@ -18,6 +19,7 @@
 * 函数功能：
 
 > <p id="tk_mutex_t_tk_mutex_create"> 创建mutex。
+
 
 
 
@@ -38,6 +40,7 @@ tk_mutex_t* tk_mutex_create ();
 * 函数功能：
 
 > <p id="tk_mutex_t_tk_mutex_destroy"> 销毁mutex对象。
+
 
 
 
@@ -62,6 +65,7 @@ ret_t tk_mutex_destroy (tk_mutex_t* mutex);
 
 
 
+
 * 函数原型：
 
 ```
@@ -80,6 +84,7 @@ ret_t tk_mutex_lock (tk_mutex_t* mutex);
 * 函数功能：
 
 > <p id="tk_mutex_t_tk_mutex_unlock"> 解锁。
+
 
 
 

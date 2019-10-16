@@ -35,10 +35,10 @@ BEGIN_C_DECLS
  *
  * svg\_image\_t是[image\_base\_t](image_base_t.md)的子类控件，image\_base\_t的函数均适用于svg\_image\_t控件。
  *
- * 在xml中使用"svg\_image"标签创建SVG图片控件。如：
+ * 在xml中使用"svg"标签创建SVG图片控件。如：
  *
  * ```xml
- * <svg_image image="girl"/>
+ * <svg image="girl"/>
  * ```
  *
  * >更多用法请参考：[svg image](

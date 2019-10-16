@@ -5,6 +5,7 @@
  按特定算法对子控件进行排版布局，子类需要实现vtable中的函数。
 
 
+
 ----------------------------------
 ### 函数
 <p id="children_layouter_t_methods">
@@ -30,6 +31,7 @@
 
 
 
+
 * 函数原型：
 
 ```
@@ -52,6 +54,7 @@ children_layouter_t* children_layouter_create (const char* params);
 
 
 
+
 * 函数原型：
 
 ```
@@ -70,6 +73,7 @@ ret_t children_layouter_destroy (children_layouter_t* layouter);
 * 函数功能：
 
 > <p id="children_layouter_t_children_layouter_get_param"> 获取指定的参数。
+
 
 
 
@@ -98,6 +102,7 @@ ret_t children_layouter_get_param (children_layouter_t* layouter, const char* na
 
 
 
+
 * 函数原型：
 
 ```
@@ -118,6 +123,7 @@ ret_t children_layouter_get_param_float (children_layouter_t* layouter, const ch
 * 函数功能：
 
 > <p id="children_layouter_t_children_layouter_get_param_int"> 获取指定的整数格式的参数。
+
 
 
 
@@ -146,6 +152,7 @@ ret_t children_layouter_get_param_int (children_layouter_t* layouter, const char
 
 
 
+
 * 函数原型：
 
 ```
@@ -164,6 +171,7 @@ bool_t children_layouter_is_valid (children_layouter_t* layouter);
 * 函数功能：
 
 > <p id="children_layouter_t_children_layouter_layout"> 对控件的子控件进行布局。
+
 
 
 
@@ -187,6 +195,7 @@ ret_t children_layouter_layout (children_layouter_t* layouter, widget_t* widget)
 * 函数功能：
 
 > <p id="children_layouter_t_children_layouter_set_param"> 获取指定的参数。
+
 
 
 
@@ -215,6 +224,7 @@ ret_t children_layouter_set_param (children_layouter_t* layouter, const char* na
 
 
 
+
 * 函数原型：
 
 ```
@@ -235,6 +245,7 @@ ret_t children_layouter_set_param_str (children_layouter_t* layouter, const char
 * 函数功能：
 
 > <p id="children_layouter_t_children_layouter_to_string"> 获取全部参数。
+
 
 
 

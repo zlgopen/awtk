@@ -4,6 +4,7 @@
  文件接口。
 
 
+
 ----------------------------------
 ### 函数
 <p id="fs_file_t_methods">
@@ -11,6 +12,7 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#fs_file_t_fs_file_close">fs\_file\_close</a> |  |
+| <a href="#fs_file_t_fs_file_eof">fs\_file\_eof</a> |  |
 | <a href="#fs_file_t_fs_file_read">fs\_file\_read</a> |  |
 | <a href="#fs_file_t_fs_file_seek">fs\_file\_seek</a> |  |
 | <a href="#fs_file_t_fs_file_truncate">fs\_file\_truncate</a> |  |
@@ -22,6 +24,7 @@
 
 > <p id="fs_file_t_fs_file_close">
  关闭文件。
+
 
 
 
@@ -39,6 +42,31 @@ ret_t fs_file_close (fs_file_t* file);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | file | fs\_file\_t* | 文件对象。 |
+#### fs\_file\_eof 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="fs_file_t_fs_file_eof">
+ 判断文件是否结束。
+
+
+
+
+
+
+* 函数原型：
+
+```
+bool_t fs_file_eof (fs_file_t* file);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示结束，否则表示没结束。 |
+| file | fs\_file\_t* | 文件对象。 |
 #### fs\_file\_read 函数
 -----------------------
 
@@ -46,6 +74,7 @@ ret_t fs_file_close (fs_file_t* file);
 
 > <p id="fs_file_t_fs_file_read">
  读取文件。
+
 
 
 
@@ -77,6 +106,7 @@ int32_t fs_file_read (fs_file_t* file, void* buffer, uint32_t size);
 
 
 
+
 * 函数原型：
 
 ```
@@ -102,6 +132,7 @@ ret_t fs_file_seek (fs_file_t* file, uint32_t offset);
 
 
 
+
 * 函数原型：
 
 ```
@@ -121,6 +152,7 @@ ret_t fs_file_truncate (fs_file_t* file);
 
 > <p id="fs_file_t_fs_file_write">
  写入文件。
+
 
 
 

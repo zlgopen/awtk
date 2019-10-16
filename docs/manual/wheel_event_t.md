@@ -4,6 +4,7 @@
 
  滚轮事件。
 
+
 ----------------------------------
 ### 函数
 <p id="wheel_event_t_methods">
@@ -30,6 +31,7 @@
 
 
 
+
 * 函数原型：
 
 ```
@@ -48,6 +50,7 @@ wheel_event_t* wheel_event_cast (event_t* event);
 * 函数功能：
 
 > <p id="wheel_event_t_wheel_event_init"> 初始化事件。
+
 
 
 
@@ -71,6 +74,7 @@ event_t* wheel_event_init (wheel_event_t* event, void* target, uint32_t type, in
 > <p id="wheel_event_t_alt"> alt键是否按下。
 
 
+
 * 类型：bool\_t
 
 | 特性 | 是否支持 |
@@ -81,6 +85,7 @@ event_t* wheel_event_init (wheel_event_t* event, void* target, uint32_t type, in
 #### ctrl 属性
 -----------------------
 > <p id="wheel_event_t_ctrl"> ctrl键是否按下。
+
 
 
 * 类型：bool\_t
@@ -95,6 +100,7 @@ event_t* wheel_event_init (wheel_event_t* event, void* target, uint32_t type, in
 > <p id="wheel_event_t_dy"> 滚轮的y值。
 
 
+
 * 类型：int32\_t
 
 | 特性 | 是否支持 |
@@ -105,6 +111,7 @@ event_t* wheel_event_init (wheel_event_t* event, void* target, uint32_t type, in
 #### shift 属性
 -----------------------
 > <p id="wheel_event_t_shift"> shift键是否按下。
+
 
 
 * 类型：bool\_t

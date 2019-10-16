@@ -6,6 +6,7 @@
  input stream interface
 
 
+
 ----------------------------------
 ### 函数
 <p id="tk_ostream_t_methods">
@@ -15,6 +16,7 @@
 | <a href="#tk_ostream_t_tk_ostream_flush">tk\_ostream\_flush</a> |  |
 | <a href="#tk_ostream_t_tk_ostream_seek">tk\_ostream\_seek</a> |  |
 | <a href="#tk_ostream_t_tk_ostream_write">tk\_ostream\_write</a> |  |
+| <a href="#tk_ostream_t_tk_ostream_write_byte">tk\_ostream\_write\_byte</a> |  |
 | <a href="#tk_ostream_t_tk_ostream_write_len">tk\_ostream\_write\_len</a> |  |
 #### tk\_ostream\_flush 函数
 -----------------------
@@ -23,6 +25,7 @@
 
 > <p id="tk_ostream_t_tk_ostream_flush">
  刷新数据。
+
 
 
 
@@ -47,6 +50,7 @@ ret_t tk_ostream_flush (tk_ostream_t* stream);
 
 > <p id="tk_ostream_t_tk_ostream_seek">
  设置偏移量。
+
 
 
 
@@ -77,6 +81,7 @@ ret_t tk_ostream_seek (tk_ostream_t* stream, uint32_t offset);
 
 
 
+
 * 函数原型：
 
 ```
@@ -91,6 +96,32 @@ int32_t tk_ostream_write (tk_ostream_t* stream, const uint8_t* buff, uint32_t ma
 | stream | tk\_ostream\_t* | ostream对象。 |
 | buff | const uint8\_t* | 返回数据的缓冲区。 |
 | max\_size | uint32\_t | 缓冲区的大小。 |
+#### tk\_ostream\_write\_byte 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="tk_ostream_t_tk_ostream_write_byte">
+ 写入一个字节的数据。
+
+
+
+
+
+
+* 函数原型：
+
+```
+ret_t tk_ostream_write_byte (tk_ostream_t* stream, uint8_t byte);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| stream | tk\_ostream\_t* | ostream对象。 |
+| byte | uint8\_t | 数据。 |
 #### tk\_ostream\_write\_len 函数
 -----------------------
 
@@ -98,6 +129,7 @@ int32_t tk_ostream_write (tk_ostream_t* stream, const uint8_t* buff, uint32_t ma
 
 > <p id="tk_ostream_t_tk_ostream_write_len">
  写入指定长度的数据。
+
 
 
 
@@ -115,6 +147,6 @@ int32_t tk_ostream_write_len (tk_ostream_t* stream, const uint8_t* buff, uint32_
 | -------- | ----- | --------- |
 | 返回值 | int32\_t | 返回负数表示写入失败，否则返回实际写入数据的长度。 |
 | stream | tk\_ostream\_t* | ostream对象。 |
-| buff | const uint8\_t* | 返回数据的缓冲区。 |
+| buff | const uint8\_t* | 数据的缓冲区。 |
 | max\_size | uint32\_t | 缓冲区的大小。 |
 | timeout\_ms | uint32\_t | timeout. |

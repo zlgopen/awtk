@@ -11,6 +11,7 @@
 
 
 
+
 ----------------------------------
 ### 函数
 <p id="font_loader_bitmap_t_methods">
@@ -25,6 +26,7 @@
 
 > <p id="font_loader_bitmap_t_font_loader_bitmap">
  获取bitmap字体加载器对象。
+
 
 
 

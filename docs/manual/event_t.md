@@ -2,6 +2,7 @@
 ### 概述
  事件基类。
 
+
 ----------------------------------
 ### 函数
 <p id="event_t_methods">
@@ -31,6 +32,7 @@
 
 
 
+
 * 函数原型：
 
 ```
@@ -51,6 +53,7 @@ event_t* event_cast (event_t* event);
 > <p id="event_t_event_create"> 创建event对象。
 
  主要给脚本语言使用。
+
 
 
 
@@ -78,6 +81,7 @@ event_t* event_create (uint32_t type, void* target);
 
 
 
+
 * 函数原型：
 
 ```
@@ -99,6 +103,7 @@ ret_t event_destroy (event_t* event);
 
 
 
+
 * 函数原型：
 
 ```
@@ -117,6 +122,7 @@ event_t event_init (uint32_t type, void* target);
 > <p id="event_t_target"> 事件发生的目标对象。
 
 
+
 * 类型：void*
 
 | 特性 | 是否支持 |
@@ -129,6 +135,7 @@ event_t event_init (uint32_t type, void* target);
 > <p id="event_t_time"> 事件发生的时间。
 
 
+
 * 类型：int32\_t
 
 | 特性 | 是否支持 |
@@ -139,6 +146,7 @@ event_t event_init (uint32_t type, void* target);
 #### type 属性
 -----------------------
 > <p id="event_t_type"> 类型。
+
 
 
 * 类型：int32\_t

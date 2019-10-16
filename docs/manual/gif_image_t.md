@@ -9,10 +9,10 @@
 
  gif\_image\_t是[image\_base\_t](image_base_t.md)的子类控件，image\_base\_t的函数均适用于gif\_image\_t控件。
 
- 在xml中使用"gif\_image"标签创建GIF图片控件。如：
+ 在xml中使用"gif"标签创建GIF图片控件。如：
 
  ```xml
- <gif_image image="bee"/>
+ <gif image="bee"/>
  ```
 
  >更多用法请参考：

@@ -35,6 +35,7 @@ https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/mledit.xml)
 https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L556)
 
 
+
 ----------------------------------
 ### 函数
 <p id="line_number_t_methods">
@@ -56,6 +57,7 @@ https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#
 
 
 
+
 * 函数原型：
 
 ```
@@ -74,6 +76,7 @@ widget_t* line_number_cast (widget_t* widget);
 * 函数功能：
 
 > <p id="line_number_t_line_number_create"> 创建line_number对象
+
 
 
 
@@ -102,6 +105,7 @@ widget_t* line_number_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 
 
+
 * 函数原型：
 
 ```
@@ -121,6 +125,7 @@ ret_t line_number_set_bottom_margin (widget_t* widget, int32_t bottom_margin);
 * 函数功能：
 
 > <p id="line_number_t_line_number_set_line_height"> 设置行高。
+
 
 
 
@@ -146,6 +151,7 @@ ret_t line_number_set_line_height (widget_t* widget, int32_t line_height);
 
 
 
+
 * 函数原型：
 
 ```
@@ -165,6 +171,7 @@ ret_t line_number_set_top_margin (widget_t* widget, int32_t top_margin);
 * 函数功能：
 
 > <p id="line_number_t_line_number_set_yoffset"> 设置y偏移。
+
 
 
 

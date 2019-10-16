@@ -41,6 +41,7 @@
  > 更多用法请参考：[theme
  default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L0)
 
+
 ----------------------------------
 ### 函数
 <p id="overlay_t_methods">
@@ -55,6 +56,7 @@
 * 函数功能：
 
 > <p id="overlay_t_overlay_cast"> 转换为overlay对象(供脚本语言使用)。
+
 
 
 
@@ -76,6 +78,7 @@ widget_t* overlay_cast (widget_t* widget);
 * 函数功能：
 
 > <p id="overlay_t_overlay_create"> 创建overlay对象
+
 
 
 

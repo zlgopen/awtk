@@ -2,6 +2,7 @@
 ### 概述
  函数描述。
 
+
 ----------------------------------
 ### 属性
 <p id="func_desc_t_properties">
@@ -18,6 +19,7 @@
 > <p id="func_desc_t_args"> 函数参数描述。
 
 
+
 * 类型：arg\_desc\_t**
 
 | 特性 | 是否支持 |
@@ -27,6 +29,7 @@
 #### desc 属性
 -----------------------
 > <p id="func_desc_t_desc"> 描述。
+
 
 
 * 类型：const char*
@@ -40,6 +43,7 @@
 > <p id="func_desc_t_exec"> 函数指针。
 
 
+
 * 类型：func\_exec\_t
 
 | 特性 | 是否支持 |
@@ -51,6 +55,7 @@
 > <p id="func_desc_t_name"> 名称。
 
 
+
 * 类型：const char*
 
 | 特性 | 是否支持 |
@@ -60,6 +65,7 @@
 #### return\_value 属性
 -----------------------
 > <p id="func_desc_t_return_value"> 函数返回值描述。
+
 
 
 * 类型：value\_desc\_t*

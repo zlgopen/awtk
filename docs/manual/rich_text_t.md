@@ -52,6 +52,7 @@
    * underline 下划线(暂不支持)
 
 
+
 ----------------------------------
 ### 函数
 <p id="rich_text_t_methods">
@@ -76,6 +77,7 @@
 
 
 
+
 * 函数原型：
 
 ```
@@ -94,6 +96,7 @@ widget_t* rich_text_cast (widget_t* widget);
 * 函数功能：
 
 > <p id="rich_text_t_rich_text_create"> 创建rich_text对象
+
 
 
 
@@ -122,6 +125,7 @@ widget_t* rich_text_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 
 
+
 * 函数原型：
 
 ```
@@ -138,6 +142,7 @@ ret_t rich_text_set_text (widget_t* widget, char* text);
 #### line\_gap 属性
 -----------------------
 > <p id="rich_text_t_line_gap"> 行间距。
+
 
 
 * 类型：int32\_t

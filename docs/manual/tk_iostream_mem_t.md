@@ -3,7 +3,8 @@
 ![image](images/tk_iostream_mem_t_0.png)
 
 
- input stream base on mem
+ iostream base on mem
+
 
 
 ----------------------------------
@@ -20,6 +21,7 @@
 
 > <p id="tk_iostream_mem_t_tk_iostream_mem_create">
  创建iostream对象。
+
 
 
 

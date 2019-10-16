@@ -6,6 +6,7 @@
  生成XML格式的UI描述数据。
 
 
+
 ----------------------------------
 ### 函数
 <p id="ui_xml_writer_t_methods">
@@ -20,6 +21,7 @@
 
 > <p id="ui_xml_writer_t_ui_xml_writer_init">
  初始化ui\_xml\_writer对象。
+
 
 
 

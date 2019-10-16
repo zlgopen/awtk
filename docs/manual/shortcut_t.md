@@ -2,6 +2,7 @@
 ### 概述
  快捷键。
 
+
 ----------------------------------
 ### 函数
 <p id="shortcut_t_methods">
@@ -39,6 +40,7 @@
 
 
 
+
 * 函数原型：
 
 ```
@@ -61,6 +63,7 @@ bool_t shortcut_equal (shortcut_t* shortcut1, shortcut_t* shortcut2);
 
 
 
+
 * 函数原型：
 
 ```
@@ -78,6 +81,7 @@ shortcut_t* shortcut_init ();
 * 函数功能：
 
 > <p id="shortcut_t_shortcut_init_with_str"> 初始化快捷键对象。
+
 
 
 
@@ -102,6 +106,7 @@ shortcut_t* shortcut_init_with_str (shortcut_t* shortcut);
 
 
 
+
 * 函数原型：
 
 ```
@@ -120,6 +125,7 @@ bool_t shortcut_match (shortcut_t* filter, shortcut_t* event);
 > <p id="shortcut_t_alt"> alt键是否按下。
 
 
+
 * 类型：bool\_t
 
 | 特性 | 是否支持 |
@@ -129,6 +135,7 @@ bool_t shortcut_match (shortcut_t* filter, shortcut_t* event);
 #### cmd 属性
 -----------------------
 > <p id="shortcut_t_cmd"> cmd/win键是否按下。
+
 
 
 * 类型：bool\_t
@@ -142,6 +149,7 @@ bool_t shortcut_match (shortcut_t* filter, shortcut_t* event);
 > <p id="shortcut_t_ctrl"> ctrl键是否按下。
 
 
+
 * 类型：bool\_t
 
 | 特性 | 是否支持 |
@@ -151,6 +159,7 @@ bool_t shortcut_match (shortcut_t* filter, shortcut_t* event);
 #### is\_valid 属性
 -----------------------
 > <p id="shortcut_t_is_valid"> 是否有效。
+
 
 
 * 类型：bool\_t
@@ -164,6 +173,7 @@ bool_t shortcut_match (shortcut_t* filter, shortcut_t* event);
 > <p id="shortcut_t_key"> 键值。
 
 
+
 * 类型：uint32\_t
 
 | 特性 | 是否支持 |
@@ -173,6 +183,7 @@ bool_t shortcut_match (shortcut_t* filter, shortcut_t* event);
 #### lalt 属性
 -----------------------
 > <p id="shortcut_t_lalt"> left alt键是否按下。
+
 
 
 * 类型：bool\_t
@@ -186,6 +197,7 @@ bool_t shortcut_match (shortcut_t* filter, shortcut_t* event);
 > <p id="shortcut_t_lctrl"> left ctrl键是否按下。
 
 
+
 * 类型：bool\_t
 
 | 特性 | 是否支持 |
@@ -195,6 +207,7 @@ bool_t shortcut_match (shortcut_t* filter, shortcut_t* event);
 #### lshift 属性
 -----------------------
 > <p id="shortcut_t_lshift"> left shift键是否按下。
+
 
 
 * 类型：bool\_t
@@ -208,6 +221,7 @@ bool_t shortcut_match (shortcut_t* filter, shortcut_t* event);
 > <p id="shortcut_t_menu"> menu键是否按下。
 
 
+
 * 类型：bool\_t
 
 | 特性 | 是否支持 |
@@ -217,6 +231,7 @@ bool_t shortcut_match (shortcut_t* filter, shortcut_t* event);
 #### ralt 属性
 -----------------------
 > <p id="shortcut_t_ralt"> right alt键是否按下。
+
 
 
 * 类型：bool\_t
@@ -230,6 +245,7 @@ bool_t shortcut_match (shortcut_t* filter, shortcut_t* event);
 > <p id="shortcut_t_rctrl"> right ctrl键是否按下。
 
 
+
 * 类型：bool\_t
 
 | 特性 | 是否支持 |
@@ -241,6 +257,7 @@ bool_t shortcut_match (shortcut_t* filter, shortcut_t* event);
 > <p id="shortcut_t_rshift"> right shift键是否按下。
 
 
+
 * 类型：bool\_t
 
 | 特性 | 是否支持 |
@@ -250,6 +267,7 @@ bool_t shortcut_match (shortcut_t* filter, shortcut_t* event);
 #### shift 属性
 -----------------------
 > <p id="shortcut_t_shift"> shift键是否按下。
+
 
 
 * 类型：bool\_t

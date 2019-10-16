@@ -36,6 +36,7 @@ https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/slide_view.xml)
 https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L350)
 
 
+
 ----------------------------------
 ### 函数
 <p id="slide_indicator_t_methods">
@@ -79,6 +80,7 @@ https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#
 
 
 
+
 * 函数原型：
 
 ```
@@ -97,6 +99,7 @@ widget_t* slide_indicator_cast (widget_t* widget);
 * 函数功能：
 
 > <p id="slide_indicator_t_slide_indicator_create"> 创建slide_indicator对象
+
 
 
 
@@ -125,6 +128,7 @@ widget_t* slide_indicator_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t
 
 
 
+
 * 函数原型：
 
 ```
@@ -147,6 +151,7 @@ widget_t* slide_indicator_create_arc (widget_t* parent, xy_t x, xy_t y, wh_t w, 
 * 函数功能：
 
 > <p id="slide_indicator_t_slide_indicator_create_linear"> 创建slide_indicator对象（线性显示）
+
 
 
 
@@ -175,6 +180,7 @@ widget_t* slide_indicator_create_linear (widget_t* parent, xy_t x, xy_t y, wh_t 
 
 
 
+
 * 函数原型：
 
 ```
@@ -195,6 +201,7 @@ ret_t slide_indicator_set_anchor (widget_t* widget, const char* anchor_x, const 
 * 函数功能：
 
 > <p id="slide_indicator_t_slide_indicator_set_auto_hide"> 设置指示器是否自动隐藏。
+
 
 
 
@@ -220,6 +227,7 @@ ret_t slide_indicator_set_auto_hide (widget_t* widget, uint16_t auto_hide);
 
 
 
+
 * 函数原型：
 
 ```
@@ -239,6 +247,7 @@ ret_t slide_indicator_set_default_paint (widget_t* widget, indicator_default_pai
 * 函数功能：
 
 > <p id="slide_indicator_t_slide_indicator_set_indicated_target"> 设置指示器指示的目标。
+
 
 
 
@@ -264,6 +273,7 @@ ret_t slide_indicator_set_indicated_target (widget_t* widget, const char* indica
 
 
 
+
 * 函数原型：
 
 ```
@@ -283,6 +293,7 @@ ret_t slide_indicator_set_margin (widget_t* widget, int32_t margin);
 * 函数功能：
 
 > <p id="slide_indicator_t_slide_indicator_set_max"> 设置指示器的数量。
+
 
 
 
@@ -308,6 +319,7 @@ ret_t slide_indicator_set_max (widget_t* widget, uint32_t max);
 
 
 
+
 * 函数原型：
 
 ```
@@ -327,6 +339,7 @@ ret_t slide_indicator_set_size (widget_t* widget, uint32_t size);
 * 函数功能：
 
 > <p id="slide_indicator_t_slide_indicator_set_spacing"> 设置指示器的间距(指示器有弧度时为角度值，否则为直线间距)。
+
 
 
 
@@ -352,6 +365,7 @@ ret_t slide_indicator_set_spacing (widget_t* widget, float_t spacing);
 
 
 
+
 * 函数原型：
 
 ```
@@ -368,6 +382,7 @@ ret_t slide_indicator_set_value (widget_t* widget, uint32_t value);
 #### anchor\_x 属性
 -----------------------
 > <p id="slide_indicator_t_anchor_x"> 锚点x坐标。
+
 
 
 * 类型：float\_t
@@ -387,6 +402,7 @@ ret_t slide_indicator_set_value (widget_t* widget, uint32_t value);
 > <p id="slide_indicator_t_anchor_y"> 锚点y坐标。
 
 
+
 * 类型：float\_t
 
 | 特性 | 是否支持 |
@@ -402,6 +418,7 @@ ret_t slide_indicator_set_value (widget_t* widget, uint32_t value);
 #### auto\_hide 属性
 -----------------------
 > <p id="slide_indicator_t_auto_hide"> 自动隐藏。0表示禁止，非0表示无操作后延迟多久隐藏。
+
 
 
 * 类型：uint16\_t
@@ -421,6 +438,7 @@ ret_t slide_indicator_set_value (widget_t* widget, uint32_t value);
 > <p id="slide_indicator_t_default_paint"> 指示器的类型。
 
 
+
 * 类型：indicator\_default\_paint\_t
 
 | 特性 | 是否支持 |
@@ -436,6 +454,7 @@ ret_t slide_indicator_set_value (widget_t* widget, uint32_t value);
 #### indicated\_target 属性
 -----------------------
 > <p id="slide_indicator_t_indicated_target"> 指示器指示的目标。
+
 
 
 * 类型：char*
@@ -455,6 +474,7 @@ ret_t slide_indicator_set_value (widget_t* widget, uint32_t value);
 > <p id="slide_indicator_t_margin"> 指示器与边缘的边距。
 
 
+
 * 类型：int32\_t
 
 | 特性 | 是否支持 |
@@ -470,6 +490,7 @@ ret_t slide_indicator_set_value (widget_t* widget, uint32_t value);
 #### max 属性
 -----------------------
 > <p id="slide_indicator_t_max"> 最大值(缺省为100)。
+
 
 
 * 类型：uint32\_t
@@ -489,6 +510,7 @@ ret_t slide_indicator_set_value (widget_t* widget, uint32_t value);
 > <p id="slide_indicator_t_size"> 指示器的大小。
 
 
+
 * 类型：uint32\_t
 
 | 特性 | 是否支持 |
@@ -506,6 +528,7 @@ ret_t slide_indicator_set_value (widget_t* widget, uint32_t value);
 > <p id="slide_indicator_t_spacing"> 指示器的中心之间的间距（圆弧显示时，间距的单位为弧度，否则为像素）。
 
 
+
 * 类型：float\_t
 
 | 特性 | 是否支持 |
@@ -521,6 +544,7 @@ ret_t slide_indicator_set_value (widget_t* widget, uint32_t value);
 #### value 属性
 -----------------------
 > <p id="slide_indicator_t_value"> 值(缺省为0)。
+
 
 
 * 类型：uint32\_t
