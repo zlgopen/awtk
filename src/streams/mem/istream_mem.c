@@ -60,7 +60,7 @@ static ret_t tk_istream_mem_set_prop(object_t* obj, const char* name, const valu
 static ret_t tk_istream_mem_get_prop(object_t* obj, const char* name, value_t* v) {
   tk_istream_mem_t* istream_mem = TK_ISTREAM_MEM(obj);
 
-  if(tk_str_eq(name, TK_STREAM_PROP_IS_EOS)) {
+  if (tk_str_eq(name, TK_STREAM_PROP_IS_EOS)) {
     value_set_bool(v, istream_mem->cursor == istream_mem->size);
     return RET_OK;
   }

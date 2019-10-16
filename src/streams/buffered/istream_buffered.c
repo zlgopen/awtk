@@ -50,7 +50,7 @@ static ret_t tk_istream_buffered_get_prop(object_t* obj, const char* name, value
   tk_istream_buffered_t* istream_buffered = TK_ISTREAM_BUFFERED(obj);
   tk_istream_t* real_istream = istream_buffered->real_istream;
 
-  if(tk_str_eq(name, TK_STREAM_PROP_HAS_BUFFERED_DATA)) {
+  if (tk_str_eq(name, TK_STREAM_PROP_HAS_BUFFERED_DATA)) {
     ring_buffer_t* rb = istream_buffered->rb;
 
     value_set_bool(v, !ring_buffer_is_empty(rb));
