@@ -40,12 +40,22 @@ static int32_t tk_istream_buffered_read(tk_istream_t* stream, uint8_t* buff, uin
 }
 
 static ret_t tk_istream_buffered_set_prop(object_t* obj, const char* name, const value_t* v) {
-  return RET_NOT_FOUND;
+  tk_istream_buffered_t* istream_buffered = TK_ISTREAM_BUFFERED(obj);
+  tk_istream_t* real_istream = istream_buffered->real_istream;
+
+  return object_set_prop(OBJECT(real_istream), name, v);
 }
 
 static ret_t tk_istream_buffered_get_prop(object_t* obj, const char* name, value_t* v) {
   tk_istream_buffered_t* istream_buffered = TK_ISTREAM_BUFFERED(obj);
   tk_istream_t* real_istream = istream_buffered->real_istream;
+
+  if(tk_str_eq(name, TK_STREAM_PROP_HAS_BUFFERED_DATA)) {
+    ring_buffer_t* rb = istream_buffered->rb;
+
+    value_set_bool(v, !ring_buffer_is_empty(rb));
+    return RET_OK;
+  }
 
   return object_get_prop(OBJECT(real_istream), name, v);
 }
@@ -54,7 +64,7 @@ static ret_t tk_istream_buffered_on_destroy(object_t* obj) {
   tk_istream_buffered_t* istream_buffered = TK_ISTREAM_BUFFERED(obj);
 
   ring_buffer_destroy(istream_buffered->rb);
-  object_unref(OBJECT(istream_buffered->real_istream));
+  OBJECT_UNREF(istream_buffered->real_istream);
 
   return RET_OK;
 }
@@ -80,6 +90,7 @@ tk_istream_t* tk_istream_buffered_create(tk_istream_t* real_istream, uint32_t bu
   istream_buffered = TK_ISTREAM_BUFFERED(obj);
   return_value_if_fail(istream_buffered != NULL, NULL);
 
+  OBJECT_REF(real_istream);
   istream_buffered->rb = rb;
   istream_buffered->real_istream = real_istream;
   TK_ISTREAM(obj)->read = tk_istream_buffered_read;

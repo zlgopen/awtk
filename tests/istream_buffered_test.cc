@@ -11,6 +11,10 @@ TEST(IStreamBuffered, basic) {
   tk_istream_t* is = tk_istream_buffered_create(mem, 32);
 
   for (i = 0; i < sizeof(str); i++) {
+    if(i != 0) {
+      ASSERT_EQ(object_get_prop_bool(OBJECT(is), TK_STREAM_PROP_HAS_BUFFERED_DATA, FALSE), TRUE);
+    }
+
     ASSERT_EQ(tk_istream_read(is, (uint8_t*)&c, 1), 1);
     ASSERT_EQ(c == str[i], true);
   }

@@ -29,6 +29,7 @@ BEGIN_C_DECLS
 #define TK_STREAM_PROP_IS_EOS "is_eos"
 #define TK_STREAM_PROP_TIMEOUT "timeout"
 #define TK_STREAM_PROP_RETRY_TIMES "retry_times"
+#define TK_STREAM_PROP_HAS_BUFFERED_DATA "has_buffered_data"
 #define TK_STREAM_PROP_COMPRESS_THRESHOLD "compress_threshold"
 
 #define TK_STREAM_CMD_IFLUSH "iflush"
