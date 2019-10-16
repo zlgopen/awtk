@@ -108,6 +108,7 @@ ret_t shdlc_read_data(tk_istream_t* istream, wbuffer_t* wb, uint32_t timeout) {
   uint16_t fcs = 0;
   uint8_t last_c = 0;
   uint16_t fcs_real = 0;
+  bool_t is_broken_frame = 0;
   return_value_if_fail(istream != NULL && wb != NULL, RET_BAD_PARAMS);
 
   do {
@@ -115,13 +116,22 @@ ret_t shdlc_read_data(tk_istream_t* istream, wbuffer_t* wb, uint32_t timeout) {
     if (c == SHDLC_FLAG) {
       break;
     }
+    is_broken_frame = TRUE;
+    log_debug("expect 0x7e skip 0x%02x(%c)\n", (int)c, c);
   } while (1);
+
+  if(is_broken_frame) {
+    wbuffer_write_uint8(wb, 0x00);
+    log_debug("meet broken frame\n");
+    return RET_CRC;
+  }
 
   do {
     return_value_if_fail(tk_istream_read_len(istream, &c, 1, timeout) == 1, RET_IO);
     if (c != SHDLC_FLAG) {
       break;
     }
+    log_debug("not expect 0x7e skip 0x%02x(%c)\n", (int)c, c);
   } while (1);
 
   /*c is type*/

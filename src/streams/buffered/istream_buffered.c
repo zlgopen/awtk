@@ -33,6 +33,7 @@ static int32_t tk_istream_buffered_read(tk_istream_t* stream, uint8_t* buff, uin
       return ret;
     }
 
+    ring_buffer_set_read_cursor(rb, 0);
     ring_buffer_set_write_cursor(rb, ret);
   }
 

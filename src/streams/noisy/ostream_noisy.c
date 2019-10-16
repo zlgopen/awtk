@@ -35,7 +35,7 @@ static int32_t tk_ostream_noisy_write(tk_ostream_t* stream, const uint8_t* buff,
       wbuffer_write_binary(wb, buff, size);
 
       wb->data[i] = ~buff[i];
-
+      log_debug("inject at %u(%u) %02x => %02x\n", i, size, buff[i], wb->data[i]);
       ostream_noisy->error_count++;
       ostream_noisy->write_count++;
 
