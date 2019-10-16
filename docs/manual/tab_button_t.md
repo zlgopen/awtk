@@ -49,7 +49,7 @@
 | <a href="#tab_button_t_tab_button_create">tab\_button\_create</a> | 创建tab_button对象 |
 | <a href="#tab_button_t_tab_button_set_active_icon">tab\_button\_set\_active\_icon</a> | 设置控件的active图标。 |
 | <a href="#tab_button_t_tab_button_set_icon">tab\_button\_set\_icon</a> | 设置控件的图标。 |
-| <a href="#tab_button_t_tab_button_set_value">tab\_button\_set\_value</a> | 设置控件的值。 |
+| <a href="#tab_button_t_tab_button_set_value">tab\_button\_set\_value</a> | 设置为当前标签。 |
 ### 属性
 <p id="tab_button_t_properties">
 
@@ -160,7 +160,7 @@ ret_t tab_button_set_icon (widget_t* widget, char* name);
 
 * 函数功能：
 
-> <p id="tab_button_t_tab_button_set_value"> 设置控件的值。
+> <p id="tab_button_t_tab_button_set_value"> 设置为当前标签。
 
 
 
@@ -176,7 +176,7 @@ ret_t tab_button_set_value (widget_t* widget, uint32_t value);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | tab\_button对象。 |
-| value | uint32\_t | 值 |
+| value | uint32\_t | 是否为当前标签。 |
 #### active\_icon 属性
 -----------------------
 > <p id="tab_button_t_active_icon"> 当前项的图标的名称。

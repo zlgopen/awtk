@@ -30,7 +30,6 @@ https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/mledit.xml)
 https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml)
 
 
-
 ----------------------------------
 ### 函数
 <p id="hscroll_label_t_methods">
@@ -54,20 +53,19 @@ https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml)
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#hscroll_label_t_duration">duration</a> | int32\_t | 完整的滚动一次需要的时间(ms)，缺省5000ms。 |
-| <a href="#hscroll_label_t_ellipses">ellipses</a> | bool\_t |  |
-| <a href="#hscroll_label_t_loop">loop</a> | bool\_t |  |
-| <a href="#hscroll_label_t_lull">lull</a> | int32\_t |  |
-| <a href="#hscroll_label_t_only_focus">only\_focus</a> | bool\_t |  |
+| <a href="#hscroll_label_t_ellipses">ellipses</a> | bool\_t | 文本显示不下时，在行尾显示省略号(缺省FALSE)。 |
+| <a href="#hscroll_label_t_loop">loop</a> | bool\_t | loop是否循环滚动(缺省FALSE)。 |
+| <a href="#hscroll_label_t_lull">lull</a> | int32\_t | 滚动之间的间歇时间(ms)，缺省3000ms。 |
+| <a href="#hscroll_label_t_only_focus">only\_focus</a> | bool\_t | 只有处于focus时才滚动(缺省否)。 |
 | <a href="#hscroll_label_t_text_w">text\_w</a> | int32\_t | 文本的宽度。 |
 | <a href="#hscroll_label_t_xoffset">xoffset</a> | int32\_t | 偏移量。 |
-| <a href="#hscroll_label_t_yoyo">yoyo</a> | bool\_t |  |
+| <a href="#hscroll_label_t_yoyo">yoyo</a> | bool\_t | 是否往返滚动(缺省FALSE)。 |
 #### hscroll\_label\_cast 函数
 -----------------------
 
 * 函数功能：
 
 > <p id="hscroll_label_t_hscroll_label_cast"> 转换为hscroll_label对象(供脚本语言使用)。
-
 
 
 
@@ -89,7 +87,6 @@ widget_t* hscroll_label_cast (widget_t* widget);
 * 函数功能：
 
 > <p id="hscroll_label_t_hscroll_label_create"> 创建hscroll_label对象
-
 
 
 
@@ -118,7 +115,6 @@ widget_t* hscroll_label_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h
 
 
 
-
 * 函数原型：
 
 ```
@@ -138,7 +134,6 @@ ret_t hscroll_label_set_duration (widget_t* widget, int32_t duration);
 * 函数功能：
 
 > <p id="hscroll_label_t_hscroll_label_set_ellipses"> 设置ellipses。
-
 
 
 
@@ -164,7 +159,6 @@ ret_t hscroll_label_set_ellipses (widget_t* widget, bool_t ellipses);
 
 
 
-
 * 函数原型：
 
 ```
@@ -184,7 +178,6 @@ ret_t hscroll_label_set_loop (widget_t* widget, bool_t loop);
 * 函数功能：
 
 > <p id="hscroll_label_t_hscroll_label_set_lull"> 设置lull。
-
 
 
 
@@ -210,7 +203,6 @@ ret_t hscroll_label_set_lull (widget_t* widget, int32_t lull);
 
 
 
-
 * 函数原型：
 
 ```
@@ -230,7 +222,6 @@ ret_t hscroll_label_set_only_focus (widget_t* widget, bool_t only_focus);
 * 函数功能：
 
 > <p id="hscroll_label_t_hscroll_label_set_xoffset"> 设置x偏移(一般无需用户调用)。。
-
 
 
 
@@ -256,7 +247,6 @@ ret_t hscroll_label_set_xoffset (widget_t* widget, int32_t xoffset);
 
 
 
-
 * 函数原型：
 
 ```
@@ -276,7 +266,6 @@ ret_t hscroll_label_set_yoyo (widget_t* widget, bool_t yoyo);
 * 函数功能：
 
 > <p id="hscroll_label_t_hscroll_label_start"> 启动(一般无需用户调用)。
-
 
 
 
@@ -301,7 +290,6 @@ ret_t hscroll_label_start (widget_t* widget);
 
 
 
-
 * 函数原型：
 
 ```
@@ -319,7 +307,6 @@ ret_t hscroll_label_stop (widget_t* widget);
 > <p id="hscroll_label_t_duration"> 完整的滚动一次需要的时间(ms)，缺省5000ms。
 
 
-
 * 类型：int32\_t
 
 | 特性 | 是否支持 |
@@ -332,9 +319,7 @@ ret_t hscroll_label_stop (widget_t* widget);
 | 可通过widget\_set\_prop修改 | 是 |
 #### ellipses 属性
 -----------------------
-> <p id="hscroll_label_t_ellipses">
- 文本显示不下时，在行尾显示ellipses(缺省FALSE)。
-
+> <p id="hscroll_label_t_ellipses"> 文本显示不下时，在行尾显示省略号(缺省FALSE)。
 
 
 * 类型：bool\_t
@@ -351,9 +336,7 @@ ret_t hscroll_label_stop (widget_t* widget);
 | 可通过widget\_set\_prop修改 | 是 |
 #### loop 属性
 -----------------------
-> <p id="hscroll_label_t_loop">
- loop是否循环滚动(缺省FALSE)。
-
+> <p id="hscroll_label_t_loop"> loop是否循环滚动(缺省FALSE)。
 
 
 * 类型：bool\_t
@@ -370,9 +353,7 @@ ret_t hscroll_label_stop (widget_t* widget);
 | 可通过widget\_set\_prop修改 | 是 |
 #### lull 属性
 -----------------------
-> <p id="hscroll_label_t_lull">
- 滚动之间的间歇时间(ms)，缺省3000ms。
-
+> <p id="hscroll_label_t_lull"> 滚动之间的间歇时间(ms)，缺省3000ms。
 
 
 * 类型：int32\_t
@@ -389,9 +370,7 @@ ret_t hscroll_label_stop (widget_t* widget);
 | 可通过widget\_set\_prop修改 | 是 |
 #### only\_focus 属性
 -----------------------
-> <p id="hscroll_label_t_only_focus">
- 只有处于focus时才滚动(缺省否)。
-
+> <p id="hscroll_label_t_only_focus"> 只有处于focus时才滚动(缺省否)。
 
 
 * 类型：bool\_t
@@ -411,7 +390,6 @@ ret_t hscroll_label_stop (widget_t* widget);
 > <p id="hscroll_label_t_text_w"> 文本的宽度。
 
 
-
 * 类型：int32\_t
 
 | 特性 | 是否支持 |
@@ -427,7 +405,6 @@ ret_t hscroll_label_stop (widget_t* widget);
 > <p id="hscroll_label_t_xoffset"> 偏移量。
 
 
-
 * 类型：int32\_t
 
 | 特性 | 是否支持 |
@@ -440,9 +417,7 @@ ret_t hscroll_label_stop (widget_t* widget);
 | 可通过widget\_set\_prop修改 | 是 |
 #### yoyo 属性
 -----------------------
-> <p id="hscroll_label_t_yoyo">
- 是否往返滚动(缺省FALSE)。
-
+> <p id="hscroll_label_t_yoyo"> 是否往返滚动(缺省FALSE)。
 
 
 * 类型：bool\_t

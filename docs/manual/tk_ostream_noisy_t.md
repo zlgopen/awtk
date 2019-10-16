@@ -6,7 +6,6 @@
  在输出流中注入错误，方便进行可靠性测试。
 
 
-
 ----------------------------------
 ### 函数
 <p id="tk_ostream_noisy_t_methods">
@@ -36,7 +35,6 @@
 
 
 
-
 * 函数原型：
 
 ```
@@ -54,7 +52,6 @@ tk_ostream_t* tk_ostream_noisy_create (tk_ostream_t* real_ostream);
 > <p id="tk_ostream_noisy_t_error_count"> 注入的错误数。
 
 
-
 * 类型：uint32\_t
 
 #### error\_level 属性
@@ -63,13 +60,11 @@ tk_ostream_t* tk_ostream_noisy_create (tk_ostream_t* real_ostream);
 
 
 
-
 * 类型：uint32\_t
 
 #### write\_count 属性
 -----------------------
 > <p id="tk_ostream_noisy_t_write_count"> 写入的次数。
-
 
 
 * 类型：uint32\_t

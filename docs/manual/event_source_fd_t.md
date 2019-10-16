@@ -6,7 +6,6 @@
  fd事件源。
 
 
-
 ----------------------------------
 ### 函数
 <p id="event_source_fd_t_methods">
@@ -21,7 +20,6 @@
 
 > <p id="event_source_fd_t_event_source_fd_create">
  创建fd事件源。
-
 
 
 

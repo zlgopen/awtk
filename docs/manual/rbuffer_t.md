@@ -17,7 +17,6 @@
   rbuffer_read_string(&rbuffer, &str);
  ```
 
-
 ----------------------------------
 ### 函数
 <p id="rbuffer_t_methods">
@@ -53,7 +52,6 @@
 
 
 
-
 * 函数原型：
 
 ```
@@ -72,7 +70,6 @@ bool_t rbuffer_has_more (rbuffer_t* rbuffer);
 * 函数功能：
 
 > <p id="rbuffer_t_rbuffer_init"> 初始rbuffer对象。
-
 
 
 
@@ -99,7 +96,6 @@ rbuffer_t* rbuffer_init (rbuffer_t* rbuffer, uint8_t* data, uint16_t capacity);
 
 
 
-
 * 函数原型：
 
 ```
@@ -119,7 +115,6 @@ ret_t rbuffer_peek_uint16 (rbuffer_t* rbuffer, uint16_t* value);
 * 函数功能：
 
 > <p id="rbuffer_t_rbuffer_peek_uint32"> 读取uint32数据，但不改变cursor的位置。
-
 
 
 
@@ -145,7 +140,6 @@ ret_t rbuffer_peek_uint32 (rbuffer_t* rbuffer, uint32_t* value);
 
 
 
-
 * 函数原型：
 
 ```
@@ -165,7 +159,6 @@ ret_t rbuffer_peek_uint8 (rbuffer_t* rbuffer, uint8_t* value);
 * 函数功能：
 
 > <p id="rbuffer_t_rbuffer_read_binary"> 读取指定长度的二进制数据。
-
 
 
 
@@ -192,7 +185,6 @@ ret_t rbuffer_read_binary (rbuffer_t* rbuffer, void* data, uint32_t size);
 
 
 
-
 * 函数原型：
 
 ```
@@ -212,7 +204,6 @@ ret_t rbuffer_read_float (rbuffer_t* rbuffer, float_t* value);
 * 函数功能：
 
 > <p id="rbuffer_t_rbuffer_read_string"> 读取字符串。
-
 
 
 
@@ -238,7 +229,6 @@ ret_t rbuffer_read_string (rbuffer_t* rbuffer, char** str);
 
 
 
-
 * 函数原型：
 
 ```
@@ -258,7 +248,6 @@ ret_t rbuffer_read_uint16 (rbuffer_t* rbuffer, uint16_t* value);
 * 函数功能：
 
 > <p id="rbuffer_t_rbuffer_read_uint32"> 读取uint32数据。
-
 
 
 
@@ -284,7 +273,6 @@ ret_t rbuffer_read_uint32 (rbuffer_t* rbuffer, uint32_t* value);
 
 
 
-
 * 函数原型：
 
 ```
@@ -307,7 +295,6 @@ ret_t rbuffer_read_uint8 (rbuffer_t* rbuffer, uint8_t* value);
 
 
 
-
 * 函数原型：
 
 ```
@@ -326,7 +313,6 @@ ret_t rbuffer_skip (rbuffer_t* rbuffer, int32_t offset);
 > <p id="rbuffer_t_capacity"> 缓存区最大容量。
 
 
-
 * 类型：uint32\_t
 
 | 特性 | 是否支持 |
@@ -338,7 +324,6 @@ ret_t rbuffer_skip (rbuffer_t* rbuffer, int32_t offset);
 > <p id="rbuffer_t_cursor"> 当前读取位置。
 
 
-
 * 类型：uint32\_t
 
 | 特性 | 是否支持 |
@@ -348,7 +333,6 @@ ret_t rbuffer_skip (rbuffer_t* rbuffer, int32_t offset);
 #### data 属性
 -----------------------
 > <p id="rbuffer_t_data"> 缓存区。
-
 
 
 * 类型：uint8\_t*

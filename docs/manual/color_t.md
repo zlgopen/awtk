@@ -3,7 +3,6 @@
  颜色。
 
 
-
 ----------------------------------
 ### 函数
 <p id="color_t_methods">
@@ -40,7 +39,6 @@
 
 
 
-
 * 函数原型：
 
 ```
@@ -62,7 +60,6 @@ uint8_t color_a (color_t* c);
  获取蓝色通道的值。
 
  > 主要供脚本语言使用。
-
 
 
 
@@ -91,7 +88,6 @@ uint8_t color_b (color_t* c);
 
 
 
-
 * 函数原型：
 
 ```
@@ -112,7 +108,6 @@ color_t* color_cast (color_t* color);
 > <p id="color_t_color_create"> 创建color对象。
 
  > 主要供脚本语言使用。
-
 
 
 
@@ -144,7 +139,6 @@ color_t* color_create (uint8_t r, uint8_t b, uint8_t g, uint8_t a);
 
 
 
-
 * 函数原型：
 
 ```
@@ -165,7 +159,6 @@ ret_t color_destroy (color_t* c);
 > <p id="color_t_color_from_str"> 创建color对象。
 
  > 主要供脚本语言使用。
-
 
 
 
@@ -197,7 +190,6 @@ color_t* color_from_str (color_t* c, const char* str);
 
 
 
-
 * 函数原型：
 
 ```
@@ -216,7 +208,6 @@ uint8_t color_g (color_t* c);
 * 函数功能：
 
 > <p id="color_t_color_init"> 初始化颜色对象。
-
 
 
 
@@ -249,7 +240,6 @@ color_t color_init (uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
 
 
-
 * 函数原型：
 
 ```
@@ -267,7 +257,6 @@ uint8_t color_r (color_t* c);
 > <p id="color_t_color"> 颜色的数值。
 
 
-
 * 类型：uint32\_t
 
 | 特性 | 是否支持 |
@@ -278,7 +267,6 @@ uint8_t color_r (color_t* c);
 #### rgba 属性
 -----------------------
 > <p id="color_t_rgba"> 颜色的RGBA值。
-
 
 
 * 类型：rgba\_t

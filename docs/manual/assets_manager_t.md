@@ -31,7 +31,6 @@
  ```
 
 
-
 ----------------------------------
 ### 函数
 <p id="assets_manager_t_methods">
@@ -63,7 +62,6 @@
 
 
 
-
 * 函数原型：
 
 ```
@@ -81,7 +79,6 @@ assets_manager_t* assets_manager ();
 * 函数功能：
 
 > <p id="assets_manager_t_assets_manager_add"> 向资源管理器中增加一个资源。
-
 
 
 
@@ -107,7 +104,6 @@ ret_t assets_manager_add (assets_manager_t* am, asset_info_t info);
 
 
 
-
 * 函数原型：
 
 ```
@@ -127,7 +123,6 @@ ret_t assets_manager_clear_cache (assets_manager_t* am, asset_type_t type);
 * 函数功能：
 
 > <p id="assets_manager_t_assets_manager_create"> 创建资源管理器。
-
 
 
 
@@ -152,7 +147,6 @@ assets_manager_t* assets_manager_create (uint32_t init_nr);
 
 
 
-
 * 函数原型：
 
 ```
@@ -174,7 +168,6 @@ ret_t assets_manager_deinit (assets_manager_t* am);
 
 
 
-
 * 函数原型：
 
 ```
@@ -193,7 +186,6 @@ ret_t assets_manager_destroy (assets_manager_t* am);
 * 函数功能：
 
 > <p id="assets_manager_t_assets_manager_find_in_cache"> 在资源管理器的缓存中查找指定的资源(不引用)。
-
 
 
 
@@ -220,7 +212,6 @@ asset_info_t* assets_manager_find_in_cache (assets_manager_t* am, asset_type_t t
 
 
 
-
 * 函数原型：
 
 ```
@@ -240,7 +231,6 @@ assets_manager_t* assets_manager_init (assets_manager_t* am, uint32_t init_nr);
 * 函数功能：
 
 > <p id="assets_manager_t_assets_manager_load"> 从文件系统中加载指定的资源，并缓存到内存中。在定义了宏WITH\_FS\_RES时才生效。
-
 
 
 
@@ -267,7 +257,6 @@ asset_info_t* assets_manager_load (assets_manager_t* am, asset_type_t type, char
 
 
 
-
 * 函数原型：
 
 ```
@@ -288,7 +277,6 @@ ret_t assets_manager_preload (assets_manager_t* am, asset_type_t type, char* nam
 * 函数功能：
 
 > <p id="assets_manager_t_assets_manager_ref"> 在资源管理器的缓存中查找指定的资源并引用它，如果缓存中不存在，尝试加载该资源。
-
 
 
 
@@ -315,7 +303,6 @@ asset_info_t* assets_manager_ref (assets_manager_t* am, asset_type_t type, char*
 
 
 
-
 * 函数原型：
 
 ```
@@ -334,7 +321,6 @@ ret_t assets_manager_set (assets_manager_t* am);
 * 函数功能：
 
 > <p id="assets_manager_t_assets_manager_set_locale_info"> 设置locale_info对象。
-
 
 
 
@@ -360,7 +346,6 @@ ret_t assets_manager_set_locale_info (assets_manager_t* am, locale_info_t* local
 
 
 
-
 * 函数原型：
 
 ```
@@ -383,7 +368,6 @@ ret_t assets_manager_set_res_root (assets_manager_t* am, const char* res_root);
 
 
 
-
 * 函数原型：
 
 ```
@@ -403,7 +387,6 @@ ret_t assets_manager_set_system_info (assets_manager_t* am, system_info_t* syste
 * 函数功能：
 
 > <p id="assets_manager_t_assets_manager_unref"> 释放指定的资源。
-
 
 
 

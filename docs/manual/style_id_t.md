@@ -1,7 +1,6 @@
 ## style\_id\_t
 ### 概述
  style常量定义。
-
 ### 常量
 <p id="style_id_t_consts">
 

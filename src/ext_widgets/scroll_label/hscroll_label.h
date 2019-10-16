@@ -64,7 +64,6 @@ typedef struct _hscroll_label_t {
   /**
    * @property {bool_t} only_focus
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   *
    * 只有处于focus时才滚动(缺省否)。
    */
   bool_t only_focus;
@@ -72,7 +71,6 @@ typedef struct _hscroll_label_t {
   /**
    * @property {bool_t} loop
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   *
    * loop是否循环滚动(缺省FALSE)。
    */
   bool_t loop;
@@ -80,7 +78,6 @@ typedef struct _hscroll_label_t {
   /**
    * @property {bool_t} yoyo
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   *
    * 是否往返滚动(缺省FALSE)。
    */
   bool_t yoyo;
@@ -88,15 +85,13 @@ typedef struct _hscroll_label_t {
   /**
    * @property {bool_t} ellipses
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   *
-   * 文本显示不下时，在行尾显示ellipses(缺省FALSE)。
+   * 文本显示不下时，在行尾显示省略号(缺省FALSE)。
    */
   bool_t ellipses;
 
   /**
    * @property {int32_t} lull
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   *
    * 滚动之间的间歇时间(ms)，缺省3000ms。
    */
   int32_t lull;

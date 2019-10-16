@@ -8,7 +8,6 @@
  内部使用有序数组保存所有属性，可以快速查找指定名称的属性。
 
 
-
 ----------------------------------
 ### 函数
 <p id="object_default_t_methods">
@@ -40,7 +39,6 @@
 
 
 
-
 * 函数原型：
 
 ```
@@ -60,7 +58,6 @@ ret_t object_default_clear_props (object_t* obj);
 
 > <p id="object_default_t_object_default_create">
  创建对象。
-
 
 
 
@@ -89,7 +86,6 @@ object_t* object_default_create ();
 
 
 
-
 * 函数原型：
 
 ```
@@ -109,7 +105,6 @@ object_t* object_default_create (object_default_t* o);
 
 > <p id="object_default_t_object_default_find_prop">
  查找满足条件的属性，并返回它的值。
-
 
 
 
@@ -141,7 +136,6 @@ value_t* object_default_find_prop (object_t* obj, tk_compare_t cmp, const void* 
 
 
 
-
 * 函数原型：
 
 ```
@@ -160,7 +154,6 @@ ret_t object_default_unref (object_t* obj);
 
 
 
-
 * 类型：named\_value\_t
 
 | 特性 | 是否支持 |
@@ -173,7 +166,6 @@ ret_t object_default_unref (object_t* obj);
 
 
 
-
 * 类型：uint32\_t
 
 | 特性 | 是否支持 |
@@ -183,7 +175,6 @@ ret_t object_default_unref (object_t* obj);
 #### props\_size 属性
 -----------------------
 > <p id="object_default_t_props_size"> 属性个数。
-
 
 
 

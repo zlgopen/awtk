@@ -1,7 +1,6 @@
 ## text\_edit\_t
 ### 概述
 
-
 ----------------------------------
 ### 函数
 <p id="text_edit_t_methods">
@@ -43,7 +42,6 @@
 
 
 
-
 * 函数原型：
 
 ```
@@ -67,7 +65,6 @@ ret_t text_edit_click (text_edit_t* text_edit, xy_t x, xy_t y);
 
 
 
-
 * 函数原型：
 
 ```
@@ -86,7 +83,6 @@ ret_t text_edit_copy (text_edit_t* text_edit);
 * 函数功能：
 
 > <p id="text_edit_t_text_edit_create"> 创建text_edit对象
-
 
 
 
@@ -112,7 +108,6 @@ widget_t* text_edit_create (widget_t* widget, boo_t single_line);
 
 
 
-
 * 函数原型：
 
 ```
@@ -134,7 +129,6 @@ ret_t text_edit_cut (text_edit_t* text_edit);
 
 
 
-
 * 函数原型：
 
 ```
@@ -153,7 +147,6 @@ ret_t text_edit_destroy (text_edit_t* text_edit);
 * 函数功能：
 
 > <p id="text_edit_t_text_edit_drag"> 处理拖动事件。
-
 
 
 
@@ -180,7 +173,6 @@ ret_t text_edit_drag (text_edit_t* text_edit, xy_t x, xy_t y);
 
 
 
-
 * 函数原型：
 
 ```
@@ -199,7 +191,6 @@ uin32_t text_edit_get_cursor (text_edit_t* text_edit);
 * 函数功能：
 
 > <p id="text_edit_t_text_edit_get_state"> 获取编辑器的状态。
-
 
 
 
@@ -225,7 +216,6 @@ ret_t text_edit_get_state (text_edit_t* text_edit, text_edit_state_t* state);
 
 
 
-
 * 函数原型：
 
 ```
@@ -244,7 +234,6 @@ ret_t text_edit_invert_caret_visible (text_edit_t* text_edit);
 * 函数功能：
 
 > <p id="text_edit_t_text_edit_key_down"> 处理按键事件。
-
 
 
 
@@ -270,7 +259,6 @@ ret_t text_edit_key_down (text_edit_t* text_edit, key_event_t* evt);
 
 
 
-
 * 函数原型：
 
 ```
@@ -289,7 +277,6 @@ ret_t text_edit_layout (text_edit_t* text_edit);
 * 函数功能：
 
 > <p id="text_edit_t_text_edit_paint"> 绘制文本。
-
 
 
 
@@ -312,7 +299,6 @@ ret_t text_edit_paint (text_edit_t* text_edit, canvas_t* c);
 * 函数功能：
 
 > <p id="text_edit_t_text_edit_paste"> 粘贴文本。
-
 
 
 
@@ -339,7 +325,6 @@ ret_t text_edit_paste (text_edit_t* text_edit, const wchar_t* str, uint32_t size
 
 
 
-
 * 函数原型：
 
 ```
@@ -358,7 +343,6 @@ ret_t text_edit_select_all (text_edit_t* text_edit);
 * 函数功能：
 
 > <p id="text_edit_t_text_edit_set_canvas"> 设置canvas对象。
-
 
 
 
@@ -384,7 +368,6 @@ ret_t text_edit_set_canvas (text_edit_t* text_edit, canvas_t* c);
 
 
 
-
 * 函数原型：
 
 ```
@@ -404,7 +387,6 @@ ret_t text_edit_set_caret_visible (text_edit_t* text_edit, bool_t caret_visible)
 * 函数功能：
 
 > <p id="text_edit_t_text_edit_set_cursor"> 设置光标位置。
-
 
 
 
@@ -430,7 +412,6 @@ ret_t text_edit_set_cursor (text_edit_t* text_edit, uint32_t cursor);
 
 
 
-
 * 函数原型：
 
 ```
@@ -450,7 +431,6 @@ ret_t text_edit_set_mask (text_edit_t* text_edit, bool_t mask);
 * 函数功能：
 
 > <p id="text_edit_t_text_edit_set_mask_char"> 设置马赛克字符。
-
 
 
 
@@ -476,7 +456,6 @@ ret_t text_edit_set_mask_char (text_edit_t* text_edit, wchar_t mask_char);
 
 
 
-
 * 函数原型：
 
 ```
@@ -496,7 +475,6 @@ ret_t text_edit_set_max_rows (text_edit_t* text_edit, uint32_t max_rows);
 * 函数功能：
 
 > <p id="text_edit_t_text_edit_set_offset"> 设置滚动偏移。
-
 
 
 
@@ -523,7 +501,6 @@ ret_t text_edit_set_offset (text_edit_t* text_edit, int32_t ox, int32_t oy);
 
 
 
-
 * 函数原型：
 
 ```
@@ -544,7 +521,6 @@ ret_t text_edit_set_on_state_changed (text_edit_t* text_edit, text_edit_on_state
 * 函数功能：
 
 > <p id="text_edit_t_text_edit_set_select"> 选择指定范围的文本。
-
 
 
 
@@ -571,7 +547,6 @@ ret_t text_edit_set_select (text_edit_t* text_edit, uint32_t start, uint32_t end
 
 
 
-
 * 函数原型：
 
 ```
@@ -594,7 +569,6 @@ ret_t text_edit_set_tips (text_edit_t* text_edit, const char* tips);
 
 
 
-
 * 函数原型：
 
 ```
@@ -614,7 +588,6 @@ ret_t text_edit_set_wrap_word (text_edit_t* text_edit, bool_t wrap_word);
 * 函数功能：
 
 > <p id="text_edit_t_text_edit_unselect"> 取消选择。
-
 
 
 

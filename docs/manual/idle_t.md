@@ -24,7 +24,6 @@
  > 在非GUI线程请用idle\_queue。
 
 
-
 ----------------------------------
 ### 函数
 <p id="idle_t_methods">
@@ -42,7 +41,6 @@
 * 函数功能：
 
 > <p id="idle_t_idle_add"> 增加一个idle。
-
 
 
 
@@ -68,7 +66,6 @@ uint32_t idle_add (idle_func_t on_idle, void* ctx);
 
 
 
-
 * 函数原型：
 
 ```
@@ -86,7 +83,6 @@ uint32_t idle_count ();
 * 函数功能：
 
 > <p id="idle_t_idle_queue"> 用于非GUI线程增加一个idle，本函数向主循环的事件队列中发送一个增加idle的请求。
-
 
 
 
@@ -112,7 +108,6 @@ ret_t idle_queue (idle_func_t on_idle, void* ctx);
 
 
 
-
 * 函数原型：
 
 ```
@@ -131,7 +126,6 @@ ret_t idle_remove (uint32_t idle_id);
 * 函数功能：
 
 > <p id="idle_t_idle_set_on_destroy"> 设置一个回调函数，在idle被销毁时调用(方便脚本语言去释放回调函数)。
-
 
 
 

@@ -105,7 +105,7 @@ static ret_t tab_button_sync_pages(void* ctx, event_t* e) {
 ret_t tab_button_set_value(widget_t* widget, bool_t value) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  if (widget->parent != NULL) {
+  if (widget->parent != NULL && value) {
     int32_t index = 0;
     widget_t* pages = NULL;
     widget_t* parent = widget->parent;
@@ -126,9 +126,9 @@ ret_t tab_button_set_value(widget_t* widget, bool_t value) {
       widget_on(widget, EVT_BEFORE_PAINT, tab_button_sync_pages, widget);
     }
 
-    if (value) {
-      widget_ensure_visible_in_viewport(widget);
-    }
+    widget_ensure_visible_in_viewport(widget);
+  } else {
+    tab_button_set_value_only(widget, value);
   }
 
   return RET_OK;

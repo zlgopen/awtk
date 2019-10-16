@@ -4,7 +4,6 @@
 
  绘制事件。
 
-
 ----------------------------------
 ### 函数
 <p id="paint_event_t_methods">
@@ -25,7 +24,6 @@
 * 函数功能：
 
 > <p id="paint_event_t_paint_event_cast"> 把event对象转paint_event_t对象。主要给脚本语言使用。
-
 
 
 
@@ -50,7 +48,6 @@ paint_event_t* paint_event_cast (event_t* event);
 
 
 
-
 * 函数原型：
 
 ```
@@ -69,7 +66,6 @@ event_t* paint_event_init (paint_event_t* event, void* target, uint32_t type, ca
 #### c 属性
 -----------------------
 > <p id="paint_event_t_c"> canvas。
-
 
 
 * 类型：canvas\_t*

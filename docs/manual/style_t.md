@@ -14,7 +14,6 @@
  属性名称的请参考[style\_id](style_id_t.md)
 
 
-
 ----------------------------------
 ### 函数
 <p id="style_t_methods">
@@ -38,7 +37,6 @@
 
 
 
-
 * 函数原型：
 
 ```
@@ -57,7 +55,6 @@ ret_t style_destroy (style_t* s);
 * 函数功能：
 
 > <p id="style_t_style_get_color"> 获取指定name的颜色值。
-
 
 
 
@@ -84,7 +81,6 @@ color_t style_get_color (style_t* s, const char* name, color_t defval);
 
 
 
-
 * 函数原型：
 
 ```
@@ -105,7 +101,6 @@ int32_t style_get_int (style_t* s, const char* name, int32_t defval);
 * 函数功能：
 
 > <p id="style_t_style_get_str"> 获取指定name的字符串格式的值。
-
 
 
 
@@ -132,7 +127,6 @@ const char* style_get_str (style_t* s, const char* name, const char* defval);
 
 
 
-
 * 函数原型：
 
 ```
@@ -151,7 +145,6 @@ bool_t style_is_mutable (style_t* s);
 * 函数功能：
 
 > <p id="style_t_style_is_valid"> 检查style对象是否有效
-
 
 
 
@@ -176,7 +169,6 @@ bool_t style_is_valid (style_t* s);
 
 
 
-
 * 函数原型：
 
 ```
@@ -196,7 +188,6 @@ ret_t style_notify_widget_state_changed (style_t* s, widget_t* widget);
 * 函数功能：
 
 > <p id="style_t_style_set"> 设置指定状态的指定属性的值(仅仅对mutable的style有效)。
-
 
 
 
