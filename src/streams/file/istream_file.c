@@ -39,6 +39,14 @@ static ret_t tk_istream_file_set_prop(object_t* obj, const char* name, const val
 }
 
 static ret_t tk_istream_file_get_prop(object_t* obj, const char* name, value_t* v) {
+  tk_istream_file_t* istream_file = TK_ISTREAM_FILE(obj);
+
+  if(tk_str_eq(name, TK_STREAM_PROP_IS_EOS)) {
+    value_set_bool(v, fs_file_eof(istream_file->file));
+
+    return RET_OK;
+  }
+
   return RET_NOT_FOUND;
 }
 

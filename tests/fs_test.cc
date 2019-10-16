@@ -26,6 +26,7 @@ TEST(Fs, eof) {
   file_write(filename, str, strlen(str));
 
   fs_file_t* f = fs_open_file(os_fs(), filename, "r");
+  memset(buff, 0x00, sizeof(buff));
   fs_file_read(f, buff, sizeof(buff));
   ASSERT_STREQ(buff, str);
   ASSERT_EQ(fs_file_eof(f), TRUE);
