@@ -19,7 +19,7 @@ void do_send(tk_iostream_t* tcp, const char* msg, uint32_t times) {
   tk_istream_t* istream = tk_iostream_get_istream(iostream);
   tk_ostream_t* ostream = tk_iostream_get_ostream(iostream);
 
-  for(i = 0; i < times; i++) {
+  for (i = 0; i < times; i++) {
     tk_snprintf(buff, sizeof(buff), "(%u) %s", i, msg);
 
     s_ret = tk_ostream_write(ostream, (uint8_t*)buff, strlen(buff));

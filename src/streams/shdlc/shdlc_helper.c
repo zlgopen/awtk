@@ -120,7 +120,7 @@ ret_t shdlc_read_data(tk_istream_t* istream, wbuffer_t* wb, uint32_t timeout) {
     log_debug("expect 0x7e skip 0x%02x(%c)\n", (int)c, c);
   } while (1);
 
-  if(is_broken_frame) {
+  if (is_broken_frame) {
     wbuffer_write_uint8(wb, 0x00);
     log_debug("meet broken frame\n");
     return RET_CRC;
