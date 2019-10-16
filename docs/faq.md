@@ -53,33 +53,27 @@ convert bg.png  -ordered-dither o8x8,32,64,32 bg.jpg
 > 参考：http://www.imagemagick.org/Usage/quantize/
 
 
-#### 5.在Windows平台，SVG显示不正常，如何解决？
+#### 5.如何获取控件值？
 
-原因是Windows下OpenGL不支持非凸多边形，所以要解决这个问题，需要使用不同的NANOVG\_BACKEND。这可以在SConstruct文件中修改。如：
+获取控件的值有以下几种方式：
 
-```
-#NANOVG_BACKEND='GL3'
-#NANOVG_BACKEND='GLES2'
-#NANOVG_BACKEND='GLES3'
-#NANOVG_BACKEND='AGG'
-#NANOVG_BACKEND='AGGE'
-NANOVG_BACKEND='BGFX'
-```
+* 用widget\_get\_value函数获取(仅支持整数类型)。
 
-在PC上，BGFX是推荐的NANOVG\_BACKEND，但是需要进入3rd/bgfx目录，手工下载bgfx相关源码：
+* 用wiget\_get\_prop函数获取。
+
+* 直接访问控件的属性。控件的属性如果标记为readable，均可直接访问。如：
 
 ```
-cd 3rd/bgfx
-git clone https://github.com/bkaradzic/bx.git 
-git clone https://github.com/bkaradzic/bimg.git 
-git clone https://github.com/bkaradzic/bgfx.git
+widget_t* slider = widget_lookup(win, "slider", TRUE);
+double value = SLIDER(slider)->value;
 ```
 
-> 如果您不需要使用SVG，仍然可以使用GL3作为NANOVG\_BACKEND。
+> 直接访问控件属性时，需要用对应的宏(如上面的SLIDER)进行类型转换。
+
 
 #### 6.Ubuntu 14上无法启动，有什么办法吗？
 
-Ubuntu 14上的OpenGL有问题，请使用AGGE软件渲染。修改awtk_config.py：
+Ubuntu 14上的OpenGL有问题，请使用AGGE软件渲染。修改awtk\_config.py：
 
 ```
 NANOVG_BACKEND='AGGE'
