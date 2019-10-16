@@ -64,11 +64,11 @@ BEGIN_C_DECLS
  * 可用通过style来设置控件的显示风格，如背景和边框等。如：
  *
  * ```xml
- * <gif_image>
+ * <gif>
  *  <style name="border">
  *   <normal border_color="#000000" bg_color="#e0e0e0" text_color="black"/>
  *  </style>
- * </gif_image>
+ * </gif>
  * ```
  *
  * > 更多用法请参考：[theme default](

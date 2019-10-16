@@ -30,9 +30,11 @@
  可用通过style来设置控件的显示风格，如背景和边框等。如：
 
  ```xml
+ <svg>
  <style name="default">
    <normal border_color="green" fg_color="red" />
  </style>
+ </svg>
  ```
 
  > 更多用法请参考：[theme default](

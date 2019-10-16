@@ -527,11 +527,11 @@
   </style>
 </progress_circle>
 
-<svg_image>
+<svg>
   <style name="default">
     <normal border_color="green" fg_color="red" />
   </style>
-</svg_image>
+</svg>
 
 <check_button>
   <style name="password_visible" >
