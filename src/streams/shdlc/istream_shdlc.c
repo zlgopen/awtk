@@ -44,16 +44,33 @@ static ret_t tk_istream_shdlc_send_ack(tk_istream_t* stream, bool_t ok, uint8_t 
 }
 
 ret_t tk_istream_shdlc_read_frame(tk_istream_t* stream, wbuffer_t* wb) {
+  ret_t ret = RET_OK;
   shdlc_header_t header = {0};
   tk_istream_shdlc_t* istream_shdlc = TK_ISTREAM_SHDLC(stream);
+
+  uint8_t seqno = 0;
+  uint32_t retry_times = 0;
   uint32_t timeout = istream_shdlc->timeout;
   tk_istream_t* real_istream = istream_shdlc->iostream->real_istream;
-  ret_t ret = shdlc_read_data(real_istream, wb, timeout);
-  return_value_if_fail(ret != RET_IO, RET_IO);
 
-  header.data = wb->data[0];
-  if (header.s.type == SHDLC_DATA) {
-    tk_istream_shdlc_send_ack(stream, ret == RET_OK, header.s.seqno);
+  for (retry_times = 0; retry_times < istream_shdlc->retry_times; retry_times++) {
+    ret = shdlc_read_data(real_istream, wb, timeout);
+    return_value_if_fail(ret != RET_IO, RET_IO);
+
+    header.data = wb->data[0];
+    seqno = header.s.seqno;
+
+    if (ret == RET_CRC) {
+      log_debug("retry_times=%u\n", retry_times);
+      return_value_if_fail(tk_istream_shdlc_send_ack(stream, FALSE, seqno) == RET_OK, RET_IO);
+      continue;
+    } else if (ret == RET_OK) {
+      if (header.s.type == SHDLC_DATA) {
+        return_value_if_fail(tk_istream_shdlc_send_ack(stream, TRUE, seqno) == RET_OK, RET_IO);
+      }
+    }
+
+    break;
   }
 
   return ret;
@@ -99,7 +116,6 @@ ret_t tk_istream_shdlc_read_ack(tk_istream_t* stream, uint8_t seqno) {
 
     header.data = wb->data[0];
     if (header.s.type != SHDLC_DATA) {
-      ENSURE(header.s.seqno == seqno);
       break;
     }
 
@@ -131,6 +147,9 @@ static ret_t tk_istream_shdlc_set_prop(object_t* obj, const char* name, const va
   if (tk_str_eq(name, TK_STREAM_PROP_TIMEOUT)) {
     istream_shdlc->timeout = value_uint32(v);
     return RET_OK;
+  } else if (tk_str_eq(name, TK_STREAM_PROP_RETRY_TIMES)) {
+    istream_shdlc->retry_times = value_uint32(v);
+    return RET_OK;
   }
 
   return object_set_prop(OBJECT(real_istream), name, v);
@@ -142,6 +161,10 @@ static ret_t tk_istream_shdlc_get_prop(object_t* obj, const char* name, value_t*
 
   if (tk_str_eq(name, TK_STREAM_PROP_TIMEOUT)) {
     value_set_uint32(v, istream_shdlc->timeout);
+
+    return RET_OK;
+  } else if (tk_str_eq(name, TK_STREAM_PROP_RETRY_TIMES)) {
+    value_set_uint32(v, istream_shdlc->retry_times);
 
     return RET_OK;
   }
@@ -180,6 +203,7 @@ tk_istream_t* tk_istream_shdlc_create(tk_iostream_shdlc_t* iostream) {
   ENSURE(wbuffer_init_extendable(&(istream_shdlc->wb_compress)) != NULL);
 
   istream_shdlc->timeout = 3000;
+  istream_shdlc->retry_times = 10;
   istream_shdlc->last_seqno = 0xff;
   istream_shdlc->iostream = iostream;
   istream_shdlc->compressor = compressor_miniz_create(COMPRESSOR_RATIO_FIRST);

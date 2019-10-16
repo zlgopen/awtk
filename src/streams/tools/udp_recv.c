@@ -48,6 +48,7 @@ int main(int argc, char* argv[]) {
   }
 
   socket_init();
+  platform_prepare();
   TK_ENABLE_CONSOLE();
 
   port = tk_atoi(argv[1]);

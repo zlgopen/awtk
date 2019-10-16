@@ -29,7 +29,7 @@ static int32_t tk_ostream_shdlc_write(tk_ostream_t* stream, const uint8_t* buff,
   tk_ostream_shdlc_t* ostream_shdlc = TK_OSTREAM_SHDLC(stream);
   uint8_t seqno = ostream_shdlc->seqno;
   uint32_t timeout = ostream_shdlc->timeout;
-  uint32_t retry_times = ostream_shdlc->retry_times;
+  uint32_t retry_times = 0;
   tk_istream_t* istream = ostream_shdlc->iostream->istream;
   tk_ostream_t* real_ostream = ostream_shdlc->iostream->real_ostream;
 
@@ -43,7 +43,7 @@ static int32_t tk_ostream_shdlc_write(tk_ostream_t* stream, const uint8_t* buff,
     return_value_if_fail(shdlc_write_data(wb, seqno, FALSE, buff, size) == RET_OK, 0);
   }
 
-  while (retry_times) {
+  while (retry_times < ostream_shdlc->retry_times) {
     return_value_if_fail(
         tk_ostream_write_len(real_ostream, wb->data, wb->cursor, timeout) == wb->cursor, RET_IO);
 
@@ -56,7 +56,8 @@ static int32_t tk_ostream_shdlc_write(tk_ostream_t* stream, const uint8_t* buff,
       return size;
     }
 
-    retry_times--;
+    retry_times++;
+    log_debug("retry_times=%u\n", retry_times);
   }
 
   log_debug("shdlc write failed\n");

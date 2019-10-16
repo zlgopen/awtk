@@ -47,6 +47,11 @@ struct _tk_istream_shdlc_t {
    * 读写超时时间(ms)
    */
   uint32_t timeout;
+  /**
+   * @property {uint32_t} retry_times
+   * 失败重传次数。
+   */
+  uint8_t retry_times;
 
   wbuffer_t wb;
   ring_buffer_t* rb;

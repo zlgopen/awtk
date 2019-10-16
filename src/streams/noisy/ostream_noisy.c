@@ -103,7 +103,7 @@ tk_ostream_t* tk_ostream_noisy_create(tk_ostream_t* real_ostream) {
   ostream_noisy = TK_OSTREAM_NOISY(obj);
   return_value_if_fail(ostream_noisy != NULL, NULL);
 
-  ostream_noisy->error_level = 1;
+  ostream_noisy->error_level = 3;
   ostream_noisy->real_ostream = real_ostream;
   wbuffer_init_extendable(&(ostream_noisy->wb));
   TK_OSTREAM(obj)->write = tk_ostream_noisy_write;
