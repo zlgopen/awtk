@@ -33,7 +33,7 @@ void do_recv(int port) {
         break;
       }
 
-      if(!object_get_prop_bool(OBJECT(is), TK_STREAM_PROP_IS_OK, FALSE)) {
+      if (!object_get_prop_bool(OBJECT(is), TK_STREAM_PROP_IS_OK, FALSE)) {
         log_debug("client disconnected\n");
         break;
       }

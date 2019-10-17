@@ -53,12 +53,12 @@ ret_t tk_istream_shdlc_read_frame(tk_istream_t* stream, wbuffer_t* wb, bool_t ex
   uint32_t timeout = istream_shdlc->timeout;
   tk_istream_t* real_istream = istream_shdlc->iostream->real_istream;
 
-  if(!object_get_prop_bool(OBJECT(real_istream), TK_STREAM_PROP_IS_OK, TRUE)) {
+  if (!object_get_prop_bool(OBJECT(real_istream), TK_STREAM_PROP_IS_OK, TRUE)) {
     return RET_IO;
   }
 
   for (retry_times = 0; retry_times < istream_shdlc->retry_times; retry_times++) {
-    if(!object_get_prop_bool(OBJECT(real_istream), TK_STREAM_PROP_IS_OK, TRUE)) {
+    if (!object_get_prop_bool(OBJECT(real_istream), TK_STREAM_PROP_IS_OK, TRUE)) {
       return RET_IO;
     }
 
@@ -69,8 +69,8 @@ ret_t tk_istream_shdlc_read_frame(tk_istream_t* stream, wbuffer_t* wb, bool_t ex
     seqno = header.s.seqno;
 
     if (ret == RET_CRC || ret == RET_TIMEOUT) {
-      log_debug("retry_times=%u\n", (retry_times+1));
-      if(expect_data) {
+      log_debug("retry_times=%u\n", (retry_times + 1));
+      if (expect_data) {
         return_value_if_fail(tk_istream_shdlc_send_ack(stream, FALSE, seqno) == RET_OK, RET_IO);
       }
       continue;
@@ -92,7 +92,8 @@ static ret_t tk_istream_shdlc_save_data_frame(tk_istream_t* stream, wbuffer_t* w
   ring_buffer_t* rb = (istream_shdlc->rb);
 
   header.data = wb->data[0];
-  ENSURE(header.s.type == SHDLC_DATA);
+  return_value_if_fail(header.s.type == SHDLC_DATA, RET_FAIL);
+
   if (istream_shdlc->last_seqno != header.s.seqno) {
     const uint8_t* data = wb->data + 1;
     uint32_t size = wb->cursor - 1;
@@ -110,7 +111,7 @@ static ret_t tk_istream_shdlc_save_data_frame(tk_istream_t* stream, wbuffer_t* w
     return_value_if_fail(ring_buffer_write_len(rb, data, size) == RET_OK, RET_OOM);
     istream_shdlc->last_seqno = header.s.seqno;
   } else {
-    log_debug("dicard duplicated packet: %d\n", (int)(header.s.seqno));
+    log_debug("discard duplicated packet: %d\n", (int)(header.s.seqno));
   }
 
   return RET_OK;
@@ -146,8 +147,18 @@ static int32_t tk_istream_shdlc_read(tk_istream_t* stream, uint8_t* buff, uint32
     return ring_buffer_read(rb, buff, max_size);
   }
 
-  return_value_if_fail(tk_istream_shdlc_read_frame(stream, wb, TRUE) == RET_OK, 0);
-  return_value_if_fail(tk_istream_shdlc_save_data_frame(stream, wb) == RET_OK, 0);
+  do {
+    shdlc_header_t header = {0};
+    return_value_if_fail(tk_istream_shdlc_read_frame(stream, wb, TRUE) == RET_OK, 0);
+
+    header.data = wb->data[0];
+    if (header.s.type == SHDLC_DATA) {
+      return_value_if_fail(tk_istream_shdlc_save_data_frame(stream, wb) == RET_OK, 0);
+      break;
+    } else {
+      log_debug("unexpected packet %d\n", (int)(header.s.type));
+    }
+  } while (1);
 
   return ring_buffer_read(rb, buff, max_size);
 }

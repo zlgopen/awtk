@@ -32,7 +32,7 @@ static int32_t tk_istream_tcp_read(tk_istream_t* stream, uint8_t* buff, uint32_t
   tk_istream_tcp_t* istream_tcp = TK_ISTREAM_TCP(stream);
 
   ret = recv(istream_tcp->sock, buff, max_size, 0);
-  if(ret <= 0) {
+  if (ret <= 0) {
     if (errno != EAGAIN) {
       perror("recv");
       istream_tcp->is_broken = TRUE;
@@ -44,7 +44,7 @@ static int32_t tk_istream_tcp_read(tk_istream_t* stream, uint8_t* buff, uint32_t
 
 static ret_t tk_istream_tcp_wait_for_data(tk_istream_t* stream, uint32_t timeout_ms) {
   tk_istream_tcp_t* istream_tcp = TK_ISTREAM_TCP(stream);
-  
+
   return socket_wait_for_data(istream_tcp->sock, timeout_ms);
 }
 

@@ -47,7 +47,7 @@ static int32_t tk_istream_udp_read(tk_istream_t* stream, uint8_t* buff, uint32_t
 
 static ret_t tk_istream_udp_wait_for_data(tk_istream_t* stream, uint32_t timeout_ms) {
   tk_istream_udp_t* istream_udp = TK_ISTREAM_UDP(stream);
-  
+
   return socket_wait_for_data(istream_udp->sock, timeout_ms);
 }
 

@@ -45,7 +45,7 @@ static int32_t tk_ostream_shdlc_write(tk_ostream_t* stream, const uint8_t* buff,
   }
 
   while (retry_times < ostream_shdlc->retry_times) {
-    if(!object_get_prop_bool(OBJECT(real_ostream), TK_STREAM_PROP_IS_OK, TRUE)) {
+    if (!object_get_prop_bool(OBJECT(real_ostream), TK_STREAM_PROP_IS_OK, TRUE)) {
       return RET_IO;
     }
 

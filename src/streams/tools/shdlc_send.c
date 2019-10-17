@@ -57,7 +57,7 @@ int main(int argc, char* argv[]) {
   msg = argv[3];
   times = tk_atoi(argv[4]);
 
-  if(msg[0] == '@') {
+  if (msg[0] == '@') {
     uint32_t size = 0;
     const char* filename = msg + 1;
     content = file_read(filename, &size);

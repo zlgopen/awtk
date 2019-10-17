@@ -173,4 +173,3 @@ ret_t shdlc_read_data(tk_istream_t* istream, wbuffer_t* wb, uint32_t timeout) {
 uint8_t shdlc_seqno_inc(uint8_t seqno) {
   return (seqno + 1) & 0x07;
 }
-

@@ -30,7 +30,7 @@ static int32_t tk_istream_file_read(tk_istream_t* stream, uint8_t* buff, uint32_
 
 static ret_t tk_istream_file_wait_for_data(tk_istream_t* stream, uint32_t timeout_ms) {
   tk_istream_file_t* istream_file = TK_ISTREAM_FILE(stream);
-  if(!fs_file_eof(istream_file->file)) {
+  if (!fs_file_eof(istream_file->file)) {
     return RET_OK;
   } else {
     return RET_EOS;

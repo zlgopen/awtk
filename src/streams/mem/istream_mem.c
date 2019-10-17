@@ -46,7 +46,7 @@ static int32_t tk_istream_mem_read(tk_istream_t* stream, uint8_t* buff, uint32_t
 
 static ret_t tk_istream_mem_wait_for_data(tk_istream_t* stream, uint32_t timeout_ms) {
   tk_istream_mem_t* istream_mem = TK_ISTREAM_MEM(stream);
-  if(istream_mem->cursor < istream_mem->size) {
+  if (istream_mem->cursor < istream_mem->size) {
     return RET_OK;
   } else {
     return RET_EOS;
