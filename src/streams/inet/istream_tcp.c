@@ -31,15 +31,21 @@ static int32_t tk_istream_tcp_read(tk_istream_t* stream, uint8_t* buff, uint32_t
   int32_t ret = 0;
   tk_istream_tcp_t* istream_tcp = TK_ISTREAM_TCP(stream);
 
-  if (socket_wait_for_data(istream_tcp->sock, 100) == RET_OK) {
-    ret = recv(istream_tcp->sock, buff, max_size, 0);
-    if (ret <= 0) {
+  ret = recv(istream_tcp->sock, buff, max_size, 0);
+  if(ret <= 0) {
+    if (errno != EAGAIN) {
       perror("recv");
       istream_tcp->is_broken = TRUE;
     }
   }
 
   return ret;
+}
+
+static ret_t tk_istream_tcp_wait_for_data(tk_istream_t* stream, uint32_t timeout_ms) {
+  tk_istream_tcp_t* istream_tcp = TK_ISTREAM_TCP(stream);
+  
+  return socket_wait_for_data(istream_tcp->sock, timeout_ms);
 }
 
 static ret_t tk_istream_tcp_get_prop(object_t* obj, const char* name, value_t* v) {
@@ -72,6 +78,7 @@ tk_istream_t* tk_istream_tcp_create(int sock) {
 
   istream_tcp->sock = sock;
   TK_ISTREAM(obj)->read = tk_istream_tcp_read;
+  TK_ISTREAM(obj)->wait_for_data = tk_istream_tcp_wait_for_data;
 
   return TK_ISTREAM(obj);
 }

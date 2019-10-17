@@ -45,6 +45,12 @@ static int32_t tk_istream_udp_read(tk_istream_t* stream, uint8_t* buff, uint32_t
   return ret;
 }
 
+static ret_t tk_istream_udp_wait_for_data(tk_istream_t* stream, uint32_t timeout_ms) {
+  tk_istream_udp_t* istream_udp = TK_ISTREAM_UDP(stream);
+  
+  return socket_wait_for_data(istream_udp->sock, timeout_ms);
+}
+
 static ret_t tk_istream_udp_get_prop(object_t* obj, const char* name, value_t* v) {
   tk_istream_udp_t* istream_udp = TK_ISTREAM_UDP(obj);
   if (tk_str_eq(name, TK_STREAM_PROP_FD)) {
@@ -75,6 +81,7 @@ tk_istream_t* tk_istream_udp_create(int sock) {
 
   istream_udp->sock = sock;
   TK_ISTREAM(obj)->read = tk_istream_udp_read;
+  TK_ISTREAM(obj)->wait_for_data = tk_istream_udp_wait_for_data;
 
   return TK_ISTREAM(obj);
 }

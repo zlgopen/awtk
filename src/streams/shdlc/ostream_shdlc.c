@@ -22,6 +22,7 @@
 #include "tkc/mem.h"
 #include "compressors/compressor_miniz.h"
 #include "streams/shdlc/shdlc_helper.h"
+#include "streams/shdlc/istream_shdlc.h"
 #include "streams/shdlc/ostream_shdlc.h"
 
 static int32_t tk_ostream_shdlc_write(tk_ostream_t* stream, const uint8_t* buff, uint32_t size) {
@@ -44,6 +45,10 @@ static int32_t tk_ostream_shdlc_write(tk_ostream_t* stream, const uint8_t* buff,
   }
 
   while (retry_times < ostream_shdlc->retry_times) {
+    if(!object_get_prop_bool(OBJECT(real_ostream), TK_STREAM_PROP_IS_OK, TRUE)) {
+      return RET_IO;
+    }
+
     return_value_if_fail(
         tk_ostream_write_len(real_ostream, wb->data, wb->cursor, timeout) == wb->cursor, RET_IO);
 

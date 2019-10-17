@@ -40,6 +40,18 @@ static int32_t tk_istream_buffered_read(tk_istream_t* stream, uint8_t* buff, uin
   return ring_buffer_read(rb, buff, max_size);
 }
 
+static ret_t tk_istream_buffered_wait_for_data(tk_istream_t* stream, uint32_t timeout_ms) {
+  tk_istream_buffered_t* istream_buffered = TK_ISTREAM_BUFFERED(stream);
+  tk_istream_t* real_istream = istream_buffered->real_istream;
+  ring_buffer_t* rb = istream_buffered->rb;
+
+  if (!ring_buffer_is_empty(rb)) {
+    return RET_OK;
+  } else {
+    return tk_istream_wait_for_data(real_istream, timeout_ms);
+  }
+}
+
 static ret_t tk_istream_buffered_set_prop(object_t* obj, const char* name, const value_t* v) {
   tk_istream_buffered_t* istream_buffered = TK_ISTREAM_BUFFERED(obj);
   tk_istream_t* real_istream = istream_buffered->real_istream;
@@ -95,6 +107,7 @@ tk_istream_t* tk_istream_buffered_create(tk_istream_t* real_istream, uint32_t bu
   istream_buffered->rb = rb;
   istream_buffered->real_istream = real_istream;
   TK_ISTREAM(obj)->read = tk_istream_buffered_read;
+  TK_ISTREAM(obj)->wait_for_data = tk_istream_buffered_wait_for_data;
 
   return TK_ISTREAM(obj);
 }

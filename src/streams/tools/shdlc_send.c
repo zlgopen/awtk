@@ -2,6 +2,7 @@
 #define WIN32_LEAN_AND_MEAN 1
 #endif /*WIN32_LEAN_AND_MEAN*/
 
+#include "tkc/mem.h"
 #include "tkc/utils.h"
 #include "tkc/platform.h"
 #include "streams/inet/iostream_tcp.h"
@@ -38,6 +39,7 @@ int main(int argc, char* argv[]) {
   int port = 0;
   int sock = 0;
   uint32_t times = 10;
+  char* content = NULL;
   const char* msg = NULL;
   const char* host = NULL;
 
@@ -55,8 +57,18 @@ int main(int argc, char* argv[]) {
   msg = argv[3];
   times = tk_atoi(argv[4]);
 
+  if(msg[0] == '@') {
+    uint32_t size = 0;
+    const char* filename = msg + 1;
+    content = file_read(filename, &size);
+    msg = content;
+  }
+
   sock = tcp_connect(host, port);
+  socket_set_blocking(sock, FALSE);
   do_send(tk_iostream_tcp_create(sock), msg, times);
+
+  TKMEM_FREE(content);
 
   socket_deinit();
 

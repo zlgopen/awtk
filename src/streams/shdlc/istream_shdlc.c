@@ -43,7 +43,7 @@ static ret_t tk_istream_shdlc_send_ack(tk_istream_t* stream, bool_t ok, uint8_t 
                                                                                       : RET_IO;
 }
 
-ret_t tk_istream_shdlc_read_frame(tk_istream_t* stream, wbuffer_t* wb) {
+ret_t tk_istream_shdlc_read_frame(tk_istream_t* stream, wbuffer_t* wb, bool_t expect_data) {
   ret_t ret = RET_OK;
   shdlc_header_t header = {0};
   tk_istream_shdlc_t* istream_shdlc = TK_ISTREAM_SHDLC(stream);
@@ -53,16 +53,26 @@ ret_t tk_istream_shdlc_read_frame(tk_istream_t* stream, wbuffer_t* wb) {
   uint32_t timeout = istream_shdlc->timeout;
   tk_istream_t* real_istream = istream_shdlc->iostream->real_istream;
 
+  if(!object_get_prop_bool(OBJECT(real_istream), TK_STREAM_PROP_IS_OK, TRUE)) {
+    return RET_IO;
+  }
+
   for (retry_times = 0; retry_times < istream_shdlc->retry_times; retry_times++) {
+    if(!object_get_prop_bool(OBJECT(real_istream), TK_STREAM_PROP_IS_OK, TRUE)) {
+      return RET_IO;
+    }
+
     ret = shdlc_read_data(real_istream, wb, timeout);
     return_value_if_fail(ret != RET_IO, RET_IO);
 
-    header.data = wb->data[0];
+    header.data = wb->data != NULL ? wb->data[0] : 0;
     seqno = header.s.seqno;
 
-    if (ret == RET_CRC) {
-      log_debug("retry_times=%u\n", retry_times);
-      return_value_if_fail(tk_istream_shdlc_send_ack(stream, FALSE, seqno) == RET_OK, RET_IO);
+    if (ret == RET_CRC || ret == RET_TIMEOUT) {
+      log_debug("retry_times=%u\n", (retry_times+1));
+      if(expect_data) {
+        return_value_if_fail(tk_istream_shdlc_send_ack(stream, FALSE, seqno) == RET_OK, RET_IO);
+      }
       continue;
     } else if (ret == RET_OK) {
       if (header.s.type == SHDLC_DATA) {
@@ -91,6 +101,8 @@ static ret_t tk_istream_shdlc_save_data_frame(tk_istream_t* stream, wbuffer_t* w
       compressor_t* c = istream_shdlc->compressor;
       wbuffer_t* wb_c = &(istream_shdlc->wb_compress);
       return_value_if_fail(compressor_uncompress(c, data, size, wb_c) == RET_OK, 0);
+      log_debug("compressed data: %u => %u\n", size, wb_c->cursor);
+
       data = wb_c->data;
       size = wb_c->cursor;
     }
@@ -111,7 +123,7 @@ ret_t tk_istream_shdlc_read_ack(tk_istream_t* stream, uint8_t seqno) {
   wbuffer_t* wb = &(istream_shdlc->wb);
 
   do {
-    ret = tk_istream_shdlc_read_frame(stream, wb);
+    ret = tk_istream_shdlc_read_frame(stream, wb, FALSE);
     return_value_if_fail(ret == RET_OK, ret);
 
     header.data = wb->data[0];
@@ -134,10 +146,22 @@ static int32_t tk_istream_shdlc_read(tk_istream_t* stream, uint8_t* buff, uint32
     return ring_buffer_read(rb, buff, max_size);
   }
 
-  return_value_if_fail(tk_istream_shdlc_read_frame(stream, wb) == RET_OK, 0);
+  return_value_if_fail(tk_istream_shdlc_read_frame(stream, wb, TRUE) == RET_OK, 0);
   return_value_if_fail(tk_istream_shdlc_save_data_frame(stream, wb) == RET_OK, 0);
 
   return ring_buffer_read(rb, buff, max_size);
+}
+
+static ret_t tk_istream_shdlc_wait_for_data(tk_istream_t* stream, uint32_t timeout_ms) {
+  tk_istream_shdlc_t* istream_shdlc = TK_ISTREAM_SHDLC(stream);
+  tk_istream_t* real_istream = tk_iostream_get_istream(istream_shdlc->iostream->real_iostream);
+  ring_buffer_t* rb = istream_shdlc->rb;
+
+  if (!ring_buffer_is_empty(rb)) {
+    return RET_OK;
+  } else {
+    return tk_istream_wait_for_data(real_istream, timeout_ms);
+  }
 }
 
 static ret_t tk_istream_shdlc_set_prop(object_t* obj, const char* name, const value_t* v) {
@@ -208,6 +232,7 @@ tk_istream_t* tk_istream_shdlc_create(tk_iostream_shdlc_t* iostream) {
   istream_shdlc->iostream = iostream;
   istream_shdlc->compressor = compressor_miniz_create(COMPRESSOR_RATIO_FIRST);
   TK_ISTREAM(obj)->read = tk_istream_shdlc_read;
+  TK_ISTREAM(obj)->wait_for_data = tk_istream_shdlc_wait_for_data;
 
   return TK_ISTREAM(obj);
 }

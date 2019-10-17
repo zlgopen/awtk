@@ -293,7 +293,7 @@ uint16_t* tk_memset16(uint16_t* buff, uint16_t val, uint32_t size) {
 
   return_value_if_fail(buff != NULL, NULL);
 
-  while ((uint32_t)pb % 4 != 0 && size > 0) {
+  while ((size_t)pb % 4 != 0 && size > 0) {
     *p = val;
 
     p++;
@@ -338,7 +338,7 @@ uint32_t* tk_memset24(uint32_t* buff, void* val, uint32_t size) {
   uint8_t* pb = (uint8_t*)buff;
   uint8_t* src = (uint8_t*)val;
 
-  while ((uint32_t)pb % 4 != 0 && size > 0) {
+  while ((size_t)pb % 4 != 0 && size > 0) {
     pb[0] = src[0];
     pb[1] = src[1];
     pb[2] = src[2];

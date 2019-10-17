@@ -44,6 +44,15 @@ static int32_t tk_istream_mem_read(tk_istream_t* stream, uint8_t* buff, uint32_t
   return size;
 }
 
+static ret_t tk_istream_mem_wait_for_data(tk_istream_t* stream, uint32_t timeout_ms) {
+  tk_istream_mem_t* istream_mem = TK_ISTREAM_MEM(stream);
+  if(istream_mem->cursor < istream_mem->size) {
+    return RET_OK;
+  } else {
+    return RET_EOS;
+  }
+}
+
 static ret_t tk_istream_mem_seek(tk_istream_t* stream, uint32_t offset) {
   tk_istream_mem_t* istream_mem = TK_ISTREAM_MEM(stream);
   return_value_if_fail(offset <= istream_mem->size, RET_BAD_PARAMS);
@@ -102,6 +111,7 @@ tk_istream_t* tk_istream_mem_create(uint8_t* buff, uint32_t size, uint32_t packe
   istream_mem->packet_size = packet_size;
   TK_ISTREAM(obj)->read = tk_istream_mem_read;
   TK_ISTREAM(obj)->seek = tk_istream_mem_seek;
+  TK_ISTREAM(obj)->wait_for_data = tk_istream_mem_wait_for_data;
 
   return TK_ISTREAM(obj);
 }

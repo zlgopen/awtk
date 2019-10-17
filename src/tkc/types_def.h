@@ -175,7 +175,12 @@ typedef enum _ret_t {
    * @const RET_IO
    * IO错误。
    */
-  RET_IO
+  RET_IO,
+  /**
+   * @const RET_EOS
+   * End of Stream
+   */
+  RET_EOS
 } ret_t;
 
 #ifdef ANDROID

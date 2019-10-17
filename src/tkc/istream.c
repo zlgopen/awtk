@@ -59,6 +59,7 @@ int32_t tk_istream_read_len(tk_istream_t* stream, uint8_t* buff, uint32_t max_si
   uint32_t now = 0;
   uint32_t end = 0;
   int32_t offset = 0;
+  ret_t ret = RET_OK;
   int32_t read_bytes = 0;
   int32_t remain_bytes = max_size;
   return_value_if_fail(stream != NULL && stream->read != NULL, -1);
@@ -69,26 +70,24 @@ int32_t tk_istream_read_len(tk_istream_t* stream, uint8_t* buff, uint32_t max_si
 
   do {
     errno = 0;
-    read_bytes = tk_istream_read(stream, buff + offset, remain_bytes);
+    ret = tk_istream_wait_for_data(stream, 20);
 
-    if (read_bytes <= 0) {
-      if (!object_get_prop_bool(OBJECT(stream), TK_STREAM_PROP_IS_OK, TRUE)) {
-        log_debug("stream is broken\n");
+    if (ret == RET_TIMEOUT) {
+      now = time_now_ms();
+      if (now > end) {
+        log_debug("read timeout.\n");
         break;
-      }
-
-      if (object_get_prop_bool(OBJECT(stream), TK_STREAM_PROP_IS_EOS, FALSE)) {
-        log_debug("stream is end\n");
-        break;
-      }
-
-      if (errno == EAGAIN || errno == 0) {
-        sleep_ms(10);
-        continue;
       } else {
-        log_debug("errno=%d\n", errno);
-        break;
+        continue;
       }
+    } else if(ret != RET_OK) {
+      break;
+    }
+
+    read_bytes = tk_istream_read(stream, buff + offset, remain_bytes);
+    if (read_bytes <= 0) {
+       log_debug("errno=%d\n", errno);
+       break;
     }
 
     offset += read_bytes;

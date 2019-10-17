@@ -1,7 +1,7 @@
 ﻿/**
- * File:   shdlc_helper.h
+ * File:   shdlc_helper.c
  * Author: AWTK Develop Team
- * Brief:  iostream for shdlc
+ * Brief:  shdlc helper functions.
  *
  * Copyright (c) 2019 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
@@ -33,6 +33,7 @@ static inline uint8_t shdlc_unescape(uint8_t c) {
 static ret_t shdlc_write_uint8(wbuffer_t* wb, uint8_t c) {
   if (c == SHDLC_FLAG || c == SHDLC_ESCAPE) {
     return_value_if_fail(wbuffer_write_uint8(wb, SHDLC_ESCAPE) == RET_OK, RET_FAIL);
+
     c = shdlc_escape(c);
   }
 
@@ -112,7 +113,7 @@ ret_t shdlc_read_data(tk_istream_t* istream, wbuffer_t* wb, uint32_t timeout) {
   return_value_if_fail(istream != NULL && wb != NULL, RET_BAD_PARAMS);
 
   do {
-    return_value_if_fail(tk_istream_read_len(istream, &c, 1, timeout) == 1, RET_IO);
+    return_value_if_fail(tk_istream_read_len(istream, &c, 1, timeout) == 1, RET_TIMEOUT);
     if (c == SHDLC_FLAG) {
       break;
     }
@@ -121,13 +122,13 @@ ret_t shdlc_read_data(tk_istream_t* istream, wbuffer_t* wb, uint32_t timeout) {
   } while (1);
 
   if (is_broken_frame) {
-    wbuffer_write_uint8(wb, 0x00);
-    log_debug("meet broken frame\n");
     return RET_CRC;
   }
 
+  /*now the data is in buffered stream in normal case*/
+  timeout = tk_min(100, timeout);
   do {
-    return_value_if_fail(tk_istream_read_len(istream, &c, 1, timeout) == 1, RET_IO);
+    return_value_if_fail(tk_istream_read_len(istream, &c, 1, timeout) == 1, RET_TIMEOUT);
     if (c != SHDLC_FLAG) {
       break;
     }
@@ -139,7 +140,7 @@ ret_t shdlc_read_data(tk_istream_t* istream, wbuffer_t* wb, uint32_t timeout) {
   return_value_if_fail(wbuffer_write_uint8(wb, c) == RET_OK, RET_OOM);
 
   do {
-    return_value_if_fail(tk_istream_read_len(istream, &c, 1, timeout) == 1, RET_IO);
+    return_value_if_fail(tk_istream_read_len(istream, &c, 1, timeout) == 1, RET_TIMEOUT);
 
     if (c == SHDLC_FLAG) {
       uint8_t fcs_low = 0;
@@ -172,3 +173,4 @@ ret_t shdlc_read_data(tk_istream_t* istream, wbuffer_t* wb, uint32_t timeout) {
 uint8_t shdlc_seqno_inc(uint8_t seqno) {
   return (seqno + 1) & 0x07;
 }
+

@@ -12,6 +12,8 @@ void do_recv(int port) {
   uint8_t buff[1024];
   int slisten = tcp_listen(port);
   log_debug("listen: %d\n", port);
+  return_if_fail(slisten > 0);
+
   do {
     int ret = 0;
     int sock = tcp_accept(slisten);
@@ -28,6 +30,11 @@ void do_recv(int port) {
         log_debug("read: %s\n", (char*)buff);
         ret = tk_ostream_write(os, buff, ret);
       } else {
+        break;
+      }
+
+      if(!object_get_prop_bool(OBJECT(is), TK_STREAM_PROP_IS_OK, FALSE)) {
+        log_debug("client disconnected\n");
         break;
       }
     } while (TRUE);

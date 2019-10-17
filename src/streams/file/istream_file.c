@@ -28,6 +28,15 @@ static int32_t tk_istream_file_read(tk_istream_t* stream, uint8_t* buff, uint32_
   return fs_file_read(istream_file->file, buff, max_size);
 }
 
+static ret_t tk_istream_file_wait_for_data(tk_istream_t* stream, uint32_t timeout_ms) {
+  tk_istream_file_t* istream_file = TK_ISTREAM_FILE(stream);
+  if(!fs_file_eof(istream_file->file)) {
+    return RET_OK;
+  } else {
+    return RET_EOS;
+  }
+}
+
 static ret_t tk_istream_file_seek(tk_istream_t* stream, uint32_t offset) {
   tk_istream_file_t* istream_file = TK_ISTREAM_FILE(stream);
 
@@ -85,6 +94,7 @@ tk_istream_t* tk_istream_file_create(const char* filename) {
   istream_file->file = file;
   TK_ISTREAM(obj)->read = tk_istream_file_read;
   TK_ISTREAM(obj)->seek = tk_istream_file_seek;
+  TK_ISTREAM(obj)->wait_for_data = tk_istream_file_wait_for_data;
 
   return TK_ISTREAM(obj);
 }
