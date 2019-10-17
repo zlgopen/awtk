@@ -86,8 +86,13 @@ int32_t tk_istream_read_len(tk_istream_t* stream, uint8_t* buff, uint32_t max_si
 
     read_bytes = tk_istream_read(stream, buff + offset, remain_bytes);
     if (read_bytes <= 0) {
-      log_debug("errno=%d\n", errno);
-      break;
+      if (!object_get_prop_bool(OBJECT(stream), TK_STREAM_PROP_IS_OK, TRUE)) {
+        log_debug("stream is broken\n");
+        break;
+      } else {
+        log_debug("not get data\n");
+        continue;
+      }
     }
 
     offset += read_bytes;
