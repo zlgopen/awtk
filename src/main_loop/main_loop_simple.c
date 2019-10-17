@@ -139,8 +139,8 @@ static ret_t main_loop_dispatch_events(main_loop_simple_t* loop) {
         timer_add(r.add_timer.func, r.add_timer.e.target, r.add_timer.duration);
         break;
       default: {
-        if(widget != NULL) {
-          widget = r.event.target;
+        if(r.event.target != NULL) {
+          widget = WIDGET(r.event.target);
         }
         widget_dispatch(widget, &(r.event));
         break;
