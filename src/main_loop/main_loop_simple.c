@@ -138,8 +138,13 @@ static ret_t main_loop_dispatch_events(main_loop_simple_t* loop) {
       case REQ_ADD_TIMER:
         timer_add(r.add_timer.func, r.add_timer.e.target, r.add_timer.duration);
         break;
-      default:
+      default: {
+        if(widget != NULL) {
+          widget = r.event.target;
+        }
+        widget_dispatch(widget, &(r.event));
         break;
+      }
     }
     time_out = time_now_ms();
     /*HANDLE OTHER EVENT*/
