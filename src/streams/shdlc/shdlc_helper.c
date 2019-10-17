@@ -110,6 +110,7 @@ ret_t shdlc_read_data(tk_istream_t* istream, wbuffer_t* wb, uint32_t timeout) {
   uint8_t last_c = 0;
   uint16_t fcs_real = 0;
   bool_t is_broken_frame = 0;
+  shdlc_header_t header = {0};
   return_value_if_fail(istream != NULL && wb != NULL, RET_BAD_PARAMS);
 
   do {
@@ -137,6 +138,7 @@ ret_t shdlc_read_data(tk_istream_t* istream, wbuffer_t* wb, uint32_t timeout) {
 
   /*c is type*/
   wb->cursor = 0;
+  header.data = c;
   return_value_if_fail(wbuffer_write_uint8(wb, c) == RET_OK, RET_OOM);
 
   do {
@@ -162,6 +164,17 @@ ret_t shdlc_read_data(tk_istream_t* istream, wbuffer_t* wb, uint32_t timeout) {
       } else {
         last_c = c;
       }
+
+      if (header.s.type == SHDLC_ACK) {
+        if (wb->cursor == 3) {
+          break;
+        }
+      } else if (header.s.type == SHDLC_NACK) {
+        if (wb->cursor == 3) {
+          break;
+        }
+      }
+
       return_value_if_fail(wbuffer_write_uint8(wb, c) == RET_OK, RET_OOM);
     }
 

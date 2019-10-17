@@ -72,8 +72,10 @@ ret_t tk_istream_shdlc_read_frame(tk_istream_t* stream, wbuffer_t* wb, bool_t ex
       log_debug("retry_times=%u\n", (retry_times + 1));
       if (expect_data) {
         return_value_if_fail(tk_istream_shdlc_send_ack(stream, FALSE, seqno) == RET_OK, RET_IO);
+        continue;
+      } else {
+        break;
       }
-      continue;
     } else if (ret == RET_OK) {
       if (header.s.type == SHDLC_DATA) {
         return_value_if_fail(tk_istream_shdlc_send_ack(stream, TRUE, seqno) == RET_OK, RET_IO);
@@ -112,6 +114,7 @@ static ret_t tk_istream_shdlc_save_data_frame(tk_istream_t* stream, wbuffer_t* w
     istream_shdlc->last_seqno = header.s.seqno;
   } else {
     log_debug("discard duplicated packet: %d\n", (int)(header.s.seqno));
+    tk_istream_shdlc_send_ack(stream, TRUE, header.s.seqno);
   }
 
   return RET_OK;
