@@ -21336,6 +21336,10 @@
       {
         "desc": " IO错误。\r\n",
         "name": "RET_IO"
+      },
+      {
+        "desc": " End of Stream\r\n",
+        "name": "RET_EOS"
       }
     ],
     "header": "tkc/types_def.h",
@@ -35927,7 +35931,7 @@
         "annotation": {
           "scriptable": true
         },
-        "desc": " 设置图片。\r\n\r\n",
+        "desc": " 设置中心图片。\r\n\r\n",
         "name": "time_clock_set_image",
         "return": {
           "type": "ret_t",

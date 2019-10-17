@@ -26,3 +26,4 @@
 | RET\_TIMEOUT | 超时。 |
 | RET\_CRC | CRC错误。 |
 | RET\_IO | IO错误。 |
+| RET\_EOS | End of Stream |

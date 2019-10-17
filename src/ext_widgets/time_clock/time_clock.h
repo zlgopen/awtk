@@ -261,7 +261,7 @@ ret_t time_clock_set_bg_image(widget_t* widget, const char* bg_image);
 
 /**
  * @method time_clock_set_image
- * 设置图片。
+ * 设置中心图片。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {const char*} image 图片。

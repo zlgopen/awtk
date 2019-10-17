@@ -45,7 +45,7 @@
 | <a href="#time_clock_t_time_clock_set_hour">time\_clock\_set\_hour</a> | 设置小时的值。 |
 | <a href="#time_clock_t_time_clock_set_hour_anchor">time\_clock\_set\_hour\_anchor</a> | 设置小时指针的旋转锚点。 |
 | <a href="#time_clock_t_time_clock_set_hour_image">time\_clock\_set\_hour\_image</a> | 设置小时的图片。 |
-| <a href="#time_clock_t_time_clock_set_image">time\_clock\_set\_image</a> | 设置图片。 |
+| <a href="#time_clock_t_time_clock_set_image">time\_clock\_set\_image</a> | 设置中心图片。 |
 | <a href="#time_clock_t_time_clock_set_minute">time\_clock\_set\_minute</a> | 设置分钟的值。 |
 | <a href="#time_clock_t_time_clock_set_minute_anchor">time\_clock\_set\_minute\_anchor</a> | 设置分钟指针的旋转锚点。 |
 | <a href="#time_clock_t_time_clock_set_minute_image">time\_clock\_set\_minute\_image</a> | 设置分钟的图片。 |
@@ -213,7 +213,7 @@ ret_t time_clock_set_hour_image (widget_t* widget, const char* hour);
 
 * 函数功能：
 
-> <p id="time_clock_t_time_clock_set_image"> 设置图片。
+> <p id="time_clock_t_time_clock_set_image"> 设置中心图片。
 
 
 
