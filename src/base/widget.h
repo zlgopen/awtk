@@ -784,6 +784,17 @@ ret_t widget_to_screen(widget_t* widget, point_t* p);
 ret_t widget_set_name(widget_t* widget, const char* name);
 
 /**
+ * @method widget_set_theme
+ * 设置theme。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {char*} name 名称。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_theme(widget_t* widget, const char* name);
+
+/**
  * @method widget_set_cursor
  * 设置鼠标指针的图片名。
  * @annotation ["scriptable"]

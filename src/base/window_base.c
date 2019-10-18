@@ -73,6 +73,31 @@ static ret_t window_base_load_theme_obj(widget_t* widget) {
   return RET_OK;
 }
 
+static ret_t window_base_unload_theme_obj(widget_t* widget) {
+  window_base_t* window_base = WINDOW_BASE(widget);
+  assets_manager_t* am = widget_get_assets_manager(widget);
+
+  if(window_base->res_theme != NULL) {
+    assets_manager_unref(am, window_base->res_theme);
+    window_base->res_theme = NULL;
+  }
+
+  if(window_base->theme_obj != NULL) {
+    theme_destroy(window_base->theme_obj);
+    window_base->theme_obj = NULL;
+  }
+
+  return RET_OK;
+}
+
+static ret_t window_base_reload_theme_obj(widget_t* widget) {
+  window_base_unload_theme_obj(widget);
+
+  log_debug("window_base_reload_theme_obj\n");
+  return window_base_load_theme_obj(widget);
+}
+
+
 ret_t window_base_get_prop(widget_t* widget, const char* name, value_t* v) {
   window_base_t* window_base = WINDOW_BASE(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
@@ -194,14 +219,7 @@ ret_t window_base_on_destroy(widget_t* widget) {
   TKMEM_FREE(window_base->open_anim_hint);
   TKMEM_FREE(window_base->close_anim_hint);
 
-  if (window_base->theme_obj != NULL) {
-    theme_destroy(window_base->theme_obj);
-  }
-
-  if (window_base->res_theme != NULL) {
-    assets_manager_t* am = widget_get_assets_manager(widget);
-    assets_manager_unref(am, window_base->res_theme);
-  }
+  window_base_unload_theme_obj(widget);
 
   return RET_OK;
 }
@@ -233,6 +251,8 @@ ret_t window_base_on_event(widget_t* widget, event_t* e) {
     win->stage = WINDOW_STAGE_OPENED;
   } else if (e->type == EVT_WINDOW_CLOSE) {
     win->stage = WINDOW_STAGE_CLOSED;
+  } else if (e->type == EVT_THEME_CHANGED) {
+    window_base_reload_theme_obj(widget);
   } else if (e->type == EVT_REQUEST_CLOSE_WINDOW) {
     log_debug("EVT_REQUEST_CLOSE_WINDOW\n");
     if (win->closable == WINDOW_CLOSABLE_YES) {

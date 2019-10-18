@@ -67,6 +67,7 @@ struct _assets_manager_t {
 
   /*private*/
   char* res_root;
+  char* theme;
   locale_info_t* locale_info;
   system_info_t* system_info;
 };
@@ -120,6 +121,17 @@ assets_manager_t* assets_manager_init(assets_manager_t* am, uint32_t init_nr);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t assets_manager_set_res_root(assets_manager_t* am, const char* res_root);
+
+/**
+ * @method assets_manager_set_theme
+ * 设置theme
+ * 
+ * @param {assets_manager_t*} am asset manager对象。
+ * @param {const char*} theme theme
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t assets_manager_set_theme(assets_manager_t* am, const char* theme);
 
 /**
  * @method assets_manager_set_system_info
@@ -216,6 +228,8 @@ ret_t assets_manager_preload(assets_manager_t* am, asset_type_t type, const char
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t assets_manager_clear_cache(assets_manager_t* am, asset_type_t type);
+
+ret_t assets_manager_clear_all(assets_manager_t* am);
 
 /**
  * @method assets_manager_deinit

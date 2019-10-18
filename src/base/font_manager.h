@@ -143,6 +143,8 @@ font_t* font_manager_get_font(font_manager_t* fm, const char* name, font_size_t 
  */
 ret_t font_manager_unload_font(font_manager_t* fm, const char* name, font_size_t size);
 
+ret_t font_manager_unload_all(font_manager_t* fm);
+
 /**
  * @method font_manager_deinit
  * 析构字体管理器。

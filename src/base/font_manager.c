@@ -135,6 +135,12 @@ ret_t font_manager_unload_font(font_manager_t* fm, const char* name, font_size_t
   return darray_remove(&(fm->fonts), &info);
 }
 
+ret_t font_manager_unload_all(font_manager_t* fm) {
+  return_value_if_fail(fm != NULL, RET_FAIL);
+
+  return darray_clear(&(fm->fonts));
+}
+
 ret_t font_manager_deinit(font_manager_t* fm) {
   return_value_if_fail(fm != NULL, RET_BAD_PARAMS);
 

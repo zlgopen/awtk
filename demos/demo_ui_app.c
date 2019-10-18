@@ -431,6 +431,12 @@ static ret_t on_show_fps(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t on_reload_theme_test(void* ctx, event_t* e) {
+  widget_set_theme(WIDGET(e->target), "default");
+
+  return RET_OK;
+}
+
 static ret_t on_mem_test(void* ctx, event_t* e) {
   char text[32];
   uint32_t size = 100 * 1024;
@@ -528,6 +534,9 @@ static ret_t install_one(void* ctx, const void* iter) {
     } else if (tk_str_eq(name, "memtest")) {
       widget_t* win = widget_get_window(widget);
       widget_on(widget, EVT_CLICK, on_mem_test, win);
+    } else if (tk_str_eq(name, "reload_theme")) {
+      widget_t* win = widget_get_window(widget);
+      widget_on(widget, EVT_CLICK, on_reload_theme_test, win);
     } else if (tk_str_eq(name, "show_fps")) {
       widget_on(widget, EVT_CLICK, on_show_fps, widget);
     } else if (tk_str_eq(name, "clone_self")) {

@@ -340,6 +340,7 @@ widget_t* window_manager_init(window_manager_t* wm, const widget_vtable_t* wvt,
 
 widget_t* window_manager_find_target_by_win(widget_t* widget, void* native_win);
 widget_t* window_manager_find_target(widget_t* widget, void* native_win, xy_t x, xy_t y);
+ret_t window_manager_on_theme_changed(widget_t* widget);
 
 #define WINDOW_MANAGER(widget) ((window_manager_t*)(widget))
 

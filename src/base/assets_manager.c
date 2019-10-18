@@ -128,9 +128,13 @@ static asset_info_t* load_asset(uint16_t type, uint16_t subtype, const char* pat
 }
 #endif /*WITH_SDL*/
 
+#define ASSETS_DIR "assets"
+#define THEME_DEFAULT "default"
+
 static ret_t build_path(assets_manager_t* am, char* path, uint32_t size, bool_t ratio_sensitive,
                         const char* subpath, const char* name, const char* extname) {
   const char* res_root = assets_manager_get_res_root(am);
+  const char* theme = am->theme ? am->theme : THEME_DEFAULT;
   system_info_t* sysinfo = assets_manager_get_system_info(am);
 
   float_t dpr = sysinfo->device_pixel_ratio;
@@ -143,10 +147,10 @@ static ret_t build_path(assets_manager_t* am, char* path, uint32_t size, bool_t 
       ratio = "x2";
     }
 
-    return_value_if_fail(path_build(path, size, res_root, subpath, ratio, name, NULL) == RET_OK,
+    return_value_if_fail(path_build(path, size, res_root, ASSETS_DIR, theme, subpath, ratio, name, NULL) == RET_OK,
                          RET_FAIL);
   } else {
-    return_value_if_fail(path_build(path, size, res_root, subpath, name, NULL) == RET_OK, RET_FAIL);
+    return_value_if_fail(path_build(path, size, res_root, ASSETS_DIR, theme, subpath, name, NULL) == RET_OK, RET_FAIL);
   }
 
   return tk_str_append(path, size, extname);
@@ -156,7 +160,7 @@ static asset_info_t* try_load_image(assets_manager_t* am, const char* name,
                                     asset_image_type_t subtype, bool_t ratio) {
   char path[MAX_PATH + 1];
   const char* extname = NULL;
-  const char* subpath = ratio ? "assets/raw/images" : "assets/raw/images/xx";
+  const char* subpath = ratio ? "raw/images" : "raw/images/xx";
 
   switch (subtype) {
     case ASSET_TYPE_IMAGE_JPG: {
@@ -177,7 +181,7 @@ static asset_info_t* try_load_image(assets_manager_t* am, const char* name,
     }
     case ASSET_TYPE_IMAGE_BSVG: {
       extname = ".bsvg";
-      subpath = "assets/raw/images/svg";
+      subpath = "raw/images/svg";
       break;
     }
     default: { return NULL; }
@@ -195,31 +199,31 @@ static asset_info_t* try_load_assets(assets_manager_t* am, const char* name, con
   const char* subpath = NULL;
   switch (type) {
     case ASSET_TYPE_FONT: {
-      subpath = "assets/raw/fonts";
+      subpath = "raw/fonts";
       break;
     }
     case ASSET_TYPE_SCRIPT: {
-      subpath = "assets/raw/scripts";
+      subpath = "raw/scripts";
       break;
     }
     case ASSET_TYPE_STYLE: {
-      subpath = "assets/raw/styles";
+      subpath = "raw/styles";
       break;
     }
     case ASSET_TYPE_STRINGS: {
-      subpath = "assets/raw/strings";
+      subpath = "raw/strings";
       break;
     }
     case ASSET_TYPE_UI: {
-      subpath = "assets/raw/ui";
+      subpath = "raw/ui";
       break;
     }
     case ASSET_TYPE_XML: {
-      subpath = "assets/raw/xml";
+      subpath = "raw/xml";
       break;
     }
     case ASSET_TYPE_DATA: {
-      subpath = "assets/raw/data";
+      subpath = "raw/data";
       break;
     }
     default: { return NULL; }
@@ -444,6 +448,7 @@ assets_manager_t* assets_manager_init(assets_manager_t* am, uint32_t init_nr) {
 
   darray_init(&(am->assets), init_nr, (tk_destroy_t)asset_info_unref,
               (tk_compare_t)asset_cache_cmp_type);
+  assets_manager_set_theme(am, THEME_DEFAULT);              
 
   return am;
 }
@@ -452,6 +457,22 @@ ret_t assets_manager_set_res_root(assets_manager_t* am, const char* res_root) {
   return_value_if_fail(am != NULL, RET_BAD_PARAMS);
 
   am->res_root = tk_str_copy(am->res_root, res_root);
+
+  return RET_OK;
+}
+
+ret_t assets_manager_clear_all(assets_manager_t* am) {
+  return_value_if_fail(am != NULL, RET_BAD_PARAMS);
+
+  return darray_clear(&(am->assets));
+}
+
+ret_t assets_manager_set_theme(assets_manager_t* am, const char* theme) {
+  return_value_if_fail(am != NULL, RET_BAD_PARAMS);
+
+  am->theme = tk_str_copy(am->theme, theme);
+  assets_manager_clear_cache(am, ASSET_TYPE_UI);
+  assets_manager_clear_cache(am, ASSET_TYPE_STYLE);
 
   return RET_OK;
 }
@@ -604,6 +625,8 @@ ret_t assets_manager_destroy(assets_manager_t* am) {
   if (am == assets_manager()) {
     assets_manager_set(NULL);
   }
+  TKMEM_FREE(am->res_root);
+  TKMEM_FREE(am->theme);
   TKMEM_FREE(am);
 
   return RET_OK;

@@ -121,6 +121,8 @@ ret_t image_manager_get_bitmap(image_manager_t* imm, const char* name, bitmap_t*
  */
 ret_t image_manager_unload_unused(image_manager_t* imm, uint32_t time_delta_s);
 
+ret_t image_manager_unload_all(image_manager_t* imm);
+
 /**
  * @method image_manager_unload_bitmap
  * 从图片管理器中卸载指定的图片。

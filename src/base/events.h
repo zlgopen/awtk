@@ -347,6 +347,11 @@ typedef enum _event_type_t {
    */
   EVT_REQUEST_QUIT_APP,
   /**
+   * @const EVT_THEME_CHANGED
+   * theme changed
+   */
+  EVT_THEME_CHANGED,
+  /**
    * @const EVT_REQ_START
    * event queue其它请求编号起始值。
    */

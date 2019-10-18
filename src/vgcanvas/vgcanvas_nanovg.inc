@@ -7,7 +7,7 @@
 #include "base/assets_manager.h"
 
 static ret_t vgcanvas_nanovg_reset(vgcanvas_t* vgcanvas) {
-  (void)vgcanvas;
+  /*TODO: unload fonts*/
 
   return RET_OK;
 }

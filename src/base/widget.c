@@ -27,6 +27,7 @@
 
 #include "base/keys.h"
 #include "base/enums.h"
+#include "base/theme.h"
 #include "tkc/time_now.h"
 #include "base/idle.h"
 #include "base/widget.h"
@@ -378,6 +379,35 @@ ret_t widget_set_name(widget_t* widget, const char* name) {
   return_value_if_fail(widget != NULL && name != NULL, RET_BAD_PARAMS);
 
   widget->name = tk_str_copy(widget->name, name);
+
+  return RET_OK;
+}
+
+ret_t widget_set_theme(widget_t* widget, const char* name) {
+  const asset_info_t* info = NULL;
+  event_t e = event_init(EVT_THEME_CHANGED, NULL);
+  font_manager_t* fm = widget_get_font_manager(widget);
+  assets_manager_t* am = widget_get_assets_manager(widget);
+  image_manager_t* imm = widget_get_image_manager(widget);
+  widget_t* wm = widget_get_window_manager(widget);
+  canvas_t* canvas = widget_get_canvas(widget);
+  vgcanvas_t* vgcanvas = canvas_get_vgcanvas(canvas);
+
+  return_value_if_fail(am != NULL && name!= NULL, RET_BAD_PARAMS);
+
+  font_manager_unload_all(fm);
+  image_manager_unload_all(imm);
+  assets_manager_set_theme(am, name);
+  vgcanvas_reset(vgcanvas);
+ 
+  info = assets_manager_ref(am, ASSET_TYPE_STYLE, "default");
+  ENSURE(info != NULL);
+  theme_init(theme(), info->data);
+
+  widget_dispatch(wm, &e);
+  widget_invalidate_force(wm, NULL);
+
+  log_debug("theme changed: %s\n", name);
 
   return RET_OK;
 }

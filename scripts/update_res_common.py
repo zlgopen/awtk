@@ -276,8 +276,9 @@ def writeResultJSON(str):
 def genIncludes(files):
     str1 = ""
     for f in files:
+        assets_root = os.path.dirname(os.path.dirname(ASSETS_ROOT));
         incf = copy.copy(f)
-        incf = incf.replace(os.path.dirname(ASSETS_ROOT), ".")
+        incf = incf.replace(assets_root, ".")
         incf = incf.replace('\\', '/')
         incf = incf.replace('./', '')
         str1 += '#include "'+incf+'"\n'
@@ -455,7 +456,8 @@ def init(awtk_root, assets_root, asset_c):
     BIN_DIR = joinPath(AWTK_ROOT, 'bin')
     INPUT_DIR = joinPath(ASSETS_ROOT, 'raw')
     OUTPUT_DIR = joinPath(ASSETS_ROOT, 'inc')
-
+    print(INPUT_DIR);
+    print(OUTPUT_DIR);
 
 def dumpArgs():
     print('ASSETS_ROOT='+ASSETS_ROOT)

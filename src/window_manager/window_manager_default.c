@@ -836,7 +836,7 @@ static ret_t window_manager_default_get_pointer(widget_t* widget, xy_t* x, xy_t*
   return RET_OK;
 }
 
-static ret_t window_manager_default_on_event(widget_t* widget, event_t* e) {
+ret_t window_manager_default_on_event(widget_t* widget, event_t* e) {
   if (e->type == EVT_ORIENTATION_WILL_CHANGED) {
     orientation_event_t* evt = orientation_event_cast(e);
     lcd_orientation_t orientation = evt->orientation;
@@ -855,6 +855,8 @@ static ret_t window_manager_default_on_event(widget_t* widget, event_t* e) {
     e->type = EVT_ORIENTATION_CHANGED;
 
     widget_dispatch(widget, e);
+  } else if (e->type == EVT_THEME_CHANGED) {
+    window_manager_on_theme_changed(widget);
   }
 
   return RET_OK;

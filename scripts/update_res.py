@@ -8,7 +8,7 @@ if APP_ROOT.endswith('scripts'):
 
 os.chdir(APP_ROOT);
 AWTK_ROOT=APP_ROOT
-ASSETS_ROOT=common.joinPath(APP_ROOT, 'demos/assets')
+ASSETS_ROOT=common.joinPath(APP_ROOT, 'demos/assets/default')
 ASSET_C=common.joinPath(APP_ROOT, 'demos/assets.c')
 
 common.init(AWTK_ROOT, ASSETS_ROOT, ASSET_C);
