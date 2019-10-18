@@ -12,7 +12,7 @@
 
 <digit_clock>
   <style name="time">
-    <normal text_color="white" />
+    <normal text_color="green" />
   </style>
 </digit_clock>
 

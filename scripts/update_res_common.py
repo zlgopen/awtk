@@ -95,7 +95,7 @@ def themegen(raw, inc):
 
 def themegen_bin(raw, bin):
     input=joinPath(INPUT_DIR, raw)
-    output=joinPath(OUTPUT_DIR, bin)
+    output=joinPath(INPUT_DIR, bin)
     if(os.path.isfile(input)):
         execCmd(toExe('themegen') + ' ' + input + ' ' + output + ' bin')
 
@@ -109,7 +109,7 @@ def strgen(raw, inc):
 
 def strgen_bin(raw, bin):
     input=joinPath(INPUT_DIR, raw)
-    output=joinPath(OUTPUT_DIR, bin)
+    output=joinPath(INPUT_DIR, bin)
     if(os.path.isfile(input)):
         execCmd(toExe('strgen') + ' ' + input + ' ' + output + ' bin')
 
