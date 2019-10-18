@@ -11,6 +11,7 @@ DPI = ''
 ACTION = 'all'
 ASSET_C = ''
 BIN_DIR = ''
+THEME = 'default'
 ASSETS_ROOT = ''
 AWTK_ROOT = ''
 INPUT_DIR = ''
@@ -65,9 +66,7 @@ def removeDir(path):
 
 def prepareOutputDir(name):
     fullpath = joinPath(OUTPUT_DIR, name)
-    if os.path.exists(fullpath):
-        print(fullpath+" exist.")
-    else:
+    if(not os.path.exists(fullpath)):
         os.makedirs(fullpath)
 
 
@@ -88,53 +87,70 @@ def execCmd(cmd):
 
 
 def themegen(raw, inc):
-    execCmd(toExe('themegen') + ' ' + joinPath(INPUT_DIR, raw) +
-            ' ' + joinPath(OUTPUT_DIR, inc))
+    input=joinPath(INPUT_DIR, raw)
+    output=joinPath(OUTPUT_DIR, inc)
+    if(os.path.isfile(input)):
+        execCmd(toExe('themegen') + ' ' + input + ' ' + output)
 
 
 def themegen_bin(raw, bin):
-    execCmd(toExe('themegen') + ' ' + joinPath(INPUT_DIR, raw) +
-            ' ' + joinPath(INPUT_DIR, bin) + ' bin')
+    input=joinPath(INPUT_DIR, raw)
+    output=joinPath(OUTPUT_DIR, bin)
+    if(os.path.isfile(input)):
+        execCmd(toExe('themegen') + ' ' + input + ' ' + output + ' bin')
 
 
 def strgen(raw, inc):
-    execCmd(toExe('strgen') + ' ' + joinPath(INPUT_DIR, raw) +
-            ' ' + joinPath(OUTPUT_DIR, inc))
+    input=joinPath(INPUT_DIR, raw)
+    output=joinPath(OUTPUT_DIR, inc)
+    if(os.path.isfile(input)):
+        execCmd(toExe('strgen') + ' ' + input + ' ' + output)
 
 
 def strgen_bin(raw, bin):
-    execCmd(toExe('strgen') + ' ' + joinPath(INPUT_DIR, raw) +
-            ' ' + joinPath(INPUT_DIR, bin) + ' bin')
-
+    input=joinPath(INPUT_DIR, raw)
+    output=joinPath(OUTPUT_DIR, bin)
+    if(os.path.isfile(input)):
+        execCmd(toExe('strgen') + ' ' + input + ' ' + output + ' bin')
 
 def resgen(raw, inc):
-    execCmd(toExe('resgen') + ' ' + joinPath(INPUT_DIR, raw) +
-            ' ' + joinPath(OUTPUT_DIR, inc))
+    input=joinPath(INPUT_DIR, raw)
+    output=joinPath(OUTPUT_DIR, inc)
+    if(os.path.isfile(input)):
+        execCmd(toExe('resgen') + ' ' + input + ' ' + output)
 
 
 def fontgen(raw, text, inc, size):
-    execCmd(toExe('fontgen') + ' ' + joinPath(INPUT_DIR, raw) + ' ' +
-            joinPath(INPUT_DIR, text) + ' ' + joinPath(OUTPUT_DIR, inc) + ' ' + 
+    inputFont=joinPath(INPUT_DIR, raw);
+    inputText=joinPath(INPUT_DIR, text);
+    output=joinPath(OUTPUT_DIR, inc);
+    if(os.path.isfile(inputFont)):
+        execCmd(toExe('fontgen') + ' ' + inputFont + ' ' +
+            inputText + ' ' + output + ' ' +
             str(size) + ' ' + FONT_OPTIONS)
 
 
 def imagegen(raw, inc):
-    execCmd(toExe('imagegen') + ' ' + raw + ' ' + inc + ' ' + IMAGEGEN_OPTIONS)
-    inc = inc.replace('.data', '.res')
-    resgen(raw, inc)
+    if(os.path.isfile(raw)):
+        execCmd(toExe('imagegen') + ' ' + raw + ' ' + inc + ' ' + IMAGEGEN_OPTIONS)
+        inc = inc.replace('.data', '.res')
+        resgen(raw, inc)
 
 
 def svggen(raw, inc, bin):
-    execCmd(toExe('bsvggen') + ' ' + raw + ' ' + inc)
-    execCmd(toExe('bsvggen') + ' ' + raw + ' ' + bin + ' bin')
+    if(os.path.isfile(raw)):
+        execCmd(toExe('bsvggen') + ' ' + raw + ' ' + inc)
+        execCmd(toExe('bsvggen') + ' ' + raw + ' ' + bin + ' bin')
 
 
 def xml_to_ui(raw, inc):
-    execCmd(toExe('xml_to_ui') + ' ' + raw + ' ' + inc)
+    if(os.path.isfile(raw)):
+        execCmd(toExe('xml_to_ui') + ' ' + raw + ' ' + inc)
 
 
 def xml_to_ui_bin(raw, bin):
-    execCmd(toExe('xml_to_ui') + ' ' + raw + ' ' + bin + ' bin')
+    if(os.path.isfile(raw)):
+        execCmd(toExe('xml_to_ui') + ' ' + raw + ' ' + bin + ' bin')
 
 
 def gen_res_all_style():
@@ -225,7 +241,8 @@ def gen_res_all_font():
         res = res.replace('.ttf', '.res')
         raw = raw.replace(INPUT_DIR, '.')
         resgen(raw, res)
-    fontgen('fonts/default_full.ttf', 'fonts/text.txt', 'fonts/default.data', 18)
+    fontgen('fonts/default_full.ttf',
+            'fonts/text.txt', 'fonts/default.data', 18)
 
 
 def gen_res_all_script():
@@ -240,7 +257,7 @@ def gen_res_all_script():
 
 
 def gen_res_all_string():
-    print('gen_res_all_string');
+    print('gen_res_all_string')
     strgen('strings/strings.xml', 'strings')
     strgen_bin('strings/strings.xml', 'strings')
 
@@ -267,16 +284,18 @@ def gen_res_all():
 
 def writeResult(str):
     with open(ASSET_C, "w") as text_file:
-        text_file.write(str);
+        text_file.write(str)
+
 
 def writeResultJSON(str):
     with open('assets.js', "w") as text_file:
-        text_file.write(str);
+        text_file.write(str)
+
 
 def genIncludes(files):
     str1 = ""
     for f in files:
-        assets_root = os.path.dirname(os.path.dirname(ASSETS_ROOT));
+        assets_root = os.path.dirname(os.path.dirname(ASSETS_ROOT))
         incf = copy.copy(f)
         incf = incf.replace(assets_root, ".")
         incf = incf.replace('\\', '/')
@@ -307,6 +326,9 @@ def gen_add_assets(files):
 
 
 def gen_res_c():
+    if THEME != 'default':
+        return
+
     result = '#include "awtk.h"\n'
     result += '#include "base/assets_manager.h"\n'
 
@@ -395,43 +417,58 @@ def gen_res_web_c():
     result += '}\n'
 
     global ASSET_C
-    ASSET_C = ASSET_C.replace('.c', '_web.c');
+    ASSET_C = ASSET_C.replace('.c', '_web.c')
     writeResult(result)
 
+
 def gen_res_json_one(res_type, files):
-    result= "\n  " + res_type + ': [\n'
+    result = "\n  " + res_type + ': [\n'
     for f in files:
         uri = f.replace(os.getcwd(), "")[1:]
-        uri = uri.replace('\\', '/');
+        uri = uri.replace('\\', '/')
         filename, extname = os.path.splitext(uri)
         basename = os.path.basename(filename)
-        result = result + '    {name:"' + basename + '\", uri:"' + uri;
+        result = result + '    {name:"' + basename + '\", uri:"' + uri
         if res_type == 'image' and extname != '.svg' and extname != '.bsvg':
             img = Image.open(f)
             w, h = img.size
-            result = result + '", w:' + str(w) + ', h:' + str(h)+ '},\n';
+            result = result + '", w:' + str(w) + ', h:' + str(h) + '},\n'
         else:
-            result = result + '"},\n';
+            result = result + '"},\n'
     result = result + '  ],'
 
-    return result;
+    return result
+
 
 def gen_res_json():
-    result = 'const g_awtk_assets = {';
+    result = 'const g_awtk_assets = {'
 
-    result = result + gen_res_json_one("image", glob.glob(joinPath(INPUT_DIR, 'images/*/*.*')));
-    result = result + gen_res_json_one("ui", glob.glob(joinPath(INPUT_DIR, 'ui/*.bin')));
-    result = result + gen_res_json_one("style", glob.glob(joinPath(INPUT_DIR, 'styles/*.bin')));
-    result = result + gen_res_json_one("string", glob.glob(joinPath(INPUT_DIR, 'strings/*.bin')));
-    result = result + gen_res_json_one("xml", glob.glob(joinPath(INPUT_DIR, 'xml/*.xml')));
-    result = result + gen_res_json_one("data", glob.glob(joinPath(INPUT_DIR, 'data/*.*')));
-    result = result + gen_res_json_one("script", glob.glob(joinPath(INPUT_DIR, 'scripts/*.*')));
-    result = result + gen_res_json_one("font", glob.glob(joinPath(INPUT_DIR, 'fonts/*.ttf')));
-    result = result + '\n};';
+    result = result + \
+        gen_res_json_one("image", glob.glob(
+            joinPath(INPUT_DIR, 'images/*/*.*')))
+    result = result + \
+        gen_res_json_one("ui", glob.glob(joinPath(INPUT_DIR, 'ui/*.bin')))
+    result = result + \
+        gen_res_json_one("style", glob.glob(
+            joinPath(INPUT_DIR, 'styles/*.bin')))
+    result = result + \
+        gen_res_json_one("string", glob.glob(
+            joinPath(INPUT_DIR, 'strings/*.bin')))
+    result = result + \
+        gen_res_json_one("xml", glob.glob(joinPath(INPUT_DIR, 'xml/*.xml')))
+    result = result + \
+        gen_res_json_one("data", glob.glob(joinPath(INPUT_DIR, 'data/*.*')))
+    result = result + \
+        gen_res_json_one("script", glob.glob(
+            joinPath(INPUT_DIR, 'scripts/*.*')))
+    result = result + \
+        gen_res_json_one("font", glob.glob(joinPath(INPUT_DIR, 'fonts/*.ttf')))
+    result = result + '\n};'
 
     global ASSET_C
-    ASSET_C = ASSET_C.replace('.c', '_web.js');
-    writeResult(result);
+    ASSET_C = ASSET_C.replace('.c', '_web.js')
+    writeResult(result)
+
 
 def gen_res():
     prepare()
@@ -439,8 +476,9 @@ def gen_res():
     gen_res_c()
 
 
-def init(awtk_root, assets_root, asset_c):
+def init(awtk_root, assets_root, theme, asset_c):
     global DPI
+    global THEME
     global ASSET_C
     global BIN_DIR
     global ASSETS_ROOT
@@ -449,24 +487,28 @@ def init(awtk_root, assets_root, asset_c):
     global OUTPUT_DIR
     global IMAGEGEN_OPTIONS
 
+    THEME = theme
     ASSET_C = asset_c
     AWTK_ROOT = awtk_root
-    ASSETS_ROOT = assets_root
+    ASSETS_ROOT = joinPath(assets_root, theme)
 
     BIN_DIR = joinPath(AWTK_ROOT, 'bin')
     INPUT_DIR = joinPath(ASSETS_ROOT, 'raw')
     OUTPUT_DIR = joinPath(ASSETS_ROOT, 'inc')
-    print(INPUT_DIR);
-    print(OUTPUT_DIR);
+    print(INPUT_DIR)
+    print(OUTPUT_DIR)
+
 
 def dumpArgs():
-    print('ASSETS_ROOT='+ASSETS_ROOT)
+    print('-------------------------------------------------------')
+    print('DPI='+DPI)
+    print('THEME='+THEME)
+    print('IMAGEGEN_OPTIONS='+IMAGEGEN_OPTIONS)
     print('AWTK_ROOT='+AWTK_ROOT)
+    print('ASSETS_ROOT='+ASSETS_ROOT)
     print('INPUT_DIR='+INPUT_DIR)
     print('OUTPUT_DIR='+OUTPUT_DIR)
     print('ASSET_C='+ASSET_C)
-    print('DPI='+DPI)
-    print('IMAGEGEN_OPTIONS='+IMAGEGEN_OPTIONS)
     print('BIN_DIR='+BIN_DIR)
 
 
@@ -566,5 +608,6 @@ def showUsage():
 
         if IMAGEGEN_OPTIONS == 'mono':
             FONT_OPTIONS = 'mono'
+
 
 showUsage()
