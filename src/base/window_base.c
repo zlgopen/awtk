@@ -77,12 +77,12 @@ static ret_t window_base_unload_theme_obj(widget_t* widget) {
   window_base_t* window_base = WINDOW_BASE(widget);
   assets_manager_t* am = widget_get_assets_manager(widget);
 
-  if(window_base->res_theme != NULL) {
+  if (window_base->res_theme != NULL) {
     assets_manager_unref(am, window_base->res_theme);
     window_base->res_theme = NULL;
   }
 
-  if(window_base->theme_obj != NULL) {
+  if (window_base->theme_obj != NULL) {
     theme_destroy(window_base->theme_obj);
     window_base->theme_obj = NULL;
   }
@@ -96,7 +96,6 @@ static ret_t window_base_reload_theme_obj(widget_t* widget) {
   log_debug("window_base_reload_theme_obj\n");
   return window_base_load_theme_obj(widget);
 }
-
 
 ret_t window_base_get_prop(widget_t* widget, const char* name, value_t* v) {
   window_base_t* window_base = WINDOW_BASE(widget);

@@ -121,6 +121,14 @@ ret_t image_manager_get_bitmap(image_manager_t* imm, const char* name, bitmap_t*
  */
 ret_t image_manager_unload_unused(image_manager_t* imm, uint32_t time_delta_s);
 
+/**
+ * @method image_manager_unload_all
+ * 从图片管理器中卸载全部图片。
+ *
+ * @param {image_manager_t*} imm 图片管理器对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t image_manager_unload_all(image_manager_t* imm);
 
 /**

@@ -393,15 +393,14 @@ ret_t widget_set_theme(widget_t* widget, const char* name) {
   canvas_t* canvas = widget_get_canvas(widget);
   vgcanvas_t* vgcanvas = canvas_get_vgcanvas(canvas);
 
-  return_value_if_fail(am != NULL && name!= NULL, RET_BAD_PARAMS);
+  return_value_if_fail(am != NULL && name != NULL, RET_BAD_PARAMS);
 
   font_manager_unload_all(fm);
   image_manager_unload_all(imm);
   assets_manager_set_theme(am, name);
   vgcanvas_reset(vgcanvas);
- 
+
   info = assets_manager_ref(am, ASSET_TYPE_STYLE, "default");
-  ENSURE(info != NULL);
   theme_init(theme(), info->data);
 
   widget_dispatch(wm, &e);

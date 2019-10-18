@@ -341,12 +341,20 @@ static ret_t wm_on_locale_changed(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t on_theme_changed(void* ctx, const void* data) {
+  widget_t* widget = WIDGET(data);
+  widget_update_style(widget);
+
+  return RET_OK;
+}
+
 ret_t window_manager_on_theme_changed(widget_t* widget) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
   event_t e = event_init(EVT_THEME_CHANGED, iter);
   widget_dispatch(iter, &e);
+  widget_foreach(iter, on_theme_changed, NULL);
   WIDGET_FOR_EACH_CHILD_END();
 
   return RET_OK;

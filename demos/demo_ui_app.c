@@ -432,7 +432,7 @@ static ret_t on_show_fps(void* ctx, event_t* e) {
 }
 
 static ret_t on_reload_theme_test(void* ctx, event_t* e) {
-  widget_set_theme(WIDGET(e->target), "default");
+  widget_set_theme(WIDGET(e->target), "dark");
 
   return RET_OK;
 }

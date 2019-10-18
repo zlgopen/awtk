@@ -147,13 +147,33 @@ static ret_t build_path(assets_manager_t* am, char* path, uint32_t size, bool_t 
       ratio = "x2";
     }
 
-    return_value_if_fail(path_build(path, size, res_root, ASSETS_DIR, theme, subpath, ratio, name, NULL) == RET_OK,
-                         RET_FAIL);
-  } else {
-    return_value_if_fail(path_build(path, size, res_root, ASSETS_DIR, theme, subpath, name, NULL) == RET_OK, RET_FAIL);
-  }
+    return_value_if_fail(
+        path_build(path, size, res_root, ASSETS_DIR, theme, subpath, ratio, name, NULL) == RET_OK,
+        RET_FAIL);
+    tk_str_append(path, size, extname);
+    if (!file_exist(path)) {
+      return_value_if_fail(path_build(path, size, res_root, ASSETS_DIR, THEME_DEFAULT, subpath,
+                                      ratio, name, NULL) == RET_OK,
+                           RET_FAIL);
+      tk_str_append(path, size, extname);
+    }
 
-  return tk_str_append(path, size, extname);
+    return RET_OK;
+  } else {
+    return_value_if_fail(
+        path_build(path, size, res_root, ASSETS_DIR, theme, subpath, name, NULL) == RET_OK,
+        RET_FAIL);
+    tk_str_append(path, size, extname);
+
+    if (!file_exist(path)) {
+      return_value_if_fail(path_build(path, size, res_root, ASSETS_DIR, THEME_DEFAULT, subpath,
+                                      name, NULL) == RET_OK,
+                           RET_FAIL);
+      tk_str_append(path, size, extname);
+    }
+
+    return RET_OK;
+  }
 }
 
 static asset_info_t* try_load_image(assets_manager_t* am, const char* name,
@@ -448,7 +468,7 @@ assets_manager_t* assets_manager_init(assets_manager_t* am, uint32_t init_nr) {
 
   darray_init(&(am->assets), init_nr, (tk_destroy_t)asset_info_unref,
               (tk_compare_t)asset_cache_cmp_type);
-  assets_manager_set_theme(am, THEME_DEFAULT);              
+  assets_manager_set_theme(am, THEME_DEFAULT);
 
   return am;
 }

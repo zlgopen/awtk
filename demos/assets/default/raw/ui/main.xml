@@ -48,7 +48,7 @@
       <button name="open:memtest" text="MemTest"/>
       <button name="open:calibration_win" text="Calibration"/>
       <button name="show_fps" text="Show FPS"/>
-      <button name="reload_theme" text="Reload Theme"/>
+      <button name="reload_theme" text="Test Change Theme"/>
       <button name="exit" text="Exit"/>
     </view>
   </slide_view>
