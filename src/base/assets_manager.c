@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   assets_manager.h
  * Author: AWTK Develop Team
  * Brief:  asset manager
@@ -26,6 +26,9 @@
 #include "base/locale_info.h"
 #include "base/system_info.h"
 #include "base/assets_manager.h"
+
+#define ASSETS_DIR "assets"
+#define THEME_DEFAULT "default"
 
 static ret_t asset_info_unref(asset_info_t* info);
 
@@ -127,9 +130,6 @@ static asset_info_t* load_asset(uint16_t type, uint16_t subtype, const char* pat
   return info;
 }
 #endif /*WITH_SDL*/
-
-#define ASSETS_DIR "assets"
-#define THEME_DEFAULT "default"
 
 static ret_t build_path(assets_manager_t* am, char* path, uint32_t size, bool_t ratio_sensitive,
                         const char* subpath, const char* name, const char* extname) {

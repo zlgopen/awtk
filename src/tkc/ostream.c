@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   tk_ostream.h
  * Author: AWTK Develop Team
  * Brief:  output stream interface
@@ -83,5 +83,5 @@ ret_t tk_ostream_flush(tk_ostream_t* stream) {
 }
 
 ret_t tk_ostream_write_byte(tk_ostream_t* stream, uint8_t byte) {
-  return tk_ostream_write_len(stream, &byte, 1, 1000);
+  return tk_ostream_write_len(stream, &byte, 1, 1000) == 1 ? RET_OK : RET_FAIL;
 }
