@@ -6,6 +6,7 @@
  iostream base on mem
 
 
+
 ----------------------------------
 ### 函数
 <p id="tk_iostream_mem_t_methods">
@@ -20,6 +21,7 @@
 
 > <p id="tk_iostream_mem_t_tk_iostream_mem_create">
  创建iostream对象。
+
 
 
 

@@ -5,6 +5,7 @@
  原生窗口。
 
 
+
 ----------------------------------
 ### 函数
 <p id="native_window_t_methods">
@@ -22,6 +23,7 @@
 * 函数功能：
 
 > <p id="native_window_t_native_window_create"> 创建win对象。
+
 
 
 
@@ -47,6 +49,7 @@ native_window_t* native_window_create (const char* params);
 
 
 
+
 * 函数原型：
 
 ```
@@ -65,6 +68,7 @@ canvas_t native_window_get_canvas (native_window_t* win);
 * 函数功能：
 
 > <p id="native_window_t_native_window_invalidate"> 请求重绘指定区域。
+
 
 
 
@@ -91,6 +95,7 @@ ret_t native_window_invalidate (native_window_t* win, rect_t* r);
 
 
 
+
 * 函数原型：
 
 ```
@@ -112,6 +117,7 @@ ret_t native_window_move (native_window_t* win, xy_t x, xy_t y, bool_t force);
 * 函数功能：
 
 > <p id="native_window_t_native_window_resize"> 调整窗口大小。
+
 
 
 

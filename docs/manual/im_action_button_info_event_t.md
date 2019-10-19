@@ -4,6 +4,7 @@
 
  设置软键盘上的action按钮的信息事件。
 
+
 ----------------------------------
 ### 属性
 <p id="im_action_button_info_event_t_properties">
@@ -17,6 +18,7 @@
 > <p id="im_action_button_info_event_t_enable"> 软键盘上的action按钮启用。
 
 
+
 * 类型：bool\_t
 
 | 特性 | 是否支持 |
@@ -26,6 +28,7 @@
 #### text 属性
 -----------------------
 > <p id="im_action_button_info_event_t_text"> 软键盘上的action按钮显示的文本。
+
 
 
 * 类型：char*

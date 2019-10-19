@@ -4,6 +4,7 @@
 
  整数枚举类型属性描述。
 
+
 ----------------------------------
 ### 属性
 <p id="value_desc_int_enums_t_properties">
@@ -17,6 +18,7 @@
 > <p id="value_desc_int_enums_t_defvalue"> 缺省值。
 
 
+
 * 类型：int32\_t
 
 | 特性 | 是否支持 |
@@ -26,6 +28,7 @@
 #### enums 属性
 -----------------------
 > <p id="value_desc_int_enums_t_enums"> 枚举值（每一项用英文冒号分隔值和名称）。
+
 
 
 * 类型：const char**

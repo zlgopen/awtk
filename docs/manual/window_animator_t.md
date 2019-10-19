@@ -2,6 +2,7 @@
 ### 概述
  窗口动画。
 
+
 ----------------------------------
 ### 函数
 <p id="window_animator_t_methods">
@@ -19,6 +20,7 @@
 * 函数功能：
 
 > <p id="window_animator_t_window_animator_begin_frame"> begin frame
+
 
 
 
@@ -45,6 +47,7 @@ ret_t window_animator_begin_frame (window_animator_t* wa);
 
 
 
+
 * 函数原型：
 
 ```
@@ -64,6 +67,7 @@ window_animator_t* window_animator_create (bool_t open, const window_animator_vt
 * 函数功能：
 
 > <p id="window_animator_t_window_animator_destroy"> 销毁窗口动画对象。
+
 
 
 
@@ -88,6 +92,7 @@ ret_t window_animator_destroy (window_animator_t* wa);
 
 
 
+
 * 函数原型：
 
 ```
@@ -106,6 +111,7 @@ ret_t window_animator_end_frame (window_animator_t* wa);
 * 函数功能：
 
 > <p id="window_animator_t_window_animator_update"> 更新动画。
+
 
 
 

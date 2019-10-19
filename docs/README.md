@@ -29,6 +29,7 @@
 * [AWTK输入事件处理流程](input_event_flow.md)
 * [内存耗尽处理流程](out_of_memory.md)
 * [如何开启按键音](how_to_enable_key_touch_sound.md)
+* [实时切换主题](theme_switch.md)
 
 ### 2.HowTos
 * [AWTK 调试技巧](debug_tips.md)

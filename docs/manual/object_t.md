@@ -6,6 +6,7 @@
  对象接口。
 
 
+
 ----------------------------------
 ### 函数
 <p id="object_t_methods">
@@ -67,6 +68,7 @@
 
 
 
+
 * 函数原型：
 
 ```
@@ -91,6 +93,7 @@ bool_t object_can_exec (object_t* obj, const char* name, const char* args);
 
 
 
+
 * 函数原型：
 
 ```
@@ -110,6 +113,7 @@ int object_compare (object_t* obj, object_t* other);
 * 函数功能：
 
 > <p id="object_t_object_copy_prop"> 拷贝指定的属性。
+
 
 
 
@@ -140,6 +144,7 @@ ret_t object_copy_prop (object_t* obj, object_t* src, const char* name);
 
 
 
+
 * 函数原型：
 
 ```
@@ -158,6 +163,7 @@ ret_t object_create (const object_vtable_t* vt);
 * 函数功能：
 
 > <p id="object_t_object_eval"> 计算一个表达式，表达式中引用的变量从prop中获取。
+
 
 
 
@@ -185,6 +191,7 @@ ret_t object_eval (object_t* obj, const char* expr, value_t* v);
 
 
 
+
 * 函数原型：
 
 ```
@@ -205,6 +212,7 @@ ret_t object_exec (object_t* obj, const char* name, const char* args);
 * 函数功能：
 
 > <p id="object_t_object_foreach_prop"> 遍历所有属性。
+
 
 
 
@@ -233,6 +241,7 @@ ret_t object_foreach_prop (object_t* obj, tk_visit_t on_prop, void* ctx);
 
 
 
+
 * 函数原型：
 
 ```
@@ -251,6 +260,7 @@ const char* object_get_desc (object_t* obj);
 * 函数功能：
 
 > <p id="object_t_object_get_prop"> 获取指定属性的值。
+
 
 
 
@@ -279,6 +289,7 @@ ret_t object_get_prop (object_t* obj, const char* name, value_t* v);
 
 
 
+
 * 函数原型：
 
 ```
@@ -299,6 +310,7 @@ bool_t object_get_prop_bool (object_t* obj, const char* name, bool_t defval);
 * 函数功能：
 
 > <p id="object_t_object_get_prop_bool_by_path"> 获取指定属性的bool类型的值。
+
 
 
 
@@ -327,6 +339,7 @@ bool_t object_get_prop_bool_by_path (object_t* obj, const char* path, bool_t def
 
 
 
+
 * 函数原型：
 
 ```
@@ -347,6 +360,7 @@ ret_t object_get_prop_by_path (object_t* obj, const char* path, value_t* v);
 * 函数功能：
 
 > <p id="object_t_object_get_prop_float"> 获取指定属性的浮点数类型的值。
+
 
 
 
@@ -375,6 +389,7 @@ float_t object_get_prop_float (object_t* obj, const char* name, float_t defval);
 
 
 
+
 * 函数原型：
 
 ```
@@ -395,6 +410,7 @@ float_t object_get_prop_float_by_path (object_t* obj, const char* path, float_t 
 * 函数功能：
 
 > <p id="object_t_object_get_prop_int"> 获取指定属性的整数类型的值。
+
 
 
 
@@ -423,6 +439,7 @@ int32_t object_get_prop_int (object_t* obj, const char* name, int32_t defval);
 
 
 
+
 * 函数原型：
 
 ```
@@ -443,6 +460,7 @@ int32_t object_get_prop_int_by_path (object_t* obj, const char* path, int32_t de
 * 函数功能：
 
 > <p id="object_t_object_get_prop_object"> 获取指定属性的object类型的值。
+
 
 
 
@@ -470,6 +488,7 @@ object_t* object_get_prop_object (object_t* obj, const char* name);
 
 
 
+
 * 函数原型：
 
 ```
@@ -489,6 +508,7 @@ object_t* object_get_prop_object_by_path (object_t* obj, const char* path);
 * 函数功能：
 
 > <p id="object_t_object_get_prop_pointer"> 获取指定属性的指针类型的值。
+
 
 
 
@@ -516,6 +536,7 @@ void* object_get_prop_pointer (object_t* obj, const char* name);
 
 
 
+
 * 函数原型：
 
 ```
@@ -535,6 +556,7 @@ void* object_get_prop_pointer_by_path (object_t* obj, const char* path);
 * 函数功能：
 
 > <p id="object_t_object_get_prop_str"> 获取指定属性的字符串类型的值。
+
 
 
 
@@ -562,6 +584,7 @@ const char* object_get_prop_str (object_t* obj, const char* name);
 
 
 
+
 * 函数原型：
 
 ```
@@ -581,6 +604,7 @@ const char* object_get_prop_str_by_path (object_t* obj, const char* path);
 * 函数功能：
 
 > <p id="object_t_object_get_size"> 获取对象占用内存的大小。
+
 
 
 
@@ -607,6 +631,7 @@ uint32_t object_get_size (object_t* obj);
 
 
 
+
 * 函数原型：
 
 ```
@@ -625,6 +650,7 @@ const char* object_get_type (object_t* obj);
 * 函数功能：
 
 > <p id="object_t_object_has_prop"> 检查是否存在指定的属性。
+
 
 
 
@@ -652,6 +678,7 @@ bool_t object_has_prop (object_t* obj, const char* name);
 
 
 
+
 * 函数原型：
 
 ```
@@ -670,6 +697,7 @@ bool_t object_is_collection (object_t* obj);
 * 函数功能：
 
 > <p id="object_t_object_notify_changed"> 触发EVT_PROPS_CHANGED事件。
+
 
 
 
@@ -696,6 +724,7 @@ ret_t object_notify_changed (object_t* obj);
 
 
 
+
 * 函数原型：
 
 ```
@@ -714,6 +743,7 @@ object_t* object_ref (object_t* obj);
 * 函数功能：
 
 > <p id="object_t_object_remove_prop"> 删除指定属性。
+
 
 
 
@@ -741,6 +771,7 @@ ret_t object_remove_prop (object_t* obj, const char* name);
 
 
 
+
 * 函数原型：
 
 ```
@@ -760,6 +791,7 @@ ret_t object_set_name (object_t* obj, const char* name);
 * 函数功能：
 
 > <p id="object_t_object_set_prop"> 设置指定属性的值。
+
 
 
 
@@ -788,6 +820,7 @@ ret_t object_set_prop (object_t* obj, const char* name, value_t* value);
 
 
 
+
 * 函数原型：
 
 ```
@@ -808,6 +841,7 @@ ret_t object_set_prop_bool (object_t* obj, const char* name, bool_t value);
 * 函数功能：
 
 > <p id="object_t_object_set_prop_float"> 设置指定属性的浮点数类型的值。
+
 
 
 
@@ -836,6 +870,7 @@ ret_t object_set_prop_float (object_t* obj, const char* name, float_t value);
 
 
 
+
 * 函数原型：
 
 ```
@@ -856,6 +891,7 @@ ret_t object_set_prop_int (object_t* obj, const char* name, int32_t value);
 * 函数功能：
 
 > <p id="object_t_object_set_prop_object"> 设置指定属性的object类型的值。
+
 
 
 
@@ -884,6 +920,7 @@ ret_t object_set_prop_object (object_t* obj, const char* name, object_t* value);
 
 
 
+
 * 函数原型：
 
 ```
@@ -904,6 +941,7 @@ ret_t object_set_prop_pointer (object_t* obj, const char* name, void* value);
 * 函数功能：
 
 > <p id="object_t_object_set_prop_str"> 设置指定属性的字符串类型的值。
+
 
 
 
@@ -932,6 +970,7 @@ ret_t object_set_prop_str (object_t* obj, const char* name, const char* value);
 
 
 
+
 * 函数原型：
 
 ```
@@ -949,6 +988,7 @@ ret_t object_unref (object_t* obj);
 > <p id="object_t_name"> 对象的名称。
 
 
+
 * 类型：char*
 
 | 特性 | 是否支持 |
@@ -959,6 +999,7 @@ ret_t object_unref (object_t* obj);
 #### ref\_count 属性
 -----------------------
 > <p id="object_t_ref_count"> 引用计数。
+
 
 
 * 类型：int32\_t

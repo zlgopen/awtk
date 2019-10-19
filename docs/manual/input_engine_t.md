@@ -11,6 +11,7 @@
  ![image](images/input_engine_t_0.png)
 
 
+
 ----------------------------------
 ### 函数
 <p id="input_engine_t_methods">
@@ -35,6 +36,7 @@
 
 
 
+
 * 函数原型：
 
 ```
@@ -52,6 +54,7 @@ input_engine_t* input_engine_create ();
 * 函数功能：
 
 > <p id="input_engine_t_input_engine_destroy"> 销毁输入法引擎对象。
+
 
 
 
@@ -76,6 +79,7 @@ ret_t input_engine_destroy (input_engine_t* engine);
 
 
 
+
 * 函数原型：
 
 ```
@@ -95,6 +99,7 @@ ret_t input_engine_input (input_engine_t* engine, int key);
 * 函数功能：
 
 > <p id="input_engine_t_input_engine_reset_input"> 清除所有输入的按键组合和候选字。
+
 
 
 

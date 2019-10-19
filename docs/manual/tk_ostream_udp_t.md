@@ -6,6 +6,7 @@
  input stream base on socket
 
 
+
 ----------------------------------
 ### 函数
 <p id="tk_ostream_udp_t_methods">
@@ -22,6 +23,7 @@
 
 > <p id="tk_ostream_udp_t_tk_ostream_udp_create">
  创建ostream对象。
+
 
 
 
@@ -51,6 +53,7 @@ tk_ostream_t* tk_ostream_udp_create (int sock);
 
 
 
+
 * 函数原型：
 
 ```
@@ -71,6 +74,7 @@ ret_t tk_ostream_udp_set_target_with_addr (tk_ostream_t* stream, struct sockaddr
 
 > <p id="tk_ostream_udp_t_tk_ostream_udp_set_target_with_host">
  设置目标。
+
 
 
 

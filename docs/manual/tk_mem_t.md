@@ -18,6 +18,7 @@
  TKMEM_FREE(str);
  ```
 
+
 ----------------------------------
 ### 函数
 <p id="tk_mem_t_methods">
@@ -34,6 +35,7 @@
 * 函数功能：
 
 > <p id="tk_mem_t_TKMEM_ALLOC"> 分配一块内存。
+
 
 
 
@@ -56,6 +58,7 @@ void* TKMEM_ALLOC (uint32_t size);
 * 函数功能：
 
 > <p id="tk_mem_t_TKMEM_CALLOC"> 分配一块内存，并将内容清零。
+
 
 
 
@@ -83,6 +86,7 @@ void* TKMEM_CALLOC (uint32_t nmemb, uint32_t size);
 
 
 
+
 * 函数原型：
 
 ```
@@ -101,6 +105,7 @@ void TKMEM_FREE (void* p);
 * 函数功能：
 
 > <p id="tk_mem_t_TKMEM_REALLOC"> 重新分配一块内存，如果原来的内存块大于等于需要的空间，直接返回原来的内存块。
+
 
 
 

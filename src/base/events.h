@@ -317,27 +317,27 @@ typedef enum _event_type_t {
   EVT_SCREEN_SAVER,
   /**
    * @const EVT_LOW_MEMORY
-   * 内存不足。
+   * 内存不足(event_t)。
    */
   EVT_LOW_MEMORY,
   /**
    * @const EVT_OUT_OF_MEMORY
-   * 内存耗尽。
+   * 内存耗尽(event_t)。
    */
   EVT_OUT_OF_MEMORY,
   /**
    * @const EVT_ORIENTATION_WILL_CHANGED
-   * 屏幕即将旋转。
+   * 屏幕即将旋转(event_t)。
    */
   EVT_ORIENTATION_WILL_CHANGED,
   /**
    * @const EVT_ORIENTATION_CHANGED
-   * 屏幕旋转。
+   * 屏幕旋转(event_t)。
    */
   EVT_ORIENTATION_CHANGED,
   /**
    * @const EVT_WIDGET_CREATED
-   * 控件创建事件。
+   * 控件创建事件(event_t)。
    */
   EVT_WIDGET_CREATED,
   /**
@@ -348,7 +348,7 @@ typedef enum _event_type_t {
   EVT_REQUEST_QUIT_APP,
   /**
    * @const EVT_THEME_CHANGED
-   * theme changed
+   * 主题变化(event_t)。
    */
   EVT_THEME_CHANGED,
   /**

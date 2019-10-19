@@ -99,6 +99,7 @@
  (https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L324)
 
 
+
 ----------------------------------
 ### 函数
 <p id="dialog_t_methods">
@@ -135,6 +136,7 @@
 
 
 
+
 * 函数原型：
 
 ```
@@ -159,6 +161,7 @@ widget_t* dialog_cast (widget_t* widget);
 
 
 
+
 * 函数原型：
 
 ```
@@ -178,6 +181,7 @@ ret_t dialog_confirm (const char* title, const char* text);
 * 函数功能：
 
 > <p id="dialog_t_dialog_create"> 创建dialog对象。
+
 
 
 
@@ -206,6 +210,7 @@ widget_t* dialog_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 
 
+
 * 函数原型：
 
 ```
@@ -231,6 +236,7 @@ widget_t* dialog_create_simple (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h
 
 
 
+
 * 函数原型：
 
 ```
@@ -249,6 +255,7 @@ widget_t* dialog_get_client (widget_t* widget);
 * 函数功能：
 
 > <p id="dialog_t_dialog_get_title"> 获取title控件。
+
 
 
 
@@ -276,6 +283,7 @@ widget_t* dialog_get_title (widget_t* widget);
 
 
 
+
 * 函数原型：
 
 ```
@@ -299,6 +307,7 @@ ret_t dialog_info (const char* title, const char* text);
 
 
 
+
 * 函数原型：
 
 ```
@@ -317,6 +326,7 @@ bool_t dialog_is_modal (widget_t* widget);
 * 函数功能：
 
 > <p id="dialog_t_dialog_is_quited"> 检查对话框是否已经退出模态。
+
 
 
 
@@ -344,6 +354,7 @@ bool_t dialog_is_quited (widget_t* widget);
 
 
 
+
 * 函数原型：
 
 ```
@@ -364,6 +375,7 @@ ret_t dialog_modal (widget_t* widget);
 > <p id="dialog_t_dialog_open"> 从资源文件中加载并创建Dialog对象。
 
  本函数在ui\_loader/ui\_builder_default里实现。
+
 
 
 
@@ -391,6 +403,7 @@ widget_t* dialog_open (const char* name);
 
 
 
+
 * 函数原型：
 
 ```
@@ -410,6 +423,7 @@ ret_t dialog_quit (widget_t* widget, uint32_t code);
 * 函数功能：
 
 > <p id="dialog_t_dialog_set_title"> 设置对话框的标题文本。
+
 
 
 
@@ -434,6 +448,7 @@ ret_t dialog_set_title (widget_t* widget, char* title);
 > <p id="dialog_t_dialog_toast"> 显示『短暂提示信息』对话框。
 
  主题由dialog_toast.xml文件决定。
+
 
 
 
@@ -463,6 +478,7 @@ ret_t dialog_toast (const char* text, uint32_t duration);
 
 
 
+
 * 函数原型：
 
 ```
@@ -479,6 +495,7 @@ ret_t dialog_warn (const char* title, const char* text);
 #### highlight 属性
 -----------------------
 > <p id="dialog_t_highlight"> 对话框高亮策略。
+
 
 
 * 类型：const char*

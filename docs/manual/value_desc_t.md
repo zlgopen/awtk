@@ -2,6 +2,7 @@
 ### 概述
  属性描述。
 
+
 ----------------------------------
 ### 属性
 <p id="value_desc_t_properties">
@@ -19,6 +20,7 @@
 > <p id="value_desc_t_desc"> 描述。
 
 
+
 * 类型：const char*
 
 | 特性 | 是否支持 |
@@ -28,6 +30,7 @@
 #### display\_name 属性
 -----------------------
 > <p id="value_desc_t_display_name"> 显示名称。
+
 
 
 * 类型：const char*
@@ -41,6 +44,7 @@
 > <p id="value_desc_t_flags"> flags。
 
 
+
 * 类型：uint8\_t
 
 | 特性 | 是否支持 |
@@ -50,6 +54,7 @@
 #### format 属性
 -----------------------
 > <p id="value_desc_t_format"> 格式。
+
 
 
 * 类型：uint8\_t
@@ -63,6 +68,7 @@
 > <p id="value_desc_t_name"> 名称。
 
 
+
 * 类型：const char*
 
 | 特性 | 是否支持 |
@@ -72,6 +78,7 @@
 #### type 属性
 -----------------------
 > <p id="value_desc_t_type"> 类型。
+
 
 
 * 类型：uint8\_t

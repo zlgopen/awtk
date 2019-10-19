@@ -6,6 +6,7 @@
  input stream base on socket
 
 
+
 ----------------------------------
 ### 函数
 <p id="tk_ostream_tcp_t_methods">
@@ -20,6 +21,7 @@
 
 > <p id="tk_ostream_tcp_t_tk_ostream_tcp_create">
  创建ostream对象。
+
 
 
 

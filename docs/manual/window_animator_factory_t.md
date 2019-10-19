@@ -6,6 +6,7 @@
  让用户可以自定义窗口动画，并获得内置窗口动画同等待遇。
 
 
+
 ----------------------------------
 ### 函数
 <p id="window_animator_factory_t_methods">
@@ -26,6 +27,7 @@
 * 函数功能：
 
 > <p id="window_animator_factory_t_window_animator_create_for_close"> 为关闭窗口创建动画。
+
 
 
 
@@ -53,6 +55,7 @@ window_animator_t* window_animator_create_for_close (char* type, canvas_t* c, wi
 
 
 
+
 * 函数原型：
 
 ```
@@ -76,6 +79,7 @@ window_animator_t* window_animator_create_for_open (char* type, canvas_t* c, wid
 > <p id="window_animator_factory_t_window_animator_factory"> 获取缺省的窗口动画工厂对象。
 
 
+
 * 函数原型：
 
 ```
@@ -96,6 +100,7 @@ window_animator_factory_t* window_animator_factory ();
 
 
 
+
 * 函数原型：
 
 ```
@@ -113,6 +118,7 @@ window_animator_factory_t* window_animator_factory_create ();
 * 函数功能：
 
 > <p id="window_animator_factory_t_window_animator_factory_create_animator"> 创建指定类型的窗口动画。
+
 
 
 
@@ -139,6 +145,7 @@ window_animator_t* window_animator_factory_create_animator (window_animator_fact
 
 
 
+
 * 函数原型：
 
 ```
@@ -157,6 +164,7 @@ ret_t window_animator_factory_destroy (window_animator_factory_t* factory);
 * 函数功能：
 
 > <p id="window_animator_factory_t_window_animator_factory_register"> 注册窗口动画创建函数。
+
 
 
 
@@ -180,6 +188,7 @@ ret_t window_animator_factory_register (window_animator_factory_t* factory, cons
 * 函数功能：
 
 > <p id="window_animator_factory_t_window_animator_factory_set"> 设置缺省的窗口动画工厂对象。
+
 
 
 

@@ -20,6 +20,7 @@
  > 在非GUI线程请用timer\_queue。
 
 
+
 ----------------------------------
 ### 函数
 <p id="timer_t_methods">
@@ -40,6 +41,7 @@
 * 函数功能：
 
 > <p id="timer_t_timer_add"> 增加一个timer。
+
 
 
 
@@ -66,6 +68,7 @@ uint32_t timer_add (timer_func_t on_timer, void* ctx, uint32_t duration);
 
 
 
+
 * 函数原型：
 
 ```
@@ -83,6 +86,7 @@ uint32_t timer_count ();
 * 函数功能：
 
 > <p id="timer_t_timer_modify"> 修改指定的timer的duration，修改之后定时器重新开始计时。
+
 
 
 
@@ -108,6 +112,7 @@ ret_t timer_modify (uint32_t timer_id, uint32_t duration);
 
 
 
+
 * 函数原型：
 
 ```
@@ -126,6 +131,7 @@ uint32_t timer_next_time ();
 
 > <p id="timer_t_timer_queue"> 用于非GUI线程增加一个timer，本函数向主循环的事件队列中发送一个增加timer的请求。
  timer回调函数，回调函数返回RET_REPEAT，则下次继续执行，否则自动移出。
+
 
 
 
@@ -152,6 +158,7 @@ ret_t timer_queue (timer_func_t , void* ctx, uint32_t duration);
 
 
 
+
 * 函数原型：
 
 ```
@@ -173,6 +180,7 @@ ret_t timer_remove (uint32_t timer_id);
 
 
 
+
 * 函数原型：
 
 ```
@@ -191,6 +199,7 @@ ret_t timer_reset (uint32_t timer_id);
 * 函数功能：
 
 > <p id="timer_t_timer_set_on_destroy"> 设置一个回调函数，在timer被销毁时调用(方便脚本语言去释放回调函数)。
+
 
 
 

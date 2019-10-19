@@ -4,6 +4,7 @@
 
  指针事件。
 
+
 ----------------------------------
 ### 函数
 <p id="pointer_event_t_methods">
@@ -35,6 +36,7 @@
 
 
 
+
 * 函数原型：
 
 ```
@@ -53,6 +55,7 @@ pointer_event_t* pointer_event_cast (event_t* event);
 * 函数功能：
 
 > <p id="pointer_event_t_pointer_event_init"> 初始化事件。
+
 
 
 
@@ -77,6 +80,7 @@ event_t* pointer_event_init (pointer_event_t* event, void* target, uint32_t type
 > <p id="pointer_event_t_alt"> alt键是否按下。
 
 
+
 * 类型：bool\_t
 
 | 特性 | 是否支持 |
@@ -87,6 +91,7 @@ event_t* pointer_event_init (pointer_event_t* event, void* target, uint32_t type
 #### button 属性
 -----------------------
 > <p id="pointer_event_t_button"> button。
+
 
 
 * 类型：uint8\_t
@@ -101,6 +106,7 @@ event_t* pointer_event_init (pointer_event_t* event, void* target, uint32_t type
 > <p id="pointer_event_t_cmd"> cmd键是否按下。
 
 
+
 * 类型：bool\_t
 
 | 特性 | 是否支持 |
@@ -111,6 +117,7 @@ event_t* pointer_event_init (pointer_event_t* event, void* target, uint32_t type
 #### ctrl 属性
 -----------------------
 > <p id="pointer_event_t_ctrl"> ctrl键是否按下。
+
 
 
 * 类型：bool\_t
@@ -125,6 +132,7 @@ event_t* pointer_event_init (pointer_event_t* event, void* target, uint32_t type
 > <p id="pointer_event_t_menu"> menu键是否按下。
 
 
+
 * 类型：bool\_t
 
 | 特性 | 是否支持 |
@@ -135,6 +143,7 @@ event_t* pointer_event_init (pointer_event_t* event, void* target, uint32_t type
 #### pressed 属性
 -----------------------
 > <p id="pointer_event_t_pressed"> 指针是否按下。
+
 
 
 * 类型：bool\_t
@@ -149,6 +158,7 @@ event_t* pointer_event_init (pointer_event_t* event, void* target, uint32_t type
 > <p id="pointer_event_t_shift"> shift键是否按下。
 
 
+
 * 类型：bool\_t
 
 | 特性 | 是否支持 |
@@ -161,6 +171,7 @@ event_t* pointer_event_init (pointer_event_t* event, void* target, uint32_t type
 > <p id="pointer_event_t_x"> x坐标。
 
 
+
 * 类型：xy\_t
 
 | 特性 | 是否支持 |
@@ -171,6 +182,7 @@ event_t* pointer_event_init (pointer_event_t* event, void* target, uint32_t type
 #### y 属性
 -----------------------
 > <p id="pointer_event_t_y"> y坐标。
+
 
 
 * 类型：xy\_t

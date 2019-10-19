@@ -4,6 +4,7 @@
  文件夹接口。
 
 
+
 ----------------------------------
 ### 函数
 <p id="fs_dir_t_methods">
@@ -20,6 +21,7 @@
 
 > <p id="fs_dir_t_fs_dir_close">
  关闭文件夹对象。
+
 
 
 
@@ -49,6 +51,7 @@ ret_t fs_dir_close (fs_dir_t* dir);
 
 
 
+
 * 函数原型：
 
 ```
@@ -69,6 +72,7 @@ ret_t fs_dir_read (fs_dir_t* dir, fs_item_t* item);
 
 > <p id="fs_dir_t_fs_dir_rewind">
  重置文件夹读取位置到开始。
+
 
 
 

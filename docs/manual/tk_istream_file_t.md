@@ -6,6 +6,7 @@
  input stream base on file
 
 
+
 ----------------------------------
 ### 函数
 <p id="tk_istream_file_t_methods">
@@ -20,6 +21,7 @@
 
 > <p id="tk_istream_file_t_tk_istream_file_create">
  创建istream对象。
+
 
 
 

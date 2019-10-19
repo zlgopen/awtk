@@ -31,6 +31,7 @@
  ```
 
 
+
 ----------------------------------
 ### 函数
 <p id="assets_manager_t_methods">
@@ -39,6 +40,7 @@
 | -------- | ------------ | 
 | <a href="#assets_manager_t_assets_manager">assets\_manager</a> | 获取缺省资源管理器。 |
 | <a href="#assets_manager_t_assets_manager_add">assets\_manager\_add</a> | 向资源管理器中增加一个资源。 |
+| <a href="#assets_manager_t_assets_manager_clear_all">assets\_manager\_clear\_all</a> | 清除全部缓存的资源。 |
 | <a href="#assets_manager_t_assets_manager_clear_cache">assets\_manager\_clear\_cache</a> | 清除指定类型的缓存。 |
 | <a href="#assets_manager_t_assets_manager_create">assets\_manager\_create</a> | 创建资源管理器。 |
 | <a href="#assets_manager_t_assets_manager_deinit">assets\_manager\_deinit</a> | 释放全部资源。 |
@@ -52,6 +54,7 @@
 | <a href="#assets_manager_t_assets_manager_set_locale_info">assets\_manager\_set\_locale\_info</a> | 设置locale_info对象。 |
 | <a href="#assets_manager_t_assets_manager_set_res_root">assets\_manager\_set\_res\_root</a> | 设置资源所在的目录(其下目录结构请参考demos)。 |
 | <a href="#assets_manager_t_assets_manager_set_system_info">assets\_manager\_set\_system\_info</a> | 设置system_info对象。 |
+| <a href="#assets_manager_t_assets_manager_set_theme">assets\_manager\_set\_theme</a> | 设置当前的主题。 |
 | <a href="#assets_manager_t_assets_manager_unref">assets\_manager\_unref</a> | 释放指定的资源。 |
 #### assets\_manager 函数
 -----------------------
@@ -59,6 +62,7 @@
 * 函数功能：
 
 > <p id="assets_manager_t_assets_manager"> 获取缺省资源管理器。
+
 
 
 
@@ -82,6 +86,7 @@ assets_manager_t* assets_manager ();
 
 
 
+
 * 函数原型：
 
 ```
@@ -95,12 +100,35 @@ ret_t assets_manager_add (assets_manager_t* am, asset_info_t info);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | am | assets\_manager\_t* | asset manager对象。 |
 | info | asset\_info\_t | 待增加的资源。 |
+#### assets\_manager\_clear\_all 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="assets_manager_t_assets_manager_clear_all"> 清除全部缓存的资源。
+
+
+
+
+* 函数原型：
+
+```
+ret_t assets_manager_clear_all (assets_manager_t* am);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| am | assets\_manager\_t* | asset manager对象。 |
 #### assets\_manager\_clear\_cache 函数
 -----------------------
 
 * 函数功能：
 
 > <p id="assets_manager_t_assets_manager_clear_cache"> 清除指定类型的缓存。
+
 
 
 
@@ -126,6 +154,7 @@ ret_t assets_manager_clear_cache (assets_manager_t* am, asset_type_t type);
 
 
 
+
 * 函数原型：
 
 ```
@@ -144,6 +173,7 @@ assets_manager_t* assets_manager_create (uint32_t init_nr);
 * 函数功能：
 
 > <p id="assets_manager_t_assets_manager_deinit"> 释放全部资源。
+
 
 
 
@@ -168,6 +198,7 @@ ret_t assets_manager_deinit (assets_manager_t* am);
 
 
 
+
 * 函数原型：
 
 ```
@@ -186,6 +217,7 @@ ret_t assets_manager_destroy (assets_manager_t* am);
 * 函数功能：
 
 > <p id="assets_manager_t_assets_manager_find_in_cache"> 在资源管理器的缓存中查找指定的资源(不引用)。
+
 
 
 
@@ -212,6 +244,7 @@ asset_info_t* assets_manager_find_in_cache (assets_manager_t* am, asset_type_t t
 
 
 
+
 * 函数原型：
 
 ```
@@ -231,6 +264,7 @@ assets_manager_t* assets_manager_init (assets_manager_t* am, uint32_t init_nr);
 * 函数功能：
 
 > <p id="assets_manager_t_assets_manager_load"> 从文件系统中加载指定的资源，并缓存到内存中。在定义了宏WITH\_FS\_RES时才生效。
+
 
 
 
@@ -257,6 +291,7 @@ asset_info_t* assets_manager_load (assets_manager_t* am, asset_type_t type, char
 
 
 
+
 * 函数原型：
 
 ```
@@ -277,6 +312,7 @@ ret_t assets_manager_preload (assets_manager_t* am, asset_type_t type, char* nam
 * 函数功能：
 
 > <p id="assets_manager_t_assets_manager_ref"> 在资源管理器的缓存中查找指定的资源并引用它，如果缓存中不存在，尝试加载该资源。
+
 
 
 
@@ -303,6 +339,7 @@ asset_info_t* assets_manager_ref (assets_manager_t* am, asset_type_t type, char*
 
 
 
+
 * 函数原型：
 
 ```
@@ -321,6 +358,7 @@ ret_t assets_manager_set (assets_manager_t* am);
 * 函数功能：
 
 > <p id="assets_manager_t_assets_manager_set_locale_info"> 设置locale_info对象。
+
 
 
 
@@ -346,6 +384,7 @@ ret_t assets_manager_set_locale_info (assets_manager_t* am, locale_info_t* local
 
 
 
+
 * 函数原型：
 
 ```
@@ -368,6 +407,7 @@ ret_t assets_manager_set_res_root (assets_manager_t* am, const char* res_root);
 
 
 
+
 * 函数原型：
 
 ```
@@ -381,12 +421,37 @@ ret_t assets_manager_set_system_info (assets_manager_t* am, system_info_t* syste
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | am | assets\_manager\_t* | asset manager对象。 |
 | system\_info | system\_info\_t* | system\_info对象。。 |
+#### assets\_manager\_set\_theme 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="assets_manager_t_assets_manager_set_theme"> 设置当前的主题。
+
+
+
+
+
+* 函数原型：
+
+```
+ret_t assets_manager_set_theme (assets_manager_t* am, const char* theme);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| am | assets\_manager\_t* | asset manager对象。 |
+| theme | const char* | 主题名称。 |
 #### assets\_manager\_unref 函数
 -----------------------
 
 * 函数功能：
 
 > <p id="assets_manager_t_assets_manager_unref"> 释放指定的资源。
+
 
 
 

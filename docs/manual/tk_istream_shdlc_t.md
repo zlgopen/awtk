@@ -6,6 +6,7 @@
  reliable istream base on simple HDLC
 
 
+
 ----------------------------------
 ### 函数
 <p id="tk_istream_shdlc_t_methods">
@@ -34,6 +35,7 @@
 
 
 
+
 * 函数原型：
 
 ```
@@ -51,11 +53,13 @@ tk_istream_t* tk_istream_shdlc_create (tk_iostream_shdlc_t* iostream);
 > <p id="tk_istream_shdlc_t_retry_times"> 失败重传次数。
 
 
+
 * 类型：uint32\_t
 
 #### timeout 属性
 -----------------------
 > <p id="tk_istream_shdlc_t_timeout"> 读写超时时间(ms)
+
 
 
 * 类型：uint32\_t

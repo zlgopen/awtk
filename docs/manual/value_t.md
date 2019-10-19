@@ -12,6 +12,7 @@
 > 在脚本语言中，需要动态创建对象。
 
 
+
 ----------------------------------
 ### 函数
 <p id="value_t_methods">
@@ -78,6 +79,7 @@
 
 
 
+
 * 函数原型：
 
 ```
@@ -96,6 +98,7 @@ binary_data_t* value_binary_data (value_t* v);
 * 函数功能：
 
 > <p id="value_t_value_bool"> 获取类型为bool的值。
+
 
 
 
@@ -122,6 +125,7 @@ bool_t value_bool (value_t* v);
 
 
 
+
 * 函数原型：
 
 ```
@@ -140,6 +144,7 @@ value_t* value_cast (value_t* value);
 * 函数功能：
 
 > <p id="value_t_value_copy"> 拷贝value的值。
+
 
 
 
@@ -165,6 +170,7 @@ ret_t value_copy (value_t* dst, value_t* src);
 
 
 
+
 * 函数原型：
 
 ```
@@ -182,6 +188,7 @@ value_t* value_create ();
 * 函数功能：
 
 > <p id="value_t_value_deep_copy"> 深拷贝value的值。
+
 
 
 
@@ -207,6 +214,7 @@ ret_t value_deep_copy (value_t* dst, value_t* src);
 
 
 
+
 * 函数原型：
 
 ```
@@ -225,6 +233,7 @@ ret_t value_destroy (value_t* v);
 * 函数功能：
 
 > <p id="value_t_value_double"> 获取类型为double的值。
+
 
 
 
@@ -251,6 +260,7 @@ double value_double (value_t* v);
 
 
 
+
 * 函数原型：
 
 ```
@@ -270,6 +280,7 @@ value_t* value_dup_str (value_t* v, const char* value);
 * 函数功能：
 
 > <p id="value_t_value_equal"> 判断两个value是否相同。
+
 
 
 
@@ -295,6 +306,7 @@ bool_t value_equal (value_t* value, value_t* other);
 
 
 
+
 * 函数原型：
 
 ```
@@ -313,6 +325,7 @@ float_t value_float (value_t* v);
 * 函数功能：
 
 > <p id="value_t_value_float32"> 获取类型为float的值。
+
 
 
 
@@ -337,6 +350,7 @@ float value_float32 (value_t* v);
 
 
 
+
 * 函数原型：
 
 ```
@@ -355,6 +369,7 @@ int value_int (value_t* v);
 * 函数功能：
 
 > <p id="value_t_value_int16"> 获取类型为int16的值。
+
 
 
 
@@ -379,6 +394,7 @@ int16_t value_int16 (value_t* v);
 
 
 
+
 * 函数原型：
 
 ```
@@ -397,6 +413,7 @@ int32_t value_int32 (value_t* v);
 * 函数功能：
 
 > <p id="value_t_value_int64"> 获取类型为int64的值。
+
 
 
 
@@ -421,6 +438,7 @@ int64_t value_int64 (value_t* v);
 
 
 
+
 * 函数原型：
 
 ```
@@ -439,6 +457,7 @@ int8_t value_int8 (value_t* v);
 * 函数功能：
 
 > <p id="value_t_value_is_null"> 判断value是否为空值。
+
 
 
 
@@ -463,6 +482,7 @@ bool_t value_is_null (value_t* value);
 
 
 
+
 * 函数原型：
 
 ```
@@ -481,6 +501,7 @@ object_t* value_object (value_t* v);
 * 函数功能：
 
 > <p id="value_t_value_pointer"> 获取类型为pointer的值。
+
 
 
 
@@ -505,6 +526,7 @@ void* value_pointer (value_t* v);
 
 
 
+
 * 函数原型：
 
 ```
@@ -523,6 +545,7 @@ ret_t value_reset (value_t* v);
 * 函数功能：
 
 > <p id="value_t_value_set_binary_data"> 设置类型为binary_data的值。
+
 
 
 
@@ -549,6 +572,7 @@ value_t* value_set_binary_data (value_t* v, void* value, uint32_t size);
 
 
 
+
 * 函数原型：
 
 ```
@@ -568,6 +592,7 @@ value_t* value_set_bool (value_t* v, bool_t value);
 * 函数功能：
 
 > <p id="value_t_value_set_double"> 设置类型为double的值。
+
 
 
 
@@ -593,6 +618,7 @@ value_t* value_set_double (value_t* v, double value);
 
 
 
+
 * 函数原型：
 
 ```
@@ -612,6 +638,7 @@ value_t* value_set_float (value_t* v, float_t value);
 * 函数功能：
 
 > <p id="value_t_value_set_float32"> 设置类型为float的值。
+
 
 
 
@@ -637,6 +664,7 @@ value_t* value_set_float32 (value_t* v, float value);
 
 
 
+
 * 函数原型：
 
 ```
@@ -656,6 +684,7 @@ value_t* value_set_int (value_t* v, int32_t value);
 * 函数功能：
 
 > <p id="value_t_value_set_int16"> 设置类型为int16的值。
+
 
 
 
@@ -681,6 +710,7 @@ value_t* value_set_int16 (value_t* v, int16_t value);
 
 
 
+
 * 函数原型：
 
 ```
@@ -700,6 +730,7 @@ value_t* value_set_int32 (value_t* v, int32_t value);
 * 函数功能：
 
 > <p id="value_t_value_set_int64"> 设置类型为int64的值。
+
 
 
 
@@ -725,6 +756,7 @@ value_t* value_set_int64 (value_t* v, int64_t value);
 
 
 
+
 * 函数原型：
 
 ```
@@ -744,6 +776,7 @@ value_t* value_set_int8 (value_t* v, int8_t value);
 * 函数功能：
 
 > <p id="value_t_value_set_object"> 设置类型为object的值。
+
 
 
 
@@ -769,6 +802,7 @@ value_t* value_set_object (value_t* v, object_t* value);
 
 
 
+
 * 函数原型：
 
 ```
@@ -788,6 +822,7 @@ value_t* value_set_pointer (value_t* v, pointer_t value);
 * 函数功能：
 
 > <p id="value_t_value_set_sized_str"> 设置类型为带长度的字符串的值。
+
 
 
 
@@ -814,6 +849,7 @@ value_t* value_set_sized_str (value_t* v, char* str, uint32_t size);
 
 
 
+
 * 函数原型：
 
 ```
@@ -836,6 +872,7 @@ value_t* value_set_str (value_t* v, const char* value);
 
 
 
+
 * 函数原型：
 
 ```
@@ -855,6 +892,7 @@ value_t* value_set_token (value_t* v, uint32_t value);
 * 函数功能：
 
 > <p id="value_t_value_set_ubjson"> 设置类型为ubjson的值。
+
 
 
 
@@ -881,6 +919,7 @@ value_t* value_set_ubjson (value_t* v, void* value, uint32_t size);
 
 
 
+
 * 函数原型：
 
 ```
@@ -900,6 +939,7 @@ value_t* value_set_uint16 (value_t* v, uint16_t value);
 * 函数功能：
 
 > <p id="value_t_value_set_uint32"> 设置类型为uint32的值。
+
 
 
 
@@ -925,6 +965,7 @@ value_t* value_set_uint32 (value_t* v, uint32_t value);
 
 
 
+
 * 函数原型：
 
 ```
@@ -944,6 +985,7 @@ value_t* value_set_uint64 (value_t* v, uint64_t value);
 * 函数功能：
 
 > <p id="value_t_value_set_uint8"> 设置类型为uint8的值。
+
 
 
 
@@ -969,6 +1011,7 @@ value_t* value_set_uint8 (value_t* v, uint8_t value);
 
 
 
+
 * 函数原型：
 
 ```
@@ -988,6 +1031,7 @@ value_t* value_set_wstr (value_t* v, const wchar_t* value);
 * 函数功能：
 
 > <p id="value_t_value_sized_str"> 获取为sized_str的值。
+
 
 
 
@@ -1012,6 +1056,7 @@ sized_str_t* value_sized_str (value_t* v);
 
 
 
+
 * 函数原型：
 
 ```
@@ -1030,6 +1075,7 @@ const char* value_str (value_t* v);
 * 函数功能：
 
 > <p id="value_t_value_token"> 获取token的值。
+
 
 
 
@@ -1054,6 +1100,7 @@ uint32_t value_token (value_t* v);
 
 
 
+
 * 函数原型：
 
 ```
@@ -1072,6 +1119,7 @@ binary_data_t* value_ubjson (value_t* v);
 * 函数功能：
 
 > <p id="value_t_value_uint16"> 获取类型为uint16的值。
+
 
 
 
@@ -1096,6 +1144,7 @@ uint16_t value_uint16 (value_t* v);
 
 
 
+
 * 函数原型：
 
 ```
@@ -1114,6 +1163,7 @@ uint32_t value_uint32 (value_t* v);
 * 函数功能：
 
 > <p id="value_t_value_uint64"> 获取类型为uint64的值。
+
 
 
 
@@ -1138,6 +1188,7 @@ uint64_t value_uint64 (value_t* v);
 
 
 
+
 * 函数原型：
 
 ```
@@ -1156,6 +1207,7 @@ int8_t value_uint8 (value_t* v);
 * 函数功能：
 
 > <p id="value_t_value_wstr"> 获取类型为宽字符串的值。
+
 
 
 
