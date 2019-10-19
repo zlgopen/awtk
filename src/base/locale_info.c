@@ -77,8 +77,28 @@ static assets_manager_t* locale_info_get_assets_manager(locale_info_t* locale_in
   return locale_info->assets_manager != NULL ? locale_info->assets_manager : assets_manager();
 }
 
-ret_t locale_info_change(locale_info_t* locale_info, const char* language, const char* country) {
+ret_t locale_info_reload(locale_info_t* locale_info) {
+  char name[16];
   assets_manager_t* am = locale_info_get_assets_manager(locale_info);
+
+  if (locale_info->strs != NULL) {
+    assets_manager_unref(am, locale_info->strs);
+    locale_info->strs = NULL;
+
+    /*清除字符串缓存*/
+    assets_manager_clear_cache(am, ASSET_TYPE_STRINGS);
+  }
+
+  tk_snprintf(name, sizeof(name) - 1, "%s_%s", locale_info->language, locale_info->country);
+  locale_info->strs = assets_manager_ref(am, ASSET_TYPE_STRINGS, name);
+  if (locale_info->strs == NULL) {
+    locale_info->strs = assets_manager_ref(am, ASSET_TYPE_STRINGS, locale_info->language);
+  }
+
+  return RET_OK;
+}
+
+ret_t locale_info_change(locale_info_t* locale_info, const char* language, const char* country) {
   return_value_if_fail(locale_info != NULL, RET_BAD_PARAMS);
 
   if (country == NULL) {
@@ -90,25 +110,12 @@ ret_t locale_info_change(locale_info_t* locale_info, const char* language, const
   }
 
   if (strcmp(locale_info->country, country) != 0 || strcmp(locale_info->language, language) != 0) {
-    char name[16];
     event_t e = event_init(EVT_LOCALE_CHANGED, locale_info);
 
     tk_strncpy(locale_info->country, country, sizeof(locale_info->country) - 1);
     tk_strncpy(locale_info->language, language, sizeof(locale_info->language) - 1);
 
-    if (locale_info->strs != NULL) {
-      assets_manager_unref(am, locale_info->strs);
-      locale_info->strs = NULL;
-
-      /*清除字符串缓存*/
-      assets_manager_clear_cache(am, ASSET_TYPE_STRINGS);
-    }
-
-    tk_snprintf(name, sizeof(name) - 1, "%s_%s", locale_info->language, locale_info->country);
-    locale_info->strs = assets_manager_ref(am, ASSET_TYPE_STRINGS, name);
-    if (locale_info->strs == NULL) {
-      locale_info->strs = assets_manager_ref(am, ASSET_TYPE_STRINGS, locale_info->language);
-    }
+    locale_info_reload(locale_info);
 
     emitter_dispatch(locale_info->emitter, &e);
   }

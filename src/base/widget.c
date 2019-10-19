@@ -384,21 +384,24 @@ ret_t widget_set_name(widget_t* widget, const char* name) {
 }
 
 ret_t widget_set_theme(widget_t* widget, const char* name) {
+#ifdef WITH_FS_RES
   const asset_info_t* info = NULL;
   event_t e = event_init(EVT_THEME_CHANGED, NULL);
-  font_manager_t* fm = widget_get_font_manager(widget);
-  assets_manager_t* am = widget_get_assets_manager(widget);
-  image_manager_t* imm = widget_get_image_manager(widget);
-  widget_t* wm = widget_get_window_manager(widget);
   canvas_t* canvas = widget_get_canvas(widget);
+  widget_t* wm = widget_get_window_manager(widget);
   vgcanvas_t* vgcanvas = canvas_get_vgcanvas(canvas);
+  font_manager_t* fm = widget_get_font_manager(widget);
+  image_manager_t* imm = widget_get_image_manager(widget);
+  assets_manager_t* am = widget_get_assets_manager(widget);
+  locale_info_t* locale_info = widget_get_locale_info(widget);
 
   return_value_if_fail(am != NULL && name != NULL, RET_BAD_PARAMS);
 
+  vgcanvas_reset(vgcanvas);
   font_manager_unload_all(fm);
   image_manager_unload_all(imm);
+  locale_info_reload(locale_info);
   assets_manager_set_theme(am, name);
-  vgcanvas_reset(vgcanvas);
 
   info = assets_manager_ref(am, ASSET_TYPE_STYLE, "default");
   theme_init(theme(), info->data);
@@ -407,6 +410,9 @@ ret_t widget_set_theme(widget_t* widget, const char* name) {
   widget_invalidate_force(wm, NULL);
 
   log_debug("theme changed: %s\n", name);
+#else
+  log_debug("WITH_FS_RES is not defined\n");
+#endif
 
   return RET_OK;
 }

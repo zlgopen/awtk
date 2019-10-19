@@ -117,7 +117,7 @@ ret_t locale_info_change(locale_info_t* locale_info, const char* language, const
  * @method locale_info_on
  * 注册指定事件的处理函数。
  * @annotation ["scriptable:custom"]
- * @param {locale_info_t*} locale_info 控件对象。
+ * @param {locale_info_t*} locale_info locale_info对象。
  * @param {event_type_t} type 事件类型，目前固定为EVT_LOCALE_CHANGED。
  * @param {event_func_t} on_event 事件处理函数。
  * @param {void*} ctx 事件处理函数上下文。
@@ -131,7 +131,7 @@ uint32_t locale_info_on(locale_info_t* locale_info, event_type_t type, event_fun
  * @method locale_info_off
  * 注销指定事件的处理函数。
  * @annotation ["scriptable"]
- * @param {locale_info_t*} locale_info 控件对象。
+ * @param {locale_info_t*} locale_info locale_info对象。
  * @param {uint32_t} id locale_info_on返回的ID。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -142,12 +142,22 @@ ret_t locale_info_off(locale_info_t* locale_info, uint32_t id);
  * @method locale_info_set_assets_manager
  * 设置资源管理器对象。
  *
- * @param {locale_info_t*} locale_info 图片管理器对象。
+ * @param {locale_info_t*} locale_info locale_info对象。
  * @param {assets_manager_t*} assets_manager 资源管理器。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t locale_info_set_assets_manager(locale_info_t* locale_info, assets_manager_t* assets_manager);
+
+/**
+ * @method locale_info_reload
+ * 重新加载字符串资源。
+ *
+ * @param {locale_info_t*} locale_info locale_info对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t locale_info_reload(locale_info_t* locale_info);
 
 /**
  * @method locale_info_destroy
