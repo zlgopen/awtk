@@ -4,6 +4,7 @@
   * 完善主题切换功能。
   * 增加文档[资源目录变更通知](assets_dir_changed.md)
   * 增加文档[主题实时切换](theme_switch.md)
+  * 修改edit在listview中时，处理Wheel事件的问题。
 
 * 2019/10/18
   * 增加主题切换功能。
@@ -44,7 +45,7 @@
   * 合并君正提供的popup支持highlight补丁(感谢君正提供补丁，感谢智明在各个平台验证）。
   * 合并君正提供的bitmap使用line\_length补丁(感谢君正提供补丁，感谢智明在各个平台验证）。
   * 修改dialog上面的combox弹出时焦点的问题。
-
+  
 * 2019/10/10
   * 修改canvas draw image repeatx/repeaty的问题（感谢俊杰提供补丁）。
   * canvas增加repeat\_y\_inverse图片绘制方式。

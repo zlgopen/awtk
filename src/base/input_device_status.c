@@ -219,7 +219,7 @@ ret_t input_device_status_on_input_event(input_device_status_t* ids, widget_t* w
       wheel_event_t* evt = (wheel_event_t*)e;
 
       input_device_status_init_wheel_event(ids, evt);
-      widget_dispatch_to_key_target(widget, e);
+      widget_on_wheel(widget, evt);
       break;
     }
     default:

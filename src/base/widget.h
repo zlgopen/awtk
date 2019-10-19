@@ -58,6 +58,7 @@ typedef ret_t (*widget_on_paint_children_t)(widget_t* widget, canvas_t* c);
 typedef ret_t (*widget_on_paint_border_t)(widget_t* widget, canvas_t* c);
 typedef ret_t (*widget_on_paint_begin_t)(widget_t* widget, canvas_t* c);
 typedef ret_t (*widget_on_paint_end_t)(widget_t* widget, canvas_t* c);
+typedef ret_t (*widget_on_wheel_t)(widget_t* widget, wheel_event_t* e);
 typedef ret_t (*widget_on_keydown_t)(widget_t* widget, key_event_t* e);
 typedef ret_t (*widget_on_keyup_t)(widget_t* widget, key_event_t* e);
 typedef ret_t (*widget_on_pointer_down_t)(widget_t* widget, pointer_event_t* e);
@@ -142,6 +143,7 @@ struct _widget_vtable_t {
   widget_set_prop_t set_prop;
   widget_on_keyup_t on_keyup;
   widget_on_keydown_t on_keydown;
+  widget_on_wheel_t on_wheel;
   widget_on_paint_background_t on_paint_background;
   widget_on_paint_self_t on_paint_self;
   widget_on_paint_children_t on_paint_children;
@@ -1988,6 +1990,7 @@ ret_t widget_reset_canvas(widget_t* widget);
 /*虚函数的包装*/
 ret_t widget_on_paint(widget_t* widget, canvas_t* c);
 ret_t widget_on_keydown(widget_t* widget, key_event_t* e);
+ret_t widget_on_wheel(widget_t* widget, wheel_event_t* e);
 ret_t widget_on_keyup(widget_t* widget, key_event_t* e);
 ret_t widget_on_pointer_down(widget_t* widget, pointer_event_t* e);
 ret_t widget_on_pointer_move(widget_t* widget, pointer_event_t* e);

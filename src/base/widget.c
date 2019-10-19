@@ -1790,6 +1790,61 @@ ret_t widget_on_keyup(widget_t* widget, key_event_t* e) {
   return ret;
 }
 
+static ret_t widget_on_wheel_before_children(widget_t* widget, wheel_event_t* e) {
+  return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
+
+  if (widget->emitter != NULL) {
+    wheel_event_t before = *e;
+    before.e.type = EVT_WHEEL_BEFORE_CHILDREN;
+    return_if_equal(emitter_dispatch(widget->emitter, (event_t*)&(before)), RET_STOP);
+  }
+
+  return widget_on_event_before_children(widget, (event_t*)e);
+}
+
+static ret_t widget_on_wheel_children(widget_t* widget, wheel_event_t* e) {
+  ret_t ret = RET_OK;
+
+  if (widget->key_target != NULL) {
+    ret = widget_on_wheel(widget->key_target, e);
+  }
+
+  return ret;
+}
+
+static ret_t widget_on_wheel_after_children(widget_t* widget, wheel_event_t* e) {
+  ret_t ret = RET_OK;
+
+  return_if_equal(ret = widget_dispatch(widget, (event_t*)e), RET_STOP);
+  if (widget->vt->on_wheel) {
+    ret = widget->vt->on_wheel(widget, e);
+  }
+
+  return ret;
+}
+
+static ret_t widget_on_wheel_impl(widget_t* widget, wheel_event_t* e) {
+  return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
+
+  return_if_equal(widget_on_wheel_before_children(widget, e), RET_STOP);
+  return_if_equal(widget_on_wheel_children(widget, e), RET_STOP);
+  return_if_equal(widget_on_wheel_after_children(widget, e), RET_STOP);
+
+  return RET_OK;
+}
+
+ret_t widget_on_wheel(widget_t* widget, wheel_event_t* e) {
+  ret_t ret = RET_OK;
+  return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
+
+  widget->can_not_destroy++;
+  ret = widget_on_wheel_impl(widget, e);
+  widget->can_not_destroy--;
+
+  return ret;
+}
+
 static ret_t widget_dispatch_leave_event(widget_t* widget, pointer_event_t* e) {
   widget_t* target = widget;
 

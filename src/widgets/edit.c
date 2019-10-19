@@ -553,6 +553,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       } else if (delta < 0) {
         edit_inc(edit);
       }
+      ret = RET_STOP;
       break;
     }
     case EVT_RESIZE:
