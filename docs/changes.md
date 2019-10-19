@@ -2,8 +2,8 @@
 
 * 2019/10/19
   * 完善主题切换功能。
-  * 增加文档[资源目录变更通知](docs/assets_dir_changed.md)
-  * 增加文档[主题实时切换](docs/theme_switch.md)
+  * 增加文档[资源目录变更通知](assets_dir_changed.md)
+  * 增加文档[主题实时切换](theme_switch.md)
 
 * 2019/10/18
   * 增加主题切换功能。
