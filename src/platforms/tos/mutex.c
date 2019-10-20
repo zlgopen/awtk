@@ -1,7 +1,7 @@
 /**
  * File:   mutex.c
  * Author: AWTK Develop Team
- * Brief:  mutex do nothing
+ * Brief:  mutex base on tos_mutex
  *
  * Copyright (c) 2018 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
@@ -15,34 +15,49 @@
 /**
  * History:
  * ================================================================
- * 2018-05-19 Li XianJing <xianjimli@hotmail.com> created
+ * 2019-10-20 Li XianJing <xianjimli@hotmail.com> created
  *
  */
 
+#include "tos.h"
 #include "tkc/mem.h"
 #include "tkc/mutex.h"
 
 struct _tk_mutex_t {
-  uint32_t none;
+  k_mutex_t mutex;
 };
 
-static tk_mutex_t s_tk_mutex_null;
-
 tk_mutex_t* tk_mutex_create() {
-  return &s_tk_mutex_null;
+  tk_mutex_t* mutex = TKMEM_ZALLOC(tk_mutex_t);
+  return_value_if_fail(mutex != NULL, NULL);
+
+  if(tos_mutex_create(&(mutex->mutex)) != K_ERR_NONE) {
+    TKMEM_FREE(mutex);
+  }
+
+  return mutex;
 }
 
 ret_t tk_mutex_lock(tk_mutex_t* mutex) {
-  (void)mutex;
+  return_value_if_fail(mutex != NULL, RET_BAD_PARAMS);
+
+  return_value_if_fail(tos_mutex_pend(&(mutex->mutex)) == K_ERR_NONE, RET_FAIL);
+
   return RET_OK;
 }
 
 ret_t tk_mutex_unlock(tk_mutex_t* mutex) {
-  (void)mutex;
+  return_value_if_fail(mutex != NULL, RET_BAD_PARAMS);
+
+  return_value_if_fail(tos_mutex_post(&(mutex->mutex)) == K_ERR_NONE, RET_FAIL);
+
   return RET_OK;
 }
 
 ret_t tk_mutex_destroy(tk_mutex_t* mutex) {
-  (void)mutex;
+  return_value_if_fail(mutex != NULL, RET_BAD_PARAMS);
+
+  tos_mutex_destroy(&(mutex->mutex));
+
   return RET_OK;
 }
