@@ -51,14 +51,14 @@ BEGIN_C_DECLS
  */
 
 /**
- * @method timer_init
+ * @method timer_prepare
  * 初始化定时器系统。
  * @annotation ["private", "static"]
  * @param {timer_get_time_t} get_time 获取当前时间的函数。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t timer_init(timer_get_time_t get_time);
+ret_t timer_prepare(timer_get_time_t get_time);
 
 /**
  * @method timer_add

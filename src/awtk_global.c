@@ -146,7 +146,7 @@ ret_t tk_init_internal(void) {
   font_loader = font_loader_bitmap();
 #endif /*WITH_TRUETYPE_FONT*/
 
-  return_value_if_fail(timer_init(time_now_ms) == RET_OK, RET_FAIL);
+  return_value_if_fail(timer_prepare(time_now_ms) == RET_OK, RET_FAIL);
   return_value_if_fail(idle_manager_set(idle_manager_create()) == RET_OK, RET_FAIL);
 #ifndef WITHOUT_INPUT_METHOD
   return_value_if_fail(input_method_set(input_method_create()) == RET_OK, RET_FAIL);
