@@ -38,7 +38,34 @@ struct _tk_thread_t {
   bool_t running;
   tk_thread_handle_t thread;
   tk_thread_entry_t entry;
+  char name[TK_NAME_LEN + 1];
+  uint32_t stack_size;
+  uint32_t priority;
 };
+
+ret_t tk_thread_set_name(tk_thread_t* thread, const char* name) {
+  return_value_if_fail(thread != NULL && name != NULL, RET_BAD_PARAMS);
+
+  tk_strncpy(thread->name, name, TK_NAME_LEN);
+
+  return RET_OK;
+}
+
+ret_t tk_thread_set_stack_size(tk_thread_t* thread, uint32_t stack_size) {
+  return_value_if_fail(thread != NULL, RET_BAD_PARAMS);
+
+  thread->stack_size = stack_size;
+
+  return RET_OK;
+}
+
+ret_t tk_thread_set_priority(tk_thread_t* thread, uint32_t priority) {
+  return_value_if_fail(thread != NULL, RET_BAD_PARAMS);
+
+  thread->priority = priority;
+
+  return RET_OK;
+}
 
 void* tk_thread_get_args(tk_thread_t* thread) {
   return_value_if_fail(thread != NULL, NULL);
@@ -82,10 +109,10 @@ static void* entry(void* arg) {
 ret_t tk_thread_start(tk_thread_t* thread) {
 #ifdef WIN32
   unsigned h = 0;
-  uint32_t stack_size = 1024 * 1024;
+  uint32_t stack_size = 0;
   return_value_if_fail(thread != NULL, RET_BAD_PARAMS);
 
-  stack_size = 1024 * 1024;
+  stack_size = tk_max(1024 * 1024, thread->stack_size);
   thread->thread = (HANDLE)_beginthreadex(NULL, 0, entry, thread, 0, &h);
   thread->running = thread->thread != NULL;
 #elif defined(HAS_PTHREAD)
