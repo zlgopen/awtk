@@ -3,3 +3,9 @@ demoui
 prefix_xml_ui
 *.exe
 *.lib
+assets.c
+assets/*/inc
+assets/*/raw/*/*.bin
+assets/*/raw/*/*/*/bin
+assets/*/raw/*/*/*.bsvg
+
