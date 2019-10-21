@@ -97,7 +97,7 @@ tk_ostream_t* tk_ostream_buffered_create(tk_ostream_t* real_ostream) {
   ostream_buffered = TK_OSTREAM_BUFFERED(obj);
   return_value_if_fail(ostream_buffered != NULL, NULL);
 
-  OBJECT_REF(ostream_buffered->real_ostream);
+  OBJECT_REF(real_ostream);
   ostream_buffered->real_ostream = real_ostream;
   wbuffer_init_extendable(&(ostream_buffered->wb));
 
