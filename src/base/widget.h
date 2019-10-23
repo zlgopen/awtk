@@ -1144,6 +1144,24 @@ ret_t widget_set_sensitive(widget_t* widget, bool_t sensitive);
 int32_t widget_on(widget_t* widget, uint32_t type, event_func_t on_event, void* ctx);
 
 /**
+ * @method widget_on_with_tag
+ * 注册指定tag的事件处理函数。
+ *
+ * > 注册时指定一个tag，可用widget\_off\_by\_tag注销相同tag的事件处理函数。
+ *
+ * @annotation ["scriptable:custom"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {uint32_t} type 事件类型。
+ * @param {event_func_t} on_event 事件处理函数。
+ * @param {void*} ctx 事件处理函数上下文。
+ * @param {uint32_t} tag tag。
+ *
+ * @return {int32_t} 返回id，用于widget_off。
+ */
+int32_t widget_on_with_tag(widget_t* widget, uint32_t type, event_func_t on_event, void* ctx,
+                           uint32_t tag);
+
+/**
  * @method widget_off
  * 注销指定事件的处理函数。
  * @annotation ["scriptable"]
@@ -1171,8 +1189,7 @@ int32_t widget_child_on(widget_t* widget, const char* name, uint32_t type, event
 
 /**
  * @method widget_off_by_func
- * 注销指定事件的处理函数。
- * 仅用于辅助实现脚本绑定。
+ * 注销指定函数的事件处理函数。
  * @param {widget_t*} widget 控件对象。
  * @param {uint32_t} type 事件类型。
  * @param {event_func_t} on_event 事件处理函数。
@@ -1181,6 +1198,16 @@ int32_t widget_child_on(widget_t* widget, const char* name, uint32_t type, event
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_off_by_func(widget_t* widget, uint32_t type, event_func_t on_event, void* ctx);
+
+/**
+ * @method widget_off_by_tag
+ * 注销指定tag的事件处理函数。
+ * @param {widget_t*} widget 控件对象。
+ * @param {uint32_t} tag tag。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_off_by_tag(widget_t* widget, uint32_t tag);
 
 /**
  * @method widget_invalidate

@@ -199,3 +199,30 @@ TEST(Emitter, remove_item) {
 
   emitter_destroy(emitter);
 }
+
+TEST(Emitter, off_by_tag) {
+  uint32_t type = 12;
+  emitter_t* emitter = emitter_create();
+
+  emitter_on_with_tag(emitter, type, on_remove, NULL, 1);
+  emitter_on_with_tag(emitter, type, on_remove, NULL, 1);
+
+  emitter_on_with_tag(emitter, type, on_remove, NULL, 2);
+  emitter_on_with_tag(emitter, type, on_remove, NULL, 3);
+
+  emitter_on_with_tag(emitter, type, on_remove, NULL, 1);
+  emitter_on_with_tag(emitter, type, on_remove, NULL, 1);
+
+  ASSERT_EQ(emitter_size(emitter), 6);
+
+  ASSERT_EQ(emitter_off_by_tag(emitter, 1), RET_OK);
+  ASSERT_EQ(emitter_size(emitter), 2);
+  
+  ASSERT_EQ(emitter_off_by_tag(emitter, 3), RET_OK);
+  ASSERT_EQ(emitter_size(emitter), 1);
+  
+  ASSERT_EQ(emitter_off_by_tag(emitter, 2), RET_OK);
+  ASSERT_EQ(emitter_size(emitter), 0);
+
+  emitter_destroy(emitter);
+}
