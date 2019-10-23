@@ -397,11 +397,11 @@ ret_t widget_set_theme(widget_t* widget, const char* name) {
 
   return_value_if_fail(am != NULL && name != NULL, RET_BAD_PARAMS);
 
-  vgcanvas_reset(vgcanvas);
   font_manager_unload_all(fm);
   image_manager_unload_all(imm);
   locale_info_reload(locale_info);
   assets_manager_set_theme(am, name);
+  widget_reset_canvas(widget);
 
   info = assets_manager_ref(am, ASSET_TYPE_STYLE, "default");
   theme_init(theme(), info->data);
