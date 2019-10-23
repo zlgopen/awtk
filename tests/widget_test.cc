@@ -1103,3 +1103,30 @@ TEST(Widget, feedback1) {
 
   widget_destroy(w);
 }
+
+TEST(Widget, off) {
+  widget_t* w = button_create(NULL, 0, 0, 0, 0);
+
+  ASSERT_EQ(widget_on(w, EVT_MOVE, widget_log_events, NULL) > 0, TRUE);
+  ASSERT_EQ(emitter_size(w->emitter), 1);
+  ASSERT_EQ(widget_off_by_func(w, EVT_MOVE, widget_log_events, NULL), RET_OK);
+
+  widget_destroy(w);
+}
+
+TEST(Widget, off_by_tag) {
+  widget_t* w = button_create(NULL, 0, 0, 0, 0);
+
+  ASSERT_EQ(widget_on_with_tag(w, EVT_MOVE, widget_log_events, NULL, 1) > 0, TRUE);
+  ASSERT_EQ(widget_on_with_tag(w, EVT_MOVE, widget_log_events, NULL, 1) > 0, TRUE);
+  ASSERT_EQ(widget_on_with_tag(w, EVT_MOVE, widget_log_events, NULL, 1) > 0, TRUE);
+  ASSERT_EQ(widget_on_with_tag(w, EVT_MOVE, widget_log_events, NULL, 2) > 0, TRUE);
+  ASSERT_EQ(widget_on_with_tag(w, EVT_MOVE, widget_log_events, NULL, 2) > 0, TRUE);
+
+  ASSERT_EQ(emitter_size(w->emitter), 5);
+
+  ASSERT_EQ(widget_off_by_tag(w, 1), RET_OK);
+  ASSERT_EQ(emitter_size(w->emitter), 2);
+
+  widget_destroy(w);
+}

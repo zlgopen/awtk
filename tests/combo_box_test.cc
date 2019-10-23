@@ -190,7 +190,7 @@ TEST(ComboBox, clone) {
 
   w2 = widget_clone(w1, NULL);
   ASSERT_EQ(widget_equal(w1, w2), TRUE);
-  
+
   widget_destroy(w1);
   widget_destroy(w2);
 }

@@ -932,13 +932,18 @@ ret_t widget_dispatch(widget_t* widget, event_t* e) {
   return ret;
 }
 
-int32_t widget_on(widget_t* widget, uint32_t type, event_func_t on_event, void* ctx) {
+int32_t widget_on_with_tag(widget_t* widget, uint32_t type, event_func_t on_event, void* ctx,
+                           uint32_t tag) {
   return_value_if_fail(widget != NULL && on_event != NULL, RET_BAD_PARAMS);
   if (widget->emitter == NULL) {
     widget->emitter = emitter_create();
   }
 
-  return emitter_on(widget->emitter, type, on_event, ctx);
+  return emitter_on_with_tag(widget->emitter, type, on_event, ctx, tag);
+}
+
+int32_t widget_on(widget_t* widget, uint32_t type, event_func_t on_event, void* ctx) {
+  return widget_on_with_tag(widget, type, on_event, ctx, 0);
 }
 
 int32_t widget_child_on(widget_t* widget, const char* name, uint32_t type, event_func_t on_event,
@@ -951,6 +956,13 @@ ret_t widget_off(widget_t* widget, int32_t id) {
   return_value_if_fail(widget->emitter != NULL, RET_BAD_PARAMS);
 
   return emitter_off(widget->emitter, id);
+}
+
+ret_t widget_off_by_tag(widget_t* widget, int32_t tag) {
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget->emitter != NULL, RET_BAD_PARAMS);
+
+  return emitter_off_by_tag(widget->emitter, tag);
 }
 
 ret_t widget_off_by_func(widget_t* widget, uint32_t type, event_func_t on_event, void* ctx) {
