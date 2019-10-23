@@ -31,7 +31,7 @@ tk_mutex_t* tk_mutex_create() {
   tk_mutex_t* mutex = TKMEM_ZALLOC(tk_mutex_t);
   return_value_if_fail(mutex != NULL, NULL);
 
-  if(tos_mutex_create(&(mutex->mutex)) != K_ERR_NONE) {
+  if (tos_mutex_create(&(mutex->mutex)) != K_ERR_NONE) {
     TKMEM_FREE(mutex);
   }
 
