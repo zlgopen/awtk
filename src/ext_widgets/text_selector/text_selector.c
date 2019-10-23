@@ -454,7 +454,6 @@ static ret_t text_selector_on_event(widget_t* widget, event_t* e) {
     }
     case EVT_WHEEL: {
       wheel_event_t* evt = (wheel_event_t*)e;
-      int32_t dir = evt->dy > 0 ? 1 : -1;
 
       if (evt->dy > 0) {
         text_selector_down(widget);
