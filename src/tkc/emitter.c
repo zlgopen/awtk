@@ -146,21 +146,27 @@ ret_t emitter_dispatch(emitter_t* emitter, event_t* e) {
   return RET_OK;
 }
 
-uint32_t emitter_on(emitter_t* emitter, uint32_t etype, event_func_t handler, void* ctx) {
+uint32_t emitter_on_with_tag(emitter_t* emitter, uint32_t etype, event_func_t handler, void* ctx,
+                             uint32_t tag) {
   emitter_item_t* iter = NULL;
   return_value_if_fail(emitter != NULL && handler != NULL, TK_INVALID_ID);
 
   iter = TKMEM_ZALLOC(emitter_item_t);
   return_value_if_fail(iter != NULL, TK_INVALID_ID);
 
-  iter->type = etype;
+  iter->tag = tag;
   iter->ctx = ctx;
+  iter->type = etype;
   iter->handler = handler;
   iter->id = emitter->next_id++;
   iter->next = emitter->items;
   emitter->items = iter;
 
   return iter->id;
+}
+
+uint32_t emitter_on(emitter_t* emitter, uint32_t etype, event_func_t handler, void* ctx) {
+  return emitter_on_with_tag(emitter, etype, handler, ctx, 0);
 }
 
 emitter_item_t* emitter_find(emitter_t* emitter, uint32_t id) {
@@ -197,7 +203,7 @@ uint32_t emitter_size(emitter_t* emitter) {
   return size;
 }
 
-ret_t emitter_off(emitter_t* emitter, uint32_t id) {
+static ret_t emitter_off_ex(emitter_t* emitter, tk_compare_t cmp, void* ctx) {
   return_value_if_fail(emitter != NULL, RET_BAD_PARAMS);
 
   if (emitter->items) {
@@ -205,7 +211,7 @@ ret_t emitter_off(emitter_t* emitter, uint32_t id) {
     emitter_item_t* prev = emitter->items;
 
     while (iter != NULL) {
-      if (iter->id == id) {
+      if (cmp(iter, ctx) == 0) {
         return emitter_remove(emitter, prev, iter);
       }
 
@@ -215,53 +221,81 @@ ret_t emitter_off(emitter_t* emitter, uint32_t id) {
   }
 
   return RET_FAIL;
+}
+
+static int emitter_item_compare_by_tag(const void* a, const void* b) {
+  const emitter_item_t* item = (const emitter_item_t*)a;
+  uint32_t tag = *(const uint32_t*)b;
+
+  return item->tag - tag;
+}
+
+static int emitter_item_compare_by_ctx(const void* a, const void* b) {
+  const emitter_item_t* item = (const emitter_item_t*)a;
+
+  return item->ctx == b ? 0 : 1;
+}
+
+static int emitter_item_compare_by_id(const void* a, const void* b) {
+  const emitter_item_t* item = (const emitter_item_t*)a;
+  uint32_t id = *(const uint32_t*)b;
+
+  return item->id - id;
+}
+
+static int emitter_item_compare_by_func(const void* a, const void* b) {
+  const emitter_item_t* item = (const emitter_item_t*)a;
+  const emitter_item_t* p = (const emitter_item_t*)a;
+
+  if (item->type == p->type && item->ctx == p->ctx && item->handler == p->handler) {
+    return 0;
+  }
+
+  return -1;
+}
+
+ret_t emitter_off(emitter_t* emitter, uint32_t id) {
+  return emitter_off_ex(emitter, emitter_item_compare_by_id, &id);
 }
 
 ret_t emitter_off_by_func(emitter_t* emitter, uint32_t etype, event_func_t handler, void* ctx) {
-  return_value_if_fail(emitter != NULL && handler != NULL, RET_BAD_PARAMS);
+  emitter_item_t item;
 
-  if (emitter->items) {
-    emitter_item_t* iter = emitter->items;
-    emitter_item_t* prev = emitter->items;
+  memset(&item, 0x00, sizeof(item));
 
-    while (iter != NULL) {
-      if (iter->type == etype && iter->ctx == ctx && iter->handler == handler) {
-        return emitter_remove(emitter, prev, iter);
+  item.ctx = ctx;
+  item.type = etype;
+  item.handler = handler;
+
+  return emitter_off_ex(emitter, emitter_item_compare_by_func, &item);
+}
+
+ret_t emitter_off_by_tag(emitter_t* emitter, uint32_t tag) {
+  ret_t ret = emitter_off_ex(emitter, emitter_item_compare_by_tag, &tag);
+
+  if (ret == RET_OK) {
+    while (TRUE) {
+      if (emitter_off_ex(emitter, emitter_item_compare_by_tag, &tag) != RET_OK) {
+        break;
       }
-
-      prev = iter;
-      iter = iter->next;
     }
   }
 
-  return RET_FAIL;
+  return ret;
 }
 
 ret_t emitter_off_by_ctx(emitter_t* emitter, void* ctx) {
-  return_value_if_fail(emitter != NULL, RET_BAD_PARAMS);
+  ret_t ret = emitter_off_ex(emitter, emitter_item_compare_by_ctx, ctx);
 
-  if (emitter->items) {
-    emitter_item_t* iter = emitter->items;
-    emitter_item_t* prev = emitter->items;
-
-    while (iter != NULL) {
-      emitter_item_t* next = iter->next;
-
-      if (iter->ctx == ctx) {
-        emitter_remove(emitter, prev, iter);
-
-        if (prev == iter) {
-          prev = next;
-        }
-      } else {
-        prev = iter;
+  if (ret == RET_OK) {
+    while (TRUE) {
+      if (emitter_off_ex(emitter, emitter_item_compare_by_ctx, ctx) != RET_OK) {
+        break;
       }
-
-      iter = next;
     }
   }
 
-  return RET_OK;
+  return ret;
 }
 
 ret_t emitter_enable(emitter_t* emitter) {
