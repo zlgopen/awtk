@@ -217,10 +217,10 @@ TEST(Emitter, off_by_tag) {
 
   ASSERT_EQ(emitter_off_by_tag(emitter, 1), RET_OK);
   ASSERT_EQ(emitter_size(emitter), 2);
-  
+
   ASSERT_EQ(emitter_off_by_tag(emitter, 3), RET_OK);
   ASSERT_EQ(emitter_size(emitter), 1);
-  
+
   ASSERT_EQ(emitter_off_by_tag(emitter, 2), RET_OK);
   ASSERT_EQ(emitter_size(emitter), 0);
 

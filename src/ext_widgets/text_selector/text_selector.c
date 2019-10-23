@@ -342,7 +342,20 @@ static ret_t text_selector_on_scroll_done(void* ctx, event_t* e) {
 static ret_t text_selector_scroll_to(widget_t* widget, int32_t yoffset_end) {
   int32_t yoffset = 0;
   text_selector_t* text_selector = TEXT_SELECTOR(widget);
-  return_value_if_fail(text_selector != NULL, RET_FAIL);
+  int32_t options_nr = text_selector_count_options(widget);
+  int32_t item_height = widget->h / text_selector->visible_nr;
+  int32_t empty_item_height = (text_selector->visible_nr / 2) * item_height;
+  int32_t min_yoffset = -empty_item_height;
+  int32_t max_yoffset = (options_nr * item_height + empty_item_height) - widget->h;
+
+  if (yoffset_end < min_yoffset) {
+    yoffset_end = min_yoffset;
+  }
+
+  if (yoffset_end > (max_yoffset)) {
+    yoffset_end = max_yoffset;
+  }
+  yoffset_end = tk_roundi((float)yoffset_end / (float)item_height) * item_height;
 
   yoffset = text_selector->yoffset;
   if (yoffset == yoffset_end) {
@@ -363,11 +376,7 @@ static ret_t text_selector_on_pointer_up(text_selector_t* text_selector, pointer
   int32_t yoffset_end = 0;
   widget_t* widget = WIDGET(text_selector);
   velocity_t* v = &(text_selector->velocity);
-  int32_t options_nr = text_selector_count_options(widget);
   int32_t item_height = widget->h / text_selector->visible_nr;
-  int32_t empty_item_height = (text_selector->visible_nr / 2) * item_height;
-  int32_t min_yoffset = -empty_item_height;
-  int32_t max_yoffset = (options_nr * item_height + empty_item_height) - widget->h;
 
   velocity_update(v, e->e.time, e->x, e->y);
   yoffset_end = text_selector->yoffset - v->yv;
@@ -386,18 +395,23 @@ static ret_t text_selector_on_pointer_up(text_selector_t* text_selector, pointer
     }
   }
 
-  if (yoffset_end < min_yoffset) {
-    yoffset_end = min_yoffset;
-  }
-
-  if (yoffset_end > (max_yoffset)) {
-    yoffset_end = max_yoffset;
-  }
-
-  yoffset_end = tk_roundi((float)yoffset_end / (float)item_height) * item_height;
   text_selector_scroll_to(widget, yoffset_end);
 
   return RET_OK;
+}
+
+static ret_t text_selector_up(widget_t* widget) {
+  text_selector_t* text_selector = TEXT_SELECTOR(widget);
+  int32_t yoffset = text_selector->yoffset - (widget->h / text_selector->visible_nr);
+
+  return text_selector_scroll_to(widget, yoffset);
+}
+
+static ret_t text_selector_down(widget_t* widget) {
+  text_selector_t* text_selector = TEXT_SELECTOR(widget);
+  int32_t yoffset = text_selector->yoffset + (widget->h / text_selector->visible_nr);
+
+  return text_selector_scroll_to(widget, yoffset);
 }
 
 static ret_t text_selector_on_event(widget_t* widget, event_t* e) {
@@ -416,6 +430,20 @@ static ret_t text_selector_on_event(widget_t* widget, event_t* e) {
       widget_ungrab(widget->parent, widget);
       break;
     }
+    case EVT_POINTER_DOWN_ABORT: {
+      text_selector->pressed = FALSE;
+      text_selector->yoffset = text_selector->yoffset_save;
+      break;
+    }
+    case EVT_KEY_DOWN: {
+      key_event_t* evt = (key_event_t*)e;
+      if (evt->key == TK_KEY_UP) {
+        text_selector_up(widget);
+      } else if (evt->key == TK_KEY_DOWN) {
+        text_selector_down(widget);
+      }
+      break;
+    }
     case EVT_POINTER_MOVE: {
       pointer_event_t* evt = (pointer_event_t*)e;
       if (evt->pressed && text_selector->pressed) {
@@ -423,6 +451,18 @@ static ret_t text_selector_on_event(widget_t* widget, event_t* e) {
         widget_invalidate(widget, NULL);
       }
       break;
+    }
+    case EVT_WHEEL: {
+      wheel_event_t* evt = (wheel_event_t*)e;
+      int32_t dir = evt->dy > 0 ? 1 : -1;
+
+      if (evt->dy > 0) {
+        text_selector_down(widget);
+      } else if (evt->dy < 0) {
+        text_selector_up(widget);
+      }
+
+      return RET_STOP;
     }
     case EVT_RESIZE:
     case EVT_MOVE_RESIZE: {

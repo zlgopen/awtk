@@ -3,6 +3,8 @@
 * 2019/10/23
   * 修改clone出来的edit的显示问题。
   * 增加widget\_on\_with\_tag和widget\_off\_by\_tag，方便一次注销多个同类事件。
+  * 完善list view对wheel事件的处理。
+  * 完善text selector处理up/down按键和wheel事件。
 
 * 2019/10/19
   * 完善主题切换功能。
