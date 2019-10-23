@@ -29,6 +29,8 @@
 #include "tkc/tokenizer.h"
 #include "widgets/combo_box_item.h"
 
+static ret_t combo_box_on_button_click(void* ctx, event_t* e);
+
 const char* s_combo_box_properties[] = {WIDGET_PROP_MIN,
                                         WIDGET_PROP_MAX,
                                         WIDGET_PROP_STEP,
@@ -41,8 +43,11 @@ const char* s_combo_box_properties[] = {WIDGET_PROP_MIN,
                                         WIDGET_PROP_TOP_MARGIN,
                                         WIDGET_PROP_BOTTOM_MARGIN,
                                         WIDGET_PROP_TIPS,
+                                        WIDGET_PROP_OPTIONS,
+                                        WIDGET_PROP_ITEM_HEIGHT,
                                         WIDGET_PROP_OPEN_WINDOW,
                                         WIDGET_PROP_SELECTED_INDEX,
+                                        WIDGET_PROP_LOCALIZE_OPTIONS,
                                         NULL};
 
 static widget_t* combo_box_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
@@ -194,6 +199,12 @@ static ret_t combo_box_on_event(widget_t* widget, event_t* e) {
   return edit_on_event(widget, e);
 }
 
+static ret_t combo_box_on_add_child(widget_t* widget, widget_t* child) {
+  widget_on(child, EVT_CLICK, combo_box_on_button_click, widget);
+
+  return RET_FAIL;
+}
+
 TK_DECL_VTABLE(combo_box) = {.size = sizeof(combo_box_t),
                              .inputable = TRUE,
                              .type = WIDGET_TYPE_COMBO_BOX,
@@ -204,6 +215,7 @@ TK_DECL_VTABLE(combo_box) = {.size = sizeof(combo_box_t),
                              .on_paint_self = edit_on_paint_self,
                              .set_prop = combo_box_set_prop,
                              .get_prop = combo_box_get_prop,
+                             .on_add_child = combo_box_on_add_child,
                              .on_layout_children = combo_box_on_layout_children,
                              .on_destroy = combo_box_on_destroy,
                              .on_event = combo_box_on_event};
@@ -349,8 +361,6 @@ widget_t* combo_box_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   combo_box_set_item_height(widget, 30);
   widget_set_name(popup, "popup");
   widget_use_style(popup, "combobox_down");
-
-  widget_on(popup, EVT_CLICK, combo_box_on_button_click, widget);
 
   return widget;
 }

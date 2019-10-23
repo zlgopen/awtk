@@ -177,3 +177,20 @@ TEST(ComboBox, move_resize) {
 
   widget_destroy(w);
 }
+
+TEST(ComboBox, clone) {
+  widget_t* w2 = NULL;
+  widget_t* w1 = combo_box_create(NULL, 0, 0, 100, 100);
+  const char* str = "1:red;2:green;3:blue";
+
+  ASSERT_EQ(combo_box_set_options(w1, str), RET_OK);
+  ASSERT_EQ(combo_box_set_selected_index(w1, 0), RET_OK);
+
+  ASSERT_STREQ(COMBO_BOX(w1)->options, str);
+
+  w2 = widget_clone(w1, NULL);
+  ASSERT_EQ(widget_equal(w1, w2), TRUE);
+  
+  widget_destroy(w1);
+  widget_destroy(w2);
+}
