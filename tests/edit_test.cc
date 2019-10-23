@@ -441,3 +441,13 @@ TEST(Edit, events) {
 
   widget_destroy(b);
 }
+
+TEST(Edit, clone) {
+  widget_t* w1 = edit_create(NULL, 10, 20, 30, 40);
+  widget_t* w2 = widget_clone(w1, NULL);
+
+  ASSERT_EQ(widget_equal(w1, w2), TRUE);
+
+  widget_destroy(w1);
+  widget_destroy(w2);
+}

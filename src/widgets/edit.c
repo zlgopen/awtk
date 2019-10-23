@@ -65,7 +65,14 @@ static ret_t edit_update_caret(const timer_info_t* timer) {
 }
 
 ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
-  return text_edit_paint(EDIT(widget)->model, c);
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
+
+  if (edit->input_type != INPUT_PASSWORD) {
+    text_edit_set_mask(edit->model, FALSE);
+  }
+
+  return text_edit_paint(edit->model, c);
 }
 
 static ret_t edit_do_input_char(widget_t* widget, wchar_t c) {
