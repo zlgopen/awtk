@@ -80,7 +80,8 @@ static ret_t list_view_on_event(widget_t* widget, event_t* e) {
         scroll_bar_add_delta(list_view->scroll_bar, delta);
         log_debug("wheel: %d\n", delta);
       }
-      break;
+
+      return RET_STOP;
     }
     default:
       break;
