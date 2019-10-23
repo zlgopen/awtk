@@ -35,6 +35,7 @@ struct _emitter_item_t {
   uint32_t type;
   event_func_t handler;
 
+  uint32_t tag;
   tk_destroy_t on_destroy;
   void* on_destroy_ctx;
   emitter_item_t* next;
@@ -138,6 +139,21 @@ ret_t emitter_dispatch_simple_event(emitter_t* emitter, uint32_t type);
 uint32_t emitter_on(emitter_t* emitter, uint32_t etype, event_func_t handler, void* ctx);
 
 /**
+ * @method emitter_on_with_tag
+ * 注册指定事件的处理函数。
+ * @annotation ["scriptable:custom"]
+ * @param {emitter_t*} emitter emitter对象。
+ * @param {uint32_t} type 事件类型。
+ * @param {event_func_t} on_event 事件处理函数。
+ * @param {void*} ctx 事件处理函数上下文。
+ * @param {uint32_t} tag tag。
+ *
+ * @return {uint32_t} 返回id，用于emitter_off。
+ */
+uint32_t emitter_on_with_tag(emitter_t* emitter, uint32_t etype, event_func_t handler, void* ctx,
+                             uint32_t tag);
+
+/**
  * @method emitter_off
  * 注销指定事件的处理函数。
  * @annotation ["scriptable"]
@@ -169,6 +185,16 @@ ret_t emitter_off_by_func(emitter_t* emitter, uint32_t etype, event_func_t handl
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t emitter_off_by_ctx(emitter_t* emitter, void* ctx);
+
+/**
+ * @method emitter_off_by_tag
+ * 注销指定事件的处理函数。
+ * @param {emitter_t*} emitter emitter对象。
+ * @param {uint32_t} tag tag。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t emitter_off_by_tag(emitter_t* emitter, uint32_t tag);
 
 /**
  * @method emitter_set_on_destroy
