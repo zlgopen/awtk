@@ -27,6 +27,7 @@
 #include "base/system_info.h"
 #include "base/assets_manager.h"
 
+#define RAW_DIR "raw"
 #define ASSETS_DIR "assets"
 #define THEME_DEFAULT "default"
 
@@ -131,48 +132,100 @@ static asset_info_t* load_asset(uint16_t type, uint16_t subtype, const char* pat
 }
 #endif /*WITH_SDL*/
 
-static ret_t build_path(assets_manager_t* am, char* path, uint32_t size, bool_t ratio_sensitive,
-                        const char* subpath, const char* name, const char* extname) {
+static ret_t build_asset_dir_one_theme(char* path, uint32_t size, const char* res_root,
+                                       const char* theme, const char* ratio, const char* subpath) {
+  if (ratio != NULL) {
+    return_value_if_fail(path_build(path, size, res_root, ASSETS_DIR, theme, RAW_DIR, subpath,
+                                    ratio, NULL) == RET_OK,
+                         RET_FAIL);
+  } else {
+    return_value_if_fail(
+        path_build(path, size, res_root, ASSETS_DIR, theme, RAW_DIR, subpath, NULL) == RET_OK,
+        RET_FAIL);
+  }
+
+  return RET_OK;
+}
+
+static ret_t build_asset_filename_one_theme(char* path, uint32_t size, const char* res_root,
+                                            const char* theme, const char* ratio,
+                                            const char* subpath, const char* name,
+                                            const char* extname) {
+  char sep[2] = {TK_PATH_SEP, 0};
+
+  return_value_if_fail(
+      build_asset_dir_one_theme(path, size, res_root, theme, ratio, subpath) == RET_OK, RET_FAIL);
+  return_value_if_fail(tk_str_append(path, size, sep) == RET_OK, RET_FAIL);
+  return_value_if_fail(tk_str_append(path, size, name) == RET_OK, RET_FAIL);
+  return_value_if_fail(tk_str_append(path, size, extname) == RET_OK, RET_FAIL);
+
+  return RET_OK;
+}
+
+static ret_t build_asset_filename_custom(assets_manager_t* am, char* path, uint32_t size,
+                                         const char* theme, const char* ratio, const char* subpath,
+                                         const char* name, const char* extname) {
+  if (am->custom_build_asset_dir != NULL) {
+    char sep[2] = {TK_PATH_SEP, 0};
+    return_value_if_fail(am->custom_build_asset_dir(path, size, theme, ratio, subpath) == RET_OK,
+                         RET_FAIL);
+    return_value_if_fail(tk_str_append(path, size, sep) == RET_OK, RET_FAIL);
+    return_value_if_fail(tk_str_append(path, size, name) == RET_OK, RET_FAIL);
+    return_value_if_fail(tk_str_append(path, size, extname) == RET_OK, RET_FAIL);
+  }
+
+  return RET_FAIL;
+}
+
+static ret_t build_asset_filename_default(char* path, uint32_t size, const char* res_root,
+                                          const char* theme, const char* ratio, const char* subpath,
+                                          const char* name, const char* extname) {
+  return_value_if_fail(build_asset_filename_one_theme(path, size, res_root, theme, ratio, subpath,
+                                                      name, extname) == RET_OK,
+                       RET_FAIL);
+
+  if (!file_exist(path) && !tk_str_eq(theme, THEME_DEFAULT)) {
+    return_value_if_fail(build_asset_filename_one_theme(path, size, res_root, THEME_DEFAULT, ratio,
+                                                        subpath, name, extname) == RET_OK,
+                         RET_FAIL);
+  }
+
+  return file_exist(path) ? RET_OK : RET_FAIL;
+}
+
+static const char* device_pixel_ratio_to_str(float_t dpr) {
+  const char* ratio = "x1";
+  if (dpr >= 3) {
+    ratio = "x3";
+  } else if (dpr >= 2) {
+    ratio = "x2";
+  }
+
+  return ratio;
+}
+
+ret_t assets_manager_build_asset_filename(assets_manager_t* am, char* path, uint32_t size,
+                                                 bool_t ratio_sensitive, const char* subpath,
+                                                 const char* name, const char* extname) {
   const char* res_root = assets_manager_get_res_root(am);
   const char* theme = am->theme ? am->theme : THEME_DEFAULT;
   system_info_t* sysinfo = assets_manager_get_system_info(am);
-
-  float_t dpr = sysinfo->device_pixel_ratio;
+  const char* ratio = device_pixel_ratio_to_str(sysinfo->device_pixel_ratio);
 
   if (ratio_sensitive) {
-    const char* ratio = "x1";
-    if (dpr >= 3) {
-      ratio = "x3";
-    } else if (dpr >= 2) {
-      ratio = "x2";
+    if (build_asset_filename_custom(am, path, size, theme, ratio, subpath, name, extname) ==
+        RET_OK) {
+      return RET_OK;
     }
 
-    return_value_if_fail(
-        path_build(path, size, res_root, ASSETS_DIR, theme, subpath, ratio, name, NULL) == RET_OK,
-        RET_FAIL);
-    tk_str_append(path, size, extname);
-    if (!file_exist(path)) {
-      return_value_if_fail(path_build(path, size, res_root, ASSETS_DIR, THEME_DEFAULT, subpath,
-                                      ratio, name, NULL) == RET_OK,
-                           RET_FAIL);
-      tk_str_append(path, size, extname);
-    }
-
-    return RET_OK;
+    return build_asset_filename_default(path, size, res_root, theme, ratio, subpath, name, extname);
   } else {
-    return_value_if_fail(
-        path_build(path, size, res_root, ASSETS_DIR, theme, subpath, name, NULL) == RET_OK,
-        RET_FAIL);
-    tk_str_append(path, size, extname);
-
-    if (!file_exist(path)) {
-      return_value_if_fail(path_build(path, size, res_root, ASSETS_DIR, THEME_DEFAULT, subpath,
-                                      name, NULL) == RET_OK,
-                           RET_FAIL);
-      tk_str_append(path, size, extname);
+    if (build_asset_filename_custom(am, path, size, theme, NULL, subpath, name, extname) ==
+        RET_OK) {
+      return RET_OK;
     }
 
-    return RET_OK;
+    return build_asset_filename_default(path, size, res_root, theme, NULL, subpath, name, extname);
   }
 }
 
@@ -180,7 +233,7 @@ static asset_info_t* try_load_image(assets_manager_t* am, const char* name,
                                     asset_image_type_t subtype, bool_t ratio) {
   char path[MAX_PATH + 1];
   const char* extname = NULL;
-  const char* subpath = ratio ? "raw/images" : "raw/images/xx";
+  const char* subpath = ratio ? "images" : "images/xx";
 
   switch (subtype) {
     case ASSET_TYPE_IMAGE_JPG: {
@@ -201,13 +254,14 @@ static asset_info_t* try_load_image(assets_manager_t* am, const char* name,
     }
     case ASSET_TYPE_IMAGE_BSVG: {
       extname = ".bsvg";
-      subpath = "raw/images/svg";
+      subpath = "images/svg";
       break;
     }
     default: { return NULL; }
   }
 
-  return_value_if_fail(build_path(am, path, MAX_PATH, ratio, subpath, name, extname) == RET_OK,
+  return_value_if_fail(assets_manager_build_asset_filename(am, path, MAX_PATH, ratio, subpath, name,
+                                                           extname) == RET_OK,
                        NULL);
 
   return load_asset(ASSET_TYPE_IMAGE, subtype, path, name);
@@ -219,37 +273,38 @@ static asset_info_t* try_load_assets(assets_manager_t* am, const char* name, con
   const char* subpath = NULL;
   switch (type) {
     case ASSET_TYPE_FONT: {
-      subpath = "raw/fonts";
+      subpath = "fonts";
       break;
     }
     case ASSET_TYPE_SCRIPT: {
-      subpath = "raw/scripts";
+      subpath = "scripts";
       break;
     }
     case ASSET_TYPE_STYLE: {
-      subpath = "raw/styles";
+      subpath = "styles";
       break;
     }
     case ASSET_TYPE_STRINGS: {
-      subpath = "raw/strings";
+      subpath = "strings";
       break;
     }
     case ASSET_TYPE_UI: {
-      subpath = "raw/ui";
+      subpath = "ui";
       break;
     }
     case ASSET_TYPE_XML: {
-      subpath = "raw/xml";
+      subpath = "xml";
       break;
     }
     case ASSET_TYPE_DATA: {
-      subpath = "raw/data";
+      subpath = "data";
       break;
     }
     default: { return NULL; }
   }
 
-  return_value_if_fail(build_path(am, path, MAX_PATH, FALSE, subpath, name, extname) == RET_OK,
+  return_value_if_fail(assets_manager_build_asset_filename(am, path, MAX_PATH, FALSE, subpath, name,
+                                                           extname) == RET_OK,
                        NULL);
 
   return load_asset(type, subtype, path, name);
@@ -634,6 +689,14 @@ ret_t assets_manager_deinit(assets_manager_t* am) {
 
   TKMEM_FREE(am->res_root);
   darray_deinit(&(am->assets));
+
+  return RET_OK;
+}
+
+ret_t assets_manager_set_custom_build_asset_dir(
+    assets_manager_t* am, assets_manager_build_asset_dir_t custom_build_asset_dir) {
+  return_value_if_fail(am != NULL, RET_BAD_PARAMS);
+  am->custom_build_asset_dir = custom_build_asset_dir;
 
   return RET_OK;
 }

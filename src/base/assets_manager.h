@@ -28,6 +28,9 @@
 
 BEGIN_C_DECLS
 
+typedef ret_t (*assets_manager_build_asset_dir_t)(char* path, uint32_t size, const char* theme,
+                                                  const char* ratio, const char* subpath);
+
 /**
  * @class assets_manager_t
  * @annotation ["scriptable"]
@@ -66,10 +69,11 @@ struct _assets_manager_t {
   darray_t assets;
 
   /*private*/
-  char* res_root;
   char* theme;
+  char* res_root;
   locale_info_t* locale_info;
   system_info_t* system_info;
+  assets_manager_build_asset_dir_t custom_build_asset_dir;
 };
 
 /**
@@ -218,6 +222,20 @@ asset_info_t* assets_manager_load(assets_manager_t* am, asset_type_t type, const
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t assets_manager_preload(assets_manager_t* am, asset_type_t type, const char* name);
+
+/**
+ * @method assets_manager_set_custom_build_asset_dir
+ * 设置一个函数，该函数用于生成资源路径。
+ *
+ * > 有时我们需要优先加载用户自定义的资源，加载失败才加载系统缺省的，可用设置一个函数去实现这类功能。
+ * 
+ * @param {assets_manager_t*} am asset manager对象。
+ * @param {assets_manager_build_asset_dir_t} custom_build_asset_dir
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t assets_manager_set_custom_build_asset_dir(
+    assets_manager_t* am, assets_manager_build_asset_dir_t custom_build_asset_dir);
 
 /**
  * @method assets_manager_clear_cache
