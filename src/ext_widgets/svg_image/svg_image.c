@@ -67,7 +67,7 @@ static ret_t svg_image_on_paint_self(widget_t* widget, canvas_t* c) {
     color_t bg = style_get_color(style, STYLE_ID_BG_COLOR, black);
     color_t fg = style_get_color(style, STYLE_ID_FG_COLOR, black);
     return_value_if_fail(asset != NULL && asset->data != NULL, RET_FAIL);
-    
+
     return_value_if_fail(bsvg_init(&bsvg, (const uint32_t*)asset->data, asset->size) != NULL,
                          RET_BAD_PARAMS);
 

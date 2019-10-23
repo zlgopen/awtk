@@ -6,7 +6,8 @@
   * 完善list view对wheel事件的处理。
   * 完善text selector处理up/down按键和wheel事件。
   * 修改SVG无效图片崩溃的BUG。
-
+  * 增加函数assets\_manager\_set\_custom\_build\_asset\_dir，有时我们需要优先加载用户自定义的资源，加载失败才加载系统缺省的，可用设置一个函数去实现这类功能。
+  
 * 2019/10/19
   * 完善主题切换功能。
   * 增加文档[资源目录变更通知](assets_dir_changed.md)
