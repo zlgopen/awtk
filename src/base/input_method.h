@@ -213,6 +213,13 @@ struct _input_method_t {
   int32_t win_delta_y;
 
   /**
+   * @property {int32_t} win_old_y
+   * @annotation ["private"]
+   * 窗口原来的位置。
+   */
+  int32_t win_old_y;
+
+  /**
    * @property {bool_t} action_button_enable
    * @annotation ["readable"]
    * 软键盘的上的action按钮是否可用。
