@@ -120,7 +120,7 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
   }
 
   if (bpp * img->w == img->line_length) {
-    data = img->data;
+    data = (uint8_t*)img->data;
   } else {
     size = bpp * img->w * img->h;
     size = TK_ROUND_TO(size, BITMAP_ALIGN_SIZE) + BITMAP_ALIGN_SIZE;
