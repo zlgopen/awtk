@@ -129,6 +129,18 @@ static widget_t* window_manager_find_prev_window(widget_t* widget) {
   return NULL;
 }
 
+static widget_t* window_manager_find_prev_any_window(widget_t* widget) {
+  int32_t i = 0;
+  return_value_if_fail(widget != NULL, NULL);
+
+  if (widget->children != NULL && widget->children->size >= 2) {
+    uint32_t i = widget->children->size - 2;
+    return (widget_t*)(widget->children->elms[i]);
+  }
+
+  return NULL;
+}
+
 ret_t window_manager_default_snap_curr_window(widget_t* widget, widget_t* curr_win, bitmap_t* img,
                                               framebuffer_object_t* fbo, bool_t auto_rotate) {
   canvas_t* c = NULL;
@@ -285,7 +297,7 @@ static ret_t window_manager_create_animator(window_manager_default_t* wm, widget
                                             bool_t open) {
   value_t v;
   const char* anim_hint = NULL;
-  widget_t* prev_win = window_manager_find_prev_window(WIDGET(wm));
+  widget_t* prev_win = window_manager_find_prev_any_window(WIDGET(wm));
   const char* key = open ? WIDGET_PROP_OPEN_ANIM_HINT : WIDGET_PROP_CLOSE_ANIM_HINT;
 
   if (prev_win == curr_win || prev_win == NULL || !widget_is_normal_window(prev_win)) {
