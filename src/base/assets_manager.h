@@ -28,7 +28,7 @@
 
 BEGIN_C_DECLS
 
-typedef ret_t (*assets_manager_build_asset_dir_t)(char* path, uint32_t size, const char* theme,
+typedef ret_t (*assets_manager_build_asset_dir_t)(void* ctx, char* path, uint32_t size, const char* theme,
                                                   const char* ratio, const char* subpath);
 
 /**
@@ -73,6 +73,7 @@ struct _assets_manager_t {
   char* res_root;
   locale_info_t* locale_info;
   system_info_t* system_info;
+  void* custom_build_asset_dir_ctx;
   assets_manager_build_asset_dir_t custom_build_asset_dir;
 };
 
@@ -231,12 +232,13 @@ ret_t assets_manager_preload(assets_manager_t* am, asset_type_t type, const char
  * 有时我们需要优先加载用户自定义的资源，加载失败才加载系统缺省的，可用设置一个函数去实现这类功能。
  *
  * @param {assets_manager_t*} am asset manager对象。
- * @param {assets_manager_build_asset_dir_t} custom_build_asset_dir
+ * @param {assets_manager_build_asset_dir_t} custom_build_asset_dir 回调函数。
+ * @param {void*} ctx 回调函数的上下文。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t assets_manager_set_custom_build_asset_dir(
-    assets_manager_t* am, assets_manager_build_asset_dir_t custom_build_asset_dir);
+    assets_manager_t* am, assets_manager_build_asset_dir_t custom_build_asset_dir, void* ctx);
 
 /**
  * @method assets_manager_clear_cache

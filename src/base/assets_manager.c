@@ -167,7 +167,7 @@ static ret_t build_asset_filename_custom(assets_manager_t* am, char* path, uint3
                                          const char* name, const char* extname) {
   if (am->custom_build_asset_dir != NULL) {
     char sep[2] = {TK_PATH_SEP, 0};
-    return_value_if_fail(am->custom_build_asset_dir(path, size, theme, ratio, subpath) == RET_OK,
+    return_value_if_fail(am->custom_build_asset_dir(am->custom_build_asset_dir_ctx, path, size, theme, ratio, subpath) == RET_OK,
                          RET_FAIL);
     return_value_if_fail(tk_str_append(path, size, sep) == RET_OK, RET_FAIL);
     return_value_if_fail(tk_str_append(path, size, name) == RET_OK, RET_FAIL);
@@ -694,8 +694,9 @@ ret_t assets_manager_deinit(assets_manager_t* am) {
 }
 
 ret_t assets_manager_set_custom_build_asset_dir(
-    assets_manager_t* am, assets_manager_build_asset_dir_t custom_build_asset_dir) {
+    assets_manager_t* am, assets_manager_build_asset_dir_t custom_build_asset_dir, void* ctx) {
   return_value_if_fail(am != NULL, RET_BAD_PARAMS);
+  am->custom_build_asset_dir_ctx = ctx;
   am->custom_build_asset_dir = custom_build_asset_dir;
 
   return RET_OK;
