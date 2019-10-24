@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   line_break.c
  * Author: AWTK Develop Team
  * Brief:  line break and work break algorithm.
@@ -23,8 +23,8 @@
 
 #ifdef WITH_UNICODE_BREAK
 
-#include "linebreak.h"
-#include "wordbreak.h"
+#include "libunibreak/linebreak.h"
+#include "libunibreak/wordbreak.h"
 
 break_type_t line_break_check(wchar_t c1, wchar_t c2) {
   int ret = 0;
