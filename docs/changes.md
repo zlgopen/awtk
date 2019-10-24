@@ -462,12 +462,10 @@
    * 添加 slide\_indicator 控件，默认作为 slide\_view 的指示器
    * 修复 scroll\_view 的 bug（scroll\_bar\_m 不会自动隐藏的问题，比如 list\_view 中拖动单位高度后）
    * 修复 scroll\_view 的 fix\_end\_offset 失败的问题（比如在 list\_view 中上下拖动直到有空白后，横向移动，松开鼠标 list\_view 不会恢复）
-
-> 感谢朝泽提供以上补丁。
-    
-    * 增加 main\_loop\_step，方便与 IOTJS 集成。
-    * 修改 ui\_loader\_xml 中的昨天引入的 BUG。
-    * 修改 stm32 编译警告。
+   > 感谢朝泽提供以上补丁。
+   * 增加 main\_loop\_step，方便与 IOTJS 集成。
+   * 修改 ui\_loader\_xml 中的昨天引入的 BUG。
+   * 修改 stm32 编译警告。
 
 * 2019/06/4
   * 修改 widget\_clone 支持拷贝 mutable style。
