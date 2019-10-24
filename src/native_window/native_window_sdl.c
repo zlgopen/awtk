@@ -272,8 +272,9 @@ static ret_t native_window_sdl_exec(object_t* obj, const char* cmd, const char* 
 #ifdef WITH_NANOVG_GPU
   if (tk_str_eq(cmd, "reset_canvas")) {
     canvas_t* c = &(sdl->canvas);
-    lcd_destroy(c->lcd);
-    c->lcd = lcd_nanovg_init(NATIVE_WINDOW(sdl));
+    vgcanvas_t* vg = canvas_get_vgcanvas(c);
+
+    vgcanvas_reset(vg);
 
     return RET_OK;
   }
