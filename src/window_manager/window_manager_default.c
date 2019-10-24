@@ -561,6 +561,14 @@ static ret_t window_manager_update_cursor(widget_t* widget, int32_t x, int32_t y
 }
 
 static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
+#ifdef FRAGMENT_FRAME_BUFFER_SIZE
+  uint32_t i = 0;
+  uint32_t y = 0;
+  uint32_t h = 0;
+  uint32_t tmp_h = 0;
+  uint32_t number = 0;
+#endif
+
   uint64_t start_time = time_now_ms();
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
 
@@ -570,12 +578,42 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
     rect_t fps_rect = rect_init(0, 0, 60, 30);
     window_manager_default_invalidate(widget, &fps_rect);
   }
+#ifdef FRAGMENT_FRAME_BUFFER_SIZE
+  if (wm->native_window->dirty_rect.w > 0 && wm->native_window->dirty_rect.h > 0) {
+    rect_t r = native_window_calc_dirty_rect(wm->native_window);
+    if (r.w > 0 && r.h > 0) {
+      assert(r.w <= FRAGMENT_FRAME_BUFFER_SIZE);
+      y = r.y;
+      h = r.h;
+      tmp_h = FRAGMENT_FRAME_BUFFER_SIZE / r.w;
+      number = r.h / tmp_h;
 
+      for (i = 0; i <= number; i++) {
+        r.y = y + i * tmp_h;
+        if (i == number) {
+          tmp_h = h % tmp_h;
+        }
+        r.h = tmp_h;
+
+        canvas_t* c = native_window_get_canvas(wm->native_window);
+        canvas_begin_frame(c, &r, LCD_DRAW_NORMAL);
+        wm->native_window->dirty = TRUE;
+        ENSURE(widget_paint(WIDGET(wm), c) == RET_OK);
+        window_manager_paint_cursor(widget, c);
+        canvas_end_frame(c);
+      }
+
+      native_window_update_last_dirty_rect(wm->native_window);
+    }
+    native_window_clear_dirty_rect(wm->native_window);
+  }
+#else
   if (native_window_begin_frame(wm->native_window, LCD_DRAW_NORMAL) == RET_OK) {
     ENSURE(widget_paint(WIDGET(wm), c) == RET_OK);
     window_manager_paint_cursor(widget, c);
     native_window_end_frame(wm->native_window);
   }
+#endif
   wm->last_paint_cost = time_now_ms() - start_time;
 
   return RET_OK;
