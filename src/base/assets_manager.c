@@ -190,7 +190,7 @@ static ret_t build_asset_filename_default(char* path, uint32_t size, const char*
                          RET_FAIL);
   }
 
-  return file_exist(path) ? RET_OK : RET_FAIL;
+  return RET_OK;
 }
 
 static const char* device_pixel_ratio_to_str(float_t dpr) {
