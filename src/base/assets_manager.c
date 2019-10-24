@@ -167,7 +167,8 @@ static ret_t build_asset_filename_custom(assets_manager_t* am, char* path, uint3
                                          const char* name, const char* extname) {
   if (am->custom_build_asset_dir != NULL) {
     char sep[2] = {TK_PATH_SEP, 0};
-    return_value_if_fail(am->custom_build_asset_dir(am->custom_build_asset_dir_ctx, path, size, theme, ratio, subpath) == RET_OK,
+    return_value_if_fail(am->custom_build_asset_dir(am->custom_build_asset_dir_ctx, path, size,
+                                                    theme, ratio, subpath) == RET_OK,
                          RET_FAIL);
     return_value_if_fail(tk_str_append(path, size, sep) == RET_OK, RET_FAIL);
     return_value_if_fail(tk_str_append(path, size, name) == RET_OK, RET_FAIL);
