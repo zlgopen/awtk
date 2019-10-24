@@ -7,6 +7,7 @@
   * 修改软键盘弹出时出现屏保的问题。
   * 完善new.cpp/new.hpp （感谢陈谭提供补丁）。
   * 修改windows中文件名的问题（感谢大恒提供补丁）
+  * assets\_manager\_set\_custom\_build\_dir增加回调函数上下文。
 
 * 2019/10/23
   * 修改clone出来的edit的显示问题。
