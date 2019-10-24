@@ -227,8 +227,9 @@ ret_t assets_manager_preload(assets_manager_t* am, asset_type_t type, const char
  * @method assets_manager_set_custom_build_asset_dir
  * 设置一个函数，该函数用于生成资源路径。
  *
- * > 有时我们需要优先加载用户自定义的资源，加载失败才加载系统缺省的，可用设置一个函数去实现这类功能。
- * 
+ * >
+ * 有时我们需要优先加载用户自定义的资源，加载失败才加载系统缺省的，可用设置一个函数去实现这类功能。
+ *
  * @param {assets_manager_t*} am asset manager对象。
  * @param {assets_manager_build_asset_dir_t} custom_build_asset_dir
  *
