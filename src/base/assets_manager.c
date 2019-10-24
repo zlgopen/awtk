@@ -205,8 +205,8 @@ static const char* device_pixel_ratio_to_str(float_t dpr) {
 }
 
 ret_t assets_manager_build_asset_filename(assets_manager_t* am, char* path, uint32_t size,
-                                                 bool_t ratio_sensitive, const char* subpath,
-                                                 const char* name, const char* extname) {
+                                          bool_t ratio_sensitive, const char* subpath,
+                                          const char* name, const char* extname) {
   const char* res_root = assets_manager_get_res_root(am);
   const char* theme = am->theme ? am->theme : THEME_DEFAULT;
   system_info_t* sysinfo = assets_manager_get_system_info(am);
