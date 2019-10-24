@@ -4,7 +4,7 @@
 
 #ifndef HAS_STD_MALLOC
 
-void* operator new(std::size_t size) throw(std::bad_alloc) {
+void* operator new(std::size_t size) __TK_THROW_BAD_ALLOC {
   if (size >= MAX_SIZE) {
     log_debug("size is too large\n");
   }
@@ -12,7 +12,7 @@ void* operator new(std::size_t size) throw(std::bad_alloc) {
   return TKMEM_ALLOC(size);
 }
 
-void* operator new[](std::size_t size) throw(std::bad_alloc) {
+void* operator new[](std::size_t size) __TK_THROW_BAD_ALLOC {
   if (size >= MAX_SIZE) {
     log_debug("size is too large\n");
   }
