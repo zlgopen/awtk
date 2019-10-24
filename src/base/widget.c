@@ -958,7 +958,7 @@ ret_t widget_off(widget_t* widget, int32_t id) {
   return emitter_off(widget->emitter, id);
 }
 
-ret_t widget_off_by_tag(widget_t* widget, int32_t tag) {
+ret_t widget_off_by_tag(widget_t* widget, uint32_t tag) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->emitter != NULL, RET_BAD_PARAMS);
 
