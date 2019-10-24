@@ -4,6 +4,7 @@
   * 优化fragment frame buffer，在STM32F103等低端平台，内存不足以实现framebuffer时，性能大幅提高（感谢智明提供补丁）。
   * 修改文档中的错误（感谢俊杰提供补丁）。
   * 更新awtk config sample。
+  * 修改软键盘弹出时出现屏保的问题。
 
 * 2019/10/23
   * 修改clone出来的edit的显示问题。
