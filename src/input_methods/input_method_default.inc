@@ -85,7 +85,7 @@ static ret_t on_push_window(void* ctx, event_t* e) {
 
 static ret_t input_method_default_restore_win_position(input_method_t* im) {
   if (im->win != NULL) {
-    im->win->y += im->win_delta_y;
+    im->win->y = im->win_old_y;
     widget_invalidate_force(im->win, NULL);
     im->win = NULL;
   }
@@ -141,6 +141,7 @@ static ret_t input_type_open_keyboard(input_method_t* im, int32_t input_type, bo
   im->busy = TRUE;
   widget_on(im->keyboard, EVT_WINDOW_OPEN, input_method_default_on_keyboard_open, im);
 
+  im->win_old_y = win->y;
   if ((p.y + widget->h) > im->keyboard->y) {
     close_anim_hint = "vtranslate";
     open_anim_hint = close_anim_hint;
