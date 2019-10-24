@@ -18,13 +18,9 @@
  * 2018-02-16 Li XianJing <xianjimli@hotmail.com> created
  *
  */
-
+#include "awtk_config.h"
 #include "base/system_info.h"
 #include "fragment_frame_buffer.h"
-
-#ifndef FRAGMENT_FRAME_BUFFER_SIZE
-#define FRAGMENT_FRAME_BUFFER_SIZE 8192
-#endif /*FRAGMENT_FRAME_BUFFER_SIZE*/
 
 typedef struct _lcd_reg_t {
   lcd_t lcd;
@@ -52,6 +48,45 @@ static inline ret_t lcd_reg_write_data(lcd_t* lcd, pixel_t data) {
     fragment_frame_buffer_write_data(reg->ffb, data);
   } else {
     write_data_func(data);
+  }
+
+  return RET_OK;
+}
+
+static inline ret_t lcd_reg_write_data_fill(lcd_t* lcd, pixel_t data, wh_t w, wh_t h) {
+  uint32_t i = 0;
+  uint32_t size = w * h;
+  lcd_reg_t* reg = (lcd_reg_t*)lcd;
+
+  if (reg->ffb != NULL) {
+    fragment_frame_buffer_write_data_fill(reg->ffb, data, size);
+  } else {
+    for (i = 0; i < size; i++) {
+      write_data_func(data);
+    }
+  }
+
+  return RET_OK;
+}
+
+static inline ret_t lcd_reg_image_copy(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
+  uint32_t i = 0;
+  uint32_t j = 0;
+  lcd_reg_t* reg = (lcd_reg_t*)lcd;
+  const pixel_t* data = (pixel_t*)img->data;
+  return_value_if_fail(src->w == dst->w && src->h == dst->h, RET_BAD_PARAMS);
+
+  if (reg->ffb != NULL) {
+    fragment_frame_buffer_image_copy(reg->ffb, img, src, dst);
+  } else {
+    const pixel_t* src_p = data + img->w * src->y + src->x;
+
+    for (j = 0; j < dst->h; j++) {
+      for (i = 0; i < dst->w; i++) {
+        write_data_func(src_p[i]);
+      }
+      src_p += img->w;
+    }
   }
 
   return RET_OK;
@@ -104,15 +139,10 @@ static ret_t lcd_reg_draw_points(lcd_t* lcd, point_t* points, uint32_t nr) {
 }
 
 static ret_t lcd_reg_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
-  uint32_t i = 0;
-  uint32_t size = w * h;
   pixel_t color = color_to_pixel(lcd->fill_color);
 
   lcd_reg_set_window(lcd, x, y, x + w - 1, y + h - 1);
-
-  for (i = 0; i < size; i++) {
-    lcd_reg_write_data(lcd, color);
-  }
+  lcd_reg_write_data_fill(lcd, color, w, h);
 
   return RET_OK;
 }
@@ -160,14 +190,7 @@ static ret_t lcd_reg_draw_image_bgr565(lcd_t* lcd, bitmap_t* img, rect_t* src, r
 
   lcd_reg_set_window(lcd, x, y, x + dw - 1, y + dh - 1);
   if (src->w == dst->w && src->h == dst->h) {
-    const uint16_t* src_p = data + img->w * src->y + src->x;
-
-    for (j = 0; j < dh; j++) {
-      for (i = 0; i < dw; i++) {
-        lcd_reg_write_data(lcd, src_p[i]);
-      }
-      src_p += img->w;
-    }
+    lcd_reg_image_copy(lcd, img, src, dst);
   } else {
     xy_t sx = src->x;
     xy_t sy = src->y;
@@ -191,7 +214,7 @@ static ret_t lcd_reg_draw_image_bgr565(lcd_t* lcd, bitmap_t* img, rect_t* src, r
   return RET_OK;
 }
 
-static ret_t lcd_reg_8888(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
+static ret_t lcd_reg_draw_image_8888(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
   wh_t i = 0;
   wh_t j = 0;
   uint8_t a = 0;
@@ -270,7 +293,7 @@ static ret_t lcd_reg_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
   if (img->format == BITMAP_FMT_BGR565) {
     return lcd_reg_draw_image_bgr565(lcd, img, src, dst);
   } else if (img->format == BITMAP_FMT_RGBA8888 || img->format == BITMAP_FMT_BGRA8888) {
-    return lcd_reg_8888(lcd, img, src, dst);
+    return lcd_reg_draw_image_8888(lcd, img, src, dst);
   } else {
     assert(!"not supported format");
     return RET_FAIL;

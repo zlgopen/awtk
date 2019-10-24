@@ -20,6 +20,14 @@ static void write_data_func(pixel_t pixel) {
   s_log += buff;
 }
 
+typedef uint16_t pixel_t;
+#define LCD_FORMAT BITMAP_FMT_BGR565
+#define pixel_from_rgb(r, g, b) ((((r) >> 3) << 11) | (((g) >> 2) << 5) | ((b) >> 3))
+#define pixel_to_rgba(p) \
+  { (0xff & ((p >> 11) << 3)), (0xff & ((p >> 5) << 2)), (0xff & (p << 3)) }
+
+#include "base/pixel.h"
+#include "base/bitmap.h"
 #include "lcd/fragment_frame_buffer.h"
 
 TEST(FragmentFrameBuffer, basic) {

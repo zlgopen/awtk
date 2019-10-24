@@ -1,5 +1,9 @@
 # 最新动态
 
+* 2019/10/24
+  * 优化fragment frame buffer，在STM32F103等低端平台，内存不足以实现framebuffer时，性能大幅提高（感谢智明提供补丁）。
+  * 修改文档中的错误（感谢俊杰提供补丁）。
+
 * 2019/10/23
   * 修改clone出来的edit的显示问题。
   * 增加widget\_on\_with\_tag和widget\_off\_by\_tag，方便一次注销多个同类事件。
