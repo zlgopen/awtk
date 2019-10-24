@@ -1,6 +1,6 @@
-<window anim_hint="htranslate" move_focus_prev_key="up" move_focus_next_key="down" text="up/down to change focus">
+<window anim_hint="htranslate" move_focus_prev_key="up" move_focus_next_key="down" text="Basic Controls">
   <app_bar x="0" y="0" w="100%" h="30" >
-    <label x="0" y="0" w="100%" h="100%" text="Basic Controls" style:font_size="24" style:text_color="green"/>
+    <label x="0" y="0" w="100%" h="100%" text="up/down key change focus" style:font_size="24" style:text_color="green"/>
   </app_bar>
 
   <row x="0" y="40" w="100%" h="30" children_layout="default(r=1,c=3,xm=2,s=10)">
