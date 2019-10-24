@@ -84,7 +84,7 @@ enum BreakAction
  * adjusted after special processing as per LB8a of Revision 41) and CB
  * (manually added as per LB20).
  */
-static enum BreakAction baTable[LBP_CB][LBP_CB] = {
+static const enum BreakAction baTable[LBP_CB][LBP_CB] = {
     {   /* OP */
         PRH_BRK, PRH_BRK, PRH_BRK, PRH_BRK, PRH_BRK, PRH_BRK, PRH_BRK,
         PRH_BRK, PRH_BRK, PRH_BRK, PRH_BRK, PRH_BRK, PRH_BRK, PRH_BRK,

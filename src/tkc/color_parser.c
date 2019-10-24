@@ -8,7 +8,7 @@ typedef struct _color_map_t {
   const char* value;
 } color_map_t;
 
-static color_map_t colors_map[] = {{"aliceblue", "#f0f8ff"},
+static color_map_t const colors_map[] = {{"aliceblue", "#f0f8ff"},
                                    {"antiquewhite", "#faebd7"},
                                    {"aqua", "#00ffff"},
                                    {"aquamarine", "#7fffd4"},
