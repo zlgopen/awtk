@@ -675,6 +675,10 @@ ret_t widget_add_child(widget_t* widget, widget_t* child) {
     }
   }
 
+  if (child->vt->on_attach_parent) {
+    child->vt->on_attach_parent(child, widget);
+  }
+
   ENSURE(darray_push(widget->children, child) == RET_OK);
 
   if (!(child->initializing) && widget_get_window(child) != NULL) {
@@ -710,6 +714,10 @@ ret_t widget_remove_child(widget_t* widget, widget_t* child) {
     if (widget->vt->on_remove_child(widget, child) == RET_OK) {
       return RET_OK;
     }
+  }
+
+  if (child->vt->on_detach_parent) {
+    child->vt->on_detach_parent(child, widget);
   }
 
   child->parent = NULL;
@@ -963,6 +971,13 @@ ret_t widget_off_by_tag(widget_t* widget, uint32_t tag) {
   return_value_if_fail(widget->emitter != NULL, RET_BAD_PARAMS);
 
   return emitter_off_by_tag(widget->emitter, tag);
+}
+
+ret_t widget_off_by_ctx(widget_t* widget, void* ctx) {
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget->emitter != NULL, RET_BAD_PARAMS);
+
+  return emitter_off_by_ctx(widget->emitter, ctx);
 }
 
 ret_t widget_off_by_func(widget_t* widget, uint32_t type, event_func_t on_event, void* ctx) {
