@@ -25,10 +25,15 @@
 #include "tkc/utils.h"
 #include "base/timer.h"
 #include "assets.h"
+#include "tkc/utf8.h"
 
 #include "ui_loader/ui_loader_xml.h"
 #include "ui_loader/ui_loader_default.h"
 #include "ui_loader/ui_builder_default.h"
+
+#ifdef WITH_SDL
+#include <SDL.h>
+#endif
 
 static ret_t refresh_in_timer(const timer_info_t* info) {
   widget_t* widget = WIDGET(info->ctx);
@@ -90,7 +95,7 @@ widget_t* preview_ui(const char* filename) {
 #if defined(WIN32)
 #include <windows.h>
 
-#define MAX_ARGV 5
+#define MAX_ARGV 7
 void command_line_to_argv(char* lpcmdline, const char* argv[MAX_ARGV], int32_t* argc) {
   int32_t i = 1;
   char* p = lpcmdline;
@@ -98,7 +103,15 @@ void command_line_to_argv(char* lpcmdline, const char* argv[MAX_ARGV], int32_t* 
   argv[0] = "preview.exe";
   for (i = 1; i < MAX_ARGV; i++) {
     argv[i] = p;
-    p = strchr(p, ' ');
+    if (*p == '\"') {
+      argv[i] = p + 1;
+      p = strchr(p + 1, '\"');
+      if (p == NULL) break;
+      *p++ = '\0';
+      if (*p == 0) break;
+    } else {
+      p = strchr(p, ' ');
+    }
     if (p == NULL) {
       break;
     }
@@ -112,19 +125,31 @@ void command_line_to_argv(char* lpcmdline, const char* argv[MAX_ARGV], int32_t* 
   return;
 }
 
-int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline, int ncmdshow) {
+int WINAPI wWinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPWSTR lpcmdline, int ncmdshow) {
   str_t str;
   int argc = 1;
+  int32_t len = wcslen(lpcmdline) * 6;
+  char* utf8_line = (char*)TKMEM_ALLOC(len);
+  utf8_from_utf16(lpcmdline, utf8_line, len);
   char* argv[MAX_ARGV];
   str_init(&str, 1024);
-  str_set(&str, lpcmdline);
+  str_set(&str, utf8_line);
   command_line_to_argv(str.str, argv, &argc);
 #if defined(WIN32)
 #if !defined(NDEBUG)
   {
-    AllocConsole();
-    FILE* fp = NULL;
-    freopen_s(&fp, "CONOUT$", "w+t", stdout);
+    bool_t log = FALSE;
+    int8_t last_arg = MAX_ARGV - 1;
+    if (argc > last_arg) {
+      if (atoi(argv[last_arg]) == 1) {
+        log = TRUE;
+      }
+    }
+    if (log) {
+      AllocConsole();
+      FILE* fp = NULL;
+      freopen_s(&fp, "CONOUT$", "w+t", stdout);
+    }
   }
 #endif /*NDEBUG*/
 #endif /*WIN32*/
@@ -134,8 +159,11 @@ int main(int argc, char* argv[]) {
 #endif
   int32_t w = 320;
   int32_t h = 480;
+  bool_t have_lang = FALSE;
   const char* filename = DEFAULT_UI;
   char res_root[MAX_PATH + 1];
+  char country[3];
+  char language[3];
   memset(res_root, 0x00, sizeof(res_root));
 
   if (argc > 1) {
@@ -162,7 +190,7 @@ int main(int argc, char* argv[]) {
     }
   }
 
-  if (argc > 5) {
+  if (argc > 4) {
     memcpy(res_root, argv[4], strlen(argv[4]));
   } else {
     char* p = NULL;
@@ -172,18 +200,35 @@ int main(int argc, char* argv[]) {
       *p = '\0';
     }
   }
-
   log_debug("%s %s %d %d %s\n", argv[0], argv[1], w, h, res_root);
-  tk_init(w, h, APP_SIMULATOR, NULL, res_root);
+
+  if (argc > 5) {
+    char str[MAX_PATH + 1];
+    memset(str, 0x00, sizeof(str));
+    memcpy(str, argv[5], strlen(argv[5]));
+    tk_strncpy(language, str, 2);
+    tk_strncpy(country, str + 3, 2);
+    have_lang = TRUE;
+  }
+
+  tk_init(w, h, APP_DESKTOP, NULL, res_root);
+  assets_manager_set_res_root(assets_manager(), res_root);
 #ifdef WITH_FS_RES
-  system_info_set_default_font(system_info(), "default_full");
+  system_info_set_default_font(system_info(), "default");
 #endif /*WITH_FS_RES*/
 
   assets_init();
   tk_ext_widgets_init();
 
   preview_ui(filename);
+  if (have_lang) {
+    locale_info_change(locale_info(), language, country);
+  }
   tk_run();
+
+#ifdef WIN32
+  TKMEM_FREE(utf8_line);
+#endif
 
   return 0;
 }
