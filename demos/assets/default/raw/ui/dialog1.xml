@@ -1,5 +1,8 @@
 <dialog anim_hint="center_scale(duration=300)" x="c" y="m" w="80%" h="160" text="Dialog" move_focus_prev_key="up" move_focus_next_key="down">
-  <dialog_title x="0" y="0" w="100%" h="30" text="Hello AWTK" />
+  <dialog_title x="0" y="0" w="100%" h="30" text="Hello AWTK" >
+    <draggable drag_window="true"/>
+  </dialog_title>
+
   <dialog_client x="0" y="bottom" w="100%" h="-30">
     <combo_box left_margin="6" readonly="true" x="center" y="5" w="80%" h="30" text="left" options="left;center;right;" focusable="true"/>
     <label name="" x="center" y="middle:-20" w="200" h="30" text="Back to home?"/>

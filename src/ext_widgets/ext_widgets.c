@@ -23,6 +23,7 @@
 #include "switch/switch.h"
 #include "guage/guage.h"
 #include "mledit/mledit.h"
+#include "features/draggable.h"
 #include "mledit/line_number.h"
 #include "guage/guage_pointer.h"
 #include "gif_image/gif_image.h"
@@ -99,6 +100,7 @@ ret_t tk_ext_widgets_init() {
   widget_factory_register(f, WIDGET_TYPE_LINE_NUMBER, line_number_create);
   widget_factory_register(f, WIDGET_TYPE_HSCROLL_LABEL, hscroll_label_create);
   widget_factory_register(f, WIDGET_TYPE_COMBO_BOX_EX, combo_box_ex_create);
+  widget_factory_register(f, WIDGET_TYPE_DRAGGABLE, draggable_create);
 
   children_layouter_register_ext_builtins();
 

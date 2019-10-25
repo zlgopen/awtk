@@ -1,5 +1,9 @@
 # 最新动态
 
+* 2019/10/25
+  * widget\_off\_by_\ctx/on\_detach\_parent/on\_attach\_parent
+  * 增加draggable控件。
+
 * 2019/10/24
   * 优化fragment frame buffer，在STM32F103等低端平台，内存不足以实现framebuffer时，性能大幅提高（感谢智明提供补丁）。
   * 修改文档中的错误（感谢俊杰提供补丁）。

@@ -1,6 +1,8 @@
 <dialog theme="dialog" style="custom" highlight="default(alpha=40)" 
   x="c" y="m" w="80%" h="220">
-  <dialog_title style="custom" x="0" y="0" w="100%" h="30" text="Hello AWTK" />
+  <dialog_title style="custom" x="0" y="0" w="100%" h="30" text="Hello AWTK" >
+    <draggable drag_window="true"/>
+  </dialog_title>
   <dialog_client style="custom" x="0" y="bottom" w="100%" h="-30">
     <label x="center" y="middle:-20" w="200" h="30" text="AWTK is cool!"/>
     <button name="reload_theme" x="center" y="middle:20" w="80%" h="30" text="Test Change Theme"/>

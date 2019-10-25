@@ -92,7 +92,7 @@ ret_t ${className}_set_${iter.name}(widget_t* widget, ${iter.type} ${iter.name})
     const propSetterDecls = this.genPropSetterDecls(json);
     const propDefines = this.genPropDefines(json);
 
-    let result = `${this.genFileComment(json, '.h')}
+    let result = `${this.genFileComment(json, 'h')}
 
 #ifndef TK_${uclassName}_H
 #define TK_${uclassName}_H
@@ -390,7 +390,7 @@ ret_t ${className}_set_${iter.name}(widget_t* widget, ${iter.type} ${iter.name})
       }).join('');
     }
 
-    let result = `${this.genFileComment(json, '.c')}
+    let result = `${this.genFileComment(json, 'c')}
 
 ${defaultInclude}
 ${propSetterImpls}

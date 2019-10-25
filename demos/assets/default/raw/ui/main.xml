@@ -44,6 +44,9 @@
       <button name="open:hscroll_label" text="HScroll Label"/>
       <button name="open:menu" text="ContextMenu"/>
     </view>
+    <view x="0" y="0" w="100%" h="100%" children_layout="default(c=2,r=8,m=5,s=5)">
+      <button name="open:draggable" text="Draggable"/>
+    </view>
     <view x="0" y="0" w="100%" h="100%" children_layout="default(c=1,r=8,m=5,s=5)">
       <button name="open:memtest" text="MemTest"/>
       <button name="open:calibration_win" text="Calibration"/>

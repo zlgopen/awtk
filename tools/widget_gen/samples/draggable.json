@@ -1,0 +1,65 @@
+{
+  "name":"draggable",
+  "date":"2019-10-25",
+  "team":"AWTK Develop Team",
+  "author":"Li XianJing <xianjimli@hotmail.com>",
+  "desc":"make parent widget or window draggable",
+  "copyright":"Guangzhou ZHIYUAN Electronics Co.,Ltd.",
+  "includes":[],
+  "props": [
+    {
+      "name":"top",
+      "desc":"拖动范围的顶部限制。缺省为父控件的顶部。",
+      "init_value":-1,
+      "type":"int32_t"
+    },
+    {
+      "name":"bottom",
+      "desc":"拖动范围的底部限制。缺省为父控件的底部。",
+      "init_value":-1,
+      "type":"int32_t"
+    },
+    {
+      "name":"left",
+      "desc":"拖动范围的左边限制。缺省为父控件的左边。",
+      "init_value":-1,
+      "type":"int32_t"
+    },
+    {
+      "name":"right",
+      "desc":"拖动范围的右边限制。缺省为父控件的右边边。",
+      "init_value":-1,
+      "type":"int32_t"
+    },
+    {
+      "name":"vertical_only",
+      "desc":"只允许垂直拖动。",
+      "init_value":"FALSE",
+      "type":"bool_t"
+    },
+    {
+      "name":"horizontall_only",
+      "desc":"只允许水平拖动。",
+      "init_value":"FALSE",
+      "type":"bool_t"
+    },
+    {
+      "name":"drag_window",
+      "desc":"拖动窗口而不是父控件。比如放在对话框的titlebar上，拖动titlebar其实是希望拖动对话框。",
+      "init_value":"FALSE",
+      "type":"bool_t"
+    },
+    {
+      "name":"inertia",
+      "desc":"启用惯性效果。",
+      "init_value":"FALSE",
+      "type":"bool_t"
+    },
+    {
+      "name":"go_or_back",
+      "desc":"要么拖动到指定位置，要么返回原来的位置。",
+      "init_value":"FALSE",
+      "type":"bool_t"
+    }
+  ]
+}
