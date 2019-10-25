@@ -24,7 +24,7 @@
  ```
 
  > 更多用法请参考：
- [draggable.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/draggable.xml)
+ [draggable.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/draggable.xml)
 
  在c代码中使用函数draggable\_create创建按钮控件。如：
 

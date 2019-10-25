@@ -16,7 +16,7 @@
  ```
 
  >更多用法请参考：
- [gif image](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/gif_image.xml)
+ [gif image](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/gif_image.xml)
 
  在c代码中使用函数gif\_image\_create创建GIF图片控件。如：
 
@@ -43,7 +43,7 @@
  ```
 
  > 更多用法请参考：[theme default](
- https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml)
+ https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml)
 
 
 ----------------------------------

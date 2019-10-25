@@ -29,7 +29,7 @@ system\_bar\_t是[window\_base\_t](window_base_t.md)的子类控件，
  ```
 
  > 更多用法请参考：
- [system_bar](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/system_bar.xml)
+ [system_bar](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/system_bar.xml)
 
  在c代码中使用函数system\_bar\_create创建system\_bar窗口。如：
 
@@ -50,7 +50,7 @@ system\_bar\_t是[window\_base\_t](window_base_t.md)的子类控件，
  ```
 
 > 更多用法请参考：
- [system_bar.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/system_bar.xml)
+ [system_bar.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/system_bar.xml)
 
 
 ----------------------------------

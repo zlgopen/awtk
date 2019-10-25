@@ -25,7 +25,7 @@
  > 滚动视图一般作为列表视图的子控件使用。
 
  > 更多用法请参考：[list\_view\_m.xml](
-https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/list_view_m.xml)
+https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/list_view_m.xml)
 
  在c代码中使用函数scroll\_view\_create创建列表视图控件。如：
 

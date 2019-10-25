@@ -20,7 +20,7 @@
  ```
 
  > 更多用法请参考：[list\_view\_m.xml](
-https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/list_view_m.xml)
+https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/list_view_m.xml)
 
  在c代码中使用函数scroll\_bar\_create创建列表项控件。如：
 
@@ -37,7 +37,7 @@ https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/list_view_m.xml)
  ```
 
  > 更多用法请参考：[theme default](
-https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L350)
+https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L350)
 
 
 ----------------------------------

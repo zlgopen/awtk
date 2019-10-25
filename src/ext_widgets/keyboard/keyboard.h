@@ -66,7 +66,7 @@ BEGIN_C_DECLS
  *
  *
  * > 更多用法请参考：
- * [kb_default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/kb_default.xml)
+ * [kb_default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/kb_default.xml)
  *
  */
 
