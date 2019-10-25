@@ -4,7 +4,6 @@
  文件接口。
 
 
-
 ----------------------------------
 ### 函数
 <p id="fs_file_t_methods">
@@ -24,7 +23,6 @@
 
 > <p id="fs_file_t_fs_file_close">
  关闭文件。
-
 
 
 
@@ -54,7 +52,6 @@ ret_t fs_file_close (fs_file_t* file);
 
 
 
-
 * 函数原型：
 
 ```
@@ -74,7 +71,6 @@ bool_t fs_file_eof (fs_file_t* file);
 
 > <p id="fs_file_t_fs_file_read">
  读取文件。
-
 
 
 
@@ -106,7 +102,6 @@ int32_t fs_file_read (fs_file_t* file, void* buffer, uint32_t size);
 
 
 
-
 * 函数原型：
 
 ```
@@ -132,7 +127,6 @@ ret_t fs_file_seek (fs_file_t* file, uint32_t offset);
 
 
 
-
 * 函数原型：
 
 ```
@@ -152,7 +146,6 @@ ret_t fs_file_truncate (fs_file_t* file);
 
 > <p id="fs_file_t_fs_file_write">
  写入文件。
-
 
 
 

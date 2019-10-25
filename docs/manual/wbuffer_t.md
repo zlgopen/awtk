@@ -29,7 +29,6 @@
 
 
 
-
 ----------------------------------
 ### 函数
 <p id="wbuffer_t_methods">
@@ -65,7 +64,6 @@
 
 
 
-
 * 函数原型：
 
 ```
@@ -84,7 +82,6 @@ ret_t wbuffer_deinit (wbuffer_t* wbuffer);
 * 函数功能：
 
 > <p id="wbuffer_t_wbuffer_extend_capacity"> 扩展内存至指定的大小。
-
 
 
 
@@ -107,7 +104,6 @@ ret_t wbuffer_extend_capacity (wbuffer_t* wbuffer, uint32_t capacity);
 * 函数功能：
 
 > <p id="wbuffer_t_wbuffer_init"> 初始wbuffer对象。
-
 
 
 
@@ -135,7 +131,6 @@ wbuffer_t* wbuffer_init (wbuffer_t* wbuffer, uint8_t* data, uint16_t capacity);
 
 
 
-
 * 函数原型：
 
 ```
@@ -154,7 +149,6 @@ wbuffer_t* wbuffer_init_extendable (wbuffer_t* wbuffer);
 * 函数功能：
 
 > <p id="wbuffer_t_wbuffer_skip"> 跳过指定的长度。
-
 
 
 
@@ -177,7 +171,6 @@ ret_t wbuffer_skip (wbuffer_t* wbuffer, int32_t delta);
 * 函数功能：
 
 > <p id="wbuffer_t_wbuffer_write_binary"> 写入指定长度的二进制数据。
-
 
 
 
@@ -204,7 +197,6 @@ ret_t wbuffer_write_binary (wbuffer_t* wbuffer, void* data, uint32_t size);
 
 
 
-
 * 函数原型：
 
 ```
@@ -224,7 +216,6 @@ ret_t wbuffer_write_float (wbuffer_t* wbuffer, float_t value);
 * 函数功能：
 
 > <p id="wbuffer_t_wbuffer_write_string"> 写入字符串。
-
 
 
 
@@ -250,7 +241,6 @@ ret_t wbuffer_write_string (wbuffer_t* wbuffer, char* data);
 
 
 
-
 * 函数原型：
 
 ```
@@ -270,7 +260,6 @@ ret_t wbuffer_write_uint16 (wbuffer_t* wbuffer, uint16_t value);
 * 函数功能：
 
 > <p id="wbuffer_t_wbuffer_write_uint32"> 写入uint32数据。
-
 
 
 
@@ -296,7 +285,6 @@ ret_t wbuffer_write_uint32 (wbuffer_t* wbuffer, uint32_t value);
 
 
 
-
 * 函数原型：
 
 ```
@@ -315,7 +303,6 @@ ret_t wbuffer_write_uint8 (wbuffer_t* wbuffer, uint8_t value);
 > <p id="wbuffer_t_capacity"> 缓存区最大容量。
 
 
-
 * 类型：uint32\_t
 
 | 特性 | 是否支持 |
@@ -325,7 +312,6 @@ ret_t wbuffer_write_uint8 (wbuffer_t* wbuffer, uint8_t value);
 #### cursor 属性
 -----------------------
 > <p id="wbuffer_t_cursor"> 当前写入位置。
-
 
 
 * 类型：uint32\_t
@@ -339,7 +325,6 @@ ret_t wbuffer_write_uint8 (wbuffer_t* wbuffer, uint8_t value);
 > <p id="wbuffer_t_data"> 缓存区。
 
 
-
 * 类型：uint8\_t*
 
 | 特性 | 是否支持 |
@@ -349,7 +334,6 @@ ret_t wbuffer_write_uint8 (wbuffer_t* wbuffer, uint8_t value);
 #### extendable 属性
 -----------------------
 > <p id="wbuffer_t_extendable"> 容量是否可扩展。
-
 
 
 * 类型：bool\_t

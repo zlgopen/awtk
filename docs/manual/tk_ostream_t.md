@@ -6,7 +6,6 @@
  input stream interface
 
 
-
 ----------------------------------
 ### 函数
 <p id="tk_ostream_t_methods">
@@ -25,7 +24,6 @@
 
 > <p id="tk_ostream_t_tk_ostream_flush">
  刷新数据。
-
 
 
 
@@ -55,7 +53,6 @@ ret_t tk_ostream_flush (tk_ostream_t* stream);
 
 
 
-
 * 函数原型：
 
 ```
@@ -76,7 +73,6 @@ ret_t tk_ostream_seek (tk_ostream_t* stream, uint32_t offset);
 
 > <p id="tk_ostream_t_tk_ostream_write">
  写入数据。
-
 
 
 
@@ -108,7 +104,6 @@ int32_t tk_ostream_write (tk_ostream_t* stream, const uint8_t* buff, uint32_t ma
 
 
 
-
 * 函数原型：
 
 ```
@@ -129,7 +124,6 @@ ret_t tk_ostream_write_byte (tk_ostream_t* stream, uint8_t byte);
 
 > <p id="tk_ostream_t_tk_ostream_write_len">
  写入指定长度的数据。
-
 
 
 

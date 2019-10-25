@@ -54,7 +54,7 @@
 | <a href="#image_animation_t_image_animation_set_range_sequence">image\_animation\_set\_range\_sequence</a> | 设置播放序列。比如image为"fire"，start_index为0, end_index为99, 将依次播放"fire0", ..., |
 | <a href="#image_animation_t_image_animation_set_sequence">image\_animation\_set\_sequence</a> | 设置播放序列。比如image为"fire"，sequence为"12223", 将依次播放"fire1", "fire2", "fire2", "fire2", |
 | <a href="#image_animation_t_image_animation_set_unload_after_paint">image\_animation\_set\_unload\_after\_paint</a> | 设置绘制完成后unload图片，以释放内存空间。 |
-| <a href="#image_animation_t_image_animation_stop">image\_animation\_stop</a> | 停止(并重置index为0)。 |
+| <a href="#image_animation_t_image_animation_stop">image\_animation\_stop</a> | 停止(并重置index为-1)。 |
 ### 属性
 <p id="image_animation_t_properties">
 
@@ -375,7 +375,7 @@ ret_t image_animation_set_unload_after_paint (widget_t* widget, bool_t unload_af
 
 * 函数功能：
 
-> <p id="image_animation_t_image_animation_stop"> 停止(并重置index为0)。
+> <p id="image_animation_t_image_animation_stop"> 停止(并重置index为-1)。
 
 
 

@@ -4,7 +4,6 @@
 
  窗口事件，由窗口管理器触发。
 
-
 ----------------------------------
 ### 函数
 <p id="window_event_t_methods">
@@ -26,7 +25,6 @@
 * 函数功能：
 
 > <p id="window_event_t_pointer_event_rotate"> 根据屏幕旋转方向修正pointer_event中的坐标。
-
 
 
 
@@ -52,7 +50,6 @@ ret_t pointer_event_rotate (pointer_event_t* evt, system_info_t* info);
 
 
 
-
 * 函数原型：
 
 ```
@@ -74,7 +71,6 @@ window_event_t* window_event_cast (event_t* event);
 
 
 
-
 * 函数原型：
 
 ```
@@ -93,7 +89,6 @@ event_t* window_event_init (window_event_t* event, void* target, uint32_t type, 
 #### window 属性
 -----------------------
 > <p id="window_event_t_window"> canvas。
-
 
 
 * 类型：widget\_t*

@@ -30647,7 +30647,7 @@
         "annotation": {
           "scriptable": true
         },
-        "desc": " 停止(并重置index为0)。\r\n\r\n",
+        "desc": " 停止(并重置index为-1)。\r\n\r\n",
         "name": "image_animation_stop",
         "return": {
           "type": "ret_t",

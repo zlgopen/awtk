@@ -4,7 +4,6 @@
 
  单精度浮点数类型属性描述。
 
-
 ----------------------------------
 ### 属性
 <p id="value_desc_double_t_properties">
@@ -21,7 +20,6 @@
 > <p id="value_desc_double_t_defvalue"> 缺省值。
 
 
-
 * 类型：double
 
 | 特性 | 是否支持 |
@@ -31,7 +29,6 @@
 #### max 属性
 -----------------------
 > <p id="value_desc_double_t_max"> 最大值。
-
 
 
 * 类型：double
@@ -45,7 +42,6 @@
 > <p id="value_desc_double_t_min"> 最小值。
 
 
-
 * 类型：double
 
 | 特性 | 是否支持 |
@@ -57,7 +53,6 @@
 > <p id="value_desc_double_t_step"> 步长。
 
 
-
 * 类型：double\_t
 
 | 特性 | 是否支持 |
@@ -67,7 +62,6 @@
 #### unit 属性
 -----------------------
 > <p id="value_desc_double_t_unit"> 单位。
-
 
 
 * 类型：const char*

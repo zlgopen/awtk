@@ -6,7 +6,6 @@
  input/output stream interface
 
 
-
 ----------------------------------
 ### 函数
 <p id="tk_iostream_t_methods">
@@ -22,7 +21,6 @@
 
 > <p id="tk_iostream_t_tk_iostream_get_istream">
  获取输入流对象。
-
 
 
 
@@ -47,7 +45,6 @@ tk_istream_t* tk_iostream_get_istream (tk_iostream_t* stream);
 
 > <p id="tk_iostream_t_tk_iostream_get_ostream">
  获取输出流对象。
-
 
 
 

@@ -2,7 +2,6 @@
 ### 概述
  矩形。包括一个x坐标、y坐标、宽度和高度。
 
-
 ----------------------------------
 ### 函数
 <p id="rect_t_methods">
@@ -33,7 +32,6 @@
 
 
 
-
 * 函数原型：
 
 ```
@@ -54,7 +52,6 @@ rect_t* rect_cast (rect_t* rect);
 > <p id="rect_t_rect_create"> 创建rect对象。
 
  > 主要供脚本语言使用。
-
 
 
 
@@ -86,7 +83,6 @@ rect_t* rect_create (xy_t x, xy_t y, wh_t w, wh_t h);
 
 
 
-
 * 函数原型：
 
 ```
@@ -107,7 +103,6 @@ ret_t rect_destroy (rect_t* r);
 > <p id="rect_t_rect_set"> 设置rect对象的xywh。
 
  > 主要供脚本语言使用。
-
 
 
 
@@ -133,7 +128,6 @@ rect_t* rect_set (rect_t* rect, xy_t x, xy_t y, wh_t w, wh_t h);
 > <p id="rect_t_h"> 高度。
 
 
-
 * 类型：wh\_t
 
 | 特性 | 是否支持 |
@@ -144,7 +138,6 @@ rect_t* rect_set (rect_t* rect, xy_t x, xy_t y, wh_t w, wh_t h);
 #### w 属性
 -----------------------
 > <p id="rect_t_w"> 宽度。
-
 
 
 * 类型：wh\_t
@@ -159,7 +152,6 @@ rect_t* rect_set (rect_t* rect, xy_t x, xy_t y, wh_t w, wh_t h);
 > <p id="rect_t_x"> x坐标。
 
 
-
 * 类型：xy\_t
 
 | 特性 | 是否支持 |
@@ -170,7 +162,6 @@ rect_t* rect_set (rect_t* rect, xy_t x, xy_t y, wh_t w, wh_t h);
 #### y 属性
 -----------------------
 > <p id="rect_t_y"> y坐标。
-
 
 
 * 类型：xy\_t
