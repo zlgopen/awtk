@@ -1,0 +1,17 @@
+<window anim_hint="htranslate" text="Draggable">
+  <button text="Drag Me" w="80" h="40" x="10" y="10">
+    <draggable />
+  </button>
+  
+  <button text="Drag V" w="80" h="40" x="100" y="10">
+    <draggable vertical_only="true"/>
+  </button>
+  
+  <button text="Drag H" w="80" h="40" x="10" y="100">
+    <draggable horizontal_only="true"/>
+  </button>
+  
+  <button text="Drag R" w="80" h="40" x="10" y="200">
+    <draggable left="10" right="200" top="150" bottom="300"/>
+  </button>
+</window>

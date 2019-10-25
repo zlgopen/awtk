@@ -28,8 +28,9 @@
 
 BEGIN_C_DECLS
 
-typedef ret_t (*assets_manager_build_asset_dir_t)(void* ctx, char* path, uint32_t size, const char* theme,
-                                                  const char* ratio, const char* subpath);
+typedef ret_t (*assets_manager_build_asset_dir_t)(void* ctx, char* path, uint32_t size,
+                                                  const char* theme, const char* ratio,
+                                                  const char* subpath);
 
 /**
  * @class assets_manager_t

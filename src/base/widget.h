@@ -66,6 +66,8 @@ typedef ret_t (*widget_on_pointer_move_t)(widget_t* widget, pointer_event_t* e);
 typedef ret_t (*widget_on_pointer_up_t)(widget_t* widget, pointer_event_t* e);
 typedef ret_t (*widget_on_add_child_t)(widget_t* widget, widget_t* child);
 typedef ret_t (*widget_on_remove_child_t)(widget_t* widget, widget_t* child);
+typedef ret_t (*widget_on_attach_parent)(widget_t* widget, widget_t* parent);
+typedef ret_t (*widget_on_detach_parent)(widget_t* widget, widget_t* parent);
 typedef ret_t (*widget_on_layout_children_t)(widget_t* widget);
 typedef ret_t (*widget_get_prop_t)(widget_t* widget, const char* name, value_t* v);
 typedef ret_t (*widget_get_prop_default_value_t)(widget_t* widget, const char* name, value_t* v);
@@ -157,6 +159,8 @@ struct _widget_vtable_t {
   widget_invalidate_t invalidate;
   widget_on_add_child_t on_add_child;
   widget_on_remove_child_t on_remove_child;
+  widget_on_attach_parent on_attach_parent;
+  widget_on_detach_parent on_detach_parent;
   widget_on_event_t on_event;
   widget_on_event_before_children_t on_event_before_children;
   widget_find_target_t find_target;
@@ -1198,6 +1202,16 @@ int32_t widget_child_on(widget_t* widget, const char* name, uint32_t type, event
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_off_by_func(widget_t* widget, uint32_t type, event_func_t on_event, void* ctx);
+
+/**
+ * @method widget_off_by_ctx
+ * 注销指定ctx的事件处理函数。
+ * @param {widget_t*} widget 控件对象。
+ * @param {void*} ctx 事件处理函数上下文。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_off_by_ctx(widget_t* widget, void* ctx);
 
 /**
  * @method widget_off_by_tag
