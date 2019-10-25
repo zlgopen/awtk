@@ -182,9 +182,11 @@ static ret_t draggable_move_target(widget_t* widget, xy_t x, xy_t y) {
   xy_t min_x = draggable->left != DRAGGABLE_UNSPECIFIED_NUM ? draggable->left : 0;
   xy_t min_y = draggable->top != DRAGGABLE_UNSPECIFIED_NUM ? draggable->top : 0;
   xy_t max_x =
-      (draggable->right != DRAGGABLE_UNSPECIFIED_NUM ? draggable->right : target->parent->w) - target->w;
+      (draggable->right != DRAGGABLE_UNSPECIFIED_NUM ? draggable->right : target->parent->w) -
+      target->w;
   xy_t max_y =
-      (draggable->bottom != DRAGGABLE_UNSPECIFIED_NUM ? draggable->bottom : target->parent->h) - target->h;
+      (draggable->bottom != DRAGGABLE_UNSPECIFIED_NUM ? draggable->bottom : target->parent->h) -
+      target->h;
 
   x = tk_clampi(x, min_x, max_x);
   y = tk_clampi(y, min_y, max_y);
@@ -222,7 +224,7 @@ static ret_t draggable_on_parent_pointer_up(void* ctx, event_t* e) {
   int32_t dx = target->x - draggable->saved_position.x;
   int32_t dy = target->y - draggable->saved_position.y;
 
-  if(tk_abs(dx) > 5 || tk_abs(dy) > 5) {
+  if (tk_abs(dx) > 5 || tk_abs(dy) > 5) {
     pointer_event_t abort;
     pointer_event_init(&abort, EVT_POINTER_DOWN_ABORT, NULL, 0, 0);
     widget_dispatch(widget->parent, (event_t*)&abort);
@@ -264,8 +266,7 @@ const char* s_draggable_properties[] = {
     DRAGGABLE_PROP_TOP,           DRAGGABLE_PROP_BOTTOM,
     DRAGGABLE_PROP_LEFT,          DRAGGABLE_PROP_RIGHT,
     DRAGGABLE_PROP_VERTICAL_ONLY, DRAGGABLE_PROP_HORIZONTAL_ONLY,
-    DRAGGABLE_PROP_DRAG_WINDOW,   
-    NULL};
+    DRAGGABLE_PROP_DRAG_WINDOW,   NULL};
 
 TK_DECL_VTABLE(draggable) = {.size = sizeof(draggable_t),
                              .type = WIDGET_TYPE_DRAGGABLE,

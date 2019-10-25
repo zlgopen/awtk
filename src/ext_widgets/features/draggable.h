@@ -29,9 +29,9 @@ BEGIN_C_DECLS
  * @class draggable_t
  * @parent widget_t
  * @annotation ["scriptable","design","widget"]
- * 
+ *
  * 将draggable放入目标控件，即可让目标控件或当前窗口可以被拖动。
- * 
+ *
  * draggable\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于draggable\_t控件。
  *
  * 在xml中使用"draggable"标签创建draggable控件。如：
@@ -220,7 +220,6 @@ ret_t draggable_set_horizontal_only(widget_t* widget, bool_t horizontal_only);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t draggable_set_drag_window(widget_t* widget, bool_t drag_window);
-
 
 #define DRAGGABLE_PROP_TOP "top"
 #define DRAGGABLE_PROP_BOTTOM "bottom"
