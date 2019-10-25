@@ -114,20 +114,6 @@ typedef struct _draggable_t {
    */
   bool_t drag_window;
 
-  /**
-   * @property {bool_t} inertia
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 启用惯性效果。
-   */
-  bool_t inertia;
-
-  /**
-   * @property {bool_t} go_or_back
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 要么拖动到指定位置，要么返回原来的位置。
-   */
-  bool_t go_or_back;
-
   /*private*/
   point_t down;
   point_t saved_position;
@@ -235,37 +221,14 @@ ret_t draggable_set_horizontal_only(widget_t* widget, bool_t horizontal_only);
  */
 ret_t draggable_set_drag_window(widget_t* widget, bool_t drag_window);
 
-/**
- * @method draggable_set_inertia
- * 设置inertia。
- * @annotation ["scriptable"]
- * @param {widget_t*} widget widget对象。
- * @param {uint32_t} inertia 启用惯性效果。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t draggable_set_inertia(widget_t* widget, bool_t inertia);
-
-/**
- * @method draggable_set_go_or_back
- * 设置go_or_back。
- * @annotation ["scriptable"]
- * @param {widget_t*} widget widget对象。
- * @param {uint32_t} go_or_back 要么拖动到指定位置，要么返回原来的位置。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t draggable_set_go_or_back(widget_t* widget, bool_t go_or_back);
 
 #define DRAGGABLE_PROP_TOP "top"
 #define DRAGGABLE_PROP_BOTTOM "bottom"
 #define DRAGGABLE_PROP_LEFT "left"
 #define DRAGGABLE_PROP_RIGHT "right"
+#define DRAGGABLE_PROP_DRAG_WINDOW "drag_window"
 #define DRAGGABLE_PROP_VERTICAL_ONLY "vertical_only"
 #define DRAGGABLE_PROP_HORIZONTAL_ONLY "horizontal_only"
-#define DRAGGABLE_PROP_DRAG_WINDOW "drag_window"
-#define DRAGGABLE_PROP_INERTIA "inertia"
-#define DRAGGABLE_PROP_GO_OR_BACK "go_or_back"
 
 #define WIDGET_TYPE_DRAGGABLE "draggable"
 #define DRAGGABLE_UNSPECIFIED_NUM 0x1fffffff
