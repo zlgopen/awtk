@@ -86,24 +86,6 @@ ret_t draggable_set_drag_window(widget_t* widget, bool_t drag_window) {
   return RET_OK;
 }
 
-ret_t draggable_set_inertia(widget_t* widget, bool_t inertia) {
-  draggable_t* draggable = DRAGGABLE(widget);
-  return_value_if_fail(draggable != NULL, RET_BAD_PARAMS);
-
-  draggable->inertia = inertia;
-
-  return RET_OK;
-}
-
-ret_t draggable_set_go_or_back(widget_t* widget, bool_t go_or_back) {
-  draggable_t* draggable = DRAGGABLE(widget);
-  return_value_if_fail(draggable != NULL, RET_BAD_PARAMS);
-
-  draggable->go_or_back = go_or_back;
-
-  return RET_OK;
-}
-
 static ret_t draggable_get_prop(widget_t* widget, const char* name, value_t* v) {
   draggable_t* draggable = DRAGGABLE(widget);
   return_value_if_fail(draggable != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
@@ -128,12 +110,6 @@ static ret_t draggable_get_prop(widget_t* widget, const char* name, value_t* v) 
     return RET_OK;
   } else if (tk_str_eq(DRAGGABLE_PROP_DRAG_WINDOW, name)) {
     value_set_bool(v, draggable->drag_window);
-    return RET_OK;
-  } else if (tk_str_eq(DRAGGABLE_PROP_INERTIA, name)) {
-    value_set_bool(v, draggable->inertia);
-    return RET_OK;
-  } else if (tk_str_eq(DRAGGABLE_PROP_GO_OR_BACK, name)) {
-    value_set_bool(v, draggable->go_or_back);
     return RET_OK;
   }
 
@@ -165,12 +141,6 @@ static ret_t draggable_set_prop(widget_t* widget, const char* name, const value_
   } else if (tk_str_eq(DRAGGABLE_PROP_DRAG_WINDOW, name)) {
     draggable_set_drag_window(widget, value_bool(v));
     return RET_OK;
-  } else if (tk_str_eq(DRAGGABLE_PROP_INERTIA, name)) {
-    draggable_set_inertia(widget, value_bool(v));
-    return RET_OK;
-  } else if (tk_str_eq(DRAGGABLE_PROP_GO_OR_BACK, name)) {
-    draggable_set_go_or_back(widget, value_bool(v));
-    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -186,10 +156,6 @@ static ret_t draggable_on_destroy(widget_t* widget) {
 }
 
 static ret_t draggable_on_paint_self(widget_t* widget, canvas_t* c) {
-  draggable_t* draggable = DRAGGABLE(widget);
-
-  (void)draggable;
-
   return RET_OK;
 }
 
@@ -251,8 +217,18 @@ static ret_t draggable_on_parent_pointer_move(void* ctx, event_t* e) {
 
 static ret_t draggable_on_parent_pointer_up(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
+  draggable_t* draggable = DRAGGABLE(widget);
+  widget_t* target = draggable->drag_window ? widget_get_window(widget) : widget->parent;
+  int32_t dx = target->x - draggable->saved_position.x;
+  int32_t dy = target->y - draggable->saved_position.y;
 
-  widget_grab(widget->parent->parent, widget->parent);
+  if(tk_abs(dx) > 5 || tk_abs(dy) > 5) {
+    pointer_event_t abort;
+    pointer_event_init(&abort, EVT_POINTER_DOWN_ABORT, NULL, 0, 0);
+    widget_dispatch(widget->parent, (event_t*)&abort);
+  }
+
+  widget_ungrab(widget->parent->parent, widget->parent);
 
   return RET_OK;
 }
@@ -260,9 +236,9 @@ static ret_t draggable_on_parent_pointer_up(void* ctx, event_t* e) {
 static ret_t draggable_on_attach_parent(widget_t* widget, widget_t* parent) {
   draggable_t* draggable = DRAGGABLE(widget);
 
-  widget_on(parent, EVT_POINTER_DOWN, draggable_on_parent_pointer_down, draggable);
-  widget_on(parent, EVT_POINTER_MOVE, draggable_on_parent_pointer_move, draggable);
-  widget_on(parent, EVT_POINTER_UP, draggable_on_parent_pointer_up, draggable);
+  widget_on(parent, EVT_POINTER_DOWN_BEFORE_CHILDREN, draggable_on_parent_pointer_down, draggable);
+  widget_on(parent, EVT_POINTER_MOVE_BEFORE_CHILDREN, draggable_on_parent_pointer_move, draggable);
+  widget_on(parent, EVT_POINTER_UP_BEFORE_CHILDREN, draggable_on_parent_pointer_up, draggable);
 
   return RET_OK;
 }
@@ -288,8 +264,8 @@ const char* s_draggable_properties[] = {
     DRAGGABLE_PROP_TOP,           DRAGGABLE_PROP_BOTTOM,
     DRAGGABLE_PROP_LEFT,          DRAGGABLE_PROP_RIGHT,
     DRAGGABLE_PROP_VERTICAL_ONLY, DRAGGABLE_PROP_HORIZONTAL_ONLY,
-    DRAGGABLE_PROP_DRAG_WINDOW,   DRAGGABLE_PROP_INERTIA,
-    DRAGGABLE_PROP_GO_OR_BACK,    NULL};
+    DRAGGABLE_PROP_DRAG_WINDOW,   
+    NULL};
 
 TK_DECL_VTABLE(draggable) = {.size = sizeof(draggable_t),
                              .type = WIDGET_TYPE_DRAGGABLE,
@@ -317,8 +293,6 @@ widget_t* draggable_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   draggable->vertical_only = FALSE;
   draggable->horizontal_only = FALSE;
   draggable->drag_window = FALSE;
-  draggable->inertia = FALSE;
-  draggable->go_or_back = FALSE;
   widget_set_sensitive(widget, FALSE);
 
   return widget;
