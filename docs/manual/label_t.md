@@ -18,7 +18,7 @@
  ```
 
  > 更多用法请参考：[label.xml](
-https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/label.xml)
+https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/label.xml)
 
  在c代码中使用函数label\_create创建文本控件。如：
 
@@ -42,7 +42,7 @@ https://github.com/zlgopen/awtk-c-demos/blob/master/demos/label.c)
 
  > 更多用法请参考：
  [theme default](
-https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L144)
+https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L144)
 
 
 ----------------------------------

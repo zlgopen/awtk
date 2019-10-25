@@ -19,7 +19,7 @@
 
  >更多用法请参考：
  [mutable
- image](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/mutable_image.xml)
+ image](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/mutable_image.xml)
 
  在c代码中使用函数mutable\_image\_create创建mutable图片控件。如：
 

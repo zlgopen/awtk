@@ -19,7 +19,7 @@
  ```
 
  > 更多用法请参考：
- [button.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/basic.xml)
+ [button.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/basic.xml)
 
  在c代码中使用函数check\_button\_create创建多选按钮控件。如：
 
@@ -55,7 +55,7 @@
 
  > 更多用法请参考：
  [theme
- default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L227)
+ default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L227)
 
 
 ----------------------------------

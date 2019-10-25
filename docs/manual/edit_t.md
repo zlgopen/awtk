@@ -27,7 +27,7 @@
  > XXX：需要在min/max/step之前设置input\_type。
 
  >更多用法请参考：
- [edit.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/edit.xml)
+ [edit.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/edit.xml)
 
  在c代码中使用函数edit\_create创建编辑器控件。如：
 
@@ -55,7 +55,7 @@
 
  > 更多用法请参考：
  [theme
-default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L104)
+default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L104)
 
 
 ----------------------------------

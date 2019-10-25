@@ -75,7 +75,7 @@ typedef widget_t* (*combo_box_custom_open_popup_t)(widget_t* combobox);
  * ```
  *
  * >
- * 更多用法请参考：[combo_box.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/combo_box.xml)
+ * 更多用法请参考：[combo_box.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/combo_box.xml)
  *
  * 在c代码中使用函数combo\_box\_create创建下拉列表控件。如：
  *
@@ -108,7 +108,7 @@ typedef widget_t* (*combo_box_custom_open_popup_t)(widget_t* combobox);
  * ```
  *
  * > 更多用法请参考：[theme
- *default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L422)
+ *default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L422)
  *
  */
 typedef struct _combo_box_t {

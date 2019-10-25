@@ -17,7 +17,7 @@
  ```
 
  > 更多用法请参考：
- [button.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/ui/button.xml)
+ [button.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/button.xml)
 
  在c代码中使用函数button\_create创建按钮控件。如：
 
@@ -45,7 +45,7 @@
 
  > 更多用法请参考：
  [theme
- default](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml#L31)
+ default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L31)
 
 
 ----------------------------------
