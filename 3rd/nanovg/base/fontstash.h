@@ -93,6 +93,8 @@ typedef struct FONScontext FONScontext;
 FONScontext* fonsCreateInternal(FONSparams* params);
 void fonsDeleteInternal(FONScontext* s);
 
+void fontsDeleteFontByName(FONScontext* stash, const char* name);
+
 void fonsSetErrorCallback(FONScontext* s, void (*callback)(void* uptr, int error, int val), void* uptr);
 // Returns current atlas size.
 void fonsGetAtlasSize(FONScontext* s, int* width, int* height);
@@ -1626,6 +1628,35 @@ int fonsValidateTexture(FONScontext* stash, int* dirty)
 		return 1;
 	}
 	return 0;
+}
+
+void fontsDeleteFontByName(FONScontext* stash, const char* name)
+{
+	int id = 0;
+	if (stash == NULL) return;
+	if(name == NULL) {
+		for (id = 0; id < stash->nfonts; ++id) {
+			fons__freeFont(stash->fonts[id]);
+		}
+		stash->nfonts = 0;
+	}
+	else {
+		id = fonsGetFontByName(stash, name);
+		if(id >= 0) {
+			fons__freeFont(stash->fonts[id]);
+
+			for(; id < stash->nfonts; id++) {
+				if(id + 1 < stash->nfonts) {
+					stash->fonts[id] = stash->fonts[id + 1];
+				}
+				else {
+					stash->fonts[id] = NULL;
+					break;
+				}
+			}
+			stash->nfonts--;
+		}
+	}
 }
 
 void fonsDeleteInternal(FONScontext* stash)
