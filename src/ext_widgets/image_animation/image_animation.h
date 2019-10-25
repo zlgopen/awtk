@@ -246,7 +246,7 @@ ret_t image_animation_play(widget_t* widget);
 
 /**
  * @method image_animation_stop
- * 停止(并重置index为0)。
+ * 停止(并重置index为-1)。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget image_animation对象。
  *
