@@ -4,7 +4,6 @@
 
  对象属性变化事件。
 
-
 ----------------------------------
 ### 函数
 <p id="prop_change_event_t_methods">
@@ -28,7 +27,6 @@
 
 
 
-
 * 函数原型：
 
 ```
@@ -46,7 +44,6 @@ prop_change_event_t* prop_change_event_cast (event_t* event);
 > <p id="prop_change_event_t_name"> 属性的名称。
 
 
-
 * 类型：const char*
 
 | 特性 | 是否支持 |
@@ -57,7 +54,6 @@ prop_change_event_t* prop_change_event_cast (event_t* event);
 #### value 属性
 -----------------------
 > <p id="prop_change_event_t_value"> 属性的值。
-
 
 
 * 类型：const value\_t*

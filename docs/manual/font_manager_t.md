@@ -3,7 +3,6 @@
  字体管理器，负责字体的加载和缓存管理。
  (如果使用nanovg，字体由nanovg内部管理)
 
-
 ----------------------------------
 ### 函数
 <p id="font_manager_t_methods">
@@ -34,7 +33,6 @@
 > <p id="font_manager_t_font_manager"> 获取缺省的字体管理器。
 
 
-
 * 函数原型：
 
 ```
@@ -52,7 +50,6 @@ font_manager_t* font_manager ();
 * 函数功能：
 
 > <p id="font_manager_t_font_manager_add_font"> 向缓存中加入字体。
-
 
 
 
@@ -79,7 +76,6 @@ ret_t font_manager_add_font (font_manager_t* fm, char* name, font_t* font);
 
 
 
-
 * 函数原型：
 
 ```
@@ -98,7 +94,6 @@ font_manager_t* font_manager_create (font_loader_t* loader);
 * 函数功能：
 
 > <p id="font_manager_t_font_manager_deinit"> 析构字体管理器。
-
 
 
 
@@ -123,7 +118,6 @@ ret_t font_manager_deinit (font_manager_t* fm);
 
 
 
-
 * 函数原型：
 
 ```
@@ -142,7 +136,6 @@ ret_t font_manager_destroy (font_manager_t* fm);
 * 函数功能：
 
 > <p id="font_manager_t_font_manager_get_font"> 从缓存中查找字体，如果没找到，再加载字体，并缓存。
-
 
 
 
@@ -169,7 +162,6 @@ font_t* font_manager_get_font (font_manager_t* fm, char* name, font_size_t size)
 
 
 
-
 * 函数原型：
 
 ```
@@ -189,7 +181,6 @@ font_manager_t* font_manager_init (font_manager_t* fm, font_loader_t* loader);
 * 函数功能：
 
 > <p id="font_manager_t_font_manager_set"> 设置缺省的字体管理器。
-
 
 
 
@@ -222,7 +213,6 @@ ret_t font_manager_set (font_manager_t* fm);
 
 
 
-
 * 函数原型：
 
 ```
@@ -245,7 +235,6 @@ ret_t font_manager_set_assets_manager (font_manager_t* imm, assets_manager_t* as
 
 
 
-
 * 函数原型：
 
 ```
@@ -264,7 +253,6 @@ ret_t font_manager_unload_all (font_manager_t* fm);
 * 函数功能：
 
 > <p id="font_manager_t_font_manager_unload_font"> 卸载指定的字体。
-
 
 
 

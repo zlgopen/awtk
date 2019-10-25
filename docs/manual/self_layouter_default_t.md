@@ -9,7 +9,6 @@
 https://github.com/zlgopen/awtk/blob/master/docs/self_layouter_default.md)
 
 
-
 ----------------------------------
 ### 函数
 <p id="self_layouter_default_t_methods">
@@ -24,7 +23,6 @@ https://github.com/zlgopen/awtk/blob/master/docs/self_layouter_default.md)
 
 > <p id="self_layouter_default_t_self_layouter_default_create">
  创建控件自身布局对象。
-
 
 
 

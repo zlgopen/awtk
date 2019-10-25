@@ -8,7 +8,6 @@
  一般用于串口通信。
 
 
-
 ----------------------------------
 ### 函数
 <p id="tk_iostream_shdlc_t_methods">
@@ -25,7 +24,6 @@
  创建iostream对象。
 
  本函数自动增加real_iostream的引用计数。
-
 
 
 

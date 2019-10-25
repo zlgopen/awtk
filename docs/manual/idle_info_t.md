@@ -5,7 +5,6 @@
 
  单个idle的信息。
 
-
 ----------------------------------
 ### 函数
 <p id="idle_info_t_methods">
@@ -32,7 +31,6 @@
 
 
 
-
 * 函数原型：
 
 ```
@@ -50,7 +48,6 @@ idle_info_t* idle_info_cast (idle_info_t* idle);
 > <p id="idle_info_t_ctx"> idle回调函数上下文。
 
 
-
 * 类型：void*
 
 | 特性 | 是否支持 |
@@ -65,7 +62,6 @@ idle_info_t* idle_info_cast (idle_info_t* idle);
  > 为TK\_INVALID\_ID时表示无效idle。
 
 
-
 * 类型：uint32\_t
 
 | 特性 | 是否支持 |
@@ -76,7 +72,6 @@ idle_info_t* idle_info_cast (idle_info_t* idle);
 #### on\_destroy 属性
 -----------------------
 > <p id="idle_info_t_on_destroy"> idle销毁时的回调函数。
-
 
 
 * 类型：tk\_destroy\_t
@@ -90,7 +85,6 @@ idle_info_t* idle_info_cast (idle_info_t* idle);
 > <p id="idle_info_t_on_destroy_ctx"> idle销毁时的回调函数的上下文。
 
 
-
 * 类型：tk\_destroy\_t
 
 | 特性 | 是否支持 |
@@ -100,7 +94,6 @@ idle_info_t* idle_info_cast (idle_info_t* idle);
 #### on\_idle 属性
 -----------------------
 > <p id="idle_info_t_on_idle"> idle回调函数。
-
 
 
 * 类型：idle\_func\_t

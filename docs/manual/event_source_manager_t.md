@@ -4,7 +4,6 @@
  事件源管理器。
 
 
-
 ----------------------------------
 ### 函数
 <p id="event_source_manager_t_methods">
@@ -25,7 +24,6 @@
 
 > <p id="event_source_manager_t_event_source_manager_add">
  增加事件源对象。
-
 
 
 
@@ -56,7 +54,6 @@ ret_t event_source_manager_add (event_source_manager_t* manager, event_source_t*
 
 
 
-
 * 函数原型：
 
 ```
@@ -76,7 +73,6 @@ ret_t event_source_manager_deinit (event_source_manager_t* manager);
 
 > <p id="event_source_manager_t_event_source_manager_destroy">
  销毁事件源管理器。
-
 
 
 
@@ -106,7 +102,6 @@ ret_t event_source_manager_destroy (event_source_manager_t* manager);
 
 
 
-
 * 函数原型：
 
 ```
@@ -126,7 +121,6 @@ ret_t event_source_manager_dispatch (event_source_manager_t* manager);
 
 > <p id="event_source_manager_t_event_source_manager_get_wakeup_time">
  获取wakeup时间(ms)
-
 
 
 
@@ -156,7 +150,6 @@ uint32_t event_source_manager_get_wakeup_time (event_source_manager_t* manager);
 
 
 
-
 * 函数原型：
 
 ```
@@ -176,7 +169,6 @@ ret_t event_source_manager_init (event_source_manager_t* manager);
 
 > <p id="event_source_manager_t_event_source_manager_remove">
  移除事件源对象。
-
 
 
 

@@ -6,7 +6,6 @@
  input stream interface
 
 
-
 ----------------------------------
 ### 函数
 <p id="tk_istream_t_methods">
@@ -26,7 +25,6 @@
 
 > <p id="tk_istream_t_tk_istream_flush">
  刷新数据。
-
 
 
 
@@ -56,7 +54,6 @@ ret_t tk_istream_flush (tk_istream_t* stream);
 
 
 
-
 * 函数原型：
 
 ```
@@ -78,7 +75,6 @@ int32_t tk_istream_read (tk_istream_t* stream, uint8_t* buff, uint32_t max_size)
 
 > <p id="tk_istream_t_tk_istream_read_len">
  读取指定长度的数据。
-
 
 
 
@@ -111,7 +107,6 @@ int32_t tk_istream_read_len (tk_istream_t* stream, uint8_t* buff, uint32_t max_s
 
 
 
-
 * 函数原型：
 
 ```
@@ -139,7 +134,6 @@ int32_t tk_istream_read_line (tk_istream_t* stream, uint8_t* buff, uint32_t max_
 
 
 
-
 * 函数原型：
 
 ```
@@ -160,7 +154,6 @@ ret_t tk_istream_seek (tk_istream_t* stream, uint32_t offset);
 
 > <p id="tk_istream_t_tk_istream_wait_for_data">
  等待数据。
-
 
 
 

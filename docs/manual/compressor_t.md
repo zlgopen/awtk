@@ -4,7 +4,6 @@
  compressor interface
 
 
-
 ----------------------------------
 ### 函数
 <p id="compressor_t_methods">
@@ -21,7 +20,6 @@
 
 > <p id="compressor_t_compressor_compress">
  压缩数据。
-
 
 
 
@@ -54,7 +52,6 @@ ret_t compressor_compress (compressor_t* compressor, const void* data, uint32_t 
 
 
 
-
 * 函数原型：
 
 ```
@@ -74,7 +71,6 @@ ret_t compressor_destroy (compressor_t* compressor);
 
 > <p id="compressor_t_compressor_uncompress">
  解压数据。
-
 
 
 

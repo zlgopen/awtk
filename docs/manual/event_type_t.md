@@ -1,7 +1,6 @@
 ## event\_type\_t
 ### 概述
  类型常量定义。
-
 ### 常量
 <p id="event_type_t_consts">
 
@@ -14,6 +13,7 @@
 | EVT\_POINTER\_UP | 指针抬起事件名(pointer\_event\_t)。 |
 | EVT\_POINTER\_UP\_BEFORE\_CHILDREN | 指针抬起事件名，在子控件处理之前触发(pointer\_event\_t)。 |
 | EVT\_WHEEL | 滚轮事件名(pointer\_event\_t)。 |
+| EVT\_WHEEL\_BEFORE\_CHILDREN | 鼠标滚轮事件名，在子控件处理之前触发(key\_event\_t)。 |
 | EVT\_POINTER\_DOWN\_ABORT | 取消前一个指针按下事件名(pointer\_event\_t)。 |
 | EVT\_CONTEXT\_MENU | 右键/长按弹出上下文菜单的事件名(pointer\_event\_t)。 |
 | EVT\_POINTER\_ENTER | 指针进入事件名(pointer\_event\_t)。 |

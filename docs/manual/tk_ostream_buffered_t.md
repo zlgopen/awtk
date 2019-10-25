@@ -6,7 +6,6 @@
  先将数据写入一个缓存区，调用flush时才真正写入底层的ostream。
 
 
-
 ----------------------------------
 ### 函数
 <p id="tk_ostream_buffered_t_methods">
@@ -24,7 +23,6 @@
  创建ostream对象。
 
  本函数自动增加real_ostream的引用计数。
-
 
 
 
@@ -49,7 +47,6 @@ tk_ostream_t* tk_ostream_buffered_create (tk_ostream_t* real_ostream);
 
 > <p id="tk_ostream_buffered_t_tk_ostream_buffered_get_size">
  获取当前缓存数据的长度。
-
 
 
 

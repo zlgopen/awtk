@@ -5,7 +5,6 @@
  负责管理缺省的主题数据，方便实现style\_const。
 
 
-
 ----------------------------------
 ### 函数
 <p id="theme_t_methods">
@@ -27,7 +26,6 @@
 > <p id="theme_t_theme"> 获取缺省的主题对象。
 
 
-
 * 函数原型：
 
 ```
@@ -45,7 +43,6 @@ theme_t* theme ();
 * 函数功能：
 
 > <p id="theme_t_theme_create"> 创建主题对象。
-
 
 
 
@@ -70,7 +67,6 @@ theme_t* theme_create (const uint8_t* data);
 
 
 
-
 * 函数原型：
 
 ```
@@ -92,7 +88,6 @@ ret_t theme_deinit (theme_t* theme);
 
 
 
-
 * 函数原型：
 
 ```
@@ -111,7 +106,6 @@ ret_t theme_destroy (theme_t* theme);
 * 函数功能：
 
 > <p id="theme_t_theme_find_style"> 查找满足条件的style。
-
 
 
 
@@ -139,7 +133,6 @@ theme_t* theme_find_style (theme_t* data, const char* widget_type, const char* n
 
 
 
-
 * 函数原型：
 
 ```
@@ -159,7 +152,6 @@ theme_t* theme_init (theme_t* theme, const uint8_t* data);
 * 函数功能：
 
 > <p id="theme_t_theme_set"> 设置缺省的主题对象。
-
 
 
 

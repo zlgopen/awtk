@@ -27,7 +27,6 @@
  time\_clock一般不需要设置style。
 
 
-
 ----------------------------------
 ### 函数
 <p id="mledit_t_methods">
@@ -70,7 +69,6 @@
 
 
 
-
 * 函数原型：
 
 ```
@@ -89,7 +87,6 @@ widget_t* mledit_cast (widget_t* widget);
 * 函数功能：
 
 > <p id="mledit_t_mledit_create"> 创建mledit对象
-
 
 
 
@@ -118,7 +115,6 @@ widget_t* mledit_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 
 
-
 * 函数原型：
 
 ```
@@ -138,7 +134,6 @@ ret_t mledit_set_focus (widget_t* widget, bool_t focus);
 * 函数功能：
 
 > <p id="mledit_t_mledit_set_input_tips"> 设置编辑器的输入提示。
-
 
 
 
@@ -164,7 +159,6 @@ ret_t mledit_set_input_tips (widget_t* widget, char* tips);
 
 
 
-
 * 函数原型：
 
 ```
@@ -184,7 +178,6 @@ ret_t mledit_set_max_lines (widget_t* widget, uint32_t max_lines);
 * 函数功能：
 
 > <p id="mledit_t_mledit_set_readonly"> 设置编辑器是否为只读。
-
 
 
 
@@ -210,7 +203,6 @@ ret_t mledit_set_readonly (widget_t* widget, bool_t readonly);
 
 
 
-
 * 函数原型：
 
 ```
@@ -229,7 +221,6 @@ ret_t mledit_set_wrap_word (widget_t* widget, bool_t wrap_word);
 > <p id="mledit_t_bottom_margin"> 下边距。
 
 
-
 * 类型：uint8\_t
 
 | 特性 | 是否支持 |
@@ -244,7 +235,6 @@ ret_t mledit_set_wrap_word (widget_t* widget, bool_t wrap_word);
 > <p id="mledit_t_left_margin"> 左边距。
 
 
-
 * 类型：uint8\_t
 
 | 特性 | 是否支持 |
@@ -257,7 +247,6 @@ ret_t mledit_set_wrap_word (widget_t* widget, bool_t wrap_word);
 #### max\_lines 属性
 -----------------------
 > <p id="mledit_t_max_lines"> 最大行数。
-
 
 
 * 类型：uint32\_t
@@ -277,7 +266,6 @@ ret_t mledit_set_wrap_word (widget_t* widget, bool_t wrap_word);
 > <p id="mledit_t_readonly"> 编辑器是否为只读。
 
 
-
 * 类型：bool\_t
 
 | 特性 | 是否支持 |
@@ -295,7 +283,6 @@ ret_t mledit_set_wrap_word (widget_t* widget, bool_t wrap_word);
 > <p id="mledit_t_right_margin"> 右边距。
 
 
-
 * 类型：uint8\_t
 
 | 特性 | 是否支持 |
@@ -308,7 +295,6 @@ ret_t mledit_set_wrap_word (widget_t* widget, bool_t wrap_word);
 #### tips 属性
 -----------------------
 > <p id="mledit_t_tips"> 输入提示。
-
 
 
 * 类型：char*
@@ -328,7 +314,6 @@ ret_t mledit_set_wrap_word (widget_t* widget, bool_t wrap_word);
 > <p id="mledit_t_top_margin"> 上边距。
 
 
-
 * 类型：uint8\_t
 
 | 特性 | 是否支持 |
@@ -341,7 +326,6 @@ ret_t mledit_set_wrap_word (widget_t* widget, bool_t wrap_word);
 #### wrap\_word 属性
 -----------------------
 > <p id="mledit_t_wrap_word"> 是否自动折行。
-
 
 
 * 类型：bool\_t
