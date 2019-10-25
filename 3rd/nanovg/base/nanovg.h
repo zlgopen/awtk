@@ -388,6 +388,9 @@ void nvgImageSize(NVGcontext* ctx, int image, int* w, int* h);
 // Deletes created image.
 void nvgDeleteImage(NVGcontext* ctx, int image);
 
+// Deletes font's assets for font's name.
+void nvgDeleteFontByName(NVGcontext* ctx, const char* name);
+
 //
 // Paints
 //

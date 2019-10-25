@@ -3204,7 +3204,7 @@ bool_t widget_is_popup(widget_t* widget) {
 ret_t widget_reset_canvas(widget_t* widget) {
   widget_t* win = widget_get_window(widget);
   return_value_if_fail(win != NULL, RET_BAD_PARAMS);
+  canvas_t* c = widget_get_canvas(win);
 
-  return object_exec(OBJECT(widget_get_prop_pointer(win, WIDGET_PROP_NATIVE_WINDOW)),
-                     "reset_canvas", "");
+  return vgcanvas_reset(canvas_get_vgcanvas(c));
 }

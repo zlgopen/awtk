@@ -8,7 +8,8 @@
 
 static ret_t vgcanvas_nanovg_reset(vgcanvas_t* vgcanvas) {
   /*TODO: unload fonts*/
-
+  NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
+  nvgDeleteFontByName(vg, NULL);
   return RET_OK;
 }
 
