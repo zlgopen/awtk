@@ -45,7 +45,8 @@ BEGIN_C_DECLS
  * ```
  *
  * >更多用法请参考：
- * [gif image](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/gif_image.xml)
+ * [gif
+ * image](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/gif_image.xml)
  *
  * 在c代码中使用函数gif\_image\_create创建GIF图片控件。如：
  *

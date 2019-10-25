@@ -63,7 +63,8 @@ BEGIN_C_DECLS
  * ```
  *
  * > 更多用法请参考：
- * [theme default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml)
+ * [theme
+ * default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml)
  *
  */
 typedef struct _guage_t {
