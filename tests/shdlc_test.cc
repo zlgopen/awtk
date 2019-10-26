@@ -200,7 +200,7 @@ TEST(SHDLC, data_error) {
   wb->data[7] = 'd';
   istream = tk_istream_mem_create(wb->data, wb->cursor, 0, FALSE);
 
-  ASSERT_EQ(shdlc_read_data(istream, wb_r, 1000), RET_IO);
+  ASSERT_EQ(shdlc_read_data(istream, wb_r, 1000), RET_TIMEOUT);
 
   OBJECT_UNREF(istream);
   wbuffer_deinit(wb);
