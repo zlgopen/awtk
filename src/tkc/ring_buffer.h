@@ -182,6 +182,17 @@ uint32_t ring_buffer_write(ring_buffer_t* ring_buffer, const void* buff, uint32_
 ret_t ring_buffer_read_len(ring_buffer_t* ring_buffer, void* buff, uint32_t size);
 
 /**
+ * @method ring_buffer_skip
+ * 跳过指定长度数据，要么成功要么失败。
+ *
+ * @param {ring_buffer_t*} ring_buffer ring_buffer对象。
+ * @param {uint32_t} size 长度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t ring_buffer_skip(ring_buffer_t* ring_buffer, uint32_t size);
+
+/**
  * @method ring_buffer_write_len
  * 写入指定长度数据，要么成功要么失败。
  *
@@ -246,6 +257,17 @@ ret_t ring_buffer_set_write_cursor(ring_buffer_t* ring_buffer, uint32_t w);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t ring_buffer_set_write_cursor_delta(ring_buffer_t* ring_buffer, uint32_t w_delta);
+
+/**
+ * @method ring_buffer_ensure_write_space
+ * 扩展buffer。
+ *
+ * @param {ring_buffer_t*} ring_buffer ring_buffer对象。
+ * @param {uint32_t} size 需要的大小。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t ring_buffer_ensure_write_space(ring_buffer_t* ring_buffer, uint32_t size);
 
 /**
  * @method ring_buffer_destroy
