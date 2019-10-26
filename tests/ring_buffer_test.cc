@@ -170,3 +170,35 @@ TEST(RingBuffer, extendable) {
 
   ring_buffer_destroy(rb);
 }
+
+TEST(RingBuffer, write_skip_read) {
+  char buff[32];
+  ring_buffer_t* rb = ring_buffer_create(32, 32);
+
+  memset(buff, 0x00, sizeof(buff));
+  ASSERT_EQ(ring_buffer_write(rb, "1234567890", 10), 10);
+  ASSERT_EQ(ring_buffer_skip(rb, 4), RET_OK);
+  ASSERT_EQ(ring_buffer_size(rb), 6);
+  ASSERT_EQ(ring_buffer_read(rb, buff, 4), 4);
+  ASSERT_STREQ(buff, "5678");
+  ASSERT_EQ(ring_buffer_size(rb), 2);
+
+  ASSERT_EQ(ring_buffer_write(rb, "1234567890", 10), 10);
+  ASSERT_EQ(ring_buffer_size(rb), 12);
+  ASSERT_EQ(ring_buffer_write(rb, "1234567890", 10), 10);
+  ASSERT_EQ(ring_buffer_size(rb), 22);
+  ASSERT_EQ(ring_buffer_write(rb, "abcdABCD", 8), 8);
+  ASSERT_EQ(ring_buffer_size(rb), 30);
+  ASSERT_EQ(ring_buffer_skip(rb, 22), RET_OK);
+  ASSERT_EQ(ring_buffer_size(rb), 8);
+
+  ASSERT_EQ(ring_buffer_read(rb, buff, 4), 4);
+  ASSERT_STREQ(buff, "abcd");
+  ASSERT_EQ(ring_buffer_size(rb), 4);
+  ASSERT_EQ(ring_buffer_read(rb, buff, 4), 4);
+  ASSERT_STREQ(buff, "ABCD");
+  ASSERT_EQ(ring_buffer_size(rb), 0);
+
+  ring_buffer_destroy(rb);
+}
+

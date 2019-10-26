@@ -22,8 +22,6 @@
 #include "tkc/mem.h"
 #include "tkc/ring_buffer.h"
 
-static ret_t ring_buffer_extend(ring_buffer_t* ring_buffer, uint32_t size);
-
 ring_buffer_t* ring_buffer_create(uint32_t init_capacity, uint32_t max_capacity) {
   ring_buffer_t* ring_buffer = NULL;
   return_value_if_fail(init_capacity >= 32, NULL);
@@ -181,7 +179,7 @@ uint32_t ring_buffer_peek(ring_buffer_t* ring_buffer, void* buff, uint32_t size)
 uint32_t ring_buffer_write(ring_buffer_t* ring_buffer, const void* buff, uint32_t size) {
   return_value_if_fail(ring_buffer != NULL && buff != NULL, 0);
 
-  ring_buffer_extend(ring_buffer, size);
+  ring_buffer_ensure_write_space(ring_buffer, size);
   if (size == 0 || ring_buffer_free_size(ring_buffer) == 0) {
     return 0;
   }
@@ -238,7 +236,19 @@ ret_t ring_buffer_read_len(ring_buffer_t* ring_buffer, void* buff, uint32_t size
   }
 }
 
-static ret_t ring_buffer_extend(ring_buffer_t* ring_buffer, uint32_t size) {
+ret_t ring_buffer_skip(ring_buffer_t* ring_buffer, uint32_t size) {
+  return_value_if_fail(ring_buffer != NULL, RET_BAD_PARAMS);
+
+  if (ring_buffer_size(ring_buffer) >= size) {
+    ring_buffer->r = (ring_buffer->r + size) % ring_buffer->capacity;
+    
+    return RET_OK;
+  } else {
+    return RET_FAIL;
+  }
+}
+
+ret_t ring_buffer_ensure_write_space(ring_buffer_t* ring_buffer, uint32_t size) {
   uint32_t free_size = ring_buffer_free_size(ring_buffer);
   if (free_size >= size) {
     return RET_OK;
@@ -267,7 +277,7 @@ static ret_t ring_buffer_extend(ring_buffer_t* ring_buffer, uint32_t size) {
 ret_t ring_buffer_write_len(ring_buffer_t* ring_buffer, const void* buff, uint32_t size) {
   return_value_if_fail(ring_buffer != NULL && buff != NULL, RET_BAD_PARAMS);
 
-  if (ring_buffer_extend(ring_buffer, size) == RET_OK) {
+  if (ring_buffer_ensure_write_space(ring_buffer, size) == RET_OK) {
     return ring_buffer_write(ring_buffer, buff, size) == size ? RET_OK : RET_FAIL;
   } else {
     return RET_FAIL;
