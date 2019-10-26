@@ -1,5 +1,11 @@
 # 最新动态
 
+* 2019/10/27
+  * 增加ostream\_retry。
+
+* 2019/10/26
+  * 完善ring buffer。
+
 * 2019/10/25
   * widget\_off\_by_\ctx/on\_detach\_parent/on\_attach\_parent
   * 增加draggable控件。
