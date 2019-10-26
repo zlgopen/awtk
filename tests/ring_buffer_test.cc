@@ -201,4 +201,3 @@ TEST(RingBuffer, write_skip_read) {
 
   ring_buffer_destroy(rb);
 }
-

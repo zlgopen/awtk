@@ -241,7 +241,7 @@ ret_t ring_buffer_skip(ring_buffer_t* ring_buffer, uint32_t size) {
 
   if (ring_buffer_size(ring_buffer) >= size) {
     ring_buffer->r = (ring_buffer->r + size) % ring_buffer->capacity;
-    
+
     return RET_OK;
   } else {
     return RET_FAIL;
