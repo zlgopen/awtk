@@ -49,7 +49,11 @@ tk_semaphore_t* tk_semaphore_create(uint32_t value, const char* name) {
     semaphore = NULL;
   }
 #elif defined(WIN32)
-  semaphore->sem = CreateSemaphore(NULL, MAX_RUNNUM, MAX_RUNNUM, name);
+  semaphore->sem = CreateSemaphore(NULL, value, INT_MAX, name);
+  if (semaphore->sem == NULL) {
+    TKMEM_FREE(semaphore);
+    semaphore = NULL;
+  }
 #endif /*HAS_PTHREAD*/
 
   return semaphore;
@@ -86,7 +90,7 @@ ret_t tk_semaphore_post(tk_semaphore_t* semaphore) {
 #ifdef HAS_PTHREAD
   return_value_if_fail(sem_post(semaphore->sem) == 0, RET_FAIL);
 #elif defined(WIN32)
-  ReleaseSemaphore(semaphore->sem, 1, NULL);
+  return_value_if_fail(ReleaseSemaphore(semaphore->sem, 1, NULL), RET_FAIL);
 #endif /*HAS_PTHREAD*/
 
   return RET_OK;

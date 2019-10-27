@@ -13,7 +13,7 @@ static void* thread_entry(void* args) {
 }
 
 TEST(Semaphore, basic) {
-  tk_semaphore_t* sem = tk_semaphore_create(1, "hello");
+  tk_semaphore_t* sem = tk_semaphore_create(0, "hello");
   tk_thread_t* thread = tk_thread_create(thread_entry, sem);
 
   tk_thread_start(thread);
