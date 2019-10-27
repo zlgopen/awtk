@@ -19,22 +19,25 @@
  *
  */
 
-#include "tos.h"
+#include "cmsis_os.h"
 #include "tkc/types_def.h"
 
 static volatile uint64_t g_sys_tick;
 
-void tos_tick(void) {
+#ifdef _TOS_CONFIG_H_
+#include "tos.h"
+void rtos_tick(void) {
   if (tos_knl_is_running()) {
     tos_knl_irq_enter();
     tos_tick_handler();
     tos_knl_irq_leave();
   }
 }
+#endif /*_TOS_CONFIG_H_*/
 
 void SysTick_Handler(void) {
   g_sys_tick++;
-  tos_tick();
+  rtos_tick();
 }
 
 uint64_t get_time_ms64() {

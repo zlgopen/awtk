@@ -22,17 +22,21 @@
 #include "tkc/mem.h"
 #include "tkc/utils.h"
 #include "tkc/thread.h"
+#include "tkc/mutex.h"
 #include "cmsis_os.h"
 
 struct _tk_thread_t {
   void* args;
   tk_thread_entry_t entry;
+
   osThreadId id;
   bool_t running;
-  
+
   const char* name;
   uint32_t stack_size;
   uint32_t priority;
+  void* stackbase;
+  tk_mutex_t* mutex;
 };
 
 ret_t tk_thread_set_name(tk_thread_t* thread, const char* name) {
@@ -57,7 +61,7 @@ ret_t tk_thread_set_priority(tk_thread_t* thread, uint32_t priority) {
   thread->priority = priority;
 
   if (thread->id) {
-    osThreadSetPriority(thread->id, priority);
+    osThreadSetPriority(thread->id, (osPriority)priority);
   }
 
   return RET_OK;
@@ -69,15 +73,16 @@ void* tk_thread_get_args(tk_thread_t* thread) {
   return thread->args;
 }
 
-static void cmsis_os_thread_entry(void* arg) {
+static void cmsis_os_thread_entry(const void* arg) {
   tk_thread_t* thread = (tk_thread_t*)arg;
+
   thread->running = TRUE;
   thread->entry(thread->args);
   thread->running = FALSE;
+  tk_mutex_unlock(thread->mutex);
 }
 
 tk_thread_t* tk_thread_create(tk_thread_entry_t entry, void* args) {
-  osThreadDef_t def;
   tk_thread_t* thread = NULL;
   return_value_if_fail(entry != NULL, NULL);
 
@@ -86,32 +91,57 @@ tk_thread_t* tk_thread_create(tk_thread_entry_t entry, void* args) {
 
   thread->args = args;
   thread->entry = entry;
-  thread->def.stack_size = 1024;
-  thread->def.entry = cmsis_os_thread_entry;
+  thread->mutex = tk_mutex_create();
 
   return thread;
 }
 
 ret_t tk_thread_start(tk_thread_t* thread) {
-  k_err_t err = K_ERR_NONE;
+  osThreadDef_t def;
   return_value_if_fail(thread != NULL && !(thread->id), RET_BAD_PARAMS);
 
-  thread->id = osThreadCreate(&(thread->def), thread->args);
+  memset(&def, 0x00, sizeof(def));
+
+#ifdef _TOS_CONFIG_H_
+  def.timeslice = 20;
+  def.name = (char*)(thread->name);
+  def.stacksize = thread->stack_size;
+  def.tpriority = (osPriority)(thread->priority);
+  def.pthread = cmsis_os_thread_entry;
+  def.stackbase = TKMEM_ALLOC(def.stacksize + 4);
+  return_value_if_fail(def.stackbase != NULL, RET_OOM);
+  thread->stackbase = def.stackbase;
+#endif
+
+  thread->id = osThreadCreate(&(def), thread->args);
+  if (thread->id != NULL) {
+    tk_mutex_lock(thread->mutex);
+  }
 
   return thread->id != NULL ? RET_OK : RET_FAIL;
 }
 
 ret_t tk_thread_join(tk_thread_t* thread) {
   return_value_if_fail(thread != NULL, RET_BAD_PARAMS);
-  /*FIXME: impl*/
+
+  return_value_if_fail(tk_mutex_lock(thread->mutex) == RET_OK, RET_FAIL);
+  tk_mutex_unlock(thread->mutex);
+
   return RET_OK;
 }
 
 ret_t tk_thread_destroy(tk_thread_t* thread) {
   return_value_if_fail(thread != NULL && thread->id, RET_BAD_PARAMS);
 
-  osThreadTerminate(thread->id);
+  if (thread->stackbase != NULL) {
+    TKMEM_FREE(thread->stackbase);
+  }
 
+  if (thread->mutex != NULL) {
+    tk_mutex_destroy(thread->mutex);
+  }
+
+  osThreadTerminate(thread->id);
   memset(thread, 0x00, sizeof(tk_thread_t));
   TKMEM_FREE(thread);
 
