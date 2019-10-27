@@ -26,7 +26,8 @@ struct _tk_semaphore_t {
   HANDLE sem;
 };
 #elif defined(HAS_PTHREAD)
-#include "pthread.h"
+#include <fcntl.h>
+#include <pthread.h>
 #include <semaphore.h>
 struct _tk_semaphore_t {
   sem_t* sem;
