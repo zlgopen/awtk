@@ -34,7 +34,8 @@ tk_mutex_t* tk_mutex_create() {
 
   memset(&def, 0x00, sizeof(def));
   mutex->mutex = osMutexCreate(&(def));
-  if(mutex->mutex == NULL) {
+
+  if (mutex->mutex == NULL) {
     TKMEM_FREE(mutex);
   }
 
@@ -42,7 +43,7 @@ tk_mutex_t* tk_mutex_create() {
 }
 
 ret_t tk_mutex_lock(tk_mutex_t* mutex) {
-  return_value_if_fail(mutex != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(mutex != NULL && mutex->mutex != NULL, RET_BAD_PARAMS);
 
   return_value_if_fail(osMutexWait(mutex->mutex, 0xffffffff) == osOK, RET_FAIL);
 
@@ -50,7 +51,7 @@ ret_t tk_mutex_lock(tk_mutex_t* mutex) {
 }
 
 ret_t tk_mutex_unlock(tk_mutex_t* mutex) {
-  return_value_if_fail(mutex != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(mutex != NULL && mutex->mutex != NULL, RET_BAD_PARAMS);
 
   return_value_if_fail(osMutexRelease(mutex->mutex) == osOK, RET_FAIL);
 
@@ -58,7 +59,7 @@ ret_t tk_mutex_unlock(tk_mutex_t* mutex) {
 }
 
 ret_t tk_mutex_destroy(tk_mutex_t* mutex) {
-  return_value_if_fail(mutex != NULL && mutex->mutex, RET_BAD_PARAMS);
+  return_value_if_fail(mutex != NULL && mutex->mutex != NULL, RET_BAD_PARAMS);
 
   osMutexDelete(mutex->mutex);
   memset(mutex, 0x00, sizeof(tk_mutex_t));
@@ -67,4 +68,3 @@ ret_t tk_mutex_destroy(tk_mutex_t* mutex) {
 
   return RET_OK;
 }
-

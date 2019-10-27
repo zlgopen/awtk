@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   semaphore.c
  * Author: AWTK Develop Team
  * Brief:  semaphore
@@ -26,7 +26,7 @@
 #include "tkc/platform.h"
 #include "tkc/semaphore.h"
 
-typedef struct _tk_semaphore_t {
+struct _tk_semaphore_t {
   osSemaphoreId sem;
 };
 
@@ -36,9 +36,10 @@ tk_semaphore_t* tk_semaphore_create(uint32_t value, const char* name) {
   return_value_if_fail(semaphore != NULL, NULL);
 
   memset(&def, 0x00, sizeof(def));
-
+#ifdef __RTTHREAD_CFG_H__
   def.name = name;
-  semaphore->sem = osSemaphoreCreate(&(semaphore->def), value);
+#endif
+  semaphore->sem = osSemaphoreCreate(&(def), value);
 
   if (semaphore->sem == NULL) {
     TKMEM_FREE(semaphore);
@@ -68,6 +69,7 @@ ret_t tk_semaphore_post(tk_semaphore_t* semaphore) {
 ret_t tk_semaphore_destroy(tk_semaphore_t* semaphore) {
   return_value_if_fail(semaphore != NULL, RET_BAD_PARAMS);
 
+  osSemaphoreDelete(semaphore->sem);
   memset(&semaphore, 0x00, sizeof(tk_semaphore_t));
   TKMEM_FREE(semaphore);
 
