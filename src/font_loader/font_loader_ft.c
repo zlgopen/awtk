@@ -181,7 +181,11 @@ font_t* font_ft_mono_create(const char* name, const uint8_t* buff, uint32_t size
 }
 
 font_t* font_ft_create(const char* name, const uint8_t* buff, uint32_t size) {
+#ifdef WITH_LCD_MONO
+  return font_ft_create_ex(name, buff, size, TRUE);
+#else
   return font_ft_create_ex(name, buff, size, FALSE);
+#endif
 }
 
 static font_t* font_ft_load(font_loader_t* loader, const char* name, const uint8_t* buff,
