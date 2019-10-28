@@ -12,8 +12,8 @@ static void* thread_entry(void* args) {
   return NULL;
 }
 
-TEST(Semaphore, basic) {
-  tk_mutex_t* mutex = tk_mutex_create(0, "hello");
+TEST(Mutex, basic) {
+  tk_mutex_t* mutex = tk_mutex_create();
   tk_thread_t* thread = tk_thread_create(thread_entry, mutex);
 
   tk_thread_start(thread);
