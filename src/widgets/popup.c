@@ -71,6 +71,12 @@ static ret_t popup_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_POINTER_DOWN: {
+      popup->is_outside = FALSE;
+      if (popup->close_when_click_outside) {
+        pointer_event_t* evt = (pointer_event_t*)e;
+        rect_t r = rect_init(widget->x, widget->y, widget->w, widget->h);
+        popup->is_outside = !rect_contains(&r, evt->x, evt->y);
+      }
       break;
     }
     case EVT_POINTER_UP: {
@@ -79,7 +85,7 @@ static ret_t popup_on_event(widget_t* widget, event_t* e) {
 
       if (popup->close_when_click) {
         close_window = TRUE;
-      } else if (popup->close_when_click_outside) {
+      } else if (popup->close_when_click_outside && popup->is_outside) {
         rect_t r = rect_init(widget->x, widget->y, widget->w, widget->h);
         if (!rect_contains(&r, evt->x, evt->y)) {
           close_window = TRUE;
