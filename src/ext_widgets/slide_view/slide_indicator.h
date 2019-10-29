@@ -171,9 +171,10 @@ typedef struct _slide_indicator_t {
   char* indicated_target;
 
   /*private*/
-  bool_t inited;
-  bool_t anchor_x_fixed;
-  bool_t anchor_y_fixed;
+  uint8_t inited : 1;
+  uint8_t anchor_x_fixed : 1;
+  uint8_t anchor_y_fixed : 1;
+  uint8_t chilren_indicated : 1;
   widget_animator_t* wa_opactiy;
   widget_t* indicated_widget;
 } slide_indicator_t;

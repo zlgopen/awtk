@@ -512,8 +512,9 @@ static ret_t slide_indicator_set_indicated_widget(widget_t* widget, widget_t* ta
 
   if (widget_get_prop(target, WIDGET_PROP_MAX, &v) != RET_OK) {
     value_set_uint32(&v, widget_count_children(target));
+    slide_indicator->chilren_indicated = TRUE;
   }
-  slide_indicator_set_max(widget, value_uint32(&v));
+  slide_indicator->max = value_uint32(&v);
 
   if (widget_get_prop(target, WIDGET_PROP_ACTIVE, &v) != RET_OK) {
     widget_get_prop(target, WIDGET_PROP_VALUE, &v);
@@ -550,6 +551,17 @@ static ret_t slide_indicator_init_if_not_inited(widget_t* widget) {
     }
 
     slide_indicator->inited = TRUE;
+  }
+
+  return RET_OK;
+}
+
+ret_t slide_indicator_on_paint_begin(widget_t* widget, canvas_t* c) {
+  slide_indicator_t* slide_indicator = SLIDE_INDICATOR(widget);
+  return_value_if_fail(widget != NULL && slide_indicator != NULL, RET_BAD_PARAMS);
+
+  if (slide_indicator->chilren_indicated) {
+    slide_indicator->max = widget_count_children(slide_indicator->indicated_widget);
   }
 
   return RET_OK;
@@ -604,6 +616,7 @@ TK_DECL_VTABLE(slide_indicator_linear) = {.size = sizeof(slide_indicator_t),
                                           .get_prop = slide_indicator_get_prop,
                                           .set_prop = slide_indicator_set_prop,
                                           .on_layout_children = slide_indicator_on_layout_children,
+                                          .on_paint_begin = slide_indicator_on_paint_begin,
                                           .on_paint_self = slide_indicator_on_paint_self,
                                           .on_destroy = slide_indicator_on_destroy};
 
@@ -616,6 +629,7 @@ TK_DECL_VTABLE(slide_indicator_arc) = {.size = sizeof(slide_indicator_t),
                                        .get_prop = slide_indicator_get_prop,
                                        .set_prop = slide_indicator_set_prop,
                                        .on_layout_children = slide_indicator_on_layout_children,
+                                       .on_paint_begin = slide_indicator_on_paint_begin,
                                        .on_paint_self = slide_indicator_arc_on_paint_self,
                                        .on_destroy = slide_indicator_on_destroy};
 
@@ -638,6 +652,7 @@ widget_t* slide_indicator_create_internal(widget_t* parent, xy_t x, xy_t y, wh_t
   slide_indicator->wa_opactiy = NULL;
   slide_indicator->anchor_x_fixed = FALSE;
   slide_indicator->anchor_y_fixed = FALSE;
+  slide_indicator->chilren_indicated = FALSE;
   slide_indicator->indicated_widget = NULL;
   slide_indicator->indicated_target =
       tk_str_copy(slide_indicator->indicated_target, WIDGET_TYPE_SLIDE_VIEW);
@@ -684,6 +699,7 @@ ret_t slide_indicator_set_max(widget_t* widget, uint32_t max) {
   return_value_if_fail(slide_indicator != NULL, RET_BAD_PARAMS);
 
   slide_indicator->max = max;
+  slide_indicator->chilren_indicated = FALSE;
   return widget_invalidate(widget, NULL);
 }
 
