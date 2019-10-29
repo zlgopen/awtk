@@ -4,6 +4,7 @@
 #include "base/vgcanvas.h"
 #include "base/system_info.h"
 #include "base/image_manager.h"
+#include "base/font_manager.h"
 #include "base/assets_manager.h"
 
 static ret_t vgcanvas_nanovg_reset(vgcanvas_t* vgcanvas) {
@@ -246,7 +247,12 @@ static ret_t vgcanvas_nanovg_set_font(vgcanvas_t* vgcanvas, const char* name) {
         return RET_OK;
       }
 
-      r = assets_manager_ref(am, ASSET_TYPE_FONT, name);
+      if (r == NULL) {
+        font_t* font = font_manager_get_font(font_manager(), NULL, TK_DEFAULT_FONT_SIZE);
+        if (font != NULL) {
+          r = assets_manager_ref(assets_manager(), ASSET_TYPE_FONT, font->name);
+        }
+      }
     }
 
     if (r != NULL && r->subtype == ASSET_TYPE_FONT_TTF) {
