@@ -99,6 +99,35 @@ static ret_t lcd_mono_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
   return RET_OK;
 }
 
+static ret_t lcd_mono_draw_rgba8888_data(lcd_t* lcd, const uint8_t* buff, uint32_t w, uint32_t h,
+                                         rect_t* src, xy_t x, xy_t y, bool_t revert_pixel) {
+  wh_t i = 0;
+  wh_t j = 0;
+  wh_t sw = src->w;
+  wh_t sh = src->h;
+  pixel_rgba8888_t* p = (pixel_rgba8888_t*)buff;
+
+  for (j = 0; j < sh; j++) {
+    for (i = 0; i < sw; i++) {
+      pixel_t pixel = FALSE;
+      if (p->a) {
+        if (p->r == 0xff && p->g == 0xff && p->b == 0xff) {
+          pixel = TRUE;
+        }
+      }
+
+      if (revert_pixel) {
+        pixel = !pixel;
+      }
+
+      lcd_mono_set_pixel(lcd, x + i, y + j, pixel);
+      p++;
+    }
+  }
+
+  return RET_OK;
+}
+
 static ret_t lcd_mono_draw_data(lcd_t* lcd, const uint8_t* buff, uint32_t w, uint32_t h,
                                 rect_t* src, xy_t x, xy_t y, bool_t revert_pixel) {
   wh_t i = 0;
@@ -127,6 +156,13 @@ static ret_t lcd_mono_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x
   return lcd_mono_draw_data(lcd, glyph->data, glyph->w, glyph->h, src, x, y, !pixel);
 }
 
+static ret_t lcd_mono_draw_image_rgba8888(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
+  const uint8_t* data = (const uint8_t*)(img->data);
+  return_value_if_fail(src->w == dst->w && src->h == dst->h, RET_OK);
+
+  return lcd_mono_draw_rgba8888_data(lcd, data, img->w, img->h, src, dst->x, dst->y, FALSE);
+}
+
 static ret_t lcd_mono_draw_image_mono(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
   const uint8_t* data = (const uint8_t*)(img->data);
   return_value_if_fail(src->w == dst->w && src->h == dst->h, RET_OK);
@@ -135,10 +171,15 @@ static ret_t lcd_mono_draw_image_mono(lcd_t* lcd, bitmap_t* img, rect_t* src, re
 }
 
 static ret_t lcd_mono_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
-  return_value_if_fail(img->format == BITMAP_FMT_MONO, RET_NOT_IMPL);
   return_value_if_fail(src->w == dst->w && src->h == dst->h, RET_NOT_IMPL);
 
-  return lcd_mono_draw_image_mono(lcd, img, src, dst);
+  if (img->format == BITMAP_FMT_MONO) {
+    return lcd_mono_draw_image_mono(lcd, img, src, dst);
+  } else if (img->format == BITMAP_FMT_RGBA8888) {
+    return lcd_mono_draw_image_rgba8888(lcd, img, src, dst);
+  }
+
+  return_value_if_fail(0, RET_NOT_IMPL);
 }
 
 static ret_t lcd_mono_end_frame(lcd_t* lcd) {
