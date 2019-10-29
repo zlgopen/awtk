@@ -1,5 +1,8 @@
 # 最新动态
 
+* 2019/10/29
+  * 完善slideview indicator（感谢朝泽提供补丁）。
+
 * 2019/10/27
   * 增加ostream\_retry。
 
