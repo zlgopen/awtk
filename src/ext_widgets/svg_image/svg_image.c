@@ -31,12 +31,8 @@ static ret_t svg_image_load_bsvg(widget_t* widget) {
   image_base_t* image_base = IMAGE_BASE(widget);
   return_value_if_fail(svg_image != NULL && image_base != NULL, RET_BAD_PARAMS);
 
-  if (svg_image->bsvg_asset != NULL && tk_str_eq(svg_image->bsvg_asset->name, image_base->image)) {
-    return RET_OK;
-  }
-
   if (svg_image->bsvg_asset != NULL) {
-    widget_unload_asset(widget, svg_image->bsvg_asset);
+    return RET_OK;
   }
 
   svg_image->bsvg_asset = widget_load_asset(widget, ASSET_TYPE_IMAGE, image_base->image);
@@ -71,8 +67,8 @@ static ret_t svg_image_on_paint_self(widget_t* widget, canvas_t* c) {
     return_value_if_fail(bsvg_init(&bsvg, (const uint32_t*)asset->data, asset->size) != NULL,
                          RET_BAD_PARAMS);
 
-    x = (widget->w - bsvg.header->w) / 2;
-    y = (widget->h - bsvg.header->h) / 2;
+    x = (widget->w - (int32_t)bsvg.header->w) / 2;
+    y = (widget->h - (int32_t)bsvg.header->h) / 2;
 
     vgcanvas_save(vg);
 
@@ -91,6 +87,17 @@ static ret_t svg_image_on_paint_self(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
+static ret_t svg_image_set_prop(widget_t* widget, const char* name, const value_t* v) {
+  return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+
+  if (tk_str_eq(name, WIDGET_PROP_IMAGE)) {
+    svg_image_set_image(widget, value_str(v));
+    return RET_OK;
+  } else {
+    return image_base_set_prop(widget, name, v);
+  }
+}
+
 static ret_t svg_image_on_destroy(widget_t* widget) {
   svg_image_t* svg_image = SVG_IMAGE(widget);
   return_value_if_fail(svg_image != NULL, RET_BAD_PARAMS);
@@ -101,6 +108,19 @@ static ret_t svg_image_on_destroy(widget_t* widget) {
   }
 
   return image_base_on_destroy(widget);
+}
+
+ret_t svg_image_set_image(widget_t* widget, const char* name) {
+  svg_image_t* svg_image = SVG_IMAGE(widget);
+  return_value_if_fail(svg_image != NULL && name != NULL, RET_BAD_PARAMS);
+
+  svg_image->image_base.image = tk_str_copy(svg_image->image_base.image, name);
+  if (svg_image->bsvg_asset != NULL) {
+    widget_unload_asset(widget, svg_image->bsvg_asset);
+    svg_image->bsvg_asset = NULL;
+  }
+
+  return widget_invalidate(widget, NULL);
 }
 
 static const char* s_svg_image_clone_properties[] = {
@@ -117,7 +137,7 @@ TK_DECL_VTABLE(svg_image) = {.size = sizeof(svg_image_t),
                              .on_event = image_base_on_event,
                              .on_paint_self = svg_image_on_paint_self,
                              .on_paint_background = widget_on_paint_null,
-                             .set_prop = image_base_set_prop,
+                             .set_prop = svg_image_set_prop,
                              .get_prop = image_base_get_prop};
 
 widget_t* svg_image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {

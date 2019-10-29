@@ -92,6 +92,20 @@ typedef struct _svg_image_t {
 widget_t* svg_image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
+ * @method svg_image_set_image
+ * 设置控件的图片名称。
+ *
+ *> 如果需要显示文件系统中的图片，只需将图片名称换成实际的文件名，并加上"file://"前缀即可。
+ *
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget image对象。
+ * @param {char*}  name 图片名称，该图片必须存在于资源管理器。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t svg_image_set_image(widget_t* widget, const char* name);
+
+/**
  * @method svg_image_cast
  * 转换为svg_image对象(供脚本语言使用)。
  * @annotation ["cast", "scriptable"]
