@@ -4,6 +4,8 @@
   * 完善slideview indicator（感谢朝泽提供补丁）。
   * 修改svg路径太长的问题（感谢尧燊提供补丁）。
   * 修改popup支持点击外部关闭的问题（感谢尧燊提供补丁）。
+  * 完善vgcanvas\_nanovg\_set\_font（感谢俊杰提供补丁）。
+  * 修改semaphore.c在 im28x上编译的问题（感谢俊杰提供补丁）。
 
 * 2019/10/27
   * 增加ostream\_retry。
