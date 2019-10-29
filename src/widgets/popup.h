@@ -80,6 +80,8 @@ BEGIN_C_DECLS
 typedef struct _popup_t {
   window_base_t window;
 
+  bool_t is_outside;
+
   /**
    * @property {bool_t} close_when_click
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
