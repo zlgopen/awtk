@@ -3189,6 +3189,10 @@ bool_t widget_is_system_bar(widget_t* widget) {
   return tk_str_eq(widget->vt->type, WIDGET_TYPE_SYSTEM_BAR);
 }
 
+bool_t widget_is_status_bar(widget_t* widget) {
+  return tk_str_eq(widget->vt->type, WIDGET_TYPE_STATUS_BAR);
+}
+
 bool_t widget_is_normal_window(widget_t* widget) {
   return tk_str_eq(widget->vt->type, WIDGET_TYPE_NORMAL_WINDOW);
 }

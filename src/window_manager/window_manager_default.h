@@ -53,6 +53,7 @@ typedef struct _window_manager_default_t {
   rect_t r_cursor;
 
   widget_t* system_bar;
+  widget_t* status_bar;
   input_device_status_t input_device_status;
   uint32_t screen_saver_timer_id;
   uint32_t screen_saver_time;
@@ -77,6 +78,7 @@ widget_t* window_manager_create(void);
 #define WINDOW_MANAGER_DEFAULT(widget) ((window_manager_default_t*)(widget))
 
 ret_t window_manager_paint_system_bar(widget_t* widget, canvas_t* c);
+ret_t window_manager_paint_status_bar(widget_t* widget, canvas_t* c);
 
 END_C_DECLS
 

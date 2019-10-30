@@ -787,6 +787,12 @@ BEGIN_C_DECLS
 #define WIDGET_TYPE_SYSTEM_BAR "system_bar"
 
 /**
+ * @const WIDGET_TYPE_STATUS_BAR
+ * status bar window
+ */
+#define WIDGET_TYPE_STATUS_BAR "status_bar"
+
+/**
  * @const WIDGET_TYPE_SPRITE
  * 精灵窗口。
  */

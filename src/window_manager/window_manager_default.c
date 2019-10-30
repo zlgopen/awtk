@@ -206,8 +206,12 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
   if (wm->system_bar) {
     widget_paint(wm->system_bar, c);
   }
+  if (wm->status_bar) {
+    widget_paint(wm->status_bar, c);
+  }
 
   window_manager_paint_system_bar(widget, c);
+  window_manager_paint_status_bar(widget, c);
   ENSURE(widget_paint(prev_win, c) == RET_OK);
 
   if (dialog_highlighter != NULL) {
@@ -222,6 +226,7 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
   canvas_set_clip_rect(c, &r);
   ENSURE(widget_on_paint_background(widget, c) == RET_OK);
   window_manager_paint_system_bar(widget, c);
+  window_manager_paint_status_bar(widget, c);
   ENSURE(widget_paint(prev_win, c) == RET_OK);
   if (dialog_highlighter != NULL) {
     dialog_highlighter_prepare(dialog_highlighter, c);
@@ -413,6 +418,8 @@ static ret_t window_manager_default_open_window(widget_t* widget, widget_t* wind
 
   if (widget_is_system_bar(window)) {
     return_value_if_fail(wm->system_bar == NULL, RET_BAD_PARAMS);
+  } else if (widget_is_status_bar(window)) {
+    return_value_if_fail(wm->status_bar == NULL, RET_BAD_PARAMS);
   }
 
   wm->prev_win = window_manager_get_top_window(widget);
@@ -437,6 +444,12 @@ static ret_t window_manager_default_open_window(widget_t* widget, widget_t* wind
 
   if (widget_is_system_bar(window)) {
     wm->system_bar = window;
+  } else if (widget_is_status_bar(window)) {
+    wm->status_bar = window;
+
+    /* fix status_bar's location */
+    widget_t* bar = wm->status_bar;
+    bar->y = widget->h - bar->h;
   }
 
   widget_set_prop_pointer(window, WIDGET_PROP_NATIVE_WINDOW, wm->native_window);
@@ -477,6 +490,8 @@ static ret_t window_manager_prepare_close_window(widget_t* widget, widget_t* win
 
   if (wm->system_bar == window) {
     wm->system_bar = NULL;
+  } else if (wm->status_bar == window) {
+    wm->status_bar = NULL;
   }
 
   return RET_OK;
@@ -685,6 +700,9 @@ static ret_t window_manager_paint_animation(widget_t* widget, canvas_t* c) {
     if (wm->system_bar != NULL) {
       widget_invalidate_force(wm->system_bar, NULL);
     }
+    if (wm->status_bar != NULL) {
+      widget_invalidate_force(wm->status_bar, NULL);
+    }
   }
 
   return RET_OK;
@@ -790,12 +808,13 @@ static ret_t window_manager_default_on_paint_children(widget_t* widget, canvas_t
     /*paint system_bar*/
     if (!has_fullscreen_win) {
       window_manager_paint_system_bar(widget, c);
+      window_manager_paint_status_bar(widget, c);
     }
   }
   /*paint dialog and other*/
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
   if (i >= start && iter->visible) {
-    if (wm->system_bar != iter && !widget_is_normal_window(iter)) {
+    if (wm->system_bar != iter && wm->status_bar != iter && !widget_is_normal_window(iter)) {
       widget_paint(iter, c);
     }
   }
@@ -925,6 +944,11 @@ static ret_t window_manager_default_layout_child(widget_t* widget, widget_t* win
     client_r = rect_init(0, bar->h, widget->w, widget->h - bar->h);
   }
 
+  if (wm->status_bar != NULL) {
+    widget_t* bar = wm->status_bar;
+    client_r.h -= bar->h;
+  }
+
   if (widget_is_normal_window(window)) {
     if (window_is_fullscreen(window)) {
       x = 0;
@@ -940,6 +964,10 @@ static ret_t window_manager_default_layout_child(widget_t* widget, widget_t* win
   } else if (widget_is_system_bar(window)) {
     x = 0;
     y = 0;
+    w = widget->w;
+  } else if (widget_is_status_bar(window)) {
+    x = 0;
+    y = client_r.h;
     w = widget->w;
   } else if (widget_is_dialog(window)) {
     x = (widget->w - window->w) >> 1;
@@ -1061,6 +1089,15 @@ ret_t window_manager_paint_system_bar(widget_t* widget, canvas_t* c) {
   }
 
   return RET_OK;
+}
+
+ret_t window_manager_paint_status_bar(widget_t* widget, canvas_t* c) {
+  window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+  return_value_if_fail(wm != NULL && c != NULL, RET_BAD_PARAMS);
+
+  if (wm->status_bar != NULL && wm->status_bar->visible) {
+    widget_paint(wm->status_bar, c);
+  }
 }
 
 static ret_t window_manager_default_native_window_resized(widget_t* widget, void* handle) {

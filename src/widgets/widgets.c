@@ -39,6 +39,7 @@
 
 #ifndef AWTK_LITE
 #include "widgets/system_bar.h"
+#include "widgets/status_bar.h"
 #include "widgets/calibration_win.h"
 #include "widgets/dragger.h"
 #include "widgets/tab_button.h"
@@ -79,6 +80,7 @@ ret_t tk_widgets_init(void) {
   widget_factory_register(f, WIDGET_TYPE_GROUP_BOX, group_box_create);
 #ifndef AWTK_LITE
   widget_factory_register(f, WIDGET_TYPE_SYSTEM_BAR, system_bar_create);
+  widget_factory_register(f, WIDGET_TYPE_STATUS_BAR, status_bar_create);
   widget_factory_register(f, WIDGET_TYPE_CALIBRATION_WIN, calibration_win_create);
   widget_factory_register(f, WIDGET_TYPE_VIEW, view_create);
   widget_factory_register(f, WIDGET_TYPE_OVERLAY, overlay_create);
