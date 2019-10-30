@@ -266,9 +266,13 @@ ret_t lcd_destroy(lcd_t* lcd) {
 }
 
 vgcanvas_t* lcd_get_vgcanvas(lcd_t* lcd) {
-  return_value_if_fail(lcd != NULL && lcd->get_vgcanvas != NULL, NULL);
+  return_value_if_fail(lcd != NULL, NULL);
 
-  return lcd->get_vgcanvas(lcd);
+  if (lcd->get_vgcanvas != NULL) {
+    return lcd->get_vgcanvas(lcd);
+  }
+
+  return NULL;
 }
 
 ret_t lcd_take_snapshot(lcd_t* lcd, bitmap_t* img, bool_t auto_rotate) {

@@ -80,6 +80,7 @@ static ret_t font_stb_get_glyph(font_t* f, wchar_t c, font_size_t font_size, gly
   g->y = y;
   g->w = w;
   g->h = h;
+  g->format = GLYPH_FMT_ALPHA;
   g->advance = advance * scale;
 
   if (g->data != NULL) {
@@ -126,6 +127,7 @@ font_t* font_stb_create(const char* name, const uint8_t* buff, uint32_t buff_siz
   f->base.destroy = font_stb_destroy;
   f->base.get_glyph = font_stb_get_glyph;
   f->base.get_baseline = font_stb_get_baseline;
+  f->base.desc = "truetype(stb)";
 
   tk_strncpy(f->base.name, name, TK_NAME_LEN);
 

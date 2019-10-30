@@ -156,6 +156,7 @@ struct _font_t {
   font_get_baseline_t get_baseline;
   font_get_glyph_t get_glyph;
   font_destroy_t destroy;
+  const char* desc;
 };
 
 /**

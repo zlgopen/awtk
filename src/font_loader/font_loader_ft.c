@@ -86,6 +86,7 @@ static ret_t font_ft_get_glyph(font_t* f, wchar_t c, font_size_t font_size, glyp
     glyf = sf->face->glyph;
     FT_Get_Glyph(glyf, &glyph);
 
+    g->format = GLYPH_FMT_ALPHA;
     g->h = glyf->bitmap.rows;
     g->w = glyf->bitmap.width;
     g->pitch = glyf->bitmap.pitch;
@@ -168,6 +169,7 @@ font_t* font_ft_create_ex(const char* name, const uint8_t* buff, uint32_t size, 
   f->base.destroy = font_ft_destroy;
   f->base.get_glyph = font_ft_get_glyph;
   f->base.get_baseline = font_ft_get_baseline;
+  f->base.desc = mono ? "mono(freetype)" : "truetype(freetype)";
 
   tk_strncpy(f->base.name, name, TK_NAME_LEN);
 
@@ -192,7 +194,7 @@ static font_t* font_ft_load(font_loader_t* loader, const char* name, const uint8
                             uint32_t buff_size) {
   (void)loader;
 
-  return font_ft_create_ex(name, buff, buff_size, FALSE);
+  return font_ft_create(name, buff, buff_size);
 }
 
 font_loader_t* font_loader_ft(void) {
