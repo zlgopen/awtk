@@ -26,6 +26,7 @@
 #include "base/timer.h"
 #include "assets.h"
 #include "tkc/utf8.h"
+#include "ext_widgets.h"
 
 #include "ui_loader/ui_loader_xml.h"
 #include "ui_loader/ui_loader_default.h"
@@ -63,7 +64,7 @@ widget_t* preview_ui(const char* filename) {
 
   filename_to_name(filename, name, TK_NAME_LEN);
   builder = ui_builder_default(name);
-  printf("preview %s\n", filename);
+  log_info("preview %s\n", filename);
   return_value_if_fail(content != NULL, NULL);
   ui_loader_load(loader, content, size, builder);
 
