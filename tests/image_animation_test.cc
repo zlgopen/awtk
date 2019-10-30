@@ -89,7 +89,7 @@ TEST(ImageAnimation, range) {
   ASSERT_EQ(ia->index, 101);
   image_animation_update(w);
   ASSERT_EQ(ia->index, 102);
-  ASSERT_EQ(image_animation_next(ia), RET_OK);
+  ASSERT_EQ(image_animation_next(w), RET_OK);
   ASSERT_EQ(ia->index, 103);
 
   widget_destroy(w);
