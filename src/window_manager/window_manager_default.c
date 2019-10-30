@@ -33,12 +33,16 @@
 #include "base/dialog_highlighter_factory.h"
 #include "window_manager/window_manager_default.h"
 
+static ret_t window_manager_invalidate_system_bar(widget_t* widget);
 static ret_t window_manager_default_inc_fps(widget_t* widget);
 static ret_t window_manager_default_update_fps(widget_t* widget);
 static ret_t window_manager_default_invalidate(widget_t* widget, rect_t* r);
+static ret_t window_manager_default_get_client_r(widget_t* widget, rect_t* r);
 static ret_t window_manager_default_do_open_window(widget_t* wm, widget_t* window);
 static ret_t window_manager_default_layout_child(widget_t* widget, widget_t* window);
+static ret_t window_manager_default_layout_system_bar(widget_t* widget, widget_t* window);
 static ret_t window_manager_default_create_dialog_highlighter(widget_t* widget, widget_t* curr_win);
+static ret_t window_manager_default_layout_not_system_bar(widget_t* widget, widget_t* window, rect_t client_r);
 
 static bool_t window_is_fullscreen(widget_t* widget) {
   value_t v;
@@ -130,12 +134,10 @@ static widget_t* window_manager_find_prev_window(widget_t* widget) {
 }
 
 static widget_t* window_manager_find_prev_any_window(widget_t* widget) {
-  int32_t i = 0;
   return_value_if_fail(widget != NULL, NULL);
 
   if (widget->children != NULL && widget->children->size >= 2) {
-    uint32_t i = widget->children->size - 2;
-    return (widget_t*)(widget->children->elms[i]);
+    return (widget_t*)(widget->children->elms[widget->children->size - 2]);
   }
 
   return NULL;
@@ -446,7 +448,6 @@ static ret_t window_manager_idle_destroy_window(const idle_info_t* info) {
 }
 
 static ret_t window_manager_prepare_close_window(widget_t* widget, widget_t* window) {
-  window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
   return_value_if_fail(widget != NULL && window != NULL, RET_BAD_PARAMS);
 
   if (widget->target == window) {
@@ -931,7 +932,6 @@ static ret_t window_manager_default_get_client_r(widget_t* widget, rect_t* r) {
 }
 
 static ret_t window_manager_default_layout_system_bar(widget_t* widget, widget_t* window) {
-  const char* align_v = widget_get_prop_str(window, WIDGET_PROP_ALIGN_V, NULL);
   window->x = 0;
   window->w = widget->w;
 
@@ -950,7 +950,6 @@ static ret_t window_manager_default_layout_not_system_bar(widget_t* widget, widg
   xy_t y = window->y;
   wh_t w = window->w;
   wh_t h = window->h;
-  window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
 
   if (widget_is_normal_window(window)) {
     if (window_is_fullscreen(window)) {
@@ -1098,7 +1097,7 @@ ret_t window_manager_paint_system_bar(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-ret_t window_manager_invalidate_system_bar(widget_t* widget) {
+static ret_t window_manager_invalidate_system_bar(widget_t* widget) {
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
   return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
 
