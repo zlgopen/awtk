@@ -173,7 +173,7 @@ static ret_t build_asset_filename_custom(assets_manager_t* am, char* path, uint3
     return_value_if_fail(tk_str_append(path, size, sep) == RET_OK, RET_FAIL);
     return_value_if_fail(tk_str_append(path, size, name) == RET_OK, RET_FAIL);
     return_value_if_fail(tk_str_append(path, size, extname) == RET_OK, RET_FAIL);
-  
+
     return RET_OK;
   }
 

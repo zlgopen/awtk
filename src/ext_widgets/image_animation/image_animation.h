@@ -265,6 +265,16 @@ ret_t image_animation_stop(widget_t* widget);
 ret_t image_animation_pause(widget_t* widget);
 
 /**
+ * @method image_animation_next
+ * 手动切换到下一张图片。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget image_animation对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t image_animation_next(image_animation_t* image_animation);
+
+/**
  * @method image_animation_set_format
  * 设置生成图片名的格式。
  *
