@@ -1,0 +1,33 @@
+<window style:bg_color="black" text="Basic Controls">
+  <app_bar x="0" y="0" w="100%" h="30" >
+    <label x="0" y="0" w="100%" h="100%" text="up/down key change focus" style:font_size="24" style:text_color="white"/>
+  </app_bar>
+
+  <row x="0" y="40" w="100%" h="30" children_layout="default(r=1,c=3,xm=2,s=10)">
+    <button name="inc_value" text="Inc" focusable="true" focus="true"/>
+    <button name="close" text="Close" focusable="true"/>
+    <button name="dec_value" text="Dec" focusable="true"/>
+  </row>
+
+  <row x="0" y="80" w="100%" h="30" children_layout="default(r=1,c=3,xm=2,s=10)">
+    <label style="left" name="left" text="Left"  style:text_color="white"/>
+    <label style="center" name="center" text="Center"  style:text_color="white"/>
+    <label style="right" name="right" text="Right"  style:text_color="white"/>
+  </row>
+
+
+  <column x="20" y="160" w="50%" h="90" children_layout="default(r=3,c=1,ym=2,s=10)" >
+    <check_button name="r1" text="Book" focusable="true"/>
+    <check_button name="r2" text="Food" focusable="true"/>
+    <check_button name="r3" text="Pencil" value="true" focusable="true"/>
+  </column>
+
+  <grid x="20" y="bottom:10" w="80%" h="40" children_layout="default(r=1,c=5,x=2,s=10)">
+    <image draw_type="icon" image="earth" />
+    <image draw_type="icon" image="rgba" />
+    <image draw_type="icon" image="rgb" />
+    <image draw_type="icon" image="message"/>
+    <image draw_type="icon" image="red_btn_n"/>
+  </grid>
+
+</window>

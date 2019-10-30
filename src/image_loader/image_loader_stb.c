@@ -72,7 +72,9 @@ ret_t stb_load_image(int32_t subtype, const uint8_t* buff, uint32_t buff_size, b
     } else {
       data = stb_data;
     }
-
+#ifdef WITH_LCD_MONO
+    ret = bitmap_init_from_rgba(image, w, h, BITMAP_FMT_MONO, data, n);
+#else
     if (enable_bgr565 && rgba_data_is_opaque(data, w, h, n)) {
       ret = bitmap_init_from_rgba(image, w, h, BITMAP_FMT_BGR565, data, n);
     } else if (require_bgra) {
@@ -80,7 +82,7 @@ ret_t stb_load_image(int32_t subtype, const uint8_t* buff, uint32_t buff_size, b
     } else {
       ret = bitmap_init_from_rgba(image, w, h, BITMAP_FMT_RGBA8888, data, n);
     }
-
+#endif/*WITH_LCD_MONO*/
     stbi_image_free((uint8_t*)(stb_data));
     if (stb_data != data) {
       TKMEM_FREE(data);
@@ -94,6 +96,9 @@ ret_t stb_load_image(int32_t subtype, const uint8_t* buff, uint32_t buff_size, b
     return_value_if_fail(data != NULL, RET_FAIL);
 
     total_h = h * z;
+#ifdef WITH_LCD_MONO
+    ret = bitmap_init_from_rgba(image, w, total_h, BITMAP_FMT_MONO, data, n);
+#else
     if (enable_bgr565 && rgba_data_is_opaque(data, w, total_h, n)) {
       ret = bitmap_init_from_rgba(image, w, total_h, BITMAP_FMT_BGR565, data, n);
     } else if (require_bgra) {
@@ -101,6 +106,7 @@ ret_t stb_load_image(int32_t subtype, const uint8_t* buff, uint32_t buff_size, b
     } else {
       ret = bitmap_init_from_rgba(image, w, total_h, BITMAP_FMT_RGBA8888, data, n);
     }
+#endif/*WITH_LCD_MONO*/
 
     image->is_gif = TRUE;
     image->gif_frame_h = h;
