@@ -340,8 +340,9 @@ static ret_t image_animation_restart(image_animation_t* image_animation) {
   return RET_REPEAT;
 }
 
-ret_t image_animation_next(image_animation_t* image_animation) {
+ret_t image_animation_next(widget_t* widget) {
   ret_t ret = RET_DONE;
+  image_animation_t* image_animation = IMAGE_ANIMATION(widget);
   return_value_if_fail(image_animation != NULL, RET_BAD_PARAMS);
 
   if (image_animation->sequence) {
@@ -367,7 +368,7 @@ ret_t image_animation_update(widget_t* widget) {
   if (image_animation->index < 0) {
     ret = image_animation_restart(image_animation);
   } else {
-    ret = image_animation_next(image_animation);
+    ret = image_animation_next(widget);
 
     if (ret == RET_DONE) {
       if (image_animation->loop) {

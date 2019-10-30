@@ -272,7 +272,7 @@ ret_t image_animation_pause(widget_t* widget);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t image_animation_next(image_animation_t* image_animation);
+ret_t image_animation_next(widget_t* widget);
 
 /**
  * @method image_animation_set_format
