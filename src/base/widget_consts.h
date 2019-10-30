@@ -787,6 +787,12 @@ BEGIN_C_DECLS
 #define WIDGET_TYPE_SYSTEM_BAR "system_bar"
 
 /**
+ * @const WIDGET_TYPE_SYSTEM_BAR_BOTTOM
+ * system bar window ato bottom
+ */
+#define WIDGET_TYPE_SYSTEM_BAR_BOTTOM "system_bar_bottom"
+
+/**
  * @const WIDGET_TYPE_SPRITE
  * 精灵窗口。
  */

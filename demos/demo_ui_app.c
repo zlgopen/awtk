@@ -622,6 +622,7 @@ static ret_t timer_preload(const timer_info_t* timer) {
   if (s_preload_nr == total) {
 #if !defined(MOBILE_APP)
     window_open("system_bar");
+/*    window_open("system_bar_bottom");*/
 #endif /*MOBILE_APP*/
 
     open_window("main", win);

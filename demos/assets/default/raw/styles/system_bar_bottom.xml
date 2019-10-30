@@ -1,0 +1,26 @@
+<system_bar_bottom>
+  <style name="default">
+    <normal bg_color="#606060"/>
+  </style>
+</system_bar_bottom>
+
+<label>
+  <style name="title" text_align_h="left">
+    <normal text_color="white" />
+  </style>
+</label>
+
+<digit_clock>
+  <style name="time">
+    <normal text_color="white" />
+  </style>
+</digit_clock>
+
+<button>
+  <style name="close" icon="earth">
+    <normal     icon="close_n"/>
+    <pressed    icon="close_p"/>
+    <over       icon="close_n"/>
+    <disable    icon="close_d"/>
+  </style>
+</button>

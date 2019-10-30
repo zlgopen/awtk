@@ -1,0 +1,7 @@
+<system_bar_bottom h="30">
+  <column x="0" y="0" w="-40" h="100%">
+    <label style="title" x="10" y="m" w="55%" h="100%" name="title"/>
+    <digit_clock style="time" x="r" y="m" w="40%" h="100%" format="hh:mm"/>
+  </column>
+  <button style="close" x="r:5" y="m" w="26" h="26" name="close"/>
+</system_bar>

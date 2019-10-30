@@ -99,6 +99,8 @@ typedef struct _system_bar_t {
  */
 widget_t* system_bar_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
+widget_t* system_bar_bottom_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
+
 /**
  * @method system_bar_cast
  * 转换为system_bar对象(供脚本语言使用)。

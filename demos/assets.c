@@ -19,6 +19,7 @@
 #include "assets/default/inc/styles/keyboard.data"
 #include "assets/default/inc/styles/slide_menu.data"
 #include "assets/default/inc/styles/system_bar.data"
+#include "assets/default/inc/styles/system_bar_bottom.data"
 #include "assets/default/inc/styles/tab_bottom.data"
 #include "assets/default/inc/styles/tab_bottom_compact.data"
 #include "assets/default/inc/styles/tab_list.data"
@@ -130,6 +131,7 @@
 #include "assets/default/inc/ui/svg_image.data"
 #include "assets/default/inc/ui/switch.data"
 #include "assets/default/inc/ui/system_bar.data"
+#include "assets/default/inc/ui/system_bar_bottom.data"
 #include "assets/default/inc/ui/tab_bottom.data"
 #include "assets/default/inc/ui/tab_bottom_compact.data"
 #include "assets/default/inc/ui/tab_control.data"
@@ -558,6 +560,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, style_keyboard);
   assets_manager_add(am, style_slide_menu);
   assets_manager_add(am, style_system_bar);
+  assets_manager_add(am, style_system_bar_bottom);
   assets_manager_add(am, style_tab_bottom);
   assets_manager_add(am, style_tab_bottom_compact);
   assets_manager_add(am, style_tab_list);
@@ -669,6 +672,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_svg_image);
   assets_manager_add(am, ui_switch);
   assets_manager_add(am, ui_system_bar);
+  assets_manager_add(am, ui_system_bar_bottom);
   assets_manager_add(am, ui_tab_bottom);
   assets_manager_add(am, ui_tab_bottom_compact);
   assets_manager_add(am, ui_tab_control);

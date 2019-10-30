@@ -26,7 +26,7 @@
 #include "base/window_manager.h"
 #include "base/window_animator.h"
 #include "base/dialog_highlighter_factory.h"
-
+#include "window_manager/window_manager_default.h"
 #include "window_animators/window_animator_common.h"
 
 ret_t window_animator_to_bottom_draw_curr(window_animator_t* wa) {
@@ -173,6 +173,9 @@ ret_t window_animator_destroy(window_animator_t* wa) {
 static ret_t window_animator_paint_system_bar(window_animator_t* wa) {
   widget_t* wm = wa->curr_win->parent;
   widget_t* system_bar = widget_lookup_by_type(wm, WIDGET_TYPE_SYSTEM_BAR, TRUE);
+  if (system_bar == NULL) {
+    system_bar = widget_lookup_by_type(wm, WIDGET_TYPE_SYSTEM_BAR_BOTTOM, TRUE);
+  }
 
   if (system_bar != NULL) {
 #ifdef AWTK_WEB
@@ -180,7 +183,7 @@ static ret_t window_animator_paint_system_bar(window_animator_t* wa) {
     rect_t dst = rect_init(system_bar->x, system_bar->y, system_bar->w, system_bar->h);
     canvas_draw_image(wa->canvas, &(wa->prev_img), rect_scale(&src, wa->ratio), &dst);
 #else
-    widget_paint(system_bar, wa->canvas);
+    window_manager_paint_system_bar(wm, wa->canvas);
 #endif /*AWTK_WEB*/
   }
 

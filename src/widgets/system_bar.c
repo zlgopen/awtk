@@ -119,6 +119,30 @@ widget_t* system_bar_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   return widget;
 }
 
+TK_DECL_VTABLE(system_bar_bottom) = {.size = sizeof(system_bar_t),
+                                     .type = WIDGET_TYPE_SYSTEM_BAR_BOTTOM,
+                                     .is_window = TRUE,
+                                     .clone_properties = s_system_bar_properties,
+                                     .persistent_properties = s_system_bar_properties,
+                                     .parent = TK_PARENT_VTABLE(window_base),
+                                     .create = system_bar_create,
+                                     .on_event = system_bar_on_event,
+                                     .set_prop = window_base_set_prop,
+                                     .get_prop = window_base_get_prop,
+                                     .on_paint_self = window_base_on_paint_self,
+                                     .on_paint_begin = window_base_on_paint_begin,
+                                     .on_paint_end = window_base_on_paint_end,
+                                     .on_destroy = system_bar_on_destroy};
+
+widget_t* system_bar_bottom_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
+  widget_t* widget = window_base_create(parent, TK_REF_VTABLE(system_bar_bottom), x, y, w, h);
+  return_value_if_fail(widget != NULL, NULL);
+
+  widget_on(widget->parent, EVT_TOP_WINDOW_CHANGED, system_bar_on_top_window_changed, widget);
+
+  return widget;
+}
+
 widget_t* system_bar_cast(widget_t* widget) {
   return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, system_bar), NULL);
 

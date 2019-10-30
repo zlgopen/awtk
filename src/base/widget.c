@@ -3186,7 +3186,8 @@ canvas_t* widget_get_canvas(widget_t* widget) {
 }
 
 bool_t widget_is_system_bar(widget_t* widget) {
-  return tk_str_eq(widget->vt->type, WIDGET_TYPE_SYSTEM_BAR);
+  return tk_str_eq(widget->vt->type, WIDGET_TYPE_SYSTEM_BAR) ||
+         tk_str_eq(widget->vt->type, WIDGET_TYPE_SYSTEM_BAR_BOTTOM);
 }
 
 bool_t widget_is_normal_window(widget_t* widget) {
