@@ -629,6 +629,9 @@ WIN_WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     case WM_KEYDOWN:
     case WM_SYSKEYDOWN:
         {
+            if(wParam == VK_PROCESSKEY) {
+                break;
+            }
             SDL_Scancode code = WindowsScanCodeToSDLScanCode(lParam, wParam);
             const Uint8 *keyboardState = SDL_GetKeyboardState(NULL);
 
