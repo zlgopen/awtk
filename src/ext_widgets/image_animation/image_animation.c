@@ -340,19 +340,19 @@ static ret_t image_animation_restart(image_animation_t* image_animation) {
   return RET_REPEAT;
 }
 
-static ret_t image_animation_next(image_animation_t* image_animation) {
-  ret_t ret = RET_REMOVE;
+ret_t image_animation_next(image_animation_t* image_animation) {
+  ret_t ret = RET_DONE;
   return_value_if_fail(image_animation != NULL, RET_BAD_PARAMS);
 
   if (image_animation->sequence) {
     if (image_animation->sequence[image_animation->index + 1]) {
       image_animation->index++;
-      ret = RET_REPEAT;
+      ret = RET_OK;
     }
   } else {
     if (image_animation->index < image_animation->end_index) {
       image_animation->index++;
-      ret = RET_REPEAT;
+      ret = RET_OK;
     }
   }
 
@@ -369,7 +369,7 @@ ret_t image_animation_update(widget_t* widget) {
   } else {
     ret = image_animation_next(image_animation);
 
-    if (ret == RET_REMOVE) {
+    if (ret == RET_DONE) {
       if (image_animation->loop) {
         event_t e = event_init(EVT_ANIM_ONCE, widget);
         widget_dispatch(widget, &e);
@@ -381,6 +381,8 @@ ret_t image_animation_update(widget_t* widget) {
 
         widget_dispatch(widget, &e);
       }
+    } else {
+      ret = RET_REPEAT;
     }
   }
 
