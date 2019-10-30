@@ -1,8 +1,12 @@
 # 最新动态
 
+* 2019/10/30
+  * 增加system\_bar\_bottom，支持system_bar在顶部、底部和两者。
+
 * 2019/10/29
   * 公开函数image\_animation\_next。
   * 修改SDL输入按键事件的问题（感谢智明提供补丁）。
+
 * 2019/10/29
   * 完善slideview indicator（感谢朝泽提供补丁）。
   * 修改svg路径太长的问题（感谢尧燊提供补丁）。

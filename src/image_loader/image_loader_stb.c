@@ -82,7 +82,7 @@ ret_t stb_load_image(int32_t subtype, const uint8_t* buff, uint32_t buff_size, b
     } else {
       ret = bitmap_init_from_rgba(image, w, h, BITMAP_FMT_RGBA8888, data, n);
     }
-#endif/*WITH_LCD_MONO*/
+#endif /*WITH_LCD_MONO*/
     stbi_image_free((uint8_t*)(stb_data));
     if (stb_data != data) {
       TKMEM_FREE(data);
@@ -106,7 +106,7 @@ ret_t stb_load_image(int32_t subtype, const uint8_t* buff, uint32_t buff_size, b
     } else {
       ret = bitmap_init_from_rgba(image, w, total_h, BITMAP_FMT_RGBA8888, data, n);
     }
-#endif/*WITH_LCD_MONO*/
+#endif /*WITH_LCD_MONO*/
 
     image->is_gif = TRUE;
     image->gif_frame_h = h;

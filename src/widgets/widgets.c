@@ -79,6 +79,7 @@ ret_t tk_widgets_init(void) {
   widget_factory_register(f, WIDGET_TYPE_GROUP_BOX, group_box_create);
 #ifndef AWTK_LITE
   widget_factory_register(f, WIDGET_TYPE_SYSTEM_BAR, system_bar_create);
+  widget_factory_register(f, WIDGET_TYPE_SYSTEM_BAR_BOTTOM, system_bar_bottom_create);
   widget_factory_register(f, WIDGET_TYPE_CALIBRATION_WIN, calibration_win_create);
   widget_factory_register(f, WIDGET_TYPE_VIEW, view_create);
   widget_factory_register(f, WIDGET_TYPE_OVERLAY, overlay_create);
