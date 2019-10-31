@@ -69,7 +69,7 @@ static const graphic_buffer_vtable_t s_graphic_buffer_default_vtable = {
     .unlock = graphic_buffer_default_unlock,
     .destroy = graphic_buffer_default_destroy};
 
-static graphic_buffer_t* graphic_buffer_default_create(uint32_t w, uint32_t h,
+graphic_buffer_t* graphic_buffer_default_create(uint32_t w, uint32_t h,
                                                        bitmap_format_t format,
                                                        uint32_t line_length) {
   uint32_t size = 0;
@@ -101,7 +101,6 @@ static graphic_buffer_t* graphic_buffer_default_create(uint32_t w, uint32_t h,
     return NULL;
   }
 }
-B
 
 graphic_buffer_t* graphic_buffer_default_create_with_const_data(const uint8_t* data) {
   graphic_buffer_default_t* buffer = NULL;
