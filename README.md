@@ -233,6 +233,10 @@ pip install Pillow
 
 * [君正](https://github.com/zlgopen/awtk-port-ingenic`)
 
+#### 第三方开发者移植
+
+* [esp32-awtk(freertos)](https://github.com/jason-mao/esp32-awtk)
+
 ## 七、各语言的绑定
 
 * [AWTK 绑定代码生成器](https://github.com/zlgopen/awtk-binding)
