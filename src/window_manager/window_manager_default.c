@@ -162,10 +162,8 @@ ret_t window_manager_default_snap_curr_window(widget_t* widget, widget_t* curr_w
   vg = lcd_get_vgcanvas(c->lcd);
   ENSURE(vgcanvas_create_fbo(vg, fbo) == RET_OK);
   ENSURE(vgcanvas_bind_fbo(vg, fbo) == RET_OK);
-  ENSURE(canvas_begin_frame(c, NULL, LCD_DRAW_OFFLINE) == RET_OK);
   ENSURE(widget_on_paint_background(widget, c) == RET_OK);
   ENSURE(widget_paint(curr_win, c) == RET_OK);
-  ENSURE(canvas_end_frame(c) == RET_OK);
   ENSURE(vgcanvas_unbind_fbo(vg, fbo) == RET_OK);
   fbo_to_img(fbo, img);
 #else
@@ -203,7 +201,6 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
   vg = lcd_get_vgcanvas(c->lcd);
   ENSURE(vgcanvas_create_fbo(vg, fbo) == RET_OK);
   ENSURE(vgcanvas_bind_fbo(vg, fbo) == RET_OK);
-  ENSURE(canvas_begin_frame(c, NULL, LCD_DRAW_OFFLINE) == RET_OK);
   ENSURE(widget_on_paint_background(widget, c) == RET_OK);
   window_manager_paint_system_bar(widget, c);
   ENSURE(widget_paint(prev_win, c) == RET_OK);
@@ -211,7 +208,6 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
   if (dialog_highlighter != NULL) {
     dialog_highlighter_prepare(dialog_highlighter, c);
   }
-  ENSURE(canvas_end_frame(c) == RET_OK);
   ENSURE(vgcanvas_unbind_fbo(vg, fbo) == RET_OK);
   fbo_to_img(fbo, img);
 #else

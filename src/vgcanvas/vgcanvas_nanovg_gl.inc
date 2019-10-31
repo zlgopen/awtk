@@ -9,13 +9,48 @@ static ret_t vgcanvas_nanovg_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h, uint
 }
 
 static ret_t vgcanvas_nanovg_begin_frame(vgcanvas_t* vgcanvas, rect_t* dirty_rect) {
+  float_t angle = 0.0f;
+  float_t anchor_x = 0.0f;
+  float_t anchor_y = 0.0f;
+
+  system_info_t* info = system_info();
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
 
-  native_window_info_t info;
-  return_value_if_fail(native_window_get_info(canvas->window, &info) == RET_OK, RET_BAD_PARAMS);
-
   native_window_gl_make_current(canvas->window);
-  nvgBeginFrame(canvas->vg, info.w, info.h, info.ratio);
+  
+  nvgBeginFrame(canvas->vg, info->lcd_w, info->lcd_h, info->device_pixel_ratio);
+
+  switch (info->lcd_orientation)
+  {
+    case LCD_ORIENTATION_0: 
+      angle = 0.0f;
+      break;
+    case LCD_ORIENTATION_90: 
+      angle = TK_D2R(90);
+      break;
+    case LCD_ORIENTATION_180: 
+      angle = TK_D2R(180);
+      break;
+    case LCD_ORIENTATION_270: 
+      angle = TK_D2R(270);
+      break;
+  }
+
+  anchor_x = info->lcd_w / 2.0f;
+  anchor_y = info->lcd_h / 2.0f;
+
+  nvgSave(canvas->vg);
+  
+  if(info->lcd_orientation == LCD_ORIENTATION_90 || info->lcd_orientation == LCD_ORIENTATION_270) {
+    nvgTranslate(canvas->vg, anchor_x, anchor_y);
+    nvgRotate(canvas->vg, angle);
+    nvgTranslate(canvas->vg, -anchor_y, -anchor_x);
+  }
+  else if(info->lcd_orientation == LCD_ORIENTATION_180) {
+    nvgTranslate(canvas->vg, anchor_x, anchor_y);
+    nvgRotate(canvas->vg, angle);
+    nvgTranslate(canvas->vg, -anchor_x, -anchor_y);
+  }
 
   return RET_OK;
 }
@@ -24,6 +59,7 @@ static ret_t vgcanvas_nanovg_end_frame(vgcanvas_t* vgcanvas) {
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
   NVGcontext* vg = canvas->vg;
 
+  nvgRestore(vg);
   nvgEndFrame(vg);
   native_window_swap_buffer(canvas->window);
 
