@@ -216,7 +216,6 @@ static ret_t lcd_mem_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
 }
 
 static vgcanvas_t* lcd_mem_get_vgcanvas(lcd_t* lcd) {
-  bitmap_t fb;
   uint32_t w = lcd->w;
   uint32_t h = lcd->h;
   lcd_mem_t* mem = (lcd_mem_t*)lcd;

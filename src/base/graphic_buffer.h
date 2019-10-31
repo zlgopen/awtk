@@ -75,7 +75,7 @@ typedef struct _graphic_buffer_t {
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t graphic_buffer_default_create_for_bitmap(bitmap_t* bitmap);
+ret_t graphic_buffer_create_for_bitmap(bitmap_t* bitmap);
 
 /**
  * @method graphic_buffer_default_create_with_const_data
