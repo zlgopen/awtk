@@ -15,7 +15,10 @@ static ret_t vgcanvas_nanovg_reset(vgcanvas_t* vgcanvas) {
 }
 
 static ret_t vgcanvas_nanovg_flush(vgcanvas_t* vgcanvas) {
-  (void)vgcanvas;
+#ifdef JZ_GPU
+  vgcanvas_nanovg_end_frame(vgcanvas);
+  glFinish();
+#endif/*JZ_GPU*/
 
   return RET_OK;
 }
@@ -187,6 +190,7 @@ static ret_t vgcanvas_nanovg_fill(vgcanvas_t* vgcanvas) {
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
 
   nvgFill(vg);
+  vgcanvas_nanovg_flush(vgcanvas);
 
   return RET_OK;
 }
@@ -195,6 +199,7 @@ static ret_t vgcanvas_nanovg_stroke(vgcanvas_t* vgcanvas) {
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
 
   nvgStroke(vg);
+  vgcanvas_nanovg_flush(vgcanvas);
 
   return RET_OK;
 }
@@ -218,6 +223,7 @@ static ret_t vgcanvas_nanovg_paint(vgcanvas_t* vgcanvas, bool_t stroke, bitmap_t
     nvgClosePath(vg);
     nvgFill(vg);
   }
+  vgcanvas_nanovg_flush(vgcanvas);
 
   return RET_OK;
 }
@@ -307,6 +313,7 @@ static ret_t vgcanvas_nanovg_fill_text(vgcanvas_t* vgcanvas, const char* text, f
 
   nvgTextAlign(vg, canvas->text_align_v | canvas->text_align_h);
   nvgText(vg, x, y, text, text + strlen(text));
+  vgcanvas_nanovg_flush(vgcanvas);
 
   return RET_OK;
 }
@@ -347,6 +354,7 @@ static ret_t vgcanvas_nanovg_draw_image(vgcanvas_t* vgcanvas, bitmap_t* img, flo
   nvgFill(vg);
   nvgBeginPath(vg);
   nvgRestore(vg);
+  vgcanvas_nanovg_flush(vgcanvas);
 
   return RET_OK;
 }
