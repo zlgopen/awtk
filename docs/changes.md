@@ -5,6 +5,7 @@
   * 完善vgcanvas，兼容JZ\_GPU。
   * 完善darray，增加darray\_find\_all。
   * lcd nanovg支持LCD旋转（感谢智明提供补丁）。
+  * 增加native\_window\_fb\_gl （感谢智明提供补丁）。
 
 > 如果有支持访问bitmap-\>data的代码，请使用bitmap\_lock\_buffer\_for\_write/read函数。
 

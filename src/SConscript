@@ -25,6 +25,8 @@ sources=Glob('layouters/*.c') + \
 
 if NATIVE_WINDOW == 'sdl':
   sources += Glob('native_window/native_window_sdl.c')
+elif NATIVE_WINDOW == 'fb_gl':
+  sources += Glob('native_window/native_window_fb_gl.c')
 else:
   sources += Glob('native_window/native_window_raw.c')
 
@@ -36,6 +38,8 @@ elif os.environ['LCD'] == 'SDL_FB':
   sources += ['lcd/lcd_sdl2.c', 'main_loop/main_loop_sdl.c']
 elif os.environ['LCD'] == 'SDL_FB_MONO':
   sources += ['lcd/lcd_sdl2_mono.c', 'main_loop/main_loop_sdl.c']
+elif os.environ['LCD'] == 'FB_GL':
+  sources += ['lcd/lcd_nanovg.c']
 
 sources += [
   'input_methods/input_method_creator.c'

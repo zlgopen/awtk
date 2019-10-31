@@ -70,20 +70,23 @@ int open_gl(void) {
         "/System/Library/Frameworks/OpenGL.framework/Versions/Current/OpenGL"
     };
 #else
-    static const char *NAMES[] = {"libGL.so.1", "libGL.so"};
+    static const char *NAMES[] = {"libGL.so.1", "libGL.so", "libGLESv2.so"};
 #endif
 
     unsigned int index = 0;
     for(index = 0; index < (sizeof(NAMES) / sizeof(NAMES[0])); index++) {
         libGL = dlopen(NAMES[index], RTLD_NOW | RTLD_GLOBAL);
-
         if(libGL != NULL) {
 #ifdef __APPLE__
             return 1;
 #else
-            gladGetProcAddressPtr = (PFNGLXGETPROCADDRESSPROC_PRIVATE)dlsym(libGL,
-                "glXGetProcAddressARB");
-            return gladGetProcAddressPtr != NULL;
+			if (index < 2) {
+				gladGetProcAddressPtr = (PFNGLXGETPROCADDRESSPROC_PRIVATE)dlsym(libGL,
+					"glXGetProcAddressARB");
+				return gladGetProcAddressPtr != NULL;
+			} else {
+				return 1;
+			}
 #endif
         }
     }
@@ -117,7 +120,6 @@ void* get_proc(const char *namez) {
         result = dlsym(libGL, namez);
 #endif
     }
-
     return result;
 }
 

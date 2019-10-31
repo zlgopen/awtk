@@ -34,8 +34,6 @@
 #ifndef WITHOUT_GLAD
 #include "glad/glad.h"
 #endif /*WITHOUT_GLAD*/
-#include <SDL_opengl.h>
-#include <SDL_opengl_glext.h>
 
 #include "nanovg.h"
 #include "tkc/utf8.h"
