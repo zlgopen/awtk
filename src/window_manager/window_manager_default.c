@@ -33,7 +33,6 @@
 #include "base/dialog_highlighter_factory.h"
 #include "window_manager/window_manager_default.h"
 
-static ret_t window_manager_invalidate_system_bar(widget_t* widget);
 static ret_t window_manager_default_inc_fps(widget_t* widget);
 static ret_t window_manager_default_update_fps(widget_t* widget);
 static ret_t window_manager_default_invalidate(widget_t* widget, rect_t* r);
@@ -618,6 +617,19 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
 }
 
 #ifdef WITH_WINDOW_ANIMATORS
+static ret_t window_manager_invalidate_system_bar(widget_t* widget) {
+  window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+  return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
+
+  WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
+  if (widget_is_system_bar(iter)) {
+    widget_invalidate_force(iter, NULL);
+  }
+  WIDGET_FOR_EACH_CHILD_END()
+
+  return RET_OK;
+}
+
 static ret_t window_manager_paint_animation(widget_t* widget, canvas_t* c) {
   paint_event_t e;
   uint64_t start_time = time_now_ms();
@@ -1092,19 +1104,6 @@ ret_t window_manager_paint_system_bar(widget_t* widget, canvas_t* c) {
   WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
   if (widget_is_system_bar(iter)) {
     widget_paint(iter, c);
-  }
-  WIDGET_FOR_EACH_CHILD_END()
-
-  return RET_OK;
-}
-
-static ret_t window_manager_invalidate_system_bar(widget_t* widget) {
-  window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
-  return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
-
-  WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
-  if (widget_is_system_bar(iter)) {
-    widget_invalidate_force(iter, NULL);
   }
   WIDGET_FOR_EACH_CHILD_END()
 
