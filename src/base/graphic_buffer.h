@@ -69,20 +69,8 @@ typedef struct _graphic_buffer_t {
 } graphic_buffer_t;
 
 /**
- * @method graphic_buffer_default_create
- * 创建缺省的缓冲区。
- * @param {uint32_t} w 宽度。
- * @param {uint32_t} h 高度度。
- * @param {bitmap_format_t} format 格式。
- * @param {uint32_t} line_length 行宽。
- *
- * @return {graphic_buffer_t*} 返回缓存区。
- */
-graphic_buffer_t* graphic_buffer_default_create(uint32_t w, uint32_t h, bitmap_format_t format,
-                                                uint32_t line_length);
-/**
- * @method graphic_buffer_default_create_for_bitmap
- * 为位图创建缺省的缓冲区。
+ * @method graphic_buffer_create_for_bitmap
+ * 为位图创建缓冲区。
  * @param {bitmap_t*} bitmap 位图对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -91,14 +79,17 @@ ret_t graphic_buffer_default_create_for_bitmap(bitmap_t* bitmap);
 
 /**
  * @method graphic_buffer_default_create_with_const_data
- * 创建缺省的缓冲区。
+ * 创建缓冲区。
  *
  * > 为了兼容raw图像。
  * @param {const uint8_t*} data 数据。
+ * @param {uint32_t} w 宽度。
+ * @param {uint32_t} h 宽度。
+ * @param {bitmap_format_t} format 格式。
  *
  * @return {graphic_buffer_t*} 返回缓存区。
  */
-graphic_buffer_t* graphic_buffer_default_create_with_const_data(const uint8_t* data);
+graphic_buffer_t* graphic_buffer_create_with_const_data(const uint8_t* data, uint32_t w, uint32_t h, bitmap_format_t format);
 
 /**
  * @method graphic_buffer_lock_for_read
@@ -136,16 +127,10 @@ ret_t graphic_buffer_unlock(graphic_buffer_t* buffer);
  */
 ret_t graphic_buffer_destroy(graphic_buffer_t* buffer);
 
-#ifndef GRAPHIC_BUFFER_CREATE_FOR_BITMAP
-#define GRAPHIC_BUFFER_CREATE_FOR_BITMAP(bitmap) graphic_buffer_default_create_for_bitmap(bitmap);
-#endif /*GRAPHIC_BUFFER_CREATE_FOR_BITMAP*/
-
-#ifndef GRAPHIC_BUFFER_CREATE_WITH_CONST_DATA
-#define GRAPHIC_BUFFER_CREATE_WITH_CONST_DATA(data) \
-  graphic_buffer_default_create_with_const_data(data)
-#endif /*GRAPHIC_BUFFER_CREATE_WITH_DATA*/
-
 #define GRAPHIC_BUFFER(buffer) ((graphic_buffer_t*)(buffer))
+
+#define GRAPHIC_BUFFER_CREATE_FOR_BITMAP(bitmap) graphic_buffer_create_for_bitmap(bitmap)
+#define GRAPHIC_BUFFER_CREATE_WITH_CONST_DATA(data, w, h, format) graphic_buffer_create_with_const_data(data, w, h, format)
 
 END_C_DECLS
 

@@ -199,7 +199,7 @@ static void bitmap_gen(bitmap_t* b, uint32_t w, uint32_t h) {
   data = bitmap_mono_create_data(w, h);
 
   gen_data((uint8_t*)(data), w, h);
-  b->buffer = GRAPHIC_BUFFER_CREATE_WITH_CONST_DATA(data);
+  b->buffer = GRAPHIC_BUFFER_CREATE_WITH_CONST_DATA(data, w, h, BITMAP_FMT_MONO);
 
   return;
 }

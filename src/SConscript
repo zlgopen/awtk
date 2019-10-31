@@ -6,6 +6,7 @@ LIB_DIR=os.environ['LIB_DIR'];
 NANOVG_BACKEND=os.environ['NANOVG_BACKEND'];
 VGCANVAS=os.environ['VGCANVAS'];
 NATIVE_WINDOW = os.environ['NATIVE_WINDOW'];
+GRAPHIC_BUFFER = os.environ['GRAPHIC_BUFFER'];
 
 sources=Glob('layouters/*.c') + \
   Glob('base/*.c') + \
@@ -29,6 +30,11 @@ elif NATIVE_WINDOW == 'fb_gl':
   sources += Glob('native_window/native_window_fb_gl.c')
 else:
   sources += Glob('native_window/native_window_raw.c')
+
+if GRAPHIC_BUFFER == 'jzgpu':
+  sources += Glob('graphic_buffer/graphic_buffer_jzgpu.c')
+else:
+  sources += Glob('graphic_buffer/graphic_buffer_default.c')
 
 sources += ['lcd/lcd_mono.c'];
 sources += ['main_loop/main_loop_simple.c'];

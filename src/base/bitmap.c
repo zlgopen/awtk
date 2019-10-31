@@ -388,7 +388,7 @@ ret_t bitmap_init(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t form
   if (data == NULL) {
     bitmap_alloc_data(bitmap);
   } else {
-    bitmap->buffer = GRAPHIC_BUFFER_CREATE_WITH_CONST_DATA(data);
+    bitmap->buffer = GRAPHIC_BUFFER_CREATE_WITH_CONST_DATA(data, w, h, format);
   }
 
   return bitmap->buffer != NULL ? RET_OK : RET_OOM;
