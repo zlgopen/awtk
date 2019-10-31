@@ -1,4 +1,5 @@
 ﻿#include "tkc/darray.h"
+#include "tkc/utils.h"
 #include "gtest/gtest.h"
 
 #include <math.h>
@@ -66,7 +67,7 @@ TEST(DArrayTest, basic) {
   ASSERT_EQ(RET_OK, darray_push(darray, p + 1));
   ASSERT_EQ(2, darray_count(darray, p + 1));
 
-  ASSERT_EQ(RET_OK, darray_remove_all(darray, p + 1));
+  ASSERT_EQ(RET_OK, darray_remove_all(darray, NULL, p + 1));
   ASSERT_EQ(darray->size, 0);
   ASSERT_EQ(0, darray_count(darray, p + 1));
 
@@ -190,29 +191,85 @@ TEST(DArrayTest, removeAll) {
   }
 
   ASSERT_EQ(darray.size, ARRAY_SIZE(cases));
-  ASSERT_EQ(darray_remove_all(&darray, p + 2), RET_OK);
+  ASSERT_EQ(darray_remove_all(&darray, NULL, p + 2), RET_OK);
   ASSERT_EQ(darray.size, ARRAY_SIZE(cases) - 4);
 
-  ASSERT_EQ(darray_remove_all(&darray, p + 1), RET_OK);
+  ASSERT_EQ(darray_remove_all(&darray, NULL, p + 1), RET_OK);
   ASSERT_EQ(darray.size, ARRAY_SIZE(cases) - 4 - 2);
 
-  ASSERT_EQ(darray_remove_all(&darray, p + 12), RET_OK);
+  ASSERT_EQ(darray_remove_all(&darray, NULL, p + 12), RET_OK);
   ASSERT_EQ(darray.size, ARRAY_SIZE(cases) - 4 - 2 - 2);
 
-  ASSERT_EQ(darray_remove_all(&darray, p + 13), RET_OK);
+  ASSERT_EQ(darray_remove_all(&darray, NULL, p + 13), RET_OK);
   ASSERT_EQ(darray.size, ARRAY_SIZE(cases) - 4 - 2 - 2 - 1);
 
-  ASSERT_EQ(darray_remove_all(&darray, p + 14), RET_OK);
+  ASSERT_EQ(darray_remove_all(&darray, NULL, p + 14), RET_OK);
   ASSERT_EQ(darray.size, ARRAY_SIZE(cases) - 4 - 2 - 2 - 1 - 1);
 
-  ASSERT_EQ(darray_remove_all(&darray, p + 33), RET_OK);
+  ASSERT_EQ(darray_remove_all(&darray, NULL, p + 33), RET_OK);
   ASSERT_EQ(darray.size, ARRAY_SIZE(cases) - 4 - 2 - 2 - 1 - 1 - 1);
 
-  ASSERT_EQ(darray_remove_all(&darray, p + 34), RET_OK);
+  ASSERT_EQ(darray_remove_all(&darray, NULL, p + 34), RET_OK);
   ASSERT_EQ(darray.size, ARRAY_SIZE(cases) - 4 - 2 - 2 - 1 - 1 - 1 - 2);
 
-  ASSERT_EQ(darray_remove_all(&darray, p + 0), RET_OK);
+  ASSERT_EQ(darray_remove_all(&darray, NULL, p + 0), RET_OK);
   ASSERT_EQ(darray.size, ARRAY_SIZE(cases) - 4 - 2 - 2 - 1 - 1 - 1 - 2);
 
+  darray_deinit(&darray);
+}
+
+static int cmp_le(const void* a, const void* b) {
+  int ia = tk_pointer_to_int((void*)a);
+  int ib = tk_pointer_to_int((void*)b);
+
+  if (ia <= ib) {
+    return 0;
+  }
+
+  return -1;
+}
+
+TEST(DArrayTest, removeAll1) {
+  uint32_t i = 0;
+  char* p = NULL;
+  darray_t darray;
+  int cases[] = {1, 2, 2, 2, 13, 14, 12, 41, 34, 34, 5, 563, 12, 1, 2, 33};
+  darray_init(&darray, 10, NULL, NULL);
+
+  for (i = 0; i < ARRAY_SIZE(cases); i++) {
+    ASSERT_EQ(RET_OK, darray_push(&darray, p + cases[i]));
+    ASSERT_EQ(i + 1, darray.size);
+  }
+
+  ASSERT_EQ(darray.size, ARRAY_SIZE(cases));
+  ASSERT_EQ(darray_remove_all(&darray, cmp_le, tk_pointer_from_int(100)), RET_OK);
+  ASSERT_EQ(darray.size, 1);
+
+  darray_deinit(&darray);
+}
+
+TEST(DArrayTest, findAll) {
+  uint32_t i = 0;
+  char* p = NULL;
+  darray_t darray;
+  darray_t matched;
+  int cases[] = {1, 2, 2, 2, 13, 14, 12, 41, 34, 34, 5, 563, 12, 1, 2, 33};
+  darray_init(&darray, 10, NULL, NULL);
+
+  for (i = 0; i < ARRAY_SIZE(cases); i++) {
+    ASSERT_EQ(RET_OK, darray_push(&darray, p + cases[i]));
+    ASSERT_EQ(i + 1, darray.size);
+  }
+
+  darray_init(&matched, 10, NULL, NULL);
+  ASSERT_EQ(darray_find_all(&darray, cmp_le, tk_pointer_from_int(10), &matched), RET_OK);
+  ASSERT_EQ(matched.size, 7);
+  darray_clear(&matched);
+
+  ASSERT_EQ(darray_find_all(&darray, cmp_le, tk_pointer_from_int(100), &matched), RET_OK);
+  ASSERT_EQ(matched.size, ARRAY_SIZE(cases) - 1);
+  darray_clear(&matched);
+
+  darray_deinit(&matched);
   darray_deinit(&darray);
 }

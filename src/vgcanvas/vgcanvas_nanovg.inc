@@ -18,7 +18,7 @@ static ret_t vgcanvas_nanovg_flush(vgcanvas_t* vgcanvas) {
 #ifdef JZ_GPU
   vgcanvas_nanovg_end_frame(vgcanvas);
   glFinish();
-#endif/*JZ_GPU*/
+#endif /*JZ_GPU*/
 
   return RET_OK;
 }

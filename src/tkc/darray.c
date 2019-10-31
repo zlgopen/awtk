@@ -123,19 +123,20 @@ ret_t darray_remove(darray_t* darray, void* data) {
   }
 }
 
-ret_t darray_remove_all(darray_t* darray, void* data) {
+ret_t darray_remove_all(darray_t* darray, tk_compare_t cmp, void* ctx) {
   int32_t i = 0;
   int32_t k = 0;
   int32_t size = 0;
   void** elms = NULL;
-
   return_value_if_fail(darray != NULL, RET_BAD_PARAMS);
+
   elms = darray->elms;
   size = darray->size;
+  cmp = cmp != NULL ? cmp : darray->compare;
 
   for (i = 0, k = 0; i < size; i++) {
     void* iter = elms[i];
-    if (darray->compare(iter, data) == 0) {
+    if (cmp(iter, ctx) == 0) {
       darray->destroy(iter);
       elms[i] = NULL;
     } else {
@@ -146,6 +147,26 @@ ret_t darray_remove_all(darray_t* darray, void* data) {
     }
   }
   darray->size = k;
+
+  return RET_OK;
+}
+
+ret_t darray_find_all(darray_t* darray, tk_compare_t cmp, void* ctx, darray_t* matched) {
+  int32_t i = 0;
+  int32_t size = 0;
+  void** elms = NULL;
+  return_value_if_fail(darray != NULL && matched != NULL, RET_BAD_PARAMS);
+
+  elms = darray->elms;
+  size = darray->size;
+  cmp = cmp != NULL ? cmp : darray->compare;
+
+  for (i = 0; i < size; i++) {
+    void* iter = elms[i];
+    if (cmp(iter, ctx) == 0) {
+      return_value_if_fail(darray_push(matched, iter) == RET_OK, RET_OOM);
+    }
+  }
 
   return RET_OK;
 }

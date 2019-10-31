@@ -3,6 +3,7 @@
 * 2019/10/31
   * 增加graphic\_buffer，用于管理bitmap的内存。
   * 完善vgcanvas，兼容JZ\_GPU。
+  * 完善darray，增加darray\_find\_all。
 
 > 如果有支持访问bitmap-\>data的代码，请使用bitmap\_lock\_buffer\_for\_write/read函数。
 

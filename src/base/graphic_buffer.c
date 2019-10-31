@@ -150,7 +150,7 @@ ret_t graphic_buffer_default_create_for_bitmap(bitmap_t* bitmap) {
 
   bitmap->buffer = graphic_buffer_default_create(bitmap->w, bitmap->h,
                                                  (bitmap_format_t)(bitmap->format), line_length);
-	bitmap->should_free_data = bitmap->buffer != NULL;
-	
+  bitmap->should_free_data = bitmap->buffer != NULL;
+
   return bitmap->buffer != NULL ? RET_OK : RET_OOM;
 }
