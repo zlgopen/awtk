@@ -46,7 +46,7 @@ ret_t bitmap_destroy(bitmap_t* bitmap) {
   }
 
   if (bitmap->should_free_data) {
-    if(bitmap->buffer != NULL) {
+    if (bitmap->buffer != NULL) {
       graphic_buffer_destroy(bitmap->buffer);
     }
 
@@ -127,8 +127,8 @@ bitmap_t* bitmap_create_ex(uint32_t w, uint32_t h, uint32_t line_length, bitmap_
 #ifdef AWTK_WEB
     uint8_t* data = bitmap_lock_buffer_for_write(bitmap);
     return_value_if_fail(format == BITMAP_FMT_RGBA8888, NULL);
-    int32_t id = EM_ASM_INT({ return VGCanvas.createMutableImage($0, $1, $2, $3, $4); },
-                            data, w, h, line_length, format);
+    int32_t id = EM_ASM_INT({ return VGCanvas.createMutableImage($0, $1, $2, $3, $4); }, data, w, h,
+                            line_length, format);
     bitmap->specific = tk_pointer_from_int(id);
     bitmap->specific_destroy = bitmap_web_destroy;
     bitmap_unlock_buffer(bitmap);
@@ -480,7 +480,7 @@ bitmap_t* bitmap_clone(bitmap_t* bitmap) {
 
   if (b->buffer != NULL) {
     b->name = bitmap->name;
-    if(bitmap_alloc_data(b) == RET_OK) {
+    if (bitmap_alloc_data(b) == RET_OK) {
       uint8_t* s = bitmap_lock_buffer_for_read(bitmap);
       uint8_t* d = bitmap_lock_buffer_for_write(b);
       memcpy((char*)(d), s, b->line_length * b->h);
@@ -597,7 +597,7 @@ ret_t bitmap_mono_dump(const uint8_t* buff, uint32_t w, uint32_t h) {
 uint8_t* bitmap_lock_buffer_for_read(bitmap_t* bitmap) {
   return_value_if_fail(bitmap != NULL, NULL);
 
-  if(bitmap->buffer != NULL) {
+  if (bitmap->buffer != NULL) {
     return graphic_buffer_lock_for_read(bitmap->buffer);
   } else {
     return NULL;
@@ -605,7 +605,7 @@ uint8_t* bitmap_lock_buffer_for_read(bitmap_t* bitmap) {
 }
 
 uint8_t* bitmap_lock_buffer_for_write(bitmap_t* bitmap) {
-  if(bitmap->buffer != NULL) {
+  if (bitmap->buffer != NULL) {
     return graphic_buffer_lock_for_write(bitmap->buffer);
   } else {
     return NULL;
@@ -615,10 +615,9 @@ uint8_t* bitmap_lock_buffer_for_write(bitmap_t* bitmap) {
 ret_t bitmap_unlock_buffer(bitmap_t* bitmap) {
   return_value_if_fail(bitmap != NULL, RET_BAD_PARAMS);
 
-  if(bitmap->buffer != NULL) {
+  if (bitmap->buffer != NULL) {
     return graphic_buffer_unlock(bitmap->buffer);
   } else {
     return RET_FAIL;
   }
 }
-

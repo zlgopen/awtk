@@ -150,7 +150,6 @@
 #include "assets/default/inc/images/visible.res"
 #include "assets/default/inc/images/ani1.res"
 #include "assets/default/inc/images/arrow_left_o.res"
-#include "assets/default/inc/images/ani3.res"
 #include "assets/default/inc/images/clock_second.res"
 #include "assets/default/inc/images/battery_2.res"
 #include "assets/default/inc/images/num_2.res"
@@ -232,7 +231,6 @@
 #include "assets/default/inc/images/close_o.data"
 #include "assets/default/inc/images/battery_1.data"
 #include "assets/default/inc/images/slider_bg.data"
-#include "assets/default/inc/images/ani3.data"
 #include "assets/default/inc/images/progress_circle.data"
 #include "assets/default/inc/images/muted.data"
 #include "assets/default/inc/images/num_8.data"
@@ -457,7 +455,6 @@ ret_t assets_init(void) {
   assets_manager_add(am, image_close_o);
   assets_manager_add(am, image_battery_1);
   assets_manager_add(am, image_slider_bg);
-  assets_manager_add(am, image_ani3);
   assets_manager_add(am, image_progress_circle);
   assets_manager_add(am, image_muted);
   assets_manager_add(am, image_num_8);

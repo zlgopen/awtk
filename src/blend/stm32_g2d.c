@@ -54,12 +54,12 @@ ret_t g2d_fill_rect(bitmap_t* fb, rect_t* dst, color_t c) {
   uint16_t o_format = 0;
   uint16_t o_offline = 0;
   uint16_t o_pixsize = 0;
-
+  uint8_t* fb_data = NULL;
   if (c.rgba.a < 0xf0) {
     return RET_NOT_IMPL;
   }
 
-  return_value_if_fail(fb != NULL && fb->data != NULL && dst != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(fb != NULL && fb->buffer != NULL && dst != NULL, RET_BAD_PARAMS);
   return_value_if_fail(fb->format == BITMAP_FMT_BGR565 || fb->format == BITMAP_FMT_BGRA8888,
                        RET_BAD_PARAMS);
 
@@ -78,8 +78,9 @@ ret_t g2d_fill_rect(bitmap_t* fb, rect_t* dst, color_t c) {
     color = c.color;
   }
 
+  fb_data = bitmap_lock_buffer_for_write(fb);
   o_offline = fb->w - w;
-  o_addr = ((uint32_t)fb->data + o_pixsize * (fb->w * y + x));
+  o_addr = ((uint32_t)fb_data + o_pixsize * (fb->w * y + x));
 
   __HAL_RCC_DMA2D_CLK_ENABLE();
 
@@ -95,6 +96,7 @@ ret_t g2d_fill_rect(bitmap_t* fb, rect_t* dst, color_t c) {
   DMA2D->CR |= DMA2D_CR_START;
 
   DMA2D_WAIT
+  bitmap_unlock_buffer(fb);
 
   return RET_OK;
 }
@@ -113,9 +115,11 @@ ret_t g2d_copy_image(bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t x, xy_t y) {
   uint16_t w = 0;
   uint16_t h = 0;
   uint16_t iw = 0;
+  uint8_t* fb_data = NULL;
+  uint8_t* img_data = NULL;
 
-  return_value_if_fail(fb != NULL && fb->data != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(img != NULL && img->data != NULL && src != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(fb != NULL && fb->buffer != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(img != NULL && img->buffer != NULL && src != NULL, RET_BAD_PARAMS);
   return_value_if_fail(fb->format == BITMAP_FMT_BGR565 || fb->format == BITMAP_FMT_BGRA8888,
                        RET_BAD_PARAMS);
   return_value_if_fail(img->format == BITMAP_FMT_BGR565 || img->format == BITMAP_FMT_BGRA8888,
@@ -143,10 +147,13 @@ ret_t g2d_copy_image(bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t x, xy_t y) {
     fg_format = PIXEL_FORMAT_BGRA8888;
   }
 
+  fb_data = bitmap_lock_buffer_for_write(fb);
+  img_data = bitmap_lock_buffer_for_write(img);
+
   o_offline = fb->w - w;
-  o_addr = ((uint32_t)fb->data + o_pixsize * (fb->w * y + x));
+  o_addr = ((uint32_t)fb_data + o_pixsize * (fb->w * y + x));
   fg_offline = iw - w;
-  fg_addr = ((uint32_t)img->data + fg_pixsize * (img->w * sy + sx));
+  fg_addr = ((uint32_t)img_data + fg_pixsize * (img->w * sy + sx));
 
   __HAL_RCC_DMA2D_CLK_ENABLE();
 
@@ -169,6 +176,8 @@ ret_t g2d_copy_image(bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t x, xy_t y) {
 
   DMA2D->CR |= DMA2D_CR_START;
   DMA2D_WAIT
+  bitmap_unlock_buffer(fb);
+  bitmap_unlock_buffer(img);
 
   return RET_OK;
 }
@@ -198,12 +207,13 @@ ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* dst, rect_t* src, uin
   uint16_t iw = 0;
   uint16_t x = 0;
   uint16_t y = 0;
-
+  uint8_t* fb_data = NULL;
+  uint8_t* img_data = NULL;
   //	return RET_NOT_IMPL;
 
   return_value_if_fail(global_alpha > 0xf0, RET_NOT_IMPL); /*not support global_alpha*/
-  return_value_if_fail(fb != NULL && fb->data != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(img != NULL && img->data != NULL && src != NULL && dst != NULL,
+  return_value_if_fail(fb != NULL && fb->buffer != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(img != NULL && img->buffer != NULL && src != NULL && dst != NULL,
                        RET_BAD_PARAMS);
   return_value_if_fail(fb->format == BITMAP_FMT_BGR565 || fb->format == BITMAP_FMT_BGRA8888,
                        RET_BAD_PARAMS);
@@ -235,10 +245,12 @@ ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* dst, rect_t* src, uin
     fg_format = PIXEL_FORMAT_BGRA8888;
   }
 
+  fb_data = bitmap_lock_buffer_for_write(fb);
+  img_data = bitmap_lock_buffer_for_write(img);
   o_offline = fb->w - w;
-  o_addr = ((uint32_t)fb->data + o_pixsize * (fb->w * y + x));
+  o_addr = ((uint32_t)fb_data + o_pixsize * (fb->w * y + x));
   fg_offline = iw - w;
-  fg_addr = ((uint32_t)img->data + fg_pixsize * (img->w * sy + sx));
+  fg_addr = ((uint32_t)img_data + fg_pixsize * (img->w * sy + sx));
 
   __HAL_RCC_DMA2D_CLK_ENABLE();
 
@@ -265,6 +277,8 @@ ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* dst, rect_t* src, uin
 
   DMA2D->CR |= DMA2D_CR_START;
   DMA2D_WAIT
+  bitmap_unlock_buffer(fb);
+  bitmap_unlock_buffer(img);
 
   return RET_OK;
 }

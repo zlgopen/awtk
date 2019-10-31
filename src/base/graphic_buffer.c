@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   graphic_buffer.c
  * Author: AWTK Develop Team
  * Brief:  graphic_buffer
@@ -69,9 +69,8 @@ static const graphic_buffer_vtable_t s_graphic_buffer_default_vtable = {
     .unlock = graphic_buffer_default_unlock,
     .destroy = graphic_buffer_default_destroy};
 
-graphic_buffer_t* graphic_buffer_default_create(uint32_t w, uint32_t h,
-                                                       bitmap_format_t format,
-                                                       uint32_t line_length) {
+graphic_buffer_t* graphic_buffer_default_create(uint32_t w, uint32_t h, bitmap_format_t format,
+                                                uint32_t line_length) {
   uint32_t size = 0;
   uint8_t* data = NULL;
   graphic_buffer_default_t* buffer = NULL;
@@ -115,7 +114,6 @@ graphic_buffer_t* graphic_buffer_default_create_with_const_data(const uint8_t* d
   return GRAPHIC_BUFFER(buffer);
 }
 
-
 uint8_t* graphic_buffer_lock_for_read(graphic_buffer_t* buffer) {
   return_value_if_fail(buffer != NULL && buffer->vt != NULL && buffer->vt->lock_for_read != NULL,
                        NULL);
@@ -131,13 +129,15 @@ uint8_t* graphic_buffer_lock_for_write(graphic_buffer_t* buffer) {
 }
 
 ret_t graphic_buffer_unlock(graphic_buffer_t* buffer) {
-  return_value_if_fail(buffer != NULL && buffer->vt != NULL && buffer->vt->unlock != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(buffer != NULL && buffer->vt != NULL && buffer->vt->unlock != NULL,
+                       RET_BAD_PARAMS);
 
   return buffer->vt->unlock(buffer);
 }
 
 ret_t graphic_buffer_destroy(graphic_buffer_t* buffer) {
-  return_value_if_fail(buffer != NULL && buffer->vt != NULL && buffer->vt->destroy != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(buffer != NULL && buffer->vt != NULL && buffer->vt->destroy != NULL,
+                       RET_BAD_PARAMS);
 
   return buffer->vt->destroy(buffer);
 }
@@ -148,9 +148,8 @@ ret_t graphic_buffer_default_create_for_bitmap(bitmap_t* bitmap) {
   uint32_t line_length = bitmap_get_line_length(bitmap);
   return_value_if_fail(bitmap != NULL && bitmap->buffer == NULL, RET_BAD_PARAMS);
 
-  bitmap->buffer = graphic_buffer_default_create(bitmap->w, bitmap->h, bitmap->format, line_length);
+  bitmap->buffer = graphic_buffer_default_create(bitmap->w, bitmap->h,
+                                                 (bitmap_format_t)(bitmap->format), line_length);
 
   return bitmap->buffer != NULL ? RET_OK : RET_OOM;
 }
-
-

@@ -137,12 +137,12 @@ ret_t graphic_buffer_unlock(graphic_buffer_t* buffer);
 ret_t graphic_buffer_destroy(graphic_buffer_t* buffer);
 
 #ifndef GRAPHIC_BUFFER_CREATE_FOR_BITMAP
-#define GRAPHIC_BUFFER_CREATE_FOR_BITMAP(bitmap) \
-  graphic_buffer_default_create_for_bitmap(bitmap);
+#define GRAPHIC_BUFFER_CREATE_FOR_BITMAP(bitmap) graphic_buffer_default_create_for_bitmap(bitmap);
 #endif /*GRAPHIC_BUFFER_CREATE_FOR_BITMAP*/
 
 #ifndef GRAPHIC_BUFFER_CREATE_WITH_CONST_DATA
-#define GRAPHIC_BUFFER_CREATE_WITH_CONST_DATA(data)  graphic_buffer_default_create_with_const_data(data)
+#define GRAPHIC_BUFFER_CREATE_WITH_CONST_DATA(data) \
+  graphic_buffer_default_create_with_const_data(data)
 #endif /*GRAPHIC_BUFFER_CREATE_WITH_DATA*/
 
 #define GRAPHIC_BUFFER(buffer) ((graphic_buffer_t*)(buffer))
