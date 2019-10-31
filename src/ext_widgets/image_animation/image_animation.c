@@ -54,9 +54,9 @@ static ret_t on_idle_unload_image(const idle_info_t* info) {
   image_animation = IMAGE_ANIMATION(info->ctx);
   return_value_if_fail(widget != NULL && image_animation != NULL, RET_REMOVE);
 
-  if (image_animation->image_data != NULL) {
+  if (image_animation->image_buffer != NULL) {
     memset(&bitmap, 0x00, sizeof(bitmap));
-    bitmap.data = image_animation->image_data;
+    bitmap.buffer = (graphic_buffer_t*)(image_animation->image_buffer);
     widget_unload_image(widget, &bitmap);
   }
 
@@ -94,7 +94,7 @@ static ret_t image_animation_on_paint_self(widget_t* widget, canvas_t* c) {
       canvas_draw_image_scale_down(c, &bitmap, &s, &d);
 
       if (image_animation->unload_after_paint) {
-        image_animation->image_data = (uint8_t*)(bitmap.data);
+        image_animation->image_buffer = (bitmap.buffer);
         idle_add(on_idle_unload_image, widget);
       }
     }
@@ -178,7 +178,7 @@ static ret_t image_animation_on_destroy(widget_t* widget) {
     timer_remove(image_animation->timer_id);
     image_animation->timer_id = TK_INVALID_ID;
   }
-  image_animation->image_data = NULL;
+  image_animation->image_buffer = NULL;
   TKMEM_FREE(image_animation->image);
   TKMEM_FREE(image_animation->sequence);
   TKMEM_FREE(image_animation->format);

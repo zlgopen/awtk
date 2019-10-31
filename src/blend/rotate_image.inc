@@ -5,6 +5,8 @@ static ret_t rotate_image(bitmap_t* dst, bitmap_t* src, rect_t* src_r, lcd_orien
   uint32_t k = 0;
   uint32_t w = 0;
   uint32_t h = 0;
+  uint8_t* src_data = NULL;
+  uint8_t* dst_data = NULL;
   pixel_dst_t* src_p = NULL;
   pixel_dst_t* dst_p = NULL;
   uint32_t fb_bpp = bitmap_get_bpp(dst);
@@ -31,8 +33,11 @@ static ret_t rotate_image(bitmap_t* dst, bitmap_t* src, rect_t* src_r, lcd_orien
     default:
       break;
   }
-  dst_p = (pixel_dst_t*)(dst->data + dy * dst_line_length + dx * fb_bpp);
-  src_p = (pixel_dst_t*)(src->data + src_r->y * src_line_length + src_r->x * img_bpp);
+
+  dst_data = bitmap_lock_buffer_for_write(dst);
+  src_data = bitmap_lock_buffer_for_read(src);
+  dst_p = (pixel_dst_t*)(dst_data + dy * dst_line_length + dx * fb_bpp);
+  src_p = (pixel_dst_t*)(src_data + src_r->y * src_line_length + src_r->x * img_bpp);
 
   w = src_r->w;
   h = src_r->h;
@@ -85,6 +90,9 @@ static ret_t rotate_image(bitmap_t* dst, bitmap_t* src, rect_t* src_r, lcd_orien
     default:
       break;
   }
+
+  bitmap_unlock_buffer(dst);
+  bitmap_unlock_buffer(src);
 
   return RET_OK;
 }

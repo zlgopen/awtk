@@ -56,20 +56,24 @@
 ret_t soft_copy_image(bitmap_t* dst, bitmap_t* src, rect_t* src_r, xy_t dx, xy_t dy) {
   uint8_t* src_p = NULL;
   uint8_t* dst_p = NULL;
+  uint8_t* src_data = NULL;
+  uint8_t* dst_data = NULL;
   uint32_t bpp = bitmap_get_bpp(dst);
   uint32_t dst_line_length = bitmap_get_line_length(dst);
   uint32_t src_line_length = bitmap_get_line_length(src);
   return_value_if_fail(dst != NULL && src != NULL && src_r != NULL, RET_BAD_PARAMS);
   return_value_if_fail(dst->format == src->format, RET_BAD_PARAMS);
 
-  src_p = (uint8_t*)(src->data) + src_r->y * src_line_length + src_r->x * bpp;
-  dst_p = (uint8_t*)(dst->data) + dy * dst_line_length + dx * bpp;
+  src_data = bitmap_lock_buffer_for_read(src);
+  dst_data = bitmap_lock_buffer_for_write(dst);
+
+  src_p = (uint8_t*)(src_data) + src_r->y * src_line_length + src_r->x * bpp;
+  dst_p = (uint8_t*)(dst_data) + dy * dst_line_length + dx * bpp;
   if ((dst->w * bpp == dst_line_length) && (src->w * bpp == src_line_length) && dst->w == src->w &&
       dst->h == src->h && src_r->w == src->w && src_r->x == 0) {
     uint32_t size = (src_r->w * src_r->h);
     tk_pixel_copy(dst_p, src_p, size, bpp);
 
-    return RET_OK;
   } else {
     uint32_t i = 0;
     uint32_t size = src_r->w;
@@ -80,6 +84,8 @@ ret_t soft_copy_image(bitmap_t* dst, bitmap_t* src, rect_t* src_r, xy_t dx, xy_t
       src_p += src_line_length;
     }
   }
+  bitmap_unlock_buffer(src);
+  bitmap_unlock_buffer(dst);
 
   return RET_OK;
 }

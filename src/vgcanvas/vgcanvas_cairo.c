@@ -457,8 +457,10 @@ static cairo_surface_t* vgcanvas_cairo_ensure_image(vgcanvas_cairo_t* vg, bitmap
 
   surface = (cairo_surface_t*)(cairo_img->specific);
   if (surface == NULL) {
+    uint8_t* cairo_img_data = bitmap_lock_buffer_for_read(cairo_img);
     surface =
-        create_surface(cairo_img->w, cairo_img->h, cairo_img->format, (void*)(cairo_img->data));
+        create_surface(cairo_img->w, cairo_img->h, cairo_img->format, cairo_img_data);
+    bitmap_unlock_buffer(cairo_img);
 
     if (surface != NULL) {
       cairo_img->specific = surface;

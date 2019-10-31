@@ -42,7 +42,7 @@ static int bitmap_cache_cmp_name(bitmap_cache_t* a, bitmap_cache_t* b) {
 }
 
 static int bitmap_cache_cmp_data(bitmap_cache_t* a, bitmap_cache_t* b) {
-  return (char*)(a->image.data) - (char*)(b->image.data);
+  return (char*)(a->image.buffer) - (char*)(b->image.buffer);
 }
 
 static ret_t bitmap_cache_destroy(bitmap_cache_t* cache) {
@@ -136,7 +136,7 @@ ret_t image_manager_update_specific(image_manager_t* imm, bitmap_t* image) {
     imm = image->image_manager;
   }
 
-  info.image.data = image->data;
+  info.image.buffer = image->buffer;
   imm->images.compare = (tk_compare_t)bitmap_cache_cmp_data;
   iter = darray_find(&(imm->images), &info);
 
@@ -177,8 +177,8 @@ static ret_t image_manager_get_bitmap_impl(image_manager_t* imm, const char* nam
     image->flags = header->flags;
     image->format = header->format;
     image->name = res->name;
-    image->data = header->data;
     image->image_manager = imm;
+    image->buffer = GRAPHIC_BUFFER_CREATE_WITH_CONST_DATA(header->data);
 #if defined(WITH_NANOVG_GPU) || defined(WITH_NANOVG_SOFT)
     image_manager_add(imm, name, image);
 #endif
@@ -274,7 +274,7 @@ ret_t image_manager_unload_bitmap(image_manager_t* imm, bitmap_t* image) {
   bitmap_cache_t b;
   return_value_if_fail(imm != NULL && image != NULL, RET_BAD_PARAMS);
 
-  b.image.data = image->data;
+  b.image.buffer = image->buffer;
   imm->images.compare = (tk_compare_t)bitmap_cache_cmp_data;
 
   return darray_remove_all(&(imm->images), &b);

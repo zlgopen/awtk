@@ -162,10 +162,13 @@ static inline ret_t fragment_frame_buffer_image_copy(fragment_frame_buffer_t* ff
   uint32_t i = 0;
   uint32_t x = ffb->win.x + ffb->cursor_x;
   uint32_t y = ffb->win.y + ffb->cursor_y;
-  pixel_t* data = (pixel_t*)img->data;
-  pixel_t* src_p = data + img->w * src->y + src->x;
+  pixel_t* data = NULL;
+  pixel_t* src_p = NULL;
 
   return_value_if_fail(src->w == dst->w && src->h == dst->h, RET_BAD_PARAMS);
+
+  data = (pixel_t*)bitmap_lock_buffer_for_read(img);
+  src_p = data + img->w * src->y + src->x;
 
   for (i = 0; i < dst->h; i++) {
     fragment_frame_buffer_copy_pixel(ffb, x, y + i, img->w, src_p);
@@ -178,6 +181,7 @@ static inline ret_t fragment_frame_buffer_image_copy(fragment_frame_buffer_t* ff
     ffb->cursor_y += (ffb->cursor_x / ffb->win.w);
     ffb->cursor_x = ffb->cursor_x % ffb->win.w;
   }
+  bitmap_unlock_buffer(img);
 
   return RET_OK;
 }

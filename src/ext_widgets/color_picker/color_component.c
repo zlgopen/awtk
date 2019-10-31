@@ -202,6 +202,7 @@ static ret_t color_component_update_sv(widget_t* widget) {
   int32_t h = 0;
   uint32_t* dst = NULL;
   bitmap_t* image = NULL;
+  uint8_t* image_data = NULL;
   color_component_t* color_component = COLOR_COMPONENT(widget);
   return_value_if_fail(widget != NULL && color_component != NULL, RET_BAD_PARAMS);
 
@@ -209,12 +210,13 @@ static ret_t color_component_update_sv(widget_t* widget) {
   image = color_component->image;
   w = image->w;
   h = image->h;
-  dst = (uint32_t*)(image->data);
+  image_data = bitmap_lock_buffer_for_write(image);
+  dst = (uint32_t*)(image_data);
 
   convertRGBtoHSV(rgba.r, rgba.g, rgba.b, &H, &S, &V);
 
   for (y = 0; y < h; y++) {
-    dst = (uint32_t*)(image->data + y * image->line_length);
+    dst = (uint32_t*)(image_data + y * image->line_length);
     for (x = 0; x < w; x++) {
       V = (float)x / (float)w;
       S = 1 - (float)y / (float)h;
@@ -223,6 +225,7 @@ static ret_t color_component_update_sv(widget_t* widget) {
     }
   }
   color_component->last_hue = H;
+  bitmap_unlock_buffer(image);
 
   return RET_OK;
 }
@@ -241,16 +244,18 @@ static ret_t color_component_update_h(widget_t* widget) {
   int32_t h = 0;
   uint32_t* dst = NULL;
   bitmap_t* image = NULL;
+  uint8_t* image_data = NULL;
   color_component_t* color_component = COLOR_COMPONENT(widget);
   return_value_if_fail(widget != NULL && color_component != NULL, RET_BAD_PARAMS);
 
   image = color_component->image;
   w = image->w;
   h = image->h;
-  dst = (uint32_t*)(image->data);
+  image_data = bitmap_lock_buffer_for_write(image);
+  dst = (uint32_t*)(image_data);
 
   for (y = 0; y < h; y++) {
-    dst = (uint32_t*)(image->data + y * image->line_length);
+    dst = (uint32_t*)(image_data + y * image->line_length);
     H = (1 - (float)y / (float)h) * 360;
     convertHSVtoRGB(H, S, V, &r, &g, &b);
     v = rgb_to_image8888(r, g, b);
@@ -258,6 +263,7 @@ static ret_t color_component_update_h(widget_t* widget) {
       *dst++ = v;
     }
   }
+  bitmap_unlock_buffer(image);
 
   return RET_OK;
 }

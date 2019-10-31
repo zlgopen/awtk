@@ -1,5 +1,8 @@
 # 最新动态
 
+* 2019/10/31
+  * 增加graphic\_buffer，用于管理bitmap的内存。
+
 * 2019/10/30
   * 增加system\_bar\_bottom，支持system_bar在顶部、底部和两者。
 

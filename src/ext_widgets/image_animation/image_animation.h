@@ -132,7 +132,7 @@ typedef struct _image_animation_t {
   bool_t inited;
   int32_t index;
   uint32_t timer_id;
-  void* image_data;
+  void* image_buffer;
   char image_name[TK_NAME_LEN + 1];
 } image_animation_t;
 

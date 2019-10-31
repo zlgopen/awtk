@@ -43,31 +43,36 @@ ret_t image_gen(bitmap_t* image, const char* output_filename, bool_t mono) {
 
 uint32_t image_gen_buff(bitmap_t* image, uint8_t* output_buff, uint32_t buff_size, bool_t mono) {
   size_t size = 0;
+  uint8_t* image_data = NULL;
   bitmap_header_t* header = (bitmap_header_t*)output_buff;
   return_value_if_fail(image != NULL && output_buff != NULL, 0);
 
   header->w = image->w;
   header->h = image->h;
   header->flags = image->flags;
+  image_data = bitmap_lock_buffer_for_read(image);
   if (!mono) {
     size = bitmap_get_line_length(image) * image->h;
     ENSURE((size + sizeof(bitmap_header_t)) < buff_size);
 
     header->format = image->format;
-    memcpy(header->data, image->data, size);
+    memcpy(header->data, image_data, size);
   } else {
     bitmap_t b;
-    bitmap_init_from_rgba(&b, image->w, image->h, BITMAP_FMT_MONO, image->data, 4);
+    uint8_t* bdata = NULL;
+    bitmap_init_from_rgba(&b, image->w, image->h, BITMAP_FMT_MONO, image_data, 4);
     header->format = b.format;
     size = bitmap_get_line_length(&b) * b.h;
     ENSURE((size + sizeof(bitmap_header_t)) < buff_size);
 
-    memcpy(header->data, b.data, size);
+    bdata = bitmap_lock_buffer_for_read(&b);
+    memcpy(header->data, bdata, size);
 
-    bitmap_mono_dump(b.data, b.w, b.h);
-
+    bitmap_mono_dump(bdata, b.w, b.h);
+    bitmap_unlock_buffer(&b);
     bitmap_destroy(&b);
   }
+  bitmap_unlock_buffer(image);
 
   return size + sizeof(bitmap_header_t);
 }

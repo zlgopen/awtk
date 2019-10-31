@@ -217,17 +217,18 @@ static ret_t lcd_mem_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
 
 static vgcanvas_t* lcd_mem_get_vgcanvas(lcd_t* lcd) {
   bitmap_t fb;
+  uint32_t w = lcd->w;
+  uint32_t h = lcd->h;
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
-  lcd_mem_init_drawing_fb(lcd, &fb);
+  bitmap_format_t format = mem->format;
   uint32_t line_length = lcd_mem_get_line_length(mem);
+  uint32_t* fbdata = (uint32_t*)lcd_mem_init_drawing_fb(lcd, NULL);
 
   if (mem->vgcanvas == NULL) {
-    mem->vgcanvas = vgcanvas_create(fb.w, fb.h, line_length, (bitmap_format_t)(fb.format),
-                                    (uint32_t*)(fb.data));
+    mem->vgcanvas = vgcanvas_create(w, h, line_length, format, fbdata);
   } else {
-    vgcanvas_reinit(mem->vgcanvas, fb.w, fb.h, line_length, (bitmap_format_t)(fb.format),
-                    (uint32_t*)(fb.data));
-    vgcanvas_clip_rect(mem->vgcanvas, 0, 0, fb.w, fb.h);
+    vgcanvas_reinit(mem->vgcanvas, w, h, line_length, format, fbdata);
+    vgcanvas_clip_rect(mem->vgcanvas, 0, 0, w, h);
   }
 
   return mem->vgcanvas;

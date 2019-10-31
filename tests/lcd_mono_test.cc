@@ -190,13 +190,16 @@ TEST(LcdMono, draw_glyph) {
 }
 
 static void bitmap_gen(bitmap_t* b, uint32_t w, uint32_t h) {
+  uint8_t* data = NULL;
   memset(b, 0x00, sizeof(bitmap_t));
 
   b->w = w;
   b->h = h;
   b->format = BITMAP_FMT_MONO;
-  b->data = bitmap_mono_create_data(w, h);
-  gen_data((uint8_t*)(b->data), w, h);
+  data = bitmap_mono_create_data(w, h);
+
+  gen_data((uint8_t*)(data), w, h);
+  b->buffer = GRAPHIC_BUFFER_CREATE_WITH_CONST_DATA(data); 
 
   return;
 }
@@ -206,11 +209,11 @@ static void test_draw_bitmap(lcd_t* lcd, uint32_t x, uint32_t y, uint32_t w, uin
   bitmap_gen(&b, w, h);
   rect_t r = rect_init(0, 0, w, h);
   rect_t d = rect_init(x, y, w, h);
-
+  uint8_t* bdata = bitmap_lock_buffer_for_write(&b);
   ASSERT_EQ(lcd_draw_image(lcd, &b, &r, &d), RET_OK);
-  lcd_check_data(lcd, (uint8_t*)(b.data), x, y, w, h);
-
-  TKMEM_FREE(b.data);
+  lcd_check_data(lcd, (uint8_t*)(bdata), x, y, w, h);
+  bitmap_unlock_buffer(&b);
+  graphic_buffer_destroy(b.buffer);
 }
 
 TEST(LcdMono, draw_bitmap) {

@@ -42,7 +42,8 @@ static ret_t window_manager_default_do_open_window(widget_t* wm, widget_t* windo
 static ret_t window_manager_default_layout_child(widget_t* widget, widget_t* window);
 static ret_t window_manager_default_layout_system_bar(widget_t* widget, widget_t* window);
 static ret_t window_manager_default_create_dialog_highlighter(widget_t* widget, widget_t* curr_win);
-static ret_t window_manager_default_layout_not_system_bar(widget_t* widget, widget_t* window, rect_t client_r);
+static ret_t window_manager_default_layout_not_system_bar(widget_t* widget, widget_t* window,
+                                                          rect_t client_r);
 
 static bool_t window_is_fullscreen(widget_t* widget) {
   value_t v;

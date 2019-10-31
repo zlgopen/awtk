@@ -35,8 +35,10 @@ static ret_t blend_image_with_alpha(bitmap_t* dst, bitmap_t* src, rect_t* dst_r,
   wh_t src_ih = src->h;
   wh_t dst_iw = dst->w;
   wh_t dst_ih = dst->h;
-  uint8_t* srcp = (uint8_t*)(src->data);
-  uint8_t* dstp = (uint8_t*)(dst->data);
+  uint8_t* srcp = NULL;
+  uint8_t* dstp = NULL;
+  uint8_t* src_data = NULL;
+  uint8_t* dst_data = NULL;
   uint8_t src_bpp = bitmap_get_bpp(src);
   uint8_t dst_bpp = bitmap_get_bpp(dst);
   uint32_t src_line_length = bitmap_get_line_length(src);
@@ -49,6 +51,11 @@ static ret_t blend_image_with_alpha(bitmap_t* dst, bitmap_t* src, rect_t* dst_r,
   return_value_if_fail(dx >= 0 && dy >= 0 && (dx + dw) <= dst_iw && (dy + dh) <= dst_ih,
                        RET_BAD_PARAMS);
 
+  src_data = bitmap_lock_buffer_for_read(src);
+  dst_data = bitmap_lock_buffer_for_write(dst);
+
+  srcp = src_data;
+  dstp = dst_data;
   if (sw == dw && sh == dh) {
     srcp += (sy * src_line_length + sx * src_bpp);
     dstp += (dy * dst_line_length + dx * dst_bpp);
@@ -72,7 +79,7 @@ static ret_t blend_image_with_alpha(bitmap_t* dst, bitmap_t* src, rect_t* dst_r,
     dstp += (dy * dst_line_length + dx * dst_bpp);
     for (j = 0; j < dh; j++) {
       uint32_t y = sy + ((j == bottom) ? (sh - 1) : ((j * scale_y) >> 8));
-      uint8_t* row_data = ((uint8_t*)(src->data)) + y * src_line_length + sx * src_bpp;
+      uint8_t* row_data = ((uint8_t*)(src_data)) + y * src_line_length + sx * src_bpp;
 
       for (i = 0; i < dw; i++) {
         uint32_t x = (i == right) ? (sw - 1) : ((i * scale_x) >> 8);
@@ -84,6 +91,8 @@ static ret_t blend_image_with_alpha(bitmap_t* dst, bitmap_t* src, rect_t* dst_r,
       dstp += dst_line_offset;
     }
   }
+  bitmap_unlock_buffer(src);
+  bitmap_unlock_buffer(dst);
 
   return RET_OK;
 }

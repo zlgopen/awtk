@@ -5,13 +5,15 @@ static ret_t clear_image(bitmap_t* dst, rect_t* dst_r, color_t c) {
   int w = dst_r->w;
   int h = dst_r->h;
   pixel_dst_t* p = NULL;
+  uint8_t* dst_data = NULL;
   uint32_t bpp = bitmap_get_bpp(dst);
   uint32_t line_length = bitmap_get_line_length(dst);
   pixel_dst_t data = pixel_dst_from_rgba(c.rgba.r, c.rgba.g, c.rgba.b, c.rgba.a);
 
+  dst_data = bitmap_lock_buffer_for_write(dst);
   if (dst->w == dst_r->w && (dst->w * bpp) == line_length && dst->h == dst_r->h) {
     uint32_t size = w * h;
-    p = (pixel_dst_t*)(dst->data);
+    p = (pixel_dst_t*)(dst_data);
 
     if (bpp == 2) {
       tk_memset16((uint16_t*)p, *(uint16_t*)(&data), size);
@@ -24,7 +26,7 @@ static ret_t clear_image(bitmap_t* dst, rect_t* dst_r, color_t c) {
     }
   } else {
     for (y = 0; y < h; y++) {
-      p = (pixel_dst_t*)(dst->data + (dst_r->y + y) * line_length + dst_r->x * bpp);
+      p = (pixel_dst_t*)(dst_data + (dst_r->y + y) * line_length + dst_r->x * bpp);
 
       if (bpp == 2) {
         tk_memset16((uint16_t*)p, *(uint16_t*)(&data), w);
@@ -37,6 +39,7 @@ static ret_t clear_image(bitmap_t* dst, rect_t* dst_r, color_t c) {
       }
     }
   }
+  bitmap_unlock_buffer(dst);
 
   return RET_OK;
 }
@@ -53,6 +56,7 @@ static ret_t fill_image(bitmap_t* dst, rect_t* dst_r, color_t c) {
     int h = dst_r->h;
     pixel_dst_t* p = NULL;
     rgba_t rgba = c.rgba;
+    uint8_t* dst_data = NULL;
     uint8_t minus_a = 0xff - a;
     uint32_t bpp = bitmap_get_bpp(dst);
     uint32_t line_length = bitmap_get_line_length(dst);
@@ -63,8 +67,9 @@ static ret_t fill_image(bitmap_t* dst, rect_t* dst_r, color_t c) {
     rgba.b = (rgba.b * a) >> 8;
     rgba.a = minus_a;
 
+    dst_data = bitmap_lock_buffer_for_write(dst);
     for (y = 0; y < h; y++) {
-      p = (pixel_dst_t*)(dst->data + (dst_r->y + y) * line_length + dst_r->x * bpp);
+      p = (pixel_dst_t*)(dst_data + (dst_r->y + y) * line_length + dst_r->x * bpp);
 
       if (dark) {
         for (x = 0; x < w; x++, p++) {
@@ -76,6 +81,7 @@ static ret_t fill_image(bitmap_t* dst, rect_t* dst_r, color_t c) {
         }
       }
     }
+    bitmap_unlock_buffer(dst);
   }
 
   return RET_OK;

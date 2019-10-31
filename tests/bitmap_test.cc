@@ -7,15 +7,19 @@ TEST(Bitmap, basic) {
   uint32_t i = 0;
   for (i = 0; i < n; i++) {
     bitmap_t* b = bitmap_create_ex(i + 1, i + 1, 0, BITMAP_FMT_BGRA8888);
-    ASSERT_EQ(((uint64_t)(b->data)) % BITMAP_ALIGN_SIZE, 0);
+    uint8_t* bdata = bitmap_lock_buffer_for_write(b);
+    ASSERT_EQ(((uint64_t)(bdata)) % BITMAP_ALIGN_SIZE, 0);
     ASSERT_EQ(bitmap_get_line_length(b), b->w * 4);
+    bitmap_unlock_buffer(b);
     bitmap_destroy(b);
   }
 
   for (i = 0; i < n; i++) {
     bitmap_t* b = bitmap_create_ex(i + 1, i + 1, 0, BITMAP_FMT_BGR565);
-    ASSERT_EQ(((uint64_t)(b->data)) % BITMAP_ALIGN_SIZE, 0);
+    uint8_t* bdata = bitmap_lock_buffer_for_write(b);
+    ASSERT_EQ(((uint64_t)(bdata)) % BITMAP_ALIGN_SIZE, 0);
     ASSERT_EQ(bitmap_get_line_length(b), b->w * 2);
+    bitmap_unlock_buffer(b);
     bitmap_destroy(b);
   }
 }
@@ -95,16 +99,18 @@ static void check_bitmap_mono(bitmap_t* b) {
   uint32_t j = 0;
   uint32_t w = b->w;
   uint32_t h = b->h;
+  uint8_t* bdata = bitmap_lock_buffer_for_read(b);
 
   for (j = 0; j < h; j++) {
     for (i = 0; i < w; i++) {
       if (j % 2) {
-        ASSERT_EQ(bitmap_mono_get_pixel(b->data, w, h, i, j), TRUE);
+        ASSERT_EQ(bitmap_mono_get_pixel(bdata, w, h, i, j), TRUE);
       } else {
-        ASSERT_EQ(bitmap_mono_get_pixel(b->data, w, h, i, j), FALSE);
+        ASSERT_EQ(bitmap_mono_get_pixel(bdata, w, h, i, j), FALSE);
       }
     }
   }
+  bitmap_unlock_buffer(b);
 
   return;
 }

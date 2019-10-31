@@ -45,8 +45,6 @@ TEST(ImageManager, add) {
 
   bmp.w = 10;
   bmp.h = 10;
-  bmp.data = NULL;
-  bmp.destroy = NULL;
 
   ASSERT_EQ(image_manager_add(image_manager(), "checked", &bmp), RET_OK);
   ASSERT_EQ(image_manager_lookup(image_manager(), "checked", &bmp), RET_OK);
