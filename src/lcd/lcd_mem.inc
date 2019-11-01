@@ -35,7 +35,12 @@ static pixel_t* lcd_mem_init_drawing_fb(lcd_t* lcd, bitmap_t* fb) {
   uint8_t* fbuff = mem->offline_fb;
 
   if (fb != NULL) {
-    bitmap_init(fb, lcd->w, lcd->h, mem->format, fbuff);
+    memset(fb, 0x00, sizeof(bitmap_t));
+
+    fb->w = lcd->w;
+    fb->h = lcd->h;
+    fb->format = mem->format;
+    fb->buffer = mem->offline_gb;
     bitmap_set_line_length(fb, lcd_mem_get_line_length(mem));
   }
 
@@ -54,14 +59,23 @@ static bitmap_t* lcd_mem_init_online_fb(lcd_t* lcd, bitmap_t* fb, lcd_orientatio
     h = lcd->w;
     w = lcd->h;
   }
-
-  bitmap_init(fb, w, h, mem->format, mem->online_fb);
+  
+  memset(fb, 0x00, sizeof(bitmap_t));
+  fb->w = w;
+  fb->h = h;
+  fb->format = mem->format;
+  fb->buffer = mem->online_gb;
   bitmap_set_line_length(fb, lcd_mem_get_line_length(mem));
 
   return fb;
 }
 
 static ret_t lcd_mem_begin_frame(lcd_t* lcd, rect_t* dirty_rect) {
+  lcd_mem_t* mem = (lcd_mem_t*)lcd;
+
+  mem->online_gb = graphic_buffer_create_with_data(mem->online_fb, lcd->w, lcd->h, mem->format);
+  mem->offline_gb = graphic_buffer_create_with_data(mem->offline_fb, lcd->w, lcd->h, mem->format);
+
   return RET_OK;
 }
 
@@ -263,17 +277,24 @@ static ret_t lcd_mem_flush(lcd_t* lcd) {
 }
 
 static ret_t lcd_mem_end_frame(lcd_t* lcd) {
-  if (lcd->draw_mode == LCD_DRAW_OFFLINE) {
-    return RET_OK;
+  lcd_mem_t* mem = (lcd_mem_t*)lcd;
+
+  if (lcd->draw_mode != LCD_DRAW_OFFLINE) {
+    if (lcd_is_swappable(lcd)) {
+      lcd_swap(lcd);
+    } else {
+      lcd_flush(lcd);
+    }
+
+    lcd_sync(lcd);
   }
 
-  if (lcd_is_swappable(lcd)) {
-    lcd_swap(lcd);
-  } else {
-    lcd_flush(lcd);
-  }
+  graphic_buffer_destroy(mem->online_gb);
+  graphic_buffer_destroy(mem->offline_gb);
+  mem->online_gb = NULL;
+  mem->offline_gb = NULL;
 
-  return lcd_sync(lcd);
+  return RET_OK;
 }
 
 static ret_t lcd_mem_destroy(lcd_t* lcd) {

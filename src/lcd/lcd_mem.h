@@ -23,6 +23,7 @@
 #define TK_LCD_MEM_H
 
 #include "base/lcd.h"
+#include "base/graphic_buffer.h"
 
 BEGIN_C_DECLS
 
@@ -36,6 +37,10 @@ typedef struct _lcd_mem_t {
   uint32_t line_length;
   bitmap_format_t format;
   bool_t own_offline_fb;
+
+  graphic_buffer_t* online_gb;
+  graphic_buffer_t* offline_gb;
+
 } lcd_mem_t;
 
 #define lcd_mem_set_line_length(lcd, value) ((lcd_mem_t*)lcd)->line_length = value;
