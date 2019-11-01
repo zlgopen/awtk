@@ -87,7 +87,7 @@ static graphic_buffer_t* graphic_buffer_jzgpu_create(uint32_t w, uint32_t h, bit
 }
 
 /*public functions*/
-graphic_buffer_t* graphic_buffer_create_with_const_data(const uint8_t* data, uint32_t w, uint32_t h, bitmap_format_t format) {
+graphic_buffer_t* graphic_buffer_create_with_data(const uint8_t* data, uint32_t w, uint32_t h, bitmap_format_t format) {
   graphic_buffer_jzgpu_t* buffer = NULL;
   return_value_if_fail(data != NULL, NULL);
 
