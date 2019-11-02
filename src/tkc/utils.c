@@ -648,6 +648,10 @@ int pointer_compare(const void* a, const void* b) {
   return ((const char*)a - (const char*)b);
 }
 
+int compare_always_equal(const void* a, const void* b) {
+  return 0;
+}
+
 ret_t tk_replace_locale(const char* name, char out[TK_NAME_LEN + 1], const char* locale) {
   char* d = NULL;
   char* p = NULL;

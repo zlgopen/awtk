@@ -71,6 +71,7 @@ char* tk_str_copy(char* dst, const char* src);
 ret_t dummy_destroy(void* data);
 ret_t default_destroy(void* data);
 int pointer_compare(const void* a, const void* b);
+int compare_always_equal(const void* a, const void* b);
 
 bool_t tk_is_valid_name(const char* name);
 ret_t tk_replace_locale(const char* name, char out[TK_NAME_LEN + 1], const char* locale);
