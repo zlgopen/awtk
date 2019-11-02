@@ -117,7 +117,6 @@ static ret_t draggable_get_prop(widget_t* widget, const char* name, value_t* v) 
 }
 
 static ret_t draggable_set_prop(widget_t* widget, const char* name, const value_t* v) {
-  draggable_t* draggable = DRAGGABLE(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(DRAGGABLE_PROP_TOP, name)) {
@@ -246,8 +245,6 @@ static ret_t draggable_on_attach_parent(widget_t* widget, widget_t* parent) {
 }
 
 static ret_t draggable_on_detach_parent(widget_t* widget, widget_t* parent) {
-  draggable_t* draggable = DRAGGABLE(widget);
-
   widget_off_by_ctx(parent, widget);
 
   return RET_OK;

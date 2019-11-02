@@ -172,8 +172,8 @@ ret_t window_manager_default_snap_curr_window(widget_t* widget, widget_t* curr_w
   canvas_set_clip_rect(c, &r);
   ENSURE(widget_on_paint_background(widget, c) == RET_OK);
   ENSURE(widget_paint(curr_win, c) == RET_OK);
-  ENSURE(canvas_end_frame(c) == RET_OK);
   ENSURE(lcd_take_snapshot(c->lcd, img, auto_rotate) == RET_OK);
+  ENSURE(canvas_end_frame(c) == RET_OK);
 #endif
 
   return RET_OK;
@@ -220,8 +220,8 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
   if (dialog_highlighter != NULL) {
     dialog_highlighter_prepare(dialog_highlighter, c);
   }
-  ENSURE(canvas_end_frame(c) == RET_OK);
   ENSURE(lcd_take_snapshot(c->lcd, img, auto_rotate) == RET_OK);
+  ENSURE(canvas_end_frame(c) == RET_OK);
 #endif /*WITH_NANOVG_GPU*/
 
   if (dialog_highlighter != NULL) {
