@@ -203,7 +203,7 @@ ret_t label_resize_to_content(widget_t* widget, uint32_t min_w, uint32_t max_w, 
 
   line_breaker_break(widget->text.str, label_on_line_measure, &ctx);
 
-  w = ctx.w;
+  w = ctx.w + 10;
   w = tk_min(w, max_w);
   w = tk_max(w, min_w);
 
