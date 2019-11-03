@@ -39,6 +39,16 @@ ret_t window_manager_set(widget_t* widget) {
   return RET_OK;
 }
 
+static ret_t window_manager_close_keyboard(widget_t* widget) {
+  widget_t* top_window = window_manager_get_top_window(widget);
+  if(widget_is_keyboard(top_window)) {
+    window_manager_close_window_force(widget, top_window);
+    top_window = window_manager_get_top_window(widget);
+  }
+
+  return RET_OK;
+}
+
 static ret_t window_manager_default_impl_back(widget_t* widget) {
   event_t e;
   widget_t* top_window = window_manager_get_top_window(widget);
@@ -269,6 +279,8 @@ ret_t window_manager_set_cursor(widget_t* widget, const char* cursor) {
 ret_t window_manager_back(widget_t* widget) {
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(wm != NULL && wm->vt != NULL, RET_BAD_PARAMS);
+
+  window_manager_close_keyboard(widget);
   if (wm->vt->back != NULL) {
     return wm->vt->back(widget);
   } else {
@@ -279,6 +291,7 @@ ret_t window_manager_back_to_home(widget_t* widget) {
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(wm != NULL && wm->vt != NULL, RET_BAD_PARAMS);
 
+  window_manager_close_keyboard(widget);
   if (wm->vt->back_to_home != NULL) {
     return wm->vt->back_to_home(widget);
   } else {
