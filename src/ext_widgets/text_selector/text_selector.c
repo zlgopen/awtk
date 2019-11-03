@@ -629,6 +629,7 @@ ret_t text_selector_set_selected_index(widget_t* widget, uint32_t index) {
   return_value_if_fail(option != NULL, RET_BAD_PARAMS);
 
   text_selector_set_selected_index_only(text_selector, index);
+  text_selector_sync_yoffset_with_selected_index(text_selector);
 
   return widget_invalidate(widget, NULL);
 }
