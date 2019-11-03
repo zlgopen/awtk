@@ -89,7 +89,8 @@ ret_t graphic_buffer_create_for_bitmap(bitmap_t* bitmap);
  *
  * @return {graphic_buffer_t*} 返回缓存区。
  */
-graphic_buffer_t* graphic_buffer_create_with_data(const uint8_t* data, uint32_t w, uint32_t h, bitmap_format_t format);
+graphic_buffer_t* graphic_buffer_create_with_data(const uint8_t* data, uint32_t w, uint32_t h,
+                                                  bitmap_format_t format);
 
 /**
  * @method graphic_buffer_lock_for_read
@@ -130,7 +131,8 @@ ret_t graphic_buffer_destroy(graphic_buffer_t* buffer);
 #define GRAPHIC_BUFFER(buffer) ((graphic_buffer_t*)(buffer))
 
 #define GRAPHIC_BUFFER_CREATE_FOR_BITMAP(bitmap) graphic_buffer_create_for_bitmap(bitmap)
-#define GRAPHIC_BUFFER_CREATE_WITH_DATA(data, w, h, format) graphic_buffer_create_with_data(data, w, h, format)
+#define GRAPHIC_BUFFER_CREATE_WITH_DATA(data, w, h, format) \
+  graphic_buffer_create_with_data(data, w, h, format)
 
 END_C_DECLS
 

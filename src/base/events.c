@@ -79,7 +79,7 @@ ret_t pointer_event_rotate(pointer_event_t* evt, system_info_t* info) {
 #if WITH_NANOVG_GPU
       evt->y = info->lcd_w - x - 1;
       evt->x = y;
-#else  
+#else
       evt->y = x;
       evt->x = info->lcd_h - y - 1;
 #endif
@@ -94,7 +94,7 @@ ret_t pointer_event_rotate(pointer_event_t* evt, system_info_t* info) {
 #if WITH_NANOVG_GPU
       evt->y = x;
       evt->x = info->lcd_h - y - 1;
-#else 
+#else
       evt->y = info->lcd_w - x - 1;
       evt->x = y;
 #endif

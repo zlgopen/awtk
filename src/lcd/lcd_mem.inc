@@ -59,7 +59,7 @@ static bitmap_t* lcd_mem_init_online_fb(lcd_t* lcd, bitmap_t* fb, lcd_orientatio
     h = lcd->w;
     w = lcd->h;
   }
-  
+
   memset(fb, 0x00, sizeof(bitmap_t));
   fb->w = w;
   fb->h = h;

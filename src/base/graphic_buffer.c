@@ -50,4 +50,3 @@ ret_t graphic_buffer_destroy(graphic_buffer_t* buffer) {
 
   return buffer->vt->destroy(buffer);
 }
-

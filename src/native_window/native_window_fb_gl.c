@@ -44,16 +44,16 @@ static native_window_t* s_shared_win = NULL;
 
 #define NATIVE_WINDOW_FB_GL(win) ((native_window_fb_gl_t*)(win))
 
-ret_t native_window_fb_gl_set_swap_buffer_func(native_window_t* win, native_window_swap_buffer_t swap_buffer)
-{
+ret_t native_window_fb_gl_set_swap_buffer_func(native_window_t* win,
+                                               native_window_swap_buffer_t swap_buffer) {
   native_window_fb_gl_t* fb_gl = NATIVE_WINDOW_FB_GL(win);
   return_value_if_fail(fb_gl != NULL && swap_buffer != NULL, RET_BAD_PARAMS);
   fb_gl->swap_buffer = swap_buffer;
   return RET_OK;
 }
 
-ret_t native_window_fb_gl_set_make_current_func(native_window_t* win, native_window_gl_make_current_t make_current)
-{
+ret_t native_window_fb_gl_set_make_current_func(native_window_t* win,
+                                                native_window_gl_make_current_t make_current) {
   native_window_fb_gl_t* fb_gl = NATIVE_WINDOW_FB_GL(win);
   return_value_if_fail(fb_gl != NULL && make_current != NULL, RET_BAD_PARAMS);
   fb_gl->make_current = make_current;
@@ -83,23 +83,23 @@ static ret_t native_window_fb_gl_get_info(native_window_t* win, native_window_in
   info->w = fb_gl->w;
   info->h = fb_gl->h;
 
-//  log_debug("ratio=%f %d %d\n", info->ratio, info->w, info->h);
+  //  log_debug("ratio=%f %d %d\n", info->ratio, info->w, info->h);
 
   return RET_OK;
 }
 
 static ret_t native_window_fb_gl_swap_buffer(native_window_t* win) {
   native_window_fb_gl_t* fb_gl = NATIVE_WINDOW_FB_GL(win);
-  if(fb_gl != NULL && fb_gl->swap_buffer != NULL) {
-     return fb_gl->swap_buffer(win);
+  if (fb_gl != NULL && fb_gl->swap_buffer != NULL) {
+    return fb_gl->swap_buffer(win);
   }
   return RET_OK;
 }
 
 static ret_t native_window_sdl_gl_make_current(native_window_t* win) {
   native_window_fb_gl_t* fb_gl = NATIVE_WINDOW_FB_GL(win);
-  if(fb_gl != NULL && fb_gl->make_current != NULL) {
-     return fb_gl->make_current(win);
+  if (fb_gl != NULL && fb_gl->make_current != NULL) {
+    return fb_gl->make_current(win);
   }
   return RET_OK;
 }
@@ -152,7 +152,7 @@ static native_window_t* native_window_create_internal(uint32_t w, uint32_t h, fl
   win->rect = rect_init(0, 0, w, h);
 
   loadGL();
-  
+
   canvas_t* c = &(fb_gl->canvas);
   lcd = lcd_nanovg_init(win);
   canvas_init(c, lcd, font_manager());
@@ -170,7 +170,6 @@ native_window_t* native_window_create(widget_t* widget) {
 }
 
 native_window_t* native_window_fb_gl_init(uint32_t w, uint32_t h, float_t ratio) {
-  
   s_shared_win = native_window_create_internal(w, h, ratio);
 
   return s_shared_win;

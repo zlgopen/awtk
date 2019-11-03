@@ -178,7 +178,8 @@ static ret_t image_manager_get_bitmap_impl(image_manager_t* imm, const char* nam
     image->format = header->format;
     image->name = res->name;
     image->image_manager = imm;
-    image->buffer = GRAPHIC_BUFFER_CREATE_WITH_DATA(header->data, header->w, header->h, header->format);
+    image->buffer =
+        GRAPHIC_BUFFER_CREATE_WITH_DATA(header->data, header->w, header->h, header->format);
 #if defined(WITH_NANOVG_GPU) || defined(WITH_NANOVG_SOFT)
     image_manager_add(imm, name, image);
 #endif

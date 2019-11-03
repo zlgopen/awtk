@@ -17,21 +17,20 @@ static ret_t vgcanvas_nanovg_begin_frame(vgcanvas_t* vgcanvas, rect_t* dirty_rec
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
 
   native_window_gl_make_current(canvas->window);
-  
+
   nvgBeginFrame(canvas->vg, info->lcd_w, info->lcd_h, info->device_pixel_ratio);
 
-  switch (info->lcd_orientation)
-  {
-    case LCD_ORIENTATION_0: 
+  switch (info->lcd_orientation) {
+    case LCD_ORIENTATION_0:
       angle = 0.0f;
       break;
-    case LCD_ORIENTATION_90: 
+    case LCD_ORIENTATION_90:
       angle = TK_D2R(90);
       break;
-    case LCD_ORIENTATION_180: 
+    case LCD_ORIENTATION_180:
       angle = TK_D2R(180);
       break;
-    case LCD_ORIENTATION_270: 
+    case LCD_ORIENTATION_270:
       angle = TK_D2R(270);
       break;
   }
@@ -40,13 +39,12 @@ static ret_t vgcanvas_nanovg_begin_frame(vgcanvas_t* vgcanvas, rect_t* dirty_rec
   anchor_y = info->lcd_h / 2.0f;
 
   nvgSave(canvas->vg);
-  
-  if(info->lcd_orientation == LCD_ORIENTATION_90 || info->lcd_orientation == LCD_ORIENTATION_270) {
+
+  if (info->lcd_orientation == LCD_ORIENTATION_90 || info->lcd_orientation == LCD_ORIENTATION_270) {
     nvgTranslate(canvas->vg, anchor_x, anchor_y);
     nvgRotate(canvas->vg, angle);
     nvgTranslate(canvas->vg, -anchor_y, -anchor_x);
-  }
-  else if(info->lcd_orientation == LCD_ORIENTATION_180) {
+  } else if (info->lcd_orientation == LCD_ORIENTATION_180) {
     nvgTranslate(canvas->vg, anchor_x, anchor_y);
     nvgRotate(canvas->vg, angle);
     nvgTranslate(canvas->vg, -anchor_x, -anchor_y);

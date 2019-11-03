@@ -26,7 +26,7 @@
 #ifdef WITH_JZGPU
 /**
  * @class graphic_buffer_jzgpu_t
- * graphic_buffer jzgpu 
+ * graphic_buffer jzgpu
  */
 typedef struct _graphic_buffer_jzgpu_t {
   graphic_buffer_t graphic_buffer;
@@ -71,7 +71,7 @@ static const graphic_buffer_vtable_t s_graphic_buffer_jzgpu_vtable = {
     .destroy = graphic_buffer_jzgpu_destroy};
 
 static graphic_buffer_t* graphic_buffer_jzgpu_create(uint32_t w, uint32_t h, bitmap_format_t format,
-                                                uint32_t line_length) {
+                                                     uint32_t line_length) {
   uint32_t size = 0;
   uint8_t* data = NULL;
   graphic_buffer_jzgpu_t* buffer = NULL;
@@ -87,7 +87,8 @@ static graphic_buffer_t* graphic_buffer_jzgpu_create(uint32_t w, uint32_t h, bit
 }
 
 /*public functions*/
-graphic_buffer_t* graphic_buffer_create_with_data(const uint8_t* data, uint32_t w, uint32_t h, bitmap_format_t format) {
+graphic_buffer_t* graphic_buffer_create_with_data(const uint8_t* data, uint32_t w, uint32_t h,
+                                                  bitmap_format_t format) {
   graphic_buffer_jzgpu_t* buffer = NULL;
   return_value_if_fail(data != NULL, NULL);
 
@@ -105,10 +106,9 @@ ret_t graphic_buffer_create_for_bitmap(bitmap_t* bitmap) {
   return_value_if_fail(bitmap != NULL && bitmap->buffer == NULL, RET_BAD_PARAMS);
 
   bitmap->buffer = graphic_buffer_jzgpu_create(bitmap->w, bitmap->h,
-                                                 (bitmap_format_t)(bitmap->format), line_length);
+                                               (bitmap_format_t)(bitmap->format), line_length);
   bitmap->should_free_data = bitmap->buffer != NULL;
 
   return bitmap->buffer != NULL ? RET_OK : RET_OOM;
 }
-#endif/*WITH_JZGPU*/
-
+#endif /*WITH_JZGPU*/

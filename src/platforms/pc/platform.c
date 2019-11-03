@@ -86,7 +86,7 @@ static ret_t date_time_get_now_impl(date_time_t* dt) {
 }
 
 static ret_t date_time_set_now_impl(date_time_t* dt) {
-  struct tm tms; 
+  struct tm tms;
   time_t t = 0;
 
   memset(&tms, 0x00, sizeof(tms));
@@ -100,11 +100,11 @@ static ret_t date_time_set_now_impl(date_time_t* dt) {
 
   t = mktime(&tms);
 #ifdef LINUX
-  if(stime(&t) != 0) {
+  if (stime(&t) != 0) {
     perror("stime failed\n");
     return RET_FAIL;
   }
-#endif/*LINUX*/
+#endif /*LINUX*/
 
   return RET_OK;
 }

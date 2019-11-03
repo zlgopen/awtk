@@ -70,8 +70,9 @@ static const graphic_buffer_vtable_t s_graphic_buffer_default_vtable = {
     .unlock = graphic_buffer_default_unlock,
     .destroy = graphic_buffer_default_destroy};
 
-static graphic_buffer_t* graphic_buffer_default_create(uint32_t w, uint32_t h, bitmap_format_t format,
-                                                uint32_t line_length) {
+static graphic_buffer_t* graphic_buffer_default_create(uint32_t w, uint32_t h,
+                                                       bitmap_format_t format,
+                                                       uint32_t line_length) {
   uint32_t size = 0;
   uint8_t* data = NULL;
   graphic_buffer_default_t* buffer = NULL;
@@ -103,7 +104,8 @@ static graphic_buffer_t* graphic_buffer_default_create(uint32_t w, uint32_t h, b
 }
 
 /*public functions*/
-graphic_buffer_t* graphic_buffer_create_with_data(const uint8_t* data, uint32_t w, uint32_t h, bitmap_format_t format) {
+graphic_buffer_t* graphic_buffer_create_with_data(const uint8_t* data, uint32_t w, uint32_t h,
+                                                  bitmap_format_t format) {
   graphic_buffer_default_t* buffer = NULL;
   return_value_if_fail(data != NULL, NULL);
 

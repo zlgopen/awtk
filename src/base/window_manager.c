@@ -41,7 +41,7 @@ ret_t window_manager_set(widget_t* widget) {
 
 static ret_t window_manager_close_keyboard(widget_t* widget) {
   widget_t* top_window = window_manager_get_top_window(widget);
-  if(widget_is_keyboard(top_window)) {
+  if (widget_is_keyboard(top_window)) {
     window_manager_close_window_force(widget, top_window);
     top_window = window_manager_get_top_window(widget);
   }
