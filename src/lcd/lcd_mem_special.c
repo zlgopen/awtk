@@ -27,6 +27,11 @@
 #include "lcd/lcd_mem_bgra8888.h"
 
 static ret_t lcd_mem_special_begin_frame(lcd_t* lcd, rect_t* dr) {
+  lcd_mem_special_t* special = (lcd_mem_special_t*)lcd;
+  lcd_t* mem = (lcd_t*)(special->lcd_mem);
+
+  mem->begin_frame(mem, dr);
+
   return RET_OK;
 }
 
@@ -93,6 +98,11 @@ static ret_t lcd_mem_special_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, 
 }
 
 static ret_t lcd_mem_special_end_frame(lcd_t* lcd) {
+  lcd_mem_special_t* special = (lcd_mem_special_t*)lcd;
+  lcd_t* mem = (lcd_t*)(special->lcd_mem);
+
+  mem->end_frame(mem);
+
   if (lcd->draw_mode == LCD_DRAW_OFFLINE) {
     return RET_OK;
   }

@@ -73,8 +73,13 @@ static bitmap_t* lcd_mem_init_online_fb(lcd_t* lcd, bitmap_t* fb, lcd_orientatio
 static ret_t lcd_mem_begin_frame(lcd_t* lcd, rect_t* dirty_rect) {
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
 
-  mem->online_gb = graphic_buffer_create_with_data(mem->online_fb, lcd->w, lcd->h, mem->format);
-  mem->offline_gb = graphic_buffer_create_with_data(mem->offline_fb, lcd->w, lcd->h, mem->format);
+  if (mem->online_fb != NULL) {
+    mem->online_gb = graphic_buffer_create_with_data(mem->online_fb, lcd->w, lcd->h, mem->format);
+  }
+
+  if (mem->offline_fb != NULL) {
+    mem->offline_gb = graphic_buffer_create_with_data(mem->offline_fb, lcd->w, lcd->h, mem->format);
+  }
 
   return RET_OK;
 }
@@ -289,10 +294,15 @@ static ret_t lcd_mem_end_frame(lcd_t* lcd) {
     lcd_sync(lcd);
   }
 
-  graphic_buffer_destroy(mem->online_gb);
-  graphic_buffer_destroy(mem->offline_gb);
-  mem->online_gb = NULL;
-  mem->offline_gb = NULL;
+  if (mem->online_gb != NULL) {
+    graphic_buffer_destroy(mem->online_gb);
+    mem->online_gb = NULL;
+  }
+
+  if (mem->offline_gb != NULL) {
+    graphic_buffer_destroy(mem->offline_gb);
+    mem->offline_gb = NULL;
+  }
 
   return RET_OK;
 }
