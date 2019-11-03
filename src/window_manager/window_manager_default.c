@@ -33,6 +33,7 @@
 #include "base/dialog_highlighter_factory.h"
 #include "window_manager/window_manager_default.h"
 
+static ret_t window_manager_animate_done(widget_t* widget);
 static ret_t window_manager_default_inc_fps(widget_t* widget);
 static ret_t window_manager_default_update_fps(widget_t* widget);
 static ret_t window_manager_default_invalidate(widget_t* widget, rect_t* r);
@@ -503,6 +504,12 @@ static ret_t window_manager_default_close_window_force(widget_t* widget, widget_
   return_value_if_fail(widget_is_window(window), RET_BAD_PARAMS);
   return_value_if_fail(wm->pending_close_window != window, RET_BAD_PARAMS);
 
+  if (wm->animator != NULL) {
+    if (wm->animator->prev_win == window || wm->animator->curr_win == window) {
+      return window_manager_animate_done(widget);
+    }
+  }
+
   window_manager_prepare_close_window(widget, window);
   window_manager_dispatch_window_event(window, EVT_WINDOW_CLOSE);
   widget_remove_child(widget, window);
@@ -626,26 +633,11 @@ static ret_t window_manager_invalidate_system_bar(widget_t* widget) {
   return RET_OK;
 }
 
-static ret_t window_manager_paint_animation(widget_t* widget, canvas_t* c) {
-  paint_event_t e;
-  uint64_t start_time = time_now_ms();
+static ret_t window_manager_animate_done(widget_t* widget) {
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
   bool_t curr_win_is_keyboard = widget_is_keyboard(wm->animator->curr_win);
 
-  ENSURE(window_animator_begin_frame(wm->animator) == RET_OK);
-
-  widget_dispatch(widget, paint_event_init(&e, EVT_BEFORE_PAINT, widget, c));
-
-  ret_t ret = window_animator_update(wm->animator, start_time);
-
-  widget_dispatch(widget, paint_event_init(&e, EVT_AFTER_PAINT, widget, c));
-
-  ENSURE(window_animator_end_frame(wm->animator) == RET_OK);
-
-  wm->last_paint_cost = time_now_ms() - start_time;
-  window_manager_default_inc_fps(widget);
-
-  if (ret == RET_DONE) {
+  if (wm->animator != NULL) {
     bool_t is_open = wm->animator->open;
     widget_t* prev_win = wm->animator->prev_win;
     widget_t* curr_win = wm->animator->curr_win;
@@ -679,6 +671,35 @@ static ret_t window_manager_paint_animation(widget_t* widget, canvas_t* c) {
     window_manager_invalidate_system_bar(widget);
   }
 
+  return RET_OK;
+}
+
+static ret_t window_manager_paint_animation(widget_t* widget, canvas_t* c) {
+  paint_event_t e;
+  uint64_t start_time = time_now_ms();
+  window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+
+  ENSURE(window_animator_begin_frame(wm->animator) == RET_OK);
+
+  widget_dispatch(widget, paint_event_init(&e, EVT_BEFORE_PAINT, widget, c));
+
+  ret_t ret = window_animator_update(wm->animator, start_time);
+
+  widget_dispatch(widget, paint_event_init(&e, EVT_AFTER_PAINT, widget, c));
+
+  ENSURE(window_animator_end_frame(wm->animator) == RET_OK);
+
+  wm->last_paint_cost = time_now_ms() - start_time;
+  window_manager_default_inc_fps(widget);
+
+  if (ret == RET_DONE) {
+    window_manager_animate_done(widget);
+  }
+
+  return RET_OK;
+}
+#else
+static ret_t window_manager_animate_done(widget_t* widget) {
   return RET_OK;
 }
 #endif /*WITH_WINDOW_ANIMATORS*/
