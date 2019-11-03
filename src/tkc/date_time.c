@@ -54,6 +54,13 @@ date_time_t* date_time_init(date_time_t* dt) {
   return dt;
 }
 
+ret_t date_time_set(date_time_t* dt) {
+  return_value_if_fail(dt != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(s_date_time_set_now != NULL, RET_NOT_IMPL);
+
+  return s_date_time_set_now(dt);
+}
+
 ret_t date_time_destroy(date_time_t* dt) {
   return_value_if_fail(dt != NULL, RET_BAD_PARAMS);
 
