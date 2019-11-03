@@ -98,6 +98,17 @@ date_time_t* date_time_create(void);
 date_time_t* date_time_init(date_time_t* dt);
 
 /**
+ * @method date_time_set
+ * 设置当前时间。
+ *
+ * @annotation ["scriptable"]
+ * @param {date_time_t*} dt date_time对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t date_time_set(date_time_t* dt);
+
+/**
  * @method date_time_destroy
  * 销毁date_time对象(一般供脚本语言中使用)。
  *
@@ -109,19 +120,23 @@ date_time_t* date_time_init(date_time_t* dt);
 ret_t date_time_destroy(date_time_t* dt);
 
 typedef ret_t (*date_time_get_now_t)(date_time_t* dt);
+typedef ret_t (*date_time_set_now_t)(date_time_t* dt);
 
 /**
- * @method date_time_set_impl
- * 设置获取当前日期和时间的函数。
+ * @method date_time_global_init
+ * 时间日期全局初始化。
  *
  * > 嵌入式平台需要提供并设置获取当前日期和时间的函数，否则相关的功能(如时钟控件)将无法正常工作。
  *
- * @param {date_time_get_now_t} date_time_get_now 获取当前日期和时间的函数。
+ * @param {date_time_get_now_t} get 获取当前日期和时间的函数。
+ * @param {date_time_set_now_t} set 设置当前日期和时间的函数。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t date_time_set_impl(date_time_get_now_t date_time_get_now);
+ret_t date_time_global_init(date_time_get_now_t get, date_time_set_now_t set);
 
+/*deprecated*/
+ret_t date_time_set_impl(date_time_get_now_t date_time_get_now);
 END_C_DECLS
 
 #endif /*TK_DATE_TIME_H*/

@@ -62,6 +62,11 @@ static ret_t date_time_get_now_impl(date_time_t* dt) {
 
   return RET_OK;
 }
+
+static ret_t date_time_set_now_impl(date_time_t* dt) {
+  return RET_NOT_IMPL;
+}
+
 #else
 #include <sys/time.h>
 #include <unistd.h>
@@ -76,6 +81,30 @@ static ret_t date_time_get_now_impl(date_time_t* dt) {
   dt->month = t->tm_mon + 1;
   dt->year = t->tm_year + 1900;
   dt->wday = t->tm_wday;
+
+  return RET_OK;
+}
+
+static ret_t date_time_set_now_impl(date_time_t* dt) {
+  struct tm tms; 
+  time_t t = 0;
+
+  memset(&tms, 0x00, sizeof(tms));
+
+  tms.tm_year = dt->year - 1900;
+  tms.tm_mon = dt->month - 1;
+  tms.tm_mday = dt->day;
+  tms.tm_hour = dt->hour;
+  tms.tm_min = dt->minute;
+  tms.tm_sec = dt->second;
+
+  t = mktime(&tms);
+#ifdef LINUX
+  if(stime(&t) != 0) {
+    perror("stime failed\n");
+    return RET_FAIL;
+  }
+#endif/*LINUX*/
 
   return RET_OK;
 }
@@ -107,7 +136,7 @@ ret_t platform_prepare(void) {
 #ifndef HAS_STD_MALLOC
   tk_mem_init(s_heap_mem, sizeof(s_heap_mem));
 #endif /*HAS_STD_MALLOC*/
-  date_time_set_impl(date_time_get_now_impl);
+  date_time_global_init(date_time_get_now_impl, date_time_set_now_impl);
 
   return RET_OK;
 }

@@ -23,6 +23,15 @@
 #include "tkc/date_time.h"
 
 static date_time_get_now_t s_date_time_get_now;
+static date_time_set_now_t s_date_time_set_now;
+
+ret_t date_time_global_init(date_time_get_now_t get, date_time_set_now_t set) {
+  s_date_time_get_now = get;
+  s_date_time_set_now = set;
+
+  return RET_OK;
+}
+
 ret_t date_time_set_impl(date_time_get_now_t date_time_get_now) {
   s_date_time_get_now = date_time_get_now;
 
