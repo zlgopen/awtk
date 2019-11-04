@@ -1,11 +1,22 @@
 # 最新动态
 
+* 2019/11/04
+  * 完善字体和文字绘制。
+
+* 2019/11/03
+  * 修改graphic\_buffer改动引入的问题。
+  * 完善close window force的流程。
+  * 完善back/back_to_home的处理。
+  * 完善text selector数据绑定的问题。
+  * 增加date_time_set函数和初始化函数。请使用date\_time\_global\_init初始化时间函数。
+  
 * 2019/10/31
   * 增加graphic\_buffer，用于管理bitmap的内存。
   * 完善vgcanvas，兼容JZ\_GPU。
   * 完善darray，增加darray\_find\_all。
   * lcd nanovg支持LCD旋转（感谢智明提供补丁）。
   * 增加native\_window\_fb\_gl （感谢智明提供补丁）。
+  * 修改valgrind发现的问题。
 
 > 如果有支持访问bitmap-\>data的代码，请使用bitmap\_lock\_buffer\_for\_write/read函数。
 
