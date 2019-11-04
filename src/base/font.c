@@ -28,11 +28,12 @@ ret_t font_get_glyph(font_t* f, wchar_t chr, font_size_t font_size, glyph_t* g) 
   return f->get_glyph(f, chr, font_size, g);
 }
 
-int32_t font_get_baseline(font_t* f, font_size_t font_size) {
-  if (f != NULL && f->get_baseline != NULL) {
-    return f->get_baseline(f, font_size);
+font_vmetrics_t font_get_vmetrics(font_t* f, font_size_t font_size) {
+  font_vmetrics_t vmetrics = {font_size, 0, 0};
+  if (f != NULL && f->get_vmetrics != NULL) {
+    return f->get_vmetrics(f, font_size);
   } else {
-    return font_size;
+    return vmetrics;
   }
 }
 

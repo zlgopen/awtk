@@ -544,9 +544,10 @@ static ret_t canvas_draw_text_impl(canvas_t* c, const wchar_t* str, uint32_t nr,
   uint32_t i = 0;
   xy_t left = x;
   uint64_t start_time = time_now_ms();
+  font_vmetrics_t vmetrics = font_get_vmetrics(c->font, c->font_size);
   font_size_t font_size = c->font_size;
+  int32_t baseline = vmetrics.ascent;
 
-  y -= font_size * 1 / 3;
   for (i = 0; i < nr; i++) {
     wchar_t chr = str[i];
     if (chr == ' ') {
@@ -561,7 +562,7 @@ static ret_t canvas_draw_text_impl(canvas_t* c, const wchar_t* str, uint32_t nr,
       x = left;
     } else if (font_get_glyph(c->font, chr, c->font_size, &g) == RET_OK) {
       xy_t xx = x + g.x;
-      xy_t yy = y + font_size + g.y;
+      xy_t yy = y + g.y + baseline;
 
       canvas_draw_glyph(c, &g, xx, yy);
       x += g.advance + 1;
@@ -1369,15 +1370,15 @@ static ret_t canvas_draw_fps(canvas_t* c) {
 ret_t canvas_draw_text_in_rect(canvas_t* c, const wchar_t* str, uint32_t nr, const rect_t* r_in) {
   int x = 0;
   int y = 0;
-  int32_t text_w = 0;
-  int32_t baseline = 0;
-  int32_t font_size = 0;
   rect_t r_fix;
+  int32_t text_w = 0;
+  int32_t height = 0;
+  font_vmetrics_t vmetrics;
   rect_t* r = canvas_fix_rect(r_in, &r_fix);
   return_value_if_fail(c != NULL && str != NULL && r != NULL, RET_BAD_PARAMS);
 
-  font_size = c->font_size;
-  baseline = font_get_baseline(c->font, font_size);
+  vmetrics = font_get_vmetrics(c->font, c->font_size);
+  height = vmetrics.ascent - vmetrics.descent;
 
   text_w = canvas_measure_text(c, str, nr);
 
@@ -1386,10 +1387,10 @@ ret_t canvas_draw_text_in_rect(canvas_t* c, const wchar_t* str, uint32_t nr, con
       y = r->y;
       break;
     case ALIGN_V_BOTTOM:
-      y = r->y + (r->h - baseline);
+      y = r->y + (r->h - height);
       break;
     default:
-      y = r->y + ((r->h - baseline) >> 1);
+      y = r->y + ((r->h - height) >> 1);
       break;
   }
 

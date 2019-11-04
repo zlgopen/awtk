@@ -80,11 +80,16 @@ static ret_t font_bitmap_destroy(font_t* f) {
   return RET_OK;
 }
 
-static int32_t font_bitmap_get_baseline(font_t* f, font_size_t font_size) {
+static font_vmetrics_t font_bitmap_get_vmetrics(font_t* f, font_size_t font_size) {
+  font_vmetrics_t vmetrics;
   font_bitmap_t* font = (font_bitmap_t*)f;
   font_bitmap_header_t* header = (font_bitmap_header_t*)(font->buff);
 
-  return header->baseline;
+  vmetrics.ascent = header->ascent;
+  vmetrics.descent = header->descent;
+  vmetrics.line_gap = header->line_gap;
+
+  return vmetrics;
 }
 
 font_t* font_bitmap_init(font_bitmap_t* f, const char* name, const uint8_t* buff,
@@ -94,7 +99,7 @@ font_t* font_bitmap_init(font_bitmap_t* f, const char* name, const uint8_t* buff
   f->buff = buff;
   f->buff_size = buff_size;
   f->base.match = font_bitmap_match;
-  f->base.get_baseline = font_bitmap_get_baseline;
+  f->base.get_vmetrics = font_bitmap_get_vmetrics;
   f->base.get_glyph = font_bitmap_get_glyph;
   f->base.destroy = font_bitmap_destroy;
   f->base.desc = "bitmap font";

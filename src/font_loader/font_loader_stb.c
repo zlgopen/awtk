@@ -41,7 +41,7 @@ typedef struct _font_stb_t {
   glyph_cache_t cache;
   int ascent;
   int descent;
-  int lineGap;
+  int line_gap;
 
 } font_stb_t;
 
@@ -50,12 +50,17 @@ static bool_t font_stb_match(font_t* f, const char* name, font_size_t font_size)
   return (name == NULL || strcmp(name, f->name) == 0);
 }
 
-static int32_t font_stb_get_baseline(font_t* f, font_size_t font_size) {
+static font_vmetrics_t font_stb_get_vmetrics(font_t* f, font_size_t font_size) {
+  font_vmetrics_t vmetrics;
   font_stb_t* font = (font_stb_t*)f;
   stbtt_fontinfo* sf = &(font->stb_font);
   float scale = stbtt_ScaleForPixelHeight(sf, font_size);
 
-  return scale * font->ascent;
+  vmetrics.ascent = scale * font->ascent;
+  vmetrics.descent = scale * font->descent;
+  vmetrics.line_gap = scale * font->line_gap;
+
+  return vmetrics;
 }
 
 static ret_t font_stb_get_glyph(font_t* f, wchar_t c, font_size_t font_size, glyph_t* g) {
@@ -126,14 +131,14 @@ font_t* font_stb_create(const char* name, const uint8_t* buff, uint32_t buff_siz
   f->base.match = font_stb_match;
   f->base.destroy = font_stb_destroy;
   f->base.get_glyph = font_stb_get_glyph;
-  f->base.get_baseline = font_stb_get_baseline;
+  f->base.get_vmetrics = font_stb_get_vmetrics;
   f->base.desc = "truetype(stb)";
 
   tk_strncpy(f->base.name, name, TK_NAME_LEN);
 
   glyph_cache_init(&(f->cache), TK_GLYPH_CACHE_NR, destroy_glyph);
   stbtt_InitFont(&(f->stb_font), buff, stbtt_GetFontOffsetForIndex(buff, 0));
-  stbtt_GetFontVMetrics(&(f->stb_font), &(f->ascent), &(f->descent), &(f->lineGap));
+  stbtt_GetFontVMetrics(&(f->stb_font), &(f->ascent), &(f->descent), &(f->line_gap));
 
   return &(f->base);
 }

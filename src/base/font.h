@@ -139,7 +139,13 @@ glyph_t* glyph_clone(glyph_t* g);
  */
 ret_t glyph_destroy(glyph_t* g);
 
-typedef int32_t (*font_get_baseline_t)(font_t* f, font_size_t font_size);
+typedef struct _font_vmetrics_t {
+  int16_t ascent;
+  int16_t descent;
+  int32_t line_gap;
+} font_vmetrics_t;
+
+typedef font_vmetrics_t (*font_get_vmetrics_t)(font_t* f, font_size_t font_size);
 typedef bool_t (*font_match_t)(font_t* f, const char* name, font_size_t font_size);
 typedef ret_t (*font_get_glyph_t)(font_t* f, wchar_t chr, font_size_t font_size, glyph_t* g);
 
@@ -153,21 +159,21 @@ typedef ret_t (*font_destroy_t)(font_t* f);
 struct _font_t {
   char name[TK_NAME_LEN + 1];
   font_match_t match;
-  font_get_baseline_t get_baseline;
+  font_get_vmetrics_t get_vmetrics;
   font_get_glyph_t get_glyph;
   font_destroy_t destroy;
   const char* desc;
 };
 
 /**
- * @method font_get_baseline
- * 获取字体的基线。
+ * @method font_get_vmetrics
+ * 获取字体的高度信息。
  * @param {font_t*} font font对象。
  * @param {font_size_t} font_size 字体大小。
  *
- * @return {int32_t} 返回字体的基线。
+ * @return {font_vmetrics_t} 返回字体的高度信息。
  */
-int32_t font_get_baseline(font_t* font, font_size_t font_size);
+font_vmetrics_t font_get_vmetrics(font_t* font, font_size_t font_size);
 
 /**
  * @method font_match

@@ -35,8 +35,11 @@ typedef struct _font_bitmap_header_t {
   uint16_t version;
   uint16_t format;
   uint16_t char_nr;
-  uint8_t font_size;
-  uint8_t baseline;
+  int16_t font_size;
+  int16_t ascent;
+  int16_t descent;
+  int16_t line_gap;
+  int16_t reserved;
   font_bitmap_index_t index[1];
 } font_bitmap_header_t;
 
