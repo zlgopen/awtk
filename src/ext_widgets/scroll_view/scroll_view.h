@@ -225,6 +225,20 @@ ret_t scroll_view_set_offset(widget_t* widget, int32_t xoffset, int32_t yoffset)
 ret_t scroll_view_scroll_to(widget_t* widget, int32_t xoffset_end, int32_t yoffset_end,
                             int32_t duration);
 
+/**
+ * @method scroll_view_scroll_delta_to
+ * 滚动到指定的偏移量。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {int32_t} xoffset_delta x偏移量。
+ * @param {int32_t} yoffset_delta y偏移量。
+ * @param {int32_t} duration 时间。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t scroll_view_scroll_delta_to(widget_t* widget, int32_t xoffset_delta, int32_t yoffset_delta,
+                                  int32_t duration);
+
 #define SCROLL_VIEW(widget) ((scroll_view_t*)(scroll_view_cast(WIDGET(widget))))
 
 /*public for subclass and runtime type check*/

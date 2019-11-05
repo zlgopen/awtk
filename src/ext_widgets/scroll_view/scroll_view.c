@@ -159,6 +159,18 @@ ret_t scroll_view_scroll_to(widget_t* widget, int32_t xoffset_end, int32_t yoffs
   scroll_view_t* scroll_view = SCROLL_VIEW(widget);
   return_value_if_fail(scroll_view != NULL, RET_FAIL);
 
+  if (scroll_view->fix_end_offset) {
+    scroll_view->xoffset_end = xoffset_end;
+    scroll_view->yoffset_end = yoffset_end;
+    scroll_view->fix_end_offset(widget);
+    xoffset_end = scroll_view->xoffset_end;
+    yoffset_end = scroll_view->yoffset_end;
+  }
+
+  if (xoffset_end == scroll_view->xoffset && yoffset_end == scroll_view->yoffset) {
+    return RET_OK;
+  }
+
   xoffset = scroll_view->xoffset;
   yoffset = scroll_view->yoffset;
 
@@ -166,14 +178,9 @@ ret_t scroll_view_scroll_to(widget_t* widget, int32_t xoffset_end, int32_t yoffs
     scroll_view->on_scroll_to(widget, xoffset_end, yoffset_end, duration);
   }
 
-  if ((!scroll_view->yslidable && xoffset == xoffset_end) ||
-      (!scroll_view->xslidable && yoffset == yoffset_end)) {
-    return RET_OK;
-  }
-
   if (scroll_view->wa != NULL) {
     widget_animator_scroll_t* wa = (widget_animator_scroll_t*)scroll_view->wa;
-    if (scroll_view->xslidable) {
+    if (xoffset_end != scroll_view->xoffset) {
       bool_t changed = wa->x_to != xoffset_end;
       bool_t in_range = wa->x_to > 0 && wa->x_to < (scroll_view->virtual_w - widget->w);
       if (changed && in_range) {
@@ -184,7 +191,7 @@ ret_t scroll_view_scroll_to(widget_t* widget, int32_t xoffset_end, int32_t yoffs
       }
     }
 
-    if (scroll_view->yslidable) {
+    if (yoffset_end != scroll_view->yoffset) {
       bool_t changed = wa->y_to != yoffset_end;
       bool_t in_range = wa->y_to > 0 && wa->y_to < (scroll_view->virtual_h - widget->h);
       if (changed && in_range) {
@@ -209,6 +216,18 @@ ret_t scroll_view_scroll_to(widget_t* widget, int32_t xoffset_end, int32_t yoffs
   return RET_OK;
 }
 
+ret_t scroll_view_scroll_delta_to(widget_t* widget, int32_t xoffset_delta, int32_t yoffset_delta,
+                                  int32_t duration) {
+  scroll_view_t* scroll_view = SCROLL_VIEW(widget);
+  return_value_if_fail(scroll_view != NULL, RET_FAIL);
+
+  scroll_view->xoffset_end = scroll_view->xoffset + xoffset_delta;
+  scroll_view->yoffset_end = scroll_view->yoffset + yoffset_delta;
+
+  return scroll_view_scroll_to(widget, scroll_view->xoffset_end, scroll_view->yoffset_end,
+                               duration);
+}
+
 #define SPEED_SCALE 2
 #define MIN_DELTA 10
 
@@ -217,10 +236,6 @@ static ret_t scroll_view_on_pointer_down_abort(scroll_view_t* scroll_view, point
   (void)e;
 
   if (scroll_view->xslidable || scroll_view->yslidable) {
-    if (scroll_view->fix_end_offset) {
-      scroll_view->fix_end_offset(widget);
-    }
-
     scroll_view_scroll_to(widget, scroll_view->xoffset_end, scroll_view->yoffset_end,
                           TK_ANIMATING_TIME);
   }
@@ -262,10 +277,6 @@ static ret_t scroll_view_on_pointer_up(scroll_view_t* scroll_view, pointer_event
       } else {
         scroll_view->yoffset_end = scroll_view->yoffset - yv / SPEED_SCALE;
       }
-    }
-
-    if (scroll_view->fix_end_offset) {
-      scroll_view->fix_end_offset(widget);
     }
 
     scroll_view_scroll_to(widget, scroll_view->xoffset_end, scroll_view->yoffset_end,

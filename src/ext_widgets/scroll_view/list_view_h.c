@@ -62,10 +62,27 @@ static ret_t list_view_h_set_prop(widget_t* widget, const char* name, const valu
 }
 
 static ret_t list_view_h_on_event(widget_t* widget, event_t* e) {
+  ret_t ret = RET_OK;
   list_view_h_t* list_view = LIST_VIEW_H(widget);
   return_value_if_fail(list_view != NULL, RET_BAD_PARAMS);
 
-  return RET_OK;
+  switch (e->type) {
+    case EVT_KEY_DOWN: {
+      key_event_t* evt = (key_event_t*)e;
+      if (evt->key == TK_KEY_PAGEDOWN) {
+        scroll_view_scroll_delta_to(list_view->scroll_view, widget->w, 0, TK_ANIMATING_TIME);
+        ret = RET_STOP;
+      } else if (evt->key == TK_KEY_PAGEUP) {
+        scroll_view_scroll_delta_to(list_view->scroll_view, -widget->w, 0, TK_ANIMATING_TIME);
+        ret = RET_STOP;
+      }
+      break;
+    }
+    default:
+      break;
+  }
+
+  return ret;
 }
 
 TK_DECL_VTABLE(list_view_h) = {.type = WIDGET_TYPE_LIST_VIEW_H,
