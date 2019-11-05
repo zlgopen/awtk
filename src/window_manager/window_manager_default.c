@@ -163,6 +163,7 @@ ret_t window_manager_default_snap_curr_window(widget_t* widget, widget_t* curr_w
   vg = lcd_get_vgcanvas(c->lcd);
   ENSURE(vgcanvas_create_fbo(vg, fbo) == RET_OK);
   ENSURE(vgcanvas_bind_fbo(vg, fbo) == RET_OK);
+  canvas_set_clip_rect(c, NULL);
   ENSURE(widget_on_paint_background(widget, c) == RET_OK);
   ENSURE(widget_paint(curr_win, c) == RET_OK);
   ENSURE(vgcanvas_unbind_fbo(vg, fbo) == RET_OK);
@@ -202,6 +203,7 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
   vg = lcd_get_vgcanvas(c->lcd);
   ENSURE(vgcanvas_create_fbo(vg, fbo) == RET_OK);
   ENSURE(vgcanvas_bind_fbo(vg, fbo) == RET_OK);
+  canvas_set_clip_rect(c, NULL);
   ENSURE(widget_on_paint_background(widget, c) == RET_OK);
   window_manager_paint_system_bar(widget, c);
   ENSURE(widget_paint(prev_win, c) == RET_OK);
@@ -1128,14 +1130,22 @@ ret_t window_manager_paint_system_bar(widget_t* widget, canvas_t* c) {
 }
 
 static ret_t window_manager_default_native_window_resized(widget_t* widget, void* handle) {
-  native_window_info_t info;
+  uint32_t w = 0;
+  uint32_t h = 0;
+  system_info_t* info = system_info();
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
   native_window_t* nw = WINDOW_MANAGER_DEFAULT(widget)->native_window;
 
-  return_value_if_fail(native_window_get_info(nw, &info) == RET_OK, RET_BAD_PARAMS);
+  if (info->lcd_orientation == LCD_ORIENTATION_90 || info->lcd_orientation == LCD_ORIENTATION_270) {
+    w = info->lcd_h;
+    h = info->lcd_w;
+  } else {
+    w = info->lcd_w;
+    h = info->lcd_h;
+  }
 
-  window_manager_default_resize(widget, info.w, info.h);
-  native_window_on_resized(nw, info.w, info.h);
+  window_manager_default_resize(widget, w, h);
+  native_window_on_resized(nw, w, h);
 
   if (wm->dialog_highlighter != NULL) {
     bitmap_t img;
