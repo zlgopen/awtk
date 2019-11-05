@@ -24,17 +24,14 @@ sources=Glob('layouters/*.c') + \
   Glob('dialog_highlighters/*.c') + \
   Glob('window_manager/window_manager_default.c') 
 
+sources += Glob('graphic_buffer/graphic_buffer_default.c')
+
 if NATIVE_WINDOW == 'sdl':
   sources += Glob('native_window/native_window_sdl.c')
 elif NATIVE_WINDOW == 'fb_gl':
   sources += Glob('native_window/native_window_fb_gl.c')
 else:
   sources += Glob('native_window/native_window_raw.c')
-
-if GRAPHIC_BUFFER == 'jzgpu':
-  sources += Glob('graphic_buffer/graphic_buffer_jzgpu.c')
-else:
-  sources += Glob('graphic_buffer/graphic_buffer_default.c')
 
 sources += ['lcd/lcd_mono.c'];
 sources += ['main_loop/main_loop_simple.c'];
