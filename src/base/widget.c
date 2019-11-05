@@ -1633,6 +1633,43 @@ ret_t widget_dispatch_to_target(widget_t* widget, event_t* e) {
   return ret;
 }
 
+static ret_t widget_map_key(widget_t* widget, key_event_t* e) {
+  value_t v;
+  const key_type_value_t* kv = NULL;
+
+  if (widget->custom_props != NULL) {
+    kv = keys_type_find_by_value(e->key);
+    if (kv != NULL) {
+      const char* to = NULL;
+      char from[TK_NAME_LEN + 1] = {0};
+      char fixed_name[TK_NAME_LEN + 1];
+
+      tk_snprintf(from, sizeof(from), "map_key:%s", kv->name);
+      if (object_get_prop(widget->custom_props, from, &v) == RET_OK) {
+        to = value_str(&v);
+      } else if (strlen(kv->name) > 1) {
+        tk_strcpy(fixed_name, kv->name);
+        tk_str_tolower(fixed_name);
+        tk_snprintf(from, sizeof(from), "map_key:%s", fixed_name);
+        if (object_get_prop(widget->custom_props, from, &v) == RET_OK) {
+          to = value_str(&v);
+        }
+      }
+
+      if (to != NULL) {
+        return_value_if_fail(to != NULL, RET_FAIL);
+        kv = keys_type_find(to);
+        if (kv != NULL) {
+          e->key = kv->value;
+          log_debug("map key %s to %s\n", from, to);
+        }
+      }
+    }
+  }
+
+  return RET_OK;
+}
+
 ret_t widget_dispatch_to_key_target(widget_t* widget, event_t* e) {
   ret_t ret = RET_OK;
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
@@ -1739,6 +1776,7 @@ ret_t widget_on_keydown(widget_t* widget, key_event_t* e) {
   ret_t ret = RET_OK;
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
 
+  widget_map_key(widget, e);
   widget->can_not_destroy++;
   ret = widget_on_keydown_impl(widget, e);
   if (widget->feedback) {
@@ -1807,6 +1845,7 @@ ret_t widget_on_keyup(widget_t* widget, key_event_t* e) {
   ret_t ret = RET_OK;
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
 
+  widget_map_key(widget, e);
   widget->can_not_destroy++;
   ret = widget_on_keyup_impl(widget, e);
   if (widget->feedback) {

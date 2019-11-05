@@ -378,27 +378,13 @@ const key_type_value_t* easing_type_find_by_value(uint32_t value) {
   return find_item_by_value(easing_type_name_value, ARRAY_SIZE(easing_type_name_value), value);
 }
 
-static const char* key_name_fix(char fixed_name[TK_NAME_LEN + 1], const char* name) {
-  uint32_t len = strlen(name);
-  tk_strncpy(fixed_name, name, TK_NAME_LEN);
-
-  if (len > 1) {
-    uint32_t i = 0;
-    for (i = 0; i < len; i++) {
-      fixed_name[i] = toupper(fixed_name[i]);
-    }
-  }
-
-  return fixed_name;
-}
-
 const key_type_value_t* keys_type_find(const char* name) {
   char fixed_name[TK_NAME_LEN + 1];
   return_value_if_fail(name != NULL, NULL);
 
   memset(fixed_name, 0x00, sizeof(fixed_name));
   return find_item(keys_type_name_value, ARRAY_SIZE(keys_type_name_value),
-                   key_name_fix(fixed_name, name));
+                   tk_normalize_key_name(name, fixed_name));
 }
 
 const key_type_value_t* keys_type_find_by_value(uint32_t value) {

@@ -1130,3 +1130,50 @@ TEST(Widget, off_by_tag) {
 
   widget_destroy(w);
 }
+
+static ret_t on_key_event(void* ctx, event_t* e) {
+  uint32_t* key = (uint32_t*)ctx;
+
+  *key = ((key_event_t*)e)->key;
+
+  return RET_OK;
+}
+
+TEST(Widget, map_key) {
+  key_event_t e;
+  uint32_t key = 0;
+  widget_t* w = button_create(NULL, 0, 0, 0, 0);
+
+  key_event_init(&e, EVT_KEY_DOWN, w, TK_KEY_s);
+  ASSERT_EQ(widget_on(w, EVT_KEY_DOWN, on_key_event, &key) > 0, TRUE);
+
+  widget_on_keydown(w, &e);
+  ASSERT_EQ(key, TK_KEY_s);
+
+  widget_set_prop_str(w, "map_key:s", "left");
+  widget_on_keydown(w, &e);
+  ASSERT_EQ(key, TK_KEY_LEFT);
+
+  widget_destroy(w);
+}
+
+TEST(Widget, map_key1) {
+  key_event_t e;
+  uint32_t key = 0;
+  widget_t* w = button_create(NULL, 0, 0, 0, 0);
+
+  ASSERT_EQ(widget_on(w, EVT_KEY_DOWN, on_key_event, &key) > 0, TRUE);
+
+  widget_set_prop_str(w, "map_key:left", "pageup");
+  widget_set_prop_str(w, "map_key:RIGHT", "PAGEDOWN");
+
+  key_event_init(&e, EVT_KEY_DOWN, w, TK_KEY_LEFT);
+  widget_on_keydown(w, &e);
+  ASSERT_EQ(key, TK_KEY_PAGEUP);
+
+  key_event_init(&e, EVT_KEY_DOWN, w, TK_KEY_RIGHT);
+  widget_on_keydown(w, &e);
+  ASSERT_EQ(key, TK_KEY_PAGEDOWN);
+
+  widget_destroy(w);
+}

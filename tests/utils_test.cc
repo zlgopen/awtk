@@ -306,3 +306,50 @@ TEST(Utils, tk_under_score_to_camel) {
             string("testObjGet"));
   ASSERT_EQ(string(tk_under_score_to_camel("test_obj_get", name, 7)), string("testObj"));
 }
+
+TEST(Utils, strcmp) {
+  ASSERT_EQ(tk_str_cmp("abc", "abc") == 0, true);
+  ASSERT_NE(tk_str_cmp("abc", "Abc") == 0, true);
+  ASSERT_EQ(tk_str_icmp("abc", "abc") == 0, true);
+  ASSERT_EQ(tk_str_icmp("abc", "Abc") == 0, true);
+}
+
+TEST(Utils, tk_normalize_key_name) {
+  char fix_name[TK_NAME_LEN + 1];
+
+  tk_normalize_key_name("a", fix_name);
+  ASSERT_STREQ(fix_name, "a");
+
+  tk_normalize_key_name("A", fix_name);
+  ASSERT_STREQ(fix_name, "A");
+
+  tk_normalize_key_name("left", fix_name);
+  ASSERT_STREQ(fix_name, "LEFT");
+
+  tk_normalize_key_name("LEFT", fix_name);
+  ASSERT_STREQ(fix_name, "LEFT");
+}
+
+TEST(Utils, tk_str_toupper) {
+  char str[TK_NAME_LEN + 1];
+
+  tk_strcpy(str, "left");
+  tk_str_toupper(str);
+  ASSERT_STREQ(str, "LEFT");
+
+  tk_strcpy(str, "Left");
+  tk_str_toupper(str);
+  ASSERT_STREQ(str, "LEFT");
+}
+
+TEST(Utils, tk_str_tolower) {
+  char str[TK_NAME_LEN + 1];
+
+  tk_strcpy(str, "left");
+  tk_str_tolower(str);
+  ASSERT_STREQ(str, "left");
+
+  tk_strcpy(str, "Left");
+  tk_str_tolower(str);
+  ASSERT_STREQ(str, "left");
+}

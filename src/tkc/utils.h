@@ -32,6 +32,7 @@ bool_t tk_atob(const char* str);
 double tk_atof(const char* str);
 
 int32_t tk_str_cmp(const char* a, const char* b);
+int32_t tk_str_icmp(const char* a, const char* b);
 
 int tk_watoi(const wchar_t* str);
 bool_t tk_watob(const wchar_t* str);
@@ -42,6 +43,7 @@ const char* tk_itoa(char* str, int len, int n);
 const char* tk_ftoa(char* str, int len, double f);
 long tk_strtol(const char* str, const char** end, int base);
 
+char* tk_strcpy(char* dst, const char* src);
 char* tk_strncpy(char* dst, const char* src, size_t len);
 char* tk_strdup(const char* str);
 wchar_t* tk_wstrdup(const wchar_t* str);
@@ -81,6 +83,10 @@ const char* tk_under_score_to_camel(const char* name, char* out, uint32_t max_ou
 
 int32_t tk_pointer_to_int(void* p);
 void* tk_pointer_from_int(int32_t v);
+
+char* tk_str_toupper(char* str);
+char* tk_str_tolower(char* str);
+const char* tk_normalize_key_name(const char* name, char fixed_name[TK_NAME_LEN + 1]);
 
 END_C_DECLS
 
