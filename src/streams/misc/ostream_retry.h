@@ -34,7 +34,6 @@ typedef struct _tk_ostream_retry_t tk_ostream_retry_t;
 
 /**
  * @enum data_discard_policy_t
- * @annotation ["scriptable"]
  * @prefix DATA_DISCARD_
  *
  * 缓存不够时丢弃数据的策略。
