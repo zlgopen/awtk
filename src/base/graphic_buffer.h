@@ -64,9 +64,9 @@ typedef struct _graphic_buffer_vtable_t {
  * @class graphic_buffer_t
  * graphic_buffer。
  */
-typedef struct _graphic_buffer_t {
+struct _graphic_buffer_t {
   const graphic_buffer_vtable_t* vt;
-} graphic_buffer_t;
+};
 
 /**
  * @method graphic_buffer_create_for_bitmap
