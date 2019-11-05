@@ -20,10 +20,35 @@
  */
 
 #include "tkc/mem.h"
+#include "tkc/darray.h"
 #include "lcd/lcd_mem.h"
 #include "base/vgcanvas.h"
 #include "blend/image_g2d.h"
 #include "base/system_info.h"
+
+#define LCD_MEM_GRAPHIC_BUFFER_CACHE_MAX_NUMBER 5
+
+typedef struct _lcd_mem_graphic_buffer_cache_t {
+  uint8_t* fb;
+  graphic_buffer_t* gb;
+} lcd_mem_graphic_buffer_cache_t;
+
+static darray_t lcd_mem_graphic_buffer_cache;
+
+static int lcd_mem_graphic_buffer_cache_cmp(const lcd_mem_graphic_buffer_cache_t* a, const lcd_mem_graphic_buffer_cache_t* b) {
+  if (a->fb == b->fb) {
+    return 0;
+  }
+  return 1;
+}
+
+static ret_t lcd_mem_graphic_buffer_cache_destroy(lcd_mem_graphic_buffer_cache_t* cache) {
+  if (cache->gb != NULL) {
+    graphic_buffer_destroy(cache->gb);
+  }
+  TKMEM_FREE(cache);
+  return RET_OK;
+}
 
 static uint32_t lcd_mem_get_line_length(lcd_mem_t* mem) {
   uint32_t bpp = bitmap_get_bpp_of_format(LCD_FORMAT);
@@ -70,15 +95,38 @@ static bitmap_t* lcd_mem_init_online_fb(lcd_t* lcd, bitmap_t* fb, lcd_orientatio
   return fb;
 }
 
+static inline graphic_buffer_t* lcd_mem_get_graphic_buffer(uint8_t* fb, uint32_t w, uint32_t h, bitmap_format_t format) {
+  graphic_buffer_t* gb = NULL;
+  lcd_mem_graphic_buffer_cache_t tmp;
+  lcd_mem_graphic_buffer_cache_t* cache = NULL;
+
+  return_value_if_fail(fb != NULL, NULL);
+
+  tmp.fb = fb;
+  cache = darray_find(&lcd_mem_graphic_buffer_cache, &tmp);
+  if (cache == NULL) {
+    cache = (lcd_mem_graphic_buffer_cache_t*)TKMEM_ZALLOC(lcd_mem_graphic_buffer_cache_t);
+    gb = graphic_buffer_create_with_data(fb, w, h, format);
+  
+    cache->fb = fb;
+    cache->gb = gb;
+    darray_push(&lcd_mem_graphic_buffer_cache, cache);
+  }
+  else {
+    gb = cache->gb;
+  }
+  return gb;
+}
+
 static ret_t lcd_mem_begin_frame(lcd_t* lcd, rect_t* dirty_rect) {
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
 
   if (mem->online_fb != NULL) {
-    mem->online_gb = graphic_buffer_create_with_data(mem->online_fb, lcd->w, lcd->h, mem->format);
+    mem->online_gb = lcd_mem_get_graphic_buffer(mem->online_fb, lcd->w, lcd->h, mem->format);
   }
 
   if (mem->offline_fb != NULL) {
-    mem->offline_gb = graphic_buffer_create_with_data(mem->offline_fb, lcd->w, lcd->h, mem->format);
+    mem->offline_gb = lcd_mem_get_graphic_buffer(mem->offline_fb, lcd->w, lcd->h, mem->format);
   }
 
   return RET_OK;
@@ -294,16 +342,6 @@ static ret_t lcd_mem_end_frame(lcd_t* lcd) {
     lcd_sync(lcd);
   }
 
-  if (mem->online_gb != NULL) {
-    graphic_buffer_destroy(mem->online_gb);
-    mem->online_gb = NULL;
-  }
-
-  if (mem->offline_gb != NULL) {
-    graphic_buffer_destroy(mem->offline_gb);
-    mem->offline_gb = NULL;
-  }
-
   return RET_OK;
 }
 
@@ -318,6 +356,8 @@ static ret_t lcd_mem_destroy(lcd_t* lcd) {
   if (mem->own_offline_fb) {
     TKMEM_FREE(mem->offline_fb);
   }
+
+  darray_deinit(&lcd_mem_graphic_buffer_cache);
 
   TKMEM_FREE(lcd);
 
@@ -387,6 +427,10 @@ static lcd_t* lcd_mem_create(wh_t w, wh_t h, bool_t alloc) {
   system_info_set_lcd_h(info, base->h);
   system_info_set_lcd_type(info, base->type);
   system_info_set_device_pixel_ratio(info, 1);
+
+  darray_init(&lcd_mem_graphic_buffer_cache, LCD_MEM_GRAPHIC_BUFFER_CACHE_MAX_NUMBER, 
+              (tk_destroy_t)lcd_mem_graphic_buffer_cache_destroy,
+              (tk_compare_t)lcd_mem_graphic_buffer_cache_cmp);
 
   return base;
 }
