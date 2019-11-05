@@ -2,7 +2,9 @@
 
 * 2019/11/05
   * list\_view/list\_view\_h 增加pageup/pagedown按键处理。
-
+  * 修复native window resize时没有更新system info中lcd大小的问题（感谢朝泽提供补丁）。
+  * 修复文档中的错误（感谢朝泽提供补丁）。
+  
 * 2019/11/04
   * 完善字体和文字绘制。
 
