@@ -28,6 +28,7 @@
 #include "base/idle.h"
 #include "base/events.h"
 #include "base/timer.h"
+#include "base/system_info.h"
 #include <SDL.h>
 
 #include <stdio.h>
@@ -164,6 +165,11 @@ static ret_t main_loop_sdl2_dispatch_window_event(main_loop_simple_t* loop, SDL_
     case SDL_WINDOWEVENT_SIZE_CHANGED: {
       event_t e = event_init(EVT_NATIVE_WINDOW_RESIZED, NULL);
       SDL_Window* win = SDL_GetWindowFromID(event->window.windowID);
+      int ww = 0;
+      int wh = 0;
+      SDL_GetWindowSize(win, &ww, &wh);
+      system_info_set_lcd_w(system_info(), ww);
+      system_info_set_lcd_h(system_info(), wh);
       window_manager_dispatch_native_window_event(l->wm, &e, win);
       break;
     }
