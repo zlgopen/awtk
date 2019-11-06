@@ -26,3 +26,4 @@ log
 *.pyc
 __pycache__
 test.bin
+release

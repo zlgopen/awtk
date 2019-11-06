@@ -3,6 +3,7 @@
 * 2019/11/06
   * 修改emitter中的错误（感谢朝泽提供补丁）。
   * 修改image manager 对raw image的处理，增加graphic buffer之后，raw image也需要由image manager管理。
+  * 增加scripts/release.sh脚本，用于将运行时需要的文件拷贝到release目录。
 
 * 2019/11/05
   * list\_view/list\_view\_h 增加pageup/pagedown按键处理。
