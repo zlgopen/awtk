@@ -77,6 +77,8 @@ static inline ret_t lcd_reg_image_copy(lcd_t* lcd, bitmap_t* img, rect_t* src, r
   return_value_if_fail(src->w == dst->w && src->h == dst->h, RET_BAD_PARAMS);
 
   data = (pixel_t*)bitmap_lock_buffer_for_read(img);
+  return_value_if_fail(data != NULL, RET_BAD_PARAMS);
+
   if (reg->ffb != NULL) {
     fragment_frame_buffer_image_copy(reg->ffb, img, src, dst);
   } else {
@@ -190,6 +192,7 @@ static ret_t lcd_reg_draw_image_bgr565(lcd_t* lcd, bitmap_t* img, rect_t* src, r
   wh_t dh = dst->h;
   const uint16_t* data = (uint16_t*)bitmap_lock_buffer_for_read(img);
 
+  return_value_if_fail(data != NULL, RET_BAD_PARAMS);
   lcd_reg_set_window(lcd, x, y, x + dw - 1, y + dh - 1);
   if (src->w == dst->w && src->h == dst->h) {
     lcd_reg_image_copy(lcd, img, src, dst);
@@ -231,6 +234,7 @@ static ret_t lcd_reg_draw_image_8888(lcd_t* lcd, bitmap_t* img, rect_t* src, rec
   pixel_t fill_pixel = color_to_pixel(fill_color);
   const color_t* data = (color_t*)bitmap_lock_buffer_for_read(img);
 
+  return_value_if_fail(data != NULL, RET_BAD_PARAMS);
   lcd_reg_set_window(lcd, x, y, x + dw - 1, y + dh - 1);
   if (src->w == dst->w && src->h == dst->h) {
     const color_t* src_p = data + img->w * src->y + src->x;

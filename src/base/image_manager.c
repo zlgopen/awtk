@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   image_manager.c
  * Author: AWTK Develop Team
  * Brief:  bitmap manager
@@ -178,11 +178,11 @@ static ret_t image_manager_get_bitmap_impl(image_manager_t* imm, const char* nam
     image->format = header->format;
     image->name = res->name;
     image->image_manager = imm;
-    image->buffer =
-        GRAPHIC_BUFFER_CREATE_WITH_DATA(header->data, header->w, header->h, header->format);
-#if defined(WITH_NANOVG_GPU) || defined(WITH_NANOVG_SOFT)
+    image->buffer = GRAPHIC_BUFFER_CREATE_WITH_DATA(header->data, header->w, header->h,
+                                                    (bitmap_format_t)(header->format));
+
     image_manager_add(imm, name, image);
-#endif
+
     return RET_OK;
   } else if (res->subtype != ASSET_TYPE_IMAGE_BSVG) {
     ret_t ret = image_loader_load_image(res, image);

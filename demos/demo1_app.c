@@ -137,6 +137,7 @@ ret_t application_init() {
   progress_bar = progress_bar_create(win, 260, 80, 20, 118);
   widget_set_value(progress_bar, 40);
   progress_bar_set_vertical(progress_bar, TRUE);
+  timer_add(on_timer, progress_bar, 500);
 
   slider = slider_create(win, 230, 80, 20, 118);
   widget_set_value(slider, 40);

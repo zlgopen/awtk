@@ -35,7 +35,8 @@ typedef struct _lcd_mem_graphic_buffer_cache_t {
 
 static darray_t lcd_mem_graphic_buffer_cache;
 
-static int lcd_mem_graphic_buffer_cache_cmp(const lcd_mem_graphic_buffer_cache_t* a, const lcd_mem_graphic_buffer_cache_t* b) {
+static int lcd_mem_graphic_buffer_cache_cmp(const lcd_mem_graphic_buffer_cache_t* a,
+                                            const lcd_mem_graphic_buffer_cache_t* b) {
   if (a->fb == b->fb) {
     return 0;
   }
@@ -95,7 +96,8 @@ static bitmap_t* lcd_mem_init_online_fb(lcd_t* lcd, bitmap_t* fb, lcd_orientatio
   return fb;
 }
 
-static inline graphic_buffer_t* lcd_mem_get_graphic_buffer(uint8_t* fb, uint32_t w, uint32_t h, bitmap_format_t format) {
+static inline graphic_buffer_t* lcd_mem_get_graphic_buffer(uint8_t* fb, uint32_t w, uint32_t h,
+                                                           bitmap_format_t format) {
   graphic_buffer_t* gb = NULL;
   lcd_mem_graphic_buffer_cache_t tmp;
   lcd_mem_graphic_buffer_cache_t* cache = NULL;
@@ -107,12 +109,11 @@ static inline graphic_buffer_t* lcd_mem_get_graphic_buffer(uint8_t* fb, uint32_t
   if (cache == NULL) {
     cache = (lcd_mem_graphic_buffer_cache_t*)TKMEM_ZALLOC(lcd_mem_graphic_buffer_cache_t);
     gb = graphic_buffer_create_with_data(fb, w, h, format);
-  
+
     cache->fb = fb;
     cache->gb = gb;
     darray_push(&lcd_mem_graphic_buffer_cache, cache);
-  }
-  else {
+  } else {
     gb = cache->gb;
   }
   return gb;
@@ -428,7 +429,7 @@ static lcd_t* lcd_mem_create(wh_t w, wh_t h, bool_t alloc) {
   system_info_set_lcd_type(info, base->type);
   system_info_set_device_pixel_ratio(info, 1);
 
-  darray_init(&lcd_mem_graphic_buffer_cache, LCD_MEM_GRAPHIC_BUFFER_CACHE_MAX_NUMBER, 
+  darray_init(&lcd_mem_graphic_buffer_cache, LCD_MEM_GRAPHIC_BUFFER_CACHE_MAX_NUMBER,
               (tk_destroy_t)lcd_mem_graphic_buffer_cache_destroy,
               (tk_compare_t)lcd_mem_graphic_buffer_cache_cmp);
 
