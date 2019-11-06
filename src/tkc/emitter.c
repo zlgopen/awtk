@@ -245,7 +245,7 @@ static int emitter_item_compare_by_id(const void* a, const void* b) {
 
 static int emitter_item_compare_by_func(const void* a, const void* b) {
   const emitter_item_t* item = (const emitter_item_t*)a;
-  const emitter_item_t* p = (const emitter_item_t*)a;
+  const emitter_item_t* p = (const emitter_item_t*)b;
 
   if (item->type == p->type && item->ctx == p->ctx && item->handler == p->handler) {
     return 0;

@@ -1,5 +1,9 @@
 # 最新动态
 
+* 2019/11/06
+  * 修改emitter中的错误（感谢朝泽提供补丁）。
+  * 修改image manager 对raw image的处理，增加graphic buffer之后，raw image也需要由image manager管理。
+
 * 2019/11/05
   * list\_view/list\_view\_h 增加pageup/pagedown按键处理。
   * 修复native window resize时没有更新system info中lcd大小的问题（感谢朝泽提供补丁）。
