@@ -10,27 +10,27 @@ BIN_DIR = 'bin'
 EXE_NAME = 'demoui'
 ASSETS_DIR = 'assets'
 OUTPUT_DIR = 'release'
+CWD = os.getcwd()
 
 
-def init(exe):
+def init(exe, assets_root, bin_root):
     global BIN_DIR
     global EXE_NAME
     global ASSETS_DIR
     global OUTPUT_DIR
 
     EXE_NAME = exe
-    APP_ROOT = os.getcwd()
-    BIN_DIR = joinPath(APP_ROOT, 'bin')
-    ASSETS_DIR = joinPath(APP_ROOT, 'assets')
-    OUTPUT_DIR = joinPath(APP_ROOT, 'release')
+    BIN_DIR = joinPath(bin_root, 'bin')
+    OUTPUT_DIR = joinPath(CWD, 'release')
+    ASSETS_DIR = joinPath(assets_root, 'assets')
     
     if not os.path.exists(BIN_DIR):
-        BIN_DIR = joinPath(APP_ROOT, 'build/bin')
+        BIN_DIR = joinPath(bin_root, 'build/bin')
 
     if not os.path.exists(ASSETS_DIR):
-        ASSETS_DIR = joinPath(APP_ROOT, 'demos/assets')
+        ASSETS_DIR = joinPath(assets_root, 'demos/assets')
     if not os.path.exists(ASSETS_DIR):
-        ASSETS_DIR = joinPath(APP_ROOT, '../awtk/demos/assets')
+        ASSETS_DIR = joinPath(assets_root, '../awtk/demos/assets')
     if not os.path.exists(ASSETS_DIR):
         print(ASSETS_DIR + ' not exist.')
         sys.exit()
