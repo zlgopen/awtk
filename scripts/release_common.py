@@ -38,10 +38,12 @@ def init(exe, assets_root, bin_root):
     if os.path.exists(OUTPUT_DIR):
         shutil.rmtree(OUTPUT_DIR)
 
+    print('==================================================');
+    print('EXE_NAME:' + EXE_NAME)
     print('ASSETS_DIR:' + ASSETS_DIR)
     print('OUTPUT_DIR:' + OUTPUT_DIR)
     print('BIN_DIR:' + BIN_DIR)
-    print('EXE_NAME:' + EXE_NAME)
+    print('==================================================');
 
 
 def joinPath(root, subdir):
