@@ -158,7 +158,6 @@
 #include "assets/default/inc/images/guage_bg.res"
 #include "assets/default/inc/images/battery_3.res"
 #include "assets/default/inc/images/num_3.res"
-#include "assets/default/inc/images/ani2.res"
 #include "assets/default/inc/images/arrow_left_n.res"
 #include "assets/default/inc/images/middle_on.res"
 #include "assets/default/inc/images/bricks.res"
@@ -468,7 +467,6 @@ ret_t assets_init(void) {
   assets_manager_add(am, image_rgb);
   assets_manager_add(am, image_num_9);
   assets_manager_add(am, image_dot);
-  assets_manager_add(am, image_ani2);
   assets_manager_add(am, image_battery_0);
   assets_manager_add(am, image_find);
   assets_manager_add(am, image_slider_fg);
