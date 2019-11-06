@@ -11,6 +11,7 @@ EXE_NAME = 'demoui'
 ASSETS_DIR = 'assets'
 OUTPUT_DIR = 'release'
 
+
 def init(exe):
     global BIN_DIR
     global EXE_NAME
@@ -23,13 +24,13 @@ def init(exe):
     ASSETS_DIR = joinPath(APP_ROOT, 'assets')
     OUTPUT_DIR = joinPath(APP_ROOT, 'release')
     if not os.path.exists(ASSETS_DIR):
-      ASSETS_DIR = joinPath(APP_ROOT, 'demos/assets')
+        ASSETS_DIR = joinPath(APP_ROOT, 'demos/assets')
     if not os.path.exists(ASSETS_DIR):
-      print(ASSETS_DIR + ' not exist.')
-      sys.exit()
+        print(ASSETS_DIR + ' not exist.')
+        sys.exit()
 
     if os.path.exists(OUTPUT_DIR):
-      shutil.rmtree(OUTPUT_DIR)
+        shutil.rmtree(OUTPUT_DIR)
 
     print('ASSETS_DIR:' + ASSETS_DIR)
     print('OUTPUT_DIR:' + OUTPUT_DIR)
@@ -82,7 +83,9 @@ def copyFiles(src_root_dir, src, dst_root_dir, dst, ignore_files=[]):
 
 
 def copyExe():
-    copyFile(BIN_DIR, EXE_NAME, joinPath(OUTPUT_DIR, 'bin'), EXE_NAME)
+    output_bin_dir = joinPath(OUTPUT_DIR, 'bin')
+    copyFile(BIN_DIR, EXE_NAME, output_bin_dir, EXE_NAME)
+    os.chmod(joinPath(output_bin_dir, EXE_NAME), 0o755)
 
 
 def copyAssets():
