@@ -157,7 +157,11 @@ static ret_t combo_box_set_prop(widget_t* widget, const char* name, const value_
 static ret_t combo_box_on_layout_children(widget_t* widget) {
   widget_t* button = widget_lookup_by_type(widget, "button", TRUE);
 
-  widget_move_resize(button, widget->w - widget->h, 0, widget->h, widget->h);
+  if (button->auto_created) {
+    widget_move_resize(button, widget->w - widget->h, 0, widget->h, widget->h);
+  } else {
+    widget_layout(button);
+  }
 
   return RET_OK;
 }
@@ -200,6 +204,11 @@ static ret_t combo_box_on_event(widget_t* widget, event_t* e) {
 }
 
 static ret_t combo_box_on_add_child(widget_t* widget, widget_t* child) {
+  widget_t* button = widget_lookup_by_type(widget, "button", TRUE);
+
+  if (button != NULL && button != child) {
+    widget_destroy(button);
+  }
   widget_on(child, EVT_CLICK, combo_box_on_button_click, widget);
 
   return RET_FAIL;
@@ -359,7 +368,6 @@ widget_t* combo_box_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   popup = button_create(widget, 0, 0, 0, 0);
   popup->auto_created = TRUE;
   combo_box_set_item_height(widget, 30);
-  widget_set_name(popup, "popup");
   widget_use_style(popup, "combobox_down");
 
   return widget;
