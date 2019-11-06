@@ -23,7 +23,7 @@ def init(exe, assets_root, bin_root):
     BIN_DIR = joinPath(bin_root, 'bin')
     OUTPUT_DIR = joinPath(CWD, 'release')
     ASSETS_DIR = joinPath(assets_root, 'assets')
-    
+
     if not os.path.exists(BIN_DIR):
         BIN_DIR = joinPath(bin_root, 'build/bin')
 
@@ -38,12 +38,12 @@ def init(exe, assets_root, bin_root):
     if os.path.exists(OUTPUT_DIR):
         shutil.rmtree(OUTPUT_DIR)
 
-    print('==================================================');
+    print('==================================================')
     print('EXE_NAME:' + EXE_NAME)
     print('ASSETS_DIR:' + ASSETS_DIR)
     print('OUTPUT_DIR:' + OUTPUT_DIR)
     print('BIN_DIR:' + BIN_DIR)
-    print('==================================================');
+    print('==================================================')
 
 
 def joinPath(root, subdir):

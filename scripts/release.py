@@ -15,11 +15,10 @@ assets_root = CWD
 exe_name = sys.argv[1]
 
 if len(sys.argv) > 2:
-  assets_root = sys.argv[2]
+    assets_root = sys.argv[2]
 
 if len(sys.argv) > 3:
-  bin_root = sys.argv[3]
+    bin_root = sys.argv[3]
 
 common.init(exe_name, assets_root, bin_root)
 common.release()
-

@@ -47,7 +47,7 @@ python scripts/release.py [exe name]
 python scripts/release.py demoui.exe
 ```
 
-也可在其它项目中使用，
+也可在其它项目中使用。
 
 用法：
 
@@ -56,6 +56,8 @@ python ../awtk/scripts/release.py [exe name]
 ```
 
 示例：
+
+> 比如当前项目为awtk-mvvm-c-hello。
 
 ```
 python ../awtk/scripts/release.py awtk_mvvm_app.exe
