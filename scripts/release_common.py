@@ -23,8 +23,14 @@ def init(exe):
     BIN_DIR = joinPath(APP_ROOT, 'bin')
     ASSETS_DIR = joinPath(APP_ROOT, 'assets')
     OUTPUT_DIR = joinPath(APP_ROOT, 'release')
+    
+    if not os.path.exists(BIN_DIR):
+        BIN_DIR = joinPath(APP_ROOT, 'build/bin')
+
     if not os.path.exists(ASSETS_DIR):
         ASSETS_DIR = joinPath(APP_ROOT, 'demos/assets')
+    if not os.path.exists(ASSETS_DIR):
+        ASSETS_DIR = joinPath(APP_ROOT, '../awtk/demos/assets')
     if not os.path.exists(ASSETS_DIR):
         print(ASSETS_DIR + ' not exist.')
         sys.exit()
