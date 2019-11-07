@@ -2,15 +2,16 @@
 
 * 2019/11/07
   * 支持重新启动已经完成的动画。
-  * 完善event source/event source manager。
+  * 完善 event source/event source manager。
   * 修改输入法中，软键盘弹出时，保存窗口位置的问题。
   * OpenGL 模式支持脏矩形（感谢智明提供补丁）。
-  * 修改slider在list view中grab的问题（感谢培煌提供补丁）。
+  * 修改 slider 在 list view 中 grab 的问题（感谢培煌提供补丁）。
   * 增加 WIDGET\_PROP\_EXEC 方便 MVVM 通过属性来控制动画的状态。
   * 增加 indicator\_default\_paint\_t 枚举类型导出（感谢大恒提供补丁）。
   * 修改动态设置 default\_paint 属性为 auto 时没有效果的问题（感谢大恒提供补丁）。
   * slide\_view 增加/删除，或者改变位置/大小时，没有同步更新的问题（感谢朝泽提供补丁）。
   * auto\_hide 动画时间设置错误，以及 auto\_hide 之后设置 visible 不能显示的问题（感谢朝泽提供补丁）。
+  * 完善 assets\_manager\_set\_theme（感谢朝泽提供补丁）。
 
 * 2019/11/06
   * 修改 emitter 中的错误（感谢朝泽提供补丁）。
