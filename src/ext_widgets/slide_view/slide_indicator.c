@@ -30,6 +30,10 @@
 #include "widget_animators/widget_animator_opacity.h"
 #include "base/widget_animator_manager.h"
 
+static ret_t slide_indicator_reset_indicated_widget(widget_t* widget);
+static ret_t slide_indicator_reset_indicated_widget(widget_t* widget);
+static ret_t slide_indicator_set_indicated_widget(widget_t* widget, widget_t* target);
+
 #define _RADIAN(cx, cy, x, y) atan2(-y + (cy), x - (cx))
 #define _DISTANCE(x1, y1, x2, y2) sqrt((x1 - (x2)) * (x1 - (x2)) + (y1 - (y2)) * (y1 - (y2)))
 
