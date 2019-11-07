@@ -1,182 +1,185 @@
 # 最新动态
 
+* 2019/11/07
+  * 支持重新启动已经完成的动画。
+  * 增加 WIDGET\_PROP\_EXEC 方便 MVVM 通过属性来控制动画的状态。
+
 * 2019/11/06
-  * 修改emitter中的错误（感谢朝泽提供补丁）。
-  * 修改image manager 对raw image的处理，增加graphic buffer之后，raw image也需要由image manager管理。
-  * 增加scripts/release.sh脚本，用于将运行时需要的文件拷贝到release目录。
-  * 允许在XML文件中指定combobox按钮的位置大小和样式。
+  * 修改 emitter 中的错误（感谢朝泽提供补丁）。
+  * 修改 image manager 对 raw image 的处理，增加 graphic buffer 之后，raw image 也需要由 image manager 管理。
+  * 增加 scripts/release.sh 脚本，用于将运行时需要的文件拷贝到 release 目录。
+  * 允许在 XML 文件中指定 combobox 按钮的位置大小和样式。
 
 * 2019/11/05
-  * list\_view/list\_view\_h 增加pageup/pagedown按键处理。
-  * 修复native window resize时没有更新system info中lcd大小的问题（感谢朝泽提供补丁）。
+  * list\_view/list\_view\_h 增加 pageup/pagedown 按键处理。
+  * 修复 native window resize 时没有更新 system info 中 lcd 大小的问题（感谢朝泽提供补丁）。
   * 修复文档中的错误（感谢朝泽提供补丁）。
   * 完善旋转的处理（感谢智明提供补丁）。
-  * 增加键值映射功能，请参考[map\_key.md](map_key.md)
-  * 优化lcd\_mem（感谢智明提供补丁）。
+  * 增加键值映射功能，请参考 [map\_key.md](map_key.md)
+  * 优化 lcd\_mem（感谢智明提供补丁）。
 
 * 2019/11/04
   * 完善字体和文字绘制。
 
 * 2019/11/03
-  * 修改graphic\_buffer改动引入的问题。
-  * 完善close window force的流程。
-  * 完善back/back_to_home的处理。
-  * 完善text selector数据绑定的问题。
-  * 增加date_time_set函数和初始化函数。请使用date\_time\_global\_init初始化时间函数。
+  * 修改 graphic\_buffer 改动引入的问题。
+  * 完善 close window force 的流程。
+  * 完善 back/back_to_home 的处理。
+  * 完善 text selector 数据绑定的问题。
+  * 增加 date_time_set 函数和初始化函数。请使用 date\_time\_global\_init 初始化时间函数。
   
 * 2019/10/31
-  * 增加graphic\_buffer，用于管理bitmap的内存。
-  * 完善vgcanvas，兼容JZ\_GPU。
-  * 完善darray，增加darray\_find\_all。
-  * lcd nanovg支持LCD旋转（感谢智明提供补丁）。
-  * 增加native\_window\_fb\_gl （感谢智明提供补丁）。
-  * 修改valgrind发现的问题。
+  * 增加 graphic\_buffer，用于管理 bitmap 的内存。
+  * 完善 vgcanvas，兼容 JZ\_GPU。
+  * 完善 darray，增加 darray\_find\_all。
+  * lcd nanovg 支持 LCD 旋转（感谢智明提供补丁）。
+  * 增加 native\_window\_fb\_gl （感谢智明提供补丁）。
+  * 修改 valgrind 发现的问题。
 
-> 如果有支持访问bitmap-\>data的代码，请使用bitmap\_lock\_buffer\_for\_write/read函数。
-
+> 如果有支持访问 bitmap-\>data 的代码，请使用 bitmap\_lock\_buffer\_for\_write/read 函数。
 
 * 2019/10/30
-  * 增加system\_bar\_bottom，支持system_bar在顶部、底部和两者。
+  * 增加 system\_bar\_bottom，支持 system_bar 在顶部、底部和两者。
 
 * 2019/10/29
-  * 公开函数image\_animation\_next。
-  * 修改SDL输入按键事件的问题（感谢智明提供补丁）。
+  * 公开函数 image\_animation\_next。
+  * 修改 SDL 输入按键事件的问题（感谢智明提供补丁）。
 
 * 2019/10/29
-  * 完善slideview indicator（感谢朝泽提供补丁）。
-  * 修改svg路径太长的问题（感谢尧燊提供补丁）。
-  * 修改popup支持点击外部关闭的问题（感谢尧燊提供补丁）。
-  * 完善vgcanvas\_nanovg\_set\_font（感谢俊杰提供补丁）。
-  * 修改semaphore.c在 im28x上编译的问题（感谢俊杰提供补丁）。
-  * 修改 build\_asset\_filename\_custom的问题（感谢瑞安提供补丁）。
+  * 完善 slideview indicator（感谢朝泽提供补丁）。
+  * 修改 svg 路径太长的问题（感谢尧燊提供补丁）。
+  * 修改 popup 支持点击外部关闭的问题（感谢尧燊提供补丁）。
+  * 完善 vgcanvas\_nanovg\_set\_font（感谢俊杰提供补丁）。
+  * 修改 semaphore.c 在 im28x 上编译的问题（感谢俊杰提供补丁）。
+  * 修改 build\_asset\_filename\_custom 的问题（感谢瑞安提供补丁）。
 
 * 2019/10/27
-  * 增加ostream\_retry。
+  * 增加 ostream\_retry。
 
 * 2019/10/26
-  * 完善ring buffer。
+  * 完善 ring buffer。
 
 * 2019/10/25
   * widget\_off\_by_\ctx/on\_detach\_parent/on\_attach\_parent
-  * 增加draggable控件。
+  * 增加 draggable 控件。
   * 修改文档中的错误（感谢俊杰提供补丁）。
   * 完善主题切换，字体卸载的问题（感谢智明提供补丁）。
 
 * 2019/10/24
-  * 优化fragment frame buffer，在STM32F103等低端平台，内存不足以实现framebuffer时，性能大幅提高（感谢智明提供补丁）。
+  * 优化 fragment frame buffer，在 STM32F103 等低端平台，内存不足以实现 framebuffer 时，性能大幅提高（感谢智明提供补丁）。
   * 修改文档中的错误（感谢俊杰提供补丁）。
-  * 更新awtk config sample。
+  * 更新 awtk config sample。
   * 修改软键盘弹出时出现屏保的问题。
-  * 完善new.cpp/new.hpp （感谢陈谭提供补丁）。
-  * 修改windows中文件名的问题（感谢大恒提供补丁）
-  * assets\_manager\_set\_custom\_build\_dir增加回调函数上下文。
+  * 完善 new.cpp/new.hpp （感谢陈谭提供补丁）。
+  * 修改 windows 中文件名的问题（感谢大恒提供补丁）
+  * assets\_manager\_set\_custom\_build\_dir 增加回调函数上下文。
 
 * 2019/10/23
-  * 修改clone出来的edit的显示问题。
-  * 增加widget\_on\_with\_tag和widget\_off\_by\_tag，方便一次注销多个同类事件。
-  * 完善list view对wheel事件的处理。
-  * 完善text selector处理up/down按键和wheel事件。
-  * 修改SVG无效图片崩溃的BUG。
-  * 增加函数assets\_manager\_set\_custom\_build\_asset\_dir，有时我们需要优先加载用户自定义的资源，加载失败才加载系统缺省的，可用设置一个函数去实现这类功能。
+  * 修改 clone 出来的 edit 的显示问题。
+  * 增加 widget\_on\_with\_tag 和 widget\_off\_by\_tag，方便一次注销多个同类事件。
+  * 完善 list view 对 wheel 事件的处理。
+  * 完善 text selector 处理 up/down 按键和 wheel 事件。
+  * 修改 SVG 无效图片崩溃的 BUG。
+  * 增加函数 assets\_manager\_set\_custom\_build\_asset\_dir，有时我们需要优先加载用户自定义的资源，加载失败才加载系统缺省的，可用设置一个函数去实现这类功能。
   
 * 2019/10/19
   * 完善主题切换功能。
-  * 增加文档[资源目录变更通知](assets_dir_changed.md)
-  * 增加文档[主题实时切换](theme_switch.md)
-  * 修改edit在listview中时，处理Wheel事件的问题。
+  * 增加文档 [资源目录变更通知](assets_dir_changed.md)
+  * 增加文档 [主题实时切换](theme_switch.md)
+  * 修改 edit 在 listview 中时，处理 Wheel 事件的问题。
 
 * 2019/10/18
   * 增加主题切换功能。
 
 * 2019/10/17
   * 修改文档中的错误（感谢俊杰提供补丁）。
-  * 完善streams。
+  * 完善 streams。
   
 * 2019/10/16
   * 更新文档。
   * 修改文档中的错误（感谢俊杰提供补丁）。
 
 * 2019/10/15
-  * 增加fs\_file\_eof。
-  * 增加tk\_iostream\_noisy。
+  * 增加 fs\_file\_eof。
+  * 增加 tk\_iostream\_noisy。
   * 完善窗口管理器（感谢大恒提供补丁）
-  * 前一个窗口为normal window时才支持窗口动画。
-  * glyph的x/y/w/h改为16位，以防超大字体溢出问题。
+  * 前一个窗口为 normal window 时才支持窗口动画。
+  * glyph 的 x/y/w/h 改为 16 位，以防超大字体溢出问题。
 
 * 2019/10/14
-  * 修改widget\_set\_value把value当uint32的BUG.
-  * 完善label换行（感谢俊杰提供补丁）。
-  * edit\_set\_int/double后调用text layout（感谢俊杰提供补丁）。
-  * 窗口被切换到后台后更新grab\_widget（感谢尧燊提供补丁）。
-  * 完善combo box（感谢尧燊提供补丁）。
-  * 完善layouters（感谢尧燊提供补丁）。
-  * 修改edit在slide view中的问题（感谢培煌提供补丁）。
-  * keyboard 增加 scriptable属性。
+  * 修改 widget\_set\_value 把 value 当 uint32 的 BUG.
+  * 完善 label 换行（感谢俊杰提供补丁）。
+  * edit\_set\_int/double 后调用 text layout（感谢俊杰提供补丁）。
+  * 窗口被切换到后台后更新 grab\_widget（感谢尧燊提供补丁）。
+  * 完善 combo box（感谢尧燊提供补丁）。
+  * 完善 layouters（感谢尧燊提供补丁）。
+  * 修改 edit 在 slide view 中的问题（感谢培煌提供补丁）。
+  * keyboard 增加 scriptable 属性。
 
 * 2019/10/13
-  * 增加stream\_shdlc文档。
+  * 增加 stream\_shdlc 文档。
 
 * 2019/10/12
-  * 增加stream\_shdlc。
+  * 增加 stream\_shdlc。
   
 * 2019/10/11
-  * 合并君正提供的屏幕旋转补丁(感谢君正提供补丁，感谢智明在各个平台验证）。
-  * 合并君正提供的popup支持highlight补丁(感谢君正提供补丁，感谢智明在各个平台验证）。
-  * 合并君正提供的bitmap使用line\_length补丁(感谢君正提供补丁，感谢智明在各个平台验证）。
-  * 修改dialog上面的combox弹出时焦点的问题。
+  * 合并君正提供的屏幕旋转补丁（感谢君正提供补丁，感谢智明在各个平台验证）。
+  * 合并君正提供的 popup 支持 highlight 补丁（感谢君正提供补丁，感谢智明在各个平台验证）。
+  * 合并君正提供的 bitmap 使用 line\_length 补丁（感谢君正提供补丁，感谢智明在各个平台验证）。
+  * 修改 dialog 上面的 combox 弹出时焦点的问题。
   
 * 2019/10/10
-  * 修改canvas draw image repeatx/repeaty的问题（感谢俊杰提供补丁）。
-  * canvas增加repeat\_y\_inverse图片绘制方式。
-  * 完善widget\_invalidate（感谢培煌提供补丁）。
+  * 修改 canvas draw image repeatx/repeaty 的问题（感谢俊杰提供补丁）。
+  * canvas 增加 repeat\_y\_inverse 图片绘制方式。
+  * 完善 widget\_invalidate（感谢培煌提供补丁）。
 
 * 2019/10/09
-  * slider 的min/max/value/step使用浮动数。
-  * combo\_box 增加item\_height属性(感谢朝泽提供补丁)。
-  * 修改mledit软键盘回车的问题（感谢俊杰提供补丁）。
+  * slider 的 min/max/value/step 使用浮动数。
+  * combo\_box 增加 item\_height 属性（感谢朝泽提供补丁）。
+  * 修改 mledit 软键盘回车的问题（感谢俊杰提供补丁）。
 
 * 2019/10/08
-  * 增加istream buffered。
+  * 增加 istream buffered。
 
 * 2019/10/07
-  * 增加ostream\_buffered。
-  * 按issue 241，把get\_time\_ms改名为get\_time\_ms64。
+  * 增加 ostream\_buffered。
+  * 按 issue 241，把 get\_time\_ms 改名为 get\_time\_ms64。
 
 * 2019/10/06
-  * 增加ring buffer。
+  * 增加 ring buffer。
 
 * 2019/10/03
-  * 完善stream serial。
+  * 完善 stream serial。
 
 * 2019/10/02
-  * 完善ubjson。
+  * 完善 ubjson。
 
 * 2019/09/30
-  * 修改文档的BUG（感谢俊杰提供补丁）。
-  * edit/mledit的margin从style中获取，从属性获取仍然保留（但不支持在IDE中设置）。
-  * 使用sokol库中的函数获取时间。
-  * 增加event source。
+  * 修改文档的 BUG（感谢俊杰提供补丁）。
+  * edit/mledit 的 margin 从 style 中获取，从属性获取仍然保留（但不支持在 IDE 中设置）。
+  * 使用 sokol 库中的函数获取时间。
+  * 增加 event source。
 
 * 2019/09/29
-  * 修改combo\_box\_ex获取type的问题（感谢尧燊提供补丁）。
+  * 修改 combo\_box\_ex 获取 type 的问题（感谢尧燊提供补丁）。
 
 * 2019/09/27
-  * time clock支持指针支持锚点（感谢智明提供补丁）。
+  * time clock 支持指针支持锚点（感谢智明提供补丁）。
   * edit/mledit 获得焦点时选中文本。
-  * combo\_box 增加localize\_options选项
-  * edit min/max/step/type支持脚本绑定。
-  * progress bar支持max属性。
+  * combo\_box 增加 localize\_options 选项
+  * edit min/max/step/type 支持脚本绑定。
+  * progress bar 支持 max 属性。
 
 * 2019/09/26
   * rename stream\_socket to stream\_tcp。
-  * 修改switch的BUG（感谢朝泽提供补丁）。
+  * 修改 switch 的 BUG（感谢朝泽提供补丁）。
 
 * 2019/09/24
   * 合并君正提供的部分补丁。
 
 * 2019/09/23
-  * 完善ubjson/value
-  * 修改前几天修改widget\_update\_style留下的问题。
+  * 完善 ubjson/value
+  * 修改前几天修改 widget\_update\_style 留下的问题。
 
 * 2019/09/19
   * 修改"color\_component" "digit\_clock" "mutable\_image"的注释，支持 designer 编辑（感谢大恒提供补丁）。
@@ -184,7 +187,7 @@
   * 增加 object\_get\_prop\_by\_path
   * 完善 children\_layouter\_list\_view（感谢尧燊提供补丁）。
   * 完善 children\_layouter\_default（感谢尧燊提供补丁）。
-  * 增加 EVT\_REQUEST\_QUIT\_APP 事件，点击原生窗口关闭按钮时，通过窗口管理器触发，注册该事件并返回RET_STOP，可以阻止窗口关闭。
+  * 增加 EVT\_REQUEST\_QUIT\_APP 事件，点击原生窗口关闭按钮时，通过窗口管理器触发，注册该事件并返回 RET_STOP，可以阻止窗口关闭。
   
 * 2019/09/18
   * 增加 iostream\_mem。
