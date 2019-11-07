@@ -28,19 +28,20 @@
 
 struct _tk_semaphore_t {
   osSemaphoreId sem;
+  osSemaphoreDef_t def;
 };
 
 tk_semaphore_t* tk_semaphore_create(uint32_t value, const char* name) {
-  osSemaphoreDef_t def;
+  osSemaphoreDef_t* def = NULL;
   tk_semaphore_t* semaphore = TKMEM_ZALLOC(tk_semaphore_t);
   return_value_if_fail(semaphore != NULL, NULL);
 
-  memset(&def, 0x00, sizeof(def));
-#ifdef __RTTHREAD_CFG_H__
-  def.name = name;
-#endif
-  semaphore->sem = osSemaphoreCreate(&(def), value);
+  memset(def, 0x00, sizeof(*def));
+#ifdef _TOS_CONFIG_H_
+  def->sem = TKMEM_ALLOC(sizeof(*(def->sem)));
+#endif /*_TOS_CONFIG_H_*/
 
+  semaphore->sem = osSemaphoreCreate(def, value);
   if (semaphore->sem == NULL) {
     TKMEM_FREE(semaphore);
   }
@@ -70,6 +71,11 @@ ret_t tk_semaphore_destroy(tk_semaphore_t* semaphore) {
   return_value_if_fail(semaphore != NULL, RET_BAD_PARAMS);
 
   osSemaphoreDelete(semaphore->sem);
+
+#ifdef _TOS_CONFIG_H_
+  TKMEM_FREE(semaphore->def.sem);
+#endif /*_TOS_CONFIG_H_*/
+
   memset(&semaphore, 0x00, sizeof(tk_semaphore_t));
   TKMEM_FREE(semaphore);
 

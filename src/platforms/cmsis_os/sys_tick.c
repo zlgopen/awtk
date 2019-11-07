@@ -33,6 +33,7 @@ void rtos_tick(void) {
     tos_knl_irq_leave();
   }
 }
+#define rtos_task_delay(ms) tos_task_delay(ms);
 #endif /*_TOS_CONFIG_H_*/
 
 void SysTick_Handler(void) {
@@ -55,7 +56,7 @@ static void sleep_ms_raw(uint32_t ms) {
 
 void sleep_ms(uint32_t ms) {
   if (tos_knl_is_running()) {
-    tos_task_delay(ms);
+    rtos_task_delay(ms);
   } else {
     sleep_ms_raw(ms);
   }
