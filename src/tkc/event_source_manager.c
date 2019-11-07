@@ -87,6 +87,16 @@ ret_t event_source_manager_remove(event_source_manager_t* manager, event_source_
   return darray_remove(&(manager->sources), source);
 }
 
+static int event_source_compare_by_tag(const void* a, const void* b) {
+  const event_source_t* source = (const event_source_t*)a;
+
+  return (source->tag == b) ? 0 : 1;
+}
+
+ret_t event_source_manager_remove_by_tag(event_source_manager_t* manager, void* tag) {
+  return darray_remove_all(&(manager->sources), event_source_compare_by_tag, tag);
+}
+
 ret_t event_source_manager_destroy(event_source_manager_t* manager) {
   return_value_if_fail(manager != NULL && manager->destroy != NULL, RET_BAD_PARAMS);
 

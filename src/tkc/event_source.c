@@ -44,3 +44,11 @@ uint32_t event_source_get_wakeup_time(event_source_t* source) {
 
   return source->get_wakeup_time != NULL ? source->get_wakeup_time(source) : 0;
 }
+
+ret_t event_source_set_tag(event_source_t* source, void* tag) {
+  return_value_if_fail(source != NULL, RET_BAD_PARAMS);
+
+  source->tag = tag;
+
+  return RET_OK;
+}

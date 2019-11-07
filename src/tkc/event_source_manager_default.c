@@ -94,7 +94,6 @@ static ret_t event_source_manager_default_dispatch_fds(event_source_manager_t* m
         ret_t r = event_source_dispatch(iter);
         if (r == RET_REMOVE) {
           event_source_manager_remove(manager, iter);
-          object_unref(OBJECT(iter));
         }
       }
     }
@@ -131,7 +130,6 @@ static ret_t event_source_manager_default_dispatch_no_fd(event_source_manager_t*
       ret_t r = event_source_dispatch(iter);
       if (r == RET_REMOVE) {
         event_source_manager_remove(manager, iter);
-        object_unref(OBJECT(iter));
       }
     }
   }
