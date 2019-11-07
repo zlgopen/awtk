@@ -551,6 +551,7 @@ ret_t assets_manager_set_theme(assets_manager_t* am, const char* theme) {
   am->theme = tk_str_copy(am->theme, theme);
   assets_manager_clear_cache(am, ASSET_TYPE_UI);
   assets_manager_clear_cache(am, ASSET_TYPE_STYLE);
+  assets_manager_clear_cache(am, ASSET_TYPE_FONT);
 
   return RET_OK;
 }
