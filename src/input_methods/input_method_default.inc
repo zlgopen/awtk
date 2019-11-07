@@ -77,6 +77,8 @@ static const char* input_type_to_keyboard_name(int32_t input_type) {
 
 static ret_t on_push_window(void* ctx, event_t* e) {
   input_method_t* im = (input_method_t*)ctx;
+
+  im->win_old_y = im->win->y;
   im->win->y -= im->win_delta_y;
   widget_invalidate_force(im->win, NULL);
 
@@ -141,7 +143,6 @@ static ret_t input_type_open_keyboard(input_method_t* im, int32_t input_type, bo
   im->busy = TRUE;
   widget_on(im->keyboard, EVT_WINDOW_OPEN, input_method_default_on_keyboard_open, im);
 
-  im->win_old_y = win->y;
   if ((p.y + widget->h) > im->keyboard->y) {
     close_anim_hint = "vtranslate";
     open_anim_hint = close_anim_hint;
