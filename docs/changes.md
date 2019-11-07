@@ -3,6 +3,7 @@
 * 2019/11/07
   * 支持重新启动已经完成的动画。
   * 完善event source/event source manager。
+  * 修改输入法中，软键盘弹出时，保存窗口位置的问题。
   * OpenGL 模式支持脏矩形（感谢智明提供补丁）。
   * 修改slider在list view中grab的问题（感谢培煌提供补丁）。
   * 增加 WIDGET\_PROP\_EXEC 方便 MVVM 通过属性来控制动画的状态。
