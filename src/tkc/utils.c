@@ -773,7 +773,7 @@ char* tk_str_tolower(char* str) {
 }
 
 const char* tk_normalize_key_name(const char* name, char fixed_name[TK_NAME_LEN + 1]) {
-  uint32_t len = NULL;
+  uint32_t len = 0;
   return_value_if_fail(name != NULL && fixed_name != NULL, NULL);
 
   len = strlen(name);
