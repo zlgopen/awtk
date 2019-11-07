@@ -1,6 +1,7 @@
 # 最新动态
 
 * 2019/11/07
+  * 完善cmsis\_os移植。
   * 支持重新启动已经完成的动画。
   * 完善 event source/event source manager。
   * 修改输入法中，软键盘弹出时，保存窗口位置的问题。
