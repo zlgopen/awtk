@@ -34,6 +34,7 @@
 #define _DISTANCE(x1, y1, x2, y2) sqrt((x1 - (x2)) * (x1 - (x2)) + (y1 - (y2)) * (y1 - (y2)))
 
 static const key_type_value_t indicator_default_paint_value[] = {
+    {"auto", 0, INDICATOR_DEFAULT_PAINT_AUTO},
     {"stroke_dot", 0, INDICATOR_DEFAULT_PAINT_STROKE_DOT},
     {"fill_dot", 0, INDICATOR_DEFAULT_PAINT_FILL_DOT},
     {"stroke_rect", 0, INDICATOR_DEFAULT_PAINT_STROKE_RECT},
@@ -172,8 +173,17 @@ static ret_t slide_indicator_on_layout_children(widget_t* widget) {
   slide_indicator_t* slide_indicator = SLIDE_INDICATOR(widget);
   return_value_if_fail(slide_indicator != NULL, RET_BAD_PARAMS);
 
-  if (slide_indicator->indicated_widget != NULL) {
+  if (slide_indicator->indicated_widget != NULL &&
+      slide_indicator->indicated_widget->parent == widget->parent) {
     slide_indicator_fix_anchor(widget);
+  } else {
+    if (slide_indicator_reset_indicated_widget(widget) == RET_OK) {
+      widget_t* target =
+          widget_lookup_by_type(widget->parent, slide_indicator->indicated_target, FALSE);
+      if (target) {
+        slide_indicator_set_indicated_widget(widget, target);
+      }
+    }
   }
 
   return widget_layout_children_default(widget);
@@ -379,6 +389,7 @@ static ret_t slide_indicator_on_animate_end(void* ctx, event_t* e) {
 
   slide_indicator->wa_opactiy = NULL;
   widget_set_visible(widget, FALSE, FALSE);
+  widget_set_opacity(widget, 0xff);
   return RET_REMOVE;
 }
 
@@ -391,14 +402,13 @@ static ret_t slide_indicator_set_visible(widget_t* widget, bool_t visible) {
     slide_indicator->wa_opactiy = NULL;
   }
 
-  widget_set_opacity(widget, 0xff);
-
   if (!visible && slide_indicator->auto_hide) {
     slide_indicator->wa_opactiy =
-        widget_animator_opacity_create(widget, slide_indicator->auto_hide, 1000, EASING_SIN_INOUT);
+        widget_animator_opacity_create(widget, 1000, slide_indicator->auto_hide, EASING_SIN_INOUT);
     widget_animator_on(slide_indicator->wa_opactiy, EVT_ANIM_END, slide_indicator_on_animate_end,
                        slide_indicator);
     widget_animator_opacity_set_params(slide_indicator->wa_opactiy, 0xff, 0);
+    widget_set_opacity(widget, 0xff);
     widget_animator_start(slide_indicator->wa_opactiy);
   } else {
     widget_set_visible(widget, visible, FALSE);
@@ -424,6 +434,14 @@ static ret_t slide_indicator_target_on_value_changed(void* ctx, event_t* e) {
   }
 
   return RET_OK;
+}
+
+static ret_t slide_indicator_target_on_move_resize(void* ctx, event_t* e) {
+  widget_t* widget = WIDGET(e->target);
+  widget_t* indicator = WIDGET(ctx);
+  return_value_if_fail(widget != NULL && indicator != NULL, RET_BAD_PARAMS);
+  slide_indicator_fix_anchor(indicator);
+  return widget_invalidate_force(indicator, NULL);
 }
 
 static ret_t slide_indicator_target_on_pointer_down(void* ctx, event_t* e) {
@@ -482,17 +500,17 @@ static ret_t slide_indicator_reset_indicated_widget(widget_t* widget) {
   return_value_if_fail(slide_indicator != NULL, RET_BAD_PARAMS);
 
   if (slide_indicator->indicated_widget != NULL) {
-    widget_off_by_func(slide_indicator->indicated_widget, EVT_VALUE_CHANGED,
-                       slide_indicator_target_on_value_changed, widget);
-    widget_off_by_func(slide_indicator->indicated_widget, EVT_DESTROY,
-                       slide_indicator_target_on_destroy, widget);
+    widget_t* target = slide_indicator->indicated_widget;
+    widget_off_by_func(target, EVT_MOVE, slide_indicator_target_on_move_resize, widget);
+    widget_off_by_func(target, EVT_MOVE_RESIZE, slide_indicator_target_on_move_resize, widget);
+    widget_off_by_func(target, EVT_RESIZE, slide_indicator_target_on_move_resize, widget);
+    widget_off_by_func(target, EVT_VALUE_CHANGED, slide_indicator_target_on_value_changed, widget);
+    widget_off_by_func(target, EVT_DESTROY, slide_indicator_target_on_destroy, widget);
     if (slide_indicator->auto_hide) {
-      widget_off_by_func(slide_indicator->indicated_widget, EVT_POINTER_DOWN,
-                         slide_indicator_target_on_pointer_down, widget);
-      widget_off_by_func(slide_indicator->indicated_widget, EVT_POINTER_DOWN_ABORT,
+      widget_off_by_func(target, EVT_POINTER_DOWN, slide_indicator_target_on_pointer_down, widget);
+      widget_off_by_func(target, EVT_POINTER_DOWN_ABORT,
                          slide_indicator_target_on_pointer_down_abort, widget);
-      widget_off_by_func(slide_indicator->indicated_widget, EVT_POINTER_UP,
-                         slide_indicator_target_on_pointer_up, widget);
+      widget_off_by_func(target, EVT_POINTER_UP, slide_indicator_target_on_pointer_up, widget);
     }
 
     slide_indicator->indicated_widget = NULL;
@@ -505,8 +523,6 @@ static ret_t slide_indicator_set_indicated_widget(widget_t* widget, widget_t* ta
   value_t v;
   slide_indicator_t* slide_indicator = SLIDE_INDICATOR(widget);
   return_value_if_fail(slide_indicator != NULL && target != NULL, RET_BAD_PARAMS);
-
-  slide_indicator_reset_indicated_widget(widget);
 
   slide_indicator->indicated_widget = target;
 
@@ -521,6 +537,9 @@ static ret_t slide_indicator_set_indicated_widget(widget_t* widget, widget_t* ta
   }
   slide_indicator_set_value(widget, value_uint32(&v));
 
+  widget_on(target, EVT_MOVE, slide_indicator_target_on_move_resize, widget);
+  widget_on(target, EVT_MOVE_RESIZE, slide_indicator_target_on_move_resize, widget);
+  widget_on(target, EVT_RESIZE, slide_indicator_target_on_move_resize, widget);
   widget_on(target, EVT_VALUE_CHANGED, slide_indicator_target_on_value_changed, widget);
   widget_on(target, EVT_DESTROY, slide_indicator_target_on_destroy, widget);
   if (slide_indicator->auto_hide) {
@@ -529,6 +548,7 @@ static ret_t slide_indicator_set_indicated_widget(widget_t* widget, widget_t* ta
     widget_on(target, EVT_POINTER_UP, slide_indicator_target_on_pointer_up, widget);
   }
 
+  slide_indicator_set_visible(widget, TRUE);
   slide_indicator_fix_anchor(widget);
 
   return RET_OK;
@@ -539,12 +559,6 @@ static ret_t slide_indicator_init_if_not_inited(widget_t* widget) {
   return_value_if_fail(slide_indicator != NULL, RET_BAD_PARAMS);
 
   if (!(slide_indicator->inited)) {
-    widget_t* target =
-        widget_lookup_by_type(widget->parent, slide_indicator->indicated_target, FALSE);
-    if (target) {
-      slide_indicator_set_indicated_widget(widget, target);
-    }
-
     if (slide_indicator->auto_hide) {
       widget_set_visible(widget, TRUE, FALSE);
       slide_indicator_set_visible(widget, FALSE);
