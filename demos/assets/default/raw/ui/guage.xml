@@ -1,7 +1,7 @@
 <window style="dark" anim_hint="htranslate" >
   <guage x="c" y="10" w="240" h="240" image="guage_bg" >
     <guage_pointer x="c" y="50" w="24" h="140" value="-128" image="guage_pointer" 
-        animation="value(from=-128, to=128, yoyo_times=1000, duration=3000, delay=1000)"/>
+        animation="value(from=-128, to=128, yoyo_times=6, duration=3000, delay=1000, auto_destroy=false)"/>
   </guage>
    
    <guage x="c" y="bottom:60" w="240" h="240" image="guage_bg" >
