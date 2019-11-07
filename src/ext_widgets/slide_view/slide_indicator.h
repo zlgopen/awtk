@@ -29,6 +29,7 @@ BEGIN_C_DECLS
 /**
  * @enum indicator_default_paint_t
  * @prefix INDICATOR_DEFAULT_PAINT_
+ * @annotation ["scriptable"]
  * 指示器默认绘制的类型。
  */
 typedef enum _indicator_default_paint_t {
