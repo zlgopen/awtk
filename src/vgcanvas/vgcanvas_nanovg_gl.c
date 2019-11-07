@@ -52,6 +52,9 @@ typedef struct _vgcanvas_nanovg_screen_shader_info_t {
   GLuint screentexture_loc;
   GLuint indexs[6];
   GLuint vboIds[3];
+#if defined NANOVG_GL3
+  GLuint vao;
+#endif
 } vgcanvas_nanovg_screen_shader_info_t;
 
 typedef struct _vgcanvas_nanovg_offline_fb_t {
@@ -172,7 +175,7 @@ vgcanvas_nanovg_screen_shader_info_t* vgcanvas_create_init_screen_shader() {
 
   const char* vertex_shader =
       " #ifdef NANOVG_GL3                                                                     \n"
-      "   in vec2 vertex;                                                                     \n"
+      "   in vec3 g_vPosition;                                                                \n"
       "   in vec2 tcoord;                                                                     \n"
       "   out vec2 ftcoord;                                                                   \n"
       " #else                                                                                 \n"
@@ -182,25 +185,45 @@ vgcanvas_nanovg_screen_shader_info_t* vgcanvas_create_init_screen_shader() {
       " #endif                                                                                \n"
       " void main(void) {                                                                     \n"
       "    ftcoord = tcoord;                                                                  \n"
+#if defined(WITH_SCREEN_GL_FLIP_VERTICAL) && defined(WITH_SCREEN_GL_FLIP_HORIZONTAL)
+      "    gl_Position = vec4(-g_vPosition.x, -g_vPosition.y, g_vPosition.z, 1.0);	          \n"
+#elif defined(WITH_SCREEN_GL_FLIP_VERTICAL)
+      "    gl_Position = vec4(g_vPosition.x, -g_vPosition.y, g_vPosition.z, 1.0);	            \n"
+#elif defined(WITH_SCREEN_GL_FLIP_HORIZONTAL)
+      "    gl_Position = vec4(-g_vPosition.x, g_vPosition.y, g_vPosition.z, 1.0);	            \n"
+#else
       "    gl_Position = vec4(g_vPosition.x, g_vPosition.y, g_vPosition.z, 1.0);	            \n"
-      // "    gl_Position = vec4(g_vPosition.x, -g_vPosition.y, g_vPosition.z, 1.0);	          \n"
-      // "    gl_Position = vec4(-g_vPosition.x, g_vPosition.y, g_vPosition.z, 1.0);	          \n"
-      // "    gl_Position = vec4(-g_vPosition.x, -g_vPosition.y, g_vPosition.z, 1.0);	          \n"
+#endif
       " }                                                                                     \n";
 
   const char* fragment_shader =
-      " #ifdef NANOVG_GL3                                      \n"
-      "   out vec4 outColor;                                   \n"
-      " #endif                                                 \n"
-      " uniform sampler2D screentexture;                       \n"
-      " varying vec2 ftcoord;                                  \n"
-      " void main() {                                          \n"
-      " #ifdef NANOVG_GL3                                      \n"
-      "    outColor = texture(screentexture, ftcoord);         \n"
-      " #else                                                  \n"
-      "    gl_FragColor = texture2D(screentexture, ftcoord);   \n"
-      " #endif                                                 \n"
-      " }                                                      \n";
+      " #ifdef NANOVG_GL3                                      			\n"
+      "   precision highp float;                               			\n"
+      "   in vec2 ftcoord;                                     			\n"
+      "   out vec4 outColor;                                   			\n"
+      " #else                                                  			\n"
+      "   precision mediump float;                             			\n"
+      "   varying vec2 ftcoord;                                			\n"
+      " #endif                                                 			\n"
+      " uniform sampler2D screentexture;                       			\n"
+      " void main() {                                          			\n"
+      " #ifdef NANOVG_GL3                                      			\n"
+      "    vec4 color = texture(screentexture, ftcoord);            \n"
+#if defined(WITH_SCREEN_GL_BGRA)
+      "    outColor = vec4(color.b, color.g, color.r, color.a);     \n"
+#else
+      "    outColor = vec4(color.r, color.g, color.b, color.a);     \n"
+#endif
+      " #else                                                  			\n"
+      "    vec4 color = texture2D(screentexture, ftcoord);     			\n"
+#if defined(WITH_SCREEN_GL_BGRA)
+      "    gl_FragColor = vec4(color.b, color.g, color.r, color.a); \n"
+#else
+      "    gl_FragColor = vec4(color.r, color.g, color.b, color.a); \n"
+#endif
+      " #endif                                                 			\n"
+      " }                                                      			\n";
+
   vgcanvas_nanovg_screen_shader_info_t* shader_info =
       (vgcanvas_nanovg_screen_shader_info_t*)TKMEM_ZALLOC(vgcanvas_nanovg_screen_shader_info_t);
   return_value_if_fail(shader_info != NULL, NULL);
@@ -222,6 +245,23 @@ vgcanvas_nanovg_screen_shader_info_t* vgcanvas_create_init_screen_shader() {
 
   glGenBuffers(sizeof(shader_info->vboIds) / sizeof(GLuint), shader_info->vboIds);
 
+#if defined NANOVG_GL3
+  glGenVertexArrays(1, &shader_info->vao);
+
+  glBindVertexArray(shader_info->vao);
+  glBindBuffer(GL_ARRAY_BUFFER, shader_info->vboIds[0]);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(vertexs), vertexs, GL_STATIC_DRAW);
+
+  glBindBuffer(GL_ARRAY_BUFFER, shader_info->vboIds[1]);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(tcoords), tcoords, GL_STATIC_DRAW);
+
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, shader_info->vboIds[2]);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(shader_info->indexs), shader_info->indexs,
+               GL_STATIC_DRAW);
+
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+  glBindVertexArray(0);
+#else
   glBindBuffer(GL_ARRAY_BUFFER, shader_info->vboIds[0]);
   glBufferData(GL_ARRAY_BUFFER, sizeof(vertexs), vertexs, GL_STATIC_DRAW);
 
@@ -232,6 +272,7 @@ vgcanvas_nanovg_screen_shader_info_t* vgcanvas_create_init_screen_shader() {
   glBufferData(GL_ARRAY_BUFFER, sizeof(shader_info->indexs), shader_info->indexs, GL_STATIC_DRAW);
 
   glBindBuffer(GL_ARRAY_BUFFER, 0);
+#endif
 
   return shader_info;
 }
