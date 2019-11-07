@@ -67,3 +67,22 @@ TEST(AnimatorManager, elapse) {
   ASSERT_EQ(widget_animator_manager_count(am), 0);
   idle_dispatch();
 }
+
+TEST(AnimatorManager, done_and_start) {
+  image_t* image = IMAGE(image_create(NULL, 0, 0, 100, 30));
+  widget_animator_t* wa1 = widget_animator_rotation_create(WIDGET(image), 1000, 0, EASING_LINEAR);
+  widget_animator_rotation_set_params(wa1, 0, 100);
+
+  widget_animator_manager_t* am = widget_animator_manager();
+
+  widget_animator_set_destroy_when_done(wa1, FALSE);
+  ASSERT_EQ(widget_animator_manager_start(am, NULL, NULL), RET_OK);
+  widget_animator_manager_time_elapse(am, 1000);
+  ASSERT_EQ(widget_animator_manager_count(am), 1);
+
+  ASSERT_EQ(wa1->state == ANIMATOR_DONE, true);
+  ASSERT_EQ(widget_animator_manager_start(am, NULL, NULL), RET_OK);
+  ASSERT_EQ(wa1->state == ANIMATOR_RUNNING, true);
+
+  idle_dispatch();
+}
