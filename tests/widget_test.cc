@@ -1189,6 +1189,7 @@ TEST(Widget, exec) {
   ASSERT_EQ(widget_set_prop_str(w, WIDGET_PROP_EXEC, "pause_animator:move"), RET_OK);
   ASSERT_EQ(widget_set_prop_str(w, WIDGET_PROP_EXEC, "stop_animator:move"), RET_OK);
   ASSERT_EQ(widget_set_prop_str(w, WIDGET_PROP_EXEC, "start_animator:move"), RET_OK);
+  ASSERT_EQ(widget_set_prop_str(w, WIDGET_PROP_EXEC, "destroy_animator:move"), RET_OK);
   ASSERT_EQ(widget_set_prop_str(w, WIDGET_PROP_EXEC, "not found"), RET_NOT_FOUND);
   ASSERT_EQ(widget_set_prop_str(w, WIDGET_PROP_EXEC, NULL), RET_NOT_FOUND);
 

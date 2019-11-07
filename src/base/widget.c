@@ -1289,7 +1289,7 @@ ret_t widget_paint(widget_t* widget, canvas_t* c) {
 static const widget_cmd_t s_widget_cmds[] = {{"start_animator", widget_start_animator},
                                              {"stop_animator", widget_stop_animator},
                                              {"pause_animator", widget_pause_animator},
-                                             {"pause_animator", widget_destroy_animator}};
+                                             {"destroy_animator", widget_destroy_animator}};
 
 static ret_t widget_do_exec(widget_t* widget, const char* cmd, const char* args) {
   uint32_t i = 0;
