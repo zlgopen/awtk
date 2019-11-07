@@ -9,9 +9,10 @@ static ret_t vgcanvas_nanovg_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h, uint
 }
 
 static inline void vgcanvas_nanovg_set_offline_fb(vgcanvas_nanovg_t* canvas, float w, float h) {
+  GLint default_fbo = 0;
   vgcanvas_nanovg_offline_fb_t* offline_fb = canvas->offline_fb;
   if (offline_fb != NULL) {
-    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &offline_fb->last_fbo);
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &default_fbo);
 
     if (offline_fb->width != w || offline_fb->height != h) {
       vgcanvas_destroy_offline_fb(canvas->offline_fb);
@@ -19,10 +20,14 @@ static inline void vgcanvas_nanovg_set_offline_fb(vgcanvas_nanovg_t* canvas, flo
       offline_fb = canvas->offline_fb;
     }
 
-    glBindFramebuffer(GL_FRAMEBUFFER, offline_fb->fbo);
-    glViewport(0, 0, w, h);
-    // glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+    if (offline_fb != NULL) {
+      offline_fb->last_fbo = (GLuint)default_fbo;
+      glBindFramebuffer(GL_FRAMEBUFFER, offline_fb->fbo);
+      glViewport(0, 0, w, h);
+      // 去除这两行注释就可以显示脏矩形的工作原理。
+      // glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+      // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+    }
   }
 }
 
@@ -40,6 +45,10 @@ static inline void vgcanvas_nanovg_offline_fb_flush(vgcanvas_nanovg_t* canvas) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
     glUseProgram(shader_info->program_object);
+
+#if defined NANOVG_GL3
+    glBindVertexArray(shader_info->vao);
+#endif
 
     glBindBuffer(GL_ARRAY_BUFFER, shader_info->vboIds[0]);
     glVertexAttribPointer(shader_info->position_loc, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), 0);
@@ -59,6 +68,13 @@ static inline void vgcanvas_nanovg_offline_fb_flush(vgcanvas_nanovg_t* canvas) {
 
     glDisableVertexAttribArray(shader_info->position_loc);
     glDisableVertexAttribArray(shader_info->coord_loc);
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+#if defined NANOVG_GL3
+    glBindVertexArray(0);
+#endif
   }
 }
 
