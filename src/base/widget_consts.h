@@ -36,6 +36,12 @@ BEGIN_C_DECLS
  */
 
 /**
+ * @const WIDGET_PROP_EXEC
+ * 用于执行某些特殊的命令（比如控制动画的启停），主要是方便MVVM通过属性来控制动画。
+ */
+#define WIDGET_PROP_EXEC "exec"
+
+/**
  * @const WIDGET_PROP_X
  * X坐标。
  */

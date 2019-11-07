@@ -1177,3 +1177,20 @@ TEST(Widget, map_key1) {
 
   widget_destroy(w);
 }
+
+TEST(Widget, exec) {
+  widget_t* w = button_create(NULL, 0, 0, 0, 0);
+
+  ASSERT_EQ(
+      widget_set_prop_str(w, WIDGET_PROP_ANIMATION,
+                          "move(y_from=0, y_to=128, yoyo_times=1000, duration=1000, delay=3000)"),
+      RET_OK);
+  ASSERT_EQ(widget_set_prop_str(w, WIDGET_PROP_EXEC, "start_animator:move"), RET_OK);
+  ASSERT_EQ(widget_set_prop_str(w, WIDGET_PROP_EXEC, "pause_animator:move"), RET_OK);
+  ASSERT_EQ(widget_set_prop_str(w, WIDGET_PROP_EXEC, "stop_animator:move"), RET_OK);
+  ASSERT_EQ(widget_set_prop_str(w, WIDGET_PROP_EXEC, "start_animator:move"), RET_OK);
+  ASSERT_EQ(widget_set_prop_str(w, WIDGET_PROP_EXEC, "not found"), RET_NOT_FOUND);
+  ASSERT_EQ(widget_set_prop_str(w, WIDGET_PROP_EXEC, NULL), RET_NOT_FOUND);
+
+  widget_destroy(w);
+}

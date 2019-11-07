@@ -76,6 +76,13 @@ typedef widget_t* (*widget_find_target_t)(widget_t* widget, xy_t x, xy_t y);
 typedef widget_t* (*widget_create_t)(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 typedef ret_t (*widget_on_destroy_t)(widget_t* widget);
 
+typedef ret_t (*widget_exec_t)(widget_t* widget, const char* args);
+
+typedef struct _widget_cmd_t {
+  const char* name;
+  widget_exec_t exec;
+} widget_cmd_t;
+
 struct _widget_vtable_t {
   uint32_t size;
   const char* type;
