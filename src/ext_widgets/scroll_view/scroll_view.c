@@ -326,6 +326,7 @@ static ret_t scroll_view_on_event(widget_t* widget, event_t* e) {
 
   switch (type) {
     case EVT_POINTER_DOWN:
+      scroll_view->pressed = TRUE;
       scroll_view->dragged = FALSE;
       widget_grab(widget->parent, widget);
       scroll_view->first_move_after_down = TRUE;
@@ -333,8 +334,11 @@ static ret_t scroll_view_on_event(widget_t* widget, event_t* e) {
       break;
     case EVT_POINTER_DOWN_ABORT:
       scroll_view_on_pointer_down_abort(scroll_view, (pointer_event_t*)e);
+      if (scroll_view->pressed) {
+        widget_ungrab(widget->parent, widget);
+      }
+      scroll_view->pressed = FALSE;
       scroll_view->dragged = FALSE;
-      widget_ungrab(widget->parent, widget);
       break;
     case EVT_POINTER_UP: {
       pointer_event_t* evt = (pointer_event_t*)e;
@@ -343,6 +347,7 @@ static ret_t scroll_view_on_event(widget_t* widget, event_t* e) {
       if (dx || dy) {
         scroll_view_on_pointer_up(scroll_view, (pointer_event_t*)e);
       }
+      scroll_view->pressed = FALSE;
       scroll_view->dragged = FALSE;
       widget_ungrab(widget->parent, widget);
       break;
