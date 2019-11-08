@@ -47,3 +47,10 @@ python scripts/update_res.py all x1 mono
 应用程序 UI 设计请考虑单色 LCD 的特殊性。
 
 > demoui 没有考虑单色 LCD，在单色 LCD 上运行效果不佳。
+
+## 预览mono test查看运行效果
+
+```
+./bin/preview_ui demos/assets/default/raw/ui/mono_test.xml 
+```
+
