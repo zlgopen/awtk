@@ -20,7 +20,7 @@
  */
 
 #include "tos.h"
-#include "rtos.h"
+#include "platforms/common/rtos.h"
 
 ret_t rtos_init(void) {
   tos_knl_init();
@@ -44,5 +44,5 @@ void rtos_tick(void) {
 }
 
 void rtos_delay(uint32_t ms) {
-  rtos_task_delay(ms);
+  tos_task_delay(ms);
 }

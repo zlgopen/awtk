@@ -20,7 +20,6 @@
  */
 
 #include "rtos.h"
-#include "tkc/types_def.h"
 
 static volatile uint64_t g_sys_tick;
 
