@@ -115,4 +115,5 @@
       <slider x="center" y="10" w="80%" h="20" value="10"/>
       <slider style="img" x="center" y="50" w="80%" h="30" value="20" />
       <slider style="img_v" x="center" y="80" w="30" h="60%" value="20" vertical="true"/>
+      <edit x="center" y="bottom:50" w="80%" h="20" value="zlg awtk"/>
     </view>
