@@ -19,8 +19,7 @@
  *
  */
 
-#include "rtos.h"
-#include "tkc/types_def.h"
+#include "platforms/common/rtos.h"
 
 static volatile uint64_t g_sys_tick;
 

@@ -19,9 +19,9 @@
  *
  */
 
-#include "rtos.h"
-
+#include "tkc/types_def.h"
 #undef EAGAIN
+
 #include "rthw.h"
 #include "rtthread.h"
 
