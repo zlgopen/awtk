@@ -854,6 +854,8 @@ static ret_t text_edit_handle_shortcut(text_edit_t* text_edit, key_event_t* evt,
         text_edit_paste(text_edit, str.str, str.size);
         wstr_reset(&str);
       }
+    } else if (key > 128 || !isprint(key)) {
+      return RET_FAIL;
     }
 
     text_edit_layout(text_edit);
