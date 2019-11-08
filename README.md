@@ -7,7 +7,7 @@
 
 [AWTK](https://github.com/zlgopen/awtk) 全称 Toolkit AnyWhere，是 [ZLG](http://www.zlg.cn/) 开发的开源 GUI 引擎，旨在为嵌入式系统、WEB、各种小程序、手机和 PC 打造的通用 GUI 引擎，为用户提供一个功能强大、高效可靠、简单易用、可轻松做出炫酷效果的 GUI 引擎。
 
-> 欢迎广大开发者一起参与开发：[生态共建计划](docs/AWTK_ecology.md)。
+> 欢迎广大开发者一起参与开发：[生态共建计划](docs/awtk_ecology.md)。
 
 #### [AWTK](https://github.com/zlgopen/awtk) 寓意有两个方面：
 
@@ -18,6 +18,7 @@
 
 * 主源码仓库：[https://github.com/zlgopen/awtk](https://github.com/zlgopen/awtk)
 * 镜像源码仓库：[https://gitee.com/zlgopen/awtk](https://gitee.com/zlgopen/awtk)
+* 稳定版整合包：https://pan.baidu.com/s/1_oRgj67M-I4kivk-YzwFWA   提取码: 1cmi
 
 #### 运行效果截图：
 
@@ -209,33 +210,7 @@ pip install Pillow
 
 ## 六、各个平台的移植
 
-#### 官方支持平台 
-
-* [awtk-web](https://github.com/zlgopen/awtk-web)
-
-* [awtk-android](https://github.com/zlgopen/awtk-android)
-
-* [awtk-aworks-rt1052](https://github.com/zlgopen/awtk-aworks-rt1052)
-
-#### 移植示例 （不定期更新）
-
-* [awtk-sylixos](https://github.com/zlgopen/awtk-sylixos)
-
-* [stm32f103ze](https://github.com/zlgopen/awtk-stm32f103ze-raw)
-
-* [stm32f429igtx](https://github.com/zlgopen/awtk-stm32f429igtx-raw)
-
-* [stm32f767igtx](https://github.com/zlgopen/awtk-stm32f767igtx-raw)
-
-* [linux-framebuffer （嵌入式 Linux 请用本项目）](https://github.com/zlgopen/awtk-linux-fb)
-
-#### 芯片原厂移植
-
-* [君正](https://github.com/zlgopen/awtk-port-ingenic`)
-
-#### 第三方开发者移植
-
-* [esp32-awtk(freertos)](https://github.com/jason-mao/esp32-awtk)
+* [详见 AWTK 生态共建计划](docs/awtk_ecology.md)
 
 ## 七、各语言的绑定
 
@@ -269,6 +244,8 @@ pip install Pillow
 
 * [任务完成情况](TODO.md)
 
+* [入门指南与手册](https://github.com/zlgopen/awtk-docs)
+
 ## 十、生态共建计划
 
-* [生态共建计划](docs/AWTK_ecology.md)
+* [生态共建计划](docs/awtk_ecology.md)
