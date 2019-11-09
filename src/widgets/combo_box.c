@@ -50,6 +50,8 @@ const char* s_combo_box_properties[] = {WIDGET_PROP_MIN,
                                         WIDGET_PROP_LOCALIZE_OPTIONS,
                                         NULL};
 
+static ret_t combo_box_active(widget_t* widget);
+static ret_t combo_box_add_selected_index(widget_t* widget, int32_t delta);
 static widget_t* combo_box_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 static ret_t combo_box_set_selected_index_ex(widget_t* widget, uint32_t index, widget_t* item);
 
