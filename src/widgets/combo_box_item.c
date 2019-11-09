@@ -101,6 +101,9 @@ static ret_t combo_box_item_get_prop(widget_t* widget, const char* name, value_t
 
 TK_DECL_VTABLE(combo_box_item) = {.size = sizeof(combo_box_item_t),
                                   .type = WIDGET_TYPE_COMBO_BOX_ITEM,
+                                  .focusable = TRUE,
+                                  .space_key_to_activate = TRUE,
+                                  .return_key_to_activate = TRUE,
                                   .on_paint_self = combo_box_item_on_paint_self,
                                   .on_event = combo_box_item_on_event,
                                   .get_prop = combo_box_item_get_prop,

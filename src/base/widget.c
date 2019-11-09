@@ -1760,7 +1760,7 @@ static ret_t widget_on_keydown_after_children(widget_t* widget, key_event_t* e) 
   return ret;
 }
 
-static bool_t widget_is_activate_key(widget_t* widget, key_event_t* e) {
+bool_t widget_is_activate_key(widget_t* widget, key_event_t* e) {
   return_value_if_fail(widget != NULL && widget->vt != NULL && e != NULL, FALSE);
 
   return (widget->vt->space_key_to_activate && e->key == TK_KEY_SPACE) ||

@@ -47,13 +47,13 @@ static bool_t is_valid_style_name(const char* str) {
   return str != NULL && *str;
 }
 
-static const void* widget_get_const_style_data(widget_t* widget) {
+static const void* widget_get_const_style_data_for_state(widget_t* widget, const char* state) {
   const void* data = NULL;
   theme_t* win_theme = NULL;
   theme_t* default_theme = NULL;
+
   const char* type = widget->vt->type;
   const char* style_name = is_valid_style_name(widget->style) ? widget->style : TK_DEFAULT_STYLE;
-  const char* state = widget_get_prop_str(widget, WIDGET_PROP_STATE_FOR_STYLE, widget->state);
 
   if (tk_str_eq(type, WIDGET_TYPE_WINDOW_MANAGER)) {
     return theme_find_style(theme(), type, style_name, state);
@@ -67,6 +67,17 @@ static const void* widget_get_const_style_data(widget_t* widget) {
 
   if (data == NULL) {
     data = theme_find_style(default_theme, type, style_name, state);
+  }
+
+  return data;
+}
+
+static const void* widget_get_const_style_data(widget_t* widget) {
+  const char* state = widget_get_prop_str(widget, WIDGET_PROP_STATE_FOR_STYLE, widget->state);
+  const void* data = widget_get_const_style_data_for_state(widget, state);
+
+  if (data == NULL) {
+    data = widget_get_const_style_data_for_state(widget, WIDGET_STATE_NORMAL);
   }
 
   return data;

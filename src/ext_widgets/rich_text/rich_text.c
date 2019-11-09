@@ -204,7 +204,7 @@ ret_t rich_text_set_text(widget_t* widget, const char* text) {
 
   rich_text_reset(widget);
   rich_text->node = rich_text_parse(text, strlen(text));
-  
+
   value_t v;
   value_set_str(&v, text);
   wstr_from_value(&(widget->text), &v);

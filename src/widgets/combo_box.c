@@ -183,6 +183,30 @@ static uint32_t edit_get_right_margin(widget_t* widget) {
   return right_margin;
 }
 
+static ret_t combo_box_on_key_event(widget_t* widget, key_event_t* evt) {
+  ret_t ret = RET_OK;
+  edit_t* edit = EDIT(WIDGET(widget));
+
+  if (evt->key == TK_KEY_UP) {
+    ret = RET_STOP;
+    if (evt->e.type == EVT_KEY_DOWN) {
+      combo_box_add_selected_index(widget, -1);
+    }
+  } else if (evt->key == TK_KEY_DOWN) {
+    ret = RET_STOP;
+    if (evt->e.type == EVT_KEY_DOWN) {
+      combo_box_add_selected_index(widget, 1);
+    }
+  } else if (widget_is_activate_key(widget, evt)) {
+    if (edit->readonly && evt->e.type == EVT_KEY_UP) {
+      ret = RET_STOP;
+      combo_box_active(widget);
+    }
+  }
+
+  return ret;
+}
+
 static ret_t combo_box_on_event(widget_t* widget, event_t* e) {
   combo_box_t* combo_box = COMBO_BOX(widget);
   edit_t* edit = EDIT(WIDGET(combo_box));
@@ -190,12 +214,21 @@ static ret_t combo_box_on_event(widget_t* widget, event_t* e) {
 
   switch (e->type) {
     case EVT_RESIZE:
-    case EVT_MOVE_RESIZE:
+    case EVT_MOVE_RESIZE: {
       if (edit_get_right_margin(widget) == 0) {
         edit->right_margin = widget->h;
         edit->left_margin = 4;
       }
       break;
+    }
+    case EVT_KEY_DOWN:
+    case EVT_KEY_UP: {
+      key_event_t* evt = (key_event_t*)e;
+      if (combo_box_on_key_event(widget, evt) == RET_STOP) {
+        return RET_STOP;
+      }
+      break;
+    }
     default:
       break;
   }
@@ -217,6 +250,9 @@ static ret_t combo_box_on_add_child(widget_t* widget, widget_t* child) {
 TK_DECL_VTABLE(combo_box) = {.size = sizeof(combo_box_t),
                              .inputable = TRUE,
                              .type = WIDGET_TYPE_COMBO_BOX,
+                             .focusable = TRUE,
+                             .space_key_to_activate = TRUE,
+                             .return_key_to_activate = TRUE,
                              .clone_properties = s_combo_box_properties,
                              .persistent_properties = s_combo_box_properties,
                              .parent = TK_PARENT_VTABLE(edit),
@@ -250,6 +286,7 @@ static ret_t combo_box_on_item_click(void* ctx, event_t* e) {
   combo_box_set_selected_index_ex(widget, widget_index_of(item), item);
 
   window_close(widget_get_window(item));
+  widget_set_focused(widget, TRUE);
 
   return RET_OK;
 }
@@ -262,6 +299,7 @@ static ret_t combo_box_visit_item(void* ctx, const void* data) {
     int32_t index = widget_index_of(iter);
 
     widget_on(iter, EVT_CLICK, combo_box_on_item_click, combo_box);
+
     if (index == combo_box->selected_index) {
       COMBO_BOX_ITEM(iter)->checked = TRUE;
       widget_set_need_update_style(iter);
@@ -320,12 +358,11 @@ static widget_t* combo_box_create_popup(combo_box_t* combo_box) {
   return win;
 }
 
-static ret_t combo_box_on_button_click(void* ctx, event_t* e) {
+static ret_t combo_box_active(widget_t* widget) {
   point_t p = {0, 0};
   widget_t* wm = NULL;
   widget_t* win = NULL;
-  widget_t* widget = WIDGET(ctx);
-  combo_box_t* combo_box = COMBO_BOX(ctx);
+  combo_box_t* combo_box = COMBO_BOX(widget);
   return_value_if_fail(widget != NULL && combo_box != NULL, RET_BAD_PARAMS);
 
   if (combo_box->open_popup) {
@@ -345,8 +382,9 @@ static ret_t combo_box_on_button_click(void* ctx, event_t* e) {
     return_value_if_fail(win != NULL, RET_FAIL);
   }
 
+  widget_set_prop_str(win, WIDGET_PROP_MOVE_FOCUS_PREV_KEY, "up");
+  widget_set_prop_str(win, WIDGET_PROP_MOVE_FOCUS_NEXT_KEY, "down");
   combo_box_hook_items(combo_box, win);
-
   widget_to_screen(widget, &p);
 
   wm = win->parent;
@@ -358,6 +396,10 @@ static ret_t combo_box_on_button_click(void* ctx, event_t* e) {
   widget_move(win, p.x, p.y);
 
   return RET_OK;
+}
+
+static ret_t combo_box_on_button_click(void* ctx, event_t* e) {
+  return combo_box_active(WIDGET(ctx));
 }
 
 widget_t* combo_box_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
@@ -532,6 +574,18 @@ static ret_t combo_box_set_selected_index_ex(widget_t* widget, uint32_t index, w
   }
 
   return widget_invalidate_force(widget, NULL);
+}
+
+static ret_t combo_box_add_selected_index(widget_t* widget, int32_t delta) {
+  combo_box_t* combo_box = COMBO_BOX(widget);
+  uint32_t nr = combo_box_count_options(widget);
+
+  if (nr > 0) {
+    uint32_t selected_index = (combo_box->selected_index + delta + nr) % nr;
+    combo_box_set_selected_index(widget, selected_index);
+  }
+
+  return RET_OK;
 }
 
 ret_t combo_box_set_selected_index(widget_t* widget, uint32_t index) {
