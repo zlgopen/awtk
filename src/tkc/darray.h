@@ -161,6 +161,16 @@ ret_t darray_remove_index(darray_t* darray, uint32_t index);
 ret_t darray_remove_all(darray_t* darray, tk_compare_t cmp, void* ctx);
 
 /**
+ * @method darray_sort
+ * 排序。
+ * @param {darray_t*} darray 数组对象。
+ * @param {tk_compare_t} cmp 比较函数，为NULL则使用内置的比较函数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t darray_sort(darray_t* darray, tk_compare_t cmp);
+
+/**
  * @method darray_find_all
  * 查找全部满足条件的元素。
  *

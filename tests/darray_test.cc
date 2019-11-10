@@ -273,3 +273,35 @@ TEST(DArrayTest, findAll) {
   darray_deinit(&matched);
   darray_deinit(&darray);
 }
+
+static int cmp_int(const void* a, const void* b) {
+  int ia = tk_pointer_to_int(*(void**)a);
+  int ib = tk_pointer_to_int(*(void**)b);
+
+  return ia - ib;
+}
+
+TEST(DArrayTest, sort) {
+  uint32_t i = 0;
+  char* p = NULL;
+  darray_t darray;
+  darray_t matched;
+  int cases[] = {100, 1, 2, 2, 13, 14, 12, 4};
+  darray_init(&darray, 10, NULL, NULL);
+
+  for (i = 0; i < ARRAY_SIZE(cases); i++) {
+    ASSERT_EQ(RET_OK, darray_push(&darray, p + cases[i]));
+    ASSERT_EQ(i + 1, darray.size);
+  }
+
+  ASSERT_EQ(darray_sort(&darray, cmp_int), RET_OK);
+  ASSERT_EQ(tk_pointer_to_int(darray.elms[0]), 1);
+  ASSERT_EQ(tk_pointer_to_int(darray.elms[1]), 2);
+  ASSERT_EQ(tk_pointer_to_int(darray.elms[2]), 2);
+  ASSERT_EQ(tk_pointer_to_int(darray.elms[3]), 4);
+  ASSERT_EQ(tk_pointer_to_int(darray.elms[4]), 12);
+  ASSERT_EQ(tk_pointer_to_int(darray.elms[5]), 13);
+  ASSERT_EQ(tk_pointer_to_int(darray.elms[6]), 14);
+  ASSERT_EQ(tk_pointer_to_int(darray.elms[7]), 100);
+  darray_deinit(&darray);
+}

@@ -151,6 +151,15 @@ ret_t darray_remove_all(darray_t* darray, tk_compare_t cmp, void* ctx) {
   return RET_OK;
 }
 
+ret_t darray_sort(darray_t* darray, tk_compare_t cmp) {
+  return_value_if_fail(darray != NULL, RET_BAD_PARAMS);
+  cmp = cmp != NULL ? cmp : darray->compare;
+
+  qsort(darray->elms, darray->size, sizeof(darray->elms[0]), cmp);
+
+  return RET_OK;
+}
+
 ret_t darray_find_all(darray_t* darray, tk_compare_t cmp, void* ctx, darray_t* matched) {
   int32_t i = 0;
   int32_t size = 0;
