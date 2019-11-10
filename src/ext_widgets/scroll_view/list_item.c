@@ -27,6 +27,14 @@ static ret_t list_item_on_paint_self(widget_t* widget, canvas_t* c) {
   return widget_paint_helper(widget, c, NULL, NULL);
 }
 
+static ret_t list_item_on_parent_pointer_up(void* ctx, event_t* e) {
+  list_item_t* list_item = LIST_ITEM(ctx);
+
+  list_item->pressed = FALSE;
+
+  return RET_REMOVE;
+}
+
 static ret_t list_item_on_timer(const timer_info_t* info) {
   widget_t* widget = WIDGET(info->ctx);
   list_item_t* list_item = LIST_ITEM(widget);
@@ -35,7 +43,10 @@ static ret_t list_item_on_timer(const timer_info_t* info) {
   if (!list_item->dragged) {
     widget_set_state(widget, WIDGET_STATE_PRESSED);
   }
+
+  list_item->pressed = TRUE;
   list_item->timer_id = TK_INVALID_ID;
+  widget_on(widget->parent, EVT_POINTER_UP, list_item_on_parent_pointer_up, widget);
 
   return RET_REMOVE;
 }
@@ -67,22 +78,26 @@ static ret_t list_item_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_POINTER_DOWN_ABORT: {
+      list_item->pressed = FALSE;
       list_item_remove_timer(widget);
       widget_invalidate_force(widget, NULL);
       widget_set_state(widget, WIDGET_STATE_NORMAL);
       break;
     }
     case EVT_POINTER_UP: {
+      pointer_event_t* evt = (pointer_event_t*)e;
+
       list_item_remove_timer(widget);
       widget_invalidate_force(widget, NULL);
       widget_set_state(widget, WIDGET_STATE_NORMAL);
 
-      if (!list_item->dragged) {
+      if (!list_item->dragged && list_item->pressed) {
         pointer_event_t evt = *(pointer_event_t*)e;
         evt.e = event_init(EVT_CLICK, widget);
         widget_dispatch(widget, (event_t*)&evt);
       }
       list_item->dragged = FALSE;
+      list_item->pressed = FALSE;
       break;
     }
     case EVT_POINTER_MOVE: {

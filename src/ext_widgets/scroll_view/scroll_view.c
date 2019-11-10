@@ -229,7 +229,6 @@ ret_t scroll_view_scroll_delta_to(widget_t* widget, int32_t xoffset_delta, int32
 }
 
 #define SPEED_SCALE 2
-#define MIN_DELTA 10
 
 static ret_t scroll_view_on_pointer_down_abort(scroll_view_t* scroll_view, pointer_event_t* e) {
   widget_t* widget = WIDGET(scroll_view);
@@ -264,7 +263,7 @@ static ret_t scroll_view_on_pointer_up(scroll_view_t* scroll_view, pointer_event
     }
 
     if (scroll_view->xslidable) {
-      if (tk_abs(move_dx) > MIN_DELTA) {
+      if (tk_abs(move_dx) > TK_CLICK_TOLERANCE) {
         scroll_view->xoffset_end = scroll_view->xoffset - xv * SPEED_SCALE;
       } else {
         scroll_view->xoffset_end = scroll_view->xoffset - xv / SPEED_SCALE;
@@ -272,7 +271,7 @@ static ret_t scroll_view_on_pointer_up(scroll_view_t* scroll_view, pointer_event
     }
 
     if (scroll_view->yslidable) {
-      if (tk_abs(move_dy) > MIN_DELTA) {
+      if (tk_abs(move_dy) > TK_CLICK_TOLERANCE) {
         scroll_view->yoffset_end = scroll_view->yoffset - yv * SPEED_SCALE;
       } else {
         scroll_view->yoffset_end = scroll_view->yoffset - yv / SPEED_SCALE;
@@ -318,6 +317,22 @@ static ret_t scroll_view_on_pointer_move(scroll_view_t* scroll_view, pointer_eve
   return RET_OK;
 }
 
+static bool_t scroll_view_is_dragged(widget_t* widget, pointer_event_t* evt) {
+  int32_t delta = 0;
+  scroll_view_t* scroll_view = SCROLL_VIEW(widget);
+  if (scroll_view->xslidable && scroll_view->yslidable) {
+    int32_t xdelta = evt->x - scroll_view->down.x;
+    int32_t ydelta = evt->y - scroll_view->down.y;
+    delta = tk_abs(xdelta) > tk_abs(ydelta) ? xdelta : ydelta;
+  } else if (scroll_view->yslidable) {
+    delta = evt->y - scroll_view->down.y;
+  } else {
+    delta = evt->x - scroll_view->down.x;
+  }
+
+  return (tk_abs(delta) >= TK_DRAG_THRESHOLD);
+}
+
 static ret_t scroll_view_on_event(widget_t* widget, event_t* e) {
   ret_t ret = RET_OK;
   uint16_t type = e->type;
@@ -342,9 +357,7 @@ static ret_t scroll_view_on_event(widget_t* widget, event_t* e) {
       break;
     case EVT_POINTER_UP: {
       pointer_event_t* evt = (pointer_event_t*)e;
-      int32_t dx = evt->x - scroll_view->down.x;
-      int32_t dy = evt->y - scroll_view->down.y;
-      if (dx || dy) {
+      if (scroll_view_is_dragged(widget, evt)) {
         scroll_view_on_pointer_up(scroll_view, (pointer_event_t*)e);
       }
       scroll_view->pressed = FALSE;
@@ -362,19 +375,7 @@ static ret_t scroll_view_on_event(widget_t* widget, event_t* e) {
         scroll_view_on_pointer_move(scroll_view, evt);
         scroll_view_invalidate_self(widget);
       } else {
-        int32_t delta = 0;
-
-        if (scroll_view->xslidable && scroll_view->yslidable) {
-          int32_t xdelta = evt->x - scroll_view->down.x;
-          int32_t ydelta = evt->y - scroll_view->down.y;
-          delta = tk_abs(xdelta) > tk_abs(ydelta) ? xdelta : ydelta;
-        } else if (scroll_view->yslidable) {
-          delta = evt->y - scroll_view->down.y;
-        } else {
-          delta = evt->x - scroll_view->down.x;
-        }
-
-        if (tk_abs(delta) >= TK_DRAG_THRESHOLD) {
+        if (scroll_view_is_dragged(widget, evt)) {
           pointer_event_t abort = *evt;
 
           abort.e.type = EVT_POINTER_DOWN_ABORT;

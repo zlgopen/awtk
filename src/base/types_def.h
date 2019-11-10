@@ -231,6 +231,7 @@ typedef enum _app_type_t {
 #define TK_TRANSPARENT_ALPHA 0x02
 
 #define TK_DRAG_THRESHOLD 10
+#define TK_CLICK_TOLERANCE 10
 #define TK_ANIMATING_TIME 500
 
 struct _widget_t;

@@ -83,6 +83,7 @@ typedef struct _list_item_t {
   /*private*/
   int32_t timer_id;
   bool_t dragged;
+  bool_t pressed;
   point_t down;
 } list_item_t;
 
