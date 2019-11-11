@@ -219,6 +219,7 @@ static ret_t slide_view_on_pointer_move(slide_view_t* slide_view, pointer_event_
 }
 
 static ret_t slide_view_on_event(widget_t* widget, event_t* e) {
+  ret_t ret = RET_OK;
   uint16_t type = e->type;
   slide_view_t* slide_view = SLIDE_VIEW(widget);
   return_value_if_fail(widget != NULL && slide_view != NULL, RET_BAD_PARAMS);
@@ -278,11 +279,27 @@ static ret_t slide_view_on_event(widget_t* widget, event_t* e) {
 
       break;
     }
+    case EVT_KEY_UP: {
+      key_event_t* evt = (key_event_t*)e;
+      if (evt->key == TK_KEY_LEFT) {
+        ret = RET_STOP;
+        slide_view_activate_prev(slide_view);
+      } else if (evt->key == TK_KEY_RIGHT) {
+        ret = RET_STOP;
+        slide_view_activate_next(slide_view);
+      }
+    }
     default:
       break;
   }
 
-  return slide_view->dragged ? RET_STOP : RET_OK;
+  if (ret == RET_OK) {
+    if (slide_view->dragged) {
+      ret = RET_STOP;
+    }
+  }
+
+  return ret;
 }
 
 static widget_t* slide_view_find_target(widget_t* widget, xy_t x, xy_t y) {

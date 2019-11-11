@@ -299,14 +299,35 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
       if (slider->vertical) {
         if (evt->key == TK_KEY_UP) {
           slider_inc(widget);
+          ret = RET_STOP;
         } else if (evt->key == TK_KEY_DOWN) {
           slider_dec(widget);
+          ret = RET_STOP;
         }
       } else {
         if (evt->key == TK_KEY_LEFT) {
           slider_dec(widget);
+          ret = RET_STOP;
         } else if (evt->key == TK_KEY_RIGHT) {
           slider_inc(widget);
+          ret = RET_STOP;
+        }
+      }
+      break;
+    }
+    case EVT_KEY_UP: {
+      key_event_t* evt = (key_event_t*)e;
+      if (slider->vertical) {
+        if (evt->key == TK_KEY_UP) {
+          ret = RET_STOP;
+        } else if (evt->key == TK_KEY_DOWN) {
+          ret = RET_STOP;
+        }
+      } else {
+        if (evt->key == TK_KEY_LEFT) {
+          ret = RET_STOP;
+        } else if (evt->key == TK_KEY_RIGHT) {
+          ret = RET_STOP;
         }
       }
       break;
