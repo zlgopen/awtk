@@ -1,18 +1,18 @@
 
-<tab_button_group>
+<tab_button_group1>
   <style name="highlight" border_color="#a0a0a0" fg_color="#1296db">
     <normal/>
   </style>
-</tab_button_group>
+</tab_button_group1>
 
 <tab_button>
-  <style name="default" margin="4" bg_color="#eeeeee">
-    <normal     text_color="black"/>
-    <pressed    text_color="black"/>
-    <over       text_color="black"/>
-    <normal_of_active     text_color="#1296db"/>
-    <pressed_of_active    text_color="#1296db"/>
-    <over_of_active       text_color="#1296db"/>
+  <style name="default" margin="4" bg_color="#eeeeee" border_color="#808080" border="bottom">
+    <normal     text_color="black" />
+    <pressed    text_color="black" />
+    <over       text_color="black" />
+    <normal_of_active text_color="#1296db" border_color="#1296db" border="bottom" border_width="2"/>
+    <pressed_of_active text_color="#1296db" border_color="#1296db" border="bottom" border_width="2"/>
+    <over_of_active    text_color="#1296db" border_color="#1296db" border="bottom" border_width="2"/>
   </style>
 </tab_button>
 

@@ -105,100 +105,6 @@ static widget_t* tab_button_group_get_pages(widget_t* widget) {
   return widget_lookup_by_type(widget->parent, WIDGET_TYPE_PAGES, TRUE);
 }
 
-static ret_t tab_button_group_on_paint_active_button(widget_t* widget, widget_t* button,
-                                                     canvas_t* c) {
-  style_t* style = widget->astyle;
-  color_t trans = color_init(0, 0, 0, 0);
-  color_t bd = style_get_color(style, STYLE_ID_BORDER_COLOR, trans);
-  color_t fg = style_get_color(style, STYLE_ID_FG_COLOR, trans);
-  widget_t* pages = tab_button_group_get_pages(widget);
-  tab_button_group_t* tab_button_group = TAB_BUTTON_GROUP(widget);
-  widget_t* last_child = widget_get_child(widget, widget_count_children(widget) - 1);
-
-  if (pages != NULL) {
-    int32_t y = 0;
-    int32_t delta = 0;
-    int32_t w = button->w - 2;
-    int32_t x = button->x + 1 - tab_button_group->hscrollable->xoffset;
-
-    if ((pages->y + pages->h) > widget->y) {
-      y = button->y + button->h;
-      delta = -1;
-    } else {
-      delta = 1;
-      y = button->y;
-    }
-
-    canvas_set_stroke_color(c, fg);
-    if (fg.rgba.a) {
-#ifdef WITH_NANOVG_GPU
-      vgcanvas_t* vg = canvas_get_vgcanvas(c);
-      vgcanvas_translate(vg, c->ox, c->oy);
-      vgcanvas_set_fill_color(vg, fg);
-      vgcanvas_begin_path(vg);
-      vgcanvas_rect(vg, x - 0.5, y - 1, w + 1, 2);
-      vgcanvas_fill(vg);
-      vgcanvas_begin_path(vg);
-      vgcanvas_translate(vg, -c->ox, -c->oy);
-#else
-      canvas_draw_hline(c, x, y, w);
-      canvas_draw_hline(c, x, y + delta, w);
-#endif
-    }
-
-    if (bd.rgba.a) {
-      canvas_set_stroke_color(c, bd);
-
-      if (tab_button_group->compact) {
-        if (last_child != NULL) {
-          int32_t right = last_child->x + last_child->w;
-          if (widget->w > right) {
-            canvas_draw_hline(c, right, y, widget->w - right);
-          }
-        }
-      } else {
-        if (x > 1) {
-          canvas_draw_hline(c, 0, y, x);
-        }
-
-        if (widget->w > (x + w)) {
-          canvas_draw_hline(c, x + w, y, widget->w - x - w);
-        }
-      }
-    }
-  }
-
-  return RET_OK;
-}
-
-static ret_t tab_button_group_on_paint_border(widget_t* widget, canvas_t* c) {
-  hscrollable_t* hscrollable = NULL;
-  tab_button_group_t* tab_button_group = TAB_BUTTON_GROUP(widget);
-  return_value_if_fail(tab_button_group != NULL, RET_BAD_PARAMS);
-
-  hscrollable = tab_button_group->hscrollable;
-
-  if (tab_button_group->compact && tab_button_group->scrollable) {
-    if (hscrollable->virtual_w > widget->w) {
-      rect_t r = rect_init(0, 0, widget->w, widget->h);
-      return widget_stroke_border_rect(widget, c, &r);
-    }
-  }
-
-  return RET_OK;
-}
-
-static ret_t tab_button_group_on_paint_end(widget_t* widget, canvas_t* c) {
-  value_t v;
-  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
-  if (widget_get_prop(iter, WIDGET_PROP_VALUE, &v) == RET_OK && value_bool(&v)) {
-    return tab_button_group_on_paint_active_button(widget, iter, c);
-  }
-  WIDGET_FOR_EACH_CHILD_END();
-
-  return RET_OK;
-}
-
 static ret_t tab_button_group_get_prop(widget_t* widget, const char* name, value_t* v) {
   tab_button_group_t* tab_button_group = TAB_BUTTON_GROUP(widget);
   return_value_if_fail(tab_button_group != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
@@ -291,10 +197,8 @@ TK_DECL_VTABLE(tab_button_group) = {.size = sizeof(tab_button_group_t),
                                     .on_event = tab_button_group_on_event,
                                     .on_destroy = tab_button_group_on_destroy,
                                     .on_paint_children = tab_button_group_on_paint_children,
-                                    .on_layout_children = tab_button_group_on_layout_children,
-                                    .on_paint_border = tab_button_group_on_paint_border,
-                                    .on_paint_end = tab_button_group_on_paint_end,
-                                    .on_paint_self = tab_button_group_on_paint_self};
+                                    .on_layout_children = tab_button_group_on_layout_children
+};
 
 widget_t* tab_button_group_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(tab_button_group), x, y, w, h);
