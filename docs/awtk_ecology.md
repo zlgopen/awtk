@@ -31,6 +31,7 @@
 | ------------ | ------------------------------------------------------- | ----------------------------------------------------- | ------------------------ |
 | AWorks       | RT1052<br/>i.MX6 Cortex-A7<br/>...                      | https://github.com/zlgopen/awtk-aworks-rt1052         | [ZLG](http://www.zlg.cn) |
 | 嵌入式 Linux | i.MX283<br/>i.MX6 Cortex-A7<br/>i.MX6 Cortex-A9<br/>... | https://github.com/zlgopen/awtk-linux-fb              | [ZLG](http://www.zlg.cn) |
+| RT-Thread    | STM32F103                                               | https://github.com/zlgopen/awtk-stm32f103ze-rtthread  | [ZLG](http://www.zlg.cn) |
 | TencentOS    | STM32F103                                               | https://github.com/zlgopen/awtk-stm32f103ze-tencentos | [ZLG](http://www.zlg.cn) |
 | SylixOS      | ARM920T                                                 | https://github.com/zlgopen/awtk-sylixos               | [ZLG](http://www.zlg.cn) |
 
@@ -100,12 +101,13 @@
 
 - #### ST
 
-| 芯片      | 操作系统  | 下载地址                                              | 作者                     |
-| --------- | --------- | ----------------------------------------------------- | ------------------------ |
-| STM32F103 | 无        | https://github.com/zlgopen/awtk-stm32f103ze-raw       | [ZLG](http://www.zlg.cn) |
-| STM32F103 | TencentOS | https://github.com/zlgopen/awtk-stm32f103ze-tencentos | [ZLG](http://www.zlg.cn) |
-| STM32F429 | 无        | https://github.com/zlgopen/awtk-stm32f429igtx-raw     | [ZLG](http://www.zlg.cn) |
-| STM32F767 | 无        | https://github.com/zlgopen/awtk-stm32f767igtx-raw     | [ZLG](http://www.zlg.cn) |
+| 芯片      | 操作系统  | 下载地址                                              | 作者                               |
+| --------- | --------- | ----------------------------------------------------- | ---------------------------------- |
+| STM32F103 | 无        | https://github.com/zlgopen/awtk-stm32f103ze-raw       | [ZLG](http://www.zlg.cn)           |
+| STM32F103 | TencentOS | https://github.com/zlgopen/awtk-stm32f103ze-tencentos | [ZLG](http://www.zlg.cn)           |
+| STM32F429 | 无        | https://github.com/zlgopen/awtk-stm32f429igtx-raw     | [ZLG](http://www.zlg.cn)           |
+| STM32F767 | 无        | https://github.com/zlgopen/awtk-stm32f767igtx-raw     | [ZLG](http://www.zlg.cn)           |
+| STM32F769 | FreeRTOS  | https://github.com/wpmyj/awtk-stm32f769-freertos      | [王培明](https://github.com/wpmyj) |
 
 > 以上信息如果有误，或需要补充的，请联系 chentan@zlg.cn 修正
 >
