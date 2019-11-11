@@ -427,7 +427,7 @@ widget_t* switch_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 }
 
 widget_t* switch_cast(widget_t* widget) {
-  return_value_if_fail(widget != NULL && (widget->vt == TK_REF_VTABLE(switch)), NULL);
+  return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, switch), NULL);
 
   return widget;
 }
