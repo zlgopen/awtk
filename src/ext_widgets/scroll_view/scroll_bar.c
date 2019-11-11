@@ -445,7 +445,7 @@ TK_DECL_VTABLE(scroll_bar_desktop) = {.size = sizeof(scroll_bar_t),
                                       .get_prop = scroll_bar_get_prop};
 
 bool_t scroll_bar_is_mobile(widget_t* widget) {
-  return widget && widget->vt == TK_REF_VTABLE(scroll_bar_mobile);
+  return widget && WIDGET_IS_INSTANCE_OF(widget, scroll_bar_mobile);
 }
 
 static ret_t scroll_bar_on_value_animate_end(void* ctx, event_t* e) {
