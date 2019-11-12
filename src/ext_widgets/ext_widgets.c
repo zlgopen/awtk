@@ -35,7 +35,6 @@
 #include "slide_menu/slide_menu.h"
 #include "image_value/image_value.h"
 #include "time_clock/time_clock.h"
-#include "time_clock/digit_clock.h"
 #include "scroll_view/list_item.h"
 #include "scroll_view/list_view.h"
 #include "slide_view/slide_view.h"
@@ -83,7 +82,6 @@ ret_t tk_ext_widgets_init() {
   widget_factory_register(f, WIDGET_TYPE_KEYBOARD, keyboard_create);
   widget_factory_register(f, WIDGET_TYPE_CANDIDATES, candidates_create);
   widget_factory_register(f, WIDGET_TYPE_TIME_CLOCK, time_clock_create);
-  widget_factory_register(f, WIDGET_TYPE_DIGIT_CLOCK, digit_clock_create);
   widget_factory_register(f, WIDGET_TYPE_GUAGE, guage_create);
   widget_factory_register(f, WIDGET_TYPE_GUAGE_POINTER, guage_pointer_create);
   widget_factory_register(f, WIDGET_TYPE_TEXT_SELECTOR, text_selector_create);

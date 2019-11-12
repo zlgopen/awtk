@@ -25,7 +25,7 @@
 #include "base/timer.h"
 #include "base/locale_info.h"
 #include "base/widget_vtable.h"
-#include "time_clock/digit_clock.h"
+#include "widgets/digit_clock.h"
 
 #define DATE_TIME_MAX_LEN 127
 

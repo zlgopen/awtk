@@ -1,4 +1,4 @@
-﻿#include "time_clock/digit_clock.h"
+﻿#include "widgets/digit_clock.h"
 #include "gtest/gtest.h"
 #include <stdlib.h>
 #include <string>
