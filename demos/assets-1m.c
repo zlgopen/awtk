@@ -124,7 +124,6 @@
 #include "assets/default/inc/images/num_6.res"
 #include "assets/default/inc/images/shift.res"
 #include "assets/default/inc/images/earth.res"
-#include "assets/default/inc/images/bee.res"
 #include "assets/default/inc/images/contact.res"
 #include "assets/default/inc/images/battery_4.res"
 #include "assets/default/inc/images/num_4.res"
@@ -167,7 +166,6 @@
 #include "assets/default/inc/images/msg_active.res"
 #include "assets/default/inc/images/radio_checked.res"
 #include "assets/default/inc/images/active_dot.res"
-#include "assets/default/inc/images/zh.res"
 #include "assets/default/inc/images/question.res"
 #include "assets/default/inc/images/discovery_active.res"
 #include "assets/default/inc/images/dot.res"
@@ -243,7 +241,6 @@
 #include "assets/default/inc/images/rgb.data"
 #include "assets/default/inc/images/num_9.data"
 #include "assets/default/inc/images/dot.data"
-#include "assets/default/inc/images/ani2.data"
 #include "assets/default/inc/images/battery_0.data"
 #include "assets/default/inc/images/find.data"
 #include "assets/default/inc/images/slider_fg.data"
@@ -255,7 +252,6 @@
 #include "assets/default/inc/images/num_5.data"
 #include "assets/default/inc/images/num_dot.data"
 #include "assets/default/inc/images/arrow_right_n.data"
-#include "assets/default/inc/images/bee.data"
 #include "assets/default/inc/images/visible.data"
 #include "assets/default/inc/images/me_active.data"
 #include "assets/default/inc/images/cursor.data"
@@ -478,7 +474,6 @@ ret_t assets_init(void) {
   assets_manager_add(am, image_num_5);
   assets_manager_add(am, image_num_dot);
   assets_manager_add(am, image_arrow_right_n);
-  assets_manager_add(am, image_bee);
   assets_manager_add(am, image_visible);
   assets_manager_add(am, image_me_active);
   assets_manager_add(am, image_cursor);
@@ -487,7 +482,6 @@ ret_t assets_init(void) {
   assets_manager_add(am, image_checked);
   assets_manager_add(am, image_middle_off);
   assets_manager_add(am, image_close_p);
-  assets_manager_add(am, image_zh);
   assets_manager_add(am, image_arrow_right_p);
   assets_manager_add(am, image_num_2);
   assets_manager_add(am, image_arrow_up_o);
