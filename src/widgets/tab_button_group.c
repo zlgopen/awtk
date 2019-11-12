@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   tab_button_group.h
  * Author: AWTK Develop Team
  * Brief:  tab_button_group
@@ -95,16 +95,6 @@ static ret_t tab_button_group_on_layout_children(widget_t* widget) {
   return RET_OK;
 }
 
-static ret_t tab_button_group_on_paint_self(widget_t* widget, canvas_t* c) {
-  return widget_paint_helper(widget, c, NULL, NULL);
-}
-
-static widget_t* tab_button_group_get_pages(widget_t* widget) {
-  return_value_if_fail(widget && widget->parent, NULL);
-
-  return widget_lookup_by_type(widget->parent, WIDGET_TYPE_PAGES, TRUE);
-}
-
 static ret_t tab_button_group_get_prop(widget_t* widget, const char* name, value_t* v) {
   tab_button_group_t* tab_button_group = TAB_BUTTON_GROUP(widget);
   return_value_if_fail(tab_button_group != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
@@ -197,8 +187,7 @@ TK_DECL_VTABLE(tab_button_group) = {.size = sizeof(tab_button_group_t),
                                     .on_event = tab_button_group_on_event,
                                     .on_destroy = tab_button_group_on_destroy,
                                     .on_paint_children = tab_button_group_on_paint_children,
-                                    .on_layout_children = tab_button_group_on_layout_children
-};
+                                    .on_layout_children = tab_button_group_on_layout_children};
 
 widget_t* tab_button_group_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(tab_button_group), x, y, w, h);
