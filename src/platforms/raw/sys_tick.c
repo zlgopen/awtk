@@ -40,10 +40,4 @@ void sleep_ms(uint32_t ms) {
   }
 }
 
-void delay_ms(uint32_t ms) {
-  sleep_ms(ms);
-}
 
-void delay_us(uint32_t us) {
-  sleep_ms(1);
-}

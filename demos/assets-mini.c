@@ -1,6 +1,5 @@
 #include "awtk.h"
 #include "base/assets_manager.h"
-#ifndef WITH_FS_RES
 #include "assets/default/inc/fonts/default.data"
 #include "assets/default/inc/images/bricks.data"
 #include "assets/default/inc/images/checked.data"
@@ -34,15 +33,19 @@
 #include "assets/default/inc/images/unmuted.data"
 #include "assets/default/inc/images/warn.data"
 #include "assets/default/inc/styles/default.data"
-#endif
+#include "assets/default/inc/ui/basic.data"
+#include "assets/default/inc/ui/system_bar.data"
+#include "assets/default/inc/images/rgba.data"
+#include "assets/default/inc/images/rgb.data"
+#include "assets/default/inc/images/message.data"
+#include "assets/default/inc/styles/system_bar.data"
+#include "assets/default/inc/images/close_n.data"
+#include "assets/default/inc/images/close_p.data"
+#include "assets/default/inc/images/close_o.data"
 
 ret_t assets_init(void) {
   assets_manager_t* am = assets_manager();
 
-#ifdef WITH_FS_RES
-  assets_manager_load(am, ASSET_TYPE_THEME, "default");
-  assets_manager_load(am, ASSET_TYPE_FONT, "default_ttf");
-#else
   assets_manager_add(am, font_default);
   assets_manager_add(am, image_bricks);
   assets_manager_add(am, image_checked);
@@ -76,7 +79,19 @@ ret_t assets_init(void) {
   assets_manager_add(am, image_unmuted);
   assets_manager_add(am, image_warn);
   assets_manager_add(am, style_default);
-#endif
+  assets_manager_add(am, ui_basic);
+  assets_manager_add(am, ui_system_bar);
+  assets_manager_add(am, image_rgb);
+  assets_manager_add(am, image_rgba);
+  assets_manager_add(am, image_message);
+  assets_manager_add(am, image_close_p);
+  assets_manager_add(am, image_close_n);
+  assets_manager_add(am, image_close_o);
+  assets_manager_add(am, image_info);
+  assets_manager_add(am, image_warn);
+  assets_manager_add(am, image_question);
+
+  assets_manager_add(am, style_system_bar);
 
   tk_init_assets();
   return RET_OK;
