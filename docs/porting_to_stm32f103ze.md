@@ -8,25 +8,10 @@ AWTK 的可移植性很高，在移植时只需要实现平台初始化、lcd �
 
 我们使用 systick 来实现 get\_time\_ms64 和 sleep\_ms 两个函数，裸系统上只需加入 src/platforms/raw/sys\_tick.c 并初始化 sys\_tick 即可。
 
-> 以下是初始化 tick 和内存的代码。
+> 以下是初始化内存的代码。
 
 ```
-void systick_init(void) {
-  u8 fac_us = 0;
-  u16 fac_ms = 0;
-
-  SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK_Div8);
-  fac_us = SystemCoreClock / 8000000;
-
-  fac_ms = (u16)fac_us * 1000;
-
-  SysTick->CTRL |= SysTick_CTRL_TICKINT_Msk;
-  SysTick->LOAD = fac_ms;
-  SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;
-}
-
-static bool_t s_inited = FALSE;
-static uint32_t s_heam_mem[4096];
+static uint32_t s_heam_mem[2 * 4096];
 
 ret_t platform_prepare(void) {
 	if(!s_inited) {
@@ -38,6 +23,53 @@ ret_t platform_prepare(void) {
 ```
 
 > 参考：awtk-port/platform.c
+
+> 以下是初始化systick的代码。
+
+```
+static u8 fac_us = 0; 
+static u16 fac_ms = 0; 
+
+void systick_enable_int(void) {
+  SysTick->CTRL |= SysTick_CTRL_TICKINT_Msk;
+  SysTick->LOAD = fac_ms;
+  SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;
+}
+
+void SysTick_Init(void) {
+  SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK_Div8);
+  fac_us = SystemCoreClock / 8000000;
+
+  fac_ms = (u16)fac_us * 1000;
+
+  systick_enable_int();
+}
+
+void delay_us(u32 nus) {
+  u32 temp = 0;
+  SysTick->LOAD = nus * fac_us;
+  SysTick->VAL = 0x00;       
+  do {
+    temp = SysTick->CTRL;
+  } while ((temp & 0x01) && !(temp & (1 << 16)));  
+
+	systick_enable_int();
+}
+
+
+void delay_ms(u16 nms) {
+  u32 temp = 0;
+  SysTick->LOAD = (u32)nms * fac_ms;  
+  SysTick->VAL = 0x00;         
+  do {
+    temp = SysTick->CTRL;
+  } while ((temp & 0x01) && !(temp & (1 << 16)));  
+
+	systick_enable_int();
+}
+```
+
+> 参考：awtk-port/SysTick.c
 
 ### 二、实现 lcd
 
@@ -111,6 +143,8 @@ void TIM3_IRQHandler(void) {
 ..\awtk-port
 ```
 
+> 请根据项目文件位置进行调整。
+
 五、其它配置
 
 其它配置请参考 awtk-port/awtk_config.h
@@ -118,3 +152,13 @@ void TIM3_IRQHandler(void) {
 注：目前以 [普中科技 STM32F103ZET6 开发实验板](https://item.taobao.com/item.htm?spm=a230r.1.14.1.50a130e8TMKYMC&id=558855281660&ns=1&abbucket=5#detail) 为载体移植，其它开发板应该差不多。
 
 完整项目和源码请参考：[awtk-stm32f103ze-raw](https://github.com/zlgopen/awtk-stm32f103ze-raw)
+
+六、常见问题
+
+ * 莫名其妙的崩溃，可能是栈溢出。请修Stack_Size的大小。
+
+```
+ Stack_Size      EQU     0x00001000
+```
+
+* 如果出现wcsxxx之类的函数没有定义时，请在awtk-port/awtk\_config.h中定义WITH\_WCSXXX。
