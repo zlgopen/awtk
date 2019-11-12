@@ -307,10 +307,12 @@ ret_t tk_set_lcd_orientation(lcd_orientation_t orientation) {
 
   if (info->lcd_orientation != orientation) {
     orientation_event_t e;
+    
+    system_info_set_lcd_orientation(info, orientation);
+    
     orientation_event_init(&e, EVT_ORIENTATION_WILL_CHANGED, NULL, orientation);
     widget_dispatch(window_manager(), (event_t*)&e);
 
-    system_info_set_lcd_orientation(info, orientation);
   }
 
   return RET_OK;

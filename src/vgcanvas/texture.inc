@@ -47,7 +47,7 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
     }
   }
 
-  i = nvgCreateImageRGBA(canvas->vg, img->w, img->h, NVG_IMAGE_NEAREST, img_data);
+  i = nvgCreateImageRGBA(canvas->vg, img->w, img->h, NVG_IMAGE_NEAREST, data);
 
   if (data != img_data) {
     TKMEM_FREE(data);

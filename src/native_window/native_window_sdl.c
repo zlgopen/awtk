@@ -74,10 +74,10 @@ static ret_t native_window_sdl_resize(native_window_t* win, wh_t w, wh_t h) {
 
   native_window_get_info(win, &info);
 
-  w = info.w;
-  h = info.h;
   win->rect.w = w;
   win->rect.h = h;
+  w = info.w;
+  h = info.h;
 
 #ifndef ANDROID
   SDL_GetWindowSize(sdl->window, &oldw, &oldh);

@@ -65,6 +65,9 @@ static ret_t native_window_fb_gl_move(native_window_t* win, xy_t x, xy_t y) {
 }
 
 static ret_t native_window_fb_gl_resize(native_window_t* win, wh_t w, wh_t h) {
+  
+  win->rect.w = w;
+  win->rect.h = h;
   return RET_OK;
 }
 
