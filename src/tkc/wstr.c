@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   wstr.c
  * Author: AWTK Develop Team
  * Brief:  width char
@@ -92,11 +92,15 @@ wchar_t* wcscpy(wchar_t* s1, const wchar_t* s2) {
 }
 
 wchar_t* wcschr(const wchar_t* s, wchar_t c) {
-  return wcs_chr(s, c);
+  return (wchar_t*)wcs_chr(s, c);
 }
 
 wchar_t* wcsdup(const wchar_t* s) {
   return wcs_dup(s);
+}
+
+int iswspace(wchar_t ch) {
+  return ch == ' ';
 }
 
 #endif /*WITH_WCSXXX*/
