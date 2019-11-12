@@ -34,7 +34,6 @@
 #include "slide_menu/slide_menu.h"
 #include "image_value/image_value.h"
 #include "time_clock/time_clock.h"
-#include "time_clock/digit_clock.h"
 #include "scroll_view/list_item.h"
 #include "scroll_view/list_view.h"
 #include "slide_view/slide_view.h"
