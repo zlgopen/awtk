@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   list_item.h
  * Author: AWTK Develop Team
  * Brief:  list_item
@@ -85,8 +85,6 @@ static ret_t list_item_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_POINTER_UP: {
-      pointer_event_t* evt = (pointer_event_t*)e;
-
       list_item_remove_timer(widget);
       widget_invalidate_force(widget, NULL);
       widget_set_state(widget, WIDGET_STATE_NORMAL);
