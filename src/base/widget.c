@@ -1789,6 +1789,34 @@ static bool_t widget_is_move_focus_next_key(widget_t* widget, key_event_t* e) {
   return e->key == key;
 }
 
+static ret_t widget_on_keydown_general(widget_t* widget, key_event_t* e) {
+  ret_t ret = RET_OK;
+  if (!widget_is_window_manager(widget)) {
+    if (widget_is_activate_key(widget, e)) {
+      ret = RET_STOP;
+      widget_set_state(widget, WIDGET_STATE_PRESSED);
+    } else if (widget_is_move_focus_next_key(widget, e)) {
+      if (widget_is_focusable(widget)) {
+        ret = RET_STOP;
+        widget_focus_next(widget);
+      } else if (widget_is_window(widget) && !widget_has_focused_widget_in_window(widget)) {
+        ret = RET_STOP;
+        widget_focus_first(widget);
+      }
+    } else if (widget_is_move_focus_prev_key(widget, e)) {
+      if (widget_is_focusable(widget)) {
+        ret = RET_STOP;
+        widget_focus_prev(widget);
+      } else if (widget_is_window(widget) && !widget_has_focused_widget_in_window(widget)) {
+        ret = RET_STOP;
+        widget_focus_first(widget);
+      }
+    }
+  }
+
+  return ret;
+}
+
 static ret_t widget_on_keydown_impl(widget_t* widget, key_event_t* e) {
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
@@ -1797,29 +1825,12 @@ static ret_t widget_on_keydown_impl(widget_t* widget, key_event_t* e) {
   return_if_equal(widget_on_keydown_children(widget, e), RET_STOP);
   return_if_equal(widget_on_keydown_after_children(widget, e), RET_STOP);
 
-  if (!widget_is_window_manager(widget)) {
-    if (widget_is_activate_key(widget, e)) {
-      widget_set_state(widget, WIDGET_STATE_PRESSED);
-    } else if (widget_is_move_focus_next_key(widget, e)) {
-      if (widget_is_focusable(widget)) {
-        widget_focus_next(widget);
-      } else if (widget_is_window(widget) && !widget_has_focused_widget_in_window(widget)) {
-        widget_focus_first(widget);
-      }
-    } else if (widget_is_move_focus_prev_key(widget, e)) {
-      if (widget_is_focusable(widget)) {
-        widget_focus_prev(widget);
-      } else if (widget_is_window(widget) && !widget_has_focused_widget_in_window(widget)) {
-        widget_focus_first(widget);
-      }
-    }
-  }
-
   return RET_OK;
 }
 
 ret_t widget_on_keydown(widget_t* widget, key_event_t* e) {
   ret_t ret = RET_OK;
+  uint32_t key = e->key;
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
 
   widget_map_key(widget, e);
@@ -1827,6 +1838,11 @@ ret_t widget_on_keydown(widget_t* widget, key_event_t* e) {
   ret = widget_on_keydown_impl(widget, e);
   if (widget->feedback) {
     ui_feedback_request(widget, (event_t*)e);
+  }
+  
+  e->key = key;
+  if (ret != RET_STOP) {
+    ret = widget_on_keydown_general(widget, e);
   }
   widget->can_not_destroy--;
 
@@ -1889,6 +1905,7 @@ static ret_t widget_on_keyup_impl(widget_t* widget, key_event_t* e) {
 
 ret_t widget_on_keyup(widget_t* widget, key_event_t* e) {
   ret_t ret = RET_OK;
+  uint32_t key = e->key;
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
 
   widget_map_key(widget, e);
@@ -1898,6 +1915,7 @@ ret_t widget_on_keyup(widget_t* widget, key_event_t* e) {
     ui_feedback_request(widget, (event_t*)e);
   }
   widget->can_not_destroy--;
+  e->key = key;
 
   return ret;
 }
