@@ -82,6 +82,7 @@ typedef struct _text_edit_impl_t {
   bool_t single_line;
   bool_t caret_visible;
   uint32_t line_height;
+  uint32_t last_line_number;
   text_layout_info_t layout_info;
 
   /*for single line edit*/
@@ -350,8 +351,10 @@ static row_info_t* text_edit_multi_line_layout_line(text_edit_t* text_edit, uint
 
   if (i == state->cursor && state->cursor == text->size) {
     if (last_char == STB_TEXTEDIT_NEWLINE) {
+      impl->last_line_number = row_num + 1;
       text_edit_set_caret_pos(impl, 0, y + line_height, c->font_size);
     } else {
+      impl->last_line_number = row_num;
       text_edit_set_caret_pos(impl, x, y, c->font_size);
     }
   }
@@ -454,7 +457,7 @@ static ret_t text_edit_paint_caret(text_edit_t* text_edit, canvas_t* c) {
 
   canvas_set_stroke_color(c, caret_color);
   canvas_draw_vline(c, x, y, c->font_size);
-
+  
   return RET_OK;
 }
 
@@ -1160,7 +1163,8 @@ ret_t text_edit_get_state(text_edit_t* text_edit, text_edit_state_t* state) {
 
   state->cursor = impl->state.cursor;
   state->max_rows = impl->rows->capacity;
-
+  state->last_line_number = impl->last_line_number;
+  
   state->select_start = tk_min(impl->state.select_start, impl->state.select_end);
   state->select_end = tk_max(impl->state.select_start, impl->state.select_end);
 

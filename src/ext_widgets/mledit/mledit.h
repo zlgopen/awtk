@@ -110,6 +110,13 @@ typedef struct _mledit_t {
    */
   uint32_t max_lines;
 
+  /**
+   * @property {float_t} scroll_line
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 鼠标一次滚动行数。
+   */
+  float_t scroll_line;
+
   /*private*/
   text_edit_t* model;
   uint32_t timer_id;
@@ -195,6 +202,28 @@ ret_t mledit_set_max_lines(widget_t* widget, uint32_t max_lines);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t mledit_set_input_tips(widget_t* widget, const char* tips);
+
+/**
+ * @method mledit_set_cursor
+ * 设置编辑器光标位置。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {uint32_t*} cursor 光标位置。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t mledit_set_cursor(widget_t* widget, uint32_t cursor);
+
+/**
+ * @method mledit_set_scroll_line
+ * 设置编辑器滚动速度。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {uint32_t*} cursor 滚动行数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t mledit_set_scroll_line(widget_t* widget, uint32_t scroll_line);
 
 /**
  * @method mledit_cast

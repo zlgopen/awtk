@@ -361,6 +361,17 @@ ret_t edit_set_password_visible(widget_t* widget, bool_t password_visible);
 ret_t edit_set_focus(widget_t* widget, bool_t focus);
 
 /**
+ * @method edit_set_start_position
+ * 设置输入框的光标坐标。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {uint32_t} cursor 是否为焦点。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t edit_set_cursor(widget_t* widget, uint32_t cursor);
+
+/**
  * @method edit_set_is_valid_char
  * 设置输入字符检查函数。
  *> 如果内置检查函数不能满足需求时，可以设置自定义的检查函数。

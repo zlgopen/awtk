@@ -210,6 +210,7 @@ static ret_t combo_box_on_key_event(widget_t* widget, key_event_t* evt) {
 }
 
 static ret_t combo_box_on_event(widget_t* widget, event_t* e) {
+  ret_t ret = RET_OK;
   combo_box_t* combo_box = COMBO_BOX(widget);
   edit_t* edit = EDIT(WIDGET(combo_box));
   return_value_if_fail(combo_box != NULL, RET_BAD_PARAMS);
@@ -234,8 +235,9 @@ static ret_t combo_box_on_event(widget_t* widget, event_t* e) {
     default:
       break;
   }
-
-  return edit_on_event(widget, e);
+  ret = edit_on_event(widget, e);
+  edit_set_cursor(WIDGET(edit), 0);
+  return ret;
 }
 
 static ret_t combo_box_on_add_child(widget_t* widget, widget_t* child) {
@@ -277,7 +279,7 @@ widget_t* combo_box_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h
   edit->right_margin = 0;
   str_init(&(combo_box->text), 32);
   combo_box->localize_options = TRUE;
-
+  
   return widget;
 }
 
