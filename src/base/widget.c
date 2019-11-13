@@ -1014,6 +1014,12 @@ ret_t widget_calc_icon_text_rect(const rect_t* ir, int32_t font_size, int32_t ic
       *r_text = rect_init(ir->x, icon_h + spacer, ir->w, font_size);
       break;
     }
+    case ICON_AT_BOTTOM: {
+      int32_t icon_h = ir->h - font_size - spacer;
+      *r_icon = rect_init(ir->x, ir->y + ir->h - icon_h, ir->w, icon_h);
+      *r_text = rect_init(ir->x, ir->y, ir->w, font_size);
+      break;
+    }
     case ICON_AT_LEFT:
     default: {
       *r_icon = rect_init(ir->x, ir->y, ir->h, ir->h);
