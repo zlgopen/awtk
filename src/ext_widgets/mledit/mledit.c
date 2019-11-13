@@ -328,16 +328,9 @@ ret_t mledit_set_scroll_line(widget_t* widget, uint32_t scroll_line) {
   return RET_OK;
 }
 
-static ret_t mledit_select_all_async(const idle_info_t* info) {
-  mledit_t* mledit = MLEDIT(info->ctx);
-  text_edit_select_all(mledit->model);
-
-  return RET_REMOVE;
-}
-
 static ret_t mledit_focus_set_cursor(const idle_info_t* info) {
   mledit_t* mledit = MLEDIT(info->ctx);
-  mledit_set_cursor(mledit, text_edit_get_cursor(mledit->model));
+  mledit_set_cursor(WIDGET(mledit), text_edit_get_cursor(mledit->model));
 
   return RET_REMOVE;
 }
