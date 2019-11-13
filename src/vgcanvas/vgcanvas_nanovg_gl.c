@@ -31,7 +31,10 @@
 #define NANOVG_GLES3_IMPLEMENTATION
 #endif
 
-#ifndef WITHOUT_GLAD
+#ifdef WITHOUT_GLAD
+#include <SDL_opengl.h>
+#include <SDL_opengl_glext.h>
+#else
 #include "glad/glad.h"
 #endif /*WITHOUT_GLAD*/
 
