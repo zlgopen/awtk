@@ -387,9 +387,7 @@ ret_t widget_set_theme(widget_t* widget, const char* name) {
 #ifdef WITH_FS_RES
   const asset_info_t* info = NULL;
   event_t e = event_init(EVT_THEME_CHANGED, NULL);
-  canvas_t* canvas = widget_get_canvas(widget);
   widget_t* wm = widget_get_window_manager(widget);
-  vgcanvas_t* vgcanvas = canvas_get_vgcanvas(canvas);
   font_manager_t* fm = widget_get_font_manager(widget);
   image_manager_t* imm = widget_get_image_manager(widget);
   assets_manager_t* am = widget_get_assets_manager(widget);
