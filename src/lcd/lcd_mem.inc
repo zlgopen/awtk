@@ -331,8 +331,6 @@ static ret_t lcd_mem_flush(lcd_t* lcd) {
 }
 
 static ret_t lcd_mem_end_frame(lcd_t* lcd) {
-  lcd_mem_t* mem = (lcd_mem_t*)lcd;
-
   if (lcd->draw_mode != LCD_DRAW_OFFLINE) {
     if (lcd_is_swappable(lcd)) {
       lcd_swap(lcd);
