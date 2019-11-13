@@ -53,7 +53,7 @@ ret_t ui_widget_serialize_prop(ui_builder_t* writer, const char* name, value_t* 
 }
 
 static ret_t ui_widget_serialize_props(ui_builder_t* writer, widget_t* widget,
-                                       const char** properties) {
+                                       const char* const* properties) {
   value_t v;
   value_t defv;
   uint32_t i = 0;
@@ -101,7 +101,7 @@ ret_t ui_widget_serialize(ui_builder_t* writer, widget_t* widget) {
 
   ui_widget_serialize_props(writer, widget, widget_get_persistent_props());
   if (widget->vt->clone_properties || widget->vt->persistent_properties) {
-    const char** properties = widget->vt->persistent_properties;
+    const char* const* properties = widget->vt->persistent_properties;
     if (properties == NULL) {
       properties = widget->vt->clone_properties;
     }

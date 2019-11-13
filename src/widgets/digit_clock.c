@@ -41,7 +41,7 @@ static uint32_t count_char(const char* p, char c) {
 static wchar_t* digit_clock_translate_wday(wchar_t* str, uint32_t size, uint32_t wday) {
   return_value_if_fail(wday < 7, NULL);
 
-  static const char* wdays[] = {
+  static const char* const wdays[] = {
       "Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat",
   };
 
@@ -52,8 +52,8 @@ static wchar_t* digit_clock_translate_wday(wchar_t* str, uint32_t size, uint32_t
 static wchar_t* digit_clock_translate_month(wchar_t* str, uint32_t size, uint32_t month) {
   return_value_if_fail(month < 13, NULL);
 
-  static const char* months[] = {"Jan", "Feb", "Mar",  "Apr", "May", "Jun",
-                                 "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"};
+  static const char* const months[] = {"Jan", "Feb", "Mar",  "Apr", "May", "Jun",
+                                       "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"};
 
   const char* utf8 = locale_info_tr(locale_info(), months[month - 1]);
   return utf8_to_utf16(utf8, str, size);
@@ -219,7 +219,7 @@ static ret_t digit_clock_on_destroy(widget_t* widget) {
   return RET_OK;
 }
 
-static const char* s_digit_clock_properties[] = {WIDGET_PROP_FORMAT, NULL};
+static const char* const s_digit_clock_properties[] = {WIDGET_PROP_FORMAT, NULL};
 
 TK_DECL_VTABLE(digit_clock) = {.size = sizeof(digit_clock_t),
                                .type = WIDGET_TYPE_DIGIT_CLOCK,

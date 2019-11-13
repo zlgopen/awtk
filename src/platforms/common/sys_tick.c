@@ -22,10 +22,17 @@
 #include "rtos.h"
 
 static volatile uint64_t g_sys_tick;
+static bool_t s_sys_tick_enable = FALSE;
+
+void sys_tick_enable(bool_t enable) {
+  s_sys_tick_enable = enable;
+}
 
 void SysTick_Handler(void) {
-  g_sys_tick++;
-  rtos_tick();
+  if (s_sys_tick_enable) {
+    g_sys_tick++;
+    rtos_tick();
+  }
 }
 
 uint64_t get_time_ms64() {
@@ -34,12 +41,4 @@ uint64_t get_time_ms64() {
 
 void sleep_ms(uint32_t ms) {
   rtos_delay(ms);
-}
-
-void delay_ms(uint32_t ms) {
-  sleep_ms(ms);
-}
-
-void delay_us(uint32_t us) {
-  sleep_ms(1);
 }

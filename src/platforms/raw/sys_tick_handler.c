@@ -39,5 +39,3 @@ void sleep_ms(uint32_t ms) {
     count++;
   }
 }
-
-

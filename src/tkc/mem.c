@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   mem.c
  * Author: AWTK Develop Team
  * Brief:  simple memory manager
@@ -245,6 +245,10 @@ static void* tk_realloc_impl(void* ptr, uint32_t size) {
 
 ret_t tk_mem_init(void* buffer, uint32_t size) {
   return_value_if_fail(buffer != NULL && size > MIN_SIZE, RET_BAD_PARAMS);
+
+  if (s_mem_info.buffer != NULL) {
+    return RET_FAIL;
+  }
 
   memset(buffer, 0x00, size);
   s_mem_info.buffer = (char*)buffer;

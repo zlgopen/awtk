@@ -94,11 +94,12 @@ static ret_t image_set_prop(widget_t* widget, const char* name, const value_t* v
   }
 }
 
-static const char* s_image_clone_properties[] = {WIDGET_PROP_IMAGE,      WIDGET_PROP_DRAW_TYPE,
-                                                 WIDGET_PROP_SCALE_X,    WIDGET_PROP_SCALE_Y,
-                                                 WIDGET_PROP_ANCHOR_X,   WIDGET_PROP_ANCHOR_Y,
-                                                 WIDGET_PROP_ROTATION,   WIDGET_PROP_CLICKABLE,
-                                                 WIDGET_PROP_SELECTABLE, NULL};
+static const char* const s_image_clone_properties[] = {
+    WIDGET_PROP_IMAGE,      WIDGET_PROP_DRAW_TYPE,
+    WIDGET_PROP_SCALE_X,    WIDGET_PROP_SCALE_Y,
+    WIDGET_PROP_ANCHOR_X,   WIDGET_PROP_ANCHOR_Y,
+    WIDGET_PROP_ROTATION,   WIDGET_PROP_CLICKABLE,
+    WIDGET_PROP_SELECTABLE, NULL};
 
 TK_DECL_VTABLE(image) = {.size = sizeof(image_t),
                          .type = WIDGET_TYPE_IMAGE,

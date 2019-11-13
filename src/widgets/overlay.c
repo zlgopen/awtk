@@ -24,7 +24,7 @@
 #include "base/enums.h"
 #include "widgets/overlay.h"
 
-static const char* s_overlay_properties[] = {
+static const char* const s_overlay_properties[] = {
     WIDGET_PROP_MOVE_FOCUS_PREV_KEY, WIDGET_PROP_MOVE_FOCUS_NEXT_KEY, WIDGET_PROP_THEME, NULL};
 
 TK_DECL_VTABLE(overlay) = {.type = WIDGET_TYPE_OVERLAY,

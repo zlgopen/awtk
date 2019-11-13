@@ -199,7 +199,7 @@ static ret_t button_on_destroy(widget_t* widget) {
   return button_remove_timer(widget);
 }
 
-static const char* s_button_properties[] = {WIDGET_PROP_REPEAT, NULL};
+static const char* const s_button_properties[] = {WIDGET_PROP_REPEAT, NULL};
 
 TK_DECL_VTABLE(button) = {.size = sizeof(button_t),
                           .type = WIDGET_TYPE_BUTTON,

@@ -28,7 +28,7 @@ ret_t image_loader_load(image_loader_t* loader, const asset_info_t* asset, bitma
   return loader->load(loader, asset, bitmap);
 }
 
-#define MAX_IMAGE_LOADERS 5
+#define MAX_IMAGE_LOADERS 3
 static image_loader_t* s_image_loaders[MAX_IMAGE_LOADERS];
 
 ret_t image_loader_register(image_loader_t* loader) {

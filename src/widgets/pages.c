@@ -109,7 +109,7 @@ static ret_t pages_set_prop(widget_t* widget, const char* name, const value_t* v
   return RET_NOT_FOUND;
 }
 
-static const char* s_pages_clone_properties[] = {WIDGET_PROP_VALUE, NULL};
+static const char* const s_pages_clone_properties[] = {WIDGET_PROP_VALUE, NULL};
 
 TK_DECL_VTABLE(pages) = {.size = sizeof(pages_t),
                          .inputable = TRUE,

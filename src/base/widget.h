@@ -87,9 +87,9 @@ struct _widget_vtable_t {
   uint32_t size;
   const char* type;
   /*克隆widget时需要复制的属性*/
-  const char** clone_properties;
+  const char* const* clone_properties;
   /*持久化widget时需要保存的属性*/
-  const char** persistent_properties;
+  const char* const* persistent_properties;
   /**
    * 是否可以滚动。
    */
@@ -2052,7 +2052,7 @@ ret_t widget_on_paint_end(widget_t* widget, canvas_t* c);
 
 #define WIDGET(w) ((widget_t*)(w))
 
-const char** widget_get_persistent_props(void);
+const char* const* widget_get_persistent_props(void);
 
 bool_t widget_is_instance_of(widget_t* widget, const widget_vtable_t* vt);
 #define WIDGET_IS_INSTANCE_OF(widget, name) widget_is_instance_of(widget, TK_REF_VTABLE(name))

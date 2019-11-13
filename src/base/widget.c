@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   widget.c
  * Author: AWTK Develop Team
  * Brief:  basic class of all widget
@@ -2680,28 +2680,28 @@ ret_t widget_prepare_text_style(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-static const char* s_widget_persistent_props[] = {WIDGET_PROP_NAME,
-                                                  WIDGET_PROP_STYLE,
-                                                  WIDGET_PROP_TR_TEXT,
-                                                  WIDGET_PROP_TEXT,
-                                                  WIDGET_PROP_ANIMATION,
-                                                  WIDGET_PROP_ENABLE,
-                                                  WIDGET_PROP_VISIBLE,
-                                                  WIDGET_PROP_FLOATING,
-                                                  WIDGET_PROP_CHILDREN_LAYOUT,
-                                                  WIDGET_PROP_SELF_LAYOUT,
-                                                  WIDGET_PROP_OPACITY,
-                                                  WIDGET_PROP_FOCUSED,
-                                                  WIDGET_PROP_FOCUSABLE,
-                                                  WIDGET_PROP_WITH_FOCUS_STATE,
-                                                  WIDGET_PROP_SENSITIVE,
-                                                  NULL};
+static const char* const s_widget_persistent_props[] = {WIDGET_PROP_NAME,
+                                                        WIDGET_PROP_STYLE,
+                                                        WIDGET_PROP_TR_TEXT,
+                                                        WIDGET_PROP_TEXT,
+                                                        WIDGET_PROP_ANIMATION,
+                                                        WIDGET_PROP_ENABLE,
+                                                        WIDGET_PROP_VISIBLE,
+                                                        WIDGET_PROP_FLOATING,
+                                                        WIDGET_PROP_CHILDREN_LAYOUT,
+                                                        WIDGET_PROP_SELF_LAYOUT,
+                                                        WIDGET_PROP_OPACITY,
+                                                        WIDGET_PROP_FOCUSED,
+                                                        WIDGET_PROP_FOCUSABLE,
+                                                        WIDGET_PROP_WITH_FOCUS_STATE,
+                                                        WIDGET_PROP_SENSITIVE,
+                                                        NULL};
 
-const char** widget_get_persistent_props(void) {
+const char* const* widget_get_persistent_props(void) {
   return s_widget_persistent_props;
 }
 
-static ret_t widget_copy_props(widget_t* clone, widget_t* widget, const char** properties) {
+static ret_t widget_copy_props(widget_t* clone, widget_t* widget, const char* const* properties) {
   if (properties != NULL) {
     value_t v;
     value_t defval;
@@ -2771,7 +2771,7 @@ widget_t* widget_clone(widget_t* widget, widget_t* parent) {
 #define PROP_EQ(prop) (widget->prop == other->prop)
 bool_t widget_equal(widget_t* widget, widget_t* other) {
   bool_t ret = FALSE;
-  const char** properties = NULL;
+  const char* const* properties = NULL;
   return_value_if_fail(widget != NULL && other != NULL, FALSE);
 
   ret = PROP_EQ(opacity) && PROP_EQ(enable) && PROP_EQ(visible) && PROP_EQ(vt) && PROP_EQ(x) &&
