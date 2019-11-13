@@ -148,7 +148,7 @@ widget_t* draggable_cast(widget_t* widget);
  * 设置top。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
- * @param {uint32_t} top 拖动范围的顶部限制。缺省为父控件的顶部。
+ * @param {int32_t} top 拖动范围的顶部限制。缺省为父控件的顶部。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -159,7 +159,7 @@ ret_t draggable_set_top(widget_t* widget, int32_t top);
  * 设置bottom。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
- * @param {uint32_t} bottom 拖动范围的底部限制。缺省为父控件的底部。
+ * @param {int32_t} bottom 拖动范围的底部限制。缺省为父控件的底部。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -170,7 +170,7 @@ ret_t draggable_set_bottom(widget_t* widget, int32_t bottom);
  * 设置left。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
- * @param {uint32_t} left 拖动范围的左边限制。缺省为父控件的左边。
+ * @param {int32_t} left 拖动范围的左边限制。缺省为父控件的左边。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -181,7 +181,7 @@ ret_t draggable_set_left(widget_t* widget, int32_t left);
  * 设置right。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
- * @param {uint32_t} right 拖动范围的右边限制。缺省为父控件的右边边。
+ * @param {int32_t} right 拖动范围的右边限制。缺省为父控件的右边边。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -192,7 +192,7 @@ ret_t draggable_set_right(widget_t* widget, int32_t right);
  * 设置vertical_only。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
- * @param {uint32_t} vertical_only 只允许垂直拖动。
+ * @param {bool_t} vertical_only 只允许垂直拖动。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -203,7 +203,7 @@ ret_t draggable_set_vertical_only(widget_t* widget, bool_t vertical_only);
  * 设置horizontal_only。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
- * @param {uint32_t} horizontal_only 只允许水平拖动。
+ * @param {bool_t} horizontal_only 只允许水平拖动。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -214,7 +214,7 @@ ret_t draggable_set_horizontal_only(widget_t* widget, bool_t horizontal_only);
  * 设置drag_window。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
- * @param {uint32_t} drag_window
+ * @param {bool_t} drag_window drag_window
  * 拖动窗口而不是父控件。比如放在对话框的titlebar上，拖动titlebar其实是希望拖动对话框。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

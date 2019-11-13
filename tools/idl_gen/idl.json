@@ -29923,7 +29923,7 @@
             "desc": "widget对象。"
           },
           {
-            "type": "uint32_t",
+            "type": "int32_t",
             "name": "top",
             "desc": "拖动范围的顶部限制。缺省为父控件的顶部。"
           }
@@ -29946,7 +29946,7 @@
             "desc": "widget对象。"
           },
           {
-            "type": "uint32_t",
+            "type": "int32_t",
             "name": "bottom",
             "desc": "拖动范围的底部限制。缺省为父控件的底部。"
           }
@@ -29969,7 +29969,7 @@
             "desc": "widget对象。"
           },
           {
-            "type": "uint32_t",
+            "type": "int32_t",
             "name": "left",
             "desc": "拖动范围的左边限制。缺省为父控件的左边。"
           }
@@ -29992,7 +29992,7 @@
             "desc": "widget对象。"
           },
           {
-            "type": "uint32_t",
+            "type": "int32_t",
             "name": "right",
             "desc": "拖动范围的右边限制。缺省为父控件的右边边。"
           }
@@ -30015,7 +30015,7 @@
             "desc": "widget对象。"
           },
           {
-            "type": "uint32_t",
+            "type": "bool_t",
             "name": "vertical_only",
             "desc": "只允许垂直拖动。"
           }
@@ -30038,7 +30038,7 @@
             "desc": "widget对象。"
           },
           {
-            "type": "uint32_t",
+            "type": "bool_t",
             "name": "horizontal_only",
             "desc": "只允许水平拖动。"
           }
@@ -30061,9 +30061,9 @@
             "desc": "widget对象。"
           },
           {
-            "type": "uint32_t",
-            "name": "",
-            "desc": "w"
+            "type": "bool_t",
+            "name": "drag_window",
+            "desc": "drag_window"
           }
         ],
         "annotation": {
