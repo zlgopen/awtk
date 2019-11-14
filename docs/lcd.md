@@ -93,7 +93,7 @@ lcd_t* platform_create_lcd(wh_t w, wh_t h) {
 }
 ```
 
-### 三、基于 vgcanvas 实现的 LCD
+### 四、基于 vgcanvas 实现的 LCD
 
 在支持 OpenGL 3D 硬件加速的平台上（如 PC 和手机），我们使用 nanovg 把 OpenGL 封装成 vgcanvas 的接口，在 vgcanvas 基础之上实现 LCD。lcd\_vgcanvas.inc 将 vgcanvas 封装成 LCD 的接口，这里出于可移植性考虑，并没有直接基于 nanovg 的函数，而是基于 vgcanvas 的接口，所以在没有 GPU 时，如果 CPU 够强大，也是可以基于 agg/picasso 去实现的 LCD。
 
