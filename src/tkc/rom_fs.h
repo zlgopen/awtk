@@ -27,8 +27,8 @@
 BEGIN_C_DECLS
 
 /**
- * @class fs_file_t
- * @annotation ["scriptable", "fake"]
+ * @class rom_t
+ * @annotation ["fake"]
  * rom_file接口。
  *
  * 示例：

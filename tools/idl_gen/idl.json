@@ -22179,9 +22179,8 @@
     "properties": [],
     "header": "tkc/rom_fs.h",
     "desc": " rom_file接口。\n\n 示例：\n\n ```c\n char rbuff[100];\n size_t len = 0;\n const char* buff = \"hello world\";\n rom_file_t* f = rom_fopen_buff((const uint8_t*)buff, sizeof(buff));\n len = rom_fread(rbuff, 2, 1, f);\n rom_fclose(f);\n ```\n\n\n",
-    "name": "fs_file_t",
+    "name": "rom_t",
     "annotation": {
-      "scriptable": true,
       "fake": true
     },
     "level": 1
@@ -24676,9 +24675,8 @@
     "properties": [],
     "header": "tkc/utils.h",
     "desc": " 工具类。\n\n\n",
-    "name": "fs_file_t",
+    "name": "utils_t",
     "annotation": {
-      "scriptable": true,
       "fake": true
     },
     "level": 1

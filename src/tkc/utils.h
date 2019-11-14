@@ -28,8 +28,8 @@
 BEGIN_C_DECLS
 
 /**
- * @class fs_file_t
- * @annotation ["scriptable", "fake"]
+ * @class utils_t
+ * @annotation ["fake"]
  * 工具类。
  *
  */
