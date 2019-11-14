@@ -35,10 +35,12 @@
 | -------- | ------------ | 
 | <a href="#mledit_t_mledit_cast">mledit\_cast</a> | 转换为mledit对象(供脚本语言使用)。 |
 | <a href="#mledit_t_mledit_create">mledit\_create</a> | 创建mledit对象 |
+| <a href="#mledit_t_mledit_set_cursor">mledit\_set\_cursor</a> | 设置编辑器光标位置。 |
 | <a href="#mledit_t_mledit_set_focus">mledit\_set\_focus</a> | 设置为焦点。 |
 | <a href="#mledit_t_mledit_set_input_tips">mledit\_set\_input\_tips</a> | 设置编辑器的输入提示。 |
 | <a href="#mledit_t_mledit_set_max_lines">mledit\_set\_max\_lines</a> | 设置编辑器的最大行数。 |
 | <a href="#mledit_t_mledit_set_readonly">mledit\_set\_readonly</a> | 设置编辑器是否为只读。 |
+| <a href="#mledit_t_mledit_set_scroll_line">mledit\_set\_scroll\_line</a> | 设置编辑器滚动速度。 |
 | <a href="#mledit_t_mledit_set_wrap_word">mledit\_set\_wrap\_word</a> | 设置编辑器是否自动折行。 |
 ### 属性
 <p id="mledit_t_properties">
@@ -50,6 +52,7 @@
 | <a href="#mledit_t_max_lines">max\_lines</a> | uint32\_t | 最大行数。 |
 | <a href="#mledit_t_readonly">readonly</a> | bool\_t | 编辑器是否为只读。 |
 | <a href="#mledit_t_right_margin">right\_margin</a> | uint8\_t | 右边距。 |
+| <a href="#mledit_t_scroll_line">scroll\_line</a> | float\_t | 鼠标一次滚动行数。 |
 | <a href="#mledit_t_tips">tips</a> | char* | 输入提示。 |
 | <a href="#mledit_t_top_margin">top\_margin</a> | uint8\_t | 上边距。 |
 | <a href="#mledit_t_wrap_word">wrap\_word</a> | bool\_t | 是否自动折行。 |
@@ -106,6 +109,28 @@ widget_t* mledit_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### mledit\_set\_cursor 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="mledit_t_mledit_set_cursor"> 设置编辑器光标位置。
+
+
+
+* 函数原型：
+
+```
+ret_t mledit_set_cursor (widget_t* widget, uint32_t cursor);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | widget对象。 |
+| cursor | uint32\_t | 光标位置。 |
 #### mledit\_set\_focus 函数
 -----------------------
 
@@ -194,6 +219,28 @@ ret_t mledit_set_readonly (widget_t* widget, bool_t readonly);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
 | readonly | bool\_t | 只读。 |
+#### mledit\_set\_scroll\_line 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="mledit_t_mledit_set_scroll_line"> 设置编辑器滚动速度。
+
+
+
+* 函数原型：
+
+```
+ret_t mledit_set_scroll_line (widget_t* widget, uint32_t scroll_line);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | widget对象。 |
+| scroll\_line | uint32\_t | 滚动行数。 |
 #### mledit\_set\_wrap\_word 函数
 -----------------------
 
@@ -289,6 +336,23 @@ ret_t mledit_set_wrap_word (widget_t* widget, bool_t wrap_word);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### scroll\_line 属性
+-----------------------
+> <p id="mledit_t_scroll_line"> 鼠标一次滚动行数。
+
+
+* 类型：float\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
 | 可通过widget\_get\_prop读取 | 是 |
 | 可通过widget\_set\_prop修改 | 是 |

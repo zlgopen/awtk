@@ -2,9 +2,9 @@
 ### 概述
 ![image](images/draggable_t_0.png)
 
- 
+
  将draggable放入目标控件，即可让目标控件或当前窗口可以被拖动。
- 
+
  draggable\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于draggable\_t控件。
 
  在xml中使用"draggable"标签创建draggable控件。如：
@@ -120,7 +120,7 @@ widget_t* draggable_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 * 函数原型：
 
 ```
-ret_t draggable_set_bottom (widget_t* widget, uint32_t bottom);
+ret_t draggable_set_bottom (widget_t* widget, int32_t bottom);
 ```
 
 * 参数说明：
@@ -129,7 +129,7 @@ ret_t draggable_set_bottom (widget_t* widget, uint32_t bottom);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
-| bottom | uint32\_t | 拖动范围的底部限制。缺省为父控件的底部。 |
+| bottom | int32\_t | 拖动范围的底部限制。缺省为父控件的底部。 |
 #### draggable\_set\_drag\_window 函数
 -----------------------
 
@@ -143,7 +143,7 @@ ret_t draggable_set_bottom (widget_t* widget, uint32_t bottom);
 * 函数原型：
 
 ```
-ret_t draggable_set_drag_window (widget_t* widget, uint32_t );
+ret_t draggable_set_drag_window (widget_t* widget, bool_t drag_window);
 ```
 
 * 参数说明：
@@ -152,7 +152,7 @@ ret_t draggable_set_drag_window (widget_t* widget, uint32_t );
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
-|  | uint32\_t | w |
+| drag\_window | bool\_t | drag\_window |
 #### draggable\_set\_horizontal\_only 函数
 -----------------------
 
@@ -165,7 +165,7 @@ ret_t draggable_set_drag_window (widget_t* widget, uint32_t );
 * 函数原型：
 
 ```
-ret_t draggable_set_horizontal_only (widget_t* widget, uint32_t horizontal_only);
+ret_t draggable_set_horizontal_only (widget_t* widget, bool_t horizontal_only);
 ```
 
 * 参数说明：
@@ -174,7 +174,7 @@ ret_t draggable_set_horizontal_only (widget_t* widget, uint32_t horizontal_only)
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
-| horizontal\_only | uint32\_t | 只允许水平拖动。 |
+| horizontal\_only | bool\_t | 只允许水平拖动。 |
 #### draggable\_set\_left 函数
 -----------------------
 
@@ -187,7 +187,7 @@ ret_t draggable_set_horizontal_only (widget_t* widget, uint32_t horizontal_only)
 * 函数原型：
 
 ```
-ret_t draggable_set_left (widget_t* widget, uint32_t left);
+ret_t draggable_set_left (widget_t* widget, int32_t left);
 ```
 
 * 参数说明：
@@ -196,7 +196,7 @@ ret_t draggable_set_left (widget_t* widget, uint32_t left);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
-| left | uint32\_t | 拖动范围的左边限制。缺省为父控件的左边。 |
+| left | int32\_t | 拖动范围的左边限制。缺省为父控件的左边。 |
 #### draggable\_set\_right 函数
 -----------------------
 
@@ -209,7 +209,7 @@ ret_t draggable_set_left (widget_t* widget, uint32_t left);
 * 函数原型：
 
 ```
-ret_t draggable_set_right (widget_t* widget, uint32_t right);
+ret_t draggable_set_right (widget_t* widget, int32_t right);
 ```
 
 * 参数说明：
@@ -218,7 +218,7 @@ ret_t draggable_set_right (widget_t* widget, uint32_t right);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
-| right | uint32\_t | 拖动范围的右边限制。缺省为父控件的右边边。 |
+| right | int32\_t | 拖动范围的右边限制。缺省为父控件的右边边。 |
 #### draggable\_set\_top 函数
 -----------------------
 
@@ -231,7 +231,7 @@ ret_t draggable_set_right (widget_t* widget, uint32_t right);
 * 函数原型：
 
 ```
-ret_t draggable_set_top (widget_t* widget, uint32_t top);
+ret_t draggable_set_top (widget_t* widget, int32_t top);
 ```
 
 * 参数说明：
@@ -240,7 +240,7 @@ ret_t draggable_set_top (widget_t* widget, uint32_t top);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
-| top | uint32\_t | 拖动范围的顶部限制。缺省为父控件的顶部。 |
+| top | int32\_t | 拖动范围的顶部限制。缺省为父控件的顶部。 |
 #### draggable\_set\_vertical\_only 函数
 -----------------------
 
@@ -253,7 +253,7 @@ ret_t draggable_set_top (widget_t* widget, uint32_t top);
 * 函数原型：
 
 ```
-ret_t draggable_set_vertical_only (widget_t* widget, uint32_t vertical_only);
+ret_t draggable_set_vertical_only (widget_t* widget, bool_t vertical_only);
 ```
 
 * 参数说明：
@@ -262,7 +262,7 @@ ret_t draggable_set_vertical_only (widget_t* widget, uint32_t vertical_only);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
-| vertical\_only | uint32\_t | 只允许垂直拖动。 |
+| vertical\_only | bool\_t | 只允许垂直拖动。 |
 #### bottom 属性
 -----------------------
 > <p id="draggable_t_bottom"> 拖动范围的底部限制。缺省为父控件的底部。

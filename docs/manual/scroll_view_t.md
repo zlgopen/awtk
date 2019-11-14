@@ -44,6 +44,7 @@ https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/list_vie
 | -------- | ------------ | 
 | <a href="#scroll_view_t_scroll_view_cast">scroll\_view\_cast</a> | 转换为scroll_view对象(供脚本语言使用)。 |
 | <a href="#scroll_view_t_scroll_view_create">scroll\_view\_create</a> | 创建scroll_view对象 |
+| <a href="#scroll_view_t_scroll_view_scroll_delta_to">scroll\_view\_scroll\_delta\_to</a> | 滚动到指定的偏移量。 |
 | <a href="#scroll_view_t_scroll_view_scroll_to">scroll\_view\_scroll\_to</a> | 滚动到指定的偏移量。 |
 | <a href="#scroll_view_t_scroll_view_set_offset">scroll\_view\_set\_offset</a> | 设置偏移量。 |
 | <a href="#scroll_view_t_scroll_view_set_virtual_h">scroll\_view\_set\_virtual\_h</a> | 设置虚拟高度。 |
@@ -107,6 +108,30 @@ widget_t* scroll_view_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### scroll\_view\_scroll\_delta\_to 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="scroll_view_t_scroll_view_scroll_delta_to"> 滚动到指定的偏移量。
+
+
+
+* 函数原型：
+
+```
+ret_t scroll_view_scroll_delta_to (widget_t* widget, int32_t xoffset_delta, int32_t yoffset_delta, int32_t duration);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| xoffset\_delta | int32\_t | x偏移量。 |
+| yoffset\_delta | int32\_t | y偏移量。 |
+| duration | int32\_t | 时间。 |
 #### scroll\_view\_scroll\_to 函数
 -----------------------
 

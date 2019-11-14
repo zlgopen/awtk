@@ -69,6 +69,7 @@ default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/st
 | <a href="#edit_t_edit_get_double">edit\_get\_double</a> | 获取double类型的值。 |
 | <a href="#edit_t_edit_get_int">edit\_get\_int</a> | 获取int类型的值。 |
 | <a href="#edit_t_edit_set_auto_fix">edit\_set\_auto\_fix</a> | 设置编辑器是否为自动改正。 |
+| <a href="#edit_t_edit_set_cursor">edit\_set\_cursor</a> | 设置输入框的光标坐标。 |
 | <a href="#edit_t_edit_set_double">edit\_set\_double</a> | 设置double类型的值。 |
 | <a href="#edit_t_edit_set_float_limit">edit\_set\_float\_limit</a> | 设置为浮点数输入及取值范围。 |
 | <a href="#edit_t_edit_set_focus">edit\_set\_focus</a> | 设置为焦点。 |
@@ -214,6 +215,28 @@ ret_t edit_set_auto_fix (widget_t* widget, bool_t auto_fix);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
 | auto\_fix | bool\_t | 自动改正。 |
+#### edit\_set\_cursor 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="edit_t_edit_set_cursor"> 设置输入框的光标坐标。
+
+
+
+* 函数原型：
+
+```
+ret_t edit_set_cursor (widget_t* widget, uint32_t cursor);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | widget对象。 |
+| cursor | uint32\_t | 是否为焦点。 |
 #### edit\_set\_double 函数
 -----------------------
 

@@ -32,6 +32,7 @@
 | <a href="#darray_t_darray_deinit">darray\_deinit</a> | 清除全部元素，并释放elms。 |
 | <a href="#darray_t_darray_destroy">darray\_destroy</a> | 销毁darray对象。 |
 | <a href="#darray_t_darray_find">darray\_find</a> | 查找第一个满足条件的元素。 |
+| <a href="#darray_t_darray_find_all">darray\_find\_all</a> | 查找全部满足条件的元素。 |
 | <a href="#darray_t_darray_find_index">darray\_find\_index</a> | 查找第一个满足条件的元素，并返回位置。 |
 | <a href="#darray_t_darray_foreach">darray\_foreach</a> | 遍历元素。 |
 | <a href="#darray_t_darray_head">darray\_head</a> | 返回第一个元素。 |
@@ -41,6 +42,7 @@
 | <a href="#darray_t_darray_remove">darray\_remove</a> | 删除第一个满足条件的元素。 |
 | <a href="#darray_t_darray_remove_all">darray\_remove\_all</a> | 删除全部满足条件的元素。 |
 | <a href="#darray_t_darray_remove_index">darray\_remove\_index</a> | 删除指定位置的元素。 |
+| <a href="#darray_t_darray_sort">darray\_sort</a> | 排序。 |
 | <a href="#darray_t_darray_tail">darray\_tail</a> | 返回最后一个元素。 |
 ### 属性
 <p id="darray_t_properties">
@@ -183,6 +185,39 @@ void* darray_find (darray_t* darray, void* ctx);
 | 返回值 | void* | 如果找到，返回满足条件的对象，否则返回NULL。 |
 | darray | darray\_t* | 数组对象。 |
 | ctx | void* | 比较函数的上下文。 |
+#### darray\_find\_all 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="darray_t_darray_find_all"> 查找全部满足条件的元素。
+
+ ```
+ darray_t matched;
+ darray_init(&matched, 0, NULL, NULL);
+ darray_find_all(darray, mycmp, myctx, &matched);
+ ...
+ darray_deinit(&matched);
+
+ ```
+
+
+
+* 函数原型：
+
+```
+ret_t darray_find_all (darray_t* darray, tk_compare_t cmp, void* ctx, darray_t* matched);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| darray | darray\_t* | 数组对象。 |
+| cmp | tk\_compare\_t | 比较函数，为NULL则使用内置的比较函数。 |
+| ctx | void* | 比较函数的上下文。 |
+| matched | darray\_t* | 返回满足条件的元素。 |
 #### darray\_find\_index 函数
 -----------------------
 
@@ -351,7 +386,7 @@ ret_t darray_remove (darray_t* darray, void* ctx);
 * 函数原型：
 
 ```
-ret_t darray_remove_all (darray_t* darray, void* ctx);
+ret_t darray_remove_all (darray_t* darray, tk_compare_t cmp, void* ctx);
 ```
 
 * 参数说明：
@@ -360,6 +395,7 @@ ret_t darray_remove_all (darray_t* darray, void* ctx);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | darray | darray\_t* | 数组对象。 |
+| cmp | tk\_compare\_t | 比较函数，为NULL则使用内置的比较函数。 |
 | ctx | void* | 比较函数的上下文。 |
 #### darray\_remove\_index 函数
 -----------------------
@@ -383,6 +419,28 @@ ret_t darray_remove_index (darray_t* darray, uint32_t index);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | darray | darray\_t* | 数组对象。 |
 | index | uint32\_t | 位置序数。 |
+#### darray\_sort 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="darray_t_darray_sort"> 排序。
+
+
+
+* 函数原型：
+
+```
+ret_t darray_sort (darray_t* darray, tk_compare_t cmp);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| darray | darray\_t* | 数组对象。 |
+| cmp | tk\_compare\_t | 比较函数，为NULL则使用内置的比较函数。 |
 #### darray\_tail 函数
 -----------------------
 

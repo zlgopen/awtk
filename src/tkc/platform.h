@@ -46,6 +46,8 @@ uint64_t get_time_ms64(void);
  * 睡眠毫秒。
  *
  * @param {uint32_t} ms 毫秒。
+ *
+ * @return {void} 无。
  */
 void sleep_ms(uint32_t ms);
 

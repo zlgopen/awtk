@@ -21,6 +21,7 @@
 | <a href="#event_source_t_event_source_dispatch">event\_source\_dispatch</a> |  |
 | <a href="#event_source_t_event_source_get_fd">event\_source\_get\_fd</a> |  |
 | <a href="#event_source_t_event_source_get_wakeup_time">event\_source\_get\_wakeup\_time</a> |  |
+| <a href="#event_source_t_event_source_set_tag">event\_source\_set\_tag</a> |  |
 #### event\_source\_check 函数
 -----------------------
 
@@ -117,3 +118,28 @@ uint32_t event_source_get_wakeup_time (event_source_t* source);
 | -------- | ----- | --------- |
 | 返回值 | uint32\_t | 返回唤醒时间(ms)。 |
 | source | event\_source\_t* | event\_source对象。 |
+#### event\_source\_set\_tag 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="event_source_t_event_source_set_tag">
+ 设置tag，方便通过tag一次移除多个事件源。
+
+
+
+
+
+* 函数原型：
+
+```
+ret_t event_source_set_tag (event_source_t* source, void* tag);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| source | event\_source\_t* | event\_source对象。 |
+| tag | void* | tag。 |

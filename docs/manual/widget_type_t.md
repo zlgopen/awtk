@@ -14,6 +14,7 @@
 | WIDGET\_TYPE\_DIALOG | 对话框。 |
 | WIDGET\_TYPE\_POPUP | 弹出窗口。 |
 | WIDGET\_TYPE\_SYSTEM\_BAR | system bar window |
+| WIDGET\_TYPE\_SYSTEM\_BAR\_BOTTOM | system bar window ato bottom |
 | WIDGET\_TYPE\_SPRITE | 精灵窗口。 |
 | WIDGET\_TYPE\_KEYBOARD | 键盘窗口。 |
 | WIDGET\_TYPE\_DND | 拖放状态窗口。 |

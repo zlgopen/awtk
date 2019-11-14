@@ -49,6 +49,7 @@
 | -------- | ------------ | 
 | <a href="#svg_image_t_svg_image_cast">svg\_image\_cast</a> | 转换为svg_image对象(供脚本语言使用)。 |
 | <a href="#svg_image_t_svg_image_create">svg\_image\_create</a> | 创建svg_image对象 |
+| <a href="#svg_image_t_svg_image_set_image">svg\_image\_set\_image</a> | 设置控件的图片名称。 |
 #### svg\_image\_cast 函数
 -----------------------
 
@@ -95,3 +96,28 @@ widget_t* svg_image_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### svg\_image\_set\_image 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="svg_image_t_svg_image_set_image"> 设置控件的图片名称。
+
+> 如果需要显示文件系统中的图片，只需将图片名称换成实际的文件名，并加上"file://"前缀即可。
+
+
+
+
+* 函数原型：
+
+```
+ret_t svg_image_set_image (widget_t* widget, char* name);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | image对象。 |
+| name | char* | 图片名称，该图片必须存在于资源管理器。 |

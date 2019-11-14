@@ -11,6 +11,7 @@
 | <a href="#ring_buffer_t_ring_buffer_capacity">ring\_buffer\_capacity</a> | 获取容量。 |
 | <a href="#ring_buffer_t_ring_buffer_create">ring\_buffer\_create</a> | 创建ring_buffer对象。 |
 | <a href="#ring_buffer_t_ring_buffer_destroy">ring\_buffer\_destroy</a> | 销毁ring_buffer。 |
+| <a href="#ring_buffer_t_ring_buffer_ensure_write_space">ring\_buffer\_ensure\_write\_space</a> | 扩展buffer。 |
 | <a href="#ring_buffer_t_ring_buffer_free_size">ring\_buffer\_free\_size</a> | 获取空闲空间的长度。 |
 | <a href="#ring_buffer_t_ring_buffer_is_empty">ring\_buffer\_is\_empty</a> | 检查ring_buffer是否空。 |
 | <a href="#ring_buffer_t_ring_buffer_is_full">ring\_buffer\_is\_full</a> | 检查ring_buffer是否满。 |
@@ -23,6 +24,7 @@
 | <a href="#ring_buffer_t_ring_buffer_set_write_cursor">ring\_buffer\_set\_write\_cursor</a> | 设置写入光标的位置。 |
 | <a href="#ring_buffer_t_ring_buffer_set_write_cursor_delta">ring\_buffer\_set\_write\_cursor\_delta</a> | 设置写入光标的位置(delta)。 |
 | <a href="#ring_buffer_t_ring_buffer_size">ring\_buffer\_size</a> | 获取数据长度。 |
+| <a href="#ring_buffer_t_ring_buffer_skip">ring\_buffer\_skip</a> | 跳过指定长度数据，要么成功要么失败。 |
 | <a href="#ring_buffer_t_ring_buffer_write">ring\_buffer\_write</a> |  |
 | <a href="#ring_buffer_t_ring_buffer_write_len">ring\_buffer\_write\_len</a> | 写入指定长度数据，要么成功要么失败。 |
 ### 属性
@@ -103,6 +105,29 @@ ret_t ring_buffer_destroy (ring_buffer_t* ring_buffer);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | ring\_buffer | ring\_buffer\_t* | ring\_buffer对象。 |
+#### ring\_buffer\_ensure\_write\_space 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="ring_buffer_t_ring_buffer_ensure_write_space"> 扩展buffer。
+
+
+
+
+* 函数原型：
+
+```
+ret_t ring_buffer_ensure_write_space (ring_buffer_t* ring_buffer, uint32_t size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| ring\_buffer | ring\_buffer\_t* | ring\_buffer对象。 |
+| size | uint32\_t | 需要的大小。 |
 #### ring\_buffer\_free\_size 函数
 -----------------------
 
@@ -377,6 +402,29 @@ uint32_t ring_buffer_size (ring_buffer_t* ring_buffer);
 | -------- | ----- | --------- |
 | 返回值 | uint32\_t | 数据长度。 |
 | ring\_buffer | ring\_buffer\_t* | ring\_buffer对象。 |
+#### ring\_buffer\_skip 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="ring_buffer_t_ring_buffer_skip"> 跳过指定长度数据，要么成功要么失败。
+
+
+
+
+* 函数原型：
+
+```
+ret_t ring_buffer_skip (ring_buffer_t* ring_buffer, uint32_t size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| ring\_buffer | ring\_buffer\_t* | ring\_buffer对象。 |
+| size | uint32\_t | 长度。 |
 #### ring\_buffer\_write 函数
 -----------------------
 

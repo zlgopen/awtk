@@ -13,8 +13,9 @@
 | -------- | ------------ | 
 | <a href="#date_time_t_date_time_create">date\_time\_create</a> | 创建date_time对象，并初始为当前日期和时间(一般供脚本语言中使用)。 |
 | <a href="#date_time_t_date_time_destroy">date\_time\_destroy</a> | 销毁date_time对象(一般供脚本语言中使用)。 |
+| <a href="#date_time_t_date_time_global_init">date\_time\_global\_init</a> | 时间日期全局初始化。 |
 | <a href="#date_time_t_date_time_init">date\_time\_init</a> | 初始为当前日期和时间。 |
-| <a href="#date_time_t_date_time_set_impl">date\_time\_set\_impl</a> | 设置获取当前日期和时间的函数。 |
+| <a href="#date_time_t_date_time_set">date\_time\_set</a> | 设置当前时间。 |
 ### 属性
 <p id="date_time_t_properties">
 
@@ -69,6 +70,31 @@ ret_t date_time_destroy (date_time_t* dt);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | dt | date\_time\_t* | date\_time对象。 |
+#### date\_time\_global\_init 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="date_time_t_date_time_global_init"> 时间日期全局初始化。
+
+ > 嵌入式平台需要提供并设置获取当前日期和时间的函数，否则相关的功能(如时钟控件)将无法正常工作。
+
+
+
+
+* 函数原型：
+
+```
+ret_t date_time_global_init (date_time_get_now_t get, date_time_set_now_t set);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| get | date\_time\_get\_now\_t | 获取当前日期和时间的函数。 |
+| set | date\_time\_set\_now\_t | 设置当前日期和时间的函数。 |
 #### date\_time\_init 函数
 -----------------------
 
@@ -90,14 +116,12 @@ date_time_t* date_time_init (date_time_t* dt);
 | -------- | ----- | --------- |
 | 返回值 | date\_time\_t* | 返回date\_time对象。 |
 | dt | date\_time\_t* | date\_time对象。 |
-#### date\_time\_set\_impl 函数
+#### date\_time\_set 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="date_time_t_date_time_set_impl"> 设置获取当前日期和时间的函数。
-
- > 嵌入式平台需要提供并设置获取当前日期和时间的函数，否则相关的功能(如时钟控件)将无法正常工作。
+> <p id="date_time_t_date_time_set"> 设置当前时间。
 
 
 
@@ -105,7 +129,7 @@ date_time_t* date_time_init (date_time_t* dt);
 * 函数原型：
 
 ```
-ret_t date_time_set_impl (date_time_get_now_t date_time_get_now);
+ret_t date_time_set (date_time_t* dt);
 ```
 
 * 参数说明：
@@ -113,7 +137,7 @@ ret_t date_time_set_impl (date_time_get_now_t date_time_get_now);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| date\_time\_get\_now | date\_time\_get\_now\_t | 获取当前日期和时间的函数。 |
+| dt | date\_time\_t* | date\_time对象。 |
 #### day 属性
 -----------------------
 > <p id="date_time_t_day"> 日(1-31)。

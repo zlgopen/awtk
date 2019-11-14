@@ -16,13 +16,16 @@
 | <a href="#bitmap_t_bitmap_get_pixel">bitmap\_get\_pixel</a> | 获取图片指定像素的rgba颜色值(主要用于测试程序)。 |
 | <a href="#bitmap_t_bitmap_init">bitmap\_init</a> | 初始化图片。 |
 | <a href="#bitmap_t_bitmap_init_from_rgba">bitmap\_init\_from\_rgba</a> | 初始化图片。 |
+| <a href="#bitmap_t_bitmap_lock_buffer_for_read">bitmap\_lock\_buffer\_for\_read</a> | 为读取数据而锁定bitmap的图片缓冲区。 |
+| <a href="#bitmap_t_bitmap_lock_buffer_for_write">bitmap\_lock\_buffer\_for\_write</a> | 为修改数据而锁定bitmap的图片缓冲区。 |
 | <a href="#bitmap_t_bitmap_set_line_length">bitmap\_set\_line\_length</a> | 设置line_length。 |
+| <a href="#bitmap_t_bitmap_unlock_buffer">bitmap\_unlock\_buffer</a> | 解锁图像缓冲区。 |
 ### 属性
 <p id="bitmap_t_properties">
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#bitmap_t_data">data</a> | uint8\_t* | 图片数据。 |
+| <a href="#bitmap_t_buffer">buffer</a> | graphic\_buffer\_t* | 图片数据。 |
 | <a href="#bitmap_t_flags">flags</a> | uint16\_t | 标志。请参考{bitmap_flag_t}。 |
 | <a href="#bitmap_t_format">format</a> | uint16\_t | 格式。请参考{bitmap_format_t}。 |
 | <a href="#bitmap_t_h">h</a> | wh\_t | 高度。 |
@@ -210,6 +213,50 @@ ret_t bitmap_init_from_rgba (bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_fo
 | format | bitmap\_format\_t | 格式。 |
 |  | const uint8\_t* | a |
 | comp | uint32\_t | 颜色通道数(目前支持3(rgb)和4(rgba))。 |
+#### bitmap\_lock\_buffer\_for\_read 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="bitmap_t_bitmap_lock_buffer_for_read"> 为读取数据而锁定bitmap的图片缓冲区。
+
+
+
+
+* 函数原型：
+
+```
+uint8_t* bitmap_lock_buffer_for_read (bitmap_t* bitmap);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint8\_t* | 返回缓存区的首地址。 |
+| bitmap | bitmap\_t* | bitmap对象。 |
+#### bitmap\_lock\_buffer\_for\_write 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="bitmap_t_bitmap_lock_buffer_for_write"> 为修改数据而锁定bitmap的图片缓冲区。
+
+
+
+
+* 函数原型：
+
+```
+uint8_t* bitmap_lock_buffer_for_write (bitmap_t* bitmap);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint8\_t* | 返回缓存区的首地址。 |
+| bitmap | bitmap\_t* | bitmap对象。 |
 #### bitmap\_set\_line\_length 函数
 -----------------------
 
@@ -232,12 +279,34 @@ ret_t bitmap_set_line_length (bitmap_t* bitmap, uint32_t line_length);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | bitmap | bitmap\_t* | bitmap对象。 |
 | line\_length | uint32\_t | line\_length。 |
-#### data 属性
+#### bitmap\_unlock\_buffer 函数
 -----------------------
-> <p id="bitmap_t_data"> 图片数据。
+
+* 函数功能：
+
+> <p id="bitmap_t_bitmap_unlock_buffer"> 解锁图像缓冲区。
 
 
-* 类型：uint8\_t*
+
+
+* 函数原型：
+
+```
+ret_t bitmap_unlock_buffer (bitmap_t* bitmap);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| bitmap | bitmap\_t* | bitmap对象。 |
+#### buffer 属性
+-----------------------
+> <p id="bitmap_t_buffer"> 图片数据。
+
+
+* 类型：graphic\_buffer\_t*
 
 | 特性 | 是否支持 |
 | -------- | ----- |

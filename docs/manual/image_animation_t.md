@@ -43,6 +43,7 @@
 | -------- | ------------ | 
 | <a href="#image_animation_t_image_animation_cast">image\_animation\_cast</a> | 转换为image_animation对象(供脚本语言使用)。 |
 | <a href="#image_animation_t_image_animation_create">image\_animation\_create</a> | 创建image_animation对象 |
+| <a href="#image_animation_t_image_animation_next">image\_animation\_next</a> | 手动切换到下一张图片。 |
 | <a href="#image_animation_t_image_animation_pause">image\_animation\_pause</a> | 暂停。 |
 | <a href="#image_animation_t_image_animation_play">image\_animation\_play</a> | 播放。 |
 | <a href="#image_animation_t_image_animation_set_auto_play">image\_animation\_set\_auto\_play</a> | 设置是否自动播放。 |
@@ -116,6 +117,27 @@ widget_t* image_animation_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### image\_animation\_next 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="image_animation_t_image_animation_next"> 手动切换到下一张图片。
+
+
+
+* 函数原型：
+
+```
+ret_t image_animation_next (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | image\_animation对象。 |
 #### image\_animation\_pause 函数
 -----------------------
 

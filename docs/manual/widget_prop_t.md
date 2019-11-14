@@ -6,6 +6,7 @@
 
 | 名称 | 说明 | 
 | -------- | ------- | 
+| WIDGET\_PROP\_EXEC | 用于执行某些特殊的命令（比如控制动画的启停），主要是方便MVVM通过属性来控制动画。 |
 | WIDGET\_PROP\_X | X坐标。 |
 | WIDGET\_PROP\_Y | Y坐标。 |
 | WIDGET\_PROP\_W | 宽度。 |
