@@ -34,7 +34,7 @@
 
  > 创建之后，和使用普通窗口是一样的。
 
- > 完整示例请参考：[combo_box.c](https://github.com/zlgopen/awtk/src/widgets/combo_box.c)
+ > 完整示例请参考：[combo_box.c](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/combo_box.c)
 
  可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：
 

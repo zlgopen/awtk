@@ -479,6 +479,8 @@ ret_t dialog_warn (const char* title, const char* text);
 #### highlight 属性
 -----------------------
 > <p id="dialog_t_highlight"> 对话框高亮策略。
+ 
+ > 请参考 [对话框高亮策略](https://github.com/zlgopen/awtk/blob/master/docs/dialog_highlight.md)
 
 
 * 类型：const char*

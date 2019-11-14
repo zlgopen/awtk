@@ -138,6 +138,8 @@ typedef struct _dialog_t {
    * @property {const char*} highlight
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 对话框高亮策略。
+   * 
+   * > 请参考 [对话框高亮策略](https://github.com/zlgopen/awtk/blob/master/docs/dialog_highlight.md)
    */
   char* highlight;
 

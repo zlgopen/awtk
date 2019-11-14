@@ -27307,7 +27307,7 @@
       }
     ],
     "header": "widgets/popup.h",
-    "desc": " 弹出窗口。\r\n\r\n 弹出窗口是一种特殊的窗口，大小和位置可以自由设置，主要用来实现右键菜单和combo\\_box的下列列表等功能。\r\n\r\n popup\\_t是[window\\_base\\_t](window_base_t.md)的子类控件，window\\_base\\_t的函数均适用于popup\\_t控件。\r\n\r\n 在xml中使用\"popup\"标签创建弹出窗口。如：\r\n\r\n ```xml\r\n <popup close_when_click_outside=\"true\" x=\"c\" y=\"m\" w=\"80%\" h=\"80\" >\r\n <list_view x=\"0\"  y=\"0\" w=\"100%\" h=\"100%\" item_height=\"30\">\r\n   <scroll_view name=\"view\" x=\"0\"  y=\"0\" w=\"-12\" h=\"100%\">\r\n     <combo_box_item tr_text=\"english\"/>\r\n     <combo_box_item tr_text=\"chinese\" />\r\n   </scroll_view>\r\n   <scroll_bar_d name=\"bar\" x=\"right\" y=\"0\" w=\"12\" h=\"100%\" value=\"0\"/>\r\n </list_view>\r\n </popup>\r\n ```\r\n\r\n >\r\n 更多用法请参考：[popup](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/)\r\n\r\n 在c代码中使用函数popup\\_create创建弹出窗口。如：\r\n\r\n ```c\r\n widget_t* win = popup_create(NULL, 0, 0, w, h);\r\n popup_set_close_when_click_outside(win, TRUE);\r\n ```\r\n\r\n > 创建之后，和使用普通窗口是一样的。\r\n\r\n > 完整示例请参考：[combo_box.c](https://github.com/zlgopen/awtk/src/widgets/combo_box.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n <popup>\r\n  <style name=\"default\" border_color=\"#a0a0a0\">\r\n    <normal bg_color=\"#f0f0f0\"/>\r\n  </style>\r\n </popup>\r\n ```\r\n\r\n > 更多用法请参考：[theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L324)\r\n",
+    "desc": " 弹出窗口。\r\n\r\n 弹出窗口是一种特殊的窗口，大小和位置可以自由设置，主要用来实现右键菜单和combo\\_box的下列列表等功能。\r\n\r\n popup\\_t是[window\\_base\\_t](window_base_t.md)的子类控件，window\\_base\\_t的函数均适用于popup\\_t控件。\r\n\r\n 在xml中使用\"popup\"标签创建弹出窗口。如：\r\n\r\n ```xml\r\n <popup close_when_click_outside=\"true\" x=\"c\" y=\"m\" w=\"80%\" h=\"80\" >\r\n <list_view x=\"0\"  y=\"0\" w=\"100%\" h=\"100%\" item_height=\"30\">\r\n   <scroll_view name=\"view\" x=\"0\"  y=\"0\" w=\"-12\" h=\"100%\">\r\n     <combo_box_item tr_text=\"english\"/>\r\n     <combo_box_item tr_text=\"chinese\" />\r\n   </scroll_view>\r\n   <scroll_bar_d name=\"bar\" x=\"right\" y=\"0\" w=\"12\" h=\"100%\" value=\"0\"/>\r\n </list_view>\r\n </popup>\r\n ```\r\n\r\n >\r\n 更多用法请参考：[popup](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/)\r\n\r\n 在c代码中使用函数popup\\_create创建弹出窗口。如：\r\n\r\n ```c\r\n widget_t* win = popup_create(NULL, 0, 0, w, h);\r\n popup_set_close_when_click_outside(win, TRUE);\r\n ```\r\n\r\n > 创建之后，和使用普通窗口是一样的。\r\n\r\n > 完整示例请参考：[combo_box.c](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/combo_box.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n <popup>\r\n  <style name=\"default\" border_color=\"#a0a0a0\">\r\n    <normal bg_color=\"#f0f0f0\"/>\r\n  </style>\r\n </popup>\r\n ```\r\n\r\n > 更多用法请参考：[theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L324)\r\n",
     "name": "popup_t",
     "parent": "widget_t",
     "annotation": {
@@ -38845,7 +38845,7 @@
     "properties": [
       {
         "name": "highlight",
-        "desc": " 对话框高亮策略。\r\n",
+        "desc": " 对话框高亮策略。\r\n \r\n > 请参考 [对话框高亮策略](https://github.com/zlgopen/awtk/blob/master/docs/dialog_highlight.md)\r\n",
         "type": "const char*",
         "annotation": {
           "set_prop": true,
