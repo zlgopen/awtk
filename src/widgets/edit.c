@@ -881,7 +881,7 @@ ret_t edit_set_focus(widget_t* widget, bool_t focus) {
 ret_t edit_set_cursor(widget_t* widget, uint32_t cursor) {
   edit_t* edit = EDIT(widget);
   return_value_if_fail(widget != NULL && edit != NULL, RET_BAD_PARAMS);
-  
+
   return text_edit_set_cursor(edit->model, cursor);
 }
 

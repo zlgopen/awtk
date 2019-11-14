@@ -279,7 +279,7 @@ widget_t* combo_box_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h
   edit->right_margin = 0;
   str_init(&(combo_box->text), 32);
   combo_box->localize_options = TRUE;
-  
+
   return widget;
 }
 

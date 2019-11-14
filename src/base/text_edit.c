@@ -457,7 +457,7 @@ static ret_t text_edit_paint_caret(text_edit_t* text_edit, canvas_t* c) {
 
   canvas_set_stroke_color(c, caret_color);
   canvas_draw_vline(c, x, y, c->font_size);
-  
+
   return RET_OK;
 }
 
@@ -1164,7 +1164,7 @@ ret_t text_edit_get_state(text_edit_t* text_edit, text_edit_state_t* state) {
   state->cursor = impl->state.cursor;
   state->max_rows = impl->rows->capacity;
   state->last_line_number = impl->last_line_number;
-  
+
   state->select_start = tk_min(impl->state.select_start, impl->state.select_end);
   state->select_end = tk_max(impl->state.select_start, impl->state.select_end);
 

@@ -319,4 +319,4 @@ lcd_t* lcd_reg_create(wh_t w, wh_t h) {
 lcd_t* lcd_reg_create(wh_t w, wh_t h) {
   return lcd_mem_fragment_create(w, h);
 }
-#endif/*FRAGMENT_FRAME_BUFFER_SIZE*/
+#endif /*FRAGMENT_FRAME_BUFFER_SIZE*/

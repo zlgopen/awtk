@@ -1839,7 +1839,7 @@ ret_t widget_on_keydown(widget_t* widget, key_event_t* e) {
   if (widget->feedback) {
     ui_feedback_request(widget, (event_t*)e);
   }
-  
+
   e->key = key;
   if (ret != RET_STOP) {
     ret = widget_on_keydown_general(widget, e);

@@ -42,7 +42,7 @@ typedef struct _text_edit_state_t {
   uint32_t select_start;
   uint32_t select_end;
   uint32_t last_line_number;
-  
+
   bool_t mask;
   bool_t wrap_word;
   wchar_t mask_char;

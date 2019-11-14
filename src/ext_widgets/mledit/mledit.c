@@ -317,7 +317,7 @@ ret_t mledit_clear(mledit_t* mledit) {
 ret_t mledit_set_cursor(widget_t* widget, uint32_t cursor) {
   mledit_t* mledit = MLEDIT(widget);
   return_value_if_fail(widget != NULL && mledit != NULL, RET_BAD_PARAMS);
-  
+
   return text_edit_set_cursor(mledit->model, cursor);
 }
 
@@ -443,8 +443,7 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
         } else if (delta < 0) {
           scroll_bar_add_delta(vscroll_bar, text_edit->c->font_size * mledit->scroll_line);
         }
-      }
-      else {
+      } else {
         if (delta > 0) {
           key_event_init(&kevt, EVT_KEY_DOWN, widget, TK_KEY_UP);
           text_edit_key_down(mledit->model, (key_event_t*)&kevt);
@@ -493,16 +492,14 @@ static ret_t mledit_sync_scrollbar(widget_t* widget, text_edit_state_t* state) {
   widget_t* vscroll_bar = widget_lookup_by_type(widget, WIDGET_TYPE_SCROLL_BAR_DESKTOP, TRUE);
 
   if (vscroll_bar != NULL) {
-
     virtual_h = virtual_h >= vscroll_bar->h ? virtual_h : vscroll_bar->h;
-  
-    if(virtual_h > vscroll_bar->h) {
+
+    if (virtual_h > vscroll_bar->h) {
       y = state->oy * virtual_h / (virtual_h - vscroll_bar->h);
-    }
-    else {
+    } else {
       y = 0;
     }
-    
+
     scroll_bar_set_params(vscroll_bar, virtual_h, state->line_height);
     scroll_bar_set_value_only(vscroll_bar, y);
     widget_invalidate_force(vscroll_bar, NULL);
