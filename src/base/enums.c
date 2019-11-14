@@ -198,6 +198,7 @@ static const key_type_value_t keys_type_name_value[] = {
     {"DELETE", 0, TK_KEY_DELETE},
     {"LEFTBRACE", 0, TK_KEY_LEFTBRACE},
     {"RIGHTBRACE", 0, TK_KEY_RIGHTBRACE},
+    {"BACK", 0, TK_KEY_BACK},
 #ifdef SDL2
     {"PRINTSCREEN", 0, TK_KEY_PRINTSCREEN},
     {"SCROLLLOCK", 0, TK_KEY_SCROLLLOCK},

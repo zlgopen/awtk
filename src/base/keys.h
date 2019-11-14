@@ -712,6 +712,7 @@ typedef enum _key_code_t {
   TK_KEY_APP1 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_APP1),
   TK_KEY_APP2 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_APP2),
   TK_KEY_COMMAND = TK_KEY_RGUI,
+  TK_KEY_BACK = TK_KEY_AC_BACK,	
 #else
   /**
    * @const TK_KEY_LSHIFT
@@ -863,6 +864,11 @@ typedef enum _key_code_t {
    * TK_KEY_COMMAND
    */
   TK_KEY_COMMAND = 0x20 + 164,
+  /**
+   * @const TK_KEY_BACK
+   * TK_KEY_BACK
+   */
+  TK_KEY_BACK = 0x20 + 165,
 #endif
 
 } key_code_t;
