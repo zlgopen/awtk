@@ -2,6 +2,7 @@
 
 * 2019/11/14
   * 完善进度条（感谢朝泽提供补丁）。
+  * 修改edit注释问题（感谢朝泽提供补丁）。
   * 增加键值TK\_KEY\_BACK。
   * 增加lcd\_mem\_fragment。
   * 增加graphic\_buffer\_attach。
