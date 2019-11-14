@@ -11,20 +11,22 @@ AWTK 的可移植性很高，在移植时只需要实现平台初始化、lcd �
 > 以下是初始化内存的代码。
 
 ```
-static uint32_t s_heam_mem[2 * 4096];
-
 ret_t platform_prepare(void) {
-	if(!s_inited) {
-		s_inited = TRUE;
+  static bool_t inited = FALSE;
+  static uint32_t s_heam_mem[4000];
+
+  if (!inited) {
+    inited = TRUE;
     tk_mem_init(s_heam_mem, sizeof(s_heam_mem));
-	}
+  }
+
   return RET_OK;
 }
 ```
 
 > 参考：awtk-port/platform.c
 
-> 以下是初始化systick的代码。
+> 以下是初始化 systick 的代码（在板子提供代码上修改而来）。
 
 ```
 static u8 fac_us = 0; 
@@ -39,33 +41,25 @@ void systick_enable_int(void) {
 void SysTick_Init(void) {
   SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK_Div8);
   fac_us = SystemCoreClock / 8000000;
-
   fac_ms = (u16)fac_us * 1000;
-
-  systick_enable_int();
 }
 
 void delay_us(u32 nus) {
   u32 temp = 0;
-  SysTick->LOAD = nus * fac_us;
-  SysTick->VAL = 0x00;       
+  SysTick->LOAD = nus * fac_us; 
+  SysTick->VAL = 0x00;          
   do {
     temp = SysTick->CTRL;
-  } while ((temp & 0x01) && !(temp & (1 << 16)));  
-
-	systick_enable_int();
+  } while ((temp & 0x01) && !(temp & (1 << 16))); 
 }
-
 
 void delay_ms(u16 nms) {
   u32 temp = 0;
-  SysTick->LOAD = (u32)nms * fac_ms;  
-  SysTick->VAL = 0x00;         
+  SysTick->LOAD = (u32)nms * fac_ms;
+  SysTick->VAL = 0x00;              
   do {
     temp = SysTick->CTRL;
-  } while ((temp & 0x01) && !(temp & (1 << 16)));  
-
-	systick_enable_int();
+  } while ((temp & 0x01) && !(temp & (1 << 16))); 
 }
 ```
 
@@ -73,29 +67,31 @@ void delay_ms(u16 nms) {
 
 ### 二、实现 lcd
 
-lcd\_t 接口提供基本的显示功能，AWTK 提供基于寄存器和基于 framebuffer 两种缺省实现，在此基础上实现自己的 lcd\_t 接口非常方便。
+lcd\_t 接口提供基本的显示功能，AWTK 提供基于*寄存器*、*帧缓冲*和*片段帧缓冲*三种缺省实现，在此基础上实现自己的 lcd\_t 接口非常方便。
 
-stm32f103ze 使用基于寄存器的 lcd 的缺省实现，只需要提供 set\_window\_func 和 write\_data\_func 两个函数/宏即可。这里直接使用了 TFT\_SetWindow 和 TFT\_WriteData 两个函数。
+stm32f103ze 使用基于*片段帧缓冲*的 lcd 的缺省实现，只需要提供 set\_window\_func 和 write\_data\_func 两个函数/宏即可。这里直接使用了 TFT\_SetWindow 和 TFT\_WriteData 两个函数。
+
+> 直接写寄存器的方式容易闪烁，而帧缓冲又需要大量内存，片段帧缓冲能有效解决低内存平台的闪烁问题。
 
 ```
-#include "gui.h"
-#include "lcd_driver.h"
-
+#include "tftlcd.h"
 #include "tkc/mem.h"
-#include "lcd/lcd_reg.h"
+#include "lcd/lcd_mem_fragment.h"
 
 typedef uint16_t pixel_t;
 
 #define LCD_FORMAT BITMAP_FMT_BGR565
-#define pixel_from_rgb(r, g, b) ((((r) >> 3) << 11) | (((g) >> 2) << 5) | ((b) >> 3))
-#define pixel_to_rgba(p) {(0xff & ((p >> 11) << 3)), (0xff & ((p >> 5) << 2)), (0xff & (p << 3))}
+#define pixel_from_rgb(r, g, b)                                                \
+  ((((r) >> 3) << 11) | (((g) >> 2) << 5) | ((b) >> 3))
+#define pixel_to_rgba(p)                                                       \
+  { (0xff & ((p >> 11) << 3)), (0xff & ((p >> 5) << 2)), (0xff & (p << 3)) }
 
-#define set_window_func TFT_SetWindow
-#define write_data_func TFT_WriteData
+#define set_window_func LCD_Set_Window
+#define write_data_func LCD_WriteData_Color
 
 #include "base/pixel.h"
 #include "blend/pixel_ops.inc"
-#include "lcd/lcd_reg.inc"
+#include "lcd/lcd_mem_fragment.inc"
 
 ```
 
@@ -106,23 +102,74 @@ typedef uint16_t pixel_t;
 main\_loop 主要负责事件分发和绘制这个不断循环的过程。main\_loop\_raw.inc 里实现了裸系统 main\_loop 的基本功能，在移植时加上输入事件的的分发即可：
 
 ```
-ret_t platform_disaptch_input(main_loop_t* l) {
-  return RET_OK;
+
+#include "key.h"
+#include "led.h"
+#include "rtc.h"
+#include "stdlib.h"
+#include "tftlcd.h"
+#include "touch.h"
+#include "usart.h"
+
+
+#include "base/idle.h"
+#include "base/timer.h"
+#include "tkc/platform.h"
+#include "base/main_loop.h"
+#include "base/event_queue.h"
+#include "base/font_manager.h"
+#include "lcd/lcd_mem_fragment.h"
+#include "main_loop/main_loop_simple.h"
+
+
+ret_t platform_disaptch_input(main_loop_t *l) { return RET_OK; }
+
+static lcd_t *platform_create_lcd(wh_t w, wh_t h) {
+  return lcd_mem_fragment_create(w, h);
 }
 
-static lcd_t* platform_create_lcd(wh_t w, wh_t h) {
-  return lcd_reg_create(w, h);
+void dispatch_input_events(void) {
+  int key = KEY_Scan(0);
+
+  switch (key) {
+  case KEY_UP: {
+    key = TK_KEY_UP;
+    break;
+  }
+  case KEY_DOWN: {
+    key = TK_KEY_DOWN;
+    break;
+  }
+  case KEY_LEFT: {
+    key = TK_KEY_RETURN;
+    break;
+  }
+  case KEY_RIGHT: {
+    key = TK_KEY_BACK;
+    break;
+  }
+  default: { key = 0; }
+  }
+
+  if (key) {
+    main_loop_post_key_event(main_loop(), TRUE, key);
+  } else {
+    main_loop_post_key_event(main_loop(), FALSE, key);
+  }
+
+  if (TOUCH_Scan() == 0) {
+    main_loop_post_pointer_event(main_loop(), TRUE, TouchData.lcdx,
+                                 TouchData.lcdy);
+  } else {
+    main_loop_post_pointer_event(main_loop(), FALSE, TouchData.lcdx,
+                                 TouchData.lcdy);
+  }
 }
 
 void TIM3_IRQHandler(void) {
   if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET) {
+    dispatch_input_events();
     TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
-
-    if (TOUCH_Scan() == 0) {
-      main_loop_post_pointer_event(main_loop(), TRUE, TouchData.lcdx, TouchData.lcdy);
-    } else {
-      main_loop_post_pointer_event(main_loop(), FALSE, TouchData.lcdx, TouchData.lcdy);
-    }
   }
 }
 
@@ -138,9 +185,9 @@ void TIM3_IRQHandler(void) {
 * 3. 增加如下头文件路径：
 
 ```
-..\awtk\src
-..\awtk\3rd
-..\awtk-port
+awtk\src
+awtk\3rd
+awtk-port
 ```
 
 > 请根据项目文件位置进行调整。
@@ -155,10 +202,10 @@ void TIM3_IRQHandler(void) {
 
 六、常见问题
 
- * 莫名其妙的崩溃，可能是栈溢出。请修Stack_Size的大小。
+ * 1.莫名其妙的崩溃，可能是栈溢出。请修 Stack_Size 的大小。
 
 ```
  Stack_Size      EQU     0x00001000
 ```
 
-* 如果出现wcsxxx之类的函数没有定义时，请在awtk-port/awtk\_config.h中定义WITH\_WCSXXX。
+* 2.如果出现 wcsxxx 之类的函数没有定义时，请在 awtk-port/awtk\_config.h 中定义 WITH\_WCSXXX。
