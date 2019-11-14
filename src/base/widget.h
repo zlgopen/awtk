@@ -973,6 +973,8 @@ ret_t widget_set_feedback(widget_t* widget, bool_t feedback);
 /**
  * @method widget_set_floating
  * 设置控件的floating标志。
+ *> floating的控件不受父控件的子控件布局参数的影响。
+ *
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {bool_t} floating 是否启用floating布局。

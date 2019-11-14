@@ -420,8 +420,8 @@ class ApiGenerator {
       if(isDesign(p)) {
         result += `| 可在IDE中设置 | ${toBool(isDesign(p))} |\n`;
       }
-      if(isGetProp(p)) {
-        result += `| 可在XML中设置 | ${toBool(isGetProp(p))} |\n`;
+      if(isSetProp(p)) {
+        result += `| 可在XML中设置 | ${toBool(isSetProp(p))} |\n`;
       }
       if(isGetProp(p)) {
         result += `| 可通过widget\\_get\\_prop读取 | ${toBool(isGetProp(p))} |\n`;

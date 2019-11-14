@@ -68,7 +68,6 @@ widget_t* window_base_cast (widget_t* widget);
 | -------- | ----- |
 | 可直接读取 | 否 |
 | 可直接修改 | 否 |
-| 可在XML中设置 | 是 |
 | 可通过widget\_get\_prop读取 | 是 |
 #### closable 属性
 -----------------------
@@ -126,7 +125,6 @@ widget_t* window_base_cast (widget_t* widget);
 | -------- | ----- |
 | 可直接读取 | 否 |
 | 可直接修改 | 否 |
-| 可在XML中设置 | 是 |
 | 可通过widget\_get\_prop读取 | 是 |
 #### image\_manager 属性
 -----------------------
@@ -142,7 +140,6 @@ widget_t* window_base_cast (widget_t* widget);
 | -------- | ----- |
 | 可直接读取 | 否 |
 | 可直接修改 | 否 |
-| 可在XML中设置 | 是 |
 | 可通过widget\_get\_prop读取 | 是 |
 #### open\_anim\_hint 属性
 -----------------------
@@ -172,7 +169,6 @@ widget_t* window_base_cast (widget_t* widget);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-| 可在XML中设置 | 是 |
 | 可通过widget\_get\_prop读取 | 是 |
 #### theme 属性
 -----------------------
@@ -208,5 +204,4 @@ widget_t* window_base_cast (widget_t* widget);
 | -------- | ----- |
 | 可直接读取 | 否 |
 | 可直接修改 | 否 |
-| 可在XML中设置 | 是 |
 | 可通过widget\_get\_prop读取 | 是 |

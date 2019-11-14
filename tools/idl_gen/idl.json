@@ -12499,7 +12499,7 @@
         "annotation": {
           "scriptable": true
         },
-        "desc": " 设置控件的floating标志。\r\n\r\n",
+        "desc": " 设置控件的floating标志。\r\n> floating的控件不受父控件的子控件布局参数的影响。\r\n\r\n\r\n",
         "name": "widget_set_floating",
         "return": {
           "type": "ret_t",
@@ -16660,7 +16660,6 @@
     "desc": " 单个资源的描述信息。\r\n",
     "name": "asset_info_t",
     "annotation": {
-      "constructor": true,
       "scriptable": true
     },
     "level": 1
@@ -18314,7 +18313,7 @@
       }
     ],
     "header": "tkc/date_time.h",
-    "desc": " 日期时间。\r\n\r\n> 在嵌入式平台中，在系统初始时，需要调用date\\_time\\_set\\_impl设置实际获取系统时间的函数。\r\n\r\n",
+    "desc": " 日期时间。\r\n\r\n> 在嵌入式平台中，在系统初始时，需要调用date\\_time\\_global\\_init设置实际获取/设置系统时间的函数。\r\n\r\n",
     "name": "date_time_t",
     "annotation": {
       "scriptable": true
@@ -31624,7 +31623,7 @@
     "events": [],
     "properties": [],
     "header": "tkc/event_source_fd.h",
-    "desc": "\r\n fd事件源。\r\n\r\n",
+    "desc": "\r\n fd事件源。用于文件、管道和套接字。\r\n\r\n",
     "name": "event_source_fd_t",
     "parent": "object",
     "level": 2
