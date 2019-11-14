@@ -31,7 +31,7 @@ BEGIN_C_DECLS
  * @annotation ["scriptable"]
  * 日期时间。
  *
- *> 在嵌入式平台中，在系统初始时，需要调用date\_time\_set\_impl设置实际获取系统时间的函数。
+ *> 在嵌入式平台中，在系统初始时，需要调用date\_time\_global\_init设置实际获取/设置系统时间的函数。
  *
  */
 typedef struct _date_time_t {

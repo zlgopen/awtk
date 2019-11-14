@@ -33,7 +33,7 @@ typedef struct _event_source_fd_t event_source_fd_t;
  * @class event_source_fd_t
  * @parent object
  *
- * fd事件源。
+ * fd事件源。用于文件、管道和套接字。
  *
  */
 struct _event_source_fd_t {

@@ -259,7 +259,7 @@ typedef struct _preload_res_t {
 
 /**
  * @class asset_info_t
- * @annotation ["constructor", "scriptable"]
+ * @annotation ["scriptable"]
  * 单个资源的描述信息。
  */
 typedef struct _asset_info_t {
