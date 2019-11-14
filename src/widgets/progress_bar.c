@@ -93,22 +93,29 @@ static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
+static ret_t progress_bar_update_text(widget_t* widget) {
+  char str[TK_NUM_MAX_LEN + 1];
+  progress_bar_t* progress_bar = PROGRESS_BAR(widget);
+  return_value_if_fail(progress_bar != NULL, RET_BAD_PARAMS);
+
+  tk_snprintf(str, TK_NUM_MAX_LEN, "%d%%", progress_bar_get_percent(widget));
+  return widget_set_text_utf8(widget, str);
+}
+
 ret_t progress_bar_set_value(widget_t* widget, float_t value) {
   progress_bar_t* progress_bar = PROGRESS_BAR(widget);
   return_value_if_fail(progress_bar != NULL, RET_BAD_PARAMS);
 
   if (progress_bar->value != value) {
-    char str[TK_NUM_MAX_LEN + 1];
     event_t e = event_init(EVT_VALUE_WILL_CHANGE, widget);
 
     widget_dispatch(widget, &e);
     progress_bar->value = value;
     e = event_init(EVT_VALUE_CHANGED, widget);
     widget_dispatch(widget, &e);
-    widget_invalidate(widget, NULL);
 
-    tk_snprintf(str, TK_NUM_MAX_LEN, "%d%%", progress_bar_get_percent(widget));
-    widget_set_text_utf8(widget, str);
+    progress_bar_update_text(widget);
+    widget_invalidate(widget, NULL);
   }
 
   return RET_OK;
@@ -204,7 +211,12 @@ ret_t progress_bar_set_max(widget_t* widget, float_t max) {
   progress_bar_t* progress_bar = PROGRESS_BAR(widget);
   return_value_if_fail(progress_bar != NULL, RET_BAD_PARAMS);
 
-  progress_bar->max = max;
+  if (progress_bar->max != max) {
+    progress_bar->max = max;
 
-  return widget_invalidate(widget, NULL);
+    progress_bar_update_text(widget);
+    widget_invalidate(widget, NULL);
+  }
+
+  return RET_OK;
 }
