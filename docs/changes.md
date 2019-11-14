@@ -8,6 +8,8 @@
   * 增加graphic\_buffer\_attach。
   * 重构lcd\_mem
   * 完善tkc的文档（感谢俊杰提供补丁）。
+  * 完善medit（感谢智明提供补丁）。
+  * 完善vgcanvas fill rect（感谢智明提供补丁）。
 
 * 2019/11/13
   * 把部分变量修改为常量，以减少内存使用。
