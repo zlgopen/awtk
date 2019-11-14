@@ -26,9 +26,36 @@
 
 BEGIN_C_DECLS
 
+/**
+ * @class platform
+ * @annotation ["scriptable", "fake"]
+ * 平台接口，包括：获取时间、休眠等函数。
+ */
+
+/**
+ * @method get_time_ms64
+ * 获取当前时间。
+ *
+ * @return {uint64_t} 成功返回当前时间。
+ */
 uint64_t get_time_ms64(void);
+
+/**
+ * @method sleep_ms
+ *
+ * 睡眠毫秒。
+ *
+ * @param {uint32_t} ms 毫秒。
+ */
 void sleep_ms(uint32_t ms);
 
+/**
+ * @method platform_prepare
+ *
+ * 平台准备函数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t platform_prepare(void);
 
 END_C_DECLS

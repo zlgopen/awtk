@@ -51,5 +51,12 @@
 #include "tkc/idle_manager.h"
 #include "tkc/timer_info.h"
 #include "tkc/timer_manager.h"
+#include "tkc/int_str.h"
+#include "tkc/str_str.h"
+#include "tkc/mime_types.h"
+#include "tkc/rom_fs.h"
+#include "tkc/ring_buffer.h"
+#include "tkc/named_value.h"
+#include "tkc/slist.h"
 
 #endif /*TK_TKC_H*/
