@@ -66,7 +66,7 @@ dialog_highlighter_t* dialog_highlighter_default_create(object_t* args) {
 }
 ```
 
-2.注册到window\_animator工厂。如：
+2.注册到dialog\_highlighter\_factory工厂。如：
 
 ```
   dialog_highlighter_factory_register(f, DIALOG_HIGHLIGHTER_DEFAULT,
