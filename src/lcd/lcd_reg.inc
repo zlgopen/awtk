@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   lcd_reg.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  register based implemented lcd interface
@@ -20,35 +20,20 @@
  */
 #include "awtk_config.h"
 #include "base/system_info.h"
-#include "fragment_frame_buffer.h"
 
+#ifndef FRAGMENT_FRAME_BUFFER_SIZE
 typedef struct _lcd_reg_t {
   lcd_t lcd;
-  fragment_frame_buffer_t affb;
-  fragment_frame_buffer_t* ffb;
-  pixel_t buff[FRAGMENT_FRAME_BUFFER_SIZE];
 } lcd_reg_t;
 
 static inline ret_t lcd_reg_set_window(lcd_t* lcd, int sx, int sy, int ex, int ey) {
-  lcd_reg_t* reg = (lcd_reg_t*)lcd;
-
-  if (reg->ffb != NULL) {
-    fragment_frame_buffer_set_window(reg->ffb, sx, sy, ex - sx + 1, ey - sy + 1);
-  } else {
-    set_window_func(sx, sy, ex, ey);
-  }
+  set_window_func(sx, sy, ex, ey);
 
   return RET_OK;
 }
 
 static inline ret_t lcd_reg_write_data(lcd_t* lcd, pixel_t data) {
-  lcd_reg_t* reg = (lcd_reg_t*)lcd;
-
-  if (reg->ffb != NULL) {
-    fragment_frame_buffer_write_data(reg->ffb, data);
-  } else {
-    write_data_func(data);
-  }
+  write_data_func(data);
 
   return RET_OK;
 }
@@ -56,51 +41,16 @@ static inline ret_t lcd_reg_write_data(lcd_t* lcd, pixel_t data) {
 static inline ret_t lcd_reg_write_data_fill(lcd_t* lcd, pixel_t data, wh_t w, wh_t h) {
   uint32_t i = 0;
   uint32_t size = w * h;
-  lcd_reg_t* reg = (lcd_reg_t*)lcd;
 
-  if (reg->ffb != NULL) {
-    fragment_frame_buffer_write_data_fill(reg->ffb, data, size);
-  } else {
-    for (i = 0; i < size; i++) {
-      write_data_func(data);
-    }
+  for (i = 0; i < size; i++) {
+    write_data_func(data);
   }
-
-  return RET_OK;
-}
-
-static inline ret_t lcd_reg_image_copy(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
-  uint32_t i = 0;
-  uint32_t j = 0;
-  const pixel_t* data = NULL;
-  lcd_reg_t* reg = (lcd_reg_t*)lcd;
-  return_value_if_fail(src->w == dst->w && src->h == dst->h, RET_BAD_PARAMS);
-
-  data = (pixel_t*)bitmap_lock_buffer_for_read(img);
-  return_value_if_fail(data != NULL, RET_BAD_PARAMS);
-
-  if (reg->ffb != NULL) {
-    fragment_frame_buffer_image_copy(reg->ffb, img, src, dst);
-  } else {
-    const pixel_t* src_p = data + img->w * src->y + src->x;
-
-    for (j = 0; j < dst->h; j++) {
-      for (i = 0; i < dst->w; i++) {
-        write_data_func(src_p[i]);
-      }
-      src_p += img->w;
-    }
-  }
-  bitmap_unlock_buffer(img);
 
   return RET_OK;
 }
 
 static ret_t lcd_reg_begin_frame(lcd_t* lcd, rect_t* dirty_rect) {
-  lcd_reg_t* reg = (lcd_reg_t*)lcd;
   lcd->dirty_rect = *dirty_rect;
-
-  reg->ffb = fragment_frame_buffer_begin_frame(&(reg->affb), dirty_rect);
 
   return RET_OK;
 }
@@ -143,10 +93,14 @@ static ret_t lcd_reg_draw_points(lcd_t* lcd, point_t* points, uint32_t nr) {
 }
 
 static ret_t lcd_reg_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
+  uint32_t i = 0;
+  uint32_t size = w * h;
   pixel_t color = color_to_pixel(lcd->fill_color);
 
   lcd_reg_set_window(lcd, x, y, x + w - 1, y + h - 1);
-  lcd_reg_write_data_fill(lcd, color, w, h);
+  for (i = 0; i < size; i++) {
+    write_data_func(color);
+  }
 
   return RET_OK;
 }
@@ -195,7 +149,13 @@ static ret_t lcd_reg_draw_image_bgr565(lcd_t* lcd, bitmap_t* img, rect_t* src, r
   return_value_if_fail(data != NULL, RET_BAD_PARAMS);
   lcd_reg_set_window(lcd, x, y, x + dw - 1, y + dh - 1);
   if (src->w == dst->w && src->h == dst->h) {
-    lcd_reg_image_copy(lcd, img, src, dst);
+    const pixel_t* src_p = data + img->w * src->y + src->x;
+    for (j = 0; j < dst->h; j++) {
+      for (i = 0; i < dst->w; i++) {
+        write_data_func(src_p[i]);
+      }
+      src_p += img->w;
+    }
   } else {
     xy_t sx = src->x;
     xy_t sy = src->y;
@@ -309,12 +269,6 @@ static ret_t lcd_reg_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* 
 }
 
 static ret_t lcd_reg_end_frame(lcd_t* lcd) {
-  lcd_reg_t* reg = (lcd_reg_t*)lcd;
-
-  if (reg->ffb != NULL) {
-    fragment_frame_buffer_end_frame(reg->ffb);
-  }
-
   return RET_OK;
 }
 
@@ -358,7 +312,11 @@ lcd_t* lcd_reg_create(wh_t w, wh_t h) {
   lcd->support_dirty_rect = TRUE;
   lcd->get_desired_bitmap_format = lcd_reg_get_desired_bitmap_format;
 
-  fragment_frame_buffer_init(&(reg.affb), reg.buff, FRAGMENT_FRAME_BUFFER_SIZE);
-
   return lcd;
 }
+#else
+#include "lcd/lcd_mem_fragment.inc"
+lcd_t* lcd_reg_create(wh_t w, wh_t h) {
+  return lcd_mem_fragment_create(w, h);
+}
+#endif/*FRAGMENT_FRAME_BUFFER_SIZE*/
