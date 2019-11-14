@@ -1,7 +1,7 @@
 ﻿/**
  * File:   lcd_mem.h
  * Author: AWTK Develop Team
- * Brief:  memory implemented lcd interface/
+ * Brief:  memory implemented lcd interface
  *
  * Copyright (c) 2018 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *

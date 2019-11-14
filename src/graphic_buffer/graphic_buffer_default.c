@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   graphic_buffer_default.c
  * Author: AWTK Develop Team
  * Brief:  graphic_buffer default
@@ -54,6 +54,16 @@ static ret_t graphic_buffer_default_unlock(graphic_buffer_t* buffer) {
   return RET_OK;
 }
 
+static ret_t graphic_buffer_default_attach(graphic_buffer_t* buffer, void* data) {
+  graphic_buffer_default_t* b = GRAPHIC_BUFFER_DEFAULT(buffer);
+  return_value_if_fail(b != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(b->data_head == NULL, RET_NOT_IMPL);
+
+  b->data = data;
+
+  return RET_OK;
+}
+
 static ret_t graphic_buffer_default_destroy(graphic_buffer_t* buffer) {
   graphic_buffer_default_t* b = GRAPHIC_BUFFER_DEFAULT(buffer);
   return_value_if_fail(b != NULL, RET_BAD_PARAMS);
@@ -68,6 +78,7 @@ static const graphic_buffer_vtable_t s_graphic_buffer_default_vtable = {
     .lock_for_read = graphic_buffer_default_lock_for_read,
     .lock_for_write = graphic_buffer_default_lock_for_write,
     .unlock = graphic_buffer_default_unlock,
+    .attach = graphic_buffer_default_attach,
     .destroy = graphic_buffer_default_destroy};
 
 static graphic_buffer_t* graphic_buffer_default_create(uint32_t w, uint32_t h,
@@ -107,7 +118,6 @@ static graphic_buffer_t* graphic_buffer_default_create(uint32_t w, uint32_t h,
 graphic_buffer_t* graphic_buffer_create_with_data(const uint8_t* data, uint32_t w, uint32_t h,
                                                   bitmap_format_t format) {
   graphic_buffer_default_t* buffer = NULL;
-  return_value_if_fail(data != NULL, NULL);
 
   buffer = TKMEM_ZALLOC(graphic_buffer_default_t);
   return_value_if_fail(buffer != NULL, NULL);

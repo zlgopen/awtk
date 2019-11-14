@@ -4,6 +4,8 @@
   * 完善进度条（感谢朝泽提供补丁）。
   * 增加键值TK\_KEY\_BACK。
   * 增加lcd\_mem\_fragment。
+  * 增加graphic\_buffer\_attach。
+  * 重构lcd\_mem
 
 * 2019/11/13
   * 把部分变量修改为常量，以减少内存使用。

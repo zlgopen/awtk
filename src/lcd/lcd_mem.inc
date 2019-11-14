@@ -1,7 +1,7 @@
-/**
+﻿/**
  * File:   lcd_mem.c
  * Author: Li XianJing <xianjimli@hotmail.com>
- * Brief:  mem implemented lcd interface/
+ * Brief:  mem implemented lcd interface
  *
  * Copyright (c) 2018 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
@@ -26,31 +26,6 @@
 #include "blend/image_g2d.h"
 #include "base/system_info.h"
 
-#define LCD_MEM_GRAPHIC_BUFFER_CACHE_MAX_NUMBER 5
-
-typedef struct _lcd_mem_graphic_buffer_cache_t {
-  uint8_t* fb;
-  graphic_buffer_t* gb;
-} lcd_mem_graphic_buffer_cache_t;
-
-static darray_t lcd_mem_graphic_buffer_cache;
-
-static int lcd_mem_graphic_buffer_cache_cmp(const lcd_mem_graphic_buffer_cache_t* a,
-                                            const lcd_mem_graphic_buffer_cache_t* b) {
-  if (a->fb == b->fb) {
-    return 0;
-  }
-  return 1;
-}
-
-static ret_t lcd_mem_graphic_buffer_cache_destroy(lcd_mem_graphic_buffer_cache_t* cache) {
-  if (cache->gb != NULL) {
-    graphic_buffer_destroy(cache->gb);
-  }
-  TKMEM_FREE(cache);
-  return RET_OK;
-}
-
 static uint32_t lcd_mem_get_line_length(lcd_mem_t* mem) {
   uint32_t bpp = bitmap_get_bpp_of_format(LCD_FORMAT);
   return tk_max(mem->base.w * bpp, mem->line_length);
@@ -65,8 +40,9 @@ static pixel_t* lcd_mem_init_drawing_fb(lcd_t* lcd, bitmap_t* fb) {
 
     fb->w = lcd->w;
     fb->h = lcd->h;
-    fb->format = mem->format;
     fb->buffer = mem->offline_gb;
+    fb->format = mem->format;
+    graphic_buffer_attach(mem->offline_gb, mem->offline_fb);
     bitmap_set_line_length(fb, lcd_mem_get_line_length(mem));
   }
 
@@ -89,47 +65,15 @@ static bitmap_t* lcd_mem_init_online_fb(lcd_t* lcd, bitmap_t* fb, lcd_orientatio
   memset(fb, 0x00, sizeof(bitmap_t));
   fb->w = w;
   fb->h = h;
-  fb->format = mem->format;
   fb->buffer = mem->online_gb;
+  fb->format = mem->format;
+  graphic_buffer_attach(mem->online_gb, mem->online_fb);
   bitmap_set_line_length(fb, lcd_mem_get_line_length(mem));
 
   return fb;
 }
 
-static inline graphic_buffer_t* lcd_mem_get_graphic_buffer(uint8_t* fb, uint32_t w, uint32_t h,
-                                                           bitmap_format_t format) {
-  graphic_buffer_t* gb = NULL;
-  lcd_mem_graphic_buffer_cache_t tmp;
-  lcd_mem_graphic_buffer_cache_t* cache = NULL;
-
-  return_value_if_fail(fb != NULL, NULL);
-
-  tmp.fb = fb;
-  cache = darray_find(&lcd_mem_graphic_buffer_cache, &tmp);
-  if (cache == NULL) {
-    cache = (lcd_mem_graphic_buffer_cache_t*)TKMEM_ZALLOC(lcd_mem_graphic_buffer_cache_t);
-    gb = graphic_buffer_create_with_data(fb, w, h, format);
-
-    cache->fb = fb;
-    cache->gb = gb;
-    darray_push(&lcd_mem_graphic_buffer_cache, cache);
-  } else {
-    gb = cache->gb;
-  }
-  return gb;
-}
-
 static ret_t lcd_mem_begin_frame(lcd_t* lcd, rect_t* dirty_rect) {
-  lcd_mem_t* mem = (lcd_mem_t*)lcd;
-
-  if (mem->online_fb != NULL) {
-    mem->online_gb = lcd_mem_get_graphic_buffer(mem->online_fb, lcd->w, lcd->h, mem->format);
-  }
-
-  if (mem->offline_fb != NULL) {
-    mem->offline_gb = lcd_mem_get_graphic_buffer(mem->offline_fb, lcd->w, lcd->h, mem->format);
-  }
-
   return RET_OK;
 }
 
@@ -198,12 +142,15 @@ static ret_t lcd_mem_draw_points(lcd_t* lcd, point_t* points, uint32_t nr) {
 }
 
 static color_t lcd_mem_get_point_color(lcd_t* lcd, xy_t x, xy_t y) {
+  color_t c;
   uint32_t line_length = lcd_mem_get_line_length((lcd_mem_t*)lcd);
   uint8_t* fbuff = (uint8_t*)lcd_mem_init_drawing_fb(lcd, NULL);
 
   pixel_t p = *((pixel_t*)(fbuff + y * line_length) + x);
+  rgba_t rgba = pixel_to_rgba(p);
+  c.rgba = rgba;
 
-  return color_init(p.r, p.g, p.b, 0xff);
+  return c;
 }
 
 static ret_t lcd_mem_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x, xy_t y) {
@@ -356,7 +303,8 @@ static ret_t lcd_mem_destroy(lcd_t* lcd) {
     TKMEM_FREE(mem->offline_fb);
   }
 
-  darray_deinit(&lcd_mem_graphic_buffer_cache);
+  graphic_buffer_destroy(mem->online_gb);
+  graphic_buffer_destroy(mem->offline_gb);
 
   TKMEM_FREE(lcd);
 
@@ -412,24 +360,23 @@ static lcd_t* lcd_mem_create(wh_t w, wh_t h, bool_t alloc) {
   base->destroy = lcd_mem_destroy;
   base->resize = lcd_mem_resize;
   base->flush = lcd_mem_flush;
+
   base->w = w;
   base->h = h;
   base->ratio = 1;
-  base->type = LCD_FRAMEBUFFER;
   base->global_alpha = 0xff;
+  base->type = LCD_FRAMEBUFFER;
   base->support_dirty_rect = TRUE;
 
-  lcd->line_length = w * bpp;
   lcd->format = LCD_FORMAT;
+  lcd->line_length = w * bpp;
+  lcd->online_gb = graphic_buffer_create_with_data(NULL, w, h, LCD_FORMAT);
+  lcd->offline_gb = graphic_buffer_create_with_data(NULL, w, h, LCD_FORMAT);
 
   system_info_set_lcd_w(info, base->w);
   system_info_set_lcd_h(info, base->h);
   system_info_set_lcd_type(info, base->type);
   system_info_set_device_pixel_ratio(info, 1);
-
-  darray_init(&lcd_mem_graphic_buffer_cache, LCD_MEM_GRAPHIC_BUFFER_CACHE_MAX_NUMBER,
-              (tk_destroy_t)lcd_mem_graphic_buffer_cache_destroy,
-              (tk_compare_t)lcd_mem_graphic_buffer_cache_cmp);
 
   return base;
 }

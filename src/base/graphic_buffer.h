@@ -32,6 +32,7 @@ typedef struct _graphic_buffer_t graphic_buffer_t;
 typedef uint8_t* (*graphic_buffer_lock_for_read_t)(graphic_buffer_t* buffer);
 typedef uint8_t* (*graphic_buffer_lock_for_write_t)(graphic_buffer_t* buffer);
 typedef ret_t (*graphic_buffer_unlock_t)(graphic_buffer_t* buffer);
+typedef ret_t (*graphic_buffer_attach_t)(graphic_buffer_t* buffer, void* data);
 typedef ret_t (*graphic_buffer_destroy_t)(graphic_buffer_t* buffer);
 
 typedef enum _graphic_buffer_options_t {
@@ -57,6 +58,7 @@ typedef struct _graphic_buffer_vtable_t {
   graphic_buffer_lock_for_read_t lock_for_read;
   graphic_buffer_lock_for_write_t lock_for_write;
   graphic_buffer_unlock_t unlock;
+  graphic_buffer_attach_t attach;
   graphic_buffer_destroy_t destroy;
 } graphic_buffer_vtable_t;
 
@@ -118,6 +120,16 @@ uint8_t* graphic_buffer_lock_for_write(graphic_buffer_t* buffer);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t graphic_buffer_unlock(graphic_buffer_t* buffer);
+
+/**
+ * @method graphic_buffer_attach
+ * 附件到指定的内存。
+ * @param {graphic_buffer_t*} buffer 图像缓冲区对象。
+ * @param {void*} data 内存数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t graphic_buffer_attach(graphic_buffer_t* buffer, void* data);
 
 /**
  * @method graphic_buffer_destroy

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   graphic_buffer.c
  * Author: AWTK Develop Team
  * Brief:  graphic_buffer
@@ -42,6 +42,13 @@ ret_t graphic_buffer_unlock(graphic_buffer_t* buffer) {
                        RET_BAD_PARAMS);
 
   return buffer->vt->unlock(buffer);
+}
+
+ret_t graphic_buffer_attach(graphic_buffer_t* buffer, void* data) {
+  return_value_if_fail(buffer != NULL && buffer->vt != NULL && buffer->vt->attach != NULL,
+                       RET_BAD_PARAMS);
+
+  return buffer->vt->attach(buffer, data);
 }
 
 ret_t graphic_buffer_destroy(graphic_buffer_t* buffer) {
