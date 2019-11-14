@@ -361,7 +361,7 @@ ret_t edit_set_password_visible(widget_t* widget, bool_t password_visible);
 ret_t edit_set_focus(widget_t* widget, bool_t focus);
 
 /**
- * @method edit_set_start_position
+ * @method edit_set_cursor
  * 设置输入框的光标坐标。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。

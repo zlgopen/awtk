@@ -208,7 +208,7 @@ ret_t mledit_set_input_tips(widget_t* widget, const char* tips);
  * 设置编辑器光标位置。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
- * @param {uint32_t*} cursor 光标位置。
+ * @param {uint32_t} cursor 光标位置。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -219,7 +219,7 @@ ret_t mledit_set_cursor(widget_t* widget, uint32_t cursor);
  * 设置编辑器滚动速度。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
- * @param {uint32_t*} cursor 滚动行数。
+ * @param {uint32_t} scroll_line 滚动行数。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
