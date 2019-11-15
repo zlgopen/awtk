@@ -293,7 +293,7 @@ ret_t fs_remove_file(fs_t* fs, const char* name);
  * @param {fs_t*} fs 文件系统对象，一般赋值为os_fs()。
  * @param {const char*} name 文件名。
  *
- * @return {bool_t} 返回TRUE表示成功，否则表示失败。
+ * @return {bool_t} 返回TRUE表示存在，否则表示不存在。
  */
 bool_t fs_file_exist(fs_t* fs, const char* name);
 
@@ -342,7 +342,7 @@ ret_t fs_remove_dir(fs_t* fs, const char* name);
  * @param {fs_t*} fs 文件系统对象，一般赋值为os_fs()。
  * @param {const char*} name 目录名称。
  *
- * @return {bool_t} 返回TRUE表示成功，否则表示失败。
+ * @return {bool_t} 返回TRUE表示存在，否则表示不存在。
  */
 bool_t fs_dir_exist(fs_t* fs, const char* name);
 

@@ -283,9 +283,9 @@
 * [event\_source](manual/event_source_t.md) 事件源接口。
 * [event\_source\_fd](manual/event_source_fd_t.md) 基于文件描述符的事件源实现。
 * [event\_source\_idle](manual/event_source_idle_t.md) 基于IDLE的事件源实现。
+* [event\_source\_timer](manual/event_source_timer_t.md) 基于Time的事件源实现。
 * [event\_source\_manager](manual/event_source_manager_t.md) 事件源管理器的接口。
 * [event\_source\_manager\_default](manual/event_source_manager_default_t.md) 创建事件源管理器。
-* [event\_source\_timer](manual/event_source_timer_t.md) 基于Time的事件源实现。
 
 ### 压缩解压
 

@@ -170,7 +170,7 @@ bool_t fs_dir_exist (fs_t* fs, const char* name);
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | bool\_t | 返回TRUE表示成功，否则表示失败。 |
+| 返回值 | bool\_t | 返回TRUE表示存在，否则表示不存在。 |
 | fs | fs\_t* | 文件系统对象，一般赋值为os\_fs()。 |
 | name | const char* | 目录名称。 |
 #### fs\_dir\_rename 函数
@@ -213,7 +213,7 @@ bool_t fs_file_exist (fs_t* fs, const char* name);
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | bool\_t | 返回TRUE表示成功，否则表示失败。 |
+| 返回值 | bool\_t | 返回TRUE表示存在，否则表示不存在。 |
 | fs | fs\_t* | 文件系统对象，一般赋值为os\_fs()。 |
 | name | const char* | 文件名。 |
 #### fs\_file\_rename 函数

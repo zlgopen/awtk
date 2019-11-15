@@ -18810,7 +18810,7 @@
         "name": "fs_file_exist",
         "return": {
           "type": "bool_t",
-          "desc": "返回TRUE表示成功，否则表示失败。"
+          "desc": "返回TRUE表示存在，否则表示不存在。"
         }
       },
       {
@@ -18899,7 +18899,7 @@
         "name": "fs_dir_exist",
         "return": {
           "type": "bool_t",
-          "desc": "返回TRUE表示成功，否则表示失败。"
+          "desc": "返回TRUE表示存在，否则表示不存在。"
         }
       },
       {
@@ -30458,7 +30458,19 @@
           "type": "event_source_t*",
           "desc": "返回事件源对象。"
         }
-      },
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "tkc/event_source_idle.h",
+    "desc": "idle事件源。\n",
+    "name": "event_source_idle_t",
+    "parent": "object",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
       {
         "params": [
           {
@@ -30478,10 +30490,13 @@
     ],
     "events": [],
     "properties": [],
-    "header": "tkc/event_source_idle.h",
-    "desc": "idle事件源。\n",
-    "name": "event_source_idle_t",
-    "parent": "object",
+    "header": "tkc/event_source_manager_default.h",
+    "desc": "缺省的事件源管理器。\n",
+    "name": "event_source_manager_default_t",
+    "parent": "event_source_manager_t",
+    "annotation": {
+      "fake": true
+    },
     "level": 2
   },
   {
@@ -42206,104 +42221,6 @@
           "constructor": true,
           "scriptable": true
         },
-        "desc": "创建svg_image对象\n",
-        "name": "svg_image_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "image对象。"
-          },
-          {
-            "type": "char*",
-            "name": "name",
-            "desc": "图片名称，该图片必须存在于资源管理器。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置控件的图片名称。\n> 如果需要显示文件系统中的图片，只需将图片名称换成实际的文件名，并加上\"file://\"前缀即可。\n",
-        "name": "svg_image_set_image",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "svg_image对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": "转换为svg_image对象(供脚本语言使用)。\n",
-        "name": "svg_image_cast",
-        "return": {
-          "type": "widget_t*",
-          "desc": "svg_image对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "svg_image/svg_image.h",
-    "desc": "SVG图片控件。\nsvg\\_image\\_t是[image\\_base\\_t](image_base_t.md)的子类控件，image\\_base\\_t的函数均适用于svg\\_image\\_t控件。\n在xml中使用\"svg\"标签创建SVG图片控件。如：\n```xml\n<svg image=\"girl\"/>\n```\n>更多用法请参考：[svg image](\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/svg_image.xml)\n在c代码中使用函数svg\\_image\\_create创建SVG图片控件。如：\n```c\nwidget_t* image = svg_image_create(win, 10, 10, 200, 200);\nimage_set_image(image, \"girl\");\n```\n> 创建之后: 需要用widget\\_set\\_image设置图片名称。\n> 完整示例请参考：[svg image demo](\nhttps://github.com/zlgopen/awtk-c-demos/blob/master/demos/svg_image.c)\n可用通过style来设置控件的显示风格，如背景和边框等。如：\n```xml\n<svg>\n<style name=\"default\">\n<normal border_color=\"green\" fg_color=\"red\" />\n</style>\n</svg>\n```\n> 更多用法请参考：[theme default](\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml)\n",
-    "name": "svg_image_t",
-    "parent": "image_base_t",
-    "annotation": {
-      "scriptable": true,
-      "design": true,
-      "widget": true
-    },
-    "level": 3
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
         "desc": "创建system_bar对象。\n",
         "name": "system_bar_create",
         "return": {
@@ -42525,6 +42442,81 @@
     "desc": "spinbox控件。\n一个特殊的数值编辑器，将edit\\_t和button\\_t进行组合，方便编辑数值。\n点击向上的按钮将数值增加一个step，点击向下的按钮将数值减小一个step。\nstep的值可以通过step属性进行设置。\nspin_box\\_t是[edit\\_t](edit_t.md)的子类控件，edit\\_t的函数均适用于spin\\_box\\_t控件。\n在xml中使用\"spin_box\"标签创建spinbox控件。如：\n```xml\n<spin_box w=\"70%\" input_type=\"int\" min=\"-100\" max=\"100\" step=\"5\">\n```\n>\n更多用法请参考：[spin_box.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/spinbox.xml)\n在c代码中使用函数spin_box\\_create创建spinbox控件。如：\n```c\nwidget_t* spin_box = spin_box_create(win, 10, 10, 128, 30);\nedit_set_input_type(spin_box, type);\n```\n> 创建之后:\n>\n> 可以用edit相关函数去设置它的各种属性。\n> 完整示例请参考：[spin_box\ndemo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/spin_box.c)\n可用通过style来设置控件的显示风格，如背景和边框等。如：\n```xml\n<spin_box>\n<style name=\"default\" border_color=\"#a0a0a0\"  text_color=\"black\" text_align_h=\"left\">\n<normal     bg_color=\"#f0f0f0\" />\n<focused    bg_color=\"#f0f0f0\" border_color=\"black\"/>\n<disable    bg_color=\"gray\" text_color=\"#d0d0d0\" />\n<error      bg_color=\"#f0f0f0\" text_color=\"red\" />\n<empty      bg_color=\"#f0f0f0\" text_color=\"#a0a0a0\" />\n</style>\n</spin_box>\n```\n> 更多用法请参考：[theme\ndefault](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L128)\n",
     "name": "spin_box_t",
     "parent": "edit_t",
+    "annotation": {
+      "scriptable": true,
+      "design": true,
+      "widget": true
+    },
+    "level": 3
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "创建gif_image对象\n",
+        "name": "gif_image_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "gif_image对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为gif_image对象(供脚本语言使用)。\n",
+        "name": "gif_image_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "gif_image对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "gif_image/gif_image.h",
+    "desc": "GIF图片控件。\n> 注意：GIF图片的尺寸大于控件大小时会自动缩小图片，但一般的嵌入式系统的硬件加速都不支持图片缩放，\n所以缩放图片会导致性能明显下降。如果性能不满意时，请确认一下GIF图片的尺寸是否小余控件大小。\ngif\\_image\\_t是[image\\_base\\_t](image_base_t.md)的子类控件，image\\_base\\_t的函数均适用于gif\\_image\\_t控件。\n在xml中使用\"gif\"标签创建GIF图片控件。如：\n```xml\n<gif image=\"bee\"/>\n```\n>更多用法请参考：\n[gif\nimage](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/gif_image.xml)\n在c代码中使用函数gif\\_image\\_create创建GIF图片控件。如：\n```c\nwidget_t* image = gif_image_create(win, 10, 10, 200, 200);\nimage_set_image(image, \"bee\");\n```\n> 创建之后:\n>\n> 需要用widget\\_set\\_image设置图片名称。\n> 完整示例请参考：[gif image demo](\nhttps://github.com/zlgopen/awtk-c-demos/blob/master/demos/gif_image.c)\n可用通过style来设置控件的显示风格，如背景和边框等。如：\n```xml\n<gif>\n<style name=\"border\">\n<normal border_color=\"#000000\" bg_color=\"#e0e0e0\" text_color=\"black\"/>\n</style>\n</gif>\n```\n> 更多用法请参考：[theme default](\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml)\n",
+    "name": "gif_image_t",
+    "parent": "image_base_t",
     "annotation": {
       "scriptable": true,
       "design": true,
@@ -42895,74 +42887,26 @@
     "type": "class",
     "methods": [
       {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
+        "params": [],
         "annotation": {
-          "constructor": true,
-          "scriptable": true
+          "constructor": true
         },
-        "desc": "创建gif_image对象\n",
-        "name": "gif_image_create",
+        "desc": "创建窗口管理器。\n",
+        "name": "window_manager_create",
         "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "gif_image对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": "转换为gif_image对象(供脚本语言使用)。\n",
-        "name": "gif_image_cast",
-        "return": {
-          "type": "widget_t*",
-          "desc": "gif_image对象。"
+          "type": "window_manager_t*",
+          "desc": "返回窗口管理器对象。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "gif_image/gif_image.h",
-    "desc": "GIF图片控件。\n> 注意：GIF图片的尺寸大于控件大小时会自动缩小图片，但一般的嵌入式系统的硬件加速都不支持图片缩放，\n所以缩放图片会导致性能明显下降。如果性能不满意时，请确认一下GIF图片的尺寸是否小余控件大小。\ngif\\_image\\_t是[image\\_base\\_t](image_base_t.md)的子类控件，image\\_base\\_t的函数均适用于gif\\_image\\_t控件。\n在xml中使用\"gif\"标签创建GIF图片控件。如：\n```xml\n<gif image=\"bee\"/>\n```\n>更多用法请参考：\n[gif\nimage](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/gif_image.xml)\n在c代码中使用函数gif\\_image\\_create创建GIF图片控件。如：\n```c\nwidget_t* image = gif_image_create(win, 10, 10, 200, 200);\nimage_set_image(image, \"bee\");\n```\n> 创建之后:\n>\n> 需要用widget\\_set\\_image设置图片名称。\n> 完整示例请参考：[gif image demo](\nhttps://github.com/zlgopen/awtk-c-demos/blob/master/demos/gif_image.c)\n可用通过style来设置控件的显示风格，如背景和边框等。如：\n```xml\n<gif>\n<style name=\"border\">\n<normal border_color=\"#000000\" bg_color=\"#e0e0e0\" text_color=\"black\"/>\n</style>\n</gif>\n```\n> 更多用法请参考：[theme default](\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml)\n",
-    "name": "gif_image_t",
-    "parent": "image_base_t",
+    "header": "window_manager/window_manager_simple.h",
+    "desc": "缺省窗口管理器。\n",
+    "name": "window_manager_simple_t",
+    "parent": "window_manager_t",
     "annotation": {
-      "scriptable": true,
-      "design": true,
-      "widget": true
+      "scriptable": true
     },
     "level": 3
   },
@@ -43111,33 +43055,6 @@
     ],
     "events": [],
     "properties": [],
-    "header": "window_manager/window_manager_simple.h",
-    "desc": "缺省窗口管理器。\n",
-    "name": "window_manager_simple_t",
-    "parent": "window_manager_t",
-    "annotation": {
-      "scriptable": true
-    },
-    "level": 3
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "创建窗口管理器。\n",
-        "name": "window_manager_create",
-        "return": {
-          "type": "window_manager_t*",
-          "desc": "返回窗口管理器对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
     "header": "window_manager/window_manager_default.h",
     "desc": "缺省窗口管理器。\n",
     "name": "window_manager_default_t",
@@ -43200,83 +43117,6 @@
       "scriptable": true,
       "design": true,
       "widget": true
-    },
-    "level": 3
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "idle_info_t*",
-            "name": "idle",
-            "desc": "idle_info对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": "转换为idle_info对象(供脚本语言使用)。\n",
-        "name": "idle_info_cast",
-        "return": {
-          "type": "idle_info_t*",
-          "desc": "idle_info对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [
-      {
-        "name": "on_idle",
-        "desc": "idle回调函数。\n",
-        "type": "idle_func_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "ctx",
-        "desc": "idle回调函数上下文。\n",
-        "type": "void*",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "id",
-        "desc": "idle的ID\n> 为TK\\_INVALID\\_ID时表示无效idle。\n",
-        "type": "uint32_t",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "on_destroy_ctx",
-        "desc": "idle销毁时的回调函数的上下文。\n",
-        "type": "tk_destroy_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "on_destroy",
-        "desc": "idle销毁时的回调函数。\n",
-        "type": "tk_destroy_t",
-        "annotation": {
-          "readable": true
-        }
-      }
-    ],
-    "header": "tkc/idle_info.h",
-    "desc": "单个idle的信息。\n",
-    "name": "idle_info_t",
-    "parent": "object_t",
-    "annotation": {
-      "scriptable": true
     },
     "level": 3
   },
@@ -43622,6 +43462,83 @@
       {
         "params": [
           {
+            "type": "idle_info_t*",
+            "name": "idle",
+            "desc": "idle_info对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为idle_info对象(供脚本语言使用)。\n",
+        "name": "idle_info_cast",
+        "return": {
+          "type": "idle_info_t*",
+          "desc": "idle_info对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "on_idle",
+        "desc": "idle回调函数。\n",
+        "type": "idle_func_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "ctx",
+        "desc": "idle回调函数上下文。\n",
+        "type": "void*",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "id",
+        "desc": "idle的ID\n> 为TK\\_INVALID\\_ID时表示无效idle。\n",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "on_destroy_ctx",
+        "desc": "idle销毁时的回调函数的上下文。\n",
+        "type": "tk_destroy_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "on_destroy",
+        "desc": "idle销毁时的回调函数。\n",
+        "type": "tk_destroy_t",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "tkc/idle_info.h",
+    "desc": "单个idle的信息。\n",
+    "name": "idle_info_t",
+    "parent": "object_t",
+    "annotation": {
+      "scriptable": true
+    },
+    "level": 3
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
             "type": "widget_t*",
             "name": "parent",
             "desc": "父控件"
@@ -43749,6 +43666,133 @@
       "design": true,
       "widget": true
     },
+    "level": 3
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "native_window_t*",
+            "name": "win",
+            "desc": "win对象。"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标。"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标。"
+          },
+          {
+            "type": "bool_t",
+            "name": "force",
+            "desc": "无论是否shared都move。"
+          }
+        ],
+        "annotation": {},
+        "desc": "移动窗口。\n",
+        "name": "native_window_move",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "native_window_t*",
+            "name": "win",
+            "desc": "win对象。"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高。"
+          },
+          {
+            "type": "bool_t",
+            "name": "force",
+            "desc": "无论是否shared都resize。"
+          }
+        ],
+        "annotation": {},
+        "desc": "调整窗口大小。\n",
+        "name": "native_window_resize",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "native_window_t*",
+            "name": "win",
+            "desc": "win对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取canvas。\n",
+        "name": "native_window_get_canvas",
+        "return": {
+          "type": "canvas_t",
+          "desc": "返回canvas对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "params",
+            "desc": "参数。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建win对象。\n",
+        "name": "native_window_create",
+        "return": {
+          "type": "native_window_t*",
+          "desc": "返回win对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "native_window_t*",
+            "name": "win",
+            "desc": "win对象。"
+          },
+          {
+            "type": "rect_t*",
+            "name": "r",
+            "desc": "重绘区域。"
+          }
+        ],
+        "annotation": {},
+        "desc": "请求重绘指定区域。\n",
+        "name": "native_window_invalidate",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "base/native_window.h",
+    "desc": "原生窗口。\n",
+    "name": "native_window_t",
+    "parent": "object_t",
     "level": 3
   },
   {
@@ -43959,60 +44003,60 @@
       {
         "params": [
           {
-            "type": "native_window_t*",
-            "name": "win",
-            "desc": "win对象。"
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
           },
           {
             "type": "xy_t",
             "name": "x",
-            "desc": "x坐标。"
+            "desc": "x坐标"
           },
           {
             "type": "xy_t",
             "name": "y",
-            "desc": "y坐标。"
-          },
-          {
-            "type": "bool_t",
-            "name": "force",
-            "desc": "无论是否shared都move。"
-          }
-        ],
-        "annotation": {},
-        "desc": "移动窗口。\n",
-        "name": "native_window_move",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "native_window_t*",
-            "name": "win",
-            "desc": "win对象。"
+            "desc": "y坐标"
           },
           {
             "type": "wh_t",
             "name": "w",
-            "desc": "宽。"
+            "desc": "宽度"
           },
           {
             "type": "wh_t",
             "name": "h",
-            "desc": "高。"
-          },
-          {
-            "type": "bool_t",
-            "name": "force",
-            "desc": "无论是否shared都resize。"
+            "desc": "高度"
           }
         ],
-        "annotation": {},
-        "desc": "调整窗口大小。\n",
-        "name": "native_window_resize",
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "创建svg_image对象\n",
+        "name": "svg_image_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image对象。"
+          },
+          {
+            "type": "char*",
+            "name": "name",
+            "desc": "图片名称，该图片必须存在于资源管理器。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置控件的图片名称。\n> 如果需要显示文件系统中的图片，只需将图片名称换成实际的文件名，并加上\"file://\"前缀即可。\n",
+        "name": "svg_image_set_image",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -44021,63 +44065,34 @@
       {
         "params": [
           {
-            "type": "native_window_t*",
-            "name": "win",
-            "desc": "win对象。"
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "svg_image对象。"
           }
         ],
-        "annotation": {},
-        "desc": "获取canvas。\n",
-        "name": "native_window_get_canvas",
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为svg_image对象(供脚本语言使用)。\n",
+        "name": "svg_image_cast",
         "return": {
-          "type": "canvas_t",
-          "desc": "返回canvas对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "const char*",
-            "name": "params",
-            "desc": "参数。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建win对象。\n",
-        "name": "native_window_create",
-        "return": {
-          "type": "native_window_t*",
-          "desc": "返回win对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "native_window_t*",
-            "name": "win",
-            "desc": "win对象。"
-          },
-          {
-            "type": "rect_t*",
-            "name": "r",
-            "desc": "重绘区域。"
-          }
-        ],
-        "annotation": {},
-        "desc": "请求重绘指定区域。\n",
-        "name": "native_window_invalidate",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
+          "type": "widget_t*",
+          "desc": "svg_image对象。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "base/native_window.h",
-    "desc": "原生窗口。\n",
-    "name": "native_window_t",
-    "parent": "object_t",
+    "header": "svg_image/svg_image.h",
+    "desc": "SVG图片控件。\nsvg\\_image\\_t是[image\\_base\\_t](image_base_t.md)的子类控件，image\\_base\\_t的函数均适用于svg\\_image\\_t控件。\n在xml中使用\"svg\"标签创建SVG图片控件。如：\n```xml\n<svg image=\"girl\"/>\n```\n>更多用法请参考：[svg image](\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/svg_image.xml)\n在c代码中使用函数svg\\_image\\_create创建SVG图片控件。如：\n```c\nwidget_t* image = svg_image_create(win, 10, 10, 200, 200);\nimage_set_image(image, \"girl\");\n```\n> 创建之后: 需要用widget\\_set\\_image设置图片名称。\n> 完整示例请参考：[svg image demo](\nhttps://github.com/zlgopen/awtk-c-demos/blob/master/demos/svg_image.c)\n可用通过style来设置控件的显示风格，如背景和边框等。如：\n```xml\n<svg>\n<style name=\"default\">\n<normal border_color=\"green\" fg_color=\"red\" />\n</style>\n</svg>\n```\n> 更多用法请参考：[theme default](\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml)\n",
+    "name": "svg_image_t",
+    "parent": "image_base_t",
+    "annotation": {
+      "scriptable": true,
+      "design": true,
+      "widget": true
+    },
     "level": 3
   },
   {

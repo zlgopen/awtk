@@ -27,6 +27,15 @@
 BEGIN_C_DECLS
 
 /**
+ * @class event_source_manager_default_t
+ * @parent event_source_manager_t
+ * @annotation ["fake"]
+ *
+ * 缺省的事件源管理器。
+ *
+ */
+
+/**
  * @method event_source_manager_default_create
  *
  * 创建事件源管理器。
