@@ -2,9 +2,7 @@
 ### 概述
 ![image](images/tk_istream_mem_t_0.png)
 
-
- input stream base on memory
-
+input stream base on memory
 
 ----------------------------------
 ### 函数
@@ -12,17 +10,13 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#tk_istream_mem_t_tk_istream_mem_create">tk\_istream\_mem\_create</a> |  |
+| <a href="#tk_istream_mem_t_tk_istream_mem_create">tk\_istream\_mem\_create</a> | 创建istream对象。 |
 #### tk\_istream\_mem\_create 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="tk_istream_mem_t_tk_istream_mem_create">
- 创建istream对象。
-
-
-
+> <p id="tk_istream_mem_t_tk_istream_mem_create">创建istream对象。
 
 
 * 函数原型：

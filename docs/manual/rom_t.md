@@ -1,21 +1,16 @@
 ## rom\_t
 ### 概述
- rom_file接口。
- 
- > 主要用于给google pinyin输入提供兼容的文件系统API。
-
- 示例：
-
- ```c
- char rbuff[100];
- size_t len = 0;
- const char* buff = "hello world";
- rom_file_t* f = rom_fopen_buff((const uint8_t*)buff, sizeof(buff));
- len = rom_fread(rbuff, 2, 1, f);
- rom_fclose(f);
- ```
-
-
+rom_file接口。
+> 主要用于给google pinyin输入提供兼容的文件系统API。
+示例：
+```c
+char rbuff[100];
+size_t len = 0;
+const char* buff = "hello world";
+rom_file_t* f = rom_fopen_buff((const uint8_t*)buff, sizeof(buff));
+len = rom_fread(rbuff, 2, 1, f);
+rom_fclose(f);
+```
 
 ----------------------------------
 ### 函数
@@ -23,23 +18,19 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#rom_t_rom_fclose">rom\_fclose</a> |  |
-| <a href="#rom_t_rom_feof">rom\_feof</a> |  |
-| <a href="#rom_t_rom_fopen">rom\_fopen</a> |  |
+| <a href="#rom_t_rom_fclose">rom\_fclose</a> | 关闭文件。 |
+| <a href="#rom_t_rom_feof">rom\_feof</a> | 判断是否到文件末尾。 |
+| <a href="#rom_t_rom_fopen">rom\_fopen</a> | 打开文件。 |
 | <a href="#rom_t_rom_fopen_buff">rom\_fopen\_buff</a> | 打开文件。 |
-| <a href="#rom_t_rom_fread">rom\_fread</a> |  |
-| <a href="#rom_t_rom_fseek">rom\_fseek</a> |  |
-| <a href="#rom_t_rom_ftell">rom\_ftell</a> |  |
+| <a href="#rom_t_rom_fread">rom\_fread</a> | 读取文件。 |
+| <a href="#rom_t_rom_fseek">rom\_fseek</a> | 设置文件当前位置。 |
+| <a href="#rom_t_rom_ftell">rom\_ftell</a> | 返回文件当前位置。 |
 #### rom\_fclose 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="rom_t_rom_fclose">
- 关闭文件。
-
-
-
+> <p id="rom_t_rom_fclose">关闭文件。
 
 
 * 函数原型：
@@ -59,11 +50,7 @@ ret_t rom_fclose (rom_file_t* f);
 
 * 函数功能：
 
-> <p id="rom_t_rom_feof">
- 判断是否到文件末尾。
-
-
-
+> <p id="rom_t_rom_feof">判断是否到文件末尾。
 
 
 * 函数原型：
@@ -83,11 +70,7 @@ int rom_feof (rom_file_t* f);
 
 * 函数功能：
 
-> <p id="rom_t_rom_fopen">
- 打开文件。
-
-
-
+> <p id="rom_t_rom_fopen">打开文件。
 
 
 * 函数原型：
@@ -108,9 +91,7 @@ ret_t rom_fopen (const char* name, const char* mode);
 
 * 函数功能：
 
-> <p id="rom_t_rom_fopen_buff"> 打开文件。
-
-
+> <p id="rom_t_rom_fopen_buff">打开文件。
 
 
 * 函数原型：
@@ -131,11 +112,7 @@ ret_t rom_fopen_buff (const uint8_t* data, uint32_t capacity);
 
 * 函数功能：
 
-> <p id="rom_t_rom_fread">
- 读取文件。
-
-
-
+> <p id="rom_t_rom_fread">读取文件。
 
 
 * 函数原型：
@@ -158,11 +135,7 @@ size_t rom_fread (void* ptr, size_t size, size_t nitems, rom_file_t* f);
 
 * 函数功能：
 
-> <p id="rom_t_rom_fseek">
- 设置文件当前位置。
-
-
-
+> <p id="rom_t_rom_fseek">设置文件当前位置。
 
 
 * 函数原型：
@@ -184,11 +157,7 @@ int rom_fseek (rom_file_t* f, long offset, int whence);
 
 * 函数功能：
 
-> <p id="rom_t_rom_ftell">
- 返回文件当前位置。
-
-
-
+> <p id="rom_t_rom_ftell">返回文件当前位置。
 
 
 * 函数原型：

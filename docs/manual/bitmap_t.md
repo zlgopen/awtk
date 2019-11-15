@@ -1,6 +1,6 @@
 ## bitmap\_t
 ### 概述
- 位图。
+位图。
 
 ----------------------------------
 ### 函数
@@ -37,7 +37,7 @@
 
 * 函数功能：
 
-> <p id="bitmap_t_bitmap_create"> 创建图片对象(一般供脚本语言中使用)。
+> <p id="bitmap_t_bitmap_create">创建图片对象(一般供脚本语言中使用)。
 
 
 * 函数原型：
@@ -56,8 +56,7 @@ bitmap_t* bitmap_create ();
 
 * 函数功能：
 
-> <p id="bitmap_t_bitmap_create_ex"> 创建图片对象。
-
+> <p id="bitmap_t_bitmap_create_ex">创建图片对象。
 
 
 * 函数原型：
@@ -80,7 +79,7 @@ bitmap_t* bitmap_create_ex (uint32_t w, uint32_t h, uint32_t line_length, bitmap
 
 * 函数功能：
 
-> <p id="bitmap_t_bitmap_destroy"> 销毁图片。
+> <p id="bitmap_t_bitmap_destroy">销毁图片。
 
 
 * 函数原型：
@@ -100,8 +99,7 @@ ret_t bitmap_destroy (bitmap_t* bitmap);
 
 * 函数功能：
 
-> <p id="bitmap_t_bitmap_get_bpp"> 获取图片一个像素占用的字节数。
-
+> <p id="bitmap_t_bitmap_get_bpp">获取图片一个像素占用的字节数。
 
 
 * 函数原型：
@@ -121,8 +119,7 @@ uint32_t bitmap_get_bpp (bitmap_t* bitmap);
 
 * 函数功能：
 
-> <p id="bitmap_t_bitmap_get_line_length"> 获取每一行占用内存的字节数。
-
+> <p id="bitmap_t_bitmap_get_line_length">获取每一行占用内存的字节数。
 
 
 * 函数原型：
@@ -142,8 +139,7 @@ ret_t bitmap_get_line_length (bitmap_t* bitmap);
 
 * 函数功能：
 
-> <p id="bitmap_t_bitmap_get_pixel"> 获取图片指定像素的rgba颜色值(主要用于测试程序)。
-
+> <p id="bitmap_t_bitmap_get_pixel">获取图片指定像素的rgba颜色值(主要用于测试程序)。
 
 
 * 函数原型：
@@ -166,8 +162,7 @@ ret_t bitmap_get_pixel (bitmap_t* bitmap, uint32_t x, uint32_t y, rgba_t* rgba);
 
 * 函数功能：
 
-> <p id="bitmap_t_bitmap_init"> 初始化图片。
-
+> <p id="bitmap_t_bitmap_init">初始化图片。
 
 
 * 函数原型：
@@ -191,9 +186,8 @@ ret_t bitmap_init (bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t for
 
 * 函数功能：
 
-> <p id="bitmap_t_bitmap_init_from_rgba"> 初始化图片。
- 数据。3通道时为RGB888格式，4通道时为RGBA888格式(内部拷贝该数据，不会引用，调用者自行释放)。
-
+> <p id="bitmap_t_bitmap_init_from_rgba">初始化图片。
+数据。3通道时为RGB888格式，4通道时为RGBA888格式(内部拷贝该数据，不会引用，调用者自行释放)。
 
 
 * 函数原型：
@@ -218,9 +212,7 @@ ret_t bitmap_init_from_rgba (bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_fo
 
 * 函数功能：
 
-> <p id="bitmap_t_bitmap_lock_buffer_for_read"> 为读取数据而锁定bitmap的图片缓冲区。
-
-
+> <p id="bitmap_t_bitmap_lock_buffer_for_read">为读取数据而锁定bitmap的图片缓冲区。
 
 
 * 函数原型：
@@ -240,9 +232,7 @@ uint8_t* bitmap_lock_buffer_for_read (bitmap_t* bitmap);
 
 * 函数功能：
 
-> <p id="bitmap_t_bitmap_lock_buffer_for_write"> 为修改数据而锁定bitmap的图片缓冲区。
-
-
+> <p id="bitmap_t_bitmap_lock_buffer_for_write">为修改数据而锁定bitmap的图片缓冲区。
 
 
 * 函数原型：
@@ -262,8 +252,7 @@ uint8_t* bitmap_lock_buffer_for_write (bitmap_t* bitmap);
 
 * 函数功能：
 
-> <p id="bitmap_t_bitmap_set_line_length"> 设置line_length。
-
+> <p id="bitmap_t_bitmap_set_line_length">设置line_length。
 
 
 * 函数原型：
@@ -284,9 +273,7 @@ ret_t bitmap_set_line_length (bitmap_t* bitmap, uint32_t line_length);
 
 * 函数功能：
 
-> <p id="bitmap_t_bitmap_unlock_buffer"> 解锁图像缓冲区。
-
-
+> <p id="bitmap_t_bitmap_unlock_buffer">解锁图像缓冲区。
 
 
 * 函数原型：
@@ -303,7 +290,7 @@ ret_t bitmap_unlock_buffer (bitmap_t* bitmap);
 | bitmap | bitmap\_t* | bitmap对象。 |
 #### buffer 属性
 -----------------------
-> <p id="bitmap_t_buffer"> 图片数据。
+> <p id="bitmap_t_buffer">图片数据。
 
 
 * 类型：graphic\_buffer\_t*
@@ -314,7 +301,7 @@ ret_t bitmap_unlock_buffer (bitmap_t* bitmap);
 | 可直接修改 | 否 |
 #### flags 属性
 -----------------------
-> <p id="bitmap_t_flags"> 标志。请参考{bitmap_flag_t}。
+> <p id="bitmap_t_flags">标志。请参考{bitmap_flag_t}。
 
 
 * 类型：uint16\_t
@@ -326,7 +313,7 @@ ret_t bitmap_unlock_buffer (bitmap_t* bitmap);
 | 可脚本化   | 是 |
 #### format 属性
 -----------------------
-> <p id="bitmap_t_format"> 格式。请参考{bitmap_format_t}。
+> <p id="bitmap_t_format">格式。请参考{bitmap_format_t}。
 
 
 * 类型：uint16\_t
@@ -338,7 +325,7 @@ ret_t bitmap_unlock_buffer (bitmap_t* bitmap);
 | 可脚本化   | 是 |
 #### h 属性
 -----------------------
-> <p id="bitmap_t_h"> 高度。
+> <p id="bitmap_t_h">高度。
 
 
 * 类型：wh\_t
@@ -350,7 +337,7 @@ ret_t bitmap_unlock_buffer (bitmap_t* bitmap);
 | 可脚本化   | 是 |
 #### line\_length 属性
 -----------------------
-> <p id="bitmap_t_line_length"> 每一行实际占用的内存(也称为stride或pitch)，一般情况下为w*bpp。
+> <p id="bitmap_t_line_length">每一行实际占用的内存(也称为stride或pitch)，一般情况下为w*bpp。
 
 
 * 类型：uint32\_t
@@ -362,7 +349,7 @@ ret_t bitmap_unlock_buffer (bitmap_t* bitmap);
 | 可脚本化   | 是 |
 #### name 属性
 -----------------------
-> <p id="bitmap_t_name"> 名称。
+> <p id="bitmap_t_name">名称。
 
 
 * 类型：const char*
@@ -374,7 +361,7 @@ ret_t bitmap_unlock_buffer (bitmap_t* bitmap);
 | 可脚本化   | 是 |
 #### w 属性
 -----------------------
-> <p id="bitmap_t_w"> 宽度。
+> <p id="bitmap_t_w">宽度。
 
 
 * 类型：wh\_t

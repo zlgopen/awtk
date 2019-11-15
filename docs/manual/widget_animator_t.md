@@ -1,6 +1,6 @@
 ## widget\_animator\_t
 ### 概述
- 控件动画接口。
+控件动画接口。
 
 ----------------------------------
 ### 函数
@@ -32,8 +32,7 @@
 
 * 函数功能：
 
-> <p id="widget_animator_t_widget_animator_destroy"> 销毁animator对象。
-
+> <p id="widget_animator_t_widget_animator_destroy">销毁animator对象。
 
 
 * 函数原型：
@@ -53,8 +52,7 @@ ret_t widget_animator_destroy (widget_animator_t* animator);
 
 * 函数功能：
 
-> <p id="widget_animator_t_widget_animator_init"> 初始化。仅供子类内部使用。
-
+> <p id="widget_animator_t_widget_animator_init">初始化。仅供子类内部使用。
 
 
 * 函数原型：
@@ -78,8 +76,7 @@ ret_t widget_animator_init (widget_animator_t* animator, widget_t* widget, uint3
 
 * 函数功能：
 
-> <p id="widget_animator_t_widget_animator_off"> 注销指定事件的处理函数。
-
+> <p id="widget_animator_t_widget_animator_off">注销指定事件的处理函数。
 
 
 * 函数原型：
@@ -100,9 +97,8 @@ ret_t widget_animator_off (widget_animator_t* animator, uint32_t id);
 
 * 函数功能：
 
-> <p id="widget_animator_t_widget_animator_on"> 注册指定事件的处理函数。
- 事件类型。目前支持：EVT_ANIM_START,EVT_ANIM_STOP,EVT_ANIM_PAUSE,EVT_ANIM_ONCE和EVT_ANIM_END。
-
+> <p id="widget_animator_t_widget_animator_on">注册指定事件的处理函数。
+事件类型。目前支持：EVT_ANIM_START,EVT_ANIM_STOP,EVT_ANIM_PAUSE,EVT_ANIM_ONCE和EVT_ANIM_END。
 
 
 * 函数原型：
@@ -125,8 +121,7 @@ uint32_t widget_animator_on (widget_animator_t* animator, event_type_t , event_f
 
 * 函数功能：
 
-> <p id="widget_animator_t_widget_animator_pause"> 暂停动画。
-
+> <p id="widget_animator_t_widget_animator_pause">暂停动画。
 
 
 * 函数原型：
@@ -146,8 +141,7 @@ ret_t widget_animator_pause (widget_animator_t* animator);
 
 * 函数功能：
 
-> <p id="widget_animator_t_widget_animator_set_destroy_when_done"> 设置完成时是否自动销毁动画对象(缺省销毁)。
-
+> <p id="widget_animator_t_widget_animator_set_destroy_when_done">设置完成时是否自动销毁动画对象(缺省销毁)。
 
 
 * 函数原型：
@@ -168,8 +162,7 @@ ret_t widget_animator_set_destroy_when_done (widget_animator_t* animator, bool_t
 
 * 函数功能：
 
-> <p id="widget_animator_t_widget_animator_set_name"> 设置名称。
-
+> <p id="widget_animator_t_widget_animator_set_name">设置名称。
 
 
 * 函数原型：
@@ -190,8 +183,7 @@ ret_t widget_animator_set_name (widget_animator_t* animator, const char* name);
 
 * 函数功能：
 
-> <p id="widget_animator_t_widget_animator_set_repeat"> 设置为重复模式。
-
+> <p id="widget_animator_t_widget_animator_set_repeat">设置为重复模式。
 
 
 * 函数原型：
@@ -212,8 +204,7 @@ ret_t widget_animator_set_repeat (widget_animator_t* animator, uint32_t repeat_t
 
 * 函数功能：
 
-> <p id="widget_animator_t_widget_animator_set_reversed"> 设置为逆向模式。
-
+> <p id="widget_animator_t_widget_animator_set_reversed">设置为逆向模式。
 
 
 * 函数原型：
@@ -234,8 +225,7 @@ ret_t widget_animator_set_reversed (widget_animator_t* animator, bool_t value);
 
 * 函数功能：
 
-> <p id="widget_animator_t_widget_animator_set_time_scale"> 设置时间倍率，用于实现时间加速减速和停滞的功能。
-
+> <p id="widget_animator_t_widget_animator_set_time_scale">设置时间倍率，用于实现时间加速减速和停滞的功能。
 
 
 * 函数原型：
@@ -256,8 +246,7 @@ ret_t widget_animator_set_time_scale (widget_animator_t* animator, float_t time_
 
 * 函数功能：
 
-> <p id="widget_animator_t_widget_animator_set_yoyo"> 设置为yoyo模式。
-
+> <p id="widget_animator_t_widget_animator_set_yoyo">设置为yoyo模式。
 
 
 * 函数原型：
@@ -278,8 +267,7 @@ ret_t widget_animator_set_yoyo (widget_animator_t* animator, uint32_t yoyo_times
 
 * 函数功能：
 
-> <p id="widget_animator_t_widget_animator_start"> 启动动画。
-
+> <p id="widget_animator_t_widget_animator_start">启动动画。
 
 
 * 函数原型：
@@ -299,8 +287,7 @@ ret_t widget_animator_start (widget_animator_t* animator);
 
 * 函数功能：
 
-> <p id="widget_animator_t_widget_animator_stop"> 停止动画。
-
+> <p id="widget_animator_t_widget_animator_stop">停止动画。
 
 
 * 函数原型：
@@ -317,7 +304,7 @@ ret_t widget_animator_stop (widget_animator_t* animator);
 | animator | widget\_animator\_t* | 动画对象。 |
 #### name 属性
 -----------------------
-> <p id="widget_animator_t_name"> 名称。
+> <p id="widget_animator_t_name">名称。
 
 
 * 类型：char*

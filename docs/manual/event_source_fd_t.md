@@ -2,9 +2,7 @@
 ### 概述
 ![image](images/event_source_fd_t_0.png)
 
-
- fd事件源。用于文件、管道和套接字。
-
+fd事件源。用于文件、管道和套接字。
 
 ----------------------------------
 ### 函数
@@ -12,17 +10,13 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#event_source_fd_t_event_source_fd_create">event\_source\_fd\_create</a> |  |
+| <a href="#event_source_fd_t_event_source_fd_create">event\_source\_fd\_create</a> | 创建fd事件源。 |
 #### event\_source\_fd\_create 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="event_source_fd_t_event_source_fd_create">
- 创建fd事件源。
-
-
-
+> <p id="event_source_fd_t_event_source_fd_create">创建fd事件源。
 
 
 * 函数原型：

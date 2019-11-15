@@ -2,10 +2,8 @@
 ### 概述
 ![image](images/combo_box_item_t_0.png)
 
- ComboBox Item控件。
-
- 本类仅供combo\_box控件内部使用。
-
+ComboBox Item控件。
+本类仅供combo\_box控件内部使用。
 
 ----------------------------------
 ### 函数
@@ -36,8 +34,7 @@
 
 * 函数功能：
 
-> <p id="combo_box_item_t_combo_box_item_cast"> 转换combo_box_item对象(供脚本语言使用)。
-
+> <p id="combo_box_item_t_combo_box_item_cast">转换combo_box_item对象(供脚本语言使用)。
 
 
 * 函数原型：
@@ -57,8 +54,7 @@ widget_t* combo_box_item_cast (widget_t* widget);
 
 * 函数功能：
 
-> <p id="combo_box_item_t_combo_box_item_create"> 创建combo_box_item对象
-
+> <p id="combo_box_item_t_combo_box_item_create">创建combo_box_item对象
 
 
 * 函数原型：
@@ -82,8 +78,7 @@ widget_t* combo_box_item_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t 
 
 * 函数功能：
 
-> <p id="combo_box_item_t_combo_box_item_set_checked"> 设置控件是否被选中。
-
+> <p id="combo_box_item_t_combo_box_item_set_checked">设置控件是否被选中。
 
 
 * 函数原型：
@@ -104,8 +99,7 @@ ret_t combo_box_item_set_checked (widget_t* widget, bool_t checked);
 
 * 函数功能：
 
-> <p id="combo_box_item_t_combo_box_item_set_value"> 设置控件的值。
-
+> <p id="combo_box_item_t_combo_box_item_set_value">设置控件的值。
 
 
 * 函数原型：
@@ -123,7 +117,7 @@ ret_t combo_box_item_set_value (widget_t* widget, int32_t value);
 | value | int32\_t | 值 |
 #### checked 属性
 -----------------------
-> <p id="combo_box_item_t_checked"> 是否被选中。
+> <p id="combo_box_item_t_checked">是否被选中。
 
 
 * 类型：bool\_t
@@ -140,7 +134,7 @@ ret_t combo_box_item_set_value (widget_t* widget, int32_t value);
 | 可通过widget\_set\_prop修改 | 是 |
 #### value 属性
 -----------------------
-> <p id="combo_box_item_t_value"> 值。
+> <p id="combo_box_item_t_value">值。
 
 
 * 类型：int32\_t

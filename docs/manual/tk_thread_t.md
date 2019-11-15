@@ -1,6 +1,6 @@
 ## tk\_thread\_t
 ### 概述
- 线程对象。
+线程对象。
 
 ----------------------------------
 ### 函数
@@ -21,9 +21,7 @@
 
 * 函数功能：
 
-> <p id="tk_thread_t_tk_thread_create"> 创建thread对象。
-
-
+> <p id="tk_thread_t_tk_thread_create">创建thread对象。
 
 
 * 函数原型：
@@ -44,8 +42,7 @@ tk_thread_t* tk_thread_create (tk_thread_entry_t entry, void* args);
 
 * 函数功能：
 
-> <p id="tk_thread_t_tk_thread_destroy"> 销毁thread对象。
-
+> <p id="tk_thread_t_tk_thread_destroy">销毁thread对象。
 
 
 * 函数原型：
@@ -65,8 +62,7 @@ ret_t tk_thread_destroy (tk_thread_t* thread);
 
 * 函数功能：
 
-> <p id="tk_thread_t_tk_thread_get_args"> 获取线程的参数。
-
+> <p id="tk_thread_t_tk_thread_get_args">获取线程的参数。
 
 
 * 函数原型：
@@ -86,8 +82,7 @@ void* tk_thread_get_args (tk_thread_t* thread);
 
 * 函数功能：
 
-> <p id="tk_thread_t_tk_thread_join"> 等待线程退出。
-
+> <p id="tk_thread_t_tk_thread_join">等待线程退出。
 
 
 * 函数原型：
@@ -107,10 +102,8 @@ ret_t tk_thread_join (tk_thread_t* thread);
 
 * 函数功能：
 
-> <p id="tk_thread_t_tk_thread_set_name"> 设置线程的名称。
-
- > 需要在调用start之前调用本函数。
-
+> <p id="tk_thread_t_tk_thread_set_name">设置线程的名称。
+> 需要在调用start之前调用本函数。
 
 
 * 函数原型：
@@ -131,10 +124,8 @@ ret_t tk_thread_set_name (tk_thread_t* thread, const char* name);
 
 * 函数功能：
 
-> <p id="tk_thread_t_tk_thread_set_priority"> 设置线程的优先级。
-
- > 部分平台支持。
-
+> <p id="tk_thread_t_tk_thread_set_priority">设置线程的优先级。
+> 部分平台支持。
 
 
 * 函数原型：
@@ -155,10 +146,8 @@ ret_t tk_thread_set_priority (tk_thread_t* thread, uint32_t priority);
 
 * 函数功能：
 
-> <p id="tk_thread_t_tk_thread_set_stack_size"> 设置线程的栈大小。
-
- > 需要在调用start之前调用本函数。
-
+> <p id="tk_thread_t_tk_thread_set_stack_size">设置线程的栈大小。
+> 需要在调用start之前调用本函数。
 
 
 * 函数原型：
@@ -179,8 +168,7 @@ ret_t tk_thread_set_stack_size (tk_thread_t* thread, uint32_t stack_size);
 
 * 函数功能：
 
-> <p id="tk_thread_t_tk_thread_start"> 启动线程。
-
+> <p id="tk_thread_t_tk_thread_start">启动线程。
 
 
 * 函数原型：

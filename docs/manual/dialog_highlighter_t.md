@@ -1,9 +1,7 @@
 ## dialog\_highlighter\_t
 ### 概述
- 对话框高亮策略。
-
+对话框高亮策略。
 > 高亮策略的基本思路是对背景进行处理，比如将背景变暗或变模糊。
-
 
 ----------------------------------
 ### 函数
@@ -30,10 +28,8 @@
 
 * 函数功能：
 
-> <p id="dialog_highlighter_t_dialog_highlighter_create"> 创建对话框高亮策略对象。
-
+> <p id="dialog_highlighter_t_dialog_highlighter_create">创建对话框高亮策略对象。
 >供子类构造函数用。
-
 
 
 * 函数原型：
@@ -53,8 +49,7 @@ dialog_highlighter_t* dialog_highlighter_create (const dialog_highlighter_vtable
 
 * 函数功能：
 
-> <p id="dialog_highlighter_t_dialog_highlighter_destroy"> 销毁对话框高亮策略对象。
-
+> <p id="dialog_highlighter_t_dialog_highlighter_destroy">销毁对话框高亮策略对象。
 
 
 * 函数原型：
@@ -74,8 +69,7 @@ ret_t dialog_highlighter_destroy (dialog_highlighter_t* h);
 
 * 函数功能：
 
-> <p id="dialog_highlighter_t_dialog_highlighter_draw"> 绘制背景。
-
+> <p id="dialog_highlighter_t_dialog_highlighter_draw">绘制背景。
 
 
 * 函数原型：
@@ -96,8 +90,7 @@ ret_t dialog_highlighter_draw (dialog_highlighter_t* h, float_t percent);
 
 * 函数功能：
 
-> <p id="dialog_highlighter_t_dialog_highlighter_is_dynamic"> 是否是动态绘制(方便外层优化)。
-
+> <p id="dialog_highlighter_t_dialog_highlighter_is_dynamic">是否是动态绘制(方便外层优化)。
 
 
 * 函数原型：
@@ -117,8 +110,7 @@ bool_t dialog_highlighter_is_dynamic (dialog_highlighter_t* h);
 
 * 函数功能：
 
-> <p id="dialog_highlighter_t_dialog_highlighter_prepare"> 初始化。在绘制完背景，在截图前调用。
-
+> <p id="dialog_highlighter_t_dialog_highlighter_prepare">初始化。在绘制完背景，在截图前调用。
 
 
 * 函数原型：
@@ -139,8 +131,7 @@ ret_t dialog_highlighter_prepare (dialog_highlighter_t* h, canvas_t* c);
 
 * 函数功能：
 
-> <p id="dialog_highlighter_t_dialog_highlighter_set_bg"> 设置背景图片。
-
+> <p id="dialog_highlighter_t_dialog_highlighter_set_bg">设置背景图片。
 
 
 * 函数原型：
@@ -159,21 +150,21 @@ ret_t dialog_highlighter_set_bg (dialog_highlighter_t* h, bitmap_t* img, framebu
 | fbo | framebuffer\_object\_t* | fbo对象。 |
 #### canvas 属性
 -----------------------
-> <p id="dialog_highlighter_t_canvas"> 画布。
+> <p id="dialog_highlighter_t_canvas">画布。
 
 
 * 类型：canvas\_t*
 
 #### dialog 属性
 -----------------------
-> <p id="dialog_highlighter_t_dialog"> 对应的对话框。
+> <p id="dialog_highlighter_t_dialog">对应的对话框。
 
 
 * 类型：widget\_t*
 
 #### img 属性
 -----------------------
-> <p id="dialog_highlighter_t_img"> 底层窗口的截图。
+> <p id="dialog_highlighter_t_img">底层窗口的截图。
 
 
 * 类型：bitmap\_t

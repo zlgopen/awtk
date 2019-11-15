@@ -1,6 +1,6 @@
 ## app\_type\_t
 ### 概述
- 应用程序类型。
+应用程序类型。
 ### 常量
 <p id="app_type_t_consts">
 

@@ -2,14 +2,10 @@
 ### 概述
 ![image](images/object_array_t_0.png)
 
-
- 简单的动态数组，内部存放value对象。
-
- 访问时属性名称为：
-
- * "size"/"length" 用于获取数组的长度。
- * index 用于访问属性，-1可以用来追加新元素。
-
+简单的动态数组，内部存放value对象。
+访问时属性名称为：
+* "size"/"length" 用于获取数组的长度。
+* index 用于访问属性，-1可以用来追加新元素。
 
 ----------------------------------
 ### 函数
@@ -17,10 +13,10 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#object_array_t_object_array_clear_props">object\_array\_clear\_props</a> |  |
-| <a href="#object_array_t_object_array_create">object\_array\_create</a> |  |
-| <a href="#object_array_t_object_array_create">object\_array\_create</a> |  |
-| <a href="#object_array_t_object_array_unref">object\_array\_unref</a> |  |
+| <a href="#object_array_t_object_array_clear_props">object\_array\_clear\_props</a> | 清除全部属性。 |
+| <a href="#object_array_t_object_array_create">object\_array\_create</a> | 创建对象。 |
+| <a href="#object_array_t_object_array_create">object\_array\_create</a> | 克隆对象。 |
+| <a href="#object_array_t_object_array_unref">object\_array\_unref</a> | for script gc |
 ### 属性
 <p id="object_array_t_properties">
 
@@ -34,11 +30,7 @@
 
 * 函数功能：
 
-> <p id="object_array_t_object_array_clear_props">
- 清除全部属性。
-
-
-
+> <p id="object_array_t_object_array_clear_props">清除全部属性。
 
 
 * 函数原型：
@@ -58,11 +50,7 @@ ret_t object_array_clear_props (object_t* obj);
 
 * 函数功能：
 
-> <p id="object_array_t_object_array_create">
- 创建对象。
-
-
-
+> <p id="object_array_t_object_array_create">创建对象。
 
 
 * 函数原型：
@@ -81,11 +69,7 @@ object_t* object_array_create ();
 
 * 函数功能：
 
-> <p id="object_array_t_object_array_create">
- 克隆对象。
-
-
-
+> <p id="object_array_t_object_array_create">克隆对象。
 
 
 * 函数原型：
@@ -105,11 +89,7 @@ object_t* object_array_create (object_array_t* o);
 
 * 函数功能：
 
-> <p id="object_array_t_object_array_unref">
- for script gc
-
-
-
+> <p id="object_array_t_object_array_unref">for script gc
 
 
 * 函数原型：
@@ -126,8 +106,7 @@ ret_t object_array_unref (object_t* obj);
 | obj | object\_t* | 对象。 |
 #### props 属性
 -----------------------
-> <p id="object_array_t_props"> 属性数组。
-
+> <p id="object_array_t_props">属性数组。
 
 
 * 类型：value\_t
@@ -138,8 +117,7 @@ ret_t object_array_unref (object_t* obj);
 | 可直接修改 | 否 |
 #### props\_capacity 属性
 -----------------------
-> <p id="object_array_t_props_capacity"> 属性数组的容量。
-
+> <p id="object_array_t_props_capacity">属性数组的容量。
 
 
 * 类型：uint32\_t
@@ -150,8 +128,7 @@ ret_t object_array_unref (object_t* obj);
 | 可直接修改 | 否 |
 #### props\_size 属性
 -----------------------
-> <p id="object_array_t_props_size"> 属性个数。
-
+> <p id="object_array_t_props_size">属性个数。
 
 
 * 类型：uint32\_t

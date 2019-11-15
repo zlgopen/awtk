@@ -1,6 +1,6 @@
 ## image\_loader\_t
 ### 概述
- 图片加载接口。
+图片加载接口。
 
 ----------------------------------
 ### 函数
@@ -17,8 +17,7 @@
 
 * 函数功能：
 
-> <p id="image_loader_t_image_loader_load"> 加载图片。
-
+> <p id="image_loader_t_image_loader_load">加载图片。
 
 
 * 函数原型：
@@ -40,9 +39,7 @@ ret_t image_loader_load (image_loader_t* loader, const asset_info_t* asset, bitm
 
 * 函数功能：
 
-> <p id="image_loader_t_image_loader_load_image"> 查找满足条件加载器并加载图片。
-
-
+> <p id="image_loader_t_image_loader_load_image">查找满足条件加载器并加载图片。
 
 
 * 函数原型：
@@ -63,9 +60,7 @@ ret_t image_loader_load_image (const asset_info_t* asset, bitmap_t* bitmap);
 
 * 函数功能：
 
-> <p id="image_loader_t_image_loader_register"> 注册图片加载器。
-
-
+> <p id="image_loader_t_image_loader_register">注册图片加载器。
 
 
 * 函数原型：
@@ -85,9 +80,7 @@ ret_t image_loader_register (image_loader_t* loader);
 
 * 函数功能：
 
-> <p id="image_loader_t_image_loader_unregister"> 注销图片加载器。
-
-
+> <p id="image_loader_t_image_loader_unregister">注销图片加载器。
 
 
 * 函数原型：

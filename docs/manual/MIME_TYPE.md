@@ -1,7 +1,6 @@
 ## MIME\_TYPE
 ### 概述
- MIME_TYPE。
-
+MIME_TYPE。
 ### 常量
 <p id="MIME_TYPE_consts">
 

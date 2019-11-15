@@ -1,8 +1,6 @@
 ## utils\_t
 ### 概述
- 工具类。
-
-
+工具类。
 
 ----------------------------------
 ### 函数
@@ -10,39 +8,35 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#utils_t_tk_atob">tk\_atob</a> |  |
-| <a href="#utils_t_tk_atof">tk\_atof</a> |  |
-| <a href="#utils_t_tk_atoi">tk\_atoi</a> |  |
-| <a href="#utils_t_tk_ftoa">tk\_ftoa</a> |  |
-| <a href="#utils_t_tk_itoa">tk\_itoa</a> |  |
-| <a href="#utils_t_tk_skip_to_num">tk\_skip\_to\_num</a> |  |
-| <a href="#utils_t_tk_snprintf">tk\_snprintf</a> |  |
-| <a href="#utils_t_tk_sscanf">tk\_sscanf</a> |  |
-| <a href="#utils_t_tk_str_append">tk\_str\_append</a> |  |
-| <a href="#utils_t_tk_str_cmp">tk\_str\_cmp</a> |  |
-| <a href="#utils_t_tk_str_icmp">tk\_str\_icmp</a> |  |
-| <a href="#utils_t_tk_str_start_with">tk\_str\_start\_with</a> |  |
-| <a href="#utils_t_tk_str_tolower">tk\_str\_tolower</a> |  |
-| <a href="#utils_t_tk_str_toupper">tk\_str\_toupper</a> |  |
-| <a href="#utils_t_tk_strcpy">tk\_strcpy</a> |  |
-| <a href="#utils_t_tk_strdup">tk\_strdup</a> |  |
-| <a href="#utils_t_tk_strncpy">tk\_strncpy</a> |  |
-| <a href="#utils_t_tk_strndup">tk\_strndup</a> |  |
-| <a href="#utils_t_tk_strtol">tk\_strtol</a> |  |
-| <a href="#utils_t_tk_watob">tk\_watob</a> |  |
-| <a href="#utils_t_tk_watof">tk\_watof</a> |  |
-| <a href="#utils_t_tk_watoi">tk\_watoi</a> |  |
-| <a href="#utils_t_tk_wstrdup">tk\_wstrdup</a> |  |
+| <a href="#utils_t_tk_atob">tk\_atob</a> | 将字符串转换为布尔类型。 |
+| <a href="#utils_t_tk_atof">tk\_atof</a> | 将字符串转换为浮点类型。 |
+| <a href="#utils_t_tk_atoi">tk\_atoi</a> | 将字符串转换为整形。 |
+| <a href="#utils_t_tk_ftoa">tk\_ftoa</a> | 将浮点型转换为字符串。 |
+| <a href="#utils_t_tk_itoa">tk\_itoa</a> | 将整形转换为字符串。 |
+| <a href="#utils_t_tk_skip_to_num">tk\_skip\_to\_num</a> | 跳过字符串函数，如：字符串"hello123world"，返回的结果是"123world"。 |
+| <a href="#utils_t_tk_snprintf">tk\_snprintf</a> | 将可变参数(...)按照format格式化字符串，并将字符串复制到str中。 |
+| <a href="#utils_t_tk_sscanf">tk\_sscanf</a> | 从字符串读取格式化输入。 |
+| <a href="#utils_t_tk_str_append">tk\_str\_append</a> | 字符串追加函数。 |
+| <a href="#utils_t_tk_str_cmp">tk\_str\_cmp</a> | 字符串比较函数。 |
+| <a href="#utils_t_tk_str_icmp">tk\_str\_icmp</a> | 字符串比较函数（不区分大小写）。 |
+| <a href="#utils_t_tk_str_start_with">tk\_str\_start\_with</a> | 检查字符串是否以指定的字符串prefix开头。 |
+| <a href="#utils_t_tk_str_tolower">tk\_str\_tolower</a> | 将大写字母转换为小写字母。 |
+| <a href="#utils_t_tk_str_toupper">tk\_str\_toupper</a> | 将小写字母转换为大写字母。 |
+| <a href="#utils_t_tk_strcpy">tk\_strcpy</a> | 将src所指向的字符串复制到dst。 |
+| <a href="#utils_t_tk_strdup">tk\_strdup</a> | 字符串拷贝函数。 |
+| <a href="#utils_t_tk_strncpy">tk\_strncpy</a> | 将src所指向的字符串复制到dst，最多复制len个字符串。 |
+| <a href="#utils_t_tk_strndup">tk\_strndup</a> | 字符串拷贝函数，最多复制len个字符串。 |
+| <a href="#utils_t_tk_strtol">tk\_strtol</a> | 将字符串转换为长整形。 |
+| <a href="#utils_t_tk_watob">tk\_watob</a> | 将宽字符串转换为布尔类型。 |
+| <a href="#utils_t_tk_watof">tk\_watof</a> | 将宽字符串转换为浮点类型。 |
+| <a href="#utils_t_tk_watoi">tk\_watoi</a> | 将宽字符串转换为整形。 |
+| <a href="#utils_t_tk_wstrdup">tk\_wstrdup</a> | 宽字符串拷贝函数。 |
 #### tk\_atob 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="utils_t_tk_atob">
- 将字符串转换为布尔类型。
-
-
-
+> <p id="utils_t_tk_atob">将字符串转换为布尔类型。
 
 
 * 函数原型：
@@ -62,11 +56,7 @@ bool_t tk_atob (const char* str);
 
 * 函数功能：
 
-> <p id="utils_t_tk_atof">
- 将字符串转换为浮点类型。
-
-
-
+> <p id="utils_t_tk_atof">将字符串转换为浮点类型。
 
 
 * 函数原型：
@@ -86,11 +76,7 @@ double tk_atof (const char* str);
 
 * 函数功能：
 
-> <p id="utils_t_tk_atoi">
- 将字符串转换为整形。
-
-
-
+> <p id="utils_t_tk_atoi">将字符串转换为整形。
 
 
 * 函数原型：
@@ -110,11 +96,7 @@ int tk_atoi (const char* str);
 
 * 函数功能：
 
-> <p id="utils_t_tk_ftoa">
- 将浮点型转换为字符串。
-
-
-
+> <p id="utils_t_tk_ftoa">将浮点型转换为字符串。
 
 
 * 函数原型：
@@ -136,11 +118,7 @@ const char* tk_ftoa (char* str, int len, double f);
 
 * 函数功能：
 
-> <p id="utils_t_tk_itoa">
- 将整形转换为字符串。
-
-
-
+> <p id="utils_t_tk_itoa">将整形转换为字符串。
 
 
 * 函数原型：
@@ -162,11 +140,7 @@ const char* tk_itoa (char* str, int len, int n);
 
 * 函数功能：
 
-> <p id="utils_t_tk_skip_to_num">
- 跳过字符串函数，如：字符串"hello123world"，返回的结果是"123world"。
-
-
-
+> <p id="utils_t_tk_skip_to_num">跳过字符串函数，如：字符串"hello123world"，返回的结果是"123world"。
 
 
 * 函数原型：
@@ -186,11 +160,7 @@ const char* tk_skip_to_num (const char* str);
 
 * 函数功能：
 
-> <p id="utils_t_tk_snprintf">
- 将可变参数(...)按照format格式化字符串，并将字符串复制到str中。
-
-
-
+> <p id="utils_t_tk_snprintf">将可变参数(...)按照format格式化字符串，并将字符串复制到str中。
 
 
 * 函数原型：
@@ -212,11 +182,7 @@ int tk_snprintf (char* str, size_t size, const char* format);
 
 * 函数功能：
 
-> <p id="utils_t_tk_sscanf">
- 从字符串读取格式化输入。
-
-
-
+> <p id="utils_t_tk_sscanf">从字符串读取格式化输入。
 
 
 * 函数原型：
@@ -237,11 +203,7 @@ int tk_sscanf (char* str, const char* format);
 
 * 函数功能：
 
-> <p id="utils_t_tk_str_append">
- 字符串追加函数。
-
-
-
+> <p id="utils_t_tk_str_append">字符串追加函数。
 
 
 * 函数原型：
@@ -263,11 +225,7 @@ ret_t tk_str_append (char* str, uint32_t max_len, const char* s);
 
 * 函数功能：
 
-> <p id="utils_t_tk_str_cmp">
- 字符串比较函数。
-
-
-
+> <p id="utils_t_tk_str_cmp">字符串比较函数。
 
 
 * 函数原型：
@@ -288,11 +246,7 @@ int32_t tk_str_cmp (const char* a, const char* b);
 
 * 函数功能：
 
-> <p id="utils_t_tk_str_icmp">
- 字符串比较函数（不区分大小写）。
-
-
-
+> <p id="utils_t_tk_str_icmp">字符串比较函数（不区分大小写）。
 
 
 * 函数原型：
@@ -313,11 +267,7 @@ int32_t tk_str_icmp (const char* a, const char* b);
 
 * 函数功能：
 
-> <p id="utils_t_tk_str_start_with">
- 检查字符串是否以指定的字符串prefix开头。
-
-
-
+> <p id="utils_t_tk_str_start_with">检查字符串是否以指定的字符串prefix开头。
 
 
 * 函数原型：
@@ -338,11 +288,7 @@ bool_t tk_str_start_with (const char* str, const char* prefix);
 
 * 函数功能：
 
-> <p id="utils_t_tk_str_tolower">
- 将大写字母转换为小写字母。
-
-
-
+> <p id="utils_t_tk_str_tolower">将大写字母转换为小写字母。
 
 
 * 函数原型：
@@ -362,11 +308,7 @@ char* tk_str_tolower (char* str);
 
 * 函数功能：
 
-> <p id="utils_t_tk_str_toupper">
- 将小写字母转换为大写字母。
-
-
-
+> <p id="utils_t_tk_str_toupper">将小写字母转换为大写字母。
 
 
 * 函数原型：
@@ -386,11 +328,7 @@ char* tk_str_toupper (char* str);
 
 * 函数功能：
 
-> <p id="utils_t_tk_strcpy">
- 将src所指向的字符串复制到dst。
-
-
-
+> <p id="utils_t_tk_strcpy">将src所指向的字符串复制到dst。
 
 
 * 函数原型：
@@ -411,11 +349,7 @@ char* tk_strcpy (char* dst, const char* src);
 
 * 函数功能：
 
-> <p id="utils_t_tk_strdup">
- 字符串拷贝函数。
-
-
-
+> <p id="utils_t_tk_strdup">字符串拷贝函数。
 
 
 * 函数原型：
@@ -435,11 +369,7 @@ char* tk_strdup (const char* str);
 
 * 函数功能：
 
-> <p id="utils_t_tk_strncpy">
- 将src所指向的字符串复制到dst，最多复制len个字符串。
-
-
-
+> <p id="utils_t_tk_strncpy">将src所指向的字符串复制到dst，最多复制len个字符串。
 
 
 * 函数原型：
@@ -461,11 +391,7 @@ char* tk_strncpy (char* dst, const char* src, size_t len);
 
 * 函数功能：
 
-> <p id="utils_t_tk_strndup">
- 字符串拷贝函数，最多复制len个字符串。
-
-
-
+> <p id="utils_t_tk_strndup">字符串拷贝函数，最多复制len个字符串。
 
 
 * 函数原型：
@@ -486,11 +412,7 @@ char* tk_strndup (const char* str, uint32_t len);
 
 * 函数功能：
 
-> <p id="utils_t_tk_strtol">
- 将字符串转换为长整形。
-
-
-
+> <p id="utils_t_tk_strtol">将字符串转换为长整形。
 
 
 * 函数原型：
@@ -512,11 +434,7 @@ long tk_strtol (const char* str, const char** end, int base);
 
 * 函数功能：
 
-> <p id="utils_t_tk_watob">
- 将宽字符串转换为布尔类型。
-
-
-
+> <p id="utils_t_tk_watob">将宽字符串转换为布尔类型。
 
 
 * 函数原型：
@@ -536,11 +454,7 @@ bool_t tk_watob (const wchar_t* str);
 
 * 函数功能：
 
-> <p id="utils_t_tk_watof">
- 将宽字符串转换为浮点类型。
-
-
-
+> <p id="utils_t_tk_watof">将宽字符串转换为浮点类型。
 
 
 * 函数原型：
@@ -560,11 +474,7 @@ double tk_watof (const wchar_t* str);
 
 * 函数功能：
 
-> <p id="utils_t_tk_watoi">
- 将宽字符串转换为整形。
-
-
-
+> <p id="utils_t_tk_watoi">将宽字符串转换为整形。
 
 
 * 函数原型：
@@ -584,11 +494,7 @@ int tk_watoi (const wchar_t* str);
 
 * 函数功能：
 
-> <p id="utils_t_tk_wstrdup">
- 宽字符串拷贝函数。
-
-
-
+> <p id="utils_t_tk_wstrdup">宽字符串拷贝函数。
 
 
 * 函数原型：

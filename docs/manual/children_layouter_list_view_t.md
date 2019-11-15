@@ -2,12 +2,9 @@
 ### 概述
 ![image](images/children_layouter_list_view_t_0.png)
 
-
- listview的子控件布局算法实现。
-
+listview的子控件布局算法实现。
 > 用法请参考：[listview子控件布局算法](
 https://github.com/zlgopen/awtk/blob/master/docs/children_layouter_list_view.md)
-
 
 ----------------------------------
 ### 函数
@@ -15,16 +12,13 @@ https://github.com/zlgopen/awtk/blob/master/docs/children_layouter_list_view.md)
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#children_layouter_list_view_t_children_layouter_list_view_create">children\_layouter\_list\_view\_create</a> |  |
+| <a href="#children_layouter_list_view_t_children_layouter_list_view_create">children\_layouter\_list\_view\_create</a> | 创建子控件布局对象。 |
 #### children\_layouter\_list\_view\_create 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="children_layouter_list_view_t_children_layouter_list_view_create">
- 创建子控件布局对象。
-
-
+> <p id="children_layouter_list_view_t_children_layouter_list_view_create">创建子控件布局对象。
 
 
 * 函数原型：

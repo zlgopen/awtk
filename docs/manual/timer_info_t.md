@@ -2,8 +2,7 @@
 ### 概述
 ![image](images/timer_info_t_0.png)
 
- 单个定时器的信息。
-
+单个定时器的信息。
 
 ----------------------------------
 ### 函数
@@ -31,8 +30,7 @@
 
 * 函数功能：
 
-> <p id="timer_info_t_timer_info_cast"> 转换为timer_info对象(供脚本语言使用)。
-
+> <p id="timer_info_t_timer_info_cast">转换为timer_info对象(供脚本语言使用)。
 
 
 * 函数原型：
@@ -49,8 +47,7 @@ timer_info_t* timer_info_cast (timer_info_t* timer);
 | timer | timer\_info\_t* | timer\_info对象。 |
 #### ctx 属性
 -----------------------
-> <p id="timer_info_t_ctx"> 定时器回调函数的上下文
-
+> <p id="timer_info_t_ctx">定时器回调函数的上下文
 
 
 * 类型：void*
@@ -62,8 +59,7 @@ timer_info_t* timer_info_cast (timer_info_t* timer);
 | 可脚本化   | 是 |
 #### duration 属性
 -----------------------
-> <p id="timer_info_t_duration"> 时间间隔(单位为毫秒)。
-
+> <p id="timer_info_t_duration">时间间隔(单位为毫秒)。
 
 
 * 类型：uint32\_t
@@ -74,9 +70,8 @@ timer_info_t* timer_info_cast (timer_info_t* timer);
 | 可直接修改 | 否 |
 #### id 属性
 -----------------------
-> <p id="timer_info_t_id"> 定时器的ID
-
- > 为TK\_INVALID\_ID时表示无效定时器。
+> <p id="timer_info_t_id">定时器的ID
+> 为TK\_INVALID\_ID时表示无效定时器。
 
 
 * 类型：uint32\_t
@@ -88,8 +83,7 @@ timer_info_t* timer_info_cast (timer_info_t* timer);
 | 可脚本化   | 是 |
 #### now 属性
 -----------------------
-> <p id="timer_info_t_now"> 当前时间(相对时间，单位为毫秒)。
-
+> <p id="timer_info_t_now">当前时间(相对时间，单位为毫秒)。
 
 
 * 类型：uint64\_t
@@ -101,7 +95,7 @@ timer_info_t* timer_info_cast (timer_info_t* timer);
 | 可脚本化   | 是 |
 #### on\_destroy 属性
 -----------------------
-> <p id="timer_info_t_on_destroy"> 定时器销毁时的回调函数。
+> <p id="timer_info_t_on_destroy">定时器销毁时的回调函数。
 
 
 * 类型：tk\_destroy\_t
@@ -112,7 +106,7 @@ timer_info_t* timer_info_cast (timer_info_t* timer);
 | 可直接修改 | 否 |
 #### on\_destroy\_ctx 属性
 -----------------------
-> <p id="timer_info_t_on_destroy_ctx"> 定时器销毁时的回调函数上下文。
+> <p id="timer_info_t_on_destroy_ctx">定时器销毁时的回调函数上下文。
 
 
 * 类型：void*
@@ -123,7 +117,7 @@ timer_info_t* timer_info_cast (timer_info_t* timer);
 | 可直接修改 | 否 |
 #### on\_timer 属性
 -----------------------
-> <p id="timer_info_t_on_timer"> 定时器回调函数。
+> <p id="timer_info_t_on_timer">定时器回调函数。
 
 
 * 类型：timer\_func\_t
@@ -134,8 +128,7 @@ timer_info_t* timer_info_cast (timer_info_t* timer);
 | 可直接修改 | 否 |
 #### start 属性
 -----------------------
-> <p id="timer_info_t_start"> 起始时间(相对时间，单位为毫秒)。
-
+> <p id="timer_info_t_start">起始时间(相对时间，单位为毫秒)。
 
 
 * 类型：uint64\_t
@@ -146,7 +139,7 @@ timer_info_t* timer_info_cast (timer_info_t* timer);
 | 可直接修改 | 否 |
 #### user\_changed\_time 属性
 -----------------------
-> <p id="timer_info_t_user_changed_time"> 用户是否修改了系统时间。
+> <p id="timer_info_t_user_changed_time">用户是否修改了系统时间。
 
 
 * 类型：bool\_t

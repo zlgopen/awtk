@@ -2,9 +2,7 @@
 ### 概述
 ![image](images/tk_ostream_t_0.png)
 
-
- input stream interface
-
+input stream interface
 
 ----------------------------------
 ### 函数
@@ -12,21 +10,17 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#tk_ostream_t_tk_ostream_flush">tk\_ostream\_flush</a> |  |
-| <a href="#tk_ostream_t_tk_ostream_seek">tk\_ostream\_seek</a> |  |
-| <a href="#tk_ostream_t_tk_ostream_write">tk\_ostream\_write</a> |  |
-| <a href="#tk_ostream_t_tk_ostream_write_byte">tk\_ostream\_write\_byte</a> |  |
-| <a href="#tk_ostream_t_tk_ostream_write_len">tk\_ostream\_write\_len</a> |  |
+| <a href="#tk_ostream_t_tk_ostream_flush">tk\_ostream\_flush</a> | 刷新数据。 |
+| <a href="#tk_ostream_t_tk_ostream_seek">tk\_ostream\_seek</a> | 设置偏移量。 |
+| <a href="#tk_ostream_t_tk_ostream_write">tk\_ostream\_write</a> | 写入数据。 |
+| <a href="#tk_ostream_t_tk_ostream_write_byte">tk\_ostream\_write\_byte</a> | 写入一个字节的数据。 |
+| <a href="#tk_ostream_t_tk_ostream_write_len">tk\_ostream\_write\_len</a> | 写入指定长度的数据。 |
 #### tk\_ostream\_flush 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="tk_ostream_t_tk_ostream_flush">
- 刷新数据。
-
-
-
+> <p id="tk_ostream_t_tk_ostream_flush">刷新数据。
 
 
 * 函数原型：
@@ -46,11 +40,7 @@ ret_t tk_ostream_flush (tk_ostream_t* stream);
 
 * 函数功能：
 
-> <p id="tk_ostream_t_tk_ostream_seek">
- 设置偏移量。
-
-
-
+> <p id="tk_ostream_t_tk_ostream_seek">设置偏移量。
 
 
 * 函数原型：
@@ -71,11 +61,7 @@ ret_t tk_ostream_seek (tk_ostream_t* stream, uint32_t offset);
 
 * 函数功能：
 
-> <p id="tk_ostream_t_tk_ostream_write">
- 写入数据。
-
-
-
+> <p id="tk_ostream_t_tk_ostream_write">写入数据。
 
 
 * 函数原型：
@@ -97,11 +83,7 @@ int32_t tk_ostream_write (tk_ostream_t* stream, const uint8_t* buff, uint32_t ma
 
 * 函数功能：
 
-> <p id="tk_ostream_t_tk_ostream_write_byte">
- 写入一个字节的数据。
-
-
-
+> <p id="tk_ostream_t_tk_ostream_write_byte">写入一个字节的数据。
 
 
 * 函数原型：
@@ -122,11 +104,7 @@ ret_t tk_ostream_write_byte (tk_ostream_t* stream, uint8_t byte);
 
 * 函数功能：
 
-> <p id="tk_ostream_t_tk_ostream_write_len">
- 写入指定长度的数据。
-
-
-
+> <p id="tk_ostream_t_tk_ostream_write_len">写入指定长度的数据。
 
 
 * 函数原型：

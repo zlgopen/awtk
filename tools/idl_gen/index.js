@@ -12,7 +12,13 @@ class IDLGenerator {
         desc = desc.substr(start + 1);
       }
 
-      return desc + '\n';
+      desc = desc.trim();
+      desc = desc.replace(/\r\n/, '\n');
+      desc = desc.replace(/^\n+|\n+$/g,"");
+      if(desc) {
+        desc += '\n';
+      }
+      return desc;
     } else {
       return '';
     }

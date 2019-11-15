@@ -1,6 +1,6 @@
 ## socketpair\_t
 ### 概述
- socketpair
+socketpair
 
 ----------------------------------
 ### 函数
@@ -14,9 +14,7 @@
 
 * 函数功能：
 
-> <p id="socketpair_t_tk_socketpair"> 生成两个socket句柄。两者可以模拟客户端和服务器通信。
-
-
+> <p id="socketpair_t_tk_socketpair">生成两个socket句柄。两者可以模拟客户端和服务器通信。
 
 
 * 函数原型：

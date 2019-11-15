@@ -2,7 +2,7 @@
 ### 概述
 ![image](images/window_manager_simple_t_0.png)
 
- 缺省窗口管理器。
+缺省窗口管理器。
 
 ----------------------------------
 ### 函数
@@ -16,8 +16,7 @@
 
 * 函数功能：
 
-> <p id="window_manager_simple_t_window_manager_create"> 创建窗口管理器。
-
+> <p id="window_manager_simple_t_window_manager_create">创建窗口管理器。
 
 
 * 函数原型：

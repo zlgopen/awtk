@@ -2,14 +2,10 @@
 ### 概述
 ![image](images/keyboard_t_0.png)
 
- 软键盘。
-
- 软键盘是一个特殊的窗口，由编辑器通过输入法自动打开和关闭。
-
- 这里介绍一下定制软键盘的方法：
-
-  编辑器输入类型和软键盘UI资源文件的对应关系:
-
+软键盘。
+软键盘是一个特殊的窗口，由编辑器通过输入法自动打开和关闭。
+这里介绍一下定制软键盘的方法：
+编辑器输入类型和软键盘UI资源文件的对应关系:
 | 输入类型       | 软键盘UI资源文件|
 |----------------|:---------------:|
 | INPUT\_PHONE    | kb\_phone.xml    |
@@ -22,9 +18,7 @@
 | INPUT\_PASSWORD | kb\_ascii.xml    |
 | INPUT\_CUSTOM   | 使用自定义的键盘 |
 | 其它            | kb\_default.xml  |
-
- keyboard中按钮子控件的名称有些特殊要求：
-
+keyboard中按钮子控件的名称有些特殊要求：
 |  名称          | 功能            |
 |----------------|:---------------:|
 | return         | 回车键          |
@@ -35,11 +29,8 @@
 | close          | 关闭软键盘      |
 | 前缀key:       | 键值            |
 | 前缀page:      | 切换到页面      |
-
-
- > 更多用法请参考：
- [kb_default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/kb_default.xml)
-
+> 更多用法请参考：
+[kb_default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/kb_default.xml)
 
 ----------------------------------
 ### 函数
@@ -55,8 +46,7 @@
 
 * 函数功能：
 
-> <p id="keyboard_t_keyboard_cast"> 转换为keyboard对象(供脚本语言使用)。
-
+> <p id="keyboard_t_keyboard_cast">转换为keyboard对象(供脚本语言使用)。
 
 
 * 函数原型：
@@ -76,8 +66,7 @@ widget_t* keyboard_cast (widget_t* widget);
 
 * 函数功能：
 
-> <p id="keyboard_t_keyboard_close"> 关闭keyboard窗口。
-
+> <p id="keyboard_t_keyboard_close">关闭keyboard窗口。
 
 
 * 函数原型：
@@ -97,8 +86,7 @@ ret_t keyboard_close (widget_t* parent);
 
 * 函数功能：
 
-> <p id="keyboard_t_keyboard_create"> 创建keyboard对象
-
+> <p id="keyboard_t_keyboard_create">创建keyboard对象
 
 
 * 函数原型：

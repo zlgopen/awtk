@@ -1,8 +1,7 @@
 ## self\_layouter\_t
 ### 概述
- 控件自身排版布局器的接口。
-
- 按特定算法对控件进行排版布局，子类需要实现vtable中的函数。
+控件自身排版布局器的接口。
+按特定算法对控件进行排版布局，子类需要实现vtable中的函数。
 
 ----------------------------------
 ### 函数
@@ -24,8 +23,7 @@
 
 * 函数功能：
 
-> <p id="self_layouter_t_self_layouter_create"> 创建layouter对象。
-
+> <p id="self_layouter_t_self_layouter_create">创建layouter对象。
 
 
 * 函数原型：
@@ -45,8 +43,7 @@ self_layouter_t* self_layouter_create (const char* params);
 
 * 函数功能：
 
-> <p id="self_layouter_t_self_layouter_destroy"> 销毁layouter对象。
-
+> <p id="self_layouter_t_self_layouter_destroy">销毁layouter对象。
 
 
 * 函数原型：
@@ -66,8 +63,7 @@ ret_t self_layouter_destroy (self_layouter_t* layouter);
 
 * 函数功能：
 
-> <p id="self_layouter_t_self_layouter_get_param"> 获取指定的参数。
-
+> <p id="self_layouter_t_self_layouter_get_param">获取指定的参数。
 
 
 * 函数原型：
@@ -89,8 +85,7 @@ ret_t self_layouter_get_param (self_layouter_t* layouter, const char* name, valu
 
 * 函数功能：
 
-> <p id="self_layouter_t_self_layouter_get_param_float"> 获取指定的浮点格式的参数。
-
+> <p id="self_layouter_t_self_layouter_get_param_float">获取指定的浮点格式的参数。
 
 
 * 函数原型：
@@ -112,8 +107,7 @@ ret_t self_layouter_get_param_float (self_layouter_t* layouter, const char* name
 
 * 函数功能：
 
-> <p id="self_layouter_t_self_layouter_get_param_int"> 获取指定的整数格式的参数。
-
+> <p id="self_layouter_t_self_layouter_get_param_int">获取指定的整数格式的参数。
 
 
 * 函数原型：
@@ -135,8 +129,7 @@ ret_t self_layouter_get_param_int (self_layouter_t* layouter, const char* name, 
 
 * 函数功能：
 
-> <p id="self_layouter_t_self_layouter_layout"> 对控件自身进行布局。
-
+> <p id="self_layouter_t_self_layouter_layout">对控件自身进行布局。
 
 
 * 函数原型：
@@ -158,8 +151,7 @@ ret_t self_layouter_layout (self_layouter_t* layouter, widget_t* widget, rect_t*
 
 * 函数功能：
 
-> <p id="self_layouter_t_self_layouter_set_param"> 获取指定的参数。
-
+> <p id="self_layouter_t_self_layouter_set_param">获取指定的参数。
 
 
 * 函数原型：
@@ -181,8 +173,7 @@ ret_t self_layouter_set_param (self_layouter_t* layouter, const char* name, cons
 
 * 函数功能：
 
-> <p id="self_layouter_t_self_layouter_set_param_str"> 设置字符串格式的参数。
-
+> <p id="self_layouter_t_self_layouter_set_param_str">设置字符串格式的参数。
 
 
 * 函数原型：
@@ -204,8 +195,7 @@ ret_t self_layouter_set_param_str (self_layouter_t* layouter, const char* name, 
 
 * 函数功能：
 
-> <p id="self_layouter_t_self_layouter_to_string"> 获取全部参数。
-
+> <p id="self_layouter_t_self_layouter_to_string">获取全部参数。
 
 
 * 函数原型：

@@ -2,12 +2,8 @@
 ### 概述
 ![image](images/input_engine_null_t_0.png)
 
-
- 空输入法引擎实现。
-
- 缺省输入法可以选择启用软键盘，但不启用具体的输入法引擎，此时可以选择空输入法引擎实现。
-
-
+空输入法引擎实现。
+缺省输入法可以选择启用软键盘，但不启用具体的输入法引擎，此时可以选择空输入法引擎实现。
 
 ----------------------------------
 ### 函数
@@ -15,16 +11,13 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#input_engine_null_t_input_engine_create">input\_engine\_create</a> |  |
+| <a href="#input_engine_null_t_input_engine_create">input\_engine\_create</a> | 创建空输入法引擎对象。 |
 #### input\_engine\_create 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="input_engine_null_t_input_engine_create">
- 创建空输入法引擎对象。
-
-
+> <p id="input_engine_null_t_input_engine_create">创建空输入法引擎对象。
 
 
 * 函数原型：

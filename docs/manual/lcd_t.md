@@ -1,6 +1,6 @@
 ## lcd\_t
 ### 概述
- 显示设备抽象基类。
+显示设备抽象基类。
 
 ----------------------------------
 ### 函数
@@ -58,8 +58,7 @@
 
 * 函数功能：
 
-> <p id="lcd_t_lcd_begin_frame"> 准备绘制。
-
+> <p id="lcd_t_lcd_begin_frame">准备绘制。
 
 
 * 函数原型：
@@ -81,8 +80,7 @@ ret_t lcd_begin_frame (lcd_t* lcd, rect_t* dirty_rect, lcd_draw_mode_t anim_mode
 
 * 函数功能：
 
-> <p id="lcd_t_lcd_draw_glyph"> 绘制字符。如果实现了measure_text/draw_text则不需要实现本函数。
-
+> <p id="lcd_t_lcd_draw_glyph">绘制字符。如果实现了measure_text/draw_text则不需要实现本函数。
 
 
 * 函数原型：
@@ -106,8 +104,7 @@ ret_t lcd_draw_glyph (lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x, xy_t y);
 
 * 函数功能：
 
-> <p id="lcd_t_lcd_draw_hline"> 绘制一条水平线。
-
+> <p id="lcd_t_lcd_draw_hline">绘制一条水平线。
 
 
 * 函数原型：
@@ -130,8 +127,7 @@ ret_t lcd_draw_hline (lcd_t* lcd, xy_t x, xy_t y, xy_t w);
 
 * 函数功能：
 
-> <p id="lcd_t_lcd_draw_image"> 绘制图片。
-
+> <p id="lcd_t_lcd_draw_image">绘制图片。
 
 
 * 函数原型：
@@ -154,8 +150,7 @@ ret_t lcd_draw_image (lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst);
 
 * 函数功能：
 
-> <p id="lcd_t_lcd_draw_image_matrix"> 绘制图片。
-
+> <p id="lcd_t_lcd_draw_image_matrix">绘制图片。
 
 
 * 函数原型：
@@ -176,8 +171,7 @@ ret_t lcd_draw_image_matrix (lcd_t* lcd, draw_image_info_t* info);
 
 * 函数功能：
 
-> <p id="lcd_t_lcd_draw_points"> 绘制一组点。
-
+> <p id="lcd_t_lcd_draw_points">绘制一组点。
 
 
 * 函数原型：
@@ -199,8 +193,7 @@ ret_t lcd_draw_points (lcd_t* lcd, point_t* points, uint32_t nr);
 
 * 函数功能：
 
-> <p id="lcd_t_lcd_draw_text"> 绘制字符。
-
+> <p id="lcd_t_lcd_draw_text">绘制字符。
 
 
 * 函数原型：
@@ -224,8 +217,7 @@ ret_t lcd_draw_text (lcd_t* lcd, const wchar_t* str, uint32_t nr, xy_t x, xy_t y
 
 * 函数功能：
 
-> <p id="lcd_t_lcd_draw_vline"> 绘制一条垂直线。
-
+> <p id="lcd_t_lcd_draw_vline">绘制一条垂直线。
 
 
 * 函数原型：
@@ -248,8 +240,7 @@ ret_t lcd_draw_vline (lcd_t* lcd, xy_t x, xy_t y, xy_t h);
 
 * 函数功能：
 
-> <p id="lcd_t_lcd_end_frame"> 完成绘制，同步到显示设备。
-
+> <p id="lcd_t_lcd_end_frame">完成绘制，同步到显示设备。
 
 
 * 函数原型：
@@ -269,8 +260,7 @@ ret_t lcd_end_frame (lcd_t* lcd);
 
 * 函数功能：
 
-> <p id="lcd_t_lcd_fill_rect"> 绘制实心矩形。
-
+> <p id="lcd_t_lcd_fill_rect">绘制实心矩形。
 
 
 * 函数原型：
@@ -294,8 +284,7 @@ ret_t lcd_fill_rect (lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h);
 
 * 函数功能：
 
-> <p id="lcd_t_lcd_get_clip_rect"> 获取裁剪区域。
-
+> <p id="lcd_t_lcd_get_clip_rect">获取裁剪区域。
 
 
 * 函数原型：
@@ -316,8 +305,7 @@ ret_t lcd_get_clip_rect (lcd_t* lcd, rect_t* rect);
 
 * 函数功能：
 
-> <p id="lcd_t_lcd_get_desired_bitmap_format"> 获取期望的位图格式。绘制期望的位图格式可以提高绘制性能。
-
+> <p id="lcd_t_lcd_get_desired_bitmap_format">获取期望的位图格式。绘制期望的位图格式可以提高绘制性能。
 
 
 * 函数原型：
@@ -337,8 +325,7 @@ bitmap_format_t lcd_get_desired_bitmap_format (lcd_t* lcd);
 
 * 函数功能：
 
-> <p id="lcd_t_lcd_get_height"> 获取高度。
-
+> <p id="lcd_t_lcd_get_height">获取高度。
 
 
 * 函数原型：
@@ -358,8 +345,7 @@ wh_t lcd_get_height (lcd_t* lcd);
 
 * 函数功能：
 
-> <p id="lcd_t_lcd_get_point_color"> 获取指定点的颜色，对于基于非FrameBuffer的LCD，返回当前的fill_color。
-
+> <p id="lcd_t_lcd_get_point_color">获取指定点的颜色，对于基于非FrameBuffer的LCD，返回当前的fill_color。
 
 
 * 函数原型：
@@ -381,8 +367,7 @@ color_t lcd_get_point_color (lcd_t* lcd, xy_t x, xy_t y);
 
 * 函数功能：
 
-> <p id="lcd_t_lcd_get_vgcanvas"> 获取矢量图canvas。
-
+> <p id="lcd_t_lcd_get_vgcanvas">获取矢量图canvas。
 
 
 * 函数原型：
@@ -402,8 +387,7 @@ vgcanvas_t* lcd_get_vgcanvas (lcd_t* lcd);
 
 * 函数功能：
 
-> <p id="lcd_t_lcd_get_width"> 获取宽度。
-
+> <p id="lcd_t_lcd_get_width">获取宽度。
 
 
 * 函数原型：
@@ -423,8 +407,7 @@ wh_t lcd_get_width (lcd_t* lcd);
 
 * 函数功能：
 
-> <p id="lcd_t_lcd_is_swappable"> 判读lcd是否支持swap。
-
+> <p id="lcd_t_lcd_is_swappable">判读lcd是否支持swap。
 
 
 * 函数原型：
@@ -444,8 +427,7 @@ bool_t lcd_is_swappable (lcd_t* lcd);
 
 * 函数功能：
 
-> <p id="lcd_t_lcd_measure_text"> 测量字符串占用的宽度。
-
+> <p id="lcd_t_lcd_measure_text">测量字符串占用的宽度。
 
 
 * 函数原型：
@@ -467,9 +449,8 @@ float_t lcd_measure_text (lcd_t* lcd, const wchar_t* str, uint32_t nr);
 
 * 函数功能：
 
-> <p id="lcd_t_lcd_resize"> 基于SDL的PC软件，在SDL窗口resize时，需要调用本函数resize lcd。
- 屏幕旋转时会调用本函数，调整LCD的大小。
-
+> <p id="lcd_t_lcd_resize">基于SDL的PC软件，在SDL窗口resize时，需要调用本函数resize lcd。
+屏幕旋转时会调用本函数，调整LCD的大小。
 
 
 * 函数原型：
@@ -492,8 +473,7 @@ ret_t lcd_resize (lcd_t* lcd, wh_t w, wh_t h, uint32_t line_length);
 
 * 函数功能：
 
-> <p id="lcd_t_lcd_set_clip_rect"> 设置裁剪区域。
-
+> <p id="lcd_t_lcd_set_clip_rect">设置裁剪区域。
 
 
 * 函数原型：
@@ -514,8 +494,7 @@ ret_t lcd_set_clip_rect (lcd_t* lcd, rect_t* rect);
 
 * 函数功能：
 
-> <p id="lcd_t_lcd_set_fill_color"> 设置填充颜色。
-
+> <p id="lcd_t_lcd_set_fill_color">设置填充颜色。
 
 
 * 函数原型：
@@ -536,8 +515,7 @@ ret_t lcd_set_fill_color (lcd_t* lcd, color_t color);
 
 * 函数功能：
 
-> <p id="lcd_t_lcd_set_font_name"> 设置字体名称。
-
+> <p id="lcd_t_lcd_set_font_name">设置字体名称。
 
 
 * 函数原型：
@@ -558,8 +536,7 @@ ret_t lcd_set_font_name (lcd_t* lcd, const char* name);
 
 * 函数功能：
 
-> <p id="lcd_t_lcd_set_font_size"> 设置字体大小。
-
+> <p id="lcd_t_lcd_set_font_size">设置字体大小。
 
 
 * 函数原型：
@@ -580,8 +557,7 @@ ret_t lcd_set_font_size (lcd_t* lcd, uint32_t font_size);
 
 * 函数功能：
 
-> <p id="lcd_t_lcd_set_global_alpha"> 设置全局alpha。
-
+> <p id="lcd_t_lcd_set_global_alpha">设置全局alpha。
 
 
 * 函数原型：
@@ -602,8 +578,7 @@ ret_t lcd_set_global_alpha (lcd_t* lcd, uint8_t alpha);
 
 * 函数功能：
 
-> <p id="lcd_t_lcd_set_stroke_color"> 设置线条颜色。
-
+> <p id="lcd_t_lcd_set_stroke_color">设置线条颜色。
 
 
 * 函数原型：
@@ -624,8 +599,7 @@ ret_t lcd_set_stroke_color (lcd_t* lcd, color_t color);
 
 * 函数功能：
 
-> <p id="lcd_t_lcd_set_text_color"> 设置文本颜色。
-
+> <p id="lcd_t_lcd_set_text_color">设置文本颜色。
 
 
 * 函数原型：
@@ -646,8 +620,7 @@ ret_t lcd_set_text_color (lcd_t* lcd, color_t color);
 
 * 函数功能：
 
-> <p id="lcd_t_lcd_stroke_rect"> 绘制矩形。
-
+> <p id="lcd_t_lcd_stroke_rect">绘制矩形。
 
 
 * 函数原型：
@@ -671,8 +644,7 @@ ret_t lcd_stroke_rect (lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h);
 
 * 函数功能：
 
-> <p id="lcd_t_lcd_take_snapshot"> 拍摄快照，一般用于窗口动画，只有framebuffer模式，才支持。
-
+> <p id="lcd_t_lcd_take_snapshot">拍摄快照，一般用于窗口动画，只有framebuffer模式，才支持。
 
 
 * 函数原型：
@@ -691,7 +663,7 @@ ret_t lcd_take_snapshot (lcd_t* lcd, bitmap_t* img, bool_t auto_rotate);
 | auto\_rotate | bool\_t | 是否根据LCD实际方向自动旋转。 |
 #### draw\_mode 属性
 -----------------------
-> <p id="lcd_t_draw_mode"> 绘制模式。
+> <p id="lcd_t_draw_mode">绘制模式。
 
 
 * 类型：lcd\_draw\_mode\_t
@@ -702,7 +674,7 @@ ret_t lcd_take_snapshot (lcd_t* lcd, bitmap_t* img, bool_t auto_rotate);
 | 可直接修改 | 否 |
 #### fill\_color 属性
 -----------------------
-> <p id="lcd_t_fill_color"> 填充颜色
+> <p id="lcd_t_fill_color">填充颜色
 
 
 * 类型：color\_t
@@ -713,7 +685,7 @@ ret_t lcd_take_snapshot (lcd_t* lcd, bitmap_t* img, bool_t auto_rotate);
 | 可直接修改 | 否 |
 #### font\_name 属性
 -----------------------
-> <p id="lcd_t_font_name"> 字体名称。
+> <p id="lcd_t_font_name">字体名称。
 
 
 * 类型：char*
@@ -724,7 +696,7 @@ ret_t lcd_take_snapshot (lcd_t* lcd, bitmap_t* img, bool_t auto_rotate);
 | 可直接修改 | 否 |
 #### font\_size 属性
 -----------------------
-> <p id="lcd_t_font_size"> 字体大小。
+> <p id="lcd_t_font_size">字体大小。
 
 
 * 类型：uint32\_t
@@ -735,7 +707,7 @@ ret_t lcd_take_snapshot (lcd_t* lcd, bitmap_t* img, bool_t auto_rotate);
 | 可直接修改 | 否 |
 #### global\_alpha 属性
 -----------------------
-> <p id="lcd_t_global_alpha"> 全局alpha
+> <p id="lcd_t_global_alpha">全局alpha
 
 
 * 类型：uint8\_t
@@ -746,7 +718,7 @@ ret_t lcd_take_snapshot (lcd_t* lcd, bitmap_t* img, bool_t auto_rotate);
 | 可直接修改 | 否 |
 #### height 属性
 -----------------------
-> <p id="lcd_t_height"> 屏幕的高度
+> <p id="lcd_t_height">屏幕的高度
 
 
 * 类型：wh\_t
@@ -757,7 +729,7 @@ ret_t lcd_take_snapshot (lcd_t* lcd, bitmap_t* img, bool_t auto_rotate);
 | 可直接修改 | 否 |
 #### ratio 属性
 -----------------------
-> <p id="lcd_t_ratio"> 屏幕密度。
+> <p id="lcd_t_ratio">屏幕密度。
 
 
 * 类型：float\_t
@@ -768,7 +740,7 @@ ret_t lcd_take_snapshot (lcd_t* lcd, bitmap_t* img, bool_t auto_rotate);
 | 可直接修改 | 否 |
 #### stroke\_color 属性
 -----------------------
-> <p id="lcd_t_stroke_color"> 线条颜色
+> <p id="lcd_t_stroke_color">线条颜色
 
 
 * 类型：color\_t
@@ -779,7 +751,7 @@ ret_t lcd_take_snapshot (lcd_t* lcd, bitmap_t* img, bool_t auto_rotate);
 | 可直接修改 | 否 |
 #### support\_dirty\_rect 属性
 -----------------------
-> <p id="lcd_t_support_dirty_rect"> 是否支持脏矩形。
+> <p id="lcd_t_support_dirty_rect">是否支持脏矩形。
 
 
 * 类型：bool\_t
@@ -790,7 +762,7 @@ ret_t lcd_take_snapshot (lcd_t* lcd, bitmap_t* img, bool_t auto_rotate);
 | 可直接修改 | 否 |
 #### text\_color 属性
 -----------------------
-> <p id="lcd_t_text_color"> 文本颜色
+> <p id="lcd_t_text_color">文本颜色
 
 
 * 类型：color\_t
@@ -801,7 +773,7 @@ ret_t lcd_take_snapshot (lcd_t* lcd, bitmap_t* img, bool_t auto_rotate);
 | 可直接修改 | 否 |
 #### type 属性
 -----------------------
-> <p id="lcd_t_type"> LCD的类型。
+> <p id="lcd_t_type">LCD的类型。
 
 
 * 类型：lcd\_type\_t
@@ -812,7 +784,7 @@ ret_t lcd_take_snapshot (lcd_t* lcd, bitmap_t* img, bool_t auto_rotate);
 | 可直接修改 | 否 |
 #### w 属性
 -----------------------
-> <p id="lcd_t_w"> 屏幕的宽度
+> <p id="lcd_t_w">屏幕的宽度
 
 
 * 类型：wh\_t

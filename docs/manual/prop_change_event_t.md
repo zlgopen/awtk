@@ -2,7 +2,7 @@
 ### 概述
 ![image](images/prop_change_event_t_0.png)
 
- 对象属性变化事件。
+对象属性变化事件。
 
 ----------------------------------
 ### 函数
@@ -23,8 +23,7 @@
 
 * 函数功能：
 
-> <p id="prop_change_event_t_prop_change_event_cast"> 把event对象转prop_change_event_t对象，主要给脚本语言使用。
-
+> <p id="prop_change_event_t_prop_change_event_cast">把event对象转prop_change_event_t对象，主要给脚本语言使用。
 
 
 * 函数原型：
@@ -41,7 +40,7 @@ prop_change_event_t* prop_change_event_cast (event_t* event);
 | event | event\_t* | event对象。 |
 #### name 属性
 -----------------------
-> <p id="prop_change_event_t_name"> 属性的名称。
+> <p id="prop_change_event_t_name">属性的名称。
 
 
 * 类型：const char*
@@ -53,7 +52,7 @@ prop_change_event_t* prop_change_event_cast (event_t* event);
 | 可脚本化   | 是 |
 #### value 属性
 -----------------------
-> <p id="prop_change_event_t_value"> 属性的值。
+> <p id="prop_change_event_t_value">属性的值。
 
 
 * 类型：const value\_t*

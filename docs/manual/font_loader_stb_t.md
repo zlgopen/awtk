@@ -2,11 +2,8 @@
 ### 概述
 ![image](images/font_loader_stb_t_0.png)
 
- stb字体加载器。
-
- stb主要用于加载矢量字体(如truetype)，它功能强大，体积小巧。
-
-
+stb字体加载器。
+stb主要用于加载矢量字体(如truetype)，它功能强大，体积小巧。
 
 ----------------------------------
 ### 函数
@@ -14,15 +11,13 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#font_loader_stb_t_font_loader_stb">font\_loader\_stb</a> |  |
+| <a href="#font_loader_stb_t_font_loader_stb">font\_loader\_stb</a> | 获取stb字体加载器对象。 |
 #### font\_loader\_stb 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="font_loader_stb_t_font_loader_stb">
- 获取stb字体加载器对象。
-
+> <p id="font_loader_stb_t_font_loader_stb">获取stb字体加载器对象。
 
 
 * 函数原型：

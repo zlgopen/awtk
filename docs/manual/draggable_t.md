@@ -2,38 +2,27 @@
 ### 概述
 ![image](images/draggable_t_0.png)
 
-
- 将draggable放入目标控件，即可让目标控件或当前窗口可以被拖动。
-
- draggable\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于draggable\_t控件。
-
- 在xml中使用"draggable"标签创建draggable控件。如：
-
- ```xml
-  <button text="Drag Me" w="80" h="40" x="10" y="10">
-   <draggable />
-  </button>
- ```
-
- 拖动对话框标题时移动对话框：
-
- ```xml
- <dialog_title x="0" y="0" w="100%" h="30" text="Hello AWTK" >
-   <draggable drag_window="true"/>
- </dialog_title>
- ```
-
- > 更多用法请参考：
- [draggable.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/draggable.xml)
-
- 在c代码中使用函数draggable\_create创建按钮控件。如：
-
- ```c
-  widget_t* draggable = draggable_create(target, 0, 0, 0, 0);
- ```
-
- > draggable本身不可见，故无需style。
-
+将draggable放入目标控件，即可让目标控件或当前窗口可以被拖动。
+draggable\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于draggable\_t控件。
+在xml中使用"draggable"标签创建draggable控件。如：
+```xml
+<button text="Drag Me" w="80" h="40" x="10" y="10">
+<draggable />
+</button>
+```
+拖动对话框标题时移动对话框：
+```xml
+<dialog_title x="0" y="0" w="100%" h="30" text="Hello AWTK" >
+<draggable drag_window="true"/>
+</dialog_title>
+```
+> 更多用法请参考：
+[draggable.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/draggable.xml)
+在c代码中使用函数draggable\_create创建按钮控件。如：
+```c
+widget_t* draggable = draggable_create(target, 0, 0, 0, 0);
+```
+> draggable本身不可见，故无需style。
 
 ----------------------------------
 ### 函数
@@ -67,8 +56,7 @@
 
 * 函数功能：
 
-> <p id="draggable_t_draggable_cast"> 转换为draggable对象(供脚本语言使用)。
-
+> <p id="draggable_t_draggable_cast">转换为draggable对象(供脚本语言使用)。
 
 
 * 函数原型：
@@ -88,8 +76,7 @@ widget_t* draggable_cast (widget_t* widget);
 
 * 函数功能：
 
-> <p id="draggable_t_draggable_create"> 创建draggable对象
-
+> <p id="draggable_t_draggable_create">创建draggable对象
 
 
 * 函数原型：
@@ -113,8 +100,7 @@ widget_t* draggable_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 * 函数功能：
 
-> <p id="draggable_t_draggable_set_bottom"> 设置bottom。
-
+> <p id="draggable_t_draggable_set_bottom">设置bottom。
 
 
 * 函数原型：
@@ -135,9 +121,8 @@ ret_t draggable_set_bottom (widget_t* widget, int32_t bottom);
 
 * 函数功能：
 
-> <p id="draggable_t_draggable_set_drag_window"> 设置drag_window。
- 拖动窗口而不是父控件。比如放在对话框的titlebar上，拖动titlebar其实是希望拖动对话框。
-
+> <p id="draggable_t_draggable_set_drag_window">设置drag_window。
+拖动窗口而不是父控件。比如放在对话框的titlebar上，拖动titlebar其实是希望拖动对话框。
 
 
 * 函数原型：
@@ -158,8 +143,7 @@ ret_t draggable_set_drag_window (widget_t* widget, bool_t drag_window);
 
 * 函数功能：
 
-> <p id="draggable_t_draggable_set_horizontal_only"> 设置horizontal_only。
-
+> <p id="draggable_t_draggable_set_horizontal_only">设置horizontal_only。
 
 
 * 函数原型：
@@ -180,8 +164,7 @@ ret_t draggable_set_horizontal_only (widget_t* widget, bool_t horizontal_only);
 
 * 函数功能：
 
-> <p id="draggable_t_draggable_set_left"> 设置left。
-
+> <p id="draggable_t_draggable_set_left">设置left。
 
 
 * 函数原型：
@@ -202,8 +185,7 @@ ret_t draggable_set_left (widget_t* widget, int32_t left);
 
 * 函数功能：
 
-> <p id="draggable_t_draggable_set_right"> 设置right。
-
+> <p id="draggable_t_draggable_set_right">设置right。
 
 
 * 函数原型：
@@ -224,8 +206,7 @@ ret_t draggable_set_right (widget_t* widget, int32_t right);
 
 * 函数功能：
 
-> <p id="draggable_t_draggable_set_top"> 设置top。
-
+> <p id="draggable_t_draggable_set_top">设置top。
 
 
 * 函数原型：
@@ -246,8 +227,7 @@ ret_t draggable_set_top (widget_t* widget, int32_t top);
 
 * 函数功能：
 
-> <p id="draggable_t_draggable_set_vertical_only"> 设置vertical_only。
-
+> <p id="draggable_t_draggable_set_vertical_only">设置vertical_only。
 
 
 * 函数原型：
@@ -265,7 +245,7 @@ ret_t draggable_set_vertical_only (widget_t* widget, bool_t vertical_only);
 | vertical\_only | bool\_t | 只允许垂直拖动。 |
 #### bottom 属性
 -----------------------
-> <p id="draggable_t_bottom"> 拖动范围的底部限制。缺省为父控件的底部。
+> <p id="draggable_t_bottom">拖动范围的底部限制。缺省为父控件的底部。
 
 
 * 类型：int32\_t
@@ -282,7 +262,7 @@ ret_t draggable_set_vertical_only (widget_t* widget, bool_t vertical_only);
 | 可通过widget\_set\_prop修改 | 是 |
 #### drag\_window 属性
 -----------------------
-> <p id="draggable_t_drag_window"> 拖动窗口而不是父控件。比如放在对话框的titlebar上，拖动titlebar其实是希望拖动对话框。
+> <p id="draggable_t_drag_window">拖动窗口而不是父控件。比如放在对话框的titlebar上，拖动titlebar其实是希望拖动对话框。
 
 
 * 类型：bool\_t
@@ -299,7 +279,7 @@ ret_t draggable_set_vertical_only (widget_t* widget, bool_t vertical_only);
 | 可通过widget\_set\_prop修改 | 是 |
 #### horizontal\_only 属性
 -----------------------
-> <p id="draggable_t_horizontal_only"> 只允许水平拖动。
+> <p id="draggable_t_horizontal_only">只允许水平拖动。
 
 
 * 类型：bool\_t
@@ -316,7 +296,7 @@ ret_t draggable_set_vertical_only (widget_t* widget, bool_t vertical_only);
 | 可通过widget\_set\_prop修改 | 是 |
 #### left 属性
 -----------------------
-> <p id="draggable_t_left"> 拖动范围的左边限制。缺省为父控件的左边。
+> <p id="draggable_t_left">拖动范围的左边限制。缺省为父控件的左边。
 
 
 * 类型：int32\_t
@@ -333,7 +313,7 @@ ret_t draggable_set_vertical_only (widget_t* widget, bool_t vertical_only);
 | 可通过widget\_set\_prop修改 | 是 |
 #### right 属性
 -----------------------
-> <p id="draggable_t_right"> 拖动范围的右边限制。缺省为父控件的右边边。
+> <p id="draggable_t_right">拖动范围的右边限制。缺省为父控件的右边边。
 
 
 * 类型：int32\_t
@@ -350,7 +330,7 @@ ret_t draggable_set_vertical_only (widget_t* widget, bool_t vertical_only);
 | 可通过widget\_set\_prop修改 | 是 |
 #### top 属性
 -----------------------
-> <p id="draggable_t_top"> 拖动范围的顶部限制。缺省为父控件的顶部。
+> <p id="draggable_t_top">拖动范围的顶部限制。缺省为父控件的顶部。
 
 
 * 类型：int32\_t
@@ -367,7 +347,7 @@ ret_t draggable_set_vertical_only (widget_t* widget, bool_t vertical_only);
 | 可通过widget\_set\_prop修改 | 是 |
 #### vertical\_only 属性
 -----------------------
-> <p id="draggable_t_vertical_only"> 只允许垂直拖动。
+> <p id="draggable_t_vertical_only">只允许垂直拖动。
 
 
 * 类型：bool\_t

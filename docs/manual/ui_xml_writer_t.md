@@ -2,9 +2,7 @@
 ### 概述
 ![image](images/ui_xml_writer_t_0.png)
 
-
- 生成XML格式的UI描述数据。
-
+生成XML格式的UI描述数据。
 
 ----------------------------------
 ### 函数
@@ -12,16 +10,13 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#ui_xml_writer_t_ui_xml_writer_init">ui\_xml\_writer\_init</a> |  |
+| <a href="#ui_xml_writer_t_ui_xml_writer_init">ui\_xml\_writer\_init</a> | 初始化ui\_xml\_writer对象。 |
 #### ui\_xml\_writer\_init 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="ui_xml_writer_t_ui_xml_writer_init">
- 初始化ui\_xml\_writer对象。
-
-
+> <p id="ui_xml_writer_t_ui_xml_writer_init">初始化ui\_xml\_writer对象。
 
 
 * 函数原型：

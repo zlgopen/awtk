@@ -1,6 +1,6 @@
 ## asset\_script\_type\_t
 ### 概述
- 脚本资源类型定义。
+脚本资源类型定义。
 ### 常量
 <p id="asset_script_type_t_consts">
 

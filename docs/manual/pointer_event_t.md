@@ -2,7 +2,7 @@
 ### 概述
 ![image](images/pointer_event_t_0.png)
 
- 指针事件。
+指针事件。
 
 ----------------------------------
 ### 函数
@@ -31,8 +31,7 @@
 
 * 函数功能：
 
-> <p id="pointer_event_t_pointer_event_cast"> 把event对象转pointer_event_t对象，主要给脚本语言使用。
-
+> <p id="pointer_event_t_pointer_event_cast">把event对象转pointer_event_t对象，主要给脚本语言使用。
 
 
 * 函数原型：
@@ -52,8 +51,7 @@ pointer_event_t* pointer_event_cast (event_t* event);
 
 * 函数功能：
 
-> <p id="pointer_event_t_pointer_event_init"> 初始化事件。
-
+> <p id="pointer_event_t_pointer_event_init">初始化事件。
 
 
 * 函数原型：
@@ -74,7 +72,7 @@ event_t* pointer_event_init (pointer_event_t* event, void* target, uint32_t type
 | y | int32\_t | y的值。 |
 #### alt 属性
 -----------------------
-> <p id="pointer_event_t_alt"> alt键是否按下。
+> <p id="pointer_event_t_alt">alt键是否按下。
 
 
 * 类型：bool\_t
@@ -86,7 +84,7 @@ event_t* pointer_event_init (pointer_event_t* event, void* target, uint32_t type
 | 可脚本化   | 是 |
 #### button 属性
 -----------------------
-> <p id="pointer_event_t_button"> button。
+> <p id="pointer_event_t_button">button。
 
 
 * 类型：uint8\_t
@@ -98,7 +96,7 @@ event_t* pointer_event_init (pointer_event_t* event, void* target, uint32_t type
 | 可脚本化   | 是 |
 #### cmd 属性
 -----------------------
-> <p id="pointer_event_t_cmd"> cmd键是否按下。
+> <p id="pointer_event_t_cmd">cmd键是否按下。
 
 
 * 类型：bool\_t
@@ -110,7 +108,7 @@ event_t* pointer_event_init (pointer_event_t* event, void* target, uint32_t type
 | 可脚本化   | 是 |
 #### ctrl 属性
 -----------------------
-> <p id="pointer_event_t_ctrl"> ctrl键是否按下。
+> <p id="pointer_event_t_ctrl">ctrl键是否按下。
 
 
 * 类型：bool\_t
@@ -122,7 +120,7 @@ event_t* pointer_event_init (pointer_event_t* event, void* target, uint32_t type
 | 可脚本化   | 是 |
 #### menu 属性
 -----------------------
-> <p id="pointer_event_t_menu"> menu键是否按下。
+> <p id="pointer_event_t_menu">menu键是否按下。
 
 
 * 类型：bool\_t
@@ -134,7 +132,7 @@ event_t* pointer_event_init (pointer_event_t* event, void* target, uint32_t type
 | 可脚本化   | 是 |
 #### pressed 属性
 -----------------------
-> <p id="pointer_event_t_pressed"> 指针是否按下。
+> <p id="pointer_event_t_pressed">指针是否按下。
 
 
 * 类型：bool\_t
@@ -146,7 +144,7 @@ event_t* pointer_event_init (pointer_event_t* event, void* target, uint32_t type
 | 可脚本化   | 是 |
 #### shift 属性
 -----------------------
-> <p id="pointer_event_t_shift"> shift键是否按下。
+> <p id="pointer_event_t_shift">shift键是否按下。
 
 
 * 类型：bool\_t
@@ -158,7 +156,7 @@ event_t* pointer_event_init (pointer_event_t* event, void* target, uint32_t type
 | 可脚本化   | 是 |
 #### x 属性
 -----------------------
-> <p id="pointer_event_t_x"> x坐标。
+> <p id="pointer_event_t_x">x坐标。
 
 
 * 类型：xy\_t
@@ -170,7 +168,7 @@ event_t* pointer_event_init (pointer_event_t* event, void* target, uint32_t type
 | 可脚本化   | 是 |
 #### y 属性
 -----------------------
-> <p id="pointer_event_t_y"> y坐标。
+> <p id="pointer_event_t_y">y坐标。
 
 
 * 类型：xy\_t

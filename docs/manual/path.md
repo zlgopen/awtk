@@ -1,7 +1,6 @@
 ## path
 ### 概述
- 路径接口。
-
+路径接口。
 
 ----------------------------------
 ### 函数
@@ -9,27 +8,23 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#path_path_abs">path\_abs</a> |  |
-| <a href="#path_path_app_root">path\_app\_root</a> |  |
-| <a href="#path_path_basename">path\_basename</a> |  |
-| <a href="#path_path_build">path\_build</a> |  |
-| <a href="#path_path_cwd">path\_cwd</a> |  |
-| <a href="#path_path_dirname">path\_dirname</a> |  |
-| <a href="#path_path_exe">path\_exe</a> |  |
-| <a href="#path_path_exist">path\_exist</a> |  |
-| <a href="#path_path_extname">path\_extname</a> |  |
-| <a href="#path_path_normalize">path\_normalize</a> |  |
-| <a href="#path_path_replace_basename">path\_replace\_basename</a> |  |
+| <a href="#path_path_abs">path\_abs</a> | 返回绝对路径。 |
+| <a href="#path_path_app_root">path\_app\_root</a> | 获取app所在目录。 |
+| <a href="#path_path_basename">path\_basename</a> | 返回文件名。 |
+| <a href="#path_path_build">path\_build</a> | 构造路径。 |
+| <a href="#path_path_cwd">path\_cwd</a> | 获取当前所在目录。 |
+| <a href="#path_path_dirname">path\_dirname</a> | 返回目录。 |
+| <a href="#path_path_exe">path\_exe</a> | 获取可执行文件所在目录。 |
+| <a href="#path_path_exist">path\_exist</a> | 判断目录是否存在。 |
+| <a href="#path_path_extname">path\_extname</a> | 返回文件扩展名。 |
+| <a href="#path_path_normalize">path\_normalize</a> | 规范路径字符形式。 |
+| <a href="#path_path_replace_basename">path\_replace\_basename</a> | 替换文件名。 |
 #### path\_abs 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="path_path_abs">
- 返回绝对路径。
-
-
-
+> <p id="path_path_abs">返回绝对路径。
 
 
 * 函数原型：
@@ -51,11 +46,7 @@ ret_t path_abs (const char* path* path, char* result, uint32_t size);
 
 * 函数功能：
 
-> <p id="path_path_app_root">
- 获取app所在目录。
-
-
-
+> <p id="path_path_app_root">获取app所在目录。
 
 
 * 函数原型：
@@ -75,11 +66,7 @@ ret_t path_app_root (char* path);
 
 * 函数功能：
 
-> <p id="path_path_basename">
- 返回文件名。
-
-
-
+> <p id="path_path_basename">返回文件名。
 
 
 * 函数原型：
@@ -101,11 +88,7 @@ ret_t path_basename (const char* path* path, char* result, uint32_t size);
 
 * 函数功能：
 
-> <p id="path_path_build">
- 构造路径。
-
-
-
+> <p id="path_path_build">构造路径。
 
 
 * 函数原型：
@@ -126,11 +109,7 @@ ret_t path_build (char* result, uint32_t size);
 
 * 函数功能：
 
-> <p id="path_path_cwd">
- 获取当前所在目录。
-
-
-
+> <p id="path_path_cwd">获取当前所在目录。
 
 
 * 函数原型：
@@ -150,11 +129,7 @@ ret_t path_cwd (char* path);
 
 * 函数功能：
 
-> <p id="path_path_dirname">
- 返回目录。
-
-
-
+> <p id="path_path_dirname">返回目录。
 
 
 * 函数原型：
@@ -176,11 +151,7 @@ ret_t path_dirname (const char* path* path, char* result, uint32_t size);
 
 * 函数功能：
 
-> <p id="path_path_exe">
- 获取可执行文件所在目录。
-
-
-
+> <p id="path_path_exe">获取可执行文件所在目录。
 
 
 * 函数原型：
@@ -200,11 +171,7 @@ ret_t path_exe (char* path);
 
 * 函数功能：
 
-> <p id="path_path_exist">
- 判断目录是否存在。
-
-
-
+> <p id="path_path_exist">判断目录是否存在。
 
 
 * 函数原型：
@@ -224,11 +191,7 @@ ret_t path_exist (const char* path);
 
 * 函数功能：
 
-> <p id="path_path_extname">
- 返回文件扩展名。
-
-
-
+> <p id="path_path_extname">返回文件扩展名。
 
 
 * 函数原型：
@@ -250,11 +213,7 @@ ret_t path_extname (const char* path* path, char* result, uint32_t size);
 
 * 函数功能：
 
-> <p id="path_path_normalize">
- 规范路径字符形式。
-
-
-
+> <p id="path_path_normalize">规范路径字符形式。
 
 
 * 函数原型：
@@ -276,11 +235,7 @@ ret_t path_normalize (const char* path* path, char* result, uint32_t size);
 
 * 函数功能：
 
-> <p id="path_path_replace_basename">
- 替换文件名。
-
-
-
+> <p id="path_path_replace_basename">替换文件名。
 
 
 * 函数原型：

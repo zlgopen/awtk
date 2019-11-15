@@ -2,11 +2,8 @@
 ### 概述
 ![image](images/style_mutable_t_0.png)
 
-
- 可变的style(可实时修改并生效，主要用于在designer中被编辑的控件，或者一些特殊控件)。
-
- style\_mutable也对style\_const进行了包装，当用户没修改某个值时，便从style\_const中获取。
-
+可变的style(可实时修改并生效，主要用于在designer中被编辑的控件，或者一些特殊控件)。
+style\_mutable也对style\_const进行了包装，当用户没修改某个值时，便从style\_const中获取。
 
 ----------------------------------
 ### 函数
@@ -37,8 +34,7 @@
 
 * 函数功能：
 
-> <p id="style_mutable_t_style_mutable_cast"> 转换为style_mutable对象。
-
+> <p id="style_mutable_t_style_mutable_cast">转换为style_mutable对象。
 
 
 * 函数原型：
@@ -58,8 +54,7 @@ style_t* style_mutable_cast (style_t* s);
 
 * 函数功能：
 
-> <p id="style_mutable_t_style_mutable_copy"> 将other对象的数据拷贝到s对象。
-
+> <p id="style_mutable_t_style_mutable_copy">将other对象的数据拷贝到s对象。
 
 
 * 函数原型：
@@ -80,11 +75,8 @@ ret_t style_mutable_copy (style_t* s, style_t* other);
 
 * 函数功能：
 
-> <p id="style_mutable_t_style_mutable_create"> 创建style\_mutable对象。
-
- > 除了测试程序外不需要直接调用，widget会通过style\_factory\_create创建。
-
-
+> <p id="style_mutable_t_style_mutable_create">创建style\_mutable对象。
+> 除了测试程序外不需要直接调用，widget会通过style\_factory\_create创建。
 
 
 * 函数原型：
@@ -105,8 +97,7 @@ style_t* style_mutable_create (widget_t* widget, style_t* default_style);
 
 * 函数功能：
 
-> <p id="style_mutable_t_style_mutable_foreach"> 遍历。对每项调用回调函数on\_style\_item。
-
+> <p id="style_mutable_t_style_mutable_foreach">遍历。对每项调用回调函数on\_style\_item。
 
 
 * 函数原型：
@@ -128,8 +119,7 @@ ret_t style_mutable_foreach (style_t* s, tk_on_style_item_t on_style_item, void*
 
 * 函数功能：
 
-> <p id="style_mutable_t_style_mutable_get_name"> 获取style的名称。
-
+> <p id="style_mutable_t_style_mutable_get_name">获取style的名称。
 
 
 * 函数原型：
@@ -149,8 +139,7 @@ const char* style_mutable_get_name (style_t* s);
 
 * 函数功能：
 
-> <p id="style_mutable_t_style_mutable_get_value"> 获取指定名称的值。
-
+> <p id="style_mutable_t_style_mutable_get_value">获取指定名称的值。
 
 
 * 函数原型：
@@ -173,8 +162,7 @@ ret_t style_mutable_get_value (style_t* s, const char* state, const char* name, 
 
 * 函数功能：
 
-> <p id="style_mutable_t_style_mutable_register"> 将自己注册到style\_factory。
-
+> <p id="style_mutable_t_style_mutable_register">将自己注册到style\_factory。
 
 
 * 函数原型：
@@ -193,8 +181,7 @@ ret_t style_mutable_register ();
 
 * 函数功能：
 
-> <p id="style_mutable_t_style_mutable_set_color"> 设置指定名称的颜色值。
-
+> <p id="style_mutable_t_style_mutable_set_color">设置指定名称的颜色值。
 
 
 * 函数原型：
@@ -217,8 +204,7 @@ ret_t style_mutable_set_color (style_t* s, const char* state, const char* name, 
 
 * 函数功能：
 
-> <p id="style_mutable_t_style_mutable_set_int"> 设置指定名称整数格式的值。
-
+> <p id="style_mutable_t_style_mutable_set_int">设置指定名称整数格式的值。
 
 
 * 函数原型：
@@ -241,8 +227,7 @@ ret_t style_mutable_set_int (style_t* s, const char* state, const char* name, in
 
 * 函数功能：
 
-> <p id="style_mutable_t_style_mutable_set_name"> 设置style的名称。
-
+> <p id="style_mutable_t_style_mutable_set_name">设置style的名称。
 
 
 * 函数原型：
@@ -263,8 +248,7 @@ ret_t style_mutable_set_name (style_t* s, const char* name);
 
 * 函数功能：
 
-> <p id="style_mutable_t_style_mutable_set_str"> 设置指定名称字符串的值。
-
+> <p id="style_mutable_t_style_mutable_set_str">设置指定名称字符串的值。
 
 
 * 函数原型：
@@ -287,8 +271,7 @@ ret_t style_mutable_set_str (style_t* s, const char* state, const char* name, co
 
 * 函数功能：
 
-> <p id="style_mutable_t_style_mutable_set_value"> 设置指定名称的值。
-
+> <p id="style_mutable_t_style_mutable_set_value">设置指定名称的值。
 
 
 * 函数原型：
@@ -308,7 +291,7 @@ ret_t style_mutable_set_value (style_t* s, const char* state, const char* name, 
 | v | const value\_t* | 值。 |
 #### name 属性
 -----------------------
-> <p id="style_mutable_t_name"> 名称。
+> <p id="style_mutable_t_name">名称。
 
 
 * 类型：char*

@@ -2,30 +2,24 @@
 ### 概述
 ![image](images/pages_t_0.png)
 
- 页面管理控件。
-
- 只有一个Page处于active状态，处于active状态的Page才能显示并接收事件。
- 常用于实现标签控件中的页面管理。
-
- pages\_t是[widget\_t](widget_t.md)的子类控件，
- widget\_t的函数均适用于pages\_t控件。
-
- 在xml中使用"pages"标签创建页面管理控件。如：
-
- ```xml
- <tab_control x="0" y="0" w="100%" h="100%" >
-   <pages x="c" y="20" w="90%" h="-60" value="1">
-   ...
-   </pages>
-   <tab_button_group>
-   ...
-   </tab_button_group>
- </tab_control>
- ```
-
- > 更多用法请参考：
- [tab control](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/)
-
+页面管理控件。
+只有一个Page处于active状态，处于active状态的Page才能显示并接收事件。
+常用于实现标签控件中的页面管理。
+pages\_t是[widget\_t](widget_t.md)的子类控件，
+widget\_t的函数均适用于pages\_t控件。
+在xml中使用"pages"标签创建页面管理控件。如：
+```xml
+<tab_control x="0" y="0" w="100%" h="100%" >
+<pages x="c" y="20" w="90%" h="-60" value="1">
+...
+</pages>
+<tab_button_group>
+...
+</tab_button_group>
+</tab_control>
+```
+> 更多用法请参考：
+[tab control](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/)
 
 ----------------------------------
 ### 函数
@@ -55,8 +49,7 @@
 
 * 函数功能：
 
-> <p id="pages_t_pages_cast"> 转换为pages对象(供脚本语言使用)。
-
+> <p id="pages_t_pages_cast">转换为pages对象(供脚本语言使用)。
 
 
 * 函数原型：
@@ -76,8 +69,7 @@ widget_t* pages_cast (widget_t* widget);
 
 * 函数功能：
 
-> <p id="pages_t_pages_create"> 创建pages对象
-
+> <p id="pages_t_pages_create">创建pages对象
 
 
 * 函数原型：
@@ -101,8 +93,7 @@ widget_t* pages_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 * 函数功能：
 
-> <p id="pages_t_pages_set_active"> 设置当前的Page。
-
+> <p id="pages_t_pages_set_active">设置当前的Page。
 
 
 * 函数原型：
@@ -123,8 +114,7 @@ ret_t pages_set_active (widget_t* widget, uint32_t index);
 
 * 函数功能：
 
-> <p id="pages_t_pages_set_active_by_name"> 通过页面的名字设置当前的Page。
-
+> <p id="pages_t_pages_set_active_by_name">通过页面的名字设置当前的Page。
 
 
 * 函数原型：
@@ -142,7 +132,7 @@ ret_t pages_set_active_by_name (widget_t* widget, char* name);
 | name | char* | 当前Page的名字。 |
 #### active 属性
 -----------------------
-> <p id="pages_t_active"> 当前活跃的page。
+> <p id="pages_t_active">当前活跃的page。
 
 
 * 类型：uint32\_t

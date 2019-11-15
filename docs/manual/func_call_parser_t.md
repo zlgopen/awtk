@@ -1,15 +1,14 @@
 ## func\_call\_parser\_t
 ### 概述
- 从字符串中解析出函数调用需要的参数。
- func_call => func_name '(' params ')'
- params => param ',' params
- param => name '=' value
- func_name => ID
- name = ID
- value = int | float | ID
-
- 如:move(x=10, y=20)
- 如:rename(old_name=aa, new_name=bb)
+从字符串中解析出函数调用需要的参数。
+func_call => func_name '(' params ')'
+params => param ',' params
+param => name '=' value
+func_name => ID
+name = ID
+value = int | float | ID
+如:move(x=10, y=20)
+如:rename(old_name=aa, new_name=bb)
 
 ----------------------------------
 ### 函数
@@ -26,8 +25,7 @@
 
 * 函数功能：
 
-> <p id="func_call_parser_t_func_call_parser_deinit"> 重置parser。
-
+> <p id="func_call_parser_t_func_call_parser_deinit">重置parser。
 
 
 * 函数原型：
@@ -47,8 +45,7 @@ ret_t func_call_parser_deinit (func_call_parser_t* parser);
 
 * 函数功能：
 
-> <p id="func_call_parser_t_func_call_parser_init"> 初始化parser对象。
-
+> <p id="func_call_parser_t_func_call_parser_init">初始化parser对象。
 
 
 * 函数原型：
@@ -70,8 +67,7 @@ func_call_parser_t* func_call_parser_init (func_call_parser_t* parser, const cha
 
 * 函数功能：
 
-> <p id="func_call_parser_t_func_call_parser_parse"> 开始解析。
-
+> <p id="func_call_parser_t_func_call_parser_parse">开始解析。
 
 
 * 函数原型：
@@ -91,10 +87,8 @@ ret_t func_call_parser_parse (func_call_parser_t* parser);
 
 * 函数功能：
 
-> <p id="func_call_parser_t_func_call_parser_parse"> 解析参数，并将结果生成一个object对象。
-
+> <p id="func_call_parser_t_func_call_parser_parse">解析参数，并将结果生成一个object对象。
 > 调用者负责释放返回的object对象。
-
 
 
 * 函数原型：

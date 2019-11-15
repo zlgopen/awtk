@@ -1,6 +1,6 @@
 ## tokenizer\_t
 ### 概述
- 从字符串中解析出一个一个的token。
+从字符串中解析出一个一个的token。
 
 ----------------------------------
 ### 函数
@@ -31,8 +31,7 @@
 
 * 函数功能：
 
-> <p id="tokenizer_t_tokenizer_deinit"> 重置tokenizer。
-
+> <p id="tokenizer_t_tokenizer_deinit">重置tokenizer。
 
 
 * 函数原型：
@@ -52,8 +51,7 @@ ret_t tokenizer_deinit (tokenizer_t* tokenizer);
 
 * 函数功能：
 
-> <p id="tokenizer_t_tokenizer_has_more"> 是否还有下一个token。
-
+> <p id="tokenizer_t_tokenizer_has_more">是否还有下一个token。
 
 
 * 函数原型：
@@ -73,8 +71,7 @@ bool_t tokenizer_has_more (tokenizer_t* tokenizer);
 
 * 函数功能：
 
-> <p id="tokenizer_t_tokenizer_init"> 初始化tokenizer对象。
-
+> <p id="tokenizer_t_tokenizer_init">初始化tokenizer对象。
 
 
 * 函数原型：
@@ -97,8 +94,7 @@ tokenizer_t* tokenizer_init (tokenizer_t* tokenizer, char* str, uint32_t size, c
 
 * 函数功能：
 
-> <p id="tokenizer_t_tokenizer_init_ex"> 初始化tokenizer对象。
-
+> <p id="tokenizer_t_tokenizer_init_ex">初始化tokenizer对象。
 
 
 * 函数原型：
@@ -122,8 +118,7 @@ tokenizer_t* tokenizer_init_ex (tokenizer_t* tokenizer, char* str, uint32_t size
 
 * 函数功能：
 
-> <p id="tokenizer_t_tokenizer_next"> 获取下一个token。
-
+> <p id="tokenizer_t_tokenizer_next">获取下一个token。
 
 
 * 函数原型：
@@ -143,8 +138,7 @@ char* tokenizer_next (tokenizer_t* tokenizer);
 
 * 函数功能：
 
-> <p id="tokenizer_t_tokenizer_next_float"> 获取下一个token，并转换成float。
-
+> <p id="tokenizer_t_tokenizer_next_float">获取下一个token，并转换成float。
 
 
 * 函数原型：
@@ -165,8 +159,7 @@ char* tokenizer_next_float (tokenizer_t* tokenizer, float defval);
 
 * 函数功能：
 
-> <p id="tokenizer_t_tokenizer_next_int"> 获取下一个token，并转换成int。
-
+> <p id="tokenizer_t_tokenizer_next_int">获取下一个token，并转换成int。
 
 
 * 函数原型：
@@ -187,8 +180,7 @@ char* tokenizer_next_int (tokenizer_t* tokenizer, int defval);
 
 * 函数功能：
 
-> <p id="tokenizer_t_tokenizer_next_until"> 获取下一个token，该token直到遇到指定的char。
-
+> <p id="tokenizer_t_tokenizer_next_until">获取下一个token，该token直到遇到指定的char。
 
 
 * 函数原型：
@@ -206,7 +198,7 @@ char* tokenizer_next_until (tokenizer_t* tokenizer, const char* str);
 | str | const char* | 字符集。 |
 #### cursor 属性
 -----------------------
-> <p id="tokenizer_t_cursor"> 当前位置。
+> <p id="tokenizer_t_cursor">当前位置。
 
 
 * 类型：uint32\_t
@@ -217,7 +209,7 @@ char* tokenizer_next_until (tokenizer_t* tokenizer, const char* str);
 | 可直接修改 | 否 |
 #### separtor 属性
 -----------------------
-> <p id="tokenizer_t_separtor"> 分隔字符串。
+> <p id="tokenizer_t_separtor">分隔字符串。
 
 
 * 类型：char*
@@ -228,7 +220,7 @@ char* tokenizer_next_until (tokenizer_t* tokenizer, const char* str);
 | 可直接修改 | 否 |
 #### single\_char\_token 属性
 -----------------------
-> <p id="tokenizer_t_single_char_token"> 单字符的token。
+> <p id="tokenizer_t_single_char_token">单字符的token。
 
 
 * 类型：char*
@@ -239,7 +231,7 @@ char* tokenizer_next_until (tokenizer_t* tokenizer, const char* str);
 | 可直接修改 | 否 |
 #### size 属性
 -----------------------
-> <p id="tokenizer_t_size"> 字符串的长度。
+> <p id="tokenizer_t_size">字符串的长度。
 
 
 * 类型：uint32\_t
@@ -250,7 +242,7 @@ char* tokenizer_next_until (tokenizer_t* tokenizer, const char* str);
 | 可直接修改 | 否 |
 #### str 属性
 -----------------------
-> <p id="tokenizer_t_str"> 字符串。
+> <p id="tokenizer_t_str">字符串。
 
 
 * 类型：char*

@@ -2,9 +2,7 @@
 ### 概述
 ![image](images/tk_ostream_tcp_t_0.png)
 
-
- input stream base on socket
-
+input stream base on socket
 
 ----------------------------------
 ### 函数
@@ -12,17 +10,13 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#tk_ostream_tcp_t_tk_ostream_tcp_create">tk\_ostream\_tcp\_create</a> |  |
+| <a href="#tk_ostream_tcp_t_tk_ostream_tcp_create">tk\_ostream\_tcp\_create</a> | 创建ostream对象。 |
 #### tk\_ostream\_tcp\_create 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="tk_ostream_tcp_t_tk_ostream_tcp_create">
- 创建ostream对象。
-
-
-
+> <p id="tk_ostream_tcp_t_tk_ostream_tcp_create">创建ostream对象。
 
 
 * 函数原型：

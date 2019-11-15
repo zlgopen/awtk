@@ -2,40 +2,28 @@
 ### 概述
 ![image](images/image_value_t_0.png)
 
- 图片值控件。
-
- 可以用图片来表示如电池电量、WIFI信号强度和其它各种数值的值。
-
- 其原理如下：
-
-  * 1.把value以format为格式转换成字符串。
-  * 2.把每个字符与image(图片文件名前缀)映射成一个图片名。
-  * 3.最后把这些图片显示出来。
-
+图片值控件。
+可以用图片来表示如电池电量、WIFI信号强度和其它各种数值的值。
+其原理如下：
+* 1.把value以format为格式转换成字符串。
+* 2.把每个字符与image(图片文件名前缀)映射成一个图片名。
+* 3.最后把这些图片显示出来。
 image\_value\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于image\_value\_t控件。
-
 在xml中使用"image\_value"标签创建图片值控件。如：
-
- ```xml
- <image_value  value="0" image="num_" />
- ```
-
- > 更多用法请参考：
- [image\_value](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/image_value.xml)
-
- 在c代码中使用函数image\_value\_create创建图片值控件。如：
-
- ```c
- image_value = image_value_create(win, 10, 10, 200, 200);
- image_value_set_image(image_value, "num_");
- image_value_set_value(image_value, 100);
- ```
-
- > 完整示例请参考：
- [image_value demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/image_value.c)
-
- 可用通过style来设置控件的显示风格，如背景颜色和边框等等，不过一般情况并不需要。
-
+```xml
+<image_value  value="0" image="num_" />
+```
+> 更多用法请参考：
+[image\_value](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/image_value.xml)
+在c代码中使用函数image\_value\_create创建图片值控件。如：
+```c
+image_value = image_value_create(win, 10, 10, 200, 200);
+image_value_set_image(image_value, "num_");
+image_value_set_value(image_value, 100);
+```
+> 完整示例请参考：
+[image_value demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/image_value.c)
+可用通过style来设置控件的显示风格，如背景颜色和边框等等，不过一般情况并不需要。
 
 ----------------------------------
 ### 函数
@@ -61,8 +49,7 @@ image\_value\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数�
 
 * 函数功能：
 
-> <p id="image_value_t_image_value_cast"> 转换为image_value对象(供脚本语言使用)。
-
+> <p id="image_value_t_image_value_cast">转换为image_value对象(供脚本语言使用)。
 
 
 * 函数原型：
@@ -82,8 +69,7 @@ widget_t* image_value_cast (widget_t* widget);
 
 * 函数功能：
 
-> <p id="image_value_t_image_value_create"> 创建image_value对象
-
+> <p id="image_value_t_image_value_create">创建image_value对象
 
 
 * 函数原型：
@@ -107,8 +93,7 @@ widget_t* image_value_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 * 函数功能：
 
-> <p id="image_value_t_image_value_set_format"> 设置格式。
-
+> <p id="image_value_t_image_value_set_format">设置格式。
 
 
 * 函数原型：
@@ -129,8 +114,7 @@ ret_t image_value_set_format (widget_t* widget, const char* format);
 
 * 函数功能：
 
-> <p id="image_value_t_image_value_set_image"> 设置图片前缀。
-
+> <p id="image_value_t_image_value_set_image">设置图片前缀。
 
 
 * 函数原型：
@@ -151,8 +135,7 @@ ret_t image_value_set_image (widget_t* widget, const char* image);
 
 * 函数功能：
 
-> <p id="image_value_t_image_value_set_value"> 设置值。
-
+> <p id="image_value_t_image_value_set_value">设置值。
 
 
 * 函数原型：
@@ -170,7 +153,7 @@ ret_t image_value_set_value (widget_t* widget, float_t value);
 | value | float\_t | 值。 |
 #### format 属性
 -----------------------
-> <p id="image_value_t_format"> 数值到字符串转换时的格式，缺省为"%d"。
+> <p id="image_value_t_format">数值到字符串转换时的格式，缺省为"%d"。
 
 
 * 类型：char*
@@ -187,7 +170,7 @@ ret_t image_value_set_value (widget_t* widget, float_t value);
 | 可通过widget\_set\_prop修改 | 是 |
 #### image 属性
 -----------------------
-> <p id="image_value_t_image"> 图片名称的前缀。
+> <p id="image_value_t_image">图片名称的前缀。
 
 
 * 类型：char*
@@ -204,7 +187,7 @@ ret_t image_value_set_value (widget_t* widget, float_t value);
 | 可通过widget\_set\_prop修改 | 是 |
 #### value 属性
 -----------------------
-> <p id="image_value_t_value"> 值。
+> <p id="image_value_t_value">值。
 
 
 * 类型：float\_t

@@ -1,6 +1,6 @@
 ## input\_device\_status\_t
 ### 概述
- 输入设备状态管理器。本类仅供窗口管理器内部使用。
+输入设备状态管理器。本类仅供窗口管理器内部使用。
 
 ----------------------------------
 ### 函数
@@ -15,8 +15,7 @@
 
 * 函数功能：
 
-> <p id="input_device_status_t_input_device_status_init"> 初始化输入设备状态管理器。
-
+> <p id="input_device_status_t_input_device_status_init">初始化输入设备状态管理器。
 
 
 * 函数原型：
@@ -36,8 +35,7 @@ input_device_status_t* input_device_status_init (input_device_status_t* ids);
 
 * 函数功能：
 
-> <p id="input_device_status_t_input_device_status_on_input_event"> 对输入事件进行处理，然后分发给widget。
-
+> <p id="input_device_status_t_input_device_status_on_input_event">对输入事件进行处理，然后分发给widget。
 
 
 * 函数原型：

@@ -1,20 +1,13 @@
 ## input\_method\_t
 ### 概述
- 输入法接口。
+输入法接口。
+常见的实现方式有以下几种：
+* 空实现。用于不需要输入法的嵌入式平台。
+* 缺省实现。用于需要输入法的嵌入式平台。
+* 基于SDL实现的平台原生输入法。用于桌面系统和手机系统。
+![image](images/input_method_t_0.png)
 
- 常见的实现方式有以下几种：
-
- * 空实现。用于不需要输入法的嵌入式平台。
-
- * 缺省实现。用于需要输入法的嵌入式平台。
-
- * 基于SDL实现的平台原生输入法。用于桌面系统和手机系统。
-
- ![image](images/input_method_t_0.png)
-
-
- > 输入类型请参考：[input\_type](input_type_t.md)
-
+> 输入类型请参考：[input\_type](input_type_t.md)
 
 ----------------------------------
 ### 函数
@@ -50,8 +43,7 @@
 
 * 函数功能：
 
-> <p id="input_method_t_input_method"> 获取全局输入法对象。
-
+> <p id="input_method_t_input_method">获取全局输入法对象。
 
 
 * 函数原型：
@@ -70,8 +62,7 @@ input_method_t* input_method ();
 
 * 函数功能：
 
-> <p id="input_method_t_input_method_commit_text"> 提交输入文本。
-
+> <p id="input_method_t_input_method_commit_text">提交输入文本。
 
 
 * 函数原型：
@@ -92,8 +83,7 @@ ret_t input_method_commit_text (input_method_t* im, char* text);
 
 * 函数功能：
 
-> <p id="input_method_t_input_method_commit_text_ex"> 提交输入文本。
-
+> <p id="input_method_t_input_method_commit_text_ex">提交输入文本。
 
 
 * 函数原型：
@@ -115,8 +105,7 @@ ret_t input_method_commit_text_ex (input_method_t* im, bool_t replace, char* tex
 
 * 函数功能：
 
-> <p id="input_method_t_input_method_create"> 创建输入法对象。在具体实现中实现。
-
+> <p id="input_method_t_input_method_create">创建输入法对象。在具体实现中实现。
 
 
 * 函数原型：
@@ -135,8 +124,7 @@ input_method_t* input_method_create ();
 
 * 函数功能：
 
-> <p id="input_method_t_input_method_destroy"> 销毁输入法对象。在具体实现中实现。
-
+> <p id="input_method_t_input_method_destroy">销毁输入法对象。在具体实现中实现。
 
 
 * 函数原型：
@@ -156,8 +144,7 @@ ret_t input_method_destroy (input_method_t* im);
 
 * 函数功能：
 
-> <p id="input_method_t_input_method_dispatch"> 分发一个事件。
-
+> <p id="input_method_t_input_method_dispatch">分发一个事件。
 
 
 * 函数原型：
@@ -178,8 +165,7 @@ ret_t input_method_dispatch (input_method_t* im, event_t* e);
 
 * 函数功能：
 
-> <p id="input_method_t_input_method_dispatch_action"> 软键盘上的action按钮被点击时，调用本函数分发EVT_IM_ACTION事件。
-
+> <p id="input_method_t_input_method_dispatch_action">软键盘上的action按钮被点击时，调用本函数分发EVT_IM_ACTION事件。
 
 
 * 函数原型：
@@ -199,8 +185,7 @@ ret_t input_method_dispatch_action (input_method_t* im);
 
 * 函数功能：
 
-> <p id="input_method_t_input_method_dispatch_candidates"> 请求显示候选字。
-
+> <p id="input_method_t_input_method_dispatch_candidates">请求显示候选字。
 
 
 * 函数原型：
@@ -222,8 +207,7 @@ ret_t input_method_dispatch_candidates (input_method_t* im, char* strs, uint32_t
 
 * 函数功能：
 
-> <p id="input_method_t_input_method_dispatch_key"> 提交按键。
-
+> <p id="input_method_t_input_method_dispatch_key">提交按键。
 
 
 * 函数原型：
@@ -244,8 +228,7 @@ ret_t input_method_dispatch_key (input_method_t* im, uint32_t key);
 
 * 函数功能：
 
-> <p id="input_method_t_input_method_dispatch_to_widget"> 分发一个事件当前焦点控件。
-
+> <p id="input_method_t_input_method_dispatch_to_widget">分发一个事件当前焦点控件。
 
 
 * 函数原型：
@@ -266,8 +249,7 @@ ret_t input_method_dispatch_to_widget (input_method_t* im, event_t* e);
 
 * 函数功能：
 
-> <p id="input_method_t_input_method_off"> 注销指定事件的处理函数。
-
+> <p id="input_method_t_input_method_off">注销指定事件的处理函数。
 
 
 * 函数原型：
@@ -288,8 +270,7 @@ ret_t input_method_off (input_method_t* im, uint32_t id);
 
 * 函数功能：
 
-> <p id="input_method_t_input_method_on"> 注册指定事件的处理函数。
-
+> <p id="input_method_t_input_method_on">注册指定事件的处理函数。
 
 
 * 函数原型：
@@ -312,8 +293,7 @@ uint32_t input_method_on (input_method_t* im, event_type_t type, event_func_t on
 
 * 函数功能：
 
-> <p id="input_method_t_input_method_request"> 打开或关闭输入法。
-
+> <p id="input_method_t_input_method_request">打开或关闭输入法。
 
 
 * 函数原型：
@@ -334,8 +314,7 @@ ret_t input_method_request (input_method_t* im, widget_t* widget);
 
 * 函数功能：
 
-> <p id="input_method_t_input_method_set"> 设置全局输入法对象。
-
+> <p id="input_method_t_input_method_set">设置全局输入法对象。
 
 
 * 函数原型：
@@ -355,8 +334,7 @@ ret_t input_method_set (input_method_t* im);
 
 * 函数功能：
 
-> <p id="input_method_t_input_method_update_action_button_info"> 设置软键盘上的action按钮的信息。
-
+> <p id="input_method_t_input_method_update_action_button_info">设置软键盘上的action按钮的信息。
 
 
 * 函数原型：
@@ -375,7 +353,7 @@ ret_t input_method_update_action_button_info (input_method_t* im, char* text, bo
 | enable | bool\_t | 按钮的是否可用。 |
 #### action\_button\_enable 属性
 -----------------------
-> <p id="input_method_t_action_button_enable"> 软键盘的上的action按钮是否可用。
+> <p id="input_method_t_action_button_enable">软键盘的上的action按钮是否可用。
 
 
 * 类型：bool\_t
@@ -386,7 +364,7 @@ ret_t input_method_update_action_button_info (input_method_t* im, char* text, bo
 | 可直接修改 | 否 |
 #### action\_button\_enable 属性
 -----------------------
-> <p id="input_method_t_action_button_enable"> 软键盘的上的action按钮文本。
+> <p id="input_method_t_action_button_enable">软键盘的上的action按钮文本。
 
 
 * 类型：bool\_t
@@ -397,7 +375,7 @@ ret_t input_method_update_action_button_info (input_method_t* im, char* text, bo
 | 可直接修改 | 否 |
 #### input\_type 属性
 -----------------------
-> <p id="input_method_t_input_type"> 当前输入的类型。
+> <p id="input_method_t_input_type">当前输入的类型。
 
 
 * 类型：input\_type\_t

@@ -2,36 +2,28 @@
 ### 概述
 ![image](images/tab_button_group_t_0.png)
 
- 标签按钮分组控件。
-
- 一个简单的容器，主要用于对标签按钮进行布局和管理。
-
- tab\_button\_group\_t是[widget\_t](widget_t.md)的子类控件，
- widget\_t的函数均适用于tab\_button\_group\_t控件。
-
- 在xml中使用"tab\_button\_group"标签创建标签按钮分组控件。如：
-
- ```xml
-   <tab_button_group x="c" y="bottom:10" w="90%" h="30" compact="true" >
-     <tab_button text="General"/>
-     <tab_button text="Network" value="true" />
-     <tab_button text="Security"/>
-   </tab_button_group>
- ```
-
- > 更多用法请参考：
- [tab control](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/)
-
- 可用通过style来设置控件的显示风格，如颜色等等。如：
-
- ```xml
- <tab_button_group>
-  <style name="default">
-   <normal/>
-  </style>
- </tab_button_group>
- ```
-
+标签按钮分组控件。
+一个简单的容器，主要用于对标签按钮进行布局和管理。
+tab\_button\_group\_t是[widget\_t](widget_t.md)的子类控件，
+widget\_t的函数均适用于tab\_button\_group\_t控件。
+在xml中使用"tab\_button\_group"标签创建标签按钮分组控件。如：
+```xml
+<tab_button_group x="c" y="bottom:10" w="90%" h="30" compact="true" >
+<tab_button text="General"/>
+<tab_button text="Network" value="true" />
+<tab_button text="Security"/>
+</tab_button_group>
+```
+> 更多用法请参考：
+[tab control](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/)
+可用通过style来设置控件的显示风格，如颜色等等。如：
+```xml
+<tab_button_group>
+<style name="default">
+<normal/>
+</style>
+</tab_button_group>
+```
 
 ----------------------------------
 ### 函数
@@ -55,8 +47,7 @@
 
 * 函数功能：
 
-> <p id="tab_button_group_t_tab_button_group_cast"> 转换tab_button_group对象(供脚本语言使用)。
-
+> <p id="tab_button_group_t_tab_button_group_cast">转换tab_button_group对象(供脚本语言使用)。
 
 
 * 函数原型：
@@ -76,8 +67,7 @@ widget_t* tab_button_group_cast (widget_t* widget);
 
 * 函数功能：
 
-> <p id="tab_button_group_t_tab_button_group_create"> 创建tab_button_group对象
-
+> <p id="tab_button_group_t_tab_button_group_create">创建tab_button_group对象
 
 
 * 函数原型：
@@ -101,8 +91,7 @@ widget_t* tab_button_group_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_
 
 * 函数功能：
 
-> <p id="tab_button_group_t_tab_button_group_set_compact"> 设置compact。
-
+> <p id="tab_button_group_t_tab_button_group_set_compact">设置compact。
 
 
 * 函数原型：
@@ -123,8 +112,7 @@ ret_t tab_button_group_set_compact (widget_t* widget, bool_t compact);
 
 * 函数功能：
 
-> <p id="tab_button_group_t_tab_button_group_set_scrollable"> 设置scrollable。
-
+> <p id="tab_button_group_t_tab_button_group_set_scrollable">设置scrollable。
 
 
 * 函数原型：
@@ -142,7 +130,7 @@ ret_t tab_button_group_set_scrollable (widget_t* widget, bool_t scrollable);
 | scrollable | bool\_t | 是否允许滚动(缺省FALSE)。 |
 #### compact 属性
 -----------------------
-> <p id="tab_button_group_t_compact"> 紧凑型排版子控件(缺省FALSE)。
+> <p id="tab_button_group_t_compact">紧凑型排版子控件(缺省FALSE)。
 
 
 * 类型：bool\_t
@@ -159,9 +147,8 @@ ret_t tab_button_group_set_scrollable (widget_t* widget, bool_t scrollable);
 | 可通过widget\_set\_prop修改 | 是 |
 #### scrollable 属性
 -----------------------
-> <p id="tab_button_group_t_scrollable"> 是否支持滚动(缺省FALSE)。
-
- > 紧凑型排版子控件时才支持滚动。
+> <p id="tab_button_group_t_scrollable">是否支持滚动(缺省FALSE)。
+> 紧凑型排版子控件时才支持滚动。
 
 
 * 类型：bool\_t

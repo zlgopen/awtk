@@ -2,7 +2,7 @@
 ### 概述
 ![image](images/candidates_t_0.png)
 
- 输入法候选字词控件。
+输入法候选字词控件。
 
 ----------------------------------
 ### 函数
@@ -17,8 +17,7 @@
 
 * 函数功能：
 
-> <p id="candidates_t_candidates_cast"> 转换为candidates对象(供脚本语言使用)。
-
+> <p id="candidates_t_candidates_cast">转换为candidates对象(供脚本语言使用)。
 
 
 * 函数原型：
@@ -38,8 +37,7 @@ widget_t* candidates_cast (widget_t* widget);
 
 * 函数功能：
 
-> <p id="candidates_t_candidates_create"> 创建candidates对象
-
+> <p id="candidates_t_candidates_create">创建candidates对象
 
 
 * 函数原型：

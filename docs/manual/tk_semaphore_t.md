@@ -1,6 +1,6 @@
 ## tk\_semaphore\_t
 ### 概述
- 信号量。
+信号量。
 
 ----------------------------------
 ### 函数
@@ -17,8 +17,7 @@
 
 * 函数功能：
 
-> <p id="tk_semaphore_t_tk_semaphore_create"> 创建信号量对象。
-
+> <p id="tk_semaphore_t_tk_semaphore_create">创建信号量对象。
 
 
 * 函数原型：
@@ -39,8 +38,7 @@ tk_semaphore_t* tk_semaphore_create (uint32_t value, const char* name);
 
 * 函数功能：
 
-> <p id="tk_semaphore_t_tk_semaphore_destroy"> 销毁信号量对象。
-
+> <p id="tk_semaphore_t_tk_semaphore_destroy">销毁信号量对象。
 
 
 * 函数原型：
@@ -60,8 +58,7 @@ ret_t tk_semaphore_destroy (tk_semaphore_t* semaphore);
 
 * 函数功能：
 
-> <p id="tk_semaphore_t_tk_semaphore_post"> 释放资源。
-
+> <p id="tk_semaphore_t_tk_semaphore_post">释放资源。
 
 
 * 函数原型：
@@ -81,8 +78,7 @@ ret_t tk_semaphore_post (tk_semaphore_t* semaphore);
 
 * 函数功能：
 
-> <p id="tk_semaphore_t_tk_semaphore_wait"> 获取资源。
-
+> <p id="tk_semaphore_t_tk_semaphore_wait">获取资源。
 
 
 * 函数原型：

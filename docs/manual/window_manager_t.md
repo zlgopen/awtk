@@ -2,7 +2,7 @@
 ### 概述
 ![image](images/window_manager_t_0.png)
 
- 窗口管理器。
+窗口管理器。
 
 ----------------------------------
 ### 函数
@@ -30,8 +30,7 @@
 
 * 函数功能：
 
-> <p id="window_manager_t_window_manager"> 获取全局window_manager对象
-
+> <p id="window_manager_t_window_manager">获取全局window_manager对象
 
 
 * 函数原型：
@@ -50,8 +49,7 @@ widget_t* window_manager ();
 
 * 函数功能：
 
-> <p id="window_manager_t_window_manager_back"> 请求关闭顶层窗口。
-
+> <p id="window_manager_t_window_manager_back">请求关闭顶层窗口。
 
 
 * 函数原型：
@@ -71,11 +69,8 @@ ret_t window_manager_back (widget_t* widget);
 
 * 函数功能：
 
-> <p id="window_manager_t_window_manager_back_to_home"> 回到主窗口，关闭之上的全部窗口。
-
+> <p id="window_manager_t_window_manager_back_to_home">回到主窗口，关闭之上的全部窗口。
 > 由于dialog通常需要用户确认，顶层窗口为dialog时调用会失败。
-
-
 
 
 * 函数原型：
@@ -95,8 +90,7 @@ ret_t window_manager_back_to_home (widget_t* widget);
 
 * 函数功能：
 
-> <p id="window_manager_t_window_manager_cast"> 转换为window_manager对象(供脚本语言使用)。
-
+> <p id="window_manager_t_window_manager_cast">转换为window_manager对象(供脚本语言使用)。
 
 
 * 函数原型：
@@ -116,9 +110,7 @@ widget_t* window_manager_cast (widget_t* widget);
 
 * 函数功能：
 
-> <p id="window_manager_t_window_manager_dispatch_native_window_event"> 处理native window事件。
-
-
+> <p id="window_manager_t_window_manager_dispatch_native_window_event">处理native window事件。
 
 
 * 函数原型：
@@ -140,8 +132,7 @@ ret_t window_manager_dispatch_native_window_event (widget_t* widget, event_t* e,
 
 * 函数功能：
 
-> <p id="window_manager_t_window_manager_get_pointer_pressed"> 获取指针当前是否按下。
-
+> <p id="window_manager_t_window_manager_get_pointer_pressed">获取指针当前是否按下。
 
 
 * 函数原型：
@@ -161,8 +152,7 @@ bool_t window_manager_get_pointer_pressed (widget_t* widget);
 
 * 函数功能：
 
-> <p id="window_manager_t_window_manager_get_pointer_x"> 获取指针当前的X坐标。
-
+> <p id="window_manager_t_window_manager_get_pointer_x">获取指针当前的X坐标。
 
 
 * 函数原型：
@@ -182,8 +172,7 @@ xy_t window_manager_get_pointer_x (widget_t* widget);
 
 * 函数功能：
 
-> <p id="window_manager_t_window_manager_get_pointer_y"> 获取指针当前的Y坐标。
-
+> <p id="window_manager_t_window_manager_get_pointer_y">获取指针当前的Y坐标。
 
 
 * 函数原型：
@@ -203,8 +192,7 @@ xy_t window_manager_get_pointer_y (widget_t* widget);
 
 * 函数功能：
 
-> <p id="window_manager_t_window_manager_get_prev_window"> 获取前一个的窗口。
-
+> <p id="window_manager_t_window_manager_get_prev_window">获取前一个的窗口。
 
 
 * 函数原型：
@@ -224,8 +212,7 @@ widget_t* window_manager_get_prev_window (widget_t* widget);
 
 * 函数功能：
 
-> <p id="window_manager_t_window_manager_get_top_main_window"> 获取最上面的主窗口。
-
+> <p id="window_manager_t_window_manager_get_top_main_window">获取最上面的主窗口。
 
 
 * 函数原型：
@@ -245,8 +232,7 @@ widget_t* window_manager_get_top_main_window (widget_t* widget);
 
 * 函数功能：
 
-> <p id="window_manager_t_window_manager_get_top_window"> 获取最上面的窗口。
-
+> <p id="window_manager_t_window_manager_get_top_window">获取最上面的窗口。
 
 
 * 函数原型：
@@ -266,8 +252,7 @@ widget_t* window_manager_get_top_window (widget_t* widget);
 
 * 函数功能：
 
-> <p id="window_manager_t_window_manager_set"> 设置缺省的窗口管理器。
-
+> <p id="window_manager_t_window_manager_set">设置缺省的窗口管理器。
 
 
 * 函数原型：
@@ -287,8 +272,7 @@ ret_t window_manager_set (window_manager_t* widget);
 
 * 函数功能：
 
-> <p id="window_manager_t_window_manager_set_cursor"> 设置鼠标指针。
-
+> <p id="window_manager_t_window_manager_set_cursor">设置鼠标指针。
 
 
 * 函数原型：
@@ -309,8 +293,7 @@ ret_t window_manager_set_cursor (widget_t* widget, const char* cursor);
 
 * 函数功能：
 
-> <p id="window_manager_t_window_manager_set_screen_saver_time"> 设置屏保时间。
-
+> <p id="window_manager_t_window_manager_set_screen_saver_time">设置屏保时间。
 
 
 * 函数原型：
@@ -331,8 +314,7 @@ ret_t window_manager_set_screen_saver_time (widget_t* widget, uint32_t screen_sa
 
 * 函数功能：
 
-> <p id="window_manager_t_window_manager_set_show_fps"> 设置是否显示FPS。
-
+> <p id="window_manager_t_window_manager_set_show_fps">设置是否显示FPS。
 
 
 * 函数原型：

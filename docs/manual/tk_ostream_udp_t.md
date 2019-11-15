@@ -2,9 +2,7 @@
 ### 概述
 ![image](images/tk_ostream_udp_t_0.png)
 
-
- input stream base on socket
-
+input stream base on socket
 
 ----------------------------------
 ### 函数
@@ -12,19 +10,15 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#tk_ostream_udp_t_tk_ostream_udp_create">tk\_ostream\_udp\_create</a> |  |
-| <a href="#tk_ostream_udp_t_tk_ostream_udp_set_target_with_addr">tk\_ostream\_udp\_set\_target\_with\_addr</a> |  |
-| <a href="#tk_ostream_udp_t_tk_ostream_udp_set_target_with_host">tk\_ostream\_udp\_set\_target\_with\_host</a> |  |
+| <a href="#tk_ostream_udp_t_tk_ostream_udp_create">tk\_ostream\_udp\_create</a> | 创建ostream对象。 |
+| <a href="#tk_ostream_udp_t_tk_ostream_udp_set_target_with_addr">tk\_ostream\_udp\_set\_target\_with\_addr</a> | 设置目标。 |
+| <a href="#tk_ostream_udp_t_tk_ostream_udp_set_target_with_host">tk\_ostream\_udp\_set\_target\_with\_host</a> | 设置目标。 |
 #### tk\_ostream\_udp\_create 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="tk_ostream_udp_t_tk_ostream_udp_create">
- 创建ostream对象。
-
-
-
+> <p id="tk_ostream_udp_t_tk_ostream_udp_create">创建ostream对象。
 
 
 * 函数原型：
@@ -44,11 +38,7 @@ tk_ostream_t* tk_ostream_udp_create (int sock);
 
 * 函数功能：
 
-> <p id="tk_ostream_udp_t_tk_ostream_udp_set_target_with_addr">
- 设置目标。
-
-
-
+> <p id="tk_ostream_udp_t_tk_ostream_udp_set_target_with_addr">设置目标。
 
 
 * 函数原型：
@@ -69,11 +59,7 @@ ret_t tk_ostream_udp_set_target_with_addr (tk_ostream_t* stream, struct sockaddr
 
 * 函数功能：
 
-> <p id="tk_ostream_udp_t_tk_ostream_udp_set_target_with_host">
- 设置目标。
-
-
-
+> <p id="tk_ostream_udp_t_tk_ostream_udp_set_target_with_host">设置目标。
 
 
 * 函数原型：

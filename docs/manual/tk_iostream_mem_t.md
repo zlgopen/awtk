@@ -2,9 +2,7 @@
 ### 概述
 ![image](images/tk_iostream_mem_t_0.png)
 
-
- iostream base on mem
-
+iostream base on mem
 
 ----------------------------------
 ### 函数
@@ -12,17 +10,13 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#tk_iostream_mem_t_tk_iostream_mem_create">tk\_iostream\_mem\_create</a> |  |
+| <a href="#tk_iostream_mem_t_tk_iostream_mem_create">tk\_iostream\_mem\_create</a> | 创建iostream对象。 |
 #### tk\_iostream\_mem\_create 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="tk_iostream_mem_t_tk_iostream_mem_create">
- 创建iostream对象。
-
-
-
+> <p id="tk_iostream_mem_t_tk_iostream_mem_create">创建iostream对象。
 
 
 * 函数原型：

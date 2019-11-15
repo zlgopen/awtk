@@ -2,44 +2,32 @@
 ### 概述
 ![image](images/window_t_0.png)
 
- 窗口。
-
- 缺省的应用程序窗口，占用除system\_bar\_t之外的整个区域，请不要修改它的位置和大小(除非你清楚后果)。
-
- window\_t是[window\_base\_t](window_base_t.md)的子类控件，window\_base\_t的函数均适用于window\_t控件。
-
- 在xml中使用"window"标签创建窗口。无需指定坐标和大小，可以指定主题和动画名称。如：
-
- ```xml
- <window theme="basic" anim_hint="htranslate">
- ...
- </window>
- ```
-
- >
- 更多用法请参考：[window.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/)
-
- 在c代码中使用函数window\_create创建窗口。如：
-
- ```c
-  widget_t* window = window_create(NULL, 0, 0, 0, 0);
- ```
-
- > 无需指定父控件、坐标和大小，使用0即可。
-
- > 完整示例请参考：[window
- demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/)
-
- 可用通过style来设置窗口的风格，如背景颜色或图片等。如：
-
- ```xml
- <style name="bricks">
-  <normal bg_image="bricks"  bg_image_draw_type="repeat"/>
- </style>
- ```
-
- > 更多用法请参考：[theme
- default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L0)
+窗口。
+缺省的应用程序窗口，占用除system\_bar\_t之外的整个区域，请不要修改它的位置和大小(除非你清楚后果)。
+window\_t是[window\_base\_t](window_base_t.md)的子类控件，window\_base\_t的函数均适用于window\_t控件。
+在xml中使用"window"标签创建窗口。无需指定坐标和大小，可以指定主题和动画名称。如：
+```xml
+<window theme="basic" anim_hint="htranslate">
+...
+</window>
+```
+>
+更多用法请参考：[window.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/)
+在c代码中使用函数window\_create创建窗口。如：
+```c
+widget_t* window = window_create(NULL, 0, 0, 0, 0);
+```
+> 无需指定父控件、坐标和大小，使用0即可。
+> 完整示例请参考：[window
+demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/)
+可用通过style来设置窗口的风格，如背景颜色或图片等。如：
+```xml
+<style name="bricks">
+<normal bg_image="bricks"  bg_image_draw_type="repeat"/>
+</style>
+```
+> 更多用法请参考：[theme
+default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L0)
 
 ----------------------------------
 ### 函数
@@ -66,8 +54,7 @@
 
 * 函数功能：
 
-> <p id="window_t_dialog_highlighter_register_builtins"> 注册内置的对话框高亮策略。
-
+> <p id="window_t_dialog_highlighter_register_builtins">注册内置的对话框高亮策略。
 
 
 * 函数原型：
@@ -86,8 +73,7 @@ ret_t dialog_highlighter_register_builtins ();
 
 * 函数功能：
 
-> <p id="window_t_window_cast"> 转换为window对象(供脚本语言使用)。
-
+> <p id="window_t_window_cast">转换为window对象(供脚本语言使用)。
 
 
 * 函数原型：
@@ -107,8 +93,7 @@ widget_t* window_cast (widget_t* widget);
 
 * 函数功能：
 
-> <p id="window_t_window_close"> 关闭窗口。
-
+> <p id="window_t_window_close">关闭窗口。
 
 
 * 函数原型：
@@ -128,8 +113,7 @@ ret_t window_close (widget_t* widget);
 
 * 函数功能：
 
-> <p id="window_t_window_close_force"> 立即无条件关闭窗口(无动画)。
-
+> <p id="window_t_window_close_force">立即无条件关闭窗口(无动画)。
 
 
 * 函数原型：
@@ -149,8 +133,7 @@ ret_t window_close_force (widget_t* widget);
 
 * 函数功能：
 
-> <p id="window_t_window_create"> 创建window对象
-
+> <p id="window_t_window_create">创建window对象
 
 
 * 函数原型：
@@ -174,9 +157,7 @@ widget_t* window_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 * 函数功能：
 
-> <p id="window_t_window_open"> 从资源文件中加载并创建window_base对象。本函数在ui_loader/ui_builder_default里实现。
-
-
+> <p id="window_t_window_open">从资源文件中加载并创建window_base对象。本函数在ui_loader/ui_builder_default里实现。
 
 
 * 函数原型：
@@ -196,8 +177,7 @@ widget_t* window_open (char* name);
 
 * 函数功能：
 
-> <p id="window_t_window_open_and_close"> 从资源文件中加载并创建window对象。本函数在ui_loader/ui_builder_default里实现。
-
+> <p id="window_t_window_open_and_close">从资源文件中加载并创建window对象。本函数在ui_loader/ui_builder_default里实现。
 
 
 * 函数原型：
@@ -218,11 +198,8 @@ widget_t* window_open_and_close (char* name, widget_t* to_close);
 
 * 函数功能：
 
-> <p id="window_t_window_set_fullscreen"> 设置为全屏窗口。
-
+> <p id="window_t_window_set_fullscreen">设置为全屏窗口。
 >这里全屏是指与LCD相同大小，而非让SDL窗口全屏。
-
-
 
 
 * 函数原型：
@@ -240,8 +217,7 @@ ret_t window_set_fullscreen (widget_t* widget, bool_t fullscreen);
 | fullscreen | bool\_t | 是否全屏。 |
 #### fullscreen 属性
 -----------------------
-> <p id="window_t_fullscreen"> 是否全屏。
-
+> <p id="window_t_fullscreen">是否全屏。
 >这里全屏是指与LCD相同大小，而非让SDL窗口全屏。
 
 

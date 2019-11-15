@@ -1,7 +1,6 @@
 ## glyph\_t
 ### 概述
- 代表一个字符的字模。
-
+代表一个字符的字模。
 
 ----------------------------------
 ### 函数
@@ -30,8 +29,7 @@
 
 * 函数功能：
 
-> <p id="glyph_t_glyph_clone"> 克隆glyph对象。
-
+> <p id="glyph_t_glyph_clone">克隆glyph对象。
 
 
 * 函数原型：
@@ -50,8 +48,7 @@ glyph_t* glyph_clone ();
 
 * 函数功能：
 
-> <p id="glyph_t_glyph_create"> 创建glyph对象。
-
+> <p id="glyph_t_glyph_create">创建glyph对象。
 
 
 * 函数原型：
@@ -70,8 +67,7 @@ glyph_t* glyph_create ();
 
 * 函数功能：
 
-> <p id="glyph_t_glyph_destroy"> 销毁glyph对象。
-
+> <p id="glyph_t_glyph_destroy">销毁glyph对象。
 
 
 * 函数原型：
@@ -88,7 +84,7 @@ ret_t glyph_destroy (glyph_t* glyph);
 | glyph | glyph\_t* | glyph对象。 |
 #### advance 属性
 -----------------------
-> <p id="glyph_t_advance"> 占位宽度。
+> <p id="glyph_t_advance">占位宽度。
 
 
 * 类型：uint16\_t
@@ -99,7 +95,7 @@ ret_t glyph_destroy (glyph_t* glyph);
 | 可直接修改 | 否 |
 #### data 属性
 -----------------------
-> <p id="glyph_t_data"> 数据。
+> <p id="glyph_t_data">数据。
 
 
 * 类型：const uint8\_t*
@@ -110,7 +106,7 @@ ret_t glyph_destroy (glyph_t* glyph);
 | 可直接修改 | 否 |
 #### format 属性
 -----------------------
-> <p id="glyph_t_format"> 格式。
+> <p id="glyph_t_format">格式。
 
 
 * 类型：uint8\_t
@@ -121,7 +117,7 @@ ret_t glyph_destroy (glyph_t* glyph);
 | 可直接修改 | 否 |
 #### h 属性
 -----------------------
-> <p id="glyph_t_h"> 高度。
+> <p id="glyph_t_h">高度。
 
 
 * 类型：uint16\_t
@@ -132,7 +128,7 @@ ret_t glyph_destroy (glyph_t* glyph);
 | 可直接修改 | 否 |
 #### pitch 属性
 -----------------------
-> <p id="glyph_t_pitch"> pitch。
+> <p id="glyph_t_pitch">pitch。
 
 
 * 类型：uint8\_t
@@ -143,7 +139,7 @@ ret_t glyph_destroy (glyph_t* glyph);
 | 可直接修改 | 否 |
 #### w 属性
 -----------------------
-> <p id="glyph_t_w"> 宽度。
+> <p id="glyph_t_w">宽度。
 
 
 * 类型：uint16\_t
@@ -154,7 +150,7 @@ ret_t glyph_destroy (glyph_t* glyph);
 | 可直接修改 | 否 |
 #### x 属性
 -----------------------
-> <p id="glyph_t_x"> x坐标。
+> <p id="glyph_t_x">x坐标。
 
 
 * 类型：int16\_t
@@ -165,7 +161,7 @@ ret_t glyph_destroy (glyph_t* glyph);
 | 可直接修改 | 否 |
 #### y 属性
 -----------------------
-> <p id="glyph_t_y"> y坐标。
+> <p id="glyph_t_y">y坐标。
 
 
 * 类型：int16\_t

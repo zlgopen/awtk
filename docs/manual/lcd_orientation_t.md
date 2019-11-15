@@ -1,6 +1,6 @@
 ## lcd\_orientation\_t
 ### 概述
- LCD旋转角度(XXX:目前仅支持0度和90度，逆时针方向)。
+LCD旋转角度(XXX:目前仅支持0度和90度，逆时针方向)。
 ### 常量
 <p id="lcd_orientation_t_consts">
 

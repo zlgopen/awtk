@@ -1,24 +1,19 @@
 ## slist\_t
 ### 概述
- 单向链表
-
- 用slist\_init初始化时，用slist\_deinit释放。如：
-
- ```c
- slist_t slist;
- slist_init(&slist, destroy, compare);
- ...
- slist_deinit(&slist);
- ```
-
- 用slist\_create创建时，用slist\_destroy销毁。如：
-
- ```c
- slist_t* slist = slist_create(destroy, compare);
- ...
- slist_destroy(slist);
- ```
-
+单向链表
+用slist\_init初始化时，用slist\_deinit释放。如：
+```c
+slist_t slist;
+slist_init(&slist, destroy, compare);
+...
+slist_deinit(&slist);
+```
+用slist\_create创建时，用slist\_destroy销毁。如：
+```c
+slist_t* slist = slist_create(destroy, compare);
+...
+slist_destroy(slist);
+```
 
 ----------------------------------
 ### 函数
@@ -51,8 +46,7 @@
 
 * 函数功能：
 
-> <p id="slist_t_slist_append"> 在尾巴追加一个元素。
-
+> <p id="slist_t_slist_append">在尾巴追加一个元素。
 
 
 * 函数原型：
@@ -73,8 +67,7 @@ ret_t slist_append (slist_t* slist, void* data);
 
 * 函数功能：
 
-> <p id="slist_t_slist_count"> 返回满足条件元素的个数。
-
+> <p id="slist_t_slist_count">返回满足条件元素的个数。
 
 
 * 函数原型：
@@ -95,8 +88,7 @@ int32_t slist_count (slist_t* slist, void* ctx);
 
 * 函数功能：
 
-> <p id="slist_t_slist_create"> 创建slist对象
-
+> <p id="slist_t_slist_create">创建slist对象
 
 
 * 函数原型：
@@ -117,8 +109,7 @@ slist_t* slist_create (tk_destroy_t destroy, tk_compare_t compare);
 
 * 函数功能：
 
-> <p id="slist_t_slist_deinit"> 清除单向链表中的元素。
-
+> <p id="slist_t_slist_deinit">清除单向链表中的元素。
 
 
 * 函数原型：
@@ -138,9 +129,7 @@ ret_t slist_deinit (slist_t* slist);
 
 * 函数功能：
 
-> <p id="slist_t_slist_destroy"> 清除单向链表中的元素，并释放单向链表对象。
-
-
+> <p id="slist_t_slist_destroy">清除单向链表中的元素，并释放单向链表对象。
 
 
 * 函数原型：
@@ -160,8 +149,7 @@ ret_t slist_destroy (slist_t* slist);
 
 * 函数功能：
 
-> <p id="slist_t_slist_find"> 查找第一个满足条件的元素。
-
+> <p id="slist_t_slist_find">查找第一个满足条件的元素。
 
 
 * 函数原型：
@@ -182,8 +170,7 @@ void* slist_find (slist_t* slist, void* ctx);
 
 * 函数功能：
 
-> <p id="slist_t_slist_foreach"> 遍历元素。
-
+> <p id="slist_t_slist_foreach">遍历元素。
 
 
 * 函数原型：
@@ -205,8 +192,7 @@ ret_t slist_foreach (slist_t* slist, tk_visit_t visit, void* ctx);
 
 * 函数功能：
 
-> <p id="slist_t_slist_init"> 初始化slist对象
-
+> <p id="slist_t_slist_init">初始化slist对象
 
 
 * 函数原型：
@@ -228,8 +214,7 @@ slist_t* slist_init (slist_t* slist, tk_destroy_t destroy, tk_compare_t compare)
 
 * 函数功能：
 
-> <p id="slist_t_slist_prepend"> 在头部追加一个元素。
-
+> <p id="slist_t_slist_prepend">在头部追加一个元素。
 
 
 * 函数原型：
@@ -250,8 +235,7 @@ ret_t slist_prepend (slist_t* slist, void* data);
 
 * 函数功能：
 
-> <p id="slist_t_slist_remove"> 删除第一个满足条件的元素。
-
+> <p id="slist_t_slist_remove">删除第一个满足条件的元素。
 
 
 * 函数原型：
@@ -272,8 +256,7 @@ ret_t slist_remove (slist_t* slist, void* ctx);
 
 * 函数功能：
 
-> <p id="slist_t_slist_remove_all"> 删除全部元素。
-
+> <p id="slist_t_slist_remove_all">删除全部元素。
 
 
 * 函数原型：
@@ -293,8 +276,7 @@ ret_t slist_remove_all (slist_t* slist);
 
 * 函数功能：
 
-> <p id="slist_t_slist_size"> 返回元素个数。
-
+> <p id="slist_t_slist_size">返回元素个数。
 
 
 * 函数原型：
@@ -311,7 +293,7 @@ int32_t slist_size (slist_t* slist);
 | slist | slist\_t* | 单向链表对象。 |
 #### compare 属性
 -----------------------
-> <p id="slist_t_compare"> 元素比较函数。
+> <p id="slist_t_compare">元素比较函数。
 
 
 * 类型：tk\_compare\_t
@@ -322,7 +304,7 @@ int32_t slist_size (slist_t* slist);
 | 可直接修改 | 否 |
 #### destroy 属性
 -----------------------
-> <p id="slist_t_destroy"> 元素销毁函数。
+> <p id="slist_t_destroy">元素销毁函数。
 
 
 * 类型：tk\_destroy\_t
@@ -333,7 +315,7 @@ int32_t slist_size (slist_t* slist);
 | 可直接修改 | 否 |
 #### first 属性
 -----------------------
-> <p id="slist_t_first"> 首节点。
+> <p id="slist_t_first">首节点。
 
 
 * 类型：slist\_node\_t*

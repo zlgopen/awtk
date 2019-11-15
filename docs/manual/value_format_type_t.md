@@ -1,6 +1,6 @@
 ## value\_format\_type\_t
 ### 概述
- 属性描述格式常量定义。
+属性描述格式常量定义。
 ### 常量
 <p id="value_format_type_t_consts">
 

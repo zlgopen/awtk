@@ -1,7 +1,7 @@
 ## widget\_animator\_scroll\_t
 ### 概述
- 滚动控件的动画。
- 本动画也可以用widget_animator_prop2实现，但滚动控件需要访问内部数据结构，出于可读性考虑保留独立实现。
+滚动控件的动画。
+本动画也可以用widget_animator_prop2实现，但滚动控件需要访问内部数据结构，出于可读性考虑保留独立实现。
 
 ----------------------------------
 ### 函数
@@ -16,8 +16,7 @@
 
 * 函数功能：
 
-> <p id="widget_animator_scroll_t_widget_animator_scroll_create"> 创建动画对象。
-
+> <p id="widget_animator_scroll_t_widget_animator_scroll_create">创建动画对象。
 
 
 * 函数原型：
@@ -40,8 +39,7 @@ widget_animator_t* widget_animator_scroll_create (widget_t* widget, uint32_t dur
 
 * 函数功能：
 
-> <p id="widget_animator_scroll_t_widget_animator_scroll_set_params"> 设置动画对象的参数。
-
+> <p id="widget_animator_scroll_t_widget_animator_scroll_set_params">设置动画对象的参数。
 
 
 * 函数原型：

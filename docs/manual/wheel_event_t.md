@@ -2,7 +2,7 @@
 ### 概述
 ![image](images/wheel_event_t_0.png)
 
- 滚轮事件。
+滚轮事件。
 
 ----------------------------------
 ### 函数
@@ -26,8 +26,7 @@
 
 * 函数功能：
 
-> <p id="wheel_event_t_wheel_event_cast"> 把event对象转wheel_event_t对象，主要给脚本语言使用。
-
+> <p id="wheel_event_t_wheel_event_cast">把event对象转wheel_event_t对象，主要给脚本语言使用。
 
 
 * 函数原型：
@@ -47,8 +46,7 @@ wheel_event_t* wheel_event_cast (event_t* event);
 
 * 函数功能：
 
-> <p id="wheel_event_t_wheel_event_init"> 初始化事件。
-
+> <p id="wheel_event_t_wheel_event_init">初始化事件。
 
 
 * 函数原型：
@@ -68,7 +66,7 @@ event_t* wheel_event_init (wheel_event_t* event, void* target, uint32_t type, in
 | dy | int32\_t | 滚轮的y值。 |
 #### alt 属性
 -----------------------
-> <p id="wheel_event_t_alt"> alt键是否按下。
+> <p id="wheel_event_t_alt">alt键是否按下。
 
 
 * 类型：bool\_t
@@ -80,7 +78,7 @@ event_t* wheel_event_init (wheel_event_t* event, void* target, uint32_t type, in
 | 可脚本化   | 是 |
 #### ctrl 属性
 -----------------------
-> <p id="wheel_event_t_ctrl"> ctrl键是否按下。
+> <p id="wheel_event_t_ctrl">ctrl键是否按下。
 
 
 * 类型：bool\_t
@@ -92,7 +90,7 @@ event_t* wheel_event_init (wheel_event_t* event, void* target, uint32_t type, in
 | 可脚本化   | 是 |
 #### dy 属性
 -----------------------
-> <p id="wheel_event_t_dy"> 滚轮的y值。
+> <p id="wheel_event_t_dy">滚轮的y值。
 
 
 * 类型：int32\_t
@@ -104,7 +102,7 @@ event_t* wheel_event_init (wheel_event_t* event, void* target, uint32_t type, in
 | 可脚本化   | 是 |
 #### shift 属性
 -----------------------
-> <p id="wheel_event_t_shift"> shift键是否按下。
+> <p id="wheel_event_t_shift">shift键是否按下。
 
 
 * 类型：bool\_t

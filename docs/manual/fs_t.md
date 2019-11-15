@@ -1,9 +1,6 @@
 ## fs\_t
 ### 概述
-
- 文件系统接口。
-
-
+文件系统接口。
 
 ----------------------------------
 ### 函数
@@ -11,34 +8,30 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#fs_t_file_exist">file\_exist</a> |  |
-| <a href="#fs_t_file_get_size">file\_get\_size</a> |  |
-| <a href="#fs_t_file_read">file\_read</a> |  |
-| <a href="#fs_t_file_read_part">file\_read\_part</a> |  |
-| <a href="#fs_t_file_remove">file\_remove</a> |  |
-| <a href="#fs_t_file_write">file\_write</a> |  |
-| <a href="#fs_t_fs_dir_exist">fs\_dir\_exist</a> |  |
-| <a href="#fs_t_fs_dir_rename">fs\_dir\_rename</a> |  |
-| <a href="#fs_t_fs_file_exist">fs\_file\_exist</a> |  |
-| <a href="#fs_t_fs_file_rename">fs\_file\_rename</a> |  |
-| <a href="#fs_t_fs_get_cwd">fs\_get\_cwd</a> |  |
-| <a href="#fs_t_fs_get_exe">fs\_get\_exe</a> |  |
-| <a href="#fs_t_fs_get_file_size">fs\_get\_file\_size</a> |  |
-| <a href="#fs_t_fs_open_dir">fs\_open\_dir</a> |  |
-| <a href="#fs_t_fs_open_file">fs\_open\_file</a> |  |
-| <a href="#fs_t_fs_remove_dir">fs\_remove\_dir</a> |  |
-| <a href="#fs_t_fs_remove_file">fs\_remove\_file</a> |  |
+| <a href="#fs_t_file_exist">file\_exist</a> | 判断文件是否存在。 |
+| <a href="#fs_t_file_get_size">file\_get\_size</a> | 获取文件大小。 |
+| <a href="#fs_t_file_read">file\_read</a> | 读取文件。 |
+| <a href="#fs_t_file_read_part">file\_read\_part</a> | 从某个位置读取文件。 |
+| <a href="#fs_t_file_remove">file\_remove</a> | 刪除文件。 |
+| <a href="#fs_t_file_write">file\_write</a> | 写入文件。 |
+| <a href="#fs_t_fs_dir_exist">fs\_dir\_exist</a> | 判断目录是否存在。 |
+| <a href="#fs_t_fs_dir_rename">fs\_dir\_rename</a> | 目录重命名。 |
+| <a href="#fs_t_fs_file_exist">fs\_file\_exist</a> | 判断文件是否存在。 |
+| <a href="#fs_t_fs_file_rename">fs\_file\_rename</a> | 文件重命名。 |
+| <a href="#fs_t_fs_get_cwd">fs\_get\_cwd</a> | 获取当前所在目录。 |
+| <a href="#fs_t_fs_get_exe">fs\_get\_exe</a> | 获取可执行文件所在目录。 |
+| <a href="#fs_t_fs_get_file_size">fs\_get\_file\_size</a> | 获取文件大小。 |
+| <a href="#fs_t_fs_open_dir">fs\_open\_dir</a> | 打开目录。 |
+| <a href="#fs_t_fs_open_file">fs\_open\_file</a> | 打开文件。 |
+| <a href="#fs_t_fs_remove_dir">fs\_remove\_dir</a> | 刪除目录。 |
+| <a href="#fs_t_fs_remove_file">fs\_remove\_file</a> | 刪除文件。 |
 | <a href="#fs_t_os_fs">os\_fs</a> | 获取缺省的文件系统对象。 |
 #### file\_exist 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="fs_t_file_exist">
- 判断文件是否存在。
-
-
-
+> <p id="fs_t_file_exist">判断文件是否存在。
 
 
 * 函数原型：
@@ -58,11 +51,7 @@ ret_t file_exist (const char* name);
 
 * 函数功能：
 
-> <p id="fs_t_file_get_size">
- 获取文件大小。
-
-
-
+> <p id="fs_t_file_get_size">获取文件大小。
 
 
 * 函数原型：
@@ -82,11 +71,7 @@ ret_t file_get_size (const char* name);
 
 * 函数功能：
 
-> <p id="fs_t_file_read">
- 读取文件。
-
-
-
+> <p id="fs_t_file_read">读取文件。
 
 
 * 函数原型：
@@ -107,11 +92,7 @@ int32_t* file_read (const char* name, uint32_t* size);
 
 * 函数功能：
 
-> <p id="fs_t_file_read_part">
- 从某个位置读取文件。
-
-
-
+> <p id="fs_t_file_read_part">从某个位置读取文件。
 
 
 * 函数原型：
@@ -134,11 +115,7 @@ int32_t* file_read_part (const char* name, const void* buffer, uint32_t size, ui
 
 * 函数功能：
 
-> <p id="fs_t_file_remove">
- 刪除文件。
-
-
-
+> <p id="fs_t_file_remove">刪除文件。
 
 
 * 函数原型：
@@ -158,11 +135,7 @@ ret_t file_remove (const char* name);
 
 * 函数功能：
 
-> <p id="fs_t_file_write">
- 写入文件。
-
-
-
+> <p id="fs_t_file_write">写入文件。
 
 
 * 函数原型：
@@ -184,11 +157,7 @@ int32_t file_write (const char* name, const void* buffer, uint32_t size);
 
 * 函数功能：
 
-> <p id="fs_t_fs_dir_exist">
- 判断目录是否存在。
-
-
-
+> <p id="fs_t_fs_dir_exist">判断目录是否存在。
 
 
 * 函数原型：
@@ -209,11 +178,7 @@ ret_t fs_dir_exist (fs_t* fs, const char* name);
 
 * 函数功能：
 
-> <p id="fs_t_fs_dir_rename">
- 目录重命名。
-
-
-
+> <p id="fs_t_fs_dir_rename">目录重命名。
 
 
 * 函数原型：
@@ -235,11 +200,7 @@ ret_t fs_dir_rename (fs_t* fs, const char* name, const char* new_name);
 
 * 函数功能：
 
-> <p id="fs_t_fs_file_exist">
- 判断文件是否存在。
-
-
-
+> <p id="fs_t_fs_file_exist">判断文件是否存在。
 
 
 * 函数原型：
@@ -260,11 +221,7 @@ ret_t fs_file_exist (fs_t* fs, const char* name);
 
 * 函数功能：
 
-> <p id="fs_t_fs_file_rename">
- 文件重命名。
-
-
-
+> <p id="fs_t_fs_file_rename">文件重命名。
 
 
 * 函数原型：
@@ -286,11 +243,7 @@ ret_t fs_file_rename (fs_t* fs, const char* name, const char* new_name);
 
 * 函数功能：
 
-> <p id="fs_t_fs_get_cwd">
- 获取当前所在目录。
-
-
-
+> <p id="fs_t_fs_get_cwd">获取当前所在目录。
 
 
 * 函数原型：
@@ -311,11 +264,7 @@ ret_t fs_get_cwd (fs_t* fs, char* path);
 
 * 函数功能：
 
-> <p id="fs_t_fs_get_exe">
- 获取可执行文件所在目录。
-
-
-
+> <p id="fs_t_fs_get_exe">获取可执行文件所在目录。
 
 
 * 函数原型：
@@ -336,11 +285,7 @@ ret_t fs_get_exe (fs_t* fs, char* path);
 
 * 函数功能：
 
-> <p id="fs_t_fs_get_file_size">
- 获取文件大小。
-
-
-
+> <p id="fs_t_fs_get_file_size">获取文件大小。
 
 
 * 函数原型：
@@ -361,11 +306,7 @@ ret_t fs_get_file_size (fs_t* fs, const char* name);
 
 * 函数功能：
 
-> <p id="fs_t_fs_open_dir">
- 打开目录。
-
-
-
+> <p id="fs_t_fs_open_dir">打开目录。
 
 
 * 函数原型：
@@ -386,11 +327,7 @@ ret_t fs_open_dir (fs_t* fs, const char* name);
 
 * 函数功能：
 
-> <p id="fs_t_fs_open_file">
- 打开文件。
-
-
-
+> <p id="fs_t_fs_open_file">打开文件。
 
 
 * 函数原型：
@@ -412,11 +349,7 @@ ret_t fs_open_file (fs_t* fs, const char* name, const char* mode);
 
 * 函数功能：
 
-> <p id="fs_t_fs_remove_dir">
- 刪除目录。
-
-
-
+> <p id="fs_t_fs_remove_dir">刪除目录。
 
 
 * 函数原型：
@@ -437,11 +370,7 @@ ret_t fs_remove_dir (fs_t* fs, const char* name);
 
 * 函数功能：
 
-> <p id="fs_t_fs_remove_file">
- 刪除文件。
-
-
-
+> <p id="fs_t_fs_remove_file">刪除文件。
 
 
 * 函数原型：
@@ -462,8 +391,7 @@ ret_t fs_remove_file (fs_t* fs, const char* name);
 
 * 函数功能：
 
-> <p id="fs_t_os_fs"> 获取缺省的文件系统对象。
-
+> <p id="fs_t_os_fs">获取缺省的文件系统对象。
 
 
 * 函数原型：

@@ -1,6 +1,6 @@
 ## bitmap\_flag\_t
 ### 概述
- 位图标志常量定义。
+位图标志常量定义。
 ### 常量
 <p id="bitmap_flag_t_consts">
 
