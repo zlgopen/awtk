@@ -23398,11 +23398,11 @@
           {
             "type": "uint32_t",
             "name": "priority",
-            "desc": "栈的大小。"
+            "desc": "优先级。"
           }
         ],
         "annotation": {},
-        "desc": " 设置线程的栈大小。\r\n\r\n > 需要在调用start之前调用本函数。\r\n\r\n",
+        "desc": " 设置线程的优先级。\r\n\r\n > 部分平台支持。\r\n\r\n",
         "name": "tk_thread_set_priority",
         "return": {
           "type": "ret_t",
@@ -23439,6 +23439,22 @@
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_thread_t*",
+            "name": "thread",
+            "desc": "thread对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 获取线程的参数。\r\n\r\n",
+        "name": "tk_thread_get_args",
+        "return": {
+          "type": "void*",
+          "desc": "返回线程的参数。"
         }
       },
       {

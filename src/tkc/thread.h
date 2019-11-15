@@ -72,11 +72,11 @@ ret_t tk_thread_set_stack_size(tk_thread_t* thread, uint32_t stack_size);
 
 /**
  * @method tk_thread_set_priority
- * 设置线程的栈大小。
+ * 设置线程的优先级。
  *
- * > 需要在调用start之前调用本函数。
+ * > 部分平台支持。
  * @param {tk_thread_t*} thread thread对象。
- * @param {uint32_t}  priority 栈的大小。
+ * @param {uint32_t}  priority 优先级。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -100,6 +100,13 @@ ret_t tk_thread_start(tk_thread_t* thread);
  */
 ret_t tk_thread_join(tk_thread_t* thread);
 
+/**
+ * @method tk_thread_get_args
+ * 获取线程的参数。
+ * @param {tk_thread_t*}    thread thread对象。
+ *
+ * @return {void*} 返回线程的参数。
+ */
 void* tk_thread_get_args(tk_thread_t* thread);
 
 /**
