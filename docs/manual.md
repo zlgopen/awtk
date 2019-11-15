@@ -296,6 +296,8 @@
 ### 平台相关
 
 * [fs](manual/fs_t.md) 文件系统接口
+* [fs\_dir](manual/fs_dir_t.md) 目录接口
+* [fs\_file](manual/fs_file_t.md) 文件接口
 * [path](manual/path_t.md) 路径接口
 * [memory](manual/tk_mem_t.md) 内存管理相关函数和宏。
 * [date\_time](manual/date_time_t.md) 时间日期函数。
