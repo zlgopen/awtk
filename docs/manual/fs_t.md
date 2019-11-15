@@ -10,7 +10,7 @@
 | -------- | ------------ | 
 | <a href="#fs_t_file_exist">file\_exist</a> | 判断文件是否存在。 |
 | <a href="#fs_t_file_get_size">file\_get\_size</a> | 获取文件大小。 |
-| <a href="#fs_t_file_read">file\_read</a> | 读取文件。 |
+| <a href="#fs_t_file_read">file\_read</a> | 读取文件的全部内容。 |
 | <a href="#fs_t_file_read_part">file\_read\_part</a> | 从某个位置读取文件。 |
 | <a href="#fs_t_file_remove">file\_remove</a> | 刪除文件。 |
 | <a href="#fs_t_file_write">file\_write</a> | 写入文件。 |
@@ -57,36 +57,36 @@ ret_t file_exist (const char* name);
 * 函数原型：
 
 ```
-ret_t file_get_size (const char* name);
+int32_t file_get_size (const char* name);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回不是-1表示成功，否则表示失败。 |
+| 返回值 | int32\_t | 返回非负表示文件大小，否则表示失败。 |
 | name | const char* | 文件名。 |
 #### file\_read 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="fs_t_file_read">读取文件。
+> <p id="fs_t_file_read">读取文件的全部内容。
 
 
 * 函数原型：
 
 ```
-int32_t* file_read (const char* name, uint32_t* size);
+void* file_read (const char* name, uint32_t* size);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | int32\_t* | 返回实际读取的字节数。 |
+| 返回值 | void* | 返回读取的数据，需要调用TKMEM\_FREE释放。 |
 | name | const char* | 文件名。 |
-| size | uint32\_t* | 缓冲区大小。 |
+| size | uint32\_t* | 返回实际读取的长度。 |
 #### file\_read\_part 函数
 -----------------------
 
@@ -98,14 +98,14 @@ int32_t* file_read (const char* name, uint32_t* size);
 * 函数原型：
 
 ```
-int32_t* file_read_part (const char* name, const void* buffer, uint32_t size, uint32_t offset);
+int32_t file_read_part (const char* name, const void* buffer, uint32_t size, uint32_t offset);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | int32\_t* | 返回实际读取的字节数。 |
+| 返回值 | int32\_t | 返回实际读取的字节数。 |
 | name | const char* | 文件名。 |
 | buffer | const void* | 数据缓冲区。 |
 | size | uint32\_t | 数据长度。 |

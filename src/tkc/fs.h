@@ -436,19 +436,19 @@ ret_t file_remove(const char* name);
  *
  * @param {const char*} name 文件名。
  *
- * @return {ret_t} 返回不是-1表示成功，否则表示失败。
+ * @return {int32_t} 返回非负表示文件大小，否则表示失败。
  */
 int32_t file_get_size(const char* name);
 
 /**
  * @method file_read
  *
- * 读取文件。
+ * 读取文件的全部内容。
  *
  * @param {const char*} name 文件名。
- * @param {uint32_t*} size 缓冲区大小。
+ * @param {uint32_t*} size 返回实际读取的长度。
  *
- * @return {int32_t*} 返回实际读取的字节数。
+ * @return {void*} 返回读取的数据，需要调用TKMEM_FREE释放。
  */
 void* file_read(const char* name, uint32_t* size);
 
@@ -462,7 +462,7 @@ void* file_read(const char* name, uint32_t* size);
  * @param {uint32_t} size 数据长度。
  * @param {uint32_t} offset 偏移量。
  *
- * @return {int32_t*} 返回实际读取的字节数。
+ * @return {int32_t} 返回实际读取的字节数。
  */
 int32_t file_read_part(const char* name, void* buff, uint32_t size, uint32_t offset);
 

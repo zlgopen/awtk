@@ -19047,8 +19047,8 @@
         "desc": "获取文件大小。\n",
         "name": "file_get_size",
         "return": {
-          "type": "ret_t",
-          "desc": "返回不是-1表示成功，否则表示失败。"
+          "type": "int32_t",
+          "desc": "返回非负表示文件大小，否则表示失败。"
         }
       },
       {
@@ -19061,15 +19061,15 @@
           {
             "type": "uint32_t*",
             "name": "size",
-            "desc": "缓冲区大小。"
+            "desc": "返回实际读取的长度。"
           }
         ],
         "annotation": {},
-        "desc": "读取文件。\n",
+        "desc": "读取文件的全部内容。\n",
         "name": "file_read",
         "return": {
-          "type": "int32_t*",
-          "desc": "返回实际读取的字节数。"
+          "type": "void*",
+          "desc": "返回读取的数据，需要调用TKMEM_FREE释放。"
         }
       },
       {
@@ -19099,7 +19099,7 @@
         "desc": "从某个位置读取文件。\n",
         "name": "file_read_part",
         "return": {
-          "type": "int32_t*",
+          "type": "int32_t",
           "desc": "返回实际读取的字节数。"
         }
       },
