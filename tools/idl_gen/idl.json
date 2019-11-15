@@ -18768,7 +18768,7 @@
         "name": "fs_open_file",
         "return": {
           "type": "ret_t",
-          "desc": "返回不是NULL表示成功，否则表示失败。"
+          "desc": "返回非NULL表示成功，否则表示失败。"
         }
       },
       {
@@ -18809,7 +18809,7 @@
         "desc": "判断文件是否存在。\n",
         "name": "fs_file_exist",
         "return": {
-          "type": "ret_t",
+          "type": "bool_t",
           "desc": "返回TRUE表示成功，否则表示失败。"
         }
       },
@@ -18856,8 +18856,8 @@
         "desc": "打开目录。\n",
         "name": "fs_open_dir",
         "return": {
-          "type": "ret_t",
-          "desc": "返回不是NULL表示成功，否则表示失败。"
+          "type": "fs_dir_t",
+          "desc": "返回非NULL表示成功，否则表示失败。"
         }
       },
       {
@@ -18898,7 +18898,7 @@
         "desc": "判断目录是否存在。\n",
         "name": "fs_dir_exist",
         "return": {
-          "type": "ret_t",
+          "type": "bool_t",
           "desc": "返回TRUE表示成功，否则表示失败。"
         }
       },
@@ -19015,7 +19015,7 @@
         "desc": "判断文件是否存在。\n",
         "name": "file_exist",
         "return": {
-          "type": "ret_t",
+          "type": "bool_t",
           "desc": "返回TRUE表示成功，否则表示失败。"
         }
       },
@@ -19125,8 +19125,8 @@
         "desc": "写入文件。\n",
         "name": "file_write",
         "return": {
-          "type": "int32_t",
-          "desc": "返回实际写入的字节数。"
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       }
     ],

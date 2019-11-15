@@ -37,14 +37,14 @@
 * 函数原型：
 
 ```
-ret_t file_exist (const char* name);
+bool_t file_exist (const char* name);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回TRUE表示成功，否则表示失败。 |
+| 返回值 | bool\_t | 返回TRUE表示成功，否则表示失败。 |
 | name | const char* | 文件名。 |
 #### file\_get\_size 函数
 -----------------------
@@ -141,14 +141,14 @@ ret_t file_remove (const char* name);
 * 函数原型：
 
 ```
-int32_t file_write (const char* name, const void* buffer, uint32_t size);
+ret_t file_write (const char* name, const void* buffer, uint32_t size);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | int32\_t | 返回实际写入的字节数。 |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | name | const char* | 文件名。 |
 | buffer | const void* | 数据缓冲区。 |
 | size | uint32\_t | 数据长度。 |
@@ -163,14 +163,14 @@ int32_t file_write (const char* name, const void* buffer, uint32_t size);
 * 函数原型：
 
 ```
-ret_t fs_dir_exist (fs_t* fs, const char* name);
+bool_t fs_dir_exist (fs_t* fs, const char* name);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回TRUE表示成功，否则表示失败。 |
+| 返回值 | bool\_t | 返回TRUE表示成功，否则表示失败。 |
 | fs | fs\_t* | 文件系统对象，一般赋值为os\_fs()。 |
 | name | const char* | 目录名称。 |
 #### fs\_dir\_rename 函数
@@ -206,14 +206,14 @@ ret_t fs_dir_rename (fs_t* fs, const char* name, const char* new_name);
 * 函数原型：
 
 ```
-ret_t fs_file_exist (fs_t* fs, const char* name);
+bool_t fs_file_exist (fs_t* fs, const char* name);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回TRUE表示成功，否则表示失败。 |
+| 返回值 | bool\_t | 返回TRUE表示成功，否则表示失败。 |
 | fs | fs\_t* | 文件系统对象，一般赋值为os\_fs()。 |
 | name | const char* | 文件名。 |
 #### fs\_file\_rename 函数
@@ -312,14 +312,14 @@ ret_t fs_get_file_size (fs_t* fs, const char* name);
 * 函数原型：
 
 ```
-ret_t fs_open_dir (fs_t* fs, const char* name);
+fs_dir_t fs_open_dir (fs_t* fs, const char* name);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回不是NULL表示成功，否则表示失败。 |
+| 返回值 | fs\_dir\_t | 返回非NULL表示成功，否则表示失败。 |
 | fs | fs\_t* | 文件系统对象，一般赋值为os\_fs()。 |
 | name | const char* | 目录名称。 |
 #### fs\_open\_file 函数
@@ -340,7 +340,7 @@ ret_t fs_open_file (fs_t* fs, const char* name, const char* mode);
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回不是NULL表示成功，否则表示失败。 |
+| 返回值 | ret\_t | 返回非NULL表示成功，否则表示失败。 |
 | fs | fs\_t* | 文件系统对象，一般赋值为os\_fs()。 |
 | name | const char* | 文件名。 |
 | mode | const char* | 打开方式。 |

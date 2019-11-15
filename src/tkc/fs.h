@@ -269,7 +269,7 @@ struct _fs_t {
  * @param {const char*} name 文件名。
  * @param {const char*} mode 打开方式。
  *
- * @return {ret_t} 返回不是NULL表示成功，否则表示失败。
+ * @return {ret_t} 返回非NULL表示成功，否则表示失败。
  */
 fs_file_t* fs_open_file(fs_t* fs, const char* name, const char* mode);
 
@@ -293,7 +293,7 @@ ret_t fs_remove_file(fs_t* fs, const char* name);
  * @param {fs_t*} fs 文件系统对象，一般赋值为os_fs()。
  * @param {const char*} name 文件名。
  *
- * @return {ret_t} 返回TRUE表示成功，否则表示失败。
+ * @return {bool_t} 返回TRUE表示成功，否则表示失败。
  */
 bool_t fs_file_exist(fs_t* fs, const char* name);
 
@@ -318,7 +318,7 @@ bool_t fs_file_rename(fs_t* fs, const char* name, const char* new_name);
  * @param {fs_t*} fs 文件系统对象，一般赋值为os_fs()。
  * @param {const char*} name 目录名称。
  *
- * @return {ret_t} 返回不是NULL表示成功，否则表示失败。
+ * @return {fs_dir_t} 返回非NULL表示成功，否则表示失败。
  */
 fs_dir_t* fs_open_dir(fs_t* fs, const char* name);
 
@@ -342,7 +342,7 @@ ret_t fs_remove_dir(fs_t* fs, const char* name);
  * @param {fs_t*} fs 文件系统对象，一般赋值为os_fs()。
  * @param {const char*} name 目录名称。
  *
- * @return {ret_t} 返回TRUE表示成功，否则表示失败。
+ * @return {bool_t} 返回TRUE表示成功，否则表示失败。
  */
 bool_t fs_dir_exist(fs_t* fs, const char* name);
 
@@ -414,7 +414,7 @@ fs_t* os_fs(void);
  *
  * @param {const char*} name 文件名。
  *
- * @return {ret_t} 返回TRUE表示成功，否则表示失败。
+ * @return {bool_t} 返回TRUE表示成功，否则表示失败。
  */
 bool_t file_exist(const char* name);
 
@@ -475,7 +475,7 @@ int32_t file_read_part(const char* name, void* buff, uint32_t size, uint32_t off
  * @param {const void*} buffer 数据缓冲区。
  * @param {uint32_t} size 数据长度。
  *
- * @return {int32_t} 返回实际写入的字节数。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t file_write(const char* name, const void* buff, uint32_t size);
 
