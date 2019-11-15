@@ -157,7 +157,6 @@ uint32_t ring_buffer_read(ring_buffer_t* ring_buffer, void* buff, uint32_t size)
 uint32_t ring_buffer_peek(ring_buffer_t* ring_buffer, void* buff, uint32_t size);
 
 /**
- *
  * @method ring_buffer_write
  * 写入数据。
  *

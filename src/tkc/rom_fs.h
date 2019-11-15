@@ -30,6 +30,8 @@ BEGIN_C_DECLS
  * @class rom_t
  * @annotation ["fake"]
  * rom_file接口。
+ * 
+ * > 主要用于给google pinyin输入提供兼容的文件系统API。
  *
  * 示例：
  *

@@ -10,7 +10,7 @@
 | -------- | ------------ | 
 | <a href="#rect_t_rect_cast">rect\_cast</a> | 转换为rect对象。 |
 | <a href="#rect_t_rect_create">rect\_create</a> | 创建rect对象。 |
-| <a href="#rect_t_rect_destroy">rect\_destroy</a> |  |
+| <a href="#rect_t_rect_destroy">rect\_destroy</a> | 销毁rect对象。 |
 | <a href="#rect_t_rect_set">rect\_set</a> | 设置rect对象的xywh。 |
 ### 属性
 <p id="rect_t_properties">
@@ -76,8 +76,8 @@ rect_t* rect_create (xy_t x, xy_t y, wh_t w, wh_t h);
 
 * 函数功能：
 
-> <p id="rect_t_rect_destroy">
- 销毁rect对象。
+> <p id="rect_t_rect_destroy"> 销毁rect对象。
+
  > 主要供脚本语言使用。
 
 

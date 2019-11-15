@@ -1,6 +1,8 @@
 ## rom\_t
 ### 概述
  rom_file接口。
+ 
+ > 主要用于给google pinyin输入提供兼容的文件系统API。
 
  示例：
 

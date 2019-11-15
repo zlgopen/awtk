@@ -28,7 +28,6 @@ BEGIN_C_DECLS
 
 /**
  * @class point_t
- * @annotation ["scriptable"]
  * 点。包括一个x坐标和一个y坐标。
  */
 typedef struct _point_t {
@@ -46,8 +45,22 @@ typedef struct _point_t {
   xy_t y;
 } point_t;
 
+/**
+ * @class pointf_t
+ * 点(浮点数)。包括一个x坐标和一个y坐标。
+ */
 typedef struct _pointf_t {
+  /**
+   * @property {float_t} x
+   * @annotation ["readable"]
+   * x坐标。
+   */
   float_t x;
+  /**
+   * @property {float_t} y
+   * @annotation ["readable"]
+   * y坐标。
+   */
   float_t y;
 } pointf_t;
 
@@ -130,8 +143,8 @@ rect_t* rect_cast(rect_t* rect);
 
 /**
  * @method rect_destroy
- *
  * 销毁rect对象。
+ *
  * > 主要供脚本语言使用。
  *
  * @annotation ["deconstructor", "scriptable", "gc"]
@@ -142,7 +155,6 @@ rect_t* rect_cast(rect_t* rect);
 ret_t rect_destroy(rect_t* r);
 
 rect_t* rect_scale(rect_t* r, float_t scale);
-
 rect_t rect_init(xy_t x, xy_t y, wh_t w, wh_t h);
 ret_t rect_merge(rect_t* dst_r, rect_t* r);
 bool_t rect_contains(rect_t* r, xy_t x, xy_t y);

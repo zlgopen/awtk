@@ -1,18 +1,35 @@
 [
   {
-    "params": [],
+    "type": "enum",
+    "desc": " 指示器默认绘制的类型。\n\n",
+    "consts": [
+      {
+        "desc": " 自动选择。\n\n",
+        "name": "INDICATOR_DEFAULT_PAINT_AUTO"
+      },
+      {
+        "desc": " 实心圆点指示器，当前项填充selected_fg_color，其他填充fg_color。\n\n",
+        "name": "INDICATOR_DEFAULT_PAINT_FILL_DOT"
+      },
+      {
+        "desc": " 镂空圆点指示器，当前项填充selected_fg_color，其他镂空fg_color。\n\n",
+        "name": "INDICATOR_DEFAULT_PAINT_STROKE_DOT"
+      },
+      {
+        "desc": " 实心矩形指示器，当前项填充selected_fg_color，其他填充fg_color。\n\n",
+        "name": "INDICATOR_DEFAULT_PAINT_FILL_RECT"
+      },
+      {
+        "desc": " 镂空矩形指示器，当前项填充selected_fg_color，其他镂空fg_color。\n\n",
+        "name": "INDICATOR_DEFAULT_PAINT_STROKE_RECT"
+      }
+    ],
+    "header": "slide_view/slide_indicator.h",
+    "name": "indicator_default_paint_t",
+    "prefix": "INDICATOR_DEFAULT_PAINT_",
     "annotation": {
-      "global": true,
       "scriptable": true
     },
-    "desc": " 初始化AWTK扩展控件。\r\n\r\n",
-    "name": "tk_ext_widgets_init",
-    "return": {
-      "type": "ret_t",
-      "desc": "返回RET_OK表示成功，否则表示失败。"
-    },
-    "type": "method",
-    "header": "ext_widgets/ext_widgets.h",
     "level": 1
   },
   {
@@ -15470,6 +15487,22 @@
     "level": 1
   },
   {
+    "params": [],
+    "annotation": {
+      "global": true,
+      "scriptable": true
+    },
+    "desc": " 初始化AWTK扩展控件。\r\n\r\n",
+    "name": "tk_ext_widgets_init",
+    "return": {
+      "type": "ret_t",
+      "desc": "返回RET_OK表示成功，否则表示失败。"
+    },
+    "type": "method",
+    "header": "ext_widgets/ext_widgets.h",
+    "level": 1
+  },
+  {
     "type": "enum",
     "desc": " 图片绘制方法常量定义。\r\n",
     "consts": [
@@ -15545,39 +15578,6 @@
     "header": "base/bitmap.h",
     "name": "image_draw_type_t",
     "prefix": "IMAGE_DRAW_",
-    "annotation": {
-      "scriptable": true
-    },
-    "level": 1
-  },
-  {
-    "type": "enum",
-    "desc": " 指示器默认绘制的类型。\n\n",
-    "consts": [
-      {
-        "desc": " 自动选择。\n\n",
-        "name": "INDICATOR_DEFAULT_PAINT_AUTO"
-      },
-      {
-        "desc": " 实心圆点指示器，当前项填充selected_fg_color，其他填充fg_color。\n\n",
-        "name": "INDICATOR_DEFAULT_PAINT_FILL_DOT"
-      },
-      {
-        "desc": " 镂空圆点指示器，当前项填充selected_fg_color，其他镂空fg_color。\n\n",
-        "name": "INDICATOR_DEFAULT_PAINT_STROKE_DOT"
-      },
-      {
-        "desc": " 实心矩形指示器，当前项填充selected_fg_color，其他填充fg_color。\n\n",
-        "name": "INDICATOR_DEFAULT_PAINT_FILL_RECT"
-      },
-      {
-        "desc": " 镂空矩形指示器，当前项填充selected_fg_color，其他镂空fg_color。\n\n",
-        "name": "INDICATOR_DEFAULT_PAINT_STROKE_RECT"
-      }
-    ],
-    "header": "slide_view/slide_indicator.h",
-    "name": "indicator_default_paint_t",
-    "prefix": "INDICATOR_DEFAULT_PAINT_",
     "annotation": {
       "scriptable": true
     },
@@ -21371,9 +21371,33 @@
     "header": "tkc/rect.h",
     "desc": " 点。包括一个x坐标和一个y坐标。\r\n",
     "name": "point_t",
-    "annotation": {
-      "scriptable": true
-    },
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [],
+    "events": [],
+    "properties": [
+      {
+        "name": "x",
+        "desc": " x坐标。\r\n",
+        "type": "float_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "y",
+        "desc": " y坐标。\r\n",
+        "type": "float_t",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "tkc/rect.h",
+    "desc": " 点(浮点数)。包括一个x坐标和一个y坐标。\r\n",
+    "name": "pointf_t",
     "level": 1
   },
   {
@@ -21484,7 +21508,7 @@
           "scriptable": true,
           "gc": true
         },
-        "desc": "\r\n 销毁rect对象。\r\n > 主要供脚本语言使用。\r\n\r\n\r\n",
+        "desc": " 销毁rect对象。\r\n\r\n > 主要供脚本语言使用。\r\n\r\n\r\n",
         "name": "rect_destroy",
         "return": {
           "type": "ret_t",
@@ -21716,7 +21740,7 @@
           }
         ],
         "annotation": {},
-        "desc": "\r\n 写入数据。\r\n\r\n\r\n",
+        "desc": " 写入数据。\r\n\r\n\r\n",
         "name": "ring_buffer_write",
         "return": {
           "type": "uint32_t",
@@ -22177,7 +22201,7 @@
     "events": [],
     "properties": [],
     "header": "tkc/rom_fs.h",
-    "desc": " rom_file接口。\n\n 示例：\n\n ```c\n char rbuff[100];\n size_t len = 0;\n const char* buff = \"hello world\";\n rom_file_t* f = rom_fopen_buff((const uint8_t*)buff, sizeof(buff));\n len = rom_fread(rbuff, 2, 1, f);\n rom_fclose(f);\n ```\n\n\n",
+    "desc": " rom_file接口。\n \n > 主要用于给google pinyin输入提供兼容的文件系统API。\n\n 示例：\n\n ```c\n char rbuff[100];\n size_t len = 0;\n const char* buff = \"hello world\";\n rom_file_t* f = rom_fopen_buff((const uint8_t*)buff, sizeof(buff));\n len = rom_fread(rbuff, 2, 1, f);\n rom_fclose(f);\n ```\n\n\n",
     "name": "rom_t",
     "annotation": {
       "fake": true
@@ -26890,255 +26914,6 @@
     "desc": " 滚动控件的动画。\r\n 本动画也可以用widget_animator_prop2实现，但滚动控件需要访问内部数据结构，出于可读性考虑保留独立实现。\r\n",
     "name": "widget_animator_scroll_t",
     "level": 1
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
-        "desc": " 创建progress_bar对象\r\n\r\n",
-        "name": "progress_bar_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "progress_bar对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": " 转换为progress_bar对象(供脚本语言使用)。\r\n\r\n",
-        "name": "progress_bar_cast",
-        "return": {
-          "type": "widget_t*",
-          "desc": "progress_bar对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "float_t",
-            "name": "value",
-            "desc": "进度"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置进度条的进度。\r\n\r\n",
-        "name": "progress_bar_set_value",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "max",
-            "desc": "最大值。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置最大值。\r\n\r\n\r\n",
-        "name": "progress_bar_set_max",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "vertical",
-            "desc": "是否为垂直方向。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置进度条的方向。\r\n\r\n",
-        "name": "progress_bar_set_vertical",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "show_text",
-            "desc": "是否显示文本。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置进度条的是否显示文本。\r\n\r\n",
-        "name": "progress_bar_set_show_text",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 获取进度百分比。\r\n\r\n > 当max为100时，percent和value取整后一致。\r\n\r\n",
-        "name": "progress_bar_get_percent",
-        "return": {
-          "type": "uint32_t",
-          "desc": "返回百分比。"
-        }
-      }
-    ],
-    "events": [
-      {
-        "name": "EVT_VALUE_WILL_CHANGE",
-        "desc": " 值即将改变事件。\r\n",
-        "type": "event_t"
-      },
-      {
-        "name": "EVT_VALUE_CHANGED",
-        "desc": " 值改变事件。\r\n",
-        "type": "event_t"
-      }
-    ],
-    "properties": [
-      {
-        "name": "value",
-        "desc": " 进度条的值[0-100]。\r\n",
-        "type": "float_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "max",
-        "desc": " 最大值(缺省为100)。\r\n",
-        "type": "float_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "vertical",
-        "desc": " 进度条的是否为垂直方向。\r\n",
-        "type": "bool_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "show_text",
-        "desc": " 是否显示文本。\r\n",
-        "type": "bool_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      }
-    ],
-    "header": "widgets/progress_bar.h",
-    "desc": " 进度条控件。\r\n\r\n 进度条控件可以水平显示也可以垂直显示，由vertical属性决定。\r\n\r\n progress\\_bar\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于progress\\_bar\\_t控件。\r\n\r\n 在xml中使用\"progress\\_bar\"标签创建进度条控件。如：\r\n\r\n ```xml\r\n  <progress_bar name=\"bar1\" x=\"10\" y=\"128\" w=\"240\" h=\"30\" value=\"40\"/>\r\n  <progress_bar name=\"bar2\" x=\"280\" y=\"128\" w=\"30\" h=\"118\" value=\"20\" vertical=\"true\"/>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [basic demo](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/basic.xml)\r\n\r\n 在c代码中使用函数progress\\_bar\\_create创建进度条控件。如：\r\n\r\n ```c\r\n  widget_t* progress_bar = progress_bar_create(win, 10, 10, 128, 30);\r\n ```\r\n\r\n > 完整示例请参考：\r\n [progress_bar demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/progress_bar.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n <style>\r\n   <normal bg_color=\"#f0f0f0\" text_color=\"gold\" fg_color=\"#c0c0c0\" border_color=\"#a0a0a0\" />\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L183)\r\n\r\n",
-    "name": "progress_bar_t",
-    "parent": "widget_t",
-    "annotation": {
-      "scriptable": true,
-      "design": true,
-      "widget": true
-    },
-    "level": 2
   },
   {
     "type": "class",
@@ -39345,6 +39120,81 @@
   },
   {
     "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": " 创建view对象\r\n\r\n",
+        "name": "view_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "view对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 转换为view对象(供脚本语言使用)。\r\n\r\n",
+        "name": "view_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "view对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "widgets/view.h",
+    "desc": " 一个通用的容器控件。\r\n\r\n 它本身不提供布局功能，仅提供具有语义的标签，让xml更具有可读性。\r\n 子控件的布局可用layout\\_children属性指定。\r\n 请参考[布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)。\r\n\r\n view\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于view\\_t控件。\r\n\r\n 在xml中使用\"view\"标签创建view。如：\r\n\r\n ```xml\r\n  <view x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" children_layout=\"default(c=2,r=2,m=5,s=5)\">\r\n   </view>\r\n ```\r\n\r\n 可用通过style来设置控件的显示风格，如背景颜色等。如：\r\n\r\n ```xml\r\n <style name=\"default\" border_color=\"#a0a0a0\">\r\n   <normal     bg_color=\"#f0f0f0\" />\r\n </style>\r\n ```\r\n",
+    "name": "view_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true,
+      "design": true,
+      "widget": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
     "methods": [],
     "events": [],
     "properties": [
@@ -40010,81 +39860,6 @@
           "constructor": true,
           "scriptable": true
         },
-        "desc": " 创建view对象\r\n\r\n",
-        "name": "view_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "view对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": " 转换为view对象(供脚本语言使用)。\r\n\r\n",
-        "name": "view_cast",
-        "return": {
-          "type": "widget_t*",
-          "desc": "view对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "widgets/view.h",
-    "desc": " 一个通用的容器控件。\r\n\r\n 它本身不提供布局功能，仅提供具有语义的标签，让xml更具有可读性。\r\n 子控件的布局可用layout\\_children属性指定。\r\n 请参考[布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)。\r\n\r\n view\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于view\\_t控件。\r\n\r\n 在xml中使用\"view\"标签创建view。如：\r\n\r\n ```xml\r\n  <view x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" children_layout=\"default(c=2,r=2,m=5,s=5)\">\r\n   </view>\r\n ```\r\n\r\n 可用通过style来设置控件的显示风格，如背景颜色等。如：\r\n\r\n ```xml\r\n <style name=\"default\" border_color=\"#a0a0a0\">\r\n   <normal     bg_color=\"#f0f0f0\" />\r\n </style>\r\n ```\r\n",
-    "name": "view_t",
-    "parent": "widget_t",
-    "annotation": {
-      "scriptable": true,
-      "design": true,
-      "widget": true
-    },
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
         "desc": " 创建tab_control对象\r\n\r\n",
         "name": "tab_control_create",
         "return": {
@@ -40474,6 +40249,118 @@
       {
         "params": [
           {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": " 创建digit_clock对象\r\n\r\n",
+        "name": "digit_clock_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "digit_clock对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 转换为digit_clock对象(供脚本语言使用)。\r\n\r\n",
+        "name": "digit_clock_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "digit_clock对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "format",
+            "desc": "格式。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置显示格式。\r\n\r\n",
+        "name": "digit_clock_set_format",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "format",
+        "desc": " 显示格式。\r\n\r\n * Y 代表年(完整显示)\r\n * M 代表月(1-12)\r\n * D 代表日(1-31)\r\n * h 代表时(0-23)\r\n * m 代表分(0-59)\r\n * s 代表秒(0-59)\r\n * w 代表星期(0-6)\r\n * W 代表星期的英文缩写(支持翻译)\r\n * YY 代表年(只显示末两位)\r\n * MM 代表月(01-12)\r\n * DD 代表日(01-31)\r\n * hh 代表时(00-23)\r\n * mm 代表分(00-59)\r\n * ss 代表秒(00-59)\r\n * MMM 代表月的英文缩写(支持翻译)\r\n\r\n 如 日期时间为：2018/11/12 9:10:20\r\n * \"Y/D/M\"显示为\"2018/11/12\"\r\n * \"Y-D-M\"显示为\"2018-11-12\"\r\n * \"Y-D-M h:m:s\"显示为\"2018-11-12 9:10:20\"\r\n * \"Y-D-M hh:mm:ss\"显示为\"2018-11-12 09:10:20\"\r\n",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "widgets/digit_clock.h",
+    "desc": " 数字时钟控件。\r\n\r\n digit\\_clock\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于digit\\_clock\\_t控件。\r\n\r\n 在xml中使用\"digit\\_clock\"标签创建数字时钟控件。如：\r\n\r\n ```xml\r\n <digit_clock format=\"YY/MM/DD h:mm:ss\"/>\r\n ```\r\n\r\n > 更多用法请参考：[digit\\_clock.xml](\r\n https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/digit_clock.xml)\r\n\r\n 在c代码中使用函数digit\\_clock\\_create创建数字时钟控件。如：\r\n\r\n ```c\r\n widget_t* tc = digit_clock_create(win, 10, 10, 240, 30);\r\n digit_clock_set_format(tc, \"YY/MM/DD h:mm:ss\");\r\n ```\r\n\r\n > 完整示例请参考：[digit\\_clock demo](\r\n https://github.com/zlgopen/awtk-c-demos/blob/master/demos/digit_clock.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n <style name=\"default\">\r\n   <normal text_color=\"black\" />\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：[theme default](\r\n https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L138)\r\n\r\n",
+    "name": "digit_clock_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true,
+      "design": true,
+      "widget": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
             "type": "ui_binary_writer_t*",
             "name": "writer",
             "desc": "writer对象。"
@@ -40623,118 +40510,6 @@
     "desc": "\r\n 生成XML格式的UI描述数据。\r\n\r\n",
     "name": "ui_xml_writer_t",
     "parent": "ui_builder_t",
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
-        "desc": " 创建digit_clock对象\r\n\r\n",
-        "name": "digit_clock_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "digit_clock对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": " 转换为digit_clock对象(供脚本语言使用)。\r\n\r\n",
-        "name": "digit_clock_cast",
-        "return": {
-          "type": "widget_t*",
-          "desc": "digit_clock对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "format",
-            "desc": "格式。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置显示格式。\r\n\r\n",
-        "name": "digit_clock_set_format",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [
-      {
-        "name": "format",
-        "desc": " 显示格式。\r\n\r\n * Y 代表年(完整显示)\r\n * M 代表月(1-12)\r\n * D 代表日(1-31)\r\n * h 代表时(0-23)\r\n * m 代表分(0-59)\r\n * s 代表秒(0-59)\r\n * w 代表星期(0-6)\r\n * W 代表星期的英文缩写(支持翻译)\r\n * YY 代表年(只显示末两位)\r\n * MM 代表月(01-12)\r\n * DD 代表日(01-31)\r\n * hh 代表时(00-23)\r\n * mm 代表分(00-59)\r\n * ss 代表秒(00-59)\r\n * MMM 代表月的英文缩写(支持翻译)\r\n\r\n 如 日期时间为：2018/11/12 9:10:20\r\n * \"Y/D/M\"显示为\"2018/11/12\"\r\n * \"Y-D-M\"显示为\"2018-11-12\"\r\n * \"Y-D-M h:m:s\"显示为\"2018-11-12 9:10:20\"\r\n * \"Y-D-M hh:mm:ss\"显示为\"2018-11-12 09:10:20\"\r\n",
-        "type": "char*",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      }
-    ],
-    "header": "widgets/digit_clock.h",
-    "desc": " 数字时钟控件。\r\n\r\n digit\\_clock\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于digit\\_clock\\_t控件。\r\n\r\n 在xml中使用\"digit\\_clock\"标签创建数字时钟控件。如：\r\n\r\n ```xml\r\n <digit_clock format=\"YY/MM/DD h:mm:ss\"/>\r\n ```\r\n\r\n > 更多用法请参考：[digit\\_clock.xml](\r\n https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/digit_clock.xml)\r\n\r\n 在c代码中使用函数digit\\_clock\\_create创建数字时钟控件。如：\r\n\r\n ```c\r\n widget_t* tc = digit_clock_create(win, 10, 10, 240, 30);\r\n digit_clock_set_format(tc, \"YY/MM/DD h:mm:ss\");\r\n ```\r\n\r\n > 完整示例请参考：[digit\\_clock demo](\r\n https://github.com/zlgopen/awtk-c-demos/blob/master/demos/digit_clock.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n <style name=\"default\">\r\n   <normal text_color=\"black\" />\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：[theme default](\r\n https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L138)\r\n\r\n",
-    "name": "digit_clock_t",
-    "parent": "widget_t",
-    "annotation": {
-      "scriptable": true,
-      "design": true,
-      "widget": true
-    },
     "level": 2
   },
   {
@@ -41112,6 +40887,255 @@
     "header": "widgets/row.h",
     "desc": " row。一个简单的容器控件，用于水平排列其子控件。\r\n\r\n 它本身不提供布局功能，仅提供具有语义的标签，让xml更具有可读性。\r\n 子控件的布局可用layout\\_children属性指定。\r\n 请参考[布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)。\r\n\r\n row\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于row\\_t控件。\r\n\r\n 在xml中使用\"row\"标签创建row。如：\r\n\r\n ```xml\r\n  <row x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" children_layout=\"default(c=0,r=1)\">\r\n     <button name=\"open:basic\" text=\"Basic\"/>\r\n     <button name=\"open:button\" text=\"Buttons\"/>\r\n     <button name=\"open:edit\" text=\"Edits\"/>\r\n     <button name=\"open:keyboard\" text=\"KeyBoard\"/>\r\n   </row>\r\n ```\r\n\r\n 可用通过style来设置控件的显示风格，如背景颜色等。如：\r\n\r\n ```xml\r\n <style name=\"default\" border_color=\"#a0a0a0\">\r\n   <normal     bg_color=\"#f0f0f0\" />\r\n </style>\r\n ```\r\n",
     "name": "row_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true,
+      "design": true,
+      "widget": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": " 创建progress_bar对象\r\n\r\n",
+        "name": "progress_bar_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "progress_bar对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 转换为progress_bar对象(供脚本语言使用)。\r\n\r\n",
+        "name": "progress_bar_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "progress_bar对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "float_t",
+            "name": "value",
+            "desc": "进度"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置进度条的进度。\r\n\r\n",
+        "name": "progress_bar_set_value",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "max",
+            "desc": "最大值。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置最大值。\r\n\r\n\r\n",
+        "name": "progress_bar_set_max",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "vertical",
+            "desc": "是否为垂直方向。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置进度条的方向。\r\n\r\n",
+        "name": "progress_bar_set_vertical",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "show_text",
+            "desc": "是否显示文本。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置进度条的是否显示文本。\r\n\r\n",
+        "name": "progress_bar_set_show_text",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 获取进度百分比。\r\n\r\n > 当max为100时，percent和value取整后一致。\r\n\r\n",
+        "name": "progress_bar_get_percent",
+        "return": {
+          "type": "uint32_t",
+          "desc": "返回百分比。"
+        }
+      }
+    ],
+    "events": [
+      {
+        "name": "EVT_VALUE_WILL_CHANGE",
+        "desc": " 值即将改变事件。\r\n",
+        "type": "event_t"
+      },
+      {
+        "name": "EVT_VALUE_CHANGED",
+        "desc": " 值改变事件。\r\n",
+        "type": "event_t"
+      }
+    ],
+    "properties": [
+      {
+        "name": "value",
+        "desc": " 进度条的值[0-100]。\r\n",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "max",
+        "desc": " 最大值(缺省为100)。\r\n",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "vertical",
+        "desc": " 进度条的是否为垂直方向。\r\n",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "show_text",
+        "desc": " 是否显示文本。\r\n",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "widgets/progress_bar.h",
+    "desc": " 进度条控件。\r\n\r\n 进度条控件可以水平显示也可以垂直显示，由vertical属性决定。\r\n\r\n progress\\_bar\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于progress\\_bar\\_t控件。\r\n\r\n 在xml中使用\"progress\\_bar\"标签创建进度条控件。如：\r\n\r\n ```xml\r\n  <progress_bar name=\"bar1\" x=\"10\" y=\"128\" w=\"240\" h=\"30\" value=\"40\"/>\r\n  <progress_bar name=\"bar2\" x=\"280\" y=\"128\" w=\"30\" h=\"118\" value=\"20\" vertical=\"true\"/>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [basic demo](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/basic.xml)\r\n\r\n 在c代码中使用函数progress\\_bar\\_create创建进度条控件。如：\r\n\r\n ```c\r\n  widget_t* progress_bar = progress_bar_create(win, 10, 10, 128, 30);\r\n ```\r\n\r\n > 完整示例请参考：\r\n [progress_bar demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/progress_bar.c)\r\n\r\n 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\r\n\r\n ```xml\r\n <style>\r\n   <normal bg_color=\"#f0f0f0\" text_color=\"gold\" fg_color=\"#c0c0c0\" border_color=\"#a0a0a0\" />\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L183)\r\n\r\n",
+    "name": "progress_bar_t",
     "parent": "widget_t",
     "annotation": {
       "scriptable": true,
@@ -42756,164 +42780,6 @@
       {
         "params": [
           {
-            "type": "tk_istream_t*",
-            "name": "stream",
-            "desc": "istream对象。"
-          },
-          {
-            "type": "uint8_t*",
-            "name": "buff",
-            "desc": "返回数据的缓冲区。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "max_size",
-            "desc": "缓冲区的大小。"
-          }
-        ],
-        "annotation": {},
-        "desc": "\r\n 读取数据。\r\n\r\n\r\n\r\n",
-        "name": "tk_istream_read",
-        "return": {
-          "type": "int32_t",
-          "desc": "返回负数表示读取失败，否则返回实际读取数据的长度。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tk_istream_t*",
-            "name": "stream",
-            "desc": "istream对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "offset",
-            "desc": "偏移量。"
-          }
-        ],
-        "annotation": {},
-        "desc": "\r\n 设置偏移量。\r\n\r\n\r\n\r\n",
-        "name": "tk_istream_seek",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tk_istream_t*",
-            "name": "stream",
-            "desc": "istream对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "timeout_ms",
-            "desc": "超时时间。"
-          }
-        ],
-        "annotation": {},
-        "desc": "\r\n 等待数据。\r\n\r\n\r\n\r\n",
-        "name": "tk_istream_wait_for_data",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tk_istream_t*",
-            "name": "stream",
-            "desc": "istream对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "\r\n 刷新数据。\r\n\r\n\r\n\r\n",
-        "name": "tk_istream_flush",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tk_istream_t*",
-            "name": "stream",
-            "desc": "istream对象。"
-          },
-          {
-            "type": "uint8_t*",
-            "name": "buff",
-            "desc": "返回数据的缓冲区。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "max_size",
-            "desc": "缓冲区的大小。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "timeout_ms",
-            "desc": "timeout."
-          }
-        ],
-        "annotation": {},
-        "desc": "\r\n 读取指定长度的数据。\r\n\r\n\r\n\r\n",
-        "name": "tk_istream_read_len",
-        "return": {
-          "type": "int32_t",
-          "desc": "返回负数表示读取失败，否则返回实际读取数据的长度。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tk_istream_t*",
-            "name": "stream",
-            "desc": "istream对象。"
-          },
-          {
-            "type": "uint8_t*",
-            "name": "buff",
-            "desc": "返回数据的缓冲区。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "max_size",
-            "desc": "缓冲区的大小。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "timeout_ms",
-            "desc": "timeout."
-          }
-        ],
-        "annotation": {},
-        "desc": "\r\n 读取一行数据。\r\n\r\n\r\n\r\n",
-        "name": "tk_istream_read_line",
-        "return": {
-          "type": "int32_t",
-          "desc": "返回负数表示读取失败，否则返回实际读取数据的长度。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "tkc/istream.h",
-    "desc": "\r\n input stream interface\r\n\r\n",
-    "name": "tk_istream_t",
-    "parent": "object_t",
-    "level": 3
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
             "type": "widget_t*",
             "name": "parent",
             "desc": "父控件"
@@ -43557,117 +43423,6 @@
     "type": "class",
     "methods": [
       {
-        "params": [
-          {
-            "type": "timer_info_t*",
-            "name": "timer",
-            "desc": "timer_info对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": " 转换为timer_info对象(供脚本语言使用)。\r\n\r\n",
-        "name": "timer_info_cast",
-        "return": {
-          "type": "timer_info_t*",
-          "desc": "timer_info对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [
-      {
-        "name": "on_timer",
-        "desc": " 定时器回调函数。\r\n",
-        "type": "timer_func_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "ctx",
-        "desc": " 定时器回调函数的上下文\r\n\r\n",
-        "type": "void*",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "id",
-        "desc": " 定时器的ID\r\n\r\n > 为TK\\_INVALID\\_ID时表示无效定时器。\r\n",
-        "type": "uint32_t",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "now",
-        "desc": " 当前时间(相对时间，单位为毫秒)。\r\n\r\n",
-        "type": "uint64_t",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "start",
-        "desc": " 起始时间(相对时间，单位为毫秒)。\r\n\r\n",
-        "type": "uint64_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "duration",
-        "desc": " 时间间隔(单位为毫秒)。\r\n\r\n",
-        "type": "uint32_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "on_destroy",
-        "desc": " 定时器销毁时的回调函数。\r\n",
-        "type": "tk_destroy_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "on_destroy_ctx",
-        "desc": " 定时器销毁时的回调函数上下文。\r\n",
-        "type": "void*",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "user_changed_time",
-        "desc": " 用户是否修改了系统时间。\r\n",
-        "type": "bool_t",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      }
-    ],
-    "header": "tkc/timer_info.h",
-    "desc": " 单个定时器的信息。\r\n\r\n",
-    "name": "timer_info_t",
-    "parent": "object_t",
-    "annotation": {
-      "scriptable": true
-    },
-    "level": 3
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
         "params": [],
         "annotation": {
           "constructor": true,
@@ -43769,6 +43524,117 @@
     "header": "tkc/object_array.h",
     "desc": "\r\n 简单的动态数组，内部存放value对象。\r\n\r\n 访问时属性名称为：\r\n\r\n * \"size\"/\"length\" 用于获取数组的长度。\r\n * index 用于访问属性，-1可以用来追加新元素。\r\n\r\n",
     "name": "object_array_t",
+    "parent": "object_t",
+    "annotation": {
+      "scriptable": true
+    },
+    "level": 3
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "timer_info_t*",
+            "name": "timer",
+            "desc": "timer_info对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 转换为timer_info对象(供脚本语言使用)。\r\n\r\n",
+        "name": "timer_info_cast",
+        "return": {
+          "type": "timer_info_t*",
+          "desc": "timer_info对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "on_timer",
+        "desc": " 定时器回调函数。\r\n",
+        "type": "timer_func_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "ctx",
+        "desc": " 定时器回调函数的上下文\r\n\r\n",
+        "type": "void*",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "id",
+        "desc": " 定时器的ID\r\n\r\n > 为TK\\_INVALID\\_ID时表示无效定时器。\r\n",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "now",
+        "desc": " 当前时间(相对时间，单位为毫秒)。\r\n\r\n",
+        "type": "uint64_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "start",
+        "desc": " 起始时间(相对时间，单位为毫秒)。\r\n\r\n",
+        "type": "uint64_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "duration",
+        "desc": " 时间间隔(单位为毫秒)。\r\n\r\n",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "on_destroy",
+        "desc": " 定时器销毁时的回调函数。\r\n",
+        "type": "tk_destroy_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "on_destroy_ctx",
+        "desc": " 定时器销毁时的回调函数上下文。\r\n",
+        "type": "void*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "user_changed_time",
+        "desc": " 用户是否修改了系统时间。\r\n",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "tkc/timer_info.h",
+    "desc": " 单个定时器的信息。\r\n\r\n",
+    "name": "timer_info_t",
     "parent": "object_t",
     "annotation": {
       "scriptable": true
@@ -44656,6 +44522,164 @@
     "header": "tkc/iostream.h",
     "desc": "\r\n input/output stream interface\r\n\r\n",
     "name": "tk_iostream_t",
+    "parent": "object_t",
+    "level": 3
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "tk_istream_t*",
+            "name": "stream",
+            "desc": "istream对象。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "buff",
+            "desc": "返回数据的缓冲区。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "max_size",
+            "desc": "缓冲区的大小。"
+          }
+        ],
+        "annotation": {},
+        "desc": "\r\n 读取数据。\r\n\r\n\r\n\r\n",
+        "name": "tk_istream_read",
+        "return": {
+          "type": "int32_t",
+          "desc": "返回负数表示读取失败，否则返回实际读取数据的长度。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_istream_t*",
+            "name": "stream",
+            "desc": "istream对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "offset",
+            "desc": "偏移量。"
+          }
+        ],
+        "annotation": {},
+        "desc": "\r\n 设置偏移量。\r\n\r\n\r\n\r\n",
+        "name": "tk_istream_seek",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_istream_t*",
+            "name": "stream",
+            "desc": "istream对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "timeout_ms",
+            "desc": "超时时间。"
+          }
+        ],
+        "annotation": {},
+        "desc": "\r\n 等待数据。\r\n\r\n\r\n\r\n",
+        "name": "tk_istream_wait_for_data",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_istream_t*",
+            "name": "stream",
+            "desc": "istream对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "\r\n 刷新数据。\r\n\r\n\r\n\r\n",
+        "name": "tk_istream_flush",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_istream_t*",
+            "name": "stream",
+            "desc": "istream对象。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "buff",
+            "desc": "返回数据的缓冲区。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "max_size",
+            "desc": "缓冲区的大小。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "timeout_ms",
+            "desc": "timeout."
+          }
+        ],
+        "annotation": {},
+        "desc": "\r\n 读取指定长度的数据。\r\n\r\n\r\n\r\n",
+        "name": "tk_istream_read_len",
+        "return": {
+          "type": "int32_t",
+          "desc": "返回负数表示读取失败，否则返回实际读取数据的长度。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_istream_t*",
+            "name": "stream",
+            "desc": "istream对象。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "buff",
+            "desc": "返回数据的缓冲区。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "max_size",
+            "desc": "缓冲区的大小。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "timeout_ms",
+            "desc": "timeout."
+          }
+        ],
+        "annotation": {},
+        "desc": "\r\n 读取一行数据。\r\n\r\n\r\n\r\n",
+        "name": "tk_istream_read_line",
+        "return": {
+          "type": "int32_t",
+          "desc": "返回负数表示读取失败，否则返回实际读取数据的长度。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "tkc/istream.h",
+    "desc": "\r\n input stream interface\r\n\r\n",
+    "name": "tk_istream_t",
     "parent": "object_t",
     "level": 3
   },

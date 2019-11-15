@@ -25,7 +25,7 @@
 | <a href="#ring_buffer_t_ring_buffer_set_write_cursor_delta">ring\_buffer\_set\_write\_cursor\_delta</a> | 设置写入光标的位置(delta)。 |
 | <a href="#ring_buffer_t_ring_buffer_size">ring\_buffer\_size</a> | 获取数据长度。 |
 | <a href="#ring_buffer_t_ring_buffer_skip">ring\_buffer\_skip</a> | 跳过指定长度数据，要么成功要么失败。 |
-| <a href="#ring_buffer_t_ring_buffer_write">ring\_buffer\_write</a> |  |
+| <a href="#ring_buffer_t_ring_buffer_write">ring\_buffer\_write</a> | 写入数据。 |
 | <a href="#ring_buffer_t_ring_buffer_write_len">ring\_buffer\_write\_len</a> | 写入指定长度数据，要么成功要么失败。 |
 ### 属性
 <p id="ring_buffer_t_properties">
@@ -430,8 +430,7 @@ ret_t ring_buffer_skip (ring_buffer_t* ring_buffer, uint32_t size);
 
 * 函数功能：
 
-> <p id="ring_buffer_t_ring_buffer_write">
- 写入数据。
+> <p id="ring_buffer_t_ring_buffer_write"> 写入数据。
 
 
 
