@@ -139,9 +139,28 @@ ret_t fs_file_close(fs_file_t* file);
  */
 bool_t fs_file_eof(fs_file_t* file);
 
+/**
+ * @class fs_item_t
+ * 代表目录或文件。
+ */
 typedef struct _fs_item_t {
+  /**
+   * @property {bool_t} is_dir
+   * @annotation ["readable"]
+   * 是否是目录。
+   */
   uint32_t is_dir : 1;
+  /**
+   * @property {bool_t} is_file
+   * @annotation ["readable"]
+   * 是否是文件。
+   */
   uint32_t is_file : 1;
+  /**
+   * @property {char*} name
+   * @annotation ["readable"]
+   * 名称。
+   */
   char name[MAX_PATH + 1];
 } fs_item_t;
 

@@ -298,6 +298,7 @@
 * [fs](manual/fs_t.md) 文件系统
 * [fs\_dir](manual/fs_dir_t.md) 目录
 * [fs\_file](manual/fs_file_t.md) 文件
+* [fs\_item](manual/fs_item_t.md) 目录或目录。
 * [path](manual/path_t.md) 路径相关的工具函数。
 * [memory](manual/tk_mem_t.md) 内存管理相关函数和宏。
 * [date\_time](manual/date_time_t.md) 时间日期函数。
