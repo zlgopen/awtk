@@ -30,7 +30,6 @@
  * MIME_TYPE。
  */
 
-
 /**
  * @const MIME_TYPE_APPLICATION_ENVOY
  * "application/envoy"。

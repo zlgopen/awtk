@@ -94,7 +94,7 @@ PointerAlignment: Left
 RawStringFormats: 
   - Language:        TextProto
     BasedOnStyle:    google
-ReflowComments:  true
+ReflowComments: false
 SortIncludes:   false 
 SortUsingDeclarations: true
 SpaceAfterCStyleCast: false
