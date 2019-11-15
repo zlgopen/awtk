@@ -271,7 +271,7 @@
 * [ring\_buffer](manual/ring_buffer_t.md) 循环缓存区。
 * [rom\_fs](manual/rom_fs_t.md) rom_file接口
 * [slist](manual/slist_t.md) 单向链表
-* [socket\_pair](manual/socket_pair_t.md) 没有对应的 MD 文档
+* [socket\_pair](manual/socketpair_t.md) 没有对应的 MD 文档
 * [thread](manual/tk_thread_t.md) 线程对象。
 * [time\_now](manual/time_now_t.md) 获取当前时间的函数。
 * [timer\_info](manual/timer_info_t.md) 单个定时器的信息。

@@ -22555,6 +22555,36 @@
       {
         "params": [
           {
+            "type": "int*",
+            "name": "socks",
+            "desc": "由于返回生成的socket句柄。"
+          }
+        ],
+        "annotation": {},
+        "desc": " 生成两个socket句柄。两者可以模拟客户端和服务器通信。\r\n\r\n\r\n",
+        "name": "tk_socketpair",
+        "return": {
+          "type": "int",
+          "desc": "小于0表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "tkc/socket_pair.h",
+    "desc": " socketpair\r\n",
+    "name": "socketpair_t",
+    "annotation": {
+      "fake": true
+    },
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
             "type": "const str_str_t*",
             "name": "items",
             "desc": "str_str_t数组。"
@@ -26860,81 +26890,6 @@
     "desc": " 滚动控件的动画。\r\n 本动画也可以用widget_animator_prop2实现，但滚动控件需要访问内部数据结构，出于可读性考虑保留独立实现。\r\n",
     "name": "widget_animator_scroll_t",
     "level": 1
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
-        "desc": " 创建row对象\r\n\r\n",
-        "name": "row_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "row对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": " 转换为row对象(供脚本语言使用)。\r\n\r\n",
-        "name": "row_cast",
-        "return": {
-          "type": "widget_t*",
-          "desc": "row对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "widgets/row.h",
-    "desc": " row。一个简单的容器控件，用于水平排列其子控件。\r\n\r\n 它本身不提供布局功能，仅提供具有语义的标签，让xml更具有可读性。\r\n 子控件的布局可用layout\\_children属性指定。\r\n 请参考[布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)。\r\n\r\n row\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于row\\_t控件。\r\n\r\n 在xml中使用\"row\"标签创建row。如：\r\n\r\n ```xml\r\n  <row x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" children_layout=\"default(c=0,r=1)\">\r\n     <button name=\"open:basic\" text=\"Basic\"/>\r\n     <button name=\"open:button\" text=\"Buttons\"/>\r\n     <button name=\"open:edit\" text=\"Edits\"/>\r\n     <button name=\"open:keyboard\" text=\"KeyBoard\"/>\r\n   </row>\r\n ```\r\n\r\n 可用通过style来设置控件的显示风格，如背景颜色等。如：\r\n\r\n ```xml\r\n <style name=\"default\" border_color=\"#a0a0a0\">\r\n   <normal     bg_color=\"#f0f0f0\" />\r\n </style>\r\n ```\r\n",
-    "name": "row_t",
-    "parent": "widget_t",
-    "annotation": {
-      "scriptable": true,
-      "design": true,
-      "widget": true
-    },
-    "level": 2
   },
   {
     "type": "class",
@@ -38509,6 +38464,33 @@
     "type": "class",
     "methods": [
       {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "\r\n 创建空输入法对象。\r\n\r\n\r\n",
+        "name": "input_method_null_create",
+        "return": {
+          "type": "input_method_t*",
+          "desc": "返回输入法对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "input_methods/input_method_null.h",
+    "desc": "\r\n 空输入法实现。\r\n\r\n 在不需要输入法的嵌入式平台使用空的输入法。\r\n\r\n\r\n",
+    "name": "input_method_null_t",
+    "parent": "input_method_t",
+    "annotation": {
+      "fake": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
         "params": [
           {
             "type": "widget_t*",
@@ -38893,43 +38875,6 @@
         "annotation": {
           "constructor": true
         },
-        "desc": "\r\n 创建SDL输入法对象。\r\n\r\n\r\n",
-        "name": "input_method_sdl_create",
-        "return": {
-          "type": "input_method_t*",
-          "desc": "返回输入法对象。"
-        }
-      },
-      {
-        "params": [],
-        "annotation": {},
-        "desc": " 注册内置的子控件布局算法。\r\n\r\n",
-        "name": "children_layouter_register_builtins",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "input_methods/input_method_sdl.h",
-    "desc": "\r\n SDL输入法实现。\r\n\r\n SDL输入法使用平台自身的输入法引擎，一般在桌面Linux、MacOS、Windows、Android和iOS上使用。\r\n\r\n\r\n",
-    "name": "input_method_sdl_t",
-    "parent": "input_method_t",
-    "annotation": {
-      "fake": true
-    },
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [],
-        "annotation": {
-          "constructor": true
-        },
         "desc": "\r\n 创建子控件布局对象。\r\n\r\n\r\n",
         "name": "children_layouter_default_create",
         "return": {
@@ -39077,6 +39022,325 @@
     "desc": "\r\n 单色LCD。\r\n\r\n lcd\\_mono是一个特殊的Framebuffer，它用一个比特来表示一个pixel。\r\n\r\n lcd\\_mono只是负责硬件无关的逻辑处理，调用者需要在创建时提供一个flush回调函数，\r\n 在flush函数中把脏矩形中的数据刷新到硬件中。\r\n\r\n",
     "name": "lcd_mono_t",
     "parent": "lcd_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image对象。"
+          },
+          {
+            "type": "char*",
+            "name": "name",
+            "desc": "图片名称，该图片必须存在于资源管理器。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置控件的图片名称。\r\n\r\n> 如果需要显示文件系统中的图片，只需将图片名称换成实际的文件名，并加上\"file://\"前缀即可。\r\n\r\n\r\n",
+        "name": "image_base_set_image",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "float_t",
+            "name": "rotation",
+            "desc": "旋转角度(幅度)。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置控件的旋转角度(仅在WITH_VGCANVAS定义时生效)。\r\n\r\n",
+        "name": "image_base_set_rotation",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "float_t",
+            "name": "scale_x",
+            "desc": "X方向缩放比例。"
+          },
+          {
+            "type": "float_t",
+            "name": "scale_y",
+            "desc": "Y方向缩放比例。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置控件的缩放比例(仅在WITH_VGCANVAS定义时生效)。\r\n\r\n",
+        "name": "image_base_set_scale",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "float_t",
+            "name": "anchor_x",
+            "desc": "锚点X(0-1)。0在控件左边，0.5在控件中间，1在控件右边。"
+          },
+          {
+            "type": "float_t",
+            "name": "anchor_y",
+            "desc": "锚点Y(0-1)。0在控件顶部，0.5在控件中间，1在控件底部。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置控件的锚点(仅在WITH_VGCANVAS定义时生效)。\r\n\r\n",
+        "name": "image_base_set_anchor",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "selected",
+            "desc": "是否被选中。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置控件的选中状态。\r\n\r\n",
+        "name": "image_base_set_selected",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "selectable",
+            "desc": "是否可以被选中。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置控件是否可以被选中。\r\n\r\n",
+        "name": "image_base_set_selectable",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "clickable",
+            "desc": "是否可以被点击。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置控件是否可以被点击。\r\n\r\n",
+        "name": "image_base_set_clickable",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_base对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 转换为image_base对象(供脚本语言使用)。\r\n\r\n",
+        "name": "image_base_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "image_base对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "image",
+        "desc": " 图片的名称。\r\n",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "anchor_x",
+        "desc": " 锚点X(0-1)。0在控件左边，0.5在控件中间，1在控件右边。\r\n",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "anchor_y",
+        "desc": " 锚点Y(0-1)。0在控件顶部，0.5在控件中间，1在控件底部。\r\n",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "scale_x",
+        "desc": " 控件在X方向上的缩放比例。\r\n",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "scale_y",
+        "desc": " 控件在Y方向上的缩放比例。\r\n",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "rotation",
+        "desc": " 控件的旋转角度(幅度)。\r\n",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "clickable",
+        "desc": " 点击时，是否触发EVT_CLICK事件。\r\n",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "selectable",
+        "desc": " 是否设置选中状态。\r\n",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "selected",
+        "desc": " 当前是否被选中。\r\n",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "base/image_base.h",
+    "desc": " 图片控件基类。\r\n\r\n 本类把图片相关控件的公共行为进行抽象，放到一起方便重用。目前已知的具体实现如下图：\r\n\r\n ```graphviz\r\n   [default_style]\r\n\r\n   image_t -> image_base_t[arrowhead = \"empty\"]\r\n   svg_image_t -> image_base_t[arrowhead = \"empty\"]\r\n   gif_image_t -> image_base_t[arrowhead = \"empty\"]\r\n ```\r\n\r\n > 本类是一个抽象类，不能进行实例化。请在应用程序中使用具体的类，如image\\_t。\r\n\r\n 如果需要显示文件系统中的图片，只需将图片名称换成实际的文件名，并加上\"file://\"前缀即可。如：\r\n\r\n```\r\n  <image draw_type=\"center\" image=\"file://./demos/assets/default/raw/images/xx/flag_CN.png\" />\r\n  <gif image=\"file://./demos/assets/default/raw/images/x2/bee.gif\" />\r\n  <svg image=\"file://./demos/assets/default/raw/images/svg/china.bsvg\" />\r\n ```\r\n",
+    "name": "image_base_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true
+    },
     "level": 2
   },
   {
@@ -39718,325 +39982,6 @@
         "params": [
           {
             "type": "widget_t*",
-            "name": "widget",
-            "desc": "image对象。"
-          },
-          {
-            "type": "char*",
-            "name": "name",
-            "desc": "图片名称，该图片必须存在于资源管理器。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置控件的图片名称。\r\n\r\n> 如果需要显示文件系统中的图片，只需将图片名称换成实际的文件名，并加上\"file://\"前缀即可。\r\n\r\n\r\n",
-        "name": "image_base_set_image",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "float_t",
-            "name": "rotation",
-            "desc": "旋转角度(幅度)。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置控件的旋转角度(仅在WITH_VGCANVAS定义时生效)。\r\n\r\n",
-        "name": "image_base_set_rotation",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "float_t",
-            "name": "scale_x",
-            "desc": "X方向缩放比例。"
-          },
-          {
-            "type": "float_t",
-            "name": "scale_y",
-            "desc": "Y方向缩放比例。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置控件的缩放比例(仅在WITH_VGCANVAS定义时生效)。\r\n\r\n",
-        "name": "image_base_set_scale",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "float_t",
-            "name": "anchor_x",
-            "desc": "锚点X(0-1)。0在控件左边，0.5在控件中间，1在控件右边。"
-          },
-          {
-            "type": "float_t",
-            "name": "anchor_y",
-            "desc": "锚点Y(0-1)。0在控件顶部，0.5在控件中间，1在控件底部。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置控件的锚点(仅在WITH_VGCANVAS定义时生效)。\r\n\r\n",
-        "name": "image_base_set_anchor",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "selected",
-            "desc": "是否被选中。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置控件的选中状态。\r\n\r\n",
-        "name": "image_base_set_selected",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "selectable",
-            "desc": "是否可以被选中。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置控件是否可以被选中。\r\n\r\n",
-        "name": "image_base_set_selectable",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "clickable",
-            "desc": "是否可以被点击。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置控件是否可以被点击。\r\n\r\n",
-        "name": "image_base_set_clickable",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "image_base对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": " 转换为image_base对象(供脚本语言使用)。\r\n\r\n",
-        "name": "image_base_cast",
-        "return": {
-          "type": "widget_t*",
-          "desc": "image_base对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [
-      {
-        "name": "image",
-        "desc": " 图片的名称。\r\n",
-        "type": "char*",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "anchor_x",
-        "desc": " 锚点X(0-1)。0在控件左边，0.5在控件中间，1在控件右边。\r\n",
-        "type": "float_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "anchor_y",
-        "desc": " 锚点Y(0-1)。0在控件顶部，0.5在控件中间，1在控件底部。\r\n",
-        "type": "float_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "scale_x",
-        "desc": " 控件在X方向上的缩放比例。\r\n",
-        "type": "float_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "scale_y",
-        "desc": " 控件在Y方向上的缩放比例。\r\n",
-        "type": "float_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "rotation",
-        "desc": " 控件的旋转角度(幅度)。\r\n",
-        "type": "float_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "clickable",
-        "desc": " 点击时，是否触发EVT_CLICK事件。\r\n",
-        "type": "bool_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "selectable",
-        "desc": " 是否设置选中状态。\r\n",
-        "type": "bool_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "selected",
-        "desc": " 当前是否被选中。\r\n",
-        "type": "bool_t",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      }
-    ],
-    "header": "base/image_base.h",
-    "desc": " 图片控件基类。\r\n\r\n 本类把图片相关控件的公共行为进行抽象，放到一起方便重用。目前已知的具体实现如下图：\r\n\r\n ```graphviz\r\n   [default_style]\r\n\r\n   image_t -> image_base_t[arrowhead = \"empty\"]\r\n   svg_image_t -> image_base_t[arrowhead = \"empty\"]\r\n   gif_image_t -> image_base_t[arrowhead = \"empty\"]\r\n ```\r\n\r\n > 本类是一个抽象类，不能进行实例化。请在应用程序中使用具体的类，如image\\_t。\r\n\r\n 如果需要显示文件系统中的图片，只需将图片名称换成实际的文件名，并加上\"file://\"前缀即可。如：\r\n\r\n```\r\n  <image draw_type=\"center\" image=\"file://./demos/assets/default/raw/images/xx/flag_CN.png\" />\r\n  <gif image=\"file://./demos/assets/default/raw/images/x2/bee.gif\" />\r\n  <svg image=\"file://./demos/assets/default/raw/images/svg/china.bsvg\" />\r\n ```\r\n",
-    "name": "image_base_t",
-    "parent": "widget_t",
-    "annotation": {
-      "scriptable": true
-    },
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
             "name": "parent",
             "desc": "父控件"
           },
@@ -40381,6 +40326,154 @@
       {
         "params": [
           {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": " 创建tab_button_group对象\r\n\r\n",
+        "name": "tab_button_group_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "compact",
+            "desc": "是否使用紧凑布局(缺省FALSE)。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置compact。\r\n\r\n",
+        "name": "tab_button_group_set_compact",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "scrollable",
+            "desc": "是否允许滚动(缺省FALSE)。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": " 设置scrollable。\r\n\r\n",
+        "name": "tab_button_group_set_scrollable",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "tab_button_group对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 转换tab_button_group对象(供脚本语言使用)。\r\n\r\n",
+        "name": "tab_button_group_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "tab_button_group对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "compact",
+        "desc": " 紧凑型排版子控件(缺省FALSE)。\r\n",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "scrollable",
+        "desc": " 是否支持滚动(缺省FALSE)。\r\n\r\n > 紧凑型排版子控件时才支持滚动。\r\n",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "widgets/tab_button_group.h",
+    "desc": " 标签按钮分组控件。\r\n\r\n 一个简单的容器，主要用于对标签按钮进行布局和管理。\r\n\r\n tab\\_button\\_group\\_t是[widget\\_t](widget_t.md)的子类控件，\r\n widget\\_t的函数均适用于tab\\_button\\_group\\_t控件。\r\n\r\n 在xml中使用\"tab\\_button\\_group\"标签创建标签按钮分组控件。如：\r\n\r\n ```xml\r\n   <tab_button_group x=\"c\" y=\"bottom:10\" w=\"90%\" h=\"30\" compact=\"true\" >\r\n     <tab_button text=\"General\"/>\r\n     <tab_button text=\"Network\" value=\"true\" />\r\n     <tab_button text=\"Security\"/>\r\n   </tab_button_group>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [tab control](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/)\r\n\r\n 可用通过style来设置控件的显示风格，如颜色等等。如：\r\n\r\n ```xml\r\n <tab_button_group>\r\n  <style name=\"default\">\r\n   <normal/>\r\n  </style>\r\n </tab_button_group>\r\n ```\r\n\r\n",
+    "name": "tab_button_group_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true,
+      "design": true,
+      "widget": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
             "type": "ui_binary_writer_t*",
             "name": "writer",
             "desc": "writer对象。"
@@ -40530,154 +40623,6 @@
     "desc": "\r\n 生成XML格式的UI描述数据。\r\n\r\n",
     "name": "ui_xml_writer_t",
     "parent": "ui_builder_t",
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
-        "desc": " 创建tab_button_group对象\r\n\r\n",
-        "name": "tab_button_group_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "compact",
-            "desc": "是否使用紧凑布局(缺省FALSE)。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置compact。\r\n\r\n",
-        "name": "tab_button_group_set_compact",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "scrollable",
-            "desc": "是否允许滚动(缺省FALSE)。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": " 设置scrollable。\r\n\r\n",
-        "name": "tab_button_group_set_scrollable",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "tab_button_group对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": " 转换tab_button_group对象(供脚本语言使用)。\r\n\r\n",
-        "name": "tab_button_group_cast",
-        "return": {
-          "type": "widget_t*",
-          "desc": "tab_button_group对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [
-      {
-        "name": "compact",
-        "desc": " 紧凑型排版子控件(缺省FALSE)。\r\n",
-        "type": "bool_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "scrollable",
-        "desc": " 是否支持滚动(缺省FALSE)。\r\n\r\n > 紧凑型排版子控件时才支持滚动。\r\n",
-        "type": "bool_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      }
-    ],
-    "header": "widgets/tab_button_group.h",
-    "desc": " 标签按钮分组控件。\r\n\r\n 一个简单的容器，主要用于对标签按钮进行布局和管理。\r\n\r\n tab\\_button\\_group\\_t是[widget\\_t](widget_t.md)的子类控件，\r\n widget\\_t的函数均适用于tab\\_button\\_group\\_t控件。\r\n\r\n 在xml中使用\"tab\\_button\\_group\"标签创建标签按钮分组控件。如：\r\n\r\n ```xml\r\n   <tab_button_group x=\"c\" y=\"bottom:10\" w=\"90%\" h=\"30\" compact=\"true\" >\r\n     <tab_button text=\"General\"/>\r\n     <tab_button text=\"Network\" value=\"true\" />\r\n     <tab_button text=\"Security\"/>\r\n   </tab_button_group>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [tab control](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/)\r\n\r\n 可用通过style来设置控件的显示风格，如颜色等等。如：\r\n\r\n ```xml\r\n <tab_button_group>\r\n  <style name=\"default\">\r\n   <normal/>\r\n  </style>\r\n </tab_button_group>\r\n ```\r\n\r\n",
-    "name": "tab_button_group_t",
-    "parent": "widget_t",
-    "annotation": {
-      "scriptable": true,
-      "design": true,
-      "widget": true
-    },
     "level": 2
   },
   {
@@ -41092,6 +41037,81 @@
     "header": "widgets/slider.h",
     "desc": " 滑块控件。\r\n\r\n slider\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于slider\\_t控件。\r\n\r\n 在xml中使用\"slider\"标签创建滑块控件。如：\r\n\r\n ```xml\r\n <slider x=\"center\" y=\"10\" w=\"80%\" h=\"20\" value=\"10\"/>\r\n <slider style=\"img\" x=\"center\" y=\"50\" w=\"80%\" h=\"30\" value=\"20\" />\r\n <slider style=\"img\" x=\"center\" y=\"90\" w=\"80%\" h=\"30\" value=\"30\" min=\"5\" max=\"50\" step=\"5\"/>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [basic](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/basic.xml)\r\n\r\n 在c代码中使用函数slider\\_create创建滑块控件。如：\r\n\r\n ```c\r\n  widget_t* slider = slider_create(win, 10, 10, 200, 30);\r\n  widget_on(slider, EVT_VALUE_CHANGED, on_changed, NULL);\r\n  widget_on(slider, EVT_VALUE_CHANGING, on_changing, NULL);\r\n ```\r\n\r\n > 完整示例请参考：\r\n [slider demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/slider.c)\r\n\r\n 可用通过style来设置控件的显示风格，如图片和颜色等等。如：\r\n\r\n ```xml\r\n <style name=\"img\" bg_image=\"slider_bg\" fg_image=\"slider_fg\">\r\n  <normal icon=\"slider_drag\"/>\r\n  <pressed icon=\"slider_drag_p\"/>\r\n  <over icon=\"slider_drag_o\"/>\r\n </style>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L179)\r\n\r\n",
     "name": "slider_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true,
+      "design": true,
+      "widget": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": " 创建row对象\r\n\r\n",
+        "name": "row_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "row对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 转换为row对象(供脚本语言使用)。\r\n\r\n",
+        "name": "row_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "row对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "widgets/row.h",
+    "desc": " row。一个简单的容器控件，用于水平排列其子控件。\r\n\r\n 它本身不提供布局功能，仅提供具有语义的标签，让xml更具有可读性。\r\n 子控件的布局可用layout\\_children属性指定。\r\n 请参考[布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)。\r\n\r\n row\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于row\\_t控件。\r\n\r\n 在xml中使用\"row\"标签创建row。如：\r\n\r\n ```xml\r\n  <row x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" children_layout=\"default(c=0,r=1)\">\r\n     <button name=\"open:basic\" text=\"Basic\"/>\r\n     <button name=\"open:button\" text=\"Buttons\"/>\r\n     <button name=\"open:edit\" text=\"Edits\"/>\r\n     <button name=\"open:keyboard\" text=\"KeyBoard\"/>\r\n   </row>\r\n ```\r\n\r\n 可用通过style来设置控件的显示风格，如背景颜色等。如：\r\n\r\n ```xml\r\n <style name=\"default\" border_color=\"#a0a0a0\">\r\n   <normal     bg_color=\"#f0f0f0\" />\r\n </style>\r\n ```\r\n",
+    "name": "row_t",
     "parent": "widget_t",
     "annotation": {
       "scriptable": true,
@@ -42701,68 +42721,34 @@
         "annotation": {
           "constructor": true
         },
-        "desc": "\r\n 创建空输入法对象。\r\n\r\n\r\n",
-        "name": "input_method_null_create",
+        "desc": "\r\n 创建SDL输入法对象。\r\n\r\n\r\n",
+        "name": "input_method_sdl_create",
         "return": {
           "type": "input_method_t*",
           "desc": "返回输入法对象。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {},
+        "desc": " 注册内置的子控件布局算法。\r\n\r\n",
+        "name": "children_layouter_register_builtins",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "input_methods/input_method_null.h",
-    "desc": "\r\n 空输入法实现。\r\n\r\n 在不需要输入法的嵌入式平台使用空的输入法。\r\n\r\n\r\n",
-    "name": "input_method_null_t",
+    "header": "input_methods/input_method_sdl.h",
+    "desc": "\r\n SDL输入法实现。\r\n\r\n SDL输入法使用平台自身的输入法引擎，一般在桌面Linux、MacOS、Windows、Android和iOS上使用。\r\n\r\n\r\n",
+    "name": "input_method_sdl_t",
     "parent": "input_method_t",
     "annotation": {
       "fake": true
     },
     "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "tk_iostream_t*",
-            "name": "stream",
-            "desc": "iostream对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "\r\n 获取输入流对象。\r\n\r\n\r\n\r\n",
-        "name": "tk_iostream_get_istream",
-        "return": {
-          "type": "tk_istream_t*",
-          "desc": "返回输入流对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tk_iostream_t*",
-            "name": "stream",
-            "desc": "iostream对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "\r\n 获取输出流对象。\r\n\r\n\r\n\r\n",
-        "name": "tk_iostream_get_ostream",
-        "return": {
-          "type": "tk_ostream_t*",
-          "desc": "返回输出流对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "tkc/iostream.h",
-    "desc": "\r\n input/output stream interface\r\n\r\n",
-    "name": "tk_iostream_t",
-    "parent": "object_t",
-    "level": 3
   },
   {
     "type": "class",
@@ -43497,6 +43483,82 @@
       {
         "params": [
           {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": " 创建system_bar对象。\r\n\r\n",
+        "name": "system_bar_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "system_bar对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "system_bar对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": " 转换为system_bar对象(供脚本语言使用)。\r\n\r\n",
+        "name": "system_bar_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "system_bar对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "widgets/system_bar.h",
+    "desc": " system\\_bar窗口。\r\n\r\n system\\_bar窗口是一种特殊的窗口，独占LCD顶部区域，用来显示当前窗口的标题和关闭按钮等内容。\r\n\r\n> system\\_bar窗口需要在打开第一个应用程序窗口之前打开。\r\n\r\n system_bar对两个子控件会做特殊处理：\r\n\r\n * 1.名为\"title\"的label控件，自动显示当前主窗口的name或text。\r\n * 2.名为\"close\"的button控件，点击之后向当前主窗口发送EVT\\_REQUEST\\_CLOSE\\_WINDOW消息。\r\n\r\nsystem\\_bar\\_t是[window\\_base\\_t](window_base_t.md)的子类控件，\r\n window\\_base\\_t的函数均适用于system\\_bar\\_t控件。\r\n\r\n 在xml中使用\"system\\_bar\"标签创建system\\_bar窗口。如：\r\n\r\n ```xml\r\n <system_bar h=\"30\">\r\n <column x=\"0\" y=\"0\" w=\"-40\" h=\"100%\">\r\n   <label style=\"title\" x=\"10\" y=\"m\" w=\"55%\" h=\"100%\" name=\"title\"/>\r\n   <digit_clock style=\"time\" x=\"r\" y=\"m\" w=\"40%\" h=\"100%\" format=\"hh:mm\"/>\r\n </column>\r\n <button style=\"close\" x=\"r:5\" y=\"m\" w=\"26\" h=\"26\" name=\"close\" text=\"x\"/>\r\n </system_bar>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [system_bar](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/system_bar.xml)\r\n\r\n 在c代码中使用函数system\\_bar\\_create创建system\\_bar窗口。如：\r\n\r\n ```c\r\n widget_t* win = system_bar_create(NULL, 0, 0, 320, 30);\r\n ```\r\n\r\n > 创建之后，和使用普通窗口是一样的。\r\n\r\n 可用通过style来设置控件的显示风格，如背景颜色等等。如：\r\n\r\n ```xml\r\n <system_bar>\r\n  <style name=\"default\">\r\n    <normal bg_color=\"#a0a0a0\"/>\r\n  </style>\r\n </system_bar>\r\n ```\r\n\r\n> 更多用法请参考：\r\n [system_bar.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/system_bar.xml)\r\n\r\n",
+    "name": "system_bar_t",
+    "parent": "window_base_t",
+    "annotation": {
+      "scriptable": true,
+      "design": true,
+      "widget": true,
+      "window": true
+    },
+    "level": 3
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
             "type": "timer_info_t*",
             "name": "timer",
             "desc": "timer_info对象。"
@@ -43599,82 +43661,6 @@
     "parent": "object_t",
     "annotation": {
       "scriptable": true
-    },
-    "level": 3
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
-        "desc": " 创建system_bar对象。\r\n\r\n",
-        "name": "system_bar_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "system_bar对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "system_bar对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": " 转换为system_bar对象(供脚本语言使用)。\r\n\r\n",
-        "name": "system_bar_cast",
-        "return": {
-          "type": "widget_t*",
-          "desc": "system_bar对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "widgets/system_bar.h",
-    "desc": " system\\_bar窗口。\r\n\r\n system\\_bar窗口是一种特殊的窗口，独占LCD顶部区域，用来显示当前窗口的标题和关闭按钮等内容。\r\n\r\n> system\\_bar窗口需要在打开第一个应用程序窗口之前打开。\r\n\r\n system_bar对两个子控件会做特殊处理：\r\n\r\n * 1.名为\"title\"的label控件，自动显示当前主窗口的name或text。\r\n * 2.名为\"close\"的button控件，点击之后向当前主窗口发送EVT\\_REQUEST\\_CLOSE\\_WINDOW消息。\r\n\r\nsystem\\_bar\\_t是[window\\_base\\_t](window_base_t.md)的子类控件，\r\n window\\_base\\_t的函数均适用于system\\_bar\\_t控件。\r\n\r\n 在xml中使用\"system\\_bar\"标签创建system\\_bar窗口。如：\r\n\r\n ```xml\r\n <system_bar h=\"30\">\r\n <column x=\"0\" y=\"0\" w=\"-40\" h=\"100%\">\r\n   <label style=\"title\" x=\"10\" y=\"m\" w=\"55%\" h=\"100%\" name=\"title\"/>\r\n   <digit_clock style=\"time\" x=\"r\" y=\"m\" w=\"40%\" h=\"100%\" format=\"hh:mm\"/>\r\n </column>\r\n <button style=\"close\" x=\"r:5\" y=\"m\" w=\"26\" h=\"26\" name=\"close\" text=\"x\"/>\r\n </system_bar>\r\n ```\r\n\r\n > 更多用法请参考：\r\n [system_bar](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/system_bar.xml)\r\n\r\n 在c代码中使用函数system\\_bar\\_create创建system\\_bar窗口。如：\r\n\r\n ```c\r\n widget_t* win = system_bar_create(NULL, 0, 0, 320, 30);\r\n ```\r\n\r\n > 创建之后，和使用普通窗口是一样的。\r\n\r\n 可用通过style来设置控件的显示风格，如背景颜色等等。如：\r\n\r\n ```xml\r\n <system_bar>\r\n  <style name=\"default\">\r\n    <normal bg_color=\"#a0a0a0\"/>\r\n  </style>\r\n </system_bar>\r\n ```\r\n\r\n> 更多用法请参考：\r\n [system_bar.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/system_bar.xml)\r\n\r\n",
-    "name": "system_bar_t",
-    "parent": "window_base_t",
-    "annotation": {
-      "scriptable": true,
-      "design": true,
-      "widget": true,
-      "window": true
     },
     "level": 3
   },
@@ -44200,8 +44186,8 @@
           "constructor": true,
           "scriptable": true
         },
-        "desc": " 创建gif_image对象\r\n\r\n",
-        "name": "gif_image_create",
+        "desc": " 创建spin_box对象\r\n\r\n",
+        "name": "spin_box_create",
         "return": {
           "type": "widget_t*",
           "desc": "对象。"
@@ -44212,27 +44198,27 @@
           {
             "type": "widget_t*",
             "name": "widget",
-            "desc": "gif_image对象。"
+            "desc": "spin_box对象。"
           }
         ],
         "annotation": {
           "cast": true,
           "scriptable": true
         },
-        "desc": " 转换为gif_image对象(供脚本语言使用)。\r\n\r\n",
-        "name": "gif_image_cast",
+        "desc": " 转换为spin_box对象(供脚本语言使用)。\r\n\r\n",
+        "name": "spin_box_cast",
         "return": {
           "type": "widget_t*",
-          "desc": "gif_image对象。"
+          "desc": "spin_box对象。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "gif_image/gif_image.h",
-    "desc": " GIF图片控件。\r\n\r\n > 注意：GIF图片的尺寸大于控件大小时会自动缩小图片，但一般的嵌入式系统的硬件加速都不支持图片缩放，\r\n 所以缩放图片会导致性能明显下降。如果性能不满意时，请确认一下GIF图片的尺寸是否小余控件大小。\r\n\r\n gif\\_image\\_t是[image\\_base\\_t](image_base_t.md)的子类控件，image\\_base\\_t的函数均适用于gif\\_image\\_t控件。\r\n\r\n 在xml中使用\"gif\"标签创建GIF图片控件。如：\r\n\r\n ```xml\r\n <gif image=\"bee\"/>\r\n ```\r\n\r\n >更多用法请参考：\r\n [gif\r\n image](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/gif_image.xml)\r\n\r\n 在c代码中使用函数gif\\_image\\_create创建GIF图片控件。如：\r\n\r\n ```c\r\n  widget_t* image = gif_image_create(win, 10, 10, 200, 200);\r\n  image_set_image(image, \"bee\");\r\n ```\r\n\r\n > 创建之后:\r\n >\r\n > 需要用widget\\_set\\_image设置图片名称。\r\n\r\n > 完整示例请参考：[gif image demo](\r\n https://github.com/zlgopen/awtk-c-demos/blob/master/demos/gif_image.c)\r\n\r\n 可用通过style来设置控件的显示风格，如背景和边框等。如：\r\n\r\n ```xml\r\n <gif>\r\n  <style name=\"border\">\r\n   <normal border_color=\"#000000\" bg_color=\"#e0e0e0\" text_color=\"black\"/>\r\n  </style>\r\n </gif>\r\n ```\r\n\r\n > 更多用法请参考：[theme default](\r\n https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml)\r\n\r\n",
-    "name": "gif_image_t",
-    "parent": "image_base_t",
+    "header": "widgets/spin_box.h",
+    "desc": " spinbox控件。\r\n\r\n 一个特殊的数值编辑器，将edit\\_t和button\\_t进行组合，方便编辑数值。\r\n\r\n 点击向上的按钮将数值增加一个step，点击向下的按钮将数值减小一个step。\r\n step的值可以通过step属性进行设置。\r\n\r\n spin_box\\_t是[edit\\_t](edit_t.md)的子类控件，edit\\_t的函数均适用于spin\\_box\\_t控件。\r\n\r\n 在xml中使用\"spin_box\"标签创建spinbox控件。如：\r\n\r\n ```xml\r\n <spin_box w=\"70%\" input_type=\"int\" min=\"-100\" max=\"100\" step=\"5\">\r\n ```\r\n\r\n >\r\n 更多用法请参考：[spin_box.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/spinbox.xml)\r\n\r\n 在c代码中使用函数spin_box\\_create创建spinbox控件。如：\r\n\r\n ```c\r\n  widget_t* spin_box = spin_box_create(win, 10, 10, 128, 30);\r\n  edit_set_input_type(spin_box, type);\r\n ```\r\n\r\n > 创建之后:\r\n >\r\n > 可以用edit相关函数去设置它的各种属性。\r\n\r\n > 完整示例请参考：[spin_box\r\n demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/spin_box.c)\r\n\r\n 可用通过style来设置控件的显示风格，如背景和边框等。如：\r\n\r\n ```xml\r\n <spin_box>\r\n <style name=\"default\" border_color=\"#a0a0a0\"  text_color=\"black\" text_align_h=\"left\">\r\n   <normal     bg_color=\"#f0f0f0\" />\r\n   <focused    bg_color=\"#f0f0f0\" border_color=\"black\"/>\r\n   <disable    bg_color=\"gray\" text_color=\"#d0d0d0\" />\r\n   <error      bg_color=\"#f0f0f0\" text_color=\"red\" />\r\n   <empty      bg_color=\"#f0f0f0\" text_color=\"#a0a0a0\" />\r\n </style>\r\n </spin_box>\r\n ```\r\n\r\n > 更多用法请参考：[theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L128)\r\n\r\n",
+    "name": "spin_box_t",
+    "parent": "edit_t",
     "annotation": {
       "scriptable": true,
       "design": true,
@@ -44275,8 +44261,8 @@
           "constructor": true,
           "scriptable": true
         },
-        "desc": " 创建spin_box对象\r\n\r\n",
-        "name": "spin_box_create",
+        "desc": " 创建gif_image对象\r\n\r\n",
+        "name": "gif_image_create",
         "return": {
           "type": "widget_t*",
           "desc": "对象。"
@@ -44287,27 +44273,27 @@
           {
             "type": "widget_t*",
             "name": "widget",
-            "desc": "spin_box对象。"
+            "desc": "gif_image对象。"
           }
         ],
         "annotation": {
           "cast": true,
           "scriptable": true
         },
-        "desc": " 转换为spin_box对象(供脚本语言使用)。\r\n\r\n",
-        "name": "spin_box_cast",
+        "desc": " 转换为gif_image对象(供脚本语言使用)。\r\n\r\n",
+        "name": "gif_image_cast",
         "return": {
           "type": "widget_t*",
-          "desc": "spin_box对象。"
+          "desc": "gif_image对象。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "widgets/spin_box.h",
-    "desc": " spinbox控件。\r\n\r\n 一个特殊的数值编辑器，将edit\\_t和button\\_t进行组合，方便编辑数值。\r\n\r\n 点击向上的按钮将数值增加一个step，点击向下的按钮将数值减小一个step。\r\n step的值可以通过step属性进行设置。\r\n\r\n spin_box\\_t是[edit\\_t](edit_t.md)的子类控件，edit\\_t的函数均适用于spin\\_box\\_t控件。\r\n\r\n 在xml中使用\"spin_box\"标签创建spinbox控件。如：\r\n\r\n ```xml\r\n <spin_box w=\"70%\" input_type=\"int\" min=\"-100\" max=\"100\" step=\"5\">\r\n ```\r\n\r\n >\r\n 更多用法请参考：[spin_box.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/spinbox.xml)\r\n\r\n 在c代码中使用函数spin_box\\_create创建spinbox控件。如：\r\n\r\n ```c\r\n  widget_t* spin_box = spin_box_create(win, 10, 10, 128, 30);\r\n  edit_set_input_type(spin_box, type);\r\n ```\r\n\r\n > 创建之后:\r\n >\r\n > 可以用edit相关函数去设置它的各种属性。\r\n\r\n > 完整示例请参考：[spin_box\r\n demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/spin_box.c)\r\n\r\n 可用通过style来设置控件的显示风格，如背景和边框等。如：\r\n\r\n ```xml\r\n <spin_box>\r\n <style name=\"default\" border_color=\"#a0a0a0\"  text_color=\"black\" text_align_h=\"left\">\r\n   <normal     bg_color=\"#f0f0f0\" />\r\n   <focused    bg_color=\"#f0f0f0\" border_color=\"black\"/>\r\n   <disable    bg_color=\"gray\" text_color=\"#d0d0d0\" />\r\n   <error      bg_color=\"#f0f0f0\" text_color=\"red\" />\r\n   <empty      bg_color=\"#f0f0f0\" text_color=\"#a0a0a0\" />\r\n </style>\r\n </spin_box>\r\n ```\r\n\r\n > 更多用法请参考：[theme\r\n default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L128)\r\n\r\n",
-    "name": "spin_box_t",
-    "parent": "edit_t",
+    "header": "gif_image/gif_image.h",
+    "desc": " GIF图片控件。\r\n\r\n > 注意：GIF图片的尺寸大于控件大小时会自动缩小图片，但一般的嵌入式系统的硬件加速都不支持图片缩放，\r\n 所以缩放图片会导致性能明显下降。如果性能不满意时，请确认一下GIF图片的尺寸是否小余控件大小。\r\n\r\n gif\\_image\\_t是[image\\_base\\_t](image_base_t.md)的子类控件，image\\_base\\_t的函数均适用于gif\\_image\\_t控件。\r\n\r\n 在xml中使用\"gif\"标签创建GIF图片控件。如：\r\n\r\n ```xml\r\n <gif image=\"bee\"/>\r\n ```\r\n\r\n >更多用法请参考：\r\n [gif\r\n image](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/gif_image.xml)\r\n\r\n 在c代码中使用函数gif\\_image\\_create创建GIF图片控件。如：\r\n\r\n ```c\r\n  widget_t* image = gif_image_create(win, 10, 10, 200, 200);\r\n  image_set_image(image, \"bee\");\r\n ```\r\n\r\n > 创建之后:\r\n >\r\n > 需要用widget\\_set\\_image设置图片名称。\r\n\r\n > 完整示例请参考：[gif image demo](\r\n https://github.com/zlgopen/awtk-c-demos/blob/master/demos/gif_image.c)\r\n\r\n 可用通过style来设置控件的显示风格，如背景和边框等。如：\r\n\r\n ```xml\r\n <gif>\r\n  <style name=\"border\">\r\n   <normal border_color=\"#000000\" bg_color=\"#e0e0e0\" text_color=\"black\"/>\r\n  </style>\r\n </gif>\r\n ```\r\n\r\n > 更多用法请参考：[theme default](\r\n https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml)\r\n\r\n",
+    "name": "gif_image_t",
+    "parent": "image_base_t",
     "annotation": {
       "scriptable": true,
       "design": true,
@@ -44627,6 +44613,50 @@
     "annotation": {
       "scriptable": true
     },
+    "level": 3
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "tk_iostream_t*",
+            "name": "stream",
+            "desc": "iostream对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "\r\n 获取输入流对象。\r\n\r\n\r\n\r\n",
+        "name": "tk_iostream_get_istream",
+        "return": {
+          "type": "tk_istream_t*",
+          "desc": "返回输入流对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_iostream_t*",
+            "name": "stream",
+            "desc": "iostream对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "\r\n 获取输出流对象。\r\n\r\n\r\n\r\n",
+        "name": "tk_iostream_get_ostream",
+        "return": {
+          "type": "tk_ostream_t*",
+          "desc": "返回输出流对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "tkc/iostream.h",
+    "desc": "\r\n input/output stream interface\r\n\r\n",
+    "name": "tk_iostream_t",
+    "parent": "object_t",
     "level": 3
   },
   {
@@ -45277,24 +45307,71 @@
           {
             "type": "int",
             "name": "sock",
-            "desc": "socket."
+            "desc": "socket。"
           }
         ],
         "annotation": {},
-        "desc": "\r\n 创建ostream对象。\r\n\r\n\r\n\r\n",
-        "name": "tk_ostream_tcp_create",
+        "desc": "\r\n 创建istream对象。\r\n\r\n\r\n\r\n",
+        "name": "tk_istream_udp_create",
         "return": {
-          "type": "tk_ostream_t*",
-          "desc": "返回ostream对象。"
+          "type": "tk_istream_t*",
+          "desc": "返回istream对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_istream_t*",
+            "name": "stream",
+            "desc": "istream对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "host",
+            "desc": "主机或IP。"
+          },
+          {
+            "type": "int",
+            "name": "port",
+            "desc": "端口。"
+          }
+        ],
+        "annotation": {},
+        "desc": "\r\n 设置目标。\r\n\r\n\r\n\r\n",
+        "name": "tk_istream_udp_set_target_with_host",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_istream_t*",
+            "name": "stream",
+            "desc": "istream对象。"
+          },
+          {
+            "type": "struct sockaddr_in",
+            "name": "addr",
+            "desc": "地址。"
+          }
+        ],
+        "annotation": {},
+        "desc": "\r\n 设置目标。\r\n\r\n\r\n\r\n",
+        "name": "tk_istream_udp_set_target_with_addr",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "inet/ostream_tcp.h",
+    "header": "inet/istream_udp.h",
     "desc": "\r\n input stream base on socket\r\n\r\n",
-    "name": "tk_ostream_tcp_t",
-    "parent": "tk_ostream_t",
+    "name": "tk_istream_udp_t",
+    "parent": "tk_istream_t",
     "level": 4
   },
   {
@@ -45543,71 +45620,24 @@
           {
             "type": "int",
             "name": "sock",
-            "desc": "socket。"
+            "desc": "socket."
           }
         ],
         "annotation": {},
-        "desc": "\r\n 创建istream对象。\r\n\r\n\r\n\r\n",
-        "name": "tk_istream_udp_create",
+        "desc": "\r\n 创建ostream对象。\r\n\r\n\r\n\r\n",
+        "name": "tk_ostream_tcp_create",
         "return": {
-          "type": "tk_istream_t*",
-          "desc": "返回istream对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tk_istream_t*",
-            "name": "stream",
-            "desc": "istream对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "host",
-            "desc": "主机或IP。"
-          },
-          {
-            "type": "int",
-            "name": "port",
-            "desc": "端口。"
-          }
-        ],
-        "annotation": {},
-        "desc": "\r\n 设置目标。\r\n\r\n\r\n\r\n",
-        "name": "tk_istream_udp_set_target_with_host",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tk_istream_t*",
-            "name": "stream",
-            "desc": "istream对象。"
-          },
-          {
-            "type": "struct sockaddr_in",
-            "name": "addr",
-            "desc": "地址。"
-          }
-        ],
-        "annotation": {},
-        "desc": "\r\n 设置目标。\r\n\r\n\r\n\r\n",
-        "name": "tk_istream_udp_set_target_with_addr",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
+          "type": "tk_ostream_t*",
+          "desc": "返回ostream对象。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "inet/istream_udp.h",
+    "header": "inet/ostream_tcp.h",
     "desc": "\r\n input stream base on socket\r\n\r\n",
-    "name": "tk_istream_udp_t",
-    "parent": "tk_istream_t",
+    "name": "tk_ostream_tcp_t",
+    "parent": "tk_ostream_t",
     "level": 4
   }
 ]
