@@ -39,12 +39,15 @@ typedef ret_t (*func_call_parser_on_done_t)(func_call_parser_t* parser);
 /**
  * @class func_call_parser_t
  * 从字符串中解析出函数调用需要的参数。
+ *
+ * ```
  * func_call => func_name '(' params ')'
  * params => param ',' params
  * param => name '=' value
  * func_name => ID
  * name = ID
  * value = int | float | ID
+ *```
  *
  * 如:move(x=10, y=20)
  * 如:rename(old_name=aa, new_name=bb)

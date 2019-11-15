@@ -19899,7 +19899,7 @@
     "events": [],
     "properties": [],
     "header": "tkc/func_call_parser.h",
-    "desc": "从字符串中解析出函数调用需要的参数。\nfunc_call => func_name '(' params ')'\nparams => param ',' params\nparam => name '=' value\nfunc_name => ID\nname = ID\nvalue = int | float | ID\n如:move(x=10, y=20)\n如:rename(old_name=aa, new_name=bb)\n",
+    "desc": "从字符串中解析出函数调用需要的参数。\n```\nfunc_call => func_name '(' params ')'\nparams => param ',' params\nparam => name '=' value\nfunc_name => ID\nname = ID\nvalue = int | float | ID\n```\n如:move(x=10, y=20)\n如:rename(old_name=aa, new_name=bb)\n",
     "name": "func_call_parser_t",
     "level": 1
   },

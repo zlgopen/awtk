@@ -1,12 +1,14 @@
 ## func\_call\_parser\_t
 ### 概述
 从字符串中解析出函数调用需要的参数。
+```
 func_call => func_name '(' params ')'
 params => param ',' params
 param => name '=' value
 func_name => ID
 name = ID
 value = int | float | ID
+```
 如:move(x=10, y=20)
 如:rename(old_name=aa, new_name=bb)
 
