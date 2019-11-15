@@ -287,6 +287,12 @@
 * [event\_source\_manager\_default](manual/event_source_manager_default_t.md) 创建事件源管理器。
 * [event\_source\_timer](manual/event_source_timer_t.md) 基于Time的事件源实现。
 
+### 压缩解压
+
+* [compressor](manual/compressor_t.md) 压缩解压接口。
+* [compressor\_miniz](manual/compressor_miniz_t.md) 基于miniz实现的压缩解压接口。
+
+
 ### 平台相关
 
 * [fs](manual/fs_t.md) 文件系统接口

@@ -35,7 +35,6 @@ default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/st
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#window_t_dialog_highlighter_register_builtins">dialog\_highlighter\_register\_builtins</a> | 注册内置的对话框高亮策略。 |
 | <a href="#window_t_window_cast">window\_cast</a> | 转换为window对象(供脚本语言使用)。 |
 | <a href="#window_t_window_close">window\_close</a> | 关闭窗口。 |
 | <a href="#window_t_window_close_force">window\_close\_force</a> | 立即无条件关闭窗口(无动画)。 |
@@ -49,25 +48,6 @@ default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/st
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#window_t_fullscreen">fullscreen</a> | bool\_t | 是否全屏。 |
-#### dialog\_highlighter\_register\_builtins 函数
------------------------
-
-* 函数功能：
-
-> <p id="window_t_dialog_highlighter_register_builtins">注册内置的对话框高亮策略。
-
-
-* 函数原型：
-
-```
-ret_t dialog_highlighter_register_builtins ();
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 #### window\_cast 函数
 -----------------------
 

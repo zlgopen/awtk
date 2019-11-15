@@ -17638,7 +17638,7 @@
     "events": [],
     "properties": [],
     "header": "tkc/compressor.h",
-    "desc": "compressor interface\n",
+    "desc": "压缩解压接口。\n",
     "name": "compressor_t",
     "level": 1
   },
@@ -20250,6 +20250,241 @@
     "annotation": {
       "fake": true
     },
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "matrix_t*",
+            "name": "m",
+            "desc": "矩阵对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "初始化矩阵对象。\n",
+        "name": "matrix_init",
+        "return": {
+          "type": "matrix_t*",
+          "desc": "矩阵对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "matrix_t*",
+            "name": "m",
+            "desc": "矩阵对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "重置矩阵对象为单位矩阵。\n",
+        "name": "matrix_identity",
+        "return": {
+          "type": "matrix_t*",
+          "desc": "矩阵对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "matrix_t*",
+            "name": "m",
+            "desc": "矩阵对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "求矩阵的逆。\n",
+        "name": "matrix_invert",
+        "return": {
+          "type": "matrix_t*",
+          "desc": "矩阵对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "matrix_t*",
+            "name": "m",
+            "desc": "矩阵对象。"
+          },
+          {
+            "type": "float",
+            "name": "a0",
+            "desc": "a0"
+          },
+          {
+            "type": "float",
+            "name": "a1",
+            "desc": "a1"
+          },
+          {
+            "type": "float",
+            "name": "a2",
+            "desc": "a2"
+          },
+          {
+            "type": "float",
+            "name": "a3",
+            "desc": "a3"
+          },
+          {
+            "type": "float",
+            "name": "a4",
+            "desc": "a4"
+          },
+          {
+            "type": "float",
+            "name": "a5",
+            "desc": "a5"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置矩阵的参数。\n",
+        "name": "matrix_set",
+        "return": {
+          "type": "matrix_t*",
+          "desc": "矩阵对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "matrix_t*",
+            "name": "m",
+            "desc": "矩阵对象。"
+          },
+          {
+            "type": "matrix_t*",
+            "name": "b",
+            "desc": "矩阵对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "矩阵相乘。\n",
+        "name": "matrix_multiply",
+        "return": {
+          "type": "matrix_t*",
+          "desc": "矩阵对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "matrix_t*",
+            "name": "m",
+            "desc": "矩阵对象。"
+          },
+          {
+            "type": "float",
+            "name": "x",
+            "desc": "x"
+          },
+          {
+            "type": "float",
+            "name": "y",
+            "desc": "y"
+          }
+        ],
+        "annotation": {},
+        "desc": "平移。\n",
+        "name": "matrix_translate",
+        "return": {
+          "type": "matrix_t*",
+          "desc": "矩阵对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "matrix_t*",
+            "name": "m",
+            "desc": "矩阵对象。"
+          },
+          {
+            "type": "float",
+            "name": "sx",
+            "desc": "sx"
+          },
+          {
+            "type": "float",
+            "name": "sy",
+            "desc": "sy"
+          }
+        ],
+        "annotation": {},
+        "desc": "缩放。\n",
+        "name": "matrix_scale",
+        "return": {
+          "type": "matrix_t*",
+          "desc": "矩阵对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "matrix_t*",
+            "name": "m",
+            "desc": "矩阵对象。"
+          },
+          {
+            "type": "float",
+            "name": "rad",
+            "desc": "角度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "旋转。\n",
+        "name": "matrix_rotate",
+        "return": {
+          "type": "matrix_t*",
+          "desc": "矩阵对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "matrix_t*",
+            "name": "m",
+            "desc": "矩阵对象。"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y"
+          },
+          {
+            "type": "xy_t*",
+            "name": "out_x",
+            "desc": "out_x"
+          },
+          {
+            "type": "xy_t*",
+            "name": "out_y",
+            "desc": "out_y"
+          }
+        ],
+        "annotation": {},
+        "desc": "对点进行变换。\n",
+        "name": "matrix_transform_point",
+        "return": {
+          "type": "matrix_t*",
+          "desc": "矩阵对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "tkc/matrix.h",
+    "desc": "2D矩阵对象。\n",
+    "name": "matrix_t",
     "level": 1
   },
   {
@@ -30253,16 +30488,6 @@
           "type": "widget_t*",
           "desc": "window对象。"
         }
-      },
-      {
-        "params": [],
-        "annotation": {},
-        "desc": "注册内置的对话框高亮策略。\n",
-        "name": "dialog_highlighter_register_builtins",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
       }
     ],
     "events": [],
@@ -30290,6 +30515,47 @@
       "design": true,
       "widget": true,
       "window": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "compressor_options_t",
+            "name": "options",
+            "desc": "选项。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建compressor对象。\n",
+        "name": "compressor_miniz_create",
+        "return": {
+          "type": "compressor_t*",
+          "desc": "返回compressor对象。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {},
+        "desc": "注册内置的对话框高亮策略。\n",
+        "name": "dialog_highlighter_register_builtins",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "compressors/compressor_miniz.h",
+    "desc": "基于miniz实现的compressor接口。\n",
+    "name": "compressor_miniz_t",
+    "parent": "compressor_t",
+    "annotation": {
+      "fake": true
     },
     "level": 2
   },
@@ -31139,6 +31405,88 @@
       {
         "params": [
           {
+            "type": "int",
+            "name": "fd",
+            "desc": "可以用select等待的文件描述符。"
+          },
+          {
+            "type": "event_source_on_event_t",
+            "name": "on_event",
+            "desc": "用户的事件处理函数。"
+          },
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "on_event函数的上下文。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建fd事件源。\n",
+        "name": "event_source_fd_create",
+        "return": {
+          "type": "event_source_t*",
+          "desc": "返回事件源对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "tkc/event_source_fd.h",
+    "desc": "fd事件源。用于文件、管道和套接字。\n",
+    "name": "event_source_fd_t",
+    "parent": "object",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "idle_manager_t*",
+            "name": "idle_manager",
+            "desc": "定时器管理器对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建idle事件源。\n",
+        "name": "event_source_idle_create",
+        "return": {
+          "type": "event_source_t*",
+          "desc": "返回事件源对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "event_source_manager_t*",
+            "name": "manager",
+            "desc": "event_source_manager对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建事件源管理器。\n",
+        "name": "event_source_manager_default_create",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "tkc/event_source_idle.h",
+    "desc": "idle事件源。\n",
+    "name": "event_source_idle_t",
+    "parent": "object",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
             "type": "widget_t*",
             "name": "parent",
             "desc": "父控件"
@@ -31341,24 +31689,14 @@
       {
         "params": [
           {
-            "type": "int",
-            "name": "fd",
-            "desc": "可以用select等待的文件描述符。"
-          },
-          {
-            "type": "event_source_on_event_t",
-            "name": "on_event",
-            "desc": "用户的事件处理函数。"
-          },
-          {
-            "type": "void*",
-            "name": "ctx",
-            "desc": "on_event函数的上下文。"
+            "type": "timer_manager_t*",
+            "name": "timer_manager",
+            "desc": "定时器管理器对象。"
           }
         ],
         "annotation": {},
-        "desc": "创建fd事件源。\n",
-        "name": "event_source_fd_create",
+        "desc": "创建timer事件源。\n",
+        "name": "event_source_timer_create",
         "return": {
           "type": "event_source_t*",
           "desc": "返回事件源对象。"
@@ -31367,9 +31705,9 @@
     ],
     "events": [],
     "properties": [],
-    "header": "tkc/event_source_fd.h",
-    "desc": "fd事件源。用于文件、管道和套接字。\n",
-    "name": "event_source_fd_t",
+    "header": "tkc/event_source_timer.h",
+    "desc": "timer事件源。\n",
+    "name": "event_source_timer_t",
     "parent": "object",
     "level": 2
   },
@@ -31379,41 +31717,94 @@
       {
         "params": [
           {
-            "type": "idle_manager_t*",
-            "name": "idle_manager",
-            "desc": "定时器管理器对象。"
+            "type": "event_source_t*",
+            "name": "source",
+            "desc": "event_source对象。"
           }
         ],
         "annotation": {},
-        "desc": "创建idle事件源。\n",
-        "name": "event_source_idle_create",
+        "desc": "获取文件描述符。\n",
+        "name": "event_source_get_fd",
         "return": {
-          "type": "event_source_t*",
-          "desc": "返回事件源对象。"
+          "type": "int32_t",
+          "desc": "返回文件描述符。"
         }
       },
       {
         "params": [
           {
-            "type": "event_source_manager_t*",
-            "name": "manager",
-            "desc": "event_source_manager对象。"
+            "type": "event_source_t*",
+            "name": "source",
+            "desc": "event_source对象。"
           }
         ],
         "annotation": {},
-        "desc": "创建事件源管理器。\n",
-        "name": "event_source_manager_default_create",
+        "desc": "分发事件。\n",
+        "name": "event_source_dispatch",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "event_source_t*",
+            "name": "source",
+            "desc": "event_source对象。"
+          },
+          {
+            "type": "void*",
+            "name": "tag",
+            "desc": "tag。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置tag，方便通过tag一次移除多个事件源。\n",
+        "name": "event_source_set_tag",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "event_source_t*",
+            "name": "source",
+            "desc": "event_source对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "对于没有文件描述符的事件源，需要自己检查是否准备就绪。\n",
+        "name": "event_source_check",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "event_source_t*",
+            "name": "source",
+            "desc": "event_source对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取唤醒时间(ms)。\n",
+        "name": "event_source_get_wakeup_time",
+        "return": {
+          "type": "uint32_t",
+          "desc": "返回唤醒时间(ms)。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "tkc/event_source_idle.h",
-    "desc": "idle事件源。\n",
-    "name": "event_source_idle_t",
+    "header": "tkc/event_source.h",
+    "desc": "表示一个事件源。\n事件源有下列两种方式：\n* 对于有文件描述符的事件源(如socket)，get_fd返回一个有效的文件描述符。\n* 对于定时器，则get_wakeup_time返回下次唤醒的时间。\n",
+    "name": "event_source_t",
     "parent": "object",
     "level": 2
   },
@@ -31563,131 +31954,6 @@
       "design": true,
       "widget": true
     },
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "timer_manager_t*",
-            "name": "timer_manager",
-            "desc": "定时器管理器对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建timer事件源。\n",
-        "name": "event_source_timer_create",
-        "return": {
-          "type": "event_source_t*",
-          "desc": "返回事件源对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "tkc/event_source_timer.h",
-    "desc": "timer事件源。\n",
-    "name": "event_source_timer_t",
-    "parent": "object",
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "event_source_t*",
-            "name": "source",
-            "desc": "event_source对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "获取文件描述符。\n",
-        "name": "event_source_get_fd",
-        "return": {
-          "type": "int32_t",
-          "desc": "返回文件描述符。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "event_source_t*",
-            "name": "source",
-            "desc": "event_source对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "分发事件。\n",
-        "name": "event_source_dispatch",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "event_source_t*",
-            "name": "source",
-            "desc": "event_source对象。"
-          },
-          {
-            "type": "void*",
-            "name": "tag",
-            "desc": "tag。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置tag，方便通过tag一次移除多个事件源。\n",
-        "name": "event_source_set_tag",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "event_source_t*",
-            "name": "source",
-            "desc": "event_source对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "对于没有文件描述符的事件源，需要自己检查是否准备就绪。\n",
-        "name": "event_source_check",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "event_source_t*",
-            "name": "source",
-            "desc": "event_source对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "获取唤醒时间(ms)。\n",
-        "name": "event_source_get_wakeup_time",
-        "return": {
-          "type": "uint32_t",
-          "desc": "返回唤醒时间(ms)。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "tkc/event_source.h",
-    "desc": "表示一个事件源。\n事件源有下列两种方式：\n* 对于有文件描述符的事件源(如socket)，get_fd返回一个有效的文件描述符。\n* 对于定时器，则get_wakeup_time返回下次唤醒的时间。\n",
-    "name": "event_source_t",
-    "parent": "object",
     "level": 2
   },
   {
@@ -32186,6 +32452,59 @@
       {
         "params": [
           {
+            "type": "event_t*",
+            "name": "event",
+            "desc": "event对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "把event对象转prop_change_event_t对象，主要给脚本语言使用。\n",
+        "name": "prop_change_event_cast",
+        "return": {
+          "type": "prop_change_event_t*",
+          "desc": "对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "name",
+        "desc": "属性的名称。\n",
+        "type": "const char*",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "value",
+        "desc": "属性的值。\n",
+        "type": "const value_t*",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "tkc/event.h",
+    "desc": "对象属性变化事件。\n",
+    "name": "prop_change_event_t",
+    "annotation": {
+      "scriptable": true
+    },
+    "parent": "event_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
             "type": "widget_t*",
             "name": "parent",
             "desc": "父控件"
@@ -32362,59 +32681,6 @@
       "design": true,
       "widget": true
     },
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "event_t*",
-            "name": "event",
-            "desc": "event对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": "把event对象转prop_change_event_t对象，主要给脚本语言使用。\n",
-        "name": "prop_change_event_cast",
-        "return": {
-          "type": "prop_change_event_t*",
-          "desc": "对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [
-      {
-        "name": "name",
-        "desc": "属性的名称。\n",
-        "type": "const char*",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "value",
-        "desc": "属性的值。\n",
-        "type": "const value_t*",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      }
-    ],
-    "header": "tkc/event.h",
-    "desc": "对象属性变化事件。\n",
-    "name": "prop_change_event_t",
-    "annotation": {
-      "scriptable": true
-    },
-    "parent": "event_t",
     "level": 2
   },
   {
@@ -42779,62 +43045,29 @@
       {
         "params": [
           {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
+            "type": "native_window_t*",
+            "name": "win",
+            "desc": "win对象。"
           },
           {
             "type": "xy_t",
             "name": "x",
-            "desc": "x坐标"
+            "desc": "x坐标。"
           },
           {
             "type": "xy_t",
             "name": "y",
-            "desc": "y坐标"
+            "desc": "y坐标。"
           },
           {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "创建mutable_image对象\n",
-        "name": "mutable_image_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "mutable_image对象。"
-          },
-          {
-            "type": "mutable_image_prepare_image_t",
-            "name": "prepare_image",
-            "desc": "准备图片的回调函数。"
-          },
-          {
-            "type": "void*",
-            "name": "prepare_image_ctx",
-            "desc": "prepare_image回调函数的上下文。"
+            "type": "bool_t",
+            "name": "force",
+            "desc": "无论是否shared都move。"
           }
         ],
         "annotation": {},
-        "desc": "设置prepare_image回调函数。\nprepare_image回调函数在每次绘制之前被调用，用于准备下一帧要显示的图片。\n比如获取摄像头的预览图片，将其设置到image参数中。\n注意：在回调函数中，只能修改图片的内容，不用修改图片的大小和格式，如果不匹配请先转换。\n",
-        "name": "mutable_image_set_prepare_image",
+        "desc": "移动窗口。\n",
+        "name": "native_window_move",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -42843,34 +43076,29 @@
       {
         "params": [
           {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "mutable_image对象。"
+            "type": "native_window_t*",
+            "name": "win",
+            "desc": "win对象。"
           },
           {
-            "type": "uint32_t",
+            "type": "wh_t",
             "name": "w",
-            "desc": "framebuffer宽度。"
+            "desc": "宽。"
           },
           {
-            "type": "uint32_t",
+            "type": "wh_t",
             "name": "h",
-            "desc": "framebuffer高度。"
+            "desc": "高。"
           },
           {
-            "type": "bitmap_format_t",
-            "name": "format",
-            "desc": "framebuffer的格式。"
-          },
-          {
-            "type": "uint8_t*",
-            "name": "buff",
-            "desc": "framebuffer内存。"
+            "type": "bool_t",
+            "name": "force",
+            "desc": "无论是否shared都resize。"
           }
         ],
         "annotation": {},
-        "desc": "设置framebuffer(当硬件支持多层合成时才用)。\n有的硬件支持多层framebuffer，一层用于视图/摄像头，一层用于GUI，由硬件合成最终图像。\n此时可以设置用于摄像头的framebuffer，图像直接绘制到该framebuffer上。\n",
-        "name": "mutable_image_set_framebuffer",
+        "desc": "调整窗口大小。\n",
+        "name": "native_window_resize",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -42879,368 +43107,62 @@
       {
         "params": [
           {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "mutable_image对象。"
+            "type": "native_window_t*",
+            "name": "win",
+            "desc": "win对象。"
           }
         ],
-        "annotation": {
-          "cast": true
-        },
-        "desc": "转换为mutable_image对象(供脚本语言使用)。\n",
-        "name": "mutable_image_cast",
+        "annotation": {},
+        "desc": "获取canvas。\n",
+        "name": "native_window_get_canvas",
         "return": {
-          "type": "widget_t*",
-          "desc": "mutable_image对象。"
+          "type": "canvas_t",
+          "desc": "返回canvas对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "params",
+            "desc": "参数。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建win对象。\n",
+        "name": "native_window_create",
+        "return": {
+          "type": "native_window_t*",
+          "desc": "返回win对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "native_window_t*",
+            "name": "win",
+            "desc": "win对象。"
+          },
+          {
+            "type": "rect_t*",
+            "name": "r",
+            "desc": "重绘区域。"
+          }
+        ],
+        "annotation": {},
+        "desc": "请求重绘指定区域。\n",
+        "name": "native_window_invalidate",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "mutable_image/mutable_image.h",
-    "desc": "mutable图片控件。\n像摄像头和视频的图像是变化的，每一帧都不同，我们把这类图片称为mutable image。\n本控件辅助实现摄像头和视频的显示功能。\nmutable\\_image\\_t是[image\\_base\\_t](image_base_t.md)的子类控件，image\\_base\\_t的函数均适用于mutable\\_image\\_t控件。\n在xml中使用\"mutable\\_image\"标签创建mutable图片控件。如：\n```xml\n<mutable_image w=\"100%\" h=\"100%\"/>\n```\n>更多用法请参考：\n[mutable\nimage](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/mutable_image.xml)\n在c代码中使用函数mutable\\_image\\_create创建mutable图片控件。如：\n```c\nwidget_t* image = mutable_image_create(win, 10, 10, 200, 200);\nmutable_image_set_prepare_image(image, get_camera_image, camera);\n```\n> 创建之后:\n>\n> 需要用mutable\\_image\\_set\\_prepare\\_image设置准备图片的回调函数。\n> 完整示例请参考：[mutable image demo](\nhttps://github.com/zlgopen/awtk-c-demos/blob/master/demos/mutable_image.c)\n一般不需通过style来设置控件的显示风格，如果在特殊情况下需要，可以参考其它控件。\n",
-    "name": "mutable_image_t",
-    "parent": "image_base_t",
-    "annotation": {
-      "scriptable": true,
-      "design": true,
-      "widget": true
-    },
-    "level": 3
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "获取system_info对象。\n",
-        "name": "system_info",
-        "alias": "system_info_instance",
-        "return": {
-          "type": "system_info_t*",
-          "desc": "返回system_info对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "app_type_t",
-            "name": "app_type",
-            "desc": "应用程序的类型。"
-          },
-          {
-            "type": "const char*",
-            "name": "app_name",
-            "desc": "应用程序的名称。"
-          },
-          {
-            "type": "const char*",
-            "name": "app_root",
-            "desc": "应用程序的根目录，用于定位资源文件。"
-          }
-        ],
-        "annotation": {
-          "static": true
-        },
-        "desc": "初始化system_info对象。\n",
-        "name": "system_info_init",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [],
-        "annotation": {
-          "static": true
-        },
-        "desc": "释放system_info对象。\n",
-        "name": "system_info_deinit",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "system_info_t* info",
-            "name": "info",
-            "desc": "system_info对象。"
-          },
-          {
-            "type": "float_t",
-            "name": "font_scale",
-            "desc": "字体缩放比例。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置字体缩放比例。\n",
-        "name": "system_info_set_font_scale",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "system_info_t* info",
-            "name": "info",
-            "desc": "system_info对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "default_font",
-            "desc": "缺省字体。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置缺省字体。\n",
-        "name": "system_info_set_default_font",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "system_info_t* info",
-            "name": "info",
-            "desc": "system_info对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "lcd_w",
-            "desc": "设置LCD宽度。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置LCD宽度。\n",
-        "name": "system_info_set_lcd_w",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "system_info_t* info",
-            "name": "info",
-            "desc": "system_info对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "lcd_h",
-            "desc": "设置LCD高度。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置LCD高度。\n",
-        "name": "system_info_set_lcd_h",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "system_info_t* info",
-            "name": "info",
-            "desc": "system_info对象。"
-          },
-          {
-            "type": "lcd_type_t",
-            "name": "lcd_type",
-            "desc": "设置LCD类型。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置LCD类型。\n",
-        "name": "system_info_set_lcd_type",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "system_info_t* info",
-            "name": "info",
-            "desc": "system_info对象。"
-          },
-          {
-            "type": "lcd_orientation_t",
-            "name": "lcd_orientation",
-            "desc": "设置LCD的旋转角度。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置LCD的旋转角度。\n",
-        "name": "system_info_set_lcd_orientation",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "system_info_t* info",
-            "name": "info",
-            "desc": "system_info对象。"
-          },
-          {
-            "type": "float_t",
-            "name": "device_pixel_ratio",
-            "desc": "设置LCD密度。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置LCD密度。\n",
-        "name": "system_info_set_device_pixel_ratio",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "const char*",
-            "name": "name",
-            "desc": "字体名称。"
-          }
-        ],
-        "annotation": {},
-        "desc": "修正字体名称，如果为NULL，返回缺省字体。\n",
-        "name": "system_info_fix_font_name",
-        "return": {
-          "type": "const char*",
-          "desc": "返回有效的字体名称。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [
-      {
-        "name": "lcd_w",
-        "desc": "显示屏的宽度。\n",
-        "type": "uint32_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "lcd_h",
-        "desc": "显示屏的高度。\n",
-        "type": "uint32_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "lcd_type",
-        "desc": "显示屏的类型。\n",
-        "type": "lcd_type_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "device_pixel_ratio",
-        "desc": "显示屏的密度。\n",
-        "type": "float_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "font_scale",
-        "desc": "字体缩放比例，用于实现字体整体放大。\n",
-        "type": "float_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "default_font",
-        "desc": "缺省字体。\n",
-        "type": "const char*",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "lcd_orientation",
-        "desc": "显示屏的旋转角度。\n",
-        "type": "lcd_orientation_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "device_orientation",
-        "desc": "显示屏的方向名称，可选值：\"portrait\"表示竖屏，\"landscape\"表示横屏。\n> 只能通过object\\_get\\_prop函数访问。\n",
-        "type": "const char*",
-        "annotation": {
-          "readable": true,
-          "fake": true
-        }
-      },
-      {
-        "name": "country",
-        "desc": "locale中的国家。\n> 只能通过object\\_get\\_prop函数访问。\n",
-        "type": "const char*",
-        "annotation": {
-          "readable": true,
-          "fake": true
-        }
-      },
-      {
-        "name": "language",
-        "desc": "locale中的语言。\n> 只能通过object\\_get\\_prop函数访问。\n",
-        "type": "const char*",
-        "annotation": {
-          "readable": true,
-          "fake": true
-        }
-      },
-      {
-        "name": "app_type",
-        "desc": "应用程序的类型。\n",
-        "type": "app_type_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "app_name",
-        "desc": "应用程序的名称。\n",
-        "type": "const char*",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "app_root",
-        "desc": "应用程序的根目录，用于定位资源文件。\n",
-        "type": "const char*",
-        "annotation": {
-          "readable": true
-        }
-      }
-    ],
-    "header": "base/system_info.h",
-    "desc": "当前系统的信息。\n",
-    "name": "system_info_t",
+    "header": "base/native_window.h",
+    "desc": "原生窗口。\n",
+    "name": "native_window_t",
     "parent": "object_t",
     "level": 3
   },
@@ -43415,6 +43337,118 @@
       "design": true,
       "widget": true,
       "window": true
+    },
+    "level": 3
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "创建image对象\n",
+        "name": "image_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image对象。"
+          },
+          {
+            "type": "image_draw_type_t",
+            "name": "draw_type",
+            "desc": "绘制方式(仅在没有旋转和缩放时生效)。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置图片的绘制方式。\n",
+        "name": "image_set_draw_type",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为image对象(供脚本语言使用)。\n",
+        "name": "image_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "image对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "draw_type",
+        "desc": "图片的绘制方式(仅在没有旋转和缩放时生效)。\n",
+        "type": "image_draw_type_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "widgets/image.h",
+    "desc": "图片控件。\n用来显示一张静态图片，目前支持bmp/png/jpg等格式。\n如果要显示gif文件，请用[gif\\_image](gif_image_t.md)。\n如果要显示svg文件，请用[svg\\_image](svg_image_t.md)。\n如果需要支持勾选效果，请设置**selectable**属性。\n如果需要支持点击效果，请设置**clickable**属性。\nimage\\_t是[image\\_base\\_t](image_base_t.md)的子类控件，image\\_base\\_t的函数均适用于image\\_t控件。\n在xml中使用\"image\"标签创建图片控件。如：\n```xml\n<image style=\"border\" image=\"earth\" draw_type=\"icon\" />\n```\n> 更多用法请参考：\n[image.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/images.xml)\n在c代码中使用函数image\\_create创建图片控件。如：\n```c\nwidget_t* image = image_create(win, 10, 10, 128, 30);\nimage_set_image(image, \"earth\");\n```\n> 创建之后:\n>\n> 需要用widget\\_set\\_image设置图片名称。\n>\n> 可以用image\\_set\\_draw\\_type设置图片的绘制方式。\n> 绘制方式请参考[image\\_draw\\_type\\_t](image_draw_type_t.md)\n> 绘制方式的属性值和枚举值:\n[image\\_draw\\_type\\_name\\_value](https://github.com/zlgopen/awtk/blob/master/src/base/enums.c#L98)\n> 完整示例请参考：\n[image demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/image.c)\n可用通过style来设置控件的显示风格，如背景和边框等。如：\n```xml\n<image>\n<style name=\"border\">\n<normal border_color=\"#000000\" bg_color=\"#e0e0e0\" text_color=\"black\"/>\n</style>\n</image>\n```\n> 更多用法请参考：\n[theme\ndefault](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L313)\n",
+    "name": "image_t",
+    "parent": "image_base_t",
+    "annotation": {
+      "scriptable": true,
+      "design": true,
+      "widget": true
     },
     "level": 3
   },
@@ -43812,8 +43846,8 @@
           "constructor": true,
           "scriptable": true
         },
-        "desc": "创建image对象\n",
-        "name": "image_create",
+        "desc": "创建spin_box对象\n",
+        "name": "spin_box_create",
         "return": {
           "type": "widget_t*",
           "desc": "对象。"
@@ -43824,64 +43858,27 @@
           {
             "type": "widget_t*",
             "name": "widget",
-            "desc": "image对象。"
-          },
-          {
-            "type": "image_draw_type_t",
-            "name": "draw_type",
-            "desc": "绘制方式(仅在没有旋转和缩放时生效)。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置图片的绘制方式。\n",
-        "name": "image_set_draw_type",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "image对象。"
+            "desc": "spin_box对象。"
           }
         ],
         "annotation": {
           "cast": true,
           "scriptable": true
         },
-        "desc": "转换为image对象(供脚本语言使用)。\n",
-        "name": "image_cast",
+        "desc": "转换为spin_box对象(供脚本语言使用)。\n",
+        "name": "spin_box_cast",
         "return": {
           "type": "widget_t*",
-          "desc": "image对象。"
+          "desc": "spin_box对象。"
         }
       }
     ],
     "events": [],
-    "properties": [
-      {
-        "name": "draw_type",
-        "desc": "图片的绘制方式(仅在没有旋转和缩放时生效)。\n",
-        "type": "image_draw_type_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      }
-    ],
-    "header": "widgets/image.h",
-    "desc": "图片控件。\n用来显示一张静态图片，目前支持bmp/png/jpg等格式。\n如果要显示gif文件，请用[gif\\_image](gif_image_t.md)。\n如果要显示svg文件，请用[svg\\_image](svg_image_t.md)。\n如果需要支持勾选效果，请设置**selectable**属性。\n如果需要支持点击效果，请设置**clickable**属性。\nimage\\_t是[image\\_base\\_t](image_base_t.md)的子类控件，image\\_base\\_t的函数均适用于image\\_t控件。\n在xml中使用\"image\"标签创建图片控件。如：\n```xml\n<image style=\"border\" image=\"earth\" draw_type=\"icon\" />\n```\n> 更多用法请参考：\n[image.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/images.xml)\n在c代码中使用函数image\\_create创建图片控件。如：\n```c\nwidget_t* image = image_create(win, 10, 10, 128, 30);\nimage_set_image(image, \"earth\");\n```\n> 创建之后:\n>\n> 需要用widget\\_set\\_image设置图片名称。\n>\n> 可以用image\\_set\\_draw\\_type设置图片的绘制方式。\n> 绘制方式请参考[image\\_draw\\_type\\_t](image_draw_type_t.md)\n> 绘制方式的属性值和枚举值:\n[image\\_draw\\_type\\_name\\_value](https://github.com/zlgopen/awtk/blob/master/src/base/enums.c#L98)\n> 完整示例请参考：\n[image demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/image.c)\n可用通过style来设置控件的显示风格，如背景和边框等。如：\n```xml\n<image>\n<style name=\"border\">\n<normal border_color=\"#000000\" bg_color=\"#e0e0e0\" text_color=\"black\"/>\n</style>\n</image>\n```\n> 更多用法请参考：\n[theme\ndefault](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L313)\n",
-    "name": "image_t",
-    "parent": "image_base_t",
+    "properties": [],
+    "header": "widgets/spin_box.h",
+    "desc": "spinbox控件。\n一个特殊的数值编辑器，将edit\\_t和button\\_t进行组合，方便编辑数值。\n点击向上的按钮将数值增加一个step，点击向下的按钮将数值减小一个step。\nstep的值可以通过step属性进行设置。\nspin_box\\_t是[edit\\_t](edit_t.md)的子类控件，edit\\_t的函数均适用于spin\\_box\\_t控件。\n在xml中使用\"spin_box\"标签创建spinbox控件。如：\n```xml\n<spin_box w=\"70%\" input_type=\"int\" min=\"-100\" max=\"100\" step=\"5\">\n```\n>\n更多用法请参考：[spin_box.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/spinbox.xml)\n在c代码中使用函数spin_box\\_create创建spinbox控件。如：\n```c\nwidget_t* spin_box = spin_box_create(win, 10, 10, 128, 30);\nedit_set_input_type(spin_box, type);\n```\n> 创建之后:\n>\n> 可以用edit相关函数去设置它的各种属性。\n> 完整示例请参考：[spin_box\ndemo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/spin_box.c)\n可用通过style来设置控件的显示风格，如背景和边框等。如：\n```xml\n<spin_box>\n<style name=\"default\" border_color=\"#a0a0a0\"  text_color=\"black\" text_align_h=\"left\">\n<normal     bg_color=\"#f0f0f0\" />\n<focused    bg_color=\"#f0f0f0\" border_color=\"black\"/>\n<disable    bg_color=\"gray\" text_color=\"#d0d0d0\" />\n<error      bg_color=\"#f0f0f0\" text_color=\"red\" />\n<empty      bg_color=\"#f0f0f0\" text_color=\"#a0a0a0\" />\n</style>\n</spin_box>\n```\n> 更多用法请参考：[theme\ndefault](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L128)\n",
+    "name": "spin_box_t",
+    "parent": "edit_t",
     "annotation": {
       "scriptable": true,
       "design": true,
@@ -44051,81 +44048,6 @@
           "constructor": true,
           "scriptable": true
         },
-        "desc": "创建spin_box对象\n",
-        "name": "spin_box_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "spin_box对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": "转换为spin_box对象(供脚本语言使用)。\n",
-        "name": "spin_box_cast",
-        "return": {
-          "type": "widget_t*",
-          "desc": "spin_box对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "widgets/spin_box.h",
-    "desc": "spinbox控件。\n一个特殊的数值编辑器，将edit\\_t和button\\_t进行组合，方便编辑数值。\n点击向上的按钮将数值增加一个step，点击向下的按钮将数值减小一个step。\nstep的值可以通过step属性进行设置。\nspin_box\\_t是[edit\\_t](edit_t.md)的子类控件，edit\\_t的函数均适用于spin\\_box\\_t控件。\n在xml中使用\"spin_box\"标签创建spinbox控件。如：\n```xml\n<spin_box w=\"70%\" input_type=\"int\" min=\"-100\" max=\"100\" step=\"5\">\n```\n>\n更多用法请参考：[spin_box.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/spinbox.xml)\n在c代码中使用函数spin_box\\_create创建spinbox控件。如：\n```c\nwidget_t* spin_box = spin_box_create(win, 10, 10, 128, 30);\nedit_set_input_type(spin_box, type);\n```\n> 创建之后:\n>\n> 可以用edit相关函数去设置它的各种属性。\n> 完整示例请参考：[spin_box\ndemo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/spin_box.c)\n可用通过style来设置控件的显示风格，如背景和边框等。如：\n```xml\n<spin_box>\n<style name=\"default\" border_color=\"#a0a0a0\"  text_color=\"black\" text_align_h=\"left\">\n<normal     bg_color=\"#f0f0f0\" />\n<focused    bg_color=\"#f0f0f0\" border_color=\"black\"/>\n<disable    bg_color=\"gray\" text_color=\"#d0d0d0\" />\n<error      bg_color=\"#f0f0f0\" text_color=\"red\" />\n<empty      bg_color=\"#f0f0f0\" text_color=\"#a0a0a0\" />\n</style>\n</spin_box>\n```\n> 更多用法请参考：[theme\ndefault](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L128)\n",
-    "name": "spin_box_t",
-    "parent": "edit_t",
-    "annotation": {
-      "scriptable": true,
-      "design": true,
-      "widget": true
-    },
-    "level": 3
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
         "desc": "创建gif_image对象\n",
         "name": "gif_image_create",
         "return": {
@@ -44170,127 +44092,27 @@
     "type": "class",
     "methods": [
       {
-        "params": [
-          {
-            "type": "native_window_t*",
-            "name": "win",
-            "desc": "win对象。"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标。"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标。"
-          },
-          {
-            "type": "bool_t",
-            "name": "force",
-            "desc": "无论是否shared都move。"
-          }
-        ],
-        "annotation": {},
-        "desc": "移动窗口。\n",
-        "name": "native_window_move",
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建窗口管理器。\n",
+        "name": "window_manager_create",
         "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "native_window_t*",
-            "name": "win",
-            "desc": "win对象。"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽。"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高。"
-          },
-          {
-            "type": "bool_t",
-            "name": "force",
-            "desc": "无论是否shared都resize。"
-          }
-        ],
-        "annotation": {},
-        "desc": "调整窗口大小。\n",
-        "name": "native_window_resize",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "native_window_t*",
-            "name": "win",
-            "desc": "win对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "获取canvas。\n",
-        "name": "native_window_get_canvas",
-        "return": {
-          "type": "canvas_t",
-          "desc": "返回canvas对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "const char*",
-            "name": "params",
-            "desc": "参数。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建win对象。\n",
-        "name": "native_window_create",
-        "return": {
-          "type": "native_window_t*",
-          "desc": "返回win对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "native_window_t*",
-            "name": "win",
-            "desc": "win对象。"
-          },
-          {
-            "type": "rect_t*",
-            "name": "r",
-            "desc": "重绘区域。"
-          }
-        ],
-        "annotation": {},
-        "desc": "请求重绘指定区域。\n",
-        "name": "native_window_invalidate",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
+          "type": "window_manager_t*",
+          "desc": "返回窗口管理器对象。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "base/native_window.h",
-    "desc": "原生窗口。\n",
-    "name": "native_window_t",
-    "parent": "object_t",
+    "header": "window_manager/window_manager_simple.h",
+    "desc": "缺省窗口管理器。\n",
+    "name": "window_manager_simple_t",
+    "parent": "window_manager_t",
+    "annotation": {
+      "scriptable": true
+    },
     "level": 3
   },
   {
@@ -44461,23 +44283,332 @@
         "annotation": {
           "constructor": true
         },
-        "desc": "创建窗口管理器。\n",
-        "name": "window_manager_create",
+        "desc": "获取system_info对象。\n",
+        "name": "system_info",
+        "alias": "system_info_instance",
         "return": {
-          "type": "window_manager_t*",
-          "desc": "返回窗口管理器对象。"
+          "type": "system_info_t*",
+          "desc": "返回system_info对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "app_type_t",
+            "name": "app_type",
+            "desc": "应用程序的类型。"
+          },
+          {
+            "type": "const char*",
+            "name": "app_name",
+            "desc": "应用程序的名称。"
+          },
+          {
+            "type": "const char*",
+            "name": "app_root",
+            "desc": "应用程序的根目录，用于定位资源文件。"
+          }
+        ],
+        "annotation": {
+          "static": true
+        },
+        "desc": "初始化system_info对象。\n",
+        "name": "system_info_init",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {
+          "static": true
+        },
+        "desc": "释放system_info对象。\n",
+        "name": "system_info_deinit",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "system_info_t* info",
+            "name": "info",
+            "desc": "system_info对象。"
+          },
+          {
+            "type": "float_t",
+            "name": "font_scale",
+            "desc": "字体缩放比例。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置字体缩放比例。\n",
+        "name": "system_info_set_font_scale",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "system_info_t* info",
+            "name": "info",
+            "desc": "system_info对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "default_font",
+            "desc": "缺省字体。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置缺省字体。\n",
+        "name": "system_info_set_default_font",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "system_info_t* info",
+            "name": "info",
+            "desc": "system_info对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "lcd_w",
+            "desc": "设置LCD宽度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置LCD宽度。\n",
+        "name": "system_info_set_lcd_w",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "system_info_t* info",
+            "name": "info",
+            "desc": "system_info对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "lcd_h",
+            "desc": "设置LCD高度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置LCD高度。\n",
+        "name": "system_info_set_lcd_h",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "system_info_t* info",
+            "name": "info",
+            "desc": "system_info对象。"
+          },
+          {
+            "type": "lcd_type_t",
+            "name": "lcd_type",
+            "desc": "设置LCD类型。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置LCD类型。\n",
+        "name": "system_info_set_lcd_type",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "system_info_t* info",
+            "name": "info",
+            "desc": "system_info对象。"
+          },
+          {
+            "type": "lcd_orientation_t",
+            "name": "lcd_orientation",
+            "desc": "设置LCD的旋转角度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置LCD的旋转角度。\n",
+        "name": "system_info_set_lcd_orientation",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "system_info_t* info",
+            "name": "info",
+            "desc": "system_info对象。"
+          },
+          {
+            "type": "float_t",
+            "name": "device_pixel_ratio",
+            "desc": "设置LCD密度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置LCD密度。\n",
+        "name": "system_info_set_device_pixel_ratio",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "字体名称。"
+          }
+        ],
+        "annotation": {},
+        "desc": "修正字体名称，如果为NULL，返回缺省字体。\n",
+        "name": "system_info_fix_font_name",
+        "return": {
+          "type": "const char*",
+          "desc": "返回有效的字体名称。"
         }
       }
     ],
     "events": [],
-    "properties": [],
-    "header": "window_manager/window_manager_simple.h",
-    "desc": "缺省窗口管理器。\n",
-    "name": "window_manager_simple_t",
-    "parent": "window_manager_t",
-    "annotation": {
-      "scriptable": true
-    },
+    "properties": [
+      {
+        "name": "lcd_w",
+        "desc": "显示屏的宽度。\n",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "lcd_h",
+        "desc": "显示屏的高度。\n",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "lcd_type",
+        "desc": "显示屏的类型。\n",
+        "type": "lcd_type_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "device_pixel_ratio",
+        "desc": "显示屏的密度。\n",
+        "type": "float_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "font_scale",
+        "desc": "字体缩放比例，用于实现字体整体放大。\n",
+        "type": "float_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "default_font",
+        "desc": "缺省字体。\n",
+        "type": "const char*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "lcd_orientation",
+        "desc": "显示屏的旋转角度。\n",
+        "type": "lcd_orientation_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "device_orientation",
+        "desc": "显示屏的方向名称，可选值：\"portrait\"表示竖屏，\"landscape\"表示横屏。\n> 只能通过object\\_get\\_prop函数访问。\n",
+        "type": "const char*",
+        "annotation": {
+          "readable": true,
+          "fake": true
+        }
+      },
+      {
+        "name": "country",
+        "desc": "locale中的国家。\n> 只能通过object\\_get\\_prop函数访问。\n",
+        "type": "const char*",
+        "annotation": {
+          "readable": true,
+          "fake": true
+        }
+      },
+      {
+        "name": "language",
+        "desc": "locale中的语言。\n> 只能通过object\\_get\\_prop函数访问。\n",
+        "type": "const char*",
+        "annotation": {
+          "readable": true,
+          "fake": true
+        }
+      },
+      {
+        "name": "app_type",
+        "desc": "应用程序的类型。\n",
+        "type": "app_type_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "app_name",
+        "desc": "应用程序的名称。\n",
+        "type": "const char*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "app_root",
+        "desc": "应用程序的根目录，用于定位资源文件。\n",
+        "type": "const char*",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "base/system_info.h",
+    "desc": "当前系统的信息。\n",
+    "name": "system_info_t",
+    "parent": "object_t",
     "level": 3
   },
   {
@@ -44680,6 +44811,141 @@
     "desc": "输入流的接口。\n",
     "name": "tk_istream_t",
     "parent": "object_t",
+    "level": 3
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建mutable_image对象\n",
+        "name": "mutable_image_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "mutable_image对象。"
+          },
+          {
+            "type": "mutable_image_prepare_image_t",
+            "name": "prepare_image",
+            "desc": "准备图片的回调函数。"
+          },
+          {
+            "type": "void*",
+            "name": "prepare_image_ctx",
+            "desc": "prepare_image回调函数的上下文。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置prepare_image回调函数。\nprepare_image回调函数在每次绘制之前被调用，用于准备下一帧要显示的图片。\n比如获取摄像头的预览图片，将其设置到image参数中。\n注意：在回调函数中，只能修改图片的内容，不用修改图片的大小和格式，如果不匹配请先转换。\n",
+        "name": "mutable_image_set_prepare_image",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "mutable_image对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "w",
+            "desc": "framebuffer宽度。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "h",
+            "desc": "framebuffer高度。"
+          },
+          {
+            "type": "bitmap_format_t",
+            "name": "format",
+            "desc": "framebuffer的格式。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "buff",
+            "desc": "framebuffer内存。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置framebuffer(当硬件支持多层合成时才用)。\n有的硬件支持多层framebuffer，一层用于视图/摄像头，一层用于GUI，由硬件合成最终图像。\n此时可以设置用于摄像头的framebuffer，图像直接绘制到该framebuffer上。\n",
+        "name": "mutable_image_set_framebuffer",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "mutable_image对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true
+        },
+        "desc": "转换为mutable_image对象(供脚本语言使用)。\n",
+        "name": "mutable_image_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "mutable_image对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "mutable_image/mutable_image.h",
+    "desc": "mutable图片控件。\n像摄像头和视频的图像是变化的，每一帧都不同，我们把这类图片称为mutable image。\n本控件辅助实现摄像头和视频的显示功能。\nmutable\\_image\\_t是[image\\_base\\_t](image_base_t.md)的子类控件，image\\_base\\_t的函数均适用于mutable\\_image\\_t控件。\n在xml中使用\"mutable\\_image\"标签创建mutable图片控件。如：\n```xml\n<mutable_image w=\"100%\" h=\"100%\"/>\n```\n>更多用法请参考：\n[mutable\nimage](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/mutable_image.xml)\n在c代码中使用函数mutable\\_image\\_create创建mutable图片控件。如：\n```c\nwidget_t* image = mutable_image_create(win, 10, 10, 200, 200);\nmutable_image_set_prepare_image(image, get_camera_image, camera);\n```\n> 创建之后:\n>\n> 需要用mutable\\_image\\_set\\_prepare\\_image设置准备图片的回调函数。\n> 完整示例请参考：[mutable image demo](\nhttps://github.com/zlgopen/awtk-c-demos/blob/master/demos/mutable_image.c)\n一般不需通过style来设置控件的显示风格，如果在特殊情况下需要，可以参考其它控件。\n",
+    "name": "mutable_image_t",
+    "parent": "image_base_t",
+    "annotation": {
+      "scriptable": true,
+      "design": true,
+      "widget": true
+    },
     "level": 3
   },
   {

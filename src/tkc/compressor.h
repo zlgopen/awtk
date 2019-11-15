@@ -43,7 +43,7 @@ typedef enum _compressor_options_t {
 /**
  * @class compressor_t
  *
- * compressor interface
+ * 压缩解压接口。
  *
  */
 struct _compressor_t {
