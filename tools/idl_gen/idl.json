@@ -42726,15 +42726,6 @@
         "annotation": {
           "readable": true
         }
-      },
-      {
-        "name": "user_changed_time",
-        "desc": "用户是否修改了系统时间。\n",
-        "type": "bool_t",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
       }
     ],
     "header": "tkc/timer_info.h",

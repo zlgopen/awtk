@@ -27,7 +27,7 @@
 #include "base/image_manager.h"
 #include "time_clock/time_clock.h"
 
-static ret_t time_clock_reset_time(time_clock_t* time_clock);
+static ret_t time_clock_update_time(time_clock_t* time_clock);
 
 static bool_t time_clock_value_is_anchor_px(const char* value) {
   const char* tmp = NULL;
@@ -274,23 +274,22 @@ static ret_t time_clock_on_timer(const timer_info_t* info) {
   time_clock = TIME_CLOCK(widget);
   return_value_if_fail(widget != NULL && time_clock != NULL, RET_BAD_PARAMS);
 
-  time_clock->second++;
-  if (time_clock->second >= 60) {
-    time_clock->second = 0;
-    time_clock->minute++;
-    if (time_clock->minute >= 60) {
-      time_clock->minute = 0;
-      time_clock->hour++;
-      if (time_clock->hour >= 12) {
-        time_clock->hour = 0;
+  if (time_clock_update_time(time_clock) != RET_OK) {
+    time_clock->second++;
+    if (time_clock->second >= 60) {
+      time_clock->second = 0;
+      time_clock->minute++;
+      if (time_clock->minute >= 60) {
+        time_clock->minute = 0;
+        time_clock->hour++;
+        if (time_clock->hour >= 12) {
+          time_clock->hour = 0;
+        }
       }
     }
   }
 
   widget_invalidate_force(widget, NULL);
-  if (info->user_changed_time) {
-    time_clock_reset_time(time_clock);
-  }
 
   return RET_REPEAT;
 }
@@ -419,15 +418,18 @@ TK_DECL_VTABLE(time_clock) = {.size = sizeof(time_clock_t),
                               .get_prop = time_clock_get_prop,
                               .on_destroy = time_clock_on_destroy};
 
-static ret_t time_clock_reset_time(time_clock_t* time_clock) {
+static ret_t time_clock_update_time(time_clock_t* time_clock) {
   date_time_t dt;
-  date_time_init(&dt);
 
-  time_clock->hour = dt.hour % 12;
-  time_clock->minute = dt.minute;
-  time_clock->second = dt.second;
+  if (date_time_init(&dt) != NULL) {
+    time_clock->hour = dt.hour % 12;
+    time_clock->minute = dt.minute;
+    time_clock->second = dt.second;
 
-  return RET_OK;
+    return RET_OK;
+  } else {
+    return RET_FAIL;
+  }
 }
 
 widget_t* time_clock_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
@@ -435,7 +437,7 @@ widget_t* time_clock_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   time_clock_t* time_clock = TIME_CLOCK(widget);
   return_value_if_fail(time_clock != NULL, NULL);
 
-  time_clock_reset_time(time_clock);
+  time_clock_update_time(time_clock);
   widget_add_timer(widget, time_clock_on_timer, 1000);
 
   time_clock->hour_anchor_x = tk_str_copy(NULL, "0.5");

@@ -133,7 +133,6 @@ static ret_t timer_manager_dispatch_one(timer_manager_t* timer_manager, uint64_t
       } else {
         timer->start = now;
       }
-      timer->user_changed_time = FALSE;
     }
 
     object_unref((object_t*)timer);

@@ -21,9 +21,6 @@ static void timer_clear_log(void) {
 
 static ret_t timer_once(const timer_info_t* timer) {
   s_log += "o:";
-  if (timer->user_changed_time) {
-    s_log += "[uct]";
-  }
   return RET_OK;
 }
 

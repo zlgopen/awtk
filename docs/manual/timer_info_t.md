@@ -24,7 +24,6 @@
 | <a href="#timer_info_t_on_destroy_ctx">on\_destroy\_ctx</a> | void* | 定时器销毁时的回调函数上下文。 |
 | <a href="#timer_info_t_on_timer">on\_timer</a> | timer\_func\_t | 定时器回调函数。 |
 | <a href="#timer_info_t_start">start</a> | uint64\_t | 起始时间(相对时间，单位为毫秒)。 |
-| <a href="#timer_info_t_user_changed_time">user\_changed\_time</a> | bool\_t | 用户是否修改了系统时间。 |
 #### timer\_info\_cast 函数
 -----------------------
 
@@ -137,15 +136,3 @@ timer_info_t* timer_info_cast (timer_info_t* timer);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-#### user\_changed\_time 属性
------------------------
-> <p id="timer_info_t_user_changed_time">用户是否修改了系统时间。
-
-
-* 类型：bool\_t
-
-| 特性 | 是否支持 |
-| -------- | ----- |
-| 可直接读取 | 是 |
-| 可直接修改 | 否 |
-| 可脚本化   | 是 |

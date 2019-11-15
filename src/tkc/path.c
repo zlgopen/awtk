@@ -222,4 +222,3 @@ ret_t path_replace_basename(char* result, int32_t size, const char* filename,
   dirname[MAX_PATH] = '\0';
   return path_build(result, size, dirname, basename, NULL);
 }
-

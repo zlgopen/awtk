@@ -46,12 +46,14 @@ date_time_t* date_time_create(void) {
 
 date_time_t* date_time_init(date_time_t* dt) {
   return_value_if_fail(dt != NULL, NULL);
+
   memset(dt, 0x00, sizeof(date_time_t));
-  return_value_if_fail(s_date_time_get_now != NULL, dt);
-
-  s_date_time_get_now(dt);
-
-  return dt;
+  if (s_date_time_get_now != NULL) {
+    s_date_time_get_now(dt);
+    return dt;
+  } else {
+    return NULL;
+  }
 }
 
 ret_t date_time_set(date_time_t* dt) {

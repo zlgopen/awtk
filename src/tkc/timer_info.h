@@ -107,13 +107,6 @@ struct _timer_info_t {
    */
   void* on_destroy_ctx;
 
-  /**
-   * @property {bool_t} user_changed_time
-   * @annotation ["readable", "scriptable"]
-   * 用户是否修改了系统时间。
-   */
-  bool_t user_changed_time;
-
   /*private*/
   uint64_t last_dispatch_time;
   timer_manager_t* timer_manager;
