@@ -33,7 +33,7 @@ typedef struct _tk_ostream_serial_t tk_ostream_serial_t;
 
 /**
  * @class tk_ostream_serial_t
- * @parent tk_ostream_t
+ * 基于串口实现的输出流。
  *
  * input stream base on fd
  *

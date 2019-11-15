@@ -1,7 +1,6 @@
 ## tk\_ostream\_serial\_t
 ### 概述
-![image](images/tk_ostream_serial_t_0.png)
-
+基于串口实现的输出流。
 input stream base on fd
 
 ----------------------------------

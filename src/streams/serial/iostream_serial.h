@@ -35,7 +35,7 @@ typedef struct _tk_iostream_serial_t tk_iostream_serial_t;
  * @class tk_iostream_serial_t
  * @parent tk_iostream_t
  *
- * input stream base on serial port
+ * 基于串口实现的输入输出流。
  *
  */
 struct _tk_iostream_serial_t {

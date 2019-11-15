@@ -2,7 +2,7 @@
 ### 概述
 ![image](images/tk_iostream_serial_t_0.png)
 
-input stream base on serial port
+基于串口实现的输入输出流。
 
 ----------------------------------
 ### 函数
