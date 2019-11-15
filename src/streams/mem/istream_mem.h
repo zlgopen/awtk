@@ -33,7 +33,7 @@ typedef struct _tk_istream_mem_t tk_istream_mem_t;
  * @class tk_istream_mem_t
  * @parent tk_istream_t
  *
- * input stream base on memory
+ * 基于内存实现的输入流。
  *
  */
 struct _tk_istream_mem_t {

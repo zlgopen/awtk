@@ -33,7 +33,7 @@ typedef struct _tk_ostream_mem_t tk_ostream_mem_t;
  * @class tk_ostream_mem_t
  * @parent tk_ostream_t
  *
- * output stream base on memory
+ * 基于内存实现的输出流。
  *
  */
 struct _tk_ostream_mem_t {

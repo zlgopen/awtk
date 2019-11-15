@@ -44156,7 +44156,7 @@
     "events": [],
     "properties": [],
     "header": "mem/iostream_mem.h",
-    "desc": "iostream base on mem\n",
+    "desc": "基于内存实现的输入输出流。\n",
     "name": "tk_iostream_mem_t",
     "parent": "tk_iostream_t",
     "level": 4
@@ -44563,7 +44563,7 @@
     "events": [],
     "properties": [],
     "header": "mem/ostream_mem.h",
-    "desc": "output stream base on memory\n",
+    "desc": "基于内存实现的输出流。\n",
     "name": "tk_ostream_mem_t",
     "parent": "tk_ostream_t",
     "level": 4
@@ -44606,7 +44606,7 @@
     "events": [],
     "properties": [],
     "header": "mem/istream_mem.h",
-    "desc": "input stream base on memory\n",
+    "desc": "基于内存实现的输入流。\n",
     "name": "tk_istream_mem_t",
     "parent": "tk_istream_t",
     "level": 4

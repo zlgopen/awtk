@@ -2,7 +2,7 @@
 ### 概述
 ![image](images/tk_ostream_mem_t_0.png)
 
-output stream base on memory
+基于内存实现的输出流。
 
 ----------------------------------
 ### 函数

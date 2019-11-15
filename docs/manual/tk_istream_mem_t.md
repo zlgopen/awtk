@@ -2,7 +2,7 @@
 ### 概述
 ![image](images/tk_istream_mem_t_0.png)
 
-input stream base on memory
+基于内存实现的输入流。
 
 ----------------------------------
 ### 函数
