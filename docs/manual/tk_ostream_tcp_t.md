@@ -2,7 +2,7 @@
 ### 概述
 ![image](images/tk_ostream_tcp_t_0.png)
 
-input stream base on socket
+基于TCP实现的输出流。
 
 ----------------------------------
 ### 函数

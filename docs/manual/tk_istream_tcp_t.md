@@ -2,7 +2,7 @@
 ### 概述
 ![image](images/tk_istream_tcp_t_0.png)
 
-input stream base on socket
+基于TCP实现的输入流。
 
 ----------------------------------
 ### 函数

@@ -2,7 +2,7 @@
 ### 概述
 ![image](images/tk_istream_file_t_0.png)
 
-input stream base on file
+基于文件实现的输入流。
 
 ----------------------------------
 ### 函数

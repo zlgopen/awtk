@@ -2,7 +2,7 @@
 ### 概述
 ![image](images/tk_iostream_udp_t_0.png)
 
-input stream base on socket
+基于UDP实现的输入输出流。
 
 ----------------------------------
 ### 函数

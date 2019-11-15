@@ -34,7 +34,7 @@ typedef struct _tk_iostream_udp_t tk_iostream_udp_t;
  * @class tk_iostream_udp_t
  * @parent tk_iostream_t
  *
- * input stream base on socket
+ * 基于UDP实现的输入输出流。
  *
  */
 struct _tk_iostream_udp_t {

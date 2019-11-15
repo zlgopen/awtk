@@ -34,7 +34,7 @@ typedef struct _tk_iostream_tcp_t tk_iostream_tcp_t;
  * @class tk_iostream_tcp_t
  * @parent tk_iostream_t
  *
- * input stream base on socket
+ * 基于TCP实现的输入输出流。
  *
  */
 struct _tk_iostream_tcp_t {

@@ -34,7 +34,7 @@ typedef struct _tk_ostream_file_t tk_ostream_file_t;
  * @class tk_ostream_file_t
  * @parent tk_ostream_t
  *
- * input stream base on file
+ * 基于文件实现的输出流。
  *
  */
 struct _tk_ostream_file_t {

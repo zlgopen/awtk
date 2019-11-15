@@ -44673,7 +44673,7 @@
     "events": [],
     "properties": [],
     "header": "inet/ostream_tcp.h",
-    "desc": "input stream base on socket\n",
+    "desc": "基于TCP实现的输出流。\n",
     "name": "tk_ostream_tcp_t",
     "parent": "tk_ostream_t",
     "level": 4
@@ -44748,7 +44748,7 @@
     "events": [],
     "properties": [],
     "header": "inet/istream_udp.h",
-    "desc": "input stream base on socket\n",
+    "desc": "基于UDP实现的输入流。\n",
     "name": "tk_istream_udp_t",
     "parent": "tk_istream_t",
     "level": 4
@@ -44776,7 +44776,7 @@
     "events": [],
     "properties": [],
     "header": "inet/istream_tcp.h",
-    "desc": "input stream base on socket\n",
+    "desc": "基于TCP实现的输入流。\n",
     "name": "tk_istream_tcp_t",
     "parent": "tk_istream_t",
     "level": 4
@@ -44825,7 +44825,7 @@
     "events": [],
     "properties": [],
     "header": "inet/iostream_udp.h",
-    "desc": "input stream base on socket\n",
+    "desc": "基于UDP实现的输入输出流。\n",
     "name": "tk_iostream_udp_t",
     "parent": "tk_iostream_t",
     "level": 4
@@ -44853,7 +44853,7 @@
     "events": [],
     "properties": [],
     "header": "inet/iostream_tcp.h",
-    "desc": "input stream base on socket\n",
+    "desc": "基于TCP实现的输入输出流。\n",
     "name": "tk_iostream_tcp_t",
     "parent": "tk_iostream_t",
     "level": 4
@@ -44881,7 +44881,7 @@
     "events": [],
     "properties": [],
     "header": "file/ostream_file.h",
-    "desc": "input stream base on file\n",
+    "desc": "基于文件实现的输出流。\n",
     "name": "tk_ostream_file_t",
     "parent": "tk_ostream_t",
     "level": 4
@@ -44909,7 +44909,7 @@
     "events": [],
     "properties": [],
     "header": "file/istream_file.h",
-    "desc": "input stream base on file\n",
+    "desc": "基于文件实现的输入流。\n",
     "name": "tk_istream_file_t",
     "parent": "tk_istream_t",
     "level": 4
@@ -44986,7 +44986,7 @@
     "events": [],
     "properties": [],
     "header": "buffered/istream_buffered.h",
-    "desc": "buffered input stream。\n如果调用者每次只读取少量数据，可以使用本类对底层istream进行装饰，以提高读取效率。\n",
+    "desc": "缓冲输入流。\n如果调用者每次只读取少量数据，可以使用本类对底层istream进行装饰，以提高读取效率。\n",
     "name": "tk_istream_buffered_t",
     "parent": "tk_istream_t",
     "level": 4
@@ -45061,7 +45061,7 @@
     "events": [],
     "properties": [],
     "header": "inet/ostream_udp.h",
-    "desc": "input stream base on socket\n",
+    "desc": "基于UDP实现的输出流。\n",
     "name": "tk_ostream_udp_t",
     "parent": "tk_ostream_t",
     "level": 4

@@ -34,7 +34,7 @@ typedef struct _tk_istream_file_t tk_istream_file_t;
  * @class tk_istream_file_t
  * @parent tk_istream_t
  *
- * input stream base on file
+ * 基于文件实现的输入流。
  *
  */
 struct _tk_istream_file_t {

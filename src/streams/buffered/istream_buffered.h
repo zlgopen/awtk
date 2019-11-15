@@ -34,7 +34,7 @@ typedef struct _tk_istream_buffered_t tk_istream_buffered_t;
  * @class tk_istream_buffered_t
  * @parent tk_istream_t
  *
- * buffered input stream。
+ * 缓冲输入流。
  *
  * 如果调用者每次只读取少量数据，可以使用本类对底层istream进行装饰，以提高读取效率。
  *
