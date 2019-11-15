@@ -33,30 +33,27 @@ static ret_t image_on_paint_self(widget_t* widget, canvas_t* c) {
   image_base_t* image_base = IMAGE_BASE(widget);
   return_value_if_fail(image != NULL, RET_BAD_PARAMS);
 
-  if (image_base->image == NULL) {
-    return RET_OK;
-  }
-
-  return_value_if_fail(widget_load_image(widget, image_base->image, &bitmap) == RET_OK,
-                       RET_BAD_PARAMS);
-
-  if (vg != NULL) {
-    if (image_need_transform(widget)) {
-      if (image->draw_type == IMAGE_DRAW_ICON) {
-        vgcanvas_save(vg);
-        image_transform(widget, c);
-        vgcanvas_draw_icon(vg, &bitmap, 0, 0, bitmap.w, bitmap.h, 0, 0, widget->w, widget->h);
-        vgcanvas_restore(vg);
-
-        return RET_OK;
-      } else {
-        log_warn("only draw_type == icon supports transformation.\n");
+  do {
+    if (image_base->image != NULL &&
+        widget_load_image(widget, image_base->image, &bitmap) == RET_OK) {
+      if (vg != NULL) {
+        if (image_need_transform(widget)) {
+          if (image->draw_type == IMAGE_DRAW_ICON) {
+            vgcanvas_save(vg);
+            image_transform(widget, c);
+            vgcanvas_draw_icon(vg, &bitmap, 0, 0, bitmap.w, bitmap.h, 0, 0, widget->w, widget->h);
+            vgcanvas_restore(vg);
+            break;
+          } else {
+            log_warn("only draw_type == icon supports transformation.\n");
+          }
+        }
       }
-    }
-  }
 
-  dst = rect_init(0, 0, widget->w, widget->h);
-  canvas_draw_image_ex(c, &bitmap, image->draw_type, &dst);
+      dst = rect_init(0, 0, widget->w, widget->h);
+      canvas_draw_image_ex(c, &bitmap, image->draw_type, &dst);
+    }
+  } while (FALSE);
 
   widget_paint_helper(widget, c, NULL, NULL);
 
