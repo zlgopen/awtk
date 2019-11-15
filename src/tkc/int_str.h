@@ -29,7 +29,9 @@ BEGIN_C_DECLS
 /**
  * @class int_str_t
  * @annotation ["fake"]
- * 数字 字符串类型。
+ * 数字-字符串类型。
+ *
+ * 负责把一个数字映射成一个字符串。
  *
  * 示例：
  *
@@ -48,7 +50,6 @@ typedef struct _int_str_t {
 
 /**
  * @method int_str_value
- *
  * 根据name获取对应的value。
  *
  * @param {const int_str_t*} items int_str_t数组。
@@ -60,7 +61,6 @@ const char* int_str_value(const int_str_t* items, int32_t name);
 
 /**
  * @method int_str_name
- *
  * 根据value获取对应的name。
  *
  * @param {const int_str_t*} items int_str_t数组。

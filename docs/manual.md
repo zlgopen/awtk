@@ -254,7 +254,6 @@
 * [func\_call\_parser](manual/func_call_parser_t.md) 从字符串中解析出函数调用需要的参数。
 * [idle\_info](manual/idle_info_t.md) 单个 idle 的信息。
 * [idle\_manager](manual/idle_manager_t.md) idle_manager_t管理器
-* [int\_str](manual/int_str_t.md) 数字 字符串类型
 * [iostream](manual/iostream_t.md) 没有对应的 MD 文档
 * [istream](manual/istream_t.md) 没有对应的 MD 文档
 * [matrix](manual/matrix_t.md) 没有对应的 MD 文档
@@ -273,9 +272,6 @@
 * [rom\_fs](manual/rom_fs_t.md) rom_file接口
 * [slist](manual/slist_t.md) 单向链表
 * [socket\_pair](manual/socket_pair_t.md) 没有对应的 MD 文档
-* [str](manual/str_t.md) 可变长度的 UTF8 字符串。
-* [str\_str](manual/str_str_t.md) 字符串 字符串类型
-* [stream\_const](manual/stream_const_t.md) 没有对应的 MD 文档
 * [thread](manual/tk_thread_t.md) 线程对象。
 * [time\_now](manual/time_now_t.md) 获取当前时间的函数。
 * [timer\_info](manual/timer_info_t.md) 单个定时器的信息。
@@ -284,6 +280,9 @@
 * [utf8](manual/utf8_t.md) wchar_t和char类型转换接口
 * [utils](manual/utils_t.md) 工具类
 * [value](manual/value_t.md) 一个通用数据类型，用来存放整数、浮点数、字符串和其它对象。
+* [int\_str](manual/int_str_t.md) 数字-字符串类型
+* [str\_str](manual/str_str_t.md) 字符串-字符串类型
+* [str](manual/str_t.md) 可变长度的 UTF8 字符串。
 * [wstr](manual/wstr_t.md) 可变长度的宽字符字符串。
 
 

@@ -29,7 +29,9 @@ BEGIN_C_DECLS
 /**
  * @class str_str_t
  * @annotation ["fake"]
- * 字符串 字符串类型。
+ * 字符串-字符串类型。
+ *
+ * 负责把一个字符串映射成另外一个字符串。
  *
  * 示例：
  *
@@ -48,7 +50,6 @@ typedef struct _str_str_t {
 
 /**
  * @method str_str_value
- *
  * 根据name获取对应的value。
  *
  * @param {const str_str_t*} items str_str_t数组。
@@ -60,7 +61,6 @@ const char* str_str_value(const str_str_t* items, const char* name);
 
 /**
  * @method str_str_name
- *
  * 根据value获取对应的name。
  *
  * @param {const str_str_t*} items str_str_t数组。

@@ -20208,7 +20208,7 @@
           }
         ],
         "annotation": {},
-        "desc": "\n 根据name获取对应的value。\n\n\n\n",
+        "desc": " 根据name获取对应的value。\n\n\n\n",
         "name": "int_str_value",
         "return": {
           "type": "const char*",
@@ -20234,7 +20234,7 @@
           }
         ],
         "annotation": {},
-        "desc": "\n 根据value获取对应的name。\n\n\n\n",
+        "desc": " 根据value获取对应的name。\n\n\n\n",
         "name": "int_str_name",
         "return": {
           "type": "int32_t",
@@ -20245,7 +20245,7 @@
     "events": [],
     "properties": [],
     "header": "tkc/int_str.h",
-    "desc": " 数字 字符串类型。\n\n 示例：\n\n ```c\n static const int_str_t color_values[] = {{1, \"red\"}, {2, \"black\"}, {3, \"blue\"}, {4, \"white\"}};\n const char* value = int_str_value(color_values, 3);\n int32_t name = int_str_name(color_values, \"blue\", 0);\n printf(\"value = %s \\n\", value);\n printf(\"name = %d \\n\", name);\n ```\n\n",
+    "desc": " 数字-字符串类型。\n\n 负责把一个数字映射成一个字符串。\n\n 示例：\n\n ```c\n static const int_str_t color_values[] = {{1, \"red\"}, {2, \"black\"}, {3, \"blue\"}, {4, \"white\"}};\n const char* value = int_str_value(color_values, 3);\n int32_t name = int_str_name(color_values, \"blue\", 0);\n printf(\"value = %s \\n\", value);\n printf(\"name = %d \\n\", name);\n ```\n\n",
     "name": "int_str_t",
     "annotation": {
       "fake": true
@@ -22566,7 +22566,7 @@
           }
         ],
         "annotation": {},
-        "desc": "\n 根据name获取对应的value。\n\n\n\n",
+        "desc": " 根据name获取对应的value。\n\n\n\n",
         "name": "str_str_value",
         "return": {
           "type": "const char*",
@@ -22587,7 +22587,7 @@
           }
         ],
         "annotation": {},
-        "desc": "\n 根据value获取对应的name。\n\n\n\n",
+        "desc": " 根据value获取对应的name。\n\n\n\n",
         "name": "str_str_name",
         "return": {
           "type": "const char*",
@@ -22598,7 +22598,7 @@
     "events": [],
     "properties": [],
     "header": "tkc/str_str.h",
-    "desc": " 字符串 字符串类型。\n\n 示例：\n\n ```c\n static const str_str_t color_values[] = {{\"1\", \"red\"}, {\"2\", \"black\"}, {\"3\", \"blue\"}, {\"4\", \"white\"}};\n const char* value = str_str_value(color_values, \"3\");\n const char* name = str_str_name(color_values, \"blue\", \"0\");\n printf(\"value = %s \\n\", value);\n printf(\"name = %s \\n\", name);\n ```\n\n",
+    "desc": " 字符串-字符串类型。\n\n 负责把一个字符串映射成另外一个字符串。\n\n 示例：\n\n ```c\n static const str_str_t color_values[] = {{\"1\", \"red\"}, {\"2\", \"black\"}, {\"3\", \"blue\"}, {\"4\", \"white\"}};\n const char* value = str_str_value(color_values, \"3\");\n const char* name = str_str_name(color_values, \"blue\", \"0\");\n printf(\"value = %s \\n\", value);\n printf(\"name = %s \\n\", name);\n ```\n\n",
     "name": "str_str_t",
     "annotation": {
       "fake": true

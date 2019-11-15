@@ -1,6 +1,8 @@
 ## str\_str\_t
 ### 概述
- 字符串 字符串类型。
+ 字符串-字符串类型。
+
+ 负责把一个字符串映射成另外一个字符串。
 
  示例：
 
@@ -19,15 +21,14 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#str_str_t_str_str_name">str\_str\_name</a> |  |
-| <a href="#str_str_t_str_str_value">str\_str\_value</a> |  |
+| <a href="#str_str_t_str_str_name">str\_str\_name</a> | 根据value获取对应的name。 |
+| <a href="#str_str_t_str_str_value">str\_str\_value</a> | 根据name获取对应的value。 |
 #### str\_str\_name 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="str_str_t_str_str_name">
- 根据value获取对应的name。
+> <p id="str_str_t_str_str_name"> 根据value获取对应的name。
 
 
 
@@ -51,8 +52,7 @@ const char* str_str_name (const str_str_t* items, const char* value);
 
 * 函数功能：
 
-> <p id="str_str_t_str_str_value">
- 根据name获取对应的value。
+> <p id="str_str_t_str_str_value"> 根据name获取对应的value。
 
 
 
