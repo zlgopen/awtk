@@ -227,7 +227,6 @@
 * [emitter](manual/emitter_t.md)事件分发器, 用于实现观察者模式。
 * [rgba](manual/rgba_t.md) RGBA颜色值。
 * [asset\_info](manual/asset_info_t.md) 资源类型定义。
-* [mime\_types](manual/mime_types_t.md) mime_types
 
 ### 流
 
