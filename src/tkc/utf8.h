@@ -27,7 +27,7 @@
 BEGIN_C_DECLS
 
 /**
- * @class utf8
+ * @class utf8_t
  * @annotation ["fake"]
  * wchar_t和char类型转换接口。
  *

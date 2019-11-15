@@ -24202,7 +24202,7 @@
     "properties": [],
     "header": "tkc/utf8.h",
     "desc": " wchar_t和char类型转换接口。\n\n 示例：\n\n ```c\n const char* str = \"hello\";\n const wchar_t* wstr = L\"hello\";\n char res_str[128];\n wchar_t res_wstr[128];\n\n utf8_to_utf16(str, res_wstr, ARRAY_SIZE(res_wstr));\n utf8_from_utf16(wstr, res_str, ARRAY_SIZE(res_str));\n ```\n\n",
-    "name": "utf8",
+    "name": "utf8_t",
     "annotation": {
       "fake": true
     },
