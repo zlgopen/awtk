@@ -281,7 +281,7 @@
 * [timer\_info](manual/timer_info_t.md) 单个定时器的信息。
 * [timer\_manager](manual/timer_manager_t.md) timer_manager_t管理器
 * [tokenizer](manual/tokenizer_t.md) 从字符串中解析出一个一个的 token。
-* [utf8](\manual/utf8_t.md) wchar_t和char类型转换接口
+* [utf8](manual/utf8_t.md) wchar_t和char类型转换接口
 * [utils](manual/utils_t.md) 工具类
 * [value](manual/value_t.md) 一个通用数据类型，用来存放整数、浮点数、字符串和其它对象。
 * [wstr](manual/wstr_t.md) 可变长度的宽字符字符串。
