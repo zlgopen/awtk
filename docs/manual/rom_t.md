@@ -25,6 +25,7 @@ rom_fclose(f);
 | <a href="#rom_t_rom_fread">rom\_fread</a> | 读取文件。 |
 | <a href="#rom_t_rom_fseek">rom\_fseek</a> | 设置文件当前位置。 |
 | <a href="#rom_t_rom_ftell">rom\_ftell</a> | 返回文件当前位置。 |
+| <a href="#rom_t_rom_fwrite">rom\_fwrite</a> | 写文件。 |
 #### rom\_fclose 函数
 -----------------------
 
@@ -171,4 +172,28 @@ long rom_ftell (rom_file_t* f);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | long | 返回当前位置。 |
+| f | rom\_file\_t* | rom\_file\_t对象。 |
+#### rom\_fwrite 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="rom_t_rom_fwrite">写文件。
+> 本函数什么也不做。
+
+
+* 函数原型：
+
+```
+size_t rom_fwrite (void* ptr, size_t size, size_t nitems, rom_file_t* f);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | size\_t | 返回实际写的字节数。 |
+| ptr | void* | 数据的缓冲区。 |
+| size | size\_t | 缓冲区大小。 |
+| nitems | size\_t | 元素的个数。 |
 | f | rom\_file\_t* | rom\_file\_t对象。 |

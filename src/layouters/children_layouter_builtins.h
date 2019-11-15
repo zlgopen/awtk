@@ -28,6 +28,8 @@ BEGIN_C_DECLS
 
 /**
  * @method children_layouter_register_builtins
+ * @annotation ["private"]
+ *
  * 注册内置的子控件布局算法。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

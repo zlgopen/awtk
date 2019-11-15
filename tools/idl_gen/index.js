@@ -140,6 +140,8 @@ class IDLGenerator {
       method.header = this.filename;
 
       this.result.push(method);
+    } else if (method.annotation.private) {
+      console.log('skip ' + method.name);
     } else if (this.cls) {
       this.cls.methods.push(method);
     }

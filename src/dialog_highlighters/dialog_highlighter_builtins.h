@@ -28,6 +28,8 @@ BEGIN_C_DECLS
 
 /**
  * @method dialog_highlighter_register_builtins
+ * @annotation ["private"]
+ *
  * 注册内置的对话框高亮策略。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

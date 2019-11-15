@@ -152,18 +152,6 @@
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
         }
-      },
-      {
-        "params": [],
-        "annotation": {
-          "private": true
-        },
-        "desc": "初始化资源。\n",
-        "name": "tk_init_assets",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
       }
     ],
     "events": [],
@@ -3072,18 +3060,6 @@
         }
       },
       {
-        "params": [],
-        "annotation": {
-          "private": true
-        },
-        "desc": "查找指定ID的idle。\n",
-        "name": "idle_find",
-        "return": {
-          "type": "idle_info_t*",
-          "desc": "返回idle的信息。"
-        }
-      },
-      {
         "params": [
           {
             "type": "uint32_t",
@@ -3104,18 +3080,6 @@
         "annotation": {},
         "desc": "设置一个回调函数，在idle被销毁时调用(方便脚本语言去释放回调函数)。\n",
         "name": "idle_set_on_destroy",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [],
-        "annotation": {
-          "private": true
-        },
-        "desc": "调用全部idle的函数。\n",
-        "name": "idle_dispatch",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -5320,24 +5284,6 @@
             "desc": "lcd对象。"
           }
         ],
-        "annotation": {
-          "private": true
-        },
-        "desc": "对于double fb，如果硬件支持swap，在LCD_DRAW_SWAP模式下，该函数用于切换fb。\n",
-        "name": "lcd_swap",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "lcd_t*",
-            "name": "lcd",
-            "desc": "lcd对象。"
-          }
-        ],
         "annotation": {},
         "desc": "获取宽度。\n",
         "name": "lcd_get_width",
@@ -5360,42 +5306,6 @@
         "return": {
           "type": "wh_t",
           "desc": "返回高度。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "lcd_t*",
-            "name": "lcd",
-            "desc": "lcd对象。"
-          }
-        ],
-        "annotation": {
-          "private": true
-        },
-        "desc": "flush。\n",
-        "name": "lcd_flush",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "lcd_t*",
-            "name": "lcd",
-            "desc": "lcd对象。"
-          }
-        ],
-        "annotation": {
-          "private": true
-        },
-        "desc": "sync。\n",
-        "name": "lcd_sync",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       },
       {
@@ -7507,25 +7417,6 @@
       {
         "params": [
           {
-            "type": "timer_get_time_t",
-            "name": "get_time",
-            "desc": "获取当前时间的函数。"
-          }
-        ],
-        "annotation": {
-          "private": true,
-          "static": true
-        },
-        "desc": "初始化定时器系统。\n",
-        "name": "timer_prepare",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
             "type": "timer_func_t",
             "name": "on_timer",
             "desc": "timer回调函数。"
@@ -7663,30 +7554,6 @@
         "annotation": {},
         "desc": "设置一个回调函数，在timer被销毁时调用(方便脚本语言去释放回调函数)。\n",
         "name": "timer_set_on_destroy",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [],
-        "annotation": {
-          "private": true
-        },
-        "desc": "查找指定ID的timer。\n",
-        "name": "timer_find",
-        "return": {
-          "type": "timer_info_t*",
-          "desc": "返回timer的信息。"
-        }
-      },
-      {
-        "params": [],
-        "annotation": {
-          "private": true
-        },
-        "desc": "检查全部timer的函数，如果时间到期，调用相应的timer函数。\n",
-        "name": "timer_dispatch",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -10733,29 +10600,6 @@
             "type": "widget_animator_t*",
             "name": "animator",
             "desc": "动画对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "delta_time",
-            "desc": "时间增量。"
-          }
-        ],
-        "annotation": {
-          "private": true
-        },
-        "desc": "时间流失，更新动画(由动画管理器调用)。\n",
-        "name": "widget_animator_time_elapse",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_animator_t*",
-            "name": "animator",
-            "desc": "动画对象。"
           }
         ],
         "annotation": {},
@@ -13101,29 +12945,6 @@
             "desc": "控件对象。"
           },
           {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "画布对象。"
-          }
-        ],
-        "annotation": {
-          "private": true
-        },
-        "desc": "绘制控件到一个canvas上。\n",
-        "name": "widget_paint",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
             "type": "event_t*",
             "name": "e",
             "desc": "事件。"
@@ -13848,536 +13669,6 @@
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          }
-        ],
-        "annotation": {
-          "private": true
-        },
-        "desc": "判断当前控件是否是keyboard。\n> keyboard收到pointer事件时，不会让当前控件失去焦点。\n在自定义软键盘时，将所有按钮放到一个容器当中，并设置为is_keyboard。\n```c\nwidget_set_prop_bool(group, WIDGET_PROP_IS_KEYBOARD, TRUE);\n```\n",
-        "name": "widget_is_keyboard",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "画布对象。"
-          },
-          {
-            "type": "char*",
-            "name": "icon",
-            "desc": "图标的名称。"
-          },
-          {
-            "type": "wstr_t*",
-            "name": "text",
-            "desc": "文字。"
-          }
-        ],
-        "annotation": {
-          "private": true
-        },
-        "desc": "帮助子控件实现自己的绘制函数。\n",
-        "name": "widget_paint_helper",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "画布对象。"
-          },
-          {
-            "type": "rect_t*",
-            "name": "r",
-            "desc": "矩形区域。"
-          }
-        ],
-        "annotation": {
-          "private": true
-        },
-        "desc": "根据控件的style绘制边框矩形。\n",
-        "name": "widget_stroke_border_rect",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "画布对象。"
-          },
-          {
-            "type": "rect_t*",
-            "name": "r",
-            "desc": "矩形区域。"
-          },
-          {
-            "type": "image_draw_type_t",
-            "name": "draw_type",
-            "desc": "图片缺省绘制方式。"
-          }
-        ],
-        "annotation": {
-          "private": true
-        },
-        "desc": "根据控件的style绘制背景矩形。\n",
-        "name": "widget_fill_bg_rect",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "画布对象。"
-          },
-          {
-            "type": "rect_t*",
-            "name": "r",
-            "desc": "矩形区域。"
-          },
-          {
-            "type": "image_draw_type_t",
-            "name": "draw_type",
-            "desc": "图片缺省绘制方式。"
-          }
-        ],
-        "annotation": {
-          "private": true
-        },
-        "desc": "根据控件的style绘制前景矩形。\n",
-        "name": "widget_fill_fg_rect",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "画布对象。"
-          }
-        ],
-        "annotation": {
-          "private": true
-        },
-        "desc": "从widget的style中取出字体名称、大小和颜色数据，设置到canvas中。\n",
-        "name": "widget_prepare_text_style",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "wchar_t*",
-            "name": "text",
-            "desc": "文本。"
-          }
-        ],
-        "annotation": {
-          "private": true
-        },
-        "desc": "计算文本的宽度。\n字体由控件当前的状态和style决定。\n",
-        "name": "widget_measure_text",
-        "return": {
-          "type": "float_t",
-          "desc": "返回文本的宽度。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "event_t*",
-            "name": "e",
-            "desc": "事件对象。"
-          }
-        ],
-        "annotation": {
-          "private": true
-        },
-        "desc": "递归分发事件到targe控件。\n",
-        "name": "widget_dispatch_event_to_target_recursive",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "bool_t",
-            "name": "is_local",
-            "desc": "TRUE表示是相对与控件左上角的坐标，否则表示全局坐标。"
-          }
-        ],
-        "annotation": {
-          "private": true
-        },
-        "desc": "判断一个点是否在控件内。\n",
-        "name": "widget_is_point_in",
-        "return": {
-          "type": "bool_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "event_t*",
-            "name": "e",
-            "desc": "事件。"
-          }
-        ],
-        "annotation": {
-          "private": true
-        },
-        "desc": "递归的分发一个事件到所有target子控件。\n",
-        "name": "widget_dispatch_to_target",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "event_t*",
-            "name": "e",
-            "desc": "事件。"
-          }
-        ],
-        "annotation": {
-          "private": true
-        },
-        "desc": "递归的分发一个事件到所有key_target子控件。\n",
-        "name": "widget_dispatch_to_key_target",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标。"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标。"
-          }
-        ],
-        "annotation": {
-          "private": true
-        },
-        "desc": "查找x/y坐标对应的子控件。\n",
-        "name": "widget_find_target",
-        "return": {
-          "type": "widget*",
-          "desc": "子控件或NULL。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          }
-        ],
-        "annotation": {
-          "private": true
-        },
-        "desc": "语言改变后，重新翻译控件上的文本(包括子控件)。\n",
-        "name": "widget_re_translate_text",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "widget对象。"
-          },
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "widget的父控件。"
-          },
-          {
-            "type": "widget_vtable_t*",
-            "name": "vt",
-            "desc": "虚表。"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "private": true
-        },
-        "desc": "初始化控件。仅在子类控件构造函数中使用。\n> 请用widget\\_create代替本函数。\n@depreated\n",
-        "name": "widget_init",
-        "return": {
-          "type": "widget_t*",
-          "desc": "widget对象本身。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "widget的父控件。"
-          },
-          {
-            "type": "widget_vtable_t*",
-            "name": "vt",
-            "desc": "虚表。"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "private": true
-        },
-        "desc": "创建控件。仅在子类控件构造函数中使用。\n",
-        "name": "widget_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "widget对象本身。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "widget对象。"
-          }
-        ],
-        "annotation": {
-          "private": true
-        },
-        "desc": "让控件根据自己当前状态更新style。\n",
-        "name": "widget_update_style",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "widget对象。"
-          }
-        ],
-        "annotation": {
-          "private": true
-        },
-        "desc": "递归的把父控件的key_target设置为自己。\n",
-        "name": "widget_set_as_key_target",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "widget对象。"
-          }
-        ],
-        "annotation": {
-          "private": true
-        },
-        "desc": "把焦点移动下一个控件。\n>widget必须是当前焦点控件。\n",
-        "name": "widget_focus_next",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "widget对象。"
-          }
-        ],
-        "annotation": {
-          "private": true
-        },
-        "desc": "把焦点移动前一个控件。\n>widget必须是当前焦点控件。\n",
-        "name": "widget_focus_prev",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "widget对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "active",
-            "desc": "控件是否为当前项。"
-          },
-          {
-            "type": "bool_t",
-            "name": "checked",
-            "desc": "控件是否为选中项。"
-          }
-        ],
-        "annotation": {
-          "private": true
-        },
-        "desc": "把控件的状态转成获取style选要的状态，一般只在子类中使用。\n",
-        "name": "widget_get_state_for_style",
-        "return": {
-          "type": "const char*",
-          "desc": "返回状态值。"
         }
       },
       {
@@ -20064,18 +19355,6 @@
         }
       },
       {
-        "params": [],
-        "annotation": {
-          "private": true
-        },
-        "desc": "检查全部idle的函数，如果时间到期，调用相应的idle函数。\n",
-        "name": "idle_manager_dispatch",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
         "params": [
           {
             "type": "idle_manager_t*",
@@ -22405,10 +21684,8 @@
             "desc": "rom_file_t对象。"
           }
         ],
-        "annotation": {
-          "private": true
-        },
-        "desc": "写文件。\n",
+        "annotation": {},
+        "desc": "写文件。\n> 本函数什么也不做。\n",
         "name": "rom_fwrite",
         "return": {
           "type": "size_t",
@@ -24037,18 +23314,6 @@
         "return": {
           "type": "timer_info_t*",
           "desc": "返回timer的信息。"
-        }
-      },
-      {
-        "params": [],
-        "annotation": {
-          "private": true
-        },
-        "desc": "检查全部定时器的函数，如果时间到期，调用相应的timer函数。\n",
-        "name": "timer_manager_dispatch",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       },
       {
@@ -30050,144 +29315,6 @@
             "desc": "窗口管理器对象。"
           },
           {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "private": true
-        },
-        "desc": "post init。\n",
-        "name": "window_manager_post_init",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "窗口管理器对象。"
-          },
-          {
-            "type": "widget_t*",
-            "name": "window",
-            "desc": "窗口对象。"
-          }
-        ],
-        "annotation": {
-          "private": true
-        },
-        "desc": "打开窗口。\n",
-        "name": "window_manager_open_window",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "窗口管理器对象。"
-          },
-          {
-            "type": "widget_t*",
-            "name": "window",
-            "desc": "窗口对象。"
-          }
-        ],
-        "annotation": {
-          "private": true
-        },
-        "desc": "关闭窗口。\n",
-        "name": "window_manager_close_window",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "窗口管理器对象。"
-          },
-          {
-            "type": "widget_t*",
-            "name": "window",
-            "desc": "窗口对象。"
-          }
-        ],
-        "annotation": {
-          "private": true
-        },
-        "desc": "强制立即关闭窗口。\n> 本函数不会执行窗口动画。\n",
-        "name": "window_manager_close_window_force",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "窗口管理器对象。"
-          }
-        ],
-        "annotation": {
-          "private": true
-        },
-        "desc": "绘制。\n> 仅由主循环调用。\n",
-        "name": "window_manager_paint",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "窗口管理器对象。"
-          },
-          {
-            "type": "event_t*",
-            "name": "e",
-            "desc": "事件对象。"
-          }
-        ],
-        "annotation": {
-          "private": true
-        },
-        "desc": "分发输入事件。\n> 一般仅由主循环调用，特殊情况也可以用来注入事件。\n",
-        "name": "window_manager_dispatch_input_event",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "窗口管理器对象。"
-          },
-          {
             "type": "bool_t",
             "name": "show_fps",
             "desc": "是否显示FPS。"
@@ -30535,16 +29662,6 @@
         "return": {
           "type": "compressor_t*",
           "desc": "返回compressor对象。"
-        }
-      },
-      {
-        "params": [],
-        "annotation": {},
-        "desc": "注册内置的对话框高亮策略。\n",
-        "name": "dialog_highlighter_register_builtins",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       }
     ],
@@ -38921,16 +38038,6 @@
           "type": "children_layouter_t*",
           "desc": "返回创建子控件布局对象。"
         }
-      },
-      {
-        "params": [],
-        "annotation": {},
-        "desc": "注册内置的控件自身布局算法。\n",
-        "name": "self_layouter_register_builtins",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
       }
     ],
     "events": [],
@@ -43015,16 +42122,6 @@
         "return": {
           "type": "input_method_t*",
           "desc": "返回输入法对象。"
-        }
-      },
-      {
-        "params": [],
-        "annotation": {},
-        "desc": "注册内置的子控件布局算法。\n",
-        "name": "children_layouter_register_builtins",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       }
     ],

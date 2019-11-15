@@ -28,6 +28,9 @@ BEGIN_C_DECLS
 
 /**
  * @method self_layouter_register_builtins
+ * @of_class self_layouter_t
+ * @annotation ["private"]
+ *
  * 注册内置的控件自身布局算法。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
