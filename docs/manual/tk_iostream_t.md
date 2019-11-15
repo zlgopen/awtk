@@ -2,7 +2,7 @@
 ### 概述
 ![image](images/tk_iostream_t_0.png)
 
-input/output stream interface
+输入输出流的接口。
 
 ----------------------------------
 ### 函数

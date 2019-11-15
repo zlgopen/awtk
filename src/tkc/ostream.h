@@ -38,7 +38,7 @@ typedef ret_t (*tk_ostream_seek_t)(tk_ostream_t* stream, uint32_t offset);
  * @class tk_ostream_t
  * @parent object_t
  *
- * input stream interface
+ * 输出流的接口。
  *
  */
 struct _tk_ostream_t {

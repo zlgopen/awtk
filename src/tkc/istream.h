@@ -39,7 +39,7 @@ typedef ret_t (*tk_istream_wait_for_data_t)(tk_istream_t* stream, uint32_t timeo
  * @class tk_istream_t
  * @parent object_t
  *
- * input stream interface
+ * 输入流的接口。
  *
  */
 struct _tk_istream_t {

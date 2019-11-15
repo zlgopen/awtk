@@ -44011,7 +44011,7 @@
     "events": [],
     "properties": [],
     "header": "tkc/ostream.h",
-    "desc": "input stream interface\n",
+    "desc": "输出流的接口。\n",
     "name": "tk_ostream_t",
     "parent": "object_t",
     "level": 3
@@ -44519,7 +44519,7 @@
     "events": [],
     "properties": [],
     "header": "tkc/iostream.h",
-    "desc": "input/output stream interface\n",
+    "desc": "输入输出流的接口。\n",
     "name": "tk_iostream_t",
     "parent": "object_t",
     "level": 3
@@ -44677,7 +44677,7 @@
     "events": [],
     "properties": [],
     "header": "tkc/istream.h",
-    "desc": "input stream interface\n",
+    "desc": "输入流的接口。\n",
     "name": "tk_istream_t",
     "parent": "object_t",
     "level": 3

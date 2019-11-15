@@ -38,7 +38,7 @@ typedef tk_ostream_t* (*tk_iostream_get_ostream_t)(tk_iostream_t* stream);
  * @class tk_iostream_t
  * @parent object_t
  *
- * input/output stream interface
+ * 输入输出流的接口。
  *
  */
 struct _tk_iostream_t {

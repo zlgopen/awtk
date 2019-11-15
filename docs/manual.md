@@ -254,8 +254,6 @@
 * [func\_call\_parser](manual/func_call_parser_t.md) 从字符串中解析出函数调用需要的参数。
 * [idle\_info](manual/idle_info_t.md) 单个 idle 的信息。
 * [idle\_manager](manual/idle_manager_t.md) idle_manager_t管理器
-* [iostream](manual/iostream_t.md) 没有对应的 MD 文档
-* [istream](manual/istream_t.md) 没有对应的 MD 文档
 * [matrix](manual/matrix_t.md) 没有对应的 MD 文档
 * [mem](manual/tk_mem_t.md) 内存管理相关的宏和函数。
 * [mime\_types](manual/mime_types_t.md) mime_types
@@ -264,7 +262,6 @@
 * [object](manual/object_t.md) 对象接口。
 * [object\_array](manual/object_array_t.md) 简单的动态数组，内部存放 value 对象。
 * [object\_default](manual/object_default_t.md) 对象接口的缺省实现。
-* [ostream](manual/ostream_t.md) 没有对应的 MD 文档
 * [path](manual/path_t.md) 路径接口
 * [platform](manual/platform_t.md) 平台接口，包括：获取时间、休眠等函数
 * [point](manual/point_t.md) 点。
@@ -285,5 +282,7 @@
 * [slist](manual/slist_t.md) 单向链表
 * [str](manual/str_t.md) 可变长度的 UTF8 字符串。
 * [wstr](manual/wstr_t.md) 可变长度的宽字符字符串。
-
+* [istream](manual/tk_istream_t.md) 输入流的接口。
+* [ostream](manual/tk_ostream_t.md) 输出流的接口。
+* [iostream](manual/tk_iostream_t.md) 输入/出流的接口。
 
