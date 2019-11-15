@@ -165,6 +165,15 @@ ret_t hscroll_label_set_only_focus(widget_t* widget, bool_t only_focus) {
   return RET_OK;
 }
 
+ret_t hscroll_label_set_only_parent_focus(widget_t* widget, bool_t only_parent_focus) {
+  hscroll_label_t* hscroll_label = HSCROLL_LABEL(widget);
+  return_value_if_fail(hscroll_label != NULL, RET_BAD_PARAMS);
+
+  hscroll_label->only_parent_focus = only_parent_focus;
+
+  return RET_OK;
+}
+
 ret_t hscroll_label_set_yoyo(widget_t* widget, bool_t yoyo) {
   hscroll_label_t* hscroll_label = HSCROLL_LABEL(widget);
   return_value_if_fail(hscroll_label != NULL, RET_BAD_PARAMS);
@@ -208,6 +217,9 @@ static ret_t hscroll_label_get_prop(widget_t* widget, const char* name, value_t*
   } else if (tk_str_eq(name, HSCROLL_LABEL_PROP_ONLY_FOCUS)) {
     value_set_bool(v, hscroll_label->only_focus);
     return RET_OK;
+  } else if (tk_str_eq(name, HSCROLL_LABEL_PROP_ONLY_PARENT_FOCUS)) {
+    value_set_bool(v, hscroll_label->only_parent_focus);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -230,6 +242,8 @@ static ret_t hscroll_label_set_prop(widget_t* widget, const char* name, const va
     return hscroll_label_set_ellipses(widget, value_bool(v));
   } else if (tk_str_eq(name, HSCROLL_LABEL_PROP_ONLY_FOCUS)) {
     return hscroll_label_set_only_focus(widget, value_bool(v));
+  } else if (tk_str_eq(name, HSCROLL_LABEL_PROP_ONLY_PARENT_FOCUS)) {
+    return hscroll_label_set_only_parent_focus(widget, value_bool(v));
   }
 
   return RET_NOT_FOUND;
@@ -278,6 +292,10 @@ static ret_t hscroll_label_on_timer_start(const timer_info_t* info) {
     if (widget->focused) {
       hscroll_label_start(widget);
     }
+  } else if (hscroll_label->only_parent_focus) {
+    if (widget->parent->focused) {
+      hscroll_label_start(widget);
+    }
   } else {
     hscroll_label_start(widget);
   }
@@ -294,6 +312,12 @@ static ret_t hscroll_label_on_timer(const timer_info_t* info) {
 
   if (hscroll_label->only_focus) {
     if (!widget->focused) {
+      hscroll_label_stop(widget);
+
+      return RET_REMOVE;
+    }
+  } else if (hscroll_label->only_parent_focus) {
+    if (!widget->parent->focused) {
       hscroll_label_stop(widget);
 
       return RET_REMOVE;
@@ -384,11 +408,42 @@ static ret_t hscroll_label_on_event(widget_t* widget, event_t* e) {
   return RET_OK;
 }
 
+static ret_t hscroll_label_on_parent_focus_changed(void* ctx, event_t* e) {
+  widget_t* widget = WIDGET(ctx);
+  hscroll_label_t* hscroll_label = HSCROLL_LABEL(widget);
+  if (hscroll_label->only_parent_focus) {
+    if (e->type == EVT_FOCUS) {
+      hscroll_label_start(widget);
+    } else {
+      hscroll_label_stop(widget);
+    }
+  }
+
+  return RET_OK;
+}
+
+static ret_t hscroll_label_on_attach_parent(widget_t* widget, widget_t* parent) {
+  widget_on_with_tag(parent, EVT_FOCUS, hscroll_label_on_parent_focus_changed, widget,
+                     tk_pointer_to_int(widget));
+  widget_on_with_tag(parent, EVT_BLUR, hscroll_label_on_parent_focus_changed, widget,
+                     tk_pointer_to_int(widget));
+
+  return RET_OK;
+}
+
+static ret_t hscroll_label_on_detach_parent(widget_t* widget, widget_t* parent) {
+  widget_off_by_tag(parent, tk_pointer_to_int(widget));
+
+  return RET_OK;
+}
+
 TK_DECL_VTABLE(hscroll_label) = {.size = sizeof(hscroll_label_t),
                                  .type = WIDGET_TYPE_HSCROLL_LABEL,
                                  .parent = TK_PARENT_VTABLE(widget),
                                  .create = hscroll_label_create,
                                  .on_destroy = hscroll_label_on_destroy,
+                                 .on_attach_parent = hscroll_label_on_attach_parent,
+                                 .on_detach_parent = hscroll_label_on_detach_parent,
                                  .set_prop = hscroll_label_set_prop,
                                  .get_prop = hscroll_label_get_prop,
                                  .on_event = hscroll_label_on_event,

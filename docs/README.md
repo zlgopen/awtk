@@ -46,6 +46,8 @@
 * [如何编译Windows 32位版本](how_to_build_windows_32bit_version.md)
 * [如何支持单色LCD](how_to_support_mono_lcd.md)
 
+* [如何让文本滚动起来](how_to_scroll_you_text.md)
+
 ### 3.内部原理
 * [AWTK脚本绑定原理](script_binding.md)
 

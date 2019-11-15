@@ -1096,7 +1096,11 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
       canvas_draw_icon_in_rect(c, &img, &r_icon);
       canvas_draw_text_in_rect(c, text->str, text->size, &r_text);
     } else {
-      widget_calc_icon_text_rect(&ir, font_size, icon_at, spacer, NULL, &r_icon);
+      if (icon_at == ICON_AT_AUTO) {
+        widget_calc_icon_text_rect(&ir, font_size, icon_at, spacer, NULL, &r_icon);
+      } else {
+        widget_calc_icon_text_rect(&ir, font_size, icon_at, spacer, &r_text, &r_icon);
+      }
       canvas_draw_icon_in_rect(c, &img, &r_icon);
     }
   } else if (text != NULL && text->size > 0) {
