@@ -556,6 +556,7 @@ static ret_t mledit_init_idle_func(const idle_info_t* info) {
   mledit_set_cursor(WIDGET(mledit), 0);
   text_edit_get_state(mledit->model, &state);
   mledit_on_text_edit_state_changed(mledit, &state);
+
   return RET_REMOVE;
 }
 
@@ -592,7 +593,7 @@ widget_t* mledit_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   wstr_init(&(mledit->temp), 0);
   widget_set_text(widget, L"");
 
-  idle_add(mledit_init_idle_func, widget);
+  widget_add_idle(widget, mledit_init_idle_func);
 
   return widget;
 }
