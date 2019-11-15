@@ -21313,11 +21313,11 @@
           {
             "type": "uint32_t",
             "name": "ms",
-            "desc": "毫秒。"
+            "desc": "睡眠时间(毫秒)。"
           }
         ],
         "annotation": {},
-        "desc": "\r\n 睡眠毫秒。\r\n\r\n\r\n",
+        "desc": "\r\n 睡眠指定时间。\r\n\r\n\r\n",
         "name": "sleep_ms",
         "return": {
           "type": "void",
@@ -21339,9 +21339,8 @@
     "properties": [],
     "header": "tkc/platform.h",
     "desc": " 平台接口，包括：获取时间、休眠等函数。\r\n",
-    "name": "platform",
+    "name": "platform_t",
     "annotation": {
-      "scriptable": true,
       "fake": true
     },
     "level": 1

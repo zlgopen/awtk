@@ -27,8 +27,8 @@
 BEGIN_C_DECLS
 
 /**
- * @class platform
- * @annotation ["scriptable", "fake"]
+ * @class platform_t
+ * @annotation ["fake"]
  * 平台接口，包括：获取时间、休眠等函数。
  */
 
@@ -43,9 +43,9 @@ uint64_t get_time_ms64(void);
 /**
  * @method sleep_ms
  *
- * 睡眠毫秒。
+ * 睡眠指定时间。
  *
- * @param {uint32_t} ms 毫秒。
+ * @param {uint32_t} ms 睡眠时间(毫秒)。
  *
  * @return {void} 无。
  */
