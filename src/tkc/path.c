@@ -223,12 +223,3 @@ ret_t path_replace_basename(char* result, int32_t size, const char* filename,
   return path_build(result, size, dirname, basename, NULL);
 }
 
-ret_t path_create(const char* path) {
-  /*TODO*/
-  return RET_FAIL;
-}
-
-ret_t path_remove(const char* path) {
-  /*TODO*/
-  return RET_FAIL;
-}

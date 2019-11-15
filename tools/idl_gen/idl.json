@@ -21181,7 +21181,7 @@
           }
         ],
         "annotation": {},
-        "desc": "构造路径。\n",
+        "desc": "构造路径。\n> 可变参数为字符串，以NULL参数结束。\n",
         "name": "path_build",
         "return": {
           "type": "ret_t",
@@ -21288,7 +21288,7 @@
     "properties": [],
     "header": "tkc/path.h",
     "desc": "路径接口。\n",
-    "name": "path",
+    "name": "path_t",
     "annotation": {
       "scriptable": true,
       "fake": true

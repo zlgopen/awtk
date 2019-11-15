@@ -27,7 +27,7 @@
 BEGIN_C_DECLS
 
 /**
- * @class path
+ * @class path_t
  * @annotation ["scriptable", "fake"]
  * 路径接口。
  */
@@ -102,6 +102,8 @@ ret_t path_abs(const char* path, char* result, int32_t size);
  *
  * 构造路径。
  *
+ *> 可变参数为字符串，以NULL参数结束。
+ *
  * @param {char*} result 用于返回路径。
  * @param {uint32_t} size 缓冲区大小。
  *
@@ -166,9 +168,6 @@ ret_t path_app_root(char path[MAX_PATH + 1]);
  * @return {ret_t} 返回TRUE表示成功，否则表示失败。
  */
 bool_t path_exist(const char* path);
-
-ret_t path_create(const char* path);
-ret_t path_remove(const char* path);
 
 END_C_DECLS
 
