@@ -32,13 +32,69 @@ BEGIN_C_DECLS
 
 #define MAX_ATTR_KEY_VALUE_NR (TK_XML_MAX_ATTRS * 2)
 
+/**
+ * @class XmlParser
+ * xml解析器
+ */
+
 struct _XmlParser;
 typedef struct _XmlParser XmlParser;
 
+/**
+ * @method xml_parser_create
+ *
+ * 创建解析器。
+ *
+ * @return {XmlParser*} 返回parser对象。
+ */
 XmlParser* xml_parser_create(void);
+
+/**
+ * @method xml_parser_set_builder
+ *
+ * 设置builder。
+ *
+ * @param {XmlParser*} thiz parser对象。
+ * @param {XmlBuilder*} builder builder对象。
+ *
+ * @return {void} 返回无。
+ */
 void xml_parser_set_builder(XmlParser* thiz, XmlBuilder* builder);
+
+/**
+ * @method xml_parser_parse
+ *
+ * 解析数据。
+ *
+ * @param {XmlParser*} thiz parser对象。
+ * @param {const char*} xml 数据。
+ * @param {int} length 数据长度。
+ *
+ * @return {void} 返回无。
+ */
 void xml_parser_parse(XmlParser* thiz, const char* xml, int length);
+
+/**
+ * @method xml_parser_parse_file
+ *
+ * 解析文件。
+ *
+ * @param {XmlParser*} thiz parser对象。
+ * @param {const char*} filename 文件名。
+ *
+ * @return {void} 返回无。
+ */
 void xml_parser_parse_file(XmlParser* thiz, const char* filename);
+
+/**
+ * @method xml_parser_destroy
+ *
+ * 销毁parser对象。
+ *
+ * @param {XmlParser*} thiz parser对象。
+ *
+ * @return {void} 返回无。
+ */
 void xml_parser_destroy(XmlParser* thiz);
 
 END_C_DECLS

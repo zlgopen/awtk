@@ -309,6 +309,7 @@
  
 * [ubjson\_parser](manual/ubjson_parser_t.md)
 * [ubjson\_writer](manual/ubjson_writer_t.md)
+* [xml\_parser](manual/XmlParser.md)
 
 ### 工具类
 
