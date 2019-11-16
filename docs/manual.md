@@ -305,6 +305,11 @@
 * [platform](manual/platform_t.md) 平台接口，包括：获取时间、休眠等函数
 * [socket\_pair](manual/socketpair_t.md) 生成两个可以互相通信的socket句柄。
 
+### 数据格式
+ 
+* [ubjson\_parser](manual/ubjson_parser_t.md)
+* [ubjson\_writer](manual/ubjson_writer_t.md)
+
 ### 工具类
 
 * [easing](manual/easing_type_t.md) 缓动作常量定义。
