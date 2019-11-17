@@ -726,16 +726,40 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_WITH_FOCUS_STATE "with_focus_state"
 
 /**
+ * @const WIDGET_PROP_MOVE_FOCUS_PREV_KEY
+ * 将焦点移到前一个的键值。
+ */
+#define WIDGET_PROP_MOVE_FOCUS_PREV_KEY "move_focus_prev_key"
+
+/**
  * @const WIDGET_PROP_MOVE_FOCUS_NEXT_KEY
- * 将焦点移到下一个的键值。
+ * 将焦点移到后一个的键值。
  */
 #define WIDGET_PROP_MOVE_FOCUS_NEXT_KEY "move_focus_next_key"
 
 /**
- * @const WIDGET_PROP_MOVE_FOCUS_PREV_KEY
- * 将焦点移到下一个的键值。
+ * @const WIDGET_PROP_MOVE_FOCUS_UP_KEY
+ * 将焦点向上移动的键值。
  */
-#define WIDGET_PROP_MOVE_FOCUS_PREV_KEY "move_focus_prev_key"
+#define WIDGET_PROP_MOVE_FOCUS_UP_KEY "move_focus_up_key"
+
+/**
+ * @const WIDGET_PROP_MOVE_FOCUS_DOWN_KEY
+ * 将焦点向下移动的键值。
+ */
+#define WIDGET_PROP_MOVE_FOCUS_DOWN_KEY "move_focus_down_key"
+
+/**
+ * @const WIDGET_PROP_MOVE_FOCUS_LEFT_KEY
+ * 将焦点向左移动的键值。
+ */
+#define WIDGET_PROP_MOVE_FOCUS_LEFT_KEY "move_focus_left_key"
+
+/**
+ * @const WIDGET_PROP_MOVE_FOCUS_RIGHT_KEY
+ * 将焦点向右移动的键值。
+ */
+#define WIDGET_PROP_MOVE_FOCUS_RIGHT_KEY "move_focus_right_key"
 
 /**
  * @enum widget_type_t

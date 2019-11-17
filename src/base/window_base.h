@@ -134,12 +134,64 @@ typedef struct _window_base_t {
    * >
    * 把资源管理器对象与窗口关联起来，是为了解决UI设计器与被设计的窗口需要从不同的位置加载资源资源的问题。
    */
+  
+  /**
+   * @property {char*} move_focus_prev_key
+   * @annotation ["set_prop","get_prop","readable","persitent","design"]
+   * 向前移动焦点的键值。
+   *
+   * 请参考[控件焦点](https://github.com/zlgopen/awtk/blob/master/docs/widget_focus.md)
+   */
+  char* move_focus_prev_key;
+  
+  /**
+   * @property {char*} move_focus_next_key
+   * @annotation ["set_prop","get_prop","readable","persitent","design"]
+   * 向后移动焦点的键值。
+   *
+   * 请参考[控件焦点](https://github.com/zlgopen/awtk/blob/master/docs/widget_focus.md)
+   */
+  char* move_focus_next_key;
+  
+  /**
+   * @property {char*} move_focus_up_key
+   * @annotation ["set_prop","get_prop","readable","persitent","design"]
+   * 向上移动焦点的键值。
+   *
+   * 请参考[控件焦点](https://github.com/zlgopen/awtk/blob/master/docs/widget_focus.md)
+   */
+  char* move_focus_up_key;
+  
+  /**
+   * @property {char*} move_focus_down_key
+   * @annotation ["set_prop","get_prop","readable","persitent","design"]
+   * 向下移动焦点的键值。
+   *
+   * 请参考[控件焦点](https://github.com/zlgopen/awtk/blob/master/docs/widget_focus.md)
+   */
+  char* move_focus_down_key;
+  
+  /**
+   * @property {char*} move_focus_left_key
+   * @annotation ["set_prop","get_prop","readable","persitent","design"]
+   * 向左移动焦点的键值。
+   *
+   * 请参考[控件焦点](https://github.com/zlgopen/awtk/blob/master/docs/widget_focus.md)
+   */
+  char* move_focus_left_key;
+  
+  /**
+   * @property {char*} move_focus_right_key
+   * @annotation ["set_prop","get_prop","readable","persitent","design"]
+   * 向右移动焦点的键值。
+   *
+   * 请参考[控件焦点](https://github.com/zlgopen/awtk/blob/master/docs/widget_focus.md)
+   */
+  char* move_focus_right_key;
 
   /*private*/
   const asset_info_t* res_theme;
   font_manager_t* font_manager;
-  int32_t move_focus_prev_key;
-  int32_t move_focus_next_key;
   native_window_t* native_window;
 } window_base_t;
 

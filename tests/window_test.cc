@@ -48,26 +48,11 @@ TEST(Window, basic) {
 TEST(Window, focus_key) {
   widget_t* w = window_create(NULL, 10, 20, 30, 40);
 
-  ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_MOVE_FOCUS_PREV_KEY, 0), TK_KEY_MOVE_FOCUS_PREV);
-  ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_MOVE_FOCUS_NEXT_KEY, 0), TK_KEY_MOVE_FOCUS_NEXT);
-
-  ASSERT_EQ(widget_set_prop_int(w, WIDGET_PROP_MOVE_FOCUS_PREV_KEY, TK_KEY_LEFT), RET_OK);
-  ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_MOVE_FOCUS_PREV_KEY, 0), TK_KEY_LEFT);
-
-  ASSERT_EQ(widget_set_prop_int(w, WIDGET_PROP_MOVE_FOCUS_NEXT_KEY, TK_KEY_RIGHT), RET_OK);
-  ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_MOVE_FOCUS_NEXT_KEY, 0), TK_KEY_RIGHT);
-
   ASSERT_EQ(widget_set_prop_str(w, WIDGET_PROP_MOVE_FOCUS_PREV_KEY, "UP"), RET_OK);
-  ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_MOVE_FOCUS_PREV_KEY, 0), TK_KEY_UP);
+  ASSERT_STREQ(widget_get_prop_str(w, WIDGET_PROP_MOVE_FOCUS_PREV_KEY, 0), "UP");
 
   ASSERT_EQ(widget_set_prop_str(w, WIDGET_PROP_MOVE_FOCUS_NEXT_KEY, "DOWN"), RET_OK);
-  ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_MOVE_FOCUS_NEXT_KEY, 0), TK_KEY_DOWN);
-
-  ASSERT_EQ(widget_set_prop_str(w, WIDGET_PROP_MOVE_FOCUS_PREV_KEY, "up"), RET_OK);
-  ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_MOVE_FOCUS_PREV_KEY, 0), TK_KEY_UP);
-
-  ASSERT_EQ(widget_set_prop_str(w, WIDGET_PROP_MOVE_FOCUS_NEXT_KEY, "down"), RET_OK);
-  ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_MOVE_FOCUS_NEXT_KEY, 0), TK_KEY_DOWN);
+  ASSERT_STREQ(widget_get_prop_str(w, WIDGET_PROP_MOVE_FOCUS_NEXT_KEY, 0), "DOWN");
 
   widget_destroy(w);
 }

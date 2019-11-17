@@ -47,6 +47,10 @@
     return (value);               \
   }
 
+ret_t widget_focus_up(widget_t* widget);
+ret_t widget_focus_down(widget_t* widget);
+ret_t widget_focus_left(widget_t* widget);
+ret_t widget_focus_right(widget_t* widget);
 static ret_t widget_do_destroy(widget_t* widget);
 static ret_t widget_destroy_sync(widget_t* widget);
 static ret_t widget_destroy_async(widget_t* widget);
@@ -1775,22 +1779,46 @@ bool_t widget_is_activate_key(widget_t* widget, key_event_t* e) {
          (widget->vt->return_key_to_activate && e->key == TK_KEY_RETURN);
 }
 
-static bool_t widget_is_move_focus_prev_key(widget_t* widget, key_event_t* e) {
-  int32_t key = TK_KEY_MOVE_FOCUS_PREV;
+static bool_t widget_match_key(widget_t* widget, const char* prop, uint32_t key) {
+  const char* value = NULL;
   widget_t* win = widget_get_window(widget);
-  return_value_if_fail(widget != NULL && win != NULL && e != NULL, FALSE);
-  key = widget_get_prop_int(win, WIDGET_PROP_MOVE_FOCUS_PREV_KEY, key);
+  return_value_if_fail(widget != NULL && win != NULL, FALSE);
 
-  return e->key == key;
+  value = widget_get_prop_str(win, prop, NULL);
+  if(value != NULL) {
+    const key_type_value_t* kv = keys_type_find_by_value(key);
+    if(kv != NULL) {
+      if(tk_str_ieq(value, kv->name)) {
+        return TRUE;
+      }
+    }
+  }
+
+  return FALSE;
+}
+
+static bool_t widget_is_move_focus_prev_key(widget_t* widget, key_event_t* e) {
+  return widget_match_key(widget, WIDGET_PROP_MOVE_FOCUS_PREV_KEY, e->key);
 }
 
 static bool_t widget_is_move_focus_next_key(widget_t* widget, key_event_t* e) {
-  int32_t key = TK_KEY_MOVE_FOCUS_NEXT;
-  widget_t* win = widget_get_window(widget);
-  return_value_if_fail(widget != NULL && win != NULL && e != NULL, FALSE);
-  key = widget_get_prop_int(win, WIDGET_PROP_MOVE_FOCUS_NEXT_KEY, key);
+  return widget_match_key(widget, WIDGET_PROP_MOVE_FOCUS_NEXT_KEY, e->key);
+}
 
-  return e->key == key;
+static bool_t widget_is_move_focus_up_key(widget_t* widget, key_event_t* e) {
+  return widget_match_key(widget, WIDGET_PROP_MOVE_FOCUS_UP_KEY, e->key);
+}
+
+static bool_t widget_is_move_focus_down_key(widget_t* widget, key_event_t* e) {
+  return widget_match_key(widget, WIDGET_PROP_MOVE_FOCUS_DOWN_KEY, e->key);
+}
+
+static bool_t widget_is_move_focus_left_key(widget_t* widget, key_event_t* e) {
+  return widget_match_key(widget, WIDGET_PROP_MOVE_FOCUS_LEFT_KEY, e->key);
+}
+
+static bool_t widget_is_move_focus_right_key(widget_t* widget, key_event_t* e) {
+  return widget_match_key(widget, WIDGET_PROP_MOVE_FOCUS_RIGHT_KEY, e->key);
 }
 
 static ret_t widget_on_keydown_general(widget_t* widget, key_event_t* e) {
@@ -1814,6 +1842,26 @@ static ret_t widget_on_keydown_general(widget_t* widget, key_event_t* e) {
       } else if (widget_is_window(widget) && !widget_has_focused_widget_in_window(widget)) {
         ret = RET_STOP;
         widget_focus_first(widget);
+      }
+    } else if (widget_is_move_focus_up_key(widget, e)) {
+      if (widget_is_focusable(widget)) {
+        ret = RET_STOP;
+        widget_focus_up(widget);
+      }
+    } else if (widget_is_move_focus_down_key(widget, e)) {
+      if (widget_is_focusable(widget)) {
+        ret = RET_STOP;
+        widget_focus_down(widget);
+      }
+    } else if (widget_is_move_focus_left_key(widget, e)) {
+      if (widget_is_focusable(widget)) {
+        ret = RET_STOP;
+        widget_focus_left(widget);
+      }
+    } else if (widget_is_move_focus_right_key(widget, e)) {
+      if (widget_is_focusable(widget)) {
+        ret = RET_STOP;
+        widget_focus_right(widget);
       }
     }
   }
@@ -3063,9 +3111,15 @@ bool_t widget_is_keyboard(widget_t* widget) {
   return FALSE;
 }
 
+typedef struct _visit_focusable_info_t {
+  void* ctx;
+  tk_compare_t cmp;
+  darray_t* all_focusable;
+} visit_focusable_info_t;
+
 static ret_t widget_on_visit_focusable(void* ctx, const void* data) {
   widget_t* widget = WIDGET(data);
-  darray_t* all_focusable = (darray_t*)ctx;
+  visit_focusable_info_t* info = (visit_focusable_info_t*)ctx;
 
   if (!(widget->visible) || !(widget->enable)) {
     return RET_SKIP;
@@ -3073,25 +3127,41 @@ static ret_t widget_on_visit_focusable(void* ctx, const void* data) {
 
   if (widget->vt->only_active_child_visible) {
     widget_t* child = widget_find_target(widget, 1, 1);
-    widget_foreach(child, widget_on_visit_focusable, all_focusable);
+    widget_foreach(child, widget_on_visit_focusable, ctx);
 
     return RET_SKIP;
   }
 
   if (widget_is_focusable(widget)) {
-    darray_push(all_focusable, widget);
+    darray_t* all_focusable = info->all_focusable;
+    if (info->cmp != NULL) {
+      if (info->cmp(widget, info->ctx) == 0) {
+        darray_push(all_focusable, widget);
+      }
+    } else {
+      darray_push(all_focusable, widget);
+    }
   }
 
   return RET_OK;
 }
 
-static ret_t widget_get_all_focusable_widgets_in_window(widget_t* widget, darray_t* all_focusable) {
+static ret_t widget_get_all_focusable_widgets_in_window_ex(widget_t* widget, tk_compare_t cmp,
+                                                           void* ctx, darray_t* all_focusable) {
+  visit_focusable_info_t info;
   widget_t* win = widget_get_window(widget);
   return_value_if_fail(win != NULL, RET_BAD_PARAMS);
 
-  widget_foreach(win, widget_on_visit_focusable, all_focusable);
+  info.cmp = cmp;
+  info.ctx = ctx;
+  info.all_focusable = all_focusable;
+  widget_foreach(win, widget_on_visit_focusable, &info);
 
   return RET_OK;
+}
+
+static ret_t widget_get_all_focusable_widgets_in_window(widget_t* widget, darray_t* all_focusable) {
+  return widget_get_all_focusable_widgets_in_window_ex(widget, NULL, NULL, all_focusable);
 }
 
 static widget_t* widget_get_first_focusable_widget_in_window(widget_t* widget) {
@@ -3137,18 +3207,30 @@ ret_t widget_focus_first(widget_t* widget) {
   return RET_OK;
 }
 
-ret_t widget_move_focus(widget_t* widget, bool_t next) {
+ret_t widget_move_focus(widget_t* widget, tk_compare_t filter, tk_compare_t sort, bool_t next) {
   uint32_t i = 0;
   uint32_t focus = 0;
   darray_t all_focusable;
-  return_value_if_fail(widget != NULL && widget->focused, RET_BAD_PARAMS);
+
+  if(widget == NULL || !widget->focused) {
+    return RET_FAIL;
+  }
   return_value_if_fail(darray_init(&all_focusable, 10, NULL, NULL) != NULL, RET_OOM);
 
-  widget_get_all_focusable_widgets_in_window(widget, &all_focusable);
+  if (filter != NULL) {
+    widget_get_all_focusable_widgets_in_window_ex(widget, filter, widget, &all_focusable);
+  } else {
+    widget_get_all_focusable_widgets_in_window(widget, &all_focusable);
+  }
+
+  if (sort != NULL) {
+    darray_sort(&all_focusable, sort);
+  }
 
   if (all_focusable.size > 1) {
     for (i = 0; i < all_focusable.size; i++) {
       widget_t* iter = WIDGET(all_focusable.elms[i]);
+
       if (iter == widget) {
         if (next) {
           if ((i + 1) == all_focusable.size) {
@@ -3177,12 +3259,72 @@ ret_t widget_move_focus(widget_t* widget, bool_t next) {
   return RET_OK;
 }
 
+static int widget_cmp_by_y(const void* a, const void* b) {
+  widget_t* a1 = WIDGET(a);
+  widget_t* b1 = WIDGET(b);
+
+  if (a1->y == b1->y) {
+    return a1->x - b1->x;
+  } else {
+    return a1->y - b1->y;
+  }
+}
+
+static int widget_cmp_by_x(const void* a, const void* b) {
+  widget_t* a1 = WIDGET(a);
+  widget_t* b1 = WIDGET(b);
+
+  if (a1->x == b1->x) {
+    return a1->y - b1->y;
+  } else {
+    return a1->x - b1->x;
+  }
+}
+
+static int widget_cmp_by_x_almost(const void* a, const void* b) {
+  widget_t* a1 = WIDGET(a);
+  widget_t* b1 = WIDGET(b);
+
+  if (tk_abs(a1->x - b1->x) < 10) {
+    return 0;
+  } else {
+    return -1;
+  }
+}
+
+static int widget_cmp_by_y_almost(const void* a, const void* b) {
+  widget_t* a1 = WIDGET(a);
+  widget_t* b1 = WIDGET(b);
+
+  if (tk_abs(a1->y - b1->y) < 10) {
+    return 0;
+  } else {
+    return -1;
+  }
+}
+
 ret_t widget_focus_prev(widget_t* widget) {
-  return widget_move_focus(widget, FALSE);
+  return widget_move_focus(widget, NULL, NULL, FALSE);
 }
 
 ret_t widget_focus_next(widget_t* widget) {
-  return widget_move_focus(widget, TRUE);
+  return widget_move_focus(widget, NULL, NULL, TRUE);
+}
+
+ret_t widget_focus_up(widget_t* widget) {
+  return widget_move_focus(widget, widget_cmp_by_x_almost, widget_cmp_by_y, FALSE);
+}
+
+ret_t widget_focus_down(widget_t* widget) {
+  return widget_move_focus(widget, widget_cmp_by_x_almost, widget_cmp_by_y, TRUE);
+}
+
+ret_t widget_focus_left(widget_t* widget) {
+  return widget_move_focus(widget, widget_cmp_by_y_almost, widget_cmp_by_x, FALSE);
+}
+
+ret_t widget_focus_right(widget_t* widget) {
+  return widget_move_focus(widget, widget_cmp_by_y_almost, widget_cmp_by_x, TRUE);
 }
 
 bool_t widget_is_window(widget_t* widget) {
