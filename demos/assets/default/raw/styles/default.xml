@@ -578,9 +578,9 @@
     <focused  />
   </style>
 
-  <style name="green" text_color="green">
-    <normal   />
-    <focused  />
+  <style name="green">
+    <normal   text_color="black"/>
+    <focused  text_color="green"/>
   </style>
   
   <style name="right" text_color="green" text_align_h="right">

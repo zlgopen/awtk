@@ -61,17 +61,17 @@ AWTK 提供了 hscroll\_label\_t 控件，可以轻松满足文本滚动的需�
   <row x="0" y="180" w="-50" h="90" children_layout="default(r=1,c=2,m=2)">
     <column children_layout="default(r=3,c=1,ym=2,s=10)" >
       <check_button name="r1" focusable="true" >
-        <hscroll_label only_parent_focus="true" x="right" y="middle" w="-30" h="100%"
+        <hscroll_label style="green" only_parent_focus="true" x="right" y="middle" w="-30" h="100%"
           text="1.AWTK 为用户提供一个功能强大、高效可靠、简单易用、可轻松做出炫酷效果的 GUI 引擎。" /> 
       </check_button>
 
       <check_button name="r2" focusable="true">
-        <hscroll_label only_parent_focus="true" x="right" y="middle" w="-30" h="100%"
+        <hscroll_label style="green" only_parent_focus="true" x="right" y="middle" w="-30" h="100%"
           text="2.AWTK 为用户提供一个功能强大、高效可靠、简单易用、可轻松做出炫酷效果的 GUI 引擎。" /> 
       </check_button>
 
       <check_button name="r3" value="true" focusable="true">
-        <hscroll_label only_parent_focus="true" x="right" y="middle" w="-30" h="100%"
+        <hscroll_label style="green" only_parent_focus="true" x="right" y="middle" w="-30" h="100%"
           text="3.AWTK 为用户提供一个功能强大、高效可靠、简单易用、可轻松做出炫酷效果的 GUI 引擎。" /> 
       </check_button>
     </column>

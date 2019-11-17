@@ -414,8 +414,10 @@ static ret_t hscroll_label_on_parent_focus_changed(void* ctx, event_t* e) {
   if (hscroll_label->only_parent_focus) {
     if (e->type == EVT_FOCUS) {
       hscroll_label_start(widget);
+      widget_set_state(widget, WIDGET_STATE_FOCUSED);
     } else {
       hscroll_label_stop(widget);
+      widget_set_state(widget, WIDGET_STATE_NORMAL);
     }
   }
 
