@@ -56,6 +56,7 @@ static ret_t list_item_remove_timer(widget_t* widget) {
   return_value_if_fail(list_item != NULL, RET_BAD_PARAMS);
 
   if (list_item->timer_id != TK_INVALID_ID) {
+    widget_off_by_func(widget->parent, EVT_POINTER_UP, list_item_on_parent_pointer_up, widget);
     timer_remove(list_item->timer_id);
     list_item->timer_id = TK_INVALID_ID;
   }
