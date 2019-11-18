@@ -1001,7 +1001,7 @@ ret_t widget_calc_icon_text_rect(const rect_t* ir, int32_t font_size, int32_t ic
     return RET_OK;
   }
 
-  return_value_if_fail(font_size < ir->h && spacer < ir->h && spacer < ir->w, RET_BAD_PARAMS);
+  return_value_if_fail(spacer < ir->h && spacer < ir->w, RET_BAD_PARAMS);
   switch (icon_at) {
     case ICON_AT_RIGHT: {
       *r_icon = rect_init(ir->x + ir->w - ir->h, ir->y, ir->h, ir->h);
