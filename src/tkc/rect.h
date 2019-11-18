@@ -28,6 +28,7 @@ BEGIN_C_DECLS
 
 /**
  * @class point_t
+ * @annotation ["scriptable"]
  * 点。包括一个x坐标和一个y坐标。
  */
 typedef struct _point_t {
@@ -47,6 +48,7 @@ typedef struct _point_t {
 
 /**
  * @class pointf_t
+ * @annotation ["scriptable"]
  * 点(浮点数)。包括一个x坐标和一个y坐标。
  */
 typedef struct _pointf_t {

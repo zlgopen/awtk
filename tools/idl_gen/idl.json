@@ -21666,6 +21666,9 @@
     "header": "tkc/rect.h",
     "desc": "点(浮点数)。包括一个x坐标和一个y坐标。\n",
     "name": "pointf_t",
+    "annotation": {
+      "scriptable": true
+    },
     "level": 1
   },
   {
@@ -21693,6 +21696,9 @@
     "header": "tkc/rect.h",
     "desc": "点。包括一个x坐标和一个y坐标。\n",
     "name": "point_t",
+    "annotation": {
+      "scriptable": true
+    },
     "level": 1
   },
   {
