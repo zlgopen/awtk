@@ -1,5 +1,8 @@
 # 最新动态
 
+* 2019/11/19
+  * 完善 widget\_calc\_icon\_text\_rect
+
 * 2019/11/18
   * 完善hscroll label，在only\_parent\_focus为TRUE时，根据父控件设置自己的focus状态。
   * 完善list item （感谢朝泽提供补丁）。
@@ -27,7 +30,7 @@
 * 2019/11/13
   * 把部分变量修改为常量，以减少内存使用。
   * 更新IDL修复脚本绑定的问题。
-  * 增加ICON_AT_BOTTOM的处理（感谢朝泽提供补丁）。
+  * 增加ICON\_AT\_BOTTOM的处理（感谢朝泽提供补丁）。
   * 修改android编译问题（感谢智明提供补丁）。
   * 完善medit（感谢智明提供补丁）。
 
