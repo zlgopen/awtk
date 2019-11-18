@@ -190,3 +190,6 @@
 详情请参考 [docs/changes.md](https://github.com/zlgopen/awtk/blob/master/docs/changes.md)。
 
 > 欢迎广大开发者一起参与开发：[生态共建计划](docs/awtk_ecology.md)。
+
+[谢谢大家支持，请投AWTK一票](https://www.oschina.net/project/top_cn_2019)
+
