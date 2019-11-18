@@ -11,6 +11,7 @@
 - [操作系统适配](#操作系统适配)
 - [MCU芯片适配](#MCU芯片适配)
 - [扩展控件](#扩展控件)
+- [编程语言绑定](#编程语言绑定)
 - [商业应用案例](#商业应用案例)
 
 
@@ -19,28 +20,29 @@
 
 - #### 桌面操作系统
 
-| 操作系统 | 平台 | 下载地址                        | 作者                     |
-| -------- | ---- | ------------------------------- | ------------------------ |
-| Windows  | PC   | https://github.com/zlgopen/awtk | [ZLG](http://www.zlg.cn) |
-| Linux    | PC   | https://github.com/zlgopen/awtk | [ZLG](http://www.zlg.cn) |
-| macOS    | Mac  | https://github.com/zlgopen/awtk | [ZLG](http://www.zlg.cn) |
+| 操作系统 | 下载地址                        | 作者                     |
+| -------- | ------------------------------- | ------------------------ |
+| Windows  | https://github.com/zlgopen/awtk | [ZLG](http://www.zlg.cn) |
+| Linux    | https://github.com/zlgopen/awtk | [ZLG](http://www.zlg.cn) |
+| macOS    | https://github.com/zlgopen/awtk | [ZLG](http://www.zlg.cn) |
 
 - #### 嵌入式操作系统
 
-| 操作系统     | 平台                                                    | 下载地址                                              | 作者                     |
-| ------------ | ------------------------------------------------------- | ----------------------------------------------------- | ------------------------ |
-| AWorks       | RT1052<br/>i.MX6 Cortex-A7<br/>...                      | https://github.com/zlgopen/awtk-aworks-rt1052         | [ZLG](http://www.zlg.cn) |
-| 嵌入式 Linux | i.MX283<br/>i.MX6 Cortex-A7<br/>i.MX6 Cortex-A9<br/>... | https://github.com/zlgopen/awtk-linux-fb              | [ZLG](http://www.zlg.cn) |
-| RT-Thread    | STM32F103                                               | https://github.com/zlgopen/awtk-stm32f103ze-rtthread  | [ZLG](http://www.zlg.cn) |
-| TencentOS    | STM32F103                                               | https://github.com/zlgopen/awtk-stm32f103ze-tencentos | [ZLG](http://www.zlg.cn) |
-| SylixOS      | ARM920T                                                 | https://github.com/zlgopen/awtk-sylixos               | [ZLG](http://www.zlg.cn) |
+| 操作系统     | 下载地址                                | 作者                     |
+| ------------ | --------------------------------------- | ------------------------ |
+| AWorks       | [MCU芯片适配](#MCU芯片适配)             |                          |
+| 嵌入式 Linux | [MCU芯片适配](#MCU芯片适配)             |                          |
+| RT-Thread    | [MCU芯片适配](#MCU芯片适配)             |                          |
+| TencentOS    | [MCU芯片适配](#MCU芯片适配)             |                          |
+| FreeRTOS     | [MCU芯片适配](#MCU芯片适配)             |                          |
+| SylixOS      | https://github.com/zlgopen/awtk-sylixos | [ZLG](http://www.zlg.cn) |
 
 - #### 其他系统平台
 
-| 操作系统 | 平台     | 下载地址                                | 作者                     |
-| -------- | -------- | --------------------------------------- | ------------------------ |
-| Web      | 浏览器   | https://github.com/zlgopen/awtk-web     | [ZLG](http://www.zlg.cn) |
-| Android  | 智能手机 | https://github.com/zlgopen/awtk-android | [ZLG](http://www.zlg.cn) |
+| 操作系统 | 下载地址                                | 作者                     |
+| -------- | --------------------------------------- | ------------------------ |
+| Web      | https://github.com/zlgopen/awtk-web     | [ZLG](http://www.zlg.cn) |
+| Android  | https://github.com/zlgopen/awtk-android | [ZLG](http://www.zlg.cn) |
 
 
 
@@ -53,7 +55,8 @@
 
 | 芯片    | 操作系统            | 下载地址   | 作者                               |
 | ------- | ------------------- | ---------- | ---------------------------------- |
-| AK376xD | RT-Thread<br/>Linux | 请联系作者 | [Anyka](http://www.anyka.com)【原厂】 |
+| AK376xD | RT-Thread | 请联系作者 | [Anyka](http://www.anyka.com)【原厂】 |
+| AK376xD | Linux | 请联系作者 | [Anyka](http://www.anyka.com)【原厂】 |
 
 - #### Espressif
 
@@ -62,6 +65,10 @@
 | ESP32 | FreeRTOS | https://github.com/jason-mao/esp32-awtk | [jason-mao](https://github.com/jason-mao) |
 
 - #### GigaDevice
+
+| 芯片     | 操作系统 | 下载地址   | 作者                     |
+| -------- | -------- | ---------- | ------------------------ |
+| GD32450Z | 无       | 请联系作者 | [ZLG](http://www.zlg.cn) |
 
 - #### Ingenic
 
@@ -104,6 +111,7 @@
 | 芯片      | 操作系统  | 下载地址                                              | 作者                               |
 | --------- | --------- | ----------------------------------------------------- | ---------------------------------- |
 | STM32F103 | 无        | https://github.com/zlgopen/awtk-stm32f103ze-raw       | [ZLG](http://www.zlg.cn)           |
+| STM32F103 | RT-Thread | https://github.com/zlgopen/awtk-stm32f103ze-rtthread  | [ZLG](http://www.zlg.cn)           |
 | STM32F103 | TencentOS | https://github.com/zlgopen/awtk-stm32f103ze-tencentos | [ZLG](http://www.zlg.cn)           |
 | STM32F429 | 无        | https://github.com/zlgopen/awtk-stm32f429igtx-raw     | [ZLG](http://www.zlg.cn)           |
 | STM32F767 | 无        | https://github.com/zlgopen/awtk-stm32f767igtx-raw     | [ZLG](http://www.zlg.cn)           |
@@ -130,6 +138,30 @@
 | 饼图     | https://github.com/zlgopen/awtk-examples | [ZLG](http://www.zlg.cn) |
 | 柱状图   | https://github.com/zlgopen/awtk-examples | [ZLG](http://www.zlg.cn) |
 | 曲线图   | https://github.com/zlgopen/awtk-examples | [ZLG](http://www.zlg.cn) |
+
+
+
+## 编程语言绑定
+
+- #### C
+
+| 解析引擎 | 下载地址                        | 作者                     |
+| -------- | ------------------------------- | ------------------------ |
+| C99      | https://github.com/zlgopen/awtk | [ZLG](http://www.zlg.cn) |
+
+- #### JavaScript
+
+| 解析引擎    | 下载地址                                    | 作者                     |
+| ----------- | ------------------------------------------- | ------------------------ |
+| JerryScript | https://github.com/zlgopen/awtk-jerryscript | [ZLG](http://www.zlg.cn) |
+| QuickJS     | https://github.com/zlgopen/awtk-quickjs     | [ZLG](http://www.zlg.cn) |
+| Node.js     | 请联系作者                                  | [ZLG](http://www.zlg.cn) |
+
+- #### Lua
+
+| 解析引擎 | 下载地址                            | 作者                     |
+| -------- | ----------------------------------- | ------------------------ |
+| Lua      | https://github.com/zlgopen/awtk-lua | [ZLG](http://www.zlg.cn) |
 
 
 

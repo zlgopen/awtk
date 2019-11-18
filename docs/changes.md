@@ -3,6 +3,7 @@
 * 2019/11/18
   * 完善hscroll label，在only\_parent\_focus为TRUE时，根据父控件设置自己的focus状态。
   * 完善list item （感谢朝泽提供补丁）。
+  * 完善awtk\_ecology.md
 
 * 2019/11/16
   * 完善文档。
