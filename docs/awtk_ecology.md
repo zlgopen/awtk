@@ -36,6 +36,7 @@
 | TencentOS    | [MCU芯片适配](#MCU芯片适配)             |                          |
 | FreeRTOS     | [MCU芯片适配](#MCU芯片适配)             |                          |
 | SylixOS      | https://github.com/zlgopen/awtk-sylixos | [ZLG](http://www.zlg.cn) |
+| Wayland      | https://github.com/zjm1060/awtk-wayland | [zjm1060](https://github.com/zjm1060)|
 
 - #### 其他系统平台
 
