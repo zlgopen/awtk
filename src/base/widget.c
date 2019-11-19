@@ -1456,8 +1456,6 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
     value_set_bool(v, widget->feedback);
   } else if (tk_str_eq(name, WIDGET_PROP_NAME)) {
     value_set_str(v, widget->name);
-  } else if (tk_str_eq(name, WIDGET_PROP_TEXT)) {
-    value_set_wstr(v, widget->text.str);
   } else if (tk_str_eq(name, WIDGET_PROP_ANIMATION)) {
     value_set_str(v, widget->animation);
   } else if (tk_str_eq(name, WIDGET_PROP_SELF_LAYOUT)) {
@@ -1487,6 +1485,9 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
       ret = RET_OK;
     } else if (tk_str_eq(name, WIDGET_PROP_LAYOUT_H)) {
       value_set_int32(v, widget->h);
+      ret = RET_OK;
+    } else if (tk_str_eq(name, WIDGET_PROP_TEXT)) {
+      value_set_wstr(v, widget->text.str);
       ret = RET_OK;
     } else if (tk_str_eq(name, WIDGET_PROP_STATE_FOR_STYLE)) {
       value_set_str(v, widget_get_state_for_style(widget, FALSE, FALSE));
