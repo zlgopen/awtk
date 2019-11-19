@@ -86,6 +86,9 @@ ret_t image_base_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_SELECTABLE)) {
     value_set_bool(v, image->selectable);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_SELECTED)) {
+    value_set_bool(v, image->selected);
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_CLICKABLE)) {
     value_set_bool(v, image->clickable);
     return RET_OK;
@@ -118,6 +121,8 @@ ret_t image_base_set_prop(widget_t* widget, const char* name, const value_t* v) 
   } else if (tk_str_eq(name, WIDGET_PROP_SELECTABLE)) {
     image->selectable = value_bool(v);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_SELECTED)) {
+    return image_base_set_selected(widget, value_bool(v));
   } else if (tk_str_eq(name, WIDGET_PROP_CLICKABLE)) {
     image->clickable = value_bool(v);
     return RET_OK;
@@ -191,6 +196,12 @@ ret_t image_base_set_selected(widget_t* widget, bool_t selected) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   image->selected = selected;
+
+  if (image->selected) {
+    widget_set_state(widget, WIDGET_STATE_SELECTED);
+  } else {
+    widget_set_state(widget, WIDGET_STATE_NORMAL);
+  }
 
   return widget_invalidate(widget, NULL);
 }
