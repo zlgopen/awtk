@@ -4,6 +4,8 @@
   * 完善 darray\_sort。
   * 完善 widget\_calc\_icon\_text\_rect （感谢大恒提供补丁）。
   * 完善 WIDGET\_PROP\_TEXT 先从控件获取，控件没有特殊处理，最后才取默认值。
+  * 完善image（感谢朝泽提供补丁）。
+  * 完善list item （感谢朝泽提供补丁）。
 
 * 2019/11/18
   * 完善hscroll label，在only\_parent\_focus为TRUE时，根据父控件设置自己的focus状态。
