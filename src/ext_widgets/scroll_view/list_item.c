@@ -35,6 +35,13 @@ static ret_t list_item_on_parent_pointer_up(void* ctx, event_t* e) {
   return RET_REMOVE;
 }
 
+static ret_t list_item_on_detach_parent(widget_t* widget, widget_t* parent) {
+  return_value_if_fail(widget != NULL && parent != NULL, RET_BAD_PARAMS);
+
+  widget_off_by_func(parent, EVT_POINTER_UP, list_item_on_parent_pointer_up, widget);
+  return RET_OK;
+}
+
 static ret_t list_item_on_timer(const timer_info_t* info) {
   widget_t* widget = WIDGET(info->ctx);
   list_item_t* list_item = LIST_ITEM(widget);
@@ -56,7 +63,6 @@ static ret_t list_item_remove_timer(widget_t* widget) {
   return_value_if_fail(list_item != NULL, RET_BAD_PARAMS);
 
   if (list_item->timer_id != TK_INVALID_ID) {
-    widget_off_by_func(widget->parent, EVT_POINTER_UP, list_item_on_parent_pointer_up, widget);
     timer_remove(list_item->timer_id);
     list_item->timer_id = TK_INVALID_ID;
   }
@@ -147,6 +153,7 @@ TK_DECL_VTABLE(list_item) = {.size = sizeof(list_item_t),
                              .create = list_item_create,
                              .on_event = list_item_on_event,
                              .on_paint_self = list_item_on_paint_self,
+                             .on_detach_parent = list_item_on_detach_parent,
                              .on_destroy = list_item_on_destroy};
 
 widget_t* list_item_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
