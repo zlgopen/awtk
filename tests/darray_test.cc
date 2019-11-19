@@ -275,8 +275,8 @@ TEST(DArrayTest, findAll) {
 }
 
 static int cmp_int(const void* a, const void* b) {
-  int ia = tk_pointer_to_int(*(void**)a);
-  int ib = tk_pointer_to_int(*(void**)b);
+  int ia = tk_pointer_to_int(a);
+  int ib = tk_pointer_to_int(b);
 
   return ia - ib;
 }

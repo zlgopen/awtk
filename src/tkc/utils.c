@@ -740,7 +740,7 @@ const char* tk_under_score_to_camel(const char* name, char* out, uint32_t max_ou
   return out;
 }
 
-int32_t tk_pointer_to_int(void* p) {
+int32_t tk_pointer_to_int(const void* p) {
   return (char*)p - (char*)(NULL);
 }
 
