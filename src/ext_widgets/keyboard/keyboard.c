@@ -97,7 +97,6 @@ static ret_t keyboard_set_active_page(widget_t* button, const char* name) {
 #define STR_KEY_BACKSPACE "backspace"
 
 static ret_t keyboard_on_button_click(void* ctx, event_t* e) {
-  uint32_t code = 0;
   input_method_t* im = input_method();
   widget_t* button = WIDGET(e->target);
   const char* name = button->name;
@@ -113,18 +112,13 @@ static ret_t keyboard_on_button_click(void* ctx, event_t* e) {
   if (page_name != NULL) {
     return keyboard_set_active_page(button, page_name + strlen(STR_PAGE_PREFIX));
   } else if (key != NULL) {
-    key += strlen(STR_KEY_PREFIX);
-    if (tk_str_eq(key, STR_KEY_BACKSPACE)) {
-      code = TK_KEY_BACKSPACE;
-    } else if (tk_str_eq(key, STR_KEY_SPACE)) {
-      code = TK_KEY_SPACE;
-    } else if (tk_str_eq(key, STR_KEY_TAB)) {
-      code = TK_KEY_TAB;
-    } else {
-      code = *key;
-    }
+    const key_type_value_t* kv = NULL;
 
-    return input_method_dispatch_key(im, code);
+    key += strlen(STR_KEY_PREFIX);
+    kv = keys_type_find(key);
+    return_value_if_fail(kv != NULL, RET_BAD_PARAMS);
+
+    return input_method_dispatch_key(im, kv->value);
   } else {
     if (tk_str_eq(name, STR_ACTION)) {
       return input_method_dispatch_action(im);
