@@ -545,7 +545,7 @@ ret_t widget_set_floating(widget_t* widget, bool_t floating) {
   return RET_OK;
 }
 
-static ret_t widget_set_focused_internal(widget_t* widget, bool_t focused) {
+ret_t widget_set_focused_internal(widget_t* widget, bool_t focused) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   if (widget->focused != focused) {

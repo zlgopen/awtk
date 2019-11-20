@@ -290,7 +290,7 @@ static ret_t combo_box_on_item_click(void* ctx, event_t* e) {
   combo_box_set_selected_index_ex(widget, widget_index_of(item), item);
 
   window_close(widget_get_window(item));
-  widget_set_focused(widget, TRUE);
+  widget_set_focused_internal(widget, TRUE);
 
   return RET_OK;
 }

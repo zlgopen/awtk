@@ -2094,6 +2094,8 @@ ret_t widget_focus_down(widget_t* widget);
 ret_t widget_focus_left(widget_t* widget);
 ret_t widget_focus_right(widget_t* widget);
 
+ret_t widget_set_focused_internal(widget_t* widget, bool_t focused);
+
 END_C_DECLS
 
 #endif /*TK_WIDGET_H*/
