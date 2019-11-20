@@ -72,19 +72,40 @@ widget_t* keyboard_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   return widget;
 }
 
+static ret_t on_visit_widget_to_focus_first(void* ctx, const void* data) {
+  widget_t* w = WIDGET(data);
+
+  if (w->focusable) {
+    widget_set_focused(w, TRUE);
+
+    return RET_STOP;
+  }
+
+  return RET_OK;
+}
+
+static ret_t keyboard_focus_first(widget_t* page) {
+  widget_foreach(page, on_visit_widget_to_focus_first, NULL);
+
+  return RET_OK;
+}
+
 static ret_t keyboard_set_active_page(widget_t* button, const char* name) {
-  widget_t* parent = button;
-  while (parent != NULL) {
-    const char* type = widget_get_type(parent);
+  widget_t* iter = button;
+  while (iter != NULL) {
+    const char* type = widget_get_type(iter);
     if (tk_str_eq(type, WIDGET_TYPE_PAGES)) {
       break;
     }
-    parent = parent->parent;
+    iter = iter->parent;
   }
 
-  return_value_if_fail(parent != NULL, RET_FAIL);
+  return_value_if_fail(iter != NULL, RET_FAIL);
+  if (pages_set_active_by_name(iter, name) == RET_OK) {
+    keyboard_focus_first(widget_get_child(iter, PAGES(iter)->active));
+  }
 
-  return pages_set_active_by_name(parent, name);
+  return RET_OK;
 }
 
 #define STR_CLOSE "close"
