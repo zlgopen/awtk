@@ -98,7 +98,7 @@
 | --------------- | -------- | -------------------------------------------------- | ------------------------------------- |
 | RT1052          | AWorks   | https://github.com/zlgopen/awtk-aworks-rt1052      | [ZLG](http://www.zlg.cn)              |
 | RT1052          | 无       | https://github.com/zlgopen/awtk-easyarm-rt1052-raw | [ZLG](http://www.zlg.cn)              |
-| RT1052          | 无       | https://github.com/chinachuli/awtk-imxrt1052-raw   | [褚立](https://github.com/chinachuli) |
+| RT1052          | FreeRTOS | https://github.com/chinachuli/awtk-imxrt1052-raw   | [褚立](https://github.com/chinachuli) |
 | RT1020          | AWorks   | 请联系作者                                         | [ZLG](http://www.zlg.cn)              |
 | i.MX6 Cortex-A7 | AWorks   | 请联系作者                                         | [ZLG](http://www.zlg.cn)              |
 | i.MX6 Cortex-A7 | Linux    | https://github.com/zlgopen/awtk-linux-fb           | [ZLG](http://www.zlg.cn)              |

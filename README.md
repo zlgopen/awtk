@@ -250,3 +250,6 @@ pip install Pillow
 ## 十、生态共建计划
 
 * [生态共建计划](docs/awtk_ecology.md)
+* 深度合作伙伴
+
+![](docs/images/logo_nxp.svg)  ![](docs/images/logo_anyka.jpg)  ![](docs/images/logo_ingenic.jpg)  ![](docs/images/logo_mindmotion.png)
