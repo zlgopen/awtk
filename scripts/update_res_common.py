@@ -586,12 +586,12 @@ def showUsage():
     args = ' action[clean|web|json|all|font|image|ui|style|string|script|data|xml] dpi[x1|x2] image_options[rgba|bgra+bgr565|mono]'
     if len(sys.argv) == 1:
         print('=========================================================')
-        print('Usage: '+sys.argv[0] + args)
+        print('Usage: python '+sys.argv[0] + args)
         print('Example:')
-        print(sys.argv[0] + ' all')
-        print(sys.argv[0] + ' clean')
-        print(sys.argv[0] + ' style')
-        print(sys.argv[0] + ' all x1 bgra+bgr565')
+        print('python ' + sys.argv[0] + ' all')
+        print('python ' + sys.argv[0] + ' clean')
+        print('python ' + sys.argv[0] + ' style')
+        print('python ' + sys.argv[0] + ' all x1 bgra+bgr565')
         print('=========================================================')
         sys.exit(0)
     else:

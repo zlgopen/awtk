@@ -3,12 +3,12 @@
 ## 一、update\_res.py 资源生成工具
 
 ```
-Usage: ./scripts/update_res.py action[clean|all|font|image|ui|style|string] dpi[x1|x2] image_options[bgra+bgr565|rgba]
+Usage: python ./scripts/update_res.py action[clean|all|font|image|ui|style|string] dpi[x1|x2] image_options[bgra+bgr565|rgba]
 Example:
-./scripts/update_res.py all
-./scripts/update_res.py clean
-./scripts/update_res.py style
-./scripts/update_res.py all x1 bgra+bgr565
+python ./scripts/update_res.py all
+python ./scripts/update_res.py clean
+python ./scripts/update_res.py style
+python ./scripts/update_res.py all x1 bgra+bgr565
 ```
 
 第一个参数action是必须的，其取值如下：
