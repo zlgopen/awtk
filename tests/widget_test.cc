@@ -887,15 +887,15 @@ TEST(Widget, move_focus) {
 
   widget_set_focused(b1, TRUE);
   ASSERT_EQ(b1->focused, TRUE);
-  ASSERT_EQ(widget_move_focus(b1, TRUE), RET_OK);
+  ASSERT_EQ(widget_focus_next(b1), RET_OK);
   ASSERT_EQ(b1->focused, FALSE);
   ASSERT_EQ(b2->focused, TRUE);
 
-  ASSERT_EQ(widget_move_focus(b2, TRUE), RET_OK);
+  ASSERT_EQ(widget_focus_next(b2), RET_OK);
   ASSERT_EQ(b2->focused, FALSE);
   ASSERT_EQ(b3->focused, TRUE);
 
-  ASSERT_EQ(widget_move_focus(b3, FALSE), RET_OK);
+  ASSERT_EQ(widget_focus_prev(b3), RET_OK);
   ASSERT_EQ(b3->focused, FALSE);
   ASSERT_EQ(b2->focused, TRUE);
 
@@ -921,15 +921,15 @@ TEST(Widget, move_focus_skip_invisible) {
 
   widget_set_focused(b1, TRUE);
   ASSERT_EQ(b1->focused, TRUE);
-  ASSERT_EQ(widget_move_focus(b1, TRUE), RET_OK);
+  ASSERT_EQ(widget_focus_next(b1), RET_OK);
   ASSERT_EQ(b1->focused, FALSE);
   ASSERT_EQ(b2->focused, TRUE);
 
-  ASSERT_EQ(widget_move_focus(b2, TRUE), RET_OK);
+  ASSERT_EQ(widget_focus_next(b2), RET_OK);
   ASSERT_EQ(b2->focused, FALSE);
   ASSERT_EQ(b3->focused, TRUE);
 
-  ASSERT_EQ(widget_move_focus(b3, FALSE), RET_OK);
+  ASSERT_EQ(widget_focus_prev(b3), RET_OK);
   ASSERT_EQ(b3->focused, FALSE);
   ASSERT_EQ(b2->focused, TRUE);
 
@@ -957,7 +957,7 @@ TEST(Widget, move_focus_first) {
   widget_focus_first(w);
   ASSERT_EQ(widget_has_focused_widget_in_window(w), TRUE);
   ASSERT_EQ(b1->focused, TRUE);
-  ASSERT_EQ(widget_move_focus(b1, TRUE), RET_OK);
+  ASSERT_EQ(widget_focus_next(b1), RET_OK);
   ASSERT_EQ(b1->focused, FALSE);
   ASSERT_EQ(b2->focused, TRUE);
 
@@ -985,22 +985,22 @@ TEST(Widget, move_focus_pages) {
 
   widget_focus_first(w);
   ASSERT_EQ(b0->focused, TRUE);
-  ASSERT_EQ(widget_move_focus(b0, TRUE), RET_OK);
+  ASSERT_EQ(widget_focus_next(b0), RET_OK);
   ASSERT_EQ(b0->focused, FALSE);
   ASSERT_EQ(b1->focused, TRUE);
 
-  ASSERT_EQ(widget_move_focus(b1, TRUE), RET_OK);
+  ASSERT_EQ(widget_focus_next(b1), RET_OK);
   ASSERT_EQ(b1->focused, FALSE);
   ASSERT_EQ(b0->focused, TRUE);
 
   pages_set_active(pages, 1);
   widget_focus_first(w);
   ASSERT_EQ(b0->focused, TRUE);
-  ASSERT_EQ(widget_move_focus(b0, TRUE), RET_OK);
+  ASSERT_EQ(widget_focus_next(b0), RET_OK);
   ASSERT_EQ(b0->focused, FALSE);
   ASSERT_EQ(b2->focused, TRUE);
 
-  ASSERT_EQ(widget_move_focus(b2, TRUE), RET_OK);
+  ASSERT_EQ(widget_focus_next(b2), RET_OK);
   ASSERT_EQ(b2->focused, FALSE);
   ASSERT_EQ(b0->focused, TRUE);
   widget_destroy(w);

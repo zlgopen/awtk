@@ -2077,7 +2077,6 @@ bool_t widget_is_activate_key(widget_t* widget, key_event_t* e);
 
 /*public for test*/
 ret_t widget_focus_first(widget_t* widget);
-ret_t widget_move_focus(widget_t* widget, bool_t next);
 locale_info_t* widget_get_locale_info(widget_t* widget);
 image_manager_t* widget_get_image_manager(widget_t* widget);
 assets_manager_t* widget_get_assets_manager(widget_t* widget);
@@ -2087,6 +2086,13 @@ bool_t widget_has_focused_widget_in_window(widget_t* widget);
 ret_t widget_set_style(widget_t* widget, const char* state_and_name, const value_t* value);
 ret_t widget_calc_icon_text_rect(const rect_t* ir, int32_t font_size, int32_t icon_at,
                                  int32_t spacer, rect_t* r_text, rect_t* r_icon);
+
+ret_t widget_focus_prev(widget_t* widget);
+ret_t widget_focus_next(widget_t* widget);
+ret_t widget_focus_up(widget_t* widget);
+ret_t widget_focus_down(widget_t* widget);
+ret_t widget_focus_left(widget_t* widget);
+ret_t widget_focus_right(widget_t* widget);
 
 END_C_DECLS
 

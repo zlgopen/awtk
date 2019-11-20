@@ -1,20 +1,21 @@
 
-<window text="Custom Soft Keyboard" anim_hint="htranslate" >
+<window text="Custom Soft Keyboard" anim_hint="htranslate" 
+  move_focus_up_key="up" move_focus_down_key="down" move_focus_left_key="left" move_focus_right_key="right">
   <edit x="c" y="10" w="90%" h="30" focused="true" input_type="custom" text="" tips="custom"/>
 
-  <view y="60" x="c" w="90%" h="-60" is_keyboard="true" 
+  <view y="60" x="c" w="90%" h="-60" is_keyboard="true" grab_keys="true" 
     children_layout="default(r=4,c=4,m=5,s=5)" >
-    <button name="key" text="0" />
-    <button name="key" text="1" />
-    <button name="key" text="2" />
-    <button name="key" text="3" />
-    <button name="key" text="4" />
-    <button name="key" text="5" />
-    <button name="key" text="6" />
-    <button name="key" text="7" />
-    <button name="key" text="8" />
-    <button name="key" text="9" />
-    <button name="key" text="#" />
-    <button name="backspace" text="<=" />
+    <button focusable="true"  name="key" text="0" />
+    <button focusable="true"  name="key" text="1" />
+    <button focusable="true"  name="key" text="2" />
+    <button focusable="true"  name="key" text="3" />
+    <button focusable="true"  name="key" text="4" />
+    <button focusable="true"  name="key" text="5" />
+    <button focusable="true"  name="key" text="6" />
+    <button focusable="true"  name="key" text="7" />
+    <button focusable="true"  name="key" text="8" />
+    <button focusable="true"  name="key" text="9" />
+    <button focusable="true"  name="key" text="#" />
+    <button focusable="true"  name="backspace" text="<=" />
   </view>
 </window>

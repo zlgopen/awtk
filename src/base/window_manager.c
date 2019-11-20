@@ -247,6 +247,9 @@ ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e) {
   return_value_if_fail(e != NULL, RET_BAD_PARAMS);
   return_value_if_fail(wm != NULL && wm->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(wm->vt->dispatch_input_event != NULL, RET_BAD_PARAMS);
+  if (widget_dispatch(widget, e) == RET_STOP) {
+    return RET_STOP;
+  }
 
   return wm->vt->dispatch_input_event(widget, e);
 }

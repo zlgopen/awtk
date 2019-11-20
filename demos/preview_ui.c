@@ -136,22 +136,7 @@ int WINAPI wWinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPWSTR lpcmdli
   str_set(&str, utf8_line);
   command_line_to_argv(str.str, argv, &argc);
 #if defined(WIN32)
-#if !defined(NDEBUG)
-  {
-    bool_t log = FALSE;
-    int8_t last_arg = MAX_ARGV - 1;
-    if (argc > last_arg) {
-      if (atoi(argv[last_arg]) == 1) {
-        log = TRUE;
-      }
-    }
-    if (log) {
-      AllocConsole();
-      FILE* fp = NULL;
-      freopen_s(&fp, "CONOUT$", "w+t", stdout);
-    }
-  }
-#endif /*NDEBUG*/
+  TK_ENABLE_CONSOLE();
 #endif /*WIN32*/
 #else
 #include "tkc/mem.h"

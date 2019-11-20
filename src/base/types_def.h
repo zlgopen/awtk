@@ -279,12 +279,8 @@ typedef struct _widget_animator_t widget_animator_t;
 #endif /*WITH_VGCANVAS*/
 
 #ifndef TK_KEY_MOVE_FOCUS_NEXT
-#define TK_KEY_MOVE_FOCUS_NEXT TK_KEY_TAB
+#define TK_KEY_MOVE_FOCUS_NEXT "tab"
 #endif /*TK_KEY_MOVE_FOCUS_NEXT*/
-
-#ifndef TK_KEY_MOVE_FOCUS_PREV
-#define TK_KEY_MOVE_FOCUS_PREV TK_KEY_UNKNOWN
-#endif /*TK_KEY_MOVE_FOCUS_PREV*/
 
 struct _locale_info_t;
 typedef struct _locale_info_t locale_info_t;

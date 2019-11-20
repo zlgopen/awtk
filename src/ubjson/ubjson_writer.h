@@ -101,7 +101,6 @@ ret_t ubjson_writer_write_noop(ubjson_writer_t* writer);
  */
 ret_t ubjson_writer_write_true(ubjson_writer_t* writer);
 
-
 /**
  * @method ubjson_writer_write_false
  *
@@ -232,7 +231,6 @@ ret_t ubjson_writer_write_char(ubjson_writer_t* writer, char value);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t ubjson_writer_write_str(ubjson_writer_t* writer, const char* value);
-
 
 /**
  * @method ubjson_writer_write_str_len
@@ -392,7 +390,6 @@ ret_t ubjson_writer_write_kv_int64(ubjson_writer_t* writer, const char* key, int
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t ubjson_writer_write_kv_float(ubjson_writer_t* writer, const char* key, float value);
-
 
 /**
  * @method ubjson_writer_write_kv_double
