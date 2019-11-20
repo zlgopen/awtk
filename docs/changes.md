@@ -4,6 +4,8 @@
   * 更新生态文档（感谢陈谭提供补丁）。
   * 更新资源生成脚本文档（感谢俊杰提供补丁）。
   * 完善[控件焦点](widget_focus.md)
+  * 完善keyboard，切换page时设置第一个focusable控件为焦点。
+  * 修改combobox焦点问题（感谢大恒提供补丁）。
 
 * 2019/11/19
   * 完善 darray\_sort。
