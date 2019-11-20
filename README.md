@@ -252,4 +252,4 @@ pip install Pillow
 * [生态共建计划](docs/awtk_ecology.md)
 * 深度合作伙伴
 
-![](docs/images/logo_nxp.svg)  ![](docs/images/logo_anyka.jpg)  ![](docs/images/logo_ingenic.jpg)  ![](docs/images/logo_mindmotion.png)
+[![](docs/images/logo_nxp.svg)](https://www.nxp.com)　[![](docs/images/logo_anyka.jpg)](http://www.anyka.com)　[![](docs/images/logo_ingenic.jpg)](http://www.ingenic.com.cn)　[![](docs/images/logo_mindmotion.png)](http://www.mindmotion.com.cn)
