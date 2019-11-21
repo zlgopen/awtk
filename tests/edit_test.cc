@@ -209,7 +209,7 @@ TEST(Edit, focus_next) {
   ASSERT_EQ(g->key_target, e1);
   ASSERT_EQ(widget_focus_next(e1), RET_OK);
   ASSERT_EQ(g->key_target, e2);
-  ASSERT_EQ(widget_focus_next(e1), RET_BAD_PARAMS);
+  ASSERT_EQ(widget_focus_next(e1), RET_FAIL);
 
   ASSERT_EQ(widget_focus_next(e2), RET_OK);
   ASSERT_EQ(g->key_target, e3);
@@ -232,7 +232,7 @@ TEST(Edit, focus_prev) {
 
   ASSERT_EQ(widget_focus_prev(e1), RET_OK);
   ASSERT_EQ(g->key_target, e3);
-  ASSERT_EQ(widget_focus_prev(e1), RET_BAD_PARAMS);
+  ASSERT_EQ(widget_focus_prev(e1), RET_FAIL);
 
   ASSERT_EQ(widget_focus_prev(e3), RET_OK);
   ASSERT_EQ(g->key_target, e2);

@@ -19,6 +19,6 @@ TEST(Events, pointer_event_rotate) {
   e.y = 20;
   info.lcd_orientation = LCD_ORIENTATION_90;
   ASSERT_EQ(pointer_event_rotate(&e, &info), RET_OK);
-  ASSERT_EQ(e.y, 10);
-  ASSERT_EQ(e.x, info.lcd_h - 20 - 1);
+  ASSERT_EQ(e.y, 309);
+  ASSERT_EQ(e.x, 20);
 }
