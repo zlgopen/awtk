@@ -31,7 +31,7 @@ static bool_t rtos_is_inited(void) {
   return s_kernel_inited;
 }
 
-static uint32_t s_heap[2 * 1024];
+static uint32_t s_heap[4 * 1024];
 
 ret_t rtos_init(void) {
   rt_hw_interrupt_disable();
