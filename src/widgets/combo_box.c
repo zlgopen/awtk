@@ -368,24 +368,25 @@ static ret_t combo_box_active(widget_t* widget) {
   widget_t* win = NULL;
   combo_box_t* combo_box = COMBO_BOX(widget);
   return_value_if_fail(widget != NULL && combo_box != NULL, RET_BAD_PARAMS);
-
-  if (combo_box->open_popup) {
-    win = combo_box->open_popup(widget);
-    return_value_if_fail(win != NULL, RET_FAIL);
-
-    widget_resize(win, widget->w, win->h);
-    widget_layout_children(win);
-  } else if (combo_box->open_window) {
+  if (combo_box->open_window) {
     win = window_open(combo_box->open_window);
-    return_value_if_fail(win != NULL, RET_FAIL);
+  }
 
+  if (win != NULL) {
     widget_resize(win, widget->w, win->h);
     widget_layout_children(win);
   } else {
-    win = combo_box_create_popup(combo_box);
-    return_value_if_fail(win != NULL, RET_FAIL);
-  }
+    if (combo_box->open_popup) {
+      win = combo_box->open_popup(widget);
+      return_value_if_fail(win != NULL, RET_FAIL);
 
+      widget_resize(win, widget->w, win->h);
+      widget_layout_children(win);
+    } else {
+      win = combo_box_create_popup(combo_box);
+      return_value_if_fail(win != NULL, RET_FAIL);
+    }
+  }
   widget_set_prop_str(win, WIDGET_PROP_MOVE_FOCUS_PREV_KEY, "up");
   widget_set_prop_str(win, WIDGET_PROP_MOVE_FOCUS_NEXT_KEY, "down");
   combo_box_hook_items(combo_box, win);
