@@ -199,6 +199,7 @@ static const key_type_value_t keys_type_name_value[] = {
     {"LEFTBRACE", 0, TK_KEY_LEFTBRACE},
     {"RIGHTBRACE", 0, TK_KEY_RIGHTBRACE},
     {"BACK", 0, TK_KEY_BACK},
+    {"CANCEL", 0, TK_KEY_CANCEL},
 #ifdef SDL2
     {"PRINTSCREEN", 0, TK_KEY_PRINTSCREEN},
     {"SCROLLLOCK", 0, TK_KEY_SCROLLLOCK},
@@ -234,7 +235,6 @@ static const key_type_value_t keys_type_name_value[] = {
     {"VOLUMEDOWN", 0, TK_KEY_VOLUMEDOWN},
     {"ALTERASE", 0, TK_KEY_ALTERASE},
     {"SYSREQ", 0, TK_KEY_SYSREQ},
-    {"CANCEL", 0, TK_KEY_CANCEL},
     {"CLEAR", 0, TK_KEY_CLEAR},
     {"PRIOR", 0, TK_KEY_PRIOR},
     {"RETURN2", 0, TK_KEY_RETURN2},

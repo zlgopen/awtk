@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   keys.h
  * Author: AWTK Develop Team
  * Brief:  key code constants
@@ -869,6 +869,11 @@ typedef enum _key_code_t {
    * TK_KEY_BACK
    */
   TK_KEY_BACK = 0x20 + 165,
+  /**
+   * @const TK_KEY_CANCEL
+   * TK_KEY_CANCEL
+   */
+  TK_KEY_CANCEL = 0x20 + 167,	
 #endif
 
 } key_code_t;
