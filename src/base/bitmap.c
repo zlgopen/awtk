@@ -329,7 +329,6 @@ ret_t bitmap_init_mono(bitmap_t* b, uint32_t w, uint32_t h, const uint8_t* data,
 ret_t bitmap_init_gray(bitmap_t* b, uint32_t w, uint32_t h, const uint8_t* data, uint32_t comp) {
   uint32_t i = 0;
   uint32_t j = 0;
-  uint8_t pixel = 0;
   const uint8_t* s = data;
   uint8_t* bdata = bitmap_lock_buffer_for_write(b);
   uint8_t* d = (uint8_t*)(bdata);

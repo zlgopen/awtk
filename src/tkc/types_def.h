@@ -203,7 +203,6 @@ typedef enum _ret_t {
 #define log_warn(format, ...) printf(format, __VA_ARGS__)
 #define log_error(format, ...) printf(format, __VA_ARGS__)
 #endif
-#define snprintf _snprintf
 #elif defined(HAS_STDIO) || defined(AWTK_WEB)
 #define log_debug(format, args...) printf(format, ##args)
 #define log_info(format, args...) printf(format, ##args)
@@ -227,6 +226,7 @@ typedef enum _ret_t {
 
 #if defined(WIN32)
 #define TK_PATH_SEP '\\'
+#define snprintf _snprintf
 #else
 #define TK_PATH_SEP '/'
 #endif /*TK_PATH_SEP*/

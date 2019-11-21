@@ -285,7 +285,6 @@ TEST(DArrayTest, sort) {
   uint32_t i = 0;
   char* p = NULL;
   darray_t darray;
-  darray_t matched;
   int cases[] = {100, 1, 2, 2, 13, 14, 12, 4};
   darray_init(&darray, 10, NULL, NULL);
 

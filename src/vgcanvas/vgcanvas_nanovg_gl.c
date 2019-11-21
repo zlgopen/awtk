@@ -280,12 +280,6 @@ vgcanvas_nanovg_screen_shader_info_t* vgcanvas_create_init_screen_shader() {
   return shader_info;
 }
 
-static void vgcanvas_destroy_shader(vgcanvas_nanovg_screen_shader_info_t* shader_info) {
-  glDeleteBuffers(sizeof(shader_info->vboIds) / sizeof(GLuint), shader_info->vboIds);
-  glDeleteShader(shader_info->program_object);
-  TKMEM_FREE(shader_info);
-}
-
 static void vgcanvas_destroy_offline_fb(vgcanvas_nanovg_offline_fb_t* offline_fb) {
   glDeleteFramebuffers(1, &offline_fb->fbo);
   glDeleteRenderbuffers(1, &offline_fb->rbo);
