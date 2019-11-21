@@ -402,6 +402,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_AUTO_FIX "auto_fix"
 
 /**
+ * @const WIDGET_PROP_SELECT_NONE_WHEN_FOCUSED
+ * 编辑器在获得焦点时是否不选中文本。
+ */
+#define WIDGET_PROP_SELECT_NONE_WHEN_FOCUSED "select_none_when_focused"
+
+/**
  * @const WIDGET_PROP_X_MIN
  * X最小值。
  */

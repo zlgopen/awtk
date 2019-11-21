@@ -4,6 +4,7 @@
   * 完善edit焦点处理。
   * 完善keyboard焦点处理。
   * 完善combobox （感谢大恒提供补丁）。
+  * edit增加属性select\_none\_when\_focused。
 
 * 2019/11/20
   * 更新生态文档（感谢陈谭提供补丁）。

@@ -560,7 +560,9 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
 
       if (widget->target == NULL) {
         edit_request_input_method(widget);
-        idle_add(edit_select_all_async, edit);
+        if (!edit->select_none_when_focused) {
+          idle_add(edit_select_all_async, edit);
+        }
       }
       break;
     }
@@ -649,6 +651,15 @@ ret_t edit_set_auto_fix(widget_t* widget, bool_t auto_fix) {
   return RET_OK;
 }
 
+ret_t edit_set_select_none_when_focused(widget_t* widget, bool_t select_none_when_focused) {
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
+
+  edit->select_none_when_focused = select_none_when_focused;
+
+  return RET_OK;
+}
+
 ret_t edit_set_input_type(widget_t* widget, input_type_t type) {
   edit_t* edit = EDIT(widget);
   return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
@@ -719,6 +730,9 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_AUTO_FIX)) {
     value_set_bool(v, edit->auto_fix);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_SELECT_NONE_WHEN_FOCUSED)) {
+    value_set_bool(v, edit->select_none_when_focused);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_LEFT_MARGIN)) {
     value_set_int(v, edit->left_margin);
@@ -827,6 +841,9 @@ ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_AUTO_FIX)) {
     edit->auto_fix = value_bool(v);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_SELECT_NONE_WHEN_FOCUSED)) {
+    edit->select_none_when_focused = value_bool(v);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_MARGIN)) {
     int margin = value_int(v);

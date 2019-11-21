@@ -113,6 +113,14 @@ typedef struct _edit_t {
    */
   bool_t auto_fix;
   /**
+   * @property {bool_t} select_none_when_focused
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 获得焦点时不选中文本。
+   *
+   * > 主要用于没有指针设备的情况，否则软键盘无法取消选中文本。
+   */
+  bool_t select_none_when_focused;
+  /**
    * @property {uint8_t} top_margin
    * @annotation ["set_prop","get_prop","readable"]
    * 上边距。
@@ -315,6 +323,17 @@ ret_t edit_set_readonly(widget_t* widget, bool_t readonly);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t edit_set_auto_fix(widget_t* widget, bool_t auto_fix);
+
+/**
+ * @method edit_set_select_none_when_focused
+ * 设置编辑器是否在获得焦点时不选中文本。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {bool_t} select_none_when_focused 是否在获得焦点时不选中文本。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t edit_set_select_none_when_focused(widget_t* widget, bool_t select_none_when_focused);
 
 /**
  * @method edit_set_input_type
