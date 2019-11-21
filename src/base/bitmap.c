@@ -79,6 +79,8 @@ uint32_t bitmap_get_bpp_of_format(bitmap_format_t format) {
     case BITMAP_FMT_RGB888:
     case BITMAP_FMT_BGR888:
       return 3;
+    case BITMAP_FMT_GRAY:
+      return 1;
     default:
       break;
   }
@@ -324,6 +326,36 @@ ret_t bitmap_init_mono(bitmap_t* b, uint32_t w, uint32_t h, const uint8_t* data,
   return RET_OK;
 }
 
+ret_t bitmap_init_gray(bitmap_t* b, uint32_t w, uint32_t h, const uint8_t* data, uint32_t comp) {
+  uint32_t i = 0;
+  uint32_t j = 0;
+  uint8_t pixel = 0;
+  const uint8_t* s = data;
+  uint8_t* bdata = bitmap_lock_buffer_for_write(b);
+  uint8_t* d = (uint8_t*)(bdata);
+
+  for (j = 0; j < h; j++) {
+    for (i = 0; i < w; i++) {
+      uint8_t r = s[0];
+      uint8_t g = s[1];
+      uint8_t b = s[2];
+
+      if (comp == 4) {
+        uint8_t a = s[3];
+        r = (r * a) >> 8;
+        g = (g * a) >> 8;
+        b = (b * a) >> 8;
+      }
+
+      *d++ = rgb_to_gray(r, g, b);
+      s += comp;
+    }
+  }
+  bitmap_unlock_buffer(b);
+
+  return RET_OK;
+}
+
 bool_t rgba_data_is_opaque(const uint8_t* data, uint32_t w, uint32_t h, uint8_t comp) {
   if (comp == 4) {
     uint32_t i = 0;
@@ -366,6 +398,8 @@ ret_t bitmap_init_from_rgba(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_for
     return bitmap_init_bgr565(bitmap, w, h, data, comp);
   } else if (format == BITMAP_FMT_MONO) {
     return bitmap_init_mono(bitmap, w, h, data, comp);
+  } else if (format == BITMAP_FMT_GRAY) {
+    return bitmap_init_gray(bitmap, w, h, data, comp);
   } else {
     return RET_NOT_IMPL;
   }
