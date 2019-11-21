@@ -292,9 +292,10 @@ typedef uint8_t pixel_gray_t;
 #define pixel_gray_BPP 1
 #define pixel_gray_a(p) 0xff
 #define pixel_gray_format BITMAP_FMT_GRAY
-#define pixel_gray_to_rgba(p) { p * 0.2989, p * 0.5870, p * 0.1140, 0xff} 
-#define pixel_gray_from_rgba(r, g, b, a)  (((r)*30 + (g)*59 + (b)*11) / 100)  
-#define pixel_gray_from_rgb(r, g, b)  (((r)*30 + (g)*59 + (b)*11) / 100)
+#define pixel_gray_to_rgba(p) \
+  { p * 0.2989, p * 0.5870, p * 0.1140, 0xff }
+#define pixel_gray_from_rgba(r, g, b, a) (((r)*30 + (g)*59 + (b)*11) / 100)
+#define pixel_gray_from_rgb(r, g, b) (((r)*30 + (g)*59 + (b)*11) / 100)
 
 #define color_to_mono(c) (((c).rgba.r))
 #define color_from_mono(p) color_init(p, 0, 0, 0xff)

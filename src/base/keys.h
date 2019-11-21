@@ -873,7 +873,7 @@ typedef enum _key_code_t {
    * @const TK_KEY_CANCEL
    * TK_KEY_CANCEL
    */
-  TK_KEY_CANCEL = 0x20 + 167,	
+  TK_KEY_CANCEL = 0x20 + 167,
 #endif
 
 } key_code_t;
