@@ -3313,6 +3313,8 @@ static bool_t match_up(const rect_t* widget, const rect_t* last_matched, const r
     } else {
       return (iter->y + iter->h) > (last_matched->y + last_matched->h);
     }
+  } else if (is_same_col(widget, last_matched)) {
+    return FALSE;
   } else {
     return distance2(widget, iter) < distance2(widget, last_matched);
   }
@@ -3327,12 +3329,14 @@ static bool_t match_down(const rect_t* widget, const rect_t* last_matched, const
     return TRUE;
   }
 
-  if (is_same_row(widget, iter)) {
-    if (!is_same_row(widget, last_matched)) {
+  if (is_same_col(widget, iter)) {
+    if (!is_same_col(widget, last_matched)) {
       return TRUE;
     } else {
       return iter->y < last_matched->y;
     }
+  } else if (is_same_col(widget, last_matched)) {
+    return FALSE;
   } else {
     return distance2(widget, iter) < distance2(widget, last_matched);
   }
@@ -3353,6 +3357,8 @@ static bool_t match_left(const rect_t* widget, const rect_t* last_matched, const
     } else {
       return (iter->x + iter->w) > (last_matched->x + last_matched->w);
     }
+  } else if (is_same_row(widget, last_matched)) {
+    return FALSE;
   } else {
     return distance2(widget, iter) < distance2(widget, last_matched);
   }
@@ -3373,6 +3379,8 @@ static bool_t match_right(const rect_t* widget, const rect_t* last_matched, cons
     } else {
       return iter->x < last_matched->x;
     }
+  } else if (is_same_row(widget, last_matched)) {
+    return FALSE;
   } else {
     return distance2(widget, iter) < distance2(widget, last_matched);
   }
