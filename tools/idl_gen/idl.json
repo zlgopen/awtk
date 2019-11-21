@@ -7924,6 +7924,10 @@
       {
         "desc": "TK_KEY_BACK\n",
         "name": "TK_KEY_BACK"
+      },
+      {
+        "desc": "TK_KEY_CANCEL\n",
+        "name": "TK_KEY_CANCEL"
       }
     ],
     "header": "base/keys.h",
@@ -14993,6 +14997,10 @@
         "name": "WIDGET_PROP_AUTO_FIX"
       },
       {
+        "desc": "编辑器在获得焦点时是否不选中文本。\n",
+        "name": "WIDGET_PROP_SELECT_NONE_WHEN_FOCUSED"
+      },
+      {
         "desc": "X最小值。\n",
         "name": "WIDGET_PROP_X_MIN"
       },
@@ -15011,6 +15019,10 @@
       {
         "desc": "最大值。\n",
         "name": "WIDGET_PROP_MAX"
+      },
+      {
+        "desc": "让窗口管理器直接把按键发给自己。\n",
+        "name": "WIDGET_PROP_GRAB_KEYS"
       },
       {
         "desc": "行数或每行的高度。\n",
@@ -15209,12 +15221,28 @@
         "name": "WIDGET_PROP_WITH_FOCUS_STATE"
       },
       {
-        "desc": "将焦点移到下一个的键值。\n",
+        "desc": "将焦点移到前一个的键值。\n",
+        "name": "WIDGET_PROP_MOVE_FOCUS_PREV_KEY"
+      },
+      {
+        "desc": "将焦点移到后一个的键值。\n",
         "name": "WIDGET_PROP_MOVE_FOCUS_NEXT_KEY"
       },
       {
-        "desc": "将焦点移到下一个的键值。\n",
-        "name": "WIDGET_PROP_MOVE_FOCUS_PREV_KEY"
+        "desc": "将焦点向上移动的键值。\n",
+        "name": "WIDGET_PROP_MOVE_FOCUS_UP_KEY"
+      },
+      {
+        "desc": "将焦点向下移动的键值。\n",
+        "name": "WIDGET_PROP_MOVE_FOCUS_DOWN_KEY"
+      },
+      {
+        "desc": "将焦点向左移动的键值。\n",
+        "name": "WIDGET_PROP_MOVE_FOCUS_LEFT_KEY"
+      },
+      {
+        "desc": "将焦点向右移动的键值。\n",
+        "name": "WIDGET_PROP_MOVE_FOCUS_RIGHT_KEY"
       }
     ],
     "header": "base/widget_consts.h",
@@ -37890,6 +37918,78 @@
         "annotation": {
           "get_prop": true
         }
+      },
+      {
+        "name": "move_focus_prev_key",
+        "desc": "向前移动焦点的键值。\n请参考[控件焦点](https://github.com/zlgopen/awtk/blob/master/docs/widget_focus.md)\n",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true
+        }
+      },
+      {
+        "name": "move_focus_next_key",
+        "desc": "向后移动焦点的键值。\n请参考[控件焦点](https://github.com/zlgopen/awtk/blob/master/docs/widget_focus.md)\n",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true
+        }
+      },
+      {
+        "name": "move_focus_up_key",
+        "desc": "向上移动焦点的键值。\n请参考[控件焦点](https://github.com/zlgopen/awtk/blob/master/docs/widget_focus.md)\n",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true
+        }
+      },
+      {
+        "name": "move_focus_down_key",
+        "desc": "向下移动焦点的键值。\n请参考[控件焦点](https://github.com/zlgopen/awtk/blob/master/docs/widget_focus.md)\n",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true
+        }
+      },
+      {
+        "name": "move_focus_left_key",
+        "desc": "向左移动焦点的键值。\n请参考[控件焦点](https://github.com/zlgopen/awtk/blob/master/docs/widget_focus.md)\n",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true
+        }
+      },
+      {
+        "name": "move_focus_right_key",
+        "desc": "向右移动焦点的键值。\n请参考[控件焦点](https://github.com/zlgopen/awtk/blob/master/docs/widget_focus.md)\n",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true
+        }
       }
     ],
     "header": "base/window_base.h",
@@ -42734,6 +42834,29 @@
             "desc": "widget对象。"
           },
           {
+            "type": "bool_t",
+            "name": "select_none_when_focused",
+            "desc": "是否在获得焦点时不选中文本。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置编辑器是否在获得焦点时不选中文本。\n",
+        "name": "edit_set_select_none_when_focused",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          },
+          {
             "type": "input_type_t",
             "name": "type",
             "desc": "输入类型。"
@@ -42905,6 +43028,19 @@
       {
         "name": "auto_fix",
         "desc": "输入无效时，是否自动改正。\n",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "select_none_when_focused",
+        "desc": "获得焦点时不选中文本。\n> 主要用于没有指针设备的情况，否则软键盘无法取消选中文本。\n",
         "type": "bool_t",
         "annotation": {
           "set_prop": true,

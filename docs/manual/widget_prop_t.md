@@ -67,11 +67,13 @@
 | WIDGET\_PROP\_AUTO\_PLAY | 是否自动播放或指定播放的时间。 |
 | WIDGET\_PROP\_LOOP | 是否循环播放或循环播放的次数。 |
 | WIDGET\_PROP\_AUTO\_FIX | 是否启用自动更正功能。 |
+| WIDGET\_PROP\_SELECT\_NONE\_WHEN\_FOCUSED | 编辑器在获得焦点时是否不选中文本。 |
 | WIDGET\_PROP\_X\_MIN | X最小值。 |
 | WIDGET\_PROP\_X\_MAX | X最大值。 |
 | WIDGET\_PROP\_Y\_MIN | Y最小值。 |
 | WIDGET\_PROP\_Y\_MAX | Y最大值。 |
 | WIDGET\_PROP\_MAX | 最大值。 |
+| WIDGET\_PROP\_GRAB\_KEYS | 让窗口管理器直接把按键发给自己。 |
 | WIDGET\_PROP\_ROW | 行数或每行的高度。 |
 | WIDGET\_PROP\_STATE\_FOR\_STYLE | 控件状态。 |
 | WIDGET\_PROP\_THEME | 窗口主题名称。 |
@@ -121,5 +123,9 @@
 | WIDGET\_PROP\_FOCUS | (过时请用focused)。 |
 | WIDGET\_PROP\_FOCUSABLE | 是否支持焦点停留。 |
 | WIDGET\_PROP\_WITH\_FOCUS\_STATE | 是否支持焦点状态(如果希望style支持焦点状态，但有不希望焦点停留，可用本属性)。 |
-| WIDGET\_PROP\_MOVE\_FOCUS\_NEXT\_KEY | 将焦点移到下一个的键值。 |
-| WIDGET\_PROP\_MOVE\_FOCUS\_PREV\_KEY | 将焦点移到下一个的键值。 |
+| WIDGET\_PROP\_MOVE\_FOCUS\_PREV\_KEY | 将焦点移到前一个的键值。 |
+| WIDGET\_PROP\_MOVE\_FOCUS\_NEXT\_KEY | 将焦点移到后一个的键值。 |
+| WIDGET\_PROP\_MOVE\_FOCUS\_UP\_KEY | 将焦点向上移动的键值。 |
+| WIDGET\_PROP\_MOVE\_FOCUS\_DOWN\_KEY | 将焦点向下移动的键值。 |
+| WIDGET\_PROP\_MOVE\_FOCUS\_LEFT\_KEY | 将焦点向左移动的键值。 |
+| WIDGET\_PROP\_MOVE\_FOCUS\_RIGHT\_KEY | 将焦点向右移动的键值。 |

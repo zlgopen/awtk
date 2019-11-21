@@ -63,6 +63,7 @@ default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/st
 | <a href="#edit_t_edit_set_is_valid_char">edit\_set\_is\_valid\_char</a> | 设置输入字符检查函数。 |
 | <a href="#edit_t_edit_set_password_visible">edit\_set\_password\_visible</a> | 当编辑器输入类型为密码时，设置密码是否可见。 |
 | <a href="#edit_t_edit_set_readonly">edit\_set\_readonly</a> | 设置编辑器是否为只读。 |
+| <a href="#edit_t_edit_set_select_none_when_focused">edit\_set\_select\_none\_when\_focused</a> | 设置编辑器是否在获得焦点时不选中文本。 |
 | <a href="#edit_t_edit_set_text_limit">edit\_set\_text\_limit</a> | 设置为文本输入及其长度限制，不允许输入超过max个字符，少于min个字符时进入error状态。 |
 ### 属性
 <p id="edit_t_properties">
@@ -78,6 +79,7 @@ default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/st
 | <a href="#edit_t_password_visible">password\_visible</a> | bool\_t | 密码是否可见。 |
 | <a href="#edit_t_readonly">readonly</a> | bool\_t | 编辑器是否为只读。 |
 | <a href="#edit_t_right_margin">right\_margin</a> | uint8\_t | 右边距。 |
+| <a href="#edit_t_select_none_when_focused">select\_none\_when\_focused</a> | bool\_t | 获得焦点时不选中文本。 |
 | <a href="#edit_t_step">step</a> | double | 步长。 |
 | <a href="#edit_t_tips">tips</a> | char* | 输入提示。 |
 | <a href="#edit_t_top_margin">top\_margin</a> | uint8\_t | 上边距。 |
@@ -429,6 +431,27 @@ ret_t edit_set_readonly (widget_t* widget, bool_t readonly);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
 | readonly | bool\_t | 只读。 |
+#### edit\_set\_select\_none\_when\_focused 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="edit_t_edit_set_select_none_when_focused">设置编辑器是否在获得焦点时不选中文本。
+
+
+* 函数原型：
+
+```
+ret_t edit_set_select_none_when_focused (widget_t* widget, bool_t select_none_when_focused);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | widget对象。 |
+| select\_none\_when\_focused | bool\_t | 是否在获得焦点时不选中文本。 |
 #### edit\_set\_text\_limit 函数
 -----------------------
 
@@ -592,6 +615,24 @@ ret_t edit_set_text_limit (widget_t* widget, uint32_t min, uint32_t max);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### select\_none\_when\_focused 属性
+-----------------------
+> <p id="edit_t_select_none_when_focused">获得焦点时不选中文本。
+> 主要用于没有指针设备的情况，否则软键盘无法取消选中文本。
+
+
+* 类型：bool\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
 | 可通过widget\_get\_prop读取 | 是 |
 | 可通过widget\_set\_prop修改 | 是 |

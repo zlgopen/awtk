@@ -25,6 +25,12 @@
 | <a href="#window_base_t_close_anim_hint">close\_anim\_hint</a> | char* | 关闭窗口动画的名称。 |
 | <a href="#window_base_t_font_manager">font\_manager</a> | font\_manager\_t* | 获取字体管理器对象。 |
 | <a href="#window_base_t_image_manager">image\_manager</a> | image\_manager\_t* | 获取图片管理器对象。 |
+| <a href="#window_base_t_move_focus_down_key">move\_focus\_down\_key</a> | char* | 向下移动焦点的键值。 |
+| <a href="#window_base_t_move_focus_left_key">move\_focus\_left\_key</a> | char* | 向左移动焦点的键值。 |
+| <a href="#window_base_t_move_focus_next_key">move\_focus\_next\_key</a> | char* | 向后移动焦点的键值。 |
+| <a href="#window_base_t_move_focus_prev_key">move\_focus\_prev\_key</a> | char* | 向前移动焦点的键值。 |
+| <a href="#window_base_t_move_focus_right_key">move\_focus\_right\_key</a> | char* | 向右移动焦点的键值。 |
+| <a href="#window_base_t_move_focus_up_key">move\_focus\_up\_key</a> | char* | 向上移动焦点的键值。 |
 | <a href="#window_base_t_open_anim_hint">open\_anim\_hint</a> | char* | 打开窗口动画的名称。 |
 | <a href="#window_base_t_stage">stage</a> | char* | 窗口当前处于的状态。 |
 | <a href="#window_base_t_theme">theme</a> | char* | 主题资源的名称。 |
@@ -129,6 +135,108 @@ widget_t* window_base_cast (widget_t* widget);
 | 可直接读取 | 否 |
 | 可直接修改 | 否 |
 | 可通过widget\_get\_prop读取 | 是 |
+#### move\_focus\_down\_key 属性
+-----------------------
+> <p id="window_base_t_move_focus_down_key">向下移动焦点的键值。
+请参考[控件焦点](https://github.com/zlgopen/awtk/blob/master/docs/widget_focus.md)
+
+
+* 类型：char*
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### move\_focus\_left\_key 属性
+-----------------------
+> <p id="window_base_t_move_focus_left_key">向左移动焦点的键值。
+请参考[控件焦点](https://github.com/zlgopen/awtk/blob/master/docs/widget_focus.md)
+
+
+* 类型：char*
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### move\_focus\_next\_key 属性
+-----------------------
+> <p id="window_base_t_move_focus_next_key">向后移动焦点的键值。
+请参考[控件焦点](https://github.com/zlgopen/awtk/blob/master/docs/widget_focus.md)
+
+
+* 类型：char*
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### move\_focus\_prev\_key 属性
+-----------------------
+> <p id="window_base_t_move_focus_prev_key">向前移动焦点的键值。
+请参考[控件焦点](https://github.com/zlgopen/awtk/blob/master/docs/widget_focus.md)
+
+
+* 类型：char*
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### move\_focus\_right\_key 属性
+-----------------------
+> <p id="window_base_t_move_focus_right_key">向右移动焦点的键值。
+请参考[控件焦点](https://github.com/zlgopen/awtk/blob/master/docs/widget_focus.md)
+
+
+* 类型：char*
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### move\_focus\_up\_key 属性
+-----------------------
+> <p id="window_base_t_move_focus_up_key">向上移动焦点的键值。
+请参考[控件焦点](https://github.com/zlgopen/awtk/blob/master/docs/widget_focus.md)
+
+
+* 类型：char*
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### open\_anim\_hint 属性
 -----------------------
 > <p id="window_base_t_open_anim_hint">打开窗口动画的名称。
