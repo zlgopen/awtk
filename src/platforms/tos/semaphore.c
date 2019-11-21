@@ -64,7 +64,7 @@ ret_t tk_semaphore_destroy(tk_semaphore_t* semaphore) {
   return_value_if_fail(semaphore != NULL, RET_BAD_PARAMS);
 
   tos_sem_destroy(&(semaphore->sem));
-  memset(&semaphore, 0x00, sizeof(tk_semaphore_t));
+  memset(semaphore, 0x00, sizeof(tk_semaphore_t));
   TKMEM_FREE(semaphore);
 
   return RET_OK;
