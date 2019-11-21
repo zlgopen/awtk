@@ -199,9 +199,15 @@ static ret_t keyboard_hook_buttons(void* ctx, const void* iter) {
 
 static ret_t keyboard_on_load(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
+  widget_t* pages = widget_lookup_by_type(widget, WIDGET_TYPE_PAGES, TRUE);
 
   (void)e;
   widget_foreach(widget, keyboard_hook_buttons, widget);
+  if (pages != NULL) {
+    keyboard_focus_first(widget_get_child(pages, PAGES(pages)->active));
+  } else {
+    keyboard_focus_first(widget);
+  }
 
   return RET_OK;
 }
