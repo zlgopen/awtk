@@ -420,6 +420,16 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
 
   if (key == TK_KEY_TAB) {
     return RET_OK;
+  } else if (key == TK_KEY_LEFT || key == TK_KEY_RIGHT) {
+    uint32_t cursor = text_edit_get_cursor(edit->model);
+    if (key == TK_KEY_LEFT && cursor == 0) {
+      return RET_OK;
+    }
+
+    if (key == TK_KEY_RIGHT && cursor == widget->text.size) {
+      return RET_OK;
+    }
+
   } else if (key == TK_KEY_DOWN) {
     if (!edit_is_number(widget)) {
       widget_focus_next(widget);
