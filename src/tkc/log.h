@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   log.h
  * Author: AWTK Develop Team
  * Brief:  log functions

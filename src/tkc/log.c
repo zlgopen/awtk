@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   log.c
  * Author: AWTK Develop Team
  * Brief:  log functions

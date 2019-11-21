@@ -80,10 +80,11 @@ int main(int argc, char* argv[]) {
   system_info_set_default_font(system_info(), "default_full");
 #endif /*WITH_FS_RES*/
 
-  log_debug("Build at: %s %s\n", __DATE__, __TIME__);
+  log_set_log_level(LOG_LEVEL_INFO);
+  log_info("Build at: %s %s\n", __DATE__, __TIME__);
   assets_init();
   application_init();
-
+  
 #ifdef ENABLE_CURSOR
   window_manager_set_cursor(window_manager(), "cursor");
 #endif /*ENABLE_CURSOR*/
