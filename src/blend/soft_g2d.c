@@ -67,7 +67,7 @@ ret_t soft_copy_image(bitmap_t* dst, bitmap_t* src, rect_t* src_r, xy_t dx, xy_t
   src_data = bitmap_lock_buffer_for_read(src);
   dst_data = bitmap_lock_buffer_for_write(dst);
   return_value_if_fail(src_data != NULL && dst_data != NULL, RET_BAD_PARAMS);
-  
+
   src_p = (uint8_t*)(src_data) + src_r->y * src_line_length + src_r->x * bpp;
   dst_p = (uint8_t*)(dst_data) + dy * dst_line_length + dx * bpp;
   if ((dst->w * bpp == dst_line_length) && (src->w * bpp == src_line_length) && dst->w == src->w &&

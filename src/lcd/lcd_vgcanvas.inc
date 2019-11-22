@@ -112,15 +112,13 @@ static ret_t lcd_vgcanvas_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) 
     vgcanvas_rect(canvas, rect_x, rect_y, rect_w, rect_h);
     vgcanvas_set_fill_color(canvas, lcd->fill_color);
     vgcanvas_fill(canvas);
-  }
-  else if (w <= 1) {
+  } else if (w <= 1) {
     vgcanvas_begin_path(canvas);
     vgcanvas_move_to(canvas, rect_x, rect_y);
     vgcanvas_line_to(canvas, rect_x, rect_y + h);
     vgcanvas_set_stroke_color(canvas, lcd->fill_color);
     vgcanvas_stroke(canvas);
-  }
-  else if (h <= 1) {
+  } else if (h <= 1) {
     vgcanvas_begin_path(canvas);
     vgcanvas_move_to(canvas, rect_x, rect_y);
     vgcanvas_line_to(canvas, rect_x + w, rect_y);

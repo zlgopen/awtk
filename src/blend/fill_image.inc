@@ -71,7 +71,7 @@ static ret_t fill_image(bitmap_t* dst, rect_t* dst_r, color_t c) {
 
     dst_data = bitmap_lock_buffer_for_write(dst);
     return_value_if_fail(dst_data != NULL, RET_BAD_PARAMS);
-    
+
     for (y = 0; y < h; y++) {
       p = (pixel_dst_t*)(dst_data + (dst_r->y + y) * line_length + dst_r->x * bpp);
 
