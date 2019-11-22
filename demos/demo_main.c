@@ -84,7 +84,7 @@ int main(int argc, char* argv[]) {
   log_info("Build at: %s %s\n", __DATE__, __TIME__);
   assets_init();
   application_init();
-  
+
 #ifdef ENABLE_CURSOR
   window_manager_set_cursor(window_manager(), "cursor");
 #endif /*ENABLE_CURSOR*/

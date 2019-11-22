@@ -121,6 +121,14 @@ typedef struct _edit_t {
    */
   bool_t select_none_when_focused;
   /**
+   * @property {bool_t} open_im_when_focused
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 获得焦点时打开输入法。
+   *
+   * > 主要用于没有指针设备的情况，否则每次切换焦点时都打开输入法。
+   */
+  bool_t open_im_when_focused;
+  /**
    * @property {uint8_t} top_margin
    * @annotation ["set_prop","get_prop","readable"]
    * 上边距。
@@ -334,6 +342,17 @@ ret_t edit_set_auto_fix(widget_t* widget, bool_t auto_fix);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t edit_set_select_none_when_focused(widget_t* widget, bool_t select_none_when_focused);
+
+/**
+ * @method edit_set_open_im_when_focused
+ * 设置编辑器是否在获得焦点时打开输入法。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {bool_t} open_im_when_focused 是否在获得焦点时打开输入法。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t edit_set_open_im_when_focused(widget_t* widget, bool_t open_im_when_focused);
 
 /**
  * @method edit_set_input_type

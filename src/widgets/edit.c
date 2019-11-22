@@ -35,6 +35,7 @@
 
 #define PASSWORD_MASK_CHAR '*'
 static ret_t edit_update_status(widget_t* widget);
+static ret_t edit_select_all_async(const idle_info_t* info);
 
 static ret_t edit_dispatch_event(widget_t* widget, event_type_t type) {
   event_t evt = event_init(type, widget);
@@ -382,6 +383,24 @@ static ret_t edit_request_input_method(widget_t* widget) {
   return RET_OK;
 }
 
+static ret_t edit_on_focused(widget_t* widget) {
+  edit_t* edit = EDIT(widget);
+
+  if (edit->timer_id == TK_INVALID_ID) {
+    edit->timer_id = timer_add(edit_update_caret, widget, 600);
+  }
+
+  if (widget->target == NULL) {
+    edit_request_input_method(widget);
+
+    if (!edit->select_none_when_focused) {
+      idle_add(edit_select_all_async, edit);
+    }
+  }
+
+  return RET_OK;
+}
+
 static ret_t edit_pointer_up_cleanup(widget_t* widget) {
   edit_t* edit = EDIT(widget);
   return_value_if_fail(edit != NULL && widget != NULL, RET_BAD_PARAMS);
@@ -528,6 +547,15 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       edit_update_status(widget);
       break;
     }
+    case EVT_KEY_UP: {
+      if (edit->timer_id == TK_INVALID_ID) {
+        if (((key_event_t*)e)->key == TK_KEY_RETURN) {
+          edit_on_focused(widget);
+          return RET_STOP;
+        }
+      }
+      break;
+    }
     case EVT_IM_COMMIT: {
       im_commit_event_t* evt = (im_commit_event_t*)e;
       if (evt->replace) {
@@ -554,15 +582,8 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_FOCUS: {
-      if (edit->timer_id == TK_INVALID_ID) {
-        edit->timer_id = timer_add(edit_update_caret, widget, 600);
-      }
-
-      if (widget->target == NULL) {
-        edit_request_input_method(widget);
-        if (!edit->select_none_when_focused) {
-          idle_add(edit_select_all_async, edit);
-        }
+      if (edit->open_im_when_focused) {
+        edit_on_focused(widget);
       }
       break;
     }
@@ -660,6 +681,15 @@ ret_t edit_set_select_none_when_focused(widget_t* widget, bool_t select_none_whe
   return RET_OK;
 }
 
+ret_t edit_set_open_im_when_focused(widget_t* widget, bool_t open_im_when_focused) {
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
+
+  edit->open_im_when_focused = open_im_when_focused;
+
+  return RET_OK;
+}
+
 ret_t edit_set_input_type(widget_t* widget, input_type_t type) {
   edit_t* edit = EDIT(widget);
   return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
@@ -733,6 +763,9 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_SELECT_NONE_WHEN_FOCUSED)) {
     value_set_bool(v, edit->select_none_when_focused);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_OPEN_IM_WHEN_FOCUSED)) {
+    value_set_bool(v, edit->open_im_when_focused);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_LEFT_MARGIN)) {
     value_set_int(v, edit->left_margin);
@@ -844,6 +877,9 @@ ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_SELECT_NONE_WHEN_FOCUSED)) {
     edit->select_none_when_focused = value_bool(v);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_OPEN_IM_WHEN_FOCUSED)) {
+    edit->open_im_when_focused = value_bool(v);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_MARGIN)) {
     int margin = value_int(v);
@@ -1205,6 +1241,7 @@ widget_t* edit_create_ex(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy
   edit->right_margin = 2;
   edit->top_margin = 2;
   edit->bottom_margin = 2;
+  edit->open_im_when_focused = TRUE;
   edit_set_text_limit(widget, 0, 1024);
 
   edit_update_status(widget);
