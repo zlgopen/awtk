@@ -53,6 +53,8 @@ static ret_t list_item_on_timer(const timer_info_t* info) {
 
   list_item->pressed = TRUE;
   list_item->timer_id = TK_INVALID_ID;
+
+  widget_off_by_func(widget->parent, EVT_POINTER_UP, list_item_on_parent_pointer_up, widget);
   widget_on(widget->parent, EVT_POINTER_UP, list_item_on_parent_pointer_up, widget);
 
   return RET_REMOVE;

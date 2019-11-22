@@ -259,6 +259,7 @@ ret_t emitter_off(emitter_t* emitter, uint32_t id) {
 }
 
 ret_t emitter_off_by_func(emitter_t* emitter, uint32_t etype, event_func_t handler, void* ctx) {
+  ret_t ret;
   emitter_item_t item;
 
   memset(&item, 0x00, sizeof(item));
@@ -267,7 +268,16 @@ ret_t emitter_off_by_func(emitter_t* emitter, uint32_t etype, event_func_t handl
   item.type = etype;
   item.handler = handler;
 
-  return emitter_off_ex(emitter, emitter_item_compare_by_func, &item);
+  ret = emitter_off_ex(emitter, emitter_item_compare_by_func, &item);
+  if (ret == RET_OK) {
+    while (TRUE) {
+      if (emitter_off_ex(emitter, emitter_item_compare_by_func, &item) != RET_OK) {
+        break;
+      }
+    }
+  }
+
+  return ret;
 }
 
 ret_t emitter_off_by_tag(emitter_t* emitter, uint32_t tag) {
