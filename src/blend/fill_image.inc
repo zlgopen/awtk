@@ -11,6 +11,8 @@ static ret_t clear_image(bitmap_t* dst, rect_t* dst_r, color_t c) {
   pixel_dst_t data = pixel_dst_from_rgba(c.rgba.r, c.rgba.g, c.rgba.b, c.rgba.a);
 
   dst_data = bitmap_lock_buffer_for_write(dst);
+  return_value_if_fail(dst_data != NULL, RET_BAD_PARAMS);
+
   if (dst->w == dst_r->w && (dst->w * bpp) == line_length && dst->h == dst_r->h) {
     uint32_t size = w * h;
     p = (pixel_dst_t*)(dst_data);
@@ -68,6 +70,8 @@ static ret_t fill_image(bitmap_t* dst, rect_t* dst_r, color_t c) {
     rgba.a = minus_a;
 
     dst_data = bitmap_lock_buffer_for_write(dst);
+    return_value_if_fail(dst_data != NULL, RET_BAD_PARAMS);
+    
     for (y = 0; y < h; y++) {
       p = (pixel_dst_t*)(dst_data + (dst_r->y + y) * line_length + dst_r->x * bpp);
 

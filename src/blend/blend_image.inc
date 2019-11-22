@@ -53,7 +53,8 @@ static ret_t blend_image_with_alpha(bitmap_t* dst, bitmap_t* src, rect_t* dst_r,
 
   src_data = bitmap_lock_buffer_for_read(src);
   dst_data = bitmap_lock_buffer_for_write(dst);
-
+  return_value_if_fail(src_data != NULL && dst_data != NULL, RET_BAD_PARAMS);
+  
   srcp = src_data;
   dstp = dst_data;
   if (sw == dw && sh == dh) {

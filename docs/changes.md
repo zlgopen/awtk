@@ -5,6 +5,7 @@
   * 完善list item（感谢朝泽提供补丁）。
   * 完善emitter（感谢朝泽提供补丁）。
   * edit增加属性open\_im\_when\_focused （感谢[qianfan-Zhao](https://github.com/qianfan-Zhao)提供补丁）。
+  * 完善和优化绘图函数（感谢智明提供补丁）。
 
 * 2019/11/21
   * 完善edit焦点处理。

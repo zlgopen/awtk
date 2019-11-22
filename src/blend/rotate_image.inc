@@ -36,6 +36,8 @@ static ret_t rotate_image(bitmap_t* dst, bitmap_t* src, rect_t* src_r, lcd_orien
 
   dst_data = bitmap_lock_buffer_for_write(dst);
   src_data = bitmap_lock_buffer_for_read(src);
+  return_value_if_fail(src_data != NULL && dst_data != NULL, RET_BAD_PARAMS);
+  
   dst_p = (pixel_dst_t*)(dst_data + dy * dst_line_length + dx * fb_bpp);
   src_p = (pixel_dst_t*)(src_data + src_r->y * src_line_length + src_r->x * img_bpp);
 
