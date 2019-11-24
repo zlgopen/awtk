@@ -195,6 +195,16 @@ ret_t str_remove(str_t* str, uint32_t offset, uint32_t len);
 ret_t str_append_char(str_t* str, char c);
 
 /**
+ * @method str_append_int
+ * 追加一个整数。
+ * @param {str_t*} str str对象。
+ * @param {int32_t} value 要追加的整数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_append_int(str_t* str, int32_t value);
+
+/**
  * @method str_pop
  * 删除最后一个字符。
  * @param {str_t*} str str对象。

@@ -101,6 +101,13 @@ ret_t str_append(str_t* str, const char* text) {
   return str_append_with_len(str, text, strlen(text));
 }
 
+ret_t str_append_int(str_t* str, int32_t value) {
+  char num[32];
+  tk_snprintf(num, sizeof(num), "%d", value);
+
+  return str_append(str, num);
+}
+
 ret_t str_append_char(str_t* str, char c) {
   return_value_if_fail(str != NULL, RET_BAD_PARAMS);
   return_value_if_fail(str_extend(str, str->size + 2) == RET_OK, RET_BAD_PARAMS);
