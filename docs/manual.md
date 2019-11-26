@@ -28,11 +28,13 @@
 * [edit](manual/edit_t.md) 单行编辑器控件。
 * [image](manual/image_t.md) 图片控件。
 * [dragger](manual/dragger_t.md) dragger控件。
+* [draggable](manual/draggable_t.md) draggable控件。
 * [image\_base](manual/image_base_t.md) 图片控件基类。
 * [check\_button](manual/check_button_t.md) 多选按钮。
 * [radio\_button](manual/check_button_t.md) 单选按钮。
 * [spin\_box](manual/spin_box_t.md) 数值编辑器控件。
 * [combo\_box](manual/combo_box_t.md) 下拉列表控件。
+* [combo\_box\_ex](manual/combo_box_ex_t.md) 可滚动的下拉列表控件。
 * [combo\_box\_item](manual/combo_box_item_t.md) 下拉列表项控件。
 * [color\_tile](manual/color_tile_t.md) 色块控件。
 * [dialog\_title](manual/dialog_title_t.md) 对话框标题控件。
