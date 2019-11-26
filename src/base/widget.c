@@ -1450,6 +1450,7 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
 
 ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
   ret_t ret = RET_OK;
+  ENSURE(widget != NULL && name != NULL && v != NULL);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
@@ -3569,6 +3570,10 @@ canvas_t* widget_get_canvas(widget_t* widget) {
   canvas_t* c = NULL;
   widget_t* win = widget_get_window(widget);
   return_value_if_fail(widget != NULL, NULL);
+
+  if (win == NULL) {
+    win = window_manager_get_top_window(window_manager());
+  }
 
   c = (canvas_t*)widget_get_prop_pointer(win, WIDGET_PROP_CANVAS);
   if (c == NULL) {
