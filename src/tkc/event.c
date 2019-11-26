@@ -70,3 +70,25 @@ progress_event_t* progress_event_cast(event_t* event) {
 
   return (progress_event_t*)event;
 }
+
+event_t* prop_change_event_init(prop_change_event_t* event, uint32_t type, const char* name,
+                                const value_t* value) {
+  return_value_if_fail(event != NULL, NULL);
+  memset(event, 0x00, sizeof(*event));
+
+  event->e.type = type;
+  event->name = name;
+  event->value = value;
+
+  return (event_t*)(event);
+}
+
+event_t* progress_event_init(progress_event_t* event, uint32_t percent) {
+  return_value_if_fail(event != NULL, NULL);
+  memset(event, 0x00, sizeof(*event));
+
+  event->e.type = EVT_PROGRESS;
+  event->percent = percent;
+
+  return (event_t*)(event);
+}

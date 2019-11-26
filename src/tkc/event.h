@@ -65,7 +65,7 @@ typedef enum _event_base_type_t {
   EVT_PROPS_CHANGED,
   /**
    * @const EVT_PROGRESS
-   * Progress changed(progress_event_t)。
+   * 进度状态(progress_event_t)。
    */
   EVT_PROGRESS,
   /**
@@ -182,24 +182,36 @@ typedef struct _prop_change_event_t {
  * 把event对象转prop_change_event_t对象，主要给脚本语言使用。
  * @param {event_t*} event event对象。
  *
- * @return {prop_change_event_t*} 对象。
+ * @return {prop_change_event_t*}  返回event对象。
  */
 prop_change_event_t* prop_change_event_cast(event_t* event);
+
+/**
+ * @method prop_change_event_init
+ * 初始prop change event。
+ * 
+ * @param {prop_change_event_t*} event event对象。
+ * @param {uint32_t} percent 进度。
+ *
+ * @return {event_t*} 返回event对象。
+ */
+event_t* prop_change_event_init(prop_change_event_t* event, uint32_t type, const char* name,
+                                const value_t* value);
 
 /**
  * @class progress_event_t
  * @annotation ["scriptable"]
  * @parent event_t
- * 对象属性变化事件。
+ * 进度变化事件。
  */
 typedef struct _progress_event_t {
   event_t e;
   /**
    * @property {const char*} percent
    * @annotation ["readable", "scriptable"]
-   * percent。
+   * 进度百分比。
    */
-   uint32_t percent;
+  uint32_t percent;
 } progress_event_t;
 
 /**
@@ -208,9 +220,20 @@ typedef struct _progress_event_t {
  * 把event对象转progress_event_t对象，主要给脚本语言使用。
  * @param {event_t*} event event对象。
  *
- * @return {progress_event_t*} 对象。
+ * @return {progress_event_t*}  返回event对象。
  */
 progress_event_t* progress_event_cast(event_t* event);
+
+/**
+ * @method progress_event_init
+ * 初始progress event。
+ * 
+ * @param {progress_event_t*} event event对象。
+ * @param {uint32_t} percent 进度。
+ *
+ * @return {event_t*} 返回event对象。
+ */
+event_t* progress_event_init(progress_event_t* event, uint32_t percent);
 
 END_C_DECLS
 
