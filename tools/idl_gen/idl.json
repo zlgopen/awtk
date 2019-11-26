@@ -29863,7 +29863,7 @@
       {
         "name": "percent",
         "desc": "进度百分比。\n",
-        "type": "const char*",
+        "type": "uint32_t",
         "annotation": {
           "readable": true,
           "scriptable": true

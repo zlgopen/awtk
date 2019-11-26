@@ -207,7 +207,7 @@ event_t* prop_change_event_init(prop_change_event_t* event, uint32_t type, const
 typedef struct _progress_event_t {
   event_t e;
   /**
-   * @property {const char*} percent
+   * @property {uint32_t} percent
    * @annotation ["readable", "scriptable"]
    * 进度百分比。
    */

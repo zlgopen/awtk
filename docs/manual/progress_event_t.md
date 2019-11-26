@@ -17,7 +17,7 @@
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#progress_event_t_percent">percent</a> | const char* | 进度百分比。 |
+| <a href="#progress_event_t_percent">percent</a> | uint32\_t | 进度百分比。 |
 #### progress\_event\_cast 函数
 -----------------------
 
@@ -64,7 +64,7 @@ event_t* progress_event_init (progress_event_t* event, uint32_t percent);
 > <p id="progress_event_t_percent">进度百分比。
 
 
-* 类型：const char*
+* 类型：uint32\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |
