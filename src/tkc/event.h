@@ -64,6 +64,11 @@ typedef enum _event_base_type_t {
    */
   EVT_PROPS_CHANGED,
   /**
+   * @const EVT_PROGRESS
+   * Progress changed(progress_event_t)。
+   */
+  EVT_PROGRESS,
+  /**
    * @const EVT_DESTROY
    * 对象销毁事件名(event_t)。
    */
@@ -180,6 +185,32 @@ typedef struct _prop_change_event_t {
  * @return {prop_change_event_t*} 对象。
  */
 prop_change_event_t* prop_change_event_cast(event_t* event);
+
+/**
+ * @class progress_event_t
+ * @annotation ["scriptable"]
+ * @parent event_t
+ * 对象属性变化事件。
+ */
+typedef struct _progress_event_t {
+  event_t e;
+  /**
+   * @property {const char*} percent
+   * @annotation ["readable", "scriptable"]
+   * percent。
+   */
+   uint32_t percent;
+} progress_event_t;
+
+/**
+ * @method progress_event_cast
+ * @annotation ["cast", "scriptable"]
+ * 把event对象转progress_event_t对象，主要给脚本语言使用。
+ * @param {event_t*} event event对象。
+ *
+ * @return {progress_event_t*} 对象。
+ */
+progress_event_t* progress_event_cast(event_t* event);
 
 END_C_DECLS
 

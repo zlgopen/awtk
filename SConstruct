@@ -25,6 +25,7 @@ SConscriptFiles=awtk.NANOVG_BACKEND_PROJS + [
   '3rd/miniz/SConscript',
   'src/SConscript',
   'src/streams/SConscript',
+  'src/file_transfer/SConscript',
   'src/compressors/SConscript',
   'src/ubjson/SConscript',
   'tools/common/SConscript', 

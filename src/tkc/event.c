@@ -63,3 +63,10 @@ ret_t event_destroy(event_t* event) {
 
   return RET_OK;
 }
+
+progress_event_t* progress_event_cast(event_t* event) {
+  return_value_if_fail(event != NULL, NULL);
+  return_value_if_fail(event->type == EVT_PROGRESS, NULL);
+
+  return (progress_event_t*)event;
+}

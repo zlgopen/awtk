@@ -1,0 +1,15 @@
+import os
+import copy
+
+BIN_DIR=os.environ['BIN_DIR'];
+LIB_DIR=os.environ['LIB_DIR'];
+
+
+env=DefaultEnvironment().Clone()
+
+env.Library(os.path.join(LIB_DIR, 'filetransfer'), Glob("*.c"), LIBS=[])
+
+env.Program(os.path.join(BIN_DIR, 'tcp_file_sender'), ['tools/tcp_file_sender.c'], LIBS=['filetransfer', 'streams'] + env['LIBS']);
+env.Program(os.path.join(BIN_DIR, 'tcp_file_receiver'), ['tools/tcp_file_receiver.c'], LIBS=['filetransfer', 'streams'] + env['LIBS']);
+env.Program(os.path.join(BIN_DIR, 'serial_file_sender'), ['tools/serial_file_sender.c'], LIBS=['filetransfer', 'streams'] + env['LIBS']);
+env.Program(os.path.join(BIN_DIR, 'serial_file_receiver'), ['tools/serial_file_receiver.c'], LIBS=['filetransfer', 'streams'] + env['LIBS']);
