@@ -38,6 +38,7 @@ file_receiver_t* file_receiver_create(uint32_t block_size, const char* productid
   if (productid != NULL) {
     tk_strncpy(receiver->productid, productid, TK_NAME_LEN);
   }
+  emitter_init(&(receiver->emitter));
 
   return receiver;
 }
