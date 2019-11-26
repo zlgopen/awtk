@@ -25,7 +25,7 @@
 BEGIN_C_DECLS
 
 /**
- * @enum ret_t
+ * @enum log_level_t
  * LOG的级别。 
  */
 typedef enum _log_level_t {
