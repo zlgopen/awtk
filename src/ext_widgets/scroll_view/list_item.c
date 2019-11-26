@@ -30,7 +30,9 @@ static ret_t list_item_on_paint_self(widget_t* widget, canvas_t* c) {
 static ret_t list_item_on_parent_pointer_up(void* ctx, event_t* e) {
   list_item_t* list_item = LIST_ITEM(ctx);
 
+  list_item->dragged = FALSE;
   list_item->pressed = FALSE;
+  list_item->downed = FALSE;
 
   return RET_REMOVE;
 }
@@ -80,6 +82,7 @@ static ret_t list_item_on_event(widget_t* widget, event_t* e) {
   switch (type) {
     case EVT_POINTER_DOWN: {
       pointer_event_t* evt = (pointer_event_t*)e;
+      list_item->downed = TRUE;
       list_item->down.x = evt->x;
       list_item->down.y = evt->y;
       list_item->timer_id = timer_add(list_item_on_timer, widget, 30);
@@ -87,7 +90,9 @@ static ret_t list_item_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_POINTER_DOWN_ABORT: {
+      list_item->dragged = FALSE;
       list_item->pressed = FALSE;
+      list_item->downed = FALSE;
       list_item_remove_timer(widget);
       widget_invalidate_force(widget, NULL);
       widget_set_state(widget, WIDGET_STATE_NORMAL);
@@ -105,13 +110,14 @@ static ret_t list_item_on_event(widget_t* widget, event_t* e) {
       }
       list_item->dragged = FALSE;
       list_item->pressed = FALSE;
+      list_item->downed = FALSE;
       break;
     }
     case EVT_POINTER_MOVE: {
       pointer_event_t* evt = (pointer_event_t*)e;
       uint32_t dy = tk_abs(evt->y - list_item->down.y);
 
-      if (evt->pressed && dy > TK_DRAG_THRESHOLD) {
+      if (list_item->downed && evt->pressed && dy > TK_DRAG_THRESHOLD) {
         list_item->dragged = TRUE;
         list_item_remove_timer(widget);
         widget_set_state(widget, WIDGET_STATE_NORMAL);

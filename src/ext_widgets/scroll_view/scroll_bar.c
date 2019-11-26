@@ -142,6 +142,22 @@ static ret_t scroll_bar_desktop_on_event(widget_t* widget, event_t* e) {
     case EVT_POINTER_ENTER:
       widget_set_state(widget, WIDGET_STATE_OVER);
       break;
+    case EVT_RESIZE:
+    case EVT_MOVE_RESIZE: {
+      widget_t* up = widget_lookup(widget, CHILD_UP, FALSE);
+      widget_t* down = widget_lookup(widget, CHILD_DOWN, FALSE);
+      bool_t horizon = widget->w > widget->h;
+
+      if (up != NULL) {
+        widget_use_style(up, horizon ? "scroll_left" : "scroll_up");
+      }
+
+      if (down != NULL) {
+        widget_use_style(down, horizon ? "scroll_right" : "scroll_down");
+      }
+
+      break;
+    }
     default:
       break;
   }

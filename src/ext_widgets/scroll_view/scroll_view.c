@@ -31,7 +31,7 @@
 
 ret_t scroll_view_invalidate(widget_t* widget, rect_t* r) {
   scroll_view_t* scroll_view = SCROLL_VIEW(widget);
-  rect_t r_self = rect_init(0, 0, widget->w, widget->h);
+  rect_t r_self = rect_init(widget->x, widget->y, widget->w, widget->h);
 
   r->x += widget->x;
   r->y += widget->y;
