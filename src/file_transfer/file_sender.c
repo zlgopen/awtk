@@ -28,21 +28,16 @@
 #include "tkc/iostream.h"
 #include "file_transfer/file_sender.h"
 
-file_sender_t* file_sender_create(const char* filename, tk_iostream_t* io) {
-  file_sender_t* sender = NULL;
-  return_value_if_fail(filename != NULL && io != NULL, NULL);
-  sender = TKMEM_ZALLOC(file_sender_t);
+file_sender_t* file_sender_create(void) {
+  file_sender_t* sender = TKMEM_ZALLOC(file_sender_t);
   return_value_if_fail(sender != NULL, NULL);
 
-  sender->io = io;
-  sender->filename = filename;
   emitter_init(&(sender->emitter));
-  object_ref(OBJECT(io));
 
   return sender;
 }
 
-ret_t file_sender_run(file_sender_t* sender) {
+ret_t file_sender_run(file_sender_t* sender, tk_iostream_t* io, const char* filename) {
   int32_t ret = 0;
   uint32_t offset = 0;
   int32_t total_size = 0;
@@ -54,22 +49,23 @@ ret_t file_sender_run(file_sender_t* sender) {
   file_transfer_req_t req;
   file_transfer_ack_t ack;
   file_transfer_data_t data;
-  file_transfer_header_t header;
+  file_transfer_meta_t meta;
+  progress_event_t event;
 
   return_value_if_fail(sender != NULL, RET_BAD_PARAMS);
 
   memset(&req, 0x00, sizeof(req));
   memset(&ack, 0x00, sizeof(ack));
   memset(&data, 0x00, sizeof(data));
-  memset(&header, 0x00, sizeof(header));
+  memset(&meta, 0x00, sizeof(meta));
 
-  total_size = file_get_size(sender->filename);
+  total_size = file_get_size(filename);
   goto_error_if_fail(total_size > 0);
-  f = fs_open_file(os_fs(), sender->filename, "rb");
+  f = fs_open_file(os_fs(), filename, "rb");
   goto_error_if_fail(f != NULL);
 
-  in = tk_iostream_get_istream(sender->io);
-  out = tk_iostream_get_ostream(sender->io);
+  in = tk_iostream_get_istream(io);
+  out = tk_iostream_get_ostream(io);
   goto_error_if_fail(in != NULL && out != NULL);
 
   ret = tk_istream_read_len(in, (uint8_t*)&req, sizeof(req), timeout * 10);
@@ -80,12 +76,12 @@ ret_t file_sender_run(file_sender_t* sender) {
   goto_error_if_fail(buff != NULL);
 
   data.type = FILE_TRANSFER_PACKET_DATA;
-  header.type = FILE_TRANSFER_PACKET_HEADER;
-  header.size = total_size;
-  path_basename(sender->filename, header.name, sizeof(header.name));
+  meta.type = FILE_TRANSFER_PACKET_META;
+  meta.size = total_size;
+  path_basename(filename, meta.name, sizeof(meta.name));
 
-  ret = tk_ostream_write_len(out, (const uint8_t*)&header, sizeof(header), timeout);
-  goto_error_if_fail(ret == sizeof(header));
+  ret = tk_ostream_write_len(out, (const uint8_t*)&meta, sizeof(meta), timeout);
+  goto_error_if_fail(ret == sizeof(meta));
 
   do {
     ret = fs_file_read(f, buff, req.block_size);
@@ -105,8 +101,8 @@ ret_t file_sender_run(file_sender_t* sender) {
     goto_error_if_fail(ack.type == FILE_TRANSFER_PACKET_ACK);
 
     offset += data.size;
-    log_debug("%u/%u\n", offset, total_size);
-    if(offset == total_size) {
+    emitter_dispatch(EMITTER(sender), progress_event_init(&event, (100 * offset / total_size)));
+    if (offset == total_size) {
       log_debug("transfer done.\n");
       break;
     }
@@ -124,7 +120,6 @@ error:
 ret_t file_sender_destroy(file_sender_t* sender) {
   return_value_if_fail(sender != NULL, RET_BAD_PARAMS);
 
-  OBJECT_UNREF(sender->io);
   emitter_deinit(&(sender->emitter));
   TKMEM_FREE(sender);
 

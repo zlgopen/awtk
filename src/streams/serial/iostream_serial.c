@@ -91,8 +91,8 @@ static ret_t tk_iostream_serial_exec(object_t* obj, const char* name, const char
   } else if (tk_str_eq(name, TK_IOSTREAM_SERIAL_CMD_CONFIG)) {
     int ret =
         serial_config(s->fd, s->baudrate, s->bytesize, s->stopbits, s->flowcontrol, s->parity);
-    log_debug("baudrate=%d bytesize=%d stopbits=%d flowcontrol=%d parity=%d\n",
-      s->baudrate, s->bytesize, s->stopbits, s->flowcontrol, s->parity);
+    log_debug("baudrate=%d bytesize=%d stopbits=%d flowcontrol=%d parity=%d\n", s->baudrate,
+              s->bytesize, s->stopbits, s->flowcontrol, s->parity);
     serial_oflush(s->fd);
 
     return ret == 0 ? RET_OK : RET_FAIL;

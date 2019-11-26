@@ -9,15 +9,7 @@
 #include "streams/inet/socket_helper.h"
 #include "streams/file/ostream_file.h"
 
-ret_t do_receive(tk_iostream_t* io, tk_ostream_t* out, const char* filename) {
-  file_receiver_t* receiver = file_receiver_create(io, out, FILE_TRANSFER_DEFAULT_BLOCK_SIZE, "myboard");
-  return_value_if_fail(receiver != NULL, RET_FAIL);
-
-  file_receiver_run(receiver, filename);
-  file_receiver_destroy(receiver);
-
-  return RET_OK;
-}
+#include "receiver.inc"
 
 int main(int argc, char* argv[]) {
   int sock = 0;
@@ -40,7 +32,7 @@ int main(int argc, char* argv[]) {
 
   sock = tcp_connect(host, port);
 
-  if(sock > 0) {
+  if (sock > 0) {
     log_debug("connected %d \n", sock);
     tk_iostream_t* io = tk_iostream_tcp_create(sock);
     tk_ostream_t* out = tk_ostream_file_create(filename);

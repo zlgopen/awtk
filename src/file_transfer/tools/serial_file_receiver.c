@@ -8,15 +8,7 @@
 #include "streams/serial/iostream_serial.h"
 #include "streams/file/ostream_file.h"
 
-ret_t do_receive(tk_iostream_t* io, tk_ostream_t* target, const char* filename) {
-  file_receiver_t* receiver = file_receiver_create(io, target, FILE_TRANSFER_DEFAULT_BLOCK_SIZE, "myboard");
-  return_value_if_fail(receiver != NULL, RET_FAIL);
-
-  file_receiver_run(receiver, filename);
-  file_receiver_destroy(receiver);
-
-  return RET_OK;
-}
+#include "receiver.inc"
 
 int main(int argc, char* argv[]) {
   const char* port = NULL;
