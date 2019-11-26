@@ -26,7 +26,7 @@
 
 /**
  * @enum lcd_orientation_t
- * LCD旋转角度(XXX:目前仅支持0度和90度，逆时针方向)。
+ * LCD旋转角度。
  */
 typedef enum _lcd_orientation_t {
   /**
