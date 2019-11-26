@@ -687,8 +687,12 @@ static ret_t on_key_back_or_back_to_home(void* ctx, event_t* e) {
   key_event_t* evt = (key_event_t*)e;
   if (evt->key == TK_KEY_F2) {
     window_manager_back(WIDGET(ctx));
+
+    return RET_STOP;
   } else if (evt->key == TK_KEY_F3) {
     window_manager_back_to_home(WIDGET(ctx));
+    
+    return RET_STOP;
   }
 
   return RET_OK;

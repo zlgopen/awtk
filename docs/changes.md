@@ -1,95 +1,97 @@
 # 最新动态
 
 * 2019/11/26
-  * 增加progress event。
-  * 增加file transfer用于将资源下载到外部flash(未完成)。
-  * 完善edit/mledit在不可见时的事件处理（感谢大恒提供补丁）。
+  * 增加 progress event。
+  * 增加 file transfer 用于将资源下载到外部 flash（未完成）。
+  * 完善 edit/mledit 在不可见时的事件处理（感谢大恒提供补丁）。
+  * 增加 dialog\_quit\_code\_t。
+  * window\_manager\_back/window\_manager\_back\_to\_home 允许关闭对话框，DIALOG\_QUIT\_NONE 退出码表示对话框可能是被强行关闭。
 
 * 2019/11/24
-  * 增加函数str\_append\_int。
+  * 增加函数 str\_append\_int。
 
 * 2019/11/22
-  * 完善log函数。
-  * 完善list item（感谢朝泽提供补丁）。
-  * 完善emitter（感谢朝泽提供补丁）。
-  * edit增加属性open\_im\_when\_focused （感谢[qianfan-Zhao](https://github.com/qianfan-Zhao)提供补丁）。
+  * 完善 log 函数。
+  * 完善 list item（感谢朝泽提供补丁）。
+  * 完善 emitter（感谢朝泽提供补丁）。
+  * edit 增加属性 open\_im\_when\_focused （感谢 [qianfan-Zhao](https://github.com/qianfan-Zhao) 提供补丁）。
   * 完善和优化绘图函数（感谢智明提供补丁）。
 
 * 2019/11/21
-  * 完善edit焦点处理。
-  * 完善keyboard焦点处理。
-  * 完善combobox （感谢大恒提供补丁）。
-  * edit增加属性select\_none\_when\_focused。
+  * 完善 edit 焦点处理。
+  * 完善 keyboard 焦点处理。
+  * 完善 combobox （感谢大恒提供补丁）。
+  * edit 增加属性 select\_none\_when\_focused。
 
 * 2019/11/20
   * 更新生态文档（感谢陈谭提供补丁）。
   * 更新资源生成脚本文档（感谢俊杰提供补丁）。
-  * 完善[控件焦点](widget_focus.md)
-  * 完善keyboard，切换page时设置第一个focusable控件为焦点。
-  * 修改combobox焦点问题（感谢大恒提供补丁）。
+  * 完善 [控件焦点](widget_focus.md)
+  * 完善 keyboard，切换 page 时设置第一个 focusable 控件为焦点。
+  * 修改 combobox 焦点问题（感谢大恒提供补丁）。
 
 * 2019/11/19
   * 完善 darray\_sort。
   * 完善 widget\_calc\_icon\_text\_rect （感谢大恒提供补丁）。
   * 完善 WIDGET\_PROP\_TEXT 先从控件获取，控件没有特殊处理，最后才取默认值。
-  * 完善image（感谢朝泽提供补丁）。
-  * 完善list item （感谢朝泽提供补丁）。
+  * 完善 image（感谢朝泽提供补丁）。
+  * 完善 list item （感谢朝泽提供补丁）。
 
 * 2019/11/18
-  * 完善hscroll label，在only\_parent\_focus为TRUE时，根据父控件设置自己的focus状态。
-  * 完善list item （感谢朝泽提供补丁）。
-  * 完善awtk\_ecology.md
+  * 完善 hscroll label，在 only\_parent\_focus 为 TRUE 时，根据父控件设置自己的 focus 状态。
+  * 完善 list item （感谢朝泽提供补丁）。
+  * 完善 awtk\_ecology.md
 
 * 2019/11/16
   * 完善文档。
 
 * 2019/11/15
   * 完善文档。
-  * 完善image绘制（感谢大恒提供补丁）。
-  * hscroll label支持在父控件获得焦点是滚动。
+  * 完善 image 绘制（感谢大恒提供补丁）。
+  * hscroll label 支持在父控件获得焦点是滚动。
 
 * 2019/11/14
   * 完善进度条（感谢朝泽提供补丁）。
-  * 修改edit注释问题（感谢朝泽提供补丁）。
-  * 增加键值TK\_KEY\_BACK。
-  * 增加lcd\_mem\_fragment。
-  * 增加graphic\_buffer\_attach。
-  * 重构lcd\_mem
-  * 完善tkc的文档（感谢俊杰提供补丁）。
-  * 完善medit（感谢智明提供补丁）。
-  * 完善vgcanvas fill rect（感谢智明提供补丁）。
+  * 修改 edit 注释问题（感谢朝泽提供补丁）。
+  * 增加键值 TK\_KEY\_BACK。
+  * 增加 lcd\_mem\_fragment。
+  * 增加 graphic\_buffer\_attach。
+  * 重构 lcd\_mem
+  * 完善 tkc 的文档（感谢俊杰提供补丁）。
+  * 完善 medit（感谢智明提供补丁）。
+  * 完善 vgcanvas fill rect（感谢智明提供补丁）。
 
 * 2019/11/13
   * 把部分变量修改为常量，以减少内存使用。
-  * 更新IDL修复脚本绑定的问题。
-  * 增加ICON\_AT\_BOTTOM的处理（感谢朝泽提供补丁）。
-  * 修改android编译问题（感谢智明提供补丁）。
-  * 完善medit（感谢智明提供补丁）。
+  * 更新 IDL 修复脚本绑定的问题。
+  * 增加 ICON\_AT\_BOTTOM 的处理（感谢朝泽提供补丁）。
+  * 修改 android 编译问题（感谢智明提供补丁）。
+  * 完善 medit（感谢智明提供补丁）。
 
 * 2019/11/12
-  * 修复了vg旋转显示bug和修改了贴图兼容性（感谢智明提供补丁）。
-  * digit clock 移到widgets目录。
-  * 增加demo\_basic用于在低端平台演示使用UI文件。
+  * 修复了 vg 旋转显示 bug 和修改了贴图兼容性（感谢智明提供补丁）。
+  * digit clock 移到 widgets 目录。
+  * 增加 demo\_basic 用于在低端平台演示使用 UI 文件。
 
 * 2019/11/11
-  * 完善list item click事件处理（感谢培煌提供补丁）。
+  * 完善 list item click 事件处理（感谢培煌提供补丁）。
   * 完善部分控件的类型检查（感谢尧燊提供补丁）。
   * 更新生态文档（感谢陈谭提供补丁）。
-  * 简化tab\_button\_group边框处理。
+  * 简化 tab\_button\_group 边框处理。
 
 * 2019/11/10
-  * 增加darray\_sort。
+  * 增加 darray\_sort。
 
 * 2019/11/09
-  * 完善combo\_box按键处理。
+  * 完善 combo\_box 按键处理。
   * AWTK\_ecology.md（感谢陈谭提供补丁）。
 
 * 2019/11/08
-  * 完善rich text （感谢大恒提供补丁）。
-  * 完善text edit（感谢尧燊提供补丁）。
+  * 完善 rich text （感谢大恒提供补丁）。
+  * 完善 text edit（感谢尧燊提供补丁）。
 
 * 2019/11/07
-  * 完善cmsis\_os移植。
+  * 完善 cmsis\_os 移植。
   * 支持重新启动已经完成的动画。
   * 完善 event source/event source manager。
   * 修改输入法中，软键盘弹出时，保存窗口位置的问题。

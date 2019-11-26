@@ -51,16 +51,21 @@ static ret_t window_manager_close_keyboard(widget_t* widget) {
 
 static ret_t window_manager_default_impl_back(widget_t* widget) {
   event_t e;
-  widget_t* top_window = window_manager_get_top_window(widget);
-  return_value_if_fail(top_window != NULL, RET_NOT_FOUND);
+  widget_t* top = window_manager_get_top_window(widget);
+  return_value_if_fail(top != NULL, RET_NOT_FOUND);
 
-  if (widget_is_normal_window(top_window)) {
-    e = event_init(EVT_REQUEST_CLOSE_WINDOW, top_window);
-    return widget_dispatch(top_window, &e);
-  } else {
-    log_warn("not support call window_manager_back on non-normal window\n");
-    return RET_FAIL;
+  if (widget_is_normal_window(top)) {
+    e = event_init(EVT_REQUEST_CLOSE_WINDOW, top);
+    return widget_dispatch(top, &e);
+  } else if (widget_is_dialog(top)) {
+    if (dialog_is_modal(top)) {
+      dialog_quit(top, DIALOG_QUIT_NONE);
+    } else {
+      window_close(top);
+    }
   }
+
+  return RET_OK;
 }
 
 static ret_t window_manager_back_to_home_sync(widget_t* widget) {
@@ -127,17 +132,14 @@ static ret_t window_manager_default_impl_back_to_home(widget_t* widget) {
 
   if (!widget_is_dialog(top) || !dialog_is_modal(top)) {
     idle_add(window_manager_back_to_home_async, widget);
-
-    return RET_OK;
   } else {
-    if (dialog_is_quited(top)) {
-      widget_on(top, EVT_DESTROY, window_manager_back_to_home_on_dialog_destroy, widget);
-    } else {
-      log_warn("not support call window_manager_back_to_home on dialog\n");
-    }
+    ENSURE(widget_is_dialog(top) && dialog_is_modal(top));
 
-    return RET_FAIL;
+    dialog_quit(top, DIALOG_QUIT_NONE);
+    widget_on(top, EVT_DESTROY, window_manager_back_to_home_on_dialog_destroy, widget);
   }
+
+  return RET_OK;
 }
 
 static widget_t* window_manager_default_impl_get_top_main_window(widget_t* widget) {
