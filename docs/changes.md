@@ -1,10 +1,12 @@
 # 最新动态
 
 * 2019/11/26
-  * 增加 progress event。
-  * 增加 file transfer 用于将资源下载到外部 flash（未完成）。
+  * 完善 log （感谢大恒提供补丁）。
+  * 完善 combo\_box\_ex（感谢大恒提供补丁）。
   * 完善 edit/mledit 在不可见时的事件处理（感谢大恒提供补丁）。
+  * 增加 progress event。
   * 增加 dialog\_quit\_code\_t。
+  * 增加 file transfer 用于将资源下载到外部 flash（未完成）。
   * window\_manager\_back/window\_manager\_back\_to\_home 允许关闭对话框，DIALOG\_QUIT\_NONE 退出码表示对话框可能是被强行关闭。
 
 * 2019/11/24
