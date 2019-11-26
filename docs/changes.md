@@ -1,5 +1,13 @@
 # 最新动态
 
+* 2019/11/26
+  * 增加progress event。
+  * 增加file transfer用于将资源下载到外部flash(未完成)。
+  * 完善edit/mledit在不可见时的事件处理（感谢大恒提供补丁）。
+
+* 2019/11/24
+  * 增加函数str\_append\_int。
+
 * 2019/11/22
   * 完善log函数。
   * 完善list item（感谢朝泽提供补丁）。
