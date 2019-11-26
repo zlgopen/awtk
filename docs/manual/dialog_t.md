@@ -352,7 +352,7 @@ ret_t dialog_quit (widget_t* widget, uint32_t code);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | dialog对象。 |
-| code | uint32\_t | 退出码，作为dialog\_modal的返回值。 |
+| code | uint32\_t | 退出码，作为dialog\_modal的返回值(参考：[dialog\_quit\_code\_t](dialog\_quit\_code\_t.md))。 |
 #### dialog\_set\_title 函数
 -----------------------
 

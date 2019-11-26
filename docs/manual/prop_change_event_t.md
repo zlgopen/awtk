@@ -11,6 +11,7 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#prop_change_event_t_prop_change_event_cast">prop\_change\_event\_cast</a> | 把event对象转prop_change_event_t对象，主要给脚本语言使用。 |
+| <a href="#prop_change_event_t_prop_change_event_init">prop\_change\_event\_init</a> | 初始prop change event。 |
 ### 属性
 <p id="prop_change_event_t_properties">
 
@@ -36,8 +37,29 @@ prop_change_event_t* prop_change_event_cast (event_t* event);
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | prop\_change\_event\_t* | 对象。 |
+| 返回值 | prop\_change\_event\_t* | 返回event对象。 |
 | event | event\_t* | event对象。 |
+#### prop\_change\_event\_init 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="prop_change_event_t_prop_change_event_init">初始prop change event。
+
+
+* 函数原型：
+
+```
+event_t* prop_change_event_init (prop_change_event_t* event, uint32_t percent);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | event\_t* | 返回event对象。 |
+| event | prop\_change\_event\_t* | event对象。 |
+| percent | uint32\_t | 进度。 |
 #### name 属性
 -----------------------
 > <p id="prop_change_event_t_name">属性的名称。

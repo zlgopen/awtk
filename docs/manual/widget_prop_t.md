@@ -68,6 +68,7 @@
 | WIDGET\_PROP\_LOOP | 是否循环播放或循环播放的次数。 |
 | WIDGET\_PROP\_AUTO\_FIX | 是否启用自动更正功能。 |
 | WIDGET\_PROP\_SELECT\_NONE\_WHEN\_FOCUSED | 编辑器在获得焦点时是否不选中文本。 |
+| WIDGET\_PROP\_OPEN\_IM\_WHEN\_FOCUSED | 编辑器在获得焦点时是否打开输入法。 |
 | WIDGET\_PROP\_X\_MIN | X最小值。 |
 | WIDGET\_PROP\_X\_MAX | X最大值。 |
 | WIDGET\_PROP\_Y\_MIN | Y最小值。 |

@@ -19,6 +19,7 @@ str_reset(&s);
 | -------- | ------------ | 
 | <a href="#str_t_str_append">str\_append</a> | 追加字符串。 |
 | <a href="#str_t_str_append_char">str\_append\_char</a> | 追加一个字符。 |
+| <a href="#str_t_str_append_int">str\_append\_int</a> | 追加一个整数。 |
 | <a href="#str_t_str_append_with_len">str\_append\_with\_len</a> | 追加字符串。 |
 | <a href="#str_t_str_clear">str\_clear</a> | 清除字符串内容。 |
 | <a href="#str_t_str_decode_xml_entity">str\_decode\_xml\_entity</a> | 对XML基本的entity进行解码，目前仅支持&lt;&gt;&quota;&amp;。 |
@@ -99,6 +100,27 @@ ret_t str_append_char (str_t* str, char c);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
 | c | char | 要追加的字符。 |
+#### str\_append\_int 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_append_int">追加一个整数。
+
+
+* 函数原型：
+
+```
+ret_t str_append_int (str_t* str, int32_t value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | str\_t* | str对象。 |
+| value | int32\_t | 要追加的整数。 |
 #### str\_append\_with\_len 函数
 -----------------------
 

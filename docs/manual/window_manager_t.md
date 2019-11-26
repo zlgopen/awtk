@@ -50,6 +50,7 @@ widget_t* window_manager ();
 * 函数功能：
 
 > <p id="window_manager_t_window_manager_back">请求关闭顶层窗口。
+> 如果顶层窗口时模态对话框，用DIALOG\_QUIT\_NONE调用dialog\_quit。
 
 
 * 函数原型：
@@ -70,7 +71,7 @@ ret_t window_manager_back (widget_t* widget);
 * 函数功能：
 
 > <p id="window_manager_t_window_manager_back_to_home">回到主窗口，关闭之上的全部窗口。
-> 由于dialog通常需要用户确认，顶层窗口为dialog时调用会失败。
+> 如果顶层窗口时模态对话框，用DIALOG\_QUIT\_NONE调用dialog\_quit。
 
 
 * 函数原型：
