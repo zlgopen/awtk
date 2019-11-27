@@ -177,7 +177,7 @@ ret_t dialog_quit(widget_t* widget, uint32_t code) {
   return_value_if_fail(dialog != NULL && !(dialog->quited), RET_BAD_PARAMS);
 
   dialog->quited = TRUE;
-  dialog->quit_code = code;
+  dialog->quit_code = (dialog_quit_code_t)code;
   main_loop_quit(main_loop());
 #endif /*AWTK_WEB*/
 

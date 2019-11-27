@@ -1,4 +1,4 @@
-﻿/**
+/**
  * History:
  * ================================================================
  * 2019-11-22 luozhiming@zlg.cn created
@@ -604,13 +604,13 @@ static void widget_darw_fill_rounded_rect(canvas_t* c, rect_t* r, color_t* color
 
   Wu_D_Circle(radius, &point_list_45, point_pix_cache_list);
 
-  widget_draw_arc_point_list(&image_info, c, v_x2, v_y1, x2, y1, angle_h, angle_v, radius, 0, color,
+  widget_draw_arc_point_list(&image_info, c, v_x2, v_y1, x2, y1, angle_h, angle_v, radius, (frr_quadrant_t)0, color,
                              &tmp_point_list_45, &point_list_45, TRUE);  // 右上角
-  widget_draw_arc_point_list(&image_info, c, v_x1, v_y1, x1, y1, angle_h, angle_v, radius, 1, color,
+  widget_draw_arc_point_list(&image_info, c, v_x1, v_y1, x1, y1, angle_h, angle_v, radius, (frr_quadrant_t)1, color,
                              &tmp_point_list_45, &point_list_45, TRUE);  // 左上角
-  widget_draw_arc_point_list(&image_info, c, v_x1, v_y2, x1, y2, angle_h, angle_v, radius, 2, color,
+  widget_draw_arc_point_list(&image_info, c, v_x1, v_y2, x1, y2, angle_h, angle_v, radius, (frr_quadrant_t)2, color,
                              &tmp_point_list_45, &point_list_45, TRUE);  // 左下角
-  widget_draw_arc_point_list(&image_info, c, v_x2, v_y2, x2, y2, angle_h, angle_v, radius, 3, color,
+  widget_draw_arc_point_list(&image_info, c, v_x2, v_y2, x2, y2, angle_h, angle_v, radius, (frr_quadrant_t)3, color,
                              &tmp_point_list_45, &point_list_45, TRUE);  // 右下角
 #endif  // WITH_NANOVG_GPU
 
@@ -701,13 +701,13 @@ static void widget_darw_stroke_rounded_rect(canvas_t* c, rect_t* r, color_t* col
 
       widget_image_info_create(&image_info, (unsigned char*)vg->buff, vg->w, vg->h, vg->format);
 
-      widget_draw_arc_point_list(&image_info, c, v_x2, v_y1, x2, y1, angle_h, angle_v, radius, 0,
+      widget_draw_arc_point_list(&image_info, c, v_x2, v_y1, x2, y1, angle_h, angle_v, radius, (frr_quadrant_t)0,
                                  color, &tmp_point_list_45, &point_list_45, FALSE);  // 右上角
-      widget_draw_arc_point_list(&image_info, c, v_x1, v_y1, x1, y1, angle_h, angle_v, radius, 1,
+      widget_draw_arc_point_list(&image_info, c, v_x1, v_y1, x1, y1, angle_h, angle_v, radius, (frr_quadrant_t)1,
                                  color, &tmp_point_list_45, &point_list_45, FALSE);  // 左上角
-      widget_draw_arc_point_list(&image_info, c, v_x1, v_y2, x1, y2, angle_h, angle_v, radius, 2,
+      widget_draw_arc_point_list(&image_info, c, v_x1, v_y2, x1, y2, angle_h, angle_v, radius, (frr_quadrant_t)2,
                                  color, &tmp_point_list_45, &point_list_45, FALSE);  // 左下角
-      widget_draw_arc_point_list(&image_info, c, v_x2, v_y2, x2, y2, angle_h, angle_v, radius, 3,
+      widget_draw_arc_point_list(&image_info, c, v_x2, v_y2, x2, y2, angle_h, angle_v, radius, (frr_quadrant_t)3,
                                  color, &tmp_point_list_45, &point_list_45, FALSE);  // 右下角
 
       if (mid_lenght_v != 0) {

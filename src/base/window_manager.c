@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   window_manager.c
  * Author: AWTK Develop Team
  * Brief:  window manager
@@ -22,6 +22,7 @@
 #include "base/widget.h"
 #include "base/canvas.h"
 #include "base/dialog.h"
+#include "base/window.h"
 #include "base/dialog_highlighter.h"
 #include "base/input_device_status.h"
 #include "base/window_manager.h"
