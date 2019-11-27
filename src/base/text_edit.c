@@ -332,7 +332,7 @@ static row_info_t* text_edit_multi_line_layout_line(text_edit_t* text_edit, uint
     if (impl->wrap_word) {
       if ((x + char_w) > layout_info->w) {
         if (last_breakable_x > 0) {
-          i = last_breakable_i;
+          i = last_breakable_i + 1;
           x = last_breakable_x;
         }
         break;
@@ -883,6 +883,26 @@ ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
   layout_info = &(impl->layout_info);
 
   switch (key) {
+#ifdef SDL2
+    case TK_KEY_KP_DIVIDE:
+    case TK_KEY_KP_MULTIPLY:
+    case TK_KEY_KP_MINUS:
+    case TK_KEY_KP_PLUS:
+    case TK_KEY_KP_PERIOD :
+    case TK_KEY_NUMLOCKCLEAR:
+    case TK_KEY_KP_0:
+    case TK_KEY_KP_1:
+    case TK_KEY_KP_2:
+    case TK_KEY_KP_3:
+    case TK_KEY_KP_4:
+    case TK_KEY_KP_5:
+    case TK_KEY_KP_6:
+    case TK_KEY_KP_7:
+    case TK_KEY_KP_8:
+    case TK_KEY_KP_9: 
+      return RET_OK;
+    case TK_KEY_KP_ENTER :
+#endif
     case TK_KEY_RETURN: {
       key = STB_TEXTEDIT_NEWLINE;
       break;
