@@ -109,7 +109,7 @@ struct pixel8 {
 template <typename PixelTargetT, typename PixelSrcT>
 inline void pixel_blend(PixelTargetT& t, const PixelSrcT& s, uint8_t a) {
   if (a > 0xf4) {
-    if (sizeof(t) == sizeof(s) || sizeof(t) == 4) {
+    if (sizeof(t) == sizeof(s) || sizeof(t) == 4 || sizeof(t) == 3) {
       t.r = s.r;
       t.g = s.g;
       t.b = s.b;
@@ -159,6 +159,77 @@ inline void pixel_blend(pixel16_bgr565& t, const pixel32_rgba& s, uint8_t a) {
     t.r = (s.r * a + (t.r << 3) * m_a) >> 11;
     t.g = (s.g * a + (t.g << 2) * m_a) >> 10;
     t.b = (s.b * a + (t.b << 3) * m_a) >> 11;
+  }
+}
+
+template <>
+inline void pixel_blend(pixel16_rgb565& t, const pixel32_rgba& s, uint8_t a) {
+  if (a > 0xf4) {
+    t.r = s.r >> 3;
+    t.g = s.g >> 2;
+    t.b = s.b >> 3;
+  } else if (a > 0x01) {
+    uint8_t m_a = 0xff - a;
+    t.r = (s.r * a + (t.r << 3) * m_a) >> 11;
+    t.g = (s.g * a + (t.g << 2) * m_a) >> 10;
+    t.b = (s.b * a + (t.b << 3) * m_a) >> 11;
+  }
+}
+
+template <>
+inline void pixel_blend(pixel24_bgr& t, const pixel32_rgba& s, uint8_t a) {
+  if (a > 0xf4) {
+    t.r = s.r;
+    t.g = s.g;
+    t.b = s.b;
+  } else if (a > 0x01) {
+    uint8_t m_a = 0xff - a;
+    t.r = (s.r * a + t.r * m_a) >> 8;
+    t.g = (s.g * a + t.g * m_a) >> 8;
+    t.b = (s.b * a + t.b * m_a) >> 8;
+  }
+}
+
+
+template <>
+inline void pixel_blend(pixel24_rgb& t, const pixel32_rgba& s, uint8_t a) {
+  if (a > 0xf4) {
+    t.r = s.r;
+    t.g = s.g;
+    t.b = s.b;
+  } else if (a > 0x01) {
+    uint8_t m_a = 0xff - a;
+    t.r = (s.r * a + t.r * m_a) >> 8;
+    t.g = (s.g * a + t.g * m_a) >> 8;
+    t.b = (s.b * a + t.b * m_a) >> 8;
+  }
+}
+
+template <>
+inline void pixel_blend(pixel32_rgba& t, const pixel32_rgba& s, uint8_t a) {
+  if (a > 0xf4) {
+    t.r = s.r;
+    t.g = s.g;
+    t.b = s.b;
+  } else if (a > 0x01) {
+    uint8_t m_a = 0xff - a;
+    t.r = (s.r * a + t.r * m_a) >> 8;
+    t.g = (s.g * a + t.g * m_a) >> 8;
+    t.b = (s.b * a + t.b * m_a) >> 8;
+  }
+}
+
+template <>
+inline void pixel_blend(pixel32_bgra& t, const pixel32_rgba& s, uint8_t a) {
+  if (a > 0xf4) {
+    t.r = s.r;
+    t.g = s.g;
+    t.b = s.b;
+  } else if (a > 0x01) {
+    uint8_t m_a = 0xff - a;
+    t.r = (s.r * a + t.r * m_a) >> 8;
+    t.g = (s.g * a + t.g * m_a) >> 8;
+    t.b = (s.b * a + t.b * m_a) >> 8;
   }
 }
 
