@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   soft_g2d.c
  * Author: AWTK Develop Team
  * Brief:  software implemented image operations

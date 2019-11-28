@@ -1,4 +1,4 @@
-#include "native_window/native_window_raw.h"
+﻿#include "native_window/native_window_raw.h"
 
 static ret_t main_loop_raw_dispatch(main_loop_simple_t* loop) {
   platform_disaptch_input((main_loop_t*)loop);

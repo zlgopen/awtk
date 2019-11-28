@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   svg_to_bsvg.c
  * Author: AWTK Develop Team
  * Brief:  svg to  bsvg

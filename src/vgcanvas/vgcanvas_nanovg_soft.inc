@@ -1,4 +1,4 @@
-#include "tkc/utils.h"
+﻿#include "tkc/utils.h"
 
 static enum NVGtexture bitmap_format_to_nanovg(bitmap_format_t format) {
   enum NVGtexture f = NVG_TEXTURE_BGRA;

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   switch.c
  * Author: AWTK Develop Team
  * Brief:  switch

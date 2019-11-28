@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   vgcanvas_nanovg_bgfx.c
  * Author: AWTK Develop Team
  * Brief:  vector graphics canvas base on nanovg-bgfx

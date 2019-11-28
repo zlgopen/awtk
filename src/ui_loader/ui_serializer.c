@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   ui_serializer.c
  * Author: AWTK Develop Team
  * Brief:  ui_serializer

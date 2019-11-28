@@ -1,4 +1,4 @@
-#include "nanovg.h"
+﻿#include "nanovg.h"
 #include "tkc/mem.h"
 #include "tkc/utf8.h"
 #include "base/vgcanvas.h"

@@ -1,4 +1,4 @@
-enum { BEGIN_IDX = 1, MAX_VIEW_COUNT = 256 };
+﻿enum { BEGIN_IDX = 1, MAX_VIEW_COUNT = 256 };
 static bool_t arrayViewId[MAX_VIEW_COUNT] = {0};
 static int32_t curViewId = 0;
 

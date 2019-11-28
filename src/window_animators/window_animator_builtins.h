@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   window_animator_builtins.h
  * Author: AWTK Develop Team
  * Brief:  builtins window animator

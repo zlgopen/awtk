@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   xml_parse.c
  * Author: AWTK Develop Team
  * Brief:  simple xml parser

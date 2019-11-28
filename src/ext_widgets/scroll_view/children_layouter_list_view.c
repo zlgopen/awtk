@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   children_layouter_list_view_list_view.c
  * Author: AWTK Develop Team
  * Brief:  children layouter list view

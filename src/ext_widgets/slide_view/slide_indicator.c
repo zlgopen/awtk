@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   slide_indicator.h
  * Author: AWTK Develop Team
  * Brief:  slide_indicator

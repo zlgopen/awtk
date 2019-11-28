@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   window_animator_common.h
  * Author: AWTK Develop Team
  * Brief:  window animator common used functions.

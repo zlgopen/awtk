@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   widget_animator_factory.c
  * Author: AWTK Develop Team
  * Brief:  widget animator factory

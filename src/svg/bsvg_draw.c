@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   bsvg_draw.c
  * Author: AWTK Develop Team
  * Brief:  bsvg_draw

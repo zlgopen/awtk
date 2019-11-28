@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   self_layouter_menu_menu.c
  * Author: AWTK Develop Team
  * Brief:  self layouter menu

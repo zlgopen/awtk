@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   window_animator_fade.h
  * Author: AWTK Develop Team
  * Brief:  fade window animator

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   window_animator_htranslate.h
  * Author: AWTK Develop Team
  * Brief:  horizontal translate window animator

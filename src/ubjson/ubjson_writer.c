@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   ubjson_writer.c
  * Author: AWTK Develop Team
  * Brief:  ubjson writer

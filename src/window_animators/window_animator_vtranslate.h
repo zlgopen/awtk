@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   window_animator_vtranslate.h
  * Author: AWTK Develop Team
  * Brief:  vertical translate window animator

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   window_animator_popdown.h
  * Author: AWTK Develop Team
  * Brief:  top to bottom window animator

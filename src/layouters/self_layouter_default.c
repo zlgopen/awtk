@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   self_layouter_default_default.c
  * Author: AWTK Develop Team
  * Brief:  self layouter default

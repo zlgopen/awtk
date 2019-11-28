@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   lcd_mono.h
  * Author: AWTK Develop Team
  * Brief:  mono lcd

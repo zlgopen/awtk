@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   window_animator_slide_left.c
  * Author: AWTK Develop Team
  * Brief:  slide_left window animator

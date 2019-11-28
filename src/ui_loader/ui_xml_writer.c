@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   ui_xml_writer.c
  * Author: AWTK Develop Team
  * Brief:  ui_builder write widget info into buffer.

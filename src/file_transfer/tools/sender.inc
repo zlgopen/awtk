@@ -1,4 +1,4 @@
-static ret_t on_progress(void* ctx, event_t* e) {
+﻿static ret_t on_progress(void* ctx, event_t* e) {
   progress_event_t* evt = (progress_event_t*)e;
 
   log_debug("progress: %u\n", evt->percent);

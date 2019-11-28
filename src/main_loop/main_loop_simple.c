@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   main_loop_simple.c
  * Author: AWTK Develop Team
  * Brief:  a simple main loop

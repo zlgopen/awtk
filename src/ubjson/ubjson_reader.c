@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   ubjson_reader.c
  * Author: AWTK Develop Team
  * Brief:  ubjson reader

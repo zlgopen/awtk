@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   children_layouter_default_default.c
  * Author: AWTK Develop Team
  * Brief:  children layouter default

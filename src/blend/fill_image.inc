@@ -1,4 +1,4 @@
-#include "tkc/utils.h"
+﻿#include "tkc/utils.h"
 
 static ret_t clear_image(bitmap_t* dst, rect_t* dst_r, color_t c) {
   int y = 0;

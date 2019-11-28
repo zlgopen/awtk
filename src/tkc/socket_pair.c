@@ -1,4 +1,4 @@
-/* socketpair.c
+﻿/* socketpair.c
  * Copyright 2007 by Nathan C. Myers <ncm@cantrip.org>; some rights reserved.
  * This code is Free Software.  It may be copied freely, in original or
  * modified form, subject only to the restrictions that (1) the author is

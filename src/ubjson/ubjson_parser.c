@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   ubjson_parser.c
  * Author: AWTK Develop Team
  * Brief:  ubjson parser

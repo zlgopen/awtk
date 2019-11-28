@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   window_manager_default.c
  * Author: AWTK Develop Team
  * Brief:  default window manager

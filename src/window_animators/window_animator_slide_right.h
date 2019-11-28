@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   window_animator_slide_right.h
  * Author: AWTK Develop Team
  * Brief:  slide_right window animator

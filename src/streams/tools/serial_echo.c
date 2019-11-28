@@ -1,4 +1,4 @@
-#ifndef WIN32_LEAN_AND_MEAN
+﻿#ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN 1
 #endif /*WIN32_LEAN_AND_MEAN*/
 

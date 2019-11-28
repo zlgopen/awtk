@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   widgets.c
  * Author: AWTK Develop Team
  * Brief:  register widgets

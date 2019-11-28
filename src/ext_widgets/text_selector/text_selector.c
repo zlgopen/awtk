@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   text_selector.h
  * Author: AWTK Develop Team
  * Brief:  text_selector

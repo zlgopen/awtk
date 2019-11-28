@@ -1,4 +1,4 @@
-/*adapted from :
+﻿/*adapted from :
  * http://rosettacode.org/wiki/Xiaolin_Wu%27s_line_algorithm#C
  */
 

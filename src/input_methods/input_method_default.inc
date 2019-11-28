@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   input_method_default.c
  * Author: AWTK Develop Team
  * Brief:  input method default

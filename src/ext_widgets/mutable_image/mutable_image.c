@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   mutable_image.h
  * Author: AWTK Develop Team
  * Brief:  mutable_image

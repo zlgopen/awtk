@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   svg_builder.c
  * Author: AWTK Develop Team
  * Brief:  svg builder

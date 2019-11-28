@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   window_animator_center_scale.c
  * Author: AWTK Develop Team
  * Brief:  center_scale window animator

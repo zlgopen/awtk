@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   hscroll_label.h
  * Author: AWTK Develop Team
  * Brief:  hscroll_label

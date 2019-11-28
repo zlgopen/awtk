@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   system_bar.c
  * Author: AWTK Develop Team
  * Brief:  system_bar

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   dialog_highlighter.c
  * Author: AWTK Develop Team
  * Brief:  dialog_highlighter

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   window_animator_popup.c
  * Author: AWTK Develop Team
  * Brief:  popup window animator

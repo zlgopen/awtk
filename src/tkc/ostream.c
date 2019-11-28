@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   tk_ostream.h
  * Author: AWTK Develop Team
  * Brief:  output stream interface

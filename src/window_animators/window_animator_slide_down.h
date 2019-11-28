@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   window_animator_slide_down.h
  * Author: AWTK Develop Team
  * Brief:  slide_down window animator

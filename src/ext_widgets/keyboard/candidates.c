@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   candidates.c
  * Author: AWTK Develop Team
  * Brief:  candidates

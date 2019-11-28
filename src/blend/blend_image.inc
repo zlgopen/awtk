@@ -1,4 +1,4 @@
-#define pixel_t pixel_dst_t
+﻿#define pixel_t pixel_dst_t
 #define pixel_from_rgb pixel_dst_from_rgb
 
 #ifndef blend_a

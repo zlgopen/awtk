@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   guage_pointer.h
  * Author: AWTK Develop Team
  * Brief:  guage_pointer

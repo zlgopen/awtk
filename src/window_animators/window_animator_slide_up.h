@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   window_animator_slide_up.h
  * Author: AWTK Develop Team
  * Brief:  slide_up window animator

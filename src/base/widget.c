@@ -1450,7 +1450,6 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
 
 ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
   ret_t ret = RET_OK;
-  ENSURE(widget != NULL && name != NULL && v != NULL);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
