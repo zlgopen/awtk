@@ -1502,6 +1502,39 @@
             "type": "canvas_t*",
             "name": "c",
             "desc": "canvas对象。"
+          },
+          {
+            "type": "bitmap_t*",
+            "name": "img",
+            "desc": "图片对象。"
+          },
+          {
+            "type": "image_draw_type_t",
+            "name": "draw_type",
+            "desc": "绘制类型。"
+          },
+          {
+            "type": "rect_t*",
+            "name": "dst",
+            "desc": "目的区域。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "绘制图片。\n",
+        "name": "canvas_draw_image_ex",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
           }
         ],
         "annotation": {
@@ -1571,10 +1604,133 @@
           "readable": true,
           "scriptable": true
         }
+      },
+      {
+        "name": "font_name",
+        "desc": "当前字体名称。\n",
+        "type": "char*",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "font_size",
+        "desc": "当前字体大小。\n",
+        "type": "uint16_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "global_alpha",
+        "desc": "当前全局alpha。\n",
+        "type": "uint8_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "clip_left",
+        "desc": "当前裁剪矩形的左边位置。\n",
+        "type": "xy_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "clip_top",
+        "desc": "当前裁剪矩形的顶部位置。\n",
+        "type": "xy_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "clip_right",
+        "desc": "当前裁剪矩形的右边位置。\n",
+        "type": "xy_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "clip_bottom",
+        "desc": "当前裁剪矩形的底部位置。\n",
+        "type": "xy_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "fps",
+        "desc": "当前的帧率。\n",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "show_fps",
+        "desc": "是否显示帧率。\n",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "text_align_v",
+        "desc": "文本垂直对齐方式。\n",
+        "type": "align_v_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "text_align_h",
+        "desc": "文本水平对齐方式。\n",
+        "type": "align_h_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "lcd",
+        "desc": "lcd对象。\n",
+        "type": "lcd_t*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "font",
+        "desc": "字体对象。\n",
+        "type": "font_t*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "font_manager",
+        "desc": "字体管理器对象。\n",
+        "type": "font_manager_t*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "assets_manager",
+        "desc": "资源管理器对象。\n",
+        "type": "assets_manager_t*",
+        "annotation": {
+          "readable": true
+        }
       }
     ],
     "header": "base/canvas.h",
-    "desc": "canvas类。\n",
+    "desc": "提供基本的绘图功能和状态管理。\n",
     "name": "canvas_t",
     "annotation": {
       "scriptable": true
