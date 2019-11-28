@@ -395,7 +395,7 @@ static ret_t combo_box_active(widget_t* widget) {
   wm = win->parent;
   if ((p.y + widget->h + win->h) < wm->h) {
     p.y += widget->h;
-  } else if(p.y >= win->h) {
+  } else if (p.y >= win->h) {
     p.y -= win->h;
   } else {
     p.y = 0;

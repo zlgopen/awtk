@@ -691,7 +691,7 @@ static ret_t on_key_back_or_back_to_home(void* ctx, event_t* e) {
     return RET_STOP;
   } else if (evt->key == TK_KEY_F3) {
     window_manager_back_to_home(WIDGET(ctx));
-    
+
     return RET_STOP;
   }
 
