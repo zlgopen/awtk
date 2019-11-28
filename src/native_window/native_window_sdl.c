@@ -67,8 +67,6 @@ static ret_t native_window_sdl_move(native_window_t* win, xy_t x, xy_t y) {
 }
 
 static ret_t native_window_sdl_resize(native_window_t* win, wh_t w, wh_t h) {
-  int oldw = 0;
-  int oldh = 0;
   native_window_info_t info;
   native_window_sdl_t* sdl = NATIVE_WINDOW_SDL(win);
 
@@ -76,12 +74,9 @@ static ret_t native_window_sdl_resize(native_window_t* win, wh_t w, wh_t h) {
 
   win->rect.w = w;
   win->rect.h = h;
-  w = info.w;
-  h = info.h;
 
 #ifndef ANDROID
-  SDL_GetWindowSize(sdl->window, &oldw, &oldh);
-  if (w != oldw || h != oldh) {
+  if (w != info.w || h != info.h) {
     SDL_SetWindowSize(sdl->window, w, h);
   }
 #endif /*ANDROID*/
