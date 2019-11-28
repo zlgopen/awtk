@@ -27,6 +27,10 @@ uint32_t idle_add(idle_func_t on_idle, void* ctx) {
   return idle_manager_add(idle_manager(), on_idle, ctx);
 }
 
+bool_t idle_exist(idle_func_t on_idle, void* ctx) {
+  return idle_manager_exist(idle_manager(), on_idle, ctx);
+}
+
 ret_t idle_remove(uint32_t idle_id) {
   return idle_manager_remove(idle_manager(), idle_id);
 }

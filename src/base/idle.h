@@ -124,6 +124,9 @@ ret_t idle_dispatch(void);
  */
 uint32_t idle_count(void);
 
+/*internal use*/
+bool_t idle_exist(idle_func_t on_idle, void* ctx);
+
 END_C_DECLS
 
 #endif /*TK_IDLE_H*/

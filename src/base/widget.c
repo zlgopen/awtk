@@ -60,6 +60,35 @@ static ret_t widget_remove_child_prepare(widget_t* widget, widget_t* child);
 typedef widget_t* (*widget_find_wanted_focus_widget_t)(widget_t* widget, darray_t* all_focusable);
 static ret_t widget_move_focus(widget_t* widget, widget_find_wanted_focus_widget_t find);
 
+static ret_t delay_work_in_idle(const idle_info_t* info) {
+  widget_t* widget = WIDGET(info->ctx);
+  ENSURE(widget != NULL && widget->vt != NULL);
+
+  /*if ref_count == 1 means the widget is pending to destroy*/
+  if (widget->ref_count > 1) {
+    if (widget->need_update_style) {
+      widget_update_style(widget);
+    }
+
+    if (widget->need_relayout_children) {
+      widget_layout_children(widget);
+    }
+  }
+  widget_unref(widget);
+
+  return RET_REMOVE;
+}
+
+static ret_t widget_add_delay_work(widget_t* widget) {
+  return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);
+  if (!idle_exist(delay_work_in_idle, widget)) {
+    widget_ref(widget);
+    idle_add(delay_work_in_idle, widget);
+  }
+
+  return RET_OK;
+}
+
 ret_t widget_set_need_update_style(widget_t* widget) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
@@ -90,6 +119,8 @@ ret_t widget_update_style(widget_t* widget) {
 }
 
 static ret_t widget_real_destroy(widget_t* widget) {
+  ENSURE(widget->ref_count == 1);
+
   if (widget->vt->on_destroy) {
     widget->vt->on_destroy(widget);
   }
@@ -293,7 +324,7 @@ assets_manager_t* widget_get_assets_manager(widget_t* widget) {
   assets_manager_t* am = assets_manager();
   return_value_if_fail(widget != NULL && widget->vt != NULL, am);
 
-  if(widget->assets_manager != NULL) {
+  if (widget->assets_manager != NULL) {
     return widget->assets_manager;
   }
 
@@ -3475,7 +3506,11 @@ bool_t widget_is_window_manager(widget_t* widget) {
 
 ret_t widget_set_need_relayout_children(widget_t* widget) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
-  widget->need_relayout_children = TRUE;
+
+  if (!widget->destroying && widget->children != NULL && widget->children->size > 0) {
+    widget->need_relayout_children = TRUE;
+    widget_add_delay_work(widget);
+  }
 
   return RET_OK;
 }

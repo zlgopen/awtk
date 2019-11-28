@@ -9,6 +9,7 @@
   * 完善 scroll view（感谢朝泽提供补丁）。
   * 完善 销毁子控件的处理（感谢培煌提供补丁）。
   * 完善 native\_window\_sdl\_resize （感谢 [qianfan-Zhao](https://github.com/qianfan-Zhao) 提供补丁）。 
+  * 完善 set need relayout children。
 
 * 2019/11/27
   * 完善 edit/mledit （感谢智明提供补丁）。

@@ -1,4 +1,5 @@
-﻿#include "base/idle.h"
+﻿#include "tkc/utils.h"
+#include "base/idle.h"
 #include "gtest/gtest.h"
 
 #include <string>
@@ -32,7 +33,8 @@ TEST(Idle, basic) {
   idle_manager_remove_all(idle_manager());
 
   for (i = 0; i < nr; i++) {
-    ASSERT_EQ(idle_add(on_idle, NULL) > 0, true);
+    ASSERT_EQ(idle_add(on_idle, tk_pointer_from_int(i)) > 0, true);
+    ASSERT_EQ(idle_exist(on_idle, tk_pointer_from_int(i)) > 0, true);
     ASSERT_EQ(idle_count(), i + 1);
   }
 
@@ -42,7 +44,8 @@ TEST(Idle, basic) {
   ASSERT_EQ(s_log, "o:o:o:o:o:o:o:o:o:o:");
 
   for (i = 0; i < nr; i++) {
-    uint32_t id = idle_add(on_idle, NULL);
+    uint32_t id = idle_add(on_idle, tk_pointer_from_int(i));
+    ASSERT_EQ(idle_exist(on_idle, tk_pointer_from_int(i)) > 0, true);
     ASSERT_EQ(id > 0, true);
     ASSERT_EQ(idle_remove(id), RET_OK);
     ASSERT_EQ(idle_count(), 0);

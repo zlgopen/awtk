@@ -160,6 +160,8 @@ const idle_info_t* idle_manager_find(idle_manager_t* idle_manager, uint32_t idle
  */
 uint32_t idle_manager_add(idle_manager_t* idle_manager, idle_func_t on_idle, void* ctx);
 
+bool_t idle_manager_exist(idle_manager_t* idle_manager, idle_func_t on_idle, void* ctx);
+
 END_C_DECLS
 
 #endif /*TK_IDLE_MANAGER_H*/
