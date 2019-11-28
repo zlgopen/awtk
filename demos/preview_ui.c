@@ -209,6 +209,7 @@ int main(int argc, char* argv[]) {
   if (have_lang) {
     locale_info_change(locale_info(), language, country);
   }
+  widget_set_style_str(window_manager(), "bg_color", "white");
   tk_run();
 
 #ifdef WIN32
