@@ -290,20 +290,25 @@ locale_info_t* widget_get_locale_info(widget_t* widget) {
 }
 
 assets_manager_t* widget_get_assets_manager(widget_t* widget) {
-  assets_manager_t* ret = assets_manager();
-  return_value_if_fail(widget != NULL && widget->vt != NULL, ret);
+  assets_manager_t* am = assets_manager();
+  return_value_if_fail(widget != NULL && widget->vt != NULL, am);
+
+  if(widget->assets_manager != NULL) {
+    return widget->assets_manager;
+  }
 
   if (tk_str_eq(widget->vt->type, WIDGET_TYPE_WINDOW_MANAGER)) {
-    ret = assets_manager();
+    am = assets_manager();
   } else {
     value_t v;
     widget_t* win = widget_get_window(widget);
     if (widget_get_prop(win, WIDGET_PROP_ASSETS_MANAGER, &v) == RET_OK) {
-      ret = (assets_manager_t*)value_pointer(&v);
+      am = (assets_manager_t*)value_pointer(&v);
     }
   }
+  widget->assets_manager = am;
 
-  return ret;
+  return am;
 }
 
 font_manager_t* widget_get_font_manager(widget_t* widget) {
@@ -653,7 +658,6 @@ ret_t widget_destroy_children(widget_t* widget) {
     WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
 
     widget_remove_child_prepare(widget, iter);
-    iter->parent = NULL;
     widget_unref(iter);
 
     WIDGET_FOR_EACH_CHILD_END();
@@ -725,6 +729,7 @@ static ret_t widget_remove_child_prepare(widget_t* widget, widget_t* child) {
   if (child->vt->on_detach_parent) {
     child->vt->on_detach_parent(child, widget);
   }
+  child->parent = NULL;
 
   return RET_OK;
 }
@@ -734,7 +739,6 @@ ret_t widget_remove_child(widget_t* widget, widget_t* child) {
 
   widget_remove_child_prepare(widget, child);
 
-  child->parent = NULL;
   return darray_remove(widget->children, child);
 }
 
