@@ -1,14 +1,15 @@
 # 最新动态
 
 * 2019/11/28
- * 修复preview ui预览dialog时，拖动dialog出现残影的问题。
- * 引入引用计数协助管理widget的生命周期。
- * 完善combobox弹出对话框位置的问题。
- * 完善vgcanvas（感谢智明提供补丁）。
+ * 修复 preview ui 预览 dialog 时，拖动 dialog 出现残影的问题。
+ * 引入引用计数协助管理 widget 的生命周期。
+ * 完善 combobox 弹出对话框位置的问题。
+ * 完善 vgcanvas（感谢智明提供补丁）。
+ * 完善 scroll view（感谢朝泽提供补丁）。
 
 * 2019/11/27
- * 完善edit/mledit （感谢智明提供补丁）。
- * 完善agge （感谢智明提供补丁）。
+ * 完善 edit/mledit （感谢智明提供补丁）。
+ * 完善 agge （感谢智明提供补丁）。
 
 * 2019/11/26
   * 完善 log （感谢大恒提供补丁）。

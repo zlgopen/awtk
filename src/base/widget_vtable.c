@@ -23,12 +23,30 @@
 #include "tkc/mem.h"
 
 ret_t widget_invalidate_default(widget_t* widget, rect_t* r) {
+  if (widget->vt->scrollable) {
+    int32_t ox = widget_get_prop_int(widget, WIDGET_PROP_XOFFSET, 0);
+    int32_t oy = widget_get_prop_int(widget, WIDGET_PROP_YOFFSET, 0);
+    rect_t r_self = rect_init(0, 0, widget->w, widget->h);
+
+    if (ox != 0) {
+      r->x -= ox;
+      r->w += ox + 1;
+    }
+    if (oy > 0) {
+      r->y -= oy;
+      r->h += oy + 1;
+    }
+
+    *r = rect_intersect(r, &r_self);
+  }
+
   if (r->w <= 0 || r->h <= 0) {
     return RET_OK;
   }
 
   r->x += widget->x;
   r->y += widget->y;
+
   if (widget->astyle != NULL) {
     int32_t ox = tk_abs(style_get_int(widget->astyle, STYLE_ID_X_OFFSET, 0));
     int32_t oy = tk_abs(style_get_int(widget->astyle, STYLE_ID_Y_OFFSET, 0));

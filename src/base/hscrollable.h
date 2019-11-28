@@ -52,7 +52,6 @@ ret_t hscrollable_set_xoffset(hscrollable_t* hscrollable, int32_t xoffset);
 ret_t hscrollable_set_virtual_w(hscrollable_t* hscrollable, int32_t virtual_w);
 ret_t hscrollable_set_always_scrollable(hscrollable_t* hscrollable, bool_t always_scrollable);
 
-ret_t hscrollable_invalidate(hscrollable_t* hscrollable, rect_t* r);
 ret_t hscrollable_on_event(hscrollable_t* hscrollable, event_t* e);
 ret_t hscrollable_get_prop(hscrollable_t* hscrollable, const char* name, value_t* v);
 ret_t hscrollable_set_prop(hscrollable_t* hscrollable, const char* name, const value_t* v);

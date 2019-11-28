@@ -172,13 +172,6 @@ static ret_t candidates_on_event(widget_t* widget, event_t* e) {
   return hscrollable_on_event(candidates->hscrollable, e);
 }
 
-static ret_t candidates_invalidate(widget_t* widget, rect_t* r) {
-  candidates_t* candidates = CANDIDATES(widget);
-  return_value_if_fail(candidates != NULL, RET_BAD_PARAMS);
-
-  return hscrollable_invalidate(candidates->hscrollable, r);
-}
-
 static ret_t candidates_on_paint_children(widget_t* widget, canvas_t* c) {
   candidates_t* candidates = CANDIDATES(widget);
   return_value_if_fail(candidates != NULL, RET_BAD_PARAMS);
@@ -206,7 +199,6 @@ TK_DECL_VTABLE(candidates) = {.size = sizeof(candidates_t),
                               .parent = TK_PARENT_VTABLE(widget),
                               .create = candidates_create,
                               .on_event = candidates_on_event,
-                              .invalidate = candidates_invalidate,
                               .on_paint_self = candidates_on_paint_self,
                               .on_paint_children = candidates_on_paint_children,
                               .get_prop = candidates_get_prop,

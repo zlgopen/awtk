@@ -33,16 +33,6 @@ static widget_t* hscrollable_get_widget(hscrollable_t* hscrollable) {
   return hscrollable != NULL ? hscrollable->widget : NULL;
 }
 
-static ret_t hscrollable_invalidate_self(hscrollable_t* hscrollable) {
-  rect_t r;
-  widget_t* widget = hscrollable_get_widget(hscrollable);
-  return_value_if_fail(hscrollable != NULL && widget != NULL, RET_BAD_PARAMS);
-
-  widget->dirty = FALSE;
-  r = rect_init(widget->x, widget->y, widget->w, widget->h);
-  return widget_invalidate(widget->parent, &r);
-}
-
 static ret_t hscrollable_on_pointer_down(hscrollable_t* hscrollable, pointer_event_t* e) {
   velocity_t* v = &(hscrollable->velocity);
 
@@ -83,7 +73,7 @@ static ret_t hscrollable_on_scroll_done(void* ctx, event_t* e) {
   return_value_if_fail(hscrollable != NULL, RET_BAD_PARAMS);
 
   hscrollable->wa = NULL;
-  hscrollable_invalidate_self(hscrollable);
+  widget_invalidate_force(hscrollable_get_widget(hscrollable), NULL);
 
   return RET_REMOVE;
 }
@@ -190,7 +180,7 @@ ret_t hscrollable_on_event(hscrollable_t* hscrollable, event_t* e) {
 
       if (hscrollable->dragged) {
         hscrollable_on_pointer_move(hscrollable, evt);
-        hscrollable_invalidate_self(hscrollable);
+        widget_invalidate_force(hscrollable_get_widget(hscrollable), NULL);
       } else {
         int32_t delta = evt->x - hscrollable->down.x;
 
@@ -212,29 +202,6 @@ ret_t hscrollable_on_event(hscrollable_t* hscrollable, event_t* e) {
   }
 
   return ret;
-}
-
-ret_t hscrollable_invalidate(hscrollable_t* hscrollable, rect_t* r) {
-  rect_t r_self;
-  widget_t* widget = hscrollable_get_widget(hscrollable);
-  return_value_if_fail(hscrollable != NULL && widget != NULL, RET_BAD_PARAMS);
-
-  r_self = rect_init(0, 0, widget->w, widget->h);
-
-  r->x -= hscrollable->xoffset;
-  *r = rect_intersect(r, &r_self);
-
-  r->x += widget->x;
-  r->y += widget->y;
-  if (r->w <= 0 || r->h <= 0) {
-    return RET_OK;
-  }
-
-  if (widget->parent) {
-    widget_invalidate(widget->parent, r);
-  }
-
-  return RET_OK;
 }
 
 ret_t hscrollable_on_paint_children(hscrollable_t* hscrollable, canvas_t* c) {
@@ -296,7 +263,7 @@ ret_t hscrollable_set_prop(hscrollable_t* hscrollable, const char* name, const v
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_XOFFSET)) {
     hscrollable->xoffset = value_int(v);
-    hscrollable_invalidate_self(hscrollable);
+    widget_invalidate_force(hscrollable_get_widget(hscrollable), NULL);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_YOFFSET)) {
     return RET_OK;

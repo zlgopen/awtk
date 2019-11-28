@@ -29,35 +29,6 @@
 #include "base/image_manager.h"
 #include "widget_animators/widget_animator_scroll.h"
 
-ret_t scroll_view_invalidate(widget_t* widget, rect_t* r) {
-  scroll_view_t* scroll_view = SCROLL_VIEW(widget);
-  rect_t r_self = rect_init(widget->x, widget->y, widget->w, widget->h);
-
-  r->x += widget->x;
-  r->y += widget->y;
-  r->x -= scroll_view->xoffset;
-  r->y -= scroll_view->yoffset;
-
-  *r = rect_intersect(r, &r_self);
-
-  if (r->w <= 0 || r->h <= 0) {
-    return RET_OK;
-  }
-
-  if (widget->parent) {
-    widget_invalidate(widget->parent, r);
-  }
-
-  return RET_OK;
-}
-
-ret_t scroll_view_invalidate_self(widget_t* widget) {
-  rect_t r = rect_init(widget->x, widget->y, widget->w, widget->h);
-
-  widget->dirty = FALSE;
-  return widget_invalidate(widget->parent, &r);
-}
-
 static ret_t scroll_view_update_virtual_size(widget_t* widget) {
   int32_t virtual_w = 0;
   int32_t virtual_h = 0;
@@ -91,9 +62,11 @@ static ret_t scroll_view_on_layout_children(widget_t* widget) {
   if (scroll_view->on_layout_children) {
     scroll_view->on_layout_children(widget);
   } else {
-    scroll_view_set_offset(widget, 0, 0);
     widget_layout_children_default(widget);
     scroll_view_update_virtual_size(widget);
+    scroll_view_set_offset(widget,
+                           tk_min(scroll_view->xoffset, (scroll_view->virtual_w - widget->w)),
+                           tk_min(scroll_view->yoffset, (scroll_view->virtual_h - widget->h)));
   }
 
   return RET_OK;
@@ -119,7 +92,7 @@ static ret_t scroll_view_on_scroll_done(void* ctx, event_t* e) {
   return_value_if_fail(widget != NULL && scroll_view != NULL, RET_BAD_PARAMS);
 
   scroll_view->wa = NULL;
-  scroll_view_invalidate_self(widget);
+  widget_invalidate_force(widget, NULL);
 
   return RET_REMOVE;
 }
@@ -373,7 +346,7 @@ static ret_t scroll_view_on_event(widget_t* widget, event_t* e) {
 
       if (scroll_view->dragged) {
         scroll_view_on_pointer_move(scroll_view, evt);
-        scroll_view_invalidate_self(widget);
+        widget_invalidate_force(widget, NULL);
       } else {
         if (scroll_view_is_dragged(widget, evt)) {
           pointer_event_t abort = *evt;
@@ -487,12 +460,12 @@ static ret_t scroll_view_set_prop(widget_t* widget, const char* name, const valu
   } else if (tk_str_eq(name, WIDGET_PROP_XOFFSET)) {
     scroll_view->xoffset = value_int(v);
     scroll_view_notify_scrolled(scroll_view);
-    scroll_view_invalidate_self(widget);
+    widget_invalidate_force(widget, NULL);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_YOFFSET)) {
     scroll_view->yoffset = value_int(v);
     scroll_view_notify_scrolled(scroll_view);
-    scroll_view_invalidate_self(widget);
+    widget_invalidate_force(widget, NULL);
     return RET_OK;
   }
 
@@ -513,7 +486,6 @@ TK_DECL_VTABLE(scroll_view) = {.size = sizeof(scroll_view_t),
                                .parent = TK_PARENT_VTABLE(widget),
                                .create = scroll_view_create,
                                .on_event = scroll_view_on_event,
-                               .invalidate = scroll_view_invalidate,
                                .on_layout_children = scroll_view_on_layout_children,
                                .on_paint_children = scroll_view_on_paint_children,
                                .on_add_child = scroll_view_on_add_child,
@@ -556,7 +528,7 @@ ret_t scroll_view_set_offset(widget_t* widget, int32_t xoffset, int32_t yoffset)
   scroll_view->xoffset = xoffset;
   scroll_view->yoffset = yoffset;
 
-  scroll_view_invalidate_self(widget);
+  widget_invalidate_force(widget, NULL);
 
   return RET_OK;
 }

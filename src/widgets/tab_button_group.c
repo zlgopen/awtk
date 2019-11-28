@@ -124,13 +124,6 @@ static ret_t tab_button_group_set_prop(widget_t* widget, const char* name, const
   return hscrollable_set_prop(tab_button_group->hscrollable, name, v);
 }
 
-static ret_t tab_button_group_invalidate(widget_t* widget, rect_t* r) {
-  tab_button_group_t* tab_button_group = TAB_BUTTON_GROUP(widget);
-  return_value_if_fail(tab_button_group != NULL, RET_BAD_PARAMS);
-
-  return hscrollable_invalidate(tab_button_group->hscrollable, r);
-}
-
 static ret_t tab_button_group_on_paint_children(widget_t* widget, canvas_t* c) {
   tab_button_group_t* tab_button_group = TAB_BUTTON_GROUP(widget);
   return_value_if_fail(tab_button_group != NULL, RET_BAD_PARAMS);
@@ -183,7 +176,6 @@ TK_DECL_VTABLE(tab_button_group) = {.size = sizeof(tab_button_group_t),
                                     .create = tab_button_group_create,
                                     .set_prop = tab_button_group_set_prop,
                                     .get_prop = tab_button_group_get_prop,
-                                    .invalidate = tab_button_group_invalidate,
                                     .on_event = tab_button_group_on_event,
                                     .on_destroy = tab_button_group_on_destroy,
                                     .on_paint_children = tab_button_group_on_paint_children,

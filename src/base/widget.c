@@ -732,7 +732,7 @@ static ret_t widget_remove_child_prepare(widget_t* widget, widget_t* child) {
 ret_t widget_remove_child(widget_t* widget, widget_t* child) {
   return_value_if_fail(widget != NULL && child != NULL, RET_BAD_PARAMS);
 
-  widget_remove_child_prepare(widget, child); 
+  widget_remove_child_prepare(widget, child);
 
   child->parent = NULL;
   return darray_remove(widget->children, child);
@@ -3130,7 +3130,7 @@ static ret_t widget_on_visit_focusable(void* ctx, const void* data) {
   widget_t* widget = WIDGET(data);
   darray_t* all_focusable = (darray_t*)ctx;
 
-  if (!(widget->visible) || !(widget->enable)) {
+  if (!(widget->sensitive) || !(widget->visible) || !(widget->enable)) {
     return RET_SKIP;
   }
 
