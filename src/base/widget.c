@@ -55,6 +55,7 @@ static ret_t widget_destroy_sync(widget_t* widget);
 static ret_t widget_ensure_style_mutable(widget_t* widget);
 static ret_t widget_dispatch_blur_event(widget_t* widget);
 static ret_t widget_on_paint_done(widget_t* widget, canvas_t* c);
+static ret_t widget_remove_child_prepare(widget_t* widget, widget_t* child);
 
 typedef widget_t* (*widget_find_wanted_focus_widget_t)(widget_t* widget, darray_t* all_focusable);
 static ret_t widget_move_focus(widget_t* widget, widget_find_wanted_focus_widget_t find);
@@ -650,8 +651,11 @@ ret_t widget_destroy_children(widget_t* widget) {
 
   if (widget->children != NULL) {
     WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+
+    widget_remove_child_prepare(widget, iter);
     iter->parent = NULL;
     widget_unref(iter);
+
     WIDGET_FOR_EACH_CHILD_END();
     widget->children->size = 0;
   }
@@ -690,7 +694,7 @@ ret_t widget_add_child(widget_t* widget, widget_t* child) {
   return RET_OK;
 }
 
-ret_t widget_remove_child(widget_t* widget, widget_t* child) {
+static ret_t widget_remove_child_prepare(widget_t* widget, widget_t* child) {
   return_value_if_fail(widget != NULL && child != NULL, RET_BAD_PARAMS);
 
   if (!widget_is_window_manager(widget)) {
@@ -721,6 +725,14 @@ ret_t widget_remove_child(widget_t* widget, widget_t* child) {
   if (child->vt->on_detach_parent) {
     child->vt->on_detach_parent(child, widget);
   }
+
+  return RET_OK;
+}
+
+ret_t widget_remove_child(widget_t* widget, widget_t* child) {
+  return_value_if_fail(widget != NULL && child != NULL, RET_BAD_PARAMS);
+
+  widget_remove_child_prepare(widget, child); 
 
   child->parent = NULL;
   return darray_remove(widget->children, child);

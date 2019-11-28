@@ -1676,7 +1676,7 @@ widget_t* widget_ref(widget_t* widget);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t widget_unrf(widget_t* widget);
+ret_t widget_unref(widget_t* widget);
 
 #define WIDGET_FOR_EACH_CHILD_BEGIN(twidget, iter, i)             \
   if (twidget->children != NULL && twidget->children->size > 0) { \
