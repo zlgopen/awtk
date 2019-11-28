@@ -362,11 +362,11 @@ struct _widget_t {
    */
   uint8_t need_update_style : 1;
   /**
-   * @property {uint16_t} can_not_destroy
+   * @property {int32_t} ref_count
    * @annotation ["readable"]
-   * 标识控件目前不能被销毁(比如正在分发事件)，如果此时调用widget\_destroy，自动异步处理。
+   * 引用计数，计数为0时销毁。
    */
-  uint16_t can_not_destroy;
+  int32_t ref_count;
   /**
    * @property {bool_t} initializing
    * @annotation ["readable"]
@@ -1646,14 +1646,37 @@ widget_t* widget_cast(widget_t* widget);
 
 /**
  * @method widget_destroy
- * 销毁控件。
- * 一般无需直接调用，关闭窗口时，自动销毁相关控件。
+ * 从父控件中移除控件，并调用unref函数销毁控件。
+ * 
+ * > 一般无需直接调用，关闭窗口时，自动销毁相关控件。
+ * 
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_destroy(widget_t* widget);
+
+/**
+ * @method widget_ref
+ * 增加控件的引用计数。
+ * 
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {widget_t*} 返回控件对象。
+ */
+widget_t* widget_ref(widget_t* widget);
+
+/**
+ * @method widget_unref
+ * 减少控件的引用计数。引用计数为0时销毁控件。
+ *
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_unrf(widget_t* widget);
 
 #define WIDGET_FOR_EACH_CHILD_BEGIN(twidget, iter, i)             \
   if (twidget->children != NULL && twidget->children->size > 0) { \

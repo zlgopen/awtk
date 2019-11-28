@@ -64,14 +64,14 @@ struct _canvas_t {
    * 当前字体大小。
    */
   font_size_t font_size;
-  
+
   /**
    * @property {uint8_t} global_alpha
    * @annotation ["readable", "scriptable"]
    * 当前全局alpha。
    */
   uint8_t global_alpha;
-  
+
   /**
    * @property {xy_t} clip_left
    * @annotation ["readable"]
@@ -85,14 +85,14 @@ struct _canvas_t {
    * 当前裁剪矩形的顶部位置。
    */
   xy_t clip_top;
-  
+
   /**
    * @property {xy_t} clip_right
    * @annotation ["readable"]
    * 当前裁剪矩形的右边位置。
    */
   xy_t clip_right;
-  
+
   /**
    * @property {xy_t} clip_bottom
    * @annotation ["readable"]

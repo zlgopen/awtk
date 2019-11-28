@@ -2,6 +2,7 @@
 
 * 2019/11/28
  * 修复preview ui预览dialog时，拖动dialog出现残影的问题。
+ * 引入引用计数协助管理widget的生命周期。
  * 完善combobox弹出对话框位置的问题。
  * 完善vgcanvas（感谢智明提供补丁）。
 

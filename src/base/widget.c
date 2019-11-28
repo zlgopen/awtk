@@ -51,11 +51,8 @@ ret_t widget_focus_up(widget_t* widget);
 ret_t widget_focus_down(widget_t* widget);
 ret_t widget_focus_left(widget_t* widget);
 ret_t widget_focus_right(widget_t* widget);
-static ret_t widget_do_destroy(widget_t* widget);
 static ret_t widget_destroy_sync(widget_t* widget);
-static ret_t widget_destroy_async(widget_t* widget);
 static ret_t widget_ensure_style_mutable(widget_t* widget);
-static ret_t widget_destroy_in_idle(const idle_info_t* info);
 static ret_t widget_dispatch_blur_event(widget_t* widget);
 static ret_t widget_on_paint_done(widget_t* widget, canvas_t* c);
 
@@ -654,7 +651,7 @@ ret_t widget_destroy_children(widget_t* widget) {
   if (widget->children != NULL) {
     WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
     iter->parent = NULL;
-    widget_do_destroy(iter);
+    widget_unref(iter);
     WIDGET_FOR_EACH_CHILD_END();
     widget->children->size = 0;
   }
@@ -928,7 +925,7 @@ ret_t widget_dispatch(widget_t* widget, event_t* e) {
   ret_t ret = RET_OK;
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
 
-  widget->can_not_destroy++;
+  widget_ref(widget);
   if (widget->vt && widget->vt->on_event) {
     ret = widget->vt->on_event(widget, e);
   } else {
@@ -940,7 +937,7 @@ ret_t widget_dispatch(widget_t* widget, event_t* e) {
       ret = emitter_dispatch(widget->emitter, e);
     }
   }
-  widget->can_not_destroy--;
+  widget_unref(widget);
 
   return ret;
 }
@@ -1909,8 +1906,8 @@ ret_t widget_on_keydown(widget_t* widget, key_event_t* e) {
   uint32_t key = e->key;
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
 
+  widget_ref(widget);
   widget_map_key(widget, e);
-  widget->can_not_destroy++;
   ret = widget_on_keydown_impl(widget, e);
   if (widget->feedback) {
     ui_feedback_request(widget, (event_t*)e);
@@ -1920,7 +1917,7 @@ ret_t widget_on_keydown(widget_t* widget, key_event_t* e) {
   if (ret != RET_STOP) {
     ret = widget_on_keydown_general(widget, e);
   }
-  widget->can_not_destroy--;
+  widget_unref(widget);
 
   return ret;
 }
@@ -1987,13 +1984,14 @@ ret_t widget_on_keyup(widget_t* widget, key_event_t* e) {
   uint32_t key = e->key;
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
 
+  widget_ref(widget);
   widget_map_key(widget, e);
-  widget->can_not_destroy++;
   ret = widget_on_keyup_impl(widget, e);
   if (widget->feedback) {
     ui_feedback_request(widget, (event_t*)e);
   }
-  widget->can_not_destroy--;
+  widget_unref(widget);
+
   e->key = key;
 
   return ret;
@@ -2047,9 +2045,9 @@ ret_t widget_on_wheel(widget_t* widget, wheel_event_t* e) {
   ret_t ret = RET_OK;
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
 
-  widget->can_not_destroy++;
+  widget_ref(widget);
   ret = widget_on_wheel_impl(widget, e);
-  widget->can_not_destroy--;
+  widget_unref(widget);
 
   return ret;
 }
@@ -2168,12 +2166,12 @@ ret_t widget_on_pointer_down(widget_t* widget, pointer_event_t* e) {
   ret_t ret = RET_OK;
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
 
-  widget->can_not_destroy++;
+  widget_ref(widget);
   ret = widget_on_pointer_down_impl(widget, e);
   if (widget->feedback) {
     ui_feedback_request(widget, (event_t*)e);
   }
-  widget->can_not_destroy--;
+  widget_unref(widget);
 
   return ret;
 }
@@ -2249,9 +2247,9 @@ ret_t widget_on_pointer_move(widget_t* widget, pointer_event_t* e) {
   ret_t ret = RET_OK;
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
 
-  widget->can_not_destroy++;
+  widget_ref(widget);
   ret = widget_on_pointer_move_impl(widget, e);
-  widget->can_not_destroy--;
+  widget_unref(widget);
 
   return ret;
 }
@@ -2312,12 +2310,12 @@ ret_t widget_on_pointer_up(widget_t* widget, pointer_event_t* e) {
   ret_t ret = RET_OK;
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
 
-  widget->can_not_destroy++;
+  widget_ref(widget);
   ret = widget_on_pointer_up_impl(widget, e);
   if (widget->feedback) {
     ui_feedback_request(widget, (event_t*)e);
   }
-  widget->can_not_destroy--;
+  widget_unref(widget);
 
   return ret;
 }
@@ -2501,52 +2499,15 @@ widget_t* widget_create(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_
   return widget_init(widget_real_create(vt), parent, vt, x, y, w, h);
 }
 
-static ret_t widget_destroy_in_idle(const idle_info_t* info) {
-  widget_t* widget = WIDGET(info->ctx);
-
-  if (widget->can_not_destroy) {
-    return RET_REPEAT;
-  } else {
-    widget_destroy_sync(widget);
-    return RET_REMOVE;
-  }
-}
-
-static ret_t widget_destroy_async(widget_t* widget) {
-  idle_add(widget_destroy_in_idle, widget);
-
-  return RET_OK;
-}
-
-static ret_t widget_do_destroy(widget_t* widget) {
-  if (widget->can_not_destroy) {
-    widget_destroy_async(widget);
-  } else {
-    widget_destroy_sync(widget);
-  }
-
-  return RET_OK;
-}
-
 ret_t widget_destroy(widget_t* widget) {
-  widget_t* parent = NULL;
-  return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget != NULL && widget->ref_count > 0 && widget->vt != NULL,
+                       RET_BAD_PARAMS);
 
-  parent = widget->parent;
-  if (parent != NULL) {
-    if (parent->target == widget || parent->key_target == widget) {
-      widget_remove_child(parent, widget);
-      if (parent->parent == NULL) {
-        return widget_do_destroy(widget);
-      } else {
-        return widget_destroy_async(widget);
-      }
-    }
-
+  if (widget->parent != NULL) {
     widget_remove_child(widget->parent, widget);
   }
 
-  return widget_do_destroy(widget);
+  return widget_unref(widget);
 }
 
 static ret_t widget_set_parent_not_dirty(widget_t* widget) {
@@ -2604,6 +2565,7 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t*
   widget->h = h;
   widget->vt = vt;
   widget->dirty = TRUE;
+  widget->ref_count = 1;
   widget->opacity = 0xff;
   widget->enable = TRUE;
   widget->visible = TRUE;
@@ -3606,4 +3568,26 @@ ret_t widget_reset_canvas(widget_t* widget) {
   canvas_t* c = widget_get_canvas(win);
 
   return vgcanvas_reset(canvas_get_vgcanvas(c));
+}
+
+widget_t* widget_ref(widget_t* widget) {
+  ENSURE(widget != NULL && widget->ref_count > 0 && widget->vt != NULL);
+  return_value_if_fail(widget != NULL && widget->ref_count > 0 && widget->vt != NULL, NULL);
+
+  widget->ref_count++;
+
+  return widget;
+}
+
+ret_t widget_unref(widget_t* widget) {
+  ENSURE(widget != NULL && widget->ref_count > 0 && widget->vt != NULL);
+  return_value_if_fail(widget != NULL && widget->ref_count > 0 && widget->vt != NULL,
+                       RET_BAD_PARAMS);
+
+  if (widget->ref_count == 1) {
+    widget_destroy_sync(widget);
+  }
+  widget->ref_count--;
+
+  return RET_OK;
 }

@@ -74,10 +74,10 @@ ret_t object_unref(object_t* obj) {
   return_value_if_fail(obj != NULL && obj->vt != NULL && obj->ref_count > 0, RET_BAD_PARAMS);
   return_value_if_fail(!(obj->visiting), RET_BUSY);
 
-  obj->ref_count--;
-  if (obj->ref_count < 1) {
+  if (obj->ref_count == 1) {
     object_destroy(obj);
   }
+  obj->ref_count--;
 
   return RET_OK;
 }
