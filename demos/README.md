@@ -16,10 +16,10 @@
 
 ### 可执行文件介绍
 
-* preview_ui 预览界面描述文件。
+* preview\_ui 预览界面描述文件。
 
 ```
-./bin/preview_ui demos/assets/raw/ui/main.xml
+./bin/preview_ui demos/assets/default/raw/ui/main.xml
 ```
 
 * bin下的demo*可以直接运行。
