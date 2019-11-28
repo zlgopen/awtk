@@ -1133,6 +1133,7 @@ ret_t widget_fill_rect(widget_t* widget, canvas_t* c, rect_t* r, bool_t bg,
   style_t* style = widget->astyle;
   color_t trans = color_init(0, 0, 0, 0);
   uint32_t radius = style_get_int(style, STYLE_ID_ROUND_RADIUS, 0);
+  rect_t bg_r = rect_init(widget->x, widget->y, widget->w, widget->h);
   const char* color_key = bg ? STYLE_ID_BG_COLOR : STYLE_ID_FG_COLOR;
   const char* image_key = bg ? STYLE_ID_BG_IMAGE : STYLE_ID_FG_IMAGE;
   const char* draw_type_key = bg ? STYLE_ID_BG_IMAGE_DRAW_TYPE : STYLE_ID_FG_IMAGE_DRAW_TYPE;
@@ -1143,7 +1144,11 @@ ret_t widget_fill_rect(widget_t* widget, canvas_t* c, rect_t* r, bool_t bg,
   if (color.rgba.a && r->w > 0 && r->h > 0) {
     canvas_set_fill_color(c, color);
     if (radius > 3) {
-      widget_darw_fill_rounded_rect(c, r, &color, radius);
+      if (bg) {
+        widget_darw_fill_rounded_rect_ex(c, r, NULL, &color, radius);
+      } else {
+        widget_darw_fill_rounded_rect_ex(c, r, &bg_r, &color, radius);
+      }
     } else {
       canvas_fill_rect(c, r->x, r->y, r->w, r->h);
     }
@@ -1174,7 +1179,7 @@ ret_t widget_stroke_border_rect(widget_t* widget, canvas_t* c, rect_t* r) {
     canvas_set_stroke_color(c, bd);
     if (border == BORDER_ALL) {
       if (radius > 3 || border_width > 1) {
-        widget_darw_stroke_rounded_rect(c, r, &bd, radius, border_width);
+        widget_darw_stroke_rounded_rect_ex(c, r, NULL, &bd, radius, border_width);
       } else {
         canvas_stroke_rect(c, 0, 0, w, h);
       }
