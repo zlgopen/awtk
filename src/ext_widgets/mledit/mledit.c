@@ -164,17 +164,23 @@ static ret_t mledit_set_prop(widget_t* widget, const char* name, const value_t* 
     mledit->right_margin = margin;
     mledit->top_margin = margin;
     mledit->bottom_margin = margin;
+    text_edit_layout(mledit->model);
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_LEFT_MARGIN)) {
     mledit->left_margin = value_int(v);
+    text_edit_layout(mledit->model);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_RIGHT_MARGIN)) {
     mledit->right_margin = value_int(v);
+    text_edit_layout(mledit->model);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_TOP_MARGIN)) {
     mledit->top_margin = value_int(v);
+    text_edit_layout(mledit->model);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_BOTTOM_MARGIN)) {
     mledit->bottom_margin = value_int(v);
+    text_edit_layout(mledit->model);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_FOCUS) || tk_str_eq(name, WIDGET_PROP_FOCUSED)) {
     mledit_set_focus(widget, value_bool(v));
