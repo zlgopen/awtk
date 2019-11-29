@@ -134,15 +134,12 @@ static ret_t lcd_vgcanvas_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) 
 }
 
 static ret_t lcd_vgcanvas_stroke_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
+  float_t offset_1 = 1.0f / lcd->ratio;
+  float_t offset_5 = 0.5f / lcd->ratio;
   vgcanvas_t* canvas = LCD(lcd)->canvas;
 
-  x += (0.5f / lcd->ratio);
-  y += (0.5f / lcd->ratio);
-  w -= (1.0f / lcd->ratio);
-  h -= (1.0f / lcd->ratio);
-
   vgcanvas_begin_path(canvas);
-  vgcanvas_rect(canvas, x, y, w, h);
+  vgcanvas_rect(canvas, x + offset_5, y + offset_5, w - offset_1, h - offset_1);
   vgcanvas_set_line_width(canvas, 1);
   vgcanvas_set_stroke_color(canvas, lcd->stroke_color);
   vgcanvas_stroke(canvas);
@@ -152,18 +149,21 @@ static ret_t lcd_vgcanvas_stroke_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h
 
 static ret_t lcd_vgcanvas_draw_points(lcd_t* lcd, point_t* points, uint32_t nr) {
   uint32_t i = 0;
+  float_t offset = 0.5f * lcd->ratio;
   vgcanvas_t* canvas = LCD(lcd)->canvas;
   vgcanvas_set_stroke_color(canvas, lcd->stroke_color);
-
-  vgcanvas_begin_path(canvas);
+  vgcanvas_set_line_width(canvas, 1);
   for (i = 0; i < nr; i++) {
     float x = points[i].x;
     float y = points[i].y;
 
-    vgcanvas_move_to(canvas, x, y);
-    vgcanvas_line_to(canvas, x, y);
+    x += offset;
+
+	  vgcanvas_begin_path(canvas);
+		vgcanvas_move_to(canvas, x, y + offset);
+		vgcanvas_line_to(canvas, x, y);
+		vgcanvas_stroke(canvas);
   }
-  vgcanvas_stroke(canvas);
 
   return RET_OK;
 }
