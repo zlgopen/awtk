@@ -1,4 +1,10 @@
 # 最新动态
+* 2019/11/30
+  * 修改 widget\_on\_attach\_parent 为 widget\_on\_attach\_parent\_t，widget\_on\_detach\_parent 为widget\_on\_detach\_parent\_t （感谢朝泽提供补丁）。
+  * 完善slide\_view：（感谢朝泽提供补丁）。
+    （1）切换页面过程中由于脏矩形或裁剪区域计算错误导致会有残影的问题，比如内部view有背景、内部控件有边框、或者控件超出slide_view范围；
+    （2）修改overlap方式切换过程中如果拖动距离超出单页的宽或高时，则停留在上一页或下一页
+
 * 2019/11/29
   * 修改定制软键盘密码不能隐藏的问题。
   * 修改 widget\_unref/object\_unref 的问题。
