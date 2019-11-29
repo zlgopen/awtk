@@ -69,7 +69,7 @@ ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
   edit_t* edit = EDIT(widget);
   return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
 
-  if (edit->input_type != INPUT_PASSWORD) {
+  if (edit->input_type != INPUT_PASSWORD && edit->input_type != INPUT_CUSTOM) {
     text_edit_set_mask(edit->model, FALSE);
   }
 
