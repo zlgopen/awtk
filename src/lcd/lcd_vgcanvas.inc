@@ -159,10 +159,10 @@ static ret_t lcd_vgcanvas_draw_points(lcd_t* lcd, point_t* points, uint32_t nr) 
 
     x += offset;
 
-	  vgcanvas_begin_path(canvas);
-		vgcanvas_move_to(canvas, x, y + offset);
-		vgcanvas_line_to(canvas, x, y);
-		vgcanvas_stroke(canvas);
+    vgcanvas_begin_path(canvas);
+    vgcanvas_move_to(canvas, x, y + offset);
+    vgcanvas_line_to(canvas, x, y);
+    vgcanvas_stroke(canvas);
   }
 
   return RET_OK;

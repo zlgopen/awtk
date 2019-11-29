@@ -1,7 +1,11 @@
 # 最新动态
 * 2019/11/29
   * 修改定制软键盘密码不能隐藏的问题。
-  * 修改widget\_unref/object\_unref的问题。
+  * 修改 widget\_unref/object\_unref 的问题。
+  * 修复 nanovg 画举行边框时候边框大小不为 1 的问题（是之前修复高分屏填充问题引起的）（感谢智明提供补丁）。
+  * 修改 widget 透明度为 0 的显示问题，如果 widget 的 opacity 低于 8 的时候，就视为不可见，就跳出 widget\_paint 函数的执行（感谢智明提供补丁）。
+  * 修改 native\_window\_fb\_gl 和 native\_window\_sdl 在编译 agge 的时候出现的警告（感谢智明提供补丁）。
+  * 修复了 mledit 设置 margin 后不会马上刷新界面的问题（感谢智明提供补丁）。
 
 * 2019/11/28
   * 修复 preview ui 预览 dialog 时，拖动 dialog 出现残影的问题。

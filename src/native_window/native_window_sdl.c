@@ -134,7 +134,6 @@ static ret_t native_window_sdl_gl_make_current(native_window_t* win) {
 }
 
 static ret_t native_window_sdl_swap_buffer(native_window_t* win) {
-
 #ifdef WITH_NANOVG_GL
   native_window_sdl_t* sdl = NATIVE_WINDOW_SDL(win);
   SDL_GL_SwapWindow(sdl->window);
@@ -262,7 +261,6 @@ static ret_t native_window_sdl_on_destroy(object_t* obj) {
 }
 
 static ret_t native_window_sdl_exec(object_t* obj, const char* cmd, const char* args) {
-
 #ifdef WITH_NANOVG_GPU
   native_window_sdl_t* sdl = NATIVE_WINDOW_SDL(obj);
   if (tk_str_eq(cmd, "reset_canvas")) {
