@@ -16517,9 +16517,7 @@
             "desc": "动画名称。"
           }
         ],
-        "annotation": {
-          "scriptable": true
-        },
+        "annotation": {},
         "desc": "查找指定名称的动画。\n",
         "name": "widget_find_animator",
         "return": {
@@ -17939,8 +17937,42 @@
         "annotation": {
           "scriptable": true
         },
-        "desc": "销毁控件。\n一般无需直接调用，关闭窗口时，自动销毁相关控件。\n",
+        "desc": "从父控件中移除控件，并调用unref函数销毁控件。\n> 一般无需直接调用，关闭窗口时，自动销毁相关控件。\n",
         "name": "widget_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "增加控件的引用计数。\n",
+        "name": "widget_ref",
+        "return": {
+          "type": "widget_t*",
+          "desc": "返回控件对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "减少控件的引用计数。引用计数为0时销毁控件。\n",
+        "name": "widget_unref",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -18512,9 +18544,9 @@
         }
       },
       {
-        "name": "can_not_destroy",
-        "desc": "标识控件目前不能被销毁(比如正在分发事件)，如果此时调用widget\\_destroy，自动异步处理。\n",
-        "type": "uint16_t",
+        "name": "ref_count",
+        "desc": "引用计数，计数为0时销毁。\n",
+        "type": "int32_t",
         "annotation": {
           "readable": true
         }

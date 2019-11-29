@@ -908,7 +908,6 @@ ret_t widget_pause_animator(widget_t* widget, const char* name);
  * @method widget_find_animator
  * 查找指定名称的动画。
  *
- * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {char*} name 动画名称。
  *
