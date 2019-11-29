@@ -1,6 +1,7 @@
 # 最新动态
 * 2019/11/29
   * 修改定制软键盘密码不能隐藏的问题。
+  * 修改widget\_unref/object\_unref的问题。
 
 * 2019/11/28
   * 修复 preview ui 预览 dialog 时，拖动 dialog 出现残影的问题。
