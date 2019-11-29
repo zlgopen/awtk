@@ -13,17 +13,17 @@
 把二维坐标的象限通过45度分为上下区域，一共8个区域
 */
 typedef enum _frr_quadrant_t {
-  FRR_QUADRANT_FIRST_F = 0,   //二维坐标第一象限的上区域
-  FRR_QUADRANT_FIRST_S,       //二维坐标第一象限的下区域
+  FRR_QUADRANT_FIRST_F = 0,  //二维坐标第一象限的上区域
+  FRR_QUADRANT_FIRST_S,      //二维坐标第一象限的下区域
 
-  FRR_QUADRANT_SECOND_F,      //二维坐标第二象限的上区域
-  FRR_QUADRANT_SECOND_S,      //二维坐标第二象限的下区域
+  FRR_QUADRANT_SECOND_F,  //二维坐标第二象限的上区域
+  FRR_QUADRANT_SECOND_S,  //二维坐标第二象限的下区域
 
-  FRR_QUADRANT_THIRD_F,       //二维坐标第三象限的上区域
-  FRR_QUADRANT_THIRD_S,       //二维坐标第三象限的下区域
+  FRR_QUADRANT_THIRD_F,  //二维坐标第三象限的上区域
+  FRR_QUADRANT_THIRD_S,  //二维坐标第三象限的下区域
 
-  FRR_QUADRANT_FOURTH_F,      //二维坐标第四象限的上区域
-  FRR_QUADRANT_FOURTH_S,      //二维坐标第四象限的下区域
+  FRR_QUADRANT_FOURTH_F,  //二维坐标第四象限的上区域
+  FRR_QUADRANT_FOURTH_S,  //二维坐标第四象限的下区域
 } frr_quadrant_t;
 
 typedef struct _frr_point_pix_t {
@@ -91,10 +91,10 @@ typedef struct _frr_draw_arc_info_table_t {
 static frr_point_pix_t frr_point_pix_cache_list[FRR_POINT_PIX_CACHE_SIZE] = {0};
 
 const static frr_draw_arc_info_table_t WIDGET_DRAW_ARC_INFO_TABLE[] = {
-    {FRR_QUADRANT_FIRST_S, FRR_QUADRANT_FIRST_F},       //右上角
-    {FRR_QUADRANT_SECOND_S, FRR_QUADRANT_SECOND_F},     //左上角
-    {FRR_QUADRANT_THIRD_F, FRR_QUADRANT_THIRD_S},       //左下角
-    {FRR_QUADRANT_FOURTH_F, FRR_QUADRANT_FOURTH_S}};    //右下角
+    {FRR_QUADRANT_FIRST_S, FRR_QUADRANT_FIRST_F},     //右上角
+    {FRR_QUADRANT_SECOND_S, FRR_QUADRANT_SECOND_F},   //左上角
+    {FRR_QUADRANT_THIRD_F, FRR_QUADRANT_THIRD_S},     //左下角
+    {FRR_QUADRANT_FOURTH_F, FRR_QUADRANT_FOURTH_S}};  //右下角
 
 static inline uint32_t widget_bitmap_format_to_bpp(bitmap_format_t fmt) {
   switch (fmt) {
@@ -562,7 +562,6 @@ static int32_t widget_get_rounded_rect_mid_length(uint32_t radius, uint32_t tota
 }
 
 static void widget_darw_fill_rounded_rect(canvas_t* c, rect_t* r, color_t* color, uint32_t radius) {
-
   float_t w1 = 0.0f;
   float_t w2 = 0.0f;
   float_t h1 = 0.0f;
@@ -585,7 +584,7 @@ static void widget_darw_fill_rounded_rect(canvas_t* c, rect_t* r, color_t* color
 
   vgcanvas_t* vg = canvas_get_vgcanvas(c);
 
-#ifndef WITH_NANOVG_GPU  
+#ifndef WITH_NANOVG_GPU
   uint32_t size = 0;
   darray_t point_list_45 = {0};
   darray_t tmp_point_list_45 = {0};
@@ -610,14 +609,14 @@ static void widget_darw_fill_rounded_rect(canvas_t* c, rect_t* r, color_t* color
   vgcanvas_translate(vg, (float_t)c->ox, (float_t)c->oy);
   widget_darw_rounded_rect_vertex(vg, (float_t)v_x1, (float_t)v_y1, (float_t)x1, (float_t)y1,
                                   radius, M_PI + M_FRR_PI_2 - angle_v, M_PI + angle_h,
-                                  FALSE);                                                               // 左上角
+                                  FALSE);  // 左上角
   widget_darw_rounded_rect_vertex(vg, (float_t)v_x2, (float_t)v_y1, (float_t)x2, (float_t)y1,
                                   radius, M_PI + M_PI - angle_h, M_PI + M_FRR_PI_2 + angle_v,
-                                  FALSE);                                                               // 右上角
+                                  FALSE);  // 右上角
   widget_darw_rounded_rect_vertex(vg, (float_t)v_x1, (float_t)v_y2, (float_t)x1, (float_t)y2,
-                                  radius, M_PI - angle_h, M_FRR_PI_2 + angle_v, FALSE);                 // 左下角
+                                  radius, M_PI - angle_h, M_FRR_PI_2 + angle_v, FALSE);  // 左下角
   widget_darw_rounded_rect_vertex(vg, (float_t)v_x2, (float_t)v_y2, (float_t)x2, (float_t)y2,
-                                  radius, M_FRR_PI_2 - angle_v, angle_h, FALSE);                        // 右下角
+                                  radius, M_FRR_PI_2 - angle_v, angle_h, FALSE);  // 右下角
   vgcanvas_translate(vg, (float_t)-c->ox, (float_t)-c->oy);
   vgcanvas_restore(vg);
 #else
@@ -647,25 +646,25 @@ static void widget_darw_fill_rounded_rect(canvas_t* c, rect_t* r, color_t* color
 #endif  // WITH_NANOVG_GPU
 
   if (mid_lenght_v != 0) {
-    canvas_fill_rect(c, x, v_y1, (wh_t)w2, mid_lenght_v);                       //左边矩形
+    canvas_fill_rect(c, x, v_y1, (wh_t)w2, mid_lenght_v);  //左边矩形
     if (mid_lenght_h == 0 && w2 + w2 > r->w) {
-      canvas_fill_rect(c, v_x2, v_y1, (wh_t)(r->w - w2), mid_lenght_v);         //右边矩形
+      canvas_fill_rect(c, v_x2, v_y1, (wh_t)(r->w - w2), mid_lenght_v);  //右边矩形
     } else {
-      canvas_fill_rect(c, v_x2, v_y1, (wh_t)w2, mid_lenght_v);                  //右边矩形
+      canvas_fill_rect(c, v_x2, v_y1, (wh_t)w2, mid_lenght_v);  //右边矩形
     }
   }
 
   if (mid_lenght_h != 0) {
-    canvas_fill_rect(c, v_x1, y, mid_lenght_h, (wh_t)h1);                       //上边矩形
+    canvas_fill_rect(c, v_x1, y, mid_lenght_h, (wh_t)h1);  //上边矩形
     if (mid_lenght_v == 0 && h1 + h1 > r->h) {
-      canvas_fill_rect(c, v_x1, v_y2, mid_lenght_h, (wh_t)(r->h - h1));         //下边矩形
+      canvas_fill_rect(c, v_x1, v_y2, mid_lenght_h, (wh_t)(r->h - h1));  //下边矩形
     } else {
-      canvas_fill_rect(c, v_x1, v_y2, mid_lenght_h, (wh_t)h1);                  //下边矩形
+      canvas_fill_rect(c, v_x1, v_y2, mid_lenght_h, (wh_t)h1);  //下边矩形
     }
   }
 
   if (mid_lenght_v != 0 && mid_lenght_h != 0) {
-    canvas_fill_rect(c, v_x1, v_y1, (wh_t)mid_lenght_h, (wh_t)mid_lenght_v);    //中间矩形
+    canvas_fill_rect(c, v_x1, v_y1, (wh_t)mid_lenght_h, (wh_t)mid_lenght_v);  //中间矩形
   }
 
 #ifndef WITH_NANOVG_GPU
@@ -699,7 +698,7 @@ static void widget_darw_stroke_rounded_rect(canvas_t* c, rect_t* r, color_t* col
 
   vgcanvas_t* vg = canvas_get_vgcanvas(c);
 
-#ifndef WITH_NANOVG_GPU  
+#ifndef WITH_NANOVG_GPU
   uint32_t size = 0;
 
   int32_t v_x1 = 0;
@@ -713,14 +712,13 @@ static void widget_darw_stroke_rounded_rect(canvas_t* c, rect_t* r, color_t* col
   frr_image_info_t image_info = {0};
   frr_point_pix_t* point_pix_cache_list = NULL;
 #endif
-  
+
   mid_lenght_v = widget_get_rounded_rect_mid_length(radius, r->h, &w1, &h1, &angle_v, TRUE);
   mid_lenght_h = widget_get_rounded_rect_mid_length(radius, r->w, &h2, &w2, &angle_h, TRUE);
 
   if (vg != NULL) {
 #ifndef WITH_NANOVG_GPU
     if (border_width == 1) {
-      
       v_x1 = x + (int32_t)w2;
       v_x2 = x + (int32_t)w2 + mid_lenght_h;
       v_y1 = y + (int32_t)h1;
@@ -790,14 +788,14 @@ static void widget_darw_stroke_rounded_rect(canvas_t* c, rect_t* r, color_t* col
       vgcanvas_begin_path(vg);
       WIDGET_SET_ROUNDED_RECT_VERTEX_STROKE(vg, x1, y1, radius, M_PI + angle_h,
                                             M_PI + M_FRR_PI_2 - angle_v,
-                                            TRUE);                                              // 左上角
+                                            TRUE);  // 左上角
       WIDGET_SET_ROUNDED_RECT_VERTEX_STROKE(vg, x1, y2, radius, M_FRR_PI_2 + angle_v,
-                                            M_PI - angle_h, TRUE);                              // 左下角
+                                            M_PI - angle_h, TRUE);  // 左下角
       WIDGET_SET_ROUNDED_RECT_VERTEX_STROKE(vg, x2, y2, radius, angle_h, M_FRR_PI_2 - angle_v,
-                                            TRUE);                                              // 右下角
+                                            TRUE);  // 右下角
       WIDGET_SET_ROUNDED_RECT_VERTEX_STROKE(vg, x2, y1, radius, M_PI + M_FRR_PI_2 + angle_v,
                                             M_PI + M_PI - angle_h,
-                                            TRUE);                                              // 右上角
+                                            TRUE);  // 右上角
       vgcanvas_close_path(vg);
 
       vgcanvas_stroke(vg);
