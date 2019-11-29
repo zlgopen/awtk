@@ -702,9 +702,6 @@ ret_t widget_add_child(widget_t* widget, widget_t* child) {
   return_value_if_fail(widget != NULL && child != NULL && child->parent == NULL, RET_BAD_PARAMS);
 
   child->parent = widget;
-  if (!widget_is_window_manager(widget)) {
-    widget_set_need_relayout_children(widget);
-  }
 
   if (widget->children == NULL) {
     widget->children = darray_create(4, NULL, NULL);
@@ -721,6 +718,10 @@ ret_t widget_add_child(widget_t* widget, widget_t* child) {
   }
 
   ENSURE(darray_push(widget->children, child) == RET_OK);
+
+  if (!widget_is_window_manager(widget)) {
+    widget_set_need_relayout_children(widget);
+  }
 
   if (!(child->initializing) && widget_get_window(child) != NULL) {
     widget_set_need_update_style_recursive(child);
