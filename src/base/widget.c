@@ -1305,7 +1305,7 @@ static ret_t widget_paint_impl(widget_t* widget, canvas_t* c) {
 ret_t widget_paint(widget_t* widget, canvas_t* c) {
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
 
-  if (!widget->visible || widget->w <= 0 || widget->h <= 0) {
+  if (!widget->visible || widget->opacity <= 0x08 || widget->w <= 0 || widget->h <= 0) {
     widget->dirty = FALSE;
     return RET_OK;
   }
