@@ -3642,8 +3642,9 @@ ret_t widget_unref(widget_t* widget) {
 
   if (widget->ref_count == 1) {
     widget_destroy_sync(widget);
+  } else {
+    widget->ref_count--;
   }
-  widget->ref_count--;
 
   return RET_OK;
 }

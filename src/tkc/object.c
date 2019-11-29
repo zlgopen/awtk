@@ -76,8 +76,9 @@ ret_t object_unref(object_t* obj) {
 
   if (obj->ref_count == 1) {
     object_destroy(obj);
+  } else {
+    obj->ref_count--;
   }
-  obj->ref_count--;
 
   return RET_OK;
 }
