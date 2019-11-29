@@ -1017,21 +1017,30 @@ ret_t widget_off(widget_t* widget, int32_t id) {
 
 ret_t widget_off_by_tag(widget_t* widget, uint32_t tag) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(widget->emitter != NULL, RET_BAD_PARAMS);
+
+  if(widget->emitter == NULL) {
+    return RET_OK;
+  }
 
   return emitter_off_by_tag(widget->emitter, tag);
 }
 
 ret_t widget_off_by_ctx(widget_t* widget, void* ctx) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(widget->emitter != NULL, RET_BAD_PARAMS);
+
+  if(widget->emitter == NULL) {
+    return RET_OK;
+  }
 
   return emitter_off_by_ctx(widget->emitter, ctx);
 }
 
 ret_t widget_off_by_func(widget_t* widget, uint32_t type, event_func_t on_event, void* ctx) {
   return_value_if_fail(widget != NULL && on_event != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(widget->emitter != NULL, RET_BAD_PARAMS);
+
+  if(widget->emitter == NULL) {
+    return RET_OK;
+  }
 
   return emitter_off_by_func(widget->emitter, type, on_event, ctx);
 }
