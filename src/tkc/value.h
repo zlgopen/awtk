@@ -508,7 +508,6 @@ const char* value_str(const value_t* v);
 /**
  * @method value_wstr
  * 获取类型为宽字符串的值。
- * @annotation ["scriptable"]
  * @param {value_t*} v value对象。
  *
  * @return {const wchar_t*} 值。
@@ -601,7 +600,6 @@ uint32_t value_token(const value_t* v);
 /**
  * @method value_set_sized_str
  * 设置类型为带长度的字符串的值。
- * @annotation ["scriptable"]
  * @param {value_t*} v  value对象。
  * @param {char*}  str 待设置的值。
  * @param {uint32_t}  size 长度。
@@ -613,7 +611,6 @@ value_t* value_set_sized_str(value_t* v, char* str, uint32_t size);
 /**
  * @method value_sized_str
  * 获取为sized_str的值。
- * @annotation ["scriptable"]
  * @param {value_t*} v value对象。
  *
  * @return {sized_str_t*} 值。
@@ -623,7 +620,6 @@ sized_str_t* value_sized_str(const value_t* v);
 /**
  * @method value_set_binary_data
  * 设置类型为binary_data的值。
- * @annotation ["scriptable"]
  * @param {value_t*} v  value对象。
  * @param {void*}  value 待设置的值。
  * @param {uint32_t}  size 长度。
@@ -635,7 +631,6 @@ value_t* value_set_binary_data(value_t* v, void* data, uint32_t size);
 /**
  * @method value_binary_data
  * 获取为binary_data的值。
- * @annotation ["scriptable"]
  * @param {value_t*} v value对象。
  *
  * @return {binary_data_t*} 值。
@@ -645,7 +640,6 @@ binary_data_t* value_binary_data(const value_t* v);
 /**
  * @method value_set_ubjson
  * 设置类型为ubjson的值。
- * @annotation ["scriptable"]
  * @param {value_t*} v  value对象。
  * @param {void*}  value 待设置的值。
  * @param {uint32_t}  size 长度。
@@ -657,7 +651,6 @@ value_t* value_set_ubjson(value_t* v, void* data, uint32_t size);
 /**
  * @method value_ubjson
  * 获取为ubjson的值。
- * @annotation ["scriptable"]
  * @param {value_t*} v value对象。
  *
  * @return {binary_data_t*} 值。

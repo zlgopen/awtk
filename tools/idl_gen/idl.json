@@ -6020,9 +6020,7 @@
             "desc": "value对象。"
           }
         ],
-        "annotation": {
-          "scriptable": true
-        },
+        "annotation": {},
         "desc": "获取类型为宽字符串的值。\n",
         "name": "value_wstr",
         "return": {
@@ -6210,9 +6208,7 @@
             "desc": "长度。"
           }
         ],
-        "annotation": {
-          "scriptable": true
-        },
+        "annotation": {},
         "desc": "设置类型为带长度的字符串的值。\n",
         "name": "value_set_sized_str",
         "return": {
@@ -6228,9 +6224,7 @@
             "desc": "value对象。"
           }
         ],
-        "annotation": {
-          "scriptable": true
-        },
+        "annotation": {},
         "desc": "获取为sized_str的值。\n",
         "name": "value_sized_str",
         "return": {
@@ -6256,9 +6250,7 @@
             "desc": "长度。"
           }
         ],
-        "annotation": {
-          "scriptable": true
-        },
+        "annotation": {},
         "desc": "设置类型为binary_data的值。\n",
         "name": "value_set_binary_data",
         "return": {
@@ -6274,9 +6266,7 @@
             "desc": "value对象。"
           }
         ],
-        "annotation": {
-          "scriptable": true
-        },
+        "annotation": {},
         "desc": "获取为binary_data的值。\n",
         "name": "value_binary_data",
         "return": {
@@ -6302,9 +6292,7 @@
             "desc": "长度。"
           }
         ],
-        "annotation": {
-          "scriptable": true
-        },
+        "annotation": {},
         "desc": "设置类型为ubjson的值。\n",
         "name": "value_set_ubjson",
         "return": {
@@ -6320,9 +6308,7 @@
             "desc": "value对象。"
           }
         ],
-        "annotation": {
-          "scriptable": true
-        },
+        "annotation": {},
         "desc": "获取为ubjson的值。\n",
         "name": "value_ubjson",
         "return": {
