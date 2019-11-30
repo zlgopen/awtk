@@ -16364,7 +16364,7 @@
           "scriptable": true
         },
         "desc": "设置鼠标指针的图片名。\n",
-        "name": "widget_set_cursor",
+        "name": "widget_set_pointer_cursor",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"

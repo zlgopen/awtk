@@ -813,7 +813,7 @@ ret_t widget_set_name(widget_t* widget, const char* name);
 ret_t widget_set_theme(widget_t* widget, const char* name);
 
 /**
- * @method widget_set_cursor
+ * @method widget_set_pointer_cursor
  * 设置鼠标指针的图片名。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
@@ -821,7 +821,8 @@ ret_t widget_set_theme(widget_t* widget, const char* name);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t widget_set_cursor(widget_t* widget, const char* cursor);
+ret_t widget_set_pointer_cursor(widget_t* widget, const char* cursor);
+#define widget_set_cursor widget_set_pointer_cursor
 
 /**
  * @method widget_set_animation

@@ -534,7 +534,7 @@ typedef struct _pointer_event_t {
  * 把event对象转pointer_event_t对象，主要给脚本语言使用。
  * @param {event_t*} event event对象。
  *
- * @return {pointer_event_t*} 对象。
+ * @return {pointer_event_t*} event对象。
  */
 pointer_event_t* pointer_event_cast(event_t* event);
 
@@ -648,7 +648,7 @@ typedef struct _key_event_t {
  * 把event对象转key_event_t对象，主要给脚本语言使用。
  * @param {event_t*} event event对象。
  *
- * @return {key_event_t*} 对象。
+ * @return {key_event_t*} event对象。
  */
 key_event_t* key_event_cast(event_t* event);
 

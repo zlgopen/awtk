@@ -456,7 +456,7 @@ ret_t widget_set_theme(widget_t* widget, const char* name) {
   return RET_OK;
 }
 
-ret_t widget_set_cursor(widget_t* widget, const char* cursor) {
+ret_t widget_set_pointer_cursor(widget_t* widget, const char* cursor) {
   widget_t* wm = widget_get_window_manager(widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
