@@ -239,6 +239,7 @@ ret_t text_selector_set_value(widget_t* widget, int32_t value);
  * @method text_selector_get_text
  * 获取text_selector的文本。
  * @annotation ["scriptable"]
+ * @alias text_selector_get_text_value
  * @param {widget_t*} widget text_selector对象。
  *
  * @return {char*} 返回文本。

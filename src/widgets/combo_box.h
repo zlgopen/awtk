@@ -328,6 +328,7 @@ int32_t combo_box_get_value(widget_t* widget);
  * @method combo_box_get_text
  * 获取combo_box的文本。
  * @annotation ["scriptable"]
+ * @alias combo_box_get_text_value
  * @param {widget_t*} widget combo_box对象。
  *
  * @return {const char*} 返回文本。

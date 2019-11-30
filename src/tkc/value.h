@@ -412,7 +412,6 @@ value_t* value_set_float(value_t* v, float_t value);
 /**
  * @method value_float
  * 获取类型为float\_t的值。
- * @annotation ["scriptable"]
  * @param {value_t*} v value对象。
  *
  * @return {float_t} 值。
@@ -422,7 +421,6 @@ float_t value_float(const value_t* v);
 /**
  * @method value_set_float32
  * 设置类型为float的值。
- * @annotation ["scriptable"]
  * @param {value_t*} v     value对象。
  * @param {float}    value 待设置的值。
  *
@@ -444,6 +442,7 @@ float value_float32(const value_t* v);
  * @method value_set_double
  * 设置类型为double的值。
  * @annotation ["scriptable"]
+ * @alias value_set_float64
  * @param {value_t*} v     value对象。
  * @param {double}   value 待设置的值。
  *
@@ -455,6 +454,7 @@ value_t* value_set_double(value_t* v, double value);
  * @method value_double
  * 获取类型为double的值。
  * @annotation ["scriptable"]
+ * @alias value_float64
  * @param {value_t*} v value对象。
  *
  * @return {double} 值。
@@ -537,7 +537,6 @@ bool_t value_equal(const value_t* value, const value_t* other);
 /**
  * @method value_int
  * 转换为int的值。
- * @annotation ["scriptable"]
  * @param {value_t*} v value对象。
  *
  * @return {int} 值。

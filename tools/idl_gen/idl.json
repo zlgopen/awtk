@@ -5836,9 +5836,7 @@
             "desc": "value对象。"
           }
         ],
-        "annotation": {
-          "scriptable": true
-        },
+        "annotation": {},
         "desc": "获取类型为float\\_t的值。\n",
         "name": "value_float",
         "return": {
@@ -5859,9 +5857,7 @@
             "desc": "待设置的值。"
           }
         ],
-        "annotation": {
-          "scriptable": true
-        },
+        "annotation": {},
         "desc": "设置类型为float的值。\n",
         "name": "value_set_float32",
         "return": {
@@ -5905,6 +5901,7 @@
         },
         "desc": "设置类型为double的值。\n",
         "name": "value_set_double",
+        "alias": "value_set_float64",
         "return": {
           "type": "value_t*",
           "desc": "value对象本身。"
@@ -5923,6 +5920,7 @@
         },
         "desc": "获取类型为double的值。\n",
         "name": "value_double",
+        "alias": "value_float64",
         "return": {
           "type": "double",
           "desc": "值。"
@@ -6075,9 +6073,7 @@
             "desc": "value对象。"
           }
         ],
-        "annotation": {
-          "scriptable": true
-        },
+        "annotation": {},
         "desc": "转换为int的值。\n",
         "name": "value_int",
         "return": {
@@ -29639,6 +29635,7 @@
         },
         "desc": "获取text_selector的文本。\n",
         "name": "text_selector_get_text",
+        "alias": "text_selector_get_text_value",
         "return": {
           "type": "char*",
           "desc": "返回文本。"
@@ -39100,24 +39097,6 @@
             "type": "style_t*",
             "name": "s",
             "desc": "style对象。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "获取style的名称。\n",
-        "name": "style_mutable_get_name",
-        "return": {
-          "type": "const char*",
-          "desc": "style的名称。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "style_t*",
-            "name": "s",
-            "desc": "style对象。"
           },
           {
             "type": "const char*",
@@ -40824,7 +40803,7 @@
         "name": "key_event_cast",
         "return": {
           "type": "key_event_t*",
-          "desc": "对象。"
+          "desc": "event对象。"
         }
       },
       {
@@ -41164,7 +41143,7 @@
         "name": "pointer_event_cast",
         "return": {
           "type": "pointer_event_t*",
-          "desc": "对象。"
+          "desc": "event对象。"
         }
       },
       {
@@ -42808,6 +42787,7 @@
         },
         "desc": "获取combo_box的文本。\n",
         "name": "combo_box_get_text",
+        "alias": "combo_box_get_text_value",
         "return": {
           "type": "const char*",
           "desc": "返回文本。"

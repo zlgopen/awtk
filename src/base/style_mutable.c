@@ -143,12 +143,6 @@ widget_state_style_t* widget_state_style_find(widget_state_style_t* first, const
   return NULL;
 }
 
-const char* style_mutable_get_name(style_t* s) {
-  style_mutable_t* style = STYLE_MUTABLE(s);
-
-  return style->name;
-}
-
 ret_t style_mutable_set_name(style_t* s, const char* name) {
   style_mutable_t* style = STYLE_MUTABLE(s);
   return_value_if_fail(style != NULL && name != NULL, RET_BAD_PARAMS);

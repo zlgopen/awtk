@@ -73,16 +73,6 @@ typedef struct _style_mutable_t {
 } style_mutable_t;
 
 /**
- * @method style_mutable_get_name
- * 获取style的名称。
- * @annotation ["scriptable"]
- * @param {style_t*} s style对象。
- *
- * @return {const char*} style的名称。
- */
-const char* style_mutable_get_name(style_t* s);
-
-/**
  * @method style_mutable_set_name
  * 设置style的名称。
  * @annotation ["scriptable"]
