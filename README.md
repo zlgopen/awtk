@@ -204,7 +204,7 @@ pip install Pillow
 
 * [智能手表演示](http://zlgawtk.bceapp.com/awtk/demos/SmartWatch-Demo/index.html)
 
-* [清风系统演示](http://zlgawtk.bceapp.com/awtk/demos/CleanAir-Demo/index.html)
+* [洁净新风系统演示](http://zlgawtk.bceapp.com/awtk/demos/CleanAir-Demo/index.html)
 
 * [音乐播放器演示](http://zlgawtk.bceapp.com/awtk/demos/MusicPlayer-Demo/index.html)
 
