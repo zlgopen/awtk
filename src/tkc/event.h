@@ -125,11 +125,10 @@ event_t* event_cast(event_t* event);
  *
  * 主要给脚本语言使用。
  * @param {uint32_t} type 事件类型。
- * @param {void*} target 目标对象。
  *
  * @return {event_t*} 返回事件对象。
  */
-event_t* event_create(uint32_t type, void* target);
+event_t* event_create(uint32_t type);
 
 /**
  * @method event_destroy

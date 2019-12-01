@@ -47,11 +47,11 @@ prop_change_event_t* prop_change_event_cast(event_t* event) {
   return (prop_change_event_t*)event;
 }
 
-event_t* event_create(uint32_t type, void* target) {
+event_t* event_create(uint32_t type) {
   event_t* e = TKMEM_ZALLOC(event_t);
 
   return_value_if_fail(e != NULL, NULL);
-  *e = event_init(type, target);
+  *e = event_init(type, NULL);
 
   return e;
 }

@@ -39,7 +39,7 @@ TEST(StyleMutable, basic) {
     char name[32];
     snprintf(name, sizeof(name), "name%d", k);
     ASSERT_EQ(style_mutable_set_name(style, name), RET_OK);
-    ASSERT_EQ(string(style_mutable_get_name(style)), string(name));
+    ASSERT_EQ(string(STYLE_MUTABLE(style)->name), string(name));
     widget_set_state(b, (const char*)state_names[k]);
     style_notify_widget_state_changed(style, b);
     const char* state = (const char*)widget_get_prop_str(b, WIDGET_PROP_STATE_FOR_STYLE, 0);
@@ -70,7 +70,7 @@ TEST(StyleMutable, basic) {
     }
   }
 
-  string str = string(style_mutable_get_name(style)) + string(":");
+  string str = string(STYLE_MUTABLE(style)->name) + string(":");
   style_mutable_foreach(style, on_style_item, &str);
   ASSERT_EQ(str,
             "name2:normal,font_size,100;normal,fg_color,65536;normal,font_name,\"font99\";pressed,"

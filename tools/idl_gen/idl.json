@@ -24539,11 +24539,6 @@
             "type": "uint32_t",
             "name": "type",
             "desc": "事件类型。"
-          },
-          {
-            "type": "void*",
-            "name": "target",
-            "desc": "目标对象。"
           }
         ],
         "annotation": {
@@ -35056,9 +35051,7 @@
             "desc": "属性的值。"
           }
         ],
-        "annotation": {
-          "scriptable": true
-        },
+        "annotation": {},
         "desc": "设置指定属性的指针类型的值。\n",
         "name": "object_set_prop_pointer",
         "return": {

@@ -317,7 +317,6 @@ ret_t object_set_prop_str(object_t* obj, const char* name, const char* value);
  * @method object_set_prop_pointer
  * 设置指定属性的指针类型的值。
  *
- * @annotation ["scriptable"]
  * @param {object_t*} obj object对象。
  * @param {const char*} name 属性的名称。
  * @param {void*} value 属性的值。
