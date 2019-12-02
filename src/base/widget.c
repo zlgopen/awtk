@@ -51,6 +51,7 @@ ret_t widget_focus_up(widget_t* widget);
 ret_t widget_focus_down(widget_t* widget);
 ret_t widget_focus_left(widget_t* widget);
 ret_t widget_focus_right(widget_t* widget);
+static ret_t widget_unref_async(widget_t* widget);
 static ret_t widget_destroy_sync(widget_t* widget);
 static ret_t widget_ensure_style_mutable(widget_t* widget);
 static ret_t widget_dispatch_blur_event(widget_t* widget);
@@ -2567,9 +2568,10 @@ ret_t widget_destroy(widget_t* widget) {
 
   if (widget->parent != NULL) {
     widget_remove_child(widget->parent, widget);
+    return widget_unref_async(widget);
+  } else {
+    return widget_unref(widget);
   }
-
-  return widget_unref(widget);
 }
 
 static ret_t widget_set_parent_not_dirty(widget_t* widget) {
@@ -3658,3 +3660,17 @@ ret_t widget_unref(widget_t* widget) {
 
   return RET_OK;
 }
+
+static ret_t widget_unref_in_idle(const idle_info_t* info) {
+  widget_t* widget = WIDGET(info->ctx);
+  widget_unref(widget);
+
+  return RET_REMOVE;
+}
+
+static ret_t widget_unref_async(widget_t* widget) {
+  idle_add(widget_unref_in_idle, widget);
+
+  return RET_OK;
+}
+
