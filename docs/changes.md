@@ -1,4 +1,8 @@
 # 最新动态
+
+* 2019/12/02
+  * 完整list item支持return/space激活 （感谢 [jianmin zhuang](https://github.com/zjm1060) 提供补丁）。
+
 * 2019/11/30
   * 修改 widget\_on\_attach\_parent 为 widget\_on\_attach\_parent\_t，widget\_on\_detach\_parent 为widget\_on\_detach\_parent\_t （感谢朝泽提供补丁）。
   * 完善slide\_view：（感谢朝泽提供补丁）。

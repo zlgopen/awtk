@@ -157,6 +157,8 @@ static ret_t list_item_on_destroy(widget_t* widget) {
 
 TK_DECL_VTABLE(list_item) = {.size = sizeof(list_item_t),
                              .type = WIDGET_TYPE_LIST_ITEM,
+                             .space_key_to_activate = TRUE,
+                             .return_key_to_activate = TRUE,
                              .parent = TK_PARENT_VTABLE(widget),
                              .create = list_item_create,
                              .on_event = list_item_on_event,
