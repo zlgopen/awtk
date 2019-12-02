@@ -340,7 +340,7 @@ static ret_t scroll_view_on_event(widget_t* widget, event_t* e) {
     }
     case EVT_POINTER_MOVE: {
       pointer_event_t* evt = (pointer_event_t*)e;
-      if (!evt->pressed || !(scroll_view->xslidable || scroll_view->yslidable)) {
+      if (!scroll_view->pressed || !(scroll_view->xslidable || scroll_view->yslidable)) {
         break;
       }
 

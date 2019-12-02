@@ -1020,7 +1020,7 @@ ret_t widget_off(widget_t* widget, int32_t id) {
 ret_t widget_off_by_tag(widget_t* widget, uint32_t tag) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  if(widget->emitter == NULL) {
+  if (widget->emitter == NULL) {
     return RET_OK;
   }
 
@@ -1030,7 +1030,7 @@ ret_t widget_off_by_tag(widget_t* widget, uint32_t tag) {
 ret_t widget_off_by_ctx(widget_t* widget, void* ctx) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  if(widget->emitter == NULL) {
+  if (widget->emitter == NULL) {
     return RET_OK;
   }
 
@@ -1040,7 +1040,7 @@ ret_t widget_off_by_ctx(widget_t* widget, void* ctx) {
 ret_t widget_off_by_func(widget_t* widget, uint32_t type, event_func_t on_event, void* ctx) {
   return_value_if_fail(widget != NULL && on_event != NULL, RET_BAD_PARAMS);
 
-  if(widget->emitter == NULL) {
+  if (widget->emitter == NULL) {
     return RET_OK;
   }
 
@@ -2294,7 +2294,7 @@ static ret_t widget_on_pointer_move_impl(widget_t* widget, pointer_event_t* e) {
 
   return_if_equal(widget_on_pointer_move_before_children(widget, e), RET_STOP);
   if (widget_on_pointer_move_children(widget, e) == RET_STOP) {
-    if (e->pressed) {
+    if (e->pressed && widget->grab_widget_count > 1) {
       pointer_event_t abort;
       pointer_event_init(&abort, EVT_POINTER_DOWN_ABORT, widget, e->x, e->y);
       return_if_equal(widget_on_pointer_move_after_children(widget, &abort), RET_STOP);
@@ -3673,4 +3673,3 @@ static ret_t widget_unref_async(widget_t* widget) {
 
   return RET_OK;
 }
-

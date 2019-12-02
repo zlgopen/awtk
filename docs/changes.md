@@ -2,6 +2,9 @@
 
 * 2019/12/02
   * 完整list item支持return/space激活 （感谢 [jianmin zhuang](https://github.com/zjm1060) 提供补丁）。
+  * 比如一个控件（比如edit）的父控件响应EVT_POINTER_DOWN_ABORT并widget_ungrab，在edit内按下鼠标，拖到控件外后释放鼠标，edit控件没有收到EVT_POINTER_UP，导致状态没复位。原因是EVT_POINTER_DOWN_ABORT触发多次，破坏了grab_widget链；（感谢朝泽提供补丁）。
+  * 修正在scroll_view外部按下鼠标之后移动到scroll_view内，scroll_view会跟随滚动的问题（感谢朝泽提供补丁）。
+
 
 * 2019/11/30
   * 修改 widget\_on\_attach\_parent 为 widget\_on\_attach\_parent\_t，widget\_on\_detach\_parent 为widget\_on\_detach\_parent\_t （感谢朝泽提供补丁）。
