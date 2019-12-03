@@ -330,7 +330,7 @@ static ret_t scroll_view_on_event(widget_t* widget, event_t* e) {
       break;
     case EVT_POINTER_UP: {
       pointer_event_t* evt = (pointer_event_t*)e;
-      if (scroll_view_is_dragged(widget, evt)) {
+      if (scroll_view->pressed && scroll_view_is_dragged(widget, evt)) {
         scroll_view_on_pointer_up(scroll_view, (pointer_event_t*)e);
       }
       scroll_view->pressed = FALSE;
