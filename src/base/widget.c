@@ -2305,7 +2305,7 @@ static ret_t widget_on_pointer_move_impl(widget_t* widget, pointer_event_t* e) {
 
   return_if_equal(widget_on_pointer_move_before_children(widget, e), RET_STOP);
   if (widget_on_pointer_move_children(widget, e) == RET_STOP) {
-    if (e->pressed && widget->grab_widget_count > 1) {
+    if (e->pressed) {
       pointer_event_t abort;
       pointer_event_init(&abort, EVT_POINTER_DOWN_ABORT, widget, e->x, e->y);
       return_if_equal(widget_on_pointer_move_after_children(widget, &abort), RET_STOP);
@@ -2416,14 +2416,16 @@ ret_t widget_ungrab(widget_t* widget, widget_t* child) {
   return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);
 
   if (widget->grab_widget == child) {
-    if (widget->parent) {
-      widget_ungrab(widget->parent, widget);
-    }
+    if (widget->grab_widget->grab_widget_count < widget->grab_widget_count) {
+      widget->grab_widget_count--;
+      if (widget->grab_widget_count <= 0) {
+        widget->grab_widget = NULL;
+        widget->grab_widget_count = 0;
+      }
 
-    widget->grab_widget_count--;
-    if (widget->grab_widget_count <= 0) {
-      widget->grab_widget = NULL;
-      widget->grab_widget_count = 0;
+      if (widget->parent) {
+        widget_ungrab(widget->parent, widget);
+      }
     }
   }
 
