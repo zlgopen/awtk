@@ -55,7 +55,7 @@ int32_t slide_menu_fix_index(widget_t* widget, int32_t index) {
 
 static widget_t* slide_menu_get_child(widget_t* widget, int32_t index) {
   widget_t** children = NULL;
-  return_value_if_fail(widget != NULL, NULL);
+  return_value_if_fail(widget != NULL && widget->children, NULL);
 
   children = (widget_t**)(widget->children->elms);
   return_value_if_fail(children != NULL, NULL);
@@ -79,6 +79,8 @@ static widget_t* slide_menu_find_target(widget_t* widget, xy_t x, xy_t y) {
 
   widget_to_local(widget, &p);
   current = slide_menu_get_child(widget, slide_menu->value);
+  return_value_if_fail(current != NULL, NULL);
+
   r = current->x + current->w;
   b = current->y + current->h;
   xx = p.x;
@@ -440,7 +442,7 @@ static ret_t slide_menu_on_scroll_done(void* ctx, event_t* e) {
   int32_t delta_index = 0;
   widget_t* widget = WIDGET(ctx);
   slide_menu_t* slide_menu = SLIDE_MENU(ctx);
-  return_value_if_fail(widget != NULL && slide_menu != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget != NULL && slide_menu != NULL && widget->children != NULL, RET_BAD_PARAMS);
 
   delta_index = slide_menu_get_delta_index(widget);
   index = slide_menu_fix_index(widget, slide_menu->value - delta_index);
