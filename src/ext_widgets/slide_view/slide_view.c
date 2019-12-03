@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   slide_view.h
  * Author: AWTK Develop Team
  * Brief:  slide_view
@@ -649,24 +649,6 @@ static ret_t slide_view_paint_prev_next_h_translate(slide_view_t* slide_view, ca
       canvas_untranslate(c, xoffset, 0);
       canvas_restore(c);
     }
-  }
-
-  return RET_OK;
-}
-
-static ret_t slide_view_set_prev_global_alpha_h(slide_view_t* slide_view, canvas_t* c) {
-  if (anim_hint_is_overlap_with_alpha(slide_view)) {
-    uint8_t a = 0;
-    int32_t offset = slide_view->xoffset;
-    int32_t total = WIDGET(slide_view)->w;
-
-    if (offset > 0) {
-      a = (0xff * tk_abs(offset)) / total;
-    } else {
-      a = 0xff - (0xff * tk_abs(offset)) / total;
-    }
-
-    canvas_set_global_alpha(c, a);
   }
 
   return RET_OK;
