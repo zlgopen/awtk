@@ -442,7 +442,8 @@ static ret_t slide_menu_on_scroll_done(void* ctx, event_t* e) {
   int32_t delta_index = 0;
   widget_t* widget = WIDGET(ctx);
   slide_menu_t* slide_menu = SLIDE_MENU(ctx);
-  return_value_if_fail(widget != NULL && slide_menu != NULL && widget->children != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget != NULL && slide_menu != NULL && widget->children != NULL,
+                       RET_BAD_PARAMS);
 
   delta_index = slide_menu_get_delta_index(widget);
   index = slide_menu_fix_index(widget, slide_menu->value - delta_index);

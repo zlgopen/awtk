@@ -8,6 +8,8 @@
   * 在窗口打开时递归update style。
   * 完善输入避免google pinyin崩溃
   * 更新stb truetype.h
+  * slide\_menu的children为空，点击会崩溃的问题（感谢大恒提供补丁）。 
+  * slide\_view在set\_active时判断foused为false，不进行焦点的切换 （感谢大恒提供补丁）。 
 
 * 2019/12/02
   * 完整 list item 支持 return/space 激活 （感谢 [jianmin zhuang](https://github.com/zjm1060) 提供补丁）。
