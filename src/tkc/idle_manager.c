@@ -159,7 +159,7 @@ bool_t idle_manager_exist(idle_manager_t* idle_manager, idle_func_t on_idle, voi
   while (iter != NULL) {
     idle_info_t* idle = (idle_info_t*)(iter->data);
 
-    if (idle->on_idle == idle->on_idle && idle->ctx == ctx) {
+    if (idle->on_idle == on_idle && idle->ctx == ctx) {
       return TRUE;
     }
 
