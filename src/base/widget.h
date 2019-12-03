@@ -1912,6 +1912,16 @@ widget_t* widget_create(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_
 ret_t widget_update_style(widget_t* widget);
 
 /**
+ * @method widget_update_style_recursive
+ * 让控件及子控件根据自己当前状态更新style。
+ * @annotation ["private"]
+ * @param {widget_t*} widget widget对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_update_style_recursive(widget_t* widget);
+
+/**
  * @method widget_set_as_key_target
  * 递归的把父控件的key_target设置为自己。
  *

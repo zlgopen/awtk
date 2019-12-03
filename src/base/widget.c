@@ -102,6 +102,17 @@ ret_t widget_set_need_update_style(widget_t* widget) {
   return RET_OK;
 }
 
+ret_t widget_update_style_recursive(widget_t* widget) {
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  widget_update_style(widget);
+  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+  widget_update_style_recursive(iter);
+  WIDGET_FOR_EACH_CHILD_END();
+
+  return RET_OK;
+}
+
 static ret_t widget_set_need_update_style_recursive(widget_t* widget) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
@@ -3520,7 +3531,9 @@ ret_t widget_set_need_relayout_children(widget_t* widget) {
 
   if (!widget->destroying && widget->children != NULL && widget->children->size > 0) {
     widget->need_relayout_children = TRUE;
-    widget_add_delay_work(widget);
+    if (widget_is_window_opened(widget)) {
+      widget_add_delay_work(widget);
+    }
   }
 
   return RET_OK;

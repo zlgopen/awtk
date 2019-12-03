@@ -259,8 +259,11 @@ ret_t window_base_on_event(widget_t* widget, event_t* e) {
   if (e->type == EVT_WINDOW_WILL_OPEN) {
     win->stage = WINDOW_STAGE_CREATED;
     window_base_load_theme_obj(widget);
+    widget_layout_children(widget);
+    widget_update_style_recursive(widget);
   } else if (e->type == EVT_WINDOW_OPEN) {
     win->stage = WINDOW_STAGE_OPENED;
+  } else if (e->type == EVT_WINDOW_LOAD) {
   } else if (e->type == EVT_WINDOW_CLOSE) {
     win->stage = WINDOW_STAGE_CLOSED;
   } else if (e->type == EVT_THEME_CHANGED) {
