@@ -1,4 +1,6 @@
 # 最新动态
+* 2019/12/03
+  * 完善widget\_destroy（感谢尧燊提供补丁）。 
 
 * 2019/12/02
   * 完整list item支持return/space激活 （感谢 [jianmin zhuang](https://github.com/zjm1060) 提供补丁）。

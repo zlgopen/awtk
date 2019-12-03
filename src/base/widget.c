@@ -2568,10 +2568,9 @@ ret_t widget_destroy(widget_t* widget) {
 
   if (widget->parent != NULL) {
     widget_remove_child(widget->parent, widget);
-    return widget_unref_async(widget);
-  } else {
-    return widget_unref(widget);
   }
+
+  return widget_unref_async(widget);
 }
 
 static ret_t widget_set_parent_not_dirty(widget_t* widget) {
@@ -3663,13 +3662,20 @@ ret_t widget_unref(widget_t* widget) {
 
 static ret_t widget_unref_in_idle(const idle_info_t* info) {
   widget_t* widget = WIDGET(info->ctx);
+
+  if (widget->ref_count > 1) {
+    return RET_REPEAT;
+  }
+
   widget_unref(widget);
 
   return RET_REMOVE;
 }
 
 static ret_t widget_unref_async(widget_t* widget) {
-  idle_add(widget_unref_in_idle, widget);
+  if (!idle_exist(widget_unref_in_idle, widget)) {
+    idle_add(widget_unref_in_idle, widget);
+  }
 
   return RET_OK;
 }
