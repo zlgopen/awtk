@@ -798,7 +798,9 @@ ret_t slide_view_set_active(widget_t* widget, uint32_t active) {
     evt = event_init(EVT_VALUE_CHANGED, widget);
     widget_dispatch(widget, &evt);
     widget_invalidate(widget, NULL);
-    widget_set_as_key_target(widget_get_child(widget, slide_view->active));
+    if(widget->focused){
+      widget_set_as_key_target(widget_get_child(widget, slide_view->active));
+    }
   }
 
   return RET_OK;
