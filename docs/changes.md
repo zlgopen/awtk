@@ -1,18 +1,20 @@
 # 最新动态
 * 2019/12/03
-  * 完善widget\_destroy（感谢尧燊提供补丁）。 
+  * 完善 widget\\_destroy（感谢尧燊提供补丁）。 
+  * 上次 EVT\_POINTER\_DOWN\_ABORT 触发多次，破坏了 grab\_widget 链的问题还是有点问题，改成在 widget\_ungrab 时限制；（感谢朝泽提供补丁）。 
+  * 由于 scroll\_view 的 EVT\_POINTER\_UP 响应没有判断 scroll\_view->pressed，导致在外部点击鼠标并拖动到 scroll\_view 内部释放时可能引起视图滚动；（感谢朝泽提供补丁）。 
+  * idle\_manager\_exist 判断条件有误（感谢朝泽提供补丁）。  
 
 * 2019/12/02
-  * 完整list item支持return/space激活 （感谢 [jianmin zhuang](https://github.com/zjm1060) 提供补丁）。
-  * 比如一个控件（比如edit）的父控件响应EVT_POINTER_DOWN_ABORT并widget_ungrab，在edit内按下鼠标，拖到控件外后释放鼠标，edit控件没有收到EVT_POINTER_UP，导致状态没复位。原因是EVT_POINTER_DOWN_ABORT触发多次，破坏了grab_widget链；（感谢朝泽提供补丁）。
-  * 修正在scroll_view外部按下鼠标之后移动到scroll_view内，scroll_view会跟随滚动的问题（感谢朝泽提供补丁）。
-
+  * 完整 list item 支持 return/space 激活 （感谢 [jianmin zhuang](https://github.com/zjm1060) 提供补丁）。
+  * 比如一个控件（比如 edit）的父控件响应 EVT\_POINTER\_DOWN\_ABORT 并 widget\_ungrab，在 edit 内按下鼠标，拖到控件外后释放鼠标，edit 控件没有收到 EVT\_POINTER\_UP，导致状态没复位。原因是 EVT\_POINTER\_DOWN\_ABORT 触发多次，破坏了 grab\_widget 链；（感谢朝泽提供补丁）。
+  * 修正在 scroll\_view 外部按下鼠标之后移动到 scroll\_view 内，scroll\_view 会跟随滚动的问题（感谢朝泽提供补丁）。
 
 * 2019/11/30
-  * 修改 widget\_on\_attach\_parent 为 widget\_on\_attach\_parent\_t，widget\_on\_detach\_parent 为widget\_on\_detach\_parent\_t （感谢朝泽提供补丁）。
-  * 完善slide\_view：（感谢朝泽提供补丁）。
-    （1）切换页面过程中由于脏矩形或裁剪区域计算错误导致会有残影的问题，比如内部view有背景、内部控件有边框、或者控件超出slide_view范围；
-    （2）修改overlap方式切换过程中如果拖动距离超出单页的宽或高时，则停留在上一页或下一页
+  * 修改 widget\_on\_attach\_parent 为 widget\_on\_attach\_parent\_t，widget\_on\_detach\_parent 为 widget\_on\_detach\_parent\_t （感谢朝泽提供补丁）。
+  * 完善 slide\_view：（感谢朝泽提供补丁）。
+    （1）切换页面过程中由于脏矩形或裁剪区域计算错误导致会有残影的问题，比如内部 view 有背景、内部控件有边框、或者控件超出 slide_view 范围；
+    （2）修改 overlap 方式切换过程中如果拖动距离超出单页的宽或高时，则停留在上一页或下一页
 
 * 2019/11/29
   * 修改定制软键盘密码不能隐藏的问题。
