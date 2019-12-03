@@ -509,6 +509,8 @@ ret_t widget_create_animator(widget_t* widget, const char* animation) {
     }
   }
 
+  widget_invalidate(widget, NULL);
+
   return RET_OK;
 }
 

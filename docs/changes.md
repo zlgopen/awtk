@@ -4,6 +4,8 @@
   * 上次 EVT\_POINTER\_DOWN\_ABORT 触发多次，破坏了 grab\_widget 链的问题还是有点问题，改成在 widget\_ungrab 时限制；（感谢朝泽提供补丁）。 
   * 由于 scroll\_view 的 EVT\_POINTER\_UP 响应没有判断 scroll\_view->pressed，导致在外部点击鼠标并拖动到 scroll\_view 内部释放时可能引起视图滚动；（感谢朝泽提供补丁）。 
   * idle\_manager\_exist 判断条件有误（感谢朝泽提供补丁）。  
+  * 完善 widget\_create\_animator（感谢培煌提供补丁）。  
+  * 在窗口打开时递归update style。
 
 * 2019/12/02
   * 完整 list item 支持 return/space 激活 （感谢 [jianmin zhuang](https://github.com/zjm1060) 提供补丁）。
