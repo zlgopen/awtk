@@ -40,10 +40,6 @@ ret_t input_engine_input(input_engine_t* engine, int key) {
   ret_t ret = RET_OK;
   return_value_if_fail(engine != NULL, RET_BAD_PARAMS);
 
-  if (engine->keys.size >= TK_IM_MAX_INPUT_CHARS) {
-    return RET_BAD_PARAMS;
-  }
-
   if (key == TK_KEY_BACKSPACE || key == TK_KEY_DELETE) {
     if (engine->keys.size > 0) {
       engine->keys.size--;
@@ -52,6 +48,10 @@ ret_t input_engine_input(input_engine_t* engine, int key) {
       return RET_FAIL;
     }
   } else {
+    if (engine->keys.size >= TK_IM_MAX_INPUT_CHARS) {
+      return RET_BAD_PARAMS;
+    }
+
     str_append_char(&(engine->keys), (char)key);
   }
 

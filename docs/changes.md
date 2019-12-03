@@ -6,6 +6,7 @@
   * idle\_manager\_exist 判断条件有误（感谢朝泽提供补丁）。  
   * 完善 widget\_create\_animator（感谢培煌提供补丁）。  
   * 在窗口打开时递归update style。
+  * 完善输入避免google pinyin崩溃
 
 * 2019/12/02
   * 完整 list item 支持 return/space 激活 （感谢 [jianmin zhuang](https://github.com/zjm1060) 提供补丁）。
