@@ -28,7 +28,7 @@ BEGIN_C_DECLS
 
 /**
  * @class window_t
- * @parent widget_t
+ * @parent window_base_t
  * @annotation ["scriptable","design","widget","window"]
  * 窗口。
  *

@@ -28,7 +28,7 @@ BEGIN_C_DECLS
 
 /**
  * @class keyboard_t
- * @parent widget_t
+ * @parent window_base_t
  * @annotation ["design","widget","window", "scriptable"]
  * 软键盘。
  *

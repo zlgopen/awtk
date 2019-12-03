@@ -74,7 +74,7 @@ typedef enum _dialog_quit_code_t {
 
 /**
  * @class dialog_t
- * @parent widget_t
+ * @parent window_base_t
  * @annotation ["scriptable","design","widget","window"]
  *
  * 对话框。 对话框是一种特殊的窗口，大小和位置可以自由设置。

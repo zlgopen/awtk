@@ -40,7 +40,7 @@ typedef ret_t (*calibration_win_on_click_t)(void* ctx, uint32_t index, point_t p
 
 /**
  * @class calibration_win_t
- * @parent widget_t
+ * @parent window_base_t
  * @annotation ["design", "widget", "window"]
  * 电阻屏校准窗口。
  *

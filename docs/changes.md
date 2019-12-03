@@ -12,6 +12,7 @@
   * slide\_view 在 set\_active 时判断 foused 为 false，不进行焦点的切换 （感谢大恒提供补丁）。 
   * 完善 dragger 事件处理（感谢大恒提供补丁）。 
   * 完善 text selector 事件处理（感谢大恒提供补丁）。 
+  * 修改 dialog/window/popup/calibration 里的注释问题。（感谢温宇飞 <wenyufei@aliyun.com>提供补丁）。 
 
 * 2019/12/02
   * 完整 list item 支持 return/space 激活 （感谢 [jianmin zhuang](https://github.com/zjm1060) 提供补丁）。
