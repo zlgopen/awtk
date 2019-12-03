@@ -5,11 +5,13 @@
   * 由于 scroll\_view 的 EVT\_POINTER\_UP 响应没有判断 scroll\_view->pressed，导致在外部点击鼠标并拖动到 scroll\_view 内部释放时可能引起视图滚动；（感谢朝泽提供补丁）。 
   * idle\_manager\_exist 判断条件有误（感谢朝泽提供补丁）。  
   * 完善 widget\_create\_animator（感谢培煌提供补丁）。  
-  * 在窗口打开时递归update style。
-  * 完善输入避免google pinyin崩溃
-  * 更新stb truetype.h
-  * slide\_menu的children为空，点击会崩溃的问题（感谢大恒提供补丁）。 
-  * slide\_view在set\_active时判断foused为false，不进行焦点的切换 （感谢大恒提供补丁）。 
+  * 在窗口打开时递归 update style。
+  * 完善输入避免 google pinyin 崩溃
+  * 更新 stb truetype.h
+  * slide\_menu 的 children 为空，点击会崩溃的问题（感谢大恒提供补丁）。 
+  * slide\_view 在 set\_active 时判断 foused 为 false，不进行焦点的切换 （感谢大恒提供补丁）。 
+  * 完善 dragger 事件处理（感谢大恒提供补丁）。 
+  * 完善 text selector 事件处理（感谢大恒提供补丁）。 
 
 * 2019/12/02
   * 完整 list item 支持 return/space 激活 （感谢 [jianmin zhuang](https://github.com/zjm1060) 提供补丁）。

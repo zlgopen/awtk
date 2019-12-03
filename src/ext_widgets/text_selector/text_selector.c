@@ -450,7 +450,7 @@ static ret_t text_selector_on_event(widget_t* widget, event_t* e) {
         text_selector_on_pointer_move(text_selector, evt);
         widget_invalidate(widget, NULL);
       }
-      break;
+      return RET_STOP;
     }
     case EVT_WHEEL: {
       wheel_event_t* evt = (wheel_event_t*)e;
