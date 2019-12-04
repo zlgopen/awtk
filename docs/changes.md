@@ -2,8 +2,7 @@
 
 * 2019/12/05
   * 修改了image_animation控件的format、sequence属性设置，为空字符串时设为空，避免显示有误（感谢朝泽提供补丁）。 
-  * 
-
+  * 增加文档how_to_use_mutable_image.md（感谢智明提供补丁）。  
 
 * 2019/12/04
   * awtk 增加对 lcd 为 rgb888 的支持 （感谢智明提供补丁）。 

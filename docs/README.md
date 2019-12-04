@@ -45,7 +45,7 @@
 * [如何实现自定义的软键盘](how_to_impl_custom_soft_keyboard.md)
 * [如何编译Windows 32位版本](how_to_build_windows_32bit_version.md)
 * [如何支持单色LCD](how_to_support_mono_lcd.md)
-
+* [如何使用 mutable_image 控件](how_to_use_mutable_image.md)
 * [如何让文本滚动起来](how_to_scroll_you_text.md)
 
 ### 3.内部原理
