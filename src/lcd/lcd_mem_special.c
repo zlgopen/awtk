@@ -230,6 +230,7 @@ lcd_t* lcd_mem_special_create(wh_t w, wh_t h, bitmap_format_t fmt, lcd_flush_t o
   special->lcd_mem = lcd_mem_special_create_lcd_mem(w, h, fmt);
   ENSURE(special->lcd_mem != NULL);
 
+  special->lcd_mem->base.flush = NULL;
   lcd->begin_frame = lcd_mem_special_begin_frame;
   lcd->draw_vline = lcd_mem_special_draw_vline;
   lcd->draw_hline = lcd_mem_special_draw_hline;
