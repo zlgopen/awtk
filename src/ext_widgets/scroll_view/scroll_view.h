@@ -99,6 +99,18 @@ typedef struct _scroll_view_t {
    */
   int32_t yoffset;
   /**
+   * @property {float_t} xoffset
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * x偏移速度比例。
+   */
+  float_t xspeed_scale;
+  /**
+   * @property {float_t} yoffset
+   * @annotation ["set_prop","get_prop","readable","scriptable"]
+   * y偏移速度比例。
+   */
+  float_t yspeed_scale;
+  /**
    * @property {bool_t} xslidable
    * @annotation ["set_prop","get_prop","readable","scriptable"]
    * 是否允许x方向滑动。
@@ -213,6 +225,18 @@ ret_t scroll_view_set_yslidable(widget_t* widget, bool_t yslidable);
 ret_t scroll_view_set_offset(widget_t* widget, int32_t xoffset, int32_t yoffset);
 
 /**
+ * @method scroll_view_set_speed_scale
+ * 设置偏移速度比例。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {float_t} xspeed_scale x偏移速度比例。。
+ * @param {float_t} yspeed_scale y偏移速度比例。。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t scroll_view_set_speed_scale(widget_t* widget, float_t xspeed_scale, float_t yspeed_scale);
+
+/**
  * @method scroll_view_scroll_to
  * 滚动到指定的偏移量。
  * @annotation ["scriptable"]
@@ -241,6 +265,9 @@ ret_t scroll_view_scroll_delta_to(widget_t* widget, int32_t xoffset_delta, int32
                                   int32_t duration);
 
 #define SCROLL_VIEW(widget) ((scroll_view_t*)(scroll_view_cast(WIDGET(widget))))
+
+#define SCROLL_VIEW_X_SPEED_SCALE "xspeed_scale"
+#define SCROLL_VIEW_Y_SPEED_SCALE "yspeed_scale"
 
 /*public for subclass and runtime type check*/
 TK_EXTERN_VTABLE(scroll_view);

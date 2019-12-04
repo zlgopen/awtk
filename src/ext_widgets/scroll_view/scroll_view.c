@@ -201,8 +201,6 @@ ret_t scroll_view_scroll_delta_to(widget_t* widget, int32_t xoffset_delta, int32
                                duration);
 }
 
-#define SPEED_SCALE 2
-
 static ret_t scroll_view_on_pointer_down_abort(scroll_view_t* scroll_view, pointer_event_t* e) {
   widget_t* widget = WIDGET(scroll_view);
   (void)e;
@@ -237,17 +235,17 @@ static ret_t scroll_view_on_pointer_up(scroll_view_t* scroll_view, pointer_event
 
     if (scroll_view->xslidable) {
       if (tk_abs(move_dx) > TK_CLICK_TOLERANCE) {
-        scroll_view->xoffset_end = scroll_view->xoffset - xv * SPEED_SCALE;
+        scroll_view->xoffset_end = scroll_view->xoffset - xv * scroll_view->xspeed_scale;
       } else {
-        scroll_view->xoffset_end = scroll_view->xoffset - xv / SPEED_SCALE;
+        scroll_view->xoffset_end = scroll_view->xoffset - xv / scroll_view->xspeed_scale;
       }
     }
 
     if (scroll_view->yslidable) {
       if (tk_abs(move_dy) > TK_CLICK_TOLERANCE) {
-        scroll_view->yoffset_end = scroll_view->yoffset - yv * SPEED_SCALE;
+        scroll_view->yoffset_end = scroll_view->yoffset - yv * scroll_view->yspeed_scale;
       } else {
-        scroll_view->yoffset_end = scroll_view->yoffset - yv / SPEED_SCALE;
+        scroll_view->yoffset_end = scroll_view->yoffset - yv / scroll_view->yspeed_scale;
       }
     }
 
@@ -436,6 +434,12 @@ static ret_t scroll_view_get_prop(widget_t* widget, const char* name, value_t* v
   } else if (tk_str_eq(name, WIDGET_PROP_YSLIDABLE)) {
     value_set_bool(v, scroll_view->yslidable);
     return RET_OK;
+  } else if (tk_str_eq(name, SCROLL_VIEW_X_SPEED_SCALE)) {
+    value_set_float(v, scroll_view->xspeed_scale);
+    return RET_OK;
+  } else if (tk_str_eq(name, SCROLL_VIEW_Y_SPEED_SCALE)) {
+    value_set_float(v, scroll_view->yspeed_scale);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -467,6 +471,12 @@ static ret_t scroll_view_set_prop(widget_t* widget, const char* name, const valu
     scroll_view_notify_scrolled(scroll_view);
     widget_invalidate_force(widget, NULL);
     return RET_OK;
+  } else if (tk_str_eq(name, SCROLL_VIEW_X_SPEED_SCALE)) {
+    scroll_view->xspeed_scale = value_float(v);
+    return RET_OK;
+  } else if (tk_str_eq(name, SCROLL_VIEW_Y_SPEED_SCALE)) {
+    scroll_view->yspeed_scale = value_float(v);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -478,6 +488,8 @@ static const char* s_scroll_view_clone_properties[] = {WIDGET_PROP_VIRTUAL_W,
                                                        WIDGET_PROP_YSLIDABLE,
                                                        WIDGET_PROP_XOFFSET,
                                                        WIDGET_PROP_YOFFSET,
+                                                       SCROLL_VIEW_X_SPEED_SCALE,
+                                                       SCROLL_VIEW_Y_SPEED_SCALE,
                                                        NULL};
 TK_DECL_VTABLE(scroll_view) = {.size = sizeof(scroll_view_t),
                                .type = WIDGET_TYPE_SCROLL_VIEW,
@@ -498,8 +510,10 @@ widget_t* scroll_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   scroll_view_t* scroll_view = SCROLL_VIEW(widget);
   return_value_if_fail(scroll_view != NULL, NULL);
 
+  scroll_view->xspeed_scale = 2.0f;
+  scroll_view->yspeed_scale = 2.0f;
   scroll_view->fix_end_offset = scroll_view_fix_end_offset_default;
-
+  
   return widget;
 }
 
@@ -517,6 +531,16 @@ ret_t scroll_view_set_virtual_h(widget_t* widget, wh_t h) {
   return_value_if_fail(scroll_view != NULL, RET_BAD_PARAMS);
 
   scroll_view->virtual_h = h;
+
+  return RET_OK;
+}
+
+ret_t scroll_view_set_speed_scale(widget_t* widget, float_t xspeed_scale, float_t yspeed_scale) {
+  scroll_view_t* scroll_view = SCROLL_VIEW(widget);
+  return_value_if_fail(scroll_view != NULL, RET_FAIL);
+
+  scroll_view->xspeed_scale = xspeed_scale;
+  scroll_view->yspeed_scale = yspeed_scale;
 
   return RET_OK;
 }
