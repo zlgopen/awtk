@@ -175,7 +175,7 @@ typedef enum _icon_at_type_t {
    * 水平居中，垂直低部(not used now)。
    */
   ICON_AT_BOTTOM = 4,
-    /**
+  /**
    * @const ICON_AT_CENTRE
    * 水平居中，垂直居中。
    */

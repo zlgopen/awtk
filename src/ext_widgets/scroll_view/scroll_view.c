@@ -482,15 +482,10 @@ static ret_t scroll_view_set_prop(widget_t* widget, const char* name, const valu
   return RET_NOT_FOUND;
 }
 
-static const char* s_scroll_view_clone_properties[] = {WIDGET_PROP_VIRTUAL_W,
-                                                       WIDGET_PROP_VIRTUAL_H,
-                                                       WIDGET_PROP_XSLIDABLE,
-                                                       WIDGET_PROP_YSLIDABLE,
-                                                       WIDGET_PROP_XOFFSET,
-                                                       WIDGET_PROP_YOFFSET,
-                                                       SCROLL_VIEW_X_SPEED_SCALE,
-                                                       SCROLL_VIEW_Y_SPEED_SCALE,
-                                                       NULL};
+static const char* s_scroll_view_clone_properties[] = {
+    WIDGET_PROP_VIRTUAL_W,     WIDGET_PROP_VIRTUAL_H,     WIDGET_PROP_XSLIDABLE,
+    WIDGET_PROP_YSLIDABLE,     WIDGET_PROP_XOFFSET,       WIDGET_PROP_YOFFSET,
+    SCROLL_VIEW_X_SPEED_SCALE, SCROLL_VIEW_Y_SPEED_SCALE, NULL};
 TK_DECL_VTABLE(scroll_view) = {.size = sizeof(scroll_view_t),
                                .type = WIDGET_TYPE_SCROLL_VIEW,
                                .scrollable = TRUE,
@@ -513,7 +508,7 @@ widget_t* scroll_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   scroll_view->xspeed_scale = 2.0f;
   scroll_view->yspeed_scale = 2.0f;
   scroll_view->fix_end_offset = scroll_view_fix_end_offset_default;
-  
+
   return widget;
 }
 
