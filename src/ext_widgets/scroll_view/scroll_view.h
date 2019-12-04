@@ -94,25 +94,25 @@ typedef struct _scroll_view_t {
   int32_t xoffset;
   /**
    * @property {int32_t} yoffset
-   * @annotation ["set_prop","get_prop","readable","scriptable"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * y偏移量。
    */
   int32_t yoffset;
   /**
-   * @property {float_t} xoffset
+   * @property {float_t} xspeed_scale
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * x偏移速度比例。
    */
   float_t xspeed_scale;
   /**
-   * @property {float_t} yoffset
-   * @annotation ["set_prop","get_prop","readable","scriptable"]
+   * @property {float_t} yspeed_scale
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * y偏移速度比例。
    */
   float_t yspeed_scale;
   /**
    * @property {bool_t} xslidable
-   * @annotation ["set_prop","get_prop","readable","scriptable"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 是否允许x方向滑动。
    */
   bool_t xslidable;
