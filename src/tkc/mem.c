@@ -265,7 +265,7 @@ ret_t tk_mem_init(void* buffer, uint32_t size) {
 mem_stat_t tk_mem_stat() {
   mem_stat_t st;
 
-  st.used_bytes = s_mem_info.size;
+  st.used_bytes = s_mem_info.used_bytes;
   st.used_block_nr = s_mem_info.used_block_nr;
 
   return st;
