@@ -188,13 +188,6 @@ static ret_t build_asset_filename_default(char* path, uint32_t size, const char*
   return_value_if_fail(build_asset_filename_one_theme(path, size, res_root, theme, ratio, subpath,
                                                       name, extname) == RET_OK,
                        RET_FAIL);
-
-  if (!file_exist(path) && !tk_str_eq(theme, THEME_DEFAULT)) {
-    return_value_if_fail(build_asset_filename_one_theme(path, size, res_root, THEME_DEFAULT, ratio,
-                                                        subpath, name, extname) == RET_OK,
-                         RET_FAIL);
-  }
-
   return RET_OK;
 }
 
@@ -210,10 +203,10 @@ static const char* device_pixel_ratio_to_str(float_t dpr) {
 }
 
 ret_t assets_manager_build_asset_filename(assets_manager_t* am, char* path, uint32_t size,
-                                          bool_t ratio_sensitive, const char* subpath,
-                                          const char* name, const char* extname) {
+                                          const char* theme, bool_t ratio_sensitive,
+                                          const char* subpath, const char* name,
+                                          const char* extname) {
   const char* res_root = assets_manager_get_res_root(am);
-  const char* theme = am->theme ? am->theme : THEME_DEFAULT;
   system_info_t* sysinfo = assets_manager_get_system_info(am);
   const char* ratio = device_pixel_ratio_to_str(sysinfo->device_pixel_ratio);
 
@@ -234,7 +227,7 @@ ret_t assets_manager_build_asset_filename(assets_manager_t* am, char* path, uint
   }
 }
 
-static asset_info_t* try_load_image(assets_manager_t* am, const char* name,
+static asset_info_t* try_load_image(assets_manager_t* am, const char* theme, const char* name,
                                     asset_image_type_t subtype, bool_t ratio) {
   char path[MAX_PATH + 1];
   const char* extname = NULL;
@@ -265,15 +258,15 @@ static asset_info_t* try_load_image(assets_manager_t* am, const char* name,
     default: { return NULL; }
   }
 
-  return_value_if_fail(assets_manager_build_asset_filename(am, path, MAX_PATH, ratio, subpath, name,
-                                                           extname) == RET_OK,
+  return_value_if_fail(assets_manager_build_asset_filename(am, path, MAX_PATH, theme, ratio,
+                                                           subpath, name, extname) == RET_OK,
                        NULL);
 
   return load_asset(ASSET_TYPE_IMAGE, subtype, path, name);
 }
 
-static asset_info_t* try_load_assets(assets_manager_t* am, const char* name, const char* extname,
-                                     asset_type_t type, uint16_t subtype) {
+static asset_info_t* try_load_assets(assets_manager_t* am, const char* theme, const char* name,
+                                     const char* extname, asset_type_t type, uint16_t subtype) {
   char path[MAX_PATH + 1];
   const char* subpath = NULL;
   switch (type) {
@@ -308,8 +301,8 @@ static asset_info_t* try_load_assets(assets_manager_t* am, const char* name, con
     default: { return NULL; }
   }
 
-  return_value_if_fail(assets_manager_build_asset_filename(am, path, MAX_PATH, FALSE, subpath, name,
-                                                           extname) == RET_OK,
+  return_value_if_fail(assets_manager_build_asset_filename(am, path, MAX_PATH, theme, FALSE,
+                                                           subpath, name, extname) == RET_OK,
                        NULL);
 
   return load_asset(type, subtype, path, name);
@@ -351,95 +344,96 @@ asset_info_t* assets_manager_load_file(assets_manager_t* am, asset_type_t type, 
   return NULL;
 }
 
-asset_info_t* assets_manager_load_asset(assets_manager_t* am, asset_type_t type, const char* name) {
+asset_info_t* assets_manager_load_asset(assets_manager_t* am, asset_type_t type, const char* theme,
+                                        const char* name) {
   asset_info_t* info = NULL;
   switch (type) {
     case ASSET_TYPE_FONT: {
-      if ((info = try_load_assets(am, name, ".ttf", type, ASSET_TYPE_FONT_TTF)) != NULL) {
+      if ((info = try_load_assets(am, theme, name, ".ttf", type, ASSET_TYPE_FONT_TTF)) != NULL) {
         break;
       }
 
-      if ((info = try_load_assets(am, name, ".bin", type, ASSET_TYPE_FONT_BMP)) != NULL) {
+      if ((info = try_load_assets(am, theme, name, ".bin", type, ASSET_TYPE_FONT_BMP)) != NULL) {
         break;
       }
       break;
     }
     case ASSET_TYPE_SCRIPT: {
-      if ((info = try_load_assets(am, name, ".js", type, ASSET_TYPE_SCRIPT_JS)) != NULL) {
+      if ((info = try_load_assets(am, theme, name, ".js", type, ASSET_TYPE_SCRIPT_JS)) != NULL) {
         break;
       }
 
-      if ((info = try_load_assets(am, name, ".lua", type, ASSET_TYPE_SCRIPT_LUA)) != NULL) {
+      if ((info = try_load_assets(am, theme, name, ".lua", type, ASSET_TYPE_SCRIPT_LUA)) != NULL) {
         break;
       }
       break;
     }
     case ASSET_TYPE_STYLE: {
-      if ((info = try_load_assets(am, name, ".bin", type, ASSET_TYPE_STYLE)) != NULL) {
+      if ((info = try_load_assets(am, theme, name, ".bin", type, ASSET_TYPE_STYLE)) != NULL) {
         break;
       }
       break;
     }
     case ASSET_TYPE_STRINGS: {
-      if ((info = try_load_assets(am, name, ".bin", type, ASSET_TYPE_STRINGS)) != NULL) {
+      if ((info = try_load_assets(am, theme, name, ".bin", type, ASSET_TYPE_STRINGS)) != NULL) {
         break;
       }
       break;
     }
     case ASSET_TYPE_IMAGE: {
-      if ((info = try_load_image(am, name, ASSET_TYPE_IMAGE_PNG, TRUE)) != NULL) {
+      if ((info = try_load_image(am, theme, name, ASSET_TYPE_IMAGE_PNG, TRUE)) != NULL) {
         return info;
       }
 
-      if ((info = try_load_image(am, name, ASSET_TYPE_IMAGE_BMP, TRUE)) != NULL) {
+      if ((info = try_load_image(am, theme, name, ASSET_TYPE_IMAGE_BMP, TRUE)) != NULL) {
         return info;
       }
 
-      if ((info = try_load_image(am, name, ASSET_TYPE_IMAGE_JPG, TRUE)) != NULL) {
+      if ((info = try_load_image(am, theme, name, ASSET_TYPE_IMAGE_JPG, TRUE)) != NULL) {
         return info;
       }
 
-      if ((info = try_load_image(am, name, ASSET_TYPE_IMAGE_GIF, TRUE)) != NULL) {
+      if ((info = try_load_image(am, theme, name, ASSET_TYPE_IMAGE_GIF, TRUE)) != NULL) {
         return info;
       }
 
       /*try ratio-insensitive image.*/
-      if ((info = try_load_image(am, name, ASSET_TYPE_IMAGE_PNG, FALSE)) != NULL) {
+      if ((info = try_load_image(am, theme, name, ASSET_TYPE_IMAGE_PNG, FALSE)) != NULL) {
         return info;
       }
 
-      if ((info = try_load_image(am, name, ASSET_TYPE_IMAGE_BMP, FALSE)) != NULL) {
+      if ((info = try_load_image(am, theme, name, ASSET_TYPE_IMAGE_BMP, FALSE)) != NULL) {
         return info;
       }
 
-      if ((info = try_load_image(am, name, ASSET_TYPE_IMAGE_JPG, FALSE)) != NULL) {
+      if ((info = try_load_image(am, theme, name, ASSET_TYPE_IMAGE_JPG, FALSE)) != NULL) {
         return info;
       }
 
-      if ((info = try_load_image(am, name, ASSET_TYPE_IMAGE_GIF, FALSE)) != NULL) {
+      if ((info = try_load_image(am, theme, name, ASSET_TYPE_IMAGE_GIF, FALSE)) != NULL) {
         return info;
       }
 
-      if ((info = try_load_image(am, name, ASSET_TYPE_IMAGE_BSVG, FALSE)) != NULL) {
+      if ((info = try_load_image(am, theme, name, ASSET_TYPE_IMAGE_BSVG, FALSE)) != NULL) {
         return info;
       }
 
       break;
     }
     case ASSET_TYPE_UI: {
-      if ((info = try_load_assets(am, name, ".bin", type, ASSET_TYPE_UI)) != NULL) {
+      if ((info = try_load_assets(am, theme, name, ".bin", type, ASSET_TYPE_UI)) != NULL) {
         break;
       }
       break;
     }
     case ASSET_TYPE_XML: {
-      if ((info = try_load_assets(am, name, ".xml", type, ASSET_TYPE_XML)) != NULL) {
+      if ((info = try_load_assets(am, theme, name, ".xml", type, ASSET_TYPE_XML)) != NULL) {
         break;
       }
       break;
     }
     case ASSET_TYPE_DATA: {
-      if ((info = try_load_assets(am, name, "", type, ASSET_TYPE_DATA)) != NULL) {
+      if ((info = try_load_assets(am, theme, name, "", type, ASSET_TYPE_DATA)) != NULL) {
         break;
       }
       break;
@@ -459,7 +453,12 @@ asset_info_t* assets_manager_load(assets_manager_t* am, asset_type_t type, const
   if (strncmp(name, STR_SCHEMA_FILE, strlen(STR_SCHEMA_FILE)) == 0) {
     return assets_manager_load_file(am, type, name + strlen(STR_SCHEMA_FILE));
   } else {
-    return assets_manager_load_asset(am, type, name);
+    const char* theme = am->theme ? am->theme : THEME_DEFAULT;
+    asset_info_t* info = assets_manager_load_asset(am, type, theme, name);
+    if (info == NULL && !tk_str_eq(theme, THEME_DEFAULT)) {
+      info = assets_manager_load_asset(am, type, THEME_DEFAULT, name);
+    }
+    return info;
   }
 }
 #else
