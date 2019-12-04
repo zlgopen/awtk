@@ -104,6 +104,9 @@ static uint32_t to_border(const char* value) {
 static uint32_t to_icon_at(const char* value) {
   uint32_t icon_at = ICON_AT_AUTO;
 
+  if (strstr(value, "centre")) {
+    icon_at = ICON_AT_CENTRE;
+  }
   if (strstr(value, "left")) {
     icon_at = ICON_AT_LEFT;
   }
