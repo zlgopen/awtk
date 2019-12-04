@@ -399,7 +399,7 @@ struct _widget_t {
   wstr_t text;
   /**
    * @property {widget_t*} parent
-   * @annotation ["readable"]
+   * @annotation ["readable", "scriptable"]
    * 父控件
    */
   widget_t* parent;
@@ -999,6 +999,7 @@ ret_t widget_set_focused(widget_t* widget, bool_t focused);
 /**
  * @method widget_set_state
  * 设置控件的状态。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {const char*} state 状态(必须为真正的常量字符串，在widget的整个生命周期有效)。
  *
@@ -1012,6 +1013,7 @@ ret_t widget_set_state(widget_t* widget, const char* state);
  *
  *>在嵌入式平台，半透明效果会使性能大幅下降，请谨慎使用。
  *
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {uint8_t} opacity 不透明度(取值0-255，0表示完全透明，255表示完全不透明)。
  *
@@ -1022,6 +1024,8 @@ ret_t widget_set_opacity(widget_t* widget, uint8_t opacity);
 /**
  * @method widget_destroy_children
  * 销毁全部子控件。
+ *
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -1031,6 +1035,8 @@ ret_t widget_destroy_children(widget_t* widget);
 /**
  * @method widget_add_child
  * 加入一个子控件。
+ *
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {widget_t*} child 子控件对象。
  *
@@ -1041,6 +1047,8 @@ ret_t widget_add_child(widget_t* widget, widget_t* child);
 /**
  * @method widget_remove_child
  * 移出指定的子控件(并不销毁)。
+ *
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {widget_t*} child 子控件对象。
  *
@@ -1051,6 +1059,8 @@ ret_t widget_remove_child(widget_t* widget, widget_t* child);
 /**
  * @method widget_insert_child
  * 插入子控件到指定的位置。
+ *
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {uint32_t} index 位置序数(大于等于总个数，则放到最后)。
  * @param {widget_t*} child 子控件对象。
@@ -1062,6 +1072,8 @@ ret_t widget_insert_child(widget_t* widget, uint32_t index, widget_t* child);
 /**
  * @method widget_restack
  * 调整控件在父控件中的位置序数。
+ *
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {uint32_t} index 位置序数(大于等于总个数，则放到最后)。
  *

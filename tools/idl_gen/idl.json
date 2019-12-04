@@ -11899,6 +11899,10 @@
       {
         "desc": "水平居中，垂直低部(not used now)。\n",
         "name": "ICON_AT_BOTTOM"
+      },
+      {
+        "desc": "水平居中，垂直居中。\n",
+        "name": "ICON_AT_CENTRE"
       }
     ],
     "header": "base/types_def.h",
@@ -16658,7 +16662,9 @@
             "desc": "状态(必须为真正的常量字符串，在widget的整个生命周期有效)。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "设置控件的状态。\n",
         "name": "widget_set_state",
         "return": {
@@ -16679,7 +16685,9 @@
             "desc": "不透明度(取值0-255，0表示完全透明，255表示完全不透明)。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "设置控件的不透明度。\n>在嵌入式平台，半透明效果会使性能大幅下降，请谨慎使用。\n",
         "name": "widget_set_opacity",
         "return": {
@@ -16695,7 +16703,9 @@
             "desc": "控件对象。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "销毁全部子控件。\n",
         "name": "widget_destroy_children",
         "return": {
@@ -16716,7 +16726,9 @@
             "desc": "子控件对象。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "加入一个子控件。\n",
         "name": "widget_add_child",
         "return": {
@@ -16737,7 +16749,9 @@
             "desc": "子控件对象。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "移出指定的子控件(并不销毁)。\n",
         "name": "widget_remove_child",
         "return": {
@@ -16763,7 +16777,9 @@
             "desc": "子控件对象。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "插入子控件到指定的位置。\n",
         "name": "widget_insert_child",
         "return": {
@@ -16784,7 +16800,9 @@
             "desc": "位置序数(大于等于总个数，则放到最后)。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "调整控件在父控件中的位置序数。\n",
         "name": "widget_restack",
         "return": {
@@ -18578,7 +18596,8 @@
         "desc": "父控件\n",
         "type": "widget_t*",
         "annotation": {
-          "readable": true
+          "readable": true,
+          "scriptable": true
         }
       },
       {
@@ -31254,6 +31273,34 @@
             "desc": "控件对象。"
           },
           {
+            "type": "float_t",
+            "name": "xspeed_scale",
+            "desc": "x偏移速度比例。。"
+          },
+          {
+            "type": "float_t",
+            "name": "yspeed_scale",
+            "desc": "y偏移速度比例。。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置偏移速度比例。\n",
+        "name": "scroll_view_set_speed_scale",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
             "type": "int32_t",
             "name": "xoffset_end",
             "desc": "x偏移量。"
@@ -31362,6 +31409,34 @@
           "set_prop": true,
           "get_prop": true,
           "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "xspeed_scale",
+        "desc": "x偏移速度比例。\n",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "yspeed_scale",
+        "desc": "y偏移速度比例。\n",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
           "scriptable": true
         }
       },
@@ -31373,6 +31448,8 @@
           "set_prop": true,
           "get_prop": true,
           "readable": true,
+          "persitent": true,
+          "design": true,
           "scriptable": true
         }
       },
@@ -38109,6 +38186,29 @@
         },
         "desc": "回到主窗口，关闭之上的全部窗口。\n> 如果顶层窗口时模态对话框，用DIALOG\\_QUIT\\_NONE调用dialog\\_quit。\n",
         "name": "window_manager_back_to_home",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "窗口管理器对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "target",
+            "desc": "目标窗口的名称。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "回到指定的窗口，关闭之上的全部窗口。\n> 如果顶层窗口时模态对话框，用DIALOG\\_QUIT\\_NONE调用dialog\\_quit。\n",
+        "name": "window_manager_back_to",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
