@@ -105,16 +105,18 @@ static asset_info_t* asset_info_create(uint16_t type, uint16_t subtype, const ch
 static asset_info_t* load_asset(uint16_t type, uint16_t subtype, const char* path,
                                 const char* name) {
   SDL_RWops* rwops = SDL_RWFromFile(path, "r");
-  return_value_if_fail(rwops != NULL, NULL);
+  if (rwops != NULL) {
+    int32_t size = rwops->size(rwops);
+    asset_info_t* info = asset_info_create(type, subtype, name, size);
+    if (info != NULL) {
+      rwops->read(rwops, info->data, size, 1);
+    }
+    rwops->close(rwops);
 
-  int32_t size = rwops->size(rwops);
-  asset_info_t* info = asset_info_create(type, subtype, name, size);
-  if (info != NULL) {
-    rwops->read(rwops, info->data, size, 1);
+    return info;
+  } else {
+    return NULL;
   }
-  rwops->close(rwops);
-
-  return info;
 }
 #else
 static asset_info_t* load_asset(uint16_t type, uint16_t subtype, const char* path,

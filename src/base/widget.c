@@ -1158,7 +1158,7 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
   widget_prepare_text_style(widget, c);
 
   font_size = c->font_size;
-  text_size = canvas_measure_text(c, text->str, text->size);
+  text_size = text->str ? canvas_measure_text(c, text->str, text->size) : 0;
   if (icon_at == ICON_AT_RIGHT || icon_at == ICON_AT_LEFT) {
     align_v = style_get_int(style, STYLE_ID_TEXT_ALIGN_V, ALIGN_V_MIDDLE);
     align_h = style_get_int(style, STYLE_ID_TEXT_ALIGN_H, ALIGN_H_LEFT);
@@ -1647,9 +1647,11 @@ ret_t widget_set_prop_pointer(widget_t* widget, const char* name, void* pointer)
 
 void* widget_get_prop_pointer(widget_t* widget, const char* name) {
   value_t v;
-  return_value_if_fail(widget_get_prop(widget, name, &v) == RET_OK, NULL);
-
-  return value_pointer(&v);
+  if (widget_get_prop(widget, name, &v) == RET_OK) {
+    return value_pointer(&v);
+  } else {
+    return NULL;
+  }
 }
 
 ret_t widget_set_prop_int(widget_t* widget, const char* name, int32_t num) {
@@ -1661,9 +1663,11 @@ ret_t widget_set_prop_int(widget_t* widget, const char* name, int32_t num) {
 
 int32_t widget_get_prop_int(widget_t* widget, const char* name, int32_t defval) {
   value_t v;
-  return_value_if_fail(widget_get_prop(widget, name, &v) == RET_OK, defval);
-
-  return value_int(&v);
+  if (widget_get_prop(widget, name, &v) == RET_OK) {
+    return value_int(&v);
+  } else {
+    return defval;
+  }
 }
 
 ret_t widget_set_prop_bool(widget_t* widget, const char* name, bool_t num) {

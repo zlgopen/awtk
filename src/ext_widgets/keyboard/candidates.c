@@ -183,14 +183,22 @@ static ret_t candidates_get_prop(widget_t* widget, const char* name, value_t* v)
   candidates_t* candidates = CANDIDATES(widget);
   return_value_if_fail(candidates != NULL, RET_BAD_PARAMS);
 
-  return hscrollable_get_prop(candidates->hscrollable, name, v);
+  if (candidates->hscrollable != NULL) {
+    return hscrollable_get_prop(candidates->hscrollable, name, v);
+  } else {
+    return RET_NOT_FOUND;
+  }
 }
 
 static ret_t candidates_set_prop(widget_t* widget, const char* name, const value_t* v) {
   candidates_t* candidates = CANDIDATES(widget);
   return_value_if_fail(candidates != NULL, RET_BAD_PARAMS);
 
-  return hscrollable_set_prop(candidates->hscrollable, name, v);
+  if (candidates->hscrollable != NULL) {
+    return hscrollable_set_prop(candidates->hscrollable, name, v);
+  } else {
+    return RET_NOT_FOUND;
+  }
 }
 
 TK_DECL_VTABLE(candidates) = {.size = sizeof(candidates_t),

@@ -107,7 +107,11 @@ static ret_t tab_button_group_get_prop(widget_t* widget, const char* name, value
     return RET_OK;
   }
 
-  return hscrollable_get_prop(tab_button_group->hscrollable, name, v);
+  if (tab_button_group->hscrollable != NULL) {
+    return hscrollable_get_prop(tab_button_group->hscrollable, name, v);
+  } else {
+    return RET_NOT_FOUND;
+  }
 }
 
 static ret_t tab_button_group_set_prop(widget_t* widget, const char* name, const value_t* v) {
@@ -121,7 +125,11 @@ static ret_t tab_button_group_set_prop(widget_t* widget, const char* name, const
     return RET_OK;
   }
 
-  return hscrollable_set_prop(tab_button_group->hscrollable, name, v);
+  if (tab_button_group->hscrollable != NULL) {
+    return hscrollable_set_prop(tab_button_group->hscrollable, name, v);
+  } else {
+    return RET_NOT_FOUND;
+  }
 }
 
 static ret_t tab_button_group_on_paint_children(widget_t* widget, canvas_t* c) {
