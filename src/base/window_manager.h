@@ -43,7 +43,7 @@ typedef ret_t (*window_manager_set_screen_saver_time_t)(widget_t* widget, uint32
 typedef ret_t (*window_manager_set_cursor_t)(widget_t* widget, const char* cursor);
 typedef ret_t (*window_manager_post_init_t)(widget_t* widget, wh_t w, wh_t h);
 typedef ret_t (*window_manager_back_t)(widget_t* widget);
-typedef ret_t (*window_manager_back_to_home_t)(widget_t* widget);
+typedef ret_t (*window_manager_back_to_t)(widget_t* widget, const char* name);
 typedef ret_t (*window_manager_get_pointer_t)(widget_t* widget, xy_t* x, xy_t* y, bool_t* pressed);
 
 typedef ret_t (*window_manager_dispatch_native_window_event_t)(widget_t* widget, event_t* e,
@@ -59,13 +59,13 @@ typedef dialog_highlighter_t* (*window_manager_get_dialog_highlighter_t)(widget_
 
 typedef struct _window_manager_vtable_t {
   window_manager_back_t back;
+  window_manager_back_to_t back_to;
   window_manager_paint_t paint;
   window_manager_post_init_t post_init;
   window_manager_set_cursor_t set_cursor;
   window_manager_open_window_t open_window;
   window_manager_close_window_t close_window;
   window_manager_set_show_fps_t set_show_fps;
-  window_manager_back_to_home_t back_to_home;
   window_manager_get_top_window_t get_top_window;
   window_manager_get_prev_window_t get_prev_window;
   window_manager_close_window_force_t close_window_force;
@@ -313,6 +313,20 @@ ret_t window_manager_back(widget_t* widget);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t window_manager_back_to_home(widget_t* widget);
+
+/**
+ * @method window_manager_back_to
+ * 回到指定的窗口，关闭之上的全部窗口。
+ *
+ * > 如果顶层窗口时模态对话框，用DIALOG\_QUIT\_NONE调用dialog\_quit。
+ *
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 窗口管理器对象。
+ * @param {const char*} target 目标窗口的名称。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t window_manager_back_to(widget_t* widget, const char* target);
 
 /**
  * @method window_manager_dispatch_native_window_event
