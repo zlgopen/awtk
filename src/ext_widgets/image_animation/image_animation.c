@@ -313,9 +313,14 @@ ret_t image_animation_set_sequence(widget_t* widget, const char* sequence) {
   image_animation_t* image_animation = IMAGE_ANIMATION(widget);
   return_value_if_fail(image_animation != NULL && sequence != NULL, RET_BAD_PARAMS);
 
-  image_animation->sequence = tk_str_copy(image_animation->sequence, sequence);
+  if (sequence != NULL && sequence[0] != '\0') {
+    image_animation->sequence = tk_str_copy(image_animation->sequence, sequence);
+  } else {
+    TKMEM_FREE(image_animation->sequence);
+    image_animation->sequence = NULL;
+  }
 
-  return RET_OK;
+  return widget_invalidate(widget, NULL);
 }
 
 ret_t image_animation_set_range_sequence(widget_t* widget, uint32_t start_index,
@@ -436,7 +441,12 @@ ret_t image_animation_set_format(widget_t* widget, const char* format) {
   image_animation_t* image_animation = IMAGE_ANIMATION(widget);
   return_value_if_fail(image_animation != NULL && format != NULL, RET_BAD_PARAMS);
 
-  image_animation->format = tk_str_copy(image_animation->format, format);
+  if (format != NULL && format[0] != '\0') {
+    image_animation->format = tk_str_copy(image_animation->format, format);
+  } else {
+    TKMEM_FREE(image_animation->format);
+    image_animation->format = NULL;
+  }
 
   return widget_invalidate(widget, NULL);
 }
