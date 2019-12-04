@@ -112,13 +112,20 @@ static ret_t bitmap_web_destroy(bitmap_t* bitmap) {
 #endif /*AWTK_WEB*/
 
 bitmap_t* bitmap_create_ex(uint32_t w, uint32_t h, uint32_t line_length, bitmap_format_t format) {
-  bitmap_t* bitmap = TKMEM_ZALLOC(bitmap_t);
+  bitmap_t* bitmap = TKMEM_ZALLOC(bitmap_t); 
+  uint32_t bpp = bitmap_get_bpp_of_format(format);
+  
   return_value_if_fail(bitmap != NULL, NULL);
 
   bitmap->w = w;
   bitmap->h = h;
   bitmap->format = format;
   bitmap->should_free_handle = TRUE;
+
+  if (bpp < 4) {
+    bitmap->flags = BITMAP_FLAG_OPAQUE;
+  }
+
   bitmap_set_line_length(bitmap, line_length);
 
   bitmap_alloc_data(bitmap);

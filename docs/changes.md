@@ -1,4 +1,8 @@
 # 最新动态
+* 2019/12/04
+  * awtk增加对lcd为rgb888的支持 （感谢智明提供补丁）。 
+  * 修改了bitmap设置不透明度的标志（感谢智明提供补丁）。  
+
 * 2019/12/03
   * 完善 widget\\_destroy（感谢尧燊提供补丁）。 
   * 上次 EVT\_POINTER\_DOWN\_ABORT 触发多次，破坏了 grab\_widget 链的问题还是有点问题，改成在 widget\_ungrab 时限制；（感谢朝泽提供补丁）。 

@@ -25,6 +25,8 @@
 #include "lcd/lcd_mem_bgr565.h"
 #include "lcd/lcd_mem_rgba8888.h"
 #include "lcd/lcd_mem_bgra8888.h"
+#include "lcd/lcd_mem_bgr888.h"
+#include "lcd/lcd_mem_rgb888.h"
 
 static ret_t lcd_mem_special_begin_frame(lcd_t* lcd, rect_t* dr) {
   lcd_mem_special_t* special = (lcd_mem_special_t*)lcd;
@@ -172,6 +174,12 @@ static lcd_mem_t* lcd_mem_special_create_lcd_mem(wh_t w, wh_t h, bitmap_format_t
     }
     case BITMAP_FMT_BGRA8888: {
       return (lcd_mem_t*)lcd_mem_bgra8888_create(w, h, TRUE);
+    }
+    case BITMAP_FMT_BGR888: {
+      return (lcd_mem_t*)lcd_mem_bgr888_create(w, h, TRUE);
+    }
+    case BITMAP_FMT_RGB888: {
+      return (lcd_mem_t*)lcd_mem_rgb888_create(w, h, TRUE);
     }
     case BITMAP_FMT_BGR565: {
       return (lcd_mem_t*)lcd_mem_bgr565_create(w, h, TRUE);

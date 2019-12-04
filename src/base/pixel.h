@@ -177,6 +177,7 @@ static inline void pixel_rgba8888_blend_rgba_dark(void* pixel, uint8_t a) {
   p[0] = (p[0] * a) >> 8;
   p[1] = (p[1] * a) >> 8;
   p[2] = (p[2] * a) >> 8;
+  p[3] = 0xff;
 }
 
 static inline void pixel_rgba8888_blend_rgba_premulti(void* pixel, rgba_t rgba) {
@@ -186,6 +187,7 @@ static inline void pixel_rgba8888_blend_rgba_premulti(void* pixel, rgba_t rgba) 
   p[0] = ((p[0] * a) >> 8) + rgba.r;
   p[1] = ((p[1] * a) >> 8) + rgba.g;
   p[2] = ((p[2] * a) >> 8) + rgba.b;
+  p[3] = 0xff;
 }
 
 typedef struct _pixel_abgr8888_t {
@@ -206,7 +208,7 @@ typedef struct _pixel_abgr8888_t {
   { a, b, g, r }
 static inline void pixel_abgr8888_blend_rgba_dark(void* pixel, uint8_t a) {
   uint8_t* p = (uint8_t*)pixel;
-
+  p[0] = 0xff;
   p[1] = (p[1] * a) >> 8;
   p[2] = (p[2] * a) >> 8;
   p[3] = (p[3] * a) >> 8;
@@ -215,7 +217,7 @@ static inline void pixel_abgr8888_blend_rgba_dark(void* pixel, uint8_t a) {
 static inline void pixel_abgr8888_blend_rgba_premulti(void* pixel, rgba_t rgba) {
   uint8_t a = rgba.a;
   uint8_t* p = (uint8_t*)pixel;
-
+  p[0] = 0xff;
   p[1] = ((p[1] * a) >> 8) + rgba.b;
   p[2] = ((p[2] * a) >> 8) + rgba.g;
   p[3] = ((p[3] * a) >> 8) + rgba.r;
@@ -243,6 +245,7 @@ static inline void pixel_bgra8888_blend_rgba_dark(void* pixel, uint8_t a) {
   p[0] = (p[0] * a) >> 8;
   p[1] = (p[1] * a) >> 8;
   p[2] = (p[2] * a) >> 8;
+  p[3] = 0xff;
 }
 
 static inline void pixel_bgra8888_blend_rgba_premulti(void* pixel, rgba_t rgba) {
@@ -252,6 +255,7 @@ static inline void pixel_bgra8888_blend_rgba_premulti(void* pixel, rgba_t rgba) 
   p[0] = ((p[0] * a) >> 8) + rgba.b;
   p[1] = ((p[1] * a) >> 8) + rgba.g;
   p[2] = ((p[2] * a) >> 8) + rgba.r;
+  p[3] = 0xff;
 }
 
 typedef struct _pixel_argb8888_t {
@@ -272,7 +276,7 @@ typedef struct _pixel_argb8888_t {
   { 0xff, r, g, b }
 static inline void pixel_argb8888_blend_rgba_dark(void* pixel, uint8_t a) {
   uint8_t* p = (uint8_t*)pixel;
-
+  p[0] = 0xff;
   p[1] = (p[1] * a) >> 8;
   p[2] = (p[2] * a) >> 8;
   p[3] = (p[3] * a) >> 8;
@@ -281,7 +285,7 @@ static inline void pixel_argb8888_blend_rgba_dark(void* pixel, uint8_t a) {
 static inline void pixel_argb8888_blend_rgba_premulti(void* pixel, rgba_t rgba) {
   uint8_t a = rgba.a;
   uint8_t* p = (uint8_t*)pixel;
-
+  p[0] = 0xff;
   p[1] = ((p[1] * a) >> 8) + rgba.r;
   p[2] = ((p[2] * a) >> 8) + rgba.g;
   p[3] = ((p[3] * a) >> 8) + rgba.b;

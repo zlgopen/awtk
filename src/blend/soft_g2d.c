@@ -27,30 +27,41 @@
 #include "blend_image_bgr565_bgr565.h"
 #include "blend_image_bgr565_bgra8888.h"
 #include "blend_image_bgr565_rgba8888.h"
-#include "blend_image_bgr888_bgr565.h"
-#include "blend_image_bgr888_bgra8888.h"
-#include "blend_image_bgr888_rgba8888.h"
-#include "blend_image_bgra8888_bgr565.h"
-#include "blend_image_bgra8888_bgra8888.h"
-#include "blend_image_bgra8888_rgba8888.h"
+
 #include "blend_image_rgb565_bgr565.h"
 #include "blend_image_rgb565_bgra8888.h"
 #include "blend_image_rgb565_rgba8888.h"
+
+#include "blend_image_bgr888_bgr565.h"
+#include "blend_image_bgr888_bgra8888.h"
+#include "blend_image_bgr888_rgba8888.h"
+
+#include "blend_image_rgb888_bgr565.h"
+#include "blend_image_rgb888_bgra8888.h"
+#include "blend_image_rgb888_rgba8888.h"
+
+#include "blend_image_bgra8888_bgr565.h"
+#include "blend_image_bgra8888_bgra8888.h"
+#include "blend_image_bgra8888_rgba8888.h"
+
 #include "blend_image_rgba8888_bgr565.h"
 #include "blend_image_rgba8888_bgra8888.h"
 #include "blend_image_rgba8888_rgba8888.h"
+
+#include "fill_image_rgb565.h"
 #include "fill_image_bgr565.h"
 #include "fill_image_bgr888.h"
+#include "fill_image_rgb888.h"
 #include "fill_image_bgra8888.h"
-#include "fill_image_rgb565.h"
 #include "fill_image_rgba8888.h"
 #include "fill_image_argb8888.h"
 #include "fill_image_abgr8888.h"
 
 #include "rotate_image_bgr565.h"
-#include "rotate_image_bgr888.h"
-#include "rotate_image_bgra8888.h"
 #include "rotate_image_rgb565.h"
+#include "rotate_image_bgr888.h"
+#include "rotate_image_rgb888.h"
+#include "rotate_image_bgra8888.h"
 #include "rotate_image_rgba8888.h"
 
 ret_t soft_copy_image(bitmap_t* dst, bitmap_t* src, rect_t* src_r, xy_t dx, xy_t dy) {
@@ -104,6 +115,9 @@ ret_t soft_clear_rect(bitmap_t* dst, rect_t* dst_r, color_t c) {
     case BITMAP_FMT_BGR888: {
       return clear_bgr888_rect(dst, dst_r, c);
     }
+    case BITMAP_FMT_RGB888: {
+      return clear_rgb888_rect(dst, dst_r, c);
+    }
     case BITMAP_FMT_BGRA8888: {
       return clear_bgra8888_rect(dst, dst_r, c);
     }
@@ -137,6 +151,9 @@ ret_t soft_fill_rect(bitmap_t* dst, rect_t* dst_r, color_t c) {
     }
     case BITMAP_FMT_BGR888: {
       return fill_bgr888_rect(dst, dst_r, c);
+    }
+    case BITMAP_FMT_RGB888: {
+      return fill_rgb888_rect(dst, dst_r, c);
     }
     case BITMAP_FMT_BGRA8888: {
       return fill_bgra8888_rect(dst, dst_r, c);
@@ -172,6 +189,9 @@ ret_t soft_rotate_image(bitmap_t* dst, bitmap_t* src, rect_t* src_r, lcd_orienta
     }
     case BITMAP_FMT_BGR888: {
       return rotate_bgr888_image(dst, src, src_r, o);
+    }
+    case BITMAP_FMT_RGB888: {
+      return rotate_rgb888_image(dst, src, src_r, o);
     }
     case BITMAP_FMT_BGRA8888: {
       return rotate_bgra8888_image(dst, src, src_r, o);
@@ -239,6 +259,22 @@ ret_t soft_blend_image(bitmap_t* dst, bitmap_t* src, rect_t* dst_r, rect_t* src_
         }
         case BITMAP_FMT_BGRA8888: {
           return blend_image_bgr888_bgra8888(dst, src, dst_r, src_r, alpha);
+        }
+        default:
+          break;
+      }
+      break;
+    }
+    case BITMAP_FMT_RGB888: {
+      switch (src->format) {
+        case BITMAP_FMT_BGR565: {
+          return blend_image_rgb888_bgr565(dst, src, dst_r, src_r, alpha);
+        }
+        case BITMAP_FMT_RGBA8888: {
+          return blend_image_rgb888_rgba8888(dst, src, dst_r, src_r, alpha);
+        }
+        case BITMAP_FMT_BGRA8888: {
+          return blend_image_rgb888_bgra8888(dst, src, dst_r, src_r, alpha);
         }
         default:
           break;
