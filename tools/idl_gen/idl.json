@@ -9104,9 +9104,7 @@
             "desc": "事件处理函数上下文。"
           }
         ],
-        "annotation": {
-          "scriptable": "custom"
-        },
+        "annotation": {},
         "desc": "注册指定事件的处理函数。\n",
         "name": "locale_info_on",
         "return": {
@@ -17027,9 +17025,7 @@
             "desc": "tag。"
           }
         ],
-        "annotation": {
-          "scriptable": "custom"
-        },
+        "annotation": {},
         "desc": "注册指定tag的事件处理函数。\n> 注册时指定一个tag，可用widget\\_off\\_by\\_tag注销相同tag的事件处理函数。\n",
         "name": "widget_on_with_tag",
         "return": {
@@ -25343,9 +25339,7 @@
             "desc": "tag。"
           }
         ],
-        "annotation": {
-          "scriptable": "custom"
-        },
+        "annotation": {},
         "desc": "注册指定事件的处理函数。\n",
         "name": "emitter_on_with_tag",
         "return": {
@@ -35165,9 +35159,7 @@
             "desc": "回调函数上下文。"
           }
         ],
-        "annotation": {
-          "scriptable": "custom"
-        },
+        "annotation": {},
         "desc": "遍历所有属性。\n",
         "name": "object_foreach_prop",
         "return": {

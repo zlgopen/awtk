@@ -141,7 +141,6 @@ uint32_t emitter_on(emitter_t* emitter, uint32_t etype, event_func_t handler, vo
 /**
  * @method emitter_on_with_tag
  * 注册指定事件的处理函数。
- * @annotation ["scriptable:custom"]
  * @param {emitter_t*} emitter emitter对象。
  * @param {uint32_t} type 事件类型。
  * @param {event_func_t} on_event 事件处理函数。

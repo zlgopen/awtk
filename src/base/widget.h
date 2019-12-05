@@ -1176,7 +1176,6 @@ int32_t widget_on(widget_t* widget, uint32_t type, event_func_t on_event, void* 
  *
  * > 注册时指定一个tag，可用widget\_off\_by\_tag注销相同tag的事件处理函数。
  *
- * @annotation ["scriptable:custom"]
  * @param {widget_t*} widget 控件对象。
  * @param {uint32_t} type 事件类型。
  * @param {event_func_t} on_event 事件处理函数。

@@ -394,7 +394,6 @@ ret_t object_copy_prop(object_t* obj, object_t* src, const char* name);
  * @method object_foreach_prop
  * 遍历所有属性。
  *
- * @annotation ["scriptable:custom"]
  * @param {object_t*} obj object对象。
  * @param {tk_visit_t} on_prop 回调函数。
  * @param {void*} ctx 回调函数上下文。

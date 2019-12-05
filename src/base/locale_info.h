@@ -116,7 +116,6 @@ ret_t locale_info_change(locale_info_t* locale_info, const char* language, const
 /**
  * @method locale_info_on
  * 注册指定事件的处理函数。
- * @annotation ["scriptable:custom"]
  * @param {locale_info_t*} locale_info locale_info对象。
  * @param {event_type_t} type 事件类型，目前固定为EVT_LOCALE_CHANGED。
  * @param {event_func_t} on_event 事件处理函数。
