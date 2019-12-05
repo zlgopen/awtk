@@ -185,6 +185,7 @@ typedef enum _icon_at_type_t {
 /**
  * @enum app_type_t
  * @prefix APP_
+ * @annotation ["scriptable"]
  * 应用程序类型。
  */
 typedef enum _app_type_t {

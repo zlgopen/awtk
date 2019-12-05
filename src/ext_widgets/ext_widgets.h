@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @method tk_ext_widgets_init
  * 初始化AWTK扩展控件。
- * @annotation ["global", "scriptable"]
+ * @annotation ["global"]
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

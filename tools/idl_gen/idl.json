@@ -11930,6 +11930,9 @@
     "header": "base/types_def.h",
     "name": "app_type_t",
     "prefix": "APP_",
+    "annotation": {
+      "scriptable": true
+    },
     "level": 1
   },
   {
@@ -20736,8 +20739,7 @@
   {
     "params": [],
     "annotation": {
-      "global": true,
-      "scriptable": true
+      "global": true
     },
     "desc": "初始化AWTK扩展控件。\n",
     "name": "tk_ext_widgets_init",
