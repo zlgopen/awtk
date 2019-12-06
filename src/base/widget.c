@@ -138,6 +138,7 @@ static ret_t widget_real_destroy(widget_t* widget) {
   }
 
   TKMEM_FREE(widget->name);
+  TKMEM_FREE(widget->state);
   TKMEM_FREE(widget->style);
   TKMEM_FREE(widget->tr_text);
   TKMEM_FREE(widget->animation);
@@ -633,7 +634,7 @@ ret_t widget_set_state(widget_t* widget, const char* state) {
 
   if (!tk_str_eq(widget->state, state)) {
     widget_invalidate_force(widget, NULL);
-    widget->state = state;
+    widget->state = tk_str_copy(widget->state, state);
     widget_set_need_update_style(widget);
     widget_invalidate_force(widget, NULL);
   }
@@ -2669,7 +2670,7 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t*
   widget->emitter = NULL;
   widget->children = NULL;
   widget->initializing = TRUE;
-  widget->state = WIDGET_STATE_NORMAL;
+  widget->state = tk_str_copy(widget->state, WIDGET_STATE_NORMAL);
   widget->target = NULL;
   widget->key_target = NULL;
   widget->grab_widget = NULL;

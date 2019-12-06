@@ -384,7 +384,7 @@ struct _widget_t {
    * @annotation ["readable"]
    * 控件的状态(取值参考widget_state_t)。
    */
-  const char* state;
+  char* state;
   /**
    * @property {uint8_t} opacity
    * @annotation ["readable"]

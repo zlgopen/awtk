@@ -1,8 +1,14 @@
 # 最新动态
 
+* 2019/12/07
+  * 修改 widget\_set\_state 脚本绑定时的问题（感谢大恒提供补丁）。
+
+* 2019/12/06
+  * 完善脚本绑定。
+
 * 2019/12/05
-  * 修改了image_animation控件的format、sequence属性设置，为空字符串时设为空，避免显示有误（感谢朝泽提供补丁）。 
-  * 增加文档how_to_use_mutable_image.md（感谢智明提供补丁）。  
+  * 修改了 image_animation 控件的 format、sequence 属性设置，为空字符串时设为空，避免显示有误（感谢朝泽提供补丁）。 
+  * 增加文档 how\_to\_use\_mutable\_image.md（感谢智明提供补丁）。  
 
 * 2019/12/04
   * awtk 增加对 lcd 为 rgb888 的支持 （感谢智明提供补丁）。 
