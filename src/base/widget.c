@@ -2670,7 +2670,7 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t*
   widget->emitter = NULL;
   widget->children = NULL;
   widget->initializing = TRUE;
-  widget->state = tk_str_copy(widget->state, WIDGET_STATE_NORMAL);
+  widget->state = tk_strdup(WIDGET_STATE_NORMAL);
   widget->target = NULL;
   widget->key_target = NULL;
   widget->grab_widget = NULL;
@@ -2911,7 +2911,7 @@ static ret_t widget_copy_style(widget_t* clone, widget_t* widget) {
 }
 
 static ret_t widget_copy(widget_t* clone, widget_t* widget) {
-  clone->state = widget->state;
+  clone->state = tk_strdup(widget->state);
   clone->focused = widget->focused;
   widget_copy_style(clone, widget);
   widget_copy_props(clone, widget, s_widget_persistent_props);

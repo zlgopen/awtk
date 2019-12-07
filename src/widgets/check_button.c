@@ -20,6 +20,7 @@
  */
 
 #include "tkc/mem.h"
+#include "tkc/utils.h"
 #include "widgets/check_button.h"
 #include "base/image_manager.h"
 #include "base/widget_vtable.h"
@@ -179,7 +180,7 @@ widget_t* check_button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) 
   return_value_if_fail(check_button != NULL, NULL);
 
   check_button->radio = FALSE;
-  widget->state = WIDGET_STATE_NORMAL;
+  widget->state = tk_strdup(WIDGET_STATE_NORMAL);
   check_button_set_value_only(widget, FALSE);
 
   return widget;
@@ -191,7 +192,7 @@ widget_t* check_button_create_radio(widget_t* parent, xy_t x, xy_t y, wh_t w, wh
   return_value_if_fail(check_button != NULL, NULL);
 
   check_button->radio = TRUE;
-  widget->state = WIDGET_STATE_NORMAL;
+  widget->state = tk_strdup(WIDGET_STATE_NORMAL);
   check_button_set_value_only(widget, FALSE);
 
   return widget;
