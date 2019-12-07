@@ -1155,7 +1155,7 @@ ret_t widget_set_sensitive(widget_t* widget, bool_t sensitive);
  * 注册指定事件的处理函数。
  * @annotation ["scriptable:custom"]
  * @param {widget_t*} widget 控件对象。
- * @param {uint32_t} type 事件类型。
+ * @param {event_type_t} type 事件类型。
  * @param {event_func_t} on_event 事件处理函数。
  * @param {void*} ctx 事件处理函数上下文。
  * 使用示例：
@@ -1177,7 +1177,7 @@ int32_t widget_on(widget_t* widget, uint32_t type, event_func_t on_event, void* 
  * > 注册时指定一个tag，可用widget\_off\_by\_tag注销相同tag的事件处理函数。
  *
  * @param {widget_t*} widget 控件对象。
- * @param {uint32_t} type 事件类型。
+ * @param {event_type_t} type 事件类型。
  * @param {event_func_t} on_event 事件处理函数。
  * @param {void*} ctx 事件处理函数上下文。
  * @param {uint32_t} tag tag。
@@ -1204,7 +1204,7 @@ ret_t widget_off(widget_t* widget, int32_t id);
  * 递归查找指定名称的子控件，然后为其注册指定事件的处理函数。
  * @param {widget_t*} widget 控件对象。
  * @param {char*} name 子控件的名称。
- * @param {uint32_t} type 事件类型。
+ * @param {event_type_t} type 事件类型。
  * @param {event_func_t} on_event 事件处理函数。
  * @param {void*} ctx 事件处理函数上下文。
  *
@@ -1217,7 +1217,7 @@ int32_t widget_child_on(widget_t* widget, const char* name, uint32_t type, event
  * @method widget_off_by_func
  * 注销指定函数的事件处理函数。
  * @param {widget_t*} widget 控件对象。
- * @param {uint32_t} type 事件类型。
+ * @param {event_type_t} type 事件类型。
  * @param {event_func_t} on_event 事件处理函数。
  * @param {void*} ctx 事件处理函数上下文。
  *

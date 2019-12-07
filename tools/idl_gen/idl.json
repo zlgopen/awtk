@@ -2862,6 +2862,38 @@
       {
         "desc": "用户定义事件起始值。\n",
         "name": "EVT_USER_START"
+      },
+      {
+        "desc": "无效事件名称。\n",
+        "name": "EVT_NONE"
+      },
+      {
+        "desc": "对象的属性即将改变的事件名(prop_change_event_t)。\n",
+        "name": "EVT_PROP_WILL_CHANGE"
+      },
+      {
+        "desc": "对象的属性改变的事件名(prop_change_event_t)。\n",
+        "name": "EVT_PROP_CHANGED"
+      },
+      {
+        "desc": "即将增加和删除集合中的项目(event_t)。\n",
+        "name": "EVT_ITEMS_WILL_CHANGE"
+      },
+      {
+        "desc": "完成增加和删除集合中的项目(event_t)。\n",
+        "name": "EVT_ITEMS_CHANGED"
+      },
+      {
+        "desc": "对象的属性改变的事件名(props_event_t)。\n",
+        "name": "EVT_PROPS_CHANGED"
+      },
+      {
+        "desc": "进度状态(progress_event_t)。\n",
+        "name": "EVT_PROGRESS"
+      },
+      {
+        "desc": "对象销毁事件名(event_t)。\n",
+        "name": "EVT_DESTROY"
       }
     ],
     "header": "base/events.h",
@@ -14490,7 +14522,7 @@
     ],
     "header": "base/widget_animator_manager.h",
     "desc": "控件动画管理器。\n",
-    "name": "widget_animator_t",
+    "name": "widget_animator_manager_t",
     "level": 1
   },
   {
@@ -16972,7 +17004,7 @@
             "desc": "控件对象。"
           },
           {
-            "type": "uint32_t",
+            "type": "event_type_t",
             "name": "type",
             "desc": "事件类型。"
           },
@@ -17005,7 +17037,7 @@
             "desc": "控件对象。"
           },
           {
-            "type": "uint32_t",
+            "type": "event_type_t",
             "name": "type",
             "desc": "事件类型。"
           },
@@ -17069,7 +17101,7 @@
             "desc": "子控件的名称。"
           },
           {
-            "type": "uint32_t",
+            "type": "event_type_t",
             "name": "type",
             "desc": "事件类型。"
           },
@@ -17100,7 +17132,7 @@
             "desc": "控件对象。"
           },
           {
-            "type": "uint32_t",
+            "type": "event_type_t",
             "name": "type",
             "desc": "事件类型。"
           },
@@ -24653,51 +24685,6 @@
     "level": 1
   },
   {
-    "type": "enum",
-    "desc": "类型常量定义。\n",
-    "consts": [
-      {
-        "desc": "无效事件名称。\n",
-        "name": "EVT_NONE"
-      },
-      {
-        "desc": "对象的属性即将改变的事件名(prop_change_event_t)。\n",
-        "name": "EVT_PROP_WILL_CHANGE"
-      },
-      {
-        "desc": "对象的属性改变的事件名(prop_change_event_t)。\n",
-        "name": "EVT_PROP_CHANGED"
-      },
-      {
-        "desc": "即将增加和删除集合中的项目(event_t)。\n",
-        "name": "EVT_ITEMS_WILL_CHANGE"
-      },
-      {
-        "desc": "完成增加和删除集合中的项目(event_t)。\n",
-        "name": "EVT_ITEMS_CHANGED"
-      },
-      {
-        "desc": "对象的属性改变的事件名(props_event_t)。\n",
-        "name": "EVT_PROPS_CHANGED"
-      },
-      {
-        "desc": "进度状态(progress_event_t)。\n",
-        "name": "EVT_PROGRESS"
-      },
-      {
-        "desc": "对象销毁事件名(event_t)。\n",
-        "name": "EVT_DESTROY"
-      }
-    ],
-    "header": "tkc/event.h",
-    "name": "event_base_type_t",
-    "prefix": "EVT_",
-    "annotation": {
-      "scriptable": true
-    },
-    "level": 1
-  },
-  {
     "type": "class",
     "methods": [
       {
@@ -24849,6 +24836,467 @@
     "header": "tkc/event_source_manager.h",
     "desc": "事件源管理器。\n",
     "name": "event_source_manager_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true,
+          "gc": true
+        },
+        "desc": "创建emitter对象。\n",
+        "name": "emitter_create",
+        "return": {
+          "type": "emitter_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "emitter_t*",
+            "name": "emitter",
+            "desc": "emitter对象。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "初始化emitter对象。\n",
+        "name": "emitter_init",
+        "return": {
+          "type": "emitter_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "emitter_t*",
+            "name": "emitter",
+            "desc": "emitter对象。"
+          },
+          {
+            "type": "event_t*",
+            "name": "e",
+            "desc": "事件对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "分发事件。如果当前分发的回调函数返回RET_REMOVE，该回调函数将被移出。\n禁用状态下，本函数不做任何事情。\n如果当前分发的回调函数返回RET_STOP，dispatch中断分发，并返回RET_STOP，否则返回RET_OK。\n",
+        "name": "emitter_dispatch",
+        "return": {
+          "type": "ret_t",
+          "desc": ""
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "emitter_t*",
+            "name": "emitter",
+            "desc": "emitter对象。"
+          },
+          {
+            "type": "event_type_t",
+            "name": "type",
+            "desc": "事件类型。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "分发事件。\n> 对emitter_dispatch的包装，分发一个简单的事件。\n如果当前分发的回调函数返回RET_STOP，dispatch中断分发，并返回RET_STOP，否则返回RET_OK。\n",
+        "name": "emitter_dispatch_simple_event",
+        "return": {
+          "type": "ret_t",
+          "desc": ""
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "emitter_t*",
+            "name": "emitter",
+            "desc": "emitter对象。"
+          },
+          {
+            "type": "event_type_t",
+            "name": "type",
+            "desc": "事件类型。"
+          },
+          {
+            "type": "event_func_t",
+            "name": "on_event",
+            "desc": "事件处理函数。"
+          },
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "事件处理函数上下文。"
+          }
+        ],
+        "annotation": {
+          "scriptable": "custom"
+        },
+        "desc": "注册指定事件的处理函数。\n",
+        "name": "emitter_on",
+        "return": {
+          "type": "uint32_t",
+          "desc": "返回id，用于emitter_off。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "emitter_t*",
+            "name": "emitter",
+            "desc": "emitter对象。"
+          },
+          {
+            "type": "event_type_t",
+            "name": "type",
+            "desc": "事件类型。"
+          },
+          {
+            "type": "event_func_t",
+            "name": "on_event",
+            "desc": "事件处理函数。"
+          },
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "事件处理函数上下文。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "tag",
+            "desc": "tag。"
+          }
+        ],
+        "annotation": {},
+        "desc": "注册指定事件的处理函数。\n",
+        "name": "emitter_on_with_tag",
+        "return": {
+          "type": "uint32_t",
+          "desc": "返回id，用于emitter_off。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "emitter_t*",
+            "name": "emitter",
+            "desc": "emitter对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "id",
+            "desc": "emitter_on返回的ID。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "注销指定事件的处理函数。\n",
+        "name": "emitter_off",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "emitter_t*",
+            "name": "emitter",
+            "desc": "emitter对象。"
+          },
+          {
+            "type": "event_type_t",
+            "name": "type",
+            "desc": "事件类型。"
+          },
+          {
+            "type": "event_func_t",
+            "name": "on_event",
+            "desc": "事件处理函数。"
+          },
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "事件处理函数上下文。"
+          }
+        ],
+        "annotation": {},
+        "desc": "注销指定事件的处理函数。\n",
+        "name": "emitter_off_by_func",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "emitter_t*",
+            "name": "emitter",
+            "desc": "emitter对象。"
+          },
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "事件处理函数上下文。"
+          }
+        ],
+        "annotation": {},
+        "desc": "注销指定事件的处理函数。\n",
+        "name": "emitter_off_by_ctx",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "emitter_t*",
+            "name": "emitter",
+            "desc": "emitter对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "tag",
+            "desc": "tag。"
+          }
+        ],
+        "annotation": {},
+        "desc": "注销指定事件的处理函数。\n",
+        "name": "emitter_off_by_tag",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "emitter_t*",
+            "name": "emitter",
+            "desc": "emitter对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "id",
+            "desc": "emitter_on返回的ID。"
+          },
+          {
+            "type": "tk_destroy_t",
+            "name": "on_destroy",
+            "desc": "回调函数。"
+          },
+          {
+            "type": "void*",
+            "name": "on_destroy_ctx",
+            "desc": "回调函数上下文。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置一个回调函数，在emitter被销毁时调用(方便脚本语言去释放回调函数)。\n",
+        "name": "emitter_set_on_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "emitter_t*",
+            "name": "emitter",
+            "desc": "emitter对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "id",
+            "desc": "emitter_on返回的ID。"
+          }
+        ],
+        "annotation": {},
+        "desc": "通过ID查找emitter_item_t，主要用于辅助测试。\n",
+        "name": "emitter_find",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "emitter_t*",
+            "name": "emitter",
+            "desc": "emitter对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "启用。\n",
+        "name": "emitter_enable",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "emitter_t*",
+            "name": "emitter",
+            "desc": "emitter对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "禁用。\n禁用后emitter_dispatch无效，但可以注册和注销。\n",
+        "name": "emitter_disable",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "emitter_t*",
+            "name": "emitter",
+            "desc": "emitter对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "获取注册的回调函数个数，主要用于辅助测试。\n",
+        "name": "emitter_size",
+        "return": {
+          "type": "uint32_t",
+          "desc": "回调函数个数。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "emitter_t*",
+            "name": "emitter",
+            "desc": "emitter对象。"
+          }
+        ],
+        "annotation": {
+          "deconstructor": true
+        },
+        "desc": "析构。\n",
+        "name": "emitter_deinit",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "emitter_t*",
+            "name": "emitter",
+            "desc": "emitter对象。"
+          }
+        ],
+        "annotation": {
+          "deconstructor": true,
+          "scriptable": true,
+          "gc": true
+        },
+        "desc": "销毁。\n",
+        "name": "emitter_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "emitter_t*",
+            "name": "emitter",
+            "desc": "emitter对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为emitter对象(供脚本语言使用)。\n主要给脚本语言使用。\n",
+        "name": "emitter_cast",
+        "return": {
+          "type": "emitter_t*",
+          "desc": "对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "items",
+        "desc": "注册的回调函数集合。\n",
+        "type": "emitter_item_t*",
+        "annotation": {
+          "private": true
+        }
+      },
+      {
+        "name": "next_id",
+        "desc": "下一次emitter_on返回的ID，emitter_on成功后会自动增加next_id。\n",
+        "type": "uint32_t",
+        "annotation": {
+          "private": true
+        }
+      },
+      {
+        "name": "enable",
+        "desc": "禁用标志。禁用时dispatch无效。\n",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "remove_curr_iter",
+        "desc": "如果在回调函数中，emitter_off当前正在dispatch的回调函数，\n我们只是设置remove_curr_iter为TRUE，在分发完成后才执行。\nXXX: 如果要注销当前正在dispatch的回调函数，直接返回RET_REMOVE是最好的选择。\n",
+        "type": "bool_t",
+        "annotation": {
+          "private": true
+        }
+      },
+      {
+        "name": "curr_iter",
+        "desc": "当前正在dispatch的项。\n",
+        "type": "emitter_item_t*",
+        "annotation": {
+          "private": true
+        }
+      }
+    ],
+    "header": "tkc/emitter.h",
+    "desc": "事件分发器, 用于实现观察者模式。\n",
+    "name": "emitter_t",
+    "annotation": {
+      "scriptable": true
+    },
     "level": 1
   },
   {
@@ -25195,467 +25643,6 @@
     "header": "file_transfer/file_transfer.h",
     "desc": "确认包(sender<-receiver)。\n",
     "name": "file_transfer_ack_t",
-    "level": 1
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true,
-          "gc": true
-        },
-        "desc": "创建emitter对象。\n",
-        "name": "emitter_create",
-        "return": {
-          "type": "emitter_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "emitter_t*",
-            "name": "emitter",
-            "desc": "emitter对象。"
-          }
-        ],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "初始化emitter对象。\n",
-        "name": "emitter_init",
-        "return": {
-          "type": "emitter_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "emitter_t*",
-            "name": "emitter",
-            "desc": "emitter对象。"
-          },
-          {
-            "type": "event_t*",
-            "name": "e",
-            "desc": "事件对象。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "分发事件。如果当前分发的回调函数返回RET_REMOVE，该回调函数将被移出。\n禁用状态下，本函数不做任何事情。\n如果当前分发的回调函数返回RET_STOP，dispatch中断分发，并返回RET_STOP，否则返回RET_OK。\n",
-        "name": "emitter_dispatch",
-        "return": {
-          "type": "ret_t",
-          "desc": ""
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "emitter_t*",
-            "name": "emitter",
-            "desc": "emitter对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "type",
-            "desc": "事件类型。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "分发事件。\n> 对emitter_dispatch的包装，分发一个简单的事件。\n如果当前分发的回调函数返回RET_STOP，dispatch中断分发，并返回RET_STOP，否则返回RET_OK。\n",
-        "name": "emitter_dispatch_simple_event",
-        "return": {
-          "type": "ret_t",
-          "desc": ""
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "emitter_t*",
-            "name": "emitter",
-            "desc": "emitter对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "type",
-            "desc": "事件类型。"
-          },
-          {
-            "type": "event_func_t",
-            "name": "on_event",
-            "desc": "事件处理函数。"
-          },
-          {
-            "type": "void*",
-            "name": "ctx",
-            "desc": "事件处理函数上下文。"
-          }
-        ],
-        "annotation": {
-          "scriptable": "custom"
-        },
-        "desc": "注册指定事件的处理函数。\n",
-        "name": "emitter_on",
-        "return": {
-          "type": "uint32_t",
-          "desc": "返回id，用于emitter_off。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "emitter_t*",
-            "name": "emitter",
-            "desc": "emitter对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "type",
-            "desc": "事件类型。"
-          },
-          {
-            "type": "event_func_t",
-            "name": "on_event",
-            "desc": "事件处理函数。"
-          },
-          {
-            "type": "void*",
-            "name": "ctx",
-            "desc": "事件处理函数上下文。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "tag",
-            "desc": "tag。"
-          }
-        ],
-        "annotation": {},
-        "desc": "注册指定事件的处理函数。\n",
-        "name": "emitter_on_with_tag",
-        "return": {
-          "type": "uint32_t",
-          "desc": "返回id，用于emitter_off。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "emitter_t*",
-            "name": "emitter",
-            "desc": "emitter对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "id",
-            "desc": "emitter_on返回的ID。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "注销指定事件的处理函数。\n",
-        "name": "emitter_off",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "emitter_t*",
-            "name": "emitter",
-            "desc": "emitter对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "type",
-            "desc": "事件类型。"
-          },
-          {
-            "type": "event_func_t",
-            "name": "on_event",
-            "desc": "事件处理函数。"
-          },
-          {
-            "type": "void*",
-            "name": "ctx",
-            "desc": "事件处理函数上下文。"
-          }
-        ],
-        "annotation": {},
-        "desc": "注销指定事件的处理函数。\n",
-        "name": "emitter_off_by_func",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "emitter_t*",
-            "name": "emitter",
-            "desc": "emitter对象。"
-          },
-          {
-            "type": "void*",
-            "name": "ctx",
-            "desc": "事件处理函数上下文。"
-          }
-        ],
-        "annotation": {},
-        "desc": "注销指定事件的处理函数。\n",
-        "name": "emitter_off_by_ctx",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "emitter_t*",
-            "name": "emitter",
-            "desc": "emitter对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "tag",
-            "desc": "tag。"
-          }
-        ],
-        "annotation": {},
-        "desc": "注销指定事件的处理函数。\n",
-        "name": "emitter_off_by_tag",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "emitter_t*",
-            "name": "emitter",
-            "desc": "emitter对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "id",
-            "desc": "emitter_on返回的ID。"
-          },
-          {
-            "type": "tk_destroy_t",
-            "name": "on_destroy",
-            "desc": "回调函数。"
-          },
-          {
-            "type": "void*",
-            "name": "on_destroy_ctx",
-            "desc": "回调函数上下文。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置一个回调函数，在emitter被销毁时调用(方便脚本语言去释放回调函数)。\n",
-        "name": "emitter_set_on_destroy",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "emitter_t*",
-            "name": "emitter",
-            "desc": "emitter对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "id",
-            "desc": "emitter_on返回的ID。"
-          }
-        ],
-        "annotation": {},
-        "desc": "通过ID查找emitter_item_t，主要用于辅助测试。\n",
-        "name": "emitter_find",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "emitter_t*",
-            "name": "emitter",
-            "desc": "emitter对象。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "启用。\n",
-        "name": "emitter_enable",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "emitter_t*",
-            "name": "emitter",
-            "desc": "emitter对象。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "禁用。\n禁用后emitter_dispatch无效，但可以注册和注销。\n",
-        "name": "emitter_disable",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "emitter_t*",
-            "name": "emitter",
-            "desc": "emitter对象。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "获取注册的回调函数个数，主要用于辅助测试。\n",
-        "name": "emitter_size",
-        "return": {
-          "type": "uint32_t",
-          "desc": "回调函数个数。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "emitter_t*",
-            "name": "emitter",
-            "desc": "emitter对象。"
-          }
-        ],
-        "annotation": {
-          "deconstructor": true
-        },
-        "desc": "析构。\n",
-        "name": "emitter_deinit",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "emitter_t*",
-            "name": "emitter",
-            "desc": "emitter对象。"
-          }
-        ],
-        "annotation": {
-          "deconstructor": true,
-          "scriptable": true,
-          "gc": true
-        },
-        "desc": "销毁。\n",
-        "name": "emitter_destroy",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "emitter_t*",
-            "name": "emitter",
-            "desc": "emitter对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": "转换为emitter对象(供脚本语言使用)。\n主要给脚本语言使用。\n",
-        "name": "emitter_cast",
-        "return": {
-          "type": "emitter_t*",
-          "desc": "对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [
-      {
-        "name": "items",
-        "desc": "注册的回调函数集合。\n",
-        "type": "emitter_item_t*",
-        "annotation": {
-          "private": true
-        }
-      },
-      {
-        "name": "next_id",
-        "desc": "下一次emitter_on返回的ID，emitter_on成功后会自动增加next_id。\n",
-        "type": "uint32_t",
-        "annotation": {
-          "private": true
-        }
-      },
-      {
-        "name": "enable",
-        "desc": "禁用标志。禁用时dispatch无效。\n",
-        "type": "bool_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "remove_curr_iter",
-        "desc": "如果在回调函数中，emitter_off当前正在dispatch的回调函数，\n我们只是设置remove_curr_iter为TRUE，在分发完成后才执行。\nXXX: 如果要注销当前正在dispatch的回调函数，直接返回RET_REMOVE是最好的选择。\n",
-        "type": "bool_t",
-        "annotation": {
-          "private": true
-        }
-      },
-      {
-        "name": "curr_iter",
-        "desc": "当前正在dispatch的项。\n",
-        "type": "emitter_item_t*",
-        "annotation": {
-          "private": true
-        }
-      }
-    ],
-    "header": "tkc/emitter.h",
-    "desc": "事件分发器, 用于实现观察者模式。\n",
-    "name": "emitter_t",
-    "annotation": {
-      "scriptable": true
-    },
     "level": 1
   },
   {
@@ -28647,103 +28634,6 @@
       {
         "params": [
           {
-            "type": "int",
-            "name": "fd",
-            "desc": "可以用select等待的文件描述符。"
-          },
-          {
-            "type": "event_source_on_event_t",
-            "name": "on_event",
-            "desc": "用户的事件处理函数。"
-          },
-          {
-            "type": "void*",
-            "name": "ctx",
-            "desc": "on_event函数的上下文。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建fd事件源。\n",
-        "name": "event_source_fd_create",
-        "return": {
-          "type": "event_source_t*",
-          "desc": "返回事件源对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "tkc/event_source_fd.h",
-    "desc": "fd事件源。用于文件、管道和套接字。\n",
-    "name": "event_source_fd_t",
-    "parent": "object",
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "idle_manager_t*",
-            "name": "idle_manager",
-            "desc": "定时器管理器对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建idle事件源。\n",
-        "name": "event_source_idle_create",
-        "return": {
-          "type": "event_source_t*",
-          "desc": "返回事件源对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "tkc/event_source_idle.h",
-    "desc": "idle事件源。\n",
-    "name": "event_source_idle_t",
-    "parent": "object",
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "event_source_manager_t*",
-            "name": "manager",
-            "desc": "event_source_manager对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建事件源管理器。\n",
-        "name": "event_source_manager_default_create",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "tkc/event_source_manager_default.h",
-    "desc": "缺省的事件源管理器。\n",
-    "name": "event_source_manager_default_t",
-    "parent": "event_source_manager_t",
-    "annotation": {
-      "fake": true
-    },
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
             "type": "widget_t*",
             "name": "parent",
             "desc": "父控件"
@@ -29270,14 +29160,24 @@
       {
         "params": [
           {
-            "type": "timer_manager_t*",
-            "name": "timer_manager",
-            "desc": "定时器管理器对象。"
+            "type": "int",
+            "name": "fd",
+            "desc": "可以用select等待的文件描述符。"
+          },
+          {
+            "type": "event_source_on_event_t",
+            "name": "on_event",
+            "desc": "用户的事件处理函数。"
+          },
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "on_event函数的上下文。"
           }
         ],
         "annotation": {},
-        "desc": "创建timer事件源。\n",
-        "name": "event_source_timer_create",
+        "desc": "创建fd事件源。\n",
+        "name": "event_source_fd_create",
         "return": {
           "type": "event_source_t*",
           "desc": "返回事件源对象。"
@@ -29286,9 +29186,9 @@
     ],
     "events": [],
     "properties": [],
-    "header": "tkc/event_source_timer.h",
-    "desc": "timer事件源。\n",
-    "name": "event_source_timer_t",
+    "header": "tkc/event_source_fd.h",
+    "desc": "fd事件源。用于文件、管道和套接字。\n",
+    "name": "event_source_fd_t",
     "parent": "object",
     "level": 2
   },
@@ -29298,95 +29198,57 @@
       {
         "params": [
           {
-            "type": "event_source_t*",
-            "name": "source",
-            "desc": "event_source对象。"
+            "type": "idle_manager_t*",
+            "name": "idle_manager",
+            "desc": "定时器管理器对象。"
           }
         ],
         "annotation": {},
-        "desc": "获取文件描述符。\n",
-        "name": "event_source_get_fd",
+        "desc": "创建idle事件源。\n",
+        "name": "event_source_idle_create",
         "return": {
-          "type": "int32_t",
-          "desc": "返回文件描述符。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "event_source_t*",
-            "name": "source",
-            "desc": "event_source对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "分发事件。\n",
-        "name": "event_source_dispatch",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "event_source_t*",
-            "name": "source",
-            "desc": "event_source对象。"
-          },
-          {
-            "type": "void*",
-            "name": "tag",
-            "desc": "tag。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置tag，方便通过tag一次移除多个事件源。\n",
-        "name": "event_source_set_tag",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "event_source_t*",
-            "name": "source",
-            "desc": "event_source对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "对于没有文件描述符的事件源，需要自己检查是否准备就绪。\n",
-        "name": "event_source_check",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "event_source_t*",
-            "name": "source",
-            "desc": "event_source对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "获取唤醒时间(ms)。\n",
-        "name": "event_source_get_wakeup_time",
-        "return": {
-          "type": "uint32_t",
-          "desc": "返回唤醒时间(ms)。"
+          "type": "event_source_t*",
+          "desc": "返回事件源对象。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "tkc/event_source.h",
-    "desc": "表示一个事件源。\n事件源有下列两种方式：\n* 对于有文件描述符的事件源(如socket)，get_fd返回一个有效的文件描述符。\n* 对于定时器，则get_wakeup_time返回下次唤醒的时间。\n",
-    "name": "event_source_t",
+    "header": "tkc/event_source_idle.h",
+    "desc": "idle事件源。\n",
+    "name": "event_source_idle_t",
     "parent": "object",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "event_source_manager_t*",
+            "name": "manager",
+            "desc": "event_source_manager对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建事件源管理器。\n",
+        "name": "event_source_manager_default_create",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "tkc/event_source_manager_default.h",
+    "desc": "缺省的事件源管理器。\n",
+    "name": "event_source_manager_default_t",
+    "parent": "event_source_manager_t",
+    "annotation": {
+      "fake": true
+    },
     "level": 2
   },
   {
@@ -29783,6 +29645,131 @@
       "design": true,
       "widget": true
     },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "timer_manager_t*",
+            "name": "timer_manager",
+            "desc": "定时器管理器对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建timer事件源。\n",
+        "name": "event_source_timer_create",
+        "return": {
+          "type": "event_source_t*",
+          "desc": "返回事件源对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "tkc/event_source_timer.h",
+    "desc": "timer事件源。\n",
+    "name": "event_source_timer_t",
+    "parent": "object",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "event_source_t*",
+            "name": "source",
+            "desc": "event_source对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取文件描述符。\n",
+        "name": "event_source_get_fd",
+        "return": {
+          "type": "int32_t",
+          "desc": "返回文件描述符。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "event_source_t*",
+            "name": "source",
+            "desc": "event_source对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "分发事件。\n",
+        "name": "event_source_dispatch",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "event_source_t*",
+            "name": "source",
+            "desc": "event_source对象。"
+          },
+          {
+            "type": "void*",
+            "name": "tag",
+            "desc": "tag。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置tag，方便通过tag一次移除多个事件源。\n",
+        "name": "event_source_set_tag",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "event_source_t*",
+            "name": "source",
+            "desc": "event_source对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "对于没有文件描述符的事件源，需要自己检查是否准备就绪。\n",
+        "name": "event_source_check",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "event_source_t*",
+            "name": "source",
+            "desc": "event_source对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取唤醒时间(ms)。\n",
+        "name": "event_source_get_wakeup_time",
+        "return": {
+          "type": "uint32_t",
+          "desc": "返回唤醒时间(ms)。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "tkc/event_source.h",
+    "desc": "表示一个事件源。\n事件源有下列两种方式：\n* 对于有文件描述符的事件源(如socket)，get_fd返回一个有效的文件描述符。\n* 对于定时器，则get_wakeup_time返回下次唤醒的时间。\n",
+    "name": "event_source_t",
+    "parent": "object",
     "level": 2
   },
   {
@@ -46257,87 +46244,6 @@
       {
         "params": [
           {
-            "type": "void*",
-            "name": "buff_in",
-            "desc": "输入流缓冲区。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "size_in",
-            "desc": "输入流缓冲区大小。"
-          },
-          {
-            "type": "void*",
-            "name": "buff_out",
-            "desc": "输入流缓冲区。"
-          },
-          {
-            "type": "uoutt32_t",
-            "name": "size_out",
-            "desc": "输入流缓冲区大小。"
-          },
-          {
-            "type": "bool_t",
-            "name": "own_the_buff",
-            "desc": "是否让istream对象拥有buff。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建iostream对象。\n",
-        "name": "tk_iostream_mem_create",
-        "return": {
-          "type": "tk_iostream_t*",
-          "desc": "返回iostream对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "mem/iostream_mem.h",
-    "desc": "基于内存实现的输入输出流。\n",
-    "name": "tk_iostream_mem_t",
-    "parent": "tk_iostream_t",
-    "level": 4
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "tk_istream_t*",
-            "name": "real_istream",
-            "desc": "实际的istream。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "buffer_size",
-            "desc": "缓冲区的大小。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建istream对象。\n本函数自动增加real_ostream的引用计数。\n",
-        "name": "tk_istream_buffered_create",
-        "return": {
-          "type": "tk_istream_t*",
-          "desc": "返回istream对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "buffered/istream_buffered.h",
-    "desc": "缓冲输入流。\n如果调用者每次只读取少量数据，可以使用本类对底层istream进行装饰，以提高读取效率。\n",
-    "name": "tk_istream_buffered_t",
-    "parent": "tk_istream_t",
-    "level": 4
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
             "type": "int",
             "name": "sock",
             "desc": "socket."
@@ -46405,6 +46311,162 @@
     "desc": "基于UDP实现的输出流。\n",
     "name": "tk_ostream_udp_t",
     "parent": "tk_ostream_t",
+    "level": 4
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "tk_istream_t*",
+            "name": "real_istream",
+            "desc": "实际的istream。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "buffer_size",
+            "desc": "缓冲区的大小。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建istream对象。\n本函数自动增加real_ostream的引用计数。\n",
+        "name": "tk_istream_buffered_create",
+        "return": {
+          "type": "tk_istream_t*",
+          "desc": "返回istream对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "buffered/istream_buffered.h",
+    "desc": "缓冲输入流。\n如果调用者每次只读取少量数据，可以使用本类对底层istream进行装饰，以提高读取效率。\n",
+    "name": "tk_istream_buffered_t",
+    "parent": "tk_istream_t",
+    "level": 4
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "int",
+            "name": "sock",
+            "desc": "socket。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建istream对象。\n",
+        "name": "tk_istream_udp_create",
+        "return": {
+          "type": "tk_istream_t*",
+          "desc": "返回istream对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_istream_t*",
+            "name": "stream",
+            "desc": "istream对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "host",
+            "desc": "主机或IP。"
+          },
+          {
+            "type": "int",
+            "name": "port",
+            "desc": "端口。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置目标。\n",
+        "name": "tk_istream_udp_set_target_with_host",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_istream_t*",
+            "name": "stream",
+            "desc": "istream对象。"
+          },
+          {
+            "type": "struct sockaddr_in",
+            "name": "addr",
+            "desc": "地址。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置目标。\n",
+        "name": "tk_istream_udp_set_target_with_addr",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "inet/istream_udp.h",
+    "desc": "基于UDP实现的输入流。\n",
+    "name": "tk_istream_udp_t",
+    "parent": "tk_istream_t",
+    "level": 4
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "void*",
+            "name": "buff_in",
+            "desc": "输入流缓冲区。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size_in",
+            "desc": "输入流缓冲区大小。"
+          },
+          {
+            "type": "void*",
+            "name": "buff_out",
+            "desc": "输入流缓冲区。"
+          },
+          {
+            "type": "uoutt32_t",
+            "name": "size_out",
+            "desc": "输入流缓冲区大小。"
+          },
+          {
+            "type": "bool_t",
+            "name": "own_the_buff",
+            "desc": "是否让istream对象拥有buff。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建iostream对象。\n",
+        "name": "tk_iostream_mem_create",
+        "return": {
+          "type": "tk_iostream_t*",
+          "desc": "返回iostream对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "mem/iostream_mem.h",
+    "desc": "基于内存实现的输入输出流。\n",
+    "name": "tk_iostream_mem_t",
+    "parent": "tk_iostream_t",
     "level": 4
   },
   {
@@ -46506,65 +46568,18 @@
         ],
         "annotation": {},
         "desc": "创建istream对象。\n",
-        "name": "tk_istream_udp_create",
+        "name": "tk_istream_tcp_create",
         "return": {
           "type": "tk_istream_t*",
           "desc": "返回istream对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tk_istream_t*",
-            "name": "stream",
-            "desc": "istream对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "host",
-            "desc": "主机或IP。"
-          },
-          {
-            "type": "int",
-            "name": "port",
-            "desc": "端口。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置目标。\n",
-        "name": "tk_istream_udp_set_target_with_host",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tk_istream_t*",
-            "name": "stream",
-            "desc": "istream对象。"
-          },
-          {
-            "type": "struct sockaddr_in",
-            "name": "addr",
-            "desc": "地址。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置目标。\n",
-        "name": "tk_istream_udp_set_target_with_addr",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "inet/istream_udp.h",
-    "desc": "基于UDP实现的输入流。\n",
-    "name": "tk_istream_udp_t",
+    "header": "inet/istream_tcp.h",
+    "desc": "基于TCP实现的输入流。\n",
+    "name": "tk_istream_tcp_t",
     "parent": "tk_istream_t",
     "level": 4
   },
@@ -46866,26 +46881,47 @@
       {
         "params": [
           {
+            "type": "const char*",
+            "name": "host",
+            "desc": "服务器地址。"
+          },
+          {
             "type": "int",
-            "name": "sock",
-            "desc": "socket。"
+            "name": "port",
+            "desc": "端口。"
           }
         ],
         "annotation": {},
-        "desc": "创建istream对象。\n",
-        "name": "tk_istream_tcp_create",
+        "desc": "创建iostream对象(客户端)。\n",
+        "name": "tk_iostream_udp_create_client",
         "return": {
-          "type": "tk_istream_t*",
-          "desc": "返回istream对象。"
+          "type": "tk_iostream_t*",
+          "desc": "返回iostream对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "int",
+            "name": "sock",
+            "desc": "socket"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建iostream对象(客户端)。\n",
+        "name": "tk_iostream_udp_create",
+        "return": {
+          "type": "tk_iostream_t*",
+          "desc": "返回iostream对象。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "inet/istream_tcp.h",
-    "desc": "基于TCP实现的输入流。\n",
-    "name": "tk_istream_tcp_t",
-    "parent": "tk_istream_t",
+    "header": "inet/iostream_udp.h",
+    "desc": "基于UDP实现的输入输出流。\n",
+    "name": "tk_iostream_udp_t",
+    "parent": "tk_iostream_t",
     "level": 4
   },
   {
@@ -46997,55 +47033,6 @@
     "desc": "reliable ostream base on simple HDLC\n",
     "name": "tk_ostream_shdlc_t",
     "parent": "tk_ostream_t",
-    "level": 4
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "const char*",
-            "name": "host",
-            "desc": "服务器地址。"
-          },
-          {
-            "type": "int",
-            "name": "port",
-            "desc": "端口。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建iostream对象(客户端)。\n",
-        "name": "tk_iostream_udp_create_client",
-        "return": {
-          "type": "tk_iostream_t*",
-          "desc": "返回iostream对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "int",
-            "name": "sock",
-            "desc": "socket"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建iostream对象(客户端)。\n",
-        "name": "tk_iostream_udp_create",
-        "return": {
-          "type": "tk_iostream_t*",
-          "desc": "返回iostream对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "inet/iostream_udp.h",
-    "desc": "基于UDP实现的输入输出流。\n",
-    "name": "tk_iostream_udp_t",
-    "parent": "tk_iostream_t",
     "level": 4
   },
   {

@@ -119,7 +119,7 @@ ret_t emitter_dispatch(emitter_t* emitter, event_t* e);
  * > 对emitter_dispatch的包装，分发一个简单的事件。
  * @annotation ["scriptable"]
  * @param {emitter_t*} emitter emitter对象。
- * @param {uint32_t} type 事件类型。
+ * @param {event_type_t} type 事件类型。
  * @return {ret_t}
  *  如果当前分发的回调函数返回RET_STOP，dispatch中断分发，并返回RET_STOP，否则返回RET_OK。
  */
@@ -130,7 +130,7 @@ ret_t emitter_dispatch_simple_event(emitter_t* emitter, uint32_t type);
  * 注册指定事件的处理函数。
  * @annotation ["scriptable:custom"]
  * @param {emitter_t*} emitter emitter对象。
- * @param {uint32_t} type 事件类型。
+ * @param {event_type_t} type 事件类型。
  * @param {event_func_t} on_event 事件处理函数。
  * @param {void*} ctx 事件处理函数上下文。
  *
@@ -142,7 +142,7 @@ uint32_t emitter_on(emitter_t* emitter, uint32_t etype, event_func_t handler, vo
  * @method emitter_on_with_tag
  * 注册指定事件的处理函数。
  * @param {emitter_t*} emitter emitter对象。
- * @param {uint32_t} type 事件类型。
+ * @param {event_type_t} type 事件类型。
  * @param {event_func_t} on_event 事件处理函数。
  * @param {void*} ctx 事件处理函数上下文。
  * @param {uint32_t} tag tag。
@@ -167,7 +167,7 @@ ret_t emitter_off(emitter_t* emitter, uint32_t id);
  * @method emitter_off_by_func
  * 注销指定事件的处理函数。
  * @param {emitter_t*} emitter emitter对象。
- * @param {uint32_t} type 事件类型。
+ * @param {event_type_t} type 事件类型。
  * @param {event_func_t} on_event 事件处理函数。
  * @param {void*} ctx 事件处理函数上下文。
  *

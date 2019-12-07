@@ -27,7 +27,7 @@
 BEGIN_C_DECLS
 
 /**
- * @enum event_base_type_t
+ * @enum event_type_t
  * @annotation ["scriptable"]
  * @prefix EVT_
  * 类型常量定义。

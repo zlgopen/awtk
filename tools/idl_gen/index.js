@@ -224,7 +224,12 @@ class IDLGenerator {
       }
     });
 
-    this.result.push(cls);
+    if(this.getClass(cls.name)) {
+      this.cls = this.getClass(cls.name);
+      console.log(`${cls.name} ${this.cls.header}  exist\n`);
+    } else {
+     this.result.push(cls);
+    }
   }
 
   parseEnum(comment) {
@@ -249,7 +254,12 @@ class IDLGenerator {
       }
     });
 
-    this.result.push(cls);
+    if(this.getClass(cls.name)) {
+      this.cls = this.getClass(cls.name);
+      console.log(`${cls.name} ${this.cls.header}  exist\n`);
+    } else {
+     this.result.push(cls);
+    }
   }
 
   parseConst(comment) {
@@ -326,14 +336,15 @@ class IDLGenerator {
     return;
   }
 
+  getClass(name) {
+    return this.result.find(iter => {
+      return iter.name === name;
+    });
+  }
+
   updateLevel() {
     let json = this.result;
-
-    function getClass(name) {
-      return json.find(iter => {
-        return iter.name === name;
-      });
-    }
+    let getClass = this.getClass.bind(this);
 
     function updateLevel(cls) {
       if(cls.level) {

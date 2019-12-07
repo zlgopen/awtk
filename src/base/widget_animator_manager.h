@@ -27,7 +27,7 @@
 BEGIN_C_DECLS
 
 /**
- * @class widget_animator_t
+ * @class widget_animator_manager_t
  * 控件动画管理器。
  */
 struct _widget_animator_manager_t {
