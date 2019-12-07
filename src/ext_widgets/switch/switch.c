@@ -391,6 +391,11 @@ static ret_t switch_set_prop(widget_t* widget, const char* name, const value_t* 
     return RET_OK;
   } else if (tk_str_eq(name, SWITCH_PROP_MAX_XOFFSET_RATIO)) {
     aswitch->max_xoffset_ratio = value_float(v);
+    if (aswitch->value) {
+      aswitch->xoffset = 0;
+    } else {
+      aswitch->xoffset = aswitch->max_xoffset_ratio * widget->w;
+    }
     return RET_OK;
   }
 
