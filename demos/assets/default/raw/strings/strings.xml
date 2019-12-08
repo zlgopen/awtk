@@ -8,6 +8,16 @@
 <language name="zh_CN">取消</language>
 </string>
 
+<string name="info">
+<language name="en_US">Information</language>
+<language name="zh_CN">温馨提示</language>
+</string>
+
+<string name="hello awtk">
+<language name="en_US">Hello AWTK</language>
+<language name="zh_CN">你好，AWTK</language>
+</string>
+
 <string name="value is %d">
 <language name="en_US">value is %d</language>
 <language name="zh_CN">值为%d</language>

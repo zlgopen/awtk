@@ -99,7 +99,7 @@ static widget_t* dialog_create_label(const char* text) {
   label = label_create(NULL, 0, 0, 0, 0);
   return_value_if_fail(label != NULL, NULL);
 
-  widget_set_text_utf8(label, text);
+  widget_set_tr_text(label, text);
   label_resize_to_content(label, r.x, r.w, r.y, r.h);
 
   return label;

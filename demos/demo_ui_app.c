@@ -263,7 +263,7 @@ static ret_t on_open_window(void* ctx, event_t* e) {
   if (tk_str_eq(name, "toast")) {
     dialog_toast("Hello AWTK!\nThis is a toast!", 3000);
   } else if (tk_str_eq(name, "info")) {
-    dialog_info(NULL, "Hello AWTK!\nThis is info dialog!");
+    dialog_info("info", "hello awtk");
   } else if (tk_str_eq(name, "warn")) {
     dialog_warn(NULL, "Hello AWTK!\nDanger!!!");
   } else if (tk_str_eq(name, "confirm")) {
