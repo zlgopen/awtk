@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   slider.c
  * Author: AWTK Develop Team
  * Brief:  slider
@@ -146,7 +146,7 @@ static ret_t slider_on_paint_self(widget_t* widget, canvas_t* c) {
   float_t fvalue = 0;
   uint32_t radius = 0;
   uint32_t bar_size = 0;
-  uint32_t dragger_size = 0;
+
   const char* bg_image = 0;
   image_draw_type_t draw_type;
   slider_t* slider = SLIDER(widget);
@@ -157,7 +157,6 @@ static ret_t slider_on_paint_self(widget_t* widget, canvas_t* c) {
   dr = &(slider->dragger_rect);
   fvalue = (float_t)(slider->value - slider->min) / (float_t)(slider->max - slider->min);
   bar_size = slider_get_bar_size(widget);
-  dragger_size = slider->dragger_size;
   radius = style_get_int(widget->astyle, STYLE_ID_ROUND_RADIUS, 0);
   bg_image = style_get_str(widget->astyle, STYLE_ID_BG_IMAGE, NULL);
   draw_type = slider->vertical ? IMAGE_DRAW_PATCH3_Y : IMAGE_DRAW_PATCH3_X;
@@ -187,7 +186,8 @@ static ret_t slider_on_paint_self(widget_t* widget, canvas_t* c) {
   slider_fill_rect(widget, c, &br, NULL, draw_type);
   slider_fill_rect(widget, c, &fr, &br, draw_type);
   slider_paint_dragger(widget, c);
-
+  (void)fvalue;
+	
   return RET_OK;
 }
 
