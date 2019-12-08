@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   window_manager.c
  * Author: AWTK Develop Team
  * Brief:  window manager
@@ -109,10 +109,6 @@ static ret_t window_manager_back_to_win_sync(widget_t* widget, widget_t* target)
   }
 
   return window_manager_close_window(widget, top);
-}
-
-static ret_t window_manager_back_to_home_sync(widget_t* widget) {
-  return window_manager_back_to_win_sync(widget, NULL);
 }
 
 typedef struct _back_to_win_info_t {
