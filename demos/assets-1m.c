@@ -94,9 +94,7 @@
 #include "assets/default/inc/ui/fade.data"
 #include "assets/default/inc/ui/image_list.data"
 #include "assets/default/inc/ui/slide_view_v1.data"
-#include "assets/default/inc/ui/select1.data"
 #include "assets/default/inc/ui/slide_left.data"
-#include "assets/default/inc/ui/image_animation.data"
 #include "assets/default/inc/ui/image_value.data"
 #include "assets/default/inc/ui/slide_view.data"
 #include "assets/default/inc/ui/time_clock.data"
@@ -123,7 +121,6 @@
 #include "assets/default/inc/images/close_p.res"
 #include "assets/default/inc/images/num_6.res"
 #include "assets/default/inc/images/shift.res"
-#include "assets/default/inc/images/earth.res"
 #include "assets/default/inc/images/contact.res"
 #include "assets/default/inc/images/battery_4.res"
 #include "assets/default/inc/images/num_4.res"
@@ -147,7 +144,6 @@
 #include "assets/default/inc/images/edit_clear_p.res"
 #include "assets/default/inc/images/arrow_up_o.res"
 #include "assets/default/inc/images/visible.res"
-#include "assets/default/inc/images/ani1.res"
 #include "assets/default/inc/images/arrow_left_o.res"
 #include "assets/default/inc/images/clock_second.res"
 #include "assets/default/inc/images/battery_2.res"
@@ -231,7 +227,6 @@
 #include "assets/default/inc/images/progress_circle.data"
 #include "assets/default/inc/images/muted.data"
 #include "assets/default/inc/images/num_8.data"
-#include "assets/default/inc/images/earth.data"
 #include "assets/default/inc/images/shift.data"
 #include "assets/default/inc/images/arrow_up_p.data"
 #include "assets/default/inc/images/discovery_active.data"
@@ -300,7 +295,6 @@
 #include "assets/default/inc/images/battery_4.data"
 #include "assets/default/inc/images/message.data"
 #include "assets/default/inc/images/edit_clear_o.data"
-#include "assets/default/inc/images/ani1.data"
 #include "assets/default/inc/images/battery_3.data"
 #include "assets/default/inc/images/logo.data"
 #include "assets/default/inc/images/arrow_left_o.data"
@@ -421,9 +415,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_fade);
   assets_manager_add(am, ui_image_list);
   assets_manager_add(am, ui_slide_view_v1);
-  assets_manager_add(am, ui_select1);
   assets_manager_add(am, ui_slide_left);
-  assets_manager_add(am, ui_image_animation);
   assets_manager_add(am, ui_image_value);
   assets_manager_add(am, ui_slide_view);
   assets_manager_add(am, ui_time_clock);
@@ -436,7 +428,6 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_kb_ufloat);
   assets_manager_add(am, ui_kb_default);
   assets_manager_add(am, ui_slide_up);
-  assets_manager_add(am, ui_rich_text2);
   assets_manager_add(am, ui_list_view_h);
   assets_manager_add(am, ui_color_picker_rgb);
   assets_manager_add(am, ui_tab_bottom_compact);
@@ -453,11 +444,9 @@ ret_t assets_init(void) {
   assets_manager_add(am, image_progress_circle);
   assets_manager_add(am, image_muted);
   assets_manager_add(am, image_num_8);
-  assets_manager_add(am, image_earth);
   assets_manager_add(am, image_shift);
   assets_manager_add(am, image_arrow_up_p);
   assets_manager_add(am, image_discovery_active);
-  assets_manager_add(am, image_en);
   assets_manager_add(am, image_right_on);
   assets_manager_add(am, image_discovery);
   assets_manager_add(am, image_rgb);
@@ -521,7 +510,6 @@ ret_t assets_init(void) {
   assets_manager_add(am, image_battery_4);
   assets_manager_add(am, image_message);
   assets_manager_add(am, image_edit_clear_o);
-  assets_manager_add(am, image_ani1);
   assets_manager_add(am, image_battery_3);
   assets_manager_add(am, image_logo);
   assets_manager_add(am, image_arrow_left_o);
