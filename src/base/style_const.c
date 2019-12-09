@@ -47,26 +47,35 @@ static bool_t is_valid_style_name(const char* str) {
   return str != NULL && *str;
 }
 
-static const void* widget_get_const_style_data_for_state(widget_t* widget, const char* state) {
+static const void* widget_get_const_style_data_for_state_impl(widget_t* widget, const char* style_name, const char* state) {
   const void* data = NULL;
   theme_t* win_theme = NULL;
   theme_t* default_theme = NULL;
-
   const char* type = widget->vt->type;
-  const char* style_name = is_valid_style_name(widget->style) ? widget->style : TK_DEFAULT_STYLE;
 
   if (tk_str_eq(type, WIDGET_TYPE_WINDOW_MANAGER)) {
     return theme_find_style(theme(), type, style_name, state);
   }
 
   return_value_if_fail(widget_get_window_theme(widget, &win_theme, &default_theme) == RET_OK, NULL);
-
   if (win_theme != NULL) {
     data = theme_find_style(win_theme, type, style_name, state);
   }
 
   if (data == NULL) {
     data = theme_find_style(default_theme, type, style_name, state);
+  }
+
+  return data;
+}
+
+static const void* widget_get_const_style_data_for_state(widget_t* widget, const char* state) {
+  const void* data = NULL;
+  const char* style_name = is_valid_style_name(widget->style) ? widget->style : TK_DEFAULT_STYLE;
+
+  data = widget_get_const_style_data_for_state_impl(widget, style_name, state);
+  if(data == NULL) {
+    data = widget_get_const_style_data_for_state_impl(widget, TK_DEFAULT_STYLE, state);
   }
 
   return data;
