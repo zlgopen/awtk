@@ -90,7 +90,12 @@ typedef enum _input_type_t {
    * @const INPUT_CUSTOM
    * 使用自定义的软键盘(如计算器等应用不希望弹出系统软键盘)。
    */
-  INPUT_CUSTOM
+  INPUT_CUSTOM,
+  /**
+   * @const INPUT_CUSTOM_PASSWORD
+   * 使用自定义的密码软键盘。
+   */
+  INPUT_CUSTOM_PASSWORD
 } input_type_t;
 
 /**

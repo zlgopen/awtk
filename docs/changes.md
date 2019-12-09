@@ -3,6 +3,7 @@
 * 2019/12/09
   * 完善 dialog ex 的文本翻译。
   * 支持设置 combobox popup 的 style。
+  * edit 增加input type "custom_password"类型。
 
 * 2019/12/07
   * 修改 widget\_set\_state 脚本绑定时的问题（感谢大恒提供补丁）。
