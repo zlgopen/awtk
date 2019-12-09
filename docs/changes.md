@@ -3,8 +3,9 @@
 * 2019/12/09
   * 完善 dialog ex 的文本翻译。
   * 支持设置 combobox popup 的 style。
-  * edit 增加input type "custom_password"类型。
-
+  * edit 增加 input type "custom_password"类型。
+  * 完善 text selector （感谢大恒提供补丁）。
+  
 * 2019/12/07
   * 修改 widget\_set\_state 脚本绑定时的问题（感谢大恒提供补丁）。
   * switch 控件：修正 max_xoffset_ratio 属性修改后 xoffset 没有更新的问题；（感谢朝泽提供补丁）。 

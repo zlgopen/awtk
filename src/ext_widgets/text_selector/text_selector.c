@@ -142,7 +142,6 @@ ret_t text_selector_parse_options(widget_t* widget, const char* str) {
   text_selector_t* text_selector = TEXT_SELECTOR(widget);
   return_value_if_fail(widget != NULL && text_selector != NULL, RET_BAD_PARAMS);
 
-  text_selector_reset_options(widget);
   text_selector->options = tk_strdup(str);
   tokenizer_init(t, str, strlen(str), ";");
 
@@ -190,6 +189,7 @@ ret_t text_selector_set_range_options(widget_t* widget, int32_t start, uint32_t 
 ret_t text_selector_set_options(widget_t* widget, const char* options) {
   return_value_if_fail(widget != NULL && options != NULL, RET_BAD_PARAMS);
 
+  text_selector_reset_options(widget);
   if (strchr(options, ':') == NULL && strchr(options, '-') != NULL) {
     int nr = 0;
     int end = 0;
@@ -496,6 +496,7 @@ widget_t* text_selector_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
   text_selector->visible_nr = 5;
   text_selector->pressed = FALSE;
 
+  text_selector_sync_yoffset_with_selected_index(text_selector);
   return widget;
 }
 
@@ -639,6 +640,7 @@ ret_t text_selector_set_visible_nr(widget_t* widget, uint32_t visible_nr) {
   return_value_if_fail(text_selector != NULL, RET_BAD_PARAMS);
 
   text_selector->visible_nr = visible_nr == 3 ? 3 : 5;
+  text_selector_sync_yoffset_with_selected_index(text_selector);
 
   return widget_invalidate(widget, NULL);
 }
