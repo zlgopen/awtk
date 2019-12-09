@@ -1,14 +1,18 @@
 # 最新动态
 
+* 2019/12/09
+  * 完善 dialog ex 的文本翻译。
+  * 支持设置 combobox popup 的 style。
+
 * 2019/12/07
   * 修改 widget\_set\_state 脚本绑定时的问题（感谢大恒提供补丁）。
-  * switch控件：修正max_xoffset_ratio属性修改后xoffset没有更新的问题；（感谢朝泽提供补丁）。 
-  * slider控件：（感谢朝泽提供补丁）。 
+  * switch 控件：修正 max_xoffset_ratio 属性修改后 xoffset 没有更新的问题；（感谢朝泽提供补丁）。 
+  * slider 控件：（感谢朝泽提供补丁）。 
     *（1）修正当控件的值比较小时滑块与前景部分之间有空白的问题（修改为始终在滑块的中间）；
     *（2）修改控件的背景和前景没有贴合的问题；
-    *（3）修改dragger_size属性允许设置，以便修改滑块的宽度或高度；
-    *（4）添加dragger_adapt_to_icon属性，用于标识滑块大小是否与icon适应
-    *（5）添加slide_with_bar属性，用于标识是否允许在轴上滑动来改变滑块位置
+    *（3）修改 dragger_size 属性允许设置，以便修改滑块的宽度或高度；
+    *（4）添加 dragger_adapt_to_icon 属性，用于标识滑块大小是否与 icon 适应
+    *（5）添加 slide_with_bar 属性，用于标识是否允许在轴上滑动来改变滑块位置
 
 * 2019/12/06
   * 完善脚本绑定。

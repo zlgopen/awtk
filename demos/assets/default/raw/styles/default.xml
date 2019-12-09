@@ -32,6 +32,9 @@
   <style name="dark">
     <normal bg_color="#808080"/>
   </style>
+  <style name="combobox_popup">
+    <normal bg_color="#808080"/>
+  </style>
 </popup>
 
 <button>

@@ -356,6 +356,7 @@ static widget_t* combo_box_create_popup(combo_box_t* combo_box) {
   tk_snprintf(params, sizeof(params) - 1, "default(m=%d, r=%d c=%d)", margin, nr, 1);
   widget_set_children_layout(win, params);
 
+  widget_use_style(win, "combobox_popup");
   combo_box_create_popup_items(combo_box, win);
   widget_layout(win);
 
