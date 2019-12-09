@@ -187,7 +187,7 @@ static ret_t slider_on_paint_self(widget_t* widget, canvas_t* c) {
   slider_fill_rect(widget, c, &fr, &br, draw_type);
   slider_paint_dragger(widget, c);
   (void)fvalue;
-	
+
   return RET_OK;
 }
 

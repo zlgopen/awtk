@@ -47,7 +47,9 @@ static bool_t is_valid_style_name(const char* str) {
   return str != NULL && *str;
 }
 
-static const void* widget_get_const_style_data_for_state_impl(widget_t* widget, const char* style_name, const char* state) {
+static const void* widget_get_const_style_data_for_state_impl(widget_t* widget,
+                                                              const char* style_name,
+                                                              const char* state) {
   const void* data = NULL;
   theme_t* win_theme = NULL;
   theme_t* default_theme = NULL;
@@ -74,7 +76,7 @@ static const void* widget_get_const_style_data_for_state(widget_t* widget, const
   const char* style_name = is_valid_style_name(widget->style) ? widget->style : TK_DEFAULT_STYLE;
 
   data = widget_get_const_style_data_for_state_impl(widget, style_name, state);
-  if(data == NULL) {
+  if (data == NULL) {
     data = widget_get_const_style_data_for_state_impl(widget, TK_DEFAULT_STYLE, state);
   }
 

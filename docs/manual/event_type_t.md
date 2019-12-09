@@ -71,3 +71,11 @@
 | EVT\_THEME\_CHANGED | 主题变化(event\_t)。 |
 | EVT\_REQ\_START | event queue其它请求编号起始值。 |
 | EVT\_USER\_START | 用户定义事件起始值。 |
+| EVT\_NONE | 无效事件名称。 |
+| EVT\_PROP\_WILL\_CHANGE | 对象的属性即将改变的事件名(prop\_change\_event\_t)。 |
+| EVT\_PROP\_CHANGED | 对象的属性改变的事件名(prop\_change\_event\_t)。 |
+| EVT\_ITEMS\_WILL\_CHANGE | 即将增加和删除集合中的项目(event\_t)。 |
+| EVT\_ITEMS\_CHANGED | 完成增加和删除集合中的项目(event\_t)。 |
+| EVT\_PROPS\_CHANGED | 对象的属性改变的事件名(props\_event\_t)。 |
+| EVT\_PROGRESS | 进度状态(progress\_event\_t)。 |
+| EVT\_DESTROY | 对象销毁事件名(event\_t)。 |

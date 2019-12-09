@@ -15,7 +15,6 @@ style\_mutable也对style\_const进行了包装，当用户没修改某个值时
 | <a href="#style_mutable_t_style_mutable_copy">style\_mutable\_copy</a> | 将other对象的数据拷贝到s对象。 |
 | <a href="#style_mutable_t_style_mutable_create">style\_mutable\_create</a> | 创建style\_mutable对象。 |
 | <a href="#style_mutable_t_style_mutable_foreach">style\_mutable\_foreach</a> | 遍历。对每项调用回调函数on\_style\_item。 |
-| <a href="#style_mutable_t_style_mutable_get_name">style\_mutable\_get\_name</a> | 获取style的名称。 |
 | <a href="#style_mutable_t_style_mutable_get_value">style\_mutable\_get\_value</a> | 获取指定名称的值。 |
 | <a href="#style_mutable_t_style_mutable_register">style\_mutable\_register</a> | 将自己注册到style\_factory。 |
 | <a href="#style_mutable_t_style_mutable_set_color">style\_mutable\_set\_color</a> | 设置指定名称的颜色值。 |
@@ -114,26 +113,6 @@ ret_t style_mutable_foreach (style_t* s, tk_on_style_item_t on_style_item, void*
 | s | style\_t* | style对象。 |
 | on\_style\_item | tk\_on\_style\_item\_t | 回调函数。 |
 | ctx | void* | 回调函数的上下文。 |
-#### style\_mutable\_get\_name 函数
------------------------
-
-* 函数功能：
-
-> <p id="style_mutable_t_style_mutable_get_name">获取style的名称。
-
-
-* 函数原型：
-
-```
-const char* style_mutable_get_name (style_t* s);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | const char* | style的名称。 |
-| s | style\_t* | style对象。 |
 #### style\_mutable\_get\_value 函数
 -----------------------
 

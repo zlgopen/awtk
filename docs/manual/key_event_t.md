@@ -48,7 +48,7 @@ key_event_t* key_event_cast (event_t* event);
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | key\_event\_t* | 对象。 |
+| 返回值 | key\_event\_t* | event对象。 |
 | event | event\_t* | event对象。 |
 #### key\_event\_init 函数
 -----------------------

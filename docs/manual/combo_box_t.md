@@ -51,6 +51,24 @@ demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/combo_box.c)
 </style>
 </combo_box>
 ```
+* 1.combobox的下拉按钮的style名称为combobox_down，可以在主题文件中设置。
+```xml
+<button>
+<style name="combobox_down" border_color="#a0a0a0">
+<normal     bg_color="#f0f0f0" icon="arrow_down_n"/>
+<pressed    bg_color="#c0c0c0" icon="arrow_down_p"/>
+<over       bg_color="#e0e0e0" icon="arrow_down_o"/>
+</style>
+</button>
+```
+* 2.combobox的弹出popup窗口的style名称为combobox_popup，可以在主题文件中设置。
+```xml
+<popup>
+<style name="combobox_popup" border_color="red">
+<normal bg_color="#808080"/>
+</style>
+</popup>
+```
 > 更多用法请参考：[theme
 default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L422)
 

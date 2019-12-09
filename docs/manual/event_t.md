@@ -53,7 +53,7 @@ event_t* event_cast (event_t* event);
 * 函数原型：
 
 ```
-event_t* event_create (uint32_t type, void* target);
+event_t* event_create (uint32_t type);
 ```
 
 * 参数说明：
@@ -62,7 +62,6 @@ event_t* event_create (uint32_t type, void* target);
 | -------- | ----- | --------- |
 | 返回值 | event\_t* | 返回事件对象。 |
 | type | uint32\_t | 事件类型。 |
-| target | void* | 目标对象。 |
 #### event\_destroy 函数
 -----------------------
 

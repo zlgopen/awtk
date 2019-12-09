@@ -169,7 +169,7 @@ ret_t emitter_dispatch (emitter_t* emitter, event_t* e);
 * 函数原型：
 
 ```
-ret_t emitter_dispatch_simple_event (emitter_t* emitter, uint32_t type);
+ret_t emitter_dispatch_simple_event (emitter_t* emitter, event_type_t type);
 ```
 
 * 参数说明：
@@ -178,7 +178,7 @@ ret_t emitter_dispatch_simple_event (emitter_t* emitter, uint32_t type);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t |  |
 | emitter | emitter\_t* | emitter对象。 |
-| type | uint32\_t | 事件类型。 |
+| type | event\_type\_t | 事件类型。 |
 #### emitter\_enable 函数
 -----------------------
 
@@ -293,7 +293,7 @@ ret_t emitter_off_by_ctx (emitter_t* emitter, void* ctx);
 * 函数原型：
 
 ```
-ret_t emitter_off_by_func (emitter_t* emitter, uint32_t type, event_func_t on_event, void* ctx);
+ret_t emitter_off_by_func (emitter_t* emitter, event_type_t type, event_func_t on_event, void* ctx);
 ```
 
 * 参数说明：
@@ -302,7 +302,7 @@ ret_t emitter_off_by_func (emitter_t* emitter, uint32_t type, event_func_t on_ev
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | emitter | emitter\_t* | emitter对象。 |
-| type | uint32\_t | 事件类型。 |
+| type | event\_type\_t | 事件类型。 |
 | on\_event | event\_func\_t | 事件处理函数。 |
 | ctx | void* | 事件处理函数上下文。 |
 #### emitter\_off\_by\_tag 函数
@@ -337,7 +337,7 @@ ret_t emitter_off_by_tag (emitter_t* emitter, uint32_t tag);
 * 函数原型：
 
 ```
-uint32_t emitter_on (emitter_t* emitter, uint32_t type, event_func_t on_event, void* ctx);
+uint32_t emitter_on (emitter_t* emitter, event_type_t type, event_func_t on_event, void* ctx);
 ```
 
 * 参数说明：
@@ -346,7 +346,7 @@ uint32_t emitter_on (emitter_t* emitter, uint32_t type, event_func_t on_event, v
 | -------- | ----- | --------- |
 | 返回值 | uint32\_t | 返回id，用于emitter\_off。 |
 | emitter | emitter\_t* | emitter对象。 |
-| type | uint32\_t | 事件类型。 |
+| type | event\_type\_t | 事件类型。 |
 | on\_event | event\_func\_t | 事件处理函数。 |
 | ctx | void* | 事件处理函数上下文。 |
 #### emitter\_on\_with\_tag 函数
@@ -360,7 +360,7 @@ uint32_t emitter_on (emitter_t* emitter, uint32_t type, event_func_t on_event, v
 * 函数原型：
 
 ```
-uint32_t emitter_on_with_tag (emitter_t* emitter, uint32_t type, event_func_t on_event, void* ctx, uint32_t tag);
+uint32_t emitter_on_with_tag (emitter_t* emitter, event_type_t type, event_func_t on_event, void* ctx, uint32_t tag);
 ```
 
 * 参数说明：
@@ -369,7 +369,7 @@ uint32_t emitter_on_with_tag (emitter_t* emitter, uint32_t type, event_func_t on
 | -------- | ----- | --------- |
 | 返回值 | uint32\_t | 返回id，用于emitter\_off。 |
 | emitter | emitter\_t* | emitter对象。 |
-| type | uint32\_t | 事件类型。 |
+| type | event\_type\_t | 事件类型。 |
 | on\_event | event\_func\_t | 事件处理函数。 |
 | ctx | void* | 事件处理函数上下文。 |
 | tag | uint32\_t | tag。 |

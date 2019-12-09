@@ -44,7 +44,7 @@ pointer_event_t* pointer_event_cast (event_t* event);
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | pointer\_event\_t* | 对象。 |
+| 返回值 | pointer\_event\_t* | event对象。 |
 | event | event\_t* | event对象。 |
 #### pointer\_event\_init 函数
 -----------------------

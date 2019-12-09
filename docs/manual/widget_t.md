@@ -48,7 +48,7 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | <a href="#widget_t_widget_clone">widget\_clone</a> | clone。 |
 | <a href="#widget_t_widget_count_children">widget\_count\_children</a> | 获取子控件的个数。 |
 | <a href="#widget_t_widget_create_animator">widget\_create\_animator</a> | 创建动画。 |
-| <a href="#widget_t_widget_destroy">widget\_destroy</a> | 销毁控件。 |
+| <a href="#widget_t_widget_destroy">widget\_destroy</a> | 从父控件中移除控件，并调用unref函数销毁控件。 |
 | <a href="#widget_t_widget_destroy_animator">widget\_destroy\_animator</a> | 销毁动画。 |
 | <a href="#widget_t_widget_destroy_children">widget\_destroy\_children</a> | 销毁全部子控件。 |
 | <a href="#widget_t_widget_dispatch">widget\_dispatch</a> | 分发一个事件。 |
@@ -92,19 +92,20 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | <a href="#widget_t_widget_on">widget\_on</a> | 注册指定事件的处理函数。 |
 | <a href="#widget_t_widget_on_with_tag">widget\_on\_with\_tag</a> | 注册指定tag的事件处理函数。 |
 | <a href="#widget_t_widget_pause_animator">widget\_pause\_animator</a> | 暂停动画。 |
+| <a href="#widget_t_widget_ref">widget\_ref</a> | 增加控件的引用计数。 |
 | <a href="#widget_t_widget_remove_child">widget\_remove\_child</a> | 移出指定的子控件(并不销毁)。 |
 | <a href="#widget_t_widget_resize">widget\_resize</a> | 调整控件的大小。 |
 | <a href="#widget_t_widget_restack">widget\_restack</a> | 调整控件在父控件中的位置序数。 |
 | <a href="#widget_t_widget_set_animation">widget\_set\_animation</a> | 设置控件的动画参数(仅用于在UI文件使用)。 |
 | <a href="#widget_t_widget_set_animator_time_scale">widget\_set\_animator\_time\_scale</a> | 设置动画的时间倍率，<0: 时间倒退，<1: 时间变慢，>1 时间变快。 |
 | <a href="#widget_t_widget_set_children_layout">widget\_set\_children\_layout</a> | 设置子控件的布局参数。 |
-| <a href="#widget_t_widget_set_cursor">widget\_set\_cursor</a> | 设置鼠标指针的图片名。 |
 | <a href="#widget_t_widget_set_enable">widget\_set\_enable</a> | 设置控件的可用性。 |
 | <a href="#widget_t_widget_set_feedback">widget\_set\_feedback</a> | 设置控件是否启用反馈。 |
 | <a href="#widget_t_widget_set_floating">widget\_set\_floating</a> | 设置控件的floating标志。 |
 | <a href="#widget_t_widget_set_focused">widget\_set\_focused</a> | 设置控件的是否聚焦。 |
 | <a href="#widget_t_widget_set_name">widget\_set\_name</a> | 设置控件的名称。 |
 | <a href="#widget_t_widget_set_opacity">widget\_set\_opacity</a> | 设置控件的不透明度。 |
+| <a href="#widget_t_widget_set_pointer_cursor">widget\_set\_pointer\_cursor</a> | 设置鼠标指针的图片名。 |
 | <a href="#widget_t_widget_set_prop">widget\_set\_prop</a> | 设置控件指定属性的值。 |
 | <a href="#widget_t_widget_set_prop_bool">widget\_set\_prop\_bool</a> | 设置布尔格式的属性。 |
 | <a href="#widget_t_widget_set_prop_int">widget\_set\_prop\_int</a> | 设置整数格式的属性。 |
@@ -132,6 +133,7 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | <a href="#widget_t_widget_ungrab">widget\_ungrab</a> | 让指定子控件放弃抓住事件。 |
 | <a href="#widget_t_widget_unload_asset">widget\_unload\_asset</a> | 卸载资源。 |
 | <a href="#widget_t_widget_unload_image">widget\_unload\_image</a> | 卸载图片。 |
+| <a href="#widget_t_widget_unref">widget\_unref</a> | 减少控件的引用计数。引用计数为0时销毁控件。 |
 | <a href="#widget_t_widget_use_style">widget\_use\_style</a> | 启用指定的主题。 |
 ### 属性
 <p id="widget_t_properties">
@@ -141,7 +143,6 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | <a href="#widget_t_animation">animation</a> | char* | 动画参数。请参考[控件动画](https://github.com/zlgopen/awtk/blob/master/docs/widget_animator.md) |
 | <a href="#widget_t_astyle">astyle</a> | style\_t* | Style对象。 |
 | <a href="#widget_t_auto_created">auto\_created</a> | bool\_t | 是否由父控件自动创建。 |
-| <a href="#widget_t_can_not_destroy">can\_not\_destroy</a> | uint16\_t | 标识控件目前不能被销毁(比如正在分发事件)，如果此时调用widget\_destroy，自动异步处理。 |
 | <a href="#widget_t_children">children</a> | darray\_t* | 全部子控件。 |
 | <a href="#widget_t_children_layout">children\_layout</a> | children\_layouter\_t* | 子控件布局器。请参考[控件布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md) |
 | <a href="#widget_t_custom_props">custom\_props</a> | object\_t* | 自定义属性。 |
@@ -160,6 +161,7 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | <a href="#widget_t_need_update_style">need\_update\_style</a> | bool\_t | 标识控件是否需要update style。 |
 | <a href="#widget_t_opacity">opacity</a> | uint8\_t | 不透明度(0-255)，0完全透明，255完全不透明。 |
 | <a href="#widget_t_parent">parent</a> | widget\_t* | 父控件 |
+| <a href="#widget_t_ref_count">ref\_count</a> | int32\_t | 引用计数，计数为0时销毁。 |
 | <a href="#widget_t_self_layout">self\_layout</a> | self\_layouter\_t* | 控件布局器。请参考[控件布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md) |
 | <a href="#widget_t_sensitive">sensitive</a> | bool\_t | 是否接受用户事件。 |
 | <a href="#widget_t_state">state</a> | uint8\_t | 控件的状态(取值参考widget_state_t)。 |
@@ -374,7 +376,7 @@ widget_t* widget_child (widget_t* widget, char* name);
 * 函数原型：
 
 ```
-int32_t widget_child_on (widget_t* widget, char* name, uint32_t type, event_func_t on_event, void* ctx);
+int32_t widget_child_on (widget_t* widget, char* name, event_type_t type, event_func_t on_event, void* ctx);
 ```
 
 * 参数说明：
@@ -384,7 +386,7 @@ int32_t widget_child_on (widget_t* widget, char* name, uint32_t type, event_func
 | 返回值 | int32\_t | 返回id，用于widget\_off。 |
 | widget | widget\_t* | 控件对象。 |
 | name | char* | 子控件的名称。 |
-| type | uint32\_t | 事件类型。 |
+| type | event\_type\_t | 事件类型。 |
 | on\_event | event\_func\_t | 事件处理函数。 |
 | ctx | void* | 事件处理函数上下文。 |
 #### widget\_clone 函数
@@ -457,8 +459,8 @@ ret_t widget_create_animator (widget_t* widget, const char* animation);
 
 * 函数功能：
 
-> <p id="widget_t_widget_destroy">销毁控件。
-一般无需直接调用，关闭窗口时，自动销毁相关控件。
+> <p id="widget_t_widget_destroy">从父控件中移除控件，并调用unref函数销毁控件。
+> 一般无需直接调用，关闭窗口时，自动销毁相关控件。
 
 
 * 函数原型：
@@ -1300,7 +1302,7 @@ ret_t widget_off_by_ctx (widget_t* widget, void* ctx);
 * 函数原型：
 
 ```
-ret_t widget_off_by_func (widget_t* widget, uint32_t type, event_func_t on_event, void* ctx);
+ret_t widget_off_by_func (widget_t* widget, event_type_t type, event_func_t on_event, void* ctx);
 ```
 
 * 参数说明：
@@ -1309,7 +1311,7 @@ ret_t widget_off_by_func (widget_t* widget, uint32_t type, event_func_t on_event
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
-| type | uint32\_t | 事件类型。 |
+| type | event\_type\_t | 事件类型。 |
 | on\_event | event\_func\_t | 事件处理函数。 |
 | ctx | void* | 事件处理函数上下文。 |
 #### widget\_off\_by\_tag 函数
@@ -1349,7 +1351,7 @@ widget_on(ok, EVT_CLICK, on_click, NULL);
 * 函数原型：
 
 ```
-int32_t widget_on (widget_t* widget, uint32_t type, event_func_t on_event, void* ctx);
+int32_t widget_on (widget_t* widget, event_type_t type, event_func_t on_event, void* ctx);
 ```
 
 * 参数说明：
@@ -1358,7 +1360,7 @@ int32_t widget_on (widget_t* widget, uint32_t type, event_func_t on_event, void*
 | -------- | ----- | --------- |
 | 返回值 | int32\_t | 返回id，用于widget\_off。 |
 | widget | widget\_t* | 控件对象。 |
-| type | uint32\_t | 事件类型。 |
+| type | event\_type\_t | 事件类型。 |
 | on\_event | event\_func\_t | 事件处理函数。 |
 | ctx | void* | 事件处理函数上下文。 |
 #### widget\_on\_with\_tag 函数
@@ -1373,7 +1375,7 @@ int32_t widget_on (widget_t* widget, uint32_t type, event_func_t on_event, void*
 * 函数原型：
 
 ```
-int32_t widget_on_with_tag (widget_t* widget, uint32_t type, event_func_t on_event, void* ctx, uint32_t tag);
+int32_t widget_on_with_tag (widget_t* widget, event_type_t type, event_func_t on_event, void* ctx, uint32_t tag);
 ```
 
 * 参数说明：
@@ -1382,7 +1384,7 @@ int32_t widget_on_with_tag (widget_t* widget, uint32_t type, event_func_t on_eve
 | -------- | ----- | --------- |
 | 返回值 | int32\_t | 返回id，用于widget\_off。 |
 | widget | widget\_t* | 控件对象。 |
-| type | uint32\_t | 事件类型。 |
+| type | event\_type\_t | 事件类型。 |
 | on\_event | event\_func\_t | 事件处理函数。 |
 | ctx | void* | 事件处理函数上下文。 |
 | tag | uint32\_t | tag。 |
@@ -1411,6 +1413,26 @@ ret_t widget_pause_animator (widget_t* widget, char* name);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | name | char* | 动画名称。 |
+#### widget\_ref 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_ref">增加控件的引用计数。
+
+
+* 函数原型：
+
+```
+widget_t* widget_ref (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | widget\_t* | 返回控件对象。 |
+| widget | widget\_t* | 控件对象。 |
 #### widget\_remove\_child 函数
 -----------------------
 
@@ -1544,27 +1566,6 @@ ret_t widget_set_children_layout (widget_t* widget, const char* params);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | params | const char* | 布局参数。 |
-#### widget\_set\_cursor 函数
------------------------
-
-* 函数功能：
-
-> <p id="widget_t_widget_set_cursor">设置鼠标指针的图片名。
-
-
-* 函数原型：
-
-```
-ret_t widget_set_cursor (widget_t* widget, char* cursor);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| widget | widget\_t* | 控件对象。 |
-| cursor | char* | 图片名称(无扩展名)。 |
 #### widget\_set\_enable 函数
 -----------------------
 
@@ -1693,6 +1694,27 @@ ret_t widget_set_opacity (widget_t* widget, uint8_t opacity);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | opacity | uint8\_t | 不透明度(取值0-255，0表示完全透明，255表示完全不透明)。 |
+#### widget\_set\_pointer\_cursor 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_set_pointer_cursor">设置鼠标指针的图片名。
+
+
+* 函数原型：
+
+```
+ret_t widget_set_pointer_cursor (widget_t* widget, char* cursor);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| cursor | char* | 图片名称(无扩展名)。 |
 #### widget\_set\_prop 函数
 -----------------------
 
@@ -2291,6 +2313,26 @@ ret_t widget_unload_image (widget_t* widget, bitmap_t* bitmap);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | bitmap | bitmap\_t* | 图片对象。 |
+#### widget\_unref 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_unref">减少控件的引用计数。引用计数为0时销毁控件。
+
+
+* 函数原型：
+
+```
+ret_t widget_unref (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
 #### widget\_use\_style 函数
 -----------------------
 
@@ -2346,17 +2388,6 @@ ret_t widget_use_style (widget_t* widget, char* style);
 
 
 * 类型：bool\_t
-
-| 特性 | 是否支持 |
-| -------- | ----- |
-| 可直接读取 | 是 |
-| 可直接修改 | 否 |
-#### can\_not\_destroy 属性
------------------------
-> <p id="widget_t_can_not_destroy">标识控件目前不能被销毁(比如正在分发事件)，如果此时调用widget\_destroy，自动异步处理。
-
-
-* 类型：uint16\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |
@@ -2594,6 +2625,18 @@ ret_t widget_use_style (widget_t* widget, char* style);
 
 
 * 类型：widget\_t*
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可脚本化   | 是 |
+#### ref\_count 属性
+-----------------------
+> <p id="widget_t_ref_count">引用计数，计数为0时销毁。
+
+
+* 类型：int32\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

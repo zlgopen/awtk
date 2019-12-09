@@ -51,9 +51,12 @@ default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/st
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#slider_t_bar_size">bar\_size</a> | uint32\_t | bar的宽度或高度。 |
+| <a href="#slider_t_bar_size">bar\_size</a> | uint32\_t | 轴的宽度或高度（单位：像素），为0表示为控件的宽度或高度的一半，缺省为0。 |
+| <a href="#slider_t_dragger_adapt_to_icon">dragger\_adapt\_to\_icon</a> | bool\_t | 滑块的宽度或高度是否与icon适应，缺省为true。 |
+| <a href="#slider_t_dragger_size">dragger\_size</a> | uint32\_t | 滑块的宽度或高度（单位：像素），缺省为10。 |
 | <a href="#slider_t_max">max</a> | double | 最大值。 |
 | <a href="#slider_t_min">min</a> | double | 最小值。 |
+| <a href="#slider_t_slide_with_bar">slide\_with\_bar</a> | bool\_t | 是否允许在轴上滑动来改变滑块位置，缺省为FALSE。 |
 | <a href="#slider_t_step">step</a> | double | 拖动的最小单位。 |
 | <a href="#slider_t_value">value</a> | double | 值。 |
 | <a href="#slider_t_vertical">vertical</a> | bool\_t | 滑块的是否为垂直方向。 |
@@ -237,7 +240,41 @@ ret_t slider_set_vertical (widget_t* widget, bool_t vertical);
 | vertical | bool\_t | 是否为垂直方向。 |
 #### bar\_size 属性
 -----------------------
-> <p id="slider_t_bar_size">bar的宽度或高度。
+> <p id="slider_t_bar_size">轴的宽度或高度（单位：像素），为0表示为控件的宽度或高度的一半，缺省为0。
+
+
+* 类型：uint32\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### dragger\_adapt\_to\_icon 属性
+-----------------------
+> <p id="slider_t_dragger_adapt_to_icon">滑块的宽度或高度是否与icon适应，缺省为true。
+
+
+* 类型：bool\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### dragger\_size 属性
+-----------------------
+> <p id="slider_t_dragger_size">滑块的宽度或高度（单位：像素），缺省为10。
 
 
 * 类型：uint32\_t
@@ -275,6 +312,23 @@ ret_t slider_set_vertical (widget_t* widget, bool_t vertical);
 
 
 * 类型：double
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### slide\_with\_bar 属性
+-----------------------
+> <p id="slider_t_slide_with_bar">是否允许在轴上滑动来改变滑块位置，缺省为FALSE。
+
+
+* 类型：bool\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |
