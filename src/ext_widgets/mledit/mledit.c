@@ -124,6 +124,12 @@ static ret_t mledit_get_prop(widget_t* widget, const char* name, value_t* v) {
   return RET_NOT_FOUND;
 }
 
+static inline void mledit_reset_text_edit_layout(text_edit_t* text_edit) {
+  text_edit_set_offset(text_edit, 0, 0);
+  text_edit_set_select(text_edit, 0, 0);
+  text_edit_set_cursor(text_edit, text_edit_get_cursor(text_edit));
+}
+
 static ret_t mledit_set_text(widget_t* widget, const value_t* v) {
   wstr_t str;
   wstr_init(&str, 0);
@@ -132,9 +138,7 @@ static ret_t mledit_set_text(widget_t* widget, const value_t* v) {
 
   if (!wstr_equal(&(widget->text), &str)) {
     wstr_set(&(widget->text), str.str);
-    text_edit_set_offset(mledit->model, 0, 0);
-    text_edit_set_select(mledit->model, 0, 0);
-    text_edit_set_cursor(mledit->model, widget->text.size);
+    mledit_reset_text_edit_layout(mledit->model);
     mledit_dispatch_event(widget, EVT_VALUE_CHANGED);
   }
 
@@ -164,23 +168,24 @@ static ret_t mledit_set_prop(widget_t* widget, const char* name, const value_t* 
     mledit->right_margin = margin;
     mledit->top_margin = margin;
     mledit->bottom_margin = margin;
-    text_edit_layout(mledit->model);
+    mledit_reset_text_edit_layout(mledit->model);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_LEFT_MARGIN)) {
     mledit->left_margin = value_int(v);
-    text_edit_layout(mledit->model);
+    mledit_reset_text_edit_layout(mledit->model);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_RIGHT_MARGIN)) {
     mledit->right_margin = value_int(v);
-    text_edit_layout(mledit->model);
+    mledit_reset_text_edit_layout(mledit->model);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_TOP_MARGIN)) {
     mledit->top_margin = value_int(v);
-    text_edit_layout(mledit->model);
+    mledit_reset_text_edit_layout(mledit->model);
+    return RET_OK;
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_BOTTOM_MARGIN)) {
     mledit->bottom_margin = value_int(v);
-    text_edit_layout(mledit->model);
+    mledit_reset_text_edit_layout(mledit->model);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_FOCUS) || tk_str_eq(name, WIDGET_PROP_FOCUSED)) {
     mledit_set_focus(widget, value_bool(v));
@@ -464,7 +469,7 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
     }
     case EVT_RESIZE:
     case EVT_MOVE_RESIZE: {
-      text_edit_layout(mledit->model);
+      mledit_reset_text_edit_layout(mledit->model);
       break;
     }
     case EVT_VALUE_CHANGING: {
@@ -496,7 +501,8 @@ static ret_t mledit_sync_line_number(widget_t* widget, text_edit_state_t* state)
 
 static ret_t mledit_sync_scrollbar(widget_t* widget, text_edit_state_t* state) {
   xy_t y = 0;
-  wh_t virtual_h = (state->last_line_number + 1) * state->line_height;
+  mledit_t* mledit = MLEDIT(widget);
+  wh_t virtual_h = (state->last_line_number + 1) * state->line_height + mledit->top_margin + mledit->bottom_margin;
   widget_t* vscroll_bar = widget_lookup_by_type(widget, WIDGET_TYPE_SCROLL_BAR_DESKTOP, TRUE);
 
   if (vscroll_bar != NULL) {

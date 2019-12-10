@@ -335,6 +335,9 @@ static row_info_t* text_edit_multi_line_layout_line(text_edit_t* text_edit, uint
           i = last_breakable_i + 1;
           x = last_breakable_x;
         }
+        if(i == offset) {
+          i++;
+        }
         break;
       }
 
@@ -351,12 +354,16 @@ static row_info_t* text_edit_multi_line_layout_line(text_edit_t* text_edit, uint
 
   if (i == state->cursor && state->cursor == text->size) {
     if (last_char == STB_TEXTEDIT_NEWLINE) {
-      impl->last_line_number = row_num + 1;
       text_edit_set_caret_pos(impl, 0, y + line_height, c->font_size);
     } else {
-      impl->last_line_number = row_num;
       text_edit_set_caret_pos(impl, x, y, c->font_size);
     }
+  }
+
+  if (last_char == STB_TEXTEDIT_NEWLINE) {
+    impl->last_line_number = row_num + 1;
+  } else {
+    impl->last_line_number = row_num;
   }
 
   row->text_w = x;
@@ -381,11 +388,12 @@ ret_t text_edit_layout(text_edit_t* text_edit) {
   uint32_t i = 0;
   uint32_t offset = 0;
   DECL_IMPL(text_edit);
+  row_info_t* iter = NULL;
   uint32_t max_rows = impl->rows->capacity;
   wstr_t* text = &(text_edit->widget->text);
   uint32_t size = text_edit->widget->text.size;
   text_layout_info_t* layout_info = &(impl->layout_info);
-
+  uint32_t char_w = canvas_measure_text(text_edit->c, text->str, 1) + CHAR_SPACING;
   impl->caret.x = 0;
   impl->caret.y = 0;
   impl->rows->size = 0;
@@ -398,8 +406,13 @@ ret_t text_edit_layout(text_edit_t* text_edit) {
   impl->line_height = text_edit->c->font_size * FONT_BASELINE;
 
   widget_get_text_layout_info(text_edit->widget, layout_info);
+
+  if(layout_info->w < char_w) {
+    return RET_OK;
+  }
+
   while ((offset < size || size == 0) && i < max_rows) {
-    row_info_t* iter = text_edit_layout_line(text_edit, i, offset);
+    iter = text_edit_layout_line(text_edit, i, offset);
     if (iter == NULL || iter->length == 0) {
       break;
     }
@@ -407,7 +420,10 @@ ret_t text_edit_layout(text_edit_t* text_edit) {
     i++;
   }
 
-  if (offset < size) {
+  if(i == max_rows && !impl->single_line) {
+    impl->last_line_number = max_rows;
+    text_edit_set_caret_pos(impl, iter->x, iter->length, text_edit->c->font_size);
+  } else if (offset < size) {
     text->size = offset;
     text->str[offset] = 0;
   }
@@ -608,6 +624,8 @@ static ret_t text_edit_paint_text(text_edit_t* text_edit, canvas_t* c) {
 }
 
 static ret_t text_edit_do_paint(text_edit_t* text_edit, canvas_t* c) {
+  bool_t is_notify = FALSE;
+  uint32_t new_line_height = 0;
   DECL_IMPL(text_edit);
   return_value_if_fail(text_edit != NULL && c != NULL, RET_BAD_PARAMS);
 
@@ -619,7 +637,10 @@ static ret_t text_edit_do_paint(text_edit_t* text_edit, canvas_t* c) {
   }
 
   widget_prepare_text_style(text_edit->widget, c);
-  impl->line_height = c->font_size * FONT_BASELINE;
+
+  new_line_height = c->font_size * FONT_BASELINE;
+  is_notify = impl->line_height != new_line_height;
+  impl->line_height = new_line_height;
 
   if (text_edit_paint_text(text_edit, c) == RET_OK) {
     DECL_IMPL(text_edit);
@@ -628,6 +649,10 @@ static ret_t text_edit_do_paint(text_edit_t* text_edit, canvas_t* c) {
     if (state->select_start == state->select_end && impl->caret_visible) {
       text_edit_paint_caret(text_edit, c);
     }
+  }
+
+  if(is_notify) {
+    text_edit_layout(text_edit);
   }
 
   return RET_OK;
