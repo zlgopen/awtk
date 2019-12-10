@@ -1,6 +1,13 @@
 # 最新动态
 
 * 2019/12/09
+  * 修复画圆角矩形在画布的 line_lenght != w*bpp 时候打点不正常的 bug（感谢智明提供补丁）  
+  * 修复 mledit 显示 bug（感谢智明提供补丁）。  
+  * 修复 fbo 脏矩形和裁减区不重叠的显示不正常 bug（感谢智明提供补丁）。  
+  * 修改 lcd_men.inc 文件的每次获取 vg 的时候都会设置裁减区为全屏的问题（感谢智明提供补丁）。  
+  * 更新文档。
+  
+* 2019/12/09
   * 完善 dialog ex 的文本翻译。
   * 支持设置 combobox popup 的 style。
   * edit 增加 input type "custom_password"类型。
