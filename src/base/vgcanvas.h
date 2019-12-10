@@ -254,6 +254,12 @@ struct _vgcanvas_t {
    */
   uint32_t h;
   /**
+   * @property {uint32_t} stride
+   * @annotation ["readable", "scriptable"]
+   * 一行占的字节
+   */
+  uint32_t stride;
+  /**
    * @property {float_t} ratio
    * @annotation ["readable", "scriptable"]
    * 显示比例。
@@ -353,8 +359,8 @@ struct _vgcanvas_t {
    * frame buffer format
    */
   bitmap_format_t format;
-
   rect_t clip_rect;
+  rect_t dirty_rect;
   const vgcanvas_vtable_t* vt;
   assets_manager_t* assets_manager;
 };

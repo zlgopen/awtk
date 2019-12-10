@@ -176,7 +176,13 @@ static ret_t vgcanvas_nanovg_clip_rect(vgcanvas_t* vgcanvas, float_t x, float_t 
                                        float_t h) {
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
 
+ #if WITH_NANOVG_GPU 
+   rect_t r1 = rect_init(x, y, w, h);
+   rect_t cilp_rect = rect_intersect((const rect_t*)&vgcanvas->dirty_rect, (const rect_t*)&r1);
+   nvgScissor(vg, (float_t)cilp_rect.x, (float_t)cilp_rect.y, (float_t)cilp_rect.w, (float_t)cilp_rect.h);
+ #else
   nvgScissor(vg, x, y, w, h);
+ #endif 
 
   return RET_OK;
 }

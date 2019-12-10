@@ -28,7 +28,7 @@
 
 static uint32_t lcd_mem_get_line_length(lcd_mem_t* mem) {
   uint32_t bpp = bitmap_get_bpp_of_format(LCD_FORMAT);
-  return tk_max(mem->base.w * bpp, mem->line_length);
+  return tk_max(mem->base.w * bpp, mem->line_length); 
 }
 
 static pixel_t* lcd_mem_init_drawing_fb(lcd_t* lcd, bitmap_t* fb) {
@@ -242,7 +242,6 @@ static vgcanvas_t* lcd_mem_get_vgcanvas(lcd_t* lcd) {
     mem->vgcanvas = vgcanvas_create(w, h, line_length, format, fbdata);
   } else {
     vgcanvas_reinit(mem->vgcanvas, w, h, line_length, format, fbdata);
-    vgcanvas_clip_rect(mem->vgcanvas, 0, 0, w, h);
   }
 
   return mem->vgcanvas;

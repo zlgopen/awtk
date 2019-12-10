@@ -90,7 +90,16 @@ static ret_t vgcanvas_nanovg_begin_frame(vgcanvas_t* vgcanvas, rect_t* dirty_rec
 
   vgcanvas_nanovg_set_offline_fb(canvas, info->lcd_w * info->device_pixel_ratio,
                                  info->lcd_h * info->device_pixel_ratio);
-
+  if(dirty_rect != NULL) {
+    /* 这里给 x y 各减一，给 w h 各加二，是对应 canvas 的 canvas_begin_frame 中的 "for vgcanvas anti alias" */
+    canvas->base.dirty_rect = rect_init(dirty_rect->x - 1, dirty_rect->y - 1, dirty_rect->w + 2, dirty_rect->h + 2);
+    canvas->base.dirty_rect.x = canvas->base.dirty_rect.x >= 0 ? canvas->base.dirty_rect.x : 0;
+    canvas->base.dirty_rect.y = canvas->base.dirty_rect.y >= 0 ? canvas->base.dirty_rect.y : 0;
+  }
+  else {
+    canvas->base.dirty_rect = rect_init(0, 0, info->lcd_w, info->lcd_h);
+  }
+  
   nvgBeginFrame(canvas->vg, info->lcd_w, info->lcd_h, info->device_pixel_ratio);
 
   switch (info->lcd_orientation) {
@@ -168,7 +177,7 @@ static ret_t vgcanvas_nanovg_destroy_fbo(vgcanvas_t* vgcanvas, framebuffer_objec
 static ret_t vgcanvas_nanovg_bind_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
   NVGLUframebuffer* handle = (NVGLUframebuffer*)fbo->handle;
-
+  vgcanvas->dirty_rect = rect_init(0, 0, fbo->w, fbo->h);
   nvgluBindFramebuffer(handle);
   glClearColor(0, 0, 0, 0);
   glViewport(0, 0, fbo->w * fbo->ratio, fbo->h * fbo->ratio);
