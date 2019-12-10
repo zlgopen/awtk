@@ -119,7 +119,8 @@ static inline uint32_t widget_bitmap_format_to_bpp(bitmap_format_t fmt) {
 }
 
 static inline frr_image_info_t* widget_image_info_create(frr_image_info_t* info, unsigned char* dst,
-                                                         uint32_t stride, uint32_t w, uint32_t h, bitmap_format_t format) {
+                                                         uint32_t stride, uint32_t w, uint32_t h,
+                                                         bitmap_format_t format) {
   if (info == NULL) {
     info = TKMEM_ZALLOC(frr_image_info_t);
     return_value_if_fail(info != NULL, NULL);
@@ -369,7 +370,8 @@ static inline void widget_draw_circluar_point_to_quadrant_hline(frr_image_info_t
     }
 
     if (w > 0 && h > 0) {
-      p = GET_IMAGE_POINT(image_info->bpp, image_info->stride, image_info->w, image_info->h, x + c->ox, y + c->oy);
+      p = GET_IMAGE_POINT(image_info->bpp, image_info->stride, image_info->w, image_info->h,
+                          x + c->ox, y + c->oy);
       if (p > 0) {
         widget_image_data2color(image_info->dst + p, image_info->format, &o_color);
 
@@ -626,7 +628,8 @@ static void widget_darw_fill_rounded_rect(canvas_t* c, rect_t* r, color_t* color
   vgcanvas_restore(vg);
 #else
 
-  widget_image_info_create(&image_info, (unsigned char*)vg->buff, vg->stride, vg->w, vg->h, vg->format);
+  widget_image_info_create(&image_info, (unsigned char*)vg->buff, vg->stride, vg->w, vg->h,
+                           vg->format);
 
   size = ANGLE2SIZE(M_FRR_PI_4, radius) + 1;
   if (size <= FRR_POINT_PIX_CACHE_SIZE) {
@@ -743,7 +746,8 @@ static void widget_darw_stroke_rounded_rect(canvas_t* c, rect_t* r, color_t* col
 
       Wu_D_Circle(radius, &point_list_45, point_pix_cache_list);
 
-      widget_image_info_create(&image_info, (unsigned char*)vg->buff, vg->stride, vg->w, vg->h, vg->format);
+      widget_image_info_create(&image_info, (unsigned char*)vg->buff, vg->stride, vg->w, vg->h,
+                               vg->format);
 
       widget_draw_arc_point_list(&image_info, c, v_x2, v_y1, x2, y1, angle_h, angle_v, radius, 0,
                                  color, &tmp_point_list_45, &point_list_45, FALSE);  // 右上角

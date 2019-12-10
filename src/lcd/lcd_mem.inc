@@ -28,7 +28,7 @@
 
 static uint32_t lcd_mem_get_line_length(lcd_mem_t* mem) {
   uint32_t bpp = bitmap_get_bpp_of_format(LCD_FORMAT);
-  return tk_max(mem->base.w * bpp, mem->line_length); 
+  return tk_max(mem->base.w * bpp, mem->line_length);
 }
 
 static pixel_t* lcd_mem_init_drawing_fb(lcd_t* lcd, bitmap_t* fb) {

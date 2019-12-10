@@ -335,7 +335,7 @@ static row_info_t* text_edit_multi_line_layout_line(text_edit_t* text_edit, uint
           i = last_breakable_i + 1;
           x = last_breakable_x;
         }
-        if(i == offset) {
+        if (i == offset) {
           i++;
         }
         break;
@@ -407,7 +407,7 @@ ret_t text_edit_layout(text_edit_t* text_edit) {
 
   widget_get_text_layout_info(text_edit->widget, layout_info);
 
-  if(layout_info->w < char_w) {
+  if (layout_info->w < char_w) {
     return RET_OK;
   }
 
@@ -420,7 +420,7 @@ ret_t text_edit_layout(text_edit_t* text_edit) {
     i++;
   }
 
-  if(i == max_rows && !impl->single_line) {
+  if (i == max_rows && !impl->single_line) {
     impl->last_line_number = max_rows;
     text_edit_set_caret_pos(impl, iter->x, iter->length, text_edit->c->font_size);
   } else if (offset < size) {
@@ -651,7 +651,7 @@ static ret_t text_edit_do_paint(text_edit_t* text_edit, canvas_t* c) {
     }
   }
 
-  if(is_notify) {
+  if (is_notify) {
     text_edit_layout(text_edit);
   }
 
