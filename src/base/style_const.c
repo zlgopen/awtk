@@ -71,24 +71,24 @@ static const void* widget_get_const_style_data_for_state_impl(widget_t* widget,
   return data;
 }
 
-static const void* widget_get_const_style_data_for_state(widget_t* widget, const char* state) {
+static const void* widget_get_const_style_data_for_style(widget_t* widget, const char* style_name) {
   const void* data = NULL;
-  const char* style_name = is_valid_style_name(widget->style) ? widget->style : TK_DEFAULT_STYLE;
+  const char* state = widget_get_prop_str(widget, WIDGET_PROP_STATE_FOR_STYLE, widget->state);
 
   data = widget_get_const_style_data_for_state_impl(widget, style_name, state);
-  if (data == NULL) {
-    data = widget_get_const_style_data_for_state_impl(widget, TK_DEFAULT_STYLE, state);
+  if (data == NULL && !tk_str_eq(state, WIDGET_STATE_NORMAL)) {
+    data = widget_get_const_style_data_for_state_impl(widget, style_name, WIDGET_STATE_NORMAL);
   }
 
   return data;
 }
 
 static const void* widget_get_const_style_data(widget_t* widget) {
-  const char* state = widget_get_prop_str(widget, WIDGET_PROP_STATE_FOR_STYLE, widget->state);
-  const void* data = widget_get_const_style_data_for_state(widget, state);
+  const char* style_name = is_valid_style_name(widget->style) ? widget->style : TK_DEFAULT_STYLE;
+  const void* data = widget_get_const_style_data_for_style(widget, style_name);
 
-  if (data == NULL) {
-    data = widget_get_const_style_data_for_state(widget, WIDGET_STATE_NORMAL);
+  if (data == NULL && !tk_str_eq(style_name, TK_DEFAULT_STYLE)) {
+    data = widget_get_const_style_data_for_style(widget, TK_DEFAULT_STYLE);
   }
 
   return data;
