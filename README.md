@@ -24,8 +24,6 @@
 
 ![CleanAir-Demo](docs/images/cleanair_main.png)
 
-![Meter-Demo](docs/images/meter_main.png)
-
 ![Chart-Demo](docs/images/chart_main.png)
 
 ![MusicPlayer-Demo](docs/images/musicplayer_main.png)
@@ -199,8 +197,6 @@ pip install Pillow
 ## 五、在线演示
 
 * [图表演示](http://zlgawtk.bceapp.com/awtk/demos/Chart-Demo/index.html)
-
-* [仪表演示](http://zlgawtk.bceapp.com/awtk/demos/Meter-Demo/index.html)
 
 * [智能手表演示](http://zlgawtk.bceapp.com/awtk/demos/SmartWatch-Demo/index.html)
 
