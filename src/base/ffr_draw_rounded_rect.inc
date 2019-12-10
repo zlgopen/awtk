@@ -9,6 +9,7 @@
 #include "../tkc/types_def.h"
 #include "../tkc/darray.h"
 
+#pragma pack(push, 4)
 /*
 把二维坐标的象限通过45度分为上下区域，一共8个区域
 */
@@ -30,13 +31,13 @@ typedef struct _frr_point_pix_t {
   int32_t x;
   int32_t y;
   float_t e;
-  rgba_t o_color;
 } frr_point_pix_t;
 
 typedef struct _frr_image_info_t {
-  int32_t w;
-  int32_t h;
-  int32_t bpp;
+  uint32_t w;
+  uint32_t h;
+  uint32_t bpp;
+  uint32_t stride;
   unsigned char* dst;
   bitmap_format_t format;
 } frr_image_info_t;
@@ -45,6 +46,8 @@ typedef struct _frr_draw_arc_info_table_t {
   frr_quadrant_t quadrant_v;
   frr_quadrant_t quadrant_h;
 } frr_draw_arc_info_table_t;
+
+#pragma pack(pop)
 
 #ifdef M_PI_2
 #define M_FRR_PI_2 (float_t)(M_PI_2)
@@ -66,8 +69,8 @@ typedef struct _frr_draw_arc_info_table_t {
 
 #define ANGLE2SIZE(angle, r) ((int)(sinf(angle) * (r)))
 
-#define GET_IMAGE_POINT(bpp, w, h, x, y) \
-  (x < 0 || x > w || y < 0 || y > h) ? -1 : (((x) + (y) * (w)) * (bpp));
+#define GET_IMAGE_POINT(bpp, stride, w, h, x, y) \
+  (x < 0 || x > w || y < 0 || y > h) ? -1 : ((x) * (bpp) + (y) * (stride));
 
 #define BLEND_DATA(d1, d2, a) ((((d1) * (a)) + ((d2) * (0xff - (a)))) >> 8)
 
@@ -116,16 +119,18 @@ static inline uint32_t widget_bitmap_format_to_bpp(bitmap_format_t fmt) {
 }
 
 static inline frr_image_info_t* widget_image_info_create(frr_image_info_t* info, unsigned char* dst,
-                                                         int32_t w, int h, bitmap_format_t format) {
+                                                         uint32_t stride, uint32_t w, uint32_t h, bitmap_format_t format) {
   if (info == NULL) {
     info = TKMEM_ZALLOC(frr_image_info_t);
     return_value_if_fail(info != NULL, NULL);
   }
-  info->bpp = widget_bitmap_format_to_bpp(format);
-  info->dst = dst;
-  info->format = format;
+
   info->w = w;
   info->h = h;
+  info->dst = dst;
+  info->stride = stride;
+  info->format = format;
+  info->bpp = widget_bitmap_format_to_bpp(format);
   return info;
 }
 
@@ -239,7 +244,7 @@ static inline void widget_draw_antialiasing_for_point(frr_image_info_t* image_in
   int p = 0;
   unsigned char a = (unsigned char)(e * c.a);
   IMAGE_COLOR2COLOR_BLEND(c, o_color, a);
-  p = GET_IMAGE_POINT(image_info->bpp, image_info->w, image_info->h, px, py);
+  p = GET_IMAGE_POINT(image_info->bpp, image_info->stride, image_info->w, image_info->h, px, py);
   if (p > 0) {
     widget_image_color2data(image_info->dst + p, image_info->format, c);
   }
@@ -325,7 +330,7 @@ static inline void widget_draw_circluar_point_to_quadrant(frr_image_info_t* imag
     y += c->oy;
 
     if (w > 0 && h > 0) {
-      p = GET_IMAGE_POINT(image_info->bpp, image_info->w, image_info->h, x, y);
+      p = GET_IMAGE_POINT(image_info->bpp, image_info->stride, image_info->w, image_info->h, x, y);
       if (p > 0) {
         widget_image_data2color(image_info->dst + p, image_info->format, &o_color);
 
@@ -364,7 +369,7 @@ static inline void widget_draw_circluar_point_to_quadrant_hline(frr_image_info_t
     }
 
     if (w > 0 && h > 0) {
-      p = GET_IMAGE_POINT(image_info->bpp, image_info->w, image_info->h, x + c->ox, y + c->oy);
+      p = GET_IMAGE_POINT(image_info->bpp, image_info->stride, image_info->w, image_info->h, x + c->ox, y + c->oy);
       if (p > 0) {
         widget_image_data2color(image_info->dst + p, image_info->format, &o_color);
 
@@ -621,7 +626,7 @@ static void widget_darw_fill_rounded_rect(canvas_t* c, rect_t* r, color_t* color
   vgcanvas_restore(vg);
 #else
 
-  widget_image_info_create(&image_info, (unsigned char*)vg->buff, vg->w, vg->h, vg->format);
+  widget_image_info_create(&image_info, (unsigned char*)vg->buff, vg->stride, vg->w, vg->h, vg->format);
 
   size = ANGLE2SIZE(M_FRR_PI_4, radius) + 1;
   if (size <= FRR_POINT_PIX_CACHE_SIZE) {
@@ -738,7 +743,7 @@ static void widget_darw_stroke_rounded_rect(canvas_t* c, rect_t* r, color_t* col
 
       Wu_D_Circle(radius, &point_list_45, point_pix_cache_list);
 
-      widget_image_info_create(&image_info, (unsigned char*)vg->buff, vg->w, vg->h, vg->format);
+      widget_image_info_create(&image_info, (unsigned char*)vg->buff, vg->stride, vg->w, vg->h, vg->format);
 
       widget_draw_arc_point_list(&image_info, c, v_x2, v_y1, x2, y1, angle_h, angle_v, radius, 0,
                                  color, &tmp_point_list_45, &point_list_45, FALSE);  // 右上角
