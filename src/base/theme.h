@@ -117,6 +117,8 @@ const char* style_data_get_str(const uint8_t* s, const char* name, const char* d
 #define THEME_MAGIC 0xFAFBFCFD
 #define TK_DEFAULT_STYLE "default"
 
+#pragma pack(push, 1)
+
 typedef struct _theme_header_t {
   uint32_t magic;
   uint32_t version;
@@ -130,15 +132,23 @@ typedef struct _theme_item_t {
   char widget_type[TK_NAME_LEN + 1];
 } theme_item_t;
 
-typedef struct _style_int_data_t {
-  char name[TK_NAME_LEN + 1];
-  uint32_t value;
-} style_int_data_t;
+typedef struct _style_name_value_header_t {
+  uint32_t type : 8;
+  uint32_t name_size : 8;
+  uint32_t value_size : 16;
+} style_name_value_header_t;
 
-typedef struct _style_str_data_t {
-  char name[TK_NAME_LEN + 1];
-  char value[TK_NAME_LEN + 1];
-} style_str_data_t;
+typedef struct _style_name_value_t {
+  uint32_t type : 8;
+  uint32_t name_size : 8;
+  uint32_t value_size : 16;
+  const char name[4];
+} style_name_value_t;
+
+#pragma pack(pop)
+
+#define STYLE_NAME_SIZE_MAX 255
+#define STYLE_VALUE_SIZE_MAX 1023
 
 END_C_DECLS
 

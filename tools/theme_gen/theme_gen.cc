@@ -87,50 +87,73 @@ bool Style::Merge(Style& other) {
   return true;
 }
 
+static uint8_t* write_str(uint8_t* buff, const string& str) {
+  memcpy(buff, str.c_str(), str.size() + 1);
+
+  return buff + str.size() + 1;
+}
+
+static uint8_t* write_binary(uint8_t* buff, void* data, uint32_t size) {
+  memcpy(buff, data, size);
+
+  return buff + size;
+}
+
+static uint8_t* write_uint32(uint8_t* buff, uint32_t value) {
+  save_uint32(buff, value);
+
+  return buff;
+}
+
 uint8_t* Style::Output(uint8_t* buff, uint32_t max_size) {
   uint32_t size = 0;
   uint8_t* p = buff;
+  style_name_value_header_t nv;
   uint8_t* end = buff + max_size;
   return_value_if_fail(buff != NULL && max_size > 32, NULL);
 
-  size = this->int_values.size();
-  save_uint32(p, size);
+  size = this->int_values.size() + this->str_values.size();
   printf("  size=%d widget_type=%s name=%s state=%s\n", size, this->widget_type.c_str(),
          this->name.c_str(), this->state.c_str());
+
+  save_uint32(p, size);
   for (vector<NameIntValue>::iterator i = this->int_values.begin(); i != this->int_values.end();
        i++) {
     const string& name = i->name;
     uint32_t value = i->value;
-    style_int_data_t data;
 
-    data.value = value;
-    tk_strncpy(data.name, name.c_str(), TK_NAME_LEN);
+    return_value_if_fail((end - p) > (name.size() + sizeof(value) + 1), NULL);
 
-    return_value_if_fail((end - p) > sizeof(data), NULL);
-    memcpy(p, &data, sizeof(data));
-    p += sizeof(data);
+    nv.type = VALUE_TYPE_UINT32;
+    nv.name_size = name.size() + 1;
+    nv.value_size = sizeof(value);
 
-    printf("    %s=0x%08x\n", data.name, data.value);
+    p = write_binary(p, &nv, sizeof(nv));
+    p = write_str(p, name);
+    p = write_uint32(p, value);
+
+    printf("    %s=0x%08x\n", name.c_str(), value);
   }
 
   return_value_if_fail((end - p) > 32, NULL);
 
   size = this->str_values.size();
-  save_uint32(p, size);
   for (vector<NameStringValue>::iterator i = this->str_values.begin(); i != this->str_values.end();
        i++) {
-    style_str_data_t data;
     const string& name = i->name;
     const string& value = i->value;
 
-    tk_strncpy(data.name, name.c_str(), TK_NAME_LEN);
-    tk_strncpy(data.value, value.c_str(), TK_NAME_LEN);
+    return_value_if_fail((end - p) > (name.size() + value.size() + 2), NULL);
 
-    return_value_if_fail((end - p) > sizeof(data), NULL);
-    memcpy(p, &data, sizeof(data));
-    p += sizeof(data);
+    nv.type = VALUE_TYPE_STRING;
+    nv.name_size = name.size() + 1;
+    nv.value_size = value.size() + 1;
 
-    printf("    %s=%s\n", data.name, data.value);
+    p = write_binary(p, &nv, sizeof(nv));
+    p = write_str(p, name);
+    p = write_str(p, value);
+
+    printf("    %s=%s\n", name.c_str(), value.c_str());
   }
 
   return p;

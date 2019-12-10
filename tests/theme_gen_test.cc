@@ -8,29 +8,129 @@
 #include <string>
 using std::string;
 
-TEST(ThemeGen, basic) {
+TEST(ThemeGen, basic0) {
   uint8_t buff[1024];
   theme_t theme;
   const uint8_t* style_data = NULL;
-  const char* str =
-      "<widget><style><normal bg_color=\"yellow\" fg_color=\"#fafbfc\" font_name=\"sans\" font_size=\"12\" /></style></widget>\
-       <progress_bar><style><normal bg_color=\"rgb(255,255,0)\" fg_color=\"rgba(255,255,0,0.5)\" border_color=\"#ff00ff\" /></style></progress_bar>";
+  const char* str = "<widget><style><normal bg_color=\"#fafbfc\"/></style></widget>";
 
   xml_gen_buff(str, buff, sizeof(buff));
   theme.data = buff;
 
   style_data = theme_find_style(&theme, WIDGET_TYPE_NONE, TK_DEFAULT_STYLE, WIDGET_STATE_NORMAL);
   ASSERT_EQ(style_data != NULL, true);
-  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_FONT_SIZE, 0), 12);
-  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_BG_COLOR, 0), 0xff00ffff);
-  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_FG_COLOR, 0), 0xfffcfbfa);
-  ASSERT_EQ(style_data_get_str(style_data, STYLE_ID_FONT_NAME, ""), string("sans"));
+  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_BG_COLOR, 0), 0xfffcfbfa);
+}
 
-  style_data =
-      theme_find_style(&theme, WIDGET_TYPE_PROGRESS_BAR, TK_DEFAULT_STYLE, WIDGET_STATE_NORMAL);
+TEST(ThemeGen, basic1) {
+  uint8_t buff[1024];
+  theme_t theme;
+  const uint8_t* style_data = NULL;
+  const char* str =
+      "<widget><style><normal bg_color=\"#fafbfc\" fg_color=\"#223344\" font_name=\"sans\" "
+      "font_size=\"12\"/></style></widget>";
+
+  xml_gen_buff(str, buff, sizeof(buff));
+  theme.data = buff;
+
+  style_data = theme_find_style(&theme, WIDGET_TYPE_NONE, TK_DEFAULT_STYLE, WIDGET_STATE_NORMAL);
   ASSERT_EQ(style_data != NULL, true);
-  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_BG_COLOR, 0), 0xff00ffff);
-  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_FG_COLOR, 0), 0x7f00ffff);
+  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_BG_COLOR, 0), 0xfffcfbfa);
+  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_FG_COLOR, 0), 0xff443322);
+  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_FONT_SIZE, 0), 12);
+  ASSERT_EQ(style_data_get_str(style_data, STYLE_ID_FONT_NAME, ""), string("sans"));
+}
+
+TEST(ThemeGen, basic2) {
+  uint8_t buff[1024];
+  theme_t theme;
+  const uint8_t* style_data = NULL;
+  const char* str =
+      "<widget>\
+      <style><normal bg_color=\"#112233\" fg_color=\"#223344\" font_name=\"sans\" font_size=\"12\"/></style>\
+      <style><over bg_color=\"#112233\" fg_color=\"#223344\" font_name=\"sans\" font_size=\"12\"/></style>\
+      <style><focus bg_color=\"#112233\" fg_color=\"#223344\" font_name=\"sans\" font_size=\"12\"/></style>\
+      </widget>";
+
+  xml_gen_buff(str, buff, sizeof(buff));
+  theme.data = buff;
+
+  style_data = theme_find_style(&theme, WIDGET_TYPE_NONE, TK_DEFAULT_STYLE, WIDGET_STATE_OVER);
+  ASSERT_EQ(style_data != NULL, true);
+  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_BG_COLOR, 0), 0xff332211);
+  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_FG_COLOR, 0), 0xff443322);
+  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_FONT_SIZE, 0), 12);
+  ASSERT_EQ(style_data_get_str(style_data, STYLE_ID_FONT_NAME, ""), string("sans"));
+}
+
+TEST(ThemeGen, basic3) {
+  uint8_t buff[10240];
+  theme_t theme;
+  const uint8_t* style_data = NULL;
+  const char* str =
+      "<widget>\
+        <style name=\"default\"><normal bg_color=\"#112233\" fg_color=\"#223344\" font_name=\"sans\" font_size=\"12\"/></style>\
+        <style name=\"1\"><normal bg_color=\"#112233\" fg_color=\"#223344\" font_name=\"sans\" font_size=\"12\"/></style>\
+        <style name=\"2\"><normal bg_color=\"#112233\" fg_color=\"#223344\" font_name=\"sans\" font_size=\"12\"/></style>\
+      </widget>\
+      <button>\
+        <style name=\"default\"><normal bg_color=\"#112233\" fg_color=\"#223344\" font_name=\"sans\" font_size=\"12\"/></style>\
+        <style name=\"1\"><normal bg_color=\"#112233\" fg_color=\"#223344\" font_name=\"sans\" font_size=\"12\"/></style>\
+        <style name=\"2\"><normal bg_color=\"#112233\" fg_color=\"#223344\" font_name=\"sans\" font_size=\"12\"/></style>\
+      </button>\
+      <label>\
+        <style name=\"default\"><normal bg_color=\"#112233\" fg_color=\"#223344\" font_name=\"sans\" font_size=\"12\"/></style>\
+        <style name=\"1\"><normal bg_color=\"#112233\" fg_color=\"#223344\" font_name=\"sans\" font_size=\"12\"/></style>\
+        <style name=\"2\"><normal bg_color=\"#112233\" fg_color=\"#223344\" font_name=\"sans\" font_size=\"12\"/></style>\
+      </label>\
+      ";
+
+  xml_gen_buff(str, buff, sizeof(buff));
+  theme.data = buff;
+
+  style_data = theme_find_style(&theme, WIDGET_TYPE_BUTTON, TK_DEFAULT_STYLE, WIDGET_STATE_NORMAL);
+  ASSERT_EQ(style_data != NULL, true);
+  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_BG_COLOR, 0), 0xff332211);
+  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_FG_COLOR, 0), 0xff443322);
+  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_FONT_SIZE, 0), 12);
+  ASSERT_EQ(style_data_get_str(style_data, STYLE_ID_FONT_NAME, ""), string("sans"));
+}
+
+TEST(ThemeGen, basic4) {
+  uint8_t buff[10240];
+  theme_t theme;
+  const uint8_t* style_data = NULL;
+  const char* str =
+      "<widget>\
+        <style name=\"default\"><normal bg_color=\"#112233\" fg_color=\"#223344\" font_name=\"sans\" font_size=\"12\"/></style>\
+        <style name=\"1\"><normal bg_color=\"#112233\" fg_color=\"#223344\" font_name=\"sans\" font_size=\"12\"/></style>\
+        <style name=\"2\"><normal bg_color=\"#112233\" fg_color=\"#223344\" font_name=\"sans\" font_size=\"12\"/></style>\
+      </widget>\
+      <button>\
+        <style name=\"default\"> \
+          <normal bg_color=\"#112233\" fg_color=\"#223344\" font_name=\"sans\" font_size=\"12\"/> \
+          <over bg_color=\"#112244\" fg_color=\"#223355\" font_name=\"sans\" font_size=\"12\"/> \
+          <focus bg_color=\"#112233\" fg_color=\"#223344\" font_name=\"sans\" font_size=\"12\"/> \
+        </style>\
+        <style name=\"1\"><normal bg_color=\"#112233\" fg_color=\"#223344\" font_name=\"sans\" font_size=\"12\"/></style>\
+        <style name=\"2\"><normal bg_color=\"#112233\" fg_color=\"#223344\" font_name=\"sans\" font_size=\"12\"/></style>\
+      </button>\
+      <label>\
+        <style name=\"default\"><normal bg_color=\"#112233\" fg_color=\"#223344\" font_name=\"sans\" font_size=\"12\"/></style>\
+        <style name=\"1\"><normal bg_color=\"#112233\" fg_color=\"#223344\" font_name=\"sans\" font_size=\"12\"/></style>\
+        <style name=\"2\"><normal bg_color=\"#112233\" fg_color=\"#223344\" font_name=\"sans\" font_size=\"12\"/></style>\
+      </label>\
+      ";
+
+  xml_gen_buff(str, buff, sizeof(buff));
+  theme.data = buff;
+
+  style_data = theme_find_style(&theme, WIDGET_TYPE_BUTTON, TK_DEFAULT_STYLE, WIDGET_STATE_OVER);
+  ASSERT_EQ(style_data != NULL, true);
+  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_BG_COLOR, 0), 0xff442211);
+  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_FG_COLOR, 0), 0xff553322);
+  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_FONT_SIZE, 0), 12);
+  ASSERT_EQ(style_data_get_str(style_data, STYLE_ID_FONT_NAME, ""), string("sans"));
 }
 
 TEST(ThemeGen, state) {
@@ -38,7 +138,7 @@ TEST(ThemeGen, state) {
   theme_t theme;
   const uint8_t* style_data = NULL;
   const char* str =
-      "<button><style><over bg_color=\"yellow\" fg_color=\"#fafbfc\" font_name=\"sans\" font_size=\"12\" /></style></button>\
+      "<button><style><over bg_color=\"#f1f2f3\" fg_color=\"#fafbfc\" font_name=\"sans\" font_size=\"12\" /></style></button>\
        <button><style><pressed bg_color=\"rgb(255,255,0)\" fg_color=\"rgba(255,255,0,0.5)\" border_color=\"#ff00ff\"/></style></button>";
 
   xml_gen_buff(str, buff, sizeof(buff));
@@ -47,14 +147,13 @@ TEST(ThemeGen, state) {
   style_data = theme_find_style(&theme, WIDGET_TYPE_BUTTON, TK_DEFAULT_STYLE, WIDGET_STATE_OVER);
   ASSERT_EQ(style_data != NULL, true);
   ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_FONT_SIZE, 0), 12);
-  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_BG_COLOR, 0), 0xff00ffff);
+  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_BG_COLOR, 0), 0xfff3f2f1);
   ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_FG_COLOR, 0), 0xfffcfbfa);
   ASSERT_EQ(style_data_get_str(style_data, STYLE_ID_FONT_NAME, ""), string("sans"));
 
   style_data = theme_find_style(&theme, WIDGET_TYPE_BUTTON, TK_DEFAULT_STYLE, WIDGET_STATE_PRESSED);
   ASSERT_EQ(style_data != NULL, true);
   ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_BG_COLOR, 0), 0xff00ffff);
-  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_FG_COLOR, 0), 0x7f00ffff);
 }
 
 TEST(ThemeGen, style_type) {

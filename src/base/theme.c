@@ -30,55 +30,50 @@ color_t style_data_get_color(const uint8_t* s, const char* name, color_t defval)
   return defval;
 }
 
-uint32_t style_data_get_int(const uint8_t* s, const char* name, uint32_t defval) {
+static const style_name_value_t* style_data_get(const uint8_t* s, const char* name) {
   uint32_t i = 0;
   uint32_t nr = 0;
   const uint8_t* p = s;
 
   if (s == NULL) {
-    return defval;
+    return NULL;
   }
 
   load_uint32(p, nr);
   for (i = 0; i < nr; i++) {
-    const style_int_data_t* iter = (const style_int_data_t*)p;
+    const style_name_value_t* iter = (const style_name_value_t*)p;
 
     if (tk_str_eq(iter->name, name)) {
-      defval = iter->value;
-      break;
+      return iter;
     } else {
-      p += sizeof(style_int_data_t);
+      p += sizeof(style_name_value_header_t) + iter->name_size + iter->value_size;
     }
   }
 
-  return defval;
+  return NULL;
+}
+
+uint32_t style_data_get_int(const uint8_t* s, const char* name, uint32_t defval) {
+  uint32_t value = defval;
+  const style_name_value_t* nv = style_data_get(s, name);
+
+  if (nv != NULL && nv->type == VALUE_TYPE_UINT32) {
+    const uint8_t* p = (const uint8_t*)(nv->name) + nv->name_size;
+    load_uint32(p, value);
+  }
+
+  return value;
 }
 
 const char* style_data_get_str(const uint8_t* s, const char* name, const char* defval) {
-  uint32_t i = 0;
-  uint32_t nr = 0;
-  const uint8_t* p = s;
+  const char* value = defval;
+  const style_name_value_t* nv = style_data_get(s, name);
 
-  if (s == NULL) {
-    return defval;
+  if (nv != NULL && nv->type == VALUE_TYPE_STRING) {
+    value = nv->name + nv->name_size;
   }
 
-  /*skip int values*/
-  load_uint32(p, nr);
-  p += nr * sizeof(style_int_data_t);
-
-  load_uint32(p, nr);
-  for (i = 0; i < nr; i++) {
-    const style_str_data_t* iter = (const style_str_data_t*)p;
-    if (tk_str_eq(iter->name, name)) {
-      defval = iter->value;
-      break;
-    } else {
-      p += sizeof(style_str_data_t);
-    }
-  }
-
-  return defval;
+  return value;
 }
 
 const uint8_t* theme_find_style(theme_t* t, const char* widget_type, const char* name,
