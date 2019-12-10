@@ -17,10 +17,6 @@
 
 #### 运行效果截图：
 
-![CleanAir-Demo](../images/cleanair_main.png)
-
-![Meter-Demo](../images/meter_main.png)
-
 ![Chart-Demo](../images/chart_main.png)
 
 ![MusicPlayer-Demo](../images/musicplayer_main.png)

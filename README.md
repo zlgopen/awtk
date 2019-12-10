@@ -22,11 +22,11 @@
 
 #### 运行效果截图：
 
-![Watch](docs/images/smartwatch_main.png)
-
 ![Chart-Demo](docs/images/chart_main.png)
 
 ![MusicPlayer-Demo](docs/images/musicplayer_main.png)
+
+![Watch](docs/images/smartwatch_main.png)
 
 ## 二、最终目标：
 
@@ -196,13 +196,13 @@ pip install Pillow
 
 ## 五、在线演示
 
-* [图表演示](http://zlgawtk.bceapp.com/awtk/demos/Chart-Demo/index.html)
+* [基本控件在线演示](http://zlgawtk.bceapp.com/awtk/demos/demoui/index.html)
 
-* [智能手表演示](http://zlgawtk.bceapp.com/awtk/demos/SmartWatch-Demo/index.html)
+* [图表演示](http://zlgawtk.bceapp.com/awtk/demos/Chart-Demo/index.html)
 
 * [音乐播放器演示](http://zlgawtk.bceapp.com/awtk/demos/MusicPlayer-Demo/index.html)
 
-* [基本控件在线演示](http://zlgawtk.bceapp.com/awtk/demos/demoui/index.html)
+* [智能手表演示](http://zlgawtk.bceapp.com/awtk/demos/SmartWatch-Demo/index.html)
 
 ## 六、各个平台的移植
 
