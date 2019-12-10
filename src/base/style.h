@@ -224,6 +224,18 @@ BEGIN_C_DECLS
  */
 #define STYLE_ID_ROUND_RADIUS "round_radius"
 
+/**
+ * @const STYLE_ID_CHILDREN_LAYOUT
+ * 子控件布局参数。
+ */
+#define STYLE_ID_CHILDREN_LAYOUT "children_layout"
+
+/**
+ * @const STYLE_ID_SELF_LAYOUT
+ * 控件布局参数。
+ */
+#define STYLE_ID_SELF_LAYOUT "self_layout"
+
 struct _style_t;
 typedef struct _style_t style_t;
 

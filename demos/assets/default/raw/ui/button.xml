@@ -1,16 +1,17 @@
 <window anim_hint="htranslate">
-  <button name="open:dialog1" style="round" enable_long_press="true" 
-    x="c" y="10" w="128" h="30" text="Long Press"/>
-  <button style="red_btn" x="c" y="50" w="128" h="30" text="Text"/>
-  <button style="icon" x="c" y="90" w="128" h="30" text="Fullscreen" name="fullscreen"/>
-  <button x="c" y="130" w="128" h="30">
-    <label y="0" x="0" w="100%" h="100%" text="Text"/>
-    <image image="earth" draw_type="icon" y="0" x="right" w="30" h="100%"/>
-  </button>
-  
+  <column style="buttons">
+    <button name="open:dialog1" style="round" enable_long_press="true" text="Long Press"/>
+    <button style="red_btn" text="Text"/>
+    <button style="icon" text="Fullscreen" name="fullscreen"/>
+    <button >
+      <label y="0" x="0" w="100%" h="100%" text="Text"/>
+      <image image="earth" draw_type="icon" y="0" x="right" w="30" h="100%"/>
+    </button>
+  </column>
+
   <button style="icon" x="c" y="170" w="60" h="60" text="Text"/>
   <button style="icon" x="c" y="240" w="60" h="60"/>
   <button style="image" x="c" y="310" w="30" h="30"/>
 
-  <button name="close" x="center" y="bottom:10" w="25%" h="30" text="Close"/>
+  <button name="close" style="close" text="Close"/>
 </window>

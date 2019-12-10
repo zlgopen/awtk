@@ -22,5 +22,19 @@
     <pressed  icon="play_p" x_offset="1" y_offset="1"/>
     <over     icon="play_o" />
   </style>
+
+  <style name="close" border_color="#a0a0a0"  text_color="black" self_layout="default(x=center,y=bottom:50,w=50%,h=30)">
+    <normal     bg_color="#f0f0f0" />
+    <pressed    bg_color="#c0c0c0" x_offset="1" y_offset="1"/>
+    <over       bg_color="#e0e0e0" />
+    <focused    bg_color="#e0e0e0" />
+    <disable    bg_color="gray" text_color="#d0d0d0" />
+  </style>
 </button>
+
+<column>
+  <style name="buttons" children_layout="default(row=4,col=1,spacing=10)" self_layout="default(x=center,y=10,w=50%,h=148)">
+    <normal />
+  </style>
+</column>
 

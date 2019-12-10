@@ -94,10 +94,33 @@ static const void* widget_get_const_style_data(widget_t* widget) {
   return data;
 }
 
+static ret_t style_const_apply_layout(style_t* s, widget_t* widget) {
+  const char* self_layout = style_get_str(s, STYLE_ID_SELF_LAYOUT, NULL);
+  const char* children_layout = style_get_str(s, STYLE_ID_CHILDREN_LAYOUT, NULL);
+
+  if (self_layout != NULL || children_layout != NULL) {
+    if (self_layout != NULL) {
+      widget_set_self_layout(widget, self_layout);
+      widget_set_need_relayout_children(widget->parent);
+    }
+
+    if (children_layout != NULL) {
+      widget_set_children_layout(widget, children_layout);
+      widget_set_need_relayout_children(widget);
+    }
+  }
+
+  return RET_OK;
+}
+
 static ret_t style_const_notify_widget_state_changed(style_t* s, widget_t* widget) {
   style_const_t* style = (style_const_t*)s;
-
+  const void* old_data = style->data;
   style->data = widget_get_const_style_data(widget);
+
+  if (old_data != style->data) {
+    style_const_apply_layout(s, widget);
+  }
 
   return RET_OK;
 }
