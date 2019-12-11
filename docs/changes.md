@@ -7,7 +7,10 @@
   * 增加文档 [如何在主题文件中写控件布局参数](how_to_write_layout_params_in_style.md)
   * 完善窗口切换的处理，窗口切换到前台时，重新设置原来的焦点控件为焦点。
   * combobox 支持 hscroll label 作为子控。
-  
+  * 修改 mledit tips 泄露的问题（感谢尧燊提供补丁）。 
+  * switch 增加对 image name 为空串的检查（感谢尧燊提供补丁）。 
+  * 修复 scroll_view 拖动时计算有误的问题（感谢大恒提供补丁）。 
+
 > 主题数据格式变化，请使用资源生成脚本，重新生成资源数据！！！
 
 * 2019/12/10
