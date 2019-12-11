@@ -1,4 +1,3 @@
-E
 # AWTK = Toolkit AnyWhere
 
 ![zlg](docs/images/zlg_adv.jpeg)
