@@ -3,7 +3,6 @@
 ![image](images/event_source_fd_t_0.png)
 
 fd事件源。用于文件、管道和套接字。
-
 ----------------------------------
 ### 函数
 <p id="event_source_fd_t_methods">
@@ -17,7 +16,6 @@ fd事件源。用于文件、管道和套接字。
 * 函数功能：
 
 > <p id="event_source_fd_t_event_source_fd_create">创建fd事件源。
-
 
 * 函数原型：
 

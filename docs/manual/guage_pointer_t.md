@@ -2,23 +2,7 @@
 ### 概述
 ![image](images/guage_pointer_t_0.png)
 
-仪表指针控件。
-仪表指针就是一张旋转的图片，图片可以是普通图片也可以是SVG图片。
-在嵌入式平台上，对于旋转的图片，SVG图片的效率比位图高数倍，所以推荐使用SVG图片。
-guage\_pointer\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于guage\_pointer\_t控件。
-在xml中使用"guage\_pointer"标签创建仪表指针控件。如：
-```xml
-<guage_pointer x="c" y="50" w="24" h="140" value="-128" image="guage_pointer" />
-```
-> 更多用法请参考：
-[guage.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/guage.xml)
-在c代码中使用函数guage\_pointer\_create创建仪表指针控件。如：
-```c
-widget_t* guage_pointer = guage_pointer_create(guage, 10, 10, 100, 30);
-guage_pointer_set_image(guage_pointer, "guage_pointer");
-```
-> 创建之后，需要用guage\_pointer\_set\_image设置仪表指针图片。
-
+仪表指针控件。 仪表指针就是一张旋转的图片，图片可以是普通图片也可以是SVG图片。 在嵌入式平台上，对于旋转的图片，SVG图片的效率比位图高数倍，所以推荐使用SVG图片。 guage\_pointer\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于guage\_pointer\_t控件。 在xml中使用"guage\_pointer"标签创建仪表指针控件。如： ```xml <guage_pointer x="c" y="50" w="24" h="140" value="-128" image="guage_pointer" /> ``` > 更多用法请参考： [guage.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/guage.xml) 在c代码中使用函数guage\_pointer\_create创建仪表指针控件。如： ```c  widget_t* guage_pointer = guage_pointer_create(guage, 10, 10, 100, 30);  guage_pointer_set_image(guage_pointer, "guage_pointer"); ``` > 创建之后，需要用guage\_pointer\_set\_image设置仪表指针图片。
 ----------------------------------
 ### 函数
 <p id="guage_pointer_t_methods">
@@ -38,14 +22,13 @@ guage_pointer_set_image(guage_pointer, "guage_pointer");
 | <a href="#guage_pointer_t_anchor_x">anchor\_x</a> | float\_t | 旋转锚点x坐标。 |
 | <a href="#guage_pointer_t_anchor_y">anchor\_y</a> | float\_t | 旋转锚点y坐标。 |
 | <a href="#guage_pointer_t_angle">angle</a> | int32\_t | 指针角度。12点钟方向为0度，顺时钟方向为正，单位为度。 |
-| <a href="#guage_pointer_t_image">image</a> | char* | 指针图片。 |
+| <a href="#guage_pointer_t_image">image</a> | char* | 指针图片。 图片须垂直向上，图片的中心点为旋转方向。 |
 #### guage\_pointer\_cast 函数
 -----------------------
 
 * 函数功能：
 
 > <p id="guage_pointer_t_guage_pointer_cast">转换为guage_pointer对象(供脚本语言使用)。
-
 
 * 函数原型：
 
@@ -65,7 +48,6 @@ widget_t* guage_pointer_cast (widget_t* widget);
 * 函数功能：
 
 > <p id="guage_pointer_t_guage_pointer_create">创建guage_pointer对象
-
 
 * 函数原型：
 
@@ -90,7 +72,6 @@ widget_t* guage_pointer_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h
 
 > <p id="guage_pointer_t_guage_pointer_set_anchor">设置指针的旋转锚点。
 
-
 * 函数原型：
 
 ```
@@ -112,7 +93,6 @@ ret_t guage_pointer_set_anchor (widget_t* widget, const char* anchor_x, const ch
 
 > <p id="guage_pointer_t_guage_pointer_set_angle">设置指针角度。12点钟方向为0度，顺时钟方向为正，单位为度。
 
-
 * 函数原型：
 
 ```
@@ -133,7 +113,6 @@ ret_t guage_pointer_set_angle (widget_t* widget, int32_t angle);
 
 > <p id="guage_pointer_t_guage_pointer_set_image">设置指针的图片。
 
-
 * 函数原型：
 
 ```
@@ -151,7 +130,6 @@ ret_t guage_pointer_set_image (widget_t* widget, const char* image);
 -----------------------
 > <p id="guage_pointer_t_anchor_x">旋转锚点x坐标。
 
-
 * 类型：float\_t
 
 | 特性 | 是否支持 |
@@ -167,7 +145,6 @@ ret_t guage_pointer_set_image (widget_t* widget, const char* image);
 #### anchor\_y 属性
 -----------------------
 > <p id="guage_pointer_t_anchor_y">旋转锚点y坐标。
-
 
 * 类型：float\_t
 
@@ -185,7 +162,6 @@ ret_t guage_pointer_set_image (widget_t* widget, const char* image);
 -----------------------
 > <p id="guage_pointer_t_angle">指针角度。12点钟方向为0度，顺时钟方向为正，单位为度。
 
-
 * 类型：int32\_t
 
 | 特性 | 是否支持 |
@@ -200,9 +176,7 @@ ret_t guage_pointer_set_image (widget_t* widget, const char* image);
 | 可通过widget\_set\_prop修改 | 是 |
 #### image 属性
 -----------------------
-> <p id="guage_pointer_t_image">指针图片。
-图片须垂直向上，图片的中心点为旋转方向。
-
+> <p id="guage_pointer_t_image">指针图片。 图片须垂直向上，图片的中心点为旋转方向。
 
 * 类型：char*
 

@@ -1,16 +1,6 @@
 ## utf8\_t
 ### 概述
-wchar_t和char类型转换接口。
-示例：
-```c
-const char* str = "hello";
-const wchar_t* wstr = L"hello";
-char res_str[128];
-wchar_t res_wstr[128];
-utf8_to_utf16(str, res_wstr, ARRAY_SIZE(res_wstr));
-utf8_from_utf16(wstr, res_str, ARRAY_SIZE(res_str));
-```
-
+wchar_t和char类型转换接口。 示例： ```c const char* str = "hello"; const wchar_t* wstr = L"hello"; char res_str[128]; wchar_t res_wstr[128]; utf8_to_utf16(str, res_wstr, ARRAY_SIZE(res_wstr)); utf8_from_utf16(wstr, res_str, ARRAY_SIZE(res_str)); ```
 ----------------------------------
 ### 函数
 <p id="utf8_t_methods">
@@ -25,7 +15,6 @@ utf8_from_utf16(wstr, res_str, ARRAY_SIZE(res_str));
 * 函数功能：
 
 > <p id="utf8_t_utf8_from_utf16">将wchar_t类型转换为char类型。
-
 
 * 函数原型：
 
@@ -47,7 +36,6 @@ char* utf8_from_utf16 (const wchar_t* str, const char* out, uint32_t size);
 * 函数功能：
 
 > <p id="utf8_t_utf8_from_utf16">将char类型转换为wchar_t类型。
-
 
 * 函数原型：
 

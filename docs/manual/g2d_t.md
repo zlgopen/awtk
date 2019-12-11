@@ -1,14 +1,13 @@
 ## g2d\_t
 ### 概述
 2D加速接口。
-
 ----------------------------------
 ### 函数
 <p id="g2d_t_methods">
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#g2d_t_g2d_blend_image">g2d\_blend\_image</a> | 把图片指定的区域渲染到framebuffer指定的区域，src的大小和dst的大小不一致则进行缩放。 |
+| <a href="#g2d_t_g2d_blend_image">g2d\_blend\_image</a> | 把图片指定的区域渲染到framebuffer指定的区域，src的大小和dst的大小不一致则进行缩放。 1.硬件不支持缩放，则返回NOT_IMPL。 2.硬件不支持全局alpha，global_alpha!=0xff时返回NOT_IMPL。 |
 | <a href="#g2d_t_g2d_copy_image">g2d\_copy\_image</a> | 把图片指定的区域拷贝到framebuffer中。 |
 | <a href="#g2d_t_g2d_copy_image">g2d\_copy\_image</a> | 把图片指定的区域进行旋转并拷贝到framebuffer相应的区域，本函数主要用于辅助实现横屏和竖屏的切换，一般支持90度旋转即可。 |
 | <a href="#g2d_t_g2d_fill_rect">g2d\_fill\_rect</a> | 用颜色填充指定的区域。 |
@@ -17,10 +16,7 @@
 
 * 函数功能：
 
-> <p id="g2d_t_g2d_blend_image">把图片指定的区域渲染到framebuffer指定的区域，src的大小和dst的大小不一致则进行缩放。
-1.硬件不支持缩放，则返回NOT_IMPL。
-2.硬件不支持全局alpha，global_alpha!=0xff时返回NOT_IMPL。
-
+> <p id="g2d_t_g2d_blend_image">把图片指定的区域渲染到framebuffer指定的区域，src的大小和dst的大小不一致则进行缩放。 1.硬件不支持缩放，则返回NOT_IMPL。 2.硬件不支持全局alpha，global_alpha!=0xff时返回NOT_IMPL。
 
 * 函数原型：
 
@@ -45,7 +41,6 @@ ret_t g2d_blend_image (bitmap_t* fb, bitmap_t* img, rect_t* dst, rect_t* src, ui
 
 > <p id="g2d_t_g2d_copy_image">把图片指定的区域拷贝到framebuffer中。
 
-
 * 函数原型：
 
 ```
@@ -69,7 +64,6 @@ ret_t g2d_copy_image (bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t dx, xy_t dy
 
 > <p id="g2d_t_g2d_copy_image">把图片指定的区域进行旋转并拷贝到framebuffer相应的区域，本函数主要用于辅助实现横屏和竖屏的切换，一般支持90度旋转即可。
 
-
 * 函数原型：
 
 ```
@@ -91,7 +85,6 @@ ret_t g2d_copy_image (bitmap_t* fb, bitmap_t* img, rect_t* src, lcd_orientation_
 * 函数功能：
 
 > <p id="g2d_t_g2d_fill_rect">用颜色填充指定的区域。
-
 
 * 函数原型：
 

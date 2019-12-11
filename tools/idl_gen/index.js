@@ -3,6 +3,14 @@ const path = require('path');
 const glob = require('glob')
 
 class IDLGenerator {
+  normalizeDesc(desc) {
+    desc = desc.trim();
+    desc = desc.replace(/\r\n/g, '\n');
+    desc = desc.replace(/^\n+|\n+$/g,"");
+
+    return desc;
+  }
+
   parseDesc(str) {
     if (str.indexOf('/**') < 0 && str.indexOf('*/') < 0) {
       let desc = str;
@@ -12,12 +20,6 @@ class IDLGenerator {
         desc = desc.substr(start + 1);
       }
 
-      desc = desc.trim();
-      desc = desc.replace(/\r\n/, '\n');
-      desc = desc.replace(/^\n+|\n+$/g,"");
-      if(desc) {
-        desc += '\n';
-      }
       return desc;
     } else {
       return '';
@@ -135,6 +137,7 @@ class IDLGenerator {
       }
     });
 
+    method.desc = this.normalizeDesc(method.desc);
     if (method.annotation.global) {
       method.type = 'method';
       method.header = this.filename;
@@ -167,6 +170,7 @@ class IDLGenerator {
       }
     });
 
+    property.desc = this.normalizeDesc(property.desc);
     if(this.cls) {
       this.cls.properties.push(property);
     }
@@ -192,6 +196,7 @@ class IDLGenerator {
       }
     });
 
+    event.desc = this.normalizeDesc(event.desc);
     if(this.cls) {
       this.cls.events.push(event);
     }
@@ -224,6 +229,7 @@ class IDLGenerator {
       }
     });
 
+    cls.desc = this.normalizeDesc(cls.desc);
     if(this.getClass(cls.name)) {
       this.cls = this.getClass(cls.name);
       console.log(`${cls.name} ${this.cls.header}  exist\n`);
@@ -254,6 +260,7 @@ class IDLGenerator {
       }
     });
 
+    cls.desc = this.normalizeDesc(cls.desc);
     if(this.getClass(cls.name)) {
       this.cls = this.getClass(cls.name);
       console.log(`${cls.name} ${this.cls.header}  exist\n`);
@@ -274,6 +281,7 @@ class IDLGenerator {
       }
     });
 
+    c.desc = this.normalizeDesc(c.desc);
     if (this.cls) {
       this.cls.consts.push(c);
     }

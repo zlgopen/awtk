@@ -1,7 +1,6 @@
 ## file\_transfer\_data\_t
 ### 概述
 文件数据包(sender->receiver)。
-
 ----------------------------------
 ### 属性
 <p id="file_transfer_data_t_properties">
@@ -16,7 +15,6 @@
 -----------------------
 > <p id="file_transfer_data_t_crc">本次传输文件数据的CRC。
 
-
 * 类型：uint32\_t
 
 | 特性 | 是否支持 |
@@ -26,7 +24,6 @@
 #### offset 属性
 -----------------------
 > <p id="file_transfer_data_t_offset">本次传输文件数据的偏移量。
-
 
 * 类型：uint32\_t
 
@@ -38,7 +35,6 @@
 -----------------------
 > <p id="file_transfer_data_t_size">本次传输文件数据的长度。
 
-
 * 类型：uint32\_t
 
 | 特性 | 是否支持 |
@@ -48,7 +44,6 @@
 #### type 属性
 -----------------------
 > <p id="file_transfer_data_t_type">包的类型。
-
 
 * 类型：uint32\_t
 

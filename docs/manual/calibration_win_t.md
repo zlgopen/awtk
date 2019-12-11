@@ -2,22 +2,7 @@
 ### 概述
 ![image](images/calibration_win_t_0.png)
 
-电阻屏校准窗口。
-calibration\_win\_t是[window\_base\_t](window_base_t.md)的子类控件，
-window\_base\_t的函数均适用于calibration\_win\_t控件。
-在xml中使用"calibration\_win"标签创建电阻屏校准窗口。如：
-```xml
-<calibration_win name="cali" w="100%" h="100%" text="Please click the center of cross">
-</calibration_win>
-```
-> 更多用法请参考：
-[window.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/calibration_win.xml)
-在c代码中使用函数calibration\_win\_create创建窗口。如：
-```c
-widget_t* win = calibration_win_create(NULL, 0, 0, 320, 480);
-```
-通过calibration\_win\_set\_on\_done注册回调函数，用于保存校准数据。
-
+电阻屏校准窗口。 calibration\_win\_t是[window\_base\_t](window_base_t.md)的子类控件， window\_base\_t的函数均适用于calibration\_win\_t控件。 在xml中使用"calibration\_win"标签创建电阻屏校准窗口。如： ```xml <calibration_win name="cali" w="100%" h="100%" text="Please click the center of cross"> </calibration_win> ``` > 更多用法请参考： [window.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/calibration_win.xml) 在c代码中使用函数calibration\_win\_create创建窗口。如： ```c  widget_t* win = calibration_win_create(NULL, 0, 0, 320, 480); ``` 通过calibration\_win\_set\_on\_done注册回调函数，用于保存校准数据。
 ----------------------------------
 ### 函数
 <p id="calibration_win_t_methods">
@@ -34,7 +19,6 @@ widget_t* win = calibration_win_create(NULL, 0, 0, 320, 480);
 * 函数功能：
 
 > <p id="calibration_win_t_calibration_win_cast">转换为calibration_win对象(供脚本语言使用)。
-
 
 * 函数原型：
 
@@ -54,7 +38,6 @@ widget_t* calibration_win_cast (widget_t* widget);
 * 函数功能：
 
 > <p id="calibration_win_t_calibration_win_create">创建calibration_win对象
-
 
 * 函数原型：
 
@@ -79,7 +62,6 @@ widget_t* calibration_win_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t
 
 > <p id="calibration_win_t_calibration_win_set_on_click">设置校准点击事件的处理函数。
 
-
 * 函数原型：
 
 ```
@@ -100,7 +82,6 @@ ret_t calibration_win_set_on_click (widget_t* widget, calibration_win_on_click_t
 * 函数功能：
 
 > <p id="calibration_win_t_calibration_win_set_on_done">设置校准完成的处理函数。
-
 
 * 函数原型：
 

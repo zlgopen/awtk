@@ -2,22 +2,7 @@
 ### 概述
 ![image](images/mledit_t_0.png)
 
-多行编辑器控件。
-mledit\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于mledit\_t控件。
-在xml中使用"mledit"标签创建多行编辑器控件。如：
-```xml
-<mledit x="c" y="m" w="300" h="300" />
-```
-> 更多用法请参考：[mledit.xml](
-https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/mledit.xml)
-在c代码中使用函数mledit\_create创建多行编辑器控件。如：
-```c
-widget_t* tc = mledit_create(win, 10, 10, 240, 240);
-```
-> 完整示例请参考：[mledit demo](
-https://github.com/zlgopen/awtk-c-demos/blob/master/demos/mledit.c)
-time\_clock一般不需要设置style。
-
+多行编辑器控件。 mledit\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于mledit\_t控件。 在xml中使用"mledit"标签创建多行编辑器控件。如： ```xml <mledit x="c" y="m" w="300" h="300" /> ``` > 更多用法请参考：[mledit.xml]( https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/mledit.xml) 在c代码中使用函数mledit\_create创建多行编辑器控件。如： ```c widget_t* tc = mledit_create(win, 10, 10, 240, 240); ``` > 完整示例请参考：[mledit demo]( https://github.com/zlgopen/awtk-c-demos/blob/master/demos/mledit.c) time\_clock一般不需要设置style。
 ----------------------------------
 ### 函数
 <p id="mledit_t_methods">
@@ -61,7 +46,6 @@ time\_clock一般不需要设置style。
 
 > <p id="mledit_t_mledit_cast">转换为mledit对象(供脚本语言使用)。
 
-
 * 函数原型：
 
 ```
@@ -80,7 +64,6 @@ widget_t* mledit_cast (widget_t* widget);
 * 函数功能：
 
 > <p id="mledit_t_mledit_create">创建mledit对象
-
 
 * 函数原型：
 
@@ -105,7 +88,6 @@ widget_t* mledit_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 > <p id="mledit_t_mledit_set_cursor">设置编辑器光标位置。
 
-
 * 函数原型：
 
 ```
@@ -125,7 +107,6 @@ ret_t mledit_set_cursor (widget_t* widget, uint32_t cursor);
 * 函数功能：
 
 > <p id="mledit_t_mledit_set_focus">设置为焦点。
-
 
 * 函数原型：
 
@@ -147,7 +128,6 @@ ret_t mledit_set_focus (widget_t* widget, bool_t focus);
 
 > <p id="mledit_t_mledit_set_input_tips">设置编辑器的输入提示。
 
-
 * 函数原型：
 
 ```
@@ -167,7 +147,6 @@ ret_t mledit_set_input_tips (widget_t* widget, char* tips);
 * 函数功能：
 
 > <p id="mledit_t_mledit_set_max_lines">设置编辑器的最大行数。
-
 
 * 函数原型：
 
@@ -189,7 +168,6 @@ ret_t mledit_set_max_lines (widget_t* widget, uint32_t max_lines);
 
 > <p id="mledit_t_mledit_set_readonly">设置编辑器是否为只读。
 
-
 * 函数原型：
 
 ```
@@ -209,7 +187,6 @@ ret_t mledit_set_readonly (widget_t* widget, bool_t readonly);
 * 函数功能：
 
 > <p id="mledit_t_mledit_set_scroll_line">设置编辑器滚动速度。
-
 
 * 函数原型：
 
@@ -231,7 +208,6 @@ ret_t mledit_set_scroll_line (widget_t* widget, uint32_t scroll_line);
 
 > <p id="mledit_t_mledit_set_wrap_word">设置编辑器是否自动折行。
 
-
 * 函数原型：
 
 ```
@@ -249,7 +225,6 @@ ret_t mledit_set_wrap_word (widget_t* widget, bool_t wrap_word);
 -----------------------
 > <p id="mledit_t_bottom_margin">下边距。
 
-
 * 类型：uint8\_t
 
 | 特性 | 是否支持 |
@@ -263,7 +238,6 @@ ret_t mledit_set_wrap_word (widget_t* widget, bool_t wrap_word);
 -----------------------
 > <p id="mledit_t_left_margin">左边距。
 
-
 * 类型：uint8\_t
 
 | 特性 | 是否支持 |
@@ -276,7 +250,6 @@ ret_t mledit_set_wrap_word (widget_t* widget, bool_t wrap_word);
 #### max\_lines 属性
 -----------------------
 > <p id="mledit_t_max_lines">最大行数。
-
 
 * 类型：uint32\_t
 
@@ -294,7 +267,6 @@ ret_t mledit_set_wrap_word (widget_t* widget, bool_t wrap_word);
 -----------------------
 > <p id="mledit_t_readonly">编辑器是否为只读。
 
-
 * 类型：bool\_t
 
 | 特性 | 是否支持 |
@@ -311,7 +283,6 @@ ret_t mledit_set_wrap_word (widget_t* widget, bool_t wrap_word);
 -----------------------
 > <p id="mledit_t_right_margin">右边距。
 
-
 * 类型：uint8\_t
 
 | 特性 | 是否支持 |
@@ -324,7 +295,6 @@ ret_t mledit_set_wrap_word (widget_t* widget, bool_t wrap_word);
 #### scroll\_line 属性
 -----------------------
 > <p id="mledit_t_scroll_line">鼠标一次滚动行数。
-
 
 * 类型：float\_t
 
@@ -342,7 +312,6 @@ ret_t mledit_set_wrap_word (widget_t* widget, bool_t wrap_word);
 -----------------------
 > <p id="mledit_t_tips">输入提示。
 
-
 * 类型：char*
 
 | 特性 | 是否支持 |
@@ -359,7 +328,6 @@ ret_t mledit_set_wrap_word (widget_t* widget, bool_t wrap_word);
 -----------------------
 > <p id="mledit_t_top_margin">上边距。
 
-
 * 类型：uint8\_t
 
 | 特性 | 是否支持 |
@@ -372,7 +340,6 @@ ret_t mledit_set_wrap_word (widget_t* widget, bool_t wrap_word);
 #### wrap\_word 属性
 -----------------------
 > <p id="mledit_t_wrap_word">是否自动折行。
-
 
 * 类型：bool\_t
 

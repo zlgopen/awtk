@@ -1,7 +1,6 @@
 ## font\_t
 ### 概述
 代表一种字体。
-
 ----------------------------------
 ### 函数
 <p id="font_t_methods">
@@ -18,7 +17,6 @@
 * 函数功能：
 
 > <p id="font_t_font_destroy">销毁font对象。
-
 
 * 函数原型：
 
@@ -38,7 +36,6 @@ ret_t font_destroy (font_t* font);
 * 函数功能：
 
 > <p id="font_t_font_get_glyph">获取指定字符和大小的字模。
-
 
 * 函数原型：
 
@@ -62,7 +59,6 @@ ret_t font_get_glyph (font_t* font, wchar_t chr, font_size_t font_size, glyph_t*
 
 > <p id="font_t_font_get_vmetrics">获取字体的高度信息。
 
-
 * 函数原型：
 
 ```
@@ -82,7 +78,6 @@ font_vmetrics_t font_get_vmetrics (font_t* font, font_size_t font_size);
 * 函数功能：
 
 > <p id="font_t_font_match">检查当前字体是否与指定名称和大小相匹配。
-
 
 * 函数原型：
 

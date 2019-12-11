@@ -3,7 +3,6 @@
 ![image](images/event_source_idle_t_0.png)
 
 idle事件源。
-
 ----------------------------------
 ### 函数
 <p id="event_source_idle_t_methods">
@@ -17,7 +16,6 @@ idle事件源。
 * 函数功能：
 
 > <p id="event_source_idle_t_event_source_idle_create">创建idle事件源。
-
 
 * 函数原型：
 

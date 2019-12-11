@@ -3,7 +3,6 @@
 ![image](images/value_desc_binary_t_0.png)
 
 二进制类型属性描述。
-
 ----------------------------------
 ### 属性
 <p id="value_desc_binary_t_properties">
@@ -16,7 +15,6 @@
 -----------------------
 > <p id="value_desc_binary_t_max">最大长度。
 
-
 * 类型：uint32\_t
 
 | 特性 | 是否支持 |
@@ -26,7 +24,6 @@
 #### min 属性
 -----------------------
 > <p id="value_desc_binary_t_min">最小长度。
-
 
 * 类型：uint32\_t
 

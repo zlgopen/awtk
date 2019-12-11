@@ -1,8 +1,6 @@
 ## file\_receiver\_t
 ### 概述
-文件接收方。
-> 可用注册EVT_PROGRESS事件，以获取传输的进度状态。
-
+文件接收方。   > 可用注册EVT_PROGRESS事件，以获取传输的进度状态。
 ----------------------------------
 ### 函数
 <p id="file_receiver_t_methods">
@@ -18,7 +16,6 @@
 * 函数功能：
 
 > <p id="file_receiver_t_file_receiver_create">创建receiver对象。
-
 
 * 函数原型：
 
@@ -40,7 +37,6 @@ file_receiver_t* file_receiver_create (uint32_t block_size, const char* producti
 
 > <p id="file_receiver_t_file_receiver_destroy">销毁receiver对象。
 
-
 * 函数原型：
 
 ```
@@ -59,7 +55,6 @@ ret_t file_receiver_destroy (file_receiver_t* receiver);
 * 函数功能：
 
 > <p id="file_receiver_t_file_receiver_run">开始传输文件。
-
 
 * 函数原型：
 

@@ -1,7 +1,6 @@
 ## value\_desc\_string\_enums\_t
 ### 概述
 字符串枚举类型属性描述。
-
 ----------------------------------
 ### 属性
 <p id="value_desc_string_enums_t_properties">
@@ -14,7 +13,6 @@
 -----------------------
 > <p id="value_desc_string_enums_t_defvalue">缺省值。
 
-
 * 类型：const  char*
 
 | 特性 | 是否支持 |
@@ -24,7 +22,6 @@
 #### enums 属性
 -----------------------
 > <p id="value_desc_string_enums_t_enums">枚举值。
-
 
 * 类型：const char**
 

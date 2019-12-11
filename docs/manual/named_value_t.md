@@ -1,7 +1,6 @@
 ## named\_value\_t
 ### 概述
 命名的值。
-
 ----------------------------------
 ### 函数
 <p id="named_value_t_methods">
@@ -30,7 +29,6 @@
 
 > <p id="named_value_t_named_value_cast">转换为named_value对象(供脚本语言使用)。
 
-
 * 函数原型：
 
 ```
@@ -50,7 +48,6 @@ named_value_t* named_value_cast (named_value_t* nv);
 
 > <p id="named_value_t_named_value_create">创建named_value对象。
 
-
 * 函数原型：
 
 ```
@@ -68,7 +65,6 @@ named_value_t* named_value_create ();
 * 函数功能：
 
 > <p id="named_value_t_named_value_deinit">重置named_value对象。
-
 
 * 函数原型：
 
@@ -89,7 +85,6 @@ ret_t named_value_deinit (named_value_t* nv);
 
 > <p id="named_value_t_named_value_destroy">销毁named_value对象。
 
-
 * 函数原型：
 
 ```
@@ -109,7 +104,6 @@ ret_t named_value_destroy (named_value_t* nv);
 
 > <p id="named_value_t_named_value_get_value">获取值对象(主要给脚本语言使用)。
 
-
 * 函数原型：
 
 ```
@@ -128,7 +122,6 @@ value_t* named_value_get_value (named_value_t* nv);
 * 函数功能：
 
 > <p id="named_value_t_named_value_init">初始化。
-
 
 * 函数原型：
 
@@ -151,7 +144,6 @@ ret_t named_value_init (named_value_t* nv, const char* name, const value_t* valu
 
 > <p id="named_value_t_named_value_set_name">设置名称。
 
-
 * 函数原型：
 
 ```
@@ -172,7 +164,6 @@ ret_t named_value_set_name (named_value_t* nv, const char* name);
 
 > <p id="named_value_t_named_value_set_value">设置值。
 
-
 * 函数原型：
 
 ```
@@ -190,7 +181,6 @@ ret_t named_value_set_value (named_value_t* nv, const value_t* value);
 -----------------------
 > <p id="named_value_t_name">名称。
 
-
 * 类型：char*
 
 | 特性 | 是否支持 |
@@ -201,7 +191,6 @@ ret_t named_value_set_value (named_value_t* nv, const value_t* value);
 #### value 属性
 -----------------------
 > <p id="named_value_t_value">值。
-
 
 * 类型：value\_t
 

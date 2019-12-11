@@ -2,33 +2,7 @@
 ### 概述
 ![image](images/progress_circle_t_0.png)
 
-进度圆环控件。
-progress\_circle\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于progress\_circle\_t控件。
-在xml中使用"progress\_circle"标签创建进度圆环控件。如：
-```xml
-<progress_circle max="360" show_text="true" start_angle="90" />
-```
-> 更多用法请参考：
-[progress_circle.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/progress_circle.xml)
-在c代码中使用函数progress\_circle\_create创建进度圆环控件。如：
-```c
-progress_circle = progress_circle_create(win, 10, 10, 200, 200);
-progress_circle_set_max(progress_circle, 360);
-widget_set_value(progress_circle, 128);
-```
-> 完整示例请参考：
-[progress_circle
-demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/progress_circle.c)
-可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：
-```xml
-<style name="default">
-<normal text_color="green" fg_color="black" />
-</style>
-```
-> 更多用法请参考：
-[theme
-default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L467)
-
+进度圆环控件。 progress\_circle\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于progress\_circle\_t控件。 在xml中使用"progress\_circle"标签创建进度圆环控件。如： ```xml  <progress_circle max="360" show_text="true" start_angle="90" /> ``` > 更多用法请参考： [progress_circle.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/progress_circle.xml) 在c代码中使用函数progress\_circle\_create创建进度圆环控件。如： ```c  progress_circle = progress_circle_create(win, 10, 10, 200, 200);  progress_circle_set_max(progress_circle, 360);  widget_set_value(progress_circle, 128); ``` > 完整示例请参考： [progress_circle demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/progress_circle.c) 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如： ```xml <style name="default">   <normal text_color="green" fg_color="black" /> </style> ``` > 更多用法请参考： [theme default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L467)
 ----------------------------------
 ### 函数
 <p id="progress_circle_t_methods">
@@ -70,7 +44,6 @@ default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/st
 
 > <p id="progress_circle_t_progress_circle_cast">转换为progress_circle对象(供脚本语言使用)。
 
-
 * 函数原型：
 
 ```
@@ -89,7 +62,6 @@ widget_t* progress_circle_cast (widget_t* widget);
 * 函数功能：
 
 > <p id="progress_circle_t_progress_circle_create">创建progress_circle对象
-
 
 * 函数原型：
 
@@ -114,7 +86,6 @@ widget_t* progress_circle_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t
 
 > <p id="progress_circle_t_progress_circle_set_counter_clock_wise">设置是否为逆时针方向。
 
-
 * 函数原型：
 
 ```
@@ -134,7 +105,6 @@ ret_t progress_circle_set_counter_clock_wise (widget_t* widget, bool_t counter_c
 * 函数功能：
 
 > <p id="progress_circle_t_progress_circle_set_line_width">设置环线的厚度。
-
 
 * 函数原型：
 
@@ -156,7 +126,6 @@ ret_t progress_circle_set_line_width (widget_t* widget, uint32_t line_width);
 
 > <p id="progress_circle_t_progress_circle_set_max">设置最大值。
 
-
 * 函数原型：
 
 ```
@@ -176,7 +145,6 @@ ret_t progress_circle_set_max (widget_t* widget, uint32_t max);
 * 函数功能：
 
 > <p id="progress_circle_t_progress_circle_set_show_text">设置是否显示文本。
-
 
 * 函数原型：
 
@@ -198,7 +166,6 @@ ret_t progress_circle_set_show_text (widget_t* widget, bool_t show_text);
 
 > <p id="progress_circle_t_progress_circle_set_start_angle">设置起始角度。
 
-
 * 函数原型：
 
 ```
@@ -218,7 +185,6 @@ ret_t progress_circle_set_start_angle (widget_t* widget, int32_t start_angle);
 * 函数功能：
 
 > <p id="progress_circle_t_progress_circle_set_unit">设置单位。
-
 
 * 函数原型：
 
@@ -240,7 +206,6 @@ ret_t progress_circle_set_unit (widget_t* widget, const char* unit);
 
 > <p id="progress_circle_t_progress_circle_set_value">设置值。
 
-
 * 函数原型：
 
 ```
@@ -258,7 +223,6 @@ ret_t progress_circle_set_value (widget_t* widget, float_t value);
 -----------------------
 > <p id="progress_circle_t_counter_clock_wise">是否为逆时针方向(缺省为FALSE)。
 
-
 * 类型：bool\_t
 
 | 特性 | 是否支持 |
@@ -274,7 +238,6 @@ ret_t progress_circle_set_value (widget_t* widget, float_t value);
 #### line\_width 属性
 -----------------------
 > <p id="progress_circle_t_line_width">环线的厚度(缺省为8)。
-
 
 * 类型：uint32\_t
 
@@ -292,7 +255,6 @@ ret_t progress_circle_set_value (widget_t* widget, float_t value);
 -----------------------
 > <p id="progress_circle_t_max">最大值(缺省为100)。
 
-
 * 类型：uint32\_t
 
 | 特性 | 是否支持 |
@@ -308,7 +270,6 @@ ret_t progress_circle_set_value (widget_t* widget, float_t value);
 #### show\_text 属性
 -----------------------
 > <p id="progress_circle_t_show_text">是否显示文本(缺省为TRUE)。
-
 
 * 类型：bool\_t
 
@@ -326,7 +287,6 @@ ret_t progress_circle_set_value (widget_t* widget, float_t value);
 -----------------------
 > <p id="progress_circle_t_start_angle">起始角度(单位为度，缺省-90)。
 
-
 * 类型：int32\_t
 
 | 特性 | 是否支持 |
@@ -343,7 +303,6 @@ ret_t progress_circle_set_value (widget_t* widget, float_t value);
 -----------------------
 > <p id="progress_circle_t_unit">单元(缺省无)。
 
-
 * 类型：char*
 
 | 特性 | 是否支持 |
@@ -359,7 +318,6 @@ ret_t progress_circle_set_value (widget_t* widget, float_t value);
 #### value 属性
 -----------------------
 > <p id="progress_circle_t_value">值(缺省为0)。
-
 
 * 类型：float\_t
 

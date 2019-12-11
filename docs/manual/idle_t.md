@@ -1,20 +1,6 @@
 ## idle\_t
 ### 概述
-idle可以看作是duration为0的定时器。
-> idle可以用来实现一些异步处理。
-示例：
-```c
-static ret_t something_on_idle(const idle_info_t* info) {
-widget_t* widget = WIDGET(info->ctx);
-edit_t* edit = EDIT(widget);
-...
-return RET_REMOVE;
-}
-...
-idle_add(something_on_idle, edit);
-```
-> 在非GUI线程请用idle\_queue。
-
+idle可以看作是duration为0的定时器。 > idle可以用来实现一些异步处理。 示例： ```c static ret_t something_on_idle(const idle_info_t* info) {   widget_t* widget = WIDGET(info->ctx);   edit_t* edit = EDIT(widget);   ...   return RET_REMOVE; } ... idle_add(something_on_idle, edit); ``` > 在非GUI线程请用idle\_queue。
 ----------------------------------
 ### 函数
 <p id="idle_t_methods">
@@ -32,7 +18,6 @@ idle_add(something_on_idle, edit);
 * 函数功能：
 
 > <p id="idle_t_idle_add">增加一个idle。
-
 
 * 函数原型：
 
@@ -54,7 +39,6 @@ uint32_t idle_add (idle_func_t on_idle, void* ctx);
 
 > <p id="idle_t_idle_count">返回idle的个数。
 
-
 * 函数原型：
 
 ```
@@ -72,7 +56,6 @@ uint32_t idle_count ();
 * 函数功能：
 
 > <p id="idle_t_idle_queue">用于非GUI线程增加一个idle，本函数向主循环的事件队列中发送一个增加idle的请求。
-
 
 * 函数原型：
 
@@ -94,7 +77,6 @@ ret_t idle_queue (idle_func_t on_idle, void* ctx);
 
 > <p id="idle_t_idle_remove">删除指定的idle。
 
-
 * 函数原型：
 
 ```
@@ -113,7 +95,6 @@ ret_t idle_remove (uint32_t idle_id);
 * 函数功能：
 
 > <p id="idle_t_idle_set_on_destroy">设置一个回调函数，在idle被销毁时调用(方便脚本语言去释放回调函数)。
-
 
 * 函数原型：
 

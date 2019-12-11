@@ -1,7 +1,6 @@
 ## path\_t
 ### 概述
 路径相关的工具函数。
-
 ----------------------------------
 ### 函数
 <p id="path_t_methods">
@@ -11,7 +10,7 @@
 | <a href="#path_t_path_abs">path\_abs</a> | 返回绝对路径。 |
 | <a href="#path_t_path_app_root">path\_app\_root</a> | 获取app所在目录。 |
 | <a href="#path_t_path_basename">path\_basename</a> | 返回文件名。 |
-| <a href="#path_t_path_build">path\_build</a> | 构造路径。 |
+| <a href="#path_t_path_build">path\_build</a> | 构造路径。> 可变参数为字符串，以NULL参数结束。 |
 | <a href="#path_t_path_cwd">path\_cwd</a> | 获取当前所在目录。 |
 | <a href="#path_t_path_dirname">path\_dirname</a> | 返回目录。 |
 | <a href="#path_t_path_exe">path\_exe</a> | 获取可执行文件所在目录。 |
@@ -25,7 +24,6 @@
 * 函数功能：
 
 > <p id="path_t_path_abs">返回绝对路径。
-
 
 * 函数原型：
 
@@ -48,7 +46,6 @@ ret_t path_abs (const char* path* path, char* result, uint32_t size);
 
 > <p id="path_t_path_app_root">获取app所在目录。
 
-
 * 函数原型：
 
 ```
@@ -67,7 +64,6 @@ ret_t path_app_root (char* path);
 * 函数功能：
 
 > <p id="path_t_path_basename">返回文件名。
-
 
 * 函数原型：
 
@@ -88,9 +84,7 @@ ret_t path_basename (const char* path* path, char* result, uint32_t size);
 
 * 函数功能：
 
-> <p id="path_t_path_build">构造路径。
-> 可变参数为字符串，以NULL参数结束。
-
+> <p id="path_t_path_build">构造路径。> 可变参数为字符串，以NULL参数结束。
 
 * 函数原型：
 
@@ -112,7 +106,6 @@ ret_t path_build (char* result, uint32_t size);
 
 > <p id="path_t_path_cwd">获取当前所在目录。
 
-
 * 函数原型：
 
 ```
@@ -131,7 +124,6 @@ ret_t path_cwd (char* path);
 * 函数功能：
 
 > <p id="path_t_path_dirname">返回目录。
-
 
 * 函数原型：
 
@@ -154,7 +146,6 @@ ret_t path_dirname (const char* path* path, char* result, uint32_t size);
 
 > <p id="path_t_path_exe">获取可执行文件所在目录。
 
-
 * 函数原型：
 
 ```
@@ -174,7 +165,6 @@ ret_t path_exe (char* path);
 
 > <p id="path_t_path_exist">判断目录是否存在。
 
-
 * 函数原型：
 
 ```
@@ -193,7 +183,6 @@ ret_t path_exist (const char* path);
 * 函数功能：
 
 > <p id="path_t_path_extname">返回文件扩展名。
-
 
 * 函数原型：
 
@@ -216,7 +205,6 @@ ret_t path_extname (const char* path* path, char* result, uint32_t size);
 
 > <p id="path_t_path_normalize">规范路径字符形式。
 
-
 * 函数原型：
 
 ```
@@ -237,7 +225,6 @@ ret_t path_normalize (const char* path* path, char* result, uint32_t size);
 * 函数功能：
 
 > <p id="path_t_path_replace_basename">替换文件名。
-
 
 * 函数原型：
 

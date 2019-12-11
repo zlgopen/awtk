@@ -3,7 +3,6 @@
 ![image](images/window_event_t_0.png)
 
 窗口事件，由窗口管理器触发。
-
 ----------------------------------
 ### 函数
 <p id="window_event_t_methods">
@@ -26,7 +25,6 @@
 
 > <p id="window_event_t_pointer_event_rotate">根据屏幕旋转方向修正pointer_event中的坐标。
 
-
 * 函数原型：
 
 ```
@@ -47,7 +45,6 @@ ret_t pointer_event_rotate (pointer_event_t* evt, system_info_t* info);
 
 > <p id="window_event_t_window_event_cast">把event对象转window_event_t对象。主要给脚本语言使用。
 
-
 * 函数原型：
 
 ```
@@ -67,7 +64,6 @@ window_event_t* window_event_cast (event_t* event);
 
 > <p id="window_event_t_window_event_init">初始化事件。
 
-
 * 函数原型：
 
 ```
@@ -86,7 +82,6 @@ event_t* window_event_init (window_event_t* event, void* target, uint32_t type, 
 #### window 属性
 -----------------------
 > <p id="window_event_t_window">canvas。
-
 
 * 类型：widget\_t*
 

@@ -1,7 +1,6 @@
 ## ring\_buffer\_t
 ### 概述
 循环缓存区。
-
 ----------------------------------
 ### 函数
 <p id="ring_buffer_t_methods">
@@ -45,7 +44,6 @@
 
 > <p id="ring_buffer_t_ring_buffer_capacity">获取容量。
 
-
 * 函数原型：
 
 ```
@@ -64,7 +62,6 @@ uint32_t ring_buffer_capacity (ring_buffer_t* ring_buffer);
 * 函数功能：
 
 > <p id="ring_buffer_t_ring_buffer_create">创建ring_buffer对象。
-
 
 * 函数原型：
 
@@ -86,7 +83,6 @@ ring_buffer_t* ring_buffer_create (uint32_t init_capacity, uint32_t max_capacity
 
 > <p id="ring_buffer_t_ring_buffer_destroy">销毁ring_buffer。
 
-
 * 函数原型：
 
 ```
@@ -105,7 +101,6 @@ ret_t ring_buffer_destroy (ring_buffer_t* ring_buffer);
 * 函数功能：
 
 > <p id="ring_buffer_t_ring_buffer_ensure_write_space">扩展buffer。
-
 
 * 函数原型：
 
@@ -127,7 +122,6 @@ ret_t ring_buffer_ensure_write_space (ring_buffer_t* ring_buffer, uint32_t size)
 
 > <p id="ring_buffer_t_ring_buffer_free_size">获取空闲空间的长度。
 
-
 * 函数原型：
 
 ```
@@ -146,7 +140,6 @@ uint32_t ring_buffer_free_size (ring_buffer_t* ring_buffer);
 * 函数功能：
 
 > <p id="ring_buffer_t_ring_buffer_is_empty">检查ring_buffer是否空。
-
 
 * 函数原型：
 
@@ -167,7 +160,6 @@ bool_t ring_buffer_is_empty (ring_buffer_t* ring_buffer);
 
 > <p id="ring_buffer_t_ring_buffer_is_full">检查ring_buffer是否满。
 
-
 * 函数原型：
 
 ```
@@ -186,7 +178,6 @@ bool_t ring_buffer_is_full (ring_buffer_t* ring_buffer);
 * 函数功能：
 
 > <p id="ring_buffer_t_ring_buffer_peek">读取数据(不修改读取位置)。
-
 
 * 函数原型：
 
@@ -209,7 +200,6 @@ uint32_t ring_buffer_peek (ring_buffer_t* ring_buffer, void* buff, uint32_t size
 
 > <p id="ring_buffer_t_ring_buffer_read">读取数据。
 
-
 * 函数原型：
 
 ```
@@ -230,7 +220,6 @@ uint32_t ring_buffer_read (ring_buffer_t* ring_buffer, void* buff, uint32_t size
 * 函数功能：
 
 > <p id="ring_buffer_t_ring_buffer_read_len">读取指定长度数据，要么成功要么失败。
-
 
 * 函数原型：
 
@@ -253,7 +242,6 @@ ret_t ring_buffer_read_len (ring_buffer_t* ring_buffer, void* buff, uint32_t siz
 
 > <p id="ring_buffer_t_ring_buffer_reset">重置ring_buffer为空。
 
-
 * 函数原型：
 
 ```
@@ -272,7 +260,6 @@ ret_t ring_buffer_reset (ring_buffer_t* ring_buffer);
 * 函数功能：
 
 > <p id="ring_buffer_t_ring_buffer_set_read_cursor">设置读取光标的位置。
-
 
 * 函数原型：
 
@@ -294,7 +281,6 @@ ret_t ring_buffer_set_read_cursor (ring_buffer_t* ring_buffer, uint32_t r);
 
 > <p id="ring_buffer_t_ring_buffer_set_read_cursor_delta">设置读取光标的位置(delta)。
 
-
 * 函数原型：
 
 ```
@@ -314,7 +300,6 @@ ret_t ring_buffer_set_read_cursor_delta (ring_buffer_t* ring_buffer, uint32_t r_
 * 函数功能：
 
 > <p id="ring_buffer_t_ring_buffer_set_write_cursor">设置写入光标的位置。
-
 
 * 函数原型：
 
@@ -336,7 +321,6 @@ ret_t ring_buffer_set_write_cursor (ring_buffer_t* ring_buffer, uint32_t w);
 
 > <p id="ring_buffer_t_ring_buffer_set_write_cursor_delta">设置写入光标的位置(delta)。
 
-
 * 函数原型：
 
 ```
@@ -357,7 +341,6 @@ ret_t ring_buffer_set_write_cursor_delta (ring_buffer_t* ring_buffer, uint32_t w
 
 > <p id="ring_buffer_t_ring_buffer_size">获取数据长度。
 
-
 * 函数原型：
 
 ```
@@ -376,7 +359,6 @@ uint32_t ring_buffer_size (ring_buffer_t* ring_buffer);
 * 函数功能：
 
 > <p id="ring_buffer_t_ring_buffer_skip">跳过指定长度数据，要么成功要么失败。
-
 
 * 函数原型：
 
@@ -397,7 +379,6 @@ ret_t ring_buffer_skip (ring_buffer_t* ring_buffer, uint32_t size);
 * 函数功能：
 
 > <p id="ring_buffer_t_ring_buffer_write">写入数据。
-
 
 * 函数原型：
 
@@ -420,7 +401,6 @@ uint32_t ring_buffer_write (ring_buffer_t* ring_buffer, const void* buff, uint32
 
 > <p id="ring_buffer_t_ring_buffer_write_len">写入指定长度数据，要么成功要么失败。
 
-
 * 函数原型：
 
 ```
@@ -439,7 +419,6 @@ ret_t ring_buffer_write_len (ring_buffer_t* ring_buffer, const void* buff, uint3
 -----------------------
 > <p id="ring_buffer_t_capacity">当前容量。
 
-
 * 类型：uint32\_t
 
 | 特性 | 是否支持 |
@@ -449,7 +428,6 @@ ret_t ring_buffer_write_len (ring_buffer_t* ring_buffer, const void* buff, uint3
 #### data 属性
 -----------------------
 > <p id="ring_buffer_t_data">数据。
-
 
 * 类型：uint8\_t*
 
@@ -461,7 +439,6 @@ ret_t ring_buffer_write_len (ring_buffer_t* ring_buffer, const void* buff, uint3
 -----------------------
 > <p id="ring_buffer_t_full">是否满。
 
-
 * 类型：bool\_t
 
 | 特性 | 是否支持 |
@@ -471,7 +448,6 @@ ret_t ring_buffer_write_len (ring_buffer_t* ring_buffer, const void* buff, uint3
 #### max\_capacity 属性
 -----------------------
 > <p id="ring_buffer_t_max_capacity">最大容量。
-
 
 * 类型：uint32\_t
 
@@ -483,7 +459,6 @@ ret_t ring_buffer_write_len (ring_buffer_t* ring_buffer, const void* buff, uint3
 -----------------------
 > <p id="ring_buffer_t_r">读取位置。
 
-
 * 类型：uint32\_t
 
 | 特性 | 是否支持 |
@@ -493,7 +468,6 @@ ret_t ring_buffer_write_len (ring_buffer_t* ring_buffer, const void* buff, uint3
 #### w 属性
 -----------------------
 > <p id="ring_buffer_t_w">写入位置。
-
 
 * 类型：uint32\_t
 

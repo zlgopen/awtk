@@ -2,10 +2,7 @@
 ### 概述
 ![image](images/self_layouter_menu_t_0.png)
 
-menu的控件自身布局算法实现(一般用于popup或dialog窗口)。
-> 用法请参考：[缺省控件自身布局算法](
-https://github.com/zlgopen/awtk/blob/master/docs/self_layouter_menu.md)
-
+menu的控件自身布局算法实现(一般用于popup或dialog窗口)。> 用法请参考：[缺省控件自身布局算法](https://github.com/zlgopen/awtk/blob/master/docs/self_layouter_menu.md)
 ----------------------------------
 ### 函数
 <p id="self_layouter_menu_t_methods">
@@ -19,7 +16,6 @@ https://github.com/zlgopen/awtk/blob/master/docs/self_layouter_menu.md)
 * 函数功能：
 
 > <p id="self_layouter_menu_t_self_layouter_menu_create">创建控件自身布局对象。
-
 
 * 函数原型：
 

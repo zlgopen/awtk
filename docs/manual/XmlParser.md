@@ -1,7 +1,6 @@
 ## XmlParser
 ### 概述
 xml解析器
-
 ----------------------------------
 ### 函数
 <p id="XmlParser_methods">
@@ -19,7 +18,6 @@ xml解析器
 * 函数功能：
 
 > <p id="XmlParser_xml_parser_create">创建解析器。
-
 
 * 函数原型：
 
@@ -39,7 +37,6 @@ XmlParser* xml_parser_create ();
 
 > <p id="XmlParser_xml_parser_destroy">销毁parser对象。
 
-
 * 函数原型：
 
 ```
@@ -58,7 +55,6 @@ void xml_parser_destroy (XmlParser* thiz);
 * 函数功能：
 
 > <p id="XmlParser_xml_parser_parse">解析数据。
-
 
 * 函数原型：
 
@@ -81,7 +77,6 @@ void xml_parser_parse (XmlParser* thiz, const char* xml, int length);
 
 > <p id="XmlParser_xml_parser_parse_file">解析文件。
 
-
 * 函数原型：
 
 ```
@@ -101,7 +96,6 @@ void xml_parser_parse_file (XmlParser* thiz, const char* filename);
 * 函数功能：
 
 > <p id="XmlParser_xml_parser_set_builder">设置builder。
-
 
 * 函数原型：
 

@@ -1,7 +1,6 @@
 ## platform\_t
 ### 概述
 平台接口，包括：获取时间、休眠等函数。
-
 ----------------------------------
 ### 函数
 <p id="platform_t_methods">
@@ -17,7 +16,6 @@
 * 函数功能：
 
 > <p id="platform_t_get_time_ms64">获取当前时间。
-
 
 * 函数原型：
 
@@ -37,7 +35,6 @@ uint64_t get_time_ms64 ();
 
 > <p id="platform_t_platform_prepare">平台准备函数。
 
-
 * 函数原型：
 
 ```
@@ -55,7 +52,6 @@ ret_t platform_prepare ();
 * 函数功能：
 
 > <p id="platform_t_sleep_ms">睡眠指定时间。
-
 
 * 函数原型：
 

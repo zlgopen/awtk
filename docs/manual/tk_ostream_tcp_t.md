@@ -3,7 +3,6 @@
 ![image](images/tk_ostream_tcp_t_0.png)
 
 基于TCP实现的输出流。
-
 ----------------------------------
 ### 函数
 <p id="tk_ostream_tcp_t_methods">
@@ -17,7 +16,6 @@
 * 函数功能：
 
 > <p id="tk_ostream_tcp_t_tk_ostream_tcp_create">创建ostream对象。
-
 
 * 函数原型：
 

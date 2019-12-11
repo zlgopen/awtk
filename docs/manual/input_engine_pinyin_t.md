@@ -2,9 +2,7 @@
 ### 概述
 ![image](images/input_engine_pinyin_t_0.png)
 
-拼音输入法引擎实现。
-基于谷歌拼音输入法实现。
-
+拼音输入法引擎实现。 基于谷歌拼音输入法实现。
 ----------------------------------
 ### 函数
 <p id="input_engine_pinyin_t_methods">
@@ -18,7 +16,6 @@
 * 函数功能：
 
 > <p id="input_engine_pinyin_t_input_engine_create">创建拼音输入法引擎对象。
-
 
 * 函数原型：
 

@@ -1,7 +1,6 @@
 ## widget\_prop\_t
 ### 概述
-控件的属性。
-### 常量
+控件的属性。### 常量
 <p id="widget_prop_t_consts">
 
 | 名称 | 说明 | 

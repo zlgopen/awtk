@@ -3,7 +3,6 @@
 ![image](images/tk_ostream_t_0.png)
 
 输出流的接口。
-
 ----------------------------------
 ### 函数
 <p id="tk_ostream_t_methods">
@@ -21,7 +20,6 @@
 * 函数功能：
 
 > <p id="tk_ostream_t_tk_ostream_flush">刷新数据。
-
 
 * 函数原型：
 
@@ -42,7 +40,6 @@ ret_t tk_ostream_flush (tk_ostream_t* stream);
 
 > <p id="tk_ostream_t_tk_ostream_seek">设置偏移量。
 
-
 * 函数原型：
 
 ```
@@ -62,7 +59,6 @@ ret_t tk_ostream_seek (tk_ostream_t* stream, uint32_t offset);
 * 函数功能：
 
 > <p id="tk_ostream_t_tk_ostream_write">写入数据。
-
 
 * 函数原型：
 
@@ -85,7 +81,6 @@ int32_t tk_ostream_write (tk_ostream_t* stream, const uint8_t* buff, uint32_t ma
 
 > <p id="tk_ostream_t_tk_ostream_write_byte">写入一个字节的数据。
 
-
 * 函数原型：
 
 ```
@@ -105,7 +100,6 @@ ret_t tk_ostream_write_byte (tk_ostream_t* stream, uint8_t byte);
 * 函数功能：
 
 > <p id="tk_ostream_t_tk_ostream_write_len">写入指定长度的数据。
-
 
 * 函数原型：
 

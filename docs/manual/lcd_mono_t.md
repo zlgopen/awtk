@@ -2,11 +2,7 @@
 ### 概述
 ![image](images/lcd_mono_t_0.png)
 
-单色LCD。
-lcd\_mono是一个特殊的Framebuffer，它用一个比特来表示一个pixel。
-lcd\_mono只是负责硬件无关的逻辑处理，调用者需要在创建时提供一个flush回调函数，
-在flush函数中把脏矩形中的数据刷新到硬件中。
-
+单色LCD。 lcd\_mono是一个特殊的Framebuffer，它用一个比特来表示一个pixel。 lcd\_mono只是负责硬件无关的逻辑处理，调用者需要在创建时提供一个flush回调函数， 在flush函数中把脏矩形中的数据刷新到硬件中。
 ----------------------------------
 ### 函数
 <p id="lcd_mono_t_methods">
@@ -27,7 +23,6 @@ lcd\_mono只是负责硬件无关的逻辑处理，调用者需要在创建时�
 
 > <p id="lcd_mono_t_lcd_mono_create">创建单色LCD对象。
 
-
 * 函数原型：
 
 ```
@@ -47,7 +42,6 @@ lcd_t* lcd_mono_create (wh_t w, wh_t h, lcd_flush_t flush, lcd_destroy_t on_dest
 #### data 属性
 -----------------------
 > <p id="lcd_mono_t_data">Framebuffer首地址。
-
 
 * 类型：uint8\_t*
 

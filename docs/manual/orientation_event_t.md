@@ -3,7 +3,6 @@
 ![image](images/orientation_event_t_0.png)
 
 滚轮事件。
-
 ----------------------------------
 ### 函数
 <p id="orientation_event_t_methods">
@@ -25,7 +24,6 @@
 
 > <p id="orientation_event_t_orientation_event_cast">把event对象转orientation_event_t对象，主要给脚本语言使用。
 
-
 * 函数原型：
 
 ```
@@ -45,7 +43,6 @@ orientation_event_t* orientation_event_cast (event_t* event);
 
 > <p id="orientation_event_t_orientation_event_init">初始化事件。
 
-
 * 函数原型：
 
 ```
@@ -64,7 +61,6 @@ event_t* orientation_event_init (orientation_event_t* event, void* target, uint3
 #### orientation 属性
 -----------------------
 > <p id="orientation_event_t_orientation">屏幕方向。
-
 
 * 类型：int32\_t
 

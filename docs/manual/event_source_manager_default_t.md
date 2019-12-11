@@ -3,7 +3,6 @@
 ![image](images/event_source_manager_default_t_0.png)
 
 缺省的事件源管理器。
-
 ----------------------------------
 ### 函数
 <p id="event_source_manager_default_t_methods">
@@ -17,7 +16,6 @@
 * 函数功能：
 
 > <p id="event_source_manager_default_t_event_source_manager_default_create">创建事件源管理器。
-
 
 * 函数原型：
 

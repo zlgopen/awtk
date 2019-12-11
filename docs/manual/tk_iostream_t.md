@@ -3,7 +3,6 @@
 ![image](images/tk_iostream_t_0.png)
 
 输入输出流的接口。
-
 ----------------------------------
 ### 函数
 <p id="tk_iostream_t_methods">
@@ -18,7 +17,6 @@
 * 函数功能：
 
 > <p id="tk_iostream_t_tk_iostream_get_istream">获取输入流对象。
-
 
 * 函数原型：
 
@@ -38,7 +36,6 @@ tk_istream_t* tk_iostream_get_istream (tk_iostream_t* stream);
 * 函数功能：
 
 > <p id="tk_iostream_t_tk_iostream_get_ostream">获取输出流对象。
-
 
 * 函数原型：
 

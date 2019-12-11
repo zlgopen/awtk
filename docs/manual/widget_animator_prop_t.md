@@ -1,7 +1,6 @@
 ## widget\_animator\_prop\_t
 ### 概述
 通过修改对象的指定属性形成动画效果。
-
 ----------------------------------
 ### 函数
 <p id="widget_animator_prop_t_methods">
@@ -16,7 +15,6 @@
 * 函数功能：
 
 > <p id="widget_animator_prop_t_widget_animator_prop_create">创建单属性动画对象。
-
 
 * 函数原型：
 
@@ -40,7 +38,6 @@ widget_animator_t* widget_animator_prop_create (widget_t* widget, uint32_t durat
 * 函数功能：
 
 > <p id="widget_animator_prop_t_widget_animator_prop_set_params">设置动画对象的参数。
-
 
 * 函数原型：
 

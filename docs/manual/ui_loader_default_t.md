@@ -3,7 +3,6 @@
 ![image](images/ui_loader_default_t_0.png)
 
 二进制格式的UI资源加载器。
-
 ----------------------------------
 ### 函数
 <p id="ui_loader_default_t_methods">
@@ -17,7 +16,6 @@
 * 函数功能：
 
 > <p id="ui_loader_default_t_default_ui_loader">获取二进制格式格式的UI资源加载器对象。
-
 
 * 函数原型：
 

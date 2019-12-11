@@ -2,10 +2,7 @@
 ### 概述
 ![image](images/font_loader_ft_t_0.png)
 
-freetype字体加载器。
-freetype主要用于加载矢量字体(如truetype)，它功能强大，效果优异，与stb字体加载器相比，缺点是代码量比较大。
-如果flash空间够大，优先使用freetype，否则使用stb。
-
+freetype字体加载器。 freetype主要用于加载矢量字体(如truetype)，它功能强大，效果优异，与stb字体加载器相比，缺点是代码量比较大。 如果flash空间够大，优先使用freetype，否则使用stb。
 ----------------------------------
 ### 函数
 <p id="font_loader_ft_t_methods">
@@ -19,7 +16,6 @@ freetype主要用于加载矢量字体(如truetype)，它功能强大，效果�
 * 函数功能：
 
 > <p id="font_loader_ft_t_font_loader_ft">获取freetype字体加载器对象。
-
 
 * 函数原型：
 

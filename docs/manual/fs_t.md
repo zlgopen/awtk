@@ -1,7 +1,6 @@
 ## fs\_t
 ### 概述
 文件系统接口。
-
 ----------------------------------
 ### 函数
 <p id="fs_t_methods">
@@ -33,7 +32,6 @@
 
 > <p id="fs_t_file_exist">判断文件是否存在。
 
-
 * 函数原型：
 
 ```
@@ -52,7 +50,6 @@ bool_t file_exist (const char* name);
 * 函数功能：
 
 > <p id="fs_t_file_get_size">获取文件大小。
-
 
 * 函数原型：
 
@@ -73,7 +70,6 @@ int32_t file_get_size (const char* name);
 
 > <p id="fs_t_file_read">读取文件的全部内容。
 
-
 * 函数原型：
 
 ```
@@ -93,7 +89,6 @@ void* file_read (const char* name, uint32_t* size);
 * 函数功能：
 
 > <p id="fs_t_file_read_part">从某个位置读取文件。
-
 
 * 函数原型：
 
@@ -117,7 +112,6 @@ int32_t file_read_part (const char* name, const void* buffer, uint32_t size, uin
 
 > <p id="fs_t_file_remove">刪除文件。
 
-
 * 函数原型：
 
 ```
@@ -136,7 +130,6 @@ ret_t file_remove (const char* name);
 * 函数功能：
 
 > <p id="fs_t_file_write">写入文件。
-
 
 * 函数原型：
 
@@ -159,7 +152,6 @@ ret_t file_write (const char* name, const void* buffer, uint32_t size);
 
 > <p id="fs_t_fs_dir_exist">判断目录是否存在。
 
-
 * 函数原型：
 
 ```
@@ -179,7 +171,6 @@ bool_t fs_dir_exist (fs_t* fs, const char* name);
 * 函数功能：
 
 > <p id="fs_t_fs_dir_rename">目录重命名。
-
 
 * 函数原型：
 
@@ -202,7 +193,6 @@ ret_t fs_dir_rename (fs_t* fs, const char* name, const char* new_name);
 
 > <p id="fs_t_fs_file_exist">判断文件是否存在。
 
-
 * 函数原型：
 
 ```
@@ -222,7 +212,6 @@ bool_t fs_file_exist (fs_t* fs, const char* name);
 * 函数功能：
 
 > <p id="fs_t_fs_file_rename">文件重命名。
-
 
 * 函数原型：
 
@@ -245,7 +234,6 @@ ret_t fs_file_rename (fs_t* fs, const char* name, const char* new_name);
 
 > <p id="fs_t_fs_get_cwd">获取当前所在目录。
 
-
 * 函数原型：
 
 ```
@@ -265,7 +253,6 @@ ret_t fs_get_cwd (fs_t* fs, char* path);
 * 函数功能：
 
 > <p id="fs_t_fs_get_exe">获取可执行文件所在目录。
-
 
 * 函数原型：
 
@@ -287,7 +274,6 @@ ret_t fs_get_exe (fs_t* fs, char* path);
 
 > <p id="fs_t_fs_get_file_size">获取文件大小。
 
-
 * 函数原型：
 
 ```
@@ -308,7 +294,6 @@ ret_t fs_get_file_size (fs_t* fs, const char* name);
 
 > <p id="fs_t_fs_open_dir">打开目录。
 
-
 * 函数原型：
 
 ```
@@ -328,7 +313,6 @@ fs_dir_t fs_open_dir (fs_t* fs, const char* name);
 * 函数功能：
 
 > <p id="fs_t_fs_open_file">打开文件。
-
 
 * 函数原型：
 
@@ -351,7 +335,6 @@ ret_t fs_open_file (fs_t* fs, const char* name, const char* mode);
 
 > <p id="fs_t_fs_remove_dir">刪除目录。
 
-
 * 函数原型：
 
 ```
@@ -372,7 +355,6 @@ ret_t fs_remove_dir (fs_t* fs, const char* name);
 
 > <p id="fs_t_fs_remove_file">刪除文件。
 
-
 * 函数原型：
 
 ```
@@ -392,7 +374,6 @@ ret_t fs_remove_file (fs_t* fs, const char* name);
 * 函数功能：
 
 > <p id="fs_t_os_fs">获取缺省的文件系统对象。
-
 
 * 函数原型：
 

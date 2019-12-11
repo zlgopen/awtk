@@ -1,7 +1,6 @@
 ## matrix\_t
 ### 概述
 2D矩阵对象。
-
 ----------------------------------
 ### 函数
 <p id="matrix_t_methods">
@@ -24,7 +23,6 @@
 
 > <p id="matrix_t_matrix_identity">重置矩阵对象为单位矩阵。
 
-
 * 函数原型：
 
 ```
@@ -43,7 +41,6 @@ matrix_t* matrix_identity (matrix_t* m);
 * 函数功能：
 
 > <p id="matrix_t_matrix_init">初始化矩阵对象。
-
 
 * 函数原型：
 
@@ -64,7 +61,6 @@ matrix_t* matrix_init (matrix_t* m);
 
 > <p id="matrix_t_matrix_invert">求矩阵的逆。
 
-
 * 函数原型：
 
 ```
@@ -83,7 +79,6 @@ matrix_t* matrix_invert (matrix_t* m);
 * 函数功能：
 
 > <p id="matrix_t_matrix_multiply">矩阵相乘。
-
 
 * 函数原型：
 
@@ -105,7 +100,6 @@ matrix_t* matrix_multiply (matrix_t* m, matrix_t* b);
 
 > <p id="matrix_t_matrix_rotate">旋转。
 
-
 * 函数原型：
 
 ```
@@ -125,7 +119,6 @@ matrix_t* matrix_rotate (matrix_t* m, float rad);
 * 函数功能：
 
 > <p id="matrix_t_matrix_scale">缩放。
-
 
 * 函数原型：
 
@@ -147,7 +140,6 @@ matrix_t* matrix_scale (matrix_t* m, float sx, float sy);
 * 函数功能：
 
 > <p id="matrix_t_matrix_set">设置矩阵的参数。
-
 
 * 函数原型：
 
@@ -174,7 +166,6 @@ matrix_t* matrix_set (matrix_t* m, float a0, float a1, float a2, float a3, float
 
 > <p id="matrix_t_matrix_transform_point">对点进行变换。
 
-
 * 函数原型：
 
 ```
@@ -197,7 +188,6 @@ matrix_t* matrix_transform_point (matrix_t* m, xy_t x, xy_t y, xy_t* out_x, xy_t
 * 函数功能：
 
 > <p id="matrix_t_matrix_translate">平移。
-
 
 * 函数原型：
 

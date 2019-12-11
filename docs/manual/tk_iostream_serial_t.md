@@ -3,7 +3,6 @@
 ![image](images/tk_iostream_serial_t_0.png)
 
 基于串口实现的输入输出流。
-
 ----------------------------------
 ### 函数
 <p id="tk_iostream_serial_t_methods">
@@ -17,7 +16,6 @@
 * 函数功能：
 
 > <p id="tk_iostream_serial_t_tk_iostream_serial_create">创建iostream对象。
-
 
 * 函数原型：
 

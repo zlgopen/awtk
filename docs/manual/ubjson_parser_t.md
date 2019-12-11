@@ -1,7 +1,6 @@
 ## ubjson\_parser\_t
 ### 概述
 ubjson parser
-
 ----------------------------------
 ### 函数
 <p id="ubjson_parser_t_methods">
@@ -17,7 +16,6 @@ ubjson parser
 * 函数功能：
 
 > <p id="ubjson_parser_t_ubjson_dump">将ubjson数据打印到控制台。
-
 
 * 函数原型：
 
@@ -38,7 +36,6 @@ ret_t ubjson_dump (void* data, uint32_t size);
 * 函数功能：
 
 > <p id="ubjson_parser_t_ubjson_parse">解析ubjson数据，遇到key/value时调用提供的回调函数。
-
 
 * 函数原型：
 
@@ -61,7 +58,6 @@ ret_t ubjson_parse (void* data, uint32_t size, ubjson_on_key_value_t on_key_valu
 * 函数功能：
 
 > <p id="ubjson_parser_t_ubjson_to_object">解析ubjson数据，生成object对象。
-
 
 * 函数原型：
 

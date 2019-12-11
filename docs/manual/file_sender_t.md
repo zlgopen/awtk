@@ -1,8 +1,6 @@
 ## file\_sender\_t
 ### 概述
-文件发送方。
-> 可用注册EVT_PROGRESS事件，以获取传输的进度状态。
-
+文件发送方。   > 可用注册EVT_PROGRESS事件，以获取传输的进度状态。
 ----------------------------------
 ### 函数
 <p id="file_sender_t_methods">
@@ -18,7 +16,6 @@
 * 函数功能：
 
 > <p id="file_sender_t_file_sender_create">创建sender对象。
-
 
 * 函数原型：
 
@@ -38,7 +35,6 @@ file_sender_t* file_sender_create ();
 
 > <p id="file_sender_t_file_sender_destroy">销毁sender对象。
 
-
 * 函数原型：
 
 ```
@@ -57,7 +53,6 @@ ret_t file_sender_destroy (file_sender_t* sender);
 * 函数功能：
 
 > <p id="file_sender_t_file_sender_run">开始传输文件。
-
 
 * 函数原型：
 

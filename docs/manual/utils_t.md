@@ -1,7 +1,6 @@
 ## utils\_t
 ### 概述
 工具类。
-
 ----------------------------------
 ### 函数
 <p id="utils_t_methods">
@@ -38,7 +37,6 @@
 
 > <p id="utils_t_tk_atob">将字符串转换为布尔类型。
 
-
 * 函数原型：
 
 ```
@@ -57,7 +55,6 @@ bool_t tk_atob (const char* str);
 * 函数功能：
 
 > <p id="utils_t_tk_atof">将字符串转换为浮点类型。
-
 
 * 函数原型：
 
@@ -78,7 +75,6 @@ double tk_atof (const char* str);
 
 > <p id="utils_t_tk_atoi">将字符串转换为整形。
 
-
 * 函数原型：
 
 ```
@@ -97,7 +93,6 @@ int tk_atoi (const char* str);
 * 函数功能：
 
 > <p id="utils_t_tk_ftoa">将浮点型转换为字符串。
-
 
 * 函数原型：
 
@@ -120,7 +115,6 @@ const char* tk_ftoa (char* str, int len, double f);
 
 > <p id="utils_t_tk_itoa">将整形转换为字符串。
 
-
 * 函数原型：
 
 ```
@@ -142,7 +136,6 @@ const char* tk_itoa (char* str, int len, int n);
 
 > <p id="utils_t_tk_skip_to_num">跳过字符串函数，如：字符串"hello123world"，返回的结果是"123world"。
 
-
 * 函数原型：
 
 ```
@@ -161,7 +154,6 @@ const char* tk_skip_to_num (const char* str);
 * 函数功能：
 
 > <p id="utils_t_tk_snprintf">将可变参数(...)按照format格式化字符串，并将字符串复制到str中。
-
 
 * 函数原型：
 
@@ -184,7 +176,6 @@ int tk_snprintf (char* str, size_t size, const char* format);
 
 > <p id="utils_t_tk_sscanf">从字符串读取格式化输入。
 
-
 * 函数原型：
 
 ```
@@ -204,7 +195,6 @@ int tk_sscanf (char* str, const char* format);
 * 函数功能：
 
 > <p id="utils_t_tk_str_append">字符串追加函数。
-
 
 * 函数原型：
 
@@ -227,7 +217,6 @@ ret_t tk_str_append (char* str, uint32_t max_len, const char* s);
 
 > <p id="utils_t_tk_str_cmp">字符串比较函数。
 
-
 * 函数原型：
 
 ```
@@ -247,7 +236,6 @@ int32_t tk_str_cmp (const char* a, const char* b);
 * 函数功能：
 
 > <p id="utils_t_tk_str_icmp">字符串比较函数（不区分大小写）。
-
 
 * 函数原型：
 
@@ -269,7 +257,6 @@ int32_t tk_str_icmp (const char* a, const char* b);
 
 > <p id="utils_t_tk_str_start_with">检查字符串是否以指定的字符串prefix开头。
 
-
 * 函数原型：
 
 ```
@@ -290,7 +277,6 @@ bool_t tk_str_start_with (const char* str, const char* prefix);
 
 > <p id="utils_t_tk_str_tolower">将大写字母转换为小写字母。
 
-
 * 函数原型：
 
 ```
@@ -310,7 +296,6 @@ char* tk_str_tolower (char* str);
 
 > <p id="utils_t_tk_str_toupper">将小写字母转换为大写字母。
 
-
 * 函数原型：
 
 ```
@@ -329,7 +314,6 @@ char* tk_str_toupper (char* str);
 * 函数功能：
 
 > <p id="utils_t_tk_strcpy">将src所指向的字符串复制到dst。
-
 
 * 函数原型：
 
@@ -351,7 +335,6 @@ char* tk_strcpy (char* dst, const char* src);
 
 > <p id="utils_t_tk_strdup">字符串拷贝函数。
 
-
 * 函数原型：
 
 ```
@@ -370,7 +353,6 @@ char* tk_strdup (const char* str);
 * 函数功能：
 
 > <p id="utils_t_tk_strncpy">将src所指向的字符串复制到dst，最多复制len个字符串。
-
 
 * 函数原型：
 
@@ -393,7 +375,6 @@ char* tk_strncpy (char* dst, const char* src, size_t len);
 
 > <p id="utils_t_tk_strndup">字符串拷贝函数，最多复制len个字符串。
 
-
 * 函数原型：
 
 ```
@@ -413,7 +394,6 @@ char* tk_strndup (const char* str, uint32_t len);
 * 函数功能：
 
 > <p id="utils_t_tk_strtol">将字符串转换为长整形。
-
 
 * 函数原型：
 
@@ -436,7 +416,6 @@ long tk_strtol (const char* str, const char** end, int base);
 
 > <p id="utils_t_tk_watob">将宽字符串转换为布尔类型。
 
-
 * 函数原型：
 
 ```
@@ -455,7 +434,6 @@ bool_t tk_watob (const wchar_t* str);
 * 函数功能：
 
 > <p id="utils_t_tk_watof">将宽字符串转换为浮点类型。
-
 
 * 函数原型：
 
@@ -476,7 +454,6 @@ double tk_watof (const wchar_t* str);
 
 > <p id="utils_t_tk_watoi">将宽字符串转换为整形。
 
-
 * 函数原型：
 
 ```
@@ -495,7 +472,6 @@ int tk_watoi (const wchar_t* str);
 * 函数功能：
 
 > <p id="utils_t_tk_wstrdup">宽字符串拷贝函数。
-
 
 * 函数原型：
 

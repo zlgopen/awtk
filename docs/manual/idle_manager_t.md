@@ -1,7 +1,6 @@
 ## idle\_manager\_t
 ### 概述
 idle_manager_t管理器。
-
 ----------------------------------
 ### 函数
 <p id="idle_manager_t_methods">
@@ -27,7 +26,6 @@ idle_manager_t管理器。
 
 > <p id="idle_manager_t_idle_manager">获取缺省的idle_manager_t管理器。
 
-
 * 函数原型：
 
 ```
@@ -45,7 +43,6 @@ idle_manager_t* idle_manager ();
 * 函数功能：
 
 > <p id="idle_manager_t_idle_manager_add">添加idle。
-
 
 * 函数原型：
 
@@ -68,7 +65,6 @@ uint32_t idle_manager_add (idle_manager_t* idle_manager, idle_func_t* on_idle, v
 
 > <p id="idle_manager_t_idle_manager_append">追加idle。
 
-
 * 函数原型：
 
 ```
@@ -89,7 +85,6 @@ ret_t idle_manager_append (idle_manager_t* idle_manager, idle_info_t* idle);
 
 > <p id="idle_manager_t_idle_manager_count">返回idle的个数。
 
-
 * 函数原型：
 
 ```
@@ -109,7 +104,6 @@ uint32_t idle_manager_count (idle_manager_t* idle_manager);
 
 > <p id="idle_manager_t_idle_manager_create">创建idle_manager_t管理器。
 
-
 * 函数原型：
 
 ```
@@ -127,7 +121,6 @@ idle_manager_t* idle_manager_create ();
 * 函数功能：
 
 > <p id="idle_manager_t_idle_manager_deinit">析构idle_manager_t管理器。
-
 
 * 函数原型：
 
@@ -148,7 +141,6 @@ ret_t idle_manager_deinit (idle_manager_t* idle_manager);
 
 > <p id="idle_manager_t_idle_manager_destroy">析构并释放idle_manager_t管理器。
 
-
 * 函数原型：
 
 ```
@@ -167,7 +159,6 @@ ret_t idle_manager_destroy (idle_manager_t* idle_manager);
 * 函数功能：
 
 > <p id="idle_manager_t_idle_manager_find">查找指定ID的idle。
-
 
 * 函数原型：
 
@@ -189,7 +180,6 @@ idle_info_t* idle_manager_find (idle_manager_t* idle_manager, uint32_t idle_id);
 
 > <p id="idle_manager_t_idle_manager_init">初始化idle_manager_t管理器。
 
-
 * 函数原型：
 
 ```
@@ -208,7 +198,6 @@ idle_manager_t* idle_manager_init (idle_manager_t* idle_manager);
 * 函数功能：
 
 > <p id="idle_manager_t_idle_manager_remove">根据idle_id删除idle。
-
 
 * 函数原型：
 
@@ -230,7 +219,6 @@ ret_t idle_manager_remove (idle_manager_t* idle_manager, uint32_t idle_id);
 
 > <p id="idle_manager_t_idle_manager_remove_all">删除全部idle。
 
-
 * 函数原型：
 
 ```
@@ -249,7 +237,6 @@ ret_t idle_manager_remove_all (idle_manager_t* idle_manager);
 * 函数功能：
 
 > <p id="idle_manager_t_idle_manager_set">设置缺省的idle_manager_t管理器。
-
 
 * 函数原型：
 

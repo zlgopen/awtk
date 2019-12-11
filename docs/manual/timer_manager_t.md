@@ -1,7 +1,6 @@
 ## timer\_manager\_t
 ### 概述
 定时器管理器。
-
 ----------------------------------
 ### 函数
 <p id="timer_manager_t_methods">
@@ -29,7 +28,6 @@
 
 > <p id="timer_manager_t_timer_manager">获取缺省的定时器管理器。
 
-
 * 函数原型：
 
 ```
@@ -47,7 +45,6 @@ timer_manager_t* timer_manager ();
 * 函数功能：
 
 > <p id="timer_manager_t_timer_manager_add">添加定时器。
-
 
 * 函数原型：
 
@@ -71,7 +68,6 @@ uint32_t timer_manager_add (timer_manager_t* timer_manager, timer_func_t* on_tim
 
 > <p id="timer_manager_t_timer_manager_append">追加定时器。
 
-
 * 函数原型：
 
 ```
@@ -92,7 +88,6 @@ ret_t timer_manager_append (timer_manager_t* timer_manager, timer_info_t* timer)
 
 > <p id="timer_manager_t_timer_manager_count">返回最近的定时器到期时间。
 
-
 * 函数原型：
 
 ```
@@ -111,7 +106,6 @@ uint64_t timer_manager_count (timer_manager_t* timer_manager);
 * 函数功能：
 
 > <p id="timer_manager_t_timer_manager_count">返回定时器的个数。
-
 
 * 函数原型：
 
@@ -132,7 +126,6 @@ uint32_t timer_manager_count (timer_manager_t* timer_manager);
 
 > <p id="timer_manager_t_timer_manager_create">创建定时器管理器。
 
-
 * 函数原型：
 
 ```
@@ -151,7 +144,6 @@ timer_manager_t* timer_manager_create (timer_get_time_t get_time);
 * 函数功能：
 
 > <p id="timer_manager_t_timer_manager_deinit">析构定时器管理器。
-
 
 * 函数原型：
 
@@ -172,7 +164,6 @@ ret_t timer_manager_deinit (timer_manager_t* timer_manager);
 
 > <p id="timer_manager_t_timer_manager_destroy">析构并释放定时器管理器。
 
-
 * 函数原型：
 
 ```
@@ -191,7 +182,6 @@ ret_t timer_manager_destroy (timer_manager_t* timer_manager);
 * 函数功能：
 
 > <p id="timer_manager_t_timer_manager_find">查找指定ID的定时器。
-
 
 * 函数原型：
 
@@ -213,7 +203,6 @@ timer_info_t* timer_manager_find (timer_manager_t* timer_manager, uint32_t timer
 
 > <p id="timer_manager_t_timer_manager_init">初始化定时器管理器。
 
-
 * 函数原型：
 
 ```
@@ -233,7 +222,6 @@ timer_manager_t* timer_manager_init (timer_manager_t* timer_manager, timer_get_t
 * 函数功能：
 
 > <p id="timer_manager_t_timer_manager_remove">根据id删除定时器。
-
 
 * 函数原型：
 
@@ -255,7 +243,6 @@ ret_t timer_manager_remove (timer_manager_t* timer_manager, uint32_t timer_id);
 
 > <p id="timer_manager_t_timer_manager_reset">重置定时器。
 
-
 * 函数原型：
 
 ```
@@ -276,7 +263,6 @@ ret_t timer_manager_reset (timer_manager_t* timer_manager, uint32_t* timer_id);
 
 > <p id="timer_manager_t_timer_manager_set">设置缺省的定时器管理器。
 
-
 * 函数原型：
 
 ```
@@ -295,7 +281,6 @@ ret_t timer_manager_set (timer_manager_t* timer_manager_t);
 * 函数功能：
 
 > <p id="timer_manager_t_timer_manager_set_on_destroy">设置一个回调函数，在定时器被销毁时调用(方便脚本语言去释放回调函数)。
-
 
 * 函数原型：
 

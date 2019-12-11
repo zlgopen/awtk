@@ -3,7 +3,6 @@
 ![image](images/progress_event_t_0.png)
 
 进度变化事件。
-
 ----------------------------------
 ### 函数
 <p id="progress_event_t_methods">
@@ -25,7 +24,6 @@
 
 > <p id="progress_event_t_progress_event_cast">把event对象转progress_event_t对象，主要给脚本语言使用。
 
-
 * 函数原型：
 
 ```
@@ -45,7 +43,6 @@ progress_event_t* progress_event_cast (event_t* event);
 
 > <p id="progress_event_t_progress_event_init">初始progress event。
 
-
 * 函数原型：
 
 ```
@@ -62,7 +59,6 @@ event_t* progress_event_init (progress_event_t* event, uint32_t percent);
 #### percent 属性
 -----------------------
 > <p id="progress_event_t_percent">进度百分比。
-
 
 * 类型：uint32\_t
 

@@ -2,31 +2,7 @@
 ### 概述
 ![image](images/scroll_view_t_0.png)
 
-滚动视图。
-scroll\_view\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于scroll\_view\_t控件。
-在xml中使用"scroll\_view"标签创建滚动视图控件。如：
-```xml
-<list_view x="0"  y="30" w="100%" h="-80" item_height="60">
-<scroll_view name="view" x="0"  y="0" w="100%" h="100%">
-<list_item style="odd" children_layout="default(rows=1,cols=0)">
-<image draw_type="icon" w="30" image="earth"/>
-<label w="-30" text="1.Hello AWTK !">
-<switch x="r:10" y="m" w="60" h="20"/>
-</label>
-</list_item>
-...
-</scroll_view>
-</list_view>
-```
-> 滚动视图一般作为列表视图的子控件使用。
-> 更多用法请参考：[list\_view\_m.xml](
-https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/list_view_m.xml)
-在c代码中使用函数scroll\_view\_create创建列表视图控件。如：
-```c
-widget_t* scroll_view = scroll_view_create(win, 0, 0, 0, 0);
-```
-可用通过style来设置控件的显示风格，如背景颜色和边框颜色等(一般情况不需要)。
-
+滚动视图。 scroll\_view\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于scroll\_view\_t控件。 在xml中使用"scroll\_view"标签创建滚动视图控件。如： ```xml <list_view x="0"  y="30" w="100%" h="-80" item_height="60">   <scroll_view name="view" x="0"  y="0" w="100%" h="100%">     <list_item style="odd" children_layout="default(rows=1,cols=0)">       <image draw_type="icon" w="30" image="earth"/>       <label w="-30" text="1.Hello AWTK !">         <switch x="r:10" y="m" w="60" h="20"/>       </label>     </list_item>     ...   </scroll_view>  </list_view> ``` > 滚动视图一般作为列表视图的子控件使用。 > 更多用法请参考：[list\_view\_m.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/list_view_m.xml) 在c代码中使用函数scroll\_view\_create创建列表视图控件。如： ```c  widget_t* scroll_view = scroll_view_create(win, 0, 0, 0, 0); ``` 可用通过style来设置控件的显示风格，如背景颜色和边框颜色等(一般情况不需要)。
 ----------------------------------
 ### 函数
 <p id="scroll_view_t_methods">
@@ -63,7 +39,6 @@ widget_t* scroll_view = scroll_view_create(win, 0, 0, 0, 0);
 
 > <p id="scroll_view_t_scroll_view_cast">转换为scroll_view对象(供脚本语言使用)。
 
-
 * 函数原型：
 
 ```
@@ -82,7 +57,6 @@ widget_t* scroll_view_cast (widget_t* widget);
 * 函数功能：
 
 > <p id="scroll_view_t_scroll_view_create">创建scroll_view对象
-
 
 * 函数原型：
 
@@ -107,7 +81,6 @@ widget_t* scroll_view_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 > <p id="scroll_view_t_scroll_view_scroll_delta_to">滚动到指定的偏移量。
 
-
 * 函数原型：
 
 ```
@@ -129,7 +102,6 @@ ret_t scroll_view_scroll_delta_to (widget_t* widget, int32_t xoffset_delta, int3
 * 函数功能：
 
 > <p id="scroll_view_t_scroll_view_scroll_to">滚动到指定的偏移量。
-
 
 * 函数原型：
 
@@ -153,7 +125,6 @@ ret_t scroll_view_scroll_to (widget_t* widget, int32_t xoffset_end, int32_t yoff
 
 > <p id="scroll_view_t_scroll_view_set_offset">设置偏移量。
 
-
 * 函数原型：
 
 ```
@@ -174,7 +145,6 @@ ret_t scroll_view_set_offset (widget_t* widget, int32_t xoffset, int32_t yoffset
 * 函数功能：
 
 > <p id="scroll_view_t_scroll_view_set_speed_scale">设置偏移速度比例。
-
 
 * 函数原型：
 
@@ -197,7 +167,6 @@ ret_t scroll_view_set_speed_scale (widget_t* widget, float_t xspeed_scale, float
 
 > <p id="scroll_view_t_scroll_view_set_virtual_h">设置虚拟高度。
 
-
 * 函数原型：
 
 ```
@@ -217,7 +186,6 @@ ret_t scroll_view_set_virtual_h (widget_t* widget, wh_t h);
 * 函数功能：
 
 > <p id="scroll_view_t_scroll_view_set_virtual_w">设置虚拟宽度。
-
 
 * 函数原型：
 
@@ -239,7 +207,6 @@ ret_t scroll_view_set_virtual_w (widget_t* widget, wh_t w);
 
 > <p id="scroll_view_t_scroll_view_set_xslidable">设置是否允许x方向滑动。
 
-
 * 函数原型：
 
 ```
@@ -260,7 +227,6 @@ ret_t scroll_view_set_xslidable (widget_t* widget, bool_t xslidable);
 
 > <p id="scroll_view_t_scroll_view_set_yslidable">设置是否允许y方向滑动。
 
-
 * 函数原型：
 
 ```
@@ -278,7 +244,6 @@ ret_t scroll_view_set_yslidable (widget_t* widget, bool_t yslidable);
 -----------------------
 > <p id="scroll_view_t_virtual_h">虚拟高度。
 
-
 * 类型：wh\_t
 
 | 特性 | 是否支持 |
@@ -294,7 +259,6 @@ ret_t scroll_view_set_yslidable (widget_t* widget, bool_t yslidable);
 #### virtual\_w 属性
 -----------------------
 > <p id="scroll_view_t_virtual_w">虚拟宽度。
-
 
 * 类型：wh\_t
 
@@ -312,7 +276,6 @@ ret_t scroll_view_set_yslidable (widget_t* widget, bool_t yslidable);
 -----------------------
 > <p id="scroll_view_t_xoffset">x偏移量。
 
-
 * 类型：int32\_t
 
 | 特性 | 是否支持 |
@@ -328,7 +291,6 @@ ret_t scroll_view_set_yslidable (widget_t* widget, bool_t yslidable);
 #### xslidable 属性
 -----------------------
 > <p id="scroll_view_t_xslidable">是否允许x方向滑动。
-
 
 * 类型：bool\_t
 
@@ -346,7 +308,6 @@ ret_t scroll_view_set_yslidable (widget_t* widget, bool_t yslidable);
 -----------------------
 > <p id="scroll_view_t_xspeed_scale">x偏移速度比例。
 
-
 * 类型：float\_t
 
 | 特性 | 是否支持 |
@@ -362,7 +323,6 @@ ret_t scroll_view_set_yslidable (widget_t* widget, bool_t yslidable);
 #### yoffset 属性
 -----------------------
 > <p id="scroll_view_t_yoffset">y偏移量。
-
 
 * 类型：int32\_t
 
@@ -380,7 +340,6 @@ ret_t scroll_view_set_yslidable (widget_t* widget, bool_t yslidable);
 -----------------------
 > <p id="scroll_view_t_yslidable">是否允许y方向滑动。
 
-
 * 类型：bool\_t
 
 | 特性 | 是否支持 |
@@ -396,7 +355,6 @@ ret_t scroll_view_set_yslidable (widget_t* widget, bool_t yslidable);
 #### yspeed\_scale 属性
 -----------------------
 > <p id="scroll_view_t_yspeed_scale">y偏移速度比例。
-
 
 * 类型：float\_t
 

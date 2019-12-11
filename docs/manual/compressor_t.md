@@ -1,7 +1,6 @@
 ## compressor\_t
 ### 概述
 压缩解压接口。
-
 ----------------------------------
 ### 函数
 <p id="compressor_t_methods">
@@ -17,7 +16,6 @@
 * 函数功能：
 
 > <p id="compressor_t_compressor_compress">压缩数据。
-
 
 * 函数原型：
 
@@ -41,7 +39,6 @@ ret_t compressor_compress (compressor_t* compressor, const void* data, uint32_t 
 
 > <p id="compressor_t_compressor_destroy">销毁compressor对象。
 
-
 * 函数原型：
 
 ```
@@ -60,7 +57,6 @@ ret_t compressor_destroy (compressor_t* compressor);
 * 函数功能：
 
 > <p id="compressor_t_compressor_uncompress">解压数据。
-
 
 * 函数原型：
 

@@ -3,7 +3,6 @@
 ![image](images/prop_change_event_t_0.png)
 
 对象属性变化事件。
-
 ----------------------------------
 ### 函数
 <p id="prop_change_event_t_methods">
@@ -26,7 +25,6 @@
 
 > <p id="prop_change_event_t_prop_change_event_cast">把event对象转prop_change_event_t对象，主要给脚本语言使用。
 
-
 * 函数原型：
 
 ```
@@ -46,7 +44,6 @@ prop_change_event_t* prop_change_event_cast (event_t* event);
 
 > <p id="prop_change_event_t_prop_change_event_init">初始prop change event。
 
-
 * 函数原型：
 
 ```
@@ -64,7 +61,6 @@ event_t* prop_change_event_init (prop_change_event_t* event, uint32_t percent);
 -----------------------
 > <p id="prop_change_event_t_name">属性的名称。
 
-
 * 类型：const char*
 
 | 特性 | 是否支持 |
@@ -75,7 +71,6 @@ event_t* prop_change_event_init (prop_change_event_t* event, uint32_t percent);
 #### value 属性
 -----------------------
 > <p id="prop_change_event_t_value">属性的值。
-
 
 * 类型：const value\_t*
 

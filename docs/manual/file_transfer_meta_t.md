@@ -1,7 +1,6 @@
 ## file\_transfer\_meta\_t
 ### 概述
 文件元数据包(sender->receiver)。
-
 ----------------------------------
 ### 属性
 <p id="file_transfer_meta_t_properties">
@@ -15,7 +14,6 @@
 -----------------------
 > <p id="file_transfer_meta_t_name">即将传输文件的名称。
 
-
 * 类型：char*
 
 | 特性 | 是否支持 |
@@ -26,7 +24,6 @@
 -----------------------
 > <p id="file_transfer_meta_t_size">即将传输文件的长度。
 
-
 * 类型：uint32\_t
 
 | 特性 | 是否支持 |
@@ -36,7 +33,6 @@
 #### type 属性
 -----------------------
 > <p id="file_transfer_meta_t_type">包的类型。
-
 
 * 类型：uint32\_t
 

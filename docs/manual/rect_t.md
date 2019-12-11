@@ -1,17 +1,16 @@
 ## rect\_t
 ### 概述
 矩形。包括一个x坐标、y坐标、宽度和高度。
-
 ----------------------------------
 ### 函数
 <p id="rect_t_methods">
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#rect_t_rect_cast">rect\_cast</a> | 转换为rect对象。 |
-| <a href="#rect_t_rect_create">rect\_create</a> | 创建rect对象。 |
-| <a href="#rect_t_rect_destroy">rect\_destroy</a> | 销毁rect对象。 |
-| <a href="#rect_t_rect_set">rect\_set</a> | 设置rect对象的xywh。 |
+| <a href="#rect_t_rect_cast">rect\_cast</a> | 转换为rect对象。 > 供脚本语言使用。 |
+| <a href="#rect_t_rect_create">rect\_create</a> | 创建rect对象。 > 主要供脚本语言使用。 |
+| <a href="#rect_t_rect_destroy">rect\_destroy</a> | 销毁rect对象。 > 主要供脚本语言使用。 |
+| <a href="#rect_t_rect_set">rect\_set</a> | 设置rect对象的xywh。 > 主要供脚本语言使用。 |
 ### 属性
 <p id="rect_t_properties">
 
@@ -26,9 +25,7 @@
 
 * 函数功能：
 
-> <p id="rect_t_rect_cast">转换为rect对象。
-> 供脚本语言使用。
-
+> <p id="rect_t_rect_cast">转换为rect对象。 > 供脚本语言使用。
 
 * 函数原型：
 
@@ -47,9 +44,7 @@ rect_t* rect_cast (rect_t* rect);
 
 * 函数功能：
 
-> <p id="rect_t_rect_create">创建rect对象。
-> 主要供脚本语言使用。
-
+> <p id="rect_t_rect_create">创建rect对象。 > 主要供脚本语言使用。
 
 * 函数原型：
 
@@ -71,9 +66,7 @@ rect_t* rect_create (xy_t x, xy_t y, wh_t w, wh_t h);
 
 * 函数功能：
 
-> <p id="rect_t_rect_destroy">销毁rect对象。
-> 主要供脚本语言使用。
-
+> <p id="rect_t_rect_destroy">销毁rect对象。 > 主要供脚本语言使用。
 
 * 函数原型：
 
@@ -92,9 +85,7 @@ ret_t rect_destroy (rect_t* r);
 
 * 函数功能：
 
-> <p id="rect_t_rect_set">设置rect对象的xywh。
-> 主要供脚本语言使用。
-
+> <p id="rect_t_rect_set">设置rect对象的xywh。 > 主要供脚本语言使用。
 
 * 函数原型：
 
@@ -116,7 +107,6 @@ rect_t* rect_set (rect_t* rect, xy_t x, xy_t y, wh_t w, wh_t h);
 -----------------------
 > <p id="rect_t_h">高度。
 
-
 * 类型：wh\_t
 
 | 特性 | 是否支持 |
@@ -127,7 +117,6 @@ rect_t* rect_set (rect_t* rect, xy_t x, xy_t y, wh_t w, wh_t h);
 #### w 属性
 -----------------------
 > <p id="rect_t_w">宽度。
-
 
 * 类型：wh\_t
 
@@ -140,7 +129,6 @@ rect_t* rect_set (rect_t* rect, xy_t x, xy_t y, wh_t w, wh_t h);
 -----------------------
 > <p id="rect_t_x">x坐标。
 
-
 * 类型：xy\_t
 
 | 特性 | 是否支持 |
@@ -151,7 +139,6 @@ rect_t* rect_set (rect_t* rect, xy_t x, xy_t y, wh_t w, wh_t h);
 #### y 属性
 -----------------------
 > <p id="rect_t_y">y坐标。
-
 
 * 类型：xy\_t
 

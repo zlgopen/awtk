@@ -2,9 +2,7 @@
 ### 概述
 ![image](images/object_default_t_0.png)
 
-对象接口的缺省实现。
-内部使用有序数组保存所有属性，可以快速查找指定名称的属性。
-
+对象接口的缺省实现。 内部使用有序数组保存所有属性，可以快速查找指定名称的属性。
 ----------------------------------
 ### 函数
 <p id="object_default_t_methods">
@@ -31,7 +29,6 @@
 
 > <p id="object_default_t_object_default_clear_props">清除全部属性。
 
-
 * 函数原型：
 
 ```
@@ -51,7 +48,6 @@ ret_t object_default_clear_props (object_t* obj);
 
 > <p id="object_default_t_object_default_create">创建对象。
 
-
 * 函数原型：
 
 ```
@@ -69,7 +65,6 @@ object_t* object_default_create ();
 * 函数功能：
 
 > <p id="object_default_t_object_default_create">克隆对象。
-
 
 * 函数原型：
 
@@ -89,7 +84,6 @@ object_t* object_default_create (object_default_t* o);
 * 函数功能：
 
 > <p id="object_default_t_object_default_find_prop">查找满足条件的属性，并返回它的值。
-
 
 * 函数原型：
 
@@ -112,7 +106,6 @@ value_t* object_default_find_prop (object_t* obj, tk_compare_t cmp, const void* 
 
 > <p id="object_default_t_object_default_unref">for script gc
 
-
 * 函数原型：
 
 ```
@@ -129,7 +122,6 @@ ret_t object_default_unref (object_t* obj);
 -----------------------
 > <p id="object_default_t_props">属性数组。
 
-
 * 类型：named\_value\_t
 
 | 特性 | 是否支持 |
@@ -140,7 +132,6 @@ ret_t object_default_unref (object_t* obj);
 -----------------------
 > <p id="object_default_t_props_capacity">属性数组的容量。
 
-
 * 类型：uint32\_t
 
 | 特性 | 是否支持 |
@@ -150,7 +141,6 @@ ret_t object_default_unref (object_t* obj);
 #### props\_size 属性
 -----------------------
 > <p id="object_default_t_props_size">属性个数。
-
 
 * 类型：uint32\_t
 

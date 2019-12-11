@@ -3,7 +3,6 @@
 ![image](images/combo_box_ex_t_0.png)
 
 可滚动的combo_box控件。
-
 ----------------------------------
 ### 函数
 <p id="combo_box_ex_t_methods">
@@ -17,7 +16,6 @@
 * 函数功能：
 
 > <p id="combo_box_ex_t_combo_box_ex_create">创建combo_box_ex对象
-
 
 * 函数原型：
 

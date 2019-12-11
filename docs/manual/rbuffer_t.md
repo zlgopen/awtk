@@ -1,18 +1,6 @@
 ## rbuffer\_t
 ### 概述
-Read Buffer。用于数据解包。
-示例：
-```c
-uint8_t buff[128];
-wbuffer_t wbuffer;
-rbuffer_t rbuffer;
-const char* str = NULL;
-wbuffer_init(&wbuffer, buff, sizeof(buff));
-wbuffer_write_string(&wbuffer, "hello awtk");
-rbuffer_init(&rbuffer, wbuffer.data, wbuffer.cursor);
-rbuffer_read_string(&rbuffer, &str);
-```
-
+Read Buffer。用于数据解包。 示例： ```c  uint8_t buff[128];  wbuffer_t wbuffer;  rbuffer_t rbuffer;  const char* str = NULL;  wbuffer_init(&wbuffer, buff, sizeof(buff));  wbuffer_write_string(&wbuffer, "hello awtk");  rbuffer_init(&rbuffer, wbuffer.data, wbuffer.cursor);  rbuffer_read_string(&rbuffer, &str); ```
 ----------------------------------
 ### 函数
 <p id="rbuffer_t_methods">
@@ -46,7 +34,6 @@ rbuffer_read_string(&rbuffer, &str);
 
 > <p id="rbuffer_t_rbuffer_has_more">判断是否还有数据可读。
 
-
 * 函数原型：
 
 ```
@@ -65,7 +52,6 @@ bool_t rbuffer_has_more (rbuffer_t* rbuffer);
 * 函数功能：
 
 > <p id="rbuffer_t_rbuffer_init">初始rbuffer对象。
-
 
 * 函数原型：
 
@@ -88,7 +74,6 @@ rbuffer_t* rbuffer_init (rbuffer_t* rbuffer, uint8_t* data, uint16_t capacity);
 
 > <p id="rbuffer_t_rbuffer_peek_uint16">读取uint16数据，但不改变cursor的位置。
 
-
 * 函数原型：
 
 ```
@@ -108,7 +93,6 @@ ret_t rbuffer_peek_uint16 (rbuffer_t* rbuffer, uint16_t* value);
 * 函数功能：
 
 > <p id="rbuffer_t_rbuffer_peek_uint32">读取uint32数据，但不改变cursor的位置。
-
 
 * 函数原型：
 
@@ -130,7 +114,6 @@ ret_t rbuffer_peek_uint32 (rbuffer_t* rbuffer, uint32_t* value);
 
 > <p id="rbuffer_t_rbuffer_peek_uint8">读取uint8数据，但不改变cursor的位置。
 
-
 * 函数原型：
 
 ```
@@ -150,7 +133,6 @@ ret_t rbuffer_peek_uint8 (rbuffer_t* rbuffer, uint8_t* value);
 * 函数功能：
 
 > <p id="rbuffer_t_rbuffer_read_binary">读取指定长度的二进制数据。
-
 
 * 函数原型：
 
@@ -173,7 +155,6 @@ ret_t rbuffer_read_binary (rbuffer_t* rbuffer, void* data, uint32_t size);
 
 > <p id="rbuffer_t_rbuffer_read_float">读取float数据。
 
-
 * 函数原型：
 
 ```
@@ -193,7 +174,6 @@ ret_t rbuffer_read_float (rbuffer_t* rbuffer, float_t* value);
 * 函数功能：
 
 > <p id="rbuffer_t_rbuffer_read_string">读取字符串。
-
 
 * 函数原型：
 
@@ -215,7 +195,6 @@ ret_t rbuffer_read_string (rbuffer_t* rbuffer, char** str);
 
 > <p id="rbuffer_t_rbuffer_read_uint16">读取uint16数据。
 
-
 * 函数原型：
 
 ```
@@ -235,7 +214,6 @@ ret_t rbuffer_read_uint16 (rbuffer_t* rbuffer, uint16_t* value);
 * 函数功能：
 
 > <p id="rbuffer_t_rbuffer_read_uint32">读取uint32数据。
-
 
 * 函数原型：
 
@@ -257,7 +235,6 @@ ret_t rbuffer_read_uint32 (rbuffer_t* rbuffer, uint32_t* value);
 
 > <p id="rbuffer_t_rbuffer_read_uint8">读取uint8数据。
 
-
 * 函数原型：
 
 ```
@@ -278,7 +255,6 @@ ret_t rbuffer_read_uint8 (rbuffer_t* rbuffer, uint8_t* value);
 
 > <p id="rbuffer_t_rbuffer_skip">跳过指定的长度。
 
-
 * 函数原型：
 
 ```
@@ -296,7 +272,6 @@ ret_t rbuffer_skip (rbuffer_t* rbuffer, int32_t offset);
 -----------------------
 > <p id="rbuffer_t_capacity">缓存区最大容量。
 
-
 * 类型：uint32\_t
 
 | 特性 | 是否支持 |
@@ -307,7 +282,6 @@ ret_t rbuffer_skip (rbuffer_t* rbuffer, int32_t offset);
 -----------------------
 > <p id="rbuffer_t_cursor">当前读取位置。
 
-
 * 类型：uint32\_t
 
 | 特性 | 是否支持 |
@@ -317,7 +291,6 @@ ret_t rbuffer_skip (rbuffer_t* rbuffer, int32_t offset);
 #### data 属性
 -----------------------
 > <p id="rbuffer_t_data">缓存区。
-
 
 * 类型：uint8\_t*
 

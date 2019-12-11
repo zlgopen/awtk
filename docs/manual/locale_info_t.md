@@ -1,7 +1,6 @@
 ## locale\_info\_t
 ### 概述
 本地化信息。提供字符串翻译数据管理，当前语言改变的事件通知等等。
-
 ----------------------------------
 ### 函数
 <p id="locale_info_t_methods">
@@ -32,7 +31,6 @@
 
 > <p id="locale_info_t_locale_info">获取缺省locale_info。
 
-
 * 函数原型：
 
 ```
@@ -50,7 +48,6 @@ locale_info_t* locale_info ();
 * 函数功能：
 
 > <p id="locale_info_t_locale_info_change">设置当前的国家和语言。
-
 
 * 函数原型：
 
@@ -73,7 +70,6 @@ ret_t locale_info_change (locale_info_t* locale_info, char* language, char* coun
 
 > <p id="locale_info_t_locale_info_create">创建locale_info。
 
-
 * 函数原型：
 
 ```
@@ -94,7 +90,6 @@ locale_info_t* locale_info_create (char* language, char* country);
 
 > <p id="locale_info_t_locale_info_destroy">释放全部资源并销毁locale_info对象。
 
-
 * 函数原型：
 
 ```
@@ -113,7 +108,6 @@ ret_t locale_info_destroy (locale_info_t* locale_info);
 * 函数功能：
 
 > <p id="locale_info_t_locale_info_off">注销指定事件的处理函数。
-
 
 * 函数原型：
 
@@ -134,7 +128,6 @@ ret_t locale_info_off (locale_info_t* locale_info, uint32_t id);
 * 函数功能：
 
 > <p id="locale_info_t_locale_info_on">注册指定事件的处理函数。
-
 
 * 函数原型：
 
@@ -158,7 +151,6 @@ uint32_t locale_info_on (locale_info_t* locale_info, event_type_t type, event_fu
 
 > <p id="locale_info_t_locale_info_reload">重新加载字符串资源。
 
-
 * 函数原型：
 
 ```
@@ -178,7 +170,6 @@ ret_t locale_info_reload (locale_info_t* locale_info);
 
 > <p id="locale_info_t_locale_info_set">设置缺省locale_info。
 
-
 * 函数原型：
 
 ```
@@ -197,7 +188,6 @@ ret_t locale_info_set (locale_info_t* locale_info);
 * 函数功能：
 
 > <p id="locale_info_t_locale_info_set_assets_manager">设置资源管理器对象。
-
 
 * 函数原型：
 
@@ -219,7 +209,6 @@ ret_t locale_info_set_assets_manager (locale_info_t* locale_info, assets_manager
 
 > <p id="locale_info_t_locale_info_tr">翻译字符串。
 
-
 * 函数原型：
 
 ```
@@ -237,7 +226,6 @@ char* locale_info_tr (locale_info_t* locale_info, char* text);
 -----------------------
 > <p id="locale_info_t_country;">国家或地区。如：CN
 
-
 * 类型：char*
 
 | 特性 | 是否支持 |
@@ -247,7 +235,6 @@ char* locale_info_tr (locale_info_t* locale_info, char* text);
 #### language 属性
 -----------------------
 > <p id="locale_info_t_language">语言。如：zh
-
 
 * 类型：char*
 

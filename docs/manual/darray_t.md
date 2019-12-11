@@ -1,20 +1,6 @@
 ## darray\_t
 ### 概述
-动态数组，根据元素个数动态调整数组的容量。
-用darray\_init初始化时，用darray\_deinit释放。如：
-```c
-darray_t darray;
-darray_init(&darray, 10, destroy, compare);
-...
-darray_deinit(&darray);
-```
-用darray\_create创建时，用darray\_destroy销毁。如：
-```c
-darray_t* darray = darray_create(10, destroy, compare);
-...
-darray_destroy(darray);
-```
-
+动态数组，根据元素个数动态调整数组的容量。 用darray\_init初始化时，用darray\_deinit释放。如： ```c darray_t darray; darray_init(&darray, 10, destroy, compare); ... darray_deinit(&darray); ``` 用darray\_create创建时，用darray\_destroy销毁。如： ```c darray_t* darray = darray_create(10, destroy, compare); ... darray_destroy(darray); ```
 ----------------------------------
 ### 函数
 <p id="darray_t_methods">
@@ -27,7 +13,7 @@ darray_destroy(darray);
 | <a href="#darray_t_darray_deinit">darray\_deinit</a> | 清除全部元素，并释放elms。 |
 | <a href="#darray_t_darray_destroy">darray\_destroy</a> | 销毁darray对象。 |
 | <a href="#darray_t_darray_find">darray\_find</a> | 查找第一个满足条件的元素。 |
-| <a href="#darray_t_darray_find_all">darray\_find\_all</a> | 查找全部满足条件的元素。 |
+| <a href="#darray_t_darray_find_all">darray\_find\_all</a> | 查找全部满足条件的元素。 ``` darray_t matched; darray_init(&matched, 0, NULL, NULL); darray_find_all(darray, mycmp, myctx, &matched); ... darray_deinit(&matched); ``` |
 | <a href="#darray_t_darray_find_index">darray\_find\_index</a> | 查找第一个满足条件的元素，并返回位置。 |
 | <a href="#darray_t_darray_foreach">darray\_foreach</a> | 遍历元素。 |
 | <a href="#darray_t_darray_head">darray\_head</a> | 返回第一个元素。 |
@@ -56,7 +42,6 @@ darray_destroy(darray);
 
 > <p id="darray_t_darray_clear">清除全部元素。
 
-
 * 函数原型：
 
 ```
@@ -75,7 +60,6 @@ ret_t darray_clear (darray_t* darray);
 * 函数功能：
 
 > <p id="darray_t_darray_count">返回满足条件元素的个数。
-
 
 * 函数原型：
 
@@ -96,7 +80,6 @@ int32_t darray_count (darray_t* darray, void* ctx);
 * 函数功能：
 
 > <p id="darray_t_darray_create">创建darray对象。
-
 
 * 函数原型：
 
@@ -119,7 +102,6 @@ darray_t* darray_create (uint32_t capacity, tk_destroy_t destroy, tk_compare_t c
 
 > <p id="darray_t_darray_deinit">清除全部元素，并释放elms。
 
-
 * 函数原型：
 
 ```
@@ -138,7 +120,6 @@ ret_t darray_deinit (darray_t* darray);
 * 函数功能：
 
 > <p id="darray_t_darray_destroy">销毁darray对象。
-
 
 * 函数原型：
 
@@ -159,7 +140,6 @@ ret_t darray_destroy (darray_t* darray);
 
 > <p id="darray_t_darray_find">查找第一个满足条件的元素。
 
-
 * 函数原型：
 
 ```
@@ -178,15 +158,7 @@ void* darray_find (darray_t* darray, void* ctx);
 
 * 函数功能：
 
-> <p id="darray_t_darray_find_all">查找全部满足条件的元素。
-```
-darray_t matched;
-darray_init(&matched, 0, NULL, NULL);
-darray_find_all(darray, mycmp, myctx, &matched);
-...
-darray_deinit(&matched);
-```
-
+> <p id="darray_t_darray_find_all">查找全部满足条件的元素。 ``` darray_t matched; darray_init(&matched, 0, NULL, NULL); darray_find_all(darray, mycmp, myctx, &matched); ... darray_deinit(&matched); ```
 
 * 函数原型：
 
@@ -210,7 +182,6 @@ ret_t darray_find_all (darray_t* darray, tk_compare_t cmp, void* ctx, darray_t* 
 
 > <p id="darray_t_darray_find_index">查找第一个满足条件的元素，并返回位置。
 
-
 * 函数原型：
 
 ```
@@ -230,7 +201,6 @@ int darray_find_index (darray_t* darray, void* ctx);
 * 函数功能：
 
 > <p id="darray_t_darray_foreach">遍历元素。
-
 
 * 函数原型：
 
@@ -253,7 +223,6 @@ ret_t darray_foreach (darray_t* darray, tk_visit_t visit, void* ctx);
 
 > <p id="darray_t_darray_head">返回第一个元素。
 
-
 * 函数原型：
 
 ```
@@ -272,7 +241,6 @@ void* darray_head (darray_t* darray);
 * 函数功能：
 
 > <p id="darray_t_darray_init">初始化darray对象。
-
 
 * 函数原型：
 
@@ -296,7 +264,6 @@ darray_t* darray_init (darray_t* darray, uint32_t* capacity, tk_destroy_t destro
 
 > <p id="darray_t_darray_pop">弹出最后一个元素。
 
-
 * 函数原型：
 
 ```
@@ -315,7 +282,6 @@ void* darray_pop (darray_t* darray);
 * 函数功能：
 
 > <p id="darray_t_darray_push">在尾巴追加一个元素。
-
 
 * 函数原型：
 
@@ -337,7 +303,6 @@ ret_t darray_push (darray_t* darray, void* data);
 
 > <p id="darray_t_darray_remove">删除第一个满足条件的元素。
 
-
 * 函数原型：
 
 ```
@@ -357,7 +322,6 @@ ret_t darray_remove (darray_t* darray, void* ctx);
 * 函数功能：
 
 > <p id="darray_t_darray_remove_all">删除全部满足条件的元素。
-
 
 * 函数原型：
 
@@ -380,7 +344,6 @@ ret_t darray_remove_all (darray_t* darray, tk_compare_t cmp, void* ctx);
 
 > <p id="darray_t_darray_remove_index">删除指定位置的元素。
 
-
 * 函数原型：
 
 ```
@@ -400,7 +363,6 @@ ret_t darray_remove_index (darray_t* darray, uint32_t index);
 * 函数功能：
 
 > <p id="darray_t_darray_sort">排序。
-
 
 * 函数原型：
 
@@ -422,7 +384,6 @@ ret_t darray_sort (darray_t* darray, tk_compare_t cmp);
 
 > <p id="darray_t_darray_tail">返回最后一个元素。
 
-
 * 函数原型：
 
 ```
@@ -439,7 +400,6 @@ void* darray_tail (darray_t* darray);
 -----------------------
 > <p id="darray_t_capacity">数组的容量大小。
 
-
 * 类型：uint32\_t
 
 | 特性 | 是否支持 |
@@ -449,7 +409,6 @@ void* darray_tail (darray_t* darray);
 #### compare 属性
 -----------------------
 > <p id="darray_t_compare">元素比较函数。
-
 
 * 类型：tk\_compare\_t
 
@@ -461,7 +420,6 @@ void* darray_tail (darray_t* darray);
 -----------------------
 > <p id="darray_t_destroy">元素销毁函数。
 
-
 * 类型：tk\_destroy\_t
 
 | 特性 | 是否支持 |
@@ -472,7 +430,6 @@ void* darray_tail (darray_t* darray);
 -----------------------
 > <p id="darray_t_elms">数组中的元素。
 
-
 * 类型：void**
 
 | 特性 | 是否支持 |
@@ -482,7 +439,6 @@ void* darray_tail (darray_t* darray);
 #### size 属性
 -----------------------
 > <p id="darray_t_size">数组中元素的个数。
-
 
 * 类型：uint32\_t
 

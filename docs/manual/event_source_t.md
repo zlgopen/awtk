@@ -2,11 +2,7 @@
 ### 概述
 ![image](images/event_source_t_0.png)
 
-表示一个事件源。
-事件源有下列两种方式：
-* 对于有文件描述符的事件源(如socket)，get_fd返回一个有效的文件描述符。
-* 对于定时器，则get_wakeup_time返回下次唤醒的时间。
-
+表示一个事件源。 事件源有下列两种方式： * 对于有文件描述符的事件源(如socket)，get_fd返回一个有效的文件描述符。 * 对于定时器，则get_wakeup_time返回下次唤醒的时间。
 ----------------------------------
 ### 函数
 <p id="event_source_t_methods">
@@ -24,7 +20,6 @@
 * 函数功能：
 
 > <p id="event_source_t_event_source_check">对于没有文件描述符的事件源，需要自己检查是否准备就绪。
-
 
 * 函数原型：
 
@@ -45,7 +40,6 @@ ret_t event_source_check (event_source_t* source);
 
 > <p id="event_source_t_event_source_dispatch">分发事件。
 
-
 * 函数原型：
 
 ```
@@ -64,7 +58,6 @@ ret_t event_source_dispatch (event_source_t* source);
 * 函数功能：
 
 > <p id="event_source_t_event_source_get_fd">获取文件描述符。
-
 
 * 函数原型：
 
@@ -85,7 +78,6 @@ int32_t event_source_get_fd (event_source_t* source);
 
 > <p id="event_source_t_event_source_get_wakeup_time">获取唤醒时间(ms)。
 
-
 * 函数原型：
 
 ```
@@ -104,7 +96,6 @@ uint32_t event_source_get_wakeup_time (event_source_t* source);
 * 函数功能：
 
 > <p id="event_source_t_event_source_set_tag">设置tag，方便通过tag一次移除多个事件源。
-
 
 * 函数原型：
 

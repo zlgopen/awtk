@@ -1,7 +1,6 @@
 ## file\_transfer\_packet\_type\_t
 ### 概述
-文件传输包的类型。
-### 常量
+文件传输包的类型。### 常量
 <p id="file_transfer_packet_type_t_consts">
 
 | 名称 | 说明 | 

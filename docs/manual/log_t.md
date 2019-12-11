@@ -1,30 +1,24 @@
 ## log\_t
 ### 概述
 log。
-
 ----------------------------------
 ### 函数
 <p id="log_t_methods">
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#log_t_log_debug">log\_debug</a> | 输出调试信息。 |
-| <a href="#log_t_log_error">log\_error</a> | 输出错误信息。 |
+| <a href="#log_t_log_debug">log\_debug</a> | 输出调试信息。 > 变参函数。 ``` log_debug("debug message\n"); ``` |
+| <a href="#log_t_log_error">log\_error</a> | 输出错误信息。 > 变参函数。 ``` log_error("error message\n"); ``` |
 | <a href="#log_t_log_get_log_level">log\_get\_log\_level</a> | 获取log的级别。 |
-| <a href="#log_t_log_info">log\_info</a> | 输出参考信息。 |
+| <a href="#log_t_log_info">log\_info</a> | 输出参考信息。 > 变参函数。 ``` log_info("info message\n"); ``` |
 | <a href="#log_t_log_set_log_level">log\_set\_log\_level</a> | 设置log的级别。 |
-| <a href="#log_t_log_warn">log\_warn</a> | 输出警告信息。 |
+| <a href="#log_t_log_warn">log\_warn</a> | 输出警告信息。 > 变参函数。 ``` log_warn("warn message\n"); ``` |
 #### log\_debug 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="log_t_log_debug">输出调试信息。
-> 变参函数。
-```
-log_debug("debug message\n");
-```
-
+> <p id="log_t_log_debug">输出调试信息。 > 变参函数。 ``` log_debug("debug message\n"); ```
 
 * 函数原型：
 
@@ -43,12 +37,7 @@ void log_debug (const char* format);
 
 * 函数功能：
 
-> <p id="log_t_log_error">输出错误信息。
-> 变参函数。
-```
-log_error("error message\n");
-```
-
+> <p id="log_t_log_error">输出错误信息。 > 变参函数。 ``` log_error("error message\n"); ```
 
 * 函数原型：
 
@@ -69,7 +58,6 @@ void log_error (const char* format);
 
 > <p id="log_t_log_get_log_level">获取log的级别。
 
-
 * 函数原型：
 
 ```
@@ -86,12 +74,7 @@ log_level_t log_get_log_level ();
 
 * 函数功能：
 
-> <p id="log_t_log_info">输出参考信息。
-> 变参函数。
-```
-log_info("info message\n");
-```
-
+> <p id="log_t_log_info">输出参考信息。 > 变参函数。 ``` log_info("info message\n"); ```
 
 * 函数原型：
 
@@ -112,7 +95,6 @@ void log_info (const char* format);
 
 > <p id="log_t_log_set_log_level">设置log的级别。
 
-
 * 函数原型：
 
 ```
@@ -130,12 +112,7 @@ ret_t log_set_log_level (log_level_t log_level);
 
 * 函数功能：
 
-> <p id="log_t_log_warn">输出警告信息。
-> 变参函数。
-```
-log_warn("warn message\n");
-```
-
+> <p id="log_t_log_warn">输出警告信息。 > 变参函数。 ``` log_warn("warn message\n"); ```
 
 * 函数原型：
 

@@ -3,7 +3,6 @@
 ![image](images/compressor_miniz_t_0.png)
 
 基于miniz实现的compressor接口。
-
 ----------------------------------
 ### 函数
 <p id="compressor_miniz_t_methods">
@@ -17,7 +16,6 @@
 * 函数功能：
 
 > <p id="compressor_miniz_t_compressor_miniz_create">创建compressor对象。
-
 
 * 函数原型：
 

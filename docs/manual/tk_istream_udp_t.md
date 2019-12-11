@@ -3,7 +3,6 @@
 ![image](images/tk_istream_udp_t_0.png)
 
 基于UDP实现的输入流。
-
 ----------------------------------
 ### 函数
 <p id="tk_istream_udp_t_methods">
@@ -19,7 +18,6 @@
 * 函数功能：
 
 > <p id="tk_istream_udp_t_tk_istream_udp_create">创建istream对象。
-
 
 * 函数原型：
 
@@ -40,7 +38,6 @@ tk_istream_t* tk_istream_udp_create (int sock);
 
 > <p id="tk_istream_udp_t_tk_istream_udp_set_target_with_addr">设置目标。
 
-
 * 函数原型：
 
 ```
@@ -60,7 +57,6 @@ ret_t tk_istream_udp_set_target_with_addr (tk_istream_t* stream, struct sockaddr
 * 函数功能：
 
 > <p id="tk_istream_udp_t_tk_istream_udp_set_target_with_host">设置目标。
-
 
 * 函数原型：
 

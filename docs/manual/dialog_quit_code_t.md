@@ -1,8 +1,6 @@
 ## dialog\_quit\_code\_t
 ### 概述
-对话框退出码。
-> 一般用作dialog_quit函数的参数。
-### 常量
+对话框退出码。   > 一般用作dialog_quit函数的参数。### 常量
 <p id="dialog_quit_code_t_consts">
 
 | 名称 | 说明 | 

@@ -1,7 +1,6 @@
 ## fs\_dir\_t
 ### 概述
 文件夹接口。
-
 ----------------------------------
 ### 函数
 <p id="fs_dir_t_methods">
@@ -17,7 +16,6 @@
 * 函数功能：
 
 > <p id="fs_dir_t_fs_dir_close">关闭文件夹对象。
-
 
 * 函数原型：
 
@@ -38,7 +36,6 @@ ret_t fs_dir_close (fs_dir_t* dir);
 
 > <p id="fs_dir_t_fs_dir_read">读取文件夹对象。
 
-
 * 函数原型：
 
 ```
@@ -58,7 +55,6 @@ ret_t fs_dir_read (fs_dir_t* dir, fs_item_t* item);
 * 函数功能：
 
 > <p id="fs_dir_t_fs_dir_rewind">重置文件夹读取位置到开始。
-
 
 * 函数原型：
 

@@ -1,16 +1,6 @@
 ## int\_str\_t
 ### 概述
-数字-字符串类型。
-负责把一个数字映射成一个字符串。
-示例：
-```c
-static const int_str_t color_values[] = {{1, "red"}, {2, "black"}, {3, "blue"}, {4, "white"}};
-const char* value = int_str_value(color_values, 3);
-int32_t name = int_str_name(color_values, "blue", 0);
-printf("value = %s \n", value);
-printf("name = %d \n", name);
-```
-
+数字-字符串类型。 负责把一个数字映射成一个字符串。 示例： ```c static const int_str_t color_values[] = {{1, "red"}, {2, "black"}, {3, "blue"}, {4, "white"}}; const char* value = int_str_value(color_values, 3); int32_t name = int_str_name(color_values, "blue", 0); printf("value = %s \n", value); printf("name = %d \n", name); ```
 ----------------------------------
 ### 函数
 <p id="int_str_t_methods">
@@ -25,7 +15,6 @@ printf("name = %d \n", name);
 * 函数功能：
 
 > <p id="int_str_t_int_str_name">根据value获取对应的name。
-
 
 * 函数原型：
 
@@ -47,7 +36,6 @@ int32_t int_str_name (const int_str_t* items, const char* value, int32_t defval)
 * 函数功能：
 
 > <p id="int_str_t_int_str_value">根据name获取对应的value。
-
 
 * 函数原型：
 

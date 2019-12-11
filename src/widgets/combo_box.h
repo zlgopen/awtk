@@ -76,6 +76,8 @@ typedef widget_t* (*combo_box_custom_open_popup_t)(widget_t* combobox);
  *
  * > 更多用法请参考：[combo_box.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/combo_box.xml)
  *
+ * 
+ *
  * 如果在文本比较长时，希望在获得焦点时文本自动滚动，可以放入一个hscroll_label为子控件，并命名为"value"。如：
  * 
  * ```xml

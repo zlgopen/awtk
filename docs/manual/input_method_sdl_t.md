@@ -2,9 +2,7 @@
 ### 概述
 ![image](images/input_method_sdl_t_0.png)
 
-SDL输入法实现。
-SDL输入法使用平台自身的输入法引擎，一般在桌面Linux、MacOS、Windows、Android和iOS上使用。
-
+SDL输入法实现。 SDL输入法使用平台自身的输入法引擎，一般在桌面Linux、MacOS、Windows、Android和iOS上使用。
 ----------------------------------
 ### 函数
 <p id="input_method_sdl_t_methods">
@@ -18,7 +16,6 @@ SDL输入法使用平台自身的输入法引擎，一般在桌面Linux、MacOS�
 * 函数功能：
 
 > <p id="input_method_sdl_t_input_method_sdl_create">创建SDL输入法对象。
-
 
 * 函数原型：
 

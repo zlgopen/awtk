@@ -3,7 +3,6 @@
 ![image](images/value_desc_bool_t_0.png)
 
 布尔类型属性描述。
-
 ----------------------------------
 ### 属性
 <p id="value_desc_bool_t_properties">
@@ -14,7 +13,6 @@
 #### defvalue 属性
 -----------------------
 > <p id="value_desc_bool_t_defvalue">缺省值。
-
 
 * 类型：bool\_t
 

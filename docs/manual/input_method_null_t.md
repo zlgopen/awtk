@@ -2,9 +2,7 @@
 ### 概述
 ![image](images/input_method_null_t_0.png)
 
-空输入法实现。
-在不需要输入法的嵌入式平台使用空的输入法。
-
+空输入法实现。 在不需要输入法的嵌入式平台使用空的输入法。
 ----------------------------------
 ### 函数
 <p id="input_method_null_t_methods">
@@ -18,7 +16,6 @@
 * 函数功能：
 
 > <p id="input_method_null_t_input_method_null_create">创建空输入法对象。
-
 
 * 函数原型：
 
