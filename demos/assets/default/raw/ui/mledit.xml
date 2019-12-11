@@ -1,5 +1,5 @@
 <window anim_hint="htranslate" >
-  <mledit x="c" y="10" h="40%" w="90%" focus="true" 
+  <mledit x="c" y="10" h="40%" w="90%" focus="true" text="it is a multi-line editor\n1\n2\n3\n4"
     left_margin="33" top_margin="2" bottom_margin="2" right_margin="16" wrap_word="true" max_lines="100"> 
    <line_number x="0" y="0" w="32" h="100%" value="0"/>
    <scroll_bar_d x="right" y="0" w="14" h="100%" value="0"/>
