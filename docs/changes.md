@@ -4,7 +4,8 @@
   * 增加 WIDGET LOAD 事件和状态。
   * 修复 text edit 中一些警告。
   * 入选码云最有价值开源项目，根据要求修改 READMEM 中的链接。
-
+  * 增加文档 [如何在主题文件中写控件布局参数](how_to_write_layout_params_in_style.md)
+  
 * 2019/12/10
   * 更新文档（感谢陈谭提供补丁）。
   * 完善 style const （感谢尧燊提供补丁）。 
