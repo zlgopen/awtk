@@ -270,7 +270,7 @@ static ret_t switch_on_paint_background(widget_t* widget, canvas_t* c) {
   style = widget->astyle;
   image_name = style_get_str(style, STYLE_ID_BG_IMAGE, NULL);
 
-  if (image_name != NULL) {
+  if (image_name != NULL && *image_name) {
     bitmap_t img;
     if (widget_load_image(widget, image_name, &img) == RET_OK) {
       return switch_on_paint_background_img(widget, c, &img);
