@@ -1,10 +1,15 @@
 # 最新动态
 
+* 2019/12/11
+  * 增加 WIDGET LOAD 事件和状态。
+  * 修复 text edit 中一些警告。
+  * 入选码云最有价值开源项目，根据要求修改 READMEM 中的链接。
+
 * 2019/12/10
   * 更新文档（感谢陈谭提供补丁）。
-  * 完善style const （感谢尧燊提供补丁）。 
-  * 优化主题数据的存储方式，控件减少30%。
-  * 主题支持self layout/children layout
+  * 完善 style const （感谢尧燊提供补丁）。 
+  * 优化主题数据的存储方式，控件减少 30%。
+  * 主题支持 self layout/children layout
   * 修复画圆角矩形在画布的 line_lenght != w*bpp 时候打点不正常的 bug（感谢智明提供补丁）  
   * 修复 mledit 显示 bug（感谢智明提供补丁）。  
   * 修复 fbo 脏矩形和裁减区不重叠的显示不正常 bug（感谢智明提供补丁）。  
