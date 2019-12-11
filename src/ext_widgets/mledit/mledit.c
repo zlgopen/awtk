@@ -212,6 +212,7 @@ static ret_t mledit_on_destroy(widget_t* widget) {
   }
 
   wstr_reset(&(mledit->temp));
+  TKMEM_FREE(mledit->tips);
   text_edit_destroy(mledit->model);
 
   return RET_OK;
