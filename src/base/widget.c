@@ -1225,6 +1225,9 @@ ret_t widget_fill_rect(widget_t* widget, canvas_t* c, rect_t* r, bool_t bg,
     } else {
       canvas_fill_rect(c, r->x, r->y, r->w, r->h);
     }
+  } else if (color.rgba.a == TK_CLEAR_IMAGE_ALPHA) {
+    canvas_set_fill_color(c, color);
+    canvas_fill_rect(c, r->x, r->y, r->w, r->h);
   }
 
   if (image_name != NULL && r->w > 0 && r->h > 0) {

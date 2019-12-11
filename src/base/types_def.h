@@ -235,6 +235,7 @@ typedef enum _app_type_t {
 
 #define TK_OPACITY_ALPHA 0xfa
 #define TK_TRANSPARENT_ALPHA 0x02
+#define TK_CLEAR_IMAGE_ALPHA 0x00
 
 #define TK_DRAG_THRESHOLD 10
 #define TK_CLICK_TOLERANCE 10
