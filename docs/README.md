@@ -47,7 +47,7 @@
 * [如何支持单色LCD](how_to_support_mono_lcd.md)
 * [如何使用 mutable_image 控件](how_to_use_mutable_image.md)
 * [如何让文本滚动起来](how_to_scroll_you_text.md)
-* [如何在主题文件中写控件布局参数](how_to_write_layout_params_in_style)
+* [如何在主题文件中写控件布局参数](how_to_write_layout_params_in_style.md)
 
 ### 3.内部原理
 * [AWTK脚本绑定原理](script_binding.md)
