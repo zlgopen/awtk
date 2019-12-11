@@ -44,6 +44,7 @@ static ret_t ui_builder_default_on_widget_start(ui_builder_t* b, const widget_de
   }
 
   b->widget = widget;
+  b->widget->loading = TRUE;
   if (b->root == NULL) {
     b->root = widget;
   }
@@ -61,7 +62,12 @@ static ret_t ui_builder_default_on_widget_prop(ui_builder_t* b, const char* name
 }
 
 static ret_t ui_builder_default_on_widget_prop_end(ui_builder_t* b) {
-  (void)b;
+  if (b->widget != NULL) {
+    event_t e = event_init(EVT_WIDGET_LOAD, NULL);
+    widget_dispatch(b->widget, &e);
+
+    b->widget->loading = FALSE;
+  }
   return RET_OK;
 }
 

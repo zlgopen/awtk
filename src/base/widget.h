@@ -374,6 +374,12 @@ struct _widget_t {
    */
   uint8_t initializing : 1;
   /**
+   * @property {bool_t} loading
+   * @annotation ["readable"]
+   * 标识控件正在加载。
+   */
+  uint8_t loading : 1;
+  /**
    * @property {bool_t} destroying
    * @annotation ["readable"]
    * 标识控件正在被销毁。
