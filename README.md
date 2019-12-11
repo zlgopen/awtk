@@ -5,16 +5,16 @@ E
 
 ## 一、介绍
 
-[AWTK](./) 全称 Toolkit AnyWhere，是 [ZLG](http://www.zlg.cn/) 开发的开源 GUI 引擎，旨在为嵌入式系统、WEB、各种小程序、手机和 PC 打造的通用 GUI 引擎，为用户提供一个功能强大、高效可靠、简单易用、可轻松做出炫酷效果的 GUI 引擎。
+[AWTK](README.md) 全称 Toolkit AnyWhere，是 [ZLG](http://www.zlg.cn/) 开发的开源 GUI 引擎，旨在为嵌入式系统、WEB、各种小程序、手机和 PC 打造的通用 GUI 引擎，为用户提供一个功能强大、高效可靠、简单易用、可轻松做出炫酷效果的 GUI 引擎。
 
 > 欢迎广大开发者一起参与开发：[生态共建计划](docs/awtk_ecology.md)。
 
-#### [AWTK](./) 寓意有两个方面：
+#### [AWTK](README.md) 寓意有两个方面：
 
 * Toolkit AnyWhere。 
 * ZLG 物联网操作系统 AWorks 内置 GUI。
 
-#### [AWTK](./) 源码仓库：
+#### [AWTK](README.md) 源码仓库：
 
 * 主源码仓库：[https://github.com/zlgopen/awtk](https://github.com/zlgopen/awtk)
 * 镜像源码仓库：[https://gitee.com/zlgopen/awtk](https://gitee.com/zlgopen/awtk)
@@ -46,7 +46,7 @@ E
 
 ### 1. 跨平台
 
-[AWTK](./) 是跨平台的，这有两个方面的意思：
+[AWTK](README.md) 是跨平台的，这有两个方面的意思：
 
 * AWTK 本身是跨平台的。目前支持的平台有 ZLG AWorks、Windows、Linux、MacOS、嵌入式 Linux、Android、Web 和嵌入式裸系统，可以轻松的移植到各种 RTOS 上。AWTK 以后也可以运行在各种小程序和 iOS 等平台上运行。
 
@@ -54,7 +54,7 @@ E
 
 ### 2. 高效
 
-[AWTK](./) 通过一系列的手段保证 AWTK 应用程序高效运行：
+[AWTK](README.md) 通过一系列的手段保证 AWTK 应用程序高效运行：
 
 * 通过脏矩算法只更新变化的部分。
 * 支持 3 FrameBuffer 让界面以最高帧率运行 （可选）。
@@ -64,7 +64,7 @@ E
 
 ### 3. 稳定
 
-[AWTK](./) 通过下列方式极力让代码稳定可靠：
+[AWTK](README.md) 通过下列方式极力让代码稳定可靠：
 
 * 使用 cppcheck 和 facebook infer 进行静态检查。
 * 使用 valgrind 进行动态内存检查。
@@ -119,7 +119,7 @@ E
 
 ### 7. 多种开发语言
 
-[AWTK](./) 本身是用 C 语言开发的，可以通过 IDL 生成各种脚本语言的绑定。生成的绑定代码不是简单的把 C 语言的 API 映射到脚本语言，而是生成脚本语言原生代码风格的 API。目前支持以下语言 （以后根据需要增加）：
+[AWTK](README.md) 本身是用 C 语言开发的，可以通过 IDL 生成各种脚本语言的绑定。生成的绑定代码不是简单的把 C 语言的 API 映射到脚本语言，而是生成脚本语言原生代码风格的 API。目前支持以下语言 （以后根据需要增加）：
 
 * C
 * Lua
