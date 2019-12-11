@@ -10,6 +10,7 @@
   * 修改 mledit tips 泄露的问题（感谢尧燊提供补丁）。 
   * switch 增加对 image name 为空串的检查（感谢尧燊提供补丁）。 
   * 修复 scroll_view 拖动时计算有误的问题（感谢大恒提供补丁）。 
+  * 增加 TK\_CLEAR\_IMAGE\_ALPHA 用于填充 framebuffer 时，同时设置 framebuffer 的 alpha 值。
 
 > 主题数据格式变化，请使用资源生成脚本，重新生成资源数据！！！
 

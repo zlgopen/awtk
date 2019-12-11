@@ -233,8 +233,13 @@ typedef enum _app_type_t {
 #endif
 #endif /*TK_MAX_FPS*/
 
+/* alpha 大于 TK_OPACITY_ALPHA 的颜色认为是不透明颜色，不进行alpha混合。*/
 #define TK_OPACITY_ALPHA 0xfa
+
+/* alpha 小于 TK_OPACITY_ALPHA 的颜色认为是透明颜色，不进行alpha混合，直接丢弃。*/
 #define TK_TRANSPARENT_ALPHA 0x02
+
+/* alpha 为 TK_CLEAR_IMAGE_ALPHA 在进行颜色填充时，不进行alpha，直接写入目标像素。*/
 #define TK_CLEAR_IMAGE_ALPHA 0x00
 
 #define TK_DRAG_THRESHOLD 10
