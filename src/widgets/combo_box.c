@@ -68,6 +68,31 @@ static ret_t combo_box_on_destroy(widget_t* widget) {
   return RET_OK;
 }
 
+#define WIDGET_NAME_VALUE "value"
+
+static ret_t combo_box_set_text(widget_t* widget, const char* text, const wchar_t* wtext,
+                                bool_t tr) {
+  widget_t* value_widget = widget_lookup(widget, WIDGET_NAME_VALUE, TRUE);
+
+  if (value_widget == NULL) {
+    value_widget = widget;
+  } else {
+    widget_set_text(widget, L"");
+  }
+
+  if (tr) {
+    widget_set_tr_text(value_widget, text);
+  } else {
+    if (wtext != NULL) {
+      widget_set_text(value_widget, wtext);
+    } else {
+      widget_set_text_utf8(value_widget, text);
+    }
+  }
+
+  return RET_OK;
+}
+
 static ret_t combo_box_get_prop(widget_t* widget, const char* name, value_t* v) {
   combo_box_t* combo_box = COMBO_BOX(widget);
   return_value_if_fail(widget != NULL && combo_box != NULL, RET_BAD_PARAMS);
@@ -546,11 +571,7 @@ static ret_t combo_box_sync_index_to_value(widget_t* widget, uint32_t index) {
 
     if (option != NULL) {
       combo_box->value = option->value;
-      if (combo_box->localize_options) {
-        widget_set_tr_text(widget, option->text);
-      } else {
-        widget_set_text_utf8(widget, option->text);
-      }
+      combo_box_set_text(widget, option->text, NULL, combo_box->localize_options);
     }
   }
 
@@ -570,9 +591,9 @@ static ret_t combo_box_set_selected_index_ex(widget_t* widget, uint32_t index, w
     if (item != NULL) {
       combo_box->value = COMBO_BOX_ITEM(item)->value;
       if (item->tr_text != NULL) {
-        widget_set_tr_text(widget, item->tr_text);
+        combo_box_set_text(widget, item->tr_text, NULL, TRUE);
       } else {
-        widget_set_text(widget, item->text.str);
+        combo_box_set_text(widget, NULL, item->text.str, FALSE);
       }
     } else {
       combo_box_sync_index_to_value(widget, index);
