@@ -159,10 +159,13 @@ static ret_t combo_box_set_prop(widget_t* widget, const char* name, const value_
 static ret_t combo_box_on_layout_children(widget_t* widget) {
   widget_t* button = widget_lookup_by_type(widget, "button", TRUE);
 
-  if (button->auto_created) {
-    widget_move_resize(button, widget->w - widget->h, 0, widget->h, widget->h);
-  } else {
-    widget_layout(button);
+  widget_layout_children_default(widget);
+  if (button != NULL) {
+    if (button->auto_created) {
+      widget_move_resize(button, widget->w - widget->h, 0, widget->h, widget->h);
+    } else {
+      widget_layout(button);
+    }
   }
 
   return RET_OK;
