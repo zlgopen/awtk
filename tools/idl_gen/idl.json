@@ -2768,6 +2768,10 @@
         "name": "EVT_WINDOW_LOAD"
       },
       {
+        "desc": "控件加载完成事件(event_t)。\n",
+        "name": "EVT_WIDGET_LOAD"
+      },
+      {
         "desc": "窗口即将打开事件(event_t)。\n如果有窗口动画，在窗口动画开始前触发。如果没有窗口动画，在窗口被加载后的下一次循环中触发。\n",
         "name": "EVT_WINDOW_WILL_OPEN"
       },
@@ -7017,6 +7021,10 @@
       {
         "desc": "使用自定义的软键盘(如计算器等应用不希望弹出系统软键盘)。\n",
         "name": "INPUT_CUSTOM"
+      },
+      {
+        "desc": "使用自定义的密码软键盘。\n",
+        "name": "INPUT_CUSTOM_PASSWORD"
       }
     ],
     "header": "base/input_method.h",
@@ -10129,6 +10137,14 @@
       {
         "desc": "圆角半径(仅在WITH_VGCANVAS定义时生效)。\n",
         "name": "STYLE_ID_ROUND_RADIUS"
+      },
+      {
+        "desc": "子控件布局参数。\n",
+        "name": "STYLE_ID_CHILDREN_LAYOUT"
+      },
+      {
+        "desc": "控件布局参数。\n",
+        "name": "STYLE_ID_SELF_LAYOUT"
       }
     ],
     "header": "base/style.h",
@@ -14006,6 +14022,15 @@
         "name": "h",
         "desc": "canvas的高度\n",
         "type": "wh_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "stride",
+        "desc": "一行占的字节\n",
+        "type": "uint32_t",
         "annotation": {
           "readable": true,
           "scriptable": true
@@ -18585,6 +18610,14 @@
       {
         "name": "initializing",
         "desc": "标识控件正在初始化。\n",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "loading",
+        "desc": "标识控件正在加载。\n",
         "type": "bool_t",
         "annotation": {
           "readable": true
@@ -43145,7 +43178,7 @@
       }
     ],
     "header": "widgets/combo_box.h",
-    "desc": "下拉列表控件。\n点击右边的按钮，可弹出一个下拉列表，从中选择一项作为当前的值。\ncombo\\_box\\_t是[edit\\_t](edit_t.md)的子类控件，edit\\_t的函数均适用于combo\\_box\\_t控件。\n在xml中使用\"combo_box\"标签创建下拉列表控件。\n列表选项可以直接写在\"options\"属性中。如：\n```xml\n<combo_box readonly=\"true\" x=\"10\" y=\"bottom:5\" w=\"200\" h=\"30\" tr_text=\"ok\"\noptions=\"1:ok;2:cancel;\"/>\n```\n列表选项也可以放在独立的窗口中，用属性\"open_window\"指定窗口的名称。如：\n```xml\n<combo_box open_window=\"language\" readonly=\"true\" x=\"10\" y=\"bottom:50\" w=\"200\" h=\"30\"\ntr_text=\"english\"/>\n```\nlanguage.xml:\n```xml\n<popup close_when_click_outside=\"true\" h=\"80\" >\n<list_view x=\"0\"  y=\"0\" w=\"100%\" h=\"100%\" item_height=\"30\">\n<scroll_view name=\"view\" x=\"0\"  y=\"0\" w=\"-12\" h=\"100%\">\n<combo_box_item tr_text=\"english\"/>\n<combo_box_item tr_text=\"chinese\" />\n</scroll_view>\n<scroll_bar_d name=\"bar\" x=\"right\" y=\"0\" w=\"12\" h=\"100%\" value=\"0\"/>\n</list_view>\n</popup>\n```\n>\n更多用法请参考：[combo_box.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/combo_box.xml)\n在c代码中使用函数combo\\_box\\_create创建下拉列表控件。如：\n```c\nwidget_t* combo_box = combo_box_create(win, 10, 10, 128, 30);\ncombo_box_set_options(combo_box, \"left;center;right;\");\ncombo_box_set_selected_index(combo_box, 1);\n```\n创建之后：\n* 用combo\\_box\\_set\\_options设置可选项目。\n* 用combo\\_box\\_set\\_selected\\_index设置缺省项。\n> 完整示例请参考：[combo_box\ndemo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/combo_box.c)\n可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\n```xml\n<combo_box>\n<style name=\"default\" border_color=\"#a0a0a0\"  text_color=\"black\" text_align_h=\"left\">\n<normal     bg_color=\"#f0f0f0\" />\n<focused    bg_color=\"#f0f0f0\" border_color=\"black\"/>\n<empty      bg_color=\"#f0f0f0\" text_color=\"#a0a0a0\" />\n</style>\n</combo_box>\n```\n* 1.combobox的下拉按钮的style名称为combobox_down，可以在主题文件中设置。\n```xml\n<button>\n<style name=\"combobox_down\" border_color=\"#a0a0a0\">\n<normal     bg_color=\"#f0f0f0\" icon=\"arrow_down_n\"/>\n<pressed    bg_color=\"#c0c0c0\" icon=\"arrow_down_p\"/>\n<over       bg_color=\"#e0e0e0\" icon=\"arrow_down_o\"/>\n</style>\n</button>\n```\n* 2.combobox的弹出popup窗口的style名称为combobox_popup，可以在主题文件中设置。\n```xml\n<popup>\n<style name=\"combobox_popup\" border_color=\"red\">\n<normal bg_color=\"#808080\"/>\n</style>\n</popup>\n```\n> 更多用法请参考：[theme\ndefault](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L422)\n",
+    "desc": "下拉列表控件。\n点击右边的按钮，可弹出一个下拉列表，从中选择一项作为当前的值。\ncombo\\_box\\_t是[edit\\_t](edit_t.md)的子类控件，edit\\_t的函数均适用于combo\\_box\\_t控件。\n在xml中使用\"combo_box\"标签创建下拉列表控件。\n列表选项可以直接写在\"options\"属性中。如：\n```xml\n<combo_box readonly=\"true\" x=\"10\" y=\"bottom:5\" w=\"200\" h=\"30\" tr_text=\"ok\"\noptions=\"1:ok;2:cancel;\"/>\n```\n列表选项也可以放在独立的窗口中，用属性\"open_window\"指定窗口的名称。如：\n```xml\n<combo_box open_window=\"language\" readonly=\"true\" x=\"10\" y=\"bottom:50\" w=\"200\" h=\"30\"\ntr_text=\"english\"/>\n```\nlanguage.xml:\n```xml\n<popup close_when_click_outside=\"true\" h=\"80\" >\n<list_view x=\"0\"  y=\"0\" w=\"100%\" h=\"100%\" item_height=\"30\">\n<scroll_view name=\"view\" x=\"0\"  y=\"0\" w=\"-12\" h=\"100%\">\n<combo_box_item tr_text=\"english\"/>\n<combo_box_item tr_text=\"chinese\" />\n</scroll_view>\n<scroll_bar_d name=\"bar\" x=\"right\" y=\"0\" w=\"12\" h=\"100%\" value=\"0\"/>\n</list_view>\n</popup>\n```\n> 更多用法请参考：[combo_box.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/combo_box.xml)\n如果在文本比较长时，希望在获得焦点时文本自动滚动，可以放入一个hscroll_label为子控件，并命名为\"value\"。如：\n```xml\n<combo_box left_margin=\"6\" readonly=\"true\" x=\"10\" y=\"50\" w=\"80\" h=\"30\" options=\"leftttttttttt;centerrrrrrrrrrrrrrrr;rightttttttttt;\"\nselected_index=\"1\">\n<hscroll_label x=\"0\" y=\"0\" w=\"-30\" h=\"100%\"\nname=\"value\"\nlull=\"1000\"\nloop=\"true\"\nyoyo=\"true\"\nellipses=\"true\"\nonly_parent_focus=\"true\"/>\n<button style=\"combobox_down\" x=\"right:5\" y=\"middle\" w=\"20\" h=\"20\"/>\n</combo_box>\n```\n在c代码中使用函数combo\\_box\\_create创建下拉列表控件。如：\n```c\nwidget_t* combo_box = combo_box_create(win, 10, 10, 128, 30);\ncombo_box_set_options(combo_box, \"left;center;right;\");\ncombo_box_set_selected_index(combo_box, 1);\n```\n创建之后：\n* 用combo\\_box\\_set\\_options设置可选项目。\n* 用combo\\_box\\_set\\_selected\\_index设置缺省项。\n> 完整示例请参考：[combo_box\ndemo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/combo_box.c)\n可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\n```xml\n<combo_box>\n<style name=\"default\" border_color=\"#a0a0a0\"  text_color=\"black\" text_align_h=\"left\">\n<normal     bg_color=\"#f0f0f0\" />\n<focused    bg_color=\"#f0f0f0\" border_color=\"black\"/>\n<empty      bg_color=\"#f0f0f0\" text_color=\"#a0a0a0\" />\n</style>\n</combo_box>\n```\n* 1.combobox的下拉按钮的style名称为combobox_down，可以在主题文件中设置。\n```xml\n<button>\n<style name=\"combobox_down\" border_color=\"#a0a0a0\">\n<normal     bg_color=\"#f0f0f0\" icon=\"arrow_down_n\"/>\n<pressed    bg_color=\"#c0c0c0\" icon=\"arrow_down_p\"/>\n<over       bg_color=\"#e0e0e0\" icon=\"arrow_down_o\"/>\n</style>\n</button>\n```\n* 2.combobox的弹出popup窗口的style名称为combobox_popup，可以在主题文件中设置。\n```xml\n<popup>\n<style name=\"combobox_popup\" border_color=\"red\">\n<normal bg_color=\"#808080\"/>\n</style>\n</popup>\n```\n> 更多用法请参考：[theme\ndefault](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L422)\n",
     "name": "combo_box_t",
     "parent": "widget_t",
     "annotation": {

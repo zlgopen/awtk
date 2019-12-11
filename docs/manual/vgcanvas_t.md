@@ -100,6 +100,7 @@ vgcanvas_restore(vg);
 | <a href="#vgcanvas_t_line_width">line\_width</a> | float\_t | 线宽。 |
 | <a href="#vgcanvas_t_miter_limit">miter\_limit</a> | float\_t | miter\_limit。 |
 | <a href="#vgcanvas_t_ratio">ratio</a> | float\_t | 显示比例。 |
+| <a href="#vgcanvas_t_stride">stride</a> | uint32\_t | 一行占的字节 |
 | <a href="#vgcanvas_t_stroke_color">stroke\_color</a> | color\_t | 线条颜色 |
 | <a href="#vgcanvas_t_text_align">text\_align</a> | const char* | 文本对齐方式。 |
 | <a href="#vgcanvas_t_text_baseline">text\_baseline</a> | const char* | 文本基线。 |
@@ -1496,6 +1497,18 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 
 
 * 类型：float\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可脚本化   | 是 |
+#### stride 属性
+-----------------------
+> <p id="vgcanvas_t_stride">一行占的字节
+
+
+* 类型：uint32\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

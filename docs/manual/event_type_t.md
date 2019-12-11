@@ -47,6 +47,7 @@
 | EVT\_ANIM\_ONCE | 控件动画yoyo/repeat时，完成一次的事件(event\_t)。 |
 | EVT\_ANIM\_END | 控件动画完成事件(event\_t)。 |
 | EVT\_WINDOW\_LOAD | 窗口加载完成事件(event\_t)。 |
+| EVT\_WIDGET\_LOAD | 控件加载完成事件(event\_t)。 |
 | EVT\_WINDOW\_WILL\_OPEN | 窗口即将打开事件(event\_t)。如果有窗口动画，在窗口动画开始前触发。如果没有窗口动画，在窗口被加载后的下一次循环中触发。 |
 | EVT\_WINDOW\_OPEN | 窗口打开事件(event\_t)。如果有窗口动画，在窗口动画完成时触发。如果没有窗口动画，在窗口被加载后的下一次循环中触发。 |
 | EVT\_WINDOW\_TO\_BACKGROUND | 窗口被切换到后台事件(event\_t)。打开新窗口时，当前窗口被切换到后台时，对当前窗口触发本事件。 |

@@ -16,3 +16,4 @@
 | INPUT\_PASSWORD | 密码。 |
 | INPUT\_PHONE | 电话号码。 |
 | INPUT\_CUSTOM | 使用自定义的软键盘(如计算器等应用不希望弹出系统软键盘)。 |
+| INPUT\_CUSTOM\_PASSWORD | 使用自定义的密码软键盘。 |

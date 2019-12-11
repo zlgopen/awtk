@@ -28,8 +28,21 @@ language.xml:
 </list_view>
 </popup>
 ```
->
-更多用法请参考：[combo_box.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/combo_box.xml)
+> 更多用法请参考：[combo_box.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/combo_box.xml)
+如果在文本比较长时，希望在获得焦点时文本自动滚动，可以放入一个hscroll_label为子控件，并命名为"value"。如：
+```xml
+<combo_box left_margin="6" readonly="true" x="10" y="50" w="80" h="30" options="leftttttttttt;centerrrrrrrrrrrrrrrr;rightttttttttt;"
+selected_index="1">
+<hscroll_label x="0" y="0" w="-30" h="100%"
+name="value"
+lull="1000"
+loop="true"
+yoyo="true"
+ellipses="true"
+only_parent_focus="true"/>
+<button style="combobox_down" x="right:5" y="middle" w="20" h="20"/>
+</combo_box>
+```
 在c代码中使用函数combo\_box\_create创建下拉列表控件。如：
 ```c
 widget_t* combo_box = combo_box_create(win, 10, 10, 128, 30);

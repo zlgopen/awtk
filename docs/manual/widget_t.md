@@ -156,6 +156,7 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | <a href="#widget_t_focused">focused</a> | bool\_t | 是否得到焦点。 |
 | <a href="#widget_t_h">h</a> | wh\_t | 高度。 |
 | <a href="#widget_t_initializing">initializing</a> | bool\_t | 标识控件正在初始化。 |
+| <a href="#widget_t_loading">loading</a> | bool\_t | 标识控件正在加载。 |
 | <a href="#widget_t_name">name</a> | char* | 控件名字。 |
 | <a href="#widget_t_need_relayout_children">need\_relayout\_children</a> | bool\_t | 标识控件是否需要重新layout子控件。 |
 | <a href="#widget_t_need_update_style">need\_update\_style</a> | bool\_t | 标识控件是否需要update style。 |
@@ -2561,6 +2562,17 @@ ret_t widget_use_style (widget_t* widget, char* style);
 #### initializing 属性
 -----------------------
 > <p id="widget_t_initializing">标识控件正在初始化。
+
+
+* 类型：bool\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+#### loading 属性
+-----------------------
+> <p id="widget_t_loading">标识控件正在加载。
 
 
 * 类型：bool\_t
