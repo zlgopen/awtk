@@ -384,7 +384,7 @@ static row_info_t* text_edit_layout_line(text_edit_t* text_edit, uint32_t row_nu
   }
 }
 
-ret_t text_edit_layout(text_edit_t* text_edit) {
+static ret_t text_edit_layout_impl(text_edit_t* text_edit) {
   uint32_t i = 0;
   uint32_t offset = 0;
   DECL_IMPL(text_edit);
@@ -433,6 +433,15 @@ ret_t text_edit_layout(text_edit_t* text_edit) {
   text_edit_notify(text_edit);
 
   return RET_OK;
+}
+
+ret_t text_edit_layout(text_edit_t* text_edit) {
+  if (text_edit == NULL || text_edit->c == NULL || text_edit->widget == NULL ||
+      text_edit->widget->initializing || text_edit->widget->loading) {
+    return RET_BAD_PARAMS;
+  }
+
+  return text_edit_layout_impl(text_edit);
 }
 
 static void text_edit_layout_for_stb(StbTexteditRow* row, STB_TEXTEDIT_STRING* str, int offset) {
