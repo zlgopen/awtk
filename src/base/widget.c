@@ -1218,9 +1218,9 @@ ret_t widget_fill_rect(widget_t* widget, canvas_t* c, rect_t* r, bool_t bg,
     canvas_set_fill_color(c, color);
     if (radius > 3) {
       if (bg) {
-        widget_darw_fill_rounded_rect_ex(c, r, NULL, &color, radius);
+        widget_draw_fill_rounded_rect_ex(c, r, NULL, &color, radius);
       } else {
-        widget_darw_fill_rounded_rect_ex(c, r, &bg_r, &color, radius);
+        widget_draw_fill_rounded_rect_ex(c, r, &bg_r, &color, radius);
       }
     } else {
       canvas_fill_rect(c, r->x, r->y, r->w, r->h);
@@ -1252,8 +1252,8 @@ ret_t widget_stroke_border_rect(widget_t* widget, canvas_t* c, rect_t* r) {
     canvas_set_stroke_color(c, bd);
     if (border == BORDER_ALL) {
       if (radius > 3 || border_width > 1) {
-        widget_darw_stroke_rounded_rect_ex(c, r, NULL, &bd, radius, border_width);
-      } else {
+        widget_draw_stroke_rounded_rect_ex(c, r, NULL, &bd, radius, border_width);
+      } else if (border_width == 1) {
         canvas_stroke_rect(c, 0, 0, w, h);
       }
     } else {

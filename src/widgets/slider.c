@@ -96,7 +96,7 @@ static ret_t slider_fill_rect(widget_t* widget, canvas_t* c, rect_t* r, rect_t* 
   if (color.rgba.a && r->w > 0 && r->h > 0) {
     canvas_set_fill_color(c, color);
     if (radius > 3) {
-      widget_darw_fill_rounded_rect_ex(c, r, br, &color, radius);
+      widget_draw_fill_rounded_rect_ex(c, r, br, &color, radius);
     } else {
       canvas_fill_rect(c, r->x, r->y, r->w, r->h);
     }
@@ -127,7 +127,7 @@ static ret_t slider_paint_dragger(widget_t* widget, canvas_t* c) {
   if (color.rgba.a) {
     canvas_set_fill_color(c, color);
     if (radius > 3) {
-      widget_darw_fill_rounded_rect_ex(c, r, NULL, &color, radius);
+      widget_draw_fill_rounded_rect_ex(c, r, NULL, &color, radius);
     } else {
       canvas_fill_rect(c, r->x, r->y, r->w, r->h);
     }

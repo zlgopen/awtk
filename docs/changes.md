@@ -5,6 +5,7 @@
   * hscroll label 在文本改变时重置 xoffset。
   * 完善 combobox 使用 hscroll label 的处理。
   * set key target 时触发 focus 事件。
+  * 完善 round rect 的绘制（感谢智明提供补丁）  
 
 * 2019/12/11
   * 增加 WIDGET LOAD 事件和状态。
