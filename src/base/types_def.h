@@ -239,9 +239,6 @@ typedef enum _app_type_t {
 /* alpha 小于 TK_OPACITY_ALPHA 的颜色认为是透明颜色，不进行alpha混合，直接丢弃。*/
 #define TK_TRANSPARENT_ALPHA 0x02
 
-/* alpha 为 TK_CLEAR_IMAGE_ALPHA 在进行颜色填充时，不进行alpha，直接写入目标像素。*/
-#define TK_CLEAR_IMAGE_ALPHA 0x00
-
 #define TK_DRAG_THRESHOLD 10
 #define TK_CLICK_TOLERANCE 10
 #define TK_ANIMATING_TIME 500

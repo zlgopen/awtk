@@ -51,8 +51,6 @@ static ret_t fill_image(bitmap_t* dst, rect_t* dst_r, color_t c) {
 
   if (a > 0xf8) {
     clear_image(dst, dst_r, c);
-  } else if (a == TK_CLEAR_IMAGE_ALPHA) {
-    clear_image(dst, dst_r, c);
   } else {
     int x = 0;
     int y = 0;
