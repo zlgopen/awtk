@@ -226,6 +226,7 @@ static ret_t hscroll_label_get_prop(widget_t* widget, const char* name, value_t*
 }
 
 static ret_t hscroll_label_set_prop(widget_t* widget, const char* name, const value_t* v) {
+  hscroll_label_t* hscroll_label = HSCROLL_LABEL(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, HSCROLL_LABEL_PROP_LOOP)) {
@@ -244,6 +245,11 @@ static ret_t hscroll_label_set_prop(widget_t* widget, const char* name, const va
     return hscroll_label_set_only_focus(widget, value_bool(v));
   } else if (tk_str_eq(name, HSCROLL_LABEL_PROP_ONLY_PARENT_FOCUS)) {
     return hscroll_label_set_only_parent_focus(widget, value_bool(v));
+  } else if (tk_str_eq(name, WIDGET_PROP_TEXT)) {
+    if (hscroll_label->timer_id != TK_INVALID_ID) {
+      hscroll_label->start_time = time_now_ms();
+    }
+    return RET_NOT_FOUND;
   }
 
   return RET_NOT_FOUND;
