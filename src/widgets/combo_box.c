@@ -30,6 +30,7 @@
 #include "widgets/combo_box_item.h"
 
 static ret_t combo_box_on_button_click(void* ctx, event_t* e);
+static ret_t combo_box_sync_index_to_value(widget_t* widget, uint32_t index);
 
 const char* const s_combo_box_properties[] = {WIDGET_PROP_MIN,
                                               WIDGET_PROP_MAX,
