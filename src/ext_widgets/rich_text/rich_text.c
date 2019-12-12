@@ -110,6 +110,16 @@ static ret_t rich_text_ensure_render_node(widget_t* widget, canvas_t* c) {
   rich_text_t* rich_text = RICH_TEXT(widget);
   return_value_if_fail(widget != NULL && rich_text != NULL, RET_BAD_PARAMS);
 
+  if (rich_text->need_reset) {
+    str_t str;
+    str_init(&str, widget->text.size * 4 + 1);
+    str_from_wstr(&str, widget->text.str);
+    rich_text_reset(widget);
+    rich_text->node = rich_text_parse(str.str, str.size);
+    str_reset(&str);
+    rich_text->need_reset = FALSE;
+  }
+
   if (rich_text->render_node != NULL) {
     return RET_OK;
   }
@@ -122,8 +132,7 @@ static ret_t rich_text_ensure_render_node(widget_t* widget, canvas_t* c) {
     int32_t w = widget->w;
     int32_t h = widget->h;
     int32_t line_gap = rich_text->line_gap;
-    style_t* style = widget->astyle;
-    int32_t margin = style_get_int(style, STYLE_ID_MARGIN, 2);
+    int32_t margin = rich_text->margin;
 
     rich_text->render_node =
         rich_text_render_node_layout(widget, rich_text->node, c, w, h, margin, line_gap);
@@ -143,6 +152,8 @@ static ret_t rich_text_on_paint_self(widget_t* widget, canvas_t* c) {
 
 static ret_t rich_text_on_event(widget_t* widget, event_t* e) {
   uint16_t type = e->type;
+  rich_text_t* rich_text = RICH_TEXT(widget);
+  return_value_if_fail(rich_text != NULL, RET_BAD_PARAMS);
 
   switch (type) {
     case EVT_POINTER_DOWN: {
@@ -158,6 +169,11 @@ static ret_t rich_text_on_event(widget_t* widget, event_t* e) {
       break;
     case EVT_POINTER_ENTER:
       break;
+    case EVT_RESIZE:
+    case EVT_MOVE_RESIZE: {
+      rich_text->need_reset = TRUE;
+      break;
+    }
     default:
       break;
   }
@@ -173,6 +189,11 @@ static ret_t rich_text_set_prop(widget_t* widget, const char* name, const value_
     return rich_text_set_text(widget, value_str(v));
   } else if (tk_str_eq(name, WIDGET_PROP_LINE_GAP)) {
     rich_text->line_gap = value_int(v);
+    rich_text->need_reset = TRUE;
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_MARGIN)) {
+    rich_text->margin = value_int(v);
+    rich_text->need_reset = TRUE;
     return RET_OK;
   }
 
@@ -202,12 +223,8 @@ ret_t rich_text_set_text(widget_t* widget, const char* text) {
   rich_text_t* rich_text = RICH_TEXT(widget);
   return_value_if_fail(rich_text != NULL, RET_BAD_PARAMS);
 
-  rich_text_reset(widget);
-  rich_text->node = rich_text_parse(text, strlen(text));
-
-  value_t v;
-  value_set_str(&v, text);
-  wstr_from_value(&(widget->text), &v);
+  wstr_set_utf8(&(widget->text), text);
+  rich_text->need_reset = TRUE;
   return RET_OK;
 }
 

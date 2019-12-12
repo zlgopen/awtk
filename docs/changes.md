@@ -4,9 +4,9 @@
   * hscroll label 在文本改变时重置 xoffset。
   * 完善 combobox 使用 hscroll label 的处理。
   * set key target 时触发 focus 事件。
-  * 修复圆角巨型在gles的时候，设置vg的Scale显示不正常的问题（感谢智明提供补丁） 
-  * 修改了border_width为0还是绘制边框的问题（感谢智明提供补丁） 
-
+  * 修复圆角巨型在 gles 的时候，设置 vg 的 Scale 显示不正常的问题（感谢智明提供补丁） 
+  * 修改了 border_width 为 0 还是绘制边框的问题（感谢智明提供补丁） 
+  * 完善 rich text 控件（感谢尧燊提供补丁）。 
 
 * 2019/12/11
   * 增加 WIDGET LOAD 事件和状态。

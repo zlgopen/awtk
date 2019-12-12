@@ -85,11 +85,25 @@ typedef struct _rich_text_t {
   widget_t widget;
 
   /**
-   * @property {int32_t} line_gap
+   * @property {uint32_t} line_gap
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 行间距。
    */
-  int32_t line_gap;
+  uint32_t line_gap;
+
+  /**
+   * @property {uint32_t} margin
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 边距。
+   */
+  uint32_t margin;
+
+  /**
+   * @property {bool_t} need_reset
+   * @annotation ["readable"]
+   * 标识控件是否需要重新绘图。
+   */
+  bool_t need_reset;
 
   /*private*/
   rich_text_node_t* node;

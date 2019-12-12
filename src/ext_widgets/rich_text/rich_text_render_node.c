@@ -209,6 +209,11 @@ rich_text_render_node_t* rich_text_render_node_layout(widget_t* widget, rich_tex
           }
 
           if ((x + tw + cw) > right || break_type == LINE_BREAK_MUST) {
+            // 一行的起始不需要换行，且最少包含一个字符
+            if (x == margin) {
+              if (i == start) i = start + 1;
+              break_type = LINE_BREAK_MUST;
+            }
             if (break_type != LINE_BREAK_MUST) {
               if ((i - last_breakable) < 10) {
                 i = last_breakable;
