@@ -31,6 +31,7 @@
 #include "widgets/calibration_win.h"
 #include "widgets/check_button.h"
 #include "widgets/color_tile.h"
+#include "widgets/clip_view.h"
 #include "widgets/column.h"
 #include "widgets/combo_box.h"
 #include "widgets/combo_box_item.h"

@@ -1069,6 +1069,12 @@ BEGIN_C_DECLS
 #define WIDGET_TYPE_COLOR_TILE "color_tile"
 
 /**
+ * @const WIDGET_TYPE_CLIP_VIEW
+ * 裁剪控件。
+ */
+#define WIDGET_TYPE_CLIP_VIEW "clip_view"
+
+/**
  * @const WIDGET_TYPE_RICH_TEXT
  * 富文本控件。
  */
