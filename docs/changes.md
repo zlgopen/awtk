@@ -1,5 +1,11 @@
 # 最新动态
 
+* 2019/12/12
+  * WIDGET LOAD 事件改在子控件加载完成时触发。
+  * hscroll label 在文本改变时重置 xoffset。
+  * 完善 combobox 使用 hscroll label 的处理。
+  * set key target 时触发 focus 事件。
+
 * 2019/12/11
   * 增加 WIDGET LOAD 事件和状态。
   * 修复 text edit 中一些警告。
