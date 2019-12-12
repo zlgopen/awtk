@@ -1,11 +1,12 @@
 # 最新动态
-
 * 2019/12/12
   * WIDGET LOAD 事件改在子控件加载完成时触发。
   * hscroll label 在文本改变时重置 xoffset。
   * 完善 combobox 使用 hscroll label 的处理。
   * set key target 时触发 focus 事件。
-  * 完善 round rect 的绘制（感谢智明提供补丁）  
+  * 修复圆角巨型在gles的时候，设置vg的Scale显示不正常的问题（感谢智明提供补丁） 
+  * 修改了border_width为0还是绘制边框的问题（感谢智明提供补丁） 
+
 
 * 2019/12/11
   * 增加 WIDGET LOAD 事件和状态。
