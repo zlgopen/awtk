@@ -62,16 +62,16 @@ static ret_t ui_builder_default_on_widget_prop(ui_builder_t* b, const char* name
 }
 
 static ret_t ui_builder_default_on_widget_prop_end(ui_builder_t* b) {
+  return RET_OK;
+}
+
+static ret_t ui_builder_default_on_widget_end(ui_builder_t* b) {
   if (b->widget != NULL) {
     event_t e = event_init(EVT_WIDGET_LOAD, NULL);
     widget_dispatch(b->widget, &e);
 
     b->widget->loading = FALSE;
   }
-  return RET_OK;
-}
-
-static ret_t ui_builder_default_on_widget_end(ui_builder_t* b) {
   b->widget = b->widget->parent;
   return RET_OK;
 }
