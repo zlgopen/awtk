@@ -182,7 +182,7 @@ static ret_t combo_box_set_prop(widget_t* widget, const char* name, const value_
 }
 
 static ret_t combo_box_on_layout_children(widget_t* widget) {
-  widget_t* button = widget_lookup_by_type(widget, "button", TRUE);
+  widget_t* button = widget_lookup_by_type(widget, WIDGET_TYPE_BUTTON, TRUE);
 
   widget_layout_children_default(widget);
   if (button != NULL) {
@@ -244,6 +244,13 @@ static ret_t combo_box_on_event(widget_t* widget, event_t* e) {
   return_value_if_fail(combo_box != NULL, RET_BAD_PARAMS);
 
   switch (e->type) {
+    case EVT_WIDGET_LOAD: {
+      /*If there is a value widget, sync the text to value widget*/
+      if (widget_lookup(widget, WIDGET_NAME_VALUE, TRUE) != NULL) {
+        combo_box_sync_index_to_value(widget, combo_box->selected_index);
+      }
+      break;
+    }
     case EVT_RESIZE:
     case EVT_MOVE_RESIZE: {
       if (edit_get_right_margin(widget) == 0) {
@@ -269,12 +276,15 @@ static ret_t combo_box_on_event(widget_t* widget, event_t* e) {
 }
 
 static ret_t combo_box_on_add_child(widget_t* widget, widget_t* child) {
-  widget_t* button = widget_lookup_by_type(widget, "button", TRUE);
+  if (tk_str_eq(widget_get_type(child), WIDGET_TYPE_BUTTON)) {
+    widget_t* button = widget_lookup_by_type(widget, WIDGET_TYPE_BUTTON, TRUE);
 
-  if (button != NULL && button != child) {
-    widget_destroy(button);
+    if (button != NULL && button != child) {
+      widget_destroy(button);
+    }
+
+    widget_on(child, EVT_CLICK, combo_box_on_button_click, widget);
   }
-  widget_on(child, EVT_CLICK, combo_box_on_button_click, widget);
 
   return RET_FAIL;
 }
