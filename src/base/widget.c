@@ -3185,10 +3185,16 @@ ret_t widget_set_as_key_target(widget_t* widget) {
     widget_t* parent = widget->parent;
 
     if (parent != NULL) {
-      parent->focused = TRUE;
+      if (!(parent->focused)) {
+        parent->focused = TRUE;
+        event_t e = event_init(EVT_FOCUS, NULL);
+        widget_dispatch(parent, &e);
+      }
+
       if (parent->key_target != NULL && parent->key_target != widget) {
         widget_set_focused_internal(widget->parent->key_target, FALSE);
       }
+
       parent->key_target = widget;
       widget_set_as_key_target(parent);
     }
