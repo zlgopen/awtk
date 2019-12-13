@@ -287,7 +287,7 @@ ret_t window_base_on_event(widget_t* widget, event_t* e) {
     if (win->should_grab_when_to_foreground) {
       widget_grab(widget->parent, widget);
     }
-    widget_set_focused(win->save_focus_widget, TRUE);
+    widget_set_focused_internal(win->save_focus_widget, TRUE);
   } else if (e->type == EVT_WINDOW_TO_BACKGROUND) {
     if (widget->parent->grab_widget == widget) {
       widget_ungrab(widget->parent, widget);
