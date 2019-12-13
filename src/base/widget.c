@@ -2224,7 +2224,13 @@ static ret_t widget_on_pointer_down_children(widget_t* widget, pointer_event_t* 
   }
   return_if_equal(ret, RET_STOP);
 
-  widget->target = target;
+  if (widget->target != target) {
+    if (widget->target != NULL) {
+      widget_dispatch_leave_event(widget->target, e);
+    }
+    widget->target = target;
+  }
+
   if (widget->target != NULL) {
     ret = widget_on_pointer_down(widget->target, e);
   }
