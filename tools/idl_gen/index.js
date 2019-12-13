@@ -59,6 +59,10 @@ class IDLGenerator {
   parseAlias(str) {
     return this.getValue(str);
   }
+  
+  parseOrder(str) {
+    return parseInt(this.getValue(str));
+  }
 
   parsePrefix(str) {
     return this.getValue(str);
@@ -222,6 +226,8 @@ class IDLGenerator {
         cls.annotation = this.parseAnnotation(iter);
       }else if (iter.indexOf('@alias') >= 0) {
         cls.alias = this.parseAlias(iter);
+      }else if (iter.indexOf('@order') >= 0) {
+        cls.order = this.parseOrder(iter);
       } else if (iter.indexOf('@parent') >= 0) {
         cls.parent = this.parseParent(iter);
       } else {
@@ -380,7 +386,10 @@ class IDLGenerator {
   
   sort() {
     this.result.sort((a, b) => {
-      return a.level - b.level;
+      let aLevel = a.order || a.level;
+      let bLevel = b.order || b.level;
+
+      return aLevel - bLevel;
     });
   }
 

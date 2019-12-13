@@ -29,6 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class point_t
  * @annotation ["scriptable"]
+ * @order -10
  * 点。包括一个x坐标和一个y坐标。
  */
 typedef struct _point_t {
@@ -48,6 +49,7 @@ typedef struct _point_t {
 
 /**
  * @class pointf_t
+ * @order -10
  * @annotation ["scriptable"]
  * 点(浮点数)。包括一个x坐标和一个y坐标。
  */
@@ -68,6 +70,7 @@ typedef struct _pointf_t {
 
 /**
  * @class rect_t
+ * @order -10
  * @annotation ["scriptable"]
  * 矩形。包括一个x坐标、y坐标、宽度和高度。
  */
