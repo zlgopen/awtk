@@ -43,6 +43,7 @@ struct _emitter_item_t {
 
 /**
  * @class emitter_t
+ * @order -10
  * @annotation ["scriptable"]
  *
  * 事件分发器, 用于实现观察者模式。

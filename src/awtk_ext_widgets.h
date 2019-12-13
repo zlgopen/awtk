@@ -37,6 +37,7 @@
 #include "scroll_view/list_item.h"
 #include "scroll_view/list_view.h"
 #include "slide_view/slide_view.h"
+#include "slide_view/slide_indicator.h"
 #include "scroll_view/scroll_bar.h"
 #include "scroll_view/scroll_view.h"
 #include "scroll_view/list_view_h.h"

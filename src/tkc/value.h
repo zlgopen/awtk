@@ -151,7 +151,7 @@ typedef struct _sized_str_t {
 
 /**
  * @class value_t
- * @order -10
+ * @order -9
  * @annotation ["scriptable"]
  * 一个通用数据类型，用来存放整数、浮点数、字符串和其它对象。
  *

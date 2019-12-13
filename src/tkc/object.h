@@ -57,6 +57,7 @@ struct _object_vtable_t {
 
 /**
  * @class object_t
+ * @order -9
  * @parent emitter_t
  * @annotation ["scriptable"]
  *

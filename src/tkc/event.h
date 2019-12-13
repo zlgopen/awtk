@@ -77,6 +77,7 @@ typedef enum _event_base_type_t {
 
 /**
  * @class event_t
+ * @order -100
  * @annotation ["scriptable"]
  * 事件基类。
  */
