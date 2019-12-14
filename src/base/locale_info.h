@@ -95,9 +95,9 @@ locale_info_t* locale_info_create(const char* language, const char* country);
  * 翻译字符串。
  * @annotation ["scriptable"]
  * @param {locale_info_t*} locale_info locale_info对象。
- * @param {char*} text 待翻译的文本。
+ * @param {const char*} text 待翻译的文本。
  *
- * @return {char*} 返回翻译之后的字符串。
+ * @return {const char*} 返回翻译之后的字符串。
  */
 const char* locale_info_tr(locale_info_t* locale_info, const char* text);
 

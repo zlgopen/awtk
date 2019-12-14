@@ -82,4 +82,5 @@
 #include "base/window_animator_factory.h"
 #include "base/window_base.h"
 #include "base/window_manager.h"
+#include "base/style_mutable.h"
 #endif /*TK_BASE_H*/

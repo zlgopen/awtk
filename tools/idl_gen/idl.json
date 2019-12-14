@@ -9183,7 +9183,7 @@
             "desc": "locale_info对象。"
           },
           {
-            "type": "char*",
+            "type": "const char*",
             "name": "text",
             "desc": "待翻译的文本。"
           }
@@ -9194,7 +9194,7 @@
         "desc": "翻译字符串。",
         "name": "locale_info_tr",
         "return": {
-          "type": "char*",
+          "type": "const char*",
           "desc": "返回翻译之后的字符串。"
         }
       },
@@ -16286,7 +16286,7 @@
             "desc": "控件对象。"
           },
           {
-            "type": "wchar_t*",
+            "type": "const wchar_t*",
             "name": "text",
             "desc": "文本。"
           }
@@ -16330,7 +16330,7 @@
             "desc": "控件对象。"
           },
           {
-            "type": "char*",
+            "type": "const char*",
             "name": "text",
             "desc": "文本。"
           }
@@ -16401,7 +16401,7 @@
         "desc": "获取控件的文本。 只是对widget\\_get\\_prop的包装，文本的意义由子类控件决定。",
         "name": "widget_get_text",
         "return": {
-          "type": "wchar_t*",
+          "type": "const wchar_t*",
           "desc": "返回文本。"
         }
       },
@@ -17881,7 +17881,7 @@
         "desc": "获取当前控件的类型名称。",
         "name": "widget_get_type",
         "return": {
-          "type": "char*",
+          "type": "const char*",
           "desc": "返回类型名。"
         }
       },
@@ -30579,7 +30579,7 @@
         "name": "text_selector_get_text",
         "alias": "text_selector_get_text_value",
         "return": {
-          "type": "char*",
+          "type": "const char*",
           "desc": "返回文本。"
         }
       },
@@ -40953,8 +40953,8 @@
         "desc": "设置拖动的范围。",
         "name": "dragger_set_range",
         "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       }
     ],
@@ -44633,9 +44633,6 @@
     "desc": "缺省窗口管理器。",
     "name": "window_manager_simple_t",
     "parent": "window_manager_t",
-    "annotation": {
-      "scriptable": true
-    },
     "level": 3
   },
   {
@@ -45948,8 +45945,8 @@
         "desc": "模态显示对话框。 dialog_modal返回后，dialog对象将在下一个idle函数中回收。 也就是在dialog_modal调用完成后仍然可以访问dialog中控件，直到本次事件结束。",
         "name": "dialog_modal",
         "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
+          "type": "dialog_quit_code_t",
+          "desc": "返回退出吗。"
         }
       },
       {
@@ -46158,9 +46155,6 @@
     "desc": "缺省窗口管理器。",
     "name": "window_manager_default_t",
     "parent": "window_manager_t",
-    "annotation": {
-      "scriptable": true
-    },
     "level": 3
   },
   {

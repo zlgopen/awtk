@@ -104,7 +104,7 @@ widget_t* dragger_cast(widget_t* widget);
  * @param {xy_t} x_max x坐标最大值。
  * @param {xy_t} y_max y坐标最大值。
  *
- * @return {widget_t*} 对象。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t dragger_set_range(widget_t* widget, xy_t x_min, xy_t y_min, xy_t x_max, xy_t y_max);
 

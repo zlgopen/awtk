@@ -242,7 +242,7 @@ ret_t text_selector_set_value(widget_t* widget, int32_t value);
  * @alias text_selector_get_text_value
  * @param {widget_t*} widget text_selector对象。
  *
- * @return {char*} 返回文本。
+ * @return {const char*} 返回文本。
  */
 const char* text_selector_get_text(widget_t* widget);
 

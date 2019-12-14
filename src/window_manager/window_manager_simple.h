@@ -30,7 +30,6 @@ BEGIN_C_DECLS
 /**
  * @class window_manager_simple_t
  * @parent window_manager_t
- * @annotation ["scriptable"]
  * 缺省窗口管理器。
  */
 typedef struct _window_manager_simple_t {

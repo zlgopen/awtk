@@ -49,6 +49,7 @@
 #include "image_animation/image_animation.h"
 #include "mutable_image/mutable_image.h"
 #include "combo_box_ex/combo_box_ex.h"
+#include "scroll_label/hscroll_label.h"
 #include "mledit/line_number.h"
 #include "mledit/mledit.h"
 #include "features/draggable.h"

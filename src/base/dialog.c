@@ -136,14 +136,14 @@ widget_t* dialog_get_client(widget_t* widget) {
   return dialog->client;
 }
 
-uint32_t dialog_modal(widget_t* widget) {
+dialog_quit_code_t dialog_modal(widget_t* widget) {
 #ifdef AWTK_WEB
   log_debug("awtk web not support dialog_modal\n");
-  return 0;
+  return DIALOG_QUIT_NONE;
 #else
   bool_t running = FALSE;
   dialog_t* dialog = DIALOG(widget);
-  return_value_if_fail(dialog != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(dialog != NULL, DIALOG_QUIT_NONE);
 
   log_debug("%s run\n", __FUNCTION__);
 
@@ -157,7 +157,7 @@ uint32_t dialog_modal(widget_t* widget) {
   log_debug("%s quit\n", __FUNCTION__);
   idle_add(dialog_idle_close, widget);
 
-  return dialog->quit_code;
+  return (dialog_quit_code_t)(dialog->quit_code);
 #endif /*AWTK_WEB*/
 }
 

@@ -286,9 +286,9 @@ ret_t dialog_set_title(widget_t* widget, const char* title);
  * @annotation ["scriptable"]
  * @param {widget_t*} widget dialog对象。
  *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ * @return {dialog_quit_code_t} 返回退出吗。
  */
-uint32_t dialog_modal(widget_t* widget);
+dialog_quit_code_t dialog_modal(widget_t* widget);
 
 /**
  * @method dialog_quit

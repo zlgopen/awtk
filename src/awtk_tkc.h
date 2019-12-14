@@ -58,5 +58,7 @@
 #include "tkc/ring_buffer.h"
 #include "tkc/named_value.h"
 #include "tkc/slist.h"
+#include "tkc/object_default.h"
+#include "tkc/object_array.h"
 
 #endif /*TK_TKC_H*/

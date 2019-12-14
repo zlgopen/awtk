@@ -701,7 +701,7 @@ ret_t widget_add_value(widget_t* widget, int32_t delta);
  * 设置控件的文本。
  * 只是对widget\_set\_prop的包装，文本的意义由子类控件决定。
  * @param {widget_t*} widget 控件对象。
- * @param {wchar_t*}  text 文本。
+ * @param {const wchar_t*}  text 文本。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -725,7 +725,7 @@ ret_t widget_use_style(widget_t* widget, const char* style);
  * @annotation ["scriptable"]
  * @alias set_text
  * @param {widget_t*} widget 控件对象。
- * @param {char*}  text 文本。
+ * @param {const char*}  text 文本。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -759,7 +759,7 @@ int32_t widget_get_value(widget_t* widget);
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  *
- * @return {wchar_t*} 返回文本。
+ * @return {const wchar_t*} 返回文本。
  */
 const wchar_t* widget_get_text(widget_t* widget);
 
@@ -1518,7 +1518,7 @@ widget_t* widget_get_window_manager(widget_t* widget);
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  *
- * @return {char*} 返回类型名。
+ * @return {const char*} 返回类型名。
  */
 const char* widget_get_type(widget_t* widget);
 
