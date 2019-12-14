@@ -2,7 +2,42 @@
 ### 概述
 ![image](images/progress_circle_t_0.png)
 
-进度圆环控件。 progress\_circle\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于progress\_circle\_t控件。 在xml中使用"progress\_circle"标签创建进度圆环控件。如： ```xml  <progress_circle max="360" show_text="true" start_angle="90" /> ``` > 更多用法请参考： [progress_circle.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/progress_circle.xml) 在c代码中使用函数progress\_circle\_create创建进度圆环控件。如： ```c  progress_circle = progress_circle_create(win, 10, 10, 200, 200);  progress_circle_set_max(progress_circle, 360);  widget_set_value(progress_circle, 128); ``` > 完整示例请参考： [progress_circle demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/progress_circle.c) 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如： ```xml <style name="default">   <normal text_color="green" fg_color="black" /> </style> ``` > 更多用法请参考： [theme default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L467)
+进度圆环控件。
+
+progress\_circle\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于progress\_circle\_t控件。
+
+在xml中使用"progress\_circle"标签创建进度圆环控件。如：
+
+```xml
+<progress_circle max="360" show_text="true" start_angle="90" />
+```
+
+> 更多用法请参考：
+[progress_circle.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/progress_circle.xml)
+
+在c代码中使用函数progress\_circle\_create创建进度圆环控件。如：
+
+```c
+progress_circle = progress_circle_create(win, 10, 10, 200, 200);
+progress_circle_set_max(progress_circle, 360);
+widget_set_value(progress_circle, 128);
+```
+
+> 完整示例请参考：
+[progress_circle
+demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/progress_circle.c)
+
+可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：
+
+```xml
+<style name="default">
+<normal text_color="green" fg_color="black" />
+</style>
+```
+
+> 更多用法请参考：
+[theme
+default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L467)
 ----------------------------------
 ### 函数
 <p id="progress_circle_t_methods">

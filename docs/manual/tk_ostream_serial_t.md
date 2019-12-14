@@ -1,6 +1,8 @@
 ## tk\_ostream\_serial\_t
 ### 概述
-基于串口实现的输出流。 input stream base on fd
+基于串口实现的输出流。
+
+input stream base on fd
 ----------------------------------
 ### 函数
 <p id="tk_ostream_serial_t_methods">

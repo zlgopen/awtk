@@ -25,7 +25,7 @@
 | <a href="#lcd_t_lcd_get_width">lcd\_get\_width</a> | 获取宽度。 |
 | <a href="#lcd_t_lcd_is_swappable">lcd\_is\_swappable</a> | 判读lcd是否支持swap。 |
 | <a href="#lcd_t_lcd_measure_text">lcd\_measure\_text</a> | 测量字符串占用的宽度。 |
-| <a href="#lcd_t_lcd_resize">lcd\_resize</a> | 基于SDL的PC软件，在SDL窗口resize时，需要调用本函数resize lcd。 屏幕旋转时会调用本函数，调整LCD的大小。 |
+| <a href="#lcd_t_lcd_resize">lcd\_resize</a> | 基于SDL的PC软件，在SDL窗口resize时，需要调用本函数resize lcd。 |
 | <a href="#lcd_t_lcd_set_clip_rect">lcd\_set\_clip\_rect</a> | 设置裁剪区域。 |
 | <a href="#lcd_t_lcd_set_fill_color">lcd\_set\_fill\_color</a> | 设置填充颜色。 |
 | <a href="#lcd_t_lcd_set_font_name">lcd\_set\_font\_name</a> | 设置字体名称。 |
@@ -430,7 +430,8 @@ float_t lcd_measure_text (lcd_t* lcd, const wchar_t* str, uint32_t nr);
 
 * 函数功能：
 
-> <p id="lcd_t_lcd_resize">基于SDL的PC软件，在SDL窗口resize时，需要调用本函数resize lcd。 屏幕旋转时会调用本函数，调整LCD的大小。
+> <p id="lcd_t_lcd_resize">基于SDL的PC软件，在SDL窗口resize时，需要调用本函数resize lcd。
+屏幕旋转时会调用本函数，调整LCD的大小。
 
 * 函数原型：
 

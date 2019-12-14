@@ -2,7 +2,29 @@
 ### 概述
 ![image](images/mledit_t_0.png)
 
-多行编辑器控件。 mledit\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于mledit\_t控件。 在xml中使用"mledit"标签创建多行编辑器控件。如： ```xml <mledit x="c" y="m" w="300" h="300" /> ``` > 更多用法请参考：[mledit.xml]( https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/mledit.xml) 在c代码中使用函数mledit\_create创建多行编辑器控件。如： ```c widget_t* tc = mledit_create(win, 10, 10, 240, 240); ``` > 完整示例请参考：[mledit demo]( https://github.com/zlgopen/awtk-c-demos/blob/master/demos/mledit.c) time\_clock一般不需要设置style。
+多行编辑器控件。
+
+mledit\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于mledit\_t控件。
+
+在xml中使用"mledit"标签创建多行编辑器控件。如：
+
+```xml
+<mledit x="c" y="m" w="300" h="300" />
+```
+
+> 更多用法请参考：[mledit.xml](
+https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/mledit.xml)
+
+在c代码中使用函数mledit\_create创建多行编辑器控件。如：
+
+```c
+widget_t* tc = mledit_create(win, 10, 10, 240, 240);
+```
+
+> 完整示例请参考：[mledit demo](
+https://github.com/zlgopen/awtk-c-demos/blob/master/demos/mledit.c)
+
+time\_clock一般不需要设置style。
 ----------------------------------
 ### 函数
 <p id="mledit_t_methods">

@@ -1,6 +1,18 @@
 ## str\_str\_t
 ### 概述
-字符串-字符串类型。 负责把一个字符串映射成另外一个字符串。 示例： ```c static const str_str_t color_values[] = {{"1", "red"}, {"2", "black"}, {"3", "blue"}, {"4", "white"}}; const char* value = str_str_value(color_values, "3"); const char* name = str_str_name(color_values, "blue", "0"); printf("value = %s \n", value); printf("name = %s \n", name); ```
+字符串-字符串类型。
+
+负责把一个字符串映射成另外一个字符串。
+
+示例：
+
+```c
+static const str_str_t color_values[] = {{"1", "red"}, {"2", "black"}, {"3", "blue"}, {"4", "white"}};
+const char* value = str_str_value(color_values, "3");
+const char* name = str_str_name(color_values, "blue", "0");
+printf("value = %s \n", value);
+printf("name = %s \n", name);
+```
 ----------------------------------
 ### 函数
 <p id="str_str_t_methods">

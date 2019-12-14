@@ -2,7 +2,38 @@
 ### 概述
 ![image](images/slide_indicator_t_0.png)
 
-slide_view的指示器控件。> 支持直线、弧线排布，默认有4种绘制样式，若设置了icon/active_icon，则优先使用icon/active_icon slide\_indicator\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于slide\_indicator\_t控件。 在xml中使用"slide\_indicator"或"slide\_indicator\_arc"标签创建指示器控件。如： ```xml <slide_view name="view" x="0"  y="0" w="100%" h="100%"> ... </slide_view> <slide_indicator name="indicator" x="right" y="0" w="6" h="100%"/> ``` > 更多用法请参考：[slide\_view.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/slide_view.xml) 在c代码中使用函数slide\_indicator\_create创建指示器控件。如： ```c  widget_t* slide_indicator = slide_indicator_create(parent, 0, 0, 0, 0); ``` ```xml <style name="default">   <normal fg_color="#FFFFFF80" selected_fg_color="#FFFFFF"/> </style> ``` > 更多用法请参考：[theme default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L350)
+slide_view的指示器控件。
+
+> 支持直线、弧线排布，默认有4种绘制样式，若设置了icon/active_icon，则优先使用icon/active_icon
+
+slide\_indicator\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于slide\_indicator\_t控件。
+
+在xml中使用"slide\_indicator"或"slide\_indicator\_arc"标签创建指示器控件。如：
+
+```xml
+<slide_view name="view" x="0"  y="0" w="100%" h="100%">
+...
+</slide_view>
+<slide_indicator name="indicator" x="right" y="0" w="6" h="100%"/>
+```
+
+> 更多用法请参考：[slide\_view.xml](
+https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/slide_view.xml)
+
+在c代码中使用函数slide\_indicator\_create创建指示器控件。如：
+
+```c
+widget_t* slide_indicator = slide_indicator_create(parent, 0, 0, 0, 0);
+```
+
+```xml
+<style name="default">
+<normal fg_color="#FFFFFF80" selected_fg_color="#FFFFFF"/>
+</style>
+```
+
+> 更多用法请参考：[theme default](
+https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L350)
 ----------------------------------
 ### 函数
 <p id="slide_indicator_t_methods">

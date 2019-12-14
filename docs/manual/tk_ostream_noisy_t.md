@@ -9,7 +9,7 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#tk_ostream_noisy_t_tk_ostream_noisy_create">tk\_ostream\_noisy\_create</a> | 创建ostream对象。> 只能由iostream_noisy调用。 |
+| <a href="#tk_ostream_noisy_t_tk_ostream_noisy_create">tk\_ostream\_noisy\_create</a> | 创建ostream对象。 |
 ### 属性
 <p id="tk_ostream_noisy_t_properties">
 
@@ -23,7 +23,9 @@
 
 * 函数功能：
 
-> <p id="tk_ostream_noisy_t_tk_ostream_noisy_create">创建ostream对象。> 只能由iostream_noisy调用。
+> <p id="tk_ostream_noisy_t_tk_ostream_noisy_create">创建ostream对象。
+
+> 只能由iostream_noisy调用。
 
 * 函数原型：
 

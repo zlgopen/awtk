@@ -11,10 +11,10 @@
 | <a href="#image_manager_t_image_manager_create">image\_manager\_create</a> | 创建图片管理器。 |
 | <a href="#image_manager_t_image_manager_deinit">image\_manager\_deinit</a> | 析构图片管理器。 |
 | <a href="#image_manager_t_image_manager_destroy">image\_manager\_destroy</a> | 析构并释放图片管理器。 |
-| <a href="#image_manager_t_image_manager_get_bitmap">image\_manager\_get\_bitmap</a> | 获取指定的图片。 先从缓存查找，如果没找到，再加载并缓存。 |
+| <a href="#image_manager_t_image_manager_get_bitmap">image\_manager\_get\_bitmap</a> | 获取指定的图片。 |
 | <a href="#image_manager_t_image_manager_init">image\_manager\_init</a> | 初始化图片管理器。 |
 | <a href="#image_manager_t_image_manager_set">image\_manager\_set</a> | 设置缺省的图片管理器。 |
-| <a href="#image_manager_t_image_manager_set_assets_manager">image\_manager\_set\_assets\_manager</a> | 设置资源管理器对象。 之所以需要设置资源管理器对象，而不是使用缺省的资源管理器对象，是因为在designer中有两个图片管理器： * 一个用于designer本身加载图片。 * 一个用于被设计的窗口加载图片。这两个图片管理器需要从不同的路径加载资源。 |
+| <a href="#image_manager_t_image_manager_set_assets_manager">image\_manager\_set\_assets\_manager</a> | 设置资源管理器对象。 |
 | <a href="#image_manager_t_image_manager_unload_all">image\_manager\_unload\_all</a> | 从图片管理器中卸载全部图片。 |
 | <a href="#image_manager_t_image_manager_unload_bitmap">image\_manager\_unload\_bitmap</a> | 从图片管理器中卸载指定的图片。 |
 | <a href="#image_manager_t_image_manager_unload_unused">image\_manager\_unload\_unused</a> | 从图片管理器中卸载指定时间内没有使用的图片。 |
@@ -103,7 +103,8 @@ ret_t image_manager_destroy (image_manager_t* imm);
 
 * 函数功能：
 
-> <p id="image_manager_t_image_manager_get_bitmap">获取指定的图片。 先从缓存查找，如果没找到，再加载并缓存。
+> <p id="image_manager_t_image_manager_get_bitmap">获取指定的图片。
+先从缓存查找，如果没找到，再加载并缓存。
 
 * 函数原型：
 
@@ -162,7 +163,15 @@ ret_t image_manager_set (image_manager_t* imm);
 
 * 函数功能：
 
-> <p id="image_manager_t_image_manager_set_assets_manager">设置资源管理器对象。 之所以需要设置资源管理器对象，而不是使用缺省的资源管理器对象，是因为在designer中有两个图片管理器： * 一个用于designer本身加载图片。 * 一个用于被设计的窗口加载图片。这两个图片管理器需要从不同的路径加载资源。
+> <p id="image_manager_t_image_manager_set_assets_manager">设置资源管理器对象。
+
+之所以需要设置资源管理器对象，而不是使用缺省的资源管理器对象，是因为在designer中有两个图片管理器：
+
+* 一个用于designer本身加载图片。
+
+* 一个用于被设计的窗口加载图片。
+
+这两个图片管理器需要从不同的路径加载资源。
 
 * 函数原型：
 

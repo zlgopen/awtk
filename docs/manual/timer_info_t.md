@@ -17,7 +17,7 @@
 | -------- | ----- | ------------ | 
 | <a href="#timer_info_t_ctx">ctx</a> | void* | 定时器回调函数的上下文 |
 | <a href="#timer_info_t_duration">duration</a> | uint32\_t | 时间间隔(单位为毫秒)。 |
-| <a href="#timer_info_t_id">id</a> | uint32\_t | 定时器的ID > 为TK\_INVALID\_ID时表示无效定时器。 |
+| <a href="#timer_info_t_id">id</a> | uint32\_t | 定时器的ID |
 | <a href="#timer_info_t_now">now</a> | uint64\_t | 当前时间(相对时间，单位为毫秒)。 |
 | <a href="#timer_info_t_on_destroy">on\_destroy</a> | tk\_destroy\_t | 定时器销毁时的回调函数。 |
 | <a href="#timer_info_t_on_destroy_ctx">on\_destroy\_ctx</a> | void* | 定时器销毁时的回调函数上下文。 |
@@ -65,7 +65,9 @@ timer_info_t* timer_info_cast (timer_info_t* timer);
 | 可直接修改 | 否 |
 #### id 属性
 -----------------------
-> <p id="timer_info_t_id">定时器的ID > 为TK\_INVALID\_ID时表示无效定时器。
+> <p id="timer_info_t_id">定时器的ID
+
+> 为TK\_INVALID\_ID时表示无效定时器。
 
 * 类型：uint32\_t
 

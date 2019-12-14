@@ -1,6 +1,9 @@
 ## dialog\_highlighter\_default\_t
 ### 概述
-缺省对话框高亮策略。>本策略在背景上画一层半透明的蒙版来高亮(突出)对话框本身。>对于性能不高的平台，建议将start\_alpha和end\_alpha设为相同。
+缺省对话框高亮策略。
+
+>本策略在背景上画一层半透明的蒙版来高亮(突出)对话框本身。
+>对于性能不高的平台，建议将start\_alpha和end\_alpha设为相同。
 ----------------------------------
 ### 函数
 <p id="dialog_highlighter_default_t_methods">

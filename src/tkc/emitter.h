@@ -109,8 +109,7 @@ emitter_t* emitter_init(emitter_t* emitter);
  * @annotation ["scriptable"]
  * @param {emitter_t*} emitter emitter对象。
  * @param {event_t*} e 事件对象。
- * @return {ret_t}
- *  如果当前分发的回调函数返回RET_STOP，dispatch中断分发，并返回RET_STOP，否则返回RET_OK。
+ * @return {ret_t} 如果当前分发的回调函数返回RET_STOP，dispatch中断分发，并返回RET_STOP，否则返回RET_OK。
  */
 ret_t emitter_dispatch(emitter_t* emitter, event_t* e);
 

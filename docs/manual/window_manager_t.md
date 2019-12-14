@@ -10,9 +10,9 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#window_manager_t_window_manager">window\_manager</a> | 获取全局window_manager对象 |
-| <a href="#window_manager_t_window_manager_back">window\_manager\_back</a> | 请求关闭顶层窗口。  > 如果顶层窗口时模态对话框，用DIALOG\_QUIT\_NONE调用dialog\_quit。 |
-| <a href="#window_manager_t_window_manager_back_to">window\_manager\_back\_to</a> | 回到指定的窗口，关闭之上的全部窗口。 > 如果顶层窗口时模态对话框，用DIALOG\_QUIT\_NONE调用dialog\_quit。 |
-| <a href="#window_manager_t_window_manager_back_to_home">window\_manager\_back\_to\_home</a> | 回到主窗口，关闭之上的全部窗口。 > 如果顶层窗口时模态对话框，用DIALOG\_QUIT\_NONE调用dialog\_quit。 |
+| <a href="#window_manager_t_window_manager_back">window\_manager\_back</a> | 请求关闭顶层窗口。 |
+| <a href="#window_manager_t_window_manager_back_to">window\_manager\_back\_to</a> | 回到指定的窗口，关闭之上的全部窗口。 |
+| <a href="#window_manager_t_window_manager_back_to_home">window\_manager\_back\_to\_home</a> | 回到主窗口，关闭之上的全部窗口。 |
 | <a href="#window_manager_t_window_manager_cast">window\_manager\_cast</a> | 转换为window_manager对象(供脚本语言使用)。 |
 | <a href="#window_manager_t_window_manager_dispatch_native_window_event">window\_manager\_dispatch\_native\_window\_event</a> | 处理native window事件。 |
 | <a href="#window_manager_t_window_manager_get_pointer_pressed">window\_manager\_get\_pointer\_pressed</a> | 获取指针当前是否按下。 |
@@ -48,7 +48,9 @@ widget_t* window_manager ();
 
 * 函数功能：
 
-> <p id="window_manager_t_window_manager_back">请求关闭顶层窗口。  > 如果顶层窗口时模态对话框，用DIALOG\_QUIT\_NONE调用dialog\_quit。
+> <p id="window_manager_t_window_manager_back">请求关闭顶层窗口。
+
+> 如果顶层窗口时模态对话框，用DIALOG\_QUIT\_NONE调用dialog\_quit。
 
 * 函数原型：
 
@@ -67,7 +69,9 @@ ret_t window_manager_back (widget_t* widget);
 
 * 函数功能：
 
-> <p id="window_manager_t_window_manager_back_to">回到指定的窗口，关闭之上的全部窗口。 > 如果顶层窗口时模态对话框，用DIALOG\_QUIT\_NONE调用dialog\_quit。
+> <p id="window_manager_t_window_manager_back_to">回到指定的窗口，关闭之上的全部窗口。
+
+> 如果顶层窗口时模态对话框，用DIALOG\_QUIT\_NONE调用dialog\_quit。
 
 * 函数原型：
 
@@ -87,7 +91,9 @@ ret_t window_manager_back_to (widget_t* widget, const char* target);
 
 * 函数功能：
 
-> <p id="window_manager_t_window_manager_back_to_home">回到主窗口，关闭之上的全部窗口。 > 如果顶层窗口时模态对话框，用DIALOG\_QUIT\_NONE调用dialog\_quit。
+> <p id="window_manager_t_window_manager_back_to_home">回到主窗口，关闭之上的全部窗口。
+
+> 如果顶层窗口时模态对话框，用DIALOG\_QUIT\_NONE调用dialog\_quit。
 
 * 函数原型：
 

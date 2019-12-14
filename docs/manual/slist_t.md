@@ -1,6 +1,23 @@
 ## slist\_t
 ### 概述
-单向链表 用slist\_init初始化时，用slist\_deinit释放。如： ```c slist_t slist; slist_init(&slist, destroy, compare); ... slist_deinit(&slist); ``` 用slist\_create创建时，用slist\_destroy销毁。如： ```c slist_t* slist = slist_create(destroy, compare); ... slist_destroy(slist); ```
+单向链表
+
+用slist\_init初始化时，用slist\_deinit释放。如：
+
+```c
+slist_t slist;
+slist_init(&slist, destroy, compare);
+...
+slist_deinit(&slist);
+```
+
+用slist\_create创建时，用slist\_destroy销毁。如：
+
+```c
+slist_t* slist = slist_create(destroy, compare);
+...
+slist_destroy(slist);
+```
 ----------------------------------
 ### 函数
 <p id="slist_t_methods">

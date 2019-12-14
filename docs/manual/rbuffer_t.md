@@ -1,6 +1,21 @@
 ## rbuffer\_t
 ### 概述
-Read Buffer。用于数据解包。 示例： ```c  uint8_t buff[128];  wbuffer_t wbuffer;  rbuffer_t rbuffer;  const char* str = NULL;  wbuffer_init(&wbuffer, buff, sizeof(buff));  wbuffer_write_string(&wbuffer, "hello awtk");  rbuffer_init(&rbuffer, wbuffer.data, wbuffer.cursor);  rbuffer_read_string(&rbuffer, &str); ```
+Read Buffer。用于数据解包。
+
+示例：
+
+```c
+uint8_t buff[128];
+wbuffer_t wbuffer;
+rbuffer_t rbuffer;
+const char* str = NULL;
+wbuffer_init(&wbuffer, buff, sizeof(buff));
+
+wbuffer_write_string(&wbuffer, "hello awtk");
+
+rbuffer_init(&rbuffer, wbuffer.data, wbuffer.cursor);
+rbuffer_read_string(&rbuffer, &str);
+```
 ----------------------------------
 ### 函数
 <p id="rbuffer_t_methods">

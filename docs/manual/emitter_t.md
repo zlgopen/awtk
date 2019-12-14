@@ -7,13 +7,13 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#emitter_t_emitter_cast">emitter\_cast</a> | 转换为emitter对象(供脚本语言使用)。 主要给脚本语言使用。 |
+| <a href="#emitter_t_emitter_cast">emitter\_cast</a> | 转换为emitter对象(供脚本语言使用)。 |
 | <a href="#emitter_t_emitter_create">emitter\_create</a> | 创建emitter对象。 |
 | <a href="#emitter_t_emitter_deinit">emitter\_deinit</a> | 析构。 |
 | <a href="#emitter_t_emitter_destroy">emitter\_destroy</a> | 销毁。 |
-| <a href="#emitter_t_emitter_disable">emitter\_disable</a> | 禁用。 禁用后emitter_dispatch无效，但可以注册和注销。 |
-| <a href="#emitter_t_emitter_dispatch">emitter\_dispatch</a> | 分发事件。如果当前分发的回调函数返回RET_REMOVE，该回调函数将被移出。 禁用状态下，本函数不做任何事情。  如果当前分发的回调函数返回RET_STOP，dispatch中断分发，并返回RET_STOP，否则返回RET_OK。 |
-| <a href="#emitter_t_emitter_dispatch_simple_event">emitter\_dispatch\_simple\_event</a> | 分发事件。 > 对emitter_dispatch的包装，分发一个简单的事件。  如果当前分发的回调函数返回RET_STOP，dispatch中断分发，并返回RET_STOP，否则返回RET_OK。 |
+| <a href="#emitter_t_emitter_disable">emitter\_disable</a> | 禁用。 |
+| <a href="#emitter_t_emitter_dispatch">emitter\_dispatch</a> | 分发事件。如果当前分发的回调函数返回RET_REMOVE，该回调函数将被移出。 |
+| <a href="#emitter_t_emitter_dispatch_simple_event">emitter\_dispatch\_simple\_event</a> | 分发事件。 |
 | <a href="#emitter_t_emitter_enable">emitter\_enable</a> | 启用。 |
 | <a href="#emitter_t_emitter_find">emitter\_find</a> | 通过ID查找emitter_item_t，主要用于辅助测试。 |
 | <a href="#emitter_t_emitter_init">emitter\_init</a> | 初始化emitter对象。 |
@@ -36,7 +36,9 @@
 
 * 函数功能：
 
-> <p id="emitter_t_emitter_cast">转换为emitter对象(供脚本语言使用)。 主要给脚本语言使用。
+> <p id="emitter_t_emitter_cast">转换为emitter对象(供脚本语言使用)。
+
+主要给脚本语言使用。
 
 * 函数原型：
 
@@ -111,7 +113,9 @@ ret_t emitter_destroy (emitter_t* emitter);
 
 * 函数功能：
 
-> <p id="emitter_t_emitter_disable">禁用。 禁用后emitter_dispatch无效，但可以注册和注销。
+> <p id="emitter_t_emitter_disable">禁用。
+
+禁用后emitter_dispatch无效，但可以注册和注销。
 
 * 函数原型：
 
@@ -130,7 +134,8 @@ ret_t emitter_disable (emitter_t* emitter);
 
 * 函数功能：
 
-> <p id="emitter_t_emitter_dispatch">分发事件。如果当前分发的回调函数返回RET_REMOVE，该回调函数将被移出。 禁用状态下，本函数不做任何事情。  如果当前分发的回调函数返回RET_STOP，dispatch中断分发，并返回RET_STOP，否则返回RET_OK。
+> <p id="emitter_t_emitter_dispatch">分发事件。如果当前分发的回调函数返回RET_REMOVE，该回调函数将被移出。
+禁用状态下，本函数不做任何事情。
 
 * 函数原型：
 
@@ -142,7 +147,7 @@ ret_t emitter_dispatch (emitter_t* emitter, event_t* e);
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t |  |
+| 返回值 | ret\_t | 如果当前分发的回调函数返回RET\_STOP，dispatch中断分发，并返回RET\_STOP，否则返回RET\_OK。 |
 | emitter | emitter\_t* | emitter对象。 |
 | e | event\_t* | 事件对象。 |
 #### emitter\_dispatch\_simple\_event 函数
@@ -150,7 +155,9 @@ ret_t emitter_dispatch (emitter_t* emitter, event_t* e);
 
 * 函数功能：
 
-> <p id="emitter_t_emitter_dispatch_simple_event">分发事件。 > 对emitter_dispatch的包装，分发一个简单的事件。  如果当前分发的回调函数返回RET_STOP，dispatch中断分发，并返回RET_STOP，否则返回RET_OK。
+> <p id="emitter_t_emitter_dispatch_simple_event">分发事件。
+> 对emitter_dispatch的包装，分发一个简单的事件。
+如果当前分发的回调函数返回RET_STOP，dispatch中断分发，并返回RET_STOP，否则返回RET_OK。
 
 * 函数原型：
 

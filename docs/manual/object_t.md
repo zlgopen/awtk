@@ -12,7 +12,7 @@
 | <a href="#object_t_object_can_exec">object\_can\_exec</a> | 检查是否可以执行指定的命令。 |
 | <a href="#object_t_object_compare">object\_compare</a> | 比较两个对象。 |
 | <a href="#object_t_object_copy_prop">object\_copy\_prop</a> | 拷贝指定的属性。 |
-| <a href="#object_t_object_create">object\_create</a> | 创建对象。 > 仅供子类调用。 |
+| <a href="#object_t_object_create">object\_create</a> | 创建对象。 |
 | <a href="#object_t_object_eval">object\_eval</a> | 计算一个表达式，表达式中引用的变量从prop中获取。 |
 | <a href="#object_t_object_exec">object\_exec</a> | 执行指定的命令。 |
 | <a href="#object_t_object_foreach_prop">object\_foreach\_prop</a> | 遍历所有属性。 |
@@ -121,7 +121,9 @@ ret_t object_copy_prop (object_t* obj, object_t* src, const char* name);
 
 * 函数功能：
 
-> <p id="object_t_object_create">创建对象。 > 仅供子类调用。
+> <p id="object_t_object_create">创建对象。
+
+> 仅供子类调用。
 
 * 函数原型：
 

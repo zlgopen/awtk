@@ -1,7 +1,37 @@
 ## vgcanvas\_t
 ### 概述
-矢量图画布抽象基类。 具体实现时可以使用agg，nanovg, cairo和skia等方式。 cairo和skia体积太大，不适合嵌入式平台，但在PC平台也是一种选择。 目前我们只提供了基于nanovg的实现，支持软件渲染和硬件渲染。 我们对nanovg进行了一些改进: * 可以用agg/agge实现软件渲染(暂时不支持文本绘制)。 * 可以用bgfx使用DirectX(Windows平台)和Metal(iOS)平台硬件加速。 ![image](images/vgcanvas_t_0.png)
- 示例： ```c   vgcanvas_t* vg = canvas_get_vgcanvas(c);   vgcanvas_save(vg);   vgcanvas_translate(vg, 0, 100);   vgcanvas_set_line_width(vg, 1);   vgcanvas_set_fill_color(vg, color_init(0xff, 0, 0, 0xff));   vgcanvas_rect(vg, 5, 5, 100, 100);   vgcanvas_fill(vg);   vgcanvas_restore(vg); ``` >请参考：https://www.w3schools.com/tags/ref_canvas.asp
+矢量图画布抽象基类。
+
+具体实现时可以使用agg，nanovg, cairo和skia等方式。
+
+cairo和skia体积太大，不适合嵌入式平台，但在PC平台也是一种选择。
+
+目前我们只提供了基于nanovg的实现，支持软件渲染和硬件渲染。
+
+我们对nanovg进行了一些改进:
+
+* 可以用agg/agge实现软件渲染(暂时不支持文本绘制)。
+
+* 可以用bgfx使用DirectX(Windows平台)和Metal(iOS)平台硬件加速。
+
+![image](images/vgcanvas_t_0.png)
+
+
+示例：
+
+```c
+vgcanvas_t* vg = canvas_get_vgcanvas(c);
+vgcanvas_save(vg);
+vgcanvas_translate(vg, 0, 100);
+
+vgcanvas_set_line_width(vg, 1);
+vgcanvas_set_fill_color(vg, color_init(0xff, 0, 0, 0xff));
+vgcanvas_rect(vg, 5, 5, 100, 100);
+vgcanvas_fill(vg);
+vgcanvas_restore(vg);
+```
+
+>请参考：https://www.w3schools.com/tags/ref_canvas.asp
 ----------------------------------
 ### 函数
 <p id="vgcanvas_t_methods">
@@ -16,10 +46,10 @@
 | <a href="#vgcanvas_t_vgcanvas_cast">vgcanvas\_cast</a> | 转换为vgcanvas对象(供脚本语言使用)。 |
 | <a href="#vgcanvas_t_vgcanvas_clear_rect">vgcanvas\_clear\_rect</a> | 用颜色清除指定矩形区域。 |
 | <a href="#vgcanvas_t_vgcanvas_clip_rect">vgcanvas\_clip\_rect</a> | 矩形裁剪。 |
-| <a href="#vgcanvas_t_vgcanvas_close_path">vgcanvas\_close\_path</a> | 闭合路径。 >闭合路径是指把起点和终点连接起来，形成一个封闭的多边形。 |
+| <a href="#vgcanvas_t_vgcanvas_close_path">vgcanvas\_close\_path</a> | 闭合路径。 |
 | <a href="#vgcanvas_t_vgcanvas_create">vgcanvas\_create</a> | 创建vgcanvas。 |
 | <a href="#vgcanvas_t_vgcanvas_destroy">vgcanvas\_destroy</a> | 销毁vgcanvas对象。 |
-| <a href="#vgcanvas_t_vgcanvas_draw_icon">vgcanvas\_draw\_icon</a> | 绘制图标。 绘制图标时会根据屏幕密度进行自动缩放，而绘制普通图片时不会。 |
+| <a href="#vgcanvas_t_vgcanvas_draw_icon">vgcanvas\_draw\_icon</a> | 绘制图标。 |
 | <a href="#vgcanvas_t_vgcanvas_draw_image">vgcanvas\_draw\_image</a> | 绘制图片。 |
 | <a href="#vgcanvas_t_vgcanvas_ellipse">vgcanvas\_ellipse</a> | 生成一个椭圆路径。 |
 | <a href="#vgcanvas_t_vgcanvas_end_frame">vgcanvas\_end\_frame</a> | 结束绘制。系统内部调用。 |
@@ -32,15 +62,15 @@
 | <a href="#vgcanvas_t_vgcanvas_line_to">vgcanvas\_line\_to</a> | 生成一条线段(从当前点到目标点)。 |
 | <a href="#vgcanvas_t_vgcanvas_measure_text">vgcanvas\_measure\_text</a> | 测量文本的宽度。 |
 | <a href="#vgcanvas_t_vgcanvas_move_to">vgcanvas\_move\_to</a> | 移动当前点到指定点。 |
-| <a href="#vgcanvas_t_vgcanvas_paint">vgcanvas\_paint</a> | 用图片填充/画多边形(可能存在可移植性问题，除非必要请勿使用)。 多边形的顶点必须在图片范围内，可以通过矩阵变化画到不同的位置。 |
+| <a href="#vgcanvas_t_vgcanvas_paint">vgcanvas\_paint</a> | 用图片填充/画多边形(可能存在可移植性问题，除非必要请勿使用)。 |
 | <a href="#vgcanvas_t_vgcanvas_quad_to">vgcanvas\_quad\_to</a> | 生成一条二次贝塞尔曲线。 |
 | <a href="#vgcanvas_t_vgcanvas_rect">vgcanvas\_rect</a> | 生成一个矩形路径。 |
 | <a href="#vgcanvas_t_vgcanvas_reinit">vgcanvas\_reinit</a> | 重新初始化，系统内部调用。 |
 | <a href="#vgcanvas_t_vgcanvas_reset">vgcanvas\_reset</a> | 重置状态。 |
-| <a href="#vgcanvas_t_vgcanvas_restore">vgcanvas\_restore</a> | 恢复上次save的状态。> save/restore必须配套使用，否则可能导致状态混乱。 |
+| <a href="#vgcanvas_t_vgcanvas_restore">vgcanvas\_restore</a> | 恢复上次save的状态。 |
 | <a href="#vgcanvas_t_vgcanvas_rotate">vgcanvas\_rotate</a> | 旋转。 |
 | <a href="#vgcanvas_t_vgcanvas_rounded_rect">vgcanvas\_rounded\_rect</a> | 生成一个圆角矩形路径。 |
-| <a href="#vgcanvas_t_vgcanvas_save">vgcanvas\_save</a> | 保存当前的状态。如颜色和矩阵等信息。 > save/restore必须配套使用，否则可能导致状态混乱。 |
+| <a href="#vgcanvas_t_vgcanvas_save">vgcanvas\_save</a> | 保存当前的状态。如颜色和矩阵等信息。 |
 | <a href="#vgcanvas_t_vgcanvas_scale">vgcanvas\_scale</a> | 缩放。 |
 | <a href="#vgcanvas_t_vgcanvas_set_antialias">vgcanvas\_set\_antialias</a> | 设置是否启用反走样。 |
 | <a href="#vgcanvas_t_vgcanvas_set_fill_color">vgcanvas\_set\_fill\_color</a> | 设置填充颜色。 |
@@ -75,15 +105,15 @@
 | <a href="#vgcanvas_t_font_size">font\_size</a> | float\_t | 字体大小。 |
 | <a href="#vgcanvas_t_global_alpha">global\_alpha</a> | float\_t | 全局alpha。 |
 | <a href="#vgcanvas_t_h">h</a> | wh\_t | canvas的高度 |
-| <a href="#vgcanvas_t_line_cap">line\_cap</a> | const char* | line\_cap。 @see http://www.w3school.com.cn/tags/canvas_linecap.asp |
-| <a href="#vgcanvas_t_line_join">line\_join</a> | const char* | line\_join。 @see http://www.w3school.com.cn/tags/canvas_linejoin.asp |
+| <a href="#vgcanvas_t_line_cap">line\_cap</a> | const char* | line\_cap。 |
+| <a href="#vgcanvas_t_line_join">line\_join</a> | const char* | line\_join。 |
 | <a href="#vgcanvas_t_line_width">line\_width</a> | float\_t | 线宽。 |
-| <a href="#vgcanvas_t_miter_limit">miter\_limit</a> | float\_t | miter\_limit。 @see http://www.w3school.com.cn/tags/canvas_miterlimit.asp |
+| <a href="#vgcanvas_t_miter_limit">miter\_limit</a> | float\_t | miter\_limit。 |
 | <a href="#vgcanvas_t_ratio">ratio</a> | float\_t | 显示比例。 |
 | <a href="#vgcanvas_t_stride">stride</a> | uint32\_t | 一行占的字节 |
 | <a href="#vgcanvas_t_stroke_color">stroke\_color</a> | color\_t | 线条颜色 |
-| <a href="#vgcanvas_t_text_align">text\_align</a> | const char* | 文本对齐方式。 @see http://www.w3school.com.cn/tags/canvas_textalign.asp |
-| <a href="#vgcanvas_t_text_baseline">text\_baseline</a> | const char* | 文本基线。 @see http://www.w3school.com.cn/tags/canvas_textbaseline.asp |
+| <a href="#vgcanvas_t_text_align">text\_align</a> | const char* | 文本对齐方式。 |
+| <a href="#vgcanvas_t_text_baseline">text\_baseline</a> | const char* | 文本基线。 |
 | <a href="#vgcanvas_t_w">w</a> | wh\_t | canvas的宽度 |
 #### vgcanvas\_arc 函数
 -----------------------
@@ -269,7 +299,9 @@ ret_t vgcanvas_clip_rect (vgcanvas_t* vg, float_t x, float_t y, float_t w, float
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_close_path">闭合路径。 >闭合路径是指把起点和终点连接起来，形成一个封闭的多边形。
+> <p id="vgcanvas_t_vgcanvas_close_path">闭合路径。
+
+>闭合路径是指把起点和终点连接起来，形成一个封闭的多边形。
 
 * 函数原型：
 
@@ -330,7 +362,9 @@ ret_t vgcanvas_destroy (vgcanvas_t* vg);
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_draw_icon">绘制图标。 绘制图标时会根据屏幕密度进行自动缩放，而绘制普通图片时不会。
+> <p id="vgcanvas_t_vgcanvas_draw_icon">绘制图标。
+
+绘制图标时会根据屏幕密度进行自动缩放，而绘制普通图片时不会。
 
 * 函数原型：
 
@@ -610,7 +644,8 @@ ret_t vgcanvas_move_to (vgcanvas_t* vg, float_t x, float_t y);
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_paint">用图片填充/画多边形(可能存在可移植性问题，除非必要请勿使用)。 多边形的顶点必须在图片范围内，可以通过矩阵变化画到不同的位置。
+> <p id="vgcanvas_t_vgcanvas_paint">用图片填充/画多边形(可能存在可移植性问题，除非必要请勿使用)。
+多边形的顶点必须在图片范围内，可以通过矩阵变化画到不同的位置。
 
 * 函数原型：
 
@@ -720,7 +755,9 @@ ret_t vgcanvas_reset (vgcanvas_t* vg);
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_restore">恢复上次save的状态。> save/restore必须配套使用，否则可能导致状态混乱。
+> <p id="vgcanvas_t_vgcanvas_restore">恢复上次save的状态。
+
+> save/restore必须配套使用，否则可能导致状态混乱。
 
 * 函数原型：
 
@@ -783,7 +820,9 @@ ret_t vgcanvas_rounded_rect (vgcanvas_t* vg, float_t x, float_t y, float_t w, fl
 
 * 函数功能：
 
-> <p id="vgcanvas_t_vgcanvas_save">保存当前的状态。如颜色和矩阵等信息。 > save/restore必须配套使用，否则可能导致状态混乱。
+> <p id="vgcanvas_t_vgcanvas_save">保存当前的状态。如颜色和矩阵等信息。
+
+> save/restore必须配套使用，否则可能导致状态混乱。
 
 * 函数原型：
 
@@ -1355,7 +1394,8 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 | 可脚本化   | 是 |
 #### line\_cap 属性
 -----------------------
-> <p id="vgcanvas_t_line_cap">line\_cap。 @see http://www.w3school.com.cn/tags/canvas_linecap.asp
+> <p id="vgcanvas_t_line_cap">line\_cap。
+@see http://www.w3school.com.cn/tags/canvas_linecap.asp
 
 * 类型：const char*
 
@@ -1366,7 +1406,8 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 | 可脚本化   | 是 |
 #### line\_join 属性
 -----------------------
-> <p id="vgcanvas_t_line_join">line\_join。 @see http://www.w3school.com.cn/tags/canvas_linejoin.asp
+> <p id="vgcanvas_t_line_join">line\_join。
+@see http://www.w3school.com.cn/tags/canvas_linejoin.asp
 
 * 类型：const char*
 
@@ -1388,7 +1429,8 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 | 可脚本化   | 是 |
 #### miter\_limit 属性
 -----------------------
-> <p id="vgcanvas_t_miter_limit">miter\_limit。 @see http://www.w3school.com.cn/tags/canvas_miterlimit.asp
+> <p id="vgcanvas_t_miter_limit">miter\_limit。
+@see http://www.w3school.com.cn/tags/canvas_miterlimit.asp
 
 * 类型：float\_t
 
@@ -1431,7 +1473,9 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 | 可直接修改 | 否 |
 #### text\_align 属性
 -----------------------
-> <p id="vgcanvas_t_text_align">文本对齐方式。 @see http://www.w3school.com.cn/tags/canvas_textalign.asp
+> <p id="vgcanvas_t_text_align">文本对齐方式。
+
+@see http://www.w3school.com.cn/tags/canvas_textalign.asp
 
 * 类型：const char*
 
@@ -1442,7 +1486,9 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 | 可脚本化   | 是 |
 #### text\_baseline 属性
 -----------------------
-> <p id="vgcanvas_t_text_baseline">文本基线。 @see http://www.w3school.com.cn/tags/canvas_textbaseline.asp
+> <p id="vgcanvas_t_text_baseline">文本基线。
+
+@see http://www.w3school.com.cn/tags/canvas_textbaseline.asp
 
 * 类型：const char*
 

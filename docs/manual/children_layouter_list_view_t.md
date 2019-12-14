@@ -2,7 +2,10 @@
 ### 概述
 ![image](images/children_layouter_list_view_t_0.png)
 
-listview的子控件布局算法实现。> 用法请参考：[listview子控件布局算法](https://github.com/zlgopen/awtk/blob/master/docs/children_layouter_list_view.md)
+listview的子控件布局算法实现。
+
+> 用法请参考：[listview子控件布局算法](
+https://github.com/zlgopen/awtk/blob/master/docs/children_layouter_list_view.md)
 ----------------------------------
 ### 函数
 <p id="children_layouter_list_view_t_methods">

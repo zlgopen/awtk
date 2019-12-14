@@ -10,7 +10,7 @@
 | <a href="#widget_animator_t_widget_animator_destroy">widget\_animator\_destroy</a> | 销毁animator对象。 |
 | <a href="#widget_animator_t_widget_animator_init">widget\_animator\_init</a> | 初始化。仅供子类内部使用。 |
 | <a href="#widget_animator_t_widget_animator_off">widget\_animator\_off</a> | 注销指定事件的处理函数。 |
-| <a href="#widget_animator_t_widget_animator_on">widget\_animator\_on</a> | 注册指定事件的处理函数。 事件类型。目前支持：EVT_ANIM_START,EVT_ANIM_STOP,EVT_ANIM_PAUSE,EVT_ANIM_ONCE和EVT_ANIM_END。 |
+| <a href="#widget_animator_t_widget_animator_on">widget\_animator\_on</a> | 注册指定事件的处理函数。 |
 | <a href="#widget_animator_t_widget_animator_pause">widget\_animator\_pause</a> | 暂停动画。 |
 | <a href="#widget_animator_t_widget_animator_set_destroy_when_done">widget\_animator\_set\_destroy\_when\_done</a> | 设置完成时是否自动销毁动画对象(缺省销毁)。 |
 | <a href="#widget_animator_t_widget_animator_set_name">widget\_animator\_set\_name</a> | 设置名称。 |
@@ -93,7 +93,8 @@ ret_t widget_animator_off (widget_animator_t* animator, uint32_t id);
 
 * 函数功能：
 
-> <p id="widget_animator_t_widget_animator_on">注册指定事件的处理函数。 事件类型。目前支持：EVT_ANIM_START,EVT_ANIM_STOP,EVT_ANIM_PAUSE,EVT_ANIM_ONCE和EVT_ANIM_END。
+> <p id="widget_animator_t_widget_animator_on">注册指定事件的处理函数。
+事件类型。目前支持：EVT_ANIM_START,EVT_ANIM_STOP,EVT_ANIM_PAUSE,EVT_ANIM_ONCE和EVT_ANIM_END。
 
 * 函数原型：
 

@@ -14,7 +14,7 @@
 | <a href="#bitmap_t_bitmap_get_line_length">bitmap\_get\_line\_length</a> | 获取每一行占用内存的字节数。 |
 | <a href="#bitmap_t_bitmap_get_pixel">bitmap\_get\_pixel</a> | 获取图片指定像素的rgba颜色值(主要用于测试程序)。 |
 | <a href="#bitmap_t_bitmap_init">bitmap\_init</a> | 初始化图片。 |
-| <a href="#bitmap_t_bitmap_init_from_rgba">bitmap\_init\_from\_rgba</a> | 初始化图片。 数据。3通道时为RGB888格式，4通道时为RGBA888格式(内部拷贝该数据，不会引用，调用者自行释放)。 |
+| <a href="#bitmap_t_bitmap_init_from_rgba">bitmap\_init\_from\_rgba</a> | 初始化图片。 |
 | <a href="#bitmap_t_bitmap_lock_buffer_for_read">bitmap\_lock\_buffer\_for\_read</a> | 为读取数据而锁定bitmap的图片缓冲区。 |
 | <a href="#bitmap_t_bitmap_lock_buffer_for_write">bitmap\_lock\_buffer\_for\_write</a> | 为修改数据而锁定bitmap的图片缓冲区。 |
 | <a href="#bitmap_t_bitmap_set_line_length">bitmap\_set\_line\_length</a> | 设置line_length。 |
@@ -178,7 +178,8 @@ ret_t bitmap_init (bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t for
 
 * 函数功能：
 
-> <p id="bitmap_t_bitmap_init_from_rgba">初始化图片。 数据。3通道时为RGB888格式，4通道时为RGBA888格式(内部拷贝该数据，不会引用，调用者自行释放)。
+> <p id="bitmap_t_bitmap_init_from_rgba">初始化图片。
+数据。3通道时为RGB888格式，4通道时为RGBA888格式(内部拷贝该数据，不会引用，调用者自行释放)。
 
 * 函数原型：
 

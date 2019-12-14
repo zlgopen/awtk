@@ -9,13 +9,15 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#tk_iostream_noisy_t_tk_iostream_noisy_create">tk\_iostream\_noisy\_create</a> | 创建iostream对象。 本函数自动增加real_iostream的引用计数。 |
+| <a href="#tk_iostream_noisy_t_tk_iostream_noisy_create">tk\_iostream\_noisy\_create</a> | 创建iostream对象。 |
 #### tk\_iostream\_noisy\_create 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="tk_iostream_noisy_t_tk_iostream_noisy_create">创建iostream对象。 本函数自动增加real_iostream的引用计数。
+> <p id="tk_iostream_noisy_t_tk_iostream_noisy_create">创建iostream对象。
+
+本函数自动增加real_iostream的引用计数。
 
 * 函数原型：
 

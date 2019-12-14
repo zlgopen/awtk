@@ -2,7 +2,31 @@
 ### 概述
 ![image](images/hscroll_label_t_0.png)
 
-可水平滚动的文本控件，方便实现长文本滚动。 hscroll\_label\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于hscroll\_label\_t控件。 在xml中使用"hscroll\_label"标签创建行号控件，一般配合mledit使用。如： ```xml ``` > 更多用法请参考：[mledit.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/mledit.xml) 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如： ```xml  <style name="default" text_color="black">    <normal   />    <focused  />  </style> ``` > 更多用法请参考： [theme default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml)
+可水平滚动的文本控件，方便实现长文本滚动。
+
+
+hscroll\_label\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于hscroll\_label\_t控件。
+
+在xml中使用"hscroll\_label"标签创建行号控件，一般配合mledit使用。如：
+
+```xml
+```
+
+> 更多用法请参考：[mledit.xml](
+https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/mledit.xml)
+
+可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：
+
+```xml
+<style name="default" text_color="black">
+<normal   />
+<focused  />
+</style>
+```
+
+> 更多用法请参考：
+[theme default](
+https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml)
 ----------------------------------
 ### 函数
 <p id="hscroll_label_t_methods">

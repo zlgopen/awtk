@@ -1,13 +1,15 @@
 ## dialog\_highlighter\_t
 ### 概述
-对话框高亮策略。> 高亮策略的基本思路是对背景进行处理，比如将背景变暗或变模糊。
+对话框高亮策略。
+
+> 高亮策略的基本思路是对背景进行处理，比如将背景变暗或变模糊。
 ----------------------------------
 ### 函数
 <p id="dialog_highlighter_t_methods">
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#dialog_highlighter_t_dialog_highlighter_create">dialog\_highlighter\_create</a> | 创建对话框高亮策略对象。>供子类构造函数用。 |
+| <a href="#dialog_highlighter_t_dialog_highlighter_create">dialog\_highlighter\_create</a> | 创建对话框高亮策略对象。 |
 | <a href="#dialog_highlighter_t_dialog_highlighter_destroy">dialog\_highlighter\_destroy</a> | 销毁对话框高亮策略对象。 |
 | <a href="#dialog_highlighter_t_dialog_highlighter_draw">dialog\_highlighter\_draw</a> | 绘制背景。 |
 | <a href="#dialog_highlighter_t_dialog_highlighter_is_dynamic">dialog\_highlighter\_is\_dynamic</a> | 是否是动态绘制(方便外层优化)。 |
@@ -26,7 +28,9 @@
 
 * 函数功能：
 
-> <p id="dialog_highlighter_t_dialog_highlighter_create">创建对话框高亮策略对象。>供子类构造函数用。
+> <p id="dialog_highlighter_t_dialog_highlighter_create">创建对话框高亮策略对象。
+
+>供子类构造函数用。
 
 * 函数原型：
 

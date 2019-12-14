@@ -7,15 +7,15 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#color_t_color_a">color\_a</a> | 获取alpha通道的值。 > 主要供脚本语言使用。 |
-| <a href="#color_t_color_b">color\_b</a> | 获取蓝色通道的值。 > 主要供脚本语言使用。 |
-| <a href="#color_t_color_cast">color\_cast</a> | 转换为color对象。 > 供脚本语言使用。 |
-| <a href="#color_t_color_create">color\_create</a> | 创建color对象。 > 主要供脚本语言使用。 |
-| <a href="#color_t_color_destroy">color\_destroy</a> | 销毁color对象。 > 主要供脚本语言使用。 |
-| <a href="#color_t_color_from_str">color\_from\_str</a> | 创建color对象。 > 主要供脚本语言使用。 |
-| <a href="#color_t_color_g">color\_g</a> | 获取绿色通道的值。 > 主要供脚本语言使用。 |
+| <a href="#color_t_color_a">color\_a</a> | 获取alpha通道的值。 |
+| <a href="#color_t_color_b">color\_b</a> | 获取蓝色通道的值。 |
+| <a href="#color_t_color_cast">color\_cast</a> | 转换为color对象。 |
+| <a href="#color_t_color_create">color\_create</a> | 创建color对象。 |
+| <a href="#color_t_color_destroy">color\_destroy</a> | 销毁color对象。 |
+| <a href="#color_t_color_from_str">color\_from\_str</a> | 创建color对象。 |
+| <a href="#color_t_color_g">color\_g</a> | 获取绿色通道的值。 |
 | <a href="#color_t_color_init">color\_init</a> | 初始化颜色对象。 |
-| <a href="#color_t_color_r">color\_r</a> | 获取红色通道的值。 > 主要供脚本语言使用。 |
+| <a href="#color_t_color_r">color\_r</a> | 获取红色通道的值。 |
 ### 属性
 <p id="color_t_properties">
 
@@ -28,7 +28,9 @@
 
 * 函数功能：
 
-> <p id="color_t_color_a">获取alpha通道的值。 > 主要供脚本语言使用。
+> <p id="color_t_color_a">获取alpha通道的值。
+
+> 主要供脚本语言使用。
 
 * 函数原型：
 
@@ -47,7 +49,9 @@ uint8_t color_a (color_t* c);
 
 * 函数功能：
 
-> <p id="color_t_color_b">获取蓝色通道的值。 > 主要供脚本语言使用。
+> <p id="color_t_color_b">获取蓝色通道的值。
+
+> 主要供脚本语言使用。
 
 * 函数原型：
 
@@ -66,7 +70,9 @@ uint8_t color_b (color_t* c);
 
 * 函数功能：
 
-> <p id="color_t_color_cast">转换为color对象。 > 供脚本语言使用。
+> <p id="color_t_color_cast">转换为color对象。
+
+> 供脚本语言使用。
 
 * 函数原型：
 
@@ -85,7 +91,9 @@ color_t* color_cast (color_t* color);
 
 * 函数功能：
 
-> <p id="color_t_color_create">创建color对象。 > 主要供脚本语言使用。
+> <p id="color_t_color_create">创建color对象。
+
+> 主要供脚本语言使用。
 
 * 函数原型：
 
@@ -107,7 +115,8 @@ color_t* color_create (uint8_t r, uint8_t b, uint8_t g, uint8_t a);
 
 * 函数功能：
 
-> <p id="color_t_color_destroy">销毁color对象。 > 主要供脚本语言使用。
+> <p id="color_t_color_destroy">销毁color对象。
+> 主要供脚本语言使用。
 
 * 函数原型：
 
@@ -126,7 +135,9 @@ ret_t color_destroy (color_t* c);
 
 * 函数功能：
 
-> <p id="color_t_color_from_str">创建color对象。 > 主要供脚本语言使用。
+> <p id="color_t_color_from_str">创建color对象。
+
+> 主要供脚本语言使用。
 
 * 函数原型：
 
@@ -146,7 +157,9 @@ color_t* color_from_str (color_t* c, const char* str);
 
 * 函数功能：
 
-> <p id="color_t_color_g">获取绿色通道的值。 > 主要供脚本语言使用。
+> <p id="color_t_color_g">获取绿色通道的值。
+
+> 主要供脚本语言使用。
 
 * 函数原型：
 
@@ -187,7 +200,9 @@ color_t color_init (uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
 * 函数功能：
 
-> <p id="color_t_color_r">获取红色通道的值。 > 主要供脚本语言使用。
+> <p id="color_t_color_r">获取红色通道的值。
+
+> 主要供脚本语言使用。
 
 * 函数原型：
 

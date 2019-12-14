@@ -10,7 +10,7 @@
 | <a href="#path_t_path_abs">path\_abs</a> | 返回绝对路径。 |
 | <a href="#path_t_path_app_root">path\_app\_root</a> | 获取app所在目录。 |
 | <a href="#path_t_path_basename">path\_basename</a> | 返回文件名。 |
-| <a href="#path_t_path_build">path\_build</a> | 构造路径。> 可变参数为字符串，以NULL参数结束。 |
+| <a href="#path_t_path_build">path\_build</a> | 构造路径。 |
 | <a href="#path_t_path_cwd">path\_cwd</a> | 获取当前所在目录。 |
 | <a href="#path_t_path_dirname">path\_dirname</a> | 返回目录。 |
 | <a href="#path_t_path_exe">path\_exe</a> | 获取可执行文件所在目录。 |
@@ -84,7 +84,9 @@ ret_t path_basename (const char* path* path, char* result, uint32_t size);
 
 * 函数功能：
 
-> <p id="path_t_path_build">构造路径。> 可变参数为字符串，以NULL参数结束。
+> <p id="path_t_path_build">构造路径。
+
+> 可变参数为字符串，以NULL参数结束。
 
 * 函数原型：
 

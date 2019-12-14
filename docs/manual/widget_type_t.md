@@ -52,6 +52,7 @@
 | WIDGET\_TYPE\_COLOR\_PICKER | 颜色选择器控件。 |
 | WIDGET\_TYPE\_COLOR\_COMPONENT | 颜色选择器组件控件。 |
 | WIDGET\_TYPE\_COLOR\_TILE | 颜色块控件。 |
+| WIDGET\_TYPE\_CLIP\_VIEW | 裁剪控件。 |
 | WIDGET\_TYPE\_RICH\_TEXT | 富文本控件。 |
 | WIDGET\_TYPE\_APP\_BAR | AppBar控件。 |
 | WIDGET\_TYPE\_GRID | 网格控件。 |

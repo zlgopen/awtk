@@ -19,8 +19,10 @@ class IDLGenerator {
       if (start >= 0) {
         desc = desc.substr(start + 1);
       }
+      desc = desc.replace(/\r\n/g, '\n');
+      desc = desc.replace(/\n/g, '');
 
-      return desc;
+      return desc.trim() + '\n';
     } else {
       return '';
     }

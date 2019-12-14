@@ -2,7 +2,9 @@
 ### 概述
 ![image](images/combo_box_item_t_0.png)
 
-ComboBox Item控件。 本类仅供combo\_box控件内部使用。
+ComboBox Item控件。
+
+本类仅供combo\_box控件内部使用。
 ----------------------------------
 ### 函数
 <p id="combo_box_item_t_methods">

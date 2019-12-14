@@ -1,6 +1,15 @@
 ## value\_t
 ### 概述
-一个通用数据类型，用来存放整数、浮点数、字符串和其它对象。 在C/C++中，一般不需动态创建对象，直接声明并初始化即可。如： ```c value_t v; value_set_int(&v, 100); ```> 在脚本语言中，需要动态创建对象。
+一个通用数据类型，用来存放整数、浮点数、字符串和其它对象。
+
+在C/C++中，一般不需动态创建对象，直接声明并初始化即可。如：
+
+```c
+value_t v;
+value_set_int(&v, 100);
+```
+
+> 在脚本语言中，需要动态创建对象。
 ----------------------------------
 ### 函数
 <p id="value_t_methods">
@@ -9,13 +18,13 @@
 | -------- | ------------ | 
 | <a href="#value_t_value_binary_data">value\_binary\_data</a> | 获取为binary_data的值。 |
 | <a href="#value_t_value_bool">value\_bool</a> | 获取类型为bool的值。 |
-| <a href="#value_t_value_cast">value\_cast</a> | 转换为value对象。 > 供脚本语言使用 |
+| <a href="#value_t_value_cast">value\_cast</a> | 转换为value对象。 |
 | <a href="#value_t_value_copy">value\_copy</a> | 拷贝value的值。 |
 | <a href="#value_t_value_create">value\_create</a> | 创建value对象。 |
 | <a href="#value_t_value_deep_copy">value\_deep\_copy</a> | 深拷贝value的值。 |
 | <a href="#value_t_value_destroy">value\_destroy</a> | 销毁value对象。 |
 | <a href="#value_t_value_double">value\_double</a> | 获取类型为double的值。 |
-| <a href="#value_t_value_dup_str">value\_dup\_str</a> | 设置类型为字符串的值(并拷贝字符串)。 > 供脚本语言使用。 |
+| <a href="#value_t_value_dup_str">value\_dup\_str</a> | 设置类型为字符串的值(并拷贝字符串)。 |
 | <a href="#value_t_value_equal">value\_equal</a> | 判断两个value是否相同。 |
 | <a href="#value_t_value_float">value\_float</a> | 获取类型为float\_t的值。 |
 | <a href="#value_t_value_float32">value\_float32</a> | 获取类型为float的值。 |
@@ -101,7 +110,9 @@ bool_t value_bool (value_t* v);
 
 * 函数功能：
 
-> <p id="value_t_value_cast">转换为value对象。 > 供脚本语言使用
+> <p id="value_t_value_cast">转换为value对象。
+
+> 供脚本语言使用
 
 * 函数原型：
 
@@ -216,7 +227,9 @@ double value_double (value_t* v);
 
 * 函数功能：
 
-> <p id="value_t_value_dup_str">设置类型为字符串的值(并拷贝字符串)。 > 供脚本语言使用。
+> <p id="value_t_value_dup_str">设置类型为字符串的值(并拷贝字符串)。
+
+> 供脚本语言使用。
 
 * 函数原型：
 

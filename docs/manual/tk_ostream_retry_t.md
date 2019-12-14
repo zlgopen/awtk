@@ -2,7 +2,9 @@
 ### 概述
 ![image](images/tk_ostream_retry_t_0.png)
 
-如果写数据失败，将数据放入ring_buffer，后面再重试(flush)。 如果重试次数超出最大值，则丢掉数据。
+如果写数据失败，将数据放入ring_buffer，后面再重试(flush)。
+
+如果重试次数超出最大值，则丢掉数据。
 ----------------------------------
 ### 函数
 <p id="tk_ostream_retry_t_methods">
@@ -10,7 +12,7 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#tk_ostream_retry_t_tk_ostream_retry_clear_buffer">tk\_ostream\_retry\_clear\_buffer</a> | 清除缓存的数据。 |
-| <a href="#tk_ostream_retry_t_tk_ostream_retry_create">tk\_ostream\_retry\_create</a> | 创建ostream对象。 本函数自动增加real_ostream的引用计数。 |
+| <a href="#tk_ostream_retry_t_tk_ostream_retry_create">tk\_ostream\_retry\_create</a> | 创建ostream对象。 |
 | <a href="#tk_ostream_retry_t_tk_ostream_retry_set_discard_policy">tk\_ostream\_retry\_set\_discard\_policy</a> | 设置数据丢弃策略。 |
 | <a href="#tk_ostream_retry_t_tk_ostream_retry_set_max_buffer_size">tk\_ostream\_retry\_set\_max\_buffer\_size</a> | 设置最大缓存大小。 |
 | <a href="#tk_ostream_retry_t_tk_ostream_retry_set_max_retry_times">tk\_ostream\_retry\_set\_max\_retry\_times</a> | 设置最大尝试次数。 |
@@ -50,7 +52,9 @@ ret_t tk_ostream_retry_clear_buffer (tk_ostream_t* ostream);
 
 * 函数功能：
 
-> <p id="tk_ostream_retry_t_tk_ostream_retry_create">创建ostream对象。 本函数自动增加real_ostream的引用计数。
+> <p id="tk_ostream_retry_t_tk_ostream_retry_create">创建ostream对象。
+
+本函数自动增加real_ostream的引用计数。
 
 * 函数原型：
 

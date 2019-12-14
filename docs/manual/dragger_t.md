@@ -2,7 +2,9 @@
 ### 概述
 ![image](images/dragger_t_0.png)
 
-dragger控件。 目前主要用于scrollbar里的滑块。
+dragger控件。
+
+目前主要用于scrollbar里的滑块。
 ----------------------------------
 ### 函数
 <p id="dragger_t_methods">
@@ -73,14 +75,14 @@ widget_t* dragger_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 * 函数原型：
 
 ```
-widget_t* dragger_set_range (widget_t* widget, xy_t x_min, xy_t y_min, xy_t x_max, xy_t y_max);
+ret_t dragger_set_range (widget_t* widget, xy_t x_min, xy_t y_min, xy_t x_max, xy_t y_max);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | widget\_t* | 对象。 |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | dragger控件。 |
 | x\_min | xy\_t | x坐标最小值。 |
 | y\_min | xy\_t | y坐标最小值。 |

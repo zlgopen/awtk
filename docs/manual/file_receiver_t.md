@@ -1,6 +1,8 @@
 ## file\_receiver\_t
 ### 概述
-文件接收方。   > 可用注册EVT_PROGRESS事件，以获取传输的进度状态。
+文件接收方。
+
+> 可用注册EVT_PROGRESS事件，以获取传输的进度状态。
 ----------------------------------
 ### 函数
 <p id="file_receiver_t_methods">

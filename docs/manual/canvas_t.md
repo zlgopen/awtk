@@ -15,8 +15,8 @@
 | <a href="#canvas_t_canvas_draw_points">canvas\_draw\_points</a> | 画多个点。 |
 | <a href="#canvas_t_canvas_draw_text">canvas\_draw\_text</a> | 绘制文本。 |
 | <a href="#canvas_t_canvas_draw_text_in_rect">canvas\_draw\_text\_in\_rect</a> | 绘制文本。 |
-| <a href="#canvas_t_canvas_draw_utf8">canvas\_draw\_utf8</a> | 绘制文本。 > 供脚本语言使用。 |
-| <a href="#canvas_t_canvas_draw_utf8_in_rect">canvas\_draw\_utf8\_in\_rect</a> | 绘制文本。 > 供脚本语言使用。 |
+| <a href="#canvas_t_canvas_draw_utf8">canvas\_draw\_utf8</a> | 绘制文本。 |
+| <a href="#canvas_t_canvas_draw_utf8_in_rect">canvas\_draw\_utf8\_in\_rect</a> | 绘制文本。 |
 | <a href="#canvas_t_canvas_draw_vline">canvas\_draw\_vline</a> | 画垂直线。 |
 | <a href="#canvas_t_canvas_fill_rect">canvas\_fill\_rect</a> | 填充矩形。 |
 | <a href="#canvas_t_canvas_get_clip_rect">canvas\_get\_clip\_rect</a> | 获取裁剪区。 |
@@ -25,19 +25,19 @@
 | <a href="#canvas_t_canvas_get_width">canvas\_get\_width</a> | 获取画布的宽度。 |
 | <a href="#canvas_t_canvas_init">canvas\_init</a> | 初始化，系统内部调用。 |
 | <a href="#canvas_t_canvas_measure_text">canvas\_measure\_text</a> | 计算文本所占的宽度。 |
-| <a href="#canvas_t_canvas_measure_utf8">canvas\_measure\_utf8</a> | 计算文本所占的宽度。 > 供脚本语言使用。 |
+| <a href="#canvas_t_canvas_measure_utf8">canvas\_measure\_utf8</a> | 计算文本所占的宽度。 |
 | <a href="#canvas_t_canvas_reset">canvas\_reset</a> | 释放相关资源。 |
 | <a href="#canvas_t_canvas_set_clip_rect">canvas\_set\_clip\_rect</a> | 设置裁剪区。 |
 | <a href="#canvas_t_canvas_set_clip_rect_ex">canvas\_set\_clip\_rect\_ex</a> | 设置裁剪区。 |
 | <a href="#canvas_t_canvas_set_fill_color">canvas\_set\_fill\_color</a> | 设置填充颜色。 |
-| <a href="#canvas_t_canvas_set_fill_color_str">canvas\_set\_fill\_color\_str</a> | 设置填充颜色。 > 供脚本语言使用。 |
+| <a href="#canvas_t_canvas_set_fill_color_str">canvas\_set\_fill\_color\_str</a> | 设置填充颜色。 |
 | <a href="#canvas_t_canvas_set_font">canvas\_set\_font</a> | 设置字体。 |
 | <a href="#canvas_t_canvas_set_global_alpha">canvas\_set\_global\_alpha</a> | 设置全局alpha值。 |
 | <a href="#canvas_t_canvas_set_stroke_color">canvas\_set\_stroke\_color</a> | 设置线条颜色。 |
-| <a href="#canvas_t_canvas_set_stroke_color_str">canvas\_set\_stroke\_color\_str</a> | 设置线条颜色。 > 供脚本语言使用。 |
+| <a href="#canvas_t_canvas_set_stroke_color_str">canvas\_set\_stroke\_color\_str</a> | 设置线条颜色。 |
 | <a href="#canvas_t_canvas_set_text_align">canvas\_set\_text\_align</a> | 设置文本对齐方式。 |
 | <a href="#canvas_t_canvas_set_text_color">canvas\_set\_text\_color</a> | 设置文本颜色。 |
-| <a href="#canvas_t_canvas_set_text_color_str">canvas\_set\_text\_color\_str</a> | 设置文本颜色。 > 供脚本语言使用。 |
+| <a href="#canvas_t_canvas_set_text_color_str">canvas\_set\_text\_color\_str</a> | 设置文本颜色。 |
 | <a href="#canvas_t_canvas_stroke_rect">canvas\_stroke\_rect</a> | 绘制矩形。 |
 | <a href="#canvas_t_canvas_translate">canvas\_translate</a> | 平移原点坐标。 |
 | <a href="#canvas_t_canvas_untranslate">canvas\_untranslate</a> | 反向平移原点坐标。 |
@@ -241,7 +241,9 @@ ret_t canvas_draw_text_in_rect (canvas_t* c, const wchar_t* str, uint32_t nr, co
 
 * 函数功能：
 
-> <p id="canvas_t_canvas_draw_utf8">绘制文本。 > 供脚本语言使用。
+> <p id="canvas_t_canvas_draw_utf8">绘制文本。
+
+> 供脚本语言使用。
 
 * 函数原型：
 
@@ -263,7 +265,9 @@ ret_t canvas_draw_utf8 (canvas_t* c, const char* str, xy_t x, xy_t y);
 
 * 函数功能：
 
-> <p id="canvas_t_canvas_draw_utf8_in_rect">绘制文本。 > 供脚本语言使用。
+> <p id="canvas_t_canvas_draw_utf8_in_rect">绘制文本。
+
+> 供脚本语言使用。
 
 * 函数原型：
 
@@ -448,7 +452,9 @@ float_t canvas_measure_text (canvas_t* c, const wchar_t* str, uint32_t nr);
 
 * 函数功能：
 
-> <p id="canvas_t_canvas_measure_utf8">计算文本所占的宽度。 > 供脚本语言使用。
+> <p id="canvas_t_canvas_measure_utf8">计算文本所占的宽度。
+
+> 供脚本语言使用。
 
 * 函数原型：
 
@@ -548,7 +554,9 @@ ret_t canvas_set_fill_color (canvas_t* c, color_t color);
 
 * 函数功能：
 
-> <p id="canvas_t_canvas_set_fill_color_str">设置填充颜色。 > 供脚本语言使用。
+> <p id="canvas_t_canvas_set_fill_color_str">设置填充颜色。
+
+> 供脚本语言使用。
 
 * 函数原型：
 
@@ -629,7 +637,9 @@ ret_t canvas_set_stroke_color (canvas_t* c, color_t color);
 
 * 函数功能：
 
-> <p id="canvas_t_canvas_set_stroke_color_str">设置线条颜色。 > 供脚本语言使用。
+> <p id="canvas_t_canvas_set_stroke_color_str">设置线条颜色。
+
+> 供脚本语言使用。
 
 * 函数原型：
 
@@ -690,7 +700,9 @@ ret_t canvas_set_text_color (canvas_t* c, color_t color);
 
 * 函数功能：
 
-> <p id="canvas_t_canvas_set_text_color_str">设置文本颜色。 > 供脚本语言使用。
+> <p id="canvas_t_canvas_set_text_color_str">设置文本颜色。
+
+> 供脚本语言使用。
 
 * 函数原型：
 

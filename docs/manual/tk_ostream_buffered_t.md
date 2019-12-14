@@ -9,14 +9,16 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#tk_ostream_buffered_t_tk_ostream_buffered_create">tk\_ostream\_buffered\_create</a> | 创建ostream对象。 本函数自动增加real_ostream的引用计数。 |
+| <a href="#tk_ostream_buffered_t_tk_ostream_buffered_create">tk\_ostream\_buffered\_create</a> | 创建ostream对象。 |
 | <a href="#tk_ostream_buffered_t_tk_ostream_buffered_get_size">tk\_ostream\_buffered\_get\_size</a> | 获取当前缓存数据的长度。 |
 #### tk\_ostream\_buffered\_create 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="tk_ostream_buffered_t_tk_ostream_buffered_create">创建ostream对象。 本函数自动增加real_ostream的引用计数。
+> <p id="tk_ostream_buffered_t_tk_ostream_buffered_create">创建ostream对象。
+
+本函数自动增加real_ostream的引用计数。
 
 * 函数原型：
 

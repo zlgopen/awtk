@@ -1,6 +1,19 @@
 ## wstr\_t
 ### 概述
-可变长度的宽字符字符串。 示例： ```c  wstr_t s;  wstr_init(&s, 0);  wstr_append(&s, L"abc");  wstr_append(&s, L"123");  wstr_reset(&s); ``` > 先调wstr\_init进行初始化，最后调用wstr\_reset释放内存。
+可变长度的宽字符字符串。
+
+示例：
+
+```c
+wstr_t s;
+wstr_init(&s, 0);
+
+wstr_append(&s, L"abc");
+wstr_append(&s, L"123");
+
+wstr_reset(&s);
+```
+> 先调wstr\_init进行初始化，最后调用wstr\_reset释放内存。
 ----------------------------------
 ### 函数
 <p id="wstr_t_methods">

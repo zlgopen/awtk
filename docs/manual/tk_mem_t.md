@@ -1,6 +1,22 @@
 ## tk\_mem\_t
 ### 概述
-内存管理相关的宏和函数。 示例： ```c char* str = (char*)TKMEM_ALLOC(100); ... TKMEM_FREE(str); ``` ```c char* str = (char*)TKMEM_ALLOC(100); ... str = (char*)TKMEM_REALLOC(str, 128); ... TKMEM_FREE(str); ```
+内存管理相关的宏和函数。
+
+示例：
+
+```c
+char* str = (char*)TKMEM_ALLOC(100);
+...
+TKMEM_FREE(str);
+```
+
+```c
+char* str = (char*)TKMEM_ALLOC(100);
+...
+str = (char*)TKMEM_REALLOC(str, 128);
+...
+TKMEM_FREE(str);
+```
 ----------------------------------
 ### 函数
 <p id="tk_mem_t_methods">

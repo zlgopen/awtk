@@ -9,7 +9,7 @@ reliable ostream base on simple HDLC
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#tk_ostream_shdlc_t_tk_ostream_shdlc_create">tk\_ostream\_shdlc\_create</a> | 创建ostream对象。> 只能由iostream_shdlc调用。 |
+| <a href="#tk_ostream_shdlc_t_tk_ostream_shdlc_create">tk\_ostream\_shdlc\_create</a> | 创建ostream对象。 |
 ### 属性
 <p id="tk_ostream_shdlc_t_properties">
 
@@ -23,7 +23,9 @@ reliable ostream base on simple HDLC
 
 * 函数功能：
 
-> <p id="tk_ostream_shdlc_t_tk_ostream_shdlc_create">创建ostream对象。> 只能由iostream_shdlc调用。
+> <p id="tk_ostream_shdlc_t_tk_ostream_shdlc_create">创建ostream对象。
+
+> 只能由iostream_shdlc调用。
 
 * 函数原型：
 

@@ -1,6 +1,31 @@
 ## wbuffer\_t
 ### 概述
-Write Buffer。用于数据打包。 示例： ```c  uint8_t buff[128];  wbuffer_t wbuffer;  rbuffer_t rbuffer;  const char* str = NULL;  wbuffer_init(&wbuffer, buff, sizeof(buff));  wbuffer_write_string(&wbuffer, "hello awtk");  rbuffer_init(&rbuffer, wbuffer.data, wbuffer.cursor);  rbuffer_read_string(&rbuffer, &str); ``` ```c  wbuffer_t wbuffer;  wbuffer_init_extendable(&wbuffer);  wbuffer_write_string(&wbuffer, "hello awtk");  wbuffer_deinit(&wbuffer); ``` > 如果初始化为extendable，则最后需要调用wbuffer\_deinit释放资源。
+Write Buffer。用于数据打包。
+
+示例：
+
+```c
+uint8_t buff[128];
+wbuffer_t wbuffer;
+rbuffer_t rbuffer;
+const char* str = NULL;
+wbuffer_init(&wbuffer, buff, sizeof(buff));
+
+wbuffer_write_string(&wbuffer, "hello awtk");
+
+rbuffer_init(&rbuffer, wbuffer.data, wbuffer.cursor);
+rbuffer_read_string(&rbuffer, &str);
+```
+
+```c
+wbuffer_t wbuffer;
+wbuffer_init_extendable(&wbuffer);
+
+wbuffer_write_string(&wbuffer, "hello awtk");
+
+wbuffer_deinit(&wbuffer);
+```
+> 如果初始化为extendable，则最后需要调用wbuffer\_deinit释放资源。
 ----------------------------------
 ### 函数
 <p id="wbuffer_t_methods">

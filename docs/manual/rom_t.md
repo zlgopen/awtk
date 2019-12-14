@@ -1,6 +1,19 @@
 ## rom\_t
 ### 概述
-rom_file接口。  > 主要用于给google pinyin输入提供兼容的文件系统API。 示例： ```c char rbuff[100]; size_t len = 0; const char* buff = "hello world"; rom_file_t* f = rom_fopen_buff((const uint8_t*)buff, sizeof(buff)); len = rom_fread(rbuff, 2, 1, f); rom_fclose(f); ```
+rom_file接口。
+
+> 主要用于给google pinyin输入提供兼容的文件系统API。
+
+示例：
+
+```c
+char rbuff[100];
+size_t len = 0;
+const char* buff = "hello world";
+rom_file_t* f = rom_fopen_buff((const uint8_t*)buff, sizeof(buff));
+len = rom_fread(rbuff, 2, 1, f);
+rom_fclose(f);
+```
 ----------------------------------
 ### 函数
 <p id="rom_t_methods">
@@ -14,7 +27,7 @@ rom_file接口。  > 主要用于给google pinyin输入提供兼容的文件系�
 | <a href="#rom_t_rom_fread">rom\_fread</a> | 读取文件。 |
 | <a href="#rom_t_rom_fseek">rom\_fseek</a> | 设置文件当前位置。 |
 | <a href="#rom_t_rom_ftell">rom\_ftell</a> | 返回文件当前位置。 |
-| <a href="#rom_t_rom_fwrite">rom\_fwrite</a> | 写文件。> 本函数什么也不做。 |
+| <a href="#rom_t_rom_fwrite">rom\_fwrite</a> | 写文件。 |
 #### rom\_fclose 函数
 -----------------------
 
@@ -160,7 +173,8 @@ long rom_ftell (rom_file_t* f);
 
 * 函数功能：
 
-> <p id="rom_t_rom_fwrite">写文件。> 本函数什么也不做。
+> <p id="rom_t_rom_fwrite">写文件。
+> 本函数什么也不做。
 
 * 函数原型：
 

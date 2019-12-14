@@ -2,7 +2,9 @@
 ### 概述
 ![image](images/style_mutable_t_0.png)
 
-可变的style(可实时修改并生效，主要用于在designer中被编辑的控件，或者一些特殊控件)。 style\_mutable也对style\_const进行了包装，当用户没修改某个值时，便从style\_const中获取。
+可变的style(可实时修改并生效，主要用于在designer中被编辑的控件，或者一些特殊控件)。
+
+style\_mutable也对style\_const进行了包装，当用户没修改某个值时，便从style\_const中获取。
 ----------------------------------
 ### 函数
 <p id="style_mutable_t_methods">
@@ -11,7 +13,7 @@
 | -------- | ------------ | 
 | <a href="#style_mutable_t_style_mutable_cast">style\_mutable\_cast</a> | 转换为style_mutable对象。 |
 | <a href="#style_mutable_t_style_mutable_copy">style\_mutable\_copy</a> | 将other对象的数据拷贝到s对象。 |
-| <a href="#style_mutable_t_style_mutable_create">style\_mutable\_create</a> | 创建style\_mutable对象。 > 除了测试程序外不需要直接调用，widget会通过style\_factory\_create创建。 |
+| <a href="#style_mutable_t_style_mutable_create">style\_mutable\_create</a> | 创建style\_mutable对象。 |
 | <a href="#style_mutable_t_style_mutable_foreach">style\_mutable\_foreach</a> | 遍历。对每项调用回调函数on\_style\_item。 |
 | <a href="#style_mutable_t_style_mutable_get_value">style\_mutable\_get\_value</a> | 获取指定名称的值。 |
 | <a href="#style_mutable_t_style_mutable_register">style\_mutable\_register</a> | 将自己注册到style\_factory。 |
@@ -70,7 +72,9 @@ ret_t style_mutable_copy (style_t* s, style_t* other);
 
 * 函数功能：
 
-> <p id="style_mutable_t_style_mutable_create">创建style\_mutable对象。 > 除了测试程序外不需要直接调用，widget会通过style\_factory\_create创建。
+> <p id="style_mutable_t_style_mutable_create">创建style\_mutable对象。
+
+> 除了测试程序外不需要直接调用，widget会通过style\_factory\_create创建。
 
 * 函数原型：
 

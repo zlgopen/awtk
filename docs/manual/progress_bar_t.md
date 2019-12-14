@@ -2,7 +2,42 @@
 ### 概述
 ![image](images/progress_bar_t_0.png)
 
-进度条控件。 进度条控件可以水平显示也可以垂直显示，由vertical属性决定。 progress\_bar\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于progress\_bar\_t控件。 在xml中使用"progress\_bar"标签创建进度条控件。如： ```xml  <progress_bar name="bar1" x="10" y="128" w="240" h="30" value="40"/>  <progress_bar name="bar2" x="280" y="128" w="30" h="118" value="20" vertical="true"/> ``` > 更多用法请参考： [basic demo](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/basic.xml) 在c代码中使用函数progress\_bar\_create创建进度条控件。如： ```c  widget_t* progress_bar = progress_bar_create(win, 10, 10, 128, 30); ``` > 完整示例请参考： [progress_bar demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/progress_bar.c) 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如： ```xml <style>   <normal bg_color="#f0f0f0" text_color="gold" fg_color="#c0c0c0" border_color="#a0a0a0" /> </style> ``` > 更多用法请参考： [theme default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L183)
+进度条控件。
+
+进度条控件可以水平显示也可以垂直显示，由vertical属性决定。
+
+progress\_bar\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于progress\_bar\_t控件。
+
+在xml中使用"progress\_bar"标签创建进度条控件。如：
+
+```xml
+<progress_bar name="bar1" x="10" y="128" w="240" h="30" value="40"/>
+<progress_bar name="bar2" x="280" y="128" w="30" h="118" value="20" vertical="true"/>
+```
+
+> 更多用法请参考：
+[basic demo](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/basic.xml)
+
+在c代码中使用函数progress\_bar\_create创建进度条控件。如：
+
+```c
+widget_t* progress_bar = progress_bar_create(win, 10, 10, 128, 30);
+```
+
+> 完整示例请参考：
+[progress_bar demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/progress_bar.c)
+
+可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：
+
+```xml
+<style>
+<normal bg_color="#f0f0f0" text_color="gold" fg_color="#c0c0c0" border_color="#a0a0a0" />
+</style>
+```
+
+> 更多用法请参考：
+[theme
+default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L183)
 ----------------------------------
 ### 函数
 <p id="progress_bar_t_methods">
@@ -11,7 +46,7 @@
 | -------- | ------------ | 
 | <a href="#progress_bar_t_progress_bar_cast">progress\_bar\_cast</a> | 转换为progress_bar对象(供脚本语言使用)。 |
 | <a href="#progress_bar_t_progress_bar_create">progress\_bar\_create</a> | 创建progress_bar对象 |
-| <a href="#progress_bar_t_progress_bar_get_percent">progress\_bar\_get\_percent</a> | 获取进度百分比。 > 当max为100时，percent和value取整后一致。 |
+| <a href="#progress_bar_t_progress_bar_get_percent">progress\_bar\_get\_percent</a> | 获取进度百分比。 |
 | <a href="#progress_bar_t_progress_bar_set_max">progress\_bar\_set\_max</a> | 设置最大值。 |
 | <a href="#progress_bar_t_progress_bar_set_show_text">progress\_bar\_set\_show\_text</a> | 设置进度条的是否显示文本。 |
 | <a href="#progress_bar_t_progress_bar_set_value">progress\_bar\_set\_value</a> | 设置进度条的进度。 |
@@ -79,7 +114,9 @@ widget_t* progress_bar_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
 
 * 函数功能：
 
-> <p id="progress_bar_t_progress_bar_get_percent">获取进度百分比。 > 当max为100时，percent和value取整后一致。
+> <p id="progress_bar_t_progress_bar_get_percent">获取进度百分比。
+
+> 当max为100时，percent和value取整后一致。
 
 * 函数原型：
 

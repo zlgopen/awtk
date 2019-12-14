@@ -2,7 +2,12 @@
 ### 概述
 ![image](images/font_loader_bitmap_t_0.png)
 
-bitmap字体加载器。 bitmap字体是用工具预先生成位图字体数据，优势是速度快，不占用内存，缺点是字体大小固定。 适合低端嵌入式平台。 tools/font_gen用于把矢量字体(如truetype)转换成位图字体。
+bitmap字体加载器。
+
+bitmap字体是用工具预先生成位图字体数据，优势是速度快，不占用内存，缺点是字体大小固定。
+适合低端嵌入式平台。
+
+tools/font_gen用于把矢量字体(如truetype)转换成位图字体。
 ----------------------------------
 ### 函数
 <p id="font_loader_bitmap_t_methods">

@@ -9,7 +9,7 @@ reliable istream base on simple HDLC
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#tk_istream_shdlc_t_tk_istream_shdlc_create">tk\_istream\_shdlc\_create</a> | 创建istream对象。> 只能由iostream_shdlc调用。 |
+| <a href="#tk_istream_shdlc_t_tk_istream_shdlc_create">tk\_istream\_shdlc\_create</a> | 创建istream对象。 |
 ### 属性
 <p id="tk_istream_shdlc_t_properties">
 
@@ -22,7 +22,9 @@ reliable istream base on simple HDLC
 
 * 函数功能：
 
-> <p id="tk_istream_shdlc_t_tk_istream_shdlc_create">创建istream对象。> 只能由iostream_shdlc调用。
+> <p id="tk_istream_shdlc_t_tk_istream_shdlc_create">创建istream对象。
+
+> 只能由iostream_shdlc调用。
 
 * 函数原型：
 

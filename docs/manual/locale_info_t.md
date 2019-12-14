@@ -212,16 +212,16 @@ ret_t locale_info_set_assets_manager (locale_info_t* locale_info, assets_manager
 * 函数原型：
 
 ```
-char* locale_info_tr (locale_info_t* locale_info, char* text);
+const char* locale_info_tr (locale_info_t* locale_info, const char* text);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | char* | 返回翻译之后的字符串。 |
+| 返回值 | const char* | 返回翻译之后的字符串。 |
 | locale\_info | locale\_info\_t* | locale\_info对象。 |
-| text | char* | 待翻译的文本。 |
+| text | const char* | 待翻译的文本。 |
 #### country; 属性
 -----------------------
 > <p id="locale_info_t_country;">国家或地区。如：CN

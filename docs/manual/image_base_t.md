@@ -2,8 +2,22 @@
 ### 概述
 ![image](images/image_base_t_0.png)
 
-图片控件基类。 本类把图片相关控件的公共行为进行抽象，放到一起方便重用。目前已知的具体实现如下图： ![image](images/image_base_t_1.png)
- > 本类是一个抽象类，不能进行实例化。请在应用程序中使用具体的类，如image\_t。 如果需要显示文件系统中的图片，只需将图片名称换成实际的文件名，并加上"file://"前缀即可。如：```  <image draw_type="center" image="file://./demos/assets/default/raw/images/xx/flag_CN.png" />  <gif image="file://./demos/assets/default/raw/images/x2/bee.gif" />  <svg image="file://./demos/assets/default/raw/images/svg/china.bsvg" /> ```
+图片控件基类。
+
+本类把图片相关控件的公共行为进行抽象，放到一起方便重用。目前已知的具体实现如下图：
+
+![image](images/image_base_t_1.png)
+
+
+> 本类是一个抽象类，不能进行实例化。请在应用程序中使用具体的类，如image\_t。
+
+如果需要显示文件系统中的图片，只需将图片名称换成实际的文件名，并加上"file://"前缀即可。如：
+
+```
+<image draw_type="center" image="file://./demos/assets/default/raw/images/xx/flag_CN.png" />
+<gif image="file://./demos/assets/default/raw/images/x2/bee.gif" />
+<svg image="file://./demos/assets/default/raw/images/svg/china.bsvg" />
+```
 ----------------------------------
 ### 函数
 <p id="image_base_t_methods">
@@ -13,7 +27,7 @@
 | <a href="#image_base_t_image_base_cast">image\_base\_cast</a> | 转换为image_base对象(供脚本语言使用)。 |
 | <a href="#image_base_t_image_base_set_anchor">image\_base\_set\_anchor</a> | 设置控件的锚点(仅在WITH_VGCANVAS定义时生效)。 |
 | <a href="#image_base_t_image_base_set_clickable">image\_base\_set\_clickable</a> | 设置控件是否可以被点击。 |
-| <a href="#image_base_t_image_base_set_image">image\_base\_set\_image</a> | 设置控件的图片名称。> 如果需要显示文件系统中的图片，只需将图片名称换成实际的文件名，并加上"file://"前缀即可。 |
+| <a href="#image_base_t_image_base_set_image">image\_base\_set\_image</a> | 设置控件的图片名称。 |
 | <a href="#image_base_t_image_base_set_rotation">image\_base\_set\_rotation</a> | 设置控件的旋转角度(仅在WITH_VGCANVAS定义时生效)。 |
 | <a href="#image_base_t_image_base_set_scale">image\_base\_set\_scale</a> | 设置控件的缩放比例(仅在WITH_VGCANVAS定义时生效)。 |
 | <a href="#image_base_t_image_base_set_selectable">image\_base\_set\_selectable</a> | 设置控件是否可以被选中。 |
@@ -97,7 +111,9 @@ ret_t image_base_set_clickable (widget_t* widget, bool_t clickable);
 
 * 函数功能：
 
-> <p id="image_base_t_image_base_set_image">设置控件的图片名称。> 如果需要显示文件系统中的图片，只需将图片名称换成实际的文件名，并加上"file://"前缀即可。
+> <p id="image_base_t_image_base_set_image">设置控件的图片名称。
+
+> 如果需要显示文件系统中的图片，只需将图片名称换成实际的文件名，并加上"file://"前缀即可。
 
 * 函数原型：
 

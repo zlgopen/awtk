@@ -1,6 +1,20 @@
 ## str\_t
 ### 概述
-可变长度的UTF8字符串。 示例： ```c  str_t s;  str_init(&s, 0);  str_append(&s, "abc");  str_append(&s, "123");  str_reset(&s); ``` > 先调str\_init进行初始化，最后调用str\_reset释放内存。
+可变长度的UTF8字符串。
+
+示例：
+
+```c
+str_t s;
+str_init(&s, 0);
+
+str_append(&s, "abc");
+str_append(&s, "123");
+
+str_reset(&s);
+```
+
+> 先调str\_init进行初始化，最后调用str\_reset释放内存。
 ----------------------------------
 ### 函数
 <p id="str_t_methods">
@@ -16,7 +30,7 @@
 | <a href="#str_t_str_decode_xml_entity_with_len">str\_decode\_xml\_entity\_with\_len</a> | 对XML基本的entity进行解码，目前仅支持&lt;&gt;&quota;&amp;。 |
 | <a href="#str_t_str_end_with">str\_end\_with</a> | 判断字符串是否以指定的子串结尾。 |
 | <a href="#str_t_str_eq">str\_eq</a> | 判断两个字符串是否相等。 |
-| <a href="#str_t_str_expand_vars">str\_expand\_vars</a> | 将字符串中的变量展开为obj中对应的属性值。 变量的格式为${xxx}： * xxx为变量名时，${xxx}被展开为obj的属性xxx的值。 * xxx为表达式时，${xxx}被展开为表达式的值，表达式中可以用变量，$为变量的前缀，如${$x+$y}。 * xxx为变量名时，而不存在obj的属性时，${xxx}被移出。 |
+| <a href="#str_t_str_expand_vars">str\_expand\_vars</a> | 将字符串中的变量展开为obj中对应的属性值。 |
 | <a href="#str_t_str_extend">str\_extend</a> | 扩展字符串到指定的容量。 |
 | <a href="#str_t_str_from_float">str\_from\_float</a> | 用浮点数初始化字符串。 |
 | <a href="#str_t_str_from_int">str\_from\_int</a> | 用整数初始化字符串。 |
@@ -234,7 +248,13 @@ bool_t str_eq (str_t* str, char* text);
 
 * 函数功能：
 
-> <p id="str_t_str_expand_vars">将字符串中的变量展开为obj中对应的属性值。 变量的格式为${xxx}： * xxx为变量名时，${xxx}被展开为obj的属性xxx的值。 * xxx为表达式时，${xxx}被展开为表达式的值，表达式中可以用变量，$为变量的前缀，如${$x+$y}。 * xxx为变量名时，而不存在obj的属性时，${xxx}被移出。
+> <p id="str_t_str_expand_vars">将字符串中的变量展开为obj中对应的属性值。
+
+变量的格式为${xxx}：
+
+* xxx为变量名时，${xxx}被展开为obj的属性xxx的值。
+* xxx为表达式时，${xxx}被展开为表达式的值，表达式中可以用变量，$为变量的前缀，如${$x+$y}。
+* xxx为变量名时，而不存在obj的属性时，${xxx}被移出。
 
 * 函数原型：
 

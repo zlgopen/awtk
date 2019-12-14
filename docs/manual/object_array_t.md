@@ -2,7 +2,12 @@
 ### 概述
 ![image](images/object_array_t_0.png)
 
-简单的动态数组，内部存放value对象。 访问时属性名称为： * "size"/"length" 用于获取数组的长度。 * index 用于访问属性，-1可以用来追加新元素。
+简单的动态数组，内部存放value对象。
+
+访问时属性名称为：
+
+* "size"/"length" 用于获取数组的长度。
+* index 用于访问属性，-1可以用来追加新元素。
 ----------------------------------
 ### 函数
 <p id="object_array_t_methods">

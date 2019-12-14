@@ -2,7 +2,36 @@
 ### 概述
 ![image](images/draggable_t_0.png)
 
-将draggable放入目标控件，即可让目标控件或当前窗口可以被拖动。 draggable\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于draggable\_t控件。 在xml中使用"draggable"标签创建draggable控件。如： ```xml  <button text="Drag Me" w="80" h="40" x="10" y="10">   <draggable />  </button> ``` 拖动对话框标题时移动对话框： ```xml <dialog_title x="0" y="0" w="100%" h="30" text="Hello AWTK" >   <draggable drag_window="true"/> </dialog_title> ``` > 更多用法请参考： [draggable.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/draggable.xml) 在c代码中使用函数draggable\_create创建按钮控件。如： ```c  widget_t* draggable = draggable_create(target, 0, 0, 0, 0); ``` > draggable本身不可见，故无需style。
+将draggable放入目标控件，即可让目标控件或当前窗口可以被拖动。
+
+draggable\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于draggable\_t控件。
+
+在xml中使用"draggable"标签创建draggable控件。如：
+
+```xml
+<button text="Drag Me" w="80" h="40" x="10" y="10">
+<draggable />
+</button>
+```
+
+拖动对话框标题时移动对话框：
+
+```xml
+<dialog_title x="0" y="0" w="100%" h="30" text="Hello AWTK" >
+<draggable drag_window="true"/>
+</dialog_title>
+```
+
+> 更多用法请参考：
+[draggable.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/draggable.xml)
+
+在c代码中使用函数draggable\_create创建按钮控件。如：
+
+```c
+widget_t* draggable = draggable_create(target, 0, 0, 0, 0);
+```
+
+> draggable本身不可见，故无需style。
 ----------------------------------
 ### 函数
 <p id="draggable_t_methods">
@@ -12,7 +41,7 @@
 | <a href="#draggable_t_draggable_cast">draggable\_cast</a> | 转换为draggable对象(供脚本语言使用)。 |
 | <a href="#draggable_t_draggable_create">draggable\_create</a> | 创建draggable对象 |
 | <a href="#draggable_t_draggable_set_bottom">draggable\_set\_bottom</a> | 设置bottom。 |
-| <a href="#draggable_t_draggable_set_drag_window">draggable\_set\_drag\_window</a> | 设置drag_window。 拖动窗口而不是父控件。比如放在对话框的titlebar上，拖动titlebar其实是希望拖动对话框。 |
+| <a href="#draggable_t_draggable_set_drag_window">draggable\_set\_drag\_window</a> | 设置drag_window。 |
 | <a href="#draggable_t_draggable_set_horizontal_only">draggable\_set\_horizontal\_only</a> | 设置horizontal_only。 |
 | <a href="#draggable_t_draggable_set_left">draggable\_set\_left</a> | 设置left。 |
 | <a href="#draggable_t_draggable_set_right">draggable\_set\_right</a> | 设置right。 |
@@ -97,7 +126,8 @@ ret_t draggable_set_bottom (widget_t* widget, int32_t bottom);
 
 * 函数功能：
 
-> <p id="draggable_t_draggable_set_drag_window">设置drag_window。 拖动窗口而不是父控件。比如放在对话框的titlebar上，拖动titlebar其实是希望拖动对话框。
+> <p id="draggable_t_draggable_set_drag_window">设置drag_window。
+拖动窗口而不是父控件。比如放在对话框的titlebar上，拖动titlebar其实是希望拖动对话框。
 
 * 函数原型：
 

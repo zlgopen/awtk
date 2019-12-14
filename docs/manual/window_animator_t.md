@@ -8,7 +8,7 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#window_animator_t_window_animator_begin_frame">window\_animator\_begin\_frame</a> | begin frame |
-| <a href="#window_animator_t_window_animator_create">window\_animator\_create</a> | 创建窗口动画对象。>供子类构造函数用。 |
+| <a href="#window_animator_t_window_animator_create">window\_animator\_create</a> | 创建窗口动画对象。 |
 | <a href="#window_animator_t_window_animator_destroy">window\_animator\_destroy</a> | 销毁窗口动画对象。 |
 | <a href="#window_animator_t_window_animator_end_frame">window\_animator\_end\_frame</a> | end frame |
 | <a href="#window_animator_t_window_animator_update">window\_animator\_update</a> | 更新动画。 |
@@ -36,7 +36,9 @@ ret_t window_animator_begin_frame (window_animator_t* wa);
 
 * 函数功能：
 
-> <p id="window_animator_t_window_animator_create">创建窗口动画对象。>供子类构造函数用。
+> <p id="window_animator_t_window_animator_create">创建窗口动画对象。
+
+>供子类构造函数用。
 
 * 函数原型：
 

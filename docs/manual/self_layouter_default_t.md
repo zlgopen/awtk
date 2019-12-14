@@ -2,7 +2,10 @@
 ### 概述
 ![image](images/self_layouter_default_t_0.png)
 
-缺省的控件自身布局算法实现。> 用法请参考：[缺省控件自身布局算法](https://github.com/zlgopen/awtk/blob/master/docs/self_layouter_default.md)
+缺省的控件自身布局算法实现。
+
+> 用法请参考：[缺省控件自身布局算法](
+https://github.com/zlgopen/awtk/blob/master/docs/self_layouter_default.md)
 ----------------------------------
 ### 函数
 <p id="self_layouter_default_t_methods">

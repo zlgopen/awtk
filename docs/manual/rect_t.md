@@ -7,10 +7,10 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#rect_t_rect_cast">rect\_cast</a> | 转换为rect对象。 > 供脚本语言使用。 |
-| <a href="#rect_t_rect_create">rect\_create</a> | 创建rect对象。 > 主要供脚本语言使用。 |
-| <a href="#rect_t_rect_destroy">rect\_destroy</a> | 销毁rect对象。 > 主要供脚本语言使用。 |
-| <a href="#rect_t_rect_set">rect\_set</a> | 设置rect对象的xywh。 > 主要供脚本语言使用。 |
+| <a href="#rect_t_rect_cast">rect\_cast</a> | 转换为rect对象。 |
+| <a href="#rect_t_rect_create">rect\_create</a> | 创建rect对象。 |
+| <a href="#rect_t_rect_destroy">rect\_destroy</a> | 销毁rect对象。 |
+| <a href="#rect_t_rect_set">rect\_set</a> | 设置rect对象的xywh。 |
 ### 属性
 <p id="rect_t_properties">
 
@@ -25,7 +25,9 @@
 
 * 函数功能：
 
-> <p id="rect_t_rect_cast">转换为rect对象。 > 供脚本语言使用。
+> <p id="rect_t_rect_cast">转换为rect对象。
+
+> 供脚本语言使用。
 
 * 函数原型：
 
@@ -44,7 +46,9 @@ rect_t* rect_cast (rect_t* rect);
 
 * 函数功能：
 
-> <p id="rect_t_rect_create">创建rect对象。 > 主要供脚本语言使用。
+> <p id="rect_t_rect_create">创建rect对象。
+
+> 主要供脚本语言使用。
 
 * 函数原型：
 
@@ -66,7 +70,9 @@ rect_t* rect_create (xy_t x, xy_t y, wh_t w, wh_t h);
 
 * 函数功能：
 
-> <p id="rect_t_rect_destroy">销毁rect对象。 > 主要供脚本语言使用。
+> <p id="rect_t_rect_destroy">销毁rect对象。
+
+> 主要供脚本语言使用。
 
 * 函数原型：
 
@@ -85,7 +91,9 @@ ret_t rect_destroy (rect_t* r);
 
 * 函数功能：
 
-> <p id="rect_t_rect_set">设置rect对象的xywh。 > 主要供脚本语言使用。
+> <p id="rect_t_rect_set">设置rect对象的xywh。
+
+> 主要供脚本语言使用。
 
 * 函数原型：
 

@@ -2,7 +2,43 @@
 ### 概述
 ![image](images/text_selector_t_0.png)
 
-文本选择器控件，通常用于选择日期和时间等。 > XXX: 目前需要先设置options和visible_nr，再设置其它参数(在XML中也需要按此顺序)。 text\_selector\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于text\_selector\_t控件。 在xml中使用"text\_selector"标签创建文本选择器控件。如： ```xml <text_selector options="red;green;blue;gold;orange" visible_nr="3" text="red"/> ``` > 更多用法请参考：[text\_selector.xml]( https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/text_selector.xml) 在c代码中使用函数text\_selector\_create创建文本选择器控件。如： ```c widget_t* ts = text_selector_create(win, 10, 10, 80, 150); text_selector_set_options(ts, "1:red;2:green;3:blue;4:orange;5:gold"); text_selector_set_value(ts, 1); widget_use_style(ts, "dark"); ``` > 完整示例请参考：[text\_selector demo]( https://github.com/zlgopen/awtk-c-demos/blob/master/demos/text_selector.c) 可用通过style来设置控件的显示风格，如字体和背景颜色等。如： ```xml <style name="dark" fg_color="#a0a0a0"  text_color="black" text_align_h="center">   <normal     bg_color="#ffffff" mask_color="#404040" border_color="#404040"/> </style> ``` > 更多用法请参考：[theme default]( https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L443)
+文本选择器控件，通常用于选择日期和时间等。
+
+> XXX: 目前需要先设置options和visible_nr，再设置其它参数(在XML中也需要按此顺序)。
+
+text\_selector\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于text\_selector\_t控件。
+
+在xml中使用"text\_selector"标签创建文本选择器控件。如：
+
+```xml
+<text_selector options="red;green;blue;gold;orange" visible_nr="3" text="red"/>
+```
+
+> 更多用法请参考：[text\_selector.xml](
+https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/text_selector.xml)
+
+在c代码中使用函数text\_selector\_create创建文本选择器控件。如：
+
+```c
+widget_t* ts = text_selector_create(win, 10, 10, 80, 150);
+text_selector_set_options(ts, "1:red;2:green;3:blue;4:orange;5:gold");
+text_selector_set_value(ts, 1);
+widget_use_style(ts, "dark");
+```
+
+> 完整示例请参考：[text\_selector demo](
+https://github.com/zlgopen/awtk-c-demos/blob/master/demos/text_selector.c)
+
+可用通过style来设置控件的显示风格，如字体和背景颜色等。如：
+
+```xml
+<style name="dark" fg_color="#a0a0a0"  text_color="black" text_align_h="center">
+<normal     bg_color="#ffffff" mask_color="#404040" border_color="#404040"/>
+</style>
+```
+
+> 更多用法请参考：[theme default](
+https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L443)
 ----------------------------------
 ### 函数
 <p id="text_selector_t_methods">
@@ -28,7 +64,7 @@
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#text_selector_t_options">options</a> | char* | 设置可选项(冒号分隔值和文本，分号分隔选项，如:1:red;2:green;3:blue)。 对于数值选项，也可以指定一个范围，用『-』分隔起始值、结束值和格式。 如："1-7-%02d"表示1到7，格式为『02d』，格式为可选，缺省为『%d』。 |
+| <a href="#text_selector_t_options">options</a> | char* | 设置可选项(冒号分隔值和文本，分号分隔选项，如:1:red;2:green;3:blue)。 |
 | <a href="#text_selector_t_selected_index">selected\_index</a> | int32\_t | 当前选中的选项。 |
 | <a href="#text_selector_t_visible_nr">visible\_nr</a> | uint32\_t | 可见的选项数量(只能是3或者5，缺省为5)。 |
 ### 事件
@@ -150,14 +186,14 @@ text_selector_option_t* text_selector_get_option (widget_t* widget, uint32_t ind
 * 函数原型：
 
 ```
-char* text_selector_get_text (widget_t* widget);
+const char* text_selector_get_text (widget_t* widget);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | char* | 返回文本。 |
+| 返回值 | const char* | 返回文本。 |
 | widget | widget\_t* | text\_selector对象。 |
 #### text\_selector\_get\_value 函数
 -----------------------
@@ -321,7 +357,9 @@ ret_t text_selector_set_visible_nr (widget_t* widget, uint32_t visible_nr);
 | visible\_nr | uint32\_t | 选项数。 |
 #### options 属性
 -----------------------
-> <p id="text_selector_t_options">设置可选项(冒号分隔值和文本，分号分隔选项，如:1:red;2:green;3:blue)。 对于数值选项，也可以指定一个范围，用『-』分隔起始值、结束值和格式。 如："1-7-%02d"表示1到7，格式为『02d』，格式为可选，缺省为『%d』。
+> <p id="text_selector_t_options">设置可选项(冒号分隔值和文本，分号分隔选项，如:1:red;2:green;3:blue)。
+对于数值选项，也可以指定一个范围，用『-』分隔起始值、结束值和格式。
+如："1-7-%02d"表示1到7，格式为『02d』，格式为可选，缺省为『%d』。
 
 * 类型：char*
 

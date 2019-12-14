@@ -16,7 +16,7 @@
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#idle_info_t_ctx">ctx</a> | void* | idle回调函数上下文。 |
-| <a href="#idle_info_t_id">id</a> | uint32\_t | idle的ID > 为TK\_INVALID\_ID时表示无效idle。 |
+| <a href="#idle_info_t_id">id</a> | uint32\_t | idle的ID |
 | <a href="#idle_info_t_on_destroy">on\_destroy</a> | tk\_destroy\_t | idle销毁时的回调函数。 |
 | <a href="#idle_info_t_on_destroy_ctx">on\_destroy\_ctx</a> | tk\_destroy\_t | idle销毁时的回调函数的上下文。 |
 | <a href="#idle_info_t_on_idle">on\_idle</a> | idle\_func\_t | idle回调函数。 |
@@ -52,7 +52,9 @@ idle_info_t* idle_info_cast (idle_info_t* idle);
 | 可脚本化   | 是 |
 #### id 属性
 -----------------------
-> <p id="idle_info_t_id">idle的ID > 为TK\_INVALID\_ID时表示无效idle。
+> <p id="idle_info_t_id">idle的ID
+
+> 为TK\_INVALID\_ID时表示无效idle。
 
 * 类型：uint32\_t
 
