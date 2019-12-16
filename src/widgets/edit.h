@@ -291,7 +291,7 @@ ret_t edit_set_text_limit(widget_t* widget, uint32_t min, uint32_t max);
  * @param {widget_t*} widget widget对象。
  * @param {int32_t} min 最小值。
  * @param {int32_t} max 最大值。
- * @param {int32_t} step 步长。
+ * @param {uint32_t} step 步长。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

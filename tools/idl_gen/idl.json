@@ -36961,7 +36961,7 @@
             "desc": "属性名。"
           },
           {
-            "type": "int32_t",
+            "type": "uint32_t",
             "name": "val",
             "desc": "值。"
           }
@@ -41213,7 +41213,7 @@
             "desc": "最大值。"
           },
           {
-            "type": "int32_t",
+            "type": "uint32_t",
             "name": "step",
             "desc": "步长。"
           }
