@@ -993,14 +993,25 @@ ret_t widget_set_floating(widget_t* widget, bool_t floating);
 
 /**
  * @method widget_set_focused
- * 设置控件的是否聚焦。
+ * 设置控件是否获得焦点。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {bool_t} focused 是否聚焦。
+ * @param {bool_t} focused 是否获得焦点。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_set_focused(widget_t* widget, bool_t focused);
+
+/**
+ * @method widget_set_focusable
+ * 设置控件是否可获得焦点。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {bool_t} focusable 是否可获得焦点。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_focusable(widget_t* widget, bool_t focusable);
 
 /**
  * @method widget_set_state

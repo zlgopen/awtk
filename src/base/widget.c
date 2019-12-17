@@ -374,11 +374,14 @@ font_manager_t* widget_get_font_manager(widget_t* widget) {
 
 static ret_t widget_apply_tr_text_before_paint(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
-  const char* tr_text = locale_info_tr(widget_get_locale_info(widget), widget->tr_text);
-  char* tmp = widget->tr_text;
-  widget->tr_text = NULL;
-  widget_set_prop_str(widget, WIDGET_PROP_TEXT, tr_text);
-  widget->tr_text = tmp;
+  if (widget->tr_text != NULL) {
+    const char* tr_text = locale_info_tr(widget_get_locale_info(widget), widget->tr_text);
+    char* tmp = widget->tr_text;
+
+    widget->tr_text = NULL;
+    widget_set_prop_str(widget, WIDGET_PROP_TEXT, tr_text);
+    widget->tr_text = tmp;
+  }
 
   return RET_REMOVE;
 }
@@ -401,6 +404,7 @@ ret_t widget_set_tr_text(widget_t* widget, const char* text) {
     widget_set_prop_str(widget, WIDGET_PROP_TEXT, text);
     widget_on(widget, EVT_BEFORE_PAINT, widget_apply_tr_text_before_paint, widget);
   }
+
   return RET_OK;
 }
 
@@ -632,6 +636,14 @@ ret_t widget_set_focused(widget_t* widget, bool_t focused) {
   if (focused) {
     widget_ensure_visible_in_viewport(widget);
   }
+
+  return RET_OK;
+}
+
+ret_t widget_set_focusable(widget_t* widget, bool_t focusable) {
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  widget->focusable = focusable;
 
   return RET_OK;
 }
