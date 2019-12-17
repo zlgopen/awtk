@@ -98,7 +98,7 @@ static ret_t suggest_words_update(suggest_words_t* suggest_words, const uint8_t*
       memset(word, 0x00, sizeof(word));
       p16 = get_str(p16, word, ARRAY_SIZE(word) - 1);
 
-      utf8_from_utf16(word, sword, sizeof(sword));
+      tk_utf8_from_utf16(word, sword, sizeof(sword));
       if (wbuffer_write_string(&wb, sword) != RET_OK) {
         break;
       }

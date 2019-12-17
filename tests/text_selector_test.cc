@@ -149,7 +149,7 @@ TEST(TextSelector, range) {
   for (i = 0; i < n; i++) {
     text_selector_option_t* iter = text_selector_get_option(w, i);
     ASSERT_EQ(iter->value, i + 1);
-    utf8_from_utf16(iter->text, text1, sizeof(text1) - 1);
+    tk_utf8_from_utf16(iter->text, text1, sizeof(text1) - 1);
     tk_snprintf(text2, sizeof(text2) - 1, "%d", i + 1);
     ASSERT_STREQ(text1, text2);
   }
@@ -171,7 +171,7 @@ TEST(TextSelector, range_format) {
   for (i = 0; i < n; i++) {
     text_selector_option_t* iter = text_selector_get_option(w, i);
     ASSERT_EQ(iter->value, i + 1);
-    utf8_from_utf16(iter->text, text1, sizeof(text1) - 1);
+    tk_utf8_from_utf16(iter->text, text1, sizeof(text1) - 1);
     tk_snprintf(text2, sizeof(text2) - 1, "%4d", i + 1);
     ASSERT_STREQ(text1, text2);
   }
@@ -193,7 +193,7 @@ TEST(TextSelector, range_format2) {
   for (i = 0; i < n; i++) {
     text_selector_option_t* iter = text_selector_get_option(w, i);
     ASSERT_EQ(iter->value, i + 1);
-    utf8_from_utf16(iter->text, text1, sizeof(text1) - 1);
+    tk_utf8_from_utf16(iter->text, text1, sizeof(text1) - 1);
     tk_snprintf(text2, sizeof(text2) - 1, "item%4X", i + 1);
     ASSERT_STREQ(text1, text2);
   }

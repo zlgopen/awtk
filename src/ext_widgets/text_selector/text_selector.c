@@ -533,7 +533,7 @@ ret_t text_selector_append_option(widget_t* widget, int32_t value, const char* t
   memset(option, 0x00, size);
 
   option->value = value;
-  utf8_to_utf16(text, option->text, strlen(text) + 1);
+  tk_utf8_to_utf16(text, option->text, strlen(text) + 1);
 
   if (text_selector->option_items != NULL) {
     iter = text_selector->option_items;

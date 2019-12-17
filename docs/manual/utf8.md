@@ -10,8 +10,8 @@
  char res_str[128];
  wchar_t res_wstr[128];
 
- utf8_to_utf16(str, res_wstr, ARRAY_SIZE(res_wstr));
- utf8_from_utf16(wstr, res_str, ARRAY_SIZE(res_str));
+ tk_utf8_to_utf16(str, res_wstr, ARRAY_SIZE(res_wstr));
+ tk_utf8_from_utf16(wstr, res_str, ARRAY_SIZE(res_str));
  ```
 
 
@@ -21,14 +21,14 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#utf8_utf8_from_utf16">utf8\_from\_utf16</a> |  |
-| <a href="#utf8_utf8_from_utf16">utf8\_from\_utf16</a> |  |
+| <a href="#tk_utf8_from_utf16">tk_\utf8\_from\_utf16</a> |  |
+| <a href="#tk_utf8_to_utf16">tk\_utf8\_to\_utf16</a> |  |
 #### utf8\_from\_utf16 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="utf8_utf8_from_utf16">
+> <p id="tk_utf8_from_utf16">
  将wchar_t类型转换为char类型。
 
 
@@ -38,7 +38,7 @@
 * 函数原型：
 
 ```
-char* utf8_from_utf16 (const wchar_t* str, const char* out, uint32_t size);
+char* tk_utf8_from_utf16 (const wchar_t* str, const char* out, uint32_t size);
 ```
 
 * 参数说明：
@@ -54,7 +54,7 @@ char* utf8_from_utf16 (const wchar_t* str, const char* out, uint32_t size);
 
 * 函数功能：
 
-> <p id="utf8_utf8_from_utf16">
+> <p id="tk_utf8_to_utf16">
  将char类型转换为wchar_t类型。
 
 
@@ -64,7 +64,7 @@ char* utf8_from_utf16 (const wchar_t* str, const char* out, uint32_t size);
 * 函数原型：
 
 ```
-wchar_t* utf8_from_utf16 (const char* str, const wchar_t* out, uint32_t size);
+wchar_t* tk_utf8_to_utf16 (const char* str, const wchar_t* out, uint32_t size);
 ```
 
 * 参数说明：

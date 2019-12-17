@@ -157,7 +157,7 @@ ret_t wstr_set_utf8(wstr_t* str, const char* text) {
   return_value_if_fail(str != NULL && text != NULL, RET_BAD_PARAMS);
   return_value_if_fail(wstr_extend(str, strlen(text) + 2) == RET_OK, RET_OOM);
 
-  utf8_to_utf16(text, str->str, str->capacity - 1);
+  tk_utf8_to_utf16(text, str->str, str->capacity - 1);
   str->size = wcslen(str->str);
 
   return RET_OK;
@@ -165,7 +165,7 @@ ret_t wstr_set_utf8(wstr_t* str, const char* text) {
 
 ret_t wstr_get_utf8(wstr_t* str, char* text, uint32_t size) {
   return_value_if_fail(str != NULL && text != NULL, RET_BAD_PARAMS);
-  utf8_from_utf16(str->str, text, size);
+  tk_utf8_from_utf16(str->str, text, size);
 
   return RET_OK;
 }
@@ -248,7 +248,7 @@ ret_t wstr_push_int(wstr_t* str, const char* format, int32_t value) {
   return_value_if_fail(str != NULL && format != NULL, RET_BAD_PARAMS);
 
   tk_snprintf(buff, TK_NUM_MAX_LEN, format, value);
-  utf8_to_utf16(buff, s, TK_NUM_MAX_LEN);
+  tk_utf8_to_utf16(buff, s, TK_NUM_MAX_LEN);
 
   return wstr_append_with_len(str, s, wcslen(s));
 }

@@ -39,13 +39,13 @@ BEGIN_C_DECLS
  * char res_str[128];
  * wchar_t res_wstr[128];
 
- * utf8_to_utf16(str, res_wstr, ARRAY_SIZE(res_wstr));
- * utf8_from_utf16(wstr, res_str, ARRAY_SIZE(res_str));
+ * tk_utf8_to_utf16(str, res_wstr, ARRAY_SIZE(res_wstr));
+ * tk_utf8_from_utf16(wstr, res_str, ARRAY_SIZE(res_str));
  * ```
  */
 
 /**
- * @method utf8_from_utf16
+ * @method tk_utf8_from_utf16
  *
  * 将wchar_t类型转换为char类型。
  *
@@ -55,10 +55,10 @@ BEGIN_C_DECLS
  *
  * @return {char*} 值。
  */
-char* utf8_from_utf16(const wchar_t* str, char* out, uint32_t size);
+char* tk_utf8_from_utf16(const wchar_t* str, char* out, uint32_t size);
 
 /**
- * @method utf8_from_utf16
+ * @method tk_utf8_to_utf16
  *
  * 将char类型转换为wchar_t类型。
  *
@@ -68,7 +68,7 @@ char* utf8_from_utf16(const wchar_t* str, char* out, uint32_t size);
  *
  * @return {wchar_t*} 值。
  */
-wchar_t* utf8_to_utf16(const char* str, wchar_t* out, uint32_t size);
+wchar_t* tk_utf8_to_utf16(const char* str, wchar_t* out, uint32_t size);
 
 END_C_DECLS
 

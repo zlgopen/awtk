@@ -61,7 +61,7 @@ uint32_t font_gen_buff(font_t* font, uint16_t font_size, const char* str, uint8_
   font_vmetrics_t vmetrics = font_get_vmetrics(font, font_size);
   font_bitmap_header_t* header = (font_bitmap_header_t*)output_buff;
 
-  utf8_to_utf16(str, wstr, MAX_CHARS);
+  tk_utf8_to_utf16(str, wstr, MAX_CHARS);
   size = wcslen(wstr);
 
   qsort(wstr, size, sizeof(wchar_t), char_cmp);

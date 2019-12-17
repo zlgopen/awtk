@@ -262,13 +262,13 @@ err_out:
   return NULL;
 }
 
-char* utf8_from_utf16(const wchar_t* str, char* out, uint32_t size) {
+char* tk_utf8_from_utf16(const wchar_t* str, char* out, uint32_t size) {
   return_value_if_fail(str != NULL && out != NULL, NULL);
 
   return utf16_to_utf8(str, wcslen(str), out, size);
 }
 
-wchar_t* utf8_to_utf16(const char* str, wchar_t* out, uint32_t size) {
+wchar_t* tk_utf8_to_utf16(const char* str, wchar_t* out, uint32_t size) {
   uint32_t i = 0;
   const char* p = str;
   const char* next = NULL;

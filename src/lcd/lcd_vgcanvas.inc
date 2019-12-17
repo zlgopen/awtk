@@ -211,7 +211,7 @@ float_t lcd_vgcanvas_measure_text(lcd_t* lcd, const wchar_t* str, uint32_t nr) {
   wcsncpy(temp, str, nr);
   temp[nr] = 0;
 
-  utf8_from_utf16(temp, text, sizeof(text) - 1);
+  tk_utf8_from_utf16(temp, text, sizeof(text) - 1);
 
   vgcanvas_set_font(canvas, lcd->font_name);
   vgcanvas_set_font_size(canvas, lcd->font_size);
@@ -231,7 +231,7 @@ static ret_t lcd_vgcanvas_draw_text(lcd_t* lcd, const wchar_t* str, uint32_t nr,
   wcsncpy(temp, str, nr);
   temp[nr] = 0;
 
-  utf8_from_utf16(temp, text, sizeof(text) - 1);
+  tk_utf8_from_utf16(temp, text, sizeof(text) - 1);
 
   vgcanvas_set_font(canvas, lcd->font_name);
   vgcanvas_set_font_size(canvas, lcd->font_size);

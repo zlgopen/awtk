@@ -46,7 +46,7 @@ static wchar_t* digit_clock_translate_wday(wchar_t* str, uint32_t size, uint32_t
   };
 
   const char* utf8 = locale_info_tr(locale_info(), wdays[wday]);
-  return utf8_to_utf16(utf8, str, size);
+  return tk_utf8_to_utf16(utf8, str, size);
 }
 
 static wchar_t* digit_clock_translate_month(wchar_t* str, uint32_t size, uint32_t month) {
@@ -56,7 +56,7 @@ static wchar_t* digit_clock_translate_month(wchar_t* str, uint32_t size, uint32_
                                        "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"};
 
   const char* utf8 = locale_info_tr(locale_info(), months[month - 1]);
-  return utf8_to_utf16(utf8, str, size);
+  return tk_utf8_to_utf16(utf8, str, size);
 }
 
 ret_t digit_clock_format_time(widget_t* widget, const char* format, date_time_t* dt) {

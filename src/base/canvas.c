@@ -1356,7 +1356,7 @@ static ret_t canvas_draw_fps(canvas_t* c) {
     lcd->fps_rect = r;
     tk_snprintf(fps, sizeof(fps), "%dfps", (int)(c->fps));
 
-    utf8_to_utf16(fps, wfps, strlen(fps) + 1);
+    tk_utf8_to_utf16(fps, wfps, strlen(fps) + 1);
     canvas_fill_rect(c, r.x, r.y, r.w, r.h);
     canvas_draw_text(c, wfps, wcslen(wfps), r.x + 8, r.y + 8);
   } else {

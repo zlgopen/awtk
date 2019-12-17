@@ -45,7 +45,7 @@ rich_text_node_t* rich_text_text_create_with_len(rich_text_font_t* font, const c
   node->u.text.text = (wchar_t*)TKMEM_ALLOC(sizeof(wchar_t) * (len + 1));
   goto_error_if_fail(node->u.text.text != NULL);
 
-  utf8_to_utf16(text, node->u.text.text, len + 1);
+  tk_utf8_to_utf16(text, node->u.text.text, len + 1);
 
   return node;
 error:

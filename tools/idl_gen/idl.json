@@ -16014,7 +16014,7 @@
         ],
         "annotation": {},
         "desc": "将wchar_t类型转换为char类型。",
-        "name": "utf8_from_utf16",
+        "name": "tk_utf8_from_utf16",
         "return": {
           "type": "char*",
           "desc": "值。"
@@ -16040,7 +16040,7 @@
         ],
         "annotation": {},
         "desc": "将char类型转换为wchar_t类型。",
-        "name": "utf8_from_utf16",
+        "name": "tk_utf8_from_utf16",
         "return": {
           "type": "wchar_t*",
           "desc": "值。"
@@ -16050,7 +16050,7 @@
     "events": [],
     "properties": [],
     "header": "tkc/utf8.h",
-    "desc": "wchar_t和char类型转换接口。\n\n示例：\n\n```c\nconst char* str = \"hello\";\nconst wchar_t* wstr = L\"hello\";\nchar res_str[128];\nwchar_t res_wstr[128];\n\nutf8_to_utf16(str, res_wstr, ARRAY_SIZE(res_wstr));\nutf8_from_utf16(wstr, res_str, ARRAY_SIZE(res_str));\n```",
+    "desc": "wchar_t和char类型转换接口。\n\n示例：\n\n```c\nconst char* str = \"hello\";\nconst wchar_t* wstr = L\"hello\";\nchar res_str[128];\nwchar_t res_wstr[128];\n\ntk_utf8_to_utf16(str, res_wstr, ARRAY_SIZE(res_wstr));\ntk_utf8_from_utf16(wstr, res_str, ARRAY_SIZE(res_str));\n```",
     "name": "utf8_t",
     "annotation": {
       "fake": true

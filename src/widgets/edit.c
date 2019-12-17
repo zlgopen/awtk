@@ -197,7 +197,7 @@ ret_t edit_input_char(widget_t* widget, wchar_t c) {
 static ret_t edit_commit_str(widget_t* widget, const char* str) {
   uint32_t i = 0;
   wchar_t wstr[32];
-  utf8_to_utf16(str, wstr, ARRAY_SIZE(wstr));
+  tk_utf8_to_utf16(str, wstr, ARRAY_SIZE(wstr));
 
   while (wstr[i]) {
     edit_input_char(widget, wstr[i]);

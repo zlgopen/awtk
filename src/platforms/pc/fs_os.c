@@ -85,7 +85,7 @@ ret_t fs_os_dir_read(fs_dir_t* dir, fs_item_t* item) {
 
     len = wcslen(ent->d_name) * 2 + 1;
     name = (char*)TKMEM_ALLOC(len);
-    utf8_from_utf16(ent->d_name, name, len);
+    tk_utf8_from_utf16(ent->d_name, name, len);
     tk_strncpy(item->name, name, MAX_PATH);
     TKMEM_FREE(name);
 #else
@@ -136,11 +136,11 @@ fs_file_t* fs_os_open_file(fs_t* fs, const char* name, const char* mode) {
 
   len = strlen(name) + 1;
   w_name = (wchar_t*)TKMEM_ALLOC(len * 2);
-  utf8_to_utf16(name, w_name, len);
+  tk_utf8_to_utf16(name, w_name, len);
 
   len = strlen(mode) + 1;
   w_mode = (wchar_t*)TKMEM_ALLOC(len * 2);
-  utf8_to_utf16(mode, w_mode, len);
+  tk_utf8_to_utf16(mode, w_mode, len);
 
   file = fs_file_create(_wfopen(w_name, w_mode));
   TKMEM_FREE(w_name);
@@ -161,7 +161,7 @@ ret_t fs_os_remove_file(fs_t* fs, const char* name) {
 
   len = strlen(name) + 1;
   w_name = (wchar_t*)TKMEM_ALLOC(len * 2);
-  utf8_to_utf16(name, w_name, len);
+  tk_utf8_to_utf16(name, w_name, len);
 
   _wunlink(w_name);
   TKMEM_FREE(w_name);
@@ -183,7 +183,7 @@ bool_t fs_os_file_exist(fs_t* fs, const char* name) {
 
   len = strlen(name) + 1;
   w_name = (wchar_t*)TKMEM_ALLOC(len * 2);
-  utf8_to_utf16(name, w_name, len);
+  tk_utf8_to_utf16(name, w_name, len);
 
   rtn = (_wstat(w_name, &st) == 0 && st.st_mode & S_IFREG);
   TKMEM_FREE(w_name);
@@ -206,11 +206,11 @@ bool_t fs_os_file_rename(fs_t* fs, const char* name, const char* new_name) {
 
   len = strlen(name) + 1;
   w_name = (wchar_t*)TKMEM_ALLOC(len * 2);
-  utf8_to_utf16(name, w_name, len);
+  tk_utf8_to_utf16(name, w_name, len);
 
   len = strlen(new_name) + 1;
   w_new_name = (wchar_t*)TKMEM_ALLOC(len * 2);
-  utf8_to_utf16(new_name, w_new_name, len);
+  tk_utf8_to_utf16(new_name, w_new_name, len);
 
   rtn = _wrename(w_name, w_new_name) == 0;
   TKMEM_FREE(w_name);
@@ -248,7 +248,7 @@ fs_dir_t* fs_os_open_dir(fs_t* fs, const char* name) {
 
   len = strlen(name) + 1;
   w_name = (wchar_t*)TKMEM_ALLOC(len * 2);
-  utf8_to_utf16(name, w_name, len);
+  tk_utf8_to_utf16(name, w_name, len);
 
   pDir = fs_dir_create(opendir(w_name));
   TKMEM_FREE(w_name);
@@ -274,7 +274,7 @@ bool_t fs_os_dir_exist(fs_t* fs, const char* name) {
 
   len = strlen(name) + 1;
   w_name = (wchar_t*)TKMEM_ALLOC(len * 2);
-  utf8_to_utf16(name, w_name, len);
+  tk_utf8_to_utf16(name, w_name, len);
 
   rtn = (_wstat(w_name, &st) == 0 && st.st_mode & S_IFDIR);
   TKMEM_FREE(w_name);
@@ -305,7 +305,7 @@ int32_t fs_os_get_file_size(fs_t* fs, const char* name) {
 
   len = strlen(name) + 1;
   w_name = (wchar_t*)TKMEM_ALLOC(len * 2);
-  utf8_to_utf16(name, w_name, len);
+  tk_utf8_to_utf16(name, w_name, len);
 
   int n = _wstat(w_name, &st);
   rtn = n == 0;

@@ -130,7 +130,7 @@ int WINAPI wWinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPWSTR lpcmdli
   int argc = 1;
   int32_t len = wcslen(lpcmdline) * 6;
   char* utf8_line = (char*)TKMEM_ALLOC(len);
-  utf8_from_utf16(lpcmdline, utf8_line, len);
+  tk_utf8_from_utf16(lpcmdline, utf8_line, len);
   char* argv[MAX_ARGV];
   str_init(&str, 1024);
   str_set(&str, utf8_line);

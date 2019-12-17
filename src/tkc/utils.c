@@ -630,7 +630,7 @@ int tk_watoi(const wchar_t* str) {
   char num[TK_NUM_MAX_LEN + 1] = {0};
   return_value_if_fail(str != NULL, 0);
 
-  utf8_from_utf16(str, num, TK_NUM_MAX_LEN);
+  tk_utf8_from_utf16(str, num, TK_NUM_MAX_LEN);
 
   return tk_atoi(num);
 }
@@ -647,7 +647,7 @@ double tk_watof(const wchar_t* str) {
   char num[TK_NUM_MAX_LEN + 1] = {0};
   return_value_if_fail(str != NULL, 0);
 
-  utf8_from_utf16(str, num, TK_NUM_MAX_LEN);
+  tk_utf8_from_utf16(str, num, TK_NUM_MAX_LEN);
 
   return tk_atof(num);
 }

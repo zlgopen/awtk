@@ -7,8 +7,8 @@ TEST(Utf8, ascii) {
   char res_str[128];
   wchar_t res_wstr[128];
 
-  ASSERT_EQ(wcscmp(utf8_to_utf16(str, res_wstr, ARRAY_SIZE(res_wstr)), wstr), 0);
-  ASSERT_EQ(strcmp(utf8_from_utf16(wstr, res_str, ARRAY_SIZE(res_str)), str), 0);
+  ASSERT_EQ(wcscmp(tk_utf8_to_utf16(str, res_wstr, ARRAY_SIZE(res_wstr)), wstr), 0);
+  ASSERT_EQ(strcmp(tk_utf8_from_utf16(wstr, res_str, ARRAY_SIZE(res_str)), str), 0);
 }
 
 TEST(Utf8, chinese) {
@@ -17,6 +17,6 @@ TEST(Utf8, chinese) {
   char res_str[128];
   wchar_t res_wstr[128];
 
-  ASSERT_EQ(wcscmp(utf8_to_utf16(str, res_wstr, ARRAY_SIZE(res_wstr)), wstr), 0);
-  ASSERT_EQ(strcmp(utf8_from_utf16(wstr, res_str, ARRAY_SIZE(res_str)), str), 0);
+  ASSERT_EQ(wcscmp(tk_utf8_to_utf16(str, res_wstr, ARRAY_SIZE(res_wstr)), wstr), 0);
+  ASSERT_EQ(strcmp(tk_utf8_from_utf16(wstr, res_str, ARRAY_SIZE(res_str)), str), 0);
 }

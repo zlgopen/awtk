@@ -35,7 +35,7 @@ static ret_t candidates_on_button_click(void* ctx, event_t* e) {
   wchar_t c = text->str[text->size - 1];
   return_value_if_fail(im != NULL && text->size > 0, RET_FAIL);
 
-  utf8_from_utf16(text->str, str, sizeof(str) - 1);
+  tk_utf8_from_utf16(text->str, str, sizeof(str) - 1);
   if (input_method_commit_text(im, str) == RET_OK) {
     suggest_words_t* suggest_words = im->suggest_words;
     if (suggest_words && suggest_words_find(suggest_words, c) == RET_OK) {
