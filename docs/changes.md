@@ -3,6 +3,8 @@
 * 2019/12/17
   * 完善dialog\_confirm/dialog\_info等函数。
   * 增加widget\_set\_focusable函数。
+  * 重命名：utf8\_to\_utf16 to tk\_utf8\_to\_utf16 （感谢智明提供补丁）
+  * 重命名：utf8\_from\_utf16 to tk\_utf8\_from\_utf16 （感谢智明提供补丁）
 
 * 2019/12/13
   * 修改窗口切到FOREGROUND把焦点设回去会导致如果当前页面有滚动控件时，页面会滚动的问题（感谢大恒提供补丁）。
