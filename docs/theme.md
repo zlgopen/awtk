@@ -78,7 +78,7 @@ AWTK 的主题按控件进行分类，每种控件可以有多种不同的风格
 
 参考： 
 
-* [AWTK 中图片的绘制方式](docs/image_draw_type.md)
+* [AWTK 中图片的绘制方式](image_draw_type.md)
 * [如何在主题文件中写控件布局参数](how_to_write_layout_params_in_style.md)
 
 #### 扩展属性

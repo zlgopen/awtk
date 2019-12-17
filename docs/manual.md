@@ -179,9 +179,9 @@
 
 ### 布局器
   
-![self\_layouter](../docs/images/layout_self_layouter.png)
+![self\_layouter](images/layout_self_layouter.png)
 
-![children\_layouter](../docs/images/layout_children_layouter.png)
+![children\_layouter](images/layout_children_layouter.png)
 
 * [self\_layouter](manual/self_layouter_t.md) 控件自身排版布局器的接口
 

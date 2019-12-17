@@ -28,7 +28,9 @@
 * [AWTK中的颜色格式](color_format.md)
 * [AWTK输入事件处理流程](input_event_flow.md)
 * [内存耗尽处理流程](out_of_memory.md)
-* [如何开启按键音](docs/how_to_enable_key_touch_sound.md)
+* [如何开启按键音](how_to_enable_key_touch_sound.md)
+* [实时切换主题](theme_switch.md)
+* [键值映射](map_key.md)
 
 ### 2.HowTos
 * [AWTK 调试技巧](debug_tips.md)
@@ -43,6 +45,9 @@
 * [如何实现自定义的软键盘](how_to_impl_custom_soft_keyboard.md)
 * [如何编译Windows 32位版本](how_to_build_windows_32bit_version.md)
 * [如何支持单色LCD](how_to_support_mono_lcd.md)
+* [如何使用 mutable_image 控件](how_to_use_mutable_image.md)
+* [如何让文本滚动起来](how_to_scroll_you_text.md)
+* [如何在主题文件中写控件布局参数](how_to_write_layout_params_in_style.md)
 
 ### 3.内部原理
 * [AWTK脚本绑定原理](script_binding.md)
