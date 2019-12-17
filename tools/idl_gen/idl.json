@@ -3213,6 +3213,7 @@
         },
         "desc": "初始化TK。",
         "name": "tk_init",
+        "alias": "init",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -3226,6 +3227,7 @@
         },
         "desc": "进入TK事件主循环。",
         "name": "tk_run",
+        "alias": "run",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
