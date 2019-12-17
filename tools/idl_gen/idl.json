@@ -3206,7 +3206,10 @@
             "desc": "应用程序的根目录，用于定位资源文件(必须为常量字符串)。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "static": true,
+          "scriptable": true
+        },
         "desc": "初始化TK。",
         "name": "tk_init",
         "return": {
@@ -3216,7 +3219,10 @@
       },
       {
         "params": [],
-        "annotation": {},
+        "annotation": {
+          "static": true,
+          "scriptable": true
+        },
         "desc": "进入TK事件主循环。",
         "name": "tk_run",
         "return": {

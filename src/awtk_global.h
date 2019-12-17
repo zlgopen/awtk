@@ -35,6 +35,7 @@ BEGIN_C_DECLS
 /**
  * @method tk_init
  * 初始化TK。
+ * @annotation ["static", "scriptable"]
  * @param {wh_t} w LCD宽度。
  * @param {wh_t} h LCD高度。
  * @param {app_type_t} app_type 应用程序的类型。
@@ -48,6 +49,7 @@ ret_t tk_init(wh_t w, wh_t h, app_type_t app_type, const char* app_name, const c
 /**
  * @method tk_run
  * 进入TK事件主循环。
+ * @annotation ["static", "scriptable"]
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
