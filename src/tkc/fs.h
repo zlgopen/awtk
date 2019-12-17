@@ -38,7 +38,7 @@ typedef ret_t (*fs_file_close_t)(fs_file_t* file);
 
 /**
  * @class fs_file_t
- * @annotation ["scriptable", "fake"]
+ * @annotation ["fake"]
  * 文件接口。
  *
  * 示例：

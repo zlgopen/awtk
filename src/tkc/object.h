@@ -445,6 +445,7 @@ bool_t object_can_exec(object_t* obj, const char* name, const char* args);
  * @method object_exec
  * 执行指定的命令。
  *
+ * @alias execute
  * @annotation ["scriptable"]
  * @param {object_t*} obj object对象。
  * @param {const char*} name 命令的名称。

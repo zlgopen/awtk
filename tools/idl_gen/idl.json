@@ -2941,6 +2941,7 @@
         },
         "desc": "执行指定的命令。",
         "name": "object_exec",
+        "alias": "execute",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -16809,14 +16810,37 @@
           {
             "type": "bool_t",
             "name": "focused",
-            "desc": "是否聚焦。"
+            "desc": "是否获得焦点。"
           }
         ],
         "annotation": {
           "scriptable": true
         },
-        "desc": "设置控件的是否聚焦。",
+        "desc": "设置控件是否获得焦点。",
         "name": "widget_set_focused",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "focusable",
+            "desc": "是否可获得焦点。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置控件是否可获得焦点。",
+        "name": "widget_set_focusable",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -23500,7 +23524,6 @@
     "desc": "路径相关的工具函数。",
     "name": "path_t",
     "annotation": {
-      "scriptable": true,
       "fake": true
     },
     "level": 1
@@ -25965,7 +25988,6 @@
     "desc": "文件接口。\n\n示例：\n\n```c\nint32_t ret = 0;\nconst char* file_name = \"test.txt\";\nint32_t len = file_get_size(file_name);\nuint8_t* buff = (uint8_t*)TKMEM_ALLOC(len + 1);\nreturn_value_if_fail(buff != NULL, NULL);\n\nfs_file_t* fp = fs_open_file(os_fs(), file_name, \"rb\");\nif (fp != NULL) {\nret = fs_file_read(fp, buff, len);\nfs_file_close(fp);\n}\n```",
     "name": "fs_file_t",
     "annotation": {
-      "scriptable": true,
       "fake": true
     },
     "level": 1

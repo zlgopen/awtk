@@ -28,7 +28,7 @@ BEGIN_C_DECLS
 
 /**
  * @class path_t
- * @annotation ["scriptable", "fake"]
+ * @annotation ["fake"]
  * 路径相关的工具函数。
  */
 
