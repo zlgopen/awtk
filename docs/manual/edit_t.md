@@ -359,7 +359,7 @@ ret_t edit_set_int (widget_t* widget, int32_t value);
 * 函数原型：
 
 ```
-ret_t edit_set_int_limit (widget_t* widget, int32_t min, int32_t max, int32_t step);
+ret_t edit_set_int_limit (widget_t* widget, int32_t min, int32_t max, uint32_t step);
 ```
 
 * 参数说明：
@@ -370,7 +370,7 @@ ret_t edit_set_int_limit (widget_t* widget, int32_t min, int32_t max, int32_t st
 | widget | widget\_t* | widget对象。 |
 | min | int32\_t | 最小值。 |
 | max | int32\_t | 最大值。 |
-| step | int32\_t | 步长。 |
+| step | uint32\_t | 步长。 |
 #### edit\_set\_is\_valid\_char 函数
 -----------------------
 

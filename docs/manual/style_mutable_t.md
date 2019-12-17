@@ -182,7 +182,7 @@ ret_t style_mutable_set_color (style_t* s, const char* state, const char* name, 
 * 函数原型：
 
 ```
-ret_t style_mutable_set_int (style_t* s, const char* state, const char* name, int32_t val);
+ret_t style_mutable_set_int (style_t* s, const char* state, const char* name, uint32_t val);
 ```
 
 * 参数说明：
@@ -193,7 +193,7 @@ ret_t style_mutable_set_int (style_t* s, const char* state, const char* name, in
 | s | style\_t* | style对象。 |
 | state | const char* | 控件状态。 |
 | name | const char* | 属性名。 |
-| val | int32\_t | 值。 |
+| val | uint32\_t | 值。 |
 #### style\_mutable\_set\_name 函数
 -----------------------
 

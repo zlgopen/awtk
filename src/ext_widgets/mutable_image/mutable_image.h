@@ -148,7 +148,7 @@ ret_t mutable_image_on_destroy(widget_t* widget);
 
 ret_t mutable_image_on_paint_self(widget_t* widget, canvas_t* canvas);
 
-#define WIDGET_TYPE_MUTABLE_IMAGE "mutable"
+#define WIDGET_TYPE_MUTABLE_IMAGE "mutable_image"
 
 #define MUTABLE_IMAGE(widget) ((mutable_image_t*)(mutable_image_cast(WIDGET(widget))))
 

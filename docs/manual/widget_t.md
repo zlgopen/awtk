@@ -114,7 +114,8 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | <a href="#widget_t_widget_set_enable">widget\_set\_enable</a> | 设置控件的可用性。 |
 | <a href="#widget_t_widget_set_feedback">widget\_set\_feedback</a> | 设置控件是否启用反馈。 |
 | <a href="#widget_t_widget_set_floating">widget\_set\_floating</a> | 设置控件的floating标志。 |
-| <a href="#widget_t_widget_set_focused">widget\_set\_focused</a> | 设置控件的是否聚焦。 |
+| <a href="#widget_t_widget_set_focusable">widget\_set\_focusable</a> | 设置控件是否可获得焦点。 |
+| <a href="#widget_t_widget_set_focused">widget\_set\_focused</a> | 设置控件是否获得焦点。 |
 | <a href="#widget_t_widget_set_name">widget\_set\_name</a> | 设置控件的名称。 |
 | <a href="#widget_t_widget_set_opacity">widget\_set\_opacity</a> | 设置控件的不透明度。 |
 | <a href="#widget_t_widget_set_pointer_cursor">widget\_set\_pointer\_cursor</a> | 设置鼠标指针的图片名。 |
@@ -1596,12 +1597,32 @@ ret_t widget_set_floating (widget_t* widget, bool_t floating);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | floating | bool\_t | 是否启用floating布局。 |
+#### widget\_set\_focusable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_set_focusable">设置控件是否可获得焦点。
+
+* 函数原型：
+
+```
+ret_t widget_set_focusable (widget_t* widget, bool_t focusable);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| focusable | bool\_t | 是否可获得焦点。 |
 #### widget\_set\_focused 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="widget_t_widget_set_focused">设置控件的是否聚焦。
+> <p id="widget_t_widget_set_focused">设置控件是否获得焦点。
 
 * 函数原型：
 
@@ -1615,7 +1636,7 @@ ret_t widget_set_focused (widget_t* widget, bool_t focused);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
-| focused | bool\_t | 是否聚焦。 |
+| focused | bool\_t | 是否获得焦点。 |
 #### widget\_set\_name 函数
 -----------------------
 
