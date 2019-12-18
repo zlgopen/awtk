@@ -370,6 +370,10 @@ native_window_t* native_window_create(widget_t* widget) {
 
 #ifdef WITH_NANOVG_GL
 static ret_t sdl_init_gl(void) {
+  SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
+  SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
+  SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
+  SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
   SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
