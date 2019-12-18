@@ -13,7 +13,6 @@ uint32_t compress_threshold = 1024;
 
 static void* server_thread_entry1(void* args) {
   tk_iostream_t* b_io = TK_IOSTREAM(args);
-  tk_istream_t* is = tk_iostream_get_istream(b_io);
   tk_ostream_t* os = tk_iostream_get_ostream(b_io);
 
   object_set_prop_int(OBJECT(os), TK_STREAM_PROP_COMPRESS_THRESHOLD, compress_threshold);
@@ -66,7 +65,6 @@ TEST(IOStreamSHDLC, small) {
   tk_iostream_t* b_tcp = tk_iostream_tcp_create(socks[1]);
   tk_iostream_t* b_io = tk_iostream_shdlc_create(b_tcp);
   tk_istream_t* is = tk_iostream_get_istream(a_io);
-  tk_ostream_t* os = tk_iostream_get_ostream(a_io);
   tk_thread_t* t = tk_thread_create(server_thread_entry1, b_io);
 
   data_size = 64;
@@ -110,7 +108,6 @@ TEST(IOStreamSHDLC, large) {
 
 static void* server_thread_entry_noisy(void* args) {
   tk_iostream_t* b_io = TK_IOSTREAM(args);
-  tk_istream_t* is = tk_iostream_get_istream(b_io);
   tk_ostream_t* os = tk_iostream_get_ostream(b_io);
 
   object_set_prop_int(OBJECT(os), TK_STREAM_PROP_COMPRESS_THRESHOLD, compress_threshold);
@@ -130,7 +127,6 @@ TEST(IOStreamSHDLC, noisy) {
   tk_iostream_t* b_io = tk_iostream_shdlc_create(b_noisy);
 
   tk_istream_t* is = tk_iostream_get_istream(a_io);
-  tk_ostream_t* os = tk_iostream_get_ostream(a_io);
   tk_thread_t* t = tk_thread_create(server_thread_entry_noisy, b_io);
 
   data_size = 4;

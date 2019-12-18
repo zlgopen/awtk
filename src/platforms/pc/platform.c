@@ -88,7 +88,6 @@ static ret_t date_time_get_now_impl(date_time_t* dt) {
 static ret_t date_time_set_now_impl(date_time_t* dt) {
   struct tm tms;
   time_t t = 0;
-  struct timeval tv;
   memset(&tms, 0x00, sizeof(tms));
 
   tms.tm_year = dt->year - 1900;
@@ -100,11 +99,14 @@ static ret_t date_time_set_now_impl(date_time_t* dt) {
 
   t = mktime(&tms);
 #ifdef LINUX
-  tv.tv_sec = t;
-  tv.tv_usec = 0;
-  if (settimeofday(&tv, (struct timezone*)0) < 0) {
-    perror("stime failed\n");
-    return RET_FAIL;
+  {
+    struct timeval tv;
+    tv.tv_sec = t;
+    tv.tv_usec = 0;
+    if (settimeofday(&tv, (struct timezone*)0) < 0) {
+      perror("stime failed\n");
+      return RET_FAIL;
+    }
   }
 #endif /*LINUX*/
 

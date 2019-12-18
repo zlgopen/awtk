@@ -19,7 +19,6 @@ TEST(Fs, basic) {
 
 TEST(Fs, eof) {
   char buff[128];
-  uint32_t size = 0;
   const char* str = "hello world";
   const char* filename = "test.bin";
 
