@@ -372,6 +372,33 @@ static ret_t on_combo_box_will_change(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t on_pages_add_child(void* ctx, event_t* e) {
+  widget_t* widget = WIDGET(ctx);
+  widget_t* win = widget_get_window(widget);
+
+  widget_t* close_btn = widget_lookup(win, "close", TRUE);
+  widget_t* text_label = widget_lookup(win, "text", TRUE);
+  widget_t* tab_button_parent = widget_lookup_by_type(win, "tab_button", TRUE)->parent;
+
+  if (close_btn != NULL) {
+    widget_on(close_btn, EVT_CLICK, on_close, win);
+  }
+
+  if (text_label != NULL) {
+    WIDGET_FOR_EACH_CHILD_BEGIN(tab_button_parent, iter, i)
+
+    if (tk_str_eq(iter->vt->type, "tab_button")) {
+      if (TAB_BUTTON(iter)->value) {
+        widget_set_text_utf8(text_label, iter->name);
+      }
+    }
+
+    WIDGET_FOR_EACH_CHILD_END();
+  }
+
+  return RET_OK;
+}
+
 static ret_t on_combo_box_changed(void* ctx, event_t* e) {
   widget_t* combo_box = WIDGET(ctx);
   widget_t* win = widget_get_window(combo_box);
@@ -589,6 +616,8 @@ static ret_t install_one(void* ctx, const void* iter) {
       if (win) {
         widget_on(widget, EVT_CLICK, on_quit_app, win);
       }
+    } else if (tk_str_eq(name, "pages")) {
+      widget_on(widget, EVT_WIDGET_ADD_CHILD, on_pages_add_child, widget);
     }
   } else if (tk_str_eq(widget->vt->type, "combo_box")) {
     widget_on(widget, EVT_VALUE_CHANGED, on_combo_box_changed, widget);

@@ -362,6 +362,16 @@ typedef enum _event_type_t {
    */
   EVT_THEME_CHANGED,
   /**
+   * @const EVT_WIDGET_ADD_CHILD
+   * 控件加载新的子控件(event_t)。
+   */
+  EVT_WIDGET_ADD_CHILD,
+  /**
+   * @const EVT_WIDGET_REMOVE_CHILD
+   * 控件移除子控件(event_t)。
+   */
+  EVT_WIDGET_REMOVE_CHILD,
+  /**
    * @const EVT_REQ_START
    * event queue其它请求编号起始值。
    */

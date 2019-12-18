@@ -25,6 +25,11 @@ TEST(TabButton, basic) {
   ASSERT_EQ(widget_get_prop(w, WIDGET_PROP_ACTIVE_ICON, &v2), RET_OK);
   ASSERT_EQ(strcmp(v1.value.str, v2.value.str), 0);
 
+  value_set_str(&v1, "tab_button_view_page1");
+  ASSERT_EQ(widget_set_prop(w, WIDGET_PROP_LOAD_UI, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(w, WIDGET_PROP_LOAD_UI, &v2), RET_OK);
+  ASSERT_EQ(strcmp(v1.value.str, v2.value.str), 0);
+
   widget_destroy(g);
 }
 

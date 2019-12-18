@@ -666,6 +666,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_ACTIVE_ICON "active_icon"
 
 /**
+ * @const WIDGET_PROP_LOAD_UI
+ * 动态加载UI名字。
+ */
+#define WIDGET_PROP_LOAD_UI "load_ui"
+
+/**
  * @const WIDGET_PROP_OPEN_WINDOW
  * 要打开窗口的名称。
  */

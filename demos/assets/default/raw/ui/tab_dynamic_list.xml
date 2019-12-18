@@ -1,0 +1,26 @@
+<window anim_hint="htranslate" theme="tab_list">
+  <pages name="pages" x="right" y="0" w="70%" h="100%"> 
+  </pages>
+
+  <list_view x="0" y="0" w="30%" h="100%" item_height="40" auto_hide_scroll_bar="true">
+    <scroll_view name="view" x="0"  y="0" w="-12" h="100%">
+      <tab_button name="tab_button1" text="page1" value="true" load_ui="tab_button_view_page1" />
+      <tab_button name="tab_button2" text="page2" load_ui="tab_button_view_page2" />
+      <tab_button name="tab_button3" text="page3" load_ui="tab_button_view_page1" />
+      <tab_button name="tab_button4" text="page4" load_ui="tab_button_view_page2" />
+      <tab_button name="tab_button5" text="page5" load_ui="tab_button_view_page1" />
+      <tab_button name="tab_button6" text="page6" load_ui="tab_button_view_page2" />
+      <tab_button name="tab_button7" text="page7" load_ui="tab_button_view_page1" />
+      <tab_button name="tab_button8" text="page8" load_ui="tab_button_view_page2" />
+      <tab_button name="tab_button9" text="page9" load_ui="tab_button_view_page1" />
+      <tab_button name="tab_button10" text="page10" load_ui="tab_button_view_page2" />
+      <tab_button name="tab_button11" text="page11" load_ui="tab_button_view_page1" />
+      <tab_button name="tab_button12" text="page12" load_ui="tab_button_view_page2" />
+      <tab_button name="tab_button13" text="page13" load_ui="tab_button_view_page1" />
+      <tab_button name="tab_button14" text="page14" load_ui="tab_button_view_page2" />
+      <tab_button name="tab_button15" text="page15" load_ui="tab_button_view_page1" />
+      <tab_button name="tab_button16" text="page16" load_ui="tab_button_view_page2" />
+    </scroll_view>
+    <scroll_bar_d name="bar" x="right" y="0" w="12" h="100%" value="0"/>
+  </list_view>
+</window>

@@ -9,6 +9,7 @@
   * 完善widget\_set\_tr\_text
   * 完善color component 事件处理（感谢大恒提供补丁）。
   * 完善combobox ex的style处理（感谢大恒提供补丁）。
+  * 完善tab button，支持动态加载指定页面（感谢智明提供补丁）
 
 * 2019/12/17
   * 完善dialog\_confirm/dialog\_info等函数。

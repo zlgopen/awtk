@@ -40,6 +40,7 @@
 #include "assets/default/inc/ui/kb_phone.data"
 #include "assets/default/inc/ui/tab_scrollable.data"
 #include "assets/default/inc/ui/main.data"
+#include "assets/default/inc/ui/tab_button_view_page1.data"
 #include "assets/default/inc/ui/digit_clock.data"
 #include "assets/default/inc/ui/scroll_bar.data"
 #include "assets/default/inc/ui/lua.data"
@@ -77,6 +78,7 @@
 #include "assets/default/inc/ui/language.data"
 #include "assets/default/inc/ui/kb_float.data"
 #include "assets/default/inc/ui/htranslate.data"
+#include "assets/default/inc/ui/tab_dynamic_list.data"
 #include "assets/default/inc/ui/draggable.data"
 #include "assets/default/inc/ui/list_view_vh.data"
 #include "assets/default/inc/ui/rich_text.data"
@@ -137,6 +139,7 @@
 #include "assets/default/inc/ui/menu_left_top.data"
 #include "assets/default/inc/ui/kb_ufloat.data"
 #include "assets/default/inc/ui/kb_default.data"
+#include "assets/default/inc/ui/tab_button_view_page2.data"
 #include "assets/default/inc/ui/slide_up.data"
 #include "assets/default/inc/ui/rich_text2.data"
 #include "assets/default/inc/ui/list_view_h.data"
@@ -394,7 +397,7 @@
 #include "assets/default/inc/images/arrow_left_n.data"
 #include "assets/default/inc/images/edit_clear_p.data"
 #include "assets/default/inc/images/battery_2.data"
-#endif /*WITH_STB_IMAGE*/
+#endif/*WITH_STB_IMAGE*/
 #ifdef WITH_VGCANVAS
 #include "assets/default/inc/images/pointer_4.bsvg"
 #include "assets/default/inc/images/ball.bsvg"
@@ -402,13 +405,13 @@
 #include "assets/default/inc/images/pointer_1.bsvg"
 #include "assets/default/inc/images/pointer.bsvg"
 #include "assets/default/inc/images/girl.bsvg"
-#endif /*WITH_VGCANVAS*/
+#endif/*WITH_VGCANVAS*/
 #if defined(WITH_TRUETYPE_FONT)
 #include "assets/default/inc/fonts/default.res"
-#else /*WITH_TRUETYPE_FONT*/
+#else/*WITH_TRUETYPE_FONT*/
 #include "assets/default/inc/fonts/default.data"
-#endif /*WITH_TRUETYPE_FONT*/
-#endif /*WITH_FS_RES*/
+#endif/*WITH_TRUETYPE_FONT*/
+#endif/*WITH_FS_RES*/
 
 ret_t assets_init(void) {
   assets_manager_t* am = assets_manager();
@@ -432,6 +435,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_kb_phone);
   assets_manager_add(am, ui_tab_scrollable);
   assets_manager_add(am, ui_main);
+  assets_manager_add(am, ui_tab_button_view_page1);
   assets_manager_add(am, ui_digit_clock);
   assets_manager_add(am, ui_scroll_bar);
   assets_manager_add(am, ui_lua);
@@ -469,6 +473,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_language);
   assets_manager_add(am, ui_kb_float);
   assets_manager_add(am, ui_htranslate);
+  assets_manager_add(am, ui_tab_dynamic_list);
   assets_manager_add(am, ui_draggable);
   assets_manager_add(am, ui_list_view_vh);
   assets_manager_add(am, ui_rich_text);
@@ -529,6 +534,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_menu_left_top);
   assets_manager_add(am, ui_kb_ufloat);
   assets_manager_add(am, ui_kb_default);
+  assets_manager_add(am, ui_tab_button_view_page2);
   assets_manager_add(am, ui_slide_up);
   assets_manager_add(am, ui_rich_text2);
   assets_manager_add(am, ui_list_view_h);
@@ -695,7 +701,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, image_pointer_1);
   assets_manager_add(am, image_pointer);
   assets_manager_add(am, image_girl);
-#endif /*WITH_VGCANVAS*/
+#endif/*WITH_VGCANVAS*/
 #endif
 
   tk_init_assets();

@@ -735,6 +735,7 @@ ret_t widget_destroy_children(widget_t* widget) {
 }
 
 ret_t widget_add_child(widget_t* widget, widget_t* child) {
+  event_t e = event_init(EVT_WIDGET_ADD_CHILD, widget);
   return_value_if_fail(widget != NULL && child != NULL && child->parent == NULL, RET_BAD_PARAMS);
 
   child->parent = widget;
@@ -762,6 +763,8 @@ ret_t widget_add_child(widget_t* widget, widget_t* child) {
   if (!(child->initializing) && widget_get_window(child) != NULL) {
     widget_set_need_update_style_recursive(child);
   }
+
+  widget_dispatch(widget, &e);
 
   return RET_OK;
 }
@@ -803,11 +806,18 @@ static ret_t widget_remove_child_prepare(widget_t* widget, widget_t* child) {
 }
 
 ret_t widget_remove_child(widget_t* widget, widget_t* child) {
+  ret_t ret = RET_OK;
+  event_t e = event_init(EVT_WIDGET_REMOVE_CHILD, widget);
   return_value_if_fail(widget != NULL && child != NULL, RET_BAD_PARAMS);
 
   widget_remove_child_prepare(widget, child);
+  ret = darray_remove(widget->children, child);
 
-  return darray_remove(widget->children, child);
+  if (ret == RET_OK) {
+    widget_dispatch(widget, &e);
+  }
+
+  return ret;
 }
 
 ret_t widget_insert_child(widget_t* widget, uint32_t index, widget_t* child) {
