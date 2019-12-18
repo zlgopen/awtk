@@ -7,6 +7,8 @@
   * 修复了gles在部分系统上面颜色显示不正常的问题（感谢智明提供补丁）
   * 修复了svg工具生成bsvg的时候对svg的默认颜色取值问题（感谢智明提供补丁）
   * 完善widget\_set\_tr\_text
+  * 完善color component 事件处理（感谢大恒提供补丁）。
+  * 完善combobox ex的style处理（感谢大恒提供补丁）。
 
 * 2019/12/17
   * 完善dialog\_confirm/dialog\_info等函数。
