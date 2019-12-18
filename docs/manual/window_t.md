@@ -50,6 +50,7 @@ default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/st
 | <a href="#window_t_window_close">window\_close</a> | 关闭窗口。 |
 | <a href="#window_t_window_close_force">window\_close\_force</a> | 立即无条件关闭窗口(无动画)。 |
 | <a href="#window_t_window_create">window\_create</a> | 创建window对象 |
+| <a href="#window_t_window_create_default">window\_create\_default</a> | 以缺省的方式创建window对象。 |
 | <a href="#window_t_window_open">window\_open</a> | 从资源文件中加载并创建window_base对象。本函数在ui_loader/ui_builder_default里实现。 |
 | <a href="#window_t_window_open_and_close">window\_open\_and\_close</a> | 从资源文件中加载并创建window对象。本函数在ui_loader/ui_builder_default里实现。 |
 | <a href="#window_t_window_set_fullscreen">window\_set\_fullscreen</a> | 设置为全屏窗口。 |
@@ -139,6 +140,24 @@ widget_t* window_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### window\_create\_default 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_t_window_create_default">以缺省的方式创建window对象。
+
+* 函数原型：
+
+```
+widget_t* window_create_default ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | widget\_t* | 对象。 |
 #### window\_open 函数
 -----------------------
 

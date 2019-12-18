@@ -45383,6 +45383,19 @@
         }
       },
       {
+        "params": [],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "以缺省的方式创建window对象。",
+        "name": "window_create_default",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
         "params": [
           {
             "type": "widget_t*",
