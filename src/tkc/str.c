@@ -197,8 +197,11 @@ ret_t str_unescape(str_t* str) {
           c = '\\';
           break;
         }
+        case '\0': {
+          break;
+        }
         default: {
-          log_warn("not support char\n");
+          log_warn("not support char: %s [%c]\n", str->str, *s);
           break;
         }
       }
