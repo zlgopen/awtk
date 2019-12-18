@@ -68,9 +68,9 @@ tab\_button\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均
 | -------- | ------------ | 
 | <a href="#tab_button_t_tab_button_cast">tab\_button\_cast</a> | 转换tab_button对象(供脚本语言使用)。 |
 | <a href="#tab_button_t_tab_button_create">tab\_button\_create</a> | 创建tab_button对象 |
-| <a href="#tab_button_t_tab_button_ex_set_load_ui">tab\_button\_ex\_set\_load\_ui</a> | 设置控件动态加载显示UI。 |
 | <a href="#tab_button_t_tab_button_set_active_icon">tab\_button\_set\_active\_icon</a> | 设置控件的active图标。 |
 | <a href="#tab_button_t_tab_button_set_icon">tab\_button\_set\_icon</a> | 设置控件的图标。 |
+| <a href="#tab_button_t_tab_button_set_load_ui">tab\_button\_set\_load\_ui</a> | 设置控件动态加载显示UI。 |
 | <a href="#tab_button_t_tab_button_set_value">tab\_button\_set\_value</a> | 设置为当前标签。 |
 ### 属性
 <p id="tab_button_t_properties">
@@ -130,26 +130,6 @@ widget_t* tab_button_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
-#### tab\_button\_ex\_set\_load\_ui 函数
------------------------
-
-* 函数功能：
-
-> <p id="tab_button_t_tab_button_ex_set_load_ui">设置控件动态加载显示UI。
-
-* 函数原型：
-
-```
-ret_t tab_button_ex_set_load_ui (widget_t* widget, char* name);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| widget | widget\_t* | tab\_button对象。 |
-| name | char* | 动态加载UI的资源名称。 |
 #### tab\_button\_set\_active\_icon 函数
 -----------------------
 
@@ -190,6 +170,26 @@ ret_t tab_button_set_icon (widget_t* widget, char* name);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | tab\_button对象。 |
 | name | char* | 当前项的图标。 |
+#### tab\_button\_set\_load\_ui 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="tab_button_t_tab_button_set_load_ui">设置控件动态加载显示UI。
+
+* 函数原型：
+
+```
+ret_t tab_button_set_load_ui (widget_t* widget, char* name);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | tab\_button对象。 |
+| name | char* | 动态加载UI的资源名称。 |
 #### tab\_button\_set\_value 函数
 -----------------------
 

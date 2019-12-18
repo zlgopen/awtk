@@ -43290,7 +43290,7 @@
           "scriptable": true
         },
         "desc": "设置控件动态加载显示UI。",
-        "name": "tab_button_ex_set_load_ui",
+        "name": "tab_button_set_load_ui",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
