@@ -79,7 +79,7 @@ static const char utf8_skip_data[256] = {
 const char* const g_utf8_skip = utf8_skip_data;
 #define g_utf8_next_char(p) (char*)((p) + g_utf8_skip[*(const unsigned char*)(p)])
 
-wchar_t utf8_get_char(const char* p, const char** next) {
+static wchar_t utf8_get_char(const char* p, const char** next) {
   uint32_t mask = 0;
   wchar_t result = 0;
   int32_t i = 0, len = 0;
@@ -96,40 +96,7 @@ wchar_t utf8_get_char(const char* p, const char** next) {
   return result;
 }
 
-wchar_t utf8_get_prev_char(const char* p, const char** prev) {
-  int i = 0;
-  for (i = 1; i < 8; i++) {
-    unsigned char val = p[-i];
-    if ((val & 0x80) && !(val & 0x40)) {
-      continue;
-    } else {
-      if (prev != NULL) {
-        *prev = p - i;
-      }
-      return utf8_get_char(p - i, NULL);
-    }
-  }
-
-  if (prev != NULL) {
-    *prev = p;
-  }
-
-  return 0;
-}
-
-int utf8_count_char(const char* str, int length) {
-  int nr = 0;
-  const char* iter = str;
-  return_value_if_fail(str != NULL, 0);
-
-  while (utf8_get_char(iter, &iter) && (iter - str) <= (int)length) {
-    nr++;
-  }
-
-  return nr;
-}
-
-int unichar_to_utf8(wchar_t c, char* outbuf) {
+static int unichar_to_utf8(wchar_t c, char* outbuf) {
   /* If this gets modified, also update the copy in g_string_insert_unichar() */
   size_t len = 0;
   int first;
@@ -168,7 +135,7 @@ int unichar_to_utf8(wchar_t c, char* outbuf) {
 
 #define SURROGATE_VALUE(h, l) (((h)-0xd800) * 0x400 + (l)-0xdc00 + 0x10000)
 
-char* utf16_to_utf8(const wchar_t* str, int32_t len, char* utf8, int out_len) {
+static char* utf16_to_utf8(const wchar_t* str, int32_t len, char* utf8, int out_len) {
   /* This function and g_utf16_to_ucs4 are almost exactly identical - The lines
    * that differ are marked.
    */
