@@ -189,7 +189,7 @@ ret_t tab_button_set_icon(widget_t* widget, const char* name);
 ret_t tab_button_set_active_icon(widget_t* widget, const char* name);
 
 /**
- * @method tab_button_ex_set_load_ui
+ * @method tab_button_set_load_ui
  * 设置控件动态加载显示UI。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget tab_button对象。
@@ -197,7 +197,7 @@ ret_t tab_button_set_active_icon(widget_t* widget, const char* name);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t tab_button_ex_set_load_ui(widget_t* widget, const char* name);
+ret_t tab_button_set_load_ui(widget_t* widget, const char* name);
 
 #define TAB_BUTTON(widget) ((tab_button_t*)(tab_button_cast(WIDGET(widget))))
 
