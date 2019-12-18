@@ -2,6 +2,8 @@
 
 * 2019/12/18
   * 完善窗口管理器支持dialog叠加（感谢尧燊提供补丁）。
+  * utf8中内部函数改为static。
+  * 完善str\_unescape。
 
 * 2019/12/17
   * 完善dialog\_confirm/dialog\_info等函数。
