@@ -1,16 +1,17 @@
-# 如何使用 mutable_image 控件
+# 如何使用 mutable\_image 控件
 
-​	有时候，需要把一个视频或者摄像头的数据绘画到屏幕上面。
+有时候，需要把一个视频或者摄像头的数据绘画到屏幕上面。
 
-​	这个时候就可以使用 mutable_image 控件来实现该功能了。
+这个时候就可以使用 mutable\_image 控件来实现该功能了。
 
+ 
 ## 一、基本用法
 
-​	一般情况下用户只需要通过 mutable_image_set_prepare_image 函数注册绘制 bitmap 的函数就可以了，例如下面示例中注册 mutable_image_prepare_image 函数，该函数不断的给 mutable_image 控件的 bitmap 填充红色，用户也可以在该函数中绘画其他的图像数据，就可以达到动态播放视频或者摄像头的效果。
+一般情况下用户只需要通过 mutable\_image\_set\_prepare\_image 函数注册绘制 bitmap 的函数就可以了，例如下面示例中注册 mutable\_image\_prepare\_image 函数，该函数不断的给 mutable\_image 控件的 bitmap 填充红色，用户也可以在该函数中绘画其他的图像数据，就可以达到动态播放视频或者摄像头的效果。
 
 #### 备注：
 
-​	一般情况下 mutable_image 控件的 bitmap 的位图格式是 lcd 的格式。
+> 一般情况下 mutable\_image 控件的 bitmap 的位图格式是 lcd 的格式。
 
 #### 示例：
 
@@ -65,17 +66,20 @@ ret_t application_init() {
 }
 ```
 
+> 完整的用法请参考：https://github.com/zlgopen/awtk-c-demos/blob/master/demos/mutable_image.c
+
+
 ## 二、扩展用法
 
-​	在某些平台下，支持多个 lcd 的硬件 framebuffer ，这些硬件 framebuffer 可以在硬件绘画的时候做合成到 lcd ，这样子可以速度会软件合成要快的多，所以 mutable_image 控件也支持该情况。
+在某些平台下，支持多个 lcd 的硬件 framebuffer ，这些硬件 framebuffer 可以在硬件绘画的时候做合成到 lcd ，这样子可以速度会软件合成要快的多，所以 mutable\_image 控件也支持该情况。
 
 #### 备注：
 
-​	如果调用了 mutable_image_set_framebuffer 函数设置硬件 framebuffer 了， mutable_image 控件就不会在 AWTK 的 GUI 上面显示了。
+如果调用了 mutable\_image\_set\_framebuffer 函数设置硬件 framebuffer 了， mutable\_image 控件就不会在 AWTK 的 GUI 上面显示了。
 
 #### 注意：
 
-​	该用法只适用于多个 lcd 硬件 framebuffer 的平台，如果单 framebuffer 的平台就只能使用上面提供的基本用法了。
+该用法只适用于多个 lcd 硬件 framebuffer 的平台，如果单 framebuffer 的平台就只能使用上面提供的基本用法了。
 
 #### 示例：
 
