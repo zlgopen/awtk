@@ -78,6 +78,7 @@ static widget_t* combo_box_create_scroll_popup(combo_box_t* combo_box) {
   widget_t* scroll_bar = scroll_bar_create(list_view, 0, 0, 0, 0);
   widget_set_self_layout(scroll_bar, "default(x=right, y=0,w=12, h=100%%)");
 
+  widget_use_style(win, "combobox_popup");
   combo_box_create_popup_items(combo_box, scroll_view);
   widget_layout(win);
 
