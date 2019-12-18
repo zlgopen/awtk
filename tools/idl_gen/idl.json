@@ -3908,6 +3908,14 @@
         "name": "EVT_THEME_CHANGED"
       },
       {
+        "desc": "控件加载新的子控件(event_t)。",
+        "name": "EVT_WIDGET_ADD_CHILD"
+      },
+      {
+        "desc": "控件移除子控件(event_t)。",
+        "name": "EVT_WIDGET_REMOVE_CHILD"
+      },
+      {
         "desc": "event queue其它请求编号起始值。",
         "name": "EVT_REQ_START"
       },
@@ -15524,6 +15532,10 @@
         "name": "WIDGET_PROP_ACTIVE_ICON"
       },
       {
+        "desc": "动态加载UI名字。",
+        "name": "WIDGET_PROP_LOAD_UI"
+      },
+      {
         "desc": "要打开窗口的名称。",
         "name": "WIDGET_PROP_OPEN_WINDOW"
       },
@@ -16040,7 +16052,7 @@
         ],
         "annotation": {},
         "desc": "将char类型转换为wchar_t类型。",
-        "name": "tk_utf8_from_utf16",
+        "name": "tk_utf8_to_utf16",
         "return": {
           "type": "wchar_t*",
           "desc": "值。"
@@ -43260,6 +43272,29 @@
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
         }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "tab_button对象。"
+          },
+          {
+            "type": "char*",
+            "name": "name",
+            "desc": "动态加载UI的资源名称。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置控件动态加载显示UI。",
+        "name": "tab_button_ex_set_load_ui",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
       }
     ],
     "events": [
@@ -43279,6 +43314,19 @@
         "name": "value",
         "desc": "值。",
         "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "load_ui",
+        "desc": "激活后加载的UI名字。",
+        "type": "char*",
         "annotation": {
           "set_prop": true,
           "get_prop": true,
@@ -43316,7 +43364,7 @@
       }
     ],
     "header": "widgets/tab_button.h",
-    "desc": "标签按钮控件。\n\n标签按钮有点类似单选按钮，但点击标签按钮之后会自动切换当前的标签页。\n\ntab\\_button\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于tab\\_button\\_t控件。\n\n在xml中使用\"tab\\_button\"标签创建标签按钮控件。如：\n\n```xml\n<tab_button_group x=\"c\" y=\"bottom:10\" w=\"90%\" h=\"30\" compact=\"true\" >\n<tab_button text=\"General\"/>\n<tab_button text=\"Network\" value=\"true\" />\n<tab_button text=\"Security\"/>\n</tab_button_group>\n```\n\n标签按钮一般放在标签按钮分组中，布局由标签按钮分组控件决定，不需要指定自己的布局参数和坐标。\n\n> 更多用法请参考：\n[tab control](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/)\n\n可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\n\n```xml\n<tab_button>\n<style name=\"default\" border_color=\"#a0a0a0\"  text_color=\"black\">\n<normal     bg_color=\"#d0d0d0\" />\n<pressed    bg_color=\"#f0f0f0\" />\n<over       bg_color=\"#e0e0e0\" />\n<normal_of_active     bg_color=\"#f0f0f0\" />\n<pressed_of_active    bg_color=\"#f0f0f0\" />\n<over_of_active       bg_color=\"#f0f0f0\" />\n</style>\n</tab_button>\n```",
+    "desc": "标签按钮控件。\n\n标签按钮有点类似单选按钮，但点击标签按钮之后会自动切换当前的标签页。\n\ntab\\_button\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于tab\\_button\\_t控件。\n\n在xml中使用\"tab\\_button\"标签创建标签按钮控件。如：\n\n```xml\n<!-- tab_button_view_page1.xml -->\n<view w=\"100%\" h=\"100%\">\n<label x=\"c\" y=\"m\" w=\"100%\" h=\"60\" text=\"page1\" />\n<button name=\"close\" x=\"c\" y=\"bottom:100\" w=\"80\" h=\"40\" text=\"Close\" />\n</view>\n```\n\n```xml\n<!-- tab_button dynamic load UI -->\n<pages name=\"pages\" x=\"right\" y=\"0\" w=\"70%\" h=\"100%\">\n</pages>\n<list_view x=\"0\" y=\"0\" w=\"30%\" h=\"100%\" item_height=\"40\" auto_hide_scroll_bar=\"true\">\n<scroll_view name=\"view\" x=\"0\"  y=\"0\" w=\"-12\" h=\"100%\">\n<tab_button text=\"page1\" load_ui=\"tab_button_view_page1\" value=\"true\"/>\n<tab_button text=\"page2\" load_ui=\"tab_button_view_page2\" />\n<tab_button text=\"page3\" load_ui=\"tab_button_view_page3\" />\n<scroll_view />\n<scroll_bar_d name=\"bar\" x=\"right\" y=\"0\" w=\"12\" h=\"100%\" value=\"0\"/>\n</list_view>\n```\n\n```xml\n<!-- tab_button static load UI -->\n<tab_button_group x=\"c\" y=\"bottom:10\" w=\"90%\" h=\"30\" compact=\"true\" >\n<tab_button text=\"General\"/>\n<tab_button text=\"Network\" value=\"true\" />\n<tab_button text=\"Security\"/>\n</tab_button_group>\n```\n\n标签按钮一般放在标签按钮分组中，布局由标签按钮分组控件决定，不需要指定自己的布局参数和坐标。\n\n> 更多用法请参考：\n[tab control](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/)\n\n可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\n\n```xml\n<tab_button>\n<style name=\"default\" border_color=\"#a0a0a0\"  text_color=\"black\">\n<normal     bg_color=\"#d0d0d0\" />\n<pressed    bg_color=\"#f0f0f0\" />\n<over       bg_color=\"#e0e0e0\" />\n<normal_of_active     bg_color=\"#f0f0f0\" />\n<pressed_of_active    bg_color=\"#f0f0f0\" />\n<over_of_active       bg_color=\"#f0f0f0\" />\n</style>\n</tab_button>\n```",
     "name": "tab_button_t",
     "parent": "widget_t",
     "annotation": {

@@ -110,6 +110,7 @@
 | WIDGET\_PROP\_SELECTED | 是否被选中。 |
 | WIDGET\_PROP\_CHECKED | 是否被勾选。 |
 | WIDGET\_PROP\_ACTIVE\_ICON | active状态下的图标。 |
+| WIDGET\_PROP\_LOAD\_UI | 动态加载UI名字。 |
 | WIDGET\_PROP\_OPEN\_WINDOW | 要打开窗口的名称。 |
 | WIDGET\_PROP\_SELECTED\_INDEX | 被选中项的索引。 |
 | WIDGET\_PROP\_CLOSE\_WHEN\_CLICK | 点击窗口时关闭窗口。 |

@@ -69,6 +69,8 @@
 | EVT\_WIDGET\_CREATED | 控件创建事件(event\_t)。 |
 | EVT\_REQUEST\_QUIT\_APP | 请求退出应用程序事件。点击原生窗口关闭按钮时，通过窗口管理器触发，注册该事件并返回RET\_STOP，可以阻止窗口关闭。 |
 | EVT\_THEME\_CHANGED | 主题变化(event\_t)。 |
+| EVT\_WIDGET\_ADD\_CHILD | 控件加载新的子控件(event\_t)。 |
+| EVT\_WIDGET\_REMOVE\_CHILD | 控件移除子控件(event\_t)。 |
 | EVT\_REQ\_START | event queue其它请求编号起始值。 |
 | EVT\_USER\_START | 用户定义事件起始值。 |
 | EVT\_NONE | 无效事件名称。 |

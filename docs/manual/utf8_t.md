@@ -19,14 +19,14 @@ tk_utf8_from_utf16(wstr, res_str, ARRAY_SIZE(res_str));
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#tk_utf8_from_utf16">tk\_utf8\_from\_utf16</a> | 将wchar_t类型转换为char类型。 |
-| <a href="#tk_utf8_to_utf16">tk\_utf8\_to\_utf16</a> | 将char类型转换为wchar_t类型。 |
-#### utf8\_from\_utf16 函数
+| <a href="#utf8_t_tk_utf8_from_utf16">tk\_utf8\_from\_utf16</a> | 将wchar_t类型转换为char类型。 |
+| <a href="#utf8_t_tk_utf8_to_utf16">tk\_utf8\_to\_utf16</a> | 将char类型转换为wchar_t类型。 |
+#### tk\_utf8\_from\_utf16 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="tk_utf8_from_utf16">将wchar_t类型转换为char类型。
+> <p id="utf8_t_tk_utf8_from_utf16">将wchar_t类型转换为char类型。
 
 * 函数原型：
 
@@ -42,12 +42,12 @@ char* tk_utf8_from_utf16 (const wchar_t* str, const char* out, uint32_t size);
 | str | const wchar\_t* | str。 |
 | out | const char* | 返回结果缓冲区。 |
 | size | uint32\_t | 缓冲区大小。 |
-#### utf8\_from\_utf16 函数
+#### tk\_utf8\_to\_utf16 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="tk_utf8_to_utf16">将char类型转换为wchar_t类型。
+> <p id="utf8_t_tk_utf8_to_utf16">将char类型转换为wchar_t类型。
 
 * 函数原型：
 
