@@ -4,6 +4,8 @@
   * 完善窗口管理器支持dialog叠加（感谢尧燊提供补丁）。
   * utf8中内部函数改为static。
   * 完善str\_unescape。
+  * 修复了gles在部分系统上面颜色显示不正常的问题（感谢智明提供补丁）
+  * 修复了svg工具生成bsvg的时候对svg的默认颜色取值问题（感谢智明提供补丁）
 
 * 2019/12/17
   * 完善dialog\_confirm/dialog\_info等函数。
