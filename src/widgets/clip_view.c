@@ -20,7 +20,8 @@
  */
 
 #include "tkc/mem.h"
-#include "clip_view.h"
+#include "widgets/clip_view.h"
+#include "base/widget_vtable.h"
 
 static ret_t clip_view_on_paint_children(widget_t* widget, canvas_t* c) {
   rect_t r = {0};
