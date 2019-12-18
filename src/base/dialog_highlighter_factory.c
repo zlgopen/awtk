@@ -77,7 +77,7 @@ ret_t dialog_highlighter_factory_register(dialog_highlighter_factory_t* factory,
   return RET_OK;
 }
 
-static ret_t dialog_highlighter_on_dialog_destroy(void* ctx, event_t* e) {
+ret_t dialog_highlighter_on_dialog_destroy(void* ctx, event_t* e) {
   dialog_highlighter_t* h = (dialog_highlighter_t*)ctx;
 
   dialog_highlighter_destroy(h);

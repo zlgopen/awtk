@@ -96,6 +96,9 @@ dialog_highlighter_t* dialog_highlighter_factory_create_highlighter(
  */
 ret_t dialog_highlighter_factory_destroy(dialog_highlighter_factory_t* factory);
 
+/*public for internal use*/
+ret_t dialog_highlighter_on_dialog_destroy(void* ctx, event_t* e);
+
 END_C_DECLS
 
 #endif /*TK_DIALOG_HIGHLIGHTER_FACTORY_H*/

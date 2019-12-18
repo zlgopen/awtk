@@ -1,5 +1,8 @@
 # 最新动态
 
+* 2019/12/18
+  * 完善窗口管理器支持dialog叠加（感谢尧燊提供补丁）。
+
 * 2019/12/17
   * 完善dialog\_confirm/dialog\_info等函数。
   * 增加widget\_set\_focusable函数。

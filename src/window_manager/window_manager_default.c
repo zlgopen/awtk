@@ -184,12 +184,22 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
 
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
   dialog_highlighter_t* dialog_highlighter = NULL;
+  int32_t end = -1, start = -1;
 
   return_value_if_fail(img != NULL && fbo != NULL, RET_BAD_PARAMS);
   return_value_if_fail(wm != NULL && prev_win != NULL, RET_BAD_PARAMS);
 
   c = native_window_get_canvas(wm->native_window);
   dialog_highlighter = wm->dialog_highlighter;
+
+  WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
+  if (iter == prev_win) end = i;
+  if (end > -1 && iter->visible && widget_is_normal_window(iter)) {
+    start = i;
+    break;
+  }
+  WIDGET_FOR_EACH_CHILD_END()
+  if (start == -1) start = end;
 
 #ifdef WITH_NANOVG_GPU
   vg = lcd_get_vgcanvas(c->lcd);
@@ -198,7 +208,14 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
   canvas_set_clip_rect(c, NULL);
   ENSURE(widget_on_paint_background(widget, c) == RET_OK);
   window_manager_paint_system_bar(widget, c);
-  ENSURE(widget_paint(prev_win, c) == RET_OK);
+  {
+    widget_t** children = (widget_t**)(widget->children->elms);
+    for (; start <= end; ++start) {
+      widget_t* iter = children[start];
+      if (widget_is_system_bar(iter) || !iter->visible) continue;
+      ENSURE(widget_paint(iter, c) == RET_OK);
+    }
+  }
 
   if (dialog_highlighter != NULL) {
     dialog_highlighter_prepare(dialog_highlighter, c);
@@ -211,7 +228,15 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
   canvas_set_clip_rect(c, &r);
   ENSURE(widget_on_paint_background(widget, c) == RET_OK);
   window_manager_paint_system_bar(widget, c);
-  ENSURE(widget_paint(prev_win, c) == RET_OK);
+  {
+    widget_t** children = (widget_t**)(widget->children->elms);
+    for (; start <= end; ++start) {
+      widget_t* iter = children[start];
+      if (widget_is_system_bar(iter) || !iter->visible) continue;
+      ENSURE(widget_paint(iter, c) == RET_OK);
+    }
+  }
+
   if (dialog_highlighter != NULL) {
     dialog_highlighter_prepare(dialog_highlighter, c);
   }
@@ -247,8 +272,20 @@ static ret_t window_manager_default_create_dialog_highlighter(widget_t* widget,
   value_t v;
   ret_t ret = RET_FAIL;
   dialog_highlighter_t* dialog_highlighter = NULL;
+  window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
 
-  if ((widget_is_dialog(curr_win) || widget_is_popup(curr_win)) &&
+  dialog_highlighter = wm->dialog_highlighter;
+  if (dialog_highlighter != NULL && dialog_highlighter->dialog != curr_win) {
+    widget_t* dialog = dialog_highlighter->dialog;
+    if (dialog != NULL) {
+      widget_off_by_func(dialog, EVT_DESTROY, dialog_highlighter_on_dialog_destroy,
+                         dialog_highlighter);
+    }
+    dialog_highlighter_destroy(dialog_highlighter);
+    wm->dialog_highlighter = dialog_highlighter = NULL;
+  }
+
+  if (dialog_highlighter == NULL && (widget_is_dialog(curr_win) || widget_is_popup(curr_win)) &&
       widget_get_prop(curr_win, WIDGET_PROP_HIGHLIGHT, &v) == RET_OK) {
     const char* args = value_str(&v);
     if (args != NULL) {
@@ -256,7 +293,6 @@ static ret_t window_manager_default_create_dialog_highlighter(widget_t* widget,
       dialog_highlighter = dialog_highlighter_factory_create_highlighter(f, args, curr_win);
 
       if (dialog_highlighter != NULL) {
-        window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
         wm->dialog_highlighter = dialog_highlighter;
 
         emitter_on(EMITTER(dialog_highlighter), EVT_DESTROY, window_manager_on_highlighter_destroy,
@@ -282,6 +318,12 @@ static ret_t window_manager_prepare_dialog_highlighter(widget_t* widget, widget_
   return RET_FAIL;
 }
 
+static ret_t window_manager_create_highlighter(widget_t* widget, widget_t* curr_win) {
+  widget_t* prev_win = window_manager_find_prev_any_window(widget);
+  window_manager_prepare_dialog_highlighter(widget, prev_win, curr_win);
+  return RET_OK;
+}
+
 static ret_t window_manager_create_animator(window_manager_default_t* wm, widget_t* curr_win,
                                             bool_t open) {
   value_t v;
@@ -289,7 +331,7 @@ static ret_t window_manager_create_animator(window_manager_default_t* wm, widget
   widget_t* prev_win = window_manager_find_prev_any_window(WIDGET(wm));
   const char* key = open ? WIDGET_PROP_OPEN_ANIM_HINT : WIDGET_PROP_CLOSE_ANIM_HINT;
 
-  if (prev_win == curr_win || prev_win == NULL || !widget_is_normal_window(prev_win)) {
+  if (prev_win == curr_win || prev_win == NULL) {
     return RET_FAIL;
   }
 
@@ -484,6 +526,7 @@ static ret_t window_manager_default_close_window(widget_t* widget, widget_t* win
     if (prev_win != NULL) {
       if (!widget_is_keyboard(window)) {
         window_manager_dispatch_window_event(prev_win, EVT_WINDOW_TO_FOREGROUND);
+        window_manager_create_highlighter(widget, prev_win);
       }
     }
   }
@@ -649,6 +692,7 @@ static ret_t window_manager_animate_done(widget_t* widget) {
     } else {
       if (!curr_win_is_keyboard) {
         window_manager_dispatch_window_event(prev_win, EVT_WINDOW_TO_FOREGROUND);
+        window_manager_create_highlighter(widget, prev_win);
       }
     }
 
@@ -770,7 +814,12 @@ static ret_t window_manager_default_on_paint_children(widget_t* widget, canvas_t
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
 
   WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
-  if (iter->visible && widget_is_normal_window(iter)) {
+  if (wm->dialog_highlighter != NULL) {
+    if (wm->dialog_highlighter->dialog == iter) {
+      start = i;
+      break;
+    }
+  } else if (iter->visible && widget_is_normal_window(iter)) {
     start = i;
     break;
   }

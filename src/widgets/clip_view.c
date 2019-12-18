@@ -23,9 +23,9 @@
 #include "clip_view.h"
 
 static ret_t clip_view_on_paint_children(widget_t* widget, canvas_t* c) {
-  rect_t r = { 0 };
-  rect_t r_save = { 0 };
-  rect_t r_vg_save = { 0 };
+  rect_t r = {0};
+  rect_t r_save = {0};
+  rect_t r_vg_save = {0};
   clip_view_t* clip_view = CLIP_VIEW(widget);
   vgcanvas_t* vg = canvas_get_vgcanvas(c);
   return_value_if_fail(clip_view != NULL, RET_BAD_PARAMS);
@@ -46,10 +46,10 @@ static ret_t clip_view_on_paint_children(widget_t* widget, canvas_t* c) {
 }
 
 TK_DECL_VTABLE(clip_view) = {.size = sizeof(clip_view_t),
-                              .type = WIDGET_TYPE_VIEW,
-                              .parent = TK_PARENT_VTABLE(widget),
-                              .create = clip_view_create,
-                              .on_paint_children = clip_view_on_paint_children};
+                             .type = WIDGET_TYPE_VIEW,
+                             .parent = TK_PARENT_VTABLE(widget),
+                             .create = clip_view_create,
+                             .on_paint_children = clip_view_on_paint_children};
 
 widget_t* clip_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   return widget_create(parent, TK_REF_VTABLE(clip_view), x, y, w, h);
