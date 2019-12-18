@@ -90,6 +90,10 @@ widget_t* window_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   return window_base_create(parent, TK_REF_VTABLE(window), x, y, w, h);
 }
 
+widget_t* window_create_default(void) {
+  return window_create(NULL, 0, 0, 0, 0);
+}
+
 widget_t* window_cast(widget_t* widget) {
   return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, window), NULL);
 

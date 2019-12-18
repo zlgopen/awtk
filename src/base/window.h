@@ -97,6 +97,15 @@ typedef struct _window_t {
 widget_t* window_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
+ * @method window_create_default
+ * 以缺省的方式创建window对象。
+ * @annotation ["constructor", "scriptable"]
+ *
+ * @return {widget_t*} 对象。
+ */
+widget_t* window_create_default(void);
+
+/**
  * @method window_set_fullscreen
  * 设置为全屏窗口。
  *
