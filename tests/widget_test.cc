@@ -828,8 +828,8 @@ TEST(Widget, calc_icon_text_rect_icon_centre) {
   int32_t icon_h = ir.h - icon_image_h;
   int32_t w = ir.w - spacer - text_size - icon_image_w;
 
-  widget_calc_icon_text_rect(&ir, font_size, text_size, ICON_AT_CENTRE, icon_image_w,
-                             icon_image_h, spacer, &r_text, &r_icon);
+  widget_calc_icon_text_rect(&ir, font_size, text_size, ICON_AT_CENTRE, icon_image_w, icon_image_h,
+                             spacer, &r_text, &r_icon);
 
   ASSERT_EQ(r_icon.x, ir.x + w / 2);
   ASSERT_EQ(r_icon.y, ir.y + icon_h / 2);

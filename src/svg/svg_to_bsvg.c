@@ -90,7 +90,7 @@ static void svg_init_shape(bsvg_builder_t* svg, svg_shape_t* shape, const char**
       if (tk_str_eq(v, "transparent") || tk_str_eq(v, "none")) {
         shape->no_stroke = TRUE;
       } else {
-        if(tk_str_eq(v, "") || v == NULL) {
+        if (tk_str_eq(v, "") || v == NULL) {
           shape->stroke = color_init(0x00, 0x00, 0x00, 0xff);
         } else {
           shape->stroke = color_parse(v);
@@ -100,7 +100,7 @@ static void svg_init_shape(bsvg_builder_t* svg, svg_shape_t* shape, const char**
       if (tk_str_eq(v, "transparent") || tk_str_eq(v, "none")) {
         shape->no_fill = TRUE;
       } else {
-        if(tk_str_eq(v, "") || v == NULL) {
+        if (tk_str_eq(v, "") || v == NULL) {
           shape->fill = color_init(0x00, 0x00, 0x00, 0xff);
         } else {
           shape->fill = color_parse(v);

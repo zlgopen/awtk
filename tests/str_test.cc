@@ -172,7 +172,7 @@ TEST(Str, remove) {
 TEST(Str, unescap) {
   str_t str;
   str_t* s = str_init(&str, 0);
-  
+
   ASSERT_EQ(str_set(s, "\\"), RET_OK);
   ASSERT_EQ(str_unescape(s), RET_OK);
   ASSERT_EQ(string(s->str), "\\");
