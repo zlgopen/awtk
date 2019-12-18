@@ -388,22 +388,24 @@ static ret_t widget_apply_tr_text_before_paint(void* ctx, event_t* e) {
 
 ret_t widget_set_tr_text(widget_t* widget, const char* text) {
   value_t v;
+  char* save_tr_text = NULL;
   const char* tr_text = NULL;
   widget_t* win = widget_get_window(widget);
   return_value_if_fail(widget != NULL && text != NULL, RET_OK);
 
   widget->tr_text = tk_str_copy(widget->tr_text, text);
 
+  save_tr_text = widget->tr_text;
+  widget->tr_text = NULL;
+
   if (win != NULL) {
-    char* tmp = widget->tr_text;
-    widget->tr_text = NULL;
     tr_text = locale_info_tr(widget_get_locale_info(widget), text);
     widget_set_prop(widget, WIDGET_PROP_TEXT, value_set_str(&v, tr_text));
-    widget->tr_text = tmp;
   } else {
     widget_set_prop_str(widget, WIDGET_PROP_TEXT, text);
     widget_on(widget, EVT_BEFORE_PAINT, widget_apply_tr_text_before_paint, widget);
   }
+  widget->tr_text = save_tr_text;
 
   return RET_OK;
 }

@@ -1223,3 +1223,13 @@ TEST(Widget, exec) {
 
   widget_destroy(w);
 }
+
+TEST(Widget, tr_text) {
+  widget_t* w = button_create(NULL, 0, 0, 0, 0);
+  widget_set_tr_text(w, "hello");
+  widget_set_text(w, L"ok");
+
+  ASSERT_EQ(w->tr_text, (const char*)NULL);
+
+  widget_destroy(w);
+}
