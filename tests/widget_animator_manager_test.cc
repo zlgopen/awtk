@@ -39,6 +39,7 @@ TEST(AnimatorManager, basic) {
 
   ASSERT_EQ(widget_animator_manager_count(am), 1);
   widget_destroy(WIDGET(image));
+  idle_dispatch();
   ASSERT_EQ(widget_animator_manager_count(am), 0);
   idle_dispatch();
 }
@@ -63,6 +64,7 @@ TEST(AnimatorManager, elapse) {
 
   emitter_on(&(wa1->emitter), EVT_ANIM_END, on_anim_done, NULL);
   widget_animator_manager_time_elapse(am, 1000);
+  idle_dispatch();
 
   ASSERT_EQ(widget_animator_manager_count(am), 0);
   idle_dispatch();
