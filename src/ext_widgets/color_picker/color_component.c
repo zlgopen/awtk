@@ -60,6 +60,7 @@ static ret_t color_component_on_event(widget_t* widget, event_t* e) {
       pointer_event_t* evt = (pointer_event_t*)e;
       if (component->pressed) {
         color_component_update_pressed(widget, evt);
+        return RET_STOP;
       }
       break;
     }
