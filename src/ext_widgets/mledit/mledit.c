@@ -380,6 +380,7 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
         pointer_event_t evt = *(pointer_event_t*)e;
         if (widget->target == NULL) {
           text_edit_drag(mledit->model, evt.x, evt.y);
+          ret = RET_STOP;
         }
       }
       break;
@@ -466,6 +467,7 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
           text_edit_key_down(mledit->model, (key_event_t*)&kevt);
         }
       }
+      ret = RET_STOP;
       break;
     }
     case EVT_RESIZE:

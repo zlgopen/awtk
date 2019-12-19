@@ -415,6 +415,7 @@ static ret_t text_selector_down(widget_t* widget) {
 }
 
 static ret_t text_selector_on_event(widget_t* widget, event_t* e) {
+  ret_t ret = RET_OK;
   uint16_t type = e->type;
   text_selector_t* text_selector = TEXT_SELECTOR(widget);
 
@@ -449,8 +450,9 @@ static ret_t text_selector_on_event(widget_t* widget, event_t* e) {
       if (evt->pressed && text_selector->pressed) {
         text_selector_on_pointer_move(text_selector, evt);
         widget_invalidate(widget, NULL);
+        ret = RET_STOP;
       }
-      return RET_STOP;
+      break;
     }
     case EVT_WHEEL: {
       wheel_event_t* evt = (wheel_event_t*)e;
@@ -461,7 +463,7 @@ static ret_t text_selector_on_event(widget_t* widget, event_t* e) {
         text_selector_up(widget);
       }
 
-      return RET_STOP;
+      ret = RET_STOP;
     }
     case EVT_RESIZE:
     case EVT_MOVE_RESIZE: {
@@ -472,7 +474,7 @@ static ret_t text_selector_on_event(widget_t* widget, event_t* e) {
       break;
   }
 
-  return RET_OK;
+  return ret;
 }
 
 TK_DECL_VTABLE(text_selector) = {.size = sizeof(text_selector_t),

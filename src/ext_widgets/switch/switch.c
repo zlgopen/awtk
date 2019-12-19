@@ -125,6 +125,7 @@ static ret_t switch_on_pointer_up(switch_t* aswitch, pointer_event_t* e) {
 static ret_t switch_on_event(widget_t* widget, event_t* e) {
   uint16_t type = e->type;
   switch_t* aswitch = SWITCH(widget);
+  ret_t ret = RET_OK;
   return_value_if_fail(widget != NULL && aswitch != NULL, RET_BAD_PARAMS);
 
   switch (type) {
@@ -154,6 +155,7 @@ static ret_t switch_on_event(widget_t* widget, event_t* e) {
       if (evt->pressed && !aswitch->point_down_aborted) {
         switch_on_pointer_move(aswitch, evt);
         widget_invalidate(widget, NULL);
+        ret = RET_STOP;
       }
       break;
     }
@@ -170,7 +172,7 @@ static ret_t switch_on_event(widget_t* widget, event_t* e) {
       break;
   }
 
-  return RET_OK;
+  return ret;
 }
 
 ret_t switch_fill_rect_color(widget_t* widget, canvas_t* c, rect_t* r, bool_t bg) {
