@@ -211,7 +211,7 @@ static ret_t emitter_off_ex(emitter_t* emitter, tk_compare_t cmp, void* ctx) {
     emitter_item_t* prev = emitter->items;
 
     while (iter != NULL) {
-      if ((emitter->curr_iter != iter || !emitter->remove_curr_iter) && cmp(iter, ctx) == 0) {
+      if (cmp(iter, ctx) == 0) {
         return emitter_remove(emitter, prev, iter);
       }
 
