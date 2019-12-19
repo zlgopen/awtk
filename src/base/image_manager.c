@@ -48,6 +48,7 @@ static int bitmap_cache_cmp_data(bitmap_cache_t* a, bitmap_cache_t* b) {
 static ret_t bitmap_cache_destroy(bitmap_cache_t* cache) {
   return_value_if_fail(cache != NULL, RET_BAD_PARAMS);
 
+  log_debug("unload image %s\n", cache->name);
   bitmap_destroy(&(cache->image));
   TKMEM_FREE(cache->name);
   TKMEM_FREE(cache);
