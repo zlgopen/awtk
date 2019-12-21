@@ -124,7 +124,7 @@ ret_t window_set_fullscreen(widget_t* widget, bool_t fullscreen);
  * @annotation ["constructor", "scriptable"]
  * 从资源文件中加载并创建window_base对象。本函数在ui_loader/ui_builder_default里实现。
  *
- * @param {char*} name window的名称。
+ * @param {const char*} name window的名称。
  *
  * @return {widget_t*} 对象。
  */
@@ -134,7 +134,7 @@ widget_t* window_open(const char* name);
  * @method window_open_and_close
  * @annotation ["constructor", "scriptable"]
  * 从资源文件中加载并创建window对象。本函数在ui_loader/ui_builder_default里实现。
- * @param {char*} name window的名称。
+ * @param {const char*} name window的名称。
  * @param {widget_t*} to_close 关闭该窗口。
  *
  * @return {widget_t*} 对象。

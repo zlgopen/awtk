@@ -27965,7 +27965,7 @@
           {
             "type": "uint8_t*",
             "name": "value",
-            "desc": "读取的数据。"
+            "desc": "返回读取的数据。"
           }
         ],
         "annotation": {},
@@ -28007,7 +28007,7 @@
           {
             "type": "uint32_t*",
             "name": "value",
-            "desc": "读取的数据。"
+            "desc": "返回读取的数据。"
           }
         ],
         "annotation": {},
@@ -28028,7 +28028,7 @@
           {
             "type": "float_t*",
             "name": "value",
-            "desc": "读取的数据。"
+            "desc": "返回读取的数据。"
           }
         ],
         "annotation": {},
@@ -28049,7 +28049,7 @@
           {
             "type": "void*",
             "name": "data",
-            "desc": "读取的数据。"
+            "desc": "返回读取的数据。"
           },
           {
             "type": "uint32_t",
@@ -28075,7 +28075,7 @@
           {
             "type": "char**",
             "name": "str",
-            "desc": "用于返回字符串。"
+            "desc": "返回字符串。"
           }
         ],
         "annotation": {},
@@ -28096,7 +28096,7 @@
           {
             "type": "uint8_t*",
             "name": "value",
-            "desc": "读取的数据。"
+            "desc": "返回读取的数据。"
           }
         ],
         "annotation": {},
@@ -28117,7 +28117,7 @@
           {
             "type": "uint16_t*",
             "name": "value",
-            "desc": "读取的数据。"
+            "desc": "返回读取的数据。"
           }
         ],
         "annotation": {},
@@ -28154,7 +28154,7 @@
     "properties": [
       {
         "name": "data",
-        "desc": "缓存区。",
+        "desc": "数据缓冲区。",
         "type": "uint8_t*",
         "annotation": {
           "readable": true
@@ -28170,7 +28170,7 @@
       },
       {
         "name": "capacity",
-        "desc": "缓存区最大容量。",
+        "desc": "缓存区的容量。",
         "type": "uint32_t",
         "annotation": {
           "readable": true
@@ -28224,7 +28224,7 @@
         "annotation": {
           "constructor": true
         },
-        "desc": "初始wbuffer对象，自动扩展buffer，使用完成后需要调用wbuffer\\_deinit释放资源。",
+        "desc": "初始wbuffer对象，容量不够时是否支持自动扩展，使用完成后需要调用wbuffer\\_deinit释放资源。",
         "name": "wbuffer_init_extendable",
         "return": {
           "type": "wbuffer_t*",
@@ -28241,11 +28241,11 @@
           {
             "type": "uint32_t",
             "name": "capacity",
-            "desc": "内存大小。"
+            "desc": "缓冲区的容量。"
           }
         ],
         "annotation": {},
-        "desc": "扩展内存至指定的大小。",
+        "desc": "扩展缓冲区至指定的大小。",
         "name": "wbuffer_extend_capacity",
         "return": {
           "type": "ret_t",
@@ -28299,7 +28299,7 @@
           {
             "type": "uint8_t",
             "name": "value",
-            "desc": "写入的数据。"
+            "desc": "要写入的数据。"
           }
         ],
         "annotation": {},
@@ -28320,7 +28320,7 @@
           {
             "type": "uint16_t",
             "name": "value",
-            "desc": "写入的数据。"
+            "desc": "要写入的数据。"
           }
         ],
         "annotation": {},
@@ -28341,7 +28341,7 @@
           {
             "type": "uint32_t",
             "name": "value",
-            "desc": "写入的数据。"
+            "desc": "要写入的数据。"
           }
         ],
         "annotation": {},
@@ -28362,7 +28362,7 @@
           {
             "type": "float_t",
             "name": "value",
-            "desc": "写入的数据。"
+            "desc": "要写入的数据。"
           }
         ],
         "annotation": {},
@@ -28383,12 +28383,12 @@
           {
             "type": "void*",
             "name": "data",
-            "desc": "写入的数据。"
+            "desc": "要写入的数据。"
           },
           {
             "type": "uint32_t",
             "name": "size",
-            "desc": "写入的数据长度。"
+            "desc": "要写入的数据长度。"
           }
         ],
         "annotation": {},
@@ -28409,7 +28409,7 @@
           {
             "type": "char*",
             "name": "data",
-            "desc": "写入的字符串。"
+            "desc": "要写入的字符串。"
           }
         ],
         "annotation": {},
@@ -28425,7 +28425,7 @@
     "properties": [
       {
         "name": "data",
-        "desc": "缓存区。",
+        "desc": "数据缓冲区。用于保存写入的数据。",
         "type": "uint8_t*",
         "annotation": {
           "readable": true
@@ -28441,7 +28441,7 @@
       },
       {
         "name": "capacity",
-        "desc": "缓存区最大容量。",
+        "desc": "数据缓冲区最大容量。",
         "type": "uint32_t",
         "annotation": {
           "readable": true
@@ -28449,7 +28449,7 @@
       },
       {
         "name": "extendable",
-        "desc": "容量是否可扩展。",
+        "desc": "容量不够时是否支持自动扩展。",
         "type": "bool_t",
         "annotation": {
           "readable": true
@@ -41792,7 +41792,7 @@
     "events": [],
     "properties": [],
     "header": "widgets/grid_item.h",
-    "desc": "grid_item。一个简单的容器控件，一般作为grid的子控件。\n\n它本身不提供布局功能，仅提供具有语义的标签，让xml更具有可读性。\n子控件的布局可用layout\\_children属性指定。\n请参考[布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)。\n\ngrid\\_item\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于grid\\_item\\_t控件。\n\n在xml中使用\"grid\\_item\"标签创建grid\\_item。如：\n\n```xml\n<grid x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" children_layout=\"default(c=2,r=2,m=5,s=5)\">\n<grid_item>\n<button x=\"c\" y=\"m\" w=\"80%\" h=\"30\" name=\"0\" text=\"0\"/>\n</grid_item>\n<grid_item>\n<button x=\"c\" y=\"m\" w=\"80%\" h=\"30\" name=\"1\" text=\"1\"/>\n</grid_item>\n<grid_item>\n<button x=\"c\" y=\"m\" w=\"80%\" h=\"30\" name=\"2\" text=\"2\"/>\n</grid_item>\n<grid_item>\n<button x=\"c\" y=\"m\" w=\"80%\" h=\"30\" name=\"3\" text=\"3\"/>\n</grid_item>\n</grid>```\n\n可用通过style来设置控件的显示风格，如背景颜色等。如：\n\n```xml\n<style name=\"default\" border_color=\"#a0a0a0\">\n<normal     bg_color=\"#f0f0f0\" />\n</style>\n```",
+    "desc": "grid_item。一个简单的容器控件，一般作为grid的子控件。\n\n它本身不提供布局功能，仅提供具有语义的标签，让xml更具有可读性。\n子控件的布局可用layout\\_children属性指定。\n请参考[布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)。\n\ngrid\\_item\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于grid\\_item\\_t控件。\n\n在xml中使用\"grid\\_item\"标签创建grid\\_item。如：\n\n```xml\n<grid x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" children_layout=\"default(c=2,r=2,m=5,s=5)\">\n<grid_item>\n<button x=\"c\" y=\"m\" w=\"80%\" h=\"30\" name=\"0\" text=\"0\"/>\n</grid_item>\n<grid_item>\n<button x=\"c\" y=\"m\" w=\"80%\" h=\"30\" name=\"1\" text=\"1\"/>\n</grid_item>\n<grid_item>\n<button x=\"c\" y=\"m\" w=\"80%\" h=\"30\" name=\"2\" text=\"2\"/>\n</grid_item>\n<grid_item>\n<button x=\"c\" y=\"m\" w=\"80%\" h=\"30\" name=\"3\" text=\"3\"/>\n</grid_item>\n</grid>\n\n```\n\n可用通过style来设置控件的显示风格，如背景颜色等。如：\n\n```xml\n<style name=\"default\" border_color=\"#a0a0a0\">\n<normal     bg_color=\"#f0f0f0\" />\n</style>\n```",
     "name": "grid_item_t",
     "parent": "widget_t",
     "annotation": {
@@ -44683,6 +44683,7 @@
     "name": "calibration_win_t",
     "parent": "window_base_t",
     "annotation": {
+      "scriptable": true,
       "design": true,
       "widget": true,
       "window": true
@@ -45422,7 +45423,7 @@
       {
         "params": [
           {
-            "type": "char*",
+            "type": "const char*",
             "name": "name",
             "desc": "window的名称。"
           }
@@ -45441,7 +45442,7 @@
       {
         "params": [
           {
-            "type": "char*",
+            "type": "const char*",
             "name": "name",
             "desc": "window的名称。"
           },
