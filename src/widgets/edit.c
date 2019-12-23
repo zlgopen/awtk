@@ -81,15 +81,28 @@ static ret_t edit_do_input_char(widget_t* widget, wchar_t c) {
 }
 
 static bool_t edit_is_valid_char_default(widget_t* widget, wchar_t c) {
+  wstr_t tmp;
   bool_t ret = FALSE;
   wstr_t* text = NULL;
+  text_edit_state_t state;
+  uint32_t cursor_pos = 0;
   edit_t* edit = EDIT(widget);
   input_type_t input_type = (input_type_t)0;
-  uint32_t cursor_pos = text_edit_get_cursor(edit->model);
 
   return_value_if_fail(widget != NULL && edit != NULL, FALSE);
 
-  text = &(widget->text);
+  wstr_init(&tmp, 0);
+  text_edit_get_state(edit->model, &state);
+  cursor_pos = state.cursor;
+  if (state.select_start != state.select_end) {
+    uint32_t end = state.select_start > state.select_end ? state.select_start : state.select_end;
+    cursor_pos = state.select_start < state.select_end ? state.select_start : state.select_end;
+    text = &tmp;
+    wstr_set(&tmp, widget->text.str);
+    wstr_remove(&tmp, cursor_pos, end - cursor_pos);
+  } else {
+    text = &(widget->text);
+  }
   input_type = edit->input_type;
 
   switch (input_type) {
@@ -168,6 +181,7 @@ static bool_t edit_is_valid_char_default(widget_t* widget, wchar_t c) {
     }
   }
 
+  wstr_reset(&tmp);
   return ret;
 }
 
