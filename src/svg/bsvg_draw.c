@@ -47,11 +47,11 @@ ret_t bsvg_draw_path(draw_ctx_t* ctx, const svg_path_t* path) {
   switch (path->type) {
     case SVG_PATH_M: {
       const svg_path_move_t* p = (const svg_path_move_t*)path;
-
+      
       ctx->x = p->x;
       ctx->y = p->y;
       vgcanvas_move_to(canvas, ctx->x, ctx->y);
-
+      vgcanvas_path_winding(canvas, 0);
       break;
     }
     case SVG_PATH_M_REL: {
@@ -60,6 +60,7 @@ ret_t bsvg_draw_path(draw_ctx_t* ctx, const svg_path_t* path) {
       ctx->x += p->x;
       ctx->y += p->y;
       vgcanvas_move_to(canvas, ctx->x, ctx->y);
+      vgcanvas_path_winding(canvas, 0);
       break;
     }
     case SVG_PATH_L: {

@@ -73,7 +73,7 @@ static ret_t svg_on_sub_path(void* ctx, const void* data) {
 static void svg_init_shape(bsvg_builder_t* svg, svg_shape_t* shape, const char** attrs) {
   uint32_t i = 0;
   bsvg_header_t* header = svg->header;
-
+  shape->no_stroke = TRUE;
   shape->fill = header->fill;
   shape->stroke = header->stroke;
 
@@ -90,6 +90,7 @@ static void svg_init_shape(bsvg_builder_t* svg, svg_shape_t* shape, const char**
       if (tk_str_eq(v, "transparent") || tk_str_eq(v, "none")) {
         shape->no_stroke = TRUE;
       } else {
+        shape->no_stroke = FALSE;
         if (tk_str_eq(v, "") || v == NULL) {
           shape->stroke = color_init(0x00, 0x00, 0x00, 0xff);
         } else {

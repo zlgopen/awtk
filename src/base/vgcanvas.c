@@ -156,6 +156,12 @@ ret_t vgcanvas_close_path(vgcanvas_t* vg) {
   return vg->vt->close_path(vg);
 }
 
+ret_t vgcanvas_path_winding(vgcanvas_t* vg, bool_t dir) {
+  return_value_if_fail(vg != NULL && vg->vt->path_winding != NULL, RET_BAD_PARAMS);
+
+  return vg->vt->path_winding(vg, dir);
+}
+
 ret_t vgcanvas_transform(vgcanvas_t* vg, float_t a, float_t b, float_t c, float_t d, float_t e,
                          float_t f) {
   return_value_if_fail(vg != NULL && vg->vt->transform != NULL, RET_BAD_PARAMS);

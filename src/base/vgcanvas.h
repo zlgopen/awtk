@@ -65,6 +65,7 @@ typedef ret_t (*vgcanvas_rounded_rect_t)(vgcanvas_t* vg, float_t x, float_t y, f
                                          float_t r);
 typedef ret_t (*vgcanvas_ellipse_t)(vgcanvas_t* vg, float_t x, float_t y, float_t rx, float_t ry);
 typedef ret_t (*vgcanvas_close_path_t)(vgcanvas_t* vg);
+typedef ret_t (*vgcanvas_path_winding_t)(vgcanvas_t* vg, bool_t dir);
 
 typedef ret_t (*vgcanvas_rotate_t)(vgcanvas_t* vg, float_t rad);
 typedef ret_t (*vgcanvas_scale_t)(vgcanvas_t* vg, float_t x, float_t y);
@@ -146,6 +147,7 @@ typedef struct _vgcanvas_vtable_t {
   vgcanvas_ellipse_t ellipse;
   vgcanvas_rounded_rect_t rounded_rect;
   vgcanvas_close_path_t close_path;
+  vgcanvas_path_winding_t path_winding;
 
   vgcanvas_scale_t scale;
   vgcanvas_rotate_t rotate;
@@ -629,6 +631,21 @@ ret_t vgcanvas_ellipse(vgcanvas_t* vg, float_t x, float_t y, float_t rx, float_t
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t vgcanvas_close_path(vgcanvas_t* vg);
+
+
+/**
+ * @method vgcanvas_path_winding
+ * 设置路径填充实心与否。
+ *
+ * >CCW(1)为实心，CW(2)为镂空，设置其他则默认根据非零环绕规则判断(nonzero)。
+ *
+ * @annotation ["scriptable"]
+ * @param {vgcanvas_t*} vg vgcanvas对象。
+ * @param {bool_t} dir 填充方法。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t vgcanvas_path_winding(vgcanvas_t* vg, bool_t dir);
 
 /**
  * @method vgcanvas_rotate
