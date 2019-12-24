@@ -18188,7 +18188,13 @@
         }
       },
       {
-        "params": [],
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          }
+        ],
         "annotation": {
           "scriptable": true
         },
@@ -18200,7 +18206,13 @@
         }
       },
       {
-        "params": [],
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          }
+        ],
         "annotation": {
           "scriptable": true
         },
@@ -18212,7 +18224,13 @@
         }
       },
       {
-        "params": [],
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          }
+        ],
         "annotation": {
           "scriptable": true
         },
@@ -18224,7 +18242,13 @@
         }
       },
       {
-        "params": [],
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          }
+        ],
         "annotation": {
           "scriptable": true
         },

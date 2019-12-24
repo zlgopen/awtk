@@ -2001,6 +2001,7 @@ const char* widget_get_state_for_style(widget_t* widget, bool_t active, bool_t c
  * 检查控件是否是system bar类型。
  *
  * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
  * @return {bool_t} 返回FALSE表示不是，否则表示是。
  */
 bool_t widget_is_system_bar(widget_t* widget);
@@ -2010,6 +2011,7 @@ bool_t widget_is_system_bar(widget_t* widget);
  * 检查控件是否是普通窗口类型。
  *
  * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
  * @return {bool_t} 返回FALSE表示不是，否则表示是。
  */
 bool_t widget_is_normal_window(widget_t* widget);
@@ -2019,6 +2021,7 @@ bool_t widget_is_normal_window(widget_t* widget);
  * 检查控件是否是对话框类型。
  *
  * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
  * @return {bool_t} 返回FALSE表示不是，否则表示是。
  */
 bool_t widget_is_dialog(widget_t* widget);
@@ -2028,6 +2031,7 @@ bool_t widget_is_dialog(widget_t* widget);
  * 检查控件是否是弹出窗口类型。
  *
  * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
  * @return {bool_t} 返回FALSE表示不是，否则表示是。
  */
 bool_t widget_is_popup(widget_t* widget);
