@@ -632,7 +632,6 @@ ret_t vgcanvas_ellipse(vgcanvas_t* vg, float_t x, float_t y, float_t rx, float_t
  */
 ret_t vgcanvas_close_path(vgcanvas_t* vg);
 
-
 /**
  * @method vgcanvas_path_winding
  * 设置路径填充实心与否。

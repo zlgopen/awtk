@@ -397,7 +397,7 @@
 #include "assets/default/inc/images/arrow_left_n.data"
 #include "assets/default/inc/images/edit_clear_p.data"
 #include "assets/default/inc/images/battery_2.data"
-#endif/*WITH_STB_IMAGE*/
+#endif /*WITH_STB_IMAGE*/
 #ifdef WITH_VGCANVAS
 #include "assets/default/inc/images/pointer_4.bsvg"
 #include "assets/default/inc/images/ball.bsvg"
@@ -405,13 +405,13 @@
 #include "assets/default/inc/images/pointer_1.bsvg"
 #include "assets/default/inc/images/pointer.bsvg"
 #include "assets/default/inc/images/girl.bsvg"
-#endif/*WITH_VGCANVAS*/
+#endif /*WITH_VGCANVAS*/
 #if defined(WITH_TRUETYPE_FONT)
 #include "assets/default/inc/fonts/default.res"
-#else/*WITH_TRUETYPE_FONT*/
+#else /*WITH_TRUETYPE_FONT*/
 #include "assets/default/inc/fonts/default.data"
-#endif/*WITH_TRUETYPE_FONT*/
-#endif/*WITH_FS_RES*/
+#endif /*WITH_TRUETYPE_FONT*/
+#endif /*WITH_FS_RES*/
 
 ret_t assets_init(void) {
   assets_manager_t* am = assets_manager();
@@ -701,7 +701,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, image_pointer_1);
   assets_manager_add(am, image_pointer);
   assets_manager_add(am, image_girl);
-#endif/*WITH_VGCANVAS*/
+#endif /*WITH_VGCANVAS*/
 #endif
 
   tk_init_assets();
