@@ -2785,6 +2785,8 @@ ret_t widget_get_prop_default_value(widget_t* widget, const char* name, value_t*
     value_set_str(v, NULL);
   } else if (tk_str_eq(name, WIDGET_PROP_FOCUSED)) {
     value_set_bool(v, FALSE);
+  } else if (tk_str_eq(name, WIDGET_PROP_FEEDBACK)) {
+    value_set_bool(v, FALSE);
   } else {
     if (widget->vt->get_prop_default_value) {
       ret = widget->vt->get_prop_default_value(widget, name, v);
