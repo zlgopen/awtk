@@ -1997,6 +1997,42 @@ ret_t widget_focus_prev(widget_t* widget);
 const char* widget_get_state_for_style(widget_t* widget, bool_t active, bool_t checked);
 
 /**
+ * @method widget_is_system_bar
+ * 检查控件是否是system bar类型。
+ *
+ * @annotation ["scriptable"]
+ * @return {bool_t} 返回FALSE表示不是，否则表示是。
+ */
+bool_t widget_is_system_bar(widget_t* widget);
+
+/**
+ * @method widget_is_normal_window
+ * 检查控件是否是普通窗口类型。
+ *
+ * @annotation ["scriptable"]
+ * @return {bool_t} 返回FALSE表示不是，否则表示是。
+ */
+bool_t widget_is_normal_window(widget_t* widget);
+
+/**
+ * @method widget_is_dialog
+ * 检查控件是否是对话框类型。
+ *
+ * @annotation ["scriptable"]
+ * @return {bool_t} 返回FALSE表示不是，否则表示是。
+ */
+bool_t widget_is_dialog(widget_t* widget);
+
+/**
+ * @method widget_is_popup
+ * 检查控件是否是弹出窗口类型。
+ *
+ * @annotation ["scriptable"]
+ * @return {bool_t} 返回FALSE表示不是，否则表示是。
+ */
+bool_t widget_is_popup(widget_t* widget);
+
+/**
  * @method widget_layout
  * 布局当前控件及子控件。
  * @annotation ["scriptable"]
@@ -2121,14 +2157,6 @@ const char* const* widget_get_persistent_props(void);
 
 bool_t widget_is_instance_of(widget_t* widget, const widget_vtable_t* vt);
 #define WIDGET_IS_INSTANCE_OF(widget, name) widget_is_instance_of(widget, TK_REF_VTABLE(name))
-
-bool_t widget_is_system_bar(widget_t* widget);
-
-bool_t widget_is_normal_window(widget_t* widget);
-
-bool_t widget_is_dialog(widget_t* widget);
-
-bool_t widget_is_popup(widget_t* widget);
 
 /*public for subclass*/
 TK_EXTERN_VTABLE(widget);

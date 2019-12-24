@@ -18188,6 +18188,54 @@
         }
       },
       {
+        "params": [],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "检查控件是否是system bar类型。",
+        "name": "widget_is_system_bar",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回FALSE表示不是，否则表示是。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "检查控件是否是普通窗口类型。",
+        "name": "widget_is_normal_window",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回FALSE表示不是，否则表示是。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "检查控件是否是对话框类型。",
+        "name": "widget_is_dialog",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回FALSE表示不是，否则表示是。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "检查控件是否是弹出窗口类型。",
+        "name": "widget_is_popup",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回FALSE表示不是，否则表示是。"
+        }
+      },
+      {
         "params": [
           {
             "type": "widget_t*",
