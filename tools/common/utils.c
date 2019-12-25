@@ -28,32 +28,42 @@
 #include <sys/types.h>
 #include "tkc/fs.h"
 #include "tkc/mem.h"
+#include "tkc/wstr.h"
 #include "base/enums.h"
 #include "tkc/path.h"
 #include "base/assets_manager.h"
 
 void exit_if_need_not_update(const char* in, const char* out) {
-  struct stat st_in;
-  struct stat st_out;
-
-  memset(&st_in, 0x00, sizeof(st_in));
-  memset(&st_out, 0x00, sizeof(st_out));
-
   if (in == NULL || out == NULL) {
     log_debug("invalid params: %s %s\n", in, out);
     exit(-1);
   }
 
-  if (stat(in, &st_in) < 0) {
+  if (!fs_file_exist(os_fs(), in)) {
     log_debug("%s not exist\n", in);
     exit(-1);
   }
 
-  if (stat(out, &st_out) < 0) {
+  if (!fs_file_exist(os_fs(), out)) {
     return;
   }
 
-  if (st_in.st_mtime < st_out.st_mtime) {
+  ret_t rt = RET_OK;
+  fs_file_stat_t fst_in;
+  fs_file_stat_t fst_out;
+
+  rt = fs_file_stat(os_fs(), in, &fst_in);
+  if (rt != RET_OK) {
+    log_debug("get \"%s\" filetime failed\n", in);
+    exit(-1);
+  }
+  rt = fs_file_stat(os_fs(), out, &fst_out);
+  if (rt != RET_OK) {
+    log_debug("get \"%s\" filetime failed\n", out);
+    exit(-1);
+  }
+
+  if (fst_in.mtime < fst_out.mtime) {
     log_debug("Skip because: %s is newer than %s\n", out, in);
     exit(0);
   }
@@ -62,8 +72,9 @@ void exit_if_need_not_update(const char* in, const char* out) {
 void exit_if_need_not_update_for_infiles(const char* out, int infiles_number, ...) {
   int i = 0;
   va_list va;
-  struct stat st_in;
-  struct stat st_out;
+  ret_t rt = RET_OK;
+  fs_file_stat_t st_in;
+  fs_file_stat_t st_out;
   bool_t is_not_need_update = TRUE;
 
   if (out == NULL) {
@@ -71,26 +82,38 @@ void exit_if_need_not_update_for_infiles(const char* out, int infiles_number, ..
     exit(-1);
   }
 
-  memset(&st_out, 0x00, sizeof(st_out));
-  if (stat(out, &st_out) < 0) {
+  if (!fs_file_exist(os_fs(), out)) {
     return;
+  }
+
+  rt = fs_file_stat(os_fs(), out, &st_out);
+  if (rt != RET_OK) {
+    log_debug("get \"%s\" filetime failed\n", out);
+    exit(-1);
   }
 
   va_start(va, infiles_number);
 
   for (i = 0; i < infiles_number; i++) {
     char* in = va_arg(va, char*);
-    memset(&st_in, 0x00, sizeof(st_in));
 
     if (in == NULL) {
       continue;
     }
-    if (stat(in, &st_in) < 0) {
+
+    if (!fs_file_exist(os_fs(), in)) {
       log_debug("%s not exist\n", in);
       is_not_need_update = TRUE;
       break;
     }
-    if (st_in.st_mtime > st_out.st_mtime) {
+
+    rt = fs_file_stat(os_fs(), in, &st_in);
+    if (rt != RET_OK) {
+      log_debug("get \"%s\" filetime failed\n", in);
+      exit(-1);
+    }
+
+    if (st_in.mtime > st_out.mtime) {
       is_not_need_update = FALSE;
       break;
     }
@@ -145,7 +168,7 @@ static const char* to_var_name(char var_name[2 * TK_NAME_LEN + 1], const char* p
 ret_t output_c_source(const char* filename, const char* prefix, const char* name, uint8_t* buff,
                       uint32_t size) {
   uint32_t i = 0;
-  FILE* fp = NULL;
+  fs_file_t* ft = NULL;
   char str[TK_NAME_LEN + 1];
   char var_name[2 * TK_NAME_LEN + 1];
   return_value_if_fail(filename != NULL && buff != NULL, RET_BAD_PARAMS);
@@ -157,19 +180,19 @@ ret_t output_c_source(const char* filename, const char* prefix, const char* name
 
   log_debug("filename=%s prefix=%s name=%s size=%u\n", filename, prefix, name, size);
 
-  fp = fopen(filename, "wb+");
-  if (fp != NULL) {
-    fprintf(fp, "TK_CONST_DATA_ALIGN(const unsigned char %s[]) = {",
-            to_var_name(var_name, prefix, name));
+  ft = fs_open_file(os_fs(), filename, "wb+");
+  if (ft != NULL) {
+    fs_file_printf(ft, "TK_CONST_DATA_ALIGN(const unsigned char %s[]) = {",
+                   to_var_name(var_name, prefix, name));
     for (i = 0; i < size; i++) {
       if ((i % 20) == 0) {
-        fprintf(fp, "\n");
+        fs_file_printf(ft, "\n");
       }
-      fprintf(fp, "0x%02x,", (int)(buff[i]));
+      fs_file_printf(ft, "0x%02x,", (int)(buff[i]));
     }
 
-    fprintf(fp, "};/*%u*/\n", size);
-    fclose(fp);
+    fs_file_printf(ft, "};/*%u*/\n", size);
+    fs_file_close(ft);
 
     return RET_OK;
   }
@@ -260,4 +283,32 @@ const char* to_lower(char* str) {
   }
 
   return str;
+}
+
+wchar_t** argvw_create(int argc, char* argv[]) {
+  int i = 0;
+  wstr_t str;
+  wchar_t** argvw = TKMEM_ALLOC((argc + 1) * sizeof(wchar_t*));
+  return_value_if_fail(argvw != NULL, NULL);
+  wstr_init(&str, 100);
+
+  for (i = 0; i < argc; i++) {
+    wstr_set_utf8(&str, argv[i]);
+    argvw[i] = wcsdup(str.str);
+  }
+  argvw[i] = NULL;
+
+  return argvw;
+}
+
+ret_t argvw_destroy(wchar_t** argvw) {
+  uint32_t i = 0;
+  return_value_if_fail(argvw != NULL, RET_BAD_PARAMS);
+
+  for (i = 0; argvw[i] != NULL; i++) {
+    TKMEM_FREE(argvw[i]);
+  }
+  TKMEM_FREE(argvw);
+
+  return RET_OK;
 }

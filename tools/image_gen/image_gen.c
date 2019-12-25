@@ -35,8 +35,12 @@ ret_t image_gen(bitmap_t* image, const char* output_filename, bool_t mono) {
   return_value_if_fail(buff != NULL, RET_FAIL);
 
   size = image_gen_buff(image, buff, MAX_BUFF_SIZE, mono);
-  output_res_c_source(output_filename, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_RAW, buff, size);
-  TKMEM_FREE(buff);
+  if (size) {
+    output_res_c_source(output_filename, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_RAW, buff, size);
+    TKMEM_FREE(buff);
+  } else {
+    return RET_FAIL;
+  }
 
   return RET_OK;
 }
@@ -53,7 +57,7 @@ uint32_t image_gen_buff(bitmap_t* image, uint8_t* output_buff, uint32_t buff_siz
   image_data = bitmap_lock_buffer_for_read(image);
   if (!mono) {
     size = bitmap_get_line_length(image) * image->h;
-    ENSURE((size + sizeof(bitmap_header_t)) < buff_size);
+    return_value_if_fail((size + sizeof(bitmap_header_t)) < buff_size, 0);
 
     header->format = image->format;
     memcpy(header->data, image_data, size);
@@ -63,7 +67,7 @@ uint32_t image_gen_buff(bitmap_t* image, uint8_t* output_buff, uint32_t buff_siz
     bitmap_init_from_rgba(&b, image->w, image->h, BITMAP_FMT_MONO, image_data, 4);
     header->format = b.format;
     size = bitmap_get_line_length(&b) * b.h;
-    ENSURE((size + sizeof(bitmap_header_t)) < buff_size);
+    return_value_if_fail((size + sizeof(bitmap_header_t)) < buff_size, 0);
 
     bdata = bitmap_lock_buffer_for_read(&b);
     memcpy(header->data, bdata, size);

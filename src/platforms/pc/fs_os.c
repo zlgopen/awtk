@@ -36,6 +36,12 @@ int32_t fs_os_file_write(fs_file_t* file, const void* buffer, uint32_t size) {
   return fwrite(buffer, 1, size, fp);
 }
 
+int32_t fs_os_file_printf(fs_file_t* file, const char* const format_str, va_list vl) {
+  FILE* fp = (FILE*)(file->data);
+
+  return vfprintf(fp, format_str, vl);
+}
+
 ret_t fs_os_file_seek(fs_file_t* file, int32_t offset) {
   FILE* fp = (FILE*)(file->data);
 
@@ -113,6 +119,7 @@ static fs_file_t* fs_file_create(FILE* fp) {
   if (f != NULL) {
     f->read = fs_os_file_read;
     f->write = fs_os_file_write;
+    f->f_printf = fs_os_file_printf;
     f->seek = fs_os_file_seek;
     f->truncate = fs_os_file_truncate;
     f->eof = fs_os_file_eof;
@@ -369,6 +376,47 @@ static ret_t fs_os_get_cwd(fs_t* fs, char path[MAX_PATH + 1]) {
   return RET_OK;
 }
 
+ret_t fs_os_get_file_stat(fs_t* fs, const char* name, fs_file_stat_t* fst) {
+  (void)fs;
+  return_value_if_fail(name != NULL && fst != NULL, RET_BAD_PARAMS);
+
+  int stat_ret = 0;
+
+#ifdef WIN32
+  struct _stat64i32 st;
+  int16_t len = 0;
+  wchar_t* w_name = NULL;
+
+  len = strlen(name) + 1;
+  w_name = (wchar_t*)TKMEM_ALLOC(len * 2);
+  tk_utf8_to_utf16(name, w_name, len);
+
+  stat_ret = _wstat(w_name, &st);
+  TKMEM_FREE(w_name);
+#else
+  struct stat st;
+  stat_ret = stat(name, &st);
+#endif
+
+  if (stat_ret == -1) {
+    return RET_FAIL;
+  } else {
+    fst->dev = st.st_dev;
+    fst->ino = st.st_ino;
+    fst->mode = st.st_mode;
+    fst->nlink = st.st_nlink;
+    fst->uid = st.st_uid;
+    fst->gid = st.st_gid;
+    fst->rdev = st.st_rdev;
+    fst->size = st.st_size;
+    fst->atime = st.st_atime;
+    fst->mtime = st.st_mtime;
+    fst->ctime = st.st_ctime;
+  }
+
+  return RET_OK;
+}
+
 static const fs_t s_os_fs = {.open_file = fs_os_open_file,
                              .remove_file = fs_os_remove_file,
                              .file_exist = fs_os_file_exist,
@@ -382,7 +430,8 @@ static const fs_t s_os_fs = {.open_file = fs_os_open_file,
                              .get_file_size = fs_os_get_file_size,
                              .get_disk_info = fs_os_get_disk_info,
                              .get_cwd = fs_os_get_cwd,
-                             .get_exe = fs_os_get_exe};
+                             .get_exe = fs_os_get_exe,
+                             .get_file_stat = fs_os_get_file_stat};
 
 fs_t* os_fs(void) {
   return (fs_t*)&s_os_fs;

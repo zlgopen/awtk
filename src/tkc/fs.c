@@ -34,6 +34,18 @@ int32_t fs_file_write(fs_file_t* file, const void* buffer, uint32_t size) {
   return file->write(file, buffer, size);
 }
 
+int32_t fs_file_printf(fs_file_t* file, const char* const format_str, ...) {
+  va_list v_l;
+  int32_t ret = 0;
+  return_value_if_fail(file != NULL && file->f_printf != NULL, -1);
+
+  va_start(v_l, format_str);
+  ret = file->f_printf(file, format_str, v_l);
+  va_end(v_l);
+
+  return ret;
+}
+
 ret_t fs_file_seek(fs_file_t* file, int32_t offset) {
   return_value_if_fail(file != NULL && file->seek != NULL, RET_BAD_PARAMS);
 
@@ -151,6 +163,12 @@ ret_t fs_get_cwd(fs_t* fs, char path[MAX_PATH + 1]) {
 
 int32_t file_get_size(const char* name) {
   return fs_get_file_size(os_fs(), name);
+}
+
+ret_t fs_file_stat(fs_t* fs, const char* name, fs_file_stat_t* fst) {
+  return_value_if_fail(fs != NULL && fs->get_file_stat != NULL && name != NULL, RET_BAD_PARAMS);
+
+  return fs->get_file_stat(fs, name, fst);
 }
 
 int32_t file_read_part(const char* name, void* buff, uint32_t size, uint32_t offset) {

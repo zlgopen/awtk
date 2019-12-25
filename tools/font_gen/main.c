@@ -30,7 +30,7 @@
 #include "font_loader/font_loader_ft.h"
 #endif /*WITH_STB_FONT*/
 
-int main(int argc, char** argv) {
+int wmain(int argc, wchar_t* argv[]) {
   uint32_t size = 0;
   bool_t mono = FALSE;
   font_t* font = NULL;
@@ -44,19 +44,32 @@ int main(int argc, char** argv) {
   platform_prepare();
 
   if (argc < 5) {
-    printf("Usage: %s ttf_filename str_filename out_filename font_size [mono]\n", argv[0]);
+    printf("Usage: %S ttf_filename str_filename out_filename font_size [mono]\n", argv[0]);
 
     return 0;
   }
 
-  ttf_filename = argv[1];
-  str_filename = argv[2];
-  out_filename = argv[3];
-  font_size = atoi(argv[4]);
+  font_size = tk_watoi(argv[4]);
 
-  if (argc == 6 && tk_str_eq(argv[5], "mono")) {
+  if (argc == 6 && tk_wstr_eq(argv[5], L"mono")) {
     mono = TRUE;
   }
+
+  str_t ttf_file;
+  str_t str_file;
+  str_t out_file;
+
+  str_init(&ttf_file, 0);
+  str_init(&str_file, 0);
+  str_init(&out_file, 0);
+
+  str_from_wstr(&ttf_file, argv[1]);
+  str_from_wstr(&str_file, argv[2]);
+  str_from_wstr(&out_file, argv[3]);
+
+  ttf_filename = ttf_file.str;
+  str_filename = str_file.str;
+  out_filename = out_file.str;
 
   exit_if_need_not_update_for_infiles(out_filename, 2, ttf_filename, str_filename);
 
@@ -86,7 +99,13 @@ int main(int argc, char** argv) {
   TKMEM_FREE(ttf_buff);
   TKMEM_FREE(str_buff);
 
+  str_reset(&ttf_file);
+  str_reset(&str_file);
+  str_reset(&out_file);
+
   printf("done\n");
 
   return 0;
 }
+
+#include "common/main.inc"

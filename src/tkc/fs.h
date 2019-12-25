@@ -31,6 +31,7 @@ typedef struct _fs_file_t fs_file_t;
 
 typedef int32_t (*fs_file_read_t)(fs_file_t* file, void* buffer, uint32_t size);
 typedef int32_t (*fs_file_write_t)(fs_file_t* file, const void* buffer, uint32_t size);
+typedef int32_t (*fs_printf_t)(fs_file_t* file, const char* const format_str, va_list);
 typedef ret_t (*fs_file_seek_t)(fs_file_t* file, int32_t offset);
 typedef ret_t (*fs_file_truncate_t)(fs_file_t* file, int32_t offset);
 typedef bool_t (*fs_file_eof_t)(fs_file_t* file);
@@ -61,12 +62,33 @@ typedef ret_t (*fs_file_close_t)(fs_file_t* file);
 struct _fs_file_t {
   fs_file_read_t read;
   fs_file_write_t write;
+  fs_printf_t f_printf;
   fs_file_seek_t seek;
   fs_file_truncate_t truncate;
   fs_file_eof_t eof;
   fs_file_close_t close;
   void* data;
 };
+
+/**
+ * @class fs_t
+ *
+ * 文件状态信息。
+ *
+ */
+typedef struct _fs_file_stat_t {
+  uint32_t dev;
+  uint16_t ino;
+  uint16_t mode;
+  int16_t nlink;
+  int16_t uid;
+  int16_t gid;
+  uint32_t rdev;
+  uint64_t size;
+  uint64_t atime;
+  uint64_t mtime;
+  uint64_t ctime;
+} fs_file_stat_t;
 
 /**
  * @method fs_file_read
@@ -93,6 +115,18 @@ int32_t fs_file_read(fs_file_t* file, void* buffer, uint32_t size);
  * @return {int32_t} 返回实际写入的字节数。
  */
 int32_t fs_file_write(fs_file_t* file, const void* buffer, uint32_t size);
+
+/**
+ * @method fs_file_printf
+ *
+ * 写入文件。
+ *
+ * @param {fs_file_t*} file 文件对象。
+ * @param {const char* const} format_str 格式化字符串。
+ *
+ * @return {int32_t} 返回实际写入的字节数。
+ */
+int32_t fs_file_printf(fs_file_t* file, const char* const format_str, ...);
 
 /**
  * @method fs_file_seek
@@ -236,6 +270,7 @@ typedef ret_t (*fs_get_disk_info_t)(fs_t* fs, const char* volume, int32_t* free_
                                     int32_t* total_kb);
 typedef ret_t (*fs_get_exe_t)(fs_t* fs, char path[MAX_PATH + 1]);
 typedef ret_t (*fs_get_cwd_t)(fs_t* fs, char path[MAX_PATH + 1]);
+typedef ret_t (*fs_get_file_stat_t)(fs_t* fs, const char* name, fs_file_stat_t* fst);
 
 /**
  * @class fs_t
@@ -258,6 +293,7 @@ struct _fs_t {
   fs_get_disk_info_t get_disk_info;
   fs_get_cwd_t get_cwd;
   fs_get_exe_t get_exe;
+  fs_get_file_stat_t get_file_stat;
 };
 
 /**
@@ -372,6 +408,19 @@ bool_t fs_dir_rename(fs_t* fs, const char* name, const char* new_name);
 int32_t fs_get_file_size(fs_t* fs, const char* name);
 
 ret_t fs_get_disk_info(fs_t* fs, const char* volume, int32_t* free_kb, int32_t* total_kb);
+
+/**
+ * @method fs_file_stat
+ *
+ * 获取文件信息。
+ *
+ * @param {fs_t*} fs 文件系统对象，一般赋值为os_fs()。
+ * @param {const char*} name 文件名。
+ * @param {fs_file_stat_t*} fst 文件状态信息。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t fs_file_stat(fs_t* fs, const char* name, fs_file_stat_t* fst);
 
 /**
  * @method fs_get_exe
