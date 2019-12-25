@@ -67,16 +67,14 @@ static ret_t line_number_do_paint_self(widget_t* widget, canvas_t* c) {
 }
 
 static ret_t line_number_on_paint_self(widget_t* widget, canvas_t* c) {
-  point_t p = {0, 0};
   rect_t save_r = {0, 0, 0, 0};
   rect_t clip_r = {0, 0, 0, 0};
   rect_t edit_r = {0, 0, 0, 0};
   line_number_t* line_number = LINE_NUMBER(widget);
 
   canvas_get_clip_rect(c, &save_r);
-  widget_to_screen(widget, &p);
 
-  edit_r = rect_init(p.x, p.y + line_number->top_margin, widget->w,
+  edit_r = rect_init(c->ox, c->oy + line_number->top_margin, widget->w,
                      widget->h - line_number->top_margin - line_number->bottom_margin);
   clip_r = rect_intersect(&save_r, &edit_r);
 
