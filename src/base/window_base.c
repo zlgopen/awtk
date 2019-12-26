@@ -221,6 +221,11 @@ ret_t window_base_on_destroy(widget_t* widget) {
   window_base_t* window_base = WINDOW_BASE(widget);
   return_value_if_fail(widget != NULL && window_base != NULL, RET_BAD_PARAMS);
 
+  if (window_base->save_focus_widget) {
+    widget_unref(window_base->save_focus_widget);
+    window_base->save_focus_widget = NULL;
+  }
+
   TKMEM_FREE(window_base->theme);
   TKMEM_FREE(window_base->open_anim_hint);
   TKMEM_FREE(window_base->close_anim_hint);
@@ -284,18 +289,33 @@ ret_t window_base_on_event(widget_t* widget, event_t* e) {
       window_close(widget);
     }
   } else if (e->type == EVT_WINDOW_TO_FOREGROUND) {
-    if (win->should_grab_when_to_foreground) {
-      widget_grab(widget->parent, widget);
+    widget->parent->grab_widget_count =
+        widget->grab_widget_count + win->grab_count_when_to_foreground;
+    if (widget->parent->grab_widget_count) {
+      widget->parent->grab_widget = widget;
     }
-    widget_set_focused_internal(win->save_focus_widget, TRUE);
+    if (win->save_focus_widget) {
+      widget_set_focused_internal(win->save_focus_widget, TRUE);
+      widget_unref(win->save_focus_widget);
+      win->save_focus_widget = NULL;
+    }
   } else if (e->type == EVT_WINDOW_TO_BACKGROUND) {
     if (widget->parent->grab_widget == widget) {
-      widget_ungrab(widget->parent, widget);
-      win->should_grab_when_to_foreground = TRUE;
+      win->grab_count_when_to_foreground =
+          widget->parent->grab_widget_count - widget->grab_widget_count;
+      widget->parent->grab_widget_count = 0;
+      widget->parent->grab_widget = NULL;
     } else {
-      win->should_grab_when_to_foreground = FALSE;
+      win->grab_count_when_to_foreground = 0;
+    }
+    if (win->save_focus_widget) {
+      widget_unref(win->save_focus_widget);
+      win->save_focus_widget = NULL;
     }
     win->save_focus_widget = window_base_get_key_target_leaf(widget);
+    if (win->save_focus_widget) {
+      widget_ref(win->save_focus_widget);
+    }
     widget_set_focused(widget, FALSE);
   }
 

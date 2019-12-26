@@ -194,7 +194,7 @@ typedef struct _window_base_t {
   font_manager_t* font_manager;
   native_window_t* native_window;
   widget_t* save_focus_widget;
-  bool_t should_grab_when_to_foreground;
+  uint32_t grab_count_when_to_foreground;
 } window_base_t;
 
 /*for sub class*/
