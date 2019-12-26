@@ -622,6 +622,16 @@ widget_t* widget_get_child(widget_t* widget, int32_t index);
 int32_t widget_index_of(widget_t* widget);
 
 /**
+ * @method widget_close_window
+ * 关闭控件所在的窗口。
+ * @annotation ["deconstructor", "scriptable"]
+ * @param {widget_t*} widget widget对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_close_window(widget_t* widget);
+
+/**
  * @method widget_move
  * 移动控件。
  * @annotation ["scriptable"]

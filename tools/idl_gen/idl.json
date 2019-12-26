@@ -13068,6 +13068,29 @@
             "desc": "vgcanvas对象。"
           },
           {
+            "type": "bool_t",
+            "name": "dir",
+            "desc": "填充方法。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置路径填充实心与否。\n\n>CCW(1)为实心，CW(2)为镂空，设置其他则默认根据非零环绕规则判断(nonzero)。",
+        "name": "vgcanvas_path_winding",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "vgcanvas_t*",
+            "name": "vg",
+            "desc": "vgcanvas对象。"
+          },
+          {
             "type": "float_t",
             "name": "rad",
             "desc": "角度"
@@ -16129,6 +16152,25 @@
         "return": {
           "type": "int32_t",
           "desc": "在父控件中的索引编号。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          }
+        ],
+        "annotation": {
+          "deconstructor": true,
+          "scriptable": true
+        },
+        "desc": "关闭控件所在的窗口。",
+        "name": "widget_close_window",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       },
       {
@@ -25455,6 +25497,247 @@
       {
         "params": [
           {
+            "type": "fs_dir_t*",
+            "name": "dir",
+            "desc": "文件夹对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "重置文件夹读取位置到开始。",
+        "name": "fs_dir_rewind",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "fs_dir_t*",
+            "name": "dir",
+            "desc": "文件夹对象。"
+          },
+          {
+            "type": "fs_item_t*",
+            "name": "item",
+            "desc": "返回一项。"
+          }
+        ],
+        "annotation": {},
+        "desc": "读取文件夹对象。",
+        "name": "fs_dir_read",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "fs_dir_t*",
+            "name": "dir",
+            "desc": "文件夹对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "关闭文件夹对象。",
+        "name": "fs_dir_close",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "tkc/fs.h",
+    "desc": "文件夹接口。",
+    "name": "fs_dir_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [],
+    "events": [],
+    "properties": [
+      {
+        "name": "is_dir",
+        "desc": "是否是目录。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "is_file",
+        "desc": "是否是文件。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "name",
+        "desc": "名称。",
+        "type": "char*",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "tkc/fs.h",
+    "desc": "代表目录或文件。",
+    "name": "fs_item_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "fs_file_t*",
+            "name": "file",
+            "desc": "文件对象。"
+          },
+          {
+            "type": "void*",
+            "name": "buffer",
+            "desc": "用于返回数据的缓冲区。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "缓冲区大小。"
+          }
+        ],
+        "annotation": {},
+        "desc": "读取文件。",
+        "name": "fs_file_read",
+        "return": {
+          "type": "int32_t",
+          "desc": "返回实际读取的字节数。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "fs_file_t*",
+            "name": "file",
+            "desc": "文件对象。"
+          },
+          {
+            "type": "const void*",
+            "name": "buffer",
+            "desc": "数据缓冲区。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "数据长度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "写入文件。",
+        "name": "fs_file_write",
+        "return": {
+          "type": "int32_t",
+          "desc": "返回实际写入的字节数。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "fs_file_t*",
+            "name": "file",
+            "desc": "文件对象。"
+          },
+          {
+            "type": "const char* const",
+            "name": "format_str",
+            "desc": "格式化字符串。"
+          }
+        ],
+        "annotation": {},
+        "desc": "写入文件。",
+        "name": "fs_file_printf",
+        "return": {
+          "type": "int32_t",
+          "desc": "返回实际写入的字节数。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "fs_file_t*",
+            "name": "file",
+            "desc": "文件对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "offset",
+            "desc": "数据长度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "定位读写指针到指定的位置。",
+        "name": "fs_file_seek",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "fs_file_t*",
+            "name": "file",
+            "desc": "文件对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "清除文件内容。",
+        "name": "fs_file_truncate",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "fs_file_t*",
+            "name": "file",
+            "desc": "文件对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "关闭文件。",
+        "name": "fs_file_close",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "fs_file_t*",
+            "name": "file",
+            "desc": "文件对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "判断文件是否结束。",
+        "name": "fs_file_eof",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回TRUE表示结束，否则表示没结束。"
+        }
+      },
+      {
+        "params": [
+          {
             "type": "fs_t*",
             "name": "fs",
             "desc": "文件系统对象，一般赋值为os_fs()。"
@@ -25664,6 +25947,32 @@
             "desc": "文件系统对象，一般赋值为os_fs()。"
           },
           {
+            "type": "const char*",
+            "name": "name",
+            "desc": "文件名。"
+          },
+          {
+            "type": "fs_file_stat_t*",
+            "name": "fst",
+            "desc": "文件状态信息。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取文件信息。",
+        "name": "fs_file_stat",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "fs_t*",
+            "name": "fs",
+            "desc": "文件系统对象，一般赋值为os_fs()。"
+          },
+          {
             "type": "char*",
             "name": "path",
             "desc": "保存可执行文件的路径。"
@@ -25840,234 +26149,13 @@
     "events": [],
     "properties": [],
     "header": "tkc/fs.h",
-    "desc": "文件系统接口。",
+    "desc": "文件状态信息。",
     "name": "fs_t",
     "level": 1
   },
   {
     "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "fs_dir_t*",
-            "name": "dir",
-            "desc": "文件夹对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "重置文件夹读取位置到开始。",
-        "name": "fs_dir_rewind",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "fs_dir_t*",
-            "name": "dir",
-            "desc": "文件夹对象。"
-          },
-          {
-            "type": "fs_item_t*",
-            "name": "item",
-            "desc": "返回一项。"
-          }
-        ],
-        "annotation": {},
-        "desc": "读取文件夹对象。",
-        "name": "fs_dir_read",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "fs_dir_t*",
-            "name": "dir",
-            "desc": "文件夹对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "关闭文件夹对象。",
-        "name": "fs_dir_close",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "tkc/fs.h",
-    "desc": "文件夹接口。",
-    "name": "fs_dir_t",
-    "level": 1
-  },
-  {
-    "type": "class",
     "methods": [],
-    "events": [],
-    "properties": [
-      {
-        "name": "is_dir",
-        "desc": "是否是目录。",
-        "type": "bool_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "is_file",
-        "desc": "是否是文件。",
-        "type": "bool_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "name",
-        "desc": "名称。",
-        "type": "char*",
-        "annotation": {
-          "readable": true
-        }
-      }
-    ],
-    "header": "tkc/fs.h",
-    "desc": "代表目录或文件。",
-    "name": "fs_item_t",
-    "level": 1
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "fs_file_t*",
-            "name": "file",
-            "desc": "文件对象。"
-          },
-          {
-            "type": "void*",
-            "name": "buffer",
-            "desc": "用于返回数据的缓冲区。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "size",
-            "desc": "缓冲区大小。"
-          }
-        ],
-        "annotation": {},
-        "desc": "读取文件。",
-        "name": "fs_file_read",
-        "return": {
-          "type": "int32_t",
-          "desc": "返回实际读取的字节数。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "fs_file_t*",
-            "name": "file",
-            "desc": "文件对象。"
-          },
-          {
-            "type": "const void*",
-            "name": "buffer",
-            "desc": "数据缓冲区。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "size",
-            "desc": "数据长度。"
-          }
-        ],
-        "annotation": {},
-        "desc": "写入文件。",
-        "name": "fs_file_write",
-        "return": {
-          "type": "int32_t",
-          "desc": "返回实际写入的字节数。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "fs_file_t*",
-            "name": "file",
-            "desc": "文件对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "offset",
-            "desc": "数据长度。"
-          }
-        ],
-        "annotation": {},
-        "desc": "定位读写指针到指定的位置。",
-        "name": "fs_file_seek",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "fs_file_t*",
-            "name": "file",
-            "desc": "文件对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "清除文件内容。",
-        "name": "fs_file_truncate",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "fs_file_t*",
-            "name": "file",
-            "desc": "文件对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "关闭文件。",
-        "name": "fs_file_close",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "fs_file_t*",
-            "name": "file",
-            "desc": "文件对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "判断文件是否结束。",
-        "name": "fs_file_eof",
-        "return": {
-          "type": "bool_t",
-          "desc": "返回TRUE表示结束，否则表示没结束。"
-        }
-      }
-    ],
     "events": [],
     "properties": [],
     "header": "tkc/fs.h",

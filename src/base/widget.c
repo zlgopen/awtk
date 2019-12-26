@@ -3761,3 +3761,11 @@ static ret_t widget_unref_async(widget_t* widget) {
 
   return RET_OK;
 }
+
+ret_t widget_close_window(widget_t* widget) {
+  widget_t* win = widget_get_window(widget);
+  return_value_if_fail(win != NULL, RET_BAD_PARAMS);
+
+  return window_manager_close_window(win->parent, win);
+}
+
