@@ -181,8 +181,8 @@ ret_t assets_manager_add(assets_manager_t* am, const void* info);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t assets_manager_add_data(assets_manager_t* am, const char* name, uint16_t type, uint16_t subtype,
-                              uint8_t* buff, uint32_t size);
+ret_t assets_manager_add_data(assets_manager_t* am, const char* name, uint16_t type,
+                              uint16_t subtype, uint8_t* buff, uint32_t size);
 
 /**
  * @method assets_manager_ref

@@ -3768,4 +3768,3 @@ ret_t widget_close_window(widget_t* widget) {
 
   return window_manager_close_window(win->parent, win);
 }
-
