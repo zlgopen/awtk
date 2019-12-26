@@ -585,6 +585,18 @@ ret_t assets_manager_add(assets_manager_t* am, const void* info) {
   return darray_push(&(am->assets), (void*)r);
 }
 
+ret_t assets_manager_add_data(assets_manager_t* am, const char* name, uint16_t type, uint16_t subtype,
+                              uint8_t* buff, uint32_t size) {
+  asset_info_t* info = asset_info_create(type, subtype, name, size);
+  return_value_if_fail(info != NULL, RET_FAIL);
+  memcpy(info->data, buff, size);
+
+  return_value_if_fail(assets_manager_add(am, info) == RET_OK, RET_FAIL);
+
+  return asset_info_unref(info);
+}
+
+
 const asset_info_t* assets_manager_find_in_cache(assets_manager_t* am, asset_type_t type,
                                                  const char* name) {
   uint32_t i = 0;

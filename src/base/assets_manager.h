@@ -170,6 +170,21 @@ ret_t assets_manager_set_locale_info(assets_manager_t* am, locale_info_t* locale
 ret_t assets_manager_add(assets_manager_t* am, const void* info);
 
 /**
+ * @method assets_manager_add
+ * 向资源管理器中增加一个资源data。
+ * @param {assets_manager_t*} am asset manager对象。
+ * @param {const char*} name 待增加的资源的名字。
+ * @param {uint16_t} type 待增加的资源的主类型枚举。
+ * @param {uint16_t} subtype 待增加的资源的子类型枚举。
+ * @param {uint8_t*} buff 待增加的资源的data数据。
+ * @param {uint32_t} size 待增加的资源的data数据长度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t assets_manager_add_data(assets_manager_t* am, const char* name, uint16_t type, uint16_t subtype,
+                              uint8_t* buff, uint32_t size);
+
+/**
  * @method assets_manager_ref
  * 在资源管理器的缓存中查找指定的资源并引用它，如果缓存中不存在，尝试加载该资源。
  * @annotation ["scriptable"]
