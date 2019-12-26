@@ -183,7 +183,7 @@ struct _value_t {
     float f32;
     double f64;
     bool_t b;
-    pointer_t ptr;
+    void* ptr;
     const char* str;
     const wchar_t* wstr;
     object_t* object;
@@ -384,11 +384,11 @@ uint64_t value_uint64(const value_t* v);
  * @method value_set_pointer
  * 设置类型为pointer的值。
  * @param {value_t*}  v       value对象。
- * @param {pointer_t}     value   待设置的值。
+ * @param {void*}     value   待设置的值。
  *
  * @return {value_t*} value对象本身。
  */
-value_t* value_set_pointer(value_t* v, pointer_t value);
+value_t* value_set_pointer(value_t* v, void* value);
 
 /**
  * @method value_pointer
@@ -397,7 +397,7 @@ value_t* value_set_pointer(value_t* v, pointer_t value);
  *
  * @return {void*} 值。
  */
-pointer_t value_pointer(const value_t* v);
+void* value_pointer(const value_t* v);
 
 /**
  * @method value_set_float
