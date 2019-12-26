@@ -51,11 +51,21 @@ static void* tk_alloc_impl(uint32_t size) {
 }
 
 static void* tk_realloc_impl(void* ptr, uint32_t size) {
+  bool_t need_count = FALSE;
   if (size > MAX_BLOCK_SIZE) {
     return NULL;
   }
 
-  return realloc(ptr, size);
+  if (ptr == NULL) {
+    need_count = TRUE;
+  }
+
+  void* temp = realloc(ptr, size);
+  if (temp != NULL && need_count) {
+    s_mem_stat.used_block_nr++;
+  }
+
+  return temp;
 }
 
 static void tk_free_impl(void* ptr) {
