@@ -36,6 +36,8 @@ typedef struct _lcd_vgcanvas_t {
 static ret_t lcd_vgcanvas_resize(lcd_t* lcd, wh_t w, wh_t h, uint32_t line_length) {
   LCD(lcd)->canvas->w = w;
   LCD(lcd)->canvas->h = h;
+  LCD(lcd)->canvas->dirty_rect.w = w;
+  LCD(lcd)->canvas->dirty_rect.h = h;
   (void)line_length;
 
   return RET_OK;
