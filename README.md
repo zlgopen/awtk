@@ -213,6 +213,12 @@ pip install Pillow
 
 * [LUA 绑定](https://github.com/zlgopen/awtk-lua)
 
+* [C++ 绑定](https://github.com/zlgopen/awtk-cpp)
+
+* [JAVA 绑定](https://github.com/zlgopen/awtk-java)
+
+* [MiniJVM 绑定](https://github.com/zlgopen/awtk-minijvm)
+
 * [JS 绑定之 QuickJS](https://github.com/zlgopen/awtk-quickjs)
 
 * [JS 绑定之 JerryScript](https://github.com/zlgopen/awtk-jerryscript)
