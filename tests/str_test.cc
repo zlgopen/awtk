@@ -257,3 +257,21 @@ TEST(Str, expand_vars) {
   object_unref(vars);
   str_reset(s);
 }
+
+TEST(Str, from_wstr) {
+  str_t str;
+  str_t* s = NULL;
+  s = str_init(&str, 0);
+
+  ASSERT_EQ(s->size, 0);
+  str_from_wstr(s, L"123456");
+  ASSERT_STREQ(s->str, "123456");
+
+  str_from_wstr_with_len(s, L"123456", 3);
+  ASSERT_STREQ(s->str, "123");
+
+  str_from_wstr_with_len(s, L"123456", 0);
+  ASSERT_STREQ(s->str, "");
+
+  str_reset(s);
+}

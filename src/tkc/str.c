@@ -261,7 +261,7 @@ ret_t str_from_value(str_t* str, const value_t* v) {
   }
 }
 
-ret_t str_from_wstr(str_t* str, const wchar_t* wstr) {
+ret_t str_from_wstr_with_len(str_t* str, const wchar_t* wstr, uint32_t len) {
   return_value_if_fail(str != NULL, RET_BAD_PARAMS);
 
   str->size = 0;
@@ -269,12 +269,12 @@ ret_t str_from_wstr(str_t* str, const wchar_t* wstr) {
     str->str[0] = '\0';
   }
 
-  if (wstr != NULL) {
-    uint32_t size = wcslen(wstr) * 4 + 1;
+  if (wstr != NULL && len > 0) {
+    uint32_t size = len * 4 + 1;
     return_value_if_fail(str_extend(str, size + 1) == RET_OK, RET_OOM);
 
     if (size > 0) {
-      tk_utf8_from_utf16(wstr, str->str, size);
+      tk_utf8_from_utf16_ex(wstr, len, str->str, size);
       str->size = strlen(str->str);
     } else {
       str_set(str, "");
@@ -282,6 +282,12 @@ ret_t str_from_wstr(str_t* str, const wchar_t* wstr) {
   }
 
   return RET_OK;
+}
+
+ret_t str_from_wstr(str_t* str, const wchar_t* wstr) {
+  return_value_if_fail(str != NULL && wstr != NULL, RET_BAD_PARAMS);
+
+  return str_from_wstr_with_len(str, wstr, wcslen(wstr));
 }
 
 ret_t str_to_int(str_t* str, int32_t* v) {

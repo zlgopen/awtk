@@ -277,11 +277,22 @@ ret_t str_from_value(str_t* str, const value_t* v);
  * @method str_from_wstr
  * 用value初始化字符串。
  * @param {str_t*} str str对象。
- * @param {wchar_t*} wstr wstr。
+ * @param {wchar_t*} wstr Unicode字符串。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t str_from_wstr(str_t* str, const wchar_t* wstr);
+
+/**
+ * @method str_from_wstr_with_len
+ * 用value初始化字符串。
+ * @param {str_t*} str str对象。
+ * @param {wchar_t*} wstr Unicode字符串
+ * @param {uint32_t} len Unicode字符串的长度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_from_wstr_with_len(str_t* str, const wchar_t* wstr, uint32_t len);
 
 /**
  * @method str_to_int
