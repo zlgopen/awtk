@@ -29,6 +29,7 @@ typedef struct _lcd_vgcanvas_t {
   lcd_t base;
 
   vgcanvas_t* canvas;
+  str_t temp_text;
 } lcd_vgcanvas_t;
 
 #define LCD(lcd) ((lcd_vgcanvas_t*)lcd)
@@ -199,41 +200,21 @@ static ret_t lcd_vgcanvas_draw_image_matrix(lcd_t* lcd, draw_image_info_t* info)
   return RET_OK;
 }
 
-#define MAX_CHARS 256
 float_t lcd_vgcanvas_measure_text(lcd_t* lcd, const wchar_t* str, uint32_t nr) {
-  wchar_t temp[MAX_CHARS + 1];
-  char text[2 * MAX_CHARS + 1];
+  str_t* text = &(LCD(lcd)->temp_text);
   vgcanvas_t* canvas = LCD(lcd)->canvas;
-  return_value_if_fail(nr < MAX_CHARS, RET_FAIL);
-
-  if (nr == 0) {
-    return 0;
-  }
-
-  wcsncpy(temp, str, nr);
-  temp[nr] = 0;
-
-  tk_utf8_from_utf16(temp, text, sizeof(text) - 1);
+  return_value_if_fail(str_from_wstr_with_len(text, str, nr) == RET_OK, RET_OOM);
 
   vgcanvas_set_font(canvas, lcd->font_name);
   vgcanvas_set_font_size(canvas, lcd->font_size);
-  return vgcanvas_measure_text(LCD(lcd)->canvas, text);
+
+  return vgcanvas_measure_text(LCD(lcd)->canvas, text->str);
 }
 
 static ret_t lcd_vgcanvas_draw_text(lcd_t* lcd, const wchar_t* str, uint32_t nr, xy_t x, xy_t y) {
-  wchar_t temp[MAX_CHARS + 1];
-  char text[2 * MAX_CHARS + 1];
+  str_t* text = &(LCD(lcd)->temp_text);
   vgcanvas_t* canvas = LCD(lcd)->canvas;
-  return_value_if_fail(nr < MAX_CHARS, RET_FAIL);
-
-  if (nr == 0) {
-    return RET_OK;
-  }
-
-  wcsncpy(temp, str, nr);
-  temp[nr] = 0;
-
-  tk_utf8_from_utf16(temp, text, sizeof(text) - 1);
+  return_value_if_fail(str_from_wstr_with_len(text, str, nr) == RET_OK, RET_OOM);
 
   vgcanvas_set_font(canvas, lcd->font_name);
   vgcanvas_set_font_size(canvas, lcd->font_size);
@@ -241,7 +222,7 @@ static ret_t lcd_vgcanvas_draw_text(lcd_t* lcd, const wchar_t* str, uint32_t nr,
   vgcanvas_set_text_align(canvas, "left");
   vgcanvas_set_text_baseline(canvas, "top");
 
-  return vgcanvas_fill_text(canvas, text, x, y, 0xffff);
+  return vgcanvas_fill_text(canvas, text->str, x, y, 0xffff);
 }
 
 wh_t lcd_vgcanvas_get_width(lcd_t* lcd) {
@@ -262,6 +243,7 @@ static ret_t lcd_vgcanvas_end_frame(lcd_t* lcd) {
 
 static ret_t lcd_vgcanvas_destroy(lcd_t* lcd) {
   vgcanvas_t* canvas = LCD(lcd)->canvas;
+  str_reset(&(LCD(lcd)->temp_text));
   vgcanvas_destroy(canvas);
   memset(lcd, 0x00, sizeof(lcd_t));
   TKMEM_FREE(lcd);
@@ -320,6 +302,7 @@ lcd_t* lcd_vgcanvas_init(wh_t w, wh_t h, vgcanvas_t* canvas) {
   system_info_set_lcd_type(info, base->type);
   system_info_set_device_pixel_ratio(info, canvas->ratio);
 
+  str_init(&(lcd->temp_text), 100);
   lcd->canvas = canvas;
 
   return base;
