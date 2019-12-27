@@ -47,15 +47,31 @@ BEGIN_C_DECLS
 /**
  * @method tk_utf8_from_utf16
  *
- * 将wchar_t类型转换为char类型。
+ * 把ucs字符串转成UTF8字符串。
  *
- * @param {const wchar_t*} str str。
- * @param {const char*} out 返回结果缓冲区。
- * @param {uint32_t} size 缓冲区大小。
+ * @param {const wchar_t*} in 输入字符串。
+ * @param {const char*} out 输出字符串。
+ * @param {uint32_t} out_size 输出字符串的最大长度。
  *
- * @return {char*} 值。
+ *
+ * @return {char*} 返回UTF8字符串。
  */
-char* tk_utf8_from_utf16(const wchar_t* str, char* out, uint32_t size);
+char* tk_utf8_from_utf16(const wchar_t* in, char* out, uint32_t size);
+
+/**
+ * @method tk_utf8_from_utf16_ex
+ *
+ * 把ucs字符串转成UTF8字符串。
+ *
+ * @param {const wchar_t*} in 输入字符串。
+ * @param {uint32_t} in_size 输入字符串的长度。
+ * @param {const char*} out 输出字符串。
+ * @param {uint32_t} out_size 输出字符串的最大长度。
+ *
+ *
+ * @return {char*} 返回UTF8字符串。
+ */
+char* tk_utf8_from_utf16_ex(const wchar_t* in, uint32_t in_size, char* out, uint32_t out_size);
 
 /**
  * @method tk_utf8_to_utf16
