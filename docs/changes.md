@@ -1,4 +1,7 @@
 # 最新动态
+* 2019/12/29
+  * 使用event\_source\_manager实现主循环。
+
 * 2019/12/27
   * 增加str\_from\_wstr\_with\_len
   * 增加tk\_utf8\_from\_utf16\_ex

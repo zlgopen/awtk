@@ -53,6 +53,7 @@ struct _main_loop_simple_t {
   void* user2;
   void* user3;
   void* user4;
+  event_source_manager_t* event_source_manager;
   main_loop_dispatch_input_t dispatch_input;
 };
 

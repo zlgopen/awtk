@@ -37,7 +37,6 @@ ret_t main_loop_quit(main_loop_t* l) {
 
   if (l->quit != NULL) {
     l->quit(l);
-    l->app_quited = TRUE;
   }
 
   return RET_OK;
@@ -100,6 +99,8 @@ ret_t main_loop_sleep_default(main_loop_t* l) {
 }
 
 ret_t main_loop_sleep(main_loop_t* l) {
+  return_value_if_fail(l != NULL, RET_BAD_PARAMS);
+
   if (l->sleep != NULL) {
     return l->sleep(l);
   }
@@ -108,9 +109,35 @@ ret_t main_loop_sleep(main_loop_t* l) {
 }
 
 ret_t main_loop_step(main_loop_t* l) {
+  return_value_if_fail(l != NULL, RET_BAD_PARAMS);
+
   if (l->step != NULL) {
     return l->step(l);
   }
 
   return RET_OK;
+}
+
+event_source_manager_t* main_loop_get_event_source_manager(main_loop_t* l) {
+  return_value_if_fail(l != NULL, NULL);
+
+  if (l->get_event_source_manager != NULL) {
+    return l->get_event_source_manager(l);
+  }
+
+  return NULL;
+}
+
+ret_t main_loop_add_event_source(main_loop_t* l, event_source_t* source) {
+  event_source_manager_t* m = main_loop_get_event_source_manager(l);
+  return_value_if_fail(m != NULL && source != NULL, RET_BAD_PARAMS);
+
+  return event_source_manager_add(m, source);
+}
+
+ret_t main_loop_remove_event_source(main_loop_t* l, event_source_t* source) {
+  event_source_manager_t* m = main_loop_get_event_source_manager(l);
+  return_value_if_fail(m != NULL && source != NULL, RET_BAD_PARAMS);
+
+  return event_source_manager_remove(m, source);
 }

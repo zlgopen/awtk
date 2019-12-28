@@ -24,6 +24,7 @@
 
 #include "base/widget.h"
 #include "base/event_queue.h"
+#include "tkc/event_source_manager.h"
 
 BEGIN_C_DECLS
 
@@ -33,6 +34,7 @@ typedef struct _main_loop_t main_loop_t;
 typedef ret_t (*main_loop_run_t)(main_loop_t* l);
 typedef ret_t (*main_loop_quit_t)(main_loop_t* l);
 typedef ret_t (*main_loop_queue_event_t)(main_loop_t* l, const event_queue_req_t* e);
+typedef event_source_manager_t* (*main_loop_get_event_source_manager_t)(main_loop_t* l);
 typedef ret_t (*main_loop_wakeup_t)(main_loop_t* l);
 typedef ret_t (*main_loop_step_t)(main_loop_t* l);
 typedef ret_t (*main_loop_sleep_t)(main_loop_t* l);
@@ -45,6 +47,7 @@ struct _main_loop_t {
   main_loop_sleep_t sleep;
   main_loop_wakeup_t wakeup;
   main_loop_queue_event_t queue_event;
+  main_loop_get_event_source_manager_t get_event_source_manager;
   main_loop_destroy_t destroy;
 
   bool_t running;
@@ -66,6 +69,11 @@ ret_t main_loop_destroy(main_loop_t* l);
 
 ret_t main_loop_step(main_loop_t* l);
 ret_t main_loop_sleep(main_loop_t* l);
+
+/*event_source*/
+event_source_manager_t* main_loop_get_event_source_manager(main_loop_t* l);
+ret_t main_loop_add_event_source(main_loop_t* l, event_source_t* source);
+ret_t main_loop_remove_event_source(main_loop_t* l, event_source_t* source);
 
 END_C_DECLS
 
