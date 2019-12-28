@@ -294,7 +294,11 @@ ret_t tk_run() {
 }
 
 static ret_t tk_quit_idle(const timer_info_t* timer) {
-  return main_loop_quit(main_loop());
+  main_loop_t* loop = main_loop();
+
+  loop->app_quited = TRUE;
+
+  return main_loop_quit(loop);
 }
 
 ret_t tk_quit() {
