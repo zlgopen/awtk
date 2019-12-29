@@ -203,7 +203,10 @@ typedef enum _ret_t {
 
 #if defined(WIN32)
 #define TK_PATH_SEP '\\'
+#ifndef snprintf
 #define snprintf _snprintf
+#endif/*snprintf*/
+
 #define strcasecmp stricmp
 #else
 #define TK_PATH_SEP '/'
