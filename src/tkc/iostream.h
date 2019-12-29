@@ -78,13 +78,13 @@ tk_ostream_t* tk_iostream_get_ostream(tk_iostream_t* stream);
  * 读取数据。
  *
  * @param {tk_iostream_t*} stream iostream对象。
- * @param {uint8_t*} buff 返回数据的缓冲区。
+ * @param {void*} buff 返回数据的缓冲区。
  * @param {uint32_t} max_size 缓冲区的大小。
  *
  * @return {int32_t} 返回负数表示读取失败，否则返回实际读取数据的长度。
  *
  */
-int32_t tk_iostream_read(tk_iostream_t* stream, uint8_t* buff, uint32_t max_size);
+int32_t tk_iostream_read(tk_iostream_t* stream, void* buff, uint32_t max_size);
 
 /**
  * @method tk_iostream_read_len
@@ -92,14 +92,14 @@ int32_t tk_iostream_read(tk_iostream_t* stream, uint8_t* buff, uint32_t max_size
  * 读取指定长度的数据。
  *
  * @param {tk_iostream_t*} stream iostream对象。
- * @param {uint8_t*} buff 返回数据的缓冲区。
+ * @param {void*} buff 返回数据的缓冲区。
  * @param {uint32_t} max_size 缓冲区的大小。
  * @param {uint32_t} timeout_ms timeout.
  *
  * @return {int32_t} 返回负数表示读取失败，否则返回实际读取数据的长度。
  *
  */
-int32_t tk_iostream_read_len(tk_iostream_t* stream, uint8_t* buff, uint32_t max_size,
+int32_t tk_iostream_read_len(tk_iostream_t* stream, void* buff, uint32_t max_size,
                             uint32_t timeout_ms);
 
 /**
@@ -108,13 +108,13 @@ int32_t tk_iostream_read_len(tk_iostream_t* stream, uint8_t* buff, uint32_t max_
  * 写入数据。
  *
  * @param {tk_iostream_t*} stream iostream对象。
- * @param {const uint8_t*} buff 返回数据的缓冲区。
+ * @param {const void*} buff 返回数据的缓冲区。
  * @param {uint32_t} max_size 缓冲区的大小。
  *
  * @return {int32_t} 返回负数表示写入失败，否则返回实际写入数据的长度。
  *
  */
-int32_t tk_iostream_write(tk_iostream_t* stream, const uint8_t* buff, uint32_t max_size);
+int32_t tk_iostream_write(tk_iostream_t* stream, const void* buff, uint32_t max_size);
 
 /**
  * @method tk_iostream_write_len
@@ -122,14 +122,14 @@ int32_t tk_iostream_write(tk_iostream_t* stream, const uint8_t* buff, uint32_t m
  * 写入指定长度的数据。
  *
  * @param {tk_iostream_t*} stream iostream对象。
- * @param {const uint8_t*} buff 数据的缓冲区。
+ * @param {const void*} buff 数据的缓冲区。
  * @param {uint32_t} max_size 缓冲区的大小。
  * @param {uint32_t} timeout_ms timeout.
  *
  * @return {int32_t} 返回负数表示写入失败，否则返回实际写入数据的长度。
  *
  */
-int32_t tk_iostream_write_len(tk_iostream_t* stream, const uint8_t* buff, uint32_t max_size,
+int32_t tk_iostream_write_len(tk_iostream_t* stream, const void* buff, uint32_t max_size,
                              uint32_t timeout_ms);
 
 #define TK_IOSTREAM(obj) ((tk_iostream_t*)(obj))

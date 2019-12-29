@@ -33,26 +33,26 @@ tk_ostream_t* tk_iostream_get_ostream(tk_iostream_t* stream) {
   return stream->get_ostream(stream);
 }
 
-int32_t tk_iostream_read(tk_iostream_t* stream, uint8_t* buff, uint32_t max_size) {
+int32_t tk_iostream_read(tk_iostream_t* stream, void* buff, uint32_t max_size) {
   tk_istream_t* is = tk_iostream_get_istream(stream);
   
   return tk_istream_read(is, buff, max_size);
 }
 
-int32_t tk_iostream_read_len(tk_iostream_t* stream, uint8_t* buff, uint32_t max_size,
+int32_t tk_iostream_read_len(tk_iostream_t* stream, void* buff, uint32_t max_size,
                             uint32_t timeout_ms) {
   tk_istream_t* is = tk_iostream_get_istream(stream);
   
   return tk_istream_read_len(is, buff, max_size, timeout_ms);
 }
 
-int32_t tk_iostream_write(tk_iostream_t* stream, const uint8_t* buff, uint32_t max_size) {
+int32_t tk_iostream_write(tk_iostream_t* stream, const void* buff, uint32_t max_size) {
   tk_ostream_t* os = tk_iostream_get_ostream(stream);
 
   return tk_ostream_write(os, buff, max_size);
 }
 
-int32_t tk_iostream_write_len(tk_iostream_t* stream, const uint8_t* buff, uint32_t max_size,
+int32_t tk_iostream_write_len(tk_iostream_t* stream, const void* buff, uint32_t max_size,
                              uint32_t timeout_ms) {
   tk_ostream_t* os = tk_iostream_get_ostream(stream);
 

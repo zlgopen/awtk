@@ -23,11 +23,11 @@
 #include "tkc/time_now.h"
 #include "tkc/istream.h"
 
-int32_t tk_istream_read(tk_istream_t* stream, uint8_t* buff, uint32_t max_size) {
+int32_t tk_istream_read(tk_istream_t* stream, void* buff, uint32_t max_size) {
   return_value_if_fail(stream != NULL && stream->read != NULL, -1);
   return_value_if_fail(buff != NULL, 0);
 
-  return stream->read(stream, buff, max_size);
+  return stream->read(stream, (uint8_t*)buff, max_size);
 }
 
 ret_t tk_istream_seek(tk_istream_t* stream, uint32_t offset) {
@@ -54,7 +54,7 @@ ret_t tk_istream_flush(tk_istream_t* stream) {
   return RET_OK;
 }
 
-int32_t tk_istream_read_len(tk_istream_t* stream, uint8_t* buff, uint32_t max_size,
+int32_t tk_istream_read_len(tk_istream_t* stream, void* buff, uint32_t max_size,
                             uint32_t timeout_ms) {
   uint32_t now = 0;
   uint32_t end = 0;
@@ -62,6 +62,7 @@ int32_t tk_istream_read_len(tk_istream_t* stream, uint8_t* buff, uint32_t max_si
   ret_t ret = RET_OK;
   int32_t read_bytes = 0;
   int32_t remain_bytes = max_size;
+  uint8_t* p = (uint8_t*)buff;
   return_value_if_fail(stream != NULL && stream->read != NULL, -1);
   return_value_if_fail(buff != NULL, 0);
 
@@ -84,7 +85,7 @@ int32_t tk_istream_read_len(tk_istream_t* stream, uint8_t* buff, uint32_t max_si
       break;
     }
 
-    read_bytes = tk_istream_read(stream, buff + offset, remain_bytes);
+    read_bytes = tk_istream_read(stream, p + offset, remain_bytes);
     if (read_bytes <= 0) {
       if (!object_get_prop_bool(OBJECT(stream), TK_STREAM_PROP_IS_OK, TRUE)) {
         log_debug("stream is broken\n");
@@ -117,13 +118,14 @@ int32_t tk_istream_read_len(tk_istream_t* stream, uint8_t* buff, uint32_t max_si
   return offset;
 }
 
-int32_t tk_istream_read_line(tk_istream_t* stream, uint8_t* buff, uint32_t max_size,
+int32_t tk_istream_read_line(tk_istream_t* stream, void* buff, uint32_t max_size,
                              uint32_t timeout_ms) {
   uint32_t start = 0;
   uint32_t end = 0;
   int32_t offset = 0;
   int32_t read_bytes = 0;
   int32_t remain_bytes = max_size;
+  uint8_t* p = (uint8_t*)buff;
   return_value_if_fail(stream != NULL && stream->read != NULL, -1);
   return_value_if_fail(buff != NULL, 0);
 
@@ -131,15 +133,12 @@ int32_t tk_istream_read_line(tk_istream_t* stream, uint8_t* buff, uint32_t max_s
   end = start + timeout_ms;
 
   do {
-    read_bytes = tk_istream_read(stream, buff + offset, 1);
+    read_bytes = tk_istream_read(stream, p + offset, 1);
 
     if (read_bytes < 0) {
       break;
     }
 
-    if (read_bytes == 1) {
-      log_debug("%c", buff[offset]);
-    }
     offset += read_bytes;
     remain_bytes -= read_bytes;
     if (time_now_ms() > end) {
@@ -147,7 +146,7 @@ int32_t tk_istream_read_line(tk_istream_t* stream, uint8_t* buff, uint32_t max_s
       break;
     }
 
-    if (buff[offset] == '\n') {
+    if (p[offset] == '\n') {
       break;
     }
   } while (remain_bytes > 0);
