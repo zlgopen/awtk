@@ -102,7 +102,7 @@ ret_t application_init() {
 
   thread = tk_thread_create(test_idle_queue, progress_bar);
   tk_thread_start(thread);
-  
+
   thread = tk_thread_create(test_timer_queue, label);
   tk_thread_start(thread);
 

@@ -100,7 +100,7 @@ int32_t tk_iostream_read(tk_iostream_t* stream, void* buff, uint32_t max_size);
  *
  */
 int32_t tk_iostream_read_len(tk_iostream_t* stream, void* buff, uint32_t max_size,
-                            uint32_t timeout_ms);
+                             uint32_t timeout_ms);
 
 /**
  * @method tk_iostream_write
@@ -130,7 +130,7 @@ int32_t tk_iostream_write(tk_iostream_t* stream, const void* buff, uint32_t max_
  *
  */
 int32_t tk_iostream_write_len(tk_iostream_t* stream, const void* buff, uint32_t max_size,
-                             uint32_t timeout_ms);
+                              uint32_t timeout_ms);
 
 #define TK_IOSTREAM(obj) ((tk_iostream_t*)(obj))
 

@@ -303,6 +303,56 @@ typedef struct _asset_info_t {
   uint8_t data[4];
 } asset_info_t;
 
+/**
+ * @method asset_info_create
+ * 创建asset_info对象。
+ *
+ * > 主要供脚本语言使用。
+ *
+ * @annotation ["constructor"]
+ * @param {uint16_t} type 资源的类型。 
+ * @param {uint16_t} subtype  资源的子类型。
+ * @param {const char*} name 资源的名称。
+ * @param {uint32_t} size  资源的数据长度(用于分配空间)。
+ *
+ * @return {asset_info_t*} asset_info对象。
+ */
+asset_info_t* asset_info_create(uint16_t type, uint16_t subtype, const char* name, int32_t size);
+
+/**
+ * @method asset_info_destroy
+ *
+ * 销毁asset_info对象。
+ *
+ * @annotation ["deconstructor"]
+ * @param {asset_info_t*} info asset_info对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t asset_info_destroy(asset_info_t* info);
+
+/**
+ * @method asset_info_unref
+ *
+ * 减少asset_info对象的引用计数。
+ *
+ * @param {asset_info_t*} info asset_info对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t asset_info_unref(asset_info_t* info);
+
+/**
+ * @method asset_info_ref
+ *
+ * 增加asset_info对象的引用计数。
+ *
+ * @param {asset_info_t*} info asset_info对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t asset_info_ref(asset_info_t* info);
+
 END_C_DECLS
 
 #endif /*TK_ASSET_INFO_H*/

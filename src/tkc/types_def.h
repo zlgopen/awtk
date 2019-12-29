@@ -205,7 +205,7 @@ typedef enum _ret_t {
 #define TK_PATH_SEP '\\'
 #ifndef snprintf
 #define snprintf _snprintf
-#endif/*snprintf*/
+#endif /*snprintf*/
 
 #define strcasecmp stricmp
 #else
