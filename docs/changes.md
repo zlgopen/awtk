@@ -1,5 +1,9 @@
 # 最新动态
 
+* 2019/12/30
+  * assset\_info相关函数移到到tkc/asset\_info.c中。
+  * asset manager支持自定义资源加载。
+
 * 2019/12/29
   * 使用event\_source\_manager实现主循环。
   * iostream增加几个包装函数。

@@ -32,6 +32,9 @@ typedef ret_t (*assets_manager_build_asset_dir_t)(void* ctx, char* path, uint32_
                                                   const char* theme, const char* ratio,
                                                   const char* subpath);
 
+typedef asset_info_t* (*assets_manager_load_asset_t)(assets_manager_t* am, asset_type_t type,
+                                                     const char* name);
+
 /**
  * @class assets_manager_t
  * @annotation ["scriptable"]
@@ -74,6 +77,10 @@ struct _assets_manager_t {
   char* res_root;
   locale_info_t* locale_info;
   system_info_t* system_info;
+
+  void* custom_load_asset_ctx;
+  assets_manager_load_asset_t custom_load_asset;
+
   void* custom_build_asset_dir_ctx;
   assets_manager_build_asset_dir_t custom_build_asset_dir;
 };
@@ -254,6 +261,22 @@ ret_t assets_manager_preload(assets_manager_t* am, asset_type_t type, const char
  */
 ret_t assets_manager_set_custom_build_asset_dir(
     assets_manager_t* am, assets_manager_build_asset_dir_t custom_build_asset_dir, void* ctx);
+
+/**
+ * @method assets_manager_set_custom_load_asset
+ * 设置一个函数，该函数用于实现自定义加载资源。
+ *
+ * > 如果不支持文件系统，开发者可以设置一个加载资源的回调函数，从flash或其它地方读取资源。
+ *
+ * @param {assets_manager_t*} am asset manager对象。
+ * @param {assets_manager_load_asset_t} custom_load_asset 回调函数。
+ * @param {void*} ctx 回调函数的上下文。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t assets_manager_set_custom_load_asset(assets_manager_t* am,
+                                           assets_manager_load_asset_t custom_load_asset,
+                                           void* ctx);
 
 /**
  * @method assets_manager_clear_cache

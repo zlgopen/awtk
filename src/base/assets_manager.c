@@ -31,24 +31,6 @@
 #define ASSETS_DIR "assets"
 #define THEME_DEFAULT "default"
 
-static ret_t asset_info_unref(asset_info_t* info);
-
-static asset_info_t* asset_info_create(uint16_t type, uint16_t subtype, const char* name,
-                                       int32_t size) {
-  asset_info_t* info = TKMEM_ALLOC(sizeof(asset_info_t) + size);
-  return_value_if_fail(info != NULL, NULL);
-
-  memset(info, 0x00, sizeof(asset_info_t));
-  info->size = size;
-  info->type = type;
-  info->subtype = subtype;
-  info->refcount = 1;
-  info->is_in_rom = FALSE;
-  strncpy(info->name, name, TK_NAME_LEN);
-
-  return info;
-}
-
 static int asset_cache_cmp_type(const void* a, const void* b) {
   const asset_info_t* aa = (const asset_info_t*)a;
   const asset_info_t* bb = (const asset_info_t*)b;
@@ -69,7 +51,8 @@ static locale_info_t* assets_manager_get_locale_info(assets_manager_t* am) {
 }
 
 #if defined(AWTK_WEB)
-asset_info_t* assets_manager_load(assets_manager_t* am, asset_type_t type, const char* name) {
+static asset_info_t* assets_manager_load_impl(assets_manager_t* am, asset_type_t type,
+                                              const char* name) {
   asset_info_t* info = TKMEM_ALLOC(sizeof(asset_info_t));
   return_value_if_fail(info != NULL, NULL);
 
@@ -449,7 +432,8 @@ asset_info_t* assets_manager_load_asset(assets_manager_t* am, asset_type_t type,
   return info;
 }
 
-asset_info_t* assets_manager_load(assets_manager_t* am, asset_type_t type, const char* name) {
+static asset_info_t* assets_manager_load_impl(assets_manager_t* am, asset_type_t type,
+                                              const char* name) {
   if (strncmp(name, STR_SCHEMA_FILE, strlen(STR_SCHEMA_FILE)) == 0) {
     return assets_manager_load_file(am, type, name + strlen(STR_SCHEMA_FILE));
   } else {
@@ -462,7 +446,8 @@ asset_info_t* assets_manager_load(assets_manager_t* am, asset_type_t type, const
   }
 }
 #else
-asset_info_t* assets_manager_load(assets_manager_t* am, asset_type_t type, const char* name) {
+static asset_info_t* assets_manager_load_impl(assets_manager_t* am, asset_type_t type,
+                                              const char* name) {
   (void)type;
   (void)name;
   return NULL;
@@ -473,41 +458,14 @@ assets_manager_t* assets_manager(void) {
   return s_assets_manager;
 }
 
-static ret_t asset_info_destroy(asset_info_t* info) {
-  return_value_if_fail(info != NULL, RET_BAD_PARAMS);
+asset_info_t* assets_manager_load(assets_manager_t* am, asset_type_t type, const char* name) {
+  return_value_if_fail(am != NULL && name != NULL, NULL);
 
-  if (!(info->is_in_rom)) {
-    memset(info, 0x00, sizeof(asset_info_t));
-
-    TKMEM_FREE(info);
+  if (am->custom_load_asset != NULL) {
+    return am->custom_load_asset(am->custom_load_asset_ctx, type, name);
   }
 
-  return RET_OK;
-}
-
-static ret_t asset_info_unref(asset_info_t* info) {
-  return_value_if_fail(info != NULL, RET_BAD_PARAMS);
-
-  if (!(info->is_in_rom)) {
-    if (info->refcount > 0) {
-      info->refcount--;
-      if (info->refcount == 0) {
-        asset_info_destroy(info);
-      }
-    }
-  }
-
-  return RET_OK;
-}
-
-static ret_t asset_info_ref(asset_info_t* info) {
-  return_value_if_fail(info != NULL, RET_BAD_PARAMS);
-
-  if (!(info->is_in_rom)) {
-    info->refcount++;
-  }
-
-  return RET_OK;
+  return assets_manager_load_impl(am, type, name);
 }
 
 ret_t assets_manager_set(assets_manager_t* am) {
@@ -714,6 +672,16 @@ ret_t assets_manager_set_custom_build_asset_dir(
   return_value_if_fail(am != NULL, RET_BAD_PARAMS);
   am->custom_build_asset_dir_ctx = ctx;
   am->custom_build_asset_dir = custom_build_asset_dir;
+
+  return RET_OK;
+}
+
+ret_t assets_manager_set_custom_load_asset(assets_manager_t* am,
+                                           assets_manager_load_asset_t custom_load_asset,
+                                           void* ctx) {
+  return_value_if_fail(am != NULL, RET_BAD_PARAMS);
+  am->custom_load_asset_ctx = ctx;
+  am->custom_load_asset = custom_load_asset;
 
   return RET_OK;
 }
