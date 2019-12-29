@@ -33,6 +33,20 @@
 #include "base/image_manager.h"
 #include "widgets/progress_bar.h"
 
+static ret_t update_label(widget_t* label) {
+  char str[32];
+  static int times = 0;
+
+  tk_snprintf(str, sizeof(str), "times:%d", times++);
+  widget_set_text_utf8(label, str);
+
+  return RET_OK;
+}
+
+static ret_t on_timer(const timer_info_t* timer) {
+  return update_label(WIDGET(timer->ctx));
+}
+
 static ret_t update_progress_bar(widget_t* progress_bar) {
   static bool_t inc = TRUE;
   int value = widget_get_value(progress_bar);
@@ -52,18 +66,23 @@ static ret_t update_progress_bar(widget_t* progress_bar) {
   return RET_OK;
 }
 
-static ret_t on_timer(const timer_info_t* timer) {
-  return update_progress_bar(WIDGET(timer->ctx));
-}
-
 static ret_t on_idle(const idle_info_t* idle) {
   return update_progress_bar(WIDGET(idle->ctx));
 }
 
-void* tk_thread_entry(void* args) {
-  int nr = 500;
+void* test_idle_queue(void* args) {
+  int nr = 50000;
   while (nr-- > 0) {
     idle_queue(on_idle, args);
+    sleep_ms(30);
+  }
+
+  return NULL;
+}
+
+void* test_timer_queue(void* args) {
+  int nr = 50000;
+  while (nr-- > 0) {
     timer_queue(on_timer, args, 30);
     sleep_ms(30);
   }
@@ -80,7 +99,10 @@ ret_t application_init() {
   widget_set_text(label, L"Update progressbar in non GUI thread");
   progress_bar = progress_bar_create(win, 10, 80, 300, 20);
 
-  thread = tk_thread_create(tk_thread_entry, progress_bar);
+  thread = tk_thread_create(test_idle_queue, progress_bar);
+  tk_thread_start(thread);
+  
+  thread = tk_thread_create(test_timer_queue, label);
   tk_thread_start(thread);
 
   return RET_OK;
