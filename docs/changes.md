@@ -1,6 +1,8 @@
 # 最新动态
+
 * 2019/12/29
   * 使用event\_source\_manager实现主循环。
+  * iostream增加几个包装函数。
 
 * 2019/12/27
   * 增加str\_from\_wstr\_with\_len
