@@ -34,10 +34,11 @@
 #include "widgets/progress_bar.h"
 
 static ret_t update_label(widget_t* label) {
-  char str[32];
+  char str[64];
   static int times = 0;
 
-  tk_snprintf(str, sizeof(str), "times:%d", times++);
+  mem_stat_t st = tk_mem_stat();
+  tk_snprintf(str, sizeof(str), "times:%d mem(%u,%u)", times++, st.used_bytes, st.used_block_nr);
   widget_set_text_utf8(label, str);
 
   return RET_OK;
@@ -71,7 +72,7 @@ static ret_t on_idle(const idle_info_t* idle) {
 }
 
 void* test_idle_queue(void* args) {
-  int nr = 50000;
+  int nr = 500000;
   while (nr-- > 0) {
     idle_queue(on_idle, args);
     sleep_ms(30);
@@ -81,7 +82,7 @@ void* test_idle_queue(void* args) {
 }
 
 void* test_timer_queue(void* args) {
-  int nr = 50000;
+  int nr = 500000;
   while (nr-- > 0) {
     timer_queue(on_timer, args, 30);
     sleep_ms(30);
