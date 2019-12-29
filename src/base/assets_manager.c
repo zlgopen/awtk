@@ -33,6 +33,22 @@
 
 static ret_t asset_info_unref(asset_info_t* info);
 
+static asset_info_t* asset_info_create(uint16_t type, uint16_t subtype, const char* name,
+                                       int32_t size) {
+  asset_info_t* info = TKMEM_ALLOC(sizeof(asset_info_t) + size);
+  return_value_if_fail(info != NULL, NULL);
+
+  memset(info, 0x00, sizeof(asset_info_t));
+  info->size = size;
+  info->type = type;
+  info->subtype = subtype;
+  info->refcount = 1;
+  info->is_in_rom = FALSE;
+  strncpy(info->name, name, TK_NAME_LEN);
+
+  return info;
+}
+
 static int asset_cache_cmp_type(const void* a, const void* b) {
   const asset_info_t* aa = (const asset_info_t*)a;
   const asset_info_t* bb = (const asset_info_t*)b;
@@ -82,22 +98,6 @@ static const char* assets_manager_get_res_root(assets_manager_t* am) {
   } else {
     return assets_manager_get_system_info(am)->app_root;
   }
-}
-
-static asset_info_t* asset_info_create(uint16_t type, uint16_t subtype, const char* name,
-                                       int32_t size) {
-  asset_info_t* info = TKMEM_ALLOC(sizeof(asset_info_t) + size);
-  return_value_if_fail(info != NULL, NULL);
-
-  memset(info, 0x00, sizeof(asset_info_t));
-  info->size = size;
-  info->type = type;
-  info->subtype = subtype;
-  info->refcount = 1;
-  info->is_in_rom = FALSE;
-  strncpy(info->name, name, TK_NAME_LEN);
-
-  return info;
 }
 
 #ifdef WITH_SDL
