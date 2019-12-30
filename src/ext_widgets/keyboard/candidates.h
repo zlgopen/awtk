@@ -31,7 +31,7 @@ BEGIN_C_DECLS
 /**
  * @class candidates_t
  * @parent widget_t
- * @annotation ["widget"]
+ * @annotation ["scriptable","design","widget"]
  * 输入法候选字词控件。
  * 
  * 如果希望启用用数字选择对应的候选字，请设置属性grab_keys="true"。如：
