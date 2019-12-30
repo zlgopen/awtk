@@ -44,8 +44,12 @@ DictTrie::DictTrie() {
 }
 
 DictTrie::~DictTrie() {
+  NGram& ngram = NGram::get_instance();
+  SpellingTrie& spl_trie = SpellingTrie::get_instance();
   free_resource(true);
   TKMEM_FREE(lma_idx_buf_);
+  delete &ngram;
+  delete &spl_trie;
 }
 
 void DictTrie::free_resource(bool free_dict_list) {

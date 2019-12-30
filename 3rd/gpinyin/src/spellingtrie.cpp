@@ -64,35 +64,51 @@ SpellingTrie::SpellingTrie() {
 }
 
 SpellingTrie::~SpellingTrie() {
-  if (NULL != spelling_buf_) delete[] spelling_buf_;
+	if (NULL != spelling_buf_) {
+		delete[] spelling_buf_;
+    spelling_buf_ = NULL;
+	}
 
-  if (NULL != splstr_queried_) delete[] splstr_queried_;
+	if (NULL != splstr_queried_) {
+		delete[] splstr_queried_;
+    splstr_queried_ = NULL;
+	}
 
-  if (NULL != splstr16_queried_) delete[] splstr16_queried_;
+	if (NULL != splstr16_queried_) {
+		delete[] splstr16_queried_;
+		splstr16_queried_ = NULL;
+	}
 
-  if (NULL != spl_ym_ids_) delete[] spl_ym_ids_;
+	if (NULL != spl_ym_ids_) {
+		delete[] spl_ym_ids_;
+    spl_ym_ids_ = NULL;
+	}
 
   if (NULL != root_) {
     free_son_trie(root_);
     delete root_;
+    root_ = NULL;
   }
 
   if (NULL != dumb_node_) {
     delete[] dumb_node_;
+    dumb_node_ = NULL;
   }
 
   if (NULL != splitter_node_) {
     delete[] splitter_node_;
+    splitter_node_ = NULL;
   }
 
-  if (NULL != instance_) {
-    delete instance_;
-    instance_ = NULL;
+  if (NULL != ym_buf_) {
+	  delete[] ym_buf_;
+    ym_buf_ = NULL;
   }
 
-  if (NULL != ym_buf_) delete[] ym_buf_;
-
-  if (NULL != f2h_) delete[] f2h_;
+  if (NULL != f2h_) {
+	  delete[] f2h_;
+    f2h_ = NULL;
+  }
 }
 
 bool SpellingTrie::if_valid_id_update(uint16* splid) const {
