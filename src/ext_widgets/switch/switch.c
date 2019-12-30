@@ -322,7 +322,7 @@ static ret_t switch_on_paint_self(widget_t* widget, canvas_t* c) {
   r.w = bar_size - margin_left - margin_right;
   r.h = widget->h - margin_top - margin_bottom;
 
-  if (image_name == NULL) {
+  if (image_name == NULL || *image_name == 0) {
     switch_fill_rect_color(widget, c, &r, FALSE);
   } else {
     bitmap_t img;
