@@ -40,6 +40,8 @@ BEGIN_C_DECLS
  * <candidates x="0" y="0" w="100%" h="30" grab_keys="true"/>
  * ```
  * 
+ *>相关文件： assets/default/raw/ui/kb_default.xml
+ * 
  * 如果希望通过左右键切换不同的候选字，除了设置属性grab_keys="true"，还需要设置按钮的focused状态的style。
  *
  * ```xml
@@ -50,6 +52,9 @@ BEGIN_C_DECLS
  *   <focused    border_color="#a0a0a0"/>
  * </style>
  * ``` 
+ * 
+ *>相关文件：assets/default/raw/styles/keyboard.xml
+ * 
  */
 typedef struct _candidates_t {
   widget_t widget;
