@@ -163,7 +163,8 @@ TK_DECL_VTABLE(calibration_win) = {.size = sizeof(calibration_win_t),
                                    .get_prop = window_base_get_prop,
                                    .on_paint_begin = window_base_on_paint_begin,
                                    .on_paint_end = window_base_on_paint_end,
-                                   .on_paint_self = calibration_win_on_paint_self};
+                                   .on_paint_self = calibration_win_on_paint_self,
+                                   .on_destroy = window_base_on_destroy};
 
 ret_t calibration_win_set_on_done(widget_t* widget, calibration_win_on_done_t on_done, void* ctx) {
   calibration_win_t* win = CALIBRATION_WIN(widget);
