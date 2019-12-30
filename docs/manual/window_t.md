@@ -168,7 +168,7 @@ widget_t* window_create_default ();
 * 函数原型：
 
 ```
-widget_t* window_open (char* name);
+widget_t* window_open (const char* name);
 ```
 
 * 参数说明：
@@ -176,7 +176,7 @@ widget_t* window_open (char* name);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | 对象。 |
-| name | char* | window的名称。 |
+| name | const char* | window的名称。 |
 #### window\_open\_and\_close 函数
 -----------------------
 
@@ -187,7 +187,7 @@ widget_t* window_open (char* name);
 * 函数原型：
 
 ```
-widget_t* window_open_and_close (char* name, widget_t* to_close);
+widget_t* window_open_and_close (const char* name, widget_t* to_close);
 ```
 
 * 参数说明：
@@ -195,7 +195,7 @@ widget_t* window_open_and_close (char* name, widget_t* to_close);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | 对象。 |
-| name | char* | window的名称。 |
+| name | const char* | window的名称。 |
 | to\_close | widget\_t* | 关闭该窗口。 |
 #### window\_set\_fullscreen 函数
 -----------------------

@@ -704,7 +704,7 @@ value_t* value_set_object (value_t* v, object_t* value);
 * 函数原型：
 
 ```
-value_t* value_set_pointer (value_t* v, pointer_t value);
+value_t* value_set_pointer (value_t* v, void* value);
 ```
 
 * 参数说明：
@@ -713,7 +713,7 @@ value_t* value_set_pointer (value_t* v, pointer_t value);
 | -------- | ----- | --------- |
 | 返回值 | value\_t* | value对象本身。 |
 | v | value\_t* | value对象。 |
-| value | pointer\_t | 待设置的值。 |
+| value | void* | 待设置的值。 |
 #### value\_set\_sized\_str 函数
 -----------------------
 

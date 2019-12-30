@@ -54,6 +54,7 @@ static ret_t candidates_create_button(widget_t* widget) {
 
   widget_use_style(button, "candidates");
   widget_on(button, EVT_CLICK, candidates_on_button_click, button);
+  widget_set_focusable(button, TRUE);
 
   return RET_OK;
 }
@@ -133,6 +134,7 @@ static ret_t candidates_update_candidates(widget_t* widget, const char* strs, ui
   for (i = 0; i < nr; i++) {
     iter = children[i];
     widget_set_text_utf8(iter, text);
+    widget_set_focused(iter, i == 0);
     text += strlen(text) + 1;
   }
 
@@ -141,6 +143,7 @@ static ret_t candidates_update_candidates(widget_t* widget, const char* strs, ui
     widget_set_text_utf8(iter, "");
   }
 
+  candidates->candidates_nr = nr;
   candidates_relayout_children(widget);
   widget_invalidate_force(widget, NULL);
 
@@ -201,6 +204,62 @@ static ret_t candidates_set_prop(widget_t* widget, const char* name, const value
   }
 }
 
+static ret_t candidates_move_focus(widget_t* widget, bool_t next) {
+  widget_t* focus = NULL;
+  int32_t next_focus = 0;
+  candidates_t* candidates = CANDIDATES(widget);
+  uint32_t nr = candidates->candidates_nr;
+
+  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+  if (iter->focused) {
+    if (next) {
+      next_focus = i + 1;
+    } else {
+      if (i > 0) {
+        next_focus = i - 1;
+      }
+    }
+  }
+  WIDGET_FOR_EACH_CHILD_END();
+
+  next_focus = next_focus % nr;
+  focus = widget_get_child(widget, next_focus);
+  widget_set_focused(focus, TRUE);
+
+  return RET_OK;
+}
+
+static ret_t candidates_on_keydown(widget_t* widget, key_event_t* e) {
+  ret_t ret = RET_OK;
+  widget_t* child = NULL;
+  candidates_t* candidates = CANDIDATES(widget);
+  uint32_t nr = candidates->candidates_nr;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  if (nr > 1) {
+    if (e->key >= TK_KEY_0 && e->key <= TK_KEY_9) {
+      int32_t i = e->key - (int32_t)TK_KEY_0;
+
+      if (i >= 0 && i < nr) {
+        event_t click = event_init(EVT_CLICK, NULL);
+        child = widget_get_child(widget, i);
+
+        if (child->text.size > 0) {
+          widget_dispatch(child, &click);
+          ret = RET_STOP;
+        }
+      }
+    } else if (e->key == TK_KEY_LEFT || e->key == TK_KEY_RIGHT) {
+      if (nr > 2) {
+        candidates_move_focus(widget, e->key == TK_KEY_RIGHT);
+        ret = RET_STOP;
+      }
+    }
+  }
+
+  return ret;
+}
+
 TK_DECL_VTABLE(candidates) = {.size = sizeof(candidates_t),
                               .scrollable = TRUE,
                               .type = WIDGET_TYPE_CANDIDATES,
@@ -211,6 +270,7 @@ TK_DECL_VTABLE(candidates) = {.size = sizeof(candidates_t),
                               .on_paint_children = candidates_on_paint_children,
                               .get_prop = candidates_get_prop,
                               .set_prop = candidates_set_prop,
+                              .on_keydown = candidates_on_keydown,
                               .on_destroy = candidates_on_destroy_default};
 
 static ret_t candidates_on_im_candidates_event(void* ctx, event_t* e) {

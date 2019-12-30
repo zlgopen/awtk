@@ -58,6 +58,7 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | <a href="#widget_t_widget_child">widget\_child</a> | 查找指定名称的子控件(同widget_lookup(widget, name, FALSE))。 |
 | <a href="#widget_t_widget_child_on">widget\_child\_on</a> | 为指定名称的子控件注册指定事件的处理函数。 |
 | <a href="#widget_t_widget_clone">widget\_clone</a> | clone。 |
+| <a href="#widget_t_widget_close_window">widget\_close\_window</a> | 关闭控件所在的窗口。 |
 | <a href="#widget_t_widget_count_children">widget\_count\_children</a> | 获取子控件的个数。 |
 | <a href="#widget_t_widget_create_animator">widget\_create\_animator</a> | 创建动画。 |
 | <a href="#widget_t_widget_destroy">widget\_destroy</a> | 从父控件中移除控件，并调用unref函数销毁控件。 |
@@ -86,6 +87,10 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | <a href="#widget_t_widget_invalidate">widget\_invalidate</a> | 请求重绘指定的区域，如果widget->dirty已经为TRUE，直接返回。 |
 | <a href="#widget_t_widget_invalidate_force">widget\_invalidate\_force</a> | 请求强制重绘控件。 |
 | <a href="#widget_t_widget_is_designing_window">widget\_is\_designing\_window</a> | 判断当前控件是否是设计窗口。 |
+| <a href="#widget_t_widget_is_dialog">widget\_is\_dialog</a> | 检查控件是否是对话框类型。 |
+| <a href="#widget_t_widget_is_normal_window">widget\_is\_normal\_window</a> | 检查控件是否是普通窗口类型。 |
+| <a href="#widget_t_widget_is_popup">widget\_is\_popup</a> | 检查控件是否是弹出窗口类型。 |
+| <a href="#widget_t_widget_is_system_bar">widget\_is\_system\_bar</a> | 检查控件是否是system bar类型。 |
 | <a href="#widget_t_widget_is_window">widget\_is\_window</a> | 判断当前控件是否是窗口。 |
 | <a href="#widget_t_widget_is_window_manager">widget\_is\_window\_manager</a> | 判断当前控件是否是窗口管理器。 |
 | <a href="#widget_t_widget_is_window_opened">widget\_is\_window\_opened</a> | 判断当前控件所在的窗口是否已经打开。 |
@@ -419,6 +424,25 @@ widget_t* widget_clone (widget_t* widget, widget_t* parent);
 | 返回值 | widget\_t* | 返回clone的对象。 |
 | widget | widget\_t* | 控件对象。 |
 | parent | widget\_t* | clone新控件的parent对象。 |
+#### widget\_close\_window 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_close_window">关闭控件所在的窗口。
+
+* 函数原型：
+
+```
+ret_t widget_close_window (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | widget对象。 |
 #### widget\_count\_children 函数
 -----------------------
 
@@ -987,6 +1011,82 @@ bool_t widget_is_designing_window (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | bool\_t | 返回当前控件是否是设计窗口。 |
 | widget | widget\_t* | 控件对象。 |
+#### widget\_is\_dialog 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_is_dialog">检查控件是否是对话框类型。
+
+* 函数原型：
+
+```
+bool_t widget_is_dialog (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回FALSE表示不是，否则表示是。 |
+| widget | widget\_t* | widget对象。 |
+#### widget\_is\_normal\_window 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_is_normal_window">检查控件是否是普通窗口类型。
+
+* 函数原型：
+
+```
+bool_t widget_is_normal_window (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回FALSE表示不是，否则表示是。 |
+| widget | widget\_t* | widget对象。 |
+#### widget\_is\_popup 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_is_popup">检查控件是否是弹出窗口类型。
+
+* 函数原型：
+
+```
+bool_t widget_is_popup (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回FALSE表示不是，否则表示是。 |
+| widget | widget\_t* | widget对象。 |
+#### widget\_is\_system\_bar 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_is_system_bar">检查控件是否是system bar类型。
+
+* 函数原型：
+
+```
+bool_t widget_is_system_bar (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回FALSE表示不是，否则表示是。 |
+| widget | widget\_t* | widget对象。 |
 #### widget\_is\_window 函数
 -----------------------
 

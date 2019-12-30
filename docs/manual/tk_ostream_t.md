@@ -63,7 +63,7 @@ ret_t tk_ostream_seek (tk_ostream_t* stream, uint32_t offset);
 * 函数原型：
 
 ```
-int32_t tk_ostream_write (tk_ostream_t* stream, const uint8_t* buff, uint32_t max_size);
+int32_t tk_ostream_write (tk_ostream_t* stream, const void* buff, uint32_t max_size);
 ```
 
 * 参数说明：
@@ -72,7 +72,7 @@ int32_t tk_ostream_write (tk_ostream_t* stream, const uint8_t* buff, uint32_t ma
 | -------- | ----- | --------- |
 | 返回值 | int32\_t | 返回负数表示写入失败，否则返回实际写入数据的长度。 |
 | stream | tk\_ostream\_t* | ostream对象。 |
-| buff | const uint8\_t* | 返回数据的缓冲区。 |
+| buff | const void* | 返回数据的缓冲区。 |
 | max\_size | uint32\_t | 缓冲区的大小。 |
 #### tk\_ostream\_write\_byte 函数
 -----------------------
@@ -104,7 +104,7 @@ ret_t tk_ostream_write_byte (tk_ostream_t* stream, uint8_t byte);
 * 函数原型：
 
 ```
-int32_t tk_ostream_write_len (tk_ostream_t* stream, const uint8_t* buff, uint32_t max_size, uint32_t timeout_ms);
+int32_t tk_ostream_write_len (tk_ostream_t* stream, const void* buff, uint32_t max_size, uint32_t timeout_ms);
 ```
 
 * 参数说明：
@@ -113,6 +113,6 @@ int32_t tk_ostream_write_len (tk_ostream_t* stream, const uint8_t* buff, uint32_
 | -------- | ----- | --------- |
 | 返回值 | int32\_t | 返回负数表示写入失败，否则返回实际写入数据的长度。 |
 | stream | tk\_ostream\_t* | ostream对象。 |
-| buff | const uint8\_t* | 数据的缓冲区。 |
+| buff | const void* | 数据的缓冲区。 |
 | max\_size | uint32\_t | 缓冲区的大小。 |
 | timeout\_ms | uint32\_t | timeout. |

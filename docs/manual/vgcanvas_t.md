@@ -63,6 +63,7 @@ vgcanvas_restore(vg);
 | <a href="#vgcanvas_t_vgcanvas_measure_text">vgcanvas\_measure\_text</a> | 测量文本的宽度。 |
 | <a href="#vgcanvas_t_vgcanvas_move_to">vgcanvas\_move\_to</a> | 移动当前点到指定点。 |
 | <a href="#vgcanvas_t_vgcanvas_paint">vgcanvas\_paint</a> | 用图片填充/画多边形(可能存在可移植性问题，除非必要请勿使用)。 |
+| <a href="#vgcanvas_t_vgcanvas_path_winding">vgcanvas\_path\_winding</a> | 设置路径填充实心与否。 |
 | <a href="#vgcanvas_t_vgcanvas_quad_to">vgcanvas\_quad\_to</a> | 生成一条二次贝塞尔曲线。 |
 | <a href="#vgcanvas_t_vgcanvas_rect">vgcanvas\_rect</a> | 生成一个矩形路径。 |
 | <a href="#vgcanvas_t_vgcanvas_reinit">vgcanvas\_reinit</a> | 重新初始化，系统内部调用。 |
@@ -661,6 +662,28 @@ ret_t vgcanvas_paint (vgcanvas_t* vg, bool_t stroke, bitmap_t* img);
 | vg | vgcanvas\_t* | vgcanvas对象。 |
 | stroke | bool\_t | TRUE表示画线FALSE表示填充。 |
 | img | bitmap\_t* | 图片。 |
+#### vgcanvas\_path\_winding 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="vgcanvas_t_vgcanvas_path_winding">设置路径填充实心与否。
+
+>CCW(1)为实心，CW(2)为镂空，设置其他则默认根据非零环绕规则判断(nonzero)。
+
+* 函数原型：
+
+```
+ret_t vgcanvas_path_winding (vgcanvas_t* vg, bool_t dir);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| vg | vgcanvas\_t* | vgcanvas对象。 |
+| dir | bool\_t | 填充方法。 |
 #### vgcanvas\_quad\_to 函数
 -----------------------
 

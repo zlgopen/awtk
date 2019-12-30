@@ -36,6 +36,7 @@ ui      UI描述数据。
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#assets_manager_t_assets_manager">assets\_manager</a> | 获取缺省资源管理器。 |
+| <a href="#assets_manager_t_assets_manager_add">assets\_manager\_add</a> | 向资源管理器中增加一个资源data。 |
 | <a href="#assets_manager_t_assets_manager_add">assets\_manager\_add</a> | 向资源管理器中增加一个资源。 |
 | <a href="#assets_manager_t_assets_manager_clear_all">assets\_manager\_clear\_all</a> | 清除全部缓存的资源。 |
 | <a href="#assets_manager_t_assets_manager_clear_cache">assets\_manager\_clear\_cache</a> | 清除指定类型的缓存。 |
@@ -49,6 +50,7 @@ ui      UI描述数据。
 | <a href="#assets_manager_t_assets_manager_ref">assets\_manager\_ref</a> | 在资源管理器的缓存中查找指定的资源并引用它，如果缓存中不存在，尝试加载该资源。 |
 | <a href="#assets_manager_t_assets_manager_set">assets\_manager\_set</a> | 设置缺省资源管理器。 |
 | <a href="#assets_manager_t_assets_manager_set_custom_build_asset_dir">assets\_manager\_set\_custom\_build\_asset\_dir</a> | 设置一个函数，该函数用于生成资源路径。 |
+| <a href="#assets_manager_t_assets_manager_set_custom_load_asset">assets\_manager\_set\_custom\_load\_asset</a> | 设置一个函数，该函数用于实现自定义加载资源。 |
 | <a href="#assets_manager_t_assets_manager_set_locale_info">assets\_manager\_set\_locale\_info</a> | 设置locale_info对象。 |
 | <a href="#assets_manager_t_assets_manager_set_res_root">assets\_manager\_set\_res\_root</a> | 设置资源所在的目录(其下目录结构请参考demos)。 |
 | <a href="#assets_manager_t_assets_manager_set_system_info">assets\_manager\_set\_system\_info</a> | 设置system_info对象。 |
@@ -72,6 +74,30 @@ assets_manager_t* assets_manager ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | assets\_manager\_t* | 返回asset manager对象。 |
+#### assets\_manager\_add 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="assets_manager_t_assets_manager_add">向资源管理器中增加一个资源data。
+
+* 函数原型：
+
+```
+ret_t assets_manager_add (assets_manager_t* am, const char* name, uint16_t type, uint16_t subtype, uint8_t* buff, uint32_t size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| am | assets\_manager\_t* | asset manager对象。 |
+| name | const char* | 待增加的资源的名字。 |
+| type | uint16\_t | 待增加的资源的主类型枚举。 |
+| subtype | uint16\_t | 待增加的资源的子类型枚举。 |
+| buff | uint8\_t* | 待增加的资源的data数据。 |
+| size | uint32\_t | 待增加的资源的data数据长度。 |
 #### assets\_manager\_add 函数
 -----------------------
 
@@ -333,6 +359,29 @@ ret_t assets_manager_set_custom_build_asset_dir (assets_manager_t* am, assets_ma
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | am | assets\_manager\_t* | asset manager对象。 |
 | custom\_build\_asset\_dir | assets\_manager\_build\_asset\_dir\_t | 回调函数。 |
+| ctx | void* | 回调函数的上下文。 |
+#### assets\_manager\_set\_custom\_load\_asset 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="assets_manager_t_assets_manager_set_custom_load_asset">设置一个函数，该函数用于实现自定义加载资源。
+
+> 如果不支持文件系统，开发者可以设置一个加载资源的回调函数，从flash或其它地方读取资源。
+
+* 函数原型：
+
+```
+ret_t assets_manager_set_custom_load_asset (assets_manager_t* am, assets_manager_load_asset_t custom_load_asset, void* ctx);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| am | assets\_manager\_t* | asset manager对象。 |
+| custom\_load\_asset | assets\_manager\_load\_asset\_t | 回调函数。 |
 | ctx | void* | 回调函数的上下文。 |
 #### assets\_manager\_set\_locale\_info 函数
 -----------------------

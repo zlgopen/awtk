@@ -162,12 +162,12 @@ TEST(AssetsManager, custom_load_asset) {
   const asset_info_t* r = NULL;
   assets_manager_t* rm = assets_manager();
 
-  assets_manager_set_custom_load_asset(rm, custom_load_asset, NULL); 
+  assets_manager_set_custom_load_asset(rm, custom_load_asset, NULL);
   r = assets_manager_ref(rm, ASSET_TYPE_DATA, "test.any");
 
   ASSERT_EQ(r != NULL, true);
   ASSERT_STREQ((const char*)(r->data), "abcd");
-  assets_manager_set_custom_load_asset(rm, NULL, NULL); 
+  assets_manager_set_custom_load_asset(rm, NULL, NULL);
 
   assets_manager_unref(rm, r);
 }

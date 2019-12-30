@@ -36,6 +36,7 @@ str_reset(&s);
 | <a href="#str_t_str_from_int">str\_from\_int</a> | 用整数初始化字符串。 |
 | <a href="#str_t_str_from_value">str\_from\_value</a> | 用value初始化字符串。 |
 | <a href="#str_t_str_from_wstr">str\_from\_wstr</a> | 用value初始化字符串。 |
+| <a href="#str_t_str_from_wstr_with_len">str\_from\_wstr\_with\_len</a> | 用value初始化字符串。 |
 | <a href="#str_t_str_init">str\_init</a> | 初始化字符串对象。 |
 | <a href="#str_t_str_insert">str\_insert</a> | 插入子字符串。 |
 | <a href="#str_t_str_insert_with_len">str\_insert\_with\_len</a> | 插入子字符串。 |
@@ -367,7 +368,28 @@ ret_t str_from_wstr (str_t* str, wchar_t* wstr);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
-| wstr | wchar\_t* | wstr。 |
+| wstr | wchar\_t* | Unicode字符串。 |
+#### str\_from\_wstr\_with\_len 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_from_wstr_with_len">用value初始化字符串。
+
+* 函数原型：
+
+```
+ret_t str_from_wstr_with_len (str_t* str, wchar_t* wstr, uint32_t len);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | str\_t* | str对象。 |
+| wstr | wchar\_t* | Unicode字符串 |
+| len | uint32\_t | Unicode字符串的长度。 |
 #### str\_init 函数
 -----------------------
 

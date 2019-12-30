@@ -3,6 +3,8 @@
 * 2019/12/30
   * assset\_info相关函数移到到tkc/asset\_info.c中。
   * asset manager支持自定义资源加载。
+  * 输入法候选字支持数字选择候选字
+  * 输入法候选字支持左右键切换候选字的焦点
 
 * 2019/12/29
   * 使用event\_source\_manager实现主循环。

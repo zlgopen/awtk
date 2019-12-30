@@ -1548,7 +1548,7 @@
             "desc": "value对象。"
           },
           {
-            "type": "pointer_t",
+            "type": "void*",
             "name": "value",
             "desc": "待设置的值。"
           }
@@ -16033,26 +16033,57 @@
         "params": [
           {
             "type": "const wchar_t*",
-            "name": "str",
-            "desc": "str。"
+            "name": "in",
+            "desc": "输入字符串。"
           },
           {
             "type": "const char*",
             "name": "out",
-            "desc": "返回结果缓冲区。"
+            "desc": "输出字符串。"
           },
           {
             "type": "uint32_t",
-            "name": "size",
-            "desc": "缓冲区大小。"
+            "name": "out_size",
+            "desc": "输出字符串的最大长度。"
           }
         ],
         "annotation": {},
-        "desc": "将wchar_t类型转换为char类型。",
+        "desc": "把ucs字符串转成UTF8字符串。",
         "name": "tk_utf8_from_utf16",
         "return": {
           "type": "char*",
-          "desc": "值。"
+          "desc": "返回UTF8字符串。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "const wchar_t*",
+            "name": "in",
+            "desc": "输入字符串。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "in_size",
+            "desc": "输入字符串的长度。"
+          },
+          {
+            "type": "const char*",
+            "name": "out",
+            "desc": "输出字符串。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "out_size",
+            "desc": "输出字符串的最大长度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "把ucs字符串转成UTF8字符串。",
+        "name": "tk_utf8_from_utf16_ex",
+        "return": {
+          "type": "char*",
+          "desc": "返回UTF8字符串。"
         }
       },
       {
@@ -20697,12 +20728,38 @@
           {
             "type": "wchar_t*",
             "name": "wstr",
-            "desc": "wstr。"
+            "desc": "Unicode字符串。"
           }
         ],
         "annotation": {},
         "desc": "用value初始化字符串。",
         "name": "str_from_wstr",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "str_t*",
+            "name": "str",
+            "desc": "str对象。"
+          },
+          {
+            "type": "wchar_t*",
+            "name": "wstr",
+            "desc": "Unicode字符串"
+          },
+          {
+            "type": "uint32_t",
+            "name": "len",
+            "desc": "Unicode字符串的长度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "用value初始化字符串。",
+        "name": "str_from_wstr_with_len",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -28623,7 +28680,91 @@
   },
   {
     "type": "class",
-    "methods": [],
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "uint16_t",
+            "name": "type",
+            "desc": "资源的类型。"
+          },
+          {
+            "type": "uint16_t",
+            "name": "subtype",
+            "desc": "资源的子类型。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "资源的名称。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "资源的数据长度(用于分配空间)。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建asset_info对象。\n\n> 主要供脚本语言使用。",
+        "name": "asset_info_create",
+        "return": {
+          "type": "asset_info_t*",
+          "desc": "asset_info对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "asset_info_t*",
+            "name": "info",
+            "desc": "asset_info对象。"
+          }
+        ],
+        "annotation": {
+          "deconstructor": true
+        },
+        "desc": "销毁asset_info对象。",
+        "name": "asset_info_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "asset_info_t*",
+            "name": "info",
+            "desc": "asset_info对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "减少asset_info对象的引用计数。",
+        "name": "asset_info_unref",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "asset_info_t*",
+            "name": "info",
+            "desc": "asset_info对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "增加asset_info对象的引用计数。",
+        "name": "asset_info_ref",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
     "events": [],
     "properties": [
       {
@@ -29130,6 +29271,47 @@
             "desc": "asset manager对象。"
           },
           {
+            "type": "const char*",
+            "name": "name",
+            "desc": "待增加的资源的名字。"
+          },
+          {
+            "type": "uint16_t",
+            "name": "type",
+            "desc": "待增加的资源的主类型枚举。"
+          },
+          {
+            "type": "uint16_t",
+            "name": "subtype",
+            "desc": "待增加的资源的子类型枚举。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "buff",
+            "desc": "待增加的资源的data数据。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "待增加的资源的data数据长度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "向资源管理器中增加一个资源data。",
+        "name": "assets_manager_add",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "assets_manager_t*",
+            "name": "am",
+            "desc": "asset manager对象。"
+          },
+          {
             "type": "asset_type_t",
             "name": "type",
             "desc": "资源的类型。"
@@ -29272,6 +29454,32 @@
         "annotation": {},
         "desc": "设置一个函数，该函数用于生成资源路径。\n\n> 有时我们需要优先加载用户自定义的资源，加载失败才加载系统缺省的，可用设置一个函数去实现这类功能。",
         "name": "assets_manager_set_custom_build_asset_dir",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "assets_manager_t*",
+            "name": "am",
+            "desc": "asset manager对象。"
+          },
+          {
+            "type": "assets_manager_load_asset_t",
+            "name": "custom_load_asset",
+            "desc": "回调函数。"
+          },
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "回调函数的上下文。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置一个函数，该函数用于实现自定义加载资源。\n\n> 如果不支持文件系统，开发者可以设置一个加载资源的回调函数，从flash或其它地方读取资源。",
+        "name": "assets_manager_set_custom_load_asset",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -34799,7 +35007,7 @@
     "events": [],
     "properties": [],
     "header": "keyboard/candidates.h",
-    "desc": "输入法候选字词控件。",
+    "desc": "输入法候选字词控件。\n\n如果希望启用用数字选择对应的候选字，请设置属性grab_keys=\"true\"。如：\n\n```xml\n<candidates x=\"0\" y=\"0\" w=\"100%\" h=\"30\" grab_keys=\"true\"/>\n```\n\n如果希望通过左右键切换不同的候选字，除了设置属性grab_keys=\"true\"，还需要设置按钮的focused状态的style。\n\n```xml\n<style name=\"candidates\" text_color=\"black\">\n<normal  />\n<pressed    bg_color=\"#c0c0c0\" border_color=\"#a0a0a0\"/>\n<over       bg_color=\"#e0e0e0\" border_color=\"#a0a0a0\"/>\n<focused    border_color=\"#a0a0a0\"/>\n</style>\n```",
     "name": "candidates_t",
     "parent": "widget_t",
     "annotation": {
@@ -45034,7 +45242,7 @@
             "desc": "ostream对象。"
           },
           {
-            "type": "const uint8_t*",
+            "type": "const void*",
             "name": "buff",
             "desc": "返回数据的缓冲区。"
           },
@@ -45081,7 +45289,7 @@
             "desc": "ostream对象。"
           },
           {
-            "type": "const uint8_t*",
+            "type": "const void*",
             "name": "buff",
             "desc": "数据的缓冲区。"
           },
@@ -45837,6 +46045,120 @@
           "type": "tk_ostream_t*",
           "desc": "返回输出流对象。"
         }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_iostream_t*",
+            "name": "stream",
+            "desc": "iostream对象。"
+          },
+          {
+            "type": "void*",
+            "name": "buff",
+            "desc": "返回数据的缓冲区。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "max_size",
+            "desc": "缓冲区的大小。"
+          }
+        ],
+        "annotation": {},
+        "desc": "读取数据。",
+        "name": "tk_iostream_read",
+        "return": {
+          "type": "int32_t",
+          "desc": "返回负数表示读取失败，否则返回实际读取数据的长度。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_iostream_t*",
+            "name": "stream",
+            "desc": "iostream对象。"
+          },
+          {
+            "type": "void*",
+            "name": "buff",
+            "desc": "返回数据的缓冲区。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "max_size",
+            "desc": "缓冲区的大小。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "timeout_ms",
+            "desc": "timeout."
+          }
+        ],
+        "annotation": {},
+        "desc": "读取指定长度的数据。",
+        "name": "tk_iostream_read_len",
+        "return": {
+          "type": "int32_t",
+          "desc": "返回负数表示读取失败，否则返回实际读取数据的长度。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_iostream_t*",
+            "name": "stream",
+            "desc": "iostream对象。"
+          },
+          {
+            "type": "const void*",
+            "name": "buff",
+            "desc": "返回数据的缓冲区。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "max_size",
+            "desc": "缓冲区的大小。"
+          }
+        ],
+        "annotation": {},
+        "desc": "写入数据。",
+        "name": "tk_iostream_write",
+        "return": {
+          "type": "int32_t",
+          "desc": "返回负数表示写入失败，否则返回实际写入数据的长度。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_iostream_t*",
+            "name": "stream",
+            "desc": "iostream对象。"
+          },
+          {
+            "type": "const void*",
+            "name": "buff",
+            "desc": "数据的缓冲区。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "max_size",
+            "desc": "缓冲区的大小。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "timeout_ms",
+            "desc": "timeout."
+          }
+        ],
+        "annotation": {},
+        "desc": "写入指定长度的数据。",
+        "name": "tk_iostream_write_len",
+        "return": {
+          "type": "int32_t",
+          "desc": "返回负数表示写入失败，否则返回实际写入数据的长度。"
+        }
       }
     ],
     "events": [],
@@ -45858,7 +46180,7 @@
             "desc": "istream对象。"
           },
           {
-            "type": "uint8_t*",
+            "type": "void*",
             "name": "buff",
             "desc": "返回数据的缓冲区。"
           },
@@ -45942,7 +46264,7 @@
             "desc": "istream对象。"
           },
           {
-            "type": "uint8_t*",
+            "type": "void*",
             "name": "buff",
             "desc": "返回数据的缓冲区。"
           },
@@ -45973,7 +46295,7 @@
             "desc": "istream对象。"
           },
           {
-            "type": "uint8_t*",
+            "type": "void*",
             "name": "buff",
             "desc": "返回数据的缓冲区。"
           },

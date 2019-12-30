@@ -44,7 +44,7 @@ ret_t tk_istream_flush (tk_istream_t* stream);
 * 函数原型：
 
 ```
-int32_t tk_istream_read (tk_istream_t* stream, uint8_t* buff, uint32_t max_size);
+int32_t tk_istream_read (tk_istream_t* stream, void* buff, uint32_t max_size);
 ```
 
 * 参数说明：
@@ -53,7 +53,7 @@ int32_t tk_istream_read (tk_istream_t* stream, uint8_t* buff, uint32_t max_size)
 | -------- | ----- | --------- |
 | 返回值 | int32\_t | 返回负数表示读取失败，否则返回实际读取数据的长度。 |
 | stream | tk\_istream\_t* | istream对象。 |
-| buff | uint8\_t* | 返回数据的缓冲区。 |
+| buff | void* | 返回数据的缓冲区。 |
 | max\_size | uint32\_t | 缓冲区的大小。 |
 #### tk\_istream\_read\_len 函数
 -----------------------
@@ -65,7 +65,7 @@ int32_t tk_istream_read (tk_istream_t* stream, uint8_t* buff, uint32_t max_size)
 * 函数原型：
 
 ```
-int32_t tk_istream_read_len (tk_istream_t* stream, uint8_t* buff, uint32_t max_size, uint32_t timeout_ms);
+int32_t tk_istream_read_len (tk_istream_t* stream, void* buff, uint32_t max_size, uint32_t timeout_ms);
 ```
 
 * 参数说明：
@@ -74,7 +74,7 @@ int32_t tk_istream_read_len (tk_istream_t* stream, uint8_t* buff, uint32_t max_s
 | -------- | ----- | --------- |
 | 返回值 | int32\_t | 返回负数表示读取失败，否则返回实际读取数据的长度。 |
 | stream | tk\_istream\_t* | istream对象。 |
-| buff | uint8\_t* | 返回数据的缓冲区。 |
+| buff | void* | 返回数据的缓冲区。 |
 | max\_size | uint32\_t | 缓冲区的大小。 |
 | timeout\_ms | uint32\_t | timeout. |
 #### tk\_istream\_read\_line 函数
@@ -87,7 +87,7 @@ int32_t tk_istream_read_len (tk_istream_t* stream, uint8_t* buff, uint32_t max_s
 * 函数原型：
 
 ```
-int32_t tk_istream_read_line (tk_istream_t* stream, uint8_t* buff, uint32_t max_size, uint32_t timeout_ms);
+int32_t tk_istream_read_line (tk_istream_t* stream, void* buff, uint32_t max_size, uint32_t timeout_ms);
 ```
 
 * 参数说明：
@@ -96,7 +96,7 @@ int32_t tk_istream_read_line (tk_istream_t* stream, uint8_t* buff, uint32_t max_
 | -------- | ----- | --------- |
 | 返回值 | int32\_t | 返回负数表示读取失败，否则返回实际读取数据的长度。 |
 | stream | tk\_istream\_t* | istream对象。 |
-| buff | uint8\_t* | 返回数据的缓冲区。 |
+| buff | void* | 返回数据的缓冲区。 |
 | max\_size | uint32\_t | 缓冲区的大小。 |
 | timeout\_ms | uint32\_t | timeout. |
 #### tk\_istream\_seek 函数
