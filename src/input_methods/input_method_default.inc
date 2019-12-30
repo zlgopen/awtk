@@ -105,7 +105,7 @@ static ret_t input_method_on_win_close(void* ctx, event_t* e) {
     window_base = WINDOW_BASE(im->keyboard);
     /* 用来区分 keyboard 切换类型时候调用的 window_close */
     widget_get_prop(im->keyboard, WIDGET_PROP_CLOSE_ANIM_HINT, &v);
-    if(tk_str_cmp(value_str(&v), "") != 0) {
+    if (tk_str_cmp(value_str(&v), "") != 0) {
       im->keyboard = NULL;
       im->widget = NULL;
       im->win = NULL;

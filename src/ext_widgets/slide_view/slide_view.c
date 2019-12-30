@@ -750,7 +750,7 @@ static ret_t slide_view_on_paint_children(widget_t* widget, canvas_t* c) {
       widget_paint(active, c);
     }
   }
-  
+
   vgcanvas_clip_rect(vg, save_r.x, save_r.y, save_r.w, save_r.h);
   canvas_set_clip_rect(c, &save_r);
   canvas_set_global_alpha(c, save_a);

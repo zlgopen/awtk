@@ -2593,7 +2593,7 @@ static ret_t widget_destroy_sync(widget_t* widget) {
   return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);
 
 #ifndef WITHOUT_WIDGET_ANIMATORS
-  widget_destroy_animator(widget , NULL);
+  widget_destroy_animator(widget, NULL);
 #endif /*WITHOUT_WIDGET_ANIMATORS*/
 
   widget->destroying = TRUE;

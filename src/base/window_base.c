@@ -315,7 +315,7 @@ ret_t window_base_on_event(widget_t* widget, event_t* e) {
       win->save_focus_widget = NULL;
     }
     widget_t* save_focus_widget = window_base_get_key_target_leaf(widget);
-    if(save_focus_widget != widget) {
+    if (save_focus_widget != widget) {
       win->save_focus_widget = save_focus_widget;
       if (win->save_focus_widget) {
         widget_ref(win->save_focus_widget);
