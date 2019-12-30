@@ -213,7 +213,6 @@ ret_t tk_init(wh_t w, wh_t h, app_type_t app_type, const char* app_name, const c
 }
 
 ret_t tk_deinit_internal(void) {
-  idle_manager_dispatch(idle_manager());
 
 #ifndef WITHOUT_CLIPBOARD
   clip_board_destroy(clip_board());
@@ -242,6 +241,18 @@ ret_t tk_deinit_internal(void) {
   input_method_set(NULL);
 #endif /*WITHOUT_INPUT_METHOD*/
 
+#ifndef WITHOUT_DIALOG_HIGHLIGHTER
+  dialog_highlighter_factory_destroy(dialog_highlighter_factory());
+  dialog_highlighter_factory_set(NULL);
+#endif /*WITHOUT_DIALOG_HIGHLIGHTER*/
+
+  timer_manager_destroy(timer_manager());
+  timer_manager_set(NULL);
+
+  idle_manager_dispatch(idle_manager());
+  idle_manager_destroy(idle_manager());
+  idle_manager_set(NULL);
+
 #ifndef WITHOUT_WINDOW_ANIMATORS
   window_animator_factory_destroy(window_animator_factory());
   window_animator_factory_set(NULL);
@@ -251,11 +262,6 @@ ret_t tk_deinit_internal(void) {
   widget_animator_manager_destroy(widget_animator_manager());
   widget_animator_manager_set(NULL);
 #endif /*WITHOUT_WIDGET_ANIMATORS*/
-
-#ifndef WITHOUT_DIALOG_HIGHLIGHTER
-  dialog_highlighter_factory_destroy(dialog_highlighter_factory());
-  dialog_highlighter_factory_set(NULL);
-#endif /*WITHOUT_DIALOG_HIGHLIGHTER*/
 
   theme_destroy(theme());
   theme_set(NULL);
@@ -268,12 +274,6 @@ ret_t tk_deinit_internal(void) {
 
   assets_manager_destroy(assets_manager());
   assets_manager_set(NULL);
-
-  idle_manager_destroy(idle_manager());
-  idle_manager_set(NULL);
-
-  timer_manager_destroy(timer_manager());
-  timer_manager_set(NULL);
 
   system_info_deinit();
 
