@@ -174,3 +174,35 @@ widget_t* win = window_open(name);
 依次查找flag\_US和flag\_none两个图片。
 
 > 变量名可以使用[system\_info中的成员变量](https://github.com/zlgopen/awtk/blob/master/docs/manual/system_info_t.md)
+
+## 四、扩展用法
+
+有时候在嵌入式平台开发项目中会出现一种情况，项目的资源分为两部分，一部分是基本上不会修改的资源（例如字库资源等），一部分会根据开发过程中会进行修改或者更换资源（例如图片资源等）。
+
+这个时候需要把不会修改的资源烧写指定的地方（flash 或者 其他的存储设备中），然后再通过特定的方法加载到 awtk 中。
+
+#### 示例：
+
+```
+#include "base/assets_manager.h"
+
+/* 字体文件资源烧写到 0x60520000 的地址中 */
+#define FONT_FULL_ADD 0x60520000
+/* 字体文件资源大小长度 */
+#define FONT_FULL_LEN 0x00220000
+
+ret_t assets_init(void) {
+
+    assets_manager_t* am = assets_manager();
+    
+     /* 
+     * 把字体文件资源 data 数据直接加载到 awtk 中
+     * 并且该字体文件资源的名字为 "default_full"
+     * 程序内部可以通过 "default_full" 名字来使用该字体资源
+     */
+	assets_manager_add_data(am, "default_full", ASSET_TYPE_FONT, ASSET_TYPE_FONT_TTF, (const uint8_t*)FONT_FULL_ADD, FONT_FULL_LEN);
+	
+｝
+```
+
+> 备注：assets_manager_add_data 函数传入的资源 data 数组，会拷贝一份在 awtk 内部，所以如果资源 data 数组是通过 malloc 等方法创建出来的话，就需要自行释放资源 data 数组。
