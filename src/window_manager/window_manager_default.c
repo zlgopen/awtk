@@ -130,7 +130,11 @@ static widget_t* window_manager_find_prev_any_window(widget_t* widget) {
   return_value_if_fail(widget != NULL, NULL);
 
   if (widget->children != NULL && widget->children->size >= 2) {
-    return (widget_t*)(widget->children->elms[widget->children->size - 2]);
+    WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
+    if (i <= widget->children->size - 2 && widget_is_normal_window(iter) && iter->visible) {
+      return iter;
+    }
+    WIDGET_FOR_EACH_CHILD_END();
   }
 
   return NULL;

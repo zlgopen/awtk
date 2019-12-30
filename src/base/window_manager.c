@@ -161,7 +161,7 @@ static widget_t* window_manager_default_impl_get_top_main_window(widget_t* widge
   return_value_if_fail(widget != NULL, NULL);
 
   WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
-  if (widget_is_normal_window(iter) && iter->visible) {
+  if (iter != NULL && widget_is_normal_window(iter) && iter->visible) {
     return iter;
   }
   WIDGET_FOR_EACH_CHILD_END();
