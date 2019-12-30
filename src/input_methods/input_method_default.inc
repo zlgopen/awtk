@@ -96,17 +96,22 @@ static ret_t input_method_default_restore_win_position(input_method_t* im) {
 }
 
 static ret_t input_method_on_win_close(void* ctx, event_t* e) {
+  value_t v;
+  window_base_t* window_base = NULL;
   input_method_t* im = (input_method_t*)ctx;
-
   input_method_default_restore_win_position(im);
 
   if (im->keyboard != NULL) {
-    window_manager_close_window_force(im->keyboard->parent, im->keyboard);
-    im->keyboard = NULL;
+    window_base = WINDOW_BASE(im->keyboard);
+    /* 用来区分 keyboard 切换类型时候调用的 window_close */
+    widget_get_prop(im->keyboard, WIDGET_PROP_CLOSE_ANIM_HINT, &v);
+    if(tk_str_cmp(value_str(&v), "") != 0) {
+      im->keyboard = NULL;
+      im->widget = NULL;
+      im->win = NULL;
+    }
   }
 
-  im->widget = NULL;
-  im->win = NULL;
   (void)e;
 
   return RET_REMOVE;
@@ -168,7 +173,7 @@ static ret_t input_type_open_keyboard(input_method_t* im, int32_t input_type, bo
   value_set_str(&v, close_anim_hint);
   widget_set_prop(im->keyboard, WIDGET_PROP_CLOSE_ANIM_HINT, &v);
 
-  widget_on(win, EVT_WINDOW_CLOSE, input_method_on_win_close, im);
+  widget_on(win->parent, EVT_WINDOW_CLOSE, input_method_on_win_close, im);
 
   return RET_OK;
 }

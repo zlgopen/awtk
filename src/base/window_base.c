@@ -314,11 +314,14 @@ ret_t window_base_on_event(widget_t* widget, event_t* e) {
       widget_unref(win->save_focus_widget);
       win->save_focus_widget = NULL;
     }
-    win->save_focus_widget = window_base_get_key_target_leaf(widget);
-    if (win->save_focus_widget) {
-      widget_ref(win->save_focus_widget);
+    widget_t* save_focus_widget = window_base_get_key_target_leaf(widget);
+    if(save_focus_widget != widget) {
+      win->save_focus_widget = save_focus_widget;
+      if (win->save_focus_widget) {
+        widget_ref(win->save_focus_widget);
+      }
+      widget_set_focused(widget, FALSE);
     }
-    widget_set_focused(widget, FALSE);
   }
 
   return RET_OK;

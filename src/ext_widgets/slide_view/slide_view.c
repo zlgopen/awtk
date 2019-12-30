@@ -43,10 +43,10 @@ static bool_t slide_view_is_loopable(slide_view_t* slide_view) {
 
 static ret_t canvas_set_clip_rect_with_offset(canvas_t* c, rect_t* r, int32_t ox, int32_t oy) {
   rect_t rr = *r;
-
+  vgcanvas_t* vg = canvas_get_vgcanvas(c);
   rr.x += ox;
   rr.y += oy;
-
+  vgcanvas_clip_rect(vg, rr.x, rr.y, rr.w, rr.h);
   return canvas_set_clip_rect(c, &rr);
 }
 
@@ -724,6 +724,7 @@ static ret_t slide_view_on_paint_children(widget_t* widget, canvas_t* c) {
   rect_t save_r;
   widget_t* active = NULL;
   uint8_t save_a = c->lcd->global_alpha;
+  vgcanvas_t* vg = canvas_get_vgcanvas(c);
   slide_view_t* slide_view = SLIDE_VIEW(widget);
   return_value_if_fail(widget != NULL && slide_view != NULL, RET_BAD_PARAMS);
 
@@ -749,6 +750,8 @@ static ret_t slide_view_on_paint_children(widget_t* widget, canvas_t* c) {
       widget_paint(active, c);
     }
   }
+  
+  vgcanvas_clip_rect(vg, save_r.x, save_r.y, save_r.w, save_r.h);
   canvas_set_clip_rect(c, &save_r);
   canvas_set_global_alpha(c, save_a);
 

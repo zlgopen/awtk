@@ -469,6 +469,7 @@ ret_t widget_set_theme(widget_t* widget, const char* name) {
   widget_reset_canvas(widget);
 
   info = assets_manager_ref(am, ASSET_TYPE_STYLE, "default");
+  assets_manager_unref(assets_manager(), info);
   theme_init(theme(), info->data);
 
   widget_dispatch(wm, &e);
@@ -726,6 +727,8 @@ ret_t widget_destroy_children(widget_t* widget) {
 
     widget_remove_child_prepare(widget, iter);
     widget_unref(iter);
+
+    widget->children->elms[i] = NULL;
 
     WIDGET_FOR_EACH_CHILD_END();
     widget->children->size = 0;
@@ -2589,6 +2592,10 @@ static ret_t widget_destroy_sync(widget_t* widget) {
   event_t e = event_init(EVT_DESTROY, widget);
   return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);
 
+#ifndef WITHOUT_WIDGET_ANIMATORS
+  widget_destroy_animator(widget , NULL);
+#endif /*WITHOUT_WIDGET_ANIMATORS*/
+
   widget->destroying = TRUE;
   if (widget->emitter != NULL) {
     widget_dispatch(widget, &e);
@@ -2970,6 +2977,7 @@ widget_t* widget_clone(widget_t* widget, widget_t* parent) {
   return_value_if_fail(widget != NULL && widget->vt != NULL && widget->vt->create != NULL, NULL);
 
   clone = widget->vt->create(parent, widget->x, widget->y, widget->w, widget->h);
+  TKMEM_FREE(clone->state);
   return_value_if_fail(clone != NULL, NULL);
 
   widget_copy(clone, widget);
