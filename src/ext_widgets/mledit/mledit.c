@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   mledit.h
  * Author: AWTK Develop Team
  * Brief:  mledit
@@ -181,7 +181,6 @@ static ret_t mledit_set_prop(widget_t* widget, const char* name, const value_t* 
   } else if (tk_str_eq(name, WIDGET_PROP_TOP_MARGIN)) {
     mledit->top_margin = value_int(v);
     mledit_reset_text_edit_layout(mledit->model);
-    return RET_OK;
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_BOTTOM_MARGIN)) {
     mledit->bottom_margin = value_int(v);
