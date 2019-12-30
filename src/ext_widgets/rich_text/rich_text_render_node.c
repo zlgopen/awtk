@@ -211,7 +211,10 @@ rich_text_render_node_t* rich_text_render_node_layout(widget_t* widget, rich_tex
           if ((x + tw + cw) > right || break_type == LINE_BREAK_MUST) {
             // 一行的起始不需要换行，且最少包含一个字符
             if (x == margin) {
-              if (i == start) i = start + 1;
+              if (i == start) {
+                i = start + 1;
+                cw = 0;
+              }
               break_type = LINE_BREAK_MUST;
             }
             if (break_type != LINE_BREAK_MUST) {
@@ -234,6 +237,7 @@ rich_text_render_node_t* rich_text_render_node_layout(widget_t* widget, rich_tex
 
             if (break_type == LINE_BREAK_MUST) {
               while (str[i] == '\r' || str[i] == '\n') {
+                cw = 0;
                 i++;
               }
               y += font_size;
@@ -241,14 +245,19 @@ rich_text_render_node_t* rich_text_render_node_layout(widget_t* widget, rich_tex
               flexible_w = 0;
             } else {
               if (str[i] == ' ' || str[i] == '\t') {
+                cw = 0;
                 i++;
               }
               start = i;
               flexible_w = right - x - canvas_measure_text(c, new_node->text, new_node->size);
             }
 
+            if (str[i]) {
+              cw = canvas_measure_text(c, str + i, 1);
+            }
+
             x += tw + 1;
-            tw = 0;
+            tw = cw;
             MOVE_TO_NEXT_ROW();
             row_h = font_size;
           } else {
