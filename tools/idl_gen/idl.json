@@ -6790,6 +6790,29 @@
             "desc": "图片管理器对象。"
           },
           {
+            "type": "char*",
+            "name": "name",
+            "desc": "图片名称。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "预加载指定的图片。",
+        "name": "image_manager_preload",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "image_manager_t*",
+            "name": "imm",
+            "desc": "图片管理器对象。"
+          },
+          {
             "type": "uint32_t",
             "name": "time_delta_s",
             "desc": "时间范围，单位为秒。"
@@ -35011,6 +35034,8 @@
     "name": "candidates_t",
     "parent": "widget_t",
     "annotation": {
+      "scriptable": true,
+      "design": true,
       "widget": true
     },
     "level": 2

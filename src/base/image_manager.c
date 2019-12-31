@@ -249,6 +249,13 @@ ret_t image_manager_get_bitmap(image_manager_t* imm, const char* name, bitmap_t*
   }
 }
 
+ret_t image_manager_preload(image_manager_t* imm, const char* name) {
+  bitmap_t image;
+  return_value_if_fail(imm != NULL && name != NULL && *name, RET_BAD_PARAMS);
+
+  return image_manager_get_bitmap(imm, name, &image);
+}
+
 ret_t image_manager_set_assets_manager(image_manager_t* imm, assets_manager_t* am) {
   return_value_if_fail(imm != NULL, RET_BAD_PARAMS);
 

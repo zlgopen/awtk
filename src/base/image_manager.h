@@ -112,6 +112,17 @@ image_manager_t* image_manager_init(image_manager_t* imm);
 ret_t image_manager_get_bitmap(image_manager_t* imm, const char* name, bitmap_t* image);
 
 /**
+ * @method image_manager_preload
+ * 预加载指定的图片。
+ * @annotation ["scriptable"]
+ * @param {image_manager_t*} imm 图片管理器对象。
+ * @param {char*} name 图片名称。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t image_manager_preload(image_manager_t* imm, const char* name);
+
+/**
  * @method image_manager_unload_unused
  * 从图片管理器中卸载指定时间内没有使用的图片。
  * @param {image_manager_t*} imm 图片管理器对象。
