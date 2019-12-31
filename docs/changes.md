@@ -1,5 +1,8 @@
 # 最新动态
 
+* 2019/12/31
+  * 完善RichText（感谢尧燊提供补丁）
+
 * 2019/12/30
   * assset\_info相关函数移到到tkc/asset\_info.c中。
   * asset manager支持自定义资源加载。
