@@ -197,13 +197,12 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
   dialog_highlighter = wm->dialog_highlighter;
 
   WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
-  if (iter == prev_win) end = i;
-  if (end > -1 && iter->visible && widget_is_normal_window(iter)) {
+  if (iter == prev_win) {
     start = i;
+    end = widget->children->size - 2;
     break;
   }
   WIDGET_FOR_EACH_CHILD_END()
-  if (start == -1) start = end;
 
 #ifdef WITH_NANOVG_GPU
   vg = lcd_get_vgcanvas(c->lcd);
