@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  log lcd commands.
  *
- * Copyright (c) 2018 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2018 - 2020  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * this program is distributed in the hope that it will be useful,
  * but without any warranty; without even the implied warranty of

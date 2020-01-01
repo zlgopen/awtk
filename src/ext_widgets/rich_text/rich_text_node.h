@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  rich_text_node
  *
- * Copyright (c) 2018 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2018 - 2020  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * This program is dirich_text_nodeibuted in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
