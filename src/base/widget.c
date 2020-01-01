@@ -1271,6 +1271,41 @@ ret_t widget_fill_rect(widget_t* widget, canvas_t* c, rect_t* r, bool_t bg,
   return RET_OK;
 }
 
+static inline ret_t widget_stroke_border_rect_for_border_type(canvas_t* c, rect_t* r, color_t bd, int32_t border, uint32_t border_width) {
+  wh_t w = r->w;
+  wh_t h = r->h;
+  xy_t x = r->x + 0.5;
+  xy_t y = r->y + 0.5;
+  xy_t y1 = y;
+  wh_t h1 = h;
+  bool_t draw_top = FALSE;
+  bool_t draw_bottom = FALSE;
+  canvas_set_fill_color(c, bd);
+  if (border & BORDER_TOP) {
+    draw_top = TRUE;
+    canvas_fill_rect(c, x, y, w, border_width);
+  }
+  if (border & BORDER_BOTTOM) {
+    draw_bottom = TRUE;
+    canvas_fill_rect(c, x, y + h - border_width, w, border_width);
+  }
+  /* 减少重复绘制的部分，可以修复有透明的时候重叠区域显示不正常为问题 */
+  if (draw_top) {
+    y1 += border_width;
+    h1 -= border_width;
+  }
+  if (draw_bottom) {
+    h1 -= border_width;
+  }
+  if (border & BORDER_LEFT) {
+    canvas_fill_rect(c, x, y1, border_width, h1);
+  }
+  if (border & BORDER_RIGHT) {
+    canvas_fill_rect(c, x + w - border_width, y1, border_width, h1);
+  }
+  return RET_OK;
+}
+
 ret_t widget_stroke_border_rect(widget_t* widget, canvas_t* c, rect_t* r) {
   style_t* style = widget->astyle;
   color_t trans = color_init(0, 0, 0, 0);
@@ -1291,17 +1326,11 @@ ret_t widget_stroke_border_rect(widget_t* widget, canvas_t* c, rect_t* r) {
         canvas_stroke_rect(c, 0, 0, w, h);
       }
     } else {
-      if (border & BORDER_TOP) {
-        canvas_draw_hline(c, 0, 0, w);
+      if(radius <= 3) {
+        widget_stroke_border_rect_for_border_type(c, r, bd, border, border_width);
       }
-      if (border & BORDER_BOTTOM) {
-        canvas_draw_hline(c, 0, h - 1, w);
-      }
-      if (border & BORDER_LEFT) {
-        canvas_draw_vline(c, 0, 0, h);
-      }
-      if (border & BORDER_RIGHT) {
-        canvas_draw_vline(c, w - 1, 0, h);
+      else {
+        assert(!"stroke border radius > 3 not supported !");
       }
     }
   }
