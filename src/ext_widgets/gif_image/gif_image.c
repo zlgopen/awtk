@@ -126,7 +126,7 @@ static ret_t gif_image_on_paint_self(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-static const char* s_gif_image_clone_properties[] = {
+static const char* s_gif_image_properties[] = {
     WIDGET_PROP_IMAGE,     WIDGET_PROP_SCALE_X,    WIDGET_PROP_SCALE_Y,
     WIDGET_PROP_ANCHOR_X,  WIDGET_PROP_ANCHOR_Y,   WIDGET_PROP_ROTATION,
     WIDGET_PROP_CLICKABLE, WIDGET_PROP_SELECTABLE, NULL};
@@ -145,13 +145,15 @@ static ret_t gif_image_on_destroy(widget_t* widget) {
 
 TK_DECL_VTABLE(gif_image) = {.size = sizeof(gif_image_t),
                              .type = WIDGET_TYPE_GIF_IMAGE,
-                             .clone_properties = s_gif_image_clone_properties,
+                             .clone_properties = s_gif_image_properties,
+                             .persistent_properties = s_gif_image_properties,
                              .parent = TK_PARENT_VTABLE(image_base),
                              .create = gif_image_create,
                              .on_destroy = gif_image_on_destroy,
                              .on_event = image_base_on_event,
                              .on_paint_self = gif_image_on_paint_self,
                              .on_paint_background = widget_on_paint_null,
+                             .on_copy = image_base_on_copy,
                              .set_prop = image_base_set_prop,
                              .get_prop = image_base_get_prop};
 

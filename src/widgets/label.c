@@ -246,9 +246,13 @@ static ret_t label_set_prop(widget_t* widget, const char* name, const value_t* v
   return RET_NOT_FOUND;
 }
 
+static const char* const s_label_properties[] = {WIDGET_PROP_LENGTH, NULL};
+
 TK_DECL_VTABLE(label) = {.size = sizeof(label_t),
                          .type = WIDGET_TYPE_LABEL,
                          .parent = TK_PARENT_VTABLE(widget),
+                         .clone_properties = s_label_properties,
+                         .persistent_properties = s_label_properties,
                          .create = label_create,
                          .set_prop = label_set_prop,
                          .get_prop = label_get_prop,

@@ -56,6 +56,27 @@ static ret_t combo_box_add_selected_index(widget_t* widget, int32_t delta);
 static widget_t* combo_box_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 static ret_t combo_box_set_selected_index_ex(widget_t* widget, uint32_t index, widget_t* item);
 
+static ret_t combo_box_on_copy(widget_t* widget, widget_t* other) {
+  combo_box_t* combo_box = COMBO_BOX(widget);
+  combo_box_t* combo_box_other = COMBO_BOX(other);
+
+  edit_on_copy(widget, other);
+
+  combo_box->item_height = combo_box_other->item_height;
+  combo_box->selected_index = combo_box_other->selected_index;
+  combo_box->localize_options = combo_box_other->localize_options;
+
+  if (combo_box_other->options != NULL) {
+    combo_box_set_options(widget, combo_box_other->options);
+  }
+
+  if (combo_box_other->open_window != NULL) {
+    combo_box->open_window = tk_str_copy(combo_box->open_window, combo_box_other->open_window);
+  }
+
+  return RET_OK;
+}
+
 static ret_t combo_box_on_destroy(widget_t* widget) {
   combo_box_t* combo_box = COMBO_BOX(widget);
   return_value_if_fail(widget != NULL && combo_box != NULL, RET_BAD_PARAMS);
@@ -306,6 +327,7 @@ TK_DECL_VTABLE(combo_box) = {.size = sizeof(combo_box_t),
                              .on_add_child = combo_box_on_add_child,
                              .on_layout_children = combo_box_on_layout_children,
                              .on_destroy = combo_box_on_destroy,
+                             .on_copy = combo_box_on_copy,
                              .on_event = combo_box_on_event};
 
 widget_t* combo_box_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {

@@ -259,3 +259,20 @@ ret_t image_transform(widget_t* widget, canvas_t* c) {
 
   return RET_OK;
 }
+
+ret_t image_base_on_copy(widget_t* widget, widget_t* other) {
+  image_base_t* image = IMAGE_BASE(widget);
+  image_base_t* image_other = IMAGE_BASE(other);
+
+  image->anchor_x = image_other->anchor_x;
+  image->anchor_y = image_other->anchor_y;
+  image->scale_x = image_other->scale_x;
+  image->scale_y = image_other->scale_y;
+  image->rotation = image_other->rotation;
+  image->clickable = image_other->clickable;
+  image->selectable = image_other->selectable;
+  image->selected = image_other->selected;
+  image->image = tk_str_copy(image->image, image_other->image);
+
+  return RET_OK;
+}

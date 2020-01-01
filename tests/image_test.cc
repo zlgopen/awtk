@@ -4,6 +4,7 @@
 #include "base/font_manager.h"
 #include "font_dummy.h"
 #include "lcd_log.h"
+#include "ui_loader/ui_serializer.h"
 
 TEST(Image, basic) {
   value_t v;
@@ -88,4 +89,31 @@ TEST(Image, cast) {
   ASSERT_EQ(w, image_base_cast(w));
 
   widget_destroy(w);
+}
+
+TEST(Image, clone) {
+  str_t str;
+  value_t v;
+  widget_t* w2 = NULL;
+  widget_t* w1 = image_create(NULL, 0, 0, 400, 300);
+
+  ASSERT_EQ(image_set_draw_type(w1, IMAGE_DRAW_REPEAT_X), RET_OK);
+  ASSERT_EQ(widget_set_prop_str(w1, WIDGET_PROP_IMAGE, "earth"), RET_OK);
+  
+  str_init(&str, 0);
+  w2 = widget_clone(w1, NULL);
+  log_debug("==================================\n");
+  widget_to_xml(w1, &str);
+  log_debug("w1:%s\n", str.str);
+
+  str_set(&str, "");
+  widget_to_xml(w2, &str);
+  log_debug("w2:%s\n", str.str);
+  log_debug("==================================\n");
+
+  ASSERT_EQ(widget_equal(w1, w2), TRUE);
+  
+  widget_destroy(w1);
+  widget_destroy(w2);
+  str_reset(&str);
 }

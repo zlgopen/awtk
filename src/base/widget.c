@@ -1271,7 +1271,9 @@ ret_t widget_fill_rect(widget_t* widget, canvas_t* c, rect_t* r, bool_t bg,
   return RET_OK;
 }
 
-static inline ret_t widget_stroke_border_rect_for_border_type(canvas_t* c, rect_t* r, color_t bd, int32_t border, uint32_t border_width) {
+static inline ret_t widget_stroke_border_rect_for_border_type(canvas_t* c, rect_t* r, color_t bd,
+                                                              int32_t border,
+                                                              uint32_t border_width) {
   wh_t w = r->w;
   wh_t h = r->h;
   xy_t x = r->x + 0.5;
@@ -1326,10 +1328,9 @@ ret_t widget_stroke_border_rect(widget_t* widget, canvas_t* c, rect_t* r) {
         canvas_stroke_rect(c, 0, 0, w, h);
       }
     } else {
-      if(radius <= 3) {
+      if (radius <= 3) {
         widget_stroke_border_rect_for_border_type(c, r, bd, border, border_width);
-      }
-      else {
+      } else {
         assert(!"stroke border radius > 3 not supported !");
       }
     }
@@ -2969,11 +2970,11 @@ static ret_t widget_copy_base_props(widget_t* widget, widget_t* other) {
   widget->state = tk_str_copy(widget->state, other->state);
   widget->name = tk_str_copy(widget->name, other->name);
   widget->style = tk_str_copy(widget->style, other->style);
-  widget->tr_text = tk_str_copy(widget->tr_text, other->tr_text);
 
   if (other->text.str != NULL) {
     widget_set_text(widget, other->text.str);
   }
+  widget->tr_text = tk_str_copy(widget->tr_text, other->tr_text);
 
   widget->enable = other->enable;
   widget->visible = other->visible;
@@ -2983,6 +2984,7 @@ static ret_t widget_copy_base_props(widget_t* widget, widget_t* other) {
   widget->feedback = other->feedback;
   widget->focusable = other->focusable;
   widget->sensitive = other->sensitive;
+  widget->auto_created = other->auto_created;
   widget->with_focus_state = other->with_focus_state;
 
   if (other->animation != NULL && *(other->animation)) {
@@ -3007,14 +3009,14 @@ static ret_t widget_copy(widget_t* widget, widget_t* other) {
   widget_copy_style(widget, other);
   widget_copy_base_props(widget, other);
 
+  if (other->custom_props) {
+    widget->custom_props = object_default_clone(OBJECT_DEFAULT(other->custom_props));
+  }
+
   if (widget->vt->on_copy != NULL) {
     widget->vt->on_copy(widget, other);
   } else {
     widget_on_copy_default(widget, other);
-  }
-
-  if (other->custom_props) {
-    widget->custom_props = object_default_clone(OBJECT_DEFAULT(other->custom_props));
   }
 
   widget_set_need_update_style(widget);
@@ -3084,6 +3086,7 @@ bool_t widget_equal(widget_t* widget, widget_t* other) {
       }
 
       if (!value_equal(&v1, &v2)) {
+        log_debug("prop %s not equal\n", prop);
         return FALSE;
       }
     }

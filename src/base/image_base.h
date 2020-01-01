@@ -218,6 +218,7 @@ ret_t image_base_get_prop(widget_t* widget, const char* name, value_t* v);
 ret_t image_base_set_prop(widget_t* widget, const char* name, const value_t* v);
 bool_t image_need_transform(widget_t* widget);
 ret_t image_transform(widget_t* widget, canvas_t* c);
+ret_t image_base_on_copy(widget_t* widget, widget_t* other);
 
 #define IMAGE_BASE(widget) ((image_base_t*)(image_base_cast(WIDGET(widget))))
 

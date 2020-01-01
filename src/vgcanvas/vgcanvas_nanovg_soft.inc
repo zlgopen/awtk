@@ -96,9 +96,9 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
   uint32_t bpp = bitmap_get_bpp(img);
 
   if (img->flags & BITMAP_FLAG_TEXTURE) {
-    if(img->specific != 0) {
+    if (img->specific != 0) {
       i = nvgFindTextureRaw(canvas->vg, img->specific);
-      if(i > 0) {
+      if (i > 0) {
         return i;
       }
     }
@@ -121,7 +121,9 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
       f = NVG_TEXTURE_RGB;
       break;
     }
-    default: { assert(!"not supported format"); }
+    default: {
+      assert(!"not supported format");
+    }
   }
 
   img_data = bitmap_lock_buffer_for_read(img);
@@ -145,7 +147,7 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
 
   if (i >= 0) {
     img->flags |= BITMAP_FLAG_TEXTURE;
-    img->specific = data;//tk_pointer_from_int(i);
+    img->specific = data;  //tk_pointer_from_int(i);
     image_manager_update_specific(image_manager(), img);
   }
   bitmap_unlock_buffer(img);

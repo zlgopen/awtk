@@ -427,6 +427,7 @@ ret_t edit_set_is_valid_char(widget_t* widget, edit_is_valid_char_t is_valid_cha
 TK_EXTERN_VTABLE(edit);
 
 /*public for spinbox and other controls*/
+ret_t edit_on_copy(widget_t* widget, widget_t* other);
 ret_t edit_on_destroy(widget_t* widget);
 ret_t edit_on_paint_self(widget_t* widget, canvas_t* c);
 ret_t edit_on_event(widget_t* widget, event_t* e);

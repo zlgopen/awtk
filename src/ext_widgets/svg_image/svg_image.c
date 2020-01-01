@@ -123,20 +123,22 @@ ret_t svg_image_set_image(widget_t* widget, const char* name) {
   return widget_invalidate(widget, NULL);
 }
 
-static const char* s_svg_image_clone_properties[] = {
+static const char* s_svg_image_properties[] = {
     WIDGET_PROP_IMAGE,     WIDGET_PROP_SCALE_X,    WIDGET_PROP_SCALE_Y,
     WIDGET_PROP_ANCHOR_X,  WIDGET_PROP_ANCHOR_Y,   WIDGET_PROP_ROTATION,
     WIDGET_PROP_CLICKABLE, WIDGET_PROP_SELECTABLE, NULL};
 
 TK_DECL_VTABLE(svg_image) = {.size = sizeof(svg_image_t),
                              .type = WIDGET_TYPE_SVG_IMAGE,
-                             .clone_properties = s_svg_image_clone_properties,
+                             .clone_properties = s_svg_image_properties,
+                             .persistent_properties = s_svg_image_properties,
                              .parent = TK_PARENT_VTABLE(image_base),
                              .create = svg_image_create,
                              .on_destroy = svg_image_on_destroy,
                              .on_event = image_base_on_event,
                              .on_paint_self = svg_image_on_paint_self,
                              .on_paint_background = widget_on_paint_null,
+                             .on_copy = image_base_on_copy,
                              .set_prop = svg_image_set_prop,
                              .get_prop = image_base_get_prop};
 

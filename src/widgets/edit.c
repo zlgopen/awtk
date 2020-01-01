@@ -1233,6 +1233,28 @@ const char* const s_edit_properties[] = {WIDGET_PROP_MIN,
                                          WIDGET_PROP_TIPS,
                                          WIDGET_PROP_PASSWORD_VISIBLE,
                                          NULL};
+
+ret_t edit_on_copy(widget_t* widget, widget_t* other) {
+  edit_t* edit = EDIT(widget);
+  edit_t* edit_other = EDIT(other);
+
+  edit->tips = tk_str_copy(edit->tips, edit_other->tips);
+
+  edit->min = edit_other->min;
+  edit->max = edit_other->max;
+  edit->step = edit_other->step;
+  edit->readonly = edit_other->readonly;
+  edit->auto_fix = edit_other->auto_fix;
+  edit->input_type = edit_other->input_type;
+  edit->left_margin = edit_other->left_margin;
+  edit->right_margin = edit_other->right_margin;
+  edit->top_margin = edit_other->top_margin;
+  edit->bottom_margin = edit_other->bottom_margin;
+  edit->password_visible = edit_other->password_visible;
+
+  return RET_OK;
+}
+
 TK_DECL_VTABLE(edit) = {.size = sizeof(edit_t),
                         .type = WIDGET_TYPE_EDIT,
                         .focusable = TRUE,
@@ -1245,6 +1267,7 @@ TK_DECL_VTABLE(edit) = {.size = sizeof(edit_t),
                         .set_prop = edit_set_prop,
                         .get_prop = edit_get_prop,
                         .on_destroy = edit_on_destroy,
+                        .on_copy = edit_on_copy,
                         .on_event = edit_on_event};
 
 widget_t* edit_create_ex(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_t y, wh_t w,

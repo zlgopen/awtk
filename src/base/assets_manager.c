@@ -238,7 +238,9 @@ static asset_info_t* try_load_image(assets_manager_t* am, const char* theme, con
       subpath = "images/svg";
       break;
     }
-    default: { return NULL; }
+    default: {
+      return NULL;
+    }
   }
 
   return_value_if_fail(assets_manager_build_asset_filename(am, path, MAX_PATH, theme, ratio,
@@ -281,7 +283,9 @@ static asset_info_t* try_load_assets(assets_manager_t* am, const char* theme, co
       subpath = "data";
       break;
     }
-    default: { return NULL; }
+    default: {
+      return NULL;
+    }
   }
 
   return_value_if_fail(assets_manager_build_asset_filename(am, path, MAX_PATH, theme, FALSE,

@@ -517,7 +517,9 @@ static int32_t text_edit_calc_x(text_edit_t* text_edit, row_info_t* iter) {
       case ALIGN_H_RIGHT: {
         return (layout_info->w - row_width);
       }
-      default: { break; }
+      default: {
+        break;
+      }
     }
   }
 

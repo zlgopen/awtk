@@ -1,5 +1,6 @@
 ﻿#include "gtest/gtest.h"
 #include "widgets/combo_box.h"
+#include "ui_loader/ui_serializer.h"
 
 #include <string>
 
@@ -179,18 +180,29 @@ TEST(ComboBox, move_resize) {
 }
 
 TEST(ComboBox, clone) {
+  str_t str;
   widget_t* w2 = NULL;
   widget_t* w1 = combo_box_create(NULL, 0, 0, 100, 100);
-  const char* str = "1:red;2:green;3:blue";
+  const char* options = "1:red;2:green;3:blue";
 
-  ASSERT_EQ(combo_box_set_options(w1, str), RET_OK);
+  str_init(&str, 0);
+  ASSERT_EQ(combo_box_set_options(w1, options), RET_OK);
   ASSERT_EQ(combo_box_set_selected_index(w1, 0), RET_OK);
 
-  ASSERT_STREQ(COMBO_BOX(w1)->options, str);
+  ASSERT_STREQ(COMBO_BOX(w1)->options, options);
 
   w2 = widget_clone(w1, NULL);
+  log_debug("==================================\n");
+  widget_to_xml(w1, &str);
+  log_debug("w1:%s\n", str.str);
+
+  str_set(&str, "");
+  widget_to_xml(w2, &str);
+  log_debug("w2:%s\n", str.str);
+  log_debug("==================================\n");
   ASSERT_EQ(widget_equal(w1, w2), TRUE);
 
   widget_destroy(w1);
   widget_destroy(w2);
+  str_reset(&str);
 }

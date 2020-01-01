@@ -91,18 +91,29 @@ static ret_t image_set_prop(widget_t* widget, const char* name, const value_t* v
   }
 }
 
-static const char* const s_image_clone_properties[] = {
-    WIDGET_PROP_IMAGE,      WIDGET_PROP_DRAW_TYPE,
-    WIDGET_PROP_SCALE_X,    WIDGET_PROP_SCALE_Y,
-    WIDGET_PROP_ANCHOR_X,   WIDGET_PROP_ANCHOR_Y,
-    WIDGET_PROP_ROTATION,   WIDGET_PROP_CLICKABLE,
-    WIDGET_PROP_SELECTABLE, NULL};
+static const char* const s_image_properties[] = {WIDGET_PROP_IMAGE,      WIDGET_PROP_DRAW_TYPE,
+                                                 WIDGET_PROP_SCALE_X,    WIDGET_PROP_SCALE_Y,
+                                                 WIDGET_PROP_ANCHOR_X,   WIDGET_PROP_ANCHOR_Y,
+                                                 WIDGET_PROP_ROTATION,   WIDGET_PROP_CLICKABLE,
+                                                 WIDGET_PROP_SELECTABLE, NULL};
+
+static ret_t image_on_copy(widget_t* widget, widget_t* other) {
+  image_t* image = IMAGE(widget);
+  image_t* image_other = IMAGE(other);
+
+  image_base_on_copy(widget, other);
+  image->draw_type = image_other->draw_type;
+
+  return RET_OK;
+}
 
 TK_DECL_VTABLE(image) = {.size = sizeof(image_t),
                          .type = WIDGET_TYPE_IMAGE,
-                         .clone_properties = s_image_clone_properties,
+                         .clone_properties = s_image_properties,
+                         .persistent_properties = s_image_properties,
                          .parent = TK_PARENT_VTABLE(image_base),
                          .create = image_create,
+                         .on_copy = image_on_copy,
                          .on_destroy = image_base_on_destroy,
                          .on_event = image_base_on_event,
                          .on_paint_self = image_on_paint_self,
