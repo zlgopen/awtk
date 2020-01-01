@@ -1,21 +1,28 @@
 # 最新动态
 
 * 2020/01/01
-  * 优化widget\_clone
+  * 优化 widget\_clone
+  * （感谢智明提供下列补丁）
+    * 修复对话框再弹出对话框时，前一个窗口的截图的显示问题
+    * 修复 agge 的填充颜色半透效果
+    * 增加 agge 对 image 支持半透效果
+    * 增加 nanovg 查找 nvgFindTextureRaw 函数，用来判断 agge 的时候图片是否在 nanovg 图片数组中（lcd 的 resize 函数释放 nanovg 的图片会把图片数组释放，导致下次调用崩毁）
+    * 修复画部分边框并且宽度大于 1 的情况显示问题。
+    * 修改一下警告地方
 
 * 2019/12/31
-  * 完善RichText（感谢尧燊提供补丁）
+  * 完善 RichText（感谢尧燊提供补丁）
 
 * 2019/12/30
-  * assset\_info相关函数移到到tkc/asset\_info.c中。
-  * asset manager支持自定义资源加载。
+  * assset\_info 相关函数移到到 tkc/asset\_info.c 中。
+  * asset manager 支持自定义资源加载。
   * 输入法候选字支持数字选择候选字
   * 输入法候选字支持左右键切换候选字的焦点
-  * 修改calibration窗口内存泄露问题（感谢培煌提供补丁）。
-  * 完善RichText（感谢尧燊提供补丁）
-  * 完善children layout（感谢尧燊提供补丁）
+  * 修改 calibration 窗口内存泄露问题（感谢培煌提供补丁）。
+  * 完善 RichText（感谢尧燊提供补丁）
+  * 完善 children layout（感谢尧燊提供补丁）
   * 输入法候选字支持脚本化（感谢大恒提供补丁）。
-  * (感谢智明提供下列补丁)
+  * （感谢智明提供下列补丁）
     * 播放窗口动画前查找 prev\_win 不正确的问题
     * 修复了 slide\_view 控件在 agge 的状态下，无法裁剪使用 vg 绘制的控件问题
     * 修复 asset\_info\_create 函数在没有开启 WITH\_FS\_RES 宏下编译出错的问题
@@ -28,66 +35,66 @@
     *调整了 tk\_deinit\_internal 函数让 widget 等资源可以顺利通过 idle 来释放。
 
 * 2019/12/29
-  * 使用event\_source\_manager实现主循环。
-  * iostream增加几个包装函数。
+  * 使用 event\_source\_manager 实现主循环。
+  * iostream 增加几个包装函数。
 
 * 2019/12/27
-  * 增加str\_from\_wstr\_with\_len
-  * 增加tk\_utf8\_from\_utf16\_ex
+  * 增加 str\_from\_wstr\_with\_len
+  * 增加 tk\_utf8\_from\_utf16\_ex
   * 感谢福明提供以下补丁： 
-    * hscroll\_label的修改：默认情况下鼠标移入控件时文本停止滚动，鼠标离开控件时开始滚动。
-    * 使用label控件的文本太长时会出现不显示的情况，主要是因为lcd\_vgcanvas.inc里面定义的一个文本长度限制。
+    * hscroll\_label 的修改：默认情况下鼠标移入控件时文本停止滚动，鼠标离开控件时开始滚动。
+    * 使用 label 控件的文本太长时会出现不显示的情况，主要是因为 lcd\_vgcanvas.inc 里面定义的一个文本长度限制。
 
 * 2019/12/26
-  * 完善mem中的计数（感谢大恒提供补丁）。
-  * 增加widget\_close\_window
-  * 修改了lcd的宽高被修改后脏矩形的宽高不修改导致裁剪去有问题（感谢智明提供补丁）
-  * 增加了把一个资源data加载到awtk的资源管理器的函数（感谢智明提供补丁）
-  * 完善window\_base\_on\_event（感谢尧燊提供补丁）
+  * 完善 mem 中的计数（感谢大恒提供补丁）。
+  * 增加 widget\_close\_window
+  * 修改了 lcd 的宽高被修改后脏矩形的宽高不修改导致裁剪去有问题（感谢智明提供补丁）
+  * 增加了把一个资源 data 加载到 awtk 的资源管理器的函数（感谢智明提供补丁）
+  * 完善 window\_base\_on\_event（感谢尧燊提供补丁）
 
 * 2019/12/25
   * 完善 line number（感谢大恒提供补丁）。
   * 感谢瑞安提供以下补丁
     * 打包工具对中文路径的支持
-    * imagegen.exe不用断言判断图片尺寸超出范围而是直接返回错误码，避免程序因断言失败而崩溃。
-    * 为了与加载bin文件时的资源名保持一致，所以路径也将作为资源名的一部分。
-    * 在xml\_to\_ui.exe增加第四个传入参数（资源名），在生成\*.data填入资源名时作为参考。
+    * imagegen.exe 不用断言判断图片尺寸超出范围而是直接返回错误码，避免程序因断言失败而崩溃。
+    * 为了与加载 bin 文件时的资源名保持一致，所以路径也将作为资源名的一部分。
+    * 在 xml\_to\_ui.exe 增加第四个传入参数（资源名），在生成、*.data 填入资源名时作为参考。
 
 * 2019/12/24
-  * 完善SVG（感谢钟伟提供补丁）
+  * 完善 SVG（感谢钟伟提供补丁）
 
 * 2019/12/23
-  * 完善edit（感谢尧燊提供补丁）
+  * 完善 edit（感谢尧燊提供补丁）
 
 * 2019/12/19
-  * 完善emitter\_off\_ex（感谢尧燊提供补丁）
-  * 修复clone的widget没有拷贝到feedback属性（感谢智明提供补丁）
+  * 完善 emitter\_off\_ex（感谢尧燊提供补丁）
+  * 修复 clone 的 widget 没有拷贝到 feedback 属性（感谢智明提供补丁）
   * 完善部分控件的事件处理（感谢大恒提供补丁）。
-  * calibration win支持脚本化。
+  * calibration win 支持脚本化。
 
 * 2019/12/18
-  * 完善窗口管理器支持dialog叠加（感谢尧燊提供补丁）。
-  * utf8中内部函数改为static。
-  * 完善str\_unescape。
-  * 修复了gles在部分系统上面颜色显示不正常的问题（感谢智明提供补丁）
-  * 修复了svg工具生成bsvg的时候对svg的默认颜色取值问题（感谢智明提供补丁）
-  * 完善widget\_set\_tr\_text
-  * 完善color component 事件处理（感谢大恒提供补丁）。
-  * 完善combobox ex的style处理（感谢大恒提供补丁）。
-  * 完善tab button，支持动态加载指定页面（感谢智明提供补丁）
-  * 增加函数window\_create\_default
-  * 完善emitter\_off\_ex（感谢尧燊提供补丁）
+  * 完善窗口管理器支持 dialog 叠加（感谢尧燊提供补丁）。
+  * utf8 中内部函数改为 static。
+  * 完善 str\_unescape。
+  * 修复了 gles 在部分系统上面颜色显示不正常的问题（感谢智明提供补丁）
+  * 修复了 svg 工具生成 bsvg 的时候对 svg 的默认颜色取值问题（感谢智明提供补丁）
+  * 完善 widget\_set\_tr\_text
+  * 完善 color component 事件处理（感谢大恒提供补丁）。
+  * 完善 combobox ex 的 style 处理（感谢大恒提供补丁）。
+  * 完善 tab button，支持动态加载指定页面（感谢智明提供补丁）
+  * 增加函数 window\_create\_default
+  * 完善 emitter\_off\_ex（感谢尧燊提供补丁）
 
 * 2019/12/17
-  * 完善dialog\_confirm/dialog\_info等函数。
-  * 增加widget\_set\_focusable函数。
+  * 完善 dialog\_confirm/dialog\_info 等函数。
+  * 增加 widget\_set\_focusable 函数。
   * 重命名：utf8\_to\_utf16 to tk\_utf8\_to\_utf16 （感谢智明提供补丁）
   * 重命名：utf8\_from\_utf16 to tk\_utf8\_from\_utf16 （感谢智明提供补丁）
 
 * 2019/12/13
-  * 修改窗口切到FOREGROUND把焦点设回去会导致如果当前页面有滚动控件时，页面会滚动的问题（感谢大恒提供补丁）。
-  * 修改widget在point_down少发了个leave事件的问题（感谢大恒提供补丁）。
-  * 完善set tr text （感谢尧燊提供补丁）
+  * 修改窗口切到 FOREGROUND 把焦点设回去会导致如果当前页面有滚动控件时，页面会滚动的问题（感谢大恒提供补丁）。
+  * 修改 widget 在 point_down 少发了个 leave 事件的问题（感谢大恒提供补丁）。
+  * 完善 set tr text （感谢尧燊提供补丁）
 
 * 2019/12/12
   * WIDGET LOAD 事件改在子控件加载完成时触发。
