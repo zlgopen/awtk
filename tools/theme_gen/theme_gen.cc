@@ -122,7 +122,7 @@ uint8_t* Style::Output(uint8_t* buff, uint32_t max_size) {
     const string& name = i->name;
     uint32_t value = i->value;
 
-    return_value_if_fail((end - p) > (name.size() + sizeof(value) + 1), NULL);
+    return_value_if_fail((uint32_t)(end - p) > (name.size() + sizeof(value) + 1), NULL);
 
     nv.type = VALUE_TYPE_UINT32;
     nv.name_size = name.size() + 1;
@@ -143,7 +143,7 @@ uint8_t* Style::Output(uint8_t* buff, uint32_t max_size) {
     const string& name = i->name;
     const string& value = i->value;
 
-    return_value_if_fail((end - p) > (name.size() + value.size() + 2), NULL);
+    return_value_if_fail((uint32_t)(end - p) > (name.size() + value.size() + 2), NULL);
 
     nv.type = VALUE_TYPE_STRING;
     nv.name_size = name.size() + 1;
