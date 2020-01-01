@@ -239,7 +239,7 @@ static ret_t switch_on_paint_background_img(widget_t* widget, canvas_t* c, bitma
   wscale = (float_t)(widget->w) / (float_t)w;
 
 #ifdef WITH_NANOVG_SOFT
-  if (round_radius < 5) {
+  if (round_radius < 5 && hscale == 1 && wscale == 1) {
     int32_t x = (widget->w - w) >> 1;
     int32_t y = (widget->h - ih) >> 1;
     rect_t src = rect_init(xoffset, 0, w, ih);
@@ -278,7 +278,7 @@ static ret_t switch_on_paint_background(widget_t* widget, canvas_t* c) {
       return switch_on_paint_background_img(widget, c, &img);
     }
   } else {
-    int32_t w = tk_roundi(widget->w * 1.5 * (1 - aswitch->max_xoffset_ratio));
+    int32_t w = widget->w;//tk_roundi(widget->w * 1.5 * (1 - aswitch->max_xoffset_ratio));
     rect_t r = rect_init((widget->w - w) / 2.0f, 0, w, widget->h);
     return switch_fill_rect_color(widget, c, &r, TRUE);
   }
