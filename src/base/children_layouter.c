@@ -113,6 +113,14 @@ ret_t children_layouter_destroy(children_layouter_t* layouter) {
   return layouter->vt->destroy(layouter);
 }
 
+children_layouter_t* children_layouter_clone(children_layouter_t* layouter) {
+  if (layouter != NULL && layouter->vt != NULL && layouter->vt->clone != NULL) {
+    return layouter->vt->clone(layouter);
+  }
+
+  return NULL;
+}
+
 #ifdef WITHOUT_LAYOUTER
 children_layouter_t* children_layouter_create(const char* params) {
   return NULL;

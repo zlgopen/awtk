@@ -41,6 +41,7 @@ typedef ret_t (*self_layouter_set_param_t)(self_layouter_t* layouter, const char
 typedef ret_t (*self_layouter_destroy_t)(self_layouter_t* layouter);
 
 typedef self_layouter_t* (*self_layouter_create_t)(void);
+typedef self_layouter_t* (*self_layouter_clone_t)(self_layouter_t* layouter);
 
 typedef struct _self_layouter_vtable_t {
   const char* type;
@@ -48,6 +49,7 @@ typedef struct _self_layouter_vtable_t {
   self_layouter_layout_t layout;
   self_layouter_get_param_t get_param;
   self_layouter_set_param_t set_param;
+  self_layouter_clone_t clone;
   self_layouter_destroy_t destroy;
 } self_layouter_vtable_t;
 
@@ -154,6 +156,16 @@ ret_t self_layouter_destroy(self_layouter_t* layouter);
  * @return {self_layouter_t*} 返回layouter对象。
  */
 self_layouter_t* self_layouter_create(const char* params);
+
+/**
+ * @method self_layouter_clone
+ * 克隆layouter对象。
+ *
+ * @param {const char*} layouter 被克隆的对象。
+ *
+ * @return {self_layouter_t*} 返回layouter对象。
+ */
+self_layouter_t* self_layouter_clone(self_layouter_t* layouter);
 
 END_C_DECLS
 

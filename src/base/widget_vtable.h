@@ -36,6 +36,7 @@ ret_t widget_on_click_default(widget_t* widget, pointer_event_t* e);
 ret_t widget_on_pointer_down_default(widget_t* widget, pointer_event_t* e);
 ret_t widget_on_pointer_move_default(widget_t* widget, pointer_event_t* e);
 ret_t widget_on_pointer_up_default(widget_t* widget, pointer_event_t* e);
+ret_t widget_on_copy_default(widget_t* widget, widget_t* other);
 ret_t widget_get_prop_default(widget_t* widget, const char* name, value_t* v);
 ret_t widget_set_prop_default(widget_t* widget, const char* name, const value_t* v);
 widget_t* widget_find_target_default(widget_t* widget, xy_t x, xy_t y);

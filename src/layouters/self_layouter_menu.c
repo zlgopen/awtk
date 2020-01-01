@@ -350,8 +350,19 @@ static ret_t self_layouter_menu_destroy(self_layouter_t* layouter) {
   return RET_OK;
 }
 
+static self_layouter_t* self_layouter_menu_clone(self_layouter_t* layouter) {
+  self_layouter_menu_t* l = TKMEM_ZALLOC(self_layouter_menu_t);
+
+  memcpy(l, layouter, sizeof(*l));
+  str_init(&(l->layouter.params), 0);
+  str_set(&(l->layouter.params), layouter->params.str);
+
+  return (self_layouter_t*)l;
+}
+
 static const self_layouter_vtable_t s_self_layouter_menu_vtable = {
     .type = "menu",
+    .clone = self_layouter_menu_clone,
     .get_param = self_layouter_menu_get_param,
     .set_param = self_layouter_menu_set_param,
     .layout = self_layouter_menu_layout,

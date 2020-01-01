@@ -385,8 +385,19 @@ static ret_t self_layouter_default_destroy(self_layouter_t* layouter) {
   return RET_OK;
 }
 
+static self_layouter_t* self_layouter_default_clone(self_layouter_t* layouter) {
+  self_layouter_default_t* l = TKMEM_ZALLOC(self_layouter_default_t);
+
+  memcpy(l, layouter, sizeof(*l));
+  str_init(&(l->layouter.params), 0);
+  str_set(&(l->layouter.params), layouter->params.str);
+
+  return (self_layouter_t*)l;
+}
+
 static const self_layouter_vtable_t s_self_layouter_default_vtable = {
     .type = "default",
+    .clone = self_layouter_default_clone,
     .to_string = self_layouter_default_to_string,
     .get_param = self_layouter_default_get_param,
     .set_param = self_layouter_default_set_param,

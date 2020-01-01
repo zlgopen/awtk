@@ -99,6 +99,14 @@ ret_t self_layouter_destroy(self_layouter_t* layouter) {
   return layouter->vt->destroy(layouter);
 }
 
+self_layouter_t* self_layouter_clone(self_layouter_t* layouter) {
+  if (layouter != NULL && layouter->vt != NULL && layouter->vt->clone != NULL) {
+    return layouter->vt->clone(layouter);
+  }
+
+  return NULL;
+}
+
 #ifdef WITHOUT_LAYOUTER
 self_layouter_t* self_layouter_create(const char* params) {
   return NULL;

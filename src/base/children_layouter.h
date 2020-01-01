@@ -41,6 +41,7 @@ typedef bool_t (*children_layouter_is_valid_t)(children_layouter_t* layouter);
 typedef ret_t (*children_layouter_destroy_t)(children_layouter_t* layouter);
 
 typedef children_layouter_t* (*children_layouter_create_t)(void);
+typedef children_layouter_t* (*children_layouter_clone_t)(children_layouter_t* layouter);
 
 typedef struct _children_layouter_vtable_t {
   const char* type;
@@ -49,6 +50,7 @@ typedef struct _children_layouter_vtable_t {
   children_layouter_is_valid_t is_valid;
   children_layouter_get_param_t get_param;
   children_layouter_set_param_t set_param;
+  children_layouter_clone_t clone;
   children_layouter_destroy_t destroy;
 } children_layouter_vtable_t;
 
@@ -175,6 +177,15 @@ ret_t children_layouter_destroy(children_layouter_t* layouter);
  * @return {children_layouter_t*} 返回layouter对象。
  */
 children_layouter_t* children_layouter_create(const char* params);
+
+/**
+ * @method children_layouter_clone
+ * 克隆layouter对象。
+ * @param {children_layouter_t*} layouter 被克隆的对象。
+ *
+ * @return {children_layouter_t*} 返回layouter对象。
+ */
+children_layouter_t* children_layouter_clone(children_layouter_t* layouter);
 
 END_C_DECLS
 
