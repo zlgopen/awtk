@@ -831,7 +831,7 @@ static inline void widget_draw_fill_rounded_rect_ex(canvas_t* c, rect_t* r, rect
   } else {
     radius = widget_get_standard_rounded_rect_radius(bg_r, radius);
   }
-
+  color->rgba.a = color->rgba.a * c->global_alpha / 0xff;
   widget_draw_fill_rounded_rect(c, r, color, radius);
 }
 
@@ -843,6 +843,6 @@ static inline void widget_draw_stroke_rounded_rect_ex(canvas_t* c, rect_t* r, re
   } else {
     radius = widget_get_standard_rounded_rect_radius(bg_r, radius);
   }
-
+  color->rgba.a = color->rgba.a * c->global_alpha / 0xff;
   widget_draw_stroke_rounded_rect(c, r, color, radius, border_width);
 }
