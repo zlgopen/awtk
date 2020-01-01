@@ -81,7 +81,9 @@ bool_t style_is_mutable(style_t* s) {
 #include "tkc/color_parser.h"
 
 static uint32_t to_border(const char* value) {
-  uint32_t border = 0;
+  uint32_t border = tk_atoi(value);
+  if(border != 0) return border;
+  
   if (strstr(value, "left")) {
     border |= BORDER_LEFT;
   }
