@@ -20,6 +20,7 @@
  */
 
 #include "tkc/mem.h"
+#include "tkc/utils.h"
 #include "base/idle.h"
 #include "base/enums.h"
 #include "base/window.h"

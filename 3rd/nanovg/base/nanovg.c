@@ -3202,4 +3202,12 @@ int nvgCreateImageRaw(NVGcontext* ctx, int w, int h, int format, int imageFlags,
 	return ctx->params.renderCreateTexture(ctx->params.userPtr, format, w, h, imageFlags, data);
 }
 
+int nvgFindTextureRaw(NVGcontext* ctx, const void* data)
+{
+	if(ctx->params.findTexture != NULL) {
+		return ctx->params.findTexture(ctx->params.userPtr, data);
+	}
+	return -1;
+}
+
 // vim: ft=c nu noet ts=4

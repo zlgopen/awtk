@@ -32,6 +32,7 @@
 #include <SDL.h>
 
 #include <stdio.h>
+#include "awtk_global.h"
 #include "tkc/time_now.h"
 #include "base/input_method.h"
 

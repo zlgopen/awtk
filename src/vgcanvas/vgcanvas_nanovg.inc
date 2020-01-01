@@ -382,7 +382,7 @@ static ret_t vgcanvas_nanovg_set_line_width(vgcanvas_t* vgcanvas, float_t value)
 
 static ret_t vgcanvas_nanovg_set_global_alpha(vgcanvas_t* vgcanvas, float_t value) {
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
-
+  vgcanvas->global_alpha = value;
   nvgGlobalAlpha(vg, value);
 
   return RET_OK;

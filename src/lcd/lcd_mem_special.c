@@ -164,7 +164,7 @@ static ret_t lcd_mem_special_set_global_alpha(lcd_t* lcd, uint8_t alpha) {
   lcd->global_alpha = alpha;
   mem->global_alpha = alpha;
 
-  return vg->vt->set_global_alpha(vg, alpha / 0xff);
+  return vg->vt->set_global_alpha(vg, alpha / 255.0f);
 }
 
 static lcd_mem_t* lcd_mem_special_create_lcd_mem(wh_t w, wh_t h, bitmap_format_t fmt) {

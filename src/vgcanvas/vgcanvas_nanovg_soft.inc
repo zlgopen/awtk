@@ -96,9 +96,12 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
   uint32_t bpp = bitmap_get_bpp(img);
 
   if (img->flags & BITMAP_FLAG_TEXTURE) {
-    i = tk_pointer_to_int(img->specific);
-
-    return i;
+    if(img->specific != 0) {
+      i = nvgFindTextureRaw(canvas->vg, img->specific);
+      if(i > 0) {
+        return i;
+      }
+    }
   }
 
   switch (img->format) {
@@ -136,13 +139,13 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
 
   i = nvgCreateImageRaw(canvas->vg, img->w, img->h, f, NVG_IMAGE_NEAREST, data);
 
-  if (data != img_data) {
-    TKMEM_FREE(data);
-  }
+  // if (data != img_data) {
+  //   TKMEM_FREE(data);
+  // }
 
   if (i >= 0) {
     img->flags |= BITMAP_FLAG_TEXTURE;
-    img->specific = tk_pointer_from_int(i);
+    img->specific = data;//tk_pointer_from_int(i);
     image_manager_update_specific(image_manager(), img);
   }
   bitmap_unlock_buffer(img);
