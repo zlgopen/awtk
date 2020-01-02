@@ -9769,6 +9769,22 @@
           "type": "self_layouter_t*",
           "desc": "返回layouter对象。"
         }
+      },
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "layouter",
+            "desc": "被克隆的对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "克隆layouter对象。",
+        "name": "self_layouter_clone",
+        "return": {
+          "type": "self_layouter_t*",
+          "desc": "返回layouter对象。"
+        }
       }
     ],
     "events": [],
@@ -23949,6 +23965,22 @@
         "annotation": {},
         "desc": "创建layouter对象。",
         "name": "children_layouter_create",
+        "return": {
+          "type": "children_layouter_t*",
+          "desc": "返回layouter对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "children_layouter_t*",
+            "name": "layouter",
+            "desc": "被克隆的对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "克隆layouter对象。",
+        "name": "children_layouter_clone",
         "return": {
           "type": "children_layouter_t*",
           "desc": "返回layouter对象。"
