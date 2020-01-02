@@ -56,6 +56,7 @@ typedef ret_t (*window_manager_snap_prev_window_t)(widget_t* widget, widget_t* p
                                                    bitmap_t* img, framebuffer_object_t* fbo,
                                                    bool_t auto_rotate);
 typedef dialog_highlighter_t* (*window_manager_get_dialog_highlighter_t)(widget_t* widget);
+typedef ret_t (*window_manager_resize_t)(widget_t* widget, wh_t w, wh_t h);
 
 typedef struct _window_manager_vtable_t {
   window_manager_back_t back;
@@ -77,6 +78,7 @@ typedef struct _window_manager_vtable_t {
   window_manager_snap_curr_window_t snap_curr_window;
   window_manager_snap_prev_window_t snap_prev_window;
   window_manager_get_dialog_highlighter_t get_dialog_highlighter;
+  window_manager_resize_t resize;
 } window_manager_vtable_t;
 
 /**
@@ -339,6 +341,18 @@ ret_t window_manager_back_to(widget_t* widget, const char* target);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t window_manager_dispatch_native_window_event(widget_t* widget, event_t* e, void* handle);
+
+/**
+ * @method window_manager_resize
+ * 调整原生窗口的大小。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 窗口管理器对象。
+ * @param {wh_t}   w 宽度
+ * @param {wh_t}   h 高度
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t window_manager_resize(widget_t* widget, wh_t w, wh_t h);
 
 /*public for animators*/
 ret_t window_manager_snap_curr_window(widget_t* widget, widget_t* curr_win, bitmap_t* img,

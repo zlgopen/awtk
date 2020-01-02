@@ -554,6 +554,7 @@ static window_manager_vtable_t s_window_manager_self_vtable = {
     .close_window_force = window_manager_simple_close_window_force,
     .dispatch_input_event = window_manager_simple_dispatch_input_event,
     .dispatch_native_window_event = window_manager_native_dispatch_native_window_event,
+    .resize = window_manager_simple_resize,
 };
 
 static const widget_vtable_t s_window_manager_vtable = {

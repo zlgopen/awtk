@@ -1231,7 +1231,8 @@ static window_manager_vtable_t s_window_manager_self_vtable = {
     .snap_curr_window = window_manager_default_snap_curr_window,
     .snap_prev_window = window_manager_default_snap_prev_window,
     .get_dialog_highlighter = window_manager_default_get_dialog_highlighter,
-    .set_screen_saver_time = window_manager_default_set_screen_saver_time};
+    .set_screen_saver_time = window_manager_default_set_screen_saver_time,
+    .resize = window_manager_default_resize};
 
 static const widget_vtable_t s_window_manager_vtable = {
     .size = sizeof(window_manager_t),

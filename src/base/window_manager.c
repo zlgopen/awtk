@@ -512,3 +512,14 @@ dialog_highlighter_t* window_manager_get_dialog_highlighter(widget_t* widget) {
 
   return NULL;
 }
+
+ret_t window_manager_resize(widget_t* widget, wh_t w, wh_t h) {
+  window_manager_t* wm = WINDOW_MANAGER(widget);
+  return_value_if_fail(wm != NULL && wm->vt != NULL, RET_BAD_PARAMS);
+
+  if (wm->vt->resize != NULL) {
+    return wm->vt->resize(widget, w, h);
+  }
+
+  return RET_NOT_IMPL;
+}
