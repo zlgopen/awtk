@@ -149,7 +149,7 @@ ret_t combo_box_item_set_checked(widget_t* widget, bool_t checked) {
     widget_t* parent = widget->parent;
 
     WIDGET_FOR_EACH_CHILD_BEGIN(parent, iter, i)
-    if (iter != widget) {
+    if (iter != widget && iter->vt == widget->vt) {
       combo_box_item_set_checked_only(iter, !checked);
     }
     WIDGET_FOR_EACH_CHILD_END();
