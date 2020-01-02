@@ -162,7 +162,7 @@ static inline void widget_image_data2color(unsigned char* d, bitmap_format_t for
       rgb->g = *d++;
       rgb->b = *d++;
       break;
-    case BITMAP_FMT_RGB565:     
+    case BITMAP_FMT_RGB565:
       c_16 = (d[1] << 8) | d[0];
       rgb->b = (c_16 >> 11) << 3;
       rgb->g = ((c_16 >> 5) & 0x3f) << 2;
@@ -728,7 +728,7 @@ static void widget_draw_stroke_rounded_rect(canvas_t* c, rect_t* r, color_t* col
       v_x2 = x + (int32_t)w2 + mid_lenght_h;
       v_y1 = y + (int32_t)h1;
       v_y2 = y + (int32_t)h1 + mid_lenght_v;
-      
+
       canvas_set_stroke_color(c, *color);
 
       size = ANGLE2SIZE(M_FRR_PI_4, radius) + 1;

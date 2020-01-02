@@ -1241,7 +1241,7 @@ TEST(Widget, dirty_rect_tolerance) {
   ASSERT_EQ(widget_set_dirty_rect_tolerance(w, 16), RET_OK);
   ASSERT_EQ(w->dirty_rect_tolerance, 16);
   ASSERT_EQ(w->dirty_rect_tolerance, widget_get_prop_int(w, WIDGET_PROP_DIRTY_RECT_TOLERANCE, 0));
- 
+
   ASSERT_EQ(widget_set_prop_int(w, WIDGET_PROP_DIRTY_RECT_TOLERANCE, 21), RET_OK);
   ASSERT_EQ(w->dirty_rect_tolerance, 21);
   ASSERT_EQ(w->dirty_rect_tolerance, widget_get_prop_int(w, WIDGET_PROP_DIRTY_RECT_TOLERANCE, 0));

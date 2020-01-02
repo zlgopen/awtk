@@ -1332,13 +1332,13 @@ ret_t widget_stroke_border_rect(widget_t* widget, canvas_t* c, rect_t* r) {
     canvas_set_stroke_color(c, bd);
     if (radius > 3) {
       if (border == BORDER_ALL) {
-        if(border_width == 1) {
+        if (border_width == 1) {
           canvas_stroke_rect(c, 0, 0, w, h);
         } else {
           widget_draw_stroke_rounded_rect_ex(c, r, NULL, &bd, radius, border_width);
         }
       } else {
-          assert(!"stroke border radius > 3 not supported !");
+        assert(!"stroke border radius > 3 not supported !");
       }
     } else {
       widget_stroke_border_rect_for_border_type(c, r, bd, border, border_width);

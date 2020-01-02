@@ -352,7 +352,7 @@ typedef enum _image_draw_type_t {
    * 将图片在垂直方向上分成等大小的3块，上下两块按原大小显示在目标矩形的上下，中间一块缩放显示在目标区域中间剩余部分。
    */
   IMAGE_DRAW_PATCH3_Y_SCALE_X,
-  
+
   /**
    * @const IMAGE_DRAW_REPEAT9
    * 平铺9宫格显示。
