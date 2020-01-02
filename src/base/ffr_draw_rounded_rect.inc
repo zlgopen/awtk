@@ -162,18 +162,18 @@ static inline void widget_image_data2color(unsigned char* d, bitmap_format_t for
       rgb->g = *d++;
       rgb->b = *d++;
       break;
-    case BITMAP_FMT_RGB565:
-      c_16 = (d[1] << 8) | d[0];
-      rgb->r = (c_16 >> 11) << 3;
-      rgb->g = ((c_16 >> 5) & 0x3f) << 2;
-      rgb->b = (c_16 & 0x1f) << 3;
-      rgb->a = 0xff;
-      break;
-    case BITMAP_FMT_BGR565:
+    case BITMAP_FMT_RGB565:     
       c_16 = (d[1] << 8) | d[0];
       rgb->b = (c_16 >> 11) << 3;
       rgb->g = ((c_16 >> 5) & 0x3f) << 2;
       rgb->r = (c_16 & 0x1f) << 3;
+      rgb->a = 0xff;
+      break;
+    case BITMAP_FMT_BGR565:
+      c_16 = (d[1] << 8) | d[0];
+      rgb->r = (c_16 >> 11) << 3;
+      rgb->g = ((c_16 >> 5) & 0x3f) << 2;
+      rgb->b = (c_16 & 0x1f) << 3;
       rgb->a = 0xff;
       break;
     case BITMAP_FMT_RGB888:
@@ -728,7 +728,7 @@ static void widget_draw_stroke_rounded_rect(canvas_t* c, rect_t* r, color_t* col
       v_x2 = x + (int32_t)w2 + mid_lenght_h;
       v_y1 = y + (int32_t)h1;
       v_y2 = y + (int32_t)h1 + mid_lenght_v;
-
+      
       canvas_set_stroke_color(c, *color);
 
       size = ANGLE2SIZE(M_FRR_PI_4, radius) + 1;
@@ -745,6 +745,7 @@ static void widget_draw_stroke_rounded_rect(canvas_t* c, rect_t* r, color_t* col
 
       widget_image_info_create(&image_info, (unsigned char*)vg->buff, vg->stride, vg->w, vg->h,
                                vg->format);
+      color->rgba.a = color->rgba.a * c->global_alpha / 0xff;
 
       widget_draw_arc_point_list(&image_info, c, v_x2, v_y1, x2, y1, angle_h, angle_v, radius, 0,
                                  color, &tmp_point_list_45, &point_list_45, FALSE);  // 右上角
@@ -829,8 +830,12 @@ static inline void widget_draw_fill_rounded_rect_ex(canvas_t* c, rect_t* r, rect
   if (bg_r == NULL) {
     radius = widget_get_standard_rounded_rect_radius(r, radius);
   } else {
-    radius = widget_get_standard_rounded_rect_radius(bg_r, radius);
+    radius = widget_get_standard_rounded_rect_radius(bg_r, radius - 1);
   }
+  if (radius <= 3) {
+    assert(!"draw fill rounded rect radius > 3 ");
+  }
+
   color->rgba.a = color->rgba.a * c->global_alpha / 0xff;
   widget_draw_fill_rounded_rect(c, r, color, radius);
 }
@@ -841,8 +846,10 @@ static inline void widget_draw_stroke_rounded_rect_ex(canvas_t* c, rect_t* r, re
   if (bg_r == NULL) {
     radius = widget_get_standard_rounded_rect_radius(r, radius);
   } else {
-    radius = widget_get_standard_rounded_rect_radius(bg_r, radius);
+    radius = widget_get_standard_rounded_rect_radius(bg_r, radius - 1);
   }
-  color->rgba.a = color->rgba.a * c->global_alpha / 0xff;
+  if (radius <= 3) {
+    assert(!"draw fill rounded rect radius > 3 ");
+  }
   widget_draw_stroke_rounded_rect(c, r, color, radius, border_width);
 }

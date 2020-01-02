@@ -1330,18 +1330,18 @@ ret_t widget_stroke_border_rect(widget_t* widget, canvas_t* c, rect_t* r) {
     wh_t h = r->h;
 
     canvas_set_stroke_color(c, bd);
-    if (border == BORDER_ALL) {
-      if (radius > 3 || border_width > 1) {
-        widget_draw_stroke_rounded_rect_ex(c, r, NULL, &bd, radius, border_width);
-      } else if (border_width == 1) {
-        canvas_stroke_rect(c, 0, 0, w, h);
+    if (radius > 3) {
+      if (border == BORDER_ALL) {
+        if(border_width == 1) {
+          canvas_stroke_rect(c, 0, 0, w, h);
+        } else {
+          widget_draw_stroke_rounded_rect_ex(c, r, NULL, &bd, radius, border_width);
+        }
+      } else {
+          assert(!"stroke border radius > 3 not supported !");
       }
     } else {
-      if (radius <= 3) {
-        widget_stroke_border_rect_for_border_type(c, r, bd, border, border_width);
-      } else {
-        assert(!"stroke border radius > 3 not supported !");
-      }
+      widget_stroke_border_rect_for_border_type(c, r, bd, border, border_width);
     }
   }
 
