@@ -4,7 +4,7 @@ AWTK 的可移植性很高，在移植时只需要实现平台初始化、lcd �
 
 ### 一、平台初始化
 
-除了基本的 libc 函数外，AWTK 对平台没有特别要求，只需要 get\_time\_ms64 和 sleep\_ms 两个函数以及一块内存。
+除了基本的libc函数外，AWTK对平台没有特别要求，实现获取当前时间的函数get\_time\_ms64和sleep_ms函数即可。另外需要给GUI分配一块内存空间，并调用tk\_mem\_init。
 
 我们使用 systick 来实现 get\_time\_ms64 和 sleep\_ms 两个函数，裸系统上只需加入 src/platforms/raw/sys\_tick.c 并初始化 sys\_tick 即可。
 

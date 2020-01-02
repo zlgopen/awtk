@@ -4,7 +4,7 @@ AWTK的可移植性很高，在移植时只需要实现平台初始化、lcd和m
 
 ### 一、平台初始化
 
-除了基本的libc函数外，AWTK对平台没有特别要求，在stm32f429igtx上没有函数gettimeofday，所以要实现一个获取当前时间的函数get\_time\_ms。另外需要给GUI分配一块内存空间，并调用tk\_mem\_init。
+除了基本的libc函数外，AWTK对平台没有特别要求，实现获取当前时间的函数get\_time\_ms64和sleep_ms函数即可。另外需要给GUI分配一块内存空间，并调用tk\_mem\_init。
 
 ```
 uint32_t get_time_ms64() {
