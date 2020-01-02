@@ -4,6 +4,7 @@
   * 修改 kb_default.xml 解决中文状态下无法输入空格。
   * 支持软键盘选择候选字。
   * 主题增加参数 dirty\_rect\_tolerance。表示脏矩形超出控件本身大小的最大范围。缺省为 4，一般不用指定。如果 border 太粗或 offset 太大等原因，导致脏矩形超出控件本身大小太多（大于缺省值）时，才需要指定。
+  * tab\_button 和 combo\_box\_item 增加类型检查（感谢钟伟提供补丁）。
 
 * 2020/01/01
   * 优化 widget\_clone
