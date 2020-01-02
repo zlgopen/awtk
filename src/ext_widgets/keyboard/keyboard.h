@@ -61,10 +61,30 @@ BEGIN_C_DECLS
  *| tab            | tab键           |
  *| space          | 空格键          |
  *| close          | 关闭软键盘      |
- *| 前缀key:       | 键值            |
- *| 前缀page:      | 切换到页面      |
+ *| 前缀key:        | 键值           |
+ *| 前缀hard_key:   | 模拟物理键盘    |
+ *| 前缀page:       | 切换到页面      |
  *
- *
+ * 示例：
+ * 
+ * * 按键"a"，提交输入法处理。
+ * 
+ * ```xml
+ * <button repeat="300" name="key:a" text="a"/>
+ * ```
+ * 
+ * * 字符"a"，直接提交到编辑器。
+ * 
+ * ```xml
+ * <button repeat="300" name="a" text="a"/>
+ * ```
+ * 
+ * * 模拟物理键盘数字"1"，触发key down/up事件（可以用来选择候选字）。
+ * 
+ * ```xml
+ * <button repeat="300" name="hard_key:1" text="1"/>
+ * ```
+ * 
  * > 更多用法请参考：
  * [kb_default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/kb_default.xml)
  *

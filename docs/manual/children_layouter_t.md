@@ -9,6 +9,7 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#children_layouter_t_children_layouter_clone">children\_layouter\_clone</a> | 克隆layouter对象。 |
 | <a href="#children_layouter_t_children_layouter_create">children\_layouter\_create</a> | 创建layouter对象。 |
 | <a href="#children_layouter_t_children_layouter_destroy">children\_layouter\_destroy</a> | 销毁layouter对象。 |
 | <a href="#children_layouter_t_children_layouter_get_param">children\_layouter\_get\_param</a> | 获取指定的参数。 |
@@ -19,6 +20,25 @@
 | <a href="#children_layouter_t_children_layouter_set_param">children\_layouter\_set\_param</a> | 获取指定的参数。 |
 | <a href="#children_layouter_t_children_layouter_set_param_str">children\_layouter\_set\_param\_str</a> | 设置字符串格式的参数。 |
 | <a href="#children_layouter_t_children_layouter_to_string">children\_layouter\_to\_string</a> | 获取全部参数。 |
+#### children\_layouter\_clone 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="children_layouter_t_children_layouter_clone">克隆layouter对象。
+
+* 函数原型：
+
+```
+children_layouter_t* children_layouter_clone (children_layouter_t* layouter);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | children\_layouter\_t* | 返回layouter对象。 |
+| layouter | children\_layouter\_t* | 被克隆的对象。 |
 #### children\_layouter\_create 函数
 -----------------------
 

@@ -114,6 +114,7 @@ static ret_t keyboard_set_active_page(widget_t* button, const char* name) {
 #define STR_KEY_SPACE "space"
 #define STR_KEY_PREFIX "key:"
 #define STR_PAGE_PREFIX "page:"
+#define STR_HARD_KEY_PREFIX "hard_key:"
 #define STR_KEY_TAB "tab"
 #define STR_KEY_BACKSPACE "backspace"
 
@@ -122,6 +123,7 @@ static ret_t keyboard_on_button_click(void* ctx, event_t* e) {
   widget_t* button = WIDGET(e->target);
   const char* name = button->name;
   const char* key = strstr(name, STR_KEY_PREFIX);
+  const char* hard_key = strstr(name, STR_HARD_KEY_PREFIX);
   const char* page_name = strstr(name, STR_PAGE_PREFIX);
 
   if (tk_str_eq(name, STR_CLOSE)) {
@@ -132,6 +134,17 @@ static ret_t keyboard_on_button_click(void* ctx, event_t* e) {
 
   if (page_name != NULL) {
     return keyboard_set_active_page(button, page_name + strlen(STR_PAGE_PREFIX));
+  } else if (hard_key != NULL) {
+    const key_type_value_t* kv = NULL;
+    key_event_t key_event;
+    hard_key += strlen(STR_HARD_KEY_PREFIX);
+    kv = keys_type_find(hard_key);
+    return_value_if_fail(kv != NULL, RET_BAD_PARAMS);
+
+    widget_dispatch(window_manager(), key_event_init(&key_event, EVT_KEY_DOWN, NULL, kv->value));
+    widget_dispatch(window_manager(), key_event_init(&key_event, EVT_KEY_UP, NULL, kv->value));
+
+    return RET_OK;
   } else if (key != NULL) {
     const key_type_value_t* kv = NULL;
 
