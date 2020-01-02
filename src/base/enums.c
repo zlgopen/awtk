@@ -77,7 +77,10 @@ static const key_type_value_t image_draw_type_name_value[] = {
     {"patch3_x", 0, IMAGE_DRAW_PATCH3_X},
     {"patch3_y", 0, IMAGE_DRAW_PATCH3_Y},
     {"patch3_x_scale_y", 0, IMAGE_DRAW_PATCH3_X_SCALE_Y},
-    {"patch3_y_scale_x", 0, IMAGE_DRAW_PATCH3_Y_SCALE_X}};
+    {"patch3_y_scale_x", 0, IMAGE_DRAW_PATCH3_Y_SCALE_X},
+    {"repeat9", 0, IMAGE_DRAW_REPEAT9},
+    {"repeat3_x", 0, IMAGE_DRAW_REPEAT3_X},
+    {"repeat3_y", 0, IMAGE_DRAW_REPEAT3_Y}};
 
 static const key_type_value_t easing_type_name_value[] = {
     {"linear", 0, EASING_LINEAR},

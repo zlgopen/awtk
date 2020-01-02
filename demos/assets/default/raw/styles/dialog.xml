@@ -1,4 +1,4 @@
-<button bg_image_draw_type="patch3_x" text_color="blue">
+<button bg_image_draw_type="repeat3_x" text_color="blue">
   <style name="green_btn" >
     <normal   bg_image="green_btn_n" />
     <pressed  bg_image="green_btn_p" />
@@ -20,7 +20,7 @@
 
 <dialog_title icon="info" text_color="black">
   <style name="custom">
-    <normal bg_image="dialog_title"  bg_image_draw_type="patch3_x"/>
+    <normal bg_image="dialog_title"  bg_image_draw_type="repeat3_x"/>
   </style>
 </dialog_title>
 

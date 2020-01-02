@@ -209,7 +209,7 @@
   </style>
 
   <style name="img_v"  bg_image="slider_v_bg" fg_image="slider_v_fg" text_color="black" 
-    bg_image_draw_type="patch3_y" fg_image_draw_type="patch3_y">
+    bg_image_draw_type="repeat3_y" fg_image_draw_type="repeat3_y">
     <normal/>
   </style>
 </progress_bar>
@@ -234,7 +234,7 @@
     <over icon="slider_drag_o"/>
   </style>
 
-  <style name="img_v"  bg_image="slider_v_bg" fg_image="slider_v_fg" bg_image_draw_type="patch3_y" fg_image_draw_type="patch3_y">
+  <style name="img_v"  bg_image="slider_v_bg" fg_image="slider_v_fg" bg_image_draw_type="repeat3_y" fg_image_draw_type="repeat3_y">
     <normal icon="slider_drag"/>
     <pressed icon="slider_drag_p"/>
     <over icon="slider_drag_o"/>

@@ -12,7 +12,7 @@
     <over       bg_color="#e0e0e0" />
     <disable    bg_color="gray" text_color="#d0d0d0" />
   </style>
-  <style name="red_btn" bg_image_draw_type="patch3_x" text_color="blue">
+  <style name="red_btn" bg_image_draw_type="repeat3_x" text_color="blue">
     <normal   bg_image="red_btn_n" />
     <pressed  bg_image="red_btn_p" x_offset="3" y_offset="3"/>
     <over     bg_image="red_btn_o" />

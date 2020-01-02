@@ -29,6 +29,11 @@
       <image style="border" image="green_btn_n" draw_type="patch3_x"><label w="100%" h="100%" text="patch3_x" /></image>
       <image style="border" image="green_btn_n" draw_type="patch3_y"><label w="100%" h="100%" text="patch3_y" /></image>
      </list_item>
+     <list_item style="empty" children_layout="default(r=1,c=3,s=2,m=2)">
+      <image style="border" image="green_btn_n" draw_type="repeat9"><label w="100%" h="100%" text="repeat9" /></image>
+      <image style="border" image="green_btn_n" draw_type="repeat3_x"><label w="100%" h="100%" text="repeat3_x" /></image>
+      <image style="border" image="green_btn_n" draw_type="repeat3_y"><label w="100%" h="100%" text="repeat3_y" /></image>
+     </list_item>
      <list_item style="empty" children_layout="default(r=1,c=1)">
       <image style="border" image="green_btn_n" draw_type="patch3_x_scale_y"><label w="100%" h="100%" text="patch3_x_scale_y" /></image>
      </list_item>
