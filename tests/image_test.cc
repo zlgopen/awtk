@@ -99,7 +99,7 @@ TEST(Image, clone) {
 
   ASSERT_EQ(image_set_draw_type(w1, IMAGE_DRAW_REPEAT_X), RET_OK);
   ASSERT_EQ(widget_set_prop_str(w1, WIDGET_PROP_IMAGE, "earth"), RET_OK);
-  
+
   str_init(&str, 0);
   w2 = widget_clone(w1, NULL);
   log_debug("==================================\n");
@@ -112,7 +112,7 @@ TEST(Image, clone) {
   log_debug("==================================\n");
 
   ASSERT_EQ(widget_equal(w1, w2), TRUE);
-  
+
   widget_destroy(w1);
   widget_destroy(w2);
   str_reset(&str);

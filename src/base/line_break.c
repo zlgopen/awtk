@@ -50,9 +50,7 @@ break_type_t line_break_check(wchar_t c1, wchar_t c2) {
     case LINEBREAK_NOBREAK: {
       return LINE_BREAK_NO;
     }
-    default: {
-      return LINE_BREAK_ALLOW;
-    }
+    default: { return LINE_BREAK_ALLOW; }
   }
 }
 

@@ -128,7 +128,7 @@ ret_t tab_button_set_value(widget_t* widget, bool_t value) {
     widget_t* parent = widget->parent;
 
     WIDGET_FOR_EACH_CHILD_BEGIN(parent, iter, i)
-    if(iter->vt == widget->vt){
+    if (iter->vt == widget->vt) {
       if (iter != widget) {
         tab_button_set_value_only(iter, !value);
       } else {

@@ -48,8 +48,8 @@ ret_t widget_invalidate_default(widget_t* widget, rect_t* r) {
   r->y += widget->y;
 
   if (widget->astyle != NULL) {
-    int32_t tolorance  = style_get_int(widget->astyle, STYLE_ID_DIRTY_RECT_TOLERANCE, 4);
-    
+    int32_t tolorance = style_get_int(widget->astyle, STYLE_ID_DIRTY_RECT_TOLERANCE, 4);
+
     r->x -= tolorance;
     r->y -= tolorance;
     r->w += 2 * tolorance + 1;

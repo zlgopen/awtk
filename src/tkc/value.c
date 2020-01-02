@@ -37,9 +37,7 @@ bool_t value_bool(const value_t* v) {
     case VALUE_TYPE_WSTRING: {
       return tk_watob(v->value.wstr);
     }
-    default: {
-      return value_int(v) ? TRUE : FALSE;
-    }
+    default: { return value_int(v) ? TRUE : FALSE; }
   }
 }
 
@@ -463,9 +461,7 @@ int value_int(const value_t* v) {
     case VALUE_TYPE_WSTRING: {
       return tk_watoi(v->value.wstr);
     }
-    default: {
-      assert(!"not supported type");
-    }
+    default: { assert(!"not supported type"); }
   }
 
   return 0;
