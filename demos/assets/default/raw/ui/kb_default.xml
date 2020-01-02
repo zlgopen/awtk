@@ -207,7 +207,7 @@
       <group_box children_layout="default(r=1,c=0,s=2,m=2)">
         <button name="page:symnum" style="highlight" w="15%" text="123"/>
         <button name="page:lower" style="highlight" w="10%"><image draw_type="icon" image="en" x="center" y="middle" w="100%" h="100%"/></button>
-        <button repeat="300" name="key:space" w="55%" text="Space"/>
+        <button repeat="300" name="space" w="55%" text="Space"/>
         <button name="action" style="highlight" w="20%" text="Return"/>
       </group_box>
     </view>
