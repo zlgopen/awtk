@@ -201,6 +201,12 @@ BEGIN_C_DECLS
 #define STYLE_ID_Y_OFFSET "y_offset"
 
 /**
+ * @const STYLE_ID_DIRTY_RECT_TOLERANCE
+ * 脏矩形超出控件本身大小的最大范围。
+ */
+#define STYLE_ID_DIRTY_RECT_TOLERANCE "dirty_rect_tolerance"
+
+/**
  * @const STYLE_ID_SELECTED_BG_COLOR
  * 编辑器中选中区域的背景颜色。
  */

@@ -48,29 +48,12 @@ ret_t widget_invalidate_default(widget_t* widget, rect_t* r) {
   r->y += widget->y;
 
   if (widget->astyle != NULL) {
-    int32_t ox = tk_abs(style_get_int(widget->astyle, STYLE_ID_X_OFFSET, 0));
-    int32_t oy = tk_abs(style_get_int(widget->astyle, STYLE_ID_Y_OFFSET, 0));
-    int32_t br = tk_abs(style_get_int(widget->astyle, STYLE_ID_ROUND_RADIUS, 0));
-    int32_t bw = tk_abs(style_get_int(widget->astyle, STYLE_ID_BORDER_WIDTH, 1)) >> 1;
-
-    if (br > 0) {
-      ox++;
-      oy++;
-    }
-
-    if (bw > 0) {
-      ox += bw;
-      oy += bw;
-    }
-
-    if (ox > 0) {
-      r->x -= ox;
-      r->w += ox + ox + 1;
-    }
-    if (oy > 0) {
-      r->y -= oy;
-      r->h += oy + oy + 1;
-    }
+    int32_t tolorance  = style_get_int(widget->astyle, STYLE_ID_DIRTY_RECT_TOLERANCE, 4);
+    
+    r->x -= tolorance;
+    r->y -= tolorance;
+    r->w += 2 * tolorance + 1;
+    r->h += 2 * tolorance + 1;
   }
 
   if (widget->parent) {
