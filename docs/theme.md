@@ -73,7 +73,6 @@ AWTK 的主题按控件进行分类，每种控件可以有多种不同的风格
 * border\_width 边框线宽（仅在定义 WITH\_VGCANVAS 时有效）。
 * self\_layout 自身布局参数。请参考 [控件布局参数文档](layout.md)
 * children\_layout 子控件布局参数。请参考 [控件布局参数文档](layout.md)
-* dirty\_rect\_tolerance 脏矩形超出控件本身大小的最大范围。缺省为4，一般不用指定。如果border太粗或offset太大等原因，导致脏矩形超出控件本身大小太多(大于缺省值)时，才需要指定。
 
 > 颜色可使用标准名称，#开头的 16 进制值和 rgba 合成的值。
 

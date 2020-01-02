@@ -66,6 +66,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_H "h"
 
 /**
+ * @const WIDGET_PROP_DIRTY_RECT_TOLERANCE
+ * 脏矩形超出控件本身大小的最大范围。
+ */
+#define WIDGET_PROP_DIRTY_RECT_TOLERANCE "dirty_rect_tolerance"
+
+/**
  * @const WIDGET_PROP_CANVAS
  * Canvas。
  */

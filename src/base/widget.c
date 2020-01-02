@@ -719,6 +719,15 @@ ret_t widget_set_opacity(widget_t* widget, uint8_t opacity) {
   return RET_OK;
 }
 
+ret_t widget_set_dirty_rect_tolerance(widget_t* widget, uint16_t dirty_rect_tolerance) {
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  widget->dirty_rect_tolerance = dirty_rect_tolerance;
+  widget_invalidate(widget, NULL);
+
+  return RET_OK;
+}
+
 ret_t widget_destroy_children(widget_t* widget) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
@@ -1532,6 +1541,8 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
     widget->focusable = value_bool(v);
   } else if (tk_str_eq(name, WIDGET_PROP_WITH_FOCUS_STATE)) {
     widget->with_focus_state = value_bool(v);
+  } else if (tk_str_eq(name, WIDGET_PROP_DIRTY_RECT_TOLERANCE)) {
+    widget->dirty_rect_tolerance = value_int(v);
   } else if (tk_str_eq(name, WIDGET_PROP_STYLE)) {
     const char* name = value_str(v);
     return widget_use_style(widget, name);
@@ -1627,6 +1638,8 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
     value_set_bool(v, widget->focused);
   } else if (tk_str_eq(name, WIDGET_PROP_WITH_FOCUS_STATE)) {
     value_set_bool(v, widget->with_focus_state);
+  } else if (tk_str_eq(name, WIDGET_PROP_DIRTY_RECT_TOLERANCE)) {
+    value_set_int(v, widget->dirty_rect_tolerance);
   } else if (tk_str_eq(name, WIDGET_PROP_STYLE)) {
     value_set_str(v, widget->style);
   } else if (tk_str_eq(name, WIDGET_PROP_ENABLE)) {
@@ -2753,6 +2766,7 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t*
   widget->focused = FALSE;
   widget->focusable = FALSE;
   widget->with_focus_state = FALSE;
+  widget->dirty_rect_tolerance = 4;
   widget->need_relayout_children = TRUE;
   widget->need_update_style = TRUE;
 
@@ -2806,6 +2820,8 @@ ret_t widget_get_prop_default_value(widget_t* widget, const char* name, value_t*
     value_set_bool(v, FALSE);
   } else if (tk_str_eq(name, WIDGET_PROP_WITH_FOCUS_STATE)) {
     value_set_bool(v, FALSE);
+  } else if (tk_str_eq(name, WIDGET_PROP_DIRTY_RECT_TOLERANCE)) {
+    value_set_int(v, 4);
   } else if (tk_str_eq(name, WIDGET_PROP_STYLE)) {
     value_set_str(v, NULL);
   } else if (tk_str_eq(name, WIDGET_PROP_ENABLE)) {
@@ -2986,6 +3002,7 @@ static ret_t widget_copy_base_props(widget_t* widget, widget_t* other) {
   widget->sensitive = other->sensitive;
   widget->auto_created = other->auto_created;
   widget->with_focus_state = other->with_focus_state;
+  widget->dirty_rect_tolerance = other->dirty_rect_tolerance;
 
   if (other->animation != NULL && *(other->animation)) {
     widget_set_animation(widget, other->animation);

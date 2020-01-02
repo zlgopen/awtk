@@ -370,6 +370,7 @@ struct _widget_t {
    * 引用计数，计数为0时销毁。
    */
   int32_t ref_count;
+
   /**
    * @property {bool_t} initializing
    * @annotation ["readable"]
@@ -400,6 +401,15 @@ struct _widget_t {
    * 不透明度(0-255)，0完全透明，255完全不透明。
    */
   uint8_t opacity;
+  /**
+   * @property {uint16_t} dirty_rect_tolerance 
+   * @annotation ["readable"]
+   * 脏矩形超出控件本身大小的最大范围(一般不用指定)。
+   *
+   *> 如果 border 太粗或 offset 太大等原因，导致脏矩形超出控件本身大小太多（大于缺省值）时，才需要指定。
+   */
+  uint16_t dirty_rect_tolerance;
+
   /**
    * @property {wstr_t} text
    * @annotation ["readable"]
@@ -1050,6 +1060,18 @@ ret_t widget_set_state(widget_t* widget, const char* state);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_set_opacity(widget_t* widget, uint8_t opacity);
+
+/**
+ * @method widget_set_dirty_rect_tolerance
+ * 设置控件脏矩形超出控件本身大小的最大范围(一般不用指定)。
+ *
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {uint16_t} dirty_rect_tolerance 控件脏脏矩形超出控件本身大小的最大范。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_dirty_rect_tolerance(widget_t* widget, uint16_t dirty_rect_tolerance);
 
 /**
  * @method widget_destroy_children
