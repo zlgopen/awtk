@@ -7,6 +7,7 @@
   * 完善 guage pointer（感谢尧燊提供补丁）
   * 增加 widget\_take\_snapshot 目前仅在非 OpenGL 下有效。
   * 完善 popup 窗口动画（感谢智明提供补丁）
+  * 完善修改 locale 的处理。
 
 * 2020/01/02
   * 修改 kb_default.xml 解决中文状态下无法输入空格。

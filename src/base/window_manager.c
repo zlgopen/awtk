@@ -391,7 +391,15 @@ bool_t window_manager_is_animating(widget_t* widget) {
 
 static ret_t wm_on_locale_changed(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
+  font_manager_t* fm = widget_get_font_manager(widget);
+  image_manager_t* imm = widget_get_image_manager(widget);
+
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(fm != NULL && imm != NULL, RET_BAD_PARAMS);
+
+  font_manager_unload_all(fm);
+  image_manager_unload_all(imm);
+  widget_reset_canvas(widget_get_child(widget, 0));
 
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
   widget_re_translate_text(iter);
