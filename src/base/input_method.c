@@ -173,6 +173,8 @@ ret_t input_method_destroy(input_method_t* im) {
 event_t* im_commit_event_init(im_commit_event_t* e, const char* text, bool_t replace) {
   return_value_if_fail(e != NULL && text != NULL, NULL);
 
+  memset(e, 0x00, sizeof(*e));
+
   e->text = text;
   e->e.target = NULL;
   e->replace = replace;
