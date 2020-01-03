@@ -68,106 +68,22 @@ TEST(GuagePointer, set_anchor) {
   EXPECT_FALSE(guage_pointer_set_anchor_for_str(NULL, "100px", TRUE) == RET_OK);
 
   EXPECT_TRUE(guage_pointer_set_anchor_for_str(guage_pointer, "100px", TRUE) == RET_OK);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_x == 100);
+  EXPECT_TRUE(tk_atoi(guage_pointer_tmp->anchor_x) == 100);
 
   EXPECT_TRUE(guage_pointer_set_anchor_for_str(guage_pointer, "100PX", TRUE) == RET_OK);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_x == 100);
+  EXPECT_TRUE(tk_atoi(guage_pointer_tmp->anchor_x) == 100);
 
-  EXPECT_FALSE(guage_pointer_set_anchor_for_str(guage_pointer, "300px", TRUE) == RET_OK);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_x == 100);
-
-  EXPECT_FALSE(guage_pointer_set_anchor_for_str(guage_pointer, "-300px", TRUE) == RET_OK);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_x == 100);
-
-  EXPECT_TRUE(guage_pointer_set_anchor_for_str(guage_pointer, "0.4", TRUE) == RET_OK);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_x == guage_pointer->w * 0.4f);
-
-  EXPECT_FALSE(guage_pointer_set_anchor_for_str(guage_pointer, "-0.4", TRUE) == RET_OK);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_x == guage_pointer->w * 0.4f);
-
-  EXPECT_FALSE(guage_pointer_set_anchor_for_str(guage_pointer, "1.4", TRUE) == RET_OK);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_x == guage_pointer->w * 0.4f);
+  EXPECT_TRUE(guage_pointer_set_anchor_for_str(guage_pointer, "300px", TRUE) == RET_OK);
+  EXPECT_TRUE(tk_atoi(guage_pointer_tmp->anchor_x) == 300);
 
   EXPECT_TRUE(guage_pointer_set_anchor_for_str(guage_pointer, "100px", FALSE) == RET_OK);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_y == 100);
+  EXPECT_TRUE(tk_atoi(guage_pointer_tmp->anchor_y) == 100);
 
   EXPECT_TRUE(guage_pointer_set_anchor_for_str(guage_pointer, "100PX", FALSE) == RET_OK);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_y == 100);
+  EXPECT_TRUE(tk_atoi(guage_pointer_tmp->anchor_y) == 100);
 
-  EXPECT_FALSE(guage_pointer_set_anchor_for_str(guage_pointer, "300px", FALSE) == RET_OK);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_y == 100);
-
-  EXPECT_FALSE(guage_pointer_set_anchor_for_str(guage_pointer, "-300px", FALSE) == RET_OK);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_y == 100);
-
-  EXPECT_TRUE(guage_pointer_set_anchor_for_str(guage_pointer, "0.4", FALSE) == RET_OK);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_y == guage_pointer->h * 0.4f);
-
-  EXPECT_FALSE(guage_pointer_set_anchor_for_str(guage_pointer, "-0.4", FALSE) == RET_OK);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_y == guage_pointer->w * 0.4f);
-
-  EXPECT_FALSE(guage_pointer_set_anchor_for_str(guage_pointer, "1.4", FALSE) == RET_OK);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_y == guage_pointer->w * 0.4f);
-
-  EXPECT_TRUE(guage_pointer_set_anchor(guage_pointer, "120px", "0.3") == RET_OK);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_x == 120);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_y == guage_pointer->h * 0.3f);
-
-  EXPECT_TRUE(guage_pointer_set_anchor(guage_pointer, "130PX", "0.2") == RET_OK);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_x == 130);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_y == guage_pointer->h * 0.2f);
-
-  EXPECT_TRUE(guage_pointer_set_anchor(guage_pointer, "0.2", "0.1") == RET_OK);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_x == guage_pointer->w * 0.2f);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_y == guage_pointer->h * 0.1f);
-
-  EXPECT_TRUE(guage_pointer_set_anchor(guage_pointer, "0.3", "120px") == RET_OK);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_x == guage_pointer->w * 0.3f);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_y == 120);
-
-  EXPECT_TRUE(guage_pointer_set_anchor(guage_pointer, "0.4", "130PX") == RET_OK);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_x == guage_pointer->w * 0.4f);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_y == 130);
-
-  EXPECT_FALSE(guage_pointer_set_anchor(guage_pointer, NULL, "120PX") == RET_OK);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_x == guage_pointer->w * 0.4f);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_y == 130);
-
-  EXPECT_FALSE(guage_pointer_set_anchor(guage_pointer, NULL, NULL) == RET_OK);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_x == guage_pointer->w * 0.4f);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_y == 130);
-
-  EXPECT_FALSE(guage_pointer_set_anchor(guage_pointer, "-1", "120PX") == RET_OK);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_x == guage_pointer->w * 0.4f);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_y == 130);
-
-  EXPECT_FALSE(guage_pointer_set_anchor(guage_pointer, "2", "120PX") == RET_OK);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_x == guage_pointer->w * 0.4f);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_y == 130);
-
-  EXPECT_FALSE(guage_pointer_set_anchor(guage_pointer, "-120px", "120PX") == RET_OK);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_x == guage_pointer->w * 0.4f);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_y == 130);
-
-  EXPECT_FALSE(guage_pointer_set_anchor(guage_pointer, "400px", "120PX") == RET_OK);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_x == guage_pointer->w * 0.4f);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_y == 130);
-
-  EXPECT_FALSE(guage_pointer_set_anchor(guage_pointer, "120px", "-1") == RET_OK);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_x == guage_pointer->w * 0.4f);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_y == 130);
-
-  EXPECT_FALSE(guage_pointer_set_anchor(guage_pointer, "120px", "2") == RET_OK);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_x == guage_pointer->w * 0.4f);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_y == 130);
-
-  EXPECT_FALSE(guage_pointer_set_anchor(guage_pointer, "120px", "-120PX") == RET_OK);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_x == guage_pointer->w * 0.4f);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_y == 130);
-
-  EXPECT_FALSE(guage_pointer_set_anchor(guage_pointer, "120px", "300PX") == RET_OK);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_x == guage_pointer->w * 0.4f);
-  EXPECT_TRUE(guage_pointer_tmp->anchor_y == 130);
+  EXPECT_TRUE(guage_pointer_set_anchor_for_str(guage_pointer, "300px", FALSE) == RET_OK);
+  EXPECT_TRUE(tk_atoi(guage_pointer_tmp->anchor_y) == 300);
 
   widget_destroy(w);
 }
