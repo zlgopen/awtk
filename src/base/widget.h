@@ -403,7 +403,7 @@ struct _widget_t {
   uint8_t opacity;
   /**
    * @property {uint16_t} dirty_rect_tolerance 
-   * @annotation ["readable"]
+   * @annotation ["readable","design","scriptable"]
    * 脏矩形超出控件本身大小的最大范围(一般不用指定)。
    *
    *> 如果 border 太粗或 offset 太大等原因，导致脏矩形超出控件本身大小太多（大于缺省值）时，才需要指定。
