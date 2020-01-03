@@ -35,6 +35,7 @@ static ret_t clip_view_on_paint_children(widget_t* widget, canvas_t* c) {
   r_vg_save = rect_init(vg->clip_rect.x, vg->clip_rect.y, vg->clip_rect.w, vg->clip_rect.h);
 
   r = rect_init(c->ox, c->oy, widget->w, widget->h);
+  r = rect_intersect(&r, &r_save);
   canvas_set_clip_rect(c, &r);
   vgcanvas_clip_rect(vg, r.x, r.y, r.w, r.h);
 
