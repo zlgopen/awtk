@@ -383,7 +383,7 @@ bool_t window_manager_is_animating(widget_t* widget) {
 
   ret = wm->vt->is_animating(widget, &playing);
 
-  if(ret == RET_OK) {
+  if (ret == RET_OK) {
     return playing;
   }
   return FALSE;

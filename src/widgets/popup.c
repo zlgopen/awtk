@@ -71,9 +71,9 @@ static ret_t popup_idle_check_if_need_set_background_state(const idle_info_t* id
   widget_t* win = widget->parent;
   event_t e = event_init(EVT_WINDOW_TO_BACKGROUND, widget);
 
-  if(win != NULL) {
+  if (win != NULL) {
     WIDGET_FOR_EACH_CHILD_BEGIN_R(win, iter, i)
-    if(iter == widget) {
+    if (iter == widget) {
       break;
     }
     x = tk_min(x, iter->x);
@@ -83,12 +83,13 @@ static ret_t popup_idle_check_if_need_set_background_state(const idle_info_t* id
 
     WIDGET_FOR_EACH_CHILD_END();
 
-    if(x < widget->x && y < widget->y && right > (widget->x + widget->w) && bottom > (widget->y + widget->h)) {
+    if (x < widget->x && y < widget->y && right > (widget->x + widget->w) &&
+        bottom > (widget->y + widget->h)) {
       is_background = TRUE;
     }
   }
 
-  if(is_background) {
+  if (is_background) {
     widget_dispatch(widget, &e);
   }
   return RET_REMOVE;
@@ -101,7 +102,7 @@ static ret_t popup_idle_window_close(const idle_info_t* idle) {
 
   widget_ungrab(win, widget);
 
-  if(window_manager_is_animating(win)) {
+  if (window_manager_is_animating(win)) {
     window_close_force(widget);
   } else {
     window_close(widget);
@@ -138,8 +139,8 @@ static ret_t popup_on_event(widget_t* widget, event_t* e) {
         rect_t r = rect_init(widget->x, widget->y, widget->w, widget->h);
         if (!rect_contains(&r, evt->x, evt->y)) {
           close_window = TRUE;
-        }  
-      } else if(!popup->close_when_click) {
+        }
+      } else if (!popup->close_when_click) {
         idle_add(popup_idle_check_if_need_set_background_state, widget);
       }
 

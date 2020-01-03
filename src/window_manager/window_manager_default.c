@@ -673,7 +673,8 @@ static ret_t window_manager_invalidate_system_bar(widget_t* widget) {
   return RET_OK;
 }
 
-static ret_t window_manager_animate_done_set_window_foreground(widget_t* widget, widget_t* prev_win, widget_t* curr_win) {
+static ret_t window_manager_animate_done_set_window_foreground(widget_t* widget, widget_t* prev_win,
+                                                               widget_t* curr_win) {
   bool_t is_set = FALSE;
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
   return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
@@ -681,11 +682,11 @@ static ret_t window_manager_animate_done_set_window_foreground(widget_t* widget,
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
   if (prev_win == iter) {
     is_set = TRUE;
-  } else if(curr_win == iter) {
+  } else if (curr_win == iter) {
     is_set = FALSE;
   }
 
-  if(is_set) {
+  if (is_set) {
     window_manager_dispatch_window_event(iter, EVT_WINDOW_TO_FOREGROUND);
   }
   WIDGET_FOR_EACH_CHILD_END()
@@ -923,7 +924,7 @@ static ret_t window_manager_default_set_prop(widget_t* widget, const char* name,
 
 static ret_t window_manager_default_on_destroy(widget_t* widget) {
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
-  if(wm->animator != NULL) {
+  if (wm->animator != NULL) {
     wm->animator->prev_win = NULL;
     wm->animator->curr_win = NULL;
     window_animator_destroy(wm->animator);
