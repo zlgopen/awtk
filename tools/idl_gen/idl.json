@@ -15194,6 +15194,10 @@
         "name": "WIDGET_PROP_H"
       },
       {
+        "desc": "脏矩形超出控件本身大小的最大范围。",
+        "name": "WIDGET_PROP_DIRTY_RECT_TOLERANCE"
+      },
+      {
         "desc": "Canvas。",
         "name": "WIDGET_PROP_CANVAS"
       },
@@ -17024,6 +17028,29 @@
             "type": "widget_t*",
             "name": "widget",
             "desc": "控件对象。"
+          },
+          {
+            "type": "uint16_t",
+            "name": "dirty_rect_tolerance",
+            "desc": "控件脏脏矩形超出控件本身大小的最大范。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置控件脏矩形超出控件本身大小的最大范围(一般不用指定)。",
+        "name": "widget_set_dirty_rect_tolerance",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
           }
         ],
         "annotation": {
@@ -18574,6 +18601,22 @@
         }
       },
       {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建一个bitmap对象，将控件绘制到bitmap上，并返回bitmap对象。\n\n调用者需要调用bitmap_destroy销毁返回的bitmap对象。\n\n```c\nbitmap_t* bitmap = widget_take_snapshot(window_manager());\nbitmap_save_png(bitmap, \"test.png\");\nbitmap_destroy(bitmap);\n```",
+        "name": "widget_take_snapshot",
+        "return": {
+          "type": "bitmap_t*",
+          "desc": "返回位图对象。"
+        }
+      },
+      {
         "params": [],
         "annotation": {},
         "desc": "获取canvas对象。",
@@ -18982,6 +19025,16 @@
         "type": "uint8_t",
         "annotation": {
           "readable": true
+        }
+      },
+      {
+        "name": "dirty_rect_tolerance",
+        "desc": "脏矩形超出控件本身大小的最大范围(一般不用指定)。\n\n> 如果 border 太粗或 offset 太大等原因，导致脏矩形超出控件本身大小太多（大于缺省值）时，才需要指定。",
+        "type": "uint16_t",
+        "annotation": {
+          "readable": true,
+          "design": true,
+          "scriptable": true
         }
       },
       {
@@ -22254,6 +22307,18 @@
       {
         "desc": "垂直方向3宫格显示，水平方向缩放显示。\n将图片在垂直方向上分成等大小的3块，上下两块按原大小显示在目标矩形的上下，中间一块缩放显示在目标区域中间剩余部分。",
         "name": "IMAGE_DRAW_PATCH3_Y_SCALE_X"
+      },
+      {
+        "desc": "平铺9宫格显示。\n将图片分成4个角和5块平铺块，4个角按原大小显示在目标矩形的4个角，其余5块会平铺对应的目标区域。\n切割方法为（如下图）：\n如果图片宽度为奇数，则中间一块为一列数据，如果图片宽度为偶数，则中间一块为二列数据，其他数据分为左右块\n如果图片高度为奇数，则中间一块为一行数据，如果图片高度为偶数，则中间一块为二行数据，其他数据分为上下块\n中间一块数据根据上面两条规则组成4中情况，分别是一列一行数据，一列两行数据，两列一行数据和两行两列数据",
+        "name": "IMAGE_DRAW_REPEAT9"
+      },
+      {
+        "desc": "水平方向3宫格显示，垂直方向居中显示。\n将图片在水平方向上分成左右相等两块和中间一块，如果图片宽度为奇数，则中间一块为一列数据，如果图片宽度为偶数，则中间一块为二列数据，其他数据分为左右块。\n左右两块按原大小显示在目标矩形的左右，中间一列像素点平铺显示在目标区域中间剩余部分。",
+        "name": "IMAGE_DRAW_REPEAT3_X"
+      },
+      {
+        "desc": "垂直方向3宫格显示，水平方向居中显示。\n将图片在垂直方向上分成上下相等两块和中间一块，如果图片高度为奇数，则中间一块为一行数据，如果图片高度为偶数，则中间一块为二行数据，其他数据分为上下块\n上下两块按原大小显示在目标矩形的上下，中间一块平铺显示在目标区域中间剩余部分。",
+        "name": "IMAGE_DRAW_REPEAT3_Y"
       }
     ],
     "header": "base/bitmap.h",
@@ -36060,8 +36125,8 @@
       },
       {
         "name": "anchor_x",
-        "desc": "旋转锚点x坐标。",
-        "type": "float_t",
+        "desc": "图片旋转锚点x坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)",
+        "type": "char*",
         "annotation": {
           "set_prop": true,
           "get_prop": true,
@@ -36073,8 +36138,8 @@
       },
       {
         "name": "anchor_y",
-        "desc": "旋转锚点y坐标。",
-        "type": "float_t",
+        "desc": "图片旋转锚点x坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)",
+        "type": "char*",
         "annotation": {
           "set_prop": true,
           "get_prop": true,
@@ -37031,6 +37096,34 @@
         "annotation": {},
         "desc": "处理native window事件。",
         "name": "window_manager_dispatch_native_window_event",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "窗口管理器对象。"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "调整原生窗口的大小。",
+        "name": "window_manager_resize",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"

@@ -43,8 +43,8 @@ guage_pointer_set_image(guage_pointer, "guage_pointer");
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#guage_pointer_t_anchor_x">anchor\_x</a> | float\_t | 旋转锚点x坐标。 |
-| <a href="#guage_pointer_t_anchor_y">anchor\_y</a> | float\_t | 旋转锚点y坐标。 |
+| <a href="#guage_pointer_t_anchor_x">anchor\_x</a> | char* | 图片旋转锚点x坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f) |
+| <a href="#guage_pointer_t_anchor_y">anchor\_y</a> | char* | 图片旋转锚点x坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f) |
 | <a href="#guage_pointer_t_angle">angle</a> | int32\_t | 指针角度。12点钟方向为0度，顺时钟方向为正，单位为度。 |
 | <a href="#guage_pointer_t_image">image</a> | char* | 指针图片。 |
 #### guage\_pointer\_cast 函数
@@ -152,9 +152,9 @@ ret_t guage_pointer_set_image (widget_t* widget, const char* image);
 | image | const char* | 指针的图片。 |
 #### anchor\_x 属性
 -----------------------
-> <p id="guage_pointer_t_anchor_x">旋转锚点x坐标。
+> <p id="guage_pointer_t_anchor_x">图片旋转锚点x坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
 
-* 类型：float\_t
+* 类型：char*
 
 | 特性 | 是否支持 |
 | -------- | ----- |
@@ -168,9 +168,9 @@ ret_t guage_pointer_set_image (widget_t* widget, const char* image);
 | 可通过widget\_set\_prop修改 | 是 |
 #### anchor\_y 属性
 -----------------------
-> <p id="guage_pointer_t_anchor_y">旋转锚点y坐标。
+> <p id="guage_pointer_t_anchor_y">图片旋转锚点x坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)
 
-* 类型：float\_t
+* 类型：char*
 
 | 特性 | 是否支持 |
 | -------- | ----- |

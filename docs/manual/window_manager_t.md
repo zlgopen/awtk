@@ -21,6 +21,7 @@
 | <a href="#window_manager_t_window_manager_get_prev_window">window\_manager\_get\_prev\_window</a> | 获取前一个的窗口。 |
 | <a href="#window_manager_t_window_manager_get_top_main_window">window\_manager\_get\_top\_main\_window</a> | 获取最上面的主窗口。 |
 | <a href="#window_manager_t_window_manager_get_top_window">window\_manager\_get\_top\_window</a> | 获取最上面的窗口。 |
+| <a href="#window_manager_t_window_manager_resize">window\_manager\_resize</a> | 调整原生窗口的大小。 |
 | <a href="#window_manager_t_window_manager_set">window\_manager\_set</a> | 设置缺省的窗口管理器。 |
 | <a href="#window_manager_t_window_manager_set_cursor">window\_manager\_set\_cursor</a> | 设置鼠标指针。 |
 | <a href="#window_manager_t_window_manager_set_screen_saver_time">window\_manager\_set\_screen\_saver\_time</a> | 设置屏保时间。 |
@@ -261,6 +262,27 @@ widget_t* window_manager_get_top_window (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | 返回窗口对象。 |
 | widget | widget\_t* | 窗口管理器对象。 |
+#### window\_manager\_resize 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_manager_t_window_manager_resize">调整原生窗口的大小。
+
+* 函数原型：
+
+```
+ret_t window_manager_resize (widget_t* widget, wh_t w, wh_t h);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 窗口管理器对象。 |
+| w | wh\_t | 宽度 |
+| h | wh\_t | 高度 |
 #### window\_manager\_set 函数
 -----------------------
 

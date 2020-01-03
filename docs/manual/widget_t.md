@@ -116,6 +116,7 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | <a href="#widget_t_widget_set_animation">widget\_set\_animation</a> | 设置控件的动画参数(仅用于在UI文件使用)。 |
 | <a href="#widget_t_widget_set_animator_time_scale">widget\_set\_animator\_time\_scale</a> | 设置动画的时间倍率，<0: 时间倒退，<1: 时间变慢，>1 时间变快。 |
 | <a href="#widget_t_widget_set_children_layout">widget\_set\_children\_layout</a> | 设置子控件的布局参数。 |
+| <a href="#widget_t_widget_set_dirty_rect_tolerance">widget\_set\_dirty\_rect\_tolerance</a> | 设置控件脏矩形超出控件本身大小的最大范围(一般不用指定)。 |
 | <a href="#widget_t_widget_set_enable">widget\_set\_enable</a> | 设置控件的可用性。 |
 | <a href="#widget_t_widget_set_feedback">widget\_set\_feedback</a> | 设置控件是否启用反馈。 |
 | <a href="#widget_t_widget_set_floating">widget\_set\_floating</a> | 设置控件的floating标志。 |
@@ -145,6 +146,7 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | <a href="#widget_t_widget_set_visible_only">widget\_set\_visible\_only</a> | 设置控件的可见性(不触发repaint和relayout)。 |
 | <a href="#widget_t_widget_start_animator">widget\_start\_animator</a> | 播放动画。 |
 | <a href="#widget_t_widget_stop_animator">widget\_stop\_animator</a> | 停止动画(控件的相应属性回归原位)。 |
+| <a href="#widget_t_widget_take_snapshot">widget\_take\_snapshot</a> | 创建一个bitmap对象，将控件绘制到bitmap上，并返回bitmap对象。 |
 | <a href="#widget_t_widget_to_global">widget\_to\_global</a> | 将控件内的本地坐标转换成全局坐标。 |
 | <a href="#widget_t_widget_to_local">widget\_to\_local</a> | 将屏幕坐标转换成控件内的本地坐标，即相对于控件左上角的坐标。 |
 | <a href="#widget_t_widget_to_screen">widget\_to\_screen</a> | 将控件内的本地坐标转换成屏幕上的坐标。 |
@@ -166,6 +168,7 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | <a href="#widget_t_custom_props">custom\_props</a> | object\_t* | 自定义属性。 |
 | <a href="#widget_t_destroying">destroying</a> | bool\_t | 标识控件正在被销毁。 |
 | <a href="#widget_t_dirty">dirty</a> | bool\_t | 标识控件是否需要重绘。 |
+| <a href="#widget_t_dirty_rect_tolerance">dirty\_rect\_tolerance</a> | uint16\_t | 脏矩形超出控件本身大小的最大范围(一般不用指定)。 |
 | <a href="#widget_t_emitter">emitter</a> | emitter\_t* | 事件发射器。 |
 | <a href="#widget_t_enable">enable</a> | bool\_t | 启用/禁用状态。 |
 | <a href="#widget_t_feedback">feedback</a> | bool\_t | 是否启用按键音、触屏音和震动等反馈。 |
@@ -1636,6 +1639,26 @@ ret_t widget_set_children_layout (widget_t* widget, const char* params);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | params | const char* | 布局参数。 |
+#### widget\_set\_dirty\_rect\_tolerance 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_set_dirty_rect_tolerance">设置控件脏矩形超出控件本身大小的最大范围(一般不用指定)。
+
+* 函数原型：
+
+```
+ret_t widget_set_dirty_rect_tolerance (widget_t* widget, uint16_t dirty_rect_tolerance);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| dirty\_rect\_tolerance | uint16\_t | 控件脏脏矩形超出控件本身大小的最大范。 |
 #### widget\_set\_enable 函数
 -----------------------
 
@@ -2246,6 +2269,33 @@ ret_t widget_stop_animator (widget_t* widget, char* name);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | name | char* | 动画名称。 |
+#### widget\_take\_snapshot 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_take_snapshot">创建一个bitmap对象，将控件绘制到bitmap上，并返回bitmap对象。
+
+调用者需要调用bitmap_destroy销毁返回的bitmap对象。
+
+```c
+bitmap_t* bitmap = widget_take_snapshot(window_manager());
+bitmap_save_png(bitmap, "test.png");
+bitmap_destroy(bitmap);
+```
+
+* 函数原型：
+
+```
+bitmap_t* widget_take_snapshot (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bitmap\_t* | 返回位图对象。 |
+| widget | widget\_t* | 控件对象。 |
 #### widget\_to\_global 函数
 -----------------------
 
@@ -2504,6 +2554,20 @@ ret_t widget_use_style (widget_t* widget, char* style);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
+#### dirty\_rect\_tolerance 属性
+-----------------------
+> <p id="widget_t_dirty_rect_tolerance">脏矩形超出控件本身大小的最大范围(一般不用指定)。
+
+> 如果 border 太粗或 offset 太大等原因，导致脏矩形超出控件本身大小太多（大于缺省值）时，才需要指定。
+
+* 类型：uint16\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
 #### emitter 属性
 -----------------------
 > <p id="widget_t_emitter">事件发射器。
