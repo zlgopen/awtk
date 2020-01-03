@@ -8,6 +8,8 @@
   * 增加 widget\_take\_snapshot 目前仅在非 OpenGL 下有效。
   * 完善 popup 窗口动画（感谢智明提供补丁）
   * 完善修改 locale 的处理。
+  * 修复 clip_view 剪裁区域计算有误的问题（感谢大恒提供补丁）。
+  * 修复 scroll_bar_m 在拖动后没有自动隐藏的问题（感谢大恒提供补丁）。
 
 * 2020/01/02
   * 修改 kb_default.xml 解决中文状态下无法输入空格。
