@@ -42,7 +42,7 @@ typedef struct _xml_builder_t {
 
   bool_t is_property;
   props_state_t properties_state;
-  char property_name[TK_NAME_LEN + 1];
+  char property_name[TK_NAME_LEN * 2 + 2];
 } xml_builder_t;
 
 /*FIXME: it is not a good solution to hardcode*/
@@ -214,7 +214,7 @@ static void xml_loader_on_start_property(XmlBuilder* thiz, const char* tag, cons
     const char* key = attrs[i];
     const char* value = attrs[i + 1];
     if (tk_str_eq(key, "name")) {
-      tk_strncpy(b->property_name, value, TK_NAME_LEN);
+      tk_strncpy(b->property_name, value, TK_NAME_LEN * 2 + 1);
       break;
     }
   }
