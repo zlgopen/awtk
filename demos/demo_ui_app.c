@@ -464,6 +464,14 @@ static ret_t on_reload_theme_test(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t on_snapshot(void* ctx, event_t* e) {
+  bitmap_t* bitmap = widget_take_snapshot(window_manager());
+  bitmap_save_png(bitmap, "test.png");
+  bitmap_destroy(bitmap);
+
+  return RET_OK;
+}
+
 static ret_t on_mem_test(void* ctx, event_t* e) {
   char text[32];
   uint32_t size = 100 * 1024;
@@ -558,6 +566,8 @@ static ret_t install_one(void* ctx, const void* iter) {
       widget_on(widget, EVT_PAINT, on_paint_stroke_gradient, NULL);
     } else if (tk_str_eq(name, "paint_vgcanvas")) {
       widget_on(widget, EVT_PAINT, on_paint_vgcanvas, NULL);
+    } else if (tk_str_eq(name, "snapshot")) {
+      widget_on(widget, EVT_CLICK, on_snapshot, NULL);
     } else if (tk_str_eq(name, "memtest")) {
       widget_t* win = widget_get_window(widget);
       widget_on(widget, EVT_CLICK, on_mem_test, win);

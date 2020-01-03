@@ -532,7 +532,7 @@ bitmap_t* bitmap_clone(bitmap_t* bitmap) {
   return b;
 }
 
-#if defined(WITH_SDL) || defined(LINUX)
+#if defined(WITH_STB_IMAGE) || defined(WITH_FS_RES)
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #define STBI_FREE TKMEM_FREE
@@ -541,15 +541,13 @@ bitmap_t* bitmap_clone(bitmap_t* bitmap) {
 
 #include "stb/stb_image_write.h"
 
-bool_t bitmap_save_png(bitmap_t* bitmap, const char* filename) {
+bitmap_t* bitmap_rgba8888_from_bitmap(bitmap_t* bitmap) {
   color_t c;
   uint32_t x = 0;
   uint32_t y = 0;
   bitmap_t* t = NULL;
   uint32_t* p = NULL;
   uint32_t* tdata = NULL;
-  return_value_if_fail(bitmap != NULL && filename != NULL, FALSE);
-
   t = bitmap_create_ex(bitmap->w, bitmap->h, 0, BITMAP_FMT_RGBA8888);
   return_value_if_fail(t != NULL, FALSE);
 
@@ -562,15 +560,36 @@ bool_t bitmap_save_png(bitmap_t* bitmap, const char* filename) {
       *p++ = c.color;
     }
   }
+  bitmap_unlock_buffer(t);
 
+  return t;
+}
+
+static bool_t bitmap_rgba8888_save_png(bitmap_t* bitmap, const char* filename) {
+  bitmap_t* t = bitmap;
+  uint32_t* tdata = NULL;
+  tdata = (uint32_t*)bitmap_lock_buffer_for_write(t);
   stbi_write_png(filename, t->w, t->h, 4, tdata, t->w * 4);
   bitmap_unlock_buffer(t);
-  bitmap_destroy(t);
 
   return TRUE;
 }
 
-#endif /*defined(WITH_SDL) || defined(LINUX)*/
+bool_t bitmap_save_png(bitmap_t* bitmap, const char* filename) {
+  return_value_if_fail(bitmap != NULL && filename != NULL, FALSE);
+
+  if (bitmap->format != BITMAP_FMT_RGBA8888 || bitmap->line_length != bitmap->w * 4) {
+    bitmap_t* t = bitmap_rgba8888_from_bitmap(bitmap);
+    bitmap_rgba8888_save_png(t, filename);
+    bitmap_destroy(t);
+  } else {
+    bitmap_rgba8888_save_png(bitmap, filename);
+  }
+
+  return TRUE;
+}
+
+#endif /*defined(WITH_STB_IMAGE) || defined(WITH_FS_RES)*/
 
 /*helper*/
 #define BIT_OFFSET(xx) (7 - ((xx) % 8))

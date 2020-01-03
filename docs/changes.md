@@ -4,6 +4,9 @@
   * 修复了画圆角矩形边框的 BUG。（感谢智明提供下列补丁）
   * 完善 widget.h 注释（感谢大恒提供补丁）。 
   * 完善 ui loader xml（感谢大恒提供补丁）。 
+  * 完善 guage pointer（感谢尧燊提供补丁）
+  * 增加 widget\_take\_snapshot 目前仅在非OpenGL下有效。
+
 * 2020/01/02
   * 修改 kb_default.xml 解决中文状态下无法输入空格。
   * 支持软键盘选择候选字。

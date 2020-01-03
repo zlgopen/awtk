@@ -51,6 +51,7 @@
       <button focusable="true" name="open:memtest" text="MemTest"/>
       <button focusable="true" name="open:calibration_win" text="Calibration"/>
       <button focusable="true" name="show_fps" text="Show FPS"/>
+      <button focusable="true" name="snapshot" text="Take Snapshot"/>
       <button focusable="true" name="reload_theme" text="Test Change Theme"/>
       <button focusable="true" name="exit" text="Exit"/>
     </view>

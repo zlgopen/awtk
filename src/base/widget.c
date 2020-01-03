@@ -1266,7 +1266,7 @@ ret_t widget_fill_rect(widget_t* widget, canvas_t* c, rect_t* r, bool_t bg,
       } else {
         ret = widget_draw_fill_rounded_rect_ex(c, r, &bg_r, &color, radius);
       }
-      if(ret == RET_FAIL) {
+      if (ret == RET_FAIL) {
         canvas_fill_rect(c, r->x, r->y, r->w, r->h);
       }
     } else {
@@ -3846,3 +3846,42 @@ ret_t widget_close_window(widget_t* widget) {
 
   return window_manager_close_window(win->parent, win);
 }
+
+#ifdef WITH_NANOVG_GPU
+bitmap_t* widget_take_snapshot(widget_t* widget) {
+  log_warn("not supported yet\n");
+  return NULL;
+}
+#else
+#include "lcd/lcd_mem_rgba8888.h"
+bitmap_t* widget_take_snapshot(widget_t* widget) {
+  wh_t w = 0;
+  wh_t h = 0;
+  canvas_t canvas;
+  lcd_t* lcd = NULL;
+  uint8_t* buff = NULL;
+  bitmap_t* bitmap = NULL;
+  canvas_t* c = &canvas;
+  return_value_if_fail(widget != NULL && widget->vt != NULL, NULL);
+
+  w = widget->w;
+  h = widget->h;
+  bitmap = bitmap_create_ex(w, h, w * 4, BITMAP_FMT_RGBA8888);
+  return_value_if_fail(bitmap != NULL, NULL);
+
+  buff = bitmap_lock_buffer_for_write(bitmap);
+  lcd = lcd_mem_rgba8888_create_single_fb(w, h, buff);
+  if (lcd != NULL) {
+    rect_t r = rect_init(0, 0, w, h);
+    canvas_init(c, lcd, font_manager());
+    canvas_begin_frame(c, &r, LCD_DRAW_OFFLINE);
+    widget_paint(widget, c);
+    canvas_end_frame(c);
+    canvas_reset(c);
+    lcd_destroy(lcd);
+  }
+  bitmap_unlock_buffer(bitmap);
+
+  return bitmap;
+}
+#endif /*WITH_NANOVG_GPU*/

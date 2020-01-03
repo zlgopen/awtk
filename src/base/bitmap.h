@@ -389,10 +389,10 @@ bool_t rgba_data_is_opaque(const uint8_t* data, uint32_t w, uint32_t h, uint8_t 
 bitmap_t* bitmap_clone(bitmap_t* bitmap);
 ret_t bitmap_premulti_alpha(bitmap_t* bitmap);
 
-#if defined(WITH_SDL) || defined(LINUX)
+#if defined(WITH_STB_IMAGE) || defined(WITH_FS_RES)
 /*for helping debug drawing bugs*/
 bool_t bitmap_save_png(bitmap_t* bitmap, const char* filename);
-#endif /*defined(WITH_SDL) || defined(LINUX)*/
+#endif /*defined(WITH_STB_IMAGE) || defined(WITH_FS_RES)*/
 
 #define TK_BITMAP_MONO_LINE_LENGTH(w) (((w + 15) >> 4) << 1)
 
