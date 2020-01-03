@@ -1215,7 +1215,7 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
   if (icon != NULL && widget_load_image(widget, icon, &img) == RET_OK) {
     float_t dpr = system_info()->device_pixel_ratio;
 
-    if (text != NULL && text->size > 0) {
+    if (text->size > 0) {
       if ((h > (img.h / dpr + font_size) && icon_at == ICON_AT_AUTO)) {
         icon_at = ICON_AT_TOP;
       }
@@ -1906,7 +1906,6 @@ static ret_t widget_map_key(widget_t* widget, key_event_t* e) {
       }
 
       if (to != NULL) {
-        return_value_if_fail(to != NULL, RET_FAIL);
         kv = keys_type_find(to);
         if (kv != NULL) {
           e->key = kv->value;
@@ -1977,7 +1976,7 @@ bool_t widget_is_activate_key(widget_t* widget, key_event_t* e) {
 static bool_t widget_match_key(widget_t* widget, const char* prop, uint32_t key) {
   const char* value = NULL;
   widget_t* win = widget_get_window(widget);
-  return_value_if_fail(widget != NULL && win != NULL, FALSE);
+  return_value_if_fail(win != NULL, FALSE);
 
   value = widget_get_prop_str(win, prop, NULL);
   if (value != NULL) {
