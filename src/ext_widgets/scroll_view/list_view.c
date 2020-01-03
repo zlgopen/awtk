@@ -50,6 +50,14 @@ static ret_t list_view_get_prop(widget_t* widget, const char* name, value_t* v) 
   return RET_NOT_FOUND;
 }
 
+static ret_t list_view_on_pointer_up(list_view_t* list_view, pointer_event_t* e) {
+  scroll_bar_t* scroll_bar = (scroll_bar_t*)list_view->scroll_bar;
+  if (scroll_bar_is_mobile(list_view->scroll_bar) && scroll_bar->wa_opactiy == NULL &&
+      list_view->scroll_bar->visible) {
+    widget_set_visible(list_view->scroll_bar, FALSE, TRUE);
+  }
+  return RET_OK;
+}
 static ret_t list_view_set_prop(widget_t* widget, const char* name, const value_t* v) {
   list_view_t* list_view = LIST_VIEW(widget);
   return_value_if_fail(list_view != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
@@ -96,6 +104,10 @@ static ret_t list_view_on_event(widget_t* widget, event_t* e) {
       }
       break;
     }
+    case EVT_POINTER_UP: {
+      pointer_event_t* evt = (pointer_event_t*)e;
+      list_view_on_pointer_up(list_view, evt);
+    } break;
     default:
       break;
   }
