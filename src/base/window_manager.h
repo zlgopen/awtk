@@ -45,6 +45,7 @@ typedef ret_t (*window_manager_post_init_t)(widget_t* widget, wh_t w, wh_t h);
 typedef ret_t (*window_manager_back_t)(widget_t* widget);
 typedef ret_t (*window_manager_back_to_t)(widget_t* widget, const char* name);
 typedef ret_t (*window_manager_get_pointer_t)(widget_t* widget, xy_t* x, xy_t* y, bool_t* pressed);
+typedef ret_t (*window_manager_is_animating_t)(widget_t* widget, bool_t* playing);
 
 typedef ret_t (*window_manager_dispatch_native_window_event_t)(widget_t* widget, event_t* e,
                                                                void* handle);
@@ -75,6 +76,7 @@ typedef struct _window_manager_vtable_t {
   window_manager_dispatch_native_window_event_t dispatch_native_window_event;
   window_manager_set_screen_saver_time_t set_screen_saver_time;
   window_manager_get_pointer_t get_pointer;
+  window_manager_is_animating_t is_animating;
   window_manager_snap_curr_window_t snap_curr_window;
   window_manager_snap_prev_window_t snap_prev_window;
   window_manager_get_dialog_highlighter_t get_dialog_highlighter;
@@ -182,6 +184,16 @@ xy_t window_manager_get_pointer_y(widget_t* widget);
  * @return {bool_t} 返回指针当前是否按下。
  */
 bool_t window_manager_get_pointer_pressed(widget_t* widget);
+
+/**
+ * @method window_manager_is_animating
+ * 获取当前窗口动画是否正在播放。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 窗口管理器对象。
+ *
+ * @return {bool_t} 返回TRUE表示正在播放，FALSE表示没有播放。
+ */
+bool_t window_manager_is_animating(widget_t* widget);
 
 /**
  * @method window_manager_post_init

@@ -291,6 +291,7 @@ ret_t window_base_on_event(widget_t* widget, event_t* e) {
       window_close(widget);
     }
   } else if (e->type == EVT_WINDOW_TO_FOREGROUND) {
+    win->stage = WINDOW_STAGE_OPENED;
     widget->parent->grab_widget_count =
         widget->grab_widget_count + win->grab_count_when_to_foreground;
     if (widget->parent->grab_widget_count) {
@@ -302,7 +303,8 @@ ret_t window_base_on_event(widget_t* widget, event_t* e) {
       win->save_focus_widget = NULL;
     }
   } else if (e->type == EVT_WINDOW_TO_BACKGROUND) {
-    if (widget->parent->grab_widget == widget) {
+    win->stage = WINDOW_STAGE_SUSPEND;
+    if (widget->parent != NULL && widget->parent->grab_widget == widget) {
       win->grab_count_when_to_foreground =
           widget->parent->grab_widget_count - widget->grab_widget_count;
       widget->parent->grab_widget_count = 0;

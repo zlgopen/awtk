@@ -25,6 +25,7 @@
 #include "widgets/label.h"
 #include "base/enums.h"
 #include "tkc/utils.h"
+#include "base/widget.h"
 #include "base/layout.h"
 #include "widgets/popup.h"
 #include "base/image_manager.h"
@@ -60,6 +61,54 @@ static ret_t popup_set_prop(widget_t* widget, const char* name, const value_t* v
   return window_base_set_prop(widget, name, v);
 }
 
+static ret_t popup_idle_check_if_need_set_background_state(const idle_info_t* idle) {
+  xy_t x = 0;
+  xy_t y = 0;
+  wh_t right = 0;
+  wh_t bottom = 0;
+  bool_t is_background = FALSE;
+  widget_t* widget = WIDGET(idle->ctx);
+  widget_t* win = widget->parent;
+  event_t e = event_init(EVT_WINDOW_TO_BACKGROUND, widget);
+
+  if(win != NULL) {
+    WIDGET_FOR_EACH_CHILD_BEGIN_R(win, iter, i)
+    if(iter == widget) {
+      break;
+    }
+    x = tk_min(x, iter->x);
+    y = tk_min(y, iter->y);
+    right = tk_max(right, (iter->x + iter->w));
+    bottom = tk_max(bottom, (iter->y + iter->h));
+
+    WIDGET_FOR_EACH_CHILD_END();
+
+    if(x < widget->x && y < widget->y && right > (widget->x + widget->w) && bottom > (widget->y + widget->h)) {
+      is_background = TRUE;
+    }
+  }
+
+  if(is_background) {
+    widget_dispatch(widget, &e);
+  }
+  return RET_REMOVE;
+}
+
+static ret_t popup_idle_window_close(const idle_info_t* idle) {
+  widget_t* widget = WIDGET(idle->ctx);
+  widget_t* win = widget->parent;
+  return_value_if_fail(win && widget != NULL, RET_REMOVE);
+
+  widget_ungrab(win, widget);
+
+  if(window_manager_is_animating(win)) {
+    window_close_force(widget);
+  } else {
+    window_close(widget);
+  }
+  return RET_REMOVE;
+}
+
 static ret_t popup_on_event(widget_t* widget, event_t* e) {
   uint16_t type = e->type;
   popup_t* popup = POPUP(widget);
@@ -89,12 +138,13 @@ static ret_t popup_on_event(widget_t* widget, event_t* e) {
         rect_t r = rect_init(widget->x, widget->y, widget->w, widget->h);
         if (!rect_contains(&r, evt->x, evt->y)) {
           close_window = TRUE;
-        }
+        }  
+      } else if(!popup->close_when_click) {
+        idle_add(popup_idle_check_if_need_set_background_state, widget);
       }
 
       if (close_window) {
-        widget_ungrab(widget->parent, widget);
-        window_close(widget);
+        idle_add(popup_idle_window_close, widget);
       }
 
       break;

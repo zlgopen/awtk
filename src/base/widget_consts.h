@@ -1147,14 +1147,19 @@ typedef enum _window_stage_t {
   WINDOW_STAGE_CREATED,
   /**
    * @const WINDOW_STAGE_OPENED
-   * 窗口已经打开(窗口打开动画完成后，处于该状态，直到窗口被关闭)
+   * 窗口已经打开(窗口打开动画完成后)
    */
   WINDOW_STAGE_OPENED,
   /**
    * @const WINDOW_STAGE_CLOSED
    * 窗口已关闭。
    */
-  WINDOW_STAGE_CLOSED
+  WINDOW_STAGE_CLOSED,
+  /**
+   * @const WINDOW_STAGE_SUSPEND
+   * 窗口挂起状态。
+   */
+  WINDOW_STAGE_SUSPEND
 } window_stage_t;
 
 /**

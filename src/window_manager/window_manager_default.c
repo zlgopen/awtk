@@ -56,7 +56,7 @@ static bool_t window_is_fullscreen(widget_t* widget) {
 static bool_t window_is_opened(widget_t* widget) {
   int32_t stage = widget_get_prop_int(widget, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE);
 
-  return stage == WINDOW_STAGE_OPENED;
+  return stage == WINDOW_STAGE_OPENED || stage == WINDOW_STAGE_SUSPEND;
 }
 
 static ret_t wm_on_screen_saver_timer(const timer_info_t* info) {
@@ -673,6 +673,26 @@ static ret_t window_manager_invalidate_system_bar(widget_t* widget) {
   return RET_OK;
 }
 
+static ret_t window_manager_animate_done_set_window_foreground(widget_t* widget, widget_t* prev_win, widget_t* curr_win) {
+  bool_t is_set = FALSE;
+  window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+  return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
+
+  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+  if (prev_win == iter) {
+    is_set = TRUE;
+  } else if(curr_win == iter) {
+    is_set = FALSE;
+  }
+
+  if(is_set) {
+    window_manager_dispatch_window_event(iter, EVT_WINDOW_TO_FOREGROUND);
+  }
+  WIDGET_FOR_EACH_CHILD_END()
+
+  return RET_OK;
+}
+
 static ret_t window_manager_animate_done(widget_t* widget) {
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
   bool_t curr_win_is_keyboard = widget_is_keyboard(wm->animator->curr_win);
@@ -694,7 +714,7 @@ static ret_t window_manager_animate_done(widget_t* widget) {
       window_manager_dispatch_window_event(curr_win, EVT_WINDOW_OPEN);
     } else {
       if (!curr_win_is_keyboard) {
-        window_manager_dispatch_window_event(prev_win, EVT_WINDOW_TO_FOREGROUND);
+        window_manager_animate_done_set_window_foreground(widget, prev_win, curr_win);
         window_manager_create_highlighter(widget, prev_win);
       }
     }
@@ -903,6 +923,12 @@ static ret_t window_manager_default_set_prop(widget_t* widget, const char* name,
 
 static ret_t window_manager_default_on_destroy(widget_t* widget) {
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+  if(wm->animator != NULL) {
+    wm->animator->prev_win = NULL;
+    wm->animator->curr_win = NULL;
+    window_animator_destroy(wm->animator);
+    wm->animator = NULL;
+  }
   object_unref(OBJECT(wm->native_window));
   TKMEM_FREE(wm->cursor);
 
@@ -953,6 +979,14 @@ static ret_t window_manager_default_get_pointer(widget_t* widget, xy_t* x, xy_t*
     *pressed = wm->input_device_status.pressed;
   }
 
+  return RET_OK;
+}
+
+static ret_t window_manager_default_is_animating(widget_t* widget, bool_t* playing) {
+  window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  *playing = wm->animator != NULL;
   return RET_OK;
 }
 
@@ -1222,6 +1256,7 @@ static window_manager_vtable_t s_window_manager_self_vtable = {
     .set_cursor = window_manager_default_set_cursor,
     .open_window = window_manager_default_open_window,
     .get_pointer = window_manager_default_get_pointer,
+    .is_animating = window_manager_default_is_animating,
     .close_window = window_manager_default_close_window,
     .set_show_fps = window_manager_default_set_show_fps,
     .get_prev_window = window_manager_default_get_prev_window,

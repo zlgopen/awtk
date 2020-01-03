@@ -48,7 +48,7 @@ static bool_t window_is_fullscreen(widget_t* widget) {
 static bool_t window_is_opened(widget_t* widget) {
   int32_t stage = widget_get_prop_int(widget, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE);
 
-  return stage == WINDOW_STAGE_OPENED;
+  return stage == WINDOW_STAGE_OPENED || stage == WINDOW_STAGE_SUSPEND;
 }
 
 static ret_t window_manager_dispatch_top_window_changed(widget_t* widget) {

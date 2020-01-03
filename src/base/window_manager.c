@@ -373,6 +373,22 @@ bool_t window_manager_get_pointer_pressed(widget_t* widget) {
   return pressed;
 }
 
+bool_t window_manager_is_animating(widget_t* widget) {
+  ret_t ret = RET_OK;
+  bool_t playing = TRUE;
+
+  window_manager_t* wm = WINDOW_MANAGER(widget);
+  return_value_if_fail(wm != NULL && wm->vt != NULL, FALSE);
+  return_value_if_fail(wm->vt->is_animating != NULL, FALSE);
+
+  ret = wm->vt->is_animating(widget, &playing);
+
+  if(ret == RET_OK) {
+    return playing;
+  }
+  return FALSE;
+}
+
 static ret_t wm_on_locale_changed(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
@@ -468,7 +484,7 @@ widget_t* window_manager_find_target(widget_t* widget, void* win, xy_t x, xy_t y
     return iter;
   }
 
-  if (widget_is_dialog(iter) || widget_is_popup(iter)) {
+  if (widget_is_dialog(iter) || (widget_is_popup(iter) && widget_is_opened_popup(iter))) {
     return iter;
   }
   WIDGET_FOR_EACH_CHILD_END()

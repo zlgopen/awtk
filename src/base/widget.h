@@ -2072,6 +2072,16 @@ bool_t widget_is_dialog(widget_t* widget);
 bool_t widget_is_popup(widget_t* widget);
 
 /**
+ * @method widget_is_popup
+ * 检查控件弹出窗口控件是否已经打开了。
+ *
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @return {bool_t} 返回FALSE表示不是，否则表示是。
+ */
+bool_t widget_is_opened_popup(widget_t* widget);
+
+/**
  * @method widget_layout
  * 布局当前控件及子控件。
  * @annotation ["scriptable"]
