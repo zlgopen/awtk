@@ -4,6 +4,7 @@
    <line_number x="0" y="0" w="32" h="100%" value="0"/>
    <scroll_bar_d x="right" y="0" w="14" h="100%" value="0"/>
  </mledit>
+ <button name="close" text="Close" focusable="true" x="c" y="m" w="128" h="30"/>
  <mledit x="c" y="b:10" h="40%" w="90%" wrap_word="false"> 
  </mledit>
 </window>
