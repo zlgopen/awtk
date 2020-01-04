@@ -19,6 +19,13 @@
 * **vgcanvas** 矢量图画布。
 * **svg** 矢量图画SVG。
 * **clip\_board** 剪切板的实现。
+* **ubjson** Universal Binary JSON实现。
+* **window\_manager** 窗口管理器的实现。
+* **native_window** 原生窗口的实现。
+* **graphic_buffer** 图像数据缓冲区。
+* **streams** 各种流的实现(如果不用可以不移植)。
+* **compressors** 压缩算法的实现(如果不用可以不移植)。
+* **file_transfer** 暂时无用。
 
 ## 使用方法
 

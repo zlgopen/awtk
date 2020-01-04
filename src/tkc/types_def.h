@@ -275,6 +275,7 @@ typedef void* (*tk_create_t)(void);
 typedef ret_t (*tk_destroy_t)(void* data);
 typedef ret_t (*tk_on_done_t)(void* data);
 typedef bool_t (*tk_is_valid_t)(void* data);
+typedef bool_t (*tk_filter_t)(void* data);
 typedef int (*tk_compare_t)(const void* a, const void* b);
 typedef ret_t (*tk_visit_t)(void* ctx, const void* data);
 

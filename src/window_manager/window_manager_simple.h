@@ -30,7 +30,7 @@ BEGIN_C_DECLS
 /**
  * @class window_manager_simple_t
  * @parent window_manager_t
- * 缺省窗口管理器。
+ * 简单窗口管理器(不支持窗口动画和对话框高亮策略)。
  */
 typedef struct _window_manager_simple_t {
   window_manager_t window_manager;

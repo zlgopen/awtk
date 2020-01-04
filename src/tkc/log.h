@@ -151,6 +151,7 @@ ret_t log_set_log_level(log_level_t log_level);
 #elif defined(WIN32)
 #include <windows.h>
 #if defined(__GNUC__)
+/*MINGW*/
 #define log_debug(format, args...) \
   if (log_get_log_level() <= LOG_LEVEL_DEBUG) printf(format, ##args)
 #define log_info(format, args...) \
@@ -160,6 +161,7 @@ ret_t log_set_log_level(log_level_t log_level);
 #define log_error(format, args...) \
   if (log_get_log_level() <= LOG_LEVEL_ERROR) printf(format, ##args)
 #else
+/*MSVC*/
 #define log_debug(format, ...) \
   if (log_get_log_level() <= LOG_LEVEL_DEBUG) printf(format, __VA_ARGS__)
 #define log_info(format, ...) \
@@ -170,6 +172,7 @@ ret_t log_set_log_level(log_level_t log_level);
   if (log_get_log_level() <= LOG_LEVEL_ERROR) printf(format, __VA_ARGS__)
 #endif
 #elif defined(HAS_STDIO) || defined(AWTK_WEB)
+#include <stdio.h>
 #define log_debug(format, args...) \
   if (log_get_log_level() <= LOG_LEVEL_DEBUG) printf(format, ##args)
 #define log_info(format, args...) \
