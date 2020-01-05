@@ -83,8 +83,8 @@ ret_t fs_os_dir_read(fs_dir_t* dir, fs_item_t* item) {
   memset(item, 0x00, sizeof(fs_item_t));
   if (ent != NULL) {
     uint8_t type = ent->d_type;
-    item->is_dir = type & DT_DIR;
-    item->is_file = type & DT_REG;
+    item->is_dir = (type & DT_DIR) != 0;
+    item->is_file = (type & DT_REG) != 0;
 #ifdef WIN32
     int16_t len = 0;
     char* name = NULL;
@@ -267,7 +267,22 @@ fs_dir_t* fs_os_open_dir(fs_t* fs, const char* name) {
 
 ret_t fs_os_remove_dir(fs_t* fs, const char* name) {
   (void)fs;
-  return rmdir(name) == 0 ? RET_OK : RET_FAIL;
+  if (rmdir(name) == 0) {
+    return RET_OK;
+  } else {
+    perror("rmdir");
+    return RET_FAIL;
+  }
+}
+
+ret_t fs_os_create_dir(fs_t* fs, const char* name) {
+  (void)fs;
+  if (mkdir(name, 0755) == 0) {
+    return RET_OK;
+  } else {
+    perror("mkdir");
+    return RET_FAIL;
+  }
 }
 
 bool_t fs_os_dir_exist(fs_t* fs, const char* name) {
@@ -424,6 +439,7 @@ static const fs_t s_os_fs = {.open_file = fs_os_open_file,
 
                              .open_dir = fs_os_open_dir,
                              .remove_dir = fs_os_remove_dir,
+                             .create_dir = fs_os_create_dir,
                              .dir_exist = fs_os_dir_exist,
                              .dir_rename = fs_os_dir_rename,
 

@@ -125,6 +125,12 @@ ret_t fs_remove_dir(fs_t* fs, const char* name) {
   return fs->remove_dir(fs, name);
 }
 
+ret_t fs_create_dir(fs_t* fs, const char* name) {
+  return_value_if_fail(fs != NULL && fs->create_dir != NULL && name != NULL, RET_BAD_PARAMS);
+
+  return fs->create_dir(fs, name);
+}
+
 bool_t fs_dir_exist(fs_t* fs, const char* name) {
   return_value_if_fail(fs != NULL && fs->dir_exist != NULL && name != NULL, FALSE);
 

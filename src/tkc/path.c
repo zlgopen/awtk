@@ -170,8 +170,22 @@ ret_t path_normalize(const char* path, char* result, int32_t size) {
   return RET_OK;
 }
 
+bool_t path_is_abs(const char* path) {
+  return_value_if_fail(path != NULL && *path, FALSE);
+
+  return path[0] == '/' || path[1] == ':';
+}
+
 ret_t path_abs(const char* path, char* result, int32_t size) {
   char cwd[MAX_PATH + 1];
+  return_value_if_fail(path != NULL && result != NULL && strlen(path) < size, RET_BAD_PARAMS);
+
+  if(path_is_abs(path)) {
+    tk_strncpy(result, path, size);
+
+    return RET_OK;
+  }
+
   if (path_cwd(cwd) == RET_OK) {
     return path_build(result, size, cwd, path, NULL);
   }

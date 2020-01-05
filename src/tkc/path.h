@@ -98,6 +98,17 @@ ret_t path_normalize(const char* path, char* result, int32_t size);
 ret_t path_abs(const char* path, char* result, int32_t size);
 
 /**
+ * @method path_is_abs
+ *
+ * 判断路径是否为绝对路径。
+ *
+ * @param {const char* path*} path 路径。
+ *
+ * @return {ret_t} 返回FALSE表示不是绝对路径，否则表示是绝对路径。
+ */
+bool_t path_is_abs(const char* path);
+
+/**
  * @method path_build
  *
  * 构造路径。

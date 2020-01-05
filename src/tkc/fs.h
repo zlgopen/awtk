@@ -183,13 +183,13 @@ typedef struct _fs_item_t {
    * @annotation ["readable"]
    * 是否是目录。
    */
-  uint32_t is_dir : 1;
+  bool_t is_dir;
   /**
    * @property {bool_t} is_file
    * @annotation ["readable"]
    * 是否是文件。
    */
-  uint32_t is_file : 1;
+  bool_t is_file;
   /**
    * @property {char*} name
    * @annotation ["readable"]
@@ -262,6 +262,7 @@ typedef bool_t (*fs_file_rename_t)(fs_t* fs, const char* name, const char* new_n
 
 typedef fs_dir_t* (*fs_open_dir_t)(fs_t* fs, const char* name);
 typedef ret_t (*fs_remove_dir_t)(fs_t* fs, const char* name);
+typedef ret_t (*fs_create_dir_t)(fs_t* fs, const char* name);
 typedef bool_t (*fs_dir_exist_t)(fs_t* fs, const char* name);
 typedef bool_t (*fs_dir_rename_t)(fs_t* fs, const char* name, const char* new_name);
 
@@ -285,6 +286,7 @@ struct _fs_t {
   fs_file_rename_t file_rename;
 
   fs_open_dir_t open_dir;
+  fs_create_dir_t create_dir;
   fs_remove_dir_t remove_dir;
   fs_dir_exist_t dir_exist;
   fs_dir_rename_t dir_rename;
@@ -357,6 +359,18 @@ bool_t fs_file_rename(fs_t* fs, const char* name, const char* new_name);
  * @return {fs_dir_t} 返回非NULL表示成功，否则表示失败。
  */
 fs_dir_t* fs_open_dir(fs_t* fs, const char* name);
+
+/**
+ * @method fs_create_dir
+ *
+ * 创建目录。
+ *
+ * @param {fs_t*} fs 文件系统对象，一般赋值为os_fs()。
+ * @param {const char*} name 目录名称。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t fs_create_dir(fs_t* fs, const char* name);
 
 /**
  * @method fs_remove_dir
