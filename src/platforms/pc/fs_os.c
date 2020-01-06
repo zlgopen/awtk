@@ -428,9 +428,13 @@ ret_t fs_os_stat(fs_t* fs, const char* name, fs_stat_info_t* fst) {
     fst->atime = st.st_atime;
     fst->mtime = st.st_mtime;
     fst->ctime = st.st_ctime;
-    fst->is_dir = S_ISDIR(st.st_mode);
-    fst->is_link = S_ISLNK(st.st_mode);
-    fst->is_reg_file = S_ISREG(st.st_mode);
+    fst->is_dir = st.st_mode & S_IFDIR;
+#ifdef S_IFLNK    
+    fst->is_link = st.st_mode & S_IFLNK;
+#else
+    fst->is_link = FALSE;
+#endif/*S_IFLNK*/
+    fst->is_reg_file = st.st_mode & S_IFREG;
   }
 
   return RET_OK;

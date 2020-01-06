@@ -13,8 +13,9 @@
  *-------------------------------------------------------------------------
  */
 
-#define DT_DIR 1
-#define DT_REG 2
+#define DT_DIR 4
+#define DT_REG 8
+#define DT_LNK 10
 
 #include "tkc/types_def.h"
 
