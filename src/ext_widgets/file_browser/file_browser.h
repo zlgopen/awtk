@@ -34,8 +34,14 @@ BEGIN_C_DECLS
  * 文件或目录的信息。
  */
 typedef struct _fb_item_t {
-  fs_item_t info;
-  fs_stat_info_t stat;
+  char* name;
+  bool_t is_dir;
+  bool_t is_reg_file;
+
+  uint64_t size;
+  uint64_t atime;
+  uint64_t mtime;
+  uint64_t ctime;
 } fb_item_t;
 
 /**

@@ -68,7 +68,7 @@ static fb_item_t* file_browser_find_item(file_browser_t* fb, const char* name) {
 
   for (i = 0; i < fb->items_size; i++) {
     fb_item_t* iter = fb->items + i;
-    if (tk_str_eq(iter->info.name, name)) {
+    if (tk_str_eq(iter->name, name)) {
       return iter;
     }
   }
@@ -127,7 +127,7 @@ ret_t file_browser_create_file(file_browser_t* fb, const char* name, const void*
   fs_file_t* fp = NULL;
   char fullpath[MAX_PATH + 1];
   fb_item_t* item = file_browser_find_item(fb, name);
-  return_value_if_fail(item == NULL || item->info.is_reg_file, RET_FOUND);
+  return_value_if_fail(item == NULL || item->is_reg_file, RET_FOUND);
 
   memset(fullpath, 0x00, sizeof(fullpath));
   return_value_if_fail(fb != NULL && name != NULL && buff != NULL, RET_BAD_PARAMS);
@@ -231,13 +231,18 @@ ret_t file_browser_paste(file_browser_t* fb) {
 
 ret_t file_browser_refresh(file_browser_t* fb) {
   fs_item_t info;
+  fs_stat_info_t st;
+  uint32_t len = 0;
   fs_dir_t* dir = NULL;
+  char fullpath[MAX_PATH + 1];
   return_value_if_fail(fb != NULL && fb->cwd[0] != '\0', RET_BAD_PARAMS);
 
   fb->items_size = 0;
   dir = fs_open_dir(fb->fs, fb->cwd);
   return_value_if_fail(dir != NULL, RET_BAD_PARAMS);
 
+  len = strlen(fb->cwd);
+  memset(fullpath, 0x00, sizeof(fullpath));
   while (fs_dir_read(dir, &info) == RET_OK) {
     fb_item_t* iter = NULL;
     if (tk_str_eq(info.name, ".") || tk_str_eq(info.name, "..")) {
@@ -247,11 +252,20 @@ ret_t file_browser_refresh(file_browser_t* fb) {
     if (fb->filter != NULL && fb->filter(fb->filter_ctx, &info) == FALSE) {
       continue;
     }
+    
+    path_build(fullpath, MAX_PATH, fb->cwd, info.name, NULL);
+    return_value_if_fail(fs_stat(os_fs(), fullpath, &st) == RET_OK, RET_FAIL);
 
     iter = file_browser_add_item(fb);
     return_value_if_fail(iter != NULL, RET_OOM);
 
-    iter->info = info;
+    iter->size = st.size;
+    iter->mtime = st.mtime;
+    iter->ctime = st.ctime;
+    iter->mtime = st.mtime;
+    iter->is_dir = info.is_dir;
+    iter->is_reg_file = info.is_reg_file;
+    iter->name = tk_str_copy(iter->name, info.name);
   }
 
   fs_dir_close(dir);

@@ -14,8 +14,8 @@ TEST(FileBrowser, dir) {
 
   item = file_browser_get_item(fb, 0);
   ASSERT_EQ(item != NULL, true);
-  ASSERT_STREQ(item->info.name, "a");
-  ASSERT_EQ(item->info.is_dir, TRUE);
+  ASSERT_STREQ(item->name, "a");
+  ASSERT_EQ(item->is_dir, TRUE);
   ASSERT_EQ(file_browser_remove(fb, "a"), RET_OK);
   ASSERT_EQ(file_browser_refresh(fb), RET_OK);
   ASSERT_EQ(file_browser_get_items_nr(fb), 0);
@@ -36,8 +36,8 @@ TEST(FileBrowser, file) {
 
   item = file_browser_get_item(fb, 0);
   ASSERT_EQ(item != NULL, true);
-  ASSERT_STREQ(item->info.name, "a");
-  ASSERT_EQ(item->info.is_reg_file, TRUE);
+  ASSERT_STREQ(item->name, "a");
+  ASSERT_EQ(item->is_reg_file, TRUE);
   ASSERT_EQ(file_browser_remove(fb, "a"), RET_OK);
   ASSERT_EQ(file_browser_refresh(fb), RET_OK);
   ASSERT_EQ(file_browser_get_items_nr(fb), 0);
@@ -98,17 +98,17 @@ TEST(FileBrowser, filter_funcs) {
   fb_item_t item;
   memset(&item, 0x00, sizeof(item));
 
-  strcpy(item.info.name, "test.txt");
-  item.info.is_reg_file = TRUE;
+  strcpy(item.name, "test.txt");
+  item.is_reg_file = TRUE;
   ASSERT_EQ(fb_filter_files_only(NULL, &item), TRUE);
 
-  item.info.is_reg_file = FALSE;
+  item.is_reg_file = FALSE;
   ASSERT_EQ(fb_filter_files_only(NULL, &item), FALSE);
 
-  item.info.is_dir = TRUE;
+  item.is_dir = TRUE;
   ASSERT_EQ(fb_filter_directories_only(NULL, &item), TRUE);
 
-  item.info.is_dir = FALSE;
+  item.is_dir = FALSE;
   ASSERT_EQ(fb_filter_directories_only(NULL, &item), FALSE);
 
   ASSERT_EQ(fb_filter_by_ext_names((void*)".txt", &item), TRUE);
@@ -129,13 +129,13 @@ TEST(FileBrowser, filter) {
   ASSERT_EQ(file_browser_refresh(fb), RET_OK);
   ASSERT_EQ(file_browser_get_items_nr(fb), 1);
   item = file_browser_get_item(fb, 0);
-  ASSERT_EQ(item->info.is_reg_file, TRUE);
+  ASSERT_EQ(item->is_reg_file, TRUE);
 
   ASSERT_EQ(file_browser_set_filter(fb, fb_filter_directories_only, (void*)".txt"), RET_OK);
   ASSERT_EQ(file_browser_refresh(fb), RET_OK);
   ASSERT_EQ(file_browser_get_items_nr(fb), 1);
   item = file_browser_get_item(fb, 0);
-  ASSERT_EQ(item->info.is_dir, TRUE);
+  ASSERT_EQ(item->is_dir, TRUE);
 
   ASSERT_EQ(file_browser_set_filter(fb, NULL, NULL), RET_OK);
   ASSERT_EQ(file_browser_refresh(fb), RET_OK);
