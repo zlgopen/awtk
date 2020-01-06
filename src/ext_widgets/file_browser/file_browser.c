@@ -158,6 +158,19 @@ static ret_t file_browser_remove_item_recursive(file_browser_t* fb, const char* 
   if (st.is_reg_file) {
     return fs_remove_file(fb->fs, fullpath);
   } else if (st.is_dir) {
+    fs_dir_t* dir = fs_open_dir(fb->fs, fullpath);
+    if(dir != NULL) {
+      fs_item_t info;
+      char path[MAX_PATH + 1];
+      while (fs_dir_read(dir, &info) == RET_OK) {
+        ENSURE(path_build(path, MAX_PATH, fullpath, info.name, NULL) == RET_OK);
+        if(file_browser_remove_item_recursive(fb->fs, fullpath) != RET_OK) {
+          log_warn("file_browser_remove_item_recursive failed\n");
+        }
+      }
+      fs_dir_close(dir);
+    }
+
     return fs_remove_dir(fb->fs, fullpath);
   } else {
     assert(!"not supported");
