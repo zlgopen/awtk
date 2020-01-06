@@ -15934,12 +15934,16 @@
         "name": "WINDOW_STAGE_CREATED"
       },
       {
-        "desc": "窗口已经打开(窗口打开动画完成后，处于该状态，直到窗口被关闭)",
+        "desc": "窗口已经打开(窗口打开动画完成后)",
         "name": "WINDOW_STAGE_OPENED"
       },
       {
         "desc": "窗口已关闭。",
         "name": "WINDOW_STAGE_CLOSED"
+      },
+      {
+        "desc": "窗口挂起状态。",
+        "name": "WINDOW_STAGE_SUSPEND"
       }
     ],
     "header": "base/widget_consts.h",
@@ -18393,6 +18397,24 @@
         },
         "desc": "检查控件是否是弹出窗口类型。",
         "name": "widget_is_popup",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回FALSE表示不是，否则表示是。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "检查控件弹出窗口控件是否已经打开了。",
+        "name": "widget_is_opened_popup",
         "return": {
           "type": "bool_t",
           "desc": "返回FALSE表示不是，否则表示是。"
@@ -21510,6 +21532,440 @@
   },
   {
     "type": "class",
+    "methods": [],
+    "events": [],
+    "properties": [],
+    "header": "file_browser/file_browser.h",
+    "desc": "文件或目录的信息。",
+    "name": "fb_item_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建file_browser对象",
+        "name": "file_browser_create",
+        "return": {
+          "type": "file_browser_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "file_browser_t*",
+            "name": "fb",
+            "desc": "file browser对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "cwd",
+            "desc": "当前目录。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置当前目录。",
+        "name": "file_browser_set_cwd",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "file_browser_t*",
+            "name": "fb",
+            "desc": "file browser对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "当前目录下的子目录名。"
+          }
+        ],
+        "annotation": {},
+        "desc": "在当前目录下创建指定子目录。",
+        "name": "file_browser_create_dir",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "file_browser_t*",
+            "name": "fb",
+            "desc": "file browser对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "当前目录下的文件名。"
+          },
+          {
+            "type": "const void*",
+            "name": "buff",
+            "desc": "文件内容。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "文件内容的长度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "在当前目录下创建指定文件。",
+        "name": "file_browser_create_file",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "file_browser_t*",
+            "name": "fb",
+            "desc": "file browser对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "当前目录下的子目录名/文件名。"
+          }
+        ],
+        "annotation": {},
+        "desc": "删除当前目录下的指定子目录或文件。",
+        "name": "file_browser_remove",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "file_browser_t*",
+            "name": "fb",
+            "desc": "file browser对象。"
+          },
+          {
+            "type": "const char**",
+            "name": "names",
+            "desc": "当前目录下的子目录名/文件名(NULL结束)。"
+          }
+        ],
+        "annotation": {},
+        "desc": "拷贝当前目录下的指定子目录。",
+        "name": "file_browser_copy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "file_browser_t*",
+            "name": "fb",
+            "desc": "file browser对象。"
+          },
+          {
+            "type": "const char**",
+            "name": "names",
+            "desc": "当前目录下的子目录名/文件名(NULL结束)。"
+          }
+        ],
+        "annotation": {},
+        "desc": "剪切当前目录下的指定子目录。",
+        "name": "file_browser_cut",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "file_browser_t*",
+            "name": "fb",
+            "desc": "file browser对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "判断是否可以粘贴。",
+        "name": "file_browser_can_paste",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回FALSE表示不可以，否则表示可以。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "file_browser_t*",
+            "name": "fb",
+            "desc": "file browser对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "粘贴。",
+        "name": "file_browser_paste",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "file_browser_t*",
+            "name": "fb",
+            "desc": "file browser对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "dir",
+            "desc": "当前目录下的子目录名。"
+          }
+        ],
+        "annotation": {},
+        "desc": "进入当前目录下的指定子目录。",
+        "name": "file_browser_enter",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "file_browser_t*",
+            "name": "fb",
+            "desc": "file browser对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "返回上一级目录。",
+        "name": "file_browser_up",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "file_browser_t*",
+            "name": "fb",
+            "desc": "file browser对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "刷新。",
+        "name": "file_browser_refresh",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "file_browser_t*",
+            "name": "fb",
+            "desc": "file browser对象。"
+          },
+          {
+            "type": "tk_filter_t",
+            "name": "filter",
+            "desc": "过滤函数。"
+          },
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "过滤函数的上下文。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置过滤函数。",
+        "name": "file_browser_set_filter",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "file_browser_t*",
+            "name": "fb",
+            "desc": "file browser对象。"
+          },
+          {
+            "type": "tk_compare_t",
+            "name": "compare",
+            "desc": "排序用的比较函数。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置排序用的比较函数。",
+        "name": "file_browser_set_compare",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "file_browser_t*",
+            "name": "fb",
+            "desc": "file browser对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "ascending",
+            "desc": "按升序排。"
+          }
+        ],
+        "annotation": {},
+        "desc": "按名称排序。",
+        "name": "file_browser_sort_by_name",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "file_browser_t*",
+            "name": "fb",
+            "desc": "file browser对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "ascending",
+            "desc": "按升序排。"
+          }
+        ],
+        "annotation": {},
+        "desc": "按大小排序。",
+        "name": "file_browser_sort_by_size",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "file_browser_t*",
+            "name": "fb",
+            "desc": "file browser对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "ascending",
+            "desc": "按升序排。"
+          }
+        ],
+        "annotation": {},
+        "desc": "按修改时间排序。",
+        "name": "file_browser_sort_by_mtime",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "file_browser_t*",
+            "name": "fb",
+            "desc": "file browser对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取当前目录下文件项个数。",
+        "name": "file_browser_get_items_nr",
+        "return": {
+          "type": "uint32_t",
+          "desc": "返回当前目录下文件项个数。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "file_browser_t*",
+            "name": "fb",
+            "desc": "file browser对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "index",
+            "desc": "序数。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取指定项序数的项目。",
+        "name": "file_browser_get_item",
+        "return": {
+          "type": "fb_item_t*",
+          "desc": "返回指定项序数的项目。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "file_browser_t*",
+            "name": "fb",
+            "desc": "file browser对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁file_browser对象",
+        "name": "file_browser_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [
+      {
+        "name": "EVT_ITEMS_WILL_CHANGE",
+        "desc": "文件项目改变",
+        "type": "event_t"
+      },
+      {
+        "name": "EVT_PROGRESS",
+        "desc": "进度改变。",
+        "type": "progress_event_t"
+      }
+    ],
+    "properties": [
+      {
+        "name": "cwd",
+        "desc": "当前路径。",
+        "type": "char*"
+      }
+    ],
+    "header": "file_browser/file_browser.h",
+    "desc": "文件浏览器模型。",
+    "name": "file_browser_t",
+    "level": 1
+  },
+  {
+    "type": "class",
     "methods": [
       {
         "params": [
@@ -23693,6 +24149,22 @@
       {
         "params": [
           {
+            "type": "const char* path*",
+            "name": "path",
+            "desc": "路径。"
+          }
+        ],
+        "annotation": {},
+        "desc": "判断路径是否为绝对路径。",
+        "name": "path_is_abs",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回FALSE表示不是绝对路径，否则表示是绝对路径。"
+        }
+      },
+      {
+        "params": [
+          {
             "type": "char*",
             "name": "result",
             "desc": "用于返回路径。"
@@ -25746,8 +26218,16 @@
         }
       },
       {
-        "name": "is_file",
-        "desc": "是否是文件。",
+        "name": "is_link",
+        "desc": "是否是符号链接。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "is_reg_file",
+        "desc": "是否是普通文件。",
         "type": "bool_t",
         "annotation": {
           "readable": true
@@ -26041,6 +26521,27 @@
           }
         ],
         "annotation": {},
+        "desc": "创建目录。",
+        "name": "fs_create_dir",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "fs_t*",
+            "name": "fs",
+            "desc": "文件系统对象，一般赋值为os_fs()。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "目录名称。"
+          }
+        ],
+        "annotation": {},
         "desc": "刪除目录。",
         "name": "fs_remove_dir",
         "return": {
@@ -26129,14 +26630,14 @@
             "desc": "文件名。"
           },
           {
-            "type": "fs_file_stat_t*",
+            "type": "fs_stat_info_t*",
             "name": "fst",
             "desc": "文件状态信息。"
           }
         ],
         "annotation": {},
         "desc": "获取文件信息。",
-        "name": "fs_file_stat",
+        "name": "fs_stat",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -29187,24 +29688,6 @@
     "level": 1
   },
   {
-    "type": "enum",
-    "desc": "缓存不够时丢弃数据的策略。",
-    "consts": [
-      {
-        "desc": "丢弃旧的数据。",
-        "name": "DATA_DISCARD_OLD"
-      },
-      {
-        "desc": "丢弃新的数据。",
-        "name": "DATA_DISCARD_NEW"
-      }
-    ],
-    "header": "misc/ostream_retry.h",
-    "name": "data_discard_policy_t",
-    "prefix": "DATA_DISCARD_",
-    "level": 1
-  },
-  {
     "type": "class",
     "methods": [
       {
@@ -29683,6 +30166,24 @@
     "annotation": {
       "scriptable": true
     },
+    "level": 1
+  },
+  {
+    "type": "enum",
+    "desc": "缓存不够时丢弃数据的策略。",
+    "consts": [
+      {
+        "desc": "丢弃旧的数据。",
+        "name": "DATA_DISCARD_OLD"
+      },
+      {
+        "desc": "丢弃新的数据。",
+        "name": "DATA_DISCARD_NEW"
+      }
+    ],
+    "header": "misc/ostream_retry.h",
+    "name": "data_discard_policy_t",
+    "prefix": "DATA_DISCARD_",
     "level": 1
   },
   {
@@ -33362,6 +33863,24 @@
           "type": "widget_t*",
           "desc": "list_view对象。"
         }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "list_view对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "list_view重新初始化。",
+        "name": "list_view_reinit",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
       }
     ],
     "events": [],
@@ -36945,6 +37464,24 @@
         "return": {
           "type": "bool_t",
           "desc": "返回指针当前是否按下。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "窗口管理器对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "获取当前窗口动画是否正在播放。",
+        "name": "window_manager_is_animating",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回TRUE表示正在播放，FALSE表示没有播放。"
         }
       },
       {
@@ -45227,7 +45764,7 @@
     "events": [],
     "properties": [],
     "header": "window_manager/window_manager_simple.h",
-    "desc": "缺省窗口管理器。",
+    "desc": "简单窗口管理器(不支持窗口动画和对话框高亮策略)。",
     "name": "window_manager_simple_t",
     "parent": "window_manager_t",
     "level": 3
@@ -47386,71 +47923,24 @@
           {
             "type": "int",
             "name": "sock",
-            "desc": "socket。"
+            "desc": "socket."
           }
         ],
         "annotation": {},
-        "desc": "创建istream对象。",
-        "name": "tk_istream_udp_create",
+        "desc": "创建ostream对象。",
+        "name": "tk_ostream_tcp_create",
         "return": {
-          "type": "tk_istream_t*",
-          "desc": "返回istream对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tk_istream_t*",
-            "name": "stream",
-            "desc": "istream对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "host",
-            "desc": "主机或IP。"
-          },
-          {
-            "type": "int",
-            "name": "port",
-            "desc": "端口。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置目标。",
-        "name": "tk_istream_udp_set_target_with_host",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tk_istream_t*",
-            "name": "stream",
-            "desc": "istream对象。"
-          },
-          {
-            "type": "struct sockaddr_in",
-            "name": "addr",
-            "desc": "地址。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置目标。",
-        "name": "tk_istream_udp_set_target_with_addr",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
+          "type": "tk_ostream_t*",
+          "desc": "返回ostream对象。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "inet/istream_udp.h",
-    "desc": "基于UDP实现的输入流。",
-    "name": "tk_istream_udp_t",
-    "parent": "tk_istream_t",
+    "header": "inet/ostream_tcp.h",
+    "desc": "基于TCP实现的输出流。",
+    "name": "tk_ostream_tcp_t",
+    "parent": "tk_ostream_t",
     "level": 4
   },
   {
@@ -47941,24 +48431,71 @@
           {
             "type": "int",
             "name": "sock",
-            "desc": "socket."
+            "desc": "socket。"
           }
         ],
         "annotation": {},
-        "desc": "创建ostream对象。",
-        "name": "tk_ostream_tcp_create",
+        "desc": "创建istream对象。",
+        "name": "tk_istream_udp_create",
         "return": {
-          "type": "tk_ostream_t*",
-          "desc": "返回ostream对象。"
+          "type": "tk_istream_t*",
+          "desc": "返回istream对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_istream_t*",
+            "name": "stream",
+            "desc": "istream对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "host",
+            "desc": "主机或IP。"
+          },
+          {
+            "type": "int",
+            "name": "port",
+            "desc": "端口。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置目标。",
+        "name": "tk_istream_udp_set_target_with_host",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_istream_t*",
+            "name": "stream",
+            "desc": "istream对象。"
+          },
+          {
+            "type": "struct sockaddr_in",
+            "name": "addr",
+            "desc": "地址。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置目标。",
+        "name": "tk_istream_udp_set_target_with_addr",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "inet/ostream_tcp.h",
-    "desc": "基于TCP实现的输出流。",
-    "name": "tk_ostream_tcp_t",
-    "parent": "tk_ostream_t",
+    "header": "inet/istream_udp.h",
+    "desc": "基于UDP实现的输入流。",
+    "name": "tk_istream_udp_t",
+    "parent": "tk_istream_t",
     "level": 4
   }
 ]

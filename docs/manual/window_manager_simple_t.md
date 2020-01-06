@@ -2,7 +2,7 @@
 ### 概述
 ![image](images/window_manager_simple_t_0.png)
 
-缺省窗口管理器。
+简单窗口管理器(不支持窗口动画和对话框高亮策略)。
 ----------------------------------
 ### 函数
 <p id="window_manager_simple_t_methods">

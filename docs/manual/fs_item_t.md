@@ -8,7 +8,8 @@
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#fs_item_t_is_dir">is\_dir</a> | bool\_t | 是否是目录。 |
-| <a href="#fs_item_t_is_file">is\_file</a> | bool\_t | 是否是文件。 |
+| <a href="#fs_item_t_is_link">is\_link</a> | bool\_t | 是否是符号链接。 |
+| <a href="#fs_item_t_is_reg_file">is\_reg\_file</a> | bool\_t | 是否是普通文件。 |
 | <a href="#fs_item_t_name">name</a> | char* | 名称。 |
 #### is\_dir 属性
 -----------------------
@@ -20,9 +21,19 @@
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
-#### is\_file 属性
+#### is\_link 属性
 -----------------------
-> <p id="fs_item_t_is_file">是否是文件。
+> <p id="fs_item_t_is_link">是否是符号链接。
+
+* 类型：bool\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+#### is\_reg\_file 属性
+-----------------------
+> <p id="fs_item_t_is_reg_file">是否是普通文件。
 
 * 类型：bool\_t
 

@@ -13,6 +13,7 @@
 | <a href="#fs_t_file_read_part">file\_read\_part</a> | 从某个位置读取文件。 |
 | <a href="#fs_t_file_remove">file\_remove</a> | 刪除文件。 |
 | <a href="#fs_t_file_write">file\_write</a> | 写入文件。 |
+| <a href="#fs_t_fs_create_dir">fs\_create\_dir</a> | 创建目录。 |
 | <a href="#fs_t_fs_dir_exist">fs\_dir\_exist</a> | 判断目录是否存在。 |
 | <a href="#fs_t_fs_dir_rename">fs\_dir\_rename</a> | 目录重命名。 |
 | <a href="#fs_t_fs_file_close">fs\_file\_close</a> | 关闭文件。 |
@@ -22,7 +23,6 @@
 | <a href="#fs_t_fs_file_read">fs\_file\_read</a> | 读取文件。 |
 | <a href="#fs_t_fs_file_rename">fs\_file\_rename</a> | 文件重命名。 |
 | <a href="#fs_t_fs_file_seek">fs\_file\_seek</a> | 定位读写指针到指定的位置。 |
-| <a href="#fs_t_fs_file_stat">fs\_file\_stat</a> | 获取文件信息。 |
 | <a href="#fs_t_fs_file_truncate">fs\_file\_truncate</a> | 清除文件内容。 |
 | <a href="#fs_t_fs_file_write">fs\_file\_write</a> | 写入文件。 |
 | <a href="#fs_t_fs_get_cwd">fs\_get\_cwd</a> | 获取当前所在目录。 |
@@ -32,6 +32,7 @@
 | <a href="#fs_t_fs_open_file">fs\_open\_file</a> | 打开文件。 |
 | <a href="#fs_t_fs_remove_dir">fs\_remove\_dir</a> | 刪除目录。 |
 | <a href="#fs_t_fs_remove_file">fs\_remove\_file</a> | 刪除文件。 |
+| <a href="#fs_t_fs_stat">fs\_stat</a> | 获取文件信息。 |
 | <a href="#fs_t_os_fs">os\_fs</a> | 获取缺省的文件系统对象。 |
 #### file\_exist 函数
 -----------------------
@@ -153,6 +154,26 @@ ret_t file_write (const char* name, const void* buffer, uint32_t size);
 | name | const char* | 文件名。 |
 | buffer | const void* | 数据缓冲区。 |
 | size | uint32\_t | 数据长度。 |
+#### fs\_create\_dir 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="fs_t_fs_create_dir">创建目录。
+
+* 函数原型：
+
+```
+ret_t fs_create_dir (fs_t* fs, const char* name);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| fs | fs\_t* | 文件系统对象，一般赋值为os\_fs()。 |
+| name | const char* | 目录名称。 |
 #### fs\_dir\_exist 函数
 -----------------------
 
@@ -334,27 +355,6 @@ ret_t fs_file_seek (fs_file_t* file, uint32_t offset);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | file | fs\_file\_t* | 文件对象。 |
 | offset | uint32\_t | 数据长度。 |
-#### fs\_file\_stat 函数
------------------------
-
-* 函数功能：
-
-> <p id="fs_t_fs_file_stat">获取文件信息。
-
-* 函数原型：
-
-```
-ret_t fs_file_stat (fs_t* fs, const char* name, fs_file_stat_t* fst);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| fs | fs\_t* | 文件系统对象，一般赋值为os\_fs()。 |
-| name | const char* | 文件名。 |
-| fst | fs\_file\_stat\_t* | 文件状态信息。 |
 #### fs\_file\_truncate 函数
 -----------------------
 
@@ -536,6 +536,27 @@ ret_t fs_remove_file (fs_t* fs, const char* name);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | fs | fs\_t* | 文件系统对象，一般赋值为os\_fs()。 |
 | name | const char* | 文件名。 |
+#### fs\_stat 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="fs_t_fs_stat">获取文件信息。
+
+* 函数原型：
+
+```
+ret_t fs_stat (fs_t* fs, const char* name, fs_stat_info_t* fst);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| fs | fs\_t* | 文件系统对象，一般赋值为os\_fs()。 |
+| name | const char* | 文件名。 |
+| fst | fs\_stat\_info\_t* | 文件状态信息。 |
 #### os\_fs 函数
 -----------------------
 

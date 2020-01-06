@@ -56,6 +56,7 @@ widget_t* list_view = list_view_create(win, 0, 0, 0, 0);
 | -------- | ------------ | 
 | <a href="#list_view_t_list_view_cast">list\_view\_cast</a> | 转换为list_view对象(供脚本语言使用)。 |
 | <a href="#list_view_t_list_view_create">list\_view\_create</a> | 创建list_view对象 |
+| <a href="#list_view_t_list_view_reinit">list\_view\_reinit</a> | list_view重新初始化。 |
 | <a href="#list_view_t_list_view_set_auto_hide_scroll_bar">list\_view\_set\_auto\_hide\_scroll\_bar</a> | 设置是否自动隐藏滚动条。 |
 | <a href="#list_view_t_list_view_set_default_item_height">list\_view\_set\_default\_item\_height</a> | 设置列表项的缺省高度。 |
 | <a href="#list_view_t_list_view_set_item_height">list\_view\_set\_item\_height</a> | 设置列表项的高度。 |
@@ -109,6 +110,25 @@ widget_t* list_view_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### list\_view\_reinit 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="list_view_t_list_view_reinit">list_view重新初始化。
+
+* 函数原型：
+
+```
+ret_t list_view_reinit (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | list\_view对象。 |
 #### list\_view\_set\_auto\_hide\_scroll\_bar 函数
 -----------------------
 

@@ -16,6 +16,7 @@
 | <a href="#path_t_path_exe">path\_exe</a> | 获取可执行文件所在目录。 |
 | <a href="#path_t_path_exist">path\_exist</a> | 判断目录是否存在。 |
 | <a href="#path_t_path_extname">path\_extname</a> | 返回文件扩展名。 |
+| <a href="#path_t_path_is_abs">path\_is\_abs</a> | 判断路径是否为绝对路径。 |
 | <a href="#path_t_path_normalize">path\_normalize</a> | 规范路径字符形式。 |
 | <a href="#path_t_path_replace_basename">path\_replace\_basename</a> | 替换文件名。 |
 #### path\_abs 函数
@@ -200,6 +201,25 @@ ret_t path_extname (const char* path* path, char* result, uint32_t size);
 | path | const char* path* | 路径。 |
 | result | char* | 用于返回文件扩展名。 |
 | size | uint32\_t | 缓冲区大小。 |
+#### path\_is\_abs 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="path_t_path_is_abs">判断路径是否为绝对路径。
+
+* 函数原型：
+
+```
+ret_t path_is_abs (const char* path* path);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回FALSE表示不是绝对路径，否则表示是绝对路径。 |
+| path | const char* path* | 路径。 |
 #### path\_normalize 函数
 -----------------------
 
