@@ -2072,7 +2072,7 @@ bool_t widget_is_dialog(widget_t* widget);
 bool_t widget_is_popup(widget_t* widget);
 
 /**
- * @method widget_is_popup
+ * @method widget_is_opened_popup
  * 检查控件弹出窗口控件是否已经打开了。
  *
  * @annotation ["scriptable"]
