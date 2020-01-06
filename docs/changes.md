@@ -2,7 +2,10 @@
 
 * 2020/01/05
   * 完善fs接口。
-  
+  * 修改widget_is_opened_popup函数注释（感谢大恒提供补丁）。
+  * list_view增加重复绑定scroll_view和scroll_bar处理（感谢大恒提供补丁）。
+  * 优化list_view按键弹起scroll_bar_m的隐藏处理（感谢大恒提供补丁）。
+
 * 2020/01/03
   * 修复了画圆角矩形边框的 BUG。（感谢智明提供下列补丁）
   * 完善 widget.h 注释（感谢大恒提供补丁）。 

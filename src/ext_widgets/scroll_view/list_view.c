@@ -27,6 +27,7 @@
 #include "scroll_view/scroll_view.h"
 
 static ret_t list_view_on_add_child(widget_t* widget, widget_t* child);
+static ret_t list_view_on_remove_child(widget_t* widget, widget_t* child);
 
 static ret_t list_view_on_paint_self(widget_t* widget, canvas_t* c) {
   return widget_paint_helper(widget, c, NULL, NULL);
@@ -52,9 +53,8 @@ static ret_t list_view_get_prop(widget_t* widget, const char* name, value_t* v) 
 
 static ret_t list_view_on_pointer_up(list_view_t* list_view, pointer_event_t* e) {
   scroll_bar_t* scroll_bar = (scroll_bar_t*)list_view->scroll_bar;
-  if (scroll_bar_is_mobile(list_view->scroll_bar) && scroll_bar->wa_opactiy == NULL &&
-      list_view->scroll_bar->visible) {
-    widget_set_visible(list_view->scroll_bar, FALSE, TRUE);
+  if (scroll_bar != NULL && scroll_bar->wa_opactiy == NULL && list_view->scroll_bar->visible) {
+    scroll_bar_hide_by_opacity_animation(list_view->scroll_bar, 500);
   }
   return RET_OK;
 }
@@ -122,6 +122,7 @@ TK_DECL_VTABLE(list_view) = {.type = WIDGET_TYPE_LIST_VIEW,
                              .get_prop = list_view_get_prop,
                              .on_event = list_view_on_event,
                              .on_add_child = list_view_on_add_child,
+                             .on_remove_child = list_view_on_remove_child,
                              .on_paint_self = list_view_on_paint_self};
 
 static int32_t scroll_bar_to_scroll_view(list_view_t* list_view, int32_t v) {
@@ -222,20 +223,103 @@ static ret_t list_view_on_add_child(widget_t* widget, widget_t* child) {
   return_value_if_fail(list_view != NULL && widget != NULL && child != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(type, WIDGET_TYPE_SCROLL_VIEW)) {
-    scroll_view_t* scroll_view = SCROLL_VIEW(child);
+    scroll_view_t* scroll_view = (scroll_view_t*)list_view->scroll_view;
+
+    if (scroll_view != NULL) {
+      scroll_view->on_scroll = NULL;
+      scroll_view->on_scroll_to = NULL;
+      scroll_view->on_layout_children = NULL;
+    }
 
     list_view->scroll_view = child;
+    scroll_view = SCROLL_VIEW(child);
     scroll_view->on_scroll = list_view_on_scroll_view_scroll;
     scroll_view->on_scroll_to = list_view_on_scroll_view_scroll_to;
     scroll_view->on_layout_children = list_view_on_scroll_view_layout_children;
   } else if (tk_str_eq(type, WIDGET_TYPE_SCROLL_BAR) ||
              tk_str_eq(type, WIDGET_TYPE_SCROLL_BAR_DESKTOP) ||
              tk_str_eq(type, WIDGET_TYPE_SCROLL_BAR_MOBILE)) {
+    if (list_view->scroll_bar != NULL) {
+      widget_off_by_func(list_view->scroll_bar, EVT_VALUE_CHANGED,
+                         list_view_on_scroll_bar_value_changed, widget);
+    }
     list_view->scroll_bar = child;
     widget_on(child, EVT_VALUE_CHANGED, list_view_on_scroll_bar_value_changed, widget);
   }
 
   return RET_CONTINUE;
+}
+
+static ret_t list_view_on_remove_child(widget_t* widget, widget_t* child) {
+  list_view_t* list_view = LIST_VIEW(widget);
+  return_value_if_fail(list_view != NULL && widget != NULL && child != NULL, RET_BAD_PARAMS);
+  if (list_view->scroll_view == child) {
+    scroll_view_t* scroll_view = SCROLL_VIEW(child);
+    scroll_view->on_scroll = NULL;
+    scroll_view->on_scroll_to = NULL;
+    scroll_view->on_layout_children = NULL;
+
+    WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
+    if (iter && iter != child && tk_str_eq(iter->vt->type, WIDGET_TYPE_SCROLL_VIEW)) {
+      list_view->scroll_view = iter;
+      scroll_view->on_scroll = list_view_on_scroll_view_scroll;
+      scroll_view->on_scroll_to = list_view_on_scroll_view_scroll_to;
+      scroll_view->on_layout_children = list_view_on_scroll_view_layout_children;
+      break;
+    }
+    WIDGET_FOR_EACH_CHILD_END();
+  } else if (list_view->scroll_bar == child) {
+    widget_off_by_func(child, EVT_VALUE_CHANGED, list_view_on_scroll_bar_value_changed, widget);
+    WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
+    if (iter && iter != child &&
+        (tk_str_eq(iter->vt->type, WIDGET_TYPE_SCROLL_BAR) ||
+         tk_str_eq(iter->vt->type, WIDGET_TYPE_SCROLL_BAR_DESKTOP) ||
+         tk_str_eq(iter->vt->type, WIDGET_TYPE_SCROLL_BAR_MOBILE))) {
+      list_view->scroll_bar = iter;
+      widget_on(iter, EVT_VALUE_CHANGED, list_view_on_scroll_bar_value_changed, widget);
+      break;
+    }
+    WIDGET_FOR_EACH_CHILD_END();
+  }
+}
+
+ret_t list_view_reinit(widget_t* widget) {
+  list_view_t* list_view = LIST_VIEW(widget);
+  return_value_if_fail(list_view != NULL && widget != NULL, RET_BAD_PARAMS);
+
+  WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
+  if (iter && tk_str_eq(iter->vt->type, WIDGET_TYPE_SCROLL_VIEW)) {
+    if (iter == list_view->scroll_view) break;
+    scroll_view_t* scroll_view = SCROLL_VIEW(list_view->scroll_view);
+    if (scroll_view != NULL) {
+      scroll_view->on_scroll = NULL;
+      scroll_view->on_scroll_to = NULL;
+      scroll_view->on_layout_children = NULL;
+    }
+    list_view->scroll_view = iter;
+    scroll_view->on_scroll = list_view_on_scroll_view_scroll;
+    scroll_view->on_scroll_to = list_view_on_scroll_view_scroll_to;
+    scroll_view->on_layout_children = list_view_on_scroll_view_layout_children;
+    break;
+  }
+  WIDGET_FOR_EACH_CHILD_END();
+
+  WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
+  if (iter && (tk_str_eq(iter->vt->type, WIDGET_TYPE_SCROLL_BAR) ||
+               tk_str_eq(iter->vt->type, WIDGET_TYPE_SCROLL_BAR_DESKTOP) ||
+               tk_str_eq(iter->vt->type, WIDGET_TYPE_SCROLL_BAR_MOBILE))) {
+    if (iter == list_view->scroll_bar) break;
+    if (list_view->scroll_bar != NULL) {
+      widget_off_by_func(list_view->scroll_bar, EVT_VALUE_CHANGED,
+                         list_view_on_scroll_bar_value_changed, widget);
+    }
+    list_view->scroll_bar = iter;
+    widget_on(iter, EVT_VALUE_CHANGED, list_view_on_scroll_bar_value_changed, widget);
+    break;
+  }
+  WIDGET_FOR_EACH_CHILD_END();
+
+  return RET_OK;
 }
 
 widget_t* list_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {

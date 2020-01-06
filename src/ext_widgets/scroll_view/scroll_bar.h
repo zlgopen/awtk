@@ -235,6 +235,8 @@ ret_t scroll_bar_set_value_only(widget_t* widget, int32_t value);
  */
 bool_t scroll_bar_is_mobile(widget_t* widget);
 
+ret_t scroll_bar_hide_by_opacity_animation(widget_t* widget, int32_t duration);
+
 #define SCROLL_BAR(widget) ((scroll_bar_t*)(scroll_bar_cast(WIDGET(widget))))
 
 /*public for subclass and runtime type check*/

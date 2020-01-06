@@ -161,6 +161,16 @@ ret_t list_view_set_auto_hide_scroll_bar(widget_t* widget, bool_t auto_hide_scro
  */
 widget_t* list_view_cast(widget_t* widget);
 
+/**
+ * @method list_view_reinit
+ * list_view重新初始化。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget list_view对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t list_view_reinit(widget_t* widget);
+
 #define LIST_VIEW(widget) ((list_view_t*)(list_view_cast(WIDGET(widget))))
 
 /*public for subclass and runtime type check*/

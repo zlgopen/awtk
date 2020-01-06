@@ -506,15 +506,7 @@ ret_t scroll_bar_scroll_to(widget_t* widget, int32_t value, int32_t duration) {
   widget_invalidate_force(widget, NULL);
 
   if (scroll_bar->value == value) {
-    if (scroll_bar_is_mobile(widget)) {
-      scroll_bar->wa_opactiy =
-          widget_animator_opacity_create(widget, duration, duration, EASING_SIN_INOUT);
-      widget_animator_on(scroll_bar->wa_opactiy, EVT_ANIM_END, scroll_bar_on_opactiy_animate_end,
-                         scroll_bar);
-      widget_animator_opacity_set_params(scroll_bar->wa_opactiy, 0xff, 0);
-      widget_animator_start(scroll_bar->wa_opactiy);
-    }
-
+    scroll_bar_hide_by_opacity_animation(widget, duration);
     return RET_OK;
   }
 
@@ -526,12 +518,7 @@ ret_t scroll_bar_scroll_to(widget_t* widget, int32_t value, int32_t duration) {
                      scroll_bar);
 
   if (scroll_bar_is_mobile(widget)) {
-    scroll_bar->wa_opactiy =
-        widget_animator_opacity_create(widget, duration, duration, EASING_SIN_INOUT);
-    widget_animator_on(scroll_bar->wa_opactiy, EVT_ANIM_END, scroll_bar_on_opactiy_animate_end,
-                       scroll_bar);
-    widget_animator_opacity_set_params(scroll_bar->wa_opactiy, 0xff, 0);
-    widget_animator_start(scroll_bar->wa_opactiy);
+    scroll_bar_hide_by_opacity_animation(widget, duration);
   } else {
     scroll_bar->wa_opactiy = NULL;
   }
@@ -633,4 +620,18 @@ widget_t* scroll_bar_cast(widget_t* widget) {
                        NULL);
 
   return widget;
+}
+
+ret_t scroll_bar_hide_by_opacity_animation(widget_t* widget, int32_t duration) {
+  scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
+  return_value_if_fail(scroll_bar != NULL, RET_BAD_PARAMS);
+  if (scroll_bar_is_mobile(widget)) {
+    scroll_bar->wa_opactiy =
+        widget_animator_opacity_create(widget, duration, duration, EASING_SIN_INOUT);
+    widget_animator_on(scroll_bar->wa_opactiy, EVT_ANIM_END, scroll_bar_on_opactiy_animate_end,
+                       scroll_bar);
+    widget_animator_opacity_set_params(scroll_bar->wa_opactiy, 0xff, 0);
+    widget_animator_start(scroll_bar->wa_opactiy);
+  }
+  return RET_OK;
 }
