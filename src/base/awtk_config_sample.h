@@ -175,4 +175,10 @@
  * #define FRAGMENT_FRAME_BUFFER_SIZE 32 * 1024
  */
 
+/**
+ * 启用widget类型检查，请定义本宏(除非编译器不支持，否则请定义它)。
+ *
+ * #define WITH_WIDGET_TYPE_CHECK 1
+ */
+
 #endif /*AWTK_CONFIG_H*/
