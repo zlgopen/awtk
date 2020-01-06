@@ -603,7 +603,6 @@ ret_t bitmap_mono_set_pixel(uint8_t* buff, uint32_t w, uint32_t h, uint32_t x, u
   return_value_if_fail(buff != NULL, RET_BAD_PARAMS);
   return_value_if_fail(x < w && y < h, RET_BAD_PARAMS);
 
-
   if (pixel) {
     *data |= (1 << offset_bit);
   } else {
@@ -619,7 +618,6 @@ bool_t bitmap_mono_get_pixel(const uint8_t* buff, uint32_t w, uint32_t h, uint32
   uint32_t offset_bit = BIT_OFFSET(x);
   return_value_if_fail(buff != NULL, FALSE);
   return_value_if_fail(x < w && y < h, FALSE);
-
 
   return (*data >> offset_bit) & 0x1;
 }

@@ -180,7 +180,7 @@ ret_t path_abs(const char* path, char* result, int32_t size) {
   char cwd[MAX_PATH + 1];
   return_value_if_fail(path != NULL && result != NULL && strlen(path) < size, RET_BAD_PARAMS);
 
-  if(path_is_abs(path)) {
+  if (path_is_abs(path)) {
     tk_strncpy(result, path, size);
 
     return RET_OK;
