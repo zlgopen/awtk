@@ -79,7 +79,7 @@ TEST(FileBrowser, enter_up) {
   ASSERT_EQ(file_browser_create_file(fb, "b.txt", "hello", 5), RET_OK);
   ASSERT_EQ(file_browser_refresh(fb), RET_OK);
   ASSERT_EQ(file_browser_get_items_nr(fb), 2);
-  
+
   ASSERT_EQ(file_browser_remove(fb, "b"), RET_OK);
   ASSERT_EQ(file_browser_remove(fb, "b.txt"), RET_OK);
   ASSERT_EQ(file_browser_up(fb), RET_OK);
@@ -101,13 +101,13 @@ TEST(FileBrowser, filter_funcs) {
   strcpy(item.info.name, "test.txt");
   item.info.is_reg_file = TRUE;
   ASSERT_EQ(fb_filter_files_only(NULL, &item), TRUE);
-  
+
   item.info.is_reg_file = FALSE;
   ASSERT_EQ(fb_filter_files_only(NULL, &item), FALSE);
 
   item.info.is_dir = TRUE;
   ASSERT_EQ(fb_filter_directories_only(NULL, &item), TRUE);
-  
+
   item.info.is_dir = FALSE;
   ASSERT_EQ(fb_filter_directories_only(NULL, &item), FALSE);
 
@@ -130,7 +130,7 @@ TEST(FileBrowser, filter) {
   ASSERT_EQ(file_browser_get_items_nr(fb), 1);
   item = file_browser_get_item(fb, 0);
   ASSERT_EQ(item->info.is_reg_file, TRUE);
-  
+
   ASSERT_EQ(file_browser_set_filter(fb, fb_filter_directories_only, (void*)".txt"), RET_OK);
   ASSERT_EQ(file_browser_refresh(fb), RET_OK);
   ASSERT_EQ(file_browser_get_items_nr(fb), 1);

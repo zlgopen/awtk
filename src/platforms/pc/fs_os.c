@@ -392,7 +392,7 @@ static ret_t fs_os_get_cwd(fs_t* fs, char path[MAX_PATH + 1]) {
   return RET_OK;
 }
 
-ret_t fs_os_get_file_stat(fs_t* fs, const char* name, fs_file_stat_t* fst) {
+ret_t fs_os_stat(fs_t* fs, const char* name, fs_stat_info_t* fst) {
   (void)fs;
   return_value_if_fail(name != NULL && fst != NULL, RET_BAD_PARAMS);
 
@@ -451,7 +451,7 @@ static const fs_t s_os_fs = {.open_file = fs_os_open_file,
                              .get_disk_info = fs_os_get_disk_info,
                              .get_cwd = fs_os_get_cwd,
                              .get_exe = fs_os_get_exe,
-                             .get_file_stat = fs_os_get_file_stat};
+                             .stat = fs_os_stat};
 
 fs_t* os_fs(void) {
   return (fs_t*)&s_os_fs;

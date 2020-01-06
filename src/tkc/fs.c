@@ -171,10 +171,10 @@ int32_t file_get_size(const char* name) {
   return fs_get_file_size(os_fs(), name);
 }
 
-ret_t fs_file_stat(fs_t* fs, const char* name, fs_file_stat_t* fst) {
-  return_value_if_fail(fs != NULL && fs->get_file_stat != NULL && name != NULL, RET_BAD_PARAMS);
+ret_t fs_stat(fs_t* fs, const char* name, fs_stat_info_t* fst) {
+  return_value_if_fail(fs != NULL && fs->stat != NULL && name != NULL, RET_BAD_PARAMS);
 
-  return fs->get_file_stat(fs, name, fst);
+  return fs->stat(fs, name, fst);
 }
 
 int32_t file_read_part(const char* name, void* buff, uint32_t size, uint32_t offset) {

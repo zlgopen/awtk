@@ -76,7 +76,7 @@ struct _fs_file_t {
  * 文件状态信息。
  *
  */
-typedef struct _fs_file_stat_t {
+typedef struct _fs_stat_info_t {
   uint32_t dev;
   uint16_t ino;
   uint16_t mode;
@@ -91,7 +91,7 @@ typedef struct _fs_file_stat_t {
   bool_t is_dir;
   bool_t is_link;
   bool_t is_reg_file;
-} fs_file_stat_t;
+} fs_stat_info_t;
 
 /**
  * @method fs_file_read
@@ -280,7 +280,7 @@ typedef ret_t (*fs_get_disk_info_t)(fs_t* fs, const char* volume, int32_t* free_
                                     int32_t* total_kb);
 typedef ret_t (*fs_get_exe_t)(fs_t* fs, char path[MAX_PATH + 1]);
 typedef ret_t (*fs_get_cwd_t)(fs_t* fs, char path[MAX_PATH + 1]);
-typedef ret_t (*fs_get_file_stat_t)(fs_t* fs, const char* name, fs_file_stat_t* fst);
+typedef ret_t (*fs_stat_t)(fs_t* fs, const char* name, fs_stat_info_t* fst);
 
 /**
  * @class fs_t
@@ -304,7 +304,7 @@ struct _fs_t {
   fs_get_disk_info_t get_disk_info;
   fs_get_cwd_t get_cwd;
   fs_get_exe_t get_exe;
-  fs_get_file_stat_t get_file_stat;
+  fs_stat_t stat;
 };
 
 /**
@@ -433,17 +433,17 @@ int32_t fs_get_file_size(fs_t* fs, const char* name);
 ret_t fs_get_disk_info(fs_t* fs, const char* volume, int32_t* free_kb, int32_t* total_kb);
 
 /**
- * @method fs_file_stat
+ * @method fs_stat
  *
  * 获取文件信息。
  *
  * @param {fs_t*} fs 文件系统对象，一般赋值为os_fs()。
  * @param {const char*} name 文件名。
- * @param {fs_file_stat_t*} fst 文件状态信息。
+ * @param {fs_stat_info_t*} fst 文件状态信息。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t fs_file_stat(fs_t* fs, const char* name, fs_file_stat_t* fst);
+ret_t fs_stat(fs_t* fs, const char* name, fs_stat_info_t* fst);
 
 /**
  * @method fs_get_exe

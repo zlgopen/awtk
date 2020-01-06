@@ -35,7 +35,7 @@ BEGIN_C_DECLS
  */
 typedef struct _fb_item_t {
   fs_item_t info;
-  fs_file_stat_t stat;
+  fs_stat_info_t stat;
 } fb_item_t;
 
 /**

@@ -146,9 +146,17 @@ ret_t file_browser_create_file(file_browser_t* fb, const char* name, const void*
 }
 
 static ret_t file_browser_remove_item_recursive(file_browser_t* fb, const char* fullpath) {
-  fs_file_stat_t st;
+  fs_stat_info_t st;
+  return_value_if_fail(fs_stat(fb->fs, fullpath, &st) == RET_OK, RET_BAD_PARAMS);
 
-  return fs_remove_dir(fb->fs, fullpath);
+  if (st.is_reg_file) {
+    return fs_remove_file(fb->fs, fullpath);
+  } else if (st.is_dir) {
+    return fs_remove_dir(fb->fs, fullpath);
+  } else {
+    assert(!"not supported");
+    return RET_NOT_IMPL;
+  }
 }
 
 ret_t file_browser_remove(file_browser_t* fb, const char* name) {
@@ -236,7 +244,7 @@ ret_t file_browser_refresh(file_browser_t* fb) {
       continue;
     }
 
-    if(fb->filter != NULL && fb->filter(fb->filter_ctx, &info) == FALSE) {
+    if (fb->filter != NULL && fb->filter(fb->filter_ctx, &info) == FALSE) {
       continue;
     }
 
@@ -375,13 +383,13 @@ ret_t file_browser_destroy(file_browser_t* fb) {
 
 bool_t fb_filter_files_only(void* ctx, const void* data) {
   fs_item_t* item = (fs_item_t*)data;
-  
+
   return item->is_reg_file;
 }
 
 bool_t fb_filter_directories_only(void* ctx, const void* data) {
   fs_item_t* item = (fs_item_t*)data;
-  
+
   return item->is_dir;
 }
 
@@ -390,14 +398,13 @@ bool_t fb_filter_by_ext_names(void* ctx, const void* data) {
   const char* ext_names = (const char*)ctx;
   const char* p = strrchr(item->name, '.');
 
-  if(ext_names == NULL) {
+  if (ext_names == NULL) {
     return TRUE;
   }
 
-  if(p == NULL) {
+  if (p == NULL) {
     return FALSE;
   }
 
   return strstr(ext_names, p) != NULL;
 }
-

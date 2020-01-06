@@ -49,15 +49,15 @@ void exit_if_need_not_update(const char* in, const char* out) {
   }
 
   ret_t rt = RET_OK;
-  fs_file_stat_t fst_in;
-  fs_file_stat_t fst_out;
+  fs_stat_info_t fst_in;
+  fs_stat_info_t fst_out;
 
-  rt = fs_file_stat(os_fs(), in, &fst_in);
+  rt = fs_stat(os_fs(), in, &fst_in);
   if (rt != RET_OK) {
     log_debug("get \"%s\" filetime failed\n", in);
     exit(-1);
   }
-  rt = fs_file_stat(os_fs(), out, &fst_out);
+  rt = fs_stat(os_fs(), out, &fst_out);
   if (rt != RET_OK) {
     log_debug("get \"%s\" filetime failed\n", out);
     exit(-1);
@@ -73,8 +73,8 @@ void exit_if_need_not_update_for_infiles(const char* out, int infiles_number, ..
   int i = 0;
   va_list va;
   ret_t rt = RET_OK;
-  fs_file_stat_t st_in;
-  fs_file_stat_t st_out;
+  fs_stat_info_t st_in;
+  fs_stat_info_t st_out;
   bool_t is_not_need_update = TRUE;
 
   if (out == NULL) {
@@ -86,7 +86,7 @@ void exit_if_need_not_update_for_infiles(const char* out, int infiles_number, ..
     return;
   }
 
-  rt = fs_file_stat(os_fs(), out, &st_out);
+  rt = fs_stat(os_fs(), out, &st_out);
   if (rt != RET_OK) {
     log_debug("get \"%s\" filetime failed\n", out);
     exit(-1);
@@ -107,7 +107,7 @@ void exit_if_need_not_update_for_infiles(const char* out, int infiles_number, ..
       break;
     }
 
-    rt = fs_file_stat(os_fs(), in, &st_in);
+    rt = fs_stat(os_fs(), in, &st_in);
     if (rt != RET_OK) {
       log_debug("get \"%s\" filetime failed\n", in);
       exit(-1);
