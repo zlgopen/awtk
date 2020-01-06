@@ -84,7 +84,8 @@ ret_t fs_os_dir_read(fs_dir_t* dir, fs_item_t* item) {
   if (ent != NULL) {
     uint8_t type = ent->d_type;
     item->is_dir = (type & DT_DIR) != 0;
-    item->is_file = (type & DT_REG) != 0;
+    item->is_link = (type & DT_LNK) != 0;
+    item->is_reg_file = (type & DT_REG) != 0;
 #ifdef WIN32
     int16_t len = 0;
     char* name = NULL;
@@ -427,6 +428,9 @@ ret_t fs_os_get_file_stat(fs_t* fs, const char* name, fs_file_stat_t* fst) {
     fst->atime = st.st_atime;
     fst->mtime = st.st_mtime;
     fst->ctime = st.st_ctime;
+    fst->is_dir = S_ISDIR(st.st_mode);
+    fst->is_link = S_ISLNK(st.st_mode);
+    fst->is_reg_file = S_ISREG(st.st_mode);
   }
 
   return RET_OK;

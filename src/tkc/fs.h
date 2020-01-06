@@ -88,6 +88,9 @@ typedef struct _fs_file_stat_t {
   uint64_t atime;
   uint64_t mtime;
   uint64_t ctime;
+  bool_t is_dir;
+  bool_t is_link;
+  bool_t is_reg_file;
 } fs_file_stat_t;
 
 /**
@@ -185,11 +188,17 @@ typedef struct _fs_item_t {
    */
   bool_t is_dir;
   /**
-   * @property {bool_t} is_file
+   * @property {bool_t} is_link
    * @annotation ["readable"]
-   * 是否是文件。
+   * 是否是符号链接。
    */
-  bool_t is_file;
+  bool_t is_link;
+  /**
+   * @property {bool_t} is_reg_file
+   * @annotation ["readable"]
+   * 是否是普通文件。
+   */
+  bool_t is_reg_file;
   /**
    * @property {char*} name
    * @annotation ["readable"]
