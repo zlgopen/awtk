@@ -1330,9 +1330,6 @@ ret_t widget_stroke_border_rect(widget_t* widget, canvas_t* c, rect_t* r) {
   uint32_t border_width = style_get_int(style, STYLE_ID_BORDER_WIDTH, 1);
 
   if (bd.rgba.a) {
-    wh_t w = r->w;
-    wh_t h = r->h;
-
     canvas_set_stroke_color(c, bd);
     if (radius > 3) {
       if (border == BORDER_ALL) {
