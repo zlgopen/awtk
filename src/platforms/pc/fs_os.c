@@ -271,7 +271,7 @@ ret_t fs_os_remove_dir(fs_t* fs, const char* name) {
   if (rmdir(name) == 0) {
     return RET_OK;
   } else {
-    perror("rmdir");
+    perror(name);
     return RET_FAIL;
   }
 }
@@ -281,7 +281,7 @@ ret_t fs_os_create_dir(fs_t* fs, const char* name) {
   if (mkdir(name, 0755) == 0) {
     return RET_OK;
   } else {
-    perror("mkdir");
+    perror(name);
     return RET_FAIL;
   }
 }

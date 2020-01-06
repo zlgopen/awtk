@@ -1,6 +1,17 @@
 ﻿#include "gtest/gtest.h"
 #include "ext_widgets/file_browser/file_browser.h"
 
+TEST(FileBrowser, prepare) {
+  file_browser_t* fb = file_browser_create(os_fs());
+  ASSERT_EQ(file_browser_set_cwd(fb, "./tests"), RET_OK);
+  ASSERT_EQ(file_browser_refresh(fb), RET_OK);
+  file_browser_remove(fb, "fbtest");
+  ASSERT_EQ(file_browser_refresh(fb), RET_OK);
+
+  file_browser_create_dir(fb, "fbtest");
+  file_browser_destroy(fb);
+}
+
 TEST(FileBrowser, dir) {
   fb_item_t* item = NULL;
   file_browser_t* fb = file_browser_create(os_fs());
