@@ -298,9 +298,17 @@ fb_item_t* file_browser_get_item(file_browser_t* fb, uint32_t index);
  */
 ret_t file_browser_destroy(file_browser_t* fb);
 
+/*public for test*/
 bool_t fb_filter_files_only(void* ctx, const void* data);
 bool_t fb_filter_directories_only(void* ctx, const void* data);
 bool_t fb_filter_by_ext_names(void* ctx, const void* data);
+
+int fb_compare_by_name(const void* a, const void* b);
+int fb_compare_by_size(const void* a, const void* b);
+int fb_compare_by_mtime(const void* a, const void* b);
+int fb_compare_by_name_dec(const void* a, const void* b);
+int fb_compare_by_size_dec(const void* a, const void* b);
+int fb_compare_by_mtime_dec(const void* a, const void* b);
 
 END_C_DECLS
 

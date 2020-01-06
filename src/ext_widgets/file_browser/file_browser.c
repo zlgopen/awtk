@@ -24,6 +24,8 @@
 #include "tkc/utils.h"
 #include "ext_widgets/file_browser/file_browser.h"
 
+static ret_t file_browser_sort(file_browser_t* fb);
+
 static ret_t file_browser_extend_items(file_browser_t* fb, uint32_t capacity) {
   fb_item_t* items = NULL;
   return_value_if_fail(fb != NULL, RET_BAD_PARAMS);
@@ -34,8 +36,12 @@ static ret_t file_browser_extend_items(file_browser_t* fb, uint32_t capacity) {
 
   items = TKMEM_REALLOC(fb->items, capacity * sizeof(fb_item_t));
   if (items != NULL) {
+    uint32_t delta = capacity - fb->items_capacity;
+
     fb->items = items;
     fb->items_capacity = capacity;
+
+    memset(items + fb->items_size, 0x00, delta * sizeof(fb_item_t));
 
     return RET_OK;
   } else {
@@ -252,7 +258,7 @@ ret_t file_browser_refresh(file_browser_t* fb) {
     if (fb->filter != NULL && fb->filter(fb->filter_ctx, &info) == FALSE) {
       continue;
     }
-    
+
     path_build(fullpath, MAX_PATH, fb->cwd, info.name, NULL);
     return_value_if_fail(fs_stat(os_fs(), fullpath, &st) == RET_OK, RET_FAIL);
 
@@ -267,8 +273,9 @@ ret_t file_browser_refresh(file_browser_t* fb) {
     iter->is_reg_file = info.is_reg_file;
     iter->name = tk_str_copy(iter->name, info.name);
   }
-
   fs_dir_close(dir);
+
+  file_browser_sort(fb);
 
   return RET_OK;
 }
@@ -316,39 +323,122 @@ ret_t file_browser_set_compare(file_browser_t* fb, tk_compare_t compare) {
   return RET_OK;
 }
 
-static int compare_by_name(const void* a, const void* b) {
-  return 0;
+int fb_compare_by_name(const void* a, const void* b) {
+  fb_item_t* aa = (fb_item_t*)a;
+  fb_item_t* bb = (fb_item_t*)b;
+
+  if ((aa->is_reg_file && bb->is_reg_file) || (aa->is_dir && bb->is_dir)) {
+    return strcmp(aa->name, bb->name);
+  }
+
+  if (aa->is_dir) {
+    return -1;
+  } else if (bb->is_dir) {
+    return 1;
+  } else {
+    return 0;
+  }
 }
 
-static int compare_by_size(const void* a, const void* b) {
-  return 0;
+int fb_compare_by_size(const void* a, const void* b) {
+  fb_item_t* aa = (fb_item_t*)a;
+  fb_item_t* bb = (fb_item_t*)b;
+
+  if ((aa->is_reg_file && bb->is_reg_file) || (aa->is_dir && bb->is_dir)) {
+    return aa->size - bb->size;
+  }
+
+  if (aa->is_dir) {
+    return -1;
+  } else if (bb->is_dir) {
+    return 1;
+  } else {
+    return 0;
+  }
 }
 
-static int compare_by_mtime(const void* a, const void* b) {
-  return 0;
+int fb_compare_by_mtime(const void* a, const void* b) {
+  fb_item_t* aa = (fb_item_t*)a;
+  fb_item_t* bb = (fb_item_t*)b;
+
+  if ((aa->is_reg_file && bb->is_reg_file) || (aa->is_dir && bb->is_dir)) {
+    return aa->mtime - bb->mtime;
+  }
+
+  if (aa->is_dir) {
+    return -1;
+  } else if (bb->is_dir) {
+    return 1;
+  } else {
+    return 0;
+  }
 }
 
-static int compare_by_name_dec(const void* a, const void* b) {
-  return 0;
+int fb_compare_by_name_dec(const void* a, const void* b) {
+  fb_item_t* aa = (fb_item_t*)a;
+  fb_item_t* bb = (fb_item_t*)b;
+
+  if ((aa->is_reg_file && bb->is_reg_file) || (aa->is_dir && bb->is_dir)) {
+    return -strcmp(aa->name, bb->name);
+  }
+
+  if (aa->is_dir) {
+    return -1;
+  } else if (bb->is_dir) {
+    return 1;
+  } else {
+    return 0;
+  }
 }
 
-static int compare_by_size_dec(const void* a, const void* b) {
-  return 0;
+int fb_compare_by_size_dec(const void* a, const void* b) {
+  fb_item_t* aa = (fb_item_t*)a;
+  fb_item_t* bb = (fb_item_t*)b;
+
+  if ((aa->is_reg_file && bb->is_reg_file) || (aa->is_dir && bb->is_dir)) {
+    return bb->size - aa->size;
+  }
+
+  if (aa->is_dir) {
+    return -1;
+  } else if (bb->is_dir) {
+    return 1;
+  } else {
+    return 0;
+  }
 }
 
-static int compare_by_mtime_dec(const void* a, const void* b) {
-  return 0;
+int fb_compare_by_mtime_dec(const void* a, const void* b) {
+  fb_item_t* aa = (fb_item_t*)a;
+  fb_item_t* bb = (fb_item_t*)b;
+
+  if ((aa->is_reg_file && bb->is_reg_file) || (aa->is_dir && bb->is_dir)) {
+    return bb->mtime - aa->mtime;
+  }
+
+  if (aa->is_dir) {
+    return -1;
+  } else if (bb->is_dir) {
+    return 1;
+  } else {
+    return 0;
+  }
 }
 
-ret_t file_browser_sort(file_browser_t* fb) {
-  /*TODO*/
+static ret_t file_browser_sort(file_browser_t* fb) {
+  return_value_if_fail(fb != NULL, RET_BAD_PARAMS);
+
+  if (fb->compare != NULL && fb->items_size > 1) {
+    qsort(fb->items, fb->items_size, sizeof(fb_item_t), fb->compare);
+  }
+
   return RET_OK;
 }
 
 ret_t file_browser_sort_by_name(file_browser_t* fb, bool_t ascending) {
   return_value_if_fail(fb != NULL, RET_BAD_PARAMS);
 
-  fb->compare = ascending ? compare_by_name : compare_by_name_dec;
+  fb->compare = ascending ? fb_compare_by_name : fb_compare_by_name_dec;
 
   return file_browser_sort(fb);
 }
@@ -356,7 +446,7 @@ ret_t file_browser_sort_by_name(file_browser_t* fb, bool_t ascending) {
 ret_t file_browser_sort_by_size(file_browser_t* fb, bool_t ascending) {
   return_value_if_fail(fb != NULL, RET_BAD_PARAMS);
 
-  fb->compare = ascending ? compare_by_size : compare_by_size_dec;
+  fb->compare = ascending ? fb_compare_by_size : fb_compare_by_size_dec;
 
   return file_browser_sort(fb);
 }
@@ -364,7 +454,7 @@ ret_t file_browser_sort_by_size(file_browser_t* fb, bool_t ascending) {
 ret_t file_browser_sort_by_mtime(file_browser_t* fb, bool_t ascending) {
   return_value_if_fail(fb != NULL, RET_BAD_PARAMS);
 
-  fb->compare = ascending ? compare_by_mtime : compare_by_mtime_dec;
+  fb->compare = ascending ? fb_compare_by_mtime : fb_compare_by_mtime_dec;
 
   return file_browser_sort(fb);
 }

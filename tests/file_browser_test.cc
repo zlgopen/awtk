@@ -95,7 +95,7 @@ TEST(FileBrowser, enter_up) {
 }
 
 TEST(FileBrowser, filter_funcs) {
-  fb_item_t item;
+  fs_item_t item;
   memset(&item, 0x00, sizeof(item));
 
   strcpy(item.name, "test.txt");
@@ -145,4 +145,64 @@ TEST(FileBrowser, filter) {
   ASSERT_EQ(file_browser_get_items_nr(fb), 0);
 
   file_browser_destroy(fb);
+}
+
+static void file_browser_prepare(file_browser_t* fb) {
+  ASSERT_EQ(file_browser_set_cwd(fb, "./tests/fbtest"), RET_OK);
+  ASSERT_EQ(file_browser_create_file(fb, "a.txt", "aaa", 3), RET_OK);
+  ASSERT_EQ(file_browser_create_file(fb, "c.txt", "ccccc", 5), RET_OK);
+  ASSERT_EQ(file_browser_create_file(fb, "d.txt", "dddddd", 6), RET_OK);
+  ASSERT_EQ(file_browser_create_file(fb, "b.txt", "bbbb", 4), RET_OK);
+  ASSERT_EQ(file_browser_create_dir(fb, "dir2"), RET_OK);
+  ASSERT_EQ(file_browser_create_dir(fb, "dir1"), RET_OK);
+  ASSERT_EQ(file_browser_refresh(fb), RET_OK);
+  ASSERT_EQ(file_browser_get_items_nr(fb), 6);
+}
+
+static void file_browser_cleanup(file_browser_t* fb) {
+  ASSERT_EQ(file_browser_remove(fb, "a.txt"), RET_OK);
+  ASSERT_EQ(file_browser_remove(fb, "b.txt"), RET_OK);
+  ASSERT_EQ(file_browser_remove(fb, "c.txt"), RET_OK);
+  ASSERT_EQ(file_browser_remove(fb, "d.txt"), RET_OK);
+  ASSERT_EQ(file_browser_remove(fb, "dir1"), RET_OK);
+  ASSERT_EQ(file_browser_remove(fb, "dir2"), RET_OK);
+  ASSERT_EQ(file_browser_refresh(fb), RET_OK);
+  ASSERT_EQ(file_browser_get_items_nr(fb), 0);
+  file_browser_destroy(fb);
+}
+
+TEST(FileBrowser, sort_by_name) {
+  fb_item_t* iter = NULL;
+  file_browser_t* fb = file_browser_create(os_fs());
+  file_browser_prepare(fb);
+
+  ASSERT_EQ(file_browser_sort_by_name(fb, TRUE), RET_OK);
+  iter = file_browser_get_item(fb, 0);
+  ASSERT_STREQ(iter->name, "dir1");
+  iter = file_browser_get_item(fb, 1);
+  ASSERT_STREQ(iter->name, "dir2");
+  iter = file_browser_get_item(fb, 2);
+  ASSERT_STREQ(iter->name, "a.txt");
+  iter = file_browser_get_item(fb, 3);
+  ASSERT_STREQ(iter->name, "b.txt");
+  iter = file_browser_get_item(fb, 4);
+  ASSERT_STREQ(iter->name, "c.txt");
+  iter = file_browser_get_item(fb, 5);
+  ASSERT_STREQ(iter->name, "d.txt");
+
+  ASSERT_EQ(file_browser_sort_by_name(fb, FALSE), RET_OK);
+  iter = file_browser_get_item(fb, 0);
+  ASSERT_STREQ(iter->name, "dir2");
+  iter = file_browser_get_item(fb, 1);
+  ASSERT_STREQ(iter->name, "dir1");
+  iter = file_browser_get_item(fb, 2);
+  ASSERT_STREQ(iter->name, "d.txt");
+  iter = file_browser_get_item(fb, 3);
+  ASSERT_STREQ(iter->name, "c.txt");
+  iter = file_browser_get_item(fb, 4);
+  ASSERT_STREQ(iter->name, "b.txt");
+  iter = file_browser_get_item(fb, 5);
+  ASSERT_STREQ(iter->name, "a.txt");
+
+  file_browser_cleanup(fb);
 }

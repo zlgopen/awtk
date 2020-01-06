@@ -429,11 +429,11 @@ ret_t fs_os_stat(fs_t* fs, const char* name, fs_stat_info_t* fst) {
     fst->mtime = st.st_mtime;
     fst->ctime = st.st_ctime;
     fst->is_dir = st.st_mode & S_IFDIR;
-#ifdef S_IFLNK    
+#ifdef S_IFLNK
     fst->is_link = st.st_mode & S_IFLNK;
 #else
     fst->is_link = FALSE;
-#endif/*S_IFLNK*/
+#endif /*S_IFLNK*/
     fst->is_reg_file = st.st_mode & S_IFREG;
   }
 
