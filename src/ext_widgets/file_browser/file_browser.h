@@ -59,6 +59,7 @@ typedef struct _file_browser_t {
 
   tk_filter_t filter;
   tk_compare_t compare;
+  void* filter_ctx;
 
   bool_t cut;
   wbuffer_t copy_items;
@@ -210,10 +211,11 @@ ret_t file_browser_refresh(file_browser_t* fb);
  * 
  * @param {file_browser_t*} fb file browser对象。
  * @param {tk_filter_t} filter 过滤函数。
+ * @param {void*} ctx 过滤函数的上下文。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t file_browser_set_filter(file_browser_t* fb, tk_filter_t filter);
+ret_t file_browser_set_filter(file_browser_t* fb, tk_filter_t filter, void* ctx);
 
 /**
  * @method file_browser_set_compare
@@ -289,6 +291,10 @@ fb_item_t* file_browser_get_item(file_browser_t* fb, uint32_t index);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t file_browser_destroy(file_browser_t* fb);
+
+bool_t fb_filter_files_only(void* ctx, const void* data);
+bool_t fb_filter_directories_only(void* ctx, const void* data);
+bool_t fb_filter_by_ext_names(void* ctx, const void* data);
 
 END_C_DECLS
 
