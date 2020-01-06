@@ -3216,7 +3216,6 @@ bool_t widget_is_instance_of(widget_t* widget, const widget_vtable_t* vt) {
   return_value_if_fail(widget != NULL && vt != NULL, FALSE);
 
   iter = widget->vt;
-
   while (iter != NULL) {
     if (iter == vt) {
       return TRUE;
@@ -3227,7 +3226,6 @@ bool_t widget_is_instance_of(widget_t* widget, const widget_vtable_t* vt) {
 #ifdef WITH_WIDGET_TYPE_CHECK
   return FALSE;
 #else
-  log_warn("%s is not instance of %s\n", widget->vt->type, vt->type);
   return TRUE;
 #endif /*WITH_WIDGET_TYPE_CHECK*/
 }
