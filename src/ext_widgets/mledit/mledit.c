@@ -309,7 +309,6 @@ static ret_t mledit_pointer_up_cleanup(widget_t* widget) {
   mledit_t* mledit = MLEDIT(widget);
   return_value_if_fail(mledit != NULL && widget != NULL, RET_BAD_PARAMS);
 
-  widget->focused = FALSE;
   widget_ungrab(widget->parent, widget);
   widget_set_state(widget, WIDGET_STATE_NORMAL);
 
