@@ -110,7 +110,8 @@ struct dirent* readdir(DIR* d) {
   d->ret.d_namlen = wcslen(d->ret.d_name);
 
   d->ret.d_type = 0;
-  if ((fd.dwFileAttributes & FILE_ATTRIBUTE_NORMAL) || (fd.dwFileAttributes & FILE_ATTRIBUTE_ARCHIVE)) {
+  if ((fd.dwFileAttributes & FILE_ATTRIBUTE_NORMAL) ||
+      (fd.dwFileAttributes & FILE_ATTRIBUTE_ARCHIVE)) {
     d->ret.d_type |= DT_REG;
   }
 

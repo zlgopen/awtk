@@ -246,8 +246,8 @@ ret_t file_browser_paste(file_browser_t* fb) {
   while (rbuffer_read_string(&rb, &name) == RET_OK) {
     if (file_browser_copy_item(fb, src, fb->cwd, name) != RET_OK) {
       return RET_FAIL;
-    } 
-    
+    }
+
     if (fb->cut) {
       return_value_if_fail(path_build(fullpath, MAX_PATH, src, name, NULL) == RET_OK, RET_FAIL);
       file_browser_remove_item_recursive(fb, fullpath);

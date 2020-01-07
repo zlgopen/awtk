@@ -412,8 +412,10 @@ static ret_t window_manager_dispatch_window_open(widget_t* curr_win) {
 static ret_t window_manager_idle_dispatch_window_open(const idle_info_t* info) {
   widget_t* curr_win = WIDGET(info->ctx);
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(curr_win->parent);
-  wm->ready_animator = FALSE;
-  window_manager_dispatch_window_open(curr_win);
+  if (wm != NULL) {
+    wm->ready_animator = FALSE;
+    window_manager_dispatch_window_open(curr_win);
+  }
 
   return RET_REMOVE;
 }
@@ -810,7 +812,7 @@ static ret_t window_manager_default_paint(widget_t* widget) {
 #ifdef WITH_WINDOW_ANIMATORS
   if (wm->animator != NULL) {
     ret = window_manager_paint_animation(widget, c);
-  } else if(!wm->ready_animator) {
+  } else if (!wm->ready_animator) {
     ret = window_manager_paint_normal(widget, c);
   }
 #else

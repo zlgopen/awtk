@@ -574,7 +574,7 @@ static void widget_draw_fill_rounded_rect(canvas_t* c, rect_t* r, color_t* color
 
   vgcanvas_t* vg = canvas_get_vgcanvas(c);
 
-  if(vg == NULL) {
+  if (vg == NULL) {
     canvas_set_fill_color(c, *color);
     canvas_fill_rect(c, r->x, r->y, r->w, r->h);
     return;
