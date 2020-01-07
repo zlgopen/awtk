@@ -74,4 +74,5 @@ TEST(FuncCallParser, object) {
   parser_test_object("move   (x=10, y=20)");
   parser_test_object("move(x = 10, y = 20 )");
   parser_test_object("  move(x = 10, y = 20 )");
+  parser_test_object("  move(x = 10, \r\ny \t= 20 )");
 }

@@ -27,7 +27,7 @@ func_call_parser_t* func_call_parser_init(func_call_parser_t* parser, const char
                                           uint32_t size) {
   return_value_if_fail(parser != NULL && str != NULL, NULL);
 
-  tokenizer_init(&(parser->tokenizer), str, size, "(=,) ");
+  tokenizer_init(&(parser->tokenizer), str, size, "(=,)\r\n\t ");
 
   return parser;
 }
