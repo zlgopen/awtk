@@ -190,7 +190,6 @@ static ret_t window_animator_paint_system_bar(window_animator_t* wa) {
   return RET_OK;
 }
 
-#include <stdio.h>
 static ret_t window_animator_begin_frame_normal(window_animator_t* wa) {
 #ifdef WITH_NANOVG_GPU
   ENSURE(canvas_begin_frame(wa->canvas, NULL, LCD_DRAW_ANIMATION) == RET_OK);
