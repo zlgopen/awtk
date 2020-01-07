@@ -97,6 +97,17 @@ static ret_t gif_image_on_paint_self(widget_t* widget, canvas_t* c) {
   h = bitmap.gif_frame_h;
   y = bitmap.gif_frame_h * image->index;
 
+#ifdef AWTK_WEB
+  if (image->timer_id == TK_INVALID_ID) {
+    image->timer_id = timer_add(gif_image_on_timer, image, 16);
+  }
+#else
+  if (image->timer_id == TK_INVALID_ID && image->frames_nr > 1) {
+    uint32_t delay = image->delays[image->index];
+    image->timer_id = timer_add(gif_image_on_timer, image, delay);
+  }
+#endif /*AWTK_WEB*/
+
   if (vg != NULL) {
     if (image_need_transform(widget)) {
       vgcanvas_save(vg);
@@ -111,17 +122,6 @@ static ret_t gif_image_on_paint_self(widget_t* widget, canvas_t* c) {
   src = rect_init(0, y, bitmap.w, h);
   dst = rect_init(0, 0, widget->w, widget->h);
   canvas_draw_image_scale_down(c, &bitmap, &src, &dst);
-
-#ifdef AWTK_WEB
-  if (image->timer_id == TK_INVALID_ID) {
-    image->timer_id = timer_add(gif_image_on_timer, image, 16);
-  }
-#else
-  if (image->timer_id == TK_INVALID_ID && image->frames_nr > 1) {
-    uint32_t delay = image->delays[image->index];
-    image->timer_id = timer_add(gif_image_on_timer, image, delay);
-  }
-#endif /*AWTK_WEB*/
 
   return RET_OK;
 }

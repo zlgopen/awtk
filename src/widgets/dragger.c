@@ -78,16 +78,21 @@ static ret_t dragger_on_event(widget_t* widget, event_t* e) {
       widget_dispatch(widget, (event_t*)&evt);
       widget_ungrab(widget->parent, widget);
       dragger->dragging = FALSE;
+      dragger->moving = FALSE;
       break;
     }
     case EVT_POINTER_UP: {
       pointer_event_t* pointer_event = (pointer_event_t*)e;
       event_t evt = event_init(EVT_DRAG_END, widget);
-      dragger_move(widget, pointer_event->x - dragger->down_x, pointer_event->y - dragger->down_y);
+      if (dragger->moving) {
+        dragger_move(widget, pointer_event->x - dragger->down_x,
+                     pointer_event->y - dragger->down_y);
+      }
       widget_set_state(widget, WIDGET_STATE_NORMAL);
       widget_dispatch(widget, (event_t*)&evt);
       widget_ungrab(widget->parent, widget);
       dragger->dragging = FALSE;
+      dragger->moving = FALSE;
       break;
     }
     case EVT_POINTER_MOVE: {
@@ -95,6 +100,7 @@ static ret_t dragger_on_event(widget_t* widget, event_t* e) {
         pointer_event_t* pointer_event = (pointer_event_t*)e;
         dragger_move(widget, pointer_event->x - dragger->down_x,
                      pointer_event->y - dragger->down_y);
+        dragger->moving = TRUE;
       }
       return RET_STOP;
     }

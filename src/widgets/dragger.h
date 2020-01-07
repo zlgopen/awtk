@@ -68,6 +68,7 @@ typedef struct _dragger_t {
   xy_t down_x;
   xy_t down_y;
   bool_t dragging;
+  bool_t moving;
 } dragger_t;
 
 /**
