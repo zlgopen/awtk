@@ -930,12 +930,16 @@ static ret_t window_manager_default_set_prop(widget_t* widget, const char* name,
 
 static ret_t window_manager_default_on_destroy(widget_t* widget) {
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+
+#ifdef WITH_WINDOW_ANIMATORS
   if (wm->animator != NULL) {
     wm->animator->prev_win = NULL;
     wm->animator->curr_win = NULL;
     window_animator_destroy(wm->animator);
     wm->animator = NULL;
   }
+#endif/*WITH_WINDOW_ANIMATORS*/
+
   object_unref(OBJECT(wm->native_window));
   TKMEM_FREE(wm->cursor);
 
