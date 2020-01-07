@@ -589,6 +589,12 @@ bool_t bitmap_save_png(bitmap_t* bitmap, const char* filename) {
   return TRUE;
 }
 
+#else 
+
+bool_t bitmap_save_png(bitmap_t* bitmap, const char* filename) {
+  return FALSE;
+}
+
 #endif /*defined(WITH_STB_IMAGE) || defined(WITH_FS_RES)*/
 
 /*helper*/
