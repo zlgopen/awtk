@@ -1,5 +1,16 @@
 # 最新动态
 
+* 2020/01/06
+  * 完善rich text（感谢尧燊提供补丁） 
+  * （感谢智明提供下列补丁）
+    * 修复调用 image_manager_unload_unused 函数释放图片的时候，会导致 agge 中的图片队列不正常的 bug 。
+    * 修复窗口动画播放前，会先把新窗口绘画出来，然后再下一帧才播放窗口动画，会导致画面有闪烁一下的问题。（给 window_manager_default_t 类型增加了一个成员变量 ready_animator 用来标记新的窗口已经创建了但是窗口动画在下一帧才会播放，让 paint 函数跳过绘画当前帧，避免当前帧出现新窗口的画面）
+    * 在 widget_is_window_opened 函数的判断中加入 WINDOW_STAGE_SUSPEND 状态判断。
+    * 修改了 edit 和 mledit 控件在触发 EVT_POINTER_DOWN_ABORT 事件后，导致 focused 属性异常无法触发 EVT_BLUR 事件导致无法正常关闭软键盘。
+    * 修复在 agge 状态下切换主题的时候会使用 canvas 的裁减区设置 vg 的裁减区，有概率导致使用 vg 绘制的控件无法正常显示。
+    * 降低了画圆角矩形的圆角判断条件要求。
+
+
 * 2020/01/05
   * 完善fs接口。
   * 修改widget_is_opened_popup函数注释（感谢大恒提供补丁）。
