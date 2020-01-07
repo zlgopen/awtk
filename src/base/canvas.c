@@ -748,11 +748,6 @@ static inline void canvas_draw_image_repeat_ex(canvas_t* c, bitmap_t* img, rect_
 
 ret_t canvas_draw_image_repeat(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
   rect_t s;
-  rect_t d;
-  xy_t x = 0;
-  xy_t y = 0;
-  wh_t w = 0;
-  wh_t h = 0;
   rect_t r_fix;
   rect_t* dst = canvas_fix_rect(dst_in, &r_fix);
   return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
@@ -869,9 +864,6 @@ ret_t canvas_draw_image_repeat9(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
 
 ret_t canvas_draw_image_repeat_x(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
   rect_t s;
-  rect_t d;
-  xy_t x = 0;
-  wh_t w = 0;
   rect_t r_fix;
   rect_t* dst = canvas_fix_rect(dst_in, &r_fix);
   return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
@@ -938,9 +930,6 @@ ret_t canvas_draw_image_repeat3_x(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
 
 ret_t canvas_draw_image_repeat_y(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
   rect_t s;
-  rect_t d;
-  xy_t y = 0;
-  wh_t h = 0;
   rect_t r_fix;
   rect_t* dst = canvas_fix_rect(dst_in, &r_fix);
   return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
