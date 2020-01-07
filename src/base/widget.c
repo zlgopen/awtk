@@ -3888,3 +3888,10 @@ bitmap_t* widget_take_snapshot(widget_t* widget) {
   return bitmap;
 }
 #endif /*WITH_NANOVG_GPU*/
+
+ret_t widget_dispatch_simple_event(widget_t* widget, uint32_t type) {
+  event_t e = event_init(type, widget);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  return widget_dispatch(widget, &e);
+}

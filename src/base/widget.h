@@ -2252,6 +2252,7 @@ ret_t widget_focus_up(widget_t* widget);
 ret_t widget_focus_down(widget_t* widget);
 ret_t widget_focus_left(widget_t* widget);
 ret_t widget_focus_right(widget_t* widget);
+ret_t widget_dispatch_simple_event(widget_t* widget, uint32_t type);
 
 ret_t widget_set_focused_internal(widget_t* widget, bool_t focused);
 
