@@ -107,29 +107,26 @@ static ret_t lcd_vgcanvas_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) 
 #ifndef AWTK_WEB
   rect_x += (0.5f / lcd->ratio);
   rect_y += (0.5f / lcd->ratio);
+  rect_w -= (1.0f / lcd->ratio);
+  rect_h -= (1.0f / lcd->ratio);
 #endif /*AWTK_WEB*/
 
   if (w > 1 && h > 1) {
-#ifndef AWTK_WEB
-    rect_w -= (1.0f / lcd->ratio);
-    rect_h -= (1.0f / lcd->ratio);
-#endif /*AWTK_WEB*/
-
     vgcanvas_begin_path(canvas);
     vgcanvas_rect(canvas, rect_x, rect_y, rect_w, rect_h);
     vgcanvas_set_fill_color(canvas, lcd->fill_color);
     vgcanvas_fill(canvas);
   } else if (w <= 1) {
     vgcanvas_begin_path(canvas);
-    vgcanvas_move_to(canvas, rect_x, rect_y);
-    vgcanvas_line_to(canvas, rect_x, rect_y + h);
+    vgcanvas_move_to(canvas, rect_x, y);
+    vgcanvas_line_to(canvas, rect_x, y + h);
     vgcanvas_set_line_width(canvas, 1);
     vgcanvas_set_stroke_color(canvas, lcd->fill_color);
     vgcanvas_stroke(canvas);
   } else if (h <= 1) {
     vgcanvas_begin_path(canvas);
-    vgcanvas_move_to(canvas, rect_x, rect_y);
-    vgcanvas_line_to(canvas, rect_x + w, rect_y);
+    vgcanvas_move_to(canvas, x, rect_y);
+    vgcanvas_line_to(canvas, x + w, rect_y);
     vgcanvas_set_line_width(canvas, 1);
     vgcanvas_set_stroke_color(canvas, lcd->fill_color);
     vgcanvas_stroke(canvas);
