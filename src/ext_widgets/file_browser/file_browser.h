@@ -34,13 +34,49 @@ BEGIN_C_DECLS
  * 文件或目录的信息。
  */
 typedef struct _fb_item_t {
+  /**
+   * @property {char*} name
+   * @annotation ["readable"]
+   * 名称。
+   */
   char* name;
+  /**
+   * @property {bool_t} is_dir
+   * @annotation ["readable"]
+   * 是否是目录。
+   */
   bool_t is_dir;
+
+  /**
+   * @property {bool_t} is_reg_file
+   * @annotation ["readable"]
+   * 是否是常规文件。
+   */
   bool_t is_reg_file;
 
+  /**
+   * @property {uint64_t} size
+   * @annotation ["readable"]
+   * 文件大小。
+   */
   uint64_t size;
+  /**
+   * @property {uint64_t} atime
+   * @annotation ["readable"]
+   * 最后一次访问时间。
+   */
   uint64_t atime;
+  /**
+   * @property {uint64_t} mtime
+   * @annotation ["readable"]
+   * 最后修改时间。
+   */
   uint64_t mtime;
+  /**
+   * @property {uint64_t} ctime
+   * @annotation ["readable"]
+   * 创建时间。
+   */
   uint64_t ctime;
 } fb_item_t;
 
@@ -52,27 +88,27 @@ typedef struct _file_browser_t {
   emitter_t emitter;
   /**
    * @property {char*} cwd
+   * @annotation ["readable"]
    * 当前路径。
    */
   char cwd[MAX_PATH + 1];
 
   /*private*/
   fs_t* fs;
-
   fb_item_t* items;
   uint32_t items_size;
   uint32_t items_capacity;
 
+  void* filter_ctx;
   tk_filter_t filter;
   tk_compare_t compare;
-  void* filter_ctx;
 
   bool_t cut;
   wbuffer_t copy_items;
 } file_browser_t;
 
 /**
- * @event {event_t} EVT_ITEMS_WILL_CHANGE
+ * @event {event_t} EVT_ITEMS_CHANGED
  * 文件项目改变
  */
 
@@ -300,8 +336,8 @@ ret_t file_browser_destroy(file_browser_t* fb);
 
 /*public for test*/
 bool_t fb_filter_files_only(void* ctx, const void* data);
-bool_t fb_filter_directories_only(void* ctx, const void* data);
 bool_t fb_filter_by_ext_names(void* ctx, const void* data);
+bool_t fb_filter_directories_only(void* ctx, const void* data);
 
 int fb_compare_by_name(const void* a, const void* b);
 int fb_compare_by_size(const void* a, const void* b);

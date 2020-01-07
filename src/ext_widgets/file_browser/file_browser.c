@@ -103,11 +103,11 @@ ret_t file_browser_set_cwd(file_browser_t* fb, const char* cwd) {
   assert(strlen(cwd) <= MAX_PATH);
 
   if (path_is_abs(cwd)) {
-    tk_strncpy(fb->cwd, cwd, MAX_PATH);
+    path_normalize(cwd, fb->cwd, MAX_PATH);
   } else {
     memset(path, 0x00, sizeof(path));
     return_value_if_fail(path_abs(cwd, path, MAX_PATH) == RET_OK, RET_BAD_PARAMS);
-    tk_strncpy(fb->cwd, path, MAX_PATH);
+    path_normalize(path, fb->cwd, MAX_PATH);
   }
 
   file_browser_refresh(fb);
@@ -161,14 +161,14 @@ static ret_t file_browser_remove_item_recursive(file_browser_t* fb, const char* 
     fs_dir_t* dir = fs_open_dir(fb->fs, fullpath);
     if (dir != NULL) {
       fs_item_t info;
-      char path[MAX_PATH + 1];
+      char sub_path[MAX_PATH + 1];
       while (fs_dir_read(dir, &info) == RET_OK) {
         if (tk_str_eq(info.name, ".") || tk_str_eq(info.name, "..")) {
           continue;
         }
 
-        ENSURE(path_build(path, MAX_PATH, fullpath, info.name, NULL) == RET_OK);
-        if (file_browser_remove_item_recursive(fb, fullpath) != RET_OK) {
+        ENSURE(path_build(sub_path, MAX_PATH, fullpath, info.name, NULL) == RET_OK);
+        if (file_browser_remove_item_recursive(fb, sub_path) != RET_OK) {
           log_warn("file_browser_remove_item_recursive failed\n");
         }
       }
@@ -178,7 +178,7 @@ static ret_t file_browser_remove_item_recursive(file_browser_t* fb, const char* 
     return fs_remove_dir(fb->fs, fullpath);
   } else {
     assert(!"not supported");
-    return RET_NOT_IMPL;
+    return fs_remove_file(fb->fs, fullpath);
   }
 }
 
@@ -235,17 +235,22 @@ ret_t file_browser_paste(file_browser_t* fb) {
   wbuffer_t* wb = NULL;
   const char* src = NULL;
   const char* name = NULL;
+  char fullpath[MAX_PATH + 1];
   return_value_if_fail(file_browser_can_paste(fb), RET_BAD_PARAMS);
 
   wb = &(fb->copy_items);
   rbuffer_init(&rb, wb->data, wb->cursor);
   return_value_if_fail(rbuffer_read_string(&rb, &src) == RET_OK, RET_BAD_PARAMS);
 
+  memset(fullpath, 0x00, sizeof(fullpath));
   while (rbuffer_read_string(&rb, &name) == RET_OK) {
     if (file_browser_copy_item(fb, src, fb->cwd, name) != RET_OK) {
       return RET_FAIL;
-    } else if (fb->cut) {
-      /*TODO remove files*/
+    } 
+    
+    if (fb->cut) {
+      return_value_if_fail(path_build(fullpath, MAX_PATH, src, name, NULL) == RET_OK, RET_FAIL);
+      file_browser_remove_item_recursive(fb, fullpath);
     }
   }
 
@@ -286,8 +291,8 @@ ret_t file_browser_refresh(file_browser_t* fb) {
     iter->mtime = st.mtime;
     iter->ctime = st.ctime;
     iter->mtime = st.mtime;
-    iter->is_dir = info.is_dir;
-    iter->is_reg_file = info.is_reg_file;
+    iter->is_dir = st.is_dir;
+    iter->is_reg_file = st.is_reg_file;
     iter->name = tk_str_copy(iter->name, info.name);
   }
   fs_dir_close(dir);
@@ -333,11 +338,21 @@ ret_t file_browser_set_filter(file_browser_t* fb, tk_filter_t filter, void* ctx)
 }
 
 ret_t file_browser_set_compare(file_browser_t* fb, tk_compare_t compare) {
-  return_value_if_fail(fb != NULL && compare != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(fb != NULL, RET_BAD_PARAMS);
 
   fb->compare = compare;
 
   return RET_OK;
+}
+
+static int fb_dir_first(fb_item_t* aa, fb_item_t* bb) {
+  if (aa->is_dir) {
+    return -1;
+  } else if (bb->is_dir) {
+    return 1;
+  } else {
+    return 0;
+  }
 }
 
 int fb_compare_by_name(const void* a, const void* b) {
@@ -348,13 +363,7 @@ int fb_compare_by_name(const void* a, const void* b) {
     return strcmp(aa->name, bb->name);
   }
 
-  if (aa->is_dir) {
-    return -1;
-  } else if (bb->is_dir) {
-    return 1;
-  } else {
-    return 0;
-  }
+  return fb_dir_first(aa, bb);
 }
 
 int fb_compare_by_size(const void* a, const void* b) {
@@ -365,13 +374,7 @@ int fb_compare_by_size(const void* a, const void* b) {
     return aa->size - bb->size;
   }
 
-  if (aa->is_dir) {
-    return -1;
-  } else if (bb->is_dir) {
-    return 1;
-  } else {
-    return 0;
-  }
+  return fb_dir_first(aa, bb);
 }
 
 int fb_compare_by_mtime(const void* a, const void* b) {
@@ -382,13 +385,7 @@ int fb_compare_by_mtime(const void* a, const void* b) {
     return aa->mtime - bb->mtime;
   }
 
-  if (aa->is_dir) {
-    return -1;
-  } else if (bb->is_dir) {
-    return 1;
-  } else {
-    return 0;
-  }
+  return fb_dir_first(aa, bb);
 }
 
 int fb_compare_by_name_dec(const void* a, const void* b) {
@@ -399,13 +396,7 @@ int fb_compare_by_name_dec(const void* a, const void* b) {
     return -strcmp(aa->name, bb->name);
   }
 
-  if (aa->is_dir) {
-    return -1;
-  } else if (bb->is_dir) {
-    return 1;
-  } else {
-    return 0;
-  }
+  return fb_dir_first(aa, bb);
 }
 
 int fb_compare_by_size_dec(const void* a, const void* b) {
@@ -416,13 +407,7 @@ int fb_compare_by_size_dec(const void* a, const void* b) {
     return bb->size - aa->size;
   }
 
-  if (aa->is_dir) {
-    return -1;
-  } else if (bb->is_dir) {
-    return 1;
-  } else {
-    return 0;
-  }
+  return fb_dir_first(aa, bb);
 }
 
 int fb_compare_by_mtime_dec(const void* a, const void* b) {
@@ -433,13 +418,7 @@ int fb_compare_by_mtime_dec(const void* a, const void* b) {
     return bb->mtime - aa->mtime;
   }
 
-  if (aa->is_dir) {
-    return -1;
-  } else if (bb->is_dir) {
-    return 1;
-  } else {
-    return 0;
-  }
+  return fb_dir_first(aa, bb);
 }
 
 static ret_t file_browser_sort(file_browser_t* fb) {
@@ -492,6 +471,12 @@ ret_t file_browser_destroy(file_browser_t* fb) {
   return_value_if_fail(fb != NULL, RET_BAD_PARAMS);
 
   if (fb->items != NULL) {
+    uint32_t i = 0;
+
+    for (i = 0; i < fb->items_size; i++) {
+      fb_item_t* iter = fb->items + i;
+      TKMEM_FREE(iter->name);
+    }
     TKMEM_FREE(fb->items);
   }
 
