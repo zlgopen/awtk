@@ -76,6 +76,11 @@ canvas_t* canvas_init(canvas_t* c, lcd_t* lcd, font_manager_t* font_manager) {
   c->lcd = lcd_profile_create(lcd);
   c->font_manager = font_manager;
 
+  c->clip_left = 0;
+  c->clip_top = 0;
+  c->clip_right = lcd->w - 1;
+  c->clip_bottom = lcd->h - 1;
+
   return c;
 }
 
