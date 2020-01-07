@@ -446,6 +446,7 @@ ret_t text_edit_layout(text_edit_t* text_edit) {
 
 static void text_edit_layout_for_stb(StbTexteditRow* row, STB_TEXTEDIT_STRING* str, int offset) {
   DECL_IMPL(str);
+  if (str->c == NULL) return;
   uint32_t font_size = str->c->font_size;
   row_info_t* info = rows_find_by_offset(impl->rows, offset);
 
