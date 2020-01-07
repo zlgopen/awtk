@@ -3850,7 +3850,7 @@ ret_t widget_close_window(widget_t* widget) {
   return window_manager_close_window(win->parent, win);
 }
 
-#ifdef WITH_NANOVG_GPU
+#if defined(WITH_NANOVG_GPU) || defined(FRAGMENT_FRAME_BUFFER_SIZE)
 bitmap_t* widget_take_snapshot(widget_t* widget) {
   log_warn("not supported yet\n");
   return NULL;
