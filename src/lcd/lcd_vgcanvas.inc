@@ -118,15 +118,15 @@ static ret_t lcd_vgcanvas_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) 
     vgcanvas_fill(canvas);
   } else if (w <= 1) {
     vgcanvas_begin_path(canvas);
-    vgcanvas_move_to(canvas, rect_x, y);
-    vgcanvas_line_to(canvas, rect_x, y + h);
+    vgcanvas_move_to(canvas, x + 0.5f, y);
+    vgcanvas_line_to(canvas, x + 0.5f, y + h);
     vgcanvas_set_line_width(canvas, 1);
     vgcanvas_set_stroke_color(canvas, lcd->fill_color);
     vgcanvas_stroke(canvas);
   } else if (h <= 1) {
     vgcanvas_begin_path(canvas);
-    vgcanvas_move_to(canvas, x, rect_y);
-    vgcanvas_line_to(canvas, x + w, rect_y);
+    vgcanvas_move_to(canvas, x, y + 0.5f);
+    vgcanvas_line_to(canvas, x + w, y + 0.5f);
     vgcanvas_set_line_width(canvas, 1);
     vgcanvas_set_stroke_color(canvas, lcd->fill_color);
     vgcanvas_stroke(canvas);
