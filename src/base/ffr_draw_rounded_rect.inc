@@ -574,6 +574,12 @@ static void widget_draw_fill_rounded_rect(canvas_t* c, rect_t* r, color_t* color
 
   vgcanvas_t* vg = canvas_get_vgcanvas(c);
 
+  if(vg == NULL) {
+    canvas_set_fill_color(c, *color);
+    canvas_fill_rect(c, r->x, r->y, r->w, r->h);
+    return;
+  }
+
 #ifndef WITH_NANOVG_GPU
   int32_t v_x1 = 0;
   int32_t v_y1 = 0;
@@ -830,9 +836,9 @@ static inline ret_t widget_draw_fill_rounded_rect_ex(canvas_t* c, rect_t* r, rec
   if (bg_r == NULL) {
     radius = widget_get_standard_rounded_rect_radius(r, radius);
   } else {
-    radius = widget_get_standard_rounded_rect_radius(bg_r, radius - 1);
+    radius = widget_get_standard_rounded_rect_radius(bg_r, radius);
   }
-  if (radius <= 3) {
+  if (radius < 2) {
     return RET_FAIL;
   }
 
@@ -847,9 +853,9 @@ static inline ret_t widget_draw_stroke_rounded_rect_ex(canvas_t* c, rect_t* r, r
   if (bg_r == NULL) {
     radius = widget_get_standard_rounded_rect_radius(r, radius);
   } else {
-    radius = widget_get_standard_rounded_rect_radius(bg_r, radius - 1);
+    radius = widget_get_standard_rounded_rect_radius(bg_r, radius);
   }
-  if (radius <= 3) {
+  if (radius < 2) {
     return RET_FAIL;
   }
   widget_draw_stroke_rounded_rect(c, r, color, radius, border_width);
