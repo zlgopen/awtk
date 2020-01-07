@@ -1338,7 +1338,8 @@ ret_t widget_stroke_border_rect(widget_t* widget, canvas_t* c, rect_t* r) {
           widget_stroke_border_rect_for_border_type(c, r, bd, border, border_width);
         }
       } else {
-        assert(!"stroke border radius > 3 not supported !");
+        log_warn("border != BORDER_ALL, stroke border radius > 3 not supported !");
+        widget_stroke_border_rect_for_border_type(c, r, bd, border, border_width);
       }
     } else {
       widget_stroke_border_rect_for_border_type(c, r, bd, border, border_width);
