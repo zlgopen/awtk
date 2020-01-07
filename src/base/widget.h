@@ -2073,7 +2073,7 @@ bool_t widget_is_popup(widget_t* widget);
 
 /**
  * @method widget_is_opened_popup
- * 检查控件弹出窗口控件是否已经打开了。
+ * 检查控件弹出窗口控件是否已经打开了（而非挂起状态）。
  *
  * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
