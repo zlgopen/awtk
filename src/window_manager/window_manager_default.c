@@ -388,7 +388,7 @@ static ret_t window_manager_check_if_need_open_animation(const idle_info_t* info
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(curr_win->parent);
 
   window_manager_dispatch_window_event(curr_win, EVT_WINDOW_WILL_OPEN);
-
+  wm->ready_animator = FALSE;
   if (window_manager_create_animator(wm, curr_win, TRUE) != RET_OK) {
     widget_t* prev_win = window_manager_find_prev_window(WIDGET(wm));
     if (prev_win != NULL) {
@@ -410,7 +410,10 @@ static ret_t window_manager_dispatch_window_open(widget_t* curr_win) {
 }
 
 static ret_t window_manager_idle_dispatch_window_open(const idle_info_t* info) {
-  window_manager_dispatch_window_open(WIDGET(info->ctx));
+  widget_t* curr_win = WIDGET(info->ctx);
+  window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(curr_win->parent);
+  wm->ready_animator = FALSE;
+  window_manager_dispatch_window_open(curr_win);
 
   return RET_REMOVE;
 }
@@ -450,6 +453,7 @@ static ret_t window_manager_default_open_window(widget_t* widget, widget_t* wind
   if (wm->animator != NULL) {
     wm->pending_open_window = window;
   } else {
+    wm->ready_animator = TRUE;
     window_manager_default_do_open_window(widget, window);
   }
 
@@ -806,7 +810,7 @@ static ret_t window_manager_default_paint(widget_t* widget) {
 #ifdef WITH_WINDOW_ANIMATORS
   if (wm->animator != NULL) {
     ret = window_manager_paint_animation(widget, c);
-  } else {
+  } else if(!wm->ready_animator) {
     ret = window_manager_paint_normal(widget, c);
   }
 #else
@@ -987,7 +991,7 @@ static ret_t window_manager_default_is_animating(widget_t* widget, bool_t* playi
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  *playing = wm->animator != NULL;
+  *playing = wm->animating;
   return RET_OK;
 }
 
@@ -1287,7 +1291,7 @@ static const widget_vtable_t s_window_manager_vtable = {
 widget_t* window_manager_create(void) {
   window_manager_default_t* wm = TKMEM_ZALLOC(window_manager_default_t);
   return_value_if_fail(wm != NULL, NULL);
-
+  wm->ready_animator = FALSE;
   return window_manager_init(WINDOW_MANAGER(wm), &s_window_manager_vtable,
                              &s_window_manager_self_vtable);
 }

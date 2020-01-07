@@ -37,6 +37,7 @@ typedef struct _window_manager_default_t {
 
   /*private*/
   bool_t animating;
+  bool_t ready_animator;
   bool_t ignore_user_input;
   window_animator_t* animator;
 
