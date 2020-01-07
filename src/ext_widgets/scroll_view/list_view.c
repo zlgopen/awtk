@@ -281,6 +281,8 @@ static ret_t list_view_on_remove_child(widget_t* widget, widget_t* child) {
     }
     WIDGET_FOR_EACH_CHILD_END();
   }
+
+  return RET_OK;
 }
 
 ret_t list_view_reinit(widget_t* widget) {
