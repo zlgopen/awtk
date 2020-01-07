@@ -81,6 +81,8 @@ struct AGGENVGcontext {
   agge::rasterizer<agge::clipper<int> > ras;
 };
 
+static int aggenvg__renderFindTexture(void* uptr, const void* data);
+
 static int aggenvg__maxi(int a, int b) {
   return a > b ? a : b;
 }
@@ -162,8 +164,15 @@ static int aggenvg__renderCreate(void* uptr) {
 
 static int aggenvg__renderCreateTexture(void* uptr, int type, int w, int h, int imageFlags,
                                         const unsigned char* data) {
+  AGGENVGtexture* tex = NULL;
   AGGENVGcontext* agge = (AGGENVGcontext*)uptr;
-  AGGENVGtexture* tex = aggenvg__allocTexture(agge);
+  int id = aggenvg__renderFindTexture(agge, data);
+  if(id > 0) {
+    tex = aggenvg__findTexture(agge, id);
+  }
+  if (tex == NULL) {
+    tex = aggenvg__allocTexture(agge);
+  }
 
   if (tex == NULL) return 0;
 
