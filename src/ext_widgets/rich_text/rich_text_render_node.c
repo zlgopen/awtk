@@ -203,24 +203,34 @@ rich_text_render_node_t* rich_text_render_node_layout(widget_t* widget, rich_tex
         canvas_set_font(c, iter->u.text.font.name, font_size);
 
         for (i = 0; str[i]; i++) {
-          cw = canvas_measure_text(c, str + i, 1);
+          if (str[i] == '\r' || str[i] == '\n')
+            cw = 0;
+          else
+            cw = canvas_measure_text(c, str + i, 1);
           if (i > 0) {
             break_type = rich_text_line_break_check(str[i - 1], str[i]);
           }
 
           if ((x + tw + cw) > right || break_type == LINE_BREAK_MUST) {
             if (break_type != LINE_BREAK_MUST) {
-              if ((i - last_breakable) < 10) {
-                i = last_breakable;
+              if (last_breakable > start) {
+                if (i != last_breakable + 1 || break_type != LINE_BREAK_ALLOW) {
+                  i = last_breakable;
+                }
               }
-            }
-            // 一行的起始不需要换行，且最少包含一个字符
-            if (x == margin) {
-              if (i == start) {
-                i = start + 1;
-                cw = 0;
+              if (x == margin) {
+                // 一行的起始不需要换行，且最少包含一个字符
+                if (i == start) {
+                  i = start + 1;
+                  cw = 0;
+                }
+              } else if (start == 0 && last_breakable == 0) {
+                // 不是起始，换行,重新计算
+                x = margin;
+                y += font_size;
+                --i;
+                continue;
               }
-              break_type = LINE_BREAK_MUST;
             }
 
             new_node = rich_text_render_node_create(iter);
@@ -240,7 +250,6 @@ rich_text_render_node_t* rich_text_render_node_layout(widget_t* widget, rich_tex
                 cw = 0;
                 i++;
               }
-              y += font_size;
               start = i;
               flexible_w = 0;
             } else {
@@ -257,7 +266,7 @@ rich_text_render_node_t* rich_text_render_node_layout(widget_t* widget, rich_tex
               last_breakable = i;
             }
 
-            x += tw + 1;
+            x = margin;
             tw = cw;
             MOVE_TO_NEXT_ROW();
             row_h = font_size;
