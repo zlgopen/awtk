@@ -86,6 +86,14 @@ static ret_t vgcanvas_nanovg_end_frame(vgcanvas_t* vgcanvas) {
   return RET_OK;
 }
 
+static ret_t vgcanvas_nanovg_image_specific_destroy(bitmap_t* bitmap) {
+  if(bitmap->specific != NULL) {
+    TKMEM_FREE(bitmap->specific);
+    bitmap->specific = NULL;
+  }
+  return RET_OK;
+}
+
 static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img) {
   int32_t i = 0;
   int32_t j = 0;
@@ -135,17 +143,14 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
     for (j = 0; j < img->h; j++) {
       memcpy(data + j * img->w * bpp, img_data + j * img->line_length, img->w * bpp);
     }
+    img->specific_destroy = vgcanvas_nanovg_image_specific_destroy;
   }
 
   i = nvgCreateImageRaw(canvas->vg, img->w, img->h, f, NVG_IMAGE_NEAREST, data);
 
-  // if (data != img_data) {
-  //   TKMEM_FREE(data);
-  // }
-
   if (i >= 0) {
     img->flags |= BITMAP_FLAG_TEXTURE;
-    img->specific = data;  //tk_pointer_from_int(i);
+    img->specific = data;
     image_manager_update_specific(image_manager(), img);
   }
   bitmap_unlock_buffer(img);

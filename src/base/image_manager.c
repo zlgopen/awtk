@@ -179,6 +179,7 @@ static ret_t image_manager_get_bitmap_impl(image_manager_t* imm, const char* nam
     image->format = header->format;
     image->name = res->name;
     image->image_manager = imm;
+    bitmap_set_line_length(image, image->line_length);
     image->buffer = GRAPHIC_BUFFER_CREATE_WITH_DATA(header->data, header->w, header->h,
                                                     (bitmap_format_t)(header->format));
 
