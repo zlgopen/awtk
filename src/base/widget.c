@@ -268,7 +268,8 @@ bool_t widget_is_window_opened(widget_t* widget) {
   widget_t* win = widget_get_window(widget);
 
   if (win != NULL) {
-    return WINDOW_STAGE_OPENED == widget_get_prop_int(win, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE);
+    int32_t stage = widget_get_prop_int(win, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE);
+    return WINDOW_STAGE_OPENED == stage || WINDOW_STAGE_SUSPEND ==stage;
   } else {
     return FALSE;
   }
