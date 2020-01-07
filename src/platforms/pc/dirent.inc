@@ -15,7 +15,7 @@
 
 #define DT_DIR 4
 #define DT_REG 8
-#define DT_LNK 10
+#define DT_LNK 16
 
 #include "tkc/types_def.h"
 
@@ -110,7 +110,7 @@ struct dirent* readdir(DIR* d) {
   d->ret.d_namlen = wcslen(d->ret.d_name);
 
   d->ret.d_type = 0;
-  if (fd.dwFileAttributes & FILE_ATTRIBUTE_NORMAL) {
+  if ((fd.dwFileAttributes & FILE_ATTRIBUTE_NORMAL) || (fd.dwFileAttributes & FILE_ATTRIBUTE_ARCHIVE)) {
     d->ret.d_type |= DT_REG;
   }
 

@@ -90,7 +90,7 @@ ret_t fs_os_dir_read(fs_dir_t* dir, fs_item_t* item) {
     int16_t len = 0;
     char* name = NULL;
 
-    len = wcslen(ent->d_name) * 2 + 1;
+    len = wcslen(ent->d_name) * 4 + 1;
     name = (char*)TKMEM_ALLOC(len);
     tk_utf8_from_utf16(ent->d_name, name, len);
     tk_strncpy(item->name, name, MAX_PATH);
@@ -428,13 +428,13 @@ ret_t fs_os_stat(fs_t* fs, const char* name, fs_stat_info_t* fst) {
     fst->atime = st.st_atime;
     fst->mtime = st.st_mtime;
     fst->ctime = st.st_ctime;
-    fst->is_dir = st.st_mode & S_IFDIR;
+    fst->is_dir = (st.st_mode & S_IFDIR) != 0;
 #ifdef S_IFLNK
-    fst->is_link = st.st_mode & S_IFLNK;
+    fst->is_link = (st.st_mode & S_IFLNK) != 0;
 #else
     fst->is_link = FALSE;
 #endif /*S_IFLNK*/
-    fst->is_reg_file = st.st_mode & S_IFREG;
+    fst->is_reg_file = (st.st_mode & S_IFREG) != 0;
   }
 
   return RET_OK;
