@@ -70,7 +70,7 @@ typedef struct _frr_draw_arc_info_table_t {
 #define ANGLE2SIZE(angle, r) ((int)(sinf(angle) * (r)))
 
 #define GET_IMAGE_POINT(bpp, stride, w, h, x, y) \
-  (x < 0 || x > w || y < 0 || y > h) ? -1 : ((x) * (bpp) + (y) * (stride));
+  ((x < 0 || x > w || y < 0 || y > h) ? -1 : ((x) * (bpp) + (y) * (stride)))
 
 #define BLEND_DATA(d1, d2, a) ((((d1) * (a)) + ((d2) * (0xff - (a)))) >> 8)
 
@@ -242,10 +242,10 @@ static inline void widget_image_color2data(unsigned char* d, bitmap_format_t for
 
 static inline void widget_draw_antialiasing_for_point(frr_image_info_t* image_info, int px, int py,
                                                       float_t e, rgba_t c, rgba_t o_color) {
-  int p = 0;
+  int32_t p = 0;
   unsigned char a = (unsigned char)(e * c.a);
   IMAGE_COLOR2COLOR_BLEND(c, o_color, a);
-  p = GET_IMAGE_POINT(image_info->bpp, image_info->stride, image_info->w, image_info->h, px, py);
+  p = (int32_t)GET_IMAGE_POINT(image_info->bpp, image_info->stride, image_info->w, image_info->h, px, py);
   if (p > 0) {
     widget_image_color2data(image_info->dst + p, image_info->format, c);
   }
@@ -331,7 +331,7 @@ static inline void widget_draw_circluar_point_to_quadrant(frr_image_info_t* imag
     y += c->oy;
 
     if (w > 0 && h > 0) {
-      p = GET_IMAGE_POINT(image_info->bpp, image_info->stride, image_info->w, image_info->h, x, y);
+      p = (int32_t)GET_IMAGE_POINT(image_info->bpp, image_info->stride, image_info->w, image_info->h, x, y);
       if (p > 0) {
         widget_image_data2color(image_info->dst + p, image_info->format, &o_color);
 
@@ -370,7 +370,7 @@ static inline void widget_draw_circluar_point_to_quadrant_hline(frr_image_info_t
     }
 
     if (w > 0 && h > 0) {
-      p = GET_IMAGE_POINT(image_info->bpp, image_info->stride, image_info->w, image_info->h,
+      p = (int32_t)GET_IMAGE_POINT(image_info->bpp, image_info->stride, image_info->w, image_info->h,
                           x + c->ox, y + c->oy);
       if (p > 0) {
         widget_image_data2color(image_info->dst + p, image_info->format, &o_color);
