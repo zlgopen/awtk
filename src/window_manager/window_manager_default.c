@@ -938,7 +938,7 @@ static ret_t window_manager_default_on_destroy(widget_t* widget) {
     window_animator_destroy(wm->animator);
     wm->animator = NULL;
   }
-#endif/*WITH_WINDOW_ANIMATORS*/
+#endif /*WITH_WINDOW_ANIMATORS*/
 
   object_unref(OBJECT(wm->native_window));
   TKMEM_FREE(wm->cursor);

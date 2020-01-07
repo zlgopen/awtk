@@ -277,7 +277,7 @@ main_loop_t* main_loop_init(int w, int h) {
 #else
   native_window_sdl_init(TRUE, w, h);
 #endif /*MULTI_NATIVE_WINDOW*/
-  loop = main_loop_simple_init(w, h);
+  loop = main_loop_simple_init(w, h, NULL, NULL);
   loop->base.destroy = main_loop_sdl2_destroy;
   loop->dispatch_input = main_loop_sdl2_dispatch;
 

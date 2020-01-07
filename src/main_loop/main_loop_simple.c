@@ -26,7 +26,7 @@
 #include "tkc/event_source_timer.h"
 #include "tkc/event_source_manager_default.h"
 
-static ret_t main_loop_simple_queue_event(main_loop_t* l, const event_queue_req_t* r) {
+static ret_t main_loop_simple_queue_event_mutex(main_loop_t* l, const event_queue_req_t* r) {
   ret_t ret = RET_FAIL;
   main_loop_simple_t* loop = (main_loop_simple_t*)l;
 
@@ -37,8 +37,9 @@ static ret_t main_loop_simple_queue_event(main_loop_t* l, const event_queue_req_
   return ret;
 }
 
-static ret_t main_loop_simple_recv_event(main_loop_simple_t* loop, event_queue_req_t* r) {
+static ret_t main_loop_simple_recv_event_mutex(main_loop_t* l, event_queue_req_t* r) {
   ret_t ret = RET_FAIL;
+  main_loop_simple_t* loop = (main_loop_simple_t*)l;
 
   tk_mutex_lock(loop->mutex);
   ret = event_queue_recv(loop->queue, r);
@@ -125,7 +126,7 @@ static ret_t main_loop_dispatch_events(main_loop_simple_t* loop) {
   int time_in = time_now_ms();
   int time_out = time_in;
 
-  while (main_loop_simple_recv_event(loop, &r) == RET_OK && time_out - time_in < 20) {
+  while (main_loop_recv_event((main_loop_t*)loop, &r) == RET_OK && time_out - time_in < 20) {
     switch (r.event.type) {
       case EVT_POINTER_DOWN:
       case EVT_POINTER_MOVE:
@@ -195,7 +196,8 @@ static event_source_manager_t* main_loop_simple_get_event_source_manager(main_lo
   return loop->event_source_manager;
 }
 
-main_loop_simple_t* main_loop_simple_init(int w, int h) {
+main_loop_simple_t* main_loop_simple_init(int w, int h, main_loop_queue_event_t queue_event,
+                                          main_loop_recv_event_t recv_event) {
   event_source_t* idle_source = NULL;
   event_source_t* timer_source = NULL;
   static main_loop_simple_t s_main_loop_simple;
@@ -211,12 +213,19 @@ main_loop_simple_t* main_loop_simple_init(int w, int h) {
   loop->queue = event_queue_create(20);
   return_value_if_fail(loop->queue != NULL, NULL);
 
-  loop->mutex = tk_mutex_create();
-  return_value_if_fail(loop->mutex != NULL, NULL);
-
   loop->base.run = main_loop_simple_run;
   loop->base.step = main_loop_simple_step;
-  loop->base.queue_event = main_loop_simple_queue_event;
+
+  if (recv_event != NULL && queue_event != NULL) {
+    loop->base.recv_event = recv_event;
+    loop->base.queue_event = queue_event;
+  } else {
+    loop->mutex = tk_mutex_create();
+    return_value_if_fail(loop->mutex != NULL, NULL);
+    loop->base.recv_event = main_loop_simple_recv_event_mutex;
+    loop->base.queue_event = main_loop_simple_queue_event_mutex;
+  }
+
   loop->base.get_event_source_manager = main_loop_simple_get_event_source_manager;
 
   window_manager_post_init(loop->base.wm, w, h);
@@ -239,7 +248,10 @@ ret_t main_loop_simple_reset(main_loop_simple_t* loop) {
 
   event_source_manager_destroy(loop->event_source_manager);
   event_queue_destroy(loop->queue);
-  tk_mutex_destroy(loop->mutex);
+
+  if (loop->mutex != NULL) {
+    tk_mutex_destroy(loop->mutex);
+  }
 
   memset(loop, 0x00, sizeof(main_loop_simple_t));
 

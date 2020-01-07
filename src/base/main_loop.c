@@ -77,6 +77,12 @@ ret_t main_loop_queue_event(main_loop_t* l, const event_queue_req_t* e) {
   return l->queue_event(l, e);
 }
 
+ret_t main_loop_recv_event(main_loop_t* l, event_queue_req_t* r) {
+  return_value_if_fail(l != NULL && l->recv_event != NULL && r != NULL, RET_BAD_PARAMS);
+
+  return l->recv_event(l, r);
+}
+
 #include "base/idle.h"
 #include "base/timer.h"
 #include "base/window_manager.h"

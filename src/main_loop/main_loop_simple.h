@@ -57,7 +57,8 @@ struct _main_loop_simple_t {
   main_loop_dispatch_input_t dispatch_input;
 };
 
-main_loop_simple_t* main_loop_simple_init(int w, int h);
+main_loop_simple_t* main_loop_simple_init(int w, int h, main_loop_queue_event_t queue_event,
+                                          main_loop_recv_event_t recv_event);
 
 ret_t main_loop_simple_reset(main_loop_simple_t* loop);
 ret_t main_loop_post_key_event(main_loop_t* l, bool_t pressed, uint8_t key);
