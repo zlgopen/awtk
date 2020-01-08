@@ -151,7 +151,7 @@ ret_t darray_remove_all(darray_t* darray, tk_compare_t cmp, void* ctx) {
   return RET_OK;
 }
 
-void quick_sort_impl(void** array, size_t left, size_t right, tk_compare_t cmp) {
+static void tk_quick_sort_impl(void** array, size_t left, size_t right, tk_compare_t cmp) {
   size_t save_left = left;
   size_t save_right = right;
   void* x = array[left];
@@ -172,23 +172,23 @@ void quick_sort_impl(void** array, size_t left, size_t right, tk_compare_t cmp) 
   array[left] = x;
 
   if (save_left < left) {
-    quick_sort_impl(array, save_left, left - 1, cmp);
+    tk_quick_sort_impl(array, save_left, left - 1, cmp);
   }
 
   if (save_right > left) {
-    quick_sort_impl(array, left + 1, save_right, cmp);
+    tk_quick_sort_impl(array, left + 1, save_right, cmp);
   }
 
   return;
 }
 
-ret_t quick_sort(void** array, size_t nr, tk_compare_t cmp) {
+static ret_t tk_quick_sort(void** array, size_t nr, tk_compare_t cmp) {
   ret_t ret = RET_OK;
 
   return_value_if_fail(array != NULL && cmp != NULL, RET_BAD_PARAMS);
 
   if (nr > 1) {
-    quick_sort_impl(array, 0, nr - 1, cmp);
+    tk_quick_sort_impl(array, 0, nr - 1, cmp);
   }
 
   return ret;
@@ -198,7 +198,7 @@ ret_t darray_sort(darray_t* darray, tk_compare_t cmp) {
   return_value_if_fail(darray != NULL, RET_BAD_PARAMS);
   cmp = cmp != NULL ? cmp : darray->compare;
 
-  quick_sort(darray->elms, darray->size, cmp);
+  tk_quick_sort(darray->elms, darray->size, cmp);
 
   return RET_OK;
 }
