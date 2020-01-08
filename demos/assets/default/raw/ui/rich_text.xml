@@ -11,13 +11,7 @@
     </property>
   </rich_text>
 
-  <rich_text x="0" y="140" w="100%" h="60">
-    <property name="text">
-      <![CDATA[<image name="bricks"/><font align_v="bottom">hello awtk!</font><font color="blue" size="32">ZLG</font>]]>
-    </property>
-  </rich_text>
-
-  <rich_text line_gap="5" x="0" y="210" w="100%" h="200">
+  <rich_text line_gap="5" x="0" y="140" w="100%" h="300">
     <property name="text">
       <![CDATA[
  <image name="bricks"/><font color="gold" align_v="bottom" size="24">hello awtk!</font><font color="green" size="20">ProTip! The feed shows you events from people you follow and repositories you watch. 
