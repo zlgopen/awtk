@@ -635,7 +635,7 @@ static ret_t canvas_do_draw_image(canvas_t* c, bitmap_t* img, rect_t* s, rect_t*
   src.w = tk_min((img->w - src.x), src.w);
   src.h = tk_min((img->h - src.y), src.h);
 
-  if (src.w == 0 || src.h == 0 || dst.w == 0 || dst.h == 0) {
+  if (src.w <= 0 || src.h <= 0 || dst.w <= 0 || dst.h <= 0) {
     return RET_OK;
   }
 
