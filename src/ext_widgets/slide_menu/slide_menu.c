@@ -111,12 +111,12 @@ static rect_t slide_menu_get_clip_r(widget_t* widget) {
   slide_menu_t* slide_menu = SLIDE_MENU(widget);
 
   nr = tk_max(1, nr);
-  if (nr > 3 && (nr % 2) == 0) {
+  if (nr > 0 && (nr % 2) != 0) {
     nr--;
     /*keep nr is odd*/
   }
 
-  w = h + h * (nr - 1) * slide_menu->min_scale;
+  w = h + h * nr * slide_menu->min_scale;
   x = tk_roundi((widget->w - w) / 2.0f);
 
   return rect_init(x, 0, w, h);
