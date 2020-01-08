@@ -48,18 +48,40 @@ static ret_t rich_text_on_paint_text(widget_t* widget, canvas_t* c) {
   rich_text_t* rich_text = RICH_TEXT(widget);
   return_value_if_fail(widget != NULL && rich_text != NULL && c != NULL, RET_BAD_PARAMS);
 
+  if (widget->w <= rich_text->margin << 1 || widget->h <= rich_text->margin << 1) return RET_OK;
+  rect_t r_save;
+  rect_t r = rect_init(c->ox, c->oy, widget->w, widget->h);
+  r.x += rich_text->margin;
+  r.y += rich_text->margin;
+  r.w -= rich_text->margin << 1;
+  r.h -= rich_text->margin << 1;
+  canvas_get_clip_rect(c, &r_save);
+  r = rect_intersect(&r, &r_save);
+  canvas_set_clip_rect(c, &r);
+
+  int32_t align_h = ALIGN_H_LEFT;
+  if (widget->astyle) {
+    align_h = style_get_int(widget->astyle, STYLE_ID_TEXT_ALIGN_H, ALIGN_H_LEFT);
+  }
+
   iter = rich_text->render_node;
   while (iter != NULL) {
-    rect_t* r = &(iter->rect);
-    if (r->y > widget->h) {
+    r = iter->rect;
+    if (r.y > widget->h) {
       break;
+    }
+
+    if (align_h == ALIGN_H_CENTER) {
+      r.x += iter->align_h_w >> 1;
+    } else if (align_h == ALIGN_H_RIGHT) {
+      r.x += iter->align_h_w;
     }
 
     switch (iter->node->type) {
       case RICH_TEXT_TEXT: {
         rect_t cr;
         int32_t i = 0;
-        float_t x = r->x;
+        float_t x = r.x;
         wchar_t* text = iter->text;
         int32_t spacing = iter->spacing;
         rich_text_font_t* font = &(iter->node->u.text.font);
@@ -71,8 +93,8 @@ static ret_t rich_text_on_paint_text(widget_t* widget, canvas_t* c) {
         for (i = 0; i < iter->size; i++) {
           float_t cw = canvas_measure_text(c, text + i, 1);
           cr.x = x;
-          cr.y = r->y;
-          cr.h = r->h;
+          cr.y = r.y;
+          cr.h = r.h;
           cr.w = cw + 1;
 
           canvas_draw_text_in_rect(c, text + i, 1, &cr);
@@ -92,7 +114,7 @@ static ret_t rich_text_on_paint_text(widget_t* widget, canvas_t* c) {
         image_draw_type_t draw_type = iter->node->u.image.draw_type;
 
         if (widget_load_image(widget, name, &bitmap) == RET_OK) {
-          canvas_draw_image_ex(c, &bitmap, draw_type, r);
+          canvas_draw_image_ex(c, &bitmap, draw_type, &r);
         }
         break;
       }
@@ -102,6 +124,7 @@ static ret_t rich_text_on_paint_text(widget_t* widget, canvas_t* c) {
 
     iter = iter->next;
   }
+  canvas_set_clip_rect(c, &r_save);
 
   return RET_OK;
 }

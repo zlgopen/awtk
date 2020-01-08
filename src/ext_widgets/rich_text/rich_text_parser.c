@@ -191,6 +191,7 @@ rich_text_node_t* rich_text_parse(const char* str, uint32_t size) {
 
   parser = xml_parser_create();
   xml_parser_set_builder(parser, builder_init(&b));
+  xml_parser_set_trim_text(parser, FALSE);
   xml_parser_parse(parser, str, size);
 
   node = b.node;
