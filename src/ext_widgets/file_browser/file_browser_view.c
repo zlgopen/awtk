@@ -23,6 +23,8 @@
 #include "tkc/utils.h"
 #include "file_browser_view.h"
 
+static ret_t file_browser_view_reload(widget_t* widget);
+
 ret_t file_browser_view_set_init_dir(widget_t* widget, const char* init_dir) {
   file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
   return_value_if_fail(file_browser_view != NULL, RET_BAD_PARAMS);
