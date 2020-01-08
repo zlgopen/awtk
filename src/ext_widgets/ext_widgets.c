@@ -53,6 +53,7 @@
 #include "mutable_image/mutable_image.h"
 #include "base/children_layouter_factory.h"
 #include "scroll_view/children_layouter_list_view.h"
+#include "ext_widgets/file_browser/file_browser_view.h"
 
 static ret_t children_layouter_register_ext_builtins(void) {
   children_layouter_factory_t* f = children_layouter_factory();
@@ -99,6 +100,7 @@ ret_t tk_ext_widgets_init() {
   widget_factory_register(f, WIDGET_TYPE_HSCROLL_LABEL, hscroll_label_create);
   widget_factory_register(f, WIDGET_TYPE_COMBO_BOX_EX, combo_box_ex_create);
   widget_factory_register(f, WIDGET_TYPE_DRAGGABLE, draggable_create);
+  widget_factory_register(f, WIDGET_TYPE_FILE_BROWSER_VIEW, file_browser_view_create);
 
   children_layouter_register_ext_builtins();
 

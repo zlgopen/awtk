@@ -33,7 +33,7 @@ class CodeGen {
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * ${iter.desc}。
    */
-   ${iter.type} ${iter.name};
+  ${iter.type} ${iter.name};
 `
       return propDecl;
     }).join('');
@@ -49,19 +49,18 @@ class CodeGen {
 
     const className = json.name;
     result = json.props.map(iter => {
-      let propSetter = `
+      return `
 /**
  * @method ${className}_set_${iter.name}
  * 设置${iter.name}。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
- * @param {uint32_t} ${iter.name} ${iter.desc}。
+ * @param {${this.mapType(iter.type)}} ${iter.name} ${iter.desc}。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t ${className}_set_${iter.name}(widget_t* widget, ${iter.type} ${iter.name});
+ret_t ${className}_set_${iter.name}(widget_t* widget, ${this.genParamDecl(iter.type, iter.name)});
 `
-      return propSetter;
     }).join('');
 
     return result;
@@ -77,8 +76,7 @@ ret_t ${className}_set_${iter.name}(widget_t* widget, ${iter.type} ${iter.name})
 
     result = json.props.map(iter => {
       const uPropName = iter.name.toUpperCase();
-      let propDecl = `#define ${uclassName}_PROP_${uPropName} "${iter.name}"`
-      return propDecl;
+      return `#define ${uclassName}_PROP_${uPropName} "${iter.name}"`
     }).join('\n');
 
     return result;
@@ -170,7 +168,7 @@ END_C_DECLS
     const month = now.getMonth() + 1;
     const date = json.date || `${year}-${month}-${day}`
 
-    let result = `/**
+    return `/**
  * File:   ${className}.${ext}
  * Author: AWTK Develop Team
  * Brief:  ${desc}
@@ -191,7 +189,26 @@ END_C_DECLS
  *
  */
 `
-    return result;
+  }
+
+  genAssignValue(type, name, value) {
+    if(type.indexOf("char*") >= 0) {
+      return `${name} = tk_str_copy(${name}, ${value});`;
+    } else {
+      return `${name} = ${value};`;
+    }
+  }
+  
+  mapType(type) {
+    if(type.indexOf("char*") >= 0) {
+      return `const char*`;
+    } else {
+      return type;
+    }
+  }
+
+  genParamDecl(type, name) {
+     return `${this.mapType(type)} ${name}`;
   }
 
   genPropSetterImpls(json) {
@@ -202,14 +219,17 @@ END_C_DECLS
 
     const className = json.name;
     const uclassName = className.toUpperCase();
-
     result = json.props.map(iter => {
+      let type = `${iter.type}`;
+      const paramDecl = this.genParamDecl(iter.type, iter.name);
+      const assignValue = this.genAssignValue(iter.type, `${className}->${iter.name}`, iter.name);
+
       let propSetter = `
-ret_t ${className}_set_${iter.name}(widget_t* widget, ${iter.type} ${iter.name}) {
+ret_t ${className}_set_${iter.name}(widget_t* widget, ${paramDecl}) {
   ${className}_t* ${className} = ${uclassName}(widget);
   return_value_if_fail(${className} != NULL, RET_BAD_PARAMS);
 
-  ${className}->${iter.name} = ${iter.name};
+  ${assignValue}
 
   return RET_OK;
 }
@@ -230,8 +250,7 @@ ret_t ${className}_set_${iter.name}(widget_t* widget, ${iter.type} ${iter.name})
 
     result = json.props.map(iter => {
       const uPropName = iter.name.toUpperCase();
-      let propDecl = `  ${uclassName}_PROP_${uPropName}`
-      return propDecl;
+      return `  ${uclassName}_PROP_${uPropName}`
     }).join(',\n');
 
     return result;
@@ -255,7 +274,7 @@ ret_t ${className}_set_${iter.name}(widget_t* widget, ${iter.type} ${iter.name})
         return `value_set_${typeName}(v, ${clsName}->${name});`;
       }
       case 'char*': {
-        return `value_set_str(v, ${clsName}->${name}.str);`;
+        return `value_set_str(v, ${clsName}->${name});`;
       }
       case 'void*': {
         return `value_set_pointer(v, ${clsName}->${name});`;

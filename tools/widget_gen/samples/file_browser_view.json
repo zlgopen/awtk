@@ -1,0 +1,31 @@
+{
+  "name":"file_browser_view",
+  "date":"2020-01-08",
+  "team":"AWTK Develop Team",
+  "author":"Li XianJing <xianjimli@hotmail.com>",
+  "desc":"文件管理/浏览/选择控件",
+  "copyright":"Guangzhou ZHIYUAN Electronics Co.,Ltd.",
+  "includes":[],
+  "props": [
+    {
+      "name":"cwd",
+      "desc":"当前目录",
+      "type":"char*"
+    },
+    {
+      "name":"file_icon",
+      "desc":"文件项的图标",
+      "type":"char*"
+    },
+    {
+      "name":"folder_icon",
+      "desc":"目录项的图标",
+      "type":"char*"
+    },
+    {
+      "name":"return_up_icon",
+      "desc":"返回上一级目录的图标",
+      "type":"char*"
+    }
+  ]
+}
