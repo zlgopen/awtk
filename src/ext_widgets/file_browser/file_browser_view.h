@@ -151,10 +151,12 @@ ret_t file_browser_view_set_return_up_icon(widget_t* widget, const char* return_
 
 ret_t file_browser_view_register(void);
 
+#define FILE_BROWSER_VIEW_NAME "name"
+#define FILE_BROWSER_VIEW_ICON "icon"
+#define FILE_BROWSER_VIEW_FILE "file"
+#define FILE_BROWSER_VIEW_FOLDER "folder"
+#define FILE_BROWSER_VIEW_RETURN_UP "return_up"
 #define FILE_BROWSER_VIEW_CONTAINER "container"
-#define FILE_BROWSER_VIEW_FILE_TEMPLATE "template:file"
-#define FILE_BROWSER_VIEW_FOLDER_TEMPLATE "template:folder"
-#define FILE_BROWSER_VIEW_RETURN_UP_TEMPLATE "template:return_up"
 
 /*public for subclass and runtime type check*/
 TK_EXTERN_VTABLE(file_browser_view);

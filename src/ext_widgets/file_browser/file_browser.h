@@ -335,6 +335,7 @@ fb_item_t* file_browser_get_item(file_browser_t* fb, uint32_t index);
 ret_t file_browser_destroy(file_browser_t* fb);
 
 /*public for test*/
+bool_t fb_filter_visible_only(void* ctx, const void* data);
 bool_t fb_filter_files_only(void* ctx, const void* data);
 bool_t fb_filter_by_ext_names(void* ctx, const void* data);
 bool_t fb_filter_directories_only(void* ctx, const void* data);

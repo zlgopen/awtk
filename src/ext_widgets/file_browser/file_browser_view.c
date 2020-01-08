@@ -120,10 +120,74 @@ static ret_t file_browser_view_on_paint_self(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
+static ret_t file_browser_view_reload_in_idle(const idle_info_t* info) {
+  widget_t* widget = WIDGET(info->ctx);
+
+  file_browser_view_reload(widget);
+
+  return RET_REMOVE;
+}
+
+static ret_t file_browser_view_on_item_clicked(void* ctx, event_t* e) {
+  widget_t* target = WIDGET(e->target);
+  file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(ctx);
+
+  if(tk_str_eq(target->name, FILE_BROWSER_VIEW_RETURN_UP)) {
+    file_browser_up(file_browser_view->fb);
+
+    idle_add(file_browser_view_reload_in_idle, file_browser_view);
+  } else if(tk_str_eq(target->name, FILE_BROWSER_VIEW_FOLDER)) {
+    uint32_t index = widget_index_of(target);
+    fb_item_t* info = file_browser_get_item(file_browser_view->fb, index - 1);
+
+    file_browser_enter(file_browser_view->fb, info->name);
+    
+    idle_add(file_browser_view_reload_in_idle, file_browser_view);
+  }
+
+  return RET_OK;
+}
+
 static ret_t file_browser_view_reload(widget_t* widget) {
+  uint32_t i = 0;
+  uint32_t nr = 0;
+  widget_t* item = NULL;
+  const char* icon = NULL;
   widget_t* container = NULL;
+  widget_t* item_child = NULL;
   file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
   container = file_browser_view->container;
+  return_value_if_fail(container != NULL, RET_BAD_PARAMS);
+
+  widget_destroy_children(container);
+
+  item = widget_clone(file_browser_view->return_up_template, container);
+  widget_on(item, EVT_CLICK, file_browser_view_on_item_clicked, widget);
+
+  nr = file_browser_get_items_nr(file_browser_view->fb);
+  for(i = 0; i < nr; i++) {
+    fb_item_t* info = file_browser_get_item(file_browser_view->fb, i);
+    if(info->is_dir) {
+      icon = file_browser_view->folder_icon;
+      item = widget_clone(file_browser_view->folder_template, container);
+    } else {
+      icon = file_browser_view->file_icon;
+      item = widget_clone(file_browser_view->file_template, container);
+    }
+
+    item_child = widget_lookup(item, FILE_BROWSER_VIEW_NAME, TRUE);
+    if(item_child != NULL) {
+      widget_set_text_utf8(item_child, info->name);
+    }
+   
+    widget_on(item, EVT_CLICK, file_browser_view_on_item_clicked, widget);
+    item_child = widget_lookup(item, FILE_BROWSER_VIEW_ICON, TRUE);
+    if(item_child != NULL && icon != NULL) {
+      widget_set_prop_str(item_child, WIDGET_PROP_IMAGE, icon);
+    }
+  }
+
+  widget_layout(container);
 
   return RET_OK;
 }
@@ -135,18 +199,19 @@ static ret_t file_browser_view_init_ui(widget_t* widget) {
 
   container = widget_lookup(widget, FILE_BROWSER_VIEW_CONTAINER, TRUE);
   return_value_if_fail(container != NULL, RET_BAD_PARAMS);
+  file_browser_view->container = container;
 
-  template = widget_lookup(container, FILE_BROWSER_VIEW_FILE_TEMPLATE, TRUE);
+  template = widget_lookup(container, FILE_BROWSER_VIEW_FILE, TRUE);
   return_value_if_fail(template != NULL, RET_BAD_PARAMS);
   file_browser_view->file_template = template;
   widget_remove_child(template->parent, template);
 
-  template = widget_lookup(container, FILE_BROWSER_VIEW_FOLDER_TEMPLATE, TRUE);
+  template = widget_lookup(container, FILE_BROWSER_VIEW_FOLDER, TRUE);
   return_value_if_fail(template != NULL, RET_BAD_PARAMS);
   file_browser_view->folder_template = template;
   widget_remove_child(template->parent, template);
 
-  template = widget_lookup(container, FILE_BROWSER_VIEW_RETURN_UP_TEMPLATE, TRUE);
+  template = widget_lookup(container, FILE_BROWSER_VIEW_RETURN_UP, TRUE);
   return_value_if_fail(template != NULL, RET_BAD_PARAMS);
   file_browser_view->return_up_template = template;
   widget_remove_child(template->parent, template);
@@ -159,7 +224,7 @@ static ret_t file_browser_view_on_event(widget_t* widget, event_t* e) {
   return_value_if_fail(widget != NULL && file_browser_view != NULL, RET_BAD_PARAMS);
 
   switch (e->type) {
-    case EVT_WINDOW_LOAD: {
+    case EVT_WIDGET_LOAD: {
       file_browser_view_init_ui(widget);
       break;
     }

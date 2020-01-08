@@ -90,6 +90,8 @@ file_browser_t* file_browser_create(fs_t* fs) {
 
   fb->fs = fs;
   tk_strcpy(fb->cwd, "/");
+  fb->compare = fb_compare_by_name;
+  fb->filter = fb_filter_visible_only;
   wbuffer_init_extendable(&(fb->copy_items));
 
   emitter_init(EMITTER(fb));
@@ -485,6 +487,12 @@ ret_t file_browser_destroy(file_browser_t* fb) {
   TKMEM_FREE(fb);
 
   return RET_OK;
+}
+
+bool_t fb_filter_visible_only(void* ctx, const void* data) {
+  fs_item_t* item = (fs_item_t*)data;
+
+  return item->name[0] != '.';
 }
 
 bool_t fb_filter_files_only(void* ctx, const void* data) {
