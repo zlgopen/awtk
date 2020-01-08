@@ -589,7 +589,7 @@ bool_t bitmap_save_png(bitmap_t* bitmap, const char* filename) {
   return TRUE;
 }
 
-#else 
+#else
 
 bool_t bitmap_save_png(bitmap_t* bitmap, const char* filename) {
   return FALSE;

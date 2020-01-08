@@ -245,7 +245,8 @@ static inline void widget_draw_antialiasing_for_point(frr_image_info_t* image_in
   int32_t p = 0;
   unsigned char a = (unsigned char)(e * c.a);
   IMAGE_COLOR2COLOR_BLEND(c, o_color, a);
-  p = (int32_t)GET_IMAGE_POINT(image_info->bpp, image_info->stride, image_info->w, image_info->h, px, py);
+  p = (int32_t)GET_IMAGE_POINT(image_info->bpp, image_info->stride, image_info->w, image_info->h,
+                               px, py);
   if (p > 0) {
     widget_image_color2data(image_info->dst + p, image_info->format, c);
   }
@@ -331,7 +332,8 @@ static inline void widget_draw_circluar_point_to_quadrant(frr_image_info_t* imag
     y += c->oy;
 
     if (w > 0 && h > 0) {
-      p = (int32_t)GET_IMAGE_POINT(image_info->bpp, image_info->stride, image_info->w, image_info->h, x, y);
+      p = (int32_t)GET_IMAGE_POINT(image_info->bpp, image_info->stride, image_info->w,
+                                   image_info->h, x, y);
       if (p > 0) {
         widget_image_data2color(image_info->dst + p, image_info->format, &o_color);
 
@@ -370,8 +372,8 @@ static inline void widget_draw_circluar_point_to_quadrant_hline(frr_image_info_t
     }
 
     if (w > 0 && h > 0) {
-      p = (int32_t)GET_IMAGE_POINT(image_info->bpp, image_info->stride, image_info->w, image_info->h,
-                          x + c->ox, y + c->oy);
+      p = (int32_t)GET_IMAGE_POINT(image_info->bpp, image_info->stride, image_info->w,
+                                   image_info->h, x + c->ox, y + c->oy);
       if (p > 0) {
         widget_image_data2color(image_info->dst + p, image_info->format, &o_color);
 

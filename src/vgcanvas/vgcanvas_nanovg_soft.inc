@@ -87,7 +87,7 @@ static ret_t vgcanvas_nanovg_end_frame(vgcanvas_t* vgcanvas) {
 }
 
 static ret_t vgcanvas_nanovg_image_specific_destroy(bitmap_t* bitmap) {
-  if(bitmap->specific != NULL) {
+  if (bitmap->specific != NULL) {
     TKMEM_FREE(bitmap->specific);
     bitmap->specific = NULL;
   }

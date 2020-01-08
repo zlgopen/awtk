@@ -68,7 +68,7 @@ void xml_parser_set_trim_text(XmlParser* thiz, bool_t trim_text) {
   return_if_fail(thiz != NULL);
 
   thiz->trim_text = trim_text;
-  
+
   return;
 }
 
@@ -449,7 +449,7 @@ static void xml_parser_on_text(XmlParser* thiz) {
     char* start = thiz->text.str;
     char* end = thiz->text.str + thiz->text.size - 1;
 
-    if(thiz->trim_text) {
+    if (thiz->trim_text) {
       while (isspace(*start) && *start) {
         start++;
       }
