@@ -250,7 +250,7 @@ rich_text_render_node_t* rich_text_render_node_layout(widget_t* widget, rich_tex
 
             if (break_type == LINE_BREAK_MUST) {
               ++i;
-              if (str[i] == '\r' && str[i + 1] == '\n') ++i;
+              if (str[i - 1] == '\r' && str[i] == '\n') ++i;
             } else {
               if (str[i] == ' ' || str[i] == '\t') {
                 i++;
