@@ -42,6 +42,7 @@ struct _XmlParser {
 
   XmlBuilder* builder;
   str_t text;
+  bool_t trim_text;
 };
 
 static const char* strtrim(char* str);
@@ -54,15 +55,26 @@ static void xml_parser_parse_text(XmlParser* thiz);
 static void xml_parser_reset_buffer(XmlParser* thiz);
 
 XmlParser* xml_parser_create(void) {
-  XmlParser* p = TKMEM_ZALLOC(XmlParser);
-  return_value_if_fail(p != NULL, NULL);
+  XmlParser* thiz = TKMEM_ZALLOC(XmlParser);
+  return_value_if_fail(thiz != NULL, NULL);
 
-  str_init(&(p->text), 100);
+  thiz->trim_text = TRUE;
+  str_init(&(thiz->text), 100);
 
-  return p;
+  return thiz;
+}
+
+void xml_parser_set_trim_text(XmlParser* thiz, bool_t trim_text) {
+  return_if_fail(thiz != NULL);
+
+  thiz->trim_text = trim_text;
+  
+  return;
 }
 
 void xml_parser_set_builder(XmlParser* thiz, XmlBuilder* builder) {
+  return_if_fail(thiz != NULL);
+
   thiz->builder = builder;
 
   return;
@@ -94,7 +106,7 @@ void xml_parser_parse(XmlParser* thiz, const char* xml, int length) {
         if (c == '<') {
           xml_parser_reset_buffer(thiz);
           state = STAT_AFTER_LT;
-        } else if (!isspace(c)) {
+        } else if (!(thiz->trim_text) || !isspace(c)) {
           state = STAT_TEXT;
         }
         break;
@@ -437,13 +449,15 @@ static void xml_parser_on_text(XmlParser* thiz) {
     char* start = thiz->text.str;
     char* end = thiz->text.str + thiz->text.size - 1;
 
-    while (isspace(*start) && *start) {
-      start++;
-    }
+    if(thiz->trim_text) {
+      while (isspace(*start) && *start) {
+        start++;
+      }
 
-    while (isspace(*end) && end > start) {
-      *end = '\0';
-      end--;
+      while (isspace(*end) && end > start) {
+        *end = '\0';
+        end--;
+      }
     }
 
     if (end >= start) {

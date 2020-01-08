@@ -86,6 +86,22 @@ TEST(XmlParser, cdata) {
   xml_parser_destroy(p);
 }
 
+TEST(XmlParser, not_trim_text) {
+  XmlBuilder b;
+  XmlParser* p = xml_parser_create();
+  xml_parser_set_builder(p, builder_init(b));
+  xml_parser_set_trim_text(p, FALSE);
+
+  test_str_ex(p, "<a> 123</a>", "<a> 123</a>");
+  test_str_ex(p, "<a>123 </a>", "<a>123 </a>");
+  test_str_ex(p, "<a> 123 </a>", "<a> 123 </a>");
+  test_str_ex(p, "<a>\n 123 </a>", "<a>\n 123 </a>");
+  test_str_ex(p, "<a>\n 123 \n</a>", "<a>\n 123 \n</a>");
+  test_str_ex(p, "<a>\n <b>123</b> \n</a>", "<a>\n <b>123</b> \n</a>");
+
+  xml_parser_destroy(p);
+}
+
 TEST(XmlParser, basic) {
   XmlBuilder b;
   XmlParser* p = xml_parser_create();
