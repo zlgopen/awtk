@@ -532,7 +532,7 @@ bitmap_t* bitmap_clone(bitmap_t* bitmap) {
   return b;
 }
 
-#if defined(WITH_STB_IMAGE) || defined(WITH_FS_RES)
+#if defined(WITH_STB_IMAGE) && defined(WITH_FS_RES)
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #define STBI_FREE TKMEM_FREE
