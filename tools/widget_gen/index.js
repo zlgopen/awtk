@@ -52,7 +52,7 @@ class CodeGen {
       return `
 /**
  * @method ${className}_set_${iter.name}
- * 设置${iter.name}。
+ * 设置 ${iter.desc}。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
  * @param {${this.mapType(iter.type)}} ${iter.name} ${iter.desc}。

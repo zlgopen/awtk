@@ -8,8 +8,8 @@
   "includes":[],
   "props": [
     {
-      "name":"cwd",
-      "desc":"当前目录",
+      "name":"init_dir",
+      "desc":"初始目录",
       "type":"char*"
     },
     {
