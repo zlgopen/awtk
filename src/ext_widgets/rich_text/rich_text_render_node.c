@@ -265,6 +265,7 @@ rich_text_render_node_t* rich_text_render_node_layout(widget_t* widget, rich_tex
                 ++i;
               }
               MOVE_TO_NEXT_ROW();
+              row_h = font_size;
               ++i;
             }
             start = i;
