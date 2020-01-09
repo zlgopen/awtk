@@ -109,9 +109,15 @@ static ret_t file_browser_view_on_destroy(widget_t* widget) {
   file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
   return_value_if_fail(widget != NULL && file_browser_view != NULL, RET_BAD_PARAMS);
 
+  TKMEM_FREE(file_browser_view->init_dir);
+  TKMEM_FREE(file_browser_view->file_icon);
+  TKMEM_FREE(file_browser_view->folder_icon);
+  TKMEM_FREE(file_browser_view->return_up_icon);
   file_browser_destroy(file_browser_view->fb);
   darray_deinit(&(file_browser_view->file_items_cache));
   darray_deinit(&(file_browser_view->folder_items_cache));
+  widget_destroy(file_browser_view->file_template);
+  widget_destroy(file_browser_view->folder_template);
 
   return RET_OK;
 }

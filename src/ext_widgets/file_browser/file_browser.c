@@ -61,7 +61,6 @@ static fb_item_t* file_browser_add_item(file_browser_t* fb) {
 
   if (fb->items_size < fb->items_capacity) {
     fb_item_t* item = fb->items + fb->items_size;
-    memset(item, 0x00, sizeof(*item));
     fb->items_size++;
     return item;
   }
@@ -486,8 +485,8 @@ ret_t file_browser_destroy(file_browser_t* fb) {
 
   if (fb->items != NULL) {
     uint32_t i = 0;
-
-    for (i = 0; i < fb->items_size; i++) {
+    log_debug("items_capacity=%u\n", fb->items_capacity);
+    for (i = 0; i < fb->items_capacity; i++) {
       fb_item_t* iter = fb->items + i;
       TKMEM_FREE(iter->name);
     }
