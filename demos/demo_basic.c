@@ -73,7 +73,7 @@ ret_t application_init() {
 
   widget_set_prop_str(win, WIDGET_PROP_CLICKABLE, "no");
 
-  timer_add(on_timer, win, 1000);
+  widget_add_timer(win, on_timer, 1000);
   widget_child_on(win, "inc_value", EVT_CLICK, on_inc, win);
   widget_child_on(win, "dec_value", EVT_CLICK, on_dec, win);
   widget_child_on(win, "close", EVT_CLICK, on_close, win);
