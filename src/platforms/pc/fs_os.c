@@ -87,14 +87,11 @@ ret_t fs_os_dir_read(fs_dir_t* dir, fs_item_t* item) {
     item->is_link = (type & DT_LNK) != 0;
     item->is_reg_file = (type & DT_REG) != 0;
 #ifdef WIN32
-    int16_t len = 0;
-    char* name = NULL;
-
-    len = wcslen(ent->d_name) * 4 + 1;
-    name = (char*)TKMEM_ALLOC(len);
-    tk_utf8_from_utf16(ent->d_name, name, len);
-    tk_strncpy(item->name, name, MAX_PATH);
-    TKMEM_FREE(name);
+    str_t str;
+    str_init(&str, wcslen(ent->d_name) * 4 + 1);
+    str_from_wstr_with_len(&str, ent->d_name, wcslen(ent->d_name));
+    tk_strncpy(item->name, str.str, MAX_PATH);
+    str_reset(&str);
 #else
     tk_strncpy(item->name, ent->d_name, MAX_PATH);
 #endif
