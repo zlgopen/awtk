@@ -43,29 +43,31 @@ typedef struct _file_browser_view_t {
   char* init_dir;
 
   /**
-   * @property {char*} file_icon
+   * @property {bool_t} ignore_hidden_files
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 文件项的图标。
+   * 忽略隐藏文件。
    */
-  char* file_icon;
+  bool_t ignore_hidden_files;
 
   /**
-   * @property {char*} folder_icon
+   * @property {bool_t} sort_ascending
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 目录项的图标。
+   * 是否为升序排序。
    */
-  char* folder_icon;
+  bool_t sort_ascending;
 
   /**
-   * @property {char*} return_up_icon
+   * @property {char*} sort_by
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 返回上一级目录的图标。
+   * 排序方式。可选值(name, size, mtime)。
    */
-  char* return_up_icon;
+  char* sort_by;
 
   /*private*/
+  bool_t inited;
   file_browser_t* fb;
 
+  widget_t* cwd;
   widget_t* container;
   widget_t* file_template;
   widget_t* folder_template;
@@ -111,42 +113,42 @@ widget_t* file_browser_view_cast(widget_t* widget);
 ret_t file_browser_view_set_init_dir(widget_t* widget, const char* init_dir);
 
 /**
- * @method file_browser_view_set_file_icon
- * 设置 文件项的图标。
+ * @method file_browser_view_set_ignore_hidden_files
+ * 设置 忽略隐藏文件。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
- * @param {const char*} file_icon 文件项的图标。
+ * @param {bool_t} ignore_hidden_files 忽略隐藏文件。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t file_browser_view_set_file_icon(widget_t* widget, const char* file_icon);
+ret_t file_browser_view_set_ignore_hidden_files(widget_t* widget, bool_t ignore_hidden_files);
 
 /**
- * @method file_browser_view_set_folder_icon
- * 设置 目录项的图标。
+ * @method file_browser_view_set_sort_ascending
+ * 设置 是否为升序排序。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
- * @param {const char*} folder_icon 目录项的图标。
+ * @param {bool_t} sort_ascending 是否为升序排序。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t file_browser_view_set_folder_icon(widget_t* widget, const char* folder_icon);
+ret_t file_browser_view_set_sort_ascending(widget_t* widget, bool_t sort_ascending);
 
 /**
- * @method file_browser_view_set_return_up_icon
- * 设置 返回上一级目录的图标。
+ * @method file_browser_view_set_sort_by
+ * 设置 排序方式。可选值(name, size, mtime)。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
- * @param {const char*} return_up_icon 返回上一级目录的图标。
+ * @param {const char*} sort_by 排序方式。可选值(name, size, mtime)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t file_browser_view_set_return_up_icon(widget_t* widget, const char* return_up_icon);
+ret_t file_browser_view_set_sort_by(widget_t* widget, const char* sort_by);
 
+#define FILE_BROWSER_VIEW_PROP_SORT_BY "sort_by"
 #define FILE_BROWSER_VIEW_PROP_INIT_DIR "init_dir"
-#define FILE_BROWSER_VIEW_PROP_FILE_ICON "file_icon"
-#define FILE_BROWSER_VIEW_PROP_FOLDER_ICON "folder_icon"
-#define FILE_BROWSER_VIEW_PROP_RETURN_UP_ICON "return_up_icon"
+#define FILE_BROWSER_VIEW_PROP_SORT_ASCENDING "sort_ascending"
+#define FILE_BROWSER_VIEW_PROP_IGNORE_HIDDEN_FILES "ignore_hidden_files"
 
 #define WIDGET_TYPE_FILE_BROWSER_VIEW "file_browser_view"
 
@@ -154,6 +156,8 @@ ret_t file_browser_view_set_return_up_icon(widget_t* widget, const char* return_
 
 ret_t file_browser_view_register(void);
 
+/*特殊子控件的名字*/
+#define FILE_BROWSER_VIEW_CWD "cwd"
 #define FILE_BROWSER_VIEW_NAME "name"
 #define FILE_BROWSER_VIEW_ICON "icon"
 #define FILE_BROWSER_VIEW_FILE "file"

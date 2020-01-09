@@ -23,6 +23,10 @@
 #include "tkc/utils.h"
 #include "file_browser_view.h"
 
+#define SORT_BY_NAME "name"
+#define SORT_BY_SIZE "size"
+#define SORT_BY_MTIME "mtime"
+
 static ret_t file_browser_view_reload(widget_t* widget);
 
 ret_t file_browser_view_set_init_dir(widget_t* widget, const char* init_dir) {
@@ -35,30 +39,50 @@ ret_t file_browser_view_set_init_dir(widget_t* widget, const char* init_dir) {
   return RET_OK;
 }
 
-ret_t file_browser_view_set_file_icon(widget_t* widget, const char* file_icon) {
+static ret_t file_browser_view_sync_sort(widget_t* widget) {
   file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
-  return_value_if_fail(file_browser_view != NULL, RET_BAD_PARAMS);
+  const char* sort_by = file_browser_view->sort_by;
+  bool_t sort_ascending = file_browser_view->sort_ascending;
 
-  file_browser_view->file_icon = tk_str_copy(file_browser_view->file_icon, file_icon);
+  if (sort_by != NULL) {
+    if (tk_str_eq(sort_by, SORT_BY_NAME)) {
+      file_browser_sort_by_name(file_browser_view->fb, sort_ascending);
+    } else if (tk_str_eq(sort_by, SORT_BY_SIZE)) {
+      file_browser_sort_by_name(file_browser_view->fb, sort_ascending);
+    } else if (tk_str_eq(sort_by, SORT_BY_MTIME)) {
+      file_browser_sort_by_mtime(file_browser_view->fb, sort_ascending);
+    }
+  }
 
   return RET_OK;
 }
 
-ret_t file_browser_view_set_folder_icon(widget_t* widget, const char* folder_icon) {
+ret_t file_browser_view_set_ignore_hidden_files(widget_t* widget, bool_t ignore_hidden_files) {
   file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
   return_value_if_fail(file_browser_view != NULL, RET_BAD_PARAMS);
 
-  file_browser_view->folder_icon = tk_str_copy(file_browser_view->folder_icon, folder_icon);
+  file_browser_view->ignore_hidden_files = ignore_hidden_files;
+  file_browser_set_ignore_hidden_files(file_browser_view->fb, ignore_hidden_files);
 
   return RET_OK;
 }
 
-ret_t file_browser_view_set_return_up_icon(widget_t* widget, const char* return_up_icon) {
+ret_t file_browser_view_set_sort_ascending(widget_t* widget, bool_t sort_ascending) {
   file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
   return_value_if_fail(file_browser_view != NULL, RET_BAD_PARAMS);
 
-  file_browser_view->return_up_icon =
-      tk_str_copy(file_browser_view->return_up_icon, return_up_icon);
+  file_browser_view->sort_ascending = sort_ascending;
+  file_browser_view_sync_sort(widget);
+
+  return RET_OK;
+}
+
+ret_t file_browser_view_set_sort_by(widget_t* widget, const char* sort_by) {
+  file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
+  return_value_if_fail(file_browser_view != NULL, RET_BAD_PARAMS);
+
+  file_browser_view->sort_by = tk_str_copy(file_browser_view->sort_by, sort_by);
+  file_browser_view_sync_sort(widget);
 
   return RET_OK;
 }
@@ -70,14 +94,14 @@ static ret_t file_browser_view_get_prop(widget_t* widget, const char* name, valu
   if (tk_str_eq(FILE_BROWSER_VIEW_PROP_INIT_DIR, name)) {
     value_set_str(v, file_browser_view->init_dir);
     return RET_OK;
-  } else if (tk_str_eq(FILE_BROWSER_VIEW_PROP_FILE_ICON, name)) {
-    value_set_str(v, file_browser_view->file_icon);
+  } else if (tk_str_eq(FILE_BROWSER_VIEW_PROP_IGNORE_HIDDEN_FILES, name)) {
+    file_browser_view_set_ignore_hidden_files(widget, value_bool(v));
     return RET_OK;
-  } else if (tk_str_eq(FILE_BROWSER_VIEW_PROP_FOLDER_ICON, name)) {
-    value_set_str(v, file_browser_view->folder_icon);
+  } else if (tk_str_eq(FILE_BROWSER_VIEW_PROP_SORT_ASCENDING, name)) {
+    file_browser_view_set_sort_ascending(widget, value_bool(v));
     return RET_OK;
-  } else if (tk_str_eq(FILE_BROWSER_VIEW_PROP_RETURN_UP_ICON, name)) {
-    value_set_str(v, file_browser_view->return_up_icon);
+  } else if (tk_str_eq(FILE_BROWSER_VIEW_PROP_SORT_BY, name)) {
+    value_set_str(v, file_browser_view->sort_by);
     return RET_OK;
   }
 
@@ -85,20 +109,19 @@ static ret_t file_browser_view_get_prop(widget_t* widget, const char* name, valu
 }
 
 static ret_t file_browser_view_set_prop(widget_t* widget, const char* name, const value_t* v) {
-  file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(FILE_BROWSER_VIEW_PROP_INIT_DIR, name)) {
     file_browser_view_set_init_dir(widget, value_str(v));
     return RET_OK;
-  } else if (tk_str_eq(FILE_BROWSER_VIEW_PROP_FILE_ICON, name)) {
-    file_browser_view_set_file_icon(widget, value_str(v));
+  } else if (tk_str_eq(FILE_BROWSER_VIEW_PROP_IGNORE_HIDDEN_FILES, name)) {
+    file_browser_view_set_ignore_hidden_files(widget, value_bool(v));
     return RET_OK;
-  } else if (tk_str_eq(FILE_BROWSER_VIEW_PROP_FOLDER_ICON, name)) {
-    file_browser_view_set_folder_icon(widget, value_str(v));
+  } else if (tk_str_eq(FILE_BROWSER_VIEW_PROP_SORT_ASCENDING, name)) {
+    file_browser_view_set_sort_ascending(widget, value_bool(v));
     return RET_OK;
-  } else if (tk_str_eq(FILE_BROWSER_VIEW_PROP_RETURN_UP_ICON, name)) {
-    file_browser_view_set_return_up_icon(widget, value_str(v));
+  } else if (tk_str_eq(FILE_BROWSER_VIEW_PROP_SORT_BY, name)) {
+    file_browser_view_set_sort_by(widget, value_str(v));
     return RET_OK;
   }
 
@@ -109,15 +132,14 @@ static ret_t file_browser_view_on_destroy(widget_t* widget) {
   file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
   return_value_if_fail(widget != NULL && file_browser_view != NULL, RET_BAD_PARAMS);
 
+  TKMEM_FREE(file_browser_view->sort_by);
   TKMEM_FREE(file_browser_view->init_dir);
-  TKMEM_FREE(file_browser_view->file_icon);
-  TKMEM_FREE(file_browser_view->folder_icon);
-  TKMEM_FREE(file_browser_view->return_up_icon);
   file_browser_destroy(file_browser_view->fb);
-  darray_deinit(&(file_browser_view->file_items_cache));
-  darray_deinit(&(file_browser_view->folder_items_cache));
+
   widget_destroy(file_browser_view->file_template);
   widget_destroy(file_browser_view->folder_template);
+  darray_deinit(&(file_browser_view->file_items_cache));
+  darray_deinit(&(file_browser_view->folder_items_cache));
 
   return RET_OK;
 }
@@ -217,13 +239,16 @@ static ret_t file_browser_view_reload(widget_t* widget) {
   uint32_t i = 0;
   uint32_t nr = 0;
   widget_t* item = NULL;
-  const char* icon = NULL;
   widget_t* item_child = NULL;
   file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
   widget_t* container = file_browser_view->container;
   return_value_if_fail(container != NULL, RET_BAD_PARAMS);
 
   file_browser_view_recycle_items(widget);
+
+  if (file_browser_view->cwd != NULL) {
+    widget_set_text_utf8(file_browser_view->cwd, file_browser_view->fb->cwd);
+  }
 
   item = file_browser_view->return_up_template;
   widget_add_child(container, item);
@@ -232,21 +257,27 @@ static ret_t file_browser_view_reload(widget_t* widget) {
   for (i = 0; i < nr; i++) {
     fb_item_t* info = file_browser_get_item(file_browser_view->fb, i);
     if (info->is_dir) {
-      icon = file_browser_view->folder_icon;
       item = file_browser_view_create_folder_item(widget);
     } else {
-      icon = file_browser_view->file_icon;
+      value_t v;
+      char prop[TK_NAME_LEN + 1];
+      const char* ext = strrchr(info->name, '.');
       item = file_browser_view_create_file_item(widget);
+      item_child = widget_lookup(item, FILE_BROWSER_VIEW_ICON, TRUE);
+
+      if (item_child != NULL && ext != NULL) {
+        ext++;
+        tk_snprintf(prop, sizeof(prop), "icon_%s", ext);
+
+        if (widget_get_prop(widget, prop, &v) == RET_OK && value_str(&v) != NULL) {
+          widget_set_prop_str(item_child, WIDGET_PROP_IMAGE, value_str(&v));
+        }
+      }
     }
 
     item_child = widget_lookup(item, FILE_BROWSER_VIEW_NAME, TRUE);
     if (item_child != NULL) {
       widget_set_text_utf8(item_child, info->name);
-    }
-
-    item_child = widget_lookup(item, FILE_BROWSER_VIEW_ICON, TRUE);
-    if (item_child != NULL && icon != NULL) {
-      widget_set_prop_str(item_child, WIDGET_PROP_IMAGE, icon);
     }
   }
 
@@ -263,6 +294,7 @@ static ret_t file_browser_view_init_ui(widget_t* widget) {
   container = widget_lookup(widget, FILE_BROWSER_VIEW_CONTAINER, TRUE);
   return_value_if_fail(container != NULL, RET_BAD_PARAMS);
   file_browser_view->container = container;
+  file_browser_view->cwd = widget_lookup(widget, FILE_BROWSER_VIEW_CWD, TRUE);
 
   template = widget_lookup(container, FILE_BROWSER_VIEW_FILE, TRUE);
   return_value_if_fail(template != NULL, RET_BAD_PARAMS);
@@ -279,6 +311,7 @@ static ret_t file_browser_view_init_ui(widget_t* widget) {
   file_browser_view->return_up_template = template;
   widget_remove_child(template->parent, template);
   widget_on(template, EVT_CLICK, file_browser_view_on_item_clicked, widget);
+  file_browser_view->inited = TRUE;
 
   return file_browser_view_reload(widget);
 }
@@ -298,8 +331,8 @@ static ret_t file_browser_view_on_event(widget_t* widget, event_t* e) {
 }
 
 const char* s_file_browser_view_properties[] = {
-    FILE_BROWSER_VIEW_PROP_INIT_DIR, FILE_BROWSER_VIEW_PROP_FILE_ICON,
-    FILE_BROWSER_VIEW_PROP_FOLDER_ICON, FILE_BROWSER_VIEW_PROP_RETURN_UP_ICON, NULL};
+    FILE_BROWSER_VIEW_PROP_SORT_BY, FILE_BROWSER_VIEW_PROP_INIT_DIR,
+    FILE_BROWSER_VIEW_PROP_SORT_ASCENDING, FILE_BROWSER_VIEW_PROP_IGNORE_HIDDEN_FILES, NULL};
 
 TK_DECL_VTABLE(file_browser_view) = {.size = sizeof(file_browser_view_t),
                                      .type = WIDGET_TYPE_FILE_BROWSER_VIEW,
@@ -318,6 +351,8 @@ widget_t* file_browser_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_
   file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
   return_value_if_fail(file_browser_view != NULL, NULL);
 
+  file_browser_view->sort_ascending = TRUE;
+  file_browser_view->ignore_hidden_files = TRUE;
   file_browser_view->fb = file_browser_create(os_fs());
   darray_init(&(file_browser_view->file_items_cache), 10, (tk_destroy_t)widget_unref, NULL);
   darray_init(&(file_browser_view->folder_items_cache), 10, (tk_destroy_t)widget_unref, NULL);
