@@ -312,6 +312,9 @@ enum { TK_NAME_LEN = 31 };
 
 #if defined(HAS_AWTK_CONFIG)
 #include "awtk_config.h"
+#ifdef FRAGMENT_FRAME_BUFFER_SIZE
+#undef WITH_WINDOW_ANIMATORS
+#endif/*FRAGMENT_FRAME_BUFFER_SIZE*/
 #endif /*HAS_AWTK_CONFIG*/
 
 #ifdef _MSC_VER
