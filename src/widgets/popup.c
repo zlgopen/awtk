@@ -130,22 +130,27 @@ static ret_t popup_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_POINTER_UP: {
-      bool_t close_window = FALSE;
-      pointer_event_t* evt = (pointer_event_t*)e;
+      window_base_t* window_base = WINDOW_BASE(popup);
+      ENSURE(window_base != NULL);
 
-      if (popup->close_when_click) {
-        close_window = TRUE;
-      } else if (popup->close_when_click_outside && popup->is_outside) {
-        rect_t r = rect_init(widget->x, widget->y, widget->w, widget->h);
-        if (!rect_contains(&r, evt->x, evt->y)) {
+      if (window_base->stage != WINDOW_STAGE_CLOSED) {
+        bool_t close_window = FALSE;
+        pointer_event_t* evt = (pointer_event_t*)e;
+
+        if (popup->close_when_click) {
           close_window = TRUE;
+        } else if (popup->close_when_click_outside && popup->is_outside) {
+          rect_t r = rect_init(widget->x, widget->y, widget->w, widget->h);
+          if (!rect_contains(&r, evt->x, evt->y)) {
+            close_window = TRUE;
+          }
+        } else if (!popup->close_when_click) {
+          idle_add(popup_idle_check_if_need_set_background_state, widget);
         }
-      } else if (!popup->close_when_click) {
-        idle_add(popup_idle_check_if_need_set_background_state, widget);
-      }
 
-      if (close_window) {
-        idle_add(popup_idle_window_close, widget);
+        if (close_window) {
+          idle_add(popup_idle_window_close, widget);
+        }
       }
 
       break;

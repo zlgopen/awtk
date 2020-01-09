@@ -278,7 +278,7 @@ ret_t file_browser_refresh(file_browser_t* fb) {
       continue;
     }
 
-    if(fb->ignore_hidden_files && info.name[0] == '.') {
+    if (fb->ignore_hidden_files && info.name[0] == '.') {
       continue;
     }
 

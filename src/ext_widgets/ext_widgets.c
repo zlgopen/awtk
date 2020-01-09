@@ -56,7 +56,7 @@
 
 #if defined(WITH_FS_RES) || defined(WITH_FS)
 #include "file_browser/file_browser_view.h"
-#endif/*WITH_FS*/
+#endif /*WITH_FS*/
 
 static ret_t children_layouter_register_ext_builtins(void) {
   children_layouter_factory_t* f = children_layouter_factory();
@@ -106,7 +106,7 @@ ret_t tk_ext_widgets_init() {
 
 #ifdef TK_FILE_BROWSER_VIEW_H
   widget_factory_register(f, WIDGET_TYPE_FILE_BROWSER_VIEW, file_browser_view_create);
-#endif/*TK_FILE_BROWSER_VIEW_H*/
+#endif /*TK_FILE_BROWSER_VIEW_H*/
 
   children_layouter_register_ext_builtins();
 
