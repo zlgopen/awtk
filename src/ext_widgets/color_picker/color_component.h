@@ -79,6 +79,18 @@ widget_t* color_component_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t 
 ret_t color_component_set_color(widget_t* widget, color_t c);
 
 /**
+ * @method color_component_set_hsv
+ * 设置颜色。
+ * @param {widget_t*} widget 控件对象。
+ * @param {float}  h 色调。
+ * @param {float}  s 饱和度。
+ * @param {float}  v 明度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t color_component_set_hsv(widget_t* widget, float h, float s, float v);
+
+/**
  * @method color_component_get_h
  * 获取h分量。
  * @param {widget_t*} widget color_component对象。

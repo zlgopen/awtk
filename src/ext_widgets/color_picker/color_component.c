@@ -214,7 +214,12 @@ static ret_t color_component_update_sv(widget_t* widget) {
   image_data = bitmap_lock_buffer_for_write(image);
   dst = (uint32_t*)(image_data);
 
-  convertRGBtoHSV(rgba.r, rgba.g, rgba.b, &H, &S, &V);
+  if (color_component->last_hue != -1) {
+    H = color_component->last_hue;
+  } else {
+    convertRGBtoHSV(rgba.r, rgba.g, rgba.b, &H, &S, &V);
+    color_component->last_hue = H;
+  }
 
   for (y = 0; y < h; y++) {
     dst = (uint32_t*)(image_data + y * image->line_length);
@@ -225,7 +230,7 @@ static ret_t color_component_update_sv(widget_t* widget) {
       *dst++ = rgb_to_image8888(r, g, b);
     }
   }
-  color_component->last_hue = H;
+
   bitmap_unlock_buffer(image);
 
   return RET_OK;
@@ -293,11 +298,36 @@ ret_t color_component_set_color(widget_t* widget, color_t c) {
     if ((int32_t)H != color_component->last_hue) {
       color_component->need_update = TRUE;
       log_debug("hue changed(%d != %d)\n", color_component->last_hue, (int32_t)H);
+      color_component->last_hue = -1;
     }
     color_component->color_x = V * widget->w;
     color_component->color_y = (1 - S) * widget->h;
   } else {
     color_component->color_y = (1 - H / 360.0f) * widget->h;
+  }
+  widget_invalidate(widget, NULL);
+
+  return RET_OK;
+}
+
+ret_t color_component_set_hsv(widget_t* widget, float h, float s, float v) {
+  color_t* c;
+  color_component_t* color_component = COLOR_COMPONENT(widget);
+  return_value_if_fail(color_component != NULL, RET_BAD_PARAMS);
+
+  c = &(color_component->c);
+  convertHSVtoRGB(h, s, v, &(c->rgba.r), &(c->rgba.g), &(c->rgba.b));
+
+  if (color_component->update == color_component_update_sv) {
+    if ((int32_t)h != color_component->last_hue) {
+      color_component->need_update = TRUE;
+      log_debug("hue changed(%d != %d)\n", color_component->last_hue, (int32_t)h);
+      color_component->last_hue = h;
+    }
+    color_component->color_x = v * widget->w;
+    color_component->color_y = (1 - s) * widget->h;
+  } else {
+    color_component->color_y = (1 - h / 360.0f) * widget->h;
   }
   widget_invalidate(widget, NULL);
 
