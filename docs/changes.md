@@ -1,9 +1,14 @@
 # 最新动态
 
+* 2020/01/09
+  * 完善 rich text（感谢尧燊提供补丁） 
+  * 完善 color picker（感谢尧燊提供补丁） 
+  * 完善 combo box item（感谢尧燊提供补丁） 
+
 * 2020/01/08
   * 修改在 stm32f429 上编译的 BUG。
   * xml 解析器支持不去掉两端的空格。
-  * 完善slide menu （感谢朝泽提供补丁） 
+  * 完善 slide menu （感谢朝泽提供补丁） 
   * rich text 支持换行符和水平对齐（感谢尧燊提供补丁） 
   * （感谢智明提供下列补丁）
     * darray 部分函数改为 static
