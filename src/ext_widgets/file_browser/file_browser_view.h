@@ -70,6 +70,9 @@ typedef struct _file_browser_view_t {
   widget_t* file_template;
   widget_t* folder_template;
   widget_t* return_up_template;
+
+  darray_t file_items_cache;
+  darray_t folder_items_cache;
 } file_browser_view_t;
 
 /**

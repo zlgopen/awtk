@@ -2232,6 +2232,7 @@ ret_t widget_set_need_relayout_children(widget_t* widget);
 ret_t widget_ensure_visible_in_viewport(widget_t* widget);
 ret_t widget_set_need_update_style(widget_t* widget);
 bool_t widget_is_activate_key(widget_t* widget, key_event_t* e);
+ret_t widget_remove_child_prepare(widget_t* widget, widget_t* child);
 
 /*public for test*/
 ret_t widget_focus_first(widget_t* widget);

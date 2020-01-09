@@ -90,8 +90,8 @@ file_browser_t* file_browser_create(fs_t* fs) {
 
   fb->fs = fs;
   tk_strcpy(fb->cwd, "/");
+  fb->ignore_hidden_files = TRUE;
   fb->compare = fb_compare_by_name;
-  fb->filter = fb_filter_visible_only;
   wbuffer_init_extendable(&(fb->copy_items));
 
   emitter_init(EMITTER(fb));
@@ -276,6 +276,10 @@ ret_t file_browser_refresh(file_browser_t* fb) {
   while (fs_dir_read(dir, &info) == RET_OK) {
     fb_item_t* iter = NULL;
     if (tk_str_eq(info.name, ".") || tk_str_eq(info.name, "..")) {
+      continue;
+    }
+
+    if(fb->ignore_hidden_files && info.name[0] == '.') {
       continue;
     }
 
@@ -469,6 +473,14 @@ fb_item_t* file_browser_get_item(file_browser_t* fb, uint32_t index) {
   return fb->items + index;
 }
 
+ret_t file_browser_set_ignore_hidden_files(file_browser_t* fb, bool_t ignore_hidden_files) {
+  return_value_if_fail(fb != NULL, RET_BAD_PARAMS);
+
+  fb->ignore_hidden_files = ignore_hidden_files;
+
+  return RET_OK;
+}
+
 ret_t file_browser_destroy(file_browser_t* fb) {
   return_value_if_fail(fb != NULL, RET_BAD_PARAMS);
 
@@ -487,12 +499,6 @@ ret_t file_browser_destroy(file_browser_t* fb) {
   TKMEM_FREE(fb);
 
   return RET_OK;
-}
-
-bool_t fb_filter_visible_only(void* ctx, const void* data) {
-  fs_item_t* item = (fs_item_t*)data;
-
-  return item->name[0] != '.';
 }
 
 bool_t fb_filter_files_only(void* ctx, const void* data) {

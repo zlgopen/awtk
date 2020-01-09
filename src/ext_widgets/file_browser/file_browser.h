@@ -105,6 +105,8 @@ typedef struct _file_browser_t {
 
   bool_t cut;
   wbuffer_t copy_items;
+
+  bool_t ignore_hidden_files;
 } file_browser_t;
 
 /**
@@ -325,6 +327,17 @@ uint32_t file_browser_get_items_nr(file_browser_t* fb);
 fb_item_t* file_browser_get_item(file_browser_t* fb, uint32_t index);
 
 /**
+ * @method file_browser_set_ignore_hidden_files
+ * 设置是否忽略隐藏文件。
+ * 
+ * @param {file_browser_t*} fb file browser对象。
+ * @param {bool_t} ignore_hidden_files 是否忽略隐藏文件。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t file_browser_set_ignore_hidden_files(file_browser_t* fb, bool_t ignore_hidden_files);
+
+/**
  * @method file_browser_destroy
  * 销毁file_browser对象
  * 
@@ -335,7 +348,6 @@ fb_item_t* file_browser_get_item(file_browser_t* fb, uint32_t index);
 ret_t file_browser_destroy(file_browser_t* fb);
 
 /*public for test*/
-bool_t fb_filter_visible_only(void* ctx, const void* data);
 bool_t fb_filter_files_only(void* ctx, const void* data);
 bool_t fb_filter_by_ext_names(void* ctx, const void* data);
 bool_t fb_filter_directories_only(void* ctx, const void* data);
