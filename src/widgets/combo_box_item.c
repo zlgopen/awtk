@@ -39,7 +39,6 @@ static ret_t combo_box_item_on_event(widget_t* widget, event_t* e) {
     }
     case EVT_POINTER_DOWN_ABORT: {
       combo_box_item->pressed = FALSE;
-      widget_ungrab(widget->parent, widget);
       widget_set_state(widget, WIDGET_STATE_NORMAL);
       break;
     }
@@ -52,11 +51,11 @@ static ret_t combo_box_item_on_event(widget_t* widget, event_t* e) {
       }
 
       combo_box_item->pressed = FALSE;
-      widget_ungrab(widget->parent, widget);
       widget_set_state(widget, WIDGET_STATE_NORMAL);
       break;
     }
     case EVT_POINTER_LEAVE:
+      combo_box_item->pressed = FALSE;
       widget_set_state(widget, WIDGET_STATE_NORMAL);
       break;
     case EVT_POINTER_ENTER:
