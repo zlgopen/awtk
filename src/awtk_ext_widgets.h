@@ -56,7 +56,7 @@
 
 #if defined(WITH_FS_RES) || defined(WITH_FS)
 #include "file_browser/file_browser_view.h"
-#endif/*WITH_FS*/
+#endif /*WITH_FS*/
 
 #include "ext_widgets/ext_widgets.h"
 
