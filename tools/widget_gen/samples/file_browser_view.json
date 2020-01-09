@@ -13,18 +13,13 @@
       "type":"char*"
     },
     {
-      "name":"file_icon",
-      "desc":"文件项的图标",
-      "type":"char*"
+      "name":"ignore_hidden_files",
+      "desc":"忽略隐藏文件",
+      "type":"bool_t"
     },
     {
-      "name":"folder_icon",
-      "desc":"目录项的图标",
-      "type":"char*"
-    },
-    {
-      "name":"return_up_icon",
-      "desc":"返回上一级目录的图标",
+      "name":"sort_by",
+      "desc":"排序方式。可选值(name, size, mtime)",
       "type":"char*"
     }
   ]

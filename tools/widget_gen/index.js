@@ -363,11 +363,28 @@ ret_t ${className}_set_${iter.name}(widget_t* widget, ${paramDecl}) {
 
     return result;
   }
+  
+  genFreeProps(json) {
+    let result = '';
+    const className = json.name;
+    if (!json.props || !json.props.length) {
+      return result;
+    }
+
+    result = json.props.map((iter, index) => {
+      if(iter.type.indexOf('char*') >= 0) {
+        return `  TKMEM_FREE(${className}->${iter.name});\n`;
+      } else {
+        return '';
+      }
+    }).join('');
+
+    return result;
+  }
 
   genGetPropDispatch(json) {
     let result = '';
     if (!json.props || !json.props.length) {
-      return result;
       return result;
     }
 
@@ -401,6 +418,7 @@ ret_t ${className}_set_${iter.name}(widget_t* widget, ${paramDecl}) {
     const propSetterImpls = this.genPropSetterImpls(json);
     const propSetPropDispatch = this.genSetPropDispatch(json);
     const propGetPropDispatch = this.genGetPropDispatch(json);
+    const freeProps = this.genFreeProps(json);
     let defaultInclude = this.genIncludes(className);
 
     if (json.includes) {
@@ -436,7 +454,7 @@ static ret_t ${className}_on_destroy(widget_t* widget) {
   ${className}_t* ${className} = ${uclassName}(widget);
   return_value_if_fail(widget != NULL && ${className} != NULL, RET_BAD_PARAMS);
 
-  (void)${className};
+${freeProps}
 
   return RET_OK;
 }
