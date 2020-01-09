@@ -68,3 +68,7 @@
 * [常见问题解答](faq.md)
 * [修改 AWTK 的代码风格](code_style.md)
 * [AWTK 是如何保证代码质量的](qa.md)
+
+### 7. 第三方文档
+
+* [AWTK 编译与调试 环境搭建指南](https://github.com/hk-mars/Blog-Article/blob/master/IoT/AWTK%20%E7%BC%96%E8%AF%91%E4%B8%8E%E8%B0%83%E8%AF%95%20%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97.md)
