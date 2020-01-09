@@ -76,6 +76,7 @@ typedef struct _color_picker_t {
   color_t c;
   bool_t inited;
   color_t init_c;
+  int32_t last_hue;
   widget_t* trigger_child;
 } color_picker_t;
 
