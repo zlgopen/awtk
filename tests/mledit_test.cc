@@ -40,6 +40,7 @@ TEST(MLEdit, events) {
 
   event_log = "";
   widget_set_text(b, L"a");
+  ASSERT_EQ(wcscmp(widget_get_text(b), L"a"), 0);
   ASSERT_EQ(event_log, "value_changed");
   ASSERT_EQ(wcscmp(b->text.str, L"a"), 0);
 
