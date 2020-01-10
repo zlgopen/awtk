@@ -41,24 +41,8 @@ static ret_t gif_image_on_timer(const timer_info_t* info) {
   return_value_if_fail(image != NULL, RET_BAD_PARAMS);
 
   image->index++;
-  if (image->index >= image->frames_nr) {
-    image->index = 0;
-  }
-
   widget_invalidate_force(WIDGET(image), NULL);
-  if (image->delays != NULL && image->frames_nr > 1) {
-    uint32_t delay = image->delays[image->index];
-
-    if (delay == info->duration) {
-      return RET_REPEAT;
-    } else {
-      image->timer_id = timer_add(gif_image_on_timer, image, delay);
-      return RET_REMOVE;
-    }
-  } else {
-    image->timer_id = TK_INVALID_ID;
-    return RET_REMOVE;
-  }
+  return RET_REPEAT;
 }
 #endif /*AWTK_WEB*/
 
@@ -67,6 +51,7 @@ static ret_t gif_image_on_paint_self(widget_t* widget, canvas_t* c) {
   wh_t h = 0;
   rect_t src;
   rect_t dst;
+  uint32_t frames_nr;
   bitmap_t bitmap;
   vgcanvas_t* vg = NULL;
   gif_image_t* image = GIF_IMAGE(widget);
@@ -82,31 +67,51 @@ static ret_t gif_image_on_paint_self(widget_t* widget, canvas_t* c) {
   return_value_if_fail(widget_load_image(widget, image_base->image, &bitmap) == RET_OK,
                        RET_BAD_PARAMS);
 #ifdef AWTK_WEB
-  image->frames_nr = 1;
   bitmap.gif_frame_h = bitmap.h;
+  frames_nr = 1;
 #else
-  return_value_if_fail(bitmap.is_gif, RET_OK);
-  image->delays = bitmap.gif_delays;
-  image->frames_nr = bitmap.gif_frames_nr;
+  if (!bitmap.is_gif) {
+    if (image->timer_id != TK_INVALID_ID) {
+      image->index = 0;
+      timer_remove(image->timer_id);
+      image->timer_id = TK_INVALID_ID;
+    }
+    return RET_OK;
+  }
+  frames_nr = bitmap.gif_frames_nr;
 #endif /*AWTK_WEB*/
 
-  if (image->index >= image->frames_nr) {
+  if (frames_nr > 0) {
+    image->index %= frames_nr;
+  } else {
     image->index = 0;
   }
-
-  h = bitmap.gif_frame_h;
-  y = bitmap.gif_frame_h * image->index;
 
 #ifdef AWTK_WEB
   if (image->timer_id == TK_INVALID_ID) {
     image->timer_id = timer_add(gif_image_on_timer, image, 16);
   }
 #else
-  if (image->timer_id == TK_INVALID_ID && image->frames_nr > 1) {
-    uint32_t delay = image->delays[image->index];
-    image->timer_id = timer_add(gif_image_on_timer, image, delay);
+  if (frames_nr > 1) {
+    uint32_t delay = bitmap.gif_delays[image->index];
+    if (image->timer_id == TK_INVALID_ID) {
+      image->index = 0;
+      image->delay = delay;
+      image->timer_id = timer_add(gif_image_on_timer, image, image->delay);
+    } else if (image->delay != delay) {
+      image->delay = delay;
+      timer_info_t* timer = (timer_info_t*)timer_find(image->timer_id);
+      if (timer) timer->duration = image->delay;
+    }
+  } else if (image->timer_id != TK_INVALID_ID) {
+    image->index = 0;
+    timer_remove(image->timer_id);
+    image->timer_id = TK_INVALID_ID;
   }
 #endif /*AWTK_WEB*/
+
+  h = bitmap.gif_frame_h;
+  y = bitmap.gif_frame_h * image->index;
 
   if (vg != NULL) {
     if (image_need_transform(widget)) {

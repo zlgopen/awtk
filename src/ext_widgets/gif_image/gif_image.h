@@ -80,10 +80,9 @@ typedef struct _gif_image_t {
   image_base_t image_base;
 
   /*private*/
-  int* delays;
   uint32_t index;
+  uint32_t delay;
   uint32_t timer_id;
-  uint32_t frames_nr;
 } gif_image_t;
 
 /**
