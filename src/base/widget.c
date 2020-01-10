@@ -1684,7 +1684,11 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
       value_set_int32(v, widget->h);
       ret = RET_OK;
     } else if (tk_str_eq(name, WIDGET_PROP_TEXT)) {
-      value_set_wstr(v, widget->text.str);
+      wchar_t* text = widget->text.str;
+      if (text != NULL) {
+        text[widget->text.size] = 0;
+      }
+      value_set_wstr(v, text);
       ret = RET_OK;
     } else if (tk_str_eq(name, WIDGET_PROP_STATE_FOR_STYLE)) {
       value_set_str(v, widget_get_state_for_style(widget, FALSE, FALSE));
