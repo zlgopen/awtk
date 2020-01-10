@@ -19,6 +19,15 @@
 * 镜像源码仓库：[https://gitee.com/zlgopen/awtk](https://gitee.com/zlgopen/awtk)
 * 稳定版整合包：https://pan.baidu.com/s/1_oRgj67M-I4kivk-YzwFWA   提取码: 1cmi
 
+#### AWTK Designer界面设计工具：
+
+* 不再需要手写XML
+* 拖拽方式设计界面，所见即所得
+* 快速预览，一键打包资源
+* 注册及下载地址：https://awtk.zlg.cn
+
+![AWTK Designer](docs/images/designer.png)
+
 #### 运行效果截图：
 
 ![Chart-Demo](docs/images/chart_main.png)
