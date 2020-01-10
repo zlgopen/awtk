@@ -193,17 +193,19 @@ ret_t file_browser_remove(file_browser_t* fb, const char* name) {
   return file_browser_remove_item_recursive(fb, fullpath);
 }
 
-ret_t file_browser_copy(file_browser_t* fb, const char** names) {
+ret_t file_browser_copy(file_browser_t* fb, darray_t* items) {
   uint32_t i = 0;
   wbuffer_t* wb = NULL;
-  return_value_if_fail(fb != NULL && names != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(fb != NULL && items != NULL, RET_BAD_PARAMS);
 
   wb = &(fb->copy_items);
   wb->cursor = 0;
-  return_value_if_fail(wbuffer_write_string(wb, fb->cwd) == RET_OK, RET_OOM);
+  tk_strncpy(fb->copy_src_dir, fb->cwd, MAX_PATH);
 
-  for (i = 0; names[i] != NULL; i++) {
-    if (wbuffer_write_string(wb, names[i]) != RET_OK) {
+  for (i = 0; i < items->size; i++) {
+    fb_item_t* iter = (fb_item_t*)(items->elms[i]);
+
+    if (wbuffer_write_string(wb, iter->name) != RET_OK) {
       wb->cursor = 0;
       return RET_FAIL;
     }
@@ -212,11 +214,11 @@ ret_t file_browser_copy(file_browser_t* fb, const char** names) {
   return RET_OK;
 }
 
-ret_t file_browser_cut(file_browser_t* fb, const char** names) {
-  return_value_if_fail(fb != NULL && names != NULL, RET_BAD_PARAMS);
+ret_t file_browser_cut(file_browser_t* fb, darray_t* items) {
+  return_value_if_fail(fb != NULL && items != NULL, RET_BAD_PARAMS);
 
   fb->cut = TRUE;
-  return file_browser_copy(fb, names);
+  return file_browser_copy(fb, items);
 }
 
 bool_t file_browser_can_paste(file_browser_t* fb) {

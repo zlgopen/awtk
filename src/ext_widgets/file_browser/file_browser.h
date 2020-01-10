@@ -25,6 +25,7 @@
 #include "tkc/fs.h"
 #include "tkc/str.h"
 #include "tkc/buffer.h"
+#include "tkc/darray.h"
 #include "tkc/emitter.h"
 
 BEGIN_C_DECLS
@@ -105,6 +106,7 @@ typedef struct _file_browser_t {
 
   bool_t cut;
   wbuffer_t copy_items;
+  char copy_src_dir[MAX_PATH + 1];
 
   bool_t ignore_hidden_files;
 } file_browser_t;
@@ -181,22 +183,22 @@ ret_t file_browser_remove(file_browser_t* fb, const char* name);
  * 拷贝当前目录下的指定子目录。
  * 
  * @param {file_browser_t*} fb file browser对象。
- * @param {const char**} names 当前目录下的子目录名/文件名(NULL结束)。
+ * @param {darray_t*} items 当前目录下的子目录/文件项列表。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t file_browser_copy(file_browser_t* fb, const char** names);
+ret_t file_browser_copy(file_browser_t* fb, darray_t* items);
 
 /**
  * @method file_browser_cut
  * 剪切当前目录下的指定子目录。
  * 
  * @param {file_browser_t*} fb file browser对象。
- * @param {const char**} names 当前目录下的子目录名/文件名(NULL结束)。
+ * @param {darray_t*} items 当前目录下的子目录/文件项列表。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t file_browser_cut(file_browser_t* fb, const char** names);
+ret_t file_browser_cut(file_browser_t* fb, darray_t* items);
 
 /**
  * @method file_browser_can_paste

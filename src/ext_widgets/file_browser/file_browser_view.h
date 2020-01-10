@@ -29,8 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class file_browser_view_t
  * @parent widget_t
- * @annotation ["scriptable","design","widget"]
- * 文件管理/浏览/选择控件
+ * 文件管理/浏览/选择控件。
  */
 typedef struct _file_browser_view_t {
   widget_t widget;
@@ -63,9 +62,21 @@ typedef struct _file_browser_view_t {
    */
   char* sort_by;
 
+  /**
+   * @property {char*} value
+   * @fake
+   * @annotation ["set_prop","get_prop"]
+   * 当前选中项的完整路径。
+   */
+
   /*private*/
   bool_t inited;
   file_browser_t* fb;
+
+  widget_t* cut;
+  widget_t* copy;
+  widget_t* paste;
+  widget_t* remove;
 
   widget_t* cwd;
   widget_t* container;
@@ -75,6 +86,9 @@ typedef struct _file_browser_view_t {
 
   darray_t file_items_cache;
   darray_t folder_items_cache;
+  darray_t selected_items;
+
+  str_t value;
 } file_browser_view_t;
 
 /**
@@ -145,6 +159,112 @@ ret_t file_browser_view_set_sort_ascending(widget_t* widget, bool_t sort_ascendi
  */
 ret_t file_browser_view_set_sort_by(widget_t* widget, const char* sort_by);
 
+/**
+ * @method file_browser_view_get_selected_items_nr
+ * 返回当前选中的项目的个数。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ *
+ * @return {uint32_t} 返回返回当前选中的项目的个数。
+ */
+uint32_t file_browser_view_get_selected_items_nr(widget_t* widget);
+
+/**
+ * @method file_browser_view_get_selected_item
+ * 获取第index个选中的项目的名称。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {uint32_t} index 序号。
+ *
+ * @return {const char*} 返回第index个选中的项目的名称。
+ */
+const char* file_browser_view_get_selected_item(widget_t* widget, uint32_t index);
+
+/**
+ * @method file_browser_view_get_cwd
+ * 获取当前路径。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ *
+ * @return {const char*} 返回当前路径。
+ */
+const char* file_browser_view_get_cwd(widget_t* widget);
+
+/**
+ * @method file_browser_view_copy
+ * 拷贝当前选中的项目。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t file_browser_view_copy(widget_t* widget);
+
+/**
+ * @method file_browser_view_cut
+ * 剪切当前选中的项目。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t file_browser_view_cut(widget_t* widget);
+
+/**
+ * @method file_browser_view_remove
+ * 删除当前选中的项目。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t file_browser_view_remove(widget_t* widget);
+
+/**
+ * @method file_browser_view_paste
+ * 粘贴之前拷贝或剪切的项目到当前目录。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t file_browser_view_paste(widget_t* widget);
+
+/**
+ * @method file_browser_view_can_paste
+ * 检查是否可以粘贴(之前是否拷贝和剪切)。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ *
+ * @return {bool_t} 返回FALSE表示不可以粘贴，否则表示可以。
+ */
+bool_t file_browser_view_can_paste(widget_t* widget);
+
+/**
+ * @method file_browser_view_create_dir
+ * 在当前目录创建子目录。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {const char*} name 子目录名。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t file_browser_view_create_dir(widget_t* widget, const char* name);
+
+/**
+ * @method file_browser_view_create_file
+ * 在当前目录创建文件。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {const char*} name 文件名。
+ * @param {const char*} data 数据。
+ * @param {uint32_t} size 数据长度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t file_browser_view_create_file(widget_t* widget, const char* name, const char* data,
+                                    uint32_t size);
+
 #define FILE_BROWSER_VIEW_PROP_SORT_BY "sort_by"
 #define FILE_BROWSER_VIEW_PROP_INIT_DIR "init_dir"
 #define FILE_BROWSER_VIEW_PROP_SORT_ASCENDING "sort_ascending"
@@ -164,6 +284,11 @@ ret_t file_browser_view_register(void);
 #define FILE_BROWSER_VIEW_FOLDER "folder"
 #define FILE_BROWSER_VIEW_RETURN_UP "return_up"
 #define FILE_BROWSER_VIEW_CONTAINER "container"
+
+#define FILE_BROWSER_VIEW_CUT "cut"
+#define FILE_BROWSER_VIEW_COPY "copy"
+#define FILE_BROWSER_VIEW_PASTE "paste"
+#define FILE_BROWSER_VIEW_REMOVE "remove"
 
 /*public for subclass and runtime type check*/
 TK_EXTERN_VTABLE(file_browser_view);

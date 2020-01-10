@@ -35,6 +35,7 @@ ret_t file_browser_view_set_init_dir(widget_t* widget, const char* init_dir) {
 
   file_browser_view->init_dir = tk_str_copy(file_browser_view->init_dir, init_dir);
   file_browser_set_cwd(file_browser_view->fb, init_dir);
+  str_set(&(file_browser_view->value), init_dir);
 
   return RET_OK;
 }
@@ -103,6 +104,9 @@ static ret_t file_browser_view_get_prop(widget_t* widget, const char* name, valu
   } else if (tk_str_eq(FILE_BROWSER_VIEW_PROP_SORT_BY, name)) {
     value_set_str(v, file_browser_view->sort_by);
     return RET_OK;
+  } else if (tk_str_eq(WIDGET_PROP_VALUE, name)) {
+    value_set_str(v, file_browser_view->value.str);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -136,8 +140,10 @@ static ret_t file_browser_view_on_destroy(widget_t* widget) {
   TKMEM_FREE(file_browser_view->init_dir);
   file_browser_destroy(file_browser_view->fb);
 
+  str_reset(&(file_browser_view->value));
   widget_destroy(file_browser_view->file_template);
   widget_destroy(file_browser_view->folder_template);
+  darray_deinit(&(file_browser_view->selected_items));
   darray_deinit(&(file_browser_view->file_items_cache));
   darray_deinit(&(file_browser_view->folder_items_cache));
 
@@ -166,6 +172,7 @@ static ret_t file_browser_view_on_item_clicked(void* ctx, event_t* e) {
 
   if (tk_str_eq(target->name, FILE_BROWSER_VIEW_RETURN_UP)) {
     file_browser_up(file_browser_view->fb);
+    str_set(&(file_browser_view->value), file_browser_view->fb->cwd);
 
     idle_add(file_browser_view_reload_in_idle, file_browser_view);
   } else if (tk_str_eq(target->name, FILE_BROWSER_VIEW_FOLDER)) {
@@ -173,9 +180,19 @@ static ret_t file_browser_view_on_item_clicked(void* ctx, event_t* e) {
     fb_item_t* info = file_browser_get_item(file_browser_view->fb, index - 1);
 
     file_browser_enter(file_browser_view->fb, info->name);
+    str_set(&(file_browser_view->value), file_browser_view->fb->cwd);
 
     idle_add(file_browser_view_reload_in_idle, file_browser_view);
+  } else {
+    uint32_t index = widget_index_of(target);
+    fb_item_t* info = file_browser_get_item(file_browser_view->fb, index - 1);
+
+    str_set(&(file_browser_view->value), file_browser_view->fb->cwd);
+    str_append_char(&(file_browser_view->value), TK_PATH_SEP);
+    str_append(&(file_browser_view->value), info->name);
   }
+
+  widget_dispatch_simple_event(WIDGET(ctx), EVT_VALUE_CHANGED);
 
   return RET_OK;
 }
@@ -286,6 +303,34 @@ static ret_t file_browser_view_reload(widget_t* widget) {
   return RET_OK;
 }
 
+static ret_t file_browser_view_on_clicked_cut(void* ctx, event_t* e) {
+  widget_t* widget = WIDGET(ctx);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  return file_browser_view_cut(widget);
+}
+
+static ret_t file_browser_view_on_clicked_copy(void* ctx, event_t* e) {
+  widget_t* widget = WIDGET(ctx);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  return file_browser_view_copy(widget);
+}
+
+static ret_t file_browser_view_on_clicked_paste(void* ctx, event_t* e) {
+  widget_t* widget = WIDGET(ctx);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  return file_browser_view_paste(widget);
+}
+
+static ret_t file_browser_view_on_clicked_remove(void* ctx, event_t* e) {
+  widget_t* widget = WIDGET(ctx);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  return file_browser_view_remove(widget);
+}
+
 static ret_t file_browser_view_init_ui(widget_t* widget) {
   widget_t* template = NULL;
   widget_t* container = NULL;
@@ -295,6 +340,25 @@ static ret_t file_browser_view_init_ui(widget_t* widget) {
   return_value_if_fail(container != NULL, RET_BAD_PARAMS);
   file_browser_view->container = container;
   file_browser_view->cwd = widget_lookup(widget, FILE_BROWSER_VIEW_CWD, TRUE);
+  file_browser_view->cut = widget_lookup(widget, FILE_BROWSER_VIEW_CUT, TRUE);
+  if (file_browser_view->cut != NULL) {
+    widget_on(file_browser_view->cut, EVT_CLICK, file_browser_view_on_clicked_cut, widget);
+  }
+
+  file_browser_view->copy = widget_lookup(widget, FILE_BROWSER_VIEW_COPY, TRUE);
+  if (file_browser_view->copy != NULL) {
+    widget_on(file_browser_view->copy, EVT_CLICK, file_browser_view_on_clicked_copy, widget);
+  }
+
+  file_browser_view->paste = widget_lookup(widget, FILE_BROWSER_VIEW_PASTE, TRUE);
+  if (file_browser_view->paste != NULL) {
+    widget_on(file_browser_view->paste, EVT_CLICK, file_browser_view_on_clicked_paste, widget);
+  }
+
+  file_browser_view->remove = widget_lookup(widget, FILE_BROWSER_VIEW_REMOVE, TRUE);
+  if (file_browser_view->remove != NULL) {
+    widget_on(file_browser_view->remove, EVT_CLICK, file_browser_view_on_clicked_remove, widget);
+  }
 
   template = widget_lookup(container, FILE_BROWSER_VIEW_FILE, TRUE);
   return_value_if_fail(template != NULL, RET_BAD_PARAMS);
@@ -351,9 +415,11 @@ widget_t* file_browser_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_
   file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
   return_value_if_fail(file_browser_view != NULL, NULL);
 
+  str_init(&(file_browser_view->value), 0);
   file_browser_view->sort_ascending = TRUE;
   file_browser_view->ignore_hidden_files = TRUE;
   file_browser_view->fb = file_browser_create(os_fs());
+  darray_init(&(file_browser_view->selected_items), 10, NULL, NULL);
   darray_init(&(file_browser_view->file_items_cache), 10, (tk_destroy_t)widget_unref, NULL);
   darray_init(&(file_browser_view->folder_items_cache), 10, (tk_destroy_t)widget_unref, NULL);
 
@@ -371,4 +437,116 @@ widget_t* file_browser_view_cast(widget_t* widget) {
 ret_t file_browser_view_register(void) {
   return widget_factory_register(widget_factory(), WIDGET_TYPE_FILE_BROWSER_VIEW,
                                  file_browser_view_create);
+}
+
+static darray_t* file_browser_view_get_selected_items(widget_t* widget) {
+  file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
+  widget_t* container = file_browser_view->container;
+  darray_t* arr = &(file_browser_view->selected_items);
+
+  darray_clear(arr);
+
+  if (container->children != NULL) {
+    WIDGET_FOR_EACH_CHILD_BEGIN(container, iter, i)
+    if (i > 0) {
+      widget_t* checkable = widget_lookup_by_type(iter, WIDGET_TYPE_CHECK_BUTTON, TRUE);
+
+      if (checkable != NULL && widget_get_value(checkable)) {
+        fb_item_t* info = file_browser_get_item(file_browser_view->fb, i - 1);
+        darray_push(arr, info);
+      }
+    }
+    WIDGET_FOR_EACH_CHILD_END();
+  }
+
+  return arr;
+}
+
+uint32_t file_browser_view_get_selected_items_nr(widget_t* widget) {
+  darray_t* selected_items = NULL;
+  file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
+  return_value_if_fail(file_browser_view != NULL, 0);
+
+  selected_items = file_browser_view_get_selected_items(widget);
+
+  return selected_items->size;
+}
+
+const char* file_browser_view_get_selected_item(widget_t* widget, uint32_t index) {
+  fb_item_t* info = NULL;
+  darray_t* selected_items = NULL;
+  file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
+  return_value_if_fail(file_browser_view != NULL, NULL);
+
+  selected_items = file_browser_view_get_selected_items(widget);
+  info = darray_get(selected_items, index);
+  return_value_if_fail(info != NULL, NULL);
+
+  return info->name;
+}
+
+const char* file_browser_view_get_cwd(widget_t* widget) {
+  file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
+  return_value_if_fail(file_browser_view != NULL, NULL);
+
+  return file_browser_view->fb->cwd;
+}
+
+ret_t file_browser_view_copy(widget_t* widget) {
+  darray_t* selected_items = NULL;
+  file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
+  return_value_if_fail(file_browser_view != NULL, RET_BAD_PARAMS);
+
+  selected_items = file_browser_view_get_selected_items(widget);
+
+  return file_browser_copy(file_browser_view->fb, selected_items);
+}
+
+ret_t file_browser_view_cut(widget_t* widget) {
+  darray_t* selected_items = NULL;
+  file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
+  return_value_if_fail(file_browser_view != NULL, RET_BAD_PARAMS);
+
+  selected_items = file_browser_view_get_selected_items(widget);
+
+  return file_browser_cut(file_browser_view->fb, selected_items);
+}
+
+ret_t file_browser_view_remove(widget_t* widget) {
+  darray_t* selected_items = NULL;
+  file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
+  return_value_if_fail(file_browser_view != NULL, RET_BAD_PARAMS);
+
+  selected_items = file_browser_view_get_selected_items(widget);
+
+  return file_browser_cut(file_browser_view->fb, selected_items);
+}
+
+ret_t file_browser_view_paste(widget_t* widget) {
+  file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
+  return_value_if_fail(file_browser_view != NULL, RET_BAD_PARAMS);
+
+  return file_browser_paste(file_browser_view->fb);
+}
+
+bool_t file_browser_view_can_paste(widget_t* widget) {
+  file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
+  return_value_if_fail(file_browser_view != NULL, RET_BAD_PARAMS);
+
+  return file_browser_can_paste(file_browser_view->fb);
+}
+
+ret_t file_browser_view_create_dir(widget_t* widget, const char* name) {
+  file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
+  return_value_if_fail(file_browser_view != NULL, RET_BAD_PARAMS);
+
+  return file_browser_create_dir(file_browser_view->fb, name);
+}
+
+ret_t file_browser_view_create_file(widget_t* widget, const char* name, const char* data,
+                                    uint32_t size) {
+  file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
+  return_value_if_fail(file_browser_view != NULL, RET_BAD_PARAMS);
+
+  return file_browser_create_file(file_browser_view->fb, name, data, size);
 }
