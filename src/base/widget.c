@@ -666,11 +666,16 @@ ret_t widget_set_state(widget_t* widget, const char* state) {
 
 const char* widget_get_state_for_style(widget_t* widget, bool_t active, bool_t checked) {
   const char* state = WIDGET_STATE_NORMAL;
+  widget_t* iter = widget;
   return_value_if_fail(widget != NULL, state);
 
   state = (const char*)(widget->state);
-  if (!widget->enable) {
-    return WIDGET_STATE_DISABLE;
+
+  while (iter != NULL) {
+    if (!iter->enable) {
+      return WIDGET_STATE_DISABLE;
+    }
+    iter = iter->parent;
   }
 
   if (widget_is_focusable(widget) || widget_with_focus_state(widget)) {
