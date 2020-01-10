@@ -8,7 +8,7 @@
   return RET_OK;
 }
 
-static inline void vgcanvas_nanovg_set_offline_fb(vgcanvas_nanovg_t* canvas, float w, float h) {
+static inline void vgcanvas_nanovg_set_offline_fb(vgcanvas_nanovg_t* canvas, uint32_t w, uint32_t h) {
   GLint default_fbo = 0;
   vgcanvas_nanovg_offline_fb_t* offline_fb = canvas->offline_fb;
   if (offline_fb != NULL) {
