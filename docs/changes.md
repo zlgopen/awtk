@@ -1,7 +1,10 @@
 # 最新动态
 * 2020/01/09
   * 完善 gif image（感谢尧燊提供补丁） 
-
+  * 完善 widget 状态 （感谢朝泽提供补丁） 
+  * 完善 source manager （感谢智明提供补丁）
+  * 完善 widget\_get\_text
+  
 * 2020/01/09
   * 完善 rich text（感谢尧燊提供补丁） 
   * 完善 color picker（感谢尧燊提供补丁） 
