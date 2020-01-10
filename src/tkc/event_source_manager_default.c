@@ -73,7 +73,6 @@ static ret_t event_source_manager_default_dispatch_fds(event_source_manager_t* m
   }
 
   if (max_fd == 0) {
-    sleep_ms(sleep_time);
     return RET_OK;
   }
 
@@ -104,7 +103,6 @@ static ret_t event_source_manager_default_dispatch_fds(event_source_manager_t* m
 #else
 static ret_t event_source_manager_default_dispatch_fds(event_source_manager_t* manager,
                                                        uint32_t sleep_time) {
-  sleep_ms(sleep_time);
   return RET_OK;
 }
 #endif /*WITH_SOCKET*/
