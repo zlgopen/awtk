@@ -585,7 +585,7 @@ ret_t widget_set_enable(widget_t* widget, bool_t enable) {
 
   if (widget->enable != enable) {
     widget->enable = enable;
-    widget_set_need_update_style(widget);
+    widget_set_need_update_style_recursive(widget);
     widget_invalidate(widget, NULL);
   }
 
