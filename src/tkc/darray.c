@@ -316,6 +316,12 @@ ret_t darray_clear(darray_t* darray) {
   return RET_OK;
 }
 
+void* darray_get(darray_t* darray, uint32_t index) {
+  return_value_if_fail(darray != NULL && index < darray->size, NULL);
+
+  return darray->elms[index];
+}
+
 ret_t darray_deinit(darray_t* darray) {
   return_value_if_fail(darray != NULL, RET_BAD_PARAMS);
 

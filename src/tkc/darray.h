@@ -120,6 +120,16 @@ darray_t* darray_init(darray_t* darray, uint32_t capacity, tk_destroy_t destroy,
 void* darray_find(darray_t* darray, void* ctx);
 
 /**
+ * @method darray_get
+ * 获取指定序数的元素。
+ * @param {darray_t*} darray 数组对象。
+ * @param {uint32_t} index 序数。
+ *
+ * @return {void*} 返回满足条件的对象，否则返回NULL。
+ */
+void* darray_get(darray_t* darray, uint32_t index);
+
+/**
  * @method darray_find_index
  * 查找第一个满足条件的元素，并返回位置。
  * @param {darray_t*} darray 数组对象。
