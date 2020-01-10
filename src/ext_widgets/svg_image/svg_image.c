@@ -66,9 +66,13 @@ static ret_t svg_image_on_paint_self(widget_t* widget, canvas_t* c) {
 
     return_value_if_fail(bsvg_init(&bsvg, (const uint32_t*)asset->data, asset->size) != NULL,
                          RET_BAD_PARAMS);
-
-    x = (widget->w - (int32_t)bsvg.header->w) / 2;
-    y = (widget->h - (int32_t)bsvg.header->h) / 2;
+    if(bsvg.header->w && bsvg.header->h){
+      x = (widget->w - (int32_t)bsvg.header->w) / 2;
+      y = (widget->h - (int32_t)bsvg.header->h) / 2;
+    }else if(bsvg.header->viewport.w && bsvg.header->viewport.h){
+      x = (widget->w - (int32_t)bsvg.header->viewport.w) / 2;    
+      y = (widget->h - (int32_t)bsvg.header->viewport.h) / 2;
+    }
 
     vgcanvas_save(vg);
 

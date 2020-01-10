@@ -33,6 +33,7 @@ typedef struct _draw_ctx_t {
   /*for S/S_REL*/
   float last_x2;
   float last_y2;
+  uint8_t last_type;
 
   /*for T/T_REL*/
   float last_x1;
@@ -115,7 +116,6 @@ ret_t bsvg_draw_path(draw_ctx_t* ctx, const svg_path_t* path) {
       ctx->y = p->y;
       ctx->last_x2 = p->x2;
       ctx->last_y2 = p->y2;
-
       break;
     }
     case SVG_PATH_C_REL: {
@@ -136,9 +136,13 @@ ret_t bsvg_draw_path(draw_ctx_t* ctx, const svg_path_t* path) {
     }
     case SVG_PATH_S: {
       const svg_path_scurve_to_t* p = (const svg_path_scurve_to_t*)path;
-      float x1 = 2 * ctx->x - ctx->last_x2;
-      float y1 = 2 * ctx->y - ctx->last_y2;
-
+      float x1 = ctx->x;
+      float y1 = ctx->y;
+      if (ctx->last_type == SVG_PATH_C_REL || ctx->last_type == SVG_PATH_C ||
+          ctx->last_type == SVG_PATH_S_REL || ctx->last_type == SVG_PATH_S) {
+        x1 = 2 * ctx->x - ctx->last_x2;
+        y1 = 2 * ctx->y - ctx->last_y2;
+      }
       vgcanvas_bezier_to(canvas, x1, y1, p->x2, p->y2, p->x, p->y);
 
       ctx->x = p->x;
@@ -149,13 +153,17 @@ ret_t bsvg_draw_path(draw_ctx_t* ctx, const svg_path_t* path) {
     }
     case SVG_PATH_S_REL: {
       const svg_path_scurve_to_t* p = (const svg_path_scurve_to_t*)path;
-      float x1 = 2 * ctx->x - ctx->last_x2;
-      float y1 = 2 * ctx->y - ctx->last_y2;
+      float x1 = ctx->x;
+      float y1 = ctx->y;
       float x2 = ctx->x + p->x2;
       float y2 = ctx->y + p->y2;
       float x = ctx->x + p->x;
       float y = ctx->y + p->y;
-
+      if (ctx->last_type == SVG_PATH_C_REL || ctx->last_type == SVG_PATH_C ||
+          ctx->last_type == SVG_PATH_S_REL || ctx->last_type == SVG_PATH_S) {
+        x1 = 2 * ctx->x - ctx->last_x2;
+        y1 = 2 * ctx->y - ctx->last_y2;
+      }
       vgcanvas_bezier_to(canvas, x1, y1, x2, y2, x, y);
 
       ctx->x = x;
@@ -230,8 +238,11 @@ ret_t bsvg_draw_path(draw_ctx_t* ctx, const svg_path_t* path) {
       break;
     }
     case SVG_PATH_NULL:
-    default: { break; }
+    default: {
+      break;
+    }
   }
+  ctx->last_type = path->type;
 
   return RET_OK;
 }

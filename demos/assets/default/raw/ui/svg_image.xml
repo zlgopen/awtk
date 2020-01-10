@@ -3,6 +3,8 @@
   <svg image="pointer_1" />
   <svg image="girl" />
   <svg image="pointer_4" /> 
+  <svg image="htest" /> 
+  <svg image="pointer" /> 
 
   <svg image="china" 
     animation="rotation(from=0, to=6.28, yoyo_times=1000, duration=5000);scale(x_from=0, x_to=2, y_from=0, y_to=2, yoyo_times=1000, duration=5000);"/>
