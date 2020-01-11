@@ -373,6 +373,32 @@ int fb_compare_by_name(const void* a, const void* b) {
   return fb_dir_first(aa, bb);
 }
 
+int fb_compare_by_type(const void* a, const void* b) {
+  fb_item_t* aa = (fb_item_t*)a;
+  fb_item_t* bb = (fb_item_t*)b;
+
+  if (aa->is_reg_file && bb->is_reg_file) {
+    const char* atype = strrchr(aa->name, '.');
+    const char* btype = strrchr(bb->name, '.');
+
+    if (atype == NULL) {
+      return -1;
+    }
+
+    if (btype == NULL) {
+      return 1;
+    }
+
+    return strcasecmp(atype + 1, btype + 1);
+  }
+
+  if (aa->is_dir && bb->is_dir) {
+    return strcmp(aa->name, bb->name);
+  }
+
+  return fb_dir_first(aa, bb);
+}
+
 int fb_compare_by_size(const void* a, const void* b) {
   fb_item_t* aa = (fb_item_t*)a;
   fb_item_t* bb = (fb_item_t*)b;
@@ -400,6 +426,32 @@ int fb_compare_by_name_dec(const void* a, const void* b) {
   fb_item_t* bb = (fb_item_t*)b;
 
   if ((aa->is_reg_file && bb->is_reg_file) || (aa->is_dir && bb->is_dir)) {
+    return -strcmp(aa->name, bb->name);
+  }
+
+  return fb_dir_first(aa, bb);
+}
+
+int fb_compare_by_type_dec(const void* a, const void* b) {
+  fb_item_t* aa = (fb_item_t*)a;
+  fb_item_t* bb = (fb_item_t*)b;
+
+  if (aa->is_reg_file && bb->is_reg_file) {
+    const char* atype = strrchr(aa->name, '.');
+    const char* btype = strrchr(bb->name, '.');
+
+    if (atype == NULL) {
+      return 1;
+    }
+
+    if (btype == NULL) {
+      return -1;
+    }
+
+    return -strcasecmp(atype + 1, btype + 1);
+  }
+
+  if (aa->is_dir && bb->is_dir) {
     return -strcmp(aa->name, bb->name);
   }
 
@@ -442,6 +494,14 @@ ret_t file_browser_sort_by_name(file_browser_t* fb, bool_t ascending) {
   return_value_if_fail(fb != NULL, RET_BAD_PARAMS);
 
   fb->compare = ascending ? fb_compare_by_name : fb_compare_by_name_dec;
+
+  return file_browser_sort(fb);
+}
+
+ret_t file_browser_sort_by_type(file_browser_t* fb, bool_t ascending) {
+  return_value_if_fail(fb != NULL, RET_BAD_PARAMS);
+
+  fb->compare = ascending ? fb_compare_by_type : fb_compare_by_type_dec;
 
   return file_browser_sort(fb);
 }

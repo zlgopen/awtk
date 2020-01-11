@@ -286,6 +286,17 @@ ret_t file_browser_set_compare(file_browser_t* fb, tk_compare_t compare);
 ret_t file_browser_sort_by_name(file_browser_t* fb, bool_t ascending);
 
 /**
+ * @method file_browser_sort_by_type
+ * 按类型排序。
+ * 
+ * @param {file_browser_t*} fb file browser对象。
+ * @param {bool_t} ascending 按升序排。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t file_browser_sort_by_type(file_browser_t* fb, bool_t ascending);
+
+/**
  * @method file_browser_sort_by_size
  * 按大小排序。
  * 
@@ -355,9 +366,11 @@ bool_t fb_filter_by_ext_names(void* ctx, const void* data);
 bool_t fb_filter_directories_only(void* ctx, const void* data);
 
 int fb_compare_by_name(const void* a, const void* b);
+int fb_compare_by_type(const void* a, const void* b);
 int fb_compare_by_size(const void* a, const void* b);
 int fb_compare_by_mtime(const void* a, const void* b);
 int fb_compare_by_name_dec(const void* a, const void* b);
+int fb_compare_by_type_dec(const void* a, const void* b);
 int fb_compare_by_size_dec(const void* a, const void* b);
 int fb_compare_by_mtime_dec(const void* a, const void* b);
 

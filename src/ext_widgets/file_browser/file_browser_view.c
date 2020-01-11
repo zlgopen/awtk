@@ -24,6 +24,7 @@
 #include "file_browser_view.h"
 
 #define SORT_BY_NAME "name"
+#define SORT_BY_TYPE "type"
 #define SORT_BY_SIZE "size"
 #define SORT_BY_MTIME "mtime"
 
@@ -52,6 +53,8 @@ static ret_t file_browser_view_sync_sort(widget_t* widget) {
       file_browser_sort_by_name(file_browser_view->fb, sort_ascending);
     } else if (tk_str_eq(sort_by, SORT_BY_MTIME)) {
       file_browser_sort_by_mtime(file_browser_view->fb, sort_ascending);
+    } else if (tk_str_eq(sort_by, SORT_BY_TYPE)) {
+      file_browser_sort_by_type(file_browser_view->fb, sort_ascending);
     }
   }
 

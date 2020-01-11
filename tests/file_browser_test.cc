@@ -217,3 +217,110 @@ TEST(FileBrowser, sort_by_name) {
 
   file_browser_cleanup(fb);
 }
+
+TEST(FileBrowser, compare_by_size) {
+  fb_item_t a;
+  fb_item_t b;
+  memset(&a, 0x00, sizeof(a));
+  memset(&b, 0x00, sizeof(b));
+
+  a.size = 100;
+  a.name = "a.txt";
+  a.is_reg_file = TRUE;
+
+  b.size = 200;
+  b.name = "b.txt";
+  b.is_reg_file = TRUE;
+
+  ASSERT_EQ(fb_compare_by_size(&a, &b) < 0, TRUE);
+  ASSERT_EQ(fb_compare_by_size(&b, &a) > 0, TRUE);
+  ASSERT_EQ(fb_compare_by_size(&a, &a) == 0, TRUE);
+
+  ASSERT_EQ(fb_compare_by_size_dec(&a, &b) > 0, TRUE);
+  ASSERT_EQ(fb_compare_by_size_dec(&b, &a) < 0, TRUE);
+  ASSERT_EQ(fb_compare_by_size_dec(&a, &a) == 0, TRUE);
+}
+
+TEST(FileBrowser, compare_by_mtime) {
+  fb_item_t a;
+  fb_item_t b;
+  memset(&a, 0x00, sizeof(a));
+  memset(&b, 0x00, sizeof(b));
+
+  a.mtime = 100;
+  a.name = "a.txt";
+  a.is_reg_file = TRUE;
+
+  b.mtime = 200;
+  b.name = "b.txt";
+  b.is_reg_file = TRUE;
+
+  ASSERT_EQ(fb_compare_by_mtime(&a, &b) < 0, TRUE);
+  ASSERT_EQ(fb_compare_by_mtime(&b, &a) > 0, TRUE);
+  ASSERT_EQ(fb_compare_by_mtime(&a, &a) == 0, TRUE);
+
+  ASSERT_EQ(fb_compare_by_mtime_dec(&a, &b) > 0, TRUE);
+  ASSERT_EQ(fb_compare_by_mtime_dec(&b, &a) < 0, TRUE);
+  ASSERT_EQ(fb_compare_by_mtime_dec(&a, &a) == 0, TRUE);
+}
+
+TEST(FileBrowser, compare_by_name) {
+  fb_item_t a;
+  fb_item_t b;
+  memset(&a, 0x00, sizeof(a));
+  memset(&b, 0x00, sizeof(b));
+
+  a.name = "a.jpg";
+  a.is_reg_file = TRUE;
+
+  b.name = "b.txt";
+  b.is_reg_file = TRUE;
+
+  ASSERT_EQ(fb_compare_by_name(&a, &b) < 0, TRUE);
+  ASSERT_EQ(fb_compare_by_name(&b, &a) > 0, TRUE);
+  ASSERT_EQ(fb_compare_by_name(&a, &a) == 0, TRUE);
+  ASSERT_EQ(fb_compare_by_name_dec(&a, &b) > 0, TRUE);
+  ASSERT_EQ(fb_compare_by_name_dec(&b, &a) < 0, TRUE);
+  ASSERT_EQ(fb_compare_by_name_dec(&a, &a) == 0, TRUE);
+}
+
+TEST(FileBrowser, compare_by_type) {
+  fb_item_t a;
+  fb_item_t b;
+  memset(&a, 0x00, sizeof(a));
+  memset(&b, 0x00, sizeof(b));
+
+  a.name = "a.jpg";
+  a.is_reg_file = TRUE;
+
+  b.name = "b.txt";
+  b.is_reg_file = TRUE;
+
+  ASSERT_EQ(fb_compare_by_type(&a, &b) < 0, TRUE);
+  ASSERT_EQ(fb_compare_by_type(&b, &a) > 0, TRUE);
+  ASSERT_EQ(fb_compare_by_type(&a, &a) == 0, TRUE);
+  ASSERT_EQ(fb_compare_by_type_dec(&a, &b) > 0, TRUE);
+  ASSERT_EQ(fb_compare_by_type_dec(&b, &a) < 0, TRUE);
+  ASSERT_EQ(fb_compare_by_type_dec(&a, &a) == 0, TRUE);
+}
+
+TEST(FileBrowser, compare_dir_file) {
+  fb_item_t a;
+  fb_item_t b;
+  memset(&a, 0x00, sizeof(a));
+  memset(&b, 0x00, sizeof(b));
+
+  a.name = "b";
+  a.is_dir = TRUE;
+
+  b.name = "a";
+  b.is_reg_file = TRUE;
+
+  ASSERT_EQ(fb_compare_by_type(&a, &b) < 0, TRUE);
+  ASSERT_EQ(fb_compare_by_type(&b, &a) > 0, TRUE);
+  ASSERT_EQ(fb_compare_by_type(&a, &a) == 0, TRUE);
+
+  ASSERT_EQ(fb_compare_by_type_dec(&a, &b) < 0, TRUE);
+  ASSERT_EQ(fb_compare_by_type_dec(&b, &a) > 0, TRUE);
+  ASSERT_EQ(fb_compare_by_type_dec(&a, &a) == 0, TRUE);
+}

@@ -58,7 +58,7 @@ typedef struct _file_browser_view_t {
   /**
    * @property {char*} sort_by
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 排序方式。可选值(name, size, mtime)。
+   * 排序方式。可选值(name, size, mtime, type)。
    */
   char* sort_by;
 
@@ -150,10 +150,10 @@ ret_t file_browser_view_set_sort_ascending(widget_t* widget, bool_t sort_ascendi
 
 /**
  * @method file_browser_view_set_sort_by
- * 设置 排序方式。可选值(name, size, mtime)。
+ * 设置 排序方式。可选值(name, size, mtime, type)。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
- * @param {const char*} sort_by 排序方式。可选值(name, size, mtime)。
+ * @param {const char*} sort_by 排序方式。可选值(name, size, mtime, type)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
