@@ -1,5 +1,5 @@
 <window anim_hint="htranslate">
-  <file_browser_view x="0" y="0" w="100%" h="100%" init_dir="./" icon_md="earth">
+  <file_browser_view x="0" y="0" w="100%" h="100%" init_dir="./">
   <hscroll_label 
     name="cwd"
     x="0"  y="0" w="100%" h="30"
@@ -13,15 +13,31 @@
     <scroll_view name="container" x="0"  y="0" w="100%" h="100%">
       <list_item name="return_up" style="odd_clickable" children_layout="default(rows=1,cols=0)">
         <image name="icon" draw_type="icon" w="30" image="return_up"/>
-        <label name="name" w="-30" tr_text="Up"/>
+        <label name="name" w="30" tr_text="Up"/>
       </list_item>
       <list_item name="file" style="odd_clickable" children_layout="default(rows=1,cols=0)">
         <image name="icon" draw_type="icon" w="30" image="file"/>
-        <label name="name" w="-30"/>
+        <hscroll_label 
+          name="name"
+          w="-30"
+          lull="1000"
+          loop="true"
+          yoyo="true"
+          ellipses="true"
+          focusable="true"
+          text=""/> 
       </list_item>
       <list_item name="folder" style="odd_clickable" children_layout="default(rows=1,cols=0)">
         <image name="icon" draw_type="icon" w="30" image="folder"/>
-        <label name="name" w="-30" />
+        <hscroll_label 
+          name="name"
+          w="-30"
+          lull="1000"
+          loop="true"
+          yoyo="true"
+          ellipses="true"
+          focusable="true"
+          text=""/> 
       </list_item>
     </scroll_view>
     <scroll_bar_m name="bar" x="right" y="0" w="6" h="100%" value="0"/>
