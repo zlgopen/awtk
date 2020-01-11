@@ -197,6 +197,7 @@ typedef struct _combo_box_t {
 
   /*private*/
   str_t text;
+  bool_t pressed;
   combo_box_option_t* option_items;
   combo_box_custom_open_popup_t open_popup;
 } combo_box_t;

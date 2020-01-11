@@ -289,11 +289,31 @@ static ret_t combo_box_on_event(widget_t* widget, event_t* e) {
       }
       break;
     }
+    case EVT_POINTER_DOWN: {
+      combo_box->pressed = TRUE;
+      break;
+    }
+    case EVT_POINTER_DOWN_ABORT: {
+      combo_box->pressed = FALSE;
+      break;
+    }
+    case EVT_POINTER_UP: {
+      if (widget->target == NULL && edit->readonly && combo_box->pressed) {
+        combo_box_active(widget);
+        return RET_STOP;
+      }
+      combo_box->pressed = FALSE;
+    }
+
     default:
       break;
   }
+
   ret = edit_on_event(widget, e);
-  edit_set_cursor(WIDGET(edit), 0);
+  if(edit->readonly) {
+    edit_set_cursor(WIDGET(edit), 0);
+  }
+
   return ret;
 }
 
