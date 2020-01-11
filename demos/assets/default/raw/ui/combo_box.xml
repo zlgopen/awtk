@@ -1,5 +1,5 @@
 <window anim_hint="htranslate">
-  <combo_box left_margin="6" readonly="true" x="10" y="5" w="200" h="30" text="left" options="left;center;right;">
+  <combo_box left_margin="6" x="10" y="5" w="200" h="30" text="left" options="left;center;right;">
     <button style="combobox_down" x="right:5" y="middle" w="20" h="20"/>
   </combo_box>
   <combo_box left_margin="6" open_window="color" readonly="true" x="10" y="50" w="200" h="30" text="red"/>
