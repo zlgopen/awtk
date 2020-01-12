@@ -24,6 +24,17 @@
 
 static date_time_get_now_t s_date_time_get_now;
 static date_time_set_now_t s_date_time_set_now;
+static date_time_from_time_t s_date_time_from_time;
+
+ret_t date_time_global_init_ex(const date_time_vtable_t* vt) {
+  return_value_if_fail(vt != NULL, RET_BAD_PARAMS);
+
+  s_date_time_get_now = vt->get_now;
+  s_date_time_set_now = vt->set_now;
+  s_date_time_from_time = vt->from_time;
+
+  return RET_OK;
+}
 
 ret_t date_time_global_init(date_time_get_now_t get, date_time_set_now_t set) {
   s_date_time_get_now = get;
@@ -42,6 +53,13 @@ date_time_t* date_time_create(void) {
   date_time_t* dt = TKMEM_ZALLOC(date_time_t);
 
   return date_time_init(dt);
+}
+
+ret_t date_time_from_time(date_time_t* dt, uint64_t time) {
+  return_value_if_fail(dt != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(s_date_time_from_time != NULL, RET_BAD_PARAMS);
+
+  return s_date_time_from_time(dt, (time_t)time);
 }
 
 date_time_t* date_time_init(date_time_t* dt) {

@@ -67,6 +67,11 @@ static ret_t date_time_set_now_impl(date_time_t* dt) {
   return RET_NOT_IMPL;
 }
 
+static ret_t date_time_from_time_impl(date_time_t* dt, uint64_t timeval) {
+  /*TODO*/
+  return RET_NOT_IMPL;
+}
+
 #else
 #include <sys/time.h>
 #include <unistd.h>
@@ -113,6 +118,24 @@ static ret_t date_time_set_now_impl(date_time_t* dt) {
   return RET_OK;
 }
 
+static ret_t date_time_from_time_impl(date_time_t* dt, uint64_t timeval) {
+  time_t tm = timeval;
+  struct tm* t = localtime(&tm);
+  return_value_if_fail(dt != NULL, RET_BAD_PARAMS);
+
+  memset(dt, 0x00, sizeof(date_time_t));
+
+  dt->second = t->tm_sec;
+  dt->minute = t->tm_min;
+  dt->hour = t->tm_hour;
+  dt->day = t->tm_mday;
+  dt->month = t->tm_mon + 1;
+  dt->year = t->tm_year + 1900;
+  dt->wday = t->tm_wday;
+
+  return RET_OK;
+}
+
 #endif
 
 uint64_t stm_now_ms();
@@ -121,6 +144,9 @@ void stm_time_init(void);
 uint64_t get_time_ms64() {
   return stm_now_ms();
 }
+
+static const date_time_vtable_t s_date_time_vtable = {
+    date_time_get_now_impl, date_time_set_now_impl, date_time_from_time_impl};
 
 void sleep_ms(uint32_t ms) {
 #ifdef WIN32
@@ -140,7 +166,8 @@ ret_t platform_prepare(void) {
 #ifndef HAS_STD_MALLOC
   tk_mem_init(s_heap_mem, sizeof(s_heap_mem));
 #endif /*HAS_STD_MALLOC*/
-  date_time_global_init(date_time_get_now_impl, date_time_set_now_impl);
+
+  date_time_global_init_ex(&s_date_time_vtable);
 
   return RET_OK;
 }
