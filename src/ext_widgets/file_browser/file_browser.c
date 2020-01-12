@@ -91,9 +91,6 @@ file_browser_t* file_browser_create(fs_t* fs) {
   tk_strcpy(fb->cwd, "/");
   fb->ignore_hidden_files = TRUE;
   fb->compare = fb_compare_by_name;
-  wbuffer_init_extendable(&(fb->copy_items));
-
-  emitter_init(EMITTER(fb));
 
   return fb;
 }
@@ -191,73 +188,6 @@ ret_t file_browser_remove(file_browser_t* fb, const char* name) {
   return_value_if_fail(path_build(fullpath, MAX_PATH, fb->cwd, name, NULL) == RET_OK, RET_FAIL);
 
   return file_browser_remove_item_recursive(fb, fullpath);
-}
-
-ret_t file_browser_copy(file_browser_t* fb, darray_t* items) {
-  uint32_t i = 0;
-  wbuffer_t* wb = NULL;
-  return_value_if_fail(fb != NULL && items != NULL, RET_BAD_PARAMS);
-
-  wb = &(fb->copy_items);
-  wb->cursor = 0;
-  tk_strncpy(fb->copy_src_dir, fb->cwd, MAX_PATH);
-
-  for (i = 0; i < items->size; i++) {
-    fb_item_t* iter = (fb_item_t*)(items->elms[i]);
-
-    if (wbuffer_write_string(wb, iter->name) != RET_OK) {
-      wb->cursor = 0;
-      return RET_FAIL;
-    }
-  }
-
-  return RET_OK;
-}
-
-ret_t file_browser_cut(file_browser_t* fb, darray_t* items) {
-  return_value_if_fail(fb != NULL && items != NULL, RET_BAD_PARAMS);
-
-  fb->cut = TRUE;
-  return file_browser_copy(fb, items);
-}
-
-bool_t file_browser_can_paste(file_browser_t* fb) {
-  return_value_if_fail(fb != NULL, FALSE);
-
-  return fb->copy_items.cursor > 0;
-}
-
-static ret_t file_browser_copy_item(file_browser_t* fb, const char* src, const char* dst,
-                                    const char* name) {
-  /*TODO*/
-  return RET_NOT_IMPL;
-}
-
-ret_t file_browser_paste(file_browser_t* fb) {
-  rbuffer_t rb;
-  wbuffer_t* wb = NULL;
-  const char* src = NULL;
-  const char* name = NULL;
-  char fullpath[MAX_PATH + 1];
-  return_value_if_fail(file_browser_can_paste(fb), RET_BAD_PARAMS);
-
-  wb = &(fb->copy_items);
-  rbuffer_init(&rb, wb->data, wb->cursor);
-  return_value_if_fail(rbuffer_read_string(&rb, &src) == RET_OK, RET_BAD_PARAMS);
-
-  memset(fullpath, 0x00, sizeof(fullpath));
-  while (rbuffer_read_string(&rb, &name) == RET_OK) {
-    if (file_browser_copy_item(fb, src, fb->cwd, name) != RET_OK) {
-      return RET_FAIL;
-    }
-
-    if (fb->cut) {
-      return_value_if_fail(path_build(fullpath, MAX_PATH, src, name, NULL) == RET_OK, RET_FAIL);
-      file_browser_remove_item_recursive(fb, fullpath);
-    }
-  }
-
-  return RET_OK;
 }
 
 ret_t file_browser_refresh(file_browser_t* fb) {
@@ -555,8 +485,6 @@ ret_t file_browser_destroy(file_browser_t* fb) {
     TKMEM_FREE(fb->items);
   }
 
-  emitter_deinit(EMITTER(fb));
-  wbuffer_deinit(&(fb->copy_items));
   TKMEM_FREE(fb);
 
   return RET_OK;

@@ -86,7 +86,6 @@ typedef struct _fb_item_t {
  * 文件浏览器模型。
  */
 typedef struct _file_browser_t {
-  emitter_t emitter;
   /**
    * @property {char*} cwd
    * @annotation ["readable"]
@@ -104,22 +103,8 @@ typedef struct _file_browser_t {
   tk_filter_t filter;
   tk_compare_t compare;
 
-  bool_t cut;
-  wbuffer_t copy_items;
-  char copy_src_dir[MAX_PATH + 1];
-
   bool_t ignore_hidden_files;
 } file_browser_t;
-
-/**
- * @event {event_t} EVT_ITEMS_CHANGED
- * 文件项目改变
- */
-
-/**
- * @event {progress_event_t} EVT_PROGRESS
- * 进度改变。
- */
 
 /**
  * @method file_browser_create
@@ -177,48 +162,6 @@ ret_t file_browser_create_file(file_browser_t* fb, const char* name, const void*
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t file_browser_remove(file_browser_t* fb, const char* name);
-
-/**
- * @method file_browser_copy
- * 拷贝当前目录下的指定子目录。
- * 
- * @param {file_browser_t*} fb file browser对象。
- * @param {darray_t*} items 当前目录下的子目录/文件项列表。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t file_browser_copy(file_browser_t* fb, darray_t* items);
-
-/**
- * @method file_browser_cut
- * 剪切当前目录下的指定子目录。
- * 
- * @param {file_browser_t*} fb file browser对象。
- * @param {darray_t*} items 当前目录下的子目录/文件项列表。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t file_browser_cut(file_browser_t* fb, darray_t* items);
-
-/**
- * @method file_browser_can_paste
- * 判断是否可以粘贴。
- * 
- * @param {file_browser_t*} fb file browser对象。
- *
- * @return {bool_t} 返回FALSE表示不可以，否则表示可以。
- */
-bool_t file_browser_can_paste(file_browser_t* fb);
-
-/**
- * @method file_browser_paste
- * 粘贴。
- * 
- * @param {file_browser_t*} fb file browser对象。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t file_browser_paste(file_browser_t* fb);
 
 /**
  * @method file_browser_enter

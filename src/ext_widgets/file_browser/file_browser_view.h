@@ -62,14 +62,6 @@ typedef struct _file_browser_view_t {
    */
   char* sort_by;
 
-  /**
-   * @property {char*} value
-   * @fake
-   * @annotation ["set_prop","get_prop"]
-   * 当前选中项的完整路径。
-   */
-  str_t value;
-
   /*private*/
   bool_t inited;
   file_browser_t* fb;
