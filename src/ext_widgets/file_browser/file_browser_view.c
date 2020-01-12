@@ -332,7 +332,7 @@ static ret_t file_browser_view_reload(widget_t* widget) {
     
     item_child = widget_lookup_by_type(item, WIDGET_TYPE_CHECK_BUTTON, TRUE);
     if (item_child != NULL) {
-      widget_set_value(item_child, file_browser_view->show_check_button);
+      widget_set_visible(item_child, file_browser_view->show_check_button, FALSE);
     }
   }
 
