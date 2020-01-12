@@ -90,9 +90,9 @@ static ret_t file_choose_on_ok(void* ctx, event_t* e) {
 ret_t file_chooser_choose(file_chooser_t* chooser) {
   widget_t* win = window_open(chooser->ui);
 
-  widget_child_on(win, "ok", EVT_CLICK, file_choose_on_ok, chooser);
-  widget_child_on(win, "cancel", EVT_CLICK, file_choose_on_click_to_close, chooser);
-  widget_child_on(win, "close", EVT_CLICK, file_choose_on_click_to_close, chooser);
+  widget_child_on(win, FILE_CHOOSER_OK, EVT_CLICK, file_choose_on_ok, chooser);
+  widget_child_on(win, FILE_CHOOSER_CANCEL, EVT_CLICK, 
+      file_choose_on_click_to_close, chooser);
 
   return RET_OK;
 }

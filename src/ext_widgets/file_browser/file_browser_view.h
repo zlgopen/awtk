@@ -54,6 +54,13 @@ typedef struct _file_browser_view_t {
    * 是否为升序排序。
    */
   bool_t sort_ascending;
+  
+  /**
+   * @property {bool_t} show_check_button
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 是否显示checkbutton。
+   */
+  bool_t show_check_button;
 
   /**
    * @property {char*} sort_by
@@ -137,6 +144,17 @@ ret_t file_browser_view_set_ignore_hidden_files(widget_t* widget, bool_t ignore_
 ret_t file_browser_view_set_sort_ascending(widget_t* widget, bool_t sort_ascending);
 
 /**
+ * @method file_browser_view_set_show_check_button
+ * 设置 是否显示checkbutton。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {bool_t} show_check_button 是否显示checkbutton。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t file_browser_view_set_show_check_button(widget_t* widget, bool_t show_check_button);
+
+/**
  * @method file_browser_view_set_sort_by
  * 设置 排序方式。可选值(name, size, mtime, type)。
  * @annotation ["scriptable"]
@@ -171,26 +189,6 @@ darray_t* file_browser_view_get_selected_items(widget_t* widget);
 const char* file_browser_view_get_cwd(widget_t* widget);
 
 /**
- * @method file_browser_view_copy
- * 拷贝当前选中的项目。
- * @annotation ["scriptable"]
- * @param {widget_t*} widget widget对象。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t file_browser_view_copy(widget_t* widget);
-
-/**
- * @method file_browser_view_cut
- * 剪切当前选中的项目。
- * @annotation ["scriptable"]
- * @param {widget_t*} widget widget对象。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t file_browser_view_cut(widget_t* widget);
-
-/**
  * @method file_browser_view_remove
  * 删除当前选中的项目。
  * @annotation ["scriptable"]
@@ -199,28 +197,6 @@ ret_t file_browser_view_cut(widget_t* widget);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t file_browser_view_remove(widget_t* widget);
-
-/**
- * @method file_browser_view_paste
- * 粘贴之前拷贝或剪切的项目到当前目录。
- *
- * @annotation ["scriptable"]
- * @param {widget_t*} widget widget对象。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t file_browser_view_paste(widget_t* widget);
-
-/**
- * @method file_browser_view_can_paste
- * 检查是否可以粘贴(之前是否拷贝和剪切)。
- *
- * @annotation ["scriptable"]
- * @param {widget_t*} widget widget对象。
- *
- * @return {bool_t} 返回FALSE表示不可以粘贴，否则表示可以。
- */
-bool_t file_browser_view_can_paste(widget_t* widget);
 
 /**
  * @method file_browser_view_create_dir
@@ -252,6 +228,7 @@ ret_t file_browser_view_create_file(widget_t* widget, const char* name, const ch
 #define FILE_BROWSER_VIEW_PROP_SORT_BY "sort_by"
 #define FILE_BROWSER_VIEW_PROP_INIT_DIR "init_dir"
 #define FILE_BROWSER_VIEW_PROP_SORT_ASCENDING "sort_ascending"
+#define FILE_BROWSER_VIEW_PROP_SHOW_CHECK_BUTTON "show_check_button"
 #define FILE_BROWSER_VIEW_PROP_IGNORE_HIDDEN_FILES "ignore_hidden_files"
 
 #define WIDGET_TYPE_FILE_BROWSER_VIEW "file_browser_view"

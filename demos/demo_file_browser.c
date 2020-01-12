@@ -36,7 +36,11 @@ static ret_t tk_on_choose_file_result(file_chooser_t* chooser) {
     widget_set_text_utf8(filename, "aborted");
   } else {
     widget_set_text_utf8(cwd, chooser->cwd.str);
-    widget_set_text_utf8(filename, chooser->filename.str);
+    if(chooser->filename.str) {
+      widget_set_text_utf8(filename, chooser->filename.str);
+    } else {
+      widget_set_text_utf8(filename, "");
+    }
   }
 
   return RET_OK;

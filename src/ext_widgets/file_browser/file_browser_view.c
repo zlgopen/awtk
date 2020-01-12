@@ -85,6 +85,16 @@ ret_t file_browser_view_set_sort_ascending(widget_t* widget, bool_t sort_ascendi
   return RET_OK;
 }
 
+ret_t file_browser_view_set_show_check_button(widget_t* widget, bool_t show_check_button) {
+  file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
+  return_value_if_fail(file_browser_view != NULL, RET_BAD_PARAMS);
+
+  file_browser_view->show_check_button = show_check_button;
+  file_browser_view_reload(widget);
+
+  return RET_OK;
+}
+
 ret_t file_browser_view_set_sort_by(widget_t* widget, const char* sort_by) {
   file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
   return_value_if_fail(file_browser_view != NULL, RET_BAD_PARAMS);
@@ -108,6 +118,9 @@ static ret_t file_browser_view_get_prop(widget_t* widget, const char* name, valu
   } else if (tk_str_eq(FILE_BROWSER_VIEW_PROP_SORT_ASCENDING, name)) {
     file_browser_view_set_sort_ascending(widget, value_bool(v));
     return RET_OK;
+  } else if (tk_str_eq(FILE_BROWSER_VIEW_PROP_SHOW_CHECK_BUTTON, name)) {
+    file_browser_view_set_show_check_button(widget, value_bool(v));
+    return RET_OK;
   } else if (tk_str_eq(FILE_BROWSER_VIEW_PROP_SORT_BY, name)) {
     value_set_str(v, file_browser_view->sort_by);
     return RET_OK;
@@ -127,6 +140,9 @@ static ret_t file_browser_view_set_prop(widget_t* widget, const char* name, cons
     return RET_OK;
   } else if (tk_str_eq(FILE_BROWSER_VIEW_PROP_SORT_ASCENDING, name)) {
     file_browser_view_set_sort_ascending(widget, value_bool(v));
+    return RET_OK;
+  } else if (tk_str_eq(FILE_BROWSER_VIEW_PROP_SHOW_CHECK_BUTTON, name)) {
+    file_browser_view_set_show_check_button(widget, value_bool(v));
     return RET_OK;
   } else if (tk_str_eq(FILE_BROWSER_VIEW_PROP_SORT_BY, name)) {
     file_browser_view_set_sort_by(widget, value_str(v));
@@ -313,6 +329,11 @@ static ret_t file_browser_view_reload(widget_t* widget) {
       wstr_t* str = &(item_child->text);
       wstr_format_time(str, FB_DATE_TIME_FORMAT, info->ctime);
     }
+    
+    item_child = widget_lookup_by_type(item, WIDGET_TYPE_CHECK_BUTTON, TRUE);
+    if (item_child != NULL) {
+      widget_set_value(item_child, file_browser_view->show_check_button);
+    }
   }
 
   widget_layout(widget);
@@ -387,6 +408,7 @@ widget_t* file_browser_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_
   return_value_if_fail(file_browser_view != NULL, NULL);
 
   file_browser_view->sort_ascending = TRUE;
+  file_browser_view->show_check_button = FALSE;
   file_browser_view->ignore_hidden_files = TRUE;
   file_browser_view->fb = file_browser_create(os_fs());
   darray_init(&(file_browser_view->selected_items), 10, NULL, NULL);

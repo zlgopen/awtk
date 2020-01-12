@@ -148,6 +148,10 @@ ret_t file_chooser_destroy(file_chooser_t* chooser);
 #define FILE_CHOOSER_UI_CHOOSE_FILE_FOR_OPEN "file_chooser_for_open"
 #define FILE_CHOOSER_UI_CHOOSE_FILE_FOR_SAVE "file_chooser_for_save"
 
+/*控件名*/
+#define FILE_CHOOSER_OK "ok"
+#define FILE_CHOOSER_CANCEL "cancel"
+
 END_C_DECLS
 
 #endif /*TK_FILE_CHOOSER_H*/
