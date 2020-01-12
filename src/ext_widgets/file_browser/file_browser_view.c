@@ -329,34 +329,6 @@ static ret_t file_browser_view_reload(widget_t* widget) {
   return RET_OK;
 }
 
-static ret_t file_browser_view_on_clicked_cut(void* ctx, event_t* e) {
-  widget_t* widget = WIDGET(ctx);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
-
-  return file_browser_view_cut(widget);
-}
-
-static ret_t file_browser_view_on_clicked_copy(void* ctx, event_t* e) {
-  widget_t* widget = WIDGET(ctx);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
-
-  return file_browser_view_copy(widget);
-}
-
-static ret_t file_browser_view_on_clicked_paste(void* ctx, event_t* e) {
-  widget_t* widget = WIDGET(ctx);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
-
-  return file_browser_view_paste(widget);
-}
-
-static ret_t file_browser_view_on_clicked_remove(void* ctx, event_t* e) {
-  widget_t* widget = WIDGET(ctx);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
-
-  return file_browser_view_remove(widget);
-}
-
 static ret_t file_browser_view_init_ui(widget_t* widget) {
   widget_t* template = NULL;
   widget_t* container = NULL;
@@ -366,25 +338,6 @@ static ret_t file_browser_view_init_ui(widget_t* widget) {
   return_value_if_fail(container != NULL, RET_BAD_PARAMS);
   file_browser_view->container = container;
   file_browser_view->cwd = widget_lookup(widget, FILE_BROWSER_VIEW_CWD, TRUE);
-  file_browser_view->cut = widget_lookup(widget, FILE_BROWSER_VIEW_CUT, TRUE);
-  if (file_browser_view->cut != NULL) {
-    widget_on(file_browser_view->cut, EVT_CLICK, file_browser_view_on_clicked_cut, widget);
-  }
-
-  file_browser_view->copy = widget_lookup(widget, FILE_BROWSER_VIEW_COPY, TRUE);
-  if (file_browser_view->copy != NULL) {
-    widget_on(file_browser_view->copy, EVT_CLICK, file_browser_view_on_clicked_copy, widget);
-  }
-
-  file_browser_view->paste = widget_lookup(widget, FILE_BROWSER_VIEW_PASTE, TRUE);
-  if (file_browser_view->paste != NULL) {
-    widget_on(file_browser_view->paste, EVT_CLICK, file_browser_view_on_clicked_paste, widget);
-  }
-
-  file_browser_view->remove = widget_lookup(widget, FILE_BROWSER_VIEW_REMOVE, TRUE);
-  if (file_browser_view->remove != NULL) {
-    widget_on(file_browser_view->remove, EVT_CLICK, file_browser_view_on_clicked_remove, widget);
-  }
 
   template = widget_lookup(container, FILE_BROWSER_VIEW_FILE, TRUE);
   return_value_if_fail(template != NULL, RET_BAD_PARAMS);
@@ -465,7 +418,7 @@ ret_t file_browser_view_register(void) {
                                  file_browser_view_create);
 }
 
-static darray_t* file_browser_view_get_selected_items(widget_t* widget) {
+darray_t* file_browser_view_get_selected_items(widget_t* widget) {
   file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
   widget_t* container = file_browser_view->container;
   darray_t* arr = &(file_browser_view->selected_items);
@@ -486,29 +439,6 @@ static darray_t* file_browser_view_get_selected_items(widget_t* widget) {
   }
 
   return arr;
-}
-
-uint32_t file_browser_view_get_selected_items_nr(widget_t* widget) {
-  darray_t* selected_items = NULL;
-  file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
-  return_value_if_fail(file_browser_view != NULL, 0);
-
-  selected_items = file_browser_view_get_selected_items(widget);
-
-  return selected_items->size;
-}
-
-const char* file_browser_view_get_selected_item(widget_t* widget, uint32_t index) {
-  fb_item_t* info = NULL;
-  darray_t* selected_items = NULL;
-  file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
-  return_value_if_fail(file_browser_view != NULL, NULL);
-
-  selected_items = file_browser_view_get_selected_items(widget);
-  info = darray_get(selected_items, index);
-  return_value_if_fail(info != NULL, NULL);
-
-  return info->name;
 }
 
 const char* file_browser_view_get_cwd(widget_t* widget) {

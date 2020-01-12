@@ -68,15 +68,11 @@ typedef struct _file_browser_view_t {
    * @annotation ["set_prop","get_prop"]
    * 当前选中项的完整路径。
    */
+  str_t value;
 
   /*private*/
   bool_t inited;
   file_browser_t* fb;
-
-  widget_t* cut;
-  widget_t* copy;
-  widget_t* paste;
-  widget_t* remove;
 
   widget_t* cwd;
   widget_t* container;
@@ -84,11 +80,10 @@ typedef struct _file_browser_view_t {
   widget_t* folder_template;
   widget_t* return_up_template;
 
+  darray_t selected_items;
   darray_t file_items_cache;
   darray_t folder_items_cache;
-  darray_t selected_items;
 
-  str_t value;
 } file_browser_view_t;
 
 /**
@@ -160,25 +155,17 @@ ret_t file_browser_view_set_sort_ascending(widget_t* widget, bool_t sort_ascendi
 ret_t file_browser_view_set_sort_by(widget_t* widget, const char* sort_by);
 
 /**
- * @method file_browser_view_get_selected_items_nr
- * 返回当前选中的项目的个数。
- * @annotation ["scriptable"]
+ * @method file_browser_view_get_selected_items
+ * 返回当前选中的项目。
+ *
+ * > 在返回数组中，每个元素是一个fb\_item\_t对象。
+ * > 调用者无需释放返回值，返回值只在当次调用有效。
+ *
  * @param {widget_t*} widget widget对象。
  *
- * @return {uint32_t} 返回返回当前选中的项目的个数。
+ * @return {darray_t*} 返回当前选中的项目。
  */
-uint32_t file_browser_view_get_selected_items_nr(widget_t* widget);
-
-/**
- * @method file_browser_view_get_selected_item
- * 获取第index个选中的项目的名称。
- * @annotation ["scriptable"]
- * @param {widget_t*} widget widget对象。
- * @param {uint32_t} index 序号。
- *
- * @return {const char*} 返回第index个选中的项目的名称。
- */
-const char* file_browser_view_get_selected_item(widget_t* widget, uint32_t index);
+darray_t* file_browser_view_get_selected_items(widget_t* widget);
 
 /**
  * @method file_browser_view_get_cwd
@@ -223,6 +210,7 @@ ret_t file_browser_view_remove(widget_t* widget);
 /**
  * @method file_browser_view_paste
  * 粘贴之前拷贝或剪切的项目到当前目录。
+ *
  * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
  *
@@ -233,6 +221,7 @@ ret_t file_browser_view_paste(widget_t* widget);
 /**
  * @method file_browser_view_can_paste
  * 检查是否可以粘贴(之前是否拷贝和剪切)。
+ *
  * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
  *
@@ -243,6 +232,7 @@ bool_t file_browser_view_can_paste(widget_t* widget);
 /**
  * @method file_browser_view_create_dir
  * 在当前目录创建子目录。
+ *
  * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
  * @param {const char*} name 子目录名。
@@ -254,6 +244,7 @@ ret_t file_browser_view_create_dir(widget_t* widget, const char* name);
 /**
  * @method file_browser_view_create_file
  * 在当前目录创建文件。
+ *
  * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
  * @param {const char*} name 文件名。
@@ -277,22 +268,29 @@ ret_t file_browser_view_create_file(widget_t* widget, const char* name, const ch
 ret_t file_browser_view_register(void);
 
 /*特殊子控件的名字*/
+
+/*用于显示当前路径的控件*/
 #define FILE_BROWSER_VIEW_CWD "cwd"
+
+/*用于显示名称的控件*/
 #define FILE_BROWSER_VIEW_NAME "name"
+/*用于显示文件大小的控件*/
 #define FILE_BROWSER_VIEW_SIZE "size"
+/*用于显示文件修改时间的控件*/
 #define FILE_BROWSER_VIEW_MTIME "mtime"
+/*用于显示文件创建时间的控件*/
 #define FILE_BROWSER_VIEW_CTIME "ctime"
-
+/*用于显示文件图标的控件*/
 #define FILE_BROWSER_VIEW_ICON "icon"
-#define FILE_BROWSER_VIEW_FILE "file"
-#define FILE_BROWSER_VIEW_FOLDER "folder"
-#define FILE_BROWSER_VIEW_RETURN_UP "return_up"
-#define FILE_BROWSER_VIEW_CONTAINER "container"
 
-#define FILE_BROWSER_VIEW_CUT "cut"
-#define FILE_BROWSER_VIEW_COPY "copy"
-#define FILE_BROWSER_VIEW_PASTE "paste"
-#define FILE_BROWSER_VIEW_REMOVE "remove"
+/*用于显示文件项的模板控件*/
+#define FILE_BROWSER_VIEW_FILE "file"
+/*用于显示目录项的模板控件*/
+#define FILE_BROWSER_VIEW_FOLDER "folder"
+/*用于显示返回上一级目录的模板控件*/
+#define FILE_BROWSER_VIEW_RETURN_UP "return_up"
+/*容器控件，通常是scrollview*/
+#define FILE_BROWSER_VIEW_CONTAINER "container"
 
 /*public for subclass and runtime type check*/
 TK_EXTERN_VTABLE(file_browser_view);
