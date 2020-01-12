@@ -1,7 +1,7 @@
 ﻿/**
  * File:   file_browser_view.h
  * Author: AWTK Develop Team
- * Brief:  文件管理/浏览/选择控件
+ * Brief:  file manager/browser/choosor
  *
  * Copyright (c) 2020 - 2020 Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
@@ -44,7 +44,7 @@ typedef struct _file_browser_view_t {
   /**
    * @property {bool_t} ignore_hidden_files
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 忽略隐藏文件。
+   * 是否忽略隐藏文件。
    */
   bool_t ignore_hidden_files;
 
@@ -279,6 +279,10 @@ ret_t file_browser_view_register(void);
 /*特殊子控件的名字*/
 #define FILE_BROWSER_VIEW_CWD "cwd"
 #define FILE_BROWSER_VIEW_NAME "name"
+#define FILE_BROWSER_VIEW_SIZE "size"
+#define FILE_BROWSER_VIEW_MTIME "mtime"
+#define FILE_BROWSER_VIEW_CTIME "ctime"
+
 #define FILE_BROWSER_VIEW_ICON "icon"
 #define FILE_BROWSER_VIEW_FILE "file"
 #define FILE_BROWSER_VIEW_FOLDER "folder"

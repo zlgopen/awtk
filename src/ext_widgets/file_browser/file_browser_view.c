@@ -1,7 +1,7 @@
 ﻿/**
  * File:   file_browser_view.c
  * Author: AWTK Develop Team
- * Brief:  文件管理/浏览/选择控件
+ * Brief:  file manager/browser/choosor
  *
  * Copyright (c) 2020 - 2020 Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
@@ -22,11 +22,16 @@
 #include "tkc/mem.h"
 #include "tkc/utils.h"
 #include "file_browser_view.h"
+#include "base/date_time_format.h"
 
 #define SORT_BY_NAME "name"
 #define SORT_BY_TYPE "type"
 #define SORT_BY_SIZE "size"
 #define SORT_BY_MTIME "mtime"
+
+#ifndef FB_DATE_TIME_FORMAT
+#define FB_DATE_TIME_FORMAT "YY-MM-DD hh:mm:ss"
+#endif/*FB_DATE_TIME_FORMAT*/
 
 static ret_t file_browser_view_reload(widget_t* widget);
 
@@ -298,6 +303,24 @@ static ret_t file_browser_view_reload(widget_t* widget) {
     item_child = widget_lookup(item, FILE_BROWSER_VIEW_NAME, TRUE);
     if (item_child != NULL) {
       widget_set_text_utf8(item_child, info->name);
+    }
+    
+    item_child = widget_lookup(item, FILE_BROWSER_VIEW_SIZE, TRUE);
+    if (item_child != NULL) {
+      wstr_t* str = &(item_child->text);
+      wstr_from_int(str, info->size);
+    }
+    
+    item_child = widget_lookup(item, FILE_BROWSER_VIEW_MTIME, TRUE);
+    if (item_child != NULL) {
+      wstr_t* str = &(item_child->text);
+      wstr_format_time(str, FB_DATE_TIME_FORMAT, info->mtime);
+    }
+    
+    item_child = widget_lookup(item, FILE_BROWSER_VIEW_CTIME, TRUE);
+    if (item_child != NULL) {
+      wstr_t* str = &(item_child->text);
+      wstr_format_time(str, FB_DATE_TIME_FORMAT, info->ctime);
     }
   }
 
