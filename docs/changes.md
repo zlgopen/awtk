@@ -1,4 +1,8 @@
 # 最新动态
+* 2020/01/12
+  * 增加函数date\_time\_from\_time
+  * 将格式化日期的函数放到date\_time\_format.c中。
+
 * 2020/01/11
   * 完善combobox, readonly时点击任意位置，弹出popup窗口。
    
