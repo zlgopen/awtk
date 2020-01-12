@@ -1,0 +1,9 @@
+<window anim_hint="htranslate" children_layout="default(c=1,h=40,m=5,s=5)">
+    <hscroll_label name="cwd" text="none"/>
+    <hscroll_label name="filename" text="none"/>
+    <button name="file_open" text="Choose For Open..."/>
+    <button name="file_save" text="Choose For Save..."/>
+    <button name="folder" text="Choose Folder..."/>
+    <button name="browser" text="File Browser..."/>
+    <button name="quit" text="Quit"/>
+</window>

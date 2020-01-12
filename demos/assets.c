@@ -18,6 +18,7 @@
 #include "assets/default/inc/styles/tab_top_compact.data"
 #include "assets/default/inc/styles/dialog_info.data"
 #include "assets/default/inc/styles/guage.data"
+#include "assets/default/inc/styles/file_browser.data"
 #include "assets/default/inc/styles/dialog_confirm.data"
 #include "assets/default/inc/styles/dialog.data"
 #include "assets/default/inc/styles/tab_top.data"
@@ -71,9 +72,11 @@
 #include "assets/default/inc/ui/list_view_m.data"
 #include "assets/default/inc/ui/slide_view_h_loop.data"
 #include "assets/default/inc/ui/mutable_image.data"
+#include "assets/default/inc/ui/file_chooser.data"
 #include "assets/default/inc/ui/calibration_win.data"
 #include "assets/default/inc/ui/memtest.data"
 #include "assets/default/inc/ui/slide_view_h2.data"
+#include "assets/default/inc/ui/folder_chooser.data"
 #include "assets/default/inc/ui/slide_view_v_loop.data"
 #include "assets/default/inc/ui/language.data"
 #include "assets/default/inc/ui/kb_float.data"
@@ -90,6 +93,7 @@
 #include "assets/default/inc/ui/tab_list.data"
 #include "assets/default/inc/ui/animator.data"
 #include "assets/default/inc/ui/slide_down.data"
+#include "assets/default/inc/ui/file_chooser_for_open.data"
 #include "assets/default/inc/ui/scroll_view_h.data"
 #include "assets/default/inc/ui/menu_up_center.data"
 #include "assets/default/inc/ui/slide_right.data"
@@ -114,6 +118,7 @@
 #include "assets/default/inc/ui/basic.data"
 #include "assets/default/inc/ui/auto_play.data"
 #include "assets/default/inc/ui/guage.data"
+#include "assets/default/inc/ui/file_browser.data"
 #include "assets/default/inc/ui/color_picker_full.data"
 #include "assets/default/inc/ui/dialog1.data"
 #include "assets/default/inc/ui/fade.data"
@@ -132,6 +137,7 @@
 #include "assets/default/inc/ui/slide_view_v.data"
 #include "assets/default/inc/ui/button.data"
 #include "assets/default/inc/ui/menu.data"
+#include "assets/default/inc/ui/file_chooser_for_save.data"
 #include "assets/default/inc/ui/system_bar.data"
 #include "assets/default/inc/ui/menu_right_bottom.data"
 #include "assets/default/inc/ui/list_view_d.data"
@@ -404,7 +410,7 @@
 #include "assets/default/inc/images/arrow_left_n.data"
 #include "assets/default/inc/images/edit_clear_p.data"
 #include "assets/default/inc/images/battery_2.data"
-#endif/*WITH_STB_IMAGE*/
+#endif /*WITH_STB_IMAGE*/
 #ifdef WITH_VGCANVAS
 #include "assets/default/inc/images/pointer_4.bsvg"
 #include "assets/default/inc/images/htest.bsvg"
@@ -413,13 +419,13 @@
 #include "assets/default/inc/images/pointer_1.bsvg"
 #include "assets/default/inc/images/pointer.bsvg"
 #include "assets/default/inc/images/girl.bsvg"
-#endif/*WITH_VGCANVAS*/
+#endif /*WITH_VGCANVAS*/
 #if defined(WITH_TRUETYPE_FONT)
 #include "assets/default/inc/fonts/default.res"
-#else/*WITH_TRUETYPE_FONT*/
+#else /*WITH_TRUETYPE_FONT*/
 #include "assets/default/inc/fonts/default.data"
-#endif/*WITH_TRUETYPE_FONT*/
-#endif/*WITH_FS_RES*/
+#endif /*WITH_TRUETYPE_FONT*/
+#endif /*WITH_FS_RES*/
 
 ret_t assets_init(void) {
   assets_manager_t* am = assets_manager();
@@ -474,9 +480,11 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_list_view_m);
   assets_manager_add(am, ui_slide_view_h_loop);
   assets_manager_add(am, ui_mutable_image);
+  assets_manager_add(am, ui_file_chooser);
   assets_manager_add(am, ui_calibration_win);
   assets_manager_add(am, ui_memtest);
   assets_manager_add(am, ui_slide_view_h2);
+  assets_manager_add(am, ui_folder_chooser);
   assets_manager_add(am, ui_slide_view_v_loop);
   assets_manager_add(am, ui_language);
   assets_manager_add(am, ui_kb_float);
@@ -493,6 +501,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_tab_list);
   assets_manager_add(am, ui_animator);
   assets_manager_add(am, ui_slide_down);
+  assets_manager_add(am, ui_file_chooser_for_open);
   assets_manager_add(am, ui_scroll_view_h);
   assets_manager_add(am, ui_menu_up_center);
   assets_manager_add(am, ui_slide_right);
@@ -517,6 +526,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_basic);
   assets_manager_add(am, ui_auto_play);
   assets_manager_add(am, ui_guage);
+  assets_manager_add(am, ui_file_browser);
   assets_manager_add(am, ui_color_picker_full);
   assets_manager_add(am, ui_dialog1);
   assets_manager_add(am, ui_fade);
@@ -535,6 +545,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_slide_view_v);
   assets_manager_add(am, ui_button);
   assets_manager_add(am, ui_menu);
+  assets_manager_add(am, ui_file_chooser_for_save);
   assets_manager_add(am, ui_system_bar);
   assets_manager_add(am, ui_menu_right_bottom);
   assets_manager_add(am, ui_list_view_d);
@@ -694,6 +705,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, style_tab_top_compact);
   assets_manager_add(am, style_dialog_info);
   assets_manager_add(am, style_guage);
+  assets_manager_add(am, style_file_browser);
   assets_manager_add(am, style_dialog_confirm);
   assets_manager_add(am, style_dialog);
   assets_manager_add(am, style_tab_top);
@@ -714,7 +726,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, image_pointer_1);
   assets_manager_add(am, image_pointer);
   assets_manager_add(am, image_girl);
-#endif/*WITH_VGCANVAS*/
+#endif /*WITH_VGCANVAS*/
 #endif
 
   tk_init_assets();

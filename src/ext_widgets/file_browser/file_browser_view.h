@@ -75,6 +75,7 @@ typedef struct _file_browser_view_t {
   file_browser_t* fb;
 
   widget_t* cwd;
+  widget_t* selected_file;
   widget_t* container;
   widget_t* file_template;
   widget_t* folder_template;
@@ -271,6 +272,7 @@ ret_t file_browser_view_register(void);
 
 /*用于显示当前路径的控件*/
 #define FILE_BROWSER_VIEW_CWD "cwd"
+#define FILE_BROWSER_VIEW_SELECTED_FILE "selected_file"
 
 /*用于显示名称的控件*/
 #define FILE_BROWSER_VIEW_NAME "name"

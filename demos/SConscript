@@ -19,6 +19,8 @@ env.Program(os.path.join(BIN_DIR, 'demo_basic'), ['demo_basic.c', 'demo_main.c']
 
 env.Program(os.path.join(BIN_DIR, 'preview_ui'), ['preview_ui.c']);
 env.Program(os.path.join(BIN_DIR, 'demo_desktop'), ['demo_desktop.c']);
+env.Program(os.path.join(BIN_DIR, 'demo_file_browser'), ['demo_file_browser.c', 
+  'demo_main.c']);
 
 
 

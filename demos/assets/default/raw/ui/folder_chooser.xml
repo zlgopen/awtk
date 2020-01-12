@@ -1,0 +1,24 @@
+<window anim_hint="htranslate" theme="file_browser">
+	<file_browser_view x="0" y="0" w="100%" h="100%" init_dir="./">
+		<list_view x="0" y="0" w="100%" h="-60" item_height="40">
+			<scroll_view name="container" x="0" y="0" w="100%" h="100%">
+				<list_item name="return_up" style="odd_clickable" children_layout="default(rows=1,cols=0)">
+					<image name="icon" draw_type="icon" w="30" image="return_up" />
+					<label name="name" w="30" tr_text="Up" />
+				</list_item>
+				<list_item name="file" style="odd_clickable" focusable="true" children_layout="default(rows=1,cols=0)">
+					<image name="icon" draw_type="icon" w="30" image="file" />
+					<label name="name" w="-30" text="" />
+				</list_item>
+				<list_item name="folder" style="odd_clickable" focusable="true" children_layout="default(rows=1,cols=0)">
+					<image name="icon" draw_type="icon" w="30" image="folder" />
+					<label name="name" w="-30" text="" />
+				</list_item>
+			</scroll_view>
+			<scroll_bar_m name="bar" x="right" y="0" w="6" h="100%" value="0" />
+		</list_view>
+    <button name="ok" x="c:-80" y="bottom:10" w="80" h="30" text="OK" />
+    <button name="cancel" x="c:80" y="bottom:10" w="80" h="30" text="Cancel" />
+  </file_browser_view>
+
+</window>

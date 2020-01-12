@@ -31,7 +31,7 @@
 
 #ifndef FB_DATE_TIME_FORMAT
 #define FB_DATE_TIME_FORMAT "YY-MM-DD hh:mm:ss"
-#endif/*FB_DATE_TIME_FORMAT*/
+#endif /*FB_DATE_TIME_FORMAT*/
 
 static ret_t file_browser_view_reload(widget_t* widget);
 
@@ -198,6 +198,10 @@ static ret_t file_browser_view_on_item_clicked(void* ctx, event_t* e) {
     str_set(&(file_browser_view->value), file_browser_view->fb->cwd);
     str_append_char(&(file_browser_view->value), TK_PATH_SEP);
     str_append(&(file_browser_view->value), info->name);
+
+    if (file_browser_view->selected_file != NULL) {
+      widget_set_text_utf8(file_browser_view->selected_file, info->name);
+    }
   }
 
   widget_dispatch_simple_event(WIDGET(ctx), EVT_VALUE_CHANGED);
@@ -304,19 +308,19 @@ static ret_t file_browser_view_reload(widget_t* widget) {
     if (item_child != NULL) {
       widget_set_text_utf8(item_child, info->name);
     }
-    
+
     item_child = widget_lookup(item, FILE_BROWSER_VIEW_SIZE, TRUE);
     if (item_child != NULL) {
       wstr_t* str = &(item_child->text);
       wstr_from_int(str, info->size);
     }
-    
+
     item_child = widget_lookup(item, FILE_BROWSER_VIEW_MTIME, TRUE);
     if (item_child != NULL) {
       wstr_t* str = &(item_child->text);
       wstr_format_time(str, FB_DATE_TIME_FORMAT, info->mtime);
     }
-    
+
     item_child = widget_lookup(item, FILE_BROWSER_VIEW_CTIME, TRUE);
     if (item_child != NULL) {
       wstr_t* str = &(item_child->text);
@@ -338,6 +342,7 @@ static ret_t file_browser_view_init_ui(widget_t* widget) {
   return_value_if_fail(container != NULL, RET_BAD_PARAMS);
   file_browser_view->container = container;
   file_browser_view->cwd = widget_lookup(widget, FILE_BROWSER_VIEW_CWD, TRUE);
+  file_browser_view->selected_file = widget_lookup(widget, FILE_BROWSER_VIEW_SELECTED_FILE, TRUE);
 
   template = widget_lookup(container, FILE_BROWSER_VIEW_FILE, TRUE);
   return_value_if_fail(template != NULL, RET_BAD_PARAMS);
