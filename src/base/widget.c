@@ -3004,7 +3004,6 @@ static ret_t widget_copy_base_props(widget_t* widget, widget_t* other) {
   widget->visible = other->visible;
   widget->floating = other->floating;
   widget->opacity = other->opacity;
-  widget->focused = other->focused;
   widget->feedback = other->feedback;
   widget->focusable = other->focusable;
   widget->sensitive = other->sensitive;
