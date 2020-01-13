@@ -30,6 +30,41 @@ BEGIN_C_DECLS
  * @class file_browser_view_t
  * @parent widget_t
  * 文件管理/浏览/选择控件。
+ *
+ * file\_browser\_view\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于file\_browser\_view\_t控件。
+ *
+ * 考虑到文件浏览器界面呈现的多样性，界面呈现工作完全有子控件来完成。
+ * 
+ * file\_browser\_view\_t负责关联文件/文件夹数据到子控件上，子控件需要特定的规范命名。
+ * 
+ * * 名为 "cwd" 的子控件用于显示当前路径。
+ *
+ * * 名为 "selected_file" 的子控件用于显示当前选择的文件。
+ *
+ * * 名为 "file" 的子控件用于显示文件项的模板控件。 
+ *
+ * * 名为 "folder" 的子控件用于显示文件夹项的模板控件。
+ *
+ * * 名为 "return_up" 的子控件用于返回上一级文件夹的模板控件。
+ *
+ * * 名为 "container" 的子控件为容器控件，通常是scrollview。
+ *
+ * * 名为 "name" 的子控件用于显示文件和文件夹的名称(放在列表项目内)。
+ 
+ * * 名为 "size" 的子控件用于显示文件和文件夹的大小(放在列表项目内)。
+ *
+ * * 名为 "mtime" 的子控件用于显示文件和文件夹的修改时间(放在列表项目内)。
+ *
+ * * 名为 "ctime" 的子控件用于显示文件和文件夹的创建时间(放在列表项目内)。
+ *
+ * * 名为 "icon" 的子控件用于显示文件和文件夹的图标(放在列表项目内)。
+ *
+ * * 类型为 "check_button" 的子控件用于选择(放在列表项目内)。
+ *
+ * 完整示例请参考：
+ *
+ * https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/file_chooser_for_open.xml
+ *
  */
 typedef struct _file_browser_view_t {
   widget_t widget;
@@ -37,7 +72,7 @@ typedef struct _file_browser_view_t {
   /**
    * @property {char*} init_dir
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 初始目录。
+   * 初始文件夹。
    */
   char* init_dir;
 
@@ -112,10 +147,10 @@ widget_t* file_browser_view_cast(widget_t* widget);
 
 /**
  * @method file_browser_view_set_init_dir
- * 设置 初始目录。
+ * 设置 初始文件夹。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
- * @param {const char*} init_dir 初始目录。
+ * @param {const char*} init_dir 初始文件夹。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -200,11 +235,11 @@ ret_t file_browser_view_remove(widget_t* widget);
 
 /**
  * @method file_browser_view_create_dir
- * 在当前目录创建子目录。
+ * 在当前文件夹创建子文件夹。
  *
  * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
- * @param {const char*} name 子目录名。
+ * @param {const char*} name 子文件夹名。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -212,7 +247,7 @@ ret_t file_browser_view_create_dir(widget_t* widget, const char* name);
 
 /**
  * @method file_browser_view_create_file
- * 在当前目录创建文件。
+ * 在当前文件夹创建文件。
  *
  * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
@@ -256,9 +291,9 @@ ret_t file_browser_view_register(void);
 
 /*用于显示文件项的模板控件*/
 #define FILE_BROWSER_VIEW_FILE "file"
-/*用于显示目录项的模板控件*/
+/*用于显示文件夹项的模板控件*/
 #define FILE_BROWSER_VIEW_FOLDER "folder"
-/*用于显示返回上一级目录的模板控件*/
+/*用于显示返回上一级文件夹的模板控件*/
 #define FILE_BROWSER_VIEW_RETURN_UP "return_up"
 /*容器控件，通常是scrollview*/
 #define FILE_BROWSER_VIEW_CONTAINER "container"
