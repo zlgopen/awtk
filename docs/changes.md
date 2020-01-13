@@ -1,4 +1,7 @@
 # 最新动态
+* 2020/01/13
+  * widget clone不复制focused属性。
+
 * 2020/01/12
   * 增加函数date\_time\_from\_time
   * 将格式化日期的函数放到date\_time\_format.c中。
