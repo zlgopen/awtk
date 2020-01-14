@@ -7,6 +7,8 @@
 #include "base/font_manager.h"
 #include "base/assets_manager.h"
 
+static ret_t vgcanvas_nanovg_set_antialias(vgcanvas_t* vgcanvas, bool_t value);
+
 static ret_t vgcanvas_nanovg_reset(vgcanvas_t* vgcanvas) {
   /*TODO: unload fonts*/
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
@@ -354,20 +356,29 @@ static ret_t vgcanvas_nanovg_draw_image(vgcanvas_t* vgcanvas, bitmap_t* img, flo
   nvgBeginPath(vg);
   nvgTranslate(vg, dx - (sx * scaleX), dy - (sy * scaleY));
   nvgScale(vg, scaleX, scaleY);
+  vgcanvas_nanovg_set_antialias(vgcanvas, FALSE);
   nvgRect(vg, sx, sy, sw, sh);
   nvgFillPaint(vg, imgPaint);
   nvgClosePath(vg);
   nvgFill(vg);
   nvgBeginPath(vg);
+  vgcanvas_nanovg_set_antialias(vgcanvas, TRUE);
   nvgRestore(vg);
 
   return RET_OK;
 }
 
 static ret_t vgcanvas_nanovg_set_antialias(vgcanvas_t* vgcanvas, bool_t value) {
+#ifdef WITH_NANOVG_GPU
+  vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
+  NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
+  NVGparams* params = (NVGparams*)vg;
+  params->edgeAntiAlias = value;
+#else
   (void)vgcanvas;
   (void)value;
   /*always*/
+#endif
 
   return RET_OK;
 }
