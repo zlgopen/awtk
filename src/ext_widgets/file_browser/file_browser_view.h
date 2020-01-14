@@ -89,7 +89,7 @@ typedef struct _file_browser_view_t {
    * 是否为升序排序。
    */
   bool_t sort_ascending;
-  
+
   /**
    * @property {bool_t} show_check_button
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
