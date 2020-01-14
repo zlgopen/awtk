@@ -30,7 +30,7 @@ BEGIN_C_DECLS
 /**
  * @class window_base_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","widget"]
  * 窗口。
  *
  * 本类把窗口相关的公共行为进行抽象，放到一起方便重用。目前已知的具体实现如下图：
@@ -77,7 +77,7 @@ typedef struct _window_base_t {
 
   /**
    * @property {char*} open_anim_hint
-   * @annotation ["set_prop","get_prop","readable","persitent","design"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 打开窗口动画的名称。
    * 请参考[窗口动画](https://github.com/zlgopen/awtk/blob/master/docs/window_animator.md)
    */
@@ -85,7 +85,7 @@ typedef struct _window_base_t {
 
   /**
    * @property {char*} close_anim_hint
-   * @annotation ["set_prop","get_prop","readable","persitent","design"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 关闭窗口动画的名称。
    * 请参考[窗口动画](https://github.com/zlgopen/awtk/blob/master/docs/window_animator.md)
    */
@@ -137,7 +137,7 @@ typedef struct _window_base_t {
 
   /**
    * @property {char*} move_focus_prev_key
-   * @annotation ["set_prop","get_prop","readable","persitent","design"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 向前移动焦点的键值。
    *
    * 请参考[控件焦点](https://github.com/zlgopen/awtk/blob/master/docs/widget_focus.md)
@@ -146,7 +146,7 @@ typedef struct _window_base_t {
 
   /**
    * @property {char*} move_focus_next_key
-   * @annotation ["set_prop","get_prop","readable","persitent","design"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 向后移动焦点的键值。
    *
    * 请参考[控件焦点](https://github.com/zlgopen/awtk/blob/master/docs/widget_focus.md)
@@ -155,7 +155,7 @@ typedef struct _window_base_t {
 
   /**
    * @property {char*} move_focus_up_key
-   * @annotation ["set_prop","get_prop","readable","persitent","design"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 向上移动焦点的键值。
    *
    * 请参考[控件焦点](https://github.com/zlgopen/awtk/blob/master/docs/widget_focus.md)
@@ -164,7 +164,7 @@ typedef struct _window_base_t {
 
   /**
    * @property {char*} move_focus_down_key
-   * @annotation ["set_prop","get_prop","readable","persitent","design"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 向下移动焦点的键值。
    *
    * 请参考[控件焦点](https://github.com/zlgopen/awtk/blob/master/docs/widget_focus.md)
@@ -173,7 +173,7 @@ typedef struct _window_base_t {
 
   /**
    * @property {char*} move_focus_left_key
-   * @annotation ["set_prop","get_prop","readable","persitent","design"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 向左移动焦点的键值。
    *
    * 请参考[控件焦点](https://github.com/zlgopen/awtk/blob/master/docs/widget_focus.md)
@@ -182,7 +182,7 @@ typedef struct _window_base_t {
 
   /**
    * @property {char*} move_focus_right_key
-   * @annotation ["set_prop","get_prop","readable","persitent","design"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 向右移动焦点的键值。
    *
    * 请参考[控件焦点](https://github.com/zlgopen/awtk/blob/master/docs/widget_focus.md)

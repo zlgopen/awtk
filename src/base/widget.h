@@ -179,7 +179,7 @@ struct _widget_vtable_t {
 
 /**
  * @class widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","widget"]
  * **widget_t** 是所有控件、窗口和窗口管理器的基类。
  * **widget_t**也是一个容器，可放其它**widget_t**到它的内部，形成一个树形结构。
  *
