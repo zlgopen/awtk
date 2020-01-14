@@ -23,6 +23,7 @@
 #define TYPES_DEF_H
 
 #include <math.h>
+#include <time.h>
 #include <ctype.h>
 #include <wchar.h>
 #include <errno.h>
