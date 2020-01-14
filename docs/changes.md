@@ -1,16 +1,17 @@
 # 最新动态
 * 2020/01/14
-  * awtk修复opengles下vg缩放后填充颜色不正常的问题（感谢智明提供补丁）
-
+  * awtk 修复 opengles 下 vg 缩放后填充颜色不正常的问题（感谢智明提供补丁）
+  * 完善 paint children（感谢大恒提供补丁） 
+  
 * 2020/01/13
-  * widget clone不复制focused属性。
+  * widget clone 不复制 focused 属性。
 
 * 2020/01/12
-  * 增加函数date\_time\_from\_time
-  * 将格式化日期的函数放到date\_time\_format.c中。
+  * 增加函数 date\_time\_from\_time
+  * 将格式化日期的函数放到 date\_time\_format.c 中。
 
 * 2020/01/11
-  * 完善combobox, readonly时点击任意位置，弹出popup窗口。
+  * 完善 combobox, readonly 时点击任意位置，弹出 popup 窗口。
    
 * 2020/01/10
   * 完善 gif image（感谢尧燊提供补丁） 
@@ -20,7 +21,6 @@
   * 完善 README.md（感谢陈谭提供补丁） 
   * 修复 svg 初始位置还有一个关于 S 元素贝塞尔曲线算法的补充的 不然压缩包里的示图会显示不正确（感谢钟伟提供补丁） 
   * 修复当高分屏的比例为非整数的时候，在改变窗口大小后会导致 fbo 不断的新建，导致 UI 显示不正常的问题（感谢智明提供补丁）
-
 
 * 2020/01/09
   * 完善 rich text（感谢尧燊提供补丁） 
