@@ -1,6 +1,7 @@
 # 最新动态
 * 2020/01/14
   * awtk修复opengles下vg缩放后填充颜色不正常的问题（感谢智明提供补丁）
+  * 修改了stbi__shiftsigned()，C语言中负数按位右移高位补1导致触发assert的问题（感谢朝泽提供补丁）
 
 * 2020/01/13
   * widget clone不复制focused属性。
