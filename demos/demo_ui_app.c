@@ -500,7 +500,7 @@ static ret_t on_mem_test(void* ctx, event_t* e) {
 static ret_t progress_bar_animate_delta(widget_t* win, const char* name, int32_t delta) {
   widget_t* progress_bar = widget_lookup(win, name, TRUE);
   int32_t value = (PROGRESS_BAR(progress_bar)->value + delta);
-  widget_animate_value_to(progress_bar, tk_min(100, value), 500);
+  widget_animate_value_to(progress_bar, tk_max(0, tk_min(100, value)), 500);
 
   return RET_OK;
 }
