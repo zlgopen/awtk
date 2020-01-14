@@ -65,7 +65,7 @@ DIR* opendir(const wchar_t* dirname) {
     errno = ENOMEM;
     return NULL;
   }
-  d->dirname = malloc(wcslen(dirname) * sizeof(wchar_t) + 4);
+  d->dirname = malloc(wcslen(dirname) * sizeof(wchar_t) + 8);
   if (!d->dirname) {
     errno = ENOMEM;
     free(d);
