@@ -32,6 +32,7 @@ BEGIN_C_DECLS
 
 /**
  * @class fb_item_t
+ * @annotation ["scriptable"]
  * 文件或目录的信息。
  */
 typedef struct _fb_item_t {
@@ -47,14 +48,12 @@ typedef struct _fb_item_t {
    * 是否是目录。
    */
   bool_t is_dir;
-
   /**
    * @property {bool_t} is_reg_file
    * @annotation ["readable"]
    * 是否是常规文件。
    */
   bool_t is_reg_file;
-
   /**
    * @property {uint64_t} size
    * @annotation ["readable"]

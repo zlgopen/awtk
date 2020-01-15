@@ -219,7 +219,10 @@ ret_t file_browser_refresh(file_browser_t* fb) {
     }
 
     path_build(fullpath, MAX_PATH, fb->cwd, info.name, NULL);
-    return_value_if_fail(fs_stat(os_fs(), fullpath, &st) == RET_OK, RET_FAIL);
+    if(fs_stat(os_fs(), fullpath, &st) != RET_OK) {
+      log_debug("stat file failed:%s\n", fullpath);
+      continue;
+    }
 
     iter = file_browser_add_item(fb);
     return_value_if_fail(iter != NULL, RET_OOM);
