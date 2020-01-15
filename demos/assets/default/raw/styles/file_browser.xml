@@ -1,3 +1,8 @@
+<dialog>
+  <style name="default">
+    <normal border_color="#606060" bg_color="#f0f0f0"/>
+  </style>
+</dialog>
 
 <label>
   <style name="default" text_align_h="left">

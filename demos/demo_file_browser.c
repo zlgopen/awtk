@@ -81,6 +81,7 @@ static ret_t on_manager(void* ctx, event_t* e) {
 ret_t application_init() {
   widget_t* win = NULL;
   tk_ext_widgets_init();
+  window_open("system_bar");
 
   win = window_open("file_browser");
 
