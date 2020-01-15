@@ -100,11 +100,11 @@ file_chooser_t* file_chooser_create(const char* init_dir, const char* filter);
  * 转换为file_chooser对象(供脚本语言使用)。
  *
  * @annotation ["cast", "scriptable"]
- * @param {void*} data file_chooser对象。
+ * @param {file_chooser_t*} chooser file_chooser对象。
  *
  * @return {file_chooser_t*} 对象。
  */
-file_chooser_t* file_chooser_cast(void* data);
+file_chooser_t* file_chooser_cast(file_chooser_t* chooser);
 
 /**
  * @method file_chooser_choose_file_for_save
