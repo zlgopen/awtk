@@ -38459,8 +38459,8 @@
       {
         "params": [
           {
-            "type": "void*",
-            "name": "data",
+            "type": "file_chooser_t*",
+            "name": "chooser",
             "desc": "file_chooser对象。"
           }
         ],
