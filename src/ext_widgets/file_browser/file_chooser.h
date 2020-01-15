@@ -29,8 +29,6 @@ BEGIN_C_DECLS
 struct _file_chooser_t;
 typedef struct _file_chooser_t file_chooser_t;
 
-typedef ret_t (*file_chooser_on_result_t)(file_chooser_t* choose);
-
 /**
  * @class file_chooser_t
  * @annotation ["scriptable"]
@@ -50,16 +48,16 @@ typedef struct _file_chooser_t {
   char* filter;
 
   /**
-   * @property {file_chooser_on_result_t} on_result 
+   * @property {tk_on_done_t} on_done 
    * 接受结果的回调函数。
    */
-  file_chooser_on_result_t on_result;
+  tk_on_done_t on_done;
 
   /**
-   * @property {void*} on_result_ctx
+   * @property {void*} on_done_ctx
    * 用户数据。
    */
-  void* on_result_ctx;
+  void* on_done_ctx;
 
   /*result*/
   /**
@@ -86,7 +84,9 @@ typedef struct _file_chooser_t {
 
 /**
  * @method file_chooser_create
- * @annotation ["constructor"]
+ * @annotation ["constructor", "scriptable"]
+ * @param {const char*} init_dir 初始目录
+ * @param {const char*} filter 过滤规则(如".jpg.png.gif")。
  * 创建file_chooser对象
  *
  * @return {file_chooser_t*} 对象。
@@ -94,20 +94,32 @@ typedef struct _file_chooser_t {
 file_chooser_t* file_chooser_create(const char* init_dir, const char* filter);
 
 /**
- * @method file_chooser_set_on_result
+ * @method file_chooser_cast
+ * 转换为file_chooser对象(供脚本语言使用)。
+ *
+ * @annotation ["cast", "scriptable"]
+ * @param {void*} data file_chooser对象。
+ *
+ * @return {file_chooser_t*} 对象。
+ */
+file_chooser_t* file_chooser_cast(void* data);
+
+/**
+ * @method file_chooser_set_on_done
  * @param {file_chooser_t*} chooser file_chooser对象。
- * @param {file_chooser_on_result_t*} on_result 接受选择结果的回调函数。
- * @param {void*} on_result_ctx 接受选择结果的回调函数的上下文。
+ * @param {tk_on_done_t*} on_done 接受选择结果的回调函数。
+ * @param {void*} on_done_ctx 接受选择结果的回调函数的上下文。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t file_chooser_set_on_result(file_chooser_t* chooser, file_chooser_on_result_t on_result,
-                                 void* on_result_ctx);
+ret_t file_chooser_set_on_done(file_chooser_t* chooser, tk_on_done_t on_done,
+                                 void* on_done_ctx);
 
 /**
  * @method file_chooser_choose_file_for_save
  * 为了保存而选择文件。
  *
+ * @annotation ["scriptable"]
  * @param {file_chooser_t*} chooser file_chooser对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -118,6 +130,7 @@ ret_t file_chooser_choose_file_for_save(file_chooser_t* chooser);
  * @method file_chooser_choose_file_for_open
  * 为了打开而选择文件。
  *
+ * @annotation ["scriptable"]
  * @param {file_chooser_t*} chooser file_chooser对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -128,6 +141,7 @@ ret_t file_chooser_choose_file_for_open(file_chooser_t* chooser);
  * @method file_chooser_choose_folder
  * 选择目录。
  *
+ * @annotation ["scriptable"]
  * @param {file_chooser_t*} chooser file_chooser对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -135,8 +149,41 @@ ret_t file_chooser_choose_file_for_open(file_chooser_t* chooser);
 ret_t file_chooser_choose_folder(file_chooser_t* chooser);
 
 /**
+ * @method file_chooser_get_dir
+ * 获取目录。
+ *
+ * @annotation ["scriptable"]
+ * @param {file_chooser_t*} chooser file_chooser对象。
+ *
+ * @return {const char*} 返回选择的目录。
+ */
+const char* file_chooser_get_dir(file_chooser_t* chooser);
+
+/**
+ * @method file_chooser_get_filename
+ * 获取文件名。
+ *
+ * @annotation ["scriptable"]
+ * @param {file_chooser_t*} chooser file_chooser对象。
+ *
+ * @return {const char*} 返回选择的文件名。
+ */
+const char* file_chooser_get_filename(file_chooser_t* chooser);
+
+/**
+ * @method file_chooser_is_aborted
+ * 用户是否取消了选择。
+ *
+ * @annotation ["scriptable"]
+ * @param {file_chooser_t*} chooser file_chooser对象。
+ *
+ * @return {bool_t} 返回用户是否取消了选择。
+ */
+bool_t file_chooser_is_aborted(file_chooser_t* chooser);
+
+/**
  * @method file_chooser_destroy
- * 销毁file_chooser对象。
+ * 销毁file_chooser对象(选择完成后自动调用)。
  *
  * @param {file_chooser_t*} chooser file_chooser对象。
  *

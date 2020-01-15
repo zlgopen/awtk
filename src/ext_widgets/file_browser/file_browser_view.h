@@ -29,6 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class file_browser_view_t
  * @parent widget_t
+ * @annotation ["scriptable","design","widget"]
  * 文件管理/浏览/选择控件。
  *
  * file\_browser\_view\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于file\_browser\_view\_t控件。
@@ -222,16 +223,6 @@ darray_t* file_browser_view_get_selected_items(widget_t* widget);
  * @return {const char*} 返回当前路径。
  */
 const char* file_browser_view_get_cwd(widget_t* widget);
-
-/**
- * @method file_browser_view_remove
- * 删除当前选中的项目。
- * @annotation ["scriptable"]
- * @param {widget_t*} widget widget对象。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t file_browser_view_remove(widget_t* widget);
 
 /**
  * @method file_browser_view_create_dir

@@ -37,12 +37,16 @@ file_chooser_t* file_chooser_create(const char* init_dir, const char* filter) {
   return chooser;
 }
 
-ret_t file_chooser_set_on_result(file_chooser_t* chooser, file_chooser_on_result_t on_result,
-                                 void* on_result_ctx) {
-  return_value_if_fail(chooser != NULL && on_result != NULL, RET_BAD_PARAMS);
+file_chooser_t* file_chooser_cast(void* data) {
+  return (file_chooser_t*)data;
+}
 
-  chooser->on_result = on_result;
-  chooser->on_result_ctx = on_result_ctx;
+ret_t file_chooser_set_on_done(file_chooser_t* chooser, tk_on_done_t on_done,
+                                 void* on_done_ctx) {
+  return_value_if_fail(chooser != NULL && on_done != NULL, RET_BAD_PARAMS);
+
+  chooser->on_done = on_done;
+  chooser->on_done_ctx = on_done_ctx;
 
   return RET_OK;
 }
@@ -54,8 +58,8 @@ static ret_t file_choose_on_click_to_close(void* ctx, event_t* e) {
   file_browser_view_t* file_browser = FILE_BROWSER_VIEW(widget);
 
   chooser->aborted = FALSE;
-  if (chooser->on_result != NULL) {
-    chooser->on_result(chooser);
+  if (chooser->on_done != NULL) {
+    chooser->on_done(chooser);
   }
 
   widget_close_window(win);
@@ -77,8 +81,8 @@ static ret_t file_choose_on_ok(void* ctx, event_t* e) {
   }
 
   chooser->aborted = FALSE;
-  if (chooser->on_result != NULL) {
-    if (chooser->on_result(chooser) == RET_OK) {
+  if (chooser->on_done != NULL) {
+    if (chooser->on_done(chooser) == RET_OK) {
       widget_close_window(win);
       file_chooser_destroy(chooser);
     }
@@ -97,7 +101,7 @@ ret_t file_chooser_choose(file_chooser_t* chooser) {
 }
 
 ret_t file_chooser_choose_file_for_save(file_chooser_t* chooser) {
-  return_value_if_fail(chooser != NULL && chooser->on_result != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(chooser != NULL && chooser->on_done != NULL, RET_BAD_PARAMS);
 
   chooser->ui = FILE_CHOOSER_UI_CHOOSE_FILE_FOR_SAVE;
 
@@ -105,18 +109,36 @@ ret_t file_chooser_choose_file_for_save(file_chooser_t* chooser) {
 }
 
 ret_t file_chooser_choose_file_for_open(file_chooser_t* chooser) {
-  return_value_if_fail(chooser != NULL && chooser->on_result != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(chooser != NULL && chooser->on_done != NULL, RET_BAD_PARAMS);
   chooser->ui = FILE_CHOOSER_UI_CHOOSE_FILE_FOR_OPEN;
 
   return file_chooser_choose(chooser);
 }
 
 ret_t file_chooser_choose_folder(file_chooser_t* chooser) {
-  return_value_if_fail(chooser != NULL && chooser->on_result != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(chooser != NULL && chooser->on_done != NULL, RET_BAD_PARAMS);
 
   chooser->ui = FILE_CHOOSER_UI_CHOOSE_FOLDER;
 
   return file_chooser_choose(chooser);
+}
+
+const char* file_chooser_get_dir(file_chooser_t* chooser) {
+  return_value_if_fail(chooser != NULL, NULL);
+
+  return chooser->cwd.str;
+}
+
+const char* file_chooser_get_filename(file_chooser_t* chooser) {
+  return_value_if_fail(chooser != NULL, NULL);
+
+  return chooser->filename.str;
+}
+
+bool_t file_chooser_is_aborted(file_chooser_t* chooser) {
+  return_value_if_fail(chooser != NULL, FALSE);
+
+  return chooser->aborted;
 }
 
 ret_t file_chooser_destroy(file_chooser_t* chooser) {

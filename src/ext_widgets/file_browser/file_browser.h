@@ -32,7 +32,6 @@ BEGIN_C_DECLS
 
 /**
  * @class fb_item_t
- * @annotation ["scriptable"]
  * 文件或目录的信息。
  */
 typedef struct _fb_item_t {
