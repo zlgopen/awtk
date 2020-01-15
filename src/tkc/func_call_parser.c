@@ -94,7 +94,7 @@ static ret_t parser_on_name(func_call_parser_t* parser, const char* func_name) {
 
 object_t* func_call_parse(const char* str, uint32_t size) {
   object_parser_t parser;
-  return_value_if_fail(str != NULL, NULL);
+  return_value_if_fail(str != NULL && size > 0, NULL);
 
   memset(&parser, 0x00, sizeof(parser));
   func_call_parser_init(&(parser.base), str, size);
