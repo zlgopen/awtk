@@ -522,8 +522,6 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
     return RET_OK;
   }
 
-  widget_invalidate(widget, NULL);
-
   switch (type) {
     case EVT_POINTER_DOWN: {
       pointer_event_t evt = *(pointer_event_t*)e;
@@ -549,11 +547,13 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
         text_edit_drag(edit->model, evt.x, evt.y);
         ret = RET_STOP;
       }
+      widget_invalidate(widget, NULL);
       break;
     }
     case EVT_POINTER_UP: {
       ret = RET_STOP;
       widget_ungrab(widget->parent, widget);
+      widget_invalidate(widget, NULL);
       break;
     }
     case EVT_KEY_DOWN: {

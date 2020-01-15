@@ -98,7 +98,11 @@ static ret_t vgcanvas_nanovg_begin_frame(vgcanvas_t* vgcanvas, rect_t* dirty_rec
     canvas->base.dirty_rect.x = canvas->base.dirty_rect.x >= 0 ? canvas->base.dirty_rect.x : 0;
     canvas->base.dirty_rect.y = canvas->base.dirty_rect.y >= 0 ? canvas->base.dirty_rect.y : 0;
   } else {
-    canvas->base.dirty_rect = rect_init(0, 0, info->lcd_w, info->lcd_h);
+    if(info->lcd_orientation == LCD_ORIENTATION_90 || info->lcd_orientation == LCD_ORIENTATION_270) {
+        canvas->base.dirty_rect = rect_init(0, 0, info->lcd_h, info->lcd_w);
+    } else {
+        canvas->base.dirty_rect = rect_init(0, 0, info->lcd_w, info->lcd_h);
+    }
   }
 
   nvgBeginFrame(canvas->vg, info->lcd_w, info->lcd_h, info->device_pixel_ratio);

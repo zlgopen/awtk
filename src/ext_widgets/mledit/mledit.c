@@ -353,7 +353,6 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
   return_value_if_fail(widget != NULL && mledit != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->visible, RET_OK);
 
-  widget_invalidate(widget, NULL);
   switch (type) {
     case EVT_POINTER_DOWN: {
       pointer_event_t evt = *(pointer_event_t*)e;
@@ -381,10 +380,12 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
           ret = RET_STOP;
         }
       }
+      widget_invalidate(widget, NULL);
       break;
     }
     case EVT_POINTER_UP: {
       widget_ungrab(widget->parent, widget);
+      widget_invalidate(widget, NULL);
       break;
     }
     case EVT_KEY_DOWN: {
@@ -420,9 +421,11 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
     }
     case EVT_IM_ACTION: {
       mledit_commit_str(widget, "\n");
+      widget_invalidate(widget, NULL);
       break;
     }
     case EVT_KEY_UP: {
+      widget_invalidate(widget, NULL);
       break;
     }
     case EVT_BLUR: {

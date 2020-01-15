@@ -312,7 +312,11 @@ ret_t canvas_begin_frame(canvas_t* c, rect_t* dirty_rect, lcd_draw_mode_t draw_m
   c->oy = 0;
 
   canvas_set_global_alpha(c, 0xff);
-  ret = lcd_begin_frame(c->lcd, dirty_rect, draw_mode);
+  if(c->lcd->support_dirty_rect) {
+    ret = lcd_begin_frame(c->lcd, dirty_rect, draw_mode);
+  } else {
+    ret = lcd_begin_frame(c->lcd, NULL, draw_mode);
+  }
   if (c->lcd->support_dirty_rect && dirty_rect != NULL) {
     if (draw_mode == LCD_DRAW_NORMAL && c->lcd->type == LCD_VGCANVAS) {
       rect_t r = *dirty_rect;

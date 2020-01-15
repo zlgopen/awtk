@@ -76,7 +76,7 @@ static ret_t native_window_sdl_resize(native_window_t* win, wh_t w, wh_t h) {
   win->rect.h = h;
 
 #ifndef ANDROID
-  if (w != info.w || h != info.h) {
+  if (system_info()->lcd_orientation == LCD_ORIENTATION_0 && (w != info.w || h != info.h)) {
     SDL_SetWindowSize(sdl->window, w, h);
   }
 #endif /*ANDROID*/
