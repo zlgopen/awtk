@@ -430,6 +430,18 @@ bool_t fs_dir_rename(fs_t* fs, const char* name, const char* new_name);
  */
 int32_t fs_get_file_size(fs_t* fs, const char* name);
 
+/**
+ * @method fs_get_disk_info
+ *
+ * 获取文件系统信息。
+ *
+ * @param {fs_t*} fs 文件系统对象，一般赋值为os_fs()。
+ * @param {const char*} value 卷名。
+ * @param {int32_t*} free_kb 用于返回空闲空间大小(KB)
+ * @param {int32_t*} total_kb 用于返回总共空间大小(KB)
+ *
+ * @return {ret_t} 返回不是-1表示成功，否则表示失败。
+ */
 ret_t fs_get_disk_info(fs_t* fs, const char* volume, int32_t* free_kb, int32_t* total_kb);
 
 /**
