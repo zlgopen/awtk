@@ -26669,6 +26669,37 @@
           },
           {
             "type": "const char*",
+            "name": "value",
+            "desc": "卷名。"
+          },
+          {
+            "type": "int32_t*",
+            "name": "free_kb",
+            "desc": "用于返回空闲空间大小(KB)"
+          },
+          {
+            "type": "int32_t*",
+            "name": "total_kb",
+            "desc": "用于返回总共空间大小(KB)"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取文件系统信息。",
+        "name": "fs_get_disk_info",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回不是-1表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "fs_t*",
+            "name": "fs",
+            "desc": "文件系统对象，一般赋值为os_fs()。"
+          },
+          {
+            "type": "const char*",
             "name": "name",
             "desc": "文件名。"
           },
@@ -36897,7 +36928,7 @@
     "properties": [
       {
         "name": "value",
-        "desc": "进度条的值[0-100]。",
+        "desc": "进度条的值[0-max]。",
         "type": "float_t",
         "annotation": {
           "set_prop": true,
@@ -38433,18 +38464,7 @@
     "type": "class",
     "methods": [
       {
-        "params": [
-          {
-            "type": "const char*",
-            "name": "init_dir",
-            "desc": "初始目录"
-          },
-          {
-            "type": "const char*",
-            "name": "filter",
-            "desc": "过滤规则(如\".jpg.png.gif\")。"
-          }
-        ],
+        "params": [],
         "annotation": {
           "constructor": true,
           "scriptable": true
@@ -38454,6 +38474,52 @@
         "return": {
           "type": "file_chooser_t*",
           "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "file_chooser_t*",
+            "name": "chooser",
+            "desc": "file_chooser对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "init_dir",
+            "desc": "初始目录"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置初始目录。",
+        "name": "file_chooser_set_init_dir",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "file_chooser_t*",
+            "name": "chooser",
+            "desc": "file_chooser对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "filter",
+            "desc": "过滤规则(如\".jpg.png.gif\")。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置过滤规则。",
+        "name": "file_chooser_set_filter",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       },
       {
@@ -42600,7 +42666,8 @@
     "name": "image_base_t",
     "parent": "widget_t",
     "annotation": {
-      "scriptable": true
+      "scriptable": true,
+      "widget": true
     },
     "level": 2
   },

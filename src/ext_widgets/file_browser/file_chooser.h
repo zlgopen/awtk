@@ -86,14 +86,34 @@ typedef struct _file_chooser_t {
 
 /**
  * @method file_chooser_create
- * @annotation ["constructor", "scriptable"]
- * @param {const char*} init_dir 初始目录
- * @param {const char*} filter 过滤规则(如".jpg.png.gif")。
  * 创建file_chooser对象
+ * @annotation ["constructor", "scriptable"]
  *
  * @return {file_chooser_t*} 对象。
  */
-file_chooser_t* file_chooser_create(const char* init_dir, const char* filter);
+file_chooser_t* file_chooser_create(void);
+
+/**
+ * @method file_chooser_set_init_dir
+ * 设置初始目录。
+ * @annotation ["scriptable"]
+ * @param {file_chooser_t*} chooser file_chooser对象。
+ * @param {const char*} init_dir 初始目录
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t file_chooser_set_init_dir(file_chooser_t* chooser, const char* init_dir);
+
+/**
+ * @method file_chooser_set_filter
+ * 设置过滤规则。
+ * @annotation ["scriptable"]
+ * @param {file_chooser_t*} chooser file_chooser对象。
+ * @param {const char*} filter 过滤规则(如".jpg.png.gif")。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t file_chooser_set_filter(file_chooser_t* chooser, const char* filter);
 
 /**
  * @method file_chooser_cast

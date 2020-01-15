@@ -27,16 +27,30 @@
 #include "file_browser/file_chooser.h"
 #include "file_browser/file_browser_view.h"
 
-file_chooser_t* file_chooser_create(const char* init_dir, const char* filter) {
+file_chooser_t* file_chooser_create(void) {
   file_chooser_t* chooser = TKMEM_ZALLOC(file_chooser_t);
   return_value_if_fail(chooser != NULL, NULL);
 
   emitter_init(EMITTER(chooser));
-  chooser->init_dir = tk_str_copy(chooser->init_dir, init_dir);
-  chooser->filter = tk_str_copy(chooser->filter, filter);
   str_init(&(chooser->cwd), 0);
   str_init(&(chooser->filename), 0);
   return chooser;
+}
+
+ret_t file_chooser_set_init_dir(file_chooser_t* chooser, const char* init_dir) {
+  return_value_if_fail(chooser != NULL, RET_BAD_PARAMS);
+
+  chooser->init_dir = tk_str_copy(chooser->init_dir, init_dir);
+
+  return RET_OK;
+}
+
+ret_t file_chooser_set_filter(file_chooser_t* chooser, const char* filter) {
+return_value_if_fail(chooser != NULL, RET_BAD_PARAMS);
+
+chooser->filter = tk_str_copy(chooser->filter, filter);
+
+return RET_OK;
 }
 
 file_chooser_t* file_chooser_cast(file_chooser_t* chooser) {
@@ -75,7 +89,7 @@ static ret_t file_choose_on_ok(void* ctx, event_t* e) {
   }
 
   chooser->aborted = FALSE;
-  if(emitter_dispatch_simple_event(EMITTER(chooser), EVT_DONE)  == RET_OK) {
+  if (emitter_dispatch_simple_event(EMITTER(chooser), EVT_DONE) == RET_OK) {
     if (widget_is_dialog(win)) {
       dialog_quit(win, DIALOG_QUIT_OK);
     } else {
