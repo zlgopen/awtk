@@ -49,31 +49,39 @@ static ret_t tk_on_choose_file_result(void* ctx, event_t* e) {
 }
 
 static ret_t on_file_save(void* ctx, event_t* e) {
-  file_chooser_t* chooser = file_chooser_create("./", NULL);
+  file_chooser_t* chooser = file_chooser_create();
   emitter_on(EMITTER(chooser), EVT_DONE, tk_on_choose_file_result, ctx);
+  
+  file_chooser_set_init_dir(chooser, "./");
 
   return file_chooser_choose_file_for_save(chooser);
 }
 
 static ret_t on_file_open(void* ctx, event_t* e) {
-  file_chooser_t* chooser = file_chooser_create("./", NULL);
+  file_chooser_t* chooser = file_chooser_create();
   emitter_on(EMITTER(chooser), EVT_DONE, tk_on_choose_file_result, ctx);
+  
+  file_chooser_set_init_dir(chooser, "./");
 
   return file_chooser_choose_file_for_open(chooser);
 }
 
 static ret_t on_choose_folder(void* ctx, event_t* e) {
-  file_chooser_t* chooser = file_chooser_create("./", NULL);
+  file_chooser_t* chooser = file_chooser_create();
   return_value_if_fail(chooser != NULL, RET_OOM);
   emitter_on(EMITTER(chooser), EVT_DONE, tk_on_choose_file_result, ctx);
+
+  file_chooser_set_init_dir(chooser, "./");
 
   return file_chooser_choose_folder(chooser);
 }
 
 static ret_t on_manager(void* ctx, event_t* e) {
-  file_chooser_t* chooser = file_chooser_create("./", NULL);
+  file_chooser_t* chooser = file_chooser_create();
   return_value_if_fail(chooser != NULL, RET_OOM);
   emitter_on(EMITTER(chooser), EVT_DONE, tk_on_choose_file_result, ctx);
+  
+  file_chooser_set_init_dir(chooser, "./");
 
   return file_chooser_choose_folder(chooser);
 }
