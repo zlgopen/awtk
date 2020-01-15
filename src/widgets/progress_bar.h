@@ -73,7 +73,7 @@ typedef struct _progress_bar_t {
   /**
    * @property {float_t} value
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 进度条的值[0-100]。
+   * 进度条的值[0-max]。
    */
   float_t value;
   /**

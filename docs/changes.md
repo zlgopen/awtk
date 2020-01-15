@@ -2,6 +2,8 @@
 * 2020/01/15
   * 点击鼠标右键触发 context menu 事件。
   * 完善color picker （感谢朝泽提供补丁）
+  * 完善func call parser （感谢俊杰提供补丁） 
+  * 完善progress bar文档 （感谢大恒提供补丁）
 
 * 2020/01/14
   * awtk 修复 opengles 下 vg 缩放后填充颜色不正常的问题（感谢智明提供补丁）

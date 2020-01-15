@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @class image_base_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","widget"]
  * 图片控件基类。
  *
  * 本类把图片相关控件的公共行为进行抽象，放到一起方便重用。目前已知的具体实现如下图：
