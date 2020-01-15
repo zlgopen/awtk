@@ -74,7 +74,7 @@ typedef float float_t;
 
 #ifndef time_t
 #define time_t uint64_t
-#endif/*time_t*/
+#endif /*time_t*/
 
 struct _value_t;
 typedef struct _value_t value_t;

@@ -188,6 +188,15 @@ ret_t input_device_status_on_input_event(input_device_status_t* ids, widget_t* w
       ids->pressed = FALSE;
       break;
     }
+    case EVT_CONTEXT_MENU: {
+      pointer_event_t* evt = (pointer_event_t*)e;
+      pointer_event_rotate(evt, system_info());
+
+      input_device_status_init_pointer_event(ids, evt);
+      widget_on_context_menu(widget, evt);
+
+      break;
+    }
     case EVT_KEY_DOWN: {
       key_event_t* evt = (key_event_t*)e;
 
@@ -205,14 +214,6 @@ ret_t input_device_status_on_input_event(input_device_status_t* ids, widget_t* w
       widget_on_keyup(widget, evt);
 
       input_device_status_update_key_status(ids, evt->key, FALSE);
-      break;
-    }
-    case EVT_CONTEXT_MENU: {
-      pointer_event_t* evt = (pointer_event_t*)e;
-      pointer_event_rotate(evt, system_info());
-
-      input_device_status_init_pointer_event(ids, evt);
-      widget_dispatch_to_target(widget, e);
       break;
     }
     case EVT_WHEEL: {

@@ -102,26 +102,37 @@ static ret_t main_loop_sdl2_dispatch_mouse_event(main_loop_simple_t* loop, SDL_E
   memset(&event, 0x00, sizeof(event));
   switch (type) {
     case SDL_MOUSEBUTTONDOWN: {
-      loop->pressed = 1;
-      pointer_event_init(&event, EVT_POINTER_DOWN, widget, sdl_event->button.x,
-                         sdl_event->button.y);
-      event.button = sdl_event->button.button;
-      event.pressed = loop->pressed;
-      event.e.native_window_handle = SDL_GetWindowFromID(sdl_event->button.windowID);
+      if (sdl_event->button.button == 1) {
+        loop->pressed = 1;
+        pointer_event_init(&event, EVT_POINTER_DOWN, widget, sdl_event->button.x,
+                           sdl_event->button.y);
+        event.button = sdl_event->button.button;
+        event.pressed = loop->pressed;
+        event.e.native_window_handle = SDL_GetWindowFromID(sdl_event->button.windowID);
 
-      SDL_CaptureMouse(TRUE);
-      window_manager_dispatch_input_event(widget, (event_t*)&event);
+        SDL_CaptureMouse(TRUE);
+        window_manager_dispatch_input_event(widget, (event_t*)&event);
+      }
       break;
     }
     case SDL_MOUSEBUTTONUP: {
-      pointer_event_init(&event, EVT_POINTER_UP, widget, sdl_event->button.x, sdl_event->button.y);
-      event.button = sdl_event->button.button;
-      event.pressed = loop->pressed;
-      event.e.native_window_handle = SDL_GetWindowFromID(sdl_event->button.windowID);
+      if (sdl_event->button.button == 1) {
+        pointer_event_init(&event, EVT_POINTER_UP, widget, sdl_event->button.x,
+                           sdl_event->button.y);
+        event.button = sdl_event->button.button;
+        event.pressed = loop->pressed;
+        event.e.native_window_handle = SDL_GetWindowFromID(sdl_event->button.windowID);
 
-      window_manager_dispatch_input_event(widget, (event_t*)&event);
-      loop->pressed = 0;
-      SDL_CaptureMouse(FALSE);
+        window_manager_dispatch_input_event(widget, (event_t*)&event);
+        loop->pressed = 0;
+        SDL_CaptureMouse(FALSE);
+      } else if (sdl_event->button.button == 3) {
+        pointer_event_init(&event, EVT_CONTEXT_MENU, widget, sdl_event->button.x,
+                           sdl_event->button.y);
+        event.button = sdl_event->button.button;
+        event.e.native_window_handle = SDL_GetWindowFromID(sdl_event->button.windowID);
+        window_manager_dispatch_input_event(widget, (event_t*)&event);
+      }
       break;
     }
     case SDL_MOUSEMOTION: {

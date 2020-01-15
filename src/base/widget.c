@@ -2506,6 +2506,50 @@ ret_t widget_on_pointer_up(widget_t* widget, pointer_event_t* e) {
   return ret;
 }
 
+static ret_t widget_on_context_menu_children(widget_t* widget, pointer_event_t* e) {
+  ret_t ret = RET_OK;
+
+  widget_t* target = widget_find_target(widget, e->x, e->y);
+  if (target != NULL) {
+    ret = widget_on_context_menu(target, e);
+  }
+
+  return ret;
+}
+
+static ret_t widget_on_context_menu_after_children(widget_t* widget, pointer_event_t* e) {
+  ret_t ret = RET_OK;
+
+  return_if_equal(ret = widget_dispatch(widget, (event_t*)e), RET_STOP);
+  if (widget->vt->on_context_menu) {
+    return_if_equal(ret = widget->vt->on_context_menu(widget, e), RET_STOP);
+  }
+
+  return ret;
+}
+
+static ret_t widget_on_context_menu_impl(widget_t* widget, pointer_event_t* e) {
+  return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
+
+  if (widget_on_context_menu_children(widget, e) == RET_STOP) {
+    return RET_STOP;
+  } else {
+    return widget_on_context_menu_after_children(widget, e);
+  }
+}
+
+ret_t widget_on_context_menu(widget_t* widget, pointer_event_t* e) {
+  ret_t ret = RET_OK;
+  return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
+
+  widget_ref(widget);
+  ret = widget_on_context_menu_impl(widget, e);
+  widget_unref(widget);
+
+  return ret;
+}
+
 ret_t widget_grab(widget_t* widget, widget_t* child) {
   return_value_if_fail(widget != NULL && child != NULL && widget->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->grab_widget == NULL || widget->grab_widget == child, RET_BAD_PARAMS);

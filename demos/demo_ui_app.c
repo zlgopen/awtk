@@ -25,6 +25,7 @@
 static ret_t on_clone_tab(void* ctx, event_t* e);
 static ret_t widget_clone_tab(widget_t* widget);
 static void install_click_hander(widget_t* widget);
+static void open_window(const char* name, widget_t* to_close);
 
 uint32_t tk_mem_speed_test(void* buffer, uint32_t length, uint32_t* pmemcpy_speed,
                            uint32_t* pmemset_speed) {
@@ -81,6 +82,12 @@ static ret_t window_to_foreground(void* ctx, event_t* e) {
   widget_t* win = WIDGET(e->target);
   log_debug("%s to_foreground\n", win->name);
   (void)win;
+  return RET_OK;
+}
+
+static ret_t on_context_menu(void* ctx, event_t* e) {
+  open_window("menu_point", NULL);
+
   return RET_OK;
 }
 
@@ -558,6 +565,10 @@ static ret_t install_one(void* ctx, const void* iter) {
     if (strstr(name, "open:") != NULL) {
       widget_on(widget, EVT_CLICK, on_open_window, (void*)(name + 5));
       widget_on(widget, EVT_LONG_PRESS, on_open_window, (void*)(name + 5));
+      if (tk_str_eq(name, "open:menu_point")) {
+        widget_on(widget, EVT_CONTEXT_MENU, on_context_menu, win);
+      }
+
     } else if (tk_str_eq(name, "paint_linear_gradient")) {
       widget_on(widget, EVT_PAINT, on_paint_linear_gradient, NULL);
     } else if (tk_str_eq(name, "paint_radial_gradient")) {
