@@ -21,6 +21,7 @@
 
 #include "tkc/mem.h"
 #include "tkc/utils.h"
+#include "base/widget.h"
 #include "base/window.h"
 #include "file_browser/file_chooser.h"
 #include "file_browser/file_browser_view.h"
@@ -29,26 +30,16 @@ file_chooser_t* file_chooser_create(const char* init_dir, const char* filter) {
   file_chooser_t* chooser = TKMEM_ZALLOC(file_chooser_t);
   return_value_if_fail(chooser != NULL, NULL);
 
+  emitter_init(EMITTER(chooser));
   chooser->init_dir = tk_str_copy(chooser->init_dir, init_dir);
   chooser->filter = tk_str_copy(chooser->filter, filter);
   str_init(&(chooser->cwd), 0);
   str_init(&(chooser->filename), 0);
-
   return chooser;
 }
 
 file_chooser_t* file_chooser_cast(void* data) {
   return (file_chooser_t*)data;
-}
-
-ret_t file_chooser_set_on_done(file_chooser_t* chooser, tk_on_done_t on_done,
-                                 void* on_done_ctx) {
-  return_value_if_fail(chooser != NULL && on_done != NULL, RET_BAD_PARAMS);
-
-  chooser->on_done = on_done;
-  chooser->on_done_ctx = on_done_ctx;
-
-  return RET_OK;
 }
 
 static ret_t file_choose_on_click_to_close(void* ctx, event_t* e) {
@@ -58,9 +49,7 @@ static ret_t file_choose_on_click_to_close(void* ctx, event_t* e) {
   file_browser_view_t* file_browser = FILE_BROWSER_VIEW(widget);
 
   chooser->aborted = FALSE;
-  if (chooser->on_done != NULL) {
-    chooser->on_done(chooser);
-  }
+  emitter_dispatch_simple_event(EMITTER(chooser), EVT_DONE);
 
   widget_close_window(win);
   file_chooser_destroy(chooser);
@@ -81,11 +70,9 @@ static ret_t file_choose_on_ok(void* ctx, event_t* e) {
   }
 
   chooser->aborted = FALSE;
-  if (chooser->on_done != NULL) {
-    if (chooser->on_done(chooser) == RET_OK) {
-      widget_close_window(win);
-      file_chooser_destroy(chooser);
-    }
+  if(emitter_dispatch_simple_event(EMITTER(chooser), EVT_DONE)  == RET_OK) {
+    widget_close_window(win);
+    file_chooser_destroy(chooser);
   }
 
   return RET_OK;
@@ -101,7 +88,7 @@ ret_t file_chooser_choose(file_chooser_t* chooser) {
 }
 
 ret_t file_chooser_choose_file_for_save(file_chooser_t* chooser) {
-  return_value_if_fail(chooser != NULL && chooser->on_done != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(chooser != NULL, RET_BAD_PARAMS);
 
   chooser->ui = FILE_CHOOSER_UI_CHOOSE_FILE_FOR_SAVE;
 
@@ -109,14 +96,14 @@ ret_t file_chooser_choose_file_for_save(file_chooser_t* chooser) {
 }
 
 ret_t file_chooser_choose_file_for_open(file_chooser_t* chooser) {
-  return_value_if_fail(chooser != NULL && chooser->on_done != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(chooser != NULL, RET_BAD_PARAMS);
   chooser->ui = FILE_CHOOSER_UI_CHOOSE_FILE_FOR_OPEN;
 
   return file_chooser_choose(chooser);
 }
 
 ret_t file_chooser_choose_folder(file_chooser_t* chooser) {
-  return_value_if_fail(chooser != NULL && chooser->on_done != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(chooser != NULL, RET_BAD_PARAMS);
 
   chooser->ui = FILE_CHOOSER_UI_CHOOSE_FOLDER;
 
@@ -149,6 +136,8 @@ ret_t file_chooser_destroy(file_chooser_t* chooser) {
 
   TKMEM_FREE(chooser->filter);
   TKMEM_FREE(chooser->init_dir);
+  emitter_deinit(EMITTER(chooser));
+
   TKMEM_FREE(chooser);
 
   return RET_OK;

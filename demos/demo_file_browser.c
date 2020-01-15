@@ -27,9 +27,9 @@ static ret_t on_quit(void* ctx, event_t* e) {
   return RET_OK;
 }
 
-static ret_t tk_on_choose_file_result(void* data) {
-  file_chooser_t* chooser = (file_chooser_t*)data;
-  widget_t* win = WIDGET(chooser->on_done_ctx);
+static ret_t tk_on_choose_file_result(void* ctx, event_t* e) {
+  widget_t* win = WIDGET(ctx);
+  file_chooser_t* chooser = (file_chooser_t*)(e->target);
   widget_t* cwd = widget_lookup(win, "cwd", TRUE);
   widget_t* filename = widget_lookup(win, "filename", TRUE);
 
@@ -50,14 +50,14 @@ static ret_t tk_on_choose_file_result(void* data) {
 
 static ret_t on_file_save(void* ctx, event_t* e) {
   file_chooser_t* chooser = file_chooser_create("./", NULL);
-  file_chooser_set_on_done(chooser, tk_on_choose_file_result, ctx);
+  emitter_on(EMITTER(chooser), EVT_DONE, tk_on_choose_file_result, ctx);
 
   return file_chooser_choose_file_for_save(chooser);
 }
 
 static ret_t on_file_open(void* ctx, event_t* e) {
   file_chooser_t* chooser = file_chooser_create("./", NULL);
-  file_chooser_set_on_done(chooser, tk_on_choose_file_result, ctx);
+  emitter_on(EMITTER(chooser), EVT_DONE, tk_on_choose_file_result, ctx);
 
   return file_chooser_choose_file_for_open(chooser);
 }
@@ -65,7 +65,7 @@ static ret_t on_file_open(void* ctx, event_t* e) {
 static ret_t on_choose_folder(void* ctx, event_t* e) {
   file_chooser_t* chooser = file_chooser_create("./", NULL);
   return_value_if_fail(chooser != NULL, RET_OOM);
-  file_chooser_set_on_done(chooser, tk_on_choose_file_result, ctx);
+  emitter_on(EMITTER(chooser), EVT_DONE, tk_on_choose_file_result, ctx);
 
   return file_chooser_choose_folder(chooser);
 }
@@ -73,7 +73,7 @@ static ret_t on_choose_folder(void* ctx, event_t* e) {
 static ret_t on_manager(void* ctx, event_t* e) {
   file_chooser_t* chooser = file_chooser_create("./", NULL);
   return_value_if_fail(chooser != NULL, RET_OOM);
-  file_chooser_set_on_done(chooser, tk_on_choose_file_result, ctx);
+  emitter_on(EMITTER(chooser), EVT_DONE, tk_on_choose_file_result, ctx);
 
   return file_chooser_choose_folder(chooser);
 }

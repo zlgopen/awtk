@@ -69,6 +69,11 @@ typedef enum _event_base_type_t {
    */
   EVT_PROGRESS,
   /**
+   * @const EVT_DONE
+   * 完成(event_t)。
+   */
+  EVT_DONE,
+  /**
    * @const EVT_DESTROY
    * 对象销毁事件名(event_t)。
    */

@@ -22,7 +22,7 @@
 #ifndef TK_FILE_CHOOSER_H
 #define TK_FILE_CHOOSER_H
 
-#include "base/widget.h"
+#include "tkc/emitter.h"
 
 BEGIN_C_DECLS
 
@@ -32,9 +32,11 @@ typedef struct _file_chooser_t file_chooser_t;
 /**
  * @class file_chooser_t
  * @annotation ["scriptable"]
+ * @parent emitter_t
  * 文件/目录选择器
  */
 typedef struct _file_chooser_t {
+  emitter_t emitter;
   /**
    * @property {char*} init_dir
    * 初始目录。
@@ -103,17 +105,6 @@ file_chooser_t* file_chooser_create(const char* init_dir, const char* filter);
  * @return {file_chooser_t*} 对象。
  */
 file_chooser_t* file_chooser_cast(void* data);
-
-/**
- * @method file_chooser_set_on_done
- * @param {file_chooser_t*} chooser file_chooser对象。
- * @param {tk_on_done_t*} on_done 接受选择结果的回调函数。
- * @param {void*} on_done_ctx 接受选择结果的回调函数的上下文。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t file_chooser_set_on_done(file_chooser_t* chooser, tk_on_done_t on_done,
-                                 void* on_done_ctx);
 
 /**
  * @method file_chooser_choose_file_for_save
