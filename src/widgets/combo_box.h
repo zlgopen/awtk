@@ -36,7 +36,7 @@ typedef widget_t* (*combo_box_custom_open_popup_t)(widget_t* combobox);
 
 /**
  * @class combo_box_t
- * @parent widget_t
+ * @parent edit_t
  * @annotation ["scriptable","design","widget"]
  * 下拉列表控件。
  *

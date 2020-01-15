@@ -33,6 +33,7 @@ typedef ret_t (*file_chooser_on_result_t)(file_chooser_t* choose);
 
 /**
  * @class file_chooser_t
+ * @annotation ["scriptable"]
  * 文件/目录选择器
  */
 typedef struct _file_chooser_t {
