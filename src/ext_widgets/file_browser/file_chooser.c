@@ -22,6 +22,7 @@
 #include "tkc/mem.h"
 #include "tkc/utils.h"
 #include "base/widget.h"
+#include "base/dialog.h"
 #include "base/window.h"
 #include "file_browser/file_chooser.h"
 #include "file_browser/file_browser_view.h"
@@ -38,8 +39,8 @@ file_chooser_t* file_chooser_create(const char* init_dir, const char* filter) {
   return chooser;
 }
 
-file_chooser_t* file_chooser_cast(void* data) {
-  return (file_chooser_t*)data;
+file_chooser_t* file_chooser_cast(file_chooser_t* chooser) {
+  return (file_chooser_t*)chooser;
 }
 
 static ret_t file_choose_on_click_to_close(void* ctx, event_t* e) {
@@ -51,7 +52,11 @@ static ret_t file_choose_on_click_to_close(void* ctx, event_t* e) {
   chooser->aborted = FALSE;
   emitter_dispatch_simple_event(EMITTER(chooser), EVT_DONE);
 
-  widget_close_window(win);
+  if (widget_is_dialog(win)) {
+    dialog_quit(win, DIALOG_QUIT_CANCEL);
+  } else {
+    widget_close_window(win);
+  }
   file_chooser_destroy(chooser);
 
   return RET_OK;
@@ -71,7 +76,11 @@ static ret_t file_choose_on_ok(void* ctx, event_t* e) {
 
   chooser->aborted = FALSE;
   if(emitter_dispatch_simple_event(EMITTER(chooser), EVT_DONE)  == RET_OK) {
-    widget_close_window(win);
+    if (widget_is_dialog(win)) {
+      dialog_quit(win, DIALOG_QUIT_OK);
+    } else {
+      widget_close_window(win);
+    }
     file_chooser_destroy(chooser);
   }
 
@@ -80,9 +89,12 @@ static ret_t file_choose_on_ok(void* ctx, event_t* e) {
 
 ret_t file_chooser_choose(file_chooser_t* chooser) {
   widget_t* win = window_open(chooser->ui);
-
   widget_child_on(win, FILE_CHOOSER_OK, EVT_CLICK, file_choose_on_ok, chooser);
   widget_child_on(win, FILE_CHOOSER_CANCEL, EVT_CLICK, file_choose_on_click_to_close, chooser);
+
+  if (widget_is_dialog(win)) {
+    dialog_modal(win);
+  }
 
   return RET_OK;
 }
