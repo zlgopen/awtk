@@ -1,17 +1,20 @@
 # 最新动态
 * 2020/01/15
   * 点击鼠标右键触发 context menu 事件。
-  * 完善color picker （感谢朝泽提供补丁）
-  * 完善func call parser （感谢俊杰提供补丁） 
-  * 完善progress bar文档 （感谢大恒提供补丁）
+  * 完善 color picker （感谢朝泽提供补丁）
+  * 完善 func call parser （感谢俊杰提供补丁） 
+  * 完善 progress bar 文档 （感谢大恒提供补丁）
+  * 修复 edit 和 mledi t 控件不断 invalidate 的问题 （感谢智明提供补丁）
+  * 修改 使用 sdl 后屏幕旋转的显示不正常问题（感谢智明提供补丁）
+  * 修复不启用脏矩形的时候，设置 vg 脏矩形的不正确的问题（感谢智明提供补丁）
 
 * 2020/01/14
   * awtk 修复 opengles 下 vg 缩放后填充颜色不正常的问题（感谢智明提供补丁）
   * 完善 paint children（感谢大恒提供补丁） 
   * 完善 comments（感谢大恒提供补丁） 
-  * awtk修复opengles下vg缩放后填充颜色不正常的问题（感谢智明提供补丁）
-  * 修改了stbi__shiftsigned()，C语言中负数按位右移高位补1导致触发assert的问题（感谢朝泽提供补丁）
-  * 完善direct.inc （感谢尧燊提供补丁）
+  * awtk 修复 opengles 下 vg 缩放后填充颜色不正常的问题（感谢智明提供补丁）
+  * 修改了 stbi__shiftsigned()，C 语言中负数按位右移高位补 1 导致触发 assert 的问题（感谢朝泽提供补丁）
+  * 完善 direct.inc （感谢尧燊提供补丁）
 
 * 2020/01/13
   * widget clone 不复制 focused 属性。
