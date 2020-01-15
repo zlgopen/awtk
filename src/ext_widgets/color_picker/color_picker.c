@@ -291,9 +291,9 @@ static ret_t color_picker_on_child_value_changing(void* ctx, event_t* e) {
     } else if (tk_str_eq(name, COLOR_PICKER_CHILD_H)) {
       color_picker_set_color_h(widget, v);
     } else if (tk_str_eq(name, COLOR_PICKER_CHILD_S)) {
-      color_picker_set_color_s(widget, v);
+      color_picker_set_color_s(widget, (float)v / 100.0f);
     } else if (tk_str_eq(name, COLOR_PICKER_CHILD_V)) {
-      color_picker_set_color_v(widget, v);
+      color_picker_set_color_v(widget, (float)v / 100.0f);
     } else if (tk_str_eq(name, COLOR_PICKER_CHILD_NEW)) {
       char color[32];
       memset(color, 0x00, sizeof(color));
@@ -348,6 +348,7 @@ static ret_t color_picker_hook_children(void* ctx, const void* iter) {
     if (tk_str_eq(type, WIDGET_TYPE_EDIT) || tk_str_eq(type, WIDGET_TYPE_SLIDER) ||
         tk_str_eq(type, WIDGET_TYPE_COLOR_COMPONENT) || tk_str_eq(type, WIDGET_TYPE_SPIN_BOX)) {
       widget_on(WIDGET(iter), EVT_VALUE_CHANGING, color_picker_on_child_value_changing, ctx);
+      widget_on(WIDGET(iter), EVT_VALUE_CHANGED, color_picker_on_child_value_changing, ctx);
     }
   }
 
