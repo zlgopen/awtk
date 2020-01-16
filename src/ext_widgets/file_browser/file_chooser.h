@@ -26,9 +26,6 @@
 
 BEGIN_C_DECLS
 
-struct _file_chooser_t;
-typedef struct _file_chooser_t file_chooser_t;
-
 /**
  * @class file_chooser_t
  * @annotation ["scriptable"]
