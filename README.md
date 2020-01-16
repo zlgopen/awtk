@@ -11,7 +11,7 @@
 #### [AWTK](README.md) 寓意有两个方面：
 
 * Toolkit AnyWhere。 
-* ZLG 物联网操作系统 AWorks 内置 GUI。
+* ZLG 物联网操作系统 AWorksOS 内置 GUI。
 
 #### [AWTK](README.md) 源码仓库：
 
@@ -56,7 +56,7 @@
 
 [AWTK](README.md) 是跨平台的，这有两个方面的意思：
 
-* AWTK 本身是跨平台的。目前支持的平台有 ZLG AWorks、Windows、Linux、MacOS、嵌入式 Linux、Android、Web 和嵌入式裸系统，可以轻松的移植到各种 RTOS 上。AWTK 以后也可以运行在各种小程序和 iOS 等平台上运行。
+* AWTK 本身是跨平台的。目前支持的平台有 ZLG AWorksOS、Windows、Linux、MacOS、嵌入式 Linux、Android、Web 和嵌入式裸系统，可以轻松的移植到各种 RTOS 上。AWTK 以后也可以运行在各种小程序和 iOS 等平台上运行。
 
 * AWTK 同时还提供了一套跨平台的基础工具库。其中包括链表、数组、字符串 (UTF8 和 widechar)，事件发射器、值、对象、文件系统、互斥锁和线程、表达式和字符串解析等等，让你用 AWTK 开发的应用程序可以真正跨平台运行。
 

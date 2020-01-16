@@ -46,11 +46,11 @@ ret_t file_chooser_set_init_dir(file_chooser_t* chooser, const char* init_dir) {
 }
 
 ret_t file_chooser_set_filter(file_chooser_t* chooser, const char* filter) {
-return_value_if_fail(chooser != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(chooser != NULL, RET_BAD_PARAMS);
 
-chooser->filter = tk_str_copy(chooser->filter, filter);
+  chooser->filter = tk_str_copy(chooser->filter, filter);
 
-return RET_OK;
+  return RET_OK;
 }
 
 file_chooser_t* file_chooser_cast(file_chooser_t* chooser) {

@@ -312,7 +312,7 @@ ret_t canvas_begin_frame(canvas_t* c, rect_t* dirty_rect, lcd_draw_mode_t draw_m
   c->oy = 0;
 
   canvas_set_global_alpha(c, 0xff);
-  if(c->lcd->support_dirty_rect) {
+  if (c->lcd->support_dirty_rect) {
     ret = lcd_begin_frame(c->lcd, dirty_rect, draw_mode);
   } else {
     ret = lcd_begin_frame(c->lcd, NULL, draw_mode);
