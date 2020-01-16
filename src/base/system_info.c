@@ -280,13 +280,19 @@ ret_t system_info_set_device_pixel_ratio(system_info_t* info, float_t device_pix
 
 static ret_t system_info_eval_one(system_info_t* info, str_t* str, const char* expr,
                                   tk_visit_t on_expr_result, void* ctx) {
-  if (strchr(expr, '$') != NULL) {
+  bool_t not_schema = strstr(expr, STR_SCHEMA_FILE) == NULL &&
+                      strstr(expr, STR_SCHEMA_HTTP) == NULL &&
+                      strstr(expr, STR_SCHEMA_HTTPS) == NULL;
+
+  if (not_schema && strchr(expr, '$') != NULL) {
     str_set(str, "");
-    ENSURE(str_expand_vars(str, expr, OBJECT(info)) == RET_OK);
-  } else {
-    ENSURE(str_set(str, expr) == RET_OK);
+
+    if (str_expand_vars(str, expr, OBJECT(info)) == RET_OK) {
+      return on_expr_result(ctx, str->str);
+    }
   }
 
+  ENSURE(str_set(str, expr) == RET_OK);
   return on_expr_result(ctx, str->str);
 }
 

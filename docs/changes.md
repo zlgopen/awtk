@@ -3,6 +3,7 @@
   * 修复 progressbar 类型问题（感谢尧燊提供补丁）
   * 修复 arm linux 编译问题（感谢俊杰提供补丁）
   * 完善 mledit/edit 文档 （感谢大恒提供补丁）
+  * 完善 str\_expand\_vars（感谢朝泽提供补丁）
 
 * 2020/01/15
   * 点击鼠标右键触发 context menu 事件。

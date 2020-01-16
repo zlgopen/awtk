@@ -557,8 +557,9 @@ ret_t str_expand_vars(str_t* str, const char* src, const object_t* obj) {
     if (c == '$') {
       if (p[1] && p[2]) {
         p = expand_var(str, p + 2, obj);
+      } else {
+        return RET_BAD_PARAMS;
       }
-      continue;
     } else {
       str_append_char(str, c);
       p++;
