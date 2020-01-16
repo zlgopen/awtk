@@ -1,4 +1,4 @@
-## 将AWTK移植到aworks平台
+## 将AWTK移植到AWorksOS平台
 
 AWTK的可移植性很高，在移植时只需要实现平台初始化、lcd和mainloop三个方面的东西。本文以aworks-rt1052平台为例介绍移植AWTK到新平台的过程。
 
@@ -36,7 +36,7 @@ ret_t platform_prepare(void) {
 
 ### 二、实现lcd
 
-aworks使用基于framebuffer的lcd的缺省实现，只需要调用函数lcd\_mem\_create\_double\_fb即可。
+AWorksOS使用基于framebuffer的lcd的缺省实现，只需要调用函数lcd\_mem\_create\_double\_fb即可。
 
 
 ```

@@ -8,7 +8,7 @@
 #### [AWTK](https://github.com/zlgopen/awtk)寓意有两个方面：
 
 * Toolkit AnyWhere。 
-* ZLG物联网操作系统AWorks内置GUI。
+* ZLG物联网操作系统AWorksOS内置GUI。
 
 #### [AWTK](https://github.com/zlgopen/awtk)源码仓库：
 
@@ -42,7 +42,7 @@
 
 [AWTK](https://github.com/zlgopen/awtk)是跨平台的，这有两个方面的意思：
 
-* AWTK本身是跨平台的。目前支持的平台有ZLG AWorks、Windows、Linux、MacOS、嵌入式Linux和嵌入式裸系统，可以轻松的移植到各种RTOS上。AWTK以后也可以运行在浏览器(即将公测)、各种小程序、Android和iOS等平台上运行。
+* AWTK本身是跨平台的。目前支持的平台有ZLG AWorksOS、Windows、Linux、MacOS、嵌入式Linux和嵌入式裸系统，可以轻松的移植到各种RTOS上。AWTK以后也可以运行在浏览器(即将公测)、各种小程序、Android和iOS等平台上运行。
 
 * AWTK同时还提供了一套跨平台的基础工具库。其中包括链表、数组、字符串(UTF8和widechar)，事件发射器、值、对象、文件系统、互斥锁和线程、表达式和字符串解析等等，让你用AWTK开发的应用程序可以真正跨平台运行。
 

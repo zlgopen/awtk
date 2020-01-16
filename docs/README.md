@@ -56,7 +56,7 @@
 * [嵌入式平台移植注意事项](porting_common.md)
 * [将 AWTK 移植到 STM32f103ze 裸系统](porting_to_stm32f103ze.md)
 * [将 AWTK 移植到 STM32f429igtx 裸系统](porting_to_stm32f429igtx.md)
-* [将 AWTK 移植到 AWorks 平台](porting_to_awtk_aworks_rt1052.md)
+* [将 AWTK 移植到 AWorksOS 平台](porting_to_awtk_aworks_rt1052.md)
 * [将 AWTK 移植到 TinyOS 平台](https://github.com/zlgopen/awtk-stm32f103ze-tencentos/blob/master/docs/tos-port.md)
 * [将 AWTK 移植到 RT-Thread 平台](https://github.com/zlgopen/awtk-stm32f103ze-rtthread/blob/master/docs/rtt-port.md)
 

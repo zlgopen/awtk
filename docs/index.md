@@ -56,7 +56,7 @@
 * [嵌入式平台移植注意事项](porting_common.md)
 * [将AWTK移植到STM32f103ze裸系统](porting_to_stm32f103ze.md)
 * [将AWTK移植到STM32f429igtx裸系统](porting_to_stm32f429igtx.md)
-* [将AWTK移植到AWorks平台](porting_to_awtk_aworks_rt1052.md)
+* [将AWTK移植到AWorksOS平台](porting_to_awtk_aworks_rt1052.md)
 
 ### 5.技术笔记
 * [LCD接口的三种实现方式](lcd.md)
