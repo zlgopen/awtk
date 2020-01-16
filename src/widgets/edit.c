@@ -534,11 +534,12 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
         input_method_request(input_method(), widget);
       }
       edit_update_status(widget);
-
+      widget_invalidate(widget, NULL);
       break;
     }
     case EVT_POINTER_DOWN_ABORT: {
       edit_pointer_up_cleanup(widget);
+      widget_invalidate(widget, NULL);
       break;
     }
     case EVT_POINTER_MOVE: {
@@ -568,6 +569,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
           return RET_STOP;
         }
       }
+      widget_invalidate(widget, NULL);
       break;
     }
     case EVT_IM_COMMIT: {
@@ -615,10 +617,12 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
     case EVT_RESIZE:
     case EVT_MOVE_RESIZE: {
       text_edit_layout(edit->model);
+      widget_invalidate(widget, NULL);
       break;
     }
     case EVT_VALUE_CHANGING: {
       edit_update_status(widget);
+      widget_invalidate(widget, NULL);
       break;
     }
     default:

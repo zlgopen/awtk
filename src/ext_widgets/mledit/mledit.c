@@ -365,11 +365,12 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
         mledit_request_input_method(widget);
       }
       mledit_update_status(widget);
-
+      widget_invalidate(widget, NULL);
       break;
     }
     case EVT_POINTER_DOWN_ABORT: {
       mledit_pointer_up_cleanup(widget);
+      widget_invalidate(widget, NULL);
       break;
     }
     case EVT_POINTER_MOVE: {
@@ -405,6 +406,7 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
 
       mledit_update_status(widget);
       ret = RET_STOP;
+      widget_invalidate(widget, NULL);
       break;
     }
     case EVT_IM_COMMIT: {
@@ -417,6 +419,7 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       }
       mledit_commit_str(widget, evt->text);
       mledit_update_status(widget);
+      widget_invalidate(widget, NULL);
       break;
     }
     case EVT_IM_ACTION: {
@@ -469,15 +472,18 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
         }
       }
       ret = RET_STOP;
+      widget_invalidate(widget, NULL);
       break;
     }
     case EVT_RESIZE:
     case EVT_MOVE_RESIZE: {
       mledit_reset_text_edit_layout(mledit->model);
+      widget_invalidate(widget, NULL);
       break;
     }
     case EVT_VALUE_CHANGING: {
       mledit_update_status(widget);
+      widget_invalidate(widget, NULL);
       break;
     }
     default:
