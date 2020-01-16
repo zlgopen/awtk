@@ -144,10 +144,10 @@ static ret_t progress_bar_get_prop(widget_t* widget, const char* name, value_t* 
   return_value_if_fail(progress_bar != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
-    value_set_uint8(v, progress_bar->value);
+    value_set_float(v, progress_bar->value);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_MAX)) {
-    value_set_uint32(v, progress_bar->max);
+    value_set_float(v, progress_bar->max);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_VERTICAL)) {
     value_set_bool(v, progress_bar->vertical);
@@ -164,7 +164,7 @@ static ret_t progress_bar_set_prop(widget_t* widget, const char* name, const val
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
-    return progress_bar_set_value(widget, value_int(v));
+    return progress_bar_set_value(widget, value_float(v));
   } else if (tk_str_eq(name, WIDGET_PROP_MAX)) {
     return progress_bar_set_max(widget, value_float(v));
   } else if (tk_str_eq(name, WIDGET_PROP_VERTICAL)) {
