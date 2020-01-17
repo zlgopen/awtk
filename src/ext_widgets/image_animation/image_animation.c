@@ -33,6 +33,8 @@ ret_t image_animation_get_image_name(image_animation_t* image_animation,
   memset(name, 0x00, TK_NAME_LEN + 1);
   if (image_animation->sequence != NULL) {
     tk_strncpy(name, image_animation->image, TK_NAME_LEN);
+    image_animation->index =
+        image_animation->index >= strlen(image_animation->sequence) ? 0 : image_animation->index;
     name[strlen(name)] = image_animation->sequence[image_animation->index];
   } else {
     const char* format = image_animation->format ? image_animation->format : "%s%d";
@@ -69,13 +71,10 @@ static ret_t image_animation_load_image(image_animation_t* image_animation, bitm
   return_value_if_fail(widget != NULL && image_animation != NULL && bitmap != NULL, RET_BAD_PARAMS);
 
   image_animation_get_image_name(image_animation, name);
-  if (widget_load_image(widget, name, bitmap) == RET_OK) {
-    tk_strncpy(image_animation->image_name, name, TK_NAME_LEN);
-    return RET_OK;
-  }
 
-  /*use old one*/
-  return widget_load_image(widget, image_animation->image_name, bitmap);
+  tk_strncpy(image_animation->image_name, name, TK_NAME_LEN);
+
+  return widget_load_image(widget, name, bitmap);
 }
 
 static ret_t image_animation_on_paint_self(widget_t* widget, canvas_t* c) {
@@ -351,7 +350,7 @@ ret_t image_animation_next(widget_t* widget) {
   return_value_if_fail(image_animation != NULL, RET_BAD_PARAMS);
 
   if (image_animation->sequence) {
-    if (image_animation->sequence[image_animation->index + 1]) {
+    if (image_animation->index + 1 < strlen(image_animation->sequence)) {
       image_animation->index++;
       ret = RET_OK;
     }
