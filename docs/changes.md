@@ -1,4 +1,7 @@
 # 最新动态
+* 2020/01/17
+  * 修复 list view on remove child 的问题（感谢培煌提供补丁)
+
 * 2020/01/16
   * 修复 progressbar 类型问题（感谢尧燊提供补丁）
   * 修复 arm linux 编译问题（感谢俊杰提供补丁）
