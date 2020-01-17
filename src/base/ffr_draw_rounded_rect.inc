@@ -91,7 +91,7 @@ typedef struct _frr_draw_arc_info_table_t {
 
 #ifndef WITH_NANOVG_GPU
 
-static frr_point_pix_t frr_point_pix_cache_list[FRR_POINT_PIX_CACHE_SIZE] = {0};
+static frr_point_pix_t frr_point_pix_cache_list[FRR_POINT_PIX_CACHE_SIZE];
 
 const static frr_draw_arc_info_table_t WIDGET_DRAW_ARC_INFO_TABLE[] = {
     {FRR_QUADRANT_FIRST_S, FRR_QUADRANT_FIRST_F},     //右上角
