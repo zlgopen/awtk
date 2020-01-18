@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   semaphore.c
  * Author: AWTK Develop Team
  * Brief:  semaphore
@@ -18,6 +18,7 @@
  * 2019-10-27 Li XianJing <xianjimli@hotmail.com> created
  *
  */
+#include "tkc/types_def.h"
 
 #ifdef WIN32
 #include <Windows.h>
@@ -29,7 +30,12 @@ struct _tk_semaphore_t {
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <pthread.h>
+
+#ifdef IOS
+#include <sys/semaphore.h>
+#else
 #include <semaphore.h>
+#endif/*IOS*/
 struct _tk_semaphore_t {
   sem_t* sem;
 };

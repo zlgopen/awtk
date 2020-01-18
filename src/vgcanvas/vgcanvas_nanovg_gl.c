@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   vgcanvas_nanovg_gl.c
  * Author: AWTK Develop Team
  * Brief:  vector graphics canvas base on nanovg-gl
@@ -19,6 +19,8 @@
  *
  */
 
+#include "tkc/types_def.h"
+
 #if defined(WITH_NANOVG_GL3)
 #define NANOVG_GL3_IMPLEMENTATION
 #endif
@@ -32,6 +34,7 @@
 #endif
 
 #ifdef WITHOUT_GLAD
+#include <SDL.h>
 #include <SDL_opengl.h>
 #include <SDL_opengl_glext.h>
 #else

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   keys.h
  * Author: AWTK Develop Team
  * Brief:  key code constants
@@ -21,11 +21,12 @@
 
 #ifndef TK_KEYS_H
 #define TK_KEYS_H
+#include "base/types_def.h"
 
 #ifdef WITH_SDL
 #include <SDL_keycode.h>
 #endif
-#include "base/types_def.h"
+
 
 BEGIN_C_DECLS
 

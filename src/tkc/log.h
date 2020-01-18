@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   log.h
  * Author: AWTK Develop Team
  * Brief:  log functions
@@ -148,6 +148,16 @@ ret_t log_set_log_level(log_level_t log_level);
 #define log_error(...)                        \
   if (log_get_log_level() <= LOG_LEVEL_ERROR) \
   __android_log_print(ANDROID_LOG_ERROR, "AWTK", __VA_ARGS__)
+#elif defined(IOS)
+void awtk_ios_log(const char *message,...);
+#define log_debug(format, args...) \
+  if (log_get_log_level() <= LOG_LEVEL_DEBUG) awtk_ios_log(format, ##args)
+#define log_info(format, args...) \
+  if (log_get_log_level() <= LOG_LEVEL_INFO) awtk_ios_log(format, ##args)
+#define log_warn(format, args...) \
+  if (log_get_log_level() <= LOG_LEVEL_WARN) awtk_ios_log(format, ##args)
+#define log_error(format, args...) \
+  if (log_get_log_level() <= LOG_LEVEL_ERROR) awtk_ios_log(format, ##args)
 #elif defined(WIN32)
 #include <windows.h>
 #if defined(__GNUC__)

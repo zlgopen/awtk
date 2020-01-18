@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   types_def.h
  * Author: AWTK Develop Team
  * Brief:  basic types definitions.
@@ -41,6 +41,14 @@
 #define BEGIN_C_DECLS
 #define END_C_DECLS
 #endif
+
+
+#if defined(HAS_AWTK_CONFIG)
+#include "awtk_config.h"
+#ifdef FRAGMENT_FRAME_BUFFER_SIZE
+#undef WITH_WINDOW_ANIMATORS
+#endif /*FRAGMENT_FRAME_BUFFER_SIZE*/
+#endif /*HAS_AWTK_CONFIG*/
 
 #if defined(HAS_STDIO) || defined(AWTK_WEB)
 #include <stdio.h>
@@ -315,13 +323,6 @@ enum { TK_NAME_LEN = 31 };
 
 #define TK_D2R(d) (((d)*M_PI) / 180)
 #define TK_R2D(r) (((r)*180) / M_PI)
-
-#if defined(HAS_AWTK_CONFIG)
-#include "awtk_config.h"
-#ifdef FRAGMENT_FRAME_BUFFER_SIZE
-#undef WITH_WINDOW_ANIMATORS
-#endif /*FRAGMENT_FRAME_BUFFER_SIZE*/
-#endif /*HAS_AWTK_CONFIG*/
 
 #ifdef _MSC_VER
 #define TK_CONST_DATA_ALIGN(v) __declspec(align(8)) v
