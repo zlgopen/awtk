@@ -149,7 +149,7 @@ ret_t log_set_log_level(log_level_t log_level);
   if (log_get_log_level() <= LOG_LEVEL_ERROR) \
   __android_log_print(ANDROID_LOG_ERROR, "AWTK", __VA_ARGS__)
 #elif defined(IOS)
-void awtk_ios_log(const char *message,...);
+void awtk_ios_log(const char* message, ...);
 #define log_debug(format, args...) \
   if (log_get_log_level() <= LOG_LEVEL_DEBUG) awtk_ios_log(format, ##args)
 #define log_info(format, args...) \

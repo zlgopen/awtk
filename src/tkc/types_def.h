@@ -42,7 +42,6 @@
 #define END_C_DECLS
 #endif
 
-
 #if defined(HAS_AWTK_CONFIG)
 #include "awtk_config.h"
 #ifdef FRAGMENT_FRAME_BUFFER_SIZE

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   native_window_sdl.h
  * Author: AWTK Develop Team
  * Brief:  native window sdl
@@ -28,9 +28,17 @@
 #define loadGL gladLoadGL
 #else
 #define loadGL()
-#endif /*WITHOUT_GLAD*/
+#ifdef IOS
+#include <OpenGLES/gltypes.h>
+#include <OpenGLES/ES2/gl.h>
+#include <OpenGLES/ES2/glext.h>
+#define GL_ALPHA_TEST 0x0BC0
+#else
 #include <SDL_opengl.h>
 #include <SDL_opengl_glext.h>
+#endif /*IOS*/
+#endif /*WITHOUT_GLAD*/
+
 #endif /*WITH_NANOVG_GL*/
 
 #include "lcd/lcd_sdl2.h"
@@ -75,7 +83,7 @@ static ret_t native_window_sdl_resize(native_window_t* win, wh_t w, wh_t h) {
   win->rect.w = w;
   win->rect.h = h;
 
-#ifndef ANDROID
+#if !defined(ANDROID) && !defined(IOS)
   if (system_info()->lcd_orientation == LCD_ORIENTATION_0 && (w != info.w || h != info.h)) {
     SDL_SetWindowSize(sdl->window, w, h);
   }
@@ -144,7 +152,7 @@ static ret_t native_window_sdl_swap_buffer(native_window_t* win) {
 }
 
 static ret_t native_window_sdl_preprocess_event(native_window_t* win, event_t* e) {
-#ifdef ANDROID
+#if defined(ANDROID)
   if (e->type == EVT_POINTER_DOWN || e->type == EVT_POINTER_MOVE || e->type == EVT_CLICK ||
       e->type == EVT_POINTER_UP || e->type == EVT_CONTEXT_MENU) {
     pointer_event_t* evt = pointer_event_cast(e);
@@ -176,20 +184,22 @@ static ret_t native_window_sdl_get_info(native_window_t* win, native_window_info
   SDL_GL_GetDrawableSize(window, &fw, &fh);
 
   memset(info, 0x00, sizeof(*info));
+  info->x = x;
+  info->y = y;
 
-#ifdef ANDROID
+#if defined(ANDROID)
   float dpi = 1;
   SDL_GetDisplayDPI(0, &dpi, NULL, NULL);
   float_t ratio = dpi / 160;
 
-  info->x = x;
-  info->y = y;
   info->w = ww / ratio;
   info->h = wh / ratio;
   info->ratio = ratio;
+#elif defined(IOS)
+  info->w = ww;
+  info->h = wh;
+  info->ratio = (float_t)fw / (float_t)ww;
 #else
-  info->x = x;
-  info->y = y;
   info->w = ww;
   info->h = wh;
   info->ratio = (float_t)fw / (float_t)ww;
@@ -312,11 +322,6 @@ static native_window_t* native_window_create_internal(const char* title, uint32_
   win->handle = sdl->window;
   win->vt = &s_native_window_vtable;
 
-  if (native_window_get_info(win, &info) == RET_OK) {
-    w = info.w;
-    h = info.h;
-  }
-  win->rect = rect_init(x, y, w, h);
 #ifdef WITH_NANOVG_GL
   sdl->context = SDL_GL_CreateContext(sdl->window);
   SDL_GL_SetSwapInterval(1);
@@ -327,6 +332,12 @@ static native_window_t* native_window_create_internal(const char* title, uint32_
   glDisable(GL_DEPTH_TEST);
   glDisable(GL_SCISSOR_TEST);
 #endif /*WITH_NANOVG_GL*/
+
+  if (native_window_get_info(win, &info) == RET_OK) {
+    w = info.w;
+    h = info.h;
+  }
+  win->rect = rect_init(x, y, w, h);
 
 #ifdef WITH_LCD_MONO
   lcd = lcd_sdl2_mono_init(sdl->render);

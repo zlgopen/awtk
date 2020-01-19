@@ -27,7 +27,6 @@
 #include <SDL_keycode.h>
 #endif
 
-
 BEGIN_C_DECLS
 
 /**
