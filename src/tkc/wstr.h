@@ -289,6 +289,8 @@ ret_t wstr_normalize_newline(wstr_t* str, wchar_t newline);
  */
 ret_t wstr_reset(wstr_t* str);
 
+wchar_t* wcsdup(const wchar_t* s);
+
 const wchar_t* wcs_chr(const wchar_t* s, wchar_t c);
 wchar_t* wcs_cpy(wchar_t* s1, const wchar_t* s2);
 int wcs_cmp(const wchar_t* s1, const wchar_t* s2);
