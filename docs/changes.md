@@ -1,4 +1,8 @@
 # 最新动态
+* 2020/01/20
+  * compare\_color 不区分大小写(感谢Toby提供补丁)
+  * 为移植到iOS做了一下改进。
+
 * 2020/01/17
   * 修复 list view on remove child 的问题（感谢培煌提供补丁)
   * 完善 image animation （感谢大恒提供补丁）

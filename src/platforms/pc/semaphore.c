@@ -35,7 +35,7 @@ struct _tk_semaphore_t {
 #include <sys/semaphore.h>
 #else
 #include <semaphore.h>
-#endif/*IOS*/
+#endif /*IOS*/
 struct _tk_semaphore_t {
   sem_t* sem;
 };

@@ -19,12 +19,12 @@
  *
  */
 
-#ifdef WITH_SDL
-
 #include "tkc/mem.h"
 #include "tkc/str.h"
 #include "SDL_clipboard.h"
 #include "clip_board/clip_board_sdl.h"
+
+#ifdef WITH_SDL
 
 typedef struct _clip_board_sdl_t {
   clip_board_t clip_board;

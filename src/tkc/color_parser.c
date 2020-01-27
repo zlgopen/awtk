@@ -150,7 +150,7 @@ static color_map_t const colors_map[] = {{"aliceblue", "#f0f8ff"},
                                          {"yellowgreen", "#9acd32"}};
 
 static int compare_color(const color_map_t* a, const color_map_t* b) {
-  return strcmp(a->name, b->name);
+  return strcasecmp(a->name, b->name);
 }
 
 static const char* map_name_to_value(const char* name) {
