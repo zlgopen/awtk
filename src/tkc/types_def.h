@@ -358,4 +358,6 @@ typedef struct _event_source_manager_t event_source_manager_t;
 #define EAGAIN 11
 #endif /*EAGAIN*/
 
+#define TK_SET_NULL(p) (p) = NULL
+
 #endif /*TYPES_DEF_H*/

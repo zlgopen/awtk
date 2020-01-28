@@ -291,6 +291,8 @@ emitter_t* emitter_cast(emitter_t* emitter);
 ret_t emitter_remove_item(emitter_t* emitter, emitter_item_t* item);
 emitter_item_t* emitter_get_item(emitter_t* emitter, uint32_t index);
 
+ret_t emitter_forward(void* ctx, event_t* e);
+
 END_C_DECLS
 
 #endif /*TK_EMITTER_H*/

@@ -383,3 +383,8 @@ ret_t emitter_dispatch_simple_event(emitter_t* emitter, uint32_t type) {
 
   return emitter_dispatch(emitter, &e);
 }
+
+ret_t emitter_forward(void* ctx, event_t* e) {
+  emitter_dispatch(EMITTER(ctx), e);
+}
+
