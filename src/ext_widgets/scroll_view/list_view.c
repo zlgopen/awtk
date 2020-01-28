@@ -217,6 +217,35 @@ static ret_t list_view_on_scroll_view_layout_children(widget_t* widget) {
   return RET_OK;
 }
 
+static ret_t list_view_on_scroll_view_paint_children(widget_t* widget, canvas_t* c) {
+  int32_t left = 0;
+  int32_t top = 0;
+  int32_t bottom = 0;
+  int32_t right = 0;
+  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+
+  if (!iter->visible) {
+    iter->dirty = FALSE;
+    continue;
+  }
+
+  left = c->ox + iter->x;
+  top = c->oy + iter->y;
+  bottom = top + iter->h;
+  right = left + iter->w;
+
+  if (left > c->clip_right || right < c->clip_left || top > c->clip_bottom ||
+      bottom < c->clip_top) {
+    iter->dirty = FALSE;
+    continue;
+  }
+
+  widget_paint(iter, c);
+  WIDGET_FOR_EACH_CHILD_END();
+
+  return RET_OK;
+}
+
 static ret_t list_view_on_add_child(widget_t* widget, widget_t* child) {
   list_view_t* list_view = LIST_VIEW(widget);
   const char* type = widget_get_type(child);
@@ -236,6 +265,8 @@ static ret_t list_view_on_add_child(widget_t* widget, widget_t* child) {
     scroll_view->on_scroll = list_view_on_scroll_view_scroll;
     scroll_view->on_scroll_to = list_view_on_scroll_view_scroll_to;
     scroll_view->on_layout_children = list_view_on_scroll_view_layout_children;
+    scroll_view->on_paint_children = list_view_on_scroll_view_paint_children;
+
   } else if (tk_str_eq(type, WIDGET_TYPE_SCROLL_BAR) ||
              tk_str_eq(type, WIDGET_TYPE_SCROLL_BAR_DESKTOP) ||
              tk_str_eq(type, WIDGET_TYPE_SCROLL_BAR_MOBILE)) {

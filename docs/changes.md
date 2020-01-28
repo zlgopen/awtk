@@ -1,4 +1,8 @@
 # 最新动态
+* 2020/01/28
+  * 优化list view paint children
+  * 增加emitter\_forward
+
 * 2020/01/20
   * compare\_color 不区分大小写(感谢Toby提供补丁)
   * 为移植到iOS做了一下改进。
