@@ -714,7 +714,7 @@ bool_t tk_is_valid_name(const char* name) {
 bool_t tk_str_start_with(const char* str, const char* prefix) {
   return_value_if_fail(str != NULL && prefix != NULL, FALSE);
 
-  return memcmp(str, prefix, strlen(prefix)) == 0;
+  return strncmp(str, prefix, strlen(prefix)) == 0;
 }
 
 const char* tk_under_score_to_camel(const char* name, char* out, uint32_t max_out_size) {
