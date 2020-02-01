@@ -472,9 +472,11 @@ static ret_t on_reload_theme_test(void* ctx, event_t* e) {
 }
 
 static ret_t on_snapshot(void* ctx, event_t* e) {
+#ifndef AWTK_WEB
   bitmap_t* bitmap = widget_take_snapshot(window_manager());
   bitmap_save_png(bitmap, "test.png");
   bitmap_destroy(bitmap);
+#endif/*AWTK_WEB*/
 
   return RET_OK;
 }

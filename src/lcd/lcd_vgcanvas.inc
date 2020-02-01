@@ -22,6 +22,7 @@
 #include "base/lcd.h"
 #include "tkc/mem.h"
 #include "tkc/utf8.h"
+#include "tkc/str.h"
 #include "base/vgcanvas.h"
 #include "base/system_info.h"
 
