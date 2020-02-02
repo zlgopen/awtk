@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   keys.h
  * Author: AWTK Develop Team
  * Brief:  key code constants
