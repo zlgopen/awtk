@@ -640,6 +640,9 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
           tmp_h = h % tmp_h;
         }
         r.h = tmp_h;
+        if (r.h == 0) {
+          break;
+        }
 
         canvas_t* c = native_window_get_canvas(wm->native_window);
         canvas_begin_frame(c, &r, LCD_DRAW_NORMAL);

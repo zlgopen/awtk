@@ -1,4 +1,7 @@
 # 最新动态
+* 2020/02/04
+  * 片段 lcd 的片段内存大小刚好等于脏矩形大小的问题（感谢智明提供补丁）
+
 * 2020/01/28
   * 优化list view paint children
   * 增加emitter\_forward
