@@ -7,12 +7,8 @@ BIN_DIR=os.environ['BIN_DIR'];
 
 env.Library(os.path.join(LIB_DIR, 'gpinyin'), Glob('src/*.cpp'))
 
-#
-# env1=DefaultEnvironment().Clone()
-# env1['LIBS'] = ['gpinyin_tools'] + env['LIBS'];
-# env1['CCFLAGS'] = '-D___BUILD_MODEL___ ' + env['CCFLAGS'];
-# env1.Library(os.path.join(LIB_DIR, 'gpinyin_tools'), Glob('src.org/*.cpp'))
-#
-# env1.Program(os.path.join(BIN_DIR, 'gpinyin_gen'), ['tools/gpinyin_gen.cpp'])
-# env1.Program(os.path.join(BIN_DIR, 'gpinyin_test'), ['tools/gpinyin_test.cpp'])
+env1=DefaultEnvironment().Clone()
+env1['CCFLAGS'] = '-D___BUILD_MODEL___ ' + env['CCFLAGS'];
+env1.Program(os.path.join(BIN_DIR, 'gpinyingen'), ['tools/gpinyin_gen.cpp'] 
+  + Glob('tools/src/*.cpp'))
 

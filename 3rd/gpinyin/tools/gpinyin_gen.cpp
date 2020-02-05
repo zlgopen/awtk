@@ -28,13 +28,24 @@ using namespace ime_pinyin;
  * in dictdef.h.
  */
 int main(int argc, char* argv[]) {
+  const char* rawdict = "./3rd/gpinyin/data/rawdict_utf16_65105_freq.txt";
+  const char* validchars = "./3rd/gpinyin/data/valid_utf16.txt";
+  const char* output = "./3rd/gpinyin/data/gpinyin.dat";
   DictTrie* dict_trie = new DictTrie();
+
   bool success;
-  if (argc >= 3)
-    success = dict_trie->build_dict(argv[1], argv[2]);
-  else
-    success =
-        dict_trie->build_dict("./data/rawdict_utf16_65105_freq.txt", "./data/valid_utf16.txt");
+  if (argc > 3) {
+    rawdict = argv[1];
+    validchars = argv[2];
+    output = argv[3];
+  } else if(argc == 2) {
+    printf("Usage: %s rawdict validchars output\n", argv[0]);
+    return -1;
+  } else {
+    printf("%s %s => %s\n", rawdict, validchars, output);
+  }
+
+  success = dict_trie->build_dict(rawdict, validchars);
 
   if (success) {
     printf("Build dictionary successfully.\n");
@@ -43,7 +54,7 @@ int main(int argc, char* argv[]) {
     return -1;
   }
 
-  success = dict_trie->save_dict("./data/gpinyin.dat");
+  success = dict_trie->save_dict(output);
 
   if (success) {
     printf("Save dictionary successfully.\n");
