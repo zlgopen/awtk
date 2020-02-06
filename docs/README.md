@@ -28,7 +28,6 @@
 * [AWTK 中的颜色格式](color_format.md)
 * [AWTK 输入事件处理流程](input_event_flow.md)
 * [内存耗尽处理流程](out_of_memory.md)
-* [如何开启按键音](how_to_enable_key_touch_sound.md)
 * [实时切换主题](theme_switch.md)
 * [键值映射](map_key.md)
 
@@ -48,6 +47,8 @@
 * [如何使用 mutable_image 控件](how_to_use_mutable_image.md)
 * [如何让文本滚动起来](how_to_scroll_you_text.md)
 * [如何在主题文件中写控件布局参数](how_to_write_layout_params_in_style.md)
+* [如何开启按键音](how_to_enable_key_touch_sound.md)
+* [如何更新拼音输入法数据](how_to_update_gpinyin_data.md)
 
 ### 3. 内部原理
 * [AWTK 脚本绑定原理](script_binding.md)
