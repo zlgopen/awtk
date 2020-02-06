@@ -4,14 +4,32 @@
 
 在当前目录下运行：
 
+* 准备
+
 ```
 npm install
-node gen.js
+```
+
+* 抓取网页，生成words.json
+
+> 可以修改maxURLS改变最大网页数量。
+
+```
+node gen_words_json.js 
+```
+
+
+* 生成二进制的words.bin文件
+
+> 可以根据自己的需要进行编辑words.json。
+
+```
+node to_words_bin.js
 ```
 
 ### 更新数据
 
-在awtk目录下运行：
+在awtk根目录下运行：
 
 ```
 ./bin/resgen tools/word_gen/words.bin src/input_methods/suggest_words.inc 

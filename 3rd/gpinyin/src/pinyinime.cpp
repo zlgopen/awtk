@@ -43,7 +43,7 @@ bool im_open_decoder_rom(void) {
     return false;
   }
 
-  return matrix_search->init((const char*)data_gpinyin, "/userdata.dat");
+  return matrix_search->init((const char*)data_gpinyin_dat, "/userdata.dat");
 }
 
 bool im_open_decoder(const char* fn_sys_dict, const char* fn_usr_dict) {
