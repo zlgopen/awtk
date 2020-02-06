@@ -371,7 +371,7 @@ static ret_t vgcanvas_nanovg_draw_image(vgcanvas_t* vgcanvas, bitmap_t* img, flo
 static ret_t vgcanvas_nanovg_set_antialias(vgcanvas_t* vgcanvas, bool_t value) {
 #ifdef WITH_NANOVG_GPU
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
-  NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
+  NVGcontext* vg = canvas->vg;
   NVGparams* params = (NVGparams*)vg;
   params->edgeAntiAlias = value;
 #else

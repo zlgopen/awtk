@@ -61,7 +61,6 @@ static ret_t file_choose_on_click_to_close(void* ctx, event_t* e) {
   widget_t* win = widget_get_window(WIDGET(e->target));
   file_chooser_t* chooser = (file_chooser_t*)ctx;
   widget_t* widget = widget_lookup_by_type(win, WIDGET_TYPE_FILE_BROWSER_VIEW, TRUE);
-  file_browser_view_t* file_browser = FILE_BROWSER_VIEW(widget);
 
   chooser->aborted = FALSE;
   emitter_dispatch_simple_event(EMITTER(chooser), EVT_DONE);
@@ -80,7 +79,6 @@ static ret_t file_choose_on_ok(void* ctx, event_t* e) {
   widget_t* win = widget_get_window(WIDGET(e->target));
   file_chooser_t* chooser = (file_chooser_t*)ctx;
   widget_t* widget = widget_lookup_by_type(win, WIDGET_TYPE_FILE_BROWSER_VIEW, TRUE);
-  file_browser_view_t* file_browser = FILE_BROWSER_VIEW(widget);
   widget_t* selected_file = widget_lookup(widget, FILE_BROWSER_VIEW_SELECTED_FILE, TRUE);
 
   str_set(&(chooser->cwd), file_browser_view_get_cwd(widget));
