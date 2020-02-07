@@ -305,7 +305,7 @@ input_method_t* input_method_default_create(void) {
 
 #ifndef WITHOUT_SUGGEST_WORDS
   im->suggest_words = suggest_words_create((const asset_info_t*)(data_words_bin));
-#endif/*WITHOUT_SUGGEST_WORDS*/
+#endif /*WITHOUT_SUGGEST_WORDS*/
 
   return im;
 }
