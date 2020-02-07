@@ -145,7 +145,7 @@ static void* tk_alloc_impl(uint32_t s) {
   }
   /*返回可用的内存*/
   s_mem_info.used_block_nr++;
-  s_mem_info.used_bytes += size;
+  s_mem_info.used_bytes += iter->size;
 
   return (char*)iter + sizeof(uint32_t);
 }
