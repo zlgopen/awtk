@@ -17,9 +17,6 @@ TEST(EventQueue, basic) {
   ASSERT_EQ(q->full, FALSE);
   ASSERT_EQ(q->capacity, 10);
 
-  memset(&r, 0x00, sizeof(r));
-  memset(&r, 0x00, sizeof(w));
-
   w.pointer_event.e.type = EVT_POINTER_DOWN;
   w.pointer_event.x = 100;
   w.pointer_event.y = 200;

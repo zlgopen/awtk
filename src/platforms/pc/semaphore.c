@@ -42,13 +42,21 @@ struct _tk_semaphore_t {
 #endif
 
 #include "tkc/mem.h"
+#include "tkc/utils.h"
 #include "tkc/time_now.h"
 #include "tkc/platform.h"
 #include "tkc/semaphore.h"
 
+static uint32_t s_ano_index = 0;
 tk_semaphore_t* tk_semaphore_create(uint32_t value, const char* name) {
   tk_semaphore_t* semaphore = TKMEM_ZALLOC(tk_semaphore_t);
   return_value_if_fail(semaphore != NULL, NULL);
+
+  if (name == NULL) {
+    char tname[32];
+    tk_snprintf(tname, sizeof(tname), "sema%u", s_ano_index++);
+    name = tname;
+  }
 
 #ifdef HAS_PTHREAD
   semaphore->sem = sem_open(name, O_CREAT, S_IRUSR | S_IWUSR, value);
