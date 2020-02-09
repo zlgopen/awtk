@@ -58,12 +58,12 @@ file_chooser_t* file_chooser_cast(file_chooser_t* chooser) {
 }
 
 static ret_t file_choose_on_click_to_close(void* ctx, event_t* e) {
+  done_event_t done;
   widget_t* win = widget_get_window(WIDGET(e->target));
   file_chooser_t* chooser = (file_chooser_t*)ctx;
-  widget_t* widget = widget_lookup_by_type(win, WIDGET_TYPE_FILE_BROWSER_VIEW, TRUE);
 
   chooser->aborted = FALSE;
-  emitter_dispatch_simple_event(EMITTER(chooser), EVT_DONE);
+  emitter_dispatch(EMITTER(chooser), done_event_init(&done, RET_OK));
 
   if (widget_is_dialog(win)) {
     dialog_quit(win, DIALOG_QUIT_CANCEL);
@@ -76,6 +76,7 @@ static ret_t file_choose_on_click_to_close(void* ctx, event_t* e) {
 }
 
 static ret_t file_choose_on_ok(void* ctx, event_t* e) {
+  done_event_t done;
   widget_t* win = widget_get_window(WIDGET(e->target));
   file_chooser_t* chooser = (file_chooser_t*)ctx;
   widget_t* widget = widget_lookup_by_type(win, WIDGET_TYPE_FILE_BROWSER_VIEW, TRUE);
@@ -87,7 +88,7 @@ static ret_t file_choose_on_ok(void* ctx, event_t* e) {
   }
 
   chooser->aborted = FALSE;
-  if (emitter_dispatch_simple_event(EMITTER(chooser), EVT_DONE) == RET_OK) {
+  if (emitter_dispatch(EMITTER(chooser), done_event_init(&done, RET_OK)) == RET_OK) {
     if (widget_is_dialog(win)) {
       dialog_quit(win, DIALOG_QUIT_OK);
     } else {

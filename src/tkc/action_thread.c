@@ -26,6 +26,7 @@
 
 static void* action_thread_entry(void* args) {
   qaction_t action;
+  done_event_t done;
   action_thread_t* thread = (action_thread_t*)args;
   memset(&action, 0x00, sizeof(action));
 
@@ -34,14 +35,14 @@ static void* action_thread_entry(void* args) {
   log_debug("action thread start\n");
 
   while (!(thread->quit)) {
+    memset(&action, 0x00, sizeof(action));
     while (waitable_action_queue_recv(thread->queue, &action, 1000) == RET_OK) {
-      event_t e = event_init(EVT_DONE, NULL);
       ret_t ret = qaction_exec(&action);
 
       if (ret == RET_QUIT) {
         thread->quit = TRUE;
       }
-      qaction_notify(&action, &e);
+      qaction_notify(&action, done_event_init(&done, ret));
 
       if (thread->max_actions_nr > 0) {
         thread->executed_actions_nr++;

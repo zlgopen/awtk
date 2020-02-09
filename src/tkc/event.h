@@ -70,7 +70,7 @@ typedef enum _event_base_type_t {
   EVT_PROGRESS,
   /**
    * @const EVT_DONE
-   * 完成(event_t)。
+   * 完成(done_event_t)。
    */
   EVT_DONE,
   /**
@@ -239,6 +239,43 @@ progress_event_t* progress_event_cast(event_t* event);
  * @return {event_t*} 返回event对象。
  */
 event_t* progress_event_init(progress_event_t* event, uint32_t percent);
+
+/**
+ * @class done_event_t
+ * @annotation ["scriptable"]
+ * @parent event_t
+ * 执行完成事件。
+ */
+typedef struct _done_event_t {
+  event_t e;
+  /**
+   * @property {ret_t} result
+   * @annotation ["readable", "scriptable"]
+   * 执行结果。
+   */
+  ret_t result;
+} done_event_t;
+
+/**
+ * @method done_event_cast
+ * @annotation ["cast", "scriptable"]
+ * 把event对象转done_event_t对象，主要给脚本语言使用。
+ * @param {event_t*} event event对象。
+ *
+ * @return {done_event_t*}  返回event对象。
+ */
+done_event_t* done_event_cast(event_t* event);
+
+/**
+ * @method done_event_init
+ * 初始done event。
+ * 
+ * @param {done_event_t*} event event对象。
+ * @param {ret_t} result 结果。
+ *
+ * @return {event_t*} 返回event对象。
+ */
+event_t* done_event_init(done_event_t* event, ret_t result);
 
 END_C_DECLS
 

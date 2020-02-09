@@ -7,7 +7,15 @@
 
 static uint32_t exec_times = 0;
 
-static ret_t qaction_exec_dummy(qaction_t* req) {
+static ret_t qaction_dummy_on_event(qaction_t* action, event_t* e) {
+  if(e->type == EVT_DONE) {
+    log_debug("done\n");
+  }
+
+  return RET_OK;
+}
+
+static ret_t qaction_dummy_exec(qaction_t* action) {
   exec_times++;
   log_debug("exec: exec_times=%u\n", exec_times);
   return RET_OK;
@@ -16,11 +24,22 @@ static ret_t qaction_exec_dummy(qaction_t* req) {
 void test() {
   uint32_t i = 0;
   qaction_t action;
-  qaction_t* a = qaction_init(&action, qaction_exec_dummy, NULL, 0);
+  action_thread_t* thread1 = NULL;
+  action_thread_t* thread2 = NULL;
+  action_thread_t* thread3 = NULL;
+
+  qaction_t* a = qaction_init(&action, qaction_dummy_exec, NULL, 0);
   action_thread_pool_t* pool = action_thread_pool_create(100, 10);
+  qaction_set_on_event(a, qaction_dummy_on_event, NULL);
+
+  thread1 = action_thread_pool_get(pool);
+  thread2 = action_thread_pool_get(pool);
+  thread3 = action_thread_pool_get(pool);
 
   for (i = 0; i < NR; i++) {
-    action_thread_pool_exec(pool, a);
+    action_thread_exec(thread1, a);
+    action_thread_exec(thread2, a);
+    action_thread_exec(thread3, a);
   }
 
   sleep_ms(200);

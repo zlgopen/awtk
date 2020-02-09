@@ -64,13 +64,6 @@ ret_t event_destroy(event_t* event) {
   return RET_OK;
 }
 
-progress_event_t* progress_event_cast(event_t* event) {
-  return_value_if_fail(event != NULL, NULL);
-  return_value_if_fail(event->type == EVT_PROGRESS, NULL);
-
-  return (progress_event_t*)event;
-}
-
 event_t* prop_change_event_init(prop_change_event_t* event, uint32_t type, const char* name,
                                 const value_t* value) {
   return_value_if_fail(event != NULL, NULL);
@@ -83,12 +76,36 @@ event_t* prop_change_event_init(prop_change_event_t* event, uint32_t type, const
   return (event_t*)(event);
 }
 
+progress_event_t* progress_event_cast(event_t* event) {
+  return_value_if_fail(event != NULL, NULL);
+  return_value_if_fail(event->type == EVT_PROGRESS, NULL);
+
+  return (progress_event_t*)event;
+}
+
 event_t* progress_event_init(progress_event_t* event, uint32_t percent) {
   return_value_if_fail(event != NULL, NULL);
   memset(event, 0x00, sizeof(*event));
 
   event->e.type = EVT_PROGRESS;
   event->percent = percent;
+
+  return (event_t*)(event);
+}
+
+done_event_t* done_event_cast(event_t* event) {
+  return_value_if_fail(event != NULL, NULL);
+  return_value_if_fail(event->type == EVT_PROGRESS, NULL);
+
+  return (done_event_t*)event;
+}
+
+event_t* done_event_init(done_event_t* event, ret_t result) {
+  return_value_if_fail(event != NULL, NULL);
+  memset(event, 0x00, sizeof(*event));
+
+  event->e.type = EVT_DONE;
+  event->result = result;;
 
   return (event_t*)(event);
 }
