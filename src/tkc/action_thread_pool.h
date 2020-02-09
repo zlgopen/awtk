@@ -43,7 +43,8 @@ typedef struct _action_thread_pool_t {
    * @annotation ["readable"]
    * 最大空闲容量。
    */
-  uint32_t max_free_nr;;
+  uint32_t max_free_nr;
+  ;
 
   /*private*/
   tk_mutex_t* mutex;

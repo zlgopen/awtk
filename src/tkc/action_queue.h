@@ -43,14 +43,14 @@ struct _qaction_t {
    * on_event_ctx。
    */
   void* on_event_ctx;
-  
+
   /**
    * @property {qaction_on_event_t} on_event
    * @annotation ["readable"]
    * 事件处理函数。如进度、错误和完成等。
    */
   qaction_on_event_t on_event;
-  
+
   /**
    * @property {qaction_exec_t} exec
    * @annotation ["readable"]
@@ -77,7 +77,7 @@ struct _qaction_t {
  *
  * @return {qaction_t*} 返回action对象。
  */
-qaction_t* qaction_init(qaction_t* action, qaction_exec_t exec, void* args, uint32_t args_size); 
+qaction_t* qaction_init(qaction_t* action, qaction_exec_t exec, void* args, uint32_t args_size);
 
 /**
  * @method qaction_set_on_event

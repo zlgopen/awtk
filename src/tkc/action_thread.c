@@ -21,21 +21,38 @@
 
 #include "tkc/mem.h"
 #include "tkc/action_thread.h"
+#include "tkc/action_thread_pool.h"
 #include "tkc/waitable_action_queue.h"
 
-static void* action_thred_entry(void* args) {
+static void* action_thread_entry(void* args) {
   qaction_t action;
   action_thread_t* thread = (action_thread_t*)args;
   memset(&action, 0x00, sizeof(action));
 
-  while(!(thread->quit)) {
-    while(waitable_action_queue_recv(thread->queue, &action, 10000) == RET_OK) {
-      if(qaction_exec(&action) == RET_QUIT) {
+  thread->quit = FALSE;
+  thread->quited = FALSE;
+  log_debug("action thread start\n");
+
+  while (!(thread->quit)) {
+    while (waitable_action_queue_recv(thread->queue, &action, 1000) == RET_OK) {
+      event_t e = event_init(EVT_DONE, NULL);
+      ret_t ret = qaction_exec(&action);
+
+      if (ret == RET_QUIT) {
         thread->quit = TRUE;
       }
-      thread->executed_actions_nr++;
+      qaction_notify(&action, &e);
+
+      if (thread->max_actions_nr > 0) {
+        thread->executed_actions_nr++;
+        if (thread->executed_actions_nr >= thread->max_actions_nr) {
+          action_thread_pool_put(thread->thread_pool, thread);
+        }
+      }
     }
   }
+  thread->quited = TRUE;
+  log_debug("action thread done\n");
 
   return NULL;
 }
@@ -47,7 +64,7 @@ action_thread_t* action_thread_create(action_thread_pool_t* thread_pool) {
   return_value_if_fail(thread != NULL, NULL);
 
   thread->thread_pool = thread_pool;
-  thread->thread = tk_thread_create(action_thred_entry, thread);
+  thread->thread = tk_thread_create(action_thread_entry, thread);
   goto_error_if_fail(thread->thread != NULL);
 
   thread->queue = waitable_action_queue_create(10);
@@ -57,11 +74,11 @@ action_thread_t* action_thread_create(action_thread_pool_t* thread_pool) {
   return thread;
 error:
 
-  if(thread->thread != NULL) {
+  if (thread->thread != NULL) {
     tk_thread_destroy(thread->thread);
   }
 
-  if(thread->queue != NULL) {
+  if (thread->queue != NULL) {
     waitable_action_queue_destroy(thread->queue);
   }
 
@@ -92,11 +109,17 @@ static ret_t qaction_quit_exec(qaction_t* action) {
 }
 
 static ret_t action_thread_quit(action_thread_t* thread) {
+  qaction_t action;
+  qaction_t* a = qaction_init(&action, qaction_quit_exec, NULL, 0);
   return_value_if_fail(thread != NULL, RET_BAD_PARAMS);
+
+  if (thread->quited || !thread->queue) {
+    return RET_OK;
+  }
 
   thread->quit = TRUE;
 
-  return RET_OK;
+  return waitable_action_queue_send(thread->queue, a, 10000);
 }
 
 ret_t action_thread_destroy(action_thread_t* thread) {
@@ -109,4 +132,3 @@ ret_t action_thread_destroy(action_thread_t* thread) {
 
   return RET_OK;
 }
-

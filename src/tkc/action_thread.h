@@ -80,7 +80,10 @@ typedef struct _action_thread_t {
   uint32_t executed_actions_nr;
 
   /*private*/
+  /*请求退出*/
   bool_t quit;
+  /*已经退出*/
+  bool_t quited;
 } action_thread_t;
 
 /**

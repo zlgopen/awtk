@@ -70,8 +70,9 @@ ret_t waitable_action_queue_recv(waitable_action_queue_t* q, qaction_t* action,
   if (tk_semaphore_wait(q->sema_recv, timeout_ms) == RET_OK) {
     if (tk_mutex_lock(q->mutex) == RET_OK) {
       ret = action_queue_recv(q->queue, action);
-      assert(ret == RET_OK);
-      ENSURE(tk_semaphore_post(q->sema_send) == RET_OK);
+      if (ret == RET_OK) {
+        ENSURE(tk_semaphore_post(q->sema_send) == RET_OK);
+      }
       ENSURE(tk_mutex_unlock(q->mutex) == RET_OK);
     }
   }

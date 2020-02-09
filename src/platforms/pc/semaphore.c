@@ -38,6 +38,7 @@ struct _tk_semaphore_t {
 #endif /*IOS*/
 struct _tk_semaphore_t {
   sem_t* sem;
+  char name[TK_NAME_LEN + 1];
 };
 #endif
 
@@ -47,19 +48,20 @@ struct _tk_semaphore_t {
 #include "tkc/platform.h"
 #include "tkc/semaphore.h"
 
-static uint32_t s_ano_index = 0;
 tk_semaphore_t* tk_semaphore_create(uint32_t value, const char* name) {
+  int ret = 0;
   tk_semaphore_t* semaphore = TKMEM_ZALLOC(tk_semaphore_t);
   return_value_if_fail(semaphore != NULL, NULL);
 
   if (name == NULL) {
-    char tname[32];
-    tk_snprintf(tname, sizeof(tname), "sema%u", s_ano_index++);
-    name = tname;
+    tk_snprintf(semaphore->name, TK_NAME_LEN, "%p", semaphore);
+  } else {
+    tk_strncpy(semaphore->name, name, TK_NAME_LEN);
   }
 
 #ifdef HAS_PTHREAD
-  semaphore->sem = sem_open(name, O_CREAT, S_IRUSR | S_IWUSR, value);
+  sem_unlink(semaphore->name);
+  semaphore->sem = sem_open(semaphore->name, O_CREAT, S_IRUSR | S_IWUSR, value);
   if (semaphore->sem == NULL) {
     TKMEM_FREE(semaphore);
     semaphore = NULL;
@@ -117,11 +119,12 @@ ret_t tk_semaphore_destroy(tk_semaphore_t* semaphore) {
 
 #ifdef HAS_PTHREAD
   sem_close(semaphore->sem);
+  sem_unlink(semaphore->name);
 #elif defined(WIN32)
   CloseHandle(semaphore->sem);
 #endif /*HAS_PTHREAD*/
 
-  memset(&semaphore, 0x00, sizeof(tk_semaphore_t));
+  memset(semaphore, 0x00, sizeof(tk_semaphore_t));
   TKMEM_FREE(semaphore);
 
   return RET_OK;
