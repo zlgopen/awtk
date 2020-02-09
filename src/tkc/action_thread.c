@@ -92,7 +92,7 @@ ret_t action_thread_exec(action_thread_t* thread, qaction_t* action) {
   return_value_if_fail(thread != NULL && thread->queue != NULL, RET_BAD_PARAMS);
   return_value_if_fail(action != NULL && action->exec != NULL, RET_BAD_PARAMS);
 
-  return waitable_action_queue_send(thread->queue, action, 1000);
+  return waitable_action_queue_send(thread->queue, action, 3000);
 }
 
 ret_t action_thread_set_max_actions_nr(action_thread_t* thread, uint32_t max_actions_nr) {
@@ -120,7 +120,7 @@ static ret_t action_thread_quit(action_thread_t* thread) {
 
   thread->quit = TRUE;
 
-  return waitable_action_queue_send(thread->queue, a, 10000);
+  return waitable_action_queue_send(thread->queue, a, 3000);
 }
 
 ret_t action_thread_destroy(action_thread_t* thread) {

@@ -38,10 +38,15 @@ void test() {
 
   for (i = 0; i < NR; i++) {
     action_thread_exec(thread1, a);
-    action_thread_exec(thread2, a);
-    action_thread_exec(thread3, a);
   }
 
+  for (i = 0; i < NR; i++) {
+    action_thread_exec(thread2, a);
+  }
+  
+  for (i = 0; i < NR; i++) {
+    action_thread_exec(thread3, a);
+  }
   sleep_ms(200);
   action_thread_pool_destroy(pool);
   log_debug("exec_times=%u\n", exec_times);
