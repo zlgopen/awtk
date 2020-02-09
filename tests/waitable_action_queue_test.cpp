@@ -13,20 +13,6 @@ static ret_t qaction_exec_dummy(qaction_t* req) {
   return RET_OK;
 }
 
-static ret_t qaction_destroy_dummy(qaction_t* req) {
-  destroy_times++;
-  return RET_OK;
-}
-
-static qaction_vtable_t qvt = {qaction_exec_dummy, qaction_destroy_dummy};
-
-static qaction_t* qaction_init(qaction_t* a) {
-  memset(a, 0x00, sizeof(qaction_t));
-  a->vt = &qvt;
-
-  return a;
-}
-
 static void* consumer(void* args) {
   uint32_t n = 0;
   qaction_t action;
@@ -35,7 +21,6 @@ static void* consumer(void* args) {
   while (waitable_action_queue_recv(q, &action, 3000) == RET_OK) {
     n++;
     qaction_exec(&action);
-    qaction_destroy(&action);
   }
   log_debug("consumer done\n");
 
@@ -45,7 +30,7 @@ static void* consumer(void* args) {
 static void* producer(void* args) {
   uint32_t i = 0;
   qaction_t action;
-  qaction_t* a = qaction_init(&action);
+  qaction_t* a = qaction_init(&action, qaction_exec_dummy, NULL, 0);
   uint32_t id = tk_pointer_to_int(args);
 
   log_debug("p=%u start\n", id);

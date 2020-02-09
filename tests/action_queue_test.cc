@@ -18,7 +18,7 @@ TEST(ActionQueue, basic) {
   ASSERT_EQ(q->full, FALSE);
   ASSERT_EQ(q->capacity, 10);
 
-  w.extra[0] = 1234;
+  w.args[0] = 1234;
   ASSERT_EQ(action_queue_recv(q, &r), RET_FAIL);
   ASSERT_EQ(action_queue_send(q, &w), RET_OK);
   ASSERT_EQ(action_queue_recv(q, &r), RET_OK);
@@ -26,7 +26,7 @@ TEST(ActionQueue, basic) {
   ASSERT_EQ(action_queue_recv(q, &r), RET_FAIL);
 
   for (i = 0; i < NR; i++) {
-    w.extra[0] = i;
+    w.args[0] = i;
     ASSERT_EQ(action_queue_send(q, &w), RET_OK);
   }
 
@@ -35,7 +35,7 @@ TEST(ActionQueue, basic) {
 
   for (i = 0; i < NR; i++) {
     ASSERT_EQ(action_queue_recv(q, &r), RET_OK);
-    ASSERT_EQ(r.extra[0], i);
+    ASSERT_EQ(r.args[0], i);
   }
   ASSERT_EQ(action_queue_recv(q, &r), RET_FAIL);
   ASSERT_EQ(q->full, FALSE);

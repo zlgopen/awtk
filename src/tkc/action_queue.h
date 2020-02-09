@@ -22,7 +22,7 @@
 #ifndef TK_ACTION_QUEUE_H
 #define TK_ACTION_QUEUE_H
 
-#include "tkc/types_def.h"
+#include "tkc/event.h"
 
 BEGIN_C_DECLS
 
@@ -30,12 +30,7 @@ struct _qaction_t;
 typedef struct _qaction_t qaction_t;
 
 typedef ret_t (*qaction_exec_t)(qaction_t* action);
-typedef ret_t (*qaction_destroy_t)(qaction_t* action);
-
-typedef struct _qaction_vtable_t {
-  qaction_exec_t exec;
-  qaction_destroy_t destroy;
-} qaction_vtable_t;
+typedef ret_t (*qaction_on_event_t)(qaction_t* action, event_t* event);
 
 /**
  * @class qaction_t
@@ -43,15 +38,69 @@ typedef struct _qaction_vtable_t {
  */
 struct _qaction_t {
   /**
-   * @property {uint32_t*} extra
+   * @property {void*} on_event_ctx 
    * @annotation ["readable"]
-   * 额外的参数(视具体的action而不同)。
+   * on_event_ctx。
    */
-  uint32_t extra[8];
+  void* on_event_ctx;
+  
+  /**
+   * @property {qaction_on_event_t} on_event
+   * @annotation ["readable"]
+   * 事件处理函数。如进度、错误和完成等。
+   */
+  qaction_on_event_t on_event;
+  
+  /**
+   * @property {qaction_exec_t} exec
+   * @annotation ["readable"]
+   * 执行函数。
+   */
+  qaction_exec_t exec;
 
-  /*private*/
-  qaction_vtable_t* vt;
+  /**
+   * @property {uint32_t*} args
+   * @annotation ["readable"]
+   * exec的参数(视具体的action而不同)。
+   */
+  uint32_t args[8];
 };
+
+/**
+ * @method qaction_init
+ * 初始化。
+ *
+ * @param {qaction_t*} action action对象。
+ * @param {qaction_exec_t} exec 执行函数。
+ * @param {void*} args 参数。
+ * @param {uint32_t} args_size 参数长度(小余等于sizeof(action->args))。
+ *
+ * @return {qaction_t*} 返回action对象。
+ */
+qaction_t* qaction_init(qaction_t* action, qaction_exec_t exec, void* args, uint32_t args_size); 
+
+/**
+ * @method qaction_set_on_event
+ * 设置事件处理函数(在后台线程调用)。
+ *
+ * @param {qaction_t*} action action对象。
+ * @param {qaction_on_event_t} on_event 事件处理函数。
+ * @param {void*} on_event_ctx 事件处理函数的上下文。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t qaction_set_on_event(qaction_t* action, qaction_on_event_t on_event, void* on_event_ctx);
+
+/**
+ * @method qaction_notify
+ * 事件通知。
+ *
+ * @param {qaction_t*} action action对象。
+ * @param {event_t**} event event对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t qaction_notify(qaction_t* action, event_t* event);
 
 /**
  * @method qaction_exec
@@ -62,16 +111,6 @@ struct _qaction_t {
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t qaction_exec(qaction_t* action);
-
-/**
- * @method qaction_destroy
- * 销毁。
- *
- * @param {qaction_t*} action action对象。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t qaction_destroy(qaction_t* action);
 
 typedef struct _action_queue_t {
   uint16_t r;

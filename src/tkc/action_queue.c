@@ -22,24 +22,44 @@
 #include "tkc/mem.h"
 #include "tkc/action_queue.h"
 
-ret_t qaction_exec(qaction_t* action) {
-  return_value_if_fail(action != NULL && action->vt != NULL, RET_BAD_PARAMS);
+qaction_t* qaction_init(qaction_t* action, qaction_exec_t exec, void* args, uint32_t args_size) {
+  return_value_if_fail(action != NULL & exec != NULL, NULL);
+  return_value_if_fail(args_size <= sizeof(action->args), NULL);
 
-  if (action->vt->exec != NULL) {
-    return action->vt->exec(action);
+  memset(action, 0x00, sizeof(qaction_t));
+
+  action->exec = exec;
+
+  if(args != NULL) {
+    memcpy(action->args, args, args_size);
   }
 
-  return RET_NOT_IMPL;
+  return action;
 }
 
-ret_t qaction_destroy(qaction_t* action) {
-  return_value_if_fail(action != NULL && action->vt != NULL, RET_BAD_PARAMS);
+ret_t qaction_set_on_event(qaction_t* action, qaction_on_event_t on_event, void* on_event_ctx) {
+  return_value_if_fail(action != NULL, RET_BAD_PARAMS);
 
-  if (action->vt->destroy != NULL) {
-    return action->vt->destroy(action);
+  action->on_event = on_event;
+  action->on_event_ctx = on_event_ctx;
+
+  return RET_OK;
+}
+
+ret_t qaction_notify(qaction_t* action, event_t* event) {
+  return_value_if_fail(action != NULL && event != NULL, RET_BAD_PARAMS);
+
+  if(action->on_event != NULL) {
+    action->on_event(action->on_event_ctx, event);
   }
 
-  return RET_NOT_IMPL;
+  return RET_OK;
+}
+
+ret_t qaction_exec(qaction_t* action) {
+  return_value_if_fail(action != NULL && action->exec != NULL, RET_BAD_PARAMS);
+
+  return action->exec(action);
 }
 
 action_queue_t* action_queue_create(uint16_t capacity) {
