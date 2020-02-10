@@ -32,11 +32,11 @@ BEGIN_C_DECLS
  */
 typedef struct _action_thread_pool_t {
   /**
-   * @property {uint32_t} capacity
+   * @property {uint32_t} max_thread_nr
    * @annotation ["readable"]
-   * 最大容量。
+   * 最大线程数。
    */
-  uint32_t capacity;
+  uint32_t max_thread_nr;
 
   /**
    * @property {uint32_t} min_idle_nr
@@ -56,16 +56,16 @@ typedef struct _action_thread_pool_t {
  * @annotation ["constructor"]
  * 创建action_thread_pool对象。
  *
- * @param {uint16_t} capacity 最大线程数。
+ * @param {uint16_t} max_thread_nr 最大线程数。
  * @param {uint16_t} min_idle_nr 最小空闲线程数。
  *
  * @return {action_thread_pool_t*} action_thread_pool对象。
  */
-action_thread_pool_t* action_thread_pool_create(uint16_t capacity, uint16_t min_idle_nr);
+action_thread_pool_t* action_thread_pool_create(uint16_t max_thread_nr, uint16_t min_idle_nr);
 
 /**
  * @method action_thread_pool_exec
- * 从线程池中获取一个线程，并让线程执行action。
+ * 执行action。
  *
  * @param {action_thread_pool_t*} thread_pool action_thread_pool对象。
  * @param {qaction_t*} action action对象。

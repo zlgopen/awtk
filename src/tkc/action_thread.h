@@ -37,16 +37,9 @@ typedef ret_t (*action_thread_on_quit_t)(void* ctx, action_thread_t* thread);
  * @class action_thread_t
  * 执行action的线程。
  *
- *> 每个线程都有一个action queue。
+ *> 每个线程都有一个action queue，可以是共享的queue，也可以是私有的queue。
  */
 typedef struct _action_thread_t {
-  /**
-   * @property {bool_t} running
-   * @annotation ["readable"]
-   * 当前是否在运行。
-   */
-  bool_t running;
-
   /**
    * @property {tk_thread_t*} thread
    * @annotation ["readable"]
@@ -71,8 +64,11 @@ typedef struct _action_thread_t {
   /*private*/
   /*请求退出*/
   bool_t quit;
+
   /*已经退出*/
   bool_t quited;
+
+  /*是否是共享的queue*/
   bool_t is_shared_queue;
 
   void* on_idle_ctx;
@@ -117,7 +113,7 @@ ret_t action_thread_exec(action_thread_t* thread, qaction_t* action);
  *
  * @param {action_thread_t*} thread action_thread对象。
  * @param {action_thread_on_idle_t} on_idle 空闲时的回调函数。
- * @param {void*} ctx 回调函数的上下文。。
+ * @param {void*} ctx 回调函数的上下文。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -130,7 +126,7 @@ ret_t action_thread_set_on_idle(action_thread_t* thread, action_thread_on_idle_t
  *
  * @param {action_thread_t*} thread action_thread对象。
  * @param {action_thread_on_quit_t} on_quit 退出时的回调函数。
- * @param {void*} ctx 回调函数的上下文。。
+ * @param {void*} ctx 回调函数的上下文。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

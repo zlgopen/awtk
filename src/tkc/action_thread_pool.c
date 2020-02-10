@@ -22,22 +22,22 @@
 #include "tkc/mem.h"
 #include "tkc/action_thread_pool.h"
 
-action_thread_pool_t* action_thread_pool_create(uint16_t capacity, uint16_t min_idle_nr) {
+action_thread_pool_t* action_thread_pool_create(uint16_t max_thread_nr, uint16_t min_idle_nr) {
   action_thread_pool_t* thread_pool = NULL;
-  uint32_t size = sizeof(action_thread_pool_t) + sizeof(action_thread_t*) * capacity;
+  uint32_t size = sizeof(action_thread_pool_t) + sizeof(action_thread_t*) * max_thread_nr;
 
-  return_value_if_fail(capacity > 0 && min_idle_nr > 0, NULL);
+  return_value_if_fail(max_thread_nr > 0 && min_idle_nr > 0, NULL);
   thread_pool = (action_thread_pool_t*)TKMEM_ALLOC(size);
   return_value_if_fail(thread_pool != NULL, NULL);
 
   memset(thread_pool, 0x00, size);
-  thread_pool->capacity = capacity;
+  thread_pool->max_thread_nr = max_thread_nr;
   thread_pool->min_idle_nr = min_idle_nr;
 
   thread_pool->mutex = tk_mutex_create();
   goto_error_if_fail(thread_pool->mutex != NULL);
 
-  thread_pool->queue = waitable_action_queue_create(capacity * 5);
+  thread_pool->queue = waitable_action_queue_create(max_thread_nr * 5);
   goto_error_if_fail(thread_pool->queue != NULL);
 
   return thread_pool;
@@ -46,7 +46,7 @@ error:
     tk_mutex_destroy(thread_pool->mutex);
   }
 
-  if(thread_pool->queue != NULL) {
+  if (thread_pool->queue != NULL) {
     waitable_action_queue_destroy(thread_pool->queue);
   }
 
@@ -62,7 +62,7 @@ static uint32_t action_thread_pool_get_thread_nr(action_thread_pool_t* thread_po
   return_value_if_fail(thread_pool != NULL, 0);
   return_value_if_fail(tk_mutex_lock(thread_pool->mutex) == RET_OK, 0);
 
-  for (i = 0; i < thread_pool->capacity; i++) {
+  for (i = 0; i < thread_pool->max_thread_nr; i++) {
     thread = thread_pool->threads[i];
     if (thread != NULL) {
       n++;
@@ -74,23 +74,37 @@ static uint32_t action_thread_pool_get_thread_nr(action_thread_pool_t* thread_po
 }
 
 static ret_t action_thread_pool_on_thread_idle(action_thread_pool_t* thread_pool,
-    action_thread_t* thread) {
+                                               action_thread_t* thread) {
+  uint32_t i = 0;
   uint32_t thread_nr = action_thread_pool_get_thread_nr(thread_pool);
   return_value_if_fail(thread_pool != NULL && thread != NULL, RET_BAD_PARAMS);
-  
-  return (thread_nr > thread_pool->min_idle_nr) ? RET_QUIT : RET_OK;
+
+  if (thread_nr > thread_pool->min_idle_nr) {
+    for (i = 0; i < thread_pool->max_thread_nr; i++) {
+      if (thread == thread_pool->threads[i]) {
+        thread_pool->threads[i] = NULL;
+        break;
+      }
+    }
+
+    return RET_QUIT;
+  }
+
+  return RET_OK;
 }
 
 static ret_t action_thread_pool_create_thread(action_thread_pool_t* thread_pool) {
   uint32_t i = 0;
   return_value_if_fail(thread_pool != NULL, RET_BAD_PARAMS);
   return_value_if_fail(tk_mutex_lock(thread_pool->mutex) == RET_OK, RET_BAD_PARAMS);
-  
-  for (i = 0; i < thread_pool->capacity; i++) {
-    if(thread_pool->threads[i] == NULL) {
+
+  for (i = 0; i < thread_pool->max_thread_nr; i++) {
+    if (thread_pool->threads[i] == NULL) {
       thread_pool->threads[i] = action_thread_create_with_queue(thread_pool->queue);
-      action_thread_set_on_quit(thread_pool->threads[i],
-          (action_thread_on_idle_t)action_thread_pool_on_thread_idle, thread_pool);
+      action_thread_set_on_idle(thread_pool->threads[i],
+                                (action_thread_on_idle_t)action_thread_pool_on_thread_idle,
+                                thread_pool);
+      break;
     }
   }
 
@@ -101,7 +115,7 @@ static ret_t action_thread_pool_ensure_threads(action_thread_pool_t* thread_pool
   uint32_t thread_nr = action_thread_pool_get_thread_nr(thread_pool);
   return_value_if_fail(thread_pool != NULL, RET_BAD_PARAMS);
 
-  if(thread_nr < thread_pool->min_idle_nr) {
+  if (thread_nr < thread_pool->min_idle_nr) {
     return action_thread_pool_create_thread(thread_pool);
   }
 
@@ -112,7 +126,7 @@ ret_t action_thread_pool_exec(action_thread_pool_t* thread_pool, qaction_t* acti
   return_value_if_fail(thread_pool != NULL && action != NULL, RET_BAD_PARAMS);
   return_value_if_fail(action_thread_pool_ensure_threads(thread_pool) == RET_OK, RET_FAIL);
 
-  if(thread_pool->queue->queue->full) {
+  if (thread_pool->queue->queue->full) {
     action_thread_pool_create_thread(thread_pool);
   }
 
@@ -124,7 +138,7 @@ ret_t action_thread_pool_destroy(action_thread_pool_t* thread_pool) {
   action_thread_t* thread = NULL;
   return_value_if_fail(thread_pool != NULL, RET_BAD_PARAMS);
 
-  for (i = 0; i < thread_pool->capacity; i++) {
+  for (i = 0; i < thread_pool->max_thread_nr; i++) {
     thread = thread_pool->threads[i];
     if (thread != NULL) {
       action_thread_destroy(thread);

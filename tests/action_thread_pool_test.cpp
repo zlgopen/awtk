@@ -3,9 +3,11 @@
 #include "tkc/platform.h"
 #include "tkc/action_thread_pool.h"
 
-#define NR 10
+#include <atomic>
 
-static uint32_t exec_times = 0;
+#define NR 10000*100
+
+static std::atomic<int> exec_times;
 
 static ret_t qaction_dummy_on_event(qaction_t* action, event_t* e) {
   if (e->type == EVT_DONE) {
@@ -17,7 +19,7 @@ static ret_t qaction_dummy_on_event(qaction_t* action, event_t* e) {
 
 static ret_t qaction_dummy_exec(qaction_t* action) {
   exec_times++;
-  log_debug("exec: exec_times=%u\n", exec_times);
+  log_debug("exec: exec_times=%d\n", exec_times.load());
   return RET_OK;
 }
 
@@ -31,14 +33,14 @@ void test() {
 
   pool = action_thread_pool_create(10, 2);
 
-  action_thread_pool_exec(pool, a);
-  action_thread_pool_exec(pool, a);
-  action_thread_pool_exec(pool, a);
+  for(i = 0; i < NR; i++) {
+    action_thread_pool_exec(pool, a);
+  }
 
   sleep_ms(2000);
 
   action_thread_pool_destroy(pool);
-  log_debug("exec_times=%u\n", exec_times);
+  log_debug("exec_times=%d\n", exec_times.load());
 }
 
 #include "tkc/platform.h"

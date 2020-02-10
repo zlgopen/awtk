@@ -48,12 +48,13 @@ static void* action_thread_entry(void* args) {
     }
 
     if (thread->on_idle != NULL) {
-      if(thread->on_idle(thread->on_quit_ctx, thread) == RET_QUIT) {
+      if (thread->on_idle(thread->on_idle_ctx, thread) == RET_QUIT) {
         thread->quit = TRUE;
         break;
       }
     }
   }
+
   thread->quited = TRUE;
   if (thread->on_quit != NULL) {
     thread->on_quit(thread->on_quit_ctx, thread);
@@ -73,10 +74,6 @@ static action_thread_t* action_thread_create_internal(void) {
 
   return thread;
 error:
-
-  if (thread->thread != NULL) {
-    tk_thread_destroy(thread->thread);
-  }
 
   TKMEM_FREE(thread);
 
@@ -148,9 +145,11 @@ ret_t action_thread_destroy(action_thread_t* thread) {
   action_thread_quit(thread);
   tk_thread_join(thread->thread);
   tk_thread_destroy(thread->thread);
+
   if (!thread->is_shared_queue) {
     waitable_action_queue_destroy(thread->queue);
   }
+  TKMEM_FREE(thread);
 
   return RET_OK;
 }
