@@ -25,6 +25,7 @@
 #include <process.h>
 struct _tk_semaphore_t {
   HANDLE sem;
+  char name[TK_NAME_LEN + 1];
 };
 #elif defined(HAS_PTHREAD)
 #include <fcntl.h>
