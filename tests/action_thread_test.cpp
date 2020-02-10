@@ -1,7 +1,7 @@
 #include "tkc/utils.h"
 #include "tkc/thread.h"
 #include "tkc/platform.h"
-#include "tkc/action_thread_pool.h"
+#include "tkc/action_thread.h"
 
 #define NR 10
 
@@ -21,23 +21,37 @@ static ret_t qaction_dummy_exec(qaction_t* action) {
   return RET_OK;
 }
 
+static ret_t on_idle(void* ctx, action_thread_t* thread) {
+  log_debug("on_idle\n");
+
+  return RET_QUIT;
+}
+
+static ret_t on_quit(void* ctx, action_thread_t* thread) {
+  log_debug("on_quit\n");
+
+  return RET_OK;
+}
+
 void test() {
   uint32_t i = 0;
   qaction_t action;
-  action_thread_pool_t* pool = NULL;
+  action_thread_t* thread1 = NULL;
 
   qaction_t* a = qaction_init(&action, qaction_dummy_exec, NULL, 0);
   qaction_set_on_event(a, qaction_dummy_on_event, NULL);
 
-  pool = action_thread_pool_create(10, 2);
+  thread1 = action_thread_create();
+  action_thread_set_on_idle(thread1, on_idle, NULL);
+  action_thread_set_on_quit(thread1, on_quit, NULL);
 
-  action_thread_pool_exec(pool, a);
-  action_thread_pool_exec(pool, a);
-  action_thread_pool_exec(pool, a);
+  action_thread_exec(thread1, a);
+  action_thread_exec(thread1, a);
+  action_thread_exec(thread1, a);
 
   sleep_ms(2000);
 
-  action_thread_pool_destroy(pool);
+  action_thread_destroy(thread1);
   log_debug("exec_times=%u\n", exec_times);
 }
 

@@ -39,15 +39,15 @@ typedef struct _action_thread_pool_t {
   uint32_t capacity;
 
   /**
-   * @property {uint32_t} max_free_nr
+   * @property {uint32_t} min_idle_nr
    * @annotation ["readable"]
-   * 最大空闲容量。
+   * 最小空闲线程数
    */
-  uint32_t max_free_nr;
-  ;
+  uint32_t min_idle_nr;
 
   /*private*/
   tk_mutex_t* mutex;
+  waitable_action_queue_t* queue;
   action_thread_t* threads[1];
 } action_thread_pool_t;
 
@@ -57,11 +57,11 @@ typedef struct _action_thread_pool_t {
  * 创建action_thread_pool对象。
  *
  * @param {uint16_t} capacity 最大线程数。
- * @param {uint16_t} max_free_nr 最大空闲线程数。
+ * @param {uint16_t} min_idle_nr 最小空闲线程数。
  *
  * @return {action_thread_pool_t*} action_thread_pool对象。
  */
-action_thread_pool_t* action_thread_pool_create(uint16_t capacity, uint16_t max_free_nr);
+action_thread_pool_t* action_thread_pool_create(uint16_t capacity, uint16_t min_idle_nr);
 
 /**
  * @method action_thread_pool_exec
@@ -73,37 +73,6 @@ action_thread_pool_t* action_thread_pool_create(uint16_t capacity, uint16_t max_
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t action_thread_pool_exec(action_thread_pool_t* thread_pool, qaction_t* action);
-
-/**
- * @method action_thread_pool_put
- * 将线程对象放回线程池。
- *
- * @param {action_thread_pool_t*} thread_pool action_thread_pool对象。
- * @param {qthread_t*} thread thread对象。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t action_thread_pool_put(action_thread_pool_t* thread_pool, action_thread_t* thread);
-
-/**
- * @method action_thread_pool_get
- * 从线程池中获取一个线程。
- *
- * @param {action_thread_pool_t*} thread_pool action_thread_pool对象。
- *
- * @return {action_thread_t*} 返回线程对象。
- */
-action_thread_t* action_thread_pool_get(action_thread_pool_t* thread_pool);
-
-/**
- * @method action_thread_pool_get_free_nr
- * 获取空闲线程数。
- *
- * @param {action_thread_pool_t*} thread_pool action_thread_pool对象。
- *
- * @return {uint32_t} 返回空闲线程数。
- */
-uint32_t action_thread_pool_get_free_nr(action_thread_pool_t* thread_pool);
 
 /**
  * @method action_thread_pool_destroy

@@ -21,7 +21,7 @@
 
 #include "tkc/mem.h"
 #include "tkc/action_thread.h"
-#include "tkc/action_thread_pool.h"
+#include "tkc/waitable_action_queue.h"
 #include "tkc/waitable_action_queue.h"
 
 static void* action_thread_entry(void* args) {
@@ -44,33 +44,32 @@ static void* action_thread_entry(void* args) {
       }
       qaction_notify(&action, done_event_init(&done, ret));
 
-      if (thread->max_actions_nr > 0) {
-        thread->executed_actions_nr++;
-        if (thread->executed_actions_nr >= thread->max_actions_nr) {
-          action_thread_pool_put(thread->thread_pool, thread);
-        }
+      thread->executed_actions_nr++;
+    }
+
+    if (thread->on_idle != NULL) {
+      if(thread->on_idle(thread->on_quit_ctx, thread) == RET_QUIT) {
+        thread->quit = TRUE;
+        break;
       }
     }
   }
   thread->quited = TRUE;
+  if (thread->on_quit != NULL) {
+    thread->on_quit(thread->on_quit_ctx, thread);
+  }
   log_debug("action thread done\n");
 
   return NULL;
 }
 
-action_thread_t* action_thread_create(action_thread_pool_t* thread_pool) {
+static action_thread_t* action_thread_create_internal(void) {
   action_thread_t* thread = NULL;
-  return_value_if_fail(thread_pool != NULL, NULL);
   thread = TKMEM_ZALLOC(action_thread_t);
   return_value_if_fail(thread != NULL, NULL);
 
-  thread->thread_pool = thread_pool;
   thread->thread = tk_thread_create(action_thread_entry, thread);
   goto_error_if_fail(thread->thread != NULL);
-
-  thread->queue = waitable_action_queue_create(10);
-  goto_error_if_fail(thread->queue != NULL);
-  tk_thread_start(thread->thread);
 
   return thread;
 error:
@@ -79,13 +78,41 @@ error:
     tk_thread_destroy(thread->thread);
   }
 
-  if (thread->queue != NULL) {
-    waitable_action_queue_destroy(thread->queue);
-  }
-
   TKMEM_FREE(thread);
 
   return NULL;
+}
+
+action_thread_t* action_thread_create(void) {
+  action_thread_t* thread = NULL;
+  waitable_action_queue_t* queue = waitable_action_queue_create(10);
+  return_value_if_fail(queue != NULL, NULL);
+
+  thread = action_thread_create_internal();
+  if (thread != NULL) {
+    thread->queue = queue;
+    tk_thread_start(thread->thread);
+  } else {
+    waitable_action_queue_destroy(queue);
+  }
+
+  return thread;
+}
+
+action_thread_t* action_thread_create_with_queue(waitable_action_queue_t* queue) {
+  action_thread_t* thread = NULL;
+  return_value_if_fail(queue != NULL, NULL);
+
+  thread = action_thread_create_internal();
+  return_value_if_fail(thread != NULL, NULL);
+
+  if (thread != NULL) {
+    thread->queue = queue;
+    thread->is_shared_queue = TRUE;
+    tk_thread_start(thread->thread);
+  }
+
+  return thread;
 }
 
 ret_t action_thread_exec(action_thread_t* thread, qaction_t* action) {
@@ -93,14 +120,6 @@ ret_t action_thread_exec(action_thread_t* thread, qaction_t* action) {
   return_value_if_fail(action != NULL && action->exec != NULL, RET_BAD_PARAMS);
 
   return waitable_action_queue_send(thread->queue, action, 3000);
-}
-
-ret_t action_thread_set_max_actions_nr(action_thread_t* thread, uint32_t max_actions_nr) {
-  return_value_if_fail(thread != NULL, RET_BAD_PARAMS);
-
-  thread->max_actions_nr = max_actions_nr;
-
-  return RET_OK;
 }
 
 static ret_t qaction_quit_exec(qaction_t* action) {
@@ -129,7 +148,29 @@ ret_t action_thread_destroy(action_thread_t* thread) {
   action_thread_quit(thread);
   tk_thread_join(thread->thread);
   tk_thread_destroy(thread->thread);
-  waitable_action_queue_destroy(thread->queue);
+  if (!thread->is_shared_queue) {
+    waitable_action_queue_destroy(thread->queue);
+  }
+
+  return RET_OK;
+}
+
+ret_t action_thread_set_on_idle(action_thread_t* thread, action_thread_on_idle_t on_idle,
+                                void* ctx) {
+  return_value_if_fail(thread != NULL, RET_BAD_PARAMS);
+
+  thread->on_idle = on_idle;
+  thread->on_idle_ctx = ctx;
+
+  return RET_OK;
+}
+
+ret_t action_thread_set_on_quit(action_thread_t* thread, action_thread_on_quit_t on_quit,
+                                void* ctx) {
+  return_value_if_fail(thread != NULL, RET_BAD_PARAMS);
+
+  thread->on_quit = on_quit;
+  thread->on_quit_ctx = ctx;
 
   return RET_OK;
 }

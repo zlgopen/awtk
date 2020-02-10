@@ -105,7 +105,8 @@ event_t* done_event_init(done_event_t* event, ret_t result) {
   memset(event, 0x00, sizeof(*event));
 
   event->e.type = EVT_DONE;
-  event->result = result;;
+  event->result = result;
+  ;
 
   return (event_t*)(event);
 }

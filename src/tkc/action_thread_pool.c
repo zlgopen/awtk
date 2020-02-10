@@ -22,64 +22,40 @@
 #include "tkc/mem.h"
 #include "tkc/action_thread_pool.h"
 
-action_thread_pool_t* action_thread_pool_create(uint16_t capacity, uint16_t max_free_nr) {
+action_thread_pool_t* action_thread_pool_create(uint16_t capacity, uint16_t min_idle_nr) {
   action_thread_pool_t* thread_pool = NULL;
   uint32_t size = sizeof(action_thread_pool_t) + sizeof(action_thread_t*) * capacity;
 
-  return_value_if_fail(capacity > 0 && max_free_nr > 0, NULL);
+  return_value_if_fail(capacity > 0 && min_idle_nr > 0, NULL);
   thread_pool = (action_thread_pool_t*)TKMEM_ALLOC(size);
   return_value_if_fail(thread_pool != NULL, NULL);
 
   memset(thread_pool, 0x00, size);
   thread_pool->capacity = capacity;
-  thread_pool->max_free_nr = max_free_nr;
-  thread_pool->mutex = tk_mutex_create();
+  thread_pool->min_idle_nr = min_idle_nr;
 
-  if (thread_pool->mutex == NULL) {
-    TKMEM_FREE(thread_pool);
-    thread_pool = NULL;
-  }
+  thread_pool->mutex = tk_mutex_create();
+  goto_error_if_fail(thread_pool->mutex != NULL);
+
+  thread_pool->queue = waitable_action_queue_create(capacity * 5);
+  goto_error_if_fail(thread_pool->queue != NULL);
 
   return thread_pool;
-}
-
-ret_t action_thread_pool_exec(action_thread_pool_t* thread_pool, qaction_t* action) {
-  action_thread_t* thread = NULL;
-  return_value_if_fail(thread_pool != NULL && action != NULL, RET_BAD_PARAMS);
-  thread = action_thread_pool_get(thread_pool);
-  return_value_if_fail(thread != NULL, RET_BAD_PARAMS);
-
-  action_thread_set_max_actions_nr(thread, 1);
-
-  return action_thread_exec(thread, action);
-}
-
-ret_t action_thread_pool_put(action_thread_pool_t* thread_pool, action_thread_t* thread) {
-  uint32_t i = 0;
-  uint32_t free_nr = action_thread_pool_get_free_nr(thread_pool);
-  return_value_if_fail(thread_pool != NULL && thread != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(thread->thread_pool == thread_pool, RET_BAD_PARAMS);
-  log_debug("put: %p\n", thread);
-  return_value_if_fail(tk_mutex_lock(thread_pool->mutex) == RET_OK, RET_BAD_PARAMS);
-
-  if (free_nr < thread_pool->max_free_nr) {
-    thread->running = FALSE;
-    thread->max_actions_nr = 0;
-    thread->executed_actions_nr = 0;
-  } else {
-    for (i = 0; i < thread_pool->capacity; i++) {
-      if (thread == thread_pool->threads[i]) {
-        thread_pool->threads[i] = NULL;
-        break;
-      }
-    }
-    action_thread_destroy(thread);
+error:
+  if (thread_pool->mutex != NULL) {
+    tk_mutex_destroy(thread_pool->mutex);
   }
 
-  return tk_mutex_unlock(thread_pool->mutex);
+  if(thread_pool->queue != NULL) {
+    waitable_action_queue_destroy(thread_pool->queue);
+  }
+
+  TKMEM_FREE(thread_pool);
+
+  return NULL;
 }
 
-uint32_t action_thread_pool_get_free_nr(action_thread_pool_t* thread_pool) {
+static uint32_t action_thread_pool_get_thread_nr(action_thread_pool_t* thread_pool) {
   uint32_t i = 0;
   uint32_t n = 0;
   action_thread_t* thread = NULL;
@@ -88,7 +64,7 @@ uint32_t action_thread_pool_get_free_nr(action_thread_pool_t* thread_pool) {
 
   for (i = 0; i < thread_pool->capacity; i++) {
     thread = thread_pool->threads[i];
-    if (thread != NULL && !(thread->running)) {
+    if (thread != NULL) {
       n++;
     }
   }
@@ -97,36 +73,50 @@ uint32_t action_thread_pool_get_free_nr(action_thread_pool_t* thread_pool) {
   return n;
 }
 
-action_thread_t* action_thread_pool_get(action_thread_pool_t* thread_pool) {
+static ret_t action_thread_pool_on_thread_idle(action_thread_pool_t* thread_pool,
+    action_thread_t* thread) {
+  uint32_t thread_nr = action_thread_pool_get_thread_nr(thread_pool);
+  return_value_if_fail(thread_pool != NULL && thread != NULL, RET_BAD_PARAMS);
+  
+  return (thread_nr > thread_pool->min_idle_nr) ? RET_QUIT : RET_OK;
+}
+
+static ret_t action_thread_pool_create_thread(action_thread_pool_t* thread_pool) {
   uint32_t i = 0;
-  action_thread_t* thread = NULL;
-  return_value_if_fail(thread_pool != NULL, NULL);
-  return_value_if_fail(tk_mutex_lock(thread_pool->mutex) == RET_OK, NULL);
-
+  return_value_if_fail(thread_pool != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(tk_mutex_lock(thread_pool->mutex) == RET_OK, RET_BAD_PARAMS);
+  
   for (i = 0; i < thread_pool->capacity; i++) {
-    thread = thread_pool->threads[i];
-    if (thread != NULL && !(thread->running)) {
-      thread->running = TRUE;
-      break;
+    if(thread_pool->threads[i] == NULL) {
+      thread_pool->threads[i] = action_thread_create_with_queue(thread_pool->queue);
+      action_thread_set_on_quit(thread_pool->threads[i],
+          (action_thread_on_idle_t)action_thread_pool_on_thread_idle, thread_pool);
     }
   }
 
-  if (thread == NULL) {
-    for (i = 0; i < thread_pool->capacity; i++) {
-      thread = thread_pool->threads[i];
-      if (thread == NULL) {
-        thread = action_thread_create(thread_pool);
-        thread->running = TRUE;
-        thread_pool->threads[i] = thread;
-        break;
-      }
-    }
+  return tk_mutex_unlock(thread_pool->mutex);
+}
+
+static ret_t action_thread_pool_ensure_threads(action_thread_pool_t* thread_pool) {
+  uint32_t thread_nr = action_thread_pool_get_thread_nr(thread_pool);
+  return_value_if_fail(thread_pool != NULL, RET_BAD_PARAMS);
+
+  if(thread_nr < thread_pool->min_idle_nr) {
+    return action_thread_pool_create_thread(thread_pool);
   }
-  tk_mutex_unlock(thread_pool->mutex);
 
-  log_debug("get: %p\n", thread);
+  return RET_OK;
+}
 
-  return thread;
+ret_t action_thread_pool_exec(action_thread_pool_t* thread_pool, qaction_t* action) {
+  return_value_if_fail(thread_pool != NULL && action != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(action_thread_pool_ensure_threads(thread_pool) == RET_OK, RET_FAIL);
+
+  if(thread_pool->queue->queue->full) {
+    action_thread_pool_create_thread(thread_pool);
+  }
+
+  return waitable_action_queue_send(thread_pool->queue, action, 1000);
 }
 
 ret_t action_thread_pool_destroy(action_thread_pool_t* thread_pool) {
@@ -143,6 +133,7 @@ ret_t action_thread_pool_destroy(action_thread_pool_t* thread_pool) {
   }
 
   tk_mutex_destroy(thread_pool->mutex);
+  waitable_action_queue_destroy(thread_pool->queue);
   memset(thread_pool, 0x00, sizeof(action_thread_pool_t));
   TKMEM_FREE(thread_pool);
 

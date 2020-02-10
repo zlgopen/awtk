@@ -27,8 +27,11 @@
 
 BEGIN_C_DECLS
 
-struct _action_thread_pool_t;
-typedef struct _action_thread_pool_t action_thread_pool_t;
+struct _action_thread_t;
+typedef struct _action_thread_t action_thread_t;
+
+typedef ret_t (*action_thread_on_idle_t)(void* ctx, action_thread_t* thread);
+typedef ret_t (*action_thread_on_quit_t)(void* ctx, action_thread_t* thread);
 
 /**
  * @class action_thread_t
@@ -52,25 +55,11 @@ typedef struct _action_thread_t {
   tk_thread_t* thread;
 
   /**
-   * @property {action_thread_pool_t*} thread_pool
-   * @annotation ["readable"]
-   * 线程池对象。
-   */
-  action_thread_pool_t* thread_pool;
-
-  /**
    * @property {waitable_action_queue_t*} queue
    * @annotation ["readable"]
    * action queue。
    */
   waitable_action_queue_t* queue;
-
-  /**
-   * @property {uint32_t} max_actions_nr
-   * @annotation ["readable"]
-   * 执行到max_actions_nr个action后自动回收。
-   */
-  uint32_t max_actions_nr;
 
   /**
    * @property {uint32_t} executed_actions_nr
@@ -84,17 +73,32 @@ typedef struct _action_thread_t {
   bool_t quit;
   /*已经退出*/
   bool_t quited;
+  bool_t is_shared_queue;
+
+  void* on_idle_ctx;
+  void* on_quit_ctx;
+  action_thread_on_idle_t on_idle;
+  action_thread_on_quit_t on_quit;
 } action_thread_t;
 
 /**
  * @method action_thread_create
  * @annotation ["constructor"]
- * @param {action_thread_pool_t*} thread_pool thread_pool对象。
  * 创建action_thread对象。
  *
  * @return {action_thread_t*} action_thread对象。
  */
-action_thread_t* action_thread_create(action_thread_pool_t* thread_pool);
+action_thread_t* action_thread_create(void);
+
+/**
+ * @method action_thread_create_with_queue
+ * @annotation ["constructor"]
+ * @param {waitable_action_queue_t*} queue queue对象。
+ * 创建action_thread对象。
+ *
+ * @return {action_thread_t*} action_thread对象。
+ */
+action_thread_t* action_thread_create_with_queue(waitable_action_queue_t* queue);
 
 /**
  * @method action_thread_exec
@@ -108,15 +112,30 @@ action_thread_t* action_thread_create(action_thread_pool_t* thread_pool);
 ret_t action_thread_exec(action_thread_t* thread, qaction_t* action);
 
 /**
- * @method action_thread_set_max_actions_nr
- * 设置max_actions_nr，让线程执行max_actions_nr个action后，自动回收。
+ * @method action_thread_set_on_idle
+ * 设置空闲时的回调函数。
  *
  * @param {action_thread_t*} thread action_thread对象。
- * @param {uint32_t} max_actions_nr 最大action个数。
+ * @param {action_thread_on_idle_t} on_idle 空闲时的回调函数。
+ * @param {void*} ctx 回调函数的上下文。。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t action_thread_set_max_actions_nr(action_thread_t* thread, uint32_t max_actions_nr);
+ret_t action_thread_set_on_idle(action_thread_t* thread, action_thread_on_idle_t on_idle,
+                                void* ctx);
+
+/**
+ * @method action_thread_set_on_quit
+ * 设置退出时的回调函数。
+ *
+ * @param {action_thread_t*} thread action_thread对象。
+ * @param {action_thread_on_quit_t} on_quit 退出时的回调函数。
+ * @param {void*} ctx 回调函数的上下文。。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t action_thread_set_on_quit(action_thread_t* thread, action_thread_on_quit_t on_quit,
+                                void* ctx);
 
 /**
  * @method action_thread_destroy
