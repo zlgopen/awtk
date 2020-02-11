@@ -37,11 +37,10 @@ qaction_t* qaction_init(qaction_t* action, qaction_exec_t exec, void* args, uint
   return action;
 }
 
-ret_t qaction_set_on_event(qaction_t* action, qaction_on_event_t on_event, void* on_event_ctx) {
+ret_t qaction_set_on_event(qaction_t* action, qaction_on_event_t on_event) {
   return_value_if_fail(action != NULL, RET_BAD_PARAMS);
 
   action->on_event = on_event;
-  action->on_event_ctx = on_event_ctx;
 
   return RET_OK;
 }
@@ -50,7 +49,7 @@ ret_t qaction_notify(qaction_t* action, event_t* event) {
   return_value_if_fail(action != NULL && event != NULL, RET_BAD_PARAMS);
 
   if (action->on_event != NULL) {
-    action->on_event(action->on_event_ctx, event);
+    action->on_event(action, event);
   }
 
   return RET_OK;

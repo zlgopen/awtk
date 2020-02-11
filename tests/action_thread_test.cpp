@@ -39,7 +39,7 @@ void test() {
   action_thread_t* thread1 = NULL;
 
   qaction_t* a = qaction_init(&action, qaction_dummy_exec, NULL, 0);
-  qaction_set_on_event(a, qaction_dummy_on_event, NULL);
+  qaction_set_on_event(a, qaction_dummy_on_event);
 
   thread1 = action_thread_create();
   action_thread_set_on_idle(thread1, on_idle, NULL);

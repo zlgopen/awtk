@@ -38,13 +38,6 @@ typedef ret_t (*qaction_on_event_t)(qaction_t* action, event_t* event);
  */
 struct _qaction_t {
   /**
-   * @property {void*} on_event_ctx 
-   * @annotation ["readable"]
-   * on_event_ctx。
-   */
-  void* on_event_ctx;
-
-  /**
    * @property {qaction_on_event_t} on_event
    * @annotation ["readable"]
    * 事件处理函数。如进度、错误和完成等。
@@ -85,11 +78,10 @@ qaction_t* qaction_init(qaction_t* action, qaction_exec_t exec, void* args, uint
  *
  * @param {qaction_t*} action action对象。
  * @param {qaction_on_event_t} on_event 事件处理函数。
- * @param {void*} on_event_ctx 事件处理函数的上下文。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t qaction_set_on_event(qaction_t* action, qaction_on_event_t on_event, void* on_event_ctx);
+ret_t qaction_set_on_event(qaction_t* action, qaction_on_event_t on_event);
 
 /**
  * @method qaction_notify

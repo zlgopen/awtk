@@ -29,7 +29,7 @@ void test() {
   action_thread_pool_t* pool = NULL;
 
   qaction_t* a = qaction_init(&action, qaction_dummy_exec, NULL, 0);
-  qaction_set_on_event(a, qaction_dummy_on_event, NULL);
+  qaction_set_on_event(a, qaction_dummy_on_event);
 
   pool = action_thread_pool_create(10, 2);
 
