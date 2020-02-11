@@ -2194,6 +2194,25 @@ ret_t widget_set_style_color(widget_t* widget, const char* state_and_name, uint3
 bitmap_t* widget_take_snapshot(widget_t* widget);
 
 /**
+ * @method widget_take_snapshot_rect
+ * 创建一个bitmap对象，将控件绘制到bitmap上并且可以设置该控件的截屏区域，返回bitmap对象。
+ *
+ * 调用者需要调用bitmap_destroy销毁返回的bitmap对象。
+ *
+ *```c
+ * bitmap_t* bitmap = widget_take_snapshot_rect(window_manager(), NULL);
+ * bitmap_save_png(bitmap, "test.png");
+ * bitmap_destroy(bitmap);
+ *``` 
+ *
+ * @param {widget_t*} widget 控件对象。
+ * @param {rect_t*} r 截屏区域（输入NULL，则为控件全区域截屏）。
+ *
+ * @return {bitmap_t*} 返回位图对象。
+ */
+bitmap_t* widget_take_snapshot_rect(widget_t* widget, rect_t* r);
+
+/**
  * @method widget_get_canvas
  * 获取canvas对象。
  *

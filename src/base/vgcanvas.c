@@ -466,6 +466,15 @@ ret_t fbo_to_img(framebuffer_object_t* fbo, bitmap_t* img) {
   return RET_OK;
 }
 
+ret_t vgcanvas_fbo_to_bitmap(vgcanvas_t* vg, framebuffer_object_t* fbo, bitmap_t* img, rect_t* r) {
+  return_value_if_fail(vg != NULL && fbo != NULL && img != NULL, RET_BAD_PARAMS);
+  if (vg->vt != NULL && vg->vt->fbo_to_bitmap != NULL) {
+    return vg->vt->fbo_to_bitmap(vg, fbo, img, r);
+  }
+
+  return RET_NOT_IMPL;
+}
+
 wh_t vgcanvas_get_width(vgcanvas_t* vgcanvas) {
   return_value_if_fail(vgcanvas != NULL && vgcanvas->vt != NULL, 0);
 

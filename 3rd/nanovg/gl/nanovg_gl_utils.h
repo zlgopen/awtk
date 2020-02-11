@@ -130,6 +130,14 @@ void nvgluBindFramebuffer(NVGLUframebuffer* fb)
 #endif
 }
 
+void nvgluReadCurrentFramebufferData(unsigned int x, unsigned int y, unsigned int w, unsigned int h, unsigned int width, unsigned int height, void* pixels)
+{
+	if(x + w <= width && y + h <= height && x > 0 && y > 0 && pixels != NULL) {
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+		glReadPixels(x, y, w, h, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+	}
+}
+
 void nvgluDeleteFramebuffer(NVGLUframebuffer* fb)
 {
 #ifdef NANOVG_FBO_VALID

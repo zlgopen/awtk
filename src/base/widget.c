@@ -32,6 +32,7 @@
 #include "base/idle.h"
 #include "base/widget.h"
 #include "base/layout.h"
+#include "native_window.h"
 #include "base/main_loop.h"
 #include "base/ui_feedback.h"
 #include "base/system_info.h"
@@ -3902,44 +3903,103 @@ ret_t widget_close_window(widget_t* widget) {
   return window_manager_close_window(win->parent, win);
 }
 
-#if defined(WITH_NANOVG_GPU) || defined(FRAGMENT_FRAME_BUFFER_SIZE)
-bitmap_t* widget_take_snapshot(widget_t* widget) {
+#if defined(FRAGMENT_FRAME_BUFFER_SIZE)
+bitmap_t* widget_take_snapshot_rect(widget_t* widget, rect_t* r) {
   log_warn("not supported yet\n");
   return NULL;
 }
+
+#elif defined(WITH_NANOVG_GPU)
+
+bitmap_t* widget_take_snapshot_rect(widget_t* widget, rect_t* r) {
+  
+  bitmap_t* img;
+  uint32_t w = 0;
+  uint32_t h = 0;
+  canvas_t* c = NULL;
+  vgcanvas_t* vg = NULL;
+  framebuffer_object_t fbo;
+
+  native_window_t* native_window = (native_window_t*)widget_get_prop_pointer(window_manager(), WIDGET_PROP_NATIVE_WINDOW);
+  return_value_if_fail(native_window != NULL, NULL);
+  
+  c = native_window_get_canvas(native_window);
+  vg = lcd_get_vgcanvas(c->lcd);
+  return_value_if_fail(c != NULL && vg != NULL, NULL);
+
+  vgcanvas_create_fbo(vg, &fbo);
+  vgcanvas_bind_fbo(vg, &fbo);
+  canvas_set_clip_rect(c, r);
+  widget_paint(widget, c);
+  vgcanvas_unbind_fbo(vg, &fbo);
+
+  if(r != NULL) {
+    w = r->w;
+    h = r->h;
+  } else {
+    w = fbo.w;
+    h = fbo.h;
+  }
+
+  img = bitmap_create_ex(w * fbo.ratio, h * fbo.ratio, 0, BITMAP_FMT_RGBA8888);
+  vgcanvas_fbo_to_bitmap(vg, &fbo, img, r);
+
+  vgcanvas_destroy_fbo(vg, &fbo);
+  
+  return img;
+}
+
 #else
 #include "lcd/lcd_mem_rgba8888.h"
-bitmap_t* widget_take_snapshot(widget_t* widget) {
+bitmap_t* widget_take_snapshot_rect(widget_t* widget, rect_t* r) {
   wh_t w = 0;
   wh_t h = 0;
+  rect_t r_fix;
   canvas_t canvas;
   lcd_t* lcd = NULL;
   uint8_t* buff = NULL;
-  bitmap_t* bitmap = NULL;
   canvas_t* c = &canvas;
+  bitmap_t* bitmap = NULL;
+  bitmap_t* bitmap_clip = NULL;
   return_value_if_fail(widget != NULL && widget->vt != NULL, NULL);
-
+  
   w = widget->w;
   h = widget->h;
+
   bitmap = bitmap_create_ex(w, h, w * 4, BITMAP_FMT_RGBA8888);
   return_value_if_fail(bitmap != NULL, NULL);
 
   buff = bitmap_lock_buffer_for_write(bitmap);
   lcd = lcd_mem_rgba8888_create_single_fb(w, h, buff);
   if (lcd != NULL) {
-    rect_t r = rect_init(0, 0, w, h);
     canvas_init(c, lcd, font_manager());
-    canvas_begin_frame(c, &r, LCD_DRAW_OFFLINE);
+    canvas_begin_frame(c, r, LCD_DRAW_OFFLINE);
     widget_paint(widget, c);
     canvas_end_frame(c);
     canvas_reset(c);
     lcd_destroy(lcd);
   }
+
   bitmap_unlock_buffer(bitmap);
+  
+  if(r != NULL) {
+    bitmap_clip = bitmap_create_ex(r->w, r->h, r->w * 4, BITMAP_FMT_RGBA8888);
+
+    if(image_copy(bitmap_clip, bitmap, r, 0, 0) == RET_OK) {
+      bitmap_destroy(bitmap);
+      return bitmap_clip;
+    } else {
+      return NULL;
+    }
+  }
 
   return bitmap;
 }
 #endif /*WITH_NANOVG_GPU*/
+
+bitmap_t* widget_take_snapshot(widget_t* widget) {
+  return widget_take_snapshot_rect(widget, NULL);
+}
 
 ret_t widget_dispatch_simple_event(widget_t* widget, uint32_t type) {
   event_t e = event_init(type, widget);
