@@ -204,7 +204,8 @@ static ret_t vgcanvas_nanovg_unbind_fbo(vgcanvas_t* vgcanvas, framebuffer_object
   return RET_OK;
 }
 
-static ret_t vgcanvas_nanovg_fbo_to_bitmap(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo, bitmap_t* img, rect_t* r) {
+static ret_t vgcanvas_nanovg_fbo_to_bitmap(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo,
+                                           bitmap_t* img, rect_t* r) {
   uint32_t x = 0;
   uint32_t y = 0;
   uint32_t height = 0;
@@ -219,20 +220,21 @@ static ret_t vgcanvas_nanovg_fbo_to_bitmap(vgcanvas_t* vgcanvas, framebuffer_obj
   data = TKMEM_ZALLOCN(uint8_t, img->h * img->line_length);
   img_data = (uint8_t*)bitmap_lock_buffer_for_write(img);
   height = fbo->h * fbo->ratio;
-  if(r != NULL) {
+  if (r != NULL) {
     x = r->x;
     y = r->y;
   }
-  
-	/* 因为 opengles 的原点坐标为左下角，所以需要把 AWTK 的坐标（AWTK 是右上角为原点的坐标系）转换为左下角为原点的坐标系*/
-  nvgluReadCurrentFramebufferData(x, height - img->h - y, img->w, img->h, fbo->w * fbo->ratio, height, data);
-  
+
+  /* 因为 opengles 的原点坐标为左下角，所以需要把 AWTK 的坐标（AWTK 是右上角为原点的坐标系）转换为左下角为原点的坐标系*/
+  nvgluReadCurrentFramebufferData(x, height - img->h - y, img->w, img->h, fbo->w * fbo->ratio,
+                                  height, data);
+
   p = data + ((img->h - 1) * img->line_length);
 
   /* 图像数据垂直翻转 */
-  while(TRUE) {
+  while (TRUE) {
     tk_memcpy32((uint32_t*)img_data, (uint32_t*)p, img->w);
-    if(p == data) {
+    if (p == data) {
       break;
     }
     p -= img->line_length;

@@ -89,7 +89,8 @@ static ret_t vgcanvas_nanovg_unbind_fbo(vgcanvas_t* vgcanvas, framebuffer_object
   return RET_OK;
 }
 
-static ret_t vgcanvas_nanovg_fbo_to_imageData(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo, bitmap_t* img, rect_t* r) {
+static ret_t vgcanvas_nanovg_fbo_to_imageData(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo,
+                                              bitmap_t* img, rect_t* r) {
   return RET_NOT_IMPL;
 }
 

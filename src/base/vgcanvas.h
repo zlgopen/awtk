@@ -125,7 +125,8 @@ typedef ret_t (*vgcanvas_create_fbo_t)(vgcanvas_t* vg, framebuffer_object_t* fbo
 typedef ret_t (*vgcanvas_destroy_fbo_t)(vgcanvas_t* vg, framebuffer_object_t* fbo);
 typedef ret_t (*vgcanvas_bind_fbo_t)(vgcanvas_t* vg, framebuffer_object_t* fbo);
 typedef ret_t (*vgcanvas_unbind_fbo_t)(vgcanvas_t* vg, framebuffer_object_t* fbo);
-typedef ret_t (*vgcanvas_nanovg_fbo_to_bitmap_t)(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo, bitmap_t* img, rect_t* r);
+typedef ret_t (*vgcanvas_nanovg_fbo_to_bitmap_t)(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo,
+                                                 bitmap_t* img, rect_t* r);
 
 typedef ret_t (*vgcanvas_destroy_t)(vgcanvas_t* vg);
 

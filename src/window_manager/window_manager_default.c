@@ -217,7 +217,7 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
       widget_t* iter = children[start];
       if (widget_is_system_bar(iter) || !iter->visible) continue;
       /* 过滤 curr_win 的对象 */
-      if(iter != wm->curr_win) {
+      if (iter != wm->curr_win) {
         ENSURE(widget_paint(iter, c) == RET_OK);
       }
     }
@@ -240,7 +240,7 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
       widget_t* iter = children[start];
       if (widget_is_system_bar(iter) || !iter->visible) continue;
       /* 过滤 curr_win 的对象 */
-      if(iter != wm->curr_win) {
+      if (iter != wm->curr_win) {
         ENSURE(widget_paint(iter, c) == RET_OK);
       }
     }

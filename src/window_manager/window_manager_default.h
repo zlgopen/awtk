@@ -57,9 +57,9 @@ typedef struct _window_manager_default_t {
   uint32_t screen_saver_time;
 
   widget_t* prev_win;
-  
+
   /* for window_manager_default_snap_prev_window */
-  widget_t* curr_win; 
+  widget_t* curr_win;
 
   native_window_t* native_window;
   dialog_highlighter_t* dialog_highlighter;

@@ -3912,7 +3912,6 @@ bitmap_t* widget_take_snapshot_rect(widget_t* widget, rect_t* r) {
 #elif defined(WITH_NANOVG_GPU)
 
 bitmap_t* widget_take_snapshot_rect(widget_t* widget, rect_t* r) {
-  
   bitmap_t* img;
   uint32_t w = 0;
   uint32_t h = 0;
@@ -3920,9 +3919,10 @@ bitmap_t* widget_take_snapshot_rect(widget_t* widget, rect_t* r) {
   vgcanvas_t* vg = NULL;
   framebuffer_object_t fbo;
 
-  native_window_t* native_window = (native_window_t*)widget_get_prop_pointer(window_manager(), WIDGET_PROP_NATIVE_WINDOW);
+  native_window_t* native_window =
+      (native_window_t*)widget_get_prop_pointer(window_manager(), WIDGET_PROP_NATIVE_WINDOW);
   return_value_if_fail(native_window != NULL, NULL);
-  
+
   c = native_window_get_canvas(native_window);
   vg = lcd_get_vgcanvas(c->lcd);
   return_value_if_fail(c != NULL && vg != NULL, NULL);
@@ -3933,7 +3933,7 @@ bitmap_t* widget_take_snapshot_rect(widget_t* widget, rect_t* r) {
   widget_paint(widget, c);
   vgcanvas_unbind_fbo(vg, &fbo);
 
-  if(r != NULL) {
+  if (r != NULL) {
     w = r->w;
     h = r->h;
   } else {
@@ -3945,7 +3945,7 @@ bitmap_t* widget_take_snapshot_rect(widget_t* widget, rect_t* r) {
   vgcanvas_fbo_to_bitmap(vg, &fbo, img, r);
 
   vgcanvas_destroy_fbo(vg, &fbo);
-  
+
   return img;
 }
 
@@ -3962,7 +3962,7 @@ bitmap_t* widget_take_snapshot_rect(widget_t* widget, rect_t* r) {
   bitmap_t* bitmap = NULL;
   bitmap_t* bitmap_clip = NULL;
   return_value_if_fail(widget != NULL && widget->vt != NULL, NULL);
-  
+
   w = widget->w;
   h = widget->h;
 
@@ -3981,11 +3981,11 @@ bitmap_t* widget_take_snapshot_rect(widget_t* widget, rect_t* r) {
   }
 
   bitmap_unlock_buffer(bitmap);
-  
-  if(r != NULL) {
+
+  if (r != NULL) {
     bitmap_clip = bitmap_create_ex(r->w, r->h, r->w * 4, BITMAP_FMT_RGBA8888);
 
-    if(image_copy(bitmap_clip, bitmap, r, 0, 0) == RET_OK) {
+    if (image_copy(bitmap_clip, bitmap, r, 0, 0) == RET_OK) {
       bitmap_destroy(bitmap);
       return bitmap_clip;
     } else {
