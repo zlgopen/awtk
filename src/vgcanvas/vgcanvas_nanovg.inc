@@ -566,4 +566,5 @@ static const vgcanvas_vtable_t vt = {
     .bind_fbo = vgcanvas_nanovg_bind_fbo,
     .destroy_fbo = vgcanvas_nanovg_destroy_fbo,
     .unbind_fbo = vgcanvas_nanovg_unbind_fbo,
+    .fbo_to_bitmap = vgcanvas_nanovg_fbo_to_bitmap,
     .destroy = vgcanvas_nanovg_destroy};

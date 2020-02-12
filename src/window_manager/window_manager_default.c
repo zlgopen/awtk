@@ -216,7 +216,10 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
     for (; start <= end; ++start) {
       widget_t* iter = children[start];
       if (widget_is_system_bar(iter) || !iter->visible) continue;
-      ENSURE(widget_paint(iter, c) == RET_OK);
+      /* 过滤 curr_win 的对象 */
+      if (iter != wm->curr_win) {
+        ENSURE(widget_paint(iter, c) == RET_OK);
+      }
     }
   }
 
@@ -236,7 +239,10 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
     for (; start <= end; ++start) {
       widget_t* iter = children[start];
       if (widget_is_system_bar(iter) || !iter->visible) continue;
-      ENSURE(widget_paint(iter, c) == RET_OK);
+      /* 过滤 curr_win 的对象 */
+      if (iter != wm->curr_win) {
+        ENSURE(widget_paint(iter, c) == RET_OK);
+      }
     }
   }
 
@@ -250,7 +256,7 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
   if (dialog_highlighter != NULL) {
     dialog_highlighter_set_bg(dialog_highlighter, img, fbo);
   }
-
+  wm->curr_win = NULL;
   return RET_OK;
 }
 
@@ -356,6 +362,7 @@ static ret_t window_manager_create_animator(window_manager_default_t* wm, widget
   if (anim_hint && *anim_hint) {
     canvas_t* c = native_window_get_canvas(wm->native_window);
     window_manager_default_create_dialog_highlighter(WIDGET(wm), curr_win);
+    wm->curr_win = curr_win;
     if (open) {
       wm->animator = window_animator_create_for_open(anim_hint, c, prev_win, curr_win);
     } else {

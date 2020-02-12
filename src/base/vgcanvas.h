@@ -125,6 +125,8 @@ typedef ret_t (*vgcanvas_create_fbo_t)(vgcanvas_t* vg, framebuffer_object_t* fbo
 typedef ret_t (*vgcanvas_destroy_fbo_t)(vgcanvas_t* vg, framebuffer_object_t* fbo);
 typedef ret_t (*vgcanvas_bind_fbo_t)(vgcanvas_t* vg, framebuffer_object_t* fbo);
 typedef ret_t (*vgcanvas_unbind_fbo_t)(vgcanvas_t* vg, framebuffer_object_t* fbo);
+typedef ret_t (*vgcanvas_nanovg_fbo_to_bitmap_t)(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo,
+                                                 bitmap_t* img, rect_t* r);
 
 typedef ret_t (*vgcanvas_destroy_t)(vgcanvas_t* vg);
 
@@ -191,6 +193,7 @@ typedef struct _vgcanvas_vtable_t {
   vgcanvas_destroy_fbo_t destroy_fbo;
   vgcanvas_bind_fbo_t bind_fbo;
   vgcanvas_unbind_fbo_t unbind_fbo;
+  vgcanvas_nanovg_fbo_to_bitmap_t fbo_to_bitmap;
 
   vgcanvas_destroy_t destroy;
 } vgcanvas_vtable_t;
@@ -1143,6 +1146,7 @@ ret_t vgcanvas_create_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo);
 ret_t vgcanvas_destroy_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo);
 ret_t vgcanvas_bind_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo);
 ret_t vgcanvas_unbind_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo);
+ret_t vgcanvas_fbo_to_bitmap(vgcanvas_t* vg, framebuffer_object_t* fbo, bitmap_t* img, rect_t* r);
 ret_t fbo_to_img(framebuffer_object_t* fbo, bitmap_t* img);
 ret_t vgcanvas_set_assets_manager(vgcanvas_t* vg, assets_manager_t* assets_manager);
 
