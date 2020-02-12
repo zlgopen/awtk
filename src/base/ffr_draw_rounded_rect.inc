@@ -240,15 +240,18 @@ static inline void widget_image_color2data(unsigned char* d, bitmap_format_t for
   }
 }
 
-static inline void widget_draw_antialiasing_for_point(frr_image_info_t* image_info, int px, int py,
-                                                      float_t e, rgba_t c, rgba_t o_color) {
+static inline void widget_draw_antialiasing_for_point(frr_image_info_t* image_info, canvas_t* canvas, int px, int py,
+                                                      float_t e, rgba_t n_color, rgba_t o_color) {
   int32_t p = 0;
-  unsigned char a = (unsigned char)(e * c.a);
-  IMAGE_COLOR2COLOR_BLEND(c, o_color, a);
-  p = (int32_t)GET_IMAGE_POINT(image_info->bpp, image_info->stride, image_info->w, image_info->h,
-                               px, py);
-  if (p > 0) {
-    widget_image_color2data(image_info->dst + p, image_info->format, c);
+  unsigned char a = (unsigned char)(e * n_color.a);
+
+  if (canvas->clip_left <= px && px <= canvas->clip_right && canvas->clip_top <= py && py <= canvas->clip_bottom) {
+    IMAGE_COLOR2COLOR_BLEND(n_color, o_color, a);
+    p = (int32_t)GET_IMAGE_POINT(image_info->bpp, image_info->stride, image_info->w, image_info->h,
+                                px, py);
+    if (p > 0) {
+      widget_image_color2data(image_info->dst + p, image_info->format, n_color);
+    }
   }
 }
 
@@ -337,7 +340,7 @@ static inline void widget_draw_circluar_point_to_quadrant(frr_image_info_t* imag
       if (p > 0) {
         widget_image_data2color(image_info->dst + p, image_info->format, &o_color);
 
-        widget_draw_antialiasing_for_point(image_info, x, y, e, color, o_color);
+        widget_draw_antialiasing_for_point(image_info, c, x, y, e, color, o_color);
       }
     }
   }
@@ -379,7 +382,7 @@ static inline void widget_draw_circluar_point_to_quadrant_hline(frr_image_info_t
 
         canvas_fill_rect(c, x_h, y, w, 1);
 
-        widget_draw_antialiasing_for_point(image_info, x + c->ox, y + c->oy, e, color, o_color);
+        widget_draw_antialiasing_for_point(image_info, c, x + c->ox, y + c->oy, e, color, o_color);
       }
     }
   }
