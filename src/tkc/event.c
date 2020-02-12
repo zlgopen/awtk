@@ -106,7 +106,24 @@ event_t* done_event_init(done_event_t* event, ret_t result) {
 
   event->e.type = EVT_DONE;
   event->result = result;
-  ;
+
+  return (event_t*)(event);
+}
+
+error_event_t* error_event_cast(event_t* event) {
+  return_value_if_fail(event != NULL, NULL);
+  return_value_if_fail(event->type == EVT_PROGRESS, NULL);
+
+  return (error_event_t*)event;
+}
+
+event_t* error_event_init(error_event_t* event, int32_t code, const char* message) {
+  return_value_if_fail(event != NULL, NULL);
+  memset(event, 0x00, sizeof(*event));
+
+  event->e.type = EVT_ERROR;
+  event->code = code;
+  event->message = message;
 
   return (event_t*)(event);
 }

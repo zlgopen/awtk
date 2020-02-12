@@ -74,6 +74,11 @@ typedef enum _event_base_type_t {
    */
   EVT_DONE,
   /**
+   * @const EVT_ERROR
+   * 错误(error_event_t)。
+   */
+  EVT_ERROR,
+  /**
    * @const EVT_DESTROY
    * 对象销毁事件名(event_t)。
    */
@@ -276,6 +281,51 @@ done_event_t* done_event_cast(event_t* event);
  * @return {event_t*} 返回event对象。
  */
 event_t* done_event_init(done_event_t* event, ret_t result);
+
+/**
+ * @class error_event_t
+ * @annotation ["scriptable"]
+ * @parent event_t
+ * 执行完成事件。
+ */
+typedef struct _error_event_t {
+  event_t e;
+  /**
+   * @property {int32_t} code
+   * @annotation ["readable", "scriptable"]
+   * 错误码。
+   */
+  int32_t code;
+
+  /**
+   * @property {ret_t} result
+   * @annotation ["readable", "scriptable"]
+   * 执行结果。
+   */
+  const char* message;
+} error_event_t;
+
+/**
+ * @method error_event_cast
+ * @annotation ["cast", "scriptable"]
+ * 把event对象转error_event_t对象，主要给脚本语言使用。
+ * @param {event_t*} event event对象。
+ *
+ * @return {error_event_t*}  返回event对象。
+ */
+error_event_t* error_event_cast(event_t* event);
+
+/**
+ * @method error_event_init
+ * 初始error event。
+ * 
+ * @param {error_event_t*} event event对象。
+ * @param {int32_t} code 错误码。
+ * @param {const char*} message 错误消息。
+ *
+ * @return {event_t*} 返回event对象。
+ */
+event_t* error_event_init(error_event_t* event, int32_t code, const char* message);
 
 END_C_DECLS
 
