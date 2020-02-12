@@ -8,6 +8,12 @@
   * opengles 支持snapshot（感谢智明提供补丁）。
   * 修复了 demoui 的 combox 功能的第一个 combox 在点击 edit 弹出输入法后，再点击按钮时候，导致输入法的动画异常的问题（感谢智明提供补丁）。
 
+* 2020/02/09
+  * 增加action thread pool
+
+* 2020/02/08
+  * 增加action thread
+
 * 2020/02/07
   * 增加waitable\_action\_queue
 
