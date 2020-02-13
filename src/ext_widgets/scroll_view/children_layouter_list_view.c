@@ -270,6 +270,10 @@ static ret_t children_layouter_list_view_layout(children_layouter_t* layouter, w
             widget_set_enable(scroll_bar, TRUE);
           }
         } else {
+          if (!widget_get_prop_bool(scroll_bar, WIDGET_PROP_VISIBLE, FALSE)) {
+            widget_set_visible_only(scroll_bar, TRUE);
+            widget_set_enable(scroll_bar, TRUE);
+          }
           scroll_view->widget.w = list_view->widget.w - scroll_bar->w;
         }
       }

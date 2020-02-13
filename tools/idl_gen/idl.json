@@ -2197,6 +2197,92 @@
           "type": "value_t*",
           "desc": "对象。"
         }
+      },
+      {
+        "params": [
+          {
+            "type": "uint32_t",
+            "name": "capacity",
+            "desc": "action的容量。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建waitable_action_queue对象。",
+        "name": "waitable_action_queue_create",
+        "return": {
+          "type": "waitable_action_queue_t*",
+          "desc": "waitable_action_queue对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "waitable_action_queue_t*",
+            "name": "q",
+            "desc": "waitable_action_queue对象。"
+          },
+          {
+            "type": "qaction_t**",
+            "name": "action",
+            "desc": "用于返回action对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "timeout_ms",
+            "desc": "超时时间(ms)"
+          }
+        ],
+        "annotation": {},
+        "desc": "接收一个请求。",
+        "name": "waitable_action_queue_recv",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "waitable_action_queue_t*",
+            "name": "q",
+            "desc": "waitable_action_queue对象。"
+          },
+          {
+            "type": "qaction_t*",
+            "name": "action",
+            "desc": "action对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "timeout_ms",
+            "desc": "超时时间(ms)"
+          }
+        ],
+        "annotation": {},
+        "desc": "发送一个请求。",
+        "name": "waitable_action_queue_send",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "waitable_action_queue_t*",
+            "name": "q",
+            "desc": "waitable_action_queue对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁。",
+        "name": "waitable_action_queue_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
       }
     ],
     "events": [],
@@ -3952,8 +4038,12 @@
         "name": "EVT_PROGRESS"
       },
       {
-        "desc": "完成(event_t)。",
+        "desc": "完成(done_event_t)。",
         "name": "EVT_DONE"
+      },
+      {
+        "desc": "错误(error_event_t)。",
+        "name": "EVT_ERROR"
       },
       {
         "desc": "对象销毁事件名(event_t)。",
@@ -18664,6 +18754,27 @@
         }
       },
       {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "rect_t*",
+            "name": "r",
+            "desc": "截屏区域（输入NULL，则为控件全区域截屏）。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建一个bitmap对象，将控件绘制到bitmap上并且可以设置该控件的截屏区域，返回bitmap对象。\n\n调用者需要调用bitmap_destroy销毁返回的bitmap对象。\n\n```c\nbitmap_t* bitmap = widget_take_snapshot_rect(window_manager(), NULL);\nbitmap_save_png(bitmap, \"test.png\");\nbitmap_destroy(bitmap);\n```",
+        "name": "widget_take_snapshot_rect",
+        "return": {
+          "type": "bitmap_t*",
+          "desc": "返回位图对象。"
+        }
+      },
+      {
         "params": [],
         "annotation": {},
         "desc": "获取canvas对象。",
@@ -24010,6 +24121,142 @@
     "type": "class",
     "methods": [
       {
+        "params": [
+          {
+            "type": "qaction_exec_t",
+            "name": "exec",
+            "desc": "执行函数。"
+          },
+          {
+            "type": "void*",
+            "name": "args",
+            "desc": "参数。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "args_size",
+            "desc": "参数长度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建action对象。",
+        "name": "qaction_create",
+        "return": {
+          "type": "qaction_t*",
+          "desc": "返回action对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "qaction_t*",
+            "name": "action",
+            "desc": "action对象。"
+          },
+          {
+            "type": "qaction_on_event_t",
+            "name": "on_event",
+            "desc": "事件处理函数。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置事件处理函数(回调函数在后台线程执行)。\n\n> exec执行完成后，会触发EVT\\_DONE事件，一般在EVT\\_DONE事件中调用qaction\\_destroy函数销毁action。",
+        "name": "qaction_set_on_event",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "qaction_t*",
+            "name": "action",
+            "desc": "action对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "执行。",
+        "name": "qaction_exec",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "qaction_t*",
+            "name": "action",
+            "desc": "action对象。"
+          },
+          {
+            "type": "event_t**",
+            "name": "event",
+            "desc": "event对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "事件通知。",
+        "name": "qaction_notify",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "qaction_t*",
+            "name": "q",
+            "desc": "qaction对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁。",
+        "name": "qaction_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "exec",
+        "desc": "执行函数。",
+        "type": "qaction_exec_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "on_event",
+        "desc": "事件处理函数。如进度、错误和完成等。",
+        "type": "qaction_on_event_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "args",
+        "desc": "exec的参数(视具体的action而不同)。",
+        "type": "uint32_t*",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "tkc/qaction.h",
+    "desc": "代表一个action，放在action queue中。",
+    "name": "qaction_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
         "params": [],
         "annotation": {},
         "desc": "获取当前时间。",
@@ -26215,6 +26462,39 @@
     "level": 1
   },
   {
+    "type": "enum",
+    "desc": "指示器默认绘制的类型。",
+    "consts": [
+      {
+        "desc": "自动选择。",
+        "name": "INDICATOR_DEFAULT_PAINT_AUTO"
+      },
+      {
+        "desc": "实心圆点指示器，当前项填充selected_fg_color，其他填充fg_color。",
+        "name": "INDICATOR_DEFAULT_PAINT_FILL_DOT"
+      },
+      {
+        "desc": "镂空圆点指示器，当前项填充selected_fg_color，其他镂空fg_color。",
+        "name": "INDICATOR_DEFAULT_PAINT_STROKE_DOT"
+      },
+      {
+        "desc": "实心矩形指示器，当前项填充selected_fg_color，其他填充fg_color。",
+        "name": "INDICATOR_DEFAULT_PAINT_FILL_RECT"
+      },
+      {
+        "desc": "镂空矩形指示器，当前项填充selected_fg_color，其他镂空fg_color。",
+        "name": "INDICATOR_DEFAULT_PAINT_STROKE_RECT"
+      }
+    ],
+    "header": "slide_view/slide_indicator.h",
+    "name": "indicator_default_paint_t",
+    "prefix": "INDICATOR_DEFAULT_PAINT_",
+    "annotation": {
+      "scriptable": true
+    },
+    "level": 1
+  },
+  {
     "type": "class",
     "methods": [],
     "events": [],
@@ -26255,39 +26535,6 @@
     "header": "tkc/fs.h",
     "desc": "代表目录或文件。",
     "name": "fs_item_t",
-    "level": 1
-  },
-  {
-    "type": "enum",
-    "desc": "指示器默认绘制的类型。",
-    "consts": [
-      {
-        "desc": "自动选择。",
-        "name": "INDICATOR_DEFAULT_PAINT_AUTO"
-      },
-      {
-        "desc": "实心圆点指示器，当前项填充selected_fg_color，其他填充fg_color。",
-        "name": "INDICATOR_DEFAULT_PAINT_FILL_DOT"
-      },
-      {
-        "desc": "镂空圆点指示器，当前项填充selected_fg_color，其他镂空fg_color。",
-        "name": "INDICATOR_DEFAULT_PAINT_STROKE_DOT"
-      },
-      {
-        "desc": "实心矩形指示器，当前项填充selected_fg_color，其他填充fg_color。",
-        "name": "INDICATOR_DEFAULT_PAINT_FILL_RECT"
-      },
-      {
-        "desc": "镂空矩形指示器，当前项填充selected_fg_color，其他镂空fg_color。",
-        "name": "INDICATOR_DEFAULT_PAINT_STROKE_RECT"
-      }
-    ],
-    "header": "slide_view/slide_indicator.h",
-    "name": "indicator_default_paint_t",
-    "prefix": "INDICATOR_DEFAULT_PAINT_",
-    "annotation": {
-      "scriptable": true
-    },
     "level": 1
   },
   {
@@ -27263,115 +27510,6 @@
     "level": 1
   },
   {
-    "type": "enum",
-    "desc": "缓动作动画常量定义。",
-    "consts": [
-      {
-        "desc": "EASING_LINEAR。",
-        "name": "EASING_LINEAR"
-      },
-      {
-        "desc": "EASING_QUADRATIC_IN",
-        "name": "EASING_QUADRATIC_IN"
-      },
-      {
-        "desc": "EASING_QUADRATIC_OUT",
-        "name": "EASING_QUADRATIC_OUT"
-      },
-      {
-        "desc": "EASING_QUADRATIC_INOUT",
-        "name": "EASING_QUADRATIC_INOUT"
-      },
-      {
-        "desc": "EASING_CUBIC_IN",
-        "name": "EASING_CUBIC_IN"
-      },
-      {
-        "desc": "EASING_CUBIC_OUT",
-        "name": "EASING_CUBIC_OUT"
-      },
-      {
-        "desc": "EASING_SIN_IN",
-        "name": "EASING_SIN_IN"
-      },
-      {
-        "desc": "EASING_SIN_OUT",
-        "name": "EASING_SIN_OUT"
-      },
-      {
-        "desc": "EASING_SIN_OUT",
-        "name": "EASING_SIN_INOUT"
-      },
-      {
-        "desc": "EASING_POW_IN",
-        "name": "EASING_POW_IN"
-      },
-      {
-        "desc": "EASING_POW_OUT",
-        "name": "EASING_POW_OUT"
-      },
-      {
-        "desc": "EASING_POW_INOUT",
-        "name": "EASING_POW_INOUT"
-      },
-      {
-        "desc": "EASING_CIRCULAR_IN",
-        "name": "EASING_CIRCULAR_IN"
-      },
-      {
-        "desc": "EASING_CIRCULAR_OUT",
-        "name": "EASING_CIRCULAR_OUT"
-      },
-      {
-        "desc": "EASING_CIRCULAR_INOUT",
-        "name": "EASING_CIRCULAR_INOUT"
-      },
-      {
-        "desc": "EASING_ELASTIC_IN",
-        "name": "EASING_ELASTIC_IN"
-      },
-      {
-        "desc": "EASING_ELASTIC_OUT",
-        "name": "EASING_ELASTIC_OUT"
-      },
-      {
-        "desc": "EASING_ELASTIC_INOUT",
-        "name": "EASING_ELASTIC_INOUT"
-      },
-      {
-        "desc": "EASING_BACK_IN",
-        "name": "EASING_BACK_IN"
-      },
-      {
-        "desc": "EASING_BACK_OUT",
-        "name": "EASING_BACK_OUT"
-      },
-      {
-        "desc": "EASING_BACK_INOUT",
-        "name": "EASING_BACK_INOUT"
-      },
-      {
-        "desc": "EASING_BOUNCE_IN",
-        "name": "EASING_BOUNCE_IN"
-      },
-      {
-        "desc": "EASING_BOUNCE_OUT",
-        "name": "EASING_BOUNCE_OUT"
-      },
-      {
-        "desc": "EASING_BOUNCE_INOUT",
-        "name": "EASING_BOUNCE_INOUT"
-      }
-    ],
-    "header": "tkc/easing.h",
-    "name": "easing_type_t",
-    "prefix": "EASING_",
-    "annotation": {
-      "scriptable": true
-    },
-    "level": 1
-  },
-  {
     "type": "class",
     "methods": [
       {
@@ -27715,6 +27853,115 @@
     "header": "file_transfer/file_transfer.h",
     "desc": "确认包(sender<-receiver)。",
     "name": "file_transfer_ack_t",
+    "level": 1
+  },
+  {
+    "type": "enum",
+    "desc": "缓动作动画常量定义。",
+    "consts": [
+      {
+        "desc": "EASING_LINEAR。",
+        "name": "EASING_LINEAR"
+      },
+      {
+        "desc": "EASING_QUADRATIC_IN",
+        "name": "EASING_QUADRATIC_IN"
+      },
+      {
+        "desc": "EASING_QUADRATIC_OUT",
+        "name": "EASING_QUADRATIC_OUT"
+      },
+      {
+        "desc": "EASING_QUADRATIC_INOUT",
+        "name": "EASING_QUADRATIC_INOUT"
+      },
+      {
+        "desc": "EASING_CUBIC_IN",
+        "name": "EASING_CUBIC_IN"
+      },
+      {
+        "desc": "EASING_CUBIC_OUT",
+        "name": "EASING_CUBIC_OUT"
+      },
+      {
+        "desc": "EASING_SIN_IN",
+        "name": "EASING_SIN_IN"
+      },
+      {
+        "desc": "EASING_SIN_OUT",
+        "name": "EASING_SIN_OUT"
+      },
+      {
+        "desc": "EASING_SIN_OUT",
+        "name": "EASING_SIN_INOUT"
+      },
+      {
+        "desc": "EASING_POW_IN",
+        "name": "EASING_POW_IN"
+      },
+      {
+        "desc": "EASING_POW_OUT",
+        "name": "EASING_POW_OUT"
+      },
+      {
+        "desc": "EASING_POW_INOUT",
+        "name": "EASING_POW_INOUT"
+      },
+      {
+        "desc": "EASING_CIRCULAR_IN",
+        "name": "EASING_CIRCULAR_IN"
+      },
+      {
+        "desc": "EASING_CIRCULAR_OUT",
+        "name": "EASING_CIRCULAR_OUT"
+      },
+      {
+        "desc": "EASING_CIRCULAR_INOUT",
+        "name": "EASING_CIRCULAR_INOUT"
+      },
+      {
+        "desc": "EASING_ELASTIC_IN",
+        "name": "EASING_ELASTIC_IN"
+      },
+      {
+        "desc": "EASING_ELASTIC_OUT",
+        "name": "EASING_ELASTIC_OUT"
+      },
+      {
+        "desc": "EASING_ELASTIC_INOUT",
+        "name": "EASING_ELASTIC_INOUT"
+      },
+      {
+        "desc": "EASING_BACK_IN",
+        "name": "EASING_BACK_IN"
+      },
+      {
+        "desc": "EASING_BACK_OUT",
+        "name": "EASING_BACK_OUT"
+      },
+      {
+        "desc": "EASING_BACK_INOUT",
+        "name": "EASING_BACK_INOUT"
+      },
+      {
+        "desc": "EASING_BOUNCE_IN",
+        "name": "EASING_BOUNCE_IN"
+      },
+      {
+        "desc": "EASING_BOUNCE_OUT",
+        "name": "EASING_BOUNCE_OUT"
+      },
+      {
+        "desc": "EASING_BOUNCE_INOUT",
+        "name": "EASING_BOUNCE_INOUT"
+      }
+    ],
+    "header": "tkc/easing.h",
+    "name": "easing_type_t",
+    "prefix": "EASING_",
+    "annotation": {
+      "scriptable": true
+    },
     "level": 1
   },
   {
@@ -29777,6 +30024,249 @@
     "type": "class",
     "methods": [
       {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建action_thread对象。",
+        "name": "action_thread_create",
+        "return": {
+          "type": "action_thread_t*",
+          "desc": "action_thread对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "waitable_action_queue_t*",
+            "name": "queue",
+            "desc": "queue对象。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建action_thread对象。",
+        "name": "action_thread_create_with_queue",
+        "return": {
+          "type": "action_thread_t*",
+          "desc": "action_thread对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "action_thread_t*",
+            "name": "thread",
+            "desc": "action_thread对象。"
+          },
+          {
+            "type": "qaction_t*",
+            "name": "action",
+            "desc": "action对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "让线程执行action。",
+        "name": "action_thread_exec",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "action_thread_t*",
+            "name": "thread",
+            "desc": "action_thread对象。"
+          },
+          {
+            "type": "action_thread_on_idle_t",
+            "name": "on_idle",
+            "desc": "空闲时的回调函数。"
+          },
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "回调函数的上下文。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置空闲时的回调函数。",
+        "name": "action_thread_set_on_idle",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "action_thread_t*",
+            "name": "thread",
+            "desc": "action_thread对象。"
+          },
+          {
+            "type": "action_thread_on_quit_t",
+            "name": "on_quit",
+            "desc": "退出时的回调函数。"
+          },
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "回调函数的上下文。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置退出时的回调函数。",
+        "name": "action_thread_set_on_quit",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "action_thread_t*",
+            "name": "thread",
+            "desc": "action_thread对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁。",
+        "name": "action_thread_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "thread",
+        "desc": "线程对象。",
+        "type": "tk_thread_t*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "queue",
+        "desc": "action queue。",
+        "type": "waitable_action_queue_t*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "executed_actions_nr",
+        "desc": "已经执行action的个数。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "tkc/action_thread.h",
+    "desc": "执行action的线程。\n\n> 每个线程都有一个action queue，可以是共享的queue，也可以是私有的queue。",
+    "name": "action_thread_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "uint16_t",
+            "name": "max_thread_nr",
+            "desc": "最大线程数。"
+          },
+          {
+            "type": "uint16_t",
+            "name": "min_idle_nr",
+            "desc": "最小空闲线程数。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建action_thread_pool对象。",
+        "name": "action_thread_pool_create",
+        "return": {
+          "type": "action_thread_pool_t*",
+          "desc": "action_thread_pool对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "action_thread_pool_t*",
+            "name": "thread_pool",
+            "desc": "action_thread_pool对象。"
+          },
+          {
+            "type": "qaction_t*",
+            "name": "action",
+            "desc": "action对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "执行action。",
+        "name": "action_thread_pool_exec",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "action_thread_pool_t*",
+            "name": "thread_pool",
+            "desc": "action_thread_pool对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁。",
+        "name": "action_thread_pool_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "max_thread_nr",
+        "desc": "最大线程数。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "min_idle_nr",
+        "desc": "最小空闲线程数",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "tkc/action_thread_pool.h",
+    "desc": "action线程池。",
+    "name": "action_thread_pool_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
         "params": [
           {
             "type": "int",
@@ -30303,24 +30793,329 @@
     "type": "class",
     "methods": [
       {
-        "params": [],
+        "params": [
+          {
+            "type": "style_t*",
+            "name": "s",
+            "desc": "style对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "名称。"
+          }
+        ],
         "annotation": {
-          "constructor": true
+          "scriptable": true
         },
-        "desc": "创建只读的style对象。",
-        "name": "style_const_create",
+        "desc": "设置style的名称。",
+        "name": "style_mutable_set_name",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "style_t*",
+            "name": "s",
+            "desc": "style对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "state",
+            "desc": "控件状态。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "属性名。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "val",
+            "desc": "值。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置指定名称整数格式的值。",
+        "name": "style_mutable_set_int",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "style_t*",
+            "name": "s",
+            "desc": "style对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "state",
+            "desc": "控件状态。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "属性名。"
+          },
+          {
+            "type": "color_t",
+            "name": "val",
+            "desc": "值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置指定名称的颜色值。",
+        "name": "style_mutable_set_color",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "style_t*",
+            "name": "s",
+            "desc": "style对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "state",
+            "desc": "控件状态。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "属性名。"
+          },
+          {
+            "type": "const char*",
+            "name": "val",
+            "desc": "值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置指定名称字符串的值。",
+        "name": "style_mutable_set_str",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "style_t*",
+            "name": "s",
+            "desc": "style对象。"
+          },
+          {
+            "type": "tk_on_style_item_t",
+            "name": "on_style_item",
+            "desc": "回调函数。"
+          },
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "回调函数的上下文。"
+          }
+        ],
+        "annotation": {},
+        "desc": "遍历。对每项调用回调函数on\\_style\\_item。",
+        "name": "style_mutable_foreach",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "style_t*",
+            "name": "s",
+            "desc": "style对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "state",
+            "desc": "控件状态。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "属性名。"
+          },
+          {
+            "type": "const value_t*",
+            "name": "v",
+            "desc": "值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取指定名称的值。",
+        "name": "style_mutable_get_value",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "style_t*",
+            "name": "s",
+            "desc": "style对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "state",
+            "desc": "控件状态。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "属性名。"
+          },
+          {
+            "type": "const value_t*",
+            "name": "v",
+            "desc": "值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置指定名称的值。",
+        "name": "style_mutable_set_value",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "style_t*",
+            "name": "s",
+            "desc": "style对象。"
+          },
+          {
+            "type": "style_t*",
+            "name": "other",
+            "desc": "style对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "将other对象的数据拷贝到s对象。",
+        "name": "style_mutable_copy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "style_t*",
+            "name": "s",
+            "desc": "style对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为style_mutable对象。",
+        "name": "style_mutable_cast",
         "return": {
           "type": "style_t*",
-          "desc": "返回style对象。"
+          "desc": "style对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件"
+          },
+          {
+            "type": "style_t*",
+            "name": "default_style",
+            "desc": "缺省的style。"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "创建style\\_mutable对象。\n\n> 除了测试程序外不需要直接调用，widget会通过style\\_factory\\_create创建。",
+        "name": "style_mutable_create",
+        "return": {
+          "type": "style_t*",
+          "desc": "style对象。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {},
+        "desc": "将自己注册到style\\_factory。",
+        "name": "style_mutable_register",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       }
     ],
     "events": [],
-    "properties": [],
-    "header": "base/style_const.h",
-    "desc": "只读的style，从theme\\_t中获取数据。\n\ntools/theme_gen用于把XML的主题数据转换成常量数据。",
-    "name": "style_const_t",
+    "properties": [
+      {
+        "name": "name",
+        "desc": "名称。",
+        "type": "char*",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "widget",
+        "desc": "与之关联的控件。",
+        "type": "widget_t*",
+        "annotation": {
+          "private": true
+        }
+      },
+      {
+        "name": "default_style",
+        "desc": "缺省的style，在mutable中找不到时，再到default_style中找。",
+        "type": "style_t*",
+        "annotation": {
+          "private": true
+        }
+      },
+      {
+        "name": "styles",
+        "desc": "控件在不同状态下的style。",
+        "type": "widget_state_style_t*",
+        "annotation": {
+          "private": true
+        }
+      }
+    ],
+    "header": "base/style_mutable.h",
+    "desc": "可变的style(可实时修改并生效，主要用于在designer中被编辑的控件，或者一些特殊控件)。\n\nstyle\\_mutable也对style\\_const进行了包装，当用户没修改某个值时，便从style\\_const中获取。",
+    "name": "style_mutable_t",
     "parent": "style_t",
+    "annotation": {
+      "scriptable": true
+    },
     "level": 2
   },
   {
@@ -30355,10 +31150,11 @@
           }
         ],
         "annotation": {
-          "constructor": true
+          "constructor": true,
+          "scriptable": true
         },
-        "desc": "创建color_component对象",
-        "name": "color_component_create",
+        "desc": "创建color_picker对象",
+        "name": "color_picker_create",
         "return": {
           "type": "widget_t*",
           "desc": "对象。"
@@ -30372,14 +31168,16 @@
             "desc": "控件对象。"
           },
           {
-            "type": "color_t",
-            "name": "c",
+            "type": "const char*",
+            "name": "color",
             "desc": "颜色。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "设置颜色。",
-        "name": "color_component_set_color",
+        "name": "color_picker_set_color",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -30390,105 +31188,51 @@
           {
             "type": "widget_t*",
             "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "float",
-            "name": "h",
-            "desc": "色调。"
-          },
-          {
-            "type": "float",
-            "name": "s",
-            "desc": "饱和度。"
-          },
-          {
-            "type": "float",
-            "name": "v",
-            "desc": "明度。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置颜色。",
-        "name": "color_component_set_hsv",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "color_component对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "获取h分量。",
-        "name": "color_component_get_h",
-        "return": {
-          "type": "float",
-          "desc": "返回h分量。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "color_component对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "获取s分量。",
-        "name": "color_component_get_s",
-        "return": {
-          "type": "float",
-          "desc": "返回s分量。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "color_component对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "获取v分量。",
-        "name": "color_component_get_v",
-        "return": {
-          "type": "float",
-          "desc": "返回v分量。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "color_component对象。"
+            "desc": "color_picker对象。"
           }
         ],
         "annotation": {
           "cast": true,
           "scriptable": true
         },
-        "desc": "转换为color_component对象(供脚本语言使用)。",
-        "name": "color_component_cast",
+        "desc": "转换为color_picker对象(供脚本语言使用)。",
+        "name": "color_picker_cast",
         "return": {
           "type": "widget_t*",
-          "desc": "color_component对象。"
+          "desc": "color_picker对象。"
         }
       }
     ],
-    "events": [],
-    "properties": [],
-    "header": "color_picker/color_component.h",
-    "desc": "颜色选择器的颜色分量。\n控件的名称有严格规定：\nCOLOR_PICKER_CHILD_SV: 水平为Value/Brightness(递增)，垂直为Saturation(递减)。\nCOLOR_PICKER_CHILD_H: 水平为同色，垂直为Hue(递减)。",
-    "name": "color_component_t",
+    "events": [
+      {
+        "name": "EVT_VALUE_WILL_CHANGE",
+        "desc": "值(颜色)即将改变事件。",
+        "type": "event_t"
+      },
+      {
+        "name": "EVT_VALUE_CHANGED",
+        "desc": "值(颜色)改变事件。",
+        "type": "event_t"
+      }
+    ],
+    "properties": [
+      {
+        "name": "value",
+        "desc": "颜色。",
+        "type": "const char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "color_picker/color_picker.h",
+    "desc": "颜色选择器。\n\ncolor\\_picker\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于color\\_picker\\_t控件。\n\n在xml中使用\"color\\_picker\"标签创建颜色选择器控件。如：\n\n```xml\n<color_picker x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" value=\"orange\">\n<color_component x=\"0\" y=\"0\" w=\"200\" h=\"200\" name=\"sv\"/>\n<color_component x=\"210\" y=\"0\" w=\"20\" h=\"200\" name=\"h\"/>\n<color_tile x=\"0\" y=\"210\" w=\"50%\" h=\"20\" name=\"new\" bg_color=\"green\"/>\n<color_tile x=\"right\" y=\"210\" w=\"50%\" h=\"20\" name=\"old\" bg_color=\"blue\"/>\n</color_picker>\n```\n\n> 更多用法请参考：\n[color\\_picker](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/color_picker.xml)\n\n其中的子控件必须按下列规则命名：\n\n* r 红色分量。可以是spin_box、edit和slider。\n* g 绿色分量。可以是spin_box、edit和slider。\n* b 蓝色分量。可以是spin_box、edit和slider。\n* h Hue分量。可以是spin_box、edit、slider和color_component。\n* s Saturation分量。可以是spin_box、edit和slider。\n* v Value/Brightness分量。可以是spin_box、edit和slider。\n* sv Saturation和Value/Brightness分量。可以是color_component。\n* old 旧的值。可以是spin_box、edit和color_tile。\n* new 新的值。可以是spin_box、edit和color_tile。",
+    "name": "color_picker_t",
     "parent": "widget_t",
     "annotation": {
       "scriptable": true,
@@ -31344,6 +32088,103 @@
       {
         "params": [
           {
+            "type": "int",
+            "name": "fd",
+            "desc": "可以用select等待的文件描述符。"
+          },
+          {
+            "type": "event_source_on_event_t",
+            "name": "on_event",
+            "desc": "用户的事件处理函数。"
+          },
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "on_event函数的上下文。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建fd事件源。",
+        "name": "event_source_fd_create",
+        "return": {
+          "type": "event_source_t*",
+          "desc": "返回事件源对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "tkc/event_source_fd.h",
+    "desc": "fd事件源。用于文件、管道和套接字。",
+    "name": "event_source_fd_t",
+    "parent": "object",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "idle_manager_t*",
+            "name": "idle_manager",
+            "desc": "定时器管理器对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建idle事件源。",
+        "name": "event_source_idle_create",
+        "return": {
+          "type": "event_source_t*",
+          "desc": "返回事件源对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "tkc/event_source_idle.h",
+    "desc": "idle事件源。",
+    "name": "event_source_idle_t",
+    "parent": "object",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "event_source_manager_t*",
+            "name": "manager",
+            "desc": "event_source_manager对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建事件源管理器。",
+        "name": "event_source_manager_default_create",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "tkc/event_source_manager_default.h",
+    "desc": "缺省的事件源管理器。",
+    "name": "event_source_manager_default_t",
+    "parent": "event_source_manager_t",
+    "annotation": {
+      "fake": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
             "type": "widget_t*",
             "name": "parent",
             "desc": "父控件"
@@ -31740,239 +32581,6 @@
       {
         "params": [
           {
-            "type": "int",
-            "name": "fd",
-            "desc": "可以用select等待的文件描述符。"
-          },
-          {
-            "type": "event_source_on_event_t",
-            "name": "on_event",
-            "desc": "用户的事件处理函数。"
-          },
-          {
-            "type": "void*",
-            "name": "ctx",
-            "desc": "on_event函数的上下文。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建fd事件源。",
-        "name": "event_source_fd_create",
-        "return": {
-          "type": "event_source_t*",
-          "desc": "返回事件源对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "tkc/event_source_fd.h",
-    "desc": "fd事件源。用于文件、管道和套接字。",
-    "name": "event_source_fd_t",
-    "parent": "object",
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "idle_manager_t*",
-            "name": "idle_manager",
-            "desc": "定时器管理器对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建idle事件源。",
-        "name": "event_source_idle_create",
-        "return": {
-          "type": "event_source_t*",
-          "desc": "返回事件源对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "tkc/event_source_idle.h",
-    "desc": "idle事件源。",
-    "name": "event_source_idle_t",
-    "parent": "object",
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "event_source_manager_t*",
-            "name": "manager",
-            "desc": "event_source_manager对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建事件源管理器。",
-        "name": "event_source_manager_default_create",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "tkc/event_source_manager_default.h",
-    "desc": "缺省的事件源管理器。",
-    "name": "event_source_manager_default_t",
-    "parent": "event_source_manager_t",
-    "annotation": {
-      "fake": true
-    },
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
-        "desc": "创建switch对象",
-        "name": "switch_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "switch对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "value",
-            "desc": "值"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置控件的值。",
-        "name": "switch_set_value",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "switch对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": "转换switch对象(供脚本语言使用)。",
-        "name": "switch_cast",
-        "return": {
-          "type": "widget_t*",
-          "desc": "switch对象。"
-        }
-      }
-    ],
-    "events": [
-      {
-        "name": "EVT_VALUE_WILL_CHANGE",
-        "desc": "值(开关状态)即将改变事件。",
-        "type": "event_t"
-      },
-      {
-        "name": "EVT_VALUE_CHANGED",
-        "desc": "值(开关状态)改变事件。",
-        "type": "event_t"
-      }
-    ],
-    "properties": [
-      {
-        "name": "value",
-        "desc": "值。",
-        "type": "bool_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "max_xoffset_ratio",
-        "desc": "当开关处于关闭时，图片偏移相对于图片宽度的比例(缺省为1/3)。",
-        "type": "float_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      }
-    ],
-    "header": "switch/switch.h",
-    "desc": "开关控件。\n\nswitch\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于switch\\_t控件。\n\n在xml中使用\"switch\"标签创建开关控件。如：\n\n```xml\n<switch x=\"10\" y=\"60\" w=\"60\" h=\"22\" />\n```\n\n> 更多用法请参考：[switch.xml](\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/switch.xml)\n\n在c代码中使用函数switch\\_create创建开关控件。如：\n\n```c\nwidget_t* sw = switch_create(win, 10, 10, 80, 30);\nwidget_on(sw, EVT_VALUE_CHANGED, on_changed, NULL);\n```\n\n> 完整示例请参考：[switch demo](\nhttps://github.com/zlgopen/awtk-c-demos/blob/master/demos/switch.c)\n\n可用通过style来设置控件的显示风格，如背景图片等。如：\n\n```xml\n<style name=\"default\">\n<normal  bg_image=\"switch\" />\n</style>\n```\n\n> 更多用法请参考：[theme default](\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L452)",
-    "name": "switch_t",
-    "parent": "widget_t",
-    "annotation": {
-      "scriptable": true,
-      "design": true,
-      "widget": true
-    },
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
             "type": "timer_manager_t*",
             "name": "timer_manager",
             "desc": "定时器管理器对象。"
@@ -32127,8 +32735,8 @@
           "constructor": true,
           "scriptable": true
         },
-        "desc": "创建view对象",
-        "name": "view_create",
+        "desc": "创建switch对象",
+        "name": "switch_create",
         "return": {
           "type": "widget_t*",
           "desc": "对象。"
@@ -32139,26 +32747,87 @@
           {
             "type": "widget_t*",
             "name": "widget",
-            "desc": "view对象。"
+            "desc": "switch对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "value",
+            "desc": "值"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置控件的值。",
+        "name": "switch_set_value",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "switch对象。"
           }
         ],
         "annotation": {
           "cast": true,
           "scriptable": true
         },
-        "desc": "转换为view对象(供脚本语言使用)。",
-        "name": "view_cast",
+        "desc": "转换switch对象(供脚本语言使用)。",
+        "name": "switch_cast",
         "return": {
           "type": "widget_t*",
-          "desc": "view对象。"
+          "desc": "switch对象。"
         }
       }
     ],
-    "events": [],
-    "properties": [],
-    "header": "widgets/view.h",
-    "desc": "一个通用的容器控件。\n\n它本身不提供布局功能，仅提供具有语义的标签，让xml更具有可读性。\n子控件的布局可用layout\\_children属性指定。\n请参考[布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)。\n\nview\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于view\\_t控件。\n\n在xml中使用\"view\"标签创建view。如：\n\n```xml\n<view x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" children_layout=\"default(c=2,r=2,m=5,s=5)\">\n</view>\n```\n\n可用通过style来设置控件的显示风格，如背景颜色等。如：\n\n```xml\n<style name=\"default\" border_color=\"#a0a0a0\">\n<normal     bg_color=\"#f0f0f0\" />\n</style>\n```",
-    "name": "view_t",
+    "events": [
+      {
+        "name": "EVT_VALUE_WILL_CHANGE",
+        "desc": "值(开关状态)即将改变事件。",
+        "type": "event_t"
+      },
+      {
+        "name": "EVT_VALUE_CHANGED",
+        "desc": "值(开关状态)改变事件。",
+        "type": "event_t"
+      }
+    ],
+    "properties": [
+      {
+        "name": "value",
+        "desc": "值。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "max_xoffset_ratio",
+        "desc": "当开关处于关闭时，图片偏移相对于图片宽度的比例(缺省为1/3)。",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "switch/switch.h",
+    "desc": "开关控件。\n\nswitch\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于switch\\_t控件。\n\n在xml中使用\"switch\"标签创建开关控件。如：\n\n```xml\n<switch x=\"10\" y=\"60\" w=\"60\" h=\"22\" />\n```\n\n> 更多用法请参考：[switch.xml](\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/switch.xml)\n\n在c代码中使用函数switch\\_create创建开关控件。如：\n\n```c\nwidget_t* sw = switch_create(win, 10, 10, 80, 30);\nwidget_on(sw, EVT_VALUE_CHANGED, on_changed, NULL);\n```\n\n> 完整示例请参考：[switch demo](\nhttps://github.com/zlgopen/awtk-c-demos/blob/master/demos/switch.c)\n\n可用通过style来设置控件的显示风格，如背景图片等。如：\n\n```xml\n<style name=\"default\">\n<normal  bg_image=\"switch\" />\n</style>\n```\n\n> 更多用法请参考：[theme default](\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L452)",
+    "name": "switch_t",
     "parent": "widget_t",
     "annotation": {
       "scriptable": true,
@@ -32304,6 +32973,225 @@
       "scriptable": true
     },
     "parent": "event_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "event_t*",
+            "name": "event",
+            "desc": "event对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "把event对象转done_event_t对象，主要给脚本语言使用。",
+        "name": "done_event_cast",
+        "return": {
+          "type": "done_event_t*",
+          "desc": "返回event对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "done_event_t*",
+            "name": "event",
+            "desc": "event对象。"
+          },
+          {
+            "type": "ret_t",
+            "name": "result",
+            "desc": "结果。"
+          }
+        ],
+        "annotation": {},
+        "desc": "初始done event。",
+        "name": "done_event_init",
+        "return": {
+          "type": "event_t*",
+          "desc": "返回event对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "result",
+        "desc": "执行结果。",
+        "type": "ret_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "tkc/event.h",
+    "desc": "执行完成事件。",
+    "name": "done_event_t",
+    "annotation": {
+      "scriptable": true
+    },
+    "parent": "event_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "event_t*",
+            "name": "event",
+            "desc": "event对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "把event对象转error_event_t对象，主要给脚本语言使用。",
+        "name": "error_event_cast",
+        "return": {
+          "type": "error_event_t*",
+          "desc": "返回event对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "error_event_t*",
+            "name": "event",
+            "desc": "event对象。"
+          },
+          {
+            "type": "int32_t",
+            "name": "code",
+            "desc": "错误码。"
+          },
+          {
+            "type": "const char*",
+            "name": "message",
+            "desc": "错误消息。"
+          }
+        ],
+        "annotation": {},
+        "desc": "初始error event。",
+        "name": "error_event_init",
+        "return": {
+          "type": "event_t*",
+          "desc": "返回event对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "code",
+        "desc": "错误码。",
+        "type": "int32_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "message",
+        "desc": "错误信息。",
+        "type": "const char*",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "tkc/event.h",
+    "desc": "执行完成事件。",
+    "name": "error_event_t",
+    "annotation": {
+      "scriptable": true
+    },
+    "parent": "event_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "创建view对象",
+        "name": "view_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "view对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为view对象(供脚本语言使用)。",
+        "name": "view_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "view对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "widgets/view.h",
+    "desc": "一个通用的容器控件。\n\n它本身不提供布局功能，仅提供具有语义的标签，让xml更具有可读性。\n子控件的布局可用layout\\_children属性指定。\n请参考[布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)。\n\nview\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于view\\_t控件。\n\n在xml中使用\"view\"标签创建view。如：\n\n```xml\n<view x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" children_layout=\"default(c=2,r=2,m=5,s=5)\">\n</view>\n```\n\n可用通过style来设置控件的显示风格，如背景颜色等。如：\n\n```xml\n<style name=\"default\" border_color=\"#a0a0a0\">\n<normal     bg_color=\"#f0f0f0\" />\n</style>\n```",
+    "name": "view_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true,
+      "design": true,
+      "widget": true
+    },
     "level": 2
   },
   {
@@ -34052,6 +34940,81 @@
           "constructor": true,
           "scriptable": true
         },
+        "desc": "创建tab_control对象",
+        "name": "tab_control_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "tab_control对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换tab_control对象(供脚本语言使用)。",
+        "name": "tab_control_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "tab_control对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "widgets/tab_control.h",
+    "desc": "标签控件。\n\n它本身不提供布局功能，仅提供具有语义的标签，让xml更具有可读性。\n\n标签控件通常会包含一个pages控件和一个tab\\_button\\_group控件。\n\n```graphviz\n[default_style]\n\npages_t -> tab_control_t[arrowhead = \"ediamond\"]\ntab_button_group_t -> tab_control_t[arrowhead = \"ediamond\"]\nview_t ->pages_t[arrowhead = \"ediamond\"]\ntab_button_t -> tab_button_group_t[arrowhead = \"ediamond\"]\n```\n\ntab\\_control\\_t是[widget\\_t](widget_t.md)的子类控件，\nwidget\\_t的函数均适用于tab\\_control\\_t控件。\n\n在xml中使用\"tab\\_control\"标签创建标签控件。如：\n\n```xml\n<tab_control x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" >\n<pages x=\"c\" y=\"20\" w=\"90%\" h=\"-60\" value=\"1\">\n...\n</pages>\n<tab_button_group>\n...\n</tab_button_group>\n</tab_control>\n```\n\n> 更多用法请参考：\n[tab control](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/)",
+    "name": "tab_control_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true,
+      "design": true,
+      "widget": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
         "desc": "创建list_view对象",
         "name": "list_view_create",
         "return": {
@@ -34254,81 +35217,6 @@
           "constructor": true,
           "scriptable": true
         },
-        "desc": "创建tab_control对象",
-        "name": "tab_control_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "tab_control对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": "转换tab_control对象(供脚本语言使用)。",
-        "name": "tab_control_cast",
-        "return": {
-          "type": "widget_t*",
-          "desc": "tab_control对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "widgets/tab_control.h",
-    "desc": "标签控件。\n\n它本身不提供布局功能，仅提供具有语义的标签，让xml更具有可读性。\n\n标签控件通常会包含一个pages控件和一个tab\\_button\\_group控件。\n\n```graphviz\n[default_style]\n\npages_t -> tab_control_t[arrowhead = \"ediamond\"]\ntab_button_group_t -> tab_control_t[arrowhead = \"ediamond\"]\nview_t ->pages_t[arrowhead = \"ediamond\"]\ntab_button_t -> tab_button_group_t[arrowhead = \"ediamond\"]\n```\n\ntab\\_control\\_t是[widget\\_t](widget_t.md)的子类控件，\nwidget\\_t的函数均适用于tab\\_control\\_t控件。\n\n在xml中使用\"tab\\_control\"标签创建标签控件。如：\n\n```xml\n<tab_control x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" >\n<pages x=\"c\" y=\"20\" w=\"90%\" h=\"-60\" value=\"1\">\n...\n</pages>\n<tab_button_group>\n...\n</tab_button_group>\n</tab_control>\n```\n\n> 更多用法请参考：\n[tab control](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/)",
-    "name": "tab_control_t",
-    "parent": "widget_t",
-    "annotation": {
-      "scriptable": true,
-      "design": true,
-      "widget": true
-    },
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
         "desc": "创建list_view_h对象",
         "name": "list_view_h_create",
         "return": {
@@ -34434,81 +35322,6 @@
     "header": "scroll_view/list_view_h.h",
     "desc": "水平列表视图控件。\n\nlist\\_view\\_h\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于list\\_view\\_h\\_t控件。\n\n在xml中使用\"list\\_view\\_h\"标签创建水平列表视图控件。如：\n\n```xml\n<list_view_h x=\"center\"  y=\"10\" w=\"90%\" h=\"100\" item_width=\"200\" spacing=\"5\">\n<scroll_view name=\"view\" w=\"100%\" h=\"100%\">\n<image style=\"border\" draw_type=\"auto\" image=\"1\" text=\"1\"/>\n...\n</scroll_view>\n</list_view_h>\n```\n\n> 注意：列表项不是作为列表视图控件的直接子控件，而是作为滚动视图的子控件。\n\n\n> 更多用法请参考：[list\\_view\\_h.xml](\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/list_view_h.xml)\n\n在c代码中使用函数list\\_view\\_h\\_create创建水平列表视图控件。如：\n\n```c\nwidget_t* list_view = list_view_h_create(win, 0, 0, 0, 0);\n```\n\n用代码构造列表视图是比较繁琐的事情，最好用XML来构造。\n如果需要动态修改，可以使用widget\\_clone来增加列表项，使用widget\\_remove\\_child来移出列表项。\n\n可用通过style来设置控件的显示风格，如背景颜色和边框颜色等(一般情况不需要)。",
     "name": "list_view_h_t",
-    "parent": "widget_t",
-    "annotation": {
-      "scriptable": true,
-      "design": true,
-      "widget": true
-    },
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
-        "desc": "创建list_item对象",
-        "name": "list_item_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "list_item对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": "转换为list_item对象(供脚本语言使用)。",
-        "name": "list_item_cast",
-        "return": {
-          "type": "widget_t*",
-          "desc": "list_item对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "scroll_view/list_item.h",
-    "desc": "列表项控件。\n\n列表项控件是一个简单的容器控件，一般作为列表视图中滚动视图的子控件。\n\nlist\\_item\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于list\\_item\\_t控件。\n\n在xml中使用\"list\\_item\"标签创建列表项控件。如：\n\n```xml\n<list_view x=\"0\"  y=\"30\" w=\"100%\" h=\"-80\" item_height=\"60\">\n<scroll_view name=\"view\" x=\"0\"  y=\"0\" w=\"100%\" h=\"100%\">\n<list_item style=\"odd\" children_layout=\"default(rows=1,cols=0)\">\n<image draw_type=\"icon\" w=\"30\" image=\"earth\"/>\n<label w=\"-30\" text=\"1.Hello AWTK !\">\n<switch x=\"r:10\" y=\"m\" w=\"60\" h=\"20\"/>\n</label>\n</list_item>\n...\n</scroll_view>\n</list_view>\n```\n\n> 更多用法请参考：[list\\_view\\_m.xml](\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/list_view_m.xml)\n\n在c代码中使用函数list\\_item\\_create创建列表项控件。如：\n\n```c\nwidget_t* list_item = list_item_create(scroll_view, 0, 0, 0, 0);\n```\n\n> 列表项控件大小一般由列表控制，不需指定xywh参数。\n\n可以用style来实现可点击或不可点击的效果。如：\n\n```xml\n<style name=\"odd_clickable\" border_color=\"#a0a0a0\"  border=\"bottom\" text_color=\"black\">\n<normal     bg_color=\"#f5f5f5\" />\n<pressed    bg_color=\"#c0c0c0\" />\n<over       bg_color=\"#f5f5f5\" />\n</style>\n```\n\n> 更多用法请参考：[theme default](\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L372)",
-    "name": "list_item_t",
     "parent": "widget_t",
     "annotation": {
       "scriptable": true,
@@ -34888,6 +35701,81 @@
     "header": "widgets/tab_button_group.h",
     "desc": "标签按钮分组控件。\n\n一个简单的容器，主要用于对标签按钮进行布局和管理。\n\ntab\\_button\\_group\\_t是[widget\\_t](widget_t.md)的子类控件，\nwidget\\_t的函数均适用于tab\\_button\\_group\\_t控件。\n\n在xml中使用\"tab\\_button\\_group\"标签创建标签按钮分组控件。如：\n\n```xml\n<tab_button_group x=\"c\" y=\"bottom:10\" w=\"90%\" h=\"30\" compact=\"true\" >\n<tab_button text=\"General\"/>\n<tab_button text=\"Network\" value=\"true\" />\n<tab_button text=\"Security\"/>\n</tab_button_group>\n```\n\n> 更多用法请参考：\n[tab control](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/)\n\n可用通过style来设置控件的显示风格，如颜色等等。如：\n\n```xml\n<tab_button_group>\n<style name=\"default\">\n<normal/>\n</style>\n</tab_button_group>\n```",
     "name": "tab_button_group_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true,
+      "design": true,
+      "widget": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "创建list_item对象",
+        "name": "list_item_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "list_item对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为list_item对象(供脚本语言使用)。",
+        "name": "list_item_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "list_item对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "scroll_view/list_item.h",
+    "desc": "列表项控件。\n\n列表项控件是一个简单的容器控件，一般作为列表视图中滚动视图的子控件。\n\nlist\\_item\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于list\\_item\\_t控件。\n\n在xml中使用\"list\\_item\"标签创建列表项控件。如：\n\n```xml\n<list_view x=\"0\"  y=\"30\" w=\"100%\" h=\"-80\" item_height=\"60\">\n<scroll_view name=\"view\" x=\"0\"  y=\"0\" w=\"100%\" h=\"100%\">\n<list_item style=\"odd\" children_layout=\"default(rows=1,cols=0)\">\n<image draw_type=\"icon\" w=\"30\" image=\"earth\"/>\n<label w=\"-30\" text=\"1.Hello AWTK !\">\n<switch x=\"r:10\" y=\"m\" w=\"60\" h=\"20\"/>\n</label>\n</list_item>\n...\n</scroll_view>\n</list_view>\n```\n\n> 更多用法请参考：[list\\_view\\_m.xml](\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/list_view_m.xml)\n\n在c代码中使用函数list\\_item\\_create创建列表项控件。如：\n\n```c\nwidget_t* list_item = list_item_create(scroll_view, 0, 0, 0, 0);\n```\n\n> 列表项控件大小一般由列表控制，不需指定xywh参数。\n\n可以用style来实现可点击或不可点击的效果。如：\n\n```xml\n<style name=\"odd_clickable\" border_color=\"#a0a0a0\"  border=\"bottom\" text_color=\"black\">\n<normal     bg_color=\"#f5f5f5\" />\n<pressed    bg_color=\"#c0c0c0\" />\n<over       bg_color=\"#f5f5f5\" />\n</style>\n```\n\n> 更多用法请参考：[theme default](\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L372)",
+    "name": "list_item_t",
     "parent": "widget_t",
     "annotation": {
       "scriptable": true,
@@ -36402,7 +37290,10 @@
         "annotation": {
           "set_prop": true,
           "get_prop": true,
-          "readable": true
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
         }
       },
       {
@@ -36412,7 +37303,10 @@
         "annotation": {
           "set_prop": true,
           "get_prop": true,
-          "readable": true
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
         }
       },
       {
@@ -36422,7 +37316,10 @@
         "annotation": {
           "set_prop": true,
           "get_prop": true,
-          "readable": true
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
         }
       },
       {
@@ -36432,7 +37329,10 @@
         "annotation": {
           "set_prop": true,
           "get_prop": true,
-          "readable": true
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
         }
       },
       {
@@ -36491,173 +37391,6 @@
     "header": "mledit/mledit.h",
     "desc": "多行编辑器控件。\n\nmledit\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于mledit\\_t控件。\n\n在xml中使用\"mledit\"标签创建多行编辑器控件。如：\n\n```xml\n<mledit x=\"c\" y=\"m\" w=\"300\" h=\"300\" />\n```\n\n> 更多用法请参考：[mledit.xml](\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/mledit.xml)\n\n在c代码中使用函数mledit\\_create创建多行编辑器控件。如：\n\n```c\nwidget_t* tc = mledit_create(win, 10, 10, 240, 240);\n```\n\n> 完整示例请参考：[mledit demo](\nhttps://github.com/zlgopen/awtk-c-demos/blob/master/demos/mledit.c)\n\ntime\\_clock一般不需要设置style。",
     "name": "mledit_t",
-    "parent": "widget_t",
-    "annotation": {
-      "scriptable": true,
-      "design": true,
-      "widget": true
-    },
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
-        "desc": "创建line_number对象",
-        "name": "line_number_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "int32_t",
-            "name": "top_margin",
-            "desc": "顶部边距。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置顶部边距。",
-        "name": "line_number_set_top_margin",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "int32_t",
-            "name": "bottom_margin",
-            "desc": "顶部边距。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置顶部边距。",
-        "name": "line_number_set_bottom_margin",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "int32_t",
-            "name": "line_height",
-            "desc": "行高。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置行高。",
-        "name": "line_number_set_line_height",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "int32_t",
-            "name": "yoffset",
-            "desc": "行高。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置y偏移。",
-        "name": "line_number_set_yoffset",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "line_number对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": "转换为line_number对象(供脚本语言使用)。",
-        "name": "line_number_cast",
-        "return": {
-          "type": "widget_t*",
-          "desc": "line_number对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "mledit/line_number.h",
-    "desc": "行号。多行编辑器的行号。\n\nline\\_number\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于line\\_number\\_t控件。\n\n在xml中使用\"lin\\e_number\"标签创建行号控件，一般配合mledit使用。如：\n\n```xml\n<mledit x=\"c\" y=\"10\" h=\"40%\" w=\"90%\" focus=\"true\" left_margin=\"36\" right_margin=\"16\"\nwrap_word=\"true\">\n<line_number x=\"0\" y=\"0\" w=\"32\" h=\"100%\" value=\"0\"/>\n<scroll_bar_d x=\"right\" y=\"0\" w=\"14\" h=\"100%\" value=\"0\"/>\n</mledit>\n```\n\n> 更多用法请参考：[mledit.xml](\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/mledit.xml)\n\n可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\n\n```xml\n<line_number>\n<style name=\"default\">\n<normal text_color=\"black\" bg_color=\"#d0d0d0\" text_align_h=\"right\"/>\n</style>\n</line_number>\n```\n\n> 更多用法请参考：\n[theme default](\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L556)",
-    "name": "line_number_t",
     "parent": "widget_t",
     "annotation": {
       "scriptable": true,
@@ -36982,6 +37715,173 @@
     "header": "widgets/progress_bar.h",
     "desc": "进度条控件。\n\n进度条控件可以水平显示也可以垂直显示，由vertical属性决定。\n\nprogress\\_bar\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于progress\\_bar\\_t控件。\n\n在xml中使用\"progress\\_bar\"标签创建进度条控件。如：\n\n```xml\n<progress_bar name=\"bar1\" x=\"10\" y=\"128\" w=\"240\" h=\"30\" value=\"40\"/>\n<progress_bar name=\"bar2\" x=\"280\" y=\"128\" w=\"30\" h=\"118\" value=\"20\" vertical=\"true\"/>\n```\n\n> 更多用法请参考：\n[basic demo](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/basic.xml)\n\n在c代码中使用函数progress\\_bar\\_create创建进度条控件。如：\n\n```c\nwidget_t* progress_bar = progress_bar_create(win, 10, 10, 128, 30);\n```\n\n> 完整示例请参考：\n[progress_bar demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/progress_bar.c)\n\n可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\n\n```xml\n<style>\n<normal bg_color=\"#f0f0f0\" text_color=\"gold\" fg_color=\"#c0c0c0\" border_color=\"#a0a0a0\" />\n</style>\n```\n\n> 更多用法请参考：\n[theme\ndefault](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L183)",
     "name": "progress_bar_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true,
+      "design": true,
+      "widget": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "创建line_number对象",
+        "name": "line_number_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "int32_t",
+            "name": "top_margin",
+            "desc": "顶部边距。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置顶部边距。",
+        "name": "line_number_set_top_margin",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "int32_t",
+            "name": "bottom_margin",
+            "desc": "顶部边距。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置顶部边距。",
+        "name": "line_number_set_bottom_margin",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "int32_t",
+            "name": "line_height",
+            "desc": "行高。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置行高。",
+        "name": "line_number_set_line_height",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "int32_t",
+            "name": "yoffset",
+            "desc": "行高。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置y偏移。",
+        "name": "line_number_set_yoffset",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "line_number对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为line_number对象(供脚本语言使用)。",
+        "name": "line_number_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "line_number对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "mledit/line_number.h",
+    "desc": "行号。多行编辑器的行号。\n\nline\\_number\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于line\\_number\\_t控件。\n\n在xml中使用\"lin\\e_number\"标签创建行号控件，一般配合mledit使用。如：\n\n```xml\n<mledit x=\"c\" y=\"10\" h=\"40%\" w=\"90%\" focus=\"true\" left_margin=\"36\" right_margin=\"16\"\nwrap_word=\"true\">\n<line_number x=\"0\" y=\"0\" w=\"32\" h=\"100%\" value=\"0\"/>\n<scroll_bar_d x=\"right\" y=\"0\" w=\"14\" h=\"100%\" value=\"0\"/>\n</mledit>\n```\n\n> 更多用法请参考：[mledit.xml](\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/mledit.xml)\n\n可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\n\n```xml\n<line_number>\n<style name=\"default\">\n<normal text_color=\"black\" bg_color=\"#d0d0d0\" text_align_h=\"right\"/>\n</style>\n</line_number>\n```\n\n> 更多用法请参考：\n[theme default](\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L556)",
+    "name": "line_number_t",
     "parent": "widget_t",
     "annotation": {
       "scriptable": true,
@@ -39419,11 +40319,10 @@
           }
         ],
         "annotation": {
-          "constructor": true,
-          "scriptable": true
+          "constructor": true
         },
-        "desc": "创建color_picker对象",
-        "name": "color_picker_create",
+        "desc": "创建color_component对象",
+        "name": "color_component_create",
         "return": {
           "type": "widget_t*",
           "desc": "对象。"
@@ -39437,16 +40336,14 @@
             "desc": "控件对象。"
           },
           {
-            "type": "const char*",
-            "name": "color",
+            "type": "color_t",
+            "name": "c",
             "desc": "颜色。"
           }
         ],
-        "annotation": {
-          "scriptable": true
-        },
+        "annotation": {},
         "desc": "设置颜色。",
-        "name": "color_picker_set_color",
+        "name": "color_component_set_color",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -39457,51 +40354,105 @@
           {
             "type": "widget_t*",
             "name": "widget",
-            "desc": "color_picker对象。"
+            "desc": "控件对象。"
+          },
+          {
+            "type": "float",
+            "name": "h",
+            "desc": "色调。"
+          },
+          {
+            "type": "float",
+            "name": "s",
+            "desc": "饱和度。"
+          },
+          {
+            "type": "float",
+            "name": "v",
+            "desc": "明度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置颜色。",
+        "name": "color_component_set_hsv",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "color_component对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取h分量。",
+        "name": "color_component_get_h",
+        "return": {
+          "type": "float",
+          "desc": "返回h分量。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "color_component对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取s分量。",
+        "name": "color_component_get_s",
+        "return": {
+          "type": "float",
+          "desc": "返回s分量。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "color_component对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取v分量。",
+        "name": "color_component_get_v",
+        "return": {
+          "type": "float",
+          "desc": "返回v分量。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "color_component对象。"
           }
         ],
         "annotation": {
           "cast": true,
           "scriptable": true
         },
-        "desc": "转换为color_picker对象(供脚本语言使用)。",
-        "name": "color_picker_cast",
+        "desc": "转换为color_component对象(供脚本语言使用)。",
+        "name": "color_component_cast",
         "return": {
           "type": "widget_t*",
-          "desc": "color_picker对象。"
+          "desc": "color_component对象。"
         }
       }
     ],
-    "events": [
-      {
-        "name": "EVT_VALUE_WILL_CHANGE",
-        "desc": "值(颜色)即将改变事件。",
-        "type": "event_t"
-      },
-      {
-        "name": "EVT_VALUE_CHANGED",
-        "desc": "值(颜色)改变事件。",
-        "type": "event_t"
-      }
-    ],
-    "properties": [
-      {
-        "name": "value",
-        "desc": "颜色。",
-        "type": "const char*",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      }
-    ],
-    "header": "color_picker/color_picker.h",
-    "desc": "颜色选择器。\n\ncolor\\_picker\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于color\\_picker\\_t控件。\n\n在xml中使用\"color\\_picker\"标签创建颜色选择器控件。如：\n\n```xml\n<color_picker x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" value=\"orange\">\n<color_component x=\"0\" y=\"0\" w=\"200\" h=\"200\" name=\"sv\"/>\n<color_component x=\"210\" y=\"0\" w=\"20\" h=\"200\" name=\"h\"/>\n<color_tile x=\"0\" y=\"210\" w=\"50%\" h=\"20\" name=\"new\" bg_color=\"green\"/>\n<color_tile x=\"right\" y=\"210\" w=\"50%\" h=\"20\" name=\"old\" bg_color=\"blue\"/>\n</color_picker>\n```\n\n> 更多用法请参考：\n[color\\_picker](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/color_picker.xml)\n\n其中的子控件必须按下列规则命名：\n\n* r 红色分量。可以是spin_box、edit和slider。\n* g 绿色分量。可以是spin_box、edit和slider。\n* b 蓝色分量。可以是spin_box、edit和slider。\n* h Hue分量。可以是spin_box、edit、slider和color_component。\n* s Saturation分量。可以是spin_box、edit和slider。\n* v Value/Brightness分量。可以是spin_box、edit和slider。\n* sv Saturation和Value/Brightness分量。可以是color_component。\n* old 旧的值。可以是spin_box、edit和color_tile。\n* new 新的值。可以是spin_box、edit和color_tile。",
-    "name": "color_picker_t",
+    "events": [],
+    "properties": [],
+    "header": "color_picker/color_component.h",
+    "desc": "颜色选择器的颜色分量。\n控件的名称有严格规定：\nCOLOR_PICKER_CHILD_SV: 水平为Value/Brightness(递增)，垂直为Saturation(递减)。\nCOLOR_PICKER_CHILD_H: 水平为同色，垂直为Hue(递减)。",
+    "name": "color_component_t",
     "parent": "widget_t",
     "annotation": {
       "scriptable": true,
@@ -40565,335 +41516,6 @@
       {
         "params": [
           {
-            "type": "style_t*",
-            "name": "s",
-            "desc": "style对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "name",
-            "desc": "名称。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置style的名称。",
-        "name": "style_mutable_set_name",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "style_t*",
-            "name": "s",
-            "desc": "style对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "state",
-            "desc": "控件状态。"
-          },
-          {
-            "type": "const char*",
-            "name": "name",
-            "desc": "属性名。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "val",
-            "desc": "值。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置指定名称整数格式的值。",
-        "name": "style_mutable_set_int",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "style_t*",
-            "name": "s",
-            "desc": "style对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "state",
-            "desc": "控件状态。"
-          },
-          {
-            "type": "const char*",
-            "name": "name",
-            "desc": "属性名。"
-          },
-          {
-            "type": "color_t",
-            "name": "val",
-            "desc": "值。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置指定名称的颜色值。",
-        "name": "style_mutable_set_color",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "style_t*",
-            "name": "s",
-            "desc": "style对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "state",
-            "desc": "控件状态。"
-          },
-          {
-            "type": "const char*",
-            "name": "name",
-            "desc": "属性名。"
-          },
-          {
-            "type": "const char*",
-            "name": "val",
-            "desc": "值。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置指定名称字符串的值。",
-        "name": "style_mutable_set_str",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "style_t*",
-            "name": "s",
-            "desc": "style对象。"
-          },
-          {
-            "type": "tk_on_style_item_t",
-            "name": "on_style_item",
-            "desc": "回调函数。"
-          },
-          {
-            "type": "void*",
-            "name": "ctx",
-            "desc": "回调函数的上下文。"
-          }
-        ],
-        "annotation": {},
-        "desc": "遍历。对每项调用回调函数on\\_style\\_item。",
-        "name": "style_mutable_foreach",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "style_t*",
-            "name": "s",
-            "desc": "style对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "state",
-            "desc": "控件状态。"
-          },
-          {
-            "type": "const char*",
-            "name": "name",
-            "desc": "属性名。"
-          },
-          {
-            "type": "const value_t*",
-            "name": "v",
-            "desc": "值。"
-          }
-        ],
-        "annotation": {},
-        "desc": "获取指定名称的值。",
-        "name": "style_mutable_get_value",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "style_t*",
-            "name": "s",
-            "desc": "style对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "state",
-            "desc": "控件状态。"
-          },
-          {
-            "type": "const char*",
-            "name": "name",
-            "desc": "属性名。"
-          },
-          {
-            "type": "const value_t*",
-            "name": "v",
-            "desc": "值。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置指定名称的值。",
-        "name": "style_mutable_set_value",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "style_t*",
-            "name": "s",
-            "desc": "style对象。"
-          },
-          {
-            "type": "style_t*",
-            "name": "other",
-            "desc": "style对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "将other对象的数据拷贝到s对象。",
-        "name": "style_mutable_copy",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "style_t*",
-            "name": "s",
-            "desc": "style对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": "转换为style_mutable对象。",
-        "name": "style_mutable_cast",
-        "return": {
-          "type": "style_t*",
-          "desc": "style对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件"
-          },
-          {
-            "type": "style_t*",
-            "name": "default_style",
-            "desc": "缺省的style。"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
-        "desc": "创建style\\_mutable对象。\n\n> 除了测试程序外不需要直接调用，widget会通过style\\_factory\\_create创建。",
-        "name": "style_mutable_create",
-        "return": {
-          "type": "style_t*",
-          "desc": "style对象。"
-        }
-      },
-      {
-        "params": [],
-        "annotation": {},
-        "desc": "将自己注册到style\\_factory。",
-        "name": "style_mutable_register",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [
-      {
-        "name": "name",
-        "desc": "名称。",
-        "type": "char*",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "widget",
-        "desc": "与之关联的控件。",
-        "type": "widget_t*",
-        "annotation": {
-          "private": true
-        }
-      },
-      {
-        "name": "default_style",
-        "desc": "缺省的style，在mutable中找不到时，再到default_style中找。",
-        "type": "style_t*",
-        "annotation": {
-          "private": true
-        }
-      },
-      {
-        "name": "styles",
-        "desc": "控件在不同状态下的style。",
-        "type": "widget_state_style_t*",
-        "annotation": {
-          "private": true
-        }
-      }
-    ],
-    "header": "base/style_mutable.h",
-    "desc": "可变的style(可实时修改并生效，主要用于在designer中被编辑的控件，或者一些特殊控件)。\n\nstyle\\_mutable也对style\\_const进行了包装，当用户没修改某个值时，便从style\\_const中获取。",
-    "name": "style_mutable_t",
-    "parent": "style_t",
-    "annotation": {
-      "scriptable": true
-    },
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
             "type": "wh_t",
             "name": "w",
             "desc": "宽度。"
@@ -40961,6 +41583,30 @@
     "desc": "单色LCD。\n\nlcd\\_mono是一个特殊的Framebuffer，它用一个比特来表示一个pixel。\n\nlcd\\_mono只是负责硬件无关的逻辑处理，调用者需要在创建时提供一个flush回调函数，\n在flush函数中把脏矩形中的数据刷新到硬件中。",
     "name": "lcd_mono_t",
     "parent": "lcd_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建只读的style对象。",
+        "name": "style_const_create",
+        "return": {
+          "type": "style_t*",
+          "desc": "返回style对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "base/style_const.h",
+    "desc": "只读的style，从theme\\_t中获取数据。\n\ntools/theme_gen用于把XML的主题数据转换成常量数据。",
+    "name": "style_const_t",
+    "parent": "style_t",
     "level": 2
   },
   {
@@ -41514,7 +42160,10 @@
         "annotation": {
           "set_prop": true,
           "get_prop": true,
-          "readable": true
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
         }
       },
       {
@@ -41524,7 +42173,10 @@
         "annotation": {
           "set_prop": true,
           "get_prop": true,
-          "readable": true
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
         }
       },
       {
@@ -41534,7 +42186,10 @@
         "annotation": {
           "set_prop": true,
           "get_prop": true,
-          "readable": true
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
         }
       },
       {
@@ -41544,7 +42199,10 @@
         "annotation": {
           "set_prop": true,
           "get_prop": true,
-          "readable": true
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
         }
       },
       {
@@ -46435,6 +47093,100 @@
       {
         "params": [
           {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "创建keyboard对象",
+        "name": "keyboard_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "keyboard对象。"
+          }
+        ],
+        "annotation": {
+          "deconstructor": true
+        },
+        "desc": "关闭keyboard窗口。",
+        "name": "keyboard_close",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "keyboard对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为keyboard对象(供脚本语言使用)。",
+        "name": "keyboard_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "keyboard对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "keyboard/keyboard.h",
+    "desc": "软键盘。\n\n软键盘是一个特殊的窗口，由编辑器通过输入法自动打开和关闭。\n\n这里介绍一下定制软键盘的方法：\n\n编辑器输入类型和软键盘UI资源文件的对应关系:\n\n| 输入类型       | 软键盘UI资源文件|\n|----------------|:---------------:|\n| INPUT\\_PHONE    | kb\\_phone.xml    |\n| INPUT\\_INT      | kb\\_int.xml      |\n| INPUT\\_FLOAT    | kb\\_float.xml    |\n| INPUT\\_UINT     | kb\\_uint.xml     |\n| INPUT\\_UFLOAT   | kb\\_ufloat.xml   |\n| INPUT\\_HEX      | kb\\_hex.xml      |\n| INPUT\\_EMAIL    | kb\\_ascii.xml    |\n| INPUT\\_PASSWORD | kb\\_ascii.xml    |\n| INPUT\\_CUSTOM   | 使用自定义的键盘 |\n| 其它            | kb\\_default.xml  |\n\nkeyboard中按钮子控件的名称有些特殊要求：\n\n|  名称          | 功能            |\n|----------------|:---------------:|\n| return         | 回车键          |\n| action         | 定制按钮        |\n| backspace      | 删除键          |\n| tab            | tab键           |\n| space          | 空格键          |\n| close          | 关闭软键盘      |\n| 前缀key:        | 键值           |\n| 前缀hard_key:   | 模拟物理键盘    |\n| 前缀page:       | 切换到页面      |\n\n示例：\n\n* 按键\"a\"，提交输入法处理。\n\n```xml\n<button repeat=\"300\" name=\"key:a\" text=\"a\"/>\n```\n\n* 字符\"a\"，直接提交到编辑器。\n\n```xml\n<button repeat=\"300\" name=\"a\" text=\"a\"/>\n```\n\n* 模拟物理键盘数字\"1\"，触发key down/up事件（可以用来选择候选字）。\n\n```xml\n<button repeat=\"300\" name=\"hard_key:1\" text=\"1\"/>\n```\n\n> 更多用法请参考：\n[kb_default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/kb_default.xml)",
+    "name": "keyboard_t",
+    "parent": "window_base_t",
+    "annotation": {
+      "design": true,
+      "widget": true,
+      "window": true,
+      "scriptable": true
+    },
+    "level": 3
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
             "type": "tk_ostream_t*",
             "name": "stream",
             "desc": "ostream对象。"
@@ -46554,100 +47306,6 @@
     "desc": "输出流的接口。",
     "name": "tk_ostream_t",
     "parent": "object_t",
-    "level": 3
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
-        "desc": "创建keyboard对象",
-        "name": "keyboard_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "keyboard对象。"
-          }
-        ],
-        "annotation": {
-          "deconstructor": true
-        },
-        "desc": "关闭keyboard窗口。",
-        "name": "keyboard_close",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "keyboard对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": "转换为keyboard对象(供脚本语言使用)。",
-        "name": "keyboard_cast",
-        "return": {
-          "type": "widget_t*",
-          "desc": "keyboard对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "keyboard/keyboard.h",
-    "desc": "软键盘。\n\n软键盘是一个特殊的窗口，由编辑器通过输入法自动打开和关闭。\n\n这里介绍一下定制软键盘的方法：\n\n编辑器输入类型和软键盘UI资源文件的对应关系:\n\n| 输入类型       | 软键盘UI资源文件|\n|----------------|:---------------:|\n| INPUT\\_PHONE    | kb\\_phone.xml    |\n| INPUT\\_INT      | kb\\_int.xml      |\n| INPUT\\_FLOAT    | kb\\_float.xml    |\n| INPUT\\_UINT     | kb\\_uint.xml     |\n| INPUT\\_UFLOAT   | kb\\_ufloat.xml   |\n| INPUT\\_HEX      | kb\\_hex.xml      |\n| INPUT\\_EMAIL    | kb\\_ascii.xml    |\n| INPUT\\_PASSWORD | kb\\_ascii.xml    |\n| INPUT\\_CUSTOM   | 使用自定义的键盘 |\n| 其它            | kb\\_default.xml  |\n\nkeyboard中按钮子控件的名称有些特殊要求：\n\n|  名称          | 功能            |\n|----------------|:---------------:|\n| return         | 回车键          |\n| action         | 定制按钮        |\n| backspace      | 删除键          |\n| tab            | tab键           |\n| space          | 空格键          |\n| close          | 关闭软键盘      |\n| 前缀key:        | 键值           |\n| 前缀hard_key:   | 模拟物理键盘    |\n| 前缀page:       | 切换到页面      |\n\n示例：\n\n* 按键\"a\"，提交输入法处理。\n\n```xml\n<button repeat=\"300\" name=\"key:a\" text=\"a\"/>\n```\n\n* 字符\"a\"，直接提交到编辑器。\n\n```xml\n<button repeat=\"300\" name=\"a\" text=\"a\"/>\n```\n\n* 模拟物理键盘数字\"1\"，触发key down/up事件（可以用来选择候选字）。\n\n```xml\n<button repeat=\"300\" name=\"hard_key:1\" text=\"1\"/>\n```\n\n> 更多用法请参考：\n[kb_default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/kb_default.xml)",
-    "name": "keyboard_t",
-    "parent": "window_base_t",
-    "annotation": {
-      "design": true,
-      "widget": true,
-      "window": true,
-      "scriptable": true
-    },
     "level": 3
   },
   {
@@ -48248,14 +48906,14 @@
       {
         "params": [
           {
-            "type": "tk_iostream_t*",
-            "name": "real_iostream",
-            "desc": "底层的iostream。"
+            "type": "int",
+            "name": "sock",
+            "desc": "socket。"
           }
         ],
         "annotation": {},
-        "desc": "创建iostream对象。\n\n本函数自动增加real_iostream的引用计数。",
-        "name": "tk_iostream_shdlc_create",
+        "desc": "创建iostream对象。",
+        "name": "tk_iostream_tcp_create",
         "return": {
           "type": "tk_iostream_t*",
           "desc": "返回iostream对象。"
@@ -48264,93 +48922,10 @@
     ],
     "events": [],
     "properties": [],
-    "header": "shdlc/iostream_shdlc.h",
-    "desc": "基于简化版的HDLC协议实现可靠的iostream。\n\n一般用于串口通信。",
-    "name": "tk_iostream_shdlc_t",
+    "header": "inet/iostream_tcp.h",
+    "desc": "基于TCP实现的输入输出流。",
+    "name": "tk_iostream_tcp_t",
     "parent": "tk_iostream_t",
-    "level": 4
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "tk_iostream_shdlc_t*",
-            "name": "iostream",
-            "desc": "iostream对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建istream对象。\n\n> 只能由iostream_shdlc调用。",
-        "name": "tk_istream_shdlc_create",
-        "return": {
-          "type": "tk_istream_t*",
-          "desc": "返回istream对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [
-      {
-        "name": "timeout",
-        "desc": "读写超时时间(ms)",
-        "type": "uint32_t"
-      },
-      {
-        "name": "retry_times",
-        "desc": "失败重传次数。",
-        "type": "uint32_t"
-      }
-    ],
-    "header": "shdlc/istream_shdlc.h",
-    "desc": "reliable istream base on simple HDLC",
-    "name": "tk_istream_shdlc_t",
-    "parent": "tk_istream_t",
-    "level": 4
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "tk_iostream_shdlc_t*",
-            "name": "iostream",
-            "desc": "iostream对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建ostream对象。\n\n> 只能由iostream_shdlc调用。",
-        "name": "tk_ostream_shdlc_create",
-        "return": {
-          "type": "tk_ostream_t*",
-          "desc": "返回ostream对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [
-      {
-        "name": "timeout",
-        "desc": "读写超时时间(ms)",
-        "type": "uint32_t"
-      },
-      {
-        "name": "retry_times",
-        "desc": "失败重传次数。",
-        "type": "uint32_t"
-      },
-      {
-        "name": "compress_threshold",
-        "desc": "激活压缩的阈值。",
-        "type": "uint32_t"
-      }
-    ],
-    "header": "shdlc/ostream_shdlc.h",
-    "desc": "reliable ostream base on simple HDLC",
-    "name": "tk_ostream_shdlc_t",
-    "parent": "tk_ostream_t",
     "level": 4
   },
   {
@@ -48406,6 +48981,83 @@
     "header": "file/istream_file.h",
     "desc": "基于文件实现的输入流。",
     "name": "tk_istream_file_t",
+    "parent": "tk_istream_t",
+    "level": 4
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "tk_ostream_t*",
+            "name": "real_ostream",
+            "desc": "实际的ostream对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建ostream对象。\n\n本函数自动增加real_ostream的引用计数。",
+        "name": "tk_ostream_buffered_create",
+        "return": {
+          "type": "tk_ostream_t*",
+          "desc": "返回ostream对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_ostream_t*",
+            "name": "ostream",
+            "desc": "ostream对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取当前缓存数据的长度。",
+        "name": "tk_ostream_buffered_get_size",
+        "return": {
+          "type": "uint32_t",
+          "desc": "返回缓存数据的长度。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "buffered/ostream_buffered.h",
+    "desc": "先将数据写入一个缓存区，调用flush时才真正写入底层的ostream。",
+    "name": "tk_ostream_buffered_t",
+    "parent": "tk_ostream_t",
+    "level": 4
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "tk_istream_t*",
+            "name": "real_istream",
+            "desc": "实际的istream。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "buffer_size",
+            "desc": "缓冲区的大小。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建istream对象。\n\n本函数自动增加real_ostream的引用计数。",
+        "name": "tk_istream_buffered_create",
+        "return": {
+          "type": "tk_istream_t*",
+          "desc": "返回istream对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "buffered/istream_buffered.h",
+    "desc": "缓冲输入流。\n\n如果调用者每次只读取少量数据，可以使用本类对底层istream进行装饰，以提高读取效率。",
+    "name": "tk_istream_buffered_t",
     "parent": "tk_istream_t",
     "level": 4
   },
@@ -48471,253 +49123,41 @@
       {
         "params": [
           {
-            "type": "tk_ostream_t*",
-            "name": "real_ostream",
-            "desc": "实际的ostream对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建ostream对象。\n\n本函数自动增加real_ostream的引用计数。",
-        "name": "tk_ostream_buffered_create",
-        "return": {
-          "type": "tk_ostream_t*",
-          "desc": "返回ostream对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tk_ostream_t*",
-            "name": "ostream",
-            "desc": "ostream对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "获取当前缓存数据的长度。",
-        "name": "tk_ostream_buffered_get_size",
-        "return": {
-          "type": "uint32_t",
-          "desc": "返回缓存数据的长度。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "buffered/ostream_buffered.h",
-    "desc": "先将数据写入一个缓存区，调用flush时才真正写入底层的ostream。",
-    "name": "tk_ostream_buffered_t",
-    "parent": "tk_ostream_t",
-    "level": 4
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "int",
-            "name": "sock",
-            "desc": "socket."
-          }
-        ],
-        "annotation": {},
-        "desc": "创建ostream对象。",
-        "name": "tk_ostream_tcp_create",
-        "return": {
-          "type": "tk_ostream_t*",
-          "desc": "返回ostream对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "inet/ostream_tcp.h",
-    "desc": "基于TCP实现的输出流。",
-    "name": "tk_ostream_tcp_t",
-    "parent": "tk_ostream_t",
-    "level": 4
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "tk_istream_t*",
-            "name": "real_istream",
-            "desc": "实际的istream。"
+            "type": "uint8_t*",
+            "name": "buff",
+            "desc": "返回数据的缓冲区。"
           },
           {
             "type": "uint32_t",
-            "name": "buffer_size",
+            "name": "size",
             "desc": "缓冲区的大小。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建istream对象。\n\n本函数自动增加real_ostream的引用计数。",
-        "name": "tk_istream_buffered_create",
-        "return": {
-          "type": "tk_istream_t*",
-          "desc": "返回istream对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "buffered/istream_buffered.h",
-    "desc": "缓冲输入流。\n\n如果调用者每次只读取少量数据，可以使用本类对底层istream进行装饰，以提高读取效率。",
-    "name": "tk_istream_buffered_t",
-    "parent": "tk_istream_t",
-    "level": 4
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
+          },
           {
-            "type": "int",
-            "name": "sock",
-            "desc": "socket。"
+            "type": "uint32_t",
+            "name": "packet_size",
+            "desc": "缺省一次读取的数据的长度。"
+          },
+          {
+            "type": "bool_t",
+            "name": "own_the_buff",
+            "desc": "是否让istream对象拥有buff。"
           }
         ],
         "annotation": {},
         "desc": "创建istream对象。",
-        "name": "tk_istream_udp_create",
+        "name": "tk_istream_mem_create",
         "return": {
           "type": "tk_istream_t*",
           "desc": "返回istream对象。"
         }
-      },
-      {
-        "params": [
-          {
-            "type": "tk_istream_t*",
-            "name": "stream",
-            "desc": "istream对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "host",
-            "desc": "主机或IP。"
-          },
-          {
-            "type": "int",
-            "name": "port",
-            "desc": "端口。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置目标。",
-        "name": "tk_istream_udp_set_target_with_host",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tk_istream_t*",
-            "name": "stream",
-            "desc": "istream对象。"
-          },
-          {
-            "type": "struct sockaddr_in",
-            "name": "addr",
-            "desc": "地址。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置目标。",
-        "name": "tk_istream_udp_set_target_with_addr",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "inet/istream_udp.h",
-    "desc": "基于UDP实现的输入流。",
-    "name": "tk_istream_udp_t",
+    "header": "mem/istream_mem.h",
+    "desc": "基于内存实现的输入流。",
+    "name": "tk_istream_mem_t",
     "parent": "tk_istream_t",
-    "level": 4
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "int",
-            "name": "sock",
-            "desc": "socket."
-          }
-        ],
-        "annotation": {},
-        "desc": "创建ostream对象。",
-        "name": "tk_ostream_udp_create",
-        "return": {
-          "type": "tk_ostream_t*",
-          "desc": "返回ostream对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tk_ostream_t*",
-            "name": "stream",
-            "desc": "ostream对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "host",
-            "desc": "主机或IP。"
-          },
-          {
-            "type": "int",
-            "name": "port",
-            "desc": "端口。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置目标。",
-        "name": "tk_ostream_udp_set_target_with_host",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tk_ostream_t*",
-            "name": "stream",
-            "desc": "ostream对象。"
-          },
-          {
-            "type": "struct sockaddr_in",
-            "name": "addr",
-            "desc": "地址。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置目标。",
-        "name": "tk_ostream_udp_set_target_with_addr",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "inet/ostream_udp.h",
-    "desc": "基于UDP实现的输出流。",
-    "name": "tk_ostream_udp_t",
-    "parent": "tk_ostream_t",
     "level": 4
   },
   {
@@ -48791,49 +49231,6 @@
           {
             "type": "bool_t",
             "name": "own_the_buff",
-            "desc": "是否让istream对象拥有buff。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建istream对象。",
-        "name": "tk_istream_mem_create",
-        "return": {
-          "type": "tk_istream_t*",
-          "desc": "返回istream对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "mem/istream_mem.h",
-    "desc": "基于内存实现的输入流。",
-    "name": "tk_istream_mem_t",
-    "parent": "tk_istream_t",
-    "level": 4
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "uint8_t*",
-            "name": "buff",
-            "desc": "返回数据的缓冲区。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "size",
-            "desc": "缓冲区的大小。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "packet_size",
-            "desc": "缺省一次读取的数据的长度。"
-          },
-          {
-            "type": "bool_t",
-            "name": "own_the_buff",
             "desc": "是否让ostream对象拥有buff。"
           }
         ],
@@ -48860,47 +49257,26 @@
       {
         "params": [
           {
-            "type": "const char*",
-            "name": "host",
-            "desc": "服务器地址。"
-          },
-          {
-            "type": "int",
-            "name": "port",
-            "desc": "端口。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建iostream对象(客户端)。",
-        "name": "tk_iostream_udp_create_client",
-        "return": {
-          "type": "tk_iostream_t*",
-          "desc": "返回iostream对象。"
-        }
-      },
-      {
-        "params": [
-          {
             "type": "int",
             "name": "sock",
-            "desc": "socket"
+            "desc": "socket."
           }
         ],
         "annotation": {},
-        "desc": "创建iostream对象(客户端)。",
-        "name": "tk_iostream_udp_create",
+        "desc": "创建ostream对象。",
+        "name": "tk_ostream_tcp_create",
         "return": {
-          "type": "tk_iostream_t*",
-          "desc": "返回iostream对象。"
+          "type": "tk_ostream_t*",
+          "desc": "返回ostream对象。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "inet/iostream_udp.h",
-    "desc": "基于UDP实现的输入输出流。",
-    "name": "tk_iostream_udp_t",
-    "parent": "tk_iostream_t",
+    "header": "inet/ostream_tcp.h",
+    "desc": "基于TCP实现的输出流。",
+    "name": "tk_ostream_tcp_t",
+    "parent": "tk_ostream_t",
     "level": 4
   },
   {
@@ -49207,8 +49583,83 @@
           }
         ],
         "annotation": {},
-        "desc": "创建iostream对象。",
-        "name": "tk_iostream_tcp_create",
+        "desc": "创建istream对象。",
+        "name": "tk_istream_udp_create",
+        "return": {
+          "type": "tk_istream_t*",
+          "desc": "返回istream对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_istream_t*",
+            "name": "stream",
+            "desc": "istream对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "host",
+            "desc": "主机或IP。"
+          },
+          {
+            "type": "int",
+            "name": "port",
+            "desc": "端口。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置目标。",
+        "name": "tk_istream_udp_set_target_with_host",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_istream_t*",
+            "name": "stream",
+            "desc": "istream对象。"
+          },
+          {
+            "type": "struct sockaddr_in",
+            "name": "addr",
+            "desc": "地址。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置目标。",
+        "name": "tk_istream_udp_set_target_with_addr",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "inet/istream_udp.h",
+    "desc": "基于UDP实现的输入流。",
+    "name": "tk_istream_udp_t",
+    "parent": "tk_istream_t",
+    "level": 4
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "tk_iostream_t*",
+            "name": "real_iostream",
+            "desc": "底层的iostream。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建iostream对象。\n\n本函数自动增加real_iostream的引用计数。",
+        "name": "tk_iostream_shdlc_create",
         "return": {
           "type": "tk_iostream_t*",
           "desc": "返回iostream对象。"
@@ -49217,10 +49668,169 @@
     ],
     "events": [],
     "properties": [],
-    "header": "inet/iostream_tcp.h",
-    "desc": "基于TCP实现的输入输出流。",
-    "name": "tk_iostream_tcp_t",
+    "header": "shdlc/iostream_shdlc.h",
+    "desc": "基于简化版的HDLC协议实现可靠的iostream。\n\n一般用于串口通信。",
+    "name": "tk_iostream_shdlc_t",
     "parent": "tk_iostream_t",
+    "level": 4
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "tk_iostream_shdlc_t*",
+            "name": "iostream",
+            "desc": "iostream对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建istream对象。\n\n> 只能由iostream_shdlc调用。",
+        "name": "tk_istream_shdlc_create",
+        "return": {
+          "type": "tk_istream_t*",
+          "desc": "返回istream对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "timeout",
+        "desc": "读写超时时间(ms)",
+        "type": "uint32_t"
+      },
+      {
+        "name": "retry_times",
+        "desc": "失败重传次数。",
+        "type": "uint32_t"
+      }
+    ],
+    "header": "shdlc/istream_shdlc.h",
+    "desc": "reliable istream base on simple HDLC",
+    "name": "tk_istream_shdlc_t",
+    "parent": "tk_istream_t",
+    "level": 4
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "tk_iostream_shdlc_t*",
+            "name": "iostream",
+            "desc": "iostream对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建ostream对象。\n\n> 只能由iostream_shdlc调用。",
+        "name": "tk_ostream_shdlc_create",
+        "return": {
+          "type": "tk_ostream_t*",
+          "desc": "返回ostream对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "uint32_t",
+            "name": "capacity",
+            "desc": "action的容量。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建action_queue对象。",
+        "name": "action_queue_create",
+        "return": {
+          "type": "action_queue_t*",
+          "desc": "action_queue对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "action_queue_t*",
+            "name": "q",
+            "desc": "action_queue对象。"
+          },
+          {
+            "type": "qaction_t**",
+            "name": "action",
+            "desc": "用于返回action对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "接收一个请求。",
+        "name": "action_queue_recv",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "action_queue_t*",
+            "name": "q",
+            "desc": "action_queue对象。"
+          },
+          {
+            "type": "qaction_t*",
+            "name": "action",
+            "desc": "action对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "发送一个请求。",
+        "name": "action_queue_send",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "action_queue_t*",
+            "name": "q",
+            "desc": "action_queue对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁。",
+        "name": "action_queue_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "timeout",
+        "desc": "读写超时时间(ms)",
+        "type": "uint32_t"
+      },
+      {
+        "name": "retry_times",
+        "desc": "失败重传次数。",
+        "type": "uint32_t"
+      },
+      {
+        "name": "compress_threshold",
+        "desc": "激活压缩的阈值。",
+        "type": "uint32_t"
+      }
+    ],
+    "header": "shdlc/ostream_shdlc.h",
+    "desc": "reliable ostream base on simple HDLC",
+    "name": "tk_ostream_shdlc_t",
+    "parent": "tk_ostream_t",
     "level": 4
   },
   {
@@ -49249,6 +49859,130 @@
     "desc": "基于TCP实现的输入流。",
     "name": "tk_istream_tcp_t",
     "parent": "tk_istream_t",
+    "level": 4
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "host",
+            "desc": "服务器地址。"
+          },
+          {
+            "type": "int",
+            "name": "port",
+            "desc": "端口。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建iostream对象(客户端)。",
+        "name": "tk_iostream_udp_create_client",
+        "return": {
+          "type": "tk_iostream_t*",
+          "desc": "返回iostream对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "int",
+            "name": "sock",
+            "desc": "socket"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建iostream对象(客户端)。",
+        "name": "tk_iostream_udp_create",
+        "return": {
+          "type": "tk_iostream_t*",
+          "desc": "返回iostream对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "inet/iostream_udp.h",
+    "desc": "基于UDP实现的输入输出流。",
+    "name": "tk_iostream_udp_t",
+    "parent": "tk_iostream_t",
+    "level": 4
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "int",
+            "name": "sock",
+            "desc": "socket."
+          }
+        ],
+        "annotation": {},
+        "desc": "创建ostream对象。",
+        "name": "tk_ostream_udp_create",
+        "return": {
+          "type": "tk_ostream_t*",
+          "desc": "返回ostream对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_ostream_t*",
+            "name": "stream",
+            "desc": "ostream对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "host",
+            "desc": "主机或IP。"
+          },
+          {
+            "type": "int",
+            "name": "port",
+            "desc": "端口。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置目标。",
+        "name": "tk_ostream_udp_set_target_with_host",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_ostream_t*",
+            "name": "stream",
+            "desc": "ostream对象。"
+          },
+          {
+            "type": "struct sockaddr_in",
+            "name": "addr",
+            "desc": "地址。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置目标。",
+        "name": "tk_ostream_udp_set_target_with_addr",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "inet/ostream_udp.h",
+    "desc": "基于UDP实现的输出流。",
+    "name": "tk_ostream_udp_t",
+    "parent": "tk_ostream_t",
     "level": 4
   }
 ]
