@@ -39,7 +39,7 @@ typedef ret_t (*action_thread_on_quit_t)(void* ctx, action_thread_t* thread);
  *
  *> 每个线程都有一个action queue，可以是共享的queue，也可以是私有的queue。
  */
-typedef struct _action_thread_t {
+struct _action_thread_t {
   /**
    * @property {tk_thread_t*} thread
    * @annotation ["readable"]
@@ -75,7 +75,7 @@ typedef struct _action_thread_t {
   void* on_quit_ctx;
   action_thread_on_idle_t on_idle;
   action_thread_on_quit_t on_quit;
-} action_thread_t;
+};
 
 /**
  * @method action_thread_create
