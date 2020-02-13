@@ -1,7 +1,7 @@
 const fs = require('fs');
 const URL = require('url')
 const Crawler = require("crawler");
-const Segment = require('segment');
+const Segment = require('novel-segment');
 
 let allWords = {};
 let doneURLS = {};
