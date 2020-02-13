@@ -240,15 +240,17 @@ static inline void widget_image_color2data(unsigned char* d, bitmap_format_t for
   }
 }
 
-static inline void widget_draw_antialiasing_for_point(frr_image_info_t* image_info, canvas_t* canvas, int px, int py,
-                                                      float_t e, rgba_t n_color, rgba_t o_color) {
+static inline void widget_draw_antialiasing_for_point(frr_image_info_t* image_info,
+                                                      canvas_t* canvas, int px, int py, float_t e,
+                                                      rgba_t n_color, rgba_t o_color) {
   int32_t p = 0;
   unsigned char a = (unsigned char)(e * n_color.a);
 
-  if (canvas->clip_left <= px && px <= canvas->clip_right && canvas->clip_top <= py && py <= canvas->clip_bottom) {
+  if (canvas->clip_left <= px && px <= canvas->clip_right && canvas->clip_top <= py &&
+      py <= canvas->clip_bottom) {
     IMAGE_COLOR2COLOR_BLEND(n_color, o_color, a);
     p = (int32_t)GET_IMAGE_POINT(image_info->bpp, image_info->stride, image_info->w, image_info->h,
-                                px, py);
+                                 px, py);
     if (p > 0) {
       widget_image_color2data(image_info->dst + p, image_info->format, n_color);
     }

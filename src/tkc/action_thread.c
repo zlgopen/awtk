@@ -25,24 +25,25 @@
 #include "tkc/waitable_action_queue.h"
 
 static void* action_thread_entry(void* args) {
-  qaction_t action;
   done_event_t done;
   action_thread_t* thread = (action_thread_t*)args;
-  memset(&action, 0x00, sizeof(action));
 
   thread->quit = FALSE;
   thread->quited = FALSE;
   log_debug("action thread start\n");
 
   while (!(thread->quit)) {
-    memset(&action, 0x00, sizeof(action));
+    qaction_t* action = NULL;
     while (waitable_action_queue_recv(thread->queue, &action, 1000) == RET_OK) {
-      ret_t ret = qaction_exec(&action);
+      ret_t ret = qaction_exec(action);
 
       if (ret == RET_QUIT) {
         thread->quit = TRUE;
       }
-      qaction_notify(&action, done_event_init(&done, ret));
+
+      if (qaction_notify(action, done_event_init(&done, ret)) == RET_NOT_IMPL) {
+        qaction_destroy(action);
+      }
 
       thread->executed_actions_nr++;
     }
@@ -126,8 +127,7 @@ static ret_t qaction_quit_exec(qaction_t* action) {
 }
 
 static ret_t action_thread_quit(action_thread_t* thread) {
-  qaction_t action;
-  qaction_t* a = qaction_init(&action, qaction_quit_exec, NULL, 0);
+  qaction_t* a = qaction_create(qaction_quit_exec, NULL, 0);
   return_value_if_fail(thread != NULL, RET_BAD_PARAMS);
 
   if (thread->quited || !thread->queue) {

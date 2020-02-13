@@ -62,7 +62,7 @@ error:
   return NULL;
 }
 
-ret_t waitable_action_queue_recv(waitable_action_queue_t* q, qaction_t* action,
+ret_t waitable_action_queue_recv(waitable_action_queue_t* q, qaction_t** action,
                                  uint32_t timeout_ms) {
   ret_t ret = RET_FAIL;
   return_value_if_fail(q != NULL && action != NULL, RET_BAD_PARAMS);
@@ -80,7 +80,7 @@ ret_t waitable_action_queue_recv(waitable_action_queue_t* q, qaction_t* action,
   return ret;
 }
 
-ret_t waitable_action_queue_send(waitable_action_queue_t* q, const qaction_t* action,
+ret_t waitable_action_queue_send(waitable_action_queue_t* q, qaction_t* action,
                                  uint32_t timeout_ms) {
   ret_t ret = RET_FAIL;
   return_value_if_fail(q != NULL && action != NULL, RET_BAD_PARAMS);

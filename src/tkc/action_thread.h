@@ -89,8 +89,9 @@ action_thread_t* action_thread_create(void);
 /**
  * @method action_thread_create_with_queue
  * @annotation ["constructor"]
- * @param {waitable_action_queue_t*} queue queue对象。
  * 创建action_thread对象。
+ *
+ * @param {waitable_action_queue_t*} queue queue对象。
  *
  * @return {action_thread_t*} action_thread对象。
  */

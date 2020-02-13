@@ -51,12 +51,12 @@ waitable_action_queue_t* waitable_action_queue_create(uint16_t capacity);
  * 接收一个请求。
  *
  * @param {waitable_action_queue_t*} q waitable_action_queue对象。
- * @param {qaction_t*} action action对象。
+ * @param {qaction_t**} action 用于返回action对象。
  * @param {uint32_t} timeout_ms 超时时间(ms)
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t waitable_action_queue_recv(waitable_action_queue_t* q, qaction_t* action,
+ret_t waitable_action_queue_recv(waitable_action_queue_t* q, qaction_t** action,
                                  uint32_t timeout_ms);
 
 /**
@@ -64,12 +64,12 @@ ret_t waitable_action_queue_recv(waitable_action_queue_t* q, qaction_t* action,
  * 发送一个请求。
  *
  * @param {waitable_action_queue_t*} q waitable_action_queue对象。
- * @param {const qaction_t*} action action对象。
+ * @param {qaction_t*} action action对象。
  * @param {uint32_t} timeout_ms 超时时间(ms)
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t waitable_action_queue_send(waitable_action_queue_t* q, const qaction_t* action,
+ret_t waitable_action_queue_send(waitable_action_queue_t* q, qaction_t* action,
                                  uint32_t timeout_ms);
 
 /**

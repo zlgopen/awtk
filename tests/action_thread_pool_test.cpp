@@ -5,13 +5,14 @@
 
 #include <atomic>
 
-#define NR 10000*100
+#define NR 10000 * 100
 
 static std::atomic<int> exec_times;
 
 static ret_t qaction_dummy_on_event(qaction_t* action, event_t* e) {
   if (e->type == EVT_DONE) {
     log_debug("done\n");
+    qaction_destroy(action);
   }
 
   return RET_OK;
@@ -25,15 +26,11 @@ static ret_t qaction_dummy_exec(qaction_t* action) {
 
 void test() {
   uint32_t i = 0;
-  qaction_t action;
-  action_thread_pool_t* pool = NULL;
+  action_thread_pool_t* pool = action_thread_pool_create(10, 2);
 
-  qaction_t* a = qaction_init(&action, qaction_dummy_exec, NULL, 0);
-  qaction_set_on_event(a, qaction_dummy_on_event);
-
-  pool = action_thread_pool_create(10, 2);
-
-  for(i = 0; i < NR; i++) {
+  for (i = 0; i < NR; i++) {
+    qaction_t* a = qaction_create(qaction_dummy_exec, NULL, 0);
+    qaction_set_on_event(a, qaction_dummy_on_event);
     action_thread_pool_exec(pool, a);
   }
 

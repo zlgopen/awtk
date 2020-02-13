@@ -5,7 +5,6 @@
 #define NR 100000
 
 static uint32_t exec_times = 0;
-static uint32_t destroy_times = 0;
 static waitable_action_queue_t* q;
 
 static ret_t qaction_exec_dummy(qaction_t* req) {
@@ -15,12 +14,13 @@ static ret_t qaction_exec_dummy(qaction_t* req) {
 
 static void* consumer(void* args) {
   uint32_t n = 0;
-  qaction_t action;
+  qaction_t* action = NULL;
 
   log_debug("consumer start\n");
   while (waitable_action_queue_recv(q, &action, 3000) == RET_OK) {
     n++;
-    qaction_exec(&action);
+    qaction_exec(action);
+    qaction_destroy(action);
   }
   log_debug("consumer done\n");
 
@@ -29,12 +29,10 @@ static void* consumer(void* args) {
 
 static void* producer(void* args) {
   uint32_t i = 0;
-  qaction_t action;
-  qaction_t* a = qaction_init(&action, qaction_exec_dummy, NULL, 0);
   uint32_t id = tk_pointer_to_int(args);
-
   log_debug("p=%u start\n", id);
   for (i = 0; i < NR; i++) {
+    qaction_t* a = qaction_create(qaction_exec_dummy, NULL, 0);
     if (waitable_action_queue_send(q, a, 3000) != RET_OK) {
       log_debug("send timeout\n");
       break;
@@ -73,7 +71,7 @@ void test() {
   tk_thread_destroy(p4);
   waitable_action_queue_destroy(q);
 
-  log_debug("exec_times=%u destroy_times=%u\n", exec_times, destroy_times);
+  log_debug("exec_times=%u \n", exec_times);
 }
 
 #include "tkc/platform.h"

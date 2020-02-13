@@ -22,45 +22,6 @@
 #include "tkc/mem.h"
 #include "tkc/action_queue.h"
 
-qaction_t* qaction_init(qaction_t* action, qaction_exec_t exec, void* args, uint32_t args_size) {
-  return_value_if_fail(action != NULL & exec != NULL, NULL);
-  return_value_if_fail(args_size <= sizeof(action->args), NULL);
-
-  memset(action, 0x00, sizeof(qaction_t));
-
-  action->exec = exec;
-
-  if (args != NULL) {
-    memcpy(action->args, args, args_size);
-  }
-
-  return action;
-}
-
-ret_t qaction_set_on_event(qaction_t* action, qaction_on_event_t on_event) {
-  return_value_if_fail(action != NULL, RET_BAD_PARAMS);
-
-  action->on_event = on_event;
-
-  return RET_OK;
-}
-
-ret_t qaction_notify(qaction_t* action, event_t* event) {
-  return_value_if_fail(action != NULL && event != NULL, RET_BAD_PARAMS);
-
-  if (action->on_event != NULL) {
-    action->on_event(action, event);
-  }
-
-  return RET_OK;
-}
-
-ret_t qaction_exec(qaction_t* action) {
-  return_value_if_fail(action != NULL && action->exec != NULL, RET_BAD_PARAMS);
-
-  return action->exec(action);
-}
-
 action_queue_t* action_queue_create(uint16_t capacity) {
   uint16_t size = 0;
   action_queue_t* q = NULL;
@@ -76,10 +37,11 @@ action_queue_t* action_queue_create(uint16_t capacity) {
   return q;
 }
 
-ret_t action_queue_recv(action_queue_t* q, qaction_t* action) {
+ret_t action_queue_recv(action_queue_t* q, qaction_t** action) {
   return_value_if_fail(q != NULL && action != NULL, RET_BAD_PARAMS);
   if (q->r != q->w || q->full) {
-    memcpy(action, q->actions + q->r, sizeof(*action));
+    *action = q->actions[q->r];
+    q->actions[q->r] = NULL;
     if ((q->r + 1) < q->capacity) {
       q->r++;
     } else {
@@ -93,10 +55,11 @@ ret_t action_queue_recv(action_queue_t* q, qaction_t* action) {
   return RET_FAIL;
 }
 
-ret_t action_queue_send(action_queue_t* q, const qaction_t* action) {
+ret_t action_queue_send(action_queue_t* q, qaction_t* action) {
   return_value_if_fail(q != NULL && action != NULL, RET_BAD_PARAMS);
   if (q->r != q->w || !q->full) {
-    memcpy(q->actions + q->w, action, sizeof(*action));
+    q->actions[q->w] = action;
+
     if ((q->w + 1) < q->capacity) {
       q->w++;
     } else {
@@ -113,7 +76,13 @@ ret_t action_queue_send(action_queue_t* q, const qaction_t* action) {
 }
 
 ret_t action_queue_destroy(action_queue_t* q) {
+  uint32_t i = 0;
   return_value_if_fail(q != NULL, RET_BAD_PARAMS);
+  for (i = 0; i < q->capacity; i++) {
+    if (q->actions[i] != NULL) {
+      qaction_destroy(q->actions[i]);
+    }
+  }
   TKMEM_FREE(q);
 
   return RET_OK;

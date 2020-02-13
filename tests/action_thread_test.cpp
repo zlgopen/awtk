@@ -3,13 +3,14 @@
 #include "tkc/platform.h"
 #include "tkc/action_thread.h"
 
-#define NR 10
+#define NR 10000
 
 static uint32_t exec_times = 0;
 
 static ret_t qaction_dummy_on_event(qaction_t* action, event_t* e) {
   if (e->type == EVT_DONE) {
     log_debug("done\n");
+    qaction_destroy(action);
   }
 
   return RET_OK;
@@ -35,19 +36,15 @@ static ret_t on_quit(void* ctx, action_thread_t* thread) {
 
 void test() {
   uint32_t i = 0;
-  qaction_t action;
-  action_thread_t* thread1 = NULL;
-
-  qaction_t* a = qaction_init(&action, qaction_dummy_exec, NULL, 0);
-  qaction_set_on_event(a, qaction_dummy_on_event);
-
-  thread1 = action_thread_create();
+  action_thread_t* thread1 = action_thread_create();
   action_thread_set_on_idle(thread1, on_idle, NULL);
   action_thread_set_on_quit(thread1, on_quit, NULL);
 
-  action_thread_exec(thread1, a);
-  action_thread_exec(thread1, a);
-  action_thread_exec(thread1, a);
+  for (i = 0; i < NR; i++) {
+    qaction_t* a = qaction_create(qaction_dummy_exec, NULL, 0);
+    qaction_set_on_event(a, qaction_dummy_on_event);
+    action_thread_exec(thread1, a);
+  }
 
   sleep_ms(2000);
 

@@ -28,7 +28,7 @@ BEGIN_C_DECLS
 
 /**
  * @class action_thread_pool_t
- * 线程池。
+ * action线程池。
  */
 typedef struct _action_thread_pool_t {
   /**
