@@ -298,9 +298,9 @@ typedef struct _error_event_t {
   int32_t code;
 
   /**
-   * @property {ret_t} result
+   * @property {const char*} message
    * @annotation ["readable", "scriptable"]
-   * 执行结果。
+   * 错误信息。
    */
   const char* message;
 } error_event_t;
