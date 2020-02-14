@@ -869,18 +869,18 @@ static ret_t text_edit_handle_shortcut(text_edit_t* text_edit, key_event_t* evt,
 #endif
     uint32_t key = evt->key;
     char c = tolower(key);
-    if (c == 'z') {
+    if (c == 'z' || c == 'Z') {
       stb_textedit_key(text_edit, state, STB_TEXTEDIT_K_UNDO);
-    } else if (c == 'y') {
+    } else if (c == 'y' || c == 'Y') {
       stb_textedit_key(text_edit, state, STB_TEXTEDIT_K_REDO);
-    } else if (c == 'c') {
+    } else if (c == 'c' || c == 'C') {
       text_edit_copy(text_edit);
-    } else if (c == 'x') {
+    } else if (c == 'x' || c == 'X') {
       text_edit_cut(text_edit);
-    } else if (c == 'a') {
+    } else if (c == 'a' || c == 'A') {
       state->select_start = 0;
       state->select_end = text->size;
-    } else if (c == 'v') {
+    } else if (c == 'v' || c == 'V') {
       value_t v;
       wstr_t str;
       const char* data = clip_board_get_text();

@@ -2,6 +2,7 @@
 
 * 2020/02/14
   * 修复idle的队弹出数据后出现超时导致弹出的队无法执行（感谢sqqdfny和智明提供补丁）。
+  * 完善edit/mledit快捷键的处理（感谢大恒提供补丁）。
 
 * 2020/02/13
   * 修复list\_view在切换auto\_hide\_scroll\_bar属性scroll\_bar不显示问题（感谢大恒提供补丁）。

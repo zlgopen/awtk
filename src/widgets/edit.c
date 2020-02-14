@@ -482,9 +482,11 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
 
   if (key == TK_KEY_BACKSPACE || key == TK_KEY_DELETE || key == TK_KEY_LEFT ||
       key == TK_KEY_RIGHT || key == TK_KEY_HOME || key == TK_KEY_END ||
-      ((e->ctrl || e->cmd) && (key == TK_KEY_a || key == TK_KEY_y || key == TK_KEY_z ||
-                               key == TK_KEY_v || key == TK_KEY_x || key == TK_KEY_c))) {
-    if (key == TK_KEY_v) {
+      ((e->ctrl || e->cmd) &&
+       (key == TK_KEY_a || key == TK_KEY_y || key == TK_KEY_z || key == TK_KEY_v ||
+        key == TK_KEY_x || key == TK_KEY_c || key == TK_KEY_A || key == TK_KEY_Y ||
+        key == TK_KEY_Z || key == TK_KEY_V || key == TK_KEY_X || key == TK_KEY_C))) {
+    if (key == TK_KEY_v || key == TK_KEY_V) {
       edit_paste(widget);
     } else {
       text_edit_key_down(edit->model, (key_event_t*)e);
