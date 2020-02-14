@@ -126,7 +126,7 @@ static ret_t main_loop_dispatch_events(main_loop_simple_t* loop) {
   int time_in = time_now_ms();
   int time_out = time_in;
 
-  while (main_loop_recv_event((main_loop_t*)loop, &r) == RET_OK && time_out - time_in < 20) {
+  while ((time_out - time_in < 20) && (main_loop_recv_event((main_loop_t*)loop, &r) == RET_OK)) {
     switch (r.event.type) {
       case EVT_POINTER_DOWN:
       case EVT_POINTER_MOVE:
