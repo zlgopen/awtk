@@ -89,7 +89,7 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | <a href="#widget_t_widget_is_designing_window">widget\_is\_designing\_window</a> | 判断当前控件是否是设计窗口。 |
 | <a href="#widget_t_widget_is_dialog">widget\_is\_dialog</a> | 检查控件是否是对话框类型。 |
 | <a href="#widget_t_widget_is_normal_window">widget\_is\_normal\_window</a> | 检查控件是否是普通窗口类型。 |
-| <a href="#widget_t_widget_is_opened_popup">widget\_is\_opened\_popup</a> | 检查控件弹出窗口控件是否已经打开了。 |
+| <a href="#widget_t_widget_is_opened_popup">widget\_is\_opened\_popup</a> | 检查控件弹出窗口控件是否已经打开了（而非挂起状态）。 |
 | <a href="#widget_t_widget_is_popup">widget\_is\_popup</a> | 检查控件是否是弹出窗口类型。 |
 | <a href="#widget_t_widget_is_system_bar">widget\_is\_system\_bar</a> | 检查控件是否是system bar类型。 |
 | <a href="#widget_t_widget_is_window">widget\_is\_window</a> | 判断当前控件是否是窗口。 |
@@ -148,6 +148,7 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | <a href="#widget_t_widget_start_animator">widget\_start\_animator</a> | 播放动画。 |
 | <a href="#widget_t_widget_stop_animator">widget\_stop\_animator</a> | 停止动画(控件的相应属性回归原位)。 |
 | <a href="#widget_t_widget_take_snapshot">widget\_take\_snapshot</a> | 创建一个bitmap对象，将控件绘制到bitmap上，并返回bitmap对象。 |
+| <a href="#widget_t_widget_take_snapshot_rect">widget\_take\_snapshot\_rect</a> | 创建一个bitmap对象，将控件绘制到bitmap上并且可以设置该控件的截屏区域，返回bitmap对象。 |
 | <a href="#widget_t_widget_to_global">widget\_to\_global</a> | 将控件内的本地坐标转换成全局坐标。 |
 | <a href="#widget_t_widget_to_local">widget\_to\_local</a> | 将屏幕坐标转换成控件内的本地坐标，即相对于控件左上角的坐标。 |
 | <a href="#widget_t_widget_to_screen">widget\_to\_screen</a> | 将控件内的本地坐标转换成屏幕上的坐标。 |
@@ -1058,7 +1059,7 @@ bool_t widget_is_normal_window (widget_t* widget);
 
 * 函数功能：
 
-> <p id="widget_t_widget_is_opened_popup">检查控件弹出窗口控件是否已经打开了。
+> <p id="widget_t_widget_is_opened_popup">检查控件弹出窗口控件是否已经打开了（而非挂起状态）。
 
 * 函数原型：
 
@@ -2316,6 +2317,34 @@ bitmap_t* widget_take_snapshot (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | bitmap\_t* | 返回位图对象。 |
 | widget | widget\_t* | 控件对象。 |
+#### widget\_take\_snapshot\_rect 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_take_snapshot_rect">创建一个bitmap对象，将控件绘制到bitmap上并且可以设置该控件的截屏区域，返回bitmap对象。
+
+调用者需要调用bitmap_destroy销毁返回的bitmap对象。
+
+```c
+bitmap_t* bitmap = widget_take_snapshot_rect(window_manager(), NULL);
+bitmap_save_png(bitmap, "test.png");
+bitmap_destroy(bitmap);
+```
+
+* 函数原型：
+
+```
+bitmap_t* widget_take_snapshot_rect (widget_t* widget, rect_t* r);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bitmap\_t* | 返回位图对象。 |
+| widget | widget\_t* | 控件对象。 |
+| r | rect\_t* | 截屏区域（输入NULL，则为控件全区域截屏）。 |
 #### widget\_to\_global 函数
 -----------------------
 

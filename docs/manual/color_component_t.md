@@ -18,6 +18,7 @@ COLOR_PICKER_CHILD_H: 水平为同色，垂直为Hue(递减)。
 | <a href="#color_component_t_color_component_get_s">color\_component\_get\_s</a> | 获取s分量。 |
 | <a href="#color_component_t_color_component_get_v">color\_component\_get\_v</a> | 获取v分量。 |
 | <a href="#color_component_t_color_component_set_color">color\_component\_set\_color</a> | 设置颜色。 |
+| <a href="#color_component_t_color_component_set_hsv">color\_component\_set\_hsv</a> | 设置颜色。 |
 #### color\_component\_cast 函数
 -----------------------
 
@@ -137,3 +138,25 @@ ret_t color_component_set_color (widget_t* widget, color_t c);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | c | color\_t | 颜色。 |
+#### color\_component\_set\_hsv 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="color_component_t_color_component_set_hsv">设置颜色。
+
+* 函数原型：
+
+```
+ret_t color_component_set_hsv (widget_t* widget, float h, float s, float v);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| h | float | 色调。 |
+| s | float | 饱和度。 |
+| v | float | 明度。 |

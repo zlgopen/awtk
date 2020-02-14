@@ -58,7 +58,7 @@ default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/st
 | -------- | ----- | ------------ | 
 | <a href="#progress_bar_t_max">max</a> | float\_t | 最大值(缺省为100)。 |
 | <a href="#progress_bar_t_show_text">show\_text</a> | bool\_t | 是否显示文本。 |
-| <a href="#progress_bar_t_value">value</a> | float\_t | 进度条的值[0-100]。 |
+| <a href="#progress_bar_t_value">value</a> | float\_t | 进度条的值[0-max]。 |
 | <a href="#progress_bar_t_vertical">vertical</a> | bool\_t | 进度条的是否为垂直方向。 |
 ### 事件
 <p id="progress_bar_t_events">
@@ -244,7 +244,7 @@ ret_t progress_bar_set_vertical (widget_t* widget, bool_t vertical);
 | 可通过widget\_set\_prop修改 | 是 |
 #### value 属性
 -----------------------
-> <p id="progress_bar_t_value">进度条的值[0-100]。
+> <p id="progress_bar_t_value">进度条的值[0-max]。
 
 * 类型：float\_t
 

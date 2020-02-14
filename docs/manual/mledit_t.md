@@ -253,6 +253,9 @@ ret_t mledit_set_wrap_word (widget_t* widget, bool_t wrap_word);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
 | 可通过widget\_get\_prop读取 | 是 |
 | 可通过widget\_set\_prop修改 | 是 |
@@ -266,6 +269,9 @@ ret_t mledit_set_wrap_word (widget_t* widget, bool_t wrap_word);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
 | 可通过widget\_get\_prop读取 | 是 |
 | 可通过widget\_set\_prop修改 | 是 |
@@ -311,6 +317,9 @@ ret_t mledit_set_wrap_word (widget_t* widget, bool_t wrap_word);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
 | 可通过widget\_get\_prop读取 | 是 |
 | 可通过widget\_set\_prop修改 | 是 |
@@ -356,6 +365,9 @@ ret_t mledit_set_wrap_word (widget_t* widget, bool_t wrap_word);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
 | 可通过widget\_get\_prop读取 | 是 |
 | 可通过widget\_set\_prop修改 | 是 |

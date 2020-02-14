@@ -26,6 +26,7 @@
 | <a href="#fs_t_fs_file_truncate">fs\_file\_truncate</a> | 清除文件内容。 |
 | <a href="#fs_t_fs_file_write">fs\_file\_write</a> | 写入文件。 |
 | <a href="#fs_t_fs_get_cwd">fs\_get\_cwd</a> | 获取当前所在目录。 |
+| <a href="#fs_t_fs_get_disk_info">fs\_get\_disk\_info</a> | 获取文件系统信息。 |
 | <a href="#fs_t_fs_get_exe">fs\_get\_exe</a> | 获取可执行文件所在目录。 |
 | <a href="#fs_t_fs_get_file_size">fs\_get\_file\_size</a> | 获取文件大小。 |
 | <a href="#fs_t_fs_open_dir">fs\_open\_dir</a> | 打开目录。 |
@@ -415,6 +416,28 @@ ret_t fs_get_cwd (fs_t* fs, char* path);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | fs | fs\_t* | 文件系统对象，一般赋值为os\_fs()。 |
 | path | char* | 保存当前所在目录的路径。 |
+#### fs\_get\_disk\_info 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="fs_t_fs_get_disk_info">获取文件系统信息。
+
+* 函数原型：
+
+```
+ret_t fs_get_disk_info (fs_t* fs, const char* value, int32_t* free_kb, int32_t* total_kb);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回不是-1表示成功，否则表示失败。 |
+| fs | fs\_t* | 文件系统对象，一般赋值为os\_fs()。 |
+| value | const char* | 卷名。 |
+| free\_kb | int32\_t* | 用于返回空闲空间大小(KB) |
+| total\_kb | int32\_t* | 用于返回总共空间大小(KB) |
 #### fs\_get\_exe 函数
 -----------------------
 

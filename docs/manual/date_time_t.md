@@ -11,7 +11,8 @@
 | -------- | ------------ | 
 | <a href="#date_time_t_date_time_create">date\_time\_create</a> | 创建date_time对象，并初始为当前日期和时间(一般供脚本语言中使用)。 |
 | <a href="#date_time_t_date_time_destroy">date\_time\_destroy</a> | 销毁date_time对象(一般供脚本语言中使用)。 |
-| <a href="#date_time_t_date_time_global_init">date\_time\_global\_init</a> | 时间日期全局初始化。 |
+| <a href="#date_time_t_date_time_from_time">date\_time\_from\_time</a> | 从time转换而来。 |
+| <a href="#date_time_t_date_time_global_init_ex">date\_time\_global\_init\_ex</a> | 时间日期全局初始化。 |
 | <a href="#date_time_t_date_time_init">date\_time\_init</a> | 初始为当前日期和时间。 |
 | <a href="#date_time_t_date_time_set">date\_time\_set</a> | 设置当前时间。 |
 ### 属性
@@ -63,19 +64,17 @@ ret_t date_time_destroy (date_time_t* dt);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | dt | date\_time\_t* | date\_time对象。 |
-#### date\_time\_global\_init 函数
+#### date\_time\_from\_time 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="date_time_t_date_time_global_init">时间日期全局初始化。
-
-> 嵌入式平台需要提供并设置获取当前日期和时间的函数，否则相关的功能(如时钟控件)将无法正常工作。
+> <p id="date_time_t_date_time_from_time">从time转换而来。
 
 * 函数原型：
 
 ```
-ret_t date_time_global_init (date_time_get_now_t get, date_time_set_now_t set);
+ret_t date_time_from_time (date_time_t* dt, uint64_t time);
 ```
 
 * 参数说明：
@@ -83,8 +82,29 @@ ret_t date_time_global_init (date_time_get_now_t get, date_time_set_now_t set);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| get | date\_time\_get\_now\_t | 获取当前日期和时间的函数。 |
-| set | date\_time\_set\_now\_t | 设置当前日期和时间的函数。 |
+| dt | date\_time\_t* | date\_time对象。 |
+| time | uint64\_t | 时间。 |
+#### date\_time\_global\_init\_ex 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="date_time_t_date_time_global_init_ex">时间日期全局初始化。
+
+> 嵌入式平台需要提供并设置获取当前日期和时间的函数，否则相关的功能(如时钟控件)将无法正常工作。
+
+* 函数原型：
+
+```
+ret_t date_time_global_init_ex (date_time_vtable_t vt);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| vt | date\_time\_vtable\_t | 日期和时间的相关函数的实现。 |
 #### date\_time\_init 函数
 -----------------------
 

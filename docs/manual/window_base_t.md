@@ -106,6 +106,7 @@ widget_t* window_base_cast (widget_t* widget);
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
 | 可持久化   | 是 |
+| 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
 | 可通过widget\_get\_prop读取 | 是 |
@@ -151,6 +152,7 @@ widget_t* window_base_cast (widget_t* widget);
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
 | 可持久化   | 是 |
+| 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
 | 可通过widget\_get\_prop读取 | 是 |
@@ -168,6 +170,7 @@ widget_t* window_base_cast (widget_t* widget);
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
 | 可持久化   | 是 |
+| 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
 | 可通过widget\_get\_prop读取 | 是 |
@@ -185,6 +188,7 @@ widget_t* window_base_cast (widget_t* widget);
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
 | 可持久化   | 是 |
+| 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
 | 可通过widget\_get\_prop读取 | 是 |
@@ -202,6 +206,7 @@ widget_t* window_base_cast (widget_t* widget);
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
 | 可持久化   | 是 |
+| 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
 | 可通过widget\_get\_prop读取 | 是 |
@@ -219,6 +224,7 @@ widget_t* window_base_cast (widget_t* widget);
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
 | 可持久化   | 是 |
+| 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
 | 可通过widget\_get\_prop读取 | 是 |
@@ -236,6 +242,7 @@ widget_t* window_base_cast (widget_t* widget);
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
 | 可持久化   | 是 |
+| 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
 | 可通过widget\_get\_prop读取 | 是 |
@@ -252,6 +259,7 @@ widget_t* window_base_cast (widget_t* widget);
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
 | 可持久化   | 是 |
+| 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
 | 可通过widget\_get\_prop读取 | 是 |

@@ -519,6 +519,9 @@ ret_t edit_set_text_limit (widget_t* widget, uint32_t min, uint32_t max);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
 | 可通过widget\_get\_prop读取 | 是 |
 | 可通过widget\_set\_prop修改 | 是 |
@@ -548,6 +551,9 @@ ret_t edit_set_text_limit (widget_t* widget, uint32_t min, uint32_t max);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
 | 可通过widget\_get\_prop读取 | 是 |
 | 可通过widget\_set\_prop修改 | 是 |
@@ -643,6 +649,9 @@ ret_t edit_set_text_limit (widget_t* widget, uint32_t min, uint32_t max);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
 | 可通过widget\_get\_prop读取 | 是 |
 | 可通过widget\_set\_prop修改 | 是 |
@@ -707,6 +716,9 @@ ret_t edit_set_text_limit (widget_t* widget, uint32_t min, uint32_t max);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
 | 可通过widget\_get\_prop读取 | 是 |
 | 可通过widget\_set\_prop修改 | 是 |
