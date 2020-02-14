@@ -53,7 +53,7 @@ static ret_t input_device_status_update_key_status(input_device_status_t* ids, u
     ids->rctrl = down;
   } else if (key == TK_KEY_MENU) {
     ids->menu = down;
-  } else if (key == TK_KEY_COMMAND) {
+  } else if (key == TK_KEY_LCOMMAND || key == TK_KEY_RCOMMAND) {
     ids->cmd = down;
   }
 
