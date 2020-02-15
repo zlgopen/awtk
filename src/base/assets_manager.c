@@ -661,7 +661,6 @@ ret_t assets_manager_preload(assets_manager_t* am, asset_type_t type, const char
 ret_t assets_manager_deinit(assets_manager_t* am) {
   return_value_if_fail(am != NULL, RET_BAD_PARAMS);
 
-  TKMEM_FREE(am->res_root);
   darray_deinit(&(am->assets));
 
   return RET_OK;
