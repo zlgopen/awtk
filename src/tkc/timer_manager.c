@@ -118,7 +118,7 @@ static ret_t timer_manager_dispatch_one(timer_manager_t* timer_manager, uint64_t
                                         int32_t delta_time) {
   slist_node_t* iter = timer_manager->timers.first;
 
-  while (iter != NULL && TIMER_INFO(iter->data)->now == now) {
+  while (iter != NULL && !timer_info_is_available(TIMER_INFO(iter->data), now)) {
     iter = iter->next;
   }
 
@@ -128,7 +128,7 @@ static ret_t timer_manager_dispatch_one(timer_manager_t* timer_manager, uint64_t
 
     timer->now = now;
     if ((timer->start + timer->duration) <= now) {
-      if (timer->on_timer(timer) != RET_REPEAT) {
+      if (timer_info_on_timer(timer, now) != RET_REPEAT) {
         timer_manager_remove(timer_manager, timer->id);
       } else {
         timer->start = now;

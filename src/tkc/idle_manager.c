@@ -107,7 +107,7 @@ const idle_info_t* idle_manager_find(idle_manager_t* idle_manager, uint32_t idle
 static ret_t idle_manager_dispatch_one(idle_manager_t* idle_manager, uint32_t dispatch_id) {
   slist_node_t* iter = idle_manager->idles.first;
 
-  while (iter != NULL && IDLE_INFO(iter->data)->dispatch_id == dispatch_id) {
+  while (iter != NULL && !idle_info_is_available(IDLE_INFO(iter->data), dispatch_id)) {
     iter = iter->next;
   }
 
@@ -115,8 +115,7 @@ static ret_t idle_manager_dispatch_one(idle_manager_t* idle_manager, uint32_t di
     idle_info_t* idle = (idle_info_t*)object_ref((object_t*)(iter->data));
     return_value_if_fail(idle != NULL, RET_BAD_PARAMS);
 
-    idle->dispatch_id = dispatch_id;
-    if (idle->on_idle(idle) != RET_REPEAT) {
+    if (idle_info_on_idle(idle, dispatch_id) != RET_REPEAT) {
       idle_manager_remove(idle_manager, idle->id);
     }
 

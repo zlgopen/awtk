@@ -84,3 +84,24 @@ timer_info_t* timer_info_cast(timer_info_t* timer) {
 
   return timer;
 }
+
+ret_t timer_info_on_timer(timer_info_t* timer, uint64_t now) {
+  ret_t ret = RET_OK;
+  return_value_if_fail(timer != NULL && timer->on_timer != NULL, RET_BAD_PARAMS);
+
+  if(timer->busy) {
+    return RET_BUSY;
+  }
+
+  timer->busy = TRUE;
+  timer->now = now;
+  ret = timer->on_timer(timer);
+  timer->busy = FALSE;
+
+  return ret;
+}
+
+bool_t timer_info_is_available(timer_info_t* timer, uint64_t now) {
+  return timer != NULL && !(timer->busy) && timer->now != now;
+}
+
