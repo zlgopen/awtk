@@ -312,11 +312,53 @@ value_t* value_set_double(value_t* v, double value) {
 double value_double(const value_t* v) {
   return_value_if_fail(v != NULL, 0);
 
-  if (v->type == VALUE_TYPE_DOUBLE) {
-    return v->value.f64;
-  } else {
-    return (double)value_float(v);
+  return_value_if_fail(v->type != VALUE_TYPE_INVALID, 0);
+
+  switch (v->type) {
+    case VALUE_TYPE_INT8: {
+      return (double)v->value.i8;
+    }
+    case VALUE_TYPE_UINT8: {
+      return (double)v->value.u8;
+    }
+    case VALUE_TYPE_INT16: {
+      return (double)v->value.i16;
+    }
+    case VALUE_TYPE_UINT16: {
+      return (double)v->value.u16;
+    }
+    case VALUE_TYPE_INT32: {
+      return (double)v->value.i32;
+    }
+    case VALUE_TYPE_UINT32: {
+      return (double)v->value.u32;
+    }
+    case VALUE_TYPE_INT64: {
+      return (double)v->value.i64;
+    }
+    case VALUE_TYPE_UINT64: {
+      return (double)v->value.u64;
+    }
+    case VALUE_TYPE_FLOAT: {
+      return (double)v->value.f;
+    }
+    case VALUE_TYPE_FLOAT32: {
+      return (double)v->value.f32;
+    }
+    case VALUE_TYPE_DOUBLE: {
+      return v->value.f64;
+    }
+    case VALUE_TYPE_STRING: {
+      return (double)tk_atof(v->value.str);
+    }
+    case VALUE_TYPE_WSTRING: {
+      return (double)tk_watof(v->value.wstr);
+    }
+    default:
+      break;
   }
+
+  return 0;
 }
 
 value_t* value_set_str(value_t* v, const char* value) {

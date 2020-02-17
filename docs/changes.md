@@ -1,8 +1,9 @@
 # 最新动态
 
 * 2020/02/17
-  * 修改在修复clip\_view控件在没有vg的时候的报错问题（感谢智明提供补丁）。。
-  * 修改在idle/timer中调用dialog\_modal导致死循环的问题（感谢智明提供补丁）。。
+  * 修改在修复clip\_view控件在没有vg的时候的报错问题（感谢智明提供补丁）。
+  * 修改在idle/timer中调用dialog\_modal导致死循环的问题（感谢智明提供补丁）。
+  * 完善value\_double（感谢尧燊提供补丁）。
 
 * 2020/02/15
   * 修改assets\_manager\_deinit中的内存错误（感谢俊杰提供补丁）。
