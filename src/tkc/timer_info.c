@@ -89,7 +89,7 @@ ret_t timer_info_on_timer(timer_info_t* timer, uint64_t now) {
   ret_t ret = RET_OK;
   return_value_if_fail(timer != NULL && timer->on_timer != NULL, RET_BAD_PARAMS);
 
-  if(timer->busy) {
+  if (timer->busy) {
     return RET_BUSY;
   }
 
@@ -104,4 +104,3 @@ ret_t timer_info_on_timer(timer_info_t* timer, uint64_t now) {
 bool_t timer_info_is_available(timer_info_t* timer, uint64_t now) {
   return timer != NULL && !(timer->busy) && timer->now != now;
 }
-

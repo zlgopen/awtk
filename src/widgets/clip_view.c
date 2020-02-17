@@ -32,19 +32,19 @@ static ret_t clip_view_on_paint_children(widget_t* widget, canvas_t* c) {
   return_value_if_fail(clip_view != NULL, RET_BAD_PARAMS);
 
   canvas_get_clip_rect(c, &r_save);
-  if(vg != NULL) {
+  if (vg != NULL) {
     r_vg_save = rect_init(vg->clip_rect.x, vg->clip_rect.y, vg->clip_rect.w, vg->clip_rect.h);
   }
 
   r = rect_init(c->ox, c->oy, widget->w, widget->h);
   r = rect_intersect(&r, &r_save);
   canvas_set_clip_rect(c, &r);
-  if(vg != NULL) {
+  if (vg != NULL) {
     vgcanvas_clip_rect(vg, r.x, r.y, r.w, r.h);
   }
 
   widget_on_paint_children_default(widget, c);
-  if(vg != NULL) {
+  if (vg != NULL) {
     vgcanvas_clip_rect(vg, r_vg_save.x, r_vg_save.y, r_vg_save.w, r_vg_save.h);
   }
   canvas_set_clip_rect(c, &r_save);

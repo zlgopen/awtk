@@ -81,14 +81,14 @@ idle_info_t* idle_info_cast(idle_info_t* idle) {
 }
 
 bool_t idle_info_is_available(idle_info_t* idle, uint32_t dispatch_id) {
-  return idle != NULL && !(idle->busy) && idle->dispatch_id != dispatch_id; 
+  return idle != NULL && !(idle->busy) && idle->dispatch_id != dispatch_id;
 }
 
 ret_t idle_info_on_idle(idle_info_t* idle, uint32_t dispatch_id) {
   ret_t ret = RET_OK;
   return_value_if_fail(idle != NULL && idle->on_idle != NULL, RET_BAD_PARAMS);
 
-  if(idle->busy) {
+  if (idle->busy) {
     return RET_BUSY;
   }
 
@@ -99,4 +99,3 @@ ret_t idle_info_on_idle(idle_info_t* idle, uint32_t dispatch_id) {
 
   return ret;
 }
-
