@@ -407,7 +407,7 @@ static ret_t sdl_init_gl(void) {
 ret_t native_window_sdl_init(bool_t shared, uint32_t w, uint32_t h) {
   const char* title = system_info()->app_name;
 
-  if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0) {
+  if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_AUDIO) != 0) {
     log_debug("Failed to initialize SDL: %s", SDL_GetError());
     exit(0);
     return RET_FAIL;
