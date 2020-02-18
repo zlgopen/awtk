@@ -12,6 +12,7 @@
 - [MCU芯片适配](#MCU芯片适配)
 - [扩展控件](#扩展控件)
 - [编程语言绑定](#编程语言绑定)
+- [编译构建工具](#编译构建工具)
 - [商业应用案例](#商业应用案例)
 
 
@@ -39,12 +40,14 @@
 
 - #### 软件框架和软件平台
 
-| 操作系统 | 下载地址                                | 作者                                          |
-| -------- | --------------------------------------- | --------------------------------------------- |
-| VSF平台  | https://github.com/vsfteam/vsf          | [vsfteam](https://github.com/vsfteam)【原厂】 |
-| Wayland  | https://github.com/zjm1060/awtk-wayland | [zjm1060](https://github.com/zjm1060)         |
-| Web      | https://github.com/zlgopen/awtk-web     | [ZLG](http://www.zlg.cn)                      |
-| Android  | https://github.com/zlgopen/awtk-android | [ZLG](http://www.zlg.cn)                      |
+| 操作系统  | 下载地址                                           | 作者                                          |
+| --------- | -------------------------------------------------- | --------------------------------------------- |
+| 海思Linux | https://github.com/zlgopen/awtk-linux-fb/issues/28 | [kent52712](https://github.com/kent52712)     |
+| VSF平台   | https://github.com/vsfteam/vsf                     | [vsfteam](https://github.com/vsfteam)【原厂】 |
+| Wayland   | https://github.com/zjm1060/awtk-wayland            | [zjm1060](https://github.com/zjm1060)         |
+| Web       | https://github.com/zlgopen/awtk-web                | [ZLG](http://www.zlg.cn)                      |
+| Android   | https://github.com/zlgopen/awtk-android            | [ZLG](http://www.zlg.cn)                      |
+| iOS       | https://github.com/zlgopen/awtk-ios                | [ZLG](http://www.zlg.cn)                      |
 
 
 
@@ -164,6 +167,30 @@
 | 解析引擎 | 下载地址                            | 作者                     |
 | -------- | ----------------------------------- | ------------------------ |
 | Lua      | https://github.com/zlgopen/awtk-lua | [ZLG](http://www.zlg.cn) |
+
+- #### C++
+
+| 解析引擎 | 下载地址                            | 作者                     |
+| -------- | ----------------------------------- | ------------------------ |
+| C++98    | https://github.com/zlgopen/awtk-cpp | [ZLG](http://www.zlg.cn) |
+
+- #### Java
+
+| 解析引擎 | 下载地址                             | 作者                     |
+| -------- | ------------------------------------ | ------------------------ |
+| JDK      | https://github.com/zlgopen/awtk-java | [ZLG](http://www.zlg.cn) |
+
+
+
+## 编译构建工具
+
+| 构建工具 | 编译平台 | 下载地址                                    | 作者                                    |
+| -------- | -------- | ------------------------------------------- | --------------------------------------- |
+| SCons    | PC ALL   | https://github.com/zlgopen/awtk             | [ZLG](http://www.zlg.cn)                |
+| SCons    | ARMCC    | https://github.com/zlgopen/awtk-scons-armcc | [ZLG](http://www.zlg.cn)                |
+| SCons    | MinGW    | https://github.com/zlgopen/awtk-scons-mingw | [ZLG](http://www.zlg.cn)                |
+| CMake    | MSVC     | https://github.com/zlgopen/awtk-msvc        | [ZLG](http://www.zlg.cn)                |
+| CMake    | macOS    | https://github.com/oskycar/awtktest_cmake   | [allenyang](https://github.com/oskycar) |
 
 
 

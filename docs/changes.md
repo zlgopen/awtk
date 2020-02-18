@@ -4,6 +4,7 @@
   * native window增加center/maximize/minimize/restore/fullscreen等函数。
   * native window支持脚本化。
   * 增加widget\_get\_native\_window。
+  * 更新awtk_ecology（感谢陈谭提供补丁）。）
 
 * 2020/02/17
   * 修改在修复clip\_view控件在没有vg的时候的报错问题（感谢智明提供补丁）。
