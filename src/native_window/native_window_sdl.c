@@ -92,6 +92,58 @@ static ret_t native_window_sdl_resize(native_window_t* win, wh_t w, wh_t h) {
   return RET_OK;
 }
 
+static ret_t native_window_sdl_minimize(native_window_t* win) {
+  native_window_sdl_t* sdl = NATIVE_WINDOW_SDL(win);
+
+  SDL_MinimizeWindow(sdl->window);
+
+  return RET_OK;
+}
+
+static ret_t native_window_sdl_maximize(native_window_t* win) {
+  native_window_sdl_t* sdl = NATIVE_WINDOW_SDL(win);
+
+  SDL_MaximizeWindow(sdl->window);
+
+  return RET_OK;
+}
+
+static ret_t native_window_sdl_restore(native_window_t* win) {
+  native_window_sdl_t* sdl = NATIVE_WINDOW_SDL(win);
+
+  SDL_RestoreWindow(sdl->window);
+
+  return RET_OK;
+}
+
+static ret_t native_window_sdl_center(native_window_t* win) {
+  native_window_sdl_t* sdl = NATIVE_WINDOW_SDL(win);
+
+  SDL_SetWindowPosition(sdl->window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+
+  return RET_OK;
+}
+
+static ret_t native_window_sdl_show_border(native_window_t* win, bool_t show) {
+  native_window_sdl_t* sdl = NATIVE_WINDOW_SDL(win);
+
+  SDL_SetWindowBordered(sdl->window, show);
+
+  return RET_OK;
+}
+
+static ret_t native_window_sdl_set_fullscreen(native_window_t* win, bool_t fullscreen) {
+  native_window_sdl_t* sdl = NATIVE_WINDOW_SDL(win);
+
+  if (fullscreen) {
+    SDL_SetWindowFullscreen(sdl->window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+  } else {
+    SDL_SetWindowFullscreen(sdl->window, 0);
+  }
+
+  return RET_OK;
+}
+
 static ret_t native_window_sdl_close(native_window_t* win) {
   native_window_sdl_t* sdl = NATIVE_WINDOW_SDL(win);
   lcd_t* lcd = sdl->canvas.lcd;
@@ -218,6 +270,12 @@ static const native_window_vtable_t s_native_window_vtable = {
     .type = "native_window_sdl",
     .move = native_window_sdl_move,
     .resize = native_window_sdl_resize,
+    .minimize = native_window_sdl_minimize,
+    .maximize = native_window_sdl_maximize,
+    .restore = native_window_sdl_restore,
+    .center = native_window_sdl_center,
+    .show_border = native_window_sdl_show_border,
+    .set_fullscreen = native_window_sdl_set_fullscreen,
     .get_info = native_window_sdl_get_info,
     .preprocess_event = native_window_sdl_preprocess_event,
     .swap_buffer = native_window_sdl_swap_buffer,

@@ -4007,3 +4007,10 @@ ret_t widget_dispatch_simple_event(widget_t* widget, uint32_t type) {
 
   return widget_dispatch(widget, &e);
 }
+
+native_window_t* widget_get_native_window(widget_t* widget) {
+  widget_t* win = widget_get_window(widget);
+  return_value_if_fail(win != NULL, NULL);
+
+  return (native_window_t*)widget_get_prop_pointer(win, WIDGET_PROP_NATIVE_WINDOW);
+}

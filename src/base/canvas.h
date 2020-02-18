@@ -22,8 +22,9 @@
 #ifndef TK_CANVAS_H
 #define TK_CANVAS_H
 
-#include "base/lcd.h"
+#include "base/system_info.h"
 #include "base/font_manager.h"
+#include "base/lcd.h"
 
 BEGIN_C_DECLS
 

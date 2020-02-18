@@ -1,5 +1,10 @@
 # 最新动态
 
+* 2020/02/18
+  * native window增加center/maximize/minimize/restore/fullscreen等函数。
+  * native window支持脚本化。
+  * 增加widget\_get\_native\_window。
+
 * 2020/02/17
   * 修改在修复clip\_view控件在没有vg的时候的报错问题（感谢智明提供补丁）。
   * 修改在idle/timer中调用dialog\_modal导致死循环的问题（感谢智明提供补丁）。

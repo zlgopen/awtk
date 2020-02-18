@@ -25,7 +25,7 @@
 #include "tkc/str.h"
 #include "tkc/value.h"
 #include "tkc/object.h"
-#include "base/widget.h"
+#include "base/canvas.h"
 
 BEGIN_C_DECLS
 
@@ -48,6 +48,12 @@ typedef ret_t (*native_window_gl_make_current_t)(native_window_t* win);
 typedef ret_t (*native_window_swap_buffer_t)(native_window_t* win);
 typedef ret_t (*native_window_preprocess_event_t)(native_window_t* win, event_t* e);
 typedef ret_t (*native_window_get_info_t)(native_window_t* win, native_window_info_t* info);
+typedef ret_t (*native_window_minimize_t)(native_window_t* win);
+typedef ret_t (*native_window_maximize_t)(native_window_t* win);
+typedef ret_t (*native_window_restore_t)(native_window_t* win);
+typedef ret_t (*native_window_center_t)(native_window_t* win);
+typedef ret_t (*native_window_show_border_t)(native_window_t* win, bool_t show);
+typedef ret_t (*native_window_set_fullscreen_t)(native_window_t* win, bool_t fullscreen);
 
 typedef struct _native_window_vtable_t {
   const char* type;
@@ -58,11 +64,18 @@ typedef struct _native_window_vtable_t {
   native_window_swap_buffer_t swap_buffer;
   native_window_gl_make_current_t gl_make_current;
   native_window_preprocess_event_t preprocess_event;
+  native_window_center_t center;
+  native_window_restore_t restore;
+  native_window_minimize_t minimize;
+  native_window_maximize_t maximize;
+  native_window_show_border_t show_border;
+  native_window_set_fullscreen_t set_fullscreen;
 } native_window_vtable_t;
 
 /**
  * @class native_window_t
  * @parent object_t
+ * @annotation ["scriptable"]
  * 原生窗口。
  *
  */
@@ -86,6 +99,7 @@ struct _native_window_t {
  * @method native_window_move
  * 移动窗口。
  *
+ * @annotation ["scriptable"]
  * @param {native_window_t*} win win对象。
  * @param {xy_t} x x坐标。
  * @param {xy_t} y y坐标。
@@ -99,6 +113,7 @@ ret_t native_window_move(native_window_t* win, xy_t x, xy_t y, bool_t force);
  * @method native_window_resize
  * 调整窗口大小。
  *
+ * @annotation ["scriptable"]
  * @param {native_window_t*} win win对象。
  * @param {wh_t} w 宽。
  * @param {wh_t} h 高。
@@ -107,6 +122,76 @@ ret_t native_window_move(native_window_t* win, xy_t x, xy_t y, bool_t force);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t native_window_resize(native_window_t* win, wh_t w, wh_t h, bool_t force);
+
+/**
+ * @method native_window_minimize
+ * 最小化窗口。
+ *
+ * @annotation ["scriptable"]
+ * @param {native_window_t*} win win对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t native_window_minimize(native_window_t* win);
+
+/**
+ * @method native_window_maximize
+ * 最大化窗口。
+ *
+ * @annotation ["scriptable"]
+ * @param {native_window_t*} win win对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t native_window_maximize(native_window_t* win);
+
+/**
+ * @method native_window_restore
+ * 恢复窗口大小。
+ *
+ * @annotation ["scriptable"]
+ * @param {native_window_t*} win win对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t native_window_restore(native_window_t* win);
+
+/**
+ * @method native_window_center
+ * 窗口居中。
+ *
+ * @annotation ["scriptable"]
+ * @param {native_window_t*} win win对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t native_window_center(native_window_t* win);
+
+/**
+ * @method native_window_show_border
+ * 是否显示边框。
+ *
+ * @annotation ["scriptable"]
+ * @param {native_window_t*} win win对象。
+ * @param {bool_t} show 是否显示。
+ *
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t native_window_show_border(native_window_t* win, bool_t show);
+
+/**
+ * @method native_window_set_fullscreen
+ * 是否全屏。
+ *
+ * @annotation ["scriptable"]
+ * @param {native_window_t*} win win对象。
+ * @param {bool_t} fullscreen 是否全屏。
+ *
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t native_window_set_fullscreen(native_window_t* win, bool_t fullscreen);
 
 /**
  * @method native_window_get_canvas

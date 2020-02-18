@@ -16340,6 +16340,24 @@
         "annotation": {
           "scriptable": true
         },
+        "desc": "获取原生窗口对象。",
+        "name": "widget_get_native_window",
+        "return": {
+          "type": "native_window_t*",
+          "desc": "原生窗口对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "获取控件在父控件中的索引编号。",
         "name": "widget_index_of",
         "return": {
@@ -46153,7 +46171,9 @@
             "desc": "无论是否shared都move。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "移动窗口。",
         "name": "native_window_move",
         "return": {
@@ -46184,9 +46204,129 @@
             "desc": "无论是否shared都resize。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "调整窗口大小。",
         "name": "native_window_resize",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "native_window_t*",
+            "name": "win",
+            "desc": "win对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "最小化窗口。",
+        "name": "native_window_minimize",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "native_window_t*",
+            "name": "win",
+            "desc": "win对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "最大化窗口。",
+        "name": "native_window_maximize",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "native_window_t*",
+            "name": "win",
+            "desc": "win对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "恢复窗口大小。",
+        "name": "native_window_restore",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "native_window_t*",
+            "name": "win",
+            "desc": "win对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "窗口居中。",
+        "name": "native_window_center",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "native_window_t*",
+            "name": "win",
+            "desc": "win对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "show",
+            "desc": "是否显示。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "是否显示边框。",
+        "name": "native_window_show_border",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "native_window_t*",
+            "name": "win",
+            "desc": "win对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "fullscreen",
+            "desc": "是否全屏。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "是否全屏。",
+        "name": "native_window_set_fullscreen",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -46252,6 +46392,9 @@
     "desc": "原生窗口。",
     "name": "native_window_t",
     "parent": "object_t",
+    "annotation": {
+      "scriptable": true
+    },
     "level": 3
   },
   {

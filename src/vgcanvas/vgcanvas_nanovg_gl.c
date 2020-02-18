@@ -19,7 +19,7 @@
  *
  */
 
-#include "tkc/types_def.h"
+#include "base/system_info.h"
 
 #if defined(WITH_NANOVG_GL3)
 #define NANOVG_GL3_IMPLEMENTATION

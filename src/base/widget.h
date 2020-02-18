@@ -46,6 +46,7 @@
 #include "base/self_layouter.h"
 #include "base/widget_animator.h"
 #include "base/children_layouter.h"
+#include "base/native_window.h"
 
 BEGIN_C_DECLS
 
@@ -625,6 +626,16 @@ int32_t widget_count_children(widget_t* widget);
  * @return {widget_t*} 子控件。
  */
 widget_t* widget_get_child(widget_t* widget, int32_t index);
+
+/**
+ * @method widget_get_native_window
+ * 获取原生窗口对象。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {native_window_t*} 原生窗口对象。
+ */
+native_window_t* widget_get_native_window(widget_t* widget);
 
 /**
  * @method widget_index_of

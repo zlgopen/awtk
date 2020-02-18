@@ -19,6 +19,7 @@
  *
  */
 
+#include "base/widget.h"
 #include "base/native_window.h"
 
 ret_t native_window_move(native_window_t* win, xy_t x, xy_t y, bool_t force) {
@@ -185,4 +186,64 @@ ret_t native_window_preprocess_event(native_window_t* win, event_t* e) {
   }
 
   return RET_OK;
+}
+
+ret_t native_window_minimize(native_window_t* win) {
+  return_value_if_fail(win != NULL && win->vt != NULL, RET_BAD_PARAMS);
+
+  if (win->vt->minimize != NULL) {
+    return win->vt->minimize(win);
+  }
+
+  return RET_NOT_IMPL;
+}
+
+ret_t native_window_maximize(native_window_t* win) {
+  return_value_if_fail(win != NULL && win->vt != NULL, RET_BAD_PARAMS);
+
+  if (win->vt->maximize != NULL) {
+    return win->vt->maximize(win);
+  }
+
+  return RET_NOT_IMPL;
+}
+
+ret_t native_window_restore(native_window_t* win) {
+  return_value_if_fail(win != NULL && win->vt != NULL, RET_BAD_PARAMS);
+
+  if (win->vt->restore != NULL) {
+    return win->vt->restore(win);
+  }
+
+  return RET_NOT_IMPL;
+}
+
+ret_t native_window_center(native_window_t* win) {
+  return_value_if_fail(win != NULL && win->vt != NULL, RET_BAD_PARAMS);
+
+  if (win->vt->center != NULL) {
+    return win->vt->center(win);
+  }
+
+  return RET_NOT_IMPL;
+}
+
+ret_t native_window_show_border(native_window_t* win, bool_t show) {
+  return_value_if_fail(win != NULL && win->vt != NULL, RET_BAD_PARAMS);
+
+  if (win->vt->show_border != NULL) {
+    return win->vt->show_border(win, show);
+  }
+
+  return RET_NOT_IMPL;
+}
+
+ret_t native_window_set_fullscreen(native_window_t* win, bool_t fullscreen) {
+  return_value_if_fail(win != NULL && win->vt != NULL, RET_BAD_PARAMS);
+
+  if (win->vt->set_fullscreen != NULL) {
+    return win->vt->set_fullscreen(win, fullscreen);
+  }
+
+  return RET_NOT_IMPL;
 }
