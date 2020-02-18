@@ -56,7 +56,7 @@
 
 [AWTK](README.md) 是跨平台的，这有两个方面的意思：
 
-* AWTK 本身是跨平台的。目前支持的平台有 ZLG AWorksOS、Windows、Linux、MacOS、嵌入式 Linux、Android、Web 和嵌入式裸系统，可以轻松的移植到各种 RTOS 上。AWTK 以后也可以运行在各种小程序和 iOS 等平台上运行。
+* AWTK 本身是跨平台的。目前支持的平台有 ZLG AWorksOS、Windows、Linux、MacOS、嵌入式 Linux、Android、iOS、Web 和嵌入式裸系统，可以轻松的移植到各种 RTOS 上。AWTK 以后也可以运行在各种小程序平台上运行。
 
 * AWTK 同时还提供了一套跨平台的基础工具库。其中包括链表、数组、字符串 (UTF8 和 widechar)，事件发射器、值、对象、文件系统、互斥锁和线程、表达式和字符串解析等等，让你用 AWTK 开发的应用程序可以真正跨平台运行。
 
@@ -107,7 +107,7 @@
 * 大量的示例代码。
 * 完善的 API 文档和使用文档。
 * ZLG 强大的技术支持团队。
-* 用 AWTK 本身开发的界面编辑器 （开发中）。
+* 用 AWTK 本身开发的[界面编辑器](https://awtk.zlg.cn)。
 * 声明式的界面描述语言。一行代码启用控件动画，启用窗口动画，显示图片 (png/jpg/svg/gif)。
 
 ### 6. 高度扩展性
@@ -130,7 +130,9 @@
 [AWTK](README.md) 本身是用 C 语言开发的，可以通过 IDL 生成各种脚本语言的绑定。生成的绑定代码不是简单的把 C 语言的 API 映射到脚本语言，而是生成脚本语言原生代码风格的 API。目前支持以下语言 （以后根据需要增加）：
 
 * C
-* Lua
+* C++
+* lua
+* java
 * Javascript on jerryscript
 * Javascript on nodejs
 * Javascript on quickjs
@@ -229,6 +231,8 @@ pip install Pillow
 * [MiniJVM 绑定](https://github.com/zlgopen/awtk-minijvm)
 
 * [JS 绑定之 QuickJS](https://github.com/zlgopen/awtk-quickjs)
+
+* [JS 绑定之 NodeJS](https://github.com/zlgopen/awtk-nodejs)
 
 * [JS 绑定之 JerryScript](https://github.com/zlgopen/awtk-jerryscript)
 
