@@ -19,6 +19,7 @@
  *
  */
 
+#include "base/widget_consts.h"
 #include "native_window/native_window_raw.h"
 
 typedef struct _native_window_raw_t {
