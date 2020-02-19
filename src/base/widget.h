@@ -1630,6 +1630,16 @@ bool_t widget_equal(widget_t* widget, widget_t* other);
 uint32_t widget_add_timer(widget_t* widget, timer_func_t on_timer, uint32_t duration_ms);
 
 /**
+ * @method widget_remove_timer
+ * 删除指定的timer。
+ * @param {widget_t*} widget 控件对象。
+ * @param {uint32_t} timer_id timerID。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_remove_timer(widget_t* widget, uint32_t timer_id);
+
+/**
  * @method widget_add_idle
  * 创建idle。
  * 该idle在控件销毁时自动销毁，**idle\_info\_t**的ctx为widget。

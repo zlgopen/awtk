@@ -1,5 +1,8 @@
 # 最新动态
 
+* 2020/02/19
+  * 增加widget\_remove\_timer（感谢陈谭提供补丁）。
+
 * 2020/02/18
   * native window增加center/maximize/minimize/restore/fullscreen等函数。
   * native window支持脚本化。
