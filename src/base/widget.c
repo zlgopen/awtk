@@ -2668,7 +2668,7 @@ uint32_t widget_add_timer(widget_t* widget, timer_func_t on_timer, uint32_t dura
 }
 
 ret_t widget_remove_timer(widget_t* widget, uint32_t timer_id) {
-  return_value_if_fail(widget != NULL, TK_INVALID_ID);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   if (widget_off_by_func(widget, EVT_DESTROY, widget_remove_timer_on_destroy, tk_pointer_from_int(timer_id)) == RET_OK) {
     return timer_remove(timer_id);
