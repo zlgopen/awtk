@@ -2,8 +2,8 @@
 ### 0. 参考手册
 
 * [参考手册](manual.md)
-* [参考手册 (chm)](https://github.com/zlgopen/awtk-docs/tree/master/AWTK-API 手册)
-* [开发实践](https://github.com/zlgopen/awtk-docs/tree/master/AWTK 开发实践)
+* [参考手册 (chm)](https://github.com/zlgopen/awtk-docs/tree/master/AWTK-API%E6%89%8B%E5%86%8C)
+* [开发实践](https://github.com/zlgopen/awtk-docs/blob/master/AWTK%E5%BC%80%E5%8F%91%E5%AE%9E%E8%B7%B5)
 
 ### 1. 使用文档
 * [避坑指南](trap_list.md)
