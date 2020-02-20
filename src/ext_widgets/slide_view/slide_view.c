@@ -259,7 +259,7 @@ static ret_t slide_view_on_event(widget_t* widget, event_t* e) {
       pointer_event_t* evt = (pointer_event_t*)e;
       if (slide_view->dragged) {
         slide_view_on_pointer_move(slide_view, evt);
-        slide_view_invalidate(slide_view);
+        widget_invalidate(widget, NULL);
       } else if (evt->pressed && slide_view->pressed) {
         int32_t delta = 0;
 
