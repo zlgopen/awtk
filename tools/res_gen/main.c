@@ -60,6 +60,8 @@ int wmain(int argc, wchar_t* argv[]) {
     output_res_c_source(out_filename, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_BMP, input_buff, size);
   } else if (end_with(in_filename, ".jpg")) {
     output_res_c_source(out_filename, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_JPG, input_buff, size);
+  } else if (end_with(in_filename, ".jpeg")) {
+    output_res_c_source(out_filename, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_JPG, input_buff, size);
   } else if (end_with(in_filename, ".gif")) {
     output_res_c_source(out_filename, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_GIF, input_buff, size);
   } else if (end_with(in_filename, ".lz4")) {
