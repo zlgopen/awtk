@@ -180,7 +180,7 @@ ret_t canvas_set_clip_rect(canvas_t* c, const rect_t* r_in) {
   }
 
 #ifdef WITH_NANOVG_GPU
-/* 把 canvas 的裁剪区设置为全屏，在 opengl 的状态下让 vg 来处理裁剪区的问题 */
+  /* 把 canvas 的裁剪区设置为全屏，在 opengl 的状态下让 vg 来处理裁剪区的问题 */
   c->clip_left = 0;
   c->clip_top = 0;
   c->clip_right = lcd_w - 1;

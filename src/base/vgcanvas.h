@@ -76,7 +76,8 @@ typedef ret_t (*vgcanvas_set_transform_t)(vgcanvas_t* vg, float_t a, float_t b, 
                                           float_t d, float_t e, float_t f);
 
 typedef ret_t (*vgcanvas_clip_rect_t)(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h);
-typedef ret_t (*vgcanvas_nanovg_intersect_clip_rect_t)(vgcanvas_t* vg, float_t* x, float_t* y, float_t* w, float_t* h);
+typedef ret_t (*vgcanvas_nanovg_intersect_clip_rect_t)(vgcanvas_t* vg, float_t* x, float_t* y,
+                                                       float_t* w, float_t* h);
 typedef ret_t (*vgcanvas_fill_t)(vgcanvas_t* vg);
 typedef ret_t (*vgcanvas_stroke_t)(vgcanvas_t* vg);
 typedef ret_t (*vgcanvas_paint_t)(vgcanvas_t* vg, bool_t stroke, bitmap_t* img);
@@ -767,7 +768,6 @@ ret_t vgcanvas_clip_rect(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t vgcanvas_intersect_clip_rect(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h);
-
 
 /**
  * @method vgcanvas_fill

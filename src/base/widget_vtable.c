@@ -49,8 +49,8 @@ ret_t widget_invalidate_default(widget_t* widget, rect_t* r) {
 
   if (widget->astyle != NULL) {
     int32_t tolerance = widget->dirty_rect_tolerance;
-    
-    if(tolerance > 0) {
+
+    if (tolerance > 0) {
       r->x -= tolerance;
       r->y -= tolerance;
       r->w += 2 * tolerance + 1;

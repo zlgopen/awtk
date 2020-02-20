@@ -99,7 +99,7 @@ ret_t vgcanvas_intersect_clip_rect(vgcanvas_t* vg, float_t x, float_t y, float_t
   return_value_if_fail(vg != NULL && vg->vt->intersect_clip_rect != NULL, RET_BAD_PARAMS);
 
   fix_xywh(x, y, w, h);
-  
+
   ret = vg->vt->intersect_clip_rect(vg, &x, &y, &w, &h);
 
   vg->clip_rect.x = x;
