@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) 2013 Mikko Mononen memon@inside.org
 //
 // This software is provided 'as-is', without any express or implied
@@ -423,6 +423,9 @@ NVGpaint nvgRadialGradient(NVGcontext* ctx, float cx, float cy, float inr, float
 NVGpaint nvgImagePattern(NVGcontext* ctx, float ox, float oy, float ex, float ey,
 						 float angle, int image, float alpha);
 
+// get xfrom data
+void nvgGetStateXfrom(NVGcontext* ctx, float* xform);
+
 //
 // Scissoring
 //
@@ -441,8 +444,44 @@ void nvgScissor(NVGcontext* ctx, float x, float y, float w, float h);
 // transform space. The resulting shape is always rectangle.
 void nvgIntersectScissor(NVGcontext* ctx, float x, float y, float w, float h);
 
+/**
+ * @method nvgIntersectScissor_ex
+ * 设置一个与前一个裁剪区做交集的矩形裁剪区。
+ * 输入要设置的裁剪区，做交集后把新的裁剪区返回来给用户。
+ * 
+ * @annotation ["scriptable"]
+ * @param {NVGcontext*} ctx nanovg的对象
+ * @param {float_t} x 裁剪区x坐标。
+ * @param {float_t} y 裁剪区y坐标。
+ * @param {float_t} w 裁剪区宽度。
+ * @param {float_t} h 裁剪区高度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+void nvgIntersectScissor_ex(NVGcontext* ctx, float* x, float* y, float* w, float* h);
+
 // Reset and disables scissoring.
 void nvgResetScissor(NVGcontext* ctx);
+
+
+/**
+ * @method nvgIntersectScissorForOtherRect
+ * 设置一个裁剪区，但是该裁剪区收到脏矩形的影响
+ * 首先会把脏矩形根据当前 nanovg 的坐标系转换为新的脏矩形区域，再和裁剪区做交集，把交集设为新的裁剪区
+ * 
+ * @annotation ["scriptable"]
+ * @param {NVGcontext*} ctx nanovg的对象
+ * @param {float_t} x 裁剪区x坐标。
+ * @param {float_t} y 裁剪区y坐标。
+ * @param {float_t} w 裁剪区宽度。
+ * @param {float_t} h 裁剪区高度。
+ * @param {float_t} dx 脏矩形x坐标。
+ * @param {float_t} dy 脏矩形y坐标。
+ * @param {float_t} dw 脏矩形宽度。
+ * @param {float_t} dh 脏矩形高度。
+ *
+ */
+void nvgIntersectScissorForOtherRect(NVGcontext* ctx, float x, float y, float w, float h, float dx, float dy, float dw, float dh);
 
 //
 // Paths
@@ -662,6 +701,7 @@ struct NVGparams {
 
 	int (*renderCreate)(void* uptr);
 	int (*findTexture)(void* uptr, const void* data);
+	void (*setStateXfrom)(void* uptr, float* xform);
 	int (*renderCreateTexture)(void* uptr, int type, int w, int h, int imageFlags, const unsigned char* data);
 	int (*renderDeleteTexture)(void* uptr, int image);
 	int (*renderUpdateTexture)(void* uptr, int image, int x, int y, int w, int h, const unsigned char* data);

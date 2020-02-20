@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) 2013 Mikko Mononen memon@inside.org
 //
 // This software is provided 'as-is', without any express or implied
@@ -287,6 +287,14 @@ static NVGstate* nvg__getState(NVGcontext* ctx)
 {
 	return &ctx->states[ctx->nstates-1];
 }
+
+void nvgGetStateXfrom(NVGcontext* ctx, float* xform)
+{
+	if(xform != NULL) {
+		memcpy(xform, &(ctx->states[ctx->nstates-1].xform), sizeof(float) * 6);
+	}
+}
+
 
 NVGcontext* nvgCreateInternal(NVGparams* params)
 {
@@ -1025,6 +1033,66 @@ static void nvg__isectRects(float* dst,
 	dst[2] = nvg__maxf(0.0f, maxx - minx);
 	dst[3] = nvg__maxf(0.0f, maxy - miny);
 }
+
+
+void nvgIntersectScissorForOtherRect(NVGcontext* ctx, float x, float y, float w, float h, float dx, float dy, float dw, float dh)
+{
+	NVGstate* state = nvg__getState(ctx);
+	float rect[4];
+	float invxorm[6];
+	float ex = 0.0f, ey = 0.0f, tex = 0.0f, tey = 0.0f;
+	/* 因为脏矩形默认坐标系就是没有旋转没有缩放没有平移的状态 */
+	float pxform[6] = { 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f };
+	ex = dw * 0.5f;
+	ey = dh * 0.5f;
+	pxform[4] = dx + dw * 0.5f;
+	pxform[5] = dy + dh * 0.5f;
+	memset(invxorm, 0, sizeof(float) * 6);
+	nvgTransformInverse(invxorm, state->xform);
+	nvgTransformMultiply(pxform, invxorm);
+	tex = ex*nvg__absf(pxform[0]) + ey*nvg__absf(pxform[2]);
+	tey = ex*nvg__absf(pxform[1]) + ey*nvg__absf(pxform[3]);
+
+	// Intersect rects.
+	nvg__isectRects(rect, pxform[4] - tex, pxform[5] - tey, tex * 2, tey * 2, x, y, w, h);
+
+	nvgScissor(ctx, rect[0], rect[1], rect[2], rect[3]);
+}
+
+void nvgIntersectScissor_ex(NVGcontext* ctx, float* x, float* y, float* w, float* h)
+{
+	NVGstate* state = nvg__getState(ctx);
+	float pxform[6], invxorm[6];
+	float rect[4];
+	float ex, ey, tex, tey;
+
+	// If no previous scissor has been set, set the scissor as current scissor.
+	if (state->scissor.extent[0] < 0) {
+		nvgScissor(ctx, *x, *y, *w, *h);
+		return;
+	}
+
+	// Transform the current scissor rect into current transform space.
+	// If there is difference in rotation, this will be approximation.
+	memcpy(pxform, state->scissor.xform, sizeof(float)*6);
+	ex = state->scissor.extent[0];
+	ey = state->scissor.extent[1];
+	nvgTransformInverse(invxorm, state->xform);
+	nvgTransformMultiply(pxform, invxorm);
+	tex = ex*nvg__absf(pxform[0]) + ey*nvg__absf(pxform[2]);
+	tey = ex*nvg__absf(pxform[1]) + ey*nvg__absf(pxform[3]);
+
+	// Intersect rects.
+	nvg__isectRects(rect, pxform[4]-tex,pxform[5]-tey,tex*2,tey*2, *x, *y, *w, *h);
+
+	*x = rect[0];
+	*y = rect[1];
+	*w = rect[2];
+	*h = rect[3];
+
+	nvgScissor(ctx, rect[0], rect[1], rect[2], rect[3]);
+}
+
 
 void nvgIntersectScissor(NVGcontext* ctx, float x, float y, float w, float h)
 {
@@ -2470,6 +2538,11 @@ void nvgFill(NVGcontext* ctx)
 	fillPaint.innerColor.a *= state->alpha;
 	fillPaint.outerColor.a *= state->alpha;
 
+	/* 把 nanovg 的坐标系传入到适量画布算法中 */
+	if(ctx->params.setStateXfrom != NULL) {
+		ctx->params.setStateXfrom(ctx->params.userPtr, state->xform);
+	}
+
 	ctx->params.renderFill(ctx->params.userPtr, &fillPaint, state->compositeOperation, &state->scissor, ctx->fringeWidth,
 						   ctx->cache->bounds, ctx->cache->paths, ctx->cache->npaths);
 
@@ -2511,6 +2584,11 @@ void nvgStroke(NVGcontext* ctx)
 		nvg__expandStroke(ctx, strokeWidth*0.5f, ctx->fringeWidth, state->lineCap, state->lineJoin, state->miterLimit);
 	else
 		nvg__expandStroke(ctx, strokeWidth*0.5f, 0.0f, state->lineCap, state->lineJoin, state->miterLimit);
+
+	/* 把 nanovg 的坐标系传入到适量画布算法中 */
+	if(ctx->params.setStateXfrom != NULL) {
+		ctx->params.setStateXfrom(ctx->params.userPtr, state->xform);
+	}
 
 	ctx->params.renderStroke(ctx->params.userPtr, &strokePaint, state->compositeOperation, &state->scissor, ctx->fringeWidth,
 							 strokeWidth, ctx->cache->paths, ctx->cache->npaths);

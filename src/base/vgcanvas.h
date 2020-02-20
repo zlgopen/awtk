@@ -76,6 +76,7 @@ typedef ret_t (*vgcanvas_set_transform_t)(vgcanvas_t* vg, float_t a, float_t b, 
                                           float_t d, float_t e, float_t f);
 
 typedef ret_t (*vgcanvas_clip_rect_t)(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h);
+typedef ret_t (*vgcanvas_nanovg_intersect_clip_rect_t)(vgcanvas_t* vg, float_t* x, float_t* y, float_t* w, float_t* h);
 typedef ret_t (*vgcanvas_fill_t)(vgcanvas_t* vg);
 typedef ret_t (*vgcanvas_stroke_t)(vgcanvas_t* vg);
 typedef ret_t (*vgcanvas_paint_t)(vgcanvas_t* vg, bool_t stroke, bitmap_t* img);
@@ -158,6 +159,7 @@ typedef struct _vgcanvas_vtable_t {
   vgcanvas_set_transform_t set_transform;
 
   vgcanvas_clip_rect_t clip_rect;
+  vgcanvas_nanovg_intersect_clip_rect_t intersect_clip_rect;
   vgcanvas_fill_t fill;
   vgcanvas_stroke_t stroke;
   vgcanvas_paint_t paint;
@@ -737,6 +739,35 @@ ret_t vgcanvas_set_transform(vgcanvas_t* vg, float_t a, float_t b, float_t c, fl
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t vgcanvas_clip_rect(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h);
+
+/**
+ * @method vgcanvas_intersect_clip_rect
+ * 设置一个与前一个裁剪区做交集的矩形裁剪区。
+ * 如果下面这种情况，则不能直接调用 rect_intersect 函数来做矩形交集和 vgcanvas_clip_rect 函数设置裁剪区，而采用本函数做交集。
+ * 由于缩放和旋转以及平移会导致 vg 的坐标系和上一个裁剪区的坐标系不同，
+ * 导致直接使用做交集的话，裁剪区会出错。
+ * 
+ * ```
+ * vgcanvas_clip_rect(vg, old_r.x, old_r.y, old_r.w, old_r.h);
+ * vgcanvas_save(vg);
+ * vgcanvas_scale(vg, scale_x, scale_y);
+ * vgcanvas_rotate(vg, TK_D2R(15));
+ * vgcanvas_intersect_clip_rect(vg, r.x, r.y, r.w, r.h);
+ * ..................
+ * vgcanvas_restore(vg);
+ * ```
+ *
+ * @annotation ["scriptable"]
+ * @param {vgcanvas_t*} vg vgcanvas对象。
+ * @param {float_t} x x坐标。
+ * @param {float_t} y y坐标。
+ * @param {float_t} w 宽度。
+ * @param {float_t} h 高度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t vgcanvas_intersect_clip_rect(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h);
+
 
 /**
  * @method vgcanvas_fill

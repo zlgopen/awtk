@@ -1,4 +1,4 @@
-//
+﻿//
 // Copyright (c) 2009-2013 Mikko Mononen memon@inside.org
 //
 // This software is provided 'as-is', without any express or implied
@@ -242,7 +242,7 @@ struct GLNVGcontext {
 #endif
   int fragSize;
   int flags;
-
+  float g_xform[6];
   // Per frame buffers
   GLNVGcall* calls;
   int ccalls;
@@ -1339,6 +1339,18 @@ static int glnvg__pathIsRect(const NVGpath* path) {
   return 0;
 }
 
+static int glnvg_getSupportFastDraw(GLNVGcontext* gl, NVGscissor* scissor) {
+  /* 根据 nanovg 的坐标系，判断坐标系是否已经旋转或者缩放了，如果是就返回不支持快速绘画的方法 */
+  if(gl->g_xform[0] == 1.0f && gl->g_xform[1] == 0.0f 
+  && gl->g_xform[2] == 0.0f && gl->g_xform[3] == 1.0f
+  && scissor->xform[0] == 1.0f && scissor->xform[1] == 0.0f 
+  && scissor->xform[2] == 0.0f && scissor->xform[3] == 1.0f) {
+    return 1;
+  } else  {
+    return 0;
+  }
+}
+
 static int glnvg__VertsInScissor(const NVGvertex* verts, int nr, NVGscissor* scissor) {
   int32_t i = 0;
   float cx = scissor->xform[4];
@@ -1409,7 +1421,7 @@ static void glnvg__renderFill(void* uptr, NVGpaint* paint,
       memcpy(&gl->verts[offset], path->fill, sizeof(NVGvertex) * path->nfill);
       offset += path->nfill;
       if (npaths == 1) {
-        support_fast_draw = glnvg__pathIsRect(path) && glnvg__pathInScissor(path, scissor);
+        support_fast_draw = glnvg__pathIsRect(path) && glnvg__pathInScissor(path, scissor) && glnvg_getSupportFastDraw(gl, scissor);
       }
     }
     if (path->nstroke > 0) {
@@ -1554,7 +1566,7 @@ static void glnvg__renderTriangles(void* uptr, NVGpaint* paint,
   if (call->uniformOffset == -1) goto error;
   frag = nvg__fragUniformPtr(gl, call->uniformOffset);
   glnvg__convertPaint(gl, frag, paint, scissor, 1.0f, 1.0f, -1.0f);
-  if(glnvg__VertsInScissor(verts, nverts, scissor)) {
+  if(glnvg__VertsInScissor(verts, nverts, scissor) && glnvg_getSupportFastDraw(gl, scissor)) {
     frag->type = NSVG_SHADER_FAST_FILLGLYPH;
   } else {
     frag->type = NSVG_SHADER_IMG;
@@ -1566,6 +1578,13 @@ error:
   // We get here if call alloc was ok, but something else is not.
   // Roll back the last call to prevent drawing it.
   if (gl->ncalls > 0) gl->ncalls--;
+}
+
+static void glnvg__setStateXfrom(void* uptr, float* xform) {
+  GLNVGcontext* gl = (GLNVGcontext*)uptr;
+  if(xform != NULL) {
+		memcpy(gl->g_xform, xform, sizeof(gl->g_xform));
+	}
 }
 
 static void glnvg__renderDelete(void* uptr) {
@@ -1626,6 +1645,7 @@ NVGcontext* nvgCreateGLES3(int flags)
   params.renderStroke = glnvg__renderStroke;
   params.renderTriangles = glnvg__renderTriangles;
   params.renderDelete = glnvg__renderDelete;
+  params.setStateXfrom = glnvg__setStateXfrom;
   params.userPtr = gl;
   params.edgeAntiAlias = flags & NVG_ANTIALIAS ? 1 : 0;
 

@@ -49,11 +49,13 @@ ret_t widget_invalidate_default(widget_t* widget, rect_t* r) {
 
   if (widget->astyle != NULL) {
     int32_t tolerance = widget->dirty_rect_tolerance;
-
-    r->x -= tolerance;
-    r->y -= tolerance;
-    r->w += 2 * tolerance + 1;
-    r->h += 2 * tolerance + 1;
+    
+    if(tolerance > 0) {
+      r->x -= tolerance;
+      r->y -= tolerance;
+      r->w += 2 * tolerance + 1;
+      r->h += 2 * tolerance + 1;
+    }
   }
 
   if (widget->parent) {

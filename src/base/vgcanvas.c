@@ -94,6 +94,22 @@ ret_t vgcanvas_clip_rect(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_
   return vg->vt->clip_rect(vg, x, y, w, h);
 }
 
+ret_t vgcanvas_intersect_clip_rect(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h) {
+  ret_t ret = RET_OK;
+  return_value_if_fail(vg != NULL && vg->vt->intersect_clip_rect != NULL, RET_BAD_PARAMS);
+
+  fix_xywh(x, y, w, h);
+  
+  ret = vg->vt->intersect_clip_rect(vg, &x, &y, &w, &h);
+
+  vg->clip_rect.x = x;
+  vg->clip_rect.y = y;
+  vg->clip_rect.w = w;
+  vg->clip_rect.h = h;
+
+  return ret;
+}
+
 ret_t vgcanvas_fill(vgcanvas_t* vg) {
   return_value_if_fail(vg != NULL && vg->vt->fill != NULL, RET_BAD_PARAMS);
 

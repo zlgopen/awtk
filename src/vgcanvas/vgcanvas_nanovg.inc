@@ -182,15 +182,36 @@ static ret_t vgcanvas_nanovg_path_winding(vgcanvas_t* vgcanvas, bool_t dir) {
   return RET_OK;
 }
 
+static ret_t vgcanvas_nanovg_intersect_clip_rect(vgcanvas_t* vgcanvas, float_t* x, float_t* y,
+                                                 float_t* w, float_t* h) {
+  NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
+
+  nvgIntersectScissor_ex(vg, x, y, w, h);
+
+  return RET_OK;
+}
+
 static ret_t vgcanvas_nanovg_clip_rect(vgcanvas_t* vgcanvas, float_t x, float_t y, float_t w,
                                        float_t h) {
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
 
 #if WITH_NANOVG_GPU
-  rect_t r1 = rect_init(x, y, w, h);
-  rect_t cilp_rect = rect_intersect((const rect_t*)&vgcanvas->dirty_rect, (const rect_t*)&r1);
-  nvgScissor(vg, (float_t)cilp_rect.x, (float_t)cilp_rect.y, (float_t)cilp_rect.w,
-             (float_t)cilp_rect.h);
+  rect_t r1;
+  rect_t cilp_rect;
+  float_t xform[6];
+  nvgGetStateXfrom(vg, xform);
+
+  /* 判断如果 vg 没有旋转和缩放的坐标系，直接使用 rect_intersect 函数做交集提高效率 */
+  if (xform[0] == 1.0f && xform[1] == 0.0f && xform[2] == 0.0f && xform[3] == 1.0f) {
+    r1 = rect_init(x, y, w, h);
+    cilp_rect = rect_intersect((const rect_t*)&vgcanvas->dirty_rect, (const rect_t*)&r1);
+    nvgScissor(vg, (float_t)cilp_rect.x, (float_t)cilp_rect.y, (float_t)cilp_rect.w,
+               (float_t)cilp_rect.h);
+  } else {
+    nvgIntersectScissorForOtherRect(
+        vg, x, y, w, h, (float_t)vgcanvas->dirty_rect.x, (float_t)vgcanvas->dirty_rect.y,
+        (float_t)vgcanvas->dirty_rect.w, (float_t)vgcanvas->dirty_rect.h);
+  }
 #else
   nvgScissor(vg, x, y, w, h);
 #endif
@@ -372,8 +393,7 @@ static ret_t vgcanvas_nanovg_set_antialias(vgcanvas_t* vgcanvas, bool_t value) {
 #ifdef WITH_NANOVG_GPU
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
   NVGcontext* vg = canvas->vg;
-  NVGparams* params = (NVGparams*)vg;
-  params->edgeAntiAlias = value;
+  nvgShapeAntiAlias(vg, value);
 #else
   (void)vgcanvas;
   (void)value;
@@ -536,6 +556,7 @@ static const vgcanvas_vtable_t vt = {
     .transform = vgcanvas_nanovg_transform,
     .set_transform = vgcanvas_nanovg_set_transform,
     .clip_rect = vgcanvas_nanovg_clip_rect,
+    .intersect_clip_rect = vgcanvas_nanovg_intersect_clip_rect,
     .path_winding = vgcanvas_nanovg_path_winding,
     .fill = vgcanvas_nanovg_fill,
     .stroke = vgcanvas_nanovg_stroke,
