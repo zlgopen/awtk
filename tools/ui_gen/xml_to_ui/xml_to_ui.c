@@ -54,6 +54,7 @@ int wmain(int argc, wchar_t* argv[]) {
 
   str_init(&in_file, 0);
   str_init(&out_file, 0);
+  str_init(&_res_name, 0);
 
   str_from_wstr(&in_file, argv[1]);
   str_from_wstr(&out_file, argv[2]);
@@ -64,7 +65,6 @@ int wmain(int argc, wchar_t* argv[]) {
   exit_if_need_not_update(in_filename, out_filename);
 
   if (argc > 4) {
-    str_init(&_res_name, 0);
     str_from_wstr(&_res_name, argv[4]);
     res_name = _res_name.str;
   }
