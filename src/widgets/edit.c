@@ -884,11 +884,6 @@ ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
       input_type = (input_type_t)value_int(v);
     }
     edit->input_type = input_type;
-
-    if (input_type == INPUT_PASSWORD) {
-      edit_set_password_visible(widget, FALSE);
-    }
-
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_READONLY)) {
     edit->readonly = value_bool(v);
@@ -1296,6 +1291,7 @@ widget_t* edit_create_ex(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy
   ENSURE(edit->model != NULL);
 
   widget_set_text(widget, L"");
+  edit_set_password_visible(widget, FALSE);
 
   return widget;
 }
