@@ -43,17 +43,10 @@ static ret_t system_bar_on_request_close_window(void* ctx, event_t* e) {
   return RET_OK;
 }
 
-static ret_t system_bar_on_top_window_changed(void* ctx, event_t* e) {
-  widget_t* widget = WIDGET(ctx);
-  window_event_t* evt = (window_event_t*)e;
-
-  widget_t* top_window = evt->window;
+static ret_t system_bar_update_title(widget_t* widget, widget_t* top_window) {
   widget_t* title = widget_lookup(widget, "title", TRUE);
-  widget_t* close = widget_lookup(widget, "close", TRUE);
 
   return_value_if_fail(top_window != NULL, RET_OK);
-
-  log_debug("%s\n", top_window->name);
 
   if (title != NULL) {
     if (top_window->tr_text) {
@@ -65,10 +58,50 @@ static ret_t system_bar_on_top_window_changed(void* ctx, event_t* e) {
     }
   }
 
+  return RET_OK;
+}
+
+static ret_t system_bar_update_close(widget_t* widget, widget_t* top_window) {
+  widget_t* close = widget_lookup(widget, "close", TRUE);
+  return_value_if_fail(top_window != NULL, RET_OK);
+
   if (close != NULL) {
     int32_t closable = widget_get_prop_int(top_window, WIDGET_PROP_CLOSABLE, WINDOW_CLOSABLE_NO);
     widget_set_enable(close, closable != WINDOW_CLOSABLE_NO);
   }
+
+  return RET_OK;
+}
+
+static ret_t system_bar_on_top_window_prop_changed(void* ctx, event_t* e) {
+  widget_t* widget = WIDGET(ctx);
+  prop_change_event_t* evt = (prop_change_event_t*)e;
+  widget_t* top_window = window_manager_get_top_main_window(widget->parent);
+
+  if (top_window != WIDGET(e->target)) {
+    return RET_OK;
+  }
+
+  if (tk_str_eq(evt->name, WIDGET_PROP_TEXT) || tk_str_eq(evt->name, WIDGET_PROP_NAME)) {
+    system_bar_update_title(widget, top_window);
+  }
+
+  if (tk_str_eq(evt->name, WIDGET_PROP_CLOSABLE)) {
+    system_bar_update_close(widget, top_window);
+  }
+
+  return RET_OK;
+}
+
+static ret_t system_bar_on_top_window_changed(void* ctx, event_t* e) {
+  widget_t* widget = WIDGET(ctx);
+  window_event_t* evt = (window_event_t*)e;
+  widget_t* top_window = evt->window;
+
+  widget_off_by_ctx(top_window, ctx);
+  system_bar_update_title(widget, top_window);
+  system_bar_update_close(widget, top_window);
+  widget_on(top_window, EVT_PROP_CHANGED, system_bar_on_top_window_prop_changed, ctx);
 
   return RET_OK;
 }

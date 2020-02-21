@@ -91,6 +91,15 @@ static ret_t on_context_menu(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t update_title_on_timer(const timer_info_t* info) {
+  char text[128];
+  tk_snprintf(text, sizeof(text), "change title:%d", random() % 100);
+
+  widget_set_text_utf8(WIDGET(info->ctx), text);
+
+  return RET_REPEAT;
+}
+
 static void open_window(const char* name, widget_t* to_close) {
   widget_t* win = to_close ? window_open_and_close(name, to_close) : window_open(name);
 
@@ -104,6 +113,10 @@ static void open_window(const char* name, widget_t* to_close) {
     widget_clone_tab(win);
     widget_clone_tab(win);
     widget_clone_tab(win);
+  }
+
+  if (tk_str_eq(name, "list_view")) {
+    widget_add_timer(win, update_title_on_timer, 1000);
   }
 
   if (tk_str_eq(widget_get_type(win), WIDGET_TYPE_DIALOG)) {
