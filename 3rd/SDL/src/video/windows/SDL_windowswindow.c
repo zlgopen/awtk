@@ -1201,7 +1201,7 @@ GetOSVersionGreater8_1()
 typedef int (WINAPI *MySetProcessDpiAwareness)(int);
 typedef HRESULT(WINAPI *MyGetDpiForMonitor)(HMONITOR, int, int*, int*); 
 float 
-WIN_GetWindowDpiRatio(SDL_Window *window)
+WIN_GetWindowDpiRatio(_THIS, SDL_Window *window)
 {
 	float fPixel_ratio = 1.0f;
 	int x = 0;

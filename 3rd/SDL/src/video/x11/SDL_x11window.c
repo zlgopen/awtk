@@ -1615,7 +1615,7 @@ X11_AcceptDragAndDrop(SDL_Window * window, SDL_bool accept)
     }
 }
 
-extern float X11_GetWindowDpiRatio(SDL_Window * window)
+extern float X11_GetWindowDpiRatio(_THIS, SDL_Window * window)
 {
 	float dpi_ratio = 1.0f;
 	GdkScreen *screen;
