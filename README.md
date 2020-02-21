@@ -17,11 +17,11 @@
 
 * 主源码仓库：[https://github.com/zlgopen/awtk](https://github.com/zlgopen/awtk)
 * 镜像源码仓库：[https://gitee.com/zlgopen/awtk](https://gitee.com/zlgopen/awtk)
-* 稳定版整合包：https://pan.baidu.com/s/1_oRgj67M-I4kivk-YzwFWA   提取码: 1cmi
+* 稳定版整合包：https://pan.baidu.com/s/1_oRgj67M-I4kivk-YzwFWA   提取码：1cmi
 
-#### AWTK Designer界面设计工具：
+#### AWTK Designer 界面设计工具：
 
-* 不再需要手写XML
+* 不再需要手写 XML
 * 拖拽方式设计界面，所见即所得
 * 快速预览，一键打包资源
 * 注册及下载地址：https://awtk.zlg.cn
@@ -107,7 +107,7 @@
 * 大量的示例代码。
 * 完善的 API 文档和使用文档。
 * ZLG 强大的技术支持团队。
-* 用 AWTK 本身开发的[界面编辑器](https://awtk.zlg.cn)。
+* 用 AWTK 本身开发的 [界面编辑器](https://awtk.zlg.cn)。
 * 声明式的界面描述语言。一行代码启用控件动画，启用窗口动画，显示图片 (png/jpg/svg/gif)。
 
 ### 6. 高度扩展性
@@ -145,7 +145,18 @@
 * 支持图片翻译 （实时生效）。
 * 文字双向排版 （计划中）。
 
-### 9. 开放源码，免费商用 (LGPL)。
+### 9. 为嵌入式软件定制的 MVVM 框架，彻底分离用户界面和业务逻辑。
+* 性能高。
+* 内存开销小。
+* 隔离更彻底。
+* 可移植到其它 GUI。
+* 代码小 (~5000 行）。
+* 无需学习 AWTK 控件本身的 API。
+* 支持多种编程语言（目前支持 C/JS)。
+
+> 详情请参考：https://github.com/zlgopen/awtk-mvvm
+
+### 10. 开放源码，免费商用 (LGPL)。
 
 ## 四、模拟运行：
 
