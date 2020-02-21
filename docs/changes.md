@@ -1,85 +1,86 @@
 # 最新动态
 
 * 2020/02/21
-  * 处理jpeg文件扩展名（感谢朝泽提供补丁）。
-  * 修改xml\_to\_ui内存问题（感谢培煌提供补丁）。
+  * 处理 jpeg 文件扩展名（感谢朝泽提供补丁）。
+  * 修改 xml\_to\_ui 内存问题（感谢培煌提供补丁）。
+  * 修改一些警告（感谢培煌提供补丁）。
   * 修复 edit 密码可见性的问题（感谢尧燊提供补丁）
-  * 修复SDL 警告（感谢智明提供补丁）。
-  * 完善 systembar 支持动态改变窗口的title和closable属性。
-  * 修复 list\_view\_h 中spacing属性类型的问题（感谢尧燊提供补丁）
-  * 修复 widget\_animator\_time\_elapse中的问题（感谢朝泽提供补丁）。
+  * 修复 SDL 警告（感谢智明提供补丁）。
+  * 完善 systembar 支持动态改变窗口的 title 和 closable 属性。
+  * 修复 list\_view\_h 中 spacing 属性类型的问题（感谢尧燊提供补丁）
+  * 修复 widget\_animator\_time\_elapse 中的问题（感谢朝泽提供补丁）。
 
 * 2020/02/20
   * 增加文档《如何集成第三方库》
-  * 完善slide view脏矩形（感谢培煌提供补丁）。
+  * 完善 slide view 脏矩形（感谢培煌提供补丁）。
   * 修复控件旋转缩放的情况下裁剪区域的问题（感谢智明提供补丁）。
 
 * 2020/02/19
-  * 增加widget\_remove\_timer（感谢陈谭提供补丁）。
+  * 增加 widget\_remove\_timer（感谢陈谭提供补丁）。
 
 * 2020/02/18
-  * native window增加center/maximize/minimize/restore/fullscreen等函数。
-  * native window支持脚本化。
-  * 增加widget\_get\_native\_window。
-  * 更新awtk_ecology（感谢陈谭提供补丁）。）
+  * native window 增加 center/maximize/minimize/restore/fullscreen 等函数。
+  * native window 支持脚本化。
+  * 增加 widget\_get\_native\_window。
+  * 更新 awtk_ecology（感谢陈谭提供补丁）。）
 
 * 2020/02/17
-  * 修改在修复clip\_view控件在没有vg的时候的报错问题（感谢智明提供补丁）。
-  * 修改在idle/timer中调用dialog\_modal导致死循环的问题（感谢智明提供补丁）。
-  * 完善value\_double（感谢尧燊提供补丁）。
+  * 修改在修复 clip\_view 控件在没有 vg 的时候的报错问题（感谢智明提供补丁）。
+  * 修改在 idle/timer 中调用 dialog\_modal 导致死循环的问题（感谢智明提供补丁）。
+  * 完善 value\_double（感谢尧燊提供补丁）。
 
 * 2020/02/15
-  * 修改assets\_manager\_deinit中的内存错误（感谢俊杰提供补丁）。
+  * 修改 assets\_manager\_deinit 中的内存错误（感谢俊杰提供补丁）。
 
 * 2020/02/14
-  * 修复idle的队弹出数据后出现超时导致弹出的队无法执行（感谢sqqdfny和智明提供补丁）。
-  * 完善edit/mledit快捷键的处理（感谢大恒提供补丁）。
-  * 完善digit clock的注释（感谢俊杰提供补丁）。
+  * 修复 idle 的队弹出数据后出现超时导致弹出的队无法执行（感谢 sqqdfny 和智明提供补丁）。
+  * 完善 edit/mledit 快捷键的处理（感谢大恒提供补丁）。
+  * 完善 digit clock 的注释（感谢俊杰提供补丁）。
 
 * 2020/02/13
-  * 修复list\_view在切换auto\_hide\_scroll\_bar属性scroll\_bar不显示问题（感谢大恒提供补丁）。
-  * 修复error\_event\_t的注释（感谢大恒提供补丁）。
+  * 修复 list\_view 在切换 auto\_hide\_scroll\_bar 属性 scroll\_bar 不显示问题（感谢大恒提供补丁）。
+  * 修复 error\_event\_t 的注释（感谢大恒提供补丁）。
 
 * 2020/02/12
   * 修复在 agge 的状态下圆角矩形不受裁剪区的影响的 bug （感谢智明提供补丁）。 
-  * 修复 agge模式下编译错误（感谢培煌提供补丁)。
+  * 修复 agge 模式下编译错误（感谢培煌提供补丁）。
 
 * 2020/02/11
-  * opengles 支持snapshot（感谢智明提供补丁）。
+  * opengles 支持 snapshot（感谢智明提供补丁）。
   * 修复了 demoui 的 combox 功能的第一个 combox 在点击 edit 弹出输入法后，再点击按钮时候，导致输入法的动画异常的问题（感谢智明提供补丁）。
 
 * 2020/02/09
-  * 增加action thread pool
+  * 增加 action thread pool
 
 * 2020/02/08
-  * 增加action thread
+  * 增加 action thread
 
 * 2020/02/07
-  * 增加waitable\_action\_queue
+  * 增加 waitable\_action\_queue
 
 * 2020/02/06
-  * 增加action\_queue
-  * 修改内存统计错误（感谢培煌提供补丁)。
+  * 增加 action\_queue
+  * 修改内存统计错误（感谢培煌提供补丁）。
 
 * 2020/02/05
   * 增加拼音输入数据更新工具。
   * 完善联想词库工具生成文档。
   * 增加拼音输入数据更新文档。
-  * 增加宏WITHOUT\_SUGGEST\_WORDS用于关闭联想字功能。
+  * 增加宏 WITHOUT\_SUGGEST\_WORDS 用于关闭联想字功能。
 
 * 2020/02/04
   * 片段 lcd 的片段内存大小刚好等于脏矩形大小的问题（感谢智明提供补丁）
 
 * 2020/01/28
-  * 优化list view paint children
-  * 增加emitter\_forward
+  * 优化 list view paint children
+  * 增加 emitter\_forward
 
 * 2020/01/20
-  * compare\_color 不区分大小写(感谢Toby提供补丁)
-  * 为移植到iOS做了一下改进。
+  * compare\_color 不区分大小写（感谢 Toby 提供补丁）
+  * 为移植到 iOS 做了一下改进。
 
 * 2020/01/17
-  * 修复 list view on remove child 的问题（感谢培煌提供补丁)
+  * 修复 list view on remove child 的问题（感谢培煌提供补丁）
   * 完善 image animation （感谢大恒提供补丁）
 
 * 2020/01/16
@@ -88,7 +89,7 @@
   * 完善 mledit/edit 文档 （感谢大恒提供补丁）
   * 完善 str\_expand\_vars（感谢朝泽提供补丁）
   * 修复 edit 和 mledi t 控件不断 invalidate 的问题 （感谢智明提供补丁）
-  * 更新生态文件 (感谢陈谭提供补丁)
+  * 更新生态文件 （感谢陈谭提供补丁）
 
 * 2020/01/15
   * 点击鼠标右键触发 context menu 事件。

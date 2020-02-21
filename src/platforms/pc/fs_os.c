@@ -4,6 +4,8 @@
 #elif defined(WIN32)
 #include <stdio.h>
 #include <windows.h>
+#include <io.h>
+#include <direct.h>
 #define unlink _unlink
 #define rename MoveFileA
 #define ftruncate _chsize
@@ -275,7 +277,11 @@ ret_t fs_os_remove_dir(fs_t* fs, const char* name) {
 
 ret_t fs_os_create_dir(fs_t* fs, const char* name) {
   (void)fs;
+#if defined(WIN32)
+  if (mkdir(name) == 0) {
+#else
   if (mkdir(name, 0755) == 0) {
+#endif
     return RET_OK;
   } else {
     perror(name);

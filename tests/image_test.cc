@@ -93,7 +93,6 @@ TEST(Image, cast) {
 
 TEST(Image, clone) {
   str_t str;
-  value_t v;
   widget_t* w2 = NULL;
   widget_t* w1 = image_create(NULL, 0, 0, 400, 300);
 

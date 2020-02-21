@@ -42,6 +42,7 @@
 #include "base/style_factory.h"
 #include "base/widget_animator_manager.h"
 #include "base/widget_animator_factory.h"
+#include "blend/image_g2d.h"
 
 #define return_if_equal(p, value) \
   if ((p) == value) {             \
@@ -3965,7 +3966,6 @@ bitmap_t* widget_take_snapshot_rect(widget_t* widget, rect_t* r) {
 bitmap_t* widget_take_snapshot_rect(widget_t* widget, rect_t* r) {
   wh_t w = 0;
   wh_t h = 0;
-  rect_t r_fix;
   canvas_t canvas;
   lcd_t* lcd = NULL;
   uint8_t* buff = NULL;
