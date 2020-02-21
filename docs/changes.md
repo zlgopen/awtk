@@ -7,6 +7,7 @@
   * 修复SDL 警告（感谢智明提供补丁）。
   * 完善 systembar 支持动态改变窗口的title和closable属性。
   * 修复 list\_view\_h 中spacing属性类型的问题（感谢尧燊提供补丁）
+  * 修复 widget\_animator\_time\_elapse中的问题（感谢朝泽提供补丁）。
 
 * 2020/02/20
   * 增加文档《如何集成第三方库》
