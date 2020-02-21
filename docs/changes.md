@@ -5,7 +5,8 @@
   * 修改xml\_to\_ui内存问题（感谢培煌提供补丁）。
   * 修复 edit 密码可见性的问题（感谢尧燊提供补丁）
   * 修复SDL 警告（感谢智明提供补丁）。
-  * 完善systembar 支持动态改变窗口的title和closable属性。
+  * 完善 systembar 支持动态改变窗口的title和closable属性。
+  * 修复 list\_view\_h 中spacing属性类型的问题（感谢尧燊提供补丁）
 
 * 2020/02/20
   * 增加文档《如何集成第三方库》

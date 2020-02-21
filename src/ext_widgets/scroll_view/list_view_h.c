@@ -39,7 +39,7 @@ static ret_t list_view_h_get_prop(widget_t* widget, const char* name, value_t* v
     value_set_int(v, list_view_h->item_width);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_SPACING)) {
-    value_set_bool(v, list_view_h->spacing);
+    value_set_int(v, list_view_h->spacing);
     return RET_OK;
   }
 
@@ -54,7 +54,7 @@ static ret_t list_view_h_set_prop(widget_t* widget, const char* name, const valu
     list_view_h->item_width = value_int(v);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_SPACING)) {
-    list_view_h->spacing = value_bool(v);
+    list_view_h->spacing = value_int(v);
     return RET_OK;
   }
 
