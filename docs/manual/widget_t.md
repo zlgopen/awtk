@@ -70,6 +70,7 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | <a href="#widget_t_widget_foreach">widget\_foreach</a> | 遍历当前控件及子控件。 |
 | <a href="#widget_t_widget_get_canvas">widget\_get\_canvas</a> | 获取canvas对象。 |
 | <a href="#widget_t_widget_get_child">widget\_get\_child</a> | 获取指定索引的子控件。 |
+| <a href="#widget_t_widget_get_native_window">widget\_get\_native\_window</a> | 获取原生窗口对象。 |
 | <a href="#widget_t_widget_get_prop">widget\_get\_prop</a> | 获取控件指定属性的值。 |
 | <a href="#widget_t_widget_get_prop_bool">widget\_get\_prop\_bool</a> | 获取布尔格式的属性。 |
 | <a href="#widget_t_widget_get_prop_default_value">widget\_get\_prop\_default\_value</a> | 获取控件指定属性的缺省值(在持久化控件时，无需保存缺省值)。 |
@@ -112,6 +113,7 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | <a href="#widget_t_widget_pause_animator">widget\_pause\_animator</a> | 暂停动画。 |
 | <a href="#widget_t_widget_ref">widget\_ref</a> | 增加控件的引用计数。 |
 | <a href="#widget_t_widget_remove_child">widget\_remove\_child</a> | 移出指定的子控件(并不销毁)。 |
+| <a href="#widget_t_widget_remove_timer">widget\_remove\_timer</a> | 删除指定的timer。 |
 | <a href="#widget_t_widget_resize">widget\_resize</a> | 调整控件的大小。 |
 | <a href="#widget_t_widget_restack">widget\_restack</a> | 调整控件在父控件中的位置序数。 |
 | <a href="#widget_t_widget_set_animation">widget\_set\_animation</a> | 设置控件的动画参数(仅用于在UI文件使用)。 |
@@ -675,6 +677,25 @@ widget_t* widget_get_child (widget_t* widget, int32_t index);
 | 返回值 | widget\_t* | 子控件。 |
 | widget | widget\_t* | 控件对象。 |
 | index | int32\_t | 索引。 |
+#### widget\_get\_native\_window 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_get_native_window">获取原生窗口对象。
+
+* 函数原型：
+
+```
+native_window_t* widget_get_native_window (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | native\_window\_t* | 原生窗口对象。 |
+| widget | widget\_t* | 控件对象。 |
 #### widget\_get\_prop 函数
 -----------------------
 
@@ -1552,6 +1573,26 @@ ret_t widget_remove_child (widget_t* widget, widget_t* child);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | child | widget\_t* | 子控件对象。 |
+#### widget\_remove\_timer 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_remove_timer">删除指定的timer。
+
+* 函数原型：
+
+```
+ret_t widget_remove_timer (widget_t* widget, uint32_t timer_id);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| timer\_id | uint32\_t | timerID。 |
 #### widget\_resize 函数
 -----------------------
 

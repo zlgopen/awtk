@@ -9,11 +9,36 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#native_window_t_native_window_center">native\_window\_center</a> | 窗口居中。 |
 | <a href="#native_window_t_native_window_create">native\_window\_create</a> | 创建win对象。 |
 | <a href="#native_window_t_native_window_get_canvas">native\_window\_get\_canvas</a> | 获取canvas。 |
 | <a href="#native_window_t_native_window_invalidate">native\_window\_invalidate</a> | 请求重绘指定区域。 |
+| <a href="#native_window_t_native_window_maximize">native\_window\_maximize</a> | 最大化窗口。 |
+| <a href="#native_window_t_native_window_minimize">native\_window\_minimize</a> | 最小化窗口。 |
 | <a href="#native_window_t_native_window_move">native\_window\_move</a> | 移动窗口。 |
 | <a href="#native_window_t_native_window_resize">native\_window\_resize</a> | 调整窗口大小。 |
+| <a href="#native_window_t_native_window_restore">native\_window\_restore</a> | 恢复窗口大小。 |
+| <a href="#native_window_t_native_window_set_fullscreen">native\_window\_set\_fullscreen</a> | 是否全屏。 |
+| <a href="#native_window_t_native_window_show_border">native\_window\_show\_border</a> | 是否显示边框。 |
+#### native\_window\_center 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="native_window_t_native_window_center">窗口居中。
+
+* 函数原型：
+
+```
+ret_t native_window_center (native_window_t* win);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| win | native\_window\_t* | win对象。 |
 #### native\_window\_create 函数
 -----------------------
 
@@ -72,6 +97,44 @@ ret_t native_window_invalidate (native_window_t* win, rect_t* r);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | win | native\_window\_t* | win对象。 |
 | r | rect\_t* | 重绘区域。 |
+#### native\_window\_maximize 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="native_window_t_native_window_maximize">最大化窗口。
+
+* 函数原型：
+
+```
+ret_t native_window_maximize (native_window_t* win);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| win | native\_window\_t* | win对象。 |
+#### native\_window\_minimize 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="native_window_t_native_window_minimize">最小化窗口。
+
+* 函数原型：
+
+```
+ret_t native_window_minimize (native_window_t* win);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| win | native\_window\_t* | win对象。 |
 #### native\_window\_move 函数
 -----------------------
 
@@ -116,3 +179,62 @@ ret_t native_window_resize (native_window_t* win, wh_t w, wh_t h, bool_t force);
 | w | wh\_t | 宽。 |
 | h | wh\_t | 高。 |
 | force | bool\_t | 无论是否shared都resize。 |
+#### native\_window\_restore 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="native_window_t_native_window_restore">恢复窗口大小。
+
+* 函数原型：
+
+```
+ret_t native_window_restore (native_window_t* win);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| win | native\_window\_t* | win对象。 |
+#### native\_window\_set\_fullscreen 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="native_window_t_native_window_set_fullscreen">是否全屏。
+
+* 函数原型：
+
+```
+ret_t native_window_set_fullscreen (native_window_t* win, bool_t fullscreen);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| win | native\_window\_t* | win对象。 |
+| fullscreen | bool\_t | 是否全屏。 |
+#### native\_window\_show\_border 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="native_window_t_native_window_show_border">是否显示边框。
+
+* 函数原型：
+
+```
+ret_t native_window_show_border (native_window_t* win, bool_t show);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| win | native\_window\_t* | win对象。 |
+| show | bool\_t | 是否显示。 |

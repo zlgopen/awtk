@@ -58,6 +58,7 @@ vgcanvas_restore(vg);
 | <a href="#vgcanvas_t_vgcanvas_flush">vgcanvas\_flush</a> | flush |
 | <a href="#vgcanvas_t_vgcanvas_get_height">vgcanvas\_get\_height</a> | 获取高度。 |
 | <a href="#vgcanvas_t_vgcanvas_get_width">vgcanvas\_get\_width</a> | 获取宽度。 |
+| <a href="#vgcanvas_t_vgcanvas_intersect_clip_rect">vgcanvas\_intersect\_clip\_rect</a> | 设置一个与前一个裁剪区做交集的矩形裁剪区。 |
 | <a href="#vgcanvas_t_vgcanvas_is_point_in_path">vgcanvas\_is\_point\_in\_path</a> | 检查点是否在当前路径中。 |
 | <a href="#vgcanvas_t_vgcanvas_line_to">vgcanvas\_line\_to</a> | 生成一条线段(从当前点到目标点)。 |
 | <a href="#vgcanvas_t_vgcanvas_measure_text">vgcanvas\_measure\_text</a> | 测量文本的宽度。 |
@@ -557,6 +558,42 @@ wh_t vgcanvas_get_width (vgcanvas_t* vgcanvas);
 | -------- | ----- | --------- |
 | 返回值 | wh\_t | 返回宽度。 |
 | vgcanvas | vgcanvas\_t* | vgcanvas对象。 |
+#### vgcanvas\_intersect\_clip\_rect 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="vgcanvas_t_vgcanvas_intersect_clip_rect">设置一个与前一个裁剪区做交集的矩形裁剪区。
+如果下面这种情况，则不能直接调用 rect_intersect 函数来做矩形交集和 vgcanvas_clip_rect 函数设置裁剪区，而采用本函数做交集。
+由于缩放和旋转以及平移会导致 vg 的坐标系和上一个裁剪区的坐标系不同，
+导致直接使用做交集的话，裁剪区会出错。
+
+```
+vgcanvas_clip_rect(vg, old_r.x, old_r.y, old_r.w, old_r.h);
+vgcanvas_save(vg);
+vgcanvas_scale(vg, scale_x, scale_y);
+vgcanvas_rotate(vg, TK_D2R(15));
+vgcanvas_intersect_clip_rect(vg, r.x, r.y, r.w, r.h);
+..................
+vgcanvas_restore(vg);
+```
+
+* 函数原型：
+
+```
+ret_t vgcanvas_intersect_clip_rect (vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| vg | vgcanvas\_t* | vgcanvas对象。 |
+| x | float\_t | x坐标。 |
+| y | float\_t | y坐标。 |
+| w | float\_t | 宽度。 |
+| h | float\_t | 高度。 |
 #### vgcanvas\_is\_point\_in\_path 函数
 -----------------------
 

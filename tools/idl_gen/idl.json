@@ -13456,6 +13456,44 @@
             "type": "vgcanvas_t*",
             "name": "vg",
             "desc": "vgcanvas对象。"
+          },
+          {
+            "type": "float_t",
+            "name": "x",
+            "desc": "x坐标。"
+          },
+          {
+            "type": "float_t",
+            "name": "y",
+            "desc": "y坐标。"
+          },
+          {
+            "type": "float_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "float_t",
+            "name": "h",
+            "desc": "高度。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置一个与前一个裁剪区做交集的矩形裁剪区。\n如果下面这种情况，则不能直接调用 rect_intersect 函数来做矩形交集和 vgcanvas_clip_rect 函数设置裁剪区，而采用本函数做交集。\n由于缩放和旋转以及平移会导致 vg 的坐标系和上一个裁剪区的坐标系不同，\n导致直接使用做交集的话，裁剪区会出错。\n\n```\nvgcanvas_clip_rect(vg, old_r.x, old_r.y, old_r.w, old_r.h);\nvgcanvas_save(vg);\nvgcanvas_scale(vg, scale_x, scale_y);\nvgcanvas_rotate(vg, TK_D2R(15));\nvgcanvas_intersect_clip_rect(vg, r.x, r.y, r.w, r.h);\n..................\nvgcanvas_restore(vg);\n```",
+        "name": "vgcanvas_intersect_clip_rect",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "vgcanvas_t*",
+            "name": "vg",
+            "desc": "vgcanvas对象。"
           }
         ],
         "annotation": {
@@ -18275,6 +18313,27 @@
         "return": {
           "type": "uint32_t",
           "desc": "返回timer的ID，TK_INVALID_ID表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "timer_id",
+            "desc": "timerID。"
+          }
+        ],
+        "annotation": {},
+        "desc": "删除指定的timer。",
+        "name": "widget_remove_timer",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       },
       {
@@ -28631,6 +28690,106 @@
       {
         "params": [],
         "annotation": {},
+        "desc": "创建cond。",
+        "name": "tk_cond_create",
+        "return": {
+          "type": "tk_cond_t*",
+          "desc": "cond对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_cond_t*",
+            "name": "cond",
+            "desc": "cond对象。"
+          },
+          {
+            "type": "tk_mutex_t*",
+            "name": "mutex",
+            "desc": "mutex对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "等待。",
+        "name": "tk_cond_wait",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_cond_t*",
+            "name": "cond",
+            "desc": "cond对象。"
+          },
+          {
+            "type": "tk_mutex_t*",
+            "name": "mutex",
+            "desc": "mutex对象。"
+          },
+          {
+            "type": "uint32_t*",
+            "name": "timeout_ms",
+            "desc": "最长等待时间。"
+          }
+        ],
+        "annotation": {},
+        "desc": "等待指定时间。",
+        "name": "tk_cond_wait",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_cond_t*",
+            "name": "cond",
+            "desc": "cond对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "唤醒。",
+        "name": "tk_cond_awake",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_cond_t*",
+            "name": "cond",
+            "desc": "cond对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁cond对象。",
+        "name": "tk_cond_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "tkc/cond.h",
+    "desc": "条件变量。",
+    "name": "tk_cond_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {},
         "desc": "创建cond_var。",
         "name": "tk_cond_var_create",
         "return": {
@@ -30309,24 +30468,6 @@
     "level": 1
   },
   {
-    "type": "enum",
-    "desc": "缓存不够时丢弃数据的策略。",
-    "consts": [
-      {
-        "desc": "丢弃旧的数据。",
-        "name": "DATA_DISCARD_OLD"
-      },
-      {
-        "desc": "丢弃新的数据。",
-        "name": "DATA_DISCARD_NEW"
-      }
-    ],
-    "header": "misc/ostream_retry.h",
-    "name": "data_discard_policy_t",
-    "prefix": "DATA_DISCARD_",
-    "level": 1
-  },
-  {
     "type": "class",
     "methods": [
       {
@@ -30805,6 +30946,24 @@
     "annotation": {
       "scriptable": true
     },
+    "level": 1
+  },
+  {
+    "type": "enum",
+    "desc": "缓存不够时丢弃数据的策略。",
+    "consts": [
+      {
+        "desc": "丢弃旧的数据。",
+        "name": "DATA_DISCARD_OLD"
+      },
+      {
+        "desc": "丢弃新的数据。",
+        "name": "DATA_DISCARD_NEW"
+      }
+    ],
+    "header": "misc/ostream_retry.h",
+    "name": "data_discard_policy_t",
+    "prefix": "DATA_DISCARD_",
     "level": 1
   },
   {
@@ -49283,6 +49442,49 @@
           {
             "type": "bool_t",
             "name": "own_the_buff",
+            "desc": "是否让ostream对象拥有buff。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建ostream对象。",
+        "name": "tk_ostream_mem_create",
+        "return": {
+          "type": "tk_ostream_t*",
+          "desc": "返回ostream对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "mem/ostream_mem.h",
+    "desc": "基于内存实现的输出流。",
+    "name": "tk_ostream_mem_t",
+    "parent": "tk_ostream_t",
+    "level": 4
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "uint8_t*",
+            "name": "buff",
+            "desc": "返回数据的缓冲区。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "缓冲区的大小。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "packet_size",
+            "desc": "缺省一次读取的数据的长度。"
+          },
+          {
+            "type": "bool_t",
+            "name": "own_the_buff",
             "desc": "是否让istream对象拥有buff。"
           }
         ],
@@ -49349,77 +49551,6 @@
     "desc": "基于内存实现的输入输出流。",
     "name": "tk_iostream_mem_t",
     "parent": "tk_iostream_t",
-    "level": 4
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "uint8_t*",
-            "name": "buff",
-            "desc": "返回数据的缓冲区。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "size",
-            "desc": "缓冲区的大小。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "packet_size",
-            "desc": "缺省一次读取的数据的长度。"
-          },
-          {
-            "type": "bool_t",
-            "name": "own_the_buff",
-            "desc": "是否让ostream对象拥有buff。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建ostream对象。",
-        "name": "tk_ostream_mem_create",
-        "return": {
-          "type": "tk_ostream_t*",
-          "desc": "返回ostream对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "mem/ostream_mem.h",
-    "desc": "基于内存实现的输出流。",
-    "name": "tk_ostream_mem_t",
-    "parent": "tk_ostream_t",
-    "level": 4
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "int",
-            "name": "sock",
-            "desc": "socket."
-          }
-        ],
-        "annotation": {},
-        "desc": "创建ostream对象。",
-        "name": "tk_ostream_tcp_create",
-        "return": {
-          "type": "tk_ostream_t*",
-          "desc": "返回ostream对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "inet/ostream_tcp.h",
-    "desc": "基于TCP实现的输出流。",
-    "name": "tk_ostream_tcp_t",
-    "parent": "tk_ostream_t",
     "level": 4
   },
   {
@@ -49722,71 +49853,24 @@
           {
             "type": "int",
             "name": "sock",
-            "desc": "socket。"
+            "desc": "socket."
           }
         ],
         "annotation": {},
-        "desc": "创建istream对象。",
-        "name": "tk_istream_udp_create",
+        "desc": "创建ostream对象。",
+        "name": "tk_ostream_tcp_create",
         "return": {
-          "type": "tk_istream_t*",
-          "desc": "返回istream对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tk_istream_t*",
-            "name": "stream",
-            "desc": "istream对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "host",
-            "desc": "主机或IP。"
-          },
-          {
-            "type": "int",
-            "name": "port",
-            "desc": "端口。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置目标。",
-        "name": "tk_istream_udp_set_target_with_host",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tk_istream_t*",
-            "name": "stream",
-            "desc": "istream对象。"
-          },
-          {
-            "type": "struct sockaddr_in",
-            "name": "addr",
-            "desc": "地址。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置目标。",
-        "name": "tk_istream_udp_set_target_with_addr",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
+          "type": "tk_ostream_t*",
+          "desc": "返回ostream对象。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "inet/istream_udp.h",
-    "desc": "基于UDP实现的输入流。",
-    "name": "tk_istream_udp_t",
-    "parent": "tk_istream_t",
+    "header": "inet/ostream_tcp.h",
+    "desc": "基于TCP实现的输出流。",
+    "name": "tk_ostream_tcp_t",
+    "parent": "tk_ostream_t",
     "level": 4
   },
   {
@@ -49974,6 +50058,81 @@
     "desc": "reliable ostream base on simple HDLC",
     "name": "tk_ostream_shdlc_t",
     "parent": "tk_ostream_t",
+    "level": 4
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "int",
+            "name": "sock",
+            "desc": "socket。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建istream对象。",
+        "name": "tk_istream_udp_create",
+        "return": {
+          "type": "tk_istream_t*",
+          "desc": "返回istream对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_istream_t*",
+            "name": "stream",
+            "desc": "istream对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "host",
+            "desc": "主机或IP。"
+          },
+          {
+            "type": "int",
+            "name": "port",
+            "desc": "端口。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置目标。",
+        "name": "tk_istream_udp_set_target_with_host",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_istream_t*",
+            "name": "stream",
+            "desc": "istream对象。"
+          },
+          {
+            "type": "struct sockaddr_in",
+            "name": "addr",
+            "desc": "地址。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置目标。",
+        "name": "tk_istream_udp_set_target_with_addr",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "inet/istream_udp.h",
+    "desc": "基于UDP实现的输入流。",
+    "name": "tk_istream_udp_t",
+    "parent": "tk_istream_t",
     "level": 4
   },
   {
