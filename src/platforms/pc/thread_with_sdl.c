@@ -52,13 +52,22 @@ tk_mutex_t* tk_mutex_create() {
 ret_t tk_mutex_lock(tk_mutex_t* mutex) {
   return_value_if_fail(mutex != NULL, RET_BAD_PARAMS);
 
-  return SDL_LockMutex(mutex->mutex) == 0 ? RET_OK : RET_FAIL;
+  if (SDL_LockMutex(mutex->mutex) != 0) {
+    log_debug("SDL_LockMutex fail\n");
+    return RET_FAIL;
+  }
+
+  return RET_OK;
 }
 
 ret_t tk_mutex_unlock(tk_mutex_t* mutex) {
   return_value_if_fail(mutex != NULL, RET_BAD_PARAMS);
+  if (SDL_UnlockMutex(mutex->mutex) != 0) {
+    log_debug("SDL_UnlockMutex fail\n");
+    return RET_FAIL;
+  }
 
-  return SDL_UnlockMutex(mutex->mutex) == 0 ? RET_OK : RET_FAIL;
+  return RET_OK;
 }
 
 ret_t tk_mutex_destroy(tk_mutex_t* mutex) {
