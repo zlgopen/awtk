@@ -91,7 +91,7 @@ static ret_t tk_ostream_retry_flush(tk_ostream_t* stream) {
       wb->cursor = 0;
       packet_size = size + sizeof(size);
 
-      return_value_if_fail(wbuffer_extend_capacity(wb, size) == RET_OK, RET_OOM);
+      return_value_if_fail(wbuffer_extend_capacity(wb, packet_size) == RET_OK, RET_OOM);
       if (ring_buffer_peek(rb, wb->data, packet_size) != packet_size) {
         break;
       }
