@@ -36,9 +36,9 @@ extern ret_t application_exit(void);
 #define LCD_HEIGHT 480
 #endif/*LCD_HEIGHT*/
 
-#ifndef AWTK_APP_TYPE
-#define AWTK_APP_TYPE APP_SIMULATOR
-#endif/*AWTK_APP_TYPE*/
+#ifndef APP_TYPE
+#define APP_TYPE APP_SIMULATOR
+#endif/*APP_TYPE*/
 
 #ifndef GLOBAL_INIT
 #define GLOBAL_INIT()
@@ -48,23 +48,31 @@ extern ret_t application_exit(void);
 #define GLOBAL_EXIT()
 #endif/*GLOBAL_EXIT*/
 
+#ifndef APP_NAME
+#define APP_NAME "awtk"
+#endif/*APP_NAME*/
+
+#ifndef APP_RES_ROOT
+#define APP_RES_ROOT NULL
+#endif/*APP_RES_ROOT*/
+
 #ifdef USE_GUI_MAIN
 int gui_app_start(int lcd_w, int lcd_h) {
-  tk_init(lcd_w, lcd_h, APP_MOBILE, NULL, NULL);
+  tk_init(lcd_w, lcd_h, APP_MOBILE, APP_NAME, APP_RES_ROOT);
 #elif defined(IOS)
 #include <SDL.h>
 int main(int argc, char* argv[]) {
   int32_t lcd_w = 0;
   int32_t lcd_h = 0;
 
-  tk_init(lcd_w, lcd_h, APP_MOBILE, NULL, NULL);
+  tk_init(lcd_w, lcd_h, APP_MOBILE, APP_NAME, APP_RES_ROOT);
   system_info_set_default_font(system_info(), "default_full");
 #elif defined(MOBILE_APP) || defined(ANDROID)
 int SDL_main(int argc, char* argv[]) {
   int32_t lcd_w = LCD_WIDTH;
   int32_t lcd_h = LCD_HEIGHT;
 
-  tk_init(lcd_w, lcd_h, APP_MOBILE, NULL, NULL);
+  tk_init(lcd_w, lcd_h, APP_MOBILE, APP_NAME, APP_RES_ROOT);
   system_info_set_default_font(system_info(), "default_full");
 #elif defined(WIN32)
 #include <windows.h>
@@ -129,7 +137,7 @@ int WINAPI wWinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPWSTR lpcmdli
   }
 #endif/*ON_CMD_LINE*/
 
-  tk_init(lcd_w, lcd_h, APP_SIMULATOR, NULL, NULL);
+  tk_init(lcd_w, lcd_h, APP_TYPE, APP_NAME, APP_RES_ROOT);
 #else
 int main(int argc, char* argv[]) {
   int32_t lcd_w = LCD_WIDTH;
@@ -145,7 +153,7 @@ int main(int argc, char* argv[]) {
   }
 #endif/*ON_CMD_LINE*/
 
-  tk_init(lcd_w, lcd_h, APP_SIMULATOR, NULL, NULL);
+  tk_init(lcd_w, lcd_h, APP_TYPE, APP_NAME, APP_RES_ROOT);
 #endif
 
 #if defined(WITH_LCD_PORTRAIT)
