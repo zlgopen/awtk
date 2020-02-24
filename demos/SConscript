@@ -9,18 +9,17 @@ env.Library(os.path.join(LIB_DIR, 'assets'), ['assets.c']);
 env['LIBS'] = ['assets'] + env['LIBS']
 env['LINKFLAGS'] = env['OS_SUBSYSTEM_WINDOWS'] + env['LINKFLAGS'];
 
-env.Program(os.path.join(BIN_DIR, 'demo1'), ['demo_main.c', 'demo1_app.c']);
-env.Program(os.path.join(BIN_DIR, 'demovg'), ['demo_main.c', 'demo_vg_app.c']);
-env.Program(os.path.join(BIN_DIR, 'demoui'), ['demo_ui_app.c', 'demo_main.c']);
-env.Program(os.path.join(BIN_DIR, 'demotr'), ['demo_tr_app.c', 'demo_main.c']);
-env.Program(os.path.join(BIN_DIR, 'demo_animator'), ['demo_animator_app.c', 'demo_main.c']);
-env.Program(os.path.join(BIN_DIR, 'demo_thread'), ['demo_thread_app.c', 'demo_main.c']);
-env.Program(os.path.join(BIN_DIR, 'demo_basic'), ['demo_basic.c', 'demo_main.c']);
+env.Program(os.path.join(BIN_DIR, 'demo1'), ['demo1_app.c']);
+env.Program(os.path.join(BIN_DIR, 'demovg'), ['demo_vg_app.c']);
+env.Program(os.path.join(BIN_DIR, 'demoui'), ['demo_ui_app.c']);
+env.Program(os.path.join(BIN_DIR, 'demotr'), ['demo_tr_app.c']);
+env.Program(os.path.join(BIN_DIR, 'demo_basic'), ['demo_basic.c']);
+env.Program(os.path.join(BIN_DIR, 'demo_thread'), ['demo_thread_app.c']);
+env.Program(os.path.join(BIN_DIR, 'demo_animator'), ['demo_animator_app.c']);
 
 env.Program(os.path.join(BIN_DIR, 'preview_ui'), ['preview_ui.c']);
 env.Program(os.path.join(BIN_DIR, 'demo_desktop'), ['demo_desktop.c']);
-env.Program(os.path.join(BIN_DIR, 'demo_file_browser'), ['demo_file_browser.c', 
-  'demo_main.c']);
+env.Program(os.path.join(BIN_DIR, 'demo_file_browser'), ['demo_file_browser.c']);
 
 
 

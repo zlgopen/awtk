@@ -12,6 +12,6 @@
   },
   "android" : {
     "app_name":"org.zlgopen.demoui",
-    "sources":["assets.c",	"assets.h",	"demo_main.c", "demo_ui_app.c",	"vg_common.inc"]
+    "sources":["assets.c",	"assets.h",	"demo_ui_app.c",	"vg_common.inc"]
   }
 }

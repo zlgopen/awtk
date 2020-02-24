@@ -813,3 +813,10 @@ ret_t application_init() {
 
   return show_preload_res_window();
 }
+
+ret_t application_exit() {
+  log_debug("application_exit\n");
+  return RET_OK;
+}
+
+#include "awtk_main.inc"

@@ -30,25 +30,13 @@ ret_t application_init(void) {
   return RET_OK;
 }
 
-#if defined(WIN32)
-#include <windows.h>
-int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline, int ncmdshow) {
-#else
-int main(void) {
-#endif
-  char res_root[MAX_PATH + 1];
-  char app_root[MAX_PATH + 1];
-  path_app_root(app_root);
-  memset(res_root, 0x00, sizeof(res_root));
-
-  path_build(res_root, MAX_PATH, app_root, "demos", NULL);
-  tk_init(800, 480, APP_DESKTOP, "AWTK Demo", res_root);
-  system_info_set_default_font(system_info(), "default_full");
-
-  assets_init();
-  application_init();
-
-  tk_run();
-
-  return 0;
+ret_t application_exit() {
+  log_debug("application_exit\n");
+  return RET_OK;
 }
+
+#define LCD_WIDTH 800
+#define LCD_HEGHT 600
+#define AWTK_APP_TYPE APP_DESKTOP
+
+#include "awtk_main.inc"

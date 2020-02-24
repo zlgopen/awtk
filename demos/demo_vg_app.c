@@ -31,10 +31,15 @@ ret_t application_init() {
   widget_t* canvas = canvas_widget_create(win, 0, 0, win->w, win->h);
 
   widget_on(canvas, EVT_PAINT, on_paint_vg, NULL);
-  // widget_on(canvas, EVT_PAINT, on_paint_vg_simple, NULL);
-  // widget_on(canvas, EVT_PAINT, on_paint_global_alpha, NULL);
 
   timer_add(on_timer, win, 500);
 
   return RET_OK;
 }
+
+ret_t application_exit() {
+  log_debug("application_exit\n");
+  return RET_OK;
+}
+
+#include "awtk_main.inc"

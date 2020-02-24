@@ -1,7 +1,7 @@
 /**
- * File:   demo_main.c
+ * File:   awtk_main.c
  * Author: AWTK Develop Team
- * Brief:  demo main
+ * Brief:  awtk main
  *
  * Copyright (c) 2018 - 2020  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
@@ -20,14 +20,22 @@
  */
 
 #include "awtk.h"
-#include "assets.h"
-#include "tkc/mem.h"
-#include "tkc/fs.h"
-#include "tkc/path.h"
-#include "base/system_info.h"
-#include "base/window_manager.h"
 
-ret_t application_init(void);
+extern ret_t assets_init();
+extern ret_t application_init(void);
+extern ret_t application_exit(void);
+
+#ifndef LCD_WIDTH
+#define LCD_WIDTH 320
+#endif/*LCD_WIDTH*/
+
+#ifndef LCD_HEIGHT
+#define LCD_HEIGHT 480
+#endif/*LCD_HEIGHT*/
+
+#ifndef AWTK_APP_TYPE
+#define AWTK_APP_TYPE APP_SIMULATOR
+#endif/*AWTK_APP_TYPE*/
 
 #ifdef USE_GUI_MAIN
 int gui_app_start(int lcd_w, int lcd_h) {
@@ -39,23 +47,23 @@ int main(int argc, char* argv[]) {
   int32_t lcd_h = 0;
   tk_init(lcd_w, lcd_h, APP_MOBILE, "", "");
   system_info_set_default_font(system_info(), "default_full");
-#elif defined(MOBILE_APP)
+#elif defined(MOBILE_APP) || defined(ANDROID)
 int SDL_main(int argc, char* argv[]) {
-  int32_t lcd_w = 320;
-  int32_t lcd_h = 480;
+  int32_t lcd_w = LCD_WIDTH;
+  int32_t lcd_h = LCD_HEIGHT;
   tk_init(lcd_w, lcd_h, APP_MOBILE, "", "");
   system_info_set_default_font(system_info(), "default_full");
-#else
-
-#if defined(WIN32)
+#elif defined(WIN32)
 #include <windows.h>
 int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline, int ncmdshow) {
-  int32_t lcd_w = 320;
-  int32_t lcd_h = 480;
+  int32_t lcd_w = LCD_WIDTH;
+  int32_t lcd_h = LCD_HEIGHT;
+  TK_ENABLE_CONSOLE();
+  tk_init(lcd_w, lcd_h, APP_SIMULATOR, NULL, NULL);
 #else
 int main(int argc, char* argv[]) {
-  int32_t lcd_w = 320;
-  int32_t lcd_h = 480;
+  int32_t lcd_w = LCD_WIDTH;
+  int32_t lcd_h = LCD_HEIGHT;
 
   if (argc >= 2) {
     lcd_w = tk_atoi(argv[1]);
@@ -63,15 +71,10 @@ int main(int argc, char* argv[]) {
   if (argc >= 3) {
     lcd_h = tk_atoi(argv[2]);
   }
-#endif
-
-  TK_ENABLE_CONSOLE();
-
   tk_init(lcd_w, lcd_h, APP_SIMULATOR, NULL, NULL);
 #endif
 
-//#define WITH_LCD_PORTRAIT 1
-#if defined(USE_GUI_MAIN) && defined(WITH_LCD_PORTRAIT)
+#if defined(WITH_LCD_PORTRAIT)
   if (lcd_w > lcd_h) {
     tk_set_lcd_orientation(LCD_ORIENTATION_90);
   }
@@ -87,16 +90,19 @@ int main(int argc, char* argv[]) {
   system_info_set_default_font(system_info(), "default_full");
 #endif /*WITH_FS_RES*/
 
+  assets_init();
+  tk_ext_widgets_init();
   log_set_log_level(LOG_LEVEL_INFO);
   log_info("Build at: %s %s\n", __DATE__, __TIME__);
-  assets_init();
-  application_init();
 
 #ifdef ENABLE_CURSOR
   window_manager_set_cursor(window_manager(), "cursor");
 #endif /*ENABLE_CURSOR*/
 
+  application_init();
   tk_run();
+  application_exit();
 
   return 0;
 }
+
