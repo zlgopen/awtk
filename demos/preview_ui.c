@@ -125,6 +125,7 @@ void command_line_to_argv(char* lpcmdline, const char* argv[MAX_ARGV], int32_t* 
   return;
 }
 
+
 int WINAPI wWinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPWSTR lpcmdline, int ncmdshow) {
   str_t str;
   int argc = 1;

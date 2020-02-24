@@ -63,7 +63,13 @@ static void command_line_to_argv(char* lpcmdline, const char* argv[MAX_ARGV], in
   int32_t i = 1;
   char* p = lpcmdline;
 
-  argv[0] = "preview.exe";
+  argv[0] = "awtk.exe";
+
+  if (!*p) {
+    argv[1] = NULL;
+    return;
+  }
+
   for (i = 1; i < MAX_ARGV; i++) {
     argv[i] = p;
     if (*p == '\"') {
