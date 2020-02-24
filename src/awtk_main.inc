@@ -45,32 +45,90 @@ int gui_app_start(int lcd_w, int lcd_h) {
 int main(int argc, char* argv[]) {
   int32_t lcd_w = 0;
   int32_t lcd_h = 0;
-  tk_init(lcd_w, lcd_h, APP_MOBILE, "", "");
+
+  tk_init(lcd_w, lcd_h, APP_MOBILE, NULL, NULL);
   system_info_set_default_font(system_info(), "default_full");
 #elif defined(MOBILE_APP) || defined(ANDROID)
 int SDL_main(int argc, char* argv[]) {
   int32_t lcd_w = LCD_WIDTH;
   int32_t lcd_h = LCD_HEIGHT;
-  tk_init(lcd_w, lcd_h, APP_MOBILE, "", "");
+
+  tk_init(lcd_w, lcd_h, APP_MOBILE, NULL, NULL);
   system_info_set_default_font(system_info(), "default_full");
 #elif defined(WIN32)
 #include <windows.h>
-int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPSTR lpcmdline, int ncmdshow) {
-  int32_t lcd_w = LCD_WIDTH;
-  int32_t lcd_h = LCD_HEIGHT;
-  TK_ENABLE_CONSOLE();
-  tk_init(lcd_w, lcd_h, APP_SIMULATOR, NULL, NULL);
-#else
-int main(int argc, char* argv[]) {
+#define MAX_ARGV 7
+
+static void command_line_to_argv(char* lpcmdline, const char* argv[MAX_ARGV], int32_t* argc) {
+  int32_t i = 1;
+  char* p = lpcmdline;
+
+  argv[0] = "preview.exe";
+  for (i = 1; i < MAX_ARGV; i++) {
+    argv[i] = p;
+    if (*p == '\"') {
+      argv[i] = p + 1;
+      p = strchr(p + 1, '\"');
+      if (p == NULL) break;
+      *p++ = '\0';
+      if (*p == 0) break;
+    } else {
+      p = strchr(p, ' ');
+    }
+    if (p == NULL) {
+      break;
+    }
+
+    while (*p == ' ') {
+      *p++ = '\0';
+    }
+  }
+  *argc = i + 1;
+
+  return;
+}
+
+int WINAPI wWinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPWSTR lpcmdline, int ncmdshow) {
+  str_t str;
+  int argc = 1;
+  char* argv[MAX_ARGV];
   int32_t lcd_w = LCD_WIDTH;
   int32_t lcd_h = LCD_HEIGHT;
 
+  str_init(&str, 1024);
+  str_from_wstr(&str, lpcmdline);
+  command_line_to_argv(str.str, argv, &argc);
+
+  TK_ENABLE_CONSOLE();
+  
+#ifdef ON_CMD_LINE
+  ON_CMD_LINE(argc, argv);
+#else
   if (argc >= 2) {
     lcd_w = tk_atoi(argv[1]);
   }
   if (argc >= 3) {
     lcd_h = tk_atoi(argv[2]);
   }
+#endif/*ON_CMD_LINE*/
+  str_reset(&str);
+
+  tk_init(lcd_w, lcd_h, APP_SIMULATOR, NULL, NULL);
+#else
+int main(int argc, char* argv[]) {
+  int32_t lcd_w = LCD_WIDTH;
+  int32_t lcd_h = LCD_HEIGHT;
+#ifdef ON_CMD_LINE
+  ON_CMD_LINE(argc, argv);
+#else
+  if (argc >= 2) {
+    lcd_w = tk_atoi(argv[1]);
+  }
+  if (argc >= 3) {
+    lcd_h = tk_atoi(argv[2]);
+  }
+#endif/*ON_CMD_LINE*/
+
   tk_init(lcd_w, lcd_h, APP_SIMULATOR, NULL, NULL);
 #endif
 
