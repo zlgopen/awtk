@@ -1,8 +1,9 @@
 # 最新动态
 
 * 2020/02/24
-  * 增加awtk_main.inc，用于标准程序的主函数。
+  * 增加awtk\_main.inc，用于标准程序的主函数。
   * 修复mledit scroll line无法通过set\_prop/get\_prop访问的问题（感谢尧燊提供补丁）
+  * 修改thread\_with\_pthread.c中的编译问题（感谢陈谭提供补丁）
 
 * 2020/02/23
   * 用SDL重新实现PC版本的线程和同步相关函数。

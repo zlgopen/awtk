@@ -78,9 +78,9 @@ ret_t tk_mutex_destroy(tk_mutex_t* mutex) {
 
 /********************************************************/
 
-typedef struct _tk_cond_t {
+struct _tk_cond_t {
   pthread_cond_t cond;
-} tk_cond_t;
+};
 
 tk_cond_t* tk_cond_create(void) {
   tk_cond_t* cond = (tk_cond_t*)TKMEM_ALLOC(sizeof(tk_cond_t));
