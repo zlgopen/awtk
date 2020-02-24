@@ -8,7 +8,7 @@
   <button name="open:menu_left_top" text="LeftTop" visible="true"/>
 
   <button name="open:menu_right_middle" text="RightMiddle" visible="true"/>
-  <button name="open:menu_point" text="Point" visible="true"/>
+  <button name="close" text="Close" visible="true"/>
   <button name="open:menu_left_middle" text="LeftMiddle" visible="true"/>
 
   <button name="open:menu_right_bottom" text="LeftBottom" visible="true"/>

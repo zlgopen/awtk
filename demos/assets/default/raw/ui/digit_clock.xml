@@ -9,4 +9,6 @@
   <digit_clock format="YY/MM/DD h:mm:ss"/>
   <digit_clock style="green" format="W(w)"/>
   <digit_clock style="green" format="MMM(M) W(w)"/>
+  <button name="close" self_layout="default(x=center,y=bottom:10,w=50%,h=30)" 
+    floating="true" text="Close"/>
 </window>

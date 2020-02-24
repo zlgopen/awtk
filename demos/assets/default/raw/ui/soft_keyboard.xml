@@ -18,4 +18,6 @@
     <button focusable="true"  name="key" text="#" />
     <button focusable="true"  name="backspace" text="<=" />
   </view>
+  <button name="close" self_layout="default(x=center,y=bottom:50,w=50%,h=30)" 
+    floating="true" text="Close"/>
 </window>

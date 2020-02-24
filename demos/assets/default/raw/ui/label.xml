@@ -26,5 +26,7 @@ sample
   <label style="center_top"  text="center_top"/>
   <label style="center" text="center"/>
   <label style="center_bottom" text="center_bottom"/>
+  <button name="close" self_layout="default(x=center,y=bottom:50,w=50%,h=30)" 
+    floating="true" text="Close"/>
 
 </window>

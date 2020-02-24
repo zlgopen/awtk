@@ -3,4 +3,5 @@
   <button name="open:confirm" text="Confirm"/>
   <button name="open:info" text="Information"/>
   <button name="open:warn" text="Warning"/>
+  <button name="close" text="Close"/>
 </window>
