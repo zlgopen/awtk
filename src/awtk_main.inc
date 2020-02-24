@@ -21,7 +21,10 @@
 
 #include "awtk.h"
 
+BEGIN_C_DECLS
 extern ret_t assets_init();
+END_C_DECLS
+
 extern ret_t application_init(void);
 extern ret_t application_exit(void);
 
@@ -36,6 +39,14 @@ extern ret_t application_exit(void);
 #ifndef AWTK_APP_TYPE
 #define AWTK_APP_TYPE APP_SIMULATOR
 #endif/*AWTK_APP_TYPE*/
+
+#ifndef GLOBAL_INIT
+#define GLOBAL_INIT()
+#endif/*GLOBAL_INIT*/
+
+#ifndef GLOBAL_EXIT
+#define GLOBAL_EXIT()
+#endif/*GLOBAL_EXIT*/
 
 #ifdef USE_GUI_MAIN
 int gui_app_start(int lcd_w, int lcd_h) {
@@ -117,7 +128,6 @@ int WINAPI wWinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPWSTR lpcmdli
     lcd_h = tk_atoi(argv[2]);
   }
 #endif/*ON_CMD_LINE*/
-  str_reset(&str);
 
   tk_init(lcd_w, lcd_h, APP_SIMULATOR, NULL, NULL);
 #else
@@ -163,9 +173,15 @@ int main(int argc, char* argv[]) {
   window_manager_set_cursor(window_manager(), "cursor");
 #endif /*ENABLE_CURSOR*/
 
+  GLOBAL_INIT();
   application_init();
   tk_run();
   application_exit();
+  GLOBAL_EXIT();
+
+#ifdef WIN32
+  str_reset(&str);
+#endif/*WIN32*/
 
   return 0;
 }
