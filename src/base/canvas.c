@@ -174,8 +174,7 @@ ret_t canvas_set_clip_rect(canvas_t* c, const rect_t* r_in) {
 #ifdef WITH_NANOVG_GPU
     /* 在 opengl 的状态下让 vg 来处理裁剪区的大小直接交给 vg 来处理，去除 LCD 的大小限制的问题 */
     if (r) {
-      rect_t clip_r =
-          rect_init(tk_max(0, r->x), tk_max(0, r->y), tk_max(0, lcd_w), tk_max(0, lcd_h));
+      rect_t clip_r = rect_init(tk_max(0, r->x), tk_max(0, r->y), tk_max(0, r->w), tk_max(0, r->h));
       lcd_set_clip_rect(c->lcd, &clip_r);
     } else {
       rect_t clip_r = rect_init(0, 0, lcd_w, lcd_h);
