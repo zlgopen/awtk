@@ -111,11 +111,11 @@ typedef struct _mledit_t {
   uint32_t max_lines;
 
   /**
-   * @property {float_t} scroll_line
+   * @property {uint32_t} scroll_line
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 鼠标一次滚动行数。
    */
-  float_t scroll_line;
+  uint32_t scroll_line;
 
   /*private*/
   text_edit_t* model;
@@ -239,6 +239,7 @@ widget_t* mledit_cast(widget_t* widget);
 
 #define MLEDIT_PROP_MAX_LINES "max_lines"
 #define MLEDIT_PROP_WRAP_WORD "wrap_word"
+#define MLEDIT_PROP_SCROLL_LINE "scroll_line"
 #define MLEDIT(widget) ((mledit_t*)(mledit_cast(WIDGET(widget))))
 
 /*public for subclass and runtime type check*/

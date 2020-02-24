@@ -82,6 +82,7 @@ ret_t mledit_set_max_lines(widget_t* widget, uint32_t max_lines) {
 
   mledit->max_lines = max_lines;
   text_edit_set_max_rows(mledit->model, max_lines);
+  text_edit_layout(mledit->model);
 
   return RET_OK;
 }
@@ -97,6 +98,9 @@ static ret_t mledit_get_prop(widget_t* widget, const char* name, value_t* v) {
     return RET_OK;
   } else if (tk_str_eq(name, MLEDIT_PROP_MAX_LINES)) {
     value_set_int(v, mledit->max_lines);
+    return RET_OK;
+  } else if (tk_str_eq(name, MLEDIT_PROP_SCROLL_LINE)) {
+    value_set_int(v, mledit->scroll_line);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_LEFT_MARGIN)) {
     value_set_int(v, mledit->left_margin);
@@ -161,6 +165,9 @@ static ret_t mledit_set_prop(widget_t* widget, const char* name, const value_t* 
     return RET_OK;
   } else if (tk_str_eq(name, MLEDIT_PROP_MAX_LINES)) {
     mledit_set_max_lines(widget, value_int(v));
+    return RET_OK;
+  } else if (tk_str_eq(name, MLEDIT_PROP_SCROLL_LINE)) {
+    mledit_set_scroll_line(widget, value_int(v));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_MARGIN)) {
     int margin = value_int(v);
@@ -585,10 +592,17 @@ static ret_t mledit_init_idle_func(const idle_info_t* info) {
   return RET_REMOVE;
 }
 
-const char* s_mledit_properties[] = {WIDGET_PROP_READONLY,    WIDGET_PROP_MARGIN,
-                                     WIDGET_PROP_LEFT_MARGIN, WIDGET_PROP_RIGHT_MARGIN,
-                                     WIDGET_PROP_TOP_MARGIN,  WIDGET_PROP_BOTTOM_MARGIN,
-                                     WIDGET_PROP_TIPS,        NULL};
+const char* s_mledit_properties[] = {WIDGET_PROP_READONLY,
+                                     WIDGET_PROP_MARGIN,
+                                     WIDGET_PROP_LEFT_MARGIN,
+                                     WIDGET_PROP_RIGHT_MARGIN,
+                                     WIDGET_PROP_TOP_MARGIN,
+                                     WIDGET_PROP_BOTTOM_MARGIN,
+                                     WIDGET_PROP_TIPS,
+                                     MLEDIT_PROP_MAX_LINES,
+                                     MLEDIT_PROP_WRAP_WORD,
+                                     MLEDIT_PROP_SCROLL_LINE,
+                                     NULL};
 
 TK_DECL_VTABLE(mledit) = {.size = sizeof(mledit_t),
                           .type = WIDGET_TYPE_MLEDIT,
