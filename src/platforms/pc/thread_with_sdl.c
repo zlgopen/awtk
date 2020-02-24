@@ -19,7 +19,7 @@
  *
  */
 
-#if defined(WITH_SDL)
+#if defined(WITH_SDL) && !defined(HAS_PTHREAD)
 
 #include "tkc/mem.h"
 #include "tkc/mutex.h"

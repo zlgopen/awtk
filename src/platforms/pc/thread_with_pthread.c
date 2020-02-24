@@ -19,7 +19,7 @@
  *
  */
 
-#if !defined(WITH_SDL) && defined(HAS_PTHREAD)
+#if defined(HAS_PTHREAD)
 
 #include "tkc/mem.h"
 #include "tkc/mutex.h"
@@ -31,7 +31,10 @@
 #include "tkc/cond.h"
 #include "tkc/semaphore.h"
 
+#include <sys/types.h>
+#include <sys/stat.h>
 #include <sys/time.h>
+#include <fcntl.h>
 #include <time.h>
 #include <unistd.h>
 #include <errno.h>
