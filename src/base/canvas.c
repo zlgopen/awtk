@@ -171,7 +171,6 @@ ret_t canvas_set_clip_rect(canvas_t* c, const rect_t* r_in) {
   }
 
   if (c->lcd->set_clip_rect != NULL) {
-#ifdef WITH_NANOVG_GPU
     /* 在 opengl 的状态下让 vg 来处理裁剪区的大小直接交给 vg 来处理，去除 LCD 的大小限制的问题 */
     if (r) {
       rect_t clip_r = rect_init(tk_max(0, r->x), tk_max(0, r->y), tk_max(0, r->w), tk_max(0, r->h));
@@ -180,24 +179,15 @@ ret_t canvas_set_clip_rect(canvas_t* c, const rect_t* r_in) {
       rect_t clip_r = rect_init(0, 0, lcd_w, lcd_h);
       lcd_set_clip_rect(c->lcd, &clip_r);
     }
-#else
-    xy_t x = c->clip_left;
-    xy_t y = c->clip_top;
-    wh_t w = c->clip_right - c->clip_left + 1;
-    wh_t h = c->clip_bottom - c->clip_top + 1;
-    rect_t clip_r = rect_init(x, y, w, h);
-    lcd_set_clip_rect(c->lcd, &clip_r);
+#ifdef WITH_NANOVG_GPU
+    /* 把 canvas 的裁剪区设置为无限大，在 opengl 的状态下让 vg 来处理裁剪区的问题 */
+    c->clip_left = 0;
+    c->clip_top = 0;
+    c->clip_right = 0x7fffffff;
+    c->clip_bottom = 0x7fffffff;
 #endif
   }
-
-#ifdef WITH_NANOVG_GPU
-  /* 把 canvas 的裁剪区设置为无限大，在 opengl 的状态下让 vg 来处理裁剪区的问题 */
-  c->clip_left = 0;
-  c->clip_top = 0;
-  c->clip_right = 0x7fffffff;
-  c->clip_bottom = 0x7fffffff;
-#endif
-
+  
   return RET_OK;
 }
 
