@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   pthread_impl.c
  * Author: AWTK Develop Team
  * Brief:  pthread implemented thread related functions.
@@ -19,7 +19,6 @@
  *
  */
 
-#if defined(HAS_PTHREAD)
 
 #include "tkc/mem.h"
 #include "tkc/mutex.h"
@@ -30,6 +29,8 @@
 #include "tkc/mutex.h"
 #include "tkc/cond.h"
 #include "tkc/semaphore.h"
+
+#if defined(HAS_PTHREAD)
 
 #include <sys/types.h>
 #include <sys/stat.h>
