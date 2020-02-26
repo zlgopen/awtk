@@ -421,7 +421,6 @@ static ret_t slide_view_calc_dirty_rect(slide_view_t* slide_view, rect_t* r) {
   return RET_OK;
 }
 
-
 static ret_t slide_view_set_prop(widget_t* widget, const char* name, const value_t* v) {
   slide_view_t* slide_view = SLIDE_VIEW(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);

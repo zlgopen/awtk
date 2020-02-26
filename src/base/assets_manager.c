@@ -687,3 +687,14 @@ ret_t assets_manager_destroy(assets_manager_t* am) {
 
   return RET_OK;
 }
+
+ret_t assets_manager_set_loader(assets_manager_t* am, asset_loader_t* loader) {
+  return_value_if_fail(am != NULL && loader != NULL, RET_BAD_PARAMS);
+
+  if (am->loader != NULL) {
+    asset_loader_destroy(am->loader);
+  }
+  am->loader = loader;
+
+  return RET_OK;
+}

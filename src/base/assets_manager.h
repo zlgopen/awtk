@@ -251,6 +251,16 @@ asset_info_t* assets_manager_load(assets_manager_t* am, asset_type_t type, const
 ret_t assets_manager_preload(assets_manager_t* am, asset_type_t type, const char* name);
 
 /**
+ * @method assets_manager_set_loader
+ * 设置loader。
+ * @param {assets_manager_t*} am asset manager对象。
+ * @param {asset_loader_t*} loader 加载器(由assets manager销毁)。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t assets_manager_set_loader(assets_manager_t* am, asset_loader_t* loader);
+
+/**
  * @method assets_manager_set_custom_build_asset_dir
  * 设置一个函数，该函数用于生成资源路径。
  *

@@ -25,9 +25,6 @@ BEGIN_C_DECLS
 extern ret_t assets_init();
 END_C_DECLS
 
-extern ret_t application_init(void);
-extern ret_t application_exit(void);
-
 #ifndef LCD_WIDTH
 #define LCD_WIDTH 320
 #endif /*LCD_WIDTH*/
@@ -56,24 +53,29 @@ extern ret_t application_exit(void);
 #define APP_RES_ROOT NULL
 #endif /*APP_RES_ROOT*/
 
+#ifdef IOS
+#include "base/asset_loader_zip.h"
+
+#ifndef ASSETS_ZIP
+#define ASSETS_ZIP "./assets.zip"
+#endif /*ASSETS_ZIP*/
+
+#endif /*IOS*/
 #ifdef USE_GUI_MAIN
 int gui_app_start(int lcd_w, int lcd_h) {
   tk_init(lcd_w, lcd_h, APP_MOBILE, APP_NAME, APP_RES_ROOT);
-#elif defined(IOS)
-#include <SDL.h>
-int main(int argc, char* argv[]) {
+#elif defined(MOBILE_APP) && defined(WITH_SDL)
+int SDL_main(int argc, char* argv[]) {
   int32_t lcd_w = 0;
   int32_t lcd_h = 0;
 
   tk_init(lcd_w, lcd_h, APP_MOBILE, APP_NAME, APP_RES_ROOT);
   system_info_set_default_font(system_info(), "default_full");
-#elif defined(MOBILE_APP) || defined(ANDROID)
-int SDL_main(int argc, char* argv[]) {
-  int32_t lcd_w = LCD_WIDTH;
-  int32_t lcd_h = LCD_HEIGHT;
 
-  tk_init(lcd_w, lcd_h, APP_MOBILE, APP_NAME, APP_RES_ROOT);
-  system_info_set_default_font(system_info(), "default_full");
+#ifdef IOS
+assets_manager_set_loader(assets_manager(), asset_loader_zip_create(ASSETS_ZIP));
+#endif /*IOS*/
+
 #elif defined(WIN32)
 #include <windows.h>
 #define MAX_ARGV 7

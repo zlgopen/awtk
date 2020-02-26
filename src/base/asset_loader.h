@@ -49,7 +49,6 @@ struct _asset_loader_t {
 /**
  * @method asset_loader_create
  * 创建缺省的资源加载器。
- * @param {asset_loader_t*} loader loader对象。
  *
  * @return {asset_loader_t*} 返回loader对象。
  */
