@@ -21,7 +21,7 @@
 
 #include "tkc/mem.h"
 
-#ifdef WITH_MINIZ
+#ifdef WITH_ASSET_LOADER_ZIP
 #include "miniz/miniz.h"
 #include "miniz/miniz_zip.h"
 #include "base/asset_loader_zip.h"
@@ -129,4 +129,4 @@ asset_loader_t* asset_loader_zip_create(const char* zipfile) {
 
   return (asset_loader_t*)zip;
 }
-#endif /*WITH_MINIZ*/
+#endif /*WITH_ASSET_LOADER_ZIP*/

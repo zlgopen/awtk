@@ -187,4 +187,10 @@
  * #define WITHOUT_SUGGEST_WORDS 1
  */
 
+/**
+ * 如果需要从zip文件中加载资源，请定义本宏。
+ *
+ * #define WITH_ASSET_LOADER_ZIP
+ */
+
 #endif /*AWTK_CONFIG_H*/
