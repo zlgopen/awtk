@@ -63,7 +63,7 @@ asset_loader_t* asset_loader_create(void);
  * @param {const char*} path 路径。
  * @param {const char*} name 名称。
  *
- * @return {asset_info_t*} 返回资源对象。
+ * @return {asset_info_t*} 返回资源对象(由调用者销毁)。
  */
 asset_info_t* asset_loader_load(asset_loader_t* loader, uint16_t type, uint16_t subtype,
                                 const char* path, const char* name);
@@ -77,7 +77,7 @@ asset_info_t* asset_loader_load(asset_loader_t* loader, uint16_t type, uint16_t 
  */
 ret_t asset_loader_destroy(asset_loader_t* loader);
 
-#define ASSET_LOADER(loader) ((asset_loader_t*)(buffer))
+#define ASSET_LOADER(loader) ((asset_loader_t*)(loader))
 
 END_C_DECLS
 

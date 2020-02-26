@@ -1,6 +1,10 @@
 # 最新动态
 
 * 2020/02/26
+  * 增加data reader接口和data writer，用于抽象外部flash等设备。
+  * asset\_loadder\_zip支持从reader读取数据，以便支持在没有文件系统时，从外部flash加载资源。
+
+* 2020/02/26
   * 删除 slide\_view\_invalidate（感谢培煌提供补丁）。
   * 完善 edit 控件（感谢尧燊提供补丁）
   * 完善 guage 控件（感谢尧燊提供补丁）
