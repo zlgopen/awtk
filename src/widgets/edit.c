@@ -884,6 +884,9 @@ ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
       input_type = (input_type_t)value_int(v);
     }
     edit->input_type = input_type;
+    if (input_type == INPUT_PASSWORD) {
+      edit_set_password_visible(widget, edit->password_visible);
+    }
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_READONLY)) {
     edit->readonly = value_bool(v);
