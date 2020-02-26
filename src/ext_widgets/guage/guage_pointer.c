@@ -104,6 +104,10 @@ static ret_t guage_pointer_load_svg_asset(void* ctx, event_t* e) {
   if (guage_pointer->image != NULL) {
     const asset_info_t* asset = widget_load_asset(widget, ASSET_TYPE_IMAGE, guage_pointer->image);
 
+    if (guage_pointer->bsvg_asset != NULL) {
+      widget_unload_asset(widget, guage_pointer->bsvg_asset);
+      guage_pointer->bsvg_asset = NULL;
+    }
     if (asset != NULL) {
       if (asset->subtype == ASSET_TYPE_IMAGE_BSVG) {
         guage_pointer->bsvg_asset = asset;
