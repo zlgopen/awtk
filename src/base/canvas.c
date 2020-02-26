@@ -187,7 +187,7 @@ ret_t canvas_set_clip_rect(canvas_t* c, const rect_t* r_in) {
     c->clip_bottom = 0x7fffffff;
 #endif
   }
-  
+
   return RET_OK;
 }
 

@@ -19,7 +19,6 @@
  *
  */
 
-
 #include "tkc/mem.h"
 #include "tkc/mutex.h"
 #include "tkc/utils.h"

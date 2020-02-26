@@ -30,31 +30,31 @@ extern ret_t application_exit(void);
 
 #ifndef LCD_WIDTH
 #define LCD_WIDTH 320
-#endif/*LCD_WIDTH*/
+#endif /*LCD_WIDTH*/
 
 #ifndef LCD_HEIGHT
 #define LCD_HEIGHT 480
-#endif/*LCD_HEIGHT*/
+#endif /*LCD_HEIGHT*/
 
 #ifndef APP_TYPE
 #define APP_TYPE APP_SIMULATOR
-#endif/*APP_TYPE*/
+#endif /*APP_TYPE*/
 
 #ifndef GLOBAL_INIT
 #define GLOBAL_INIT()
-#endif/*GLOBAL_INIT*/
+#endif /*GLOBAL_INIT*/
 
 #ifndef GLOBAL_EXIT
 #define GLOBAL_EXIT()
-#endif/*GLOBAL_EXIT*/
+#endif /*GLOBAL_EXIT*/
 
 #ifndef APP_NAME
 #define APP_NAME "awtk"
-#endif/*APP_NAME*/
+#endif /*APP_NAME*/
 
 #ifndef APP_RES_ROOT
 #define APP_RES_ROOT NULL
-#endif/*APP_RES_ROOT*/
+#endif /*APP_RES_ROOT*/
 
 #ifdef USE_GUI_MAIN
 int gui_app_start(int lcd_w, int lcd_h) {
@@ -125,7 +125,7 @@ int WINAPI wWinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPWSTR lpcmdli
   command_line_to_argv(str.str, argv, &argc);
 
   TK_ENABLE_CONSOLE();
-  
+
 #ifdef ON_CMD_LINE
   ON_CMD_LINE(argc, argv);
 #else
@@ -135,7 +135,7 @@ int WINAPI wWinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPWSTR lpcmdli
   if (argc >= 3) {
     lcd_h = tk_atoi(argv[2]);
   }
-#endif/*ON_CMD_LINE*/
+#endif /*ON_CMD_LINE*/
 
   tk_init(lcd_w, lcd_h, APP_TYPE, APP_NAME, APP_RES_ROOT);
 #else
@@ -151,7 +151,7 @@ int main(int argc, char* argv[]) {
   if (argc >= 3) {
     lcd_h = tk_atoi(argv[2]);
   }
-#endif/*ON_CMD_LINE*/
+#endif /*ON_CMD_LINE*/
 
   tk_init(lcd_w, lcd_h, APP_TYPE, APP_NAME, APP_RES_ROOT);
 #endif
@@ -189,8 +189,7 @@ int main(int argc, char* argv[]) {
 
 #ifdef WIN32
   str_reset(&str);
-#endif/*WIN32*/
+#endif /*WIN32*/
 
   return 0;
 }
-

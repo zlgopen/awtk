@@ -25,6 +25,7 @@
 #include "tkc/darray.h"
 #include "tkc/asset_info.h"
 #include "base/types_def.h"
+#include "base/asset_loader.h"
 
 BEGIN_C_DECLS
 
@@ -83,6 +84,8 @@ struct _assets_manager_t {
 
   void* custom_build_asset_dir_ctx;
   assets_manager_build_asset_dir_t custom_build_asset_dir;
+
+  asset_loader_t* loader;
 };
 
 /**
