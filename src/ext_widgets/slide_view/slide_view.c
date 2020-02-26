@@ -26,8 +26,6 @@
 #include "slide_view/slide_view.h"
 #include "widget_animators/widget_animator_scroll.h"
 
-static ret_t slide_view_invalidate(slide_view_t* slide_view);
-
 static bool_t anim_hint_is_overlap(slide_view_t* slide_view) {
   return tk_str_eq(slide_view->anim_hint, "overlap") ||
          tk_str_eq(slide_view->anim_hint, "overlap_with_alpha");
@@ -423,39 +421,6 @@ static ret_t slide_view_calc_dirty_rect(slide_view_t* slide_view, rect_t* r) {
   return RET_OK;
 }
 
-static ret_t slide_view_invalidate(slide_view_t* slide_view) {
-  rect_t r;
-  widget_t* widget = WIDGET(slide_view);
-  slide_view_calc_dirty_rect(slide_view, &r);
-
-  if (r.x < 0) {
-    r.x = 0;
-  }
-
-  if (r.x >= widget->w) {
-    r.x = 0;
-    r.w = 0;
-  }
-
-  if (r.y < 0) {
-    r.y = 0;
-  }
-
-  if (r.y >= widget->h) {
-    r.y = 0;
-    r.h = 0;
-  }
-
-  if ((r.x + r.w) > widget->w) {
-    r.w = widget->w - r.x;
-  }
-
-  if ((r.y + r.h) > widget->h) {
-    r.h = widget->h - r.y;
-  }
-
-  return widget_invalidate(widget, &r);
-}
 
 static ret_t slide_view_set_prop(widget_t* widget, const char* name, const value_t* v) {
   slide_view_t* slide_view = SLIDE_VIEW(widget);
@@ -471,13 +436,13 @@ static ret_t slide_view_set_prop(widget_t* widget, const char* name, const value
     return slide_view_set_loop(widget, value_bool(v));
   } else if (tk_str_eq(name, WIDGET_PROP_XOFFSET)) {
     slide_view->xoffset = value_int(v);
-    slide_view_invalidate(slide_view);
+    widget_invalidate(widget, NULL);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_AUTO_PLAY)) {
     return slide_view_set_auto_play(widget, value_int(v));
   } else if (tk_str_eq(name, WIDGET_PROP_YOFFSET)) {
     slide_view->yoffset = value_int(v);
-    slide_view_invalidate(slide_view);
+    widget_invalidate(widget, NULL);
     return RET_OK;
   }
 
