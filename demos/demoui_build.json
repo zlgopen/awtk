@@ -2,6 +2,8 @@
   "name":"demoui",
   "version":"1.0",
   "assets" : "assets",
+  "author" : "xianjimli@hotmail",
+  "copyright" : "Guangzhou ZHIYUAN Electronics Co.,Ltd.",
   "web": {
     "app_type":"c",
     "sources":["demo_ui_app.c"],
@@ -11,6 +13,10 @@
     }
   },
   "android" : {
+    "app_name":"org.zlgopen.demoui",
+    "sources":["assets.c",	"assets.h",	"demo_ui_app.c",	"vg_common.inc"]
+  },
+  "ios" : {
     "app_name":"org.zlgopen.demoui",
     "sources":["assets.c",	"assets.h",	"demo_ui_app.c",	"vg_common.inc"]
   }
