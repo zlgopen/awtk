@@ -81,10 +81,10 @@ static bool_t is_valid_self_layout(const char* x, const char* y, const char* w, 
 static void xml_loader_on_start_widget(XmlBuilder* thiz, const char* tag, const char** attrs) {
   char c = '\0';
   uint32_t i = 0;
-  const char* x = "0";
-  const char* y = "0";
-  const char* w = "0";
-  const char* h = "0";
+  const char* x = NULL;
+  const char* y = NULL;
+  const char* w = NULL;
+  const char* h = NULL;
   widget_desc_t desc;
   const char* key = NULL;
   const char* value = NULL;
