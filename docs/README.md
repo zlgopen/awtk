@@ -31,6 +31,7 @@
 * [实时切换主题](theme_switch.md)
 * [键值映射](map_key.md)
 * [应用程序的入口函数](awtk_main.md)
+* [资源打包](assets_zip.md)
 
 ### 2.HowTos
 * [AWTK 调试技巧](debug_tips.md)

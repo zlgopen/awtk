@@ -3,6 +3,8 @@
 * 2020/02/27
   * 完善style const和ui loader（感谢尧燊提供补丁）
   * 增加文档 《AWTK 应用程序的入口》
+  * 增加文档 《AWTK 资源打包》
+  * 增加脚本 scripts/create\_assets\_zip.sh
 
 * 2020/02/26
   * 增加data reader接口和data writer，用于抽象外部flash等设备。
