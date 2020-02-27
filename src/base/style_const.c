@@ -53,7 +53,7 @@ static const void* widget_get_const_style_data_for_state_impl(widget_t* widget,
   const void* data = NULL;
   theme_t* win_theme = NULL;
   theme_t* default_theme = NULL;
-  const char* type = widget->vt->type;
+  const char* type = widget_get_type(widget);
 
   if (tk_str_eq(type, WIDGET_TYPE_WINDOW_MANAGER)) {
     return theme_find_style(theme(), type, style_name, state);

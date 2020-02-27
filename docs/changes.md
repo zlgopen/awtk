@@ -1,5 +1,8 @@
 # 最新动态
 
+* 2020/02/27
+  * 完善style const和ui loader（感谢尧燊提供补丁）
+
 * 2020/02/26
   * 增加data reader接口和data writer，用于抽象外部flash等设备。
   * asset\_loadder\_zip支持从reader读取数据，以便支持在没有文件系统时，从外部flash加载资源。
