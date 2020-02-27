@@ -465,6 +465,16 @@
   </style>
 </combo_box>
 
+<combo_box_ex>
+  <style name="default" border_color="#a0a0a0"  text_color="black" text_align_h="left">
+    <normal     bg_color="#f0f0f0" />
+    <focused    bg_color="#f0f0f0" border_color="black"/>
+    <disable    bg_color="gray" text_color="#d0d0d0" />
+    <error      bg_color="#f0f0f0" text_color="red" />
+    <empty      bg_color="#f0f0f0" text_color="#a0a0a0" />
+  </style>
+</combo_box_ex>
+
 <combo_box_item>
   <style name="default" icon_at="left" text_color="black" bg_color="#f0f0f0">
     <normal  icon="empty"/>
