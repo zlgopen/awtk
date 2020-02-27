@@ -73,7 +73,7 @@ int SDL_main(int argc, char* argv[]) {
   system_info_set_default_font(system_info(), "default_full");
 
 #ifdef IOS
-assets_manager_set_loader(assets_manager(), asset_loader_zip_create(ASSETS_ZIP));
+  assets_manager_set_loader(assets_manager(), asset_loader_zip_create(ASSETS_ZIP));
 #endif /*IOS*/
 
 #elif defined(WIN32)
