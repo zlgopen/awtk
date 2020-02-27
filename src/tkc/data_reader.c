@@ -35,8 +35,8 @@ uint64_t data_reader_get_size(data_reader_t* reader) {
 }
 
 ret_t data_reader_destroy(data_reader_t* reader) {
-  return_value_if_fail(reader != NULL && reader->vt != NULL && reader->vt->destroy != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(reader != NULL && reader->vt != NULL && reader->vt->destroy != NULL,
+                       RET_BAD_PARAMS);
 
   return reader->vt->destroy(reader);
 }
-

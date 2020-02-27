@@ -29,8 +29,8 @@ int32_t data_writer_write(data_writer_t* writer, uint64_t offset, const void* da
 }
 
 ret_t data_writer_destroy(data_writer_t* writer) {
-  return_value_if_fail(writer != NULL && writer->vt != NULL && writer->vt->destroy != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(writer != NULL && writer->vt != NULL && writer->vt->destroy != NULL,
+                       RET_BAD_PARAMS);
 
   return writer->vt->destroy(writer);
 }
-

@@ -30,10 +30,11 @@ typedef struct _data_reader_file_t {
   uint64_t size;
 } data_reader_file_t;
 
-static int32_t data_reader_file_read(data_reader_t* reader, uint64_t offset, void* data, uint32_t size) {
+static int32_t data_reader_file_read(data_reader_t* reader, uint64_t offset, void* data,
+                                     uint32_t size) {
   data_reader_file_t* file = (data_reader_file_t*)reader;
   return_value_if_fail(fs_file_seek(file->file, offset) == RET_OK, 0);
-  
+
   return fs_file_read(file->file, data, size);
 }
 
@@ -53,9 +54,9 @@ static ret_t data_reader_file_destroy(data_reader_t* reader) {
 }
 
 static data_reader_vtable_t s_data_reader_file_vtable = {
-  .read = data_reader_file_read,
-  .get_size = data_reader_file_get_size,
-  .destroy = data_reader_file_destroy,
+    .read = data_reader_file_read,
+    .get_size = data_reader_file_get_size,
+    .destroy = data_reader_file_destroy,
 };
 
 data_reader_t* data_reader_file_create(const char* filename) {
@@ -65,16 +66,15 @@ data_reader_t* data_reader_file_create(const char* filename) {
   file = TKMEM_ZALLOC(data_reader_file_t);
   return_value_if_fail(file != NULL, NULL);
 
-  if(fs_stat(os_fs(), filename, &st) == RET_OK) {
+  if (fs_stat(os_fs(), filename, &st) == RET_OK) {
     file->size = st.size;
     file->file = fs_open_file(os_fs(), filename, "rb");
     file->data_reader.vt = &s_data_reader_file_vtable;
   }
 
-  if(file->file == NULL) {
+  if (file->file == NULL) {
     TKMEM_FREE(file);
   }
 
   return (data_reader_t*)file;
 }
-

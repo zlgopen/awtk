@@ -29,7 +29,8 @@ BEGIN_C_DECLS
 struct _data_reader_t;
 typedef struct _data_reader_t data_reader_t;
 
-typedef int32_t (*data_reader_read_t)(data_reader_t* reader, uint64_t offset, void* data, uint32_t size);
+typedef int32_t (*data_reader_read_t)(data_reader_t* reader, uint64_t offset, void* data,
+                                      uint32_t size);
 typedef uint64_t (*data_reader_get_size_t)(data_reader_t* reader);
 typedef ret_t (*data_reader_destroy_t)(data_reader_t* reader);
 

@@ -29,8 +29,8 @@ BEGIN_C_DECLS
 struct _data_writer_t;
 typedef struct _data_writer_t data_writer_t;
 
-typedef int32_t (*data_writer_write_t)(data_writer_t* writer, uint64_t offset, 
-    const void* data, uint32_t size);
+typedef int32_t (*data_writer_write_t)(data_writer_t* writer, uint64_t offset, const void* data,
+                                       uint32_t size);
 typedef ret_t (*data_writer_destroy_t)(data_writer_t* writer);
 
 typedef struct _data_writer_vtable_t {
