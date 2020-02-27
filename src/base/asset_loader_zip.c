@@ -105,11 +105,11 @@ static ret_t asset_loader_zip_destroy(asset_loader_t* loader) {
   asset_loader_zip_t* zip = (asset_loader_zip_t*)loader;
   mz_zip_end(&(zip->archive));
 
-  if(zip->data != NULL) {
+  if (zip->data != NULL) {
     TKMEM_FREE(zip->data);
   }
 
-  if(zip->own_the_reader && zip->reader != NULL) {
+  if (zip->own_the_reader && zip->reader != NULL) {
     data_reader_destroy(zip->reader);
   }
 
@@ -149,7 +149,7 @@ asset_loader_t* asset_loader_zip_create(const char* zipfile) {
   return (asset_loader_t*)zip;
 }
 
-static size_t asset_loader_zip_read(void *pOpaque, mz_uint64 offset, void *buff, size_t n) {
+static size_t asset_loader_zip_read(void* pOpaque, mz_uint64 offset, void* buff, size_t n) {
   asset_loader_zip_t* zip = (asset_loader_zip_t*)pOpaque;
 
   return data_reader_read(zip->reader, offset, buff, n);
@@ -166,12 +166,12 @@ asset_loader_t* asset_loader_zip_create_with_reader(data_reader_t* reader, bool_
   zip->reader = reader;
   zip->own_the_reader = own_the_reader;
   zip->archive.m_pIO_opaque = zip;
-  zip->archive.m_pRead= asset_loader_zip_read;
+  zip->archive.m_pRead = asset_loader_zip_read;
 
   if (!mz_zip_reader_init(&(zip->archive), size, 0)) {
     TKMEM_FREE(zip);
   }
-  
+
   return (asset_loader_t*)zip;
 }
 
