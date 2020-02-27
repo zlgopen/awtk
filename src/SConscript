@@ -8,7 +8,7 @@ VGCANVAS=os.environ['VGCANVAS'];
 NATIVE_WINDOW = os.environ['NATIVE_WINDOW'];
 GRAPHIC_BUFFER = os.environ['GRAPHIC_BUFFER'];
 
-sources=Glob('layouters/*.c') + \
+BASE_SOURCES=Glob('layouters/*.c') + \
   Glob('base/*.c') + \
   Glob('ui_loader/*.c') + \
   Glob('xml/*.c') + \
@@ -24,46 +24,46 @@ sources=Glob('layouters/*.c') + \
   Glob('dialog_highlighters/*.c') + \
   Glob('window_manager/window_manager_default.c') 
 
-sources += Glob('graphic_buffer/graphic_buffer_default.c')
+BASE_SOURCES += Glob('graphic_buffer/graphic_buffer_default.c')
 
 if NATIVE_WINDOW == 'sdl':
-  sources += Glob('native_window/native_window_sdl.c')
+  BASE_SOURCES += Glob('native_window/native_window_sdl.c')
 elif NATIVE_WINDOW == 'fb_gl':
-  sources += Glob('native_window/native_window_fb_gl.c')
+  BASE_SOURCES += Glob('native_window/native_window_fb_gl.c')
 else:
-  sources += Glob('native_window/native_window_raw.c')
+  BASE_SOURCES += Glob('native_window/native_window_raw.c')
 
-sources += ['lcd/lcd_mono.c'];
-sources += ['main_loop/main_loop_simple.c'];
+BASE_SOURCES += ['lcd/lcd_mono.c'];
+BASE_SOURCES += ['main_loop/main_loop_simple.c'];
 if os.environ['LCD'] == 'SDL_GPU':
-  sources += ['lcd/lcd_nanovg.c', 'main_loop/main_loop_sdl.c'];
+  BASE_SOURCES += ['lcd/lcd_nanovg.c', 'main_loop/main_loop_sdl.c'];
 elif os.environ['LCD'] == 'SDL_FB':
-  sources += ['lcd/lcd_sdl2.c', 'main_loop/main_loop_sdl.c']
+  BASE_SOURCES += ['lcd/lcd_sdl2.c', 'main_loop/main_loop_sdl.c']
 elif os.environ['LCD'] == 'SDL_FB_MONO':
-  sources += ['lcd/lcd_sdl2_mono.c', 'main_loop/main_loop_sdl.c']
+  BASE_SOURCES += ['lcd/lcd_sdl2_mono.c', 'main_loop/main_loop_sdl.c']
 elif os.environ['LCD'] == 'FB_GL':
-  sources += ['lcd/lcd_nanovg.c']
+  BASE_SOURCES += ['lcd/lcd_nanovg.c']
 
-sources += [
+BASE_SOURCES += [
   'input_methods/input_method_creator.c'
   ] + Glob('lcd/lcd_mem_*.c') ;
 
 if VGCANVAS == 'CAIRO':
-  sources +=['vgcanvas/vgcanvas_cairo.c'];
+  BASE_SOURCES +=['vgcanvas/vgcanvas_cairo.c'];
 else:
   if NANOVG_BACKEND == 'BGFX':
-    sources +=['vgcanvas/vgcanvas_nanovg_bgfx.c'];
+    BASE_SOURCES +=['vgcanvas/vgcanvas_nanovg_bgfx.c'];
   elif NANOVG_BACKEND == 'AGG':
-    sources +=['vgcanvas/vgcanvas_nanovg_soft.c'];
+    BASE_SOURCES +=['vgcanvas/vgcanvas_nanovg_soft.c'];
   elif NANOVG_BACKEND == 'AGGE':
-    sources +=['vgcanvas/vgcanvas_nanovg_soft.c'];
+    BASE_SOURCES +=['vgcanvas/vgcanvas_nanovg_soft.c'];
   else:
-    sources +=['vgcanvas/vgcanvas_nanovg_gl.c'];
+    BASE_SOURCES +=['vgcanvas/vgcanvas_nanovg_gl.c'];
 
 if os.environ['INPUT_ENGINE'] == 'null':
-  sources += Glob('input_engines/input_engine_null.c')
+  BASE_SOURCES += Glob('input_engines/input_engine_null.c')
 else:
-  sources += Glob('input_engines/input_engine_pinyin.cpp')
+  BASE_SOURCES += Glob('input_engines/input_engine_pinyin.cpp')
 
 env=DefaultEnvironment().Clone()
 
@@ -89,9 +89,18 @@ if env['PLATFORM'] == 'win32' and os.environ['TOOLS_NAME'] != '':
   buf.ourenv = env
   env['SPAWN'] = buf.ourspawn
   
-env.Library(os.path.join(LIB_DIR, 'base'), sources, LIBS=[])
+env.Library(os.path.join(LIB_DIR, 'base'), BASE_SOURCES, LIBS=[])
 env.Library(os.path.join(LIB_DIR, 'awtk'), ['awtk_global.c'], LIBS=[])
-env.Library(os.path.join(LIB_DIR, 'widgets'), Glob('widgets/*.c'), LIBS=[])
-env.Library(os.path.join(LIB_DIR, 'tkc'), Glob('tkc/*.c') + Glob('platforms/pc/*.c'), LIBS=[])
-env.Library(os.path.join(LIB_DIR, 'extwidgets'), Glob('ext_widgets/*.c') + Glob('ext_widgets/*/*.c'), LIBS=[])
+
+WIDGETS_SOURCES=Glob('widgets/*.c')
+env.Library(os.path.join(LIB_DIR, 'widgets'), WIDGETS_SOURCES, LIBS=[])
+
+TK_SOURCES=Glob('tkc/*.c') + Glob('platforms/pc/*.c')
+env.Library(os.path.join(LIB_DIR, 'tkc'), TK_SOURCES, LIBS=[])
+
+EXT_WIDGETS_SOURCES=Glob('ext_widgets/*.c') + Glob('ext_widgets/*/*.c') 
+env.Library(os.path.join(LIB_DIR, 'extwidgets'), EXT_WIDGETS_SOURCES, LIBS=[])
+
+#ALL_SOURCES=TK_SOURCES + BASE_SOURCES + WIDGETS_SOURCES + EXT_WIDGETS_SOURCES + ['awtk_global.c']
+#env.SharedLibrary(os.path.join(LIB_DIR, 'awtk_all'), ALL_SOURCES); 
 

@@ -9,6 +9,7 @@
 *.lib
 *.exp
 *.exe
+*.os
 .sconsign.dblite
 lua/demo1
 lua/lftk_run
