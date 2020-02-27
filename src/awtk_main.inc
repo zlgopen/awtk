@@ -56,10 +56,6 @@ END_C_DECLS
 #ifdef IOS
 #include "base/asset_loader_zip.h"
 
-#ifndef ASSETS_ZIP
-#define ASSETS_ZIP "./assets.zip"
-#endif /*ASSETS_ZIP*/
-
 #endif /*IOS*/
 #ifdef USE_GUI_MAIN
 int gui_app_start(int lcd_w, int lcd_h) {
@@ -71,10 +67,6 @@ int SDL_main(int argc, char* argv[]) {
 
   tk_init(lcd_w, lcd_h, APP_MOBILE, APP_NAME, APP_RES_ROOT);
   system_info_set_default_font(system_info(), "default_full");
-
-#ifdef IOS
-  assets_manager_set_loader(assets_manager(), asset_loader_zip_create(ASSETS_ZIP));
-#endif /*IOS*/
 
 #elif defined(WIN32)
 #include <windows.h>
@@ -157,6 +149,10 @@ int main(int argc, char* argv[]) {
 
   tk_init(lcd_w, lcd_h, APP_TYPE, APP_NAME, APP_RES_ROOT);
 #endif
+
+#ifdef ASSETS_ZIP
+  assets_manager_set_loader(assets_manager(), asset_loader_zip_create(ASSETS_ZIP));
+#endif /*ASSETS_ZIP*/
 
 #if defined(WITH_LCD_PORTRAIT)
   if (lcd_w > lcd_h) {
