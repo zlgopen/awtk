@@ -12,6 +12,7 @@
 #include "assets/default/inc/styles/tab_bottom.data"
 #include "assets/default/inc/styles/calibration.data"
 #include "assets/default/inc/styles/tab_list.data"
+#include "assets/default/inc/styles/list_view_dynamic.data"
 #include "assets/default/inc/styles/default.data"
 #include "assets/default/inc/styles/system_bar_bottom.data"
 #include "assets/default/inc/styles/big_font.data"
@@ -94,6 +95,7 @@
 #include "assets/default/inc/ui/slide_down.data"
 #include "assets/default/inc/ui/file_chooser_for_open.data"
 #include "assets/default/inc/ui/scroll_view_h.data"
+#include "assets/default/inc/ui/list_view_dynamic.data"
 #include "assets/default/inc/ui/menu_up_center.data"
 #include "assets/default/inc/ui/slide_right.data"
 #include "assets/default/inc/ui/scroll_bar_h.data"
@@ -408,7 +410,7 @@
 #include "assets/default/inc/images/arrow_left_n.data"
 #include "assets/default/inc/images/edit_clear_p.data"
 #include "assets/default/inc/images/battery_2.data"
-#endif /*WITH_STB_IMAGE*/
+#endif/*WITH_STB_IMAGE*/
 #ifdef WITH_VGCANVAS
 #include "assets/default/inc/images/pointer_4.bsvg"
 #include "assets/default/inc/images/htest.bsvg"
@@ -417,13 +419,13 @@
 #include "assets/default/inc/images/pointer_1.bsvg"
 #include "assets/default/inc/images/pointer.bsvg"
 #include "assets/default/inc/images/girl.bsvg"
-#endif /*WITH_VGCANVAS*/
+#endif/*WITH_VGCANVAS*/
 #if defined(WITH_TRUETYPE_FONT)
 #include "assets/default/inc/fonts/default.res"
-#else /*WITH_TRUETYPE_FONT*/
+#else/*WITH_TRUETYPE_FONT*/
 #include "assets/default/inc/fonts/default.data"
-#endif /*WITH_TRUETYPE_FONT*/
-#endif /*WITH_FS_RES*/
+#endif/*WITH_TRUETYPE_FONT*/
+#endif/*WITH_FS_RES*/
 
 ret_t assets_init(void) {
   assets_manager_t* am = assets_manager();
@@ -500,6 +502,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_slide_down);
   assets_manager_add(am, ui_file_chooser_for_open);
   assets_manager_add(am, ui_scroll_view_h);
+  assets_manager_add(am, ui_list_view_dynamic);
   assets_manager_add(am, ui_menu_up_center);
   assets_manager_add(am, ui_slide_right);
   assets_manager_add(am, ui_scroll_bar_h);
@@ -695,6 +698,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, style_tab_bottom);
   assets_manager_add(am, style_calibration);
   assets_manager_add(am, style_tab_list);
+  assets_manager_add(am, style_list_view_dynamic);
   assets_manager_add(am, style_default);
   assets_manager_add(am, style_system_bar_bottom);
   assets_manager_add(am, style_big_font);
@@ -722,7 +726,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, image_pointer_1);
   assets_manager_add(am, image_pointer);
   assets_manager_add(am, image_girl);
-#endif /*WITH_VGCANVAS*/
+#endif/*WITH_VGCANVAS*/
 #endif
 
   tk_init_assets();

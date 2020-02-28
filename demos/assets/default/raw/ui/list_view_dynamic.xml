@@ -1,0 +1,15 @@
+<window anim_hint="htranslate">
+  <list_view  x="5"  y="30" w="40%" h="-80" item_height="40">
+    <scroll_view name="overview" x="0"  y="0" w="100%" h="100%">
+    </scroll_view>
+    <scroll_bar_d name="bar" x="right" y="0" w="12" h="100%" value="0"/>
+  </list_view>
+
+  <list_view x="45%"  y="30" w="50%" h="-80" item_height="30">
+    <scroll_view name="detail" x="0"  y="0" w="100%" h="100%">
+    </scroll_view>
+    <scroll_bar_d name="bar" x="right" y="0" w="12" h="100%" value="0"/>
+  </list_view>
+
+  <button name="close" x="center" y="bottom:10" w="50%" h="30" text="close"/>
+</window>

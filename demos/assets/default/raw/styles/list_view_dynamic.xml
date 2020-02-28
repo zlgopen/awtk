@@ -1,0 +1,15 @@
+
+<list_item>
+  <style name="odd_clickable" border_color="#a0a0a0"  border="bottom" text_color="black">
+    <focused   bg_color="#1296db" text_color="gold" />
+    <normal     bg_color="#f5f5f5" />
+    <pressed    bg_color="#c0c0c0" />
+    <over       bg_color="#f5f5f5" />
+  </style>
+  <style name="even_clickable" border_color="#a0a0a0"  border="bottom" text_color="black">
+    <focused bg_color="#1296db" text_color="gold" />
+    <normal  bg_color="#eaeaea" />
+    <pressed bg_color="#c0c0c0" />
+    <over    bg_color="#eaeaea" />
+  </style>
+</list_item>
