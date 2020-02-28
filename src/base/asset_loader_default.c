@@ -20,6 +20,7 @@
  */
 
 #include "tkc/mem.h"
+#include "tkc/fs.h"
 #include "base/asset_loader_default.h"
 
 #ifdef WITH_SDL
