@@ -191,7 +191,7 @@ int main(int argc, char* argv[]) {
 
 #ifdef HAS_STDIO
   fflush(stdout);
-#endif/*HAS_STDIO*/
+#endif /*HAS_STDIO*/
 
   return 0;
 }

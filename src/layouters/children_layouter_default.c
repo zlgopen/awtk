@@ -382,6 +382,14 @@ static ret_t children_layouter_default_layout(children_layouter_t* layouter, wid
       area = rect_init(x, y, item_w, item_h);
       widget_move_resize(iter, x, y, item_w, item_h);
       if (self_layouter_default_is_valid(iter->self_layout)) {
+        if (self_layouter_get_param_int(iter->self_layout, "x_attr", 0) == X_ATTR_UNDEF) {
+          self_layouter_set_param_str(iter->self_layout, "x", "0");
+        }
+
+        if (self_layouter_get_param_int(iter->self_layout, "y_attr", 0) == Y_ATTR_UNDEF) {
+          self_layouter_set_param_str(iter->self_layout, "y", "0");
+        }
+
         widget_layout_self_with_rect(iter->self_layout, iter, &area);
       }
 

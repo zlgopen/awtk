@@ -113,10 +113,10 @@ static void xml_loader_on_start_widget(XmlBuilder* thiz, const char* tag, const 
   }
 
   strncpy(desc.type, tag, TK_NAME_LEN);
-  desc.layout.x = tk_atoi(x);
-  desc.layout.y = tk_atoi(y);
-  desc.layout.w = tk_atoi(w);
-  desc.layout.h = tk_atoi(h);
+  if (x != NULL) desc.layout.x = tk_atoi(x);
+  if (y != NULL) desc.layout.y = tk_atoi(y);
+  if (w != NULL) desc.layout.w = tk_atoi(w);
+  if (h != NULL) desc.layout.h = tk_atoi(h);
   ui_builder_on_widget_start(b->ui_builder, &desc);
 
   if (is_valid_self_layout(x, y, w, h)) {
