@@ -189,5 +189,9 @@ int main(int argc, char* argv[]) {
   str_reset(&str);
 #endif /*WIN32*/
 
+#ifdef HAS_STDIO
+  fflush(stdout);
+#endif/*HAS_STDIO*/
+
   return 0;
 }
