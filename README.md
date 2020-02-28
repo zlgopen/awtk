@@ -160,6 +160,33 @@
 
 ## 四、模拟运行：
 
+### 下载代码
+
+* 用 git 下载
+
+> [Windows 下的 git](https://git-scm.com/download/win)
+
+**下载代码**
+
+```
+git clone https://github.com/zlgopen/awtk.git
+```
+
+> Windows 下可以用带 GUI 的 git 下载代码。
+
+**更新代码(在 awtk 目录下运行)**
+
+```
+git pull
+```
+
+> 用 git 下载代码的好处是以后更新代码非常快。
+
+* 直接下载 zip 文件
+
+> 下载[ zip 文件](https://github.com/zlgopen/awtk/archive/master.zip)。解压之后**需要把文件夹改名为awtk**。
+
+
 ### Mac
 
 如果没有安装 scons 和 sdl2，请在终端运行下面的命令 （假定已安装 brew)：
