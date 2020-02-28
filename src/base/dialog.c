@@ -58,6 +58,20 @@ static ret_t dialog_set_prop(widget_t* widget, const char* name, const value_t* 
     dialog->highlight = tk_str_copy(dialog->highlight, value_str(v));
 
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_SELF_LAYOUT)) {
+    self_layouter_t* self_layout = widget->self_layout;
+    if (self_layout != NULL && self_layout->vt != NULL) {
+      if (tk_str_eq(self_layout->vt->type, "default")) {
+        if (self_layouter_get_param_int(self_layout, "x_attr", 0) == X_ATTR_UNDEF) {
+          self_layouter_set_param_str(self_layout, "x", "c");
+        }
+
+        if (self_layouter_get_param_int(self_layout, "y_attr", 0) == Y_ATTR_UNDEF) {
+          self_layouter_set_param_str(self_layout, "y", "m");
+        }
+      }
+    }
+    return RET_OK;
   }
 
   return window_base_set_prop(widget, name, v);

@@ -1,5 +1,8 @@
 # 最新动态
 
+* 2020/02/28
+  * 完善dialog set prop对layout参数的处理（感谢朝泽提供补丁）。
+
 * 2020/02/27
   * 完善style const和ui loader（感谢尧燊提供补丁）
   * 增加文档 《AWTK 应用程序的入口》
