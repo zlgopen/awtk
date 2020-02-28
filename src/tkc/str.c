@@ -79,6 +79,7 @@ ret_t str_set_with_len(str_t* str, const char* text, uint32_t len) {
 
   tk_strncpy(str->str, text, size);
   str->size = size;
+  str->str[str->size] = '\0';
 
   return RET_OK;
 }
