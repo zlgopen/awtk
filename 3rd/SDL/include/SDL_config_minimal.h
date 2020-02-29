@@ -71,7 +71,10 @@ typedef unsigned long uintptr_t;
 #define SDL_LOADSO_DISABLED 1
 
 /* Enable the stub thread support (src/thread/generic/\*.c) */
-#define SDL_THREADS_DISABLED    1
+//#define SDL_THREADS_DISABLED    1
+
+/* Enable the stub thread support (src/thread/pthread/\*.c) */
+#define SDL_THREAD_PTHREAD 1
 
 /* Enable the stub timer support (src/timer/dummy/\*.c) */
 #define SDL_TIMERS_DISABLED 1
@@ -81,5 +84,8 @@ typedef unsigned long uintptr_t;
 
 /* Enable the dummy filesystem driver (src/filesystem/dummy/\*.c) */
 #define SDL_FILESYSTEM_DUMMY  1
+
+/* Enable the dummy filesystem driver (src/audio/alsa/\*.c) */
+#define SDL_AUDIO_DRIVER_ALSA 1
 
 #endif /* SDL_config_minimal_h_ */

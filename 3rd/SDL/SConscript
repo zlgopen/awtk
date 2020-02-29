@@ -60,6 +60,7 @@ elif OS_NAME == 'Linux':
     'include',
     'gen',
     'src/video/khronos',
+    'src/audio/alsa',
     'src'
     ]
   sources=Glob('gen/*.c')+\
@@ -85,6 +86,7 @@ elif OS_NAME == 'Linux':
   Glob('src/audio/sndio/*.c')+\
   Glob('src/video/x11/*.c')+\
   Glob('src/video/dummy/*.c')+\
+  Glob('src/audio/alsa/*.c')+\
   Glob('src/core/linux/*.c')+\
   Glob('src/thread/pthread/*.c')+\
   Glob('src/power/linux/*.c')+\

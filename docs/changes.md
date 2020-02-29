@@ -3,6 +3,7 @@
 * 2020/02/29
   * 完善 dialog 的layout 处理（感谢朝泽提供补丁）。
   * 完善 fs stat 处理（感谢陈谭提供补丁）。
+  * 修复 Linux SDL Audio 的问题（感谢智明提供补丁）。
 
 * 2020/02/28
   * 完善dialog set prop对layout参数的处理（感谢朝泽提供补丁）。
