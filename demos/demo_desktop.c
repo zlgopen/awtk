@@ -21,10 +21,8 @@
 
 #include "awtk.h"
 #include "assets.h"
-#include "ext_widgets.h"
 
 ret_t application_init(void) {
-  tk_ext_widgets_init();
   window_open("edit");
 
   return RET_OK;

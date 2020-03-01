@@ -798,8 +798,6 @@ static ret_t wm_on_request_quit(void* ctx, event_t* evt) {
 ret_t application_init() {
   widget_t* wm = window_manager();
 
-  tk_ext_widgets_init();
-
   /*enable screen saver*/
   window_manager_set_screen_saver_time(wm, 180 * 1000);
   widget_on(wm, EVT_SCREEN_SAVER, on_screen_saver, NULL);

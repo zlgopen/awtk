@@ -5,6 +5,7 @@
   * 增加data reader factory
   * 增加data writer factory
   * 完善awtk\_main.inc（感谢陈谭提供补丁）。
+  * 完善demos（感谢陈谭提供补丁）。
 
 * 2020/02/29
   * 完善 dialog 的layout 处理（感谢朝泽提供补丁）。
