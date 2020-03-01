@@ -81,7 +81,7 @@ ret_t self_layouter_factory_register(self_layouter_factory_t* factory, const cha
  * @param {self_layouter_factory_t*} factory 控件自身布局算法工厂对象。
  * @param {const char*} type 类型。
  *
- * @return {self_layouter_t*} 返回窗口动画对象。
+ * @return {self_layouter_t*} 返回控件自身布局算法对象。
  */
 self_layouter_t* self_layouter_factory_create_layouter(self_layouter_factory_t* factory,
                                                        const char* type);

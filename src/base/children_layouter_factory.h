@@ -81,7 +81,7 @@ ret_t children_layouter_factory_register(children_layouter_factory_t* factory, c
  * @param {children_layouter_factory_t*} factory 子控件布局算法工厂对象。
  * @param {const char*} type 类型。
  *
- * @return {children_layouter_t*} 返回窗口动画对象。
+ * @return {children_layouter_t*} 返回子控件布局算法对象。
  */
 children_layouter_t* children_layouter_factory_create_layouter(children_layouter_factory_t* factory,
                                                                const char* type);

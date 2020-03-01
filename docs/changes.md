@@ -1,5 +1,10 @@
 # 最新动态
 
+* 2020/03/01
+  * 增加data writer file 
+  * 增加data reader factory
+  * 增加data writer factory
+
 * 2020/02/29
   * 完善 dialog 的layout 处理（感谢朝泽提供补丁）。
   * 完善 fs stat 处理（感谢陈谭提供补丁）。
