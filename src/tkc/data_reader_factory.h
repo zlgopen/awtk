@@ -68,7 +68,7 @@ data_reader_factory_t* data_reader_factory_create(void);
 /**
  * @method data_reader_factory_register
  * 注册data reader创建函数。
- * @param {data_reader_factory_t*} factory highlighter工厂对象。
+ * @param {data_reader_factory_t*} factory reader工厂对象。
  * @param {const char*} protocol 协议(如file)。
  * @param {data_reader_create_t} create data reader创建函数。
  *

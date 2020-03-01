@@ -66,7 +66,7 @@ self_layouter_factory_t* self_layouter_factory_create(void);
 /**
  * @method self_layouter_factory_register
  * 注册控件自身布局算法创建函数。
- * @param {self_layouter_factory_t*} factory highlighter工厂对象。
+ * @param {self_layouter_factory_t*} factory layouter工厂对象。
  * @param {const char*} type 控件自身布局算法类型。
  * @param {self_layouter_create_t} create 控件自身布局算法创建函数。
  *

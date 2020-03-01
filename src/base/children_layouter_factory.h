@@ -66,7 +66,7 @@ children_layouter_factory_t* children_layouter_factory_create(void);
 /**
  * @method children_layouter_factory_register
  * 注册子控件布局算法创建函数。
- * @param {children_layouter_factory_t*} factory highlighter工厂对象。
+ * @param {children_layouter_factory_t*} factory layouter工厂对象。
  * @param {const char*} type 子控件布局算法类型。
  * @param {children_layouter_create_t} create 子控件布局算法创建函数。
  *

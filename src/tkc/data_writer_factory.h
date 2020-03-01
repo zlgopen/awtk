@@ -68,7 +68,7 @@ data_writer_factory_t* data_writer_factory_create(void);
 /**
  * @method data_writer_factory_register
  * 注册data writer创建函数。
- * @param {data_writer_factory_t*} factory highlighter工厂对象。
+ * @param {data_writer_factory_t*} factory writer工厂对象。
  * @param {const char*} protocol 协议(如file)。
  * @param {data_writer_create_t} create data writer创建函数。
  *
