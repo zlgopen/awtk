@@ -2300,6 +2300,11 @@ ret_t widget_dispatch_simple_event(widget_t* widget, uint32_t type);
 
 ret_t widget_set_focused_internal(widget_t* widget, bool_t focused);
 
+ret_t widget_fill_rounded_rect(canvas_t* c, rect_t* r, rect_t* bg_r, color_t* color,
+                               uint32_t radius);
+ret_t widget_stroke_rounded_rect(canvas_t* c, rect_t* r, rect_t* bg_r, color_t* color,
+                                 uint32_t radius, uint32_t border_width);
+
 END_C_DECLS
 
 #endif /*TK_WIDGET_H*/

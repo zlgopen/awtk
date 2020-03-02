@@ -174,7 +174,7 @@ int main(int argc, char* argv[]) {
 
 #ifndef WITHOUT_EXT_WIDGETS
   tk_ext_widgets_init();
-#endif/*WITHOUT_EXT_WIDGETS*/
+#endif /*WITHOUT_EXT_WIDGETS*/
 
   log_set_log_level(LOG_LEVEL_INFO);
   log_info("Build at: %s %s\n", __DATE__, __TIME__);
