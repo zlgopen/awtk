@@ -1,5 +1,8 @@
 # 最新动态
 
+* 2020/03/02
+  * 完善 README 中 Ubuntu 依赖软件包（感谢陈谭提供补丁）。
+
 * 2020/03/01
   * 增加data writer file 
   * 增加data reader factory
