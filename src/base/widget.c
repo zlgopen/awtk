@@ -1057,7 +1057,7 @@ ret_t widget_dispatch(widget_t* widget, event_t* e) {
 
 static ret_t widget_dispatch_callback(void* ctx, const void* data) {
   widget_t* widget = WIDGET(data);
-  
+
   return widget_dispatch(widget, (event_t*)ctx);
 }
 

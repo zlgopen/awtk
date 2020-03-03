@@ -573,4 +573,3 @@ ret_t window_manager_dispatch_window_event(widget_t* window, event_type_t type) 
 
   return widget_dispatch(window->parent, (event_t*)&(evt));
 }
-
