@@ -75,6 +75,24 @@ BEGIN_C_DECLS
 #define STYLE_ID_TEXT_COLOR "text_color"
 
 /**
+ * @const STYLE_ID_HIGHLIGHT_FONT_NAME
+ * 高亮文本的字体名称。
+ */
+#define STYLE_ID_HIGHLIGHT_FONT_NAME "highlight_font_name"
+
+/**
+ * @const STYLE_ID_HIGHLIGHT_FONT_SIZE
+ * 高亮文本的字体大小。
+ */
+#define STYLE_ID_HIGHLIGHT_FONT_SIZE "highlight_font_size"
+
+/**
+ * @const STYLE_ID_HIGHLIGHT_TEXT_COLOR
+ * 高亮文本的文本颜色。
+ */
+#define STYLE_ID_HIGHLIGHT_TEXT_COLOR "highlight_text_color"
+
+/**
  * @const STYLE_ID_TIPS_TEXT_COLOR
  * 提示文本颜色。
  */
