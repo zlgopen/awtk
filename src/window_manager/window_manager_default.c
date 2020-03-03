@@ -82,32 +82,6 @@ static ret_t window_manager_start_or_reset_screen_saver_timer(window_manager_def
   return RET_OK;
 }
 
-static ret_t window_manager_dispatch_top_window_changed(widget_t* widget) {
-  window_event_t e;
-
-  e.e = event_init(EVT_TOP_WINDOW_CHANGED, widget);
-  e.window = window_manager_get_top_main_window(widget);
-
-  widget_dispatch(widget, (event_t*)(&e));
-
-  return RET_OK;
-}
-
-static ret_t window_manager_dispatch_window_event(widget_t* window, event_type_t type) {
-  window_event_t evt;
-  event_t e = event_init(type, window);
-  widget_dispatch(window, &e);
-
-  evt.window = window;
-  evt.e = event_init(type, window->parent);
-
-  if (type == EVT_WINDOW_OPEN) {
-    window_manager_dispatch_top_window_changed(window->parent);
-  }
-
-  return widget_dispatch(window->parent, (event_t*)&(evt));
-}
-
 static widget_t* window_manager_find_prev_window(widget_t* widget) {
   int32_t i = 0;
   int32_t nr = 0;
