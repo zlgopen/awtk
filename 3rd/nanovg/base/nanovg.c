@@ -1010,7 +1010,12 @@ void nvgScissor(NVGcontext* ctx, float x, float y, float w, float h)
 
 	w = nvg__maxf(0.0f, w);
 	h = nvg__maxf(0.0f, h);
-
+	/* 消除着色器精度不够引起的漏出颜色的问题 */
+	if (w == 0.0f || h == 0.0f) {
+		w = 0.0f;
+		h = 0.0f;
+	}
+	
 	nvgTransformIdentity(state->scissor.xform);
 	state->scissor.xform[4] = x+w*0.5f;
 	state->scissor.xform[5] = y+h*0.5f;
