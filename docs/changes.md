@@ -4,6 +4,7 @@
   * 增加STYLE\_ID\_HIGHLIGHT相关定义。
   * 增加widget\_dispatch\_recursive函数。
   * 完善窗口管理器事件分发，窗口相关事件同时分发到控件。
+  * 完善SVG （感谢钟伟提供补丁）。
 
 * 2020/03/02
   * 完善 README 中 Ubuntu 依赖软件包（感谢陈谭提供补丁）。

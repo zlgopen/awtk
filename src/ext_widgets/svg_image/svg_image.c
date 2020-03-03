@@ -32,7 +32,8 @@ static ret_t svg_image_load_bsvg(widget_t* widget) {
   return_value_if_fail(svg_image != NULL && image_base != NULL, RET_BAD_PARAMS);
 
   if (svg_image->bsvg_asset != NULL) {
-    return RET_OK;
+    widget_unload_asset(widget, svg_image->bsvg_asset);
+    svg_image->bsvg_asset = NULL;
   }
 
   svg_image->bsvg_asset = widget_load_asset(widget, ASSET_TYPE_IMAGE, image_base->image);
