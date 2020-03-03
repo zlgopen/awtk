@@ -1353,6 +1353,16 @@ ret_t widget_paint(widget_t* widget, canvas_t* c);
 ret_t widget_dispatch(widget_t* widget, event_t* e);
 
 /**
+ * @method widget_dispatch_recursive
+ * 分发一个事件控件本身及所有子控件。
+ * @param {widget_t*} widget 控件对象。
+ * @param {event_t*} e 事件。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_dispatch_recursive(widget_t* widget, event_t* e);
+
+/**
  * @method widget_get_prop
  * 获取控件指定属性的值。
  * @param {widget_t*} widget 控件对象。
