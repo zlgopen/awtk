@@ -107,11 +107,20 @@ static ret_t image_value_get_prop(widget_t* widget, const char* name, value_t* v
   if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     value_set_float(v, image_value->value);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_MIN)) {
+    value_set_float(v, image_value->min);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_MAX)) {
+    value_set_float(v, image_value->max);
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_IMAGE)) {
     value_set_str(v, image_value->image);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_FORMAT)) {
     value_set_str(v, image_value->format);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_CLICK_ADD_DELTA)) {
+    value_set_float(v, image_value->click_add_delta);
     return RET_OK;
   }
 
@@ -123,10 +132,16 @@ static ret_t image_value_set_prop(widget_t* widget, const char* name, const valu
 
   if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     return image_value_set_value(widget, value_float(v));
+  } else if (tk_str_eq(name, WIDGET_PROP_MIN)) {
+    return image_value_set_min(widget, value_float(v));
+  } else if (tk_str_eq(name, WIDGET_PROP_MAX)) {
+    return image_value_set_max(widget, value_float(v));
   } else if (tk_str_eq(name, WIDGET_PROP_IMAGE)) {
     return image_value_set_image(widget, value_str(v));
   } else if (tk_str_eq(name, WIDGET_PROP_FORMAT)) {
     return image_value_set_format(widget, value_str(v));
+  } else if (tk_str_eq(name, WIDGET_PROP_CLICK_ADD_DELTA)) {
+    return image_value_set_click_add_delta(widget, value_float(v));
   }
 
   return RET_NOT_FOUND;
@@ -142,11 +157,79 @@ static ret_t image_value_on_destroy(widget_t* widget) {
   return RET_OK;
 }
 
+ret_t image_value_add_delta(widget_t* widget) {
+  image_value_t* image_value = IMAGE_VALUE(widget);
+  return_value_if_fail(image_value != NULL, RET_BAD_PARAMS);
+
+  if (image_value->click_add_delta) {
+    float_t min = tk_min(image_value->min, image_value->max);
+    float_t max = tk_max(image_value->min, image_value->max);
+    return_value_if_fail(min < max, RET_BAD_PARAMS);
+
+    widget_dispatch_simple_event(widget, EVT_VALUE_WILL_CHANGE);
+    image_value->value += image_value->click_add_delta;
+
+    if (image_value->value > max) {
+      image_value->value = min;
+    } else if (image_value->value < min) {
+      image_value->value = max;
+    }
+
+    widget_dispatch_simple_event(widget, EVT_VALUE_CHANGED);
+    widget_invalidate(widget, NULL);
+  }
+
+  return RET_OK;
+}
+
+static ret_t image_value_on_event(widget_t* widget, event_t* e) {
+  uint16_t type = e->type;
+  image_value_t* image_value = IMAGE_VALUE(widget);
+  return_value_if_fail(image_value != NULL && widget != NULL, RET_BAD_PARAMS);
+
+  switch (type) {
+    case EVT_POINTER_DOWN: {
+      image_value->pressed = TRUE;
+      widget_grab(widget->parent, widget);
+      break;
+    }
+    case EVT_POINTER_DOWN_ABORT: {
+      image_value->pressed = FALSE;
+      widget_ungrab(widget->parent, widget);
+      break;
+    }
+    case EVT_POINTER_UP: {
+      if (image_value->pressed) {
+        image_value_add_delta(widget);
+      }
+      image_value->pressed = FALSE;
+      widget_ungrab(widget->parent, widget);
+      break;
+    }
+    default:
+      break;
+  }
+
+  return RET_OK;
+}
+
+static const char* s_image_value_properties[] = {WIDGET_PROP_VALUE,
+                                                 WIDGET_PROP_MIN,
+                                                 WIDGET_PROP_MAX,
+                                                 WIDGET_PROP_FORMAT,
+                                                 WIDGET_PROP_IMAGE,
+                                                 WIDGET_PROP_CLICK_ADD_DELTA,
+                                                 NULL};
+
 TK_DECL_VTABLE(image_value) = {.size = sizeof(image_value_t),
                                .type = WIDGET_TYPE_IMAGE_VALUE,
                                .parent = TK_PARENT_VTABLE(widget),
+                               .inputable = TRUE,
+                               .clone_properties = s_image_value_properties,
+                               .persistent_properties = s_image_value_properties,
                                .create = image_value_create,
                                .on_destroy = image_value_on_destroy,
+                               .on_event = image_value_on_event,
                                .get_prop = image_value_get_prop,
                                .set_prop = image_value_set_prop,
                                .on_paint_self = image_value_on_paint_self};
@@ -190,6 +273,33 @@ ret_t image_value_set_value(widget_t* widget, float_t value) {
     widget_dispatch(widget, &e);
     widget_invalidate(widget, NULL);
   }
+
+  return RET_OK;
+}
+
+ret_t image_value_set_click_add_delta(widget_t* widget, float_t click_add_delta) {
+  image_value_t* image_value = IMAGE_VALUE(widget);
+  return_value_if_fail(image_value != NULL, RET_BAD_PARAMS);
+
+  image_value->click_add_delta = click_add_delta;
+
+  return RET_OK;
+}
+
+ret_t image_value_set_min(widget_t* widget, float_t min) {
+  image_value_t* image_value = IMAGE_VALUE(widget);
+  return_value_if_fail(image_value != NULL, RET_BAD_PARAMS);
+
+  image_value->min = min;
+
+  return RET_OK;
+}
+
+ret_t image_value_set_max(widget_t* widget, float_t max) {
+  image_value_t* image_value = IMAGE_VALUE(widget);
+  return_value_if_fail(image_value != NULL, RET_BAD_PARAMS);
+
+  image_value->max = max;
 
   return RET_OK;
 }

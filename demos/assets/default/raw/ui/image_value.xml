@@ -1,7 +1,6 @@
 <window anim_hint="htranslate">
   <view x="0" y="0" w="100%" h="100%" children_layout="default(c=2,r=3)">
-    <image_value  value="0" image="battery_"
-      animation="value(from=0, to=5, duration=10000)"/>
+    <image_value  value="0" image="battery_" click_add_delta="1" min="0" max="5"/>
     
     <image_value  value="0" image="battery_"
       animation="value(from=0, to=5, duration=10000)"/>

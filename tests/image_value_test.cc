@@ -35,3 +35,72 @@ TEST(ImageValue, cast) {
 
   widget_destroy(w);
 }
+
+TEST(ImageValue, min_max) {
+  widget_t* w = image_value_create(NULL, 10, 20, 30, 40);
+
+  ASSERT_EQ(widget_set_prop_int(w, WIDGET_PROP_MIN, 1), RET_OK);
+  ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_MIN, 0), 1);
+
+  ASSERT_EQ(widget_set_prop_int(w, WIDGET_PROP_MAX, 5), RET_OK);
+  ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_MAX, 0), 5);
+
+  ASSERT_EQ(widget_set_prop_int(w, WIDGET_PROP_VALUE, 3), RET_OK);
+  ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_VALUE, 0), 3);
+
+  widget_destroy(w);
+}
+
+TEST(ImageValue, add_delta_p) {
+  widget_t* w = image_value_create(NULL, 10, 20, 30, 40);
+
+  ASSERT_EQ(widget_set_prop_int(w, WIDGET_PROP_MIN, 1), RET_OK);
+  ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_MIN, 0), 1);
+
+  ASSERT_EQ(widget_set_prop_int(w, WIDGET_PROP_MAX, 5), RET_OK);
+  ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_MAX, 0), 5);
+
+  ASSERT_EQ(widget_set_prop_int(w, WIDGET_PROP_VALUE, 3), RET_OK);
+  ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_VALUE, 0), 3);
+
+  ASSERT_EQ(widget_set_prop_int(w, WIDGET_PROP_CLICK_ADD_DELTA, 1), RET_OK);
+  ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_CLICK_ADD_DELTA, 0), 1);
+
+  ASSERT_EQ(image_value_add_delta(w), RET_OK);
+  ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_VALUE, 0), 4);
+
+  ASSERT_EQ(image_value_add_delta(w), RET_OK);
+  ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_VALUE, 0), 5);
+
+  ASSERT_EQ(image_value_add_delta(w), RET_OK);
+  ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_VALUE, 0), 1);
+
+  widget_destroy(w);
+}
+
+TEST(ImageValue, add_delta_n) {
+  widget_t* w = image_value_create(NULL, 10, 20, 30, 40);
+
+  ASSERT_EQ(widget_set_prop_int(w, WIDGET_PROP_MIN, 1), RET_OK);
+  ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_MIN, 0), 1);
+
+  ASSERT_EQ(widget_set_prop_int(w, WIDGET_PROP_MAX, 5), RET_OK);
+  ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_MAX, 0), 5);
+
+  ASSERT_EQ(widget_set_prop_int(w, WIDGET_PROP_VALUE, 3), RET_OK);
+  ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_VALUE, 0), 3);
+
+  ASSERT_EQ(widget_set_prop_int(w, WIDGET_PROP_CLICK_ADD_DELTA, -1), RET_OK);
+  ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_CLICK_ADD_DELTA, 0), -1);
+
+  ASSERT_EQ(image_value_add_delta(w), RET_OK);
+  ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_VALUE, 0), 2);
+
+  ASSERT_EQ(image_value_add_delta(w), RET_OK);
+  ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_VALUE, 0), 1);
+
+  ASSERT_EQ(image_value_add_delta(w), RET_OK);
+  ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_VALUE, 0), 5);
+
+  widget_destroy(w);
+}

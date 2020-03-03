@@ -40,6 +40,9 @@ BEGIN_C_DECLS
  *  * 2.把每个字符与image(图片文件名前缀)映射成一个图片名。
  *  * 3.最后把这些图片显示出来。
  *
+ * 如果设置click\_add\_delta为非0，那么点击时自动增加指定的增量，值超过最大值时回到最小值, 
+ * 或者值超过最小值时回到最大值。
+ *
  *image\_value\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用于image\_value\_t控件。
  *
  *在xml中使用"image\_value"标签创建图片值控件。如：
@@ -83,12 +86,46 @@ typedef struct _image_value_t {
   char* format;
 
   /**
+   * @property {float_t} click_add_delta
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 点击时加上一个增量。
+   */
+  float_t click_add_delta;
+
+  /**
    * @property {float_t} value
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 值。
    */
   float_t value;
+
+  /**
+   * @property {float_t} min
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 最小值(如果设置了click\_add\_delta，到达最小值后回到最大值)。
+   */
+  float_t min;
+
+  /**
+   * @property {float_t} max
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 最大值(如果设置了click\_add\_delta，到达最大值后回到最小值)。
+   */
+  float_t max;
+
+  /*private*/
+  bool_t pressed;
 } image_value_t;
+
+/**
+ * @event {event_t} EVT_VALUE_WILL_CHANGE
+ * 值即将改变事件(click_add_delta为非0时，点击触发)。
+ */
+
+/**
+ * @event {event_t} EVT_VALUE_CHANGED
+ * 值改变事件(click_add_delta为非0时，点击触发)。
+ */
 
 /**
  * @method image_value_create
@@ -127,6 +164,17 @@ ret_t image_value_set_image(widget_t* widget, const char* image);
 ret_t image_value_set_format(widget_t* widget, const char* format);
 
 /**
+ * @method image_value_set_click_add_delta
+ * 设置点击时加上的增量。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget image_value对象。
+ * @param {float_t} delta 增量。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t image_value_set_click_add_delta(widget_t* widget, float_t click_add_delta);
+
+/**
  * @method image_value_set_value
  * 设置值。
  * @annotation ["scriptable"]
@@ -136,6 +184,28 @@ ret_t image_value_set_format(widget_t* widget, const char* format);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t image_value_set_value(widget_t* widget, float_t value);
+
+/**
+ * @method image_value_set_min
+ * 设置最小值。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget image_min对象。
+ * @param {float_t} min 最小值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t image_value_set_min(widget_t* widget, float_t min);
+
+/**
+ * @method image_value_set_max
+ * 设置最大值。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget image_max对象。
+ * @param {float_t} max 最大值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t image_value_set_max(widget_t* widget, float_t max);
 
 /**
  * @method image_value_cast
@@ -154,6 +224,8 @@ widget_t* image_value_cast(widget_t* widget);
 /* "/"不是有效的文件名，所以把字符"/"映射成"slash" */
 #define IMAGE_VALUE_MAP_SLASH "slash"
 
+#define WIDGET_PROP_CLICK_ADD_DELTA "click_add_delta"
+
 #ifndef IMAGE_VALUE_MAX_CHAR_NR
 #define IMAGE_VALUE_MAX_CHAR_NR 8
 #endif /*IMAGE_VALUE_MAX_CHAR_NR*/
@@ -162,6 +234,9 @@ widget_t* image_value_cast(widget_t* widget);
 
 /*public for subclass and runtime type check*/
 TK_EXTERN_VTABLE(image_value);
+
+/*public for test*/
+ret_t image_value_add_delta(widget_t* widget);
 
 END_C_DECLS
 
