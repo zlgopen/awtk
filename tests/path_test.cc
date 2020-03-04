@@ -114,3 +114,17 @@ TEST(Path, approot) {
   ASSERT_EQ(path_build(result, sizeof(result), app_root, "bin", NULL), RET_OK);
   ASSERT_EQ(path_exist(result), TRUE);
 }
+
+TEST(Path, replace_basename) {
+  const char* filename = "a/b/test.txt";
+  char result[MAX_PATH + 1];
+  ASSERT_EQ(path_replace_basename(result, sizeof(result), filename, "abc.txt"), RET_OK);
+  ASSERT_STREQ(result, "a/b/abc.txt");
+}
+
+TEST(Path, replace_extname) {
+  const char* filename = "a/b/test.txt";
+  char result[MAX_PATH + 1];
+  ASSERT_EQ(path_replace_extname(result, sizeof(result), filename, "abc"), RET_OK);
+  ASSERT_STREQ(result, "a/b/test.abc");
+}
