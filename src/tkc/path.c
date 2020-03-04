@@ -209,7 +209,9 @@ ret_t path_build(char* result, int32_t size, ...) {
       return_value_if_fail(((new_size + 1) < avail_size), RET_FAIL);
 
       if (d != result) {
-        *d++ = TK_PATH_SEP;
+        if (d[-1] != TK_PATH_SEP) {
+          *d++ = TK_PATH_SEP;
+        }
       }
 
       memcpy(d, p, new_size);
@@ -235,4 +237,22 @@ ret_t path_replace_basename(char* result, int32_t size, const char* filename,
 
   dirname[MAX_PATH] = '\0';
   return path_build(result, size, dirname, basename, NULL);
+}
+
+ret_t path_replace_extname(char* result, int32_t size, const char* filename, const char* extname) {
+  char* p = NULL;
+  return_value_if_fail(result != NULL && filename != NULL && extname != NULL, RET_BAD_PARAMS);
+
+  memset(result, 0x00, size);
+  path_normalize(filename, result, size);
+  p = strrchr(result, '.');
+  if (p != NULL) {
+    uint32_t n = 0;
+    p++;
+    *p = '\0';
+    n = size - strlen(result) - 1;
+    strncpy(p, extname, n);
+  }
+
+  return RET_OK;
 }

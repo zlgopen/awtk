@@ -1,5 +1,10 @@
 # 最新动态
 
+* 2020/03/05
+  * 增加path\_replace\_extname函数。
+  * 完善path\_replace\_basename函数。
+  * 完善path\_build函数。
+
 * 2020/03/04
   * slider 拖动时不允许调用 set value。
 

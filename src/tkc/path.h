@@ -137,6 +137,20 @@ ret_t path_build(char* result, int32_t size, ...);
 ret_t path_replace_basename(char* result, int32_t size, const char* filename, const char* basename);
 
 /**
+ * @method path_replace_extname
+ *
+ * 替换文件扩展名。
+ *
+ * @param {char*} result 用于返回结果。
+ * @param {uint32_t} size 缓冲区大小。
+ * @param {char*} filename 原始文件路径。
+ * @param {char*} extname 替换后的文件扩展名。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t path_replace_extname(char* result, int32_t size, const char* filename, const char* extname);
+
+/**
  * @method path_cwd
  *
  * 获取当前所在目录。
