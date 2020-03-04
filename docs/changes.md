@@ -1,5 +1,8 @@
 # 最新动态
 
+* 2020/03/04
+  * slider 拖动时不允许调用 set value。
+
 * 2020/03/03
   * 增加STYLE\_ID\_HIGHLIGHT相关定义。
   * 增加widget\_dispatch\_recursive函数。

@@ -394,6 +394,10 @@ ret_t slider_set_value(widget_t* widget, double value) {
   slider_t* slider = SLIDER(widget);
   return_value_if_fail(slider != NULL, RET_BAD_PARAMS);
 
+  if (slider->dragging) {
+    return RET_BUSY;
+  }
+
   if (slider->value != value) {
     event_t e = event_init(EVT_VALUE_WILL_CHANGE, widget);
     widget_dispatch(widget, &e);
