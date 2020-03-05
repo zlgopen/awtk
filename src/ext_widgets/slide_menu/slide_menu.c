@@ -178,6 +178,7 @@ static ret_t slide_menu_on_paint_children(widget_t* widget, canvas_t* c) {
     rect_t r;
     rect_t save_r;
     rect_t clip_r = slide_menu_get_clip_r(widget);
+    vgcanvas_t* vg = canvas_get_vgcanvas(c);
 
     clip_r.x += c->ox;
     clip_r.y += c->oy;
@@ -185,9 +186,20 @@ static ret_t slide_menu_on_paint_children(widget_t* widget, canvas_t* c) {
     r = rect_intersect(&save_r, &clip_r);
 
     canvas_save(c);
+    if (vg != NULL) {
+      vgcanvas_save(vg);
+      vgcanvas_clip_rect(vg, (float_t)r.x, (float_t)r.y, (float_t)r.w, (float_t)r.h);
+    }
+
     canvas_set_clip_rect(c, &r);
     slide_menu_paint_children(widget, c);
     canvas_set_clip_rect(c, &save_r);
+
+    if (vg != NULL) {
+      vgcanvas_clip_rect(vg, (float_t)save_r.x, (float_t)save_r.y, (float_t)save_r.w,
+                         (float_t)save_r.h);
+      vgcanvas_restore(vg);
+    }
     canvas_restore(c);
 
     slide_menu_paint_mask(widget, c, &clip_r);

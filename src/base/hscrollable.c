@@ -207,6 +207,7 @@ ret_t hscrollable_on_event(hscrollable_t* hscrollable, event_t* e) {
 ret_t hscrollable_on_paint_children(hscrollable_t* hscrollable, canvas_t* c) {
   rect_t r_save;
   widget_t* widget = hscrollable_get_widget(hscrollable);
+  vgcanvas_t* vg = canvas_get_vgcanvas(c);
   return_value_if_fail(hscrollable != NULL && c != NULL && widget != NULL, RET_BAD_PARAMS);
 
   rect_t r = rect_init(c->ox, c->oy, widget->w, widget->h);
@@ -217,11 +218,22 @@ ret_t hscrollable_on_paint_children(hscrollable_t* hscrollable, canvas_t* c) {
   canvas_get_clip_rect(c, &r_save);
 
   r = rect_intersect(&r, &r_save);
+
+  if (vg != NULL) {
+    vgcanvas_save(vg);
+    vgcanvas_clip_rect(vg, (float_t)r.x, (float_t)r.y, (float_t)r.w, (float_t)r.h);
+  }
+
   canvas_set_clip_rect(c, &r);
   widget_on_paint_children_default(widget, c);
   canvas_set_clip_rect(c, &r_save);
   canvas_untranslate(c, xoffset, 0);
 
+  if (vg != NULL) {
+    vgcanvas_clip_rect(vg, (float_t)r_save.x, (float_t)r_save.y, (float_t)r_save.w,
+                       (float_t)r_save.h);
+    vgcanvas_restore(vg);
+  }
   return RET_OK;
 }
 

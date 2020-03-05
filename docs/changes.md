@@ -5,6 +5,7 @@
   * 完善path\_replace\_basename函数。
   * 完善path\_build函数。
   * 增加data\_reader\_read\_all函数。
+  * 完善hscrollable、scroll\_view和slide\_menu（感谢智明提供补丁）。
 
 * 2020/03/04
   * slider 拖动时不允许调用 set value。
