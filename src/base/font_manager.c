@@ -78,9 +78,25 @@ ret_t font_manager_add_font(font_manager_t* fm, font_t* font) {
 }
 
 font_t* font_manager_lookup(font_manager_t* fm, const char* name, font_size_t size) {
+#if WITH_BITMAP_FONT
+  font_t* font = NULL;
+  char font_name[MAX_PATH];
+  font_cmp_info_t info_bitmap;
+ #endif 
+ 
   font_cmp_info_t info = {name, size};
   return_value_if_fail(fm != NULL, NULL);
 
+#if WITH_BITMAP_FONT
+  memset(font_name, 0, MAX_PATH);
+  sprintf(font_name, "%s_%d", name, size);
+  info_bitmap.name = font_name;
+  info_bitmap.size = size;
+  font = darray_find(&(fm->fonts), &info_bitmap);
+  if(font != NULL) {
+    return font;
+  }
+ #endif 
   return darray_find(&(fm->fonts), &info);
 }
 
