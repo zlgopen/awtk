@@ -31,8 +31,13 @@ static ret_t clip_view_on_paint_children(widget_t* widget, canvas_t* c) {
   vgcanvas_t* vg = canvas_get_vgcanvas(c);
   return_value_if_fail(clip_view != NULL, RET_BAD_PARAMS);
 
+  /* 裁剪子控件的话，需要注意保存和还原 canvas 和 vg 这两个画布，*/
+  /* 因为子控件可能会修改任意一个画布的裁剪区或者其他的配置，有概率会导致其他的控件的绘图不正常 */
+  /* 如果创建新的裁剪区的话，需要和之前的裁剪区做交集，让新的裁剪区必须在旧的裁剪区中 */
+  canvas_save(c);
   canvas_get_clip_rect(c, &r_save);
   if (vg != NULL) {
+    vgcanvas_save(vg);
     r_vg_save = rect_init(vg->clip_rect.x, vg->clip_rect.y, vg->clip_rect.w, vg->clip_rect.h);
   }
 
@@ -46,8 +51,10 @@ static ret_t clip_view_on_paint_children(widget_t* widget, canvas_t* c) {
   widget_on_paint_children_default(widget, c);
   if (vg != NULL) {
     vgcanvas_clip_rect(vg, r_vg_save.x, r_vg_save.y, r_vg_save.w, r_vg_save.h);
+    vgcanvas_restore(vg);
   }
   canvas_set_clip_rect(c, &r_save);
+  canvas_restore(c);
 
   return RET_OK;
 }
