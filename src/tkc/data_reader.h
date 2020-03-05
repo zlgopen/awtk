@@ -83,6 +83,16 @@ uint64_t data_reader_get_size(data_reader_t* reader);
  */
 ret_t data_reader_destroy(data_reader_t* reader);
 
+/**
+ * @method data_reader_read_all
+ * 从指定的URL读取全部数据。
+ * @param {const char*} url URL。
+ * @param {uint32_t*} size 返回数据长度。
+ *
+ * @return {void*} 返回全部数据，调用者需要调用TKMEM_FREE释放返回值。
+ */
+void* data_reader_read_all(const char* url, uint32_t* size);
+
 #define DATA_READER(reader) ((data_reader_t*)(reader))
 
 END_C_DECLS
