@@ -82,8 +82,8 @@ font_t* font_manager_lookup(font_manager_t* fm, const char* name, font_size_t si
   font_t* font = NULL;
   char font_name[MAX_PATH];
   font_cmp_info_t info_bitmap;
- #endif 
- 
+#endif
+
   font_cmp_info_t info = {name, size};
   return_value_if_fail(fm != NULL, NULL);
 
@@ -93,10 +93,10 @@ font_t* font_manager_lookup(font_manager_t* fm, const char* name, font_size_t si
   info_bitmap.name = font_name;
   info_bitmap.size = size;
   font = darray_find(&(fm->fonts), &info_bitmap);
-  if(font != NULL) {
+  if (font != NULL) {
     return font;
   }
- #endif 
+#endif
   return darray_find(&(fm->fonts), &info);
 }
 
