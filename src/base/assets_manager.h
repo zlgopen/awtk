@@ -141,7 +141,7 @@ ret_t assets_manager_set_res_root(assets_manager_t* am, const char* res_root);
 /**
  * @method assets_manager_set_theme
  * 设置当前的主题。
- *
+ * @annotation ["scriptable"]
  * @param {assets_manager_t*} am asset manager对象。
  * @param {const char*} theme 主题名称。
  *
