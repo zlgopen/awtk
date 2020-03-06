@@ -2,6 +2,8 @@
 
 * 2020/03/06
   * 完善mutable image，支持自定义的图片创建函数。
+  * 完善asset manager 注释（感谢尧燊提供补丁）。
+  * 完善children layout （感谢尧燊提供补丁）。
 
 * 2020/03/05
   * 增加path\_replace\_extname函数。
