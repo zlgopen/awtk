@@ -300,18 +300,19 @@ static ret_t children_layouter_list_view_layout(children_layouter_t* layouter, w
         y = iter->y + iter->h + spacing;
       }
     } else {
-      uint32_t row = 0;
-      uint32_t col = 0;
       uint32_t item_w = (w - (cols - 1) * spacing) / cols;
 
       h = item_height;
+      y = y_margin - item_height - spacing;
       for (i = 0; i < n; i++) {
         widget_t* iter = children[i];
 
-        row = i / cols;
-        col = i % cols;
-        x = col * (item_w + spacing);
-        y = row * (item_height + spacing);
+        if (i % cols == 0) {
+          x = x_margin;
+          y += item_height + spacing;
+        } else {
+          x += item_w + spacing;
+        }
 
         widget_move_resize(iter, x, y, item_w, h);
         widget_layout(iter);
