@@ -28,6 +28,8 @@
 BEGIN_C_DECLS
 
 typedef ret_t (*mutable_image_prepare_image_t)(void* ctx, bitmap_t* image);
+typedef bitmap_t* (*mutable_image_create_image_t)(void* ctx, bitmap_format_t format,
+                                                  bitmap_t* old_image);
 
 /**
  * @class mutable_image_t
@@ -61,6 +63,7 @@ typedef ret_t (*mutable_image_prepare_image_t)(void* ctx, bitmap_t* image);
  *
  * > 创建之后:
  * >
+ * > 需要用mutable\_image\_set\_create\_image设置创建图片的回调函数。
  * > 需要用mutable\_image\_set\_prepare\_image设置准备图片的回调函数。
  *
  * > 完整示例请参考：[mutable image demo](
@@ -75,6 +78,9 @@ typedef struct _mutable_image_t {
   /*private*/
   void* prepare_image_ctx;
   mutable_image_prepare_image_t prepare_image;
+
+  void* create_image_ctx;
+  mutable_image_create_image_t create_image;
 
   bitmap_t* fb;
   bitmap_t* image;
@@ -112,6 +118,19 @@ widget_t* mutable_image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
  */
 ret_t mutable_image_set_prepare_image(widget_t* widget, mutable_image_prepare_image_t prepare_image,
                                       void* prepare_image_ctx);
+
+/**
+ * @method mutable_image_set_create_image
+ * 设置create_image回调函数。
+ * 
+ * @param {widget_t*} widget mutable_image对象。
+ * @param {mutable_image_create_image_t} create_image 创建图片的回调函数。
+ * @param {void*} create_image_ctx create_image回调函数的上下文。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t mutable_image_set_create_image(widget_t* widget, mutable_image_create_image_t create_image,
+                                     void* create_image_ctx);
 
 /**
  * @method mutable_image_set_framebuffer

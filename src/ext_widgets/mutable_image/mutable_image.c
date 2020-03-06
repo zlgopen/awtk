@@ -26,20 +26,33 @@
 #include "base/widget_vtable.h"
 #include "mutable_image/mutable_image.h"
 
+static bitmap_format_t mutable_image_get_disire_format(widget_t* widget, canvas_t* c) {
+  mutable_image_t* mutable_image = MUTABLE_IMAGE(widget);
+  bitmap_format_t format = BITMAP_FMT_NONE;
+
+  if (mutable_image->fb != NULL) {
+    format = (bitmap_format_t)(mutable_image->fb->format);
+  } else {
+    format = lcd_get_desired_bitmap_format(c->lcd);
+  }
+
+  return format;
+}
+
 static bitmap_t* mutable_image_prepare_image(widget_t* widget, canvas_t* c) {
   mutable_image_t* mutable_image = MUTABLE_IMAGE(widget);
+  bitmap_format_t format = mutable_image_get_disire_format(widget, c);
   return_value_if_fail(mutable_image != NULL && mutable_image->prepare_image != NULL, NULL);
 
+  if (mutable_image->create_image != NULL) {
+    void* ctx = mutable_image->create_image_ctx;
+    mutable_image->image = mutable_image->create_image(ctx, format, mutable_image->image);
+  } else if (mutable_image->image == NULL) {
+    mutable_image->image = bitmap_create_ex(widget->w, widget->h, 0, format);
+  }
+
   if (mutable_image->image == NULL) {
-    bitmap_format_t format = BITMAP_FMT_NONE;
-
-    if (mutable_image->fb != NULL) {
-      format = (bitmap_format_t)(mutable_image->fb->format);
-    } else {
-      format = lcd_get_desired_bitmap_format(c->lcd);
-    }
-
-    mutable_image->image = bitmap_create_ex(widget->w, widget->h, widget->w * 2, format);
+    return NULL;
   }
 
   if (mutable_image->prepare_image != NULL) {
@@ -57,7 +70,9 @@ ret_t mutable_image_on_paint_self(widget_t* widget, canvas_t* canvas) {
   mutable_image_t* mutable_image = MUTABLE_IMAGE(widget);
   bitmap_t* bitmap = mutable_image_prepare_image(widget, canvas);
 
-  return_value_if_fail(bitmap != NULL, RET_BAD_PARAMS);
+  if (bitmap == NULL) {
+    return RET_FAIL;
+  }
 
   if (mutable_image->fb != NULL) {
     rect_t r = rect_init(0, 0, bitmap->w, bitmap->h);
@@ -76,9 +91,8 @@ ret_t mutable_image_on_paint_self(widget_t* widget, canvas_t* canvas) {
     }
 
     if (bitmap->buffer != NULL) {
-      rect_t src = rect_init(0, 0, bitmap->w, bitmap->h);
       rect_t dst = rect_init(0, 0, widget->w, widget->h);
-      canvas_draw_image(canvas, bitmap, &src, &dst);
+      canvas_draw_image_center(canvas, bitmap, &dst);
     }
   }
 
@@ -148,6 +162,17 @@ ret_t mutable_image_set_prepare_image(widget_t* widget, mutable_image_prepare_im
 
   mutable_image->prepare_image = prepare_image;
   mutable_image->prepare_image_ctx = prepare_image_ctx;
+
+  return RET_OK;
+}
+
+ret_t mutable_image_set_create_image(widget_t* widget, mutable_image_create_image_t create_image,
+                                     void* create_image_ctx) {
+  mutable_image_t* mutable_image = MUTABLE_IMAGE(widget);
+  return_value_if_fail(mutable_image != NULL && create_image != NULL, RET_BAD_PARAMS);
+
+  mutable_image->create_image = create_image;
+  mutable_image->create_image_ctx = create_image_ctx;
 
   return RET_OK;
 }
