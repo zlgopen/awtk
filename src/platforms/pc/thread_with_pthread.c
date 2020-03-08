@@ -210,8 +210,13 @@ tk_semaphore_t* tk_semaphore_create(uint32_t value, const char* name) {
     tk_strncpy(semaphore->name, name, TK_NAME_LEN);
   }
 
+#ifdef HAS_SEM_OPEN
   sem_unlink(semaphore->name);
   semaphore->sem = sem_open(semaphore->name, O_CREAT, S_IRUSR | S_IWUSR, value);
+#else
+  semaphore->sem = TKMEM_ZALLOC(sem_t);
+  sem_init(semaphore->sem, 0, value);
+#endif
   if (semaphore->sem == NULL) {
     TKMEM_FREE(semaphore);
   }
@@ -249,9 +254,13 @@ ret_t tk_semaphore_post(tk_semaphore_t* semaphore) {
 ret_t tk_semaphore_destroy(tk_semaphore_t* semaphore) {
   return_value_if_fail(semaphore != NULL, RET_BAD_PARAMS);
 
+#ifdef HAS_SEM_OPEN
   sem_close(semaphore->sem);
   sem_unlink(semaphore->name);
-
+#else
+  sem_destroy(semaphore->sem);
+  TKMEM_FREE(semaphore->sem);
+#endif/*HAS_SEM_OPEN*/
   memset(semaphore, 0x00, sizeof(tk_semaphore_t));
   TKMEM_FREE(semaphore);
 
