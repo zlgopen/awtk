@@ -140,7 +140,7 @@ if OS_NAME == 'Darwin':
   OS_FLAGS='-g -Wall -fPIC '
   OS_LIBS = ['stdc++', 'pthread', 'm', 'dl']
   OS_LINKFLAGS='-framework IOKit -framework Cocoa -framework QuartzCore -framework OpenGL -weak_framework Metal -weak_framework MetalKit'
-  COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_WIDGET_POOL=1000 '
+  COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DHAS_SEM_OPEN '
   COMMON_CCFLAGS = COMMON_CCFLAGS + ' -D__APPLE__ -DHAS_PTHREAD -DMACOS -DENABLE_MEM_LEAK_CHECK1 '
   COMMON_CCFLAGS = COMMON_CCFLAGS + ' -D__STDC_LIMIT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_CONSTANT_MACROS  -DBGFX_CONFIG_RENDERER_METAL=1 '
 
