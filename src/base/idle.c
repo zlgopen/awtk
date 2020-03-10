@@ -50,12 +50,18 @@ uint32_t idle_count(void) {
 #include "base/main_loop.h"
 
 ret_t idle_queue(idle_func_t on_idle, void* ctx) {
+#ifdef AWTK_WEB
+  idle_add(on_idle, ctx);
+
+  return RET_OK;
+#else
   event_queue_req_t r;
   r.add_idle.func = on_idle;
   r.add_idle.e.target = ctx;
   r.add_idle.e.type = REQ_ADD_IDLE;
 
   return main_loop_queue_event(main_loop(), &r);
+#endif /*AWTK_WEB*/
 }
 
 ret_t idle_set_on_destroy(uint32_t idle_id, tk_destroy_t on_destroy, void* on_destroy_ctx) {

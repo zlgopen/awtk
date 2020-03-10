@@ -1,5 +1,8 @@
 # 最新动态
 
+* 2020/03/10
+  *  完善 idle\_queue/timer\_queue 支持 web
+
 * 2020/03/09
   * 增加 async.c/.h
 

@@ -260,7 +260,7 @@ ret_t tk_semaphore_destroy(tk_semaphore_t* semaphore) {
 #else
   sem_destroy(semaphore->sem);
   TKMEM_FREE(semaphore->sem);
-#endif/*HAS_SEM_OPEN*/
+#endif /*HAS_SEM_OPEN*/
   memset(semaphore, 0x00, sizeof(tk_semaphore_t));
   TKMEM_FREE(semaphore);
 

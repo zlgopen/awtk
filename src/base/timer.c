@@ -70,6 +70,11 @@ uint32_t timer_next_time(void) {
 #include "base/main_loop.h"
 
 ret_t timer_queue(timer_func_t on_timer, void* ctx, uint32_t duration) {
+#ifdef AWTK_WEB
+  timer_add(on_timer, ctx, duration);
+
+  return RET_OK;
+#else
   event_queue_req_t r;
   r.add_timer.func = on_timer;
   r.add_timer.duration = duration;
@@ -77,6 +82,7 @@ ret_t timer_queue(timer_func_t on_timer, void* ctx, uint32_t duration) {
   r.add_timer.e.type = REQ_ADD_TIMER;
 
   return main_loop_queue_event(main_loop(), &r);
+#endif /*AWTK_WEB*/
 }
 
 ret_t timer_set_on_destroy(uint32_t timer_id, tk_destroy_t on_destroy, void* on_destroy_ctx) {
