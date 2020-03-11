@@ -2,6 +2,7 @@
 
 * 2020/03/11
   * 修改 font manager 中的警告 （感谢智明提供补丁）。
+  * 修复 ring buffer peek 中的问题 （感谢[abelbilbil](https://github.com/abelbilbil)提供补丁）。
 
 * 2020/03/10
   *  完善 idle\_queue/timer\_queue 支持 web

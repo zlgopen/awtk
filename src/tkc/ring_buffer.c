@@ -167,11 +167,14 @@ uint32_t ring_buffer_read(ring_buffer_t* ring_buffer, void* buff, uint32_t size)
 uint32_t ring_buffer_peek(ring_buffer_t* ring_buffer, void* buff, uint32_t size) {
   uint32_t r = 0;
   uint32_t ret = 0;
+  bool_t full = FALSE;
   return_value_if_fail(ring_buffer != NULL && buff != NULL, 0);
 
   r = ring_buffer->r;
+  full = ring_buffer->full;
   ret = ring_buffer_read(ring_buffer, buff, size);
   ring_buffer->r = r;
+  ring_buffer->full = full;
 
   return ret;
 }
