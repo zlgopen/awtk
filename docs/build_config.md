@@ -1,6 +1,6 @@
 # 特殊平台编译配置
 
-有些平台编译比较特殊，不能使用 scons 编译，也不能使用 keil 编译。我们用一个配置文件描述项目，然后用脚本来编译或生成项目模板。目前有 web 版本和 android 版本使用这种方式。
+有些平台编译比较特殊，不能使用 scons 编译，也不能使用 keil 编译。我们用一个配置文件描述项目，然后用脚本来编译或生成项目模板。目前有 web、ios 和 android 版本使用这种方式。
 
 配置文件采用 JSON 格式。
 
@@ -70,8 +70,8 @@ android 平台选项放在 android 子键下面，目前支持以下选项：
 ```
   "android" : { 
     "app_name":"org.zlgopen.demoui",
-    "sources":["assets.c",  "assets.h", "demo_main.c", "demo_ui_app.c", "vg_common.inc"]
-  }
+    "sources":["assets.c",  "assets.h", "demo_ui_app.c",  "vg_common.inc"]
+  }, 
 ```
 
 ## 四、完整示例
@@ -83,6 +83,8 @@ android 平台选项放在 android 子键下面，目前支持以下选项：
   "name":"demoui",
   "version":"1.0",
   "assets" : "assets",
+  "author" : "xianjimli@hotmail",
+  "copyright" : "Guangzhou ZHIYUAN Electronics Co.,Ltd.",
   "web": {
     "app_type":"c",
     "sources":["demo_ui_app.c"],
@@ -93,7 +95,14 @@ android 平台选项放在 android 子键下面，目前支持以下选项：
   },  
   "android" : { 
     "app_name":"org.zlgopen.demoui",
-    "sources":["assets.c",  "assets.h", "demo_main.c", "demo_ui_app.c", "vg_common.inc"]
+    "sources":["assets.c",  "assets.h", "demo_ui_app.c",  "vg_common.inc"]
+  },  
+  "ios" : { 
+    "app_name":"org.zlgopen.demoui",
+    "sources":["assets.c",  "assets.h", "demo_ui_app.c",  "vg_common.inc"]
   }
 }
+
 ```
+
+使用第三方库请参考[awtk-hello的配置文件](https://github.com/zlgopen/awtk-hello/blob/master/awtk_hello_build.json)
