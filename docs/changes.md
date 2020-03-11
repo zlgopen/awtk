@@ -1,5 +1,8 @@
 # 最新动态
 
+* 2020/03/11
+  * 修改 font manager 中的警告 （感谢智明提供补丁）。
+
 * 2020/03/10
   *  完善 idle\_queue/timer\_queue 支持 web
 

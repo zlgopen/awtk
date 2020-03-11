@@ -20,6 +20,7 @@
  */
 
 #include "tkc/mem.h"
+#include "tkc/utils.h"
 #include "base/system_info.h"
 #include "base/font_manager.h"
 
@@ -89,7 +90,7 @@ font_t* font_manager_lookup(font_manager_t* fm, const char* name, font_size_t si
 
 #if WITH_BITMAP_FONT
   memset(font_name, 0, MAX_PATH);
-  sprintf(font_name, "%s_%d", name, size);
+  tk_snprintf(font_name, sizeof(font_name), "%s_%d", name, size);
   info_bitmap.name = font_name;
   info_bitmap.size = size;
   font = darray_find(&(fm->fonts), &info_bitmap);
@@ -97,6 +98,7 @@ font_t* font_manager_lookup(font_manager_t* fm, const char* name, font_size_t si
     return font;
   }
 #endif
+
   return darray_find(&(fm->fonts), &info);
 }
 
