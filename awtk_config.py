@@ -238,3 +238,5 @@ os.environ['NATIVE_WINDOW'] = NATIVE_WINDOW;
 os.environ['GRAPHIC_BUFFER'] = GRAPHIC_BUFFER;
 os.environ['FRAME_BUFFER_FORMAT'] = FRAME_BUFFER_FORMAT;
 
+def has_custom_cc():
+    return False
