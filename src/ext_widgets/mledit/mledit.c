@@ -632,6 +632,7 @@ widget_t* mledit_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   wstr_init(&(mledit->temp), 0);
   widget_set_text(widget, L"");
 
+  mledit_update_status(widget);
   widget_add_idle(widget, mledit_init_idle_func);
 
   return widget;

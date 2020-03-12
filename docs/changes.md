@@ -1,14 +1,16 @@
 # 最新动态
+* 2020/03/13
+  * 修改 mledit tips 颜色不正确的问题。 
 
 * 2020/03/12
   * 完善 《 特殊平台编译配置》文档
   * 修改 android resume 后界面黑屏的问题。
-  * 修复widget坐标为负数的时候导致脏矩形变大的问题（感谢智明提供补丁）。
-   * 完善函数str\_from_wstr\_with\_len。
+  * 修复 widget 坐标为负数的时候导致脏矩形变大的问题（感谢智明提供补丁）。
+   * 完善函数 str\_from_wstr\_with\_len。
   
 * 2020/03/11
   * 修改 font manager 中的警告 （感谢智明提供补丁）。
-  * 修复 ring buffer peek 中的问题 （感谢[abelbilbil](https://github.com/abelbilbil)提供补丁）。
+  * 修复 ring buffer peek 中的问题 （感谢 [abelbilbil](https://github.com/abelbilbil) 提供补丁）。
 
 * 2020/03/10
   *  完善 idle\_queue/timer\_queue 支持 web
@@ -17,78 +19,78 @@
   * 增加 async.c/.h
 
 * 2020/03/06
-  * 完善mutable image，支持自定义的图片创建函数。
-  * 完善asset manager 注释（感谢尧燊提供补丁）。
-  * 完善children layout （感谢尧燊提供补丁）。
+  * 完善 mutable image，支持自定义的图片创建函数。
+  * 完善 asset manager 注释（感谢尧燊提供补丁）。
+  * 完善 children layout （感谢尧燊提供补丁）。
 
 * 2020/03/05
-  * 增加path\_replace\_extname函数。
-  * 完善path\_replace\_basename函数。
-  * 完善path\_build函数。
-  * 增加data\_reader\_read\_all函数。
-  * 完善clip\_view（感谢智明提供补丁）。
-  * 完善hscrollable、scroll\_view和slide\_menu（感谢智明提供补丁）。
-  * 完善font manager关于bitmap font查找算法（感谢智明提供补丁）。
+  * 增加 path\_replace\_extname 函数。
+  * 完善 path\_replace\_basename 函数。
+  * 完善 path\_build 函数。
+  * 增加 data\_reader\_read\_all 函数。
+  * 完善 clip\_view（感谢智明提供补丁）。
+  * 完善 hscrollable、scroll\_view 和 slide\_menu（感谢智明提供补丁）。
+  * 完善 font manager 关于 bitmap font 查找算法（感谢智明提供补丁）。
 
 * 2020/03/04
   * slider 拖动时不允许调用 set value。
 
 * 2020/03/03
-  * 增加STYLE\_ID\_HIGHLIGHT相关定义。
-  * 增加widget\_dispatch\_recursive函数。
+  * 增加 STYLE\_ID\_HIGHLIGHT 相关定义。
+  * 增加 widget\_dispatch\_recursive 函数。
   * 完善窗口管理器事件分发，窗口相关事件同时分发到控件。
-  * 完善SVG （感谢钟伟提供补丁）。
-  * 完善OpenGL shader（感谢智明提供补丁）。
-  * 完善image value，支持点击时加上一个增量，增加到最大值后回到最小值。
+  * 完善 SVG （感谢钟伟提供补丁）。
+  * 完善 OpenGL shader（感谢智明提供补丁）。
+  * 完善 image value，支持点击时加上一个增量，增加到最大值后回到最小值。
 
 * 2020/03/02
   * 完善 README 中 Ubuntu 依赖软件包（感谢陈谭提供补丁）。
   * 优化内存使用（感谢智明提供补丁）。
 
 * 2020/03/01
-  * 增加data writer file 
-  * 增加data reader factory
-  * 增加data writer factory
-  * 完善awtk\_main.inc（感谢陈谭提供补丁）。
-  * 完善demos（感谢陈谭提供补丁）。
+  * 增加 data writer file 
+  * 增加 data reader factory
+  * 增加 data writer factory
+  * 完善 awtk\_main.inc（感谢陈谭提供补丁）。
+  * 完善 demos（感谢陈谭提供补丁）。
 
 * 2020/02/29
-  * 完善 dialog 的layout 处理（感谢朝泽提供补丁）。
+  * 完善 dialog 的 layout 处理（感谢朝泽提供补丁）。
   * 完善 fs stat 处理（感谢陈谭提供补丁）。
   * 修复 Linux SDL Audio 的问题（感谢智明提供补丁）。
 
 * 2020/02/28
-  * 完善dialog set prop对layout参数的处理（感谢朝泽提供补丁）。
+  * 完善 dialog set prop 对 layout 参数的处理（感谢朝泽提供补丁）。
 
 * 2020/02/27
-  * 完善style const和ui loader（感谢尧燊提供补丁）
+  * 完善 style const 和 ui loader（感谢尧燊提供补丁）
   * 增加文档 《AWTK 应用程序的入口》
   * 增加文档 《AWTK 资源打包》
   * 增加脚本 scripts/create\_assets\_zip.sh
 
 * 2020/02/26
-  * 增加data reader接口和data writer，用于抽象外部flash等设备。
-  * asset\_loadder\_zip支持从reader读取数据，以便支持在没有文件系统时，从外部flash加载资源。
+  * 增加 data reader 接口和 data writer，用于抽象外部 flash 等设备。
+  * asset\_loadder\_zip 支持从 reader 读取数据，以便支持在没有文件系统时，从外部 flash 加载资源。
 
 * 2020/02/26
   * 删除 slide\_view\_invalidate（感谢培煌提供补丁）。
   * 完善 edit 控件（感谢尧燊提供补丁）
   * 完善 guage 控件（感谢尧燊提供补丁）
-  * 增加 asset\_loader接口和缺省实现。
-  * 增加 asset\_loader\_zip 用于从zip文件加载资源。
+  * 增加 asset\_loader 接口和缺省实现。
+  * 增加 asset\_loader\_zip 用于从 zip 文件加载资源。
 
 * 2020/02/25
-  * 修复canvas裁剪区域导致测试失败的问题（感谢智明提供补丁）。
+  * 修复 canvas 裁剪区域导致测试失败的问题（感谢智明提供补丁）。
 
 * 2020/02/24
-  * 增加awtk\_main.inc，用于标准程序的主函数。
-  * 修复mledit scroll line无法通过set\_prop/get\_prop访问的问题（感谢尧燊提供补丁）
-  * 修改thread\_with\_pthread.c中的编译问题（感谢陈谭提供补丁）
-  * 修改ostream_retry中内存溢出的问题（感谢培煌提供补丁）。
+  * 增加 awtk\_main.inc，用于标准程序的主函数。
+  * 修复 mledit scroll line 无法通过 set\_prop/get\_prop 访问的问题（感谢尧燊提供补丁）
+  * 修改 thread\_with\_pthread.c 中的编译问题（感谢陈谭提供补丁）
+  * 修改 ostream_retry 中内存溢出的问题（感谢培煌提供补丁）。
 
 * 2020/02/23
-  * 用SDL重新实现PC版本的线程和同步相关函数。
-  * 完善canvas裁剪区域（感谢智明提供补丁）。
+  * 用 SDL 重新实现 PC 版本的线程和同步相关函数。
+  * 完善 canvas 裁剪区域（感谢智明提供补丁）。
 
 * 2020/02/21
   * 处理 jpeg 文件扩展名（感谢朝泽提供补丁）。
