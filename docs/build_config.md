@@ -64,6 +64,8 @@ http://192.168.1.117:8080/demoui/index.html?width=480&height=800&fontScale=0.8&d
 android 平台选项放在 android 子键下面，目前支持以下选项：
 
 * app_name 应用程序的完整名称。如：org.zlgopen.demoui
+* cflags C代码额外的编译参数。
+* cppflags C++代码额外的编译参数。
 
 示例：
 
@@ -74,7 +76,15 @@ android 平台选项放在 android 子键下面，目前支持以下选项：
   }, 
 ```
 
-## 四、完整示例
+## 三、 ios 平台选项
+
+* app_name 应用程序的完整名称。如：org.zlgopen.demoui
+* defines 宏定义。ios 和 android 定义方式有些不同，宏定义要放到 defines中，而不能放到cflags和cppflags。格式也有些不同，如：
+
+```
+"defines":" HAVE_CONFIG_H=1 BUILDING_LIBCURL=1 WITH_CURL=1 ",
+```
+## 五、完整示例
 
 下面是 demoui 的完整示例
 
@@ -105,4 +115,4 @@ android 平台选项放在 android 子键下面，目前支持以下选项：
 
 ```
 
-使用第三方库请参考[awtk-hello的配置文件](https://github.com/zlgopen/awtk-hello/blob/master/awtk_hello_build.json)
+使用第三方库请参考[awtk-http-client的配置文件](https://github.com/zlgopen/awtk-http-client/blob/master/build.json)
