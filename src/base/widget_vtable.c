@@ -58,6 +58,18 @@ ret_t widget_invalidate_default(widget_t* widget, rect_t* r) {
     }
   }
 
+  if (r->x < 0) {
+    r->w = r->w + r->x;
+  }
+  if (r->y < 0) {
+    r->h = r->h + r->y;
+  }
+
+  r->x = tk_max(0, r->x);
+  r->y = tk_max(0, r->y);
+  r->w = tk_max(0, r->w);
+  r->h = tk_max(0, r->h);
+
   if (widget->parent) {
     widget_t* parent = widget->parent;
     if (parent->vt && parent->vt->invalidate) {
