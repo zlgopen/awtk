@@ -176,7 +176,11 @@ int main(int argc, char* argv[]) {
   tk_ext_widgets_init();
 #endif /*WITHOUT_EXT_WIDGETS*/
 
+#ifdef NDEBUG
   log_set_log_level(LOG_LEVEL_INFO);
+#else
+  log_set_log_level(LOG_LEVEL_DEBUG);
+#endif/*NDEBUG*/
   log_info("Build at: %s %s\n", __DATE__, __TIME__);
 
 #ifdef ENABLE_CURSOR
