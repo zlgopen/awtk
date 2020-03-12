@@ -270,7 +270,7 @@ ret_t str_from_wstr_with_len(str_t* str, const wchar_t* wstr, uint32_t len) {
     str->str[0] = '\0';
   }
 
-  if (wstr != NULL && len > 0) {
+  if (wstr != NULL) {
     uint32_t size = len * 4 + 1;
     return_value_if_fail(str_extend(str, size + 1) == RET_OK, RET_OOM);
 
