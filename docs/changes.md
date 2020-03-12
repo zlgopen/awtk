@@ -1,5 +1,8 @@
 # 最新动态
 
+* 2020/03/12
+  * 修改 android resume 后界面黑屏的问题。
+  
 * 2020/03/11
   * 修改 font manager 中的警告 （感谢智明提供补丁）。
   * 修复 ring buffer peek 中的问题 （感谢[abelbilbil](https://github.com/abelbilbil)提供补丁）。
