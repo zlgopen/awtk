@@ -25,6 +25,14 @@ BEGIN_C_DECLS
 extern ret_t assets_init();
 END_C_DECLS
 
+#ifndef APP_DEFAULT_FONT
+#ifdef WITH_FS_RES
+#define APP_DEFAULT_FONT "default_full"
+#else
+#define APP_DEFAULT_FONT "default"
+#endif /*WITH_FS_RES*/
+#endif/*APP_DEFAULT_FONT*/
+
 #ifndef LCD_WIDTH
 #define LCD_WIDTH 320
 #endif /*LCD_WIDTH*/
@@ -66,7 +74,6 @@ int SDL_main(int argc, char* argv[]) {
   int32_t lcd_h = 0;
 
   tk_init(lcd_w, lcd_h, APP_MOBILE, APP_NAME, APP_RES_ROOT);
-  system_info_set_default_font(system_info(), "default_full");
 
 #elif defined(WIN32)
 #include <windows.h>
@@ -166,10 +173,7 @@ int main(int argc, char* argv[]) {
   }
 #endif /*WITH_LCD_PORTRAIT*/
 
-#ifdef WITH_FS_RES
-  system_info_set_default_font(system_info(), "default_full");
-#endif /*WITH_FS_RES*/
-
+  system_info_set_default_font(system_info(), APP_DEFAULT_FONT);
   assets_init();
 
 #ifndef WITHOUT_EXT_WIDGETS

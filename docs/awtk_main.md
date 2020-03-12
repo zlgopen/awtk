@@ -77,4 +77,13 @@ static ret_t on_cmd_line(int argc, char* argv[]) {
 #include "awtk_main.inc"
 ```
 
+* 指定缺省字体
+
+```c
+
+#define APP_DEFAULT_FONT "default_full"
+
+#include "awtk_main.inc"
+```
+
 > 请参考[完整的例子](https://github.com/zlgopen/awtk-jerryscript/blob/master/src/c/main.c)
