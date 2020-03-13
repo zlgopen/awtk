@@ -4,7 +4,8 @@
   * 完善 awtk_main.inc
   * 增加动态链接库的接口 dl.h
   * 完善 demo_desktop
-  
+  * 完善 system_info（感谢朝泽提供补丁）。 
+
 * 2020/03/12
   * 完善 《 特殊平台编译配置》文档
   * 修改 android resume 后界面黑屏的问题。
