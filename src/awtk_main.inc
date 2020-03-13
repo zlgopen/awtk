@@ -31,7 +31,7 @@ END_C_DECLS
 #else
 #define APP_DEFAULT_FONT "default"
 #endif /*WITH_FS_RES*/
-#endif/*APP_DEFAULT_FONT*/
+#endif /*APP_DEFAULT_FONT*/
 
 #ifndef LCD_WIDTH
 #define LCD_WIDTH 320
@@ -184,7 +184,7 @@ int main(int argc, char* argv[]) {
   log_set_log_level(LOG_LEVEL_INFO);
 #else
   log_set_log_level(LOG_LEVEL_DEBUG);
-#endif/*NDEBUG*/
+#endif /*NDEBUG*/
   log_info("Build at: %s %s\n", __DATE__, __TIME__);
 
 #ifdef ENABLE_CURSOR
