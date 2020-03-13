@@ -22,8 +22,15 @@
 #include "awtk.h"
 #include "assets.h"
 
+static ret_t on_click_close(void* ctx, event_t* e) {
+  tk_quit();
+
+  return RET_OK;
+}
+
 ret_t application_init(void) {
-  window_open("edit");
+  widget_t* win = window_open("edit");
+  widget_child_on(win, "close", EVT_CLICK, on_click_close, NULL);
 
   return RET_OK;
 }
@@ -35,6 +42,6 @@ ret_t application_exit() {
 
 #define LCD_WIDTH 800
 #define LCD_HEGHT 600
-#define AWTK_APP_TYPE APP_DESKTOP
+#define APP_TYPE APP_DESKTOP
 
 #include "awtk_main.inc"
