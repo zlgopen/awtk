@@ -8,7 +8,7 @@
 #include "streams/inet/iostream_tcp.h"
 #include "streams/noisy/iostream_noisy.h"
 #include "streams/shdlc/iostream_shdlc.h"
-#include "streams/inet/socket_helper.h"
+#include "tkc/socket_helper.h"
 
 void do_send(tk_iostream_t* tcp, const char* msg, uint32_t times) {
   uint32_t i = 0;

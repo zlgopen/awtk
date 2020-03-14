@@ -24,7 +24,7 @@
 #endif /*WIN32_LEAN_AND_MEAN*/
 
 #include "tkc/mem.h"
-#include "streams/inet/socket_helper.h"
+#include "tkc/socket_helper.h"
 #include "streams/inet/istream_tcp.h"
 #include "streams/inet/ostream_tcp.h"
 #include "streams/inet/iostream_tcp.h"

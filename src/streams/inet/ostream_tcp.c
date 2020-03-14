@@ -24,7 +24,7 @@
 #endif /*WIN32_LEAN_AND_MEAN*/
 
 #include "tkc/mem.h"
-#include "streams/inet/socket_helper.h"
+#include "tkc/socket_helper.h"
 #include "streams/inet/ostream_tcp.h"
 
 static int32_t tk_ostream_tcp_write(tk_ostream_t* stream, const uint8_t* buff, uint32_t max_size) {

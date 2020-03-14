@@ -5,7 +5,7 @@
 #include "tkc/utils.h"
 #include "tkc/platform.h"
 #include "streams/inet/iostream_udp.h"
-#include "streams/inet/socket_helper.h"
+#include "tkc/socket_helper.h"
 
 void do_send(tk_iostream_t* iostream, const char* msg) {
   char buff[1024];

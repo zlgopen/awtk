@@ -24,40 +24,48 @@
 #endif /*WIN32_LEAN_AND_MEAN*/
 
 #include "tkc/mem.h"
-#include "streams/inet/socket_helper.h"
+#include "tkc/socket_helper.h"
+
+#ifdef WITH_SOCKET
 
 #ifdef WIN32
 #pragma comment(lib, "ws2_32")
-void socket_init() {
+ret_t socket_init() {
   int iResult;
   WSADATA wsaData;
   iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
   if (iResult != 0) {
     log_debug("WSAStartup failed: %d\n", iResult);
+    return RET_FAIL;
   }
+
+  return RET_OK;
 }
 
-void socket_deinit() {
+ret_t socket_deinit() {
   WSACleanup();
+  return RET_OK;
 }
 
-void msleep(int ms) {
-  Sleep(ms);
-}
-
-void socket_close(int sock) {
+ret_t socket_close(int sock) {
   closesocket(sock);
+
+  return RET_OK;
 }
 #else
 
-void socket_init() {
+ret_t socket_init() {
+  return RET_OK;
 }
-void socket_deinit() {
+ret_t socket_deinit() {
+  return RET_OK;
 }
-void socket_close(int sock) {
+
+ret_t socket_close(int sock) {
   close(sock);
+  return RET_OK;
 }
-#endif /**/
+#endif /*WIN32*/
 
 ret_t socket_bind(int sock, int port) {
   struct sockaddr_in s;
@@ -200,18 +208,17 @@ int tcp_accept(int sock) {
   return so;
 }
 
-/** Returns TRUE on success, or FALSE if there was an error */
-bool_t socket_set_blocking(int sock, bool_t blocking) {
-  if (sock < 0) return FALSE;
+ret_t socket_set_blocking(int sock, bool_t blocking) {
+  return_value_if_fail(sock >= 0, RET_BAD_PRARAMS);
 
 #ifdef _WIN32
   unsigned long mode = blocking ? 0 : 1;
-  return (ioctlsocket(sock, FIONBIO, &mode) == 0) ? TRUE : FALSE;
+  return (ioctlsocket(sock, FIONBIO, &mode) == 0) ? RET_OK : RET_FAIL;
 #else
   int flags = fcntl(sock, F_GETFL, 0);
-  if (flags == -1) return FALSE;
+  if (flags == -1) return RET_FAIL;
   flags = blocking ? (flags & ~O_NONBLOCK) : (flags | O_NONBLOCK);
-  return (fcntl(sock, F_SETFL, flags) == 0) ? TRUE : FALSE;
+  return (fcntl(sock, F_SETFL, flags) == 0) ? RET_OK : RET_FAIL;
 #endif
 }
 
@@ -231,3 +238,5 @@ ret_t socket_wait_for_data(int sock, uint32_t timeout_ms) {
 
   return ret > 0 ? RET_OK : RET_TIMEOUT;
 }
+
+#endif /*WITH_SOCKET*/

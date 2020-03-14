@@ -6,7 +6,7 @@
 #include "tkc/platform.h"
 #include "file_transfer/file_receiver.h"
 #include "streams/inet/iostream_tcp.h"
-#include "streams/inet/socket_helper.h"
+#include "tkc/socket_helper.h"
 #include "streams/file/ostream_file.h"
 
 #include "receiver.inc"

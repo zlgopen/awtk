@@ -35,7 +35,7 @@
 #include "tkc/wstr.h"
 #include "tkc/thread.h"
 #include "tkc/socket_pair.h"
-#include "streams/inet/socket_helper.h"
+#include "tkc/socket_helper.h"
 #include "streams/serial/serial_helper.h"
 
 #ifdef WIN32

@@ -79,6 +79,7 @@
 #include "tkc/semaphore.h"
 #include "tkc/slist.h"
 #include "tkc/socket_pair.h"
+#include "tkc/socket_helper.h"
 #include "tkc/str.h"
 #include "tkc/str_str.h"
 #include "tkc/stream_const.h"

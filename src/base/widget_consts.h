@@ -66,6 +66,18 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_H "h"
 
 /**
+ * @const WIDGET_PROP_CARET_X
+ * caret x。
+ */
+#define WIDGET_PROP_CARET_X "caret_x"
+
+/**
+ * @const WIDGET_PROP_CARET_Y
+ * caret y。
+ */
+#define WIDGET_PROP_CARET_Y "caret_y"
+
+/**
  * @const WIDGET_PROP_DIRTY_RECT_TOLERANCE
  * 脏矩形超出控件本身大小的最大范围。
  */

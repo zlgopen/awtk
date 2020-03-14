@@ -811,6 +811,16 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     value_set_wstr(v, widget->text.str);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_CARET_X)) {
+    text_edit_state_t state;
+    text_edit_get_state(edit->model, &state);
+    value_set_int(v, state.caret.x);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_CARET_Y)) {
+    text_edit_state_t state;
+    text_edit_get_state(edit->model, &state);
+    value_set_int(v, state.caret.y);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;

@@ -203,7 +203,6 @@ static ret_t native_window_sdl_swap_buffer(native_window_t* win) {
   return RET_OK;
 }
 
-
 extern ret_t tk_quit();
 
 static ret_t native_window_sdl_preprocess_event(native_window_t* win, event_t* e) {
@@ -217,7 +216,7 @@ static ret_t native_window_sdl_preprocess_event(native_window_t* win, event_t* e
     key_event_t* evt = key_event_cast(e);
     if (evt->key == TK_KEY_AC_BACK) {
       window_manager_back(window_manager());
-      if(widget_count_children(window_manager()) == 0) {
+      if (widget_count_children(window_manager()) == 0) {
         tk_quit();
       }
     }

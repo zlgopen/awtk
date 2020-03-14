@@ -6,7 +6,7 @@
 #include "tkc/platform.h"
 #include "streams/inet/iostream_tcp.h"
 #include "streams/shdlc/iostream_shdlc.h"
-#include "streams/inet/socket_helper.h"
+#include "tkc/socket_helper.h"
 
 void do_recv(int port) {
   uint8_t buff[1024];
