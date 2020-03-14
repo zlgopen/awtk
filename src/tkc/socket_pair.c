@@ -23,7 +23,7 @@
  *   add argument make_overlapped
  */
 
-#include <string.h>
+#include "tkc/types_def.h"
 
 #ifdef WITH_SOCKET
 #ifdef _WIN32
