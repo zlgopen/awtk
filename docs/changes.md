@@ -1,5 +1,9 @@
 # 最新动态
 * 2020/03/13
+  * 完善文档。
+  * 把socket_helper放到tkc目录。
+  
+* 2020/03/13
   * 修改 mledit tips 颜色不正确的问题。 
   * 完善 awtk_main.inc
   * 增加动态链接库的接口 dl.h
