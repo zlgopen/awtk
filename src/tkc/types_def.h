@@ -36,9 +36,10 @@
 
 #if defined(WIN32) || defined(LINUX) || defined(MACOS) || defined(ANDROID) || defined(IOS)
 
+#define WITH_SOCKET 1
+
 #ifdef WIN32
 #define  WIN32_LEAN_AND_MEAN 1
-#define WITH_SOCKET 1
 #include <windows.h>
 #include <winsock2.h>
 typedef int socklen_t;
