@@ -209,7 +209,7 @@ int tcp_accept(int sock) {
 }
 
 ret_t socket_set_blocking(int sock, bool_t blocking) {
-  return_value_if_fail(sock >= 0, RET_BAD_PRARAMS);
+  return_value_if_fail(sock >= 0, RET_BAD_PARAMS);
 
 #ifdef _WIN32
   unsigned long mode = blocking ? 0 : 1;
