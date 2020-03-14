@@ -748,7 +748,7 @@ ret_t widget_set_text(widget_t* widget, const wchar_t* text);
  * 启用指定的主题。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {char*}  style style的名称。
+ * @param {const char*}  style style的名称。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -772,7 +772,7 @@ ret_t widget_set_text_utf8(widget_t* widget, const char* text);
  * 获取翻译之后的文本，然后调用widget_set_text。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {char*}  text 文本。
+ * @param {const char*}  text 文本。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -834,7 +834,7 @@ ret_t widget_to_screen(widget_t* widget, point_t* p);
  * 设置控件的名称。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {char*} name 名称。
+ * @param {const char*} name 名称。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -848,7 +848,7 @@ ret_t widget_set_name(widget_t* widget, const char* name);
  *
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {char*} name 主题的名称。
+ * @param {const char*} name 主题的名称。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -859,7 +859,7 @@ ret_t widget_set_theme(widget_t* widget, const char* name);
  * 设置鼠标指针的图片名。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {char*} cursor 图片名称(无扩展名)。
+ * @param {const char*} cursor 图片名称(无扩展名)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -941,7 +941,7 @@ ret_t widget_set_animator_time_scale(widget_t* widget, const char* name, float_t
  *
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {char*} name 动画名称。
+ * @param {const char*} name 动画名称。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -952,7 +952,7 @@ ret_t widget_pause_animator(widget_t* widget, const char* name);
  * 查找指定名称的动画。
  *
  * @param {widget_t*} widget 控件对象。
- * @param {char*} name 动画名称。
+ * @param {const char*} name 动画名称。
  *
  * @return {widget_animator_t*} 成功返回动画对象，失败返回NULL。
  */
@@ -969,7 +969,7 @@ widget_animator_t* widget_find_animator(widget_t* widget, const char* name);
  *
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {char*} name 动画名称。
+ * @param {const char*} name 动画名称。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -986,7 +986,7 @@ ret_t widget_stop_animator(widget_t* widget, const char* name);
  *
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {char*} name 动画名称。
+ * @param {const char*} name 动画名称。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -1151,7 +1151,7 @@ ret_t widget_restack(widget_t* widget, uint32_t index);
  * 查找指定名称的子控件(同widget_lookup(widget, name, FALSE))。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {char*} name 子控件的名称。
+ * @param {const char*} name 子控件的名称。
  *
  * @return {widget_t*} 子控件或NULL。
  */
@@ -1162,7 +1162,7 @@ widget_t* widget_child(widget_t* widget, const char* name);
  * 查找指定名称的子控件(返回第一个)。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {char*} name 子控件的名称。
+ * @param {const char*} name 子控件的名称。
  * @param {bool_t} recursive 是否递归查找全部子控件。
  *
  * @return {widget_t*} 子控件或NULL。
@@ -1174,7 +1174,7 @@ widget_t* widget_lookup(widget_t* widget, const char* name, bool_t recursive);
  * 查找指定类型的子控件(返回第一个)。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {char*} type 子控件的名称。
+ * @param {const char*} type 子控件的名称。
  * @param {bool_t} recursive 是否递归查找全部子控件。
  *
  * @return {widget_t*} 子控件或NULL。
@@ -1268,7 +1268,7 @@ ret_t widget_off(widget_t* widget, int32_t id);
  * 为指定名称的子控件注册指定事件的处理函数。
  * 递归查找指定名称的子控件，然后为其注册指定事件的处理函数。
  * @param {widget_t*} widget 控件对象。
- * @param {char*} name 子控件的名称。
+ * @param {const char*} name 子控件的名称。
  * @param {event_type_t} type 事件类型。
  * @param {event_func_t} on_event 事件处理函数。
  * @param {void*} ctx 事件处理函数上下文。
@@ -1823,7 +1823,7 @@ bool_t widget_is_keyboard(widget_t* widget);
  * @annotation ["private"]
  * @param {widget_t*} widget 控件对象。
  * @param {canvas_t*} c 画布对象。
- * @param {char*} icon 图标的名称。
+ * @param {const char*} icon 图标的名称。
  * @param {wstr_t*} text 文字。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

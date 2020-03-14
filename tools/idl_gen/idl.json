@@ -3390,6 +3390,53 @@
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
         }
+      },
+      {
+        "params": [],
+        "annotation": {},
+        "desc": "创建缺省的资源加载器。",
+        "name": "asset_loader_default_create",
+        "return": {
+          "type": "asset_loader_t*",
+          "desc": "返回loader对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "zipfile",
+            "desc": "zip文件名。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建zip资源加载器。",
+        "name": "asset_loader_zip_create",
+        "return": {
+          "type": "asset_loader_t*",
+          "desc": "返回loader对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "data_reader_t*",
+            "name": "reader",
+            "desc": "reader对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "own_the_reader",
+            "desc": "如果希望销毁loader时销毁reader，请设置为TRUE。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建zip资源加载器。",
+        "name": "asset_loader_zip_create_with_reader",
+        "return": {
+          "type": "asset_loader_t*",
+          "desc": "返回loader对象。"
+        }
       }
     ],
     "events": [],
@@ -3400,6 +3447,175 @@
     "annotation": {
       "scriptable": true,
       "fake": true
+    },
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "获取缺省的剪切板对象。",
+        "name": "clip_board",
+        "alias": "clip_board_instance",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回缺省剪切板对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "clip_board_t*",
+            "name": "cl",
+            "desc": "剪切板对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置缺省的剪切板对象。",
+        "name": "clip_board_set",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "clip_board_t*",
+            "name": "cl",
+            "desc": "剪切板对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "清空剪切板中的数据。",
+        "name": "clip_board_clear",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "clip_board_t*",
+            "name": "cl",
+            "desc": "剪切板对象。"
+          },
+          {
+            "type": "clip_board_data_type_t",
+            "name": "type",
+            "desc": "数据类型。"
+          },
+          {
+            "type": "const void* data",
+            "name": "data",
+            "desc": "数据。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "数据长度"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置数据到剪切板中。",
+        "name": "clip_board_set_data",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "clip_board_t*",
+            "name": "cl",
+            "desc": "剪切板对象。"
+          },
+          {
+            "type": "clip_board_data_type_t*",
+            "name": "type",
+            "desc": "返回数据类型(可为NULL)。"
+          },
+          {
+            "type": "void** data",
+            "name": "data",
+            "desc": "返回数据(可为NULL)。"
+          },
+          {
+            "type": "uint32_t*",
+            "name": "size",
+            "desc": "返回数据长度(可为NULL)。"
+          }
+        ],
+        "annotation": {},
+        "desc": "从剪切板中获取数据。",
+        "name": "clip_board_get_data",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "clip_board_t*",
+            "name": "cl",
+            "desc": "剪切板对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁剪切板对象。",
+        "name": "clip_board_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "text",
+            "desc": "文本。"
+          }
+        ],
+        "annotation": {
+          "static": true,
+          "scriptable": true
+        },
+        "desc": "设置文本(UTF8)数据到剪切板。",
+        "name": "clip_board_set_text",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {
+          "static": true,
+          "scriptable": true
+        },
+        "desc": "从剪切板中获取文本(UTF8)数据。",
+        "name": "clip_board_get_text",
+        "return": {
+          "type": "const char*",
+          "desc": "返回文本数据。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "base/clip_board.h",
+    "desc": "剪切板接口。",
+    "name": "clip_board_t",
+    "annotation": {
+      "scriptable": true
     },
     "level": 1
   },
@@ -6589,125 +6805,503 @@
     "methods": [
       {
         "params": [],
-        "annotation": {},
-        "desc": "创建解析器。",
-        "name": "xml_parser_create",
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "获取缺省资源管理器。",
+        "name": "assets_manager",
+        "alias": "assets_manager_instance",
         "return": {
-          "type": "XmlParser*",
-          "desc": "返回parser对象。"
+          "type": "assets_manager_t*",
+          "desc": "返回asset manager对象。"
         }
       },
       {
         "params": [
           {
-            "type": "XmlParser*",
-            "name": "thiz",
-            "desc": "parser对象。"
-          },
-          {
-            "type": "XmlBuilder*",
-            "name": "builder",
-            "desc": "builder对象。"
+            "type": "assets_manager_t*",
+            "name": "am",
+            "desc": "asset manager对象。"
           }
         ],
         "annotation": {},
-        "desc": "设置builder。",
-        "name": "xml_parser_set_builder",
+        "desc": "设置缺省资源管理器。",
+        "name": "assets_manager_set",
         "return": {
-          "type": "void",
-          "desc": "返回无。"
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       },
       {
         "params": [
           {
-            "type": "XmlParser*",
-            "name": "thiz",
-            "desc": "parser对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "trim_text",
-            "desc": "是否去掉文本两端的空白字符。"
+            "type": "uint32_t",
+            "name": "init_nr",
+            "desc": "预先分配资源的个数。"
           }
         ],
-        "annotation": {},
-        "desc": "设置是否去掉文本两端的空白字符。\n\n> 默认值为去掉文本两端的空白字符，如果不x希望去掉，调用本函数设置为FALSE。",
-        "name": "xml_parser_set_trim_text",
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建资源管理器。",
+        "name": "assets_manager_create",
         "return": {
-          "type": "void",
-          "desc": "返回无。"
+          "type": "assets_manager_t*",
+          "desc": "返回asset manager对象。"
         }
       },
       {
         "params": [
           {
-            "type": "XmlParser*",
-            "name": "thiz",
-            "desc": "parser对象。"
+            "type": "assets_manager_t*",
+            "name": "am",
+            "desc": "asset manager对象。"
           },
           {
-            "type": "const char*",
-            "name": "xml",
-            "desc": "数据。"
-          },
-          {
-            "type": "int",
-            "name": "length",
-            "desc": "数据长度。"
+            "type": "uint32_t",
+            "name": "init_nr",
+            "desc": "预先分配资源的个数。"
           }
         ],
-        "annotation": {},
-        "desc": "解析数据。",
-        "name": "xml_parser_parse",
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "初始化资源管理器。",
+        "name": "assets_manager_init",
         "return": {
-          "type": "void",
-          "desc": "返回无。"
+          "type": "assets_manager_t*",
+          "desc": "返回asset manager对象。"
         }
       },
       {
         "params": [
           {
-            "type": "XmlParser*",
-            "name": "thiz",
-            "desc": "parser对象。"
+            "type": "assets_manager_t*",
+            "name": "am",
+            "desc": "asset manager对象。"
           },
           {
             "type": "const char*",
-            "name": "filename",
-            "desc": "文件名。"
+            "name": "res_root",
+            "desc": "资源所在的目录。"
           }
         ],
         "annotation": {},
-        "desc": "解析文件。",
-        "name": "xml_parser_parse_file",
+        "desc": "设置资源所在的目录(其下目录结构请参考demos)。",
+        "name": "assets_manager_set_res_root",
         "return": {
-          "type": "void",
-          "desc": "返回无。"
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       },
       {
         "params": [
           {
-            "type": "XmlParser*",
-            "name": "thiz",
-            "desc": "parser对象。"
+            "type": "assets_manager_t*",
+            "name": "am",
+            "desc": "asset manager对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "theme",
+            "desc": "主题名称。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置当前的主题。",
+        "name": "assets_manager_set_theme",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "assets_manager_t*",
+            "name": "am",
+            "desc": "asset manager对象。"
+          },
+          {
+            "type": "system_info_t*",
+            "name": "system_info",
+            "desc": "system_info对象。。"
           }
         ],
         "annotation": {},
-        "desc": "销毁parser对象。",
-        "name": "xml_parser_destroy",
+        "desc": "设置system_info对象。",
+        "name": "assets_manager_set_system_info",
         "return": {
-          "type": "void",
-          "desc": "返回无。"
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "assets_manager_t*",
+            "name": "am",
+            "desc": "asset manager对象。"
+          },
+          {
+            "type": "locale_info_t*",
+            "name": "locale_info",
+            "desc": "locale_info对象。。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置locale_info对象。",
+        "name": "assets_manager_set_locale_info",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "assets_manager_t*",
+            "name": "am",
+            "desc": "asset manager对象。"
+          },
+          {
+            "type": "asset_info_t",
+            "name": "info",
+            "desc": "待增加的资源。"
+          }
+        ],
+        "annotation": {},
+        "desc": "向资源管理器中增加一个资源。",
+        "name": "assets_manager_add",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "assets_manager_t*",
+            "name": "am",
+            "desc": "asset manager对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "待增加的资源的名字。"
+          },
+          {
+            "type": "uint16_t",
+            "name": "type",
+            "desc": "待增加的资源的主类型枚举。"
+          },
+          {
+            "type": "uint16_t",
+            "name": "subtype",
+            "desc": "待增加的资源的子类型枚举。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "buff",
+            "desc": "待增加的资源的data数据。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "待增加的资源的data数据长度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "向资源管理器中增加一个资源data。",
+        "name": "assets_manager_add",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "assets_manager_t*",
+            "name": "am",
+            "desc": "asset manager对象。"
+          },
+          {
+            "type": "asset_type_t",
+            "name": "type",
+            "desc": "资源的类型。"
+          },
+          {
+            "type": "char*",
+            "name": "name",
+            "desc": "资源的名称。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "在资源管理器的缓存中查找指定的资源并引用它，如果缓存中不存在，尝试加载该资源。",
+        "name": "assets_manager_ref",
+        "return": {
+          "type": "asset_info_t*",
+          "desc": "返回资源。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "assets_manager_t*",
+            "name": "am",
+            "desc": "asset manager对象。"
+          },
+          {
+            "type": "asset_info_t*",
+            "name": "info",
+            "desc": "资源。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "释放指定的资源。",
+        "name": "assets_manager_unref",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "assets_manager_t*",
+            "name": "am",
+            "desc": "asset manager对象。"
+          },
+          {
+            "type": "asset_type_t",
+            "name": "type",
+            "desc": "资源的类型。"
+          },
+          {
+            "type": "char*",
+            "name": "name",
+            "desc": "资源的名称。"
+          }
+        ],
+        "annotation": {},
+        "desc": "在资源管理器的缓存中查找指定的资源(不引用)。",
+        "name": "assets_manager_find_in_cache",
+        "return": {
+          "type": "asset_info_t*",
+          "desc": "返回资源。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "assets_manager_t*",
+            "name": "am",
+            "desc": "asset manager对象。"
+          },
+          {
+            "type": "asset_type_t",
+            "name": "type",
+            "desc": "资源的类型。"
+          },
+          {
+            "type": "char*",
+            "name": "name",
+            "desc": "资源的名称。"
+          }
+        ],
+        "annotation": {},
+        "desc": "从文件系统中加载指定的资源，并缓存到内存中。在定义了宏WITH\\_FS\\_RES时才生效。",
+        "name": "assets_manager_load",
+        "return": {
+          "type": "asset_info_t*",
+          "desc": "返回资源。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "assets_manager_t*",
+            "name": "am",
+            "desc": "asset manager对象。"
+          },
+          {
+            "type": "asset_type_t",
+            "name": "type",
+            "desc": "资源的类型。"
+          },
+          {
+            "type": "char*",
+            "name": "name",
+            "desc": "资源的名称。"
+          }
+        ],
+        "annotation": {},
+        "desc": "从文件系统中加载指定的资源，并缓存到内存中。在定义了宏WITH\\_FS\\_RES时才生效。",
+        "name": "assets_manager_preload",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "assets_manager_t*",
+            "name": "am",
+            "desc": "asset manager对象。"
+          },
+          {
+            "type": "asset_loader_t*",
+            "name": "loader",
+            "desc": "加载器(由assets manager销毁)。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置loader。",
+        "name": "assets_manager_set_loader",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "assets_manager_t*",
+            "name": "am",
+            "desc": "asset manager对象。"
+          },
+          {
+            "type": "assets_manager_build_asset_dir_t",
+            "name": "custom_build_asset_dir",
+            "desc": "回调函数。"
+          },
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "回调函数的上下文。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置一个函数，该函数用于生成资源路径。\n\n> 有时我们需要优先加载用户自定义的资源，加载失败才加载系统缺省的，可用设置一个函数去实现这类功能。",
+        "name": "assets_manager_set_custom_build_asset_dir",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "assets_manager_t*",
+            "name": "am",
+            "desc": "asset manager对象。"
+          },
+          {
+            "type": "assets_manager_load_asset_t",
+            "name": "custom_load_asset",
+            "desc": "回调函数。"
+          },
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "回调函数的上下文。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置一个函数，该函数用于实现自定义加载资源。\n\n> 如果不支持文件系统，开发者可以设置一个加载资源的回调函数，从flash或其它地方读取资源。",
+        "name": "assets_manager_set_custom_load_asset",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "assets_manager_t*",
+            "name": "am",
+            "desc": "asset manager对象。"
+          },
+          {
+            "type": "asset_type_t",
+            "name": "type",
+            "desc": "资源的类型。"
+          }
+        ],
+        "annotation": {},
+        "desc": "清除指定类型的缓存。",
+        "name": "assets_manager_clear_cache",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "assets_manager_t*",
+            "name": "am",
+            "desc": "asset manager对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "清除全部缓存的资源。",
+        "name": "assets_manager_clear_all",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "assets_manager_t*",
+            "name": "am",
+            "desc": "asset manager对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "释放全部资源。",
+        "name": "assets_manager_deinit",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "assets_manager_t*",
+            "name": "am",
+            "desc": "asset manager对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "释放全部资源并销毁asset manager对象。",
+        "name": "assets_manager_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "xml/xml_parser.h",
-    "desc": "xml解析器",
-    "name": "XmlParser",
+    "header": "base/assets_manager.h",
+    "desc": "资源管理器。\n这里的资源管理器并非Windows下的文件浏览器，而是负责对各种资源，比如字体、主题、图片、界面数据、字符串和其它数据的进行集中管理的组件。引入资源管理器的目的有以下几个：\n\n* 让上层不需要了解存储的方式。\n在没有文件系统时或者内存紧缺时，把资源转成常量数组直接编译到代码中。在有文件系统而且内存充足时，资源放在文件系统中。在有网络时，资源也可以存放在服务器上(暂未实现)。资源管理器为上层提供统一的接口，让上层而不用关心底层的存储方式。\n\n* 让上层不需要了解资源的具体格式。\n比如一个名为earth的图片，没有文件系统或内存紧缺，图片直接用位图数据格式存在ROM中，而有文件系统时，则用PNG格式存放在文件系统中。资源管理器让上层不需要关心图片的格式，访问时指定图片的名称即可(不用指定扩展名)。\n\n* 让上层不需要了解屏幕的密度。\n不同的屏幕密度下需要加载不同的图片，比如MacPro的Retina屏就需要用双倍解析度的图片，否则就出现界面模糊。AWTK以后会支持PC软件和手机软件的开发，所以资源管理器需要为此提供支持，让上层不需关心屏幕的密度。\n\n* 对资源进行内存缓存。\n不同类型的资源使用方式是不一样的，比如字体和主题加载之后会一直使用，UI文件在生成界面之后就暂时不需要了，PNG文件解码之后就只需要保留解码的位图数据即可。资源管理器配合图片管理器等其它组件实现资源的自动缓存。\n\n当从文件系统加载资源时，目录结构要求如下：\n\n```\nassets/{theme}/raw/\nfonts   字体\nimages  图片\nx1   普通密度屏幕的图片。\nx2   2倍密度屏幕的图片。\nx3   3倍密度屏幕的图片。\nxx   密度无关的图片。\nstrings 需要翻译的字符串。\nstyles  主题数据。\nui      UI描述数据。\n```",
+    "name": "assets_manager_t",
+    "annotation": {
+      "scriptable": true
+    },
     "level": 1
   },
   {
@@ -9610,7 +10204,7 @@
           {
             "type": "self_layouter_factory_t*",
             "name": "factory",
-            "desc": "highlighter工厂对象。"
+            "desc": "layouter工厂对象。"
           },
           {
             "type": "const char*",
@@ -9651,7 +10245,7 @@
         "name": "self_layouter_factory_create_layouter",
         "return": {
           "type": "self_layouter_t*",
-          "desc": "返回窗口动画对象。"
+          "desc": "返回控件自身布局算法对象。"
         }
       },
       {
@@ -10313,6 +10907,18 @@
       {
         "desc": "文本颜色。",
         "name": "STYLE_ID_TEXT_COLOR"
+      },
+      {
+        "desc": "高亮文本的字体名称。",
+        "name": "STYLE_ID_HIGHLIGHT_FONT_NAME"
+      },
+      {
+        "desc": "高亮文本的字体大小。",
+        "name": "STYLE_ID_HIGHLIGHT_FONT_SIZE"
+      },
+      {
+        "desc": "高亮文本的文本颜色。",
+        "name": "STYLE_ID_HIGHLIGHT_TEXT_COLOR"
       },
       {
         "desc": "提示文本颜色。",
@@ -16619,7 +17225,7 @@
             "desc": "控件对象。"
           },
           {
-            "type": "char*",
+            "type": "const char*",
             "name": "style",
             "desc": "style的名称。"
           }
@@ -16666,7 +17272,7 @@
             "desc": "控件对象。"
           },
           {
-            "type": "char*",
+            "type": "const char*",
             "name": "text",
             "desc": "文本。"
           }
@@ -16788,7 +17394,7 @@
             "desc": "控件对象。"
           },
           {
-            "type": "char*",
+            "type": "const char*",
             "name": "name",
             "desc": "名称。"
           }
@@ -16811,7 +17417,7 @@
             "desc": "控件对象。"
           },
           {
-            "type": "char*",
+            "type": "const char*",
             "name": "name",
             "desc": "主题的名称。"
           }
@@ -16834,7 +17440,7 @@
             "desc": "控件对象。"
           },
           {
-            "type": "char*",
+            "type": "const char*",
             "name": "cursor",
             "desc": "图片名称(无扩展名)。"
           }
@@ -16954,7 +17560,7 @@
             "desc": "控件对象。"
           },
           {
-            "type": "char*",
+            "type": "const char*",
             "name": "name",
             "desc": "动画名称。"
           }
@@ -16977,7 +17583,7 @@
             "desc": "控件对象。"
           },
           {
-            "type": "char*",
+            "type": "const char*",
             "name": "name",
             "desc": "动画名称。"
           }
@@ -16998,7 +17604,7 @@
             "desc": "控件对象。"
           },
           {
-            "type": "char*",
+            "type": "const char*",
             "name": "name",
             "desc": "动画名称。"
           }
@@ -17021,7 +17627,7 @@
             "desc": "控件对象。"
           },
           {
-            "type": "char*",
+            "type": "const char*",
             "name": "name",
             "desc": "动画名称。"
           }
@@ -17343,7 +17949,7 @@
             "desc": "控件对象。"
           },
           {
-            "type": "char*",
+            "type": "const char*",
             "name": "name",
             "desc": "子控件的名称。"
           }
@@ -17366,7 +17972,7 @@
             "desc": "控件对象。"
           },
           {
-            "type": "char*",
+            "type": "const char*",
             "name": "name",
             "desc": "子控件的名称。"
           },
@@ -17394,7 +18000,7 @@
             "desc": "控件对象。"
           },
           {
-            "type": "char*",
+            "type": "const char*",
             "name": "type",
             "desc": "子控件的名称。"
           },
@@ -17588,7 +18194,7 @@
             "desc": "控件对象。"
           },
           {
-            "type": "char*",
+            "type": "const char*",
             "name": "name",
             "desc": "子控件的名称。"
           },
@@ -17749,6 +18355,27 @@
         "annotation": {},
         "desc": "分发一个事件。",
         "name": "widget_dispatch",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "event_t*",
+            "name": "e",
+            "desc": "事件。"
+          }
+        ],
+        "annotation": {},
+        "desc": "分发一个事件控件本身及所有子控件。",
+        "name": "widget_dispatch_recursive",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -22924,6 +23551,132 @@
     "level": 1
   },
   {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {},
+        "desc": "创建解析器。",
+        "name": "xml_parser_create",
+        "return": {
+          "type": "XmlParser*",
+          "desc": "返回parser对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "XmlParser*",
+            "name": "thiz",
+            "desc": "parser对象。"
+          },
+          {
+            "type": "XmlBuilder*",
+            "name": "builder",
+            "desc": "builder对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置builder。",
+        "name": "xml_parser_set_builder",
+        "return": {
+          "type": "void",
+          "desc": "返回无。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "XmlParser*",
+            "name": "thiz",
+            "desc": "parser对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "trim_text",
+            "desc": "是否去掉文本两端的空白字符。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置是否去掉文本两端的空白字符。\n\n> 默认值为去掉文本两端的空白字符，如果不x希望去掉，调用本函数设置为FALSE。",
+        "name": "xml_parser_set_trim_text",
+        "return": {
+          "type": "void",
+          "desc": "返回无。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "XmlParser*",
+            "name": "thiz",
+            "desc": "parser对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "xml",
+            "desc": "数据。"
+          },
+          {
+            "type": "int",
+            "name": "length",
+            "desc": "数据长度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "解析数据。",
+        "name": "xml_parser_parse",
+        "return": {
+          "type": "void",
+          "desc": "返回无。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "XmlParser*",
+            "name": "thiz",
+            "desc": "parser对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "filename",
+            "desc": "文件名。"
+          }
+        ],
+        "annotation": {},
+        "desc": "解析文件。",
+        "name": "xml_parser_parse_file",
+        "return": {
+          "type": "void",
+          "desc": "返回无。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "XmlParser*",
+            "name": "thiz",
+            "desc": "parser对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁parser对象。",
+        "name": "xml_parser_destroy",
+        "return": {
+          "type": "void",
+          "desc": "返回无。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "xml/xml_parser.h",
+    "desc": "xml解析器",
+    "name": "XmlParser",
+    "level": 1
+  },
+  {
     "type": "enum",
     "desc": "图片绘制方法常量定义。",
     "consts": [
@@ -24082,122 +24835,6 @@
     "type": "class",
     "methods": [
       {
-        "params": [],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "获取缺省的子控件布局算法工厂对象。",
-        "name": "children_layouter_factory",
-        "return": {
-          "type": "children_layouter_factory_t*",
-          "desc": "返回子控件布局算法工厂对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "children_layouter_factory_t*",
-            "name": "factory",
-            "desc": "子控件布局算法工厂对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置缺省的子控件布局算法工厂对象。",
-        "name": "children_layouter_factory_set",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "创建子控件布局算法工厂对象。",
-        "name": "children_layouter_factory_create",
-        "return": {
-          "type": "children_layouter_factory_t*",
-          "desc": "返回子控件布局算法工厂对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "children_layouter_factory_t*",
-            "name": "factory",
-            "desc": "highlighter工厂对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "type",
-            "desc": "子控件布局算法类型。"
-          },
-          {
-            "type": "children_layouter_create_t",
-            "name": "create",
-            "desc": "子控件布局算法创建函数。"
-          }
-        ],
-        "annotation": {},
-        "desc": "注册子控件布局算法创建函数。",
-        "name": "children_layouter_factory_register",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "children_layouter_factory_t*",
-            "name": "factory",
-            "desc": "子控件布局算法工厂对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "type",
-            "desc": "类型。"
-          }
-        ],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "创建指定类型的子控件布局算法对象。",
-        "name": "children_layouter_factory_create_layouter",
-        "return": {
-          "type": "children_layouter_t*",
-          "desc": "返回窗口动画对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "children_layouter_factory_t*",
-            "name": "factory",
-            "desc": "子控件布局算法工厂对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "析构并释放子控件布局算法工厂对象。",
-        "name": "children_layouter_factory_destroy",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "base/children_layouter_factory.h",
-    "desc": "子控件布局算法工厂。",
-    "name": "children_layouter_factory_t",
-    "level": 1
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
         "params": [
           {
             "type": "qaction_exec_t",
@@ -24585,6 +25222,37 @@
         "params": [
           {
             "type": "char*",
+            "name": "result",
+            "desc": "用于返回结果。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "缓冲区大小。"
+          },
+          {
+            "type": "char*",
+            "name": "filename",
+            "desc": "原始文件路径。"
+          },
+          {
+            "type": "char*",
+            "name": "extname",
+            "desc": "替换后的文件扩展名。"
+          }
+        ],
+        "annotation": {},
+        "desc": "替换文件扩展名。",
+        "name": "path_replace_extname",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "char*",
             "name": "path",
             "desc": "保存当前所在目录的路径。"
           }
@@ -24660,37 +25328,66 @@
     "type": "class",
     "methods": [
       {
-        "params": [
-          {
-            "type": "children_layouter_t*",
-            "name": "layouter",
-            "desc": "layouter对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "获取全部参数。",
-        "name": "children_layouter_to_string",
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "获取缺省的子控件布局算法工厂对象。",
+        "name": "children_layouter_factory",
         "return": {
-          "type": "ret_t",
-          "desc": "返回字符串格式的参数。"
+          "type": "children_layouter_factory_t*",
+          "desc": "返回子控件布局算法工厂对象。"
         }
       },
       {
         "params": [
           {
-            "type": "children_layouter_t*",
-            "name": "layouter",
-            "desc": "layouter对象。"
-          },
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件。"
+            "type": "children_layouter_factory_t*",
+            "name": "factory",
+            "desc": "子控件布局算法工厂对象。"
           }
         ],
         "annotation": {},
-        "desc": "对控件的子控件进行布局。",
-        "name": "children_layouter_layout",
+        "desc": "设置缺省的子控件布局算法工厂对象。",
+        "name": "children_layouter_factory_set",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建子控件布局算法工厂对象。",
+        "name": "children_layouter_factory_create",
+        "return": {
+          "type": "children_layouter_factory_t*",
+          "desc": "返回子控件布局算法工厂对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "children_layouter_factory_t*",
+            "name": "factory",
+            "desc": "layouter工厂对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "type",
+            "desc": "子控件布局算法类型。"
+          },
+          {
+            "type": "children_layouter_create_t",
+            "name": "create",
+            "desc": "子控件布局算法创建函数。"
+          }
+        ],
+        "annotation": {},
+        "desc": "注册子控件布局算法创建函数。",
+        "name": "children_layouter_factory_register",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -24699,203 +25396,48 @@
       {
         "params": [
           {
-            "type": "children_layouter_t*",
-            "name": "layouter",
-            "desc": "layouter对象。"
+            "type": "children_layouter_factory_t*",
+            "name": "factory",
+            "desc": "子控件布局算法工厂对象。"
           },
           {
             "type": "const char*",
-            "name": "name",
-            "desc": "参数名。"
-          },
-          {
-            "type": "value_t*",
-            "name": "v",
-            "desc": "返回参数的值。"
+            "name": "type",
+            "desc": "类型。"
           }
         ],
-        "annotation": {},
-        "desc": "获取指定的参数。",
-        "name": "children_layouter_get_param",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "children_layouter_t*",
-            "name": "layouter",
-            "desc": "layouter对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "name",
-            "desc": "参数名。"
-          },
-          {
-            "type": "const value_t*",
-            "name": "v",
-            "desc": "参数的值。"
-          }
-        ],
-        "annotation": {},
-        "desc": "获取指定的参数。",
-        "name": "children_layouter_set_param",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "children_layouter_t*",
-            "name": "layouter",
-            "desc": "layouter对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "name",
-            "desc": "参数名。"
-          },
-          {
-            "type": "const char*",
-            "name": "value",
-            "desc": "参数值。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置字符串格式的参数。",
-        "name": "children_layouter_set_param_str",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "children_layouter_t*",
-            "name": "layouter",
-            "desc": "layouter对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "name",
-            "desc": "参数名。"
-          },
-          {
-            "type": "float_t",
-            "name": "defval",
-            "desc": "缺省值。"
-          }
-        ],
-        "annotation": {},
-        "desc": "获取指定的浮点格式的参数。",
-        "name": "children_layouter_get_param_float",
-        "return": {
-          "type": "ret_t",
-          "desc": "成功返回参数的值，失败返回缺省值。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "children_layouter_t*",
-            "name": "layouter",
-            "desc": "layouter对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "name",
-            "desc": "参数名。"
-          },
-          {
-            "type": "int32_t",
-            "name": "defval",
-            "desc": "缺省值。"
-          }
-        ],
-        "annotation": {},
-        "desc": "获取指定的整数格式的参数。",
-        "name": "children_layouter_get_param_int",
-        "return": {
-          "type": "ret_t",
-          "desc": "成功返回参数的值，失败返回缺省值。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "children_layouter_t*",
-            "name": "layouter",
-            "desc": "layouter对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "判断layouter对象是否有效。",
-        "name": "children_layouter_is_valid",
-        "return": {
-          "type": "bool_t",
-          "desc": "返回TRUE表示有效，否则表示无效。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "children_layouter_t*",
-            "name": "layouter",
-            "desc": "layouter对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "销毁layouter对象。",
-        "name": "children_layouter_destroy",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "const char*",
-            "name": "params",
-            "desc": "参数。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建layouter对象。",
-        "name": "children_layouter_create",
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建指定类型的子控件布局算法对象。",
+        "name": "children_layouter_factory_create_layouter",
         "return": {
           "type": "children_layouter_t*",
-          "desc": "返回layouter对象。"
+          "desc": "返回子控件布局算法对象。"
         }
       },
       {
         "params": [
           {
-            "type": "children_layouter_t*",
-            "name": "layouter",
-            "desc": "被克隆的对象。"
+            "type": "children_layouter_factory_t*",
+            "name": "factory",
+            "desc": "子控件布局算法工厂对象。"
           }
         ],
         "annotation": {},
-        "desc": "克隆layouter对象。",
-        "name": "children_layouter_clone",
+        "desc": "析构并释放子控件布局算法工厂对象。",
+        "name": "children_layouter_factory_destroy",
         "return": {
-          "type": "children_layouter_t*",
-          "desc": "返回layouter对象。"
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "base/children_layouter.h",
-    "desc": "子控件排版布局器的接口。\n\n按特定算法对子控件进行排版布局，子类需要实现vtable中的函数。",
-    "name": "children_layouter_t",
+    "header": "base/children_layouter_factory.h",
+    "desc": "子控件布局算法工厂。",
+    "name": "children_layouter_factory_t",
     "level": 1
   },
   {
@@ -27243,24 +27785,245 @@
     "level": 1
   },
   {
-    "type": "enum",
-    "desc": "剪切板数据类型定义。",
-    "consts": [
+    "type": "class",
+    "methods": [
       {
-        "desc": "无数据。",
-        "name": "CLIP_BOARD_DATA_TYPE_NONE"
+        "params": [
+          {
+            "type": "children_layouter_t*",
+            "name": "layouter",
+            "desc": "layouter对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取全部参数。",
+        "name": "children_layouter_to_string",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回字符串格式的参数。"
+        }
       },
       {
-        "desc": "UTF8文本。",
-        "name": "CLIP_BOARD_DATA_TYPE_TEXT"
+        "params": [
+          {
+            "type": "children_layouter_t*",
+            "name": "layouter",
+            "desc": "layouter对象。"
+          },
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件。"
+          }
+        ],
+        "annotation": {},
+        "desc": "对控件的子控件进行布局。",
+        "name": "children_layouter_layout",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "children_layouter_t*",
+            "name": "layouter",
+            "desc": "layouter对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "参数名。"
+          },
+          {
+            "type": "value_t*",
+            "name": "v",
+            "desc": "返回参数的值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取指定的参数。",
+        "name": "children_layouter_get_param",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "children_layouter_t*",
+            "name": "layouter",
+            "desc": "layouter对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "参数名。"
+          },
+          {
+            "type": "const value_t*",
+            "name": "v",
+            "desc": "参数的值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取指定的参数。",
+        "name": "children_layouter_set_param",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "children_layouter_t*",
+            "name": "layouter",
+            "desc": "layouter对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "参数名。"
+          },
+          {
+            "type": "const char*",
+            "name": "value",
+            "desc": "参数值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置字符串格式的参数。",
+        "name": "children_layouter_set_param_str",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "children_layouter_t*",
+            "name": "layouter",
+            "desc": "layouter对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "参数名。"
+          },
+          {
+            "type": "float_t",
+            "name": "defval",
+            "desc": "缺省值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取指定的浮点格式的参数。",
+        "name": "children_layouter_get_param_float",
+        "return": {
+          "type": "ret_t",
+          "desc": "成功返回参数的值，失败返回缺省值。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "children_layouter_t*",
+            "name": "layouter",
+            "desc": "layouter对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "参数名。"
+          },
+          {
+            "type": "int32_t",
+            "name": "defval",
+            "desc": "缺省值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取指定的整数格式的参数。",
+        "name": "children_layouter_get_param_int",
+        "return": {
+          "type": "ret_t",
+          "desc": "成功返回参数的值，失败返回缺省值。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "children_layouter_t*",
+            "name": "layouter",
+            "desc": "layouter对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "判断layouter对象是否有效。",
+        "name": "children_layouter_is_valid",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回TRUE表示有效，否则表示无效。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "children_layouter_t*",
+            "name": "layouter",
+            "desc": "layouter对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁layouter对象。",
+        "name": "children_layouter_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "params",
+            "desc": "参数。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建layouter对象。",
+        "name": "children_layouter_create",
+        "return": {
+          "type": "children_layouter_t*",
+          "desc": "返回layouter对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "children_layouter_t*",
+            "name": "layouter",
+            "desc": "被克隆的对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "克隆layouter对象。",
+        "name": "children_layouter_clone",
+        "return": {
+          "type": "children_layouter_t*",
+          "desc": "返回layouter对象。"
+        }
       }
     ],
-    "header": "base/clip_board.h",
-    "name": "clip_board_data_type_t",
-    "prefix": "CLIP_BOARD_DATA_TYPE_",
-    "annotation": {
-      "scriptable": true
-    },
+    "events": [],
+    "properties": [],
+    "header": "base/children_layouter.h",
+    "desc": "子控件排版布局器的接口。\n\n按特定算法对子控件进行排版布局，子类需要实现vtable中的函数。",
+    "name": "children_layouter_t",
     "level": 1
   },
   {
@@ -27418,169 +28181,21 @@
     "level": 1
   },
   {
-    "type": "class",
-    "methods": [
+    "type": "enum",
+    "desc": "剪切板数据类型定义。",
+    "consts": [
       {
-        "params": [],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "获取缺省的剪切板对象。",
-        "name": "clip_board",
-        "alias": "clip_board_instance",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回缺省剪切板对象。"
-        }
+        "desc": "无数据。",
+        "name": "CLIP_BOARD_DATA_TYPE_NONE"
       },
       {
-        "params": [
-          {
-            "type": "clip_board_t*",
-            "name": "cl",
-            "desc": "剪切板对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置缺省的剪切板对象。",
-        "name": "clip_board_set",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "clip_board_t*",
-            "name": "cl",
-            "desc": "剪切板对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "清空剪切板中的数据。",
-        "name": "clip_board_clear",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "clip_board_t*",
-            "name": "cl",
-            "desc": "剪切板对象。"
-          },
-          {
-            "type": "clip_board_data_type_t",
-            "name": "type",
-            "desc": "数据类型。"
-          },
-          {
-            "type": "const void* data",
-            "name": "data",
-            "desc": "数据。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "size",
-            "desc": "数据长度"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置数据到剪切板中。",
-        "name": "clip_board_set_data",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "clip_board_t*",
-            "name": "cl",
-            "desc": "剪切板对象。"
-          },
-          {
-            "type": "clip_board_data_type_t*",
-            "name": "type",
-            "desc": "返回数据类型(可为NULL)。"
-          },
-          {
-            "type": "void** data",
-            "name": "data",
-            "desc": "返回数据(可为NULL)。"
-          },
-          {
-            "type": "uint32_t*",
-            "name": "size",
-            "desc": "返回数据长度(可为NULL)。"
-          }
-        ],
-        "annotation": {},
-        "desc": "从剪切板中获取数据。",
-        "name": "clip_board_get_data",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "clip_board_t*",
-            "name": "cl",
-            "desc": "剪切板对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "销毁剪切板对象。",
-        "name": "clip_board_destroy",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "const char*",
-            "name": "text",
-            "desc": "文本。"
-          }
-        ],
-        "annotation": {
-          "static": true,
-          "scriptable": true
-        },
-        "desc": "设置文本(UTF8)数据到剪切板。",
-        "name": "clip_board_set_text",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [],
-        "annotation": {
-          "static": true,
-          "scriptable": true
-        },
-        "desc": "从剪切板中获取文本(UTF8)数据。",
-        "name": "clip_board_get_text",
-        "return": {
-          "type": "const char*",
-          "desc": "返回文本数据。"
-        }
+        "desc": "UTF8文本。",
+        "name": "CLIP_BOARD_DATA_TYPE_TEXT"
       }
     ],
-    "events": [],
-    "properties": [],
     "header": "base/clip_board.h",
-    "desc": "剪切板接口。",
-    "name": "clip_board_t",
+    "name": "clip_board_data_type_t",
+    "prefix": "CLIP_BOARD_DATA_TYPE_",
     "annotation": {
       "scriptable": true
     },
@@ -28045,6 +28660,70 @@
     "type": "class",
     "methods": [
       {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "filename",
+            "desc": "文件名。"
+          }
+        ],
+        "annotation": {},
+        "desc": "打开动态链接库。",
+        "name": "tk_dl_open",
+        "return": {
+          "type": "tk_dl_t*",
+          "desc": "动态链接库对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_dl_t*",
+            "name": "dl",
+            "desc": "dl对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "函数名。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取指定名称函数的地址。",
+        "name": "tk_dl_sym",
+        "return": {
+          "type": "void*",
+          "desc": "返回函数的地址。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_dl_t*",
+            "name": "dl",
+            "desc": "dl对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "关闭dl对象。",
+        "name": "tk_dl_close",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "tkc/dl.h",
+    "desc": "动态链接库对象。",
+    "name": "tk_dl_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
         "params": [],
         "annotation": {
           "constructor": true,
@@ -28224,6 +28903,423 @@
     "annotation": {
       "scriptable": true
     },
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "data_writer_t*",
+            "name": "writer",
+            "desc": "writer对象。"
+          },
+          {
+            "type": "uint64_t",
+            "name": "offset",
+            "desc": "偏移量。"
+          },
+          {
+            "type": "const void*",
+            "name": "data",
+            "desc": "数据缓冲区。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "数据长度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "在指定位置写入数据。",
+        "name": "data_writer_write",
+        "return": {
+          "type": "int32_t",
+          "desc": "返回实际读取数据的长度。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "data_writer_t*",
+            "name": "writer",
+            "desc": "writer对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁writer对象。",
+        "name": "data_writer_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "tkc/data_writer.h",
+    "desc": "数据写入接口。\n\n>用于抽象flash等外部设备。",
+    "name": "data_writer_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "获取缺省的data writer工厂对象。",
+        "name": "data_writer_factory",
+        "return": {
+          "type": "data_writer_factory_t*",
+          "desc": "返回data writer工厂对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "data_writer_factory_t*",
+            "name": "factory",
+            "desc": "data writer工厂对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置缺省的data writer工厂对象。",
+        "name": "data_writer_factory_set",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建data writer工厂对象。",
+        "name": "data_writer_factory_create",
+        "return": {
+          "type": "data_writer_factory_t*",
+          "desc": "返回data writer工厂对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "data_writer_factory_t*",
+            "name": "factory",
+            "desc": "writer工厂对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "protocol",
+            "desc": "协议(如file)。"
+          },
+          {
+            "type": "data_writer_create_t",
+            "name": "create",
+            "desc": "data writer创建函数。"
+          }
+        ],
+        "annotation": {},
+        "desc": "注册data writer创建函数。",
+        "name": "data_writer_factory_register",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "data_writer_factory_t*",
+            "name": "factory",
+            "desc": "data writer工厂对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "url",
+            "desc": "URL。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建指定类型的data writer对象。",
+        "name": "data_writer_factory_create_writer",
+        "return": {
+          "type": "data_writer_t*",
+          "desc": "返回data writer对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "data_writer_factory_t*",
+            "name": "factory",
+            "desc": "data writer工厂对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "析构并释放data writer工厂对象。",
+        "name": "data_writer_factory_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "data_writer_t*",
+            "name": "writer",
+            "desc": "writer对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建基于文件的data writer。",
+        "name": "data_writer_file_create",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "tkc/data_writer_factory.h",
+    "desc": "data writer工厂。",
+    "name": "data_writer_factory_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "data_reader_t*",
+            "name": "reader",
+            "desc": "reader对象。"
+          },
+          {
+            "type": "uint64_t",
+            "name": "offset",
+            "desc": "偏移量。"
+          },
+          {
+            "type": "void*",
+            "name": "data",
+            "desc": "用于读取数据的缓冲区。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "最大读取数据长度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "在指定位置读取数据。",
+        "name": "data_reader_read",
+        "return": {
+          "type": "int32_t",
+          "desc": "返回实际读取数据的长度。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "data_reader_t*",
+            "name": "reader",
+            "desc": "reader对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取数据长度。",
+        "name": "data_reader_get_size",
+        "return": {
+          "type": "uint64_t",
+          "desc": "返回数据长度。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "data_reader_t*",
+            "name": "reader",
+            "desc": "reader对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁reader对象。",
+        "name": "data_reader_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "url",
+            "desc": "URL。"
+          },
+          {
+            "type": "uint32_t*",
+            "name": "size",
+            "desc": "返回数据长度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "从指定的URL读取全部数据。",
+        "name": "data_reader_read_all",
+        "return": {
+          "type": "void*",
+          "desc": "返回全部数据，调用者需要调用TKMEM_FREE释放返回值。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "tkc/data_reader.h",
+    "desc": "数据读取接口。\n\n>用于抽象flash等外部设备。",
+    "name": "data_reader_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "获取缺省的data reader工厂对象。",
+        "name": "data_reader_factory",
+        "return": {
+          "type": "data_reader_factory_t*",
+          "desc": "返回data reader工厂对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "data_reader_factory_t*",
+            "name": "factory",
+            "desc": "data reader工厂对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置缺省的data reader工厂对象。",
+        "name": "data_reader_factory_set",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建data reader工厂对象。",
+        "name": "data_reader_factory_create",
+        "return": {
+          "type": "data_reader_factory_t*",
+          "desc": "返回data reader工厂对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "data_reader_factory_t*",
+            "name": "factory",
+            "desc": "reader工厂对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "protocol",
+            "desc": "协议(如file)。"
+          },
+          {
+            "type": "data_reader_create_t",
+            "name": "create",
+            "desc": "data reader创建函数。"
+          }
+        ],
+        "annotation": {},
+        "desc": "注册data reader创建函数。",
+        "name": "data_reader_factory_register",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "data_reader_factory_t*",
+            "name": "factory",
+            "desc": "data reader工厂对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "url",
+            "desc": "URL。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建指定类型的data reader对象。",
+        "name": "data_reader_factory_create_reader",
+        "return": {
+          "type": "data_reader_t*",
+          "desc": "返回data reader对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "data_reader_factory_t*",
+            "name": "factory",
+            "desc": "data reader工厂对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "析构并释放data reader工厂对象。",
+        "name": "data_reader_factory_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "data_reader_t*",
+            "name": "reader",
+            "desc": "reader对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建基于文件的data reader。",
+        "name": "data_reader_file_create",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "tkc/data_reader_factory.h",
+    "desc": "data reader工厂。",
+    "name": "data_reader_factory_t",
     "level": 1
   },
   {
@@ -29842,6 +30938,72 @@
       {
         "params": [
           {
+            "type": "async_exec_t",
+            "name": "exec",
+            "desc": "需要异步支持的函数。"
+          },
+          {
+            "type": "async_on_result_t",
+            "name": "on_result",
+            "desc": "返回执行结果(可选)"
+          },
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "两个回调函数的上下文。"
+          }
+        ],
+        "annotation": {
+          "static": true
+        },
+        "desc": "异步执行exec函数，执行完成后，在后台线程调用on_result函数。",
+        "name": "async_call",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {
+          "static": true
+        },
+        "desc": "全局初始化。",
+        "name": "async_call_init",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {
+          "static": true
+        },
+        "desc": "全局~初始化。",
+        "name": "async_call_deinit",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "tkc/async.h",
+    "desc": "异步请求。",
+    "name": "async_t",
+    "annotation": {
+      "fake": true
+    },
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
             "type": "uint16_t",
             "name": "type",
             "desc": "资源的类型。"
@@ -30202,6 +31364,97 @@
     "methods": [
       {
         "params": [],
+        "annotation": {},
+        "desc": "创建缺省的资源加载器。",
+        "name": "asset_loader_create",
+        "return": {
+          "type": "asset_loader_t*",
+          "desc": "返回loader对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "asset_loader_t*",
+            "name": "loader",
+            "desc": "loader对象。"
+          },
+          {
+            "type": "uint16_t",
+            "name": "type",
+            "desc": "资源类型。"
+          },
+          {
+            "type": "uint16_t",
+            "name": "subtype",
+            "desc": "资源子类型。"
+          },
+          {
+            "type": "const char*",
+            "name": "path",
+            "desc": "路径。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "名称。"
+          }
+        ],
+        "annotation": {},
+        "desc": "加载指定的资源。",
+        "name": "asset_loader_load",
+        "return": {
+          "type": "asset_info_t*",
+          "desc": "返回资源对象(由调用者销毁)。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "asset_loader_t*",
+            "name": "loader",
+            "desc": "loader对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁loader对象。",
+        "name": "asset_loader_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "base/asset_loader.h",
+    "desc": "资源加载器接口。",
+    "name": "asset_loader_t",
+    "level": 1
+  },
+  {
+    "type": "enum",
+    "desc": "缓存不够时丢弃数据的策略。",
+    "consts": [
+      {
+        "desc": "丢弃旧的数据。",
+        "name": "DATA_DISCARD_OLD"
+      },
+      {
+        "desc": "丢弃新的数据。",
+        "name": "DATA_DISCARD_NEW"
+      }
+    ],
+    "header": "misc/ostream_retry.h",
+    "name": "data_discard_policy_t",
+    "prefix": "DATA_DISCARD_",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
         "annotation": {
           "constructor": true
         },
@@ -30465,505 +31718,6 @@
     "header": "serial/ostream_serial.h",
     "desc": "基于串口实现的输出流。\n\ninput stream base on fd",
     "name": "tk_ostream_serial_t",
-    "level": 1
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
-        "desc": "获取缺省资源管理器。",
-        "name": "assets_manager",
-        "alias": "assets_manager_instance",
-        "return": {
-          "type": "assets_manager_t*",
-          "desc": "返回asset manager对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "assets_manager_t*",
-            "name": "am",
-            "desc": "asset manager对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置缺省资源管理器。",
-        "name": "assets_manager_set",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "uint32_t",
-            "name": "init_nr",
-            "desc": "预先分配资源的个数。"
-          }
-        ],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "创建资源管理器。",
-        "name": "assets_manager_create",
-        "return": {
-          "type": "assets_manager_t*",
-          "desc": "返回asset manager对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "assets_manager_t*",
-            "name": "am",
-            "desc": "asset manager对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "init_nr",
-            "desc": "预先分配资源的个数。"
-          }
-        ],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "初始化资源管理器。",
-        "name": "assets_manager_init",
-        "return": {
-          "type": "assets_manager_t*",
-          "desc": "返回asset manager对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "assets_manager_t*",
-            "name": "am",
-            "desc": "asset manager对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "res_root",
-            "desc": "资源所在的目录。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置资源所在的目录(其下目录结构请参考demos)。",
-        "name": "assets_manager_set_res_root",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "assets_manager_t*",
-            "name": "am",
-            "desc": "asset manager对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "theme",
-            "desc": "主题名称。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置当前的主题。",
-        "name": "assets_manager_set_theme",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "assets_manager_t*",
-            "name": "am",
-            "desc": "asset manager对象。"
-          },
-          {
-            "type": "system_info_t*",
-            "name": "system_info",
-            "desc": "system_info对象。。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置system_info对象。",
-        "name": "assets_manager_set_system_info",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "assets_manager_t*",
-            "name": "am",
-            "desc": "asset manager对象。"
-          },
-          {
-            "type": "locale_info_t*",
-            "name": "locale_info",
-            "desc": "locale_info对象。。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置locale_info对象。",
-        "name": "assets_manager_set_locale_info",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "assets_manager_t*",
-            "name": "am",
-            "desc": "asset manager对象。"
-          },
-          {
-            "type": "asset_info_t",
-            "name": "info",
-            "desc": "待增加的资源。"
-          }
-        ],
-        "annotation": {},
-        "desc": "向资源管理器中增加一个资源。",
-        "name": "assets_manager_add",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "assets_manager_t*",
-            "name": "am",
-            "desc": "asset manager对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "name",
-            "desc": "待增加的资源的名字。"
-          },
-          {
-            "type": "uint16_t",
-            "name": "type",
-            "desc": "待增加的资源的主类型枚举。"
-          },
-          {
-            "type": "uint16_t",
-            "name": "subtype",
-            "desc": "待增加的资源的子类型枚举。"
-          },
-          {
-            "type": "uint8_t*",
-            "name": "buff",
-            "desc": "待增加的资源的data数据。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "size",
-            "desc": "待增加的资源的data数据长度。"
-          }
-        ],
-        "annotation": {},
-        "desc": "向资源管理器中增加一个资源data。",
-        "name": "assets_manager_add",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "assets_manager_t*",
-            "name": "am",
-            "desc": "asset manager对象。"
-          },
-          {
-            "type": "asset_type_t",
-            "name": "type",
-            "desc": "资源的类型。"
-          },
-          {
-            "type": "char*",
-            "name": "name",
-            "desc": "资源的名称。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "在资源管理器的缓存中查找指定的资源并引用它，如果缓存中不存在，尝试加载该资源。",
-        "name": "assets_manager_ref",
-        "return": {
-          "type": "asset_info_t*",
-          "desc": "返回资源。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "assets_manager_t*",
-            "name": "am",
-            "desc": "asset manager对象。"
-          },
-          {
-            "type": "asset_info_t*",
-            "name": "info",
-            "desc": "资源。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "释放指定的资源。",
-        "name": "assets_manager_unref",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "assets_manager_t*",
-            "name": "am",
-            "desc": "asset manager对象。"
-          },
-          {
-            "type": "asset_type_t",
-            "name": "type",
-            "desc": "资源的类型。"
-          },
-          {
-            "type": "char*",
-            "name": "name",
-            "desc": "资源的名称。"
-          }
-        ],
-        "annotation": {},
-        "desc": "在资源管理器的缓存中查找指定的资源(不引用)。",
-        "name": "assets_manager_find_in_cache",
-        "return": {
-          "type": "asset_info_t*",
-          "desc": "返回资源。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "assets_manager_t*",
-            "name": "am",
-            "desc": "asset manager对象。"
-          },
-          {
-            "type": "asset_type_t",
-            "name": "type",
-            "desc": "资源的类型。"
-          },
-          {
-            "type": "char*",
-            "name": "name",
-            "desc": "资源的名称。"
-          }
-        ],
-        "annotation": {},
-        "desc": "从文件系统中加载指定的资源，并缓存到内存中。在定义了宏WITH\\_FS\\_RES时才生效。",
-        "name": "assets_manager_load",
-        "return": {
-          "type": "asset_info_t*",
-          "desc": "返回资源。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "assets_manager_t*",
-            "name": "am",
-            "desc": "asset manager对象。"
-          },
-          {
-            "type": "asset_type_t",
-            "name": "type",
-            "desc": "资源的类型。"
-          },
-          {
-            "type": "char*",
-            "name": "name",
-            "desc": "资源的名称。"
-          }
-        ],
-        "annotation": {},
-        "desc": "从文件系统中加载指定的资源，并缓存到内存中。在定义了宏WITH\\_FS\\_RES时才生效。",
-        "name": "assets_manager_preload",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "assets_manager_t*",
-            "name": "am",
-            "desc": "asset manager对象。"
-          },
-          {
-            "type": "assets_manager_build_asset_dir_t",
-            "name": "custom_build_asset_dir",
-            "desc": "回调函数。"
-          },
-          {
-            "type": "void*",
-            "name": "ctx",
-            "desc": "回调函数的上下文。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置一个函数，该函数用于生成资源路径。\n\n> 有时我们需要优先加载用户自定义的资源，加载失败才加载系统缺省的，可用设置一个函数去实现这类功能。",
-        "name": "assets_manager_set_custom_build_asset_dir",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "assets_manager_t*",
-            "name": "am",
-            "desc": "asset manager对象。"
-          },
-          {
-            "type": "assets_manager_load_asset_t",
-            "name": "custom_load_asset",
-            "desc": "回调函数。"
-          },
-          {
-            "type": "void*",
-            "name": "ctx",
-            "desc": "回调函数的上下文。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置一个函数，该函数用于实现自定义加载资源。\n\n> 如果不支持文件系统，开发者可以设置一个加载资源的回调函数，从flash或其它地方读取资源。",
-        "name": "assets_manager_set_custom_load_asset",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "assets_manager_t*",
-            "name": "am",
-            "desc": "asset manager对象。"
-          },
-          {
-            "type": "asset_type_t",
-            "name": "type",
-            "desc": "资源的类型。"
-          }
-        ],
-        "annotation": {},
-        "desc": "清除指定类型的缓存。",
-        "name": "assets_manager_clear_cache",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "assets_manager_t*",
-            "name": "am",
-            "desc": "asset manager对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "清除全部缓存的资源。",
-        "name": "assets_manager_clear_all",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "assets_manager_t*",
-            "name": "am",
-            "desc": "asset manager对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "释放全部资源。",
-        "name": "assets_manager_deinit",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "assets_manager_t*",
-            "name": "am",
-            "desc": "asset manager对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "释放全部资源并销毁asset manager对象。",
-        "name": "assets_manager_destroy",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "base/assets_manager.h",
-    "desc": "资源管理器。\n这里的资源管理器并非Windows下的文件浏览器，而是负责对各种资源，比如字体、主题、图片、界面数据、字符串和其它数据的进行集中管理的组件。引入资源管理器的目的有以下几个：\n\n* 让上层不需要了解存储的方式。\n在没有文件系统时或者内存紧缺时，把资源转成常量数组直接编译到代码中。在有文件系统而且内存充足时，资源放在文件系统中。在有网络时，资源也可以存放在服务器上(暂未实现)。资源管理器为上层提供统一的接口，让上层而不用关心底层的存储方式。\n\n* 让上层不需要了解资源的具体格式。\n比如一个名为earth的图片，没有文件系统或内存紧缺，图片直接用位图数据格式存在ROM中，而有文件系统时，则用PNG格式存放在文件系统中。资源管理器让上层不需要关心图片的格式，访问时指定图片的名称即可(不用指定扩展名)。\n\n* 让上层不需要了解屏幕的密度。\n不同的屏幕密度下需要加载不同的图片，比如MacPro的Retina屏就需要用双倍解析度的图片，否则就出现界面模糊。AWTK以后会支持PC软件和手机软件的开发，所以资源管理器需要为此提供支持，让上层不需关心屏幕的密度。\n\n* 对资源进行内存缓存。\n不同类型的资源使用方式是不一样的，比如字体和主题加载之后会一直使用，UI文件在生成界面之后就暂时不需要了，PNG文件解码之后就只需要保留解码的位图数据即可。资源管理器配合图片管理器等其它组件实现资源的自动缓存。\n\n当从文件系统加载资源时，目录结构要求如下：\n\n```\nassets/{theme}/raw/\nfonts   字体\nimages  图片\nx1   普通密度屏幕的图片。\nx2   2倍密度屏幕的图片。\nx3   3倍密度屏幕的图片。\nxx   密度无关的图片。\nstrings 需要翻译的字符串。\nstyles  主题数据。\nui      UI描述数据。\n```",
-    "name": "assets_manager_t",
-    "annotation": {
-      "scriptable": true
-    },
-    "level": 1
-  },
-  {
-    "type": "enum",
-    "desc": "缓存不够时丢弃数据的策略。",
-    "consts": [
-      {
-        "desc": "丢弃旧的数据。",
-        "name": "DATA_DISCARD_OLD"
-      },
-      {
-        "desc": "丢弃新的数据。",
-        "name": "DATA_DISCARD_NEW"
-      }
-    ],
-    "header": "misc/ostream_retry.h",
-    "name": "data_discard_policy_t",
-    "prefix": "DATA_DISCARD_",
     "level": 1
   },
   {
@@ -37554,7 +38308,7 @@
       {
         "name": "scroll_line",
         "desc": "鼠标一次滚动行数。",
-        "type": "float_t",
+        "type": "uint32_t",
         "annotation": {
           "set_prop": true,
           "get_prop": true,
@@ -38460,6 +39214,29 @@
           },
           {
             "type": "float_t",
+            "name": "delta",
+            "desc": "增量。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置点击时加上的增量。",
+        "name": "image_value_set_click_add_delta",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_value对象。"
+          },
+          {
+            "type": "float_t",
             "name": "value",
             "desc": "值。"
           }
@@ -38469,6 +39246,52 @@
         },
         "desc": "设置值。",
         "name": "image_value_set_value",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_min对象。"
+          },
+          {
+            "type": "float_t",
+            "name": "min",
+            "desc": "最小值。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置最小值。",
+        "name": "image_value_set_min",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_max对象。"
+          },
+          {
+            "type": "float_t",
+            "name": "max",
+            "desc": "最大值。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置最大值。",
+        "name": "image_value_set_max",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -38494,7 +39317,18 @@
         }
       }
     ],
-    "events": [],
+    "events": [
+      {
+        "name": "EVT_VALUE_WILL_CHANGE",
+        "desc": "值即将改变事件(click_add_delta为非0时，点击触发)。",
+        "type": "event_t"
+      },
+      {
+        "name": "EVT_VALUE_CHANGED",
+        "desc": "值改变事件(click_add_delta为非0时，点击触发)。",
+        "type": "event_t"
+      }
+    ],
     "properties": [
       {
         "name": "image",
@@ -38523,8 +39357,47 @@
         }
       },
       {
+        "name": "click_add_delta",
+        "desc": "点击时加上一个增量。",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
         "name": "value",
         "desc": "值。",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "min",
+        "desc": "最小值(如果设置了click\\_add\\_delta，到达最小值后回到最大值)。",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "max",
+        "desc": "最大值(如果设置了click\\_add\\_delta，到达最大值后回到最小值)。",
         "type": "float_t",
         "annotation": {
           "set_prop": true,
@@ -38537,7 +39410,7 @@
       }
     ],
     "header": "image_value/image_value.h",
-    "desc": "图片值控件。\n\n可以用图片来表示如电池电量、WIFI信号强度和其它各种数值的值。\n\n其原理如下：\n\n* 1.把value以format为格式转换成字符串。\n* 2.把每个字符与image(图片文件名前缀)映射成一个图片名。\n* 3.最后把这些图片显示出来。\n\nimage\\_value\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于image\\_value\\_t控件。\n\n在xml中使用\"image\\_value\"标签创建图片值控件。如：\n\n```xml\n<image_value  value=\"0\" image=\"num_\" />\n```\n\n> 更多用法请参考：\n[image\\_value](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/image_value.xml)\n\n在c代码中使用函数image\\_value\\_create创建图片值控件。如：\n\n```c\nimage_value = image_value_create(win, 10, 10, 200, 200);\nimage_value_set_image(image_value, \"num_\");\nimage_value_set_value(image_value, 100);\n```\n\n> 完整示例请参考：\n[image_value demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/image_value.c)\n\n可用通过style来设置控件的显示风格，如背景颜色和边框等等，不过一般情况并不需要。",
+    "desc": "图片值控件。\n\n可以用图片来表示如电池电量、WIFI信号强度和其它各种数值的值。\n\n其原理如下：\n\n* 1.把value以format为格式转换成字符串。\n* 2.把每个字符与image(图片文件名前缀)映射成一个图片名。\n* 3.最后把这些图片显示出来。\n\n如果设置click\\_add\\_delta为非0，那么点击时自动增加指定的增量，值超过最大值时回到最小值,\n或者值超过最小值时回到最大值。\n\nimage\\_value\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于image\\_value\\_t控件。\n\n在xml中使用\"image\\_value\"标签创建图片值控件。如：\n\n```xml\n<image_value  value=\"0\" image=\"num_\" />\n```\n\n> 更多用法请参考：\n[image\\_value](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/image_value.xml)\n\n在c代码中使用函数image\\_value\\_create创建图片值控件。如：\n\n```c\nimage_value = image_value_create(win, 10, 10, 200, 200);\nimage_value_set_image(image_value, \"num_\");\nimage_value_set_value(image_value, 100);\n```\n\n> 完整示例请参考：\n[image_value demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/image_value.c)\n\n可用通过style来设置控件的显示风格，如背景颜色和边框等等，不过一般情况并不需要。",
     "name": "image_value_t",
     "parent": "widget_t",
     "annotation": {
@@ -48072,6 +48945,32 @@
             "desc": "mutable_image对象。"
           },
           {
+            "type": "mutable_image_create_image_t",
+            "name": "create_image",
+            "desc": "创建图片的回调函数。"
+          },
+          {
+            "type": "void*",
+            "name": "create_image_ctx",
+            "desc": "create_image回调函数的上下文。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置create_image回调函数。",
+        "name": "mutable_image_set_create_image",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "mutable_image对象。"
+          },
+          {
             "type": "uint32_t",
             "name": "w",
             "desc": "framebuffer宽度。"
@@ -48122,7 +49021,7 @@
     "events": [],
     "properties": [],
     "header": "mutable_image/mutable_image.h",
-    "desc": "mutable图片控件。\n\n像摄像头和视频的图像是变化的，每一帧都不同，我们把这类图片称为mutable image。\n\n本控件辅助实现摄像头和视频的显示功能。\n\nmutable\\_image\\_t是[image\\_base\\_t](image_base_t.md)的子类控件，image\\_base\\_t的函数均适用于mutable\\_image\\_t控件。\n\n在xml中使用\"mutable\\_image\"标签创建mutable图片控件。如：\n\n```xml\n<mutable_image w=\"100%\" h=\"100%\"/>\n```\n\n>更多用法请参考：\n[mutable\nimage](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/mutable_image.xml)\n\n在c代码中使用函数mutable\\_image\\_create创建mutable图片控件。如：\n\n```c\nwidget_t* image = mutable_image_create(win, 10, 10, 200, 200);\nmutable_image_set_prepare_image(image, get_camera_image, camera);\n```\n\n> 创建之后:\n>\n> 需要用mutable\\_image\\_set\\_prepare\\_image设置准备图片的回调函数。\n\n> 完整示例请参考：[mutable image demo](\nhttps://github.com/zlgopen/awtk-c-demos/blob/master/demos/mutable_image.c)\n\n一般不需通过style来设置控件的显示风格，如果在特殊情况下需要，可以参考其它控件。",
+    "desc": "mutable图片控件。\n\n像摄像头和视频的图像是变化的，每一帧都不同，我们把这类图片称为mutable image。\n\n本控件辅助实现摄像头和视频的显示功能。\n\nmutable\\_image\\_t是[image\\_base\\_t](image_base_t.md)的子类控件，image\\_base\\_t的函数均适用于mutable\\_image\\_t控件。\n\n在xml中使用\"mutable\\_image\"标签创建mutable图片控件。如：\n\n```xml\n<mutable_image w=\"100%\" h=\"100%\"/>\n```\n\n>更多用法请参考：\n[mutable\nimage](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/mutable_image.xml)\n\n在c代码中使用函数mutable\\_image\\_create创建mutable图片控件。如：\n\n```c\nwidget_t* image = mutable_image_create(win, 10, 10, 200, 200);\nmutable_image_set_prepare_image(image, get_camera_image, camera);\n```\n\n> 创建之后:\n>\n> 需要用mutable\\_image\\_set\\_create\\_image设置创建图片的回调函数。\n> 需要用mutable\\_image\\_set\\_prepare\\_image设置准备图片的回调函数。\n\n> 完整示例请参考：[mutable image demo](\nhttps://github.com/zlgopen/awtk-c-demos/blob/master/demos/mutable_image.c)\n\n一般不需通过style来设置控件的显示风格，如果在特殊情况下需要，可以参考其它控件。",
     "name": "mutable_image_t",
     "parent": "image_base_t",
     "annotation": {
@@ -49425,72 +50324,14 @@
       {
         "params": [
           {
-            "type": "uint8_t*",
-            "name": "buff",
-            "desc": "返回数据的缓冲区。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "size",
-            "desc": "缓冲区的大小。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "packet_size",
-            "desc": "缺省一次读取的数据的长度。"
-          },
-          {
-            "type": "bool_t",
-            "name": "own_the_buff",
-            "desc": "是否让ostream对象拥有buff。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建ostream对象。",
-        "name": "tk_ostream_mem_create",
-        "return": {
-          "type": "tk_ostream_t*",
-          "desc": "返回ostream对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "mem/ostream_mem.h",
-    "desc": "基于内存实现的输出流。",
-    "name": "tk_ostream_mem_t",
-    "parent": "tk_ostream_t",
-    "level": 4
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "uint8_t*",
-            "name": "buff",
-            "desc": "返回数据的缓冲区。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "size",
-            "desc": "缓冲区的大小。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "packet_size",
-            "desc": "缺省一次读取的数据的长度。"
-          },
-          {
-            "type": "bool_t",
-            "name": "own_the_buff",
-            "desc": "是否让istream对象拥有buff。"
+            "type": "int",
+            "name": "fd",
+            "desc": "fd。"
           }
         ],
         "annotation": {},
         "desc": "创建istream对象。",
-        "name": "tk_istream_mem_create",
+        "name": "tk_istream_serial_create",
         "return": {
           "type": "tk_istream_t*",
           "desc": "返回istream对象。"
@@ -49499,9 +50340,9 @@
     ],
     "events": [],
     "properties": [],
-    "header": "mem/istream_mem.h",
-    "desc": "基于内存实现的输入流。",
-    "name": "tk_istream_mem_t",
+    "header": "serial/istream_serial.h",
+    "desc": "基于串口实现的输入流。",
+    "name": "tk_istream_serial_t",
     "parent": "tk_istream_t",
     "level": 4
   },
@@ -49511,34 +50352,14 @@
       {
         "params": [
           {
-            "type": "void*",
-            "name": "buff_in",
-            "desc": "输入流缓冲区。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "size_in",
-            "desc": "输入流缓冲区大小。"
-          },
-          {
-            "type": "void*",
-            "name": "buff_out",
-            "desc": "输入流缓冲区。"
-          },
-          {
-            "type": "uoutt32_t",
-            "name": "size_out",
-            "desc": "输入流缓冲区大小。"
-          },
-          {
-            "type": "bool_t",
-            "name": "own_the_buff",
-            "desc": "是否让istream对象拥有buff。"
+            "type": "const char*",
+            "name": "port",
+            "desc": "port name。"
           }
         ],
         "annotation": {},
         "desc": "创建iostream对象。",
-        "name": "tk_iostream_mem_create",
+        "name": "tk_iostream_serial_create",
         "return": {
           "type": "tk_iostream_t*",
           "desc": "返回iostream对象。"
@@ -49547,201 +50368,9 @@
     ],
     "events": [],
     "properties": [],
-    "header": "mem/iostream_mem.h",
-    "desc": "基于内存实现的输入输出流。",
-    "name": "tk_iostream_mem_t",
-    "parent": "tk_iostream_t",
-    "level": 4
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "tk_ostream_t*",
-            "name": "real_ostream",
-            "desc": "实际的ostream对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建ostream对象。\n\n本函数自动增加real_ostream的引用计数。",
-        "name": "tk_ostream_retry_create",
-        "return": {
-          "type": "tk_ostream_t*",
-          "desc": "返回ostream对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tk_ostream_t*",
-            "name": "ostream",
-            "desc": "ostream对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "max_retry_times",
-            "desc": "最大尝试次数。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置最大尝试次数。",
-        "name": "tk_ostream_retry_set_max_retry_times",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tk_ostream_t*",
-            "name": "ostream",
-            "desc": "ostream对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "max_buffer_size",
-            "desc": "缓存大小。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置最大缓存大小。",
-        "name": "tk_ostream_retry_set_max_buffer_size",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tk_ostream_t*",
-            "name": "ostream",
-            "desc": "ostream对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "清除缓存的数据。",
-        "name": "tk_ostream_retry_clear_buffer",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tk_ostream_t*",
-            "name": "ostream",
-            "desc": "ostream对象。"
-          },
-          {
-            "type": "data_discard_policy_t",
-            "name": "discard_policy",
-            "desc": "丢弃策略。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置数据丢弃策略。",
-        "name": "tk_ostream_retry_set_discard_policy",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [
-      {
-        "name": "pending_bytes",
-        "desc": "待重写的数据大小。",
-        "type": "uint32_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "pending_packets",
-        "desc": "待重写的数据包的个数。",
-        "type": "uint32_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "discard_bytes",
-        "desc": "总共丢弃数据的字节数。",
-        "type": "uint32_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "discard_packets",
-        "desc": "总共丢弃数据包的个数。",
-        "type": "uint32_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "max_retry_times",
-        "desc": "尝试次数超过指定的值时丢弃该数据包。",
-        "type": "uint32_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "timeout",
-        "desc": "写超时时间(ms)。",
-        "type": "uint32_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "discard_policy",
-        "desc": "缓存不够时，丢弃数据包的策略。",
-        "type": "data_discard_policy_t",
-        "annotation": {
-          "readable": true
-        }
-      }
-    ],
-    "header": "misc/ostream_retry.h",
-    "desc": "如果写数据失败，将数据放入ring_buffer，后面再重试(flush)。\n\n如果重试次数超出最大值，则丢掉数据。",
-    "name": "tk_ostream_retry_t",
-    "parent": "tk_ostream_t",
-    "level": 4
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "tk_iostream_t*",
-            "name": "real_iostream",
-            "desc": "底层的iostream。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建iostream对象。\n\n本函数自动增加real_iostream的引用计数。",
-        "name": "tk_iostream_noisy_create",
-        "return": {
-          "type": "tk_iostream_t*",
-          "desc": "返回iostream对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "noisy/iostream_noisy.h",
-    "desc": "在输出流中注入错误，方便进行可靠性测试。",
-    "name": "tk_iostream_noisy_t",
+    "header": "serial/iostream_serial.h",
+    "desc": "基于串口实现的输入输出流。",
+    "name": "tk_iostream_serial_t",
     "parent": "tk_iostream_t",
     "level": 4
   },
@@ -49786,90 +50415,6 @@
     "header": "noisy/ostream_noisy.h",
     "desc": "在输出流中注入错误，方便进行可靠性测试。",
     "name": "tk_ostream_noisy_t",
-    "parent": "tk_ostream_t",
-    "level": 4
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "const char*",
-            "name": "port",
-            "desc": "port name。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建iostream对象。",
-        "name": "tk_iostream_serial_create",
-        "return": {
-          "type": "tk_iostream_t*",
-          "desc": "返回iostream对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "serial/iostream_serial.h",
-    "desc": "基于串口实现的输入输出流。",
-    "name": "tk_iostream_serial_t",
-    "parent": "tk_iostream_t",
-    "level": 4
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "int",
-            "name": "fd",
-            "desc": "fd。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建istream对象。",
-        "name": "tk_istream_serial_create",
-        "return": {
-          "type": "tk_istream_t*",
-          "desc": "返回istream对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "serial/istream_serial.h",
-    "desc": "基于串口实现的输入流。",
-    "name": "tk_istream_serial_t",
-    "parent": "tk_istream_t",
-    "level": 4
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "int",
-            "name": "sock",
-            "desc": "socket."
-          }
-        ],
-        "annotation": {},
-        "desc": "创建ostream对象。",
-        "name": "tk_ostream_tcp_create",
-        "return": {
-          "type": "tk_ostream_t*",
-          "desc": "返回ostream对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "inet/ostream_tcp.h",
-    "desc": "基于TCP实现的输出流。",
-    "name": "tk_ostream_tcp_t",
     "parent": "tk_ostream_t",
     "level": 4
   },
@@ -50066,6 +50611,392 @@
       {
         "params": [
           {
+            "type": "tk_iostream_t*",
+            "name": "real_iostream",
+            "desc": "底层的iostream。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建iostream对象。\n\n本函数自动增加real_iostream的引用计数。",
+        "name": "tk_iostream_noisy_create",
+        "return": {
+          "type": "tk_iostream_t*",
+          "desc": "返回iostream对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "noisy/iostream_noisy.h",
+    "desc": "在输出流中注入错误，方便进行可靠性测试。",
+    "name": "tk_iostream_noisy_t",
+    "parent": "tk_iostream_t",
+    "level": 4
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "tk_ostream_t*",
+            "name": "real_ostream",
+            "desc": "实际的ostream对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建ostream对象。\n\n本函数自动增加real_ostream的引用计数。",
+        "name": "tk_ostream_retry_create",
+        "return": {
+          "type": "tk_ostream_t*",
+          "desc": "返回ostream对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_ostream_t*",
+            "name": "ostream",
+            "desc": "ostream对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "max_retry_times",
+            "desc": "最大尝试次数。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置最大尝试次数。",
+        "name": "tk_ostream_retry_set_max_retry_times",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_ostream_t*",
+            "name": "ostream",
+            "desc": "ostream对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "max_buffer_size",
+            "desc": "缓存大小。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置最大缓存大小。",
+        "name": "tk_ostream_retry_set_max_buffer_size",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_ostream_t*",
+            "name": "ostream",
+            "desc": "ostream对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "清除缓存的数据。",
+        "name": "tk_ostream_retry_clear_buffer",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_ostream_t*",
+            "name": "ostream",
+            "desc": "ostream对象。"
+          },
+          {
+            "type": "data_discard_policy_t",
+            "name": "discard_policy",
+            "desc": "丢弃策略。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置数据丢弃策略。",
+        "name": "tk_ostream_retry_set_discard_policy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "pending_bytes",
+        "desc": "待重写的数据大小。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "pending_packets",
+        "desc": "待重写的数据包的个数。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "discard_bytes",
+        "desc": "总共丢弃数据的字节数。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "discard_packets",
+        "desc": "总共丢弃数据包的个数。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "max_retry_times",
+        "desc": "尝试次数超过指定的值时丢弃该数据包。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "timeout",
+        "desc": "写超时时间(ms)。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "discard_policy",
+        "desc": "缓存不够时，丢弃数据包的策略。",
+        "type": "data_discard_policy_t",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "misc/ostream_retry.h",
+    "desc": "如果写数据失败，将数据放入ring_buffer，后面再重试(flush)。\n\n如果重试次数超出最大值，则丢掉数据。",
+    "name": "tk_ostream_retry_t",
+    "parent": "tk_ostream_t",
+    "level": 4
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "uint8_t*",
+            "name": "buff",
+            "desc": "返回数据的缓冲区。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "缓冲区的大小。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "packet_size",
+            "desc": "缺省一次读取的数据的长度。"
+          },
+          {
+            "type": "bool_t",
+            "name": "own_the_buff",
+            "desc": "是否让istream对象拥有buff。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建istream对象。",
+        "name": "tk_istream_mem_create",
+        "return": {
+          "type": "tk_istream_t*",
+          "desc": "返回istream对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "mem/istream_mem.h",
+    "desc": "基于内存实现的输入流。",
+    "name": "tk_istream_mem_t",
+    "parent": "tk_istream_t",
+    "level": 4
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "void*",
+            "name": "buff_in",
+            "desc": "输入流缓冲区。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size_in",
+            "desc": "输入流缓冲区大小。"
+          },
+          {
+            "type": "void*",
+            "name": "buff_out",
+            "desc": "输入流缓冲区。"
+          },
+          {
+            "type": "uoutt32_t",
+            "name": "size_out",
+            "desc": "输入流缓冲区大小。"
+          },
+          {
+            "type": "bool_t",
+            "name": "own_the_buff",
+            "desc": "是否让istream对象拥有buff。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建iostream对象。",
+        "name": "tk_iostream_mem_create",
+        "return": {
+          "type": "tk_iostream_t*",
+          "desc": "返回iostream对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "mem/iostream_mem.h",
+    "desc": "基于内存实现的输入输出流。",
+    "name": "tk_iostream_mem_t",
+    "parent": "tk_iostream_t",
+    "level": 4
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "int",
+            "name": "sock",
+            "desc": "socket."
+          }
+        ],
+        "annotation": {},
+        "desc": "创建ostream对象。",
+        "name": "tk_ostream_udp_create",
+        "return": {
+          "type": "tk_ostream_t*",
+          "desc": "返回ostream对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_ostream_t*",
+            "name": "stream",
+            "desc": "ostream对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "host",
+            "desc": "主机或IP。"
+          },
+          {
+            "type": "int",
+            "name": "port",
+            "desc": "端口。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置目标。",
+        "name": "tk_ostream_udp_set_target_with_host",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_ostream_t*",
+            "name": "stream",
+            "desc": "ostream对象。"
+          },
+          {
+            "type": "struct sockaddr_in",
+            "name": "addr",
+            "desc": "地址。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置目标。",
+        "name": "tk_ostream_udp_set_target_with_addr",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "inet/ostream_udp.h",
+    "desc": "基于UDP实现的输出流。",
+    "name": "tk_ostream_udp_t",
+    "parent": "tk_ostream_t",
+    "level": 4
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "int",
+            "name": "sock",
+            "desc": "socket."
+          }
+        ],
+        "annotation": {},
+        "desc": "创建ostream对象。",
+        "name": "tk_ostream_tcp_create",
+        "return": {
+          "type": "tk_ostream_t*",
+          "desc": "返回ostream对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "inet/ostream_tcp.h",
+    "desc": "基于TCP实现的输出流。",
+    "name": "tk_ostream_tcp_t",
+    "parent": "tk_ostream_t",
+    "level": 4
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
             "type": "int",
             "name": "sock",
             "desc": "socket。"
@@ -50218,72 +51149,40 @@
       {
         "params": [
           {
-            "type": "int",
-            "name": "sock",
-            "desc": "socket."
+            "type": "uint8_t*",
+            "name": "buff",
+            "desc": "返回数据的缓冲区。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "缓冲区的大小。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "packet_size",
+            "desc": "缺省一次读取的数据的长度。"
+          },
+          {
+            "type": "bool_t",
+            "name": "own_the_buff",
+            "desc": "是否让ostream对象拥有buff。"
           }
         ],
         "annotation": {},
         "desc": "创建ostream对象。",
-        "name": "tk_ostream_udp_create",
+        "name": "tk_ostream_mem_create",
         "return": {
           "type": "tk_ostream_t*",
           "desc": "返回ostream对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tk_ostream_t*",
-            "name": "stream",
-            "desc": "ostream对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "host",
-            "desc": "主机或IP。"
-          },
-          {
-            "type": "int",
-            "name": "port",
-            "desc": "端口。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置目标。",
-        "name": "tk_ostream_udp_set_target_with_host",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tk_ostream_t*",
-            "name": "stream",
-            "desc": "ostream对象。"
-          },
-          {
-            "type": "struct sockaddr_in",
-            "name": "addr",
-            "desc": "地址。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置目标。",
-        "name": "tk_ostream_udp_set_target_with_addr",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "inet/ostream_udp.h",
-    "desc": "基于UDP实现的输出流。",
-    "name": "tk_ostream_udp_t",
+    "header": "mem/ostream_mem.h",
+    "desc": "基于内存实现的输出流。",
+    "name": "tk_ostream_mem_t",
     "parent": "tk_ostream_t",
     "level": 4
   }
