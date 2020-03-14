@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   types_def.h
  * Author: AWTK Develop Team
  * Brief:  basic types definitions.
@@ -34,6 +34,13 @@
 #include <string.h>
 #include <limits.h>
 
+#if defined(HAS_AWTK_CONFIG)
+#include "awtk_config.h"
+#ifdef FRAGMENT_FRAME_BUFFER_SIZE
+#undef WITH_WINDOW_ANIMATORS
+#endif /*FRAGMENT_FRAME_BUFFER_SIZE*/
+#endif /*HAS_AWTK_CONFIG*/
+
 #if defined(WIN32) || defined(LINUX) || defined(MACOS) || defined(ANDROID) || defined(IOS)
 
 #define WITH_SOCKET 1
@@ -67,12 +74,6 @@ typedef int socklen_t;
 #define END_C_DECLS
 #endif
 
-#if defined(HAS_AWTK_CONFIG)
-#include "awtk_config.h"
-#ifdef FRAGMENT_FRAME_BUFFER_SIZE
-#undef WITH_WINDOW_ANIMATORS
-#endif /*FRAGMENT_FRAME_BUFFER_SIZE*/
-#endif /*HAS_AWTK_CONFIG*/
 
 #if defined(HAS_STDIO) || defined(AWTK_WEB)
 #include <stdio.h>
