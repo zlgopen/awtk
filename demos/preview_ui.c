@@ -196,7 +196,7 @@ int main(int argc, char* argv[]) {
     have_lang = TRUE;
   }
 
-  tk_init(w, h, APP_DESKTOP, NULL, res_root);
+  tk_init(w, h, APP_SIMULATOR, NULL, res_root);
   assets_manager_set_res_root(assets_manager(), system_info()->app_root);
 #ifdef WITH_FS_RES
   system_info_set_default_font(system_info(), "default_full");
