@@ -34,6 +34,30 @@
 #include <string.h>
 #include <limits.h>
 
+#if defined(WIN32) || defined(LINUX) || defined(MACOS) || defined(ANDROID) || defined(IOS)
+
+#ifdef WIN32
+#define  WIN32_LEAN_AND_MEAN 1
+#define WITH_SOCKET 1
+#include <windows.h>
+#include <winsock2.h>
+typedef int socklen_t;
+#else
+#include <unistd.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <netdb.h>
+#include <unistd.h>
+#include <arpa/inet.h>
+#include <fcntl.h>
+#include <sys/select.h>
+#include <sys/time.h>
+#include <sys/types.h>
+#endif /*WIN32*/
+
+#endif/*WIN32 || MACOS || LINUX || IOS || ANDROID*/
+
+
 #ifdef __cplusplus
 #define BEGIN_C_DECLS extern "C" {
 #define END_C_DECLS }
@@ -343,10 +367,6 @@ typedef void (*tk_sleep_ms_t)(uint32_t ms);
 #else
 #define TK_ENABLE_CONSOLE()
 #endif /*WIN32 && !NDEBUG*/
-
-#if defined(WIN32) || defined(LINUX) || defined(MACOS) || defined(ANDROID) || defined(MACOS)
-#define WITH_SOCKET 1
-#endif
 
 struct _event_source_t;
 typedef struct _event_source_t event_source_t;

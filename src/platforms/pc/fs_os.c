@@ -1,4 +1,6 @@
-﻿#if defined(__APPLE__) || defined(LINUX)
+﻿#include "tkc/types_def.h"
+
+#if defined(__APPLE__) || defined(LINUX)
 #include <unistd.h>
 #include <dirent.h>
 #elif defined(WIN32)

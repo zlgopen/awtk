@@ -28,24 +28,6 @@
 
 BEGIN_C_DECLS
 
-#ifdef WIN32
-#include "windows.h"
-#include <winsock2.h>
-#include <ws2tcpip.h>
-typedef int socklen_t;
-#else
-#include <unistd.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <netdb.h>
-#include <unistd.h>
-#include <arpa/inet.h>
-#include <fcntl.h>
-#include <sys/select.h>
-#include <sys/time.h>
-#include <sys/types.h>
-#endif /*WIN32*/
-
 /**
  * @class socket 
  * @annotation ["fake"]
