@@ -133,6 +133,7 @@
 * C++
 * lua
 * java
+* python
 * Javascript on jerryscript
 * Javascript on nodejs
 * Javascript on quickjs
@@ -266,6 +267,8 @@ pip install Pillow
 
 * [JAVA 绑定](https://github.com/zlgopen/awtk-java)
 
+* [Python 绑定](https://github.com/zlgopen/awtk-python)
+
 * [MiniJVM 绑定](https://github.com/zlgopen/awtk-minijvm)
 
 * [JS 绑定之 QuickJS](https://github.com/zlgopen/awtk-quickjs)
@@ -288,6 +291,8 @@ pip install Pillow
 
 * [扩展控件实例：圆形滑块](https://github.com/longyuwlz/awtk_slider_circle)
 
+* [react-awtk](https://github.com/wenyufei2018/react-awtk)
+* 
 ## 九、文档
 
 * [开发文档](docs/README.md)
