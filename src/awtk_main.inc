@@ -205,5 +205,8 @@ int main(int argc, char* argv[]) {
   fflush(stdout);
 #endif /*HAS_STDIO*/
 
+#ifdef IOS
+  exit(0);
+#endif/*IOS*/
   return 0;
 }
