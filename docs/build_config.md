@@ -93,23 +93,23 @@ android 平台选项放在 android 子键下面，目前支持以下选项：
   "name":"demoui",
   "version":"1.0",
   "assets" : "assets",
-  "author" : "xianjimli@hotmail",
+  "author" : "xianjimli@hotmail.com",
   "copyright" : "Guangzhou ZHIYUAN Electronics Co.,Ltd.",
   "web": {
     "app_type":"c",
     "sources":["demo_ui_app.c"],
-    "config" : { 
+    "config" : {
       "fontScale":"0.8",
       "defaultFont":"sans"
-    }   
-  },  
-  "android" : { 
+    }
+  },
+  "android" : {
     "app_name":"org.zlgopen.demoui",
-    "sources":["assets.c",  "assets.h", "demo_ui_app.c",  "vg_common.inc"]
-  },  
-  "ios" : { 
+    "sources":["assets.c", "assets_dark.c", "assets_default.c",	"assets.h",	"demo_ui_app.c",	"vg_common.inc"]
+  },
+  "ios" : {
     "app_name":"org.zlgopen.demoui",
-    "sources":["assets.c",  "assets.h", "demo_ui_app.c",  "vg_common.inc"]
+    "sources":["assets.c", "assets_dark.c", "assets_default.c",	"assets.h",	"demo_ui_app.c",	"vg_common.inc"]
   }
 }
 
