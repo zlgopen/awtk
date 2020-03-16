@@ -14,7 +14,7 @@ ret_t assets_init(const char* theme) {
     return assets_init_default();
   } else if (tk_str_eq(theme, "dark")) {
     return assets_init_dark();
-  } else { 
+  } else {
     log_debug("%s not support.\n", theme);
     return RET_NOT_IMPL;
   }

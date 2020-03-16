@@ -46,7 +46,7 @@
 #define WITH_SOCKET 1
 
 #ifdef WIN32
-#define  WIN32_LEAN_AND_MEAN 1
+#define WIN32_LEAN_AND_MEAN 1
 #include <windows.h>
 #include <winsock2.h>
 typedef int socklen_t;
@@ -63,8 +63,7 @@ typedef int socklen_t;
 #include <sys/types.h>
 #endif /*WIN32*/
 
-#endif/*WIN32 || MACOS || LINUX || IOS || ANDROID*/
-
+#endif /*WIN32 || MACOS || LINUX || IOS || ANDROID*/
 
 #ifdef __cplusplus
 #define BEGIN_C_DECLS extern "C" {
@@ -73,7 +72,6 @@ typedef int socklen_t;
 #define BEGIN_C_DECLS
 #define END_C_DECLS
 #endif
-
 
 #if defined(HAS_STDIO) || defined(AWTK_WEB)
 #include <stdio.h>

@@ -428,7 +428,7 @@ extern TK_CONST_DATA_ALIGN(const unsigned char image_3[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_arrow_left_n[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_edit_clear_p[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_battery_2[]);
-#endif/*WITH_STB_IMAGE*/
+#endif /*WITH_STB_IMAGE*/
 #ifdef WITH_VGCANVAS
 extern TK_CONST_DATA_ALIGN(const unsigned char image_pointer_4[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_htest[]);
@@ -437,21 +437,21 @@ extern TK_CONST_DATA_ALIGN(const unsigned char image_china[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_pointer_1[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_pointer[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char image_girl[]);
-#endif/*WITH_VGCANVAS*/
+#endif /*WITH_VGCANVAS*/
 #if defined(WITH_STB_FONT) || defined(WITH_FT_FONT)
 extern TK_CONST_DATA_ALIGN(const unsigned char font_ap[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char font_default_full[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char font_default[]);
-#else/*WITH_STB_FONT or WITH_FT_FONT*/
+#else  /*WITH_STB_FONT or WITH_FT_FONT*/
 extern TK_CONST_DATA_ALIGN(const unsigned char font_default_20[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char font_default_16[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char font_default_18[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char font_default_96[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char font_default_32[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char font_default_24[]);
-#endif/*WITH_STB_FONT or WITH_FT_FONT*/
+#endif /*WITH_STB_FONT or WITH_FT_FONT*/
 extern TK_CONST_DATA_ALIGN(const unsigned char script_dummy[]);
-#endif/*WITH_FS_RES*/
+#endif /*WITH_FS_RES*/
 
 ret_t assets_init_dark(void) {
   assets_manager_t* am = assets_manager();
@@ -756,14 +756,14 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, font_ap);
   assets_manager_add(am, font_default_full);
   assets_manager_add(am, font_default);
-#else/*WITH_STB_FONT or WITH_FT_FONT*/
+#else  /*WITH_STB_FONT or WITH_FT_FONT*/
   assets_manager_add(am, font_default_20);
   assets_manager_add(am, font_default_16);
   assets_manager_add(am, font_default_18);
   assets_manager_add(am, font_default_96);
   assets_manager_add(am, font_default_32);
   assets_manager_add(am, font_default_24);
-#endif/*WITH_STB_FONT or WITH_FT_FONT*/
+#endif /*WITH_STB_FONT or WITH_FT_FONT*/
 #ifdef WITH_VGCANVAS
   assets_manager_add(am, image_pointer_4);
   assets_manager_add(am, image_htest);
@@ -772,7 +772,7 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, image_pointer_1);
   assets_manager_add(am, image_pointer);
   assets_manager_add(am, image_girl);
-#endif/*WITH_VGCANVAS*/
+#endif /*WITH_VGCANVAS*/
   assets_manager_add(am, script_dummy);
 #endif
 

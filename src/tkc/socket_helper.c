@@ -26,7 +26,6 @@
 #include "tkc/mem.h"
 #include "tkc/socket_helper.h"
 
-
 #ifdef WITH_SOCKET
 
 #ifdef WIN32
