@@ -22,7 +22,7 @@
 #include "awtk.h"
 
 BEGIN_C_DECLS
-extern ret_t assets_init();
+extern ret_t assets_init(const char* theme);
 END_C_DECLS
 
 #ifndef APP_DEFAULT_FONT
@@ -32,6 +32,10 @@ END_C_DECLS
 #define APP_DEFAULT_FONT "default"
 #endif /*WITH_FS_RES*/
 #endif /*APP_DEFAULT_FONT*/
+
+#ifndef APP_THEME
+#define APP_THEME "default"
+#endif /*APP_THEME*/
 
 #ifndef LCD_WIDTH
 #define LCD_WIDTH 320
@@ -79,7 +83,7 @@ int SDL_main(int argc, char* argv[]) {
 #include <windows.h>
 #define MAX_ARGV 7
 
-static void command_line_to_argv(char* lpcmdline, const char* argv[MAX_ARGV], int32_t* argc) {
+static void command_line_to_argv(char* lpcmdline, char* argv[MAX_ARGV], int32_t* argc) {
   int32_t i = 1;
   char* p = lpcmdline;
 
@@ -174,7 +178,7 @@ int main(int argc, char* argv[]) {
 #endif /*WITH_LCD_PORTRAIT*/
 
   system_info_set_default_font(system_info(), APP_DEFAULT_FONT);
-  assets_init();
+  assets_init(APP_THEME);
 
 #ifndef WITHOUT_EXT_WIDGETS
   tk_ext_widgets_init();
@@ -207,6 +211,6 @@ int main(int argc, char* argv[]) {
 
 #ifdef IOS
   exit(0);
-#endif/*IOS*/
+#endif /*IOS*/
   return 0;
 }

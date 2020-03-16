@@ -26,7 +26,7 @@
 
 BEGIN_C_DECLS
 
-ret_t assets_init(void);
+ret_t assets_init(const char* theme);
 
 END_C_DECLS
 

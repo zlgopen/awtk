@@ -13,11 +13,14 @@ ASSET_C = ''
 BIN_DIR = ''
 THEME = 'default'
 ASSETS_ROOT = ''
+DEFAULT_THEME_ASSETS_ROOT = ''
 AWTK_ROOT = ''
 INPUT_DIR = ''
 OUTPUT_DIR = ''
+DEFAULT_THEME_OUTPUT_DIR = ''
 FONT_OPTIONS = ''
 IMAGEGEN_OPTIONS = ''
+IS_DEFAULT_THEME = False
 ###########################
 
 
@@ -31,13 +34,37 @@ def to_var_name(s):
     return out
 
 
-def fix_output_file_name(name):
-    filename, extname = os.path.splitext(name)
+def fix_output_file_name(filename):
     basename = os.path.basename(filename)
     dirname = os.path.dirname(filename)
-    newname = os.path.normpath(os.path.join(
-        dirname, to_var_name(basename) + extname))
+    varname = to_var_name(basename)
+    newname = os.path.normpath(os.path.join(dirname, varname))
     return newname
+
+
+def to_assets_basename(filename, output_dir):
+    basename = os.path.splitext(filename)[0]
+    basename = basename.replace(output_dir, '.')
+    basename = basename.replace('\\', '/')
+    basename = basename.replace('/fonts/', '/font/')
+    basename = basename.replace('/images/', '/image/')
+    basename = basename.replace('/styles/', '/style/')
+    basename = basename.replace('/scripts/', '/script/')
+    basename = basename.replace('./', '')
+    basename = basename.replace('/', '_')
+    return basename
+
+
+def fix_inc_file(filename):
+    with open(filename, "r") as fr:
+        content = fr.read()
+
+    basename = to_assets_basename(filename, OUTPUT_DIR)
+    index = content.find(basename + '[])')
+    if index > 0:
+        with open(filename, 'w') as fw:
+            content = content.replace(basename + '[])', basename + '_' + THEME + '[])', 1)
+            fw.write(content)
 
 
 def joinPath(root, subdir):
@@ -155,42 +182,46 @@ def xml_to_ui_bin(raw, bin):
 
 def gen_res_all_style():
     for f in glob.glob(joinPath(INPUT_DIR, 'styles/*.xml')):
-        inc = copy.copy(f)
-        raw = copy.copy(f)
-        bin = copy.copy(f)
-        inc = inc.replace('.xml', '.data')
-        inc = inc.replace(INPUT_DIR, OUTPUT_DIR)
-        inc = fix_output_file_name(inc)
-        themegen(raw, inc)
-        bin = bin.replace('.xml', '.bin')
+        filename, extname = os.path.splitext(f)
+        raw = f
+        bin = filename + '.bin'
         themegen_bin(raw, bin)
+        filename = filename.replace(INPUT_DIR, OUTPUT_DIR)
+        inc = fix_output_file_name(filename) + '.data'
+        themegen(raw, inc)
+        if not IS_DEFAULT_THEME: 
+            fix_inc_file(inc)
 
 
 def gen_res_svg():
     for f in glob.glob(joinPath(INPUT_DIR, 'images/svg/*.svg')):
-        inc = copy.copy(f)
-        bin = copy.copy(f)
-        raw = copy.copy(f)
-        basename = os.path.basename(inc)
-        inc = joinPath(OUTPUT_DIR, 'images/'+basename)
-        inc = inc.replace('.svg', '.bsvg')
-        inc = fix_output_file_name(inc)
-        bin = bin.replace('.svg', '.bsvg')
+        filename, extname = os.path.splitext(f)
+        raw = f
+        bin = filename + '.bsvg'
+        basename = os.path.basename(filename)
+        filename = joinPath(OUTPUT_DIR, 'images/'+basename)
+        inc = fix_output_file_name(filename) + '.bsvg'
         svggen(raw, inc, bin)
+        if not IS_DEFAULT_THEME: 
+            fix_inc_file(inc)
 
 
 def gen_res_png_jpg():
-    for f in glob.glob(joinPath(INPUT_DIR, 'images/'+DPI+'/*.*')):
-        inc = copy.copy(f)
-        raw = copy.copy(f)
-        basename = os.path.basename(inc)
-        inc = joinPath(OUTPUT_DIR, 'images/'+basename)
-        inc = inc.replace('.png', '.data')
-        inc = inc.replace('.jpg', '.data')
-        inc = inc.replace('.bmp', '.data')
-        inc = inc.replace('.gif', '.data')
-        inc = fix_output_file_name(inc)
-        imagegen(raw, inc)
+    formats = ['.png', '.jpg', '.jpeg', '.bmp', '.gif']
+    files = glob.glob(joinPath(INPUT_DIR, 'images/'+DPI+'/*.*')) \
+        + glob.glob(joinPath(INPUT_DIR, 'images/xx/*.*'))
+    for f in files:
+        filename, extname = os.path.splitext(f)
+        for fm in formats:
+            if fm == extname:
+                raw = f
+                basename = os.path.basename(filename)
+                filename = joinPath(OUTPUT_DIR, 'images/'+basename)
+                inc = fix_output_file_name(filename) + '.data'
+                imagegen(raw, inc)
+                if not IS_DEFAULT_THEME: 
+                    fix_inc_file(inc)
+                break
 
 
 def gen_res_all_image():
@@ -200,60 +231,67 @@ def gen_res_all_image():
 
 def gen_res_all_ui():
     for f in glob.glob(joinPath(INPUT_DIR, 'ui/*.xml')):
-        inc = copy.copy(f)
-        raw = copy.copy(f)
-        bin = copy.copy(f)
-        inc = inc.replace('.xml', '.data')
-        inc = inc.replace(INPUT_DIR, OUTPUT_DIR)
-        inc = fix_output_file_name(inc)
-        xml_to_ui(raw, inc)
-        bin = bin.replace('.xml', '.bin')
+        filename, extname = os.path.splitext(f)
+        raw = f
+        bin = filename + '.bin'
         xml_to_ui_bin(raw, bin)
+        filename = filename.replace(INPUT_DIR, OUTPUT_DIR)
+        inc = fix_output_file_name(filename) + '.data'
+        xml_to_ui(raw, inc)
+        if not IS_DEFAULT_THEME: 
+            fix_inc_file(inc)
 
 
 def gen_res_all_data():
     for f in glob.glob(joinPath(INPUT_DIR, 'data/*.*')):
-        inc = copy.copy(f)
-        raw = copy.copy(f)
-        _, extname = os.path.splitext(inc)
-        uextname = extname.replace('.', '_')
-        inc = inc.replace(extname, uextname+'.data')
-        inc = inc.replace(INPUT_DIR, OUTPUT_DIR)
-        inc = fix_output_file_name(inc)
+        filename, extname = os.path.splitext(f)
+        raw = f
+        filename = filename.replace(INPUT_DIR, OUTPUT_DIR) + extname.replace('.', '_')
+        inc = fix_output_file_name(filename) + '.data'
         resgen(raw, inc)
+        if not IS_DEFAULT_THEME: 
+            fix_inc_file(inc)
 
 
 def gen_res_all_xml():
     for f in glob.glob(joinPath(INPUT_DIR, 'xml/*.xml')):
-        inc = copy.copy(f)
-        raw = copy.copy(f)
-        inc = inc.replace('.xml', '.data')
-        inc = inc.replace(INPUT_DIR, OUTPUT_DIR)
-        inc = fix_output_file_name(inc)
+        filename, extname = os.path.splitext(f)
+        raw = f
+        filename = filename.replace(INPUT_DIR, OUTPUT_DIR)
+        inc = fix_output_file_name(filename) + '.data'
         resgen(raw, inc)
+        if not IS_DEFAULT_THEME: 
+            fix_inc_file(inc)
 
 
 def gen_res_all_font():
     for f in glob.glob(joinPath(INPUT_DIR, 'fonts/*.ttf')):
-        res = copy.copy(f)
-        raw = copy.copy(f)
-        res = res.replace(INPUT_DIR, '.')
-        res = res.replace('.ttf', '.res')
-        raw = raw.replace(INPUT_DIR, '.')
-        resgen(raw, res)
-    fontgen('fonts/default_full.ttf',
-            'fonts/text.txt', 'fonts/default.data', 18)
+        filename, extname = os.path.splitext(f)
+        raw = f
+        filename = filename.replace(INPUT_DIR, OUTPUT_DIR)
+        inc = fix_output_file_name(filename) + '.res'
+        resgen(raw, inc)
+        if not IS_DEFAULT_THEME: 
+            fix_inc_file(inc)
+
+    fontgen('fonts/default_full.ttf', 'fonts/text.txt', 'fonts/default_16.data', 16)
+    fontgen('fonts/default_full.ttf', 'fonts/text.txt', 'fonts/default_18.data', 18)
+    fontgen('fonts/default_full.ttf', 'fonts/text.txt', 'fonts/default_20.data', 20)
+    fontgen('fonts/default_full.ttf', 'fonts/text.txt', 'fonts/default_24.data', 24)
+    fontgen('fonts/default_full.ttf', 'fonts/text.txt', 'fonts/default_32.data', 32)
+    fontgen('fonts/default_full.ttf', 'fonts/text.txt', 'fonts/default_96.data', 96)
+
 
 
 def gen_res_all_script():
     for f in glob.glob(joinPath(INPUT_DIR, 'scripts/*.js')):
-        res = copy.copy(f)
-        raw = copy.copy(f)
-        res = res.replace(INPUT_DIR, '.')
-        res = res.replace('.js', '.res')
-        raw = raw.replace(INPUT_DIR, '.')
-        raw = fix_output_file_name(raw)
-        resgen(raw, res)
+        filename, extname = os.path.splitext(f)
+        raw = f
+        filename = filename.replace(INPUT_DIR, OUTPUT_DIR)
+        inc = fix_output_file_name(filename) + '.res'
+        resgen(raw, inc)
+        if not IS_DEFAULT_THEME: 
+            fix_inc_file(inc)
 
 
 def gen_res_all_string():
@@ -282,8 +320,8 @@ def gen_res_all():
     gen_res_all_xml()
 
 
-def writeResult(str):
-    with open(ASSET_C, "w") as text_file:
+def writeResult(filename, str):
+    with open(filename, "w") as text_file:
         text_file.write(str)
 
 
@@ -293,79 +331,110 @@ def writeResultJSON(str):
 
 
 def genIncludes(files):
-    str1 = ""
+    result = ""
+    assets_root = os.path.dirname(os.path.dirname(ASSETS_ROOT))
     for f in files:
-        assets_root = os.path.dirname(os.path.dirname(ASSETS_ROOT))
         incf = copy.copy(f)
         incf = incf.replace(assets_root, ".")
         incf = incf.replace('\\', '/')
         incf = incf.replace('./', '')
-        str1 += '#include "'+incf+'"\n'
+        result += '#include "'+incf+'"\n'
 
-    return str1
+    return result
 
+def genExternOfDefaultTheme(files):
+    result = ""
+    for f in files:
+        if(not os.path.exists(f.replace(DEFAULT_THEME_ASSETS_ROOT, ASSETS_ROOT))):
+            basename = to_assets_basename(f, DEFAULT_THEME_OUTPUT_DIR)
+            result += 'extern TK_CONST_DATA_ALIGN(const unsigned char '+basename+'[]);\n'
+
+    return result
 
 def gen_add_assets(files):
     result = ""
     for f in files:
-        incf = copy.copy(f)
-        basename = incf.replace(OUTPUT_DIR, '.')
-        basename = basename.replace('\\', '/')
-        basename = basename.replace('/fonts/', '/font/')
-        basename = basename.replace('/images/', '/image/')
-        basename = basename.replace('/styles/', '/style/')
-        basename = basename.replace('./', '')
-        basename = basename.replace('/', '_')
-        basename = basename.replace('.data', '')
-        basename = basename.replace('.bsvg', '')
-        if basename == 'font_default':
-            result += '  assets_manager_add(am, font_default);\n'
-        else:
+        basename = to_assets_basename(f, OUTPUT_DIR)
+        if IS_DEFAULT_THEME:
             result += '  assets_manager_add(am, '+basename+');\n'
+        else:
+            result += '  assets_manager_add(am, '+basename+'_'+THEME+');\n'
     return result
 
+def gen_add_assets_of_default_theme(files):
+    result = ""
+    for f in files:
+        if(not os.path.exists(f.replace(DEFAULT_THEME_ASSETS_ROOT, ASSETS_ROOT))):
+            basename = to_assets_basename(f, DEFAULT_THEME_OUTPUT_DIR)
+            result += '  assets_manager_add(am, '+basename+');\n'
+
+    return result
 
 def gen_res_c():
-    if THEME != 'default':
-        return
-
     result = '#include "awtk.h"\n'
     result += '#include "base/assets_manager.h"\n'
-
     result += '#ifndef WITH_FS_RES\n'
+
     files = glob.glob(joinPath(OUTPUT_DIR, 'strings/*.data')) \
         + glob.glob(joinPath(OUTPUT_DIR, 'styles/*.data'))  \
         + glob.glob(joinPath(OUTPUT_DIR, 'ui/*.data')) \
         + glob.glob(joinPath(OUTPUT_DIR, 'xml/*.data')) \
         + glob.glob(joinPath(OUTPUT_DIR, 'data/*.data'))
-
     result += genIncludes(files)
+    if not IS_DEFAULT_THEME:
+        files = glob.glob(joinPath(DEFAULT_THEME_OUTPUT_DIR, 'strings/*.data')) \
+        + glob.glob(joinPath(DEFAULT_THEME_OUTPUT_DIR, 'styles/*.data'))  \
+        + glob.glob(joinPath(DEFAULT_THEME_OUTPUT_DIR, 'ui/*.data')) \
+        + glob.glob(joinPath(DEFAULT_THEME_OUTPUT_DIR, 'xml/*.data')) \
+        + glob.glob(joinPath(DEFAULT_THEME_OUTPUT_DIR, 'data/*.data'))
+        result += genExternOfDefaultTheme(files)
 
     result += "#ifdef WITH_STB_IMAGE\n"
     files = glob.glob(joinPath(OUTPUT_DIR, 'images/*.res'))
     result += genIncludes(files)
+    if not IS_DEFAULT_THEME:
+        files = glob.glob(joinPath(DEFAULT_THEME_OUTPUT_DIR, 'images/*.res'))
+        result += genExternOfDefaultTheme(files)
     result += "#else\n"
     files = glob.glob(joinPath(OUTPUT_DIR, 'images/*.data'))
     result += genIncludes(files)
+    if not IS_DEFAULT_THEME:
+        files = glob.glob(joinPath(DEFAULT_THEME_OUTPUT_DIR, 'images/*.data'))
+        result += genExternOfDefaultTheme(files)
     result += '#endif/*WITH_STB_IMAGE*/\n'
 
     result += "#ifdef WITH_VGCANVAS\n"
     files = glob.glob(joinPath(OUTPUT_DIR, 'images/*.bsvg'))
     result += genIncludes(files)
+    if not IS_DEFAULT_THEME:
+        files = glob.glob(joinPath(DEFAULT_THEME_OUTPUT_DIR, 'images/*.bsvg'))
+        result += genExternOfDefaultTheme(files)
     result += '#endif/*WITH_VGCANVAS*/\n'
 
-    result += "#if defined(WITH_TRUETYPE_FONT)\n"
-    files = glob.glob(joinPath(OUTPUT_DIR, 'fonts/default.res'))
+    result += "#if defined(WITH_STB_FONT) || defined(WITH_FT_FONT)\n"
+    files = glob.glob(joinPath(OUTPUT_DIR, 'fonts/*.res'))
     result += genIncludes(files)
-    result += "#else/*WITH_TRUETYPE_FONT*/\n"
+    if not IS_DEFAULT_THEME:
+        files = glob.glob(joinPath(DEFAULT_THEME_OUTPUT_DIR, 'fonts/*.res'))
+        result += genExternOfDefaultTheme(files)
+    result += "#else/*WITH_STB_FONT or WITH_FT_FONT*/\n"
     files = glob.glob(joinPath(OUTPUT_DIR, 'fonts/*.data'))
     result += genIncludes(files)
-    result += '#endif/*WITH_TRUETYPE_FONT*/\n'
+    if not IS_DEFAULT_THEME:
+        files = glob.glob(joinPath(DEFAULT_THEME_OUTPUT_DIR, 'fonts/*.data'))
+        result += genExternOfDefaultTheme(files)
+    result += '#endif/*WITH_STB_FONT or WITH_FT_FONT*/\n'
+
+    files = glob.glob(joinPath(OUTPUT_DIR, 'scripts/*.res'))
+    result += genIncludes(files)
+    if not IS_DEFAULT_THEME:
+        files = glob.glob(joinPath(DEFAULT_THEME_OUTPUT_DIR, 'scripts/*.res'))
+        result += genExternOfDefaultTheme(files)
 
     result += '#endif/*WITH_FS_RES*/\n'
 
     result += '\n'
-    result += 'ret_t assets_init(void) {\n'
+    result += 'ret_t assets_init_' + THEME + '(void) {\n'
     result += '  assets_manager_t* am = assets_manager();\n\n'
     result += ''
 
@@ -374,13 +443,49 @@ def gen_res_c():
     result += '  assets_manager_preload(am, ASSET_TYPE_STYLE, "default");\n'
     result += '#else\n'
 
-    files = glob.glob(joinPath(OUTPUT_DIR, '**/*.data'))
+    files = glob.glob(joinPath(OUTPUT_DIR, 'strings/*.data')) \
+        + glob.glob(joinPath(OUTPUT_DIR, 'styles/*.data'))  \
+        + glob.glob(joinPath(OUTPUT_DIR, 'ui/*.data')) \
+        + glob.glob(joinPath(OUTPUT_DIR, 'xml/*.data')) \
+        + glob.glob(joinPath(OUTPUT_DIR, 'data/*.data')) \
+        + glob.glob(joinPath(OUTPUT_DIR, 'images/*.data'))
     result += gen_add_assets(files)
+    if not IS_DEFAULT_THEME:
+        files = glob.glob(joinPath(DEFAULT_THEME_OUTPUT_DIR, 'strings/*.data')) \
+            + glob.glob(joinPath(DEFAULT_THEME_OUTPUT_DIR, 'styles/*.data'))  \
+            + glob.glob(joinPath(DEFAULT_THEME_OUTPUT_DIR, 'ui/*.data')) \
+            + glob.glob(joinPath(DEFAULT_THEME_OUTPUT_DIR, 'xml/*.data')) \
+            + glob.glob(joinPath(DEFAULT_THEME_OUTPUT_DIR, 'data/*.data')) \
+            + glob.glob(joinPath(DEFAULT_THEME_OUTPUT_DIR, 'images/*.data'))
+        result += gen_add_assets_of_default_theme(files)
+
+    result += "#if defined(WITH_STB_FONT) || defined(WITH_FT_FONT)\n"
+    files = glob.glob(joinPath(OUTPUT_DIR, 'fonts/*.res'))
+    result += gen_add_assets(files)
+    if not IS_DEFAULT_THEME:
+        files = glob.glob(joinPath(DEFAULT_THEME_OUTPUT_DIR, 'fonts/*.res'))
+        result += gen_add_assets_of_default_theme(files)
+    result += "#else/*WITH_STB_FONT or WITH_FT_FONT*/\n"
+    files = glob.glob(joinPath(OUTPUT_DIR, 'fonts/*.data'))
+    result += gen_add_assets(files)
+    if not IS_DEFAULT_THEME:
+        files = glob.glob(joinPath(DEFAULT_THEME_OUTPUT_DIR, 'fonts/*.data'))
+        result += gen_add_assets_of_default_theme(files)
+    result += '#endif/*WITH_STB_FONT or WITH_FT_FONT*/\n'
 
     result += "#ifdef WITH_VGCANVAS\n"
     files = glob.glob(joinPath(OUTPUT_DIR, 'images/*.bsvg'))
     result += gen_add_assets(files)
+    if not IS_DEFAULT_THEME:
+        files = glob.glob(joinPath(DEFAULT_THEME_OUTPUT_DIR, 'images/*.bsvg'))
+        result += gen_add_assets_of_default_theme(files)
     result += '#endif/*WITH_VGCANVAS*/\n'
+
+    files = glob.glob(joinPath(OUTPUT_DIR, 'scripts/*.res'))
+    result += gen_add_assets(files)
+    if not IS_DEFAULT_THEME:
+        files = glob.glob(joinPath(DEFAULT_THEME_OUTPUT_DIR, 'scripts/*.res'))
+        result += gen_add_assets_of_default_theme(files)
 
     result += '#endif\n'
 
@@ -388,7 +493,8 @@ def gen_res_c():
     result += '  tk_init_assets();\n'
     result += '  return RET_OK;\n'
     result += '}\n'
-    writeResult(result)
+
+    writeResult(ASSET_C.replace('.c', '_' + THEME + '.c'), result)
 
 
 def gen_res_web_c():
@@ -405,7 +511,7 @@ def gen_res_web_c():
     result += genIncludes(files)
 
     result += '\n'
-    result += 'ret_t assets_init(void) {\n'
+    result += 'ret_t assets_init(const char* theme) {\n'
     result += '  assets_manager_t* am = assets_manager();\n\n'
     result += ''
 
@@ -416,9 +522,7 @@ def gen_res_web_c():
     result += '  return RET_OK;\n'
     result += '}\n'
 
-    global ASSET_C
-    ASSET_C = ASSET_C.replace('.c', '_web.c')
-    writeResult(result)
+    writeResult(ASSET_C.replace('.c', '_web.c'), result)
 
 
 def gen_res_json_one(res_type, files):
@@ -465,9 +569,7 @@ def gen_res_json():
         gen_res_json_one("font", glob.glob(joinPath(INPUT_DIR, 'fonts/*.ttf')))
     result = result + '\n};'
 
-    global ASSET_C
-    ASSET_C = ASSET_C.replace('.c', '_web.js')
-    writeResult(result)
+    writeResult(ASSET_C.replace('.c', '_web.js'), result)
 
 
 def gen_res():
@@ -476,25 +578,56 @@ def gen_res():
     gen_res_c()
 
 
+def genAssetC(themes, asset_c):
+    result = '#include "awtk.h"\n'
+    result += '#include "base/assets_manager.h"\n\n'
+
+    for theme in themes:
+        result += 'extern ret_t assets_init_'+theme+'(void);\n'
+
+    result += '\n'
+    result += 'ret_t assets_init(const char* theme) {\n'
+    result += '  assets_manager_t* am = assets_manager();\n'
+    result += '  return_value_if_fail(theme != NULL && am != NULL, RET_BAD_PARAMS);\n\n'
+    result += '  assets_manager_set_theme(am, theme);\n\n'
+    result += '  '
+
+    for theme in themes:
+        result +=   'if (tk_str_eq(theme, "'+theme+'")) {\n'
+        result += '    return assets_init_'+theme+'();\n'
+        result += '  } else '
+
+    result += '{ \n'
+    result += '    log_debug(\"%s not support.\\n\", theme);\n'
+    result += '    return RET_NOT_IMPL;\n  }\n}'
+    writeResult(asset_c, result)
+
+
 def init(awtk_root, assets_root, theme, asset_c):
     global DPI
     global THEME
     global ASSET_C
     global BIN_DIR
     global ASSETS_ROOT
+    global DEFAULT_THEME_ASSETS_ROOT
     global AWTK_ROOT
     global INPUT_DIR
     global OUTPUT_DIR
+    global DEFAULT_THEME_OUTPUT_DIR
     global IMAGEGEN_OPTIONS
+    global IS_DEFAULT_THEME
 
+    IS_DEFAULT_THEME = theme == 'default'
     THEME = theme
     ASSET_C = asset_c
     AWTK_ROOT = awtk_root
     ASSETS_ROOT = joinPath(assets_root, theme)
+    DEFAULT_THEME_ASSETS_ROOT = joinPath(assets_root, 'default')
 
     BIN_DIR = joinPath(AWTK_ROOT, 'bin')
     INPUT_DIR = joinPath(ASSETS_ROOT, 'raw')
     OUTPUT_DIR = joinPath(ASSETS_ROOT, 'inc')
+    DEFAULT_THEME_OUTPUT_DIR = joinPath(DEFAULT_THEME_ASSETS_ROOT, 'inc')
     print(INPUT_DIR)
     print(OUTPUT_DIR)
 

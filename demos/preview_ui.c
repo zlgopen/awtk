@@ -146,6 +146,7 @@ int main(int argc, char* argv[]) {
   int32_t h = 480;
   bool_t have_lang = FALSE;
   const char* filename = DEFAULT_UI;
+  const char* theme = "default";
   char res_root[MAX_PATH + 1];
   char country[3];
   char language[3];
@@ -154,7 +155,7 @@ int main(int argc, char* argv[]) {
   if (argc > 1) {
     filename = argv[1];
   } else {
-    log_debug("%s ui_file [w] [h] [res root]\n", argv[0]);
+    log_debug("%s ui_file [w] [h] [res root] [language] [theme]\n", argv[0]);
 #ifdef WIN32
     assert(!"no ui file provided");
 #endif /*WIN32*/
@@ -196,13 +197,17 @@ int main(int argc, char* argv[]) {
     have_lang = TRUE;
   }
 
+  if (argc > 6) {
+    theme = argv[6];
+  }
+
   tk_init(w, h, APP_SIMULATOR, NULL, res_root);
   assets_manager_set_res_root(assets_manager(), system_info()->app_root);
 #ifdef WITH_FS_RES
   system_info_set_default_font(system_info(), "default_full");
 #endif /*WITH_FS_RES*/
 
-  assets_init();
+  assets_init(theme);
   tk_ext_widgets_init();
 
   preview_ui(filename);

@@ -15,6 +15,11 @@ os.chdir(APP_ROOT);
 AWTK_ROOT=common.joinPath(APP_ROOT, '../awtk');
 ASSETS_ROOT=common.joinPath(APP_ROOT, 'assets')
 ASSET_C=common.joinPath(APP_ROOT, 'src/assets.c')
+themes=['default']
 
-common.init(AWTK_ROOT, ASSETS_ROOT, 'default', ASSET_C);
-common.updateRes()
+for theme in themes:
+    print('========================='+theme+' begin =========================')
+    common.init(AWTK_ROOT, ASSETS_ROOT, theme, ASSET_C)
+    common.updateRes()
+    print('========================='+theme+' end =========================\n')
+common.genAssetC(themes, ASSET_C)

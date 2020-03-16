@@ -26,10 +26,11 @@ def buildTools():
 
 def run():
     for theme in themes:
-        print('========================='+theme+' begin =========================');
+        print('========================='+theme+' begin =========================')
         common.init(AWTK_ROOT, ASSETS_ROOT, theme, ASSET_C)
         common.updateRes()
-        print('========================='+theme+' end =========================\n');
+        print('========================='+theme+' end =========================\n')
+    common.genAssetC(themes, ASSET_C)
 
 
 if sys.argv[1] == 'all':
