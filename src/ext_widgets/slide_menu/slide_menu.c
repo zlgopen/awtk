@@ -94,13 +94,14 @@ static widget_t* slide_menu_find_target(widget_t* widget, xy_t x, xy_t y) {
 }
 
 static int32_t slide_menu_get_visible_nr(widget_t* widget) {
+  if (widget->w == 0 || widget->h == 0) return 0;
   slide_menu_t* slide_menu = SLIDE_MENU(widget);
   int32_t n = (widget->w - widget->h) / (slide_menu->min_scale * widget->h) + 1;
 
   n = tk_min(n, MAX_VISIBLE_NR);
   n = tk_min(n, widget_count_children(widget));
 
-  return n;
+  return n > 0 ? n : 0;
 }
 
 static rect_t slide_menu_get_clip_r(widget_t* widget) {
@@ -236,6 +237,7 @@ static uint32_t slide_menu_get_visible_children(widget_t* widget,
   }
 
   nr = slide_menu_get_visible_nr(widget);
+  if (nr == 0) return 0;
 
   if (xoffset >= 0) {
     curr = MAX_VISIBLE_NR / 2;
