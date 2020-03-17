@@ -29,6 +29,7 @@
 #endif /*WITH_NANOVG_GL*/
 
 #include "lcd/lcd_nanovg.h"
+#include "base/widget_consts.h"
 #include "native_window/native_window_fb_gl.h"
 
 typedef struct _native_window_fb_gl_t {
