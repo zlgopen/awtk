@@ -523,7 +523,7 @@ static void widget_draw_arc_point_list(frr_image_info_t* image_info, canvas_t* c
 
 static inline uint32_t widget_get_standard_rounded_rect_radius(rect_t* r, uint32_t radius) {
   int32_t l = radius * 2;
-  if (l > r->w) {
+  if (l > r->w || l <= 0) {
     radius = r->w / 2;
     l = r->w;
   }
