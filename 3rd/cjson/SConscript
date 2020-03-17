@@ -1,0 +1,10 @@
+import os
+import platform
+
+env=DefaultEnvironment().Clone()
+LIB_DIR=os.environ['LIB_DIR'];
+BIN_DIR=os.environ['BIN_DIR'];
+
+env.Library(os.path.join(LIB_DIR, 'cjson'), Glob('*.c'))
+
+
