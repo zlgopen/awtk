@@ -51,6 +51,7 @@ ui      UI描述数据。
 | <a href="#assets_manager_t_assets_manager_set">assets\_manager\_set</a> | 设置缺省资源管理器。 |
 | <a href="#assets_manager_t_assets_manager_set_custom_build_asset_dir">assets\_manager\_set\_custom\_build\_asset\_dir</a> | 设置一个函数，该函数用于生成资源路径。 |
 | <a href="#assets_manager_t_assets_manager_set_custom_load_asset">assets\_manager\_set\_custom\_load\_asset</a> | 设置一个函数，该函数用于实现自定义加载资源。 |
+| <a href="#assets_manager_t_assets_manager_set_loader">assets\_manager\_set\_loader</a> | 设置loader。 |
 | <a href="#assets_manager_t_assets_manager_set_locale_info">assets\_manager\_set\_locale\_info</a> | 设置locale_info对象。 |
 | <a href="#assets_manager_t_assets_manager_set_res_root">assets\_manager\_set\_res\_root</a> | 设置资源所在的目录(其下目录结构请参考demos)。 |
 | <a href="#assets_manager_t_assets_manager_set_system_info">assets\_manager\_set\_system\_info</a> | 设置system_info对象。 |
@@ -383,6 +384,26 @@ ret_t assets_manager_set_custom_load_asset (assets_manager_t* am, assets_manager
 | am | assets\_manager\_t* | asset manager对象。 |
 | custom\_load\_asset | assets\_manager\_load\_asset\_t | 回调函数。 |
 | ctx | void* | 回调函数的上下文。 |
+#### assets\_manager\_set\_loader 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="assets_manager_t_assets_manager_set_loader">设置loader。
+
+* 函数原型：
+
+```
+ret_t assets_manager_set_loader (assets_manager_t* am, asset_loader_t* loader);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| am | assets\_manager\_t* | asset manager对象。 |
+| loader | asset\_loader\_t* | 加载器(由assets manager销毁)。 |
 #### assets\_manager\_set\_locale\_info 函数
 -----------------------
 

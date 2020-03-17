@@ -19,6 +19,7 @@
 | <a href="#path_t_path_is_abs">path\_is\_abs</a> | 判断路径是否为绝对路径。 |
 | <a href="#path_t_path_normalize">path\_normalize</a> | 规范路径字符形式。 |
 | <a href="#path_t_path_replace_basename">path\_replace\_basename</a> | 替换文件名。 |
+| <a href="#path_t_path_replace_extname">path\_replace\_extname</a> | 替换文件扩展名。 |
 #### path\_abs 函数
 -----------------------
 
@@ -263,3 +264,25 @@ ret_t path_replace_basename (char* result, uint32_t size, char* filename, char* 
 | size | uint32\_t | 缓冲区大小。 |
 | filename | char* | 原始文件路径。 |
 | basename | char* | 替换后的文件名。 |
+#### path\_replace\_extname 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="path_t_path_replace_extname">替换文件扩展名。
+
+* 函数原型：
+
+```
+ret_t path_replace_extname (char* result, uint32_t size, char* filename, char* extname);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| result | char* | 用于返回结果。 |
+| size | uint32\_t | 缓冲区大小。 |
+| filename | char* | 原始文件路径。 |
+| extname | char* | 替换后的文件扩展名。 |

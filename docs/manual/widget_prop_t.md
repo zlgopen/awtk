@@ -10,6 +10,8 @@
 | WIDGET\_PROP\_Y | Y坐标。 |
 | WIDGET\_PROP\_W | 宽度。 |
 | WIDGET\_PROP\_H | 高度。 |
+| WIDGET\_PROP\_CARET\_X | caret x。 |
+| WIDGET\_PROP\_CARET\_Y | caret y。 |
 | WIDGET\_PROP\_DIRTY\_RECT\_TOLERANCE | 脏矩形超出控件本身大小的最大范围。 |
 | WIDGET\_PROP\_CANVAS | Canvas。 |
 | WIDGET\_PROP\_LOCALIZE\_OPTIONS | Canvas。 |

@@ -50,7 +50,7 @@ time\_clock一般不需要设置style。
 | <a href="#mledit_t_max_lines">max\_lines</a> | uint32\_t | 最大行数。 |
 | <a href="#mledit_t_readonly">readonly</a> | bool\_t | 编辑器是否为只读。 |
 | <a href="#mledit_t_right_margin">right\_margin</a> | uint8\_t | 右边距。 |
-| <a href="#mledit_t_scroll_line">scroll\_line</a> | float\_t | 鼠标一次滚动行数。 |
+| <a href="#mledit_t_scroll_line">scroll\_line</a> | uint32\_t | 鼠标一次滚动行数。 |
 | <a href="#mledit_t_tips">tips</a> | char* | 输入提示。 |
 | <a href="#mledit_t_top_margin">top\_margin</a> | uint8\_t | 上边距。 |
 | <a href="#mledit_t_wrap_word">wrap\_word</a> | bool\_t | 是否自动折行。 |
@@ -327,7 +327,7 @@ ret_t mledit_set_wrap_word (widget_t* widget, bool_t wrap_word);
 -----------------------
 > <p id="mledit_t_scroll_line">鼠标一次滚动行数。
 
-* 类型：float\_t
+* 类型：uint32\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

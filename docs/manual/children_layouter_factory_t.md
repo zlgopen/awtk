@@ -66,7 +66,7 @@ children_layouter_t* children_layouter_factory_create_layouter (children_layoute
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | children\_layouter\_t* | 返回窗口动画对象。 |
+| 返回值 | children\_layouter\_t* | 返回子控件布局算法对象。 |
 | factory | children\_layouter\_factory\_t* | 子控件布局算法工厂对象。 |
 | type | const char* | 类型。 |
 #### children\_layouter\_factory\_destroy 函数
@@ -106,7 +106,7 @@ ret_t children_layouter_factory_register (children_layouter_factory_t* factory, 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| factory | children\_layouter\_factory\_t* | highlighter工厂对象。 |
+| factory | children\_layouter\_factory\_t* | layouter工厂对象。 |
 | type | const char* | 子控件布局算法类型。 |
 | create | children\_layouter\_create\_t | 子控件布局算法创建函数。 |
 #### children\_layouter\_factory\_set 函数

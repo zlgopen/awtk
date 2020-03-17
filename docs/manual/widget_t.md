@@ -65,6 +65,7 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | <a href="#widget_t_widget_destroy_animator">widget\_destroy\_animator</a> | 销毁动画。 |
 | <a href="#widget_t_widget_destroy_children">widget\_destroy\_children</a> | 销毁全部子控件。 |
 | <a href="#widget_t_widget_dispatch">widget\_dispatch</a> | 分发一个事件。 |
+| <a href="#widget_t_widget_dispatch_recursive">widget\_dispatch\_recursive</a> | 分发一个事件控件本身及所有子控件。 |
 | <a href="#widget_t_widget_equal">widget\_equal</a> | 判断两个widget是否相同。 |
 | <a href="#widget_t_widget_find_animator">widget\_find\_animator</a> | 查找指定名称的动画。 |
 | <a href="#widget_t_widget_foreach">widget\_foreach</a> | 遍历当前控件及子控件。 |
@@ -377,7 +378,7 @@ widget_t* widget_cast (widget_t* widget);
 * 函数原型：
 
 ```
-widget_t* widget_child (widget_t* widget, char* name);
+widget_t* widget_child (widget_t* widget, const char* name);
 ```
 
 * 参数说明：
@@ -386,7 +387,7 @@ widget_t* widget_child (widget_t* widget, char* name);
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | 子控件或NULL。 |
 | widget | widget\_t* | 控件对象。 |
-| name | char* | 子控件的名称。 |
+| name | const char* | 子控件的名称。 |
 #### widget\_child\_on 函数
 -----------------------
 
@@ -398,7 +399,7 @@ widget_t* widget_child (widget_t* widget, char* name);
 * 函数原型：
 
 ```
-int32_t widget_child_on (widget_t* widget, char* name, event_type_t type, event_func_t on_event, void* ctx);
+int32_t widget_child_on (widget_t* widget, const char* name, event_type_t type, event_func_t on_event, void* ctx);
 ```
 
 * 参数说明：
@@ -407,7 +408,7 @@ int32_t widget_child_on (widget_t* widget, char* name, event_type_t type, event_
 | -------- | ----- | --------- |
 | 返回值 | int32\_t | 返回id，用于widget\_off。 |
 | widget | widget\_t* | 控件对象。 |
-| name | char* | 子控件的名称。 |
+| name | const char* | 子控件的名称。 |
 | type | event\_type\_t | 事件类型。 |
 | on\_event | event\_func\_t | 事件处理函数。 |
 | ctx | void* | 事件处理函数上下文。 |
@@ -529,7 +530,7 @@ ret_t widget_destroy (widget_t* widget);
 * 函数原型：
 
 ```
-ret_t widget_destroy_animator (widget_t* widget, char* name);
+ret_t widget_destroy_animator (widget_t* widget, const char* name);
 ```
 
 * 参数说明：
@@ -538,7 +539,7 @@ ret_t widget_destroy_animator (widget_t* widget, char* name);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
-| name | char* | 动画名称。 |
+| name | const char* | 动画名称。 |
 #### widget\_destroy\_children 函数
 -----------------------
 
@@ -578,6 +579,26 @@ ret_t widget_dispatch (widget_t* widget, event_t* e);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | e | event\_t* | 事件。 |
+#### widget\_dispatch\_recursive 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_dispatch_recursive">分发一个事件控件本身及所有子控件。
+
+* 函数原型：
+
+```
+ret_t widget_dispatch_recursive (widget_t* widget, event_t* e);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| e | event\_t* | 事件。 |
 #### widget\_equal 函数
 -----------------------
 
@@ -608,7 +629,7 @@ bool_t widget_equal (widget_t* widget, widget_t* other);
 * 函数原型：
 
 ```
-widget_animator_t* widget_find_animator (widget_t* widget, char* name);
+widget_animator_t* widget_find_animator (widget_t* widget, const char* name);
 ```
 
 * 参数说明：
@@ -617,7 +638,7 @@ widget_animator_t* widget_find_animator (widget_t* widget, char* name);
 | -------- | ----- | --------- |
 | 返回值 | widget\_animator\_t* | 成功返回动画对象，失败返回NULL。 |
 | widget | widget\_t* | 控件对象。 |
-| name | char* | 动画名称。 |
+| name | const char* | 动画名称。 |
 #### widget\_foreach 函数
 -----------------------
 
@@ -1297,7 +1318,7 @@ ret_t widget_load_image (widget_t* widget, const char* name, bitmap_t* bitmap);
 * 函数原型：
 
 ```
-widget_t* widget_lookup (widget_t* widget, char* name, bool_t recursive);
+widget_t* widget_lookup (widget_t* widget, const char* name, bool_t recursive);
 ```
 
 * 参数说明：
@@ -1306,7 +1327,7 @@ widget_t* widget_lookup (widget_t* widget, char* name, bool_t recursive);
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | 子控件或NULL。 |
 | widget | widget\_t* | 控件对象。 |
-| name | char* | 子控件的名称。 |
+| name | const char* | 子控件的名称。 |
 | recursive | bool\_t | 是否递归查找全部子控件。 |
 #### widget\_lookup\_by\_type 函数
 -----------------------
@@ -1318,7 +1339,7 @@ widget_t* widget_lookup (widget_t* widget, char* name, bool_t recursive);
 * 函数原型：
 
 ```
-widget_t* widget_lookup_by_type (widget_t* widget, char* type, bool_t recursive);
+widget_t* widget_lookup_by_type (widget_t* widget, const char* type, bool_t recursive);
 ```
 
 * 参数说明：
@@ -1327,7 +1348,7 @@ widget_t* widget_lookup_by_type (widget_t* widget, char* type, bool_t recursive)
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | 子控件或NULL。 |
 | widget | widget\_t* | 控件对象。 |
-| type | char* | 子控件的名称。 |
+| type | const char* | 子控件的名称。 |
 | recursive | bool\_t | 是否递归查找全部子控件。 |
 #### widget\_move 函数
 -----------------------
@@ -1524,7 +1545,7 @@ int32_t widget_on_with_tag (widget_t* widget, event_type_t type, event_func_t on
 * 函数原型：
 
 ```
-ret_t widget_pause_animator (widget_t* widget, char* name);
+ret_t widget_pause_animator (widget_t* widget, const char* name);
 ```
 
 * 参数说明：
@@ -1533,7 +1554,7 @@ ret_t widget_pause_animator (widget_t* widget, char* name);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
-| name | char* | 动画名称。 |
+| name | const char* | 动画名称。 |
 #### widget\_ref 函数
 -----------------------
 
@@ -1832,7 +1853,7 @@ ret_t widget_set_focused (widget_t* widget, bool_t focused);
 * 函数原型：
 
 ```
-ret_t widget_set_name (widget_t* widget, char* name);
+ret_t widget_set_name (widget_t* widget, const char* name);
 ```
 
 * 参数说明：
@@ -1841,7 +1862,7 @@ ret_t widget_set_name (widget_t* widget, char* name);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
-| name | char* | 名称。 |
+| name | const char* | 名称。 |
 #### widget\_set\_opacity 函数
 -----------------------
 
@@ -1874,7 +1895,7 @@ ret_t widget_set_opacity (widget_t* widget, uint8_t opacity);
 * 函数原型：
 
 ```
-ret_t widget_set_pointer_cursor (widget_t* widget, char* cursor);
+ret_t widget_set_pointer_cursor (widget_t* widget, const char* cursor);
 ```
 
 * 参数说明：
@@ -1883,7 +1904,7 @@ ret_t widget_set_pointer_cursor (widget_t* widget, char* cursor);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
-| cursor | char* | 图片名称(无扩展名)。 |
+| cursor | const char* | 图片名称(无扩展名)。 |
 #### widget\_set\_prop 函数
 -----------------------
 
@@ -2189,7 +2210,7 @@ ret_t widget_set_text_utf8 (widget_t* widget, const char* text);
 * 函数原型：
 
 ```
-ret_t widget_set_theme (widget_t* widget, char* name);
+ret_t widget_set_theme (widget_t* widget, const char* name);
 ```
 
 * 参数说明：
@@ -2198,7 +2219,7 @@ ret_t widget_set_theme (widget_t* widget, char* name);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
-| name | char* | 主题的名称。 |
+| name | const char* | 主题的名称。 |
 #### widget\_set\_tr\_text 函数
 -----------------------
 
@@ -2209,7 +2230,7 @@ ret_t widget_set_theme (widget_t* widget, char* name);
 * 函数原型：
 
 ```
-ret_t widget_set_tr_text (widget_t* widget, char* text);
+ret_t widget_set_tr_text (widget_t* widget, const char* text);
 ```
 
 * 参数说明：
@@ -2218,7 +2239,7 @@ ret_t widget_set_tr_text (widget_t* widget, char* text);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
-| text | char* | 文本。 |
+| text | const char* | 文本。 |
 #### widget\_set\_value 函数
 -----------------------
 
@@ -2321,7 +2342,7 @@ ret_t widget_start_animator (widget_t* widget, const char* name);
 * 函数原型：
 
 ```
-ret_t widget_stop_animator (widget_t* widget, char* name);
+ret_t widget_stop_animator (widget_t* widget, const char* name);
 ```
 
 * 参数说明：
@@ -2330,7 +2351,7 @@ ret_t widget_stop_animator (widget_t* widget, char* name);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
-| name | char* | 动画名称。 |
+| name | const char* | 动画名称。 |
 #### widget\_take\_snapshot 函数
 -----------------------
 
@@ -2545,7 +2566,7 @@ ret_t widget_unref (widget_t* widget);
 * 函数原型：
 
 ```
-ret_t widget_use_style (widget_t* widget, char* style);
+ret_t widget_use_style (widget_t* widget, const char* style);
 ```
 
 * 参数说明：
@@ -2554,7 +2575,7 @@ ret_t widget_use_style (widget_t* widget, char* style);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
-| style | char* | style的名称。 |
+| style | const char* | style的名称。 |
 #### animation 属性
 -----------------------
 > <p id="widget_t_animation">动画参数。请参考[控件动画](https://github.com/zlgopen/awtk/blob/master/docs/widget_animator.md)

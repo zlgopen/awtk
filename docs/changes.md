@@ -2,7 +2,11 @@
 * 2020/03/17
   * 修复在 ubuntu 编译 fb_gl 模式下出现编译出错的问题（感谢智明提供补丁）。
   * 修复圆角矩形半径为负数时候出现的bug（感谢智明提供补丁）。
-   
+  * progress circle 支持 line cap 属性。
+  * 增加 vgcanvas\_line\_join\_t 定义。
+  * 增加 vgcanvas\_line\_cap\_t 定义。
+  * 更新文档和idl.json
+
 * 2020/03/16
   * 无文件系统是支持多主题（感谢朝泽提供补丁）。
 

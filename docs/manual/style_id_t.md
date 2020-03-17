@@ -12,6 +12,9 @@ style常量定义。### 常量
 | STYLE\_ID\_FONT\_SIZE | 字体大小。 |
 | STYLE\_ID\_FONT\_STYLE | 字体风格(粗体、斜体等)。 |
 | STYLE\_ID\_TEXT\_COLOR | 文本颜色。 |
+| STYLE\_ID\_HIGHLIGHT\_FONT\_NAME | 高亮文本的字体名称。 |
+| STYLE\_ID\_HIGHLIGHT\_FONT\_SIZE | 高亮文本的字体大小。 |
+| STYLE\_ID\_HIGHLIGHT\_TEXT\_COLOR | 高亮文本的文本颜色。 |
 | STYLE\_ID\_TIPS\_TEXT\_COLOR | 提示文本颜色。 |
 | STYLE\_ID\_TEXT\_ALIGN\_H | 文本水平对齐的方式。 |
 | STYLE\_ID\_TEXT\_ALIGN\_V | 文本垂直对齐的方式。 |

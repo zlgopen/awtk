@@ -29,6 +29,7 @@ mutable_image_set_prepare_image(image, get_camera_image, camera);
 
 > 创建之后:
 >
+> 需要用mutable\_image\_set\_create\_image设置创建图片的回调函数。
 > 需要用mutable\_image\_set\_prepare\_image设置准备图片的回调函数。
 
 > 完整示例请参考：[mutable image demo](
@@ -43,6 +44,7 @@ https://github.com/zlgopen/awtk-c-demos/blob/master/demos/mutable_image.c)
 | -------- | ------------ | 
 | <a href="#mutable_image_t_mutable_image_cast">mutable\_image\_cast</a> | 转换为mutable_image对象(供脚本语言使用)。 |
 | <a href="#mutable_image_t_mutable_image_create">mutable\_image\_create</a> | 创建mutable_image对象 |
+| <a href="#mutable_image_t_mutable_image_set_create_image">mutable\_image\_set\_create\_image</a> | 设置create_image回调函数。 |
 | <a href="#mutable_image_t_mutable_image_set_framebuffer">mutable\_image\_set\_framebuffer</a> | 设置framebuffer(当硬件支持多层合成时才用)。 |
 | <a href="#mutable_image_t_mutable_image_set_prepare_image">mutable\_image\_set\_prepare\_image</a> | 设置prepare_image回调函数。 |
 #### mutable\_image\_cast 函数
@@ -87,6 +89,27 @@ widget_t* mutable_image_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### mutable\_image\_set\_create\_image 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="mutable_image_t_mutable_image_set_create_image">设置create_image回调函数。
+
+* 函数原型：
+
+```
+ret_t mutable_image_set_create_image (widget_t* widget, mutable_image_create_image_t create_image, void* create_image_ctx);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | mutable\_image对象。 |
+| create\_image | mutable\_image\_create\_image\_t | 创建图片的回调函数。 |
+| create\_image\_ctx | void* | create\_image回调函数的上下文。 |
 #### mutable\_image\_set\_framebuffer 函数
 -----------------------
 
