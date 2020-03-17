@@ -268,6 +268,10 @@ static ret_t main_loop_sdl2_dispatch(main_loop_simple_t* loop) {
         main_loop_sdl2_dispatch_window_event(loop, &event);
         break;
       }
+      case SDL_QUIT: {
+        main_loop_quit((main_loop_t*)loop);
+        break;
+      }
     }
   }
 
