@@ -266,7 +266,7 @@ widget_t* progress_circle_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t 
   progress_circle->show_text = TRUE;
   progress_circle->counter_clock_wise = FALSE;
   progress_circle_set_line_cap(widget, VGCANVAS_LINE_CAP_ROUND);
-  
+
   return widget;
 }
 
