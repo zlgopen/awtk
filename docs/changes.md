@@ -7,6 +7,7 @@
   * 增加 vgcanvas\_line\_cap\_t 定义。
   * 更新文档和idl.json
   * 修改 dragger 放在list view中的问题（感谢大恒提供补丁）。
+  * 完善 combo_box （感谢尧燊提供补丁）。
 
 * 2020/03/16
   * 无文件系统是支持多主题（感谢朝泽提供补丁）。
