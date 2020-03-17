@@ -519,7 +519,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
   return_value_if_fail(widget != NULL && edit != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->visible, RET_OK);
 
-  if (edit->readonly) {
+  if (edit->readonly && type != EVT_DESTROY) {
     text_edit_set_cursor(edit->model, 0xffffffff);
     return RET_OK;
   }
