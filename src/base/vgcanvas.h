@@ -1181,6 +1181,48 @@ ret_t vgcanvas_fbo_to_bitmap(vgcanvas_t* vg, framebuffer_object_t* fbo, bitmap_t
 ret_t fbo_to_img(framebuffer_object_t* fbo, bitmap_t* img);
 ret_t vgcanvas_set_assets_manager(vgcanvas_t* vg, assets_manager_t* assets_manager);
 
+/**
+ * @enum vgcanvas_line_cap_t
+ * @annotation ["scriptable", "string"]
+ * @prefix VGCANVAS_LINE_CAP_
+ * 线帽类型。
+ */
+/**
+ * @const VGCANVAS_LINE_CAP_ROUND
+ * 圆头。
+ */
+#define VGCANVAS_LINE_CAP_ROUND "round"
+
+/**
+ * @const VGCANVAS_LINE_CAP_SQUARE
+ * 方头。 
+ */
+#define VGCANVAS_LINE_CAP_SQUARE "square"
+
+/**
+ * @enum vgcanvas_line_join_t
+ * @annotation ["scriptable", "string"]
+ * @prefix VGCANVAS_LINE_JOIN_
+ * 线条连接类型。
+ */
+/**
+ * @const VGCANVAS_LINE_JOIN_ROUND
+ * round。
+ */
+#define VGCANVAS_LINE_JOIN_ROUND "round"
+
+/**
+ * @const VGCANVAS_LINE_JOIN_BEVEL
+ * bevel。 
+ */
+#define VGCANVAS_LINE_JOIN_BEVEL "bevel"
+
+/**
+ * @const VGCANVAS_LINE_JOIN_MITTER
+ * mitter。 
+ */
+#define VGCANVAS_LINE_JOIN_MITTER "mitter"
+
 END_C_DECLS
 
 #endif /*TK_VG_CANVAS_H*/
