@@ -61,7 +61,11 @@ static ret_t progress_circle_on_paint_self(widget_t* widget, canvas_t* c) {
     vgcanvas_translate(vg, c->ox, c->oy);
     vgcanvas_set_stroke_color(vg, color);
     vgcanvas_set_line_width(vg, progress_circle->line_width);
-    vgcanvas_set_line_cap(vg, "round");
+    if (tk_str_eq(progress_circle->line_cap, VGCANVAS_LINE_CAP_ROUND)) {
+      vgcanvas_set_line_cap(vg, progress_circle->line_cap);
+    } else {
+      vgcanvas_set_line_cap(vg, VGCANVAS_LINE_CAP_SQUARE);
+    }
     vgcanvas_begin_path(vg);
     if (end_angle > start_angle) {
       vgcanvas_arc(vg, cx, cy, r, start_angle, end_angle, ccw);
@@ -140,6 +144,15 @@ ret_t progress_circle_set_unit(widget_t* widget, const char* unit) {
   return widget_invalidate(widget, NULL);
 }
 
+ret_t progress_circle_set_line_cap(widget_t* widget, const char* line_cap) {
+  progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
+  return_value_if_fail(progress_circle != NULL, RET_BAD_PARAMS);
+
+  progress_circle->line_cap = tk_str_copy(progress_circle->line_cap, line_cap);
+
+  return widget_invalidate(widget, NULL);
+}
+
 ret_t progress_circle_set_show_text(widget_t* widget, bool_t show_text) {
   progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
   return_value_if_fail(progress_circle != NULL, RET_BAD_PARAMS);
@@ -183,6 +196,9 @@ static ret_t progress_circle_get_prop(widget_t* widget, const char* name, value_
   } else if (tk_str_eq(name, PROGRESS_CIRCLE_PROP_UNIT)) {
     value_set_str(v, progress_circle->unit);
     return RET_OK;
+  } else if (tk_str_eq(name, PROGRESS_CIRCLE_PROP_LINE_CAP)) {
+    value_set_str(v, progress_circle->line_cap);
+    return RET_OK;
   } else if (tk_str_eq(name, PROGRESS_CIRCLE_PROP_LINE_WIDTH)) {
     value_set_uint32(v, progress_circle->line_width);
     return RET_OK;
@@ -214,6 +230,8 @@ static ret_t progress_circle_set_prop(widget_t* widget, const char* name, const 
     return progress_circle_set_start_angle(widget, value_int(v));
   } else if (tk_str_eq(name, PROGRESS_CIRCLE_PROP_UNIT)) {
     return progress_circle_set_unit(widget, value_str(v));
+  } else if (tk_str_eq(name, PROGRESS_CIRCLE_PROP_LINE_CAP)) {
+    return progress_circle_set_line_cap(widget, value_str(v));
   }
 
   return RET_NOT_FOUND;
@@ -247,7 +265,8 @@ widget_t* progress_circle_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t 
   progress_circle->start_angle = -90;
   progress_circle->show_text = TRUE;
   progress_circle->counter_clock_wise = FALSE;
-
+  progress_circle_set_line_cap(widget, VGCANVAS_LINE_CAP_ROUND);
+  
   return widget;
 }
 
