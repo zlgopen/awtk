@@ -280,12 +280,14 @@ def gen_res_all_font():
         if not IS_DEFAULT_THEME: 
             fix_inc_file(inc)
 
-    font_sizes = [16, 18, 20, 24, 32, 96]
-    for sz in font_sizes:
-        inc = 'fonts/default_%d.data' % sz
-        fontgen('fonts/default_full.ttf', 'fonts/text.txt', inc, sz)
-        if not IS_DEFAULT_THEME: 
-            fix_inc_file(joinPath(OUTPUT_DIR, inc))
+    if os.path.exists(joinPath(INPUT_DIR, 'fonts/default_full.ttf')):
+        if os.path.exists(joinPath(INPUT_DIR, 'fonts/text.txt')):
+            font_sizes = [16, 18, 20, 24, 32, 96]
+            for sz in font_sizes:
+                inc = 'fonts/default_%d.data' % sz
+                fontgen('fonts/default_full.ttf', 'fonts/text.txt', inc, sz)
+                if not IS_DEFAULT_THEME: 
+                    fix_inc_file(joinPath(OUTPUT_DIR, inc))
 
 
 
