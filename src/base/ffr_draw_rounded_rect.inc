@@ -6,8 +6,10 @@
 */
 
 #include <math.h>
-#include "../tkc/types_def.h"
+#include "bitmap.h"
 #include "../tkc/darray.h"
+#include "../lcd/lcd_mem.h"
+#include "../tkc/types_def.h"
 
 #pragma pack(push, 4)
 /*
@@ -118,20 +120,29 @@ static inline uint32_t widget_bitmap_format_to_bpp(bitmap_format_t fmt) {
   return 0;
 }
 
-static inline frr_image_info_t* widget_image_info_create(frr_image_info_t* info, unsigned char* dst,
-                                                         uint32_t stride, uint32_t w, uint32_t h,
-                                                         bitmap_format_t format) {
+static inline frr_image_info_t* widget_image_info_create(frr_image_info_t* info, canvas_t* c) {
+  lcd_mem_t* mem = NULL;
+  vgcanvas_t* vg = canvas_get_vgcanvas(c);
   if (info == NULL) {
     info = TKMEM_ZALLOC(frr_image_info_t);
     return_value_if_fail(info != NULL, NULL);
   }
-
-  info->w = w;
-  info->h = h;
-  info->dst = dst;
-  info->stride = stride;
-  info->format = format;
-  info->bpp = widget_bitmap_format_to_bpp(format);
+  if(vg != NULL) {
+    info->w = vg->w;
+    info->h = vg->h;
+    info->stride = vg->stride;
+    info->format = vg->format;
+    info->dst = (unsigned char*)vg->buff;
+  }
+  else {
+    mem = (lcd_mem_t*)c->lcd;
+    info->w = mem->base.w;
+    info->h = mem->base.h;
+    info->format =  mem->format;
+    info->dst = mem->offline_fb;
+    info->stride = mem->line_length;
+  }
+  info->bpp = widget_bitmap_format_to_bpp(info->format);
   return info;
 }
 
@@ -581,12 +592,6 @@ static void widget_draw_fill_rounded_rect(canvas_t* c, rect_t* r, color_t* color
 
   vgcanvas_t* vg = canvas_get_vgcanvas(c);
 
-  if (vg == NULL) {
-    canvas_set_fill_color(c, *color);
-    canvas_fill_rect(c, r->x, r->y, r->w, r->h);
-    return;
-  }
-
 #ifndef WITH_NANOVG_GPU
   int32_t v_x1 = 0;
   int32_t v_y1 = 0;
@@ -640,8 +645,7 @@ static void widget_draw_fill_rounded_rect(canvas_t* c, rect_t* r, color_t* color
 
   canvas_set_fill_color(c, *color);
 
-  widget_image_info_create(&image_info, (unsigned char*)vg->buff, vg->stride, vg->w, vg->h,
-                           vg->format);
+  widget_image_info_create(&image_info, c);
 
   size = ANGLE2SIZE(M_FRR_PI_4, radius) + 1;
   if (size <= FRR_POINT_PIX_CACHE_SIZE) {
@@ -756,8 +760,7 @@ static void widget_draw_stroke_rounded_rect(canvas_t* c, rect_t* r, color_t* col
 
       Wu_D_Circle(radius, &point_list_45, point_pix_cache_list);
 
-      widget_image_info_create(&image_info, (unsigned char*)vg->buff, vg->stride, vg->w, vg->h,
-                               vg->format);
+      widget_image_info_create(&image_info, c);
       color->rgba.a = color->rgba.a * c->global_alpha / 0xff;
 
       widget_draw_arc_point_list(&image_info, c, v_x2, v_y1, x2, y1, angle_h, angle_v, radius, 0,
