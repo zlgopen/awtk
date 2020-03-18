@@ -22,7 +22,7 @@
 #include "awtk.h"
 
 BEGIN_C_DECLS
-extern ret_t assets_init(const char* theme);
+extern ret_t assets_init(void);
 END_C_DECLS
 
 #ifndef APP_DEFAULT_FONT
@@ -32,10 +32,6 @@ END_C_DECLS
 #define APP_DEFAULT_FONT "default"
 #endif /*WITH_FS_RES*/
 #endif /*APP_DEFAULT_FONT*/
-
-#ifndef APP_THEME
-#define APP_THEME "default"
-#endif /*APP_THEME*/
 
 #ifndef LCD_WIDTH
 #define LCD_WIDTH 320
@@ -178,7 +174,7 @@ int main(int argc, char* argv[]) {
 #endif /*WITH_LCD_PORTRAIT*/
 
   system_info_set_default_font(system_info(), APP_DEFAULT_FONT);
-  assets_init(APP_THEME);
+  assets_init();
 
 #ifndef WITHOUT_EXT_WIDGETS
   tk_ext_widgets_init();

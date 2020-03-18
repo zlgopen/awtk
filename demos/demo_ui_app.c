@@ -478,6 +478,7 @@ static ret_t on_show_fps(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+extern ret_t widget_set_theme_without_file_system(widget_t* widget, const char* name);
 static ret_t on_reload_theme_test(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(e->target);
   assets_manager_t* am = widget_get_assets_manager(widget);
@@ -490,29 +491,7 @@ static ret_t on_reload_theme_test(void* ctx, event_t* e) {
 #ifdef WITH_FS_RES
   widget_set_theme(widget, t);
 #else
-  const asset_info_t* info = NULL;
-  event_t evt = event_init(EVT_THEME_CHANGED, NULL);
-  widget_t* wm = widget_get_window_manager(widget);
-  font_manager_t* fm = widget_get_font_manager(widget);
-  image_manager_t* imm = widget_get_image_manager(widget);
-  locale_info_t* locale_info = widget_get_locale_info(widget);
-
-  font_manager_unload_all(fm);
-  image_manager_unload_all(imm);
-  assets_manager_clear_all(am);
-  widget_reset_canvas(widget);
-
-  assets_init(t);
-  locale_info_reload(locale_info);
-
-  info = assets_manager_ref(am, ASSET_TYPE_STYLE, "default");
-  assets_manager_unref(assets_manager(), info);
-  theme_init(theme(), info->data);
-
-  widget_dispatch(wm, &evt);
-  widget_invalidate_force(wm, NULL);
-
-  log_debug("theme changed: %s\n", t);
+  widget_set_theme_without_file_system(widget, t);
 #endif /*WITH_FS_RES*/
 
   return RET_OK;
@@ -845,10 +824,3 @@ ret_t application_init() {
 
   return show_preload_res_window();
 }
-
-ret_t application_exit() {
-  log_debug("application_exit\n");
-  return RET_OK;
-}
-
-#include "awtk_main.inc"

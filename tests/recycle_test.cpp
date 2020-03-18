@@ -37,7 +37,7 @@ int main(void) {
   system_info_init(APP_SIMULATOR, NULL, "./demos");
   tk_init_internal();
 
-  assets_init("default");
+  assets_init();
   tk_init_assets();
   create_destroy_test(10000);
 

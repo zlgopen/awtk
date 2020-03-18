@@ -2,6 +2,7 @@
 * 2020/03/18
   * 增加 cjson。
   * str 中增加了辅助一些 json 打包的函数。
+  * 完善资源管理（感谢朝泽提供补丁）。
   * WITH_BITMAP_FONT时locale change后异常的问题；（感谢朝泽提供补丁）。
   * update_res_common.py添加多主题处理时遗漏的images/*.res、strings/*.data，fonts/*.data等处理（感谢朝泽提供补丁）。
   * 完善圆角矩形（感谢智明提供补丁）。

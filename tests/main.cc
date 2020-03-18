@@ -51,7 +51,7 @@ GTEST_API_ int main(int argc, char** argv) {
   system_info_init(APP_SIMULATOR, NULL, "./demos");
   tk_init_internal();
 
-  assets_init("default");
+  assets_init();
   tk_init_assets();
   tk_ext_widgets_init();
 

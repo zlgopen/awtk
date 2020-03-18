@@ -207,8 +207,12 @@ int main(int argc, char* argv[]) {
   system_info_set_default_font(system_info(), "default_full");
 #endif /*WITH_FS_RES*/
 
-  assets_init(theme);
+  assets_init();
   tk_ext_widgets_init();
+
+  if (!tk_str_eq(theme, "default")) {
+    widget_set_theme(window_manager(), theme);
+  }
 
   preview_ui(filename);
   if (have_lang) {

@@ -1,6 +1,6 @@
 #include "awtk.h"
 #include "base/assets_manager.h"
-#include "assets/default/inc/fonts/default.data"
+#include "assets/default/inc/fonts/default_18.data"
 #include "assets/default/inc/images/bricks.data"
 #include "assets/default/inc/images/checked.data"
 #include "assets/default/inc/images/dialog_title.data"
@@ -46,7 +46,7 @@
 ret_t assets_init(void) {
   assets_manager_t* am = assets_manager();
 
-  assets_manager_add(am, font_default);
+  assets_manager_add(am, font_default_18);
   assets_manager_add(am, image_bricks);
   assets_manager_add(am, image_checked);
   assets_manager_add(am, image_dialog_title);

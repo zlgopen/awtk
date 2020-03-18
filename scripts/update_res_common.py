@@ -413,7 +413,7 @@ def gen_res_c():
     if not IS_DEFAULT_THEME:
         files = glob.glob(joinPath(DEFAULT_THEME_OUTPUT_DIR, 'images/*.data'))
         result += genExternOfDefaultTheme(files)
-    result += '#endif/*WITH_STB_IMAGE*/\n'
+    result += '#endif /*WITH_STB_IMAGE*/\n'
 
     result += "#ifdef WITH_VGCANVAS\n"
     files = glob.glob(joinPath(OUTPUT_DIR, 'images/*.bsvg'))
@@ -421,7 +421,7 @@ def gen_res_c():
     if not IS_DEFAULT_THEME:
         files = glob.glob(joinPath(DEFAULT_THEME_OUTPUT_DIR, 'images/*.bsvg'))
         result += genExternOfDefaultTheme(files)
-    result += '#endif/*WITH_VGCANVAS*/\n'
+    result += '#endif /*WITH_VGCANVAS*/\n'
 
     result += "#if defined(WITH_STB_FONT) || defined(WITH_FT_FONT)\n"
     files = glob.glob(joinPath(OUTPUT_DIR, 'fonts/*.res'))
@@ -435,7 +435,7 @@ def gen_res_c():
     if not IS_DEFAULT_THEME:
         files = glob.glob(joinPath(DEFAULT_THEME_OUTPUT_DIR, 'fonts/*.data'))
         result += genExternOfDefaultTheme(files)
-    result += '#endif/*WITH_STB_FONT or WITH_FT_FONT*/\n'
+    result += '#endif /*WITH_STB_FONT or WITH_FT_FONT*/\n'
 
     files = glob.glob(joinPath(OUTPUT_DIR, 'scripts/*.res'))
     result += genIncludes(files)
@@ -443,7 +443,7 @@ def gen_res_c():
         files = glob.glob(joinPath(DEFAULT_THEME_OUTPUT_DIR, 'scripts/*.res'))
         result += genExternOfDefaultTheme(files)
 
-    result += '#endif/*WITH_FS_RES*/\n'
+    result += '#endif /*WITH_FS_RES*/\n'
 
     result += '\n'
     result += 'ret_t assets_init_' + THEME + '(void) {\n'
@@ -477,13 +477,13 @@ def gen_res_c():
     if not IS_DEFAULT_THEME:
         files = glob.glob(joinPath(DEFAULT_THEME_OUTPUT_DIR, 'fonts/*.res'))
         result += gen_add_assets_of_default_theme(files)
-    result += "#else/*WITH_STB_FONT or WITH_FT_FONT*/\n"
+    result += "#else /*WITH_STB_FONT or WITH_FT_FONT*/\n"
     files = glob.glob(joinPath(OUTPUT_DIR, 'fonts/*.data'))
     result += gen_add_assets(files)
     if not IS_DEFAULT_THEME:
         files = glob.glob(joinPath(DEFAULT_THEME_OUTPUT_DIR, 'fonts/*.data'))
         result += gen_add_assets_of_default_theme(files)
-    result += '#endif/*WITH_STB_FONT or WITH_FT_FONT*/\n'
+    result += '#endif /*WITH_STB_FONT or WITH_FT_FONT*/\n'
 
     result += "#ifdef WITH_VGCANVAS\n"
     files = glob.glob(joinPath(OUTPUT_DIR, 'images/*.bsvg'))
@@ -491,7 +491,7 @@ def gen_res_c():
     if not IS_DEFAULT_THEME:
         files = glob.glob(joinPath(DEFAULT_THEME_OUTPUT_DIR, 'images/*.bsvg'))
         result += gen_add_assets_of_default_theme(files)
-    result += '#endif/*WITH_VGCANVAS*/\n'
+    result += '#endif /*WITH_VGCANVAS*/\n'
 
     files = glob.glob(joinPath(OUTPUT_DIR, 'scripts/*.res'))
     result += gen_add_assets(files)
@@ -506,7 +506,7 @@ def gen_res_c():
     result += '  return RET_OK;\n'
     result += '}\n'
 
-    writeResult(ASSET_C.replace('.c', '_' + THEME + '.c'), result)
+    writeResult(ASSET_C.replace('.c', '_' + THEME + '.inc'), result)
 
 
 def gen_res_web_c():
@@ -523,7 +523,7 @@ def gen_res_web_c():
     result += genIncludes(files)
 
     result += '\n'
-    result += 'ret_t assets_init(const char* theme) {\n'
+    result += 'ret_t assets_init(void) {\n'
     result += '  assets_manager_t* am = assets_manager();\n\n'
     result += ''
 
@@ -595,10 +595,13 @@ def genAssetC(themes, asset_c):
     result += '#include "base/assets_manager.h"\n\n'
 
     for theme in themes:
-        result += 'extern ret_t assets_init_'+theme+'(void);\n'
+        result += '#include "assets_'+theme+'.inc"\n'
 
     result += '\n'
-    result += 'ret_t assets_init(const char* theme) {\n'
+    result += '#ifndef APP_THEME\n'
+    result += '#define APP_THEME "default"\n'
+    result += '#endif /*APP_THEME*/\n\n'
+    result += 'ret_t assets_init_internal(const char* theme) {\n'
     result += '  assets_manager_t* am = assets_manager();\n'
     result += '  return_value_if_fail(theme != NULL && am != NULL, RET_BAD_PARAMS);\n\n'
     result += '  assets_manager_set_theme(am, theme);\n\n'
@@ -609,9 +612,40 @@ def genAssetC(themes, asset_c):
         result += '    return assets_init_'+theme+'();\n'
         result += '  } else '
 
-    result += '{ \n'
+    result += '{\n'
     result += '    log_debug(\"%s not support.\\n\", theme);\n'
-    result += '    return RET_NOT_IMPL;\n  }\n}'
+    result += '    return RET_NOT_IMPL;\n  }\n}\n\n'
+
+    result += 'ret_t assets_init(void) {\n'
+    result += '  return assets_init_internal(APP_THEME);\n}\n\n'
+
+    result += 'ret_t widget_set_theme_without_file_system(widget_t* widget, const char* name) {\n'
+    result += '#ifndef WITH_FS_RES\n'
+    result += '  const asset_info_t* info = NULL;\n'
+    result += '  event_t e = event_init(EVT_THEME_CHANGED, NULL);\n'
+    result += '  widget_t* wm = widget_get_window_manager(widget);\n'
+    result += '  font_manager_t* fm = widget_get_font_manager(widget);\n'
+    result += '  image_manager_t* imm = widget_get_image_manager(widget);\n'
+    result += '  assets_manager_t* am = widget_get_assets_manager(widget);\n'
+    result += '  locale_info_t* locale_info = widget_get_locale_info(widget);\n\n'
+    result += '  font_manager_unload_all(fm);\n'
+    result += '  image_manager_unload_all(imm);\n'
+    result += '  assets_manager_clear_all(am);\n'
+    result += '  widget_reset_canvas(widget);\n\n'
+    result += '  assets_init_internal(name);\n'
+    result += '  locale_info_reload(locale_info);\n\n'
+    result += '  info = assets_manager_ref(am, ASSET_TYPE_STYLE, "default");\n'
+    result += '  theme_init(theme(), info->data);\n'
+    result += '  assets_manager_unref(assets_manager(), info);\n\n'
+    result += '  widget_dispatch(wm, &e);\n'
+    result += '  widget_invalidate_force(wm, NULL);\n\n'
+    result += '  log_debug("theme changed: %s\\n", name);\n\n'
+    result += '  return RET_OK;\n'
+    result += '#else\n'
+    result += '  return RET_NOT_IMPL;\n'
+    result += '#endif /*WITH_FS_RES*/\n'
+    result += '}\n'
+
     writeResult(asset_c, result)
 
 
