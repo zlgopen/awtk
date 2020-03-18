@@ -78,6 +78,13 @@ ret_t font_manager_add_font(font_manager_t* fm, font_t* font) {
   return darray_push(&(fm->fonts), font);
 }
 
+static const char* font_manager_fix_bitmap_font_name(char str[MAX_PATH], const char* name,
+                                                     font_size_t size) {
+  memset(str, 0, MAX_PATH);
+  tk_snprintf(str, MAX_PATH, "%s_%d", name, size);
+  return str;
+}
+
 font_t* font_manager_lookup(font_manager_t* fm, const char* name, font_size_t size) {
 #if WITH_BITMAP_FONT
   font_t* font = NULL;
@@ -89,9 +96,7 @@ font_t* font_manager_lookup(font_manager_t* fm, const char* name, font_size_t si
   return_value_if_fail(fm != NULL, NULL);
 
 #if WITH_BITMAP_FONT
-  memset(font_name, 0, MAX_PATH);
-  tk_snprintf(font_name, sizeof(font_name), "%s_%d", name, size);
-  info_bitmap.name = font_name;
+  info_bitmap.name = font_manager_fix_bitmap_font_name(font_name, name, size);
   info_bitmap.size = size;
   font = darray_find(&(fm->fonts), &info_bitmap);
   if (font != NULL) {
@@ -105,7 +110,17 @@ font_t* font_manager_lookup(font_manager_t* fm, const char* name, font_size_t si
 font_t* font_manager_load(font_manager_t* fm, const char* name, uint32_t size) {
   font_t* font = NULL;
   if (fm->loader != NULL) {
-    const asset_info_t* info = assets_manager_ref(assets_manager(), ASSET_TYPE_FONT, name);
+    const asset_info_t* info = NULL;
+
+#if WITH_BITMAP_FONT
+    char font_name[MAX_PATH];
+    font_manager_fix_bitmap_font_name(font_name, name, size);
+    info = assets_manager_ref(assets_manager(), ASSET_TYPE_FONT, font_name);
+#endif
+
+    if (info == NULL) {
+      info = assets_manager_ref(assets_manager(), ASSET_TYPE_FONT, name);
+    }
 
     if (info != NULL) {
       if (info->subtype == fm->loader->type) {
@@ -144,11 +159,24 @@ ret_t font_manager_unload_font(font_manager_t* fm, const char* name, font_size_t
   font_t* font = NULL;
   font_cmp_info_t info = {name, size};
 
+#if WITH_BITMAP_FONT
+  char font_name[MAX_PATH];
+  font_cmp_info_t info_bitmap;
+#endif
+
   name = system_info_fix_font_name(name);
   return_value_if_fail(fm != NULL, RET_FAIL);
 
   font = font_manager_lookup(fm, name, size);
   return_value_if_fail(font != NULL, RET_NOT_FOUND);
+
+#if WITH_BITMAP_FONT
+  info_bitmap.name = font_manager_fix_bitmap_font_name(font_name, name, size);
+  info_bitmap.size = size;
+  if (darray_remove(&(fm->fonts), &info_bitmap) == RET_OK) {
+    return RET_OK;
+  }
+#endif
 
   return darray_remove(&(fm->fonts), &info);
 }
