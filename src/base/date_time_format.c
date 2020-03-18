@@ -23,7 +23,7 @@
 #include "base/locale_info.h"
 #include "base/date_time_format.h"
 
-static uint32_t count_char(const char* p, char c) {
+static uint32_t count_char(const wchar_t* p, wchar_t c) {
   uint32_t nr = 0;
 
   while (*p++ == c) {
@@ -56,8 +56,12 @@ static wchar_t* translate_month(wchar_t* str, uint32_t size, uint32_t month) {
 
 ret_t wstr_format_date_time(wstr_t* str, const char* format, const date_time_t* dt) {
   wchar_t temp[32];
-  const char* p = format;
   return_value_if_fail(format != NULL && str != NULL, RET_BAD_PARAMS);
+
+  wstr_t wformat;
+  wstr_init(&wformat, strlen(format) + 2);
+  wstr_set_utf8(&wformat, format);
+  const wchar_t* p = wformat.str;
 
   str->size = 0;
   memset(temp, 0x00, sizeof(temp));
@@ -126,12 +130,13 @@ ret_t wstr_format_date_time(wstr_t* str, const char* format, const date_time_t* 
         break;
       }
       default: {
-        wstr_push(str, *p);
+        wstr_append_with_len(str, p, repeat);
         break;
       }
     }
     p += repeat;
   }
+  wstr_reset(&wformat);
 
   return RET_OK;
 }
