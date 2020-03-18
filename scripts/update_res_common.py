@@ -59,8 +59,12 @@ def fix_inc_file(filename):
     with open(filename, "r") as fr:
         content = fr.read()
 
+    end = content.find('\n')
+    if end <= 0:
+        end = len(content)
+
     basename = to_assets_basename(filename, OUTPUT_DIR)
-    index = content.find(basename + '[])')
+    index = content.find(basename + '[])', 0, end)
     if index > 0:
         with open(filename, 'w') as fw:
             content = content.replace(basename + '[])', basename + '_' + THEME + '[])', 1)
@@ -217,10 +221,12 @@ def gen_res_png_jpg():
                 raw = f
                 basename = os.path.basename(filename)
                 filename = joinPath(OUTPUT_DIR, 'images/'+basename)
-                inc = fix_output_file_name(filename) + '.data'
+                filename = fix_output_file_name(filename)
+                inc = filename + '.data'
                 imagegen(raw, inc)
                 if not IS_DEFAULT_THEME: 
                     fix_inc_file(inc)
+                    fix_inc_file(filename + '.res')
                 break
 
 
@@ -274,12 +280,12 @@ def gen_res_all_font():
         if not IS_DEFAULT_THEME: 
             fix_inc_file(inc)
 
-    fontgen('fonts/default_full.ttf', 'fonts/text.txt', 'fonts/default_16.data', 16)
-    fontgen('fonts/default_full.ttf', 'fonts/text.txt', 'fonts/default_18.data', 18)
-    fontgen('fonts/default_full.ttf', 'fonts/text.txt', 'fonts/default_20.data', 20)
-    fontgen('fonts/default_full.ttf', 'fonts/text.txt', 'fonts/default_24.data', 24)
-    fontgen('fonts/default_full.ttf', 'fonts/text.txt', 'fonts/default_32.data', 32)
-    fontgen('fonts/default_full.ttf', 'fonts/text.txt', 'fonts/default_96.data', 96)
+    font_sizes = [16, 18, 20, 24, 32, 96]
+    for sz in font_sizes:
+        inc = 'fonts/default_%d.data' % sz
+        fontgen('fonts/default_full.ttf', 'fonts/text.txt', inc, sz)
+        if not IS_DEFAULT_THEME: 
+            fix_inc_file(joinPath(OUTPUT_DIR, inc))
 
 
 
@@ -298,6 +304,10 @@ def gen_res_all_string():
     print('gen_res_all_string')
     strgen('strings/strings.xml', 'strings')
     strgen_bin('strings/strings.xml', 'strings')
+    if not IS_DEFAULT_THEME: 
+        files = glob.glob(joinPath(OUTPUT_DIR, 'strings/*.data'))
+        for f in files:
+            fix_inc_file(f)
 
 
 def gen_gpinyin():
