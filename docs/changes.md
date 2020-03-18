@@ -1,15 +1,16 @@
 # 最新动态
 * 2020/03/18
   * 增加 cjson。
-  
+  * str 中增加了辅助一些 json 打包的函数。
+
 * 2020/03/17
   * 修复在 ubuntu 编译 fb_gl 模式下出现编译出错的问题（感谢智明提供补丁）。
-  * 修复圆角矩形半径为负数时候出现的bug（感谢智明提供补丁）。
+  * 修复圆角矩形半径为负数时候出现的 bug（感谢智明提供补丁）。
   * progress circle 支持 line cap 属性。
   * 增加 vgcanvas\_line\_join\_t 定义。
   * 增加 vgcanvas\_line\_cap\_t 定义。
-  * 更新文档和idl.json
-  * 修改 dragger 放在list view中的问题（感谢大恒提供补丁）。
+  * 更新文档和 idl.json
+  * 修改 dragger 放在 list view 中的问题（感谢大恒提供补丁）。
   * 完善 combo_box （感谢尧燊提供补丁）。
   * 完善 edit（感谢尧燊提供补丁）。
   * 完善 slide menu（感谢尧燊提供补丁）。

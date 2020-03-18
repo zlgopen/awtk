@@ -578,3 +578,70 @@ ret_t str_pop(str_t* str) {
 
   return RET_OK;
 }
+
+ret_t str_append_double(str_t* str, const char* format, double value) {
+  char buff[64];
+  const char* fmt = format != NULL ? format : "%.4lf";
+  return_value_if_fail(str != NULL, RET_BAD_PARAMS);
+
+  tk_snprintf(buff, sizeof(buff), fmt, value);
+
+  return str_append(str, buff);
+}
+
+ret_t str_append_json_str(str_t* str, const char* json_str) {
+  const char* p = json_str;
+  return_value_if_fail(str != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(str_append_char(str, '\"') == RET_OK, RET_OOM);
+  if (p != NULL) {
+    while (*p) {
+      if (*p == '\"') {
+        return_value_if_fail(str_append_char(str, '\\') == RET_OK, RET_OOM);
+      }
+      return_value_if_fail(str_append_char(str, *p) == RET_OK, RET_OOM);
+      p++;
+    }
+  }
+  return_value_if_fail(str_append_char(str, '\"') == RET_OK, RET_OOM);
+
+  return RET_OK;
+}
+
+ret_t str_append_json_int_pair(str_t* str, const char* key, int32_t value) {
+  return_value_if_fail(str != NULL && key != NULL, RET_BAD_PARAMS);
+
+  return_value_if_fail(str_append_json_str(str, key) == RET_OK, RET_OOM);
+  return_value_if_fail(str_append_char(str, ':') == RET_OK, RET_OOM);
+  return_value_if_fail(str_append_int(str, value) == RET_OK, RET_OOM);
+
+  return RET_OK;
+}
+
+ret_t str_append_json_str_pair(str_t* str, const char* key, const char* value) {
+  return_value_if_fail(str != NULL && key != NULL && value != NULL, RET_BAD_PARAMS);
+
+  return_value_if_fail(str_append_json_str(str, key) == RET_OK, RET_OOM);
+  return_value_if_fail(str_append_char(str, ':') == RET_OK, RET_OOM);
+  return_value_if_fail(str_append_json_str(str, value) == RET_OK, RET_OOM);
+
+  return RET_OK;
+}
+
+ret_t str_append_json_double_pair(str_t* str, const char* key, double value) {
+  return_value_if_fail(str != NULL && key != NULL, RET_BAD_PARAMS);
+
+  return_value_if_fail(str_append_json_str(str, key) == RET_OK, RET_OOM);
+  return_value_if_fail(str_append_char(str, ':') == RET_OK, RET_OOM);
+  return_value_if_fail(str_append_double(str, NULL, value) == RET_OK, RET_OOM);
+
+  return RET_OK;
+}
+ret_t str_append_json_bool_pair(str_t* str, const char* key, bool_t value) {
+  return_value_if_fail(str != NULL && key != NULL, RET_BAD_PARAMS);
+
+  return_value_if_fail(str_append_json_str(str, key) == RET_OK, RET_OOM);
+  return_value_if_fail(str_append_char(str, ':') == RET_OK, RET_OOM);
+  return_value_if_fail(str_append(str, value ? "true" : "false") == RET_OK, RET_OOM);
+
+  return RET_OK;
+}

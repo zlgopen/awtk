@@ -275,3 +275,26 @@ TEST(Str, from_wstr) {
 
   str_reset(s);
 }
+
+TEST(Str, json) {
+  str_t str;
+  str_t* s = NULL;
+  s = str_init(&str, 100);
+
+  ASSERT_EQ(str_append_char(&str, '{'), RET_OK);
+  ASSERT_EQ(str_append_json_str_pair(&str, "name", "zhangshan"), RET_OK);
+  ASSERT_EQ(str_append_char(&str, ','), RET_OK);
+
+  ASSERT_EQ(str_append_json_int_pair(&str, "age", 100), RET_OK);
+  ASSERT_EQ(str_append_char(&str, ','), RET_OK);
+
+  ASSERT_EQ(str_append_json_double_pair(&str, "weight", 60.5), RET_OK);
+  ASSERT_EQ(str_append_char(&str, ','), RET_OK);
+
+  ASSERT_EQ(str_append_json_bool_pair(&str, "gender", TRUE), RET_OK);
+  ASSERT_EQ(str_append_char(&str, '}'), RET_OK);
+
+  ASSERT_STREQ(str.str, "{\"name\":\"zhangshan\",\"age\":100,\"weight\":60.5000,\"gender\":true}");
+
+  str_reset(s);
+}

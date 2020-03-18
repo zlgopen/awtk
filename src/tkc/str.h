@@ -205,6 +205,71 @@ ret_t str_append_char(str_t* str, char c);
 ret_t str_append_int(str_t* str, int32_t value);
 
 /**
+ * @method str_append_double
+ * 追加一个浮点数。
+ * @param {str_t*} str str对象。
+ * @param {const char*} format 格式。
+ * @param {double} value 要追加的浮点数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_append_double(str_t* str, const char* format, double value);
+
+/**
+ * @method str_append_json_str
+ * 追加一个字符串，字符串前后加英文双引号，字符串本身的双引号被转义为\"。
+ * @param {str_t*} str str对象。
+ * @param {const char*} json_str 待追加的字符串。 
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_append_json_str(str_t* str, const char* json_str);
+
+/**
+ * @method str_append_json_int_pair
+ * 追加int格式的json键值对。
+ * @param {str_t*} str str对象。
+ * @param {const char*} key 键。 
+ * @param {int32_t} value 值。 
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_append_json_int_pair(str_t* str, const char* key, int32_t value);
+
+/**
+ * @method str_append_json_str_pair
+ * 追加字符串格式的json键值对。
+ * @param {str_t*} str str对象。
+ * @param {const char*} key 键。 
+ * @param {const char*} value 值。 
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_append_json_str_pair(str_t* str, const char* key, const char* value);
+
+/**
+ * @method str_append_json_double_pair
+ * 追加doube格式的json键值对。
+ * @param {str_t*} str str对象。
+ * @param {const char*} key 键。 
+ * @param {double} value 值。 
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_append_json_double_pair(str_t* str, const char* key, double value);
+
+/**
+ * @method str_append_json_double_pair
+ * 追加bool格式的json键值对。
+ * @param {str_t*} str str对象。
+ * @param {const char*} key 键。 
+ * @param {bool_t} value 值。 
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_append_json_bool_pair(str_t* str, const char* key, bool_t value);
+
+/**
  * @method str_pop
  * 删除最后一个字符。
  * @param {str_t*} str str对象。
