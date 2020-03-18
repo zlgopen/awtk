@@ -5,6 +5,7 @@
   * WITH_BITMAP_FONT时locale change后异常的问题；（感谢朝泽提供补丁）。
   * update_res_common.py添加多主题处理时遗漏的images/*.res、strings/*.data，fonts/*.data等处理（感谢朝泽提供补丁）。
   * 完善圆角矩形（感谢智明提供补丁）。
+  * 修改 dragger 放在 scroll view 中的问题（感谢大恒提供补丁）。
 
 * 2020/03/17
   * 修复在 ubuntu 编译 fb_gl 模式下出现编译出错的问题（感谢智明提供补丁）。

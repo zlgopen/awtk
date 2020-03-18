@@ -72,15 +72,13 @@ static ret_t dragger_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_POINTER_DOWN_ABORT: {
-      if (dragger->dragging) {
-        event_t evt = event_init(EVT_DRAG_END, widget);
-        dragger_move(widget, 0, 0);
-        widget_set_state(widget, WIDGET_STATE_NORMAL);
-        widget_dispatch(widget, (event_t*)&evt);
-        widget_ungrab(widget->parent, widget);
-        dragger->dragging = FALSE;
-        dragger->moving = FALSE;
-      }
+      event_t evt = event_init(EVT_DRAG_END, widget);
+      dragger_move(widget, 0, 0);
+      widget_set_state(widget, WIDGET_STATE_NORMAL);
+      widget_dispatch(widget, (event_t*)&evt);
+      widget_ungrab(widget->parent, widget);
+      dragger->dragging = FALSE;
+      dragger->moving = FALSE;
       break;
     }
     case EVT_POINTER_UP: {
