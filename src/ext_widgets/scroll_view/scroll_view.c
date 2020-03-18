@@ -355,8 +355,8 @@ static ret_t scroll_view_on_event(widget_t* widget, event_t* e) {
           scroll_view->dragged = TRUE;
         }
       }
-      
-      ret =  RET_STOP;
+
+      ret = RET_STOP;
       break;
     }
     default:

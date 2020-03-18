@@ -127,18 +127,17 @@ static inline frr_image_info_t* widget_image_info_create(frr_image_info_t* info,
     info = TKMEM_ZALLOC(frr_image_info_t);
     return_value_if_fail(info != NULL, NULL);
   }
-  if(vg != NULL) {
+  if (vg != NULL) {
     info->w = vg->w;
     info->h = vg->h;
     info->stride = vg->stride;
     info->format = vg->format;
     info->dst = (unsigned char*)vg->buff;
-  }
-  else {
+  } else {
     mem = (lcd_mem_t*)c->lcd;
     info->w = mem->base.w;
     info->h = mem->base.h;
-    info->format =  mem->format;
+    info->format = mem->format;
     info->dst = mem->offline_fb;
     info->stride = mem->line_length;
   }
