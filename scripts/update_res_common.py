@@ -628,6 +628,7 @@ def genAssetC(themes, asset_c):
     result += '  image_manager_t* imm = widget_get_image_manager(widget);\n'
     result += '  assets_manager_t* am = widget_get_assets_manager(widget);\n'
     result += '  locale_info_t* locale_info = widget_get_locale_info(widget);\n\n'
+    result += '  return_value_if_fail(am != NULL && name != NULL, RET_BAD_PARAMS);\n\n'
     result += '  font_manager_unload_all(fm);\n'
     result += '  image_manager_unload_all(imm);\n'
     result += '  assets_manager_clear_all(am);\n'
