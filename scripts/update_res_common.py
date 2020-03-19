@@ -601,17 +601,26 @@ def genAssetC(themes, asset_c):
     result += '#ifndef APP_THEME\n'
     result += '#define APP_THEME "default"\n'
     result += '#endif /*APP_THEME*/\n\n'
-    result += 'ret_t assets_init_internal(const char* theme) {\n'
+
+    result += 'ret_t assets_has_theme(const char* name) {\n'
+    result += '  return_value_if_fail(name != NULL, FALSE);\n\n'
+    result += '  '
+    for theme in themes:
+        result +=   'if (tk_str_eq(name, "'+theme+'")) {\n'
+        result += '    return TRUE;\n'
+        result += '  } else '
+    result += '{\n'
+    result += '    return FALSE;\n  }\n}\n\n'
+
+    result += 'static ret_t assets_init_internal(const char* theme) {\n'
     result += '  assets_manager_t* am = assets_manager();\n'
     result += '  return_value_if_fail(theme != NULL && am != NULL, RET_BAD_PARAMS);\n\n'
     result += '  assets_manager_set_theme(am, theme);\n\n'
     result += '  '
-
     for theme in themes:
         result +=   'if (tk_str_eq(theme, "'+theme+'")) {\n'
         result += '    return assets_init_'+theme+'();\n'
         result += '  } else '
-
     result += '{\n'
     result += '    log_debug(\"%s not support.\\n\", theme);\n'
     result += '    return RET_NOT_IMPL;\n  }\n}\n\n'
@@ -619,7 +628,7 @@ def genAssetC(themes, asset_c):
     result += 'ret_t assets_init(void) {\n'
     result += '  return assets_init_internal(APP_THEME);\n}\n\n'
 
-    result += 'ret_t widget_set_theme_without_file_system(widget_t* widget, const char* name) {\n'
+    result += 'static ret_t widget_set_theme_without_file_system(widget_t* widget, const char* name) {\n'
     result += '#ifndef WITH_FS_RES\n'
     result += '  const asset_info_t* info = NULL;\n'
     result += '  event_t e = event_init(EVT_THEME_CHANGED, NULL);\n'
@@ -628,7 +637,8 @@ def genAssetC(themes, asset_c):
     result += '  image_manager_t* imm = widget_get_image_manager(widget);\n'
     result += '  assets_manager_t* am = widget_get_assets_manager(widget);\n'
     result += '  locale_info_t* locale_info = widget_get_locale_info(widget);\n\n'
-    result += '  return_value_if_fail(am != NULL && name != NULL, RET_BAD_PARAMS);\n\n'
+    result += '  return_value_if_fail(am != NULL && name != NULL, RET_BAD_PARAMS);\n'
+    result += '  return_value_if_fail(assets_has_theme(name), RET_BAD_PARAMS);\n\n'
     result += '  font_manager_unload_all(fm);\n'
     result += '  image_manager_unload_all(imm);\n'
     result += '  assets_manager_clear_all(am);\n'
@@ -642,8 +652,16 @@ def genAssetC(themes, asset_c):
     result += '  widget_invalidate_force(wm, NULL);\n\n'
     result += '  log_debug("theme changed: %s\\n", name);\n\n'
     result += '  return RET_OK;\n'
-    result += '#else\n'
+    result += '#else /*WITH_FS_RES*/\n'
     result += '  return RET_NOT_IMPL;\n'
+    result += '#endif /*WITH_FS_RES*/\n'
+    result += '}\n\n'
+
+    result += 'ret_t assets_set_global_theme(const char* name) {\n'
+    result += '#ifdef WITH_FS_RES\n'
+    result += '  return widget_set_theme(window_manager(), name);\n'
+    result += '#else  /*WITH_FS_RES*/\n'
+    result += '  return widget_set_theme_without_file_system(window_manager(), name);\n'
     result += '#endif /*WITH_FS_RES*/\n'
     result += '}\n'
 

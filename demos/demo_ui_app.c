@@ -478,21 +478,17 @@ static ret_t on_show_fps(void* ctx, event_t* e) {
   return RET_OK;
 }
 
-extern ret_t widget_set_theme_without_file_system(widget_t* widget, const char* name);
+extern ret_t assets_set_global_theme(const char* name);
 static ret_t on_reload_theme_test(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(e->target);
   assets_manager_t* am = widget_get_assets_manager(widget);
-  const char* t = "default";
+  const char* theme = "default";
 
-  if (tk_str_eq(am->theme, t)) {
-    t = "dark";
+  if (tk_str_eq(am->theme, theme)) {
+    theme = "dark";
   }
 
-#ifdef WITH_FS_RES
-  widget_set_theme(widget, t);
-#else
-  widget_set_theme_without_file_system(widget, t);
-#endif /*WITH_FS_RES*/
+  assets_set_global_theme(theme);
 
   return RET_OK;
 }

@@ -3837,16 +3837,19 @@ ret_t widget_set_style_str(widget_t* widget, const char* state_and_name, const c
 
 canvas_t* widget_get_canvas(widget_t* widget) {
   canvas_t* c = NULL;
+  widget_t* wm = window_manager();
   widget_t* win = widget_get_window(widget);
   return_value_if_fail(widget != NULL, NULL);
 
   if (win == NULL) {
-    win = window_manager_get_top_window(window_manager());
+    win = window_manager_get_top_window(wm);
   }
 
-  c = (canvas_t*)widget_get_prop_pointer(win, WIDGET_PROP_CANVAS);
+  if (win != NULL) {
+    c = (canvas_t*)widget_get_prop_pointer(win, WIDGET_PROP_CANVAS);
+  }
+
   if (c == NULL) {
-    widget_t* wm = window_manager();
     c = (canvas_t*)widget_get_prop_pointer(wm, WIDGET_PROP_CANVAS);
   }
 
@@ -3877,10 +3880,9 @@ bool_t widget_is_opened_popup(widget_t* widget) {
 
 ret_t widget_reset_canvas(widget_t* widget) {
   rect_t rect;
-  widget_t* win = widget_get_window(widget);
-  canvas_t* c = widget_get_canvas(win);
+  canvas_t* c = widget_get_canvas(widget);
 
-  return_value_if_fail(win != NULL && c != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(c != NULL, RET_BAD_PARAMS);
   rect = rect_init(0, 0, c->lcd->w, c->lcd->h);
   canvas_set_clip_rect(c, &rect);
   return vgcanvas_reset(canvas_get_vgcanvas(c));
