@@ -215,8 +215,6 @@ static ret_t main_loop_sdl2_dispatch_window_event(main_loop_simple_t* loop, SDL_
 
         e = event_init(EVT_NATIVE_WINDOW_DESTROY, NULL);
         window_manager_dispatch_native_window_event(l->wm, &e, win);
-
-        tk_quit();
       }
     } break;
 #if SDL_VERSION_ATLEAST(2, 0, 5)
