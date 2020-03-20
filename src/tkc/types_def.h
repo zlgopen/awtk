@@ -103,9 +103,11 @@ typedef long double float_t;
 typedef float float_t;
 #endif /*WITH_DOUBLE_FLOAT*/
 
+#if !defined(ANDROID) && !defined(IOS) && !defined(LINUX) && !defined(MACOS) && !defined(WIN32)
 #ifndef time_t
 #define time_t uint64_t
 #endif /*time_t*/
+#endif
 
 struct _value_t;
 typedef struct _value_t value_t;
