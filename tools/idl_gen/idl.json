@@ -17329,6 +17329,68 @@
           },
           {
             "type": "const char*",
+            "name": "name",
+            "desc": "子控件的名称。"
+          },
+          {
+            "type": "const char*",
+            "name": "text",
+            "desc": "文本。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置子控件的文本。\n只是对widget\\_set\\_prop的包装，文本的意义由子类控件决定。",
+        "name": "widget_set_child_text_utf8",
+        "alias": "set_child_text",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "子控件的名称。"
+          },
+          {
+            "type": "const char*",
+            "name": "format",
+            "desc": "格式字符串(如：\"%2.2lf\")。"
+          },
+          {
+            "type": "double",
+            "name": "value",
+            "desc": "浮点数值。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "用一个浮点数去设置子控件的文本。\n只是对widget\\_set\\_prop的包装，文本的意义由子类控件决定。",
+        "name": "widget_set_child_text_with_double",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "const char*",
             "name": "text",
             "desc": "文本。"
           }
@@ -21582,6 +21644,157 @@
         "annotation": {},
         "desc": "追加一个整数。",
         "name": "str_append_int",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "str_t*",
+            "name": "str",
+            "desc": "str对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "format",
+            "desc": "格式。"
+          },
+          {
+            "type": "double",
+            "name": "value",
+            "desc": "要追加的浮点数。"
+          }
+        ],
+        "annotation": {},
+        "desc": "追加一个浮点数。",
+        "name": "str_append_double",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "str_t*",
+            "name": "str",
+            "desc": "str对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "json_str",
+            "desc": "待追加的字符串。"
+          }
+        ],
+        "annotation": {},
+        "desc": "追加一个字符串，字符串前后加英文双引号，字符串本身的双引号被转义为\\\"。",
+        "name": "str_append_json_str",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "str_t*",
+            "name": "str",
+            "desc": "str对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "key",
+            "desc": "键。"
+          },
+          {
+            "type": "int32_t",
+            "name": "value",
+            "desc": "值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "追加int格式的json键值对。",
+        "name": "str_append_json_int_pair",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "str_t*",
+            "name": "str",
+            "desc": "str对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "key",
+            "desc": "键。"
+          },
+          {
+            "type": "const char*",
+            "name": "value",
+            "desc": "值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "追加字符串格式的json键值对。",
+        "name": "str_append_json_str_pair",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "str_t*",
+            "name": "str",
+            "desc": "str对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "key",
+            "desc": "键。"
+          },
+          {
+            "type": "double",
+            "name": "value",
+            "desc": "值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "追加doube格式的json键值对。",
+        "name": "str_append_json_double_pair",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "str_t*",
+            "name": "str",
+            "desc": "str对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "key",
+            "desc": "键。"
+          },
+          {
+            "type": "bool_t",
+            "name": "value",
+            "desc": "值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "追加bool格式的json键值对。",
+        "name": "str_append_json_double_pair",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"

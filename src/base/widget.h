@@ -797,19 +797,6 @@ ret_t widget_set_child_text_with_double(widget_t* widget, const char* name, cons
                                         double value);
 
 /**
- * @method widget_set_child_text_utf8
- * 设置控件的文本。
- * 只是对widget\_set\_prop的包装，文本的意义由子类控件决定。
- * @annotation ["scriptable"]
- * @alias set_text
- * @param {widget_t*} widget 控件对象。
- * @param {const char*}  text 文本。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t widget_set_child_text_utf8(widget_t* widget, const char* name, const char* text);
-
-/**
  * @method widget_set_tr_text
  * 获取翻译之后的文本，然后调用widget_set_text。
  * @annotation ["scriptable"]
