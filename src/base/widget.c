@@ -4048,3 +4048,22 @@ native_window_t* widget_get_native_window(widget_t* widget) {
 
   return (native_window_t*)widget_get_prop_pointer(win, WIDGET_PROP_NATIVE_WINDOW);
 }
+
+ret_t widget_set_child_text_utf8(widget_t* widget, const char* name, const char* text) {
+  widget_t* child = widget_lookup(widget, name, TRUE);
+  return_value_if_fail(child != NULL, RET_BAD_PARAMS);
+
+  return widget_set_text_utf8(child, text);
+}
+
+ret_t widget_set_child_text_with_double(widget_t* widget, const char* name, const char* format,
+                                        double value) {
+  char text[64];
+  widget_t* child = widget_lookup(widget, name, TRUE);
+  return_value_if_fail(child != NULL && format != NULL, RET_BAD_PARAMS);
+
+  memset(text, 0x00, sizeof(text));
+  tk_snprintf(text, sizeof(text) - 1, format, value);
+
+  return widget_set_text_utf8(child, text);
+}

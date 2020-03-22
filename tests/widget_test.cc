@@ -1248,3 +1248,28 @@ TEST(Widget, dirty_rect_tolerance) {
 
   widget_destroy(w);
 }
+
+TEST(Widget, set_child_text) {
+  widget_t* view = view_create(NULL, 0, 0, 0, 0);
+  widget_t* label = label_create(view, 0, 0, 0, 0);
+  widget_set_name(label, "aaa");
+
+  ASSERT_EQ(widget_set_child_text_utf8(view, "aaa", "awtk"), RET_OK);
+  ASSERT_EQ(wcs_cmp(label->text.str, L"awtk"), 0);
+
+  widget_destroy(view);
+}
+
+TEST(Widget, set_child_text_with_double) {
+  widget_t* view = view_create(NULL, 0, 0, 0, 0);
+  widget_t* label = label_create(view, 0, 0, 0, 0);
+  widget_set_name(label, "aaa");
+
+  ASSERT_EQ(widget_set_child_text_with_double(view, "aaa", "%2.2lf", 12.3), RET_OK);
+  ASSERT_EQ(wcs_cmp(label->text.str, L"12.30"), 0);
+  
+  ASSERT_EQ(widget_set_child_text_with_double(view, "aaa", "%2.4lfkg", 12.3), RET_OK);
+  ASSERT_EQ(wcs_cmp(label->text.str, L"12.3000kg"), 0);
+
+  widget_destroy(view);
+}

@@ -768,6 +768,48 @@ ret_t widget_use_style(widget_t* widget, const char* style);
 ret_t widget_set_text_utf8(widget_t* widget, const char* text);
 
 /**
+ * @method widget_set_child_text_utf8
+ * 设置子控件的文本。
+ * 只是对widget\_set\_prop的包装，文本的意义由子类控件决定。
+ * @annotation ["scriptable"]
+ * @alias set_child_text
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*}  name 子控件的名称。
+ * @param {const char*}  text 文本。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_child_text_utf8(widget_t* widget, const char* name, const char* text);
+
+/**
+ * @method widget_set_child_text_with_double
+ * 用一个浮点数去设置子控件的文本。
+ * 只是对widget\_set\_prop的包装，文本的意义由子类控件决定。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*}  name 子控件的名称。
+ * @param {const char*}  format 格式字符串(如："%2.2lf")。
+ * @param {double} value 浮点数值。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_child_text_with_double(widget_t* widget, const char* name, const char* format,
+                                        double value);
+
+/**
+ * @method widget_set_child_text_utf8
+ * 设置控件的文本。
+ * 只是对widget\_set\_prop的包装，文本的意义由子类控件决定。
+ * @annotation ["scriptable"]
+ * @alias set_text
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*}  text 文本。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_child_text_utf8(widget_t* widget, const char* name, const char* text);
+
+/**
  * @method widget_set_tr_text
  * 获取翻译之后的文本，然后调用widget_set_text。
  * @annotation ["scriptable"]
