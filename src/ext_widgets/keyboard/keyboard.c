@@ -43,6 +43,15 @@ static ret_t keyboard_on_destroy(widget_t* widget) {
   return window_base_on_destroy(widget);
 }
 
+static ret_t keyboard_on_event(widget_t* widget, event_t* e) {
+  if (e->type == EVT_KEY_DOWN || e->type == EVT_KEY_UP) {
+    /*goto here only when grab_keys=true*/
+    return RET_STOP;
+  }
+
+  return window_base_on_event(widget, e);
+}
+
 TK_DECL_VTABLE(keyboard) = {.size = sizeof(keyboard_t),
                             .type = WIDGET_TYPE_KEYBOARD,
                             .is_window = TRUE,
@@ -51,7 +60,7 @@ TK_DECL_VTABLE(keyboard) = {.size = sizeof(keyboard_t),
                             .persistent_properties = s_keyboard_properties,
                             .parent = TK_PARENT_VTABLE(window_base),
                             .create = keyboard_create,
-                            .on_event = window_base_on_event,
+                            .on_event = keyboard_on_event,
                             .on_paint_self = window_base_on_paint_self,
                             .on_paint_begin = window_base_on_paint_begin,
                             .on_paint_end = window_base_on_paint_end,

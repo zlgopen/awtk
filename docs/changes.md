@@ -2,6 +2,7 @@
 * 2020/03/22
   * 增加函数 widget\_set\_child\_text\_utf8
   * 增加函数 widget\_set\_child\_text\_with\_double
+  * keyboard 在 grab_keys 时，keyboard 处理 key 事件后，应用窗口不再处理。
 
 * 2020/03/20
   * 去掉 main_loop_sdl.c 中重复的 quit（感谢尧燊提供补丁）。
