@@ -1267,7 +1267,7 @@ TEST(Widget, set_child_text_with_double) {
 
   ASSERT_EQ(widget_set_child_text_with_double(view, "aaa", "%2.2lf", 12.3), RET_OK);
   ASSERT_EQ(wcs_cmp(label->text.str, L"12.30"), 0);
-  
+
   ASSERT_EQ(widget_set_child_text_with_double(view, "aaa", "%2.4lfkg", 12.3), RET_OK);
   ASSERT_EQ(wcs_cmp(label->text.str, L"12.3000kg"), 0);
 

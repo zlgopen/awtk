@@ -249,8 +249,11 @@ static ret_t combo_box_on_key_event(widget_t* widget, key_event_t* evt) {
     if (evt->e.type == EVT_KEY_DOWN) {
       combo_box_add_selected_index(widget, 1);
     }
-  } else if (widget_is_activate_key(widget, evt)) {
-    if (edit->readonly && evt->e.type == EVT_KEY_UP) {
+  } else if (widget_is_activate_key(widget, evt) && evt->e.type == EVT_KEY_UP) {
+    if (edit->readonly) {
+      ret = RET_STOP;
+      combo_box_active(widget);
+    } else if (evt->key == TK_KEY_RETURN) {
       ret = RET_STOP;
       combo_box_active(widget);
     }
@@ -370,6 +373,8 @@ static ret_t combo_box_on_item_click(void* ctx, event_t* e) {
 
   combo_box_set_selected_index_ex(widget, widget_index_of(item), item);
 
+  widget->target = NULL;
+  widget->key_target = NULL;
   window_close(widget_get_window(item));
   widget_set_focused_internal(widget, TRUE);
 
