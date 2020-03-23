@@ -1,4 +1,8 @@
 # 最新动态
+* 2020/03/23
+  * 增加函数tk_strlen。
+  * 完善圆角矩形（感谢智明提供补丁）。
+
 * 2020/03/22
   * 增加函数 widget\_set\_child\_text\_utf8
   * 增加函数 widget\_set\_child\_text\_with\_double

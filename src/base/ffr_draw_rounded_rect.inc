@@ -63,9 +63,13 @@ typedef struct _frr_draw_arc_info_table_t {
 #define M_FRR_PI_4 (float_t)(M_PI / 4)
 #endif /*M_FRR_PI_4*/
 
+#ifndef FRR_POINT_PIX_CACHE_SIZE
 #define FRR_POINT_PIX_CACHE_SIZE 256
+#endif 
 
+#ifndef CMP_ACCURACY
 #define CMP_ACCURACY 0.001f
+#endif 
 
 #define CMP_FLOAT_QE(a, b) (-CMP_ACCURACY <= ((a) - (b)) && ((a) - (b)) <= CMP_ACCURACY)
 
