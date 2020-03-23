@@ -785,3 +785,11 @@ const char* tk_normalize_key_name(const char* name, char fixed_name[TK_NAME_LEN 
 
   return fixed_name;
 }
+
+uint32_t tk_strlen(const char* str) {
+  if (str == NULL || *str == '\0') {
+    return 0;
+  }
+
+  return strlen(str);
+}

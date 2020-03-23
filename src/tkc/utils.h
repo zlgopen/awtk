@@ -234,6 +234,17 @@ wchar_t* tk_wstrdup(const wchar_t* str);
 char* tk_strndup(const char* str, uint32_t len);
 
 /**
+ * @method tk_strlen
+ *
+ * 获取字符串的长度。str为空时返回0。
+ *
+ * @param {const char*} str 字符串。
+ *
+ * @return {uint32_t} 返回字符串的长度。
+ */
+uint32_t tk_strlen(const char* str);
+
+/**
  * @method tk_str_append
  *
  * 字符串追加函数。
