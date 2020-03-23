@@ -29,14 +29,14 @@
 
 #define MAX_BUFF_SIZE 2 * 1024 * 1024
 
-ret_t image_gen(bitmap_t* image, const char* output_filename, bool_t mono) {
+ret_t image_gen(bitmap_t* image, const char* output_filename, const char* theme, bool_t mono) {
   uint32_t size = 0;
   uint8_t* buff = (uint8_t*)TKMEM_ALLOC(MAX_BUFF_SIZE);
   return_value_if_fail(buff != NULL, RET_FAIL);
 
   size = image_gen_buff(image, buff, MAX_BUFF_SIZE, mono);
   if (size) {
-    output_res_c_source(output_filename, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_RAW, buff, size);
+    output_res_c_source(output_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_RAW, buff, size);
     TKMEM_FREE(buff);
   } else {
     return RET_FAIL;

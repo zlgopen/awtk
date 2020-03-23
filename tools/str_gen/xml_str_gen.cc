@@ -111,7 +111,7 @@ bool xml_buff_to_str_gen(const char* buff, StrGen* sg) {
 
 static uint8_t output_buff[1024 * 1024];
 
-bool xml_to_str_gen(const char* input_file, const char* output_dir, bool bin) {
+bool xml_to_str_gen(const char* input_file, const char* output_dir, const char* theme, bool bin) {
   StrGen sg;
   uint8_t* p = NULL;
   char path[MAX_PATH + 1];
@@ -131,7 +131,7 @@ bool xml_to_str_gen(const char* input_file, const char* output_dir, bool bin) {
       file_write(path, output_buff, size);
     } else {
       snprintf(path, MAX_PATH, "%s/%s.data", output_dir, iter.c_str());
-      output_res_c_source(path, ASSET_TYPE_STRINGS, 0, output_buff, size);
+      output_res_c_source(path, theme, ASSET_TYPE_STRINGS, 0, output_buff, size);
     }
     log_debug("write %s\n", path);
   }

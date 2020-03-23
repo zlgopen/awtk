@@ -40,6 +40,7 @@ int wmain(int argc, wchar_t* argv[]) {
   const char* ttf_filename = NULL;
   const char* str_filename = NULL;
   const char* out_filename = NULL;
+  const char* theme_name = NULL;
 
   platform_prepare();
 
@@ -51,8 +52,14 @@ int wmain(int argc, wchar_t* argv[]) {
 
   font_size = tk_watoi(argv[4]);
 
-  if (argc == 6 && tk_wstr_eq(argv[5], L"mono")) {
+  if (argc > 5 && tk_wstr_eq(argv[5], L"mono")) {
     mono = TRUE;
+  }
+
+  str_t str_theme = {0};
+  if (argc > 6) {
+    str_from_wstr(&str_theme, argv[6]);
+    theme_name = str_theme.str;
   }
 
   str_t ttf_file;
@@ -93,7 +100,7 @@ int wmain(int argc, wchar_t* argv[]) {
   return_value_if_fail(str_buff != NULL, 0);
 
   if (font != NULL) {
-    font_gen(font, (uint16_t)font_size, str_buff, out_filename);
+    font_gen(font, (uint16_t)font_size, str_buff, out_filename, theme_name);
   }
 
   TKMEM_FREE(ttf_buff);
@@ -102,6 +109,7 @@ int wmain(int argc, wchar_t* argv[]) {
   str_reset(&ttf_file);
   str_reset(&str_file);
   str_reset(&out_file);
+  str_reset(&str_theme);
 
   printf("done\n");
 

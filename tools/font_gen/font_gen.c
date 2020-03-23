@@ -40,11 +40,12 @@ static int char_cmp(const void* a, const void* b) {
   return c1 - c2;
 }
 
-ret_t font_gen(font_t* font, uint16_t font_size, const char* str, const char* output_filename) {
+ret_t font_gen(font_t* font, uint16_t font_size, const char* str, const char* output_filename,
+               const char* theme) {
   uint8_t* buff = (uint8_t*)TKMEM_ALLOC(MAX_BUFF_SIZE);
   uint32_t size = font_gen_buff(font, font_size, str, buff, MAX_BUFF_SIZE);
 
-  output_res_c_source(output_filename, ASSET_TYPE_FONT, ASSET_TYPE_FONT_BMP, buff, size);
+  output_res_c_source(output_filename, theme, ASSET_TYPE_FONT, ASSET_TYPE_FONT_BMP, buff, size);
 
   TKMEM_FREE(buff);
 

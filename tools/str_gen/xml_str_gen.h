@@ -26,6 +26,6 @@
 
 bool xml_to_str_gen(const char* input_file, StrGen* sg);
 bool xml_buff_to_str_gen(const char* buff, StrGen* sg);
-bool xml_to_str_gen(const char* input_file, const char* output_dir, bool bin);
+bool xml_to_str_gen(const char* input_file, const char* output_dir, const char* theme, bool bin);
 
 #endif /*XML_STR_GEN_H*/

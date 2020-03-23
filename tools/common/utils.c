@@ -33,19 +33,19 @@
 #include "tkc/path.h"
 #include "base/assets_manager.h"
 
-void exit_if_need_not_update(const char* in, const char* out) {
+bool_t exit_if_need_not_update(const char* in, const char* out) {
   if (in == NULL || out == NULL) {
     log_debug("invalid params: %s %s\n", in, out);
-    exit(-1);
+    return TRUE;
   }
 
   if (!fs_file_exist(os_fs(), in)) {
     log_debug("%s not exist\n", in);
-    exit(-1);
+    return TRUE;
   }
 
   if (!fs_file_exist(os_fs(), out)) {
-    return;
+    return FALSE;
   }
 
   ret_t rt = RET_OK;
@@ -55,18 +55,19 @@ void exit_if_need_not_update(const char* in, const char* out) {
   rt = fs_stat(os_fs(), in, &fst_in);
   if (rt != RET_OK) {
     log_debug("get \"%s\" filetime failed\n", in);
-    exit(-1);
+    return TRUE;
   }
   rt = fs_stat(os_fs(), out, &fst_out);
   if (rt != RET_OK) {
     log_debug("get \"%s\" filetime failed\n", out);
-    exit(-1);
+    return TRUE;
   }
 
   if (fst_in.mtime < fst_out.mtime) {
     log_debug("Skip because: %s is newer than %s\n", out, in);
-    exit(0);
+    return TRUE;
   }
+  return FALSE;
 }
 
 void exit_if_need_not_update_for_infiles(const char* out, int infiles_number, ...) {
@@ -150,9 +151,13 @@ int unique(wchar_t* str, int size) {
   return d - str;
 }
 
-static const char* to_var_name(char var_name[2 * TK_NAME_LEN + 1], const char* prefix,
-                               const char* name) {
-  tk_snprintf(var_name, 2 * TK_NAME_LEN, "%s_%s", prefix ? prefix : "", name);
+static const char* to_var_name(char var_name[2 * TK_NAME_LEN + 1], const char* theme,
+                               const char* prefix, const char* name) {
+  if (tk_str_eq(theme, "default") || theme == NULL) {
+    tk_snprintf(var_name, 2 * TK_NAME_LEN, "%s_%s", prefix ? prefix : "", name);
+  } else {
+    tk_snprintf(var_name, 2 * TK_NAME_LEN, "%s_%s_%s", prefix ? prefix : "", name, theme);
+  }
 
   char* p = var_name;
   while (*p) {
@@ -165,8 +170,8 @@ static const char* to_var_name(char var_name[2 * TK_NAME_LEN + 1], const char* p
   return var_name;
 }
 
-ret_t output_c_source(const char* filename, const char* prefix, const char* name, uint8_t* buff,
-                      uint32_t size) {
+ret_t output_c_source(const char* filename, const char* theme, const char* prefix, const char* name,
+                      uint8_t* buff, uint32_t size) {
   uint32_t i = 0;
   fs_file_t* ft = NULL;
   char str[TK_NAME_LEN + 1];
@@ -183,7 +188,7 @@ ret_t output_c_source(const char* filename, const char* prefix, const char* name
   ft = fs_open_file(os_fs(), filename, "wb+");
   if (ft != NULL) {
     fs_file_printf(ft, "TK_CONST_DATA_ALIGN(const unsigned char %s[]) = {",
-                   to_var_name(var_name, prefix, name));
+                   to_var_name(var_name, theme, prefix, name));
     for (i = 0; i < size; i++) {
       if ((i % 20) == 0) {
         fs_file_printf(ft, "\n");
@@ -200,8 +205,8 @@ ret_t output_c_source(const char* filename, const char* prefix, const char* name
   return RET_FAIL;
 }
 
-ret_t output_res_c_source_ex(const char* filename, uint16_t type, uint16_t subtype, uint8_t* buff,
-                             uint32_t size, const char* name) {
+ret_t output_res_c_source_ex(const char* filename, const char* theme, uint16_t type,
+                             uint16_t subtype, uint8_t* buff, uint32_t size, const char* name) {
   asset_info_t* res = NULL;
   uint32_t total_size = sizeof(asset_info_t) + size;
   const key_type_value_t* kv = asset_type_find_by_value(type);
@@ -225,15 +230,15 @@ ret_t output_res_c_source_ex(const char* filename, uint16_t type, uint16_t subty
       filename_to_name(filename, res->name, sizeof(res->name));
     }
   }
-  output_c_source(filename, kv->name, res->name, (uint8_t*)res, total_size);
+  output_c_source(filename, theme, kv->name, res->name, (uint8_t*)res, total_size);
   free(res);
 
   return RET_OK;
 }
 
-ret_t output_res_c_source(const char* filename, uint16_t type, uint16_t subtype, uint8_t* buff,
-                          uint32_t size) {
-  return output_res_c_source_ex(filename, type, subtype, buff, size, NULL);
+ret_t output_res_c_source(const char* filename, const char* theme, uint16_t type, uint16_t subtype,
+                          uint8_t* buff, uint32_t size) {
+  return output_res_c_source_ex(filename, theme, type, subtype, buff, size, NULL);
 }
 
 const char* skip_to(const char* p, char c) {
