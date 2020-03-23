@@ -90,7 +90,9 @@ static ret_t gen_floder(const char* in_flodername, const char* out_flodername, c
 
       str_init(&str_name, 0);
       str_set(&str_name, item.name);
-      str_replace(&str_name, ext_array, ".data");
+      str_replace(&str_name, ext_array, "");
+      filter_name(str_name.str);
+      str_append(&str_name, ".data");
       path_build(in_name, MAX_PATH, in_flodername, item.name, NULL);
       path_build(out_name, MAX_PATH, out_flodername, str_name.str, NULL);
       ret = gen_one(in_name, out_name, theme, image_format);

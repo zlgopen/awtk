@@ -159,15 +159,7 @@ static const char* to_var_name(char var_name[2 * TK_NAME_LEN + 1], const char* t
     tk_snprintf(var_name, 2 * TK_NAME_LEN, "%s_%s_%s", prefix ? prefix : "", name, theme);
   }
 
-  char* p = var_name;
-  while (*p) {
-    if (!(isdigit(*p) || isalpha(*p) || *p == '_')) {
-      *p = '_';
-    }
-    p++;
-  }
-
-  return var_name;
+  return filter_name(var_name);
 }
 
 ret_t output_c_source(const char* filename, const char* theme, const char* prefix, const char* name,
@@ -288,6 +280,18 @@ const char* to_lower(char* str) {
   }
 
   return str;
+}
+
+const char* filter_name(char* name){
+  char* p = name;
+  while (*p) {
+    if (!(isdigit(*p) || isalpha(*p) || *p == '_')) {
+      *p = '_';
+    }
+    p++;
+  }
+
+  return name;
 }
 
 wchar_t** argvw_create(int argc, char* argv[]) {

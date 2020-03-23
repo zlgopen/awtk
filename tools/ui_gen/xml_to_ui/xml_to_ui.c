@@ -69,8 +69,8 @@ static ret_t gen_floder(const char* in_flodername, const char* out_flodername, b
   char in_name[MAX_PATH] = {0};
   char out_name[MAX_PATH] = {0};
   const char* c_xml = ".xml";
-  if(!fs_dir_exist(os_fs(), out_flodername)) {
-    fs_create_dir(os_fs(), out_flodername); 
+  if (!fs_dir_exist(os_fs(), out_flodername)) {
+    fs_create_dir(os_fs(), out_flodername);
   }
   while (dir->read(dir, &item) != RET_FAIL) {
     if (item.is_reg_file && end_with(item.name, c_xml)) {
@@ -91,6 +91,7 @@ static ret_t gen_floder(const char* in_flodername, const char* out_flodername, b
       if (output_bin) {
         str_append(&str_name, ".bin");
       } else {
+        filter_name(str_name.str);
         str_append(&str_name, ".data");
       }
       path_build(out_name, MAX_PATH, out_flodername, str_name.str, NULL);

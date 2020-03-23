@@ -51,6 +51,8 @@ bool_t start_with(const char* p, const char* str);
 bool_t end_with(const char* p, const char* str);
 const char* get_next_token(const char* p, char* token, char c);
 
+const char* filter_name(char* name);
+
 wchar_t** argvw_create(int argc, char* argv[]);
 ret_t argvw_destroy(wchar_t** argvw);
 

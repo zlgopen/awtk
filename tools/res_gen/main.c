@@ -112,16 +112,11 @@ static ret_t gen_floder(const char* in_flodername, const char* out_flodername, c
       path_extname(item.name, ext_array, MAX_PATH);
       str_init(&str_name, 0);
       str_set(&str_name, item.name);
-      if (data_floder) {
-        str_t str_ext = {0};
-        str_set(&str_ext, ext_array);
-        str_replace(&str_ext, ".", "_");
-        str_replace(&str_name, ext_array, str_ext.str);
-        str_append(&str_name, extname);
-        str_reset(&str_ext);
-      } else {
-        str_replace(&str_name, ext_array, extname);
+      if (!data_floder) {
+        str_replace(&str_name, ext_array, "");
       }
+      filter_name(str_name.str);
+      str_append(&str_name, extname);
 
       path_build(in_name, MAX_PATH, in_flodername, item.name, NULL);
       path_build(out_name, MAX_PATH, out_flodername, str_name.str, NULL);
