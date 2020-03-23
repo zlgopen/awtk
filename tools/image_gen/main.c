@@ -76,7 +76,7 @@ ret_t gen_one(const char* input_file, const char* output_file, const char* theme
 }
 
 static ret_t gen_floder(const char* in_flodername, const char* out_flodername, const char* theme,
-                 image_format_t* image_format) {
+                        image_format_t* image_format) {
   ret_t ret = RET_OK;
   fs_dir_t* dir = fs_open_dir(os_fs(), in_flodername);
   fs_item_t item;
@@ -97,7 +97,7 @@ static ret_t gen_floder(const char* in_flodername, const char* out_flodername, c
       path_build(out_name, MAX_PATH, out_flodername, str_name.str, NULL);
       ret = gen_one(in_name, out_name, theme, image_format);
       str_reset(&str_name);
-      if(ret != RET_OK){
+      if (ret != RET_OK) {
         break;
       }
     }

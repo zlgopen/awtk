@@ -282,7 +282,7 @@ const char* to_lower(char* str) {
   return str;
 }
 
-const char* filter_name(char* name){
+const char* filter_name(char* name) {
   char* p = name;
   while (*p) {
     if (!(isdigit(*p) || isalpha(*p) || *p == '_')) {
