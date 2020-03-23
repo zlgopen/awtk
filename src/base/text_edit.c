@@ -420,9 +420,10 @@ static ret_t text_edit_layout_impl(text_edit_t* text_edit) {
     i++;
   }
 
-  if (i == max_rows && !impl->single_line) {
+  if (impl->state.cursor > offset && !impl->single_line) {
+    impl->state.cursor = offset;
     impl->last_line_number = max_rows;
-    text_edit_set_caret_pos(impl, iter->x, iter->length, text_edit->c->font_size);
+    text_edit_set_caret_pos(impl, iter->x, impl->line_height * max_rows, text_edit->c->font_size);
   } else if (offset < size) {
     text->size = offset;
     text->str[offset] = 0;
