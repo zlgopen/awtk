@@ -172,7 +172,7 @@ static ret_t input_type_open_keyboard(input_method_t* im, int32_t input_type, bo
   value_set_str(&v, close_anim_hint);
   widget_set_prop(im->keyboard, WIDGET_PROP_CLOSE_ANIM_HINT, &v);
 
-  widget_on(win->parent, EVT_WINDOW_CLOSE, input_method_on_win_close, im);
+  widget_on(win, EVT_WINDOW_CLOSE, input_method_on_win_close, im);
 
   return RET_OK;
 }
