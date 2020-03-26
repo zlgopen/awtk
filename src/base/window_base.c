@@ -301,6 +301,8 @@ ret_t window_base_on_event(widget_t* widget, event_t* e) {
       widget_set_focused_internal(win->save_focus_widget, TRUE);
       widget_unref(win->save_focus_widget);
       win->save_focus_widget = NULL;
+    } else {
+      widget_set_focused(widget, TRUE);
     }
   } else if (e->type == EVT_WINDOW_TO_BACKGROUND) {
     win->stage = WINDOW_STAGE_SUSPEND;
@@ -322,8 +324,8 @@ ret_t window_base_on_event(widget_t* widget, event_t* e) {
       if (win->save_focus_widget) {
         widget_ref(win->save_focus_widget);
       }
-      widget_set_focused(widget, FALSE);
     }
+    widget_set_focused(widget, FALSE);
   }
 
   return RET_OK;
