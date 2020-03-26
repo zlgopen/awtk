@@ -735,6 +735,15 @@ ret_t edit_set_input_tips(widget_t* widget, const char* tips) {
   return RET_OK;
 }
 
+ret_t edit_set_keyboard(widget_t* widget, const char* keyboard) {
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(edit != NULL && keyboard != NULL, RET_BAD_PARAMS);
+
+  edit->keyboard = tk_str_copy(edit->keyboard, keyboard);
+
+  return RET_OK;
+}
+
 ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
   edit_t* edit = EDIT(widget);
   input_type_t input_type = INPUT_TEXT;
@@ -805,6 +814,9 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_TIPS)) {
     value_set_str(v, edit->tips);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_KEYBOARD)) {
+    value_set_str(v, edit->keyboard);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_FOCUSABLE)) {
     value_set_bool(v, !(edit->readonly));
@@ -937,6 +949,9 @@ ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_TIPS)) {
     edit_set_input_tips(widget, value_str(v));
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_KEYBOARD)) {
+    edit_set_keyboard(widget, value_str(v));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_VALUE) || tk_str_eq(name, WIDGET_PROP_TEXT)) {
     edit_set_text(widget, v);
@@ -1217,6 +1232,7 @@ ret_t edit_on_destroy(widget_t* widget) {
   }
 
   TKMEM_FREE(edit->tips);
+  TKMEM_FREE(edit->keyboard);
   text_edit_destroy(edit->model);
 
   return RET_OK;
@@ -1245,6 +1261,7 @@ const char* const s_edit_properties[] = {WIDGET_PROP_MIN,
                                          WIDGET_PROP_TOP_MARGIN,
                                          WIDGET_PROP_BOTTOM_MARGIN,
                                          WIDGET_PROP_TIPS,
+                                         WIDGET_PROP_KEYBOARD,
                                          WIDGET_PROP_PASSWORD_VISIBLE,
                                          NULL};
 

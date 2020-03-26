@@ -47,6 +47,15 @@ ret_t mledit_set_input_tips(widget_t* widget, const char* tips) {
   return RET_OK;
 }
 
+ret_t mledit_set_keyboard(widget_t* widget, const char* keyboard) {
+  mledit_t* mledit = MLEDIT(widget);
+  return_value_if_fail(mledit != NULL && keyboard != NULL, RET_BAD_PARAMS);
+
+  mledit->keyboard = tk_str_copy(mledit->keyboard, keyboard);
+
+  return RET_OK;
+}
+
 ret_t mledit_set_focus(widget_t* widget, bool_t focus) {
   mledit_t* mledit = MLEDIT(widget);
   return_value_if_fail(mledit != NULL, RET_BAD_PARAMS);
@@ -116,6 +125,9 @@ static ret_t mledit_get_prop(widget_t* widget, const char* name, value_t* v) {
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_TIPS)) {
     value_set_str(v, mledit->tips);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_KEYBOARD)) {
+    value_set_str(v, mledit->keyboard);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_FOCUSABLE)) {
     value_set_bool(v, !(mledit->readonly));
@@ -209,6 +221,9 @@ static ret_t mledit_set_prop(widget_t* widget, const char* name, const value_t* 
   } else if (tk_str_eq(name, WIDGET_PROP_TIPS)) {
     mledit_set_input_tips(widget, value_str(v));
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_KEYBOARD)) {
+    mledit_set_keyboard(widget, value_str(v));
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_TEXT)) {
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
@@ -229,6 +244,7 @@ static ret_t mledit_on_destroy(widget_t* widget) {
 
   wstr_reset(&(mledit->temp));
   TKMEM_FREE(mledit->tips);
+  TKMEM_FREE(mledit->keyboard);
   text_edit_destroy(mledit->model);
 
   return RET_OK;
@@ -606,17 +622,11 @@ static ret_t mledit_init_idle_func(const idle_info_t* info) {
   return RET_REMOVE;
 }
 
-const char* s_mledit_properties[] = {WIDGET_PROP_READONLY,
-                                     WIDGET_PROP_MARGIN,
-                                     WIDGET_PROP_LEFT_MARGIN,
-                                     WIDGET_PROP_RIGHT_MARGIN,
-                                     WIDGET_PROP_TOP_MARGIN,
-                                     WIDGET_PROP_BOTTOM_MARGIN,
-                                     WIDGET_PROP_TIPS,
-                                     MLEDIT_PROP_MAX_LINES,
-                                     MLEDIT_PROP_WRAP_WORD,
-                                     MLEDIT_PROP_SCROLL_LINE,
-                                     NULL};
+const char* s_mledit_properties[] = {
+    WIDGET_PROP_READONLY,     WIDGET_PROP_MARGIN,      WIDGET_PROP_LEFT_MARGIN,
+    WIDGET_PROP_RIGHT_MARGIN, WIDGET_PROP_TOP_MARGIN,  WIDGET_PROP_BOTTOM_MARGIN,
+    WIDGET_PROP_TIPS,         WIDGET_PROP_KEYBOARD,    MLEDIT_PROP_MAX_LINES,
+    MLEDIT_PROP_WRAP_WORD,    MLEDIT_PROP_SCROLL_LINE, NULL};
 
 TK_DECL_VTABLE(mledit) = {.size = sizeof(mledit_t),
                           .type = WIDGET_TYPE_MLEDIT,

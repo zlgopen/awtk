@@ -161,6 +161,13 @@ typedef struct _edit_t {
   char* tips;
 
   /**
+   * @property {char*} keyboard
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 自定义软键盘名称。
+   */
+  char* keyboard;
+
+  /**
    * @property {input_type_t} input_type
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 输入类型。
@@ -375,6 +382,18 @@ ret_t edit_set_input_type(widget_t* widget, input_type_t type);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t edit_set_input_tips(widget_t* widget, const char* tips);
+
+/**
+ * @method edit_set_keyboard
+ * 设置自定义软键盘名称。
+ * 
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {char*} keyboard 键盘名称(相应UI资源必须存在)。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t edit_set_keyboard(widget_t* widget, const char* keyboard);
 
 /**
  * @method edit_set_password_visible

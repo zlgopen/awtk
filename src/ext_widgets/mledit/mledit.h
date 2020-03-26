@@ -95,6 +95,12 @@ typedef struct _mledit_t {
    * 输入提示。
    */
   char* tips;
+  /**
+   * @property {char*} keyboard
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 自定义软键盘名称。
+   */
+  char* keyboard;
 
   /**
    * @property {bool_t} wrap_word
@@ -202,6 +208,18 @@ ret_t mledit_set_max_lines(widget_t* widget, uint32_t max_lines);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t mledit_set_input_tips(widget_t* widget, const char* tips);
+
+/**
+ * @method mledit_set_keyboard
+ * 设置自定义软键盘名称。
+ * 
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {char*} keyboard 键盘名称(相应UI资源必须存在)。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t mledit_set_keyboard(widget_t* widget, const char* keyboard);
 
 /**
  * @method mledit_set_cursor

@@ -76,6 +76,36 @@ static const char* input_type_to_keyboard_name(int32_t input_type) {
   return keyboard;
 }
 
+static int32_t widget_get_input_type(widget_t* widget) {
+  value_t v;
+  int32_t input_type = 0;
+
+  value_set_int(&v, INPUT_TEXT);
+  widget_get_prop(widget, WIDGET_PROP_INPUT_TYPE, &v);
+
+  if (v.type == VALUE_TYPE_STRING) {
+    const key_type_value_t* kv = input_type_find(value_str(&v));
+    if (kv != NULL) {
+      input_type = kv->value;
+    }
+  } else {
+    input_type = value_int(&v);
+  }
+
+  return input_type;
+}
+
+static const char* widget_get_keyboard(widget_t* widget) {
+  int32_t input_type = widget_get_input_type(widget);
+  const char* keyboard = widget_get_prop_str(widget, WIDGET_PROP_KEYBOARD, NULL);
+
+  if (keyboard == NULL) {
+    keyboard = input_type_to_keyboard_name(input_type);
+  }
+
+  return keyboard;
+}
+
 static ret_t on_push_window(void* ctx, event_t* e) {
   input_method_t* im = (input_method_t*)ctx;
 
@@ -123,23 +153,23 @@ static ret_t input_method_default_on_keyboard_open(void* ctx, event_t* e) {
   return RET_REMOVE;
 }
 
-static ret_t input_type_open_keyboard(input_method_t* im, int32_t input_type, bool_t open_anim) {
+static ret_t input_type_open_keyboard(input_method_t* im, const char* keyboard_name,
+                                      bool_t open_anim) {
   value_t v;
   point_t p = {0, 0};
   widget_t* widget = im->widget;
   widget_t* win = widget_get_window(widget);
   const char* close_anim_hint = WINDOW_ANIMATOR_POPUP;
   const char* open_anim_hint = open_anim ? close_anim_hint : "";
-  const char* keyboard = input_type_to_keyboard_name(input_type);
 
-  if (keyboard == NULL) {
+  if (keyboard_name == NULL) {
     return RET_OK;
   }
 
   widget_to_screen(widget, &p);
-  im->keyboard = window_open(keyboard);
+  im->keyboard = window_open(keyboard_name);
   if (im->keyboard == NULL) {
-    log_debug("Not found keyboard [%s], try default.\n", keyboard);
+    log_debug("Not found keyboard [%s], try default.\n", keyboard_name);
     im->keyboard = window_open("kb_default");
   }
   return_value_if_fail(im->keyboard != NULL, RET_NOT_FOUND);
@@ -177,37 +207,18 @@ static ret_t input_type_open_keyboard(input_method_t* im, int32_t input_type, bo
   return RET_OK;
 }
 
-static int32_t widget_get_input_type(widget_t* widget) {
-  value_t v;
-  int32_t input_type = 0;
-
-  value_set_int(&v, INPUT_TEXT);
-  widget_get_prop(widget, WIDGET_PROP_INPUT_TYPE, &v);
-
-  if (v.type == VALUE_TYPE_STRING) {
-    const key_type_value_t* kv = input_type_find(value_str(&v));
-    if (kv != NULL) {
-      input_type = kv->value;
-    }
-  } else {
-    input_type = value_int(&v);
-  }
-
-  return input_type;
-}
-
 static ret_t input_method_default_show_keyboard(input_method_t* im) {
   value_t v;
   point_t p = {0, 0};
   bool_t open_anim = TRUE;
   widget_t* widget = im->widget;
-  int32_t input_type = widget_get_input_type(widget);
+  const char* keyboard_name = widget_get_keyboard(widget);
 
   widget_to_screen(widget, &p);
   if (im->keyboard != NULL) {
     bool_t edit_is_in_view = (p.y >= 0) && ((p.y + widget->h) <= im->keyboard->y);
 
-    if (im->input_type == input_type && edit_is_in_view) {
+    if (tk_str_eq(im->keyboard_name, keyboard_name) && edit_is_in_view) {
       /*old edit and new edit has same input type, reuse old keyboard*/
 
       return RET_OK;
@@ -222,9 +233,10 @@ static ret_t input_method_default_show_keyboard(input_method_t* im) {
       open_anim = FALSE;
     }
   }
-  im->input_type = (input_type_t)input_type;
 
-  return input_type_open_keyboard(im, input_type, open_anim);
+  tk_strncpy(im->keyboard_name, keyboard_name, TK_NAME_LEN);
+
+  return input_type_open_keyboard(im, keyboard_name, open_anim);
 }
 
 typedef struct _idle_close_info_t {

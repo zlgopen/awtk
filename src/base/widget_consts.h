@@ -348,6 +348,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_INPUT_TYPE "input_type"
 
 /**
+ * @const WIDGET_PROP_KEYBOARD
+ * 自定义软键盘资源名称。
+ */
+#define WIDGET_PROP_KEYBOARD "keyboard"
+
+/**
  * @const WIDGET_PROP_READONLY
  * 只读模式。
  */

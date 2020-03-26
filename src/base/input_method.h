@@ -246,11 +246,11 @@ struct _input_method_t {
   emitter_t emitter;
 
   /**
-   * @property {input_type_t} input_type
+   * @property {char*} keyboard_name
    * @annotation ["readable"]
-   * 当前输入的类型。
+   * 软键盘资源名称。
    */
-  input_type_t input_type;
+  char keyboard_name[TK_NAME_LEN + 1];
 
   input_engine_t* engine;
   suggest_words_t* suggest_words;
