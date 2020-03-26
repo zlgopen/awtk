@@ -29,7 +29,7 @@ static ret_t image_on_paint_self(widget_t* widget, canvas_t* c) {
   rect_t dst;
   bitmap_t bitmap;
   image_t* image = IMAGE(widget);
-  vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
+  vgcanvas_t* vg = canvas_get_vgcanvas(c);;
   image_base_t* image_base = IMAGE_BASE(widget);
   return_value_if_fail(image != NULL, RET_BAD_PARAMS);
 

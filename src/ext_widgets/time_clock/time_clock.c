@@ -325,7 +325,7 @@ static ret_t time_clock_load_image(widget_t* widget, const char* name, bitmap_t*
 static ret_t time_clock_draw_image(widget_t* widget, canvas_t* c, bitmap_t* img, float_t dx,
                                    float_t dy, float_t anchor_x, float_t anchor_y,
                                    float_t rotation) {
-  vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
+  vgcanvas_t* vg = canvas_get_vgcanvas(c);
 
   vgcanvas_save(vg);
   vgcanvas_translate(vg, c->ox + dx, c->oy + dy);

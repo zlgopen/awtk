@@ -50,7 +50,7 @@ static ret_t svg_image_load_bsvg(widget_t* widget) {
 
 static ret_t svg_image_on_paint_self(widget_t* widget, canvas_t* c) {
   svg_image_t* svg_image = SVG_IMAGE(widget);
-  vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
+  vgcanvas_t* vg = canvas_get_vgcanvas(c);
   image_base_t* image_base = IMAGE_BASE(widget);
   return_value_if_fail(svg_image != NULL && image_base != NULL && widget != NULL, RET_BAD_PARAMS);
 

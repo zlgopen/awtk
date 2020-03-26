@@ -244,7 +244,7 @@ ret_t image_transform(widget_t* widget, canvas_t* c) {
   float_t anchor_x = 0;
   float_t anchor_y = 0;
   image_base_t* image_base = IMAGE_BASE(widget);
-  vgcanvas_t* vg = lcd_get_vgcanvas(c->lcd);
+  vgcanvas_t* vg = canvas_get_vgcanvas(c);
 
   return_value_if_fail(widget != NULL && vg != NULL, RET_BAD_PARAMS);
 
