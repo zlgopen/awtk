@@ -445,6 +445,10 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_KEY_UP: {
+      key_event_t* key_event = key_event_cast(e);
+      if (key_code_is_enter(key_event->key)) {
+        ret = RET_STOP;
+      }
       widget_invalidate(widget, NULL);
       break;
     }

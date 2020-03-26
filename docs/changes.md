@@ -1,6 +1,9 @@
 # 最新动态
+* 2020/03/26
+  * 完善 edit/mledit 对 enter 键的处理（感谢大恒提供补丁）。
+
 * 2020/03/25
-    * 支持scroll view放在slide view 中。（感谢yeslee提供补丁）。
+    * 支持 scroll view 放在 slide view 中。（感谢 yeslee 提供补丁）。
 
 * 2020/03/24
     * 增加工具 remove\_utf8\_bom

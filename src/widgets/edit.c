@@ -565,11 +565,12 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_KEY_UP: {
-      if (edit->timer_id == TK_INVALID_ID) {
-        if (((key_event_t*)e)->key == TK_KEY_RETURN) {
+      key_event_t* key_event = key_event_cast(e);
+      if (key_code_is_enter(key_event->key)) {
+        if (edit->timer_id == TK_INVALID_ID) {
           edit_on_focused(widget);
-          return RET_STOP;
         }
+        ret = RET_STOP;
       }
       widget_invalidate(widget, NULL);
       break;

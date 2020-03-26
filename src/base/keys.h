@@ -882,6 +882,14 @@ typedef enum _key_code_t {
 
 } key_code_t;
 
+static inline bool_t key_code_is_enter(int key) {
+#ifdef SDL2
+  return (key == TK_KEY_RETURN || key == TK_KEY_KP_ENTER);
+#else
+  return key == TK_KEY_RETURN;
+#endif/*SDL2*/
+}
+
 END_C_DECLS
 
 #endif /*TK_KEYS_H*/
