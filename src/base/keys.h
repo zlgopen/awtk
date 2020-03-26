@@ -887,7 +887,7 @@ static inline bool_t key_code_is_enter(int key) {
   return (key == TK_KEY_RETURN || key == TK_KEY_KP_ENTER);
 #else
   return key == TK_KEY_RETURN;
-#endif/*SDL2*/
+#endif /*SDL2*/
 }
 
 END_C_DECLS
