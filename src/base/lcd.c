@@ -215,6 +215,7 @@ ret_t lcd_end_frame(lcd_t* lcd) {
   return_value_if_fail(lcd != NULL && lcd->end_frame != NULL, RET_BAD_PARAMS);
 
   return_value_if_fail(lcd->end_frame(lcd) == RET_OK, RET_FAIL);
+  lcd->last_update_time = time_now_ms();
 
   return RET_OK;
 }
