@@ -267,7 +267,10 @@ static ret_t main_loop_sdl2_dispatch(main_loop_simple_t* loop) {
         break;
       }
       case SDL_QUIT: {
-        main_loop_quit((main_loop_t*)loop);
+        event_t e = event_init(EVT_REQUEST_QUIT_APP, NULL);
+        if (widget_dispatch(window_manager(), &e) == RET_OK) {
+          main_loop_quit((main_loop_t*)loop);
+        }
         break;
       }
     }
