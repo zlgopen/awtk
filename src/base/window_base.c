@@ -302,7 +302,7 @@ ret_t window_base_on_event(widget_t* widget, event_t* e) {
       widget_unref(win->save_focus_widget);
       win->save_focus_widget = NULL;
     } else {
-      widget_set_focused(widget, TRUE);
+      widget_set_focused_internal(widget, TRUE);
     }
   } else if (e->type == EVT_WINDOW_TO_BACKGROUND) {
     win->stage = WINDOW_STAGE_SUSPEND;
