@@ -260,10 +260,17 @@ struct _lcd_t {
    * 是否支持脏矩形。
    */
   bool_t support_dirty_rect;
+  
+  /**
+   * @property {uint64_t} last_update_time
+   * @annotation ["readable"]
+   * last update time
+   */
+  uint64_t last_update_time;
 
+  /*private*/
   rect_t fps_rect;
   rect_t dirty_rect;
-
   void* impl_data;
 };
 
