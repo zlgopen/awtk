@@ -176,6 +176,7 @@ static ret_t progress_circle_on_destroy(widget_t* widget) {
   return_value_if_fail(widget != NULL && progress_circle != NULL, RET_BAD_PARAMS);
 
   TKMEM_FREE(progress_circle->unit);
+  TKMEM_FREE(progress_circle->line_cap);
 
   return RET_OK;
 }
