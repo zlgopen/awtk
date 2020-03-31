@@ -154,7 +154,6 @@ dialog_quit_code_t dialog_modal(widget_t* widget) {
   log_debug("awtk web not support dialog_modal\n");
   return DIALOG_QUIT_NONE;
 #else
-  bool_t running = FALSE;
   dialog_t* dialog = DIALOG(widget);
   return_value_if_fail(dialog != NULL, DIALOG_QUIT_NONE);
 
@@ -162,10 +161,8 @@ dialog_quit_code_t dialog_modal(widget_t* widget) {
 
   dialog->quited = FALSE;
   dialog->is_model = TRUE;
-  running = main_loop()->running;
   widget_invalidate(widget, NULL);
   main_loop_run(main_loop());
-  main_loop()->running = running;
 
   log_debug("%s quit\n", __FUNCTION__);
   idle_add(dialog_idle_close, widget);

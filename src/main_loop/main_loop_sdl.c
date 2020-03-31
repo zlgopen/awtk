@@ -208,15 +208,6 @@ static ret_t main_loop_sdl2_dispatch_window_event(main_loop_simple_t* loop, SDL_
     case SDL_WINDOWEVENT_FOCUS_LOST:
       log_debug("Window %d lost keyboard focus\n", event->window.windowID);
       break;
-    case SDL_WINDOWEVENT_CLOSE: {
-      event_t e = event_init(EVT_REQUEST_QUIT_APP, NULL);
-      if (widget_dispatch(window_manager(), &e) == RET_OK) {
-        SDL_Window* win = SDL_GetWindowFromID(event->window.windowID);
-
-        e = event_init(EVT_NATIVE_WINDOW_DESTROY, NULL);
-        window_manager_dispatch_native_window_event(l->wm, &e, win);
-      }
-    } break;
 #if SDL_VERSION_ATLEAST(2, 0, 5)
     case SDL_WINDOWEVENT_TAKE_FOCUS:
       log_debug("Window %d is offered a focus\n", event->window.windowID);

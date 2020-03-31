@@ -183,6 +183,11 @@ static ret_t main_loop_simple_run(main_loop_t* l) {
 
   loop->pressed = FALSE;
   while (l->running) {
+    if (l->quit_num) {
+      --l->quit_num;
+      --l->running;
+      break;
+    }
     main_loop_step(l);
     main_loop_sleep(l);
   }

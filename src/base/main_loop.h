@@ -52,7 +52,8 @@ struct _main_loop_t {
   main_loop_get_event_source_manager_t get_event_source_manager;
   main_loop_destroy_t destroy;
 
-  bool_t running;
+  uint8_t running;
+  uint8_t quit_num;
   bool_t app_quited;
   uint32_t last_loop_time;
   widget_t* wm;

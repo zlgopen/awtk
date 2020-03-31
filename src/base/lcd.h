@@ -260,7 +260,7 @@ struct _lcd_t {
    * 是否支持脏矩形。
    */
   bool_t support_dirty_rect;
-  
+
   /**
    * @property {uint64_t} last_update_time
    * @annotation ["readable"]
