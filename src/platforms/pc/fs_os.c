@@ -269,7 +269,18 @@ fs_dir_t* fs_os_open_dir(fs_t* fs, const char* name) {
 
 ret_t fs_os_remove_dir(fs_t* fs, const char* name) {
   (void)fs;
+  return_value_if_fail(name != NULL, RET_FAIL);
+#if defined(WIN32)
+  wchar_t* w_name = NULL;
+  int16_t len = strlen(name) + 1;
+  w_name = (wchar_t*)TKMEM_ALLOC(len * 2);
+  tk_utf8_to_utf16(name, w_name, len);
+  int8_t ret = _wrmdir(w_name);
+  TKMEM_FREE(w_name);
+  if (ret == 0) {
+#else
   if (rmdir(name) == 0) {
+#endif
     return RET_OK;
   } else {
     perror(name);
@@ -279,8 +290,15 @@ ret_t fs_os_remove_dir(fs_t* fs, const char* name) {
 
 ret_t fs_os_create_dir(fs_t* fs, const char* name) {
   (void)fs;
+  return_value_if_fail(name != NULL, RET_FAIL);
 #if defined(WIN32)
-  if (mkdir(name) == 0) {
+  wchar_t* w_name = NULL;
+  int16_t len = strlen(name) + 1;
+  w_name = (wchar_t*)TKMEM_ALLOC(len * 2);
+  tk_utf8_to_utf16(name, w_name, len);
+  int8_t ret = _wmkdir(w_name);
+  TKMEM_FREE(w_name);
+  if (ret == 0) {
 #else
   if (mkdir(name, 0755) == 0) {
 #endif
