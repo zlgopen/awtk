@@ -28,7 +28,7 @@ BEGIN_C_DECLS
 
 /**
  * @class overlay_t
- * @parent widget_t
+ * @parent window_base_t
  * @annotation ["scriptable","design","widget","window"]
  * overlay窗口。
  *
