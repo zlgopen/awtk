@@ -20,6 +20,7 @@
  */
 
 #include "base/lcd.h"
+#include "tkc/time_now.h"
 #include "base/system_info.h"
 
 ret_t lcd_begin_frame(lcd_t* lcd, rect_t* dirty_rect, lcd_draw_mode_t draw_mode) {
