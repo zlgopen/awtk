@@ -281,6 +281,7 @@ typedef ret_t (*fs_get_disk_info_t)(fs_t* fs, const char* volume, int32_t* free_
 typedef ret_t (*fs_get_exe_t)(fs_t* fs, char path[MAX_PATH + 1]);
 typedef ret_t (*fs_get_cwd_t)(fs_t* fs, char path[MAX_PATH + 1]);
 typedef ret_t (*fs_stat_t)(fs_t* fs, const char* name, fs_stat_info_t* fst);
+typedef ret_t (*fs_get_user_storage_path_t)(fs_t* fs, char path[MAX_PATH + 1]);
 
 /**
  * @class fs_t
@@ -304,6 +305,7 @@ struct _fs_t {
   fs_get_disk_info_t get_disk_info;
   fs_get_cwd_t get_cwd;
   fs_get_exe_t get_exe;
+  fs_get_user_storage_path_t get_user_storage_path;
   fs_stat_t stat;
 };
 
@@ -468,6 +470,18 @@ ret_t fs_stat(fs_t* fs, const char* name, fs_stat_info_t* fst);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t fs_get_exe(fs_t* fs, char path[MAX_PATH + 1]);
+
+/**
+ * @method fs_get_user_storage_path
+ *
+ * 获取home目录或者应用程序可以写入数据的目录。
+ *
+ * @param {fs_t*} fs 文件系统对象，一般赋值为os_fs()。
+ * @param {char*} path 保存路径。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t fs_get_user_storage_path(fs_t* fs, char path[MAX_PATH + 1]);
 
 /**
  * @method fs_get_cwd

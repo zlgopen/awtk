@@ -1,13 +1,20 @@
 ﻿#include "tkc/types_def.h"
 
+#ifdef ANDROID
+#include "SDL.h"
+#endif /*ANDROID*/
+
 #if defined(__APPLE__) || defined(LINUX)
 #include <unistd.h>
 #include <dirent.h>
+#include <sys/types.h>
+#include <pwd.h>
 #elif defined(WIN32)
 #include <stdio.h>
 #include <windows.h>
 #include <io.h>
 #include <direct.h>
+#include <Shlobj.h>
 #define unlink _unlink
 #define rename MoveFileA
 #define ftruncate _chsize
@@ -162,7 +169,7 @@ fs_file_t* fs_os_open_file(fs_t* fs, const char* name, const char* mode) {
 
 ret_t fs_os_remove_file(fs_t* fs, const char* name) {
   (void)fs;
-  return_value_if_fail(name != NULL, FALSE);
+  return_value_if_fail(name != NULL, RET_FAIL);
 
 #ifdef WIN32
   int16_t len = 0;
@@ -402,6 +409,44 @@ ret_t fs_os_get_exe(fs_t* fs, char path[MAX_PATH + 1]) {
   return RET_OK;
 }
 
+ret_t fs_os_get_user_storage_path(fs_t* fs, char path[MAX_PATH + 1]) {
+#if defined(ANDROID)
+  const char* homedir = SDL_AndroidGetInternalStoragePath();
+  memset(path, 0x00, MAX_PATH + 1);
+
+  return_value_if_fail(homedir != NULL, RET_FAIL);
+  tk_strncpy(path, homedir, MAX_PATH);
+
+  return RET_OK;
+#elif defined(LINUX) || defined(__APPLE__) || defined(IOS)
+  const char* homedir = NULL;
+  memset(path, 0x00, MAX_PATH + 1);
+
+  if ((homedir = getenv("HOME")) == NULL) {
+    homedir = getpwuid(getuid())->pw_dir;
+  }
+
+  return_value_if_fail(homedir != NULL, RET_FAIL);
+  tk_strncpy(path, homedir, MAX_PATH);
+
+  return RET_OK;
+#elif defined(WIN32)
+  WCHAR path[MAX_PATH];
+
+  if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_PROFILE, NULL, 0, path))) {
+    str_t str;
+    str_init(&str, MAX_PATH);
+    str_from_wstr(&str, path);
+    tk_strncpy(path, str.str, MAX_PATH);
+    str_reset(&str);
+
+    return RET_OK;
+  }
+#endif
+
+  return RET_FAIL;
+}
+
 static ret_t fs_os_get_cwd(fs_t* fs, char path[MAX_PATH + 1]) {
   return_value_if_fail(fs != NULL && path != NULL, RET_BAD_PARAMS);
 
@@ -478,6 +523,7 @@ static const fs_t s_os_fs = {.open_file = fs_os_open_file,
                              .get_disk_info = fs_os_get_disk_info,
                              .get_cwd = fs_os_get_cwd,
                              .get_exe = fs_os_get_exe,
+                             .get_user_storage_path = fs_os_get_user_storage_path,
                              .stat = fs_os_stat};
 
 fs_t* os_fs(void) {
