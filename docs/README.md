@@ -32,6 +32,7 @@
 * [键值映射](map_key.md)
 * [应用程序的入口函数](awtk_main.md)
 * [资源打包](assets_zip.md)
+* [LCD 密度与图片的对应关系](../demos/assets/default/raw/images/README.md)
 
 ### 2.HowTos
 * [AWTK 调试技巧](debug_tips.md)
