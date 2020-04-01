@@ -431,12 +431,12 @@ ret_t fs_os_get_user_storage_path(fs_t* fs, char path[MAX_PATH + 1]) {
 
   return RET_OK;
 #elif defined(WIN32)
-  WCHAR path[MAX_PATH];
+  WCHAR homedir[MAX_PATH];
 
-  if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_PROFILE, NULL, 0, path))) {
+  if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_PROFILE, NULL, 0, homedir))) {
     str_t str;
     str_init(&str, MAX_PATH);
-    str_from_wstr(&str, path);
+    str_from_wstr(&str, homedir);
     tk_strncpy(path, str.str, MAX_PATH);
     str_reset(&str);
 
