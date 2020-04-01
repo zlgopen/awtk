@@ -28,6 +28,11 @@
 
 BEGIN_C_DECLS
 
+/**
+ * @class waitable_action_queue_t
+ * 
+ * waitable actionqueue 
+ */
 typedef struct _waitable_action_queue_t {
   action_queue_t* queue;
   tk_mutex_t* mutex;
