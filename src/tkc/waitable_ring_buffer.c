@@ -64,7 +64,7 @@ error:
 }
 
 ret_t waitable_ring_buffer_read(waitable_ring_buffer_t* rb, void* buff, uint32_t size,
-                                 uint32_t timeout_ms) {
+                                uint32_t timeout_ms) {
   ret_t ret = RET_FAIL;
   return_value_if_fail(rb != NULL && buff != NULL, RET_BAD_PARAMS);
   return_value_if_fail(size == rb->block_size, RET_BAD_PARAMS);

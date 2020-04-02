@@ -31,7 +31,7 @@ BEGIN_C_DECLS
 /**
  * @class waitable_ring_buffer_t
  * waitable ring buffer
- */ 
+ */
 typedef struct _waitable_ring_buffer_t {
   /*private*/
   uint32_t block_size;
@@ -80,7 +80,7 @@ ret_t waitable_ring_buffer_read(waitable_ring_buffer_t* rb, void* buff, uint32_t
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t waitable_ring_buffer_write(waitable_ring_buffer_t* rb, const void* buff, uint32_t size,
-                                uint32_t timeout_ms);
+                                 uint32_t timeout_ms);
 
 /**
  * @method waitable_ring_buffer_destroy
