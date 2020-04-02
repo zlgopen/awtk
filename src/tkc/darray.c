@@ -343,7 +343,7 @@ ret_t darray_destroy(darray_t* darray) {
   return RET_OK;
 }
 
-int darray_bsearch_index(darray_t* darray, void* ctx) {
+int darray_bsearch_index(darray_t* darray, tk_compare_t cmp, void* ctx) {
   int low = 0;
   int mid = 0;
   int high = 0;
@@ -351,12 +351,16 @@ int darray_bsearch_index(darray_t* darray, void* ctx) {
   void* iter = NULL;
   return_value_if_fail(darray != NULL && darray->size > 0, -1);
 
+  if (cmp == NULL) {
+    cmp = darray->compare;
+  }
+
   high = darray->size - 1;
   while (low <= high) {
     mid = low + ((high - low) >> 1);
     iter = darray->elms[mid];
 
-    result = darray->compare(iter, ctx);
+    result = cmp(iter, ctx);
 
     if (result == 0) {
       return mid;
@@ -370,8 +374,8 @@ int darray_bsearch_index(darray_t* darray, void* ctx) {
   return -1;
 }
 
-void* darray_bsearch(darray_t* darray, void* ctx) {
-  int index = darray_bsearch_index(darray, ctx);
+void* darray_bsearch(darray_t* darray, tk_compare_t cmp, void* ctx) {
+  int index = darray_bsearch_index(darray, cmp, ctx);
   if (index >= 0) {
     return darray->elms[index];
   } else {
