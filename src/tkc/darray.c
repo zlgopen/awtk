@@ -342,3 +342,39 @@ ret_t darray_destroy(darray_t* darray) {
 
   return RET_OK;
 }
+
+int darray_bsearch_index(darray_t* darray, void* ctx) {
+  int low = 0;
+  int mid = 0;
+  int high = 0;
+  int result = 0;
+  void* iter = NULL;
+  return_value_if_fail(darray != NULL && darray->size > 0, -1);
+
+  high = darray->size - 1;
+  while (low <= high) {
+    mid = low + ((high - low) >> 1);
+    iter = darray->elms[mid];
+
+    result = darray->compare(iter, ctx);
+
+    if (result == 0) {
+      return mid;
+    } else if (result < 0) {
+      low = mid + 1;
+    } else {
+      high = mid - 1;
+    }
+  }
+
+  return -1;
+}
+
+void* darray_bsearch(darray_t* darray, void* ctx) {
+  int index = darray_bsearch_index(darray, ctx);
+  if (index >= 0) {
+    return darray->elms[index];
+  } else {
+    return NULL;
+  }
+}

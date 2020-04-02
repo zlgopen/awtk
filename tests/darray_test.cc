@@ -302,5 +302,33 @@ TEST(DArrayTest, sort) {
   ASSERT_EQ(tk_pointer_to_int(darray.elms[5]), 13);
   ASSERT_EQ(tk_pointer_to_int(darray.elms[6]), 14);
   ASSERT_EQ(tk_pointer_to_int(darray.elms[7]), 100);
+
+  ASSERT_EQ(darray_bsearch_index(&darray, tk_pointer_from_int(1)), 0);
+  ASSERT_EQ(darray_bsearch_index(&darray, tk_pointer_from_int(4)), 3);
+  ASSERT_EQ(darray_bsearch_index(&darray, tk_pointer_from_int(12)), 4);
+  ASSERT_EQ(darray_bsearch_index(&darray, tk_pointer_from_int(13)), 5);
+  ASSERT_EQ(darray_bsearch_index(&darray, tk_pointer_from_int(14)), 6);
+  ASSERT_EQ(darray_bsearch_index(&darray, tk_pointer_from_int(100)), 7);
+
   darray_deinit(&darray);
 }
+
+
+TEST(DArrayTest, bsearch) {
+  darray_t darray;
+  darray_init(&darray, 10, NULL, NULL);
+
+  darray_push(&darray, tk_pointer_from_int(1));
+  ASSERT_EQ(darray_bsearch_index(&darray, tk_pointer_from_int(1)), 0);
+  
+  darray_push(&darray, tk_pointer_from_int(2));
+  ASSERT_EQ(darray_bsearch_index(&darray, tk_pointer_from_int(2)), 1);
+  
+  darray_push(&darray, tk_pointer_from_int(3));
+  ASSERT_EQ(darray_bsearch_index(&darray, tk_pointer_from_int(3)), 2);
+  
+  ASSERT_EQ(darray_bsearch_index(&darray, tk_pointer_from_int(30)), -1);
+
+  darray_deinit(&darray);
+}
+

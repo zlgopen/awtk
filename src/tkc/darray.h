@@ -120,6 +120,28 @@ darray_t* darray_init(darray_t* darray, uint32_t capacity, tk_destroy_t destroy,
 void* darray_find(darray_t* darray, void* ctx);
 
 /**
+ * @method darray_bsearch_index
+ * 二分查找(确保数组有序)。
+ * 
+ * @param {darray_t*} darray 数组对象。
+ * @param {void*} ctx 比较函数的上下文。
+ *
+ * @return {int} 如果找到，返回满足条件的对象的位置，否则返回-1。
+ */
+int darray_bsearch_index(darray_t* darray, void* ctx);
+
+/**
+ * @method darray_bsearch
+ * 二分查找(确保数组有序)。
+ * 
+ * @param {darray_t*} darray 数组对象。
+ * @param {void*} ctx 比较函数的上下文。
+ *
+ * @return {void*} 如果找到，返回满足条件的对象，否则返回NULL。
+ */
+void* darray_bsearch(darray_t* darray, void* ctx);
+
+/**
  * @method darray_get
  * 获取指定序数的元素。
  * @param {darray_t*} darray 数组对象。
