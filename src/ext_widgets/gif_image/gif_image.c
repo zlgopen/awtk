@@ -59,11 +59,12 @@ static ret_t gif_image_on_paint_self(widget_t* widget, canvas_t* c) {
   return_value_if_fail(image_base != NULL && image != NULL && widget != NULL && c != NULL,
                        RET_BAD_PARAMS);
 
-  vg = canvas_get_vgcanvas(c);
-  if (image_base->image == NULL) {
+  if (image_base->image == NULL || image_base->image[0] == '\0') {
+    widget_paint_helper(widget, c, NULL, NULL);
     return RET_OK;
   }
 
+  vg = canvas_get_vgcanvas(c);
   return_value_if_fail(widget_load_image(widget, image_base->image, &bitmap) == RET_OK,
                        RET_BAD_PARAMS);
 #ifdef AWTK_WEB
