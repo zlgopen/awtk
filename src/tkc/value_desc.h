@@ -660,11 +660,11 @@ typedef struct _value_desc_double_t {
    */
   double max;
   /**
-   * @property {double_t} step
+   * @property {double} step
    * @annotation ["readable"]
    * 步长。
    */
-  double_t step;
+  double step;
   /**
    * @property {const char*} unit
    * @annotation ["readable"]

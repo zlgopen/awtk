@@ -160,8 +160,8 @@ namespace agge
 			const int fy1 = y1 & _1_mask;
 			const int fy2 = y2 & _1_mask;
 			const int step = dy > 0 ? +1 : -1;
-			const int near = dy > 0 ? _1 : 0;
-			const int far = _1 - near;
+			const int near_ = dy > 0 ? _1 : 0;
+			const int far_ = _1 - near_;
 
 			if (x2 == x1)
 			{
@@ -173,12 +173,12 @@ namespace agge
 				const int two_fx = 2 * (x1 & _1_mask);
 
 				jump_xy(current, ex1, ey1);
-				add_and_commit(current, two_fx, near - fy1);
+				add_and_commit(current, two_fx, near_ - fy1);
 				ey1 += step;
 
 				if (ey1 != ey2)
 				{
-					const int inner_delta = near - far, inner_area = two_fx * inner_delta;
+					const int inner_delta = near_ - far_, inner_area = two_fx * inner_delta;
 
 					do
 					{
@@ -186,13 +186,13 @@ namespace agge
 						ey1 += step;
 					} while (ey1 != ey2);
 				}
-				set(current, ex1, ey1, two_fx, fy2 - far);
+				set(current, ex1, ey1, two_fx, fy2 - far_);
 			}
 			else
 			{
 				// Ok, we have to render several hlines.
 
-				const int lift = near - fy1;
+				const int lift = near_ - fy1;
 				precise_delta ctg_delta(dx, dy), tg_delta(dy, dx);
 
 				ctg_delta.multiply(lift);
@@ -205,7 +205,7 @@ namespace agge
 
 				if (ey1 != ey2)
 				{
-					const int lift_full = near - far;
+					const int lift_full = near_ - far_;
 
 					ctg_delta.multiply(lift_full);
 
@@ -217,7 +217,7 @@ namespace agge
 						ey1 += step;
 					} while (ey1 != ey2);
 				}
-				if (int dy_rest = fy2 - far)
+				if (int dy_rest = fy2 - far_)
 					hline(current, tg_delta, ey1, x_to, x2, dy_rest);
 			}
 		}
@@ -320,19 +320,19 @@ namespace agge
 			// Ok, we'll have to render a run of adjacent cells on the same hline...
 
 			const int step = x2 > x1 ? +1 : -1;
-			const int near = x2 > x1 ? _1 : 0;
-			const int far = _1 - near;
+			const int near_ = x2 > x1 ? _1 : 0;
+			const int far_ = _1 - near_;
 
-			tg_delta.multiply(near - fx1);
+			tg_delta.multiply(near_ - fx1);
 
 			int y_to = tg_delta.next();
 
-			add_and_commit(current, fx1 + near, y_to);
+			add_and_commit(current, fx1 + near_, y_to);
 			ex1 += step;
 
 			if (ex1 != ex2)
 			{
-				tg_delta.multiply(near - far);
+				tg_delta.multiply(near_ - far_);
 
 				do
 				{
@@ -344,7 +344,7 @@ namespace agge
 					ex1 += step;
 				} while (ex1 != ex2);
 			}
-			set(current, ex1, ey, fx2 + far, dy - y_to);
+			set(current, ex1, ey, fx2 + far_, dy - y_to);
 		}
 	}
 

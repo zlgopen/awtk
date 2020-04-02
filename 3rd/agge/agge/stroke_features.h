@@ -1,6 +1,7 @@
 #pragma once
 
 #include "stroke.h"
+#include <math.h>
 
 namespace agge
 {
