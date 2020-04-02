@@ -571,3 +571,11 @@ ret_t assets_init(void) {
   tk_init_assets();
   return RET_OK;
 }
+
+bool_t assets_has_theme(const char* name) {
+  return FALSE;
+}
+
+ret_t assets_set_global_theme(const char* name) {
+  return RET_NOT_IMPL;
+}

@@ -28,6 +28,9 @@ BEGIN_C_DECLS
 
 ret_t assets_init(void);
 
+bool_t assets_has_theme(const char* name);
+ret_t assets_set_global_theme(const char* name);
+
 END_C_DECLS
 
 #endif /*ASSET_H*/

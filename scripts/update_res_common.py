@@ -602,7 +602,7 @@ def genAssetC(themes, asset_c):
     result += '#define APP_THEME "default"\n'
     result += '#endif /*APP_THEME*/\n\n'
 
-    result += 'ret_t assets_has_theme(const char* name) {\n'
+    result += 'bool_t assets_has_theme(const char* name) {\n'
     result += '  return_value_if_fail(name != NULL, FALSE);\n\n'
     result += '  '
     for theme in themes:
