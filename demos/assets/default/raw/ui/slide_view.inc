@@ -117,3 +117,70 @@
       <slider style="img_v" x="center" y="80" w="30" h="60%" value="20" vertical="true"/>
       <edit x="center" y="bottom:50" w="80%" h="20" value="zlg awtk"/>
     </view>
+    <view x="0" y="0" w="100%" h="100%" >
+      <list_view x="0"  y="0" w="100%" h="-50" item_height="60">
+        <scroll_view name="view" x="0"  y="0" w="-12" h="100%" children_layout="list_view(x_margin=5,spacing=10)">
+          <list_item style="odd_clickable" children_layout="default(r=1,c=0)">
+            <image draw_type="icon" w="30" image="earth"/>
+            <label w="-30" text="1.Hello AWTK !"/>
+          </list_item>
+          <list_item style="even_clickable" children_layout="default(r=1,c=0)">
+            <image draw_type="icon" w="30" image="earth"/>
+            <label w="-30" text="2.Hello AWTK !"/>
+          </list_item>
+          <list_item style="odd_clickable" children_layout="default(r=1,c=0)">
+            <image draw_type="icon" w="30" image="earth"/>
+            <label w="-30" text="3.Hello AWTK !"/>
+          </list_item>
+          <list_item style="even_clickable" children_layout="default(r=1,c=0)">
+            <image draw_type="icon" w="30" image="earth"/>
+            <label w="-30" text="4.Hello AWTK !"/>
+          </list_item>
+          <list_item style="odd_clickable" children_layout="default(r=1,c=0)">
+            <image draw_type="icon" w="30" image="earth"/>
+            <label w="-30" text="5.Hello AWTK !"/>
+          </list_item>
+          <list_item style="even_clickable" children_layout="default(r=1,c=0)">
+            <image draw_type="icon" w="30" image="earth"/>
+            <label w="-30" text="6.Hello AWTK !"/>
+          </list_item>
+          <list_item style="odd_clickable" children_layout="default(r=1,c=0)">
+            <image draw_type="icon" w="30" image="earth"/>
+            <label w="-30" text="7.Hello AWTK !"/>
+          </list_item>
+          <list_item style="even_clickable" children_layout="default(r=1,c=0)">
+            <image draw_type="icon" w="30" image="earth"/>
+            <label w="-30" text="8.Hello AWTK !"/>
+          </list_item>
+          <list_item style="odd_clickable" children_layout="default(r=1,c=0)">
+            <image draw_type="icon" w="30" image="earth"/>
+            <label w="-30" text="9.Hello AWTK !"/>
+          </list_item>
+          <list_item style="even_clickable" children_layout="default(r=1,c=0)">
+            <image draw_type="icon" w="30" image="earth"/>
+            <label w="-30" text="10.Hello AWTK !"/>
+          </list_item>
+          <list_item style="odd_clickable" children_layout="default(r=1,c=0)">
+            <image draw_type="icon" w="30" image="earth"/>
+            <label w="-30" text="11.Hello AWTK !"/>
+          </list_item>
+          <list_item style="even_clickable" children_layout="default(r=1,c=0)">
+            <image draw_type="icon" w="30" image="earth"/>
+            <label w="-30" text="12.Hello AWTK !"/>
+          </list_item>
+          <list_item style="odd_clickable" children_layout="default(r=1,c=0)">
+            <image draw_type="icon" w="30" image="earth"/>
+            <label w="-30" text="13.Hello AWTK !"/>
+          </list_item>
+          <list_item style="even_clickable" children_layout="default(r=1,c=0)">
+            <image draw_type="icon" w="30" image="earth"/>
+            <label w="-30" text="14.Hello AWTK !"/>
+          </list_item>
+          <list_item style="even_clickable" name="clone_self" text="Clone Self" />
+          <list_item style="odd_clickable" name="clone_self" text="Clone Self" />
+          <list_item style="even_clickable" name="remove_self" text="Remove Self" />
+          <list_item style="odd_clickable" name="remove_self" text="Remove Self" />
+        </scroll_view>
+        <scroll_bar_m name="bar" x="right" y="0" w="8" h="100%" value="0"/>
+      </list_view>
+    </view>
