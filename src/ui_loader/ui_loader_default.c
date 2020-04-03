@@ -63,6 +63,7 @@ ret_t ui_loader_load_default(ui_loader_t* loader, const uint8_t* data, uint32_t 
         }
       }
     }
+    if (b->widget == NULL) break;
   }
   ui_builder_on_end(b);
 

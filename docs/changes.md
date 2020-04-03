@@ -1,7 +1,8 @@
 # 最新动态
 * 2020/04/02
   * 增加 darray\_bsearch
-  
+  * 完善 ui loader （感谢尧燊提供补丁）。
+
 * 2020/04/02
   * 增加 waitable ring buffer
   * 修改资源的问题（感谢陈谭提供补丁）。
