@@ -2,6 +2,7 @@
 * 2020/04/02
   * 增加 darray\_bsearch
   * 完善 ui loader （感谢尧燊提供补丁）。
+  * 完善 window base 窗口切换事件对 designer 处理（感谢培煌提供补丁）。
 
 * 2020/04/02
   * 增加 waitable ring buffer
