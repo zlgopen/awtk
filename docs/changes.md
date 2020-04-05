@@ -1,4 +1,8 @@
 # 最新动态
+* 2020/04/05
+  * list view 增加上下键的处理。
+  * slide view 切换时保存和恢复焦点。
+
 * 2020/04/02
   * 增加 darray\_bsearch
   * 完善 ui loader （感谢尧燊提供补丁）。

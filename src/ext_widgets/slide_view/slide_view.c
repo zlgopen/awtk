@@ -754,20 +754,76 @@ TK_DECL_VTABLE(slide_view) = {.size = sizeof(slide_view_t),
                               .on_paint_self = slide_view_on_paint_self,
                               .on_destroy = slide_view_on_destroy};
 
+static ret_t slide_view_on_target_destroy(void* ctx, event_t* evt) {
+  widget_t* view = WIDGET(ctx);
+
+  widget_set_prop_pointer(view, "save_target", NULL);
+
+  return RET_REMOVE;
+}
+
+static ret_t slide_view_save_target(widget_t* widget) {
+  widget_t* target = NULL;
+  slide_view_t* slide_view = SLIDE_VIEW(widget);
+  widget_t* active_view = widget_get_child(widget, slide_view->active);
+
+  if (active_view != NULL) {
+    target = active_view;
+    while (target->target != NULL) {
+      target = target->target;
+    }
+
+    if (target != NULL) {
+      widget_set_prop_pointer(active_view, "save_target", target);
+      widget_on(target, EVT_DESTROY, slide_view_on_target_destroy, active_view);
+    }
+  }
+
+  return RET_OK;
+}
+
+static ret_t slide_view_restore_target(widget_t* widget) {
+  widget_t* target = NULL;
+  slide_view_t* slide_view = SLIDE_VIEW(widget);
+  widget_t* active_view = widget_get_child(widget, slide_view->active);
+
+  if (active_view != NULL) {
+    target = WIDGET(widget_get_prop_pointer(active_view, "save_target"));
+
+    if (target == NULL || target->parent == NULL) {
+      target = active_view;
+    }
+    widget_off_by_func(target, EVT_DESTROY, slide_view_on_target_destroy, active_view);
+
+    while (target->parent != NULL) {
+      target->parent->target = target;
+      target->parent->key_target = target;
+      target = target->parent;
+      if (target == widget) {
+        break;
+      }
+    }
+  }
+
+  return RET_OK;
+}
+
 ret_t slide_view_set_active(widget_t* widget, uint32_t active) {
   slide_view_t* slide_view = SLIDE_VIEW(widget);
   return_value_if_fail(slide_view != NULL, RET_BAD_PARAMS);
 
   if (slide_view->active != active) {
     event_t evt = event_init(EVT_VALUE_WILL_CHANGE, widget);
+
+    slide_view_save_target(widget);
+
     widget_dispatch(widget, &evt);
     slide_view->active = active;
     evt = event_init(EVT_VALUE_CHANGED, widget);
     widget_dispatch(widget, &evt);
+
+    slide_view_restore_target(widget);
     widget_invalidate(widget, NULL);
-    if (widget->focused) {
-      widget_set_as_key_target(widget_get_child(widget, slide_view->active));
-    }
   }
 
   return RET_OK;
