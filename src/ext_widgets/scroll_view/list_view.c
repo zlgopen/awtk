@@ -101,6 +101,14 @@ static ret_t list_view_on_event(widget_t* widget, event_t* e) {
       } else if (evt->key == TK_KEY_PAGEUP) {
         scroll_view_scroll_delta_to(list_view->scroll_view, 0, -widget->h, TK_ANIMATING_TIME);
         ret = RET_STOP;
+      } else if (evt->key == TK_KEY_UP) {
+        uint32_t item_height = tk_max(list_view->item_height, 20);
+        scroll_view_scroll_delta_to(list_view->scroll_view, 0, -item_height, TK_ANIMATING_TIME);
+        ret = RET_STOP;
+      } else if (evt->key == TK_KEY_DOWN) {
+        uint32_t item_height = tk_max(list_view->item_height, 20);
+        scroll_view_scroll_delta_to(list_view->scroll_view, 0, item_height, TK_ANIMATING_TIME);
+        ret = RET_STOP;
       }
       break;
     }
