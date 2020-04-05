@@ -14,7 +14,7 @@ TEST(Utf8, ascii) {
 static void dump_utf8(const char* str) {
   const char* p = str;
   log_debug("dump_utf8:%s\n", str);
-  while(*p) {
+  while (*p) {
     log_debug("%02x ", ((int)(*p) & 0xff));
     p++;
   }
@@ -25,7 +25,7 @@ static void dump_utf8(const char* str) {
 static void dump_unicode(const wchar_t* str) {
   const wchar_t* p = str;
   log_debug("dump_unicode\n");
-  while(*p) {
+  while (*p) {
     log_debug("%04x ", (int)(*p));
     p++;
   }
