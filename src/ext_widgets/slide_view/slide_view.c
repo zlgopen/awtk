@@ -816,13 +816,12 @@ ret_t slide_view_set_active(widget_t* widget, uint32_t active) {
     event_t evt = event_init(EVT_VALUE_WILL_CHANGE, widget);
 
     slide_view_save_target(widget);
-
     widget_dispatch(widget, &evt);
     slide_view->active = active;
     evt = event_init(EVT_VALUE_CHANGED, widget);
     widget_dispatch(widget, &evt);
-
     slide_view_restore_target(widget);
+
     widget_invalidate(widget, NULL);
   }
 
