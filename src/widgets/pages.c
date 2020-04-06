@@ -25,25 +25,86 @@
 #include "base/widget_vtable.h"
 #include "base/image_manager.h"
 
+static ret_t pages_on_target_destroy(void* ctx, event_t* evt) {
+  widget_t* view = WIDGET(ctx);
+
+  widget_set_prop_pointer(view, "save_target", NULL);
+
+  return RET_REMOVE;
+}
+
+static ret_t pages_save_target(widget_t* widget) {
+  widget_t* target = NULL;
+  pages_t* pages = PAGES(widget);
+  widget_t* active_view = widget_get_child(widget, pages->active);
+
+  if (active_view != NULL) {
+    target = active_view;
+    while (target->target != NULL) {
+      target = target->target;
+    }
+
+    if (target != NULL) {
+      widget_set_prop_pointer(active_view, "save_target", target);
+      widget_on(target, EVT_DESTROY, pages_on_target_destroy, active_view);
+    }
+  }
+
+  return RET_OK;
+}
+
+static ret_t pages_restore_target(widget_t* widget) {
+  widget_t* target = NULL;
+  pages_t* pages = PAGES(widget);
+  widget_t* active_view = widget_get_child(widget, pages->active);
+
+  if (active_view != NULL) {
+    target = WIDGET(widget_get_prop_pointer(active_view, "save_target"));
+
+    if (target == NULL || target->parent == NULL) {
+      const char* default_focused_child =
+          widget_get_prop_str(active_view, "default_focused_child", NULL);
+      if (default_focused_child != NULL) {
+        target = widget_lookup(active_view, default_focused_child, TRUE);
+        if (target == NULL) {
+          target = widget_lookup_by_type(active_view, default_focused_child, TRUE);
+        }
+      }
+    }
+
+    if (target == NULL || target->parent == NULL) {
+      target = active_view;
+    }
+    widget_off_by_func(target, EVT_DESTROY, pages_on_target_destroy, active_view);
+
+    log_debug("target=%s\n", target->vt->type);
+    while (target->parent != NULL) {
+      target->parent->target = target;
+      target->parent->key_target = target;
+      target = target->parent;
+      if (target == widget) {
+        break;
+      }
+    }
+  }
+
+  return RET_OK;
+}
+
 ret_t pages_set_active(widget_t* widget, uint32_t index) {
   pages_t* pages = PAGES(widget);
   return_value_if_fail(pages != NULL, RET_BAD_PARAMS);
 
   if (pages->active != index) {
-    widget_t* active = NULL;
     event_t evt = event_init(EVT_VALUE_WILL_CHANGE, widget);
+
+    pages_save_target(widget);
     widget_dispatch(widget, &evt);
     pages->active = index;
     evt = event_init(EVT_VALUE_CHANGED, widget);
     widget_dispatch(widget, &evt);
+    pages_restore_target(widget);
     widget_invalidate(widget, NULL);
-
-    if (index < widget_count_children(widget)) {
-      active = widget_get_child(widget, pages->active);
-      if (active != NULL) {
-        widget_set_as_key_target(active);
-      }
-    }
   }
 
   return RET_OK;
