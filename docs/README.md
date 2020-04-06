@@ -33,7 +33,7 @@
 * [应用程序的入口函数](awtk_main.md)
 * [资源打包](assets_zip.md)
 * [LCD 密度与图片的对应关系](../demos/assets/default/raw/images/README.md)
-
+* [slide_view/pages 各个页面缺省的焦点控件](pages_slide_view_default_focused_child_for_each_page.md)
 ### 2.HowTos
 * [AWTK 调试技巧](debug_tips.md)
 * [AWTK 优化技巧](optimation.md)

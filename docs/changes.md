@@ -1,6 +1,11 @@
 # 最新动态
 
 * 2020/04/05
+  * pages 切换时保存和恢复焦点。
+  * view 增加属性 default\_focused\_child
+  * 增加文档 《slide_view/pages 各个页面缺省的焦点控件》
+
+* 2020/04/05
   * list view 增加上下键的处理。
   * slide view 切换时保存和恢复焦点。
 
@@ -11,7 +16,7 @@
 
 * 2020/04/02
   * 增加 waitable ring buffer
-  * 修改资源的问题（感谢陈谭提供补丁）。
+  * 修改资源的问题pagespages提供补丁）。
   * 修改 ti 编译器的问题（感谢陈谭提供补丁）。
   * 完善 image 名称为空的处理。
   
