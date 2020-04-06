@@ -354,6 +354,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_KEYBOARD "keyboard"
 
 /**
+ * @const WIDGET_PROP_DEFAULT_FOCUSED_CHILD
+ * 缺省获得焦点的子控件(可用控件名或类型)。
+ */
+#define WIDGET_PROP_DEFAULT_FOCUSED_CHILD "default_focused_child"
+
+/**
  * @const WIDGET_PROP_READONLY
  * 只读模式。
  */
