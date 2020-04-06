@@ -791,10 +791,22 @@ static ret_t slide_view_restore_target(widget_t* widget) {
     target = WIDGET(widget_get_prop_pointer(active_view, "save_target"));
 
     if (target == NULL || target->parent == NULL) {
+      const char* default_focused_child =
+          widget_get_prop_str(active_view, "default_focused_child", NULL);
+      if (default_focused_child != NULL) {
+        target = widget_lookup(active_view, default_focused_child, TRUE);
+        if (target == NULL) {
+          target = widget_lookup_by_type(active_view, default_focused_child, TRUE);
+        }
+      }
+    }
+
+    if (target == NULL || target->parent == NULL) {
       target = active_view;
     }
     widget_off_by_func(target, EVT_DESTROY, slide_view_on_target_destroy, active_view);
 
+    log_debug("target=%s\n", target->vt->type);
     while (target->parent != NULL) {
       target->parent->target = target;
       target->parent->key_target = target;
