@@ -55,6 +55,17 @@ BEGIN_C_DECLS
  */
 typedef struct _view_t {
   widget_t widget;
+  /**
+   * @property {char*} default_focused_child
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 
+   * 缺省获得焦点的子控件(可用控件名或类型)。
+   * 
+   *> view作为pages/slideview的直接子控件才需要设置。
+   *> 正常情况下，一个窗口只能指定一个初始焦点。
+   *> 但是对于pages/slideview来说，可能希望每一个页面都有一个初始焦点，此时可用default\_focused\_child来指定。
+   */
+  char* default_focused_child;
 } view_t;
 
 /**
@@ -72,6 +83,17 @@ typedef struct _view_t {
 widget_t* view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
+ * @method view_set_default_focused_child
+ * 设置缺省获得焦点的子控件(可用控件名或类型)。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*}  default_focused_child 缺省获得焦点的子控件(可用控件名或类型)。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t view_set_default_focused_child(widget_t* widget, const char* default_focused_child);
+
+/**
  * @method view_cast
  * 转换为view对象(供脚本语言使用)。
  * @annotation ["cast", "scriptable"]
@@ -80,6 +102,8 @@ widget_t* view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
  * @return {widget_t*} view对象。
  */
 widget_t* view_cast(widget_t* widget);
+
+#define VIEW(widget) ((view_t*)(view_cast(WIDGET(widget))))
 
 END_C_DECLS
 
