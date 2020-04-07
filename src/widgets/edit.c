@@ -1117,7 +1117,7 @@ ret_t edit_inc(edit_t* edit) {
     default:
       break;
   }
-  text_edit_set_cursor(edit->model, 0xffffffff);
+  text_edit_select_all(edit->model);
 
   return widget_invalidate_force(widget, NULL);
 }
@@ -1155,7 +1155,7 @@ ret_t edit_dec(edit_t* edit) {
       break;
   }
 
-  text_edit_set_cursor(edit->model, 0xffffffff);
+  text_edit_select_all(edit->model);
   return widget_invalidate_force(widget, NULL);
 }
 

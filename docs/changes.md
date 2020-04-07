@@ -4,6 +4,7 @@
   * 完善 slide\_view\_set\_active/pages\_set\_active
   * 优化 list view paint
   * 优化 widget\_set\_need\_relayout\_children
+  * 完善 edit （感谢尧燊提供补丁）。
   
 * 2020/04/05
   * pages 切换时保存和恢复焦点。
