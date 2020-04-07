@@ -29,6 +29,7 @@
 | <a href="#fs_t_fs_get_disk_info">fs\_get\_disk\_info</a> | 获取文件系统信息。 |
 | <a href="#fs_t_fs_get_exe">fs\_get\_exe</a> | 获取可执行文件所在目录。 |
 | <a href="#fs_t_fs_get_file_size">fs\_get\_file\_size</a> | 获取文件大小。 |
+| <a href="#fs_t_fs_get_user_storage_path">fs\_get\_user\_storage\_path</a> | 获取home目录或者应用程序可以写入数据的目录。 |
 | <a href="#fs_t_fs_open_dir">fs\_open\_dir</a> | 打开目录。 |
 | <a href="#fs_t_fs_open_file">fs\_open\_file</a> | 打开文件。 |
 | <a href="#fs_t_fs_remove_dir">fs\_remove\_dir</a> | 刪除目录。 |
@@ -478,6 +479,26 @@ ret_t fs_get_file_size (fs_t* fs, const char* name);
 | 返回值 | ret\_t | 返回不是-1表示成功，否则表示失败。 |
 | fs | fs\_t* | 文件系统对象，一般赋值为os\_fs()。 |
 | name | const char* | 文件名。 |
+#### fs\_get\_user\_storage\_path 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="fs_t_fs_get_user_storage_path">获取home目录或者应用程序可以写入数据的目录。
+
+* 函数原型：
+
+```
+ret_t fs_get_user_storage_path (fs_t* fs, char* path);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| fs | fs\_t* | 文件系统对象，一般赋值为os\_fs()。 |
+| path | char* | 保存路径。 |
 #### fs\_open\_dir 函数
 -----------------------
 

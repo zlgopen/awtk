@@ -23,7 +23,13 @@ str_reset(&s);
 | -------- | ------------ | 
 | <a href="#str_t_str_append">str\_append</a> | 追加字符串。 |
 | <a href="#str_t_str_append_char">str\_append\_char</a> | 追加一个字符。 |
+| <a href="#str_t_str_append_double">str\_append\_double</a> | 追加一个浮点数。 |
 | <a href="#str_t_str_append_int">str\_append\_int</a> | 追加一个整数。 |
+| <a href="#str_t_str_append_json_double_pair">str\_append\_json\_double\_pair</a> | 追加bool格式的json键值对。 |
+| <a href="#str_t_str_append_json_double_pair">str\_append\_json\_double\_pair</a> | 追加doube格式的json键值对。 |
+| <a href="#str_t_str_append_json_int_pair">str\_append\_json\_int\_pair</a> | 追加int格式的json键值对。 |
+| <a href="#str_t_str_append_json_str">str\_append\_json\_str</a> | 追加一个字符串，字符串前后加英文双引号，字符串本身的双引号被转义为\"。 |
+| <a href="#str_t_str_append_json_str_pair">str\_append\_json\_str\_pair</a> | 追加字符串格式的json键值对。 |
 | <a href="#str_t_str_append_with_len">str\_append\_with\_len</a> | 追加字符串。 |
 | <a href="#str_t_str_clear">str\_clear</a> | 清除字符串内容。 |
 | <a href="#str_t_str_decode_xml_entity">str\_decode\_xml\_entity</a> | 对XML基本的entity进行解码，目前仅支持&lt;&gt;&quota;&amp;。 |
@@ -103,6 +109,27 @@ ret_t str_append_char (str_t* str, char c);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
 | c | char | 要追加的字符。 |
+#### str\_append\_double 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_append_double">追加一个浮点数。
+
+* 函数原型：
+
+```
+ret_t str_append_double (str_t* str, const char* format, double value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | str\_t* | str对象。 |
+| format | const char* | 格式。 |
+| value | double | 要追加的浮点数。 |
 #### str\_append\_int 函数
 -----------------------
 
@@ -123,6 +150,110 @@ ret_t str_append_int (str_t* str, int32_t value);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
 | value | int32\_t | 要追加的整数。 |
+#### str\_append\_json\_double\_pair 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_append_json_double_pair">追加bool格式的json键值对。
+
+* 函数原型：
+
+```
+ret_t str_append_json_double_pair (str_t* str, const char* key, bool_t value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | str\_t* | str对象。 |
+| key | const char* | 键。 |
+| value | bool\_t | 值。 |
+#### str\_append\_json\_double\_pair 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_append_json_double_pair">追加doube格式的json键值对。
+
+* 函数原型：
+
+```
+ret_t str_append_json_double_pair (str_t* str, const char* key, double value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | str\_t* | str对象。 |
+| key | const char* | 键。 |
+| value | double | 值。 |
+#### str\_append\_json\_int\_pair 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_append_json_int_pair">追加int格式的json键值对。
+
+* 函数原型：
+
+```
+ret_t str_append_json_int_pair (str_t* str, const char* key, int32_t value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | str\_t* | str对象。 |
+| key | const char* | 键。 |
+| value | int32\_t | 值。 |
+#### str\_append\_json\_str 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_append_json_str">追加一个字符串，字符串前后加英文双引号，字符串本身的双引号被转义为\"。
+
+* 函数原型：
+
+```
+ret_t str_append_json_str (str_t* str, const char* json_str);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | str\_t* | str对象。 |
+| json\_str | const char* | 待追加的字符串。 |
+#### str\_append\_json\_str\_pair 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_append_json_str_pair">追加字符串格式的json键值对。
+
+* 函数原型：
+
+```
+ret_t str_append_json_str_pair (str_t* str, const char* key, const char* value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | str\_t* | str对象。 |
+| key | const char* | 键。 |
+| value | const char* | 值。 |
 #### str\_append\_with\_len 函数
 -----------------------
 

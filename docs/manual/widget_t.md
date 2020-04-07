@@ -119,6 +119,8 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | <a href="#widget_t_widget_restack">widget\_restack</a> | 调整控件在父控件中的位置序数。 |
 | <a href="#widget_t_widget_set_animation">widget\_set\_animation</a> | 设置控件的动画参数(仅用于在UI文件使用)。 |
 | <a href="#widget_t_widget_set_animator_time_scale">widget\_set\_animator\_time\_scale</a> | 设置动画的时间倍率，<0: 时间倒退，<1: 时间变慢，>1 时间变快。 |
+| <a href="#widget_t_widget_set_child_text_utf8">widget\_set\_child\_text\_utf8</a> | 设置子控件的文本。 |
+| <a href="#widget_t_widget_set_child_text_with_double">widget\_set\_child\_text\_with\_double</a> | 用一个浮点数去设置子控件的文本。 |
 | <a href="#widget_t_widget_set_children_layout">widget\_set\_children\_layout</a> | 设置子控件的布局参数。 |
 | <a href="#widget_t_widget_set_dirty_rect_tolerance">widget\_set\_dirty\_rect\_tolerance</a> | 设置控件脏矩形超出控件本身大小的最大范围(一般不用指定)。 |
 | <a href="#widget_t_widget_set_enable">widget\_set\_enable</a> | 设置控件的可用性。 |
@@ -1702,6 +1704,51 @@ ret_t widget_set_animator_time_scale (widget_t* widget, const char* name, float_
 | widget | widget\_t* | 控件对象。 |
 | name | const char* | 动画名称。 |
 | time\_scale | float\_t | 时间倍率。 |
+#### widget\_set\_child\_text\_utf8 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_set_child_text_utf8">设置子控件的文本。
+只是对widget\_set\_prop的包装，文本的意义由子类控件决定。
+
+* 函数原型：
+
+```
+ret_t widget_set_child_text_utf8 (widget_t* widget, const char* name, const char* text);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| name | const char* | 子控件的名称。 |
+| text | const char* | 文本。 |
+#### widget\_set\_child\_text\_with\_double 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_set_child_text_with_double">用一个浮点数去设置子控件的文本。
+只是对widget\_set\_prop的包装，文本的意义由子类控件决定。
+
+* 函数原型：
+
+```
+ret_t widget_set_child_text_with_double (widget_t* widget, const char* name, const char* format, double value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| name | const char* | 子控件的名称。 |
+| format | const char* | 格式字符串(如："%2.2lf")。 |
+| value | double | 浮点数值。 |
 #### widget\_set\_children\_layout 函数
 -----------------------
 

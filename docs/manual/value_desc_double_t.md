@@ -12,7 +12,7 @@
 | <a href="#value_desc_double_t_defvalue">defvalue</a> | double | 缺省值。 |
 | <a href="#value_desc_double_t_max">max</a> | double | 最大值。 |
 | <a href="#value_desc_double_t_min">min</a> | double | 最小值。 |
-| <a href="#value_desc_double_t_step">step</a> | double\_t | 步长。 |
+| <a href="#value_desc_double_t_step">step</a> | double | 步长。 |
 | <a href="#value_desc_double_t_unit">unit</a> | const char* | 单位。 |
 #### defvalue 属性
 -----------------------
@@ -48,7 +48,7 @@
 -----------------------
 > <p id="value_desc_double_t_step">步长。
 
-* 类型：double\_t
+* 类型：double
 
 | 特性 | 是否支持 |
 | -------- | ----- |

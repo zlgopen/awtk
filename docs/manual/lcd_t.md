@@ -46,6 +46,7 @@
 | <a href="#lcd_t_font_size">font\_size</a> | uint32\_t | 字体大小。 |
 | <a href="#lcd_t_global_alpha">global\_alpha</a> | uint8\_t | 全局alpha |
 | <a href="#lcd_t_height">height</a> | wh\_t | 屏幕的高度 |
+| <a href="#lcd_t_last_update_time">last\_update\_time</a> | uint64\_t | last update time |
 | <a href="#lcd_t_ratio">ratio</a> | float\_t | 屏幕密度。 |
 | <a href="#lcd_t_stroke_color">stroke\_color</a> | color\_t | 线条颜色 |
 | <a href="#lcd_t_support_dirty_rect">support\_dirty\_rect</a> | bool\_t | 是否支持脏矩形。 |
@@ -687,6 +688,16 @@ ret_t lcd_take_snapshot (lcd_t* lcd, bitmap_t* img, bool_t auto_rotate);
 > <p id="lcd_t_height">屏幕的高度
 
 * 类型：wh\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+#### last\_update\_time 属性
+-----------------------
+> <p id="lcd_t_last_update_time">last update time
+
+* 类型：uint64\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

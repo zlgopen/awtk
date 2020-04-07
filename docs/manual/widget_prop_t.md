@@ -57,6 +57,8 @@
 | WIDGET\_PROP\_MIN | 最小值。 |
 | WIDGET\_PROP\_TIPS | 提示信息。 |
 | WIDGET\_PROP\_INPUT\_TYPE | 输入类型。 |
+| WIDGET\_PROP\_KEYBOARD | 自定义软键盘资源名称。 |
+| WIDGET\_PROP\_DEFAULT\_FOCUSED\_CHILD | 缺省获得焦点的子控件(可用控件名或类型)。 |
 | WIDGET\_PROP\_READONLY | 只读模式。 |
 | WIDGET\_PROP\_PASSWORD\_VISIBLE | 密码是否可见。 |
 | WIDGET\_PROP\_ACTIVE | 是否处于active状态。 |

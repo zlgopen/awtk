@@ -23,6 +23,7 @@
 | <a href="#utils_t_tk_str_toupper">tk\_str\_toupper</a> | 将小写字母转换为大写字母。 |
 | <a href="#utils_t_tk_strcpy">tk\_strcpy</a> | 将src所指向的字符串复制到dst。 |
 | <a href="#utils_t_tk_strdup">tk\_strdup</a> | 字符串拷贝函数。 |
+| <a href="#utils_t_tk_strlen">tk\_strlen</a> | 获取字符串的长度。str为空时返回0。 |
 | <a href="#utils_t_tk_strncpy">tk\_strncpy</a> | 将src所指向的字符串复制到dst，最多复制len个字符串。 |
 | <a href="#utils_t_tk_strndup">tk\_strndup</a> | 字符串拷贝函数，最多复制len个字符串。 |
 | <a href="#utils_t_tk_strtol">tk\_strtol</a> | 将字符串转换为长整形。 |
@@ -347,6 +348,25 @@ char* tk_strdup (const char* str);
 | -------- | ----- | --------- |
 | 返回值 | char* | 返回指向的复制字符串指针，如果失败则返回NULL。 |
 | str | const char* | 原字符串。 |
+#### tk\_strlen 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_strlen">获取字符串的长度。str为空时返回0。
+
+* 函数原型：
+
+```
+uint32_t tk_strlen (const char* str);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint32\_t | 返回字符串的长度。 |
+| str | const char* | 字符串。 |
 #### tk\_strncpy 函数
 -----------------------
 

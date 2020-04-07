@@ -24,6 +24,8 @@ darray_destroy(darray);
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#darray_t_darray_bsearch">darray\_bsearch</a> | 二分查找(确保数组有序)。 |
+| <a href="#darray_t_darray_bsearch_index">darray\_bsearch\_index</a> | 二分查找(确保数组有序)。 |
 | <a href="#darray_t_darray_clear">darray\_clear</a> | 清除全部元素。 |
 | <a href="#darray_t_darray_count">darray\_count</a> | 返回满足条件元素的个数。 |
 | <a href="#darray_t_darray_create">darray\_create</a> | 创建darray对象。 |
@@ -53,6 +55,48 @@ darray_destroy(darray);
 | <a href="#darray_t_destroy">destroy</a> | tk\_destroy\_t | 元素销毁函数。 |
 | <a href="#darray_t_elms">elms</a> | void** | 数组中的元素。 |
 | <a href="#darray_t_size">size</a> | uint32\_t | 数组中元素的个数。 |
+#### darray\_bsearch 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="darray_t_darray_bsearch">二分查找(确保数组有序)。
+
+* 函数原型：
+
+```
+void* darray_bsearch (darray_t* darray, tk_compare_t cmp, void* ctx);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | void* | 如果找到，返回满足条件的对象，否则返回NULL。 |
+| darray | darray\_t* | 数组对象。 |
+| cmp | tk\_compare\_t | 比较函数，为NULL则使用内置的比较函数。 |
+| ctx | void* | 比较函数的上下文。 |
+#### darray\_bsearch\_index 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="darray_t_darray_bsearch_index">二分查找(确保数组有序)。
+
+* 函数原型：
+
+```
+int darray_bsearch_index (darray_t* darray, tk_compare_t cmp, void* ctx);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | int | 如果找到，返回满足条件的对象的位置，否则返回-1。 |
+| darray | darray\_t* | 数组对象。 |
+| cmp | tk\_compare\_t | 比较函数，为NULL则使用内置的比较函数。 |
+| ctx | void* | 比较函数的上下文。 |
 #### darray\_clear 函数
 -----------------------
 

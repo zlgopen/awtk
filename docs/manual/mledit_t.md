@@ -36,6 +36,7 @@ time\_clock一般不需要设置style。
 | <a href="#mledit_t_mledit_set_cursor">mledit\_set\_cursor</a> | 设置编辑器光标位置。 |
 | <a href="#mledit_t_mledit_set_focus">mledit\_set\_focus</a> | 设置为焦点。 |
 | <a href="#mledit_t_mledit_set_input_tips">mledit\_set\_input\_tips</a> | 设置编辑器的输入提示。 |
+| <a href="#mledit_t_mledit_set_keyboard">mledit\_set\_keyboard</a> | 设置自定义软键盘名称。 |
 | <a href="#mledit_t_mledit_set_max_lines">mledit\_set\_max\_lines</a> | 设置编辑器的最大行数。 |
 | <a href="#mledit_t_mledit_set_readonly">mledit\_set\_readonly</a> | 设置编辑器是否为只读。 |
 | <a href="#mledit_t_mledit_set_scroll_line">mledit\_set\_scroll\_line</a> | 设置编辑器滚动速度。 |
@@ -46,6 +47,7 @@ time\_clock一般不需要设置style。
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#mledit_t_bottom_margin">bottom\_margin</a> | uint8\_t | 下边距。 |
+| <a href="#mledit_t_keyboard">keyboard</a> | char* | 自定义软键盘名称。 |
 | <a href="#mledit_t_left_margin">left\_margin</a> | uint8\_t | 左边距。 |
 | <a href="#mledit_t_max_lines">max\_lines</a> | uint32\_t | 最大行数。 |
 | <a href="#mledit_t_readonly">readonly</a> | bool\_t | 编辑器是否为只读。 |
@@ -163,6 +165,26 @@ ret_t mledit_set_input_tips (widget_t* widget, char* tips);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
 | tips | char* | 输入提示。 |
+#### mledit\_set\_keyboard 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="mledit_t_mledit_set_keyboard">设置自定义软键盘名称。
+
+* 函数原型：
+
+```
+ret_t mledit_set_keyboard (widget_t* widget, char* keyboard);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | widget对象。 |
+| keyboard | char* | 键盘名称(相应UI资源必须存在)。 |
 #### mledit\_set\_max\_lines 函数
 -----------------------
 
@@ -248,6 +270,22 @@ ret_t mledit_set_wrap_word (widget_t* widget, bool_t wrap_word);
 > <p id="mledit_t_bottom_margin">下边距。
 
 * 类型：uint8\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### keyboard 属性
+-----------------------
+> <p id="mledit_t_keyboard">自定义软键盘名称。
+
+* 类型：char*
 
 | 特性 | 是否支持 |
 | -------- | ----- |
