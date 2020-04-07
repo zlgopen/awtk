@@ -824,7 +824,7 @@ ret_t slide_view_set_active(widget_t* widget, uint32_t active) {
   slide_view_t* slide_view = SLIDE_VIEW(widget);
   return_value_if_fail(slide_view != NULL, RET_BAD_PARAMS);
 
-  if (slide_view->active != active) {
+  if (slide_view->active != active && widget->children != NULL) {
     event_t evt = event_init(EVT_VALUE_WILL_CHANGE, widget);
 
     slide_view_save_target(widget);
@@ -835,6 +835,8 @@ ret_t slide_view_set_active(widget_t* widget, uint32_t active) {
     slide_view_restore_target(widget);
 
     widget_invalidate(widget, NULL);
+  } else {
+    slide_view->active = active;
   }
 
   return RET_OK;
