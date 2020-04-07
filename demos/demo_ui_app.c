@@ -387,7 +387,9 @@ static ret_t on_combo_box_will_change(void* ctx, event_t* e) {
   widget_t* win = widget_get_window(combo_box);
   widget_t* value = widget_lookup(win, "old_value", TRUE);
 
-  widget_set_tr_text(value, combo_box_get_text(combo_box));
+  if (value != NULL) {
+    widget_set_tr_text(value, combo_box_get_text(combo_box));
+  }
 
   return RET_OK;
 }
@@ -424,7 +426,9 @@ static ret_t on_combo_box_changed(void* ctx, event_t* e) {
   widget_t* win = widget_get_window(combo_box);
   widget_t* value = widget_lookup(win, "value", TRUE);
 
-  widget_set_tr_text(value, combo_box_get_text(combo_box));
+  if (value != NULL) {
+    widget_set_tr_text(value, combo_box_get_text(combo_box));
+  }
 
   return RET_OK;
 }
