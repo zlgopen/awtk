@@ -95,7 +95,7 @@ ret_t pages_set_active(widget_t* widget, uint32_t index) {
   pages_t* pages = PAGES(widget);
   return_value_if_fail(pages != NULL, RET_BAD_PARAMS);
 
-  if (pages->active != index) {
+  if (pages->active != index && widget->children != NULL) {
     event_t evt = event_init(EVT_VALUE_WILL_CHANGE, widget);
 
     pages_save_target(widget);
@@ -105,6 +105,8 @@ ret_t pages_set_active(widget_t* widget, uint32_t index) {
     widget_dispatch(widget, &evt);
     pages_restore_target(widget);
     widget_invalidate(widget, NULL);
+  } else {
+    pages->active = index;
   }
 
   return RET_OK;
