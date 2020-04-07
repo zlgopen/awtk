@@ -21,6 +21,7 @@
 
 #include "tkc/mem.h"
 #include "tkc/utils.h"
+#include "tkc/time_now.h"
 #include "base/layout.h"
 #include "scroll_view/list_view.h"
 #include "scroll_view/scroll_bar.h"
@@ -230,6 +231,9 @@ static ret_t list_view_on_scroll_view_paint_children(widget_t* widget, canvas_t*
   int32_t top = 0;
   int32_t bottom = 0;
   int32_t right = 0;
+  int32_t max_w = canvas_get_width(c);
+  int32_t max_h = canvas_get_height(c);
+
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
 
   if (!iter->visible) {
@@ -242,6 +246,15 @@ static ret_t list_view_on_scroll_view_paint_children(widget_t* widget, canvas_t*
   bottom = top + iter->h;
   right = left + iter->w;
 
+  if (top > max_h || left > max_w) {
+    break;
+  }
+  
+  if (bottom < 0 || right < 0) {
+    iter->dirty = FALSE;
+    continue;
+  }
+  
   if (left > c->clip_right || right < c->clip_left || top > c->clip_bottom ||
       bottom < c->clip_top) {
     iter->dirty = FALSE;
