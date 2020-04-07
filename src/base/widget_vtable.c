@@ -164,6 +164,8 @@ ret_t widget_set_prop_default(widget_t* widget, const char* name, const value_t*
 }
 
 widget_t* widget_find_target_default(widget_t* widget, xy_t x, xy_t y) {
+  xy_t xx = 0;
+  xy_t yy = 0;
   point_t p = {x, y};
   return_value_if_fail(widget != NULL, NULL);
 
@@ -172,15 +174,22 @@ widget_t* widget_find_target_default(widget_t* widget, xy_t x, xy_t y) {
   }
 
   widget_to_local(widget, &p);
+  xx = p.x;
+  yy = p.y;
   WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
-  xy_t xx = p.x;
-  xy_t yy = p.y;
-  xy_t r = iter->x + iter->w;
-  xy_t b = iter->y + iter->h;
-
-  if (iter->sensitive && iter->enable && xx >= iter->x && yy >= iter->y && xx <= r && yy <= b) {
-    return iter;
+  if (yy < iter->y || yy >= (iter->y + iter->h)) {
+    continue;
   }
+
+  if (xx < iter->x || xx >= (iter->x + iter->w)) {
+    continue;
+  }
+
+  if (!iter->sensitive || !iter->enable) {
+    continue;
+  }
+
+  return iter;
   WIDGET_FOR_EACH_CHILD_END();
 
   return NULL;
