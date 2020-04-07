@@ -2298,7 +2298,7 @@ ret_t widget_dispatch_event_to_target_recursive(widget_t* widget, event_t* e) {
   target = widget->grab_widget ? widget->grab_widget : widget->target;
   while (target != NULL) {
     widget_dispatch(target, e);
-    target = target->target;
+    target = target->target != NULL ? target->target : target->key_target;
   }
 
   return RET_OK;
