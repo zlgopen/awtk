@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   demo1_app.c
  * Author: AWTK Develop Team
  * Brief:  demoui
@@ -17,6 +17,10 @@
  * ================================================================
  * 2018-02-16 Li XianJing <xianjimli@hotmail.com> created
  *
+ */
+
+/*
+ * XXX: 本示例只是为了展示功能，不适合作为编写代码参考，编写代码请参考：https://github.com/zlgopen/awtk-c-demos
  */
 
 #include "awtk.h"

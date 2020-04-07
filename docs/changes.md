@@ -1,5 +1,10 @@
 # 最新动态
 
+* 2020/04/07
+  * 完善 slide\_view\_set\_active/pages\_set\_active
+  * 优化 list view paint
+  * 优化 widget\_set\_need\_relayout\_children
+  
 * 2020/04/05
   * pages 切换时保存和恢复焦点。
   * view 增加属性 default\_focused\_child
@@ -16,7 +21,7 @@
 
 * 2020/04/02
   * 增加 waitable ring buffer
-  * 修改资源的问题pagespages提供补丁）。
+  * 修改资源的问题 pagespages 提供补丁）。
   * 修改 ti 编译器的问题（感谢陈谭提供补丁）。
   * 完善 image 名称为空的处理。
   

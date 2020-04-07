@@ -4,7 +4,7 @@
 
 * demo\_main.c 所有入口函数。
 * demo1\_app.c 演示按传统方式创建界面。
-* demo\_ui\_app.c 演示从UI资源文件中创建界面。
+* demo\_ui\_app.c 演示各种控件和动画效果(不适合作为编写代码参考，编写代码请参考：https://github.com/zlgopen/awtk-c-demos)。
 * demo\_animator\_app.c 演示控件动画。 
 * demo\_desktop.c  演示开发桌面应用程序(使用原生输入法，可以调整窗口大小)。
 * demo\_thread\_app.c 演示非GUI线程操作GUI。
