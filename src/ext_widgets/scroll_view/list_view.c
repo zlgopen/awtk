@@ -249,12 +249,12 @@ static ret_t list_view_on_scroll_view_paint_children(widget_t* widget, canvas_t*
   if (top > max_h || left > max_w) {
     break;
   }
-  
+
   if (bottom < 0 || right < 0) {
     iter->dirty = FALSE;
     continue;
   }
-  
+
   if (left > c->clip_right || right < c->clip_left || top > c->clip_bottom ||
       bottom < c->clip_top) {
     iter->dirty = FALSE;
