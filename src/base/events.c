@@ -46,7 +46,7 @@ pointer_event_t* pointer_event_cast(event_t* event) {
 
 key_event_t* key_event_cast(event_t* event) {
   return_value_if_fail(event != NULL, NULL);
-  return_value_if_fail(event->type >= EVT_KEY_DOWN && event->type <= EVT_KEY_UP, NULL);
+  return_value_if_fail(event->type >= EVT_KEY_DOWN && event->type <= EVT_KEY_UP_BEFORE_CHILDREN, NULL);
 
   return (key_event_t*)event;
 }
