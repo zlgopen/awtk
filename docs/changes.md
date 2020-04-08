@@ -1,5 +1,9 @@
 # 最新动态
 
+* 2020/04/08
+  * 完善资源更新脚本（感谢朝泽提供补丁）。
+  * 完善 key event cast（感谢大恒提供补丁）。
+
 * 2020/04/07
   * 完善 slide\_view\_set\_active/pages\_set\_active
   * 优化 list view paint

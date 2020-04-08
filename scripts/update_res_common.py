@@ -532,6 +532,19 @@ def gen_res_web_c():
     result += '\n'
     result += '  tk_init_assets();\n'
     result += '  return RET_OK;\n'
+    result += '}\n\n'
+
+    result += 'bool_t assets_has_theme(const char* name) {\n'
+    result += '  return_value_if_fail(name != NULL, FALSE);\n\n'
+    result += '  if (tk_str_eq(name, "default")) {\n'
+    result += '    return TRUE;\n'
+    result += '  } else {\n'
+    result += '    return FALSE;\n'
+    result += '  }\n}\n\n'
+
+    result += 'ret_t assets_set_global_theme(const char* name) {\n'
+    result += '  log_debug(\"not support to change theme.\\n\");\n'
+    result += '  return RET_NOT_IMPL;\n'
     result += '}\n'
 
     writeResult(ASSET_C.replace('.c', '_web.c'), result)
