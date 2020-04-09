@@ -109,7 +109,7 @@ uint32_t font_gen_buff(font_t* font, uint16_t font_size, const char* str, uint8_
       }
 
     } else if (c > 32 && c != 65279) {
-      printf("not found %d\n", c);
+      printf("gen fail, filename = %s! desc = not found char = %d!\n", "", c);
       exit(0);
     } else {
       iter->offset = 0;
