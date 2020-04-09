@@ -122,11 +122,11 @@ ret_t main_loop_post_key_event(main_loop_t* l, bool_t pressed, uint8_t key) {
 
 static ret_t main_loop_dispatch_events(main_loop_simple_t* loop) {
   event_queue_req_t r;
-  widget_t* widget = loop->base.wm;
   int time_in = time_now_ms();
   int time_out = time_in;
 
   while ((time_out - time_in < 20) && (main_loop_recv_event((main_loop_t*)loop, &r) == RET_OK)) {
+    widget_t* widget = loop->base.wm;
     switch (r.event.type) {
       case EVT_POINTER_DOWN:
       case EVT_POINTER_MOVE:
