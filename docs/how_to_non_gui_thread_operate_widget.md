@@ -1,12 +1,12 @@
-## 如何在非GUI线程操作GUI控件
+## 如何在非 GUI 线程操作 GUI 控件
 
-GUI控件只能在GUI线程进行操作，非GUI线程想操作GUI控件，必须用idle\_queue或timer\_queue进行串行化。
+GUI 控件只能在 GUI 线程进行操作，非 GUI 线程想操作 GUI 控件，必须用 idle\_queue 或 timer\_queue 进行串行化。
 
-* idle\_queue向主循环的事件队列提交一个增加idle的请求，GUI线程的主循环在处理事件队列时，会把该idle函数放到idle管理器中，在分发idle时，该idle函数在GUI线程执行。
+* idle\_queue 向主循环的事件队列提交一个增加 idle 的请求，GUI 线程的主循环在处理事件队列时，会把该 idle 函数放到 idle 管理器中，在分发 idle 时，该 idle 函数在 GUI 线程执行。
 
-* timer\_queue向主循环的事件队列提交一个增加timer的请求，GUI线程的主循环在处理事件队列时，会把该timer函数放到timer管理器中，在分发timer时，该timer函数在GUI线程执行。
+* timer\_queue 向主循环的事件队列提交一个增加 timer 的请求，GUI 线程的主循环在处理事件队列时，会把该 timer 函数放到 timer 管理器中，在分发 timer 时，该 timer 函数在 GUI 线程执行。
 
-**注意：idle\_queue和timer\_queue是少数几个可以在非GUI线程安全调用的函数。**
+**注意：idle\_queue 和 timer\_queue 是少数几个可以在非 GUI 线程安全调用的函数。**
 
 ### 示例：
 
@@ -50,4 +50,6 @@ ret_t application_init() {
 
 > demos/demo\_thread\_app.c
 
+### 注意事项
 
+在 idle 函数执行的时候，窗口可能已经被关闭，控件已经处于无效状态。为了避免出现也指针的问题，在 idle 函数中，应该检查目标窗口和控件是否存在。
