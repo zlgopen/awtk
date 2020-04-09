@@ -2,6 +2,7 @@
 
 * 2020/04/09
   * 完善 main\_loop\_dispatch\_events（感谢陈谭提供补丁）。 
+  * 完善 widget\_set\_need\_relayout\_children（感谢朝泽提供补丁）。
 
 * 2020/04/08
   * 完善资源更新脚本（感谢朝泽提供补丁）。
