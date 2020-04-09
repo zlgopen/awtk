@@ -3762,6 +3762,7 @@ ret_t widget_set_need_relayout_children(widget_t* widget) {
     if (widget_is_window_opened(widget)) {
       widget_t* win = widget_get_window(widget);
       /*relayout win to avoid adding too many idles*/
+      win->need_relayout_children = TRUE;
       widget_add_delay_work(win);
     }
   }
