@@ -1,5 +1,8 @@
 # 最新动态
 
+* 2020/04/10
+  * 完善 widget\_set\_need\_relayout\_children（感谢尧燊提供补丁）。
+
 * 2020/04/09
   * 完善 main\_loop\_dispatch\_events（感谢陈谭提供补丁）。 
   * 完善 widget\_set\_need\_relayout\_children（感谢朝泽提供补丁）。

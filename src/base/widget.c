@@ -62,6 +62,17 @@ static ret_t widget_on_paint_done(widget_t* widget, canvas_t* c);
 typedef widget_t* (*widget_find_wanted_focus_widget_t)(widget_t* widget, darray_t* all_focusable);
 static ret_t widget_move_focus(widget_t* widget, widget_find_wanted_focus_widget_t find);
 
+static ret_t layout_children_need(widget_t* widget) {
+  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+  if (widget->need_relayout_children) {
+    widget_layout_children(widget);
+  } else {
+    layout_children_need(iter);
+  }
+  WIDGET_FOR_EACH_CHILD_END()
+  return RET_OK;
+}
+
 static ret_t delay_work_in_idle(const idle_info_t* info) {
   widget_t* widget = WIDGET(info->ctx);
   ENSURE(widget != NULL && widget->vt != NULL);
@@ -74,6 +85,8 @@ static ret_t delay_work_in_idle(const idle_info_t* info) {
 
     if (widget->need_relayout_children) {
       widget_layout_children(widget);
+    } else {
+      layout_children_need(widget);
     }
   }
   widget_unref(widget);
@@ -3762,7 +3775,6 @@ ret_t widget_set_need_relayout_children(widget_t* widget) {
     if (widget_is_window_opened(widget)) {
       widget_t* win = widget_get_window(widget);
       /*relayout win to avoid adding too many idles*/
-      win->need_relayout_children = TRUE;
       widget_add_delay_work(win);
     }
   }
