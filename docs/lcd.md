@@ -77,21 +77,68 @@ typedef uint16_t pixel_t;
 #include "lcd/lcd_mem_fragment.inc"
 ```
 
+> 完整示例请参考：https://github.com/zlgopen/awtk-stm32f103ze-raw/blob/master/awtk-port/lcd_stm32_raw.c
+
 ### 三、基于 framebuffer 实现的 LCD
 
 这是在嵌入式平台上最常见的方式。一般有两个 framebuffer，一个称为 online framebuffer，一个称为 offline framebuffer。online framebuffer 是当前现实的内容，offline framebuffer 是 GUI 当前正在绘制的内容。lcd\_mem\_rgb565 提供了 rgb565 格式的 LCD 实现，lcd\_mem\_rgba8888 提供了 rgba8888 格式的 LCD 实现，它们都是在 lcd\_mem.inc 基础上实现的，要增加新的格式也是很方便的。
 
-下面是 STMF429 上 LCD 的实现：
+下面是 STMF767 上 LCD 的实现：
 
 ```
-extern u32 *ltdc_framebuf[2];
-#define online_fb_addr (uint8_t*)ltdc_framebuf[0]
-#define offline_fb_addr (uint8_t*)ltdc_framebuf[1]
+#define FB_ADDR (uint8_t*)0XC0000000
 
-lcd_t* platform_create_lcd(wh_t w, wh_t h) {
-  return lcd_mem_rgb565_create_double_fb(w, h, online_fb_addr, offline_fb_addr);
+static uint8_t* s_framebuffers[2];
+
+lcd_t* stm32f767_create_lcd(wh_t w, wh_t h) {
+  lcd_t* lcd = NULL;
+  uint32_t size = w * h * lcdltdc.pixsize;
+  s_framebuffers[0] = FB_ADDR;
+  s_framebuffers[1] = FB_ADDR + size;
+
+#if LCD_PIXFORMAT == LCD_PIXFORMAT_ARGB8888 
+  lcd = lcd_mem_bgra8888_create_double_fb(w, h, s_framebuffers[0], s_framebuffers[1]);
+#else
+  lcd = lcd_mem_bgr565_create_double_fb(w, h, s_framebuffers[0], s_framebuffers[1]);
+#endif /*LCD_PIXFORMAT*/
+	
+  return lcd;
 }
 ```
+
+> online\_fb\_addr 一定要是系统显存的地址，offline\_fb\_addr 可以是任意一块内存。
+
+> 请参考： https://github.com/zlgopen/awtk-stm32f767igtx-raw/blob/master/USER/main.c
+
+#### online framebuffer 和 offline framebuffer
+
+* **online framebuffer** 相当于系统显存，一般更新 online framebuffer，图像就会显示到屏幕上。
+
+* **offline framebuffer** 是 GUI 绘制时使用的 framebuffer，GUI 会把控件绘制到 offline framebuffer 上，offline framebuffer 不会直接显示到显示到屏幕上。
+
+一般通过下面几种方式将 offline framebuffer 上的图像显示到 online framebuffer 上：
+
+* swap 的方式。一般重载 lcd 的 swap 函数，通过系统调用切换 online framebuffer 和 offline framebuffer 的角色。一般适用于 linux 2/3 framebuffer 系统。
+
+> 参考： https://github.com/zlgopen/awtk-linux-fb/blob/master/awtk-port/lcd\_linux\_fb.c
+
+* 缺省 flush 的方式。一般由 lcd 的 flush 函数把 offline framebuffer 中的图像（脏矩形内的部分） 拷贝到 offline framebuffer。这是缺省实现，一般不需修改。在这种情况下，一般用 lcd_mem_xxx_create_double_fb 创建 lcd 对象，注意 online framebuffer 参数一定要是系统显存。
+
+> 如果要做显示同步，也就是等显卡把数据真正显示到屏幕上，可以重载 lcd 的 sync 函数。一般适用于 linux 单 framebuffer 的情况。参考： https://github.com/zlgopen/awtk-linux-fb/blob/master/awtk-port/lcd\_linux\_fb.c
+
+* 自定义 flush 的方式。有的系统没有 online framebuffer，只有 offline framebuffer。比如显示屏与 MCU 之间用 SPI 连接，那就需要重载 flush 函数，把 offline framebuffer 中的图像（脏矩形内的部分） 数据传输到显示屏。在这种情况下一般用 lcd_mem_xxx_create_single_fb 创建 lcd 对象，并重载 lcd 的 flush 函数。
+
+在嵌入式系统中，如果希望提供显示帧率，可以使用 3 framebuffer，这 3 个 framebuffer 的角色为：
+
+* **online framebuffer** 当前显示的 framebuffer。
+
+* **offline framebuffer** 当前绘制的 framebuffer。
+
+* **next framebuffer** 绘制就绪的 framebuffer，下一个周期切换成 online framebuffer。
+
+3 framebuffer 一般需要配合中断使用，实现的比较复杂，新手请不要使用。
+
+> 请参考：https://github.com/zlgopen/awtk-stm32f429igtx-raw/blob/master/USER/main.c
 
 ### 四、基于 vgcanvas 实现的 LCD
 

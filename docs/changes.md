@@ -1,5 +1,8 @@
 # 最新动态
 
+* 2020/04/11
+  * 完善文档 lcd.md
+  
 * 2020/04/10
   * 完善 widget\_set\_need\_relayout\_children（感谢尧燊提供补丁）。
 
