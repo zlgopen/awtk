@@ -222,7 +222,7 @@ scons
 
 ### Windows
 
-（请先安装 python，scons 和 Visual Studio C++（版本 >=2017)
+> 请先安装 python(64位系统要安装64位版本的python)，scons 和 Visual Studio C++（版本 >=2017)
 
 > 如果没有安装 pywin32，请 pip 安装：
 

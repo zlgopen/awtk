@@ -25,15 +25,15 @@
 * 快速预览，一键打包资源
 * 注册及下载地址：https://awtk.zlg.cn
 
-![AWTK Designer](docs/images/designer.png)
+![AWTK Designer](../images/designer.png)
 
 #### 运行效果截图：
 
-![Chart-Demo](docs/images/chart_main.png)
+![Chart-Demo](../images/chart_main.png)
 
-![MusicPlayer-Demo](docs/images/musicplayer_main.png)
+![MusicPlayer-Demo](../images/musicplayer_main.png)
 
-![Watch](docs/images/smartwatch_main.png)
+![Watch](../images/smartwatch_main.png)
 
 ## 二、最终目标：
 
@@ -162,20 +162,20 @@
 -------------------
 
 ### 1. 细节完善
-  * slide view/pages 每个页面支持独立的初始焦点。
+  * 完善 fs 接口。
+  * 完善工具支持多主题。
   * list view 支持上下键滚动。
   * 完善窗口切换时焦点恢复的问题。
-  * 完善工具支持多主题
-  * 增加函数 widget\_set\_child\_text\_utf8
-  * 增加函数 widget\_set\_child\_text\_with\_double
-  * keyboard 在 grab_keys 时，keyboard 处理 key 事件后，应用窗口不再处理。
   * 完善 combobox，选择之后重新打开输入法。
   * progress circle 支持 line cap 属性。
   * 增加 vgcanvas\_line\_join\_t 定义。
-  * 增加 vgcanvas\_line\_cap\_t 定义
+  * 增加 vgcanvas\_line\_cap\_t 定义。
   * 修改 android resume 后界面黑屏的问题。
+  * slide view/pages 每个页面支持独立的初始焦点。
+  * 增加函数 widget\_set\_child\_text\_utf8。
+  * 增加函数 widget\_set\_child\_text\_with\_double。
+  * keyboard 在 grab_keys 时，keyboard 处理 key 事件后，应用窗口不再处理。
   * 完善 image value，支持点击时加上一个增量，增加到最大值后回到最小值。
-  * 完善 fs 接口。
 
 > 大量细节完善去请参考： https://github.com/zlgopen/awtk/blob/master/docs/changes.md
 
@@ -183,10 +183,10 @@
   * 无文件系统是支持多主题。
   * opengles 支持 snapshot。
   * dit/mledit 支持自己指定软键盘名称。
-  * 增加 awtk\_main.inc，用于标准程序的主函数。
-  * 用 SDL 重新实现 PC 版本的线程和同步相关函数 。
   * 点击鼠标右键触发 context menu 事件。
   * 使用 event\_source\_manager 实现主循环。
+  * 增加 awtk\_main.inc，用于标准程序的主函数。
+  * 用 SDL 重新实现 PC 版本的线程和同步相关函数 。
   * edit 增加 input type "custom_password"类型。
 
 ### 4. 新增控件
