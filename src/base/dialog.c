@@ -174,7 +174,16 @@ dialog_quit_code_t dialog_modal(widget_t* widget) {
 static bool_t is_dialog_opened(widget_t* widget) {
   int32_t stage = widget_get_prop_int(widget, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE);
 
-  return stage == WINDOW_STAGE_OPENED;
+  if (stage == WINDOW_STAGE_OPENED) return TRUE;
+  if (stage != WINDOW_STAGE_SUSPEND || widget->parent == NULL) return FALSE;
+
+  WIDGET_FOR_EACH_CHILD_BEGIN_R(widget->parent, iter, i)
+  if (iter == widget) break;
+  if (!tk_str_eq(iter->vt->type, WIDGET_TYPE_DIALOG)) return FALSE;
+  dialog_t* dialog = DIALOG(iter);
+  if (dialog == NULL || !dialog->quited) return FALSE;
+  WIDGET_FOR_EACH_CHILD_END()
+  return TRUE;
 }
 
 ret_t dialog_quit(widget_t* widget, uint32_t code) {
@@ -183,8 +192,8 @@ ret_t dialog_quit(widget_t* widget, uint32_t code) {
   dialog_close(widget);
 #else
   dialog_t* dialog = DIALOG(widget);
-  return_value_if_fail(is_dialog_opened(widget), RET_BAD_PARAMS);
   return_value_if_fail(dialog != NULL && !(dialog->quited), RET_BAD_PARAMS);
+  return_value_if_fail(is_dialog_opened(widget), RET_BAD_PARAMS);
 
   dialog->quited = TRUE;
   dialog->quit_code = (dialog_quit_code_t)code;
