@@ -10,7 +10,7 @@ ARCH = platform.architecture();
 is32bit = (ARCH[0] == '32bit');
 
 if is32bit:
-  if MACH == 'i686' or MACH == 'i386':
+  if MACH == 'i686' or MACH == 'i386' or MACH == 'x86':
     TARGET_ARCH='x86'
   else:
     TARGET_ARCH='arm'
