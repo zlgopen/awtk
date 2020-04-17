@@ -45,7 +45,6 @@ static ret_t event_source_manager_default_dispatch_fds(event_source_manager_t* m
                                                        uint32_t sleep_time) {
   fd_set fdsr;
   uint32_t i = 0;
-  uint32_t n = 0;
   int32_t fd = 0;
   int32_t ret = 0;
   int32_t max_fd = 0;
@@ -58,10 +57,9 @@ static ret_t event_source_manager_default_dispatch_fds(event_source_manager_t* m
   tv.tv_sec = sleep_time / 1000;
   tv.tv_usec = (sleep_time % 1000) * 1000;
 
-  n = manager->dispatching_sources.size;
   sources = (event_source_t**)(manager->dispatching_sources.elms);
 
-  for (i = 0; i < n; i++) {
+  for (i = 0; i < manager->dispatching_sources.size; i++) {
     iter = sources[i];
     fd = event_source_get_fd(iter);
     if (fd >= 0) {
@@ -84,7 +82,7 @@ static ret_t event_source_manager_default_dispatch_fds(event_source_manager_t* m
     return RET_TIMEOUT;
   }
 
-  for (i = 0; i < n; i++) {
+  for (i = 0; i < manager->dispatching_sources.size; i++) {
     iter = sources[i];
     fd = event_source_get_fd(iter);
 
@@ -109,16 +107,14 @@ static ret_t event_source_manager_default_dispatch_fds(event_source_manager_t* m
 
 static ret_t event_source_manager_default_dispatch_no_fd(event_source_manager_t* manager) {
   uint32_t i = 0;
-  uint32_t n = 0;
   int32_t fd = 0;
   event_source_t* iter = NULL;
   event_source_t** sources = NULL;
   return_value_if_fail(manager != NULL, RET_BAD_PARAMS);
 
-  n = manager->dispatching_sources.size;
   sources = (event_source_t**)(manager->dispatching_sources.elms);
 
-  for (i = 0; i < n; i++) {
+  for (i = 0; i < manager->dispatching_sources.size; i++) {
     iter = sources[i];
     fd = event_source_get_fd(iter);
     if (fd >= 0) {
