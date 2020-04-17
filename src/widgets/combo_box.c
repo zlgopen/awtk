@@ -313,9 +313,6 @@ static ret_t combo_box_on_event(widget_t* widget, event_t* e) {
   }
 
   ret = edit_on_event(widget, e);
-  if (edit->readonly && e->type != EVT_DESTROY) {
-    edit_set_cursor(WIDGET(edit), 0);
-  }
 
   return ret;
 }

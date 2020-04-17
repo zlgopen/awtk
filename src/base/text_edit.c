@@ -1115,8 +1115,10 @@ ret_t text_edit_set_cursor(text_edit_t* text_edit, uint32_t cursor) {
     cursor = text->size;
   }
 
-  impl->state.cursor = cursor;
-  text_edit_layout(text_edit);
+  if (impl->state.cursor != cursor) {
+    impl->state.cursor = cursor;
+    text_edit_layout(text_edit);
+  }
 
   return RET_OK;
 }
@@ -1142,8 +1144,10 @@ ret_t text_edit_set_mask(text_edit_t* text_edit, bool_t mask) {
   DECL_IMPL(text_edit);
   return_value_if_fail(text_edit != NULL, RET_BAD_PARAMS);
 
-  impl->mask = mask;
-  text_edit_layout(text_edit);
+  if (impl->mask != mask) {
+    impl->mask = mask;
+    text_edit_layout(text_edit);
+  }
 
   return RET_OK;
 }

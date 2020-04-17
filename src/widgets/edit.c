@@ -69,6 +69,14 @@ ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
   edit_t* edit = EDIT(widget);
   return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
 
+  edit->model->c = c;
+  if (edit->readonly) {
+    if (tk_str_eq(widget->vt->type, WIDGET_TYPE_COMBO_BOX))
+      text_edit_set_cursor(edit->model, 0);
+    else
+      text_edit_set_cursor(edit->model, 0xffffffff);
+  }
+
   if (edit->input_type != INPUT_PASSWORD && edit->input_type != INPUT_CUSTOM_PASSWORD) {
     text_edit_set_mask(edit->model, FALSE);
   }
@@ -519,8 +527,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
   return_value_if_fail(widget != NULL && edit != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->visible, RET_OK);
 
-  if (edit->readonly && type != EVT_DESTROY) {
-    text_edit_set_cursor(edit->model, 0xffffffff);
+  if (edit->readonly) {
     return RET_OK;
   }
 
