@@ -11,7 +11,6 @@
 #include "../lcd/lcd_mem.h"
 #include "../tkc/types_def.h"
 
-#pragma pack(push, 4)
 /*
 把二维坐标的象限通过45度分为上下区域，一共8个区域
 */
@@ -49,7 +48,6 @@ typedef struct _frr_draw_arc_info_table_t {
   frr_quadrant_t quadrant_h;
 } frr_draw_arc_info_table_t;
 
-#pragma pack(pop)
 
 #ifdef M_PI_2
 #define M_FRR_PI_2 (float_t)(M_PI_2)
@@ -459,7 +457,7 @@ static void widget_draw_fill_arc_point_list(frr_image_info_t* image_info, canvas
 }
 
 static void widget_push_arc_point_list(float_t angle_1, float_t angle_2, int32_t r,
-                                       darray_t* point_list, darray_t* point_list_45) {
+                                       darray_t* point_list, darray_t* point_list_45, bool_t is_v) {
   uint32_t i = 0;
   void** elms = point_list_45->elms;
 
@@ -467,12 +465,27 @@ static void widget_push_arc_point_list(float_t angle_1, float_t angle_2, int32_t
   float_t x2 = CMP_FLOAT_QE(angle_2, M_FRR_PI_4)
                    ? ((frr_point_pix_t*)elms[point_list_45->size - 1])->x
                    : sinf(angle_2) * r;
-
-  for (i = 0; i < point_list_45->size; i++) {
-    frr_point_pix_t* iter = (frr_point_pix_t*)elms[i];
-    if ((x1 < iter->x || CMP_FLOAT_QE(x1, iter->x)) &&
-        (iter->x < x2 || CMP_FLOAT_QE(x2, iter->x))) {
-      darray_push(point_list, iter);
+  if(is_v) {
+    for (i = 0; i < point_list_45->size; i++) {
+      frr_point_pix_t* iter = (frr_point_pix_t*)elms[i];
+      if ((x1 < iter->x || CMP_FLOAT_QE(x1, iter->x)) &&
+          (iter->x < x2 || CMP_FLOAT_QE(x2, iter->x))) {
+        darray_push(point_list, iter);
+      }
+    }
+  } else {
+    frr_point_pix_t* tmp_iter = NULL;
+    int32_t y = ((frr_point_pix_t*)darray_head(point_list_45))->y;
+    for (i = 0; i < point_list_45->size; i++) {
+      frr_point_pix_t* iter = (frr_point_pix_t*)elms[i];
+      if ((x1 < iter->x || CMP_FLOAT_QE(x1, iter->x)) &&
+          (iter->x < x2 || CMP_FLOAT_QE(x2, iter->x))) {
+        tmp_iter = iter;
+        if(y != iter->y) {
+          darray_push(point_list, tmp_iter);
+          y = iter->y;
+        }
+      }
     }
   }
 }
@@ -505,7 +518,7 @@ static void widget_draw_arc_point_list(frr_image_info_t* image_info, canvas_t* c
   }
 
   if (angle_v > M_FRR_PI_4) {
-    widget_push_arc_point_list(angle_v_1, angle_v_2, r, point_list, point_list_45);
+    widget_push_arc_point_list(angle_v_1, angle_v_2, r, point_list, point_list_45, TRUE);
     if (is_fill) {
       widget_draw_fill_arc_point_list(image_info, c, x, y, xc, yc,
                                       WIDGET_DRAW_ARC_INFO_TABLE[quadrant_id].quadrant_v, color,
@@ -519,7 +532,7 @@ static void widget_draw_arc_point_list(frr_image_info_t* image_info, canvas_t* c
   }
 
   if (angle_h > M_FRR_PI_4) {
-    widget_push_arc_point_list(angle_h_1, angle_h_2, r, point_list, point_list_45);
+    widget_push_arc_point_list(angle_h_1, angle_h_2, r, point_list, point_list_45, FALSE);
     point_list->size--;
     if (is_fill) {
       widget_draw_fill_arc_point_list(image_info, c, x, y, xc, yc,
