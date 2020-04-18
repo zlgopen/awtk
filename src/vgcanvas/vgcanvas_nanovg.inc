@@ -192,15 +192,19 @@ static ret_t vgcanvas_nanovg_intersect_clip_rect(vgcanvas_t* vgcanvas, float_t* 
 }
 
 #if WITH_NANOVG_GPU
-#define CMP_FLOAT_QE(a, b, CMP_ACCURACY) (-CMP_ACCURACY <= ((a) - (b)) && ((a) - (b)) <= CMP_ACCURACY)
+#define CMP_FLOAT_QE(a, b, CMP_ACCURACY) \
+  (-CMP_ACCURACY <= ((a) - (b)) && ((a) - (b)) <= CMP_ACCURACY)
 
 static bool_t vgcanvas_nanovg_is_system_orientation_0_or_180(float_t xform[6]) {
   float_t sin_180 = sinf(TK_D2R(180));
   system_info_t* info = system_info();
 
-  if(info->lcd_orientation == LCD_ORIENTATION_0 && xform[0] == 1.0f && xform[1] == 0.0f && xform[2] == 0.0f && xform[3] == 1.0f) {
+  if (info->lcd_orientation == LCD_ORIENTATION_0 && xform[0] == 1.0f && xform[1] == 0.0f &&
+      xform[2] == 0.0f && xform[3] == 1.0f) {
     return TRUE;
-  } else if(info->lcd_orientation == LCD_ORIENTATION_180 && xform[0] == -1.0f && CMP_FLOAT_QE(xform[1], sin_180, 0.0001f) && CMP_FLOAT_QE(xform[2], sin_180, 0.0001f) && xform[3] == -1.0f) {
+  } else if (info->lcd_orientation == LCD_ORIENTATION_180 && xform[0] == -1.0f &&
+             CMP_FLOAT_QE(xform[1], sin_180, 0.0001f) && CMP_FLOAT_QE(xform[2], sin_180, 0.0001f) &&
+             xform[3] == -1.0f) {
     return TRUE;
   }
   return FALSE;
@@ -210,10 +214,11 @@ static bool_t vgcanvas_nanovg_is_system_orientation_90_or_270(float_t xform[6]) 
   float_t cos_90 = cosf(TK_D2R(90));
   system_info_t* info = system_info();
 
-  if(CMP_FLOAT_QE(xform[0], cos_90, 0.0001f) && CMP_FLOAT_QE(xform[3], cos_90, 0.0001f)) {
-    if(info->lcd_orientation == LCD_ORIENTATION_90 && xform[1] == 1.0f && xform[2] == -1.0f) {
+  if (CMP_FLOAT_QE(xform[0], cos_90, 0.0001f) && CMP_FLOAT_QE(xform[3], cos_90, 0.0001f)) {
+    if (info->lcd_orientation == LCD_ORIENTATION_90 && xform[1] == 1.0f && xform[2] == -1.0f) {
       return TRUE;
-    } else if (info->lcd_orientation == LCD_ORIENTATION_270 && xform[1] == -1.0f && xform[2] == 1.0f) {
+    } else if (info->lcd_orientation == LCD_ORIENTATION_270 && xform[1] == -1.0f &&
+               xform[2] == 1.0f) {
       return TRUE;
     }
   }
@@ -232,7 +237,8 @@ static ret_t vgcanvas_nanovg_clip_rect(vgcanvas_t* vgcanvas, float_t x, float_t 
   nvgGetStateXfrom(vg, xform);
 
   /* 判断如果 vg 没有旋转和缩放的坐标系，直接使用 rect_intersect 函数做交集提高效率 */
-  if (vgcanvas_nanovg_is_system_orientation_0_or_180(xform) || vgcanvas_nanovg_is_system_orientation_90_or_270(xform)) {
+  if (vgcanvas_nanovg_is_system_orientation_0_or_180(xform) ||
+      vgcanvas_nanovg_is_system_orientation_90_or_270(xform)) {
     r1 = rect_init(x, y, w, h);
     cilp_rect = rect_intersect((const rect_t*)&vgcanvas->dirty_rect, (const rect_t*)&r1);
     nvgScissor(vg, (float_t)cilp_rect.x, (float_t)cilp_rect.y, (float_t)cilp_rect.w,

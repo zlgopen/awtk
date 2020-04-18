@@ -48,7 +48,6 @@ typedef struct _frr_draw_arc_info_table_t {
   frr_quadrant_t quadrant_h;
 } frr_draw_arc_info_table_t;
 
-
 #ifdef M_PI_2
 #define M_FRR_PI_2 (float_t)(M_PI_2)
 #else
@@ -465,7 +464,7 @@ static void widget_push_arc_point_list(float_t angle_1, float_t angle_2, int32_t
   float_t x2 = CMP_FLOAT_QE(angle_2, M_FRR_PI_4)
                    ? ((frr_point_pix_t*)elms[point_list_45->size - 1])->x
                    : sinf(angle_2) * r;
-  if(is_v) {
+  if (is_v) {
     for (i = 0; i < point_list_45->size; i++) {
       frr_point_pix_t* iter = (frr_point_pix_t*)elms[i];
       if ((x1 < iter->x || CMP_FLOAT_QE(x1, iter->x)) &&
@@ -481,7 +480,7 @@ static void widget_push_arc_point_list(float_t angle_1, float_t angle_2, int32_t
       if ((x1 < iter->x || CMP_FLOAT_QE(x1, iter->x)) &&
           (iter->x < x2 || CMP_FLOAT_QE(x2, iter->x))) {
         tmp_iter = iter;
-        if(y != iter->y) {
+        if (y != iter->y) {
           darray_push(point_list, tmp_iter);
           y = iter->y;
         }
