@@ -16834,7 +16834,7 @@
         "annotation": {
           "scriptable": true
         },
-        "desc": "获取控件的文本。\n只是对widget\\_get\\_prop的包装，文本的意义由子类控件决定。",
+        "desc": "获取控件的文本。\n只是对widget\\_get\\_prop的包装，文本的意义由子类控件决定。\n\n如果希望获取UTF8格式的文本，可以参考下面的代码：\n\n```c\nstr_t str;\nstr_init(&str, 0);\nstr_from_wstr(&str, widget_get_text(target));\nlog_debug(\"%s: %s\\n\", target->name, str.str);\nstr_reset(&str);\n```",
         "name": "widget_get_text",
         "return": {
           "type": "const wchar_t*",

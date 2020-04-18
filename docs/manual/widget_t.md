@@ -852,6 +852,16 @@ const char* widget_get_prop_str (widget_t* widget, const char* name, const char*
 > <p id="widget_t_widget_get_text">获取控件的文本。
 只是对widget\_get\_prop的包装，文本的意义由子类控件决定。
 
+如果希望获取UTF8格式的文本，可以参考下面的代码：
+
+```c
+str_t str;
+str_init(&str, 0);
+str_from_wstr(&str, widget_get_text(target));
+log_debug("%s: %s\n", target->name, str.str);
+str_reset(&str);
+```
+
 * 函数原型：
 
 ```
