@@ -1,9 +1,12 @@
 # 最新动态
 
+* 2020/04/18
+  * 修复在 SDL+gl 状态下旋转后后出现脏矩形不正常的问题（感谢智明提供补丁）。
+  
 * 2020/04/17
-* 修改 dialog 弹 dialog 然后两个都关掉的问题（感谢尧燊提供补丁）。
-* 修改 edit 的在 agge 中截图时 c 会被换成临时变量，在 setcustor 时 c 会非法的问题（感谢尧燊提供补丁）。
-* 修改 event\_source\_manager\_default 在 idle 中弹 dialog，manager->dispatching\_sources 会被 clear的问题（感谢尧燊提供补丁）。
+  * 修改 dialog 弹 dialog 然后两个都关掉的问题（感谢尧燊提供补丁）。
+  * 修改 edit 的在 agge 中截图时 c 会被换成临时变量，在 setcustor 时 c 会非法的问题（感谢尧燊提供补丁）。
+  * 修改 event\_source\_manager\_default 在 idle 中弹 dialog，manager->dispatching\_sources 会被 clear 的问题（感谢尧燊提供补丁）。
 
 * 2020/04/11
   * 完善文档 lcd.md

@@ -205,11 +205,9 @@ static ret_t vgcanvas_nanovg_fbo_to_bitmap(vgcanvas_t* vgcanvas, framebuffer_obj
   uint32_t x = 0;
   uint32_t y = 0;
   uint32_t height = 0;
-  uint32_t offset = 0;
   uint8_t* p = NULL;
   uint8_t* data = NULL;
   uint8_t* img_data = NULL;
-  NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
 
   NVGLUframebuffer* handle = (NVGLUframebuffer*)fbo->handle;
   nvgluBindFramebuffer(handle);
