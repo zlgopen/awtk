@@ -82,11 +82,20 @@ static void xml_str_gen_on_text(XmlBuilder* thiz, const char* text, size_t lengt
   return;
 }
 
+static void xml_gen_on_comment(XmlBuilder* thiz, const char* text, size_t length) {
+  (void)thiz;
+  (void)text;
+  (void)length;
+
+  return;
+}
+
 static XmlBuilder* builder_init(xml_str_builder_t& b, StrGen* sg) {
   b.sg = sg;
   b.level = 0;
   b.builder.on_start = xml_str_gen_on_start;
   b.builder.on_end = xml_str_gen_on_end;
+  b.builder.on_comment = xml_gen_on_comment;
   b.builder.on_text = xml_str_gen_on_text;
 
   return &(b.builder);
