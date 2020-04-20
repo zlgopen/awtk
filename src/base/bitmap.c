@@ -88,10 +88,10 @@ uint32_t bitmap_get_bpp_of_format(bitmap_format_t format) {
   return 0;
 }
 
-uint32_t bitmap_get_bpp(bitmap_t* bmp) {
-  return_value_if_fail(bmp != NULL, 0);
+uint32_t bitmap_get_bpp(bitmap_t* bitmap) {
+  return_value_if_fail(bitmap != NULL, 0);
 
-  return bitmap_get_bpp_of_format((bitmap_format_t)(bmp->format));
+  return bitmap_get_bpp_of_format((bitmap_format_t)(bitmap->format));
 }
 
 ret_t bitmap_alloc_data(bitmap_t* bitmap) {
@@ -223,22 +223,22 @@ ret_t bitmap_get_pixel(bitmap_t* bitmap, uint32_t x, uint32_t y, rgba_t* rgba) {
   return ret;
 }
 
-ret_t bitmap_init_rgba8888(bitmap_t* b, uint32_t w, uint32_t h, const uint8_t* data,
+ret_t bitmap_init_rgba8888(bitmap_t* bitmap, uint32_t w, uint32_t h, const uint8_t* data,
                            uint32_t comp) {
   uint32_t i = 0;
   uint32_t j = 0;
-  uint8_t* bdata = bitmap_lock_buffer_for_write(b);
+  uint8_t* bdata = bitmap_lock_buffer_for_write(bitmap);
   return_value_if_fail(bdata != NULL && data != NULL, RET_BAD_PARAMS);
 
   if (comp == 4) {
     for (i = 0; i < h; i++) {
-      memcpy((uint8_t*)(bdata) + i * b->line_length, data + i * w * 4, w * 4);
+      memcpy((uint8_t*)(bdata) + i * bitmap->line_length, data + i * w * 4, w * 4);
     }
   } else {
     const uint8_t* s = data;
     uint8_t* d = (uint8_t*)(bdata);
     for (j = 0; j < h; j++) {
-      d = (uint8_t*)(bdata) + j * b->line_length;
+      d = (uint8_t*)(bdata) + j * bitmap->line_length;
       for (i = 0; i < w; i++) {
         *d++ = *s++;
         *d++ = *s++;
@@ -247,22 +247,22 @@ ret_t bitmap_init_rgba8888(bitmap_t* b, uint32_t w, uint32_t h, const uint8_t* d
       }
     }
   }
-  bitmap_unlock_buffer(b);
+  bitmap_unlock_buffer(bitmap);
 
   return RET_OK;
 }
 
-ret_t bitmap_init_bgra8888(bitmap_t* b, uint32_t w, uint32_t h, const uint8_t* data,
+ret_t bitmap_init_bgra8888(bitmap_t* bitmap, uint32_t w, uint32_t h, const uint8_t* data,
                            uint32_t comp) {
   uint32_t i = 0;
   uint32_t j = 0;
   const uint8_t* s = data;
-  uint8_t* bdata = bitmap_lock_buffer_for_write(b);
+  uint8_t* bdata = bitmap_lock_buffer_for_write(bitmap);
   uint8_t* d = bdata;
 
   /*bgra=rgba*/
   for (j = 0; j < h; j++) {
-    d = (uint8_t*)(bdata) + j * b->line_length;
+    d = (uint8_t*)(bdata) + j * bitmap->line_length;
     for (i = 0; i < w; i++) {
       d[0] = s[2];
       d[1] = s[1];
@@ -272,20 +272,20 @@ ret_t bitmap_init_bgra8888(bitmap_t* b, uint32_t w, uint32_t h, const uint8_t* d
       s += comp;
     }
   }
-  bitmap_unlock_buffer(b);
+  bitmap_unlock_buffer(bitmap);
 
   return RET_OK;
 }
 
-ret_t bitmap_init_bgr565(bitmap_t* b, uint32_t w, uint32_t h, const uint8_t* data, uint32_t comp) {
+ret_t bitmap_init_bgr565(bitmap_t* bitmap, uint32_t w, uint32_t h, const uint8_t* data, uint32_t comp) {
   uint32_t i = 0;
   uint32_t j = 0;
   const uint8_t* s = data;
-  uint8_t* bdata = bitmap_lock_buffer_for_write(b);
+  uint8_t* bdata = bitmap_lock_buffer_for_write(bitmap);
   uint16_t* d = (uint16_t*)(bdata);
 
   for (j = 0; j < h; j++) {
-    d = (uint16_t*)((bdata) + j * b->line_length);
+    d = (uint16_t*)((bdata) + j * bitmap->line_length);
     for (i = 0; i < w; i++) {
       uint8_t r = s[0];
       uint8_t g = s[1];
@@ -296,17 +296,17 @@ ret_t bitmap_init_bgr565(bitmap_t* b, uint32_t w, uint32_t h, const uint8_t* dat
       s += comp;
     }
   }
-  bitmap_unlock_buffer(b);
+  bitmap_unlock_buffer(bitmap);
 
   return RET_OK;
 }
 
-ret_t bitmap_init_mono(bitmap_t* b, uint32_t w, uint32_t h, const uint8_t* data, uint32_t comp) {
+ret_t bitmap_init_mono(bitmap_t* bitmap, uint32_t w, uint32_t h, const uint8_t* data, uint32_t comp) {
   uint32_t i = 0;
   uint32_t j = 0;
   bool_t pixel = FALSE;
   const uint8_t* s = data;
-  uint8_t* bdata = bitmap_lock_buffer_for_write(b);
+  uint8_t* bdata = bitmap_lock_buffer_for_write(bitmap);
   uint8_t* d = (uint8_t*)(bdata);
 
   for (j = 0; j < h; j++) {
@@ -328,7 +328,7 @@ ret_t bitmap_init_mono(bitmap_t* b, uint32_t w, uint32_t h, const uint8_t* data,
       s += comp;
     }
   }
-  bitmap_unlock_buffer(b);
+  bitmap_unlock_buffer(bitmap);
 
   return RET_OK;
 }
