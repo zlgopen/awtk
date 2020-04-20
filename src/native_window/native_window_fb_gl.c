@@ -28,6 +28,7 @@
 #endif /*WITHOUT_GLAD*/
 #endif /*WITH_NANOVG_GL*/
 
+#include "base/widget.h"
 #include "lcd/lcd_nanovg.h"
 #include "base/widget_consts.h"
 #include "native_window/native_window_fb_gl.h"
