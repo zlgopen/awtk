@@ -277,7 +277,8 @@ ret_t bitmap_init_bgra8888(bitmap_t* bitmap, uint32_t w, uint32_t h, const uint8
   return RET_OK;
 }
 
-ret_t bitmap_init_bgr565(bitmap_t* bitmap, uint32_t w, uint32_t h, const uint8_t* data, uint32_t comp) {
+ret_t bitmap_init_bgr565(bitmap_t* bitmap, uint32_t w, uint32_t h, const uint8_t* data,
+                         uint32_t comp) {
   uint32_t i = 0;
   uint32_t j = 0;
   const uint8_t* s = data;
@@ -301,7 +302,8 @@ ret_t bitmap_init_bgr565(bitmap_t* bitmap, uint32_t w, uint32_t h, const uint8_t
   return RET_OK;
 }
 
-ret_t bitmap_init_mono(bitmap_t* bitmap, uint32_t w, uint32_t h, const uint8_t* data, uint32_t comp) {
+ret_t bitmap_init_mono(bitmap_t* bitmap, uint32_t w, uint32_t h, const uint8_t* data,
+                       uint32_t comp) {
   uint32_t i = 0;
   uint32_t j = 0;
   bool_t pixel = FALSE;

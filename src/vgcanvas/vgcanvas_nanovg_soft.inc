@@ -135,8 +135,8 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
 
   img_data = bitmap_lock_buffer_for_read(img);
 
-
-  i = nvgCreateImageRaw(canvas->vg, img->w, img->h, f, img->line_length, NVG_IMAGE_NEAREST, img_data);
+  i = nvgCreateImageRaw(canvas->vg, img->w, img->h, f, img->line_length, NVG_IMAGE_NEAREST,
+                        img_data);
 
   if (i >= 0) {
     img->flags |= BITMAP_FLAG_TEXTURE;
