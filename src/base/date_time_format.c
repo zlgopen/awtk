@@ -45,7 +45,7 @@ static wchar_t* translate_wday(wchar_t* str, uint32_t size, uint32_t wday) {
 }
 
 static wchar_t* translate_month(wchar_t* str, uint32_t size, uint32_t month) {
-  return_value_if_fail(month < 13, NULL);
+  return_value_if_fail(month < 13 && month > 0, NULL);
 
   static const char* const months[] = {"Jan", "Feb", "Mar",  "Apr", "May", "Jun",
                                        "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"};
