@@ -27,6 +27,7 @@ struct AGGNVGtexture {
   int tex;
   int width;
   int height;
+  int stride;
   int type;
   int flags;
   const uint8_t* data;
@@ -129,7 +130,7 @@ static int aggnvg__renderCreate(void* uptr) {
   return 1;
 }
 
-static int aggnvg__renderCreateTexture(void* uptr, int type, int w, int h, int imageFlags,
+static int aggnvg__renderCreateTexture(void* uptr, int type, int w, int h, int stride, int imageFlags,
                                         const unsigned char* data) {
   AGGNVGcontext* agg = (AGGNVGcontext*)uptr;
   AGGNVGtexture* tex = aggnvg__allocTexture(agg);
@@ -140,6 +141,7 @@ static int aggnvg__renderCreateTexture(void* uptr, int type, int w, int h, int i
   tex->height = h;
   tex->type = type;
   tex->data = data;
+  tex->stride = stride;
   tex->flags = imageFlags;
 
   return tex->id;
@@ -224,6 +226,7 @@ void renderPaint(AGGNVGcontext* agg, NVGpaint* paint) {
     float invxform[6];
     int32_t img_w = tex->width;
     int32_t img_h = tex->height;
+    int32_t img_stride = tex->stride;
     uint8_t* img_data = (uint8_t*)(tex->data);
     
     nvgTransformInverse(invxform, paint->xform);
@@ -232,7 +235,7 @@ void renderPaint(AGGNVGcontext* agg, NVGpaint* paint) {
 
     switch (tex->type) {
       case NVG_TEXTURE_RGBA: {
-        agg::rendering_buffer img_rbuf(img_data, img_w, img_h, img_w * 4);
+        agg::rendering_buffer img_rbuf(img_data, img_w, img_h, img_stride);
         agg::pixfmt_rgba32 img_pixf(img_rbuf);
         agg::span_image_filter_rgba_bilinear_clip<agg::pixfmt_rgba32, agg::span_interpolator_linear<> > sg(img_pixf, agg::rgba(0, 0, 0, 0), interpolator);
   
@@ -240,7 +243,7 @@ void renderPaint(AGGNVGcontext* agg, NVGpaint* paint) {
         break;
       }
       case NVG_TEXTURE_BGRA: {
-        agg::rendering_buffer img_rbuf(img_data, img_w, img_h, img_w * 4);
+        agg::rendering_buffer img_rbuf(img_data, img_w, img_h, img_stride);
         agg::pixfmt_bgra32 img_pixf(img_rbuf);
         agg::span_image_filter_rgba_bilinear_clip<agg::pixfmt_bgra32, agg::span_interpolator_linear<> > sg(img_pixf, agg::rgba(0, 0, 0, 0), interpolator);
   
@@ -253,7 +256,7 @@ void renderPaint(AGGNVGcontext* agg, NVGpaint* paint) {
         break;
       }
       case NVG_TEXTURE_RGB: {
-        agg::rendering_buffer img_rbuf(img_data, img_w, img_h, img_w * 3);
+        agg::rendering_buffer img_rbuf(img_data, img_w, img_h, img_stride);
         agg::pixfmt_rgb24 img_pixf(img_rbuf);
         agg::span_image_filter_rgb_bilinear_clip<agg::pixfmt_rgb24, agg::span_interpolator_linear<> > sg(img_pixf, agg::rgba(0, 0, 0, 0), interpolator);
   
@@ -261,7 +264,7 @@ void renderPaint(AGGNVGcontext* agg, NVGpaint* paint) {
         break;
       }
       case NVG_TEXTURE_BGR: {
-        agg::rendering_buffer img_rbuf(img_data, img_w, img_h, img_w * 3);
+        agg::rendering_buffer img_rbuf(img_data, img_w, img_h, img_stride);
         agg::pixfmt_bgr24 img_pixf(img_rbuf);
         agg::span_image_filter_rgb_bilinear_clip<agg::pixfmt_bgr24, agg::span_interpolator_linear<> > sg(img_pixf, agg::rgba(0, 0, 0, 0), interpolator);
   

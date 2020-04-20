@@ -702,7 +702,7 @@ struct NVGparams {
 	int (*renderCreate)(void* uptr);
 	int (*findTexture)(void* uptr, const void* data);
 	void (*setStateXfrom)(void* uptr, float* xform);
-	int (*renderCreateTexture)(void* uptr, int type, int w, int h, int imageFlags, const unsigned char* data);
+	int (*renderCreateTexture)(void* uptr, int type, int w, int h, int stride, int imageFlags, const unsigned char* data);
 	int (*renderDeleteTexture)(void* uptr, int image);
 	int (*renderUpdateTexture)(void* uptr, int image, int x, int y, int w, int h, const unsigned char* data);
 	int (*renderGetTextureSize)(void* uptr, int image, int* w, int* h);
@@ -732,7 +732,7 @@ void nvgDebugDumpPathCache(NVGcontext* ctx);
 #define NVG_NOTUSED(v) for (;;) { (void)(1 ? (void)0 : ( (void)(v) ) ); break; }
 
 NVGparams* nvgGetParams(NVGcontext* ctx);
-int nvgCreateImageRaw(NVGcontext* ctx, int w, int h, int format, int imageFlags, const unsigned char* data);
+int nvgCreateImageRaw(NVGcontext* ctx, int w, int h, int format, int stride, int imageFlags, const unsigned char* data);
 
 int nvgFindTextureRaw(NVGcontext* ctx, const void* data);
 

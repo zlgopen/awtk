@@ -34,6 +34,7 @@ struct AGGENVGtexture {
   int height;
   int type;
   int flags;
+  int stride;
   const uint8_t* data;
 };
 typedef struct AGGENVGtexture AGGENVGtexture;
@@ -162,7 +163,7 @@ static int aggenvg__renderCreate(void* uptr) {
   return 1;
 }
 
-static int aggenvg__renderCreateTexture(void* uptr, int type, int w, int h, int imageFlags,
+static int aggenvg__renderCreateTexture(void* uptr, int type, int w, int h, int stride, int imageFlags,
                                         const unsigned char* data) {
   AGGENVGtexture* tex = NULL;
   AGGENVGcontext* agge = (AGGENVGcontext*)uptr;
@@ -180,6 +181,7 @@ static int aggenvg__renderCreateTexture(void* uptr, int type, int w, int h, int 
   tex->height = h;
   tex->type = type;
   tex->data = data;
+  tex->stride = stride;
   tex->flags = imageFlags;
 
   return tex->id;
@@ -285,28 +287,28 @@ void renderPaint(AGGENVGcontext* agge, NVGpaint* paint) {
     switch (tex->type) {
       case NVG_TEXTURE_RGBA: {
         typedef agge::bitmap<agge::pixel32_rgba, agge::raw_bitmap> rgba_bitmap_t;
-        rgba_bitmap_t src(tex->width, tex->height, tex->width*4, (uint8_t*)(tex->data));
+        rgba_bitmap_t src(tex->width, tex->height, tex->stride, (uint8_t*)(tex->data));
         agge::nanovg_image_blender<PixelT, rgba_bitmap_t> color(&src, (float*)invxform, paint->innerColor.a);
         ren(surface, 0, ras, color, agge::winding<>());
         break;
       }
       case NVG_TEXTURE_BGRA: {
         typedef agge::bitmap<agge::pixel32_bgra, agge::raw_bitmap> bgra_bitmap_t;
-        bgra_bitmap_t src(tex->width, tex->height, tex->width*4, (uint8_t*)(tex->data));
+        bgra_bitmap_t src(tex->width, tex->height, tex->stride, (uint8_t*)(tex->data));
         agge::nanovg_image_blender<PixelT, bgra_bitmap_t> color(&src, (float*)invxform, paint->innerColor.a);
         ren(surface, 0, ras, color, agge::winding<>());
         break;
       }
       case NVG_TEXTURE_BGR565: {
         typedef agge::bitmap<agge::pixel16_bgr565, agge::raw_bitmap> bgr565_bitmap_t;
-        bgr565_bitmap_t src(tex->width, tex->height, tex->width*2, (uint8_t*)(tex->data));
+        bgr565_bitmap_t src(tex->width, tex->height, tex->stride, (uint8_t*)(tex->data));
         agge::nanovg_image_blender<PixelT, bgr565_bitmap_t> color(&src, (float*)invxform, paint->innerColor.a);
         ren(surface, 0, ras, color, agge::winding<>());
         break;
       }
       case NVG_TEXTURE_RGB: {
         typedef agge::bitmap<agge::pixel24_rgb, agge::raw_bitmap> rgb_bitmap_t;
-        rgb_bitmap_t src(tex->width, tex->height, tex->width*3, (uint8_t*)(tex->data));
+        rgb_bitmap_t src(tex->width, tex->height, tex->stride, (uint8_t*)(tex->data));
         agge::nanovg_image_blender<PixelT, rgb_bitmap_t> color(&src, (float*)invxform, paint->innerColor.a);
         ren(surface, 0, ras, color, agge::winding<>());
         break;
