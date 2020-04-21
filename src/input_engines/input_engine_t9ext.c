@@ -70,6 +70,7 @@ static ret_t input_engine_t9ext_input(input_engine_t* engine, int key) {
     if (t9->timer_id != TK_INVALID_ID) {
       timer_remove(t9->timer_id);
       t9->timer_id = TK_INVALID_ID;
+      input_method_dispatch_preedit_confirm(engine->im);
     }
 
     input_method_dispatch(engine->im, &e);
