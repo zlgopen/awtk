@@ -47,7 +47,6 @@
 #include "assets/default/inc/ui/scroll_bar.data"
 #include "assets/default/inc/ui/lua.data"
 #include "assets/default/inc/ui/linear_gradient.data"
-#include "assets/default/inc/ui/kb_t9.data"
 #include "assets/default/inc/ui/preload.data"
 #include "assets/default/inc/ui/images.data"
 #include "assets/default/inc/ui/soft_keyboard.data"
@@ -446,7 +445,7 @@
 #include "assets/default/inc/fonts/ap.res"
 #include "assets/default/inc/fonts/default_full.res"
 #include "assets/default/inc/fonts/default.res"
-#else/*WITH_STB_FONT or WITH_FT_FONT*/
+#else /*WITH_STB_FONT or WITH_FT_FONT*/
 #include "assets/default/inc/fonts/default_20.data"
 #include "assets/default/inc/fonts/default_16.data"
 #include "assets/default/inc/fonts/default_18.data"
@@ -510,7 +509,6 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, ui_scroll_bar);
   assets_manager_add(am, ui_lua);
   assets_manager_add(am, ui_linear_gradient);
-  assets_manager_add(am, ui_kb_t9);
   assets_manager_add(am, ui_preload);
   assets_manager_add(am, ui_images);
   assets_manager_add(am, ui_soft_keyboard);
@@ -764,7 +762,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, font_ap);
   assets_manager_add(am, font_default_full);
   assets_manager_add(am, font_default);
-#else /*WITH_STB_FONT or WITH_FT_FONT*/
+#else  /*WITH_STB_FONT or WITH_FT_FONT*/
   assets_manager_add(am, font_default_20);
   assets_manager_add(am, font_default_16);
   assets_manager_add(am, font_default_18);

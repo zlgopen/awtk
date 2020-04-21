@@ -229,7 +229,7 @@ ret_t soft_blend_image(bitmap_t* dst, bitmap_t* src, rect_t* dst_r, rect_t* src_
           } else {
             return blend_image_bgr565_bgr565(dst, src, dst_r, src_r, alpha);
           }
-        }       
+        }
         case BITMAP_FMT_RGB565: {
           return blend_image_bgr565_rgb565(dst, src, dst_r, src_r, alpha);
         }

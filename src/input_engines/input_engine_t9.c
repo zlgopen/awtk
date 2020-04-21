@@ -70,7 +70,7 @@ static ret_t input_engine_table_search(input_engine_t* engine, const char* keys)
     engine->candidates_nr = 1;
     wbuffer_write_string(&wb, keys);
   }
-  
+
   input_method_dispatch_candidates(engine->im, engine->candidates, engine->candidates_nr);
 
   return RET_OK;
@@ -124,4 +124,3 @@ ret_t input_engine_destroy(input_engine_t* engine) {
 }
 
 #endif /*WITH_IME_T9*/
-

@@ -47,7 +47,6 @@ extern TK_CONST_DATA_ALIGN(const unsigned char ui_digit_clock[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_scroll_bar[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_lua[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_linear_gradient[]);
-extern TK_CONST_DATA_ALIGN(const unsigned char ui_kb_t9[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_preload[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_images[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_soft_keyboard[]);
@@ -446,7 +445,7 @@ extern TK_CONST_DATA_ALIGN(const unsigned char image_girl[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char font_ap[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char font_default_full[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char font_default[]);
-#else/*WITH_STB_FONT or WITH_FT_FONT*/
+#else  /*WITH_STB_FONT or WITH_FT_FONT*/
 extern TK_CONST_DATA_ALIGN(const unsigned char font_default_20[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char font_default_16[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char font_default_18[]);
@@ -510,7 +509,6 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, ui_scroll_bar);
   assets_manager_add(am, ui_lua);
   assets_manager_add(am, ui_linear_gradient);
-  assets_manager_add(am, ui_kb_t9);
   assets_manager_add(am, ui_preload);
   assets_manager_add(am, ui_images);
   assets_manager_add(am, ui_soft_keyboard);
@@ -764,7 +762,7 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, font_ap);
   assets_manager_add(am, font_default_full);
   assets_manager_add(am, font_default);
-#else /*WITH_STB_FONT or WITH_FT_FONT*/
+#else  /*WITH_STB_FONT or WITH_FT_FONT*/
   assets_manager_add(am, font_default_20);
   assets_manager_add(am, font_default_16);
   assets_manager_add(am, font_default_18);

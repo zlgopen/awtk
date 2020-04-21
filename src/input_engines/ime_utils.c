@@ -176,4 +176,3 @@ ret_t input_engine_add_chars(wbuffer_t* wb, const wchar_t** table, char c) {
 
   return n;
 }
-
