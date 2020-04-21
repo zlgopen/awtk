@@ -92,9 +92,10 @@ uint32_t table_search(const table_entry_t* items, uint32_t items_nr, const char*
   if (found >= 0) {
     iter = items + found;
 
-    if (key_len > 1) {
-      nr++;
-      wbuffer_write_string_if_has_room(result, iter->memo);
+    if (key_len > 1 && iter->memo != NULL) {
+      if (wbuffer_write_string_if_has_room(result, iter->memo) == RET_OK) {
+        nr++;
+      }
     }
 
     while (iter->words[i] != NULL) {
@@ -119,9 +120,10 @@ uint32_t table_search(const table_entry_t* items, uint32_t items_nr, const char*
     uint32_t key_len = strlen(key);
 
     iter = items + found;
-    if (key_len > 1) {
-      nr++;
-      wbuffer_write_string_if_has_room(result, iter->memo);
+    if (key_len > 1 && iter->memo != NULL) {
+      if (wbuffer_write_string_if_has_room(result, iter->memo) == RET_OK) {
+        nr++;
+      }
     }
 
     while (found > 0) {
