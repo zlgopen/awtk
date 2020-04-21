@@ -47,12 +47,15 @@ extern TK_CONST_DATA_ALIGN(const unsigned char ui_digit_clock[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_scroll_bar[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_lua[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_linear_gradient[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char ui_kb_t9[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_preload[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_images[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_soft_keyboard[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_edit[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_menu_up_left[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_locale[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char ui_kb_ascii_t9[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char ui_kb_default_t9[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_kb_int[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_tab_control[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_slide_view_v2[]);
@@ -65,6 +68,7 @@ extern TK_CONST_DATA_ALIGN(const unsigned char ui_color_picker[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_switch[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_back_to_home[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_menu_right_middle[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char ui_kb_default_t9ext[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_dragger[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_dialog2[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_color_picker_hsv[]);
@@ -442,7 +446,7 @@ extern TK_CONST_DATA_ALIGN(const unsigned char image_girl[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char font_ap[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char font_default_full[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char font_default[]);
-#else  /*WITH_STB_FONT or WITH_FT_FONT*/
+#else/*WITH_STB_FONT or WITH_FT_FONT*/
 extern TK_CONST_DATA_ALIGN(const unsigned char font_default_20[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char font_default_16[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char font_default_18[]);
@@ -506,12 +510,15 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, ui_scroll_bar);
   assets_manager_add(am, ui_lua);
   assets_manager_add(am, ui_linear_gradient);
+  assets_manager_add(am, ui_kb_t9);
   assets_manager_add(am, ui_preload);
   assets_manager_add(am, ui_images);
   assets_manager_add(am, ui_soft_keyboard);
   assets_manager_add(am, ui_edit);
   assets_manager_add(am, ui_menu_up_left);
   assets_manager_add(am, ui_locale);
+  assets_manager_add(am, ui_kb_ascii_t9);
+  assets_manager_add(am, ui_kb_default_t9);
   assets_manager_add(am, ui_kb_int);
   assets_manager_add(am, ui_tab_control);
   assets_manager_add(am, ui_slide_view_v2);
@@ -524,6 +531,7 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, ui_switch);
   assets_manager_add(am, ui_back_to_home);
   assets_manager_add(am, ui_menu_right_middle);
+  assets_manager_add(am, ui_kb_default_t9ext);
   assets_manager_add(am, ui_dragger);
   assets_manager_add(am, ui_dialog2);
   assets_manager_add(am, ui_color_picker_hsv);
@@ -756,7 +764,7 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, font_ap);
   assets_manager_add(am, font_default_full);
   assets_manager_add(am, font_default);
-#else  /*WITH_STB_FONT or WITH_FT_FONT*/
+#else /*WITH_STB_FONT or WITH_FT_FONT*/
   assets_manager_add(am, font_default_20);
   assets_manager_add(am, font_default_16);
   assets_manager_add(am, font_default_18);

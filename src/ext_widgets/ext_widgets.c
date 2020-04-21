@@ -29,9 +29,10 @@
 #include "gif_image/gif_image.h"
 #include "svg_image/svg_image.h"
 #include "keyboard/keyboard.h"
+#include "keyboard/candidates.h"
+#include "keyboard/lang_indicator.h"
 #include "base/widget_factory.h"
 #include "rich_text/rich_text.h"
-#include "keyboard/candidates.h"
 #include "slide_menu/slide_menu.h"
 #include "image_value/image_value.h"
 #include "time_clock/time_clock.h"
@@ -84,6 +85,7 @@ ret_t tk_ext_widgets_init() {
   widget_factory_register(f, WIDGET_TYPE_SLIDE_INDICATOR, slide_indicator_create);
   widget_factory_register(f, WIDGET_TYPE_SLIDE_INDICATOR_ARC, slide_indicator_create_arc);
   widget_factory_register(f, WIDGET_TYPE_KEYBOARD, keyboard_create);
+  widget_factory_register(f, WIDGET_TYPE_LANG_INDICATOR, lang_indicator_create);
   widget_factory_register(f, WIDGET_TYPE_CANDIDATES, candidates_create);
   widget_factory_register(f, WIDGET_TYPE_TIME_CLOCK, time_clock_create);
   widget_factory_register(f, WIDGET_TYPE_GUAGE, guage_create);

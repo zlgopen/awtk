@@ -1,0 +1,131 @@
+<keyboard theme="keyboard" x="0" y="bottom" w="100%" h="40%">
+  <pages x="0" y="bottom" w="100%" h="-28" active="2">
+    <view name="number" x="0" y="0" w="100%" h="100%" children_layout="default(r=4,c=5,s=2,m=2)">
+        <button repeat="300" name="1" text="1"/>
+        <button repeat="300" name="2" text="2"/>
+        <button repeat="300" name="3" text="3"/>
+        <button repeat="300" name="+" text="+"/>
+        <button repeat="300" name="key:backspace" style="highlight">
+          <image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/>
+        </button>
+        <button repeat="300" name="4" text="4"/>
+        <button repeat="300" name="5" text="5"/>
+        <button repeat="300" name="6" text="6"/>
+        <button repeat="300" name="-" text="-"/>
+        <button name="page:lower" style="highlight">
+          <image draw_type="icon" image="en" x="center" y="middle" w="100%" h="100%"/>
+        </button>
+        <button repeat="300" name="7" text="7"/>
+        <button repeat="300" name="8" text="8"/>
+        <button repeat="300" name="9" text="9"/>
+        <button repeat="300" name="*" text="*"/>
+        <button name="page:chinese" style="highlight">
+          <image draw_type="icon" image="zh" x="center" y="middle" w="100%" h="100%"/>
+        </button>
+        <button repeat="300" name="." text="."/>
+        <button repeat="300" name="0" text="0"/>
+        <button repeat="300" name="%" text="%"/>
+        <button repeat="300" name="/" text="/"/>
+        <button name="page:symbols" style="highlight" text="#+="/>
+    </view>
+    <view name="symbols" x="0" y="0" w="100%" h="100%" children_layout="default(r=4,c=5,s=2,m=2)">
+        <button repeat="300" name="<" text="<"/>
+        <button repeat="300" name=">" text=">"/>
+        <button repeat="300" name="(" text="("/>
+        <button repeat="300" name=")" text=")"/>
+        <button repeat="300" name="key:backspace" style="highlight">
+          <image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/>
+        </button>
+        <button repeat="300" name="{" text="{"/>
+        <button repeat="300" name="}" text="}"/>
+        <button repeat="300" name="[" text="["/>
+        <button repeat="300" name="]" text="]"/>
+        <button name="page:lower" style="highlight">
+          <image draw_type="icon" image="en" x="center" y="middle" w="100%" h="100%"/>
+        </button>
+        <button repeat="300" name="$" text="$"/>
+        <button repeat="300" name="@" text="@"/>
+        <button repeat="300" name="&quota;" text="&quota;"/>
+        <button repeat="300" name="'" text="'"/>
+        <button name="page:chinese" style="highlight">
+          <image draw_type="icon" image="zh" x="center" y="middle" w="100%" h="100%"/>
+        </button>
+        <button repeat="300" name="#" text="#"/>
+        <button repeat="300" name="=" text="="/>
+        <button repeat="300" name="," text=","/>
+        <button repeat="300" name="?" text="?"/>
+        <button name="page:number" style="highlight" text="123"/>
+    </view>
+    <view name="lower" lang="en_us" 
+      x="0" y="0" w="100%" h="100%" children_layout="default(r=4,c=4,s=2,m=2)">
+      <button repeat="300" name="," text=","/>
+        <button repeat="300" name="key:2" text="abc"/>
+        <button repeat="300" name="key:3" text="def"/>
+        <button repeat="300" name="key:backspace" style="highlight">
+          <image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/>
+        </button>
+        <button repeat="300" name="key:4" text="ghi"/>
+        <button repeat="300" name="key:5" text="jkl"/>
+        <button repeat="300" name="key:6" text="mno"/>
+        <button name="page:upper" style="highlight" text="ABC"/>
+
+        <button repeat="300" name="key:7" text="pqrs"/>
+        <button repeat="300" name="key:8" text="tuv"/>
+        <button repeat="300" name="key:9" text="wxyz"/>
+        <button name="page:chinese" style="highlight">
+          <image draw_type="icon" image="zh" x="center" y="middle" w="100%" h="100%"/>
+        </button>
+        <button repeat="300" name="opt:.?!" text=".?!"/>
+        <button repeat="300" name="space" text="Space"/>
+        <button name="action" style="highlight" text="Return"/>
+        <button name="page:number" style="highlight" text="123"/>
+    </view>
+    <view name="upper" x="0" y="0" w="100%" h="100%" children_layout="default(r=4,c=4,s=2,m=2)">
+        <button repeat="300" name="opt:._@/#" text="._@/#"/>
+        <button repeat="300" name="opt:ABC" text="ABC"/>
+        <button repeat="300" name="opt:DEF" text="DEF"/>
+        <button repeat="300" name="key:backspace" style="highlight">
+          <image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/>
+        </button>
+        <button repeat="300" name="opt:GHI" text="GHI"/>
+        <button repeat="300" name="opt:JKL" text="JKL"/>
+        <button repeat="300" name="opt:MNO" text="MNO"/>
+        <button name="page:lower" style="highlight" text="abc"/>
+
+        <button repeat="300" name="opt:PQRS" text="PQRS"/>
+        <button repeat="300" name="opt:TUV" text="TUV"/>
+        <button repeat="300" name="opt:WXYZ" text="WXYZ"/>
+        <button name="page:chinese" style="highlight">
+          <image draw_type="icon" image="zh" x="center" y="middle" w="100%" h="100%"/>
+        </button>
+        <button repeat="300" name="confirm_preedit" text="-->"/>
+        <button repeat="300" name="space" text="Space"/>
+        <button name="action" style="highlight" text="Return"/>
+        <button name="page:number" style="highlight" text="123"/>
+    </view>
+    <view name="chinese" lang="zh_cn" 
+      x="0" y="0" w="100%" h="100%" children_layout="default(r=4,c=4,s=2,m=2)">
+        <button repeat="300" name="，" text="，"/>
+        <button repeat="300" name="key:2" text="ABC"/>
+        <button repeat="300" name="key:3" text="DEF"/>
+        <button repeat="300" name="key:backspace" style="highlight">
+          <image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/>
+        </button>
+        <button repeat="300" name="key:4" text="GHI"/>
+        <button repeat="300" name="key:5" text="JKL"/>
+        <button repeat="300" name="key:6" text="MNO"/>
+        <button name="page:lower" style="highlight" text="abc"/>
+
+        <button repeat="300" name="key:7" text="PQRS"/>
+        <button repeat="300" name="key:8" text="TUV"/>
+        <button repeat="300" name="key:9" text="WXYZ"/>
+        <button name="page:symbols" style="highlight" text="#+="/>
+        <button repeat="300" name="opt:。？！" text="。？！"/>
+        <button repeat="300" name="space" text="Space"/>
+        <button name="action" style="highlight" text="Return"/>
+        <button name="page:number" style="highlight" text="123"/>
+    </view>
+  </pages>
+  <candidates x="0" y="0" w="100%" h="30"/>
+  <button name="close" style="close" self_layout="default(x=r:2, y=2, w=20, h=20)" text="x" />
+</keyboard>

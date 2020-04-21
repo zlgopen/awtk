@@ -44,6 +44,7 @@ typedef struct _text_edit_state_t {
   uint32_t last_line_number;
 
   bool_t mask;
+  bool_t preedit;
   bool_t wrap_word;
   wchar_t mask_char;
   bool_t caret_visible;
@@ -319,6 +320,42 @@ ret_t text_edit_set_on_state_changed(text_edit_t* text_edit,
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t text_edit_destroy(text_edit_t* text_edit);
+
+/**
+ * @method text_edit_preedit_clear
+ * 清除预编辑文本。
+ * @param {text_edit_t*} text_edit text_edit对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t text_edit_preedit_clear(text_edit_t* text_edit);
+
+/**
+ * @method text_edit_preedit
+ * 进入预编辑状态。
+ * @param {text_edit_t*} text_edit text_edit对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t text_edit_preedit(text_edit_t* text_edit);
+
+/**
+ * @method text_edit_preedit_confirm
+ * 提交预编辑的文本，并退出预编辑状态。
+ * @param {text_edit_t*} text_edit text_edit对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t text_edit_preedit_confirm(text_edit_t* text_edit);
+
+/**
+ * @method text_edit_preedit_abort
+ * 取消预编辑的文本，并退出预编辑状态。
+ * @param {text_edit_t*} text_edit text_edit对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t text_edit_preedit_abort(text_edit_t* text_edit);
 
 END_C_DECLS
 

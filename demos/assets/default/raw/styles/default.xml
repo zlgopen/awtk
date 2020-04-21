@@ -155,6 +155,12 @@
   </style>
 </digit_clock>
 
+<lang_indicator>
+  <style name="default">
+    <normal text_color="white" bg_color="#1296db"/>
+  </style>
+</lang_indicator>
+
 <label>
   <style name="default">
     <normal text_color="black" />

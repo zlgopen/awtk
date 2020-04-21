@@ -47,5 +47,5 @@ function outputWords(arr) {
 }
 
 outputWords(JSON.parse(fs.readFileSync("./words.json").toString()))
-
+console.log("write to words.bin");
 

@@ -23,12 +23,20 @@
 #include "tkc/utf8.h"
 #include "tkc/buffer.h"
 #include "base/input_engine.h"
+#include "base/input_method.h"
+
+#ifdef WITH_IME_PINYIN
 
 #include "pinyinime.h"
 
 #define MAX_WORD_LEN 32
 
 using namespace ime_pinyin;
+
+static const char* input_engine_pinyin_get_lang(input_engine_t* engine) {
+  return IM_LANG_ZH_CN;
+}
+
 static ret_t input_engine_pinyin_reset_input(input_engine_t* engine) {
   (void)engine;
   im_reset_search();
@@ -60,13 +68,21 @@ static ret_t input_engine_pinyin_add_candidate(input_engine_t* engine, wbuffer_t
   return wbuffer_write_string(wb, str);
 }
 
-static ret_t input_engine_pinyin_input(input_engine_t* engine, int c) {
-  uint32_t i = 0;
+static ret_t input_engine_pinyin_search(input_engine_t* engine, const char* keys) {
   wbuffer_t wb;
-  uint32_t nr = im_search(engine->keys.str, engine->keys.size);
+  uint32_t i = 0;
+  uint32_t keys_size = strlen(keys);
+  uint32_t nr = im_search(keys, keys_size);
   wbuffer_init(&wb, (uint8_t*)(engine->candidates), sizeof(engine->candidates));
 
-  wbuffer_write_string(&wb, engine->keys.str);
+  if (keys_size == 0) {
+    input_engine_reset_input(engine);
+    input_method_dispatch_candidates(engine->im, engine->candidates, 0);
+
+    return RET_OK;
+  }
+
+  wbuffer_write_string(&wb, keys);
   engine->candidates_nr = 1;
 
   for (i = 0; i < nr; i++) {
@@ -77,18 +93,21 @@ static ret_t input_engine_pinyin_input(input_engine_t* engine, int c) {
     }
   }
 
-  (void)c;
+  input_method_dispatch_candidates(engine->im, engine->candidates, engine->candidates_nr);
 
   return RET_OK;
 }
 
-input_engine_t* input_engine_create(void) {
+input_engine_t* input_engine_create(input_method_t* im) {
   input_engine_t* engine = TKMEM_ZALLOC(input_engine_t);
   return_value_if_fail(engine != NULL, NULL);
 
   str_init(&(engine->keys), TK_IM_MAX_INPUT_CHARS + 1);
   engine->reset_input = input_engine_pinyin_reset_input;
-  engine->input = input_engine_pinyin_input;
+
+  engine->im = im;
+  engine->search = input_engine_pinyin_search;
+  engine->get_lang = input_engine_pinyin_get_lang;
 
   im_open_decoder_rom();
   im_set_max_lens(32, 16);
@@ -104,3 +123,5 @@ ret_t input_engine_destroy(input_engine_t* engine) {
 
   return RET_OK;
 }
+
+#endif /*WITH_IME_PINYIN*/

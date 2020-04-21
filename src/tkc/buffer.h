@@ -198,6 +198,16 @@ ret_t wbuffer_write_binary(wbuffer_t* wbuffer, const void* data, uint32_t size);
 ret_t wbuffer_write_string(wbuffer_t* wbuffer, const char* data);
 
 /**
+ * @method wbuffer_has_room
+ * 是否还有空间。
+ * @param {wbuffer_t*} wbuffer wbuffer对象。
+ * @param {uint32_t} size 空间大小。
+ *
+ * @return {bool_t} 返回FALSE表示无，否则表示有。
+ */
+bool_t wbuffer_has_room(wbuffer_t* wbuffer, uint32_t size);
+
+/**
  * @class rbuffer_t
  * Read Buffer。用于数据解包。
  *

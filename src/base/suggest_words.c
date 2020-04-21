@@ -106,12 +106,6 @@ static ret_t suggest_words_update(suggest_words_t* suggest_words, const uint8_t*
     }
   }
 
-  if (suggest_words->words_nr < 5) {
-    if (wbuffer_write_string(&wb, "的") == RET_OK) {
-      suggest_words->words_nr++;
-    }
-  }
-
   return RET_OK;
 }
 

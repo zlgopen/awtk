@@ -102,13 +102,28 @@ ret_t window_base_get_prop(widget_t* widget, const char* name, value_t* v) {
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_ANIM_HINT)) {
-    value_set_str(v, window_base->open_anim_hint);
+    if (window_base->disable_anim) {
+      value_set_str(v, NULL);
+    } else {
+      value_set_str(v, window_base->open_anim_hint);
+    }
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_OPEN_ANIM_HINT)) {
-    value_set_str(v, window_base->open_anim_hint);
+    if (window_base->disable_anim) {
+      value_set_str(v, NULL);
+    } else {
+      value_set_str(v, window_base->open_anim_hint);
+    }
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_CLOSE_ANIM_HINT)) {
-    value_set_str(v, window_base->close_anim_hint);
+    if (window_base->disable_anim) {
+      value_set_str(v, NULL);
+    } else {
+      value_set_str(v, window_base->close_anim_hint);
+    }
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_DISABLE_ANIM)) {
+    value_set_bool(v, window_base->disable_anim);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_NATIVE_WINDOW)) {
     value_set_pointer(v, window_base->native_window);
@@ -173,6 +188,9 @@ ret_t window_base_set_prop(widget_t* widget, const char* name, const value_t* v)
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_OPEN_ANIM_HINT)) {
     window_base->open_anim_hint = tk_str_copy(window_base->open_anim_hint, value_str(v));
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_DISABLE_ANIM)) {
+    window_base->disable_anim = value_bool(v);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_NATIVE_WINDOW)) {
     window_base->native_window = (native_window_t*)value_pointer(v);

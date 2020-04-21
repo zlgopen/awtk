@@ -583,13 +583,33 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_IM_COMMIT: {
+      text_edit_state_t state;
+      text_edit_get_state(edit->model, &state);
       im_commit_event_t* evt = (im_commit_event_t*)e;
+
+      if (state.preedit) {
+        text_edit_preedit_clear(edit->model);
+      }
+
       if (evt->replace) {
         edit_clear(edit);
       }
       edit_commit_str(widget, evt->text);
+
       widget_invalidate(widget, NULL);
 
+      break;
+    }
+    case EVT_IM_PREEDIT: {
+      text_edit_preedit(edit->model);
+      break;
+    }
+    case EVT_IM_PREEDIT_CONFIRM: {
+      text_edit_preedit_confirm(edit->model);
+      break;
+    }
+    case EVT_IM_PREEDIT_ABORT: {
+      text_edit_preedit_abort(edit->model);
       break;
     }
     case EVT_BLUR: {

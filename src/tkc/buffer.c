@@ -144,6 +144,12 @@ ret_t wbuffer_write_binary(wbuffer_t* wbuffer, const void* data, uint32_t size) 
   return RET_OK;
 }
 
+bool_t wbuffer_has_room(wbuffer_t* wbuffer, uint32_t size) {
+  return_value_if_fail(wbuffer != NULL && wbuffer->data != NULL, FALSE);
+
+  return (wbuffer->cursor + size) <= wbuffer->capacity;
+}
+
 ret_t wbuffer_write_string(wbuffer_t* wbuffer, const char* data) {
   return_value_if_fail(data != NULL, RET_BAD_PARAMS);
 

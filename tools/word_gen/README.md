@@ -27,6 +27,16 @@ node gen_words_json.js
 node to_words_bin.js
 ```
 
+### 使用现有数据
+
+chinese\_with\_freq.txt是从 https://github.com/ling0322/webdict 下载的。
+
+如果不想自己生成，可以直接使用该文件：
+
+```
+node to_json.js
+```
+
 ### 更新数据
 
 在awtk根目录下运行：

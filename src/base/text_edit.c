@@ -85,6 +85,9 @@ typedef struct _text_edit_impl_t {
   uint32_t last_line_number;
   text_layout_info_t layout_info;
 
+  bool_t preedit;
+  uint32_t preedit_chars_nr;
+
   /*for single line edit*/
   wchar_t mask_char;
   bool_t mask;
@@ -569,8 +572,13 @@ static ret_t text_edit_paint_line(text_edit_t* text_edit, canvas_t* c, row_info_
     if (chr != STB_TEXTEDIT_NEWLINE) {
       uint32_t rx = x - layout_info->ox;
       uint32_t ry = y - layout_info->oy;
+      uint32_t cursor = state->cursor;
 
-      if (offset >= select_start && offset < select_end) {
+      bool_t selected = offset >= select_start && offset < select_end;
+      bool_t preedit =
+          impl->preedit && offset < cursor && offset >= (cursor - impl->preedit_chars_nr);
+
+      if (selected || preedit) {
         color_t select_bg_color = style_get_color(style, STYLE_ID_SELECTED_BG_COLOR, white);
         color_t select_text_color = style_get_color(style, STYLE_ID_SELECTED_TEXT_COLOR, black);
 
@@ -1099,6 +1107,9 @@ ret_t text_edit_paste(text_edit_t* text_edit, const wchar_t* str, uint32_t size)
   return_value_if_fail(text_edit != NULL && str != NULL, RET_BAD_PARAMS);
 
   stb_textedit_paste(text_edit, &(impl->state), str, size);
+  if (impl->preedit) {
+    impl->preedit_chars_nr += size;
+  }
   text_edit_layout(text_edit);
 
   return RET_OK;
@@ -1219,6 +1230,7 @@ ret_t text_edit_get_state(text_edit_t* text_edit, text_edit_state_t* state) {
   state->virtual_h = impl->layout_info.virtual_h;
   state->rows = impl->rows->size;
   state->caret = impl->caret;
+  state->preedit = impl->preedit;
   state->line_height = impl->line_height;
 
   state->cursor = impl->state.cursor;
@@ -1277,6 +1289,49 @@ ret_t text_edit_set_on_state_changed(text_edit_t* text_edit,
 
   impl->on_state_changed = on_state_changed;
   impl->on_state_changed_ctx = ctx;
+
+  return RET_OK;
+}
+
+ret_t text_edit_preedit(text_edit_t* text_edit) {
+  DECL_IMPL(text_edit);
+  return_value_if_fail(text_edit != NULL, RET_BAD_PARAMS);
+
+  impl->preedit = TRUE;
+  impl->preedit_chars_nr = 0;
+
+  return RET_OK;
+}
+
+ret_t text_edit_preedit_confirm(text_edit_t* text_edit) {
+  DECL_IMPL(text_edit);
+  return_value_if_fail(text_edit != NULL, RET_BAD_PARAMS);
+
+  impl->preedit = FALSE;
+  impl->preedit_chars_nr = 0;
+
+  return RET_OK;
+}
+
+ret_t text_edit_preedit_clear(text_edit_t* text_edit) {
+  DECL_IMPL(text_edit);
+  return_value_if_fail(text_edit != NULL, RET_BAD_PARAMS);
+
+  if (impl->preedit_chars_nr > 0) {
+    text_edit_remove(text_edit, impl->state.cursor - impl->preedit_chars_nr,
+                     impl->preedit_chars_nr);
+    impl->preedit_chars_nr = 0;
+  }
+
+  return RET_OK;
+}
+
+ret_t text_edit_preedit_abort(text_edit_t* text_edit) {
+  DECL_IMPL(text_edit);
+  return_value_if_fail(text_edit != NULL, RET_BAD_PARAMS);
+
+  impl->preedit = FALSE;
+  text_edit_preedit_clear(text_edit);
 
   return RET_OK;
 }

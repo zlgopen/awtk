@@ -62,6 +62,15 @@ else:
 
 if os.environ['INPUT_ENGINE'] == 'null':
   BASE_SOURCES += Glob('input_engines/input_engine_null.c')
+elif os.environ['INPUT_ENGINE'] == 't9ext':
+  BASE_SOURCES += Glob('input_engines/ime_utils.c')
+  BASE_SOURCES += Glob('input_engines/input_engine_t9ext.c')
+elif os.environ['INPUT_ENGINE'] == 't9':
+  BASE_SOURCES += Glob('input_engines/ime_utils.c')
+  BASE_SOURCES += Glob('input_engines/input_engine_t9.c')
+elif os.environ['INPUT_ENGINE'] == 'spinyin':
+  BASE_SOURCES += Glob('input_engines/ime_utils.c')
+  BASE_SOURCES += Glob('input_engines/input_engine_spinyin.c')
 else:
   BASE_SOURCES += Glob('input_engines/input_engine_pinyin.cpp')
 

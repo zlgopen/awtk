@@ -12,6 +12,14 @@
     <over       bg_color="#e0e0e0" border_color="#a0a0a0"/>
   </style>
   
+  <style name="candidates_focusable" text_color="black">
+    <normal  />
+    <pressed    bg_color="#c0c0c0" border_color="#a0a0a0"/>
+    <over       bg_color="#e0e0e0" border_color="#a0a0a0"/>
+    <focused    bg_color="#e0e0e0" />
+    <disable    bg_color="gray" text_color="#d0d0d0" />
+  </style>
+  
   <style name="close" text_color="black" text_align_h="center" text_align_v="middle">
     <normal  bg_color="#f0f0f0"/>
     <pressed    bg_color="#c0c0c0" border_color="#a0a0a0"/>
@@ -28,6 +36,9 @@
 <keyboard>
   <style name="default">
     <normal bg_color="#cfd4da"/>
+  </style>
+  <style name="transparent">
+    <normal />
   </style>
 </keyboard>
 

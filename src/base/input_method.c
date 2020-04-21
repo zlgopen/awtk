@@ -29,6 +29,24 @@ ret_t input_method_dispatch(input_method_t* im, event_t* e) {
   return emitter_dispatch(&(im->emitter), e);
 }
 
+ret_t input_method_dispatch_preedit(input_method_t* im) {
+  event_t e = event_init(EVT_IM_PREEDIT, im);
+
+  return input_method_dispatch_to_widget(im, &e);
+}
+
+ret_t input_method_dispatch_preedit_confirm(input_method_t* im) {
+  event_t e = event_init(EVT_IM_PREEDIT_CONFIRM, im);
+
+  return input_method_dispatch_to_widget(im, &e);
+}
+
+ret_t input_method_dispatch_preedit_abort(input_method_t* im) {
+  event_t e = event_init(EVT_IM_PREEDIT_ABORT, im);
+
+  return input_method_dispatch_to_widget(im, &e);
+}
+
 ret_t input_method_dispatch_to_widget(input_method_t* im, event_t* e) {
   return_value_if_fail(im != NULL && im->widget != NULL && e != NULL, RET_BAD_PARAMS);
 
@@ -113,26 +131,47 @@ static ret_t input_method_dispatch_key_only(input_method_t* im, uint32_t key) {
 ret_t input_method_dispatch_key(input_method_t* im, uint32_t key) {
   return_value_if_fail(im != NULL, RET_BAD_PARAMS);
 
-  if (key == TK_KEY_TAB || key == TK_KEY_LEFT || key == TK_KEY_RIGHT || key == TK_KEY_UP ||
-      key == TK_KEY_DOWN || key == TK_KEY_PAGEUP || key == TK_KEY_PAGEDOWN ||
-      key == TK_KEY_RETURN || key == TK_KEY_CANCEL) {
-    return input_method_dispatch_key_only(im, key);
-  }
-
   if (im->engine != NULL) {
     if (input_engine_input(im->engine, (char)key) == RET_OK) {
-      input_method_dispatch_candidates(im, (const char*)(im->engine->candidates),
-                                       im->engine->candidates_nr);
-
       return RET_OK;
-    } else {
-      if (key != TK_KEY_BACKSPACE && key != TK_KEY_DELETE) {
-        return RET_FAIL;
-      }
     }
   }
 
   return input_method_dispatch_key_only(im, key);
+}
+
+ret_t input_method_dispatch_keys(input_method_t* im, const char* keys) {
+  return_value_if_fail(im != NULL && keys != NULL, RET_BAD_PARAMS);
+
+  if (im->engine != NULL) {
+    return input_engine_search(im->engine, keys);
+  }
+
+  return RET_OK;
+}
+
+ret_t input_method_set_lang(input_method_t* im, const char* lang) {
+  return_value_if_fail(im != NULL, RET_BAD_PARAMS);
+  if (im->engine != NULL) {
+    if (input_engine_set_lang(im->engine, lang) == RET_OK) {
+      event_t e = event_init(EVT_IM_LANG_CHANGED, im);
+      input_method_dispatch(im, &e);
+
+      return RET_OK;
+    }
+  }
+
+  return RET_FAIL;
+}
+
+const char* input_method_get_lang(input_method_t* im) {
+  return_value_if_fail(im != NULL, NULL);
+
+  if (im->engine != NULL) {
+    return input_engine_get_lang(im->engine);
+  }
+
+  return NULL;
 }
 
 ret_t input_method_dispatch_candidates(input_method_t* im, const char* strs, uint32_t nr) {
@@ -141,6 +180,18 @@ ret_t input_method_dispatch_candidates(input_method_t* im, const char* strs, uin
   ce.e = event_init(EVT_IM_SHOW_CANDIDATES, im);
   ce.candidates_nr = nr;
   ce.candidates = strs;
+
+  return input_method_dispatch(im, (event_t*)(&ce));
+}
+
+ret_t input_method_dispatch_pre_candidates(input_method_t* im, const char* strs, uint32_t nr,
+                                           int32_t selected) {
+  im_candidates_event_t ce;
+
+  ce.e = event_init(EVT_IM_SHOW_PRE_CANDIDATES, im);
+  ce.candidates_nr = nr;
+  ce.candidates = strs;
+  ce.selected = selected;
 
   return input_method_dispatch(im, (event_t*)(&ce));
 }

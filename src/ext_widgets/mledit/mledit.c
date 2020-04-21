@@ -443,16 +443,36 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_IM_COMMIT: {
+      text_edit_state_t state;
+      text_edit_get_state(mledit->model, &state);
       im_commit_event_t* evt = (im_commit_event_t*)e;
+
       if (mledit->readonly) {
         break;
       }
+
+      if (state.preedit) {
+        text_edit_preedit_clear(mledit->model);
+      }
+
       if (evt->replace) {
         mledit_clear(mledit);
       }
       mledit_commit_str(widget, evt->text);
       mledit_update_status(widget);
       widget_invalidate(widget, NULL);
+      break;
+    }
+    case EVT_IM_PREEDIT: {
+      text_edit_preedit(mledit->model);
+      break;
+    }
+    case EVT_IM_PREEDIT_CONFIRM: {
+      text_edit_preedit_confirm(mledit->model);
+      break;
+    }
+    case EVT_IM_PREEDIT_ABORT: {
+      text_edit_preedit_abort(mledit->model);
       break;
     }
     case EVT_IM_ACTION: {
@@ -630,6 +650,8 @@ const char* s_mledit_properties[] = {
 
 TK_DECL_VTABLE(mledit) = {.size = sizeof(mledit_t),
                           .type = WIDGET_TYPE_MLEDIT,
+                          .focusable = TRUE,
+                          .inputable = TRUE,
                           .clone_properties = s_mledit_properties,
                           .persistent_properties = s_mledit_properties,
                           .parent = TK_PARENT_VTABLE(widget),

@@ -47,12 +47,15 @@
 #include "assets/default/inc/ui/scroll_bar.data"
 #include "assets/default/inc/ui/lua.data"
 #include "assets/default/inc/ui/linear_gradient.data"
+#include "assets/default/inc/ui/kb_t9.data"
 #include "assets/default/inc/ui/preload.data"
 #include "assets/default/inc/ui/images.data"
 #include "assets/default/inc/ui/soft_keyboard.data"
 #include "assets/default/inc/ui/edit.data"
 #include "assets/default/inc/ui/menu_up_left.data"
 #include "assets/default/inc/ui/locale.data"
+#include "assets/default/inc/ui/kb_ascii_t9.data"
+#include "assets/default/inc/ui/kb_default_t9.data"
 #include "assets/default/inc/ui/kb_int.data"
 #include "assets/default/inc/ui/tab_control.data"
 #include "assets/default/inc/ui/slide_view_v2.data"
@@ -65,6 +68,7 @@
 #include "assets/default/inc/ui/switch.data"
 #include "assets/default/inc/ui/back_to_home.data"
 #include "assets/default/inc/ui/menu_right_middle.data"
+#include "assets/default/inc/ui/kb_default_t9ext.data"
 #include "assets/default/inc/ui/dragger.data"
 #include "assets/default/inc/ui/dialog2.data"
 #include "assets/default/inc/ui/color_picker_hsv.data"
@@ -442,7 +446,7 @@
 #include "assets/default/inc/fonts/ap.res"
 #include "assets/default/inc/fonts/default_full.res"
 #include "assets/default/inc/fonts/default.res"
-#else /*WITH_STB_FONT or WITH_FT_FONT*/
+#else/*WITH_STB_FONT or WITH_FT_FONT*/
 #include "assets/default/inc/fonts/default_20.data"
 #include "assets/default/inc/fonts/default_16.data"
 #include "assets/default/inc/fonts/default_18.data"
@@ -506,12 +510,15 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, ui_scroll_bar);
   assets_manager_add(am, ui_lua);
   assets_manager_add(am, ui_linear_gradient);
+  assets_manager_add(am, ui_kb_t9);
   assets_manager_add(am, ui_preload);
   assets_manager_add(am, ui_images);
   assets_manager_add(am, ui_soft_keyboard);
   assets_manager_add(am, ui_edit);
   assets_manager_add(am, ui_menu_up_left);
   assets_manager_add(am, ui_locale);
+  assets_manager_add(am, ui_kb_ascii_t9);
+  assets_manager_add(am, ui_kb_default_t9);
   assets_manager_add(am, ui_kb_int);
   assets_manager_add(am, ui_tab_control);
   assets_manager_add(am, ui_slide_view_v2);
@@ -524,6 +531,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, ui_switch);
   assets_manager_add(am, ui_back_to_home);
   assets_manager_add(am, ui_menu_right_middle);
+  assets_manager_add(am, ui_kb_default_t9ext);
   assets_manager_add(am, ui_dragger);
   assets_manager_add(am, ui_dialog2);
   assets_manager_add(am, ui_color_picker_hsv);
@@ -756,7 +764,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, font_ap);
   assets_manager_add(am, font_default_full);
   assets_manager_add(am, font_default);
-#else  /*WITH_STB_FONT or WITH_FT_FONT*/
+#else /*WITH_STB_FONT or WITH_FT_FONT*/
   assets_manager_add(am, font_default_20);
   assets_manager_add(am, font_default_16);
   assets_manager_add(am, font_default_18);

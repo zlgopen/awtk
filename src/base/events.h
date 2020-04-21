@@ -291,10 +291,39 @@ typedef enum _event_type_t {
    */
   EVT_IM_COMMIT,
   /**
+   * @const EVT_IM_PREEDIT
+   * 进入预编辑状态(event_t)。
+   */
+  EVT_IM_PREEDIT,
+
+  /**
+   * @const EVT_IM_PREEDIT_CONFIRM
+   * 确认预编辑内容，退出预编辑状态(event_t)。
+   */
+  EVT_IM_PREEDIT_CONFIRM,
+
+  /**
+   * @const EVT_IM_PREEDIT_ABORT
+   * 删除预编辑内容，退出预编辑状态event_t)。
+   */
+  EVT_IM_PREEDIT_ABORT,
+
+  /**
    * @const EVT_IM_SHOW_CANDIDATES
    * 输入法请求显示候选字事件(im_candidates_event_t)。
    */
   EVT_IM_SHOW_CANDIDATES,
+
+  /**
+   * @const EVT_IM_SHOW_PRE_CANDIDATES
+   * 输入法请求显示预候选字事件(im_candidates_event_t)。
+   */
+  EVT_IM_SHOW_PRE_CANDIDATES,
+  /**
+   * @const EVT_IM_LANG_CHANGED
+   * 输入法语言改变事件(event_t)。
+   */
+  EVT_IM_LANG_CHANGED,
   /**
    * @const EVT_IM_ACTION
    * 软键盘Action点击事件(event_t)。

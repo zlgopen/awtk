@@ -452,4 +452,10 @@ typedef enum _bitmap_flag_t {
 struct _bitmap_t;
 typedef struct _bitmap_t bitmap_t;
 
+struct _input_method_t;
+typedef struct _input_method_t input_method_t;
+
+struct _input_engine_t;
+typedef struct _input_engine_t input_engine_t;
+
 #endif /*TK_TYPES_DEF_H*/

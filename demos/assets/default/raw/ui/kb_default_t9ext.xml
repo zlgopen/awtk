@@ -1,0 +1,18 @@
+<keyboard disable_anim="true" theme="keyboard" style="transparent" x="0" y="bottom" w="100%" h="78" 
+    move_focus_up_key="up"
+    move_focus_down_key="down"
+    move_focus_left_key="left"
+    move_focus_right_key="right"
+    grab_keys="true">
+   <lang_indicator self_layout="default(x=r:2, y=0, w=48, h=20)" />
+    <candidates pre="true" x="0" y="20" w="100%" h="30" 
+      visible="false"
+      button_style="candidates_focusable" 
+      auto_hide="true"
+      select_by_num="false"/>
+    <candidates x="0" y="48" w="100%" h="30" 
+      visible="false"
+      button_style="candidates_focusable"
+      auto_hide="true"
+      select_by_num="false"/>
+</keyboard>

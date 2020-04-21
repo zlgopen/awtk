@@ -189,6 +189,10 @@ static bool_t widget_with_focus_state(widget_t* widget) {
 static bool_t widget_is_focusable(widget_t* widget) {
   return_value_if_fail(widget != NULL && widget->vt != NULL, FALSE);
 
+  if (!widget->visible || !widget->sensitive) {
+    return FALSE;
+  }
+
   return widget->focusable || widget->vt->focusable;
 }
 
@@ -2190,6 +2194,34 @@ static ret_t widget_on_keyup_impl(widget_t* widget, key_event_t* e) {
     widget_dispatch(widget, pointer_event_init(&click, EVT_CLICK, widget, 0, 0));
 
     ret = RET_STOP;
+  } else if (widget_is_move_focus_next_key(widget, e)) {
+    if (widget_is_focusable(widget)) {
+      ret = RET_STOP;
+    } else if (widget_is_window(widget) && !widget_has_focused_widget_in_window(widget)) {
+      ret = RET_STOP;
+    }
+  } else if (widget_is_move_focus_prev_key(widget, e)) {
+    if (widget_is_focusable(widget)) {
+      ret = RET_STOP;
+    } else if (widget_is_window(widget) && !widget_has_focused_widget_in_window(widget)) {
+      ret = RET_STOP;
+    }
+  } else if (widget_is_move_focus_up_key(widget, e)) {
+    if (widget_is_focusable(widget)) {
+      ret = RET_STOP;
+    }
+  } else if (widget_is_move_focus_down_key(widget, e)) {
+    if (widget_is_focusable(widget)) {
+      ret = RET_STOP;
+    }
+  } else if (widget_is_move_focus_left_key(widget, e)) {
+    if (widget_is_focusable(widget)) {
+      ret = RET_STOP;
+    }
+  } else if (widget_is_move_focus_right_key(widget, e)) {
+    if (widget_is_focusable(widget)) {
+      ret = RET_STOP;
+    }
   }
 
   return ret;

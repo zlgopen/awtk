@@ -61,6 +61,13 @@ typedef struct _window_base_t {
   char* theme;
 
   /**
+   * @property {bool_t} disable_anim
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 禁用窗口动画。
+   */
+  bool_t disable_anim;
+
+  /**
    * @property {window_closable_t} closable
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 收到EVT_REQUEST_CLOSE_WINDOW是否自动关闭窗口。

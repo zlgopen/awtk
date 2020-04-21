@@ -318,14 +318,20 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_FULLSCREEN "fullscreen"
 
 /**
+ * @const WIDGET_PROP_DISABLE_ANIM
+ * 禁用窗口动画。
+ */
+#define WIDGET_PROP_DISABLE_ANIM "disable_anim"
+
+/**
  * @const WIDGET_PROP_OPEN_ANIM_HINT
- * 打开窗口动画。
+ * 打开窗口时的动画。
  */
 #define WIDGET_PROP_OPEN_ANIM_HINT "open_anim_hint"
 
 /**
  * @const WIDGET_PROP_CLOSE_ANIM_HINT
- * 关闭窗口动画。
+ * 关闭窗口时的动画。
  */
 #define WIDGET_PROP_CLOSE_ANIM_HINT "close_anim_hint"
 
