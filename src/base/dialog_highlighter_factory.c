@@ -89,10 +89,12 @@ ret_t dialog_highlighter_on_dialog_destroy(void* ctx, event_t* e) {
 
 dialog_highlighter_t* dialog_highlighter_factory_create_highlighter(
     dialog_highlighter_factory_t* factory, const char* args, widget_t* dialog) {
+  object_t* args_obj = NULL;
   dialog_highlighter_t* h = NULL;
   const creator_item_t* iter = NULL;
-  object_t* args_obj = func_call_parse(args, strlen(args));
-  return_value_if_fail(factory != NULL && args_obj != NULL, NULL);
+  return_value_if_fail(factory != NULL, NULL);
+  args_obj = func_call_parse(args, strlen(args));
+  return_value_if_fail(args_obj != NULL, NULL);
 
   iter = darray_find(&(factory->creators), (void*)args_obj->name);
   if (iter != NULL) {
