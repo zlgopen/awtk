@@ -127,7 +127,7 @@ int wmain(int argc, wchar_t* argv[]) {
   if (argc > 3) {
     format = argv[3];
   }
-  image_format_t image_format = {FALSE, FALSE, FALSE};
+  image_format_t image_format = {FALSE, FALSE, FALSE, FALSE};
   image_format_set(&image_format, format);
 
   str_t theme_name;
