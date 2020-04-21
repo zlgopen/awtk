@@ -101,13 +101,34 @@ static void tab_button_load_ui(tab_button_t* tab_button, widget_t* pages) {
   }
 }
 
+int32_t tab_button_index_of(widget_t* widget) {
+  int32_t index = 0;
+  widget_t* parent = NULL;
+  return_value_if_fail(widget != NULL && widget->parent != NULL, -1);
+
+  parent = widget->parent;
+  WIDGET_FOR_EACH_CHILD_BEGIN(parent, iter, i)
+  if (tk_str_eq(iter->vt->type, WIDGET_TYPE_TAB_BUTTON)) {
+    if (iter == widget) {
+      return index;
+    } else {
+      index++;
+    }
+  }
+  WIDGET_FOR_EACH_CHILD_END();
+
+  return -1;
+}
+
 static ret_t tab_button_sync_pages(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   tab_button_t* tab_button = TAB_BUTTON(widget);
   widget_t* pages = tab_button_get_pages(widget);
   if (pages != NULL) {
     if (tab_button == NULL || tab_button->load_ui == NULL) {
-      uint32_t index = widget_index_of(widget);
+      int32_t index = tab_button_index_of(widget);
+      return_value_if_fail(index >= 0, RET_BAD_PARAMS);
+
       widget_set_value(pages, index);
     } else if (tab_button->ui == NULL) {
       tab_button_load_ui(tab_button, pages);
@@ -140,7 +161,9 @@ ret_t tab_button_set_value(widget_t* widget, bool_t value) {
     pages = tab_button_get_pages(widget);
     if (pages != NULL) {
       if (tab_button->load_ui == NULL) {
-        index = widget_index_of(widget);
+        int32_t index = tab_button_index_of(widget);
+        return_value_if_fail(index >= 0, RET_BAD_PARAMS);
+
         widget_set_value(pages, index);
       } else if (tab_button->ui == NULL) {
         tab_button_load_ui(tab_button, pages);
