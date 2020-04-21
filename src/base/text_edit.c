@@ -1320,6 +1320,7 @@ ret_t text_edit_preedit_clear(text_edit_t* text_edit) {
   if (impl->preedit_chars_nr > 0) {
     text_edit_remove(text_edit, impl->state.cursor - impl->preedit_chars_nr,
                      impl->preedit_chars_nr);
+    impl->state.cursor = impl->state.cursor - impl->preedit_chars_nr;
     impl->preedit_chars_nr = 0;
   }
 
