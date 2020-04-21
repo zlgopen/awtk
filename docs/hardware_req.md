@@ -91,19 +91,19 @@ AWTK 基本代码(包括常用控件)，在 STM32上编译之后大概 150K。�
 
 ### 1. AWTK 对应模块内存表：
 
-| 功能名称                    | 宏                                                       | ROM         | RAM                   | 说明                                                         |
-| --------------------------- | -------------------------------------------------------- | :---------- | :-------------------- | :----------------------------------------------------------- |
-| PNG ，JPG 和 GIF 图片解码器 | WITH_STB_IMAGE                                           | 大约57.64KB | 大于（2 * 255KB）     | 一张16位色分辨率为480 * 272的图片内存为255KB                 |
-| Truetype 字体解码器         | WITH_STB_FONT                                            | 大约27.3KB  | 4.2KB+18.5KB          | 100个方正水云的18号字的内存大约为18.5KB，长度为256的字体图片缓冲区的大约占用4.2KB |
-| 标准的 UNICODE 换行算法     | WITH_UNICODE_BREAK                                       | 大约49.4KB  | 大于1.39KB            |                                                              |
-| Google 拼音输入法           | 取消定义  WITHOUT_INPUT_METHOD 或者取消定义 WITH_NULL_IM | 大约1.15MB  | 大于700KB             |                                                              |
-| 加载文件系统资源模块        | WITH_FS_RES                                              | 大约7.1KB   | 0B                    |                                                              |
-| 启用 AGGE 作为矢量画布      | WITH_NANOVG_AGGE                                         | 大约21KB    | 大于（18.4KB + 10KB） | AGGE 计算时候开辟内存保守估计峰值为10KB                      |
-| 窗口动画                    | WITHOUT_WINDOW_ANIMATORS                                 | 大约9.42KB  | 大于（2 * 255KB）     | 一块16位色分辨率为480 * 272的 framebuffer 为255KB            |
-| 裁剪布局算法                | WITHOUT_LAYOUT                                           | 大约3.64KB  | 0B                    |                                                              |
-| 裁剪控件动画                | WITHOUT_WIDGET_ANIMATORS                                 | 大约1.3KB   | 0B                    |                                                              |
-| 裁剪剪切板算法              | WITHOUT_CLIPBOARD                                        | 472B        | 0B                    |                                                              |
-| 裁剪对话框高亮策略代码      | WITHOUT_DIALOG_HIGHLIGHTER                               | 大约1.46KB  | 0B                    |                                                              |
+| 功能名称                    | 宏                                                       | ROM         | RAM                      | 说明                                                         |
+| --------------------------- | -------------------------------------------------------- | :---------- | :----------------------- | :----------------------------------------------------------- |
+| PNG ，JPG 和 GIF 图片解码器 | WITH_STB_IMAGE                                           | 大约57.64KB | 大于（2 * 255KB + 16KB） | 一张16位色分辨率为480 * 272的图片内存为255KB                 |
+| Truetype 字体解码器         | WITH_STB_FONT                                            | 大约27.3KB  | 4.2KB+18.5KB             | 100个方正水云的18号字的内存大约为18.5KB，长度为256的字体图片缓冲区的大约占用4.2KB |
+| 标准的 UNICODE 换行算法     | WITH_UNICODE_BREAK                                       | 大约49.4KB  | 大于1.39KB               |                                                              |
+| Google 拼音输入法           | 取消定义  WITHOUT_INPUT_METHOD 或者取消定义 WITH_NULL_IM | 大约1.15MB  | 大于700KB                |                                                              |
+| 加载文件系统资源模块        | WITH_FS_RES                                              | 大约7.1KB   | 0B                       |                                                              |
+| 启用 AGGE 作为矢量画布      | WITH_NANOVG_AGGE                                         | 大约21KB    | 大于（18.4KB + 10KB）    | AGGE 计算时候开辟内存保守估计峰值为10KB                      |
+| 窗口动画                    | WITHOUT_WINDOW_ANIMATORS                                 | 大约9.42KB  | 大于（2 * 255KB）        | 一块16位色分辨率为480 * 272的 framebuffer 为255KB            |
+| 裁剪布局算法                | WITHOUT_LAYOUT                                           | 大约3.64KB  | 0B                       |                                                              |
+| 裁剪控件动画                | WITHOUT_WIDGET_ANIMATORS                                 | 大约1.3KB   | 0B                       |                                                              |
+| 裁剪剪切板算法              | WITHOUT_CLIPBOARD                                        | 472B        | 0B                       |                                                              |
+| 裁剪对话框高亮策略代码      | WITHOUT_DIALOG_HIGHLIGHTER                               | 大约1.46KB  | 0B                       |                                                              |
 
 
 

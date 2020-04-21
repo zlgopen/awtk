@@ -55,7 +55,7 @@ static uint8_t* convert_2_to_4(uint8_t* src, uint32_t w, uint32_t h) {
 }
 
 ret_t stb_load_image(int32_t subtype, const uint8_t* buff, uint32_t buff_size, bitmap_t* image,
-                     bool_t require_bgra, bool_t enable_bgr565) {
+                     bool_t require_bgra, bool_t enable_bgr565, bool_t enable_rgb565) {
   int w = 0;
   int h = 0;
   int n = 0;
@@ -77,6 +77,8 @@ ret_t stb_load_image(int32_t subtype, const uint8_t* buff, uint32_t buff_size, b
 #else
     if (enable_bgr565 && rgba_data_is_opaque(data, w, h, n)) {
       ret = bitmap_init_from_rgba(image, w, h, BITMAP_FMT_BGR565, data, n);
+    } else if (enable_rgb565 && rgba_data_is_opaque(data, w, h, n)) {
+      ret = bitmap_init_from_rgba(image, w, h, BITMAP_FMT_RGB565, data, n);
     } else if (require_bgra) {
       ret = bitmap_init_from_rgba(image, w, h, BITMAP_FMT_BGRA8888, data, n);
     } else {
@@ -122,6 +124,7 @@ ret_t stb_load_image(int32_t subtype, const uint8_t* buff, uint32_t buff_size, b
 static ret_t image_loader_stb_load(image_loader_t* l, const asset_info_t* asset, bitmap_t* image) {
   bool_t require_bgra = FALSE;
   bool_t enable_bgr565 = FALSE;
+  bool_t enable_rgb565 = FALSE;
   return_value_if_fail(l != NULL && image != NULL, RET_BAD_PARAMS);
 
   if (asset->subtype != ASSET_TYPE_IMAGE_JPG && asset->subtype != ASSET_TYPE_IMAGE_PNG &&
@@ -133,12 +136,16 @@ static ret_t image_loader_stb_load(image_loader_t* l, const asset_info_t* asset,
   enable_bgr565 = TRUE;
 #endif /*WITH_BITMAP_BGR565*/
 
+#ifdef WITH_BITMAP_RGB565
+  enable_rgb565 = TRUE;
+#endif /*WITH_BITMAP_RGB565*/
+
 #ifdef WITH_BITMAP_BGRA
   require_bgra = TRUE;
 #endif /*WITH_BITMAP_BGRA*/
 
   return stb_load_image(asset->subtype, asset->data, asset->size, image, require_bgra,
-                        enable_bgr565);
+                        enable_bgr565, enable_rgb565);
 }
 
 static const image_loader_t stb_loader = {.load = image_loader_stb_load};

@@ -74,8 +74,17 @@
 /**
  * 如果定义本宏，将不透明的PNG图片解码成BGR565格式，建议定义。
  * 另外和LCD的格式保存一致，可以大幅度提高性能。
+ * 如果没有定义 WITH_BITMAP_BGR565 和 WITH_BITMAP_RGB565 宏，默认解析为32位色
  *
  * #define WITH_BITMAP_BGR565 1
+ */
+
+/**
+ * 如果定义本宏，将不透明的PNG图片解码成RGB565格式，建议定义。
+ * 另外和LCD的格式保存一致，可以大幅度提高性能。
+ * 如果没有定义 WITH_BITMAP_BGR565 和 WITH_BITMAP_RGB565 宏，默认解析为32位色
+ *
+ * #define WITH_BITMAP_RGB565 1
  */
 
 /**

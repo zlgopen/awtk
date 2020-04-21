@@ -277,6 +277,31 @@ ret_t bitmap_init_bgra8888(bitmap_t* bitmap, uint32_t w, uint32_t h, const uint8
   return RET_OK;
 }
 
+ret_t bitmap_init_rgb565(bitmap_t* bitmap, uint32_t w, uint32_t h, const uint8_t* data,
+                         uint32_t comp) {
+  uint32_t i = 0;
+  uint32_t j = 0;
+  const uint8_t* s = data;
+  uint8_t* bdata = bitmap_lock_buffer_for_write(bitmap);
+  uint16_t* d = (uint16_t*)(bdata);
+
+  for (j = 0; j < h; j++) {
+    d = (uint16_t*)((bdata) + j * bitmap->line_length);
+    for (i = 0; i < w; i++) {
+      uint8_t r = s[0];
+      uint8_t g = s[1];
+      uint8_t b = s[2];
+
+      *d++ = rgb_to_rgb565(r, g, b);
+
+      s += comp;
+    }
+  }
+  bitmap_unlock_buffer(bitmap);
+
+  return RET_OK;
+}
+
 ret_t bitmap_init_bgr565(bitmap_t* bitmap, uint32_t w, uint32_t h, const uint8_t* data,
                          uint32_t comp) {
   uint32_t i = 0;
@@ -404,6 +429,8 @@ ret_t bitmap_init_from_rgba(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_for
     return bitmap_init_rgba8888(bitmap, w, h, data, comp);
   } else if (format == BITMAP_FMT_BGR565) {
     return bitmap_init_bgr565(bitmap, w, h, data, comp);
+  } else if (format == BITMAP_FMT_RGB565) {
+    return bitmap_init_rgb565(bitmap, w, h, data, comp);
   } else if (format == BITMAP_FMT_MONO) {
     return bitmap_init_mono(bitmap, w, h, data, comp);
   } else if (format == BITMAP_FMT_GRAY) {

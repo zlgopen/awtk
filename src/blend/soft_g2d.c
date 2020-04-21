@@ -25,26 +25,34 @@
 #include "base/pixel_pack_unpack.h"
 
 #include "blend_image_bgr565_bgr565.h"
+#include "blend_image_bgr565_rgb565.h"
 #include "blend_image_bgr565_bgra8888.h"
 #include "blend_image_bgr565_rgba8888.h"
 
 #include "blend_image_rgb565_bgr565.h"
+#include "blend_image_rgb565_rgb565.h"
 #include "blend_image_rgb565_bgra8888.h"
 #include "blend_image_rgb565_rgba8888.h"
 
 #include "blend_image_bgr888_bgr565.h"
+#include "blend_image_bgr888_rgb565.h"
+#include "blend_image_bgr888_bgr888.h"
 #include "blend_image_bgr888_bgra8888.h"
 #include "blend_image_bgr888_rgba8888.h"
 
 #include "blend_image_rgb888_bgr565.h"
+#include "blend_image_rgb888_rgb565.h"
+#include "blend_image_rgb888_rgb888.h"
 #include "blend_image_rgb888_bgra8888.h"
 #include "blend_image_rgb888_rgba8888.h"
 
 #include "blend_image_bgra8888_bgr565.h"
+#include "blend_image_bgra8888_rgb565.h"
 #include "blend_image_bgra8888_bgra8888.h"
 #include "blend_image_bgra8888_rgba8888.h"
 
 #include "blend_image_rgba8888_bgr565.h"
+#include "blend_image_rgba8888_rgb565.h"
 #include "blend_image_rgba8888_bgra8888.h"
 #include "blend_image_rgba8888_rgba8888.h"
 
@@ -221,6 +229,9 @@ ret_t soft_blend_image(bitmap_t* dst, bitmap_t* src, rect_t* dst_r, rect_t* src_
           } else {
             return blend_image_bgr565_bgr565(dst, src, dst_r, src_r, alpha);
           }
+        }       
+        case BITMAP_FMT_RGB565: {
+          return blend_image_bgr565_rgb565(dst, src, dst_r, src_r, alpha);
         }
         case BITMAP_FMT_RGBA8888: {
           return blend_image_bgr565_rgba8888(dst, src, dst_r, src_r, alpha);
@@ -235,6 +246,13 @@ ret_t soft_blend_image(bitmap_t* dst, bitmap_t* src, rect_t* dst_r, rect_t* src_
     }
     case BITMAP_FMT_RGB565: {
       switch (src->format) {
+        case BITMAP_FMT_RGB565: {
+          if (dst_r->w == src_r->w && dst_r->h == src_r->h && alpha > 0xf8) {
+            return soft_copy_image(dst, src, src_r, dst_r->x, dst_r->y);
+          } else {
+            return blend_image_rgb565_rgb565(dst, src, dst_r, src_r, alpha);
+          }
+        }
         case BITMAP_FMT_BGR565: {
           return blend_image_rgb565_bgr565(dst, src, dst_r, src_r, alpha);
         }
@@ -254,6 +272,16 @@ ret_t soft_blend_image(bitmap_t* dst, bitmap_t* src, rect_t* dst_r, rect_t* src_
         case BITMAP_FMT_BGR565: {
           return blend_image_bgr888_bgr565(dst, src, dst_r, src_r, alpha);
         }
+        case BITMAP_FMT_RGB565: {
+          return blend_image_bgr888_rgb565(dst, src, dst_r, src_r, alpha);
+        }
+        case BITMAP_FMT_BGR888: {
+          if (dst_r->w == src_r->w && dst_r->h == src_r->h && alpha > 0xf8) {
+            return soft_copy_image(dst, src, src_r, dst_r->x, dst_r->y);
+          } else {
+            return blend_image_bgr888_bgr888(dst, src, dst_r, src_r, alpha);
+          }
+        }
         case BITMAP_FMT_RGBA8888: {
           return blend_image_bgr888_rgba8888(dst, src, dst_r, src_r, alpha);
         }
@@ -269,6 +297,16 @@ ret_t soft_blend_image(bitmap_t* dst, bitmap_t* src, rect_t* dst_r, rect_t* src_
       switch (src->format) {
         case BITMAP_FMT_BGR565: {
           return blend_image_rgb888_bgr565(dst, src, dst_r, src_r, alpha);
+        }
+        case BITMAP_FMT_RGB565: {
+          return blend_image_rgb888_rgb565(dst, src, dst_r, src_r, alpha);
+        }
+        case BITMAP_FMT_RGB888: {
+          if (dst_r->w == src_r->w && dst_r->h == src_r->h && alpha > 0xf8) {
+            return soft_copy_image(dst, src, src_r, dst_r->x, dst_r->y);
+          } else {
+            return blend_image_rgb888_rgb888(dst, src, dst_r, src_r, alpha);
+          }
         }
         case BITMAP_FMT_RGBA8888: {
           return blend_image_rgb888_rgba8888(dst, src, dst_r, src_r, alpha);
@@ -286,6 +324,9 @@ ret_t soft_blend_image(bitmap_t* dst, bitmap_t* src, rect_t* dst_r, rect_t* src_
         case BITMAP_FMT_BGR565: {
           return blend_image_bgra8888_bgr565(dst, src, dst_r, src_r, alpha);
         }
+        case BITMAP_FMT_RGB565: {
+          return blend_image_bgra8888_rgb565(dst, src, dst_r, src_r, alpha);
+        }
         case BITMAP_FMT_RGBA8888: {
           return blend_image_bgra8888_rgba8888(dst, src, dst_r, src_r, alpha);
         }
@@ -301,6 +342,9 @@ ret_t soft_blend_image(bitmap_t* dst, bitmap_t* src, rect_t* dst_r, rect_t* src_
       switch (src->format) {
         case BITMAP_FMT_BGR565: {
           return blend_image_rgba8888_bgr565(dst, src, dst_r, src_r, alpha);
+        }
+        case BITMAP_FMT_RGB565: {
+          return blend_image_rgba8888_rgb565(dst, src, dst_r, src_r, alpha);
         }
         case BITMAP_FMT_RGBA8888: {
           return blend_image_rgba8888_rgba8888(dst, src, dst_r, src_r, alpha);

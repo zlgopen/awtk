@@ -31,6 +31,7 @@ typedef struct _image_format_t {
   bool_t mono;
   bool_t require_bgra;
   bool_t enable_bgr565;
+  bool_t enable_rgb565;
 } image_format_t;
 
 ret_t image_format_set(image_format_t* image_format, const wchar_t* format) {
@@ -46,6 +47,10 @@ ret_t image_format_set(image_format_t* image_format, const wchar_t* format) {
     if (tk_wstr_eq(format, L"bgr565")) {
       image_format->enable_bgr565 = TRUE;
     };
+
+    if (tk_wstr_eq(format, L"rgb565")) {
+      image_format->enable_rgb565 = TRUE;
+    };
   }
   return RET_OK;
 }
@@ -60,7 +65,7 @@ ret_t gen_one(const char* input_file, const char* output_file, const char* theme
     buff = (uint8_t*)read_file(input_file, &size);
     if (buff != NULL) {
       ret = stb_load_image(0, buff, size, &image, image_format->require_bgra,
-                           image_format->enable_bgr565);
+                           image_format->enable_bgr565, image_format->enable_rgb565);
       if (ret == RET_OK) {
         ret = image_gen(&image, output_file, theme, image_format->mono);
       }
@@ -114,7 +119,7 @@ int wmain(int argc, wchar_t* argv[]) {
   TKMEM_INIT(4 * 1024 * 1024);
 
   if (argc < 3) {
-    printf("Usage: %S in_filename out_filename (bgra|bgr565|mono)\n", argv[0]);
+    printf("Usage: %S in_filename out_filename (bgra|bgr565|rgb565|mono)\n", argv[0]);
 
     return 0;
   }
