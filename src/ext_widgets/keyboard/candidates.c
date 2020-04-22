@@ -321,7 +321,7 @@ static ret_t candidates_move_focus(widget_t* widget, bool_t next) {
   return RET_OK;
 }
 
-static ret_t candidates_on_keydown(widget_t* widget, key_event_t* e) {
+static ret_t candidates_on_keyup(widget_t* widget, key_event_t* e) {
   ret_t ret = RET_OK;
   widget_t* child = NULL;
   candidates_t* candidates = CANDIDATES(widget);
@@ -346,6 +346,10 @@ static ret_t candidates_on_keydown(widget_t* widget, key_event_t* e) {
         candidates_move_focus(widget, e->key == TK_KEY_RIGHT);
         ret = RET_STOP;
       }
+    } else if (e->key == TK_KEY_BACKSPACE || e->key == TK_KEY_DELETE) {
+      char words[2] = {0};
+      input_method_dispatch_candidates(input_method(), words, 0);
+      ret = RET_STOP;
     }
   }
 
@@ -368,7 +372,7 @@ TK_DECL_VTABLE(candidates) = {.size = sizeof(candidates_t),
                               .on_paint_children = candidates_on_paint_children,
                               .get_prop = candidates_get_prop,
                               .set_prop = candidates_set_prop,
-                              .on_keydown = candidates_on_keydown,
+                              .on_keyup = candidates_on_keyup,
                               .on_destroy = candidates_on_destroy_default};
 
 static ret_t candidates_on_im_candidates_event(void* ctx, event_t* e) {
