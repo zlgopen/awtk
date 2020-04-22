@@ -65,6 +65,7 @@ static ret_t candidates_on_button_click(void* ctx, event_t* e) {
           input_method_dispatch_candidates(im, suggest_words->words, suggest_words->words_nr);
           if (suggest_words->words_nr > 0) {
             widget_set_focused(widget_get_child(button->parent, 0), TRUE);
+            candidates->is_suggest = TRUE;
           }
           log_debug("suggest_words->words:%s\n", suggest_words->words);
         }
@@ -347,9 +348,11 @@ static ret_t candidates_on_keyup(widget_t* widget, key_event_t* e) {
         ret = RET_STOP;
       }
     } else if (e->key == TK_KEY_BACKSPACE || e->key == TK_KEY_DELETE) {
-      char words[2] = {0};
-      input_method_dispatch_candidates(input_method(), words, 0);
-      ret = RET_STOP;
+      if (candidates->is_suggest) {
+        char words[2] = {0};
+        input_method_dispatch_candidates(input_method(), words, 0);
+        ret = RET_STOP;
+      }
     }
   }
 
@@ -380,6 +383,7 @@ static ret_t candidates_on_im_candidates_event(void* ctx, event_t* e) {
   candidates_t* candidates = CANDIDATES(widget);
   im_candidates_event_t* evt = (im_candidates_event_t*)e;
 
+  candidates->is_suggest = FALSE;
   if (candidates->pre) {
     if (e->type == EVT_IM_SHOW_PRE_CANDIDATES) {
       candidates_update_candidates(widget, evt->candidates, evt->candidates_nr, evt->selected);
