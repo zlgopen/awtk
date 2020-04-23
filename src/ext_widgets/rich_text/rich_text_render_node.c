@@ -22,6 +22,7 @@
 #include "tkc/mem.h"
 #include "base/line_break.h"
 #include "base/image_manager.h"
+#include "rich_text/rich_text.h"
 #include "rich_text/rich_text_render_node.h"
 
 #define ICON_SIZE 128
@@ -134,8 +135,8 @@ rich_text_render_node_t* rich_text_render_node_layout(widget_t* widget, rich_tex
   int32_t right = w - margin;
   int32_t client_w = w - 2 * margin;
   int32_t client_h = h - 2 * margin;
-
   rich_text_node_t* iter = node;
+  rich_text_t* rich_text = RICH_TEXT(widget);
   rich_text_render_node_t* new_node = NULL;
   rich_text_render_node_t* render_node = NULL;
   rich_text_render_node_t* row_first_node = NULL;
@@ -187,6 +188,7 @@ rich_text_render_node_t* rich_text_render_node_layout(widget_t* widget, rich_tex
           x += new_node->rect.w + 1;
         }
 
+        rich_text->content_h = new_node->rect.y + new_node->rect.h;
         break;
       }
       case RICH_TEXT_TEXT: {
@@ -300,6 +302,7 @@ rich_text_render_node_t* rich_text_render_node_layout(widget_t* widget, rich_tex
           }
         }
 
+        rich_text->content_h = new_node->rect.y + new_node->rect.h;
         break;
       }
       default:

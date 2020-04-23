@@ -23,6 +23,8 @@
 #define TK_RICH_TEXT_H
 
 #include "base/widget.h"
+#include "base/velocity.h"
+#include "base/widget_animator.h"
 #include "rich_text/rich_text_render_node.h"
 
 BEGIN_C_DECLS
@@ -99,6 +101,13 @@ typedef struct _rich_text_t {
   uint32_t margin;
 
   /**
+   * @property {int32_t} yoffset
+   * @annotation ["set_prop","get_prop","readable"]
+   * y偏移。
+   */
+  int32_t yoffset;
+
+  /**
    * @property {bool_t} need_reset
    * @annotation ["readable"]
    * 标识控件是否需要重新绘图。
@@ -106,7 +115,14 @@ typedef struct _rich_text_t {
   bool_t need_reset;
 
   /*private*/
+  bool_t pressed;
+  int32_t ydown;
+  int32_t yoffset_end;
+  uint32_t content_h;
   rich_text_node_t* node;
+  widget_animator_t* wa;
+  velocity_t velocity;
+  int32_t yoffset_save;
   rich_text_render_node_t* render_node;
 } rich_text_t;
 
