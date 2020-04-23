@@ -311,6 +311,7 @@ static ret_t list_view_on_remove_child(widget_t* widget, widget_t* child) {
     scroll_view->on_scroll_to = NULL;
     scroll_view->on_layout_children = NULL;
 
+    list_view->scroll_view = NULL;
     WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
     if (iter && iter != child && tk_str_eq(iter->vt->type, WIDGET_TYPE_SCROLL_VIEW)) {
       list_view->scroll_view = iter;
@@ -322,6 +323,7 @@ static ret_t list_view_on_remove_child(widget_t* widget, widget_t* child) {
     WIDGET_FOR_EACH_CHILD_END();
   } else if (list_view->scroll_bar == child) {
     widget_off_by_func(child, EVT_VALUE_CHANGED, list_view_on_scroll_bar_value_changed, widget);
+    list_view->scroll_bar = NULL;
     WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
     if (iter && iter != child &&
         (tk_str_eq(iter->vt->type, WIDGET_TYPE_SCROLL_BAR) ||
