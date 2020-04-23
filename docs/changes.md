@@ -5,6 +5,7 @@
   * rich text 支持滚动。
   * 完善 t9ext 输入法。
   * 完善 list view（感谢尧燊提供补丁）。 
+  * 修复 window\_manager\_animate\_done 同时关闭两个窗口，打开一个窗口时的问题。
 
 * 2020/04/20
   * 完善 tab button，允许兄弟控件中存在非 tab button 控件。
