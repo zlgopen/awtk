@@ -2023,8 +2023,12 @@ bool_t widget_is_activate_key(widget_t* widget, key_event_t* e) {
 static bool_t widget_match_key(widget_t* widget, const char* prop, uint32_t key) {
   const char* value = NULL;
   widget_t* win = widget_get_window(widget);
-  return_value_if_fail(win != NULL, FALSE);
 
+  if (widget_is_window_manager(widget)) {
+    return FALSE;
+  }
+
+  return_value_if_fail(win != NULL, FALSE);
   value = widget_get_prop_str(win, prop, NULL);
   if (value != NULL) {
     const key_type_value_t* kv = keys_type_find_by_value(key);
