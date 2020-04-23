@@ -264,7 +264,7 @@ static uint32_t rich_text_get_row_height(widget_t* widget) {
   if (rich_text->render_node != NULL) {
     int32_t row_height = tk_max(rich_text->render_node->rect.h, 30);
 
-    return tk_min(row_height, widget->h/2);
+    return tk_min(row_height, widget->h / 2);
   } else {
     return 30;
   }
