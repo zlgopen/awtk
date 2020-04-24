@@ -109,21 +109,23 @@ const static frr_draw_arc_info_table_t WIDGET_DRAW_ARC_INFO_TABLE[] = {
     {FRR_QUADRANT_THIRD_F, FRR_QUADRANT_THIRD_S},     //左下角
     {FRR_QUADRANT_FOURTH_F, FRR_QUADRANT_FOURTH_S}};  //右下角
 
-static inline int32_t widget_frr_image_get_buff_point(frr_image_info_t* info, int32_t x, int32_t y) {
+static inline int32_t widget_frr_image_get_buff_point(frr_image_info_t* info, int32_t x,
+                                                      int32_t y) {
   int32_t p = -1;
   int32_t dx = 0;
   int32_t dy = 0;
 
   return_value_if_fail(info != NULL, -1);
 
-  if(x < 0 || x > (int32_t)info->w || y < 0 || y > (int32_t)info->h || info->stride == 0 || info->bpp == 0) {
+  if (x < 0 || x > (int32_t)info->w || y < 0 || y > (int32_t)info->h || info->stride == 0 ||
+      info->bpp == 0) {
     return p;
   }
 
   dx = x - info->dx;
   dy = y - info->dy;
 
-  if(dx < 0 || dx > (int32_t)info->dw || dy < 0 || dy > (int32_t)info->dh) {
+  if (dx < 0 || dx > (int32_t)info->dw || dy < 0 || dy > (int32_t)info->dh) {
     return p;
   }
 
@@ -504,8 +506,8 @@ static void widget_push_arc_point_list(float_t angle_1, float_t angle_2, int32_t
         if (y != iter->y && i - 1 > 0) {
           darray_push(point_list, elms[i - 1]);
           y = iter->y;
-        } 
-        if(i + 1 >= point_list_45->size) {
+        }
+        if (i + 1 >= point_list_45->size) {
           darray_push(point_list, iter);
         }
       }
@@ -800,13 +802,13 @@ static void widget_draw_stroke_rounded_rect(canvas_t* c, rect_t* r, color_t* col
     color->rgba.a = color->rgba.a * c->global_alpha / 0xff;
 
     widget_draw_arc_point_list(&image_info, c, v_x2, v_y1, x2, y1, angle_h, angle_v, radius, 0,
-                                color, &tmp_point_list_45, &point_list_45, FALSE);  // 右上角
+                               color, &tmp_point_list_45, &point_list_45, FALSE);  // 右上角
     widget_draw_arc_point_list(&image_info, c, v_x1, v_y1, x1, y1, angle_h, angle_v, radius, 1,
-                                color, &tmp_point_list_45, &point_list_45, FALSE);  // 左上角
+                               color, &tmp_point_list_45, &point_list_45, FALSE);  // 左上角
     widget_draw_arc_point_list(&image_info, c, v_x1, v_y2, x1, y2, angle_h, angle_v, radius, 2,
-                                color, &tmp_point_list_45, &point_list_45, FALSE);  // 左下角
+                               color, &tmp_point_list_45, &point_list_45, FALSE);  // 左下角
     widget_draw_arc_point_list(&image_info, c, v_x2, v_y2, x2, y2, angle_h, angle_v, radius, 3,
-                                color, &tmp_point_list_45, &point_list_45, FALSE);  // 右下角
+                               color, &tmp_point_list_45, &point_list_45, FALSE);  // 右下角
 
     if (mid_lenght_v != 0) {
       canvas_draw_vline(c, x, v_y1, mid_lenght_v);                      //左边边
@@ -865,7 +867,7 @@ static void widget_draw_stroke_rounded_rect(canvas_t* c, rect_t* r, color_t* col
     } else {
       canvas_stroke_rect(c, 0, 0, r->w, r->h);
     }
-  } 
+  }
 
 #ifndef WITH_NANOVG_GPU
 
