@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   lcd_mem_fragment.h
  * Author: AWTK Develop Team
  * Brief:  mem fragment based implemented lcd interface
@@ -264,6 +264,13 @@ static bitmap_format_t lcd_mem_fragment_get_desired_bitmap_format(lcd_t* lcd) {
 }
 
 static lcd_mem_fragment_t s_lcd_mem_fragment;
+
+uint8_t* lcd_mem_fragment_get_buff(lcd_t* lcd) {
+  lcd_mem_fragment_t* mem = (lcd_mem_fragment_t*)lcd;
+  return_value_if_fail(lcd != NULL && mem != NULL, NULL);
+
+  return (uint8_t*)mem->buff;
+}
 
 lcd_t* lcd_mem_fragment_create(wh_t w, wh_t h) {
   lcd_mem_fragment_t* mem = &s_lcd_mem_fragment;

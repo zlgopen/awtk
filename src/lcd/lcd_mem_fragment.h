@@ -28,6 +28,8 @@ BEGIN_C_DECLS
 
 lcd_t* lcd_mem_fragment_create(wh_t w, wh_t h);
 
+uint8_t* lcd_mem_fragment_get_buff(lcd_t* lcd);
+
 END_C_DECLS
 
 #endif /*LCD_MEM_FRAGMENT_H*/
