@@ -182,7 +182,7 @@ static ret_t image_manager_get_bitmap_impl(image_manager_t* imm, const char* nam
     bitmap_set_line_length(image, image->line_length);
     image->buffer = GRAPHIC_BUFFER_CREATE_WITH_DATA(header->data, header->w, header->h,
                                                     (bitmap_format_t)(header->format));
-
+    image->should_free_data = image->buffer != NULL;
     image_manager_add(imm, name, image);
 
     return RET_OK;
