@@ -385,7 +385,7 @@ const char* input_method_get_lang(input_method_t* im);
  * 提交输入文本。
  * @param {input_method_t*} im 输入法对象。
  * @param {bool_t} replace 是否替换原来的文本。
- * @param {char*} text 文本。
+ * @param {const char*} text 文本。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -407,7 +407,7 @@ ret_t input_method_dispatch_key(input_method_t* im, uint32_t key);
  * 提交按键。
  * @annotation ["scriptable"]
  * @param {input_method_t*} im 输入法对象。
- * @param {uint32_t} key 键值。
+ * @param {const char*} key 键值。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
