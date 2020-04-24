@@ -33,6 +33,7 @@
 #include "keyboard/lang_indicator.h"
 #include "base/widget_factory.h"
 #include "rich_text/rich_text.h"
+#include "rich_text/rich_text_view.h"
 #include "slide_menu/slide_menu.h"
 #include "image_value/image_value.h"
 #include "time_clock/time_clock.h"
@@ -72,6 +73,7 @@ ret_t tk_ext_widgets_init() {
   widget_factory_t* f = widget_factory();
 
   widget_factory_register(f, WIDGET_TYPE_RICH_TEXT, rich_text_create);
+  widget_factory_register(f, WIDGET_TYPE_RICH_TEXT_VIEW, rich_text_view_create);
   widget_factory_register(f, WIDGET_TYPE_COLOR_PICKER, color_picker_create);
   widget_factory_register(f, WIDGET_TYPE_COLOR_COMPONENT, color_component_create);
   widget_factory_register(f, WIDGET_TYPE_SCROLL_VIEW, scroll_view_create);

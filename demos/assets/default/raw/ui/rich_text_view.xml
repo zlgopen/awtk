@@ -1,0 +1,39 @@
+<window anim_hint="htranslate" >
+  <rich_text_view x="0" y="0" w="100%" h="40%">
+    <rich_text line_gap="5" x="0" y="10" w="-12" h="100%" margin="10">
+      <property name="text">
+        <![CDATA[
+<image name="bricks"/><font color="gold" align_v="bottom" size="24">1.hello awtk!</font><font color="green" size="20">ProTip! The feed shows you events from people you follow and repositories you watch. hello world!</font>
+<font color="red" size="20">1.确定取消中文字符测试。确定。取消。中文字符测试。</font>"
+<image name="bricks"/><font color="gold" align_v="bottom" size="24">1.hello awtk!</font><font color="green" size="20">ProTip! The feed shows you events from people you follow and repositories you watch. hello world!</font>
+<font color="red" size="20">2.确定取消中文字符测试。确定。取消。中文字符测试。</font>"
+<image name="bricks"/><font color="gold" align_v="bottom" size="24">1.hello awtk!</font><font color="green" size="20">ProTip! The feed shows you events from people you follow and repositories you watch. hello world!</font>
+<font color="red" size="20">3.确定取消中文字符测试。确定。取消。中文字符测试。</font>"
+<image name="bricks"/><font color="gold" align_v="bottom" size="24">1.hello awtk!</font><font color="green" size="20">ProTip! The feed shows you events from people you follow and repositories you watch. hello world!</font>
+<font color="red" size="20">4.确定取消中文字符测试。确定。取消。中文字符测试。</font>"
+        ]]>
+      </property>
+    </rich_text>
+  
+    <scroll_bar_d name="bar" x="right" y="0" w="12" h="100%" value="0" row="30"/>
+  </rich_text_view>
+  <rich_text_view x="0" y="45%" w="100%" h="40%">
+    <rich_text line_gap="5" x="0" y="10" w="-6" h="100%" margin="10">
+      <property name="text">
+        <![CDATA[
+<image name="bricks"/><font color="gold" align_v="bottom" size="24">1.hello awtk!</font><font color="green" size="20">ProTip! The feed shows you events from people you follow and repositories you watch. hello world!</font>
+<font color="red" size="20">1.确定取消中文字符测试。确定。取消。中文字符测试。</font>"
+<image name="bricks"/><font color="gold" align_v="bottom" size="24">1.hello awtk!</font><font color="green" size="20">ProTip! The feed shows you events from people you follow and repositories you watch. hello world!</font>
+<font color="red" size="20">2.确定取消中文字符测试。确定。取消。中文字符测试。</font>"
+<image name="bricks"/><font color="gold" align_v="bottom" size="24">1.hello awtk!</font><font color="green" size="20">ProTip! The feed shows you events from people you follow and repositories you watch. hello world!</font>
+<font color="red" size="20">3.确定取消中文字符测试。确定。取消。中文字符测试。</font>"
+<image name="bricks"/><font color="gold" align_v="bottom" size="24">1.hello awtk!</font><font color="green" size="20">ProTip! The feed shows you events from people you follow and repositories you watch. hello world!</font>
+<font color="red" size="20">4.确定取消中文字符测试。确定。取消。中文字符测试。</font>"
+        ]]>
+      </property>
+    </rich_text>
+  
+    <scroll_bar_m name="bar" x="right" y="0" w="6" h="100%" value="0"/>
+  </rich_text_view>
+    <button name="close" text="Close" x="c" y="bottom:10" w="25%" h="40" />
+</window>

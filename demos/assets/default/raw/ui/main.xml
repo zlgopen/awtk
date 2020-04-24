@@ -46,6 +46,7 @@
     </view>
     <view x="0" y="0" w="100%" h="100%" children_layout="default(c=2,r=8,m=5,s=5)">
       <button focusable="true" name="open:draggable" text="Draggable"/>
+      <button focusable="true" name="open:rich_text_view" text="RichTextView"/>
     </view>
     <view x="0" y="0" w="100%" h="100%" children_layout="default(c=1,r=8,m=5,s=5)">
       <button focusable="true" name="open:memtest" text="MemTest"/>

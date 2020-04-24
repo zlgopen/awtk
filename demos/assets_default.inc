@@ -110,6 +110,7 @@
 #include "assets/default/inc/ui/auto_play_portrait.data"
 #include "assets/default/inc/ui/system_bar_bottom.data"
 #include "assets/default/inc/ui/text_selector.data"
+#include "assets/default/inc/ui/rich_text_view.data"
 #include "assets/default/inc/ui/big_font.data"
 #include "assets/default/inc/ui/tab_top_compact.data"
 #include "assets/default/inc/ui/slide_view_h.data"
@@ -445,7 +446,7 @@
 #include "assets/default/inc/fonts/ap.res"
 #include "assets/default/inc/fonts/default_full.res"
 #include "assets/default/inc/fonts/default.res"
-#else /*WITH_STB_FONT or WITH_FT_FONT*/
+#else/*WITH_STB_FONT or WITH_FT_FONT*/
 #include "assets/default/inc/fonts/default_20.data"
 #include "assets/default/inc/fonts/default_16.data"
 #include "assets/default/inc/fonts/default_18.data"
@@ -572,6 +573,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, ui_auto_play_portrait);
   assets_manager_add(am, ui_system_bar_bottom);
   assets_manager_add(am, ui_text_selector);
+  assets_manager_add(am, ui_rich_text_view);
   assets_manager_add(am, ui_big_font);
   assets_manager_add(am, ui_tab_top_compact);
   assets_manager_add(am, ui_slide_view_h);
@@ -762,7 +764,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, font_ap);
   assets_manager_add(am, font_default_full);
   assets_manager_add(am, font_default);
-#else  /*WITH_STB_FONT or WITH_FT_FONT*/
+#else /*WITH_STB_FONT or WITH_FT_FONT*/
   assets_manager_add(am, font_default_20);
   assets_manager_add(am, font_default_16);
   assets_manager_add(am, font_default_18);

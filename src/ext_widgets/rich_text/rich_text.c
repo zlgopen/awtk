@@ -179,6 +179,7 @@ static ret_t rich_text_ensure_render_node(widget_t* widget, canvas_t* c) {
 
     rich_text->render_node =
         rich_text_render_node_layout(widget, rich_text->node, c, w, h, margin, line_gap);
+    widget_set_prop_int(WIDGET(rich_text), WIDGET_PROP_YOFFSET, 0);
   }
   return_value_if_fail(rich_text->render_node != NULL, RET_OOM);
 
@@ -288,7 +289,8 @@ static ret_t rich_text_on_pointer_move(rich_text_t* rich_text, pointer_event_t* 
   velocity_update(v, e->e.time, e->x, e->y);
 
   if (rich_text->wa == NULL && dy) {
-    rich_text->yoffset = rich_text->yoffset_save - dy;
+    int32_t yoffset = rich_text->yoffset_save - dy;
+    widget_set_prop_int(WIDGET(rich_text), WIDGET_PROP_YOFFSET, yoffset);
   }
 
   return RET_OK;
@@ -471,6 +473,9 @@ static ret_t rich_text_get_prop(widget_t* widget, const char* name, value_t* v) 
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_XOFFSET)) {
     value_set_int(v, 0);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_VIRTUAL_H)) {
+    value_set_int(v, rich_text->content_h + 2 * rich_text->margin);
     return RET_OK;
   }
 

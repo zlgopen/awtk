@@ -110,6 +110,7 @@ extern TK_CONST_DATA_ALIGN(const unsigned char ui_test_view[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_auto_play_portrait[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_system_bar_bottom[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_text_selector[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char ui_rich_text_view[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_big_font[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_tab_top_compact[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char ui_slide_view_h[]);
@@ -445,7 +446,7 @@ extern TK_CONST_DATA_ALIGN(const unsigned char image_girl[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char font_ap[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char font_default_full[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char font_default[]);
-#else  /*WITH_STB_FONT or WITH_FT_FONT*/
+#else/*WITH_STB_FONT or WITH_FT_FONT*/
 extern TK_CONST_DATA_ALIGN(const unsigned char font_default_20[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char font_default_16[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char font_default_18[]);
@@ -572,6 +573,7 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, ui_auto_play_portrait);
   assets_manager_add(am, ui_system_bar_bottom);
   assets_manager_add(am, ui_text_selector);
+  assets_manager_add(am, ui_rich_text_view);
   assets_manager_add(am, ui_big_font);
   assets_manager_add(am, ui_tab_top_compact);
   assets_manager_add(am, ui_slide_view_h);
@@ -762,7 +764,7 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, font_ap);
   assets_manager_add(am, font_default_full);
   assets_manager_add(am, font_default);
-#else  /*WITH_STB_FONT or WITH_FT_FONT*/
+#else /*WITH_STB_FONT or WITH_FT_FONT*/
   assets_manager_add(am, font_default_20);
   assets_manager_add(am, font_default_16);
   assets_manager_add(am, font_default_18);

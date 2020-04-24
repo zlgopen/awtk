@@ -368,6 +368,7 @@ static ret_t scroll_bar_create_children(widget_t* widget) {
     widget_use_style(down, "scroll_down");
   }
 
+  scroll_bar->row = 30;
   scroll_bar->dragger = dragger;
   widget_set_need_relayout_children(widget);
 

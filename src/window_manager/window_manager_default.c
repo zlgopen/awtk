@@ -718,8 +718,8 @@ static ret_t window_manager_animate_done(widget_t* widget) {
       } else {
         window_manager_close_window(widget, window);
       }
-    } 
-    
+    }
+
     if (wm->pending_open_window != NULL) {
       widget_t* window = wm->pending_open_window;
       wm->pending_open_window = NULL;

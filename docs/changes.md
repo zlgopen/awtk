@@ -1,5 +1,9 @@
 # 最新动态
 
+* 2020/04/24
+  * 增加 rich text view 控件用于协调 rich text 和 scroll bar。
+  
+
 * 2020/04/23
   * 去掉 widget 中不必要的 log。
   * rich text 支持滚动。
