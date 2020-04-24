@@ -179,7 +179,7 @@ static bool_t is_dialog_opened(widget_t* widget) {
 
   WIDGET_FOR_EACH_CHILD_BEGIN_R(widget->parent, iter, i)
   if (iter == widget) break;
-  if (!tk_str_eq(iter->vt->type, WIDGET_TYPE_DIALOG)) return FALSE;
+  if (!tk_str_eq(iter->vt->type, WIDGET_TYPE_DIALOG)) continue;
   dialog_t* dialog = DIALOG(iter);
   if (dialog == NULL || !dialog->quited) return FALSE;
   WIDGET_FOR_EACH_CHILD_END()
