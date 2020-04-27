@@ -1,8 +1,10 @@
 <window tr_text="ok" anim_hint="htranslate"  x="0" y="0" w="320" h="480">
   <label name="ok" x="10" y="5" w="25%" h="30" tr_text="ok"/>
   <label name="cancel" x="right:10" y="5" w="25%" h="30" tr_text="cancel"/>
-  
   <image image="flag_${country},flag_none" x="c" y="m:-80" w="80" h="80"/>
+
+  <edit x="10" y="m:50" w="-20" h="30" tr_tips="name" />
+  <mledit x="10" y="m:120" w="-20" h="80" tr_tips="desc" />
 
   <button name="chinese" x="10" y="m" w="25%" h="30" text="Chinese"/>
   <button name="english" x="center" y="m" w="25%" h="30" text="English"/>

@@ -33,6 +33,16 @@
 <language name="zh_CN">英文</language>
 </string>
 
+<string name="name">
+<language name="en_US">Name</language>
+<language name="zh_CN">名称</language>
+</string>
+
+<string name="desc">
+<language name="en_US">Description</language>
+<language name="zh_CN">描述信息</language>
+</string>
+
 <string name="multi line text">
   <language name="en_US">
 it

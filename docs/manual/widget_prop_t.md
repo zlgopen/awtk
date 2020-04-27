@@ -52,10 +52,12 @@
 | WIDGET\_PROP\_ANIMATION | 控件动画。 |
 | WIDGET\_PROP\_ANIM\_HINT | 窗口动画。 |
 | WIDGET\_PROP\_FULLSCREEN | 窗口设置为全部大小。 |
-| WIDGET\_PROP\_OPEN\_ANIM\_HINT | 打开窗口动画。 |
-| WIDGET\_PROP\_CLOSE\_ANIM\_HINT | 关闭窗口动画。 |
+| WIDGET\_PROP\_DISABLE\_ANIM | 禁用窗口动画。 |
+| WIDGET\_PROP\_OPEN\_ANIM\_HINT | 打开窗口时的动画。 |
+| WIDGET\_PROP\_CLOSE\_ANIM\_HINT | 关闭窗口时的动画。 |
 | WIDGET\_PROP\_MIN | 最小值。 |
 | WIDGET\_PROP\_TIPS | 提示信息。 |
+| WIDGET\_PROP\_TR\_TIPS | 需要翻译的提示信息。 |
 | WIDGET\_PROP\_INPUT\_TYPE | 输入类型。 |
 | WIDGET\_PROP\_KEYBOARD | 自定义软键盘资源名称。 |
 | WIDGET\_PROP\_DEFAULT\_FOCUSED\_CHILD | 缺省获得焦点的子控件(可用控件名或类型)。 |

@@ -71,7 +71,6 @@ default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/st
 | <a href="#edit_t_edit_set_double">edit\_set\_double</a> | 设置double类型的值。 |
 | <a href="#edit_t_edit_set_float_limit">edit\_set\_float\_limit</a> | 设置为浮点数输入及取值范围。 |
 | <a href="#edit_t_edit_set_focus">edit\_set\_focus</a> | 设置为焦点。 |
-| <a href="#edit_t_edit_set_input_tips">edit\_set\_input\_tips</a> | 设置编辑器的输入提示。 |
 | <a href="#edit_t_edit_set_input_type">edit\_set\_input\_type</a> | 设置编辑器的输入类型。 |
 | <a href="#edit_t_edit_set_int">edit\_set\_int</a> | 设置int类型的值。 |
 | <a href="#edit_t_edit_set_int_limit">edit\_set\_int\_limit</a> | 设置为整数输入及取值范围。 |
@@ -82,6 +81,8 @@ default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/st
 | <a href="#edit_t_edit_set_readonly">edit\_set\_readonly</a> | 设置编辑器是否为只读。 |
 | <a href="#edit_t_edit_set_select_none_when_focused">edit\_set\_select\_none\_when\_focused</a> | 设置编辑器是否在获得焦点时不选中文本。 |
 | <a href="#edit_t_edit_set_text_limit">edit\_set\_text\_limit</a> | 设置为文本输入及其长度限制，不允许输入超过max个字符，少于min个字符时进入error状态。 |
+| <a href="#edit_t_edit_set_tips">edit\_set\_tips</a> | 设置编辑器的输入提示。 |
+| <a href="#edit_t_edit_set_tr_tips">edit\_set\_tr\_tips</a> | 获取翻译之后的文本，然后调用edit_set_tips。 |
 ### 属性
 <p id="edit_t_properties">
 
@@ -102,6 +103,7 @@ default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/st
 | <a href="#edit_t_step">step</a> | double | 步长。 |
 | <a href="#edit_t_tips">tips</a> | char* | 输入提示。 |
 | <a href="#edit_t_top_margin">top\_margin</a> | uint8\_t | 上边距。 |
+| <a href="#edit_t_tr_tips">tr\_tips</a> | char* | 保存用于翻译的提示信息。 |
 ### 事件
 <p id="edit_t_events">
 
@@ -291,26 +293,6 @@ ret_t edit_set_focus (widget_t* widget, bool_t focus);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
 | focus | bool\_t | 是否为焦点。 |
-#### edit\_set\_input\_tips 函数
------------------------
-
-* 函数功能：
-
-> <p id="edit_t_edit_set_input_tips">设置编辑器的输入提示。
-
-* 函数原型：
-
-```
-ret_t edit_set_input_tips (widget_t* widget, char* tips);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| widget | widget\_t* | widget对象。 |
-| tips | char* | 输入提示。 |
 #### edit\_set\_input\_type 函数
 -----------------------
 
@@ -515,6 +497,46 @@ ret_t edit_set_text_limit (widget_t* widget, uint32_t min, uint32_t max);
 | widget | widget\_t* | widget对象。 |
 | min | uint32\_t | 最小长度。 |
 | max | uint32\_t | 最大长度。 |
+#### edit\_set\_tips 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="edit_t_edit_set_tips">设置编辑器的输入提示。
+
+* 函数原型：
+
+```
+ret_t edit_set_tips (widget_t* widget, char* tips);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | widget对象。 |
+| tips | char* | 输入提示。 |
+#### edit\_set\_tr\_tips 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="edit_t_edit_set_tr_tips">获取翻译之后的文本，然后调用edit_set_tips。
+
+* 函数原型：
+
+```
+ret_t edit_set_tr_tips (widget_t* widget, const char* tr_tips);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| tr\_tips | const char* | 提示信息。 |
 #### auto\_fix 属性
 -----------------------
 > <p id="edit_t_auto_fix">输入无效时，是否自动改正。
@@ -749,6 +771,22 @@ ret_t edit_set_text_limit (widget_t* widget, uint32_t min, uint32_t max);
 > <p id="edit_t_top_margin">上边距。
 
 * 类型：uint8\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### tr\_tips 属性
+-----------------------
+> <p id="edit_t_tr_tips">保存用于翻译的提示信息。
+
+* 类型：char*
 
 | 特性 | 是否支持 |
 | -------- | ----- |

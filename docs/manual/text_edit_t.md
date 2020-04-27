@@ -20,6 +20,10 @@
 | <a href="#text_edit_t_text_edit_layout">text\_edit\_layout</a> | 重新排版。 |
 | <a href="#text_edit_t_text_edit_paint">text\_edit\_paint</a> | 绘制文本。 |
 | <a href="#text_edit_t_text_edit_paste">text\_edit\_paste</a> | 粘贴文本。 |
+| <a href="#text_edit_t_text_edit_preedit">text\_edit\_preedit</a> | 进入预编辑状态。 |
+| <a href="#text_edit_t_text_edit_preedit_abort">text\_edit\_preedit\_abort</a> | 取消预编辑的文本，并退出预编辑状态。 |
+| <a href="#text_edit_t_text_edit_preedit_clear">text\_edit\_preedit\_clear</a> | 清除预编辑文本。 |
+| <a href="#text_edit_t_text_edit_preedit_confirm">text\_edit\_preedit\_confirm</a> | 提交预编辑的文本，并退出预编辑状态。 |
 | <a href="#text_edit_t_text_edit_select_all">text\_edit\_select\_all</a> | 全选。 |
 | <a href="#text_edit_t_text_edit_set_canvas">text\_edit\_set\_canvas</a> | 设置canvas对象。 |
 | <a href="#text_edit_t_text_edit_set_caret_visible">text\_edit\_set\_caret\_visible</a> | 设置光标的看见性。 |
@@ -290,6 +294,82 @@ ret_t text_edit_paste (text_edit_t* text_edit, const wchar_t* str, uint32_t size
 | text\_edit | text\_edit\_t* | text\_edit对象。 |
 | str | const wchar\_t* | 文本。 |
 | size | uint32\_t | 文本长度。 |
+#### text\_edit\_preedit 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="text_edit_t_text_edit_preedit">进入预编辑状态。
+
+* 函数原型：
+
+```
+ret_t text_edit_preedit (text_edit_t* text_edit);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| text\_edit | text\_edit\_t* | text\_edit对象。 |
+#### text\_edit\_preedit\_abort 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="text_edit_t_text_edit_preedit_abort">取消预编辑的文本，并退出预编辑状态。
+
+* 函数原型：
+
+```
+ret_t text_edit_preedit_abort (text_edit_t* text_edit);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| text\_edit | text\_edit\_t* | text\_edit对象。 |
+#### text\_edit\_preedit\_clear 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="text_edit_t_text_edit_preedit_clear">清除预编辑文本。
+
+* 函数原型：
+
+```
+ret_t text_edit_preedit_clear (text_edit_t* text_edit);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| text\_edit | text\_edit\_t* | text\_edit对象。 |
+#### text\_edit\_preedit\_confirm 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="text_edit_t_text_edit_preedit_confirm">提交预编辑的文本，并退出预编辑状态。
+
+* 函数原型：
+
+```
+ret_t text_edit_preedit_confirm (text_edit_t* text_edit);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| text\_edit | text\_edit\_t* | text\_edit对象。 |
 #### text\_edit\_select\_all 函数
 -----------------------
 

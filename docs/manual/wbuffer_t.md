@@ -34,6 +34,7 @@ wbuffer_deinit(&wbuffer);
 | -------- | ------------ | 
 | <a href="#wbuffer_t_wbuffer_deinit">wbuffer\_deinit</a> | 释放资源。 |
 | <a href="#wbuffer_t_wbuffer_extend_capacity">wbuffer\_extend\_capacity</a> | 扩展缓冲区至指定的大小。 |
+| <a href="#wbuffer_t_wbuffer_has_room">wbuffer\_has\_room</a> | 是否还有空间。 |
 | <a href="#wbuffer_t_wbuffer_init">wbuffer\_init</a> | 初始wbuffer对象。 |
 | <a href="#wbuffer_t_wbuffer_init_extendable">wbuffer\_init\_extendable</a> | 初始wbuffer对象，容量不够时是否支持自动扩展，使用完成后需要调用wbuffer\_deinit释放资源。 |
 | <a href="#wbuffer_t_wbuffer_skip">wbuffer\_skip</a> | 跳过指定的长度。 |
@@ -91,6 +92,26 @@ ret_t wbuffer_extend_capacity (wbuffer_t* wbuffer, uint32_t capacity);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | wbuffer | wbuffer\_t* | wbuffer对象。 |
 | capacity | uint32\_t | 缓冲区的容量。 |
+#### wbuffer\_has\_room 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="wbuffer_t_wbuffer_has_room">是否还有空间。
+
+* 函数原型：
+
+```
+bool_t wbuffer_has_room (wbuffer_t* wbuffer, uint32_t size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回FALSE表示无，否则表示有。 |
+| wbuffer | wbuffer\_t* | wbuffer对象。 |
+| size | uint32\_t | 空间大小。 |
 #### wbuffer\_init 函数
 -----------------------
 

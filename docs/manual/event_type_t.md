@@ -55,7 +55,12 @@
 | EVT\_REQUEST\_CLOSE\_WINDOW | 请求关闭窗口的事件(event\_t)。 |
 | EVT\_TOP\_WINDOW\_CHANGED | 顶层窗口改变的事件(window\_event\_t)。 |
 | EVT\_IM\_COMMIT | 输入法提交输入的文本事件(im\_commit\_event\_t)。 |
+| EVT\_IM\_PREEDIT | 进入预编辑状态(event\_t)。 |
+| EVT\_IM\_PREEDIT\_CONFIRM | 确认预编辑内容，退出预编辑状态(event\_t)。 |
+| EVT\_IM\_PREEDIT\_ABORT | 删除预编辑内容，退出预编辑状态event\_t)。 |
 | EVT\_IM\_SHOW\_CANDIDATES | 输入法请求显示候选字事件(im\_candidates\_event\_t)。 |
+| EVT\_IM\_SHOW\_PRE\_CANDIDATES | 输入法请求显示预候选字事件(im\_candidates\_event\_t)。 |
+| EVT\_IM\_LANG\_CHANGED | 输入法语言改变事件(event\_t)。 |
 | EVT\_IM\_ACTION | 软键盘Action点击事件(event\_t)。 |
 | EVT\_IM\_ACTION\_INFO | 请求更新软键盘上的Action按钮的信息(im\_action\_button\_info\_event\_t)。 |
 | EVT\_DRAG\_START | 开始拖动(event\_t)。 |
