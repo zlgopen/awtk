@@ -96,6 +96,12 @@ typedef struct _mledit_t {
    */
   char* tips;
   /**
+   * @property {char*} tr_tips
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 保存用于翻译的提示信息。
+   */
+  char* tr_tips;
+  /**
    * @property {char*} keyboard
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 自定义软键盘名称。
@@ -199,7 +205,7 @@ ret_t mledit_set_wrap_word(widget_t* widget, bool_t wrap_word);
 ret_t mledit_set_max_lines(widget_t* widget, uint32_t max_lines);
 
 /**
- * @method mledit_set_input_tips
+ * @method mledit_set_tips
  * 设置编辑器的输入提示。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
@@ -207,7 +213,18 @@ ret_t mledit_set_max_lines(widget_t* widget, uint32_t max_lines);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t mledit_set_input_tips(widget_t* widget, const char* tips);
+ret_t mledit_set_tips(widget_t* widget, const char* tips);
+
+/**
+ * @method mledit_set_tr_tips
+ * 获取翻译之后的文本，然后调用mledit_set_tips。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*}  tr_tips 提示信息。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t mledit_set_tr_tips(widget_t* widget, const char* tr_tips);
 
 /**
  * @method mledit_set_keyboard
@@ -259,6 +276,9 @@ widget_t* mledit_cast(widget_t* widget);
 #define MLEDIT_PROP_WRAP_WORD "wrap_word"
 #define MLEDIT_PROP_SCROLL_LINE "scroll_line"
 #define MLEDIT(widget) ((mledit_t*)(mledit_cast(WIDGET(widget))))
+
+/*for compatability*/
+#define mledit_set_input_tips(w, t) mledit_set_tips(w, t)
 
 /*public for subclass and runtime type check*/
 TK_EXTERN_VTABLE(mledit);

@@ -45,6 +45,18 @@ TEST(Edit, int) {
   widget_destroy(b);
 }
 
+TEST(Edit, tips) {
+  widget_t* b = edit_create(NULL, 10, 20, 30, 40);
+
+  ASSERT_EQ(widget_set_prop_str(b, WIDGET_PROP_TIPS, "tips"), RET_OK);
+  ASSERT_STREQ(EDIT(b)->tips, "tips");
+
+  ASSERT_EQ(widget_set_prop_str(b, WIDGET_PROP_TR_TIPS, "tr_tips"), RET_OK);
+  ASSERT_STREQ(EDIT(b)->tr_tips, "tr_tips");
+
+  widget_destroy(b);
+}
+
 TEST(Edit, set_text) {
   text_edit_state_t state;
   widget_t* b = edit_create(NULL, 10, 20, 30, 40);

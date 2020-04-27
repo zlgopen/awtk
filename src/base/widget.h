@@ -62,6 +62,7 @@ typedef ret_t (*widget_on_paint_end_t)(widget_t* widget, canvas_t* c);
 typedef ret_t (*widget_on_wheel_t)(widget_t* widget, wheel_event_t* e);
 typedef ret_t (*widget_on_keydown_t)(widget_t* widget, key_event_t* e);
 typedef ret_t (*widget_on_keyup_t)(widget_t* widget, key_event_t* e);
+typedef ret_t (*widget_on_re_translate_t)(widget_t* widget);
 typedef ret_t (*widget_on_pointer_down_t)(widget_t* widget, pointer_event_t* e);
 typedef ret_t (*widget_on_pointer_move_t)(widget_t* widget, pointer_event_t* e);
 typedef ret_t (*widget_on_pointer_up_t)(widget_t* widget, pointer_event_t* e);
@@ -160,6 +161,7 @@ struct _widget_vtable_t {
   widget_on_keyup_t on_keyup;
   widget_on_keydown_t on_keydown;
   widget_on_wheel_t on_wheel;
+  widget_on_re_translate_t on_re_translate;
   widget_on_paint_background_t on_paint_background;
   widget_on_paint_self_t on_paint_self;
   widget_on_paint_children_t on_paint_children;

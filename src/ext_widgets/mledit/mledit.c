@@ -37,12 +37,40 @@ static ret_t mledit_dispatch_event(widget_t* widget, event_type_t type) {
   return RET_OK;
 }
 
-ret_t mledit_set_input_tips(widget_t* widget, const char* tips) {
+ret_t mledit_set_tips(widget_t* widget, const char* tips) {
   mledit_t* mledit = MLEDIT(widget);
   return_value_if_fail(mledit != NULL && tips != NULL, RET_BAD_PARAMS);
 
   mledit->tips = tk_str_copy(mledit->tips, tips);
   text_edit_set_tips(mledit->model, mledit->tips);
+
+  return RET_OK;
+}
+
+static ret_t mledit_apply_tr_text_before_paint(void* ctx, event_t* e) {
+  widget_t* widget = WIDGET(ctx);
+  mledit_t* mledit = MLEDIT(widget);
+
+  if (mledit->tr_tips != NULL) {
+    const char* tr_tips = locale_info_tr(widget_get_locale_info(widget), mledit->tr_tips);
+    mledit_set_tips(widget, tr_tips);
+  }
+
+  return RET_REMOVE;
+}
+
+ret_t mledit_set_tr_tips(widget_t* widget, const char* tr_tips) {
+  mledit_t* mledit = MLEDIT(widget);
+  widget_t* win = widget_get_window(widget);
+  return_value_if_fail(mledit != NULL && tr_tips != NULL, RET_BAD_PARAMS);
+
+  mledit->tr_tips = tk_str_copy(mledit->tr_tips, tr_tips);
+  if (win != NULL) {
+    tr_tips = locale_info_tr(widget_get_locale_info(widget), tr_tips);
+    mledit_set_tips(widget, tr_tips);
+  } else {
+    widget_on(widget, EVT_BEFORE_PAINT, mledit_apply_tr_text_before_paint, widget);
+  }
 
   return RET_OK;
 }
@@ -125,6 +153,9 @@ static ret_t mledit_get_prop(widget_t* widget, const char* name, value_t* v) {
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_TIPS)) {
     value_set_str(v, mledit->tips);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_TR_TIPS)) {
+    value_set_str(v, mledit->tr_tips);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_KEYBOARD)) {
     value_set_str(v, mledit->keyboard);
@@ -219,7 +250,10 @@ static ret_t mledit_set_prop(widget_t* widget, const char* name, const value_t* 
     mledit_set_focus(widget, value_bool(v));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_TIPS)) {
-    mledit_set_input_tips(widget, value_str(v));
+    mledit_set_tips(widget, value_str(v));
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_TR_TIPS)) {
+    mledit_set_tr_tips(widget, value_str(v));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_KEYBOARD)) {
     mledit_set_keyboard(widget, value_str(v));
@@ -244,6 +278,7 @@ static ret_t mledit_on_destroy(widget_t* widget) {
 
   wstr_reset(&(mledit->temp));
   TKMEM_FREE(mledit->tips);
+  TKMEM_FREE(mledit->tr_tips);
   TKMEM_FREE(mledit->keyboard);
   text_edit_destroy(mledit->model);
 
@@ -550,6 +585,16 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
   return ret;
 }
 
+static ret_t mledit_on_re_translate(widget_t* widget) {
+  mledit_t* mledit = MLEDIT(widget);
+  if (mledit->tr_tips != NULL) {
+    const char* tr_tips = locale_info_tr(widget_get_locale_info(widget), mledit->tr_tips);
+    mledit_set_tips(widget, tr_tips);
+  }
+
+  return RET_OK;
+}
+
 static ret_t mledit_sync_line_number(widget_t* widget, text_edit_state_t* state) {
   mledit_t* mledit = MLEDIT(widget);
   widget_t* line_number = widget_lookup_by_type(widget, WIDGET_TYPE_LINE_NUMBER, TRUE);
@@ -642,11 +687,19 @@ static ret_t mledit_init_idle_func(const idle_info_t* info) {
   return RET_REMOVE;
 }
 
-const char* s_mledit_properties[] = {
-    WIDGET_PROP_READONLY,     WIDGET_PROP_MARGIN,      WIDGET_PROP_LEFT_MARGIN,
-    WIDGET_PROP_RIGHT_MARGIN, WIDGET_PROP_TOP_MARGIN,  WIDGET_PROP_BOTTOM_MARGIN,
-    WIDGET_PROP_TIPS,         WIDGET_PROP_KEYBOARD,    MLEDIT_PROP_MAX_LINES,
-    MLEDIT_PROP_WRAP_WORD,    MLEDIT_PROP_SCROLL_LINE, NULL};
+const char* s_mledit_properties[] = {WIDGET_PROP_READONLY,
+                                     WIDGET_PROP_MARGIN,
+                                     WIDGET_PROP_LEFT_MARGIN,
+                                     WIDGET_PROP_RIGHT_MARGIN,
+                                     WIDGET_PROP_TOP_MARGIN,
+                                     WIDGET_PROP_BOTTOM_MARGIN,
+                                     WIDGET_PROP_TIPS,
+                                     WIDGET_PROP_TR_TIPS,
+                                     WIDGET_PROP_KEYBOARD,
+                                     MLEDIT_PROP_MAX_LINES,
+                                     MLEDIT_PROP_WRAP_WORD,
+                                     MLEDIT_PROP_SCROLL_LINE,
+                                     NULL};
 
 TK_DECL_VTABLE(mledit) = {.size = sizeof(mledit_t),
                           .type = WIDGET_TYPE_MLEDIT,
@@ -657,6 +710,7 @@ TK_DECL_VTABLE(mledit) = {.size = sizeof(mledit_t),
                           .parent = TK_PARENT_VTABLE(widget),
                           .create = mledit_create,
                           .on_paint_self = mledit_on_paint_self,
+                          .on_re_translate = mledit_on_re_translate,
                           .set_prop = mledit_set_prop,
                           .get_prop = mledit_get_prop,
                           .on_event = mledit_on_event,

@@ -36,6 +36,18 @@ TEST(MLEdit, int) {
   widget_destroy(b);
 }
 
+TEST(MLEdit, tips) {
+  widget_t* b = mledit_create(NULL, 10, 20, 30, 40);
+
+  ASSERT_EQ(widget_set_prop_str(b, WIDGET_PROP_TIPS, "tips"), RET_OK);
+  ASSERT_STREQ(MLEDIT(b)->tips, "tips");
+
+  ASSERT_EQ(widget_set_prop_str(b, WIDGET_PROP_TR_TIPS, "tr_tips"), RET_OK);
+  ASSERT_STREQ(MLEDIT(b)->tr_tips, "tr_tips");
+
+  widget_destroy(b);
+}
+
 TEST(MLEdit, events) {
   string event_log;
   widget_t* b = mledit_create(NULL, 10, 20, 30, 40);

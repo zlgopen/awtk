@@ -662,6 +662,16 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
   return ret;
 }
 
+static ret_t edit_on_re_translate(widget_t* widget) {
+  edit_t* edit = EDIT(widget);
+  if (edit->tr_tips != NULL) {
+    const char* tr_tips = locale_info_tr(widget_get_locale_info(widget), edit->tr_tips);
+    edit_set_tips(widget, tr_tips);
+  }
+
+  return RET_OK;
+}
+
 ret_t edit_set_text_limit(widget_t* widget, uint32_t min, uint32_t max) {
   edit_t* edit = EDIT(widget);
   return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
@@ -752,12 +762,40 @@ ret_t edit_set_input_type(widget_t* widget, input_type_t type) {
   return RET_OK;
 }
 
-ret_t edit_set_input_tips(widget_t* widget, const char* tips) {
+ret_t edit_set_tips(widget_t* widget, const char* tips) {
   edit_t* edit = EDIT(widget);
   return_value_if_fail(edit != NULL && tips != NULL, RET_BAD_PARAMS);
 
   edit->tips = tk_str_copy(edit->tips, tips);
   text_edit_set_tips(edit->model, edit->tips);
+
+  return RET_OK;
+}
+
+static ret_t edit_apply_tr_text_before_paint(void* ctx, event_t* e) {
+  widget_t* widget = WIDGET(ctx);
+  edit_t* edit = EDIT(widget);
+
+  if (edit->tr_tips != NULL) {
+    const char* tr_tips = locale_info_tr(widget_get_locale_info(widget), edit->tr_tips);
+    edit_set_tips(widget, tr_tips);
+  }
+
+  return RET_REMOVE;
+}
+
+ret_t edit_set_tr_tips(widget_t* widget, const char* tr_tips) {
+  edit_t* edit = EDIT(widget);
+  widget_t* win = widget_get_window(widget);
+  return_value_if_fail(edit != NULL && tr_tips != NULL, RET_BAD_PARAMS);
+
+  edit->tr_tips = tk_str_copy(edit->tr_tips, tr_tips);
+  if (win != NULL) {
+    tr_tips = locale_info_tr(widget_get_locale_info(widget), tr_tips);
+    edit_set_tips(widget, tr_tips);
+  } else {
+    widget_on(widget, EVT_BEFORE_PAINT, edit_apply_tr_text_before_paint, widget);
+  }
 
   return RET_OK;
 }
@@ -841,6 +879,9 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_TIPS)) {
     value_set_str(v, edit->tips);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_TR_TIPS)) {
+    value_set_str(v, edit->tr_tips);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_KEYBOARD)) {
     value_set_str(v, edit->keyboard);
@@ -975,7 +1016,10 @@ ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
     edit_set_focus(widget, value_bool(v));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_TIPS)) {
-    edit_set_input_tips(widget, value_str(v));
+    edit_set_tips(widget, value_str(v));
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_TR_TIPS)) {
+    edit_set_tr_tips(widget, value_str(v));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_KEYBOARD)) {
     edit_set_keyboard(widget, value_str(v));
@@ -1259,6 +1303,7 @@ ret_t edit_on_destroy(widget_t* widget) {
   }
 
   TKMEM_FREE(edit->tips);
+  TKMEM_FREE(edit->tr_tips);
   TKMEM_FREE(edit->keyboard);
   text_edit_destroy(edit->model);
 
@@ -1288,6 +1333,7 @@ const char* const s_edit_properties[] = {WIDGET_PROP_MIN,
                                          WIDGET_PROP_TOP_MARGIN,
                                          WIDGET_PROP_BOTTOM_MARGIN,
                                          WIDGET_PROP_TIPS,
+                                         WIDGET_PROP_TR_TIPS,
                                          WIDGET_PROP_KEYBOARD,
                                          WIDGET_PROP_PASSWORD_VISIBLE,
                                          NULL};
@@ -1297,6 +1343,7 @@ ret_t edit_on_copy(widget_t* widget, widget_t* other) {
   edit_t* edit_other = EDIT(other);
 
   edit->tips = tk_str_copy(edit->tips, edit_other->tips);
+  edit->tr_tips = tk_str_copy(edit->tr_tips, edit_other->tr_tips);
 
   edit->min = edit_other->min;
   edit->max = edit_other->max;
@@ -1321,6 +1368,7 @@ TK_DECL_VTABLE(edit) = {.size = sizeof(edit_t),
                         .persistent_properties = s_edit_properties,
                         .parent = TK_PARENT_VTABLE(widget),
                         .create = edit_create,
+                        .on_re_translate = edit_on_re_translate,
                         .on_paint_self = edit_on_paint_self,
                         .set_prop = edit_set_prop,
                         .get_prop = edit_get_prop,

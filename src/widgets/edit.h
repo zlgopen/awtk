@@ -161,6 +161,13 @@ typedef struct _edit_t {
   char* tips;
 
   /**
+   * @property {char*} tr_tips
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 保存用于翻译的提示信息。
+   */
+  char* tr_tips;
+
+  /**
    * @property {char*} keyboard
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 自定义软键盘名称。
@@ -373,7 +380,7 @@ ret_t edit_set_open_im_when_focused(widget_t* widget, bool_t open_im_when_focuse
 ret_t edit_set_input_type(widget_t* widget, input_type_t type);
 
 /**
- * @method edit_set_input_tips
+ * @method edit_set_tips
  * 设置编辑器的输入提示。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
@@ -381,7 +388,18 @@ ret_t edit_set_input_type(widget_t* widget, input_type_t type);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t edit_set_input_tips(widget_t* widget, const char* tips);
+ret_t edit_set_tips(widget_t* widget, const char* tips);
+
+/**
+ * @method edit_set_tr_tips
+ * 获取翻译之后的文本，然后调用edit_set_tips。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*}  tr_tips 提示信息。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t edit_set_tr_tips(widget_t* widget, const char* tr_tips);
 
 /**
  * @method edit_set_keyboard
@@ -462,6 +480,9 @@ ret_t edit_clear(edit_t* edit);
 bool_t edit_is_valid_value(widget_t* widget);
 ret_t edit_input_char(widget_t* widget, wchar_t c);
 bool_t edit_is_valid_char(widget_t* widget, wchar_t c);
+
+/*for compatability*/
+#define edit_set_input_tips(w, t) edit_set_tips(w, t)
 
 END_C_DECLS
 

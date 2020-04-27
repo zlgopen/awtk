@@ -348,6 +348,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_TIPS "tips"
 
 /**
+ * @const WIDGET_PROP_TR_TIPS
+ * 需要翻译的提示信息。
+ */
+#define WIDGET_PROP_TR_TIPS "tr_tips"
+
+/**
  * @const WIDGET_PROP_INPUT_TYPE
  * 输入类型。
  */
