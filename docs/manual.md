@@ -67,6 +67,7 @@
 * [keyboard](manual/keyboard_t.md)  软键盘控件。
 * [progress\_circle](manual/progress_circle_t.md) 进度圆环控件。
 * [rich\_text](manual/rich_text_t.md) 图文混排控件。
+* [rich\_text\_view](manual/rich_text_view_t.md) 用于协调rich text 和 scrollbar控件。
 * [slide\_menu](manual/slide_menu_t.md) 左右滑动菜单控件。
 * [slide\_view](manual/slide_view_t.md) 滑动视图控件。
 * [slide\_view\_indicator](manual/slide_indicator_t.md) 滑动视图的指示器控件。
@@ -81,8 +82,9 @@
 * [scroll\_bar](manual/scroll_bar_t.md) 滚动条控件。
 * [scroll\_view](manual/scroll_view_t.md) 滚动视图控件。
 * [mledit](manual/mledit_t.md) 多行编辑器控件。
-* [line_number](manual/line_number_t.md) 多行编辑器的行号控件。
+* [line\_number](manual/line_number_t.md) 多行编辑器的行号控件。
 * [mutable\_image](manual/mutable_image_t.md) mutable图片控件(用于辅助实现camera/video)。
+* [file\_browser\_view](manual/file_browser_view_t.md) 文件浏览控件。
 
 ### 画布
 
