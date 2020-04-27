@@ -316,7 +316,7 @@ struct _fs_t {
  *
  * @param {fs_t*} fs 文件系统对象，一般赋值为os_fs()。
  * @param {const char*} name 文件名。
- * @param {const char*} mode 打开方式。
+ * @param {const char*} mode 打开方式，取值请参考POSIX的[fopen函数](https://www.runoob.com/cprogramming/c-function-fopen.html)相应的参数。
  *
  * @return {ret_t} 返回非NULL表示成功，否则表示失败。
  */
