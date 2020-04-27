@@ -98,18 +98,16 @@ if env['PLATFORM'] == 'win32' and os.environ['TOOLS_NAME'] != '':
   buf.ourenv = env
   env['SPAWN'] = buf.ourspawn
   
-env.Library(os.path.join(LIB_DIR, 'base'), BASE_SOURCES, LIBS=[])
-env.Library(os.path.join(LIB_DIR, 'awtk'), ['awtk_global.c'], LIBS=[])
-
-WIDGETS_SOURCES=Glob('widgets/*.c')
-env.Library(os.path.join(LIB_DIR, 'widgets'), WIDGETS_SOURCES, LIBS=[])
-
 TK_SOURCES=Glob('tkc/*.c') + Glob('platforms/pc/*.c')
 env.Library(os.path.join(LIB_DIR, 'tkc'), TK_SOURCES, LIBS=[])
-
+env.Library(os.path.join(LIB_DIR, 'base'), BASE_SOURCES, LIBS=[])
+WIDGETS_SOURCES=Glob('widgets/*.c')
+env.Library(os.path.join(LIB_DIR, 'widgets'), WIDGETS_SOURCES, LIBS=[])
 EXT_WIDGETS_SOURCES=Glob('ext_widgets/*.c') + Glob('ext_widgets/*/*.c') 
 env.Library(os.path.join(LIB_DIR, 'extwidgets'), EXT_WIDGETS_SOURCES, LIBS=[])
+env.Library(os.path.join(LIB_DIR, 'awtk_global'), ['awtk_global.c'], LIBS=[])
 
-#ALL_SOURCES=TK_SOURCES + BASE_SOURCES + WIDGETS_SOURCES + EXT_WIDGETS_SOURCES + ['awtk_global.c']
-#env.SharedLibrary(os.path.join(LIB_DIR, 'awtk_all'), ALL_SOURCES); 
+AWTK_DEPS_LIBS=os.environ['AWTK_DEPS_LIBS'].split(';')
+LINKFLAGS=env['LINKFLAGS'] + os.environ['OS_WHOLE_ARCHIVE']
+env.SharedLibrary(os.path.join(LIB_DIR, 'awtk'), [], LIBS=AWTK_DEPS_LIBS, LINKFLAGS=LINKFLAGS); 
 
