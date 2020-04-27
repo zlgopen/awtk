@@ -400,10 +400,10 @@ ret_t color_picker_set_color(widget_t* widget, const char* color) {
   float s = 0;
   float v = 0;
   color_picker->init_c = color_parse(color);
-  color_picker_update_color(widget, color_picker->init_c);
   convertRGBtoHSV(color_picker->init_c.rgba.r, color_picker->init_c.rgba.g,
                   color_picker->init_c.rgba.b, &h, &s, &v);
   color_picker->last_hue = h;
+  color_picker_update_color(widget, color_picker->init_c);
   return RET_OK;
 }
 
