@@ -32,6 +32,10 @@
 #define CHILD_DOWN "down"
 #define CHILD_DRAGGER "dragger"
 
+#ifndef TK_DRAGGER_MIN_SIZE
+#define TK_DRAGGER_MIN_SIZE 10
+#endif /*TK_DRAGGER_MIN_SIZE*/
+
 static ret_t scroll_bar_update_dragger(widget_t* widget);
 widget_t* scroll_bar_create_desktop_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
@@ -190,7 +194,7 @@ static ret_t scroll_bar_destop_get_dragger_size(widget_t* widget, rect_t* r) {
     y = 1;
     h = widget_h - 2;
     w = (widget_w * max_bar_w) / virtual_size;
-    w = tk_max(w, 20);
+    w = tk_max(w, TK_DRAGGER_MIN_SIZE);
     x = (widget_w - w - 2 * widget_h) * value / virtual_size + widget_h;
   } else {
     /*vertical*/
@@ -200,7 +204,7 @@ static ret_t scroll_bar_destop_get_dragger_size(widget_t* widget, rect_t* r) {
     x = 1;
     w = widget_w - 2;
     h = (widget_h * max_bar_h) / virtual_size;
-    h = tk_max(h, 20);
+    h = tk_max(h, TK_DRAGGER_MIN_SIZE);
     y = (widget_h - h - 2 * widget_w) * value / virtual_size + widget_w;
   }
 
