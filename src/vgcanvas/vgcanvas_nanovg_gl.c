@@ -200,43 +200,48 @@ vgcanvas_nanovg_screen_shader_info_t* vgcanvas_create_init_screen_shader() {
       " void main(void) {                                                                     \n"
       "    ftcoord = tcoord;                                                                  \n"
 #if defined(WITH_SCREEN_GL_FLIP_VERTICAL) && defined(WITH_SCREEN_GL_FLIP_HORIZONTAL)
-      "    gl_Position = vec4(-g_vPosition.x, -g_vPosition.y, g_vPosition.z, 1.0);	          \n"
+      "    gl_Position = vec4(-g_vPosition.x, -g_vPosition.y, g_vPosition.z, 1.0);            \n"
 #elif defined(WITH_SCREEN_GL_FLIP_VERTICAL)
-      "    gl_Position = vec4(g_vPosition.x, -g_vPosition.y, g_vPosition.z, 1.0);	            \n"
+      "    gl_Position = vec4(g_vPosition.x, -g_vPosition.y, g_vPosition.z, 1.0);             \n"
 #elif defined(WITH_SCREEN_GL_FLIP_HORIZONTAL)
-      "    gl_Position = vec4(-g_vPosition.x, g_vPosition.y, g_vPosition.z, 1.0);	            \n"
+      "    gl_Position = vec4(-g_vPosition.x, g_vPosition.y, g_vPosition.z, 1.0);             \n"
 #else
-      "    gl_Position = vec4(g_vPosition.x, g_vPosition.y, g_vPosition.z, 1.0);	            \n"
+      "    gl_Position = vec4(g_vPosition.x, g_vPosition.y, g_vPosition.z, 1.0);              \n"
 #endif
       " }                                                                                     \n";
 
   const char* fragment_shader =
-      " #ifdef NANOVG_GL3                                      			\n"
-      "   precision highp float;                               			\n"
-      "   in vec2 ftcoord;                                     			\n"
-      "   out vec4 outColor;                                   			\n"
-      " #else                                                  			\n"
-      "   precision mediump float;                             			\n"
-      "   varying vec2 ftcoord;                                			\n"
-      " #endif                                                 			\n"
-      " uniform sampler2D screentexture;                       			\n"
-      " void main() {                                          			\n"
-      " #ifdef NANOVG_GL3                                      			\n"
-      "    vec4 color = texture(screentexture, ftcoord);            \n"
+      " #ifdef GL_ES                                                                          \n"
+      " #if defined(GL_FRAGMENT_PRECISION_HIGH) || defined(NANOVG_GL3)                        \n"
+      "   precision highp float;                                                              \n"
+      " #else                                                                                 \n"
+      "   precision mediump float;                                                            \n"
+      " #endif                                                                                \n"
+      " #endif                                                                                \n"
+      " #ifdef NANOVG_GL3                                                                     \n"
+      "   in vec2 ftcoord;                                                                    \n"
+      "   out vec4 outColor;                                                                  \n"
+      " #else                                                                                 \n"
+      "   varying vec2 ftcoord;                                                               \n"
+      " #endif                                                                                \n"
+      " uniform sampler2D screentexture;                                                      \n"
+      " void main() {                                                                         \n"
+      " #ifdef NANOVG_GL3                                                                     \n"
+      "    vec4 color = texture(screentexture, ftcoord);                                      \n"
 #if defined(WITH_SCREEN_GL_BGRA)
-      "    outColor = vec4(color.b, color.g, color.r, color.a);     \n"
+      "    outColor = vec4(color.b, color.g, color.r, color.a);                               \n"
 #else
-      "    outColor = vec4(color.r, color.g, color.b, color.a);     \n"
+      "    outColor = vec4(color.r, color.g, color.b, color.a);                               \n"
 #endif
-      " #else                                                  			\n"
-      "    vec4 color = texture2D(screentexture, ftcoord);     			\n"
+      " #else                                                                                 \n"
+      "    vec4 color = texture2D(screentexture, ftcoord);                                    \n"
 #if defined(WITH_SCREEN_GL_BGRA)
-      "    gl_FragColor = vec4(color.b, color.g, color.r, color.a); \n"
+      "    gl_FragColor = vec4(color.b, color.g, color.r, color.a);                           \n"
 #else
-      "    gl_FragColor = vec4(color.r, color.g, color.b, color.a); \n"
+      "    gl_FragColor = vec4(color.r, color.g, color.b, color.a);                           \n"
 #endif
-      " #endif                                                 			\n"
-      " }                                                      			\n";
+      " #endif                                                                                \n"
+      " }                                                                                     \n";
 
   vgcanvas_nanovg_screen_shader_info_t* shader_info =
       (vgcanvas_nanovg_screen_shader_info_t*)TKMEM_ZALLOC(vgcanvas_nanovg_screen_shader_info_t);

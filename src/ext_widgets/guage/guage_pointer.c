@@ -92,7 +92,7 @@ ret_t guage_pointer_set_anchor(widget_t* widget, const char* anchor_x, const cha
   return_value_if_fail(guage_pointer != NULL, RET_BAD_PARAMS);
 
   guage_pointer_set_anchor_for_str(widget, anchor_x, TRUE);
-  guage_pointer_set_anchor_for_str(widget, anchor_x, FALSE);
+  guage_pointer_set_anchor_for_str(widget, anchor_y, FALSE);
 
   return RET_OK;
 }

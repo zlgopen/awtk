@@ -36,19 +36,19 @@ typedef struct _image_format_t {
 
 ret_t image_format_set(image_format_t* image_format, const wchar_t* format) {
   if (format != NULL) {
-    if (tk_wstr_eq(format, L"mono")) {
+    if (wcsstr(format, L"mono")) {
       image_format->mono = TRUE;
     }
 
-    if (tk_wstr_eq(format, L"bgra")) {
+    if (wcsstr(format, L"bgra")) {
       image_format->require_bgra = TRUE;
     }
 
-    if (tk_wstr_eq(format, L"bgr565")) {
+    if (wcsstr(format, L"bgr565")) {
       image_format->enable_bgr565 = TRUE;
     };
 
-    if (tk_wstr_eq(format, L"rgb565")) {
+    if (wcsstr(format, L"rgb565")) {
       image_format->enable_rgb565 = TRUE;
     };
   }
