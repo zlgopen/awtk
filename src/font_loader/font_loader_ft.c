@@ -5,8 +5,12 @@
  *      Author: zjm09
  */
 
+#include "tkc/mem.h"
 #include "tkc/utils.h"
 #include "base/types_def.h"
+#include "base/glyph_cache.h"
+#include "font_loader/font_loader_ft.h"
+
 
 #ifdef WITH_FT_FONT
 #ifdef USE_SYSTEM_FREETYPE
@@ -22,10 +26,6 @@
 /*3rd/freetype_single_header/freetype.h*/
 #include "freetype_single_header/freetype.h"
 #endif /*USE_SYSTEM_FREETYPE*/
-
-#include "tkc/mem.h"
-#include "base/glyph_cache.h"
-#include "font_loader/font_loader_ft.h"
 
 typedef struct {
   FT_Face face;
@@ -228,5 +228,16 @@ font_loader_t* font_loader_mono_ft(void) {
 
   return &loader;
 }
+#else
+font_loader_t* font_loader_ft(void) {
+  return NULL;
+}
 
+font_t* font_ft_mono_create(const char* name, const uint8_t* buff, uint32_t size) {
+  return NULL;
+}
+
+font_t* font_ft_create(const char* name, const uint8_t* buff, uint32_t size) {
+  return NULL;
+}
 #endif /*WITH_FT_FONT*/

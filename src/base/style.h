@@ -390,6 +390,15 @@ bool_t style_is_mutable(style_t* s);
 ret_t style_destroy(style_t* s);
 
 /*helper functions*/
+/**
+ * @method style_normalize_value
+ * 对值进行正规化。
+ * @param {const char*} name 名称。
+ * @param {const char*} value 值。
+ * @param {value_t*} out 返回的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t style_normalize_value(const char* name, const char* value, value_t* out);
 
 END_C_DECLS

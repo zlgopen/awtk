@@ -180,7 +180,7 @@ ret_t assets_manager_set_locale_info(assets_manager_t* am, locale_info_t* locale
 ret_t assets_manager_add(assets_manager_t* am, const void* info);
 
 /**
- * @method assets_manager_add
+ * @method assets_manager_add_data
  * 向资源管理器中增加一个资源data。
  * @param {assets_manager_t*} am asset manager对象。
  * @param {const char*} name 待增加的资源的名字。

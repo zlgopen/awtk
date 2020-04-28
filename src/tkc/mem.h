@@ -69,6 +69,7 @@ void tk_free(void* ptr);
 
 /**
  * @method TKMEM_ALLOC
+ * @export tk_alloc
  * 分配一块内存。
  *
  * @annotation ["macro"]
@@ -80,6 +81,7 @@ void tk_free(void* ptr);
 
 /**
  * @method TKMEM_CALLOC
+ * @export tk_calloc
  * 分配一块内存，并将内容清零。
  *
  * @annotation ["macro"]
@@ -92,6 +94,7 @@ void tk_free(void* ptr);
 
 /**
  * @method TKMEM_REALLOC
+ * @export tk_realloc
  * 重新分配一块内存，如果原来的内存块大于等于需要的空间，直接返回原来的内存块。
  *
  * @annotation ["macro"]
@@ -104,6 +107,7 @@ void tk_free(void* ptr);
 
 /**
  * @method TKMEM_FREE
+ * @export tk_free
  * 释放内存。
  *
  * @annotation ["macro"]
@@ -132,7 +136,20 @@ typedef struct _mem_stat_t {
   uint32_t used_block_nr;
 } mem_stat_t;
 
+/**
+ * @method tk_mem_dump
+ * 显示内存信息。
+ *
+ * @return {void} 返回void。
+ */
 void tk_mem_dump(void);
+
+/**
+ * @method tk_mem_stat
+ * 获取内存信息。
+ *
+ * @return {mem_stat_t} 返回内存信息。
+ */
 mem_stat_t tk_mem_stat(void);
 
 END_C_DECLS

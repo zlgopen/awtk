@@ -33,12 +33,25 @@ typedef struct _key_type_value_t {
 } key_type_value_t;
 
 enum { TYPE_INT = 0, TYPE_COLOR, TYPE_STRING, TYPE_WSTRING, TYPE_BOOL };
-
+/**
+ * @class enum_helper
+ * @annotation ["fake"]
+ */
 const key_type_value_t* input_type_find(const char* name);
 const key_type_value_t* window_closable_type_find(const char* name);
 const key_type_value_t* align_v_type_find(const char* name);
 const key_type_value_t* align_h_type_find(const char* name);
 const key_type_value_t* asset_type_find(const char* name);
+
+/**
+ * @method asset_type_find_by_value
+ *
+ * 获取资源类型枚值和名称的对应关系。
+ *
+ * @param {uint32_t} value 资源的类型。
+ *
+ * @return {const key_type_value_t*} 返回资源类型枚值和名称的对应关系。
+ */
 const key_type_value_t* asset_type_find_by_value(uint32_t value);
 
 const key_type_value_t* image_draw_type_find(const char* name);

@@ -62,6 +62,10 @@ class IDLGen {
     return this.getValue(str);
   }
   
+  parseExport(str) {
+    return this.getValue(str);
+  }
+  
   parseOrder(str) {
     return parseInt(this.getValue(str));
   }
@@ -136,6 +140,8 @@ class IDLGen {
         method.annotation = this.parseAnnotation(iter);
       } else if (iter.indexOf(' @param') >= 0) {
         method.params.push(this.parseParam(iter));
+      } else if (iter.indexOf(' @export') >= 0) {
+        method.export = this.parseExport(iter);
       } else if (iter.indexOf(' @return') >= 0) {
         method.return = this.parseReturn(iter);
       } else {
@@ -405,18 +411,29 @@ class IDLGen {
     fs.writeFileSync(filename, str);
   }
 
-  static gen(sourcesPath, outputIDL) {
-    let gen = new IDLGen();
+  run(sourcesPath) {
     let st = fs.statSync(sourcesPath);
-    
-    gen.result = []
+   
+    console.log(sourcesPath);
     if(st.isFile()) {
       let filename = path.resolve(sourcesPath);
       filename = filename.replace(/\\/g, '/');
-      gen.parseFile(filename);
+      this.parseFile(filename);
     } else {
-      gen.parseFolder(path.resolve(sourcesPath) + '/**/*.h');
+      this.parseFolder(path.resolve(sourcesPath) + '/**/*.h');
     }
+  }
+
+  static gen(sourcesPath, outputIDL) {
+    let gen = new IDLGen();
+    let arr = sourcesPath.split(';');
+
+    console.log(sourcesPath, arr);
+
+    gen.result = []
+    arr.forEach(iter => {
+      gen.run(path.normalize(iter));
+    })
 
     gen.postProcess();
     gen.saveResult(outputIDL);

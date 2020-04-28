@@ -53,7 +53,7 @@ tk_cond_t* tk_cond_create(void);
 ret_t tk_cond_wait(tk_cond_t* cond, tk_mutex_t* mutex);
 
 /**
- * @method tk_cond_wait
+ * @method tk_cond_wait_timeout
  * 等待指定时间。
  * @param {tk_cond_t*}    cond cond对象。
  * @param {tk_mutex_t*}    mutex mutex对象。
@@ -64,7 +64,7 @@ ret_t tk_cond_wait(tk_cond_t* cond, tk_mutex_t* mutex);
 ret_t tk_cond_wait_timeout(tk_cond_t* cond, tk_mutex_t* mutex, uint32_t ms);
 
 /**
- * @method tk_cond_awake
+ * @method tk_cond_signal
  * 唤醒。
  * @param {tk_cond_t*}    cond cond对象。
  *

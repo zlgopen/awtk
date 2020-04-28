@@ -10,9 +10,10 @@ sources = Glob('buffered/*.c') + Glob('file/*.c') \
 
 env=DefaultEnvironment().Clone()
 
-env.Library(os.path.join(LIB_DIR, 'streams'), sources, LIBS=[])
+env.Library(os.path.join(LIB_DIR, 'streams'), sources, LIBS=['tkc'])
 
-LIBS=['streams', 'compressors', 'miniz'] + env['LIBS']
+LIBS=os.environ['AWTK_DEPS_LIBS'].split(';')
+
 env.Program(os.path.join(BIN_DIR, 'udp_send'), ['tools/udp_send.c'], LIBS=LIBS);
 env.Program(os.path.join(BIN_DIR, 'udp_recv'), ['tools/udp_recv.c'], LIBS=LIBS);
 env.Program(os.path.join(BIN_DIR, 'serial_echo'), ['tools/serial_echo.c'], LIBS=LIBS);

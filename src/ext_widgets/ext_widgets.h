@@ -27,9 +27,13 @@
 BEGIN_C_DECLS
 
 /**
+ * @class tk_ext_widgets_t
+ */
+
+/**
  * @method tk_ext_widgets_init
  * 初始化AWTK扩展控件。
- * @annotation ["global"]
+ * @annotation ["static"]
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

@@ -289,10 +289,44 @@ int tk_snprintf(char* str, size_t size, const char* format, ...);
  */
 int tk_sscanf(const char* str, const char* format, ...);
 
+/**
+ * @method filename_to_name
+ *
+ * 从完整文件名中获取文件名。
+ *
+ * @param {const char*} filename 完整的文件名。
+ * @param {char*} str 用于返回文件名。
+ * @param {uint32_t} size 文件名(str参数)的最大长度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t filename_to_name(const char* filename, char* str, uint32_t size);
+
+/**
+ * @method filename_to_name_ex
+ *
+ * 从完整文件名中获取文件名。
+ *
+ * @param {const char*} filename 完整的文件名。
+ * @param {char*} str 用于返回文件名。
+ * @param {uint32_t} size 文件名(str参数)的最大长度。
+ * @param {bool_t} remove_extname 是否移除扩展名。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t filename_to_name_ex(const char* filename, char* str, uint32_t size, bool_t remove_extname);
 
-/*expand include process instruction to file content: <?include filename="view_me.inc" ?>*/
+
+/**
+ * @method xml_file_expand_read
+ *
+ * expand include process instruction to file content: <?include filename="view_me.inc" ?>
+ *
+ * @param {const char*} filename 文件名。
+ * @param {str_t*} s 用于返回内容。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t xml_file_expand_read(const char* filename, str_t* s);
 
 /*XXX:

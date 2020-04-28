@@ -80,6 +80,7 @@ ret_t log_set_log_level(log_level_t log_level);
 
 /**
  * @method log_debug
+ * @export none
  *
  * 输出调试信息。
  * > 变参函数。
@@ -88,12 +89,12 @@ ret_t log_set_log_level(log_level_t log_level);
  * log_debug("debug message\n");
  * ```
  * @param {const char*} format 格式或信息。
- *
  * @return {void} 无返回值。
  */
 
 /**
  * @method log_info
+ * @export none
  *
  * 输出参考信息。
  * > 变参函数。
@@ -108,6 +109,7 @@ ret_t log_set_log_level(log_level_t log_level);
 
 /**
  * @method log_warn
+ * @export none
  *
  * 输出警告信息。
  * > 变参函数。
@@ -122,6 +124,7 @@ ret_t log_set_log_level(log_level_t log_level);
 
 /**
  * @method log_error
+ * @export none
  *
  * 输出错误信息。
  * > 变参函数。

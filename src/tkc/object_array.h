@@ -82,7 +82,7 @@ typedef struct _object_array_t {
 object_t* object_array_create(void);
 
 /**
- * @method object_array_create
+ * @method object_array_clone
  *
  * 克隆对象。
  *

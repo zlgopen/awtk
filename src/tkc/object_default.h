@@ -79,7 +79,7 @@ typedef struct _object_default_t {
 object_t* object_default_create(void);
 
 /**
- * @method object_default_create
+ * @method object_default_clone
  *
  * 克隆对象。
  *

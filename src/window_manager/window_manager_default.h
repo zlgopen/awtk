@@ -70,6 +70,7 @@ typedef struct _window_manager_default_t {
 
 /**
  * @method window_manager_create
+ * @export none
  * 创建窗口管理器。
  * @annotation ["constructor"]
  *

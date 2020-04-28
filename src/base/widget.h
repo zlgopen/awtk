@@ -2330,12 +2330,53 @@ bool_t widget_is_activate_key(widget_t* widget, key_event_t* e);
 ret_t widget_remove_child_prepare(widget_t* widget, widget_t* child);
 
 /*public for test*/
+
+/**
+ * @method widget_focus_first
+ * 置焦点于第一个控件。
+ * @param {widget_t*} widget 控件对象。
+ *
+ *  @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t widget_focus_first(widget_t* widget);
+
+/**
+ * @method widget_get_locale_info
+ * 获取locale_info对象。
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {locale_info_t*} 返回locale_info对象。
+ */
 locale_info_t* widget_get_locale_info(widget_t* widget);
+
+/**
+ * @method widget_get_image_manager
+ * 获取image_manager对象。
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {image_manager_t*} 返回image_manager对象。
+ */
 image_manager_t* widget_get_image_manager(widget_t* widget);
+
+/**
+ * @method widget_get_assets_manager
+ * 获取assets_manager对象。
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {assets_manager_t*} 返回assets_manager对象。
+ */
 assets_manager_t* widget_get_assets_manager(widget_t* widget);
+
+
+/**
+ * @method widget_get_font_manager
+ * 获取font_manager对象。
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {font_manager_t*} 返回font_manager对象。
+ */
 font_manager_t* widget_get_font_manager(widget_t* widget);
-uint32_t widget_add_idle(widget_t* widget, idle_func_t on_idle);
+
 bool_t widget_has_focused_widget_in_window(widget_t* widget);
 ret_t widget_set_style(widget_t* widget, const char* state_and_name, const value_t* value);
 ret_t widget_calc_icon_text_rect(const rect_t* ir, int32_t font_size, float_t text_size,

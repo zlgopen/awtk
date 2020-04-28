@@ -232,6 +232,34 @@ ret_t bitmap_init_from_rgba(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_for
  */
 ret_t bitmap_init(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t format, uint8_t* data);
 
+#if defined(WITH_STB_IMAGE) || defined(WITH_FS_RES)
+/*for helping debug drawing bugs*/
+
+/**
+ * @method bitmap_save_png
+ * 把bitmap保存为png。
+ *
+ * @param {bitmap_t*} bitmap bitmap对象。
+ * @param {const char*} filename 文件名。
+ *
+ * @return {bool_t} 返回TRUE表示成功，FALSE表示失败。
+ */
+bool_t bitmap_save_png(bitmap_t* bitmap, const char* filename);
+
+#endif /*defined(WITH_STB_IMAGE) || defined(WITH_FS_RES)*/
+
+/**
+ * @method bitmap_mono_dump
+ * dump mono bitmap。
+ * @annotation ["static"]
+ * @param {const uint8_t*} buff 数据。
+ * @param {uint32_t} w 宽度。
+ * @param {uint32_t} h 高度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t bitmap_mono_dump(const uint8_t* buff, uint32_t w, uint32_t h);
+
 /**
  * @method bitmap_destroy
  * 销毁图片。
@@ -389,10 +417,6 @@ bool_t rgba_data_is_opaque(const uint8_t* data, uint32_t w, uint32_t h, uint8_t 
 bitmap_t* bitmap_clone(bitmap_t* bitmap);
 ret_t bitmap_premulti_alpha(bitmap_t* bitmap);
 
-#if defined(WITH_STB_IMAGE) || defined(WITH_FS_RES)
-/*for helping debug drawing bugs*/
-bool_t bitmap_save_png(bitmap_t* bitmap, const char* filename);
-#endif /*defined(WITH_STB_IMAGE) || defined(WITH_FS_RES)*/
 
 #define TK_BITMAP_MONO_LINE_LENGTH(w) (((w + 15) >> 4) << 1)
 
@@ -400,7 +424,6 @@ uint8_t* bitmap_mono_create_data(uint32_t w, uint32_t h);
 bool_t bitmap_mono_get_pixel(const uint8_t* buff, uint32_t w, uint32_t h, uint32_t x, uint32_t y);
 ret_t bitmap_mono_set_pixel(uint8_t* buff, uint32_t w, uint32_t h, uint32_t x, uint32_t y,
                             bool_t pixel);
-ret_t bitmap_mono_dump(const uint8_t* buff, uint32_t w, uint32_t h);
 END_C_DECLS
 
 #endif /*TK_BITMAP_H*/

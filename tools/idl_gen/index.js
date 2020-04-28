@@ -10,7 +10,7 @@ if(process.argv.length == 3) {
   outputIDL = process.argv[2];
 } else if(process.argv.length > 3) {
   outputIDL = process.argv[2];
-  sourcesPath = path.normalize(process.argv[3]);
+  sourcesPath = process.argv[3];
 }
 
 if(sourcesPath === '-h' || sourcesPath === '--help') {

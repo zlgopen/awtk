@@ -37,6 +37,12 @@ typedef void (*XmlBuilderOnPiFunc)(XmlBuilder* thiz, const char* tag, const char
 typedef void (*XmlBuilderOnErrorFunc)(XmlBuilder* thiz, int line, int row, const char* message);
 typedef void (*XmlBuilderDestroyFunc)(XmlBuilder* thiz);
 
+/**
+ * @class xml_builder_t
+ * xml builder interface
+ *
+ */
+
 struct _XmlBuilder {
   XmlBuilderOnStartFunc on_start;
   XmlBuilderOnEndFunc on_end;
@@ -55,6 +61,15 @@ void xml_builder_on_pi(XmlBuilder* thiz, const char* tag, const char** attrs);
 void xml_builder_on_error(XmlBuilder* thiz, int line, int row, const char* message);
 void xml_builder_destroy(XmlBuilder* thiz);
 
+/**
+ * @method xml_builder_get_attr
+ * 获取属性。
+ * @param {const char**} attrs 属性列表。
+ * @param {const char*} attr 属性名。
+ *
+ * @return {const char*} 返回属性的值。
+ *
+ */
 const char* xml_builder_get_attr(const char** attrs, const char* attr);
 
 END_C_DECLS

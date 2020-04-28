@@ -69,7 +69,7 @@ static ret_t children_layouter_register_ext_builtins(void) {
   return RET_OK;
 }
 
-ret_t tk_ext_widgets_init() {
+ret_t tk_ext_widgets_init(void) {
   widget_factory_t* f = widget_factory();
 
   widget_factory_register(f, WIDGET_TYPE_RICH_TEXT, rich_text_create);

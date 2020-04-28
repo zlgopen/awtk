@@ -26,8 +26,6 @@
 
 BEGIN_C_DECLS
 
-font_t* font_stb_create(const char* name, const uint8_t* buff, uint32_t size);
-
 /**
  * @class font_loader_stb_t
  * @parent font_loader_t
@@ -48,6 +46,20 @@ font_t* font_stb_create(const char* name, const uint8_t* buff, uint32_t size);
  * @return {font_loader_t*} 返回字体加载器对象。
  */
 font_loader_t* font_loader_stb(void);
+
+/**
+ * @method font_stb_create
+ * @annotation ["static"]
+ *
+ * 创建stb字体对象。
+ * @param {const char*} name 字体名称。
+ * @param {const uint8_t* buff} 字体数据。
+ * @param {uint32_t} size 字体数据长度。
+ *
+ * @return {font_t*} 返回字体对象。
+ */
+font_t* font_stb_create(const char* name, const uint8_t* buff, uint32_t size);
+
 
 END_C_DECLS
 

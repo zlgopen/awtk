@@ -75,7 +75,7 @@ ret_t socket_close(int sock);
 ret_t socket_bind(int sock, int port);
 
 /**
- * @method socket_bind
+ * @method socket_wait_for_data
  * @annotation ["static"]
  * 等待数据。
  *
@@ -98,7 +98,7 @@ ret_t socket_wait_for_data(int sock, uint32_t timeout_ms);
 ret_t socket_set_blocking(int sock, bool_t blocking);
 
 /**
- * @method socket_set_blocking
+ * @method socket_resolve
  * @annotation ["static"]
  * 解析主机名，并初始化addr对象。
  * 

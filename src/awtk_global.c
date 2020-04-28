@@ -92,7 +92,7 @@ static ret_t tk_add_font(const asset_info_t* res) {
   return RET_OK;
 }
 
-ret_t tk_init_assets() {
+ret_t tk_init_assets(void) {
   uint32_t i = 0;
   uint32_t nr = assets_manager()->assets.size;
   const asset_info_t** all = (const asset_info_t**)(assets_manager()->assets.elms);

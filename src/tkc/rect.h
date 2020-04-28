@@ -159,11 +159,72 @@ rect_t* rect_cast(rect_t* rect);
  */
 ret_t rect_destroy(rect_t* r);
 
+/**
+ * @method rect_scale
+ * 缩放rect对象。
+ *
+ * @param {rect_t*} r rect对象。
+ * @param {float_t} scale 缩放比例。
+ *
+ * @return {rect_t*} 返回rect对象。
+ */
 rect_t* rect_scale(rect_t* r, float_t scale);
+
+/**
+ * @method rect_init
+ * 初始化rect对象。
+ *
+ * @param {xy_t} x x坐标。
+ * @param {xy_t} y y坐标。
+ * @param {wh_t} w 宽度。
+ * @param {wh_t} h 高度。
+ *
+ * @return {rect_t} 返回rect对象。
+ */
 rect_t rect_init(xy_t x, xy_t y, wh_t w, wh_t h);
-ret_t rect_merge(rect_t* dst_r, rect_t* r);
+
+/**
+ * @method rect_merge
+ * 合并两个rect对象。
+ *
+ * @param {rect_t*} dst_r rect对象。
+ * @param {const rect_t*} r rect对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t rect_merge(rect_t* dst_r, const rect_t* r);
+
+/**
+ * @method rect_contains
+ * 判断指定的点在rect范围内。
+ *
+ * @param {rect_t*} r rect对象。
+ * @param {xy_t} x x坐标。
+ * @param {xy_t} y y坐标。
+ *
+ * @return {bool_t} 返回在rect范围内。
+ */
 bool_t rect_contains(rect_t* r, xy_t x, xy_t y);
+
+/**
+ * @method rect_fix
+ * 确保rect在指定的大小范围内。
+ *
+ * @param {rect_t*} r rect对象。
+ *
+ * @return {rect_t} 返回修复之后的rect对象。
+ */
 rect_t rect_fix(rect_t* r, wh_t max_w, wh_t max_h);
+
+/**
+ * @method rect_intersect
+ * 求两个rect的交集。
+ *
+ * @param {const rect_t*} r1 rect对象。
+ * @param {const rect_t*} r2 rect对象。
+ *
+ * @return {rect_t} 返回交集。
+ */
 rect_t rect_intersect(const rect_t* r1, const rect_t* r2);
 
 END_C_DECLS

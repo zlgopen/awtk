@@ -109,7 +109,6 @@ ret_t tk_set_lcd_orientation(lcd_orientation_t orientation);
 /**
  * @method tk_init_assets
  * 初始化资源。
- * @annotation ["private"]
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

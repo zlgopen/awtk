@@ -21,7 +21,7 @@
 #include "tkc/mem.h"
 #include "tkc/rect.h"
 
-ret_t rect_merge(rect_t* dr, rect_t* r) {
+ret_t rect_merge(rect_t* dr, const rect_t* r) {
   return_value_if_fail(r != NULL && dr != NULL, RET_BAD_PARAMS);
 
   if (r->w > 0 && r->h > 0) {

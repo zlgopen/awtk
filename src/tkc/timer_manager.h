@@ -111,19 +111,6 @@ uint32_t timer_manager_add(timer_manager_t* timer_manager, timer_func_t on_timer
                            uint32_t duration);
 
 /**
- * @method timer_manager_set_on_destroy
- * 设置一个回调函数，在定时器被销毁时调用(方便脚本语言去释放回调函数)。
- * @param {timer_manager_t*} timer_manager 定时器管理器对象。
- * @param {uint32_t} timer_id timer_id。
- * @param {tk_destroy_t} on_destroy 回调函数。
- * @param {void*} on_destroy_ctx 回调函数上下文。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t timer_manager_set_on_destroy(timer_manager_t* timer_manager, uint32_t timer_id,
-                                   tk_destroy_t on_destroy, void* on_destroy_ctx);
-
-/**
  * @method timer_manager_remove
  * 根据id删除定时器。
  * @param {timer_manager_t*} timer_manager 定时器管理器对象。
@@ -172,7 +159,7 @@ ret_t timer_manager_dispatch(timer_manager_t* timer_manager);
 uint32_t timer_manager_count(timer_manager_t* timer_manager);
 
 /**
- * @method timer_manager_count
+ * @method timer_manager_next_time
  * 返回最近的定时器到期时间。
  * @param {timer_manager_t*} timer_manager 定时器管理器对象。
  *

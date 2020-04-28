@@ -259,7 +259,7 @@ ret_t str_append_json_str_pair(str_t* str, const char* key, const char* value);
 ret_t str_append_json_double_pair(str_t* str, const char* key, double value);
 
 /**
- * @method str_append_json_double_pair
+ * @method str_append_json_bool_pair
  * 追加bool格式的json键值对。
  * @param {str_t*} str str对象。
  * @param {const char*} key 键。 

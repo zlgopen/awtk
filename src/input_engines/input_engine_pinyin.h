@@ -40,6 +40,7 @@ BEGIN_C_DECLS
 
 /**
  * @method input_engine_create
+ * @export none
  * @annotation ["constructor"]
  *
  * 创建拼音输入法引擎对象。

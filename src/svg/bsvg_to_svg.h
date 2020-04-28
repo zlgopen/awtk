@@ -26,6 +26,22 @@
 
 BEGIN_C_DECLS
 
+/**
+ * @class svg_helper_t
+ * @annotation ["fake"]
+ */
+
+/**
+ * @method bsvg_to_svg
+ *
+ * bsvg to svg
+ *
+ * @param {uint32_t*} data bsvg数据。
+ * @param {uint32_t} size bsvg数据长度。
+ * @param {str_t*} str 用于返回svg数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t bsvg_to_svg(const uint32_t* data, uint32_t size, str_t* str);
 
 /*public for test*/

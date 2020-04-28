@@ -91,7 +91,7 @@ ret_t func_call_parser_parse(func_call_parser_t* parser);
 ret_t func_call_parser_deinit(func_call_parser_t* parser);
 
 /**
- * @method func_call_parser_parse
+ * @method func_call_parse
  * 解析参数，并将结果生成一个object对象。
  *
  *> 调用者负责释放返回的object对象。

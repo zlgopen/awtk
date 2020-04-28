@@ -81,6 +81,7 @@ ret_t graphic_buffer_create_for_bitmap(bitmap_t* bitmap);
 
 /**
  * @method graphic_buffer_default_create_with_data
+ * @export none
  * 创建缓冲区。
  *
  * > 为了兼容raw图像。

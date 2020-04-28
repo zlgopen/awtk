@@ -26,6 +26,23 @@
 
 BEGIN_C_DECLS
 
+/**
+ * @class svg_helper_t
+ * @annotation ["fake"]
+ */
+
+/**
+ * @method svg_to_bsvg
+ *
+ * svg to bsvg
+ *
+ * @param {const char*} xml svg数据。
+ * @param {uint32_t} size svg数据长度。
+ * @param {uint32_t*} out 用于返回bsvg数据。
+ * @param {uint32_t*} out_size bsvg数据长度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t svg_to_bsvg(const char* xml, uint32_t size, uint32_t** out, uint32_t* out_size);
 
 /*public for test*/

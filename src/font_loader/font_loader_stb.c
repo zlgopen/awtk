@@ -21,6 +21,7 @@
 
 #include "tkc/utils.h"
 #include "base/types_def.h"
+#include "font_loader/font_loader_stb.h"
 
 #ifdef WITH_STB_FONT
 
@@ -33,7 +34,6 @@
 
 #include "base/glyph_cache.h"
 #include "stb/stb_truetype.h"
-#include "font_loader/font_loader_stb.h"
 
 typedef struct _font_stb_t {
   font_t base;
@@ -157,5 +157,12 @@ font_loader_t* font_loader_stb(void) {
 
   return &loader;
 }
+#else
+font_loader_t* font_loader_stb(void) {
+  return NULL;
+}
 
+font_t* font_stb_create(const char* name, const uint8_t* buff, uint32_t buff_size) {
+  return NULL;
+}
 #endif /*WITH_STB_FONT*/
