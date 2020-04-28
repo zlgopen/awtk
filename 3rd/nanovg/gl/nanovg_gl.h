@@ -234,6 +234,7 @@ struct GLNVGcontext {
   int ctextures;
   int textureId;
   GLuint vertBuf;
+  float devicePixelRatio;
 #if defined NANOVG_GL3
   GLuint vertArr;
 #endif
@@ -996,10 +997,11 @@ static void glnvg__setUniforms(GLNVGcontext* gl, int uniformOffset, int image) {
 }
 
 static void glnvg__renderViewport(void* uptr, float width, float height, float devicePixelRatio) {
-  NVG_NOTUSED(devicePixelRatio);
+  //NVG_NOTUSED(devicePixelRatio);
   GLNVGcontext* gl = (GLNVGcontext*)uptr;
   gl->view[0] = width;
   gl->view[1] = height;
+  gl->devicePixelRatio = devicePixelRatio;
 }
 
 static void glnvg__fill(GLNVGcontext* gl, GLNVGcall* call) {
@@ -1547,6 +1549,7 @@ static void glnvg__renderTriangles(void* uptr, NVGpaint* paint,
   GLNVGcontext* gl = (GLNVGcontext*)uptr;
   GLNVGcall* call = glnvg__allocCall(gl);
   GLNVGfragUniforms* frag;
+  float fringe = 1.0f / gl->devicePixelRatio;
 
   if (call == NULL) return;
 
@@ -1565,7 +1568,7 @@ static void glnvg__renderTriangles(void* uptr, NVGpaint* paint,
   call->uniformOffset = glnvg__allocFragUniforms(gl, 1);
   if (call->uniformOffset == -1) goto error;
   frag = nvg__fragUniformPtr(gl, call->uniformOffset);
-  glnvg__convertPaint(gl, frag, paint, scissor, 1.0f, 1.0f, -1.0f);
+  glnvg__convertPaint(gl, frag, paint, scissor, 1.0f, fringe, -1.0f);
   if(glnvg__VertsInScissor(verts, nverts, scissor) && glnvg_getSupportFastDraw(gl, scissor)) {
     frag->type = NSVG_SHADER_FAST_FILLGLYPH;
   } else {
