@@ -7,7 +7,7 @@ if awtk.TOOLS_NAME != '' :
 
 DefaultEnvironment(TOOLS = APP_TOOLS,
   CCFLAGS = awtk.CCFLAGS,
-  LIBS = awtk.LIBS,
+  LIBS = awtk.SHARED_LIBS,
   LIBPATH = awtk.LIBPATH,
   CPPPATH = awtk.CPPPATH,
   LINKFLAGS = awtk.LINKFLAGS,
