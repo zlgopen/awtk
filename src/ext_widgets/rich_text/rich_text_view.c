@@ -25,8 +25,8 @@
 #include "rich_text/rich_text.h"
 #include "rich_text/rich_text_view.h"
 
-static ret_t rich_text_view_on_scroll_bar_changed(void* ctx, event_t* e) {
-  rich_text_view_t* rich_text_view = RICH_TEXT_VIEW(ctx);
+static ret_t rich_text_view_sync_scroll_bar_to_rich_text(widget_t* widget) {
+  rich_text_view_t* rich_text_view = RICH_TEXT_VIEW(widget);
   rich_text_t* rich_text = RICH_TEXT(rich_text_view->rich_text);
   int32_t yoffset = widget_get_value(rich_text_view->scroll_bar);
 
@@ -39,18 +39,38 @@ static ret_t rich_text_view_on_scroll_bar_changed(void* ctx, event_t* e) {
   return RET_OK;
 }
 
-static ret_t rich_text_view_on_rich_text_scrolled(void* ctx, event_t* e) {
-  rich_text_view_t* rich_text_view = RICH_TEXT_VIEW(ctx);
+static ret_t rich_text_view_on_scroll_bar_changed(void* ctx, event_t* e) {
+  rich_text_view_sync_scroll_bar_to_rich_text(WIDGET(ctx));
+  return RET_OK;
+}
+
+static ret_t rich_text_view_sync_rich_text_to_scroll_bar(widget_t* widget) {
+  int32_t value = 0;
+  rich_text_view_t* rich_text_view = RICH_TEXT_VIEW(widget);
   int32_t yoffset = widget_get_prop_int(rich_text_view->rich_text, WIDGET_PROP_YOFFSET, 0);
   int32_t virtual_h = widget_get_prop_int(rich_text_view->rich_text, WIDGET_PROP_VIRTUAL_H, 0);
+  int32_t h = rich_text_view->rich_text->h;
+  int32_t max = tk_max(virtual_h, h);
+
+  if (max > h) {
+    value = (yoffset * max) / (max - h);
+  }
 
   if (rich_text_view->scroll_bar != NULL) {
-    virtual_h -= rich_text_view->scroll_bar->h;
-
     emitter_disable(rich_text_view->scroll_bar->emitter);
-    widget_set_prop_int(rich_text_view->scroll_bar, WIDGET_PROP_VALUE, yoffset);
-    widget_set_prop_int(rich_text_view->scroll_bar, WIDGET_PROP_MAX, virtual_h);
+    widget_set_prop_int(rich_text_view->scroll_bar, WIDGET_PROP_MAX, max);
+    widget_set_prop_int(rich_text_view->scroll_bar, WIDGET_PROP_VALUE, value);
     emitter_enable(rich_text_view->scroll_bar->emitter);
+  }
+
+  return RET_OK;
+}
+
+static ret_t rich_text_view_on_rich_text_scrolled(void* ctx, event_t* e) {
+  prop_change_event_t* evt = (prop_change_event_t*)e;
+
+  if (tk_str_eq(evt->name, WIDGET_PROP_YOFFSET)) {
+    rich_text_view_sync_rich_text_to_scroll_bar(WIDGET(ctx));
   }
 
   return RET_OK;
