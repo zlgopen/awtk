@@ -33,6 +33,7 @@ TK_3RD_ROOT   = joinPath(TK_ROOT, '3rd')
 TK_TOOLS_ROOT = joinPath(TK_ROOT, 'tools')
 TK_DEMO_ROOT  = joinPath(TK_ROOT, 'demos')
 GTEST_ROOT    = joinPath(TK_ROOT, '3rd/gtest/googletest')
+AWTK_STATIC_LIBS=['awtk_global', 'extwidgets', 'widgets', 'base', 'gpinyin', 'streams', 'ubjson', 'compressors', 'miniz', 'tkc', 'linebreak']
 
 #INPUT_ENGINE='null'
 #INPUT_ENGINE='spinyin'
@@ -152,12 +153,13 @@ OS_WHOLE_ARCHIVE=''
 if OS_NAME == 'Darwin':
   TOOLS_NAME = ''
   OS_FLAGS='-g -Wall -fPIC '
-  OS_WHOLE_ARCHIVE=' -all_load '
   OS_LIBS = ['stdc++', 'pthread', 'm', 'dl']
   OS_LINKFLAGS='-framework IOKit -framework Cocoa -framework QuartzCore -framework OpenGL -weak_framework Metal -weak_framework MetalKit'
   COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DHAS_SEM_OPEN '
   COMMON_CCFLAGS = COMMON_CCFLAGS + ' -D__APPLE__ -DHAS_PTHREAD -DMACOS -DENABLE_MEM_LEAK_CHECK1 '
   COMMON_CCFLAGS = COMMON_CCFLAGS + ' -D__STDC_LIMIT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_CONSTANT_MACROS  -DBGFX_CONFIG_RENDERER_METAL=1 '
+  AWTK_DLL_DEPS_LIBS = AWTK_STATIC_LIBS + NANOVG_BACKEND_LIBS + ['SDL2', 'glad'] + OS_LIBS
+  OS_WHOLE_ARCHIVE=' -all_load '
 
 elif OS_NAME == 'Linux':
   TOOLS_NAME = ''
@@ -176,7 +178,7 @@ elif OS_NAME == 'Linux':
     OS_FLAGS = OS_FLAGS + ' -DWITH_64BIT_CPU '
 
   OS_LINKFLAGS=' -Wl,-rpath=' + os.path.abspath(TK_LIB_DIR) + ' '
-  AWTK_DEPS_LIBS = NANOVG_BACKEND_LIBS + ['SDL2', 'glad'] + OS_LIBS
+  AWTK_DLL_DEPS_LIBS = NANOVG_BACKEND_LIBS + ['SDL2', 'glad'] + OS_LIBS
   OS_WHOLE_ARCHIVE =' -Wl,--whole-archive -lawtk_global -lextwidgets -lwidgets -lbase -lgpinyin -lstreams -lubjson -lcompressors -lminiz -ltkc -llinebreak -Wl,--no-whole-archive'
 
 elif OS_NAME == 'Windows':
@@ -200,6 +202,7 @@ elif OS_NAME == 'Windows':
       OS_SUBSYSTEM_WINDOWS='/SUBSYSTEM:WINDOWS  '
       COMMON_CCFLAGS = COMMON_CCFLAGS + ' -D_WIN64 '
     OS_WHOLE_ARCHIVE=' /DEF:"dllexports/awtk.def"'
+    AWTK_DLL_DEPS_LIBS = AWTK_STATIC_LIBS + NANOVG_BACKEND_LIBS + ['SDL2', 'glad'] + OS_LIBS
 
   elif TOOLS_NAME == 'mingw' :
     OS_LIBS=['kernel32', 'gdi32', 'user32', 'winmm','imm32','version','shell32','ole32','Oleaut32','Advapi32','oleaut32','uuid','stdc++']
@@ -207,6 +210,7 @@ elif OS_NAME == 'Windows':
     COMMON_CFLAGS=COMMON_CFLAGS+' -std=gnu99 '
     COMMON_CCFLAGS=COMMON_CCFLAGS+' -DWITH_DOUBLE_FLOAT -DUNICODE ' 
     OS_WHOLE_ARCHIVE=' -Wl,--whole-archive '
+    AWTK_DLL_DEPS_LIBS = AWTK_STATIC_LIBS + NANOVG_BACKEND_LIBS + ['SDL2', 'glad'] + OS_LIBS
     
   #OS_FLAGS='-DWIN32 -D_WIN32 -DWINDOWS /EHsc -D_CONSOLE  /DEBUG /Od  /FS /Z7 -D_DEBUG /MDd '
   COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DSDL_REAL_API -DSDL_HAPTIC_DISABLED -DSDL_SENSOR_DISABLED -DSDL_JOYSTICK_DISABLED '
@@ -221,7 +225,7 @@ LIBPATH=[TK_LIB_DIR, TK_BIN_DIR] + OS_LIBPATH
 CCFLAGS=OS_FLAGS + COMMON_CCFLAGS 
 
 LIBS=['awtk'] + OS_LIBS;
-AWTK_DEPS_LIBS=['awtk_global', 'extwidgets', 'widgets', 'base', 'gpinyin', 'streams', 'ubjson', 'compressors', 'miniz', 'tkc', 'linebreak'] + NANOVG_BACKEND_LIBS + ['SDL2', 'glad'] + OS_LIBS
+STATIC_LIBS = AWTK_STATIC_LIBS + NANOVG_BACKEND_LIBS + ['SDL2', 'glad'] + OS_LIBS
 
 CPPPATH=[TK_ROOT, 
   TK_SRC, 
@@ -262,7 +266,7 @@ os.environ['NATIVE_WINDOW'] = NATIVE_WINDOW;
 os.environ['GRAPHIC_BUFFER'] = GRAPHIC_BUFFER;
 os.environ['FRAME_BUFFER_FORMAT'] = FRAME_BUFFER_FORMAT;
 os.environ['OS_WHOLE_ARCHIVE'] = OS_WHOLE_ARCHIVE;
-os.environ['AWTK_DEPS_LIBS'] = ';'.join(AWTK_DEPS_LIBS)
+os.environ['AWTK_DLL_DEPS_LIBS'] = ';'.join(AWTK_DLL_DEPS_LIBS)
 
 def has_custom_cc():
     return False

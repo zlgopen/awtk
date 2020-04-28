@@ -107,7 +107,7 @@ EXT_WIDGETS_SOURCES=Glob('ext_widgets/*.c') + Glob('ext_widgets/*/*.c')
 env.Library(os.path.join(LIB_DIR, 'extwidgets'), EXT_WIDGETS_SOURCES, LIBS=[])
 env.Library(os.path.join(LIB_DIR, 'awtk_global'), ['awtk_global.c'], LIBS=[])
 
-AWTK_DEPS_LIBS=os.environ['AWTK_DEPS_LIBS'].split(';')
+LIBS=os.environ['AWTK_DLL_DEPS_LIBS'].split(';')
 LINKFLAGS=env['LINKFLAGS'] + os.environ['OS_WHOLE_ARCHIVE']
-env.SharedLibrary(os.path.join(BIN_DIR, 'awtk'), [], LIBS=AWTK_DEPS_LIBS, LINKFLAGS=LINKFLAGS); 
+env.SharedLibrary(os.path.join(BIN_DIR, 'awtk'), [], LIBS=LIBS, LINKFLAGS=LINKFLAGS); 
 
