@@ -21,6 +21,11 @@ DEFAULT_THEME_OUTPUT_DIR = ''
 FONT_OPTIONS = ''
 IMAGEGEN_OPTIONS = ''
 IS_DEFAULT_THEME = False
+IS_EXCLUDE_LARGE_FILE = True
+FONT_RES_MAX = 150 * 1024
+FONT_DATA_MAX = 150 * 1024
+IMAGE_RES_MAX = 150 * 1024
+IMAGE_DATA_MAX = 2000 * 1024
 ###########################
 
 
@@ -342,10 +347,35 @@ def writeResultJSON(str):
         text_file.write(str)
 
 
+def isExcluduFile(f):
+    if (not IS_EXCLUDE_LARGE_FILE):
+        return False;
+
+    filesize = os.path.getsize(f);
+    filename, extname = os.path.splitext(f)
+    filename = filename.replace('\\', '/')
+
+    if (filename.find("/fonts/") >= 0):
+        if (extname == '.res'):
+            return filesize > FONT_RES_MAX;
+        else :
+            return filesize > FONT_DATA_MAX;
+
+    if (filename.find("/images/") >= 0):
+        if (extname == '.res'):
+            return filesize > IMAGE_RES_MAX;
+        else :
+            return filesize > IMAGE_DATA_MAX;
+
+    return False;
+
+
 def genIncludes(files):
     result = ""
     assets_root = os.path.dirname(os.path.dirname(ASSETS_ROOT))
     for f in files:
+        if (isExcluduFile(f)):
+            continue
         incf = copy.copy(f)
         incf = incf.replace(assets_root, ".")
         incf = incf.replace('\\', '/')
@@ -357,6 +387,8 @@ def genIncludes(files):
 def genExternOfDefaultTheme(files):
     result = ""
     for f in files:
+        if (isExcluduFile(f)):
+            continue
         if(not os.path.exists(f.replace(DEFAULT_THEME_ASSETS_ROOT, ASSETS_ROOT))):
             basename = to_assets_basename(f, DEFAULT_THEME_OUTPUT_DIR)
             result += 'extern TK_CONST_DATA_ALIGN(const unsigned char '+basename+'[]);\n'
@@ -366,6 +398,8 @@ def genExternOfDefaultTheme(files):
 def gen_add_assets(files):
     result = ""
     for f in files:
+        if (isExcluduFile(f)):
+            continue
         basename = to_assets_basename(f, OUTPUT_DIR)
         if IS_DEFAULT_THEME:
             result += '  assets_manager_add(am, '+basename+');\n'
@@ -376,6 +410,8 @@ def gen_add_assets(files):
 def gen_add_assets_of_default_theme(files):
     result = ""
     for f in files:
+        if (isExcluduFile(f)):
+            continue
         if(not os.path.exists(f.replace(DEFAULT_THEME_ASSETS_ROOT, ASSETS_ROOT))):
             basename = to_assets_basename(f, DEFAULT_THEME_OUTPUT_DIR)
             result += '  assets_manager_add(am, '+basename+');\n'

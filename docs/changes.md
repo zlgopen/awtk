@@ -6,9 +6,10 @@
   * 修复 nanovg 在高分屏下裁剪区裁剪字体显示不正常的问题（感谢智明提供补丁） 
   * 修复 vgcanvas 的着色器精度问题导致显示不正常的 bug（感谢智明提供补丁） 
   * 完善 image gen（感谢大恒提供补丁）。
-  * Linux/MacOS/Windows 支持编译awtk为动态库。
+  * Linux/MacOS/Windows 支持编译 awtk 为动态库。
   * 增加文档《静态链接与动态链接》
-  
+  * 完善 update res 脚本（感谢朝泽提供补丁）。 
+
 * 2020/04/27
   * edit/mledit 支持翻译提示信息（感谢瑞安提供补丁）。 
   * 更新文档。
