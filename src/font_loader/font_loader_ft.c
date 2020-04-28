@@ -11,7 +11,6 @@
 #include "base/glyph_cache.h"
 #include "font_loader/font_loader_ft.h"
 
-
 #ifdef WITH_FT_FONT
 #ifdef USE_SYSTEM_FREETYPE
 #include <ft2build.h>

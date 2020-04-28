@@ -2367,7 +2367,6 @@ image_manager_t* widget_get_image_manager(widget_t* widget);
  */
 assets_manager_t* widget_get_assets_manager(widget_t* widget);
 
-
 /**
  * @method widget_get_font_manager
  * 获取font_manager对象。

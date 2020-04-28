@@ -417,7 +417,6 @@ bool_t rgba_data_is_opaque(const uint8_t* data, uint32_t w, uint32_t h, uint8_t 
 bitmap_t* bitmap_clone(bitmap_t* bitmap);
 ret_t bitmap_premulti_alpha(bitmap_t* bitmap);
 
-
 #define TK_BITMAP_MONO_LINE_LENGTH(w) (((w + 15) >> 4) << 1)
 
 uint8_t* bitmap_mono_create_data(uint32_t w, uint32_t h);

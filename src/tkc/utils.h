@@ -316,7 +316,6 @@ ret_t filename_to_name(const char* filename, char* str, uint32_t size);
  */
 ret_t filename_to_name_ex(const char* filename, char* str, uint32_t size, bool_t remove_extname);
 
-
 /**
  * @method xml_file_expand_read
  *

@@ -60,7 +60,6 @@ font_loader_t* font_loader_stb(void);
  */
 font_t* font_stb_create(const char* name, const uint8_t* buff, uint32_t size);
 
-
 END_C_DECLS
 
 #endif /*TK_FONT_LOADER_STB_H*/
