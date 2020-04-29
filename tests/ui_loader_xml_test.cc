@@ -46,7 +46,7 @@ TEST(UILoaderXML, attr) {
   const char* str =
       "<dialog margin=\"0\" x=\"0\" y=\"0\" w=\"400\" h=\"300\">\
       <dialog_client style=\"border\" x=\"0\" y=\"bottom\" w=\"100%\" h=\"-30\">\
-       <button name=\"b1\" text=\"a&lt;b&gt;c&quota;&amp;\" x=\"10\" y=\"10\" w=\"80\" h=\"20\" />\
+       <button name=\"b1\" text=\"a&lt;b&gt;c&quot;&amp;\" x=\"10\" y=\"10\" w=\"80\" h=\"20\" />\
        <button name=\"b2\" x=\"10%\" y=\"10%\" w=\"80%\" h=\"20%\" />\
        <button name=\"b3\" x=\"center\" y=\"middle\" w=\"80\" h=\"20\" />\
        <button name=\"b4\" x=\"right\" y=\"bottom\" w=\"80\" h=\"20\" />\

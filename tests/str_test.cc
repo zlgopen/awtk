@@ -87,10 +87,10 @@ TEST(Str, decode_xml_entity) {
   ASSERT_EQ(str_decode_xml_entity(s, "a&lt;b&gt;c"), RET_OK);
   ASSERT_EQ(str_eq(s, "a<b>c"), TRUE);
 
-  ASSERT_EQ(str_decode_xml_entity(s, "&quota;a&lt;b&gt;c&quota;"), RET_OK);
+  ASSERT_EQ(str_decode_xml_entity(s, "&quot;a&lt;b&gt;c&quot;"), RET_OK);
   ASSERT_EQ(str_eq(s, "\"a<b>c\""), TRUE);
 
-  ASSERT_EQ(str_decode_xml_entity(s, "&quota;a&lt;b&gt;c&quota;&amp;&amp;"), RET_OK);
+  ASSERT_EQ(str_decode_xml_entity(s, "&quot;a&lt;b&gt;c&quot;&amp;&amp;"), RET_OK);
   ASSERT_EQ(str_eq(s, "\"a<b>c\"&&"), TRUE);
 
   str_reset(s);
