@@ -1,8 +1,9 @@
 # 最新动态
 
 * 2020/04/29
-  * 完善rich text view 滚动条的处理。
-
+  * 完善 rich text view 滚动条的处理。
+  * lcd 增加 draw_image_repeat 函数，方便特定平台优化（感谢智明提供补丁）。
+  
 * 2020/04/28
   * 完善 color picker（感谢尧燊提供补丁）。 
   * 修复 guage_pointer 函数设置锚点不正确的问题（感谢智明提供补丁） 

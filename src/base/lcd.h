@@ -53,6 +53,9 @@ typedef ret_t (*lcd_set_fill_color_t)(lcd_t* lcd, color_t color);
 typedef ret_t (*lcd_set_font_name_t)(lcd_t* lcd, const char* name);
 typedef ret_t (*lcd_set_font_size_t)(lcd_t* lcd, uint32_t size);
 
+typedef ret_t (*lcd_draw_image_repeat_t)(lcd_t* lcd, bitmap_t* img, rect_t* src_in, rect_t* dst_in,
+                                         wh_t dst_w, wh_t dst_h);
+
 typedef ret_t (*lcd_draw_vline_t)(lcd_t* lcd, xy_t x, xy_t y, wh_t h);
 typedef ret_t (*lcd_draw_hline_t)(lcd_t* lcd, xy_t x, xy_t y, wh_t w);
 typedef ret_t (*lcd_draw_points_t)(lcd_t* lcd, point_t* points, uint32_t nr);
@@ -171,6 +174,7 @@ struct _lcd_t {
   lcd_draw_text_t draw_text;
   lcd_measure_text_t measure_text;
   lcd_draw_points_t draw_points;
+  lcd_draw_image_repeat_t draw_image_repeat;
   lcd_get_point_color_t get_point_color;
   lcd_swap_t swap; /*适用于double fb，可选*/
   lcd_get_width_t get_width;
