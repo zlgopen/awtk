@@ -367,6 +367,7 @@ static ret_t on_idle_invalidate(const timer_info_t* info) {
 static ret_t window_manager_check_if_need_open_animation(const idle_info_t* info) {
   widget_t* curr_win = WIDGET(info->ctx);
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(curr_win->parent);
+  return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
 
   window_manager_dispatch_window_event(curr_win, EVT_WINDOW_WILL_OPEN);
   wm->ready_animator = FALSE;
