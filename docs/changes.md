@@ -3,6 +3,7 @@
 * 2020/04/29
   * 完善 rich text view 滚动条的处理。
   * lcd 增加 draw_image_repeat 函数，方便特定平台优化（感谢智明提供补丁）。
+  * 完善 str gen 名称支持引号。
   
 * 2020/04/28
   * 完善 color picker（感谢尧燊提供补丁）。 

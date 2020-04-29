@@ -77,9 +77,9 @@ TEST(StrGen, xml1) {
     <language name=\"en_US\">a&lt;b&gt;c</language> \
     <language name=\"zh_CN\">a&quot;b&amp;c</language> \
     </string> \
-    <string name=\"&quot;&lt;&gt;\"> \
-    <language name=\"en_US\">en:&quot;&lt;&gt;</language> \
-    <language name=\"zh_CN\">zh:&quot;&lt;&gt;</language> \
+    <string name=\"&quot;&lt;&gt;'\"> \
+    <language name=\"en_US\">en:&quot;&lt;&gt;'</language> \
+    <language name=\"zh_CN\">zh:&quot;&lt;&gt;'</language> \
     </string> \
     <string name=\"cancel\"> \
     <language name=\"en_US\">Cancel</language> \
@@ -95,12 +95,12 @@ TEST(StrGen, xml1) {
   ASSERT_EQ(string("OK"), str_table_lookup(table, "ok"));
   ASSERT_EQ(string("Cancel"), str_table_lookup(table, "cancel"));
   ASSERT_EQ(string("a<b>c"), str_table_lookup(table, "abc"));
-  ASSERT_EQ(string("en:\"<>"), str_table_lookup(table, "\"<>"));
+  ASSERT_EQ(string("en:\"<>'"), str_table_lookup(table, "\"<>'"));
 
   sg.Output("zh_CN", buff, sizeof(buff));
   assert_str_eq(L"确定", str_table_lookup(table, "ok"));
   assert_str_eq(L"取消", str_table_lookup(table, "cancel"));
-  assert_str_eq(L"zh:\"<>", str_table_lookup(table, "\"<>"));
+  assert_str_eq(L"zh:\"<>'", str_table_lookup(table, "\"<>'"));
 
   ASSERT_EQ(string("a\"b&c"), str_table_lookup(table, "abc"));
   ASSERT_EQ(NULL, str_table_lookup(table, "not exist"));

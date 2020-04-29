@@ -235,4 +235,23 @@ demotr 提供了实时切换语言的示例，代码可以参考 demos/demo\_tr\
 
 ## 十、注意事项
 
-* 在源文件中最好不要用非英文字符串。如果一定要用，源文件的格式一定要用 UTF8-BOM 编码，这个可以用 vscode 或记事本转换，否则在 Windows 平台可能出现乱码。
+* 1. 在源文件中最好不要用非英文字符串。如果一定要用，源文件的格式一定要用 UTF8-BOM 编码，这个可以用 vscode 或记事本转换，否则在 Windows 平台可能出现乱码。
+
+* 2. 在 XML 中，以下字符需要转义成 HTML 实体
+
+|  字符   | 转义实体  |
+|  ----  | ----  |
+|  <  | &amp;lt; |
+|  >  | &amp;gt; |
+|  "  | &amp;quot; |
+
+示例：
+
+```xml
+<string name="&lt;&quot;en&amp;zh&quot;&gt;">
+<language name="en_US">&lt;&quot;en&amp;zh&quot;&gt;</language>
+<language name="zh_CN">&lt;&quot;英文&amp;中文&quot;&gt;</language>
+</string>
+```
+
+
