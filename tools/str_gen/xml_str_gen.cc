@@ -43,8 +43,14 @@ static void xml_str_gen_on_start(XmlBuilder* thiz, const char* tag, const char**
   xml_str_builder_t* b = (xml_str_builder_t*)thiz;
 
   if (b->level == 0) {
+    str_t str;
+    const char* name = xml_builder_get_attr(attrs, "name");
+    str_init(&str, 100);
+    str_decode_xml_entity(&str, name);
+    b->str = str.str;
+    str_reset(&(str));
+    
     assert(strcmp(tag, "string") == 0);
-    b->str = xml_builder_get_attr(attrs, "name");
   } else if (b->level == 1) {
     assert(strcmp(tag, "language") == 0);
     b->language = xml_builder_get_attr(attrs, "name");
