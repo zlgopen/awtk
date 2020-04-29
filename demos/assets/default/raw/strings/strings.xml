@@ -53,3 +53,8 @@ Translate text
 (center)
   </language>
 </string>
+
+<string name="&lt;&quot;en&amp;zh&quot;&gt;">
+<language name="en_US">&lt;&quot;en&amp;zh&quot;&gt;</language>
+<language name="zh_CN">&lt;&quot;英文&amp;中文&quot;&gt;</language>
+</string>
