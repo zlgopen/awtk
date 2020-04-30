@@ -724,9 +724,10 @@ static ret_t canvas_draw_image_repeat_x_impl(canvas_t* c, bitmap_t* img, rect_t*
   d.w = dst_in->w;
   d.h = dst_in->h;
 
-  if (c->lcd->draw_image_repeat != NULL && c->lcd->draw_image_repeat(c->lcd, img, src_in, &d, src_in->w, dst_in->h) == RET_OK) {
+  if (c->lcd->draw_image_repeat != NULL &&
+      c->lcd->draw_image_repeat(c->lcd, img, src_in, &d, src_in->w, dst_in->h) == RET_OK) {
     return RET_OK;
-  } 
+  }
 
   return canvas_draw_image_repeat_default(c, img, src_in, dst_in, src_in->w, dst_in->h);
 }
@@ -742,9 +743,10 @@ static ret_t canvas_draw_image_repeat_y_impl(canvas_t* c, bitmap_t* img, rect_t*
   d.w = dst_in->w;
   d.h = dst_in->h;
 
-  if (c->lcd->draw_image_repeat != NULL && c->lcd->draw_image_repeat(c->lcd, img, src_in, dst_in, dst_in->w, src_in->h) == RET_OK) {
+  if (c->lcd->draw_image_repeat != NULL &&
+      c->lcd->draw_image_repeat(c->lcd, img, src_in, &d, dst_in->w, src_in->h) == RET_OK) {
     return RET_OK;
-  } 
+  }
 
   return canvas_draw_image_repeat_default(c, img, src_in, dst_in, dst_in->w, src_in->h);
 }
@@ -759,11 +761,12 @@ static ret_t canvas_draw_image_repeat_impl(canvas_t* c, bitmap_t* img, rect_t* s
   d.y = dst_in->y + c->oy;
   d.w = dst_in->w;
   d.h = dst_in->h;
-  
-  if (c->lcd->draw_image_repeat != NULL && c->lcd->draw_image_repeat(c->lcd, img, src_in, dst_in, src_in->w, src_in->h) == RET_OK) {
+
+  if (c->lcd->draw_image_repeat != NULL &&
+      c->lcd->draw_image_repeat(c->lcd, img, src_in, &d, src_in->w, src_in->h) == RET_OK) {
     return RET_OK;
   }
-    
+
   return canvas_draw_image_repeat_default(c, img, src_in, dst_in, src_in->w, src_in->h);
 }
 
@@ -928,6 +931,11 @@ ret_t canvas_draw_image_repeat3_x(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
   w_w = dst_w - (w << 1);
 
   y = (dst_h - img_h) >> 1;
+  if (y < 0) {
+    img_h += y;
+    y = 0;
+  }
+
   /*left*/
   s = rect_init(0, 0, w, img_h);
   d = rect_init(0, y, w, img_h);
@@ -935,9 +943,11 @@ ret_t canvas_draw_image_repeat3_x(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
 
   /*center*/
   tmp = image_w - w - w;
-  s = rect_init(w, 0, tmp > 0 ? tmp : 2, img_h);
-  d = rect_init(w, y, w_w, img_h);
-  canvas_draw_image_repeat_x_impl(c, img, &s, &d);
+  if (dst_w > img_w) {
+    s = rect_init(w, 0, tmp > 0 ? tmp : 2, img_h);
+    d = rect_init(w, y, w_w, img_h);
+    canvas_draw_image_repeat_x_impl(c, img, &s, &d);
+  }
 
   /*right*/
   s = rect_init(img_w - w, 0, w, img_h);
@@ -992,6 +1002,10 @@ ret_t canvas_draw_image_repeat3_y(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
   h_h = dst_h - (h << 1);
 
   x = (dst->w - img->w) >> 1;
+  if (x < 0) {
+    img_w += x;
+    x = 0;
+  }
   /*top*/
   s = rect_init(0, 0, img_w, h);
   d = rect_init(x, 0, img_w, h);
@@ -999,9 +1013,11 @@ ret_t canvas_draw_image_repeat3_y(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
 
   /*middle*/
   tmp = image_h - h - h;
-  s = rect_init(0, tmp > 0 ? h : h - 1, img_w, tmp > 0 ? tmp : 2);
-  d = rect_init(x, h, img_w, h_h);
-  canvas_draw_image_repeat_y_impl(c, img, &s, &d);
+  if (dst_h > img_h) {
+    s = rect_init(0, tmp > 0 ? h : h - 1, img_w, tmp > 0 ? tmp : 2);
+    d = rect_init(x, h, img_w, h_h);
+    canvas_draw_image_repeat_y_impl(c, img, &s, &d);
+  }
 
   /*bottom*/
   s = rect_init(0, img_h - h, img_w, h);

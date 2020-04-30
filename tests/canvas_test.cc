@@ -461,13 +461,13 @@ TEST(Canvas, draw_image_repeat_x) {
   r = rect_init(0, 0, img.w, img.h);
   d = rect_init(0, 0, img.w + 10, img.h / 2);
   ASSERT_EQ(canvas_draw_image_repeat_x(&c, &img, &d), RET_OK);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "dg(0,0,32,32,0,0,32,16);dg(0,0,10,32,32,0,10,16);");
+  ASSERT_EQ(lcd_log_get_commands(lcd), "dg(0,0,32,16,0,0,32,16);dg(0,0,10,16,32,0,10,16);");
 
   lcd_log_reset(lcd);
   r = rect_init(0, 0, img.w, img.h);
   d = rect_init(0, 0, img.w + 10, img.h / 2);
   ASSERT_EQ(canvas_draw_image_ex(&c, &img, IMAGE_DRAW_REPEAT_X, &d), RET_OK);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "dg(0,0,32,32,0,0,32,16);dg(0,0,10,32,32,0,10,16);");
+  ASSERT_EQ(lcd_log_get_commands(lcd), "dg(0,0,32,16,0,0,32,16);dg(0,0,10,16,32,0,10,16);");
 
   lcd_log_reset(lcd);
   r = rect_init(0, 0, img.w, img.h);
@@ -636,6 +636,204 @@ TEST(Canvas, draw_image_repeat) {
             "dg(0,0,32,32,0,0,32,32);dg(0,0,32,32,32,0,32,32);dg(0,0,10,32,64,0,10,32);dg(0,0,32,"
             "32,0,32,32,32);dg(0,0,32,32,32,32,32,32);dg(0,0,10,32,64,32,10,32);dg(0,0,32,10,0,64,"
             "32,10);dg(0,0,32,10,32,64,32,10);dg(0,0,10,10,64,64,10,10);");
+
+  canvas_end_frame(&c);
+  font_manager_deinit(&font_manager);
+  lcd_destroy(lcd);
+  canvas_reset(&c);
+}
+
+TEST(Canvas, draw_image_repeat9) {
+  rect_t r;
+  rect_t d;
+  canvas_t c;
+  bitmap_t img;
+  font_manager_t font_manager;
+  font_manager_init(&font_manager, NULL);
+  lcd_t* lcd = lcd_log_init(800, 600);
+  canvas_init(&c, lcd, &font_manager);
+
+  img.w = 32;
+  img.h = 32;
+  r = rect_init(0, 0, 320, 480);
+  canvas_begin_frame(&c, &r, LCD_DRAW_NORMAL);
+
+  lcd_log_reset(lcd);
+  r = rect_init(0, 0, img.w, img.h);
+  d = rect_init(0, 0, img.w / 2, img.h / 2);
+  ASSERT_EQ(canvas_draw_image_repeat9(&c, &img, &d), RET_OK);
+  ASSERT_EQ(lcd_log_get_commands(lcd),
+            "dg(0,0,8,8,0,0,8,8);dg(24,0,8,8,8,0,8,8);dg(0,24,8,8,0,8,8,8);dg(24,24,8,8,8,8,8,8);");
+
+  lcd_log_reset(lcd);
+  r = rect_init(0, 0, img.w, img.h);
+  d = rect_init(0, 0, img.w + 10, img.h / 2);
+  ASSERT_EQ(canvas_draw_image_repeat9(&c, &img, &d), RET_OK);
+  ASSERT_EQ(lcd_log_get_commands(lcd),
+            "dg(0,0,16,8,0,0,16,8);dg(16,0,16,8,26,0,16,8);dg(0,24,16,8,0,8,16,8);dg(16,24,16,8,26,"
+            "8,16,8);"
+            "dg(15,0,2,8,16,0,2,8);dg(15,0,2,8,18,0,2,8);dg(15,0,2,8,20,0,2,8);dg(15,0,2,8,22,0,2,"
+            "8);dg(15,0,2,8,24,0,2,8);"
+            "dg(15,24,2,8,16,8,2,8);dg(15,24,2,8,18,8,2,8);dg(15,24,2,8,20,8,2,8);dg(15,24,2,8,22,"
+            "8,2,8);dg(15,24,2,8,24,8,2,8);");
+
+  lcd_log_reset(lcd);
+  r = rect_init(0, 0, img.w, img.h);
+  d = rect_init(0, 0, img.w + 10, img.h / 2);
+  ASSERT_EQ(canvas_draw_image_ex(&c, &img, IMAGE_DRAW_REPEAT9, &d), RET_OK);
+  ASSERT_EQ(lcd_log_get_commands(lcd),
+            "dg(0,0,16,8,0,0,16,8);dg(16,0,16,8,26,0,16,8);dg(0,24,16,8,0,8,16,8);dg(16,24,16,8,26,"
+            "8,16,8);"
+            "dg(15,0,2,8,16,0,2,8);dg(15,0,2,8,18,0,2,8);dg(15,0,2,8,20,0,2,8);dg(15,0,2,8,22,0,2,"
+            "8);dg(15,0,2,8,24,0,2,8);"
+            "dg(15,24,2,8,16,8,2,8);dg(15,24,2,8,18,8,2,8);dg(15,24,2,8,20,8,2,8);dg(15,24,2,8,22,"
+            "8,2,8);dg(15,24,2,8,24,8,2,8);");
+
+  lcd_log_reset(lcd);
+  r = rect_init(0, 0, img.w, img.h);
+  d = rect_init(0, 0, img.w + 15, img.h + 15);
+  ASSERT_EQ(canvas_draw_image_repeat9(&c, &img, &d), RET_OK);
+  ASSERT_EQ(lcd_log_get_commands(lcd),
+            "dg(0,0,16,16,0,0,16,16);dg(16,0,16,16,31,0,16,16);dg(0,16,16,16,0,31,16,16);dg(16,16,"
+            "16,16,31,31,16,16);"
+            "dg(15,0,2,16,16,0,2,16);dg(15,0,2,16,18,0,2,16);dg(15,0,2,16,20,0,2,16);dg(15,0,2,16,"
+            "22,0,2,16);dg(15,0,2,16,24,0,2,16);dg(15,0,2,16,26,0,2,16);dg(15,0,2,16,28,0,2,16);dg("
+            "15,0,1,16,30,0,1,16);"
+            "dg(15,16,2,16,16,31,2,16);dg(15,16,2,16,18,31,2,16);dg(15,16,2,16,20,31,2,16);dg(15,"
+            "16,2,16,22,31,2,16);dg(15,16,2,16,24,31,2,16);dg(15,16,2,16,26,31,2,16);dg(15,16,2,16,"
+            "28,31,2,16);dg(15,16,1,16,30,31,1,16);"
+            "dg(0,15,16,2,0,16,16,2);dg(0,15,16,2,0,18,16,2);dg(0,15,16,2,0,20,16,2);dg(0,15,16,2,"
+            "0,22,16,2);dg(0,15,16,2,0,24,16,2);dg(0,15,16,2,0,26,16,2);dg(0,15,16,2,0,28,16,2);dg("
+            "0,15,16,1,0,30,16,1);"
+            "dg(16,15,16,2,31,16,16,2);dg(16,15,16,2,31,18,16,2);dg(16,15,16,2,31,20,16,2);dg(16,"
+            "15,16,2,31,22,16,2);dg(16,15,16,2,31,24,16,2);dg(16,15,16,2,31,26,16,2);dg(16,15,16,2,"
+            "31,28,16,2);dg(16,15,16,1,31,30,16,1);"
+            "dg(15,15,2,2,16,16,2,2);dg(15,15,2,2,18,16,2,2);dg(15,15,2,2,20,16,2,2);dg(15,15,2,2,"
+            "22,16,2,2);dg(15,15,2,2,24,16,2,2);dg(15,15,2,2,26,16,2,2);dg(15,15,2,2,28,16,2,2);dg("
+            "15,15,1,2,30,16,1,2);dg(15,15,2,2,16,18,2,2);dg(15,15,2,2,18,18,2,2);dg(15,15,2,2,20,"
+            "18,2,2);dg(15,15,2,2,22,18,2,2);dg(15,15,2,2,24,18,2,2);dg(15,15,2,2,26,18,2,2);dg(15,"
+            "15,2,2,28,18,2,2);dg(15,15,1,2,30,18,1,2);dg(15,15,2,2,16,20,2,2);dg(15,15,2,2,18,20,"
+            "2,2);dg(15,15,2,2,20,20,2,2);dg(15,15,2,2,22,20,2,2);dg(15,15,2,2,24,20,2,2);dg(15,15,"
+            "2,2,26,20,2,2);dg(15,15,2,2,28,20,2,2);dg(15,15,1,2,30,20,1,2);dg(15,15,2,2,16,22,2,2)"
+            ";dg(15,15,2,2,18,22,2,2);dg(15,15,2,2,20,22,2,2);dg(15,15,2,2,22,22,2,2);dg(15,15,2,2,"
+            "24,22,2,2);dg(15,15,2,2,26,22,2,2);dg(15,15,2,2,28,22,2,2);dg(15,15,1,2,30,22,1,2);dg("
+            "15,15,2,2,16,24,2,2);dg(15,15,2,2,18,24,2,2);dg(15,15,2,2,20,24,2,2);dg(15,15,2,2,22,"
+            "24,2,2);dg(15,15,2,2,24,24,2,2);dg(15,15,2,2,26,24,2,2);dg(15,15,2,2,28,24,2,2);dg(15,"
+            "15,1,2,30,24,1,2);dg(15,15,2,2,16,26,2,2);dg(15,15,2,2,18,26,2,2);dg(15,15,2,2,20,26,"
+            "2,2);dg(15,15,2,2,22,26,2,2);dg(15,15,2,2,24,26,2,2);dg(15,15,2,2,26,26,2,2);dg(15,15,"
+            "2,2,28,26,2,2);dg(15,15,1,2,30,26,1,2);dg(15,15,2,2,16,28,2,2);dg(15,15,2,2,18,28,2,2)"
+            ";dg(15,15,2,2,20,28,2,2);dg(15,15,2,2,22,28,2,2);dg(15,15,2,2,24,28,2,2);dg(15,15,2,2,"
+            "26,28,2,2);dg(15,15,2,2,28,28,2,2);dg(15,15,1,2,30,28,1,2);dg(15,15,2,1,16,30,2,1);dg("
+            "15,15,2,1,18,30,2,1);dg(15,15,2,1,20,30,2,1);dg(15,15,2,1,22,30,2,1);dg(15,15,2,1,24,"
+            "30,2,1);dg(15,15,2,1,26,30,2,1);dg(15,15,2,1,28,30,2,1);dg(15,15,1,1,30,30,1,1);");
+
+  canvas_end_frame(&c);
+  font_manager_deinit(&font_manager);
+  lcd_destroy(lcd);
+  canvas_reset(&c);
+}
+
+TEST(Canvas, draw_image_repeat3_x) {
+  rect_t r;
+  rect_t d;
+  canvas_t c;
+  bitmap_t img;
+  font_manager_t font_manager;
+  font_manager_init(&font_manager, NULL);
+  lcd_t* lcd = lcd_log_init(800, 600);
+  canvas_init(&c, lcd, &font_manager);
+
+  img.w = 32;
+  img.h = 32;
+  r = rect_init(0, 0, 320, 480);
+  canvas_begin_frame(&c, &r, LCD_DRAW_NORMAL);
+
+  lcd_log_reset(lcd);
+  r = rect_init(0, 0, img.w, img.h);
+  d = rect_init(0, 0, img.w / 2, img.h / 2);
+  ASSERT_EQ(canvas_draw_image_repeat3_x(&c, &img, &d), RET_OK);
+  ASSERT_EQ(lcd_log_get_commands(lcd), "dg(0,0,8,24,0,0,8,24);dg(24,0,8,24,8,0,8,24);");
+
+  lcd_log_reset(lcd);
+  r = rect_init(0, 0, img.w, img.h);
+  d = rect_init(0, 0, img.w + 10, img.h / 2);
+  ASSERT_EQ(canvas_draw_image_repeat3_x(&c, &img, &d), RET_OK);
+  ASSERT_EQ(lcd_log_get_commands(lcd),
+            "dg(0,0,16,24,0,0,16,24);dg(16,0,2,24,16,0,2,24);dg(16,0,2,24,18,0,2,24);dg(16,0,2,24,"
+            "20,0,2,24);dg(16,0,2,24,22,0,2,24);dg(16,0,2,24,24,0,2,24);dg(16,0,16,24,26,0,16,24)"
+            ";");
+
+  lcd_log_reset(lcd);
+  r = rect_init(0, 0, img.w, img.h);
+  d = rect_init(0, 0, img.w + 10, img.h / 2);
+  ASSERT_EQ(canvas_draw_image_ex(&c, &img, IMAGE_DRAW_REPEAT3_X, &d), RET_OK);
+  ASSERT_EQ(lcd_log_get_commands(lcd),
+            "dg(0,0,16,24,0,0,16,24);dg(16,0,2,24,16,0,2,24);dg(16,0,2,24,18,0,2,24);dg(16,0,2,24,"
+            "20,0,2,24);dg(16,0,2,24,22,0,2,24);dg(16,0,2,24,24,0,2,24);dg(16,0,16,24,26,0,16,24)"
+            ";");
+
+  lcd_log_reset(lcd);
+  r = rect_init(0, 0, img.w, img.h);
+  d = rect_init(0, 0, img.w + 15, img.h + 15);
+  ASSERT_EQ(canvas_draw_image_repeat3_x(&c, &img, &d), RET_OK);
+  ASSERT_EQ(lcd_log_get_commands(lcd),
+            "dg(0,0,16,32,0,7,16,32);dg(16,0,2,32,16,7,2,32);dg(16,0,2,32,18,7,2,32);dg(16,0,2,32,"
+            "20,7,2,32);dg(16,0,2,32,22,7,2,32);dg(16,0,2,32,24,7,2,32);dg(16,0,2,32,26,7,2,32);dg("
+            "16,0,2,32,28,7,2,32);dg(16,0,1,32,30,7,1,32);dg(16,0,16,32,31,7,16,32);");
+
+  canvas_end_frame(&c);
+  font_manager_deinit(&font_manager);
+  lcd_destroy(lcd);
+  canvas_reset(&c);
+}
+
+TEST(Canvas, draw_image_repeat3_y) {
+  rect_t r;
+  rect_t d;
+  canvas_t c;
+  bitmap_t img;
+  font_manager_t font_manager;
+  font_manager_init(&font_manager, NULL);
+  lcd_t* lcd = lcd_log_init(800, 600);
+  canvas_init(&c, lcd, &font_manager);
+
+  img.w = 32;
+  img.h = 32;
+  r = rect_init(0, 0, 320, 480);
+  canvas_begin_frame(&c, &r, LCD_DRAW_NORMAL);
+
+  lcd_log_reset(lcd);
+  r = rect_init(0, 0, img.w, img.h);
+  d = rect_init(0, 0, img.w / 2, img.h / 2);
+  ASSERT_EQ(canvas_draw_image_repeat3_y(&c, &img, &d), RET_OK);
+  ASSERT_EQ(lcd_log_get_commands(lcd), "dg(0,0,24,8,0,0,24,8);dg(0,24,24,8,0,8,24,8);");
+
+  lcd_log_reset(lcd);
+  r = rect_init(0, 0, img.w, img.h);
+  d = rect_init(0, 0, img.w / 2, img.h + 10);
+  ASSERT_EQ(canvas_draw_image_repeat3_y(&c, &img, &d), RET_OK);
+  ASSERT_EQ(lcd_log_get_commands(lcd),
+            "dg(0,0,24,16,0,0,24,16);dg(0,15,24,2,0,16,24,2);dg(0,15,24,2,0,18,24,2);dg(0,15,24,2,"
+            "0,20,24,2);dg(0,15,24,2,0,22,24,2);dg(0,15,24,2,0,24,24,2);dg(0,16,24,16,0,26,24,16)"
+            ";");
+
+  lcd_log_reset(lcd);
+  r = rect_init(0, 0, img.w, img.h);
+  d = rect_init(0, 0, img.w / 2, img.h + 10);
+  ASSERT_EQ(canvas_draw_image_ex(&c, &img, IMAGE_DRAW_REPEAT3_Y, &d), RET_OK);
+  ASSERT_EQ(lcd_log_get_commands(lcd),
+            "dg(0,0,24,16,0,0,24,16);dg(0,15,24,2,0,16,24,2);dg(0,15,24,2,0,18,24,2);dg(0,15,24,2,"
+            "0,20,24,2);dg(0,15,24,2,0,22,24,2);dg(0,15,24,2,0,24,24,2);dg(0,16,24,16,0,26,24,16)"
+            ";");
+
+  lcd_log_reset(lcd);
+  r = rect_init(0, 0, img.w, img.h);
+  d = rect_init(0, 0, img.w + 15, img.h + 15);
+  ASSERT_EQ(canvas_draw_image_repeat3_y(&c, &img, &d), RET_OK);
+  ASSERT_EQ(lcd_log_get_commands(lcd),
+            "dg(0,0,32,16,7,0,32,16);dg(0,15,32,2,7,16,32,2);dg(0,15,32,2,7,18,32,2);dg(0,15,32,2,"
+            "7,20,32,2);dg(0,15,32,2,7,22,32,2);dg(0,15,32,2,7,24,32,2);dg(0,15,32,2,7,26,32,2);dg("
+            "0,15,32,2,7,28,32,2);dg(0,15,32,1,7,30,32,1);dg(0,16,32,16,7,31,32,16);");
 
   canvas_end_frame(&c);
   font_manager_deinit(&font_manager);
