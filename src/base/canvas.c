@@ -715,38 +715,56 @@ static ret_t canvas_draw_image_repeat_default(canvas_t* c, bitmap_t* img, rect_t
 
 static ret_t canvas_draw_image_repeat_x_impl(canvas_t* c, bitmap_t* img, rect_t* src_in,
                                              rect_t* dst_in) {
+  rect_t d;
   return_value_if_fail(
       c != NULL && c->lcd != NULL && img != NULL && src_in != NULL && dst_in != NULL,
       RET_BAD_PARAMS);
-  if (c->lcd->draw_image_repeat != NULL) {
-    return c->lcd->draw_image_repeat(c->lcd, img, src_in, dst_in, src_in->w, dst_in->h);
-  } else {
-    return canvas_draw_image_repeat_default(c, img, src_in, dst_in, src_in->w, dst_in->h);
-  }
+  d.x = dst_in->x + c->ox;
+  d.y = dst_in->y + c->oy;
+  d.w = dst_in->w;
+  d.h = dst_in->h;
+
+  if (c->lcd->draw_image_repeat != NULL && c->lcd->draw_image_repeat(c->lcd, img, src_in, &d, src_in->w, dst_in->h) == RET_OK) {
+    return RET_OK;
+  } 
+
+  return canvas_draw_image_repeat_default(c, img, src_in, dst_in, src_in->w, dst_in->h);
 }
 
 static ret_t canvas_draw_image_repeat_y_impl(canvas_t* c, bitmap_t* img, rect_t* src_in,
                                              rect_t* dst_in) {
+  rect_t d;
   return_value_if_fail(
       c != NULL && c->lcd != NULL && img != NULL && src_in != NULL && dst_in != NULL,
       RET_BAD_PARAMS);
-  if (c->lcd->draw_image_repeat != NULL) {
-    return c->lcd->draw_image_repeat(c->lcd, img, src_in, dst_in, dst_in->w, src_in->h);
-  } else {
-    return canvas_draw_image_repeat_default(c, img, src_in, dst_in, dst_in->w, src_in->h);
-  }
+  d.x = dst_in->x + c->ox;
+  d.y = dst_in->y + c->oy;
+  d.w = dst_in->w;
+  d.h = dst_in->h;
+
+  if (c->lcd->draw_image_repeat != NULL && c->lcd->draw_image_repeat(c->lcd, img, src_in, dst_in, dst_in->w, src_in->h) == RET_OK) {
+    return RET_OK;
+  } 
+
+  return canvas_draw_image_repeat_default(c, img, src_in, dst_in, dst_in->w, src_in->h);
 }
 
 static ret_t canvas_draw_image_repeat_impl(canvas_t* c, bitmap_t* img, rect_t* src_in,
                                            rect_t* dst_in) {
+  rect_t d;
   return_value_if_fail(
       c != NULL && c->lcd != NULL && img != NULL && src_in != NULL && dst_in != NULL,
       RET_BAD_PARAMS);
-  if (c->lcd->draw_image_repeat != NULL) {
-    return c->lcd->draw_image_repeat(c->lcd, img, src_in, dst_in, src_in->w, src_in->h);
-  } else {
-    return canvas_draw_image_repeat_default(c, img, src_in, dst_in, src_in->w, src_in->h);
+  d.x = dst_in->x + c->ox;
+  d.y = dst_in->y + c->oy;
+  d.w = dst_in->w;
+  d.h = dst_in->h;
+  
+  if (c->lcd->draw_image_repeat != NULL && c->lcd->draw_image_repeat(c->lcd, img, src_in, dst_in, src_in->w, src_in->h) == RET_OK) {
+    return RET_OK;
   }
+    
+  return canvas_draw_image_repeat_default(c, img, src_in, dst_in, src_in->w, src_in->h);
 }
 
 ret_t canvas_draw_image_repeat(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
