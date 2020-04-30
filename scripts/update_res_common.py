@@ -21,11 +21,7 @@ DEFAULT_THEME_OUTPUT_DIR = ''
 FONT_OPTIONS = ''
 IMAGEGEN_OPTIONS = ''
 IS_DEFAULT_THEME = False
-IS_EXCLUDE_LARGE_FILE = True
-FONT_RES_MAX = 150 * 1024
-FONT_DATA_MAX = 150 * 1024
-IMAGE_RES_MAX = 150 * 1024
-IMAGE_DATA_MAX = 2000 * 1024
+IS_FILE_EXCLUDED = None
 ###########################
 
 
@@ -347,34 +343,12 @@ def writeResultJSON(str):
         text_file.write(str)
 
 
-def isExcluduFile(f):
-    if (not IS_EXCLUDE_LARGE_FILE):
-        return False;
-
-    filesize = os.path.getsize(f);
-    filename, extname = os.path.splitext(f)
-    filename = filename.replace('\\', '/')
-
-    if (filename.find("/fonts/") >= 0):
-        if (extname == '.res'):
-            return filesize > FONT_RES_MAX;
-        else :
-            return filesize > FONT_DATA_MAX;
-
-    if (filename.find("/images/") >= 0):
-        if (extname == '.res'):
-            return filesize > IMAGE_RES_MAX;
-        else :
-            return filesize > IMAGE_DATA_MAX;
-
-    return False;
-
-
 def genIncludes(files):
+    global IS_FILE_EXCLUDED
     result = ""
     assets_root = os.path.dirname(os.path.dirname(ASSETS_ROOT))
     for f in files:
-        if (isExcluduFile(f)):
+        if (IS_FILE_EXCLUDED and IS_FILE_EXCLUDED(f)):
             continue
         incf = copy.copy(f)
         incf = incf.replace(assets_root, ".")
@@ -385,9 +359,10 @@ def genIncludes(files):
     return result
 
 def genExternOfDefaultTheme(files):
+    global IS_FILE_EXCLUDED
     result = ""
     for f in files:
-        if (isExcluduFile(f)):
+        if (IS_FILE_EXCLUDED and IS_FILE_EXCLUDED(f)):
             continue
         if(not os.path.exists(f.replace(DEFAULT_THEME_ASSETS_ROOT, ASSETS_ROOT))):
             basename = to_assets_basename(f, DEFAULT_THEME_OUTPUT_DIR)
@@ -396,9 +371,10 @@ def genExternOfDefaultTheme(files):
     return result
 
 def gen_add_assets(files):
+    global IS_FILE_EXCLUDED
     result = ""
     for f in files:
-        if (isExcluduFile(f)):
+        if (IS_FILE_EXCLUDED and IS_FILE_EXCLUDED(f)):
             continue
         basename = to_assets_basename(f, OUTPUT_DIR)
         if IS_DEFAULT_THEME:
@@ -408,9 +384,10 @@ def gen_add_assets(files):
     return result
 
 def gen_add_assets_of_default_theme(files):
+    global IS_FILE_EXCLUDED
     result = ""
     for f in files:
-        if (isExcluduFile(f)):
+        if (IS_FILE_EXCLUDED and IS_FILE_EXCLUDED(f)):
             continue
         if(not os.path.exists(f.replace(DEFAULT_THEME_ASSETS_ROOT, ASSETS_ROOT))):
             basename = to_assets_basename(f, DEFAULT_THEME_OUTPUT_DIR)
@@ -633,12 +610,6 @@ def gen_res_json():
     writeResult(ASSET_C.replace('.c', '_web.js'), result)
 
 
-def gen_res():
-    prepare()
-    gen_res_all()
-    gen_res_c()
-
-
 def genAssetC(themes, asset_c):
     result = '#include "awtk.h"\n'
     result += '#include "base/assets_manager.h"\n\n'
@@ -717,7 +688,7 @@ def genAssetC(themes, asset_c):
     writeResult(asset_c, result)
 
 
-def init(awtk_root, assets_root, theme, asset_c):
+def init(awtk_root, assets_root, theme, asset_c, is_file_excluded = None):
     global DPI
     global THEME
     global ASSET_C
@@ -730,7 +701,9 @@ def init(awtk_root, assets_root, theme, asset_c):
     global DEFAULT_THEME_OUTPUT_DIR
     global IMAGEGEN_OPTIONS
     global IS_DEFAULT_THEME
+    global IS_FILE_EXCLUDED
 
+    IS_FILE_EXCLUDED = is_file_excluded
     IS_DEFAULT_THEME = theme == 'default'
     THEME = theme
     ASSET_C = asset_c
@@ -763,7 +736,9 @@ def updateRes():
     global ACTION
     if ACTION == 'all':
         removeDir(OUTPUT_DIR)
-        gen_res()
+        prepare()
+        gen_res_all()
+        gen_res_c()
     elif ACTION == 'clean':
         cleanRes()
     elif ACTION == 'web':
@@ -806,6 +781,8 @@ def updateRes():
         prepare()
         gen_gpinyin()
         gen_res_c()
+    elif ACTION == 'assets.c':
+        gen_res_c()
     dumpArgs()
 
 
@@ -830,7 +807,7 @@ def showUsage():
     global ACTION
     global IMAGEGEN_OPTIONS
     global FONT_OPTIONS
-    args = ' action[clean|web|json|all|font|image|ui|style|string|script|data|xml] dpi[x1|x2] image_options[rgba|bgra+bgr565|mono]'
+    args = ' action[clean|web|json|all|font|image|ui|style|string|script|data|xml|assets.c] dpi[x1|x2] image_options[rgba|bgra+bgr565|mono]'
     if len(sys.argv) == 1:
         print('=========================================================')
         print('Usage: python '+sys.argv[0] + args)

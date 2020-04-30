@@ -1,5 +1,9 @@
 # 最新动态
 
+* 2020/04/30
+  * 完善 update res 脚本（感谢朝泽提供补丁）。 
+  * 完善 draw_image_repeat（感谢智明提供补丁）。
+
 * 2020/04/29
   * 完善 rich text view 滚动条的处理。
   * lcd 增加 draw_image_repeat 函数，方便特定平台优化（感谢智明提供补丁）。
