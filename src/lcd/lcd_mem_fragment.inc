@@ -232,13 +232,17 @@ static ret_t lcd_mem_fragment_flush(lcd_t* lcd) {
   uint32_t w = mem->fb.w;
   uint32_t h = mem->fb.h;
   pixel_t* p = mem->buff;
+  
+#ifdef lcd_draw_bitmap_impl
+  lcd_draw_bitmap_impl(x, y, w, h, p);
+#else
   uint32_t nr = w * h;
-
   set_window_func(x, y, x + w - 1, y + h - 1);
   while (nr-- > 0) {
     write_data_func(*p++);
   }
-
+#endif
+	
   return RET_OK;
 }
 
