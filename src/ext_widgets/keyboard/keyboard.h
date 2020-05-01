@@ -129,6 +129,7 @@ typedef struct _keyboard_t {
   uint32_t action_info_id;
   uint32_t timer_id;
   str_t temp;
+  int key_down;
 } keyboard_t;
 
 /**
