@@ -879,8 +879,19 @@ typedef enum _key_code_t {
    */
   TK_KEY_CANCEL = 0x20 + 167,
 #endif
-
 } key_code_t;
+
+#ifndef TK_KEY_CLOSE_INPUT_METHOD
+#define TK_KEY_CLOSE_INPUT_METHOD TK_KEY_F7
+#endif /*TK_KEY_CLOSE_INPUT_METHOD*/
+
+#ifndef TK_KEY_OPEN_INPUT_METHOD
+#define TK_KEY_OPEN_INPUT_METHOD TK_KEY_F8
+#endif /*TK_KEY_OPEN_INPUT_METHOD*/
+
+#ifndef TK_KEY_TOGGLE_INPUT_METHOD
+#define TK_KEY_TOGGLE_INPUT_METHOD TK_KEY_F9
+#endif /*TK_KEY_TOGGLE_INPUT_METHOD*/
 
 static inline bool_t key_code_is_enter(int key) {
 #ifdef SDL2

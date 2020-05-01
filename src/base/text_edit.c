@@ -28,6 +28,7 @@
 #include "base/text_edit.h"
 #include "base/line_break.h"
 #include "base/clip_board.h"
+#include "base/input_method.h"
 
 #define CHAR_SPACING 1
 #define FONT_BASELINE 1.25f
@@ -913,6 +914,34 @@ static ret_t text_edit_handle_shortcut(text_edit_t* text_edit, key_event_t* evt,
   return RET_FAIL;
 }
 
+ret_t text_edit_key_up(text_edit_t* text_edit, key_event_t* evt) {
+  uint32_t key = 0;
+  ret_t ret = RET_OK;
+  widget_t* widget = NULL;
+  input_method_t* im = input_method();
+  return_value_if_fail(im != NULL, RET_FAIL);
+  return_value_if_fail(text_edit != NULL && text_edit->widget != NULL && evt != NULL, RET_FAIL);
+
+  key = evt->key;
+  widget = text_edit->widget;
+  if (key == TK_KEY_OPEN_INPUT_METHOD) {
+    input_method_request(im, widget);
+    ret = RET_STOP;
+  } else if (key == TK_KEY_CLOSE_INPUT_METHOD) {
+    input_method_request(im, NULL);
+    ret = RET_STOP;
+  } else if (key == TK_KEY_TOGGLE_INPUT_METHOD) {
+    if (im->widget == widget) {
+      input_method_request(im, NULL);
+    } else {
+      input_method_request(im, widget);
+    }
+    ret = RET_STOP;
+  }
+
+  return ret;
+}
+
 ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
   uint32_t key = 0;
   wstr_t* text = NULL;
@@ -1022,6 +1051,18 @@ ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
       }
       break;
     }
+    case TK_KEY_F1:
+    case TK_KEY_F2:
+    case TK_KEY_F3:
+    case TK_KEY_F4:
+    case TK_KEY_F5:
+    case TK_KEY_F6:
+    case TK_KEY_F7:
+    case TK_KEY_F8:
+    case TK_KEY_F9:
+    case TK_KEY_F10:
+    case TK_KEY_F11:
+    case TK_KEY_F12:
     case TK_KEY_LSHIFT:
     case TK_KEY_RSHIFT:
     case TK_KEY_LCTRL:

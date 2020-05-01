@@ -2,6 +2,7 @@
 
 * 2020/05/01
   * 完善 draw_image_repeat（感谢智明提供补丁）。
+  * edit/mledit 支持用按键关闭、打开和toggle [输入法](https://github.com/zlgopen/awtk/blob/master/docs/input_method.md)。
 
 * 2020/04/30
   * 完善 update res 脚本（感谢朝泽提供补丁）。 

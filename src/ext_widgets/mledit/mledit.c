@@ -519,6 +519,8 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       key_event_t* key_event = key_event_cast(e);
       if (key_code_is_enter(key_event->key)) {
         ret = RET_STOP;
+      } else {
+        ret = text_edit_key_up(mledit->model, key_event);
       }
       widget_invalidate(widget, NULL);
       break;

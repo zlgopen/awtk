@@ -473,7 +473,7 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
   } else if (key == TK_KEY_DOWN) {
     if (!edit_is_number(widget)) {
       widget_focus_next(widget);
-      return RET_OK;
+      return RET_STOP;
     } else {
       edit_dec(edit);
     }
@@ -481,7 +481,7 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
   } else if (key == TK_KEY_UP) {
     if (!edit_is_number(widget)) {
       widget_focus_prev(widget);
-      return RET_OK;
+      return RET_STOP;
     } else {
       edit_inc(edit);
     }
@@ -511,6 +511,23 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
   }
 
   return RET_STOP;
+}
+
+static ret_t edit_on_key_up(widget_t* widget, key_event_t* e) {
+  int key = e->key;
+  ret_t ret = RET_OK;
+  edit_t* edit = EDIT(widget);
+
+  if (key_code_is_enter(key)) {
+    if (edit->timer_id == TK_INVALID_ID) {
+      edit_on_focused(widget);
+    }
+    ret = RET_STOP;
+  } else {
+    ret = text_edit_key_up(edit->model, e);
+  }
+
+  return ret;
 }
 
 static ret_t edit_select_all_async(const idle_info_t* info) {
@@ -572,13 +589,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_KEY_UP: {
-      key_event_t* key_event = key_event_cast(e);
-      if (key_code_is_enter(key_event->key)) {
-        if (edit->timer_id == TK_INVALID_ID) {
-          edit_on_focused(widget);
-        }
-        ret = RET_STOP;
-      }
+      ret = edit_on_key_up(widget, (key_event_t*)e);
       widget_invalidate(widget, NULL);
       break;
     }

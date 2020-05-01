@@ -144,6 +144,16 @@ ret_t text_edit_copy(text_edit_t* text_edit);
 ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt);
 
 /**
+ * @method text_edit_key_up
+ * 处理按键事件。
+ * @param {text_edit_t*} text_edit text_edit对象。
+ * @param {key_event_t*} evt event
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t text_edit_key_up(text_edit_t* text_edit, key_event_t* evt);
+
+/**
  * @method text_edit_set_select
  * 选择指定范围的文本。
  * @param {text_edit_t*} text_edit text_edit对象。
