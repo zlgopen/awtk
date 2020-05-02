@@ -2324,8 +2324,10 @@ static ret_t widget_dispatch_leave_event(widget_t* widget, pointer_event_t* e) {
 
 static ret_t widget_dispatch_blur_event(widget_t* widget) {
   widget_t* target = widget;
+  widget_t* temp;
 
   while (target != NULL) {
+    widget_ref(target);
     if (target->focused) {
       target->focused = FALSE;
       event_t e = event_init(EVT_BLUR, target);
@@ -2336,7 +2338,10 @@ static ret_t widget_dispatch_blur_event(widget_t* widget) {
     if (target->parent && target->parent->key_target == target) {
       target->parent->key_target = NULL;
     }
-    target = target->key_target;
+
+    temp = target->key_target;
+    widget_unref(target);
+    target = temp;
   }
 
   return RET_OK;
@@ -3950,30 +3955,32 @@ widget_t* widget_ref(widget_t* widget) {
   return widget;
 }
 
-ret_t widget_unref(widget_t* widget) {
-  ENSURE(widget != NULL && widget->ref_count > 0 && widget->vt != NULL);
-  return_value_if_fail(widget != NULL && widget->ref_count > 0 && widget->vt != NULL,
-                       RET_BAD_PARAMS);
-
-  if (widget->ref_count == 1) {
-    widget_destroy_sync(widget);
-  } else {
-    widget->ref_count--;
-  }
-
-  return RET_OK;
-}
-
 static ret_t widget_unref_in_idle(const idle_info_t* info) {
   widget_t* widget = WIDGET(info->ctx);
+  ENSURE(widget != NULL && widget->ref_count > 0 && widget->vt != NULL);
 
   if (widget->ref_count > 1) {
     return RET_REPEAT;
   }
 
-  widget_unref(widget);
-
+  widget_destroy_sync(widget);
   return RET_REMOVE;
+}
+
+ret_t widget_unref(widget_t* widget) {
+  ENSURE(widget != NULL && widget->ref_count > 0 && widget->vt != NULL);
+  return_value_if_fail(widget != NULL && widget->ref_count > 0 && widget->vt != NULL,
+                       RET_BAD_PARAMS);
+
+  if (widget->ref_count > 1) {
+    widget->ref_count--;
+  } else if (widget->ref_count == 1) {
+    if (!idle_exist(widget_unref_in_idle, widget)) {
+      widget_destroy_sync(widget);
+    }
+  }
+
+  return RET_OK;
 }
 
 static ret_t widget_unref_async(widget_t* widget) {
