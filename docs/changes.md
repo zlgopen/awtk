@@ -1,5 +1,8 @@
 # 最新动态
 
+* 2020/05/02
+  * 完善控件动画（感谢朝泽提供补丁）。
+
 * 2020/05/01
   * 完善 draw_image_repeat（感谢智明提供补丁）。
   * edit/mledit 支持用按键关闭、打开和toggle [输入法](https://github.com/zlgopen/awtk/blob/master/docs/input_method.md)。

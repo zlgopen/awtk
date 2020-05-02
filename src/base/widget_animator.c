@@ -109,7 +109,10 @@ ret_t widget_animator_time_elapse(widget_animator_t* animator, uint32_t delta_ti
       event_t e = event_init(EVT_ANIM_ONCE, animator);
       animator->start_time = animator->now;
       animator->reversed = !animator->reversed;
-      animator->yoyo_times--;
+
+      if (!animator->reversed) {
+        animator->yoyo_times--;
+      }
 
       if (animator->yoyo_times == 0 && animator->forever) {
         animator->yoyo_times = TK_UINT32_MAX;
@@ -141,6 +144,9 @@ ret_t widget_animator_start(widget_animator_t* animator) {
   }
 
   if (animator->state == ANIMATOR_DONE) {
+    animator->now = 0;
+    animator->start_time = 0;
+    animator->reversed = FALSE;
     animator->yoyo_times = animator->total_yoyo_times;
     animator->repeat_times = animator->total_repeat_times;
   }
@@ -198,11 +204,9 @@ ret_t widget_animator_set_yoyo(widget_animator_t* animator, uint32_t yoyo_times)
   return_value_if_fail(animator != NULL && animator->update != NULL, RET_BAD_PARAMS);
 
   animator->repeat_times = 0;
-  animator->yoyo_times = yoyo_times;
+  animator->total_repeat_times = animator->repeat_times;
   animator->forever = yoyo_times == 0;
-  if (animator->forever) {
-    animator->yoyo_times = TK_UINT32_MAX;
-  }
+  animator->yoyo_times = animator->forever ? TK_UINT32_MAX : yoyo_times;
   animator->total_yoyo_times = animator->yoyo_times;
 
   return RET_OK;
@@ -220,11 +224,9 @@ ret_t widget_animator_set_repeat(widget_animator_t* animator, uint32_t repeat_ti
   return_value_if_fail(animator != NULL && animator->update != NULL, RET_BAD_PARAMS);
 
   animator->yoyo_times = 0;
-  animator->repeat_times = repeat_times;
+  animator->total_yoyo_times = animator->yoyo_times;
   animator->forever = repeat_times == 0;
-  if (animator->forever) {
-    animator->repeat_times = TK_UINT32_MAX;
-  }
+  animator->repeat_times = animator->forever ? TK_UINT32_MAX : repeat_times;
   animator->total_repeat_times = animator->repeat_times;
 
   return RET_OK;
