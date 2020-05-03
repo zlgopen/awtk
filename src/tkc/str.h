@@ -39,6 +39,7 @@ BEGIN_C_DECLS
  *
  *  str_append(&s, "abc");
  *  str_append(&s, "123");
+ *  log_debug("%s\n", s.str);
  *
  *  str_reset(&s);
  * ```
@@ -138,6 +139,28 @@ ret_t str_set_with_len(str_t* str, const char* text, uint32_t len);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t str_append(str_t* str, const char* text);
+
+/**
+ * @method str_append_more
+ * 追加多个字符串。以NULL结束。
+ *
+ * 示例：
+ *
+ * ```c
+ *  str_t s;
+ *  str_init(&s, 0);
+ *
+ *  str_append_more(&s, "abc", "123", NULL);
+ *  log_debug("%s\n", s.str);
+ *
+ *  str_reset(&s);
+ * ```
+ * @param {str_t*} str str对象。
+ * @param {char*} text 要追加的字符串。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_append_more(str_t* str, const char* text, ...);
 
 /**
  * @method str_append_with_len

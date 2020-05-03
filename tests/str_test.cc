@@ -298,3 +298,23 @@ TEST(Str, json) {
 
   str_reset(s);
 }
+
+TEST(Str, append_more1) {
+  str_t str;
+  str_t* s = NULL;
+  s = str_init(&str, 100);
+  ASSERT_EQ(str_append_more(s, "123", NULL), RET_OK);
+  ASSERT_STREQ(s->str, "123");
+
+  str_reset(s);
+}
+
+TEST(Str, append_more2) {
+  str_t str;
+  str_t* s = NULL;
+  s = str_init(&str, 100);
+  ASSERT_EQ(str_append_more(s, "123", "abc", NULL), RET_OK);
+  ASSERT_STREQ(s->str, "123abc");
+
+  str_reset(s);
+}
