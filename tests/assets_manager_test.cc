@@ -1,5 +1,6 @@
 ﻿#include "base/assets_manager.h"
 #include "gtest/gtest.h"
+#include "tkc/str.h"
 
 TEST(AssetsManager, basic) {
   const asset_info_t* null_res = NULL;
@@ -112,9 +113,14 @@ TEST(AssetsManager, json) {
   const asset_info_t* r = NULL;
   assets_manager_t* rm = assets_manager();
 #ifdef WITH_FS_RES
+  str_t s;
+  str_init(&s, 0);
   r = assets_manager_ref(rm, ASSET_TYPE_DATA, "com.zlg.app.json");
   ASSERT_EQ(r != NULL, true);
-  ASSERT_EQ(strncmp((const char*)(r->data), "{}\n", 3), 0);
+  str_set(&s, (const char*)(r->data));
+  str_replace(&s, "\r\n", "\n");
+  ASSERT_STREQ(s.str, "{}\n");
+  str_reset(&s);
   assets_manager_unref(rm, r);
 #else
   r = assets_manager_find_in_cache(rm, ASSET_TYPE_DATA, "com.zlg.app.json");
@@ -140,9 +146,14 @@ TEST(AssetsManager, any) {
   const asset_info_t* r = NULL;
   assets_manager_t* rm = assets_manager();
 #ifdef WITH_FS_RES
+  str_t s;
+  str_init(&s, 0);
   r = assets_manager_ref(rm, ASSET_TYPE_DATA, "a-b-c.any");
   ASSERT_EQ(r != NULL, true);
-  ASSERT_EQ(strncmp((const char*)(r->data), "abc\n", 4), 0);
+  str_set(&s, (const char*)(r->data));
+  str_replace(&s, "\r\n", "\n");
+  ASSERT_STREQ(s.str, "abc\n");
+  str_reset(&s);
   assets_manager_unref(rm, r);
 #else
   r = assets_manager_find_in_cache(rm, ASSET_TYPE_DATA, "a-b-c.any");

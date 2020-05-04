@@ -213,9 +213,11 @@ TEST(Utils, xml_file_expand_read) {
   str_init(&s, 0);
 
   ASSERT_EQ(xml_file_expand_read("./tests/testdata/main.xml", &s), RET_OK);
+  str_replace(&s, "\r\n", "\n");
   ASSERT_EQ(string(s.str), "<window><button />\n<label />\n</window>\n");
 
   ASSERT_EQ(xml_file_expand_read("./tests/testdata/button.xml", &s), RET_OK);
+  str_replace(&s, "\r\n", "\n");
   ASSERT_EQ(string(s.str), "<button />\n");
 
   str_reset(&s);
