@@ -57,7 +57,7 @@ ret_t fs_file_seek(fs_file_t* file, int32_t offset) {
 ret_t fs_file_truncate(fs_file_t* file, int32_t offset) {
   return_value_if_fail(file != NULL && file->vt != NULL && file->vt->truncate != NULL,
                        RET_BAD_PARAMS);
-
+  fs_file_seek(file, 0);
   return file->vt->truncate(file, offset);
 }
 
@@ -110,9 +110,9 @@ bool_t fs_file_exist(fs_t* fs, const char* name) {
   return fs->file_exist(fs, name);
 }
 
-bool_t fs_file_rename(fs_t* fs, const char* name, const char* new_name) {
+ret_t fs_file_rename(fs_t* fs, const char* name, const char* new_name) {
   return_value_if_fail(fs != NULL && fs->file_rename != NULL && name != NULL && new_name != NULL,
-                       FALSE);
+                       RET_BAD_PARAMS);
 
   return fs->file_rename(fs, name, new_name);
 }
@@ -141,8 +141,9 @@ bool_t fs_dir_exist(fs_t* fs, const char* name) {
   return fs->dir_exist(fs, name);
 }
 
-bool_t fs_dir_rename(fs_t* fs, const char* name, const char* new_name) {
-  return_value_if_fail(fs != NULL && fs->dir_rename != NULL && name != NULL && new_name, FALSE);
+ret_t fs_dir_rename(fs_t* fs, const char* name, const char* new_name) {
+  return_value_if_fail(fs != NULL && fs->dir_rename != NULL && name != NULL && new_name,
+                       RET_BAD_PARAMS);
 
   return fs->dir_rename(fs, name, new_name);
 }
@@ -256,4 +257,95 @@ bool_t file_exist(const char* name) {
   return_value_if_fail(name != NULL, FALSE);
 
   return fs_file_exist(os_fs(), name);
+}
+
+ret_t fs_test(fs_t* fs) {
+  char buff[32];
+  fs_item_t item;
+  fs_file_t* fp = NULL;
+  fs_dir_t* dir = NULL;
+  const char* filename = "./test.txt";
+
+  memset(buff, 0x00, sizeof(buff));
+  assert(fs_file_exist(fs, filename) == FALSE);
+  fp = fs_open_file(fs, filename, "w+");
+  assert(fs_file_write(fp, "hello", 5) == 5);
+  assert(fs_file_truncate(fp, 0) == RET_OK);
+  assert(fs_file_write(fp, "world", 5) == 5);
+  assert(fs_file_seek(fp, 0) == RET_OK);
+  assert(fs_file_write(fp, "WORLD", 5) == 5);
+  assert(fs_file_close(fp) == RET_OK);
+  assert(fs_file_exist(fs, filename) == TRUE);
+
+  fp = fs_open_file(fs, filename, "a");
+  assert(fs_file_write(fp, "world", 5) == 5);
+  assert(fs_file_close(fp) == RET_OK);
+  assert(fs_get_file_size(fs, filename) == 10);
+
+  fp = fs_open_file(fs, filename, "r");
+  assert(fs_file_read(fp, buff, 10) == 10);
+  assert(strcmp(buff, "WORLDworld") == 0);
+  assert(fs_file_close(fp) == RET_OK);
+  assert(fs_get_file_size(fs, filename) == 10);
+
+  fp = fs_open_file(fs, filename, "w+");
+  assert(fs_file_printf(fp, "%s:%d", "hello", 10) == 8);
+  assert(fs_file_close(fp) == RET_OK);
+
+  assert(fs_file_rename(fs, filename, "./test.bin") == RET_OK);
+  assert(!fs_file_exist(fs, filename));
+  assert(fs_file_exist(fs, "./test.bin"));
+  assert(fs_remove_file(fs, "./test.bin") == RET_OK);
+  assert(!fs_file_exist(fs, "./test.bin"));
+
+  assert(!fs_dir_exist(fs, "./a"));
+  assert(fs_create_dir(fs, "./a") == RET_OK);
+  assert(fs_dir_exist(fs, "./a"));
+
+  assert(fs_create_dir(fs, "./a/b") == RET_OK);
+  assert(fs_dir_exist(fs, "./a/b"));
+
+  assert(fs_create_dir(fs, "./a/b/c1") == RET_OK);
+  assert(fs_dir_exist(fs, "./a/b/c1"));
+
+  assert(fs_create_dir(fs, "./a/b/c2") == RET_OK);
+  assert(fs_dir_exist(fs, "./a/b/c2"));
+
+  dir = fs_open_dir(fs, "./a/b");
+  assert(dir != NULL);
+
+  assert(fs_dir_read(dir, &item) == RET_OK);
+  assert(strcmp(item.name, ".") == 0);
+  assert(!item.is_reg_file);
+  assert(item.is_dir);
+
+  assert(fs_dir_read(dir, &item) == RET_OK);
+  assert(strcmp(item.name, "..") == 0);
+  assert(!item.is_reg_file);
+  assert(item.is_dir);
+
+  assert(fs_dir_read(dir, &item) == RET_OK);
+  assert(strcmp(item.name, "c1") == 0);
+  assert(!item.is_reg_file);
+  assert(item.is_dir);
+
+  assert(fs_dir_read(dir, &item) == RET_OK);
+  assert(strcmp(item.name, "c2") == 0);
+  assert(!item.is_reg_file);
+  assert(item.is_dir);
+
+  assert(fs_dir_read(dir, &item) == RET_FAIL);
+  assert(fs_dir_close(dir) == RET_OK);
+
+  if (fs_dir_rename(fs, "./a/b/c2", "./a/b/c3") == RET_OK) {
+    assert(!fs_dir_exist(fs, "./a/b/c2"));
+    assert(fs_dir_exist(fs, "./a/b/c3"));
+    assert(fs_dir_rename(fs, "./a/b/c3", "./a/b/c2") == RET_OK);
+  }
+  assert(fs_remove_dir(fs, "./a/b/c1") == RET_OK);
+  assert(fs_remove_dir(fs, "./a/b/c2") == RET_OK);
+  assert(fs_remove_dir(fs, "./a/b") == RET_OK);
+  assert(fs_remove_dir(fs, "./a") == RET_OK);
+
+  return RET_OK;
 }

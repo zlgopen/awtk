@@ -276,13 +276,13 @@ typedef struct _fs_t fs_t;
 typedef fs_file_t* (*fs_open_file_t)(fs_t* fs, const char* name, const char* mode);
 typedef ret_t (*fs_remove_file_t)(fs_t* fs, const char* name);
 typedef bool_t (*fs_file_exist_t)(fs_t* fs, const char* name);
-typedef bool_t (*fs_file_rename_t)(fs_t* fs, const char* name, const char* new_name);
+typedef ret_t (*fs_file_rename_t)(fs_t* fs, const char* name, const char* new_name);
 
 typedef fs_dir_t* (*fs_open_dir_t)(fs_t* fs, const char* name);
 typedef ret_t (*fs_remove_dir_t)(fs_t* fs, const char* name);
 typedef ret_t (*fs_create_dir_t)(fs_t* fs, const char* name);
 typedef bool_t (*fs_dir_exist_t)(fs_t* fs, const char* name);
-typedef bool_t (*fs_dir_rename_t)(fs_t* fs, const char* name, const char* new_name);
+typedef ret_t (*fs_dir_rename_t)(fs_t* fs, const char* name, const char* new_name);
 
 typedef int32_t (*fs_get_file_size_t)(fs_t* fs, const char* name);
 typedef ret_t (*fs_get_disk_info_t)(fs_t* fs, const char* volume, int32_t* free_kb,
@@ -364,9 +364,9 @@ bool_t fs_file_exist(fs_t* fs, const char* name);
  * @param {const char*} name 旧文件名。
  * @param {const char*} new_name 新文件名。
  *
- * @return {ret_t} 返回TRUE表示成功，否则表示失败。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-bool_t fs_file_rename(fs_t* fs, const char* name, const char* new_name);
+ret_t fs_file_rename(fs_t* fs, const char* name, const char* new_name);
 
 /**
  * @method fs_open_dir
@@ -425,9 +425,9 @@ bool_t fs_dir_exist(fs_t* fs, const char* name);
  * @param {const char*} name 旧目录名称。
  * @param {const char*} new_name 新目录名称。
  *
- * @return {ret_t} 返回TRUE表示成功，否则表示失败。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-bool_t fs_dir_rename(fs_t* fs, const char* name, const char* new_name);
+ret_t fs_dir_rename(fs_t* fs, const char* name, const char* new_name);
 
 /**
  * @method fs_get_file_size
@@ -585,6 +585,9 @@ int32_t file_read_part(const char* name, void* buff, uint32_t size, uint32_t off
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t file_write(const char* name, const void* buff, uint32_t size);
+
+/*basic function test*/
+ret_t fs_test(fs_t* fs);
 
 END_C_DECLS
 

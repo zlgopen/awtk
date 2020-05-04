@@ -1,5 +1,8 @@
 # 最新动态
 
+* 2020/05/04
+  * 完善文件系统，函数指针放到vtable中，增加测试。
+
 * 2020/05/03
   * 增加函数str\_append\_more。
   * 在 EVT_BLUR 的事件回调中 widget_destroy_children（当前控件的父控件等）, 会导致 widget_dispatch_blur_event() 访问野指针（感谢朝泽提供补丁）。

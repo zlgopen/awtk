@@ -212,9 +212,9 @@ static bool_t fs_os_file_exist(fs_t* fs, const char* name) {
 #endif
 }
 
-static bool_t fs_os_file_rename(fs_t* fs, const char* name, const char* new_name) {
+static ret_t fs_os_file_rename(fs_t* fs, const char* name, const char* new_name) {
   (void)fs;
-  return_value_if_fail(name != NULL && new_name != NULL, FALSE);
+  return_value_if_fail(name != NULL && new_name != NULL, RET_BAD_PARAMS);
 
 #ifdef WIN32
   bool_t rtn = FALSE;
@@ -233,9 +233,9 @@ static bool_t fs_os_file_rename(fs_t* fs, const char* name, const char* new_name
   rtn = _wrename(w_name, w_new_name) == 0;
   TKMEM_FREE(w_name);
   TKMEM_FREE(w_new_name);
-  return rtn;
+  return rtn ? RET_OK : RET_FAIL;
 #else
-  return rename(name, new_name) == 0;
+  return rename(name, new_name) == 0 ? RET_OK : RET_FAIL;
 #endif
 }
 
@@ -341,13 +341,8 @@ static bool_t fs_os_dir_exist(fs_t* fs, const char* name) {
 #endif
 }
 
-static bool_t fs_os_dir_rename(fs_t* fs, const char* name, const char* new_name) {
-  (void)fs;
-  (void)name;
-  (void)new_name;
-  assert(!"fs_os_dir_rename not supported yet");
-
-  return FALSE;
+static ret_t fs_os_dir_rename(fs_t* fs, const char* name, const char* new_name) {
+  return fs_os_file_rename(fs, name, new_name);
 }
 
 static int32_t fs_os_get_file_size(fs_t* fs, const char* name) {

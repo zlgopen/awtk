@@ -3,6 +3,10 @@
 #include "gtest/gtest.h"
 
 TEST(Fs, basic) {
+  ASSERT_EQ(fs_test(os_fs()), RET_OK);
+}
+
+TEST(Fs, read_part) {
   char buff[128];
   uint32_t size = 0;
   const char* str = "hello world";
