@@ -23,69 +23,73 @@
 #include "tkc/mem.h"
 
 int32_t fs_file_read(fs_file_t* file, void* buffer, uint32_t size) {
-  return_value_if_fail(file != NULL && buffer != NULL && file->read != NULL, -1);
+  return_value_if_fail(file != NULL && file->vt != NULL && buffer != NULL && file->vt->read != NULL,
+                       -1);
 
-  return file->read(file, buffer, size);
+  return file->vt->read(file, buffer, size);
 }
 
 int32_t fs_file_write(fs_file_t* file, const void* buffer, uint32_t size) {
-  return_value_if_fail(file != NULL && buffer != NULL && file->write != NULL, -1);
+  return_value_if_fail(
+      file != NULL && file->vt != NULL && buffer != NULL && file->vt->write != NULL, -1);
 
-  return file->write(file, buffer, size);
+  return file->vt->write(file, buffer, size);
 }
 
 int32_t fs_file_printf(fs_file_t* file, const char* const format_str, ...) {
   va_list v_l;
   int32_t ret = 0;
-  return_value_if_fail(file != NULL && file->f_printf != NULL, -1);
+  return_value_if_fail(file != NULL && file->vt != NULL && file->vt->printf != NULL, -1);
 
   va_start(v_l, format_str);
-  ret = file->f_printf(file, format_str, v_l);
+  ret = file->vt->printf(file, format_str, v_l);
   va_end(v_l);
 
   return ret;
 }
 
 ret_t fs_file_seek(fs_file_t* file, int32_t offset) {
-  return_value_if_fail(file != NULL && file->seek != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(file != NULL && file->vt != NULL && file->vt->seek != NULL, RET_BAD_PARAMS);
 
-  return file->seek(file, offset);
+  return file->vt->seek(file, offset);
 }
 
 ret_t fs_file_truncate(fs_file_t* file, int32_t offset) {
-  return_value_if_fail(file != NULL && file->truncate != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(file != NULL && file->vt != NULL && file->vt->truncate != NULL,
+                       RET_BAD_PARAMS);
 
-  return file->truncate(file, offset);
+  return file->vt->truncate(file, offset);
 }
 
 bool_t fs_file_eof(fs_file_t* file) {
-  return_value_if_fail(file != NULL && file->eof != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(file != NULL && file->vt != NULL && file->vt->eof != NULL, RET_BAD_PARAMS);
 
-  return file->eof(file);
+  return file->vt->eof(file);
 }
 
 ret_t fs_file_close(fs_file_t* file) {
-  return_value_if_fail(file != NULL && file->close != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(file != NULL && file->vt != NULL && file->vt->close != NULL, RET_BAD_PARAMS);
 
-  return file->close(file);
+  return file->vt->close(file);
 }
 
 ret_t fs_dir_rewind(fs_dir_t* dir) {
-  return_value_if_fail(dir != NULL && dir->rewind != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(dir != NULL && dir->vt != NULL && dir->vt->rewind != NULL, RET_BAD_PARAMS);
 
-  return dir->rewind(dir);
+  return dir->vt->rewind(dir);
 }
 
 ret_t fs_dir_read(fs_dir_t* dir, fs_item_t* item) {
-  return_value_if_fail(dir != NULL && dir->read != NULL && item != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(dir != NULL && dir->vt != NULL && dir->vt->read != NULL && item != NULL,
+                       RET_BAD_PARAMS);
 
-  return dir->read(dir, item);
+  return dir->vt->read(dir, item);
 }
 
 ret_t fs_dir_close(fs_dir_t* dir) {
-  return_value_if_fail(dir != NULL && dir->close != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(dir != NULL && dir->vt != NULL && dir->vt->close != NULL, RET_BAD_PARAMS);
 
-  return dir->close(dir);
+  return dir->vt->close(dir);
 }
 
 fs_file_t* fs_open_file(fs_t* fs, const char* name, const char* mode) {

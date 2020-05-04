@@ -72,7 +72,7 @@ static ret_t gen_floder(const char* in_flodername, const char* out_flodername, b
   if (!fs_dir_exist(os_fs(), out_flodername)) {
     fs_create_dir(os_fs(), out_flodername);
   }
-  while (dir->read(dir, &item) != RET_FAIL) {
+  while (fs_dir_read(dir, &item) != RET_FAIL) {
     if (item.is_reg_file && end_with(item.name, c_xml)) {
       str_t str_name;
       str_t sub_res_name;

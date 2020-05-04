@@ -42,7 +42,7 @@ static ret_t gen_floder(const char* in_flodername, const char* out_flodername, c
   fs_dir_t* dir = fs_open_dir(os_fs(), in_flodername);
   fs_item_t item;
   char in_name[MAX_PATH] = {0};
-  while (dir->read(dir, &item) != RET_FAIL) {
+  while (fs_dir_read(dir, &item) != RET_FAIL) {
     if (item.is_reg_file && end_with(item.name, ".xml")) {
       path_build(in_name, MAX_PATH, in_flodername, item.name, NULL);
       ret = gen_one(in_name, out_flodername, theme, output_bin);

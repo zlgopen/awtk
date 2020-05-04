@@ -120,19 +120,21 @@ static ret_t fs_os_dir_close(fs_dir_t* dir) {
   return RET_OK;
 }
 
+static const fs_file_vtable_t s_file_vtable = {.read = fs_os_file_read,
+                                               .write = fs_os_file_write,
+                                               .printf = fs_os_file_printf,
+                                               .seek = fs_os_file_seek,
+                                               .truncate = fs_os_file_truncate,
+                                               .eof = fs_os_file_eof,
+                                               .close = fs_os_file_close};
+
 static fs_file_t* fs_file_create(FILE* fp) {
   fs_file_t* f = NULL;
   return_value_if_fail(fp != NULL, NULL);
 
   f = TKMEM_ZALLOC(fs_file_t);
   if (f != NULL) {
-    f->read = fs_os_file_read;
-    f->write = fs_os_file_write;
-    f->f_printf = fs_os_file_printf;
-    f->seek = fs_os_file_seek;
-    f->truncate = fs_os_file_truncate;
-    f->eof = fs_os_file_eof;
-    f->close = fs_os_file_close;
+    f->vt = &s_file_vtable;
     f->data = fp;
   } else {
     fclose(fp);
@@ -237,15 +239,16 @@ static bool_t fs_os_file_rename(fs_t* fs, const char* name, const char* new_name
 #endif
 }
 
+static const fs_dir_vtable_t s_dir_vtable = {
+    .read = fs_os_dir_read, .rewind = fs_os_dir_rewind, .close = fs_os_dir_close};
+
 static fs_dir_t* fs_dir_create(DIR* dir) {
   fs_dir_t* d = NULL;
   return_value_if_fail(dir != NULL, NULL);
 
   d = TKMEM_ZALLOC(fs_dir_t);
   if (d != NULL) {
-    d->read = fs_os_dir_read;
-    d->rewind = fs_os_dir_rewind;
-    d->close = fs_os_dir_close;
+    d->vt = &s_dir_vtable;
     d->data = dir;
   } else {
     closedir(dir);
@@ -374,7 +377,8 @@ static int32_t fs_os_get_file_size(fs_t* fs, const char* name) {
 #endif
 }
 
-static ret_t fs_os_get_disk_info(fs_t* fs, const char* volume, int32_t* free_kb, int32_t* total_kb) {
+static ret_t fs_os_get_disk_info(fs_t* fs, const char* volume, int32_t* free_kb,
+                                 int32_t* total_kb) {
   /*TODO*/
   *free_kb = 0;
   *total_kb = 0;

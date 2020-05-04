@@ -59,14 +59,18 @@ typedef ret_t (*fs_file_close_t)(fs_file_t* file);
  * ```
  *
  */
-struct _fs_file_t {
+typedef struct _fs_file_vtable_t {
   fs_file_read_t read;
   fs_file_write_t write;
-  fs_printf_t f_printf;
+  fs_printf_t printf;
   fs_file_seek_t seek;
   fs_file_truncate_t truncate;
   fs_file_eof_t eof;
   fs_file_close_t close;
+} fs_file_vtable_t;
+
+struct _fs_file_t {
+  const fs_file_vtable_t* vt;
   void* data;
 };
 
@@ -220,10 +224,15 @@ typedef ret_t (*fs_dir_close_t)(fs_dir_t* dir);
  * 文件夹接口。
  *
  */
-struct _fs_dir_t {
+typedef struct _fs_dir_vtable_t {
   fs_dir_rewind_t rewind;
   fs_dir_read_t read;
   fs_dir_close_t close;
+  void* data;
+} fs_dir_vtable_t;
+
+struct _fs_dir_t {
+  const fs_dir_vtable_t* vt;
   void* data;
 };
 
