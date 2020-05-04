@@ -41,37 +41,37 @@ static int32_t fs_os_file_read(fs_file_t* file, void* buffer, uint32_t size) {
   return (int32_t)fread(buffer, 1, size, fp);
 }
 
-int32_t fs_os_file_write(fs_file_t* file, const void* buffer, uint32_t size) {
+static int32_t fs_os_file_write(fs_file_t* file, const void* buffer, uint32_t size) {
   FILE* fp = (FILE*)(file->data);
 
   return fwrite(buffer, 1, size, fp);
 }
 
-int32_t fs_os_file_printf(fs_file_t* file, const char* const format_str, va_list vl) {
+static int32_t fs_os_file_printf(fs_file_t* file, const char* const format_str, va_list vl) {
   FILE* fp = (FILE*)(file->data);
 
   return vfprintf(fp, format_str, vl);
 }
 
-ret_t fs_os_file_seek(fs_file_t* file, int32_t offset) {
+static ret_t fs_os_file_seek(fs_file_t* file, int32_t offset) {
   FILE* fp = (FILE*)(file->data);
 
   return fseek(fp, offset, SEEK_SET) == 0 ? RET_OK : RET_FAIL;
 }
 
-ret_t fs_os_file_truncate(fs_file_t* file, int32_t size) {
+static ret_t fs_os_file_truncate(fs_file_t* file, int32_t size) {
   FILE* fp = (FILE*)(file->data);
 
   return ftruncate(fileno(fp), size) == 0 ? RET_OK : RET_FAIL;
 }
 
-bool_t fs_os_file_eof(fs_file_t* file) {
+static bool_t fs_os_file_eof(fs_file_t* file) {
   FILE* fp = (FILE*)(file->data);
 
   return feof(fp) != 0;
 }
 
-ret_t fs_os_file_close(fs_file_t* file) {
+static ret_t fs_os_file_close(fs_file_t* file) {
   FILE* fp = (FILE*)(file->data);
   fclose(fp);
   TKMEM_FREE(file);
@@ -79,7 +79,7 @@ ret_t fs_os_file_close(fs_file_t* file) {
   return RET_OK;
 }
 
-ret_t fs_os_dir_rewind(fs_dir_t* dir) {
+static ret_t fs_os_dir_rewind(fs_dir_t* dir) {
   DIR* d = (DIR*)(dir->data);
 
   rewinddir(d);
@@ -87,7 +87,7 @@ ret_t fs_os_dir_rewind(fs_dir_t* dir) {
   return RET_OK;
 }
 
-ret_t fs_os_dir_read(fs_dir_t* dir, fs_item_t* item) {
+static ret_t fs_os_dir_read(fs_dir_t* dir, fs_item_t* item) {
   DIR* d = (DIR*)(dir->data);
   struct dirent* ent = readdir(d);
 
@@ -112,7 +112,7 @@ ret_t fs_os_dir_read(fs_dir_t* dir, fs_item_t* item) {
   }
 }
 
-ret_t fs_os_dir_close(fs_dir_t* dir) {
+static ret_t fs_os_dir_close(fs_dir_t* dir) {
   DIR* d = (DIR*)dir->data;
   closedir(d);
   TKMEM_FREE(dir);
@@ -141,7 +141,7 @@ static fs_file_t* fs_file_create(FILE* fp) {
   return f;
 }
 
-fs_file_t* fs_os_open_file(fs_t* fs, const char* name, const char* mode) {
+static fs_file_t* fs_os_open_file(fs_t* fs, const char* name, const char* mode) {
   (void)fs;
   return_value_if_fail(name != NULL && mode != NULL, NULL);
 #ifdef WIN32
@@ -167,7 +167,7 @@ fs_file_t* fs_os_open_file(fs_t* fs, const char* name, const char* mode) {
 #endif
 }
 
-ret_t fs_os_remove_file(fs_t* fs, const char* name) {
+static ret_t fs_os_remove_file(fs_t* fs, const char* name) {
   (void)fs;
   return_value_if_fail(name != NULL, RET_FAIL);
 
@@ -187,7 +187,7 @@ ret_t fs_os_remove_file(fs_t* fs, const char* name) {
   return RET_OK;
 }
 
-bool_t fs_os_file_exist(fs_t* fs, const char* name) {
+static bool_t fs_os_file_exist(fs_t* fs, const char* name) {
   (void)fs;
   return_value_if_fail(name != NULL, FALSE);
 
@@ -210,7 +210,7 @@ bool_t fs_os_file_exist(fs_t* fs, const char* name) {
 #endif
 }
 
-bool_t fs_os_file_rename(fs_t* fs, const char* name, const char* new_name) {
+static bool_t fs_os_file_rename(fs_t* fs, const char* name, const char* new_name) {
   (void)fs;
   return_value_if_fail(name != NULL && new_name != NULL, FALSE);
 
@@ -237,7 +237,7 @@ bool_t fs_os_file_rename(fs_t* fs, const char* name, const char* new_name) {
 #endif
 }
 
-fs_dir_t* fs_dir_create(DIR* dir) {
+static fs_dir_t* fs_dir_create(DIR* dir) {
   fs_dir_t* d = NULL;
   return_value_if_fail(dir != NULL, NULL);
 
@@ -254,7 +254,7 @@ fs_dir_t* fs_dir_create(DIR* dir) {
   return d;
 }
 
-fs_dir_t* fs_os_open_dir(fs_t* fs, const char* name) {
+static fs_dir_t* fs_os_open_dir(fs_t* fs, const char* name) {
   (void)fs;
   return_value_if_fail(name != NULL, NULL);
 #ifdef WIN32
@@ -274,7 +274,7 @@ fs_dir_t* fs_os_open_dir(fs_t* fs, const char* name) {
 #endif
 }
 
-ret_t fs_os_remove_dir(fs_t* fs, const char* name) {
+static ret_t fs_os_remove_dir(fs_t* fs, const char* name) {
   (void)fs;
   return_value_if_fail(name != NULL, RET_FAIL);
 #if defined(WIN32)
@@ -295,7 +295,7 @@ ret_t fs_os_remove_dir(fs_t* fs, const char* name) {
   }
 }
 
-ret_t fs_os_create_dir(fs_t* fs, const char* name) {
+static ret_t fs_os_create_dir(fs_t* fs, const char* name) {
   (void)fs;
   return_value_if_fail(name != NULL, RET_FAIL);
 #if defined(WIN32)
@@ -316,7 +316,7 @@ ret_t fs_os_create_dir(fs_t* fs, const char* name) {
   }
 }
 
-bool_t fs_os_dir_exist(fs_t* fs, const char* name) {
+static bool_t fs_os_dir_exist(fs_t* fs, const char* name) {
   (void)fs;
   return_value_if_fail(name != NULL, FALSE);
 #ifdef WIN32
@@ -338,7 +338,7 @@ bool_t fs_os_dir_exist(fs_t* fs, const char* name) {
 #endif
 }
 
-bool_t fs_os_dir_rename(fs_t* fs, const char* name, const char* new_name) {
+static bool_t fs_os_dir_rename(fs_t* fs, const char* name, const char* new_name) {
   (void)fs;
   (void)name;
   (void)new_name;
@@ -347,7 +347,7 @@ bool_t fs_os_dir_rename(fs_t* fs, const char* name, const char* new_name) {
   return FALSE;
 }
 
-int32_t fs_os_get_file_size(fs_t* fs, const char* name) {
+static int32_t fs_os_get_file_size(fs_t* fs, const char* name) {
   (void)fs;
   return_value_if_fail(name != NULL, -1);
 #ifdef WIN32
@@ -374,7 +374,7 @@ int32_t fs_os_get_file_size(fs_t* fs, const char* name) {
 #endif
 }
 
-ret_t fs_os_get_disk_info(fs_t* fs, const char* volume, int32_t* free_kb, int32_t* total_kb) {
+static ret_t fs_os_get_disk_info(fs_t* fs, const char* volume, int32_t* free_kb, int32_t* total_kb) {
   /*TODO*/
   *free_kb = 0;
   *total_kb = 0;
@@ -384,7 +384,7 @@ ret_t fs_os_get_disk_info(fs_t* fs, const char* volume, int32_t* free_kb, int32_
   return RET_FAIL;
 }
 
-ret_t fs_os_get_exe(fs_t* fs, char path[MAX_PATH + 1]) {
+static ret_t fs_os_get_exe(fs_t* fs, char path[MAX_PATH + 1]) {
   uint32_t size = MAX_PATH;
   (void)fs;
 
@@ -409,7 +409,7 @@ ret_t fs_os_get_exe(fs_t* fs, char path[MAX_PATH + 1]) {
   return RET_OK;
 }
 
-ret_t fs_os_get_user_storage_path(fs_t* fs, char path[MAX_PATH + 1]) {
+static ret_t fs_os_get_user_storage_path(fs_t* fs, char path[MAX_PATH + 1]) {
 #if defined(ANDROID)
   const char* homedir = SDL_AndroidGetInternalStoragePath();
   memset(path, 0x00, MAX_PATH + 1);
@@ -460,7 +460,7 @@ static ret_t fs_os_get_cwd(fs_t* fs, char path[MAX_PATH + 1]) {
   return RET_OK;
 }
 
-ret_t fs_os_stat(fs_t* fs, const char* name, fs_stat_info_t* fst) {
+static ret_t fs_os_stat(fs_t* fs, const char* name, fs_stat_info_t* fst) {
   (void)fs;
   return_value_if_fail(name != NULL && fst != NULL, RET_BAD_PARAMS);
 
