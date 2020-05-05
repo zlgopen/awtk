@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   stm32_g2d.h
  * Author: AWTK Develop Team
  * Brief:  stm32 dma2d implemented hardware 2d
@@ -23,7 +23,15 @@
 
 #ifdef WITH_STM32_G2D
 
-#ifdef ARM_MATH_CM7
+#if defined(STM32H743xx)
+#include "stm32h7xx.h"
+#include "stm32h7xx_hal.h"
+#include "stm32h7xx_hal_rcc.h"
+#include "stm32h7xx_hal_dma2d.h"
+/* Legacy defines */
+#define DMA2D_IFSR_CTCIF                   DMA2D_IFCR_CTCIF                     /*!< Clears Transfer Complete Interrupt Flag      */
+
+#elif defined(ARM_MATH_CM7)
 #include "stm32f7xx_hal.h"
 #include "stm32f7xx_hal_rcc.h"
 #include "stm32f7xx_hal_dma2d.h"
