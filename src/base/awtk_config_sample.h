@@ -59,6 +59,13 @@
  */
 
 /**
+ * 如果代码在flash中，而资源在文件系统，请定义本宏指明资源所在的路径。
+ * 
+ * #define APP_RES_ROOT "0://awtk/"
+ * 
+ */
+
+/**
  * 如果定义本宏，使用标准的UNICODE换行算法，除非资源极为有限，请定义本宏。
  *
  * #define WITH_UNICODE_BREAK 1
