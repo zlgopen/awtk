@@ -561,7 +561,7 @@ bitmap_t* bitmap_clone(bitmap_t* bitmap) {
   return b;
 }
 
-#if defined(WITH_STB_IMAGE) && defined(WITH_FS_RES)
+#if defined(WITH_STB_IMAGE) && defined(HAS_STDIO)
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #define STBI_FREE TKMEM_FREE
@@ -623,7 +623,7 @@ bool_t bitmap_save_png(bitmap_t* bitmap, const char* filename) {
   return FALSE;
 }
 
-#endif /*defined(WITH_STB_IMAGE) || defined(WITH_FS_RES)*/
+#endif /*defined(WITH_STB_IMAGE) || defined(HAS_STDIO)*/
 
 /*helper*/
 #define BIT_OFFSET(xx) (7 - ((xx) % 8))
