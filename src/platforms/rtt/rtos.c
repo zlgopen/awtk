@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   rtos.c
  * Author: AWTK Develop Team
  * Brief:  rtos
@@ -20,6 +20,8 @@
  */
 
 #include "tkc/types_def.h"
+#include "platforms/common/rtos.h"
+
 #undef EAGAIN
 
 #include "rthw.h"
@@ -77,4 +79,8 @@ void rtos_tick(void) {
 
 void rtos_delay(uint32_t ms) {
   rt_thread_delay(ms);
+}
+
+bool_t rtos_is_running(void) {
+  return s_kernel_inited;
 }
