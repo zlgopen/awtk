@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   rtos.c
  * Author: AWTK Develop Team
  * Brief:  rtos
@@ -45,4 +45,8 @@ void rtos_tick(void) {
 
 void rtos_delay(uint32_t ms) {
   tos_task_delay(ms);
+}
+
+bool_t rtos_is_running(void) {
+	return tos_knl_is_running();
 }

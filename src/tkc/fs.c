@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   fs.h
  * Author: AWTK Develop Team
  * Brief:  simple fs api
@@ -267,7 +267,6 @@ ret_t fs_test(fs_t* fs) {
   const char* filename = "./test.txt";
 
   memset(buff, 0x00, sizeof(buff));
-  assert(fs_file_exist(fs, filename) == FALSE);
   fp = fs_open_file(fs, filename, "w+");
   assert(fs_file_write(fp, "hello", 5) == 5);
   assert(fs_file_truncate(fp, 0) == RET_OK);

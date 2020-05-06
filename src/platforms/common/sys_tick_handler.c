@@ -1,7 +1,7 @@
 /**
- * File:   rtos.h
+ * File:   sys_tick.c
  * Author: AWTK Develop Team
- * Brief:  rtos
+ * Brief:  use sys tick to implement sleep/get_time_ms64.
  *
  * Copyright (c) 2018 - 2020  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
@@ -19,19 +19,25 @@
  *
  */
 
-#include "tkc/types_def.h"
+#include "rtos.h"
 
-#ifndef TK_RTOS_H
-#define TK_RTOS_H
+static volatile uint64_t g_sys_tick;
 
-BEGIN_C_DECLS
+void SysTick_Handler(void) {
+  g_sys_tick++;
+  rtos_tick();
+}
 
-ret_t rtos_init(void);
-ret_t rtos_start(void);
-void rtos_tick(void);
-void rtos_delay(uint32_t ms);
-bool_t rtos_is_running(void);
+uint64_t get_time_ms64() {
+  return g_sys_tick;
+}
 
-END_C_DECLS
-
-#endif /*TK_RTOS_H*/
+void sleep_ms(uint32_t ms) {
+	if(rtos_is_running()) {
+		rtos_delay(ms);
+	} else {
+		uint64_t start = get_time_ms64();
+		while((start + ms) > get_time_ms64()) {
+		}
+	}
+}
