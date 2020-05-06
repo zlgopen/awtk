@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   color_picker.
  * Author: AWTK Develop Team
  * Brief:  color_picker
@@ -266,11 +266,9 @@ static ret_t color_picker_on_child_value_changing(void* ctx, event_t* e) {
   widget_t* child = NULL;
   const char* name = NULL;
   const char* type = NULL;
-  int32_t last_hue = 0;
   color_picker_t* color_picker = COLOR_PICKER(ctx);
   return_value_if_fail(e != NULL && color_picker != NULL, RET_BAD_PARAMS);
 
-  last_hue = color_picker->last_hue;
   color_picker->last_hue = -1;
   widget = WIDGET(ctx);
   child = WIDGET(e->target);

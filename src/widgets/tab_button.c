@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   tab_button.c
  * Author: AWTK Develop Team
  * Brief:  tab_button
@@ -144,7 +144,6 @@ ret_t tab_button_set_value(widget_t* widget, bool_t value) {
   return_value_if_fail(widget != NULL && tab_button != NULL, RET_BAD_PARAMS);
 
   if (widget->parent != NULL && value) {
-    int32_t index = 0;
     widget_t* pages = NULL;
     widget_t* parent = widget->parent;
 

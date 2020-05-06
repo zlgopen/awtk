@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   font_manager.c
  * Author: AWTK Develop Team
  * Brief:  font manager
@@ -78,12 +78,14 @@ ret_t font_manager_add_font(font_manager_t* fm, font_t* font) {
   return darray_push(&(fm->fonts), font);
 }
 
+#if WITH_BITMAP_FONT
 static const char* font_manager_fix_bitmap_font_name(char str[MAX_PATH], const char* name,
                                                      font_size_t size) {
   memset(str, 0, MAX_PATH);
   tk_snprintf(str, MAX_PATH, "%s_%d", name, size);
   return str;
 }
+#endif
 
 font_t* font_manager_lookup(font_manager_t* fm, const char* name, font_size_t size) {
 #if WITH_BITMAP_FONT

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   utils.h
  * Author: AWTK Develop Team
  * Brief:  utils struct and utils functions.

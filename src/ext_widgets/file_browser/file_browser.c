@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   file_browser.c
  * Author: AWTK Develop Team
  * Brief:  file_browser
@@ -193,7 +193,6 @@ ret_t file_browser_remove(file_browser_t* fb, const char* name) {
 ret_t file_browser_refresh(file_browser_t* fb) {
   fs_item_t info;
   fs_stat_info_t st;
-  uint32_t len = 0;
   fs_dir_t* dir = NULL;
   char fullpath[MAX_PATH + 1];
   return_value_if_fail(fb != NULL && fb->cwd[0] != '\0', RET_BAD_PARAMS);
@@ -202,7 +201,6 @@ ret_t file_browser_refresh(file_browser_t* fb) {
   dir = fs_open_dir(fb->fs, fb->cwd);
   return_value_if_fail(dir != NULL, RET_BAD_PARAMS);
 
-  len = strlen(fb->cwd);
   memset(fullpath, 0x00, sizeof(fullpath));
   while (fs_dir_read(dir, &info) == RET_OK) {
     fb_item_t* iter = NULL;
