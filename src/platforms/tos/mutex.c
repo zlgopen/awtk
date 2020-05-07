@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   mutex.c
  * Author: AWTK Develop Team
  * Brief:  mutex base on tos_mutex
@@ -19,7 +19,7 @@
  *
  */
 
-#include "tos.h"
+#include "tos_k.h"
 #include "tkc/mem.h"
 #include "tkc/mutex.h"
 

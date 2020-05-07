@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   thread.c
  * Author: AWTK Develop Team
  * Brief:  thread on cmsis_os
@@ -19,7 +19,7 @@
  *
  */
 
-#include "tos.h"
+#include "tos_k.h"
 #include "tkc/mem.h"
 #include "tkc/utils.h"
 #include "tkc/thread.h"
