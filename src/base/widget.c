@@ -490,8 +490,10 @@ ret_t widget_set_theme(widget_t* widget, const char* name) {
   widget_reset_canvas(widget);
 
   info = assets_manager_ref(am, ASSET_TYPE_STYLE, "default");
-  assets_manager_unref(assets_manager(), info);
-  theme_init(theme(), info->data);
+  if (info != NULL) {
+    assets_manager_unref(assets_manager(), info);
+    theme_init(theme(), info->data);
+  }
 
   widget_dispatch(wm, &e);
   widget_invalidate_force(wm, NULL);
