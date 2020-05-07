@@ -174,7 +174,8 @@ const char* input_method_get_lang(input_method_t* im) {
   return NULL;
 }
 
-ret_t input_method_dispatch_candidates(input_method_t* im, const char* strs, uint32_t nr, int32_t selected) {
+ret_t input_method_dispatch_candidates(input_method_t* im, const char* strs, uint32_t nr,
+                                       int32_t selected) {
   im_candidates_event_t ce;
 
   ce.e = event_init(EVT_IM_SHOW_CANDIDATES, im);

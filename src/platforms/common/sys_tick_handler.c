@@ -33,11 +33,11 @@ uint64_t get_time_ms64() {
 }
 
 void sleep_ms(uint32_t ms) {
-	if(rtos_is_running()) {
-		rtos_delay(ms);
-	} else {
-		uint64_t start = get_time_ms64();
-		while((start + ms) > get_time_ms64()) {
-		}
-	}
+  if (rtos_is_running()) {
+    rtos_delay(ms);
+  } else {
+    uint64_t start = get_time_ms64();
+    while ((start + ms) > get_time_ms64()) {
+    }
+  }
 }

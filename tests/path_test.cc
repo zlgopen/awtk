@@ -117,7 +117,7 @@ TEST(Path, approot) {
 
 static const char* normalize_path_str(char* str) {
   char* p = str;
-  while(*p) {
+  while (*p) {
     if (*p == '\\') {
       *p = '/';
     }

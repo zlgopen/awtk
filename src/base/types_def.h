@@ -452,8 +452,8 @@ typedef enum _bitmap_flag_t {
 #ifndef WITH_ASSET_LOADER
 #ifdef WITH_FS_RES
 #define WITH_ASSET_LOADER 1
-#endif/*WITH_FS_RES*/
-#endif/*WITH_ASSET_LOADER*/
+#endif /*WITH_FS_RES*/
+#endif /*WITH_ASSET_LOADER*/
 
 struct _bitmap_t;
 typedef struct _bitmap_t bitmap_t;

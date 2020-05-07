@@ -29,7 +29,7 @@
 #include "stm32h7xx_hal_rcc.h"
 #include "stm32h7xx_hal_dma2d.h"
 /* Legacy defines */
-#define DMA2D_IFSR_CTCIF                   DMA2D_IFCR_CTCIF                     /*!< Clears Transfer Complete Interrupt Flag      */
+#define DMA2D_IFSR_CTCIF DMA2D_IFCR_CTCIF /*!< Clears Transfer Complete Interrupt Flag      */
 
 #elif defined(ARM_MATH_CM7)
 #include "stm32f7xx_hal.h"
