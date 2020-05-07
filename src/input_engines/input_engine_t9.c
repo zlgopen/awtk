@@ -71,7 +71,7 @@ static ret_t input_engine_table_search(input_engine_t* engine, const char* keys)
     wbuffer_write_string(&wb, keys);
   }
 
-  input_method_dispatch_candidates(engine->im, engine->candidates, engine->candidates_nr);
+  input_method_dispatch_candidates(engine->im, engine->candidates, engine->candidates_nr, 0);
 
   return RET_OK;
 }

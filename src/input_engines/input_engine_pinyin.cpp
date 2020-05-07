@@ -77,7 +77,7 @@ static ret_t input_engine_pinyin_search(input_engine_t* engine, const char* keys
 
   if (keys_size == 0) {
     input_engine_reset_input(engine);
-    input_method_dispatch_candidates(engine->im, engine->candidates, 0);
+    input_method_dispatch_candidates(engine->im, engine->candidates, 0, 0);
 
     return RET_OK;
   }
@@ -93,7 +93,7 @@ static ret_t input_engine_pinyin_search(input_engine_t* engine, const char* keys
     }
   }
 
-  input_method_dispatch_candidates(engine->im, engine->candidates, engine->candidates_nr);
+  input_method_dispatch_candidates(engine->im, engine->candidates, engine->candidates_nr, 0);
 
   return RET_OK;
 }

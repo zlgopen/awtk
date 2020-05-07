@@ -1,10 +1,16 @@
 # 最新动态
 
+* 2020/05/07
+  * 完善 input\_method\_dispatch\_candidates。
+
+* 2020/05/06
+  * 支持从 SD 卡加载资源，做了一些小的改动。
+  
 * 2020/05/04
-  * 完善文件系统，函数指针放到vtable中，增加测试。
+  * 完善文件系统，函数指针放到 vtable 中，增加测试。
 
 * 2020/05/03
-  * 增加函数str\_append\_more。
+  * 增加函数 str\_append\_more。
   * 在 EVT_BLUR 的事件回调中 widget_destroy_children（当前控件的父控件等）, 会导致 widget_dispatch_blur_event() 访问野指针（感谢朝泽提供补丁）。
   * 控件事件的回调被调用时，如果当前控件的 ref_count == 2，且回调中同时执行了 widget_destroy_children（当前控件的父控件等）、widget_destroy（自身），会导致 widget_unref_in_idle() 访问野指针（感谢朝泽提供补丁）。
   * 如果在窗口某控件的 EVT_BLUR 事件回调中调用 widget_set_need_relayout_children()，当焦点在该控件时关闭程序，会导致当前窗口的 destroy 在 widget_destroy_sync(window_manager()) 之后执行，引起 wm_on_destroy_child() 访问野指针（感谢朝泽提供补丁）。

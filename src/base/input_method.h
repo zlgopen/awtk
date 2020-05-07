@@ -449,10 +449,11 @@ ret_t input_method_dispatch_preedit_abort(input_method_t* im);
  * @param {input_method_t*} im 输入法对象。
  * @param {char*} strs 候选字列表。
  * @param {uint32_t} nr 候选字个数。
+ * @param {int32_t} selected 缺省选中候选字的序数。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t input_method_dispatch_candidates(input_method_t* im, const char* strs, uint32_t nr);
+ret_t input_method_dispatch_candidates(input_method_t* im, const char* strs, uint32_t nr, int32_t selected);
 
 /**
  * @method input_method_dispatch_pre_candidates

@@ -62,7 +62,7 @@ static ret_t candidates_on_button_click(void* ctx, event_t* e) {
       if (!candidates->pre) {
         suggest_words_t* suggest_words = im->suggest_words;
         if (suggest_words && suggest_words_find(suggest_words, c) == RET_OK) {
-          input_method_dispatch_candidates(im, suggest_words->words, suggest_words->words_nr);
+          input_method_dispatch_candidates(im, suggest_words->words, suggest_words->words_nr, -1);
           if (suggest_words->words_nr > 0) {
             widget_set_focused(widget_get_child(button->parent, 0), TRUE);
             candidates->is_suggest = TRUE;
@@ -350,7 +350,7 @@ static ret_t candidates_on_keyup(widget_t* widget, key_event_t* e) {
     } else if (e->key == TK_KEY_BACKSPACE || e->key == TK_KEY_DELETE) {
       if (candidates->is_suggest) {
         char words[2] = {0};
-        input_method_dispatch_candidates(input_method(), words, 0);
+        input_method_dispatch_candidates(input_method(), words, 0, 0);
         ret = RET_STOP;
       }
     }

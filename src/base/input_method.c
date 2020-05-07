@@ -174,12 +174,13 @@ const char* input_method_get_lang(input_method_t* im) {
   return NULL;
 }
 
-ret_t input_method_dispatch_candidates(input_method_t* im, const char* strs, uint32_t nr) {
+ret_t input_method_dispatch_candidates(input_method_t* im, const char* strs, uint32_t nr, int32_t selected) {
   im_candidates_event_t ce;
 
   ce.e = event_init(EVT_IM_SHOW_CANDIDATES, im);
   ce.candidates_nr = nr;
   ce.candidates = strs;
+  ce.selected = selected;
 
   return input_method_dispatch(im, (event_t*)(&ce));
 }
@@ -202,7 +203,7 @@ ret_t input_method_commit_text_ex(input_method_t* im, bool_t replace, const char
 
   if (im->engine) {
     input_engine_reset_input(im->engine);
-    input_method_dispatch_candidates(im, "", 0);
+    input_method_dispatch_candidates(im, "", 0, 0);
   }
 
   return input_method_dispatch_to_widget(input_method(), im_commit_event_init(&e, text, replace));

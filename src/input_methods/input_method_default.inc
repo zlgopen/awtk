@@ -266,7 +266,7 @@ static ret_t input_method_default_request(input_method_t* im, widget_t* widget) 
   }
 
   input_engine_reset_input(im->engine);
-  input_method_dispatch_candidates(im, "", 0);
+  input_method_dispatch_candidates(im, "", 0, 0);
 
   if (widget != NULL) {
     im->widget = widget;

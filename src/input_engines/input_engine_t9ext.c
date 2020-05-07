@@ -74,7 +74,7 @@ static ret_t input_engine_t9ext_input(input_engine_t* engine, int key) {
     }
 
     input_method_dispatch(engine->im, &e);
-    input_method_dispatch_candidates(engine->im, engine->candidates, 0);
+    input_method_dispatch_candidates(engine->im, engine->candidates, 0, -1);
 
     return RET_OK;
   }
@@ -232,7 +232,7 @@ static ret_t input_engine_t9ext_search_zh(input_engine_t* engine, const char* ke
         uint32_t items_nr = ARRAY_SIZE(s_pinyin_chinese_items);
         engine->candidates_nr = table_search(items, items_nr, first, &wb, TRUE);
       }
-      input_method_dispatch_candidates(engine->im, engine->candidates, engine->candidates_nr);
+      input_method_dispatch_candidates(engine->im, engine->candidates, engine->candidates_nr, -1);
     }
   } else {
     /*map pinyin to Chinese chars*/
@@ -241,7 +241,7 @@ static ret_t input_engine_t9ext_search_zh(input_engine_t* engine, const char* ke
 
     wbuffer_init(&wb, (uint8_t*)(engine->candidates), sizeof(engine->candidates));
     engine->candidates_nr = table_search(items, items_nr, keys, &wb, TRUE);
-    input_method_dispatch_candidates(engine->im, engine->candidates, engine->candidates_nr);
+    input_method_dispatch_candidates(engine->im, engine->candidates, engine->candidates_nr, -1);
   }
 
   return RET_OK;
@@ -256,7 +256,7 @@ static ret_t input_engine_t9ext_search(input_engine_t* engine, const char* keys)
   if (keys_size == 0) {
     engine->candidates_nr = 0;
     input_engine_reset_input(engine);
-    input_method_dispatch_candidates(engine->im, engine->candidates, 0);
+    input_method_dispatch_candidates(engine->im, engine->candidates, 0, -1);
     return RET_OK;
   }
 
@@ -293,7 +293,7 @@ static ret_t input_engine_t9ext_search(input_engine_t* engine, const char* keys)
 
         wbuffer_init(&wb, (uint8_t*)(engine->candidates), sizeof(engine->candidates));
         engine->candidates_nr = input_engine_add_chars(&wb, s_table_num_chars, '1');
-        input_method_dispatch_candidates(engine->im, engine->candidates, engine->candidates_nr);
+        input_method_dispatch_candidates(engine->im, engine->candidates, engine->candidates_nr, -1);
 
         return RET_OK;
       }

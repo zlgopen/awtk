@@ -46,7 +46,7 @@ static ret_t input_engine_null_search(input_engine_t* engine, const char* keys) 
     wbuffer_write_string(&wb, "电子");
     wbuffer_write_string(&wb, "有限公司");
     engine->candidates_nr = 7;
-    input_method_dispatch_candidates(engine->im, engine->candidates, engine->candidates_nr);
+    input_method_dispatch_candidates(engine->im, engine->candidates, engine->candidates_nr, 0);
   } else {
     engine->candidates_nr = 0;
   }

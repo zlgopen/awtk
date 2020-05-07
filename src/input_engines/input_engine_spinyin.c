@@ -34,7 +34,7 @@ static const char* input_engine_spinyin_get_lang(input_engine_t* engine) {
 }
 
 static ret_t input_engine_spinyin_reset_input(input_engine_t* engine) {
-  input_method_dispatch_candidates(engine->im, engine->candidates, 0);
+  input_method_dispatch_candidates(engine->im, engine->candidates, 0, 0);
 
   return RET_OK;
 }
@@ -55,7 +55,7 @@ static ret_t input_engine_spinyin_search(input_engine_t* engine, const char* key
   engine->candidates_nr = 1;
   wbuffer_write_string(&wb, keys);
   engine->candidates_nr += table_search(items, items_nr, keys, &wb, FALSE);
-  input_method_dispatch_candidates(engine->im, engine->candidates, engine->candidates_nr);
+  input_method_dispatch_candidates(engine->im, engine->candidates, engine->candidates_nr, 0);
 
   return RET_OK;
 }
