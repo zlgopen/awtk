@@ -2,7 +2,8 @@
 
 * 2020/05/07
   * 完善 input\_method\_dispatch\_candidates。
-
+  * 完善 widget_set_theme（感谢大恒提供补丁）
+  
 * 2020/05/06
   * 支持从 SD 卡加载资源，做了一些小的改动。
   
