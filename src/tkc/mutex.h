@@ -51,6 +51,15 @@ tk_mutex_t* tk_mutex_create(void);
 ret_t tk_mutex_lock(tk_mutex_t* mutex);
 
 /**
+ * @method tk_mutex_try_lock
+ * 尝试加锁。
+ * @param {tk_mutex_t*}    mutex mutex对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_mutex_try_lock(tk_mutex_t* mutex);
+
+/**
  * @method tk_mutex_unlock
  * 解锁。
  * @param {tk_mutex_t*}    mutex mutex对象。

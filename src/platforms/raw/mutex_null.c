@@ -37,6 +37,11 @@ ret_t tk_mutex_lock(tk_mutex_t* mutex) {
   return RET_OK;
 }
 
+ret_t tk_mutex_try_lock(tk_mutex_t* mutex) {
+  (void)mutex;
+  return RET_OK;
+}
+
 ret_t tk_mutex_unlock(tk_mutex_t* mutex) {
   (void)mutex;
   return RET_OK;
