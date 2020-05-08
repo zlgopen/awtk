@@ -11,8 +11,10 @@ TEST(DateTimeFormat, basic) {
   str_from_wstr(&s, str.str);
 #ifdef WIN32
   ASSERT_STREQ(s.str, "00-00-00");
-#else
+#elif defined(MACOS)
   ASSERT_STREQ(s.str, "70-01-01");
+#else
+  ASSERT_STREQ(s.str, "69-12-31");
 #endif /*WIN32*/
   str_reset(&s);
   wstr_reset(&str);

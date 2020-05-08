@@ -117,7 +117,7 @@ TEST(AssetsManager, json) {
   str_init(&s, 0);
   r = assets_manager_ref(rm, ASSET_TYPE_DATA, "com.zlg.app.json");
   ASSERT_EQ(r != NULL, true);
-  str_set(&s, (const char*)(r->data));
+  str_set_with_len(&s, (const char*)(r->data), r->size);
   str_replace(&s, "\r\n", "\n");
   ASSERT_STREQ(s.str, "{}\n");
   str_reset(&s);
@@ -150,7 +150,7 @@ TEST(AssetsManager, any) {
   str_init(&s, 0);
   r = assets_manager_ref(rm, ASSET_TYPE_DATA, "a-b-c.any");
   ASSERT_EQ(r != NULL, true);
-  str_set(&s, (const char*)(r->data));
+  str_set_with_len(&s, (const char*)(r->data), r->size);
   str_replace(&s, "\r\n", "\n");
   ASSERT_STREQ(s.str, "abc\n");
   str_reset(&s);

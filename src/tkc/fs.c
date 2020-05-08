@@ -295,6 +295,7 @@ ret_t fs_test(fs_t* fs) {
   fp = fs_open_file(fs, filename, "w+");
   assert(fs_file_write(fp, "hello", 5) == 5);
   assert(fs_file_tell(fp) == 5);
+  assert(fs_file_sync(fp) == RET_OK);
   assert(fs_file_size(fp) == 5);
   assert(fs_file_truncate(fp, 0) == RET_OK);
   assert(fs_file_write(fp, "world", 5) == 5);
@@ -351,12 +352,12 @@ ret_t fs_test(fs_t* fs) {
   assert(item.is_dir);
 
   assert(fs_dir_read(dir, &item) == RET_OK);
-  assert(strcmp(item.name, "c1") == 0);
+  assert(strcmp(item.name, "c1") == 0 || strcmp(item.name, "c2") == 0 );
   assert(!item.is_reg_file);
   assert(item.is_dir);
 
   assert(fs_dir_read(dir, &item) == RET_OK);
-  assert(strcmp(item.name, "c2") == 0);
+  assert(strcmp(item.name, "c1") == 0 || strcmp(item.name, "c2") == 0 );
   assert(!item.is_reg_file);
   assert(item.is_dir);
 

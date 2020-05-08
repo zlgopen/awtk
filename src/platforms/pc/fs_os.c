@@ -129,6 +129,7 @@ static ret_t fs_os_file_sync(fs_file_t* file) {
 #ifdef WIN32
   return fflush(fp) == 0 ? RET_OK : RET_FAIL;
 #else
+  fflush(fp);
   return fsync(fileno(fp)) == 0 ? RET_OK : RET_FAIL;
 #endif /*WIN32*/
 }
