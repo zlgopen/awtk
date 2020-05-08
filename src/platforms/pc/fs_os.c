@@ -96,10 +96,10 @@ static int64_t fs_os_file_tell(fs_file_t* file) {
 }
 
 static int64_t fs_os_file_size(fs_file_t* file) {
-  struct stat st;
-  FILE* fp = (FILE*)(file->data);
-  if(fstat(fp, &st) == 0) {
-    return st.st_size;
+  fs_stat_info_t st;
+
+  if (fs_file_stat(file, &st) == RET_OK && st.is_reg_file) {
+    return st.size;
   } else {
     return -1;
   }
@@ -112,7 +112,8 @@ static ret_t fs_os_file_stat(fs_file_t* file, fs_stat_info_t* fst) {
    struct _stat64i32 st;
   rc = _fstat64i32(fileno(fp), &st);
 #else
-  rc = fstat(fp, &st);
+  struct stat st;
+  rc = fstat(fileno(fp), &st);
 #endif
   if (rc == 0) {
     return fs_stat_info_from_stat(fst, &st);
@@ -128,7 +129,7 @@ static ret_t fs_os_file_sync(fs_file_t* file) {
 #ifdef WIN32
   return fflush(fp) == 0 ? RET_OK : RET_FAIL;
 #else
-  return fsync(fp) == 0 ? RET_OK : RET_FAIL;
+  return fsync(fileno(fp)) == 0 ? RET_OK : RET_FAIL;
 #endif/*WIN32*/
 }
 
@@ -255,7 +256,7 @@ static bool_t fs_os_file_exist(fs_t* fs, const char* name) {
   fs_stat_info_t st;
   return_value_if_fail(name != NULL, FALSE);
 
-  if (fs_os_stat(fs, &st) == RET_OK) {
+  if (fs_stat(fs, name, &st) == RET_OK) {
     return st.is_reg_file;
   } else {
     return FALSE;
@@ -349,7 +350,7 @@ static bool_t fs_os_dir_exist(fs_t* fs, const char* name) {
   fs_stat_info_t st;
   return_value_if_fail(name != NULL, FALSE);
 
-  if (fs_os_stat(fs, name, &st) == RET_OK) {
+  if (fs_stat(fs, name, &st) == RET_OK) {
     return st.is_dir;
   } else {
     return FALSE;
@@ -364,7 +365,7 @@ static int32_t fs_os_get_file_size(fs_t* fs, const char* name) {
   fs_stat_info_t st;
   return_value_if_fail(name != NULL, FALSE);
 
-  if (fs_os_stat(fs, name, &st) == RET_OK && st.is_reg_file) {
+  if (fs_stat(fs, name, &st) == RET_OK && st.is_reg_file) {
     return st.size;
   } else {
     return -1;
