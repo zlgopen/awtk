@@ -250,7 +250,7 @@ static ret_t switch_on_paint_background_img(widget_t* widget, canvas_t* c, bitma
     return canvas_draw_image(c, img, &src, &dst);
   }
 
-  if(vg != NULL) {
+  if (vg != NULL) {
     vgcanvas_save(vg);
     vgcanvas_translate(vg, c->ox, c->oy);
     vgcanvas_scale(vg, wscale, hscale);
@@ -259,7 +259,7 @@ static ret_t switch_on_paint_background_img(widget_t* widget, canvas_t* c, bitma
     vgcanvas_paint(vg, FALSE, img);
     vgcanvas_restore(vg);
   }
-  
+
   return RET_OK;
 }
 

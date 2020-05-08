@@ -39,7 +39,8 @@ static bool_t slide_view_is_loopable(slide_view_t* slide_view) {
   return slide_view->auto_play || slide_view->loop;
 }
 
-static ret_t canvas_set_clip_rect_with_offset(canvas_t* c, rect_t* r, rect_t* save_r, int32_t ox, int32_t oy) {
+static ret_t canvas_set_clip_rect_with_offset(canvas_t* c, rect_t* r, rect_t* save_r, int32_t ox,
+                                              int32_t oy) {
   rect_t rr = *r;
   vgcanvas_t* vg = canvas_get_vgcanvas(c);
   rr.x += ox;
@@ -371,8 +372,8 @@ static ret_t slide_view_set_prop(widget_t* widget, const char* name, const value
   return RET_NOT_FOUND;
 }
 
-static ret_t slide_view_paint_prev_next_v_translate(slide_view_t* slide_view, canvas_t* c, rect_t* save_r,
-                                                    widget_t* prev, widget_t* next,
+static ret_t slide_view_paint_prev_next_v_translate(slide_view_t* slide_view, canvas_t* c,
+                                                    rect_t* save_r, widget_t* prev, widget_t* next,
                                                     int32_t yoffset) {
   rect_t r;
   int32_t ox = c->ox;
@@ -428,8 +429,9 @@ static ret_t slide_view_set_global_alpha(slide_view_t* slide_view, canvas_t* c, 
   return RET_OK;
 }
 
-static ret_t slide_view_paint_prev_next_v_overlap(slide_view_t* slide_view, canvas_t* c, rect_t* save_r,
-                                                  widget_t* prev, widget_t* next, int32_t yoffset) {
+static ret_t slide_view_paint_prev_next_v_overlap(slide_view_t* slide_view, canvas_t* c,
+                                                  rect_t* save_r, widget_t* prev, widget_t* next,
+                                                  int32_t yoffset) {
   rect_t r;
   int32_t ox = c->ox;
   int32_t oy = c->oy;
@@ -494,8 +496,8 @@ static ret_t slide_view_paint_children_v_lt(slide_view_t* slide_view, canvas_t* 
   }
 }
 
-static ret_t slide_view_paint_prev_next_h_translate(slide_view_t* slide_view, canvas_t* c, rect_t* save_r,
-                                                    widget_t* prev, widget_t* next,
+static ret_t slide_view_paint_prev_next_h_translate(slide_view_t* slide_view, canvas_t* c,
+                                                    rect_t* save_r, widget_t* prev, widget_t* next,
                                                     int32_t xoffset) {
   rect_t r;
   int32_t ox = c->ox;
@@ -541,8 +543,9 @@ static ret_t slide_view_paint_prev_next_h_translate(slide_view_t* slide_view, ca
   return RET_OK;
 }
 
-static ret_t slide_view_paint_prev_next_h_overlap(slide_view_t* slide_view, canvas_t* c, rect_t* save_r,
-                                                  widget_t* prev, widget_t* next, int32_t xoffset) {
+static ret_t slide_view_paint_prev_next_h_overlap(slide_view_t* slide_view, canvas_t* c,
+                                                  rect_t* save_r, widget_t* prev, widget_t* next,
+                                                  int32_t xoffset) {
   rect_t r;
   int32_t ox = c->ox;
   int32_t oy = c->oy;

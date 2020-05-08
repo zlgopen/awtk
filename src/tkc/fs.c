@@ -352,12 +352,12 @@ ret_t fs_test(fs_t* fs) {
   assert(item.is_dir);
 
   assert(fs_dir_read(dir, &item) == RET_OK);
-  assert(strcmp(item.name, "c1") == 0 || strcmp(item.name, "c2") == 0 );
+  assert(strcmp(item.name, "c1") == 0 || strcmp(item.name, "c2") == 0);
   assert(!item.is_reg_file);
   assert(item.is_dir);
 
   assert(fs_dir_read(dir, &item) == RET_OK);
-  assert(strcmp(item.name, "c1") == 0 || strcmp(item.name, "c2") == 0 );
+  assert(strcmp(item.name, "c1") == 0 || strcmp(item.name, "c2") == 0);
   assert(!item.is_reg_file);
   assert(item.is_dir);
 

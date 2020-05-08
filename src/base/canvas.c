@@ -137,8 +137,9 @@ ret_t canvas_set_clip_rect(canvas_t* c, const rect_t* r_in) {
   rect_t r_fix;
   rect_t* r = canvas_fix_rect(r_in, &r_fix);
 
-#ifdef FRAGMENT_FRAME_BUFFER_SIZE 
-  rect_t dirty_r = rect_init(c->lcd->dirty_rect.x, c->lcd->dirty_rect.y, c->lcd->dirty_rect.w, c->lcd->dirty_rect.h);
+#ifdef FRAGMENT_FRAME_BUFFER_SIZE
+  rect_t dirty_r = rect_init(c->lcd->dirty_rect.x, c->lcd->dirty_rect.y, c->lcd->dirty_rect.w,
+                             c->lcd->dirty_rect.h);
 #endif
 
   return_value_if_fail(c != NULL, RET_BAD_PARAMS);
@@ -147,7 +148,7 @@ ret_t canvas_set_clip_rect(canvas_t* c, const rect_t* r_in) {
   lcd_h = lcd_get_height(c->lcd);
 
   if (r) {
-#ifdef FRAGMENT_FRAME_BUFFER_SIZE 
+#ifdef FRAGMENT_FRAME_BUFFER_SIZE
     r_fix = rect_intersect(&r_fix, &dirty_r);
 #endif
 
@@ -156,7 +157,7 @@ ret_t canvas_set_clip_rect(canvas_t* c, const rect_t* r_in) {
     c->clip_right = r->x + r->w - 1;
     c->clip_bottom = r->y + r->h - 1;
   } else {
-#ifdef FRAGMENT_FRAME_BUFFER_SIZE 
+#ifdef FRAGMENT_FRAME_BUFFER_SIZE
     c->clip_left = tk_max(0, dirty_r.x);
     c->clip_top = tk_max(0, dirty_r.y);
     c->clip_right = dirty_r.x + dirty_r.w - 1;
