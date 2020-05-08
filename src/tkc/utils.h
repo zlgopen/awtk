@@ -378,6 +378,17 @@ char* tk_str_toupper(char* str);
  */
 char* tk_str_tolower(char* str);
 
+/**
+ * @method tk_wstr_dup_utf8
+ *
+ * 将utf8字符串拷贝为UCS字符串。
+ *
+ * @param {char*} str utf8编码的字符串。
+ *
+ * @return {wchar_t*} 返回UCS字符串(需要调用TKMEM_FREE释放)。
+ */
+wchar_t* tk_wstr_dup_utf8(const char* str);
+
 const char* tk_normalize_key_name(const char* name, char fixed_name[TK_NAME_LEN + 1]);
 
 END_C_DECLS

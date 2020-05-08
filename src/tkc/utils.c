@@ -793,3 +793,21 @@ uint32_t tk_strlen(const char* str) {
 
   return strlen(str);
 }
+
+wchar_t* tk_wstr_dup_utf8(const char* str) {
+  int32_t len = 0;
+  int32_t size = 0;
+  wchar_t* wstr = NULL;
+  return_value_if_fail(str != NULL, NULL);
+
+  len = strlen(str) + 1;
+  size = len * sizeof(wchar_t);
+  wstr = TKMEM_ALLOC(size);
+  return_value_if_fail(wstr != NULL, NULL);
+  memset(wstr, 0x00, size);
+
+  tk_utf8_to_utf16(str, wstr, len);
+
+  return wstr;
+}
+
