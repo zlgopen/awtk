@@ -810,4 +810,3 @@ wchar_t* tk_wstr_dup_utf8(const char* str) {
 
   return wstr;
 }
-

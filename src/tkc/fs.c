@@ -92,7 +92,8 @@ ret_t fs_file_sync(fs_file_t* file) {
 }
 
 ret_t fs_file_stat(fs_file_t* file, fs_stat_info_t* fst) {
-  return_value_if_fail(file != NULL && file->vt != NULL && file->vt->stat != NULL && fst != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(file != NULL && file->vt != NULL && file->vt->stat != NULL && fst != NULL,
+                       RET_BAD_PARAMS);
 
   return file->vt->stat(file, fst);
 }

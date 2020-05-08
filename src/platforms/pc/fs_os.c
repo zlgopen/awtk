@@ -39,9 +39,9 @@
 static ret_t fs_stat_info_from_stat(fs_stat_info_t* fst, struct _stat64i32* st) {
 #else
 static ret_t fs_stat_info_from_stat(fs_stat_info_t* fst, struct stat* st) {
-#endif/*WIN32*/
-  return_value_if_fail(fst != NULL &&& st != NULL, RET_BAD_PARAMS);
-  
+#endif /*WIN32*/
+  return_value_if_fail(fst != NULL && &st != NULL, RET_BAD_PARAMS);
+
   memset(fst, 0x00, sizeof(fs_stat_info_t));
   fst->dev = st->st_dev;
   fst->ino = st->st_ino;
@@ -91,7 +91,7 @@ static ret_t fs_os_file_seek(fs_file_t* file, int32_t offset) {
 
 static int64_t fs_os_file_tell(fs_file_t* file) {
   FILE* fp = (FILE*)(file->data);
-  
+
   return ftell(fp);
 }
 
@@ -109,7 +109,7 @@ static ret_t fs_os_file_stat(fs_file_t* file, fs_stat_info_t* fst) {
   int rc = 0;
   FILE* fp = (FILE*)(file->data);
 #ifdef WIN32
-   struct _stat64i32 st;
+  struct _stat64i32 st;
   rc = _fstat64i32(fileno(fp), &st);
 #else
   struct stat st;
@@ -130,9 +130,8 @@ static ret_t fs_os_file_sync(fs_file_t* file) {
   return fflush(fp) == 0 ? RET_OK : RET_FAIL;
 #else
   return fsync(fileno(fp)) == 0 ? RET_OK : RET_FAIL;
-#endif/*WIN32*/
+#endif /*WIN32*/
 }
-
 
 static ret_t fs_os_file_truncate(fs_file_t* file, int32_t size) {
   FILE* fp = (FILE*)(file->data);
@@ -447,7 +446,7 @@ static ret_t fs_os_get_user_storage_path(fs_t* fs, char path[MAX_PATH + 1]) {
 }
 
 static ret_t fs_os_get_cwd(fs_t* fs, char path[MAX_PATH + 1]) {
-  wchar_t wpath[MAX_PATH+1];
+  wchar_t wpath[MAX_PATH + 1];
   return_value_if_fail(fs != NULL && path != NULL, RET_BAD_PARAMS);
 
   memset(path, 0x00, MAX_PATH + 1);

@@ -261,7 +261,6 @@ int64_t fs_file_tell(fs_file_t* file);
  */
 int64_t fs_file_size(fs_file_t* file);
 
-
 /**
  * @class fs_item_t
  * 代表目录或文件。
