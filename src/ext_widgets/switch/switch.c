@@ -238,8 +238,7 @@ static ret_t switch_on_paint_background_img(widget_t* widget, canvas_t* c, bitma
   w = iw * (1 - aswitch->max_xoffset_ratio);
   wscale = (float_t)(widget->w) / (float_t)w;
 
-#ifdef WITH_NANOVG_SOFT
-  if (round_radius < 5 && hscale == 1 && wscale == 1) {
+  if (vg == NULL || (round_radius < 5 && hscale == 1 && wscale == 1)) {
     int32_t x = (widget->w - w) >> 1;
     int32_t y = (widget->h - ih) >> 1;
     rect_t src = rect_init(xoffset, 0, w, ih);
@@ -250,16 +249,17 @@ static ret_t switch_on_paint_background_img(widget_t* widget, canvas_t* c, bitma
 
     return canvas_draw_image(c, img, &src, &dst);
   }
-#endif /*WITH_NANOVG_SOFT*/
 
-  vgcanvas_save(vg);
-  vgcanvas_translate(vg, c->ox, c->oy);
-  vgcanvas_scale(vg, wscale, hscale);
-  vgcanvas_translate(vg, -xoffset, 0);
-  vgcanvas_rounded_rect(vg, xoffset, 0, w, h, round_radius);
-  vgcanvas_paint(vg, FALSE, img);
-  vgcanvas_restore(vg);
-
+  if(vg != NULL) {
+    vgcanvas_save(vg);
+    vgcanvas_translate(vg, c->ox, c->oy);
+    vgcanvas_scale(vg, wscale, hscale);
+    vgcanvas_translate(vg, -xoffset, 0);
+    vgcanvas_rounded_rect(vg, xoffset, 0, w, h, round_radius);
+    vgcanvas_paint(vg, FALSE, img);
+    vgcanvas_restore(vg);
+  }
+  
   return RET_OK;
 }
 
