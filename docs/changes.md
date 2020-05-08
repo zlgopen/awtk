@@ -1,5 +1,14 @@
 # 最新动态
 
+* 2020/05/08
+  * 增加函数 tk\_wstr\_dup\_utf8
+  * 增加函数 fs\_os\_file\_tell
+  * 增加函数 fs\_os\_file\_size
+  * 增加函数 fs\_os\_file\_stat
+  * 增加函数 fs\_os\_file\_sync
+  * 增加函数 tk_mutex_try_lock 以及各个平台的实现。
+  * 重构src/platforms/pc/fs_os.c中的函数。
+
 * 2020/05/07
   * 完善 input\_method\_dispatch\_candidates。
   * 完善 widget_set_theme（感谢大恒提供补丁）

@@ -62,15 +62,39 @@ ret_t fs_file_truncate(fs_file_t* file, int32_t offset) {
 }
 
 bool_t fs_file_eof(fs_file_t* file) {
-  return_value_if_fail(file != NULL && file->vt != NULL && file->vt->eof != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(file != NULL && file->vt != NULL && file->vt->eof != NULL, TRUE);
 
   return file->vt->eof(file);
+}
+
+int64_t fs_file_tell(fs_file_t* file) {
+  return_value_if_fail(file != NULL && file->vt != NULL && file->vt->tell != NULL, -1);
+
+  return file->vt->tell(file);
+}
+
+int64_t fs_file_size(fs_file_t* file) {
+  return_value_if_fail(file != NULL && file->vt != NULL && file->vt->size != NULL, -1);
+
+  return file->vt->size(file);
 }
 
 ret_t fs_file_close(fs_file_t* file) {
   return_value_if_fail(file != NULL && file->vt != NULL && file->vt->close != NULL, RET_BAD_PARAMS);
 
   return file->vt->close(file);
+}
+
+ret_t fs_file_sync(fs_file_t* file) {
+  return_value_if_fail(file != NULL && file->vt != NULL && file->vt->sync != NULL, RET_BAD_PARAMS);
+
+  return file->vt->sync(file);
+}
+
+ret_t fs_file_stat(fs_file_t* file, fs_stat_info_t* fst) {
+  return_value_if_fail(file != NULL && file->vt != NULL && file->vt->stat != NULL && fst != NULL, RET_BAD_PARAMS);
+
+  return file->vt->stat(file, fst);
 }
 
 ret_t fs_dir_rewind(fs_dir_t* dir) {
@@ -269,6 +293,8 @@ ret_t fs_test(fs_t* fs) {
   memset(buff, 0x00, sizeof(buff));
   fp = fs_open_file(fs, filename, "w+");
   assert(fs_file_write(fp, "hello", 5) == 5);
+  assert(fs_file_tell(fp) == 5);
+  assert(fs_file_size(fp) == 5);
   assert(fs_file_truncate(fp, 0) == RET_OK);
   assert(fs_file_write(fp, "world", 5) == 5);
   assert(fs_file_seek(fp, 0) == RET_OK);
