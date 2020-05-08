@@ -160,16 +160,19 @@ static ret_t draggable_on_paint_self(widget_t* widget, canvas_t* c) {
 
 static ret_t draggable_on_parent_pointer_down(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
-  pointer_event_t* evt = (pointer_event_t*)e;
-  draggable_t* draggable = DRAGGABLE(widget);
-  widget_t* target = draggable->drag_window ? widget_get_window(widget) : widget->parent;
 
-  draggable->down.x = evt->x;
-  draggable->down.y = evt->y;
-  draggable->saved_position.x = target->x;
-  draggable->saved_position.y = target->y;
+  if (widget->enable) {
+    pointer_event_t* evt = (pointer_event_t*)e;
+    draggable_t* draggable = DRAGGABLE(widget);
+    widget_t* target = draggable->drag_window ? widget_get_window(widget) : widget->parent;
 
-  widget_grab(widget->parent->parent, widget->parent);
+    draggable->down.x = evt->x;
+    draggable->down.y = evt->y;
+    draggable->saved_position.x = target->x;
+    draggable->saved_position.y = target->y;
+
+    widget_grab(widget->parent->parent, widget->parent);
+  }
 
   return RET_OK;
 }
@@ -196,40 +199,46 @@ static ret_t draggable_move_target(widget_t* widget, xy_t x, xy_t y) {
 }
 
 static ret_t draggable_on_parent_pointer_move(void* ctx, event_t* e) {
-  xy_t x = 0;
-  xy_t y = 0;
   widget_t* widget = WIDGET(ctx);
-  pointer_event_t* evt = (pointer_event_t*)e;
-  draggable_t* draggable = DRAGGABLE(widget);
-  xy_t dx = evt->x - draggable->down.x;
-  xy_t dy = evt->y - draggable->down.y;
 
-  x = draggable->saved_position.x + (draggable->vertical_only ? 0 : dx);
-  y = draggable->saved_position.y + (draggable->horizontal_only ? 0 : dy);
+  if (widget->enable) {
+    xy_t x = 0;
+    xy_t y = 0;
+    pointer_event_t* evt = (pointer_event_t*)e;
+    draggable_t* draggable = DRAGGABLE(widget);
+    xy_t dx = evt->x - draggable->down.x;
+    xy_t dy = evt->y - draggable->down.y;
 
-  if (!evt->pressed) {
-    return RET_OK;
+    x = draggable->saved_position.x + (draggable->vertical_only ? 0 : dx);
+    y = draggable->saved_position.y + (draggable->horizontal_only ? 0 : dy);
+
+    if (!evt->pressed) {
+      return RET_OK;
+    }
+
+    draggable_move_target(widget, x, y);
   }
-
-  draggable_move_target(widget, x, y);
 
   return RET_OK;
 }
 
 static ret_t draggable_on_parent_pointer_up(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
-  draggable_t* draggable = DRAGGABLE(widget);
-  widget_t* target = draggable->drag_window ? widget_get_window(widget) : widget->parent;
-  int32_t dx = target->x - draggable->saved_position.x;
-  int32_t dy = target->y - draggable->saved_position.y;
 
-  if (tk_abs(dx) > 5 || tk_abs(dy) > 5) {
-    pointer_event_t abort;
-    pointer_event_init(&abort, EVT_POINTER_DOWN_ABORT, NULL, 0, 0);
-    widget_dispatch(widget->parent, (event_t*)&abort);
+  if (widget->enable) {
+    draggable_t* draggable = DRAGGABLE(widget);
+    widget_t* target = draggable->drag_window ? widget_get_window(widget) : widget->parent;
+    int32_t dx = target->x - draggable->saved_position.x;
+    int32_t dy = target->y - draggable->saved_position.y;
+
+    if (tk_abs(dx) > 5 || tk_abs(dy) > 5) {
+      pointer_event_t abort;
+      pointer_event_init(&abort, EVT_POINTER_DOWN_ABORT, NULL, 0, 0);
+      widget_dispatch(widget->parent, (event_t*)&abort);
+    }
+
+    widget_ungrab(widget->parent->parent, widget->parent);
   }
-
-  widget_ungrab(widget->parent->parent, widget->parent);
 
   return RET_OK;
 }

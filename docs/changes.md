@@ -7,7 +7,8 @@
   * 增加函数 fs\_os\_file\_stat
   * 增加函数 fs\_os\_file\_sync
   * 增加函数 tk_mutex_try_lock 以及各个平台的实现。
-  * 重构src/platforms/pc/fs_os.c中的函数。
+  * 重构 src/platforms/pc/fs_os.c 中的函数。
+  * 完善 draggable 控件，enable=false 时，禁止拖动。
   * 修复如果 slide_view 控件其他控件遮挡时候，刷新 slide_view 控件会出现显示异常的问题和修复了 switch 控件对 片段式显存的支持（感谢智明提供补丁）。
   * 修改了片段式显存下 canvas 设置裁减区收到当前脏矩形控制，防止裁减区越界的问题（感谢智明提供补丁）。
   * 修复了 awtk 的警告问题（感谢智明提供补丁）。
