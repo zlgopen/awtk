@@ -122,7 +122,7 @@ lcd_t* stm32f767_create_lcd(wh_t w, wh_t h) {
 
 > 参考： https://github.com/zlgopen/awtk-linux-fb/blob/master/awtk-port/lcd\_linux\_fb.c
 
-* 缺省 flush 的方式。一般由 lcd 的 flush 函数把 offline framebuffer 中的图像（脏矩形内的部分） 拷贝到 offline framebuffer。这是缺省实现，一般不需修改。在这种情况下，一般用 lcd_mem_xxx_create_double_fb 创建 lcd 对象，注意 online framebuffer 参数一定要是系统显存。
+* 缺省 flush 的方式。一般由 lcd 的 flush 函数把 offline framebuffer 中的图像（脏矩形内的部分） 拷贝到 online framebuffer。这是缺省实现，一般不需修改。在这种情况下，一般用 lcd_mem_xxx_create_double_fb 创建 lcd 对象，注意 online framebuffer 参数一定要是系统显存。
 
 > 如果要做显示同步，也就是等显卡把数据真正显示到屏幕上，可以重载 lcd 的 sync 函数。一般适用于 linux 单 framebuffer 的情况。参考： https://github.com/zlgopen/awtk-linux-fb/blob/master/awtk-port/lcd\_linux\_fb.c
 
