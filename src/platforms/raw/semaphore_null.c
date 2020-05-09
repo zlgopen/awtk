@@ -1,7 +1,7 @@
-﻿/**
- * File:   cond_var_null.c
+/**
+ * File:   semaphore_null.c
  * Author: AWTK Develop Team
- * Brief:  cond_var do nothing
+ * Brief:  semaphore do nothing
  *
  * Copyright (c) 2018 - 2020  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
@@ -15,31 +15,30 @@
 /**
  * History:
  * ================================================================
- * 2019-05-11 Li XianJing <xianjimli@hotmail.com> created
+ * 2020-05-10 Li XianJing <xianjimli@hotmail.com> created
  *
  */
 
-#include "tkc/mem.h"
-#include "tkc/cond_var.h"
+#include "tkc/semaphore.h"
 
-struct _tk_cond_var_t {
+struct _tk_semaphore_t {
   uint32_t none;
 };
 
-static const tk_cond_var_t s_cond_var_null;
+static const tk_semaphore_t s_semaphore_null;
 
-tk_cond_var_t* tk_cond_var_create(void) {
-  return (tk_cond_var_t*)&s_cond_var_null;
+tk_semaphore_t* tk_semaphore_create(uint32_t value, const char* name) {
+  return (tk_semaphore_t*)&s_semaphore_null;
 }
 
-ret_t tk_cond_var_wait(tk_cond_var_t* cond_var, uint32_t timeout_ms) {
+ret_t tk_semaphore_wait(tk_semaphore_t* semaphore, uint32_t timeout_ms) {
   return RET_OK;
 }
 
-ret_t tk_cond_var_awake(tk_cond_var_t* cond_var) {
+ret_t tk_semaphore_post(tk_semaphore_t* semaphore) {
   return RET_OK;
 }
 
-ret_t tk_cond_var_destroy(tk_cond_var_t* cond_var) {
+ret_t tk_semaphore_destroy(tk_semaphore_t* semaphore) {
   return RET_OK;
 }
