@@ -25,7 +25,11 @@
 #include "base/enums.h"
 #include "base/window.h"
 #include "keyboard/keyboard.h"
+
+#if !defined(WITHOUT_SUGGEST_WORDS) && !defined(WITH_IME_NULL)
 #include "suggest_words.inc"
+#endif/*WITHOUT_SUGGEST_WORDS && WITH_IME_NULL*/
+
 #include "base/input_method.h"
 #include "base/window_manager.h"
 #include "ui_loader/ui_builder_default.h"
@@ -315,7 +319,7 @@ input_method_t* input_method_default_create(void) {
   emitter_init(&(im->emitter));
   im->engine = input_engine_create(im);
 
-#ifndef WITHOUT_SUGGEST_WORDS
+#if !defined(WITHOUT_SUGGEST_WORDS) && !defined(WITH_IME_NULL)
   im->suggest_words = suggest_words_create((const asset_info_t*)(data_words_bin));
 #endif /*WITHOUT_SUGGEST_WORDS*/
 
