@@ -110,6 +110,7 @@
 | i.MX283         | Linux    | https://github.com/zlgopen/awtk-linux-fb           | [ZLG](http://www.zlg.cn)              |
 | LPC54608        | 无       | 请联系作者                                         | [ZLG](http://www.zlg.cn)              |
 | LPC54018        | 无       | 请联系作者                                         | [ZLG](http://www.zlg.cn)              |
+| LPC1768         | 无       | https://github.com/zlgopen/awtk-lpc1768-raw       | [ZLG](http://www.zlg.cn)              |
 
 - #### ST
 
@@ -118,6 +119,7 @@
 | STM32F103 | 无        | https://github.com/zlgopen/awtk-stm32f103ze-raw       | [ZLG](http://www.zlg.cn)           |
 | STM32F103 | RT-Thread | https://github.com/zlgopen/awtk-stm32f103ze-rtthread  | [ZLG](http://www.zlg.cn)           |
 | STM32F103 | TencentOS | https://github.com/zlgopen/awtk-stm32f103ze-tencentos | [ZLG](http://www.zlg.cn)           |
+| STM32H743 | TencentOS | https://github.com/zlgopen/awtk-stm32h743iitx-tencentos | [ZLG](http://www.zlg.cn)           |
 | STM32F429 | 无        | https://github.com/zlgopen/awtk-stm32f429igtx-raw     | [ZLG](http://www.zlg.cn)           |
 | STM32F767 | 无        | https://github.com/zlgopen/awtk-stm32f767igtx-raw     | [ZLG](http://www.zlg.cn)           |
 | STM32F769 | FreeRTOS  | https://github.com/wpmyj/awtk-stm32f769-freertos      | [王培明](https://github.com/wpmyj) |
