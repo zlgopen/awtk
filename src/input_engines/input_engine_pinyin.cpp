@@ -99,6 +99,7 @@ static ret_t input_engine_pinyin_search(input_engine_t* engine, const char* keys
 }
 
 input_engine_t* input_engine_create(input_method_t* im) {
+  const asset_info_t* data = NULL;
   input_engine_t* engine = TKMEM_ZALLOC(input_engine_t);
   return_value_if_fail(engine != NULL, NULL);
 
@@ -108,8 +109,11 @@ input_engine_t* input_engine_create(input_method_t* im) {
   engine->im = im;
   engine->search = input_engine_pinyin_search;
   engine->get_lang = input_engine_pinyin_get_lang;
+  data = assets_manager_ref(assets_manager(), ASSET_TYPE_DATA, "gpinyin.dat");
+  return_value_if_fail(data != NULL, NULL);
+  engine->data = (void*)data;
 
-  im_open_decoder_rom();
+  im_open_decoder_rom((const char*)data);
   im_set_max_lens(32, 16);
 
   return engine;
@@ -117,6 +121,7 @@ input_engine_t* input_engine_create(input_method_t* im) {
 
 ret_t input_engine_destroy(input_engine_t* engine) {
   return_value_if_fail(engine != NULL, RET_BAD_PARAMS);
+  assets_manager_unref(assets_manager(), (const asset_info_t*)(engine->data));
   str_reset(&(engine->keys));
   im_close_decoder();
   TKMEM_FREE(engine);

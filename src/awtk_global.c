@@ -148,13 +148,12 @@ ret_t tk_init_internal(void) {
 
   return_value_if_fail(timer_prepare(time_now_ms) == RET_OK, RET_FAIL);
   return_value_if_fail(idle_manager_set(idle_manager_create()) == RET_OK, RET_FAIL);
+  return_value_if_fail(widget_factory_set(widget_factory_create()) == RET_OK, RET_FAIL);
+  return_value_if_fail(theme_set(theme_create(NULL)) == RET_OK, RET_FAIL);
+  return_value_if_fail(assets_manager_set(assets_manager_create(30)) == RET_OK, RET_FAIL);
 #ifndef WITHOUT_INPUT_METHOD
   return_value_if_fail(input_method_set(input_method_create()) == RET_OK, RET_FAIL);
 #endif /*WITHOUT_INPUT_METHOD*/
-  return_value_if_fail(widget_factory_set(widget_factory_create()) == RET_OK, RET_FAIL);
-
-  return_value_if_fail(theme_set(theme_create(NULL)) == RET_OK, RET_FAIL);
-  return_value_if_fail(assets_manager_set(assets_manager_create(30)) == RET_OK, RET_FAIL);
   return_value_if_fail(locale_info_set(locale_info_create(NULL, NULL)) == RET_OK, RET_FAIL);
   return_value_if_fail(font_manager_set(font_manager_create(font_loader)) == RET_OK, RET_FAIL);
   return_value_if_fail(image_manager_set(image_manager_create()) == RET_OK, RET_FAIL);

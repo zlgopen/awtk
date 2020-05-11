@@ -35,7 +35,7 @@ namespace ime_pinyin {
  */
 bool im_open_decoder(const char* fn_sys_dict, const char* fn_usr_dict);
 
-bool im_open_decoder_rom(void);
+bool im_open_decoder_rom(const char* data);
 
 /**
  * Open the decoder engine via the system dictionary FD and user dictionary
