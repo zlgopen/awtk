@@ -26,10 +26,6 @@
 #include "base/window.h"
 #include "keyboard/keyboard.h"
 
-#if !defined(WITHOUT_SUGGEST_WORDS) && !defined(WITH_IME_NULL)
-#include "suggest_words.inc"
-#endif/*WITHOUT_SUGGEST_WORDS && WITH_IME_NULL*/
-
 #include "base/input_method.h"
 #include "base/window_manager.h"
 #include "ui_loader/ui_builder_default.h"
@@ -302,6 +298,7 @@ ret_t input_method_default_destroy(input_method_t* im) {
   emitter_deinit(&(im->emitter));
   input_engine_destroy(im->engine);
   suggest_words_destroy(im->suggest_words);
+  assets_manager_unref(assets_manager(), (const asset_info_t*)(im->data));
 
   TKMEM_FREE(im);
 
@@ -309,6 +306,7 @@ ret_t input_method_default_destroy(input_method_t* im) {
 }
 
 input_method_t* input_method_default_create(void) {
+  const asset_info_t* suggest_words = NULL;
   input_method_t* im = TKMEM_ZALLOC(input_method_t);
   return_value_if_fail(im != NULL, NULL);
 
@@ -320,7 +318,11 @@ input_method_t* input_method_default_create(void) {
   im->engine = input_engine_create(im);
 
 #if !defined(WITHOUT_SUGGEST_WORDS) && !defined(WITH_IME_NULL)
-  im->suggest_words = suggest_words_create((const asset_info_t*)(data_words_bin));
+  suggest_words = assets_manager_ref(assets_manager(), ASSET_TYPE_DATA, "suggest_words_zh_cn.dat");
+  if (suggest_words != NULL) {
+    im->suggest_words = suggest_words_create((const asset_info_t*)(suggest_words));
+    im->data = (void*)suggest_words;
+  }
 #endif /*WITHOUT_SUGGEST_WORDS*/
 
   return im;

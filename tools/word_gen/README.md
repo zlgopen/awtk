@@ -42,7 +42,13 @@ node to_json.js
 在awtk根目录下运行：
 
 ```
-./bin/resgen tools/word_gen/words.bin src/input_methods/suggest_words.inc 
+cp tools/word_gen/words.bin demos/assets/default/raw/data/suggest_words_zh_cn.dat
+```
+
+如果不支持文件系统，还需要运行更新资源的脚本：
+
+```
+python scripts/update_res.py all
 ```
 
 ### 注意：

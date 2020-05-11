@@ -267,6 +267,7 @@ struct _input_method_t {
 
   /*private*/
   bool_t busy;
+  void* data;
 };
 
 /**

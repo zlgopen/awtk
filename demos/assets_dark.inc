@@ -163,6 +163,7 @@ extern TK_CONST_DATA_ALIGN(const unsigned char xml_test[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char data_a_b_c_any[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char data_com_zlg_app_json[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char data_gpinyin_dat[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char data_suggest_words_zh_cn_dat[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char data_test_dat[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char data_test_json[]);
 #ifdef WITH_STB_IMAGE
@@ -611,6 +612,7 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, data_a_b_c_any);
   assets_manager_add(am, data_com_zlg_app_json);
   assets_manager_add(am, data_gpinyin_dat);
+  assets_manager_add(am, data_suggest_words_zh_cn_dat);
   assets_manager_add(am, data_test_dat);
   assets_manager_add(am, data_test_json);
   assets_manager_add(am, image_1);
