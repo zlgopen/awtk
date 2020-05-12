@@ -29,6 +29,18 @@ BEGIN_C_DECLS
 /**
  * @class tokenizer_t
  * 从字符串中解析出一个一个的token。
+ * 
+ * ```c
+ * tokenizer_t tokenizer;
+ * tokenizer_t* t = tokenizer_init(&tokenizer, "20,111.2,22.3,333.3,44,555.5", 0xffffff, ",");
+ *
+ * while(tokenizer_has_more(t)) {
+ *   double v = tokenizer_next_float(t, 0);
+ *   log_debug("%lf\n", v);
+ * }
+ *
+ * tokenizer_deinit(t);
+ * ```
  */
 typedef struct _tokenizer_t {
   /**
