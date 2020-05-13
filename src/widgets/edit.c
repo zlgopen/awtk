@@ -545,6 +545,10 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
   return_value_if_fail(widget->visible, RET_OK);
 
   if (edit->readonly) {
+    if (type == EVT_RESIZE || type == EVT_MOVE_RESIZE) {
+      text_edit_layout(edit->model);
+      widget_invalidate(widget, NULL);
+    }
     return RET_OK;
   }
 
@@ -925,7 +929,6 @@ static ret_t edit_set_text(widget_t* widget, const value_t* v) {
   return_value_if_fail(wstr_from_value(&str, v) == RET_OK, RET_BAD_PARAMS);
 
   if (!wstr_equal(&(widget->text), &str)) {
-    TKMEM_FREE(widget->tr_text);
     wstr_set(&(widget->text), str.str);
 
     text_edit_set_cursor(edit->model, widget->text.size);
