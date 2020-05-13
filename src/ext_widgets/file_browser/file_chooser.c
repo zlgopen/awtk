@@ -62,7 +62,7 @@ static ret_t file_choose_on_click_to_close(void* ctx, event_t* e) {
   widget_t* win = widget_get_window(WIDGET(e->target));
   file_chooser_t* chooser = (file_chooser_t*)ctx;
 
-  chooser->aborted = FALSE;
+  chooser->aborted = TRUE;
   emitter_dispatch(EMITTER(chooser), done_event_init(&done, RET_OK));
 
   if (widget_is_dialog(win)) {
