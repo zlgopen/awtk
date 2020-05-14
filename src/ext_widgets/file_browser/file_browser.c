@@ -256,6 +256,10 @@ ret_t file_browser_up(file_browser_t* fb) {
 
   p = strrchr(fb->cwd, TK_PATH_SEP);
   if (p != NULL) {
+    if (p[1] == '\0') {
+      *p = '\0';
+      p = strrchr(fb->cwd, TK_PATH_SEP);
+    }
     *p = '\0';
   }
 
