@@ -60,7 +60,7 @@ static ret_t clip_view_on_paint_children(widget_t* widget, canvas_t* c) {
 }
 
 TK_DECL_VTABLE(clip_view) = {.size = sizeof(clip_view_t),
-                             .type = WIDGET_TYPE_VIEW,
+                             .type = WIDGET_TYPE_CLIP_VIEW,
                              .parent = TK_PARENT_VTABLE(widget),
                              .create = clip_view_create,
                              .on_paint_children = clip_view_on_paint_children};
