@@ -284,11 +284,9 @@ bool_t file_exist(const char* name) {
   return fs_file_exist(os_fs(), name);
 }
 
-ret_t fs_test(fs_t* fs) {
+ret_t fs_test_file(fs_t* fs) {
   char buff[32];
-  fs_item_t item;
   fs_file_t* fp = NULL;
-  fs_dir_t* dir = NULL;
   const char* filename = "./test.txt";
 
   memset(buff, 0x00, sizeof(buff));
@@ -324,6 +322,13 @@ ret_t fs_test(fs_t* fs) {
   assert(fs_file_exist(fs, "./test.bin"));
   assert(fs_remove_file(fs, "./test.bin") == RET_OK);
   assert(!fs_file_exist(fs, "./test.bin"));
+
+  return RET_OK;
+}
+
+ret_t fs_test_dir(fs_t* fs) {
+  fs_item_t item;
+  fs_dir_t* dir = NULL;
 
   assert(!fs_dir_exist(fs, "./a"));
   assert(fs_create_dir(fs, "./a") == RET_OK);
@@ -375,4 +380,9 @@ ret_t fs_test(fs_t* fs) {
   assert(fs_remove_dir(fs, "./a") == RET_OK);
 
   return RET_OK;
+}
+
+ret_t fs_test(fs_t* fs) {
+  fs_test_file(fs);
+  return fs_test_dir(fs);
 }

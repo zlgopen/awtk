@@ -669,6 +669,8 @@ ret_t file_write(const char* name, const void* buff, uint32_t size);
 
 /*basic function test*/
 ret_t fs_test(fs_t* fs);
+ret_t fs_test_file(fs_t* fs);
+ret_t fs_test_dir(fs_t* fs);
 
 END_C_DECLS
 
