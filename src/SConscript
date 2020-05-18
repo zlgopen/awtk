@@ -108,7 +108,7 @@ env.Library(os.path.join(LIB_DIR, 'extwidgets'), EXT_WIDGETS_SOURCES, LIBS=[])
 env.Library(os.path.join(LIB_DIR, 'awtk_global'), ['awtk_global.c'], LIBS=[])
 
 
-if os.environ.has_key('WITH_AWTK_SO'):
+if 'WITH_AWTK_SO' in os.environ:
   print("with awtk so");
   LIBS=os.environ['AWTK_DLL_DEPS_LIBS'].split(';')
   LINKFLAGS=env['LINKFLAGS'] + os.environ['OS_WHOLE_ARCHIVE']
