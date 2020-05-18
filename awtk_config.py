@@ -271,6 +271,7 @@ os.environ['FRAME_BUFFER_FORMAT'] = FRAME_BUFFER_FORMAT;
 os.environ['OS_WHOLE_ARCHIVE'] = OS_WHOLE_ARCHIVE;
 os.environ['AWTK_DLL_DEPS_LIBS'] = ';'.join(AWTK_DLL_DEPS_LIBS)
 os.environ['STATIC_LIBS'] = ';'.join(STATIC_LIBS)
+os.environ['WITH_AWTK_SO'] = 'true'
 
 def has_custom_cc():
     return False
