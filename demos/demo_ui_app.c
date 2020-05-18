@@ -25,6 +25,7 @@
 
 #include "awtk.h"
 #include "ext_widgets.h"
+#include "base/event_recorder_player.h"
 
 static ret_t on_clone_tab(void* ctx, event_t* e);
 static ret_t widget_clone_tab(widget_t* widget);
@@ -765,6 +766,28 @@ static ret_t on_screen_saver(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t on_key_record_play_events(void* ctx, event_t* e) {
+  key_event_t* evt = (key_event_t*)e;
+
+#ifdef WITH_EVENT_RECORDER_PLAYER
+  if (evt->key == TK_KEY_F5) {
+    event_recorder_player_start_record("event_log.bin");
+    return RET_STOP;
+  } else if (evt->key == TK_KEY_F6) {
+    event_recorder_player_stop_record();
+    return RET_STOP;
+  } else if (evt->key == TK_KEY_F7) {
+    event_recorder_player_start_play("event_log.bin", 0xffff);
+    return RET_STOP;
+  } else if (evt->key == TK_KEY_F8) {
+    event_recorder_player_stop_play();
+    return RET_STOP;
+  }
+#endif/*WITH_EVENT_RECORDER_PLAYER*/
+
+  return RET_OK;
+}
+
 static ret_t on_key_back_or_back_to_home(void* ctx, event_t* e) {
   key_event_t* evt = (key_event_t*)e;
   if (evt->key == TK_KEY_F2) {
@@ -821,6 +844,7 @@ ret_t application_init() {
   widget_on(wm, EVT_SCREEN_SAVER, on_screen_saver, NULL);
 
   widget_on(wm, EVT_KEY_DOWN, on_key_back_or_back_to_home, wm);
+  widget_on(wm, EVT_KEY_UP, on_key_record_play_events, wm);
   widget_on(wm, EVT_BEFORE_PAINT, wm_on_before_paint, wm);
   widget_on(wm, EVT_AFTER_PAINT, wm_on_after_paint, wm);
   widget_on(wm, EVT_LOW_MEMORY, wm_on_low_memory, wm);
