@@ -56,6 +56,34 @@ static ret_t system_info_set_app_root(system_info_t* info, const char* app_root)
   return RET_OK;
 }
 
+static ret_t system_info_normalize_app_root_try_default(system_info_t* info,
+                                                        const char* app_root_default) {
+  if (app_root_is_valid(app_root_default)) {
+    return system_info_set_app_root(info, app_root_default);
+  } else if (!path_is_abs(app_root_default)) {
+    char path[MAX_PATH + 1] = {0};
+
+    if (path_exe(path) == RET_OK) {
+      char app_root[MAX_PATH + 1] = {0};
+      char* last = NULL;
+
+      last = strrchr(path, TK_PATH_SEP);
+      if (last != NULL) {
+        *last = '\0';
+      }
+
+      path_build(app_root, MAX_PATH, path, app_root_default, NULL);
+      if (app_root_is_valid(app_root)) {
+        return system_info_set_app_root(info, app_root);
+      }
+    }
+
+    return RET_FAIL;
+  }
+  
+  return RET_FAIL;
+}
+
 static ret_t system_info_normalize_app_root_try_path(system_info_t* info, char* path) {
   char* last = NULL;
   char app_root[MAX_PATH + 1] = {0};
@@ -106,8 +134,8 @@ static ret_t system_info_normalize_app_root_try_exe(system_info_t* info) {
 }
 
 static ret_t system_info_normalize_app_root(system_info_t* info, const char* app_root_default) {
-  if (app_root_is_valid(app_root_default)) {
-    return system_info_set_app_root(info, app_root_default);
+  if (system_info_normalize_app_root_try_default(info, app_root_default) == RET_OK) {
+    return RET_OK;
   } else if (system_info_normalize_app_root_try_cwd(info) == RET_OK) {
     return RET_OK;
   } else if (system_info_normalize_app_root_try_exe(info) == RET_OK) {
