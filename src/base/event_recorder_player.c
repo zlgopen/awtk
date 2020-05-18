@@ -46,6 +46,7 @@ typedef struct _event_recorder_player_t {
 
 static event_recorder_player_t s_event_recorder_player;
 
+static ret_t event_recorder_player_stop(void);
 static ret_t event_recorder_player_play(event_recorder_player_t* p);
 
 static ret_t dispatch_event_in_timer(const timer_info_t* info) {
@@ -193,7 +194,7 @@ ret_t event_recorder_player_start_play(const char* filename, uint32_t times) {
   return RET_OK;
 }
 
-ret_t event_recorder_player_stop(void) {
+static ret_t event_recorder_player_stop(void) {
   event_recorder_player_t* p = &s_event_recorder_player;
 
   if (p->recording || p->playing) {
