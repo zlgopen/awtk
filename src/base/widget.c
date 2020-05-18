@@ -501,7 +501,7 @@ ret_t widget_set_pointer_cursor(widget_t* widget, const char* cursor) {
   return widget_set_prop_str(wm, WIDGET_PROP_CURSOR, cursor);
 }
 
-#ifndef WITHOUT_WINDOW_ANIMATORS
+#ifndef WITHOUT_WIDGET_ANIMATORS
 ret_t widget_set_animation(widget_t* widget, const char* animation) {
   return_value_if_fail(widget != NULL && animation != NULL, RET_BAD_PARAMS);
 

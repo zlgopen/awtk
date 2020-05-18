@@ -11,8 +11,14 @@ static ret_t vgcanvas_nanovg_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h, uint
 }
 
 static inline void vgcanvas_nanovg_set_offline_fb(vgcanvas_nanovg_t* canvas, uint32_t w,
-                                                  uint32_t h) {
+                                                  uint32_t h, rect_t* dirty_rect) {
   GLint default_fbo = 0;
+
+#if WITH_LCD_CLEAR_ALPHA
+  rect_t r;
+  system_info_t* info = system_info();
+#endif
+
   vgcanvas_nanovg_offline_fb_t* offline_fb = canvas->offline_fb;
   if (offline_fb != NULL) {
     glGetIntegerv(GL_FRAMEBUFFER_BINDING, &default_fbo);
@@ -30,6 +36,33 @@ static inline void vgcanvas_nanovg_set_offline_fb(vgcanvas_nanovg_t* canvas, uin
       // 去除这两行注释就可以显示脏矩形的工作原理。
       // glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
       // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+#if WITH_LCD_CLEAR_ALPHA
+      switch (info->lcd_orientation) {
+        case LCD_ORIENTATION_0:
+          r = rect_init(dirty_rect->x, h - dirty_rect->h - dirty_rect->y, dirty_rect->w, dirty_rect->h);
+          break;
+        case LCD_ORIENTATION_90:
+          r = rect_init(w - dirty_rect->h - dirty_rect->y, h - dirty_rect->w - dirty_rect->x, dirty_rect->h, dirty_rect->w);
+          break;
+        case LCD_ORIENTATION_180:
+          r = rect_init(w - dirty_rect->w - dirty_rect->x, dirty_rect->y, dirty_rect->w, dirty_rect->h);
+          break;
+        case LCD_ORIENTATION_270:
+          r = rect_init(dirty_rect->y, dirty_rect->x, dirty_rect->h, dirty_rect->w);
+          break;
+      }
+      
+      // 把脏矩形的区域刷新为黑色透明度为0的颜色
+      glScissor(r.x, r.y, r.w, r.h);
+      glEnable(GL_SCISSOR_TEST);
+      glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+      glDisable(GL_SCISSOR_TEST);
+#else
+      (void)dirty_rect;
+#endif
+
     }
   }
 }
@@ -44,7 +77,7 @@ static inline void vgcanvas_nanovg_offline_fb_flush(vgcanvas_nanovg_t* canvas) {
     glViewport(0, 0, info->lcd_w * info->device_pixel_ratio,
                info->lcd_h * info->device_pixel_ratio);
 
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
     glUseProgram(shader_info->program_object);
@@ -91,8 +124,6 @@ static ret_t vgcanvas_nanovg_begin_frame(vgcanvas_t* vgcanvas, rect_t* dirty_rec
 
   native_window_gl_make_current(canvas->window);
 
-  vgcanvas_nanovg_set_offline_fb(canvas, info->lcd_w * info->device_pixel_ratio,
-                                 info->lcd_h * info->device_pixel_ratio);
   if (dirty_rect != NULL) {
     canvas->base.dirty_rect = rect_init(dirty_rect->x, dirty_rect->y, dirty_rect->w, dirty_rect->h);
   } else {
@@ -103,6 +134,9 @@ static ret_t vgcanvas_nanovg_begin_frame(vgcanvas_t* vgcanvas, rect_t* dirty_rec
       canvas->base.dirty_rect = rect_init(0, 0, info->lcd_w, info->lcd_h);
     }
   }
+
+  vgcanvas_nanovg_set_offline_fb(canvas, info->lcd_w * info->device_pixel_ratio,
+                                 info->lcd_h * info->device_pixel_ratio, &canvas->base.dirty_rect);
 
   nvgBeginFrame(canvas->vg, info->lcd_w, info->lcd_h, info->device_pixel_ratio);
 
@@ -183,9 +217,11 @@ static ret_t vgcanvas_nanovg_bind_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t
   NVGLUframebuffer* handle = (NVGLUframebuffer*)fbo->handle;
   vgcanvas->dirty_rect = rect_init(0, 0, fbo->w, fbo->h);
   nvgluBindFramebuffer(handle);
-  glClearColor(0, 0, 0, 0);
   glViewport(0, 0, fbo->w * fbo->ratio, fbo->h * fbo->ratio);
-  glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+  glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
   nvgBeginFrame(vg, fbo->w, fbo->h, fbo->ratio);
 
   return RET_OK;

@@ -76,6 +76,14 @@ ret_t dialog_highlighter_set_bg(dialog_highlighter_t* h, bitmap_t* img, framebuf
   return RET_OK;
 }
 
+ret_t dialog_highlighter_set_bg_clip_rect(dialog_highlighter_t* h, rect_t* clip_rect) {
+  return_value_if_fail(h != NULL && h->vt != NULL, RET_BAD_PARAMS);
+
+  h->clip_rect = rect_init(clip_rect->x, clip_rect->y, clip_rect->w, clip_rect->h);
+
+  return RET_OK;
+}
+
 ret_t dialog_highlighter_draw(dialog_highlighter_t* h, float_t percent) {
   return_value_if_fail(h != NULL && h->vt != NULL, RET_BAD_PARAMS);
 

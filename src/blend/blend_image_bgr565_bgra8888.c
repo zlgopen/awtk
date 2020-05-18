@@ -27,6 +27,7 @@
 #define pixel_dst_format pixel_bgr565_format
 #define pixel_dst_to_rgba pixel_bgr565_to_rgba
 #define pixel_dst_from_rgb pixel_bgr565_from_rgb
+#define pixel_dst_from_rgba pixel_bgr565_from_rgba
 
 #define pixel_src_t pixel_bgra8888_t
 #define pixel_src_format pixel_bgra8888_format
@@ -34,6 +35,7 @@
 
 #define pixel_t pixel_dst_t
 #define pixel_from_rgb pixel_dst_from_rgb
+#define pixel_from_rgba pixel_dst_from_rgba
 #define pixel_to_rgba pixel_dst_to_rgba
 
 static inline void blend_a_bgr565_bgra8888(uint8_t* dst, uint8_t* src, uint8_t alpha) {

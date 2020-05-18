@@ -29,6 +29,7 @@
 #define pixel_bpp pixel_bgr888_BPP
 #define pixel_to_rgba pixel_bgr888_to_rgba
 #define pixel_from_rgb pixel_bgr888_from_rgb
+#define pixel_from_rgba pixel_bgr888_from_rgba
 
 #include "blend/pixel_ops.inc"
 #include "lcd/lcd_mem.inc"

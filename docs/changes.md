@@ -3,7 +3,8 @@
   * 增加事件录制与重放功能，辅助手动测试和压力测试。
   * 完善 text edit（感谢大恒提供补丁）。
   * 完善 system settings 和 release 脚本（感谢俊杰提供补丁）。
-  
+  * 支持硬件多层合并(GUI + Camera)（感谢尧燊提供补丁）。
+
 * 2020/05/14
   * 修复 clip view 中 type 的问题（感谢尧燊提供补丁）。
   * 修复 file browser up 中的问题（感谢瑞安提供补丁）。

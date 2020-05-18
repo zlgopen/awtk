@@ -205,17 +205,38 @@ inline void pixel_blend(pixel24_rgb& t, const pixel32_rgba& s, uint8_t a) {
   }
 }
 
+static inline uint8_t pixel_limit_uint8(int tmp) {
+  if(tmp > 0xff) {
+    tmp = 0xff;
+  } else if(tmp < 0) {
+    tmp = 0;
+  }
+  return (uint8_t)tmp;
+}
+
 template <>
 inline void pixel_blend(pixel32_rgba& t, const pixel32_rgba& s, uint8_t a) {
   if (a > 0xf4) {
     t.r = s.r;
     t.g = s.g;
-    t.b = s.b;
+    t.b = s.b; 
+    t.a = a;
   } else if (a > 0x01) {
     uint8_t m_a = 0xff - a;
-    t.r = (s.r * a + t.r * m_a) >> 8;
-    t.g = (s.g * a + t.g * m_a) >> 8;
-    t.b = (s.b * a + t.b * m_a) >> 8;
+    if(t.a > 0xf4) {
+      t.r = (s.r * a + t.r * m_a) >> 8;
+      t.g = (s.g * a + t.g * m_a) >> 8;
+      t.b = (s.b * a + t.b * m_a) >> 8;
+    } else {
+      uint8_t out_a = pixel_limit_uint8(a + t.a - ((a * t.a) >> 8));
+      if(out_a > 0) {
+        uint8_t d_a = (t.a * (0xff - a)) >> 8;
+        t.r = (s.r * a + t.r * d_a) / out_a;
+        t.g = (s.g * a + t.g * d_a) / out_a;
+        t.b = (s.b * a + t.b * d_a) / out_a;
+      }
+      t.a = out_a;
+    }
   }
 }
 
@@ -225,11 +246,23 @@ inline void pixel_blend(pixel32_bgra& t, const pixel32_rgba& s, uint8_t a) {
     t.r = s.r;
     t.g = s.g;
     t.b = s.b;
+    t.a = a;
   } else if (a > 0x01) {
-    uint8_t m_a = 0xff - a;
-    t.r = (s.r * a + t.r * m_a) >> 8;
-    t.g = (s.g * a + t.g * m_a) >> 8;
-    t.b = (s.b * a + t.b * m_a) >> 8;
+    if(t.a > 0xf4) {
+      uint8_t m_a = 0xff - a;
+      t.r = (s.r * a + t.r * m_a) >> 8;
+      t.g = (s.g * a + t.g * m_a) >> 8;
+      t.b = (s.b * a + t.b * m_a) >> 8;
+    } else {
+      uint8_t out_a = pixel_limit_uint8(a + t.a - ((a * t.a) >> 8));
+      if(out_a > 0) {
+        uint8_t d_a = (t.a * (0xff - a)) >> 8;
+        t.r = (s.r * a + t.r * d_a) / out_a;
+        t.g = (s.g * a + t.g * d_a) / out_a;
+        t.b = (s.b * a + t.b * d_a) / out_a;
+      }
+      t.a = out_a;
+    }
   }
 }
 

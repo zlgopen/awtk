@@ -27,10 +27,12 @@
 #define pixel_dst_format pixel_rgb888_format
 #define pixel_dst_to_rgba pixel_rgb888_to_rgba
 #define pixel_dst_from_rgb pixel_rgb888_from_rgb
-#define pixel_dst_from_rgba(r, g, b, a) pixel_rgb888_from_rgb(r, g, b)
+#define pixel_dst_from_rgba pixel_rgb888_from_rgba
+// #define pixel_dst_from_rgba(r, g, b, a) pixel_rgb888_from_rgb(r, g, b)
 
 #define pixel_t pixel_dst_t
 #define pixel_from_rgb pixel_dst_from_rgb
+#define pixel_from_rgba pixel_dst_from_rgba
 #define pixel_to_rgba pixel_dst_to_rgba
 #define pixel_blend_rgba_dark pixel_rgb888_blend_rgba_dark
 #define pixel_blend_rgba_premulti pixel_rgb888_blend_rgba_premulti

@@ -27,6 +27,7 @@
 #define pixel_dst_format pixel_bgra8888_format
 #define pixel_dst_to_rgba pixel_bgra8888_to_rgba
 #define pixel_dst_from_rgb pixel_bgra8888_from_rgb
+#define pixel_dst_from_rgba pixel_bgra8888_from_rgba
 
 #define pixel_src_t pixel_rgba8888_t
 #define pixel_src_format pixel_rgba8888_format
@@ -34,6 +35,7 @@
 
 #define pixel_t pixel_dst_t
 #define pixel_from_rgb pixel_dst_from_rgb
+#define pixel_from_rgba pixel_dst_from_rgba
 #define pixel_to_rgba pixel_dst_to_rgba
 
 #include "pixel_ops.inc"

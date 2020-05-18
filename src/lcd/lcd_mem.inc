@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   lcd_mem.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  mem implemented lcd interface
@@ -74,7 +74,21 @@ static bitmap_t* lcd_mem_init_online_fb(lcd_t* lcd, bitmap_t* fb, lcd_orientatio
 }
 
 static ret_t lcd_mem_begin_frame(lcd_t* lcd, rect_t* dirty_rect) {
+#if WITH_LCD_CLEAR_ALPHA
+  rect_t r;
+  bitmap_t fb;
+  
+  if (lcd->draw_mode == LCD_DRAW_OFFLINE || dirty_rect == NULL) {
+    r = rect_init(0, 0, lcd->w, lcd->h);
+  } else {
+    r = rect_init(dirty_rect->x, dirty_rect->y, dirty_rect->w, dirty_rect->h);
+  }
+
+  lcd_mem_init_drawing_fb(lcd, &fb);
+  return image_clear(&fb, &r, color_init(0x0, 0x0, 0x0, 0x0));
+#else
   return RET_OK;
+#endif
 }
 
 static ret_t lcd_mem_fill_rect_with_color(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h, color_t c) {

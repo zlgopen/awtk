@@ -31,7 +31,7 @@
 static ret_t lcd_mem_special_begin_frame(lcd_t* lcd, rect_t* dr) {
   lcd_mem_special_t* special = (lcd_mem_special_t*)lcd;
   lcd_t* mem = (lcd_t*)(special->lcd_mem);
-
+  mem->draw_mode = lcd->draw_mode;
   mem->begin_frame(mem, dr);
 
   return RET_OK;
