@@ -43,7 +43,6 @@ BEGIN_C_DECLS
  */
 ret_t event_recorder_player_start_record(const char* filename);
 
-
 /**
  * @method event_recorder_player_start_play
  * 开始事件重放。
@@ -54,7 +53,6 @@ ret_t event_recorder_player_start_record(const char* filename);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t event_recorder_player_start_play(const char* filename, uint32_t times);
-
 
 /**
  * @method event_recorder_player_stop_record

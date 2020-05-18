@@ -80,7 +80,7 @@ static ret_t system_info_normalize_app_root_try_default(system_info_t* info,
 
     return RET_FAIL;
   }
-  
+
   return RET_FAIL;
 }
 

@@ -783,7 +783,7 @@ static ret_t on_key_record_play_events(void* ctx, event_t* e) {
     event_recorder_player_stop_play();
     return RET_STOP;
   }
-#endif/*WITH_EVENT_RECORDER_PLAYER*/
+#endif /*WITH_EVENT_RECORDER_PLAYER*/
 
   return RET_OK;
 }
