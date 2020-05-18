@@ -105,7 +105,7 @@ def copyExe():
     os.chmod(joinPath(output_bin_dir, EXE_NAME), 0o755)
 
 def copyAssets():
-    copyFiles(ASSETS_DIR, 'default/raw', OUTPUT_DIR, 'assets/default/raw/')
+    copyFiles(ASSETS_DIR, '', OUTPUT_DIR, 'assets/')	
 
 
 def release():
