@@ -43,10 +43,15 @@ static ret_t image_on_paint_self(widget_t* widget, canvas_t* c) {
         widget_load_image(widget, image_base->image, &bitmap) == RET_OK) {
       if (vg != NULL) {
         if (image_need_transform(widget)) {
-          if (image->draw_type == IMAGE_DRAW_ICON) {
+          if (image->draw_type == IMAGE_DRAW_ICON || image->draw_type == IMAGE_DRAW_CENTER) {
             vgcanvas_save(vg);
             image_transform(widget, c);
-            vgcanvas_draw_icon(vg, &bitmap, 0, 0, bitmap.w, bitmap.h, 0, 0, widget->w, widget->h);
+            if (image->draw_type == IMAGE_DRAW_ICON) {
+              vgcanvas_draw_icon(vg, &bitmap, 0, 0, bitmap.w, bitmap.h, 0, 0, widget->w, widget->h);
+            } else {
+              vgcanvas_draw_image(vg, &bitmap, 0, 0, bitmap.w, bitmap.h, 0, 0, widget->w,
+                                  widget->h);
+            }
             vgcanvas_restore(vg);
             break;
           } else {
