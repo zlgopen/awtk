@@ -85,7 +85,7 @@ static void command_line_to_argv(char* lpcmdline, char* argv[MAX_ARGV], int32_t*
 
   argv[0] = "awtk.exe";
 
-  if (!*p) {
+  if (p == NULL || *p == '\0') {
     argv[1] = NULL;
     return;
   }

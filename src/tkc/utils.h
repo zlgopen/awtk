@@ -328,8 +328,17 @@ ret_t filename_to_name_ex(const char* filename, char* str, uint32_t size, bool_t
  */
 ret_t xml_file_expand_read(const char* filename, str_t* s);
 
-/*XXX:
- * 本函数仅供内部使用，可以提高速度，但使用不当极度危险。它要求dst为NULL或内存块的首地址，本函数调用之后，dst可能无效，请保留返回的地址*/
+/**
+ * @method tk_str_copy
+ *
+ * 字符串拷贝函数。
+ * > XXX: 要求dst为NULL或内存块的首地址，本函数调用之后，dst可能无效，请保留返回的地址
+ *
+ * @param {const char*} dst 目标字符串。
+ * @param {const char*} src 源字符串。
+ *
+ * @return {char*} 返回指向的复制字符串指针，如果失败则返回NULL。
+ */
 char* tk_str_copy(char* dst, const char* src);
 
 ret_t dummy_destroy(void* data);

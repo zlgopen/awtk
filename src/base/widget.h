@@ -1862,7 +1862,6 @@ bool_t widget_is_keyboard(widget_t* widget);
 /**
  * @method widget_paint_helper
  * 帮助子控件实现自己的绘制函数。
- * @annotation ["private"]
  * @param {widget_t*} widget 控件对象。
  * @param {canvas_t*} c 画布对象。
  * @param {const char*} icon 图标的名称。
@@ -2026,7 +2025,6 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t*
 /**
  * @method widget_create
  * 创建控件。仅在子类控件构造函数中使用。
- * @annotation ["private"]
  * @param {widget_t*} parent widget的父控件。
  * @param {widget_vtable_t*} vt 虚表。
  * @param {xy_t}   x x坐标
@@ -2317,7 +2315,16 @@ ret_t widget_on_paint_end(widget_t* widget, canvas_t* c);
 
 const char* const* widget_get_persistent_props(void);
 
+/**
+ * @method widget_is_instance_of
+ * 检查控件是否是指定的类型。
+ * @param {widget_t*} widget 控件对象。
+ * @param {widget_vtable_t*} vt 虚表。
+ *
+ *  @return {bool_t} 返回TRUE表示是，FALSE表示否。
+ */
 bool_t widget_is_instance_of(widget_t* widget, const widget_vtable_t* vt);
+
 #define WIDGET_IS_INSTANCE_OF(widget, name) widget_is_instance_of(widget, TK_REF_VTABLE(name))
 
 /*public for subclass*/

@@ -99,7 +99,7 @@
       {
         "name": "time",
         "desc": "事件发生的时间。",
-        "type": "int32_t",
+        "type": "uint64_t",
         "annotation": {
           "readable": true,
           "scriptable": true
@@ -3503,6 +3503,26 @@
       {
         "params": [],
         "annotation": {},
+        "desc": "init。\n> public for test program",
+        "name": "tk_init_internal",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {},
+        "desc": "deinit。\n> public for test program",
+        "name": "tk_deinit_internal",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {},
         "desc": "创建缺省的资源加载器。",
         "name": "asset_loader_default_create",
         "return": {
@@ -3916,6 +3936,27 @@
             "desc": "对话框高亮策略对象。"
           },
           {
+            "type": "rect_t*",
+            "name": "clip_rect",
+            "desc": "背景显示裁减区。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置背景图片的显示裁减区。",
+        "name": "dialog_highlighter_set_bg_clip_rect",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "dialog_highlighter_t*",
+            "name": "h",
+            "desc": "对话框高亮策略对象。"
+          },
+          {
             "type": "canvas_t*",
             "name": "c",
             "desc": "画布。"
@@ -3999,6 +4040,11 @@
         "name": "dialog",
         "desc": "对应的对话框。",
         "type": "widget_t*"
+      },
+      {
+        "name": "clip_rect",
+        "desc": "截图的显示裁减区",
+        "type": "rect_t*"
       }
     ],
     "header": "base/dialog_highlighter.h",
@@ -4100,6 +4146,85 @@
     "header": "base/enums.h",
     "desc": "",
     "name": "enum_helper",
+    "annotation": {
+      "fake": true
+    },
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "filename",
+            "desc": "用于保存事件的文件名。"
+          }
+        ],
+        "annotation": {
+          "static": true
+        },
+        "desc": "开始事件记录。",
+        "name": "event_recorder_player_start_record",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "filename",
+            "desc": "存放事件的文件名。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "times",
+            "desc": "循环播放的次数。"
+          }
+        ],
+        "annotation": {
+          "static": true
+        },
+        "desc": "开始事件重放。",
+        "name": "event_recorder_player_start_play",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {
+          "static": true
+        },
+        "desc": "停止事件记录。",
+        "name": "event_recorder_player_stop_record",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {
+          "static": true
+        },
+        "desc": "停止事件重放。",
+        "name": "event_recorder_player_stop_play",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "base/event_recorder_player.h",
+    "desc": "事件录制与重放，用于辅助自动测试和压力测试。",
+    "name": "event_recorder_player_t",
     "annotation": {
       "fake": true
     },
@@ -8687,6 +8812,11 @@
             "type": "uint32_t",
             "name": "nr",
             "desc": "候选字个数。"
+          },
+          {
+            "type": "int32_t",
+            "name": "selected",
+            "desc": "缺省选中候选字的序数。"
           }
         ],
         "annotation": {},
@@ -11997,6 +12127,27 @@
         "annotation": {},
         "desc": "处理按键事件。",
         "name": "text_edit_key_down",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "text_edit_t*",
+            "name": "text_edit",
+            "desc": "text_edit对象。"
+          },
+          {
+            "type": "key_event_t*",
+            "name": "evt",
+            "desc": "event"
+          }
+        ],
+        "annotation": {},
+        "desc": "处理按键事件。",
+        "name": "text_edit_key_up",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -16958,6 +17109,10 @@
         "name": "WIDGET_STATE_OVER_OF_CHECKED"
       },
       {
+        "desc": "禁用状态(选中项)。",
+        "name": "WIDGET_STATE_DISABLE_OF_CHECKED"
+      },
+      {
         "desc": "焦点状态(选中项)。",
         "name": "WIDGET_STATE_FOCUSED_OF_CHECKED"
       },
@@ -16972,6 +17127,10 @@
       {
         "desc": "指针悬浮状态(当前项)。",
         "name": "WIDGET_STATE_OVER_OF_ACTIVE"
+      },
+      {
+        "desc": "禁用状态(当前项)。",
+        "name": "WIDGET_STATE_DISABLE_OF_ACTIVE"
       },
       {
         "desc": "焦点状态(当前项)。",
@@ -19328,6 +19487,78 @@
           {
             "type": "widget_t*",
             "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "画布对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "icon",
+            "desc": "图标的名称。"
+          },
+          {
+            "type": "wstr_t*",
+            "name": "text",
+            "desc": "文字。"
+          }
+        ],
+        "annotation": {},
+        "desc": "帮助子控件实现自己的绘制函数。",
+        "name": "widget_paint_helper",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "widget的父控件。"
+          },
+          {
+            "type": "widget_vtable_t*",
+            "name": "vt",
+            "desc": "虚表。"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建控件。仅在子类控件构造函数中使用。",
+        "name": "widget_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "widget对象本身。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
             "desc": "widget对象。"
           }
         ],
@@ -19668,6 +19899,27 @@
             "type": "widget_t*",
             "name": "widget",
             "desc": "控件对象。"
+          },
+          {
+            "type": "widget_vtable_t*",
+            "name": "vt",
+            "desc": "虚表。"
+          }
+        ],
+        "annotation": {},
+        "desc": "检查控件是否是指定的类型。",
+        "name": "widget_is_instance_of",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回TRUE表示是，FALSE表示否。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
           }
         ],
         "annotation": {},
@@ -19735,11 +19987,11 @@
           }
         ],
         "annotation": {},
-        "desc": "获取assets_manager对象。",
+        "desc": "获取font_manager对象。",
         "name": "widget_get_font_manager",
         "return": {
-          "type": "assets_manager_t*",
-          "desc": "返回assets_manager对象。"
+          "type": "font_manager_t*",
+          "desc": "返回font_manager对象。"
         }
       }
     ],
@@ -21192,6 +21444,27 @@
         "params": [
           {
             "type": "const char*",
+            "name": "dst",
+            "desc": "目标字符串。"
+          },
+          {
+            "type": "const char*",
+            "name": "src",
+            "desc": "源字符串。"
+          }
+        ],
+        "annotation": {},
+        "desc": "字符串拷贝函数。\n> XXX: 要求dst为NULL或内存块的首地址，本函数调用之后，dst可能无效，请保留返回的地址",
+        "name": "tk_str_copy",
+        "return": {
+          "type": "char*",
+          "desc": "返回指向的复制字符串指针，如果失败则返回NULL。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "const char*",
             "name": "str",
             "desc": "要检查字符串。"
           },
@@ -21239,6 +21512,22 @@
         "return": {
           "type": "char*",
           "desc": "返回转换后的小写字母字符串。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "char*",
+            "name": "str",
+            "desc": "utf8编码的字符串。"
+          }
+        ],
+        "annotation": {},
+        "desc": "将utf8字符串拷贝为UCS字符串。",
+        "name": "tk_wstr_dup_utf8",
+        "return": {
+          "type": "wchar_t*",
+          "desc": "返回UCS字符串(需要调用TKMEM_FREE释放)。"
         }
       }
     ],
@@ -21716,7 +22005,7 @@
       }
     ],
     "header": "tkc/tokenizer.h",
-    "desc": "从字符串中解析出一个一个的token。",
+    "desc": "从字符串中解析出一个一个的token。\n\n```c\ntokenizer_t tokenizer;\ntokenizer_t* t = tokenizer_init(&tokenizer, \"20,111.2,22.3,333.3,44,555.5\", 0xffffff, \",\");\n\nwhile(tokenizer_has_more(t)) {\ndouble v = tokenizer_next_float(t, 0);\nlog_debug(\"%lf\\n\", v);\n}\n\ntokenizer_deinit(t);\n```",
     "name": "tokenizer_t",
     "level": 1
   },
@@ -22354,6 +22643,27 @@
         "annotation": {},
         "desc": "追加字符串。",
         "name": "str_append",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "str_t*",
+            "name": "str",
+            "desc": "str对象。"
+          },
+          {
+            "type": "char*",
+            "name": "text",
+            "desc": "要追加的字符串。"
+          }
+        ],
+        "annotation": {},
+        "desc": "追加多个字符串。以NULL结束。\n\n示例：\n\n```c\nstr_t s;\nstr_init(&s, 0);\n\nstr_append_more(&s, \"abc\", \"123\", NULL);\nlog_debug(\"%s\\n\", s.str);\n\nstr_reset(&s);\n```",
+        "name": "str_append_more",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -23116,7 +23426,7 @@
       }
     ],
     "header": "tkc/str.h",
-    "desc": "可变长度的UTF8字符串。\n\n示例：\n\n```c\nstr_t s;\nstr_init(&s, 0);\n\nstr_append(&s, \"abc\");\nstr_append(&s, \"123\");\n\nstr_reset(&s);\n```\n\n> 先调str\\_init进行初始化，最后调用str\\_reset释放内存。",
+    "desc": "可变长度的UTF8字符串。\n\n示例：\n\n```c\nstr_t s;\nstr_init(&s, 0);\n\nstr_append(&s, \"abc\");\nstr_append(&s, \"123\");\nlog_debug(\"%s\\n\", s.str);\n\nstr_reset(&s);\n```\n\n> 先调str\\_init进行初始化，最后调用str\\_reset释放内存。",
     "name": "str_t",
     "level": 1
   },
@@ -27055,6 +27365,22 @@
           }
         ],
         "annotation": {},
+        "desc": "尝试加锁。",
+        "name": "tk_mutex_try_lock",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_mutex_t*",
+            "name": "mutex",
+            "desc": "mutex对象。"
+          }
+        ],
+        "annotation": {},
         "desc": "解锁。",
         "name": "tk_mutex_unlock",
         "return": {
@@ -28465,255 +28791,6 @@
       {
         "params": [
           {
-            "type": "fs_dir_t*",
-            "name": "dir",
-            "desc": "文件夹对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "重置文件夹读取位置到开始。",
-        "name": "fs_dir_rewind",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "fs_dir_t*",
-            "name": "dir",
-            "desc": "文件夹对象。"
-          },
-          {
-            "type": "fs_item_t*",
-            "name": "item",
-            "desc": "返回一项。"
-          }
-        ],
-        "annotation": {},
-        "desc": "读取文件夹对象。",
-        "name": "fs_dir_read",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "fs_dir_t*",
-            "name": "dir",
-            "desc": "文件夹对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "关闭文件夹对象。",
-        "name": "fs_dir_close",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "tkc/fs.h",
-    "desc": "文件夹接口。",
-    "name": "fs_dir_t",
-    "level": 1
-  },
-  {
-    "type": "class",
-    "methods": [],
-    "events": [],
-    "properties": [
-      {
-        "name": "is_dir",
-        "desc": "是否是目录。",
-        "type": "bool_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "is_link",
-        "desc": "是否是符号链接。",
-        "type": "bool_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "is_reg_file",
-        "desc": "是否是普通文件。",
-        "type": "bool_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "name",
-        "desc": "名称。",
-        "type": "char*",
-        "annotation": {
-          "readable": true
-        }
-      }
-    ],
-    "header": "tkc/fs.h",
-    "desc": "代表目录或文件。",
-    "name": "fs_item_t",
-    "level": 1
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "fs_file_t*",
-            "name": "file",
-            "desc": "文件对象。"
-          },
-          {
-            "type": "void*",
-            "name": "buffer",
-            "desc": "用于返回数据的缓冲区。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "size",
-            "desc": "缓冲区大小。"
-          }
-        ],
-        "annotation": {},
-        "desc": "读取文件。",
-        "name": "fs_file_read",
-        "return": {
-          "type": "int32_t",
-          "desc": "返回实际读取的字节数。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "fs_file_t*",
-            "name": "file",
-            "desc": "文件对象。"
-          },
-          {
-            "type": "const void*",
-            "name": "buffer",
-            "desc": "数据缓冲区。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "size",
-            "desc": "数据长度。"
-          }
-        ],
-        "annotation": {},
-        "desc": "写入文件。",
-        "name": "fs_file_write",
-        "return": {
-          "type": "int32_t",
-          "desc": "返回实际写入的字节数。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "fs_file_t*",
-            "name": "file",
-            "desc": "文件对象。"
-          },
-          {
-            "type": "const char* const",
-            "name": "format_str",
-            "desc": "格式化字符串。"
-          }
-        ],
-        "annotation": {},
-        "desc": "写入文件。",
-        "name": "fs_file_printf",
-        "return": {
-          "type": "int32_t",
-          "desc": "返回实际写入的字节数。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "fs_file_t*",
-            "name": "file",
-            "desc": "文件对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "offset",
-            "desc": "数据长度。"
-          }
-        ],
-        "annotation": {},
-        "desc": "定位读写指针到指定的位置。",
-        "name": "fs_file_seek",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "fs_file_t*",
-            "name": "file",
-            "desc": "文件对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "清除文件内容。",
-        "name": "fs_file_truncate",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "fs_file_t*",
-            "name": "file",
-            "desc": "文件对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "关闭文件。",
-        "name": "fs_file_close",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "fs_file_t*",
-            "name": "file",
-            "desc": "文件对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "判断文件是否结束。",
-        "name": "fs_file_eof",
-        "return": {
-          "type": "bool_t",
-          "desc": "返回TRUE表示结束，否则表示没结束。"
-        }
-      },
-      {
-        "params": [
-          {
             "type": "fs_t*",
             "name": "fs",
             "desc": "文件系统对象，一般赋值为os_fs()。"
@@ -28802,7 +28879,7 @@
         "name": "fs_file_rename",
         "return": {
           "type": "ret_t",
-          "desc": "返回TRUE表示成功，否则表示失败。"
+          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       },
       {
@@ -28912,7 +28989,7 @@
         "name": "fs_dir_rename",
         "return": {
           "type": "ret_t",
-          "desc": "返回TRUE表示成功，否则表示失败。"
+          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       },
       {
@@ -29198,13 +29275,332 @@
     "events": [],
     "properties": [],
     "header": "tkc/fs.h",
-    "desc": "文件状态信息。",
+    "desc": "文件系统接口。",
     "name": "fs_t",
     "level": 1
   },
   {
     "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "fs_dir_t*",
+            "name": "dir",
+            "desc": "文件夹对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "重置文件夹读取位置到开始。",
+        "name": "fs_dir_rewind",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "fs_dir_t*",
+            "name": "dir",
+            "desc": "文件夹对象。"
+          },
+          {
+            "type": "fs_item_t*",
+            "name": "item",
+            "desc": "返回一项。"
+          }
+        ],
+        "annotation": {},
+        "desc": "读取文件夹对象。",
+        "name": "fs_dir_read",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "fs_dir_t*",
+            "name": "dir",
+            "desc": "文件夹对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "关闭文件夹对象。",
+        "name": "fs_dir_close",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "tkc/fs.h",
+    "desc": "文件夹接口。",
+    "name": "fs_dir_t",
+    "level": 1
+  },
+  {
+    "type": "class",
     "methods": [],
+    "events": [],
+    "properties": [
+      {
+        "name": "is_dir",
+        "desc": "是否是目录。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "is_link",
+        "desc": "是否是符号链接。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "is_reg_file",
+        "desc": "是否是普通文件。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "name",
+        "desc": "名称。",
+        "type": "char*",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "tkc/fs.h",
+    "desc": "代表目录或文件。",
+    "name": "fs_item_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "fs_file_t*",
+            "name": "file",
+            "desc": "文件对象。"
+          },
+          {
+            "type": "void*",
+            "name": "buffer",
+            "desc": "用于返回数据的缓冲区。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "缓冲区大小。"
+          }
+        ],
+        "annotation": {},
+        "desc": "读取文件。",
+        "name": "fs_file_read",
+        "return": {
+          "type": "int32_t",
+          "desc": "返回实际读取的字节数。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "fs_file_t*",
+            "name": "file",
+            "desc": "文件对象。"
+          },
+          {
+            "type": "const void*",
+            "name": "buffer",
+            "desc": "数据缓冲区。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "数据长度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "写入文件。",
+        "name": "fs_file_write",
+        "return": {
+          "type": "int32_t",
+          "desc": "返回实际写入的字节数。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "fs_file_t*",
+            "name": "file",
+            "desc": "文件对象。"
+          },
+          {
+            "type": "const char* const",
+            "name": "format_str",
+            "desc": "格式化字符串。"
+          }
+        ],
+        "annotation": {},
+        "desc": "写入文件。",
+        "name": "fs_file_printf",
+        "return": {
+          "type": "int32_t",
+          "desc": "返回实际写入的字节数。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "fs_file_t*",
+            "name": "file",
+            "desc": "文件对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "offset",
+            "desc": "数据长度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "定位读写指针到指定的位置。",
+        "name": "fs_file_seek",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "fs_file_t*",
+            "name": "file",
+            "desc": "文件对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "清除文件内容。",
+        "name": "fs_file_truncate",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "fs_file_t*",
+            "name": "file",
+            "desc": "文件对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "关闭文件。",
+        "name": "fs_file_close",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "fs_file_t*",
+            "name": "file",
+            "desc": "文件对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "同步文件到磁盘。",
+        "name": "fs_file_sync",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "fs_file_t*",
+            "name": "file",
+            "desc": "文件对象。"
+          },
+          {
+            "type": "fs_stat_info_t*",
+            "name": "fst",
+            "desc": "文件状态信息。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取文件信息。",
+        "name": "fs_file_stat",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "fs_file_t*",
+            "name": "file",
+            "desc": "文件对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "判断文件是否结束。",
+        "name": "fs_file_eof",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回TRUE表示结束，否则表示没结束。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "fs_file_t*",
+            "name": "file",
+            "desc": "文件对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取文件当前读写位置。",
+        "name": "fs_file_tell",
+        "return": {
+          "type": "int64_t",
+          "desc": "返回文件当前读写位置。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "fs_file_t*",
+            "name": "file",
+            "desc": "文件对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取文件大小。",
+        "name": "fs_file_size",
+        "return": {
+          "type": "int64_t",
+          "desc": "返回文件大小。"
+        }
+      }
+    ],
     "events": [],
     "properties": [],
     "header": "tkc/fs.h",
@@ -29213,6 +29609,52 @@
     "annotation": {
       "fake": true
     },
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [],
+    "events": [],
+    "properties": [
+      {
+        "name": "size",
+        "desc": "文件大小。",
+        "type": "uint64_t"
+      },
+      {
+        "name": "atime",
+        "desc": "最后访问时间。",
+        "type": "uint64_t"
+      },
+      {
+        "name": "mtime",
+        "desc": "最后修改时间。",
+        "type": "uint64_t"
+      },
+      {
+        "name": "ctime",
+        "desc": "创建时间。",
+        "type": "uint64_t"
+      },
+      {
+        "name": "is_dir",
+        "desc": "是否为目录。",
+        "type": "bool_t"
+      },
+      {
+        "name": "is_link",
+        "desc": "是否为链接。",
+        "type": "bool_t"
+      },
+      {
+        "name": "is_reg_file",
+        "desc": "是否普通文件。",
+        "type": "bool_t"
+      }
+    ],
+    "header": "tkc/fs.h",
+    "desc": "文件状态信息。",
+    "name": "fs_stat_info_t",
     "level": 1
   },
   {
@@ -32418,6 +32860,24 @@
   },
   {
     "type": "enum",
+    "desc": "缓存不够时丢弃数据的策略。",
+    "consts": [
+      {
+        "desc": "丢弃旧的数据。",
+        "name": "DATA_DISCARD_OLD"
+      },
+      {
+        "desc": "丢弃新的数据。",
+        "name": "DATA_DISCARD_NEW"
+      }
+    ],
+    "header": "misc/ostream_retry.h",
+    "name": "data_discard_policy_t",
+    "prefix": "DATA_DISCARD_",
+    "level": 1
+  },
+  {
+    "type": "enum",
     "desc": "数据资源类型定义。",
     "consts": [
       {
@@ -32448,24 +32908,6 @@
   },
   {
     "type": "enum",
-    "desc": "缓存不够时丢弃数据的策略。",
-    "consts": [
-      {
-        "desc": "丢弃旧的数据。",
-        "name": "DATA_DISCARD_OLD"
-      },
-      {
-        "desc": "丢弃新的数据。",
-        "name": "DATA_DISCARD_NEW"
-      }
-    ],
-    "header": "misc/ostream_retry.h",
-    "name": "data_discard_policy_t",
-    "prefix": "DATA_DISCARD_",
-    "level": 1
-  },
-  {
-    "type": "enum",
     "desc": "字体资源类型定义。",
     "consts": [
       {
@@ -32484,55 +32926,6 @@
     "header": "tkc/asset_info.h",
     "name": "asset_font_type_t",
     "prefix": "ASSET_FONT_TYPE_",
-    "level": 1
-  },
-  {
-    "type": "enum",
-    "desc": "资源类型常量定义。",
-    "consts": [
-      {
-        "desc": "无效资源。",
-        "name": "ASSET_TYPE_NONE"
-      },
-      {
-        "desc": "字体资源。",
-        "name": "ASSET_TYPE_FONT"
-      },
-      {
-        "desc": "图片资源。",
-        "name": "ASSET_TYPE_IMAGE"
-      },
-      {
-        "desc": "主题资源。",
-        "name": "ASSET_TYPE_STYLE"
-      },
-      {
-        "desc": "UI数据资源。",
-        "name": "ASSET_TYPE_UI"
-      },
-      {
-        "desc": "XML数据资源。",
-        "name": "ASSET_TYPE_XML"
-      },
-      {
-        "desc": "字符串数据资源。",
-        "name": "ASSET_TYPE_STRINGS"
-      },
-      {
-        "desc": "JS等脚本资源。",
-        "name": "ASSET_TYPE_SCRIPT"
-      },
-      {
-        "desc": "其它数据资源。",
-        "name": "ASSET_TYPE_DATA"
-      }
-    ],
-    "header": "tkc/asset_info.h",
-    "name": "asset_type_t",
-    "prefix": "ASSET_TYPE_",
-    "annotation": {
-      "scriptable": true
-    },
     "level": 1
   },
   {
@@ -32606,6 +32999,55 @@
     "header": "base/asset_loader.h",
     "desc": "资源加载器接口。",
     "name": "asset_loader_t",
+    "level": 1
+  },
+  {
+    "type": "enum",
+    "desc": "资源类型常量定义。",
+    "consts": [
+      {
+        "desc": "无效资源。",
+        "name": "ASSET_TYPE_NONE"
+      },
+      {
+        "desc": "字体资源。",
+        "name": "ASSET_TYPE_FONT"
+      },
+      {
+        "desc": "图片资源。",
+        "name": "ASSET_TYPE_IMAGE"
+      },
+      {
+        "desc": "主题资源。",
+        "name": "ASSET_TYPE_STYLE"
+      },
+      {
+        "desc": "UI数据资源。",
+        "name": "ASSET_TYPE_UI"
+      },
+      {
+        "desc": "XML数据资源。",
+        "name": "ASSET_TYPE_XML"
+      },
+      {
+        "desc": "字符串数据资源。",
+        "name": "ASSET_TYPE_STRINGS"
+      },
+      {
+        "desc": "JS等脚本资源。",
+        "name": "ASSET_TYPE_SCRIPT"
+      },
+      {
+        "desc": "其它数据资源。",
+        "name": "ASSET_TYPE_DATA"
+      }
+    ],
+    "header": "tkc/asset_info.h",
+    "name": "asset_type_t",
+    "prefix": "ASSET_TYPE_",
+    "annotation": {
+      "scriptable": true
+    },
     "level": 1
   },
   {
@@ -32769,6 +33211,33 @@
       {
         "params": [
           {
+            "type": "int",
+            "name": "fd",
+            "desc": "fd."
+          }
+        ],
+        "annotation": {},
+        "desc": "创建ostream对象。",
+        "name": "tk_ostream_serial_create",
+        "return": {
+          "type": "tk_ostream_t*",
+          "desc": "返回ostream对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "serial/ostream_serial.h",
+    "desc": "基于串口实现的输出流。\n\ninput stream base on fd",
+    "name": "tk_ostream_serial_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
             "type": "uint16_t",
             "name": "max_thread_nr",
             "desc": "最大线程数。"
@@ -32857,33 +33326,6 @@
       {
         "params": [
           {
-            "type": "int",
-            "name": "fd",
-            "desc": "fd."
-          }
-        ],
-        "annotation": {},
-        "desc": "创建ostream对象。",
-        "name": "tk_ostream_serial_create",
-        "return": {
-          "type": "tk_ostream_t*",
-          "desc": "返回ostream对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "serial/ostream_serial.h",
-    "desc": "基于串口实现的输出流。\n\ninput stream base on fd",
-    "name": "tk_ostream_serial_t",
-    "level": 1
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
             "type": "uint32_t*",
             "name": "data",
             "desc": "bsvg数据。"
@@ -32896,7 +33338,7 @@
           {
             "type": "str_t*",
             "name": "str",
-            "desc": "svg数据。"
+            "desc": "用于返回svg数据。"
           }
         ],
         "annotation": {},
@@ -32922,7 +33364,7 @@
           {
             "type": "uint32_t*",
             "name": "out",
-            "desc": "bsvg数据。"
+            "desc": "用于返回bsvg数据。"
           },
           {
             "type": "uint32_t*",
@@ -33662,6 +34104,36 @@
             "type": "int32_t",
             "name": "subtype",
             "desc": "资源类型。"
+          },
+          {
+            "type": "const uint8_t*",
+            "name": "buff",
+            "desc": "资源数据。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "buff_size",
+            "desc": "资源数据长度。"
+          },
+          {
+            "type": "bitmap_t*",
+            "name": "image",
+            "desc": "image 对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "require_bgra",
+            "desc": "require_bgra"
+          },
+          {
+            "type": "bool_t",
+            "name": "enable_bgr565",
+            "desc": "enable_bgr565"
+          },
+          {
+            "type": "bool_t",
+            "name": "enable_rgb565",
+            "desc": "enable_rgb565"
           }
         ],
         "annotation": {
@@ -33681,61 +34153,6 @@
     "desc": "stb图片加载器。\n\nstb主要用于加载jpg/png/gif等格式的图片，它功能强大，体积小巧。",
     "name": "image_loader_stb_t",
     "parent": "image_loader_t",
-    "annotation": {
-      "fake": true
-    },
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "获取stb字体加载器对象。",
-        "name": "font_loader_stb",
-        "return": {
-          "type": "font_loader_t*",
-          "desc": "返回字体加载器对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "const char*",
-            "name": "name",
-            "desc": "字体名称。"
-          },
-          {
-            "type": "const uint8_t* buff",
-            "name": "",
-            "desc": "。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "size",
-            "desc": "字体数据长度。"
-          }
-        ],
-        "annotation": {
-          "static": true
-        },
-        "desc": "创建stb字体对象。",
-        "name": "font_stb_create",
-        "return": {
-          "type": "font_t*",
-          "desc": "返回字体对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "font_loader/font_loader_stb.h",
-    "desc": "stb字体加载器。\n\nstb主要用于加载矢量字体(如truetype)，它功能强大，体积小巧。",
-    "name": "font_loader_stb_t",
-    "parent": "font_loader_t",
     "annotation": {
       "fake": true
     },
@@ -33846,19 +34263,47 @@
         "annotation": {
           "constructor": true
         },
-        "desc": "获取freetype字体加载器对象。",
-        "name": "font_loader_ft",
+        "desc": "获取stb字体加载器对象。",
+        "name": "font_loader_stb",
         "return": {
           "type": "font_loader_t*",
           "desc": "返回字体加载器对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "字体名称。"
+          },
+          {
+            "type": "const uint8_t* buff",
+            "name": "",
+            "desc": "。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "字体数据长度。"
+          }
+        ],
+        "annotation": {
+          "static": true
+        },
+        "desc": "创建stb字体对象。",
+        "name": "font_stb_create",
+        "return": {
+          "type": "font_t*",
+          "desc": "返回字体对象。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "font_loader/font_loader_ft.h",
-    "desc": "freetype字体加载器。\n\nfreetype主要用于加载矢量字体(如truetype)，它功能强大，效果优异，与stb字体加载器相比，缺点是代码量比较大。\n如果flash空间够大，优先使用freetype，否则使用stb。",
-    "name": "font_loader_ft_t",
+    "header": "font_loader/font_loader_stb.h",
+    "desc": "stb字体加载器。\n\nstb主要用于加载矢量字体(如truetype)，它功能强大，体积小巧。",
+    "name": "font_loader_stb_t",
     "parent": "font_loader_t",
     "annotation": {
       "fake": true
@@ -33998,8 +34443,8 @@
         "annotation": {
           "constructor": true
         },
-        "desc": "获取bitmap字体加载器对象。",
-        "name": "font_loader_bitmap",
+        "desc": "获取freetype字体加载器对象。",
+        "name": "font_loader_ft",
         "return": {
           "type": "font_loader_t*",
           "desc": "返回字体加载器对象。"
@@ -34008,9 +34453,9 @@
     ],
     "events": [],
     "properties": [],
-    "header": "font_loader/font_loader_bitmap.h",
-    "desc": "bitmap字体加载器。\n\nbitmap字体是用工具预先生成位图字体数据，优势是速度快，不占用内存，缺点是字体大小固定。\n适合低端嵌入式平台。\n\ntools/font_gen用于把矢量字体(如truetype)转换成位图字体。",
-    "name": "font_loader_bitmap_t",
+    "header": "font_loader/font_loader_ft.h",
+    "desc": "freetype字体加载器。\n\nfreetype主要用于加载矢量字体(如truetype)，它功能强大，效果优异，与stb字体加载器相比，缺点是代码量比较大。\n如果flash空间够大，优先使用freetype，否则使用stb。",
+    "name": "font_loader_ft_t",
     "parent": "font_loader_t",
     "annotation": {
       "fake": true
@@ -34298,6 +34743,33 @@
       "scriptable": true
     },
     "parent": "event_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "获取bitmap字体加载器对象。",
+        "name": "font_loader_bitmap",
+        "return": {
+          "type": "font_loader_t*",
+          "desc": "返回字体加载器对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "font_loader/font_loader_bitmap.h",
+    "desc": "bitmap字体加载器。\n\nbitmap字体是用工具预先生成位图字体数据，优势是速度快，不占用内存，缺点是字体大小固定。\n适合低端嵌入式平台。\n\ntools/font_gen用于把矢量字体(如truetype)转换成位图字体。",
+    "name": "font_loader_bitmap_t",
+    "parent": "font_loader_t",
+    "annotation": {
+      "fake": true
+    },
     "level": 2
   },
   {
@@ -52132,11 +52604,11 @@
           }
         ],
         "annotation": {},
-        "desc": "创建ostream对象。\n\n> 只能由iostream_shdlc调用。",
-        "name": "tk_ostream_shdlc_create",
+        "desc": "创建istream对象。\n\n> 只能由iostream_shdlc调用。",
+        "name": "tk_istream_shdlc_create",
         "return": {
-          "type": "tk_ostream_t*",
-          "desc": "返回ostream对象。"
+          "type": "tk_istream_t*",
+          "desc": "返回istream对象。"
         }
       }
     ],
@@ -52151,17 +52623,12 @@
         "name": "retry_times",
         "desc": "失败重传次数。",
         "type": "uint32_t"
-      },
-      {
-        "name": "compress_threshold",
-        "desc": "激活压缩的阈值。",
-        "type": "uint32_t"
       }
     ],
-    "header": "shdlc/ostream_shdlc.h",
-    "desc": "reliable ostream base on simple HDLC",
-    "name": "tk_ostream_shdlc_t",
-    "parent": "tk_ostream_t",
+    "header": "shdlc/istream_shdlc.h",
+    "desc": "reliable istream base on simple HDLC",
+    "name": "tk_istream_shdlc_t",
+    "parent": "tk_istream_t",
     "level": 4
   },
   {
@@ -52974,11 +53441,11 @@
           }
         ],
         "annotation": {},
-        "desc": "创建istream对象。\n\n> 只能由iostream_shdlc调用。",
-        "name": "tk_istream_shdlc_create",
+        "desc": "创建ostream对象。\n\n> 只能由iostream_shdlc调用。",
+        "name": "tk_ostream_shdlc_create",
         "return": {
-          "type": "tk_istream_t*",
-          "desc": "返回istream对象。"
+          "type": "tk_ostream_t*",
+          "desc": "返回ostream对象。"
         }
       }
     ],
@@ -52993,12 +53460,17 @@
         "name": "retry_times",
         "desc": "失败重传次数。",
         "type": "uint32_t"
+      },
+      {
+        "name": "compress_threshold",
+        "desc": "激活压缩的阈值。",
+        "type": "uint32_t"
       }
     ],
-    "header": "shdlc/istream_shdlc.h",
-    "desc": "reliable istream base on simple HDLC",
-    "name": "tk_istream_shdlc_t",
-    "parent": "tk_istream_t",
+    "header": "shdlc/ostream_shdlc.h",
+    "desc": "reliable ostream base on simple HDLC",
+    "name": "tk_ostream_shdlc_t",
+    "parent": "tk_ostream_t",
     "level": 4
   },
   {

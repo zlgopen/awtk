@@ -202,7 +202,7 @@ elif OS_NAME == 'Windows':
       OS_SUBSYSTEM_CONSOLE='/SUBSYSTEM:CONSOLE  '
       OS_SUBSYSTEM_WINDOWS='/SUBSYSTEM:WINDOWS  '
       COMMON_CCFLAGS = COMMON_CCFLAGS + ' -D_WIN64 '
-    OS_WHOLE_ARCHIVE=' /DEF:"dllexports/awtk.def"'
+    OS_WHOLE_ARCHIVE=' /DEF:"dllexports/awtk.def" '
     AWTK_DLL_DEPS_LIBS = AWTK_STATIC_LIBS + NANOVG_BACKEND_LIBS + ['SDL2', 'glad'] + OS_LIBS
 
   elif TOOLS_NAME == 'mingw' :
