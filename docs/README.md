@@ -36,6 +36,7 @@
 * [slide_view/pages 各个页面缺省的焦点控件](pages_slide_view_default_focused_child_for_each_page.md)
 * [输入事件记录与重放](event_recorder_player.md)
 * [API 注释格式](api_doc.md)
+* [自定义控件规范](custom_widget_rules.md)
 
 ### 2.HowTos
 * [AWTK 调试技巧](debug_tips.md)
