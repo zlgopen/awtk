@@ -267,10 +267,6 @@ typedef struct _widget_animator_t widget_animator_t;
 
 #define TK_LONG_PRESS_TIME 1000
 
-#if defined(WITH_SDL) || defined(LINUX) || defined(AWTK_WEB)
-#define WITH_WIDGET_TYPE_CHECK 1
-#endif /*WITH_SDL || defined(LINUX)*/
-
 #ifdef WITH_WIDGET_TYPE_CHECK
 #define TK_REF_VTABLE(vt) &(g_##vt##_vtable)
 #define TK_PARENT_VTABLE(vt) TK_REF_VTABLE(vt)

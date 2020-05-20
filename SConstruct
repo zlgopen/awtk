@@ -6,7 +6,7 @@ if awtk.TOOLS_NAME != '' :
   APP_TOOLS = [awtk.TOOLS_NAME]
 
 DefaultEnvironment(TOOLS = APP_TOOLS,
-  CCFLAGS = awtk.CCFLAGS,
+  CCFLAGS = awtk.AWTK_CCFLAGS,
   LIBS = awtk.LIBS,
   LIBPATH = awtk.LIBPATH,
   CPPPATH = awtk.CPPPATH,
