@@ -1230,7 +1230,7 @@ TEST(Widget, tr_text) {
   widget_set_tr_text(w, "hello");
   widget_set_text(w, L"ok");
 
-  ASSERT_EQ(w->tr_text, (const char*)NULL);
+  ASSERT_STREQ(w->tr_text, "hello");
 
   widget_destroy(w);
 }
