@@ -459,6 +459,16 @@ ret_t canvas_set_text_align(canvas_t* c, align_h_t align_h, align_v_t align_v);
 float_t canvas_measure_text(canvas_t* c, const wchar_t* str, uint32_t nr);
 
 /**
+ * @method canvas_get_font_height
+ * 获取字体的高度。
+ *
+ * @param {canvas_t*} c canvas对象。
+ *
+ * @return {float_t} 返回字体的高度。
+ */
+float_t canvas_get_font_height(canvas_t* c);
+
+/**
  * @method canvas_measure_utf8
  * 计算文本所占的宽度。
  *

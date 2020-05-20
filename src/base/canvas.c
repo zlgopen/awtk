@@ -1672,18 +1672,22 @@ static ret_t canvas_draw_fps(canvas_t* c) {
   return RET_OK;
 }
 
+float_t canvas_get_font_height(canvas_t* c) {
+  font_vmetrics_t vmetrics;
+  return_value_if_fail(c != NULL && c->font_size > 0, 0);
+  vmetrics = font_get_vmetrics(c->font, c->font_size);
+
+  return vmetrics.ascent - vmetrics.descent;
+}
+
 ret_t canvas_draw_text_in_rect(canvas_t* c, const wchar_t* str, uint32_t nr, const rect_t* r_in) {
   int x = 0;
   int y = 0;
   rect_t r_fix;
   int32_t text_w = 0;
-  int32_t height = 0;
-  font_vmetrics_t vmetrics;
+  int32_t height = canvas_get_font_height(c);
   rect_t* r = canvas_fix_rect(r_in, &r_fix);
   return_value_if_fail(c != NULL && str != NULL && r != NULL, RET_BAD_PARAMS);
-
-  vmetrics = font_get_vmetrics(c->font, c->font_size);
-  height = vmetrics.ascent - vmetrics.descent;
 
   text_w = canvas_measure_text(c, str, nr);
 

@@ -26068,6 +26068,22 @@
             "type": "canvas_t*",
             "name": "c",
             "desc": "canvas对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取字体的高度。",
+        "name": "canvas_get_font_height",
+        "return": {
+          "type": "float_t",
+          "desc": "返回字体的高度。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
           },
           {
             "type": "const char*",
