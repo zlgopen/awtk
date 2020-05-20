@@ -128,6 +128,23 @@ TEST(ComboBox, props) {
   widget_destroy(w);
 }
 
+TEST(ComboBox, value) {
+  value_t v1;
+  value_t v2;
+  const char* str = "1:red;2:green;3:blue";
+  widget_t* w = combo_box_create(NULL, 10, 20, 30, 40);
+
+  value_set_str(&v1, str);
+  ASSERT_EQ(combo_box_cast(w), w);
+  ASSERT_EQ(widget_set_prop(w, WIDGET_PROP_OPTIONS, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(w, WIDGET_PROP_OPTIONS, &v2), RET_OK);
+  ASSERT_EQ(widget_set_prop_str(w, WIDGET_PROP_VALUE, "1"), RET_OK);
+  ASSERT_EQ(widget_get_value(w), 1);
+
+  widget_destroy(w);
+}
+
+
 #include "log_change_events.inc"
 
 TEST(ComboBox, event) {
