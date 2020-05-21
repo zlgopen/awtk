@@ -1,6 +1,7 @@
 # 最新动态
 * 2020/05/21
   * 增加文档《自定义控件规范》
+  * 修正了WITH\_BITMAP\_FONT模式下font\_manager\_unload\_all（比如语言切换）后由于字体名称设置错误导致字体加载失败的问题（感谢朝泽提供补丁）。
 
 * 2020/05/20
   * 增加 canvas\_get\_font\_height
