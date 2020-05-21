@@ -53,7 +53,6 @@ static ret_t list_item_on_timer(const timer_info_t* info) {
     widget_set_state(widget, WIDGET_STATE_PRESSED);
   }
 
-  list_item->pressed = TRUE;
   list_item->timer_id = TK_INVALID_ID;
 
   widget_off_by_func(widget->parent, EVT_POINTER_UP, list_item_on_parent_pointer_up, widget);
@@ -85,6 +84,7 @@ static ret_t list_item_on_event(widget_t* widget, event_t* e) {
       list_item->downed = TRUE;
       list_item->down.x = evt->x;
       list_item->down.y = evt->y;
+      list_item->pressed = TRUE;
       list_item->timer_id = timer_add(list_item_on_timer, widget, 30);
       widget_invalidate_force(widget, NULL);
       break;
@@ -119,6 +119,7 @@ static ret_t list_item_on_event(widget_t* widget, event_t* e) {
 
       if (list_item->downed && evt->pressed && dy > TK_DRAG_THRESHOLD) {
         list_item->dragged = TRUE;
+        list_item->pressed = FALSE;
         list_item_remove_timer(widget);
         widget_set_state(widget, WIDGET_STATE_NORMAL);
       }
