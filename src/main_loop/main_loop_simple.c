@@ -173,6 +173,7 @@ static ret_t main_loop_simple_step(main_loop_t* l) {
   main_loop_dispatch_events(loop);
   event_source_manager_dispatch(loop->event_source_manager);
 
+  window_manager_check_and_layout(loop->base.wm);
   window_manager_paint(loop->base.wm);
 
   return RET_OK;

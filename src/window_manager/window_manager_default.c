@@ -128,6 +128,7 @@ ret_t window_manager_default_snap_curr_window(widget_t* widget, widget_t* curr_w
   return_value_if_fail(wm != NULL && curr_win != NULL, RET_BAD_PARAMS);
 
   c = native_window_get_canvas(wm->native_window);
+  window_manager_check_and_layout(widget);
 
 #ifdef WITH_NANOVG_GPU
   vg = lcd_get_vgcanvas(c->lcd);
@@ -168,6 +169,7 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
 
   c = native_window_get_canvas(wm->native_window);
   dialog_highlighter = wm->dialog_highlighter;
+  window_manager_check_and_layout(widget);
 
   WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
   if (iter == prev_win) {

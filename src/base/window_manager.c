@@ -251,6 +251,18 @@ ret_t window_manager_close_window_force(widget_t* widget, widget_t* window) {
   return wm->vt->close_window_force(widget, window);
 }
 
+ret_t window_manager_check_and_layout(widget_t* widget) {
+  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+  if (iter->need_relayout_children) {
+    widget_layout_children(iter);
+  } else {
+    window_manager_check_and_layout(iter);
+  }
+  WIDGET_FOR_EACH_CHILD_END()
+
+  return RET_OK;
+}
+
 ret_t window_manager_paint(widget_t* widget) {
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(wm != NULL && wm->vt != NULL, RET_BAD_PARAMS);

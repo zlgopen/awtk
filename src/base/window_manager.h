@@ -256,6 +256,19 @@ ret_t window_manager_close_window_force(widget_t* widget, widget_t* window);
 ret_t window_manager_paint(widget_t* widget);
 
 /**
+ * @method window_manager_check_and_layout
+ * 检查各个窗口的layout并且把有需要的执行对应的layout。
+ *
+ *> 仅由主循环调用。
+ *
+ * @annotation ["private"]
+ * @param {widget_t*} widget 窗口管理器对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t window_manager_check_and_layout(widget_t* widget);
+
+/**
  * @method window_manager_dispatch_input_event
  * 分发输入事件。
  *
