@@ -3316,7 +3316,7 @@ bool_t widget_is_instance_of(widget_t* widget, const widget_vtable_t* vt) {
     iter = iter->parent;
   }
 #ifdef WITH_WIDGET_TYPE_CHECK
-  if(vt == widget_vtable_default()) {
+  if (vt == widget_vtable_default()) {
     return TRUE;
   } else {
     return FALSE;

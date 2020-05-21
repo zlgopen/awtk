@@ -228,7 +228,6 @@ static inline void pixel_rgba8888_blend_rgba_dark(void* pixel, uint8_t a) {
     p[1] = (p[1] * out_a) >> 8;
     p[2] = (p[2] * out_a) >> 8;
     p[3] = out_a;
-    
   }
 }
 
@@ -284,7 +283,6 @@ static inline void pixel_abgr8888_blend_rgba_dark(void* pixel, uint8_t a) {
     p[1] = (p[1] * out_a) >> 8;
     p[2] = (p[2] * out_a) >> 8;
     p[3] = (p[3] * out_a) >> 8;
-
   }
 }
 
@@ -340,7 +338,6 @@ static inline void pixel_bgra8888_blend_rgba_dark(void* pixel, uint8_t a) {
     p[1] = (p[1] * out_a) >> 8;
     p[2] = (p[2] * out_a) >> 8;
     p[3] = out_a;
-    
   }
 }
 
@@ -396,7 +393,6 @@ static inline void pixel_argb8888_blend_rgba_dark(void* pixel, uint8_t a) {
     p[1] = (p[1] * out_a) >> 8;
     p[2] = (p[2] * out_a) >> 8;
     p[3] = (p[3] * out_a) >> 8;
-
   }
 }
 

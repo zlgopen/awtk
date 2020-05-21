@@ -144,7 +144,6 @@ TEST(ComboBox, value) {
   widget_destroy(w);
 }
 
-
 #include "log_change_events.inc"
 
 TEST(ComboBox, event) {

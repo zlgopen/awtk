@@ -123,7 +123,6 @@ ret_t tk_init_assets(void);
  */
 ret_t tk_init_internal(void);
 
-
 /**
  * @method tk_deinit_internal
  * deinit。
