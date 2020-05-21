@@ -31,7 +31,7 @@
 #include "ui_loader/ui_loader_default.h"
 #include "ui_loader/ui_builder_default.h"
 
-#ifdef WITH_SDL
+#if defined(WITH_SDL) && !defined(MINGW)
 #include <SDL.h>
 #endif
 
@@ -92,7 +92,7 @@ widget_t* preview_ui(const char* filename) {
 #include "tkc/path.h"
 
 #define DEFAULT_UI "./demos/assets/raw/ui/main.xml"
-#if defined(WIN32)
+#if defined(WIN32) && !defined(MINGW)
 #include <windows.h>
 
 #define MAX_ARGV 7
@@ -221,7 +221,7 @@ int main(int argc, char* argv[]) {
   widget_set_style_str(window_manager(), "bg_color", "white");
   tk_run();
 
-#ifdef WIN32
+#if defined(WIN32) && !defined(MINGW)
   TKMEM_FREE(utf8_line);
 #endif
 

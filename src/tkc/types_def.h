@@ -97,6 +97,10 @@ typedef int32_t xy_t;
 typedef int32_t wh_t;
 typedef uint16_t font_size_t;
 
+/* 
+ * 如果使用了 mingw 或者 32 位 pc 的 linux 出现 “conflicting declaration 'typedef float float_t'” 的错误提示的话，
+ * 因为 awtk 的 float_t 类型为 float，所以请定义 __FLT_EVAL_METHOD__ 宏并且宏为 0 （#define __FLT_EVAL_METHOD__ 0 ）
+ */
 #if defined(WITH_DOUBLE_FLOAT)
 typedef long double float_t;
 #else

@@ -1,6 +1,6 @@
 #include "common/utils.h"
 
-#ifndef WIN32
+#if !defined(WIN32) || defined(MINGW)
 int main(int argc, char* argv[]) {
   int ret = 0;
   wchar_t** argvw = argvw_create(argc, argv);

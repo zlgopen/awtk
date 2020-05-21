@@ -35,7 +35,7 @@
 #include "tkc/mem.h"
 #include "tkc/utils.h"
 
-#ifdef WIN32
+#if defined(WIN32) && !defined(MINGW)
 static ret_t fs_stat_info_from_stat(fs_stat_info_t* fst, struct _stat64i32* st) {
 #else
 static ret_t fs_stat_info_from_stat(fs_stat_info_t* fst, struct stat* st) {
@@ -108,7 +108,7 @@ static int64_t fs_os_file_size(fs_file_t* file) {
 static ret_t fs_os_file_stat(fs_file_t* file, fs_stat_info_t* fst) {
   int rc = 0;
   FILE* fp = (FILE*)(file->data);
-#ifdef WIN32
+#if defined(WIN32) && !defined(MINGW)
   struct _stat64i32 st;
   rc = _fstat64i32(fileno(fp), &st);
 #else
@@ -468,7 +468,7 @@ static ret_t fs_os_stat(fs_t* fs, const char* name, fs_stat_info_t* fst) {
 
   int stat_ret = 0;
 
-#ifdef WIN32
+#if defined(WIN32) && !defined(MINGW)
   struct _stat64i32 st;
   wchar_t* w_name = tk_wstr_dup_utf8(name);
   stat_ret = _wstat(w_name, &st);

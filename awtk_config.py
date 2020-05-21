@@ -174,7 +174,7 @@ elif OS_NAME == 'Linux':
   COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DSDL_REAL_API -DSDL_HAPTIC_DISABLED -DSDL_SENSOR_DISABLED -DSDL_JOYSTICK_DISABLED '
   OS_PROJECTS=['3rd/SDL/SConscript']
   if TARGET_ARCH == 'x86':
-    OS_FLAGS = OS_FLAGS + ' -DWITH_DOUBLE_FLOAT '
+    OS_FLAGS = OS_FLAGS + ' -U__FLT_EVAL_METHOD__ -D__FLT_EVAL_METHOD__=0 '
   else:
     OS_FLAGS = OS_FLAGS + ' -DWITH_64BIT_CPU '
 
@@ -206,11 +206,12 @@ elif OS_NAME == 'Windows':
     AWTK_DLL_DEPS_LIBS = AWTK_STATIC_LIBS + NANOVG_BACKEND_LIBS + ['SDL2', 'glad'] + OS_LIBS
 
   elif TOOLS_NAME == 'mingw' :
-    OS_LIBS=['kernel32', 'gdi32', 'user32', 'winmm','imm32','version','shell32','ole32','Oleaut32','Advapi32','oleaut32','uuid','stdc++']
-    OS_FLAGS='-DWINDOWS -D_CONSOLE -g -Wall'
+    OS_LIBS=['kernel32', 'gdi32', 'user32', 'winmm','imm32','version','shell32','ole32','Oleaut32','Advapi32','oleaut32','uuid','stdc++',"ws2_32"]
+    OS_FLAGS='-DMINGW -DWINDOWS -D_CONSOLE -g -Wall'
+    OS_LINKFLAGS=' -Wl,-rpath=' + os.path.abspath(TK_LIB_DIR) + ' '
     COMMON_CFLAGS=COMMON_CFLAGS+' -std=gnu99 '
-    COMMON_CCFLAGS=COMMON_CCFLAGS+' -DWITH_DOUBLE_FLOAT -DUNICODE ' 
-    OS_WHOLE_ARCHIVE=' -Wl,--whole-archive '
+    COMMON_CCFLAGS=COMMON_CCFLAGS+' -U__FLT_EVAL_METHOD__ -D__FLT_EVAL_METHOD__=0 -DUNICODE -DDECLSPEC=  ' 
+    OS_WHOLE_ARCHIVE =' -Wl,--whole-archive -lawtk_global -lextwidgets -lwidgets -lbase -lgpinyin -lstreams -lubjson -lcompressors -lminiz -ltkc -llinebreak -Wl,--no-whole-archive'
     AWTK_DLL_DEPS_LIBS = AWTK_STATIC_LIBS + NANOVG_BACKEND_LIBS + ['SDL2', 'glad'] + OS_LIBS
     
   #OS_FLAGS='-DWIN32 -D_WIN32 -DWINDOWS /EHsc -D_CONSOLE  /DEBUG /Od  /FS /Z7 -D_DEBUG /MDd '

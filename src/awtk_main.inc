@@ -75,7 +75,7 @@ int SDL_main(int argc, char* argv[]) {
 
   tk_init(lcd_w, lcd_h, APP_MOBILE, APP_NAME, APP_RES_ROOT);
 
-#elif defined(WIN32)
+#elif defined(WIN32) && !defined(MINGW)
 #include <windows.h>
 #define MAX_ARGV 7
 
@@ -197,7 +197,7 @@ int main(int argc, char* argv[]) {
   application_exit();
   GLOBAL_EXIT();
 
-#ifdef WIN32
+#if defined(WIN32) && !defined(MINGW)
   str_reset(&str);
 #endif /*WIN32*/
 
