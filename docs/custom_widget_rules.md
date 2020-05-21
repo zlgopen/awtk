@@ -78,6 +78,8 @@ typedef struct _number_label_t {
 } number_label_t;  
 ```
 
+> 自定义控件只能以 widget_t 作为父类。
+
 ### 2.2 函数名
 
 成员函数以控件类型名为前缀，以下划线连接，全部使用小写单词。
