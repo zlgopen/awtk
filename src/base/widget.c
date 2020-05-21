@@ -2010,7 +2010,7 @@ bool_t widget_is_activate_key(widget_t* widget, key_event_t* e) {
   return_value_if_fail(widget != NULL && widget->vt != NULL && e != NULL, FALSE);
 
   return (widget->vt->space_key_to_activate && e->key == TK_KEY_SPACE) ||
-         (widget->vt->return_key_to_activate && e->key == TK_KEY_RETURN);
+         (widget->vt->return_key_to_activate && key_code_is_enter(e->key));
 }
 
 static bool_t widget_match_key(widget_t* widget, const char* prop, uint32_t key) {

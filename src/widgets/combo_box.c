@@ -253,7 +253,7 @@ static ret_t combo_box_on_key_event(widget_t* widget, key_event_t* evt) {
     if (edit->readonly) {
       ret = RET_STOP;
       combo_box_active(widget);
-    } else if (evt->key == TK_KEY_RETURN) {
+    } else if (key_code_is_enter(evt->key)) {
       ret = RET_STOP;
       combo_box_active(widget);
     }
