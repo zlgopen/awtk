@@ -168,6 +168,19 @@ typedef struct _edit_t {
   char* tr_tips;
 
   /**
+   * @property {char*} action_text
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 软键盘上action按钮的文本。内置取值有：
+   * 
+   * * next 将焦点切换到下一个控件。
+   * * done 完成，关闭软键盘。
+   * 
+   * 也可以使用其它文本，比如send表示发送。这个需要自己实现相应的功能，处理EVT\_IM\_ACTION事件即可。
+   * 
+   */
+  char* action_text;
+
+  /**
    * @property {char*} keyboard
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 自定义软键盘名称。
@@ -378,6 +391,17 @@ ret_t edit_set_open_im_when_focused(widget_t* widget, bool_t open_im_when_focuse
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t edit_set_input_type(widget_t* widget, input_type_t type);
+
+/**
+ * @method edit_set_action_text
+ * 设置软键盘上action按钮的文本。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {char*} action_text 软键盘上action按钮的文本。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t edit_set_action_text(widget_t* widget, const char* action_text);
 
 /**
  * @method edit_set_tips

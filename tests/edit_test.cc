@@ -76,6 +76,17 @@ TEST(Edit, set_int) {
   widget_destroy(b);
 }
 
+TEST(Edit, action_text) {
+  widget_t* b = edit_create(NULL, 10, 20, 30, 40);
+
+  ASSERT_STREQ(EDIT(b)->action_text, "done");
+  ASSERT_EQ(widget_set_prop_str(b, WIDGET_PROP_ACTION_TEXT, "next"), RET_OK);
+  ASSERT_STREQ(EDIT(b)->action_text, "next");
+  ASSERT_STREQ(widget_get_prop_str(b, WIDGET_PROP_ACTION_TEXT, ""), "next");
+
+  widget_destroy(b);
+}
+
 TEST(Edit, inputable) {
   widget_t* b = edit_create(NULL, 10, 20, 30, 40);
   ASSERT_EQ(b->vt->inputable, TRUE);

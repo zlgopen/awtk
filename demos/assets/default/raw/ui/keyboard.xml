@@ -3,11 +3,11 @@
     <scroll_view name="view" x="0"  y="0" w="-12" h="100%">
      <list_item style="empty" children_layout="default(r=1,c=0,ym=1)">
       <label w="30%" text="Name"/>
-      <edit w="70%" text="" tips="name"/>
+      <edit w="70%" text="" tips="name"  action_text="next"/>
      </list_item>
      <list_item style="empty" children_layout="default(r=1,c=0,ym=1)">
       <label w="30%" text="Desc"/>
-      <edit w="70%" text="" tips="desc" focused="true"/>
+      <edit w="70%" text="" tips="desc" focused="true"  action_text="next"/>
      </list_item>
      <list_item style="empty" children_layout="default(r=1,c=0,ym=1)">
       <label w="30%" text="Int"/>

@@ -40,19 +40,19 @@
      </list_item>
      <list_item style="empty" children_layout="default(r=1,c=0,ym=1)">
       <label w="30%" text="Password"/>
-      <edit w="70%" right_margin="30" input_type="password">
+      <edit w="70%" right_margin="30" input_type="password" action_text="next">
         <check_button style="password_visible" name="visible" x="right" y="0" w="24" h="100%" />
       </edit>
      </list_item>
      <list_item style="empty" children_layout="default(r=1,c=0,ym=1)">
       <label w="30%" text="Text"/>
-      <edit w="70%" left_margin="34" tips="searth" min="0" max="150" step="0.1">
+      <edit w="70%" left_margin="34" tips="searth" min="0" max="150" step="0.1" action_text="next">
         <image draw_type="icon" image="find" x="0" y="0" w="30" h="100%" />
       </edit>
      </list_item>
      <list_item style="empty" children_layout="default(r=1,c=0,ym=1)">
       <label w="30%" text="Text"/>
-      <edit style="dark" w="70%" right_margin="34" tips="searth" min="0" max="150" step="0.1">
+      <edit style="dark" w="70%" right_margin="34" tips="searth" min="0" max="150" step="0.1"  action_text="next">
         <button name="clear" style="edit_clear" x="right" y="bottom" w="30" h="100%" />
       </edit>
      </list_item>
@@ -62,7 +62,7 @@
      </list_item>
      <list_item style="empty" children_layout="default(r=1,c=0,ym=1)">
       <label w="30%" text="Text"/>
-      <edit w="70%" style="line" tips="underline" text="" />
+      <edit w="70%" style="line" tips="underline" text=""  action_text="done"/>
      </list_item>
     </scroll_view>
     <scroll_bar_d name="bar" x="right" y="0" w="12" h="100%" value="0"/>

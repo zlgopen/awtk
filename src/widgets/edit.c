@@ -33,6 +33,9 @@
 #include "base/clip_board.h"
 #include "base/window_manager.h"
 
+#define ACTION_TEXT_NEXT "next"
+#define ACTION_TEXT_DONE "done"
+
 #define PASSWORD_MASK_CHAR '*'
 static ret_t edit_update_status(widget_t* widget);
 static ret_t edit_select_all_async(const idle_info_t* info);
@@ -386,15 +389,27 @@ static ret_t edit_update_status(widget_t* widget) {
   return RET_OK;
 }
 
+static ret_t edit_do_request_input_method(widget_t* widget) {
+  edit_t* edit = EDIT(widget);
+  input_method_t* im = input_method();
+  input_method_request(im, widget);
+  if (edit->action_text != NULL) {
+    const char* action_text = locale_info_tr(widget_get_locale_info(widget), edit->action_text);
+    input_method_update_action_button_info(im, action_text, TRUE);
+  }
+
+  return RET_OK;
+}
+
 static ret_t edit_request_input_method_on_window_open(void* ctx, event_t* e) {
-  input_method_request(input_method(), WIDGET(ctx));
+  edit_do_request_input_method(WIDGET(ctx));
 
   return RET_REMOVE;
 }
 
 static ret_t edit_request_input_method(widget_t* widget) {
   if (widget_is_window_opened(widget)) {
-    input_method_request(input_method(), widget);
+    edit_do_request_input_method(widget);
   } else {
     widget_t* win = widget_get_window(widget);
     if (win != NULL) {
@@ -670,6 +685,17 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       widget_invalidate(widget, NULL);
       break;
     }
+    case EVT_IM_ACTION: {
+      if (tk_str_eq(edit->action_text, ACTION_TEXT_DONE)) {
+        input_method_request(input_method(), NULL);
+        ret = RET_STOP;
+      } else if (tk_str_eq(edit->action_text, ACTION_TEXT_NEXT)) {
+        widget_focus_next(widget);
+        ret = RET_STOP;
+      }
+      log_debug("action button\n");
+      break;
+    }
     default:
       break;
   }
@@ -787,6 +813,15 @@ ret_t edit_set_tips(widget_t* widget, const char* tips) {
   return RET_OK;
 }
 
+ret_t edit_set_action_text(widget_t* widget, const char* action_text) {
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
+
+  edit->action_text = tk_str_copy(edit->action_text, action_text);
+
+  return RET_OK;
+}
+
 static ret_t edit_apply_tr_text_before_paint(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   edit_t* edit = EDIT(widget);
@@ -891,6 +926,9 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_PASSWORD_VISIBLE)) {
     value_set_bool(v, edit->password_visible);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_ACTION_TEXT)) {
+    value_set_str(v, edit->action_text);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_TIPS)) {
     value_set_str(v, edit->tips);
@@ -1028,6 +1066,9 @@ ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_FOCUS) || tk_str_eq(name, WIDGET_PROP_FOCUSED)) {
     edit_set_focus(widget, value_bool(v));
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_ACTION_TEXT)) {
+    edit_set_action_text(widget, value_str(v));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_TIPS)) {
     edit_set_tips(widget, value_str(v));
@@ -1346,6 +1387,7 @@ const char* const s_edit_properties[] = {WIDGET_PROP_MIN,
                                          WIDGET_PROP_RIGHT_MARGIN,
                                          WIDGET_PROP_TOP_MARGIN,
                                          WIDGET_PROP_BOTTOM_MARGIN,
+                                         WIDGET_PROP_ACTION_TEXT,
                                          WIDGET_PROP_TIPS,
                                          WIDGET_PROP_TR_TIPS,
                                          WIDGET_PROP_KEYBOARD,
@@ -1412,6 +1454,7 @@ widget_t* edit_create_ex(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy
 
   widget_set_text(widget, L"");
   edit_set_password_visible(widget, FALSE);
+  edit_set_action_text(widget, ACTION_TEXT_DONE);
 
   return widget;
 }

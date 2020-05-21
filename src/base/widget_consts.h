@@ -342,6 +342,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_MIN "min"
 
 /**
+ * @const WIDGET_PROP_ACTION_TEXT
+ * 软键盘上action按钮的文本。
+ */
+#define WIDGET_PROP_ACTION_TEXT "action_text"
+
+/**
  * @const WIDGET_PROP_TIPS
  * 提示信息。
  */

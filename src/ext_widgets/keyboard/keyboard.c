@@ -41,6 +41,7 @@ static const char* s_keyboard_properties[] = {WIDGET_PROP_ANIM_HINT, WIDGET_PROP
 static ret_t keyboard_on_destroy(widget_t* widget) {
   keyboard_t* keyboard = KEYBOARD(widget);
   return_value_if_fail(keyboard != NULL, RET_BAD_PARAMS);
+  input_method_off(input_method(), keyboard->action_info_id);
   darray_deinit(&(keyboard->action_buttons));
   str_reset(&(keyboard->temp));
 
