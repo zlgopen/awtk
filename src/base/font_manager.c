@@ -118,6 +118,9 @@ font_t* font_manager_load(font_manager_t* fm, const char* name, uint32_t size) {
     char font_name[MAX_PATH];
     font_manager_fix_bitmap_font_name(font_name, name, size);
     info = assets_manager_ref(assets_manager(), ASSET_TYPE_FONT, font_name);
+    if (info != NULL) {
+      name = font_name;
+    }
 #endif
 
     if (info == NULL) {
