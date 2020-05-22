@@ -6382,8 +6382,7 @@
         ],
         "annotation": {},
         "desc": "创建缓冲区。\n\n> 为了兼容raw图像。",
-        "name": "graphic_buffer_default_create_with_data",
-        "export": "none",
+        "name": "graphic_buffer_create_with_data",
         "return": {
           "type": "graphic_buffer_t*",
           "desc": "返回缓存区。"
@@ -16417,6 +16416,10 @@
       {
         "desc": "最小值。",
         "name": "WIDGET_PROP_MIN"
+      },
+      {
+        "desc": "软键盘上action按钮的文本。",
+        "name": "WIDGET_PROP_ACTION_TEXT"
       },
       {
         "desc": "提示信息。",
@@ -46797,6 +46800,29 @@
           },
           {
             "type": "char*",
+            "name": "action_text",
+            "desc": "软键盘上action按钮的文本。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置软键盘上action按钮的文本。",
+        "name": "edit_set_action_text",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          },
+          {
+            "type": "char*",
             "name": "tips",
             "desc": "输入提示。"
           }
@@ -47094,6 +47120,19 @@
       {
         "name": "tr_tips",
         "desc": "保存用于翻译的提示信息。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "action_text",
+        "desc": "软键盘上action按钮的文本。内置取值有：\n\n* next 将焦点切换到下一个控件。\n* done 完成，关闭软键盘。\n\n也可以使用其它文本，比如send表示发送。这个需要自己实现相应的功能，处理EVT\\_IM\\_ACTION事件即可。",
         "type": "char*",
         "annotation": {
           "set_prop": true,
@@ -51227,6 +51266,161 @@
         "return": {
           "type": "widget_t*",
           "desc": "window对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "bitmap_t*",
+            "name": "dst",
+            "desc": "目标图片对象。"
+          },
+          {
+            "type": "rect_t*",
+            "name": "dst_r",
+            "desc": "要填充的目标区域。"
+          },
+          {
+            "type": "color_t",
+            "name": "c",
+            "desc": "颜色。"
+          }
+        ],
+        "annotation": {},
+        "desc": "用颜色绘制指定的区域。",
+        "name": "image_fill",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败，返回失败则上层用软件实现。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "bitmap_t*",
+            "name": "dst",
+            "desc": "目标图片对象。"
+          },
+          {
+            "type": "rect_t*",
+            "name": "dst_r",
+            "desc": "要填充的目标区域。"
+          },
+          {
+            "type": "color_t",
+            "name": "c",
+            "desc": "颜色。"
+          }
+        ],
+        "annotation": {},
+        "desc": "用颜色填充指定的区域。",
+        "name": "image_clear",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败，返回失败则上层用软件实现。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "bitmap_t*",
+            "name": "dst",
+            "desc": "目标图片对象。"
+          },
+          {
+            "type": "bitmap_t*",
+            "name": "src",
+            "desc": "源图片对象。"
+          },
+          {
+            "type": "rect_t*",
+            "name": "src_r",
+            "desc": "要拷贝的区域。"
+          },
+          {
+            "type": "xy_t",
+            "name": "dx",
+            "desc": "目标位置的x坐标。"
+          },
+          {
+            "type": "xy_t",
+            "name": "dy",
+            "desc": "目标位置的y坐标。"
+          }
+        ],
+        "annotation": {},
+        "desc": "把图片指定的区域拷贝到framebuffer中。",
+        "name": "image_copy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败，返回失败则上层用软件实现。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "bitmap_t*",
+            "name": "dst",
+            "desc": "目标图片对象。"
+          },
+          {
+            "type": "bitmap_t*",
+            "name": "src",
+            "desc": "源图片对象。"
+          },
+          {
+            "type": "rect_t*",
+            "name": "src_r",
+            "desc": "要旋转并拷贝的区域。"
+          },
+          {
+            "type": "lcd_orientation_t",
+            "name": "o",
+            "desc": "旋转角度(一般支持90度即可)。"
+          }
+        ],
+        "annotation": {},
+        "desc": "把图片指定的区域进行旋转并拷贝到framebuffer相应的区域，本函数主要用于辅助实现横屏和竖屏的切换，一般支持90度旋转即可。",
+        "name": "image_rotate",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败，返回失败则上层用软件实现。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "bitmap_t*",
+            "name": "dst",
+            "desc": "目标图片对象。"
+          },
+          {
+            "type": "bitmap_t*",
+            "name": "src",
+            "desc": "源图片对象。"
+          },
+          {
+            "type": "rect_t*",
+            "name": "dst_r",
+            "desc": "目的区域。"
+          },
+          {
+            "type": "rect_t*",
+            "name": "src_r",
+            "desc": "源区域。"
+          },
+          {
+            "type": "uint8_t",
+            "name": "global_alpha",
+            "desc": "全局alpha。"
+          }
+        ],
+        "annotation": {},
+        "desc": "把图片指定的区域渲染到framebuffer指定的区域，src的大小和dst的大小不一致则进行缩放。",
+        "name": "image_blend",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败，返回失败则上层用软件实现。"
         }
       }
     ],
