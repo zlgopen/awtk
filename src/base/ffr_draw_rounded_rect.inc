@@ -6,6 +6,7 @@
 */
 
 #include <math.h>
+#include "pixel.h"
 #include "base/lcd.h"
 #include "base/bitmap.h"
 #include "../tkc/darray.h"
@@ -14,7 +15,11 @@
 #ifdef FRAGMENT_FRAME_BUFFER_SIZE
 #include "../lcd/lcd_mem_fragment.h"
 #else
+#ifdef WITH_LCD_MONO
+#include "../lcd/lcd_mono.h"
+#else
 #include "../lcd/lcd_mem.h"
+#endif
 #endif
 
 /*
@@ -111,6 +116,9 @@ const static frr_draw_arc_info_table_t WIDGET_DRAW_ARC_INFO_TABLE[] = {
 
 static inline int32_t widget_frr_image_get_buff_point(frr_image_info_t* info, int32_t x,
                                                       int32_t y) {
+#if defined(WITH_LCD_MONO)
+  return 0;
+#else
   int32_t p = -1;
   int32_t dx = 0;
   int32_t dy = 0;
@@ -132,6 +140,7 @@ static inline int32_t widget_frr_image_get_buff_point(frr_image_info_t* info, in
   p = dx * info->bpp + dy * info->stride;
 
   return p;
+#endif
 }
 
 static inline frr_image_info_t* widget_image_info_create(frr_image_info_t* info, canvas_t* c) {
@@ -159,6 +168,14 @@ static inline frr_image_info_t* widget_image_info_create(frr_image_info_t* info,
     info->dst = lcd_mem_fragment_get_buff(c->lcd);
     info->format = lcd_get_desired_bitmap_format(c->lcd);
     info->stride = info->dw * bitmap_get_bpp_of_format(info->format);
+#elif defined(WITH_LCD_MONO)
+    lcd_mono_t* mem = (lcd_mono_t*)c->lcd;
+    info->dx = 0;
+    info->dy = 0;
+    info->dst = mem->data;
+    info->dw = info->w = c->lcd->w;
+    info->dh = info->h = c->lcd->h;
+    info->format = BITMAP_FMT_MONO;
 #else
     lcd_mem_t* mem = (lcd_mem_t*)c->lcd;
     info->dx = 0;
@@ -174,7 +191,7 @@ static inline frr_image_info_t* widget_image_info_create(frr_image_info_t* info,
   return info;
 }
 
-static inline void widget_image_data2color(unsigned char* d, bitmap_format_t format, rgba_t* rgb) {
+static inline void widget_image_data2color(unsigned char* d, int32_t x, int32_t y, int32_t w, int32_t h, bitmap_format_t format, rgba_t* rgb) {
   uint32_t c_16 = 0;
   switch (format) {
     case BITMAP_FMT_RGBA8888:
@@ -227,12 +244,21 @@ static inline void widget_image_data2color(unsigned char* d, bitmap_format_t for
       rgb->r = *d++;
       rgb->a = 255;
       break;
+    case BITMAP_FMT_MONO: {
+      uint8_t p = bitmap_mono_get_pixel(d, w, h, x, y);
+      color_t c = color_from_mono(p);
+      rgb->b = c.rgba.b;
+      rgb->g = c.rgba.g;
+      rgb->r = c.rgba.r;
+      rgb->a = c.rgba.a;
+      break;
+    }
     default:
       break;
   }
 }
 
-static inline void widget_image_color2data(unsigned char* d, bitmap_format_t format, rgba_t rgb) {
+static inline void widget_image_color2data(unsigned char* d, int32_t x, int32_t y, int32_t w, int32_t h, bitmap_format_t format, rgba_t rgb) {
   switch (format) {
     case BITMAP_FMT_RGBA8888:
       *d++ = rgb.r;
@@ -274,6 +300,9 @@ static inline void widget_image_color2data(unsigned char* d, bitmap_format_t for
       *d++ = rgb.g;
       *d++ = rgb.r;
       break;
+    case BITMAP_FMT_MONO: 
+      bitmap_mono_set_pixel(d, w, h, x, y, rgb.r);
+      break;
     default:
       break;
   }
@@ -289,8 +318,8 @@ static inline void widget_draw_antialiasing_for_point(frr_image_info_t* image_in
       py <= canvas->clip_bottom) {
     IMAGE_COLOR2COLOR_BLEND(n_color, o_color, a);
     p = widget_frr_image_get_buff_point(image_info, px, py);
-    if (p > 0) {
-      widget_image_color2data(image_info->dst + p, image_info->format, n_color);
+    if (p >= 0) {
+      widget_image_color2data(image_info->dst + p, px, py, image_info->w, image_info->h, image_info->format, n_color);
     }
   }
 }
@@ -376,8 +405,8 @@ static inline void widget_draw_circluar_point_to_quadrant(frr_image_info_t* imag
 
     if (w > 0 && h > 0) {
       p = widget_frr_image_get_buff_point(image_info, x, y);
-      if (p > 0) {
-        widget_image_data2color(image_info->dst + p, image_info->format, &o_color);
+      if (p >= 0) {
+        widget_image_data2color(image_info->dst + p, x, y, image_info->w, image_info->h, image_info->format, &o_color);
 
         widget_draw_antialiasing_for_point(image_info, c, x, y, e, color, o_color);
       }
@@ -415,8 +444,8 @@ static inline void widget_draw_circluar_point_to_quadrant_hline(frr_image_info_t
 
     if (w > 0 && h > 0) {
       p = widget_frr_image_get_buff_point(image_info, x + c->ox, y + c->oy);
-      if (p > 0) {
-        widget_image_data2color(image_info->dst + p, image_info->format, &o_color);
+      if (p >= 0) {
+        widget_image_data2color(image_info->dst + p, x + c->ox, y + c->oy, image_info->w, image_info->h, image_info->format, &o_color);
 
         canvas_fill_rect(c, x_h, y, w, 1);
 
