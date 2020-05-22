@@ -26,11 +26,7 @@ extern ret_t assets_init(void);
 END_C_DECLS
 
 #ifndef APP_DEFAULT_FONT
-#ifdef WITH_FS_RES
-#define APP_DEFAULT_FONT "default_full"
-#else
 #define APP_DEFAULT_FONT "default"
-#endif /*WITH_FS_RES*/
 #endif /*APP_DEFAULT_FONT*/
 
 #ifndef LCD_WIDTH

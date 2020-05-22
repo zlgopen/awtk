@@ -152,7 +152,7 @@ font_t* font_manager_get_font(font_manager_t* fm, const char* name, font_size_t 
     }
   }
 
-  if (font == NULL) {
+  if (font == NULL && fm->fonts.size > 0) {
     font_t** fonts = (font_t**)fm->fonts.elms;
     font = fonts[0];
   }
