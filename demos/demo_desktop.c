@@ -46,6 +46,6 @@ ret_t application_exit() {
 
 #ifdef WITH_FS_RES
 #define APP_DEFAULT_FONT "default_full"
-#endif/*WITH_FS_RES*/
+#endif /*WITH_FS_RES*/
 
 #include "awtk_main.inc"

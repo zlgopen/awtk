@@ -276,6 +276,13 @@ ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e) {
   return_value_if_fail(e != NULL, RET_BAD_PARAMS);
   return_value_if_fail(wm != NULL && wm->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(wm->vt->dispatch_input_event != NULL, RET_BAD_PARAMS);
+
+  if (wm->ignore_input_events) {
+    log_debug("waiting cursort, ignore input events");
+
+    return RET_STOP;
+  }
+
   if (widget_dispatch(widget, e) == RET_STOP) {
     return RET_STOP;
   }
@@ -304,6 +311,10 @@ ret_t window_manager_set_cursor(widget_t* widget, const char* cursor) {
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(wm != NULL && wm->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(wm->vt->set_cursor != NULL, RET_BAD_PARAMS);
+
+  if (wm->show_waiting_pointer_cursor) {
+    return RET_FAIL;
+  }
 
   return wm->vt->set_cursor(widget, cursor);
 }
@@ -584,4 +595,30 @@ ret_t window_manager_dispatch_window_event(widget_t* window, event_type_t type) 
   }
 
   return widget_dispatch(window->parent, (event_t*)&(evt));
+}
+
+ret_t window_manager_begin_wait_pointer_cursor(widget_t* widget, bool_t ignore_user_input) {
+  window_manager_t* wm = WINDOW_MANAGER(widget);
+  return_value_if_fail(wm != NULL && wm->vt != NULL, RET_BAD_PARAMS);
+
+  if (wm->vt->set_cursor != NULL) {
+    wm->ignore_input_events = TRUE;
+    wm->show_waiting_pointer_cursor = ignore_user_input;
+    return wm->vt->set_cursor(widget, WIDGET_CURSOR_WAIT);
+  } else {
+    return RET_NOT_IMPL;
+  }
+}
+
+ret_t window_manager_end_wait_pointer_cursor(widget_t* widget) {
+  window_manager_t* wm = WINDOW_MANAGER(widget);
+  return_value_if_fail(wm != NULL && wm->vt != NULL, RET_BAD_PARAMS);
+
+  if (wm->vt->set_cursor != NULL) {
+    wm->ignore_input_events = FALSE;
+    wm->show_waiting_pointer_cursor = FALSE;
+    return wm->vt->set_cursor(widget, WIDGET_CURSOR_DEFAULT);
+  } else {
+    return RET_NOT_IMPL;
+  }
 }

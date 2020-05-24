@@ -456,7 +456,9 @@ ret_t widget_set_pointer_cursor(widget_t* widget, const char* cursor) {
   widget_t* wm = widget_get_window_manager(widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  return widget_set_prop_str(wm, WIDGET_PROP_CURSOR, cursor);
+  widget->pointer_cursor = tk_str_copy(widget->pointer_cursor, cursor);
+
+  return RET_OK;
 }
 
 #ifndef WITHOUT_WIDGET_ANIMATORS
@@ -1003,11 +1005,32 @@ ret_t widget_on_event_before_children(widget_t* widget, event_t* e) {
   return ret;
 }
 
+static const char* widget_get_pointer_cursor(widget_t* widget) {
+  if (widget->pointer_cursor != NULL) {
+    return widget->pointer_cursor;
+  } else if (widget->vt->pointer_cursor != NULL) {
+    return widget->vt->pointer_cursor;
+  }
+
+  return WIDGET_CURSOR_DEFAULT;
+}
+
+ret_t widget_update_pointer_cursor(widget_t* widget) {
+  widget_t* wm = widget_get_window_manager(widget);
+  return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
+
+  return window_manager_set_cursor(wm, widget_get_pointer_cursor(widget));
+}
+
 ret_t widget_dispatch(widget_t* widget, event_t* e) {
   ret_t ret = RET_OK;
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
 
   widget_ref(widget);
+  if (e->type == EVT_POINTER_ENTER) {
+    widget_update_pointer_cursor(widget);
+  }
+
   if (widget->vt && widget->vt->on_event) {
     ret = widget->vt->on_event(widget, e);
   } else {
@@ -1557,6 +1580,8 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
     widget_set_self_layout(widget, value_str(v));
   } else if (tk_str_eq(name, WIDGET_PROP_LAYOUT) || tk_str_eq(name, WIDGET_PROP_CHILDREN_LAYOUT)) {
     widget_set_children_layout(widget, value_str(v));
+  } else if (tk_str_eq(name, WIDGET_PROP_POINTER_CURSOR)) {
+    widget_set_pointer_cursor(widget, value_str(v));
   } else {
     ret = RET_NOT_FOUND;
   }
@@ -1646,6 +1671,8 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
     value_set_str(v, widget->name);
   } else if (tk_str_eq(name, WIDGET_PROP_ANIMATION)) {
     value_set_str(v, widget->animation);
+  } else if (tk_str_eq(name, WIDGET_PROP_POINTER_CURSOR)) {
+    value_set_str(v, widget->pointer_cursor);
   } else if (tk_str_eq(name, WIDGET_PROP_SELF_LAYOUT)) {
     if (widget->self_layout != NULL) {
       value_set_str(v, self_layouter_to_string(widget->self_layout));
@@ -4074,4 +4101,16 @@ ret_t widget_set_child_text_with_double(widget_t* widget, const char* name, cons
   tk_snprintf(text, sizeof(text) - 1, format, value);
 
   return widget_set_text_utf8(child, text);
+}
+
+ret_t widget_begin_wait_pointer_cursor(widget_t* widget, bool_t ignore_user_input) {
+  widget_t* wm = widget_get_window_manager(widget);
+
+  return window_manager_begin_wait_pointer_cursor(wm, ignore_user_input);
+}
+
+ret_t widget_end_wait_pointer_cursor(widget_t* widget) {
+  widget_t* wm = widget_get_window_manager(widget);
+
+  return window_manager_end_wait_pointer_cursor(wm);
 }

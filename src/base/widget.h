@@ -149,6 +149,10 @@ struct _widget_vtable_t {
    * parent class vtable
    */
   const struct _widget_vtable_t* parent;
+  /**
+   * cursor image name
+   */
+  const char* pointer_cursor;
 
   widget_create_t create;
   widget_get_prop_t get_prop;
@@ -276,6 +280,12 @@ struct _widget_t {
    * 控件名字。
    */
   char* name;
+  /**
+   * @property {char*} pointer_cursor
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 鼠标光标图片名称。
+   */
+  char* pointer_cursor;
   /**
    * @property {char*} tr_text
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
@@ -2382,6 +2392,34 @@ assets_manager_t* widget_get_assets_manager(widget_t* widget);
  * @return {font_manager_t*} 返回font_manager对象。
  */
 font_manager_t* widget_get_font_manager(widget_t* widget);
+
+/**
+ * @method widget_update_pointer_cursor
+ * 更新鼠标指针。
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。。
+ */
+ret_t widget_update_pointer_cursor(widget_t* widget);
+
+/**
+ * @method widget_begin_wait_pointer_cursor
+ * 开始等待鼠标指针。
+ * @param {widget_t*} widget 控件对象。
+ * @param {bool_t} ignore_user_input 是否忽略用户输入。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。。
+ */
+ret_t widget_begin_wait_pointer_cursor(widget_t* widget, bool_t ignore_user_input);
+
+/**
+ * @method widget_end_wait_pointer_cursor
+ * 结束等待鼠标指针。
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。。
+ */
+ret_t widget_begin_end_pointer_cursor(widget_t* widget);
 
 bool_t widget_has_focused_widget_in_window(widget_t* widget);
 ret_t widget_set_style(widget_t* widget, const char* state_and_name, const value_t* value);

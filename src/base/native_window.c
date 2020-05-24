@@ -247,3 +247,13 @@ ret_t native_window_set_fullscreen(native_window_t* win, bool_t fullscreen) {
 
   return RET_NOT_IMPL;
 }
+
+ret_t native_window_set_cursor(native_window_t* win, const char* name, bitmap_t* img) {
+  return_value_if_fail(win != NULL && win->vt != NULL, RET_BAD_PARAMS);
+
+  if (win->vt->set_cursor != NULL) {
+    return win->vt->set_cursor(win, name, img);
+  }
+
+  return RET_NOT_IMPL;
+}

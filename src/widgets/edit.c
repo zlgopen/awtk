@@ -588,8 +588,11 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_POINTER_MOVE: {
+      pointer_event_t evt = *(pointer_event_t*)e;
+      if (widget_find_target(widget, evt.x, evt.y) == NULL) {
+        widget_update_pointer_cursor(widget);
+      }
       if (widget->parent && widget->parent->grab_widget == widget) {
-        pointer_event_t evt = *(pointer_event_t*)e;
         text_edit_drag(edit->model, evt.x, evt.y);
         ret = RET_STOP;
       }
@@ -1420,6 +1423,7 @@ TK_DECL_VTABLE(edit) = {.size = sizeof(edit_t),
                         .type = WIDGET_TYPE_EDIT,
                         .focusable = TRUE,
                         .inputable = TRUE,
+                        .pointer_cursor = WIDGET_CURSOR_EDIT,
                         .clone_properties = s_edit_properties,
                         .persistent_properties = s_edit_properties,
                         .parent = TK_PARENT_VTABLE(widget),

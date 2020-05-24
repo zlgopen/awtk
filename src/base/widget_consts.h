@@ -192,10 +192,10 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_CLOSABLE "closable"
 
 /**
- * @const WIDGET_PROP_CURSOR
+ * @const WIDGET_PROP_POINTER_CURSOR
  * 鼠标指针。
  */
-#define WIDGET_PROP_CURSOR "cursor"
+#define WIDGET_PROP_POINTER_CURSOR "pointer_cursor"
 
 /**
  * @const WIDGET_PROP_VALUE
@@ -1367,6 +1367,71 @@ typedef enum _window_closable_t {
  * 焦点状态(当前项)。
  */
 #define WIDGET_STATE_FOCUSED_OF_ACTIVE "focused_of_active"
+
+/**
+ * @enum widget_cursor_t
+ * @annotation ["scriptable", "string"]
+ * @prefix WIDGET_
+ * 控件鼠标光标常量定义。
+ *
+ */
+
+/**
+ * @const WIDGET_CURSOR_DEFAULT
+ * 默认光标。
+ */
+#define WIDGET_CURSOR_DEFAULT "cursor"
+/**
+ * @const WIDGET_CURSOR_EDIT
+ * 文本选择光标。
+ */
+#define WIDGET_CURSOR_EDIT "cursor_text"
+/**
+ * @const WIDGET_CURSOR_HAND
+ * 手指光标。
+ */
+#define WIDGET_CURSOR_HAND "cursor_hand"
+/**
+ * @const WIDGET_CURSOR_WAIT
+ * 等待光标。
+ */
+#define WIDGET_CURSOR_WAIT "cursor_wait"
+/**
+ * @const WIDGET_CURSOR_CROSS
+ * 叉光标。
+ */
+#define WIDGET_CURSOR_CROSS "cursor_cross"
+/**
+ * @const WIDGET_CURSOR_NO
+ * Slashed circle or crossbones。
+ */
+#define WIDGET_CURSOR_NO "cursor_no"
+/**
+ * @const WIDGET_CURSOR_SIZENWSE
+ * Double arrow pointing northwest and southeast。
+ */
+#define WIDGET_CURSOR_SIZENWSE "cursor_size_nwse"
+/**
+ * @const WIDGET_CURSOR_SIZENESW
+ * Double arrow pointing northeast and southwest。
+ */
+#define WIDGET_CURSOR_SIZENESW "cursor_size_nesw"
+
+/**
+ * @const WIDGET_CURSOR_SIZEWE
+ * Double arrow pointing west and east。
+ */
+#define WIDGET_CURSOR_SIZEWE "cursor_size_we"
+/**
+ * @const WIDGET_CURSOR_SIZENS
+ * Double arrow pointing north and south。
+ */
+#define WIDGET_CURSOR_SIZENS "cursor_size_ns"
+/**
+ * @const WIDGET_CURSOR_SIZEALL
+ * Four pointed arrow pointing north, south, east, and west。
+ */
+#define WIDGET_CURSOR_SIZEALL "cursor_size_all"
 
 END_C_DECLS
 

@@ -54,6 +54,7 @@ typedef ret_t (*native_window_restore_t)(native_window_t* win);
 typedef ret_t (*native_window_center_t)(native_window_t* win);
 typedef ret_t (*native_window_show_border_t)(native_window_t* win, bool_t show);
 typedef ret_t (*native_window_set_fullscreen_t)(native_window_t* win, bool_t fullscreen);
+typedef ret_t (*native_window_set_cursor_t)(native_window_t* win, const char* name, bitmap_t* img);
 
 typedef struct _native_window_vtable_t {
   const char* type;
@@ -70,6 +71,7 @@ typedef struct _native_window_vtable_t {
   native_window_maximize_t maximize;
   native_window_show_border_t show_border;
   native_window_set_fullscreen_t set_fullscreen;
+  native_window_set_cursor_t set_cursor;
 } native_window_vtable_t;
 
 /**
@@ -192,6 +194,19 @@ ret_t native_window_show_border(native_window_t* win, bool_t show);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t native_window_set_fullscreen(native_window_t* win, bool_t fullscreen);
+
+/**
+ * @method native_window_set_cursor
+ * 设置鼠标光标。
+ *
+ * @annotation ["scriptable"]
+ * @param {native_window_t*} win win对象。
+ * @param {const char*}  name 鼠标光标的名称。
+ * @param {bitmap_t*}  img 鼠标光标的图片。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t native_window_set_cursor(native_window_t* win, const char* name, bitmap_t* img);
 
 /**
  * @method native_window_get_canvas

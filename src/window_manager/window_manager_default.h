@@ -49,7 +49,7 @@ typedef struct _window_manager_default_t {
   widget_t* pending_close_window;
   widget_t* pending_open_window;
 
-  char* cursor;
+  char cursor[TK_NAME_LEN + 1];
   rect_t r_cursor;
 
   input_device_status_t input_device_status;

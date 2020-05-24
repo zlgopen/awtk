@@ -92,7 +92,10 @@ typedef struct _window_manager_vtable_t {
 typedef struct _window_manager_t {
   widget_t widget;
 
+  /*private*/
   bool_t show_fps;
+  bool_t ignore_input_events;
+  bool_t show_waiting_pointer_cursor;
   const window_manager_vtable_t* vt;
 } window_manager_t;
 
@@ -366,6 +369,25 @@ ret_t window_manager_back_to(widget_t* widget, const char* target);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t window_manager_dispatch_native_window_event(widget_t* widget, event_t* e, void* handle);
+
+/**
+ * @method window_manager_begin_wait_pointer_cursor
+ * 开始等待鼠标指针。
+ * @param {widget_t*} widget 窗口管理器对象。
+ * @param {bool_t} ignore_user_input 是否忽略用户输入。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。。
+ */
+ret_t window_manager_begin_wait_pointer_cursor(widget_t* widget, bool_t ignore_user_input);
+
+/**
+ * @method window_manager_end_wait_pointer_cursor
+ * 结束等待鼠标指针。
+ * @param {widget_t*} widget 窗口管理器对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。。
+ */
+ret_t window_manager_end_wait_pointer_cursor(widget_t* widget);
 
 /**
  * @method window_manager_resize
