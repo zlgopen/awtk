@@ -557,12 +557,10 @@ static ret_t window_manager_paint_cursor(widget_t* widget, canvas_t* c) {
   bitmap_t bitmap;
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
 
-  if (wm->cursor != NULL) {
-    if (wm->r_cursor.w > 0 && wm->r_cursor.h > 0) {
-      return_value_if_fail(image_manager_get_bitmap(image_manager(), wm->cursor, &bitmap) == RET_OK,
-                           RET_BAD_PARAMS);
-      canvas_draw_icon(c, &bitmap, wm->r_cursor.x, wm->r_cursor.y);
-    }
+  if (wm->r_cursor.w > 0 && wm->r_cursor.h > 0) {
+    return_value_if_fail(image_manager_get_bitmap(image_manager(), wm->cursor, &bitmap) == RET_OK,
+                         RET_BAD_PARAMS);
+    canvas_draw_icon(c, &bitmap, wm->r_cursor.x, wm->r_cursor.y);
   }
 
   return RET_OK;
@@ -573,7 +571,7 @@ static ret_t window_manager_update_cursor(widget_t* widget, int32_t x, int32_t y
   uint32_t w = wm->r_cursor.w;
   uint32_t h = wm->r_cursor.h;
 
-  if (wm->cursor != NULL && w > 0 && h > 0) {
+  if (w > 0 && h > 0) {
     uint32_t hw = w >> 1;
     uint32_t hh = h >> 1;
     int32_t oldx = wm->r_cursor.x;
@@ -1198,9 +1196,13 @@ static ret_t window_manager_default_set_cursor(widget_t* widget, const char* cur
   tk_strncpy(wm->cursor, cursor, TK_NAME_LEN);
   if (cursor != NULL && *cursor) {
     bitmap_t bitmap;
-    return_value_if_fail(image_manager_get_bitmap(image_manager(), cursor, &bitmap) == RET_OK,
-                         RET_BAD_PARAMS);
-    if (native_window_set_cursor(wm->native_window, cursor, &bitmap) != RET_OK) {
+    bitmap_t* img = NULL;
+
+    if (image_manager_get_bitmap(image_manager(), cursor, &bitmap) == RET_OK) {
+      img = &bitmap;
+    }
+
+    if (native_window_set_cursor(wm->native_window, cursor, img) != RET_OK) {
       wm->r_cursor.w = bitmap.w;
       wm->r_cursor.h = bitmap.h;
     } else {
