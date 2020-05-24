@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   native_window.h
  * Author: AWTK Develop Team
  * Brief:  native window
