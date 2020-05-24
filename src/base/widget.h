@@ -2419,7 +2419,7 @@ ret_t widget_begin_wait_pointer_cursor(widget_t* widget, bool_t ignore_user_inpu
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。。
  */
-ret_t widget_begin_end_pointer_cursor(widget_t* widget);
+ret_t widget_end_wait_pointer_cursor(widget_t* widget);
 
 bool_t widget_has_focused_widget_in_window(widget_t* widget);
 ret_t widget_set_style(widget_t* widget, const char* state_and_name, const value_t* value);
