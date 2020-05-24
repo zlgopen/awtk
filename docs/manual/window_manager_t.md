@@ -13,8 +13,10 @@
 | <a href="#window_manager_t_window_manager_back">window\_manager\_back</a> | 请求关闭顶层窗口。 |
 | <a href="#window_manager_t_window_manager_back_to">window\_manager\_back\_to</a> | 回到指定的窗口，关闭之上的全部窗口。 |
 | <a href="#window_manager_t_window_manager_back_to_home">window\_manager\_back\_to\_home</a> | 回到主窗口，关闭之上的全部窗口。 |
+| <a href="#window_manager_t_window_manager_begin_wait_pointer_cursor">window\_manager\_begin\_wait\_pointer\_cursor</a> | 开始等待鼠标指针。 |
 | <a href="#window_manager_t_window_manager_cast">window\_manager\_cast</a> | 转换为window_manager对象(供脚本语言使用)。 |
 | <a href="#window_manager_t_window_manager_dispatch_native_window_event">window\_manager\_dispatch\_native\_window\_event</a> | 处理native window事件。 |
+| <a href="#window_manager_t_window_manager_end_wait_pointer_cursor">window\_manager\_end\_wait\_pointer\_cursor</a> | 结束等待鼠标指针。 |
 | <a href="#window_manager_t_window_manager_get_pointer_pressed">window\_manager\_get\_pointer\_pressed</a> | 获取指针当前是否按下。 |
 | <a href="#window_manager_t_window_manager_get_pointer_x">window\_manager\_get\_pointer\_x</a> | 获取指针当前的X坐标。 |
 | <a href="#window_manager_t_window_manager_get_pointer_y">window\_manager\_get\_pointer\_y</a> | 获取指针当前的Y坐标。 |
@@ -109,6 +111,26 @@ ret_t window_manager_back_to_home (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 窗口管理器对象。 |
+#### window\_manager\_begin\_wait\_pointer\_cursor 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_manager_t_window_manager_begin_wait_pointer_cursor">开始等待鼠标指针。
+
+* 函数原型：
+
+```
+ret_t window_manager_begin_wait_pointer_cursor (widget_t* widget, bool_t ignore_user_input);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。。 |
+| widget | widget\_t* | 窗口管理器对象。 |
+| ignore\_user\_input | bool\_t | 是否忽略用户输入。 |
 #### window\_manager\_cast 函数
 -----------------------
 
@@ -149,6 +171,25 @@ ret_t window_manager_dispatch_native_window_event (widget_t* widget, event_t* e,
 | widget | widget\_t* | 窗口管理器对象。 |
 | e | event\_t* | 事件。 |
 | handle | void* | native window句柄。 |
+#### window\_manager\_end\_wait\_pointer\_cursor 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_manager_t_window_manager_end_wait_pointer_cursor">结束等待鼠标指针。
+
+* 函数原型：
+
+```
+ret_t window_manager_end_wait_pointer_cursor (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。。 |
+| widget | widget\_t* | 窗口管理器对象。 |
 #### window\_manager\_get\_pointer\_pressed 函数
 -----------------------
 

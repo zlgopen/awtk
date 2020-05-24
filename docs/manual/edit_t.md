@@ -66,6 +66,7 @@ default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/st
 | <a href="#edit_t_edit_create">edit\_create</a> | 创建edit对象 |
 | <a href="#edit_t_edit_get_double">edit\_get\_double</a> | 获取double类型的值。 |
 | <a href="#edit_t_edit_get_int">edit\_get\_int</a> | 获取int类型的值。 |
+| <a href="#edit_t_edit_set_action_text">edit\_set\_action\_text</a> | 设置软键盘上action按钮的文本。 |
 | <a href="#edit_t_edit_set_auto_fix">edit\_set\_auto\_fix</a> | 设置编辑器是否为自动改正。 |
 | <a href="#edit_t_edit_set_cursor">edit\_set\_cursor</a> | 设置输入框的光标坐标。 |
 | <a href="#edit_t_edit_set_double">edit\_set\_double</a> | 设置double类型的值。 |
@@ -88,6 +89,7 @@ default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/st
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
+| <a href="#edit_t_action_text">action\_text</a> | char* | 软键盘上action按钮的文本。内置取值有： |
 | <a href="#edit_t_auto_fix">auto\_fix</a> | bool\_t | 输入无效时，是否自动改正。 |
 | <a href="#edit_t_bottom_margin">bottom\_margin</a> | uint8\_t | 下边距。 |
 | <a href="#edit_t_input_type">input\_type</a> | input\_type\_t | 输入类型。 |
@@ -191,6 +193,26 @@ int32_t edit_get_int (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | int32\_t | 返回int的值。 |
 | widget | widget\_t* | widget对象。 |
+#### edit\_set\_action\_text 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="edit_t_edit_set_action_text">设置软键盘上action按钮的文本。
+
+* 函数原型：
+
+```
+ret_t edit_set_action_text (widget_t* widget, char* action_text);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | widget对象。 |
+| action\_text | char* | 软键盘上action按钮的文本。 |
 #### edit\_set\_auto\_fix 函数
 -----------------------
 
@@ -537,6 +559,27 @@ ret_t edit_set_tr_tips (widget_t* widget, const char* tr_tips);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | tr\_tips | const char* | 提示信息。 |
+#### action\_text 属性
+-----------------------
+> <p id="edit_t_action_text">软键盘上action按钮的文本。内置取值有：
+
+* next 将焦点切换到下一个控件。
+* done 完成，关闭软键盘。
+
+也可以使用其它文本，比如send表示发送。这个需要自己实现相应的功能，处理EVT\_IM\_ACTION事件即可。
+
+* 类型：char*
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### auto\_fix 属性
 -----------------------
 > <p id="edit_t_auto_fix">输入无效时，是否自动改正。

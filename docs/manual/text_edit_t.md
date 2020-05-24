@@ -17,6 +17,7 @@
 | <a href="#text_edit_t_text_edit_get_state">text\_edit\_get\_state</a> | 获取编辑器的状态。 |
 | <a href="#text_edit_t_text_edit_invert_caret_visible">text\_edit\_invert\_caret\_visible</a> | 如果caret可见，将其设置为不可见。 如果caret不可见，将其设置为可见。 |
 | <a href="#text_edit_t_text_edit_key_down">text\_edit\_key\_down</a> | 处理按键事件。 |
+| <a href="#text_edit_t_text_edit_key_up">text\_edit\_key\_up</a> | 处理按键事件。 |
 | <a href="#text_edit_t_text_edit_layout">text\_edit\_layout</a> | 重新排版。 |
 | <a href="#text_edit_t_text_edit_paint">text\_edit\_paint</a> | 绘制文本。 |
 | <a href="#text_edit_t_text_edit_paste">text\_edit\_paste</a> | 粘贴文本。 |
@@ -225,6 +226,26 @@ ret_t text_edit_invert_caret_visible (text_edit_t* text_edit);
 
 ```
 ret_t text_edit_key_down (text_edit_t* text_edit, key_event_t* evt);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| text\_edit | text\_edit\_t* | text\_edit对象。 |
+| evt | key\_event\_t* | event |
+#### text\_edit\_key\_up 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="text_edit_t_text_edit_key_up">处理按键事件。
+
+* 函数原型：
+
+```
+ret_t text_edit_key_up (text_edit_t* text_edit, key_event_t* evt);
 ```
 
 * 参数说明：

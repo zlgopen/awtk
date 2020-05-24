@@ -7,6 +7,8 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#utils_t_filename_to_name">filename\_to\_name</a> | 从完整文件名中获取文件名。 |
+| <a href="#utils_t_filename_to_name_ex">filename\_to\_name\_ex</a> | 从完整文件名中获取文件名。 |
 | <a href="#utils_t_tk_atob">tk\_atob</a> | 将字符串转换为布尔类型。 |
 | <a href="#utils_t_tk_atof">tk\_atof</a> | 将字符串转换为浮点类型。 |
 | <a href="#utils_t_tk_atoi">tk\_atoi</a> | 将字符串转换为整形。 |
@@ -17,6 +19,7 @@
 | <a href="#utils_t_tk_sscanf">tk\_sscanf</a> | 从字符串读取格式化输入。 |
 | <a href="#utils_t_tk_str_append">tk\_str\_append</a> | 字符串追加函数。 |
 | <a href="#utils_t_tk_str_cmp">tk\_str\_cmp</a> | 字符串比较函数。 |
+| <a href="#utils_t_tk_str_copy">tk\_str\_copy</a> | 字符串拷贝函数。 |
 | <a href="#utils_t_tk_str_icmp">tk\_str\_icmp</a> | 字符串比较函数（不区分大小写）。 |
 | <a href="#utils_t_tk_str_start_with">tk\_str\_start\_with</a> | 检查字符串是否以指定的字符串prefix开头。 |
 | <a href="#utils_t_tk_str_tolower">tk\_str\_tolower</a> | 将大写字母转换为小写字母。 |
@@ -30,7 +33,52 @@
 | <a href="#utils_t_tk_watob">tk\_watob</a> | 将宽字符串转换为布尔类型。 |
 | <a href="#utils_t_tk_watof">tk\_watof</a> | 将宽字符串转换为浮点类型。 |
 | <a href="#utils_t_tk_watoi">tk\_watoi</a> | 将宽字符串转换为整形。 |
+| <a href="#utils_t_tk_wstr_dup_utf8">tk\_wstr\_dup\_utf8</a> | 将utf8字符串拷贝为UCS字符串。 |
 | <a href="#utils_t_tk_wstrdup">tk\_wstrdup</a> | 宽字符串拷贝函数。 |
+| <a href="#utils_t_xml_file_expand_read">xml\_file\_expand\_read</a> | expand include process instruction to file content: <?include filename="view_me.inc" ?> |
+#### filename\_to\_name 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_filename_to_name">从完整文件名中获取文件名。
+
+* 函数原型：
+
+```
+ret_t filename_to_name (const char* filename, char* str, uint32_t size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| filename | const char* | 完整的文件名。 |
+| str | char* | 用于返回文件名。 |
+| size | uint32\_t | 文件名(str参数)的最大长度。 |
+#### filename\_to\_name\_ex 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_filename_to_name_ex">从完整文件名中获取文件名。
+
+* 函数原型：
+
+```
+ret_t filename_to_name_ex (const char* filename, char* str, uint32_t size, bool_t remove_extname);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| filename | const char* | 完整的文件名。 |
+| str | char* | 用于返回文件名。 |
+| size | uint32\_t | 文件名(str参数)的最大长度。 |
+| remove\_extname | bool\_t | 是否移除扩展名。 |
 #### tk\_atob 函数
 -----------------------
 
@@ -231,6 +279,27 @@ int32_t tk_str_cmp (const char* a, const char* b);
 | 返回值 | int32\_t | 如果返回值=-1，则表示a为NULL；如果返回值=1，则表示b为NULL；如果返回值<0，则表示a小于b；如果返回值>0，则表示a大于b；如果返回值=0，则表示a等于b。 |
 | a | const char* | 要进行比较的第一个字符串。 |
 | b | const char* | 要进行比较的第二个字符串。 |
+#### tk\_str\_copy 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_str_copy">字符串拷贝函数。
+> XXX: 要求dst为NULL或内存块的首地址，本函数调用之后，dst可能无效，请保留返回的地址
+
+* 函数原型：
+
+```
+char* tk_str_copy (const char* dst, const char* src);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | char* | 返回指向的复制字符串指针，如果失败则返回NULL。 |
+| dst | const char* | 目标字符串。 |
+| src | const char* | 源字符串。 |
 #### tk\_str\_icmp 函数
 -----------------------
 
@@ -486,6 +555,25 @@ int tk_watoi (const wchar_t* str);
 | -------- | ----- | --------- |
 | 返回值 | int | 返回转换后的整形。 |
 | str | const wchar\_t* | 要转换为整形的宽字符串。 |
+#### tk\_wstr\_dup\_utf8 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_wstr_dup_utf8">将utf8字符串拷贝为UCS字符串。
+
+* 函数原型：
+
+```
+wchar_t* tk_wstr_dup_utf8 (char* str);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | wchar\_t* | 返回UCS字符串(需要调用TKMEM\_FREE释放)。 |
+| str | char* | utf8编码的字符串。 |
 #### tk\_wstrdup 函数
 -----------------------
 
@@ -505,3 +593,23 @@ wchar_t* tk_wstrdup (const wchar_t* str);
 | -------- | ----- | --------- |
 | 返回值 | wchar\_t* | 返回指向的复制宽字符串指针，如果失败则返回NULL。 |
 | str | const wchar\_t* | 原宽字符串。 |
+#### xml\_file\_expand\_read 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_xml_file_expand_read">expand include process instruction to file content: <?include filename="view_me.inc" ?>
+
+* 函数原型：
+
+```
+ret_t xml_file_expand_read (const char* filename, str_t* s);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| filename | const char* | 文件名。 |
+| s | str\_t* | 用于返回内容。 |

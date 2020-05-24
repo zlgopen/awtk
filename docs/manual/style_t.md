@@ -24,6 +24,7 @@ uint16_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SI
 | <a href="#style_t_style_get_str">style\_get\_str</a> | 获取指定name的字符串格式的值。 |
 | <a href="#style_t_style_is_mutable">style\_is\_mutable</a> | 检查style是否是mutable的。 |
 | <a href="#style_t_style_is_valid">style\_is\_valid</a> | 检查style对象是否有效 |
+| <a href="#style_t_style_normalize_value">style\_normalize\_value</a> | 对值进行正规化。 |
 | <a href="#style_t_style_notify_widget_state_changed">style\_notify\_widget\_state\_changed</a> | widget状态改变时，通知style更新数据。 |
 | <a href="#style_t_style_set">style\_set</a> | 设置指定状态的指定属性的值(仅仅对mutable的style有效)。 |
 #### style\_destroy 函数
@@ -146,6 +147,27 @@ bool_t style_is_valid (style_t* s);
 | -------- | ----- | --------- |
 | 返回值 | bool\_t | 返回是否有效。 |
 | s | style\_t* | style对象。 |
+#### style\_normalize\_value 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="style_t_style_normalize_value">对值进行正规化。
+
+* 函数原型：
+
+```
+ret_t style_normalize_value (const char* name, const char* value, value_t* out);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| name | const char* | 名称。 |
+| value | const char* | 值。 |
+| out | value\_t* | 返回的值。 |
 #### style\_notify\_widget\_state\_changed 函数
 -----------------------
 

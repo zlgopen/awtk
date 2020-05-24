@@ -17,6 +17,8 @@
 | <a href="#bitmap_t_bitmap_init_from_rgba">bitmap\_init\_from\_rgba</a> | 初始化图片。 |
 | <a href="#bitmap_t_bitmap_lock_buffer_for_read">bitmap\_lock\_buffer\_for\_read</a> | 为读取数据而锁定bitmap的图片缓冲区。 |
 | <a href="#bitmap_t_bitmap_lock_buffer_for_write">bitmap\_lock\_buffer\_for\_write</a> | 为修改数据而锁定bitmap的图片缓冲区。 |
+| <a href="#bitmap_t_bitmap_mono_dump">bitmap\_mono\_dump</a> | dump mono bitmap。 |
+| <a href="#bitmap_t_bitmap_save_png">bitmap\_save\_png</a> | 把bitmap保存为png。 |
 | <a href="#bitmap_t_bitmap_set_line_length">bitmap\_set\_line\_length</a> | 设置line_length。 |
 | <a href="#bitmap_t_bitmap_unlock_buffer">bitmap\_unlock\_buffer</a> | 解锁图像缓冲区。 |
 ### 属性
@@ -236,6 +238,47 @@ uint8_t* bitmap_lock_buffer_for_write (bitmap_t* bitmap);
 | -------- | ----- | --------- |
 | 返回值 | uint8\_t* | 返回缓存区的首地址。 |
 | bitmap | bitmap\_t* | bitmap对象。 |
+#### bitmap\_mono\_dump 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="bitmap_t_bitmap_mono_dump">dump mono bitmap。
+
+* 函数原型：
+
+```
+ret_t bitmap_mono_dump (const uint8_t* buff, uint32_t w, uint32_t h);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| buff | const uint8\_t* | 数据。 |
+| w | uint32\_t | 宽度。 |
+| h | uint32\_t | 高度。 |
+#### bitmap\_save\_png 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="bitmap_t_bitmap_save_png">把bitmap保存为png。
+
+* 函数原型：
+
+```
+bool_t bitmap_save_png (bitmap_t* bitmap, const char* filename);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示成功，FALSE表示失败。 |
+| bitmap | bitmap\_t* | bitmap对象。 |
+| filename | const char* | 文件名。 |
 #### bitmap\_set\_line\_length 函数
 -----------------------
 

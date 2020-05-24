@@ -17,7 +17,7 @@
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#event_t_target">target</a> | void* | 事件发生的目标对象。 |
-| <a href="#event_t_time">time</a> | int32\_t | 事件发生的时间。 |
+| <a href="#event_t_time">time</a> | uint64\_t | 事件发生的时间。 |
 | <a href="#event_t_type">type</a> | int32\_t | 类型。 |
 #### event\_cast 函数
 -----------------------
@@ -117,7 +117,7 @@ event_t event_init (uint32_t type, void* target);
 -----------------------
 > <p id="event_t_time">事件发生的时间。
 
-* 类型：int32\_t
+* 类型：uint64\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

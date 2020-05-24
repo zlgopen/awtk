@@ -9,7 +9,7 @@ graphic_buffer。
 | -------- | ------------ | 
 | <a href="#graphic_buffer_t_graphic_buffer_attach">graphic\_buffer\_attach</a> | 附件到指定的内存。 |
 | <a href="#graphic_buffer_t_graphic_buffer_create_for_bitmap">graphic\_buffer\_create\_for\_bitmap</a> | 为位图创建缓冲区。 |
-| <a href="#graphic_buffer_t_graphic_buffer_default_create_with_data">graphic\_buffer\_default\_create\_with\_data</a> | 创建缓冲区。 |
+| <a href="#graphic_buffer_t_graphic_buffer_create_with_data">graphic\_buffer\_create\_with\_data</a> | 创建缓冲区。 |
 | <a href="#graphic_buffer_t_graphic_buffer_destroy">graphic\_buffer\_destroy</a> | 销毁缓冲区。 |
 | <a href="#graphic_buffer_t_graphic_buffer_lock_for_read">graphic\_buffer\_lock\_for\_read</a> | 为读取数据而锁定缓冲区。 |
 | <a href="#graphic_buffer_t_graphic_buffer_lock_for_write">graphic\_buffer\_lock\_for\_write</a> | 为修改数据而锁定缓冲区。 |
@@ -53,19 +53,19 @@ ret_t graphic_buffer_create_for_bitmap (bitmap_t* bitmap);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | bitmap | bitmap\_t* | 位图对象。 |
-#### graphic\_buffer\_default\_create\_with\_data 函数
+#### graphic\_buffer\_create\_with\_data 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="graphic_buffer_t_graphic_buffer_default_create_with_data">创建缓冲区。
+> <p id="graphic_buffer_t_graphic_buffer_create_with_data">创建缓冲区。
 
 > 为了兼容raw图像。
 
 * 函数原型：
 
 ```
-graphic_buffer_t* graphic_buffer_default_create_with_data (const uint8_t* data, uint32_t w, uint32_t h, bitmap_format_t format);
+graphic_buffer_t* graphic_buffer_create_with_data (const uint8_t* data, uint32_t w, uint32_t h, bitmap_format_t format);
 ```
 
 * 参数说明：

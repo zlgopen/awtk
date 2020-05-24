@@ -20,6 +20,7 @@
 | <a href="#canvas_t_canvas_draw_vline">canvas\_draw\_vline</a> | 画垂直线。 |
 | <a href="#canvas_t_canvas_fill_rect">canvas\_fill\_rect</a> | 填充矩形。 |
 | <a href="#canvas_t_canvas_get_clip_rect">canvas\_get\_clip\_rect</a> | 获取裁剪区。 |
+| <a href="#canvas_t_canvas_get_font_height">canvas\_get\_font\_height</a> | 获取字体的高度。 |
 | <a href="#canvas_t_canvas_get_height">canvas\_get\_height</a> | 获取画布的高度。 |
 | <a href="#canvas_t_canvas_get_vgcanvas">canvas\_get\_vgcanvas</a> | 获取vgcanvas对象。 |
 | <a href="#canvas_t_canvas_get_width">canvas\_get\_width</a> | 获取画布的宽度。 |
@@ -348,6 +349,25 @@ ret_t canvas_get_clip_rect (canvas_t* c, rect_t* r);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | c | canvas\_t* | canvas对象。 |
 | r | rect\_t* | rect对象。 |
+#### canvas\_get\_font\_height 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="canvas_t_canvas_get_font_height">获取字体的高度。
+
+* 函数原型：
+
+```
+float_t canvas_get_font_height (canvas_t* c);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | float\_t | 返回字体的高度。 |
+| c | canvas\_t* | canvas对象。 |
 #### canvas\_get\_height 函数
 -----------------------
 

@@ -22,7 +22,7 @@
 | <a href="#ui_builder_t_ui_builder_on_start">ui\_builder\_on\_start</a> | ui\_loader在解析开始时，调用本函数做些准备工作。 |
 | <a href="#ui_builder_t_ui_builder_on_widget_end">ui\_builder\_on\_widget\_end</a> | ui\_loader在解析到widget结束时，调用本函数进一步处理。 |
 | <a href="#ui_builder_t_ui_builder_on_widget_prop">ui\_builder\_on\_widget\_prop</a> | ui\_loader在解析到widget的属性时，调用本函数进一步处理。 |
-| <a href="#ui_builder_t_ui_builder_on_widget_prop">ui\_builder\_on\_widget\_prop</a> | ui\_loader在解析到widget全部属性结束时，调用本函数进一步处理。 |
+| <a href="#ui_builder_t_ui_builder_on_widget_prop_end">ui\_builder\_on\_widget\_prop\_end</a> | ui\_loader在解析到widget全部属性结束时，调用本函数进一步处理。 |
 | <a href="#ui_builder_t_ui_builder_on_widget_start">ui\_builder\_on\_widget\_start</a> | ui\_loader在解析到widget时，调用本函数进一步处理。 |
 #### ui\_builder\_on\_end 函数
 -----------------------
@@ -102,17 +102,17 @@ ret_t ui_builder_on_widget_prop (ui_builder_t* builder, const char* name, const 
 | builder | ui\_builder\_t* | builder对象。 |
 | name | const char* | 属性名。 |
 | value | const char* | 属性值。 |
-#### ui\_builder\_on\_widget\_prop 函数
+#### ui\_builder\_on\_widget\_prop\_end 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="ui_builder_t_ui_builder_on_widget_prop">ui\_loader在解析到widget全部属性结束时，调用本函数进一步处理。
+> <p id="ui_builder_t_ui_builder_on_widget_prop_end">ui\_loader在解析到widget全部属性结束时，调用本函数进一步处理。
 
 * 函数原型：
 
 ```
-ret_t ui_builder_on_widget_prop (ui_builder_t* builder);
+ret_t ui_builder_on_widget_prop_end (ui_builder_t* builder);
 ```
 
 * 参数说明：

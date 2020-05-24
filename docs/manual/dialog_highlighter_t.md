@@ -15,12 +15,14 @@
 | <a href="#dialog_highlighter_t_dialog_highlighter_is_dynamic">dialog\_highlighter\_is\_dynamic</a> | 是否是动态绘制(方便外层优化)。 |
 | <a href="#dialog_highlighter_t_dialog_highlighter_prepare">dialog\_highlighter\_prepare</a> | 初始化。在绘制完背景，在截图前调用。 |
 | <a href="#dialog_highlighter_t_dialog_highlighter_set_bg">dialog\_highlighter\_set\_bg</a> | 设置背景图片。 |
+| <a href="#dialog_highlighter_t_dialog_highlighter_set_bg_clip_rect">dialog\_highlighter\_set\_bg\_clip\_rect</a> | 设置背景图片的显示裁减区。 |
 ### 属性
 <p id="dialog_highlighter_t_properties">
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#dialog_highlighter_t_canvas">canvas</a> | canvas\_t* | 画布。 |
+| <a href="#dialog_highlighter_t_clip_rect">clip\_rect</a> | rect\_t* | 截图的显示裁减区 |
 | <a href="#dialog_highlighter_t_dialog">dialog</a> | widget\_t* | 对应的对话框。 |
 | <a href="#dialog_highlighter_t_img">img</a> | bitmap\_t | 底层窗口的截图。 |
 #### dialog\_highlighter\_create 函数
@@ -143,11 +145,37 @@ ret_t dialog_highlighter_set_bg (dialog_highlighter_t* h, bitmap_t* img, framebu
 | h | dialog\_highlighter\_t* | 对话框高亮策略对象。 |
 | img | bitmap\_t* | 背景截图。 |
 | fbo | framebuffer\_object\_t* | fbo对象。 |
+#### dialog\_highlighter\_set\_bg\_clip\_rect 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="dialog_highlighter_t_dialog_highlighter_set_bg_clip_rect">设置背景图片的显示裁减区。
+
+* 函数原型：
+
+```
+ret_t dialog_highlighter_set_bg_clip_rect (dialog_highlighter_t* h, rect_t* clip_rect);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| h | dialog\_highlighter\_t* | 对话框高亮策略对象。 |
+| clip\_rect | rect\_t* | 背景显示裁减区。 |
 #### canvas 属性
 -----------------------
 > <p id="dialog_highlighter_t_canvas">画布。
 
 * 类型：canvas\_t*
+
+#### clip\_rect 属性
+-----------------------
+> <p id="dialog_highlighter_t_clip_rect">截图的显示裁减区
+
+* 类型：rect\_t*
 
 #### dialog 属性
 -----------------------

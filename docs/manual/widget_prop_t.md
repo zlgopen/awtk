@@ -31,7 +31,7 @@
 | WIDGET\_PROP\_NAME | 名称。 |
 | WIDGET\_PROP\_TYPE | 类型。 |
 | WIDGET\_PROP\_CLOSABLE | 是否可以关闭。 |
-| WIDGET\_PROP\_CURSOR | 鼠标指针。 |
+| WIDGET\_PROP\_POINTER\_CURSOR | 鼠标指针。 |
 | WIDGET\_PROP\_VALUE | 值。 |
 | WIDGET\_PROP\_LENGTH | 长度。 |
 | WIDGET\_PROP\_TEXT | 文本。 |
@@ -56,6 +56,7 @@
 | WIDGET\_PROP\_OPEN\_ANIM\_HINT | 打开窗口时的动画。 |
 | WIDGET\_PROP\_CLOSE\_ANIM\_HINT | 关闭窗口时的动画。 |
 | WIDGET\_PROP\_MIN | 最小值。 |
+| WIDGET\_PROP\_ACTION\_TEXT | 软键盘上action按钮的文本。 |
 | WIDGET\_PROP\_TIPS | 提示信息。 |
 | WIDGET\_PROP\_TR\_TIPS | 需要翻译的提示信息。 |
 | WIDGET\_PROP\_INPUT\_TYPE | 输入类型。 |

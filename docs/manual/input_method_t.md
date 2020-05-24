@@ -195,7 +195,7 @@ ret_t input_method_dispatch_action (input_method_t* im);
 * 函数原型：
 
 ```
-ret_t input_method_dispatch_candidates (input_method_t* im, char* strs, uint32_t nr);
+ret_t input_method_dispatch_candidates (input_method_t* im, char* strs, uint32_t nr, int32_t selected);
 ```
 
 * 参数说明：
@@ -206,6 +206,7 @@ ret_t input_method_dispatch_candidates (input_method_t* im, char* strs, uint32_t
 | im | input\_method\_t* | 输入法对象。 |
 | strs | char* | 候选字列表。 |
 | nr | uint32\_t | 候选字个数。 |
+| selected | int32\_t | 缺省选中候选字的序数。 |
 #### input\_method\_dispatch\_key 函数
 -----------------------
 

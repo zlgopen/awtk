@@ -18,6 +18,7 @@
 | <a href="#native_window_t_native_window_move">native\_window\_move</a> | 移动窗口。 |
 | <a href="#native_window_t_native_window_resize">native\_window\_resize</a> | 调整窗口大小。 |
 | <a href="#native_window_t_native_window_restore">native\_window\_restore</a> | 恢复窗口大小。 |
+| <a href="#native_window_t_native_window_set_cursor">native\_window\_set\_cursor</a> | 设置鼠标光标。 |
 | <a href="#native_window_t_native_window_set_fullscreen">native\_window\_set\_fullscreen</a> | 是否全屏。 |
 | <a href="#native_window_t_native_window_show_border">native\_window\_show\_border</a> | 是否显示边框。 |
 #### native\_window\_center 函数
@@ -198,6 +199,27 @@ ret_t native_window_restore (native_window_t* win);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | win | native\_window\_t* | win对象。 |
+#### native\_window\_set\_cursor 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="native_window_t_native_window_set_cursor">设置鼠标光标。
+
+* 函数原型：
+
+```
+ret_t native_window_set_cursor (native_window_t* win, const char* name, bitmap_t* img);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| win | native\_window\_t* | win对象。 |
+| name | const char* | 鼠标光标的名称。 |
+| img | bitmap\_t* | 鼠标光标的图片。 |
 #### native\_window\_set\_fullscreen 函数
 -----------------------
 

@@ -10,17 +10,16 @@
 | <a href="#timer_manager_t_timer_manager">timer\_manager</a> | 获取缺省的定时器管理器。 |
 | <a href="#timer_manager_t_timer_manager_add">timer\_manager\_add</a> | 添加定时器。 |
 | <a href="#timer_manager_t_timer_manager_append">timer\_manager\_append</a> | 追加定时器。 |
-| <a href="#timer_manager_t_timer_manager_count">timer\_manager\_count</a> | 返回最近的定时器到期时间。 |
 | <a href="#timer_manager_t_timer_manager_count">timer\_manager\_count</a> | 返回定时器的个数。 |
 | <a href="#timer_manager_t_timer_manager_create">timer\_manager\_create</a> | 创建定时器管理器。 |
 | <a href="#timer_manager_t_timer_manager_deinit">timer\_manager\_deinit</a> | 析构定时器管理器。 |
 | <a href="#timer_manager_t_timer_manager_destroy">timer\_manager\_destroy</a> | 析构并释放定时器管理器。 |
 | <a href="#timer_manager_t_timer_manager_find">timer\_manager\_find</a> | 查找指定ID的定时器。 |
 | <a href="#timer_manager_t_timer_manager_init">timer\_manager\_init</a> | 初始化定时器管理器。 |
+| <a href="#timer_manager_t_timer_manager_next_time">timer\_manager\_next\_time</a> | 返回最近的定时器到期时间。 |
 | <a href="#timer_manager_t_timer_manager_remove">timer\_manager\_remove</a> | 根据id删除定时器。 |
 | <a href="#timer_manager_t_timer_manager_reset">timer\_manager\_reset</a> | 重置定时器。 |
 | <a href="#timer_manager_t_timer_manager_set">timer\_manager\_set</a> | 设置缺省的定时器管理器。 |
-| <a href="#timer_manager_t_timer_manager_set_on_destroy">timer\_manager\_set\_on\_destroy</a> | 设置一个回调函数，在定时器被销毁时调用(方便脚本语言去释放回调函数)。 |
 #### timer\_manager 函数
 -----------------------
 
@@ -81,25 +80,6 @@ ret_t timer_manager_append (timer_manager_t* timer_manager, timer_info_t* timer)
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | timer\_manager | timer\_manager\_t* | 定时器管理器对象。。 |
 | timer | timer\_info\_t* | timer对象。 |
-#### timer\_manager\_count 函数
------------------------
-
-* 函数功能：
-
-> <p id="timer_manager_t_timer_manager_count">返回最近的定时器到期时间。
-
-* 函数原型：
-
-```
-uint64_t timer_manager_count (timer_manager_t* timer_manager);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | uint64\_t | 返回最近的timer到期时间。 |
-| timer\_manager | timer\_manager\_t* | 定时器管理器对象。 |
 #### timer\_manager\_count 函数
 -----------------------
 
@@ -216,6 +196,25 @@ timer_manager_t* timer_manager_init (timer_manager_t* timer_manager, timer_get_t
 | 返回值 | timer\_manager\_t* | 返回定时器管理器对象。 |
 | timer\_manager | timer\_manager\_t* | 定时器管理器对象。 |
 | get\_time | timer\_get\_time\_t | 获取当前时间的函数。 |
+#### timer\_manager\_next\_time 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="timer_manager_t_timer_manager_next_time">返回最近的定时器到期时间。
+
+* 函数原型：
+
+```
+uint64_t timer_manager_next_time (timer_manager_t* timer_manager);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint64\_t | 返回最近的timer到期时间。 |
+| timer\_manager | timer\_manager\_t* | 定时器管理器对象。 |
 #### timer\_manager\_remove 函数
 -----------------------
 
@@ -275,25 +274,3 @@ ret_t timer_manager_set (timer_manager_t* timer_manager_t);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | timer\_manager\_t | timer\_manager\_t* | 定时器管理器对象。 |
-#### timer\_manager\_set\_on\_destroy 函数
------------------------
-
-* 函数功能：
-
-> <p id="timer_manager_t_timer_manager_set_on_destroy">设置一个回调函数，在定时器被销毁时调用(方便脚本语言去释放回调函数)。
-
-* 函数原型：
-
-```
-ret_t timer_manager_set_on_destroy (timer_manager_t* timer_manager, uint32_t timer_id, tk_destroy_t on_destroy, void* on_destroy_ctx);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| timer\_manager | timer\_manager\_t* | 定时器管理器对象。 |
-| timer\_id | uint32\_t | timer\_id。 |
-| on\_destroy | tk\_destroy\_t | 回调函数。 |
-| on\_destroy\_ctx | void* | 回调函数上下文。 |

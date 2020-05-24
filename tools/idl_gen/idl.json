@@ -16319,7 +16319,7 @@
       },
       {
         "desc": "鼠标指针。",
-        "name": "WIDGET_PROP_CURSOR"
+        "name": "WIDGET_PROP_POINTER_CURSOR"
       },
       {
         "desc": "值。",
@@ -17142,6 +17142,64 @@
     ],
     "header": "base/widget_consts.h",
     "name": "widget_state_t",
+    "prefix": "WIDGET_",
+    "annotation": {
+      "scriptable": true,
+      "string": true
+    },
+    "level": 1
+  },
+  {
+    "type": "enum",
+    "desc": "控件鼠标光标常量定义。",
+    "consts": [
+      {
+        "desc": "默认光标。",
+        "name": "WIDGET_CURSOR_DEFAULT"
+      },
+      {
+        "desc": "文本选择光标。",
+        "name": "WIDGET_CURSOR_EDIT"
+      },
+      {
+        "desc": "手指光标。",
+        "name": "WIDGET_CURSOR_HAND"
+      },
+      {
+        "desc": "等待光标。",
+        "name": "WIDGET_CURSOR_WAIT"
+      },
+      {
+        "desc": "叉光标。",
+        "name": "WIDGET_CURSOR_CROSS"
+      },
+      {
+        "desc": "Slashed circle or crossbones。",
+        "name": "WIDGET_CURSOR_NO"
+      },
+      {
+        "desc": "Double arrow pointing northwest and southeast。",
+        "name": "WIDGET_CURSOR_SIZENWSE"
+      },
+      {
+        "desc": "Double arrow pointing northeast and southwest。",
+        "name": "WIDGET_CURSOR_SIZENESW"
+      },
+      {
+        "desc": "Double arrow pointing west and east。",
+        "name": "WIDGET_CURSOR_SIZEWE"
+      },
+      {
+        "desc": "Double arrow pointing north and south。",
+        "name": "WIDGET_CURSOR_SIZENS"
+      },
+      {
+        "desc": "Four pointed arrow pointing north, south, east, and west。",
+        "name": "WIDGET_CURSOR_SIZEALL"
+      }
+    ],
+    "header": "base/widget_consts.h",
+    "name": "widget_cursor_t",
     "prefix": "WIDGET_",
     "annotation": {
       "scriptable": true,
@@ -19996,6 +20054,59 @@
           "type": "font_manager_t*",
           "desc": "返回font_manager对象。"
         }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "更新鼠标指针。",
+        "name": "widget_update_pointer_cursor",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "ignore_user_input",
+            "desc": "是否忽略用户输入。"
+          }
+        ],
+        "annotation": {},
+        "desc": "开始等待鼠标指针。",
+        "name": "widget_begin_wait_pointer_cursor",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "结束等待鼠标指针。",
+        "name": "widget_end_wait_pointer_cursor",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。。"
+        }
       }
     ],
     "events": [
@@ -20166,6 +20277,19 @@
       {
         "name": "name",
         "desc": "控件名字。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "pointer_cursor",
+        "desc": "鼠标光标图片名称。",
         "type": "char*",
         "annotation": {
           "set_prop": true,
@@ -32926,28 +33050,6 @@
     "level": 1
   },
   {
-    "type": "enum",
-    "desc": "字体资源类型定义。",
-    "consts": [
-      {
-        "desc": "无效字体。",
-        "name": "ASSET_TYPE_FONT_NONE"
-      },
-      {
-        "desc": "TTF字体。",
-        "name": "ASSET_TYPE_FONT_TTF"
-      },
-      {
-        "desc": "位图字体。",
-        "name": "ASSET_TYPE_FONT_BMP"
-      }
-    ],
-    "header": "tkc/asset_info.h",
-    "name": "asset_font_type_t",
-    "prefix": "ASSET_FONT_TYPE_",
-    "level": 1
-  },
-  {
     "type": "class",
     "methods": [
       {
@@ -33018,6 +33120,28 @@
     "header": "base/asset_loader.h",
     "desc": "资源加载器接口。",
     "name": "asset_loader_t",
+    "level": 1
+  },
+  {
+    "type": "enum",
+    "desc": "字体资源类型定义。",
+    "consts": [
+      {
+        "desc": "无效字体。",
+        "name": "ASSET_TYPE_FONT_NONE"
+      },
+      {
+        "desc": "TTF字体。",
+        "name": "ASSET_TYPE_FONT_TTF"
+      },
+      {
+        "desc": "位图字体。",
+        "name": "ASSET_TYPE_FONT_BMP"
+      }
+    ],
+    "header": "tkc/asset_info.h",
+    "name": "asset_font_type_t",
+    "prefix": "ASSET_FONT_TYPE_",
     "level": 1
   },
   {
@@ -42758,6 +42882,43 @@
             "desc": "窗口管理器对象。"
           },
           {
+            "type": "bool_t",
+            "name": "ignore_user_input",
+            "desc": "是否忽略用户输入。"
+          }
+        ],
+        "annotation": {},
+        "desc": "开始等待鼠标指针。",
+        "name": "window_manager_begin_wait_pointer_cursor",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "窗口管理器对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "结束等待鼠标指针。",
+        "name": "window_manager_end_wait_pointer_cursor",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "窗口管理器对象。"
+          },
+          {
             "type": "wh_t",
             "name": "w",
             "desc": "宽度"
@@ -49742,6 +49903,34 @@
             "type": "native_window_t*",
             "name": "win",
             "desc": "win对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "鼠标光标的名称。"
+          },
+          {
+            "type": "bitmap_t*",
+            "name": "img",
+            "desc": "鼠标光标的图片。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置鼠标光标。",
+        "name": "native_window_set_cursor",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "native_window_t*",
+            "name": "win",
+            "desc": "win对象。"
           }
         ],
         "annotation": {},
@@ -52903,26 +53092,42 @@
       {
         "params": [
           {
-            "type": "tk_iostream_t*",
-            "name": "real_iostream",
-            "desc": "底层的iostream。"
+            "type": "tk_ostream_t*",
+            "name": "real_ostream",
+            "desc": "实际的ostream对象。"
           }
         ],
         "annotation": {},
-        "desc": "创建iostream对象。\n\n本函数自动增加real_iostream的引用计数。",
-        "name": "tk_iostream_noisy_create",
+        "desc": "创建ostream对象。\n\n> 只能由iostream_noisy调用。",
+        "name": "tk_ostream_noisy_create",
         "return": {
-          "type": "tk_iostream_t*",
-          "desc": "返回iostream对象。"
+          "type": "tk_ostream_t*",
+          "desc": "返回ostream对象。"
         }
       }
     ],
     "events": [],
-    "properties": [],
-    "header": "noisy/iostream_noisy.h",
+    "properties": [
+      {
+        "name": "error_level",
+        "desc": "error level.",
+        "type": "uint32_t"
+      },
+      {
+        "name": "error_count",
+        "desc": "注入的错误数。",
+        "type": "uint32_t"
+      },
+      {
+        "name": "write_count",
+        "desc": "写入的次数。",
+        "type": "uint32_t"
+      }
+    ],
+    "header": "noisy/ostream_noisy.h",
     "desc": "在输出流中注入错误，方便进行可靠性测试。",
-    "name": "tk_iostream_noisy_t",
-    "parent": "tk_iostream_t",
+    "name": "tk_ostream_noisy_t",
+    "parent": "tk_ostream_t",
     "level": 4
   },
   {
@@ -53689,42 +53894,26 @@
       {
         "params": [
           {
-            "type": "tk_ostream_t*",
-            "name": "real_ostream",
-            "desc": "实际的ostream对象。"
+            "type": "tk_iostream_t*",
+            "name": "real_iostream",
+            "desc": "底层的iostream。"
           }
         ],
         "annotation": {},
-        "desc": "创建ostream对象。\n\n> 只能由iostream_noisy调用。",
-        "name": "tk_ostream_noisy_create",
+        "desc": "创建iostream对象。\n\n本函数自动增加real_iostream的引用计数。",
+        "name": "tk_iostream_noisy_create",
         "return": {
-          "type": "tk_ostream_t*",
-          "desc": "返回ostream对象。"
+          "type": "tk_iostream_t*",
+          "desc": "返回iostream对象。"
         }
       }
     ],
     "events": [],
-    "properties": [
-      {
-        "name": "error_level",
-        "desc": "error level.",
-        "type": "uint32_t"
-      },
-      {
-        "name": "error_count",
-        "desc": "注入的错误数。",
-        "type": "uint32_t"
-      },
-      {
-        "name": "write_count",
-        "desc": "写入的次数。",
-        "type": "uint32_t"
-      }
-    ],
-    "header": "noisy/ostream_noisy.h",
+    "properties": [],
+    "header": "noisy/iostream_noisy.h",
     "desc": "在输出流中注入错误，方便进行可靠性测试。",
-    "name": "tk_ostream_noisy_t",
-    "parent": "tk_ostream_t",
+    "name": "tk_iostream_noisy_t",
+    "parent": "tk_iostream_t",
     "level": 4
   }
 ]

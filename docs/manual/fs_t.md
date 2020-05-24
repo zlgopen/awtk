@@ -1,6 +1,6 @@
 ## fs\_t
 ### 概述
-文件状态信息。
+文件系统接口。
 ----------------------------------
 ### 函数
 <p id="fs_t_methods">
@@ -16,15 +16,8 @@
 | <a href="#fs_t_fs_create_dir">fs\_create\_dir</a> | 创建目录。 |
 | <a href="#fs_t_fs_dir_exist">fs\_dir\_exist</a> | 判断目录是否存在。 |
 | <a href="#fs_t_fs_dir_rename">fs\_dir\_rename</a> | 目录重命名。 |
-| <a href="#fs_t_fs_file_close">fs\_file\_close</a> | 关闭文件。 |
-| <a href="#fs_t_fs_file_eof">fs\_file\_eof</a> | 判断文件是否结束。 |
 | <a href="#fs_t_fs_file_exist">fs\_file\_exist</a> | 判断文件是否存在。 |
-| <a href="#fs_t_fs_file_printf">fs\_file\_printf</a> | 写入文件。 |
-| <a href="#fs_t_fs_file_read">fs\_file\_read</a> | 读取文件。 |
 | <a href="#fs_t_fs_file_rename">fs\_file\_rename</a> | 文件重命名。 |
-| <a href="#fs_t_fs_file_seek">fs\_file\_seek</a> | 定位读写指针到指定的位置。 |
-| <a href="#fs_t_fs_file_truncate">fs\_file\_truncate</a> | 清除文件内容。 |
-| <a href="#fs_t_fs_file_write">fs\_file\_write</a> | 写入文件。 |
 | <a href="#fs_t_fs_get_cwd">fs\_get\_cwd</a> | 获取当前所在目录。 |
 | <a href="#fs_t_fs_get_disk_info">fs\_get\_disk\_info</a> | 获取文件系统信息。 |
 | <a href="#fs_t_fs_get_exe">fs\_get\_exe</a> | 获取可执行文件所在目录。 |
@@ -213,48 +206,10 @@ ret_t fs_dir_rename (fs_t* fs, const char* name, const char* new_name);
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回TRUE表示成功，否则表示失败。 |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | fs | fs\_t* | 文件系统对象，一般赋值为os\_fs()。 |
 | name | const char* | 旧目录名称。 |
 | new\_name | const char* | 新目录名称。 |
-#### fs\_file\_close 函数
------------------------
-
-* 函数功能：
-
-> <p id="fs_t_fs_file_close">关闭文件。
-
-* 函数原型：
-
-```
-ret_t fs_file_close (fs_file_t* file);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| file | fs\_file\_t* | 文件对象。 |
-#### fs\_file\_eof 函数
------------------------
-
-* 函数功能：
-
-> <p id="fs_t_fs_file_eof">判断文件是否结束。
-
-* 函数原型：
-
-```
-bool_t fs_file_eof (fs_file_t* file);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | bool\_t | 返回TRUE表示结束，否则表示没结束。 |
-| file | fs\_file\_t* | 文件对象。 |
 #### fs\_file\_exist 函数
 -----------------------
 
@@ -275,47 +230,6 @@ bool_t fs_file_exist (fs_t* fs, const char* name);
 | 返回值 | bool\_t | 返回TRUE表示存在，否则表示不存在。 |
 | fs | fs\_t* | 文件系统对象，一般赋值为os\_fs()。 |
 | name | const char* | 文件名。 |
-#### fs\_file\_printf 函数
------------------------
-
-* 函数功能：
-
-> <p id="fs_t_fs_file_printf">写入文件。
-
-* 函数原型：
-
-```
-int32_t fs_file_printf (fs_file_t* file, const char* const format_str);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | int32\_t | 返回实际写入的字节数。 |
-| file | fs\_file\_t* | 文件对象。 |
-| format\_str | const char* const | 格式化字符串。 |
-#### fs\_file\_read 函数
------------------------
-
-* 函数功能：
-
-> <p id="fs_t_fs_file_read">读取文件。
-
-* 函数原型：
-
-```
-int32_t fs_file_read (fs_file_t* file, void* buffer, uint32_t size);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | int32\_t | 返回实际读取的字节数。 |
-| file | fs\_file\_t* | 文件对象。 |
-| buffer | void* | 用于返回数据的缓冲区。 |
-| size | uint32\_t | 缓冲区大小。 |
 #### fs\_file\_rename 函数
 -----------------------
 
@@ -333,70 +247,10 @@ ret_t fs_file_rename (fs_t* fs, const char* name, const char* new_name);
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回TRUE表示成功，否则表示失败。 |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | fs | fs\_t* | 文件系统对象，一般赋值为os\_fs()。 |
 | name | const char* | 旧文件名。 |
 | new\_name | const char* | 新文件名。 |
-#### fs\_file\_seek 函数
------------------------
-
-* 函数功能：
-
-> <p id="fs_t_fs_file_seek">定位读写指针到指定的位置。
-
-* 函数原型：
-
-```
-ret_t fs_file_seek (fs_file_t* file, uint32_t offset);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| file | fs\_file\_t* | 文件对象。 |
-| offset | uint32\_t | 数据长度。 |
-#### fs\_file\_truncate 函数
------------------------
-
-* 函数功能：
-
-> <p id="fs_t_fs_file_truncate">清除文件内容。
-
-* 函数原型：
-
-```
-ret_t fs_file_truncate (fs_file_t* file);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| file | fs\_file\_t* | 文件对象。 |
-#### fs\_file\_write 函数
------------------------
-
-* 函数功能：
-
-> <p id="fs_t_fs_file_write">写入文件。
-
-* 函数原型：
-
-```
-int32_t fs_file_write (fs_file_t* file, const void* buffer, uint32_t size);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | int32\_t | 返回实际写入的字节数。 |
-| file | fs\_file\_t* | 文件对象。 |
-| buffer | const void* | 数据缓冲区。 |
-| size | uint32\_t | 数据长度。 |
 #### fs\_get\_cwd 函数
 -----------------------
 
@@ -539,7 +393,7 @@ ret_t fs_open_file (fs_t* fs, const char* name, const char* mode);
 | 返回值 | ret\_t | 返回非NULL表示成功，否则表示失败。 |
 | fs | fs\_t* | 文件系统对象，一般赋值为os\_fs()。 |
 | name | const char* | 文件名。 |
-| mode | const char* | 打开方式。 |
+| mode | const char* | 打开方式，取值请参考POSIX的[fopen函数](https://www.runoob.com/cprogramming/c-function-fopen.html)相应的参数。 |
 #### fs\_remove\_dir 函数
 -----------------------
 

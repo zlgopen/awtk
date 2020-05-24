@@ -10,6 +10,7 @@ str_init(&s, 0);
 
 str_append(&s, "abc");
 str_append(&s, "123");
+log_debug("%s\n", s.str);
 
 str_reset(&s);
 ```
@@ -25,11 +26,12 @@ str_reset(&s);
 | <a href="#str_t_str_append_char">str\_append\_char</a> | 追加一个字符。 |
 | <a href="#str_t_str_append_double">str\_append\_double</a> | 追加一个浮点数。 |
 | <a href="#str_t_str_append_int">str\_append\_int</a> | 追加一个整数。 |
-| <a href="#str_t_str_append_json_double_pair">str\_append\_json\_double\_pair</a> | 追加bool格式的json键值对。 |
+| <a href="#str_t_str_append_json_bool_pair">str\_append\_json\_bool\_pair</a> | 追加bool格式的json键值对。 |
 | <a href="#str_t_str_append_json_double_pair">str\_append\_json\_double\_pair</a> | 追加doube格式的json键值对。 |
 | <a href="#str_t_str_append_json_int_pair">str\_append\_json\_int\_pair</a> | 追加int格式的json键值对。 |
 | <a href="#str_t_str_append_json_str">str\_append\_json\_str</a> | 追加一个字符串，字符串前后加英文双引号，字符串本身的双引号被转义为\"。 |
 | <a href="#str_t_str_append_json_str_pair">str\_append\_json\_str\_pair</a> | 追加字符串格式的json键值对。 |
+| <a href="#str_t_str_append_more">str\_append\_more</a> | 追加多个字符串。以NULL结束。 |
 | <a href="#str_t_str_append_with_len">str\_append\_with\_len</a> | 追加字符串。 |
 | <a href="#str_t_str_clear">str\_clear</a> | 清除字符串内容。 |
 | <a href="#str_t_str_decode_xml_entity">str\_decode\_xml\_entity</a> | 对XML基本的entity进行解码，目前仅支持&lt;&gt;&quota;&amp;。 |
@@ -150,17 +152,17 @@ ret_t str_append_int (str_t* str, int32_t value);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | str\_t* | str对象。 |
 | value | int32\_t | 要追加的整数。 |
-#### str\_append\_json\_double\_pair 函数
+#### str\_append\_json\_bool\_pair 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="str_t_str_append_json_double_pair">追加bool格式的json键值对。
+> <p id="str_t_str_append_json_bool_pair">追加bool格式的json键值对。
 
 * 函数原型：
 
 ```
-ret_t str_append_json_double_pair (str_t* str, const char* key, bool_t value);
+ret_t str_append_json_bool_pair (str_t* str, const char* key, bool_t value);
 ```
 
 * 参数说明：
@@ -254,6 +256,38 @@ ret_t str_append_json_str_pair (str_t* str, const char* key, const char* value);
 | str | str\_t* | str对象。 |
 | key | const char* | 键。 |
 | value | const char* | 值。 |
+#### str\_append\_more 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_append_more">追加多个字符串。以NULL结束。
+
+示例：
+
+```c
+str_t s;
+str_init(&s, 0);
+
+str_append_more(&s, "abc", "123", NULL);
+log_debug("%s\n", s.str);
+
+str_reset(&s);
+```
+
+* 函数原型：
+
+```
+ret_t str_append_more (str_t* str, char* text);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | str\_t* | str对象。 |
+| text | char* | 要追加的字符串。 |
 #### str\_append\_with\_len 函数
 -----------------------
 

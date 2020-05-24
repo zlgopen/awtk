@@ -15,8 +15,8 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#object_array_t_object_array_clear_props">object\_array\_clear\_props</a> | 清除全部属性。 |
+| <a href="#object_array_t_object_array_clone">object\_array\_clone</a> | 克隆对象。 |
 | <a href="#object_array_t_object_array_create">object\_array\_create</a> | 创建对象。 |
-| <a href="#object_array_t_object_array_create">object\_array\_create</a> | 克隆对象。 |
 | <a href="#object_array_t_object_array_unref">object\_array\_unref</a> | for script gc |
 ### 属性
 <p id="object_array_t_properties">
@@ -45,6 +45,25 @@ ret_t object_array_clear_props (object_t* obj);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | obj | object\_t* | 对象。 |
+#### object\_array\_clone 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_array_t_object_array_clone">克隆对象。
+
+* 函数原型：
+
+```
+object_t* object_array_clone (object_array_t* o);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | object\_t* | 返回object对象。 |
+| o | object\_array\_t* | 被克隆的对象。 |
 #### object\_array\_create 函数
 -----------------------
 
@@ -63,25 +82,6 @@ object_t* object_array_create ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | object\_t* | 返回object对象。 |
-#### object\_array\_create 函数
------------------------
-
-* 函数功能：
-
-> <p id="object_array_t_object_array_create">克隆对象。
-
-* 函数原型：
-
-```
-object_t* object_array_create (object_array_t* o);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | object\_t* | 返回object对象。 |
-| o | object\_array\_t* | 被克隆的对象。 |
 #### object\_array\_unref 函数
 -----------------------
 

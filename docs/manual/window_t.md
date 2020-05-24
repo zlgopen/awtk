@@ -46,6 +46,11 @@ default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/st
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#window_t_image_blend">image\_blend</a> | 把图片指定的区域渲染到framebuffer指定的区域，src的大小和dst的大小不一致则进行缩放。 |
+| <a href="#window_t_image_clear">image\_clear</a> | 用颜色填充指定的区域。 |
+| <a href="#window_t_image_copy">image\_copy</a> | 把图片指定的区域拷贝到framebuffer中。 |
+| <a href="#window_t_image_fill">image\_fill</a> | 用颜色绘制指定的区域。 |
+| <a href="#window_t_image_rotate">image\_rotate</a> | 把图片指定的区域进行旋转并拷贝到framebuffer相应的区域，本函数主要用于辅助实现横屏和竖屏的切换，一般支持90度旋转即可。 |
 | <a href="#window_t_window_cast">window\_cast</a> | 转换为window对象(供脚本语言使用)。 |
 | <a href="#window_t_window_close">window\_close</a> | 关闭窗口。 |
 | <a href="#window_t_window_close_force">window\_close\_force</a> | 立即无条件关闭窗口(无动画)。 |
@@ -60,6 +65,116 @@ default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/st
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#window_t_fullscreen">fullscreen</a> | bool\_t | 是否全屏。 |
+#### image\_blend 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_t_image_blend">把图片指定的区域渲染到framebuffer指定的区域，src的大小和dst的大小不一致则进行缩放。
+
+* 函数原型：
+
+```
+ret_t image_blend (bitmap_t* dst, bitmap_t* src, rect_t* dst_r, rect_t* src_r, uint8_t global_alpha);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败，返回失败则上层用软件实现。 |
+| dst | bitmap\_t* | 目标图片对象。 |
+| src | bitmap\_t* | 源图片对象。 |
+| dst\_r | rect\_t* | 目的区域。 |
+| src\_r | rect\_t* | 源区域。 |
+| global\_alpha | uint8\_t | 全局alpha。 |
+#### image\_clear 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_t_image_clear">用颜色填充指定的区域。
+
+* 函数原型：
+
+```
+ret_t image_clear (bitmap_t* dst, rect_t* dst_r, color_t c);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败，返回失败则上层用软件实现。 |
+| dst | bitmap\_t* | 目标图片对象。 |
+| dst\_r | rect\_t* | 要填充的目标区域。 |
+| c | color\_t | 颜色。 |
+#### image\_copy 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_t_image_copy">把图片指定的区域拷贝到framebuffer中。
+
+* 函数原型：
+
+```
+ret_t image_copy (bitmap_t* dst, bitmap_t* src, rect_t* src_r, xy_t dx, xy_t dy);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败，返回失败则上层用软件实现。 |
+| dst | bitmap\_t* | 目标图片对象。 |
+| src | bitmap\_t* | 源图片对象。 |
+| src\_r | rect\_t* | 要拷贝的区域。 |
+| dx | xy\_t | 目标位置的x坐标。 |
+| dy | xy\_t | 目标位置的y坐标。 |
+#### image\_fill 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_t_image_fill">用颜色绘制指定的区域。
+
+* 函数原型：
+
+```
+ret_t image_fill (bitmap_t* dst, rect_t* dst_r, color_t c);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败，返回失败则上层用软件实现。 |
+| dst | bitmap\_t* | 目标图片对象。 |
+| dst\_r | rect\_t* | 要填充的目标区域。 |
+| c | color\_t | 颜色。 |
+#### image\_rotate 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_t_image_rotate">把图片指定的区域进行旋转并拷贝到framebuffer相应的区域，本函数主要用于辅助实现横屏和竖屏的切换，一般支持90度旋转即可。
+
+* 函数原型：
+
+```
+ret_t image_rotate (bitmap_t* dst, bitmap_t* src, rect_t* src_r, lcd_orientation_t o);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败，返回失败则上层用软件实现。 |
+| dst | bitmap\_t* | 目标图片对象。 |
+| src | bitmap\_t* | 源图片对象。 |
+| src\_r | rect\_t* | 要旋转并拷贝的区域。 |
+| o | lcd\_orientation\_t | 旋转角度(一般支持90度即可)。 |
 #### window\_cast 函数
 -----------------------
 
