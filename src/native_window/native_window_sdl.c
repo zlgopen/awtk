@@ -20,6 +20,7 @@
  */
 
 #include <SDL.h>
+#include "base/system_info.h"
 #include "base/window_manager.h"
 
 #ifdef WITH_NANOVG_GL
@@ -346,7 +347,6 @@ static int map_to_sdl_cursor(const char* name) {
 }
 
 static ret_t native_window_sdl_set_cursor(native_window_t* win, const char* name, bitmap_t* img) {
-  int system_cursor = map_to_sdl_cursor(name);
   native_window_sdl_t* sdl = NATIVE_WINDOW_SDL(win);
 
   if (sdl->cursor != NULL) {
@@ -354,13 +354,16 @@ static ret_t native_window_sdl_set_cursor(native_window_t* win, const char* name
     sdl->cursor = NULL;
   }
 
-  if (img != NULL) {
-    return native_window_sdl_cursor_from_bitmap(win, img);
-  } else if (system_cursor >= 0) {
-    sdl->cursor = SDL_CreateSystemCursor((SDL_SystemCursor)system_cursor);
-    SDL_SetCursor(sdl->cursor);
+  if (system_info()->app_type == APP_DESKTOP) {
+    int system_cursor = map_to_sdl_cursor(name);
+    if (system_cursor >= 0) {
+      sdl->cursor = SDL_CreateSystemCursor((SDL_SystemCursor)system_cursor);
+      SDL_SetCursor(sdl->cursor);
 
-    return RET_OK;
+      return RET_OK;
+    }
+  } else if (img != NULL) {
+    return native_window_sdl_cursor_from_bitmap(win, img);
   }
 
   return RET_FAIL;
