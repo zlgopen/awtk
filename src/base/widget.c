@@ -1027,10 +1027,6 @@ ret_t widget_dispatch(widget_t* widget, event_t* e) {
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
 
   widget_ref(widget);
-  if (e->type == EVT_POINTER_ENTER) {
-    widget_update_pointer_cursor(widget);
-  }
-
   if (widget->vt && widget->vt->on_event) {
     ret = widget->vt->on_event(widget, e);
   } else {
@@ -2442,6 +2438,9 @@ static ret_t widget_on_pointer_move_children(widget_t* widget, pointer_event_t* 
       pointer_event_t enter = *e;
       enter.e.type = EVT_POINTER_ENTER;
       ret = widget_dispatch(target, (event_t*)(&enter));
+      widget_update_pointer_cursor(target);
+    } else {
+      widget_update_pointer_cursor(widget);
     }
 
     widget->target = target;

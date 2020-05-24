@@ -443,9 +443,6 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
     }
     case EVT_POINTER_MOVE: {
       pointer_event_t evt = *(pointer_event_t*)e;
-      if (widget_find_target(widget, evt.x, evt.y) == NULL) {
-        widget_update_pointer_cursor(widget);
-      }
       if (widget->parent && widget->parent->grab_widget == widget) {
         if (widget->target == NULL) {
           text_edit_drag(mledit->model, evt.x, evt.y);

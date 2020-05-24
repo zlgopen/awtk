@@ -589,9 +589,6 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
     }
     case EVT_POINTER_MOVE: {
       pointer_event_t evt = *(pointer_event_t*)e;
-      if (widget_find_target(widget, evt.x, evt.y) == NULL) {
-        widget_update_pointer_cursor(widget);
-      }
       if (widget->parent && widget->parent->grab_widget == widget) {
         text_edit_drag(edit->model, evt.x, evt.y);
         ret = RET_STOP;
