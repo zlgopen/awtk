@@ -205,74 +205,90 @@ typedef struct _window_base_t {
 } window_base_t;
 
 /*for sub class*/
+
 /**
  * @method window_base_on_destroy
- * window_base_on_destroy
+ * 窗口on_destroy函数的缺省实现。
  * @param {widget_t*} widget window_base对象。
  *
- * @return {ret_t}。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t window_base_on_destroy(widget_t* widget);
 /**
  * @method window_base_on_event
- * window_base_on_event
+ * 窗口on_event函数的缺省实现。
  * @param {widget_t*} widget window_base对象。
  * @param {event_t*} e event对象。
  *
- * @return {ret_t}。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t window_base_on_event(widget_t* widget, event_t* e);
 ret_t window_base_invalidate(widget_t* widget, rect_t* r);
+
 /**
  * @method window_base_on_paint_begin
- * window_base_on_paint_begin
+ * 窗口on_paint_begin函数的缺省实现。
  * @param {widget_t*} widget window_base对象。
  * @param {canvas_t*} c canvas对象。
  *
- * @return {ret_t}。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t window_base_on_paint_begin(widget_t* widget, canvas_t* c);
 /**
  * @method window_base_on_paint_end
- * window_base_on_paint_end
+ * 窗口on_paint_end函数的缺省实现。
  * @param {widget_t*} widget window_base对象。
  * @param {canvas_t*} c canvas对象。
  *
- * @return {ret_t}。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。1
  */
 ret_t window_base_on_paint_end(widget_t* widget, canvas_t* c);
+
 /**
  * @method window_base_on_paint_self
- * window_base_on_paint_self
+ * 窗口on_paint_self函数的缺省实现。
  * @param {widget_t*} widget window_base对象。
  * @param {canvas_t*} c canvas对象。
  *
- * @return {ret_t}。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t window_base_on_paint_self(widget_t* widget, canvas_t* c);
+
 /**
  * @method window_base_get_prop
- * window_base_get_prop
- * @param {widget_t*} widget window_base对象。
- * @param {name} name 属性名。
+ * 窗口get_prop函数的缺省实现。
+ * @param {widget_t*} widget window_base对象。g
+ * @param {const char*} name 属性名。
  * @param {value_t*} v value对象
  *
- * @return {ret_t}。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。。
  */
 ret_t window_base_get_prop(widget_t* widget, const char* name, value_t* v);
+
 /**
  * @method window_base_set_prop
- * window_base_set_prop
- * @param {widget_t*} widget window_base对象。
- * @param {name} name 属性名。
- * @param {value_t*} v value对象
+ * 窗口set_prop函数的缺省实现。
  *
- * @return {ret_t}。
+ * @param {widget_t*} widget window_base对象。
+ * @param {const char*} name 属性名。
+ * @param {const value_t*} v value对象
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t window_base_set_prop(widget_t* widget, const char* name, const value_t* v);
+
 /**
  * @method window_base_create
- * window_base_create
+ * 创建window base对象。
+ *
+ * @param {widget_t*} parent 父控件
+ * @param {const widget_vtable_t*} vt vtable对象。
+ * @param {xy_t} x x坐标
+ * @param {xy_t} y y坐标
+ * @param {wh_t} w 宽度
+ * @param {wh_t} h 高度
+ *
+ * @return {widget_t*} 窗口对象。
  */
 widget_t* window_base_create(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_t y, wh_t w,
                              wh_t h);

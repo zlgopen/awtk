@@ -24,6 +24,7 @@
 | <a href="#window_manager_t_window_manager_get_top_main_window">window\_manager\_get\_top\_main\_window</a> | 获取最上面的主窗口。 |
 | <a href="#window_manager_t_window_manager_get_top_window">window\_manager\_get\_top\_window</a> | 获取最上面的窗口。 |
 | <a href="#window_manager_t_window_manager_is_animating">window\_manager\_is\_animating</a> | 获取当前窗口动画是否正在播放。 |
+| <a href="#window_manager_t_window_manager_paint">window\_manager\_paint</a> | 绘制。 |
 | <a href="#window_manager_t_window_manager_resize">window\_manager\_resize</a> | 调整原生窗口的大小。 |
 | <a href="#window_manager_t_window_manager_set">window\_manager\_set</a> | 设置缺省的窗口管理器。 |
 | <a href="#window_manager_t_window_manager_set_cursor">window\_manager\_set\_cursor</a> | 设置鼠标指针。 |
@@ -322,6 +323,27 @@ bool_t window_manager_is_animating (widget_t* widget);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | bool\_t | 返回TRUE表示正在播放，FALSE表示没有播放。 |
+| widget | widget\_t* | 窗口管理器对象。 |
+#### window\_manager\_paint 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_manager_t_window_manager_paint">绘制。
+
+> 仅由主循环调用。
+
+* 函数原型：
+
+```
+ret_t window_manager_paint (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 窗口管理器对象。 |
 #### window\_manager\_resize 函数
 -----------------------

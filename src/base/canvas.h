@@ -641,10 +641,17 @@ ret_t canvas_draw_image_scale(canvas_t* c, bitmap_t* img, rect_t* dst);
 ret_t canvas_draw_image_scale_w(canvas_t* c, bitmap_t* img, rect_t* dst);
 ret_t canvas_draw_image_scale_h(canvas_t* c, bitmap_t* img, rect_t* dst);
 ret_t canvas_draw_image_scale_down(canvas_t* c, bitmap_t* img, rect_t* src, rect_t* dst);
+
 /**
  * @method canvas_draw_line
  * 画直线。
+ * @param {canvas_t*} c canvas对象。
+ * @param {xy_t} x1 起始点的x坐标。
+ * @param {xy_t} y1 起始点的y坐标。
+ * @param {xy_t} x2 结束点的x坐标。
+ * @param {xy_t} y2 结束点的y坐标。
  *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t canvas_draw_line(canvas_t* c, xy_t x1, xy_t y1, xy_t x2, xy_t y2);
 ret_t canvas_draw_char(canvas_t* c, wchar_t chr, xy_t x, xy_t y);

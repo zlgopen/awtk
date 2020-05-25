@@ -11,6 +11,7 @@ TK全局对象。
 | <a href="#global_t_asset_loader_zip_create">asset\_loader\_zip\_create</a> | 创建zip资源加载器。 |
 | <a href="#global_t_asset_loader_zip_create_with_reader">asset\_loader\_zip\_create\_with\_reader</a> | 创建zip资源加载器。 |
 | <a href="#global_t_tk_deinit_internal">tk\_deinit\_internal</a> | deinit。 |
+| <a href="#global_t_tk_exit">tk\_exit</a> | public for web |
 | <a href="#global_t_tk_get_pointer_x">tk\_get\_pointer\_x</a> | 获取全局指针的X坐标。 |
 | <a href="#global_t_tk_get_pointer_y">tk\_get\_pointer\_y</a> | 获取全局指针的Y坐标。 |
 | <a href="#global_t_tk_init">tk\_init</a> | 初始化TK。 |
@@ -89,6 +90,24 @@ asset_loader_t* asset_loader_zip_create_with_reader (data_reader_t* reader, bool
 
 ```
 ret_t tk_deinit_internal ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+#### tk\_exit 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="global_t_tk_exit">public for web
+
+* 函数原型：
+
+```
+ret_t tk_exit ();
 ```
 
 * 参数说明：

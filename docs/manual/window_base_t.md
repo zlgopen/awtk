@@ -17,6 +17,14 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#window_base_t_window_base_cast">window\_base\_cast</a> | 转换为window_base对象(供脚本语言使用)。 |
+| <a href="#window_base_t_window_base_create">window\_base\_create</a> | 创建window base对象。 |
+| <a href="#window_base_t_window_base_get_prop">window\_base\_get\_prop</a> | 窗口get_prop函数的缺省实现。 |
+| <a href="#window_base_t_window_base_on_destroy">window\_base\_on\_destroy</a> | 窗口on_destroy函数的缺省实现。 |
+| <a href="#window_base_t_window_base_on_event">window\_base\_on\_event</a> | 窗口on_event函数的缺省实现。 |
+| <a href="#window_base_t_window_base_on_paint_begin">window\_base\_on\_paint\_begin</a> | 窗口on_paint_begin函数的缺省实现。 |
+| <a href="#window_base_t_window_base_on_paint_end">window\_base\_on\_paint\_end</a> | 窗口on_paint_end函数的缺省实现。 |
+| <a href="#window_base_t_window_base_on_paint_self">window\_base\_on\_paint\_self</a> | 窗口on_paint_self函数的缺省实现。 |
+| <a href="#window_base_t_window_base_set_prop">window\_base\_set\_prop</a> | 窗口set_prop函数的缺省实现。 |
 ### 属性
 <p id="window_base_t_properties">
 
@@ -57,6 +65,171 @@ widget_t* window_base_cast (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | window\_base对象。 |
 | widget | widget\_t* | window\_base对象。 |
+#### window\_base\_create 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_base_t_window_base_create">创建window base对象。
+
+* 函数原型：
+
+```
+widget_t* window_base_create (widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_t y, wh_t w, wh_t h);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | widget\_t* | 窗口对象。 |
+| parent | widget\_t* | 父控件 |
+| vt | const widget\_vtable\_t* | vtable对象。 |
+| x | xy\_t | x坐标 |
+| y | xy\_t | y坐标 |
+| w | wh\_t | 宽度 |
+| h | wh\_t | 高度 |
+#### window\_base\_get\_prop 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_base_t_window_base_get_prop">窗口get_prop函数的缺省实现。
+
+* 函数原型：
+
+```
+ret_t window_base_get_prop (widget_t* widget, const char* name, value_t* v);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。。 |
+| widget | widget\_t* | window\_base对象。g |
+| name | const char* | 属性名。 |
+| v | value\_t* | value对象 |
+#### window\_base\_on\_destroy 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_base_t_window_base_on_destroy">窗口on_destroy函数的缺省实现。
+
+* 函数原型：
+
+```
+ret_t window_base_on_destroy (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | window\_base对象。 |
+#### window\_base\_on\_event 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_base_t_window_base_on_event">窗口on_event函数的缺省实现。
+
+* 函数原型：
+
+```
+ret_t window_base_on_event (widget_t* widget, event_t* e);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | window\_base对象。 |
+| e | event\_t* | event对象。 |
+#### window\_base\_on\_paint\_begin 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_base_t_window_base_on_paint_begin">窗口on_paint_begin函数的缺省实现。
+
+* 函数原型：
+
+```
+ret_t window_base_on_paint_begin (widget_t* widget, canvas_t* c);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | window\_base对象。 |
+| c | canvas\_t* | canvas对象。 |
+#### window\_base\_on\_paint\_end 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_base_t_window_base_on_paint_end">窗口on_paint_end函数的缺省实现。
+
+* 函数原型：
+
+```
+ret_t window_base_on_paint_end (widget_t* widget, canvas_t* c);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。1 |
+| widget | widget\_t* | window\_base对象。 |
+| c | canvas\_t* | canvas对象。 |
+#### window\_base\_on\_paint\_self 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_base_t_window_base_on_paint_self">窗口on_paint_self函数的缺省实现。
+
+* 函数原型：
+
+```
+ret_t window_base_on_paint_self (widget_t* widget, canvas_t* c);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | window\_base对象。 |
+| c | canvas\_t* | canvas对象。 |
+#### window\_base\_set\_prop 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_base_t_window_base_set_prop">窗口set_prop函数的缺省实现。
+
+* 函数原型：
+
+```
+ret_t window_base_set_prop (widget_t* widget, const char* name, const value_t* v);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | window\_base对象。 |
+| name | const char* | 属性名。 |
+| v | const value\_t* | value对象 |
 #### assets\_manager 属性
 -----------------------
 > <p id="window_base_t_assets_manager">获取资源管理器对象。

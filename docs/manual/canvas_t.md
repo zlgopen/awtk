@@ -12,6 +12,7 @@
 | <a href="#canvas_t_canvas_draw_icon">canvas\_draw\_icon</a> | 绘制图标。 |
 | <a href="#canvas_t_canvas_draw_image">canvas\_draw\_image</a> | 绘制图片。 |
 | <a href="#canvas_t_canvas_draw_image_ex">canvas\_draw\_image\_ex</a> | 绘制图片。 |
+| <a href="#canvas_t_canvas_draw_line">canvas\_draw\_line</a> | 画直线。 |
 | <a href="#canvas_t_canvas_draw_points">canvas\_draw\_points</a> | 画多个点。 |
 | <a href="#canvas_t_canvas_draw_text">canvas\_draw\_text</a> | 绘制文本。 |
 | <a href="#canvas_t_canvas_draw_text_in_rect">canvas\_draw\_text\_in\_rect</a> | 绘制文本。 |
@@ -28,11 +29,13 @@
 | <a href="#canvas_t_canvas_measure_text">canvas\_measure\_text</a> | 计算文本所占的宽度。 |
 | <a href="#canvas_t_canvas_measure_utf8">canvas\_measure\_utf8</a> | 计算文本所占的宽度。 |
 | <a href="#canvas_t_canvas_reset">canvas\_reset</a> | 释放相关资源。 |
+| <a href="#canvas_t_canvas_set_assets_manager">canvas\_set\_assets\_manager</a> | 设置canvas的assets_manager对象。 |
 | <a href="#canvas_t_canvas_set_clip_rect">canvas\_set\_clip\_rect</a> | 设置裁剪区。 |
 | <a href="#canvas_t_canvas_set_clip_rect_ex">canvas\_set\_clip\_rect\_ex</a> | 设置裁剪区。 |
 | <a href="#canvas_t_canvas_set_fill_color">canvas\_set\_fill\_color</a> | 设置填充颜色。 |
 | <a href="#canvas_t_canvas_set_fill_color_str">canvas\_set\_fill\_color\_str</a> | 设置填充颜色。 |
 | <a href="#canvas_t_canvas_set_font">canvas\_set\_font</a> | 设置字体。 |
+| <a href="#canvas_t_canvas_set_font_manager">canvas\_set\_font\_manager</a> | 设置canvas的font_manager对象。 |
 | <a href="#canvas_t_canvas_set_global_alpha">canvas\_set\_global\_alpha</a> | 设置全局alpha值。 |
 | <a href="#canvas_t_canvas_set_stroke_color">canvas\_set\_stroke\_color</a> | 设置线条颜色。 |
 | <a href="#canvas_t_canvas_set_stroke_color_str">canvas\_set\_stroke\_color\_str</a> | 设置线条颜色。 |
@@ -171,6 +174,29 @@ ret_t canvas_draw_image_ex (canvas_t* c, bitmap_t* img, image_draw_type_t draw_t
 | img | bitmap\_t* | 图片对象。 |
 | draw\_type | image\_draw\_type\_t | 绘制类型。 |
 | dst | rect\_t* | 目的区域。 |
+#### canvas\_draw\_line 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="canvas_t_canvas_draw_line">画直线。
+
+* 函数原型：
+
+```
+ret_t canvas_draw_line (canvas_t* c, xy_t x1, xy_t y1, xy_t x2, xy_t y2);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| c | canvas\_t* | canvas对象。 |
+| x1 | xy\_t | 起始点的x坐标。 |
+| y1 | xy\_t | 起始点的y坐标。 |
+| x2 | xy\_t | 结束点的x坐标。 |
+| y2 | xy\_t | 结束点的y坐标。 |
 #### canvas\_draw\_points 函数
 -----------------------
 
@@ -508,6 +534,26 @@ ret_t canvas_reset (canvas_t* c);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | c | canvas\_t* | canvas对象。 |
+#### canvas\_set\_assets\_manager 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="canvas_t_canvas_set_assets_manager">设置canvas的assets_manager对象。
+
+* 函数原型：
+
+```
+ret_t canvas_set_assets_manager (canvas_t* c, assets_manager_t* assets_manager);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| c | canvas\_t* | canvas对象。 |
+| assets\_manager | assets\_manager\_t* | assets\_manager对象。 |
 #### canvas\_set\_clip\_rect 函数
 -----------------------
 
@@ -612,6 +658,26 @@ ret_t canvas_set_font (canvas_t* c, const char* name, font_size_t size);
 | c | canvas\_t* | canvas对象。 |
 | name | const char* | 字体名称。 |
 | size | font\_size\_t | 字体大小。 |
+#### canvas\_set\_font\_manager 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="canvas_t_canvas_set_font_manager">设置canvas的font_manager对象。
+
+* 函数原型：
+
+```
+ret_t canvas_set_font_manager (canvas_t* c, font_manager_t* font_manager);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| c | canvas\_t* | canvas对象。 |
+| font\_manager | font\_manager\_t* | font\_manager对象。 |
 #### canvas\_set\_global\_alpha 函数
 -----------------------
 

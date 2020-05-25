@@ -10,6 +10,7 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#system_info_t_system_info">system\_info</a> | 获取system_info对象。 |
+| <a href="#system_info_t_system_info_create">system\_info\_create</a> | 创建system_info对象。 |
 | <a href="#system_info_t_system_info_deinit">system\_info\_deinit</a> | 释放system_info对象。 |
 | <a href="#system_info_t_system_info_fix_font_name">system\_info\_fix\_font\_name</a> | 修正字体名称，如果为NULL，返回缺省字体。 |
 | <a href="#system_info_t_system_info_init">system\_info\_init</a> | 初始化system_info对象。 |
@@ -56,6 +57,27 @@ system_info_t* system_info ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | system\_info\_t* | 返回system\_info对象。 |
+#### system\_info\_create 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="system_info_t_system_info_create">创建system_info对象。
+
+* 函数原型：
+
+```
+system_info_t* system_info_create (app_type_t app_type, const char* app_name, const char* app_root);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | system\_info\_t* | 返回创建的对象指针。 |
+| app\_type | app\_type\_t | 应用程序的类型。 |
+| app\_name | const char* | 应用程序的名称。 |
+| app\_root | const char* | 应用程序的根目录，用于定位资源文件。 |
 #### system\_info\_deinit 函数
 -----------------------
 

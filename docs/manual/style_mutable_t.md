@@ -17,6 +17,7 @@ style\_mutable也对style\_const进行了包装，当用户没修改某个值时
 | <a href="#style_mutable_t_style_mutable_foreach">style\_mutable\_foreach</a> | 遍历。对每项调用回调函数on\_style\_item。 |
 | <a href="#style_mutable_t_style_mutable_get_value">style\_mutable\_get\_value</a> | 获取指定名称的值。 |
 | <a href="#style_mutable_t_style_mutable_register">style\_mutable\_register</a> | 将自己注册到style\_factory。 |
+| <a href="#style_mutable_t_style_mutable_reset">style\_mutable\_reset</a> | 清空s对象。 |
 | <a href="#style_mutable_t_style_mutable_set_color">style\_mutable\_set\_color</a> | 设置指定名称的颜色值。 |
 | <a href="#style_mutable_t_style_mutable_set_int">style\_mutable\_set\_int</a> | 设置指定名称整数格式的值。 |
 | <a href="#style_mutable_t_style_mutable_set_name">style\_mutable\_set\_name</a> | 设置style的名称。 |
@@ -150,6 +151,25 @@ ret_t style_mutable_register ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+#### style\_mutable\_reset 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="style_mutable_t_style_mutable_reset">清空s对象。
+
+* 函数原型：
+
+```
+ret_t style_mutable_reset (style_t* s);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| s | style\_t* | style对象。 |
 #### style\_mutable\_set\_color 函数
 -----------------------
 
