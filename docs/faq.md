@@ -160,3 +160,32 @@ void tk_mem_dump(void) {
 * 减少同时打开窗口的个数。
 
 * 根据实际情况 (lcd 的格式） 定义 WITH\_BITMAP_BGR565/WITH\_BITMAP\_RGB565 把不透明的图片解码成 16 位。
+
+#### 12. 如何关闭 log_debug 打印的调试信息。
+
+log\_set\_log\_level 函数可设置 log 的级别，用它可以关闭低级别的 log 信息。
+
+```c
+/**
+ * @method log_set_log_level
+ *
+ * 设置 log 的级别。
+ *
+ * @param {log_level_t} log_level log 的级别。
+ *
+ * @return {ret_t} 返回 RET_OK 表示成功，否则表示失败。
+ */
+ret_t log_set_log_level(log_level_t log_level);
+```
+
+在 awtk_main.inc 中有如下代码：
+
+```c
+#ifdef NDEBUG
+  log_set_log_level(LOG_LEVEL_INFO);
+#else
+  log_set_log_level(LOG_LEVEL_DEBUG);
+#endif /*NDEBUG*/
+```
+
+如果使用 awtk_main.inc 作为应用程序的入口，定义 NDEBUG 也关闭 debug 级别的调试信息。
