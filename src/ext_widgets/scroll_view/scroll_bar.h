@@ -240,7 +240,8 @@ ret_t scroll_bar_hide_by_opacity_animation(widget_t* widget, int32_t duration);
 #define SCROLL_BAR(widget) ((scroll_bar_t*)(scroll_bar_cast(WIDGET(widget))))
 
 /*public for subclass and runtime type check*/
-TK_EXTERN_VTABLE(scroll_bar);
+TK_EXTERN_VTABLE(scroll_bar_mobile);
+TK_EXTERN_VTABLE(scroll_bar_desktop);
 
 END_C_DECLS
 

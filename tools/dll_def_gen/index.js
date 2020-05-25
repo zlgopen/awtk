@@ -4,24 +4,28 @@ const path = require('path')
 let exportIndex = 1;
 
 class DefGenerator {
-  genOneClass(cls) {
-    cls.methods.forEach(iter => {
-      let name = iter.name;
-      if (iter.export) {
-        if (iter.export === 'none') {
-          console.log('skip:' + iter.name);
-          return;
-        } else {
-          name = iter.export
-        }
+  genMethod(iter) {
+    let name = iter.name;
+    if (iter.export) {
+      if (iter.export === 'none') {
+        console.log('skip:' + iter.name);
+        return;
+      } else {
+        name = iter.export
       }
-      this.result += `    ${name} @${exportIndex++}\n`
-    });
+    }
+    this.result += `    ${name} @${exportIndex++}\n`
+  }
+
+  genOneClass(cls) {
+    cls.methods.forEach(iter => this.genMethod(iter));
   }
 
   genOne(cls) {
     if (cls.type === 'class') {
-      return this.genOneClass(cls);
+      this.genOneClass(cls);
+    } else if (cls.type === 'method') {
+      this.genMethod(cls);
     }
   }
 

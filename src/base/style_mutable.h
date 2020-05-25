@@ -166,6 +166,15 @@ ret_t style_mutable_set_value(style_t* s, const char* state, const char* name, c
 ret_t style_mutable_copy(style_t* s, style_t* other);
 
 /**
+ * @method style_mutable_reset
+ * 清空s对象。
+ * @param {style_t*} s style对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t style_mutable_reset(style_t* s);
+
+/**
  * @method style_mutable_cast
  * 转换为style_mutable对象。
  * @annotation ["cast", "scriptable"]

@@ -132,7 +132,12 @@ ret_t tk_init_internal(void);
  */
 ret_t tk_deinit_internal(void);
 
-/*public for web*/
+/**
+ * @method tk_exit
+ * public for web
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t tk_exit(void);
 
 END_C_DECLS

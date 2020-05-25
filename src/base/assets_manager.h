@@ -328,6 +328,17 @@ ret_t assets_manager_deinit(assets_manager_t* am);
  */
 ret_t assets_manager_destroy(assets_manager_t* am);
 
+/**
+ * @method assets_manager_load_file
+ * @param {assets_manager_t*} am asset manager对象。
+ * @param {asset_type_t} type 资源类型。
+ * @param {const char*} path 目录。
+ * 获取path里的资源。
+ *
+ * @return {asset_info_t*} 返回asset_info_t。
+ */
+asset_info_t* assets_manager_load_file(assets_manager_t* am, asset_type_t type, const char* path);
+
 END_C_DECLS
 
 #endif /*TK_ASSETS_MANAGER_H*/

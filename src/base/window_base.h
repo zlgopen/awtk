@@ -205,14 +205,75 @@ typedef struct _window_base_t {
 } window_base_t;
 
 /*for sub class*/
+/**
+ * @method window_base_on_destroy
+ * window_base_on_destroy
+ * @param {widget_t*} widget window_base对象。
+ *
+ * @return {ret_t}。
+ */
 ret_t window_base_on_destroy(widget_t* widget);
+/**
+ * @method window_base_on_event
+ * window_base_on_event
+ * @param {widget_t*} widget window_base对象。
+ * @param {event_t*} e event对象。
+ *
+ * @return {ret_t}。
+ */
 ret_t window_base_on_event(widget_t* widget, event_t* e);
 ret_t window_base_invalidate(widget_t* widget, rect_t* r);
+/**
+ * @method window_base_on_paint_begin
+ * window_base_on_paint_begin
+ * @param {widget_t*} widget window_base对象。
+ * @param {canvas_t*} c canvas对象。
+ *
+ * @return {ret_t}。
+ */
 ret_t window_base_on_paint_begin(widget_t* widget, canvas_t* c);
+/**
+ * @method window_base_on_paint_end
+ * window_base_on_paint_end
+ * @param {widget_t*} widget window_base对象。
+ * @param {canvas_t*} c canvas对象。
+ *
+ * @return {ret_t}。
+ */
 ret_t window_base_on_paint_end(widget_t* widget, canvas_t* c);
+/**
+ * @method window_base_on_paint_self
+ * window_base_on_paint_self
+ * @param {widget_t*} widget window_base对象。
+ * @param {canvas_t*} c canvas对象。
+ *
+ * @return {ret_t}。
+ */
 ret_t window_base_on_paint_self(widget_t* widget, canvas_t* c);
+/**
+ * @method window_base_get_prop
+ * window_base_get_prop
+ * @param {widget_t*} widget window_base对象。
+ * @param {name} name 属性名。
+ * @param {value_t*} v value对象
+ *
+ * @return {ret_t}。
+ */
 ret_t window_base_get_prop(widget_t* widget, const char* name, value_t* v);
+/**
+ * @method window_base_set_prop
+ * window_base_set_prop
+ * @param {widget_t*} widget window_base对象。
+ * @param {name} name 属性名。
+ * @param {value_t*} v value对象
+ *
+ * @return {ret_t}。
+ */
 ret_t window_base_set_prop(widget_t* widget, const char* name, const value_t* v);
+/**
+ * @method window_base_create
+ * window_base_create
+ */
 widget_t* window_base_create(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_t y, wh_t w,
                              wh_t h);
 /**

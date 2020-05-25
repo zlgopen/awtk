@@ -27,6 +27,10 @@
 
 BEGIN_C_DECLS
 
+/**
+ * @class bsvg_t
+ * SVG的二进制格式。
+ */
 typedef struct _bsvg_t {
   uint32_t size;
   const uint32_t* data;
@@ -34,6 +38,17 @@ typedef struct _bsvg_t {
 } bsvg_t;
 
 const uint8_t* bsvg_visit_path(const uint8_t* p, void* ctx, tk_visit_t on_path);
+
+/**
+ * @method bsvg_init
+ * 初始化bsvg对象。
+ *
+ * @param {bsvg_t*} svg对象。
+ * @param {const uint32_t*} data svg数据。
+ * @param {size} size data长度。
+ *
+ * @return {bsvg_t*} 返回解析后的svg。
+ */
 bsvg_t* bsvg_init(bsvg_t* svg, const uint32_t* data, uint32_t size);
 ret_t bsvg_visit(bsvg_t* svg, void* ctx, tk_visit_t on_shape, tk_visit_t on_path);
 

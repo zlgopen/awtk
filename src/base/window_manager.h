@@ -251,7 +251,6 @@ ret_t window_manager_close_window_force(widget_t* widget, widget_t* window);
  *
  *> 仅由主循环调用。
  *
- * @annotation ["private"]
  * @param {widget_t*} widget 窗口管理器对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

@@ -158,6 +158,14 @@ typedef enum _easing_type_t {
 
 typedef float_t (*easing_func_t)(float_t k);
 
+/**
+ * @method easing_get
+ * 获取对应类型的操作函数。
+ * @annotation ["global"]
+ * @param {easing_type_t} type 类型。
+ *
+ * @return {easing_func_t} 返回对应的操作函数地址。
+ */
 easing_func_t easing_get(easing_type_t type);
 
 END_C_DECLS

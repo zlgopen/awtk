@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   canvas.h
  * Author: AWTK Develop Team
  * Brief:  canvas provides basic drawings functions.
@@ -641,12 +641,34 @@ ret_t canvas_draw_image_scale(canvas_t* c, bitmap_t* img, rect_t* dst);
 ret_t canvas_draw_image_scale_w(canvas_t* c, bitmap_t* img, rect_t* dst);
 ret_t canvas_draw_image_scale_h(canvas_t* c, bitmap_t* img, rect_t* dst);
 ret_t canvas_draw_image_scale_down(canvas_t* c, bitmap_t* img, rect_t* src, rect_t* dst);
-
+/**
+ * @method canvas_draw_line
+ * 画直线。
+ *
+ */
 ret_t canvas_draw_line(canvas_t* c, xy_t x1, xy_t y1, xy_t x2, xy_t y2);
 ret_t canvas_draw_char(canvas_t* c, wchar_t chr, xy_t x, xy_t y);
 ret_t canvas_draw_image_matrix(canvas_t* c, bitmap_t* img, matrix_t* matrix);
 ret_t canvas_set_fps(canvas_t* c, bool_t show_fps, uint32_t fps);
+/**
+ * @method canvas_set_font_manager
+ * 设置canvas的font_manager对象。
+ *
+ * @param {canvas_t*} c canvas对象。
+ * @param {font_manager_t*} font_manager font_manager对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t canvas_set_font_manager(canvas_t* c, font_manager_t* font_manager);
+/**
+ * @method canvas_set_assets_manager
+ * 设置canvas的assets_manager对象。
+ *
+ * @param {canvas_t*} c canvas对象。
+ * @param {assets_manager_t*} assets_manager assets_manager对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t canvas_set_assets_manager(canvas_t* c, assets_manager_t* assets_manager);
 
 ret_t canvas_begin_frame(canvas_t* c, rect_t* dirty_rect, lcd_draw_mode_t draw_mode);

@@ -263,7 +263,16 @@ const char* system_info_fix_font_name(const char* name);
 #define SYSTEM_INFO_PROP_LANGUAGE "language"
 #define SYSTEM_INFO_PROP_COUNTRY "country"
 
-/*public for test*/
+/**
+ * @method system_info_create
+ * 创建system_info对象。
+ * @annotation ["static"]
+ * @param {app_type_t} app_type 应用程序的类型。
+ * @param {const char*} app_name 应用程序的名称。
+ * @param {const char*} app_root 应用程序的根目录，用于定位资源文件。
+ *
+ * @return {system_info_t*} 返回创建的对象指针。
+ */
 system_info_t* system_info_create(app_type_t app_type, const char* app_name, const char* app_root);
 ret_t system_info_set_app_info(system_info_t* info, app_type_t app_type, const char* app_name,
                                const char* app_root);

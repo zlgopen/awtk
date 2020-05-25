@@ -339,7 +339,8 @@ ret_t slide_indicator_set_indicated_target(widget_t* widget, const char* indicat
 #define SLIDE_INDICATOR_PROP_SIZE "size"
 
 /*public for subclass and runtime type check*/
-TK_EXTERN_VTABLE(slide_indicator);
+TK_EXTERN_VTABLE(slide_indicator_linear);
+TK_EXTERN_VTABLE(slide_indicator_arc);
 
 END_C_DECLS
 

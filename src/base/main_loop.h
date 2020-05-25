@@ -41,6 +41,11 @@ typedef ret_t (*main_loop_step_t)(main_loop_t* l);
 typedef ret_t (*main_loop_sleep_t)(main_loop_t* l);
 typedef ret_t (*main_loop_destroy_t)(main_loop_t* l);
 
+/**
+ * @class main_loop_t
+ * 主循环接口。
+ *
+ */
 struct _main_loop_t {
   main_loop_run_t run;
   main_loop_quit_t quit;
@@ -61,9 +66,17 @@ struct _main_loop_t {
 
 main_loop_t* main_loop_init(int w, int h);
 
+/**
+ * @method main_loop
+ * 获取当前main_loop对象
+ * 
+ * @annotation ["static"]
+ *
+ * @return {main_loop_t*} 返回main_loop对象。
+ */
 main_loop_t* main_loop(void);
-ret_t main_loop_set(main_loop_t* loop);
 
+ret_t main_loop_set(main_loop_t* loop);
 ret_t main_loop_run(main_loop_t* l);
 ret_t main_loop_wakeup(main_loop_t* l);
 ret_t main_loop_quit(main_loop_t* l);
@@ -76,7 +89,25 @@ ret_t main_loop_sleep(main_loop_t* l);
 
 /*event_source*/
 event_source_manager_t* main_loop_get_event_source_manager(main_loop_t* l);
+/**
+ * @method main_loop_add_event_source
+ * 添加event_source。
+ * @param {main_loop_t*} l main_loop对象。
+ * @param {event_source_t*} source event_source对象。
+ * 
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t main_loop_add_event_source(main_loop_t* l, event_source_t* source);
+
+/**
+ * @method main_loop_remove_event_source
+ * 删除event_source。
+ * @param {main_loop_t*} l main_loop对象。
+ * @param {event_source_t*} source event_source对象。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t main_loop_remove_event_source(main_loop_t* l, event_source_t* source);
 
 END_C_DECLS
