@@ -352,9 +352,8 @@ font_manager_t* widget_get_font_manager(widget_t* widget) {
 static ret_t widget_apply_tr_text_before_paint(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   if (widget->tr_text != NULL) {
-    const char* tr_text = locale_info_tr(widget_get_locale_info(widget), widget->tr_text);
-    widget->tr_text = NULL;
-    widget_set_prop_str(widget, WIDGET_PROP_TEXT, tr_text);
+    const char* text = locale_info_tr(widget_get_locale_info(widget), widget->tr_text);
+    widget_set_prop_str(widget, WIDGET_PROP_TEXT, text);
   }
 
   return RET_REMOVE;
