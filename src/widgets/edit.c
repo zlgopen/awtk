@@ -1360,6 +1360,7 @@ ret_t edit_on_destroy(widget_t* widget) {
   TKMEM_FREE(edit->tips);
   TKMEM_FREE(edit->tr_tips);
   TKMEM_FREE(edit->keyboard);
+  TKMEM_FREE(edit->action_text);
   text_edit_destroy(edit->model);
 
   return RET_OK;
