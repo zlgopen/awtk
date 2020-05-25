@@ -1026,6 +1026,10 @@ ret_t widget_dispatch(widget_t* widget, event_t* e) {
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
 
   widget_ref(widget);
+  if (e->target == NULL) {
+    e->target = widget;
+  }
+
   if (widget->vt && widget->vt->on_event) {
     ret = widget->vt->on_event(widget, e);
   } else {
