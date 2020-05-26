@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   demo1_app.c
  * Author: AWTK Develop Team
  * Brief:  demoui
@@ -767,9 +767,9 @@ static ret_t on_screen_saver(void* ctx, event_t* e) {
 }
 
 static ret_t on_key_record_play_events(void* ctx, event_t* e) {
-  key_event_t* evt = (key_event_t*)e;
-
 #ifdef WITH_EVENT_RECORDER_PLAYER
+  key_event_t* evt = (key_event_t*)e;
+  
   if (evt->key == TK_KEY_F5) {
     event_recorder_player_start_record("event_log.bin");
     return RET_STOP;

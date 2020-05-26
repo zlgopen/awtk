@@ -1,4 +1,4 @@
-﻿#include "tkc/utils.h"
+#include "tkc/utils.h"
 
 static enum NVGtexture bitmap_format_to_nanovg(bitmap_format_t format) {
   enum NVGtexture f = NVG_TEXTURE_BGRA;
@@ -98,9 +98,7 @@ static ret_t vgcanvas_nanovg_end_frame(vgcanvas_t* vgcanvas) {
 
 static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img) {
   int32_t i = 0;
-  int32_t j = 0;
   int32_t f = 0;
-  uint32_t size = 0;
   uint8_t* img_data = NULL;
   uint32_t bpp = bitmap_get_bpp(img);
 
