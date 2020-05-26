@@ -55,9 +55,6 @@ static ret_t list_item_on_timer(const timer_info_t* info) {
 
   list_item->timer_id = TK_INVALID_ID;
 
-  widget_off_by_func(widget->parent, EVT_POINTER_UP, list_item_on_parent_pointer_up, widget);
-  widget_on(widget->parent, EVT_POINTER_UP, list_item_on_parent_pointer_up, widget);
-
   return RET_REMOVE;
 }
 
@@ -87,6 +84,8 @@ static ret_t list_item_on_event(widget_t* widget, event_t* e) {
       list_item->pressed = TRUE;
       list_item->timer_id = timer_add(list_item_on_timer, widget, 30);
       widget_invalidate_force(widget, NULL);
+      widget_off_by_func(widget->parent, EVT_POINTER_UP, list_item_on_parent_pointer_up, widget);
+      widget_on(widget->parent, EVT_POINTER_UP, list_item_on_parent_pointer_up, widget);
       break;
     }
     case EVT_POINTER_DOWN_ABORT: {
