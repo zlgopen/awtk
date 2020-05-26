@@ -34,6 +34,7 @@ SConscriptFiles=awtk.NANOVG_BACKEND_PROJS + [
   'tools/font_gen/SConscript', 
   'tools/image_gen/SConscript', 
   'tools/image_resize/SConscript', 
+  'tools/image_dither/SConscript',
   'tools/res_gen/SConscript', 
   'tools/str_gen/SConscript', 
   'tools/ui_gen/qt_to_xml/SConscript',
