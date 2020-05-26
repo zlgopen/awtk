@@ -90,6 +90,7 @@ typedef struct _switch_t {
   velocity_t velocity;
   widget_animator_t* wa;
   bool_t point_down_aborted;
+  bool_t pressed;
 } switch_t;
 
 /**

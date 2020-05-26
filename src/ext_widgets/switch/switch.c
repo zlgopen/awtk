@@ -130,18 +130,21 @@ static ret_t switch_on_event(widget_t* widget, event_t* e) {
 
   switch (type) {
     case EVT_POINTER_DOWN: {
+      aswitch->pressed = TRUE;
       aswitch->point_down_aborted = FALSE;
       widget_grab(widget->parent, widget);
       switch_on_pointer_down(aswitch, (pointer_event_t*)e);
       break;
     }
     case EVT_POINTER_DOWN_ABORT: {
+      aswitch->pressed = FALSE;
       aswitch->point_down_aborted = TRUE;
       aswitch->xoffset = aswitch->xoffset_save;
       widget_ungrab(widget->parent, widget);
       break;
     }
     case EVT_POINTER_UP: {
+      aswitch->pressed = FALSE;
       if (!aswitch->point_down_aborted) {
         switch_on_pointer_up(aswitch, (pointer_event_t*)e);
         widget_ungrab(widget->parent, widget);
@@ -152,7 +155,7 @@ static ret_t switch_on_event(widget_t* widget, event_t* e) {
     }
     case EVT_POINTER_MOVE: {
       pointer_event_t* evt = (pointer_event_t*)e;
-      if (evt->pressed && !aswitch->point_down_aborted) {
+      if (aswitch->pressed && !aswitch->point_down_aborted) {
         switch_on_pointer_move(aswitch, evt);
         widget_invalidate(widget, NULL);
         ret = RET_STOP;
@@ -428,6 +431,7 @@ widget_t* switch_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   return_value_if_fail(aswitch != NULL, NULL);
 
   aswitch->value = TRUE;
+  aswitch->pressed = FALSE;
   aswitch->max_xoffset_ratio = 0.34f;
 
   return widget;
