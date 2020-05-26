@@ -80,6 +80,8 @@ static ret_t scroll_view_on_pointer_down(scroll_view_t* scroll_view, pointer_eve
   scroll_view->down.y = e->y;
   scroll_view->xoffset_save = scroll_view->xoffset;
   scroll_view->yoffset_save = scroll_view->yoffset;
+  scroll_view->xoffset_end = scroll_view->xoffset;
+  scroll_view->yoffset_end = scroll_view->yoffset;
 
   velocity_update(v, e->e.time, e->x, e->y);
 
