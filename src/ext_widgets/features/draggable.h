@@ -115,6 +115,7 @@ typedef struct _draggable_t {
   bool_t drag_window;
 
   /*private*/
+  bool_t pressed;
   point_t down;
   point_t saved_position;
 } draggable_t;

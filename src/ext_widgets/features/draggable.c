@@ -166,6 +166,7 @@ static ret_t draggable_on_parent_pointer_down(void* ctx, event_t* e) {
     draggable_t* draggable = DRAGGABLE(widget);
     widget_t* target = draggable->drag_window ? widget_get_window(widget) : widget->parent;
 
+    draggable->pressed = TRUE;
     draggable->down.x = evt->x;
     draggable->down.y = evt->y;
     draggable->saved_position.x = target->x;
@@ -200,21 +201,17 @@ static ret_t draggable_move_target(widget_t* widget, xy_t x, xy_t y) {
 
 static ret_t draggable_on_parent_pointer_move(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
+  draggable_t* draggable = DRAGGABLE(widget);
 
-  if (widget->enable) {
+  if (widget->enable && draggable->pressed) {
     xy_t x = 0;
     xy_t y = 0;
     pointer_event_t* evt = (pointer_event_t*)e;
-    draggable_t* draggable = DRAGGABLE(widget);
     xy_t dx = evt->x - draggable->down.x;
     xy_t dy = evt->y - draggable->down.y;
 
     x = draggable->saved_position.x + (draggable->vertical_only ? 0 : dx);
     y = draggable->saved_position.y + (draggable->horizontal_only ? 0 : dy);
-
-    if (!evt->pressed) {
-      return RET_OK;
-    }
 
     draggable_move_target(widget, x, y);
   }
@@ -227,6 +224,7 @@ static ret_t draggable_on_parent_pointer_up(void* ctx, event_t* e) {
 
   if (widget->enable) {
     draggable_t* draggable = DRAGGABLE(widget);
+    draggable->pressed = FALSE;
     widget_t* target = draggable->drag_window ? widget_get_window(widget) : widget->parent;
     int32_t dx = target->x - draggable->saved_position.x;
     int32_t dy = target->y - draggable->saved_position.y;
@@ -300,6 +298,7 @@ widget_t* draggable_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   draggable->vertical_only = FALSE;
   draggable->horizontal_only = FALSE;
   draggable->drag_window = FALSE;
+  draggable->pressed = FALSE;
   widget_set_sensitive(widget, FALSE);
 
   return widget;
