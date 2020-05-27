@@ -56,6 +56,7 @@
 * [如何在主题文件中写控件布局参数](how_to_write_layout_params_in_style.md)
 * [如何开启按键音](how_to_enable_key_touch_sound.md)
 * [如何更新拼音输入法数据](how_to_update_gpinyin_data.md)
+* [如何定制 combo_box 控件中按钮的风格和大小](how_to_customize_combo_boxox_button.md)
 * [如何集成第三方库](https://github.com/zlgopen/awtk-hello/blob/master/docs/how_to_integrate_3rd_libs.md)
 * [动态库与静态库](shared_static.md)
 
