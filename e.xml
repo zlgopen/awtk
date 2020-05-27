@@ -1,5 +1,0 @@
-<window anim_hint="htranslate" >
-  <edit x="10" y="10" w="-20" h="30" keyboard="kb_default_t9ext" focused="true" />
-  <edit x="10" y="50" w="-20" h="30" keyboard="kb_default_t9ext" focused="true" />
-  <mledit x="10" y="90" w="-20" h="80" keyboard="kb_default_t9ext" focused="true" />
-</window>

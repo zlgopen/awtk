@@ -1,4 +1,0 @@
-<window name="main" x="0" y="0" w="320" h="480" style="Green_bg">
-  <label name="" x="10" y="40" w="80" h="30" text="Left" opacity="0"/>
-  <label name="" x="10" y="80" w="80" h="30" text="Right" />
-</window>
