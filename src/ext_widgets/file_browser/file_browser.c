@@ -260,11 +260,15 @@ ret_t file_browser_up(file_browser_t* fb) {
       *p = '\0';
       p = strrchr(fb->cwd, TK_PATH_SEP);
     }
-    *p = '\0';
+  
+    if (p != NULL) {
+      *p = '\0';
+    }
   }
 
   if (fb->cwd[0] == '\0') {
     fb->cwd[0] = '/';
+    fb->cwd[1] = '\0';
   }
 
   return file_browser_refresh(fb);
