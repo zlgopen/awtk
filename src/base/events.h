@@ -68,12 +68,12 @@ typedef enum _event_type_t {
   EVT_POINTER_UP_BEFORE_CHILDREN,
   /**
    * @const EVT_WHEEL
-   * 滚轮事件名(pointer_event_t)。
+   * 滚轮事件名(wheel_event_t)。
    */
   EVT_WHEEL,
   /**
    * @const EVT_WHEEL_BEFORE_CHILDREN
-   * 鼠标滚轮事件名，在子控件处理之前触发(key_event_t)。
+   * 鼠标滚轮事件名，在子控件处理之前触发(wheel_event_t)。
    */
   EVT_WHEEL_BEFORE_CHILDREN,
   /**

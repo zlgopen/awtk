@@ -44,6 +44,7 @@ typedef struct _add_timer_t {
 typedef union _event_queue_req_t {
   event_t event;
   key_event_t key_event;
+  wheel_event_t wheel_event;
   pointer_event_t pointer_event;
   add_idle_t add_idle;
   add_timer_t add_timer;
