@@ -56,6 +56,7 @@
 * [如何在主题文件中写控件布局参数](how_to_write_layout_params_in_style.md)
 * [如何开启按键音](how_to_enable_key_touch_sound.md)
 * [如何更新拼音输入法数据](how_to_update_gpinyin_data.md)
+* [如何用 valgrind 查找内存相关问题](how_to_use_valgrind_detect_memory_bugs.md)
 * [如何定制 combo_box 控件中按钮的风格和大小](how_to_customize_combo_boxox_button.md)
 * [如何集成第三方库](https://github.com/zlgopen/awtk-hello/blob/master/docs/how_to_integrate_3rd_libs.md)
 * [动态库与静态库](shared_static.md)
@@ -70,8 +71,8 @@
 * [将 AWTK 移植到 AWorksOS 平台](porting_to_awtk_aworks_rt1052.md)
 * [将 AWTK 移植到 TencentOS 平台](https://github.com/zlgopen/awtk-stm32f103ze-tencentos/blob/master/docs/tos-port.md)
 * [将 AWTK 移植到 RT-Thread 平台](https://github.com/zlgopen/awtk-stm32f103ze-rtthread/blob/master/docs/rtt-port.md)
-* [将 AWTK 移植到 LPC1867 裸系统(推荐)](https://github.com/zlgopen/awtk-lpc1768-raw/blob/master/docs/lpc1768_port.md)
-* [将 AWTK 移植到 STM32H743(TencentOS)平台(推荐)](https://github.com/zlgopen/awtk-stm32h743iitx-tencentos/blob/master/docs/stm32h743iitx_port.md)
+* [将 AWTK 移植到 LPC1867 裸系统（推荐）](https://github.com/zlgopen/awtk-lpc1768-raw/blob/master/docs/lpc1768_port.md)
+* [将 AWTK 移植到 STM32H743(TencentOS) 平台（推荐）](https://github.com/zlgopen/awtk-stm32h743iitx-tencentos/blob/master/docs/stm32h743iitx_port.md)
 
 ### 5. 技术笔记
 * [LCD 接口的三种实现方式](lcd.md)
