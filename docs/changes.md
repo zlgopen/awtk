@@ -2,6 +2,8 @@
 * 2020/05/27
   * 增加文档《如何定制 combo_box 控件中按钮的风格和大小》
   * 增加文档《如何用 valgrind 查找内存相关问题》
+  * 修改 agge 中内存未初始化的 BUG（感谢智明提供补丁）
+  * 修改 file browser 在 Linux 下无法回到根目录的 BUG（感谢瑞安提供补丁）
 
 * 2020/05/26
   * 完善 widget_dispatch。
