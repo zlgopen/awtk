@@ -330,3 +330,47 @@ TEST(DArrayTest, bsearch) {
 
   darray_deinit(&darray);
 }
+
+#include "tkc/mem.h"
+
+typedef struct _my_data_t {
+  char name[TK_NAME_LEN+1];
+  int value;
+}my_data_t;
+
+static my_data_t* my_data_create(const char* name, int value) {
+  my_data_t* data = TKMEM_ZALLOC(my_data_t);
+  return_value_if_fail(data != NULL, NULL);
+
+  tk_strncpy(data->name, name, TK_NAME_LEN);
+  data->value = value;
+
+  return data;
+}
+
+static ret_t my_data_destroy(my_data_t* data) {
+  TKMEM_FREE(data);
+
+  return RET_OK;
+}
+
+TEST(DArrayTest, struct) {
+  darray_t darray;
+  my_data_t* p = NULL;
+  darray_init(&darray, 10, (tk_destroy_t)my_data_destroy, NULL);
+
+  darray_push(&darray, my_data_create("jack", 100));
+  darray_push(&darray, my_data_create("tom", 10));
+  
+  ASSERT_EQ(darray.size, 2);
+
+  p = (my_data_t*)darray_get(&darray, 0);
+  ASSERT_STREQ(p->name, "jack");
+  ASSERT_EQ(p->value, 100);
+  
+  p = (my_data_t*)darray_get(&darray, 1);
+  ASSERT_STREQ(p->name, "tom");
+  ASSERT_EQ(p->value, 10);
+
+  darray_deinit(&darray);
+}
