@@ -607,7 +607,7 @@ const asset_info_t* assets_manager_ref(assets_manager_t* am, asset_type_t type, 
     info = assets_manager_ref_impl(am, type, name);
   }
 
-  if (info == NULL && type != ASSET_TYPE_STYLE) {
+  if (info == NULL && type == ASSET_TYPE_UI) {
     const key_type_value_t* kv = asset_type_find_by_value(type);
     const char* asset_type = kv != NULL ? kv->name : "unknown";
     log_warn("!!!Asset [name=%s type=%s] not exist!!!\n", name, asset_type);
