@@ -58,6 +58,7 @@
 * [如何更新拼音输入法数据](how_to_update_gpinyin_data.md)
 * [如何用 valgrind 查找内存相关问题](how_to_use_valgrind_detect_memory_bugs.md)
 * [如何定制 combo_box 控件中按钮的风格和大小](how_to_customize_combo_boxox_button.md)
+[如何访问控件的属性](how_to_access_widget_props.md)
 * [如何集成第三方库](https://github.com/zlgopen/awtk-hello/blob/master/docs/how_to_integrate_3rd_libs.md)
 * [动态库与静态库](shared_static.md)
 

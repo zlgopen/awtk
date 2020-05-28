@@ -91,7 +91,7 @@ typedef struct _check_button_t {
   /**
    * @property {bool_t} value
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 值。
+   * 值(勾选为TRUE，非勾选为FALSE)。
    */
   bool_t value;
 
@@ -144,7 +144,7 @@ widget_t* check_button_create_radio(widget_t* parent, xy_t x, xy_t y, wh_t w, wh
  * 设置控件的值。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget check_button对象。
- * @param {bool_t}  value 值
+ * @param {bool_t}  value 值(勾选为TRUE，非勾选为FALSE)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
