@@ -28,6 +28,7 @@ TEST(FontManager, basic) {
   font_manager_deinit(&font_manager);
 }
 
+#if defined(WITH_FT_FONT) || defined(WITH_STB_FONT)
 #include "font_loader/font_loader_truetype.h"
 
 TEST(FontManager, loader) {
@@ -51,3 +52,4 @@ TEST(FontManager, unload) {
 
   font_manager_deinit(&font_manager);
 }
+#endif

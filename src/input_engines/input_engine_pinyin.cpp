@@ -68,12 +68,28 @@ static ret_t input_engine_pinyin_add_candidate(input_engine_t* engine, wbuffer_t
   return wbuffer_write_string(wb, str);
 }
 
+static ret_t input_engine_ensure_data(input_engine_t* engine) {
+  if (engine->data != NULL) {
+    return RET_OK;
+  } else {
+    const asset_info_t* data = assets_manager_ref(assets_manager(), ASSET_TYPE_DATA, "gpinyin.dat");
+    return_value_if_fail(data != NULL, RET_FAIL);
+    engine->data = (void*)data;
+  }
+  im_open_decoder_rom((const char*)engine->data);
+  im_set_max_lens(32, 16);
+
+  return RET_OK;
+}
+
 static ret_t input_engine_pinyin_search(input_engine_t* engine, const char* keys) {
   wbuffer_t wb;
   uint32_t i = 0;
   uint32_t keys_size = strlen(keys);
   uint32_t nr = im_search(keys, keys_size);
+
   wbuffer_init(&wb, (uint8_t*)(engine->candidates), sizeof(engine->candidates));
+  return_value_if_fail(input_engine_ensure_data(engine) == RET_OK, RET_FAIL);
 
   if (keys_size == 0) {
     input_engine_reset_input(engine);
@@ -99,7 +115,6 @@ static ret_t input_engine_pinyin_search(input_engine_t* engine, const char* keys
 }
 
 input_engine_t* input_engine_create(input_method_t* im) {
-  const asset_info_t* data = NULL;
   input_engine_t* engine = TKMEM_ZALLOC(input_engine_t);
   return_value_if_fail(engine != NULL, NULL);
 
@@ -109,12 +124,6 @@ input_engine_t* input_engine_create(input_method_t* im) {
   engine->im = im;
   engine->search = input_engine_pinyin_search;
   engine->get_lang = input_engine_pinyin_get_lang;
-  data = assets_manager_ref(assets_manager(), ASSET_TYPE_DATA, "gpinyin.dat");
-  return_value_if_fail(data != NULL, NULL);
-  engine->data = (void*)data;
-
-  im_open_decoder_rom((const char*)data);
-  im_set_max_lens(32, 16);
 
   return engine;
 }

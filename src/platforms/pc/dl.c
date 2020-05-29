@@ -70,8 +70,9 @@ tk_dl_t* tk_dl_open(const char* filename) {
   HMODULE h = NULL;
   tk_dl_t* dl = NULL;
   return_value_if_fail(filename != NULL, NULL);
-
-  h = LoadLibraryA(filename);
+  wchar_t* w_file_name = tk_wstr_dup_utf8(filename);
+  h = LoadLibraryW(w_file_name);
+  TKMEM_FREE(w_file_name);
   return_value_if_fail(h != NULL, NULL);
 
   dl = TKMEM_ZALLOC(tk_dl_t);

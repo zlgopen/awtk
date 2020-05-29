@@ -260,6 +260,25 @@ static ret_t on_idle_close_keyboard(const idle_info_t* idle) {
   return RET_OK;
 }
 
+static ret_t input_method_default_ensure_suggest_words(input_method_t* im) {
+  if (im->data != NULL) {
+    return RET_OK;
+  }
+
+#if !defined(WITHOUT_SUGGEST_WORDS) && !defined(WITH_IME_NULL)
+  if (im->data == NULL) {
+    const asset_info_t* suggest_words =
+        assets_manager_ref(assets_manager(), ASSET_TYPE_DATA, "suggest_words_zh_cn.dat");
+    if (suggest_words != NULL) {
+      im->suggest_words = suggest_words_create((const asset_info_t*)(suggest_words));
+      im->data = (void*)suggest_words;
+    }
+  }
+#endif /*WITHOUT_SUGGEST_WORDS*/
+
+  return RET_OK;
+}
+
 static ret_t input_method_default_request(input_method_t* im, widget_t* widget) {
   if (im->widget == widget) {
     return RET_OK;
@@ -267,6 +286,7 @@ static ret_t input_method_default_request(input_method_t* im, widget_t* widget) 
 
   input_engine_reset_input(im->engine);
   input_method_dispatch_candidates(im, "", 0, 0);
+  input_method_default_ensure_suggest_words(im);
 
   if (widget != NULL) {
     im->widget = widget;
@@ -306,7 +326,6 @@ ret_t input_method_default_destroy(input_method_t* im) {
 }
 
 input_method_t* input_method_default_create(void) {
-  const asset_info_t* suggest_words = NULL;
   input_method_t* im = TKMEM_ZALLOC(input_method_t);
   return_value_if_fail(im != NULL, NULL);
 
@@ -316,14 +335,6 @@ input_method_t* input_method_default_create(void) {
 
   emitter_init(&(im->emitter));
   im->engine = input_engine_create(im);
-
-#if !defined(WITHOUT_SUGGEST_WORDS) && !defined(WITH_IME_NULL)
-  suggest_words = assets_manager_ref(assets_manager(), ASSET_TYPE_DATA, "suggest_words_zh_cn.dat");
-  if (suggest_words != NULL) {
-    im->suggest_words = suggest_words_create((const asset_info_t*)(suggest_words));
-    im->data = (void*)suggest_words;
-  }
-#endif /*WITHOUT_SUGGEST_WORDS*/
 
   return im;
 }

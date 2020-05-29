@@ -15,6 +15,7 @@ using std::string;
 #define TTF_FILE TK_ROOT "/tests/testdata/assets/default/raw/fonts/starthere.ttf"
 #define BUFF_SIZE 1024 * 1024
 
+#if defined(WITH_FT_FONT) || defined(WITH_STB_FONT)
 TEST(FontGen, basic) {
   uint32_t size = 0;
   uint16_t font_size = 20;
@@ -47,3 +48,4 @@ TEST(FontGen, basic) {
   TKMEM_FREE(bmp_buff);
   TKMEM_FREE(ttf_buff);
 }
+#endif/**/
