@@ -297,7 +297,10 @@ static ret_t native_window_sdl_cursor_from_bitmap(native_window_t* win, bitmap_t
     bmask = 0x00ff0000;
     amask = 0xff000000;
   } else {
-    assert(!"not supported format!");
+    /*
+     *assert(!"not supported format!");
+     */
+    return RET_FAIL;
   }
 
   if (sdl->cursor_surface != NULL) {
