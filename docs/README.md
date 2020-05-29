@@ -61,7 +61,7 @@
 * [如何定制 combo_box 控件中按钮的风格和大小](how_to_customize_combo_boxox_button.md)
 [如何访问控件的属性](how_to_access_widget_props.md)
 * [如何集成第三方库](https://github.com/zlgopen/awtk-hello/blob/master/docs/how_to_integrate_3rd_libs.md)
-* [如何使用对话框](docs/how_toto_use_dialog.md)
+* [如何使用对话框](how_toto_use_dialog.md)
 
 ### 3. 内部原理
 * [AWTK 脚本绑定原理](script_binding.md)
