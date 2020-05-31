@@ -55,6 +55,9 @@ idle_info_t* idle_info_create(idle_manager_t* idle_manager, idle_func_t on_idle,
 
   if (idle_manager != NULL) {
     idle->id = idle_manager->next_idle_id++;
+    if (idle->id == TK_INVALID_ID) {
+      idle->id = idle_manager->next_idle_id++;
+    }
     idle_manager_append(idle_manager, idle);
   }
 

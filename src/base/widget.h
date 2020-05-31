@@ -1283,9 +1283,9 @@ ret_t widget_set_sensitive(widget_t* widget, bool_t sensitive);
  *
  * ```
  *
- * @return {int32_t} 返回id，用于widget_off。
+ * @return {uint32_t} 返回id，用于widget_off。
  */
-int32_t widget_on(widget_t* widget, uint32_t type, event_func_t on_event, void* ctx);
+uint32_t widget_on(widget_t* widget, uint32_t type, event_func_t on_event, void* ctx);
 
 /**
  * @method widget_on_with_tag
@@ -1299,9 +1299,9 @@ int32_t widget_on(widget_t* widget, uint32_t type, event_func_t on_event, void* 
  * @param {void*} ctx 事件处理函数上下文。
  * @param {uint32_t} tag tag。
  *
- * @return {int32_t} 返回id，用于widget_off。
+ * @return {uint32_t} 返回id，用于widget_off。
  */
-int32_t widget_on_with_tag(widget_t* widget, uint32_t type, event_func_t on_event, void* ctx,
+uint32_t widget_on_with_tag(widget_t* widget, uint32_t type, event_func_t on_event, void* ctx,
                            uint32_t tag);
 
 /**
@@ -1309,11 +1309,11 @@ int32_t widget_on_with_tag(widget_t* widget, uint32_t type, event_func_t on_even
  * 注销指定事件的处理函数。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {int32_t} id widget_on返回的ID。
+ * @param {uint32_t} id widget_on返回的ID。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t widget_off(widget_t* widget, int32_t id);
+ret_t widget_off(widget_t* widget, uint32_t id);
 
 /**
  * @method widget_child_on
@@ -1325,9 +1325,9 @@ ret_t widget_off(widget_t* widget, int32_t id);
  * @param {event_func_t} on_event 事件处理函数。
  * @param {void*} ctx 事件处理函数上下文。
  *
- * @return {int32_t} 返回id，用于widget_off。
+ * @return {uint32_t} 返回id，用于widget_off。
  */
-int32_t widget_child_on(widget_t* widget, const char* name, uint32_t type, event_func_t on_event,
+uint32_t widget_child_on(widget_t* widget, const char* name, uint32_t type, event_func_t on_event,
                         void* ctx);
 
 /**

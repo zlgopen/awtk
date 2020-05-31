@@ -29,6 +29,16 @@ emitter_t* emitter_create() {
   return emitter_init(emitter);
 }
 
+static uint32_t emitter_next_id(emitter_t* emitter) {
+  uint32_t id = emitter->next_id++;
+
+  if (id == TK_INVALID_ID) {
+    id = emitter->next_id++;
+  }
+
+  return id;
+}
+
 emitter_t* emitter_init(emitter_t* emitter) {
   return_value_if_fail(emitter, NULL);
 
@@ -158,7 +168,7 @@ uint32_t emitter_on_with_tag(emitter_t* emitter, uint32_t etype, event_func_t ha
   iter->ctx = ctx;
   iter->type = etype;
   iter->handler = handler;
-  iter->id = emitter->next_id++;
+  iter->id = emitter_next_id(emitter);
   iter->next = emitter->items;
   emitter->items = iter;
 

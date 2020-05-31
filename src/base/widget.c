@@ -1056,7 +1056,7 @@ ret_t widget_dispatch_recursive(widget_t* widget, event_t* e) {
   return widget_foreach(widget, widget_dispatch_callback, e);
 }
 
-int32_t widget_on_with_tag(widget_t* widget, uint32_t type, event_func_t on_event, void* ctx,
+uint32_t widget_on_with_tag(widget_t* widget, uint32_t type, event_func_t on_event, void* ctx,
                            uint32_t tag) {
   return_value_if_fail(widget != NULL && on_event != NULL, RET_BAD_PARAMS);
   if (widget->emitter == NULL) {
@@ -1066,16 +1066,16 @@ int32_t widget_on_with_tag(widget_t* widget, uint32_t type, event_func_t on_even
   return emitter_on_with_tag(widget->emitter, type, on_event, ctx, tag);
 }
 
-int32_t widget_on(widget_t* widget, uint32_t type, event_func_t on_event, void* ctx) {
+uint32_t widget_on(widget_t* widget, uint32_t type, event_func_t on_event, void* ctx) {
   return widget_on_with_tag(widget, type, on_event, ctx, 0);
 }
 
-int32_t widget_child_on(widget_t* widget, const char* name, uint32_t type, event_func_t on_event,
+uint32_t widget_child_on(widget_t* widget, const char* name, uint32_t type, event_func_t on_event,
                         void* ctx) {
   return widget_on(widget_lookup(widget, name, TRUE), type, on_event, ctx);
 }
 
-ret_t widget_off(widget_t* widget, int32_t id) {
+ret_t widget_off(widget_t* widget, uint32_t id) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget->emitter != NULL, RET_BAD_PARAMS);
 
