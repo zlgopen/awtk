@@ -1,5 +1,5 @@
 /**
- * File:   image_gen.h
+ * File:   image_dither.h
  * Author: AWTK Develop Team
  * Brief:  bitmap image generator
  *
@@ -15,7 +15,7 @@
 /**
  * History:
  * ================================================================
- * 2018-01-27 Li XianJing <xianjimli@hotmail.com> created
+ * 2020-05-26 Luo ZhiMing <luozhiming@zlg.cn> created
  *
  */
 

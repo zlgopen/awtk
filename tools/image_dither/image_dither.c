@@ -1,5 +1,5 @@
 /**
- * File:   image_gen.c
+ * File:   image_dither.c
  * Author: AWTK Develop Team
  * Brief:  bitmap image generator
  *
@@ -15,7 +15,7 @@
 /**
  * History:
  * ================================================================
- * 2018-01-27 Li XianJing <xianjimli@hotmail.com> created
+ * 2020-05-26 Luo ZhiMing <luozhiming@zlg.cn> created
  *
  */
 
@@ -31,7 +31,11 @@
 
 #include "stb/stb_image.h"
 
-int stbi_write_png(char const *filename, int x, int y, int comp, const void *data, int stride_bytes);
+#ifndef WITH_STB_IMAGE
+#include "stb/stb_image_write.h"
+#else
+extern int stbi_write_png(char const *filename, int x, int y, int comp, const void *data, int stride_bytes);
+#endif /*WITH_STB_IMAGE*/
 
 typedef void (*set_dst_data_func_t)(uint8_t* dst, int32_t b, int32_t g, int32_t r, int32_t a);
 

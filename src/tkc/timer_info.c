@@ -59,7 +59,7 @@ timer_info_t* timer_info_create(timer_manager_t* tm, timer_func_t on_timer, void
     timer->timer_manager = tm;
     timer->start = tm->get_time();
     timer->id = tm->next_timer_id++;
-    if (iter->id == TK_INVALID_ID) {
+    if (timer->id == TK_INVALID_ID) {
       timer->id = tm->next_timer_id++;
     }
     timer_manager_append(tm, timer);
