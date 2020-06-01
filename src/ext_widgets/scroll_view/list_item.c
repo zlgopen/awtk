@@ -82,6 +82,7 @@ static ret_t list_item_on_event(widget_t* widget, event_t* e) {
       list_item->down.x = evt->x;
       list_item->down.y = evt->y;
       list_item->pressed = TRUE;
+      widget_grab(widget->parent, widget);
       list_item->timer_id = timer_add(list_item_on_timer, widget, 30);
       widget_invalidate_force(widget, NULL);
       widget_off_by_func(widget->parent, EVT_POINTER_UP, list_item_on_parent_pointer_up, widget);
@@ -92,6 +93,7 @@ static ret_t list_item_on_event(widget_t* widget, event_t* e) {
       list_item->dragged = FALSE;
       list_item->pressed = FALSE;
       list_item->downed = FALSE;
+      widget_ungrab(widget->parent, widget);
       list_item_remove_timer(widget);
       widget_invalidate_force(widget, NULL);
       widget_set_state(widget, WIDGET_STATE_NORMAL);
@@ -110,6 +112,7 @@ static ret_t list_item_on_event(widget_t* widget, event_t* e) {
       list_item->dragged = FALSE;
       list_item->pressed = FALSE;
       list_item->downed = FALSE;
+      widget_ungrab(widget->parent, widget);
       break;
     }
     case EVT_POINTER_MOVE: {
@@ -119,6 +122,7 @@ static ret_t list_item_on_event(widget_t* widget, event_t* e) {
       if (list_item->downed && evt->pressed && dy > TK_DRAG_THRESHOLD) {
         list_item->dragged = TRUE;
         list_item->pressed = FALSE;
+        widget_ungrab(widget->parent, widget);
         list_item_remove_timer(widget);
         widget_set_state(widget, WIDGET_STATE_NORMAL);
       }
