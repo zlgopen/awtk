@@ -228,7 +228,12 @@ static ret_t label_get_prop(widget_t* widget, const char* name, value_t* v) {
   label_t* label = LABEL(widget);
   return_value_if_fail(label != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (tk_str_eq(name, WIDGET_PROP_LENGTH)) {
+  if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
+    double d = 0;
+    wstr_to_float(&(widget->text), &d);
+    value_set_double(v, d);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_LENGTH)) {
     value_set_int(v, label->length);
     return RET_OK;
   }
@@ -239,7 +244,9 @@ static ret_t label_get_prop(widget_t* widget, const char* name, value_t* v) {
 static ret_t label_set_prop(widget_t* widget, const char* name, const value_t* v) {
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (tk_str_eq(name, WIDGET_PROP_LENGTH)) {
+  if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
+    return wstr_from_value(&(widget->text), v);
+  } else if (tk_str_eq(name, WIDGET_PROP_LENGTH)) {
     return label_set_length(widget, tk_roundi(value_float(v)));
   }
 
