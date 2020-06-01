@@ -18918,7 +18918,7 @@
         "desc": "注册指定事件的处理函数。\n使用示例：\n\n```c\nwidget_t* ok = button_create(win, 10, 10, 80, 30);\nwidget_on(ok, EVT_CLICK, on_click, NULL);\n\n```",
         "name": "widget_on",
         "return": {
-          "type": "int32_t",
+          "type": "uint32_t",
           "desc": "返回id，用于widget_off。"
         }
       },
@@ -18954,7 +18954,7 @@
         "desc": "注册指定tag的事件处理函数。\n\n> 注册时指定一个tag，可用widget\\_off\\_by\\_tag注销相同tag的事件处理函数。",
         "name": "widget_on_with_tag",
         "return": {
-          "type": "int32_t",
+          "type": "uint32_t",
           "desc": "返回id，用于widget_off。"
         }
       },
@@ -18966,7 +18966,7 @@
             "desc": "控件对象。"
           },
           {
-            "type": "int32_t",
+            "type": "uint32_t",
             "name": "id",
             "desc": "widget_on返回的ID。"
           }
@@ -19013,7 +19013,7 @@
         "desc": "为指定名称的子控件注册指定事件的处理函数。\n递归查找指定名称的子控件，然后为其注册指定事件的处理函数。",
         "name": "widget_child_on",
         "return": {
-          "type": "int32_t",
+          "type": "uint32_t",
           "desc": "返回id，用于widget_off。"
         }
       },
@@ -49403,7 +49403,7 @@
           {
             "type": "bool_t",
             "name": "value",
-            "desc": "值"
+            "desc": "值(勾选为TRUE，非勾选为FALSE)。"
           }
         ],
         "annotation": {
@@ -49451,7 +49451,7 @@
     "properties": [
       {
         "name": "value",
-        "desc": "值。",
+        "desc": "值(勾选为TRUE，非勾选为FALSE)。",
         "type": "bool_t",
         "annotation": {
           "set_prop": true,

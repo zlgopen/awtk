@@ -433,14 +433,14 @@ widget_t* widget_child (widget_t* widget, const char* name);
 * 函数原型：
 
 ```
-int32_t widget_child_on (widget_t* widget, const char* name, event_type_t type, event_func_t on_event, void* ctx);
+uint32_t widget_child_on (widget_t* widget, const char* name, event_type_t type, event_func_t on_event, void* ctx);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | int32\_t | 返回id，用于widget\_off。 |
+| 返回值 | uint32\_t | 返回id，用于widget\_off。 |
 | widget | widget\_t* | 控件对象。 |
 | name | const char* | 子控件的名称。 |
 | type | event\_type\_t | 事件类型。 |
@@ -1606,7 +1606,7 @@ ret_t widget_move_resize (widget_t* widget, xy_t x, xy_t y, wh_t w, wh_t h);
 * 函数原型：
 
 ```
-ret_t widget_off (widget_t* widget, int32_t id);
+ret_t widget_off (widget_t* widget, uint32_t id);
 ```
 
 * 参数说明：
@@ -1615,7 +1615,7 @@ ret_t widget_off (widget_t* widget, int32_t id);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
-| id | int32\_t | widget\_on返回的ID。 |
+| id | uint32\_t | widget\_on返回的ID。 |
 #### widget\_off\_by\_ctx 函数
 -----------------------
 
@@ -1695,14 +1695,14 @@ widget_on(ok, EVT_CLICK, on_click, NULL);
 * 函数原型：
 
 ```
-int32_t widget_on (widget_t* widget, event_type_t type, event_func_t on_event, void* ctx);
+uint32_t widget_on (widget_t* widget, event_type_t type, event_func_t on_event, void* ctx);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | int32\_t | 返回id，用于widget\_off。 |
+| 返回值 | uint32\_t | 返回id，用于widget\_off。 |
 | widget | widget\_t* | 控件对象。 |
 | type | event\_type\_t | 事件类型。 |
 | on\_event | event\_func\_t | 事件处理函数。 |
@@ -1719,14 +1719,14 @@ int32_t widget_on (widget_t* widget, event_type_t type, event_func_t on_event, v
 * 函数原型：
 
 ```
-int32_t widget_on_with_tag (widget_t* widget, event_type_t type, event_func_t on_event, void* ctx, uint32_t tag);
+uint32_t widget_on_with_tag (widget_t* widget, event_type_t type, event_func_t on_event, void* ctx, uint32_t tag);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | int32\_t | 返回id，用于widget\_off。 |
+| 返回值 | uint32\_t | 返回id，用于widget\_off。 |
 | widget | widget\_t* | 控件对象。 |
 | type | event\_type\_t | 事件类型。 |
 | on\_event | event\_func\_t | 事件处理函数。 |

@@ -71,7 +71,7 @@ default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/st
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
-| <a href="#check_button_t_value">value</a> | bool\_t | 值。 |
+| <a href="#check_button_t_value">value</a> | bool\_t | 值(勾选为TRUE，非勾选为FALSE)。 |
 ### 事件
 <p id="check_button_t_events">
 
@@ -163,10 +163,10 @@ ret_t check_button_set_value (widget_t* widget, bool_t value);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | check\_button对象。 |
-| value | bool\_t | 值 |
+| value | bool\_t | 值(勾选为TRUE，非勾选为FALSE)。 |
 #### value 属性
 -----------------------
-> <p id="check_button_t_value">值。
+> <p id="check_button_t_value">值(勾选为TRUE，非勾选为FALSE)。
 
 * 类型：bool\_t
 
