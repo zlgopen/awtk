@@ -1,11 +1,14 @@
 # 最新动态
+* 2020/06/02
+  * 完善 label
+  * 完善文档
 
-* 2020/05/01
-  * 增加[awtk-widget-generator](https://github.com/zlgopen/awtk-widget-generator) 用于生成自定义控件。
+* 2020/06/01
+  * 增加 [awtk-widget-generator](https://github.com/zlgopen/awtk-widget-generator) 用于生成自定义控件。
 
-  * 增加[awtk-widget-qr](https://github.com/zlgopen/awtk-widget-qr)二维码控件。
+  * 增加 [awtk-widget-qr](https://github.com/zlgopen/awtk-widget-qr) 二维码控件。
 
-  * 完善list item
+  * 完善 list item
 
 * 2020/05/31
   * 修改 event id 潜在的问题。

@@ -175,7 +175,7 @@ git clone https://github.com/zlgopen/awtk.git
 
 > Windows 下可以用带 GUI 的 git 下载代码。
 
-**更新代码(在 awtk 目录下运行)**
+**更新代码（在 awtk 目录下运行）**
 
 ```
 git pull
@@ -185,8 +185,7 @@ git pull
 
 * 直接下载 zip 文件
 
-> 下载[ zip 文件](https://github.com/zlgopen/awtk/archive/master.zip)。解压之后**需要把文件夹改名为awtk**。
-
+> 下载 [ zip 文件](https://github.com/zlgopen/awtk/archive/master.zip)。解压之后**需要把文件夹改名为 awtk**。
 
 ### Mac
 
@@ -222,7 +221,7 @@ scons
 
 ### Windows
 
-> 请先安装 python(64位系统要安装64位版本的python)，scons 和 Visual Studio C++（版本 >=2017)
+> 请先安装 python(64 位系统要安装 64 位版本的 python)，scons 和 Visual Studio C++（版本 >=2017)
 
 > 如果没有安装 pywin32，请 pip 安装：
 
@@ -287,12 +286,25 @@ pip install Pillow
 
 * [AWTK-MVVM](https://github.com/zlgopen/awtk-mvvm)
 
+* [MVC/MVVM 演示示例](https://github.com/zlgopen/awtk-patterns)
+
+* [扩展控件实例：控件代码生成器](https://github.com/zlgopen/awtk-widget-generator)
+
+* [扩展控件实例：二维码](https://github.com/zlgopen/awtk-widget-qr)
+
+* [扩展控件实例：TinyGL](https://github.com/zlgopen/awtk-widget-glview)
+
+* [扩展控件实例：number-label](https://github.com/zlgopen/awtk-widget-number-label)
+
+第三方提供：
+
+* [react-awtk](https://github.com/wenyufei2018/react-awtk)
+
 * [扩展控件实例：二维码](https://github.com/CUITzhaoqi/awtk-qr)
 
 * [扩展控件实例：圆形滑块](https://github.com/longyuwlz/awtk_slider_circle)
 
-* [react-awtk](https://github.com/wenyufei2018/react-awtk)
-* 
+
 ## 九、文档
 
 * [开发文档](docs/README.md)
