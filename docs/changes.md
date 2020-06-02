@@ -1,7 +1,10 @@
 # 最新动态
 * 2020/06/02
-  * 完善 label
   * 完善文档
+  * 完善 label
+  * 增加 [awtk-inter-win-communication](https://github.com/zlgopen/awtk-inter-win-communication) 用于演示窗口之间的通讯方式。
+  * 完善 image（感谢智明提供补丁）。 
+  * 完善 file browser（感谢瑞安提供补丁）。 
 
 * 2020/06/01
   * 增加 [awtk-widget-generator](https://github.com/zlgopen/awtk-widget-generator) 用于生成自定义控件。

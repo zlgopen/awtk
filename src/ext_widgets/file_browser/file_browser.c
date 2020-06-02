@@ -255,15 +255,13 @@ ret_t file_browser_up(file_browser_t* fb) {
   return_value_if_fail(fb != NULL, RET_BAD_PARAMS);
 
   p = strrchr(fb->cwd, TK_PATH_SEP);
+  while (p != NULL && (p[1] == '\0' || (p[1] == '.' && p[2] == '\0'))) {
+    *p = '\0';
+    p = strrchr(fb->cwd, TK_PATH_SEP);
+  }
+
   if (p != NULL) {
-    if (p[1] == '\0') {
-      *p = '\0';
-      p = strrchr(fb->cwd, TK_PATH_SEP);
-    }
-  
-    if (p != NULL) {
-      *p = '\0';
-    }
+    *p = '\0';
   }
 
   if (fb->cwd[0] == '\0') {
