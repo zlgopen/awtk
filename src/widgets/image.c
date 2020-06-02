@@ -49,8 +49,9 @@ static ret_t image_on_paint_self(widget_t* widget, canvas_t* c) {
             if (image->draw_type == IMAGE_DRAW_ICON) {
               vgcanvas_draw_icon(vg, &bitmap, 0, 0, bitmap.w, bitmap.h, 0, 0, widget->w, widget->h);
             } else {
-              vgcanvas_draw_image(vg, &bitmap, 0, 0, bitmap.w, bitmap.h, 0, 0, widget->w,
-                                  widget->h);
+              float_t x = (widget->w - bitmap.w) * 0.5f;
+              float_t y = (widget->h - bitmap.h) * 0.5f;
+              vgcanvas_draw_image(vg, &bitmap, 0, 0, bitmap.w, bitmap.h, x, y, bitmap.w, bitmap.h);
             }
             vgcanvas_restore(vg);
             break;
