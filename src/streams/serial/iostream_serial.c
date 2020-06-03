@@ -164,3 +164,19 @@ tk_iostream_t* tk_iostream_serial_create(const char* port) {
 
   return TK_IOSTREAM(obj);
 }
+
+ret_t tk_iostream_serial_config(tk_iostream_t* iostream, int32_t baudrate,
+    bytesize_t bytesize, parity_t parity, stopbits_t stopbits, flowcontrol_t flowcontrol) {
+	return_value_if_fail(iostream != NULL, RET_BAD_PARAMS);
+
+  object_set_prop_int(OBJECT(iostream),  TK_IOSTREAM_SERIAL_PROP_STOPBITS, stopbits);
+  object_set_prop_int(OBJECT(iostream),  TK_IOSTREAM_SERIAL_PROP_BAUDRATE, baudrate);
+  object_set_prop_int(OBJECT(iostream),  TK_IOSTREAM_SERIAL_PROP_PARITY, parity);
+  object_set_prop_int(OBJECT(iostream),  TK_IOSTREAM_SERIAL_PROP_BYTESIZE, bytesize);
+  object_set_prop_int(OBJECT(iostream),  TK_IOSTREAM_SERIAL_PROP_FLOWCONTROL, flowcontrol);
+
+  object_exec(OBJECT(iostream), TK_IOSTREAM_SERIAL_CMD_CONFIG, NULL);
+
+  return RET_OK;
+}
+

@@ -37,6 +37,8 @@ void do_send(tk_iostream_t* iostream, const char* msg) {
 }
 
 int main(int argc, char* argv[]) {
+  tk_iostream_t* serial = NULL;
+
   if (argc != 3) {
     printf("Usage: %s port msg\n", argv[0]);
     return 0;
@@ -46,7 +48,13 @@ int main(int argc, char* argv[]) {
 
   socket_init();
   platform_prepare();
-  do_send(tk_iostream_serial_create(argv[1]), argv[2]);
+
+  serial = tk_iostream_serial_create(argv[1]);
+
+  tk_iostream_serial_config(serial, 115200, eightbits, parity_none, stopbits_one, flowcontrol_none);
+
+  do_send(serial, argv[2]);
+
   socket_deinit();
 
   return 0;

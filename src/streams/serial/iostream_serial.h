@@ -56,13 +56,32 @@ struct _tk_iostream_serial_t {
  * @method tk_iostream_serial_create
  *
  * 创建iostream对象。
- *
+ * > 缺省配置: baudrate=115200 bytesize=8 stopbits=1 flowcontrol=0 parity=0
  * @param {const char*} port port name。
  *
  * @return {tk_iostream_t*} 返回iostream对象。
  *
  */
 tk_iostream_t* tk_iostream_serial_create(const char* port);
+
+
+/**
+ * @method tk_iostream_serial_config
+ *
+ * 配置串口。
+ *
+ * @param {tk_iostream_t*} iostream 串口对象。
+ * @param {int32_t} baudrate 波特率。
+ * @param {bytesize_t} bytesize 字节位数。
+ * @param {parity_t} parity 奇偶校验。
+ * @param {stopbits_t} stopbits 停止位。
+ * @param {flowcontrol_t} flowcontrol 流控。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ *
+ */
+ret_t tk_iostream_serial_config(tk_iostream_t* iostream, int32_t baudrate,
+    bytesize_t bytesize, parity_t parity, stopbits_t stopbits, flowcontrol_t flowcontrol);
 
 #define TK_IOSTREAM_SERIAL_PROP_PARITY "parity"
 #define TK_IOSTREAM_SERIAL_PROP_STOPBITS "stopbits"
