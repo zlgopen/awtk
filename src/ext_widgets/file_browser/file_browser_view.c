@@ -33,7 +33,7 @@
 #define FB_DATE_TIME_FORMAT "YY-MM-DD hh:mm:ss"
 #endif /*FB_DATE_TIME_FORMAT*/
 
-static ret_t file_browser_view_reload(widget_t* widget);
+ret_t file_browser_view_reload(widget_t* widget);
 
 ret_t file_browser_view_set_init_dir(widget_t* widget, const char* init_dir) {
   file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
@@ -41,6 +41,26 @@ ret_t file_browser_view_set_init_dir(widget_t* widget, const char* init_dir) {
 
   file_browser_view->init_dir = tk_str_copy(file_browser_view->init_dir, init_dir);
   file_browser_set_cwd(file_browser_view->fb, init_dir);
+
+  return RET_OK;
+}
+
+ret_t file_browser_view_set_filter(widget_t* widget, const char* filter) {
+  file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
+  return_value_if_fail(file_browser_view != NULL && filter != NULL, RET_BAD_PARAMS);
+
+  file_browser_view->filter = tk_str_copy(file_browser_view->filter, filter);
+
+  if (tk_str_eq(filter, STR_FILTER_FILES_ONLY)) {
+    file_browser_set_filter(file_browser_view->fb, fb_filter_files_only, NULL);
+  } else if (tk_str_eq(filter, STR_FILTER_DIR_ONLY)) {
+    file_browser_set_filter(file_browser_view->fb, fb_filter_directories_only, NULL);
+  } else if(filter != NULL) {
+    file_browser_set_filter(file_browser_view->fb, fb_filter_by_ext_names,
+                            file_browser_view->filter);
+  } else {
+    file_browser_set_filter(file_browser_view->fb, NULL, NULL);
+  }
 
   return RET_OK;
 }
@@ -267,7 +287,7 @@ static widget_t* file_browser_view_create_folder_item(widget_t* widget) {
   return item;
 }
 
-static ret_t file_browser_view_reload(widget_t* widget) {
+ret_t file_browser_view_reload(widget_t* widget) {
   uint32_t i = 0;
   uint32_t nr = 0;
   widget_t* item = NULL;
@@ -369,7 +389,7 @@ static ret_t file_browser_view_init_ui(widget_t* widget) {
   widget_on(template, EVT_CLICK, file_browser_view_on_item_clicked, widget);
   file_browser_view->inited = TRUE;
 
-  return file_browser_view_reload(widget);
+  return RET_OK;
 }
 
 static ret_t file_browser_view_on_event(widget_t* widget, event_t* e) {

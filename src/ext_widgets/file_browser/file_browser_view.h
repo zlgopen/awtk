@@ -76,6 +76,13 @@ typedef struct _file_browser_view_t {
    * 初始文件夹。
    */
   char* init_dir;
+  
+  /**
+   * @property {char*} filter
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 过滤规则。
+   */
+  char* filter;
 
   /**
    * @property {bool_t} ignore_hidden_files
@@ -156,6 +163,28 @@ widget_t* file_browser_view_cast(widget_t* widget);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t file_browser_view_set_init_dir(widget_t* widget, const char* init_dir);
+
+/**
+ * @method file_browser_view_set_filter
+ * 设置 过滤规则。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {const char*} filter 过滤规则。 
+ *> files_only 表示只列出文件，dir_only 表示只列出目录，其它表示只列出满足扩展名文件集合(如：.jpg.png.gif)。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t file_browser_view_set_filter(widget_t* widget, const char* filter);
+
+/**
+ * @method file_browser_view_reload
+ * 重新加载。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t file_browser_view_reload(widget_t* widget);
 
 /**
  * @method file_browser_view_set_ignore_hidden_files
@@ -288,6 +317,9 @@ ret_t file_browser_view_register(void);
 #define FILE_BROWSER_VIEW_RETURN_UP "return_up"
 /*容器控件，通常是scrollview*/
 #define FILE_BROWSER_VIEW_CONTAINER "container"
+
+#define STR_FILTER_FILES_ONLY "files_only"
+#define STR_FILTER_DIR_ONLY "dir_only"
 
 /*public for subclass and runtime type check*/
 TK_EXTERN_VTABLE(file_browser_view);

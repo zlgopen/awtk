@@ -106,7 +106,8 @@ ret_t file_chooser_set_init_dir(file_chooser_t* chooser, const char* init_dir);
  * 设置过滤规则。
  * @annotation ["scriptable"]
  * @param {file_chooser_t*} chooser file_chooser对象。
- * @param {const char*} filter 过滤规则(如".jpg.png.gif")。
+ * @param {const char*} filter 过滤规则。
+ *> files_only 表示只列出文件，dir_only 表示只列出目录，其它表示只列出满足扩展名文件集合(如：.jpg.png.gif)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

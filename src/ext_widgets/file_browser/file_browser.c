@@ -514,6 +514,10 @@ bool_t fb_filter_by_ext_names(void* ctx, const void* data) {
   const char* ext_names = (const char*)ctx;
   const char* p = strrchr(item->name, '.');
 
+  if (item->is_dir) {
+    return TRUE;
+  }
+
   if (ext_names == NULL) {
     return TRUE;
   }

@@ -102,8 +102,21 @@ static ret_t file_choose_on_ok(void* ctx, event_t* e) {
 
 ret_t file_chooser_choose(file_chooser_t* chooser) {
   widget_t* win = window_open(chooser->ui);
+  widget_t* file_browser_view = widget_lookup_by_type(win, WIDGET_TYPE_FILE_BROWSER_VIEW, TRUE);
+
   widget_child_on(win, FILE_CHOOSER_OK, EVT_CLICK, file_choose_on_ok, chooser);
   widget_child_on(win, FILE_CHOOSER_CANCEL, EVT_CLICK, file_choose_on_click_to_close, chooser);
+
+  if (chooser->init_dir != NULL || chooser->filter != NULL) {
+    if (chooser->filter != NULL) {
+      file_browser_view_set_filter(file_browser_view, chooser->filter);
+    }
+
+    if (chooser->init_dir != NULL) {
+      file_browser_view_set_init_dir(file_browser_view, chooser->init_dir);
+    }
+  }
+  file_browser_view_reload(file_browser_view);
 
   if (widget_is_dialog(win)) {
     dialog_modal(win);
@@ -131,6 +144,7 @@ ret_t file_chooser_choose_folder(file_chooser_t* chooser) {
   return_value_if_fail(chooser != NULL, RET_BAD_PARAMS);
 
   chooser->ui = FILE_CHOOSER_UI_CHOOSE_FOLDER;
+  file_chooser_set_filter(chooser, STR_FILTER_DIR_ONLY);
 
   return file_chooser_choose(chooser);
 }
