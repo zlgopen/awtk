@@ -126,6 +126,37 @@ ret_t path_app_root(char path[MAX_PATH + 1]) {
   return RET_FAIL;
 }
 
+static char* path_up(char* path) {
+  uint32_t len = strlen(path);
+  if (len > 0) {
+    char* p = path + strlen(path) - 1;
+    if (IS_PATH_SEP(*p)) {
+      *p = '\0';
+      p--;
+    }
+
+    while (p > path && *p != '/' && *p != '\\') {
+      p--;
+    }
+
+    if (path == p) {
+      if (*p != '/' && *p != '\\') {
+        p[0] = '\0';
+        return p;
+      } else {
+        p[0] = TK_PATH_SEP;
+      }
+    } else {
+      p[0] = TK_PATH_SEP;
+    }
+    p[1] = '\0';
+
+    return p + 1;
+  } else {
+    return path;
+  }
+}
+
 ret_t path_normalize(const char* path, char* result, int32_t size) {
   const char* s = path;
   char* d = result;
@@ -136,7 +167,9 @@ ret_t path_normalize(const char* path, char* result, int32_t size) {
     switch (*s) {
       case '/':
       case '\\': {
-        *d++ = TK_PATH_SEP;
+        if (d == result || !IS_PATH_SEP(d[-1])) {
+          *d++ = TK_PATH_SEP;
+        }
         while (IS_PATH_SEP(*s)) {
           s++;
         }
@@ -147,23 +180,21 @@ ret_t path_normalize(const char* path, char* result, int32_t size) {
           s += 2;
         } else if (s[1] == '.') {
           char* p = NULL;
-          return_value_if_fail(IS_PATH_SEP(s[2]), RET_FAIL);
+          return_value_if_fail(IS_PATH_SEP(s[2]) || s[2] == '\0', RET_FAIL);
 
-          d--;
-          *d = '\0';
-          p = strrchr(result, TK_PATH_SEP);
-          if (p != NULL) {
-            d = p + 1;
-          } else {
-            d = result;
+          d = path_up(result);
+          s += 2;
+          if (IS_PATH_SEP(s[0])) {
+            s++;
           }
-          s += 3;
         } else {
           *d++ = *s++;
         }
         break;
       }
-      default: { *d++ = *s++; }
+      default: {
+        *d++ = *s++;
+      }
     }
   }
 
