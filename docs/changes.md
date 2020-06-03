@@ -1,6 +1,7 @@
 # 最新动态
 * 2020/06/04
   * 完善 file_chooser 支持初始目录和过滤规则。
+  * 完善 widget_dispatch，保证事件处理函数中，e->target 指向当前的 widget。
 
 * 2020/06/03
   * 完善 path_normalize 函数。

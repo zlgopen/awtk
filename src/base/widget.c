@@ -1038,7 +1038,11 @@ ret_t widget_dispatch(widget_t* widget, event_t* e) {
 
   if (ret != RET_STOP) {
     if (widget->emitter != NULL) {
+      void* saved_target = e->target;
+
+      e->target = widget;
       ret = emitter_dispatch(widget->emitter, e);
+      e->target = saved_target;
     }
   }
   widget_unref(widget);
