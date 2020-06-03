@@ -136,13 +136,13 @@ TEST(FileBrowser, filter) {
   ASSERT_EQ(file_browser_refresh(fb), RET_OK);
   ASSERT_EQ(file_browser_get_items_nr(fb), 2);
 
-  ASSERT_EQ(file_browser_set_filter(fb, fb_filter_by_ext_names, (void*)".txt"), RET_OK);
+  ASSERT_EQ(file_browser_set_filter(fb, fb_filter_files_only, NULL), RET_OK);
   ASSERT_EQ(file_browser_refresh(fb), RET_OK);
   ASSERT_EQ(file_browser_get_items_nr(fb), 1);
   item = file_browser_get_item(fb, 0);
   ASSERT_EQ(item->is_reg_file, TRUE);
 
-  ASSERT_EQ(file_browser_set_filter(fb, fb_filter_directories_only, (void*)".txt"), RET_OK);
+  ASSERT_EQ(file_browser_set_filter(fb, fb_filter_directories_only, NULL), RET_OK);
   ASSERT_EQ(file_browser_refresh(fb), RET_OK);
   ASSERT_EQ(file_browser_get_items_nr(fb), 1);
   item = file_browser_get_item(fb, 0);
