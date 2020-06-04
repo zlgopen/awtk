@@ -9365,6 +9365,22 @@
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
         }
+      },
+      {
+        "params": [
+          {
+            "type": "lcd_t*",
+            "name": "lcd",
+            "desc": "lcd对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁lcd对象。",
+        "name": "lcd_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
       }
     ],
     "events": [],
@@ -27191,6 +27207,37 @@
             "desc": "canvas对象。"
           },
           {
+            "type": "bitmap_t*",
+            "name": "img",
+            "desc": "图片对象。"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标。"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "w坐标。"
+          }
+        ],
+        "annotation": {},
+        "desc": "在指定位置画图。",
+        "name": "canvas_draw_image_at",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
             "type": "xy_t",
             "name": "x1",
             "desc": "起始点的x坐标。"
@@ -27256,6 +27303,48 @@
         "annotation": {},
         "desc": "设置canvas的assets_manager对象。",
         "name": "canvas_set_assets_manager",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "rect_t*",
+            "name": "dirty_rect",
+            "desc": "脏矩形。"
+          },
+          {
+            "type": "lcd_draw_mode_t",
+            "name": "draw_mode",
+            "desc": "绘制模式。"
+          }
+        ],
+        "annotation": {},
+        "desc": "绘制开始。",
+        "name": "canvas_begin_frame",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "绘制结束。",
+        "name": "canvas_end_frame",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -31163,6 +31252,538 @@
     "type": "class",
     "methods": [
       {
+        "params": [
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度。"
+          },
+          {
+            "type": "bool_t",
+            "name": "alloc",
+            "desc": "是否分配内存。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建lcd对象。",
+        "name": "lcd_mem_bgr565_create",
+        "return": {
+          "type": "lcd_t*",
+          "desc": "返回lcd对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "fbuff",
+            "desc": "帧率缓冲区。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建single fb lcd对象。",
+        "name": "lcd_mem_bgr565_create_single_fb",
+        "return": {
+          "type": "lcd_t*",
+          "desc": "返回lcd对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "online_fb",
+            "desc": "在线帧率缓冲区。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "offline_fb",
+            "desc": "离线帧率缓冲区。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建double fb lcd对象。",
+        "name": "lcd_mem_bgr565_create_double_fb",
+        "return": {
+          "type": "lcd_t*",
+          "desc": "返回lcd对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "online_fb",
+            "desc": "在线帧率缓冲区。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "offline_fb",
+            "desc": "离线帧率缓冲区。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "next_fb",
+            "desc": "待显示的帧率缓冲区。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建three fb lcd对象。",
+        "name": "lcd_mem_bgr565_create_three_fb",
+        "return": {
+          "type": "lcd_t*",
+          "desc": "返回lcd对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "lcd/lcd_mem_bgr565.h",
+    "desc": "",
+    "name": "lcd_mem_bgr565_t",
+    "annotation": {
+      "fake": true
+    },
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度。"
+          },
+          {
+            "type": "bool_t",
+            "name": "alloc",
+            "desc": "是否分配内存。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建lcd对象。",
+        "name": "lcd_mem_bgra8888_create",
+        "return": {
+          "type": "lcd_t*",
+          "desc": "返回lcd对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "fbuff",
+            "desc": "帧率缓冲区。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建single fb lcd对象。",
+        "name": "lcd_mem_bgra8888_create_single_fb",
+        "return": {
+          "type": "lcd_t*",
+          "desc": "返回lcd对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "online_fb",
+            "desc": "在线帧率缓冲区。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "offline_fb",
+            "desc": "离线帧率缓冲区。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建double fb lcd对象。",
+        "name": "lcd_mem_bgra8888_create_double_fb",
+        "return": {
+          "type": "lcd_t*",
+          "desc": "返回lcd对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "online_fb",
+            "desc": "在线帧率缓冲区。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "offline_fb",
+            "desc": "离线帧率缓冲区。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "next_fb",
+            "desc": "待显示的帧率缓冲区。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建three fb lcd对象。",
+        "name": "lcd_mem_bgra8888_create_three_fb",
+        "return": {
+          "type": "lcd_t*",
+          "desc": "返回lcd对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "lcd/lcd_mem_bgra8888.h",
+    "desc": "",
+    "name": "lcd_mem_bgra8888_t",
+    "annotation": {
+      "fake": true
+    },
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度。"
+          },
+          {
+            "type": "bool_t",
+            "name": "alloc",
+            "desc": "是否分配内存。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建lcd对象。",
+        "name": "lcd_mem_rgb565_create",
+        "return": {
+          "type": "lcd_t*",
+          "desc": "返回lcd对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "fbuff",
+            "desc": "帧率缓冲区。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建single fb lcd对象。",
+        "name": "lcd_mem_rgb565_create_single_fb",
+        "return": {
+          "type": "lcd_t*",
+          "desc": "返回lcd对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "online_fb",
+            "desc": "在线帧率缓冲区。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "offline_fb",
+            "desc": "离线帧率缓冲区。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建double fb lcd对象。",
+        "name": "lcd_mem_rgb565_create_double_fb",
+        "return": {
+          "type": "lcd_t*",
+          "desc": "返回lcd对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "online_fb",
+            "desc": "在线帧率缓冲区。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "offline_fb",
+            "desc": "离线帧率缓冲区。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "next_fb",
+            "desc": "待显示的帧率缓冲区。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建three fb lcd对象。",
+        "name": "lcd_mem_rgb565_create_three_fb",
+        "return": {
+          "type": "lcd_t*",
+          "desc": "返回lcd对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "lcd/lcd_mem_rgb565.h",
+    "desc": "",
+    "name": "lcd_mem_rgb565_t",
+    "annotation": {
+      "fake": true
+    },
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度。"
+          },
+          {
+            "type": "bool_t",
+            "name": "alloc",
+            "desc": "是否分配内存。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建lcd对象。",
+        "name": "lcd_mem_rgba8888_create",
+        "return": {
+          "type": "lcd_t*",
+          "desc": "返回lcd对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "fbuff",
+            "desc": "帧率缓冲区。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建single fb lcd对象。",
+        "name": "lcd_mem_rgba8888_create_single_fb",
+        "return": {
+          "type": "lcd_t*",
+          "desc": "返回lcd对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "online_fb",
+            "desc": "在线帧率缓冲区。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "offline_fb",
+            "desc": "离线帧率缓冲区。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建double fb lcd对象。",
+        "name": "lcd_mem_rgba8888_create_double_fb",
+        "return": {
+          "type": "lcd_t*",
+          "desc": "返回lcd对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "online_fb",
+            "desc": "在线帧率缓冲区。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "offline_fb",
+            "desc": "离线帧率缓冲区。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "next_fb",
+            "desc": "待显示的帧率缓冲区。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建three fb lcd对象。",
+        "name": "lcd_mem_rgba8888_create_three_fb",
+        "return": {
+          "type": "lcd_t*",
+          "desc": "返回lcd对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "lcd/lcd_mem_rgba8888.h",
+    "desc": "",
+    "name": "lcd_mem_rgba8888_t",
+    "annotation": {
+      "fake": true
+    },
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
         "params": [],
         "annotation": {
           "constructor": true,
@@ -31759,6 +32380,79 @@
     "header": "tkc/data_reader_factory.h",
     "desc": "data reader工厂。",
     "name": "data_reader_factory_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {},
+        "desc": "创建缺省的资源加载器。",
+        "name": "asset_loader_create",
+        "return": {
+          "type": "asset_loader_t*",
+          "desc": "返回loader对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "asset_loader_t*",
+            "name": "loader",
+            "desc": "loader对象。"
+          },
+          {
+            "type": "uint16_t",
+            "name": "type",
+            "desc": "资源类型。"
+          },
+          {
+            "type": "uint16_t",
+            "name": "subtype",
+            "desc": "资源子类型。"
+          },
+          {
+            "type": "const char*",
+            "name": "path",
+            "desc": "路径。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "名称。"
+          }
+        ],
+        "annotation": {},
+        "desc": "加载指定的资源。",
+        "name": "asset_loader_load",
+        "return": {
+          "type": "asset_info_t*",
+          "desc": "返回资源对象(由调用者销毁)。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "asset_loader_t*",
+            "name": "loader",
+            "desc": "loader对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁loader对象。",
+        "name": "asset_loader_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "base/asset_loader.h",
+    "desc": "资源加载器接口。",
+    "name": "asset_loader_t",
     "level": 1
   },
   {
@@ -32369,79 +33063,6 @@
     "header": "tkc/cond.h",
     "desc": "条件变量。",
     "name": "tk_cond_t",
-    "level": 1
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [],
-        "annotation": {},
-        "desc": "创建缺省的资源加载器。",
-        "name": "asset_loader_create",
-        "return": {
-          "type": "asset_loader_t*",
-          "desc": "返回loader对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "asset_loader_t*",
-            "name": "loader",
-            "desc": "loader对象。"
-          },
-          {
-            "type": "uint16_t",
-            "name": "type",
-            "desc": "资源类型。"
-          },
-          {
-            "type": "uint16_t",
-            "name": "subtype",
-            "desc": "资源子类型。"
-          },
-          {
-            "type": "const char*",
-            "name": "path",
-            "desc": "路径。"
-          },
-          {
-            "type": "const char*",
-            "name": "name",
-            "desc": "名称。"
-          }
-        ],
-        "annotation": {},
-        "desc": "加载指定的资源。",
-        "name": "asset_loader_load",
-        "return": {
-          "type": "asset_info_t*",
-          "desc": "返回资源对象(由调用者销毁)。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "asset_loader_t*",
-            "name": "loader",
-            "desc": "loader对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "销毁loader对象。",
-        "name": "asset_loader_destroy",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "base/asset_loader.h",
-    "desc": "资源加载器接口。",
-    "name": "asset_loader_t",
     "level": 1
   },
   {
@@ -43791,13 +44412,13 @@
           {
             "type": "const char*",
             "name": "filter",
-            "desc": "过滤规则(如\".jpg.png.gif\")。"
+            "desc": "过滤规则。"
           }
         ],
         "annotation": {
           "scriptable": true
         },
-        "desc": "设置过滤规则。",
+        "desc": "设置过滤规则。\n> files_only 表示只列出文件，dir_only 表示只列出目录，其它表示只列出满足扩展名文件集合(如：.jpg.png.gif)。",
         "name": "file_chooser_set_filter",
         "return": {
           "type": "ret_t",
@@ -44087,6 +44708,47 @@
             "desc": "widget对象。"
           },
           {
+            "type": "const char*",
+            "name": "filter",
+            "desc": "过滤规则。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置 过滤规则。\n> files_only 表示只列出文件，dir_only 表示只列出目录，其它表示只列出满足扩展名文件集合(如：.jpg.png.gif)。",
+        "name": "file_browser_view_set_filter",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "重新加载。",
+        "name": "file_browser_view_reload",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          },
+          {
             "type": "bool_t",
             "name": "ignore_hidden_files",
             "desc": "忽略隐藏文件。"
@@ -44267,6 +44929,19 @@
       {
         "name": "init_dir",
         "desc": "初始文件夹。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "filter",
+        "desc": "过滤规则。",
         "type": "char*",
         "annotation": {
           "set_prop": true,
@@ -54320,11 +54995,52 @@
           }
         ],
         "annotation": {},
-        "desc": "创建iostream对象。",
+        "desc": "创建iostream对象。\n> 缺省配置: baudrate=115200 bytesize=8 stopbits=1 flowcontrol=0 parity=0",
         "name": "tk_iostream_serial_create",
         "return": {
           "type": "tk_iostream_t*",
           "desc": "返回iostream对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_iostream_t*",
+            "name": "iostream",
+            "desc": "串口对象。"
+          },
+          {
+            "type": "int32_t",
+            "name": "baudrate",
+            "desc": "波特率。"
+          },
+          {
+            "type": "bytesize_t",
+            "name": "bytesize",
+            "desc": "字节位数。"
+          },
+          {
+            "type": "parity_t",
+            "name": "parity",
+            "desc": "奇偶校验。"
+          },
+          {
+            "type": "stopbits_t",
+            "name": "stopbits",
+            "desc": "停止位。"
+          },
+          {
+            "type": "flowcontrol_t",
+            "name": "flowcontrol",
+            "desc": "流控。"
+          }
+        ],
+        "annotation": {},
+        "desc": "配置串口。",
+        "name": "tk_iostream_serial_config",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       }
     ],
@@ -54890,6 +55606,34 @@
       {
         "params": [
           {
+            "type": "int",
+            "name": "sock",
+            "desc": "socket。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建istream对象。",
+        "name": "tk_istream_tcp_create",
+        "return": {
+          "type": "tk_istream_t*",
+          "desc": "返回istream对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "inet/istream_tcp.h",
+    "desc": "基于TCP实现的输入流。",
+    "name": "tk_istream_tcp_t",
+    "parent": "tk_istream_t",
+    "level": 4
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
             "type": "const char*",
             "name": "host",
             "desc": "服务器地址。"
@@ -54939,34 +55683,6 @@
       {
         "params": [
           {
-            "type": "int",
-            "name": "sock",
-            "desc": "socket。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建iostream对象。",
-        "name": "tk_iostream_tcp_create",
-        "return": {
-          "type": "tk_iostream_t*",
-          "desc": "返回iostream对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "inet/iostream_tcp.h",
-    "desc": "基于TCP实现的输入输出流。",
-    "name": "tk_iostream_tcp_t",
-    "parent": "tk_iostream_t",
-    "level": 4
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
             "type": "const char*",
             "name": "filename",
             "desc": "文件名。"
@@ -55001,20 +55717,20 @@
           }
         ],
         "annotation": {},
-        "desc": "创建istream对象。",
-        "name": "tk_istream_tcp_create",
+        "desc": "创建iostream对象。",
+        "name": "tk_iostream_tcp_create",
         "return": {
-          "type": "tk_istream_t*",
-          "desc": "返回istream对象。"
+          "type": "tk_iostream_t*",
+          "desc": "返回iostream对象。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "inet/istream_tcp.h",
-    "desc": "基于TCP实现的输入流。",
-    "name": "tk_istream_tcp_t",
-    "parent": "tk_istream_t",
+    "header": "inet/iostream_tcp.h",
+    "desc": "基于TCP实现的输入输出流。",
+    "name": "tk_iostream_tcp_t",
+    "parent": "tk_iostream_t",
     "level": 4
   }
 ]

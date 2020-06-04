@@ -49,6 +49,8 @@ https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/file_cho
 | <a href="#file_browser_view_t_file_browser_view_create_file">file\_browser\_view\_create\_file</a> | 在当前文件夹创建文件。 |
 | <a href="#file_browser_view_t_file_browser_view_get_cwd">file\_browser\_view\_get\_cwd</a> | 获取当前路径。 |
 | <a href="#file_browser_view_t_file_browser_view_get_selected_items">file\_browser\_view\_get\_selected\_items</a> | 返回当前选中的项目。 |
+| <a href="#file_browser_view_t_file_browser_view_reload">file\_browser\_view\_reload</a> | 重新加载。 |
+| <a href="#file_browser_view_t_file_browser_view_set_filter">file\_browser\_view\_set\_filter</a> | 设置 过滤规则。 |
 | <a href="#file_browser_view_t_file_browser_view_set_ignore_hidden_files">file\_browser\_view\_set\_ignore\_hidden\_files</a> | 设置 忽略隐藏文件。 |
 | <a href="#file_browser_view_t_file_browser_view_set_init_dir">file\_browser\_view\_set\_init\_dir</a> | 设置 初始文件夹。 |
 | <a href="#file_browser_view_t_file_browser_view_set_show_check_button">file\_browser\_view\_set\_show\_check\_button</a> | 设置 是否显示checkbutton。 |
@@ -59,6 +61,7 @@ https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/file_cho
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
+| <a href="#file_browser_view_t_filter">filter</a> | char* | 过滤规则。 |
 | <a href="#file_browser_view_t_ignore_hidden_files">ignore\_hidden\_files</a> | bool\_t | 是否忽略隐藏文件。 |
 | <a href="#file_browser_view_t_init_dir">init\_dir</a> | char* | 初始文件夹。 |
 | <a href="#file_browser_view_t_show_check_button">show\_check\_button</a> | bool\_t | 是否显示checkbutton。 |
@@ -189,6 +192,46 @@ darray_t* file_browser_view_get_selected_items (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | darray\_t* | 返回当前选中的项目。 |
 | widget | widget\_t* | widget对象。 |
+#### file\_browser\_view\_reload 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="file_browser_view_t_file_browser_view_reload">重新加载。
+
+* 函数原型：
+
+```
+ret_t file_browser_view_reload (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | widget对象。 |
+#### file\_browser\_view\_set\_filter 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="file_browser_view_t_file_browser_view_set_filter">设置 过滤规则。
+> files_only 表示只列出文件，dir_only 表示只列出目录，其它表示只列出满足扩展名文件集合(如：.jpg.png.gif)。
+
+* 函数原型：
+
+```
+ret_t file_browser_view_set_filter (widget_t* widget, const char* filter);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | widget对象。 |
+| filter | const char* | 过滤规则。 |
 #### file\_browser\_view\_set\_ignore\_hidden\_files 函数
 -----------------------
 
@@ -289,6 +332,22 @@ ret_t file_browser_view_set_sort_by (widget_t* widget, const char* sort_by);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
 | sort\_by | const char* | 排序方式。可选值(name, size, mtime, type)。 |
+#### filter 属性
+-----------------------
+> <p id="file_browser_view_t_filter">过滤规则。
+
+* 类型：char*
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### ignore\_hidden\_files 属性
 -----------------------
 > <p id="file_browser_view_t_ignore_hidden_files">是否忽略隐藏文件。

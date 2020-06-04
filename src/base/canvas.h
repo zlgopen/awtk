@@ -618,8 +618,21 @@ canvas_t* canvas_cast(canvas_t* c);
  */
 ret_t canvas_reset(canvas_t* c);
 
-/*public for internal use*/
+
+/**
+ * @method canvas_draw_image_at
+ * 在指定位置画图。
+ *
+ * @param {canvas_t*} c canvas对象。
+ * @param {bitmap_t*} img 图片对象。
+ * @param {xy_t} x x坐标。
+ * @param {xy_t} y w坐标。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t canvas_draw_image_at(canvas_t* c, bitmap_t* img, xy_t x, xy_t y);
+
+/*public for internal use*/
 ret_t canvas_draw_icon_in_rect(canvas_t* c, bitmap_t* img, rect_t* r);
 
 ret_t canvas_draw_image_center(canvas_t* c, bitmap_t* img, rect_t* dst);
@@ -678,8 +691,29 @@ ret_t canvas_set_font_manager(canvas_t* c, font_manager_t* font_manager);
  */
 ret_t canvas_set_assets_manager(canvas_t* c, assets_manager_t* assets_manager);
 
+/**
+ * @method canvas_begin_frame
+ * 绘制开始。
+ *
+ * @param {canvas_t*} c canvas对象。
+ * @param {rect_t*} dirty_rect 脏矩形。
+ * @param {lcd_draw_mode_t} draw_mode 绘制模式。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t canvas_begin_frame(canvas_t* c, rect_t* dirty_rect, lcd_draw_mode_t draw_mode);
+
+
+/**
+ * @method canvas_end_frame
+ * 绘制结束。
+ *
+ * @param {canvas_t*} c canvas对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t canvas_end_frame(canvas_t* c);
+
 ret_t canvas_test_paint(canvas_t* c, bool_t pressed, xy_t x, xy_t y);
 
 /*save/restore works for awtk web only*/

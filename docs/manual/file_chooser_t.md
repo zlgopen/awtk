@@ -208,6 +208,7 @@ bool_t file_chooser_is_aborted (file_chooser_t* chooser);
 * 函数功能：
 
 > <p id="file_chooser_t_file_chooser_set_filter">设置过滤规则。
+> files_only 表示只列出文件，dir_only 表示只列出目录，其它表示只列出满足扩展名文件集合(如：.jpg.png.gif)。
 
 * 函数原型：
 
@@ -221,7 +222,7 @@ ret_t file_chooser_set_filter (file_chooser_t* chooser, const char* filter);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | chooser | file\_chooser\_t* | file\_chooser对象。 |
-| filter | const char* | 过滤规则(如".jpg.png.gif")。 |
+| filter | const char* | 过滤规则。 |
 #### file\_chooser\_set\_init\_dir 函数
 -----------------------
 

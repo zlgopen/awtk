@@ -8,6 +8,7 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#lcd_t_lcd_begin_frame">lcd\_begin\_frame</a> | 准备绘制。 |
+| <a href="#lcd_t_lcd_destroy">lcd\_destroy</a> | 销毁lcd对象。 |
 | <a href="#lcd_t_lcd_draw_glyph">lcd\_draw\_glyph</a> | 绘制字符。如果实现了measure_text/draw_text则不需要实现本函数。 |
 | <a href="#lcd_t_lcd_draw_hline">lcd\_draw\_hline</a> | 绘制一条水平线。 |
 | <a href="#lcd_t_lcd_draw_image">lcd\_draw\_image</a> | 绘制图片。 |
@@ -74,6 +75,25 @@ ret_t lcd_begin_frame (lcd_t* lcd, rect_t* dirty_rect, lcd_draw_mode_t anim_mode
 | lcd | lcd\_t* | lcd对象。 |
 | dirty\_rect | rect\_t* | 需要绘制的区域。 |
 | anim\_mode | lcd\_draw\_mode\_t | 动画模式，如果可能，直接画到显存而不是离线的framebuffer。 |
+#### lcd\_destroy 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="lcd_t_lcd_destroy">销毁lcd对象。
+
+* 函数原型：
+
+```
+ret_t lcd_destroy (lcd_t* lcd);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| lcd | lcd\_t* | lcd对象。 |
 #### lcd\_draw\_glyph 函数
 -----------------------
 

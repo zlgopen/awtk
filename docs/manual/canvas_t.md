@@ -7,10 +7,12 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#canvas_t_canvas_begin_frame">canvas\_begin\_frame</a> | 绘制开始。 |
 | <a href="#canvas_t_canvas_cast">canvas\_cast</a> | 转换为canvas对象(供脚本语言使用)。 |
 | <a href="#canvas_t_canvas_draw_hline">canvas\_draw\_hline</a> | 画水平线。 |
 | <a href="#canvas_t_canvas_draw_icon">canvas\_draw\_icon</a> | 绘制图标。 |
 | <a href="#canvas_t_canvas_draw_image">canvas\_draw\_image</a> | 绘制图片。 |
+| <a href="#canvas_t_canvas_draw_image_at">canvas\_draw\_image\_at</a> | 在指定位置画图。 |
 | <a href="#canvas_t_canvas_draw_image_ex">canvas\_draw\_image\_ex</a> | 绘制图片。 |
 | <a href="#canvas_t_canvas_draw_line">canvas\_draw\_line</a> | 画直线。 |
 | <a href="#canvas_t_canvas_draw_points">canvas\_draw\_points</a> | 画多个点。 |
@@ -19,6 +21,7 @@
 | <a href="#canvas_t_canvas_draw_utf8">canvas\_draw\_utf8</a> | 绘制文本。 |
 | <a href="#canvas_t_canvas_draw_utf8_in_rect">canvas\_draw\_utf8\_in\_rect</a> | 绘制文本。 |
 | <a href="#canvas_t_canvas_draw_vline">canvas\_draw\_vline</a> | 画垂直线。 |
+| <a href="#canvas_t_canvas_end_frame">canvas\_end\_frame</a> | 绘制结束。 |
 | <a href="#canvas_t_canvas_fill_rect">canvas\_fill\_rect</a> | 填充矩形。 |
 | <a href="#canvas_t_canvas_get_clip_rect">canvas\_get\_clip\_rect</a> | 获取裁剪区。 |
 | <a href="#canvas_t_canvas_get_font_height">canvas\_get\_font\_height</a> | 获取字体的高度。 |
@@ -67,6 +70,27 @@
 | <a href="#canvas_t_show_fps">show\_fps</a> | bool\_t | 是否显示帧率。 |
 | <a href="#canvas_t_text_align_h">text\_align\_h</a> | align\_h\_t | 文本水平对齐方式。 |
 | <a href="#canvas_t_text_align_v">text\_align\_v</a> | align\_v\_t | 文本垂直对齐方式。 |
+#### canvas\_begin\_frame 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="canvas_t_canvas_begin_frame">绘制开始。
+
+* 函数原型：
+
+```
+ret_t canvas_begin_frame (canvas_t* c, rect_t* dirty_rect, lcd_draw_mode_t draw_mode);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| c | canvas\_t* | canvas对象。 |
+| dirty\_rect | rect\_t* | 脏矩形。 |
+| draw\_mode | lcd\_draw\_mode\_t | 绘制模式。 |
 #### canvas\_cast 函数
 -----------------------
 
@@ -152,6 +176,28 @@ ret_t canvas_draw_image (canvas_t* c, bitmap_t* img, rect_t* src, rect_t* dst);
 | img | bitmap\_t* | 图片对象。 |
 | src | rect\_t* | 源区域。 |
 | dst | rect\_t* | 目的区域。 |
+#### canvas\_draw\_image\_at 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="canvas_t_canvas_draw_image_at">在指定位置画图。
+
+* 函数原型：
+
+```
+ret_t canvas_draw_image_at (canvas_t* c, bitmap_t* img, xy_t x, xy_t y);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| c | canvas\_t* | canvas对象。 |
+| img | bitmap\_t* | 图片对象。 |
+| x | xy\_t | x坐标。 |
+| y | xy\_t | w坐标。 |
 #### canvas\_draw\_image\_ex 函数
 -----------------------
 
@@ -332,6 +378,25 @@ ret_t canvas_draw_vline (canvas_t* c, xy_t x, xy_t y, wh_t h);
 | x | xy\_t | x坐标。 |
 | y | xy\_t | y坐标。 |
 | h | wh\_t | 高度。 |
+#### canvas\_end\_frame 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="canvas_t_canvas_end_frame">绘制结束。
+
+* 函数原型：
+
+```
+ret_t canvas_end_frame (canvas_t* c);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| c | canvas\_t* | canvas对象。 |
 #### canvas\_fill\_rect 函数
 -----------------------
 
