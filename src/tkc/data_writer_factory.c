@@ -89,7 +89,7 @@ data_writer_t* data_writer_factory_create_writer(data_writer_factory_t* factory,
 
   iter = darray_find(&(factory->creators), (void*)protocol);
   if (iter != NULL) {
-    p = strstr(url, "://");
+    p = strstr(url, ":");
 
     if (p == NULL) {
       p = url;
