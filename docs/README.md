@@ -39,6 +39,7 @@
 * [自定义控件规范](custom_widget_rules.md)
 * [动态库与静态库](shared_static.md)
 * [窗口之间如何通信](https://github.com/zlgopen/awtk-inter-win-communication)
+* [为 512K Flash 优化空间](how_to_optimize_for_512K_flash.md)
 
 ### 2.HowTos
 * [AWTK 调试技巧](debug_tips.md)
