@@ -1882,6 +1882,16 @@ bool_t widget_is_keyboard(widget_t* widget);
 ret_t widget_paint_helper(widget_t* widget, canvas_t* c, const char* icon, wstr_t* text);
 
 /**
+ * @method widget_draw_background
+ * 根据控件的style绘制背景矩形。
+ * @param {widget_t*} widget 控件对象。
+ * @param {canvas_t*} c 画布对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_draw_background(widget_t* widget, canvas_t* c);
+
+/**
  * @method widget_stroke_border_rect
  * 根据控件的style绘制边框矩形。
  * @annotation ["private"]

@@ -1371,7 +1371,7 @@ ret_t widget_stroke_border_rect(widget_t* widget, canvas_t* c, rect_t* r) {
   return RET_OK;
 }
 
-static ret_t widget_draw_background(widget_t* widget, canvas_t* c) {
+ret_t widget_draw_background(widget_t* widget, canvas_t* c) {
   rect_t r;
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
 

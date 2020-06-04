@@ -19995,6 +19995,27 @@
         "params": [
           {
             "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "画布对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "根据控件的style绘制背景矩形。",
+        "name": "widget_draw_background",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
             "name": "parent",
             "desc": "widget的父控件。"
           },
