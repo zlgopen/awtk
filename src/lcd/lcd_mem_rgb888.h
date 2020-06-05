@@ -26,9 +26,65 @@
 
 BEGIN_C_DECLS
 
+/**
+ * @class lcd_mem_rgb888_t
+ * @parent lcd_t
+ * @annotation ["fake"]
+ */
+
+/**
+ * @method lcd_mem_rgb888_create
+ *
+ * 创建lcd对象。
+ *
+ * @param {wh_t} w 宽度。
+ * @param {wh_t} h 高度。
+ * @param {bool_t} alloc 是否分配内存。
+ *
+ * @return {lcd_t*} 返回lcd对象。
+ */
 lcd_t* lcd_mem_rgb888_create(wh_t w, wh_t h, bool_t alloc);
+
+/**
+ * @method lcd_mem_rgb888_create_single_fb
+ *
+ * 创建single fb lcd对象。
+ *
+ * @param {wh_t} w 宽度。
+ * @param {wh_t} h 高度。
+ * @param {uint8_t*} fbuff 帧率缓冲区。
+ *
+ * @return {lcd_t*} 返回lcd对象。
+ */
 lcd_t* lcd_mem_rgb888_create_single_fb(wh_t w, wh_t h, uint8_t* fbuff);
+
+/**
+ * @method lcd_mem_rgb888_create_double_fb
+ *
+ * 创建double fb lcd对象。
+ *
+ * @param {wh_t} w 宽度。
+ * @param {wh_t} h 高度。
+ * @param {uint8_t*} online_fb 在线帧率缓冲区。
+ * @param {uint8_t*} offline_fb 离线帧率缓冲区。
+ *
+ * @return {lcd_t*} 返回lcd对象。
+ */
 lcd_t* lcd_mem_rgb888_create_double_fb(wh_t w, wh_t h, uint8_t* online_fb, uint8_t* offline_fb);
+
+/**
+ * @method lcd_mem_rgb888_create_three_fb
+ * 
+ * 创建three fb lcd对象。
+ *
+ * @param {wh_t} w 宽度。
+ * @param {wh_t} h 高度。
+ * @param {uint8_t*} online_fb 在线帧率缓冲区。
+ * @param {uint8_t*} offline_fb 离线帧率缓冲区。
+ * @param {uint8_t*} next_fb 待显示的帧率缓冲区。
+ *
+ * @return {lcd_t*} 返回lcd对象。
+ */
 lcd_t* lcd_mem_rgb888_create_three_fb(wh_t w, wh_t h, uint8_t* online_fb, uint8_t* offline_fb,
                                       uint8_t* next_fb);
 

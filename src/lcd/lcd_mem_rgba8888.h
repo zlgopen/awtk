@@ -28,6 +28,7 @@ BEGIN_C_DECLS
 
 /**
  * @class lcd_mem_rgba8888_t
+ * @parent lcd_t
  * @annotation ["fake"]
  */
 

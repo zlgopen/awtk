@@ -202,6 +202,25 @@
 
 * [children\_layouter\_list\_view](manual/children_layouter_list_view_t.md) 列表视图的子控件布局算法实现。
 
+### lcd
+
+![lcd](images/lcd.jpg)
+ 
+[lcd](manual/lcd_t.md)
+[lcd\_type](manual/lcd_type_t.md)
+[lcd\_draw\_mode](manual/lcd_draw_mode_t.md)
+[lcd\_orientation](manual/lcd_orientation_t.md)
+[lcd\_mem\_bgr565](manual/lcd_mem_bgr565_t.md)
+[lcd\_mem\_bgr888](manual/lcd_mem_bgr888_t.md)
+[lcd\_mem\_bgra8888](manual/lcd_mem_bgra8888_t.md)
+[lcd\_mem\_fragment](manual/lcd_mem_fragment_t.md)
+[lcd\_mem\_rgb565](manual/lcd_mem_rgb565_t.md)
+[lcd\_mem\_rgb888](manual/lcd_mem_rgb888_t.md)
+[lcd\_mem\_rgba8888](manual/lcd_mem_rgba8888_t.md)
+[lcd\_mem\_special](manual/lcd_mem_special_t.md)
+[lcd\_mono](manual/lcd_mono_t.md)
+[lcd\_profile](manual/lcd_profile_t.md)
+
 ### 杂项
 
 * [system\_info](manual/system_info_t.md) 系统信息。
