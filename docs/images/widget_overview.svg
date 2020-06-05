@@ -110,12 +110,12 @@
 <text text-anchor="middle" x="183" y="-2021.5" font-family="Courier New" font-size="12.00">app_bar_t</text>
 </g>
 <!-- app_bar_t&#45;&gt;widget_t -->
-<g id="edge20" class="edge"><title>app_bar_t&#45;&gt;widget_t</title>
+<g id="edge70" class="edge"><title>app_bar_t&#45;&gt;widget_t</title>
 <path fill="none" stroke="black" d="M142.315,-2009.47C130.145,-2004.86 117.896,-1998.34 110,-1988 69.7292,-1935.26 45.2753,-1460.24 39.3888,-1338.32"/>
 <polygon fill="none" stroke="black" points="42.8818,-1338.09 38.9067,-1328.27 35.8899,-1338.42 42.8818,-1338.09"/>
 </g>
 <!-- app_bar_t&#45;&gt;widget_t -->
-<g id="edge70" class="edge"><title>app_bar_t&#45;&gt;widget_t</title>
+<g id="edge20" class="edge"><title>app_bar_t&#45;&gt;widget_t</title>
 <path fill="none" stroke="black" d="M142.315,-2026.49C130.145,-2022.86 117.896,-2016.34 110,-2006 69.0669,-1952.4 44.4751,-1462.5 39.1135,-1338.38"/>
 <polygon fill="none" stroke="black" points="42.6009,-1338.01 38.6806,-1328.16 35.6072,-1338.3 42.6009,-1338.01"/>
 </g>
@@ -165,12 +165,12 @@
 <text text-anchor="middle" x="183" y="-1746.5" font-family="Courier New" font-size="12.00">group_box_t</text>
 </g>
 <!-- group_box_t&#45;&gt;widget_t -->
-<g id="edge30" class="edge"><title>group_box_t&#45;&gt;widget_t</title>
+<g id="edge68" class="edge"><title>group_box_t&#45;&gt;widget_t</title>
 <path fill="none" stroke="black" d="M137.09,-1731.86C126.863,-1727.44 116.97,-1721.51 110,-1713 62.2123,-1654.68 44.5754,-1419.84 39.6197,-1338.07"/>
 <polygon fill="none" stroke="black" points="43.1092,-1337.79 39.0273,-1328.01 36.1213,-1338.2 43.1092,-1337.79"/>
 </g>
 <!-- group_box_t&#45;&gt;widget_t -->
-<g id="edge68" class="edge"><title>group_box_t&#45;&gt;widget_t</title>
+<g id="edge30" class="edge"><title>group_box_t&#45;&gt;widget_t</title>
 <path fill="none" stroke="black" d="M135.223,-1748.55C125.667,-1744.7 116.545,-1738.99 110,-1731 60.7307,-1670.87 43.5107,-1423.11 39.1948,-1338.38"/>
 <polygon fill="none" stroke="black" points="42.6818,-1338.03 38.7,-1328.21 35.69,-1338.37 42.6818,-1338.03"/>
 </g>

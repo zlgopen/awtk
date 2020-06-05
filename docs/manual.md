@@ -204,35 +204,35 @@
 
 ### lcd
 
-![lcd](images/lcd.jpg)
+![lcd](images/lcd.png)
  
-* [lcd](manual/lcd_t.md)
+* [lcd](manual/lcd_t.md) LCD接口
 
-* [lcd\_type](manual/lcd_type_t.md)
+* [lcd\_type](manual/lcd_type_t.md) LCD类型定义
 
-* [lcd\_draw\_mode](manual/lcd_draw_mode_t.md)
+* [lcd\_draw\_mode](manual/lcd_draw_mode_t.md) LCD绘制模式
 
-* [lcd\_orientation](manual/lcd_orientation_t.md)
+* [lcd\_mem\_fragment](manual/lcd_mem_fragment_t.md) 片段LCD
 
-* [lcd\_mem\_bgr565](manual/lcd_mem_bgr565_t.md)
+* [lcd\_orientation](manual/lcd_orientation_t.md) LCD旋转常量
 
-* [lcd\_mem\_bgr888](manual/lcd_mem_bgr888_t.md)
+* [lcd\_mem\_bgr565](manual/lcd_mem_bgr565_t.md) bgr565 格式的LCD
 
-* [lcd\_mem\_bgra8888](manual/lcd_mem_bgra8888_t.md)
+* [lcd\_mem\_bgr888](manual/lcd_mem_bgr888_t.md) bgr888 格式的LCD
 
-* [lcd\_mem\_fragment](manual/lcd_mem_fragment_t.md)
+* [lcd\_mem\_bgra8888](manual/lcd_mem_bgra8888_t.md) bgra8888 格式的LCD
 
-* [lcd\_mem\_rgb565](manual/lcd_mem_rgb565_t.md)
+* [lcd\_mem\_rgb565](manual/lcd_mem_rgb565_t.md) rgb565 格式的LCD
 
-* [lcd\_mem\_rgb888](manual/lcd_mem_rgb888_t.md)
+* [lcd\_mem\_rgb888](manual/lcd_mem_rgb888_t.md) rgb888 格式的LCD
 
-* [lcd\_mem\_rgba8888](manual/lcd_mem_rgba8888_t.md)
+* [lcd\_mem\_rgba8888](manual/lcd_mem_rgba8888_t.md) bgra8888 格式的LCD
 
-* [lcd\_mem\_special](manual/lcd_mem_special_t.md)
+* [lcd\_mem\_special](manual/lcd_mem_special_t.md) 特殊格式的LCD
 
-* [lcd\_mono](manual/lcd_mono_t.md)
+* [lcd\_mono](manual/lcd_mono_t.md) 单色LCD
 
-* [lcd\_profile](manual/lcd_profile_t.md)
+* [lcd\_profile](manual/lcd_profile_t.md) 用于profile性能的LCD
 
 ### 杂项
 

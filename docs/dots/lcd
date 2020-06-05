@@ -1,0 +1,20 @@
+digraph G {
+  rankdir  = BT
+  fontname = "Courier New"
+  fontsize = 12
+
+  node [
+      fontname = "Courier New"
+      fontsize = 12
+      shape    = "record"
+      width = 0.4
+  ]
+
+ lcd_mem_fragment_t -> lcd_t[arrowhead = "empty"]
+ lcd_mono_t -> lcd_t[arrowhead = "empty"]
+ lcd_mem_t -> lcd_t[arrowhead = "empty"]
+ lcd_vgcanvas_t -> lcd_t[arrowhead = "empty"]
+ lcd_profile_t -> lcd_t[arrowhead = "empty"]
+ lcd_mem_xxx -> lcd_mem_t[arrowhead = "none"]
+ lcd_mem_special -> lcd_mem_t[arrowhead = "none"]
+}
