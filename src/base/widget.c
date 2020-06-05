@@ -974,10 +974,12 @@ ret_t widget_set_visible_only(widget_t* widget, bool_t visible) {
 
 ret_t widget_set_visible(widget_t* widget, bool_t visible, bool_t recursive) {
   if (recursive) {
-    return widget_set_visible_recursive(widget, visible);
+    widget_set_visible_recursive(widget, visible);
   } else {
-    return widget_set_visible_self(widget, visible);
+    widget_set_visible_self(widget, visible);
   }
+
+  return widget_invalidate(widget, NULL);
 }
 
 widget_t* widget_find_target(widget_t* widget, xy_t x, xy_t y) {
