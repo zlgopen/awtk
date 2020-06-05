@@ -38,7 +38,7 @@ BEGIN_C_DECLS
 
 /**
  * @method lcd_mem_fragment_create
- *
+ * @export none
  * 创建lcd对象。
  *
  * @param {wh_t} w 宽度。
@@ -50,6 +50,7 @@ lcd_t* lcd_mem_fragment_create(wh_t w, wh_t h);
 
 /**
  * @method lcd_mem_fragment_get_buff
+ * @export none
  *
  * 获取framebuffer的地址。
  *

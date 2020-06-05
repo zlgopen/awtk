@@ -35166,6 +35166,7 @@
         "annotation": {},
         "desc": "创建lcd对象。",
         "name": "lcd_mem_fragment_create",
+        "export": "none",
         "return": {
           "type": "lcd_t*",
           "desc": "返回lcd对象。"
@@ -35182,6 +35183,7 @@
         "annotation": {},
         "desc": "获取framebuffer的地址。",
         "name": "lcd_mem_fragment_get_buff",
+        "export": "none",
         "return": {
           "type": "uint8_t*",
           "desc": "返回framebuffer的地址。"
