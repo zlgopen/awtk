@@ -120,10 +120,10 @@ ret_t soft_clear_rect(bitmap_t* dst, rect_t* dst_r, color_t c) {
     case BITMAP_FMT_RGBA8888: {
       return clear_rgba8888_rect(dst, dst_r, c);
     }
-#ifndef LCD_BGR565_LITE        
+#ifndef LCD_BGR565_LITE
     case BITMAP_FMT_RGB565: {
       return clear_rgb565_rect(dst, dst_r, c);
-    }    
+    }
     case BITMAP_FMT_BGR888: {
       return clear_bgr888_rect(dst, dst_r, c);
     }
@@ -139,7 +139,7 @@ ret_t soft_clear_rect(bitmap_t* dst, rect_t* dst_r, color_t c) {
     case BITMAP_FMT_ABGR8888: {
       return clear_abgr8888_rect(dst, dst_r, c);
     }
-#endif/*LCD_BGR565_LITE*/    
+#endif /*LCD_BGR565_LITE*/
     default:
       break;
   }
@@ -159,11 +159,11 @@ ret_t soft_fill_rect(bitmap_t* dst, rect_t* dst_r, color_t c) {
     case BITMAP_FMT_RGBA8888: {
       return fill_rgba8888_rect(dst, dst_r, c);
     }
-    
-#ifndef LCD_BGR565_LITE    
+
+#ifndef LCD_BGR565_LITE
     case BITMAP_FMT_RGB565: {
       return fill_rgb565_rect(dst, dst_r, c);
-    }    
+    }
     case BITMAP_FMT_BGR888: {
       return fill_bgr888_rect(dst, dst_r, c);
     }
@@ -179,7 +179,7 @@ ret_t soft_fill_rect(bitmap_t* dst, rect_t* dst_r, color_t c) {
     case BITMAP_FMT_ABGR8888: {
       return fill_abgr8888_rect(dst, dst_r, c);
     }
-#endif/*LCD_BGR565_LITE*/        
+#endif /*LCD_BGR565_LITE*/
     default:
       break;
   }
@@ -196,11 +196,11 @@ ret_t soft_rotate_image(bitmap_t* dst, bitmap_t* src, rect_t* src_r, lcd_orienta
   switch (dst->format) {
     case BITMAP_FMT_BGR565: {
       return rotate_bgr565_image(dst, src, src_r, o);
-    }   
+    }
     case BITMAP_FMT_RGBA8888: {
       return rotate_rgba8888_image(dst, src, src_r, o);
     }
-#ifndef LCD_BGR565_LITE        
+#ifndef LCD_BGR565_LITE
     case BITMAP_FMT_RGB565: {
       return rotate_rgb565_image(dst, src, src_r, o);
     }
@@ -213,7 +213,7 @@ ret_t soft_rotate_image(bitmap_t* dst, bitmap_t* src, rect_t* src_r, lcd_orienta
     case BITMAP_FMT_BGRA8888: {
       return rotate_bgra8888_image(dst, src, src_r, o);
     }
-#endif/*LCD_BGR565_LITE*/            
+#endif /*LCD_BGR565_LITE*/
     default:
       break;
   }
@@ -240,20 +240,20 @@ ret_t soft_blend_image(bitmap_t* dst, bitmap_t* src, rect_t* dst_r, rect_t* src_
         case BITMAP_FMT_RGBA8888: {
           return blend_image_bgr565_rgba8888(dst, src, dst_r, src_r, alpha);
         }
-#ifndef LCD_BGR565_LITE                    
+#ifndef LCD_BGR565_LITE
         case BITMAP_FMT_RGB565: {
           return blend_image_bgr565_rgb565(dst, src, dst_r, src_r, alpha);
         }
         case BITMAP_FMT_BGRA8888: {
           return blend_image_bgr565_bgra8888(dst, src, dst_r, src_r, alpha);
         }
-#endif/*LCD_BGR565_LITE*/                        
+#endif /*LCD_BGR565_LITE*/
         default:
           break;
       }
       break;
     }
-#ifndef LCD_BGR565_LITE            
+#ifndef LCD_BGR565_LITE
     case BITMAP_FMT_RGB565: {
       switch (src->format) {
         case BITMAP_FMT_RGB565: {
@@ -367,7 +367,7 @@ ret_t soft_blend_image(bitmap_t* dst, bitmap_t* src, rect_t* dst_r, rect_t* src_
       }
       break;
     }
-#endif/*LCD_BGR565_LITE*/                
+#endif /*LCD_BGR565_LITE*/
     default:
       break;
   }

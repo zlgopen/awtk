@@ -42,11 +42,10 @@ bitmap_format_t get_image_format(const wchar_t* format) {
     } else if (wcsstr(format, L"rgba")) {
       return BITMAP_FMT_RGBA8888;
     } else if (wcsstr(format, L"bgr565")) {
-       return BITMAP_FMT_BGR565;
+      return BITMAP_FMT_BGR565;
     } else if (wcsstr(format, L"rgb565")) {
       return BITMAP_FMT_RGB565;
     };
-
   }
   return BITMAP_FMT_NONE;
 }
@@ -65,7 +64,6 @@ output_format_t get_output_format(const wchar_t* format) {
 }
 
 ret_t res_image_gen(str_t* out_file, bitmap_t* bitmap, const char* theme) {
-
   str_t temp_file;
   uint32_t size = 0;
   uint8_t* buff = NULL;
@@ -80,7 +78,8 @@ ret_t res_image_gen(str_t* out_file, bitmap_t* bitmap, const char* theme) {
 
   buff = (uint8_t*)read_file(temp_file.str, &size);
   if (buff != NULL) {
-    ret = output_res_c_source(out_file->str, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_PNG, buff, size);
+    ret = output_res_c_source(out_file->str, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_PNG, buff,
+                              size);
   }
 
   file_remove(temp_file.str);
@@ -99,7 +98,6 @@ ret_t gen_one(str_t* in_file, str_t* out_file, const char* theme, output_format_
     uint8_t* buff = NULL;
     buff = (uint8_t*)read_file(in_file->str, &size);
     if (buff != NULL) {
-
       if (output_format == OUTPUT_FORMAT_DATA) {
         ret = image_dither_load_image(buff, size, &bitmap, image_format);
         if (ret == RET_OK) {
@@ -107,13 +105,13 @@ ret_t gen_one(str_t* in_file, str_t* out_file, const char* theme, output_format_
         }
       } else {
         bitmap_format_t temp_image_format = BITMAP_FMT_RGBA8888;
-        if(image_format == BITMAP_FMT_BGRA8888) {
+        if (image_format == BITMAP_FMT_BGRA8888) {
           temp_image_format = BITMAP_FMT_BGRA8888;
         }
 
         ret = image_dither_load_image(buff, size, &bitmap, temp_image_format);
         if (ret == RET_OK) {
-          if(output_format == OUTPUT_FORMAT_RES) {
+          if (output_format == OUTPUT_FORMAT_RES) {
             res_image_gen(out_file, &bitmap, theme);
           } else {
             image_dither_image_wirte_png_file(out_file->str, &bitmap);
@@ -134,7 +132,6 @@ ret_t gen_one(str_t* in_file, str_t* out_file, const char* theme, output_format_
 }
 
 int wmain(int argc, wchar_t* argv[]) {
-
   str_t in_file;
   str_t out_file;
 
@@ -148,7 +145,8 @@ int wmain(int argc, wchar_t* argv[]) {
   TKMEM_INIT(4 * 1024 * 1024);
 
   if (argc < 4) {
-    printf("Usage: %S in_filename out_filename (png|res|data) (bgra|rgba|bgr565|rgb565) \n", argv[0]);
+    printf("Usage: %S in_filename out_filename (png|res|data) (bgra|rgba|bgr565|rgb565) \n",
+           argv[0]);
 
     return 0;
   }
@@ -167,7 +165,7 @@ int wmain(int argc, wchar_t* argv[]) {
     format = argv[4];
   }
 
-  image_format = get_image_format(format);  
+  image_format = get_image_format(format);
   if (image_format == BITMAP_FMT_NONE && output_format == OUTPUT_FORMAT_DATA) {
     printf("set (bgra|rgba|bgr565|rgb565) \n");
     return 0;

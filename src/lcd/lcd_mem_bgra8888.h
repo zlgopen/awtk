@@ -87,7 +87,6 @@ lcd_t* lcd_mem_bgra8888_create_double_fb(wh_t w, wh_t h, uint8_t* online_fb, uin
 lcd_t* lcd_mem_bgra8888_create_three_fb(wh_t w, wh_t h, uint8_t* online_fb, uint8_t* offline_fb,
                                         uint8_t* next_fb);
 
-
 END_C_DECLS
 
 #endif /*TK_LCD_MEM_BGRA8888_H*/

@@ -64,7 +64,6 @@ struct _tk_iostream_serial_t {
  */
 tk_iostream_t* tk_iostream_serial_create(const char* port);
 
-
 /**
  * @method tk_iostream_serial_config
  *
@@ -80,8 +79,8 @@ tk_iostream_t* tk_iostream_serial_create(const char* port);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  *
  */
-ret_t tk_iostream_serial_config(tk_iostream_t* iostream, int32_t baudrate,
-    bytesize_t bytesize, parity_t parity, stopbits_t stopbits, flowcontrol_t flowcontrol);
+ret_t tk_iostream_serial_config(tk_iostream_t* iostream, int32_t baudrate, bytesize_t bytesize,
+                                parity_t parity, stopbits_t stopbits, flowcontrol_t flowcontrol);
 
 #define TK_IOSTREAM_SERIAL_PROP_PARITY "parity"
 #define TK_IOSTREAM_SERIAL_PROP_STOPBITS "stopbits"

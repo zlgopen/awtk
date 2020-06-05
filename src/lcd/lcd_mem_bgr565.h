@@ -85,7 +85,7 @@ lcd_t* lcd_mem_bgr565_create_double_fb(wh_t w, wh_t h, uint8_t* online_fb, uint8
  * @return {lcd_t*} 返回lcd对象。
  */
 lcd_t* lcd_mem_bgr565_create_three_fb(wh_t w, wh_t h, uint8_t* online_fb, uint8_t* offline_fb,
-                                        uint8_t* next_fb);
+                                      uint8_t* next_fb);
 
 END_C_DECLS
 

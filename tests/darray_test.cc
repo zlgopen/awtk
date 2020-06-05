@@ -334,9 +334,9 @@ TEST(DArrayTest, bsearch) {
 #include "tkc/mem.h"
 
 typedef struct _my_data_t {
-  char name[TK_NAME_LEN+1];
+  char name[TK_NAME_LEN + 1];
   int value;
-}my_data_t;
+} my_data_t;
 
 static my_data_t* my_data_create(const char* name, int value) {
   my_data_t* data = TKMEM_ZALLOC(my_data_t);
@@ -361,13 +361,13 @@ TEST(DArrayTest, struct) {
 
   darray_push(&darray, my_data_create("jack", 100));
   darray_push(&darray, my_data_create("tom", 10));
-  
+
   ASSERT_EQ(darray.size, 2);
 
   p = (my_data_t*)darray_get(&darray, 0);
   ASSERT_STREQ(p->name, "jack");
   ASSERT_EQ(p->value, 100);
-  
+
   p = (my_data_t*)darray_get(&darray, 1);
   ASSERT_STREQ(p->name, "tom");
   ASSERT_EQ(p->value, 10);

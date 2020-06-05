@@ -192,9 +192,7 @@ ret_t path_normalize(const char* path, char* result, int32_t size) {
         }
         break;
       }
-      default: {
-        *d++ = *s++;
-      }
+      default: { *d++ = *s++; }
     }
   }
 

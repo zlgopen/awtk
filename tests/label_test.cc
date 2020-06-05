@@ -28,7 +28,7 @@ TEST(Label, value) {
   widget_t* l = label_create(NULL, 10, 20, 30, 40);
   ASSERT_EQ(widget_set_value(l, 100), RET_OK);
   ASSERT_EQ(widget_get_value(l), 100);
-  
+
   ASSERT_EQ(widget_add_value(l, 100), RET_OK);
   ASSERT_EQ(widget_get_value(l), 200);
 

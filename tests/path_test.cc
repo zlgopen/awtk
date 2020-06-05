@@ -65,10 +65,10 @@ TEST(Path, normalize) {
 
   ASSERT_EQ(path_normalize("/a/b", result, sizeof(result)), RET_OK);
   ASSERT_EQ(string(result), normalPath("/a/b"));
-  
+
   ASSERT_EQ(path_normalize("/a//b", result, sizeof(result)), RET_OK);
   ASSERT_EQ(string(result), normalPath("/a/b"));
-  
+
   ASSERT_EQ(path_normalize("/a//./////././/b", result, sizeof(result)), RET_OK);
   ASSERT_EQ(string(result), normalPath("/a/b"));
 
@@ -98,19 +98,19 @@ TEST(Path, normalize) {
 
   ASSERT_EQ(path_normalize("/a/b/../../c", result, sizeof(result)), RET_OK);
   ASSERT_EQ(string(result), normalPath("/c"));
-  
+
   ASSERT_EQ(path_normalize("/a/b/../", result, sizeof(result)), RET_OK);
   ASSERT_EQ(string(result), normalPath("/a/"));
 
   ASSERT_EQ(path_normalize("/a/b/..", result, sizeof(result)), RET_OK);
   ASSERT_EQ(string(result), normalPath("/a/"));
-  
+
   ASSERT_EQ(path_normalize("/a/b/..\\", result, sizeof(result)), RET_OK);
   ASSERT_EQ(string(result), normalPath("/a/"));
 
   ASSERT_EQ(path_normalize("/a/b\\..", result, sizeof(result)), RET_OK);
   ASSERT_EQ(string(result), normalPath("/a/"));
-  
+
   ASSERT_EQ(path_normalize("\\a\\b/../../c", result, sizeof(result)), RET_OK);
   ASSERT_EQ(string(result), normalPath("/c"));
 }

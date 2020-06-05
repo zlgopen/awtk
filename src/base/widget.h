@@ -1302,7 +1302,7 @@ uint32_t widget_on(widget_t* widget, uint32_t type, event_func_t on_event, void*
  * @return {uint32_t} 返回id，用于widget_off。
  */
 uint32_t widget_on_with_tag(widget_t* widget, uint32_t type, event_func_t on_event, void* ctx,
-                           uint32_t tag);
+                            uint32_t tag);
 
 /**
  * @method widget_off
@@ -1328,7 +1328,7 @@ ret_t widget_off(widget_t* widget, uint32_t id);
  * @return {uint32_t} 返回id，用于widget_off。
  */
 uint32_t widget_child_on(widget_t* widget, const char* name, uint32_t type, event_func_t on_event,
-                        void* ctx);
+                         void* ctx);
 
 /**
  * @method widget_off_by_func

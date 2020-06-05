@@ -55,7 +55,7 @@ ret_t file_browser_view_set_filter(widget_t* widget, const char* filter) {
     file_browser_set_filter(file_browser_view->fb, fb_filter_files_only, NULL);
   } else if (tk_str_eq(filter, STR_FILTER_DIR_ONLY)) {
     file_browser_set_filter(file_browser_view->fb, fb_filter_directories_only, NULL);
-  } else if(filter != NULL) {
+  } else if (filter != NULL) {
     file_browser_set_filter(file_browser_view->fb, fb_filter_by_ext_names,
                             file_browser_view->filter);
   } else {

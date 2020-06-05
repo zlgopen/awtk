@@ -608,7 +608,6 @@ bool_t lcd_is_swappable(lcd_t* lcd);
  */
 ret_t lcd_end_frame(lcd_t* lcd);
 
-
 /**
  * @method lcd_destroy
  * 销毁lcd对象。

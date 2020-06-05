@@ -76,7 +76,7 @@ typedef struct _file_browser_view_t {
    * 初始文件夹。
    */
   char* init_dir;
-  
+
   /**
    * @property {char*} filter
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]

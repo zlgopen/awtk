@@ -618,7 +618,6 @@ canvas_t* canvas_cast(canvas_t* c);
  */
 ret_t canvas_reset(canvas_t* c);
 
-
 /**
  * @method canvas_draw_image_at
  * 在指定位置画图。
@@ -702,7 +701,6 @@ ret_t canvas_set_assets_manager(canvas_t* c, assets_manager_t* assets_manager);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t canvas_begin_frame(canvas_t* c, rect_t* dirty_rect, lcd_draw_mode_t draw_mode);
-
 
 /**
  * @method canvas_end_frame
