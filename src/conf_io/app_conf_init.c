@@ -21,6 +21,7 @@
 
 #include "tkc/fs.h"
 #include "tkc/path.h"
+#include "tkc/utils.h"
 #include "conf_io/app_conf_init.h"
 
 ret_t app_conf_init(conf_load_t load, const char* app_name, const char* extname) {
@@ -45,10 +46,11 @@ ret_t app_conf_init(conf_load_t load, const char* app_name, const char* extname)
   }
 
   tk_snprintf(app_conf_name, sizeof(app_conf_name)-1, "app_conf.%s", extname);
-  path_build(path, MAX_PATH, "file:/", app_dir, app_conf_name, NULL);
+  path_build(path, MAX_PATH, app_dir, app_conf_name, NULL);
 
-  log_info("app conf: %s\n", path);
-  obj = load(path, TRUE);
+  tk_snprintf(app_conf_name, MAX_PATH, "file://%s", path);
+  log_info("app conf: %s\n", app_conf_name);
+  obj = load(app_conf_name, TRUE);
   return_value_if_fail(obj != NULL, RET_FAIL);
 
   app_conf_set_instance(obj);
