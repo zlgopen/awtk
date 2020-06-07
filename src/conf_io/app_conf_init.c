@@ -25,6 +25,9 @@
 #include "conf_io/app_conf_init.h"
 
 ret_t app_conf_init(conf_load_t load, const char* app_name, const char* extname) {
+#ifdef APP_CONF_URL
+  const char* app_conf_name = APP_CONF_URL;
+#else
   char path[MAX_PATH + 1];
   char app_dir[MAX_PATH + 1];
   char app_conf_name[MAX_PATH + 1];
@@ -49,7 +52,9 @@ ret_t app_conf_init(conf_load_t load, const char* app_name, const char* extname)
   path_build(path, MAX_PATH, app_dir, app_conf_name, NULL);
 
   tk_snprintf(app_conf_name, MAX_PATH, "file://%s", path);
+#endif/*APP_CONF_URL*/
   log_info("app conf: %s\n", app_conf_name);
+
   obj = load(app_conf_name, TRUE);
   return_value_if_fail(obj != NULL, RET_FAIL);
 
