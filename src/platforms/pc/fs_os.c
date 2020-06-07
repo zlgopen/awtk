@@ -432,7 +432,7 @@ static ret_t fs_os_get_user_storage_path(fs_t* fs, char path[MAX_PATH + 1]) {
 #elif defined(WIN32)
   WCHAR homedir[MAX_PATH];
 
-  if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_PROFILE, NULL, 0, homedir))) {
+  if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_LOCAL_APPDATA, NULL, 0, homedir))) {
     str_t str;
     str_init(&str, MAX_PATH);
     str_from_wstr(&str, homedir);
