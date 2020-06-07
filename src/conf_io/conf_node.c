@@ -341,6 +341,7 @@ ret_t conf_doc_destroy(conf_doc_t* doc) {
 
 ret_t conf_node_set_value(conf_node_t* node, const value_t* v) {
   return_value_if_fail(node != NULL && v != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(node->value_type != CONF_NODE_VALUE_NODE, RET_BAD_PARAMS);
 
   if (node->value_type == CONF_NODE_VALUE_STRING) {
     TKMEM_FREE(node->value.str);

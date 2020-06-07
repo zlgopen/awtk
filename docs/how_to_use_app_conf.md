@@ -26,7 +26,7 @@ AWTK 提供了 [app_conf](https://github.com/zlgopen/awtk/blob/master/docs/manua
 
 ## 2. 初始化（任意选一种格式即可）
 
-app_conf 作为可选组件，需要开发者自己初始化。
+[app_conf](https://github.com/zlgopen/awtk/blob/master/docs/manual/app_conf_t.md) 作为可选组件，需要开发者自己初始化。
 
 * 2.1 使用 ini 格式时的初始方法
 
@@ -433,16 +433,18 @@ static ret_t app_conf_changed(void* ctx, event_t* e) {
 app_conf_on_changed(app_conf_changed, NULL);
 ```
 
+> 回调函数在修改配置的线程调用。如果是后台线程修改配置，在配置变化时，需要更新界面，此时需要用 idle_queue 进行串行化。
+
 ## 6. 释放配置相关资源。
 
 ```c
 /**
  * @method app_conf_deinit
- * 释放conf对象。
+ * 释放 conf 对象。
  *
  * @annotation ["static", "scriptable"]
  * 
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ * @return {ret_t} 返回 RET_OK 表示成功，否则表示失败。
  */
 ret_t app_conf_deinit(void);
 ```
@@ -457,7 +459,41 @@ ret_t application_exit() {
 }
 ```
 
-## 7. key 的高级用法
+## 7. key 的规则
+
+* 配置信息通常都是层次结构的，为了能访问所有数据，key 也必须是多级的，各级的名称之间用“.”分隔。
+
+> “.”不能作为名称的一部分，如果出现，需要用其它字符代替。
+
+```json
+{
+    "network" : {
+        "eth0" : {
+            "ip" : "192.169.0.100",
+            "gateway" : "192.169.0.1",
+            "mask" : "255.255.255.0"
+        }
+    }
+}
+```
+
+在这个例子中，要访问 ip 的这个配置，可以用"network.eth0.ip":
+
+```c
+  app_conf_set_str("network.eth0.ip", "192.169.0.100");
+```
+
+* 按索引访问
+
+在访问时，每一级的名称，可以用索引代替，格式为：[+索引+]，比如 [0] 表示第一项，[2] 表示第三项。这对于不清楚名称的情况，或遍历全部配置，很有帮助。
+
+如：
+
+```c
+  const char* ip0 = app_conf_get_str("network.[0].ip", NULL);
+  const char* ip1 = app_conf_get_str("network.[1].ip", NULL);
+  const char* ip2 = app_conf_get_str("network.[2].ip", NULL);
+```
 
 ## 8. 注意事项
 
@@ -469,8 +505,6 @@ ret_t application_exit() {
 
 * [conf_ini](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/conf_ini.c)
 
-
 * [conf_json](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/conf_json.c)
-
 
 * [conf_ubjson](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/conf_ubjson.c)

@@ -66,6 +66,7 @@
 * [如何集成第三方库](https://github.com/zlgopen/awtk-hello/blob/master/docs/how_to_integrate_3rd_libs.md)
 * [如何使用对话框](how_toto_use_dialog.md)
 * [如何使用软键盘上的 action 按钮](how_to_use_action_text.md)
+* [如何存取应用程序的配置信息](how_to_use_app_conf.md)
 
 ### 3. 内部原理
 * [AWTK 脚本绑定原理](script_binding.md)
