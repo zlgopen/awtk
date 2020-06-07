@@ -346,17 +346,16 @@ ret_t fs_test_dir(fs_t* fs) {
   dir = fs_open_dir(fs, "./a/b");
   assert(dir != NULL);
 
-  assert(fs_dir_read(dir, &item) == RET_OK);
-  assert(strcmp(item.name, ".") == 0);
-  assert(!item.is_reg_file);
-  assert(item.is_dir);
+  do {
+    assert(fs_dir_read(dir, &item) == RET_OK);
+    if (item.name[0] != '.') {
+      break;
+    } else {
+      assert(!item.is_reg_file);
+      assert(item.is_dir);
+    }
+  }while(TRUE);
 
-  assert(fs_dir_read(dir, &item) == RET_OK);
-  assert(strcmp(item.name, "..") == 0);
-  assert(!item.is_reg_file);
-  assert(item.is_dir);
-
-  assert(fs_dir_read(dir, &item) == RET_OK);
   assert(strcmp(item.name, "c1") == 0 || strcmp(item.name, "c2") == 0);
   assert(!item.is_reg_file);
   assert(item.is_dir);
@@ -366,7 +365,6 @@ ret_t fs_test_dir(fs_t* fs) {
   assert(!item.is_reg_file);
   assert(item.is_dir);
 
-  assert(fs_dir_read(dir, &item) == RET_FAIL);
   assert(fs_dir_close(dir) == RET_OK);
 
   if (fs_dir_rename(fs, "./a/b/c2", "./a/b/c3") == RET_OK) {
