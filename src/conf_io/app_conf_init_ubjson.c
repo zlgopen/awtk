@@ -25,5 +25,3 @@
 ret_t app_conf_init_ubjson(const char* app_name) {
   return app_conf_init(conf_ubjson_load, app_name, "ubjson");
 }
-
-

@@ -42,4 +42,3 @@ ret_t app_conf_init_ini(const char* app_name);
 END_C_DECLS
 
 #endif /*TK_APP_CONF_INIT_INI_H*/
-

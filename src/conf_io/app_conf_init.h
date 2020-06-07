@@ -47,4 +47,3 @@ ret_t app_conf_init(conf_load_t load, const char* app_name, const char* extname)
 END_C_DECLS
 
 #endif /*TK_APP_CONF_INIT_H*/
-

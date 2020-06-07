@@ -25,5 +25,3 @@
 ret_t app_conf_init_json(const char* app_name) {
   return app_conf_init(conf_json_load, app_name, "json");
 }
-
-

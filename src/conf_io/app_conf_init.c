@@ -48,11 +48,11 @@ ret_t app_conf_init(conf_load_t load, const char* app_name, const char* extname)
     return_value_if_fail(fs_create_dir(fs, app_dir) == RET_OK, RET_FAIL);
   }
 
-  tk_snprintf(app_conf_name, sizeof(app_conf_name)-1, "app_conf.%s", extname);
+  tk_snprintf(app_conf_name, sizeof(app_conf_name) - 1, "app_conf.%s", extname);
   path_build(path, MAX_PATH, app_dir, app_conf_name, NULL);
 
   tk_snprintf(app_conf_name, MAX_PATH, "file://%s", path);
-#endif/*APP_CONF_URL*/
+#endif /*APP_CONF_URL*/
   log_info("app conf: %s\n", app_conf_name);
 
   obj = load(app_conf_name, TRUE);

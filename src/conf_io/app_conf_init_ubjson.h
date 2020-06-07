@@ -42,4 +42,3 @@ ret_t app_conf_init_ubjson(const char* app_name);
 END_C_DECLS
 
 #endif /*TK_APP_CONF_INIT_UBJSON_H*/
-

@@ -179,7 +179,6 @@ ret_t app_conf_set_int64(const char* key, int64_t v);
  */
 ret_t app_conf_set_bool(const char* key, bool_t v);
 
-
 /**
  * @method app_conf_set_double
  * 设置双精度类型配置项的值。

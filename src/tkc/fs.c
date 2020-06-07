@@ -354,7 +354,7 @@ ret_t fs_test_dir(fs_t* fs) {
       assert(!item.is_reg_file);
       assert(item.is_dir);
     }
-  }while(TRUE);
+  } while (TRUE);
 
   assert(strcmp(item.name, "c1") == 0 || strcmp(item.name, "c2") == 0);
   assert(!item.is_reg_file);
