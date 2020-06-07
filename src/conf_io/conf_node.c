@@ -276,7 +276,11 @@ const char* conf_node_get_name(conf_node_t* node) {
 
 conf_node_t* conf_node_find_sibling(conf_node_t* node, const char* name) {
   conf_node_t* iter = NULL;
-  return_value_if_fail(node != NULL && name != NULL, NULL);
+  if (node != NULL) {
+    return NULL;
+  }
+
+  return_value_if_fail(name != NULL, NULL);
 
   if (node->parent != NULL) {
     iter = conf_node_get_first_child(node->parent);

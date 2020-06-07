@@ -22,7 +22,7 @@ static bitmap_t* bitmap_from_str(canvas_t* canvas, wchar_t* str, color_t tc) {
   bitmap_t* bitmap = NULL;
   uint32_t font_size = canvas->font_size;
   font_manager_t* fm = canvas->font_manager;
-  font_t* font = font_manager_lookup(fm, canvas->font_name, font_size);
+  font_t* font = font_manager_get_font(fm, canvas->font_name, font_size);
   return_value_if_fail(font != NULL, NULL);
 
   vm = font_get_vmetrics(font, font_size);

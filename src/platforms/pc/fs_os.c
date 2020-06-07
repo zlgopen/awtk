@@ -447,11 +447,11 @@ static ret_t fs_os_get_user_storage_path(fs_t* fs, char path[MAX_PATH + 1]) {
 }
 
 static ret_t fs_os_get_cwd(fs_t* fs, char path[MAX_PATH + 1]) {
-  wchar_t wpath[MAX_PATH + 1];
   return_value_if_fail(fs != NULL && path != NULL, RET_BAD_PARAMS);
 
   memset(path, 0x00, MAX_PATH + 1);
 #if defined(WIN32)
+  wchar_t wpath[MAX_PATH + 1];
   memset(wpath, 0x00, sizeof(wpath));
   _wgetcwd(wpath, MAX_PATH);
   tk_utf8_from_utf16_ex(wpath, MAX_PATH, path, MAX_PATH);
