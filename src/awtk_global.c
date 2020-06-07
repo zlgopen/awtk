@@ -33,6 +33,9 @@
 #include "base/window_manager.h"
 #include "base/widget_factory.h"
 #include "base/assets_manager.h"
+#include "tkc/data_writer_factory.h"
+#include "tkc/data_writer_factory.h"
+
 #include "base/widget_animator_manager.h"
 #include "font_loader/font_loader_bitmap.h"
 #include "base/window_animator_factory.h"
@@ -132,6 +135,12 @@ static ret_t awtk_mem_on_out_of_memory(void* ctx, uint32_t tried_times, uint32_t
 
 ret_t tk_init_internal(void) {
   font_loader_t* font_loader = NULL;
+
+  data_writer_factory_set(data_writer_factory_create());
+  data_reader_factory_set(data_reader_factory_create());
+  data_writer_factory_register(data_writer_factory(), "file", data_writer_file_create);
+  data_reader_factory_register(data_reader_factory(), "file", data_reader_file_create);
+
 #ifdef WITH_STB_IMAGE
   image_loader_register(image_loader_stb());
 #endif /*WITH_STB_IMAGE*/
@@ -272,6 +281,11 @@ ret_t tk_deinit_internal(void) {
 
   assets_manager_destroy(assets_manager());
   assets_manager_set(NULL);
+
+  data_writer_factory_destroy(data_writer_factory());
+  data_reader_factory_destroy(data_reader_factory());
+  data_writer_factory_set(NULL);
+  data_reader_factory_set(NULL);
 
   system_info_deinit();
 

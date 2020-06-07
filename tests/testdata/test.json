@@ -1,0 +1,22 @@
+{
+    "group" : {
+        "key" : "value",
+        "tom" : {
+            "name" : "tom",
+            "age" : 100,
+            "weight" : 60.5100
+        }
+    },
+    "array" : [
+        {
+            "name" : "none"
+        },
+        2,
+        3
+    ],
+    "tom" : {
+        "name" : "tom",
+        "age" : 100,
+        "weight" : 60.5000
+    }
+}
