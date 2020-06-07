@@ -465,4 +465,12 @@ ret_t application_exit() {
 
 * ini 格式不支持注释和换行。
 
-## 8. 注意事项
+## 9. 参考示例
+
+* [conf_ini](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/conf_ini.c)
+
+
+* [conf_json](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/conf_json.c)
+
+
+* [conf_ubjson](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/conf_ubjson.c)
