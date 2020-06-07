@@ -21582,7 +21582,7 @@
     "annotation": {
       "global": true
     },
-    "desc": "初始化。",
+    "desc": "初始化应用程序的配置信息。",
     "name": "app_conf_init_ini",
     "return": {
       "type": "ret_t",
@@ -21603,7 +21603,7 @@
     "annotation": {
       "global": true
     },
-    "desc": "初始化。",
+    "desc": "初始化应用程序的配置信息。",
     "name": "app_conf_init_json",
     "return": {
       "type": "ret_t",
@@ -21624,7 +21624,7 @@
     "annotation": {
       "global": true
     },
-    "desc": "初始化。",
+    "desc": "初始化应用程序的配置信息。",
     "name": "app_conf_init_ubjson",
     "return": {
       "type": "ret_t",
@@ -21645,6 +21645,11 @@
         "type": "const char*",
         "name": "app_name",
         "desc": "应用程序名称。"
+      },
+      {
+        "type": "const char*",
+        "name": "extname",
+        "desc": "文件扩展名。"
       }
     ],
     "annotation": {
@@ -21687,7 +21692,7 @@
           "static": true,
           "scriptable": true
         },
-        "desc": "保存配置。",
+        "desc": "持久保存配置。",
         "name": "app_conf_save",
         "return": {
           "type": "ret_t",
@@ -22767,7 +22772,7 @@
         ],
         "annotation": {},
         "desc": "获取第一个子节点。",
-        "name": "conf_node_set_first_child",
+        "name": "conf_node_get_first_child",
         "return": {
           "type": "conf_node_t*",
           "desc": "返回第一个子节点。"
@@ -23432,6 +23437,103 @@
       {
         "params": [
           {
+            "type": "const wchar_t*",
+            "name": "in",
+            "desc": "输入字符串。"
+          },
+          {
+            "type": "const char*",
+            "name": "out",
+            "desc": "输出字符串。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "out_size",
+            "desc": "输出字符串的最大长度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "把ucs字符串转成UTF8字符串。",
+        "name": "tk_utf8_from_utf16",
+        "return": {
+          "type": "char*",
+          "desc": "返回UTF8字符串。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "const wchar_t*",
+            "name": "in",
+            "desc": "输入字符串。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "in_size",
+            "desc": "输入字符串的长度。"
+          },
+          {
+            "type": "const char*",
+            "name": "out",
+            "desc": "输出字符串。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "out_size",
+            "desc": "输出字符串的最大长度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "把ucs字符串转成UTF8字符串。",
+        "name": "tk_utf8_from_utf16_ex",
+        "return": {
+          "type": "char*",
+          "desc": "返回UTF8字符串。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "str",
+            "desc": "str。"
+          },
+          {
+            "type": "const wchar_t*",
+            "name": "out",
+            "desc": "返回结果缓冲区。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "缓冲区大小。"
+          }
+        ],
+        "annotation": {},
+        "desc": "将char类型转换为wchar_t类型。",
+        "name": "tk_utf8_to_utf16",
+        "return": {
+          "type": "wchar_t*",
+          "desc": "值。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "tkc/utf8.h",
+    "desc": "wchar_t和char类型转换接口。\n\n示例：\n\n```c\nconst char* str = \"hello\";\nconst wchar_t* wstr = L\"hello\";\nchar res_str[128];\nwchar_t res_wstr[128];\n\ntk_utf8_to_utf16(str, res_wstr, ARRAY_SIZE(res_wstr));\ntk_utf8_from_utf16(wstr, res_str, ARRAY_SIZE(res_str));\n```",
+    "name": "utf8_t",
+    "annotation": {
+      "fake": true
+    },
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
             "type": "object_t*",
             "name": "args",
             "desc": "参数。"
@@ -23541,103 +23643,6 @@
     "name": "SDL_GetMouseFocus",
     "type": "method",
     "header": "src/dllexports.h",
-    "level": 1
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "const wchar_t*",
-            "name": "in",
-            "desc": "输入字符串。"
-          },
-          {
-            "type": "const char*",
-            "name": "out",
-            "desc": "输出字符串。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "out_size",
-            "desc": "输出字符串的最大长度。"
-          }
-        ],
-        "annotation": {},
-        "desc": "把ucs字符串转成UTF8字符串。",
-        "name": "tk_utf8_from_utf16",
-        "return": {
-          "type": "char*",
-          "desc": "返回UTF8字符串。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "const wchar_t*",
-            "name": "in",
-            "desc": "输入字符串。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "in_size",
-            "desc": "输入字符串的长度。"
-          },
-          {
-            "type": "const char*",
-            "name": "out",
-            "desc": "输出字符串。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "out_size",
-            "desc": "输出字符串的最大长度。"
-          }
-        ],
-        "annotation": {},
-        "desc": "把ucs字符串转成UTF8字符串。",
-        "name": "tk_utf8_from_utf16_ex",
-        "return": {
-          "type": "char*",
-          "desc": "返回UTF8字符串。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "const char*",
-            "name": "str",
-            "desc": "str。"
-          },
-          {
-            "type": "const wchar_t*",
-            "name": "out",
-            "desc": "返回结果缓冲区。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "size",
-            "desc": "缓冲区大小。"
-          }
-        ],
-        "annotation": {},
-        "desc": "将char类型转换为wchar_t类型。",
-        "name": "tk_utf8_to_utf16",
-        "return": {
-          "type": "wchar_t*",
-          "desc": "值。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "tkc/utf8.h",
-    "desc": "wchar_t和char类型转换接口。\n\n示例：\n\n```c\nconst char* str = \"hello\";\nconst wchar_t* wstr = L\"hello\";\nchar res_str[128];\nwchar_t res_wstr[128];\n\ntk_utf8_to_utf16(str, res_wstr, ARRAY_SIZE(res_wstr));\ntk_utf8_from_utf16(wstr, res_str, ARRAY_SIZE(res_str));\n```",
-    "name": "utf8_t",
-    "annotation": {
-      "fake": true
-    },
     "level": 1
   },
   {
@@ -24239,29 +24244,6 @@
       {
         "params": [],
         "annotation": {
-          "static": true
-        },
-        "desc": "初始化AWTK扩展控件。",
-        "name": "tk_ext_widgets_init",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "ext_widgets/ext_widgets.h",
-    "desc": "",
-    "name": "tk_ext_widgets_t",
-    "level": 1
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [],
-        "annotation": {
           "scriptable": true,
           "static": true
         },
@@ -24295,6 +24277,29 @@
       "scriptable": true,
       "fake": true
     },
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {
+          "static": true
+        },
+        "desc": "初始化AWTK扩展控件。",
+        "name": "tk_ext_widgets_init",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "ext_widgets/ext_widgets.h",
+    "desc": "",
+    "name": "tk_ext_widgets_t",
     "level": 1
   },
   {
@@ -24454,457 +24459,6 @@
     "header": "tkc/thread.h",
     "desc": "线程对象。",
     "name": "tk_thread_t",
-    "level": 1
-  },
-  {
-    "type": "class",
-    "methods": [],
-    "events": [],
-    "properties": [
-      {
-        "name": "name",
-        "desc": "名称。",
-        "type": "char*",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "is_dir",
-        "desc": "是否是目录。",
-        "type": "bool_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "is_reg_file",
-        "desc": "是否是常规文件。",
-        "type": "bool_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "size",
-        "desc": "文件大小。",
-        "type": "uint64_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "atime",
-        "desc": "最后一次访问时间。",
-        "type": "uint64_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "mtime",
-        "desc": "最后修改时间。",
-        "type": "uint64_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "ctime",
-        "desc": "创建时间。",
-        "type": "uint64_t",
-        "annotation": {
-          "readable": true
-        }
-      }
-    ],
-    "header": "file_browser/file_browser.h",
-    "desc": "文件或目录的信息。",
-    "name": "fb_item_t",
-    "level": 1
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "创建file_browser对象",
-        "name": "file_browser_create",
-        "return": {
-          "type": "file_browser_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "file_browser_t*",
-            "name": "fb",
-            "desc": "file browser对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "cwd",
-            "desc": "当前目录。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置当前目录。",
-        "name": "file_browser_set_cwd",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "file_browser_t*",
-            "name": "fb",
-            "desc": "file browser对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "name",
-            "desc": "当前目录下的子目录名。"
-          }
-        ],
-        "annotation": {},
-        "desc": "在当前目录下创建指定子目录。",
-        "name": "file_browser_create_dir",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "file_browser_t*",
-            "name": "fb",
-            "desc": "file browser对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "name",
-            "desc": "当前目录下的文件名。"
-          },
-          {
-            "type": "const void*",
-            "name": "buff",
-            "desc": "文件内容。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "size",
-            "desc": "文件内容的长度。"
-          }
-        ],
-        "annotation": {},
-        "desc": "在当前目录下创建指定文件。",
-        "name": "file_browser_create_file",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "file_browser_t*",
-            "name": "fb",
-            "desc": "file browser对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "name",
-            "desc": "当前目录下的子目录名/文件名。"
-          }
-        ],
-        "annotation": {},
-        "desc": "删除当前目录下的指定子目录或文件。",
-        "name": "file_browser_remove",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "file_browser_t*",
-            "name": "fb",
-            "desc": "file browser对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "dir",
-            "desc": "当前目录下的子目录名。"
-          }
-        ],
-        "annotation": {},
-        "desc": "进入当前目录下的指定子目录。",
-        "name": "file_browser_enter",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "file_browser_t*",
-            "name": "fb",
-            "desc": "file browser对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "返回上一级目录。",
-        "name": "file_browser_up",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "file_browser_t*",
-            "name": "fb",
-            "desc": "file browser对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "刷新。",
-        "name": "file_browser_refresh",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "file_browser_t*",
-            "name": "fb",
-            "desc": "file browser对象。"
-          },
-          {
-            "type": "tk_filter_t",
-            "name": "filter",
-            "desc": "过滤函数。"
-          },
-          {
-            "type": "void*",
-            "name": "ctx",
-            "desc": "过滤函数的上下文。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置过滤函数。",
-        "name": "file_browser_set_filter",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "file_browser_t*",
-            "name": "fb",
-            "desc": "file browser对象。"
-          },
-          {
-            "type": "tk_compare_t",
-            "name": "compare",
-            "desc": "排序用的比较函数。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置排序用的比较函数。",
-        "name": "file_browser_set_compare",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "file_browser_t*",
-            "name": "fb",
-            "desc": "file browser对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "ascending",
-            "desc": "按升序排。"
-          }
-        ],
-        "annotation": {},
-        "desc": "按名称排序。",
-        "name": "file_browser_sort_by_name",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "file_browser_t*",
-            "name": "fb",
-            "desc": "file browser对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "ascending",
-            "desc": "按升序排。"
-          }
-        ],
-        "annotation": {},
-        "desc": "按类型排序。",
-        "name": "file_browser_sort_by_type",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "file_browser_t*",
-            "name": "fb",
-            "desc": "file browser对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "ascending",
-            "desc": "按升序排。"
-          }
-        ],
-        "annotation": {},
-        "desc": "按大小排序。",
-        "name": "file_browser_sort_by_size",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "file_browser_t*",
-            "name": "fb",
-            "desc": "file browser对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "ascending",
-            "desc": "按升序排。"
-          }
-        ],
-        "annotation": {},
-        "desc": "按修改时间排序。",
-        "name": "file_browser_sort_by_mtime",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "file_browser_t*",
-            "name": "fb",
-            "desc": "file browser对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "获取当前目录下文件项个数。",
-        "name": "file_browser_get_items_nr",
-        "return": {
-          "type": "uint32_t",
-          "desc": "返回当前目录下文件项个数。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "file_browser_t*",
-            "name": "fb",
-            "desc": "file browser对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "index",
-            "desc": "序数。"
-          }
-        ],
-        "annotation": {},
-        "desc": "获取指定项序数的项目。",
-        "name": "file_browser_get_item",
-        "return": {
-          "type": "fb_item_t*",
-          "desc": "返回指定项序数的项目。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "file_browser_t*",
-            "name": "fb",
-            "desc": "file browser对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "ignore_hidden_files",
-            "desc": "是否忽略隐藏文件。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置是否忽略隐藏文件。",
-        "name": "file_browser_set_ignore_hidden_files",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "file_browser_t*",
-            "name": "fb",
-            "desc": "file browser对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "销毁file_browser对象",
-        "name": "file_browser_destroy",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [
-      {
-        "name": "cwd",
-        "desc": "当前路径。",
-        "type": "char*",
-        "annotation": {
-          "readable": true
-        }
-      }
-    ],
-    "header": "file_browser/file_browser.h",
-    "desc": "文件浏览器模型。",
-    "name": "file_browser_t",
     "level": 1
   },
   {
@@ -25841,6 +25395,457 @@
     "header": "tkc/str.h",
     "desc": "可变长度的UTF8字符串。\n\n示例：\n\n```c\nstr_t s;\nstr_init(&s, 0);\n\nstr_append(&s, \"abc\");\nstr_append(&s, \"123\");\nlog_debug(\"%s\\n\", s.str);\n\nstr_reset(&s);\n```\n\n> 先调str\\_init进行初始化，最后调用str\\_reset释放内存。",
     "name": "str_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [],
+    "events": [],
+    "properties": [
+      {
+        "name": "name",
+        "desc": "名称。",
+        "type": "char*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "is_dir",
+        "desc": "是否是目录。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "is_reg_file",
+        "desc": "是否是常规文件。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "size",
+        "desc": "文件大小。",
+        "type": "uint64_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "atime",
+        "desc": "最后一次访问时间。",
+        "type": "uint64_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "mtime",
+        "desc": "最后修改时间。",
+        "type": "uint64_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "ctime",
+        "desc": "创建时间。",
+        "type": "uint64_t",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "file_browser/file_browser.h",
+    "desc": "文件或目录的信息。",
+    "name": "fb_item_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建file_browser对象",
+        "name": "file_browser_create",
+        "return": {
+          "type": "file_browser_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "file_browser_t*",
+            "name": "fb",
+            "desc": "file browser对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "cwd",
+            "desc": "当前目录。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置当前目录。",
+        "name": "file_browser_set_cwd",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "file_browser_t*",
+            "name": "fb",
+            "desc": "file browser对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "当前目录下的子目录名。"
+          }
+        ],
+        "annotation": {},
+        "desc": "在当前目录下创建指定子目录。",
+        "name": "file_browser_create_dir",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "file_browser_t*",
+            "name": "fb",
+            "desc": "file browser对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "当前目录下的文件名。"
+          },
+          {
+            "type": "const void*",
+            "name": "buff",
+            "desc": "文件内容。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "文件内容的长度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "在当前目录下创建指定文件。",
+        "name": "file_browser_create_file",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "file_browser_t*",
+            "name": "fb",
+            "desc": "file browser对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "当前目录下的子目录名/文件名。"
+          }
+        ],
+        "annotation": {},
+        "desc": "删除当前目录下的指定子目录或文件。",
+        "name": "file_browser_remove",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "file_browser_t*",
+            "name": "fb",
+            "desc": "file browser对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "dir",
+            "desc": "当前目录下的子目录名。"
+          }
+        ],
+        "annotation": {},
+        "desc": "进入当前目录下的指定子目录。",
+        "name": "file_browser_enter",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "file_browser_t*",
+            "name": "fb",
+            "desc": "file browser对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "返回上一级目录。",
+        "name": "file_browser_up",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "file_browser_t*",
+            "name": "fb",
+            "desc": "file browser对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "刷新。",
+        "name": "file_browser_refresh",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "file_browser_t*",
+            "name": "fb",
+            "desc": "file browser对象。"
+          },
+          {
+            "type": "tk_filter_t",
+            "name": "filter",
+            "desc": "过滤函数。"
+          },
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "过滤函数的上下文。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置过滤函数。",
+        "name": "file_browser_set_filter",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "file_browser_t*",
+            "name": "fb",
+            "desc": "file browser对象。"
+          },
+          {
+            "type": "tk_compare_t",
+            "name": "compare",
+            "desc": "排序用的比较函数。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置排序用的比较函数。",
+        "name": "file_browser_set_compare",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "file_browser_t*",
+            "name": "fb",
+            "desc": "file browser对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "ascending",
+            "desc": "按升序排。"
+          }
+        ],
+        "annotation": {},
+        "desc": "按名称排序。",
+        "name": "file_browser_sort_by_name",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "file_browser_t*",
+            "name": "fb",
+            "desc": "file browser对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "ascending",
+            "desc": "按升序排。"
+          }
+        ],
+        "annotation": {},
+        "desc": "按类型排序。",
+        "name": "file_browser_sort_by_type",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "file_browser_t*",
+            "name": "fb",
+            "desc": "file browser对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "ascending",
+            "desc": "按升序排。"
+          }
+        ],
+        "annotation": {},
+        "desc": "按大小排序。",
+        "name": "file_browser_sort_by_size",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "file_browser_t*",
+            "name": "fb",
+            "desc": "file browser对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "ascending",
+            "desc": "按升序排。"
+          }
+        ],
+        "annotation": {},
+        "desc": "按修改时间排序。",
+        "name": "file_browser_sort_by_mtime",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "file_browser_t*",
+            "name": "fb",
+            "desc": "file browser对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取当前目录下文件项个数。",
+        "name": "file_browser_get_items_nr",
+        "return": {
+          "type": "uint32_t",
+          "desc": "返回当前目录下文件项个数。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "file_browser_t*",
+            "name": "fb",
+            "desc": "file browser对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "index",
+            "desc": "序数。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取指定项序数的项目。",
+        "name": "file_browser_get_item",
+        "return": {
+          "type": "fb_item_t*",
+          "desc": "返回指定项序数的项目。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "file_browser_t*",
+            "name": "fb",
+            "desc": "file browser对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "ignore_hidden_files",
+            "desc": "是否忽略隐藏文件。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置是否忽略隐藏文件。",
+        "name": "file_browser_set_ignore_hidden_files",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "file_browser_t*",
+            "name": "fb",
+            "desc": "file browser对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁file_browser对象",
+        "name": "file_browser_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "cwd",
+        "desc": "当前路径。",
+        "type": "char*",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "file_browser/file_browser.h",
+    "desc": "文件浏览器模型。",
+    "name": "file_browser_t",
     "level": 1
   },
   {
@@ -30453,39 +30458,6 @@
     "level": 1
   },
   {
-    "type": "enum",
-    "desc": "指示器默认绘制的类型。",
-    "consts": [
-      {
-        "desc": "自动选择。",
-        "name": "INDICATOR_DEFAULT_PAINT_AUTO"
-      },
-      {
-        "desc": "实心圆点指示器，当前项填充selected_fg_color，其他填充fg_color。",
-        "name": "INDICATOR_DEFAULT_PAINT_FILL_DOT"
-      },
-      {
-        "desc": "镂空圆点指示器，当前项填充selected_fg_color，其他镂空fg_color。",
-        "name": "INDICATOR_DEFAULT_PAINT_STROKE_DOT"
-      },
-      {
-        "desc": "实心矩形指示器，当前项填充selected_fg_color，其他填充fg_color。",
-        "name": "INDICATOR_DEFAULT_PAINT_FILL_RECT"
-      },
-      {
-        "desc": "镂空矩形指示器，当前项填充selected_fg_color，其他镂空fg_color。",
-        "name": "INDICATOR_DEFAULT_PAINT_STROKE_RECT"
-      }
-    ],
-    "header": "slide_view/slide_indicator.h",
-    "name": "indicator_default_paint_t",
-    "prefix": "INDICATOR_DEFAULT_PAINT_",
-    "annotation": {
-      "scriptable": true
-    },
-    "level": 1
-  },
-  {
     "type": "class",
     "methods": [
       {
@@ -30543,6 +30515,39 @@
     "name": "int_str_t",
     "annotation": {
       "fake": true
+    },
+    "level": 1
+  },
+  {
+    "type": "enum",
+    "desc": "指示器默认绘制的类型。",
+    "consts": [
+      {
+        "desc": "自动选择。",
+        "name": "INDICATOR_DEFAULT_PAINT_AUTO"
+      },
+      {
+        "desc": "实心圆点指示器，当前项填充selected_fg_color，其他填充fg_color。",
+        "name": "INDICATOR_DEFAULT_PAINT_FILL_DOT"
+      },
+      {
+        "desc": "镂空圆点指示器，当前项填充selected_fg_color，其他镂空fg_color。",
+        "name": "INDICATOR_DEFAULT_PAINT_STROKE_DOT"
+      },
+      {
+        "desc": "实心矩形指示器，当前项填充selected_fg_color，其他填充fg_color。",
+        "name": "INDICATOR_DEFAULT_PAINT_FILL_RECT"
+      },
+      {
+        "desc": "镂空矩形指示器，当前项填充selected_fg_color，其他镂空fg_color。",
+        "name": "INDICATOR_DEFAULT_PAINT_STROKE_RECT"
+      }
+    ],
+    "header": "slide_view/slide_indicator.h",
+    "name": "indicator_default_paint_t",
+    "prefix": "INDICATOR_DEFAULT_PAINT_",
+    "annotation": {
+      "scriptable": true
     },
     "level": 1
   },
@@ -35380,24 +35385,6 @@
     "level": 1
   },
   {
-    "type": "enum",
-    "desc": "缓存不够时丢弃数据的策略。",
-    "consts": [
-      {
-        "desc": "丢弃旧的数据。",
-        "name": "DATA_DISCARD_OLD"
-      },
-      {
-        "desc": "丢弃新的数据。",
-        "name": "DATA_DISCARD_NEW"
-      }
-    ],
-    "header": "misc/ostream_retry.h",
-    "name": "data_discard_policy_t",
-    "prefix": "DATA_DISCARD_",
-    "level": 1
-  },
-  {
     "type": "class",
     "methods": [
       {
@@ -35483,6 +35470,24 @@
     "header": "tkc/action_thread_pool.h",
     "desc": "action线程池。",
     "name": "action_thread_pool_t",
+    "level": 1
+  },
+  {
+    "type": "enum",
+    "desc": "缓存不够时丢弃数据的策略。",
+    "consts": [
+      {
+        "desc": "丢弃旧的数据。",
+        "name": "DATA_DISCARD_OLD"
+      },
+      {
+        "desc": "丢弃新的数据。",
+        "name": "DATA_DISCARD_NEW"
+      }
+    ],
+    "header": "misc/ostream_retry.h",
+    "name": "data_discard_policy_t",
+    "prefix": "DATA_DISCARD_",
     "level": 1
   },
   {
@@ -36119,7 +36124,7 @@
         ],
         "annotation": {},
         "desc": "创建lcd对象。",
-        "name": "lcd_mem_rgb888_create",
+        "name": "lcd_mem_rgb565_create",
         "return": {
           "type": "lcd_t*",
           "desc": "返回lcd对象。"
@@ -36145,7 +36150,7 @@
         ],
         "annotation": {},
         "desc": "创建single fb lcd对象。",
-        "name": "lcd_mem_rgb888_create_single_fb",
+        "name": "lcd_mem_rgb565_create_single_fb",
         "return": {
           "type": "lcd_t*",
           "desc": "返回lcd对象。"
@@ -36176,7 +36181,7 @@
         ],
         "annotation": {},
         "desc": "创建double fb lcd对象。",
-        "name": "lcd_mem_rgb888_create_double_fb",
+        "name": "lcd_mem_rgb565_create_double_fb",
         "return": {
           "type": "lcd_t*",
           "desc": "返回lcd对象。"
@@ -36212,7 +36217,7 @@
         ],
         "annotation": {},
         "desc": "创建three fb lcd对象。",
-        "name": "lcd_mem_rgb888_create_three_fb",
+        "name": "lcd_mem_rgb565_create_three_fb",
         "return": {
           "type": "lcd_t*",
           "desc": "返回lcd对象。"
@@ -36221,9 +36226,9 @@
     ],
     "events": [],
     "properties": [],
-    "header": "lcd/lcd_mem_rgb888.h",
+    "header": "lcd/lcd_mem_rgb565.h",
     "desc": "",
-    "name": "lcd_mem_rgb888_t",
+    "name": "lcd_mem_rgb565_t",
     "parent": "lcd_t",
     "annotation": {
       "fake": true
@@ -39748,7 +39753,7 @@
         ],
         "annotation": {},
         "desc": "创建lcd对象。",
-        "name": "lcd_mem_rgb565_create",
+        "name": "lcd_mem_rgb888_create",
         "return": {
           "type": "lcd_t*",
           "desc": "返回lcd对象。"
@@ -39774,7 +39779,7 @@
         ],
         "annotation": {},
         "desc": "创建single fb lcd对象。",
-        "name": "lcd_mem_rgb565_create_single_fb",
+        "name": "lcd_mem_rgb888_create_single_fb",
         "return": {
           "type": "lcd_t*",
           "desc": "返回lcd对象。"
@@ -39805,7 +39810,7 @@
         ],
         "annotation": {},
         "desc": "创建double fb lcd对象。",
-        "name": "lcd_mem_rgb565_create_double_fb",
+        "name": "lcd_mem_rgb888_create_double_fb",
         "return": {
           "type": "lcd_t*",
           "desc": "返回lcd对象。"
@@ -39841,7 +39846,7 @@
         ],
         "annotation": {},
         "desc": "创建three fb lcd对象。",
-        "name": "lcd_mem_rgb565_create_three_fb",
+        "name": "lcd_mem_rgb888_create_three_fb",
         "return": {
           "type": "lcd_t*",
           "desc": "返回lcd对象。"
@@ -39850,9 +39855,9 @@
     ],
     "events": [],
     "properties": [],
-    "header": "lcd/lcd_mem_rgb565.h",
+    "header": "lcd/lcd_mem_rgb888.h",
     "desc": "",
-    "name": "lcd_mem_rgb565_t",
+    "name": "lcd_mem_rgb888_t",
     "parent": "lcd_t",
     "annotation": {
       "fake": true
@@ -40497,6 +40502,34 @@
     "type": "class",
     "methods": [
       {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建空输入法引擎对象。",
+        "name": "input_engine_create",
+        "export": "none",
+        "return": {
+          "type": "input_engine_t*",
+          "desc": "返回输入法引擎对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "input_engines/input_engine_null.h",
+    "desc": "空输入法引擎实现。\n\n缺省输入法可以选择启用软键盘，但不启用具体的输入法引擎，此时可以选择空输入法引擎实现。",
+    "name": "input_engine_null_t",
+    "parent": "input_engine_t",
+    "annotation": {
+      "fake": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
         "params": [
           {
             "type": "int",
@@ -40598,21 +40631,68 @@
         "annotation": {
           "constructor": true
         },
-        "desc": "创建空输入法引擎对象。",
-        "name": "input_engine_create",
-        "export": "none",
+        "desc": "获取stb图片加载器对象。",
+        "name": "image_loader_stb",
         "return": {
-          "type": "input_engine_t*",
-          "desc": "返回输入法引擎对象。"
+          "type": "image_loader_t*",
+          "desc": "返回图片加载器对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "int32_t",
+            "name": "subtype",
+            "desc": "资源类型。"
+          },
+          {
+            "type": "const uint8_t*",
+            "name": "buff",
+            "desc": "资源数据。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "buff_size",
+            "desc": "资源数据长度。"
+          },
+          {
+            "type": "bitmap_t*",
+            "name": "image",
+            "desc": "image 对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "require_bgra",
+            "desc": "require_bgra"
+          },
+          {
+            "type": "bool_t",
+            "name": "enable_bgr565",
+            "desc": "enable_bgr565"
+          },
+          {
+            "type": "bool_t",
+            "name": "enable_rgb565",
+            "desc": "enable_rgb565"
+          }
+        ],
+        "annotation": {
+          "static": true
+        },
+        "desc": "加载图片。",
+        "name": "stb_load_image",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "input_engines/input_engine_null.h",
-    "desc": "空输入法引擎实现。\n\n缺省输入法可以选择启用软键盘，但不启用具体的输入法引擎，此时可以选择空输入法引擎实现。",
-    "name": "input_engine_null_t",
-    "parent": "input_engine_t",
+    "header": "image_loader/image_loader_stb.h",
+    "desc": "stb图片加载器。\n\nstb主要用于加载jpg/png/gif等格式的图片，它功能强大，体积小巧。",
+    "name": "image_loader_stb_t",
+    "parent": "image_loader_t",
     "annotation": {
       "fake": true
     },
@@ -40751,68 +40831,48 @@
         "annotation": {
           "constructor": true
         },
-        "desc": "获取stb图片加载器对象。",
-        "name": "image_loader_stb",
+        "desc": "获取stb字体加载器对象。",
+        "name": "font_loader_stb",
         "return": {
-          "type": "image_loader_t*",
-          "desc": "返回图片加载器对象。"
+          "type": "font_loader_t*",
+          "desc": "返回字体加载器对象。"
         }
       },
       {
         "params": [
           {
-            "type": "int32_t",
-            "name": "subtype",
-            "desc": "资源类型。"
+            "type": "const char*",
+            "name": "name",
+            "desc": "字体名称。"
           },
           {
-            "type": "const uint8_t*",
-            "name": "buff",
-            "desc": "资源数据。"
+            "type": "const uint8_t* buff",
+            "name": "",
+            "desc": "。"
           },
           {
             "type": "uint32_t",
-            "name": "buff_size",
-            "desc": "资源数据长度。"
-          },
-          {
-            "type": "bitmap_t*",
-            "name": "image",
-            "desc": "image 对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "require_bgra",
-            "desc": "require_bgra"
-          },
-          {
-            "type": "bool_t",
-            "name": "enable_bgr565",
-            "desc": "enable_bgr565"
-          },
-          {
-            "type": "bool_t",
-            "name": "enable_rgb565",
-            "desc": "enable_rgb565"
+            "name": "size",
+            "desc": "字体数据长度。"
           }
         ],
         "annotation": {
           "static": true
         },
-        "desc": "加载图片。",
-        "name": "stb_load_image",
+        "desc": "创建stb字体对象。",
+        "name": "font_stb_create",
         "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
+          "type": "font_t*",
+          "desc": "返回字体对象。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "image_loader/image_loader_stb.h",
-    "desc": "stb图片加载器。\n\nstb主要用于加载jpg/png/gif等格式的图片，它功能强大，体积小巧。",
-    "name": "image_loader_stb_t",
-    "parent": "image_loader_t",
+    "header": "font_loader/font_loader_stb.h",
+    "desc": "stb字体加载器。\n\nstb主要用于加载矢量字体(如truetype)，它功能强大，体积小巧。",
+    "name": "font_loader_stb_t",
+    "parent": "font_loader_t",
     "annotation": {
       "fake": true
     },
@@ -41099,61 +41159,6 @@
       "scriptable": true
     },
     "parent": "event_t",
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "获取stb字体加载器对象。",
-        "name": "font_loader_stb",
-        "return": {
-          "type": "font_loader_t*",
-          "desc": "返回字体加载器对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "const char*",
-            "name": "name",
-            "desc": "字体名称。"
-          },
-          {
-            "type": "const uint8_t* buff",
-            "name": "",
-            "desc": "。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "size",
-            "desc": "字体数据长度。"
-          }
-        ],
-        "annotation": {
-          "static": true
-        },
-        "desc": "创建stb字体对象。",
-        "name": "font_stb_create",
-        "return": {
-          "type": "font_t*",
-          "desc": "返回字体对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "font_loader/font_loader_stb.h",
-    "desc": "stb字体加载器。\n\nstb主要用于加载矢量字体(如truetype)，它功能强大，体积小巧。",
-    "name": "font_loader_stb_t",
-    "parent": "font_loader_t",
-    "annotation": {
-      "fake": true
-    },
     "level": 2
   },
   {
@@ -42378,173 +42383,6 @@
           "constructor": true,
           "scriptable": true
         },
-        "desc": "创建color_tile对象",
-        "name": "color_tile_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "color_tile对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": "转换为color_tile对象(供脚本语言使用)。",
-        "name": "color_tile_cast",
-        "return": {
-          "type": "widget_t*",
-          "desc": "color_tile对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "color",
-            "desc": "背景颜色。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置背景颜色。",
-        "name": "color_tile_set_bg_color",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "color",
-            "desc": "边框颜色。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置边框颜色。",
-        "name": "color_tile_set_border_color",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "color_t",
-            "name": "color",
-            "desc": "背景颜色。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置背景颜色。",
-        "name": "color_tile_set_value",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [
-      {
-        "name": "bg_color",
-        "desc": "背景颜色。",
-        "type": "const char*",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "border_color",
-        "desc": "边框颜色。",
-        "type": "const char*",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      }
-    ],
-    "header": "widgets/color_tile.h",
-    "desc": "色块控件。\n\n用来显示一个颜色块，它通过属性而不是主题来设置颜色，方便在运行时动态改变颜色。\n\n可以使用value属性访问背景颜色的颜色值。\n\ncolor\\_tile\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于color\\_tile\\_t控件。\n\n在xml中使用\"color_tile\"标签创建色块控件。如：\n\n```xml\n<color_tile x=\"c\" y=\"m\" w=\"80\" h=\"30\" bg_color=\"green\" />\n```\n\n> 更多用法请参考：\n[color_tile](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/color_picker_rgb.xml)\n\n在c代码中使用函数color_tile\\_create创建色块控件。如：\n\n```c\nwidget_t* color_tile = color_tile_create(win, 10, 10, 128, 30);\ncolor_tile_set_bg_color(color_tile, \"red\");\n```\n> 创建之后，用color\\_tile\\_set\\_bg\\_color设置背景颜色。",
-    "name": "color_tile_t",
-    "parent": "widget_t",
-    "annotation": {
-      "scriptable": true,
-      "design": true,
-      "widget": true
-    },
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
         "desc": "创建slide_view对象",
         "name": "slide_view_create",
         "return": {
@@ -42756,6 +42594,173 @@
     "header": "slide_view/slide_view.h",
     "desc": "滑动视图。\n\n滑动视图可以管理多个页面，并通过滑动来切换当前页面。也可以管理多张图片，让它们自动切换。\n\nslide\\_view\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于slide\\_view\\_t控件。\n\n在xml中使用\"slide\\_view\"标签创建滑动视图控件。如：\n\n```xml\n<slide_view x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" style=\"dot\">\n<view x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" children_layout=\"default(w=60,h=60,m=5,s=10)\">\n...\n</view>\n<view x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" children_layout=\"default(w=60,h=60,m=5,s=10)\">\n...\n</view>\n</slide_view>\n```\n\n> 更多用法请参考：[slide_view.xml](\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/slide_view.xml)\n\n在c代码中使用函数slide\\_view\\_create创建滑动视图控件。如：\n\n```c\nslide_view = slide_view_create(win, 0, 0, win->w, win->h);\n```\n\n> 完整示例请参考：\n[slide_view demo](\nhttps://github.com/zlgopen/awtk-c-demos/blob/master/demos/slide_view.c)\n\n可用通过style来设置控件的显示风格，如背景颜色和指示器的图标等等。如：\n\n```xml\n<style name=\"dot\">\n<normal  icon=\"dot\" active_icon=\"active_dot\"/>\n</style>\n```\n\n> 如果希望背景图片跟随滚动，请将背景图片设置到页面上，否则设置到slide\\_view上。\n\n> 更多用法请参考：[theme default](\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L458)",
     "name": "slide_view_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true,
+      "design": true,
+      "widget": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "创建color_tile对象",
+        "name": "color_tile_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "color_tile对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为color_tile对象(供脚本语言使用)。",
+        "name": "color_tile_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "color_tile对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "color",
+            "desc": "背景颜色。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置背景颜色。",
+        "name": "color_tile_set_bg_color",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "color",
+            "desc": "边框颜色。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置边框颜色。",
+        "name": "color_tile_set_border_color",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "color_t",
+            "name": "color",
+            "desc": "背景颜色。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置背景颜色。",
+        "name": "color_tile_set_value",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "bg_color",
+        "desc": "背景颜色。",
+        "type": "const char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "border_color",
+        "desc": "边框颜色。",
+        "type": "const char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "widgets/color_tile.h",
+    "desc": "色块控件。\n\n用来显示一个颜色块，它通过属性而不是主题来设置颜色，方便在运行时动态改变颜色。\n\n可以使用value属性访问背景颜色的颜色值。\n\ncolor\\_tile\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于color\\_tile\\_t控件。\n\n在xml中使用\"color_tile\"标签创建色块控件。如：\n\n```xml\n<color_tile x=\"c\" y=\"m\" w=\"80\" h=\"30\" bg_color=\"green\" />\n```\n\n> 更多用法请参考：\n[color_tile](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/color_picker_rgb.xml)\n\n在c代码中使用函数color_tile\\_create创建色块控件。如：\n\n```c\nwidget_t* color_tile = color_tile_create(win, 10, 10, 128, 30);\ncolor_tile_set_bg_color(color_tile, \"red\");\n```\n> 创建之后，用color\\_tile\\_set\\_bg\\_color设置背景颜色。",
+    "name": "color_tile_t",
     "parent": "widget_t",
     "annotation": {
       "scriptable": true,
@@ -43295,6 +43300,201 @@
           "constructor": true,
           "scriptable": true
         },
+        "desc": "创建slide_menu对象",
+        "name": "slide_menu_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "slide_menu对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换slide_menu对象(供脚本语言使用)。",
+        "name": "slide_menu_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "slide_menu对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "slide_menu对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "value",
+            "desc": "当前项的索引。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置当前项。",
+        "name": "slide_menu_set_value",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "slide_menu对象。"
+          },
+          {
+            "type": "align_v_t",
+            "name": "align_v",
+            "desc": "对齐方式。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置垂直对齐方式。",
+        "name": "slide_menu_set_align_v",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "slide_menu对象。"
+          },
+          {
+            "type": "float_t",
+            "name": "min_scale",
+            "desc": "最小缩放比例，范围[0.5-1]。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置最小缩放比例。",
+        "name": "slide_menu_set_min_scale",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [
+      {
+        "name": "EVT_VALUE_WILL_CHANGE",
+        "desc": "值(当前项)即将改变事件。",
+        "type": "event_t"
+      },
+      {
+        "name": "EVT_VALUE_CHANGED",
+        "desc": "值(当前项)改变事件。",
+        "type": "event_t"
+      }
+    ],
+    "properties": [
+      {
+        "name": "value",
+        "desc": "值。代表当前选中项的索引。",
+        "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "align_v",
+        "desc": "垂直对齐方式。",
+        "type": "align_v_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "min_scale",
+        "desc": "最小缩放比例。",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "slide_menu/slide_menu.h",
+    "desc": "左右滑动菜单控件。\n\n一般用一组按钮作为子控件，通过左右滑动改变当前的项。除了当菜单使用外，也可以用来切换页面。\n\nslide\\_menu\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于slide\\_menu\\_t控件。\n\n在xml中使用\"slide\\_menu\"标签创建左右滑动菜单控件。如：\n\n```xml\n<slide_menu style=\"mask\" align_v=\"top\">\n<button style=\"slide_button\" text=\"0\"/>\n<button style=\"slide_button\" text=\"1\"/>\n<button style=\"slide_button\" text=\"2\"/>\n<button style=\"slide_button\" text=\"3\"/>\n<button style=\"slide_button\" text=\"4\"/>\n</slide_menu>\n```\n\n> 更多用法请参考：[slide_menu.xml](\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/slide_menu.xml)\n\n在c代码中使用函数slide\\_menu\\_create创建左右滑动菜单控件。如：\n\n```c\nslide_menu = slide_menu_create(win, 10, 10, 300, 60);\nb = button_create(slide_menu, 0, 0, 0, 0);\nwidget_set_text_utf8(b, \"1\");\nb = button_create(slide_menu, 0, 0, 0, 0);\nwidget_set_text_utf8(b, \"2\");\nb = button_create(slide_menu, 0, 0, 0, 0);\nwidget_set_text_utf8(b, \"3\");\nb = button_create(slide_menu, 0, 0, 0, 0);\nwidget_set_text_utf8(b, \"4\");\n```\n\n可按下面的方法关注当前项改变的事件：\n\n```c\nwidget_on(slide_menu, EVT_VALUE_CHANGED, on_current_changed, slide_menu);\n```\n\n可按下面的方法关注当前按钮被点击的事件：\n\n```c\nwidget_on(b, EVT_CLICK, on_button_click, b);\n```\n\n> 完整示例请参考：[slide_menu demo](\nhttps://github.com/zlgopen/awtk-c-demos/blob/master/demos/slide_menu.c)\n\n可用通过style来设置控件的显示风格，如背景颜色和蒙版颜色等等。如：\n\n```xml\n<style name=\"mask\">\n<normal     bg_color=\"#f0f0f0\" mask_color=\"#f0f0f0\"/>\n</style>\n```\n\n> 更多用法请参考：[theme default](\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L493)",
+    "name": "slide_menu_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true,
+      "design": true,
+      "widget": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
         "desc": "创建clip_view对象",
         "name": "clip_view_create",
         "return": {
@@ -43489,201 +43689,6 @@
     "header": "widgets/check_button.h",
     "desc": "勾选按钮控件(单选/多选)。\n\ncheck\\_button\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于check\\_button\\_t控件。\n\n在xml中使用\"check_button\"标签创建多选按钮控件。如：\n\n```xml\n<check_button name=\"c1\" text=\"Book\"/>\n```\n\n在xml中使用\"radio_button\"标签创建单选按钮控件。如：\n\n```xml\n<radio_button name=\"r1\" text=\"Book\"/>\n```\n\n> 更多用法请参考：\n[button.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/basic.xml)\n\n在c代码中使用函数check\\_button\\_create创建多选按钮控件。如：\n\n```c\nwidget_t* button = check_button_create(win, x, y, w, h);\nwidget_set_text(button, L\"OK\");\nwidget_on(button, EVT_VALUE_CHANGED, on_changed, NULL);\n```\n\n在c代码中使用函数check\\_button\\_create\\_radio创建单选按钮控件。如：\n\n```c\nwidget_t* button = check_button_create_radio(win, x, y, w, h);\nwidget_set_text(button, L\"OK\");\nwidget_on(button, EVT_VALUE_CHANGED, on_changed, NULL);\n```\n\n> 完整示例请参考：\n[button demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/check_button.c)\n\n可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\n\n```xml\n<style name=\"default\" icon_at=\"left\">\n<normal  icon=\"unchecked\" />\n<pressed icon=\"unchecked\" />\n<over    icon=\"unchecked\" text_color=\"green\"/>\n<normal_of_checked icon=\"checked\" text_color=\"blue\"/>\n<pressed_of_checked icon=\"checked\" text_color=\"blue\"/>\n<over_of_checked icon=\"checked\" text_color=\"green\"/>\n</style>\n```\n\n> 更多用法请参考：\n[theme\ndefault](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L227)",
     "name": "check_button_t",
-    "parent": "widget_t",
-    "annotation": {
-      "scriptable": true,
-      "design": true,
-      "widget": true
-    },
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
-        "desc": "创建slide_menu对象",
-        "name": "slide_menu_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "slide_menu对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": "转换slide_menu对象(供脚本语言使用)。",
-        "name": "slide_menu_cast",
-        "return": {
-          "type": "widget_t*",
-          "desc": "slide_menu对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "slide_menu对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "value",
-            "desc": "当前项的索引。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置当前项。",
-        "name": "slide_menu_set_value",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "slide_menu对象。"
-          },
-          {
-            "type": "align_v_t",
-            "name": "align_v",
-            "desc": "对齐方式。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置垂直对齐方式。",
-        "name": "slide_menu_set_align_v",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "slide_menu对象。"
-          },
-          {
-            "type": "float_t",
-            "name": "min_scale",
-            "desc": "最小缩放比例，范围[0.5-1]。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置最小缩放比例。",
-        "name": "slide_menu_set_min_scale",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "events": [
-      {
-        "name": "EVT_VALUE_WILL_CHANGE",
-        "desc": "值(当前项)即将改变事件。",
-        "type": "event_t"
-      },
-      {
-        "name": "EVT_VALUE_CHANGED",
-        "desc": "值(当前项)改变事件。",
-        "type": "event_t"
-      }
-    ],
-    "properties": [
-      {
-        "name": "value",
-        "desc": "值。代表当前选中项的索引。",
-        "type": "int32_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "align_v",
-        "desc": "垂直对齐方式。",
-        "type": "align_v_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "min_scale",
-        "desc": "最小缩放比例。",
-        "type": "float_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      }
-    ],
-    "header": "slide_menu/slide_menu.h",
-    "desc": "左右滑动菜单控件。\n\n一般用一组按钮作为子控件，通过左右滑动改变当前的项。除了当菜单使用外，也可以用来切换页面。\n\nslide\\_menu\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于slide\\_menu\\_t控件。\n\n在xml中使用\"slide\\_menu\"标签创建左右滑动菜单控件。如：\n\n```xml\n<slide_menu style=\"mask\" align_v=\"top\">\n<button style=\"slide_button\" text=\"0\"/>\n<button style=\"slide_button\" text=\"1\"/>\n<button style=\"slide_button\" text=\"2\"/>\n<button style=\"slide_button\" text=\"3\"/>\n<button style=\"slide_button\" text=\"4\"/>\n</slide_menu>\n```\n\n> 更多用法请参考：[slide_menu.xml](\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/slide_menu.xml)\n\n在c代码中使用函数slide\\_menu\\_create创建左右滑动菜单控件。如：\n\n```c\nslide_menu = slide_menu_create(win, 10, 10, 300, 60);\nb = button_create(slide_menu, 0, 0, 0, 0);\nwidget_set_text_utf8(b, \"1\");\nb = button_create(slide_menu, 0, 0, 0, 0);\nwidget_set_text_utf8(b, \"2\");\nb = button_create(slide_menu, 0, 0, 0, 0);\nwidget_set_text_utf8(b, \"3\");\nb = button_create(slide_menu, 0, 0, 0, 0);\nwidget_set_text_utf8(b, \"4\");\n```\n\n可按下面的方法关注当前项改变的事件：\n\n```c\nwidget_on(slide_menu, EVT_VALUE_CHANGED, on_current_changed, slide_menu);\n```\n\n可按下面的方法关注当前按钮被点击的事件：\n\n```c\nwidget_on(b, EVT_CLICK, on_button_click, b);\n```\n\n> 完整示例请参考：[slide_menu demo](\nhttps://github.com/zlgopen/awtk-c-demos/blob/master/demos/slide_menu.c)\n\n可用通过style来设置控件的显示风格，如背景颜色和蒙版颜色等等。如：\n\n```xml\n<style name=\"mask\">\n<normal     bg_color=\"#f0f0f0\" mask_color=\"#f0f0f0\"/>\n</style>\n```\n\n> 更多用法请参考：[theme default](\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L493)",
-    "name": "slide_menu_t",
     "parent": "widget_t",
     "annotation": {
       "scriptable": true,
@@ -44942,240 +44947,6 @@
           "constructor": true,
           "scriptable": true
         },
-        "desc": "创建button对象",
-        "name": "button_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "button对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": "转换为button对象(供脚本语言使用)。",
-        "name": "button_cast",
-        "return": {
-          "type": "widget_t*",
-          "desc": "button对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "int32_t",
-            "name": "repeat",
-            "desc": "触发EVT_CLICK事件的时间间隔(毫秒)。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置触发EVT\\_CLICK事件的时间间隔。为0则不重复触发EVT\\_CLICK事件。",
-        "name": "button_set_repeat",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "enable_long_press",
-            "desc": "是否启用长按事件。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置是否启用长按事件。",
-        "name": "button_set_enable_long_press",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "events": [
-      {
-        "name": "EVT_CLICK",
-        "desc": "点击事件。",
-        "type": "pointer_event_t"
-      },
-      {
-        "name": "EVT_LONG_PRESS",
-        "desc": "长按事件。",
-        "type": "pointer_event_t"
-      }
-    ],
-    "properties": [
-      {
-        "name": "repeat",
-        "desc": "重复触发EVT\\_CLICK事件的时间间隔。\n\n为0则不重复触发EVT\\_CLICK事件。",
-        "type": "int32_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "enable_long_press",
-        "desc": "是否启用长按事件，为true时才触发长按事件。\n\n触发长按事件后不再触发点击事件。\n缺省不启用。",
-        "type": "bool_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      }
-    ],
-    "header": "widgets/button.h",
-    "desc": "按钮控件。\n\n点击按钮之后会触发EVT\\_CLICK事件，注册EVT\\_CLICK事件以执行特定操作。\n\n按钮控件也可以作为容器使用，使用图片和文本作为其子控件，可以实现很多有趣的效果。\n\nbutton\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于button\\_t控件。\n\n在xml中使用\"button\"标签创建按钮控件。如：\n\n```xml\n<button x=\"c\" y=\"m\" w=\"80\" h=\"30\" text=\"OK\"/>\n```\n\n> 更多用法请参考：\n[button.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/button.xml)\n\n在c代码中使用函数button\\_create创建按钮控件。如：\n\n```c\nwidget_t* button = button_create(win, 10, 10, 128, 30);\nwidget_set_text(button, L\"OK\");\nwidget_on(button, EVT_CLICK, on_click, NULL);\n```\n\n> 创建之后，需要用widget\\_set\\_text或widget\\_set\\_text\\_utf8设置文本内容。\n\n> 完整示例请参考：\n[button demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/button.c)\n\n可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\n\n```xml\n<style name=\"default\" border_color=\"#a0a0a0\"  text_color=\"black\">\n<normal     bg_color=\"#f0f0f0\" />\n<pressed    bg_color=\"#c0c0c0\" x_offset=\"1\" y_offset=\"1\"/>\n<over       bg_color=\"#e0e0e0\" />\n<disable    bg_color=\"gray\" text_color=\"#d0d0d0\" />\n</style>\n```\n\n> 更多用法请参考：\n[theme\ndefault](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L31)",
-    "name": "button_t",
-    "parent": "widget_t",
-    "annotation": {
-      "scriptable": true,
-      "design": true,
-      "widget": true
-    },
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
-        "desc": "创建button_group对象",
-        "name": "button_group_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "button_group对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": "转换为button_group对象(供脚本语言使用)。",
-        "name": "button_group_cast",
-        "return": {
-          "type": "widget_t*",
-          "desc": "button_group对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "widgets/button_group.h",
-    "desc": "Button Group控件。一个简单的容器控件，用于容纳一组按钮控件。\n\n它本身不提供布局功能，仅提供具有语义的标签，让xml更具有可读性。\n子控件的布局可用layout\\_children属性指定。\n请参考[布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)。\n\nbutton\\_group\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于button\\_group\\_t控件。\n\n在xml中使用\"button\\_group\"标签创建button\\_group。如：\n\n```xml\n<button_group x=\"0\" y=\"m\" w=\"100%\" h=\"40\" children_layout=\"default(c=4,r=1,s=5,m=5)\">\n<button name=\"open:basic\" text=\"Basic\"/>\n<button name=\"open:button\" text=\"Buttons\"/>\n<button name=\"open:edit\" text=\"Edits\"/>\n<button name=\"open:keyboard\" text=\"KeyBoard\"/>\n</button_group>\n```\n\n可用通过style来设置控件的显示风格，如背景颜色等。如：\n\n```xml\n<style name=\"default\" border_color=\"#a0a0a0\">\n<normal     bg_color=\"#f0f0f0\" />\n</style>\n```",
-    "name": "button_group_t",
-    "parent": "widget_t",
-    "annotation": {
-      "scriptable": true,
-      "design": true,
-      "widget": true
-    },
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
         "desc": "创建hscroll_label对象",
         "name": "hscroll_label_create",
         "return": {
@@ -45583,8 +45354,8 @@
           "constructor": true,
           "scriptable": true
         },
-        "desc": "创建app_bar对象",
-        "name": "app_bar_create",
+        "desc": "创建button对象",
+        "name": "button_create",
         "return": {
           "type": "widget_t*",
           "desc": "对象。"
@@ -45595,26 +45366,185 @@
           {
             "type": "widget_t*",
             "name": "widget",
-            "desc": "app_bar对象。"
+            "desc": "button对象。"
           }
         ],
         "annotation": {
           "cast": true,
           "scriptable": true
         },
-        "desc": "转换为app_bar对象(供脚本语言使用)。",
-        "name": "app_bar_cast",
+        "desc": "转换为button对象(供脚本语言使用)。",
+        "name": "button_cast",
         "return": {
           "type": "widget_t*",
-          "desc": "app_bar对象。"
+          "desc": "button对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "int32_t",
+            "name": "repeat",
+            "desc": "触发EVT_CLICK事件的时间间隔(毫秒)。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置触发EVT\\_CLICK事件的时间间隔。为0则不重复触发EVT\\_CLICK事件。",
+        "name": "button_set_repeat",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "enable_long_press",
+            "desc": "是否启用长按事件。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置是否启用长按事件。",
+        "name": "button_set_enable_long_press",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [
+      {
+        "name": "EVT_CLICK",
+        "desc": "点击事件。",
+        "type": "pointer_event_t"
+      },
+      {
+        "name": "EVT_LONG_PRESS",
+        "desc": "长按事件。",
+        "type": "pointer_event_t"
+      }
+    ],
+    "properties": [
+      {
+        "name": "repeat",
+        "desc": "重复触发EVT\\_CLICK事件的时间间隔。\n\n为0则不重复触发EVT\\_CLICK事件。",
+        "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "enable_long_press",
+        "desc": "是否启用长按事件，为true时才触发长按事件。\n\n触发长按事件后不再触发点击事件。\n缺省不启用。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "widgets/button.h",
+    "desc": "按钮控件。\n\n点击按钮之后会触发EVT\\_CLICK事件，注册EVT\\_CLICK事件以执行特定操作。\n\n按钮控件也可以作为容器使用，使用图片和文本作为其子控件，可以实现很多有趣的效果。\n\nbutton\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于button\\_t控件。\n\n在xml中使用\"button\"标签创建按钮控件。如：\n\n```xml\n<button x=\"c\" y=\"m\" w=\"80\" h=\"30\" text=\"OK\"/>\n```\n\n> 更多用法请参考：\n[button.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/button.xml)\n\n在c代码中使用函数button\\_create创建按钮控件。如：\n\n```c\nwidget_t* button = button_create(win, 10, 10, 128, 30);\nwidget_set_text(button, L\"OK\");\nwidget_on(button, EVT_CLICK, on_click, NULL);\n```\n\n> 创建之后，需要用widget\\_set\\_text或widget\\_set\\_text\\_utf8设置文本内容。\n\n> 完整示例请参考：\n[button demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/button.c)\n\n可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\n\n```xml\n<style name=\"default\" border_color=\"#a0a0a0\"  text_color=\"black\">\n<normal     bg_color=\"#f0f0f0\" />\n<pressed    bg_color=\"#c0c0c0\" x_offset=\"1\" y_offset=\"1\"/>\n<over       bg_color=\"#e0e0e0\" />\n<disable    bg_color=\"gray\" text_color=\"#d0d0d0\" />\n</style>\n```\n\n> 更多用法请参考：\n[theme\ndefault](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L31)",
+    "name": "button_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true,
+      "design": true,
+      "widget": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "创建button_group对象",
+        "name": "button_group_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "button_group对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为button_group对象(供脚本语言使用)。",
+        "name": "button_group_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "button_group对象。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "widgets/app_bar.h",
-    "desc": "app_bar控件。\n\n一个简单的容器控件，一般在窗口的顶部，用于显示本窗口的状态和信息。\n\n它本身不提供布局功能，仅提供具有语义的标签，让xml更具有可读性。\n子控件的布局可用layout\\_children属性指定。\n请参考[布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)。\n\napp\\_bar\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于app\\_bar\\_t控件。\n\n在xml中使用\"app\\_bar\"标签创建app\\_bar。如：\n\n```xml\n<app_bar x=\"0\" y=\"0\" w=\"100%\" h=\"30\" >\n<label x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" text=\"Basic Controls\" />\n</app_bar>\n```\n\n在c代码中使用函数app\\_bar\\_create创建app\\_bar。如：\n\n```c\nwidget_t* app_bar = app_bar_create(win, 0, 0, 320, 30);\n```\n\n可用通过style来设置控件的显示风格，如背景颜色等。如：\n\n```xml\n<style name=\"default\" border_color=\"#a0a0a0\">\n<normal     bg_color=\"#f0f0f0\" />\n</style>\n```",
-    "name": "app_bar_t",
+    "header": "widgets/button_group.h",
+    "desc": "Button Group控件。一个简单的容器控件，用于容纳一组按钮控件。\n\n它本身不提供布局功能，仅提供具有语义的标签，让xml更具有可读性。\n子控件的布局可用layout\\_children属性指定。\n请参考[布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)。\n\nbutton\\_group\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于button\\_group\\_t控件。\n\n在xml中使用\"button\\_group\"标签创建button\\_group。如：\n\n```xml\n<button_group x=\"0\" y=\"m\" w=\"100%\" h=\"40\" children_layout=\"default(c=4,r=1,s=5,m=5)\">\n<button name=\"open:basic\" text=\"Basic\"/>\n<button name=\"open:button\" text=\"Buttons\"/>\n<button name=\"open:edit\" text=\"Edits\"/>\n<button name=\"open:keyboard\" text=\"KeyBoard\"/>\n</button_group>\n```\n\n可用通过style来设置控件的显示风格，如背景颜色等。如：\n\n```xml\n<style name=\"default\" border_color=\"#a0a0a0\">\n<normal     bg_color=\"#f0f0f0\" />\n</style>\n```",
+    "name": "button_group_t",
     "parent": "widget_t",
     "annotation": {
       "scriptable": true,
@@ -45758,6 +45688,81 @@
     "header": "rich_text/rich_text.h",
     "desc": "图文混排控件，实现简单的图文混排。\n\nrich\\_text\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于rich\\_text\\_t控件。\n\n在xml中使用\"rich\\_text\"标签创建图文混排控件。如：\n\n```xml\n<rich_text x=\"0\" y=\"0\" w=\"100%\" h=\"60\"\ntext=\"<image name=&quota;bricks&quota;/><font align_v=&quota;middle&quota;>hello awtk!</font>\" />\n```\n>\n\n> 更多用法请参考：\n[rich_text.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/rich_text.xml)\n\n在c代码中使用函数rich\\_text\\_create创建图文混排控件。如：\n\n```c\nwidget_t* rich_text = rich_text_create(win, 0, 0, 0, 0);\nwidget_set_text_utf8(rich_text,\n\"<image name=\\\"bricks\\\"/><font color=\\\"gold\\\" align_v=\\\"bottom\\\" \"\n\"size=\\\"24\\\">hello awtk!</font><font color=\\\"green\\\" size=\\\"20\\\">ProTip! The \"\n\"feed shows you events from people you follow and repositories you watch. \"\n\"nhello world. </font><font color=\\\"red\\\" \"\n\"size=\\\"20\\\">确定取消中文字符测试。确定。取消。中文字符测试。</font>\");\n\nwidget_set_self_layout_params(rich_text, \"center\", \"middle\", \"100%\", \"100%\");\n```\n\n> 完整示例请参考：\n[rich_text demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/rich_text.c)\n\n可用通过style来设置控件的显示风格，如背景颜色等等。而字体的大小和颜色则由文本内部的属性决定。\n\n目前支持image和font两个tag：\n\n* image 支持的属性有：\n* name 图片的名称。\n* w 图片的宽度。\n* h 图片的高度。\n\n* font 支持的属性有：\n* color 颜色。\n* size 大小。\n* align_v 垂直方向对齐的方式(top|middle|bottom)。\n* bold 粗体(暂不支持)\n* italic 斜体(暂不支持)\n* underline 下划线(暂不支持)",
     "name": "rich_text_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true,
+      "design": true,
+      "widget": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "创建app_bar对象",
+        "name": "app_bar_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "app_bar对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为app_bar对象(供脚本语言使用)。",
+        "name": "app_bar_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "app_bar对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "widgets/app_bar.h",
+    "desc": "app_bar控件。\n\n一个简单的容器控件，一般在窗口的顶部，用于显示本窗口的状态和信息。\n\n它本身不提供布局功能，仅提供具有语义的标签，让xml更具有可读性。\n子控件的布局可用layout\\_children属性指定。\n请参考[布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)。\n\napp\\_bar\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于app\\_bar\\_t控件。\n\n在xml中使用\"app\\_bar\"标签创建app\\_bar。如：\n\n```xml\n<app_bar x=\"0\" y=\"0\" w=\"100%\" h=\"30\" >\n<label x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" text=\"Basic Controls\" />\n</app_bar>\n```\n\n在c代码中使用函数app\\_bar\\_create创建app\\_bar。如：\n\n```c\nwidget_t* app_bar = app_bar_create(win, 0, 0, 320, 30);\n```\n\n可用通过style来设置控件的显示风格，如背景颜色等。如：\n\n```xml\n<style name=\"default\" border_color=\"#a0a0a0\">\n<normal     bg_color=\"#f0f0f0\" />\n</style>\n```",
+    "name": "app_bar_t",
     "parent": "widget_t",
     "annotation": {
       "scriptable": true,
@@ -49895,37 +49900,6 @@
       {
         "params": [
           {
-            "type": "compressor_options_t",
-            "name": "options",
-            "desc": "选项。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建compressor对象。",
-        "name": "compressor_miniz_create",
-        "return": {
-          "type": "compressor_t*",
-          "desc": "返回compressor对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "compressors/compressor_miniz.h",
-    "desc": "基于miniz实现的compressor接口。",
-    "name": "compressor_miniz_t",
-    "parent": "compressor_t",
-    "annotation": {
-      "fake": true
-    },
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
             "type": "event_t*",
             "name": "event",
             "desc": "event对象。"
@@ -50014,6 +49988,357 @@
       "scriptable": true
     },
     "parent": "event_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "compressor_options_t",
+            "name": "options",
+            "desc": "选项。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建compressor对象。",
+        "name": "compressor_miniz_create",
+        "return": {
+          "type": "compressor_t*",
+          "desc": "返回compressor对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "compressors/compressor_miniz.h",
+    "desc": "基于miniz实现的compressor接口。",
+    "name": "compressor_miniz_t",
+    "parent": "compressor_t",
+    "annotation": {
+      "fake": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image对象。"
+          },
+          {
+            "type": "char*",
+            "name": "name",
+            "desc": "图片名称，该图片必须存在于资源管理器。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置控件的图片名称。\n\n> 如果需要显示文件系统中的图片，只需将图片名称换成实际的文件名，并加上\"file://\"前缀即可。",
+        "name": "image_base_set_image",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "float_t",
+            "name": "rotation",
+            "desc": "旋转角度(幅度)。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置控件的旋转角度(仅在WITH_VGCANVAS定义时生效)。",
+        "name": "image_base_set_rotation",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "float_t",
+            "name": "scale_x",
+            "desc": "X方向缩放比例。"
+          },
+          {
+            "type": "float_t",
+            "name": "scale_y",
+            "desc": "Y方向缩放比例。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置控件的缩放比例(仅在WITH_VGCANVAS定义时生效)。",
+        "name": "image_base_set_scale",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "float_t",
+            "name": "anchor_x",
+            "desc": "锚点X(0-1)。0在控件左边，0.5在控件中间，1在控件右边。"
+          },
+          {
+            "type": "float_t",
+            "name": "anchor_y",
+            "desc": "锚点Y(0-1)。0在控件顶部，0.5在控件中间，1在控件底部。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置控件的锚点(仅在WITH_VGCANVAS定义时生效)。",
+        "name": "image_base_set_anchor",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "selected",
+            "desc": "是否被选中。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置控件的选中状态。",
+        "name": "image_base_set_selected",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "selectable",
+            "desc": "是否可以被选中。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置控件是否可以被选中。",
+        "name": "image_base_set_selectable",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "clickable",
+            "desc": "是否可以被点击。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置控件是否可以被点击。",
+        "name": "image_base_set_clickable",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_base对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为image_base对象(供脚本语言使用)。",
+        "name": "image_base_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "image_base对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "image",
+        "desc": "图片的名称。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "anchor_x",
+        "desc": "锚点X(0-1)。0在控件左边，0.5在控件中间，1在控件右边。",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "anchor_y",
+        "desc": "锚点Y(0-1)。0在控件顶部，0.5在控件中间，1在控件底部。",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "scale_x",
+        "desc": "控件在X方向上的缩放比例。",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "scale_y",
+        "desc": "控件在Y方向上的缩放比例。",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "rotation",
+        "desc": "控件的旋转角度(幅度)。",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "clickable",
+        "desc": "点击时，是否触发EVT_CLICK事件。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "selectable",
+        "desc": "是否设置选中状态。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "selected",
+        "desc": "当前是否被选中。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "base/image_base.h",
+    "desc": "图片控件基类。\n\n本类把图片相关控件的公共行为进行抽象，放到一起方便重用。目前已知的具体实现如下图：\n\n```graphviz\n[default_style]\n\nimage_t -> image_base_t[arrowhead = \"empty\"]\nsvg_image_t -> image_base_t[arrowhead = \"empty\"]\ngif_image_t -> image_base_t[arrowhead = \"empty\"]\n```\n\n> 本类是一个抽象类，不能进行实例化。请在应用程序中使用具体的类，如image\\_t。\n\n如果需要显示文件系统中的图片，只需将图片名称换成实际的文件名，并加上\"file://\"前缀即可。如：\n\n```\n<image draw_type=\"center\" image=\"file://./demos/assets/default/raw/images/xx/flag_CN.png\" />\n<gif image=\"file://./demos/assets/default/raw/images/x2/bee.gif\" />\n<svg image=\"file://./demos/assets/default/raw/images/svg/china.bsvg\" />\n```",
+    "name": "image_base_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true,
+      "widget": true
+    },
     "level": 2
   },
   {
@@ -51627,322 +51952,30 @@
   },
   {
     "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "image对象。"
-          },
-          {
-            "type": "char*",
-            "name": "name",
-            "desc": "图片名称，该图片必须存在于资源管理器。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置控件的图片名称。\n\n> 如果需要显示文件系统中的图片，只需将图片名称换成实际的文件名，并加上\"file://\"前缀即可。",
-        "name": "image_base_set_image",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "float_t",
-            "name": "rotation",
-            "desc": "旋转角度(幅度)。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置控件的旋转角度(仅在WITH_VGCANVAS定义时生效)。",
-        "name": "image_base_set_rotation",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "float_t",
-            "name": "scale_x",
-            "desc": "X方向缩放比例。"
-          },
-          {
-            "type": "float_t",
-            "name": "scale_y",
-            "desc": "Y方向缩放比例。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置控件的缩放比例(仅在WITH_VGCANVAS定义时生效)。",
-        "name": "image_base_set_scale",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "float_t",
-            "name": "anchor_x",
-            "desc": "锚点X(0-1)。0在控件左边，0.5在控件中间，1在控件右边。"
-          },
-          {
-            "type": "float_t",
-            "name": "anchor_y",
-            "desc": "锚点Y(0-1)。0在控件顶部，0.5在控件中间，1在控件底部。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置控件的锚点(仅在WITH_VGCANVAS定义时生效)。",
-        "name": "image_base_set_anchor",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "selected",
-            "desc": "是否被选中。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置控件的选中状态。",
-        "name": "image_base_set_selected",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "selectable",
-            "desc": "是否可以被选中。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置控件是否可以被选中。",
-        "name": "image_base_set_selectable",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "clickable",
-            "desc": "是否可以被点击。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置控件是否可以被点击。",
-        "name": "image_base_set_clickable",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "image_base对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": "转换为image_base对象(供脚本语言使用)。",
-        "name": "image_base_cast",
-        "return": {
-          "type": "widget_t*",
-          "desc": "image_base对象。"
-        }
-      }
-    ],
+    "methods": [],
     "events": [],
     "properties": [
       {
-        "name": "image",
-        "desc": "图片的名称。",
+        "name": "text",
+        "desc": "提交的文本。",
         "type": "char*",
         "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
+          "readable": true
         }
       },
       {
-        "name": "anchor_x",
-        "desc": "锚点X(0-1)。0在控件左边，0.5在控件中间，1在控件右边。",
-        "type": "float_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "anchor_y",
-        "desc": "锚点Y(0-1)。0在控件顶部，0.5在控件中间，1在控件底部。",
-        "type": "float_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "scale_x",
-        "desc": "控件在X方向上的缩放比例。",
-        "type": "float_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "scale_y",
-        "desc": "控件在Y方向上的缩放比例。",
-        "type": "float_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "rotation",
-        "desc": "控件的旋转角度(幅度)。",
-        "type": "float_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "clickable",
-        "desc": "点击时，是否触发EVT_CLICK事件。",
+        "name": "replace;",
+        "desc": "是否替换原来的文本。",
         "type": "bool_t",
         "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "selectable",
-        "desc": "是否设置选中状态。",
-        "type": "bool_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "selected",
-        "desc": "当前是否被选中。",
-        "type": "bool_t",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
+          "readable": true
         }
       }
     ],
-    "header": "base/image_base.h",
-    "desc": "图片控件基类。\n\n本类把图片相关控件的公共行为进行抽象，放到一起方便重用。目前已知的具体实现如下图：\n\n```graphviz\n[default_style]\n\nimage_t -> image_base_t[arrowhead = \"empty\"]\nsvg_image_t -> image_base_t[arrowhead = \"empty\"]\ngif_image_t -> image_base_t[arrowhead = \"empty\"]\n```\n\n> 本类是一个抽象类，不能进行实例化。请在应用程序中使用具体的类，如image\\_t。\n\n如果需要显示文件系统中的图片，只需将图片名称换成实际的文件名，并加上\"file://\"前缀即可。如：\n\n```\n<image draw_type=\"center\" image=\"file://./demos/assets/default/raw/images/xx/flag_CN.png\" />\n<gif image=\"file://./demos/assets/default/raw/images/x2/bee.gif\" />\n<svg image=\"file://./demos/assets/default/raw/images/svg/china.bsvg\" />\n```",
-    "name": "image_base_t",
-    "parent": "widget_t",
-    "annotation": {
-      "scriptable": true,
-      "widget": true
-    },
+    "header": "base/input_method.h",
+    "desc": "输入法提交输入的文本事件。",
+    "name": "im_commit_event_t",
+    "parent": "event_t",
     "level": 2
   },
   {
@@ -52321,15 +52354,15 @@
     "properties": [
       {
         "name": "text",
-        "desc": "提交的文本。",
+        "desc": "软键盘上的action按钮显示的文本。",
         "type": "char*",
         "annotation": {
           "readable": true
         }
       },
       {
-        "name": "replace;",
-        "desc": "是否替换原来的文本。",
+        "name": "enable",
+        "desc": "软键盘上的action按钮启用。",
         "type": "bool_t",
         "annotation": {
           "readable": true
@@ -52337,8 +52370,8 @@
       }
     ],
     "header": "base/input_method.h",
-    "desc": "输入法提交输入的文本事件。",
-    "name": "im_commit_event_t",
+    "desc": "设置软键盘上的action按钮的信息事件。",
+    "name": "im_action_button_info_event_t",
     "parent": "event_t",
     "level": 2
   },
@@ -52386,34 +52419,6 @@
     "header": "base/input_method.h",
     "desc": "输入法请求显示候选字的事件。",
     "name": "im_candidates_event_t",
-    "parent": "event_t",
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [],
-    "events": [],
-    "properties": [
-      {
-        "name": "text",
-        "desc": "软键盘上的action按钮显示的文本。",
-        "type": "char*",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "enable",
-        "desc": "软键盘上的action按钮启用。",
-        "type": "bool_t",
-        "annotation": {
-          "readable": true
-        }
-      }
-    ],
-    "header": "base/input_method.h",
-    "desc": "设置软键盘上的action按钮的信息事件。",
-    "name": "im_action_button_info_event_t",
     "parent": "event_t",
     "level": 2
   },
@@ -52918,29 +52923,6 @@
           "type": "object_t*",
           "desc": "返回配置对象。"
         }
-      },
-      {
-        "params": [
-          {
-            "type": "const char*",
-            "name": "url",
-            "desc": "路径(通常是文件路径)。"
-          },
-          {
-            "type": "bool_t",
-            "name": "create_if_not_exist",
-            "desc": "如果不存在是否创建。"
-          }
-        ],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "",
-        "name": "conf_json_load",
-        "return": {
-          "type": "object_t*",
-          "desc": "返回配置对象。"
-        }
       }
     ],
     "events": [],
@@ -53028,6 +53010,44 @@
     "header": "conf_io/conf_obj.h",
     "desc": "conf对象。",
     "name": "conf_obj_t",
+    "parent": "object_t",
+    "annotation": {
+      "fake": true
+    },
+    "level": 3
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "url",
+            "desc": "路径(通常是文件路径)。"
+          },
+          {
+            "type": "bool_t",
+            "name": "create_if_not_exist",
+            "desc": "如果不存在是否创建。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "",
+        "name": "conf_ubjson_load",
+        "return": {
+          "type": "object_t*",
+          "desc": "返回配置对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "conf_io/conf_ubjson.h",
+    "desc": "conf json对象。",
+    "name": "conf_ubjson_t",
     "parent": "object_t",
     "annotation": {
       "fake": true
@@ -56529,26 +56549,54 @@
       {
         "params": [
           {
-            "type": "int",
-            "name": "fd",
-            "desc": "fd。"
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
           }
         ],
-        "annotation": {},
-        "desc": "创建istream对象。",
-        "name": "tk_istream_serial_create",
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "创建combo_box_ex对象",
+        "name": "combo_box_ex_create",
         "return": {
-          "type": "tk_istream_t*",
-          "desc": "返回istream对象。"
+          "type": "widget_t*",
+          "desc": "对象。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "serial/istream_serial.h",
-    "desc": "基于串口实现的输入流。",
-    "name": "tk_istream_serial_t",
-    "parent": "tk_istream_t",
+    "header": "combo_box_ex/combo_box_ex.h",
+    "desc": "可滚动的combo_box控件。",
+    "name": "combo_box_ex_t",
+    "parent": "combo_box_t",
+    "annotation": {
+      "scriptable": true,
+      "design": true,
+      "widget": true
+    },
     "level": 4
   },
   {
@@ -56713,67 +56761,26 @@
       {
         "params": [
           {
-            "type": "const char*",
-            "name": "port",
-            "desc": "port name。"
+            "type": "int",
+            "name": "fd",
+            "desc": "fd。"
           }
         ],
         "annotation": {},
-        "desc": "创建iostream对象。\n> 缺省配置: baudrate=115200 bytesize=8 stopbits=1 flowcontrol=0 parity=0",
-        "name": "tk_iostream_serial_create",
+        "desc": "创建istream对象。",
+        "name": "tk_istream_serial_create",
         "return": {
-          "type": "tk_iostream_t*",
-          "desc": "返回iostream对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tk_iostream_t*",
-            "name": "iostream",
-            "desc": "串口对象。"
-          },
-          {
-            "type": "int32_t",
-            "name": "baudrate",
-            "desc": "波特率。"
-          },
-          {
-            "type": "bytesize_t",
-            "name": "bytesize",
-            "desc": "字节位数。"
-          },
-          {
-            "type": "parity_t",
-            "name": "parity",
-            "desc": "奇偶校验。"
-          },
-          {
-            "type": "stopbits_t",
-            "name": "stopbits",
-            "desc": "停止位。"
-          },
-          {
-            "type": "flowcontrol_t",
-            "name": "flowcontrol",
-            "desc": "流控。"
-          }
-        ],
-        "annotation": {},
-        "desc": "配置串口。",
-        "name": "tk_iostream_serial_config",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
+          "type": "tk_istream_t*",
+          "desc": "返回istream对象。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "serial/iostream_serial.h",
-    "desc": "基于串口实现的输入输出流。",
-    "name": "tk_iostream_serial_t",
-    "parent": "tk_iostream_t",
+    "header": "serial/istream_serial.h",
+    "desc": "基于串口实现的输入流。",
+    "name": "tk_istream_serial_t",
+    "parent": "tk_istream_t",
     "level": 4
   },
   {
@@ -57132,50 +57139,6 @@
       {
         "params": [
           {
-            "type": "tk_ostream_t*",
-            "name": "real_ostream",
-            "desc": "实际的ostream对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建ostream对象。\n\n> 只能由iostream_noisy调用。",
-        "name": "tk_ostream_noisy_create",
-        "return": {
-          "type": "tk_ostream_t*",
-          "desc": "返回ostream对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [
-      {
-        "name": "error_level",
-        "desc": "error level.",
-        "type": "uint32_t"
-      },
-      {
-        "name": "error_count",
-        "desc": "注入的错误数。",
-        "type": "uint32_t"
-      },
-      {
-        "name": "write_count",
-        "desc": "写入的次数。",
-        "type": "uint32_t"
-      }
-    ],
-    "header": "noisy/ostream_noisy.h",
-    "desc": "在输出流中注入错误，方便进行可靠性测试。",
-    "name": "tk_ostream_noisy_t",
-    "parent": "tk_ostream_t",
-    "level": 4
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
             "type": "tk_iostream_shdlc_t*",
             "name": "iostream",
             "desc": "iostream对象。"
@@ -57287,54 +57250,111 @@
       {
         "params": [
           {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
+            "type": "tk_ostream_t*",
+            "name": "real_ostream",
+            "desc": "实际的ostream对象。"
           }
         ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
-        "desc": "创建combo_box_ex对象",
-        "name": "combo_box_ex_create",
+        "annotation": {},
+        "desc": "创建ostream对象。\n\n> 只能由iostream_noisy调用。",
+        "name": "tk_ostream_noisy_create",
         "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
+          "type": "tk_ostream_t*",
+          "desc": "返回ostream对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "error_level",
+        "desc": "error level.",
+        "type": "uint32_t"
+      },
+      {
+        "name": "error_count",
+        "desc": "注入的错误数。",
+        "type": "uint32_t"
+      },
+      {
+        "name": "write_count",
+        "desc": "写入的次数。",
+        "type": "uint32_t"
+      }
+    ],
+    "header": "noisy/ostream_noisy.h",
+    "desc": "在输出流中注入错误，方便进行可靠性测试。",
+    "name": "tk_ostream_noisy_t",
+    "parent": "tk_ostream_t",
+    "level": 4
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "port",
+            "desc": "port name。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建iostream对象。\n> 缺省配置: baudrate=115200 bytesize=8 stopbits=1 flowcontrol=0 parity=0",
+        "name": "tk_iostream_serial_create",
+        "return": {
+          "type": "tk_iostream_t*",
+          "desc": "返回iostream对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_iostream_t*",
+            "name": "iostream",
+            "desc": "串口对象。"
+          },
+          {
+            "type": "int32_t",
+            "name": "baudrate",
+            "desc": "波特率。"
+          },
+          {
+            "type": "bytesize_t",
+            "name": "bytesize",
+            "desc": "字节位数。"
+          },
+          {
+            "type": "parity_t",
+            "name": "parity",
+            "desc": "奇偶校验。"
+          },
+          {
+            "type": "stopbits_t",
+            "name": "stopbits",
+            "desc": "停止位。"
+          },
+          {
+            "type": "flowcontrol_t",
+            "name": "flowcontrol",
+            "desc": "流控。"
+          }
+        ],
+        "annotation": {},
+        "desc": "配置串口。",
+        "name": "tk_iostream_serial_config",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "combo_box_ex/combo_box_ex.h",
-    "desc": "可滚动的combo_box控件。",
-    "name": "combo_box_ex_t",
-    "parent": "combo_box_t",
-    "annotation": {
-      "scriptable": true,
-      "design": true,
-      "widget": true
-    },
+    "header": "serial/iostream_serial.h",
+    "desc": "基于串口实现的输入输出流。",
+    "name": "tk_iostream_serial_t",
+    "parent": "tk_iostream_t",
     "level": 4
   },
   {

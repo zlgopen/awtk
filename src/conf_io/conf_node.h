@@ -449,7 +449,7 @@ ret_t conf_node_set_value(conf_node_t* node, const value_t* v);
 ret_t conf_node_get_value(conf_node_t* node, value_t* v);
 
 /**
- * @method conf_node_set_first_child
+ * @method conf_node_get_first_child
  *
  * 获取第一个子节点。
  *

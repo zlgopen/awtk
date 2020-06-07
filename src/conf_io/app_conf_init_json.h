@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 /**
  * @method app_conf_init_json
  *
- * 初始化。
+ * 初始化应用程序的配置信息。
  *
  * @annotation ["global"]
  * 

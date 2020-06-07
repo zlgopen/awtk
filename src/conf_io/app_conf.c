@@ -182,7 +182,7 @@ const char* app_conf_get_str(const char* key, const char* defval) {
 
 uint32_t app_conf_on_changed(event_func_t on_event, void* ctx) {
   uint32_t ret = TK_INVALID_ID;
-  return_value_if_fail(on_event != NULL && ctx != NULL, ret);
+  return_value_if_fail(on_event != NULL, ret);
   return_value_if_fail(s_conf != NULL && s_conf_lock != NULL, ret);
 
   return_value_if_fail(tk_mutex_lock(s_conf_lock) == RET_OK, ret);

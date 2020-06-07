@@ -29,7 +29,7 @@
 BEGIN_C_DECLS
 
 /**
- * @class conf_json_t
+ * @class conf_ubjson_t
  * @parent object_t
  * @annotation ["fake"]
  * 
@@ -37,7 +37,7 @@ BEGIN_C_DECLS
  */
 
 /**
- * @method conf_json_load 
+ * @method conf_ubjson_load 
  * 
  * @annotation ["constructor"]
  * 

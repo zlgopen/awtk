@@ -778,7 +778,7 @@ EXPORTS
     conf_node_find_sibling @776
     conf_node_set_value @777
     conf_node_get_value @778
-    conf_node_set_first_child @779
+    conf_node_get_first_child @779
     conf_node_set_first_child @780
     tk_atoi @781
     tk_atob @782
@@ -809,17 +809,17 @@ EXPORTS
     tk_str_toupper @807
     tk_str_tolower @808
     tk_wstr_dup_utf8 @809
-    dialog_highlighter_default_create @810
-    SDL_ShowCursor @811
-    SDL_WarpMouseInWindow @812
-    SDL_GetDefaultCursor @813
-    SDL_SetCursor @814
-    SDL_FreeCursor @815
-    SDL_CreateSystemCursor @816
-    SDL_GetMouseFocus @817
-    tk_utf8_from_utf16 @818
-    tk_utf8_from_utf16_ex @819
-    tk_utf8_to_utf16 @820
+    tk_utf8_from_utf16 @810
+    tk_utf8_from_utf16_ex @811
+    tk_utf8_to_utf16 @812
+    dialog_highlighter_default_create @813
+    SDL_ShowCursor @814
+    SDL_WarpMouseInWindow @815
+    SDL_GetDefaultCursor @816
+    SDL_SetCursor @817
+    SDL_FreeCursor @818
+    SDL_CreateSystemCursor @819
+    SDL_GetMouseFocus @820
     tokenizer_init @821
     tokenizer_init_ex @822
     tokenizer_has_more @823
@@ -841,9 +841,9 @@ EXPORTS
     timer_manager_count @839
     timer_manager_next_time @840
     timer_manager_append @841
-    tk_ext_widgets_init @842
-    time_now_s @843
-    time_now_ms @844
+    time_now_s @842
+    time_now_ms @843
+    tk_ext_widgets_init @844
     tk_thread_create @845
     tk_thread_set_name @846
     tk_thread_set_stack_size @847
@@ -852,65 +852,65 @@ EXPORTS
     tk_thread_join @850
     tk_thread_get_args @851
     tk_thread_destroy @852
-    file_browser_create @853
-    file_browser_set_cwd @854
-    file_browser_create_dir @855
-    file_browser_create_file @856
-    file_browser_remove @857
-    file_browser_enter @858
-    file_browser_up @859
-    file_browser_refresh @860
-    file_browser_set_filter @861
-    file_browser_set_compare @862
-    file_browser_sort_by_name @863
-    file_browser_sort_by_type @864
-    file_browser_sort_by_size @865
-    file_browser_sort_by_mtime @866
-    file_browser_get_items_nr @867
-    file_browser_get_item @868
-    file_browser_set_ignore_hidden_files @869
-    file_browser_destroy @870
-    str_init @871
-    str_extend @872
-    str_eq @873
-    str_set @874
-    str_clear @875
-    str_set_with_len @876
-    str_append @877
-    str_append_more @878
-    str_append_with_len @879
-    str_insert @880
-    str_insert_with_len @881
-    str_remove @882
-    str_append_char @883
-    str_append_int @884
-    str_append_double @885
-    str_append_json_str @886
-    str_append_json_int_pair @887
-    str_append_json_str_pair @888
-    str_append_json_double_pair @889
-    str_append_json_bool_pair @890
-    str_pop @891
-    str_unescape @892
-    str_decode_xml_entity @893
-    str_decode_xml_entity_with_len @894
-    str_from_int @895
-    str_from_float @896
-    str_from_value @897
-    str_from_wstr @898
-    str_from_wstr_with_len @899
-    str_to_int @900
-    str_to_float @901
-    str_end_with @902
-    str_start_with @903
-    str_trim @904
-    str_trim_left @905
-    str_trim_right @906
-    str_replace @907
-    str_to_lower @908
-    str_to_upper @909
-    str_expand_vars @910
-    str_reset @911
+    str_init @853
+    str_extend @854
+    str_eq @855
+    str_set @856
+    str_clear @857
+    str_set_with_len @858
+    str_append @859
+    str_append_more @860
+    str_append_with_len @861
+    str_insert @862
+    str_insert_with_len @863
+    str_remove @864
+    str_append_char @865
+    str_append_int @866
+    str_append_double @867
+    str_append_json_str @868
+    str_append_json_int_pair @869
+    str_append_json_str_pair @870
+    str_append_json_double_pair @871
+    str_append_json_bool_pair @872
+    str_pop @873
+    str_unescape @874
+    str_decode_xml_entity @875
+    str_decode_xml_entity_with_len @876
+    str_from_int @877
+    str_from_float @878
+    str_from_value @879
+    str_from_wstr @880
+    str_from_wstr_with_len @881
+    str_to_int @882
+    str_to_float @883
+    str_end_with @884
+    str_start_with @885
+    str_trim @886
+    str_trim_left @887
+    str_trim_right @888
+    str_replace @889
+    str_to_lower @890
+    str_to_upper @891
+    str_expand_vars @892
+    str_reset @893
+    file_browser_create @894
+    file_browser_set_cwd @895
+    file_browser_create_dir @896
+    file_browser_create_file @897
+    file_browser_remove @898
+    file_browser_enter @899
+    file_browser_up @900
+    file_browser_refresh @901
+    file_browser_set_filter @902
+    file_browser_set_compare @903
+    file_browser_sort_by_name @904
+    file_browser_sort_by_type @905
+    file_browser_sort_by_size @906
+    file_browser_sort_by_mtime @907
+    file_browser_get_items_nr @908
+    file_browser_get_item @909
+    file_browser_set_ignore_hidden_files @910
+    file_browser_destroy @911
     str_str_value @912
     str_str_name @913
     tk_socketpair @914
@@ -1285,10 +1285,10 @@ EXPORTS
     file_browser_view_get_cwd @1283
     file_browser_view_create_dir @1284
     file_browser_view_create_file @1285
-    lcd_mem_rgb888_create @1286
-    lcd_mem_rgb888_create_single_fb @1287
-    lcd_mem_rgb888_create_double_fb @1288
-    lcd_mem_rgb888_create_three_fb @1289
+    lcd_mem_rgb565_create @1286
+    lcd_mem_rgb565_create_single_fb @1287
+    lcd_mem_rgb565_create_double_fb @1288
+    lcd_mem_rgb565_create_three_fb @1289
     wheel_event_cast @1290
     wheel_event_init @1291
     view_create @1292
@@ -1379,10 +1379,10 @@ EXPORTS
     lcd_mem_rgba8888_create_single_fb @1377
     lcd_mem_rgba8888_create_double_fb @1378
     lcd_mem_rgba8888_create_three_fb @1379
-    lcd_mem_rgb565_create @1380
-    lcd_mem_rgb565_create_single_fb @1381
-    lcd_mem_rgb565_create_double_fb @1382
-    lcd_mem_rgb565_create_three_fb @1383
+    lcd_mem_rgb888_create @1380
+    lcd_mem_rgb888_create_single_fb @1381
+    lcd_mem_rgb888_create_double_fb @1382
+    lcd_mem_rgb888_create_three_fb @1383
     lcd_mem_bgra8888_create @1384
     lcd_mem_bgra8888_create_single_fb @1385
     lcd_mem_bgra8888_create_double_fb @1386
@@ -1404,24 +1404,24 @@ EXPORTS
     event_source_fd_create @1402
     event_source_idle_create @1403
     event_source_manager_default_create @1404
-    event_source_timer_create @1405
-    event_source_get_fd @1406
-    event_source_dispatch @1407
-    event_source_set_tag @1408
-    event_source_check @1409
-    event_source_get_wakeup_time @1410
-    image_loader_stb @1411
-    stb_load_image @1412
-    prop_change_event_cast @1413
-    prop_change_event_init @1414
-    progress_event_cast @1415
-    progress_event_init @1416
-    done_event_cast @1417
-    done_event_init @1418
-    error_event_cast @1419
-    error_event_init @1420
-    font_loader_stb @1421
-    font_stb_create @1422
+    image_loader_stb @1405
+    stb_load_image @1406
+    event_source_timer_create @1407
+    event_source_get_fd @1408
+    event_source_dispatch @1409
+    event_source_set_tag @1410
+    event_source_check @1411
+    event_source_get_wakeup_time @1412
+    font_loader_stb @1413
+    font_stb_create @1414
+    prop_change_event_cast @1415
+    prop_change_event_init @1416
+    progress_event_cast @1417
+    progress_event_init @1418
+    done_event_cast @1419
+    done_event_init @1420
+    error_event_cast @1421
+    error_event_init @1422
     font_loader_ft @1423
     font_loader_bitmap @1424
     time_clock_create @1425
@@ -1456,18 +1456,18 @@ EXPORTS
     switch_cast @1454
     column_create @1455
     column_cast @1456
-    color_tile_create @1457
-    color_tile_cast @1458
-    color_tile_set_bg_color @1459
-    color_tile_set_border_color @1460
-    color_tile_set_value @1461
-    slide_view_create @1462
-    slide_view_cast @1463
-    slide_view_set_auto_play @1464
-    slide_view_set_active @1465
-    slide_view_set_vertical @1466
-    slide_view_set_anim_hint @1467
-    slide_view_set_loop @1468
+    slide_view_create @1457
+    slide_view_cast @1458
+    slide_view_set_auto_play @1459
+    slide_view_set_active @1460
+    slide_view_set_vertical @1461
+    slide_view_set_anim_hint @1462
+    slide_view_set_loop @1463
+    color_tile_create @1464
+    color_tile_cast @1465
+    color_tile_set_bg_color @1466
+    color_tile_set_border_color @1467
+    color_tile_set_value @1468
     slide_indicator_create @1469
     slide_indicator_create_linear @1470
     slide_indicator_create_arc @1471
@@ -1481,17 +1481,17 @@ EXPORTS
     slide_indicator_set_size @1479
     slide_indicator_set_anchor @1480
     slide_indicator_set_indicated_target @1481
-    clip_view_create @1482
-    clip_view_cast @1483
-    check_button_create @1484
-    check_button_create_radio @1485
-    check_button_set_value @1486
-    check_button_cast @1487
-    slide_menu_create @1488
-    slide_menu_cast @1489
-    slide_menu_set_value @1490
-    slide_menu_set_align_v @1491
-    slide_menu_set_min_scale @1492
+    slide_menu_create @1482
+    slide_menu_cast @1483
+    slide_menu_set_value @1484
+    slide_menu_set_align_v @1485
+    slide_menu_set_min_scale @1486
+    clip_view_create @1487
+    clip_view_cast @1488
+    check_button_create @1489
+    check_button_create_radio @1490
+    check_button_set_value @1491
+    check_button_cast @1492
     scroll_view_create @1493
     scroll_view_cast @1494
     scroll_view_set_virtual_w @1495
@@ -1526,29 +1526,29 @@ EXPORTS
     list_item_create @1524
     list_item_cast @1525
     children_layouter_list_view_create @1526
-    button_create @1527
-    button_cast @1528
-    button_set_repeat @1529
-    button_set_enable_long_press @1530
-    button_group_create @1531
-    button_group_cast @1532
-    hscroll_label_create @1533
-    hscroll_label_set_lull @1534
-    hscroll_label_set_duration @1535
-    hscroll_label_set_only_focus @1536
-    hscroll_label_set_only_parent_focus @1537
-    hscroll_label_set_loop @1538
-    hscroll_label_set_yoyo @1539
-    hscroll_label_set_ellipses @1540
-    hscroll_label_set_xoffset @1541
-    hscroll_label_start @1542
-    hscroll_label_stop @1543
-    hscroll_label_cast @1544
-    app_bar_create @1545
-    app_bar_cast @1546
-    rich_text_create @1547
-    rich_text_set_text @1548
-    rich_text_cast @1549
+    hscroll_label_create @1527
+    hscroll_label_set_lull @1528
+    hscroll_label_set_duration @1529
+    hscroll_label_set_only_focus @1530
+    hscroll_label_set_only_parent_focus @1531
+    hscroll_label_set_loop @1532
+    hscroll_label_set_yoyo @1533
+    hscroll_label_set_ellipses @1534
+    hscroll_label_set_xoffset @1535
+    hscroll_label_start @1536
+    hscroll_label_stop @1537
+    hscroll_label_cast @1538
+    button_create @1539
+    button_cast @1540
+    button_set_repeat @1541
+    button_set_enable_long_press @1542
+    button_group_create @1543
+    button_group_cast @1544
+    rich_text_create @1545
+    rich_text_set_text @1546
+    rich_text_cast @1547
+    app_bar_create @1548
+    app_bar_cast @1549
     rich_text_view_create @1550
     rich_text_view_cast @1551
     progress_circle_create @1552
@@ -1664,54 +1664,54 @@ EXPORTS
     ui_binary_writer_init @1662
     paint_event_cast @1663
     paint_event_init @1664
-    compressor_miniz_create @1665
-    window_event_cast @1666
-    window_event_init @1667
-    pointer_event_rotate @1668
-    window_manager @1669
-    window_manager_cast @1670
-    window_manager_set @1671
-    window_manager_get_top_main_window @1672
-    window_manager_get_top_window @1673
-    window_manager_get_prev_window @1674
-    window_manager_get_pointer_x @1675
-    window_manager_get_pointer_y @1676
-    window_manager_get_pointer_pressed @1677
-    window_manager_is_animating @1678
-    window_manager_paint @1679
-    window_manager_set_show_fps @1680
-    window_manager_set_screen_saver_time @1681
-    window_manager_set_cursor @1682
-    window_manager_back @1683
-    window_manager_back_to_home @1684
-    window_manager_back_to @1685
-    window_manager_dispatch_native_window_event @1686
-    window_manager_begin_wait_pointer_cursor @1687
-    window_manager_end_wait_pointer_cursor @1688
-    window_manager_resize @1689
-    window_base_on_destroy @1690
-    window_base_on_event @1691
-    window_base_on_paint_begin @1692
-    window_base_on_paint_end @1693
-    window_base_on_paint_self @1694
-    window_base_get_prop @1695
-    window_base_set_prop @1696
-    window_base_create @1697
-    window_base_cast @1698
-    widget_factory @1699
-    widget_factory_set @1700
-    widget_factory_create @1701
-    widget_factory_register @1702
-    widget_factory_create_widget @1703
-    widget_factory_destroy @1704
-    image_base_set_image @1705
-    image_base_set_rotation @1706
-    image_base_set_scale @1707
-    image_base_set_anchor @1708
-    image_base_set_selected @1709
-    image_base_set_selectable @1710
-    image_base_set_clickable @1711
-    image_base_cast @1712
+    window_event_cast @1665
+    window_event_init @1666
+    pointer_event_rotate @1667
+    compressor_miniz_create @1668
+    image_base_set_image @1669
+    image_base_set_rotation @1670
+    image_base_set_scale @1671
+    image_base_set_anchor @1672
+    image_base_set_selected @1673
+    image_base_set_selectable @1674
+    image_base_set_clickable @1675
+    image_base_cast @1676
+    window_manager @1677
+    window_manager_cast @1678
+    window_manager_set @1679
+    window_manager_get_top_main_window @1680
+    window_manager_get_top_window @1681
+    window_manager_get_prev_window @1682
+    window_manager_get_pointer_x @1683
+    window_manager_get_pointer_y @1684
+    window_manager_get_pointer_pressed @1685
+    window_manager_is_animating @1686
+    window_manager_paint @1687
+    window_manager_set_show_fps @1688
+    window_manager_set_screen_saver_time @1689
+    window_manager_set_cursor @1690
+    window_manager_back @1691
+    window_manager_back_to_home @1692
+    window_manager_back_to @1693
+    window_manager_dispatch_native_window_event @1694
+    window_manager_begin_wait_pointer_cursor @1695
+    window_manager_end_wait_pointer_cursor @1696
+    window_manager_resize @1697
+    window_base_on_destroy @1698
+    window_base_on_event @1699
+    window_base_on_paint_begin @1700
+    window_base_on_paint_end @1701
+    window_base_on_paint_self @1702
+    window_base_get_prop @1703
+    window_base_set_prop @1704
+    window_base_create @1705
+    window_base_cast @1706
+    widget_factory @1707
+    widget_factory_set @1708
+    widget_factory_create @1709
+    widget_factory_register @1710
+    widget_factory_create_widget @1711
+    widget_factory_destroy @1712
     style_mutable_set_name @1713
     style_mutable_set_int @1714
     style_mutable_set_color @1715
@@ -1745,10 +1745,10 @@ EXPORTS
     native_window_invalidate @1743
     conf_ini_load @1744
     conf_json_load @1745
-    conf_json_load @1746
-    conf_obj_create @1747
-    conf_obj_get_doc @1748
-    conf_obj_save @1749
+    conf_obj_create @1746
+    conf_obj_get_doc @1747
+    conf_obj_save @1748
+    conf_ubjson_load @1749
     timer_info_cast @1750
     gif_image_create @1751
     gif_image_cast @1752
@@ -1861,30 +1861,30 @@ EXPORTS
     tk_istream_udp_set_target_with_host @1859
     tk_istream_udp_set_target_with_addr @1860
     tk_ostream_tcp_create @1861
-    tk_istream_serial_create @1862
+    combo_box_ex_create @1862
     tk_ostream_udp_create @1863
     tk_ostream_udp_set_target_with_host @1864
     tk_ostream_udp_set_target_with_addr @1865
     tk_istream_buffered_create @1866
     tk_iostream_mem_create @1867
-    tk_iostream_serial_create @1868
-    tk_iostream_serial_config @1869
-    tk_istream_mem_create @1870
-    tk_ostream_mem_create @1871
-    tk_ostream_retry_create @1872
-    tk_ostream_retry_set_max_retry_times @1873
-    tk_ostream_retry_set_max_buffer_size @1874
-    tk_ostream_retry_clear_buffer @1875
-    tk_ostream_retry_set_discard_policy @1876
-    tk_ostream_buffered_create @1877
-    tk_ostream_buffered_get_size @1878
-    tk_istream_file_create @1879
-    tk_iostream_noisy_create @1880
-    tk_ostream_noisy_create @1881
-    tk_ostream_shdlc_create @1882
-    tk_istream_shdlc_create @1883
-    tk_iostream_shdlc_create @1884
-    combo_box_ex_create @1885
+    tk_istream_serial_create @1868
+    tk_istream_mem_create @1869
+    tk_ostream_mem_create @1870
+    tk_ostream_retry_create @1871
+    tk_ostream_retry_set_max_retry_times @1872
+    tk_ostream_retry_set_max_buffer_size @1873
+    tk_ostream_retry_clear_buffer @1874
+    tk_ostream_retry_set_discard_policy @1875
+    tk_ostream_buffered_create @1876
+    tk_ostream_buffered_get_size @1877
+    tk_istream_file_create @1878
+    tk_iostream_noisy_create @1879
+    tk_ostream_shdlc_create @1880
+    tk_istream_shdlc_create @1881
+    tk_iostream_shdlc_create @1882
+    tk_ostream_noisy_create @1883
+    tk_iostream_serial_create @1884
+    tk_iostream_serial_config @1885
     tk_iostream_tcp_create @1886
     tk_iostream_udp_create_client @1887
     tk_iostream_udp_create @1888

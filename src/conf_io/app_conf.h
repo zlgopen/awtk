@@ -52,7 +52,7 @@ ret_t app_conf_set_instance(object_t* obj);
 
 /**
  * @method app_conf_save
- * 保存配置。
+ * 持久保存配置。
  *
  * @annotation ["static", "scriptable"]
  * 

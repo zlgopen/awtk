@@ -23,7 +23,7 @@
 #include "conf_io/app_conf_init_json.h"
 
 ret_t app_conf_init_json(const char* app_name) {
-  return app_conf_init(conf_json_load, app_name, ".json");
+  return app_conf_init(conf_json_load, app_name, "json");
 }
 
 
