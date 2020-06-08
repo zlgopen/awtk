@@ -19158,6 +19158,27 @@
             "desc": "控件对象。"
           },
           {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "画布对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "绘制控件到一个canvas上。",
+        "name": "widget_paint",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
             "type": "event_t*",
             "name": "e",
             "desc": "事件。"
@@ -20010,6 +20031,83 @@
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "bool_t",
+            "name": "is_local",
+            "desc": "TRUE表示是相对与控件左上角的坐标，否则表示全局坐标。"
+          }
+        ],
+        "annotation": {},
+        "desc": "判断一个点是否在控件内。",
+        "name": "widget_is_point_in",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          },
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "widget的父控件。"
+          },
+          {
+            "type": "widget_vtable_t*",
+            "name": "vt",
+            "desc": "虚表。"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {},
+        "desc": "初始化控件。仅在子类控件构造函数中使用。\n\n> 请用widget\\_create代替本函数。\n\n@depreated",
+        "name": "widget_init",
+        "return": {
+          "type": "widget_t*",
+          "desc": "widget对象本身。"
         }
       },
       {

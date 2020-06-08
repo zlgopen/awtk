@@ -1386,7 +1386,6 @@ ret_t widget_invalidate_force(widget_t* widget, rect_t* r);
 /**
  * @method widget_paint
  * 绘制控件到一个canvas上。
- * @annotation ["private"]
  * @param {widget_t*} widget 控件对象。
  * @param {canvas_t*} c 画布对象。
  *
@@ -1967,7 +1966,6 @@ ret_t widget_dispatch_event_to_target_recursive(widget_t* widget, event_t* e);
 /**
  * @method widget_is_point_in
  * 判断一个点是否在控件内。
- * @annotation ["private"]
  * @param {widget_t*} widget 控件对象。
  * @param {xy_t} x x坐标
  * @param {xy_t} y y坐标
@@ -2028,7 +2026,6 @@ ret_t widget_re_translate_text(widget_t* widget);
  * > 请用widget\_create代替本函数。
  *
  * @depreated
- * @annotation ["private"]
  * @param {widget_t*} widget widget对象。
  * @param {widget_t*} parent widget的父控件。
  * @param {widget_vtable_t*} vt 虚表。
