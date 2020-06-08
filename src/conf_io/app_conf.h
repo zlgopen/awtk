@@ -40,7 +40,7 @@ BEGIN_C_DECLS
 
 /**
  * @method app_conf_set_instance
- * 初始化。
+ * 设置app_conf实例。
  *
  * @annotation ["static"]
  * 
@@ -49,6 +49,16 @@ BEGIN_C_DECLS
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t app_conf_set_instance(object_t* obj);
+
+/**
+ * @method app_conf_get_instance
+ * 获取app_conf实例。
+ *
+ * @annotation ["static"]
+ * 
+ * @return {object_t*} 返回app_conf实例。
+ */
+object_t* app_conf_get_instance(void);
 
 /**
  * @method app_conf_save
@@ -76,6 +86,7 @@ uint32_t app_conf_on_changed(event_func_t on_event, void* ctx);
  * 注销配置变化事件。
  *
  * @annotation ["static", "scriptable"]
+ * @param {uint32_t} id app_conf_on_changed返回的ID。
  * 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

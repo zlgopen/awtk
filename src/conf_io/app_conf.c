@@ -36,6 +36,10 @@ ret_t app_conf_set_instance(object_t* obj) {
   return RET_OK;
 }
 
+object_t* app_conf_get_instance(void) {
+  return s_conf;
+}
+
 ret_t app_conf_save(void) {
   ret_t ret = RET_FAIL;
   return_value_if_fail(s_conf != NULL && s_conf_lock != NULL, RET_BAD_PARAMS);
