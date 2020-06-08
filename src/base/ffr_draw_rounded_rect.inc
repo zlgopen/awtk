@@ -91,11 +91,18 @@ typedef struct _frr_draw_arc_info_table_t {
 
 #define IMAGE_COLOR2COLOR_BLEND(c1, c2, a) \
   {                                        \
-    c1.r = BLEND_DATA(c1.r, c2.r, a);      \
-    c1.g = BLEND_DATA(c1.g, c2.g, a);      \
-    c1.b = BLEND_DATA(c1.b, c2.b, a);      \
-    c1.a = 0xff;                           \
-  }
+    if (a < 0x8) {                         \
+      c1.r = c2.r;                         \
+      c1.g = c2.g;                         \
+      c1.b = c2.b;                         \
+      c1.a = c2.a;                         \
+    } else if (a < 0xfa)  {                \
+      c1.r = BLEND_DATA(c1.r, c2.r, a);    \
+      c1.g = BLEND_DATA(c1.g, c2.g, a);    \
+      c1.b = BLEND_DATA(c1.b, c2.b, a);    \
+      c1.a = 0xff;                         \
+    }                                      \
+  }                                        \
 
 #define WIDGET_SET_ROUNDED_RECT_VERTEX_STROKE(vg, o_x, o_y, radius, start_angle, end_angle, ccw)  \
   {                                                                                               \
@@ -461,13 +468,15 @@ static inline void Wu_D_Circle(int32_t r, darray_t* point_list,
   int32_t y = r;
   uint32_t i = 0;
   float_t e = 0.0f;
+  int32_t yy = y * y;
   frr_point_pix_t* tmp = NULL;
 
   for (; x <= y; x++) {
-    e = y - sqrtf(r * r - (x + 1.0f) * (x + 1.0f));
+    e = sqrtf(yy + x * x) - (float_t)r;
     if (e >= 1) {
       e--;
       y--;
+      yy = y * y;
     }
     tmp = &(point_pix_cache_list[i++]);
     tmp->x = x;

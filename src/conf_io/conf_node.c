@@ -276,7 +276,7 @@ const char* conf_node_get_name(conf_node_t* node) {
 
 conf_node_t* conf_node_find_sibling(conf_node_t* node, const char* name) {
   conf_node_t* iter = NULL;
-  if (node != NULL) {
+  if (node == NULL) {
     return NULL;
   }
 
