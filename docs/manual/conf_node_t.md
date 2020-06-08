@@ -9,9 +9,9 @@
 | -------- | ------------ | 
 | <a href="#conf_node_t_conf_node_find_child">conf\_node\_find\_child</a> | 查找指定名称的子节点。 |
 | <a href="#conf_node_t_conf_node_find_sibling">conf\_node\_find\_sibling</a> | 查找指定名称的兄弟节点。 |
+| <a href="#conf_node_t_conf_node_get_first_child">conf\_node\_get\_first\_child</a> | 获取第一个子节点。 |
 | <a href="#conf_node_t_conf_node_get_name">conf\_node\_get\_name</a> | 获得节点的名称。 |
 | <a href="#conf_node_t_conf_node_get_value">conf\_node\_get\_value</a> | 设置节点的值。 |
-| <a href="#conf_node_t_conf_node_set_first_child">conf\_node\_set\_first\_child</a> | 获取第一个子节点。 |
 | <a href="#conf_node_t_conf_node_set_first_child">conf\_node\_set\_first\_child</a> | 设置第一个子节点。 |
 | <a href="#conf_node_t_conf_node_set_value">conf\_node\_set\_value</a> | 设置节点的值。 |
 ### 属性
@@ -63,6 +63,25 @@ conf_node_t* conf_node_find_sibling (conf_node_t* node, const char* name);
 | 返回值 | conf\_node\_t* | 返回节点对象。 |
 | node | conf\_node\_t* | 节点对象。 |
 | name | const char* | 节点名称。 |
+#### conf\_node\_get\_first\_child 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="conf_node_t_conf_node_get_first_child">获取第一个子节点。
+
+* 函数原型：
+
+```
+conf_node_t* conf_node_get_first_child (conf_node_t* node);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | conf\_node\_t* | 返回第一个子节点。 |
+| node | conf\_node\_t* | 节点对象。 |
 #### conf\_node\_get\_name 函数
 -----------------------
 
@@ -102,25 +121,6 @@ ret_t conf_node_get_value (conf_node_t* node, value_t* v);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | node | conf\_node\_t* | 节点对象。 |
 | v | value\_t* | 值(返回)。 |
-#### conf\_node\_set\_first\_child 函数
------------------------
-
-* 函数功能：
-
-> <p id="conf_node_t_conf_node_set_first_child">获取第一个子节点。
-
-* 函数原型：
-
-```
-conf_node_t* conf_node_set_first_child (conf_node_t* node);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | conf\_node\_t* | 返回第一个子节点。 |
-| node | conf\_node\_t* | 节点对象。 |
 #### conf\_node\_set\_first\_child 函数
 -----------------------
 

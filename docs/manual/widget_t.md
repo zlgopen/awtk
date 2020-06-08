@@ -94,6 +94,7 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | <a href="#widget_t_widget_get_window_manager">widget\_get\_window\_manager</a> | 获取当前的窗口管理器。 |
 | <a href="#widget_t_widget_grab">widget\_grab</a> | 让指定子控件抓住事件。 |
 | <a href="#widget_t_widget_index_of">widget\_index\_of</a> | 获取控件在父控件中的索引编号。 |
+| <a href="#widget_t_widget_init">widget\_init</a> | 初始化控件。仅在子类控件构造函数中使用。 |
 | <a href="#widget_t_widget_insert_child">widget\_insert\_child</a> | 插入子控件到指定的位置。 |
 | <a href="#widget_t_widget_invalidate">widget\_invalidate</a> | 请求重绘指定的区域，如果widget->dirty已经为TRUE，直接返回。 |
 | <a href="#widget_t_widget_invalidate_force">widget\_invalidate\_force</a> | 请求强制重绘控件。 |
@@ -102,6 +103,7 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | <a href="#widget_t_widget_is_instance_of">widget\_is\_instance\_of</a> | 检查控件是否是指定的类型。 |
 | <a href="#widget_t_widget_is_normal_window">widget\_is\_normal\_window</a> | 检查控件是否是普通窗口类型。 |
 | <a href="#widget_t_widget_is_opened_popup">widget\_is\_opened\_popup</a> | 检查控件弹出窗口控件是否已经打开了（而非挂起状态）。 |
+| <a href="#widget_t_widget_is_point_in">widget\_is\_point\_in</a> | 判断一个点是否在控件内。 |
 | <a href="#widget_t_widget_is_popup">widget\_is\_popup</a> | 检查控件是否是弹出窗口类型。 |
 | <a href="#widget_t_widget_is_system_bar">widget\_is\_system\_bar</a> | 检查控件是否是system bar类型。 |
 | <a href="#widget_t_widget_is_window">widget\_is\_window</a> | 判断当前控件是否是窗口。 |
@@ -121,6 +123,7 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | <a href="#widget_t_widget_off_by_tag">widget\_off\_by\_tag</a> | 注销指定tag的事件处理函数。 |
 | <a href="#widget_t_widget_on">widget\_on</a> | 注册指定事件的处理函数。 |
 | <a href="#widget_t_widget_on_with_tag">widget\_on\_with\_tag</a> | 注册指定tag的事件处理函数。 |
+| <a href="#widget_t_widget_paint">widget\_paint</a> | 绘制控件到一个canvas上。 |
 | <a href="#widget_t_widget_paint_helper">widget\_paint\_helper</a> | 帮助子控件实现自己的绘制函数。 |
 | <a href="#widget_t_widget_pause_animator">widget\_pause\_animator</a> | 暂停动画。 |
 | <a href="#widget_t_widget_ref">widget\_ref</a> | 增加控件的引用计数。 |
@@ -1181,6 +1184,35 @@ int32_t widget_index_of (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | int32\_t | 在父控件中的索引编号。 |
 | widget | widget\_t* | 控件对象。 |
+#### widget\_init 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_init">初始化控件。仅在子类控件构造函数中使用。
+
+> 请用widget\_create代替本函数。
+
+@depreated
+
+* 函数原型：
+
+```
+widget_t* widget_init (widget_t* widget, widget_t* parent, widget_vtable_t* vt, xy_t x, xy_t y, wh_t w, wh_t h);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | widget\_t* | widget对象本身。 |
+| widget | widget\_t* | widget对象。 |
+| parent | widget\_t* | widget的父控件。 |
+| vt | widget\_vtable\_t* | 虚表。 |
+| x | xy\_t | x坐标 |
+| y | xy\_t | y坐标 |
+| w | wh\_t | 宽度 |
+| h | wh\_t | 高度 |
 #### widget\_insert\_child 函数
 -----------------------
 
@@ -1338,6 +1370,28 @@ bool_t widget_is_opened_popup (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | bool\_t | 返回FALSE表示不是，否则表示是。 |
 | widget | widget\_t* | widget对象。 |
+#### widget\_is\_point\_in 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_is_point_in">判断一个点是否在控件内。
+
+* 函数原型：
+
+```
+bool_t widget_is_point_in (widget_t* widget, xy_t x, xy_t y, bool_t is_local);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| x | xy\_t | x坐标 |
+| y | xy\_t | y坐标 |
+| is\_local | bool\_t | TRUE表示是相对与控件左上角的坐标，否则表示全局坐标。 |
 #### widget\_is\_popup 函数
 -----------------------
 
@@ -1753,6 +1807,26 @@ uint32_t widget_on_with_tag (widget_t* widget, event_type_t type, event_func_t o
 | on\_event | event\_func\_t | 事件处理函数。 |
 | ctx | void* | 事件处理函数上下文。 |
 | tag | uint32\_t | tag。 |
+#### widget\_paint 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_paint">绘制控件到一个canvas上。
+
+* 函数原型：
+
+```
+ret_t widget_paint (widget_t* widget, canvas_t* c);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| c | canvas\_t* | 画布对象。 |
 #### widget\_paint\_helper 函数
 -----------------------
 

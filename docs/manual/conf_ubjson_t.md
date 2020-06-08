@@ -1,26 +1,26 @@
-## conf\_json\_t
+## conf\_ubjson\_t
 ### 概述
-![image](images/conf_json_t_0.png)
+![image](images/conf_ubjson_t_0.png)
 
 conf json对象。
 ----------------------------------
 ### 函数
-<p id="conf_json_t_methods">
+<p id="conf_ubjson_t_methods">
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#conf_json_t_conf_json_load">conf\_json\_load</a> |  |
-#### conf\_json\_load 函数
+| <a href="#conf_ubjson_t_conf_ubjson_load">conf\_ubjson\_load</a> |  |
+#### conf\_ubjson\_load 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="conf_json_t_conf_json_load">
+> <p id="conf_ubjson_t_conf_ubjson_load">
 
 * 函数原型：
 
 ```
-object_t* conf_json_load (const char* url, bool_t create_if_not_exist);
+object_t* conf_ubjson_load (const char* url, bool_t create_if_not_exist);
 ```
 
 * 参数说明：

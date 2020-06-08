@@ -23,7 +23,7 @@
 | <a href="#app_conf_t_app_conf_off_changed_by_ctx">app\_conf\_off\_changed\_by\_ctx</a> | 注销配置变化事件。 |
 | <a href="#app_conf_t_app_conf_on_changed">app\_conf\_on\_changed</a> | 注册配置变化事件。 |
 | <a href="#app_conf_t_app_conf_remove">app\_conf\_remove</a> | 删除配置项。 |
-| <a href="#app_conf_t_app_conf_save">app\_conf\_save</a> | 保存配置。 |
+| <a href="#app_conf_t_app_conf_save">app\_conf\_save</a> | 持久保存配置。 |
 | <a href="#app_conf_t_app_conf_set">app\_conf\_set</a> | 设置配置项的值。 |
 | <a href="#app_conf_t_app_conf_set_bool">app\_conf\_set\_bool</a> | 设置bool类型配置项的值。 |
 | <a href="#app_conf_t_app_conf_set_double">app\_conf\_set\_double</a> | 设置双精度类型配置项的值。 |
@@ -269,7 +269,7 @@ ret_t app_conf_remove (const char* key);
 
 * 函数功能：
 
-> <p id="app_conf_t_app_conf_save">保存配置。
+> <p id="app_conf_t_app_conf_save">持久保存配置。
 
 * 函数原型：
 
