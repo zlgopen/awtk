@@ -21777,11 +21777,23 @@
         "annotation": {
           "static": true
         },
-        "desc": "初始化。",
+        "desc": "设置app_conf实例。",
         "name": "app_conf_set_instance",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {
+          "static": true
+        },
+        "desc": "获取app_conf实例。",
+        "name": "app_conf_get_instance",
+        "return": {
+          "type": "object_t*",
+          "desc": "返回app_conf实例。"
         }
       },
       {
@@ -21822,7 +21834,13 @@
         }
       },
       {
-        "params": [],
+        "params": [
+          {
+            "type": "uint32_t",
+            "name": "id",
+            "desc": "app_conf_on_changed返回的ID。"
+          }
+        ],
         "annotation": {
           "static": true,
           "scriptable": true
