@@ -96,19 +96,17 @@
 * lua 绑定
 * 用 AWTK 实现界面编辑器
 * MVVM 支持
+* python 绑定
+* 事件录制与重放。
 
 ## 短期计划（顺序不定）
-* python 绑定
-* golang 绑定
-* 多进程支持
 * tree view
-* property sheet
+* table view
 * port code editor
 * calendar
 * chart
 * drag & drop
 * 音频接口。
-* 事件录制与重放。
 * 支持 appuim 自动测试
 
 ## 长期计划
@@ -120,3 +118,4 @@
 * 支持骨骼动画
 * flash 播放器支持
 * 小程序版本
+* 多进程支持
