@@ -76,7 +76,7 @@ static ret_t event_recorder_player_play(event_recorder_player_t* p) {
 
   e = (event_t*)&event;
   memset(&event, 0x00, sizeof(event));
-  if (fs_file_read(p->fp, &event, sizeof(event)) == sizeof(event)) {
+  if (!fs_file_eof(p->fp) && fs_file_read(p->fp, &event, sizeof(event)) == sizeof(event)) {
     if (p->last_event_time == 0) {
       p->last_event_time = e->time;
     }
@@ -88,6 +88,11 @@ static ret_t event_recorder_player_play(event_recorder_player_t* p) {
     if (duration < 0) {
       duration = 0;
     }
+    
+    if (duration > 100 * 1000) {
+      duration = 100;
+    }    
+    
     timer_modify(p->timer_id, duration);
 
     return RET_REPEAT;
@@ -108,8 +113,6 @@ static ret_t event_recorder_player_play(event_recorder_player_t* p) {
       return RET_REMOVE;
     }
   }
-
-  return RET_OK;
 }
 
 static ret_t event_recorder_player_record(event_recorder_player_t* p, event_t* e) {
