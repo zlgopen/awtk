@@ -16,6 +16,7 @@
 | <a href="#app_conf_t_app_conf_get">app\_conf\_get</a> | 获取配置项的值。 |
 | <a href="#app_conf_t_app_conf_get_bool">app\_conf\_get\_bool</a> | 获取bool类型配置项的值。 |
 | <a href="#app_conf_t_app_conf_get_double">app\_conf\_get\_double</a> | 获取单精度浮点数类型配置项的值。 |
+| <a href="#app_conf_t_app_conf_get_instance">app\_conf\_get\_instance</a> | 获取app_conf实例。 |
 | <a href="#app_conf_t_app_conf_get_int">app\_conf\_get\_int</a> | 获取整数类型配置项的值。 |
 | <a href="#app_conf_t_app_conf_get_int64">app\_conf\_get\_int64</a> | 获取64位整数类型配置项的值。 |
 | <a href="#app_conf_t_app_conf_get_str">app\_conf\_get\_str</a> | 获取字符串类型配置项的值。 |
@@ -27,7 +28,7 @@
 | <a href="#app_conf_t_app_conf_set">app\_conf\_set</a> | 设置配置项的值。 |
 | <a href="#app_conf_t_app_conf_set_bool">app\_conf\_set\_bool</a> | 设置bool类型配置项的值。 |
 | <a href="#app_conf_t_app_conf_set_double">app\_conf\_set\_double</a> | 设置双精度类型配置项的值。 |
-| <a href="#app_conf_t_app_conf_set_instance">app\_conf\_set\_instance</a> | 初始化。 |
+| <a href="#app_conf_t_app_conf_set_instance">app\_conf\_set\_instance</a> | 设置app_conf实例。 |
 | <a href="#app_conf_t_app_conf_set_int">app\_conf\_set\_int</a> | 设置整数类型配置项的值。 |
 | <a href="#app_conf_t_app_conf_set_int64">app\_conf\_set\_int64</a> | 设置64位整数类型配置项的值。 |
 | <a href="#app_conf_t_app_conf_set_str">app\_conf\_set\_str</a> | 设置字符串类型配置项的值。 |
@@ -128,6 +129,24 @@ double app_conf_get_double (const char* key, double defval);
 | 返回值 | double | 返回配置项的值（如果不存在返回缺省值）。 |
 | key | const char* | 配置项的名称。 |
 | defval | double | 缺省值。 |
+#### app\_conf\_get\_instance 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="app_conf_t_app_conf_get_instance">获取app_conf实例。
+
+* 函数原型：
+
+```
+object_t* app_conf_get_instance ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | object\_t* | 返回app\_conf实例。 |
 #### app\_conf\_get\_int 函数
 -----------------------
 
@@ -198,7 +217,7 @@ const char* app_conf_get_str (const char* key, const char* defval);
 * 函数原型：
 
 ```
-ret_t app_conf_off_changed ();
+ret_t app_conf_off_changed (uint32_t id);
 ```
 
 * 参数说明：
@@ -206,6 +225,7 @@ ret_t app_conf_off_changed ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| id | uint32\_t | app\_conf\_on\_changed返回的ID。 |
 #### app\_conf\_off\_changed\_by\_ctx 函数
 -----------------------
 
@@ -347,7 +367,7 @@ ret_t app_conf_set_double (const char* key, double v);
 
 * 函数功能：
 
-> <p id="app_conf_t_app_conf_set_instance">初始化。
+> <p id="app_conf_t_app_conf_set_instance">设置app_conf实例。
 
 * 函数原型：
 
