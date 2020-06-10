@@ -37,6 +37,7 @@
 | TencentOS    | [MCU芯片适配](#MCU芯片适配)             |                          |
 | FreeRTOS     | [MCU芯片适配](#MCU芯片适配)             |                          |
 | SylixOS      | https://github.com/zlgopen/awtk-sylixos | [ZLG](http://www.zlg.cn) |
+| ms-rtos      | https://github.com/ms-rtos/awtk         | [翼辉](http://www.acoinfo.com/)|
 
 - #### 软件框架和软件平台
 
