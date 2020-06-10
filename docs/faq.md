@@ -197,3 +197,8 @@ ret_t log_set_log_level(log_level_t log_level);
 ```python
 COMMON_CCFLAGS=COMMON_CCFLAGS+' -DNATIVE_WINDOW_BORDERLESS=1 '
 ```
+
+#### 14. 子控件处理了事件，不希望父控件继续处理，怎么处理呢？
+   
+让事件处理函数返回 RET\_STOP，AWTK 不再调用后续事件处理函数。
+
