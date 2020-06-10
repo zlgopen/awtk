@@ -477,6 +477,10 @@ static native_window_t* native_window_create_internal(const char* title, uint32_
   flags |= SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI;
 #endif /*WITH_NANOVG_SOFT*/
 
+#ifdef NATIVE_WINDOW_BORDERLESS
+  flags |= SDL_WINDOW_BORDERLESS;
+#endif/*NATIVE_WINDOW_BORDERLESS*/
+
   sdl->window = SDL_CreateWindow(title, x, y, w, h, flags);
 
 #ifdef WITH_NANOVG_SOFT

@@ -189,3 +189,11 @@ ret_t log_set_log_level(log_level_t log_level);
 ```
 
 如果使用 awtk_main.inc 作为应用程序的入口，定义 NDEBUG 也关闭 debug 级别的调试信息。
+
+#### 13. 应用程序在 Windows 的手持设备中运行，如何去掉窗口的标题栏？
+
+在 awtk\_config.py 中定义宏 NATIVE\_WINDOW\_BORDERLESS，重新编译即可：
+
+```python
+COMMON_CCFLAGS=COMMON_CCFLAGS+' -DNATIVE_WINDOW_BORDERLESS=1 '
+```
