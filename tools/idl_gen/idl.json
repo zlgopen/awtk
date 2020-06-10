@@ -20069,6 +20069,48 @@
           {
             "type": "widget_t*",
             "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标。"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标。"
+          }
+        ],
+        "annotation": {},
+        "desc": "查找x/y坐标对应的子控件。",
+        "name": "widget_find_target",
+        "return": {
+          "type": "widget*",
+          "desc": "子控件或NULL。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "语言改变后，重新翻译控件上的文本(包括子控件)。",
+        "name": "widget_re_translate_text",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
             "desc": "widget对象。"
           },
           {
@@ -20498,6 +20540,90 @@
             "desc": "控件对象。"
           },
           {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "绘制背景。",
+        "name": "widget_on_paint_background",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "绘制自身。",
+        "name": "widget_on_paint_self",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "绘制子控件。",
+        "name": "widget_on_paint_children",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "绘制边框。",
+        "name": "widget_on_paint_border",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
             "type": "widget_vtable_t*",
             "name": "vt",
             "desc": "虚表。"
@@ -20509,6 +20635,38 @@
         "return": {
           "type": "bool_t",
           "desc": "返回TRUE表示是，FALSE表示否。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置控件需要relayout标识。",
+        "name": "widget_set_need_relayout_children",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "使控件滚动到可见区域。",
+        "name": "widget_ensure_visible_in_viewport",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回。"
         }
       },
       {
@@ -20643,6 +20801,38 @@
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。。"
         }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "state_and_name",
+            "desc": "样式对应类型与名字。"
+          },
+          {
+            "type": "const value_t*",
+            "name": "value",
+            "desc": "值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置widget私有样式。",
+        "name": "widget_set_style",
+        "return": {
+          "type": "ret_t",
+          "desc": "。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {},
+        "desc": "计算icon text的位置。",
+        "name": "widget_calc_icon_text_rect"
       }
     ],
     "events": [

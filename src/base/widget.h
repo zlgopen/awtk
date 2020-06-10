@@ -2000,7 +2000,6 @@ ret_t widget_dispatch_to_key_target(widget_t* widget, event_t* e);
 /**
  * @method widget_find_target
  * 查找x/y坐标对应的子控件。
- * @annotation ["private"]
  * @param {widget_t*} widget 控件对象。
  * @param {xy_t} x x坐标。
  * @param {xy_t} y y坐标。
@@ -2012,7 +2011,6 @@ widget_t* widget_find_target(widget_t* widget, xy_t x, xy_t y);
 /**
  * @method widget_re_translate_text
  * 语言改变后，重新翻译控件上的文本(包括子控件)。
- * @annotation ["private"]
  * @param {widget_t*} widget 控件对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -2321,9 +2319,41 @@ ret_t widget_on_pointer_down(widget_t* widget, pointer_event_t* e);
 ret_t widget_on_pointer_move(widget_t* widget, pointer_event_t* e);
 ret_t widget_on_pointer_up(widget_t* widget, pointer_event_t* e);
 ret_t widget_on_context_menu(widget_t* widget, pointer_event_t* e);
+/**
+ * @method widget_on_paint_background
+ * 绘制背景。
+ * @param {widget_t*} widget 控件对象。
+ * @param {canvas_t*} c canvas对象。
+ *
+ * @return {ret_t} 返回。
+ */
 ret_t widget_on_paint_background(widget_t* widget, canvas_t* c);
+/**
+ * @method widget_on_paint_self
+ * 绘制自身。
+ * @param {widget_t*} widget 控件对象。
+ * @param {canvas_t*} c canvas对象。
+ *
+ * @return {ret_t} 返回。
+ */
 ret_t widget_on_paint_self(widget_t* widget, canvas_t* c);
+/**
+ * @method widget_on_paint_children
+ * 绘制子控件。
+ * @param {widget_t*} widget 控件对象。
+ * @param {canvas_t*} c canvas对象。
+ *
+ * @return {ret_t} 返回。
+ */
 ret_t widget_on_paint_children(widget_t* widget, canvas_t* c);
+/**
+ * @method widget_on_paint_border
+ * 绘制边框。
+ * @param {widget_t*} widget 控件对象。
+ * @param {canvas_t*} c canvas对象。
+ *
+ * @return {ret_t} 返回。
+ */
 ret_t widget_on_paint_border(widget_t* widget, canvas_t* c);
 ret_t widget_on_paint_begin(widget_t* widget, canvas_t* c);
 ret_t widget_on_paint_end(widget_t* widget, canvas_t* c);
@@ -2347,7 +2377,21 @@ bool_t widget_is_instance_of(widget_t* widget, const widget_vtable_t* vt);
 /*public for subclass*/
 TK_EXTERN_VTABLE(widget);
 
+/**
+ * @method widget_set_need_relayout_children
+ * 设置控件需要relayout标识。
+ * @param {widget_t*} widget 控件对象。
+ *
+ *  @return {ret_t} 返回。
+ */
 ret_t widget_set_need_relayout_children(widget_t* widget);
+/**
+ * @method widget_ensure_visible_in_viewport
+ * 使控件滚动到可见区域。
+ * @param {widget_t*} widget 控件对象。
+ *
+ *  @return {ret_t} 返回。
+ */
 ret_t widget_ensure_visible_in_viewport(widget_t* widget);
 ret_t widget_set_need_update_style(widget_t* widget);
 bool_t widget_is_activate_key(widget_t* widget, key_event_t* e);
@@ -2429,7 +2473,21 @@ ret_t widget_begin_wait_pointer_cursor(widget_t* widget, bool_t ignore_user_inpu
 ret_t widget_end_wait_pointer_cursor(widget_t* widget);
 
 bool_t widget_has_focused_widget_in_window(widget_t* widget);
+/**
+ * @method widget_set_style
+ * 设置widget私有样式。
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*} state_and_name 样式对应类型与名字。
+ * @param {const value_t*} value 值。
+ *
+ * @return {ret_t} 。
+ */
 ret_t widget_set_style(widget_t* widget, const char* state_and_name, const value_t* value);
+/**
+ * @method widget_calc_icon_text_rect
+ * 计算icon text的位置。
+ * 
+ */
 ret_t widget_calc_icon_text_rect(const rect_t* ir, int32_t font_size, float_t text_size,
                                  int32_t icon_at, uint32_t img_w, uint32_t img_h, int32_t spacer,
                                  rect_t* r_text, rect_t* r_icon);
