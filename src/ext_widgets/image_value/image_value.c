@@ -73,7 +73,7 @@ static ret_t image_value_on_paint_self(widget_t* widget, canvas_t* c) {
 
   memset(bitmap, 0x00, sizeof(bitmap));
   memset(sub_name, 0x00, sizeof(sub_name));
-  if (strchr(format, 'd') != NULL) {
+  if (strchr(format, 'd') != NULL || strchr(format, 'x') != NULL || strchr(format, 'X') != NULL) {
     tk_snprintf(str, IMAGE_VALUE_MAX_CHAR_NR, format, tk_roundi(image_value->value));
   } else {
     tk_snprintf(str, IMAGE_VALUE_MAX_CHAR_NR, format, image_value->value);

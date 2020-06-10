@@ -3,6 +3,7 @@
 * 2020/06/10
   * 增加宏 NATIVE_WINDOW_BORDERLESS 控制是否去掉 native window 的标题栏。
   * 增加 FAQ《应用程序在 Windows 的手持设备中运行，如何去掉窗口的标题栏》
+  * image value 支持16进制格式。
 
 * 2020/06/09
   * 增加 dll 导出函数（感谢俊杰提供补丁）。 
