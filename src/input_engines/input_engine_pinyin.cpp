@@ -86,7 +86,7 @@ static ret_t input_engine_pinyin_search(input_engine_t* engine, const char* keys
   wbuffer_t wb;
   uint32_t i = 0;
   uint32_t keys_size = strlen(keys);
-  uint32_t nr = im_search(keys, keys_size);
+  uint32_t nr = im_search(keys, tk_min(14, keys_size));
 
   wbuffer_init(&wb, (uint8_t*)(engine->candidates), sizeof(engine->candidates));
   return_value_if_fail(input_engine_ensure_data(engine) == RET_OK, RET_FAIL);
