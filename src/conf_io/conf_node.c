@@ -274,6 +274,19 @@ const char* conf_node_get_name(conf_node_t* node) {
   return node->is_small_name ? node->name.small_str : node->name.str;
 }
 
+uint32_t conf_node_count_children(conf_node_t* node) {
+  uint32_t i = 0;
+  conf_node_t* first = conf_node_get_first_child(node);
+  return_value_if_fail(node != NULL, 0);
+
+  while (first != NULL) {
+    i++;
+    first = first->next;
+  }
+
+  return i;
+}
+
 conf_node_t* conf_node_find_sibling(conf_node_t* node, const char* name) {
   conf_node_t* iter = NULL;
   if (node == NULL) {
@@ -525,6 +538,8 @@ static conf_node_t* conf_doc_get_node(conf_doc_t* doc, const char* path,
       iter = conf_node_find_child_by_index(node, tk_atoi(token + 1));
       /*node must be exist if find by index */
       return_value_if_fail(iter != NULL, NULL);
+    } else if (*token == '#') {
+      return node;
     } else {
       iter = conf_node_find_child(node, token);
     }
@@ -576,7 +591,16 @@ ret_t conf_doc_get(conf_doc_t* doc, const char* path, value_t* v) {
   node = conf_doc_get_node(doc, path, FALSE);
 
   if (node != NULL) {
-    return conf_node_get_value(node, v);
+    const char* special = strchr(path, '#');
+    if (special == NULL) {
+      return conf_node_get_value(node, v);
+    } else if (tk_str_eq(special, CONF_SPECIAL_ATTR_NAME)) {
+      value_set_str(v, conf_node_get_name(node));
+      return RET_OK;
+    } else if (tk_str_eq(special, CONF_SPECIAL_ATTR_SIZE)) {
+      value_set_uint32(v, conf_node_count_children(node));
+      return RET_OK;
+    }
   } else {
     value_set_int(v, 0);
     return RET_NOT_FOUND;

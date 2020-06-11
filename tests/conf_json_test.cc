@@ -27,6 +27,77 @@ TEST(ConfJson, basic1) {
   conf_doc_destroy(doc);
 }
 
+TEST(ConfJson, name) {
+  value_t v;
+  str_t str;
+  conf_node_t* node = NULL;
+  const char* data = " {\"tom\" : { \"name\" : \"tom\", \"age\" : 100  }  } ";
+
+  conf_doc_t* doc = conf_doc_load_json(data, -1);
+
+  ASSERT_EQ(conf_doc_get(doc, "tom.name.#name", &v), RET_OK);
+  ASSERT_STREQ(value_str(&v), "name");
+
+  ASSERT_EQ(conf_doc_get(doc, "tom.[0].#name", &v), RET_OK);
+  ASSERT_STREQ(value_str(&v), "name");
+
+  ASSERT_EQ(conf_doc_get(doc, "tom.age.#name", &v), RET_OK);
+  ASSERT_STREQ(value_str(&v), "age");
+
+  ASSERT_EQ(conf_doc_get(doc, "tom.[1].#name", &v), RET_OK);
+  ASSERT_STREQ(value_str(&v), "age");
+
+  ASSERT_EQ(conf_doc_get(doc, "tom.#name", &v), RET_OK);
+  ASSERT_STREQ(value_str(&v), "tom");
+
+  conf_doc_destroy(doc);
+}
+
+TEST(ConfJson, size1) {
+  value_t v;
+  str_t str;
+  conf_node_t* node = NULL;
+  const char* data = " {\"tom\" : { \"name\" : \"tom\", \"age\" : 100  }  } ";
+
+  conf_doc_t* doc = conf_doc_load_json(data, -1);
+
+  ASSERT_EQ(conf_doc_get(doc, "tom.#size", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 2);
+
+  ASSERT_EQ(conf_doc_get(doc, "tom.name.#size", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 0);
+
+  conf_doc_destroy(doc);
+}
+
+TEST(ConfJson, size2) {
+  value_t v;
+  str_t str;
+  conf_node_t* node = NULL;
+  const char* data = " {\"data\" : [1,2,3,4,5]  } ";
+
+  conf_doc_t* doc = conf_doc_load_json(data, -1);
+
+  ASSERT_EQ(conf_doc_get(doc, "data.#size", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 5);
+
+  conf_doc_destroy(doc);
+}
+
+TEST(ConfJson, size3) {
+  value_t v;
+  str_t str;
+  conf_node_t* node = NULL;
+  const char* data = " {\"data\" : [{\"name\":\"tom\"},{\"name\":\"jack\"}]  } ";
+
+  conf_doc_t* doc = conf_doc_load_json(data, -1);
+
+  ASSERT_EQ(conf_doc_get(doc, "data.#size", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 2);
+
+  conf_doc_destroy(doc);
+}
+
 TEST(ConfJson, escape) {
   value_t v;
   str_t str;

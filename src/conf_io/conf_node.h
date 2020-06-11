@@ -473,6 +473,9 @@ ret_t conf_node_set_first_child(conf_node_t* node, conf_node_t* child);
 
 #define CONF_NODE_ROOT_NAME "root"
 
+#define CONF_SPECIAL_ATTR_SIZE "#size"
+#define CONF_SPECIAL_ATTR_NAME "#name"
+
 END_C_DECLS
 
 #endif /*TK_CONF_NODE_H*/
