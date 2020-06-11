@@ -98,6 +98,20 @@ TEST(ConfJson, size3) {
   conf_doc_destroy(doc);
 }
 
+TEST(ConfJson, size4) {
+  value_t v;
+  str_t str;
+  conf_node_t* node = NULL;
+  const char* data = " {\"data\" : [{\"name\":\"tom\"},{\"name\":\"jack\"}]  } ";
+
+  conf_doc_t* doc = conf_doc_load_json(data, -1);
+
+  ASSERT_EQ(conf_doc_get(doc, "#size", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 1);
+
+  conf_doc_destroy(doc);
+}
+
 TEST(ConfJson, escape) {
   value_t v;
   str_t str;
