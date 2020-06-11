@@ -88,11 +88,11 @@ static ret_t event_recorder_player_play(event_recorder_player_t* p) {
     if (duration < 0) {
       duration = 0;
     }
-    
+
     if (duration > 100 * 1000) {
       duration = 100;
-    }    
-    
+    }
+
     timer_modify(p->timer_id, duration);
 
     return RET_REPEAT;
