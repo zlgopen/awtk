@@ -19,6 +19,7 @@ static bitmap_t* bitmap_from_str(canvas_t* canvas, wchar_t* str, color_t tc) {
   uint32_t ox = 0;
   font_vmetrics_t vm;
   uint32_t* p = NULL;
+  uint32_t baseline = 0;
   bitmap_t* bitmap = NULL;
   uint32_t font_size = canvas->font_size;
   font_manager_t* fm = canvas->font_manager;
@@ -26,12 +27,13 @@ static bitmap_t* bitmap_from_str(canvas_t* canvas, wchar_t* str, color_t tc) {
   return_value_if_fail(font != NULL, NULL);
 
   vm = font_get_vmetrics(font, font_size);
-  h = vm.ascent + vm.descent;
+  h = vm.ascent - vm.descent;
   return_value_if_fail(h > 0, NULL);
 
+  baseline = vm.ascent;
   for (i = 0; str[i]; i++) {
     return_value_if_fail(font_get_glyph(font, str[i], font_size, &g) == RET_OK, NULL);
-    w += g.w + 1;
+    w += g.advance + 1;
   }
 
   bitmap = bitmap_create_ex(w, h, 0, BITMAP_FMT_RGBA8888);
@@ -46,13 +48,17 @@ static bitmap_t* bitmap_from_str(canvas_t* canvas, wchar_t* str, color_t tc) {
 
     for (y = 0; y < g.h; y++) {
       for (x = 0; x < g.w; x++) {
-        uint32_t* d = p + y * w + ox + x;
+        int32_t dx = ox + g.x + x;
+        int32_t dy = baseline + g.y + y;
+
+        uint32_t* d = p +  dy * w + dx;
         const uint8_t* s = g.data + y * g.w + x;
+
         tc.rgba.a = *s;
         *d = tc.color;
       }
     }
-    ox += g.w + 1;
+    ox += g.advance + 1;
   }
   bitmap_unlock_buffer(bitmap);
   bitmap->flags |= BITMAP_FLAG_CHANGED;
