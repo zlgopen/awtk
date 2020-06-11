@@ -2306,8 +2306,13 @@ bitmap_t* widget_take_snapshot_rect(widget_t* widget, rect_t* r);
  */
 canvas_t* widget_get_canvas(widget_t* widget);
 
-/*for designer only*/
-/*调用者需要unload全部图片*/
+/**
+ * @method widget_reset_canvas
+ * 重置canvas对象。for designer only,调用者需要unload全部图片
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t widget_reset_canvas(widget_t* widget);
 
 /*虚函数的包装*/
@@ -2480,13 +2485,14 @@ bool_t widget_has_focused_widget_in_window(widget_t* widget);
  * @param {const char*} state_and_name 样式对应类型与名字。
  * @param {const value_t*} value 值。
  *
- * @return {ret_t} 。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。。
  */
 ret_t widget_set_style(widget_t* widget, const char* state_and_name, const value_t* value);
 /**
  * @method widget_calc_icon_text_rect
  * 计算icon text的位置。
  * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。。
  */
 ret_t widget_calc_icon_text_rect(const rect_t* ir, int32_t font_size, float_t text_size,
                                  int32_t icon_at, uint32_t img_w, uint32_t img_h, int32_t spacer,

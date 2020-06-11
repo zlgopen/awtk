@@ -1,5 +1,9 @@
 # 最新动态
 
+* 2020/06/11
+  * 完善conf\_io，支持#name/#size
+  * 增加 dll 导出函数（感谢俊杰提供补丁）。 
+
 * 2020/06/10
   * 增加宏 NATIVE\_WINDOW\_BORDERLESS 控制是否去掉 native window 的标题栏。
   * 增加 FAQ《应用程序在 Windows 的手持设备中运行，如何去掉窗口的标题栏》

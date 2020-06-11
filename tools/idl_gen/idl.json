@@ -20538,6 +20538,22 @@
             "type": "widget_t*",
             "name": "widget",
             "desc": "控件对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "重置canvas对象。for designer only,调用者需要unload全部图片",
+        "name": "widget_reset_canvas",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
           },
           {
             "type": "canvas_t*",
@@ -20825,14 +20841,18 @@
         "name": "widget_set_style",
         "return": {
           "type": "ret_t",
-          "desc": "。"
+          "desc": "返回RET_OK表示成功，否则表示失败。。"
         }
       },
       {
         "params": [],
         "annotation": {},
         "desc": "计算icon text的位置。",
-        "name": "widget_calc_icon_text_rect"
+        "name": "widget_calc_icon_text_rect",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。。"
+        }
       }
     ],
     "events": [
