@@ -559,10 +559,11 @@ static ret_t canvas_draw_glyph(canvas_t* c, glyph_t* g, xy_t x, xy_t y) {
 static ret_t canvas_draw_char_impl(canvas_t* c, wchar_t chr, xy_t x, xy_t y) {
   glyph_t g;
   font_size_t font_size = c->font_size;
+  font_vmetrics_t vmetrics = font_get_vmetrics(c->font, c->font_size);
   return_value_if_fail(font_get_glyph(c->font, chr, font_size, &g) == RET_OK, RET_BAD_PARAMS);
 
   x += g.x;
-  y += font_size + g.y;
+  y += vmetrics.ascent + g.y;
 
   return canvas_draw_glyph(c, &g, x, y);
 }

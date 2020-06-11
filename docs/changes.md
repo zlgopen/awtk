@@ -3,6 +3,7 @@
 * 2020/06/11
   * 完善conf\_io，支持#name/#size
   * 增加 dll 导出函数（感谢俊杰提供补丁）。 
+  * 修改 canvas\_draw\_char\_impl baseline的BUG。
 
 * 2020/06/10
   * 增加宏 NATIVE\_WINDOW\_BORDERLESS 控制是否去掉 native window 的标题栏。
