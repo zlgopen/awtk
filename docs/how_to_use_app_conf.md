@@ -495,6 +495,47 @@ ret_t application_exit() {
   const char* ip2 = app_conf_get_str("network.[2].ip", NULL);
 ```
 
+* 用 #size 获取子节点个数
+
+示例：
+
+```ini
+[wifi]
+  on = 1 
+  name = awtk
+[server]
+  port = 8080
+  timeout = 1.000000
+
+```
+
+在上面的例子中，"#size"获取分组的个数为 2，"wifi.#size"获取 wifi 下的子项数为 2。
+
+```c
+  assert(app_conf_get_int("#size", 0) == 2); 
+  assert(app_conf_get_int("wifi.#size", 0) == 2); 
+```
+
+* 用 #name 获取项的名称。
+
+示例：
+
+```ini
+[wifi]
+  on = 1 
+  name = awtk
+[server]
+  port = 8080
+  timeout = 1.000000
+
+```
+在上面的例子中，"[0].#name" 获取第一个分组的名称为"wifi"，"wifi.[0].#name" 获取 wifi 下第一项的名称为 "on"。
+
+```c
+  assert(strcmp(app_conf_get_str("[0].#name", NULL), "wifi") == 0);
+  assert(strcmp(app_conf_get_str("wifi.[0].#name", NULL), "on") == 0);
+```
+
 ## 8. 注意事项
 
 * . 作为 key 的分隔符。
