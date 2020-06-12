@@ -426,6 +426,10 @@ static uint32_t str_count_sub_str(str_t* s, const char* str) {
   uint32_t count = 0;
   uint32_t size = strlen(str);
 
+  if (size == 0) {
+    return 0;
+  }
+
   do {
     p = strstr(p, str);
     if (p != NULL) {
