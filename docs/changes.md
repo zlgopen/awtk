@@ -1,8 +1,10 @@
 # 最新动态
 
-* 2020/06/11
+* 2020/06/12
   * 增加 app\_conf\_set\_wstr/app\_conf\_get\_wstr
   * 完善 window\_manager\_back\_to\_home 对软键盘窗口的处理。
+  * 增加 object\_locker 对 object 进行装饰，提供互斥的功能。
+  * 用 app_conf 重新实现 object\_locker。
 
 * 2020/06/11
   * 完善 conf\_io，支持#name/#size

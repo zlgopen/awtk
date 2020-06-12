@@ -34,7 +34,7 @@ TEST(Ini, group2) {
   node = conf_node_find_child(doc->root, "world");
   ASSERT_EQ(node != NULL, true);
   ASSERT_STREQ(conf_node_get_name(node), "world");
-  
+
   ASSERT_EQ(conf_doc_get(doc, "#size", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 2);
 

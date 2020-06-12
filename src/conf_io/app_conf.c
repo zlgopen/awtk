@@ -22,18 +22,17 @@
 #include "tkc/str.h"
 #include "tkc/utf8.h"
 #include "tkc/mutex.h"
+#include "tkc/object_locker.h"
 #include "conf_io/app_conf.h"
 
 static object_t* s_conf;
-static tk_mutex_t* s_conf_lock;
 
 ret_t app_conf_set_instance(object_t* obj) {
   return_value_if_fail(s_conf == NULL, RET_BAD_PARAMS);
   return_value_if_fail(obj != NULL, RET_BAD_PARAMS);
 
-  s_conf = obj;
-  s_conf_lock = tk_mutex_create();
-  ENSURE(s_conf_lock != NULL);
+  s_conf = object_locker_create(obj);
+  ENSURE(s_conf != NULL);
 
   return RET_OK;
 }
@@ -43,62 +42,25 @@ object_t* app_conf_get_instance(void) {
 }
 
 ret_t app_conf_save(void) {
-  ret_t ret = RET_FAIL;
-  return_value_if_fail(s_conf != NULL && s_conf_lock != NULL, RET_BAD_PARAMS);
-
-  return_value_if_fail(tk_mutex_lock(s_conf_lock) == RET_OK, RET_BAD_PARAMS);
-  ret = object_exec(s_conf, "save", NULL);
-  tk_mutex_unlock(s_conf_lock);
-
-  return ret;
+  return object_exec(s_conf, "save", NULL);
 }
 
 ret_t app_conf_deinit(void) {
-  return_value_if_fail(s_conf != NULL && s_conf_lock != NULL, RET_BAD_PARAMS);
-
-  return_value_if_fail(tk_mutex_lock(s_conf_lock) == RET_OK, RET_BAD_PARAMS);
   OBJECT_UNREF(s_conf);
-  tk_mutex_unlock(s_conf_lock);
-  tk_mutex_destroy(s_conf_lock);
-  s_conf_lock = NULL;
 
   return RET_OK;
 }
 
 ret_t app_conf_set(const char* key, const value_t* v) {
-  ret_t ret = RET_FAIL;
-  return_value_if_fail(key != NULL && v != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(s_conf != NULL && s_conf_lock != NULL, RET_BAD_PARAMS);
-
-  return_value_if_fail(tk_mutex_lock(s_conf_lock) == RET_OK, RET_BAD_PARAMS);
-  ret = object_set_prop(s_conf, key, v);
-  tk_mutex_unlock(s_conf_lock);
-
-  return ret;
+  return object_set_prop(s_conf, key, v);
 }
 
 ret_t app_conf_get(const char* key, value_t* v) {
-  ret_t ret = RET_FAIL;
-  return_value_if_fail(key != NULL && v != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(s_conf != NULL && s_conf_lock != NULL, RET_BAD_PARAMS);
-
-  return_value_if_fail(tk_mutex_lock(s_conf_lock) == RET_OK, RET_BAD_PARAMS);
-  ret = object_get_prop(s_conf, key, v);
-  tk_mutex_unlock(s_conf_lock);
-
-  return ret;
+  return object_get_prop(s_conf, key, v);
 }
 
 bool_t app_conf_exist(const char* key) {
-  bool_t ret = FALSE;
-  return_value_if_fail(key != NULL, FALSE);
-  return_value_if_fail(s_conf != NULL && s_conf_lock != NULL, FALSE);
-
-  return_value_if_fail(tk_mutex_lock(s_conf_lock) == RET_OK, RET_BAD_PARAMS);
-  ret = object_has_prop(s_conf, key);
-  tk_mutex_unlock(s_conf_lock);
-
-  return ret;
+  return object_has_prop(s_conf, key);
 }
 
 ret_t app_conf_set_int(const char* key, int32_t v) {
@@ -189,46 +151,42 @@ const char* app_conf_get_str(const char* key, const char* defval) {
 uint32_t app_conf_on_changed(event_func_t on_event, void* ctx) {
   uint32_t ret = TK_INVALID_ID;
   return_value_if_fail(on_event != NULL, ret);
-  return_value_if_fail(s_conf != NULL && s_conf_lock != NULL, ret);
+  return_value_if_fail(s_conf != NULL, ret);
 
-  return_value_if_fail(tk_mutex_lock(s_conf_lock) == RET_OK, ret);
-  ret = emitter_on(EMITTER(s_conf), EVT_PROP_CHANGED, on_event, ctx);
-  tk_mutex_unlock(s_conf_lock);
+  if (object_exec(s_conf, "lock", NULL) == RET_OK) {
+    ret = emitter_on(EMITTER(s_conf), EVT_PROP_CHANGED, on_event, ctx);
+    object_exec(s_conf, "unlock", NULL);
+  }
 
   return ret;
 }
 
 ret_t app_conf_off_changed(uint32_t id) {
   ret_t ret = RET_FAIL;
-  return_value_if_fail(s_conf != NULL && s_conf_lock != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(s_conf != NULL, RET_BAD_PARAMS);
 
-  return_value_if_fail(tk_mutex_lock(s_conf_lock) == RET_OK, RET_BAD_PARAMS);
-  ret = emitter_off(EMITTER(s_conf), id);
-  tk_mutex_unlock(s_conf_lock);
+  if (object_exec(s_conf, "lock", NULL) == RET_OK) {
+    ret = emitter_off(EMITTER(s_conf), id);
+    object_exec(s_conf, "unlock", NULL);
+  }
 
   return ret;
 }
 
 ret_t app_conf_off_changed_by_ctx(void* ctx) {
   ret_t ret = RET_FAIL;
-  return_value_if_fail(s_conf != NULL && s_conf_lock != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(s_conf != NULL, RET_BAD_PARAMS);
 
-  return_value_if_fail(tk_mutex_lock(s_conf_lock) == RET_OK, RET_BAD_PARAMS);
-  ret = emitter_off_by_ctx(EMITTER(s_conf), ctx);
-  tk_mutex_unlock(s_conf_lock);
+  if (object_exec(s_conf, "lock", NULL) == RET_OK) {
+    ret = emitter_off_by_ctx(EMITTER(s_conf), ctx);
+    object_exec(s_conf, "unlock", NULL);
+  }
 
   return ret;
 }
 
 ret_t app_conf_remove(const char* key) {
-  ret_t ret = RET_FAIL;
-  return_value_if_fail(s_conf != NULL && s_conf_lock != NULL, RET_BAD_PARAMS);
-
-  return_value_if_fail(tk_mutex_lock(s_conf_lock) == RET_OK, RET_BAD_PARAMS);
-  ret = object_remove_prop(s_conf, key);
-  tk_mutex_unlock(s_conf_lock);
-
-  return ret;
+  return object_remove_prop(s_conf, key);
 }
 
 ret_t app_conf_get_wstr(const char* key, wchar_t* str, uint32_t max_size) {
@@ -254,4 +212,3 @@ ret_t app_conf_set_wstr(const char* key, const wchar_t* v) {
 
   return ret;
 }
-
