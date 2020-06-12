@@ -217,6 +217,19 @@ ret_t app_conf_set_double(const char* key, double v);
 ret_t app_conf_set_str(const char* key, const char* v);
 
 /**
+ * @method app_conf_set_wstr
+ * 设置宽字符串类型配置项的值。
+ *
+ * @annotation ["static"]
+ *
+ * @param {const char*} key 配置项的名称。
+ * @param {const wchar_t*} v 配置项的值。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t app_conf_set_wstr(const char* key, const wchar_t* v);
+
+/**
  * @method app_conf_get_int
  * 获取整数类型配置项的值。
  *
@@ -280,6 +293,20 @@ double app_conf_get_double(const char* key, double defval);
  * @return {const char*} 返回配置项的值（如果不存在返回缺省值）。
  */
 const char* app_conf_get_str(const char* key, const char* defval);
+
+/**
+ * @method app_conf_get_wstr
+ * 获取宽字符串类型配置项的值。
+ *
+ * @annotation ["static"]
+ *
+ * @param {const char*} key 配置项的名称。
+ * @param {const wchar_t*} str 返回值。
+ * @param {uint32_t} max_size 最大长度(字符数)。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t app_conf_get_wstr(const char* key, wchar_t* str, uint32_t max_size);
 
 /**
  * @method app_conf_remove

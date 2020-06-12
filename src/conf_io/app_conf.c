@@ -19,6 +19,8 @@
  *
  */
 
+#include "tkc/str.h"
+#include "tkc/utf8.h"
 #include "tkc/mutex.h"
 #include "conf_io/app_conf.h"
 
@@ -228,3 +230,28 @@ ret_t app_conf_remove(const char* key) {
 
   return ret;
 }
+
+ret_t app_conf_get_wstr(const char* key, wchar_t* str, uint32_t max_size) {
+  const char* s = app_conf_get_str(key, NULL);
+  return_value_if_fail(str != NULL && max_size > 1, RET_BAD_PARAMS);
+  *str = 0;
+  return_value_if_fail(s != NULL, RET_NOT_FOUND);
+
+  tk_utf8_to_utf16(s, str, max_size);
+
+  return RET_OK;
+}
+
+ret_t app_conf_set_wstr(const char* key, const wchar_t* v) {
+  str_t str;
+  ret_t ret = RET_FAIL;
+  return_value_if_fail(key != NULL && v != NULL, RET_BAD_PARAMS);
+  str_init(&str, 0);
+  return_value_if_fail(str_from_wstr(&str, v) == RET_OK, RET_OOM);
+
+  ret = app_conf_set_str(key, str.str);
+  str_reset(&str);
+
+  return ret;
+}
+

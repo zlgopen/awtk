@@ -64,3 +64,14 @@ TEST(AppConf, init) {
 
   ASSERT_EQ(app_conf_deinit(), RET_OK);
 }
+
+TEST(AppConf, wstr) {
+  wchar_t str[32];
+  app_conf_init_ini("conf_test");
+
+  ASSERT_EQ(app_conf_set_wstr("wstr", L"abc"), RET_OK);
+  ASSERT_EQ(app_conf_get_wstr("wstr", str, ARRAY_SIZE(str)), RET_OK);
+  ASSERT_STREQ(app_conf_get_str("wstr", NULL), "abc");
+
+  ASSERT_EQ(app_conf_deinit(), RET_OK);
+}
