@@ -28,6 +28,8 @@ AWTK 提供了 [app_conf](https://github.com/zlgopen/awtk/blob/master/docs/manua
 
 [app_conf](https://github.com/zlgopen/awtk/blob/master/docs/manual/app_conf_t.md) 作为可选组件，需要开发者自己初始化。
 
+> 初始化函数一般在 application_init 函数中调用。所有读写等函数，必须在成功初始化之后才能调用。
+
 * 2.1 使用 ini 格式时的初始方法
 
 包含头文件：
