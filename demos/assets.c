@@ -1,8 +1,7 @@
 #include "awtk.h"
 #include "base/assets_manager.h"
-
-#include "assets_default.inc"
-#include "assets_dark.inc"
+#include "assets/__assets_default.inc"
+#include "assets/__assets_dark.inc"
 
 #ifndef APP_THEME
 #define APP_THEME "default"
@@ -71,7 +70,7 @@ static ret_t widget_set_theme_without_file_system(widget_t* widget, const char* 
   log_debug("theme changed: %s\n", name);
 
   return RET_OK;
-#else  /*WITH_FS_RES*/
+#else /*WITH_FS_RES*/
   return RET_NOT_IMPL;
 #endif /*WITH_FS_RES*/
 }

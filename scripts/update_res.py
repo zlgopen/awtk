@@ -1,20 +1,20 @@
-import os
+﻿import os
 import sys
 import update_res_common as common
 
-APP_ROOT = os.getcwd()
+APP_ROOT = common.getcwd()
 if APP_ROOT.endswith('scripts'):
     APP_ROOT = os.path.dirname(APP_ROOT)
 
 os.chdir(APP_ROOT)
 
 AWTK_ROOT = APP_ROOT
-themes = ['default', 'dark']
-ASSET_C = common.joinPath(APP_ROOT, 'demos/assets.c')
-ASSETS_ROOT = common.joinPath(APP_ROOT, 'demos/assets')
+ASSET_C = common.join_path(APP_ROOT, 'demos/assets.c')
+ASSETS_ROOT = common.join_path(APP_ROOT, 'demos/assets')
+THEMES = ['default', 'dark']
 
-def isFileExcluded(filename):
-    exclude_files = [
+def is_excluded_file(filename):
+    excluded_files = [
         '/images/bg_landscape_1',
         '/images/bg_landscape_2',
         '/images/bg_landscape_3',
@@ -29,7 +29,7 @@ def isFileExcluded(filename):
     ]
     filename = filename.replace('\\', '/')
 
-    for f in exclude_files:
+    for f in excluded_files:
         if (filename.find(f) >= 0):
             return True;
 
@@ -38,21 +38,19 @@ def isFileExcluded(filename):
 
 def buildTools():
     common.init(AWTK_ROOT, ASSETS_ROOT, 'default', ASSET_C)
-    os.system('scons '+common.toExe('bsvggen'))
-    os.system('scons '+common.toExe('strgen'))
-    os.system('scons '+common.toExe('resgen'))
-    os.system('scons '+common.toExe('themegen'))
-    os.system('scons '+common.toExe('imagegen'))
-    os.system('scons '+common.toExe('fontgen'))
-    os.system('scons '+common.toExe('xml_to_ui'))
+    os.system('scons '+common.to_exe('bsvggen'))
+    os.system('scons '+common.to_exe('strgen'))
+    os.system('scons '+common.to_exe('resgen'))
+    os.system('scons '+common.to_exe('themegen'))
+    os.system('scons '+common.to_exe('imagegen'))
+    os.system('scons '+common.to_exe('fontgen'))
+    os.system('scons '+common.to_exe('xml_to_ui'))
+
 
 def run():
-    for theme in themes:
-        print('========================='+theme+' begin =========================')
-        common.init(AWTK_ROOT, ASSETS_ROOT, theme, ASSET_C, isFileExcluded)
-        common.updateRes()
-        print('========================='+theme+' end =========================\n')
-    common.genAssetC(themes, ASSET_C)
+    common.init(AWTK_ROOT, ASSETS_ROOT, THEMES, ASSET_C)
+    common.set_is_excluded_file_handler(is_excluded_file)
+    common.update_res()
 
 
 if sys.argv[1] == 'all':

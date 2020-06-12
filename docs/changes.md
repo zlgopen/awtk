@@ -1,5 +1,9 @@
 # 最新动态
 
+* 2020/06/13
+  * 完善资源生成脚本，兼容 AWTK 和 Designer（感谢朝泽提供补丁）。
+  * 完善 str\_count\_sub\_str（感谢朝泽提供补丁）。 
+
 * 2020/06/12
   * 增加 app\_conf\_set\_wstr/app\_conf\_get\_wstr
   * 完善 window\_manager\_back\_to\_home 对软键盘窗口的处理。
