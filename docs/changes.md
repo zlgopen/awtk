@@ -2,11 +2,12 @@
 
 * 2020/06/11
   * 增加 app\_conf\_set\_wstr/app\_conf\_get\_wstr
+  * 完善 window\_manager\_back\_to\_home 对软键盘窗口的处理。
 
 * 2020/06/11
-  * 完善conf\_io，支持#name/#size
+  * 完善 conf\_io，支持#name/#size
   * 增加 dll 导出函数（感谢俊杰提供补丁）。 
-  * 修改 canvas\_draw\_char\_impl baseline的BUG。
+  * 修改 canvas\_draw\_char\_impl baseline 的 BUG。
   * 完善文档。
   
 * 2020/06/10

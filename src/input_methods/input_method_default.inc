@@ -30,6 +30,9 @@
 #include "base/window_manager.h"
 #include "ui_loader/ui_builder_default.h"
 
+static ret_t input_method_default_on_edit_destroy(void* ctx, event_t* e);
+static ret_t input_method_default_on_keyboard_destroy(void* ctx, event_t* e);
+
 static const char* input_type_to_keyboard_name(int32_t input_type) {
   const char* keyboard = NULL;
 
@@ -176,6 +179,7 @@ static ret_t input_type_open_keyboard(input_method_t* im, const char* keyboard_n
 
   im->busy = TRUE;
   widget_on(im->keyboard, EVT_WINDOW_OPEN, input_method_default_on_keyboard_open, im);
+  widget_on(im->keyboard, EVT_DESTROY, input_method_default_on_keyboard_destroy, im);
 
   if ((p.y + widget->h) > im->keyboard->y) {
     close_anim_hint = "vtranslate";
@@ -279,6 +283,31 @@ static ret_t input_method_default_ensure_suggest_words(input_method_t* im) {
   return RET_OK;
 }
 
+static ret_t input_method_default_on_keyboard_destroy(void* ctx, event_t* e) {
+  widget_t* widget = WIDGET(e->target);
+  input_method_t* im = (input_method_t*)ctx;
+
+  if (im->keyboard == widget) {
+    input_method_default_restore_win_position(im);
+    im->win = NULL;
+    im->widget = NULL;
+    im->keyboard = NULL;
+  }
+
+  return RET_REMOVE;
+}
+
+static ret_t input_method_default_on_edit_destroy(void* ctx, event_t* e) {
+  widget_t* widget = WIDGET(e->target);
+  input_method_t* im = (input_method_t*)ctx;
+
+  if(im->widget == widget) {
+    input_method_request(im, NULL);
+  }
+
+  return RET_REMOVE;
+}
+
 static ret_t input_method_default_request(input_method_t* im, widget_t* widget) {
   if (im->widget == widget) {
     return RET_OK;
@@ -291,6 +320,7 @@ static ret_t input_method_default_request(input_method_t* im, widget_t* widget) 
   if (widget != NULL) {
     im->widget = widget;
     input_method_default_show_keyboard(im);
+    widget_on(widget, EVT_DESTROY, input_method_default_on_edit_destroy, im);
   } else {
     if (im->keyboard != NULL) {
       idle_close_info_t* info = TKMEM_ZALLOC(idle_close_info_t);
