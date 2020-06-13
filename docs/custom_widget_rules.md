@@ -6,7 +6,9 @@
 
 ## 1. 目录结构
 
-* assets 存放示例代码需要的资源。
+* design 存放示例代码的原始资源，用 Designer 打开后可进行编辑。
+
+* res 存放示例代码运行时需要的资源，由 Designer 打包 或者 scripts/update_res.py 脚本生成。
 
 * bin 存放动态库和可执行文件。
 
@@ -25,8 +27,11 @@
 示例：
 
 ```
-├─assets
+├─design
 │  └─default
+├─res
+│  └─assets
+│       └─default
 ├─bin
 ├─lib
 ├─demos
