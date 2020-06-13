@@ -41,27 +41,35 @@ typedef struct _conf_obj_t {
   conf_doc_load_t load;
 } conf_obj_t;
 
-#define CONF_OBJ(obj) (conf_obj_t*)(obj)
+static conf_obj_t* conf_obj_cast(object_t* obj);
+#define CONF_OBJ(obj) conf_obj_cast((object_t*)obj)
+
 
 static ret_t conf_obj_remove_prop(object_t* obj, const char* name) {
   conf_obj_t* o = CONF_OBJ(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
   return conf_doc_remove(o->doc, name);
 }
 
 static ret_t conf_obj_set_prop(object_t* obj, const char* name, const value_t* v) {
   conf_obj_t* o = CONF_OBJ(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
   return conf_doc_set(o->doc, name, v);
 }
 
 static ret_t conf_obj_get_prop(object_t* obj, const char* name, value_t* v) {
   conf_obj_t* o = CONF_OBJ(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
   return conf_doc_get(o->doc, name, v);
 }
 
 static bool_t conf_obj_can_exec(object_t* obj, const char* name, const char* args) {
+  conf_obj_t* o = CONF_OBJ(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
   if (tk_str_ieq(name, CMD_SAVE)) {
     return TRUE;
   }
@@ -71,8 +79,11 @@ static bool_t conf_obj_can_exec(object_t* obj, const char* name, const char* arg
 
 ret_t conf_obj_save(object_t* obj) {
   ret_t ret = RET_FAIL;
+  data_writer_t* writer = NULL;
   conf_obj_t* o = CONF_OBJ(obj);
-  data_writer_t* writer = data_writer_factory_create_writer(data_writer_factory(), o->url);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
+  writer = data_writer_factory_create_writer(data_writer_factory(), o->url);
   return_value_if_fail(writer != NULL, RET_FAIL);
 
   ret = o->save(o->doc, writer);
@@ -82,8 +93,11 @@ ret_t conf_obj_save(object_t* obj) {
 }
 
 static ret_t conf_obj_load(object_t* obj) {
+  data_reader_t* reader = NULL;
   conf_obj_t* o = CONF_OBJ(obj);
-  data_reader_t* reader = data_reader_factory_create_reader(data_reader_factory(), o->url);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
+  reader = data_reader_factory_create_reader(data_reader_factory(), o->url);
   return_value_if_fail(reader != NULL, RET_FAIL);
 
   o->doc = o->load(reader);
@@ -97,6 +111,9 @@ static ret_t conf_obj_load(object_t* obj) {
 }
 
 static ret_t conf_obj_exec(object_t* obj, const char* name, const char* args) {
+  conf_obj_t* o = CONF_OBJ(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
   if (tk_str_ieq(name, CMD_SAVE)) {
     return conf_obj_save(obj);
   }
@@ -106,6 +123,8 @@ static ret_t conf_obj_exec(object_t* obj, const char* name, const char* args) {
 
 static ret_t conf_obj_destroy(object_t* obj) {
   conf_obj_t* o = CONF_OBJ(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
   conf_doc_destroy(o->doc);
   TKMEM_FREE(o->url);
   o->doc = NULL;
@@ -115,6 +134,7 @@ static ret_t conf_obj_destroy(object_t* obj) {
 
 conf_doc_t* conf_obj_get_doc(object_t* conf) {
   conf_obj_t* o = CONF_OBJ(conf);
+  return_value_if_fail(o != NULL, NULL);
 
   return_value_if_fail(conf != NULL, NULL);
 
@@ -131,6 +151,12 @@ static const object_vtable_t s_conf_obj_vtable = {.type = "conf_obj",
                                                   .get_prop = conf_obj_get_prop,
                                                   .set_prop = conf_obj_set_prop,
                                                   .on_destroy = conf_obj_destroy};
+
+static conf_obj_t* conf_obj_cast(object_t* obj) {
+  return_value_if_fail(obj != NULL && obj->vt == &s_conf_obj_vtable, NULL);
+
+  return (conf_obj_t*)obj;
+}
 
 object_t* conf_obj_create(conf_doc_save_t save, conf_doc_load_t load, const char* url,
                           bool_t create_if_not_exist) {
