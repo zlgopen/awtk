@@ -28,3 +28,4 @@ log
 __pycache__
 test.bin
 release
+event_log.bin

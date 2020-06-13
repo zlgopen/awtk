@@ -29,9 +29,9 @@ BEGIN_C_DECLS
 /**
  * @method data_reader_file_create
  * 创建基于文件的data reader。
- * @param {data_reader_t*} reader reader对象。
+ * @param {const char*} filename 文件名。
  *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ * @return {data_reader_t*} 返回data reader对象。
  */
 data_reader_t* data_reader_file_create(const char* filename);
 

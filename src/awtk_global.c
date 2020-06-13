@@ -33,8 +33,14 @@
 #include "base/window_manager.h"
 #include "base/widget_factory.h"
 #include "base/assets_manager.h"
+
+#ifdef WITH_DATA_READER_WRITER
 #include "tkc/data_reader_factory.h"
 #include "tkc/data_writer_factory.h"
+#include "tkc/data_writer_file.h"
+#include "tkc/data_reader_file.h"
+#include "base/data_reader_asset.h"
+#endif/*WITH_DATA_READER_WRITER*/
 
 #include "base/widget_animator_manager.h"
 #include "font_loader/font_loader_bitmap.h"
@@ -141,6 +147,7 @@ ret_t tk_init_internal(void) {
   data_reader_factory_set(data_reader_factory_create());
   data_writer_factory_register(data_writer_factory(), "file", data_writer_file_create);
   data_reader_factory_register(data_reader_factory(), "file", data_reader_file_create);
+  data_reader_factory_register(data_reader_factory(), "asset", data_reader_asset_create);
 #endif /*WITH_DATA_READER_WRITER*/
 
 #ifdef WITH_STB_IMAGE

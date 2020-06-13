@@ -29,9 +29,9 @@ BEGIN_C_DECLS
 /**
  * @method data_writer_file_create
  * 创建基于文件的data writer。
- * @param {data_writer_t*} writer writer对象。
+ * @param {const char*} filename 文件名。
  *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ * @return {data_writer_t*} 返回data writer对象。
  */
 data_writer_t* data_writer_file_create(const char* filename);
 
