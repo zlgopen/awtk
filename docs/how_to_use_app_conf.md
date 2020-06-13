@@ -538,6 +538,24 @@ ret_t application_exit() {
   assert(strcmp(app_conf_get_str("wifi.[0].#name", NULL), "on") == 0);
 ```
 
+* 用 #index 获取配置项在兄弟节点中的序数。
+
+```ini
+[wifi]
+  on = 1 
+  name = awtk
+[server]
+  port = 8080
+  timeout = 1.000000
+
+```
+在上面的例子中，"wifi.#index" 获取 wifi 的序数为 0，"server.#index"  获取 server 的序数为 1。
+
+```c
+  assert(app_conf_get_int("wifi.#index", -1) == 0);
+  assert(app_conf_get_int("server.#index", -1) == 1);
+```
+
 ## 8. 注意事项
 
 * . 作为 key 的分隔符。

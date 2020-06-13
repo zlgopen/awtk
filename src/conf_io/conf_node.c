@@ -287,6 +287,23 @@ uint32_t conf_node_count_children(conf_node_t* node) {
   return i;
 }
 
+static int32_t conf_node_get_index(conf_node_t* node) {
+  uint32_t i = 0;
+  conf_node_t* iter = NULL;
+  return_value_if_fail(node != NULL, 0);
+  iter = conf_node_get_first_child(node->parent);
+
+  while (iter != NULL) {
+    if (iter == node) {
+      return i;
+    }
+    i++;
+    iter = iter->next;
+  }
+  assert(!"impossible");
+  return -1;
+}
+
 conf_node_t* conf_node_find_sibling(conf_node_t* node, const char* name) {
   conf_node_t* iter = NULL;
   if (node == NULL) {
@@ -438,7 +455,9 @@ ret_t conf_node_set_value(conf_node_t* node, const value_t* v) {
       }
       break;
     }
-    default: { return RET_NOT_IMPL; }
+    default: {
+      return RET_NOT_IMPL;
+    }
   }
   node->node_type = CONF_NODE_SIMPLE;
 
@@ -502,7 +521,9 @@ ret_t conf_node_get_value(conf_node_t* node, value_t* v) {
       value_set_str(v, node->value.small_str);
       break;
     }
-    default: { return RET_NOT_IMPL; }
+    default: {
+      return RET_NOT_IMPL;
+    }
   }
 
   return RET_OK;
@@ -600,11 +621,13 @@ ret_t conf_doc_get(conf_doc_t* doc, const char* path, value_t* v) {
     } else if (tk_str_eq(special, CONF_SPECIAL_ATTR_SIZE)) {
       value_set_uint32(v, conf_node_count_children(node));
       return RET_OK;
+    } else if (tk_str_eq(special, CONF_SPECIAL_ATTR_INDEX)) {
+      value_set_uint32(v, conf_node_get_index(node));
+      return RET_OK;
     }
-  } else {
-    value_set_int(v, 0);
-    return RET_NOT_FOUND;
   }
+  value_set_int(v, 0);
+  return RET_NOT_FOUND;
 }
 
 ret_t conf_doc_remove(conf_doc_t* doc, const char* path) {
@@ -616,6 +639,105 @@ ret_t conf_doc_remove(conf_doc_t* doc, const char* path) {
   if (node != NULL) {
     conf_doc_remove_children(doc, node);
     return conf_doc_remove_child(doc, node->parent, node);
+  } else {
+    return RET_NOT_FOUND;
+  }
+}
+
+static conf_node_t* conf_node_get_prev(conf_node_t* node) {
+  conf_node_t* iter = NULL;
+  return_value_if_fail(node != NULL && node->parent != NULL, NULL);
+  iter = conf_node_get_first_child(node->parent);
+
+  if (iter == node) {
+    return NULL;
+  }
+
+  while (iter->next != NULL) {
+    if (iter->next == node) {
+      return iter;
+    }
+    iter = iter->next;
+  }
+
+  return NULL;
+}
+
+bool_t conf_doc_is_first(conf_doc_t* doc, const char* path) {
+  conf_node_t* node = NULL;
+  return_value_if_fail(doc != NULL && path != NULL, FALSE);
+
+  node = conf_doc_get_node(doc, path, FALSE);
+  return_value_if_fail(node != NULL, FALSE);
+
+  return conf_node_get_first_child(node->parent) == node;
+}
+
+bool_t conf_doc_is_last(conf_doc_t* doc, const char* path) {
+  conf_node_t* node = NULL;
+  return_value_if_fail(doc != NULL && path != NULL, FALSE);
+
+  node = conf_doc_get_node(doc, path, FALSE);
+  return_value_if_fail(node != NULL, FALSE);
+
+  return node->next == NULL;
+}
+
+ret_t conf_doc_move_up(conf_doc_t* doc, const char* path) {
+  conf_node_t* node = NULL;
+  return_value_if_fail(doc != NULL && path != NULL, RET_BAD_PARAMS);
+
+  node = conf_doc_get_node(doc, path, FALSE);
+  if (node != NULL) {
+    conf_node_t* pprev = NULL;
+    conf_node_t* prev = conf_node_get_prev(node);
+
+    if (prev == NULL) {
+      return RET_FAIL;
+    }
+
+    pprev = conf_node_get_prev(prev);
+    
+    prev->next = node->next;
+    node->next = prev;
+
+    if (pprev != NULL) {
+      pprev->next = node;
+    } else {
+      conf_node_set_first_child(node->parent, node);
+    }
+
+    return RET_OK;
+  } else {
+    return RET_NOT_FOUND;
+  }
+}
+
+ret_t conf_doc_move_down(conf_doc_t* doc, const char* path) {
+  conf_node_t* node = NULL;
+  return_value_if_fail(doc != NULL && path != NULL, RET_BAD_PARAMS);
+
+  node = conf_doc_get_node(doc, path, FALSE);
+  if (node != NULL) {
+    conf_node_t* prev = conf_node_get_prev(node);
+    conf_node_t* next = node->next;
+
+    if (next == NULL) {
+      return RET_FAIL;
+    }
+
+    node->next = next->next;
+    next->next = node;
+
+    if (prev != NULL) {
+      prev->next = next;
+    }
+
+    if (conf_node_get_first_child(node->parent) == node) {
+      conf_node_set_first_child(node->parent, next);
+    }
+
+    return RET_OK;
   } else {
     return RET_NOT_FOUND;
   }

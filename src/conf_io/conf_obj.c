@@ -27,10 +27,6 @@
 #include "tkc/data_reader_factory.h"
 #include "tkc/data_writer_factory.h"
 
-#define CMD_LOCK "lock"
-#define CMD_SAVE "save"
-#define CMD_UNLOCK "unlock"
-
 typedef struct _conf_obj_t {
   object_t object;
 
@@ -44,6 +40,19 @@ typedef struct _conf_obj_t {
 static conf_obj_t* conf_obj_cast(object_t* obj);
 #define CONF_OBJ(obj) conf_obj_cast((object_t*)obj)
 
+static ret_t conf_obj_move_up(object_t* obj, const char* name) {
+  conf_obj_t* o = CONF_OBJ(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
+  return conf_doc_move_up(o->doc, name);
+}
+
+static ret_t conf_obj_move_down(object_t* obj, const char* name) {
+  conf_obj_t* o = CONF_OBJ(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
+  return conf_doc_move_down(o->doc, name);
+}
 
 static ret_t conf_obj_remove_prop(object_t* obj, const char* name) {
   conf_obj_t* o = CONF_OBJ(obj);
@@ -70,8 +79,12 @@ static bool_t conf_obj_can_exec(object_t* obj, const char* name, const char* arg
   conf_obj_t* o = CONF_OBJ(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
-  if (tk_str_ieq(name, CMD_SAVE)) {
+  if (tk_str_ieq(name, CONF_CMD_SAVE)) {
     return TRUE;
+  } else if (tk_str_ieq(name, CONF_CMD_MOVE_UP)) {
+    return !conf_doc_is_first(o->doc, name);
+  } else if (tk_str_ieq(name, CONF_CMD_MOVE_DOWN)) {
+    return !conf_doc_is_last(o->doc, name);
   }
 
   return FALSE;
@@ -114,8 +127,12 @@ static ret_t conf_obj_exec(object_t* obj, const char* name, const char* args) {
   conf_obj_t* o = CONF_OBJ(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
-  if (tk_str_ieq(name, CMD_SAVE)) {
+  if (tk_str_ieq(name, CONF_CMD_SAVE)) {
     return conf_obj_save(obj);
+  } else if (tk_str_ieq(name, CONF_CMD_MOVE_UP)) {
+    return conf_obj_move_up(obj, args);
+  } else if (tk_str_ieq(name, CONF_CMD_MOVE_DOWN)) {
+    return conf_obj_move_down(obj, args);
   }
 
   return RET_NOT_IMPL;

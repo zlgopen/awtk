@@ -202,6 +202,30 @@ ret_t conf_doc_get(conf_doc_t* doc, const char* path, value_t* v);
 ret_t conf_doc_remove(conf_doc_t* doc, const char* path);
 
 /**
+ * @method conf_doc_move_up
+ *
+ * 和前一个兄弟节点交换位置。
+ *
+ * @param {conf_doc_t*} doc 文档对象。
+ * @param {const char*} path 节点的路径。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t conf_doc_move_up(conf_doc_t* doc, const char* path);
+
+/**
+ * @method conf_doc_move_down
+ *
+ * 和后一个兄弟节点交换位置。
+ *
+ * @param {conf_doc_t*} doc 文档对象。
+ * @param {const char*} path 节点的路径。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t conf_doc_move_down(conf_doc_t* doc, const char* path);
+
+/**
  * @method conf_doc_exists
  *
  * 判断指定路径的节点是否存在。
@@ -471,10 +495,35 @@ conf_node_t* conf_node_get_first_child(conf_node_t* node);
  */
 ret_t conf_node_set_first_child(conf_node_t* node, conf_node_t* child);
 
+/**
+ * @method conf_doc_is_first
+ *
+ * 检查指定节点是否在兄弟节点中排第一。
+ *
+ * @param {conf_node_t*} node 节点对象。
+ * @param {const char*} path 节点的路径。
+ *
+ * @return {bool_t} 返回TRUE表示是，否则表示不是。
+ */
+bool_t conf_doc_is_first(conf_doc_t* doc, const char* path);
+
+/**
+ * @method conf_doc_is_last
+ *
+ * 检查指定节点是否在兄弟节点中排最后。
+ *
+ * @param {conf_node_t*} node 节点对象。
+ * @param {const char*} path 节点的路径。
+ *
+ * @return {bool_t} 返回TRUE表示是，否则表示不是。
+ */
+bool_t conf_doc_is_last(conf_doc_t* doc, const char* path);
+
 #define CONF_NODE_ROOT_NAME "root"
 
 #define CONF_SPECIAL_ATTR_SIZE "#size"
 #define CONF_SPECIAL_ATTR_NAME "#name"
+#define CONF_SPECIAL_ATTR_INDEX "#index"
 
 END_C_DECLS
 

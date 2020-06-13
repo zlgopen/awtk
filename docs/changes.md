@@ -5,7 +5,8 @@
   * 完善 str\_count\_sub\_str（感谢朝泽提供补丁）。 
   * 完善 《自定义控件规范》（感谢朝泽提供补丁）。 
   * 增加 data\_reader\_asset。
-
+  * 完善 conf_io，支持移动配置项的顺序，增加#index 获得序数。
+  
 * 2020/06/12
   * 增加 app\_conf\_set\_wstr/app\_conf\_get\_wstr
   * 完善 window\_manager\_back\_to\_home 对软键盘窗口的处理。
