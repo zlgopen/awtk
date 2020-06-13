@@ -41,6 +41,7 @@
 * [窗口之间如何通信](https://github.com/zlgopen/awtk-inter-win-communication)
 * [为 512K Flash 优化空间](how_to_optimize_for_512K_flash.md)
 * [如何绘制旋转文字](how_to_draw_rotate_text.md)
+* [如何修改 Windows 下应用程序的图标](https://github.com/zlgopen/awtk/blob/master/win32_res/README.md)
 
 ### 2.HowTos
 * [AWTK 调试技巧](debug_tips.md)
