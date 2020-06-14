@@ -40,7 +40,7 @@
 #include "tkc/data_writer_file.h"
 #include "tkc/data_reader_file.h"
 #include "base/data_reader_asset.h"
-#endif/*WITH_DATA_READER_WRITER*/
+#endif /*WITH_DATA_READER_WRITER*/
 
 #include "base/widget_animator_manager.h"
 #include "font_loader/font_loader_bitmap.h"

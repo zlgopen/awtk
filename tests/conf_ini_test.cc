@@ -279,7 +279,7 @@ TEST(Ini, index) {
 
   ASSERT_EQ(conf_doc_get(doc, "hello.#index", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 0);
-  
+
   ASSERT_EQ(conf_doc_get(doc, "world.#index", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 1);
 
@@ -297,7 +297,7 @@ TEST(Ini, last_first) {
   ASSERT_EQ(conf_doc_is_last(doc, "hello"), FALSE);
   ASSERT_EQ(conf_doc_is_last(doc, "world"), FALSE);
   ASSERT_EQ(conf_doc_is_last(doc, "awtk"), TRUE);
-  
+
   ASSERT_EQ(conf_doc_is_first(doc, "hello"), TRUE);
   ASSERT_EQ(conf_doc_is_first(doc, "world"), FALSE);
   ASSERT_EQ(conf_doc_is_first(doc, "awtk"), FALSE);
@@ -320,23 +320,23 @@ TEST(Ini, move_up) {
   ASSERT_EQ(conf_doc_is_first(doc, "world"), TRUE);
   ASSERT_EQ(conf_doc_get(doc, "hello.#index", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 1);
-  
+
   ASSERT_EQ(conf_doc_move_down(doc, "hello"), RET_OK);
   ASSERT_EQ(conf_doc_is_last(doc, "hello"), TRUE);
   ASSERT_EQ(conf_doc_get(doc, "hello.#index", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 2);
   ASSERT_EQ(conf_doc_move_down(doc, "hello"), RET_FAIL);
-  
+
   ASSERT_EQ(conf_doc_move_up(doc, "hello"), RET_OK);
   ASSERT_EQ(conf_doc_is_last(doc, "hello"), FALSE);
   ASSERT_EQ(conf_doc_get(doc, "hello.#index", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 1);
-  
+
   ASSERT_EQ(conf_doc_move_up(doc, "hello"), RET_OK);
   ASSERT_EQ(conf_doc_is_last(doc, "hello"), FALSE);
   ASSERT_EQ(conf_doc_get(doc, "hello.#index", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 0);
-  
+
   ASSERT_EQ(conf_doc_move_up(doc, "hello"), RET_FAIL);
 
   conf_doc_destroy(doc);
