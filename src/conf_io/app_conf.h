@@ -71,6 +71,16 @@ object_t* app_conf_get_instance(void);
 ret_t app_conf_save(void);
 
 /**
+ * @method app_conf_reload
+ * 重新加载配置(内存中的配置丢失)。
+ *
+ * @annotation ["static", "scriptable"]
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t app_conf_reload(void);
+
+/**
  * @method app_conf_on_changed
  * 注册配置变化事件。
  *

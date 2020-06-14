@@ -75,21 +75,6 @@ static ret_t conf_obj_get_prop(object_t* obj, const char* name, value_t* v) {
   return conf_doc_get(o->doc, name, v);
 }
 
-static bool_t conf_obj_can_exec(object_t* obj, const char* name, const char* args) {
-  conf_obj_t* o = CONF_OBJ(obj);
-  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
-
-  if (tk_str_ieq(name, CONF_CMD_SAVE)) {
-    return TRUE;
-  } else if (tk_str_ieq(name, CONF_CMD_MOVE_UP)) {
-    return !conf_doc_is_first(o->doc, name);
-  } else if (tk_str_ieq(name, CONF_CMD_MOVE_DOWN)) {
-    return !conf_doc_is_last(o->doc, name);
-  }
-
-  return FALSE;
-}
-
 ret_t conf_obj_save(object_t* obj) {
   ret_t ret = RET_FAIL;
   data_writer_t* writer = NULL;
@@ -123,12 +108,41 @@ static ret_t conf_obj_load(object_t* obj) {
   return RET_OK;
 }
 
+static ret_t conf_obj_reload(object_t* obj) {
+  conf_obj_t* o = CONF_OBJ(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
+  conf_doc_destroy(o->doc);
+  o->doc = NULL;
+
+  return conf_obj_load(obj);
+}
+
+static bool_t conf_obj_can_exec(object_t* obj, const char* name, const char* args) {
+  conf_obj_t* o = CONF_OBJ(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
+  if (tk_str_ieq(name, CONF_CMD_SAVE)) {
+    return TRUE;
+  } else if (tk_str_ieq(name, CONF_CMD_RELOAD)) {
+    return TRUE;
+  } else if (tk_str_ieq(name, CONF_CMD_MOVE_UP)) {
+    return !conf_doc_is_first(o->doc, name);
+  } else if (tk_str_ieq(name, CONF_CMD_MOVE_DOWN)) {
+    return !conf_doc_is_last(o->doc, name);
+  }
+
+  return FALSE;
+}
+
 static ret_t conf_obj_exec(object_t* obj, const char* name, const char* args) {
   conf_obj_t* o = CONF_OBJ(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
   if (tk_str_ieq(name, CONF_CMD_SAVE)) {
     return conf_obj_save(obj);
+  } else if (tk_str_ieq(name, CONF_CMD_RELOAD)) {
+    return conf_obj_reload(obj);
   } else if (tk_str_ieq(name, CONF_CMD_MOVE_UP)) {
     return conf_obj_move_up(obj, args);
   } else if (tk_str_ieq(name, CONF_CMD_MOVE_DOWN)) {

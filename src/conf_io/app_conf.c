@@ -23,6 +23,7 @@
 #include "tkc/utf8.h"
 #include "tkc/mutex.h"
 #include "tkc/object_locker.h"
+#include "conf_io/conf_obj.h"
 #include "conf_io/app_conf.h"
 
 static object_t* s_conf;
@@ -42,7 +43,11 @@ object_t* app_conf_get_instance(void) {
 }
 
 ret_t app_conf_save(void) {
-  return object_exec(s_conf, "save", NULL);
+  return object_exec(s_conf, CONF_CMD_SAVE, NULL);
+}
+
+ret_t app_conf_reload(void) {
+  return object_exec(s_conf, CONF_CMD_RELOAD, NULL);
 }
 
 ret_t app_conf_deinit(void) {

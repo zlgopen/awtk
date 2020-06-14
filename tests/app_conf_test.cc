@@ -75,3 +75,18 @@ TEST(AppConf, wstr) {
 
   ASSERT_EQ(app_conf_deinit(), RET_OK);
 }
+
+TEST(AppConf, reload) {
+  app_conf_init_ini("conf_test");
+
+  ASSERT_EQ(app_conf_set_int("int", 123), RET_OK);
+  ASSERT_EQ(app_conf_save(), RET_OK);
+  
+  ASSERT_EQ(app_conf_set_int("int", 456), RET_OK);
+  ASSERT_EQ(app_conf_get_int("int", 0), 456);
+
+  ASSERT_EQ(app_conf_reload(), RET_OK);
+  ASSERT_EQ(app_conf_get_int("int", 0), 123);
+
+  ASSERT_EQ(app_conf_deinit(), RET_OK);
+}

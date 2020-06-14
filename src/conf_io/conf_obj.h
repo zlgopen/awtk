@@ -82,6 +82,9 @@ ret_t conf_obj_save(object_t* conf);
 /*保存命令*/
 #define CONF_CMD_SAVE "save"
 
+/*重新加载命令*/
+#define CONF_CMD_RELOAD "reload"
+
 /*和前一个兄弟节点交换位置*/
 #define CONF_CMD_MOVE_UP "move_up"
 
