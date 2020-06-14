@@ -139,12 +139,12 @@ ret_t data_writer_factory_set (data_writer_factory_t* factory);
 * 函数原型：
 
 ```
-ret_t data_writer_file_create (data_writer_t* writer);
+data_writer_t* data_writer_file_create (const char* filename);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| writer | data\_writer\_t* | writer对象。 |
+| 返回值 | data\_writer\_t* | 返回data writer对象。 |
+| filename | const char* | 文件名。 |

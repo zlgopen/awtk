@@ -76,6 +76,9 @@
 | EVT\_THEME\_CHANGED | 主题变化(event\_t)。 |
 | EVT\_WIDGET\_ADD\_CHILD | 控件加载新的子控件(event\_t)。 |
 | EVT\_WIDGET\_REMOVE\_CHILD | 控件移除子控件(event\_t)。 |
+| EVT\_SCROLL\_START | scroll view开始滚动(event\_t)。 |
+| EVT\_SCROLL | scroll view滚动(event\_t)。 |
+| EVT\_SCROLL\_END | scroll view结束滚动(event\_t)。 |
 | EVT\_REQ\_START | event queue其它请求编号起始值。 |
 | EVT\_USER\_START | 用户定义事件起始值。 |
 | EVT\_NONE | 无效事件名称。 |

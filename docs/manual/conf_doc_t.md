@@ -15,6 +15,8 @@
 | <a href="#conf_doc_t_conf_doc_destroy_node">conf\_doc\_destroy\_node</a> | 销毁节点对象。 |
 | <a href="#conf_doc_t_conf_doc_exists">conf\_doc\_exists</a> | 判断指定路径的节点是否存在。 |
 | <a href="#conf_doc_t_conf_doc_get">conf\_doc\_get</a> | 获取指定路径节点的值。 |
+| <a href="#conf_doc_t_conf_doc_move_down">conf\_doc\_move\_down</a> | 和后一个兄弟节点交换位置。 |
+| <a href="#conf_doc_t_conf_doc_move_up">conf\_doc\_move\_up</a> | 和前一个兄弟节点交换位置。 |
 | <a href="#conf_doc_t_conf_doc_remove">conf\_doc\_remove</a> | 删除指定路径的节点。 |
 | <a href="#conf_doc_t_conf_doc_remove_child">conf\_doc\_remove\_child</a> | 删除指定的子节点。 |
 | <a href="#conf_doc_t_conf_doc_remove_child_by_name">conf\_doc\_remove\_child\_by\_name</a> | 删除指定的子节点。 |
@@ -188,6 +190,46 @@ ret_t conf_doc_get (conf_doc_t* doc, const char* path, value_t* v);
 | doc | conf\_doc\_t* | 文档对象。 |
 | path | const char* | 节点的路径。 |
 | v | value\_t* | 用于返回值。 |
+#### conf\_doc\_move\_down 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="conf_doc_t_conf_doc_move_down">和后一个兄弟节点交换位置。
+
+* 函数原型：
+
+```
+ret_t conf_doc_move_down (conf_doc_t* doc, const char* path);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| doc | conf\_doc\_t* | 文档对象。 |
+| path | const char* | 节点的路径。 |
+#### conf\_doc\_move\_up 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="conf_doc_t_conf_doc_move_up">和前一个兄弟节点交换位置。
+
+* 函数原型：
+
+```
+ret_t conf_doc_move_up (conf_doc_t* doc, const char* path);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| doc | conf\_doc\_t* | 文档对象。 |
+| path | const char* | 节点的路径。 |
 #### conf\_doc\_remove 函数
 -----------------------
 

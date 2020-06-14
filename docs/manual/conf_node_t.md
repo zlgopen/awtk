@@ -7,6 +7,8 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#conf_node_t_conf_doc_is_first">conf\_doc\_is\_first</a> | 检查指定节点是否在兄弟节点中排第一。 |
+| <a href="#conf_node_t_conf_doc_is_last">conf\_doc\_is\_last</a> | 检查指定节点是否在兄弟节点中排最后。 |
 | <a href="#conf_node_t_conf_node_find_child">conf\_node\_find\_child</a> | 查找指定名称的子节点。 |
 | <a href="#conf_node_t_conf_node_find_sibling">conf\_node\_find\_sibling</a> | 查找指定名称的兄弟节点。 |
 | <a href="#conf_node_t_conf_node_get_first_child">conf\_node\_get\_first\_child</a> | 获取第一个子节点。 |
@@ -23,6 +25,46 @@
 | <a href="#conf_node_t_node_type">node\_type</a> | uint8\_t | 节点类型。 |
 | <a href="#conf_node_t_parent">parent</a> | conf\_node\_t* | 父节点。 |
 | <a href="#conf_node_t_value_type">value\_type</a> | uint8\_t | 值的类型。 |
+#### conf\_doc\_is\_first 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="conf_node_t_conf_doc_is_first">检查指定节点是否在兄弟节点中排第一。
+
+* 函数原型：
+
+```
+bool_t conf_doc_is_first (conf_node_t* node, const char* path);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示是，否则表示不是。 |
+| node | conf\_node\_t* | 节点对象。 |
+| path | const char* | 节点的路径。 |
+#### conf\_doc\_is\_last 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="conf_node_t_conf_doc_is_last">检查指定节点是否在兄弟节点中排最后。
+
+* 函数原型：
+
+```
+bool_t conf_doc_is_last (conf_node_t* node, const char* path);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示是，否则表示不是。 |
+| node | conf\_node\_t* | 节点对象。 |
+| path | const char* | 节点的路径。 |
 #### conf\_node\_find\_child 函数
 -----------------------
 

@@ -63,6 +63,14 @@ widget_t* scroll_view = scroll_view_create(win, 0, 0, 0, 0);
 | <a href="#scroll_view_t_yoffset">yoffset</a> | int32\_t | y偏移量。 |
 | <a href="#scroll_view_t_yslidable">yslidable</a> | bool\_t | 是否允许y方向滑动。 |
 | <a href="#scroll_view_t_yspeed_scale">yspeed\_scale</a> | float\_t | y偏移速度比例。 |
+### 事件
+<p id="scroll_view_t_events">
+
+| 事件名称 | 类型  | 说明 | 
+| -------- | ----- | ------- | 
+| EVT\_SCROLL\_START | event\_t | 开始滚动事件。 |
+| EVT\_SCROLL\_END | event\_t | 结束滚动事件。 |
+| EVT\_SCROLL | event\_t | 滚动事件。 |
 #### scroll\_view\_cast 函数
 -----------------------
 

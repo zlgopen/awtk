@@ -139,12 +139,12 @@ ret_t data_reader_factory_set (data_reader_factory_t* factory);
 * 函数原型：
 
 ```
-ret_t data_reader_file_create (data_reader_t* reader);
+data_reader_t* data_reader_file_create (const char* filename);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
-| reader | data\_reader\_t* | reader对象。 |
+| 返回值 | data\_reader\_t* | 返回data reader对象。 |
+| filename | const char* | 文件名。 |

@@ -20,6 +20,7 @@
 | <a href="#app_conf_t_app_conf_get_int">app\_conf\_get\_int</a> | 获取整数类型配置项的值。 |
 | <a href="#app_conf_t_app_conf_get_int64">app\_conf\_get\_int64</a> | 获取64位整数类型配置项的值。 |
 | <a href="#app_conf_t_app_conf_get_str">app\_conf\_get\_str</a> | 获取字符串类型配置项的值。 |
+| <a href="#app_conf_t_app_conf_get_wstr">app\_conf\_get\_wstr</a> | 获取宽字符串类型配置项的值。 |
 | <a href="#app_conf_t_app_conf_off_changed">app\_conf\_off\_changed</a> | 注销配置变化事件。 |
 | <a href="#app_conf_t_app_conf_off_changed_by_ctx">app\_conf\_off\_changed\_by\_ctx</a> | 注销配置变化事件。 |
 | <a href="#app_conf_t_app_conf_on_changed">app\_conf\_on\_changed</a> | 注册配置变化事件。 |
@@ -32,6 +33,7 @@
 | <a href="#app_conf_t_app_conf_set_int">app\_conf\_set\_int</a> | 设置整数类型配置项的值。 |
 | <a href="#app_conf_t_app_conf_set_int64">app\_conf\_set\_int64</a> | 设置64位整数类型配置项的值。 |
 | <a href="#app_conf_t_app_conf_set_str">app\_conf\_set\_str</a> | 设置字符串类型配置项的值。 |
+| <a href="#app_conf_t_app_conf_set_wstr">app\_conf\_set\_wstr</a> | 设置宽字符串类型配置项的值。 |
 #### app\_conf\_deinit 函数
 -----------------------
 
@@ -207,6 +209,27 @@ const char* app_conf_get_str (const char* key, const char* defval);
 | 返回值 | const char* | 返回配置项的值（如果不存在返回缺省值）。 |
 | key | const char* | 配置项的名称。 |
 | defval | const char* | 缺省值。 |
+#### app\_conf\_get\_wstr 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="app_conf_t_app_conf_get_wstr">获取宽字符串类型配置项的值。
+
+* 函数原型：
+
+```
+ret_t app_conf_get_wstr (const char* key, const wchar_t* str, uint32_t max_size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| key | const char* | 配置项的名称。 |
+| str | const wchar\_t* | 返回值。 |
+| max\_size | uint32\_t | 最大长度(字符数)。 |
 #### app\_conf\_off\_changed 函数
 -----------------------
 
@@ -441,3 +464,23 @@ ret_t app_conf_set_str (const char* key, const char* v);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | key | const char* | 配置项的名称。 |
 | v | const char* | 配置项的值。 |
+#### app\_conf\_set\_wstr 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="app_conf_t_app_conf_set_wstr">设置宽字符串类型配置项的值。
+
+* 函数原型：
+
+```
+ret_t app_conf_set_wstr (const char* key, const wchar_t* v);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| key | const char* | 配置项的名称。 |
+| v | const wchar\_t* | 配置项的值。 |
