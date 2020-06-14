@@ -74,7 +74,7 @@ ret_t app_conf_save(void);
  * @method app_conf_on_changed
  * 注册配置变化事件。
  *
- * @annotation ["static", "scriptable"]
+ * @annotation ["static"]
  * @param {event_func_t} on_event 事件处理函数。
  * @param {void*} ctx 事件处理函数上下文。
  * @return {uint32_t} 返回id，用于app_conf_off_changed。
@@ -85,7 +85,7 @@ uint32_t app_conf_on_changed(event_func_t on_event, void* ctx);
  * @method app_conf_off_changed
  * 注销配置变化事件。
  *
- * @annotation ["static", "scriptable"]
+ * @annotation ["static"]
  * @param {uint32_t} id app_conf_on_changed返回的ID。
  * 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

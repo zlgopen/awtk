@@ -22061,8 +22061,7 @@
           }
         ],
         "annotation": {
-          "static": true,
-          "scriptable": true
+          "static": true
         },
         "desc": "注册配置变化事件。",
         "name": "app_conf_on_changed",
@@ -22080,8 +22079,7 @@
           }
         ],
         "annotation": {
-          "static": true,
-          "scriptable": true
+          "static": true
         },
         "desc": "注销配置变化事件。",
         "name": "app_conf_off_changed",
