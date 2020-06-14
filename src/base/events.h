@@ -401,6 +401,21 @@ typedef enum _event_type_t {
    */
   EVT_WIDGET_REMOVE_CHILD,
   /**
+   * @const EVT_SCROLL_START
+   * scroll view开始滚动(event_t)。
+   */
+  EVT_SCROLL_START,
+  /**
+   * @const EVT_SCROLL
+   * scroll view滚动(event_t)。
+   */
+  EVT_SCROLL,
+  /**
+   * @const EVT_SCROLL_END
+   * scroll view结束滚动(event_t)。
+   */
+  EVT_SCROLL_END,
+  /**
    * @const EVT_REQ_START
    * event queue其它请求编号起始值。
    */

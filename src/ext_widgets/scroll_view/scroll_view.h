@@ -145,6 +145,21 @@ typedef struct _scroll_view_t {
 } scroll_view_t;
 
 /**
+ * @event {event_t} EVT_SCROLL_START
+ * 开始滚动事件。
+ */
+
+/**
+ * @event {event_t} EVT_SCROLL_END
+ * 结束滚动事件。
+ */
+
+/**
+ * @event {event_t} EVT_SCROLL
+ * 滚动事件。
+ */
+
+/**
  * @method scroll_view_create
  * 创建scroll_view对象
  * @annotation ["constructor", "scriptable"]
