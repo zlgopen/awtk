@@ -66,6 +66,11 @@ namespace agge
 	  this->_x1 = 0;
 	  this->_y1 = 0;
 	  this->_f1 = 0;
+
+	  this->_window.x1 = 0;
+	  this->_window.x2 = 0;
+	  this->_window.y1 = 0;
+	  this->_window.y2 = 0;
 	}
 
 	template <typename T>
