@@ -281,6 +281,7 @@ mem_stat_t tk_mem_stat() {
   return st;
 }
 
+#ifdef WITH_SDL
 /*export std malloc*/
 void* calloc(size_t count, size_t size) {
   return tk_calloc_impl(count, size);
@@ -297,6 +298,8 @@ void* malloc(size_t size) {
 void* realloc(void* ptr, size_t size) {
   return tk_realloc_impl(ptr, size);
 }
+#endif/*WITH_SDL*/
+
 #endif /*HAS_STD_MALLOC*/
 
 static void* tk_calloc_impl(uint32_t nmemb, uint32_t s) {
