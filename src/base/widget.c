@@ -1572,7 +1572,7 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
     const char* name = value_str(v);
     return widget_use_style(widget, name);
   } else if (tk_str_eq(name, WIDGET_PROP_ENABLE)) {
-    widget->enable = value_bool(v);
+    widget_set_enable(widget, value_bool(v));
   } else if (tk_str_eq(name, WIDGET_PROP_FEEDBACK)) {
     widget->feedback = value_bool(v);
   } else if (tk_str_eq(name, WIDGET_PROP_NAME)) {
