@@ -2,6 +2,7 @@
 
 * 2020/06/15
   * 完善toast （感谢培煌提供补丁）
+  * 修复旋转后online\_fb的line\_length不正确的问(感谢智明提供补丁)。
 
 * 2020/06/14
   * 完善 scroll view，增加滚动相关事件。
@@ -19,7 +20,7 @@
   * 增加 app\_conf\_set\_wstr/app\_conf\_get\_wstr
   * 完善 window\_manager\_back\_to\_home 对软键盘窗口的处理。
   * 增加 object\_locker 对 object 进行装饰，提供互斥的功能。
-  * 用 app_conf 重新实现 object\_locker。
+  * 用 object\_locker 重新实现 app\_conf。
 
 * 2020/06/11
   * 完善 conf\_io，支持#name/#size

@@ -53,6 +53,7 @@ static bitmap_t* lcd_mem_init_online_fb(lcd_t* lcd, bitmap_t* fb, lcd_orientatio
   uint32_t w = 0;
   uint32_t h = 0;
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
+  uint32_t bpp = bitmap_get_bpp_of_format(LCD_FORMAT);
 
   if (o == LCD_ORIENTATION_0 || o == LCD_ORIENTATION_180) {
     w = lcd->w;
@@ -68,7 +69,7 @@ static bitmap_t* lcd_mem_init_online_fb(lcd_t* lcd, bitmap_t* fb, lcd_orientatio
   fb->buffer = mem->online_gb;
   fb->format = mem->format;
   graphic_buffer_attach(mem->online_gb, mem->online_fb);
-  bitmap_set_line_length(fb, lcd_mem_get_line_length(mem));
+  bitmap_set_line_length(fb, tk_max(fb->w * bpp, mem->online_line_length));
 
   return fb;
 }
@@ -384,6 +385,7 @@ static lcd_t* lcd_mem_create(wh_t w, wh_t h, bool_t alloc) {
 
   lcd->format = LCD_FORMAT;
   lcd->line_length = w * bpp;
+  lcd->online_line_length = lcd->line_length;
   lcd->online_gb = graphic_buffer_create_with_data(NULL, w, h, LCD_FORMAT);
   lcd->offline_gb = graphic_buffer_create_with_data(NULL, w, h, LCD_FORMAT);
 
