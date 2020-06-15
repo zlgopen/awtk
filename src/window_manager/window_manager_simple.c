@@ -372,8 +372,8 @@ static ret_t window_manager_simple_on_event(widget_t* widget, event_t* e) {
     wh_t w = wm->lcd_w;
     wh_t h = wm->lcd_h;
     if (orientation == LCD_ORIENTATION_90 || orientation == LCD_ORIENTATION_270) {
-      w = wm->lcd_w;
-      h = wm->lcd_h;
+      w = wm->lcd_h;
+      h = wm->lcd_w;
     }
 
     lcd_resize(lcd, w, h, 0);

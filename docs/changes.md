@@ -2,8 +2,9 @@
 
 * 2020/06/15
   * 完善toast （感谢培煌提供补丁）
-  * 修复旋转后online\_fb的line\_length不正确的问(感谢智明提供补丁)。
-
+  * 修复旋转后online\_fb的line\_length不正确的问题(感谢智明提供补丁)。
+  * 完善window manager simple(感谢智明提供补丁)。
+ 
 * 2020/06/14
   * 完善 scroll view，增加滚动相关事件。
   * 增加文档《如何实现弹出菜单》
