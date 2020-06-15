@@ -532,7 +532,9 @@ def gen_res_bitmap_font(input_dir, font_options, theme):
         fontname = os.path.basename(filename)
         index = fontname.rfind('_')
         if index > 0:
-            raw = os.path.dirname(os.path.dirname(filename)) + '/' + fontname[0 : index] + '.ttf'
+            raw = os.path.dirname(os.path.dirname(filename)) + '/origin/' + fontname[0 : index] + '.ttf'
+            if not os.path.exists(raw):
+                raw = os.path.dirname(os.path.dirname(filename)) + '/' + fontname[0 : index] + '.ttf'
             if os.path.exists(raw):
                 size = fontname[index + 1 : len(fontname)]
                 inc = join_path(OUTPUT_DIR, 'inc/fonts/' + fontname[0 : index] + '_' + str(size) + '.data')
