@@ -27,6 +27,7 @@
 static ret_t object_locker_on_destroy(object_t* obj) {
   object_locker_t* o = OBJECT_LOCKER(obj);
   tk_mutex_destroy(o->mutex);
+  emitter_off_by_ctx(EMITTER(o->obj), o);
   OBJECT_UNREF(o->obj);
 
   return RET_OK;
@@ -127,6 +128,14 @@ static const object_vtable_t s_object_locker_vtable = {.type = "object_locker",
                                                        .remove_prop = object_locker_remove_prop,
                                                        .foreach_prop = object_locker_foreach_prop};
 
+static ret_t object_locker_forward_events(void* ctx, event_t* e) {
+  object_locker_t* o = OBJECT_LOCKER(ctx);
+
+  emitter_dispatch_simple_event(EMITTER(o), e->type);
+
+  return RET_OK;
+}
+
 object_t* object_locker_create(object_t* obj) {
   object_t* o = NULL;
   object_locker_t* wrapper = NULL;
@@ -139,6 +148,8 @@ object_t* object_locker_create(object_t* obj) {
   wrapper->mutex = tk_mutex_create();
   if (wrapper->mutex != NULL) {
     wrapper->obj = object_ref(obj);
+    emitter_on(EMITTER(obj), EVT_ITEMS_CHANGED, object_locker_forward_events, o);
+    emitter_on(EMITTER(obj), EVT_PROPS_CHANGED, object_locker_forward_events, o);
   } else {
     OBJECT_UNREF(wrapper->obj);
   }

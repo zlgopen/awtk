@@ -136,20 +136,29 @@ static bool_t conf_obj_can_exec(object_t* obj, const char* name, const char* arg
 }
 
 static ret_t conf_obj_exec(object_t* obj, const char* name, const char* args) {
+  ret_t ret = RET_NOT_IMPL;
   conf_obj_t* o = CONF_OBJ(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
   if (tk_str_ieq(name, CONF_CMD_SAVE)) {
-    return conf_obj_save(obj);
+    ret = conf_obj_save(obj);
   } else if (tk_str_ieq(name, CONF_CMD_RELOAD)) {
-    return conf_obj_reload(obj);
+    conf_obj_reload(obj);
+    ret = RET_ITEMS_CHANGED;
   } else if (tk_str_ieq(name, CONF_CMD_MOVE_UP)) {
-    return conf_obj_move_up(obj, args);
+    conf_obj_move_up(obj, args);
+    ret = RET_ITEMS_CHANGED;
   } else if (tk_str_ieq(name, CONF_CMD_MOVE_DOWN)) {
-    return conf_obj_move_down(obj, args);
+    conf_obj_move_down(obj, args);
+    ret = RET_ITEMS_CHANGED;
   }
 
-  return RET_NOT_IMPL;
+  if (ret == RET_ITEMS_CHANGED) {
+    emitter_dispatch_simple_event(EMITTER(obj), EVT_PROPS_CHANGED);
+    emitter_dispatch_simple_event(EMITTER(obj), EVT_ITEMS_CHANGED);
+  }
+
+  return RET_OK;
 }
 
 static ret_t conf_obj_destroy(object_t* obj) {
