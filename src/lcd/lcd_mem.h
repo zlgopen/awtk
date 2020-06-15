@@ -44,8 +44,7 @@ typedef struct _lcd_mem_t {
 
 } lcd_mem_t;
 
-#define lcd_mem_set_line_length(lcd, value) \
-  ((lcd_mem_t*)lcd)->line_length = ((lcd_mem_t*)lcd)->offline_line_length = value;
+#define lcd_mem_set_line_length(lcd, value) ((lcd_mem_t*)lcd)->line_length = ((lcd_mem_t*)lcd)->online_line_length = value;
 
 END_C_DECLS
 
