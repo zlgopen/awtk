@@ -943,7 +943,27 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
     value_set_bool(v, !(edit->readonly));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
-    value_set_wstr(v, widget->text.str);
+    switch(edit->input_type) {
+      case INPUT_INT: {
+        int32_t n = edit_get_int(widget);
+        value_set_int32(v, n);
+        break;
+      }
+      case INPUT_UINT: {
+        uint32_t n = (uint32_t)edit_get_int(widget);
+        value_set_uint32(v, n);
+        break;
+      }
+      case INPUT_FLOAT:
+      case INPUT_UFLOAT: {
+        double d = edit_get_double(widget);
+        value_set_double(v, d);
+        break;
+      }
+      default: {
+        value_set_wstr(v, widget->text.str);
+      }
+    }
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_CARET_X)) {
     text_edit_state_t state;
