@@ -108,19 +108,25 @@ static widget_t* dialog_create_label(const char* text) {
 }
 
 ret_t dialog_toast(const char* text, uint32_t duration) {
+  char params[128];
+  int32_t margin = 10;
   widget_t* label = NULL;
   widget_t* dialog = NULL;
-  return_value_if_fail(text != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(text != NULL && duration >= 1000, RET_BAD_PARAMS);
 
   label = dialog_create_label(text);
   return_value_if_fail(label != NULL, RET_OOM);
 
-  dialog = dialog_create(NULL, 0, 0, label->w, label->h);
+  dialog = dialog_create(NULL, 0, 0, label->w + 2 * margin, label->h + 2 * margin);
   goto_error_if_fail(dialog != NULL);
 
   widget_set_prop_str(dialog, WIDGET_PROP_ANIM_HINT, "fade(duration=500)");
   widget_set_prop_str(dialog, WIDGET_PROP_THEME, "dialog_toast");
   widget_add_child(dialog, label);
+
+  tk_snprintf(params, sizeof(params) - 1, "default(x=%d, y=%d, w=%d, h=%d)", 
+      margin, margin, label->w, label->h);
+  widget_set_self_layout(label, params);
 
   widget_on(dialog, EVT_POINTER_UP, on_ok_to_quit, dialog);
   widget_add_timer(dialog, on_timer_to_quit, duration);
