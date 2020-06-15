@@ -124,8 +124,8 @@ ret_t dialog_toast(const char* text, uint32_t duration) {
   widget_set_prop_str(dialog, WIDGET_PROP_THEME, "dialog_toast");
   widget_add_child(dialog, label);
 
-  tk_snprintf(params, sizeof(params) - 1, "default(x=%d, y=%d, w=%d, h=%d)", 
-      margin, margin, label->w, label->h);
+  tk_snprintf(params, sizeof(params) - 1, "default(x=%d, y=%d, w=%d, h=%d)", margin, margin,
+              label->w, label->h);
   widget_set_self_layout(label, params);
 
   widget_on(dialog, EVT_POINTER_UP, on_ok_to_quit, dialog);
