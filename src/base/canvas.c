@@ -597,7 +597,7 @@ static ret_t canvas_draw_text_impl(canvas_t* c, const wchar_t* str, uint32_t nr,
       xy_t xx = x + g.x;
       xy_t yy = y + g.y + baseline;
 
-      if(g.data != NULL) {
+      if (g.data != NULL) {
         canvas_draw_glyph(c, &g, xx, yy);
       }
       x += g.advance + 1;

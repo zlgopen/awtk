@@ -298,7 +298,7 @@ void* malloc(size_t size) {
 void* realloc(void* ptr, size_t size) {
   return tk_realloc_impl(ptr, size);
 }
-#endif/*WITH_SDL*/
+#endif /*WITH_SDL*/
 
 #endif /*HAS_STD_MALLOC*/
 
