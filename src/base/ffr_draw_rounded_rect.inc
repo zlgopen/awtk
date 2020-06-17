@@ -596,7 +596,9 @@ static void widget_draw_arc_point_list(frr_image_info_t* image_info, canvas_t* c
 
   if (angle_h > M_FRR_PI_4) {
     widget_push_arc_point_list(angle_h_1, angle_h_2, r, point_list, point_list_45, !is_fill);
-    point_list->size--;
+    if(point_list->size > 0) {
+      point_list->size--;
+    }
     if (is_fill) {
       widget_draw_fill_arc_point_list(image_info, c, x, y, xc, yc,
                                       WIDGET_DRAW_ARC_INFO_TABLE[quadrant_id].quadrant_h, color,
