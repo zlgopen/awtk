@@ -141,7 +141,7 @@ bool_t is_data_floder(const char* floder_name) {
 int wmain(int argc, wchar_t* argv[]) {
   const char* in_filename = NULL;
   const char* out_filename = NULL;
-  TKMEM_INIT(4 * 1024 * 1024);
+  platform_prepare();
 
   if (argc < 3) {
     printf("Usage: %S in_filename out_filename [theme] [out_extname]\n", argv[0]);

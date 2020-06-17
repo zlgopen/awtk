@@ -58,7 +58,7 @@ static ret_t gen_floder(const char* in_flodername, const char* out_flodername, c
 int wmain(int argc, wchar_t* argv[]) {
   bool_t output_bin = argc == 4;
 
-  TKMEM_INIT(4 * 1024 * 1024)
+  platform_prepare();
 
   if (argc < 3) {
     printf("Usage: %S input outputidr [bin] [theme]\n", argv[0]);

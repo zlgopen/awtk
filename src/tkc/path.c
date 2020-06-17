@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   path.c
  * Author: AWTK Develop Team
  * Brief:  path
@@ -179,7 +179,6 @@ ret_t path_normalize(const char* path, char* result, int32_t size) {
         if (IS_PATH_SEP(s[1])) {
           s += 2;
         } else if (s[1] == '.') {
-          char* p = NULL;
           return_value_if_fail(IS_PATH_SEP(s[2]) || s[2] == '\0', RET_FAIL);
 
           d = path_up(result);

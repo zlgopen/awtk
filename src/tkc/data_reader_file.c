@@ -53,7 +53,7 @@ static ret_t data_reader_file_destroy(data_reader_t* reader) {
   return RET_OK;
 }
 
-static data_reader_vtable_t s_data_reader_file_vtable = {
+static const data_reader_vtable_t s_data_reader_file_vtable = {
     .read = data_reader_file_read,
     .get_size = data_reader_file_get_size,
     .destroy = data_reader_file_destroy,

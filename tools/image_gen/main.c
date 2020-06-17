@@ -116,7 +116,7 @@ int wmain(int argc, wchar_t* argv[]) {
   const char* out_filename = NULL;
   const wchar_t* format = NULL;
 
-  TKMEM_INIT(4 * 1024 * 1024);
+  platform_prepare();
 
   if (argc < 3) {
     printf("Usage: %S in_filename out_filename (bgra|bgr565|rgb565|mono)\n", argv[0]);

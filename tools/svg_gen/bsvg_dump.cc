@@ -47,7 +47,7 @@ static ret_t bsvg_dump(const char* input_file) {
 }
 
 int main(int argc, char* argv[]) {
-  TKMEM_INIT(4 * 1024 * 1024)
+  platform_prepare();
 
   if (argc < 2) {
     printf("Usage: %s bsvg_filename\n", argv[0]);

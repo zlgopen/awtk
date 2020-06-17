@@ -23,19 +23,9 @@
 #define TK_TKMEM_MANAGER_H
 
 #include "tkc/types_def.h"
+#include "tkc/platform.h"
 
 BEGIN_C_DECLS
-
-#ifdef HAS_STD_MALLOC
-#define TKMEM_INIT(size)
-#else
-ret_t tk_mem_init(void* buffer, uint32_t length);
-#define TKMEM_INIT(size)               \
-  {                                    \
-    static uint32_t mheap[size >> 2];  \
-    tk_mem_init(mheap, sizeof(mheap)); \
-  }
-#endif /*HAS_STD_MALLOC*/
 
 typedef ret_t (*tk_mem_on_out_of_memory_t)(void* ctx, uint32_t tried_times, uint32_t need_size);
 ret_t tk_mem_set_on_out_of_memory(tk_mem_on_out_of_memory_t on_out_of_memory, void* ctx);
@@ -130,12 +120,6 @@ void tk_free(void* ptr);
 #define TKMEM_ZALLOCN(type, n) (type*)tk_calloc(n, sizeof(type), __FUNCTION__, __LINE__)
 #define TKMEM_REALLOCT(type, p, n) (type*)tk_realloc(p, (n) * sizeof(type), __FUNCTION__, __LINE__)
 
-/*for memory debug*/
-typedef struct _mem_stat_t {
-  uint32_t used_bytes;
-  uint32_t used_block_nr;
-} mem_stat_t;
-
 /**
  * @method tk_mem_dump
  * 显示内存信息。
@@ -145,12 +129,16 @@ typedef struct _mem_stat_t {
 void tk_mem_dump(void);
 
 /**
- * @method tk_mem_stat
- * 获取内存信息。
+ * @method tk_mem_init
+ * 初始化内存。
  *
- * @return {mem_stat_t} 返回内存信息。
+ * @param {void*} buffer 内存地址。
+ * @param {uint32_t} size 内存长度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-mem_stat_t tk_mem_stat(void);
+ret_t tk_mem_init(void* buffer, uint32_t size);
 
 END_C_DECLS
+
 #endif /*TK_TKMEM_MANAGER_H*/

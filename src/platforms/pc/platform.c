@@ -157,7 +157,7 @@ void sleep_ms(uint32_t ms) {
 }
 
 #ifndef HAS_STD_MALLOC
-static uint32_t s_heap_mem[2 * 1024 * 1024];
+static uint32_t s_heap_mem[3 * 1024 * 1024];
 #endif /*HAS_STD_MALLOC*/
 
 ret_t platform_prepare(void) {

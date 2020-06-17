@@ -37,8 +37,7 @@ static ret_t update_label(widget_t* label) {
   char str[64];
   static int times = 0;
 
-  mem_stat_t st = tk_mem_stat();
-  tk_snprintf(str, sizeof(str), "times:%d mem(%u,%u)", times++, st.used_bytes, st.used_block_nr);
+  tk_snprintf(str, sizeof(str), "times:%d", times++);
   widget_set_text_utf8(label, str);
 
   return RET_OK;

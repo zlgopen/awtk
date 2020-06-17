@@ -142,7 +142,7 @@ int wmain(int argc, wchar_t* argv[]) {
   bitmap_format_t image_format = BITMAP_FMT_NONE;
   output_format_t output_format = OUTPUT_FORMAT_NONE;
 
-  TKMEM_INIT(4 * 1024 * 1024);
+  platform_prepare();
 
   if (argc < 4) {
     printf("Usage: %S in_filename out_filename (png|res|data) (bgra|rgba|bgr565|rgb565) \n",

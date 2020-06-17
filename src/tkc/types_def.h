@@ -385,5 +385,6 @@ typedef struct _event_source_manager_t event_source_manager_t;
 #endif /*EAGAIN*/
 
 #define TK_SET_NULL(p) (p) = NULL
+#define TK_ROUND_TO8(size) (((size + 7) >> 3) << 3)
 
 #endif /*TYPES_DEF_H*/

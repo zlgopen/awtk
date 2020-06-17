@@ -782,6 +782,15 @@ static ret_t on_key_record_play_events(void* ctx, event_t* e) {
   } else if (evt->key == TK_KEY_F8) {
     event_recorder_player_stop_play();
     return RET_STOP;
+  } else if (evt->key == TK_KEY_F9) {
+    tk_mem_dump();
+    return RET_STOP;
+  } else if (evt->key == TK_KEY_F10) {
+    font_manager_unload_all(font_manager());
+    image_manager_unload_all(image_manager());
+    assets_manager_clear_cache(assets_manager(), ASSET_TYPE_UI);
+    tk_mem_dump();
+    return RET_STOP;
   }
 #endif /*WITH_EVENT_RECORDER_PLAYER*/
 

@@ -1076,7 +1076,6 @@ EXPORTS
     tk_realloc @1074
     tk_free @1075
     tk_mem_dump @1076
-    tk_mem_stat @1077
     matrix_init @1078
     matrix_identity @1079
     matrix_invert @1080

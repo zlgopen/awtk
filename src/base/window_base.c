@@ -255,7 +255,6 @@ ret_t window_base_on_destroy(widget_t* widget) {
   TKMEM_FREE(window_base->move_focus_right_key);
 
   window_base_unload_theme_obj(widget);
-  tk_mem_dump();
 
   return RET_OK;
 }
@@ -295,7 +294,6 @@ ret_t window_base_on_event(widget_t* widget, event_t* e) {
     window_base_load_theme_obj(widget);
     widget_layout_children(widget);
     widget_update_style_recursive(widget);
-    tk_mem_dump();
   } else if (e->type == EVT_WINDOW_OPEN) {
     win->stage = WINDOW_STAGE_OPENED;
   } else if (e->type == EVT_WINDOW_LOAD) {
@@ -364,10 +362,6 @@ widget_t* window_base_create(widget_t* parent, const widget_vtable_t* vt, xy_t x
   win->stage = WINDOW_STAGE_NONE;
   win->move_focus_prev_key = NULL;
   win->move_focus_next_key = tk_strdup(TK_KEY_MOVE_FOCUS_NEXT);
-
-#ifdef ENABLE_MEM_LEAK_CHECK
-  tk_mem_dump();
-#endif /*ENABLE_MEM_LEAK_CHECK*/
 
   return widget;
 }

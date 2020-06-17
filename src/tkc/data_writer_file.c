@@ -46,7 +46,7 @@ static ret_t data_writer_file_destroy(data_writer_t* writer) {
   return RET_OK;
 }
 
-static data_writer_vtable_t s_data_writer_file_vtable = {
+static const data_writer_vtable_t s_data_writer_file_vtable = {
     .write = data_writer_file_write,
     .destroy = data_writer_file_destroy,
 };
