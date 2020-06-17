@@ -196,7 +196,7 @@ static void xml_parser_reset_buffer(XmlParser* thiz) {
   return;
 }
 
-static int xml_parser_strdup(XmlParser* thiz, const char* start, int length) {
+static int xml_parser_strdup(XmlParser* thiz, const char* start, int length, bool_t trim) {
   int offset = -1;
 
   if ((thiz->buffer_used + length) >= thiz->capacity) {
@@ -215,7 +215,9 @@ static int xml_parser_strdup(XmlParser* thiz, const char* start, int length) {
   offset = thiz->buffer_used;
   strncpy(thiz->buffer + offset, start, length);
   thiz->buffer[offset + length] = '\0';
-  strtrim(thiz->buffer + offset);
+  if (trim) {
+    strtrim(thiz->buffer + offset);
+  }
   thiz->buffer_used += length + 1;
 
   return offset;
@@ -250,7 +252,7 @@ static void xml_parser_parse_attrs(XmlParser* thiz, char end_char) {
       case STAT_KEY: {
         if (c == '=') {
           thiz->attrs[thiz->attrs_nr++] =
-              tk_pointer_from_int(xml_parser_strdup(thiz, start, thiz->read_ptr - start));
+              tk_pointer_from_int(xml_parser_strdup(thiz, start, thiz->read_ptr - start, TRUE));
           state = STAT_PRE_VALUE;
         }
 
@@ -267,7 +269,7 @@ static void xml_parser_parse_attrs(XmlParser* thiz, char end_char) {
       case STAT_VALUE: {
         if (c == value_end) {
           thiz->attrs[thiz->attrs_nr++] =
-              tk_pointer_from_int(xml_parser_strdup(thiz, start, thiz->read_ptr - start));
+              tk_pointer_from_int(xml_parser_strdup(thiz, start, thiz->read_ptr - start, FALSE));
           state = STAT_PRE_KEY;
         }
       }
@@ -304,7 +306,7 @@ static void xml_parser_parse_start_tag(XmlParser* thiz) {
     switch (state) {
       case STAT_NAME: {
         if (isspace(c) || c == '>' || c == '/') {
-          tag_name = tk_pointer_from_int(xml_parser_strdup(thiz, start, thiz->read_ptr - start));
+          tag_name = tk_pointer_from_int(xml_parser_strdup(thiz, start, thiz->read_ptr - start, TRUE));
           state = (c != '>' && c != '/') ? STAT_ATTR : STAT_END;
         }
         break;
@@ -342,7 +344,7 @@ static void xml_parser_parse_end_tag(XmlParser* thiz) {
   const char* start = thiz->read_ptr;
   for (; *thiz->read_ptr != '\0'; thiz->read_ptr++) {
     if (*thiz->read_ptr == '>') {
-      tag_name = thiz->buffer + xml_parser_strdup(thiz, start, thiz->read_ptr - start);
+      tag_name = thiz->buffer + xml_parser_strdup(thiz, start, thiz->read_ptr - start, TRUE);
       xml_builder_on_end(thiz->builder, tag_name);
 
       break;
@@ -415,7 +417,7 @@ static void xml_parser_parse_pi(XmlParser* thiz) {
     switch (state) {
       case STAT_NAME: {
         if (isspace(c) || c == '>') {
-          tag_name = tk_pointer_from_int(xml_parser_strdup(thiz, start, thiz->read_ptr - start));
+          tag_name = tk_pointer_from_int(xml_parser_strdup(thiz, start, thiz->read_ptr - start, TRUE));
           state = c != '>' ? STAT_ATTR : STAT_END;
         }
 

@@ -135,3 +135,27 @@ TEST(XmlParser, max_attrs) {
 
   xml_parser_destroy(p);
 }
+
+TEST(XmlParser, space1) {
+  XmlBuilder b;
+  XmlParser* p = xml_parser_create();
+  xml_parser_set_builder(p, builder_init(b));
+
+  test_str_ex(p,
+              "<test a1=\" 1 \" ></test>",
+              "<test a1=\" 1 \" ></test>"); 
+
+  xml_parser_destroy(p);
+}
+
+TEST(XmlParser, space2) {
+  XmlBuilder b;
+  XmlParser* p = xml_parser_create();
+  xml_parser_set_builder(p, builder_init(b));
+
+  test_str_ex(p,
+              "< test a1 =\" 1 \"></ test >",
+              "<test a1=\" 1 \" ></test>"); 
+
+  xml_parser_destroy(p);
+}
