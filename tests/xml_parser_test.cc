@@ -31,6 +31,10 @@ static void xml_gen_on_end(XmlBuilder* thiz, const char* tag) {
   return;
 }
 
+static void xml_gen_on_error(XmlBuilder* thiz, int line, int row, const char* message) { 
+ log_debug("%d:%d %s\n", line, row, message);
+}
+
 static void xml_gen_on_text(XmlBuilder* thiz, const char* text, size_t length) {
   char str[1024];
   assert(length < sizeof(str));
@@ -51,6 +55,7 @@ static XmlBuilder* builder_init(XmlBuilder& b) {
   b.on_start = xml_gen_on_start;
   b.on_end = xml_gen_on_end;
   b.on_text = xml_gen_on_text;
+  b.on_error = xml_gen_on_error;
   b.destroy = xml_gen_destroy;
 
   return &(b);
