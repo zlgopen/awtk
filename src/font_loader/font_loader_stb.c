@@ -99,7 +99,7 @@ static ret_t font_stb_get_glyph(font_t* f, wchar_t c, font_size_t font_size, gly
     }
   }
 
-  return g->data != NULL ? RET_OK : RET_NOT_FOUND;
+  return g->data != NULL || c == ' ' ? RET_OK : RET_NOT_FOUND;
 }
 
 static ret_t font_stb_destroy(font_t* f) {

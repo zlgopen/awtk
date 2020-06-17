@@ -290,10 +290,10 @@ static float_t canvas_measure_text_default(canvas_t* c, const wchar_t* str, uint
 
   for (i = 0; i < nr; i++) {
     wchar_t chr = str[i];
-    if (chr == ' ') {
-      w += 4;
-    } else if (font_get_glyph(c->font, chr, c->font_size, &g) == RET_OK) {
+    if (font_get_glyph(c->font, chr, c->font_size, &g) == RET_OK) {
       w += g.advance + 1;
+    } else {
+      w += 4;
     }
   }
 
@@ -585,9 +585,7 @@ static ret_t canvas_draw_text_impl(canvas_t* c, const wchar_t* str, uint32_t nr,
 
   for (i = 0; i < nr; i++) {
     wchar_t chr = str[i];
-    if (chr == ' ') {
-      x += 4;
-    } else if (chr == '\r') {
+    if (chr == '\r') {
       if (str[i + 1] != '\n') {
         y += font_size;
         x = left;
@@ -599,7 +597,9 @@ static ret_t canvas_draw_text_impl(canvas_t* c, const wchar_t* str, uint32_t nr,
       xy_t xx = x + g.x;
       xy_t yy = y + g.y + baseline;
 
-      canvas_draw_glyph(c, &g, xx, yy);
+      if(g.data != NULL) {
+        canvas_draw_glyph(c, &g, xx, yy);
+      }
       x += g.advance + 1;
     } else {
       x += 4;
