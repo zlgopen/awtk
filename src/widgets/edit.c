@@ -186,7 +186,7 @@ static bool_t edit_is_valid_char_default(widget_t* widget, wchar_t c) {
       break;
     }
     default: {
-      if (widget->text.size < edit->max) {
+      if (text->size < edit->max) {
         ret = TRUE;
       }
     }

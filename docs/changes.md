@@ -1,16 +1,19 @@
 # 最新动态
 
+* 2020/06/17
+  * 完善 edit（感谢培煌提供补丁）
+  
 * 2020/06/15
-  * 完善toast （感谢培煌提供补丁）
-  * 修复旋转后online\_fb的line\_length不正确的问题(感谢智明提供补丁)。
-  * 完善window manager simple(感谢智明提供补丁)。
-  * 完善app conf/object locker
+  * 完善 toast （感谢培煌提供补丁）
+  * 修复旋转后 online\_fb 的 line\_length 不正确的问题（感谢智明提供补丁）。
+  * 完善 window manager simple（感谢智明提供补丁）。
+  * 完善 app conf/object locker
   * 完善资源生成脚本（感谢朝泽提供补丁）。
 
 * 2020/06/14
   * 完善 scroll view，增加滚动相关事件。
   * 增加文档《如何实现弹出菜单》
-  * 完善conf-io，支持reload。
+  * 完善 conf-io，支持 reload。
   
 * 2020/06/13
   * 完善资源生成脚本，兼容 AWTK 和 Designer（感谢朝泽提供补丁）。
