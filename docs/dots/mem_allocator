@@ -1,0 +1,19 @@
+digraph G {
+  rankdir  = BT
+  fontname = "Courier New"
+  fontsize = 12
+
+  node [
+      fontname = "Courier New"
+      fontsize = 12
+      shape    = "record"
+      width = 0.4
+  ]
+
+ mem_allocator_simple_t -> mem_allocator_t[arrowhead = "empty"]
+ mem_allocator_std_t -> mem_allocator_t[arrowhead = "empty"]
+ mem_allocator_lock_t -> mem_allocator_t[arrowhead = "empty"]
+ mem_allocator_pool_t -> mem_allocator_t[arrowhead = "empty"]
+ mem_allocator_debug_t -> mem_allocator_t[arrowhead = "empty"]
+ mem_allocator_oom_t -> mem_allocator_t[arrowhead = "empty"]
+}

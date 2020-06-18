@@ -30,7 +30,8 @@ typedef struct _mem_pool_t {
   uint32_t block_size : 8;
   uint32_t block_nr : 16;
   uint32_t bits_size : 8;
-  uint32_t used;
+  uint32_t min_block_size:16;
+  uint32_t used:16;
 
   uint32_t* bits;
   uint8_t* start;
@@ -41,17 +42,21 @@ typedef struct _mem_pool_t {
 #define TK_TOGGLE_BIT(v, n) ((v) ^= (1UL << (n)))
 #define TK_TEST_BIT(v, n) (((v) >> (n)) & 1U)
 
-static uint32_t mem_pool_get_bits_size(uint8_t block_nr) {
+static bool_t mem_pool_match_size(mem_pool_t* pool, uint32_t size) {
+  return size >= pool->min_block_size && size <= pool->block_size;
+}
+
+static uint32_t mem_pool_get_bits_size(uint32_t block_nr) {
   return (block_nr / 32 + 2) & 0xfffffffe;
 }
 
-static uint32_t mem_pool_get_min_size(uint8_t block_size, uint32_t block_nr) {
+static uint32_t mem_pool_get_min_size(uint32_t block_size, uint32_t block_nr) {
   uint32_t bits_size = mem_pool_get_bits_size(block_nr);
   uint32_t head_size = sizeof(mem_pool_t);
   return head_size + bits_size * sizeof(uint32_t) + block_nr * block_size;
 }
 
-static inline mem_pool_t* mem_pool_init(uint8_t* addr, uint32_t size, uint8_t block_size,
+static inline mem_pool_t* mem_pool_init(uint8_t* addr, uint32_t size, uint32_t block_size,
                                         uint32_t block_nr) {
   mem_pool_t* pool = (mem_pool_t*)addr;
   uint32_t bits_size = mem_pool_get_bits_size(block_nr);

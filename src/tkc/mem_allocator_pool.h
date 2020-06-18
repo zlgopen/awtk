@@ -27,6 +27,7 @@
 
 BEGIN_C_DECLS
 
+#define TK_MEM_POOLS_NR 5
 /**
  * @class mem_allocator_pool_t 
  * @parent mem_allocator_t 
@@ -37,50 +38,29 @@ BEGIN_C_DECLS
 
 typedef struct _mem_allocator_pool_t {
   mem_allocator_t allocator;
+
   mem_allocator_t* impl;
-  mem_pool_t* pool8;
-  mem_pool_t* pool16;
-  mem_pool_t* pool32;
-  mem_pool_t* pool48;
-  mem_pool_t* pool64;
+  mem_pool_t* pools[TK_MEM_POOLS_NR];;
 } mem_allocator_pool_t;
 
 #define MEM_ALLOCATOR_POOL(allocator) ((mem_allocator_pool_t*)(allocator))
 
 static inline void* mem_allocator_pool_alloc(mem_allocator_t* allocator, uint32_t size,
                                              const char* func, uint32_t line) {
+  uint32_t i = 0;
   void* addr = NULL;
-  mem_pool_t* pool8 = MEM_ALLOCATOR_POOL(allocator)->pool8;
-  mem_pool_t* pool16 = MEM_ALLOCATOR_POOL(allocator)->pool16;
-  mem_pool_t* pool32 = MEM_ALLOCATOR_POOL(allocator)->pool32;
-  mem_pool_t* pool48 = MEM_ALLOCATOR_POOL(allocator)->pool48;
-  mem_pool_t* pool64 = MEM_ALLOCATOR_POOL(allocator)->pool64;
+  mem_pool_t** pools = MEM_ALLOCATOR_POOL(allocator)->pools;
   mem_allocator_t* impl = MEM_ALLOCATOR_POOL(allocator)->impl;
 
-  if (size <= 8) {
-    addr = mem_pool_get(pool8);
-    if (addr != NULL) {
-      return addr;
-    }
-  } else if (size <= 16) {
-    addr = mem_pool_get(pool16);
-    if (addr != NULL) {
-      return addr;
-    }
-  } else if (size <= 32) {
-    addr = mem_pool_get(pool32);
-    if (addr != NULL) {
-      return addr;
-    }
-  } else if (size <= 48) {
-    addr = mem_pool_get(pool48);
-    if (addr != NULL) {
-      return addr;
-    }
-  } else if (size <= 64) {
-    addr = mem_pool_get(pool64);
-    if (addr != NULL) {
-      return addr;
+  for(i = 0; i < TK_MEM_POOLS_NR; i++) {
+    mem_pool_t* p = pools[i];
+    if(mem_pool_match_size(p, size)) {
+      addr = mem_pool_get(p);
+      if (addr != NULL) {
+        return addr;
+      } else {
+        break;
+      }
     }
   }
 
@@ -91,159 +71,84 @@ static inline void* mem_allocator_pool_alloc(mem_allocator_t* allocator, uint32_
 
 static inline void* mem_allocator_pool_realloc(mem_allocator_t* allocator, void* ptr, uint32_t size,
                                                const char* func, uint32_t line) {
+  uint32_t i = 0;
   void* addr = NULL;
-  mem_pool_t* pool8 = MEM_ALLOCATOR_POOL(allocator)->pool8;
-  mem_pool_t* pool16 = MEM_ALLOCATOR_POOL(allocator)->pool16;
-  mem_pool_t* pool32 = MEM_ALLOCATOR_POOL(allocator)->pool32;
-  mem_pool_t* pool48 = MEM_ALLOCATOR_POOL(allocator)->pool48;
-  mem_pool_t* pool64 = MEM_ALLOCATOR_POOL(allocator)->pool64;
+  mem_pool_t** pools = MEM_ALLOCATOR_POOL(allocator)->pools;
   mem_allocator_t* impl = MEM_ALLOCATOR_POOL(allocator)->impl;
-
-  if (ptr != NULL && mem_pool_get_index(pool8, ptr) >= 0) {
-    if (size <= pool8->block_size) {
-      return ptr;
-    } else {
-      addr = mem_allocator_pool_alloc(allocator, size, func, line);
-      return_value_if_fail(addr != NULL, NULL);
-      memcpy(addr, ptr, pool8->block_size);
-      mem_pool_put(pool8, ptr);
-      return addr;
-    }
-  }
   
-  if (ptr != NULL && mem_pool_get_index(pool16, ptr) >= 0) {
-    if (size <= pool16->block_size) {
-      return ptr;
-    } else {
-      addr = mem_allocator_pool_alloc(allocator, size, func, line);
-      return_value_if_fail(addr != NULL, NULL);
-      memcpy(addr, ptr, pool16->block_size);
-      mem_pool_put(pool16, ptr);
-      return addr;
+  if(ptr == NULL) {
+    return mem_allocator_pool_alloc(allocator, size, func, line);
+  }
+
+  for(i = 0; i < TK_MEM_POOLS_NR; i++) {
+    mem_pool_t* p = pools[i];
+    if (mem_pool_get_index(p, ptr) >= 0) {
+      if(mem_pool_match_size(p, size)) {
+        return ptr;
+      } else {
+        addr = mem_allocator_pool_alloc(allocator, size, func, line);
+        return_value_if_fail(addr != NULL, NULL);
+        memcpy(addr, ptr, p->block_size);
+        mem_pool_put(p, ptr);
+        return addr;
+      }
     }
   }
 
-
-  if (ptr != NULL && mem_pool_get_index(pool32, ptr) >= 0) {
-    if (size <= pool32->block_size) {
-      return ptr;
-    } else {
-      addr = mem_allocator_pool_alloc(allocator, size, func, line);
-      return_value_if_fail(addr != NULL, NULL);
-      memcpy(addr, ptr, pool32->block_size);
-      mem_pool_put(pool32, ptr);
-      return addr;
-    }
-  }
-
-  if (ptr != NULL && mem_pool_get_index(pool48, ptr) >= 0) {
-    if (size <= pool48->block_size) {
-      return ptr;
-    } else {
-      addr = mem_allocator_pool_alloc(allocator, size, func, line);
-      return_value_if_fail(addr != NULL, NULL);
-      memcpy(addr, ptr, pool48->block_size);
-      mem_pool_put(pool48, ptr);
-      return addr;
-    }
-  }
-  
-  if (ptr != NULL && mem_pool_get_index(pool64, ptr) >= 0) {
-    if (size <= pool64->block_size) {
-      return ptr;
-    } else {
-      addr = mem_allocator_pool_alloc(allocator, size, func, line);
-      return_value_if_fail(addr != NULL, NULL);
-      memcpy(addr, ptr, pool64->block_size);
-      mem_pool_put(pool64, ptr);
-      return addr;
-    }
-  }
-
-
-  if (ptr != NULL) {
-    addr = mem_allocator_realloc(impl, ptr, size, func, line);
-  } else {
-    addr = mem_allocator_pool_alloc(allocator, size, func, line);
-  }
+  addr = mem_allocator_realloc(impl, ptr, size, func, line);
 
   return addr;
 }
 
 static inline void mem_allocator_pool_free(mem_allocator_t* allocator, void* ptr) {
-  mem_pool_t* pool8 = MEM_ALLOCATOR_POOL(allocator)->pool8;
-  mem_pool_t* pool16 = MEM_ALLOCATOR_POOL(allocator)->pool16;
-  mem_pool_t* pool32 = MEM_ALLOCATOR_POOL(allocator)->pool32;
-  mem_pool_t* pool48 = MEM_ALLOCATOR_POOL(allocator)->pool48;
-  mem_pool_t* pool64 = MEM_ALLOCATOR_POOL(allocator)->pool64;
+  uint32_t i = 0;
+  mem_pool_t** pools = MEM_ALLOCATOR_POOL(allocator)->pools;
   mem_allocator_t* impl = MEM_ALLOCATOR_POOL(allocator)->impl;
 
-  if (mem_pool_get_index(pool8, ptr) >= 0) {
-    mem_pool_put(pool8, ptr);
+  if(ptr == NULL) {
     return;
   }
 
-  if (mem_pool_get_index(pool16, ptr) >= 0) {
-    mem_pool_put(pool16, ptr);
-    return;
-  }
-
-  if (mem_pool_get_index(pool32, ptr) >= 0) {
-    mem_pool_put(pool32, ptr);
-    return;
-  }
-
-  if (mem_pool_get_index(pool48, ptr) >= 0) {
-    mem_pool_put(pool48, ptr);
-    return;
-  }
-
-  if (mem_pool_get_index(pool64, ptr) >= 0) {
-    mem_pool_put(pool64, ptr);
-    return;
+  for(i = 0; i < TK_MEM_POOLS_NR; i++) {
+    mem_pool_t* p = pools[i];
+    if (mem_pool_get_index(p, ptr) >= 0) {
+      mem_pool_put(p, ptr);
+      return;
+    }
   }
 
   mem_allocator_free(impl, ptr);
 }
 
 static inline ret_t mem_allocator_pool_dump(mem_allocator_t* allocator) {
-  mem_pool_t* pool8 = MEM_ALLOCATOR_POOL(allocator)->pool8;
-  mem_pool_t* pool16 = MEM_ALLOCATOR_POOL(allocator)->pool16;
-  mem_pool_t* pool32 = MEM_ALLOCATOR_POOL(allocator)->pool32;
-  mem_pool_t* pool48 = MEM_ALLOCATOR_POOL(allocator)->pool48;
-  mem_pool_t* pool64 = MEM_ALLOCATOR_POOL(allocator)->pool64;
+  uint32_t i = 0;
+  uint32_t used = 0;
+  mem_pool_t** pools = MEM_ALLOCATOR_POOL(allocator)->pools;
   mem_allocator_t* impl = MEM_ALLOCATOR_POOL(allocator)->impl;
 
-  uint32_t used = pool8->used + pool16->used + pool32->used + pool48->used + pool64->used;
-  uint32_t block_nr = pool8->block_nr + pool16->block_nr + pool32->block_nr + pool48->block_nr + pool64->block_nr;
-
   mem_allocator_dump(impl);
-  log_debug("total: used=%u total=%u\n", used, block_nr);
-  log_debug("pool8: used=%u total=%u\n", pool8->used, pool8->block_nr);
-  log_debug("pool16: used=%u total=%u\n", pool16->used, pool16->block_nr);
-  log_debug("pool32: used=%u total=%u\n", pool32->used, pool32->block_nr);
-  log_debug("pool48: used=%u total=%u\n", pool48->used, pool48->block_nr);
-  log_debug("pool64: used=%u total=%u\n", pool64->used, pool64->block_nr);
 
-  (void)used;
-  (void)block_nr;
-  
+  for(i = 0; i < TK_MEM_POOLS_NR; i++) {
+    mem_pool_t* p = pools[i];
+    used += p->used;
+    log_debug("%u: block_size=%u block_nr=%u used=%u\n", i, p->block_size, p->block_nr, p->used);
+  }
+  log_debug("total_used=%u\n", used);
+
   return RET_OK;
 }
 
 static inline ret_t mem_allocator_pool_destroy(mem_allocator_t* allocator) {
-  mem_pool_t* pool8 = MEM_ALLOCATOR_POOL(allocator)->pool8;
-  mem_pool_t* pool16 = MEM_ALLOCATOR_POOL(allocator)->pool16;
-  mem_pool_t* pool32 = MEM_ALLOCATOR_POOL(allocator)->pool32;
-  mem_pool_t* pool48 = MEM_ALLOCATOR_POOL(allocator)->pool48;
-  mem_pool_t* pool64 = MEM_ALLOCATOR_POOL(allocator)->pool64;
+  uint32_t i = 0;
+  mem_pool_t** pools = MEM_ALLOCATOR_POOL(allocator)->pools;
   mem_allocator_t* impl = MEM_ALLOCATOR_POOL(allocator)->impl;
 
-  mem_allocator_free(impl, pool8);
-  mem_allocator_free(impl, pool16);
-  mem_allocator_free(impl, pool32);
-  mem_allocator_free(impl, pool48);
-  mem_allocator_free(impl, pool64);
+  for(i = 0; i < TK_MEM_POOLS_NR; i++) {
+    mem_pool_t* p = pools[i];
+    mem_allocator_free(impl, p);
+    pools[i] = NULL;
+  }
+
   mem_allocator_destroy(impl);
   allocator->vt = NULL;
 
@@ -257,49 +162,32 @@ static const mem_allocator_vtable_t s_mem_allocator_pool_vtable = {
     .dump = mem_allocator_pool_dump,
     .destroy = mem_allocator_pool_destroy};
 
+static mem_pool_t* mem_pool_create(mem_allocator_t* impl, uint32_t block_size, uint32_t block_nr) {
+  uint32_t size = mem_pool_get_min_size(block_size, block_nr);
+  uint8_t* addr = (uint8_t*)mem_allocator_alloc(impl, size, __FUNCTION__, __LINE__);
+  return_value_if_fail(addr != NULL, NULL);
+
+  return mem_pool_init(addr, size, block_size, block_nr);
+}
+
 static inline mem_allocator_t* mem_allocator_pool_init(mem_allocator_pool_t* pool,
                                                        mem_allocator_t* impl, uint32_t pool8_nr,
                                                        uint32_t pool16_nr, uint32_t pool32_nr,
                                                        uint32_t pool48_nr, uint32_t pool64_nr) {
-  uint32_t size = 0;
-  uint8_t* addr = NULL;
+  uint32_t i = 0;
   mem_allocator_t* allocator = MEM_ALLOCATOR(pool);
-  return_value_if_fail(impl != NULL, NULL);
+  uint32_t blocks_size[TK_MEM_POOLS_NR] = {8, 16, 32, 48, 64};
+  uint32_t blocks_nr[TK_MEM_POOLS_NR] = {pool8_nr, pool16_nr, pool32_nr, pool48_nr, pool64_nr};
+
+  return_value_if_fail(pool != NULL && impl != NULL, NULL);
 
   memset(pool, 0x00, sizeof(*pool));
   allocator->vt = &s_mem_allocator_pool_vtable;
-
   pool->impl = impl;
-  pool8_nr = tk_max(32, pool8_nr);
-  pool16_nr = tk_max(32, pool16_nr);
-  pool32_nr = tk_max(32, pool32_nr);
-  pool48_nr = tk_max(32, pool48_nr);
-  pool64_nr = tk_max(32, pool64_nr);
 
-  size = mem_pool_get_min_size(8, pool8_nr);
-  addr = (uint8_t*)mem_allocator_alloc(impl, size, __FUNCTION__, __LINE__);
-  pool->pool8 = mem_pool_init(addr, size, 8, pool8_nr);
-  ENSURE(pool->pool8 != NULL);
-
-  size = mem_pool_get_min_size(16, pool16_nr);
-  addr = (uint8_t*)mem_allocator_alloc(impl, size, __FUNCTION__, __LINE__);
-  pool->pool16 = mem_pool_init(addr, size, 16, pool16_nr);
-  ENSURE(pool->pool16 != NULL);
-
-  size = mem_pool_get_min_size(32, pool32_nr);
-  addr = (uint8_t*)mem_allocator_alloc(impl, size, __FUNCTION__, __LINE__);
-  pool->pool32 = mem_pool_init(addr, size, 32, pool32_nr);
-  ENSURE(pool->pool32 != NULL);
-
-  size = mem_pool_get_min_size(48, pool48_nr);
-  addr = (uint8_t*)mem_allocator_alloc(impl, size, __FUNCTION__, __LINE__);
-  pool->pool48 = mem_pool_init(addr, size, 48, pool48_nr);
-  ENSURE(pool->pool48 != NULL);
-
-  size = mem_pool_get_min_size(64, pool64_nr);
-  addr = (uint8_t*)mem_allocator_alloc(impl, size, __FUNCTION__, __LINE__);
-  pool->pool64 = mem_pool_init(addr, size, 64, pool64_nr);
-  ENSURE(pool->pool64 != NULL);
+  for(i = 0; i < TK_MEM_POOLS_NR; i++) {
+    pool->pools[i] = mem_pool_create(impl, blocks_size[i], tk_max(32, blocks_nr[i]));
+  }
 
   return allocator;
 }
@@ -307,3 +195,4 @@ static inline mem_allocator_t* mem_allocator_pool_init(mem_allocator_pool_t* poo
 END_C_DECLS
 
 #endif /*TK_MEM_ALLOCATOR_POOL_H*/
+

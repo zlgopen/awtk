@@ -45,10 +45,10 @@ static mem_allocator_t* mem_allocator_get(void) {
   }
 
   s_allocator = mem_allocator_std_init(&std);
-  s_allocator = mem_allocator_oom_init(&s_oom, s_allocator);
 #ifdef ENABLE_MEM_LEAK_CHECK
   s_allocator = mem_allocator_debug_init(&s_debug, s_allocator);
 #endif /*ENABLE_MEM_LEAK_CHECK*/
+  s_allocator = mem_allocator_oom_init(&s_oom, s_allocator);
 
   return s_allocator;
 }
@@ -63,11 +63,6 @@ ret_t tk_mem_init(void* buffer, uint32_t size) {
   static mem_allocator_pool_t pool;
 
   s_allocator = mem_allocator_simple_init(&simple, buffer, size);
-  s_allocator = mem_allocator_lock_init(&s_lock, s_allocator);
-  s_allocator = mem_allocator_oom_init(&s_oom, s_allocator);
-#ifdef ENABLE_MEM_LEAK_CHECK
-  s_allocator = mem_allocator_debug_init(&s_debug, s_allocator);
-#endif /*ENABLE_MEM_LEAK_CHECK*/
   if(size < 100 * 1024) {
     s_allocator = mem_allocator_pool_init(&pool, s_allocator, 100, 100, 80, 80, 32);
   } else if(size < 1000 * 1024) {
@@ -75,6 +70,11 @@ ret_t tk_mem_init(void* buffer, uint32_t size) {
   } else {
     s_allocator = mem_allocator_pool_init(&pool, s_allocator, 1000, 1000, 1000, 500, 500);
   }
+#ifdef ENABLE_MEM_LEAK_CHECK
+  s_allocator = mem_allocator_debug_init(&s_debug, s_allocator);
+#endif /*ENABLE_MEM_LEAK_CHECK*/
+  s_allocator = mem_allocator_lock_init(&s_lock, s_allocator);
+  s_allocator = mem_allocator_oom_init(&s_oom, s_allocator);
 
   return s_allocator != NULL ? RET_OK : RET_FAIL;
 }
