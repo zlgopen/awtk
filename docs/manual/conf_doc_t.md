@@ -15,6 +15,8 @@
 | <a href="#conf_doc_t_conf_doc_destroy_node">conf\_doc\_destroy\_node</a> | 销毁节点对象。 |
 | <a href="#conf_doc_t_conf_doc_exists">conf\_doc\_exists</a> | 判断指定路径的节点是否存在。 |
 | <a href="#conf_doc_t_conf_doc_get">conf\_doc\_get</a> | 获取指定路径节点的值。 |
+| <a href="#conf_doc_t_conf_doc_is_first">conf\_doc\_is\_first</a> | 检查指定节点是否在兄弟节点中排第一。 |
+| <a href="#conf_doc_t_conf_doc_is_last">conf\_doc\_is\_last</a> | 检查指定节点是否在兄弟节点中排最后。 |
 | <a href="#conf_doc_t_conf_doc_move_down">conf\_doc\_move\_down</a> | 和后一个兄弟节点交换位置。 |
 | <a href="#conf_doc_t_conf_doc_move_up">conf\_doc\_move\_up</a> | 和前一个兄弟节点交换位置。 |
 | <a href="#conf_doc_t_conf_doc_remove">conf\_doc\_remove</a> | 删除指定路径的节点。 |
@@ -190,6 +192,46 @@ ret_t conf_doc_get (conf_doc_t* doc, const char* path, value_t* v);
 | doc | conf\_doc\_t* | 文档对象。 |
 | path | const char* | 节点的路径。 |
 | v | value\_t* | 用于返回值。 |
+#### conf\_doc\_is\_first 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="conf_doc_t_conf_doc_is_first">检查指定节点是否在兄弟节点中排第一。
+
+* 函数原型：
+
+```
+bool_t conf_doc_is_first (conf_doc_t* doc, const char* path);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示是，否则表示不是。 |
+| doc | conf\_doc\_t* | 文档对象。 |
+| path | const char* | 节点的路径。 |
+#### conf\_doc\_is\_last 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="conf_doc_t_conf_doc_is_last">检查指定节点是否在兄弟节点中排最后。
+
+* 函数原型：
+
+```
+bool_t conf_doc_is_last (conf_doc_t* doc, const char* path);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示是，否则表示不是。 |
+| doc | conf\_doc\_t* | 文档对象。 |
+| path | const char* | 节点的路径。 |
 #### conf\_doc\_move\_down 函数
 -----------------------
 

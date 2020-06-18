@@ -24,6 +24,7 @@
 | <a href="#app_conf_t_app_conf_off_changed">app\_conf\_off\_changed</a> | 注销配置变化事件。 |
 | <a href="#app_conf_t_app_conf_off_changed_by_ctx">app\_conf\_off\_changed\_by\_ctx</a> | 注销配置变化事件。 |
 | <a href="#app_conf_t_app_conf_on_changed">app\_conf\_on\_changed</a> | 注册配置变化事件。 |
+| <a href="#app_conf_t_app_conf_reload">app\_conf\_reload</a> | 重新加载配置(内存中的配置丢失)。 |
 | <a href="#app_conf_t_app_conf_remove">app\_conf\_remove</a> | 删除配置项。 |
 | <a href="#app_conf_t_app_conf_save">app\_conf\_save</a> | 持久保存配置。 |
 | <a href="#app_conf_t_app_conf_set">app\_conf\_set</a> | 设置配置项的值。 |
@@ -288,6 +289,24 @@ uint32_t app_conf_on_changed (event_func_t on_event, void* ctx);
 | 返回值 | uint32\_t | 返回id，用于app\_conf\_off\_changed。 |
 | on\_event | event\_func\_t | 事件处理函数。 |
 | ctx | void* | 事件处理函数上下文。 |
+#### app\_conf\_reload 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="app_conf_t_app_conf_reload">重新加载配置(内存中的配置丢失)。
+
+* 函数原型：
+
+```
+ret_t app_conf_reload ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 #### app\_conf\_remove 函数
 -----------------------
 

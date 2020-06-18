@@ -424,7 +424,7 @@ ret_t window_manager_set_screen_saver_time (widget_t* widget, uint32_t screen_sa
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 窗口管理器对象。 |
-| screen\_saver\_time | uint32\_t | 屏保时间(单位毫秒)。 |
+| screen\_saver\_time | uint32\_t | 屏保时间(单位毫秒), 为0关闭屏保。 |
 #### window\_manager\_set\_show\_fps 函数
 -----------------------
 

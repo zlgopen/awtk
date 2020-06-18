@@ -24,7 +24,8 @@ TKMEM_FREE(str);
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#tk_mem_t_tk_mem_dump">tk\_mem\_dump</a> | 显示内存信息。 |
-| <a href="#tk_mem_t_tk_mem_stat">tk\_mem\_stat</a> | 获取内存信息。 |
+| <a href="#tk_mem_t_tk_mem_init">tk\_mem\_init</a> | 初始化内存。 |
+| <a href="#tk_mem_t_tk_mem_init_stage2">tk\_mem\_init\_stage2</a> | 初始化互斥和oom。 |
 | <a href="#tk_mem_t_TKMEM_ALLOC">TKMEM\_ALLOC</a> | 分配一块内存。 |
 | <a href="#tk_mem_t_TKMEM_CALLOC">TKMEM\_CALLOC</a> | 分配一块内存，并将内容清零。 |
 | <a href="#tk_mem_t_TKMEM_FREE">TKMEM\_FREE</a> | 释放内存。 |
@@ -47,24 +48,44 @@ void tk_mem_dump ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | void | 返回void。 |
-#### tk\_mem\_stat 函数
+#### tk\_mem\_init 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="tk_mem_t_tk_mem_stat">获取内存信息。
+> <p id="tk_mem_t_tk_mem_init">初始化内存。
 
 * 函数原型：
 
 ```
-mem_stat_t tk_mem_stat ();
+ret_t tk_mem_init (void* buffer, uint32_t size);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | mem\_stat\_t | 返回内存信息。 |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| buffer | void* | 内存地址。 |
+| size | uint32\_t | 内存长度。 |
+#### tk\_mem\_init\_stage2 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="tk_mem_t_tk_mem_init_stage2">初始化互斥和oom。
+
+* 函数原型：
+
+```
+ret_t tk_mem_init_stage2 ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 #### TKMEM\_ALLOC 宏
 -----------------------
 

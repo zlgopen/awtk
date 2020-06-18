@@ -65,6 +65,7 @@ default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/st
 | <a href="#check_button_t_check_button_cast">check\_button\_cast</a> | 转换check_button对象(供脚本语言使用)。 |
 | <a href="#check_button_t_check_button_create">check\_button\_create</a> | 创建多选按钮对象 |
 | <a href="#check_button_t_check_button_create_radio">check\_button\_create\_radio</a> | 创建单选按钮对象 |
+| <a href="#check_button_t_check_button_get_checked_button">check\_button\_get\_checked\_button</a> | 用于radio button获取同组中勾选的radio button。 |
 | <a href="#check_button_t_check_button_set_value">check\_button\_set\_value</a> | 设置控件的值。 |
 ### 属性
 <p id="check_button_t_properties">
@@ -115,7 +116,7 @@ widget_t* check_button_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | widget\_t* | 对象。 |
+| 返回值 | widget\_t* | widget对象。 |
 | parent | widget\_t* | 父控件 |
 | x | xy\_t | x坐标 |
 | y | xy\_t | y坐标 |
@@ -138,12 +139,31 @@ widget_t* check_button_create_radio (widget_t* parent, xy_t x, xy_t y, wh_t w, w
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | widget\_t* | 对象。 |
+| 返回值 | widget\_t* | widget对象。 |
 | parent | widget\_t* | 父控件 |
 | x | xy\_t | x坐标 |
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### check\_button\_get\_checked\_button 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="check_button_t_check_button_get_checked_button">用于radio button获取同组中勾选的radio button。
+
+* 函数原型：
+
+```
+widget_t* check_button_get_checked_button (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | widget\_t* | 同组中勾选的radio button对象。 |
+| widget | widget\_t* | radio\_button对象。 |
 #### check\_button\_set\_value 函数
 -----------------------
 
