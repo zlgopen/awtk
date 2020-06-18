@@ -139,6 +139,14 @@ void tk_mem_dump(void);
  */
 ret_t tk_mem_init(void* buffer, uint32_t size);
 
+/**
+ * @method tk_mem_init_stage2
+ * 初始化互斥和oom。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_mem_init_stage2(void);
+
 END_C_DECLS
 
 #endif /*TK_TKMEM_MANAGER_H*/

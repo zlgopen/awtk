@@ -2,15 +2,16 @@
 
 * 2020/06/18
   * 增加文档《内存分配》
-  * 完善mem allocator pool
-  * 增加函数check\_button\_get\_checked\_button
-  * 完善API注释（感谢俊杰提供补丁）。
+  * 完善 mem allocator pool
+  * 完善 API 注释（感谢俊杰提供补丁）。
+  * 增加函数 check\_button\_get\_checked\_button
+  * 增加 tk_mem_init_stage2 用于初始化 pool/oom，否则在嵌入式式平台会死锁。
 
 * 2020/06/17
   * 完善 edit（感谢培煌提供补丁）
   * 修复空格字体的显示问题（感谢智明提供补丁）。
   * 修复圆角矩形在宽高很小的时候出现异常的问题（感谢智明提供补丁）。
-  * 保留xml属性中的空格。
+  * 保留 xml 属性中的空格。
   * 重新设计内存管理器架构，新增加锁、调试和防内存碎片功能。
 
 * 2020/06/15
