@@ -102,12 +102,13 @@ mem\_allocator\_debug 对现有的 allocator 进行包装，记录分配的内�
 
 >宏 ENABLE\_MEM\_LEAK\_CHECK 决定是否开启调试功能。在 PC 上一般修改 awtk\_config.py，在嵌入式系统一般修改 awtk\_config.h。
 
-一般长时间运行，才能得出真实数据。
+一般长时间运行，才能得出真实数据。可以结合[输入事件记录与重放](https://github.com/zlgopen/awtk/blob/master/docs/event_recorder_player.md)来结合测试。
 
-请参考 demos/demo_ui_app.c
+请参考 demos/demo\_ui\_app.c
 
 ## 6. 装饰器-内存耗尽
 	
-mem_allocator_oom 对现有的 allocator 进行包装，如果分配内存失败，调用预先设置的回调函数释放内存，然后再重试。
+mem\_allocator\_oom 对现有的 allocator 进行包装，如果分配内存失败，调用预先设置的回调函数释放内存，然后再重试。
 
 给应用程序优雅退出的机会。
+
