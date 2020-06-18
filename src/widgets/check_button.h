@@ -121,7 +121,7 @@ typedef struct _check_button_t {
  * @param {wh_t} w 宽度
  * @param {wh_t} h 高度
  *
- * @return {widget_t*} 对象。
+ * @return {widget_t*} widget对象。
  */
 widget_t* check_button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
@@ -135,7 +135,7 @@ widget_t* check_button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
  * @param {wh_t} w 宽度
  * @param {wh_t} h 高度
  *
- * @return {widget_t*} 对象。
+ * @return {widget_t*} widget对象。
  */
 widget_t* check_button_create_radio(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
@@ -149,6 +149,16 @@ widget_t* check_button_create_radio(widget_t* parent, xy_t x, xy_t y, wh_t w, wh
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t check_button_set_value(widget_t* widget, bool_t value);
+
+/**
+ * @method check_button_get_checked_button
+ * 用于radio button获取同组中勾选的radio button。
+ *
+ * @param {widget_t*} widget radio_button对象。
+ *
+ * @return {widget_t*} 同组中勾选的radio button对象。
+ */
+widget_t* check_button_get_checked_button(widget_t* widget);
 
 /**
  * @method check_button_cast

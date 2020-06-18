@@ -203,3 +203,23 @@ widget_t* check_button_cast(widget_t* widget) {
 
   return widget;
 }
+
+widget_t* check_button_get_checked_button(widget_t* widget) {
+  check_button_t* check_button = CHECK_BUTTON(widget);
+  return_value_if_fail(check_button != NULL, NULL);
+
+  if (check_button->radio && widget->parent != NULL) {
+    widget_t* parent = widget->parent;
+
+    WIDGET_FOR_EACH_CHILD_BEGIN(parent, iter, i)
+    if (iter->vt == widget->vt) {
+      check_button_t* b = CHECK_BUTTON(iter);
+      if(b->value) {
+        return iter;
+      }
+    }
+    WIDGET_FOR_EACH_CHILD_END();
+  }
+
+  return NULL;
+}

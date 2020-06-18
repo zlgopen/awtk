@@ -2,6 +2,7 @@
 #include "gtest/gtest.h"
 #include "widgets/button.h"
 #include "widgets/check_button.h"
+#include "widgets/group_box.h"
 
 using std::string;
 
@@ -86,3 +87,28 @@ TEST(CheckButton, check_cast) {
   ASSERT_NE(w, button_cast(w));
   widget_destroy(w);
 }
+
+TEST(CheckButton, radio1) {
+  widget_t* g = group_box_create(NULL, 0, 0, 100, 100);
+  widget_t* b1 = check_button_create_radio(g, 0, 0, 100, 100);
+  widget_t* b2 = check_button_create_radio(g, 0, 0, 100, 100);
+  widget_t* b3 = check_button_create_radio(g, 0, 0, 100, 100);
+
+  ASSERT_EQ(check_button_set_value(b3, TRUE), RET_OK);
+  ASSERT_EQ(check_button_get_checked_button(b1), b3);
+  ASSERT_EQ(check_button_get_checked_button(b2), b3);
+  ASSERT_EQ(check_button_get_checked_button(b3), b3);
+  
+  ASSERT_EQ(check_button_set_value(b1, TRUE), RET_OK);
+  ASSERT_EQ(check_button_get_checked_button(b1), b1);
+  ASSERT_EQ(check_button_get_checked_button(b2), b1);
+  ASSERT_EQ(check_button_get_checked_button(b3), b1);
+  
+  ASSERT_EQ(check_button_set_value(b2, TRUE), RET_OK);
+  ASSERT_EQ(check_button_get_checked_button(b1), b2);
+  ASSERT_EQ(check_button_get_checked_button(b2), b2);
+  ASSERT_EQ(check_button_get_checked_button(b3), b2);
+
+  widget_destroy(g);
+}
+
