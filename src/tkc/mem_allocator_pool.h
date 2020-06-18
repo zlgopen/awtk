@@ -40,7 +40,7 @@ typedef struct _mem_allocator_pool_t {
   mem_allocator_t allocator;
 
   mem_allocator_t* impl;
-  mem_pool_t* pools[TK_MEM_POOLS_NR];;
+  mem_pool_t* pools[TK_MEM_POOLS_NR];
 } mem_allocator_pool_t;
 
 #define MEM_ALLOCATOR_POOL(allocator) ((mem_allocator_pool_t*)(allocator))
