@@ -56,6 +56,7 @@ struct _mem_allocator_t {
 
 /**
  * @method mem_allocator_alloc
+ * @export none
  * 分配指定大小的内存。
  *
  * @param {mem_allocator_t*} allocator allocator对象。
@@ -75,6 +76,7 @@ static inline void* mem_allocator_alloc(mem_allocator_t* allocator, uint32_t siz
 
 /**
  * @method mem_allocator_realloc
+ * @export none
  * 重新分配指定大小的内存。
  *
  * @param {mem_allocator_t*} allocator allocator对象。
@@ -95,6 +97,7 @@ static inline void* mem_allocator_realloc(mem_allocator_t* allocator, void* ptr,
 
 /**
  * @method mem_allocator_free
+ * @export none
  * 释放内存。
  *
  * @param {mem_allocator_t*} allocator allocator对象。
@@ -110,6 +113,7 @@ static inline void mem_allocator_free(mem_allocator_t* allocator, void* ptr) {
 
 /**
  * @method mem_allocator_dump
+ * @export none
  * 显示内存信息，用于调试。
  *
  * @param {mem_allocator_t*} allocator allocator对象。
@@ -125,6 +129,7 @@ static inline ret_t mem_allocator_dump(mem_allocator_t* allocator) {
 
 /**
  * @method mem_allocator_destroy
+ * @export none
  * 销毁内存分配器。
  *
  * @param {mem_allocator_t*} allocator allocator对象。

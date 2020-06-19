@@ -30583,6 +30583,7 @@
         "annotation": {},
         "desc": "初始化内存。",
         "name": "tk_mem_init",
+        "export": "none",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -30593,6 +30594,7 @@
         "annotation": {},
         "desc": "初始化互斥和oom。",
         "name": "tk_mem_init_stage2",
+        "export": "none",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -30638,6 +30640,7 @@
         "annotation": {},
         "desc": "分配指定大小的内存。",
         "name": "mem_allocator_alloc",
+        "export": "none",
         "return": {
           "type": "void*",
           "desc": "成功返回内存块的地址，失败返回NULL。"
@@ -30674,6 +30677,7 @@
         "annotation": {},
         "desc": "重新分配指定大小的内存。",
         "name": "mem_allocator_realloc",
+        "export": "none",
         "return": {
           "type": "void*",
           "desc": "成功返回内存块的地址，失败返回NULL。"
@@ -30695,6 +30699,7 @@
         "annotation": {},
         "desc": "释放内存。",
         "name": "mem_allocator_free",
+        "export": "none",
         "return": {
           "type": "void*",
           "desc": "成功返回内存块的地址，失败返回NULL。"
@@ -30711,6 +30716,7 @@
         "annotation": {},
         "desc": "显示内存信息，用于调试。",
         "name": "mem_allocator_dump",
+        "export": "none",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -30727,6 +30733,7 @@
         "annotation": {},
         "desc": "销毁内存分配器。",
         "name": "mem_allocator_destroy",
+        "export": "none",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
