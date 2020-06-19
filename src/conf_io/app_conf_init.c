@@ -27,7 +27,7 @@
 #include "tkc/data_reader_factory.h"
 #include "tkc/data_writer_factory.h"
 
-static bool_t app_conf_exist(const char* url) {
+static bool_t app_conf_file_exist(const char* url) {
   bool_t exist = FALSE;
   data_reader_t* reader = data_reader_factory_create_reader(data_reader_factory(), url);
 
@@ -42,7 +42,7 @@ static bool_t app_conf_exist(const char* url) {
 
 static ret_t app_conf_prepare_default(const char* url, const char* default_url) {
   ret_t ret = RET_OK;
-  if (!app_conf_exist(url)) {
+  if (!app_conf_file_exist(url)) {
     data_reader_t* reader = data_reader_factory_create_reader(data_reader_factory(), default_url);
     if (reader != NULL) {
       uint32_t size = data_reader_get_size(reader);

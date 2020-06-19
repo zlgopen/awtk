@@ -40,7 +40,6 @@ static int32_t object_compositor_compare(object_t* obj, object_t* other) {
 }
 
 static ret_t object_compositor_remove_prop(object_t* obj, const char* name) {
-  ret_t ret = RET_NOT_FOUND;
   object_compositor_t* o = OBJECT_COMPOSITOR(obj);
 
   if (object_remove_prop(o->obj1, name) == RET_OK) {
@@ -51,7 +50,6 @@ static ret_t object_compositor_remove_prop(object_t* obj, const char* name) {
 }
 
 static ret_t object_compositor_set_prop(object_t* obj, const char* name, const value_t* v) {
-  ret_t ret = RET_NOT_FOUND;
   object_compositor_t* o = OBJECT_COMPOSITOR(obj);
 
   if (object_set_prop(o->obj1, name, v) == RET_OK) {
@@ -62,7 +60,6 @@ static ret_t object_compositor_set_prop(object_t* obj, const char* name, const v
 }
 
 static ret_t object_compositor_get_prop(object_t* obj, const char* name, value_t* v) {
-  ret_t ret = RET_NOT_FOUND;
   object_compositor_t* o = OBJECT_COMPOSITOR(obj);
 
   if (object_get_prop(o->obj1, name, v) == RET_OK) {
@@ -95,7 +92,6 @@ static bool_t object_compositor_can_exec(object_t* obj, const char* name, const 
 }
 
 static ret_t object_compositor_exec(object_t* obj, const char* name, const char* args) {
-  ret_t ret = RET_OK;
   object_compositor_t* o = OBJECT_COMPOSITOR(obj);
 
   if (object_exec(o->obj1, name, args) == RET_OK) {
