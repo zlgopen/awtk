@@ -59,6 +59,7 @@ ret_t app_conf_init(conf_load_t load, const char* app_name, const char* extname)
   return_value_if_fail(obj != NULL, RET_FAIL);
 
   app_conf_set_instance(obj);
+  OBJECT_UNREF(obj);
 
   return RET_OK;
 }

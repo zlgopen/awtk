@@ -35,6 +35,7 @@ typedef struct _conf_obj_t {
   conf_doc_t* doc;
   conf_doc_save_t save;
   conf_doc_load_t load;
+  bool_t readonly;
 } conf_obj_t;
 
 static conf_obj_t* conf_obj_cast(object_t* obj);
@@ -58,12 +59,20 @@ static ret_t conf_obj_remove_prop(object_t* obj, const char* name) {
   conf_obj_t* o = CONF_OBJ(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
+  if (o->readonly) {
+    return RET_NOT_IMPL;
+  }
+
   return conf_doc_remove(o->doc, name);
 }
 
 static ret_t conf_obj_set_prop(object_t* obj, const char* name, const value_t* v) {
   conf_obj_t* o = CONF_OBJ(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
+  if (o->readonly) {
+    return RET_NOT_IMPL;
+  }
 
   return conf_doc_set(o->doc, name, v);
 }
@@ -139,6 +148,11 @@ static ret_t conf_obj_reload(object_t* obj) {
 static bool_t conf_obj_can_exec(object_t* obj, const char* name, const char* args) {
   conf_obj_t* o = CONF_OBJ(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+  
+  if (o->readonly) {
+    return FALSE;
+  }
+
 
   if (tk_str_ieq(name, CONF_CMD_SAVE)) {
     return TRUE;
@@ -157,6 +171,10 @@ static ret_t conf_obj_exec(object_t* obj, const char* name, const char* args) {
   ret_t ret = RET_NOT_IMPL;
   conf_obj_t* o = CONF_OBJ(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
+  if (o->readonly) {
+    return RET_NOT_IMPL;
+  }
 
   if (tk_str_ieq(name, CONF_CMD_SAVE)) {
     ret = conf_obj_save(obj);
@@ -242,4 +260,12 @@ object_t* conf_obj_create(conf_doc_save_t save, conf_doc_load_t load, const char
   }
 
   return obj;
+}
+
+ret_t conf_obj_set_readonly(object_t* conf, bool_t readonly) {
+  conf_obj_t* o = CONF_OBJ(conf);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+  o->readonly = readonly;
+
+  return RET_OK;
 }

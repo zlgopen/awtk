@@ -79,6 +79,18 @@ conf_doc_t* conf_obj_get_doc(object_t* conf);
  */
 ret_t conf_obj_save(object_t* conf);
 
+/**
+ * @method conf_obj_set_readonly
+ * 
+ * 设置为只读模式。
+ * 
+ * @param {object_t*} conf conf对象。
+ * @param {bool_t} readonly 只读模式。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败
+ */
+ret_t conf_obj_set_readonly(object_t* conf, bool_t readonly);
+
 /*保存命令*/
 #define CONF_CMD_SAVE "save"
 

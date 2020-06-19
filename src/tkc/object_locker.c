@@ -150,8 +150,6 @@ object_t* object_locker_create(object_t* obj) {
     wrapper->obj = object_ref(obj);
     emitter_on(EMITTER(obj), EVT_ITEMS_CHANGED, object_locker_forward_events, o);
     emitter_on(EMITTER(obj), EVT_PROPS_CHANGED, object_locker_forward_events, o);
-  } else {
-    OBJECT_UNREF(wrapper->obj);
   }
 
   return o;
