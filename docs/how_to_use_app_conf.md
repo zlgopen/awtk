@@ -556,13 +556,29 @@ ret_t application_exit() {
   assert(app_conf_get_int("server.#index", -1) == 1);
 ```
 
-## 8. 注意事项
+## 8. 缺省配置
+  
+  * 位置。缺省配置放到资源中，位于：demos/assets/default/raw/data
+  
+  * 命名：应用程序名 + '.' + 文件扩展名。
+
+  * 文件扩展名与初始化时指定的格式一致。 
+
+比如，下面的例子中，应用程序名 demo，扩展名为 json。所以对应的缺省配置文件为：demos/assets/default/raw/data.json
+
+```c
+  ENSURE(app_conf_init_json("demo") == RET_OK);
+```
+
+> 在初始化时，如果配置文件不存在，则将缺省配置拷贝到配置文件。
+
+## 9. 注意事项
 
 * . 作为 key 的分隔符。
 
 * ini 格式不支持注释和换行。
 
-## 9. 参考示例
+## 10. 参考示例
 
 * [conf_ini](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/conf_ini.c)
 
