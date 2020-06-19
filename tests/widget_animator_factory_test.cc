@@ -85,6 +85,7 @@ TEST(WidgetAnimatorFactory, rotation_default) {
   ASSERT_EQ(rotation->to, 200);
   widget_animator_destroy(wa);
 
+  widget_set_prop(b, WIDGET_PROP_ROTATION, &v);
   wa = widget_animator_create(b, "rotation(to=1)");
   rotation = (widget_animator_prop_t*)wa;
   ASSERT_EQ(rotation->to, 1);
@@ -124,6 +125,7 @@ TEST(WidgetAnimatorFactory, value_default) {
   ASSERT_EQ(value->to, 20);
   widget_animator_destroy(wa);
 
+  widget_set_value(b, 20);
   wa = widget_animator_create(b, "value(to=10)");
   value = (widget_animator_prop_t*)wa;
   ASSERT_EQ(value->from, 20);
@@ -212,6 +214,7 @@ TEST(WidgetAnimatorFactory, scale_default) {
   ASSERT_EQ(scale->to2, 4);
   widget_animator_destroy(wa);
 
+  image_set_scale(b, 2, 4);
   wa = widget_animator_create(b, "scale(y_from=1, y_to=200)");
   scale = (widget_animator_prop2_t*)wa;
   ASSERT_EQ(scale->from2, 1);
