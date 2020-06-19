@@ -43,18 +43,18 @@ static ret_t object_compositor_remove_prop(object_t* obj, const char* name) {
   ret_t ret = RET_NOT_FOUND;
   object_compositor_t* o = OBJECT_COMPOSITOR(obj);
 
-   if(object_remove_prop(o->obj1, name) == RET_OK) {
-     return RET_OK;
-   }
+  if (object_remove_prop(o->obj1, name) == RET_OK) {
+    return RET_OK;
+  }
 
-   return object_remove_prop(o->obj2, name);
+  return object_remove_prop(o->obj2, name);
 }
 
 static ret_t object_compositor_set_prop(object_t* obj, const char* name, const value_t* v) {
   ret_t ret = RET_NOT_FOUND;
   object_compositor_t* o = OBJECT_COMPOSITOR(obj);
 
-  if(object_set_prop(o->obj1, name, v) == RET_OK) {
+  if (object_set_prop(o->obj1, name, v) == RET_OK) {
     return RET_OK;
   }
 
@@ -65,7 +65,7 @@ static ret_t object_compositor_get_prop(object_t* obj, const char* name, value_t
   ret_t ret = RET_NOT_FOUND;
   object_compositor_t* o = OBJECT_COMPOSITOR(obj);
 
-  if(object_get_prop(o->obj1, name, v) == RET_OK) {
+  if (object_get_prop(o->obj1, name, v) == RET_OK) {
     return RET_OK;
   }
 
@@ -77,7 +77,7 @@ static ret_t object_compositor_foreach_prop(object_t* obj, tk_visit_t on_prop, v
   object_compositor_t* o = OBJECT_COMPOSITOR(obj);
 
   ret = object_foreach_prop(o->obj1, on_prop, ctx);
-  if(ret != RET_STOP) {
+  if (ret != RET_STOP) {
     ret = object_foreach_prop(o->obj2, on_prop, ctx);
   }
 
@@ -87,10 +87,10 @@ static ret_t object_compositor_foreach_prop(object_t* obj, tk_visit_t on_prop, v
 static bool_t object_compositor_can_exec(object_t* obj, const char* name, const char* args) {
   object_compositor_t* o = OBJECT_COMPOSITOR(obj);
 
-  if(object_can_exec(o->obj1, name, args)) {
+  if (object_can_exec(o->obj1, name, args)) {
     return TRUE;
   }
-  
+
   return object_can_exec(o->obj2, name, args);
 }
 
@@ -98,25 +98,26 @@ static ret_t object_compositor_exec(object_t* obj, const char* name, const char*
   ret_t ret = RET_OK;
   object_compositor_t* o = OBJECT_COMPOSITOR(obj);
 
-  if(object_exec(o->obj1, name, args) == RET_OK) {
+  if (object_exec(o->obj1, name, args) == RET_OK) {
     return RET_OK;
   }
 
   return object_exec(o->obj2, name, args);
 }
 
-static const object_vtable_t s_object_compositor_vtable = {.type = "object_compositor",
-                                                       .desc = "object_compositor",
-                                                       .size = sizeof(object_compositor_t),
-                                                       .is_collection = FALSE,
-                                                       .on_destroy = object_compositor_on_destroy,
-                                                       .exec = object_compositor_exec,
-                                                       .can_exec = object_compositor_can_exec,
-                                                       .compare = object_compositor_compare,
-                                                       .get_prop = object_compositor_get_prop,
-                                                       .set_prop = object_compositor_set_prop,
-                                                       .remove_prop = object_compositor_remove_prop,
-                                                       .foreach_prop = object_compositor_foreach_prop};
+static const object_vtable_t s_object_compositor_vtable = {
+    .type = "object_compositor",
+    .desc = "object_compositor",
+    .size = sizeof(object_compositor_t),
+    .is_collection = FALSE,
+    .on_destroy = object_compositor_on_destroy,
+    .exec = object_compositor_exec,
+    .can_exec = object_compositor_can_exec,
+    .compare = object_compositor_compare,
+    .get_prop = object_compositor_get_prop,
+    .set_prop = object_compositor_set_prop,
+    .remove_prop = object_compositor_remove_prop,
+    .foreach_prop = object_compositor_foreach_prop};
 
 static ret_t object_compositor_forward_events(void* ctx, event_t* e) {
   object_compositor_t* o = OBJECT_COMPOSITOR(ctx);
@@ -138,7 +139,7 @@ object_t* object_compositor_create(object_t* obj1, object_t* obj2) {
   wrapper->obj1 = object_ref(obj1);
   emitter_on(EMITTER(obj1), EVT_ITEMS_CHANGED, object_compositor_forward_events, o);
   emitter_on(EMITTER(obj1), EVT_PROPS_CHANGED, object_compositor_forward_events, o);
-  
+
   wrapper->obj2 = object_ref(obj2);
   emitter_on(EMITTER(obj2), EVT_ITEMS_CHANGED, object_compositor_forward_events, o);
   emitter_on(EMITTER(obj2), EVT_PROPS_CHANGED, object_compositor_forward_events, o);

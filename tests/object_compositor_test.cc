@@ -72,7 +72,7 @@ TEST(ObjectComposite, basic) {
   log = "";
   object_foreach_prop(obj, visit_dump, &log);
   ASSERT_EQ(log, "56");
-  
+
   ASSERT_EQ(object_set_prop(obj2, "7", value_set_int(&v, 70)), RET_OK);
   ASSERT_EQ(object_get_prop(obj, "7", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 70);
