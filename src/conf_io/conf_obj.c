@@ -108,6 +108,24 @@ static ret_t conf_obj_load(object_t* obj) {
   return RET_OK;
 }
 
+static ret_t conf_obj_load_or_create(object_t* obj) {
+  conf_obj_t* o = CONF_OBJ(obj);
+
+  conf_obj_load(obj);
+
+  if (o->doc == NULL) {
+    o->doc = conf_doc_create(20);
+  }
+
+  if (o->doc != NULL) {
+    if (o->doc->root == NULL) {
+      o->doc->root = conf_doc_create_node(o->doc, CONF_NODE_ROOT_NAME);
+    }
+  }
+
+  return RET_OK;
+}
+
 static ret_t conf_obj_reload(object_t* obj) {
   conf_obj_t* o = CONF_OBJ(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
@@ -115,7 +133,7 @@ static ret_t conf_obj_reload(object_t* obj) {
   conf_doc_destroy(o->doc);
   o->doc = NULL;
 
-  return conf_obj_load(obj);
+  return conf_obj_load_or_create(obj);
 }
 
 static bool_t conf_obj_can_exec(object_t* obj, const char* name, const char* args) {
@@ -216,15 +234,7 @@ object_t* conf_obj_create(conf_doc_save_t save, conf_doc_load_t load, const char
   }
   return_value_if_fail(o != NULL, NULL);
 
-  conf_obj_load(obj);
-  if (o->doc == NULL) {
-    if (create_if_not_exist) {
-      o->doc = conf_doc_create(20);
-      if (o->doc != NULL) {
-        o->doc->root = conf_doc_create_node(o->doc, CONF_NODE_ROOT_NAME);
-      }
-    }
-  }
+  conf_obj_load_or_create(obj);
 
   if (o->doc == NULL || o->doc->root == NULL) {
     TKMEM_FREE(o->url);
