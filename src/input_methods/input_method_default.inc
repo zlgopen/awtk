@@ -135,7 +135,6 @@ static ret_t input_method_on_win_close(void* ctx, event_t* e) {
   input_method_default_restore_win_position(im);
 
   if (im->keyboard != NULL) {
-    /* 用来区分 keyboard 切换类型时候调用的 window_close */
     widget_get_prop(im->keyboard, WIDGET_PROP_CLOSE_ANIM_HINT, &v);
     if (tk_str_cmp(value_str(&v), "") != 0) {
       im->keyboard = NULL;
@@ -143,8 +142,6 @@ static ret_t input_method_on_win_close(void* ctx, event_t* e) {
       im->win = NULL;
     }
   }
-
-  (void)e;
 
   return RET_REMOVE;
 }
@@ -258,7 +255,12 @@ static ret_t on_idle_close_keyboard(const idle_info_t* idle) {
     window_close(im->keyboard);
     im->keyboard = NULL;
     im->widget = NULL;
+  } else if(im->widget == NULL) {
+    window_close_force(info->keyboard);
+    im->keyboard = NULL;
+    im->widget = NULL;
   }
+
   TKMEM_FREE(info);
 
   return RET_OK;
