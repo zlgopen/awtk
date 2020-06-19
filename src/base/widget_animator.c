@@ -153,6 +153,7 @@ ret_t widget_animator_start(widget_animator_t* animator) {
 
   animator->state = ANIMATOR_RUNNING;
   emitter_dispatch(&(animator->emitter), &e);
+  widget_animator_update(animator, 0);
 
   return RET_OK;
 }
