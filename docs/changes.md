@@ -1,6 +1,9 @@
 # 最新动态
 
 * 2020/06/20
+  * 完善tab\_button\_group支持缺省的active button。
+
+* 2020/06/19
   * 完善 DLL 导出符号。
   * 完善 conf-io，支持自读模式。
   * 完善 conf-io，支持缺省配置。

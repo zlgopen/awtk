@@ -139,9 +139,30 @@ static ret_t tab_button_group_on_paint_children(widget_t* widget, canvas_t* c) {
   return hscrollable_on_paint_children(tab_button_group->hscrollable, c);
 }
 
+static ret_t tab_button_group_ensure_active(widget_t* widget) {
+  widget_t* first = NULL;
+
+  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+  if (widget_get_value(iter)) {
+    return RET_OK;
+  }
+  if (first == NULL) {
+    first = iter;
+  }
+  WIDGET_FOR_EACH_CHILD_END();
+
+  widget_set_value(first, TRUE);
+
+  return RET_OK;
+}
+
 static ret_t tab_button_group_on_event(widget_t* widget, event_t* e) {
   tab_button_group_t* tab_button_group = TAB_BUTTON_GROUP(widget);
   return_value_if_fail(tab_button_group != NULL, RET_BAD_PARAMS);
+
+  if (e->type == EVT_WINDOW_WILL_OPEN) {
+    tab_button_group_ensure_active(widget);
+  }
 
   if (tab_button_group->scrollable && tab_button_group->compact) {
     return hscrollable_on_event(tab_button_group->hscrollable, e);
