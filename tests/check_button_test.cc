@@ -98,12 +98,12 @@ TEST(CheckButton, radio1) {
   ASSERT_EQ(check_button_get_checked_button(b1), b3);
   ASSERT_EQ(check_button_get_checked_button(b2), b3);
   ASSERT_EQ(check_button_get_checked_button(b3), b3);
-  
+
   ASSERT_EQ(check_button_set_value(b1, TRUE), RET_OK);
   ASSERT_EQ(check_button_get_checked_button(b1), b1);
   ASSERT_EQ(check_button_get_checked_button(b2), b1);
   ASSERT_EQ(check_button_get_checked_button(b3), b1);
-  
+
   ASSERT_EQ(check_button_set_value(b2, TRUE), RET_OK);
   ASSERT_EQ(check_button_get_checked_button(b1), b2);
   ASSERT_EQ(check_button_get_checked_button(b2), b2);
@@ -111,4 +111,3 @@ TEST(CheckButton, radio1) {
 
   widget_destroy(g);
 }
-

@@ -148,11 +148,10 @@ static ret_t conf_obj_reload(object_t* obj) {
 static bool_t conf_obj_can_exec(object_t* obj, const char* name, const char* args) {
   conf_obj_t* o = CONF_OBJ(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
-  
+
   if (o->readonly) {
     return FALSE;
   }
-
 
   if (tk_str_ieq(name, CONF_CMD_SAVE)) {
     return TRUE;

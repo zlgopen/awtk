@@ -25,7 +25,7 @@ void allocator_test_basic() {
     mem_allocator_free(allocator, addrs[i]);
   }
 
-  for(i = 0; i < TK_MEM_POOLS_NR; i++) {
+  for (i = 0; i < TK_MEM_POOLS_NR; i++) {
     assert(pool.pools[i]->used == 0);
   }
 }
@@ -57,7 +57,7 @@ void allocator_test_rand() {
       mem_allocator_free(allocator, addrs[i]);
     }
   }
-  for(i = 0; i < TK_MEM_POOLS_NR; i++) {
+  for (i = 0; i < TK_MEM_POOLS_NR; i++) {
     assert(pool.pools[i]->used == 0);
   }
 }

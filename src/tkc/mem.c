@@ -67,9 +67,9 @@ ret_t tk_mem_init(void* buffer, uint32_t size) {
   static mem_allocator_pool_t pool;
 
   s_allocator = mem_allocator_simple_init(&simple, buffer, size);
-  if(size < 100 * 1024) {
+  if (size < 100 * 1024) {
     s_allocator = mem_allocator_pool_init(&pool, s_allocator, 100, 100, 80, 80, 32);
-  } else if(size < 1000 * 1024) {
+  } else if (size < 1000 * 1024) {
     s_allocator = mem_allocator_pool_init(&pool, s_allocator, 500, 500, 500, 200, 200);
   } else {
     s_allocator = mem_allocator_pool_init(&pool, s_allocator, 1000, 1000, 1000, 500, 500);
@@ -85,7 +85,7 @@ ret_t tk_mem_init_stage2(void) {
   return_value_if_fail(s_allocator != NULL, RET_FAIL);
   s_allocator = mem_allocator_lock_init(&s_lock, s_allocator);
   s_allocator = mem_allocator_oom_init(&s_oom, s_allocator);
-  
+
   return RET_OK;
 }
 
@@ -154,4 +154,3 @@ void tk_mem_dump(void) {
 
   mem_allocator_dump(allocator);
 }
-

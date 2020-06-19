@@ -30,8 +30,8 @@ typedef struct _mem_pool_t {
   uint32_t block_size : 8;
   uint32_t block_nr : 16;
   uint32_t bits_size : 8;
-  uint32_t min_block_size:16;
-  uint32_t used:16;
+  uint32_t min_block_size : 16;
+  uint32_t used : 16;
 
   uint32_t* bits;
   uint8_t* start;

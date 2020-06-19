@@ -31,8 +31,8 @@ static void xml_gen_on_end(XmlBuilder* thiz, const char* tag) {
   return;
 }
 
-static void xml_gen_on_error(XmlBuilder* thiz, int line, int row, const char* message) { 
- log_debug("%d:%d %s\n", line, row, message);
+static void xml_gen_on_error(XmlBuilder* thiz, int line, int row, const char* message) {
+  log_debug("%d:%d %s\n", line, row, message);
 }
 
 static void xml_gen_on_text(XmlBuilder* thiz, const char* text, size_t length) {
@@ -146,9 +146,7 @@ TEST(XmlParser, space1) {
   XmlParser* p = xml_parser_create();
   xml_parser_set_builder(p, builder_init(b));
 
-  test_str_ex(p,
-              "<test a1=\" 1 \" ></test>",
-              "<test a1=\" 1 \" ></test>"); 
+  test_str_ex(p, "<test a1=\" 1 \" ></test>", "<test a1=\" 1 \" ></test>");
 
   xml_parser_destroy(p);
 }
@@ -158,9 +156,7 @@ TEST(XmlParser, space2) {
   XmlParser* p = xml_parser_create();
   xml_parser_set_builder(p, builder_init(b));
 
-  test_str_ex(p,
-              "< test a1 =\" 1 \"></ test >",
-              "<test a1=\" 1 \" ></test>"); 
+  test_str_ex(p, "< test a1 =\" 1 \"></ test >", "<test a1=\" 1 \" ></test>");
 
   xml_parser_destroy(p);
 }

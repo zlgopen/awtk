@@ -214,7 +214,7 @@ widget_t* check_button_get_checked_button(widget_t* widget) {
     WIDGET_FOR_EACH_CHILD_BEGIN(parent, iter, i)
     if (iter->vt == widget->vt) {
       check_button_t* b = CHECK_BUTTON(iter);
-      if(b->value) {
+      if (b->value) {
         return iter;
       }
     }

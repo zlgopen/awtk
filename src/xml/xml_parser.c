@@ -306,7 +306,8 @@ static void xml_parser_parse_start_tag(XmlParser* thiz) {
     switch (state) {
       case STAT_NAME: {
         if (isspace(c) || c == '>' || c == '/') {
-          tag_name = tk_pointer_from_int(xml_parser_strdup(thiz, start, thiz->read_ptr - start, TRUE));
+          tag_name =
+              tk_pointer_from_int(xml_parser_strdup(thiz, start, thiz->read_ptr - start, TRUE));
           state = (c != '>' && c != '/') ? STAT_ATTR : STAT_END;
         }
         break;
@@ -417,7 +418,8 @@ static void xml_parser_parse_pi(XmlParser* thiz) {
     switch (state) {
       case STAT_NAME: {
         if (isspace(c) || c == '>') {
-          tag_name = tk_pointer_from_int(xml_parser_strdup(thiz, start, thiz->read_ptr - start, TRUE));
+          tag_name =
+              tk_pointer_from_int(xml_parser_strdup(thiz, start, thiz->read_ptr - start, TRUE));
           state = c != '>' ? STAT_ATTR : STAT_END;
         }
 

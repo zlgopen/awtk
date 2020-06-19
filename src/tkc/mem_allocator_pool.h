@@ -52,9 +52,9 @@ static inline void* mem_allocator_pool_alloc(mem_allocator_t* allocator, uint32_
   mem_pool_t** pools = MEM_ALLOCATOR_POOL(allocator)->pools;
   mem_allocator_t* impl = MEM_ALLOCATOR_POOL(allocator)->impl;
 
-  for(i = 0; i < TK_MEM_POOLS_NR; i++) {
+  for (i = 0; i < TK_MEM_POOLS_NR; i++) {
     mem_pool_t* p = pools[i];
-    if(mem_pool_match_size(p, size)) {
+    if (mem_pool_match_size(p, size)) {
       addr = mem_pool_get(p);
       if (addr != NULL) {
         return addr;
@@ -75,15 +75,15 @@ static inline void* mem_allocator_pool_realloc(mem_allocator_t* allocator, void*
   void* addr = NULL;
   mem_pool_t** pools = MEM_ALLOCATOR_POOL(allocator)->pools;
   mem_allocator_t* impl = MEM_ALLOCATOR_POOL(allocator)->impl;
-  
-  if(ptr == NULL) {
+
+  if (ptr == NULL) {
     return mem_allocator_pool_alloc(allocator, size, func, line);
   }
 
-  for(i = 0; i < TK_MEM_POOLS_NR; i++) {
+  for (i = 0; i < TK_MEM_POOLS_NR; i++) {
     mem_pool_t* p = pools[i];
     if (mem_pool_get_index(p, ptr) >= 0) {
-      if(mem_pool_match_size(p, size)) {
+      if (mem_pool_match_size(p, size)) {
         return ptr;
       } else {
         addr = mem_allocator_pool_alloc(allocator, size, func, line);
@@ -105,11 +105,11 @@ static inline void mem_allocator_pool_free(mem_allocator_t* allocator, void* ptr
   mem_pool_t** pools = MEM_ALLOCATOR_POOL(allocator)->pools;
   mem_allocator_t* impl = MEM_ALLOCATOR_POOL(allocator)->impl;
 
-  if(ptr == NULL) {
+  if (ptr == NULL) {
     return;
   }
 
-  for(i = 0; i < TK_MEM_POOLS_NR; i++) {
+  for (i = 0; i < TK_MEM_POOLS_NR; i++) {
     mem_pool_t* p = pools[i];
     if (mem_pool_get_index(p, ptr) >= 0) {
       mem_pool_put(p, ptr);
@@ -128,7 +128,7 @@ static inline ret_t mem_allocator_pool_dump(mem_allocator_t* allocator) {
 
   mem_allocator_dump(impl);
 
-  for(i = 0; i < TK_MEM_POOLS_NR; i++) {
+  for (i = 0; i < TK_MEM_POOLS_NR; i++) {
     mem_pool_t* p = pools[i];
     used += p->used;
     log_debug("%u: block_size=%u block_nr=%u used=%u\n", i, p->block_size, p->block_nr, p->used);
@@ -143,7 +143,7 @@ static inline ret_t mem_allocator_pool_destroy(mem_allocator_t* allocator) {
   mem_pool_t** pools = MEM_ALLOCATOR_POOL(allocator)->pools;
   mem_allocator_t* impl = MEM_ALLOCATOR_POOL(allocator)->impl;
 
-  for(i = 0; i < TK_MEM_POOLS_NR; i++) {
+  for (i = 0; i < TK_MEM_POOLS_NR; i++) {
     mem_pool_t* p = pools[i];
     mem_allocator_free(impl, p);
     pools[i] = NULL;
@@ -185,7 +185,7 @@ static inline mem_allocator_t* mem_allocator_pool_init(mem_allocator_pool_t* poo
   allocator->vt = &s_mem_allocator_pool_vtable;
   pool->impl = impl;
 
-  for(i = 0; i < TK_MEM_POOLS_NR; i++) {
+  for (i = 0; i < TK_MEM_POOLS_NR; i++) {
     pool->pools[i] = mem_pool_create(impl, blocks_size[i], tk_max(32, blocks_nr[i]));
   }
 
@@ -195,4 +195,3 @@ static inline mem_allocator_t* mem_allocator_pool_init(mem_allocator_pool_t* poo
 END_C_DECLS
 
 #endif /*TK_MEM_ALLOCATOR_POOL_H*/
-

@@ -344,14 +344,14 @@ TEST(Ini, move_up) {
 
 TEST(Ini, readonly) {
   object_t* conf = conf_ini_load("file://./tests/testdata/test.ini", TRUE);
-  
+
   ASSERT_EQ(object_set_prop_str(conf, "tom.name", "tom"), RET_OK);
   ASSERT_EQ(object_remove_prop(conf, "tom.name"), RET_OK);
 
   ASSERT_EQ(conf_obj_set_readonly(conf, TRUE), RET_OK);
   ASSERT_NE(object_set_prop_str(conf, "tom.name", "tom"), RET_OK);
   ASSERT_NE(object_remove_prop(conf, "tom.name"), RET_OK);
-  
+
   ASSERT_EQ(conf_obj_set_readonly(conf, FALSE), RET_OK);
   ASSERT_EQ(object_set_prop_str(conf, "tom.name", "tom"), RET_OK);
   ASSERT_EQ(object_remove_prop(conf, "tom.name"), RET_OK);
