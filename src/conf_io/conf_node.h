@@ -274,6 +274,18 @@ bool_t conf_doc_is_first(conf_doc_t* doc, const char* path);
 bool_t conf_doc_is_last(conf_doc_t* doc, const char* path);
 
 /**
+ * @method conf_doc_add_child
+ *
+ * 追加一个子节点。
+ *
+ * @param {conf_doc_t*} doc 文档对象。
+ * @param {const char*} path 节点的路径。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t conf_doc_add_child(conf_doc_t* doc, const char* path);
+
+/**
  * @method conf_doc_destroy
  *
  * 析构函数。

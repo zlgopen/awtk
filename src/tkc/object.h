@@ -609,6 +609,20 @@ float_t object_get_prop_float_by_path(object_t* obj, const char* path, float_t d
  */
 #define OBJECT_CMD_CLEAR "clear"
 
+/**
+ * @const OBJECT_CMD_ADD
+ * 增加子项。
+ *>参数为属性的名称或路径。
+ */
+#define OBJECT_CMD_ADD "add"
+
+/**
+ * @const OBJECT_CMD_EDIT
+ * 编辑子项。
+ *>参数为属性的名称或路径。
+ */
+#define OBJECT_CMD_EDIT "edit"
+
 END_C_DECLS
 
 #endif /*TK_OBJECT_H*/

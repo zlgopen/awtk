@@ -145,17 +145,22 @@ static ret_t conf_json_parse_object(json_parser_t* parser) {
 
 static ret_t conf_json_parse_array(json_parser_t* parser) {
   char c = '\0';
+  uint32_t i = 0;
+  char name[TK_NAME_LEN + 1];
+  conf_node_t* node = NULL;
+
   parser->cursor++;
 
   while (parser->cursor < parser->size) {
-    conf_node_t* node = conf_doc_create_node(parser->doc, NULL);
+    tk_snprintf(name, TK_NAME_LEN, "%u", i++);
+    node = conf_doc_create_node(parser->doc, name);
     return_value_if_fail(node != NULL, RET_OOM);
     conf_doc_append_child(parser->doc, parser->current, node);
-
     parser->current = node;
     return_value_if_fail(conf_json_parse_value(parser) == RET_OK, RET_FAIL);
     parser->current = node->parent;
 
+    conf_json_skip_spaces(parser);
     c = parser->data[parser->cursor];
     if (c == ']') {
       parser->cursor++;

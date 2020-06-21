@@ -757,3 +757,19 @@ bool_t conf_doc_exists(conf_doc_t* doc, const char* path) {
 
   return conf_doc_get_node(doc, path, FALSE) != NULL;
 }
+
+ret_t conf_doc_add_child(conf_doc_t* doc, const char* path) {
+  conf_node_t* node = NULL;
+  conf_node_t* new_node = NULL;
+  char name[TK_NAME_LEN + 1];
+  return_value_if_fail(doc != NULL && path != NULL, RET_BAD_PARAMS);
+
+  node = conf_doc_get_node(doc, path, FALSE);
+  return_value_if_fail(node != NULL, RET_NOT_FOUND);
+ 
+  tk_snprintf(name, TK_NAME_LEN, "%u", conf_node_count_children(node));
+  new_node = conf_doc_create_node(doc, name);
+  return_value_if_fail(new_node != NULL, RET_OOM);
+  
+  return conf_doc_append_child(doc, node, new_node);
+}

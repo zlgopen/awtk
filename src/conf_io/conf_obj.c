@@ -176,6 +176,8 @@ static bool_t conf_obj_can_exec(object_t* obj, const char* name, const char* arg
     return conf_doc_exists(o->doc, args);
   } else if (tk_str_ieq(name, OBJECT_CMD_REMOVE)) {
     return conf_doc_exists(o->doc, args);
+  } else if (tk_str_ieq(name, OBJECT_CMD_ADD)) {
+    return conf_doc_exists(o->doc, args);
   }
 
   return FALSE;
@@ -215,6 +217,12 @@ static ret_t conf_obj_exec(object_t* obj, const char* name, const char* args) {
     }
   } else if (tk_str_ieq(name, OBJECT_CMD_REMOVE)) {
     if (conf_obj_remove_prop(obj, args) == RET_OK) {
+      ret = RET_ITEMS_CHANGED;
+    } else {
+      ret = RET_FAIL;
+    }
+  } else if (tk_str_ieq(name, OBJECT_CMD_ADD)) {
+    if (conf_doc_add_child(o->doc, args) == RET_OK) {
       ret = RET_ITEMS_CHANGED;
     } else {
       ret = RET_FAIL;
