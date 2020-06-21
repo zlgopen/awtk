@@ -91,18 +91,6 @@ ret_t conf_obj_save(object_t* conf);
  */
 ret_t conf_obj_set_readonly(object_t* conf, bool_t readonly);
 
-/*保存命令*/
-#define CONF_CMD_SAVE "save"
-
-/*重新加载命令*/
-#define CONF_CMD_RELOAD "reload"
-
-/*和前一个兄弟节点交换位置*/
-#define CONF_CMD_MOVE_UP "move_up"
-
-/*和后一个兄弟节点交换位置*/
-#define CONF_CMD_MOVE_DOWN "move_down"
-
 END_C_DECLS
 
 #endif /*TK_CONF_OBJ_H*/

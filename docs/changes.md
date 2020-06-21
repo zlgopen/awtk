@@ -1,7 +1,11 @@
 # 最新动态
 
+* 2020/06/21
+  * 增加 object\_cmd\_t 定义对象支持的常见命令。
+  * 完善 conf-io 实现常见命令。
+
 * 2020/06/20
-  * 完善tab\_button\_group支持缺省的active button。
+  * 完善 tab\_button\_group 支持缺省的 active button。
 
 * 2020/06/19
   * 完善 DLL 导出符号。

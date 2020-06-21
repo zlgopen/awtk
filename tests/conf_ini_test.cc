@@ -342,6 +342,21 @@ TEST(Ini, move_up) {
   conf_doc_destroy(doc);
 }
 
+
+TEST(Ini, clear) {
+  value_t v;
+  conf_node_t* node = NULL;
+  conf_doc_t* doc = conf_doc_load_ini("[hello]\n name=aaa\n");
+
+  ASSERT_EQ(conf_doc_get(doc, "hello.#size", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 1);
+  ASSERT_EQ(conf_doc_clear(doc, "hello"), RET_OK);
+  ASSERT_EQ(conf_doc_get(doc, "hello.#size", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 0);
+
+  conf_doc_destroy(doc);
+ }
+
 TEST(Ini, readonly) {
   object_t* conf = conf_ini_load("file://./tests/testdata/test.ini", TRUE);
 

@@ -202,6 +202,18 @@ ret_t conf_doc_get(conf_doc_t* doc, const char* path, value_t* v);
 ret_t conf_doc_remove(conf_doc_t* doc, const char* path);
 
 /**
+ * @method conf_doc_clear
+ *
+ * 删除指定路径的节点的全部子节点。
+ *
+ * @param {conf_doc_t*} doc 文档对象。
+ * @param {const char*} path 节点的路径。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t conf_doc_clear(conf_doc_t* doc, const char* path);
+
+/**
  * @method conf_doc_move_up
  *
  * 和前一个兄弟节点交换位置。

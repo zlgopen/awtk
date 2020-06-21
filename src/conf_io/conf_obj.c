@@ -66,6 +66,17 @@ static ret_t conf_obj_remove_prop(object_t* obj, const char* name) {
   return conf_doc_remove(o->doc, name);
 }
 
+static ret_t conf_obj_clear(object_t* obj, const char* name) {
+  conf_obj_t* o = CONF_OBJ(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
+  if (o->readonly) {
+    return RET_NOT_IMPL;
+  }
+
+  return conf_doc_clear(o->doc, name);
+}
+
 static ret_t conf_obj_set_prop(object_t* obj, const char* name, const value_t* v) {
   conf_obj_t* o = CONF_OBJ(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
@@ -153,14 +164,18 @@ static bool_t conf_obj_can_exec(object_t* obj, const char* name, const char* arg
     return FALSE;
   }
 
-  if (tk_str_ieq(name, CONF_CMD_SAVE)) {
+  if (tk_str_ieq(name, OBJECT_CMD_SAVE)) {
     return TRUE;
-  } else if (tk_str_ieq(name, CONF_CMD_RELOAD)) {
+  } else if (tk_str_ieq(name, OBJECT_CMD_RELOAD)) {
     return TRUE;
-  } else if (tk_str_ieq(name, CONF_CMD_MOVE_UP)) {
-    return !conf_doc_is_first(o->doc, name);
-  } else if (tk_str_ieq(name, CONF_CMD_MOVE_DOWN)) {
-    return !conf_doc_is_last(o->doc, name);
+  } else if (tk_str_ieq(name, OBJECT_CMD_MOVE_UP)) {
+    return conf_doc_exists(o->doc, args) && !conf_doc_is_first(o->doc, args);
+  } else if (tk_str_ieq(name, OBJECT_CMD_MOVE_DOWN)) {
+    return conf_doc_exists(o->doc, args) && !conf_doc_is_last(o->doc, args);
+  } else if (tk_str_ieq(name, OBJECT_CMD_CLEAR)) {
+    return conf_doc_exists(o->doc, args);
+  } else if (tk_str_ieq(name, OBJECT_CMD_REMOVE)) {
+    return conf_doc_exists(o->doc, args);
   }
 
   return FALSE;
@@ -175,17 +190,37 @@ static ret_t conf_obj_exec(object_t* obj, const char* name, const char* args) {
     return RET_NOT_IMPL;
   }
 
-  if (tk_str_ieq(name, CONF_CMD_SAVE)) {
+  if (tk_str_ieq(name, OBJECT_CMD_SAVE)) {
     ret = conf_obj_save(obj);
-  } else if (tk_str_ieq(name, CONF_CMD_RELOAD)) {
+  } else if (tk_str_ieq(name, OBJECT_CMD_RELOAD)) {
     conf_obj_reload(obj);
     ret = RET_ITEMS_CHANGED;
-  } else if (tk_str_ieq(name, CONF_CMD_MOVE_UP)) {
-    conf_obj_move_up(obj, args);
-    ret = RET_ITEMS_CHANGED;
-  } else if (tk_str_ieq(name, CONF_CMD_MOVE_DOWN)) {
-    conf_obj_move_down(obj, args);
-    ret = RET_ITEMS_CHANGED;
+  } else if (tk_str_ieq(name, OBJECT_CMD_MOVE_UP)) {
+    if (conf_obj_move_up(obj, args) == RET_OK) {
+      ret = RET_ITEMS_CHANGED;
+    } else {
+      ret = RET_FAIL;
+    }
+  } else if (tk_str_ieq(name, OBJECT_CMD_MOVE_DOWN)) {
+    if (conf_obj_move_down(obj, args) == RET_OK) {
+      ret = RET_ITEMS_CHANGED;
+    } else {
+      ret = RET_FAIL;
+    }
+  } else if (tk_str_ieq(name, OBJECT_CMD_CLEAR)) {
+    if (conf_obj_clear(obj, args) == RET_OK) {
+      ret = RET_ITEMS_CHANGED;
+    } else {
+      ret = RET_FAIL;
+    }
+  } else if (tk_str_ieq(name, OBJECT_CMD_REMOVE)) {
+    if (conf_obj_remove_prop(obj, args) == RET_OK) {
+      ret = RET_ITEMS_CHANGED;
+    } else {
+      ret = RET_FAIL;
+    }
+  } else {
+    return RET_NOT_IMPL;
   }
 
   if (ret == RET_ITEMS_CHANGED) {

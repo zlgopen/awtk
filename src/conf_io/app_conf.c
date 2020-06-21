@@ -43,11 +43,11 @@ object_t* app_conf_get_instance(void) {
 }
 
 ret_t app_conf_save(void) {
-  return object_exec(s_conf, CONF_CMD_SAVE, NULL);
+  return object_exec(s_conf, OBJECT_CMD_SAVE, NULL);
 }
 
 ret_t app_conf_reload(void) {
-  return object_exec(s_conf, CONF_CMD_RELOAD, NULL);
+  return object_exec(s_conf, OBJECT_CMD_RELOAD, NULL);
 }
 
 ret_t app_conf_deinit(void) {

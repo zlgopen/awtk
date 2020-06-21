@@ -27,6 +27,21 @@ TEST(ConfJson, basic1) {
   conf_doc_destroy(doc);
 }
 
+TEST(Json, clear) {
+  value_t v;
+  conf_node_t* node = NULL;
+  const char* data = " {\"hello\" : { \"name\" : \"tom\", \"age\" : 100  }  } ";
+  conf_doc_t* doc = conf_doc_load_json(data, -1);
+
+  ASSERT_EQ(conf_doc_get(doc, "hello.#size", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 2);
+  ASSERT_EQ(conf_doc_clear(doc, "hello"), RET_OK);
+  ASSERT_EQ(conf_doc_get(doc, "hello.#size", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 0);
+
+  conf_doc_destroy(doc);
+ }
+
 TEST(ConfJson, name) {
   value_t v;
   str_t str;
@@ -178,6 +193,36 @@ TEST(Json, file) {
   ASSERT_STREQ(object_get_prop_str(conf, "group.key"), "value");
   ASSERT_EQ(object_remove_prop(conf, "group.key"), RET_OK);
   ASSERT_EQ(object_get_prop_str(conf, "group.key"), (char*)NULL);
+
+  OBJECT_UNREF(conf);
+}
+
+TEST(Json, exec) {
+  value_t v;
+  object_t* conf = conf_json_load("file://./tests/testdata/test.json", TRUE);
+
+  ASSERT_EQ(object_can_exec(conf, OBJECT_CMD_MOVE_UP, "group.key"), FALSE);
+  ASSERT_EQ(object_can_exec(conf, OBJECT_CMD_MOVE_DOWN, "group.key"), TRUE);
+  ASSERT_EQ(object_can_exec(conf, OBJECT_CMD_CLEAR, "group"), TRUE);
+  ASSERT_EQ(object_can_exec(conf, OBJECT_CMD_REMOVE, "group.key"), TRUE);
+  ASSERT_EQ(object_can_exec(conf, OBJECT_CMD_SAVE, NULL), TRUE);
+  ASSERT_EQ(object_can_exec(conf, OBJECT_CMD_RELOAD, NULL), TRUE);
+  
+  ASSERT_EQ(object_exec(conf, OBJECT_CMD_MOVE_DOWN, "group.key"), RET_OK);
+  ASSERT_EQ(object_get_prop_int(conf, "group.key.#index", 0), 1);
+
+  ASSERT_EQ(object_exec(conf, OBJECT_CMD_MOVE_UP, "group.key"), RET_OK);
+  ASSERT_EQ(object_get_prop_int(conf, "group.key.#index", 0), 0);
+
+  ASSERT_STREQ(object_get_prop_str(conf, "group.key"), "value");
+  ASSERT_EQ(object_exec(conf, OBJECT_CMD_REMOVE, "group.key"), RET_OK);
+  ASSERT_EQ(object_get_prop_str(conf, "group.key"), (char*)NULL);
+
+  ASSERT_EQ(object_exec(conf, OBJECT_CMD_CLEAR, "group"), RET_OK);
+  ASSERT_EQ(object_get_prop_int(conf, "group.#size", -1), 0);
+
+  ASSERT_EQ(object_exec(conf, OBJECT_CMD_RELOAD, NULL), RET_OK);
+  ASSERT_EQ(object_exec(conf, OBJECT_CMD_SAVE, NULL), RET_OK);
 
   OBJECT_UNREF(conf);
 }

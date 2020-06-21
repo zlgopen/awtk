@@ -640,6 +640,19 @@ ret_t conf_doc_remove(conf_doc_t* doc, const char* path) {
   }
 }
 
+ret_t conf_doc_clear(conf_doc_t* doc, const char* path) {
+  conf_node_t* node = NULL;
+  return_value_if_fail(doc != NULL && path != NULL, RET_BAD_PARAMS);
+
+  node = conf_doc_get_node(doc, path, FALSE);
+
+  if (node != NULL) {
+    return conf_doc_remove_children(doc, node);
+  } else {
+    return RET_NOT_FOUND;
+  }
+}
+
 static conf_node_t* conf_node_get_prev(conf_node_t* node) {
   conf_node_t* iter = NULL;
   return_value_if_fail(node != NULL && node->parent != NULL, NULL);
