@@ -9,6 +9,7 @@
 | -------- | ------------ | 
 | <a href="#conf_doc_t_conf_doc_append_child">conf\_doc\_append\_child</a> | 追加一个子节点。 |
 | <a href="#conf_doc_t_conf_doc_append_sibling">conf\_doc\_append\_sibling</a> | 追加一个兄弟节点。 |
+| <a href="#conf_doc_t_conf_doc_clear">conf\_doc\_clear</a> | 删除指定路径的节点的全部子节点。 |
 | <a href="#conf_doc_t_conf_doc_create">conf\_doc\_create</a> | 构造函数。 |
 | <a href="#conf_doc_t_conf_doc_create_node">conf\_doc\_create\_node</a> | 创建一个空节点。 |
 | <a href="#conf_doc_t_conf_doc_destroy">conf\_doc\_destroy</a> | 析构函数。 |
@@ -73,6 +74,26 @@ ret_t conf_doc_append_sibling (conf_doc_t* doc, conf_node_t* node, conf_node_t* 
 | doc | conf\_doc\_t* | 文档对象。 |
 | node | conf\_node\_t* | 节点对象。 |
 | sibling | conf\_node\_t* | 待追加节点对象。 |
+#### conf\_doc\_clear 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="conf_doc_t_conf_doc_clear">删除指定路径的节点的全部子节点。
+
+* 函数原型：
+
+```
+ret_t conf_doc_clear (conf_doc_t* doc, const char* path);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| doc | conf\_doc\_t* | 文档对象。 |
+| path | const char* | 节点的路径。 |
 #### conf\_doc\_create 函数
 -----------------------
 

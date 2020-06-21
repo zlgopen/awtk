@@ -12,6 +12,7 @@ conf对象。
 | <a href="#conf_obj_t_conf_obj_create">conf\_obj\_create</a> |  |
 | <a href="#conf_obj_t_conf_obj_get_doc">conf\_obj\_get\_doc</a> | 获取doc对象，用于更高级的操作。 |
 | <a href="#conf_obj_t_conf_obj_save">conf\_obj\_save</a> | 保存文档。 |
+| <a href="#conf_obj_t_conf_obj_set_readonly">conf\_obj\_set\_readonly</a> | 设置为只读模式。 |
 #### conf\_obj\_create 函数
 -----------------------
 
@@ -72,3 +73,23 @@ ret_t conf_obj_save (object_t* conf);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败 |
 | conf | object\_t* | conf对象。 |
+#### conf\_obj\_set\_readonly 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="conf_obj_t_conf_obj_set_readonly">设置为只读模式。
+
+* 函数原型：
+
+```
+ret_t conf_obj_set_readonly (object_t* conf, bool_t readonly);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败 |
+| conf | object\_t* | conf对象。 |
+| readonly | bool\_t | 只读模式。 |
