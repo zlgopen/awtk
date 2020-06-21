@@ -29689,7 +29689,7 @@
       },
       {
         "desc": "和后一个属性交换位置\n>参数为属性的名称或路径。",
-        "name": "OBJECT_CMD_MOVE_UP"
+        "name": "OBJECT_CMD_MOVE_DOWN"
       },
       {
         "desc": "删除属性。\n>参数为属性的名称或路径。",

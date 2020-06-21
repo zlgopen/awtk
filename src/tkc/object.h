@@ -589,7 +589,7 @@ float_t object_get_prop_float_by_path(object_t* obj, const char* path, float_t d
 #define OBJECT_CMD_MOVE_UP "move_up"
 
 /**
- * @const OBJECT_CMD_MOVE_UP
+ * @const OBJECT_CMD_MOVE_DOWN
  * 和后一个属性交换位置
  *>参数为属性的名称或路径。
  */
