@@ -342,7 +342,6 @@ TEST(Ini, move_up) {
   conf_doc_destroy(doc);
 }
 
-
 TEST(Ini, clear) {
   value_t v;
   conf_node_t* node = NULL;
@@ -355,7 +354,7 @@ TEST(Ini, clear) {
   ASSERT_EQ(value_int(&v), 0);
 
   conf_doc_destroy(doc);
- }
+}
 
 TEST(Ini, readonly) {
   object_t* conf = conf_ini_load("file://./tests/testdata/test.ini", TRUE);

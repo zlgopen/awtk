@@ -40,7 +40,7 @@ TEST(Json, clear) {
   ASSERT_EQ(value_int(&v), 0);
 
   conf_doc_destroy(doc);
- }
+}
 
 TEST(ConfJson, name) {
   value_t v;
@@ -207,7 +207,7 @@ TEST(Json, exec) {
   ASSERT_EQ(object_can_exec(conf, OBJECT_CMD_REMOVE, "group.key"), TRUE);
   ASSERT_EQ(object_can_exec(conf, OBJECT_CMD_SAVE, NULL), TRUE);
   ASSERT_EQ(object_can_exec(conf, OBJECT_CMD_RELOAD, NULL), TRUE);
-  
+
   ASSERT_EQ(object_exec(conf, OBJECT_CMD_MOVE_DOWN, "group.key"), RET_OK);
   ASSERT_EQ(object_get_prop_int(conf, "group.key.#index", 0), 1);
 

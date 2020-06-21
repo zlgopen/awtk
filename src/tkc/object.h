@@ -562,7 +562,6 @@ float_t object_get_prop_float_by_path(object_t* obj, const char* path, float_t d
     (obj) = NULL;                   \
   }
 
-
 /**
  * @enum object_cmd_t
  * @annotation ["scriptable", "string"]
@@ -595,7 +594,6 @@ float_t object_get_prop_float_by_path(object_t* obj, const char* path, float_t d
  *>参数为属性的名称或路径。
  */
 #define OBJECT_CMD_MOVE_DOWN "move_down"
-
 
 /**
  * @const OBJECT_CMD_REMOVE
