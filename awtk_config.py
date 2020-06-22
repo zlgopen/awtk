@@ -218,7 +218,7 @@ elif OS_NAME == 'Windows':
     OS_LINKFLAGS=' -Wl,-rpath=' + os.path.abspath(TK_LIB_DIR) + ' '
     COMMON_CFLAGS=COMMON_CFLAGS+' -std=gnu99 '
     COMMON_CCFLAGS=COMMON_CCFLAGS+' -U__FLT_EVAL_METHOD__ -D__FLT_EVAL_METHOD__=0 -DUNICODE -DDECLSPEC=  ' 
-    OS_WHOLE_ARCHIVE =' -Wl,--whole-archive -lawtk_global -lextwidgets -lwidgets -lbase -lgpinyin -lstreams -l_conf_io -lubjson -lcompressors -lminiz -ltkc -llinebreak -Wl,--no-whole-archive'
+    OS_WHOLE_ARCHIVE =' -Wl,--whole-archive -lawtk_global -lextwidgets -lwidgets -lbase -lgpinyin -lstreams -lconf_io -lubjson -lcompressors -lminiz -ltkc -llinebreak -Wl,--no-whole-archive'
     AWTK_DLL_DEPS_LIBS = AWTK_STATIC_LIBS + NANOVG_BACKEND_LIBS + ['SDL2', 'glad'] + OS_LIBS
     
   #OS_FLAGS='-DWIN32 -D_WIN32 -DWINDOWS /EHsc -D_CONSOLE  /DEBUG /Od  /FS /Z7 -D_DEBUG /MDd '
