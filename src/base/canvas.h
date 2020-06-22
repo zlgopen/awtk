@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   canvas.h
  * Author: AWTK Develop Team
  * Brief:  canvas provides basic drawings functions.

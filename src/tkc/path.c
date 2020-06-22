@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   path.c
  * Author: AWTK Develop Team
  * Brief:  path

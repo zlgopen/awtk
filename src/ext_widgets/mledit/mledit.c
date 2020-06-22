@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   mledit.h
  * Author: AWTK Develop Team
  * Brief:  mledit

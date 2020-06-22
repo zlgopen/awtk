@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   date_time_format.c
  * Author: AWTK Develop Team
  * Brief:  date_time_format

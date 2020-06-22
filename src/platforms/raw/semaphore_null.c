@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   semaphore_null.c
  * Author: AWTK Develop Team
  * Brief:  semaphore do nothing

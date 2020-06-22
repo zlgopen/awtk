@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   pthread_impl.c
  * Author: AWTK Develop Team
  * Brief:  pthread implemented thread related functions.

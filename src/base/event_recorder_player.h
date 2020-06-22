@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   event_recorder_player.h
  * Author: AWTK Develop Team
  * Brief:  event_recorder_player

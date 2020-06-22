@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   font_manager.c
  * Author: AWTK Develop Team
  * Brief:  font manager

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   sys_tick.c
  * Author: AWTK Develop Team
  * Brief:  use sys tick to implement sleep/get_time_ms64.

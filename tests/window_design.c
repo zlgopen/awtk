@@ -1,4 +1,4 @@
-#include "base/window_base.h"
+﻿#include "base/window_base.h"
 #include "base/window.h"
 
 widget_t* window_design_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);

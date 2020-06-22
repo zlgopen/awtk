@@ -1,4 +1,4 @@
-/*
+﻿/*
   Simple DirectMedia Layer
   Copyright (C) 1997-2018 Sam Lantinga <slouken@libsdl.org>
 

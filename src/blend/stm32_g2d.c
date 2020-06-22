@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   stm32_g2d.h
  * Author: AWTK Develop Team
  * Brief:  stm32 dma2d implemented hardware 2d

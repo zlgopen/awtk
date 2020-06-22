@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   mem_allocator_pool.h
  * Author: AWTK Develop Team
  * Brief:  mem_allocator_pool

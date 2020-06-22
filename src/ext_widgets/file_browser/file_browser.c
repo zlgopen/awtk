@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   file_browser.c
  * Author: AWTK Develop Team
  * Brief:  file_browser
