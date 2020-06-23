@@ -202,3 +202,20 @@ COMMON_CCFLAGS=COMMON_CCFLAGS+' -DNATIVE_WINDOW_BORDERLESS=1 '
    
 让事件处理函数返回 RET\_STOP，AWTK 不再调用后续事件处理函数。
 
+#### 15. 如何去掉不需要的控件，以节省 flash 控件。
+
+因为控件注册了，即使没有使用，编译器也会把相关代码编译进去。所以只有去掉控件的注册代码，才能优化掉不必要的代码。
+
+* 去掉不必要的基本控件，可以编辑 src/widgets/widgets.c 
+
+比如去掉 overlay 窗口，可以注释掉下面的这行代码：
+
+```
+  widget_factory_register(f, WIDGET_TYPE_OVERLAY, overlay_create);
+```
+
+* 去掉不必要的扩展控件，可以编辑 src/ext_widgets/ext_widgets.c
+
+* 从 assets/default/raw/styles/default.xml 中去掉不必要的。
+
+* 去掉不必要的图片。一些控件去掉了，相应的图片也没有必要了。
