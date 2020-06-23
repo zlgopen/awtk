@@ -21,6 +21,7 @@
 
 #include "tkc/mem.h"
 #include "tkc/mutex.h"
+#include "tkc/thread.h"
 
 struct _tk_mutex_t {
   uint32_t none;
@@ -51,3 +52,8 @@ ret_t tk_mutex_destroy(tk_mutex_t* mutex) {
   (void)mutex;
   return RET_OK;
 }
+
+uint64_t tk_thread_self(void) {
+    return 0;
+}
+

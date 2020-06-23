@@ -118,6 +118,15 @@ void* tk_thread_get_args(tk_thread_t* thread);
  */
 ret_t tk_thread_destroy(tk_thread_t* thread);
 
+
+/**
+ * @method tk_thread_self
+ * 获取当前线程的原生句柄。
+ *
+ * @return {uint64_t} 返回当前线程的原生句柄。
+ */
+uint64_t tk_thread_self(void);
+
 END_C_DECLS
 
 #endif /*TK_THREAD_H*/
