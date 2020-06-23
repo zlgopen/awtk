@@ -202,7 +202,7 @@ COMMON_CCFLAGS=COMMON_CCFLAGS+' -DNATIVE_WINDOW_BORDERLESS=1 '
    
 让事件处理函数返回 RET\_STOP，AWTK 不再调用后续事件处理函数。
 
-#### 15. 如何去掉不需要的控件，以节省 flash 控件。
+#### 15. 如何去掉不需要的控件，以节省 flash 空间
 
 因为控件注册了，即使没有使用，编译器也会把相关代码编译进去。所以只有去掉控件的注册代码，才能优化掉不必要的代码。
 
