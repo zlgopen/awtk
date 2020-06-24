@@ -35,6 +35,7 @@ static bool_t app_conf_file_exist(const char* url) {
     if (data_reader_get_size(reader) > 0) {
       exist = TRUE;
     }
+    data_reader_destroy(reader);
   }
 
   return exist;

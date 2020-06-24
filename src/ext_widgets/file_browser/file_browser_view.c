@@ -176,6 +176,7 @@ static ret_t file_browser_view_on_destroy(widget_t* widget) {
   file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
   return_value_if_fail(widget != NULL && file_browser_view != NULL, RET_BAD_PARAMS);
 
+  TKMEM_FREE(file_browser_view->filter);
   TKMEM_FREE(file_browser_view->sort_by);
   TKMEM_FREE(file_browser_view->init_dir);
   file_browser_destroy(file_browser_view->fb);
