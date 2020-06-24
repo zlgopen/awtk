@@ -318,8 +318,13 @@ int object_compare(object_t* obj, object_t* other) {
 
 bool_t object_can_exec(object_t* obj, const char* name, const char* args) {
   bool_t ret = FALSE;
+  cmd_exec_event_t e;
   return_value_if_fail(name != NULL, FALSE);
   return_value_if_fail(obj != NULL && obj->vt != NULL && obj->ref_count >= 0, FALSE);
+
+  if (emitter_dispatch(EMITTER(obj), cmd_exec_event_init(&e, EVT_CMD_CAN_EXEC, name, args)) != RET_OK) {
+    return FALSE;
+  }
 
   if (obj->vt->can_exec != NULL) {
     ret = obj->vt->can_exec(obj, name, args);
@@ -329,15 +334,25 @@ bool_t object_can_exec(object_t* obj, const char* name, const char* args) {
 }
 
 ret_t object_exec(object_t* obj, const char* name, const char* args) {
+  cmd_exec_event_t e;
+  event_t* evt = NULL;
   ret_t ret = RET_NOT_IMPL;
   return_value_if_fail(name != NULL, RET_BAD_PARAMS);
   return_value_if_fail(obj != NULL && obj->vt != NULL && obj->ref_count >= 0, RET_BAD_PARAMS);
 
+  if (emitter_dispatch(EMITTER(obj), cmd_exec_event_init(&e, EVT_CMD_WILL_EXEC, name, args)) != RET_OK) {
+    return RET_FAIL;
+  }
+
   if (obj->vt->exec != NULL) {
     ret = obj->vt->exec(obj, name, args);
   }
+  
+  evt =  cmd_exec_event_init(&e, EVT_CMD_EXECED, name, args);
+  e.result = ret;
+  emitter_dispatch(EMITTER(obj), evt);
 
-  return ret;
+  return e.result;
 }
 
 bool_t object_has_prop(object_t* obj, const char* name) {

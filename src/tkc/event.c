@@ -39,14 +39,6 @@ event_t* event_cast(event_t* event) {
   return event;
 }
 
-prop_change_event_t* prop_change_event_cast(event_t* event) {
-  return_value_if_fail(event != NULL, NULL);
-  return_value_if_fail(event->type == EVT_PROP_CHANGED || event->type == EVT_PROP_WILL_CHANGE,
-                       NULL);
-
-  return (prop_change_event_t*)event;
-}
-
 event_t* event_create(uint32_t type) {
   event_t* e = TKMEM_ZALLOC(event_t);
 
@@ -63,6 +55,15 @@ ret_t event_destroy(event_t* event) {
 
   return RET_OK;
 }
+
+prop_change_event_t* prop_change_event_cast(event_t* event) {
+  return_value_if_fail(event != NULL, NULL);
+  return_value_if_fail(event->type == EVT_PROP_CHANGED || event->type == EVT_PROP_WILL_CHANGE,
+                       NULL);
+
+  return (prop_change_event_t*)event;
+}
+
 
 event_t* prop_change_event_init(prop_change_event_t* event, uint32_t type, const char* name,
                                 const value_t* value) {
@@ -127,3 +128,25 @@ event_t* error_event_init(error_event_t* event, int32_t code, const char* messag
 
   return (event_t*)(event);
 }
+
+cmd_exec_event_t* cmd_exec_event_cast(event_t* event) {
+  return_value_if_fail(event != NULL, NULL);
+  return_value_if_fail(event->type == EVT_CMD_WILL_EXEC || event->type == EVT_CMD_EXECED || event->type == EVT_CMD_CAN_EXEC,
+                       NULL);
+
+  return (cmd_exec_event_t*)event;
+}
+
+
+event_t* cmd_exec_event_init(cmd_exec_event_t* event, uint32_t type, const char* name,
+                                const char* value) {
+  return_value_if_fail(event != NULL, NULL);
+  memset(event, 0x00, sizeof(*event));
+
+  event->e.type = type;
+  event->name = name;
+  event->args = value;
+
+  return (event_t*)(event);
+}
+

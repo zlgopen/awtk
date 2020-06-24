@@ -13,6 +13,11 @@ static ret_t event_dump(void* ctx, event_t* e) {
     prop_change_event_t* evt = (prop_change_event_t*)e;
     str += evt->name;
     str += ":";
+  } else if (e->type == EVT_CMD_WILL_EXEC || e->type == EVT_CMD_EXECED ||
+             e->type == EVT_CMD_CAN_EXEC) {
+    cmd_exec_event_t* evt = (cmd_exec_event_t*)e;
+    str += evt->name;
+    str += ":";
   } else if (e->type == EVT_DESTROY) {
     str += "destroy:";
   }
@@ -419,4 +424,23 @@ TEST(ObjectDefault, path) {
   object_unref(objb);
   object_unref(objb1);
   object_unref(objb2);
+}
+
+TEST(ObjectDefault, cmd_events) {
+  value_t v;
+  string log;
+  object_t* obj = object_default_create();
+  object_default_t* o = OBJECT_DEFAULT(obj);
+
+  emitter_on((emitter_t*)o, EVT_CMD_CAN_EXEC, event_dump, &log);
+  emitter_on((emitter_t*)o, EVT_CMD_WILL_EXEC, event_dump, &log);
+  emitter_on((emitter_t*)o, EVT_CMD_EXECED, event_dump, &log);
+  emitter_on((emitter_t*)o, EVT_DESTROY, event_dump, &log);
+
+  ASSERT_EQ(object_can_exec(obj, "6", NULL), FALSE);
+  ASSERT_NE(object_exec(obj, "8", NULL), RET_OK);
+
+  object_unref(obj);
+
+  ASSERT_EQ(log, "6:8:8:destroy:");
 }

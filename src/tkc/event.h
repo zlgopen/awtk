@@ -49,6 +49,21 @@ typedef enum _event_base_type_t {
    */
   EVT_PROP_CHANGED,
   /**
+   * @const EVT_CMD_WILL_EXEC
+   * 对象即将执行命令(cmd_exec_event_t)。
+   */
+  EVT_CMD_WILL_EXEC,
+  /**
+   * @const EVT_CMD_EXECED
+   * 对象完成执行命令(cmd_exec_event_t)。
+   */
+  EVT_CMD_EXECED,
+  /**
+   * @const EVT_CMD_CAN_EXEC
+   * 对象命令是否能执行指定的命令(cmd_exec_event_t)。
+   */
+  EVT_CMD_CAN_EXEC,
+  /**
    * @const EVT_ITEMS_WILL_CHANGE
    * 即将增加和删除集合中的项目(event_t)。
    */
@@ -201,7 +216,9 @@ prop_change_event_t* prop_change_event_cast(event_t* event);
  * 初始prop change event。
  * 
  * @param {prop_change_event_t*} event event对象。
- * @param {uint32_t} percent 进度。
+ * @param {uint32_t} type 事件类型。
+ * @param {const char*} name 属性名。
+ * @param {const value_t*} value 属性的值。
  *
  * @return {event_t*} 返回event对象。
  */
@@ -326,6 +343,59 @@ error_event_t* error_event_cast(event_t* event);
  * @return {event_t*} 返回event对象。
  */
 event_t* error_event_init(error_event_t* event, int32_t code, const char* message);
+
+/**
+ * @class cmd_exec_event_t
+ * @annotation ["scriptable"]
+ * @parent event_t
+ * 对象执行命令的事件。
+ */
+typedef struct _cmd_exec_event_t {
+  event_t e;
+  /**
+   * @property {const char*} name
+   * @annotation ["readable", "scriptable"]
+   * 命令的名称。
+   */
+  const char* name;
+  /**
+   * @property {const char*} args
+   * @annotation ["readable", "scriptable"]
+   * 命令的参数。
+   */
+  const char* args;
+
+  /**
+   * @property {ret_t} ret
+   * @annotation ["readable", "scriptable"]
+   * 执行结果(适用于EXECED)。
+   */
+  ret_t result;
+} cmd_exec_event_t;
+
+/**
+ * @method cmd_exec_event_cast
+ * @annotation ["cast", "scriptable"]
+ * 把event对象转cmd_exec_event_t对象，主要给脚本语言使用。
+ * @param {event_t*} event event对象。
+ *
+ * @return {cmd_exec_event_t*}  返回event对象。
+ */
+cmd_exec_event_t* cmd_exec_event_cast(event_t* event);
+
+/**
+ * @method cmd_exec_event_init
+ * 初始命令执行事件。
+ * 
+ * @param {cmd_exec_event_t*} event event对象。
+ * @param {uint32_t} type 事件类型。
+ * @param {const char*} name 命令名。
+ * @param {const char*} args 命令参数。
+ *
+ * @return {event_t*} 返回event对象。
+ */
+event_t* cmd_exec_event_init(cmd_exec_event_t* event, uint32_t type, const char* name,
+                                const char* args);
 
 END_C_DECLS
 

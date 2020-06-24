@@ -1,17 +1,18 @@
 # 最新动态
 
 * 2020/06/24
-  * 增加函数tk\_thread\_self。
-  * 增加mutex\_nest嵌套互斥锁。
+  * 增加函数 tk\_thread\_self。
+  * 增加 mutex\_nest 嵌套互斥锁。
+  * 增加事件 cmd\_exec\_event\_t，方便拦截 object exec。
 
 * 2020/06/23
-  * 完善FAQ，增加《如何去掉不需要的控件，以节省 flash 空间》
+  * 完善 FAQ，增加《如何去掉不需要的控件，以节省 flash 空间》
   
 * 2020/06/22
-  * 完善conf-io 支持add命令，新建一个空的子节点。
-  * 修复Build script问题（感谢智明/陈谭提供补丁）。
-  * 修改mutable\_image文档（感谢智明提供补丁）。
-  * 将部分文件转成UTF8-BOM格式（感谢陈谭提供补丁）。
+  * 完善 conf-io 支持 add 命令，新建一个空的子节点。
+  * 修复 Build script 问题（感谢智明/陈谭提供补丁）。
+  * 修改 mutable\_image 文档（感谢智明提供补丁）。
+  * 将部分文件转成 UTF8-BOM 格式（感谢陈谭提供补丁）。
 
 * 2020/06/21
   * 增加 object\_cmd\_t 定义对象支持的常见命令。
