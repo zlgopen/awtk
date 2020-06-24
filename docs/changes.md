@@ -6,7 +6,7 @@
   * object_locker 改用嵌套互斥锁实现。
   * 增加事件 cmd\_exec\_event\_t，方便拦截 object exec。
   * 完善rich text(感谢尧燊提供补丁)
-
+  * 修改app conf/file browser中的内存泄露。
 
 * 2020/06/23
   * 完善 FAQ，增加《如何去掉不需要的控件，以节省 flash 空间》
