@@ -322,7 +322,8 @@ bool_t object_can_exec(object_t* obj, const char* name, const char* args) {
   return_value_if_fail(name != NULL, FALSE);
   return_value_if_fail(obj != NULL && obj->vt != NULL && obj->ref_count >= 0, FALSE);
 
-  if (emitter_dispatch(EMITTER(obj), cmd_exec_event_init(&e, EVT_CMD_CAN_EXEC, name, args)) != RET_OK) {
+  if (emitter_dispatch(EMITTER(obj), cmd_exec_event_init(&e, EVT_CMD_CAN_EXEC, name, args)) !=
+      RET_OK) {
     return FALSE;
   }
 
@@ -340,15 +341,16 @@ ret_t object_exec(object_t* obj, const char* name, const char* args) {
   return_value_if_fail(name != NULL, RET_BAD_PARAMS);
   return_value_if_fail(obj != NULL && obj->vt != NULL && obj->ref_count >= 0, RET_BAD_PARAMS);
 
-  if (emitter_dispatch(EMITTER(obj), cmd_exec_event_init(&e, EVT_CMD_WILL_EXEC, name, args)) != RET_OK) {
+  if (emitter_dispatch(EMITTER(obj), cmd_exec_event_init(&e, EVT_CMD_WILL_EXEC, name, args)) !=
+      RET_OK) {
     return RET_FAIL;
   }
 
   if (obj->vt->exec != NULL) {
     ret = obj->vt->exec(obj, name, args);
   }
-  
-  evt =  cmd_exec_event_init(&e, EVT_CMD_EXECED, name, args);
+
+  evt = cmd_exec_event_init(&e, EVT_CMD_EXECED, name, args);
   e.result = ret;
   emitter_dispatch(EMITTER(obj), evt);
 

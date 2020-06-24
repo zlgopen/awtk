@@ -395,7 +395,7 @@ cmd_exec_event_t* cmd_exec_event_cast(event_t* event);
  * @return {event_t*} 返回event对象。
  */
 event_t* cmd_exec_event_init(cmd_exec_event_t* event, uint32_t type, const char* name,
-                                const char* args);
+                             const char* args);
 
 END_C_DECLS
 

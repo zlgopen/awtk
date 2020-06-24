@@ -54,6 +54,5 @@ ret_t tk_mutex_destroy(tk_mutex_t* mutex) {
 }
 
 uint64_t tk_thread_self(void) {
-    return 0;
+  return 0;
 }
-

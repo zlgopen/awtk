@@ -766,10 +766,10 @@ ret_t conf_doc_add_child(conf_doc_t* doc, const char* path) {
 
   node = conf_doc_get_node(doc, path, FALSE);
   return_value_if_fail(node != NULL, RET_NOT_FOUND);
- 
+
   tk_snprintf(name, TK_NAME_LEN, "%u", conf_node_count_children(node));
   new_node = conf_doc_create_node(doc, name);
   return_value_if_fail(new_node != NULL, RET_OOM);
-  
+
   return conf_doc_append_child(doc, node, new_node);
 }

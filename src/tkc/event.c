@@ -64,7 +64,6 @@ prop_change_event_t* prop_change_event_cast(event_t* event) {
   return (prop_change_event_t*)event;
 }
 
-
 event_t* prop_change_event_init(prop_change_event_t* event, uint32_t type, const char* name,
                                 const value_t* value) {
   return_value_if_fail(event != NULL, NULL);
@@ -131,15 +130,15 @@ event_t* error_event_init(error_event_t* event, int32_t code, const char* messag
 
 cmd_exec_event_t* cmd_exec_event_cast(event_t* event) {
   return_value_if_fail(event != NULL, NULL);
-  return_value_if_fail(event->type == EVT_CMD_WILL_EXEC || event->type == EVT_CMD_EXECED || event->type == EVT_CMD_CAN_EXEC,
+  return_value_if_fail(event->type == EVT_CMD_WILL_EXEC || event->type == EVT_CMD_EXECED ||
+                           event->type == EVT_CMD_CAN_EXEC,
                        NULL);
 
   return (cmd_exec_event_t*)event;
 }
 
-
 event_t* cmd_exec_event_init(cmd_exec_event_t* event, uint32_t type, const char* name,
-                                const char* value) {
+                             const char* value) {
   return_value_if_fail(event != NULL, NULL);
   memset(event, 0x00, sizeof(*event));
 
@@ -149,4 +148,3 @@ event_t* cmd_exec_event_init(cmd_exec_event_t* event, uint32_t type, const char*
 
   return (event_t*)(event);
 }
-
