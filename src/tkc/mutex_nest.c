@@ -20,6 +20,7 @@
  */
 
 #include "tkc/mem.h"
+#include "tkc/thread.h"
 #include "tkc/mutex_nest.h"
 
 tk_mutex_nest_t* tk_mutex_nest_create(void) {
