@@ -486,7 +486,7 @@ static ret_t rich_text_on_destroy(widget_t* widget) {
   return rich_text_reset(widget);
 }
 
-static const char* s_rich_text_clone_properties[] = {WIDGET_PROP_MARGIN, WIDGET_PROP_LINE_GAP};
+static const char* s_rich_text_clone_properties[] = {WIDGET_PROP_MARGIN, WIDGET_PROP_LINE_GAP, NULL};
 TK_DECL_VTABLE(rich_text) = {.size = sizeof(rich_text_t),
                              .type = "rich_text",
                              .parent = TK_PARENT_VTABLE(widget),
