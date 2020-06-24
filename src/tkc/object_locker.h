@@ -22,8 +22,8 @@
 #ifndef TK_OBJECT_LOCKER_H
 #define TK_OBJECT_LOCKER_H
 
-#include "tkc/mutex.h"
 #include "tkc/object.h"
+#include "tkc/mutex_nest.h"
 
 BEGIN_C_DECLS
 
@@ -38,7 +38,7 @@ typedef struct _object_locker_t {
   object_t object;
 
   /*private*/
-  tk_mutex_t* mutex;
+  tk_mutex_nest_t* mutex;
   object_t* obj;
 } object_locker_t;
 
