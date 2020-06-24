@@ -4661,6 +4661,18 @@
         "name": "EVT_PROP_CHANGED"
       },
       {
+        "desc": "对象即将执行命令(cmd_exec_event_t)。",
+        "name": "EVT_CMD_WILL_EXEC"
+      },
+      {
+        "desc": "对象完成执行命令(cmd_exec_event_t)。",
+        "name": "EVT_CMD_EXECED"
+      },
+      {
+        "desc": "对象命令是否能执行指定的命令(cmd_exec_event_t)。",
+        "name": "EVT_CMD_CAN_EXEC"
+      },
+      {
         "desc": "即将增加和删除集合中的项目(event_t)。",
         "name": "EVT_ITEMS_WILL_CHANGE"
       },
@@ -23060,6 +23072,27 @@
             "type": "conf_doc_t*",
             "name": "doc",
             "desc": "文档对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "path",
+            "desc": "节点的路径。"
+          }
+        ],
+        "annotation": {},
+        "desc": "追加一个子节点。",
+        "name": "conf_doc_add_child",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "conf_doc_t*",
+            "name": "doc",
+            "desc": "文档对象。"
           }
         ],
         "annotation": {},
@@ -24972,6 +25005,16 @@
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {},
+        "desc": "获取当前线程的原生句柄。",
+        "name": "tk_thread_self",
+        "return": {
+          "type": "uint64_t",
+          "desc": "返回当前线程的原生句柄。"
         }
       }
     ],
@@ -29698,6 +29741,14 @@
       {
         "desc": "清除全部属性。\n>参数为属性的名称或路径。",
         "name": "OBJECT_CMD_CLEAR"
+      },
+      {
+        "desc": "增加子项。\n>参数为属性的名称或路径。",
+        "name": "OBJECT_CMD_ADD"
+      },
+      {
+        "desc": "编辑子项。\n>参数为属性的名称或路径。",
+        "name": "OBJECT_CMD_EDIT"
       }
     ],
     "header": "tkc/object.h",
@@ -30103,6 +30154,91 @@
     "header": "tkc/mutex.h",
     "desc": "互斥锁。",
     "name": "tk_mutex_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {},
+        "desc": "创建嵌套互斥锁。",
+        "name": "tk_mutex_nest_create",
+        "return": {
+          "type": "tk_mutex_nest_t*",
+          "desc": "mutex_nest对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_mutex_nest_t*",
+            "name": "mutex_nest",
+            "desc": "mutex_nest对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "加锁。",
+        "name": "tk_mutex_nest_lock",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_mutex_nest_t*",
+            "name": "mutex_nest",
+            "desc": "mutex_nest对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "尝试加锁。",
+        "name": "tk_mutex_nest_try_lock",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_mutex_nest_t*",
+            "name": "mutex_nest",
+            "desc": "mutex_nest对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "解锁。只允许解锁当前线程所加的锁。",
+        "name": "tk_mutex_nest_unlock",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_mutex_nest_t*",
+            "name": "mutex_nest",
+            "desc": "mutex_nest对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁mutex_nest对象。",
+        "name": "tk_mutex_nest_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "tkc/mutex_nest.h",
+    "desc": "嵌套互斥锁。允许同一个线程多次加锁。",
+    "name": "tk_mutex_nest_t",
     "level": 1
   },
   {
@@ -31042,6 +31178,39 @@
     "level": 1
   },
   {
+    "type": "enum",
+    "desc": "指示器默认绘制的类型。",
+    "consts": [
+      {
+        "desc": "自动选择。",
+        "name": "INDICATOR_DEFAULT_PAINT_AUTO"
+      },
+      {
+        "desc": "实心圆点指示器，当前项填充selected_fg_color，其他填充fg_color。",
+        "name": "INDICATOR_DEFAULT_PAINT_FILL_DOT"
+      },
+      {
+        "desc": "镂空圆点指示器，当前项填充selected_fg_color，其他镂空fg_color。",
+        "name": "INDICATOR_DEFAULT_PAINT_STROKE_DOT"
+      },
+      {
+        "desc": "实心矩形指示器，当前项填充selected_fg_color，其他填充fg_color。",
+        "name": "INDICATOR_DEFAULT_PAINT_FILL_RECT"
+      },
+      {
+        "desc": "镂空矩形指示器，当前项填充selected_fg_color，其他镂空fg_color。",
+        "name": "INDICATOR_DEFAULT_PAINT_STROKE_RECT"
+      }
+    ],
+    "header": "slide_view/slide_indicator.h",
+    "name": "indicator_default_paint_t",
+    "prefix": "INDICATOR_DEFAULT_PAINT_",
+    "annotation": {
+      "scriptable": true
+    },
+    "level": 1
+  },
+  {
     "type": "class",
     "methods": [
       {
@@ -31146,39 +31315,6 @@
     "name": "log_t",
     "annotation": {
       "fake": true
-    },
-    "level": 1
-  },
-  {
-    "type": "enum",
-    "desc": "指示器默认绘制的类型。",
-    "consts": [
-      {
-        "desc": "自动选择。",
-        "name": "INDICATOR_DEFAULT_PAINT_AUTO"
-      },
-      {
-        "desc": "实心圆点指示器，当前项填充selected_fg_color，其他填充fg_color。",
-        "name": "INDICATOR_DEFAULT_PAINT_FILL_DOT"
-      },
-      {
-        "desc": "镂空圆点指示器，当前项填充selected_fg_color，其他镂空fg_color。",
-        "name": "INDICATOR_DEFAULT_PAINT_STROKE_DOT"
-      },
-      {
-        "desc": "实心矩形指示器，当前项填充selected_fg_color，其他填充fg_color。",
-        "name": "INDICATOR_DEFAULT_PAINT_FILL_RECT"
-      },
-      {
-        "desc": "镂空矩形指示器，当前项填充selected_fg_color，其他镂空fg_color。",
-        "name": "INDICATOR_DEFAULT_PAINT_STROKE_RECT"
-      }
-    ],
-    "header": "slide_view/slide_indicator.h",
-    "name": "indicator_default_paint_t",
-    "prefix": "INDICATOR_DEFAULT_PAINT_",
-    "annotation": {
-      "scriptable": true
     },
     "level": 1
   },
@@ -35900,6 +36036,24 @@
   },
   {
     "type": "enum",
+    "desc": "缓存不够时丢弃数据的策略。",
+    "consts": [
+      {
+        "desc": "丢弃旧的数据。",
+        "name": "DATA_DISCARD_OLD"
+      },
+      {
+        "desc": "丢弃新的数据。",
+        "name": "DATA_DISCARD_NEW"
+      }
+    ],
+    "header": "misc/ostream_retry.h",
+    "name": "data_discard_policy_t",
+    "prefix": "DATA_DISCARD_",
+    "level": 1
+  },
+  {
+    "type": "enum",
     "desc": "资源类型常量定义。",
     "consts": [
       {
@@ -35945,24 +36099,6 @@
     "annotation": {
       "scriptable": true
     },
-    "level": 1
-  },
-  {
-    "type": "enum",
-    "desc": "缓存不够时丢弃数据的策略。",
-    "consts": [
-      {
-        "desc": "丢弃旧的数据。",
-        "name": "DATA_DISCARD_OLD"
-      },
-      {
-        "desc": "丢弃新的数据。",
-        "name": "DATA_DISCARD_NEW"
-      }
-    ],
-    "header": "misc/ostream_retry.h",
-    "name": "data_discard_policy_t",
-    "prefix": "DATA_DISCARD_",
     "level": 1
   },
   {
@@ -37685,33 +37821,6 @@
     "type": "class",
     "methods": [
       {
-        "params": [],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "创建缺省输入法对象。",
-        "name": "input_method_default_create",
-        "return": {
-          "type": "input_method_t*",
-          "desc": "返回输入法对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "input_methods/input_method_default.h",
-    "desc": "缺省输入法实现。输入法会启用软键盘，但是开发者可以自定义输入法引擎。\n\n目前可以选择不启用输入法引擎或启用拼音输入法引擎。\n\n开发者也可以开发手写输入法或语音输入法，如果实现时遇到问题可以和我们交流。",
-    "name": "input_method_default_t",
-    "parent": "input_method_t",
-    "annotation": {
-      "fake": true
-    },
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
         "params": [
           {
             "type": "int",
@@ -37813,21 +37922,20 @@
         "annotation": {
           "constructor": true
         },
-        "desc": "创建拼音输入法引擎对象。",
-        "name": "input_engine_create",
-        "export": "none",
+        "desc": "创建缺省输入法对象。",
+        "name": "input_method_default_create",
         "return": {
-          "type": "input_engine_t*",
-          "desc": "返回输入法引擎对象。"
+          "type": "input_method_t*",
+          "desc": "返回输入法对象。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "input_engines/input_engine_pinyin.h",
-    "desc": "拼音输入法引擎实现。\n\n基于谷歌拼音输入法实现。",
-    "name": "input_engine_pinyin_t",
-    "parent": "input_engine_t",
+    "header": "input_methods/input_method_default.h",
+    "desc": "缺省输入法实现。输入法会启用软键盘，但是开发者可以自定义输入法引擎。\n\n目前可以选择不启用输入法引擎或启用拼音输入法引擎。\n\n开发者也可以开发手写输入法或语音输入法，如果实现时遇到问题可以和我们交流。",
+    "name": "input_method_default_t",
+    "parent": "input_method_t",
     "annotation": {
       "fake": true
     },
@@ -37966,7 +38074,7 @@
         "annotation": {
           "constructor": true
         },
-        "desc": "创建空输入法引擎对象。",
+        "desc": "创建拼音输入法引擎对象。",
         "name": "input_engine_create",
         "export": "none",
         "return": {
@@ -37977,9 +38085,9 @@
     ],
     "events": [],
     "properties": [],
-    "header": "input_engines/input_engine_null.h",
-    "desc": "空输入法引擎实现。\n\n缺省输入法可以选择启用软键盘，但不启用具体的输入法引擎，此时可以选择空输入法引擎实现。",
-    "name": "input_engine_null_t",
+    "header": "input_engines/input_engine_pinyin.h",
+    "desc": "拼音输入法引擎实现。\n\n基于谷歌拼音输入法实现。",
+    "name": "input_engine_pinyin_t",
     "parent": "input_engine_t",
     "annotation": {
       "fake": true
@@ -38017,8 +38125,18 @@
           },
           {
             "type": "uint32_t",
-            "name": "percent",
-            "desc": "进度。"
+            "name": "type",
+            "desc": "事件类型。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "属性名。"
+          },
+          {
+            "type": "const value_t*",
+            "name": "value",
+            "desc": "属性的值。"
           }
         ],
         "annotation": {},
@@ -38267,6 +38385,127 @@
       "scriptable": true
     },
     "parent": "event_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "event_t*",
+            "name": "event",
+            "desc": "event对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "把event对象转cmd_exec_event_t对象，主要给脚本语言使用。",
+        "name": "cmd_exec_event_cast",
+        "return": {
+          "type": "cmd_exec_event_t*",
+          "desc": "返回event对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "cmd_exec_event_t*",
+            "name": "event",
+            "desc": "event对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "type",
+            "desc": "事件类型。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "命令名。"
+          },
+          {
+            "type": "const char*",
+            "name": "args",
+            "desc": "命令参数。"
+          }
+        ],
+        "annotation": {},
+        "desc": "初始命令执行事件。",
+        "name": "cmd_exec_event_init",
+        "return": {
+          "type": "event_t*",
+          "desc": "返回event对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "name",
+        "desc": "命令的名称。",
+        "type": "const char*",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "args",
+        "desc": "命令的参数。",
+        "type": "const char*",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "result",
+        "desc": "执行结果(适用于EXECED)。",
+        "type": "ret_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "tkc/event.h",
+    "desc": "对象执行命令的事件。",
+    "name": "cmd_exec_event_t",
+    "annotation": {
+      "scriptable": true
+    },
+    "parent": "event_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建空输入法引擎对象。",
+        "name": "input_engine_create",
+        "export": "none",
+        "return": {
+          "type": "input_engine_t*",
+          "desc": "返回输入法引擎对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "input_engines/input_engine_null.h",
+    "desc": "空输入法引擎实现。\n\n缺省输入法可以选择启用软键盘，但不启用具体的输入法引擎，此时可以选择空输入法引擎实现。",
+    "name": "input_engine_null_t",
+    "parent": "input_engine_t",
+    "annotation": {
+      "fake": true
+    },
     "level": 2
   },
   {
@@ -39381,6 +39620,108 @@
       {
         "params": [
           {
+            "type": "event_t*",
+            "name": "event",
+            "desc": "event对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "把event对象转wheel_event_t对象，主要给脚本语言使用。",
+        "name": "wheel_event_cast",
+        "return": {
+          "type": "wheel_event_t*",
+          "desc": "event对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "wheel_event_t*",
+            "name": "event",
+            "desc": "event对象。"
+          },
+          {
+            "type": "void*",
+            "name": "target",
+            "desc": "事件目标。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "type",
+            "desc": "事件类型。"
+          },
+          {
+            "type": "int32_t",
+            "name": "dy",
+            "desc": "滚轮的y值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "初始化事件。",
+        "name": "wheel_event_init",
+        "return": {
+          "type": "event_t*",
+          "desc": "event对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "dy",
+        "desc": "滚轮的y值。",
+        "type": "int32_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "alt",
+        "desc": "alt键是否按下。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "ctrl",
+        "desc": "ctrl键是否按下。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "shift",
+        "desc": "shift键是否按下。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "base/events.h",
+    "desc": "滚轮事件。",
+    "name": "wheel_event_t",
+    "annotation": {
+      "scriptable": true
+    },
+    "parent": "event_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
             "type": "widget_t*",
             "name": "parent",
             "desc": "父控件"
@@ -39517,108 +39858,6 @@
       {
         "params": [
           {
-            "type": "event_t*",
-            "name": "event",
-            "desc": "event对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": "把event对象转wheel_event_t对象，主要给脚本语言使用。",
-        "name": "wheel_event_cast",
-        "return": {
-          "type": "wheel_event_t*",
-          "desc": "event对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "wheel_event_t*",
-            "name": "event",
-            "desc": "event对象。"
-          },
-          {
-            "type": "void*",
-            "name": "target",
-            "desc": "事件目标。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "type",
-            "desc": "事件类型。"
-          },
-          {
-            "type": "int32_t",
-            "name": "dy",
-            "desc": "滚轮的y值。"
-          }
-        ],
-        "annotation": {},
-        "desc": "初始化事件。",
-        "name": "wheel_event_init",
-        "return": {
-          "type": "event_t*",
-          "desc": "event对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [
-      {
-        "name": "dy",
-        "desc": "滚轮的y值。",
-        "type": "int32_t",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "alt",
-        "desc": "alt键是否按下。",
-        "type": "bool_t",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "ctrl",
-        "desc": "ctrl键是否按下。",
-        "type": "bool_t",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "shift",
-        "desc": "shift键是否按下。",
-        "type": "bool_t",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      }
-    ],
-    "header": "base/events.h",
-    "desc": "滚轮事件。",
-    "name": "wheel_event_t",
-    "annotation": {
-      "scriptable": true
-    },
-    "parent": "event_t",
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
             "type": "widget_t*",
             "name": "parent",
             "desc": "父控件"
@@ -39717,260 +39956,6 @@
     "header": "widgets/view.h",
     "desc": "一个通用的容器控件。\n\n它本身不提供布局功能，仅提供具有语义的标签，让xml更具有可读性。\n子控件的布局可用layout\\_children属性指定。\n请参考[布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md)。\n\nview\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于view\\_t控件。\n\n在xml中使用\"view\"标签创建view。如：\n\n```xml\n<view x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" children_layout=\"default(c=2,r=2,m=5,s=5)\">\n</view>\n```\n\n可用通过style来设置控件的显示风格，如背景颜色等。如：\n\n```xml\n<style name=\"default\" border_color=\"#a0a0a0\">\n<normal     bg_color=\"#f0f0f0\" />\n</style>\n```",
     "name": "view_t",
-    "parent": "widget_t",
-    "annotation": {
-      "scriptable": true,
-      "design": true,
-      "widget": true
-    },
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
-        "desc": "创建slide_view对象",
-        "name": "slide_view_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "slide_view对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": "转换为slide_view对象(供脚本语言使用)。",
-        "name": "slide_view_cast",
-        "return": {
-          "type": "widget_t*",
-          "desc": "slide_view对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "slide_view对象。"
-          },
-          {
-            "type": "uint16_t",
-            "name": "auto_play",
-            "desc": "0表示禁止自动播放，非0表示自动播放时每一页播放的时间。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置为自动播放模式。",
-        "name": "slide_view_set_auto_play",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "slide_view对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "index",
-            "desc": "当前页的序号。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置当前页的序号。",
-        "name": "slide_view_set_active",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "slide_view对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "vertical",
-            "desc": "TRUE表示上下滑动，FALSE表示左右滑动。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置为上下滑动(缺省为左右滑动)。",
-        "name": "slide_view_set_vertical",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "slide_view对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "anim_hint",
-            "desc": "页面切换动画。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置页面切换动画。\n\nanim_hint取值如下：\n\n* \"translate\"：平移。\n* \"overlap\"：覆盖。\n* \"overlap\\_with\\_alpha\"：覆盖并改变透明度。\n\n> 使用\"overlap\"或\"overlap\\_with\\_alpha\"动画时，背景图片最好指定到page上。\n>\n> 使用\"overlap\\_with\\_alpha\"动画时，slideview的背景设置为黑色，\n> 或slideview的背景设置为透明，窗口的背景设置为黑色，以获得更好的视觉效果和性能。",
-        "name": "slide_view_set_anim_hint",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "slide_view对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "loop",
-            "desc": "是否启用循环切换模式。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置循环切换模式。",
-        "name": "slide_view_set_loop",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "events": [
-      {
-        "name": "EVT_VALUE_WILL_CHANGE",
-        "desc": "值(当前页)即将改变事件。",
-        "type": "event_t"
-      },
-      {
-        "name": "EVT_VALUE_CHANGED",
-        "desc": "值(当前页)改变事件。",
-        "type": "event_t"
-      }
-    ],
-    "properties": [
-      {
-        "name": "vertical",
-        "desc": "是否为上下滑动模式。",
-        "type": "bool_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "auto_play",
-        "desc": "自动播放。0表示禁止自动播放，非0表示自动播放时每一页播放的时间。",
-        "type": "uint16_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "loop",
-        "desc": "循环切换模式。\n\n向后切换：切换到最后一页时，再往后切换就到第一页。\n向前切换：切换到第一页时，再往前切换就到最后一页。",
-        "type": "bool_t",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "anim_hint",
-        "desc": "页面切换效果。",
-        "type": "char*",
-        "annotation": {
-          "set_prop": true,
-          "get_prop": true,
-          "readable": true,
-          "persitent": true,
-          "design": true,
-          "scriptable": true
-        }
-      }
-    ],
-    "header": "slide_view/slide_view.h",
-    "desc": "滑动视图。\n\n滑动视图可以管理多个页面，并通过滑动来切换当前页面。也可以管理多张图片，让它们自动切换。\n\nslide\\_view\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于slide\\_view\\_t控件。\n\n在xml中使用\"slide\\_view\"标签创建滑动视图控件。如：\n\n```xml\n<slide_view x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" style=\"dot\">\n<view x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" children_layout=\"default(w=60,h=60,m=5,s=10)\">\n...\n</view>\n<view x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" children_layout=\"default(w=60,h=60,m=5,s=10)\">\n...\n</view>\n</slide_view>\n```\n\n> 更多用法请参考：[slide_view.xml](\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/slide_view.xml)\n\n在c代码中使用函数slide\\_view\\_create创建滑动视图控件。如：\n\n```c\nslide_view = slide_view_create(win, 0, 0, win->w, win->h);\n```\n\n> 完整示例请参考：\n[slide_view demo](\nhttps://github.com/zlgopen/awtk-c-demos/blob/master/demos/slide_view.c)\n\n可用通过style来设置控件的显示风格，如背景颜色和指示器的图标等等。如：\n\n```xml\n<style name=\"dot\">\n<normal  icon=\"dot\" active_icon=\"active_dot\"/>\n</style>\n```\n\n> 如果希望背景图片跟随滚动，请将背景图片设置到页面上，否则设置到slide\\_view上。\n\n> 更多用法请参考：[theme default](\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L458)",
-    "name": "slide_view_t",
     "parent": "widget_t",
     "annotation": {
       "scriptable": true,
@@ -40277,6 +40262,260 @@
     "header": "widgets/tab_button.h",
     "desc": "标签按钮控件。\n\n标签按钮有点类似单选按钮，但点击标签按钮之后会自动切换当前的标签页。\n\ntab\\_button\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于tab\\_button\\_t控件。\n\n在xml中使用\"tab\\_button\"标签创建标签按钮控件。如：\n\n```xml\n<!-- tab_button_view_page1.xml -->\n<view w=\"100%\" h=\"100%\">\n<label x=\"c\" y=\"m\" w=\"100%\" h=\"60\" text=\"page1\" />\n<button name=\"close\" x=\"c\" y=\"bottom:100\" w=\"80\" h=\"40\" text=\"Close\" />\n</view>\n```\n\n```xml\n<!-- tab_button dynamic load UI -->\n<pages name=\"pages\" x=\"right\" y=\"0\" w=\"70%\" h=\"100%\">\n</pages>\n<list_view x=\"0\" y=\"0\" w=\"30%\" h=\"100%\" item_height=\"40\" auto_hide_scroll_bar=\"true\">\n<scroll_view name=\"view\" x=\"0\"  y=\"0\" w=\"-12\" h=\"100%\">\n<tab_button text=\"page1\" load_ui=\"tab_button_view_page1\" value=\"true\"/>\n<tab_button text=\"page2\" load_ui=\"tab_button_view_page2\" />\n<tab_button text=\"page3\" load_ui=\"tab_button_view_page3\" />\n<scroll_view />\n<scroll_bar_d name=\"bar\" x=\"right\" y=\"0\" w=\"12\" h=\"100%\" value=\"0\"/>\n</list_view>\n```\n\n```xml\n<!-- tab_button static load UI -->\n<tab_button_group x=\"c\" y=\"bottom:10\" w=\"90%\" h=\"30\" compact=\"true\" >\n<tab_button text=\"General\"/>\n<tab_button text=\"Network\" value=\"true\" />\n<tab_button text=\"Security\"/>\n</tab_button_group>\n```\n\n标签按钮一般放在标签按钮分组中，布局由标签按钮分组控件决定，不需要指定自己的布局参数和坐标。\n\n> 更多用法请参考：\n[tab control](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/)\n\n可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：\n\n```xml\n<tab_button>\n<style name=\"default\" border_color=\"#a0a0a0\"  text_color=\"black\">\n<normal     bg_color=\"#d0d0d0\" />\n<pressed    bg_color=\"#f0f0f0\" />\n<over       bg_color=\"#e0e0e0\" />\n<normal_of_active     bg_color=\"#f0f0f0\" />\n<pressed_of_active    bg_color=\"#f0f0f0\" />\n<over_of_active       bg_color=\"#f0f0f0\" />\n</style>\n</tab_button>\n```",
     "name": "tab_button_t",
+    "parent": "widget_t",
+    "annotation": {
+      "scriptable": true,
+      "design": true,
+      "widget": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "创建slide_view对象",
+        "name": "slide_view_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "slide_view对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为slide_view对象(供脚本语言使用)。",
+        "name": "slide_view_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "slide_view对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "slide_view对象。"
+          },
+          {
+            "type": "uint16_t",
+            "name": "auto_play",
+            "desc": "0表示禁止自动播放，非0表示自动播放时每一页播放的时间。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置为自动播放模式。",
+        "name": "slide_view_set_auto_play",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "slide_view对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "index",
+            "desc": "当前页的序号。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置当前页的序号。",
+        "name": "slide_view_set_active",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "slide_view对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "vertical",
+            "desc": "TRUE表示上下滑动，FALSE表示左右滑动。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置为上下滑动(缺省为左右滑动)。",
+        "name": "slide_view_set_vertical",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "slide_view对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "anim_hint",
+            "desc": "页面切换动画。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置页面切换动画。\n\nanim_hint取值如下：\n\n* \"translate\"：平移。\n* \"overlap\"：覆盖。\n* \"overlap\\_with\\_alpha\"：覆盖并改变透明度。\n\n> 使用\"overlap\"或\"overlap\\_with\\_alpha\"动画时，背景图片最好指定到page上。\n>\n> 使用\"overlap\\_with\\_alpha\"动画时，slideview的背景设置为黑色，\n> 或slideview的背景设置为透明，窗口的背景设置为黑色，以获得更好的视觉效果和性能。",
+        "name": "slide_view_set_anim_hint",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "slide_view对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "loop",
+            "desc": "是否启用循环切换模式。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置循环切换模式。",
+        "name": "slide_view_set_loop",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [
+      {
+        "name": "EVT_VALUE_WILL_CHANGE",
+        "desc": "值(当前页)即将改变事件。",
+        "type": "event_t"
+      },
+      {
+        "name": "EVT_VALUE_CHANGED",
+        "desc": "值(当前页)改变事件。",
+        "type": "event_t"
+      }
+    ],
+    "properties": [
+      {
+        "name": "vertical",
+        "desc": "是否为上下滑动模式。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "auto_play",
+        "desc": "自动播放。0表示禁止自动播放，非0表示自动播放时每一页播放的时间。",
+        "type": "uint16_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "loop",
+        "desc": "循环切换模式。\n\n向后切换：切换到最后一页时，再往后切换就到第一页。\n向前切换：切换到第一页时，再往前切换就到最后一页。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "anim_hint",
+        "desc": "页面切换效果。",
+        "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "slide_view/slide_view.h",
+    "desc": "滑动视图。\n\n滑动视图可以管理多个页面，并通过滑动来切换当前页面。也可以管理多张图片，让它们自动切换。\n\nslide\\_view\\_t是[widget\\_t](widget_t.md)的子类控件，widget\\_t的函数均适用于slide\\_view\\_t控件。\n\n在xml中使用\"slide\\_view\"标签创建滑动视图控件。如：\n\n```xml\n<slide_view x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" style=\"dot\">\n<view x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" children_layout=\"default(w=60,h=60,m=5,s=10)\">\n...\n</view>\n<view x=\"0\" y=\"0\" w=\"100%\" h=\"100%\" children_layout=\"default(w=60,h=60,m=5,s=10)\">\n...\n</view>\n</slide_view>\n```\n\n> 更多用法请参考：[slide_view.xml](\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/slide_view.xml)\n\n在c代码中使用函数slide\\_view\\_create创建滑动视图控件。如：\n\n```c\nslide_view = slide_view_create(win, 0, 0, win->w, win->h);\n```\n\n> 完整示例请参考：\n[slide_view demo](\nhttps://github.com/zlgopen/awtk-c-demos/blob/master/demos/slide_view.c)\n\n可用通过style来设置控件的显示风格，如背景颜色和指示器的图标等等。如：\n\n```xml\n<style name=\"dot\">\n<normal  icon=\"dot\" active_icon=\"active_dot\"/>\n</style>\n```\n\n> 如果希望背景图片跟随滚动，请将背景图片设置到页面上，否则设置到slide\\_view上。\n\n> 更多用法请参考：[theme default](\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L458)",
+    "name": "slide_view_t",
     "parent": "widget_t",
     "annotation": {
       "scriptable": true,
@@ -40978,6 +41217,75 @@
   },
   {
     "type": "class",
+    "methods": [],
+    "events": [],
+    "properties": [],
+    "header": "tkc/mem_allocator_debug.h",
+    "desc": "对现有的allocator进行包装，记录分配的内存，用于帮助分析内存的使用和泄露。",
+    "name": "mem_allocator_debug_t",
+    "parent": "mem_allocator_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [],
+    "events": [],
+    "properties": [],
+    "header": "tkc/mem_allocator_lock.h",
+    "desc": "对现有的allocator进行包装，提供互斥功能。",
+    "name": "mem_allocator_lock_t",
+    "parent": "mem_allocator_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [],
+    "events": [],
+    "properties": [],
+    "header": "tkc/mem_allocator_oom.h",
+    "desc": "对现有的allocator进行包装，如果分配内存失败，调用预先设置的回调函数释放内存，然后再重试。",
+    "name": "mem_allocator_oom_t",
+    "parent": "mem_allocator_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [],
+    "events": [],
+    "properties": [],
+    "header": "tkc/mem_allocator_pool.h",
+    "desc": "对现有的allocator进行包装，预先分配一部分内存，用于分配小块内存，可以避免内存碎片。",
+    "name": "mem_allocator_pool_t",
+    "parent": "mem_allocator_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [],
+    "events": [],
+    "properties": [],
+    "header": "tkc/mem_allocator_simple.h",
+    "desc": "简单的内存分配器。",
+    "name": "mem_allocator_simple_t",
+    "parent": "mem_allocator_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [],
+    "events": [],
+    "properties": [],
+    "header": "tkc/mem_allocator_std.h",
+    "desc": "将标准的C的内存分配函数包装成内存分配器。",
+    "name": "mem_allocator_std_t",
+    "parent": "mem_allocator_t",
+    "annotation": {
+      "fake": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
     "methods": [
       {
         "params": [
@@ -41383,75 +41691,6 @@
       "scriptable": true,
       "design": true,
       "widget": true
-    },
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [],
-    "events": [],
-    "properties": [],
-    "header": "tkc/mem_allocator_debug.h",
-    "desc": "对现有的allocator进行包装，记录分配的内存，用于帮助分析内存的使用和泄露。",
-    "name": "mem_allocator_debug_t",
-    "parent": "mem_allocator_t",
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [],
-    "events": [],
-    "properties": [],
-    "header": "tkc/mem_allocator_lock.h",
-    "desc": "对现有的allocator进行包装，提供互斥功能。",
-    "name": "mem_allocator_lock_t",
-    "parent": "mem_allocator_t",
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [],
-    "events": [],
-    "properties": [],
-    "header": "tkc/mem_allocator_oom.h",
-    "desc": "对现有的allocator进行包装，如果分配内存失败，调用预先设置的回调函数释放内存，然后再重试。",
-    "name": "mem_allocator_oom_t",
-    "parent": "mem_allocator_t",
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [],
-    "events": [],
-    "properties": [],
-    "header": "tkc/mem_allocator_pool.h",
-    "desc": "对现有的allocator进行包装，预先分配一部分内存，用于分配小块内存，可以避免内存碎片。",
-    "name": "mem_allocator_pool_t",
-    "parent": "mem_allocator_t",
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [],
-    "events": [],
-    "properties": [],
-    "header": "tkc/mem_allocator_simple.h",
-    "desc": "简单的内存分配器。",
-    "name": "mem_allocator_simple_t",
-    "parent": "mem_allocator_t",
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [],
-    "events": [],
-    "properties": [],
-    "header": "tkc/mem_allocator_std.h",
-    "desc": "将标准的C的内存分配函数包装成内存分配器。",
-    "name": "mem_allocator_std_t",
-    "parent": "mem_allocator_t",
-    "annotation": {
-      "fake": true
     },
     "level": 2
   },
@@ -57329,20 +57568,20 @@
           }
         ],
         "annotation": {},
-        "desc": "创建ostream对象。",
-        "name": "tk_ostream_file_create",
+        "desc": "创建istream对象。",
+        "name": "tk_istream_file_create",
         "return": {
-          "type": "tk_ostream_t*",
-          "desc": "返回ostream对象。"
+          "type": "tk_istream_t*",
+          "desc": "返回istream对象。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "file/ostream_file.h",
-    "desc": "基于文件实现的输出流。",
-    "name": "tk_ostream_file_t",
-    "parent": "tk_ostream_t",
+    "header": "file/istream_file.h",
+    "desc": "基于文件实现的输入流。",
+    "name": "tk_istream_file_t",
+    "parent": "tk_istream_t",
     "level": 4
   },
   {
@@ -57407,14 +57646,19 @@
       {
         "params": [
           {
-            "type": "const char*",
-            "name": "filename",
-            "desc": "文件名。"
+            "type": "tk_istream_t*",
+            "name": "real_istream",
+            "desc": "实际的istream。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "buffer_size",
+            "desc": "缓冲区的大小。"
           }
         ],
         "annotation": {},
-        "desc": "创建istream对象。",
-        "name": "tk_istream_file_create",
+        "desc": "创建istream对象。\n\n本函数自动增加real_ostream的引用计数。",
+        "name": "tk_istream_buffered_create",
         "return": {
           "type": "tk_istream_t*",
           "desc": "返回istream对象。"
@@ -57423,9 +57667,9 @@
     ],
     "events": [],
     "properties": [],
-    "header": "file/istream_file.h",
-    "desc": "基于文件实现的输入流。",
-    "name": "tk_istream_file_t",
+    "header": "buffered/istream_buffered.h",
+    "desc": "缓冲输入流。\n\n如果调用者每次只读取少量数据，可以使用本类对底层istream进行装饰，以提高读取效率。",
+    "name": "tk_istream_buffered_t",
     "parent": "tk_istream_t",
     "level": 4
   },
@@ -57435,109 +57679,26 @@
       {
         "params": [
           {
-            "type": "tk_ostream_t*",
-            "name": "real_ostream",
-            "desc": "实际的ostream对象。"
+            "type": "tk_iostream_t*",
+            "name": "real_iostream",
+            "desc": "底层的iostream。"
           }
         ],
         "annotation": {},
-        "desc": "创建ostream对象。\n\n本函数自动增加real_ostream的引用计数。",
-        "name": "tk_ostream_buffered_create",
+        "desc": "创建iostream对象。\n\n本函数自动增加real_iostream的引用计数。",
+        "name": "tk_iostream_shdlc_create",
         "return": {
-          "type": "tk_ostream_t*",
-          "desc": "返回ostream对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tk_ostream_t*",
-            "name": "ostream",
-            "desc": "ostream对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "获取当前缓存数据的长度。",
-        "name": "tk_ostream_buffered_get_size",
-        "return": {
-          "type": "uint32_t",
-          "desc": "返回缓存数据的长度。"
+          "type": "tk_iostream_t*",
+          "desc": "返回iostream对象。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "buffered/ostream_buffered.h",
-    "desc": "先将数据写入一个缓存区，调用flush时才真正写入底层的ostream。",
-    "name": "tk_ostream_buffered_t",
-    "parent": "tk_ostream_t",
-    "level": 4
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "int",
-            "name": "fd",
-            "desc": "fd。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建istream对象。",
-        "name": "tk_istream_serial_create",
-        "return": {
-          "type": "tk_istream_t*",
-          "desc": "返回istream对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "serial/istream_serial.h",
-    "desc": "基于串口实现的输入流。",
-    "name": "tk_istream_serial_t",
-    "parent": "tk_istream_t",
-    "level": 4
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "tk_iostream_shdlc_t*",
-            "name": "iostream",
-            "desc": "iostream对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建istream对象。\n\n> 只能由iostream_shdlc调用。",
-        "name": "tk_istream_shdlc_create",
-        "return": {
-          "type": "tk_istream_t*",
-          "desc": "返回istream对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [
-      {
-        "name": "timeout",
-        "desc": "读写超时时间(ms)",
-        "type": "uint32_t"
-      },
-      {
-        "name": "retry_times",
-        "desc": "失败重传次数。",
-        "type": "uint32_t"
-      }
-    ],
-    "header": "shdlc/istream_shdlc.h",
-    "desc": "reliable istream base on simple HDLC",
-    "name": "tk_istream_shdlc_t",
-    "parent": "tk_istream_t",
+    "header": "shdlc/iostream_shdlc.h",
+    "desc": "基于简化版的HDLC协议实现可靠的iostream。\n\n一般用于串口通信。",
+    "name": "tk_iostream_shdlc_t",
+    "parent": "tk_iostream_t",
     "level": 4
   },
   {
@@ -57582,6 +57743,34 @@
     "desc": "reliable ostream base on simple HDLC",
     "name": "tk_ostream_shdlc_t",
     "parent": "tk_ostream_t",
+    "level": 4
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "int",
+            "name": "fd",
+            "desc": "fd。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建istream对象。",
+        "name": "tk_istream_serial_create",
+        "return": {
+          "type": "tk_istream_t*",
+          "desc": "返回istream对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "serial/istream_serial.h",
+    "desc": "基于串口实现的输入流。",
+    "name": "tk_istream_serial_t",
+    "parent": "tk_istream_t",
     "level": 4
   },
   {
@@ -58132,34 +58321,6 @@
       {
         "params": [
           {
-            "type": "tk_iostream_t*",
-            "name": "real_iostream",
-            "desc": "底层的iostream。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建iostream对象。\n\n本函数自动增加real_iostream的引用计数。",
-        "name": "tk_iostream_shdlc_create",
-        "return": {
-          "type": "tk_iostream_t*",
-          "desc": "返回iostream对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "shdlc/iostream_shdlc.h",
-    "desc": "基于简化版的HDLC协议实现可靠的iostream。\n\n一般用于串口通信。",
-    "name": "tk_iostream_shdlc_t",
-    "parent": "tk_iostream_t",
-    "level": 4
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
             "type": "int",
             "name": "sock",
             "desc": "socket。"
@@ -58226,6 +58387,45 @@
     "header": "inet/istream_udp.h",
     "desc": "基于UDP实现的输入流。",
     "name": "tk_istream_udp_t",
+    "parent": "tk_istream_t",
+    "level": 4
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "tk_iostream_shdlc_t*",
+            "name": "iostream",
+            "desc": "iostream对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建istream对象。\n\n> 只能由iostream_shdlc调用。",
+        "name": "tk_istream_shdlc_create",
+        "return": {
+          "type": "tk_istream_t*",
+          "desc": "返回istream对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "timeout",
+        "desc": "读写超时时间(ms)",
+        "type": "uint32_t"
+      },
+      {
+        "name": "retry_times",
+        "desc": "失败重传次数。",
+        "type": "uint32_t"
+      }
+    ],
+    "header": "shdlc/istream_shdlc.h",
+    "desc": "reliable istream base on simple HDLC",
+    "name": "tk_istream_shdlc_t",
     "parent": "tk_istream_t",
     "level": 4
   },
@@ -58340,31 +58540,70 @@
       {
         "params": [
           {
-            "type": "tk_istream_t*",
-            "name": "real_istream",
-            "desc": "实际的istream。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "buffer_size",
-            "desc": "缓冲区的大小。"
+            "type": "const char*",
+            "name": "filename",
+            "desc": "文件名。"
           }
         ],
         "annotation": {},
-        "desc": "创建istream对象。\n\n本函数自动增加real_ostream的引用计数。",
-        "name": "tk_istream_buffered_create",
+        "desc": "创建ostream对象。",
+        "name": "tk_ostream_file_create",
         "return": {
-          "type": "tk_istream_t*",
-          "desc": "返回istream对象。"
+          "type": "tk_ostream_t*",
+          "desc": "返回ostream对象。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "buffered/istream_buffered.h",
-    "desc": "缓冲输入流。\n\n如果调用者每次只读取少量数据，可以使用本类对底层istream进行装饰，以提高读取效率。",
-    "name": "tk_istream_buffered_t",
-    "parent": "tk_istream_t",
+    "header": "file/ostream_file.h",
+    "desc": "基于文件实现的输出流。",
+    "name": "tk_ostream_file_t",
+    "parent": "tk_ostream_t",
+    "level": 4
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "tk_ostream_t*",
+            "name": "real_ostream",
+            "desc": "实际的ostream对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建ostream对象。\n\n本函数自动增加real_ostream的引用计数。",
+        "name": "tk_ostream_buffered_create",
+        "return": {
+          "type": "tk_ostream_t*",
+          "desc": "返回ostream对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_ostream_t*",
+            "name": "ostream",
+            "desc": "ostream对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取当前缓存数据的长度。",
+        "name": "tk_ostream_buffered_get_size",
+        "return": {
+          "type": "uint32_t",
+          "desc": "返回缓存数据的长度。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "buffered/ostream_buffered.h",
+    "desc": "先将数据写入一个缓存区，调用flush时才真正写入底层的ostream。",
+    "name": "tk_ostream_buffered_t",
+    "parent": "tk_ostream_t",
     "level": 4
   }
 ]

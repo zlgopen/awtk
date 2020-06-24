@@ -11,6 +11,7 @@
 | <a href="#tk_thread_t_tk_thread_destroy">tk\_thread\_destroy</a> | 销毁thread对象。 |
 | <a href="#tk_thread_t_tk_thread_get_args">tk\_thread\_get\_args</a> | 获取线程的参数。 |
 | <a href="#tk_thread_t_tk_thread_join">tk\_thread\_join</a> | 等待线程退出。 |
+| <a href="#tk_thread_t_tk_thread_self">tk\_thread\_self</a> | 获取当前线程的原生句柄。 |
 | <a href="#tk_thread_t_tk_thread_set_name">tk\_thread\_set\_name</a> | 设置线程的名称。 |
 | <a href="#tk_thread_t_tk_thread_set_priority">tk\_thread\_set\_priority</a> | 设置线程的优先级。 |
 | <a href="#tk_thread_t_tk_thread_set_stack_size">tk\_thread\_set\_stack\_size</a> | 设置线程的栈大小。 |
@@ -92,6 +93,24 @@ ret_t tk_thread_join (tk_thread_t* thread);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | thread | tk\_thread\_t* | thread对象。 |
+#### tk\_thread\_self 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="tk_thread_t_tk_thread_self">获取当前线程的原生句柄。
+
+* 函数原型：
+
+```
+uint64_t tk_thread_self ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint64\_t | 返回当前线程的原生句柄。 |
 #### tk\_thread\_set\_name 函数
 -----------------------
 

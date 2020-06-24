@@ -47,7 +47,7 @@ prop_change_event_t* prop_change_event_cast (event_t* event);
 * 函数原型：
 
 ```
-event_t* prop_change_event_init (prop_change_event_t* event, uint32_t percent);
+event_t* prop_change_event_init (prop_change_event_t* event, uint32_t type, const char* name, const value_t* value);
 ```
 
 * 参数说明：
@@ -56,7 +56,9 @@ event_t* prop_change_event_init (prop_change_event_t* event, uint32_t percent);
 | -------- | ----- | --------- |
 | 返回值 | event\_t* | 返回event对象。 |
 | event | prop\_change\_event\_t* | event对象。 |
-| percent | uint32\_t | 进度。 |
+| type | uint32\_t | 事件类型。 |
+| name | const char* | 属性名。 |
+| value | const value\_t* | 属性的值。 |
 #### name 属性
 -----------------------
 > <p id="prop_change_event_t_name">属性的名称。

@@ -7,6 +7,7 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#conf_doc_t_conf_doc_add_child">conf\_doc\_add\_child</a> | 追加一个子节点。 |
 | <a href="#conf_doc_t_conf_doc_append_child">conf\_doc\_append\_child</a> | 追加一个子节点。 |
 | <a href="#conf_doc_t_conf_doc_append_sibling">conf\_doc\_append\_sibling</a> | 追加一个兄弟节点。 |
 | <a href="#conf_doc_t_conf_doc_clear">conf\_doc\_clear</a> | 删除指定路径的节点的全部子节点。 |
@@ -32,6 +33,26 @@
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#conf_doc_t_root">root</a> | conf\_node\_t* | 根节点。 |
+#### conf\_doc\_add\_child 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="conf_doc_t_conf_doc_add_child">追加一个子节点。
+
+* 函数原型：
+
+```
+ret_t conf_doc_add_child (conf_doc_t* doc, const char* path);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| doc | conf\_doc\_t* | 文档对象。 |
+| path | const char* | 节点的路径。 |
 #### conf\_doc\_append\_child 函数
 -----------------------
 

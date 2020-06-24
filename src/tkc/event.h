@@ -366,7 +366,7 @@ typedef struct _cmd_exec_event_t {
   const char* args;
 
   /**
-   * @property {ret_t} ret
+   * @property {ret_t} result
    * @annotation ["readable", "scriptable"]
    * 执行结果(适用于EXECED)。
    */
