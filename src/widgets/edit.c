@@ -1015,9 +1015,7 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
         value_set_double(v, d);
         break;
       }
-      default: {
-        value_set_wstr(v, widget->text.str);
-      }
+      default: { value_set_wstr(v, widget->text.str); }
     }
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_CARET_X)) {

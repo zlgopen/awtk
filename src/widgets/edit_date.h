@@ -38,7 +38,6 @@ static bool_t edit_date_part_len_is_valid(uint32_t index, uint32_t len) {
 }
 
 static wchar_t* edit_date_fix_part(uint32_t index, int32_t v, wchar_t* start, wchar_t* end) {
-  uint32_t i = 0;
   uint32_t len = end - start;
   const wchar_t* fix_value = NULL;
   if (index == 0) {

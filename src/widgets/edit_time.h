@@ -4,7 +4,6 @@
 #define EDIT_TIME_SEP_NR 1
 #define EDIT_TIME_DEFVAL "00:00"
 
-
 static uint32_t edit_time_part_get_max_len(uint32_t index) {
   return 2;
 }
@@ -26,7 +25,6 @@ static bool_t edit_time_part_len_is_valid(uint32_t index, uint32_t len) {
 }
 
 static wchar_t* edit_time_fix_part(uint32_t index, int32_t v, wchar_t* start, wchar_t* end) {
-  uint32_t i = 0;
   uint32_t len = end - start;
   const wchar_t* fix_value = NULL;
   if (index == 0) {

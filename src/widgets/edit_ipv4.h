@@ -22,7 +22,7 @@ static wchar_t* edit_ipv4_fix_part(uint32_t index, int32_t v, wchar_t* start, wc
   if ((v) > 255) {
     return end - 1;
   }
-  
+
   if (start == end) {
     *start = '0';
     end++;
@@ -50,8 +50,8 @@ static ret_t edit_ipv4_fix_ex(widget_t* widget, bool_t strict) {
 }
 
 static bool_t edit_ipv4_is_valid_char(widget_t* widget, wchar_t c) {
-  edit_pattern_fix_ex(widget, FALSE, EDIT_IPV4_DEFVAL, EDIT_IPV4_SEP, EDIT_IPV4_SEP_NR, edit_ipv4_part_get_max_len,
-                      edit_ipv4_fix_part);
+  edit_pattern_fix_ex(widget, FALSE, EDIT_IPV4_DEFVAL, EDIT_IPV4_SEP, EDIT_IPV4_SEP_NR,
+                      edit_ipv4_part_get_max_len, edit_ipv4_fix_part);
 
   return edit_pattern_is_valid_char(widget, c, EDIT_IPV4_SEP, edit_ipv4_part_get_max_len);
 }

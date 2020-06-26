@@ -639,7 +639,7 @@ int tk_watoi_n(const wchar_t* str, uint32_t len) {
 int tk_watoi(const wchar_t* str) {
   return_value_if_fail(str != NULL, 0);
 
-  return tk_watoi_n(str, wcs_len(str));
+  return tk_watoi_n(str, wcslen(str));
 }
 
 bool_t tk_watob(const wchar_t* str) {
@@ -823,8 +823,8 @@ int tk_wstr_count_c(const wchar_t* str, wchar_t c) {
   const wchar_t* p = str;
   return_value_if_fail(p != NULL, nr);
 
-  while(*p) {
-    if(*p == c) {
+  while (*p) {
+    if (*p == c) {
       nr++;
     }
     p++;
@@ -832,4 +832,3 @@ int tk_wstr_count_c(const wchar_t* str, wchar_t c) {
 
   return nr;
 }
-

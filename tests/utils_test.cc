@@ -368,4 +368,3 @@ TEST(Utils, tk_watoi_n) {
   ASSERT_EQ(tk_watoi_n(L"1234", 3), 123);
   ASSERT_EQ(tk_watoi_n(L"1234", 4), 1234);
 }
-

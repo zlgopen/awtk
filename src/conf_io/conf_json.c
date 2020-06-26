@@ -300,7 +300,6 @@ static ret_t conf_json_save_node_value_simple(conf_node_t* node, str_t* str, uin
       return str_append(str, "false");
     }
   } else if (v.type == VALUE_TYPE_STRING) {
-    uint32_t i = 0;
     const char* s = value_str(&v);
     return_value_if_fail(str_append_char(str, '\"') == RET_OK, RET_OOM);
     if (s != NULL) {

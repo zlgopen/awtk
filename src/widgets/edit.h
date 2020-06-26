@@ -225,7 +225,7 @@ typedef struct _edit_t {
   uint32_t idle_id;
   uint32_t timer_id;
   text_edit_t* model;
-    
+
   edit_inc_value_t inc_value;
   edit_dec_value_t dec_value;
   edit_fix_value_t fix_value;

@@ -310,13 +310,11 @@ static ret_t rich_text_on_pointer_up(rich_text_t* rich_text, pointer_event_t* e)
 }
 
 static ret_t rich_text_down(widget_t* widget) {
-  rich_text_t* rich_text = RICH_TEXT(widget);
   uint32_t row_height = rich_text_get_row_height(widget);
   return rich_text_scroll_delta_to(widget, row_height);
 }
 
 static ret_t rich_text_up(widget_t* widget) {
-  rich_text_t* rich_text = RICH_TEXT(widget);
   uint32_t row_height = rich_text_get_row_height(widget);
   return rich_text_scroll_delta_to(widget, -row_height);
 }
@@ -486,7 +484,8 @@ static ret_t rich_text_on_destroy(widget_t* widget) {
   return rich_text_reset(widget);
 }
 
-static const char* s_rich_text_clone_properties[] = {WIDGET_PROP_MARGIN, WIDGET_PROP_LINE_GAP, NULL};
+static const char* s_rich_text_clone_properties[] = {WIDGET_PROP_MARGIN, WIDGET_PROP_LINE_GAP,
+                                                     NULL};
 TK_DECL_VTABLE(rich_text) = {.size = sizeof(rich_text_t),
                              .type = "rich_text",
                              .parent = TK_PARENT_VTABLE(widget),
