@@ -818,8 +818,8 @@ wchar_t* tk_wstr_dup_utf8(const char* str) {
   return wstr;
 }
 
-int tk_wstr_count_c(const wchar_t* str, wchar_t c) {
-  int nr = 0;
+uint32_t tk_wstr_count_c(const wchar_t* str, wchar_t c) {
+  uint32_t nr = 0;
   const wchar_t* p = str;
   return_value_if_fail(p != NULL, nr);
 

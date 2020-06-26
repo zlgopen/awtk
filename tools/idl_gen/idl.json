@@ -7361,6 +7361,22 @@
         "name": "INPUT_PHONE"
       },
       {
+        "desc": "IP Addr V4。如：192.168.1.1",
+        "name": "INPUT_IPV4"
+      },
+      {
+        "desc": "日期。如：2020/02/20。",
+        "name": "INPUT_DATE"
+      },
+      {
+        "desc": "时间(时分)。如：12:00。",
+        "name": "INPUT_TIME"
+      },
+      {
+        "desc": "时间(时分秒)。如：12:00:00。",
+        "name": "INPUT_TIME_FULL"
+      },
+      {
         "desc": "使用自定义的软键盘(如计算器等应用不希望弹出系统软键盘)。",
         "name": "INPUT_CUSTOM"
       },
@@ -23496,6 +23512,27 @@
           {
             "type": "const wchar_t*",
             "name": "str",
+            "desc": "要转换为整形的宽字符串。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "len",
+            "desc": "字符串长度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "将宽字符串转换为整形。",
+        "name": "tk_watoi_n",
+        "return": {
+          "type": "int",
+          "desc": "返回转换后的整形。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "const wchar_t*",
+            "name": "str",
             "desc": "要转换为布尔类型的宽字符串。"
           }
         ],
@@ -23972,6 +24009,27 @@
         "return": {
           "type": "wchar_t*",
           "desc": "返回UCS字符串(需要调用TKMEM_FREE释放)。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "const wchar_t*",
+            "name": "str",
+            "desc": "字符串。"
+          },
+          {
+            "type": "wchar_t",
+            "name": "c",
+            "desc": "字符。"
+          }
+        ],
+        "annotation": {},
+        "desc": "统计UCS字符串中某个字符出现的次数。",
+        "name": "tk_wstr_count_c",
+        "return": {
+          "type": "uint32_t",
+          "desc": "返回字符出现的次数。"
         }
       }
     ],
@@ -48665,8 +48723,113 @@
           }
         ],
         "annotation": {},
-        "desc": "设置输入字符检查函数。\n> 如果内置检查函数不能满足需求时，可以设置自定义的检查函数。",
+        "desc": "设置输入字符检查函数。\n> 如果内置函数不能满足需求时，可以设置自定义的检查函数。",
         "name": "edit_set_is_valid_char",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          },
+          {
+            "type": "edit_is_valid_value_t",
+            "name": "is_valid_value",
+            "desc": "检查输入内容是否有效的回调函数。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置输入内容检查函数。\n> 如果内置函数不能满足需求时，可以设置自定义的检查函数。",
+        "name": "edit_set_is_valid_value",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          },
+          {
+            "type": "edit_fix_value_t",
+            "name": "fix_value",
+            "desc": "修正输入内容的回调函数。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置修正输入内容的回调函数。\n> 如果内置函数不能满足需求时，可以设置自定义的检查函数。",
+        "name": "edit_set_fix_value",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          },
+          {
+            "type": "edit_inc_value_t",
+            "name": "inc_value",
+            "desc": "增加值的回调函数。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置增加值的回调函数。\n> 如果内置函数不能满足需求时，可以设置自定义的检查函数。",
+        "name": "edit_set_inc_value",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          },
+          {
+            "type": "edit_dec_value_t",
+            "name": "dec_value",
+            "desc": "减少值的回调函数。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置减少值的回调函数。\n> 如果内置函数不能满足需求时，可以设置自定义的检查函数。",
+        "name": "edit_set_dec_value",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          },
+          {
+            "type": "edit_pre_input_t",
+            "name": "pre_input",
+            "desc": "预输入处理的回调函数(处理一些特殊的键)。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置预输入处的回调函数。\n> 如果内置函数不能满足需求时，可以设置自定义的检查函数。",
+        "name": "edit_set_pre_input",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"

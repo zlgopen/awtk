@@ -4,6 +4,7 @@
 
 TEST(DataReaderAsset, basic) {
   char data[256];
+  uint32_t size = 0;
   data_reader_t* reader = NULL;
   data_reader_factory_t* f = data_reader_factory_create();
 
@@ -13,8 +14,9 @@ TEST(DataReaderAsset, basic) {
   ASSERT_EQ(reader != NULL, true);
 
   memset(data, 0x00, sizeof(data));
-  ASSERT_EQ(data_reader_get_size(reader), 27);
-  ASSERT_EQ(data_reader_read(reader, 0, data, sizeof(data)), 27);
+  size = data_reader_get_size(reader);
+  ASSERT_EQ(size >= 24, true);
+  ASSERT_EQ(data_reader_read(reader, 0, data, sizeof(data)), size);
 
   data_reader_destroy(reader);
   data_reader_factory_destroy(f);

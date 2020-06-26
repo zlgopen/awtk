@@ -410,8 +410,19 @@ char* tk_str_tolower(char* str);
  */
 wchar_t* tk_wstr_dup_utf8(const char* str);
 
+/**
+ * @method tk_wstr_count_c
+ *
+ * 统计UCS字符串中某个字符出现的次数。
+ *
+ * @param {const wchar_t*} str 字符串。
+ * @param {wchar_t} c 字符。
+ *
+ * @return {uint32_t} 返回字符出现的次数。
+ */
+uint32_t tk_wstr_count_c(const wchar_t* str, wchar_t c);
+
 const char* tk_normalize_key_name(const char* name, char fixed_name[TK_NAME_LEN + 1]);
-int tk_wstr_count_c(const wchar_t* str, wchar_t c);
 
 END_C_DECLS
 

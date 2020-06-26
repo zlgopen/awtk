@@ -69,16 +69,21 @@ default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/st
 | <a href="#edit_t_edit_set_action_text">edit\_set\_action\_text</a> | 设置软键盘上action按钮的文本。 |
 | <a href="#edit_t_edit_set_auto_fix">edit\_set\_auto\_fix</a> | 设置编辑器是否为自动改正。 |
 | <a href="#edit_t_edit_set_cursor">edit\_set\_cursor</a> | 设置输入框的光标坐标。 |
+| <a href="#edit_t_edit_set_dec_value">edit\_set\_dec\_value</a> | 设置减少值的回调函数。 |
 | <a href="#edit_t_edit_set_double">edit\_set\_double</a> | 设置double类型的值。 |
+| <a href="#edit_t_edit_set_fix_value">edit\_set\_fix\_value</a> | 设置修正输入内容的回调函数。 |
 | <a href="#edit_t_edit_set_float_limit">edit\_set\_float\_limit</a> | 设置为浮点数输入及取值范围。 |
 | <a href="#edit_t_edit_set_focus">edit\_set\_focus</a> | 设置为焦点。 |
+| <a href="#edit_t_edit_set_inc_value">edit\_set\_inc\_value</a> | 设置增加值的回调函数。 |
 | <a href="#edit_t_edit_set_input_type">edit\_set\_input\_type</a> | 设置编辑器的输入类型。 |
 | <a href="#edit_t_edit_set_int">edit\_set\_int</a> | 设置int类型的值。 |
 | <a href="#edit_t_edit_set_int_limit">edit\_set\_int\_limit</a> | 设置为整数输入及取值范围。 |
 | <a href="#edit_t_edit_set_is_valid_char">edit\_set\_is\_valid\_char</a> | 设置输入字符检查函数。 |
+| <a href="#edit_t_edit_set_is_valid_value">edit\_set\_is\_valid\_value</a> | 设置输入内容检查函数。 |
 | <a href="#edit_t_edit_set_keyboard">edit\_set\_keyboard</a> | 设置自定义软键盘名称。 |
 | <a href="#edit_t_edit_set_open_im_when_focused">edit\_set\_open\_im\_when\_focused</a> | 设置编辑器是否在获得焦点时打开输入法。 |
 | <a href="#edit_t_edit_set_password_visible">edit\_set\_password\_visible</a> | 当编辑器输入类型为密码时，设置密码是否可见。 |
+| <a href="#edit_t_edit_set_pre_input">edit\_set\_pre\_input</a> | 设置预输入处的回调函数。 |
 | <a href="#edit_t_edit_set_readonly">edit\_set\_readonly</a> | 设置编辑器是否为只读。 |
 | <a href="#edit_t_edit_set_select_none_when_focused">edit\_set\_select\_none\_when\_focused</a> | 设置编辑器是否在获得焦点时不选中文本。 |
 | <a href="#edit_t_edit_set_text_limit">edit\_set\_text\_limit</a> | 设置为文本输入及其长度限制，不允许输入超过max个字符，少于min个字符时进入error状态。 |
@@ -253,6 +258,27 @@ ret_t edit_set_cursor (widget_t* widget, uint32_t cursor);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
 | cursor | uint32\_t | 是否为焦点。 |
+#### edit\_set\_dec\_value 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="edit_t_edit_set_dec_value">设置减少值的回调函数。
+> 如果内置函数不能满足需求时，可以设置自定义的检查函数。
+
+* 函数原型：
+
+```
+ret_t edit_set_dec_value (widget_t* widget, edit_dec_value_t dec_value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | widget对象。 |
+| dec\_value | edit\_dec\_value\_t | 减少值的回调函数。 |
 #### edit\_set\_double 函数
 -----------------------
 
@@ -273,6 +299,27 @@ ret_t edit_set_double (widget_t* widget, double value);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
 | value | double | 值。 |
+#### edit\_set\_fix\_value 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="edit_t_edit_set_fix_value">设置修正输入内容的回调函数。
+> 如果内置函数不能满足需求时，可以设置自定义的检查函数。
+
+* 函数原型：
+
+```
+ret_t edit_set_fix_value (widget_t* widget, edit_fix_value_t fix_value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | widget对象。 |
+| fix\_value | edit\_fix\_value\_t | 修正输入内容的回调函数。 |
 #### edit\_set\_float\_limit 函数
 -----------------------
 
@@ -315,6 +362,27 @@ ret_t edit_set_focus (widget_t* widget, bool_t focus);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
 | focus | bool\_t | 是否为焦点。 |
+#### edit\_set\_inc\_value 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="edit_t_edit_set_inc_value">设置增加值的回调函数。
+> 如果内置函数不能满足需求时，可以设置自定义的检查函数。
+
+* 函数原型：
+
+```
+ret_t edit_set_inc_value (widget_t* widget, edit_inc_value_t inc_value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | widget对象。 |
+| inc\_value | edit\_inc\_value\_t | 增加值的回调函数。 |
 #### edit\_set\_input\_type 函数
 -----------------------
 
@@ -383,7 +451,7 @@ ret_t edit_set_int_limit (widget_t* widget, int32_t min, int32_t max, uint32_t s
 * 函数功能：
 
 > <p id="edit_t_edit_set_is_valid_char">设置输入字符检查函数。
-> 如果内置检查函数不能满足需求时，可以设置自定义的检查函数。
+> 如果内置函数不能满足需求时，可以设置自定义的检查函数。
 
 * 函数原型：
 
@@ -398,6 +466,27 @@ ret_t edit_set_is_valid_char (widget_t* widget, edit_is_valid_char_t is_valid_ch
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
 | is\_valid\_char | edit\_is\_valid\_char\_t | 检查输入字符是否有效的回调函数。 |
+#### edit\_set\_is\_valid\_value 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="edit_t_edit_set_is_valid_value">设置输入内容检查函数。
+> 如果内置函数不能满足需求时，可以设置自定义的检查函数。
+
+* 函数原型：
+
+```
+ret_t edit_set_is_valid_value (widget_t* widget, edit_is_valid_value_t is_valid_value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | widget对象。 |
+| is\_valid\_value | edit\_is\_valid\_value\_t | 检查输入内容是否有效的回调函数。 |
 #### edit\_set\_keyboard 函数
 -----------------------
 
@@ -458,6 +547,27 @@ ret_t edit_set_password_visible (widget_t* widget, bool_t password_visible);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
 | password\_visible | bool\_t | 密码是否可见。 |
+#### edit\_set\_pre\_input 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="edit_t_edit_set_pre_input">设置预输入处的回调函数。
+> 如果内置函数不能满足需求时，可以设置自定义的检查函数。
+
+* 函数原型：
+
+```
+ret_t edit_set_pre_input (widget_t* widget, edit_pre_input_t pre_input);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | widget对象。 |
+| pre\_input | edit\_pre\_input\_t | 预输入处理的回调函数(处理一些特殊的键)。 |
 #### edit\_set\_readonly 函数
 -----------------------
 

@@ -85,22 +85,22 @@ typedef enum _input_type_t {
   INPUT_PHONE,
   /**
    * @const INPUT_IPV4
-   * IP Addr V4。
+   * IP Addr V4。如：192.168.1.1
    */
   INPUT_IPV4,
   /**
    * @const INPUT_DATE
-   * 日期：2020/02/20。
+   * 日期。如：2020/02/20。
    */
   INPUT_DATE,
   /**
    * @const INPUT_TIME
-   * 时间：12:00。
+   * 时间(时分)。如：12:00。
    */
   INPUT_TIME,
   /**
    * @const INPUT_TIME_FULL
-   * 时间：12:00:00。
+   * 时间(时分秒)。如：12:00:00。
    */
   INPUT_TIME_FULL,
   /**

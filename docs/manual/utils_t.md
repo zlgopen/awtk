@@ -33,6 +33,8 @@
 | <a href="#utils_t_tk_watob">tk\_watob</a> | 将宽字符串转换为布尔类型。 |
 | <a href="#utils_t_tk_watof">tk\_watof</a> | 将宽字符串转换为浮点类型。 |
 | <a href="#utils_t_tk_watoi">tk\_watoi</a> | 将宽字符串转换为整形。 |
+| <a href="#utils_t_tk_watoi_n">tk\_watoi\_n</a> | 将宽字符串转换为整形。 |
+| <a href="#utils_t_tk_wstr_count_c">tk\_wstr\_count\_c</a> | 统计UCS字符串中某个字符出现的次数。 |
 | <a href="#utils_t_tk_wstr_dup_utf8">tk\_wstr\_dup\_utf8</a> | 将utf8字符串拷贝为UCS字符串。 |
 | <a href="#utils_t_tk_wstrdup">tk\_wstrdup</a> | 宽字符串拷贝函数。 |
 | <a href="#utils_t_xml_file_expand_read">xml\_file\_expand\_read</a> | expand include process instruction to file content: <?include filename="view_me.inc" ?> |
@@ -555,6 +557,46 @@ int tk_watoi (const wchar_t* str);
 | -------- | ----- | --------- |
 | 返回值 | int | 返回转换后的整形。 |
 | str | const wchar\_t* | 要转换为整形的宽字符串。 |
+#### tk\_watoi\_n 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_watoi_n">将宽字符串转换为整形。
+
+* 函数原型：
+
+```
+int tk_watoi_n (const wchar_t* str, uint32_t len);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | int | 返回转换后的整形。 |
+| str | const wchar\_t* | 要转换为整形的宽字符串。 |
+| len | uint32\_t | 字符串长度。 |
+#### tk\_wstr\_count\_c 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_wstr_count_c">统计UCS字符串中某个字符出现的次数。
+
+* 函数原型：
+
+```
+uint32_t tk_wstr_count_c (const wchar_t* str, wchar_t c);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint32\_t | 返回字符出现的次数。 |
+| str | const wchar\_t* | 字符串。 |
+| c | wchar\_t | 字符。 |
 #### tk\_wstr\_dup\_utf8 函数
 -----------------------
 
