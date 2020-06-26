@@ -1,4 +1,4 @@
-/*
+ï»¿/*
   Simple DirectMedia Layer
   Copyright (C) 1997-2018 Sam Lantinga <slouken@libsdl.org>
 
@@ -370,7 +370,7 @@ IME_Init(SDL_VideoData *videodata, HWND hwnd)
     videodata->ime_available = SDL_TRUE;
     IME_UpdateInputLocale(videodata);
     IME_SetupAPI(videodata);
-    //videodata->ime_uiless = UILess_SetupSinks(videodata);//win10 ²»ÏÔÊ¾ÎÊÌâ
+    //videodata->ime_uiless = UILess_SetupSinks(videodata);//win10 ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½
     IME_UpdateInputLocale(videodata);
     IME_Disable(videodata, hwnd);
 }
@@ -879,7 +879,7 @@ IME_HandleMessage(HWND hwnd, UINT msg, WPARAM wParam, LPARAM *lParam, SDL_VideoD
         IME_InputLangChanged(videodata);
         break;
     case WM_IME_SETCONTEXT:
-        //*lParam = 0;  //win7 ´°¿ÚÇÐ»»ºóÊäÈë¿ò²»ÏÔÊ¾ÎÊÌâ
+        //*lParam = 0;  //win7 ï¿½ï¿½ï¿½ï¿½ï¿½Ð»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½
         break;
     case WM_IME_STARTCOMPOSITION:
         //trap = SDL_TRUE;
