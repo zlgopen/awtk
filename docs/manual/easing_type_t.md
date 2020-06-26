@@ -1,6 +1,7 @@
 ## easing\_type\_t
 ### 概述
-缓动作动画常量定义。### 常量
+缓动作动画常量定义。
+### 常量
 <p id="easing_type_t_consts">
 
 | 名称 | 说明 | 

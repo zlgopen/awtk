@@ -1,6 +1,7 @@
 ## window\_stage\_t
 ### 概述
-窗口的生命周期常量定义。### 常量
+窗口的生命周期常量定义。
+### 常量
 <p id="window_stage_t_consts">
 
 | 名称 | 说明 | 

@@ -1,6 +1,7 @@
 ## conf\_node\_type\_t
 ### 概述
-节点类型。### 常量
+节点类型。
+### 常量
 <p id="conf_node_type_t_consts">
 
 | 名称 | 说明 | 

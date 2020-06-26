@@ -1,6 +1,7 @@
 ## widget\_cursor\_t
 ### 概述
-控件鼠标光标常量定义。### 常量
+控件鼠标光标常量定义。
+### 常量
 <p id="widget_cursor_t_consts">
 
 | 名称 | 说明 | 

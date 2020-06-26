@@ -1,6 +1,7 @@
 ## lcd\_draw\_mode\_t
 ### 概述
-LCD绘制模式常量定义。### 常量
+LCD绘制模式常量定义。
+### 常量
 <p id="lcd_draw_mode_t_consts">
 
 | 名称 | 说明 | 

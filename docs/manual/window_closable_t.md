@@ -1,6 +1,7 @@
 ## window\_closable\_t
 ### 概述
-窗口的closable常量定义。### 常量
+窗口的closable常量定义。
+### 常量
 <p id="window_closable_t_consts">
 
 | 名称 | 说明 | 

@@ -1,6 +1,7 @@
 ## prop\_desc\_flags\_t
 ### 概述
-属性描述范围常量定义。### 常量
+属性描述范围常量定义。
+### 常量
 <p id="prop_desc_flags_t_consts">
 
 | 名称 | 说明 | 

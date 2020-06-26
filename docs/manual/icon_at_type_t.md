@@ -1,6 +1,7 @@
 ## icon\_at\_type\_t
 ### 概述
-图标所在的位置。### 常量
+图标所在的位置。
+### 常量
 <p id="icon_at_type_t_consts">
 
 | 名称 | 说明 | 

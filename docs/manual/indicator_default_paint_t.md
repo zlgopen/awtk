@@ -1,6 +1,7 @@
 ## indicator\_default\_paint\_t
 ### 概述
-指示器默认绘制的类型。### 常量
+指示器默认绘制的类型。
+### 常量
 <p id="indicator_default_paint_t_consts">
 
 | 名称 | 说明 | 

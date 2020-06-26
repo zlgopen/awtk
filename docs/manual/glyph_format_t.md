@@ -1,6 +1,7 @@
 ## glyph\_format\_t
 ### 概述
-字模格式常量定义。### 常量
+字模格式常量定义。
+### 常量
 <p id="glyph_format_t_consts">
 
 | 名称 | 说明 | 

@@ -334,7 +334,7 @@ class ApiGenerator {
     let result = '';
 
     if (cls.consts && cls.consts.length) {
-      result += `### 常量\n`
+      result += `\n### 常量\n`
       result += genAnchor(cls.name, {
         name: 'consts'
       }) + '\n\n';

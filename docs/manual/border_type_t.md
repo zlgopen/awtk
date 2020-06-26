@@ -1,6 +1,7 @@
 ## border\_type\_t
 ### 概述
-控件边框类型。### 常量
+控件边框类型。
+### 常量
 <p id="border_type_t_consts">
 
 | 名称 | 说明 | 

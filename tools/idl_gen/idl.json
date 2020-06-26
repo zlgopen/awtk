@@ -7325,63 +7325,63 @@
     "desc": "输入类型常量定义。",
     "consts": [
       {
-        "desc": "文本。",
+        "desc": "文本。字符串属性值：text",
         "name": "INPUT_TEXT"
       },
       {
-        "desc": "整数。",
+        "desc": "整数。字符串属性值：int",
         "name": "INPUT_INT"
       },
       {
-        "desc": "非负整数。",
+        "desc": "非负整数。字符串属性值：uint",
         "name": "INPUT_UINT"
       },
       {
-        "desc": "16进制整数。",
+        "desc": "16进制整数。字符串属性值：hex",
         "name": "INPUT_HEX"
       },
       {
-        "desc": "浮点数。",
+        "desc": "浮点数。字符串属性值：float",
         "name": "INPUT_FLOAT"
       },
       {
-        "desc": "非负浮点数。",
+        "desc": "非负浮点数。字符串属性值：ufloat",
         "name": "INPUT_UFLOAT"
       },
       {
-        "desc": "邮件地址。",
+        "desc": "邮件地址。字符串属性值：email",
         "name": "INPUT_EMAIL"
       },
       {
-        "desc": "密码。",
+        "desc": "密码。字符串属性值：password",
         "name": "INPUT_PASSWORD"
       },
       {
-        "desc": "电话号码。",
+        "desc": "电话号码。字符串属性值：phone",
         "name": "INPUT_PHONE"
       },
       {
-        "desc": "IP Addr V4。如：192.168.1.1",
+        "desc": "IP Addr V4(如：192.168.1.1)。字符串属性值：ipv4",
         "name": "INPUT_IPV4"
       },
       {
-        "desc": "日期。如：2020/02/20。",
+        "desc": "日期(如：2020/02/20)。字符串属性值：date",
         "name": "INPUT_DATE"
       },
       {
-        "desc": "时间(时分)。如：12:00。",
+        "desc": "时间(时分，如：12:00)。字符串属性值：time",
         "name": "INPUT_TIME"
       },
       {
-        "desc": "时间(时分秒)。如：12:00:00。",
+        "desc": "时间(时分秒，如：12:00:00)。字符串属性值：time_full",
         "name": "INPUT_TIME_FULL"
       },
       {
-        "desc": "使用自定义的软键盘(如计算器等应用不希望弹出系统软键盘)。",
+        "desc": "使用自定义的软键盘(如计算器等应用不希望弹出系统软键盘)。字符串属性值：custom",
         "name": "INPUT_CUSTOM"
       },
       {
-        "desc": "使用自定义的密码软键盘。",
+        "desc": "使用自定义的密码软键盘。字符串属性值：custom_password",
         "name": "INPUT_CUSTOM_PASSWORD"
       }
     ],

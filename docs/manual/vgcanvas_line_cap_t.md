@@ -1,6 +1,7 @@
 ## vgcanvas\_line\_cap\_t
 ### 概述
-线帽类型。### 常量
+线帽类型。
+### 常量
 <p id="vgcanvas_line_cap_t_consts">
 
 | 名称 | 说明 | 

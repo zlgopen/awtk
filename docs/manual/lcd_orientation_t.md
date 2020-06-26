@@ -1,6 +1,7 @@
 ## lcd\_orientation\_t
 ### 概述
-LCD旋转角度。### 常量
+LCD旋转角度。
+### 常量
 <p id="lcd_orientation_t_consts">
 
 | 名称 | 说明 | 

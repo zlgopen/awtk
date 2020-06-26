@@ -157,6 +157,7 @@
 
 ![input\_method\_overview](images/input_method_overview.png)
 
+* [input\_type](manual/input_type_t.md) 输入类型(用于控制软键盘和输入格式)
 * [input\_method](manual/input_method_t.md) 输入法接口。
 * [input\_method\_default](manual/input_method_default_t.md) 输入法缺省实现。
 * [input\_method\_sdl](manual/input_method_sdl_t.md) 输入法SDL实现。

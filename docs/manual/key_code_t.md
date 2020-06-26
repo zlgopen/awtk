@@ -1,6 +1,7 @@
 ## key\_code\_t
 ### 概述
-key code。### 常量
+key code。
+### 常量
 <p id="key_code_t_consts">
 
 | 名称 | 说明 | 

@@ -1,6 +1,7 @@
 ## value\_desc\_type\_t
 ### 概述
-属性描述类型常量定义。### 常量
+属性描述类型常量定义。
+### 常量
 <p id="value_desc_type_t_consts">
 
 | 名称 | 说明 | 
