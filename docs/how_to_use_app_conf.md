@@ -564,7 +564,7 @@ ret_t application_exit() {
 
   * 文件扩展名与初始化时指定的格式一致。 
 
-比如，下面的例子中，应用程序名 demo，扩展名为 json。所以对应的缺省配置文件为：demos/assets/default/raw/data.json
+比如，下面的例子中，应用程序名 demo，扩展名为 json。所以对应的缺省配置文件为：demos/assets/default/raw/demo.json
 
 ```c
   ENSURE(app_conf_init_json("demo") == RET_OK);
