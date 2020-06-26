@@ -45,6 +45,10 @@ static const key_type_value_t input_type_name_value[] = {
     {"hex", 0, INPUT_HEX},
     {"email", 0, INPUT_EMAIL},
     {"phone", 0, INPUT_PHONE},
+    {"date", 0, INPUT_DATE},
+    {"time", 0, INPUT_TIME},
+    {"time_full", 0, INPUT_TIME_FULL},
+    {"ipv4", 0, INPUT_IPV4},
     {"custom", 0, INPUT_CUSTOM},
     {"custom_password", 0, INPUT_CUSTOM_PASSWORD},
 };

@@ -41,7 +41,7 @@ void allocator_test_rand() {
   mem_allocator_t* allocator = mem_allocator_simple_init(&simple, buff, sizeof(buff));
   allocator = mem_allocator_pool_init(&pool, allocator, 10, 10, 10, 10, 10);
 
-  for (k = 0; k < 10000; k++) {
+  for (k = 0; k < 1000; k++) {
     for (i = 0; i < ARRAY_SIZE(addrs); i++) {
       uint32_t size = random() % 100;
       addr = mem_allocator_alloc(allocator, size, __FUNCTION__, __LINE__);

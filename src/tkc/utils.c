@@ -626,13 +626,20 @@ char* tk_str_copy(char* dst, const char* src) {
   return dst;
 }
 
-int tk_watoi(const wchar_t* str) {
+int tk_watoi_n(const wchar_t* str, uint32_t len) {
   char num[TK_NUM_MAX_LEN + 1] = {0};
   return_value_if_fail(str != NULL, 0);
 
-  tk_utf8_from_utf16(str, num, TK_NUM_MAX_LEN);
+  memset(num, 0x00, sizeof(num));
+  tk_utf8_from_utf16_ex(str, len, num, TK_NUM_MAX_LEN);
 
   return tk_atoi(num);
+}
+
+int tk_watoi(const wchar_t* str) {
+  return_value_if_fail(str != NULL, 0);
+
+  return tk_watoi_n(str, wcs_len(str));
 }
 
 bool_t tk_watob(const wchar_t* str) {
@@ -810,3 +817,19 @@ wchar_t* tk_wstr_dup_utf8(const char* str) {
 
   return wstr;
 }
+
+int tk_wstr_count_c(const wchar_t* str, wchar_t c) {
+  int nr = 0;
+  const wchar_t* p = str;
+  return_value_if_fail(p != NULL, nr);
+
+  while(*p) {
+    if(*p == c) {
+      nr++;
+    }
+    p++;
+  }
+
+  return nr;
+}
+

@@ -1,5 +1,11 @@
 # 最新动态
 
+* 2020/06/26
+  * edit 支持date/time/time\_full输入类型。
+
+* 2020/06/25
+  * edit 支持ip v4输入类型。
+
 * 2020/06/24
   * 增加函数 tk\_thread\_self。
   * 增加 mutex\_nest 嵌套互斥锁。

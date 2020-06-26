@@ -53,6 +53,13 @@ static const char* input_type_to_keyboard_name(int32_t input_type) {
       keyboard = "kb_uint";
       break;
     }
+    case INPUT_IPV4: 
+    case INPUT_TIME: 
+    case INPUT_DATE: 
+    case INPUT_TIME_FULL: {
+      keyboard = "kb_uint";
+      break;
+    }
     case INPUT_UFLOAT: {
       keyboard = "kb_ufloat";
       break;

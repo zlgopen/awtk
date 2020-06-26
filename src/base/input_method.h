@@ -84,6 +84,26 @@ typedef enum _input_type_t {
    */
   INPUT_PHONE,
   /**
+   * @const INPUT_IPV4
+   * IP Addr V4。
+   */
+  INPUT_IPV4,
+  /**
+   * @const INPUT_DATE
+   * 日期：2020/02/20。
+   */
+  INPUT_DATE,
+  /**
+   * @const INPUT_TIME
+   * 时间：12:00。
+   */
+  INPUT_TIME,
+  /**
+   * @const INPUT_TIME_FULL
+   * 时间：12:00:00。
+   */
+  INPUT_TIME_FULL,
+  /**
    * @const INPUT_CUSTOM
    * 使用自定义的软键盘(如计算器等应用不希望弹出系统软键盘)。
    */

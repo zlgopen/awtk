@@ -355,3 +355,17 @@ TEST(Utils, tk_str_tolower) {
   tk_str_tolower(str);
   ASSERT_STREQ(str, "left");
 }
+
+TEST(Utils, tk_wstr_count_c) {
+  ASSERT_EQ(tk_wstr_count_c(L"", 'a'), 0);
+  ASSERT_EQ(tk_wstr_count_c(L"a", 'a'), 1);
+  ASSERT_EQ(tk_wstr_count_c(L"abcaba", 'a'), 3);
+}
+
+TEST(Utils, tk_watoi_n) {
+  ASSERT_EQ(tk_watoi_n(L"1234", 1), 1);
+  ASSERT_EQ(tk_watoi_n(L"1234", 2), 12);
+  ASSERT_EQ(tk_watoi_n(L"1234", 3), 123);
+  ASSERT_EQ(tk_watoi_n(L"1234", 4), 1234);
+}
+

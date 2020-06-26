@@ -45,6 +45,38 @@
       <label w="30%" text="Overlap"/>
       <edit w="70%" text="" tips="name"/>
      </list_item>
+     <list_item style="empty" children_layout="default(r=1,c=0,ym=1)">
+      <label w="30%" text="IP Addr"/>
+      <edit w="70%" text="192.168.1.1" tips="ipv4" action_text="next" input_type="ipv4"/>
+     </list_item>
+     <list_item style="empty" children_layout="default(r=1,c=0,ym=1)">
+      <label w="30%" text="IP Addr"/>
+      <edit w="70%" text="" tips="ipv4 autofix" action_text="next" input_type="ipv4" auto_fix="true"/>
+     </list_item>
+     <list_item style="empty" children_layout="default(r=1,c=0,ym=1)">
+      <label w="30%" text="Date"/>
+      <edit w="70%" text="2020/10/10"   tips="date" action_text="next" input_type="date"/>
+     </list_item>
+     <list_item style="empty" children_layout="default(r=1,c=0,ym=1)">
+      <label w="30%" text="Date"/>
+      <edit w="70%" text="" tips="date autofix"   action_text="next" input_type="date" auto_fix="true"/>
+     </list_item>
+     <list_item style="empty" children_layout="default(r=1,c=0,ym=1)">
+      <label w="30%" text="Time"/>
+      <edit w="70%" text="12:16"  tips="time"  action_text="next" input_type="time"/>
+     </list_item>
+     <list_item style="empty" children_layout="default(r=1,c=0,ym=1)">
+      <label w="30%" text="Time"/>
+      <edit w="70%" text="" tips="time autofix"   action_text="next" input_type="time" auto_fix="true"/>
+     </list_item>
+     <list_item style="empty" children_layout="default(r=1,c=0,ym=1)">
+      <label w="30%" text="Full Time"/>
+      <edit w="70%" text="12:16:00" tips="full time"   action_text="next" input_type="time_full"/>
+     </list_item>
+     <list_item style="empty" children_layout="default(r=1,c=0,ym=1)">
+      <label w="30%" text="Full Time"/>
+      <edit w="70%" text="" tips="full time autofix"  action_text="next" input_type="time_full" auto_fix="true"/>
+     </list_item>
     </scroll_view>
     <scroll_bar_d name="bar" x="right" y="0" w="12" h="100%" value="0"/>
   </list_view>

@@ -103,6 +103,18 @@ int32_t tk_str_icmp(const char* a, const char* b);
 int tk_watoi(const wchar_t* str);
 
 /**
+ * @method tk_watoi_n
+ *
+ * 将宽字符串转换为整形。
+ *
+ * @param {const wchar_t*} str 要转换为整形的宽字符串。
+ * @param {uint32_t} len 字符串长度。
+ *
+ * @return {int} 返回转换后的整形。
+ */
+int tk_watoi_n(const wchar_t* str, uint32_t len);
+
+/**
  * @method tk_watob
  *
  * 将宽字符串转换为布尔类型。
@@ -399,6 +411,7 @@ char* tk_str_tolower(char* str);
 wchar_t* tk_wstr_dup_utf8(const char* str);
 
 const char* tk_normalize_key_name(const char* name, char fixed_name[TK_NAME_LEN + 1]);
+int tk_wstr_count_c(const wchar_t* str, wchar_t c);
 
 END_C_DECLS
 
