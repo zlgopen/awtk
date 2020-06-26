@@ -1,18 +1,21 @@
 # 最新动态
 
 * 2020/06/26
-  * edit 支持date/time/time\_full输入类型。
+* edit 支持 date/time/time\_full 输入类型。
+* 增加文档 [如何用 edit 控件编辑日期](how_to_edit_date.md)
+* 增加文档 [如何用 edit 控件编辑时间](how_to_edit_time.md)
+* 增加文档 [如何用 edit 控件编辑 IP 地址](how_to_edit_ip_addr.md)
 
 * 2020/06/25
-  * edit 支持ip v4输入类型。
+  * edit 支持 ip v4 输入类型。
 
 * 2020/06/24
   * 增加函数 tk\_thread\_self。
   * 增加 mutex\_nest 嵌套互斥锁。
   * object_locker 改用嵌套互斥锁实现。
   * 增加事件 cmd\_exec\_event\_t，方便拦截 object exec。
-  * 完善rich text(感谢尧燊提供补丁)
-  * 修改app conf/file browser中的内存泄露。
+  * 完善 rich text（感谢尧燊提供补丁）
+  * 修改 app conf/file browser 中的内存泄露。
 
 * 2020/06/23
   * 完善 FAQ，增加《如何去掉不需要的控件，以节省 flash 空间》
