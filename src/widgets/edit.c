@@ -1477,12 +1477,13 @@ ret_t edit_on_copy(widget_t* widget, widget_t* other) {
   edit->step = edit_other->step;
   edit->readonly = edit_other->readonly;
   edit->auto_fix = edit_other->auto_fix;
-  edit->input_type = edit_other->input_type;
   edit->left_margin = edit_other->left_margin;
   edit->right_margin = edit_other->right_margin;
   edit->top_margin = edit_other->top_margin;
   edit->bottom_margin = edit_other->bottom_margin;
   edit->password_visible = edit_other->password_visible;
+
+  edit_set_input_type(widget, edit_other->input_type);
 
   return RET_OK;
 }
