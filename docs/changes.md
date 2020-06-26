@@ -1,10 +1,10 @@
 # 最新动态
 
 * 2020/06/26
-* edit 支持 date/time/time\_full 输入类型。
-* 增加文档 [如何用 edit 控件编辑日期](how_to_edit_date.md)
-* 增加文档 [如何用 edit 控件编辑时间](how_to_edit_time.md)
-* 增加文档 [如何用 edit 控件编辑 IP 地址](how_to_edit_ip_addr.md)
+  * edit 支持 date/time/time\_full 输入类型。
+  * 增加文档 [如何用 edit 控件编辑日期](how_to_edit_date.md)
+  * 增加文档 [如何用 edit 控件编辑时间](how_to_edit_time.md)
+  * 增加文档 [如何用 edit 控件编辑 IP 地址](how_to_edit_ip_addr.md)
 
 * 2020/06/25
   * edit 支持 ip v4 输入类型。
