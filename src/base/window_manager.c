@@ -592,6 +592,9 @@ ret_t window_manager_dispatch_window_event(widget_t* window, event_type_t type) 
 
   if (type == EVT_WINDOW_OPEN) {
     window_manager_dispatch_top_window_changed(window->parent);
+  } else if (type == EVT_WINDOW_TO_FOREGROUND) {
+    window->parent->target = window;
+    window->parent->key_target = window;
   }
 
   return widget_dispatch(window->parent, (event_t*)&(evt));

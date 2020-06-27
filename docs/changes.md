@@ -2,6 +2,7 @@
 
 * 2020/06/27
   * 完善font cache（感谢智明提供补丁）。
+  * 窗口切换到前台时，将其为窗口管理的target/key\_arget。
 
 * 2020/06/26
   * edit 支持 date/time/time\_full 输入类型。
