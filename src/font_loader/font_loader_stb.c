@@ -91,8 +91,12 @@ static ret_t font_stb_get_glyph(font_t* f, wchar_t c, font_size_t font_size, gly
   if (g->data != NULL) {
     glyph_t* gg = glyph_clone(g);
     if (gg != NULL) {
-      glyph_cache_add(&(font->cache), c, font_size, gg);
-    } else {
+      if (glyph_cache_add(&(font->cache), c, font_size, gg) != RET_OK) {
+        TKMEM_FREE(gg);
+        gg = NULL;
+      }
+    }
+    if (gg == NULL) {
       STBTT_free(g->data, NULL);
       log_warn("out of memory\n");
       g->data = NULL;
@@ -100,6 +104,12 @@ static ret_t font_stb_get_glyph(font_t* f, wchar_t c, font_size_t font_size, gly
   }
 
   return g->data != NULL || c == ' ' ? RET_OK : RET_NOT_FOUND;
+}
+
+static ret_t font_stb_shrink_cache(font_t* f, uint32_t cache_nr) {
+  font_stb_t* font = (font_stb_t*)f;
+
+  return glyph_cache_shrink(&(font->cache), cache_nr);
 }
 
 static ret_t font_stb_destroy(font_t* f) {
@@ -132,6 +142,7 @@ font_t* font_stb_create(const char* name, const uint8_t* buff, uint32_t buff_siz
   f->base.destroy = font_stb_destroy;
   f->base.get_glyph = font_stb_get_glyph;
   f->base.get_vmetrics = font_stb_get_vmetrics;
+  f->base.shrink_cache = font_stb_shrink_cache;
   f->base.desc = "truetype(stb)";
 
   tk_strncpy(f->base.name, name, TK_NAME_LEN);

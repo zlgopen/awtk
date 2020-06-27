@@ -103,12 +103,18 @@ static ret_t font_ft_get_glyph(font_t* f, wchar_t c, font_size_t font_size, glyp
 
         g_ft->glyph = *g;
         g_ft->handle = glyph;
-        glyph_cache_add(&(font->cache), c, font_size, (glyph_t*)(g_ft));
-      } else {
+        if (glyph_cache_add(&(font->cache), c, font_size, (glyph_t*)(g_ft)) != RET_OK) {
+          TKMEM_FREE(g_ft);
+          g_ft = NULL;
+        }
+      }
+      if (g_ft == NULL) {
         FT_Done_Glyph(glyph);
         log_warn("out of memory\n");
         g->data = NULL;
       }
+    } else {
+      FT_Done_Glyph(glyph);
     }
   }
 
@@ -133,6 +139,12 @@ static font_vmetrics_t font_ft_get_vmetrics(font_t* f, font_size_t font_size) {
   vmetrics.line_gap = vmetrics.line_gap >> 6;
 
   return vmetrics;
+}
+
+static ret_t font_ft_shrink_cache(font_t* f, uint32_t cache_nr) {
+  font_ft_t* font = (font_ft_t*)f;
+
+  return glyph_cache_shrink(&(font->cache), cache_nr);
 }
 
 static ret_t font_ft_destroy(font_t* f) {
@@ -177,6 +189,7 @@ font_t* font_ft_create_ex(const char* name, const uint8_t* buff, uint32_t size, 
   f->base.destroy = font_ft_destroy;
   f->base.get_glyph = font_ft_get_glyph;
   f->base.get_vmetrics = font_ft_get_vmetrics;
+  f->base.shrink_cache = font_ft_shrink_cache;
   f->base.desc = mono ? "mono(freetype)" : "truetype(freetype)";
 
   tk_strncpy(f->base.name, name, TK_NAME_LEN);

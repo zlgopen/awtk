@@ -126,10 +126,13 @@ ret_t tk_init_assets(void) {
 static ret_t awtk_mem_on_out_of_memory(void* ctx, uint32_t tried_times, uint32_t need_size) {
   if (tried_times == 1) {
     image_manager_unload_unused(image_manager(), 10);
+    font_manager_shrink_cache(font_manager(), 10);
   } else if (tried_times == 2) {
     image_manager_unload_unused(image_manager(), 0);
+    font_manager_shrink_cache(font_manager(), 0);
   } else if (tried_times == 3) {
     event_t e = event_init(EVT_LOW_MEMORY, NULL);
+    font_manager_unload_all(font_manager());
     widget_dispatch(window_manager(), &e);
   } else {
     event_t e = event_init(EVT_OUT_OF_MEMORY, NULL);

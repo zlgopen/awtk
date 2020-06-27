@@ -45,6 +45,7 @@ glyph_cache_t* glyph_cache_init(glyph_cache_t* cache, uint32_t capacity,
 ret_t glyph_cache_add(glyph_cache_t* cache, wchar_t code, font_size_t size, glyph_t* g);
 ret_t glyph_cache_lookup(glyph_cache_t* cache, wchar_t code, font_size_t size, glyph_t* g);
 ret_t glyph_cache_deinit(glyph_cache_t* cache);
+ret_t glyph_cache_shrink(glyph_cache_t* cache, uint32_t cache_size);
 
 END_C_DECLS
 

@@ -148,6 +148,7 @@ typedef struct _font_vmetrics_t {
 typedef font_vmetrics_t (*font_get_vmetrics_t)(font_t* f, font_size_t font_size);
 typedef bool_t (*font_match_t)(font_t* f, const char* name, font_size_t font_size);
 typedef ret_t (*font_get_glyph_t)(font_t* f, wchar_t chr, font_size_t font_size, glyph_t* g);
+typedef ret_t (*font_shrink_cache_t)(font_t* f, uint32_t cache_size);
 
 typedef ret_t (*font_destroy_t)(font_t* f);
 
@@ -159,8 +160,9 @@ typedef ret_t (*font_destroy_t)(font_t* f);
 struct _font_t {
   char name[TK_NAME_LEN + 1];
   font_match_t match;
-  font_get_vmetrics_t get_vmetrics;
   font_get_glyph_t get_glyph;
+  font_get_vmetrics_t get_vmetrics;
+  font_shrink_cache_t shrink_cache;
   font_destroy_t destroy;
   const char* desc;
 };
@@ -199,6 +201,17 @@ bool_t font_match(font_t* font, const char* font_name, font_size_t font_size);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t font_get_glyph(font_t* font, wchar_t chr, font_size_t font_size, glyph_t* glyph);
+
+/**
+ * @method font_shrink_cache
+ * 清除最近没使用的字模。
+ *
+ * @param {font_t*} font font对象。
+ * @param {uint32_t} cache_size 保留缓存字模的个数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t font_shrink_cache(font_t* font, uint32_t cache_size);
 
 /**
  * @method font_destroy

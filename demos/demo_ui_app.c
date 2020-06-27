@@ -25,6 +25,7 @@
 
 #include "awtk.h"
 #include "ext_widgets.h"
+#include "base/font_manager.h"
 #include "base/event_recorder_player.h"
 
 static ret_t on_clone_tab(void* ctx, event_t* e);
@@ -533,6 +534,8 @@ static ret_t on_mem_test(void* ctx, event_t* e) {
 
   tk_snprintf(text, sizeof(text), "memcpy: %uK/s", memcpy_speed);
   widget_set_text_utf8(label_memcpy, text);
+
+  font_manager_shrink_cache(font_manager(), 1);
 
   return RET_OK;
 }

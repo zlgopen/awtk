@@ -1,5 +1,8 @@
 # 最新动态
 
+* 2020/06/27
+  * 完善font cache（感谢智明提供补丁）。
+
 * 2020/06/26
   * edit 支持 date/time/time\_full 输入类型。
   * 增加文档 [如何用 edit 控件编辑日期](how_to_edit_date.md)

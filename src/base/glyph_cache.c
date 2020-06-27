@@ -46,7 +46,7 @@ static glyph_cache_item_t* glyph_cache_get_empty(glyph_cache_t* cache) {
 
   return_value_if_fail(cache != NULL && cache->items != NULL, NULL);
 
-  if ((cache->size + 1) < cache->capacity) {
+  if (cache->size < cache->capacity) {
     oldest = cache->size++;
     return cache->items + oldest;
   }
@@ -113,6 +113,32 @@ ret_t glyph_cache_deinit(glyph_cache_t* cache) {
 
   TKMEM_FREE(cache->items);
   memset(cache, 0x00, sizeof(glyph_cache_t));
+
+  return RET_OK;
+}
+
+static int glyph_cache_item_compare_by_time(const void* a, const void* b) {
+  glyph_cache_item_t* aa = (glyph_cache_item_t*)a;
+  glyph_cache_item_t* bb = (glyph_cache_item_t*)b;
+
+  return bb->last_access_time - aa->last_access_time;
+}
+
+ret_t glyph_cache_shrink(glyph_cache_t* cache, uint32_t cache_size) {
+  return_value_if_fail(cache != NULL && cache->items != NULL, RET_BAD_PARAMS);
+
+  if (cache->size > cache_size) {
+    uint32_t i = 0;
+    qsort(cache->items, cache->size, sizeof(glyph_cache_item_t), glyph_cache_item_compare_by_time);
+
+    for (i = cache_size; i < cache->size; i++) {
+      glyph_cache_item_t* item = cache->items + i;
+      cache->destroy_glyph(item->g);
+      memset(item, 0x00, sizeof(glyph_cache_item_t));
+    }
+
+    cache->size = cache_size;
+  }
 
   return RET_OK;
 }

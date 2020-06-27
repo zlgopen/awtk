@@ -205,3 +205,16 @@ ret_t font_manager_destroy(font_manager_t* fm) {
 
   return RET_OK;
 }
+
+ret_t font_manager_shrink_cache(font_manager_t* fm, uint32_t cache_size) {
+  uint32_t i = 0;
+  font_t* font = NULL;
+  return_value_if_fail(fm != NULL, RET_FAIL);
+
+  for (i = 0; i < fm->fonts.size; i++) {
+    font = (font_t*)darray_get(&(fm->fonts), i);
+    font_shrink_cache(font, cache_size);
+  }
+
+  return RET_OK;
+}
