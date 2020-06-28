@@ -84,10 +84,6 @@ uint32_t font_gen_buff(font_t* font, uint16_t font_size, const char* str, uint8_
     iter->c = c;
     iter->offset = p - output_buff;
 
-    if (iswspace(c)) {
-      continue;
-    }
-
     printf("%d/%d: 0x%04x\n", i, size, c);
     if (font_get_glyph(font, c, font_size, &g) == RET_OK) {
       uint32_t data_size = (g.pitch ? g.pitch : g.w) * g.h;
@@ -101,8 +97,10 @@ uint32_t font_gen_buff(font_t* font, uint16_t font_size, const char* str, uint8_
       save_uint8(p, g.format);
       save_uint8(p, g.pitch);
 
-      memcpy(p, g.data, data_size);
-      p += data_size;
+      if (g.data != NULL) {
+        memcpy(p, g.data, data_size);
+        p += data_size;
+      }
 
       if (g.format == GLYPH_FMT_MONO) {
         bitmap_mono_dump(g.data, g.w, g.h);
