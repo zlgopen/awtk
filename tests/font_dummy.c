@@ -5,6 +5,8 @@ static glyph_t s_glyph_0;
 static glyph_t s_glyph_1;
 static glyph_t s_glyph_2;
 
+static uint8_t glyph_data[] = {0x1, 0x2, 0x3, 0x4, 0x5};
+
 typedef struct _font_dummy_t {
   font_t base;
   uint16_t font_size;
@@ -15,16 +17,19 @@ ret_t font_dummy_init() {
   s_glyph_0.y = -10;
   s_glyph_0.w = 10;
   s_glyph_0.h = 10;
+  s_glyph_0.data = glyph_data;
 
   s_glyph_1.x = 0;
   s_glyph_1.y = -11;
   s_glyph_1.w = 11;
   s_glyph_1.h = 11;
+  s_glyph_1.data = glyph_data;
 
   s_glyph_2.x = 0;
   s_glyph_2.y = -5;
   s_glyph_2.w = 12;
   s_glyph_2.h = 12;
+  s_glyph_2.data = glyph_data;
 
   return RET_OK;
 }

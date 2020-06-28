@@ -19,13 +19,21 @@
  *
  */
 
+#define GLYPH_CACHE_FREE_ITEM(cache, item)            \
+  {                                                   \
+    if (cache->destroy_glyph && item->g != NULL) {    \
+      cache->destroy_glyph(item->g);                  \
+      memset(item, 0x00, sizeof(glyph_cache_item_t)); \
+    }                                                 \
+  }
+
 #include "tkc/mem.h"
 #include "tkc/time_now.h"
 #include "base/glyph_cache.h"
 
 glyph_cache_t* glyph_cache_init(glyph_cache_t* cache, uint32_t capacity,
                                 tk_destroy_t destroy_glyph) {
-  return_value_if_fail(cache != NULL && capacity > 10, NULL);
+  return_value_if_fail(cache != NULL && capacity > 0, NULL);
 
   cache->items = TKMEM_ZALLOCN(glyph_cache_item_t, capacity);
   return_value_if_fail(cache->items != NULL, NULL);
@@ -56,14 +64,14 @@ static glyph_cache_item_t* glyph_cache_get_empty(glyph_cache_t* cache) {
     if (item->last_access_time < oldest_time) {
       oldest_time = item->last_access_time;
       oldest = i;
+      if (oldest_time == 0) {
+        break;
+      }
     }
   }
 
   item = cache->items + oldest;
-  if (cache->destroy_glyph) {
-    cache->destroy_glyph(item->g);
-    memset(item, 0x00, sizeof(glyph_cache_item_t));
-  }
+  GLYPH_CACHE_FREE_ITEM(cache, item);
 
   return item;
 }
@@ -107,7 +115,8 @@ ret_t glyph_cache_deinit(glyph_cache_t* cache) {
   if (cache->destroy_glyph != NULL) {
     for (i = 0, nr = cache->size; i < nr; i++) {
       glyph_cache_item_t* item = cache->items + i;
-      cache->destroy_glyph(item->g);
+
+      GLYPH_CACHE_FREE_ITEM(cache, item);
     }
   }
 
@@ -133,8 +142,7 @@ ret_t glyph_cache_shrink(glyph_cache_t* cache, uint32_t cache_size) {
 
     for (i = cache_size; i < cache->size; i++) {
       glyph_cache_item_t* item = cache->items + i;
-      cache->destroy_glyph(item->g);
-      memset(item, 0x00, sizeof(glyph_cache_item_t));
+      GLYPH_CACHE_FREE_ITEM(cache, item);
     }
 
     cache->size = cache_size;

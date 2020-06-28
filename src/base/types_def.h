@@ -317,6 +317,10 @@ typedef struct _system_info_t system_info_t;
 
 #endif /*TK_GLYPH_CACHE_NR*/
 
+#if TK_GLYPH_CACHE_NR <= 0
+#error " TK_GLYPH_CACHE_NR must > 0 "
+#endif
+
 #if defined(WITH_STB_FONT) || defined(WITH_FT_FONT)
 #define WITH_TRUETYPE_FONT 1
 #endif /*WITH_STB_FONT or WITH_FT_FONT*/

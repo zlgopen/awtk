@@ -539,7 +539,8 @@ static ret_t canvas_draw_glyph(canvas_t* c, glyph_t* g, xy_t x, xy_t y) {
   xy_t x2 = x + g->w - 1;
   xy_t y2 = y + g->h - 1;
 
-  if (x > c->clip_right || x2 < c->clip_left || y > c->clip_bottom || y2 < c->clip_top) {
+  if (g->data == NULL || x > c->clip_right || x2 < c->clip_left || y > c->clip_bottom ||
+      y2 < c->clip_top) {
     return RET_OK;
   }
 
@@ -597,9 +598,7 @@ static ret_t canvas_draw_text_impl(canvas_t* c, const wchar_t* str, uint32_t nr,
       xy_t xx = x + g.x;
       xy_t yy = y + g.y + baseline;
 
-      if (g.data != NULL) {
-        canvas_draw_glyph(c, &g, xx, yy);
-      }
+      canvas_draw_glyph(c, &g, xx, yy);
       x += g.advance + 1;
     } else {
       x += 4;
