@@ -198,7 +198,6 @@ elif OS_NAME == 'Windows':
     OS_LIBS=['gdi32', 'user32','winmm.lib','imm32.lib','version.lib','shell32.lib','ole32.lib','Oleaut32.lib','Advapi32.lib','DelayImp.lib','psapi.lib']
     OS_FLAGS='-DWIN32 -D_WIN32 -DWINDOWS /EHsc -D_CONSOLE  /DEBUG /Od  /FS /Z7 /utf-8'
     if TARGET_ARCH == 'x86':
-      OS_FLAGS += OS_FLAGS
       OS_LINKFLAGS='/MACHINE:X86 /DEBUG ' + WIN32_AWTK_RES + ' '
       OS_SUBSYSTEM_CONSOLE='/SUBSYSTEM:CONSOLE,5.01  '
       OS_SUBSYSTEM_WINDOWS='/SUBSYSTEM:WINDOWS,5.01  '
