@@ -251,6 +251,7 @@ static ret_t children_layouter_list_view_layout(children_layouter_t* layouter, w
       }
     } else {
       uint32_t rows = (n % cols) ? (n / cols) + 1 : (n / cols);
+      if (item_height == 0) item_height = default_item_height;
       y = (item_height + spacing) * rows;
       if (y > virtual_h) {
         virtual_h = y;
