@@ -68,7 +68,8 @@ static const char* input_type_to_keyboard_name(int32_t input_type) {
       keyboard = "kb_hex";
       break;
     }
-    case INPUT_CUSTOM: {
+    case INPUT_CUSTOM: 
+    case INPUT_CUSTOM_PASSWORD: {
       log_debug("custom keyboard\n");
       break;
     }
