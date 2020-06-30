@@ -691,6 +691,20 @@ ret_t canvas_set_font_manager(canvas_t* c, font_manager_t* font_manager);
 ret_t canvas_set_assets_manager(canvas_t* c, assets_manager_t* assets_manager);
 
 /**
+ * @method canvas_get_text_metrics
+ * 获取当前字体的度量信息。
+ *
+ * @param {canvas_t*} canvas canvas对象。
+ * @param {float_t*} ascent 用于返回ascent。
+ * @param {float_t*} descent 用于返回descent。
+ * @param {float_t*} line_hight 用于返回line height。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t canvas_get_text_metrics(canvas_t* canvas, float_t* ascent, 
+                                      float_t* descent, float_t* line_hight);
+
+/**
  * @method canvas_begin_frame
  * 绘制开始。
  *

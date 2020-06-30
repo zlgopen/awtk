@@ -3,7 +3,8 @@
 * 2020/06/30
   * 完善 font gen（感谢智明提供补丁）。
   * 完善 image dither（感谢大恒提供补丁）。
-  
+  * add vgcanvas\_get\_text\_metrics.
+
 * 2020/06/29
   * 完善 listview layout（感谢尧燊提供补丁）
 	* 完善 input\_type\_to\_keyboard\_name（感谢俊杰提供补丁）

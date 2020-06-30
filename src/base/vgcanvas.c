@@ -510,3 +510,12 @@ wh_t vgcanvas_get_height(vgcanvas_t* vgcanvas) {
     return vgcanvas->h;
   }
 }
+
+ret_t vgcanvas_get_text_metrics(vgcanvas_t* vg, float_t* ascent, 
+                                      float_t* descent, float_t* line_hight) {
+  return_value_if_fail(vg != NULL && vg->vt != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(vg->vt->get_text_metrics != NULL, RET_BAD_PARAMS);
+
+  return vg->vt->get_text_metrics(vg, ascent, descent, line_hight);
+}
+

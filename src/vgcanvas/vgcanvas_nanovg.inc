@@ -393,6 +393,31 @@ static float_t vgcanvas_nanovg_measure_text(vgcanvas_t* vgcanvas, const char* te
   return nvgTextBounds(vg, 0, 0, text, text + strlen(text), bounds);
 }
 
+static ret_t vgcanvas_nanovg_get_text_metrics(vgcanvas_t* vgcanvas, float_t* ascent, 
+                                      float_t* descent, float_t* line_hight) {
+  NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
+
+  float a = 0;
+  float  d = 0;
+  float  h = 0;
+
+  nvgTextMetrics(vg, &a, &d, &h);
+
+  if(ascent != NULL) {
+    *ascent = a;
+  }
+
+  if(descent != NULL) {
+    *descent = d;
+  }
+
+  if(line_hight != NULL) {
+    *line_hight = h;
+  }
+
+  return RET_OK;
+}
+
 static ret_t vgcanvas_nanovg_draw_image(vgcanvas_t* vgcanvas, bitmap_t* img, float_t sx, float_t sy,
                                         float_t sw, float_t sh, float_t dx, float_t dy, float_t dw,
                                         float_t dh) {
@@ -616,6 +641,7 @@ static const vgcanvas_vtable_t vt = {
     .set_line_join = vgcanvas_nanovg_set_line_join,
     .set_line_cap = vgcanvas_nanovg_set_line_cap,
     .set_miter_limit = vgcanvas_nanovg_set_miter_limit,
+    .get_text_metrics = vgcanvas_nanovg_get_text_metrics,
     .save = vgcanvas_nanovg_save,
     .restore = vgcanvas_nanovg_restore,
     .end_frame = vgcanvas_nanovg_end_frame,

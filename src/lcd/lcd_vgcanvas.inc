@@ -251,6 +251,12 @@ static bitmap_format_t lcd_vgcanvas_get_desired_bitmap_format(lcd_t* lcd) {
   return BITMAP_FMT_RGBA8888;
 }
 
+static ret_t lcd_vgcanvas_get_text_metrics(lcd_t* lcd, float_t* ascender, 
+                                      float_t* descender, float_t* lineh) {
+  vgcanvas_t* canvas = LCD(lcd)->canvas;
+  return vgcanvas_get_text_metrics(canvas, ascender, descender, lineh);
+}
+
 lcd_t* lcd_vgcanvas_init(wh_t w, wh_t h, vgcanvas_t* canvas) {
   lcd_vgcanvas_t* lcd = TKMEM_ZALLOC(lcd_vgcanvas_t);
   lcd_t* base = &(lcd->base);
@@ -279,7 +285,7 @@ lcd_t* lcd_vgcanvas_init(wh_t w, wh_t h, vgcanvas_t* canvas) {
   base->get_width = lcd_vgcanvas_get_width;
   base->get_height = lcd_vgcanvas_get_height;
   base->destroy = lcd_vgcanvas_destroy;
-
+  base->get_text_metrics = lcd_vgcanvas_get_text_metrics;
   base->w = (wh_t)w;
   base->h = (wh_t)h;
   base->ratio = canvas->ratio;

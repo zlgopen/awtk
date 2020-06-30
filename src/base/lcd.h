@@ -45,6 +45,8 @@ typedef ret_t (*lcd_begin_frame_t)(lcd_t* lcd, rect_t* dirty_rect);
 typedef ret_t (*lcd_set_clip_rect_t)(lcd_t* lcd, rect_t* rect);
 typedef ret_t (*lcd_get_clip_rect_t)(lcd_t* lcd, rect_t* rect);
 typedef ret_t (*lcd_resize_t)(lcd_t* lcd, wh_t w, wh_t h, uint32_t line_length);
+typedef ret_t (*lcd_get_text_metrics_t)(lcd_t* lcd, float_t* ascent, 
+                                      float_t* descent, float_t* line_hight);
 
 typedef ret_t (*lcd_set_global_alpha_t)(lcd_t* lcd, uint8_t alpha);
 typedef ret_t (*lcd_set_text_color_t)(lcd_t* lcd, color_t color);
@@ -164,6 +166,7 @@ struct _lcd_t {
   lcd_set_fill_color_t set_fill_color;
   lcd_set_font_name_t set_font_name;
   lcd_set_font_size_t set_font_size;
+  lcd_get_text_metrics_t get_text_metrics;
   lcd_draw_vline_t draw_vline;
   lcd_draw_hline_t draw_hline;
   lcd_fill_rect_t fill_rect;
@@ -607,6 +610,20 @@ bool_t lcd_is_swappable(lcd_t* lcd);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t lcd_end_frame(lcd_t* lcd);
+
+/**
+ * @method lcd_get_text_metrics
+ * 获取当前字体的度量信息。
+ *
+ * @param {lcd_t*} lcd lcd对象。
+ * @param {float_t*} ascent 用于返回ascent。
+ * @param {float_t*} descent 用于返回descent。
+ * @param {float_t*} line_hight 用于返回line height。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t lcd_get_text_metrics(lcd_t* lcd, float_t* ascent, 
+                                      float_t* descent, float_t* line_hight);
 
 /**
  * @method lcd_destroy
