@@ -1800,14 +1800,13 @@ ret_t canvas_reset(canvas_t* c) {
   return RET_OK;
 }
 
-ret_t canvas_get_text_metrics(canvas_t* c, float_t* ascent, float_t* descent,
-                              float_t* line_hight) {
-  return_value_if_fail(c!= NULL, RET_BAD_PARAMS);
+ret_t canvas_get_text_metrics(canvas_t* c, float_t* ascent, float_t* descent, float_t* line_hight) {
+  return_value_if_fail(c != NULL, RET_BAD_PARAMS);
   return_value_if_fail(ascent != NULL && descent != NULL && line_hight != NULL, RET_BAD_PARAMS);
 
-  if(c->lcd != NULL && c->lcd->get_text_metrics != NULL) {
+  if (c->lcd != NULL && c->lcd->get_text_metrics != NULL) {
     return c->lcd->get_text_metrics(c->lcd, ascent, descent, line_hight);
-  } else if(c->font != NULL) {
+  } else if (c->font != NULL) {
     font_vmetrics_t vmetrics = font_get_vmetrics(c->font, c->font_size);
 
     *ascent = vmetrics.ascent;

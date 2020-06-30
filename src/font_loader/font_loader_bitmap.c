@@ -61,7 +61,7 @@ static ret_t font_bitmap_get_glyph(font_t* f, wchar_t c, font_size_t font_size, 
 
   p = (font->buff + index->offset);
   memcpy(g, p, sizeof(glyph_t));
-  if(c == ' ') {
+  if (c == ' ') {
     g->data = NULL;
   } else {
     g->data = font->buff + index->offset + sizeof(glyph_t) - sizeof(g->data);

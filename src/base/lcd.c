@@ -321,10 +321,8 @@ wh_t lcd_get_height(lcd_t* lcd) {
   }
 }
 
-ret_t lcd_get_text_metrics(lcd_t* lcd, float_t* ascent, 
-                                      float_t* descent, float_t* line_hight) {
+ret_t lcd_get_text_metrics(lcd_t* lcd, float_t* ascent, float_t* descent, float_t* line_hight) {
   return_value_if_fail(lcd != NULL && lcd->get_text_metrics != NULL, RET_BAD_PARAMS);
 
   return lcd->get_text_metrics(lcd, ascent, descent, line_hight);
 }
-

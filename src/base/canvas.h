@@ -701,8 +701,8 @@ ret_t canvas_set_assets_manager(canvas_t* c, assets_manager_t* assets_manager);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t canvas_get_text_metrics(canvas_t* canvas, float_t* ascent, 
-                                      float_t* descent, float_t* line_hight);
+ret_t canvas_get_text_metrics(canvas_t* canvas, float_t* ascent, float_t* descent,
+                              float_t* line_hight);
 
 /**
  * @method canvas_begin_frame

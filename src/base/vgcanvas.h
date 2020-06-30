@@ -86,8 +86,8 @@ typedef ret_t (*vgcanvas_set_font_t)(vgcanvas_t* vg, const char* font);
 typedef ret_t (*vgcanvas_set_font_size_t)(vgcanvas_t* vg, float_t size);
 typedef ret_t (*vgcanvas_set_text_align_t)(vgcanvas_t* vg, const char* value);
 typedef ret_t (*vgcanvas_set_text_baseline_t)(vgcanvas_t* vg, const char* value);
-typedef ret_t (*vgcanvas_get_text_metrics_t)(vgcanvas_t* vg, float_t* ascent, 
-                                      float_t* descent, float_t* line_hight);
+typedef ret_t (*vgcanvas_get_text_metrics_t)(vgcanvas_t* vg, float_t* ascent, float_t* descent,
+                                             float_t* line_hight);
 typedef ret_t (*vgcanvas_fill_text_t)(vgcanvas_t* vg, const char* text, float_t x, float_t y,
                                       float_t max_width);
 typedef float_t (*vgcanvas_measure_text_t)(vgcanvas_t* vg, const char* text);
@@ -867,8 +867,8 @@ ret_t vgcanvas_set_text_baseline(vgcanvas_t* vg, const char* value);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t vgcanvas_get_text_metrics(vgcanvas_t* vg, float_t* ascent, 
-                                      float_t* descent, float_t* line_hight);
+ret_t vgcanvas_get_text_metrics(vgcanvas_t* vg, float_t* ascent, float_t* descent,
+                                float_t* line_hight);
 
 /**
  * @method vgcanvas_fill_text

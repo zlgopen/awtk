@@ -45,8 +45,8 @@ typedef ret_t (*lcd_begin_frame_t)(lcd_t* lcd, rect_t* dirty_rect);
 typedef ret_t (*lcd_set_clip_rect_t)(lcd_t* lcd, rect_t* rect);
 typedef ret_t (*lcd_get_clip_rect_t)(lcd_t* lcd, rect_t* rect);
 typedef ret_t (*lcd_resize_t)(lcd_t* lcd, wh_t w, wh_t h, uint32_t line_length);
-typedef ret_t (*lcd_get_text_metrics_t)(lcd_t* lcd, float_t* ascent, 
-                                      float_t* descent, float_t* line_hight);
+typedef ret_t (*lcd_get_text_metrics_t)(lcd_t* lcd, float_t* ascent, float_t* descent,
+                                        float_t* line_hight);
 
 typedef ret_t (*lcd_set_global_alpha_t)(lcd_t* lcd, uint8_t alpha);
 typedef ret_t (*lcd_set_text_color_t)(lcd_t* lcd, color_t color);
@@ -622,8 +622,7 @@ ret_t lcd_end_frame(lcd_t* lcd);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t lcd_get_text_metrics(lcd_t* lcd, float_t* ascent, 
-                                      float_t* descent, float_t* line_hight);
+ret_t lcd_get_text_metrics(lcd_t* lcd, float_t* ascent, float_t* descent, float_t* line_hight);
 
 /**
  * @method lcd_destroy
