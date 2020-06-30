@@ -393,6 +393,7 @@ static float_t vgcanvas_nanovg_measure_text(vgcanvas_t* vgcanvas, const char* te
   return nvgTextBounds(vg, 0, 0, text, text + strlen(text), bounds);
 }
 
+#ifdef WITH_NANOVG_GPU
 static ret_t vgcanvas_nanovg_get_text_metrics(vgcanvas_t* vgcanvas, float_t* ascent, 
                                       float_t* descent, float_t* line_hight) {
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
@@ -402,7 +403,6 @@ static ret_t vgcanvas_nanovg_get_text_metrics(vgcanvas_t* vgcanvas, float_t* asc
   float  h = 0;
 
   nvgTextMetrics(vg, &a, &d, &h);
-
   if(ascent != NULL) {
     *ascent = a;
   }
@@ -417,6 +417,9 @@ static ret_t vgcanvas_nanovg_get_text_metrics(vgcanvas_t* vgcanvas, float_t* asc
 
   return RET_OK;
 }
+#else
+#define vgcanvas_nanovg_get_text_metrics NULL
+#endif/*WITH_NANOVG_GPU*/
 
 static ret_t vgcanvas_nanovg_draw_image(vgcanvas_t* vgcanvas, bitmap_t* img, float_t sx, float_t sy,
                                         float_t sw, float_t sh, float_t dx, float_t dy, float_t dw,
