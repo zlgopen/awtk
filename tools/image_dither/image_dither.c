@@ -2052,7 +2052,7 @@ static void image_dither_data_8888_to_565(uint8_t* src_data, uint8_t* dst_data,
     line_err[-1].g = 0;
     line_err[-1].r = 0;
     for (x = 0; x < w; x++) {
-      if (src[3] > 0) {
+      if (src_bpp == 3 || (src_bpp == 4 && src[3] > 0)) {
         cB = src[0] + (((err.b << 1) + line_err[x].b + err_1.b) >> 2);
         cG = src[1] + (((err.g << 1) + line_err[x].g + err_1.g) >> 2);
         cR = src[2] + (((err.r << 1) + line_err[x].r + err_1.r) >> 2);
