@@ -1,9 +1,13 @@
 # 最新动态
 
+* 2020/06/30
+  * 完善 font gen（感谢智明提供补丁）。
+  * 完善 image dither（感谢大恒提供补丁）。
+  
 * 2020/06/29
   * 完善 listview layout（感谢尧燊提供补丁）
 	* 完善 input\_type\_to\_keyboard\_name（感谢俊杰提供补丁）
-	* 
+	
 * 2020/06/28
   * 完善 font cache（感谢智明提供补丁）。
   * font\_bitmap\_index\_t 中的偏移量改为 32 位（如果使用位图字体，需要重新生成资源）。
