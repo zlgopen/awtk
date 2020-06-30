@@ -107,7 +107,10 @@ uint32_t font_gen_buff(font_t* font, uint16_t font_size, const char* str, uint8_
       }
 
     } else if (c > 32 && c != 65279) {
-      printf("gen fail, filename = %s! desc = not found char = %d!\n", "", c);
+      wchar_t arr[] = {c};
+      char utf8_arr[6] = {0};
+      tk_utf8_from_utf16(arr, utf8_arr, 6);
+      printf("gen fail, filename = ! desc = unable to find '%s' in TTF, please modify the setting of font cropping.!\n", utf8_arr);
       exit(0);
     } else {
       iter->offset = 0;
