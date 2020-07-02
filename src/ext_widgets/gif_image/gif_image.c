@@ -31,7 +31,9 @@ static ret_t gif_image_on_timer(const timer_info_t* info) {
   return_value_if_fail(image != NULL, RET_BAD_PARAMS);
 
   image->index = 0;
-  widget_invalidate_force(WIDGET(image), NULL);
+  if (WIDGET(image)->visible) {
+    widget_invalidate_force(WIDGET(image), NULL);
+  }
 
   return RET_REPEAT;
 }
@@ -41,7 +43,9 @@ static ret_t gif_image_on_timer(const timer_info_t* info) {
   return_value_if_fail(image != NULL, RET_BAD_PARAMS);
 
   image->index++;
-  widget_invalidate_force(WIDGET(image), NULL);
+  if (WIDGET(image)->visible) {
+    widget_invalidate_force(WIDGET(image), NULL);
+  }
   return RET_REPEAT;
 }
 #endif /*AWTK_WEB*/
