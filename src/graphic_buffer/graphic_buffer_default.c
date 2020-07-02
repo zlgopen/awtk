@@ -34,7 +34,9 @@ typedef struct _graphic_buffer_default_t {
   uint8_t* data_head;
 } graphic_buffer_default_t;
 
-#define GRAPHIC_BUFFER_DEFAULT(buffer) ((graphic_buffer_default_t*)(buffer))
+static graphic_buffer_default_t* graphic_buffer_default_cast(graphic_buffer_t* buffer);
+
+#define GRAPHIC_BUFFER_DEFAULT(buffer) graphic_buffer_default_cast(buffer)
 
 static uint8_t* graphic_buffer_default_lock_for_read(graphic_buffer_t* buffer) {
   graphic_buffer_default_t* b = GRAPHIC_BUFFER_DEFAULT(buffer);
@@ -69,6 +71,8 @@ static ret_t graphic_buffer_default_destroy(graphic_buffer_t* buffer) {
   return_value_if_fail(b != NULL, RET_BAD_PARAMS);
 
   TKMEM_FREE(b->data_head);
+  memset(b, 0x00, sizeof(*b));
+
   TKMEM_FREE(b);
 
   return RET_OK;
@@ -138,3 +142,10 @@ ret_t graphic_buffer_create_for_bitmap(bitmap_t* bitmap) {
 
   return bitmap->buffer != NULL ? RET_OK : RET_OOM;
 }
+
+static graphic_buffer_default_t* graphic_buffer_default_cast(graphic_buffer_t* buffer) {
+  return_value_if_fail(buffer != NULL && buffer->vt == &s_graphic_buffer_default_vtable, NULL);
+
+  return (graphic_buffer_default_t*)(buffer);
+}
+
