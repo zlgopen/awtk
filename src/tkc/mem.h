@@ -149,6 +149,18 @@ ret_t tk_mem_init(void* buffer, uint32_t size);
  */
 ret_t tk_mem_init_stage2(void);
 
+/**
+ * @method tk_mem_is_valid_addr
+ * 检查给定的地址是否是一个有效的heap地址。
+ * 
+ * > 用于辅助发现内存问题。
+ *
+ * @return {bool_t} 返回FALSE一定是无效地址，返回TRUE在PC则不太确定。
+ */
+bool_t tk_mem_is_valid_addr(void* addr);
+
+#define TK_IS_VALID_ADDR(addr) tk_mem_is_valid_addr(addr)
+
 END_C_DECLS
 
 #endif /*TK_TKMEM_MANAGER_H*/

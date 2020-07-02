@@ -38,6 +38,10 @@ static mem_allocator_t* s_allocator = NULL;
 #ifdef HAS_STD_MALLOC
 #include "tkc/mem_allocator_std.h"
 
+bool_t tk_mem_is_valid_addr(void* addr) {
+  return ((uint64_t)addr > 0x10000);
+}
+
 static mem_allocator_t* mem_allocator_get(void) {
   static mem_allocator_t std;
   if (s_allocator != NULL) {
@@ -62,9 +66,23 @@ ret_t tk_mem_init_stage2(void) {
 #include "tkc/mem_allocator_simple.h"
 
 static mem_allocator_lock_t s_lock;
+
+static void* s_heap_start = NULL;
+static uint32_t s_heap_size = 0;
+
+bool_t tk_mem_is_valid_addr(void* addr) {
+  uint64_t start = (uint64_t)s_heap_start;
+  uint64_t end = start + s_heap_size;
+  
+  return (((uint64_t)addr >= (uint64_t)start) && ((uint64_t)addr < end));
+}
+
 ret_t tk_mem_init(void* buffer, uint32_t size) {
   static mem_allocator_simple_t simple;
   static mem_allocator_pool_t pool;
+
+  s_heap_size = size;
+  s_heap_start = buffer;
 
   s_allocator = mem_allocator_simple_init(&simple, buffer, size);
   if (size < 100 * 1024) {
