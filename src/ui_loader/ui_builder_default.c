@@ -71,8 +71,9 @@ static ret_t ui_builder_default_on_widget_end(ui_builder_t* b) {
     widget_dispatch(b->widget, &e);
 
     b->widget->loading = FALSE;
+    b->widget = b->widget->parent;
   }
-  b->widget = b->widget->parent;
+
   return RET_OK;
 }
 
