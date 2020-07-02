@@ -2,6 +2,8 @@
 
 * 2020/07/02
   * 完善 ui loader（感谢 dog2nd_Zhao 提供补丁）。
+  * 完善 graphic\_buffer\_default
+  * 增加 tk\_mem\_is\_valid\_addr
 
 * 2020/06/30
   * 完善 font gen（感谢智明提供补丁）。
