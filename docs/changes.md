@@ -1,5 +1,9 @@
 # 最新动态
 
+* 2020/07/03
+  * 完善 graphic\_buffer\_default
+  * 完善焦点快捷键的处理。支持 shift+tab 向后切换焦点。 
+  
 * 2020/07/02
   * 完善 graphic\_buffer\_default
   * 增加 tk\_mem\_is\_valid\_addr
