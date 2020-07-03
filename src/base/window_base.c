@@ -360,8 +360,8 @@ widget_t* window_base_create(widget_t* parent, const widget_vtable_t* vt, xy_t x
 
   return_value_if_fail(window_manager_open_window(parent, widget) == RET_OK, NULL);
   win->stage = WINDOW_STAGE_NONE;
-  win->move_focus_prev_key = NULL;
   win->move_focus_next_key = tk_strdup(TK_KEY_MOVE_FOCUS_NEXT);
+  win->move_focus_prev_key = tk_strdup(TK_KEY_MOVE_FOCUS_PREV);
 
   return widget;
 }

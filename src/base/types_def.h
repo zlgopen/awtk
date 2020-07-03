@@ -287,6 +287,10 @@ typedef struct _widget_animator_t widget_animator_t;
 #define TK_KEY_MOVE_FOCUS_NEXT "tab"
 #endif /*TK_KEY_MOVE_FOCUS_NEXT*/
 
+#ifndef TK_KEY_MOVE_FOCUS_PREV
+#define TK_KEY_MOVE_FOCUS_PREV "shift+tab"
+#endif /*TK_KEY_MOVE_FOCUS_PREV*/
+
 struct _locale_info_t;
 typedef struct _locale_info_t locale_info_t;
 

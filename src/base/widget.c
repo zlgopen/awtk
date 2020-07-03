@@ -2002,8 +2002,31 @@ bool_t widget_is_activate_key(widget_t* widget, key_event_t* e) {
          (widget->vt->return_key_to_activate && key_code_is_enter(e->key));
 }
 
-static bool_t widget_match_key(widget_t* widget, const char* prop, uint32_t key) {
-  const char* value = NULL;
+static bool_t shortcut_fast_match(const char* shortcut, key_event_t* e) {
+  uint32_t key = e->key;
+  const char* kname = strrchr(shortcut, '+');
+  bool_t cmd = strstr(shortcut, "cmd") != NULL;
+  bool_t ctrl = strstr(shortcut, "ctrl") != NULL;
+  bool_t shift = strstr(shortcut, "shift") != NULL;
+  const key_type_value_t* kv = keys_type_find_by_value(key);
+
+  if (kv != NULL) {
+    if (kname == NULL) {
+      kname = shortcut;
+    } else {
+      kname++;
+    }
+
+    if (tk_str_ieq(kname, kv->name) && cmd == e->cmd && ctrl == e->ctrl && shift == e->shift) {
+      return TRUE;
+    }
+  }
+
+  return FALSE;
+}
+
+static bool_t widget_match_key(widget_t* widget, const char* prop, key_event_t* e) {
+  const char* shortcut = NULL;
   widget_t* win = widget_get_window(widget);
 
   if (widget_is_window_manager(widget)) {
@@ -2011,41 +2034,37 @@ static bool_t widget_match_key(widget_t* widget, const char* prop, uint32_t key)
   }
 
   return_value_if_fail(win != NULL, FALSE);
-  value = widget_get_prop_str(win, prop, NULL);
-  if (value != NULL) {
-    const key_type_value_t* kv = keys_type_find_by_value(key);
-    if (kv != NULL) {
-      if (tk_str_ieq(value, kv->name)) {
-        return TRUE;
-      }
-    }
+  shortcut = widget_get_prop_str(win, prop, NULL);
+
+  if (shortcut != NULL) {
+    return shortcut_fast_match(shortcut, e);
   }
 
   return FALSE;
 }
 
 static bool_t widget_is_move_focus_prev_key(widget_t* widget, key_event_t* e) {
-  return widget_match_key(widget, WIDGET_PROP_MOVE_FOCUS_PREV_KEY, e->key);
+  return widget_match_key(widget, WIDGET_PROP_MOVE_FOCUS_PREV_KEY, e);
 }
 
 static bool_t widget_is_move_focus_next_key(widget_t* widget, key_event_t* e) {
-  return widget_match_key(widget, WIDGET_PROP_MOVE_FOCUS_NEXT_KEY, e->key);
+  return widget_match_key(widget, WIDGET_PROP_MOVE_FOCUS_NEXT_KEY, e);
 }
 
 static bool_t widget_is_move_focus_up_key(widget_t* widget, key_event_t* e) {
-  return widget_match_key(widget, WIDGET_PROP_MOVE_FOCUS_UP_KEY, e->key);
+  return widget_match_key(widget, WIDGET_PROP_MOVE_FOCUS_UP_KEY, e);
 }
 
 static bool_t widget_is_move_focus_down_key(widget_t* widget, key_event_t* e) {
-  return widget_match_key(widget, WIDGET_PROP_MOVE_FOCUS_DOWN_KEY, e->key);
+  return widget_match_key(widget, WIDGET_PROP_MOVE_FOCUS_DOWN_KEY, e);
 }
 
 static bool_t widget_is_move_focus_left_key(widget_t* widget, key_event_t* e) {
-  return widget_match_key(widget, WIDGET_PROP_MOVE_FOCUS_LEFT_KEY, e->key);
+  return widget_match_key(widget, WIDGET_PROP_MOVE_FOCUS_LEFT_KEY, e);
 }
 
 static bool_t widget_is_move_focus_right_key(widget_t* widget, key_event_t* e) {
-  return widget_match_key(widget, WIDGET_PROP_MOVE_FOCUS_RIGHT_KEY, e->key);
+  return widget_match_key(widget, WIDGET_PROP_MOVE_FOCUS_RIGHT_KEY, e);
 }
 
 static ret_t widget_on_keydown_general(widget_t* widget, key_event_t* e) {
