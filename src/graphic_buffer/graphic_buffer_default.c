@@ -32,11 +32,20 @@ typedef struct _graphic_buffer_default_t {
 
   uint8_t* data;
   uint8_t* data_head;
+  uint32_t w;
+  uint32_t h;
 } graphic_buffer_default_t;
 
 static graphic_buffer_default_t* graphic_buffer_default_cast(graphic_buffer_t* buffer);
 
 #define GRAPHIC_BUFFER_DEFAULT(buffer) graphic_buffer_default_cast(buffer)
+
+static bool_t graphic_buffer_default_is_valid_for(graphic_buffer_t* buffer, bitmap_t* bitmap) {
+  graphic_buffer_default_t* b = GRAPHIC_BUFFER_DEFAULT(buffer);
+  return_value_if_fail(b != NULL && bitmap != NULL, FALSE);
+
+  return b->w == bitmap->w && b->h == bitmap->h;
+}
 
 static uint8_t* graphic_buffer_default_lock_for_read(graphic_buffer_t* buffer) {
   graphic_buffer_default_t* b = GRAPHIC_BUFFER_DEFAULT(buffer);
@@ -56,11 +65,14 @@ static ret_t graphic_buffer_default_unlock(graphic_buffer_t* buffer) {
   return RET_OK;
 }
 
-static ret_t graphic_buffer_default_attach(graphic_buffer_t* buffer, void* data) {
+static ret_t graphic_buffer_default_attach(graphic_buffer_t* buffer, void* data, uint32_t w,
+                                           uint32_t h) {
   graphic_buffer_default_t* b = GRAPHIC_BUFFER_DEFAULT(buffer);
   return_value_if_fail(b != NULL, RET_BAD_PARAMS);
   return_value_if_fail(b->data_head == NULL, RET_NOT_IMPL);
 
+  b->w = w;
+  b->h = h;
   b->data = data;
 
   return RET_OK;
@@ -83,6 +95,7 @@ static const graphic_buffer_vtable_t s_graphic_buffer_default_vtable = {
     .lock_for_write = graphic_buffer_default_lock_for_write,
     .unlock = graphic_buffer_default_unlock,
     .attach = graphic_buffer_default_attach,
+    .is_valid_for = graphic_buffer_default_is_valid_for,
     .destroy = graphic_buffer_default_destroy};
 
 static graphic_buffer_t* graphic_buffer_default_create(uint32_t w, uint32_t h,
@@ -108,8 +121,9 @@ static graphic_buffer_t* graphic_buffer_default_create(uint32_t w, uint32_t h,
     while (((uint32_t)(data - (uint8_t*)NULL)) % BITMAP_ALIGN_SIZE) {
       data++;
     }
+    buffer->w = w;
+    buffer->h = h;
     buffer->data = data;
-
     buffer->graphic_buffer.vt = &s_graphic_buffer_default_vtable;
     return GRAPHIC_BUFFER(buffer);
   } else {
@@ -126,6 +140,8 @@ graphic_buffer_t* graphic_buffer_create_with_data(const uint8_t* data, uint32_t 
   buffer = TKMEM_ZALLOC(graphic_buffer_default_t);
   return_value_if_fail(buffer != NULL, NULL);
 
+  buffer->w = w;
+  buffer->h = h;
   buffer->data = (uint8_t*)data;
   buffer->graphic_buffer.vt = &s_graphic_buffer_default_vtable;
 
@@ -148,4 +164,3 @@ static graphic_buffer_default_t* graphic_buffer_default_cast(graphic_buffer_t* b
 
   return (graphic_buffer_default_t*)(buffer);
 }
-

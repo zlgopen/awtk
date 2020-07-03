@@ -32,7 +32,9 @@ typedef struct _graphic_buffer_t graphic_buffer_t;
 typedef uint8_t* (*graphic_buffer_lock_for_read_t)(graphic_buffer_t* buffer);
 typedef uint8_t* (*graphic_buffer_lock_for_write_t)(graphic_buffer_t* buffer);
 typedef ret_t (*graphic_buffer_unlock_t)(graphic_buffer_t* buffer);
-typedef ret_t (*graphic_buffer_attach_t)(graphic_buffer_t* buffer, void* data);
+typedef ret_t (*graphic_buffer_attach_t)(graphic_buffer_t* buffer, void* data, uint32_t w,
+                                         uint32_t h);
+typedef bool_t (*graphic_buffer_is_valid_for_t)(graphic_buffer_t* buffer, bitmap_t* bitmap);
 typedef ret_t (*graphic_buffer_destroy_t)(graphic_buffer_t* buffer);
 
 typedef enum _graphic_buffer_options_t {
@@ -59,6 +61,7 @@ typedef struct _graphic_buffer_vtable_t {
   graphic_buffer_lock_for_write_t lock_for_write;
   graphic_buffer_unlock_t unlock;
   graphic_buffer_attach_t attach;
+  graphic_buffer_is_valid_for_t is_valid_for;
   graphic_buffer_destroy_t destroy;
 } graphic_buffer_vtable_t;
 
@@ -126,10 +129,23 @@ ret_t graphic_buffer_unlock(graphic_buffer_t* buffer);
  * 附件到指定的内存。
  * @param {graphic_buffer_t*} buffer 图像缓冲区对象。
  * @param {void*} data 内存数据。
+ * @param {uint32_t} w 宽度。
+ * @param {uint32_t} h 宽度。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t graphic_buffer_attach(graphic_buffer_t* buffer, void* data);
+ret_t graphic_buffer_attach(graphic_buffer_t* buffer, void* data, uint32_t w, uint32_t h);
+
+/**
+ * @method graphic_buffer_is_valid_for
+ * 用于检查graphic buffer的有效性。
+ * 
+ * @param {graphic_buffer_t*} buffer 图像缓冲区对象。
+ * @param {bitmap_t*} bitmap 位图对象。
+ *
+ * @return {bool_t} 返回TRUE表示有效，否则表示无效。
+ */
+bool_t graphic_buffer_is_valid_for(graphic_buffer_t* buffer, bitmap_t* bitmap);
 
 /**
  * @method graphic_buffer_destroy

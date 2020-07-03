@@ -73,7 +73,7 @@ static uint32_t s_heap_size = 0;
 bool_t tk_mem_is_valid_addr(void* addr) {
   uint64_t start = (uint64_t)s_heap_start;
   uint64_t end = start + s_heap_size;
-  
+
   return (((uint64_t)addr >= (uint64_t)start) && ((uint64_t)addr < end));
 }
 
