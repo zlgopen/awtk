@@ -19393,6 +19393,27 @@
             "desc": "控件对象。"
           },
           {
+            "type": "uint32_t",
+            "name": "type",
+            "desc": "事件类型。"
+          }
+        ],
+        "annotation": {},
+        "desc": "分发一个简单事件。",
+        "name": "widget_dispatch_simple_event",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
             "type": "event_t*",
             "name": "e",
             "desc": "事件。"
