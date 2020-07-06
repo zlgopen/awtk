@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   ubjson.c
  * Author: AWTK Develop Team
  * Brief:  ubjson 
@@ -52,8 +52,6 @@ static ret_t conf_ubjson_save_node_value_simple(conf_node_t* node, ubjson_writer
   } else {
     return ubjson_writer_write_int(writer, value_int(&v));
   }
-  /*FIXME*/
-  return RET_OK;
 }
 
 static ret_t conf_ubjson_save_node_value(conf_node_t* node, ubjson_writer_t* writer) {

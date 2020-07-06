@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   conf_json.c
  * Author: AWTK Develop Team
  * Brief:  json 
@@ -322,8 +322,6 @@ static ret_t conf_json_save_node_value_simple(conf_node_t* node, str_t* str, uin
       return str_append_double(str, "%.4f", value_double(&v));
     }
   }
-
-  return RET_OK;
 }
 
 static ret_t conf_json_save_node_value(conf_node_t* node, str_t* str, uint32_t level) {

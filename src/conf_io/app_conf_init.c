@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   app_conf_init.h
  * Author: AWTK Develop Team
  * Brief:  init config for app
@@ -47,7 +47,7 @@ static ret_t app_conf_prepare_default(const char* url, const char* default_url) 
     data_reader_t* reader = data_reader_factory_create_reader(data_reader_factory(), default_url);
     if (reader != NULL) {
       uint32_t size = data_reader_get_size(reader);
-      if (size >= 0) {
+      if (size > 0) {
         data_writer_t* writer = data_writer_factory_create_writer(data_writer_factory(), url);
         if (writer != NULL) {
           void* buff = TKMEM_CALLOC(1, size + 1);
