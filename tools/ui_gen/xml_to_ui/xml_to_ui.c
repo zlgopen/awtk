@@ -34,7 +34,7 @@ static ret_t gen_one(const char* in_filename, const char* out_filename, bool_t o
     uint32_t size = 0;
     wbuffer_t wbuffer;
     char* content = NULL;
-    uint8_t data[100 * 1024];
+    uint8_t data[500 * 1024];
     ui_binary_writer_t ui_binary_writer;
     ui_loader_t* loader = xml_ui_loader();
     ui_builder_t* builder =
