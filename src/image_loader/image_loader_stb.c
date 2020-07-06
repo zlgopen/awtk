@@ -54,6 +54,28 @@ static uint8_t* convert_2_to_4(uint8_t* src, uint32_t w, uint32_t h) {
   return data;
 }
 
+ret_t stb_image_to_premulti_alpha(bitmap_t* image) {
+  if (image->format == BITMAP_FMT_BGRA8888 || image->format == BITMAP_FMT_RGBA8888) {
+    uint32_t i = 0;
+    uint32_t j = 0;
+    uint8_t* d = NULL;
+    uint8_t* bdata = bitmap_lock_buffer_for_write(image);
+
+    for (j = 0; j < image->h; j++) {
+      d = (uint8_t*)(bdata) + j * image->line_length;
+      for (i = 0; i < image->w; i++) {
+        d[0] = (d[0] * d[3]) >> 8;
+        d[1] = (d[1] * d[3]) >> 8;
+        d[2] = (d[2] * d[3]) >> 8;
+        d += 4;
+      }
+    }
+    image->flags |= BITMAP_FLAG_PREMULTI_ALPHA;
+    bitmap_unlock_buffer(image);
+  }
+  return RET_OK;
+}
+
 ret_t stb_load_image(int32_t subtype, const uint8_t* buff, uint32_t buff_size, bitmap_t* image,
                      bool_t require_bgra, bool_t enable_bgr565, bool_t enable_rgb565) {
   int w = 0;
@@ -122,6 +144,7 @@ ret_t stb_load_image(int32_t subtype, const uint8_t* buff, uint32_t buff_size, b
 }
 
 static ret_t image_loader_stb_load(image_loader_t* l, const asset_info_t* asset, bitmap_t* image) {
+  ret_t ret = RET_OK;
   bool_t require_bgra = FALSE;
   bool_t enable_bgr565 = FALSE;
   bool_t enable_rgb565 = FALSE;
@@ -144,8 +167,15 @@ static ret_t image_loader_stb_load(image_loader_t* l, const asset_info_t* asset,
   require_bgra = TRUE;
 #endif /*WITH_BITMAP_BGRA*/
 
-  return stb_load_image(asset->subtype, asset->data, asset->size, image, require_bgra,
+  ret = stb_load_image(asset->subtype, asset->data, asset->size, image, require_bgra,
                         enable_bgr565, enable_rgb565);
+
+#ifdef WITH_BITMAP_PREMULTI_ALPHA
+  if (ret == RET_OK) {
+    ret = stb_image_to_premulti_alpha(image);
+  }
+#endif /*WITH_BITMAP_RGB565*/
+  return ret;
 }
 
 static const image_loader_t stb_loader = {.load = image_loader_stb_load};

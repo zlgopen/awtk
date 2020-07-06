@@ -10,10 +10,11 @@ typedef uint8_t* image_handle;
 namespace agge {
 class raw_bitmap : noncopyable {
  public:  // General
-  raw_bitmap(count_t width, count_t height, count_t stride, bits_per_pixel bpp, uint8_t* data);
+  raw_bitmap(count_t width, count_t height, count_t stride, count_t flags, bits_per_pixel bpp, uint8_t* data);
   ~raw_bitmap() {
   }
 
+  count_t flags() const;
   count_t width() const;
   count_t height() const;
 
@@ -28,13 +29,18 @@ class raw_bitmap : noncopyable {
   uint8_t* _memory;
   count_t _width, _height;
   count_t _stride;
+  count_t _flags;
   const bits_per_pixel _bpp;
   image_handle _native;
 };
 
-inline raw_bitmap::raw_bitmap(count_t width, count_t height, count_t stride, bits_per_pixel bpp, uint8_t* data)
-    : _memory(data), _width(width), _height(height), _stride(stride), _bpp(bpp), _native(0) {
+inline raw_bitmap::raw_bitmap(count_t width, count_t height, count_t stride, count_t flags, bits_per_pixel bpp, uint8_t* data)
+    : _memory(data), _width(width), _height(height), _stride(stride), _flags(flags), _bpp(bpp), _native(0) {
   
+}
+
+inline count_t raw_bitmap::flags() const {
+  return _flags;
 }
 
 inline count_t raw_bitmap::width() const {

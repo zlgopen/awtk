@@ -91,6 +91,12 @@ inline bool nanovg_image_blender<PixelT, BitmapT>::get_pixel(float x, float y,
 
   ref.a *= _alpha;
 
+  if (_bitmap->flags() & NVG_IMAGE_PREMULTIPLIED) {
+    ref.r = ref.r * _alpha;
+    ref.g = ref.g * _alpha;
+    ref.b = ref.b * _alpha;
+  }
+
   return true;
 }
 
@@ -103,7 +109,11 @@ inline void nanovg_image_blender<PixelT, BitmapT>::operator()(pixel* pixels, int
       continue;
     }
 
-    pixel_blend<PixelT, pixel32_rgba>(*pixels, p, p.a);
+    if (_bitmap->flags() & NVG_IMAGE_PREMULTIPLIED) {
+      pixel_blend_premulti_alpha<PixelT, pixel32_rgba>(*pixels, p, p.a, 1);
+    } else {
+      pixel_blend<PixelT, pixel32_rgba>(*pixels, p, p.a);
+    }
   }
 }
 
@@ -118,7 +128,11 @@ inline void nanovg_image_blender<PixelT, BitmapT>::operator()(pixel* pixels, int
     }
 
     uint8_t a = pixel_a(p, covers[0]);
-    pixel_blend<PixelT, pixel32_rgba>(*pixels, p, a);
+    if (_bitmap->flags() & NVG_IMAGE_PREMULTIPLIED) {
+      pixel_blend_premulti_alpha<PixelT, pixel32_rgba>(*pixels, p, a, covers[0]);
+    } else {
+      pixel_blend<PixelT, pixel32_rgba>(*pixels, p, a);
+    }
   }
 }
 }  // namespace agge

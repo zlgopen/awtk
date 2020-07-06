@@ -96,20 +96,54 @@ static ret_t vgcanvas_nanovg_end_frame(vgcanvas_t* vgcanvas) {
   return RET_OK;
 }
 
+typedef struct _vgcanvas_nanovg_soft_texture_t {
+  int32_t id;
+  void* data;
+}vgcanvas_nanovg_soft_texture_t;
+
+static int vgcanvas_nanovg_bitmap_flag_to_NVGimageFlags(bitmap_flag_t flags) {
+
+  if(flags & BITMAP_FLAG_PREMULTI_ALPHA) {
+    return NVG_IMAGE_PREMULTIPLIED;
+  }
+  return NVG_IMAGE_NEAREST;
+}
+
+static ret_t vgcanvas_nanovg_on_bitmap_destroy(bitmap_t* img) {
+  vgcanvas_nanovg_soft_texture_t* texture = (vgcanvas_nanovg_soft_texture_t*)img->specific;
+  NVGcontext* vg = (NVGcontext*)(img->specific_ctx);
+
+  if (vg != NULL && texture->id >= 0) {
+    nvgDeleteImage(vg, texture->id);
+    TKMEM_FREE(texture);
+  }
+
+  img->specific = NULL;
+  img->specific_ctx = NULL;
+  img->specific_destroy = NULL;
+
+  return RET_OK;
+}
+
 static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img) {
+  int flag = 0;
   int32_t i = 0;
   int32_t f = 0;
   uint8_t* img_data = NULL;
   uint32_t bpp = bitmap_get_bpp(img);
+  vgcanvas_nanovg_soft_texture_t* texture = NULL;
 
   if (img->flags & BITMAP_FLAG_TEXTURE) {
     if (img->specific != 0) {
-      i = nvgFindTextureRaw(canvas->vg, img->specific);
+      texture = (vgcanvas_nanovg_soft_texture_t*)img->specific;
+      i = nvgFindTextureRaw(canvas->vg, texture->data);
       if (i > 0) {
         return i;
       }
     }
   }
+
+  flag = (int)vgcanvas_nanovg_bitmap_flag_to_NVGimageFlags(img->flags);
 
   switch (img->format) {
     case BITMAP_FMT_RGBA8888: {
@@ -133,12 +167,20 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
 
   img_data = bitmap_lock_buffer_for_read(img);
 
-  i = nvgCreateImageRaw(canvas->vg, img->w, img->h, f, img->line_length, NVG_IMAGE_NEAREST,
+  i = nvgCreateImageRaw(canvas->vg, img->w, img->h, f, img->line_length, flag,
                         img_data);
 
   if (i >= 0) {
+    texture = TKMEM_ZALLOC(vgcanvas_nanovg_soft_texture_t);
+    texture->id = i;
+    texture->data = img_data;
+
+    img->specific = texture;
+    img->specific_ctx = canvas->vg;
     img->flags |= BITMAP_FLAG_TEXTURE;
-    img->specific = img_data;
+    img->specific_destroy = vgcanvas_nanovg_on_bitmap_destroy;
+
+    image_manager_update_specific(img->image_manager, img);
   }
   bitmap_unlock_buffer(img);
 

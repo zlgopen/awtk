@@ -39,7 +39,7 @@
 #define pixel_from_rgba pixel_dst_from_rgba
 #define pixel_to_rgba pixel_dst_to_rgba
 
-static inline void blend_a_bgr565_bgra8888(uint8_t* dst, uint8_t* src, uint8_t a) {
+static inline void blend_a_bgr565_bgra8888(uint8_t* dst, uint8_t* src, uint8_t a, bool_t premulti_alpha) {
   if (a > 0xf8) {
     *(uint16_t*)dst = *(uint16_t*)src;
   } else if (a > 8) {

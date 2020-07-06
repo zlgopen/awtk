@@ -2,7 +2,8 @@
 #define pixel_from_rgb pixel_dst_from_rgb
 
 #ifndef blend_a
-static inline void blend_a(uint8_t* dst, uint8_t* src, uint8_t alpha) {
+
+static inline void blend_a(uint8_t* dst, uint8_t* src, uint8_t alpha, bool_t premulti_alpha) {
   pixel_dst_t* d = (pixel_dst_t*)dst;
   pixel_src_t* s = (pixel_src_t*)src;
   rgba_t srgba = pixel_src_to_rgba((*s));
@@ -14,7 +15,17 @@ static inline void blend_a(uint8_t* dst, uint8_t* src, uint8_t alpha) {
   } else if (a > 8) {
     rgba_t drgba = pixel_dst_to_rgba((*d));
 
-    *d = blend_rgba(drgba, srgba, a);
+    if (premulti_alpha) {
+      if(alpha <= 0xf8) {
+        srgba.r = (srgba.r * alpha) >> 8;
+        srgba.g = (srgba.g * alpha) >> 8;
+        srgba.b = (srgba.b * alpha) >> 8;
+      }
+      *d = blend_rgba_premulti(drgba, srgba, 0xff - a);
+    } else  {
+      *d = blend_rgba(drgba, srgba, a);
+    }
+
   }
 }
 #endif /*blend_a*/
@@ -45,6 +56,7 @@ static ret_t blend_image_with_alpha(bitmap_t* dst, bitmap_t* src, rect_t* dst_r,
   uint32_t dst_line_length = bitmap_get_line_length(dst);
   uint32_t src_line_offset = src_line_length - sw * src_bpp;
   uint32_t dst_line_offset = dst_line_length - dw * dst_bpp;
+  bool_t premulti_alpha = src->flags & BITMAP_FLAG_PREMULTI_ALPHA;
 
   return_value_if_fail(sx >= 0 && sy >= 0 && (sx + sw) <= src_iw && (sy + sh) <= src_ih,
                        RET_BAD_PARAMS);
@@ -63,7 +75,7 @@ static ret_t blend_image_with_alpha(bitmap_t* dst, bitmap_t* src, rect_t* dst_r,
 
     for (j = 0; j < dh; j++) {
       for (i = 0; i < dw; i++) {
-        blend_a(dstp, srcp, a);
+        blend_a(dstp, srcp, a, premulti_alpha);
         dstp += dst_bpp;
         srcp += src_bpp;
       }
@@ -86,7 +98,7 @@ static ret_t blend_image_with_alpha(bitmap_t* dst, bitmap_t* src, rect_t* dst_r,
         uint32_t x = (i == right) ? (sw - 1) : ((i * scale_x) >> 8);
 
         srcp = row_data + x * src_bpp;
-        blend_a(dstp, srcp, a);
+        blend_a(dstp, srcp, a, premulti_alpha);
         dstp += dst_bpp;
       }
       dstp += dst_line_offset;
