@@ -1109,8 +1109,8 @@ def clean_res_of_one_theme():
     print('clean res: ' + OUTPUT_DIR)
     clean_res_bin(join_path(OUTPUT_DIR, 'raw/ui'))
     clean_res_bin(join_path(OUTPUT_DIR, 'raw/images/svg'))
-    clean_res_bin(join_path(OUTPUT_DIR, 'raw/strings/svg'))
-    clean_res_bin(join_path(OUTPUT_DIR, 'raw/styles/svg'))
+    clean_res_bin(join_path(OUTPUT_DIR, 'raw/strings'))
+    clean_res_bin(join_path(OUTPUT_DIR, 'raw/styles'))
     remove_dir(join_path(OUTPUT_DIR, 'inc'))
     remove_dir(join_path(OUTPUT_ROOT, '__assets_'+THEME+'.inc'))
 
