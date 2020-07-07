@@ -296,6 +296,8 @@ pip install Pillow
 
 * [扩展控件实例：number-label](https://github.com/zlgopen/awtk-widget-number-label)
 
+* [扩展控件实例：代码编辑器](https://github.com/zlgopen/awtk-widget-code-edit)
+
 第三方提供：
 
 * [react-awtk](https://github.com/wenyufei2018/react-awtk)
