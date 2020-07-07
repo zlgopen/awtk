@@ -37,7 +37,11 @@ AWTK 的主题按控件进行分类，每种控件可以有多种不同的风格
 >
 > 同一控件可以出现多次（如上面的 button 出现了两次），有利于实现配置共享，让维护工作更简单。 
 
-参考：[demos/assets/raw/styles/default.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml)
+参考：
+
+* [完整示例(default.xml)](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml)
+
+* [控件状态定义](manual/widget_state_t.md)
 
 ### 二、主题的属性
 
@@ -223,6 +227,7 @@ ret_t widget_set_style_str(widget_t* widget, const char* state_and_name, const c
 
 ```
 widget_set_style_int(b, "font_size", 24);
+widget_set_style_str(b, "style:focused:text_color", "red");
 ```
 
 > inline style 会消耗更多内存，而且不方便切换主题，一般应该尽量避免使用。
@@ -230,3 +235,5 @@ widget_set_style_int(b, "font_size", 24);
 ### 七、相关文档
 
 * [AWTK 中的颜色格式](color_format.md)
+
+* [控件状态定义](manual/widget_state_t.md)
