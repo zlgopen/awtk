@@ -88,9 +88,9 @@
 
 ### 常用常量
 
-[控件状态定义](manual/widget_state_t.md)
+* [控件状态定义](manual/widget_state_t.md)
 
-[控件属性定义](manual/widget_prop_t.md)
+* [控件属性定义](manual/widget_prop_t.md)
 
 ### 画布
 
