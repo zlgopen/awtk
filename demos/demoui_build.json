@@ -14,10 +14,10 @@
   },
   "android" : {
     "app_name":"org.zlgopen.demoui",
-    "sources":["assets.c", "assets_dark.inc", "assets_default.inc",	"assets.h",	"demo_ui_app.c",	"vg_common.inc"]
+    "sources":["assets.c", "assets/__assets_dark.inc", "assets/__assets_default.inc",	"assets.h",	"demo_ui_app.c",	"vg_common.inc"]
   },
   "ios" : {
     "app_name":"org.zlgopen.demoui",
-    "sources":["assets.c", "assets_dark.inc", "assets_default.inc",	"assets.h",	"demo_ui_app.c",	"vg_common.inc"]
+    "sources":["assets.c", "assets/__assets_dark.inc", "assets/__assets_default.inc",	"assets.h",	"demo_ui_app.c",	"vg_common.inc"]
   }
 }
