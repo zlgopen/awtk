@@ -7,7 +7,7 @@
   
 * 2020/07/07
   * 完善资源生成脚本（感谢朝泽提供补丁）。
-  * 增加 mvvm 在 stm32 上的移植。
+  * 增加 [mvvm 在 stm32](https://github.com/zlgopen/awtk-stm32h743iitx-mvvms) 上的移植。
   
 * 2020/07/06
   * 支持图片预乘功能（感谢智明提供补丁）。
