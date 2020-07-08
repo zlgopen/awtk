@@ -29,36 +29,37 @@
 
 static ret_t gen_one(const char* in_filename, const char* out_filename, bool_t output_bin,
                      const char* res_name, const char* theme_name) {
+  ret_t ret = RET_OK;
   if (!exit_if_need_not_update(in_filename, out_filename)) {
     str_t s;
     uint32_t size = 0;
     wbuffer_t wbuffer;
     char* content = NULL;
-    uint8_t data[500 * 1024];
     ui_binary_writer_t ui_binary_writer;
     ui_loader_t* loader = xml_ui_loader();
     ui_builder_t* builder =
-        ui_binary_writer_init(&ui_binary_writer, wbuffer_init(&wbuffer, data, sizeof(data)));
+        ui_binary_writer_init(&ui_binary_writer, wbuffer_init_extendable(&wbuffer));
     str_init(&s, 0);
-
-    return_value_if_fail(xml_file_expand_read(in_filename, &s) == RET_OK, RET_FAIL);
-
-    content = s.str;
-    size = s.size;
-    return_value_if_fail(content != NULL, RET_FAIL);
-
-    ui_loader_load(loader, (const uint8_t*)content, size, builder);
-
-    if (output_bin) {
-      write_file(out_filename, wbuffer.data, wbuffer.cursor);
-    } else {
-      output_res_c_source_ex(out_filename, theme_name, ASSET_TYPE_UI, ASSET_TYPE_UI_BIN,
-                             wbuffer.data, wbuffer.cursor, res_name);
-    }
+    do {
+      ret = RET_FAIL;
+      if (xml_file_expand_read(in_filename, &s) != RET_OK) break;
+      content = s.str;
+      size = s.size;
+      wbuffer_extend_capacity(&wbuffer, size);
+      if (content == NULL) break;
+      ui_loader_load(loader, (const uint8_t*)content, size, builder);
+      if (output_bin) {
+        write_file(out_filename, wbuffer.data, wbuffer.cursor);
+      } else {
+        output_res_c_source_ex(out_filename, theme_name, ASSET_TYPE_UI, ASSET_TYPE_UI_BIN,
+                               wbuffer.data, wbuffer.cursor, res_name);
+      }
+      ret = RET_OK;
+    } while (FALSE);
     str_reset(&s);
+    wbuffer_deinit(&wbuffer);
   }
-
-  return RET_OK;
+  return ret;
 }
 
 static ret_t gen_floder(const char* in_flodername, const char* out_flodername, bool_t output_bin,

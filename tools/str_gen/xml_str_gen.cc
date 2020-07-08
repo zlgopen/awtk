@@ -22,6 +22,7 @@
 #include "str_gen.h"
 #include "tkc/fs.h"
 #include "tkc/str.h"
+#include "tkc/buffer.h"
 #include "base/enums.h"
 #include "base/theme.h"
 #include "common/utils.h"
@@ -124,8 +125,6 @@ bool xml_buff_to_str_gen(const char* buff, StrGen* sg) {
   return true;
 }
 
-static uint8_t output_buff[1024 * 1024];
-
 bool xml_to_str_gen(const char* input_file, const char* output_dir, const char* theme, bool bin) {
   StrGen sg;
   uint8_t* p = NULL;
@@ -135,20 +134,26 @@ bool xml_to_str_gen(const char* input_file, const char* output_dir, const char* 
   return_value_if_fail(xml_to_str_gen(input_file, &sg) == true, false);
 
   memset(path, 0x00, sizeof(path));
+
   vector<string> languages = sg.GetLanguages();
   for (size_t i = 0; i < languages.size(); i++) {
+    wbuffer_t wbuffer;
+    wbuffer_init_extendable(&wbuffer);
     string iter = languages[i];
-    p = sg.Output(iter, output_buff, sizeof(output_buff));
-    uint32_t size = p - output_buff;
-
-    if (bin) {
-      snprintf(path, MAX_PATH, "%s/%s.bin", output_dir, iter.c_str());
-      file_write(path, output_buff, size);
+    uint32_t size = sg.Output(iter, &wbuffer);
+    if (size > 0) {
+      if (bin) {
+        snprintf(path, MAX_PATH, "%s/%s.bin", output_dir, iter.c_str());
+        file_write(path, wbuffer.data, size);
+      } else {
+        snprintf(path, MAX_PATH, "%s/%s.data", output_dir, iter.c_str());
+        output_res_c_source(path, theme, ASSET_TYPE_STRINGS, 0, wbuffer.data, size);
+      }
+      log_debug("write %s\n", path);
     } else {
-      snprintf(path, MAX_PATH, "%s/%s.data", output_dir, iter.c_str());
-      output_res_c_source(path, theme, ASSET_TYPE_STRINGS, 0, output_buff, size);
+      log_debug("language  %s Sentences is NULL.\n", iter.c_str());
     }
-    log_debug("write %s\n", path);
+    wbuffer_deinit(&wbuffer);
   }
 
   return true;

@@ -71,8 +71,10 @@ void GenThemeData(uint8_t* buff, uint32_t size, uint32_t state_nr, uint32_t name
       g.AddStyle(s);
     }
   }
-
-  g.Output(buff, size);
+  wbuffer_t wbuffer;
+  wbuffer_t* b = wbuffer_init(&wbuffer, buff, size);
+  g.Output(b);
+  wbuffer_deinit(b);
 }
 
 TEST(Theme, saveLoad) {

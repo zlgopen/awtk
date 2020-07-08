@@ -27,6 +27,7 @@
 #include <vector>
 #include <algorithm>
 #include "tkc/types_def.h"
+#include "tkc/buffer.h"
 
 using std::map;
 using std::pair;
@@ -66,12 +67,12 @@ typedef map<string, Sentences> StrTable;
 class StrGen {
  public:
   void Add(const string& language, const Sentence& sentence);
-  uint8_t* Output(const string& language, uint8_t* buff, uint32_t max_size);
+  int32_t Output(const string& language, wbuffer_t* wbuffer);
 
   vector<string> GetLanguages();
 
  private:
-  uint8_t* OutputSentences(const Sentences& sentences, uint8_t* buff, uint32_t max_size);
+  int32_t OutputSentences(const Sentences& sentences, wbuffer_t* wbuffer);
   StrTable str_table;
 };
 

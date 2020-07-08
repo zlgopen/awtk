@@ -25,6 +25,7 @@
 #include "base/theme.h"
 #include "tkc/buffer.h"
 #include "tkc/types_def.h"
+#include "tkc/mem.h"
 
 Style::Style() {
 }
@@ -105,37 +106,30 @@ static uint8_t* write_uint32(uint8_t* buff, uint32_t value) {
   return buff;
 }
 
-uint8_t* Style::Output(uint8_t* buff, uint32_t max_size) {
+ret_t Style::Output(wbuffer_t* wbuffer) {
   uint32_t size = 0;
-  uint8_t* p = buff;
   style_name_value_header_t nv;
-  uint8_t* end = buff + max_size;
-  return_value_if_fail(buff != NULL && max_size > 32, NULL);
 
   size = this->int_values.size() + this->str_values.size();
   printf("  size=%d widget_type=%s name=%s state=%s\n", size, this->widget_type.c_str(),
          this->name.c_str(), this->state.c_str());
 
-  save_uint32(p, size);
+  wbuffer_write_uint32(wbuffer, size);
   for (vector<NameIntValue>::iterator i = this->int_values.begin(); i != this->int_values.end();
        i++) {
     const string& name = i->name;
     uint32_t value = i->value;
 
-    return_value_if_fail((uint32_t)(end - p) > (name.size() + sizeof(value) + 1), NULL);
-
     nv.type = VALUE_TYPE_UINT32;
     nv.name_size = name.size() + 1;
     nv.value_size = sizeof(value);
 
-    p = write_binary(p, &nv, sizeof(nv));
-    p = write_str(p, name);
-    p = write_uint32(p, value);
+    wbuffer_write_binary(wbuffer, &nv, sizeof(nv));
+    wbuffer_write_string(wbuffer, name.c_str());
+    wbuffer_write_uint32(wbuffer, value);
 
     printf("    %s=0x%08x\n", name.c_str(), value);
   }
-
-  return_value_if_fail((end - p) > 32, NULL);
 
   size = this->str_values.size();
   for (vector<NameStringValue>::iterator i = this->str_values.begin(); i != this->str_values.end();
@@ -143,20 +137,18 @@ uint8_t* Style::Output(uint8_t* buff, uint32_t max_size) {
     const string& name = i->name;
     const string& value = i->value;
 
-    return_value_if_fail((uint32_t)(end - p) > (name.size() + value.size() + 2), NULL);
-
     nv.type = VALUE_TYPE_STRING;
     nv.name_size = name.size() + 1;
     nv.value_size = value.size() + 1;
 
-    p = write_binary(p, &nv, sizeof(nv));
-    p = write_str(p, name);
-    p = write_str(p, value);
+    wbuffer_write_binary(wbuffer, &nv, sizeof(nv));
+    wbuffer_write_string(wbuffer, name.c_str());
+    wbuffer_write_string(wbuffer, value.c_str());
 
     printf("    %s=%s\n", name.c_str(), value.c_str());
   }
 
-  return p;
+  return RET_OK;
 }
 
 bool ThemeGen::AddStyle(const Style& style) {
@@ -165,31 +157,32 @@ bool ThemeGen::AddStyle(const Style& style) {
   return true;
 }
 
-uint8_t* ThemeGen::Output(uint8_t* buff, uint32_t max_size) {
+ret_t ThemeGen::Output(wbuffer_t* wbuffer) {
   uint32_t nr = this->styles.size();
-  uint8_t* end = buff + max_size;
-  theme_header_t* header = (theme_header_t*)buff;
+  return_value_if_fail(nr > 0, RET_FAIL);
   uint32_t data_start = sizeof(theme_header_t) + nr * sizeof(theme_item_t);
-  theme_item_t* item = (theme_item_t*)(buff + sizeof(theme_header_t));
-  uint8_t* p = buff + data_start;
-
-  return_value_if_fail(p != NULL && max_size > data_start + 128, NULL);
-
-  memset(buff, 0x00, max_size);
+  theme_header_t* header = (theme_header_t*)TKMEM_ALLOC(data_start);
+  memset(header, 0, data_start);
+  theme_item_t* item = (theme_item_t*)((uint8_t*)header + sizeof(theme_header_t));
+  wbuffer_write_binary(wbuffer, header, data_start);
 
   header->magic = THEME_MAGIC;
   header->version = 0;
   header->nr = nr;
 
   for (vector<Style>::iterator iter = this->styles.begin(); iter != this->styles.end(); iter++) {
-    item->offset = p - buff;
+    item->offset = wbuffer->cursor;
     tk_strncpy(item->state, iter->state.c_str(), TK_NAME_LEN);
     tk_strncpy(item->name, iter->name.c_str(), TK_NAME_LEN);
     tk_strncpy(item->widget_type, iter->widget_type.c_str(), TK_NAME_LEN);
-
-    p = iter->Output(p, end - p);
+    iter->Output(wbuffer);
     item++;
   }
 
-  return p;
+  int32_t size = wbuffer->cursor;
+  wbuffer->cursor = 0;
+  wbuffer_write_binary(wbuffer, header, data_start);
+  wbuffer->cursor = size;
+  TKMEM_FREE(header);
+  return RET_OK;
 }

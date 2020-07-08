@@ -28,6 +28,7 @@
 #include "xml_theme_gen.h"
 #include "xml/xml_parser.h"
 #include "tkc/color_parser.h"
+#include "tkc/buffer.h"
 #include "base/assets_manager.h"
 
 typedef struct _xml_builder_t {
@@ -182,39 +183,39 @@ uint32_t xml_gen_buff(const char* xml, uint8_t* output, uint32_t max_size) {
   XmlParser* parser = xml_parser_create();
   xml_parser_set_builder(parser, builder_init(b));
   xml_parser_parse(parser, xml, strlen(xml));
+  wbuffer_t wbuffer;
+  wbuffer_init(&wbuffer, output, max_size);
 
-  uint8_t* end = b.gen.Output(output, max_size);
-  return_value_if_fail(end != NULL, 0);
+  return_value_if_fail(b.gen.Output(&wbuffer) != RET_OK, 0);
 
-  uint32_t size = end - output;
+  uint32_t size = wbuffer.cursor;
+  wbuffer_deinit(&wbuffer);
 
   xml_parser_destroy(parser);
 
-  return size;
+  return 0;
 }
 
 bool xml_gen(const char* input_file, const char* output_file, const char* theme,
              bool_t output_bin) {
   xml_builder_t b;
-  uint8_t buff[500 * 1024];
-
+  wbuffer_t wbuffer;
   return_value_if_fail(input_file != NULL && output_file != NULL, false);
 
+  wbuffer_init_extendable(&wbuffer);
   XmlParser* parser = xml_parser_create();
   xml_parser_set_builder(parser, builder_init(b));
   xml_parser_parse_file(parser, input_file);
 
-  uint8_t* end = b.gen.Output(buff, sizeof(buff));
-  return_value_if_fail(end != NULL, false);
-
-  uint32_t size = end - buff;
-
-  if (output_bin) {
-    write_file(output_file, buff, size);
-  } else {
-    output_res_c_source(output_file, theme, ASSET_TYPE_STYLE, 0, buff, size);
+  if (b.gen.Output(&wbuffer) == RET_OK) {
+    if (output_bin) {
+      write_file(output_file, wbuffer.data, wbuffer.cursor);
+    } else {
+      output_res_c_source(output_file, theme, ASSET_TYPE_STYLE, 0, wbuffer.data, wbuffer.cursor);
+    }
   }
 
+  wbuffer_deinit(&wbuffer);
   xml_parser_destroy(parser);
 
   return true;

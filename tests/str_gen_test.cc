@@ -28,7 +28,8 @@ static void TestStrGen(const char* strs[]) {
   for (size_t k = 0; k < languages.size(); k++) {
     string lang = languages[k];
     str_table_t* table = (str_table_t*)buff;
-    p = sg.Output(lang, buff, sizeof(buff));
+    wbuffer_t wbuffer;
+    sg.Output(lang, wbuffer_init(&wbuffer, buff, sizeof(buff)));
 
     ASSERT_EQ(table->nr, nr);
     std::sort(vstrs.begin(), vstrs.end());
@@ -42,6 +43,7 @@ static void TestStrGen(const char* strs[]) {
       ASSERT_EQ(v, value);
       ASSERT_EQ(value, str_table_lookup(table, k));
     }
+    wbuffer_deinit(&wbuffer);
   }
 }
 
@@ -91,17 +93,21 @@ TEST(StrGen, xml1) {
 
   ASSERT_EQ(languages.size(), 2);
   str_table_t* table = (str_table_t*)buff;
-  sg.Output("en_US", buff, sizeof(buff));
+  wbuffer_t wbuffer;
+  wbuffer_t* b = wbuffer_init(&wbuffer, buff, sizeof(buff));
+  sg.Output("en_US", b);
   ASSERT_EQ(string("OK"), str_table_lookup(table, "ok"));
   ASSERT_EQ(string("Cancel"), str_table_lookup(table, "cancel"));
   ASSERT_EQ(string("a<b>c"), str_table_lookup(table, "abc"));
   ASSERT_EQ(string("en:\"<>'"), str_table_lookup(table, "\"<>'"));
 
-  sg.Output("zh_CN", buff, sizeof(buff));
+  sg.Output("zh_CN", b);
   assert_str_eq(L"确定", str_table_lookup(table, "ok"));
   assert_str_eq(L"取消", str_table_lookup(table, "cancel"));
   assert_str_eq(L"zh:\"<>'", str_table_lookup(table, "\"<>'"));
 
   ASSERT_EQ(string("a\"b&c"), str_table_lookup(table, "abc"));
   ASSERT_EQ(NULL, str_table_lookup(table, "not exist"));
+
+  wbuffer_deinit(b);
 }

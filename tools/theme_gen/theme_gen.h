@@ -25,6 +25,7 @@
 #include <string>
 #include <vector>
 #include "tkc/types_def.h"
+#include "tkc/buffer.h"
 
 using std::string;
 using std::vector;
@@ -61,7 +62,7 @@ class Style {
 
   bool AddInt(const string& name, int32_t value);
   bool AddString(const string& name, const string& str);
-  uint8_t* Output(uint8_t* buff, uint32_t max_size);
+  ret_t Output(wbuffer_t* wbuffer);
   bool Merge(Style& other);
   bool Reset();
 
@@ -76,7 +77,7 @@ class Style {
 class ThemeGen {
  public:
   bool AddStyle(const Style& style);
-  uint8_t* Output(uint8_t* buff, uint32_t max_size);
+  ret_t Output(wbuffer_t* wbuffer);
 
  private:
   vector<Style> styles;
