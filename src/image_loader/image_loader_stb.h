@@ -67,18 +67,6 @@ image_loader_t* image_loader_stb(void);
 ret_t stb_load_image(int32_t subtype, const uint8_t* buff, uint32_t buff_size, bitmap_t* image,
                      bool_t require_bgra, bool_t enable_bgr565, bool_t enable_rgb565);
 
-
-/**
- * @method stb_image_to_premulti_alpha
- * 图片预乘操作。
- *
- * @annotation ["static"]
- * @param {bitmap_t*} image image 对象。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t stb_image_to_premulti_alpha(bitmap_t* image);
-
 END_C_DECLS
 
 #endif /*TK_IMAGE_LOADER_STB_H*/
