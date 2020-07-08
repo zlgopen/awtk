@@ -692,7 +692,10 @@ uint8_t* bitmap_lock_buffer_for_read(bitmap_t* bitmap) {
   return_value_if_fail(bitmap != NULL, NULL);
 
   if (bitmap->buffer != NULL) {
-    assert(graphic_buffer_is_valid_for(bitmap->buffer, bitmap));
+    if (!graphic_buffer_is_valid_for(bitmap->buffer, bitmap)) {
+      assert(!" graphic_buffer is not valid ");
+      return NULL;
+    }
     return graphic_buffer_lock_for_read(bitmap->buffer);
   } else {
     return NULL;
@@ -701,7 +704,10 @@ uint8_t* bitmap_lock_buffer_for_read(bitmap_t* bitmap) {
 
 uint8_t* bitmap_lock_buffer_for_write(bitmap_t* bitmap) {
   if (bitmap->buffer != NULL) {
-    assert(graphic_buffer_is_valid_for(bitmap->buffer, bitmap));
+    if (!graphic_buffer_is_valid_for(bitmap->buffer, bitmap)) {
+      assert(!" graphic_buffer is not valid ");
+      return NULL;
+    }
     return graphic_buffer_lock_for_write(bitmap->buffer);
   } else {
     return NULL;
