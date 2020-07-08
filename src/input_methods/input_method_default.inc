@@ -53,9 +53,9 @@ static const char* input_type_to_keyboard_name(int32_t input_type) {
       keyboard = "kb_uint";
       break;
     }
-    case INPUT_IPV4: 
-    case INPUT_TIME: 
-    case INPUT_DATE: 
+    case INPUT_IPV4:
+    case INPUT_TIME:
+    case INPUT_DATE:
     case INPUT_TIME_FULL: {
       keyboard = "kb_uint";
       break;
@@ -68,7 +68,7 @@ static const char* input_type_to_keyboard_name(int32_t input_type) {
       keyboard = "kb_hex";
       break;
     }
-    case INPUT_CUSTOM: 
+    case INPUT_CUSTOM:
     case INPUT_CUSTOM_PASSWORD: {
       log_debug("custom keyboard\n");
       break;
@@ -144,7 +144,9 @@ static ret_t input_method_on_win_close(void* ctx, event_t* e) {
 
   if (im->keyboard != NULL) {
     widget_get_prop(im->keyboard, WIDGET_PROP_CLOSE_ANIM_HINT, &v);
-    if (tk_str_cmp(value_str(&v), "") != 0) {
+    if (im->idle_close_id == TK_INVALID_ID) {
+      window_close_force(im->keyboard);
+      
       im->keyboard = NULL;
       im->widget = NULL;
       im->win = NULL;
@@ -263,11 +265,12 @@ static ret_t on_idle_close_keyboard(const idle_info_t* idle) {
     window_close(im->keyboard);
     im->keyboard = NULL;
     im->widget = NULL;
-  } else if(im->widget == NULL) {
+  } else if (im->widget == NULL) {
     window_close_force(info->keyboard);
     im->keyboard = NULL;
     im->widget = NULL;
   }
+  im->idle_close_id = TK_INVALID_ID;
 
   TKMEM_FREE(info);
 
@@ -311,7 +314,7 @@ static ret_t input_method_default_on_edit_destroy(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(e->target);
   input_method_t* im = (input_method_t*)ctx;
 
-  if(im->widget == widget) {
+  if (im->widget == widget) {
     input_method_request(im, NULL);
   }
 
@@ -326,6 +329,10 @@ static ret_t input_method_default_request(input_method_t* im, widget_t* widget) 
   input_engine_reset_input(im->engine);
   input_method_dispatch_candidates(im, "", 0, 0);
   input_method_default_ensure_suggest_words(im);
+  if (im->idle_close_id != TK_INVALID_ID) {
+    idle_remove(im->idle_close_id);
+    im->idle_close_id = TK_INVALID_ID;
+  }
 
   if (widget != NULL) {
     im->widget = widget;
@@ -340,7 +347,7 @@ static ret_t input_method_default_request(input_method_t* im, widget_t* widget) 
         info->widget = im->widget;
         info->keyboard = im->keyboard;
 
-        idle_add(on_idle_close_keyboard, info);
+        im->idle_close_id = idle_add(on_idle_close_keyboard, info);
       } else {
         window_close(im->keyboard);
         im->keyboard = NULL;
