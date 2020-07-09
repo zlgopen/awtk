@@ -154,7 +154,7 @@ static inline bidi_t* bidi_init(bidi_t* bidi, bool_t alloc_l2v, bool_t alloc_v2l
 
 static inline ret_t bidi_log2vis(bidi_t* bidi, const wchar_t* str, uint32_t size) {
   return_value_if_fail(bidi != NULL, RET_BAD_PARAMS);
-  bidi->vis_str = str;
+  bidi->vis_str = (wchar_t*)str;
   bidi->vis_str_size = size;
 
   return RET_OK;
