@@ -72,6 +72,7 @@
 * [如何用 edit 控件编辑日期](how_to_edit_date.md)
 * [如何用 edit 控件编辑时间](how_to_edit_time.md)
 * [如何用 edit 控件编辑IP地址](how_to_edit_ip_addr.md)
+* [如何支持 unicode bidirectional algorithm](how_to_enable_bidi.md)
 
 ### 3. 内部原理
 * [AWTK 脚本绑定原理](script_binding.md)
