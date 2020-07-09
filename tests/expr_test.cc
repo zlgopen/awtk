@@ -67,3 +67,16 @@ TEST(ExprEval, hex) {
   ASSERT_EQ(0xfffffffa, tk_expr_eval("0xffffFFFa"));
   ASSERT_EQ(0xfffafffa, tk_expr_eval("0xfffaFFFa"));
 }
+
+TEST(ExprEval, fformat) {
+  char result[128];
+  ASSERT_STREQ("1.23", tk_expr_eval_str("fformat(\"%2.2f\", 1.23)", result, sizeof(result)));
+  ASSERT_STREQ("temp:1.20",
+               tk_expr_eval_str("fformat(\"temp:%2.2f\", 1.2)", result, sizeof(result)));
+}
+
+TEST(ExprEval, iformat) {
+  char result[128];
+  ASSERT_STREQ("123", tk_expr_eval_str("iformat(\"%d\", 123)", result, sizeof(result)));
+  ASSERT_STREQ("temp:123", tk_expr_eval_str("iformat(\"temp:%d\", 123)", result, sizeof(result)));
+}

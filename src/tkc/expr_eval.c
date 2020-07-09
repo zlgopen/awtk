@@ -1196,6 +1196,46 @@ static EvalResult func_if(const ExprValue* input, void* user_data, ExprValue* ou
   return EVAL_RESULT_OK;
 }
 
+static EvalResult func_fformat(const ExprValue* input, void* user_data, ExprValue* output) {
+  (void)user_data;
+  if (args_count(input) != 2) {
+    return EVAL_RESULT_BAD_PARAMS;
+  }
+
+  if (input->type == EXPR_VALUE_TYPE_STRING) {
+    char buff[128];
+    const char* format = input->v.str.str;
+    double value = expr_value_get_number(input + 1);
+    return_value_if_fail(format != NULL, EVAL_RESULT_BAD_PARAMS);
+
+    tk_snprintf(buff, sizeof(buff), format, value);
+    expr_value_set_string(output, buff, strlen(buff));
+    return EVAL_RESULT_OK;
+  } else {
+    return EVAL_RESULT_BAD_PARAMS;
+  }
+}
+
+static EvalResult func_iformat(const ExprValue* input, void* user_data, ExprValue* output) {
+  (void)user_data;
+  if (args_count(input) != 2) {
+    return EVAL_RESULT_BAD_PARAMS;
+  }
+
+  if (input->type == EXPR_VALUE_TYPE_STRING) {
+    char buff[128];
+    const char* format = input->v.str.str;
+    int value = (int)expr_value_get_number(input + 1);
+    return_value_if_fail(format != NULL, EVAL_RESULT_BAD_PARAMS);
+
+    tk_snprintf(buff, sizeof(buff), format, value);
+    expr_value_set_string(output, buff, strlen(buff));
+    return EVAL_RESULT_OK;
+  } else {
+    return EVAL_RESULT_BAD_PARAMS;
+  }
+}
+
 static EvalResult func_ceil(const ExprValue* input, void* user_data, ExprValue* output) {
   (void)user_data;
   expr_value_set_number(output, ceil(expr_value_get_number(input)));
@@ -1216,13 +1256,14 @@ static EvalResult func_round(const ExprValue* input, void* user_data, ExprValue*
 
 static EvalFunc default_get_func(const char* name, void* user_data) {
   static const EvalFunctionEntry FUNCTIONS[] = {
-      {"number", func_number}, {"strlen", func_strlen},   {"path", func_path},
-      {"string", func_string}, {"toupper", func_toupper}, {"tolower", func_tolower},
-      {"cos", func_cos},       {"sin", func_sin},         {"tan", func_tan},
-      {"acos", func_acos},     {"asin", func_asin},       {"atan", func_atan},
-      {"exp", func_exp},       {"log", func_log},         {"log10", func_log10},
-      {"sqrt", func_sqrt},     {"ceil", func_ceil},       {"floor", func_floor},
-      {"int", func_floor},     {"round", func_round},     {"if", func_if}};
+      {"number", func_number},   {"strlen", func_strlen},   {"path", func_path},
+      {"string", func_string},   {"toupper", func_toupper}, {"tolower", func_tolower},
+      {"cos", func_cos},         {"sin", func_sin},         {"tan", func_tan},
+      {"acos", func_acos},       {"asin", func_asin},       {"atan", func_atan},
+      {"exp", func_exp},         {"log", func_log},         {"log10", func_log10},
+      {"sqrt", func_sqrt},       {"ceil", func_ceil},       {"floor", func_floor},
+      {"int", func_floor},       {"round", func_round},     {"if", func_if},
+      {"fformat", func_fformat}, {"iformat", func_iformat}};
 
   const EvalFunctionEntry* i = FUNCTIONS;
   const EvalFunctionEntry* e = i + (sizeof(FUNCTIONS) / sizeof(*FUNCTIONS));
@@ -1304,4 +1345,20 @@ double tk_expr_eval(const char* expr) {
   expr_value_clear(&v);
 
   return ret;
+}
+
+const char* tk_expr_eval_str(const char* expr, char* result, uint32_t max_size) {
+  ExprValue v;
+  EvalResult res;
+  const char* ret = NULL;
+  return_value_if_fail(result != NULL, NULL);
+
+  expr_value_init(&v);
+  res = eval_execute(expr, eval_default_hooks(), NULL, &v);
+
+  ret = res == EVAL_RESULT_OK ? expr_value_get_string(&v) : "";
+  strncpy(result, ret, max_size - 1);
+  expr_value_clear(&v);
+
+  return result;
 }

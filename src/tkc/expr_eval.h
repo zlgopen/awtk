@@ -82,6 +82,7 @@ typedef struct {
 EvalResult eval_execute(const char* expr, const EvalHooks* hooks, void* ctx, ExprValue* output);
 
 double tk_expr_eval(const char* expr);
+const char* tk_expr_eval_str(const char* expr, char* result, uint32_t max_size);
 
 const EvalHooks* eval_default_hooks(void);
 
