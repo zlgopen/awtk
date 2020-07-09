@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   bidi.h
  * Author: AWTK Develop Team
  * Brief:  Unicode Bidirectional Algorithm.
@@ -91,17 +91,17 @@ typedef struct _bidi_t {
    */
   bidi_type_t resolved_type;
   /**
-   * @property {uint32_t*} positions_L_to_V
+   * @property {int32_t*} positions_L_to_V
    * @annotation ["readable"]
    * logical位置与visual位置的映射。
    */
-  uint32_t* positions_L_to_V;
+  int32_t* positions_L_to_V;
   /**
-   * @property {uint32_t*} positions_V_to_L
+   * @property {int32_t*} positions_V_to_L
    * @annotation ["readable"]
    * visual位置与logical位置的映射。
    */
-  uint32_t* positions_V_to_L;
+  int32_t* positions_V_to_L;
   /*private*/
   bool_t alloc_l2v;
   bool_t alloc_v2l;

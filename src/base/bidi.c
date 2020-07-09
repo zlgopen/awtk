@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   bidi.h
  * Author: AWTK Develop Team
  * Brief:  Unicode Bidirectional Algorithm.
@@ -19,9 +19,10 @@
  *
  */
 
+#include "base/bidi.h"
+
 #ifdef WITH_TEXT_BIDI
 #include "tkc/mem.h"
-#include "base/bidi.h"
 #include "fribidi/fribidi.h"
 
 static bidi_type_t bidi_type_from(int fribidi_type) {
@@ -39,7 +40,7 @@ static bidi_type_t bidi_type_from(int fribidi_type) {
   }
 }
 
-static int bidi_type_to(bidi_type_t type) {
+static FriBidiParType bidi_type_to(bidi_type_t type) {
   switch (type) {
     case BIDI_TYPE_RTL:
       return FRIBIDI_PAR_RTL;
@@ -83,17 +84,18 @@ ret_t bidi_log2vis(bidi_t* bidi, const wchar_t* str, uint32_t size) {
   return_value_if_fail(sizeof(uint32_t) == sizeof(FriBidiStrIndex), RET_BAD_PARAMS);
 
   if (bidi->alloc_l2v) {
-    bidi->positions_L_to_V = TKMEM_ZALLOCN(FriBidiStrIndex, size);
+    bidi->positions_L_to_V = TKMEM_ZALLOCN(int32_t, size);
   }
   if (bidi->alloc_v2l) {
-    bidi->positions_L_to_V = TKMEM_ZALLOCN(FriBidiStrIndex, size);
+    bidi->positions_L_to_V = TKMEM_ZALLOCN(int32_t, size);
   }
 
   type = bidi_type_to(bidi->request_type);
   level = fribidi_log2vis(str, size, &type, bidi->vis_str, bidi->positions_L_to_V,
                           bidi->positions_V_to_L, NULL);
   bidi->resolved_type = bidi_type_from(type);
-
+  (void)level;
+  
   return RET_OK;
 }
 
