@@ -17,4 +17,19 @@
 
  ### 2. 加入相关文件
 
+```
+3rd/fribidi/fribidi-arabic.c
+3rd/fribidi/fribidi-bidi-types.c
+3rd/fribidi/fribidi-bidi.c
+3rd/fribidi/fribidi-brackets.c
+3rd/fribidi/fribidi-deprecated.c
+3rd/fribidi/fribidi-joining-types.c
+3rd/fribidi/fribidi-joining.c
+3rd/fribidi/fribidi-mirroring.c
+3rd/fribidi/fribidi-run.c
+3rd/fribidi/fribidi-shape.c
+3rd/fribidi/fribidi.c
+src/base/bidi.c
+```
 
+>PC　版本默认已经加。

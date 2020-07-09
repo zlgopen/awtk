@@ -39,7 +39,6 @@
 #include "fribidi-brackets.h"
 #include "fribidi-arabic.h"
 #include "fribidi-shape.h"
-#include "fribidi-char-sets.h"
 
 #include "fribidi-begindecls.h"
 
