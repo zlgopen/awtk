@@ -79,8 +79,10 @@ static ret_t native_window_raw_get_prop(object_t* obj, const char* name, value_t
 
 static ret_t native_window_raw_on_destroy(object_t* obj) {
   native_window_raw_t* raw = NATIVE_WINDOW_RAW(obj);
+  lcd_t* lcd = raw->canvas.lcd;
 
   canvas_reset(&(raw->canvas));
+  lcd_destroy(lcd);
 
   return RET_OK;
 }

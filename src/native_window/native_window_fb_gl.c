@@ -128,8 +128,10 @@ static ret_t native_window_fb_gl_get_prop(object_t* obj, const char* name, value
 
 static ret_t native_window_fb_gl_on_destroy(object_t* obj) {
   native_window_fb_gl_t* raw = NATIVE_WINDOW_FB_GL(obj);
+  lcd_t* lcd = raw->canvas.lcd;
 
   canvas_reset(&(raw->canvas));
+  lcd_destroy(lcd);
 
   return RET_OK;
 }
