@@ -528,6 +528,19 @@ ret_t canvas_draw_utf8(canvas_t* c, const char* str, xy_t x, xy_t y);
 ret_t canvas_draw_text_in_rect(canvas_t* c, const wchar_t* str, uint32_t nr, const rect_t* r);
 
 /**
+ * @method canvas_draw_text_bidi_in_rect
+ * 绘制文本(支持Unicode Bidirectional Algorithm)。
+ *
+ * @param {canvas_t*} c canvas对象。
+ * @param {const wchar_t*} str 字符串。
+ * @param {uint32_t} nr 字符数。
+ * @param {const rect_t*} r 矩形区域。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t canvas_draw_text_bidi_in_rect(canvas_t* c, const wchar_t* str, uint32_t nr, const rect_t* r);
+
+/**
  * @method canvas_draw_utf8_in_rect
  * 绘制文本。
  *

@@ -1,0 +1,8 @@
+﻿<window anim_hint="htranslate" text="hscroll_label" children_layout="default(c=1,h=30,xm=10,s=5)">
+  <label text="الصين" style:font_size="30" style:font_name="trado"/>
+  <label text="مصر" style:font_size="30" style:font_name="trado"/>
+  <label text="الظلال أخفى القمر." style:font_size="30" style:font_name="trado"/>
+  
+  <button name="close" self_layout="default(x=center,y=bottom:50,w=50%,h=30)" 
+    floating="true" text="Close"/>
+</window>

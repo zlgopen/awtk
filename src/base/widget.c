@@ -1237,7 +1237,7 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
                                  &r_icon);
 
       canvas_draw_icon_in_rect(c, &img, &r_icon);
-      canvas_draw_text_in_rect(c, text->str, text->size, &r_text);
+      canvas_draw_text_bidi_in_rect(c, text->str, text->size, &r_text);
     } else {
       if (icon_at == ICON_AT_AUTO) {
         widget_calc_icon_text_rect(&ir, font_size, text_size, icon_at, img.w, img.h, spacer, NULL,
@@ -1250,7 +1250,7 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
     }
   } else if (text != NULL && text->size > 0) {
     widget_calc_icon_text_rect(&ir, font_size, text_size, icon_at, 0, 0, spacer, &r_text, NULL);
-    canvas_draw_text_in_rect(c, text->str, text->size, &r_text);
+    canvas_draw_text_bidi_in_rect(c, text->str, text->size, &r_text);
   }
 
   return RET_OK;
