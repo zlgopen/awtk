@@ -1,0 +1,10 @@
+import os
+import platform
+
+env=DefaultEnvironment().Clone()
+LIB_DIR=os.environ['LIB_DIR'];
+
+SOURCES=Glob("*.c")
+
+env.Library(os.path.join(LIB_DIR, 'fribidi'), SOURCES)
+

@@ -24,6 +24,7 @@ SConscriptFiles=awtk.NANOVG_BACKEND_PROJS + [
   '3rd/libunibreak/SConscript',
   '3rd/lz4/SConscript',
   '3rd/miniz/SConscript',
+  '3rd/fribidi/SConscript',
   'src/SConscript',
   'src/conf_io/SConscript',
   'src/streams/SConscript',

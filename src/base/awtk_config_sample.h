@@ -216,4 +216,11 @@
  * #define LCD_BGR565_LITE 1
  */
 
+/**
+ * 如果希望支持文字双向排版算法(如阿拉伯语言)，请定义本宏。
+ * 
+ * #define WITH_TEXT_BIDI 1
+ * 
+ */
+
 #endif /*AWTK_CONFIG_H*/

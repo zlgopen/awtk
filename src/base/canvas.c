@@ -23,6 +23,7 @@
 #include "tkc/mem.h"
 #include "tkc/utf8.h"
 #include "tkc/utils.h"
+#include "base/bidi.h"
 #include "base/canvas.h"
 #include "tkc/time_now.h"
 #include "tkc/color_parser.h"
@@ -1716,6 +1717,20 @@ ret_t canvas_draw_text_in_rect(canvas_t* c, const wchar_t* str, uint32_t nr, con
   }
 
   return canvas_draw_text(c, str, nr, x, y);
+}
+
+ret_t canvas_draw_text_bidi_in_rect(canvas_t* c, const wchar_t* str, uint32_t nr,
+                                    const rect_t* r_in) {
+  bidi_t b;
+  ret_t ret = RET_FAIL;
+  return_value_if_fail(c != NULL && str != NULL && r_in != NULL, RET_BAD_PARAMS);
+
+  bidi_init(&b, FALSE, FALSE, BIDI_TYPE_AUTO);
+  ENSURE(bidi_log2vis(&b, str, nr) == RET_OK);
+  ret = canvas_draw_text_in_rect(c, b.vis_str, b.vis_str_size, r_in);
+  bidi_deinit(&b);
+
+  return ret;
 }
 
 ret_t canvas_draw_utf8_in_rect(canvas_t* c, const char* str, const rect_t* r) {

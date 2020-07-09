@@ -1,0 +1,6 @@
+﻿<window>
+  <label x="10" y="10" w="-20" h="30" text="الصين" style:font_size="30" style:font_name="trado"/>
+  <label x="10" y="50" w="-20" h="30" text="مصر" style:font_size="30" style:font_name="trado"/>
+  
+  <button name="close" style="close" text="Close"/>
+</window>
