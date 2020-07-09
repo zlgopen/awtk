@@ -95,7 +95,7 @@ ret_t bidi_log2vis(bidi_t* bidi, const wchar_t* str, uint32_t size) {
                           bidi->positions_V_to_L, NULL);
   bidi->resolved_type = bidi_type_from(type);
   (void)level;
-  
+
   return RET_OK;
 }
 

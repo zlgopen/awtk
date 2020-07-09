@@ -3,7 +3,9 @@
 * 2020/07/09
   * 基本控件的文本支持双向排版 (Unicode Bidirectional Algorithm)
   * 完善 font、image 和字符串工具（感谢大恒提供补丁）
-  
+  * 完善 native windows 销毁 lcd 对象。
+  * 完善 expr 支持浮点数和整数格式化。
+   
 * 2020/07/08
   * 完善软键盘关闭流程。
   * 完善 stb 预乘处理（感谢智明提供补丁）。

@@ -38,7 +38,8 @@
 #define pixel_from_rgba pixel_dst_from_rgba
 #define pixel_to_rgba pixel_dst_to_rgba
 
-static inline void blend_a_bgr565_bgra8888(uint8_t* dst, uint8_t* src, uint8_t alpha, bool_t premulti_alpha) {
+static inline void blend_a_bgr565_bgra8888(uint8_t* dst, uint8_t* src, uint8_t alpha,
+                                           bool_t premulti_alpha) {
   uint32_t color = *(uint32_t*)src;
   uint8_t sa = color >> 24;
   uint8_t sr = color >> 16;
@@ -52,13 +53,13 @@ static inline void blend_a_bgr565_bgra8888(uint8_t* dst, uint8_t* src, uint8_t a
     rgba_t rgba = {.a = a, .r = sr, .g = sg, .b = sb};
     if (premulti_alpha) {
       rgba.a = 0xff - a;
-      if(alpha <= 0xf8) {
+      if (alpha <= 0xf8) {
         rgba.r = (sr * alpha) >> 8;
         rgba.g = (sg * alpha) >> 8;
         rgba.b = (sb * alpha) >> 8;
       }
       pixel_bgr565_blend_rgba_premulti(dst, rgba);
-    } else  {
+    } else {
       pixel_bgr565_blend_rgba(dst, rgba);
     }
   }

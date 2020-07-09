@@ -145,8 +145,8 @@ static ret_t image_loader_stb_load(image_loader_t* l, const asset_info_t* asset,
   require_bgra = TRUE;
 #endif /*WITH_BITMAP_BGRA*/
 
-  ret = stb_load_image(asset->subtype, asset->data, asset->size, image, require_bgra,
-                        enable_bgr565, enable_rgb565);
+  ret = stb_load_image(asset->subtype, asset->data, asset->size, image, require_bgra, enable_bgr565,
+                       enable_rgb565);
 
 #ifdef WITH_BITMAP_PREMULTI_ALPHA
   if (ret == RET_OK) {
