@@ -22,7 +22,6 @@
 #include <wctype.h>
 #include "tkc/mem.h"
 #include "tkc/utf8.h"
-#include "tkc/buffer.h"
 #include "base/bitmap.h"
 #include "common/utils.h"
 #include "font_gen/font_gen.h"
@@ -42,25 +41,25 @@ static int char_cmp(const void* a, const void* b) {
 
 ret_t font_gen(font_t* font, uint16_t font_size, const char* str, const char* output_filename,
                const char* theme) {
-  uint8_t* buff = (uint8_t*)TKMEM_ALLOC(MAX_BUFF_SIZE);
-  uint32_t size = font_gen_buff(font, font_size, str, buff, MAX_BUFF_SIZE);
+  wbuffer_t wbuffer;
+  wbuffer_init_extendable(&wbuffer);
 
-  output_res_c_source(output_filename, theme, ASSET_TYPE_FONT, ASSET_TYPE_FONT_BMP, buff, size);
+  uint32_t size = font_gen_buff(font, font_size, str, &wbuffer);
 
-  TKMEM_FREE(buff);
+  output_res_c_source(output_filename, theme, ASSET_TYPE_FONT, ASSET_TYPE_FONT_BMP, wbuffer.data,
+                      size);
+  wbuffer_deinit(&wbuffer);
 
   return RET_OK;
 }
 
-uint32_t font_gen_buff(font_t* font, uint16_t font_size, const char* str, uint8_t* output_buff,
-                       uint32_t buff_size) {
+uint32_t font_gen_buff(font_t* font, uint16_t font_size, const char* str, wbuffer_t* wbuffer) {
   int i = 0;
   glyph_t g;
   int size = 0;
   uint8_t* p = NULL;
   wchar_t wstr[MAX_CHARS];
   font_vmetrics_t vmetrics = font_get_vmetrics(font, font_size);
-  font_bitmap_header_t* header = (font_bitmap_header_t*)output_buff;
 
   tk_utf8_to_utf16(str, wstr, MAX_CHARS);
   size = wcslen(wstr);
@@ -68,38 +67,37 @@ uint32_t font_gen_buff(font_t* font, uint16_t font_size, const char* str, uint8_
   qsort(wstr, size, sizeof(wchar_t), char_cmp);
   size = unique(wstr, size);
 
+  int32_t header_size = sizeof(font_bitmap_header_t) + (size - 1) * sizeof(font_bitmap_index_t);
+  font_bitmap_header_t* header = (font_bitmap_header_t*)TKMEM_ALLOC(header_size);
+  memset(header, 0, header_size);
+  wbuffer_write_binary(wbuffer, header, header_size);
+
   header->char_nr = size;
   header->font_size = (uint8_t)font_size;
   header->ascent = vmetrics.ascent;
   header->descent = vmetrics.descent;
   header->line_gap = vmetrics.line_gap;
 
-  p = (uint8_t*)(header->index + size);
-  return_value_if_fail(buff_size > 512, 0);
-
   for (i = 0; i < size; i++) {
     wchar_t c = wstr[i];
-    font_bitmap_index_t* iter = header->index + i;
 
-    iter->c = c;
-    iter->offset = p - output_buff;
+    header->index[i].c = c;
+    header->index[i].offset = wbuffer->cursor;
 
     printf("%d/%d: 0x%04x\n", i, size, c);
     if (font_get_glyph(font, c, font_size, &g) == RET_OK) {
       uint32_t data_size = (g.pitch ? g.pitch : g.w) * g.h;
-      return_value_if_fail(buff_size > (iter->offset + data_size + 4), 0);
 
-      save_uint16(p, g.x);
-      save_uint16(p, g.y);
-      save_uint16(p, g.w);
-      save_uint16(p, g.h);
-      save_uint16(p, g.advance);
-      save_uint8(p, g.format);
-      save_uint8(p, g.pitch);
+      wbuffer_write_uint16(wbuffer, g.x);
+      wbuffer_write_uint16(wbuffer, g.y);
+      wbuffer_write_uint16(wbuffer, g.w);
+      wbuffer_write_uint16(wbuffer, g.h);
+      wbuffer_write_uint16(wbuffer, g.advance);
+      wbuffer_write_uint8(wbuffer, g.format);
+      wbuffer_write_uint8(wbuffer, g.pitch);
 
       if (g.data != NULL) {
-        memcpy(p, g.data, data_size);
-        p += data_size;
+        wbuffer_write_binary(wbuffer, g.data, data_size);
       }
 
       if (g.format == GLYPH_FMT_MONO) {
@@ -116,9 +114,14 @@ uint32_t font_gen_buff(font_t* font, uint16_t font_size, const char* str, uint8_
           utf8_arr);
       exit(0);
     } else {
-      iter->offset = 0;
+      header->index[i].offset = 0;
     }
   }
+  size = wbuffer->cursor;
+  wbuffer->cursor = 0;
+  wbuffer_write_binary(wbuffer, header, header_size);
+  wbuffer->cursor = size;
+  TKMEM_FREE(header);
 
-  return p - output_buff;
+  return size;
 }

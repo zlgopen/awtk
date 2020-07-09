@@ -23,8 +23,9 @@ TEST(FontGen, basic) {
   uint8_t* ttf_buff = (uint8_t*)read_file(TTF_FILE, &size);
   font_t* ttf_font = font_truetype_create("default", ttf_buff, size);
   const char* str = "helloworld HELLOWORLD 1243541 helloworld HELLOWORLD 1243541";
-
-  uint32_t ret = font_gen_buff(ttf_font, font_size, str, bmp_buff, BUFF_SIZE);
+  wbuffer_t wbuffer;
+  wbuffer_init(&wbuffer, bmp_buff, BUFF_SIZE);
+  uint32_t ret = font_gen_buff(ttf_font, font_size, str, &wbuffer);
   font_t* bmp_font = font_bitmap_create("default", bmp_buff, ret);
 
   for (uint32_t i = 0; str[i]; i++) {
@@ -45,6 +46,7 @@ TEST(FontGen, basic) {
   ASSERT_EQ(ret > 0, true);
   font_destroy(ttf_font);
   font_destroy(bmp_font);
+  wbuffer_deinit(&wbuffer);
   TKMEM_FREE(bmp_buff);
   TKMEM_FREE(ttf_buff);
 }

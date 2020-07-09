@@ -64,6 +64,7 @@ int32_t StrGen::OutputSentences(const Sentences& sentences, wbuffer_t* wbuffer) 
   return_value_if_fail(nr >= 1, 0);
   header_size = nr * sizeof(str_pair_t) + sizeof(str_table_t);
   str_table_t* table = (str_table_t*)TKMEM_ALLOC(header_size);
+  memset(table, 0, header_size);
   wbuffer_write_binary(wbuffer, table, header_size);
   table->nr = nr;
   table->version = 0;

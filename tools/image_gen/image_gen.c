@@ -27,29 +27,30 @@
 #include "base/assets_manager.h"
 #include "image_loader/image_loader_stb.h"
 
-#define MAX_BUFF_SIZE 2 * 1024 * 1024
-
 ret_t image_gen(bitmap_t* image, const char* output_filename, const char* theme, bool_t mono) {
   uint32_t size = 0;
-  uint8_t* buff = (uint8_t*)TKMEM_ALLOC(MAX_BUFF_SIZE);
-  return_value_if_fail(buff != NULL, RET_FAIL);
-
-  size = image_gen_buff(image, buff, MAX_BUFF_SIZE, mono);
+  wbuffer_t wbuffer;
+  wbuffer_init_extendable(&wbuffer);
+  ret_t ret = RET_OK;
+  size = image_gen_buff(image, &wbuffer, mono);
   if (size) {
-    output_res_c_source(output_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_RAW, buff, size);
-    TKMEM_FREE(buff);
+    output_res_c_source(output_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_RAW,
+                        wbuffer.data, size);
   } else {
-    return RET_FAIL;
+    ret = RET_FAIL;
   }
-
-  return RET_OK;
+  wbuffer_deinit(&wbuffer);
+  return ret;
 }
 
-uint32_t image_gen_buff(bitmap_t* image, uint8_t* output_buff, uint32_t buff_size, bool_t mono) {
+uint32_t image_gen_buff(bitmap_t* image, wbuffer_t* wbuffer, bool_t mono) {
   size_t size = 0;
   uint8_t* image_data = NULL;
-  bitmap_header_t* header = (bitmap_header_t*)output_buff;
-  return_value_if_fail(image != NULL && output_buff != NULL, 0);
+  return_value_if_fail(image != NULL, 0);
+  uint32_t header_size = sizeof(bitmap_header_t) - 4;
+  bitmap_header_t* header = (bitmap_header_t*)TKMEM_ALLOC(header_size);
+  memset(header, 0, header_size);
+  wbuffer_write_binary(wbuffer, header, header_size);
 
   header->w = image->w;
   header->h = image->h;
@@ -57,26 +58,28 @@ uint32_t image_gen_buff(bitmap_t* image, uint8_t* output_buff, uint32_t buff_siz
   image_data = bitmap_lock_buffer_for_read(image);
   if (!mono) {
     size = bitmap_get_line_length(image) * image->h;
-    return_value_if_fail((size + sizeof(bitmap_header_t)) < buff_size, 0);
-
     header->format = image->format;
-    memcpy(header->data, image_data, size);
+    wbuffer_write_binary(wbuffer, image_data, size);
   } else {
     bitmap_t b;
     uint8_t* bdata = NULL;
     bitmap_init_from_rgba(&b, image->w, image->h, BITMAP_FMT_MONO, image_data, 4);
     header->format = b.format;
     size = bitmap_get_line_length(&b) * b.h;
-    return_value_if_fail((size + sizeof(bitmap_header_t)) < buff_size, 0);
 
     bdata = bitmap_lock_buffer_for_read(&b);
-    memcpy(header->data, bdata, size);
+    wbuffer_write_binary(wbuffer, bdata, size);
 
     bitmap_mono_dump(bdata, b.w, b.h);
     bitmap_unlock_buffer(&b);
     bitmap_destroy(&b);
   }
   bitmap_unlock_buffer(image);
+  int32_t cursor = wbuffer->cursor;
+  wbuffer->cursor = 0;
+  wbuffer_write_binary(wbuffer, header, header_size);
+  wbuffer->cursor = cursor;
+  TKMEM_FREE(header);
 
   return size + sizeof(bitmap_header_t);
 }

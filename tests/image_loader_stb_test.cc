@@ -70,14 +70,15 @@ static ret_t add_image_res(const char* filename, const char* name) {
   ret_t ret = load_image(filename, &image);
   asset_info_t* r = (asset_info_t*)buff;
   return_value_if_fail(ret == RET_OK, RET_FAIL);
-
+  wbuffer_t wbuffer;
+  wbuffer_init(&wbuffer, buff, sizeof(buff));
   strcpy(r->name, name);
   r->is_in_rom = TRUE;
   r->type = ASSET_TYPE_IMAGE;
   r->subtype = ASSET_TYPE_IMAGE_RAW;
-  r->size = image_gen_buff(&image, r->data, sizeof(buff) - sizeof(asset_info_t), FALSE);
+  r->size = image_gen_buff(&image, &wbuffer, FALSE);
   bitmap_destroy(&image);
-
+  wbuffer_deinit(&wbuffer);
   return assets_manager_add(assets_manager(), buff);
 }
 

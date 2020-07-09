@@ -1,7 +1,8 @@
 # 最新动态
 
 * 2020/07/09
-  * 基本控件的文本支持双向排版(Unicode Bidirectional Algorithm)
+  * 基本控件的文本支持双向排版 (Unicode Bidirectional Algorithm)
+  * 完善 font、image 和字符串工具（感谢大恒提供补丁）
   
 * 2020/07/08
   * 完善软键盘关闭流程。
