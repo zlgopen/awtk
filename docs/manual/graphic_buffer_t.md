@@ -11,6 +11,7 @@ graphic_buffer。
 | <a href="#graphic_buffer_t_graphic_buffer_create_for_bitmap">graphic\_buffer\_create\_for\_bitmap</a> | 为位图创建缓冲区。 |
 | <a href="#graphic_buffer_t_graphic_buffer_create_with_data">graphic\_buffer\_create\_with\_data</a> | 创建缓冲区。 |
 | <a href="#graphic_buffer_t_graphic_buffer_destroy">graphic\_buffer\_destroy</a> | 销毁缓冲区。 |
+| <a href="#graphic_buffer_t_graphic_buffer_is_valid_for">graphic\_buffer\_is\_valid\_for</a> | 用于检查graphic buffer的有效性。 |
 | <a href="#graphic_buffer_t_graphic_buffer_lock_for_read">graphic\_buffer\_lock\_for\_read</a> | 为读取数据而锁定缓冲区。 |
 | <a href="#graphic_buffer_t_graphic_buffer_lock_for_write">graphic\_buffer\_lock\_for\_write</a> | 为修改数据而锁定缓冲区。 |
 | <a href="#graphic_buffer_t_graphic_buffer_unlock">graphic\_buffer\_unlock</a> | 解锁缓冲区。 |
@@ -24,7 +25,7 @@ graphic_buffer。
 * 函数原型：
 
 ```
-ret_t graphic_buffer_attach (graphic_buffer_t* buffer, void* data);
+ret_t graphic_buffer_attach (graphic_buffer_t* buffer, void* data, uint32_t w, uint32_t h);
 ```
 
 * 参数说明：
@@ -34,6 +35,8 @@ ret_t graphic_buffer_attach (graphic_buffer_t* buffer, void* data);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | buffer | graphic\_buffer\_t* | 图像缓冲区对象。 |
 | data | void* | 内存数据。 |
+| w | uint32\_t | 宽度。 |
+| h | uint32\_t | 宽度。 |
 #### graphic\_buffer\_create\_for\_bitmap 函数
 -----------------------
 
@@ -96,6 +99,26 @@ ret_t graphic_buffer_destroy (graphic_buffer_t* buffer);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | buffer | graphic\_buffer\_t* | 图像缓冲区对象。 |
+#### graphic\_buffer\_is\_valid\_for 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="graphic_buffer_t_graphic_buffer_is_valid_for">用于检查graphic buffer的有效性。
+
+* 函数原型：
+
+```
+bool_t graphic_buffer_is_valid_for (graphic_buffer_t* buffer, bitmap_t* bitmap);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示有效，否则表示无效。 |
+| buffer | graphic\_buffer\_t* | 图像缓冲区对象。 |
+| bitmap | bitmap\_t* | 位图对象。 |
 #### graphic\_buffer\_lock\_for\_read 函数
 -----------------------
 

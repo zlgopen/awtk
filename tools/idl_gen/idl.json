@@ -3597,6 +3597,385 @@
         "annotation": {
           "constructor": true
         },
+        "desc": "获取缺省的子控件布局算法工厂对象。",
+        "name": "children_layouter_factory",
+        "return": {
+          "type": "children_layouter_factory_t*",
+          "desc": "返回子控件布局算法工厂对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "children_layouter_factory_t*",
+            "name": "factory",
+            "desc": "子控件布局算法工厂对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置缺省的子控件布局算法工厂对象。",
+        "name": "children_layouter_factory_set",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建子控件布局算法工厂对象。",
+        "name": "children_layouter_factory_create",
+        "return": {
+          "type": "children_layouter_factory_t*",
+          "desc": "返回子控件布局算法工厂对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "children_layouter_factory_t*",
+            "name": "factory",
+            "desc": "layouter工厂对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "type",
+            "desc": "子控件布局算法类型。"
+          },
+          {
+            "type": "children_layouter_create_t",
+            "name": "create",
+            "desc": "子控件布局算法创建函数。"
+          }
+        ],
+        "annotation": {},
+        "desc": "注册子控件布局算法创建函数。",
+        "name": "children_layouter_factory_register",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "children_layouter_factory_t*",
+            "name": "factory",
+            "desc": "子控件布局算法工厂对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "type",
+            "desc": "类型。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建指定类型的子控件布局算法对象。",
+        "name": "children_layouter_factory_create_layouter",
+        "return": {
+          "type": "children_layouter_t*",
+          "desc": "返回子控件布局算法对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "children_layouter_factory_t*",
+            "name": "factory",
+            "desc": "子控件布局算法工厂对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "析构并释放子控件布局算法工厂对象。",
+        "name": "children_layouter_factory_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "base/children_layouter_factory.h",
+    "desc": "子控件布局算法工厂。",
+    "name": "children_layouter_factory_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "children_layouter_t*",
+            "name": "layouter",
+            "desc": "layouter对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取全部参数。",
+        "name": "children_layouter_to_string",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回字符串格式的参数。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "children_layouter_t*",
+            "name": "layouter",
+            "desc": "layouter对象。"
+          },
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件。"
+          }
+        ],
+        "annotation": {},
+        "desc": "对控件的子控件进行布局。",
+        "name": "children_layouter_layout",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "children_layouter_t*",
+            "name": "layouter",
+            "desc": "layouter对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "参数名。"
+          },
+          {
+            "type": "value_t*",
+            "name": "v",
+            "desc": "返回参数的值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取指定的参数。",
+        "name": "children_layouter_get_param",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "children_layouter_t*",
+            "name": "layouter",
+            "desc": "layouter对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "参数名。"
+          },
+          {
+            "type": "const value_t*",
+            "name": "v",
+            "desc": "参数的值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取指定的参数。",
+        "name": "children_layouter_set_param",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "children_layouter_t*",
+            "name": "layouter",
+            "desc": "layouter对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "参数名。"
+          },
+          {
+            "type": "const char*",
+            "name": "value",
+            "desc": "参数值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置字符串格式的参数。",
+        "name": "children_layouter_set_param_str",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "children_layouter_t*",
+            "name": "layouter",
+            "desc": "layouter对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "参数名。"
+          },
+          {
+            "type": "float_t",
+            "name": "defval",
+            "desc": "缺省值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取指定的浮点格式的参数。",
+        "name": "children_layouter_get_param_float",
+        "return": {
+          "type": "ret_t",
+          "desc": "成功返回参数的值，失败返回缺省值。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "children_layouter_t*",
+            "name": "layouter",
+            "desc": "layouter对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "参数名。"
+          },
+          {
+            "type": "int32_t",
+            "name": "defval",
+            "desc": "缺省值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取指定的整数格式的参数。",
+        "name": "children_layouter_get_param_int",
+        "return": {
+          "type": "ret_t",
+          "desc": "成功返回参数的值，失败返回缺省值。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "children_layouter_t*",
+            "name": "layouter",
+            "desc": "layouter对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "判断layouter对象是否有效。",
+        "name": "children_layouter_is_valid",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回TRUE表示有效，否则表示无效。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "children_layouter_t*",
+            "name": "layouter",
+            "desc": "layouter对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁layouter对象。",
+        "name": "children_layouter_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "params",
+            "desc": "参数。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建layouter对象。",
+        "name": "children_layouter_create",
+        "return": {
+          "type": "children_layouter_t*",
+          "desc": "返回layouter对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "children_layouter_t*",
+            "name": "layouter",
+            "desc": "被克隆的对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "克隆layouter对象。",
+        "name": "children_layouter_clone",
+        "return": {
+          "type": "children_layouter_t*",
+          "desc": "返回layouter对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "base/children_layouter.h",
+    "desc": "子控件排版布局器的接口。\n\n按特定算法对子控件进行排版布局，子类需要实现vtable中的函数。",
+    "name": "children_layouter_t",
+    "level": 1
+  },
+  {
+    "type": "enum",
+    "desc": "剪切板数据类型定义。",
+    "consts": [
+      {
+        "desc": "无数据。",
+        "name": "CLIP_BOARD_DATA_TYPE_NONE"
+      },
+      {
+        "desc": "UTF8文本。",
+        "name": "CLIP_BOARD_DATA_TYPE_TEXT"
+      }
+    ],
+    "header": "base/clip_board.h",
+    "name": "clip_board_data_type_t",
+    "prefix": "CLIP_BOARD_DATA_TYPE_",
+    "annotation": {
+      "scriptable": true
+    },
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
         "desc": "获取缺省的剪切板对象。",
         "name": "clip_board",
         "alias": "clip_board_instance",
@@ -24647,6 +25026,27 @@
             "desc": "tokenizer对象。"
           },
           {
+            "type": "const char*",
+            "name": "str",
+            "desc": "字符集。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取下一个expr，该expr直到遇到指定的char。",
+        "name": "tokenizer_next_expr_until",
+        "return": {
+          "type": "char*",
+          "desc": "成功返回token，失败返回NULL。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tokenizer_t*",
+            "name": "tokenizer",
+            "desc": "tokenizer对象。"
+          },
+          {
             "type": "int",
             "name": "defval",
             "desc": "缺省值。"
@@ -27990,6 +28390,176 @@
     "level": 1
   },
   {
+    "type": "enum",
+    "desc": "bidi 类型常量定义。",
+    "consts": [
+      {
+        "desc": "自动检查。",
+        "name": "BIDI_TYPE_AUTO"
+      },
+      {
+        "desc": "Left-To-Right letter。",
+        "name": "BIDI_TYPE_LTR"
+      },
+      {
+        "desc": "Right-To-Left letter。",
+        "name": "BIDI_TYPE_RTL"
+      },
+      {
+        "desc": "Weak Left To Right paragraph。",
+        "name": "BIDI_TYPE_WLTR"
+      },
+      {
+        "desc": "Weak Right To Left paragraph。",
+        "name": "BIDI_TYPE_WRTL"
+      }
+    ],
+    "header": "base/bidi.h",
+    "name": "bidi_type_t",
+    "prefix": "BIDI_TYPE_",
+    "annotation": {
+      "scriptable": true
+    },
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "bidi_t*",
+            "name": "bidi",
+            "desc": "bidi对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "alloc_l2v",
+            "desc": "是否为positions_L_to_V分配空间。"
+          },
+          {
+            "type": "bool_t",
+            "name": "alloc_v2l",
+            "desc": "是否为positions_V_to_L分配空间。"
+          },
+          {
+            "type": "bidi_type_t",
+            "name": "type",
+            "desc": "类型。"
+          }
+        ],
+        "annotation": {
+          "deconstructor": true
+        },
+        "desc": "初始化bidi对象。",
+        "name": "bidi_init",
+        "return": {
+          "type": "bidi_t*",
+          "desc": "返回bidi对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "bidi_t*",
+            "name": "bidi",
+            "desc": "bidi对象。"
+          },
+          {
+            "type": "const wchar_t*",
+            "name": "str",
+            "desc": "字符串。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "字符串的长度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "将字符串转成用于显示的字符串，输出结果放在bidi->vis_str中。",
+        "name": "widget_close_window",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "bidi_t*",
+            "name": "bidi",
+            "desc": "bidi对象。"
+          }
+        ],
+        "annotation": {
+          "deconstructor": true
+        },
+        "desc": "释放bidi对象相关资源。",
+        "name": "bidi_deinit",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "vis_strx",
+        "desc": "用于显示的字符串(存放log2vis的结果)。",
+        "type": "wchar_t*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "vis_str_size",
+        "desc": "用于显示的字符串长度(存放log2vis的结果)。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "request_type",
+        "desc": "请求的类型。",
+        "type": "bidi_type_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "resolved_type",
+        "desc": "实际的类型。",
+        "type": "bidi_type_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "positions_L_to_V",
+        "desc": "logical位置与visual位置的映射。",
+        "type": "int32_t*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "positions_V_to_L",
+        "desc": "visual位置与logical位置的映射。",
+        "type": "int32_t*",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "base/bidi.h",
+    "desc": "Unicode Bidirectional Algorithm.",
+    "name": "bidi_t",
+    "level": 1
+  },
+  {
     "type": "class",
     "methods": [
       {
@@ -28113,1359 +28683,6 @@
     "header": "xml/xml_parser.h",
     "desc": "xml解析器",
     "name": "XmlParser",
-    "level": 1
-  },
-  {
-    "type": "enum",
-    "desc": "图片绘制方法常量定义。",
-    "consts": [
-      {
-        "desc": "缺省显示。将图片按原大小显示在目标矩形的左上角。",
-        "name": "IMAGE_DRAW_DEFAULT"
-      },
-      {
-        "desc": "居中显示。将图片按原大小显示在目标矩形的中央。",
-        "name": "IMAGE_DRAW_CENTER"
-      },
-      {
-        "desc": "图标显示。同居中显示，但会根据屏幕密度调整大小。",
-        "name": "IMAGE_DRAW_ICON"
-      },
-      {
-        "desc": "缩放显示。将图片缩放至目标矩形的大小(不保证宽高成比例)。",
-        "name": "IMAGE_DRAW_SCALE"
-      },
-      {
-        "desc": "自动缩放显示。将图片缩放至目标矩形的宽度或高度(选取最小的比例)，并居中显示。",
-        "name": "IMAGE_DRAW_SCALE_AUTO"
-      },
-      {
-        "desc": "如果图片比目标矩形大，自动缩小显示，否则居中显示。",
-        "name": "IMAGE_DRAW_SCALE_DOWN"
-      },
-      {
-        "desc": "宽度缩放显示。 将图片缩放至目标矩形的宽度，高度按此比例进行缩放，超出不部分不显示。",
-        "name": "IMAGE_DRAW_SCALE_W"
-      },
-      {
-        "desc": "高度缩放显示。将图片缩放至目标矩形的高度，宽度按此比例进行缩放，超出不部分不显示。",
-        "name": "IMAGE_DRAW_SCALE_H"
-      },
-      {
-        "desc": "平铺显示。",
-        "name": "IMAGE_DRAW_REPEAT"
-      },
-      {
-        "desc": "水平方向平铺显示，垂直方向缩放。",
-        "name": "IMAGE_DRAW_REPEAT_X"
-      },
-      {
-        "desc": "垂直方向平铺显示，水平方向缩放。",
-        "name": "IMAGE_DRAW_REPEAT_Y"
-      },
-      {
-        "desc": "垂直方向平铺显示，水平方向缩放(从底部到顶部)。",
-        "name": "IMAGE_DRAW_REPEAT_Y_INVERSE"
-      },
-      {
-        "desc": "9宫格显示。\n将图片分成等大小的9块，4个角按原大小显示在目标矩形的4个角，左右上下和中间5块分别缩放显示在对应的目标区域。",
-        "name": "IMAGE_DRAW_PATCH9"
-      },
-      {
-        "desc": "水平方向3宫格显示，垂直方向居中显示。\n将图片在水平方向上分成等大小的3块，左右两块按原大小显示在目标矩形的左右，中间一块缩放显示在目标区域中间剩余部分。",
-        "name": "IMAGE_DRAW_PATCH3_X"
-      },
-      {
-        "desc": "垂直方向3宫格显示，水平方向居中显示。\n将图片在垂直方向上分成等大小的3块，上下两块按原大小显示在目标矩形的上下，中间一块缩放显示在目标区域中间剩余部分。",
-        "name": "IMAGE_DRAW_PATCH3_Y"
-      },
-      {
-        "desc": "水平方向3宫格显示，垂直方向缩放显示。\n将图片在水平方向上分成等大小的3块，左右两块按原大小显示在目标矩形的左右，中间一块缩放显示在目标区域中间剩余部分。",
-        "name": "IMAGE_DRAW_PATCH3_X_SCALE_Y"
-      },
-      {
-        "desc": "垂直方向3宫格显示，水平方向缩放显示。\n将图片在垂直方向上分成等大小的3块，上下两块按原大小显示在目标矩形的上下，中间一块缩放显示在目标区域中间剩余部分。",
-        "name": "IMAGE_DRAW_PATCH3_Y_SCALE_X"
-      },
-      {
-        "desc": "平铺9宫格显示。\n将图片分成4个角和5块平铺块，4个角按原大小显示在目标矩形的4个角，其余5块会平铺对应的目标区域。\n切割方法为（如下图）：\n如果图片宽度为奇数，则中间一块为一列数据，如果图片宽度为偶数，则中间一块为二列数据，其他数据分为左右块\n如果图片高度为奇数，则中间一块为一行数据，如果图片高度为偶数，则中间一块为二行数据，其他数据分为上下块\n中间一块数据根据上面两条规则组成4中情况，分别是一列一行数据，一列两行数据，两列一行数据和两行两列数据",
-        "name": "IMAGE_DRAW_REPEAT9"
-      },
-      {
-        "desc": "水平方向3宫格显示，垂直方向居中显示。\n将图片在水平方向上分成左右相等两块和中间一块，如果图片宽度为奇数，则中间一块为一列数据，如果图片宽度为偶数，则中间一块为二列数据，其他数据分为左右块。\n左右两块按原大小显示在目标矩形的左右，中间一列像素点平铺显示在目标区域中间剩余部分。",
-        "name": "IMAGE_DRAW_REPEAT3_X"
-      },
-      {
-        "desc": "垂直方向3宫格显示，水平方向居中显示。\n将图片在垂直方向上分成上下相等两块和中间一块，如果图片高度为奇数，则中间一块为一行数据，如果图片高度为偶数，则中间一块为二行数据，其他数据分为上下块\n上下两块按原大小显示在目标矩形的上下，中间一块平铺显示在目标区域中间剩余部分。",
-        "name": "IMAGE_DRAW_REPEAT3_Y"
-      }
-    ],
-    "header": "base/bitmap.h",
-    "name": "image_draw_type_t",
-    "prefix": "IMAGE_DRAW_",
-    "annotation": {
-      "scriptable": true
-    },
-    "level": 1
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          },
-          {
-            "type": "lcd_t*",
-            "name": "lcd",
-            "desc": "lcd对象。"
-          },
-          {
-            "type": "font_manager_t*",
-            "name": "font_manager",
-            "desc": "字体管理器对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "初始化，系统内部调用。",
-        "name": "canvas_init",
-        "return": {
-          "type": "canvas_t*",
-          "desc": "返回canvas对象本身。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "获取画布的宽度。",
-        "name": "canvas_get_width",
-        "return": {
-          "type": "wh_t",
-          "desc": "返回画布的宽度。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "获取画布的高度。",
-        "name": "canvas_get_height",
-        "return": {
-          "type": "wh_t",
-          "desc": "返回画布的高度。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          },
-          {
-            "type": "rect_t*",
-            "name": "r",
-            "desc": "rect对象。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "获取裁剪区。",
-        "name": "canvas_get_clip_rect",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          },
-          {
-            "type": "const rect_t*",
-            "name": "r",
-            "desc": "rect对象。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置裁剪区。",
-        "name": "canvas_set_clip_rect",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          },
-          {
-            "type": "const rect_t*",
-            "name": "r",
-            "desc": "rect对象。"
-          },
-          {
-            "type": "bool_t",
-            "name": "translate",
-            "desc": "是否将裁剪区的位置加上canvas当前的偏移。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置裁剪区。",
-        "name": "canvas_set_clip_rect_ex",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          },
-          {
-            "type": "color_t",
-            "name": "color",
-            "desc": "颜色。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置填充颜色。",
-        "name": "canvas_set_fill_color",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          },
-          {
-            "type": "color_t",
-            "name": "color",
-            "desc": "颜色。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置文本颜色。",
-        "name": "canvas_set_text_color",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          },
-          {
-            "type": "color_t",
-            "name": "color",
-            "desc": "颜色。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置线条颜色。",
-        "name": "canvas_set_stroke_color",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "color",
-            "desc": "颜色。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置填充颜色。\n\n> 供脚本语言使用。",
-        "name": "canvas_set_fill_color_str",
-        "alias": "canvas_set_fill_color",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "color",
-            "desc": "颜色。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置文本颜色。\n\n> 供脚本语言使用。",
-        "name": "canvas_set_text_color_str",
-        "alias": "canvas_set_text_color",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "color",
-            "desc": "颜色。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置线条颜色。\n\n> 供脚本语言使用。",
-        "name": "canvas_set_stroke_color_str",
-        "alias": "canvas_set_stroke_color",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          },
-          {
-            "type": "uint8_t",
-            "name": "alpha",
-            "desc": "alpha值。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置全局alpha值。",
-        "name": "canvas_set_global_alpha",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          },
-          {
-            "type": "xy_t",
-            "name": "dx",
-            "desc": "x偏移。"
-          },
-          {
-            "type": "xy_t",
-            "name": "dy",
-            "desc": "y偏移。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "平移原点坐标。",
-        "name": "canvas_translate",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          },
-          {
-            "type": "xy_t",
-            "name": "dx",
-            "desc": "x偏移。"
-          },
-          {
-            "type": "xy_t",
-            "name": "dy",
-            "desc": "y偏移。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "反向平移原点坐标。",
-        "name": "canvas_untranslate",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标。"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标。"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "画垂直线。",
-        "name": "canvas_draw_vline",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标。"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标。"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "画水平线。",
-        "name": "canvas_draw_hline",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          },
-          {
-            "type": "const point_t*",
-            "name": "points",
-            "desc": "点数组。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "nr",
-            "desc": "点的个数。"
-          }
-        ],
-        "annotation": {},
-        "desc": "画多个点。",
-        "name": "canvas_draw_points",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标。"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标。"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度。"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "填充矩形。",
-        "name": "canvas_fill_rect",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标。"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标。"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度。"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "绘制矩形。",
-        "name": "canvas_stroke_rect",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "name",
-            "desc": "字体名称。"
-          },
-          {
-            "type": "font_size_t",
-            "name": "size",
-            "desc": "字体大小。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置字体。",
-        "name": "canvas_set_font",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          },
-          {
-            "type": "align_h_t",
-            "name": "align_h",
-            "desc": "水平对齐方式。"
-          },
-          {
-            "type": "align_v_t",
-            "name": "align_v",
-            "desc": "垂直对齐方式。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置文本对齐方式。",
-        "name": "canvas_set_text_align",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          },
-          {
-            "type": "const wchar_t*",
-            "name": "str",
-            "desc": "字符串。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "nr",
-            "desc": "字符数。"
-          }
-        ],
-        "annotation": {},
-        "desc": "计算文本所占的宽度。",
-        "name": "canvas_measure_text",
-        "return": {
-          "type": "float_t",
-          "desc": "返回文本所占的宽度。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "获取字体的高度。",
-        "name": "canvas_get_font_height",
-        "return": {
-          "type": "float_t",
-          "desc": "返回字体的高度。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "str",
-            "desc": "字符串。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "计算文本所占的宽度。\n\n> 供脚本语言使用。",
-        "name": "canvas_measure_utf8",
-        "alias": "canvas_measure_text",
-        "return": {
-          "type": "float_t",
-          "desc": "返回文本所占的宽度。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          },
-          {
-            "type": "const wchar_t*",
-            "name": "str",
-            "desc": "字符串。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "nr",
-            "desc": "字符数。"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标。"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标。"
-          }
-        ],
-        "annotation": {},
-        "desc": "绘制文本。",
-        "name": "canvas_draw_text",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "str",
-            "desc": "字符串。"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标。"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "绘制文本。\n\n> 供脚本语言使用。",
-        "name": "canvas_draw_utf8",
-        "alias": "canvas_draw_text",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          },
-          {
-            "type": "const wchar_t*",
-            "name": "str",
-            "desc": "字符串。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "nr",
-            "desc": "字符数。"
-          },
-          {
-            "type": "const rect_t*",
-            "name": "r",
-            "desc": "矩形区域。"
-          }
-        ],
-        "annotation": {},
-        "desc": "绘制文本。",
-        "name": "canvas_draw_text_in_rect",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "str",
-            "desc": "字符串。"
-          },
-          {
-            "type": "const rect_t*",
-            "name": "r",
-            "desc": "矩形区域。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "绘制文本。\n\n> 供脚本语言使用。",
-        "name": "canvas_draw_utf8_in_rect",
-        "alias": "canvas_draw_text_in_rect",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          },
-          {
-            "type": "bitmap_t*",
-            "name": "img",
-            "desc": "图片对象。"
-          },
-          {
-            "type": "xy_t",
-            "name": "cx",
-            "desc": "中心点x坐标。"
-          },
-          {
-            "type": "xy_t",
-            "name": "cy",
-            "desc": "中心点y坐标。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "绘制图标。",
-        "name": "canvas_draw_icon",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          },
-          {
-            "type": "bitmap_t*",
-            "name": "img",
-            "desc": "图片对象。"
-          },
-          {
-            "type": "rect_t*",
-            "name": "src",
-            "desc": "源区域。"
-          },
-          {
-            "type": "rect_t*",
-            "name": "dst",
-            "desc": "目的区域。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "绘制图片。",
-        "name": "canvas_draw_image",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          },
-          {
-            "type": "bitmap_t*",
-            "name": "img",
-            "desc": "图片对象。"
-          },
-          {
-            "type": "image_draw_type_t",
-            "name": "draw_type",
-            "desc": "绘制类型。"
-          },
-          {
-            "type": "rect_t*",
-            "name": "dst",
-            "desc": "目的区域。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "绘制图片。",
-        "name": "canvas_draw_image_ex",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "获取vgcanvas对象。",
-        "name": "canvas_get_vgcanvas",
-        "return": {
-          "type": "vgcanvas_t*",
-          "desc": "返回vgcanvas对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": "转换为canvas对象(供脚本语言使用)。",
-        "name": "canvas_cast",
-        "return": {
-          "type": "canvas_t*",
-          "desc": "canvas对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "释放相关资源。",
-        "name": "canvas_reset",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          },
-          {
-            "type": "bitmap_t*",
-            "name": "img",
-            "desc": "图片对象。"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标。"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "w坐标。"
-          }
-        ],
-        "annotation": {},
-        "desc": "在指定位置画图。",
-        "name": "canvas_draw_image_at",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          },
-          {
-            "type": "xy_t",
-            "name": "x1",
-            "desc": "起始点的x坐标。"
-          },
-          {
-            "type": "xy_t",
-            "name": "y1",
-            "desc": "起始点的y坐标。"
-          },
-          {
-            "type": "xy_t",
-            "name": "x2",
-            "desc": "结束点的x坐标。"
-          },
-          {
-            "type": "xy_t",
-            "name": "y2",
-            "desc": "结束点的y坐标。"
-          }
-        ],
-        "annotation": {},
-        "desc": "画直线。",
-        "name": "canvas_draw_line",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          },
-          {
-            "type": "font_manager_t*",
-            "name": "font_manager",
-            "desc": "font_manager对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置canvas的font_manager对象。",
-        "name": "canvas_set_font_manager",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          },
-          {
-            "type": "assets_manager_t*",
-            "name": "assets_manager",
-            "desc": "assets_manager对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置canvas的assets_manager对象。",
-        "name": "canvas_set_assets_manager",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "canvas",
-            "desc": "canvas对象。"
-          },
-          {
-            "type": "float_t*",
-            "name": "ascent",
-            "desc": "用于返回ascent。"
-          },
-          {
-            "type": "float_t*",
-            "name": "descent",
-            "desc": "用于返回descent。"
-          },
-          {
-            "type": "float_t*",
-            "name": "line_hight",
-            "desc": "用于返回line height。"
-          }
-        ],
-        "annotation": {},
-        "desc": "获取当前字体的度量信息。",
-        "name": "canvas_get_text_metrics",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          },
-          {
-            "type": "rect_t*",
-            "name": "dirty_rect",
-            "desc": "脏矩形。"
-          },
-          {
-            "type": "lcd_draw_mode_t",
-            "name": "draw_mode",
-            "desc": "绘制模式。"
-          }
-        ],
-        "annotation": {},
-        "desc": "绘制开始。",
-        "name": "canvas_begin_frame",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "canvas_t*",
-            "name": "c",
-            "desc": "canvas对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "绘制结束。",
-        "name": "canvas_end_frame",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [
-      {
-        "name": "ox",
-        "desc": "x坐标偏移。",
-        "type": "xy_t",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "oy",
-        "desc": "y坐标偏移。",
-        "type": "xy_t",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "font_name",
-        "desc": "当前字体名称。",
-        "type": "char*",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "font_size",
-        "desc": "当前字体大小。",
-        "type": "uint16_t",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "global_alpha",
-        "desc": "当前全局alpha。",
-        "type": "uint8_t",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "clip_left",
-        "desc": "当前裁剪矩形的左边位置。",
-        "type": "xy_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "clip_top",
-        "desc": "当前裁剪矩形的顶部位置。",
-        "type": "xy_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "clip_right",
-        "desc": "当前裁剪矩形的右边位置。",
-        "type": "xy_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "clip_bottom",
-        "desc": "当前裁剪矩形的底部位置。",
-        "type": "xy_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "fps",
-        "desc": "当前的帧率。",
-        "type": "uint32_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "show_fps",
-        "desc": "是否显示帧率。",
-        "type": "bool_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "text_align_v",
-        "desc": "文本垂直对齐方式。",
-        "type": "align_v_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "text_align_h",
-        "desc": "文本水平对齐方式。",
-        "type": "align_h_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "lcd",
-        "desc": "lcd对象。",
-        "type": "lcd_t*",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "font",
-        "desc": "字体对象。",
-        "type": "font_t*",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "font_manager",
-        "desc": "字体管理器对象。",
-        "type": "font_manager_t*",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "assets_manager",
-        "desc": "资源管理器对象。",
-        "type": "assets_manager_t*",
-        "annotation": {
-          "readable": true
-        }
-      }
-    ],
-    "header": "base/canvas.h",
-    "desc": "提供基本的绘图功能和状态管理。",
-    "name": "canvas_t",
-    "annotation": {
-      "scriptable": true
-    },
     "level": 1
   },
   {
@@ -30008,119 +29225,96 @@
     "level": 1
   },
   {
-    "type": "class",
-    "methods": [
+    "type": "enum",
+    "desc": "图片绘制方法常量定义。",
+    "consts": [
       {
-        "params": [],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "获取缺省的子控件布局算法工厂对象。",
-        "name": "children_layouter_factory",
-        "return": {
-          "type": "children_layouter_factory_t*",
-          "desc": "返回子控件布局算法工厂对象。"
-        }
+        "desc": "缺省显示。将图片按原大小显示在目标矩形的左上角。",
+        "name": "IMAGE_DRAW_DEFAULT"
       },
       {
-        "params": [
-          {
-            "type": "children_layouter_factory_t*",
-            "name": "factory",
-            "desc": "子控件布局算法工厂对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "设置缺省的子控件布局算法工厂对象。",
-        "name": "children_layouter_factory_set",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
+        "desc": "居中显示。将图片按原大小显示在目标矩形的中央。",
+        "name": "IMAGE_DRAW_CENTER"
       },
       {
-        "params": [],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "创建子控件布局算法工厂对象。",
-        "name": "children_layouter_factory_create",
-        "return": {
-          "type": "children_layouter_factory_t*",
-          "desc": "返回子控件布局算法工厂对象。"
-        }
+        "desc": "图标显示。同居中显示，但会根据屏幕密度调整大小。",
+        "name": "IMAGE_DRAW_ICON"
       },
       {
-        "params": [
-          {
-            "type": "children_layouter_factory_t*",
-            "name": "factory",
-            "desc": "layouter工厂对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "type",
-            "desc": "子控件布局算法类型。"
-          },
-          {
-            "type": "children_layouter_create_t",
-            "name": "create",
-            "desc": "子控件布局算法创建函数。"
-          }
-        ],
-        "annotation": {},
-        "desc": "注册子控件布局算法创建函数。",
-        "name": "children_layouter_factory_register",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
+        "desc": "缩放显示。将图片缩放至目标矩形的大小(不保证宽高成比例)。",
+        "name": "IMAGE_DRAW_SCALE"
       },
       {
-        "params": [
-          {
-            "type": "children_layouter_factory_t*",
-            "name": "factory",
-            "desc": "子控件布局算法工厂对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "type",
-            "desc": "类型。"
-          }
-        ],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "创建指定类型的子控件布局算法对象。",
-        "name": "children_layouter_factory_create_layouter",
-        "return": {
-          "type": "children_layouter_t*",
-          "desc": "返回子控件布局算法对象。"
-        }
+        "desc": "自动缩放显示。将图片缩放至目标矩形的宽度或高度(选取最小的比例)，并居中显示。",
+        "name": "IMAGE_DRAW_SCALE_AUTO"
       },
       {
-        "params": [
-          {
-            "type": "children_layouter_factory_t*",
-            "name": "factory",
-            "desc": "子控件布局算法工厂对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "析构并释放子控件布局算法工厂对象。",
-        "name": "children_layouter_factory_destroy",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
+        "desc": "如果图片比目标矩形大，自动缩小显示，否则居中显示。",
+        "name": "IMAGE_DRAW_SCALE_DOWN"
+      },
+      {
+        "desc": "宽度缩放显示。 将图片缩放至目标矩形的宽度，高度按此比例进行缩放，超出不部分不显示。",
+        "name": "IMAGE_DRAW_SCALE_W"
+      },
+      {
+        "desc": "高度缩放显示。将图片缩放至目标矩形的高度，宽度按此比例进行缩放，超出不部分不显示。",
+        "name": "IMAGE_DRAW_SCALE_H"
+      },
+      {
+        "desc": "平铺显示。",
+        "name": "IMAGE_DRAW_REPEAT"
+      },
+      {
+        "desc": "水平方向平铺显示，垂直方向缩放。",
+        "name": "IMAGE_DRAW_REPEAT_X"
+      },
+      {
+        "desc": "垂直方向平铺显示，水平方向缩放。",
+        "name": "IMAGE_DRAW_REPEAT_Y"
+      },
+      {
+        "desc": "垂直方向平铺显示，水平方向缩放(从底部到顶部)。",
+        "name": "IMAGE_DRAW_REPEAT_Y_INVERSE"
+      },
+      {
+        "desc": "9宫格显示。\n将图片分成等大小的9块，4个角按原大小显示在目标矩形的4个角，左右上下和中间5块分别缩放显示在对应的目标区域。",
+        "name": "IMAGE_DRAW_PATCH9"
+      },
+      {
+        "desc": "水平方向3宫格显示，垂直方向居中显示。\n将图片在水平方向上分成等大小的3块，左右两块按原大小显示在目标矩形的左右，中间一块缩放显示在目标区域中间剩余部分。",
+        "name": "IMAGE_DRAW_PATCH3_X"
+      },
+      {
+        "desc": "垂直方向3宫格显示，水平方向居中显示。\n将图片在垂直方向上分成等大小的3块，上下两块按原大小显示在目标矩形的上下，中间一块缩放显示在目标区域中间剩余部分。",
+        "name": "IMAGE_DRAW_PATCH3_Y"
+      },
+      {
+        "desc": "水平方向3宫格显示，垂直方向缩放显示。\n将图片在水平方向上分成等大小的3块，左右两块按原大小显示在目标矩形的左右，中间一块缩放显示在目标区域中间剩余部分。",
+        "name": "IMAGE_DRAW_PATCH3_X_SCALE_Y"
+      },
+      {
+        "desc": "垂直方向3宫格显示，水平方向缩放显示。\n将图片在垂直方向上分成等大小的3块，上下两块按原大小显示在目标矩形的上下，中间一块缩放显示在目标区域中间剩余部分。",
+        "name": "IMAGE_DRAW_PATCH3_Y_SCALE_X"
+      },
+      {
+        "desc": "平铺9宫格显示。\n将图片分成4个角和5块平铺块，4个角按原大小显示在目标矩形的4个角，其余5块会平铺对应的目标区域。\n切割方法为（如下图）：\n如果图片宽度为奇数，则中间一块为一列数据，如果图片宽度为偶数，则中间一块为二列数据，其他数据分为左右块\n如果图片高度为奇数，则中间一块为一行数据，如果图片高度为偶数，则中间一块为二行数据，其他数据分为上下块\n中间一块数据根据上面两条规则组成4中情况，分别是一列一行数据，一列两行数据，两列一行数据和两行两列数据",
+        "name": "IMAGE_DRAW_REPEAT9"
+      },
+      {
+        "desc": "水平方向3宫格显示，垂直方向居中显示。\n将图片在水平方向上分成左右相等两块和中间一块，如果图片宽度为奇数，则中间一块为一列数据，如果图片宽度为偶数，则中间一块为二列数据，其他数据分为左右块。\n左右两块按原大小显示在目标矩形的左右，中间一列像素点平铺显示在目标区域中间剩余部分。",
+        "name": "IMAGE_DRAW_REPEAT3_X"
+      },
+      {
+        "desc": "垂直方向3宫格显示，水平方向居中显示。\n将图片在垂直方向上分成上下相等两块和中间一块，如果图片高度为奇数，则中间一块为一行数据，如果图片高度为偶数，则中间一块为二行数据，其他数据分为上下块\n上下两块按原大小显示在目标矩形的上下，中间一块平铺显示在目标区域中间剩余部分。",
+        "name": "IMAGE_DRAW_REPEAT3_Y"
       }
     ],
-    "events": [],
-    "properties": [],
-    "header": "base/children_layouter_factory.h",
-    "desc": "子控件布局算法工厂。",
-    "name": "children_layouter_factory_t",
+    "header": "base/bitmap.h",
+    "name": "image_draw_type_t",
+    "prefix": "IMAGE_DRAW_",
+    "annotation": {
+      "scriptable": true
+    },
     "level": 1
   },
   {
@@ -32908,61 +32102,40 @@
       {
         "params": [
           {
-            "type": "children_layouter_t*",
-            "name": "layouter",
-            "desc": "layouter对象。"
+            "type": "uint32_t",
+            "name": "w",
+            "desc": "离线 canvas 的宽。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "h",
+            "desc": "离线 canvas 的高。"
+          },
+          {
+            "type": "bitmap_format_t",
+            "name": "format",
+            "desc": "离线 canvas 的格式。"
           }
         ],
         "annotation": {},
-        "desc": "获取全部参数。",
-        "name": "children_layouter_to_string",
+        "desc": "创建一个离线的 canvas\n在 opengl 模式下 format 参数只能为 BITMAP_FMT_RGBA8888\n在其他模式下，离线 canvas 格式可以为 rgba，bgar，bgr565和rgb565",
+        "name": "canvas_offline_create",
         "return": {
-          "type": "ret_t",
-          "desc": "返回字符串格式的参数。"
+          "type": "canvas_t*",
+          "desc": "成功返回 canvas ，失败返回 NULL。"
         }
       },
       {
         "params": [
           {
-            "type": "children_layouter_t*",
-            "name": "layouter",
-            "desc": "layouter对象。"
-          },
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件。"
+            "type": "canvas_t*",
+            "name": "canvas",
+            "desc": "离线 canvas 对象。"
           }
         ],
         "annotation": {},
-        "desc": "对控件的子控件进行布局。",
-        "name": "children_layouter_layout",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "children_layouter_t*",
-            "name": "layouter",
-            "desc": "layouter对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "name",
-            "desc": "参数名。"
-          },
-          {
-            "type": "value_t*",
-            "name": "v",
-            "desc": "返回参数的值。"
-          }
-        ],
-        "annotation": {},
-        "desc": "获取指定的参数。",
-        "name": "children_layouter_get_param",
+        "desc": "设置离线 canvas 开始绘图",
+        "name": "canvas_offline_begin_draw",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -32971,24 +32144,14 @@
       {
         "params": [
           {
-            "type": "children_layouter_t*",
-            "name": "layouter",
-            "desc": "layouter对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "name",
-            "desc": "参数名。"
-          },
-          {
-            "type": "const value_t*",
-            "name": "v",
-            "desc": "参数的值。"
+            "type": "canvas_t*",
+            "name": "canvas",
+            "desc": "离线 canvas 对象。"
           }
         ],
         "annotation": {},
-        "desc": "获取指定的参数。",
-        "name": "children_layouter_set_param",
+        "desc": "设置离线 canvas 结束绘图",
+        "name": "canvas_offline_end_draw",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -32997,24 +32160,30 @@
       {
         "params": [
           {
-            "type": "children_layouter_t*",
-            "name": "layouter",
-            "desc": "layouter对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "name",
-            "desc": "参数名。"
-          },
-          {
-            "type": "const char*",
-            "name": "value",
-            "desc": "参数值。"
+            "type": "canvas_t*",
+            "name": "canvas",
+            "desc": "离线 canvas 对象。"
           }
         ],
         "annotation": {},
-        "desc": "设置字符串格式的参数。",
-        "name": "children_layouter_set_param_str",
+        "desc": "获取离线 canvas 的离线 bitmap。",
+        "name": "canvas_offline_get_bitmap",
+        "return": {
+          "type": "bitmap_t*",
+          "desc": "返回 bitmap_t 对象表示成功，返回 NULL 表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "canvas",
+            "desc": "离线 canvas 对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "把离线 canvas 的数据放到绑定的 bitmap 中\n该函数只有在 opengl 模式才需要调用，是否把显存中的数据回传到内存中。",
+        "name": "canvas_offline_flush_bitmap",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -33023,125 +32192,37 @@
       {
         "params": [
           {
-            "type": "children_layouter_t*",
-            "name": "layouter",
-            "desc": "layouter对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "name",
-            "desc": "参数名。"
-          },
-          {
-            "type": "float_t",
-            "name": "defval",
-            "desc": "缺省值。"
+            "type": "canvas_t*",
+            "name": "canvas",
+            "desc": "离线 canvas 对象。"
           }
         ],
         "annotation": {},
-        "desc": "获取指定的浮点格式的参数。",
-        "name": "children_layouter_get_param_float",
-        "return": {
-          "type": "ret_t",
-          "desc": "成功返回参数的值，失败返回缺省值。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "children_layouter_t*",
-            "name": "layouter",
-            "desc": "layouter对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "name",
-            "desc": "参数名。"
-          },
-          {
-            "type": "int32_t",
-            "name": "defval",
-            "desc": "缺省值。"
-          }
-        ],
-        "annotation": {},
-        "desc": "获取指定的整数格式的参数。",
-        "name": "children_layouter_get_param_int",
-        "return": {
-          "type": "ret_t",
-          "desc": "成功返回参数的值，失败返回缺省值。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "children_layouter_t*",
-            "name": "layouter",
-            "desc": "layouter对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "判断layouter对象是否有效。",
-        "name": "children_layouter_is_valid",
-        "return": {
-          "type": "bool_t",
-          "desc": "返回TRUE表示有效，否则表示无效。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "children_layouter_t*",
-            "name": "layouter",
-            "desc": "layouter对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "销毁layouter对象。",
-        "name": "children_layouter_destroy",
+        "desc": "释放离线 canvas 和离线 bitmap",
+        "name": "canvas_offline_destroy",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "const char*",
-            "name": "params",
-            "desc": "参数。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建layouter对象。",
-        "name": "children_layouter_create",
-        "return": {
-          "type": "children_layouter_t*",
-          "desc": "返回layouter对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "children_layouter_t*",
-            "name": "layouter",
-            "desc": "被克隆的对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "克隆layouter对象。",
-        "name": "children_layouter_clone",
-        "return": {
-          "type": "children_layouter_t*",
-          "desc": "返回layouter对象。"
         }
       }
     ],
     "events": [],
-    "properties": [],
-    "header": "base/children_layouter.h",
-    "desc": "子控件排版布局器的接口。\n\n按特定算法对子控件进行排版布局，子类需要实现vtable中的函数。",
-    "name": "children_layouter_t",
+    "properties": [
+      {
+        "name": "bitmap",
+        "desc": "绑定的离线 bitmap",
+        "type": "bitmap_t*",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "base/canvas_offline.h",
+    "desc": "离线画布 canvas。",
+    "name": "canvas_offline_t",
+    "annotation": {
+      "scriptable": true
+    },
     "level": 1
   },
   {
@@ -33299,21 +32380,1291 @@
     "level": 1
   },
   {
-    "type": "enum",
-    "desc": "剪切板数据类型定义。",
-    "consts": [
+    "type": "class",
+    "methods": [
       {
-        "desc": "无数据。",
-        "name": "CLIP_BOARD_DATA_TYPE_NONE"
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "lcd_t*",
+            "name": "lcd",
+            "desc": "lcd对象。"
+          },
+          {
+            "type": "font_manager_t*",
+            "name": "font_manager",
+            "desc": "字体管理器对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "初始化，系统内部调用。",
+        "name": "canvas_init",
+        "return": {
+          "type": "canvas_t*",
+          "desc": "返回canvas对象本身。"
+        }
       },
       {
-        "desc": "UTF8文本。",
-        "name": "CLIP_BOARD_DATA_TYPE_TEXT"
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "获取画布的宽度。",
+        "name": "canvas_get_width",
+        "return": {
+          "type": "wh_t",
+          "desc": "返回画布的宽度。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "获取画布的高度。",
+        "name": "canvas_get_height",
+        "return": {
+          "type": "wh_t",
+          "desc": "返回画布的高度。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "rect_t*",
+            "name": "r",
+            "desc": "rect对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "获取裁剪区。",
+        "name": "canvas_get_clip_rect",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "const rect_t*",
+            "name": "r",
+            "desc": "rect对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置裁剪区。",
+        "name": "canvas_set_clip_rect",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "const rect_t*",
+            "name": "r",
+            "desc": "rect对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "translate",
+            "desc": "是否将裁剪区的位置加上canvas当前的偏移。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置裁剪区。",
+        "name": "canvas_set_clip_rect_ex",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "color_t",
+            "name": "color",
+            "desc": "颜色。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置填充颜色。",
+        "name": "canvas_set_fill_color",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "color_t",
+            "name": "color",
+            "desc": "颜色。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置文本颜色。",
+        "name": "canvas_set_text_color",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "color_t",
+            "name": "color",
+            "desc": "颜色。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置线条颜色。",
+        "name": "canvas_set_stroke_color",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "color",
+            "desc": "颜色。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置填充颜色。\n\n> 供脚本语言使用。",
+        "name": "canvas_set_fill_color_str",
+        "alias": "canvas_set_fill_color",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "color",
+            "desc": "颜色。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置文本颜色。\n\n> 供脚本语言使用。",
+        "name": "canvas_set_text_color_str",
+        "alias": "canvas_set_text_color",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "color",
+            "desc": "颜色。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置线条颜色。\n\n> 供脚本语言使用。",
+        "name": "canvas_set_stroke_color_str",
+        "alias": "canvas_set_stroke_color",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "uint8_t",
+            "name": "alpha",
+            "desc": "alpha值。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置全局alpha值。",
+        "name": "canvas_set_global_alpha",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "xy_t",
+            "name": "dx",
+            "desc": "x偏移。"
+          },
+          {
+            "type": "xy_t",
+            "name": "dy",
+            "desc": "y偏移。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "平移原点坐标。",
+        "name": "canvas_translate",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "xy_t",
+            "name": "dx",
+            "desc": "x偏移。"
+          },
+          {
+            "type": "xy_t",
+            "name": "dy",
+            "desc": "y偏移。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "反向平移原点坐标。",
+        "name": "canvas_untranslate",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标。"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "画垂直线。",
+        "name": "canvas_draw_vline",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标。"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标。"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "画水平线。",
+        "name": "canvas_draw_hline",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "const point_t*",
+            "name": "points",
+            "desc": "点数组。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "nr",
+            "desc": "点的个数。"
+          }
+        ],
+        "annotation": {},
+        "desc": "画多个点。",
+        "name": "canvas_draw_points",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标。"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标。"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "填充矩形。",
+        "name": "canvas_fill_rect",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标。"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标。"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "绘制矩形。",
+        "name": "canvas_stroke_rect",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "字体名称。"
+          },
+          {
+            "type": "font_size_t",
+            "name": "size",
+            "desc": "字体大小。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置字体。",
+        "name": "canvas_set_font",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "align_h_t",
+            "name": "align_h",
+            "desc": "水平对齐方式。"
+          },
+          {
+            "type": "align_v_t",
+            "name": "align_v",
+            "desc": "垂直对齐方式。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置文本对齐方式。",
+        "name": "canvas_set_text_align",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "const wchar_t*",
+            "name": "str",
+            "desc": "字符串。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "nr",
+            "desc": "字符数。"
+          }
+        ],
+        "annotation": {},
+        "desc": "计算文本所占的宽度。",
+        "name": "canvas_measure_text",
+        "return": {
+          "type": "float_t",
+          "desc": "返回文本所占的宽度。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取字体的高度。",
+        "name": "canvas_get_font_height",
+        "return": {
+          "type": "float_t",
+          "desc": "返回字体的高度。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "str",
+            "desc": "字符串。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "计算文本所占的宽度。\n\n> 供脚本语言使用。",
+        "name": "canvas_measure_utf8",
+        "alias": "canvas_measure_text",
+        "return": {
+          "type": "float_t",
+          "desc": "返回文本所占的宽度。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "const wchar_t*",
+            "name": "str",
+            "desc": "字符串。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "nr",
+            "desc": "字符数。"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标。"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标。"
+          }
+        ],
+        "annotation": {},
+        "desc": "绘制文本。",
+        "name": "canvas_draw_text",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "str",
+            "desc": "字符串。"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标。"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "绘制文本。\n\n> 供脚本语言使用。",
+        "name": "canvas_draw_utf8",
+        "alias": "canvas_draw_text",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "const wchar_t*",
+            "name": "str",
+            "desc": "字符串。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "nr",
+            "desc": "字符数。"
+          },
+          {
+            "type": "const rect_t*",
+            "name": "r",
+            "desc": "矩形区域。"
+          }
+        ],
+        "annotation": {},
+        "desc": "绘制文本。",
+        "name": "canvas_draw_text_in_rect",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "const wchar_t*",
+            "name": "str",
+            "desc": "字符串。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "nr",
+            "desc": "字符数。"
+          },
+          {
+            "type": "const rect_t*",
+            "name": "r",
+            "desc": "矩形区域。"
+          }
+        ],
+        "annotation": {},
+        "desc": "绘制文本(支持Unicode Bidirectional Algorithm)。",
+        "name": "canvas_draw_text_bidi_in_rect",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "str",
+            "desc": "字符串。"
+          },
+          {
+            "type": "const rect_t*",
+            "name": "r",
+            "desc": "矩形区域。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "绘制文本。\n\n> 供脚本语言使用。",
+        "name": "canvas_draw_utf8_in_rect",
+        "alias": "canvas_draw_text_in_rect",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "bitmap_t*",
+            "name": "img",
+            "desc": "图片对象。"
+          },
+          {
+            "type": "xy_t",
+            "name": "cx",
+            "desc": "中心点x坐标。"
+          },
+          {
+            "type": "xy_t",
+            "name": "cy",
+            "desc": "中心点y坐标。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "绘制图标。",
+        "name": "canvas_draw_icon",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "bitmap_t*",
+            "name": "img",
+            "desc": "图片对象。"
+          },
+          {
+            "type": "rect_t*",
+            "name": "src",
+            "desc": "源区域。"
+          },
+          {
+            "type": "rect_t*",
+            "name": "dst",
+            "desc": "目的区域。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "绘制图片。",
+        "name": "canvas_draw_image",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "bitmap_t*",
+            "name": "img",
+            "desc": "图片对象。"
+          },
+          {
+            "type": "image_draw_type_t",
+            "name": "draw_type",
+            "desc": "绘制类型。"
+          },
+          {
+            "type": "rect_t*",
+            "name": "dst",
+            "desc": "目的区域。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "绘制图片。",
+        "name": "canvas_draw_image_ex",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "获取vgcanvas对象。",
+        "name": "canvas_get_vgcanvas",
+        "return": {
+          "type": "vgcanvas_t*",
+          "desc": "返回vgcanvas对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为canvas对象(供脚本语言使用)。",
+        "name": "canvas_cast",
+        "return": {
+          "type": "canvas_t*",
+          "desc": "canvas对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "释放相关资源。",
+        "name": "canvas_reset",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "bitmap_t*",
+            "name": "img",
+            "desc": "图片对象。"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标。"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "w坐标。"
+          }
+        ],
+        "annotation": {},
+        "desc": "在指定位置画图。",
+        "name": "canvas_draw_image_at",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "xy_t",
+            "name": "x1",
+            "desc": "起始点的x坐标。"
+          },
+          {
+            "type": "xy_t",
+            "name": "y1",
+            "desc": "起始点的y坐标。"
+          },
+          {
+            "type": "xy_t",
+            "name": "x2",
+            "desc": "结束点的x坐标。"
+          },
+          {
+            "type": "xy_t",
+            "name": "y2",
+            "desc": "结束点的y坐标。"
+          }
+        ],
+        "annotation": {},
+        "desc": "画直线。",
+        "name": "canvas_draw_line",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "font_manager_t*",
+            "name": "font_manager",
+            "desc": "font_manager对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置canvas的font_manager对象。",
+        "name": "canvas_set_font_manager",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "assets_manager_t*",
+            "name": "assets_manager",
+            "desc": "assets_manager对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置canvas的assets_manager对象。",
+        "name": "canvas_set_assets_manager",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "canvas",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "float_t*",
+            "name": "ascent",
+            "desc": "用于返回ascent。"
+          },
+          {
+            "type": "float_t*",
+            "name": "descent",
+            "desc": "用于返回descent。"
+          },
+          {
+            "type": "float_t*",
+            "name": "line_hight",
+            "desc": "用于返回line height。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取当前字体的度量信息。",
+        "name": "canvas_get_text_metrics",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "rect_t*",
+            "name": "dirty_rect",
+            "desc": "脏矩形。"
+          },
+          {
+            "type": "lcd_draw_mode_t",
+            "name": "draw_mode",
+            "desc": "绘制模式。"
+          }
+        ],
+        "annotation": {},
+        "desc": "绘制开始。",
+        "name": "canvas_begin_frame",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "绘制结束。",
+        "name": "canvas_end_frame",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
       }
     ],
-    "header": "base/clip_board.h",
-    "name": "clip_board_data_type_t",
-    "prefix": "CLIP_BOARD_DATA_TYPE_",
+    "events": [],
+    "properties": [
+      {
+        "name": "ox",
+        "desc": "x坐标偏移。",
+        "type": "xy_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "oy",
+        "desc": "y坐标偏移。",
+        "type": "xy_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "font_name",
+        "desc": "当前字体名称。",
+        "type": "char*",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "font_size",
+        "desc": "当前字体大小。",
+        "type": "uint16_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "global_alpha",
+        "desc": "当前全局alpha。",
+        "type": "uint8_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "clip_left",
+        "desc": "当前裁剪矩形的左边位置。",
+        "type": "xy_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "clip_top",
+        "desc": "当前裁剪矩形的顶部位置。",
+        "type": "xy_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "clip_right",
+        "desc": "当前裁剪矩形的右边位置。",
+        "type": "xy_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "clip_bottom",
+        "desc": "当前裁剪矩形的底部位置。",
+        "type": "xy_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "fps",
+        "desc": "当前的帧率。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "show_fps",
+        "desc": "是否显示帧率。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "text_align_v",
+        "desc": "文本垂直对齐方式。",
+        "type": "align_v_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "text_align_h",
+        "desc": "文本水平对齐方式。",
+        "type": "align_h_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "lcd",
+        "desc": "lcd对象。",
+        "type": "lcd_t*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "font",
+        "desc": "字体对象。",
+        "type": "font_t*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "font_manager",
+        "desc": "字体管理器对象。",
+        "type": "font_manager_t*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "assets_manager",
+        "desc": "资源管理器对象。",
+        "type": "assets_manager_t*",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "base/canvas.h",
+    "desc": "提供基本的绘图功能和状态管理。",
+    "name": "canvas_t",
     "annotation": {
       "scriptable": true
     },
@@ -33585,6 +33936,78 @@
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "uint32_t",
+            "name": "year",
+            "desc": "年份。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true,
+          "static": true
+        },
+        "desc": "是否是闰年。",
+        "name": "date_time_is_leap",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回TRUE表示是，否则表示否。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "uint32_t",
+            "name": "year",
+            "desc": "年份。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "montn",
+            "desc": "月份(1-12)。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true,
+          "static": true
+        },
+        "desc": "获取指定年份月份的天数。",
+        "name": "date_time_get_days",
+        "return": {
+          "type": "int32_t",
+          "desc": "返回大于0表示天数，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "uint32_t",
+            "name": "year",
+            "desc": "年份。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "montn",
+            "desc": "月份(1-12)。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "day",
+            "desc": "日(1-31)。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true,
+          "static": true
+        },
+        "desc": "获取指定日期是周几(0-6)。",
+        "name": "date_time_get_wday",
+        "return": {
+          "type": "int32_t",
+          "desc": "返回大于等于0表示周几(0-6)，否则表示失败。"
         }
       },
       {
@@ -35168,53 +35591,6 @@
   },
   {
     "type": "class",
-    "methods": [],
-    "events": [],
-    "properties": [
-      {
-        "name": "r",
-        "desc": "红色。",
-        "type": "uint8_t",
-        "annotation": {
-          "readable": true,
-          "writable": true
-        }
-      },
-      {
-        "name": "g",
-        "desc": "绿色。",
-        "type": "uint8_t",
-        "annotation": {
-          "readable": true,
-          "writable": true
-        }
-      },
-      {
-        "name": "b",
-        "desc": "蓝色。",
-        "type": "uint8_t",
-        "annotation": {
-          "readable": true,
-          "writable": true
-        }
-      },
-      {
-        "name": "a",
-        "desc": "alpha。",
-        "type": "uint8_t",
-        "annotation": {
-          "readable": true,
-          "writable": true
-        }
-      }
-    ],
-    "header": "tkc/color.h",
-    "desc": "颜色的四个通道。",
-    "name": "rgba_t",
-    "level": 1
-  },
-  {
-    "type": "class",
     "methods": [
       {
         "params": [],
@@ -35284,6 +35660,53 @@
     "header": "base/asset_loader.h",
     "desc": "资源加载器接口。",
     "name": "asset_loader_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [],
+    "events": [],
+    "properties": [
+      {
+        "name": "r",
+        "desc": "红色。",
+        "type": "uint8_t",
+        "annotation": {
+          "readable": true,
+          "writable": true
+        }
+      },
+      {
+        "name": "g",
+        "desc": "绿色。",
+        "type": "uint8_t",
+        "annotation": {
+          "readable": true,
+          "writable": true
+        }
+      },
+      {
+        "name": "b",
+        "desc": "蓝色。",
+        "type": "uint8_t",
+        "annotation": {
+          "readable": true,
+          "writable": true
+        }
+      },
+      {
+        "name": "a",
+        "desc": "alpha。",
+        "type": "uint8_t",
+        "annotation": {
+          "readable": true,
+          "writable": true
+        }
+      }
+    ],
+    "header": "tkc/color.h",
+    "desc": "颜色的四个通道。",
+    "name": "rgba_t",
     "level": 1
   },
   {
@@ -58008,31 +58431,42 @@
       {
         "params": [
           {
-            "type": "tk_istream_t*",
-            "name": "real_istream",
-            "desc": "实际的istream。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "buffer_size",
-            "desc": "缓冲区的大小。"
+            "type": "tk_ostream_t*",
+            "name": "real_ostream",
+            "desc": "实际的ostream对象。"
           }
         ],
         "annotation": {},
-        "desc": "创建istream对象。\n\n本函数自动增加real_ostream的引用计数。",
-        "name": "tk_istream_buffered_create",
+        "desc": "创建ostream对象。\n\n本函数自动增加real_ostream的引用计数。",
+        "name": "tk_ostream_buffered_create",
         "return": {
-          "type": "tk_istream_t*",
-          "desc": "返回istream对象。"
+          "type": "tk_ostream_t*",
+          "desc": "返回ostream对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_ostream_t*",
+            "name": "ostream",
+            "desc": "ostream对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取当前缓存数据的长度。",
+        "name": "tk_ostream_buffered_get_size",
+        "return": {
+          "type": "uint32_t",
+          "desc": "返回缓存数据的长度。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "buffered/istream_buffered.h",
-    "desc": "缓冲输入流。\n\n如果调用者每次只读取少量数据，可以使用本类对底层istream进行装饰，以提高读取效率。",
-    "name": "tk_istream_buffered_t",
-    "parent": "tk_istream_t",
+    "header": "buffered/ostream_buffered.h",
+    "desc": "先将数据写入一个缓存区，调用flush时才真正写入底层的ostream。",
+    "name": "tk_ostream_buffered_t",
+    "parent": "tk_ostream_t",
     "level": 4
   },
   {
@@ -58930,42 +59364,31 @@
       {
         "params": [
           {
-            "type": "tk_ostream_t*",
-            "name": "real_ostream",
-            "desc": "实际的ostream对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建ostream对象。\n\n本函数自动增加real_ostream的引用计数。",
-        "name": "tk_ostream_buffered_create",
-        "return": {
-          "type": "tk_ostream_t*",
-          "desc": "返回ostream对象。"
-        }
-      },
-      {
-        "params": [
+            "type": "tk_istream_t*",
+            "name": "real_istream",
+            "desc": "实际的istream。"
+          },
           {
-            "type": "tk_ostream_t*",
-            "name": "ostream",
-            "desc": "ostream对象。"
+            "type": "uint32_t",
+            "name": "buffer_size",
+            "desc": "缓冲区的大小。"
           }
         ],
         "annotation": {},
-        "desc": "获取当前缓存数据的长度。",
-        "name": "tk_ostream_buffered_get_size",
+        "desc": "创建istream对象。\n\n本函数自动增加real_ostream的引用计数。",
+        "name": "tk_istream_buffered_create",
         "return": {
-          "type": "uint32_t",
-          "desc": "返回缓存数据的长度。"
+          "type": "tk_istream_t*",
+          "desc": "返回istream对象。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "buffered/ostream_buffered.h",
-    "desc": "先将数据写入一个缓存区，调用flush时才真正写入底层的ostream。",
-    "name": "tk_ostream_buffered_t",
-    "parent": "tk_ostream_t",
+    "header": "buffered/istream_buffered.h",
+    "desc": "缓冲输入流。\n\n如果调用者每次只读取少量数据，可以使用本类对底层istream进行装饰，以提高读取效率。",
+    "name": "tk_istream_buffered_t",
+    "parent": "tk_istream_t",
     "level": 4
   }
 ]

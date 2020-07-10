@@ -26,6 +26,7 @@ TKMEM_FREE(str);
 | <a href="#tk_mem_t_tk_mem_dump">tk\_mem\_dump</a> | 显示内存信息。 |
 | <a href="#tk_mem_t_tk_mem_init">tk\_mem\_init</a> | 初始化内存。 |
 | <a href="#tk_mem_t_tk_mem_init_stage2">tk\_mem\_init\_stage2</a> | 初始化互斥和oom。 |
+| <a href="#tk_mem_t_tk_mem_is_valid_addr">tk\_mem\_is\_valid\_addr</a> | 检查给定的地址是否是一个有效的heap地址。 |
 | <a href="#tk_mem_t_TKMEM_ALLOC">TKMEM\_ALLOC</a> | 分配一块内存。 |
 | <a href="#tk_mem_t_TKMEM_CALLOC">TKMEM\_CALLOC</a> | 分配一块内存，并将内容清零。 |
 | <a href="#tk_mem_t_TKMEM_FREE">TKMEM\_FREE</a> | 释放内存。 |
@@ -86,6 +87,26 @@ ret_t tk_mem_init_stage2 ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+#### tk\_mem\_is\_valid\_addr 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="tk_mem_t_tk_mem_is_valid_addr">检查给定的地址是否是一个有效的heap地址。
+
+> 用于辅助发现内存问题。
+
+* 函数原型：
+
+```
+bool_t tk_mem_is_valid_addr ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回FALSE一定是无效地址，返回TRUE在PC则不太确定。 |
 #### TKMEM\_ALLOC 宏
 -----------------------
 

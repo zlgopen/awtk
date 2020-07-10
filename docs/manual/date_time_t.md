@@ -12,8 +12,11 @@
 | <a href="#date_time_t_date_time_create">date\_time\_create</a> | 创建date_time对象，并初始为当前日期和时间(一般供脚本语言中使用)。 |
 | <a href="#date_time_t_date_time_destroy">date\_time\_destroy</a> | 销毁date_time对象(一般供脚本语言中使用)。 |
 | <a href="#date_time_t_date_time_from_time">date\_time\_from\_time</a> | 从time转换而来。 |
+| <a href="#date_time_t_date_time_get_days">date\_time\_get\_days</a> | 获取指定年份月份的天数。 |
+| <a href="#date_time_t_date_time_get_wday">date\_time\_get\_wday</a> | 获取指定日期是周几(0-6)。 |
 | <a href="#date_time_t_date_time_global_init_ex">date\_time\_global\_init\_ex</a> | 时间日期全局初始化。 |
 | <a href="#date_time_t_date_time_init">date\_time\_init</a> | 初始为当前日期和时间。 |
+| <a href="#date_time_t_date_time_is_leap">date\_time\_is\_leap</a> | 是否是闰年。 |
 | <a href="#date_time_t_date_time_set">date\_time\_set</a> | 设置当前时间。 |
 ### 属性
 <p id="date_time_t_properties">
@@ -84,6 +87,47 @@ ret_t date_time_from_time (date_time_t* dt, uint64_t time);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | dt | date\_time\_t* | date\_time对象。 |
 | time | uint64\_t | 时间。 |
+#### date\_time\_get\_days 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="date_time_t_date_time_get_days">获取指定年份月份的天数。
+
+* 函数原型：
+
+```
+int32_t date_time_get_days (uint32_t year, uint32_t montn);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | int32\_t | 返回大于0表示天数，否则表示失败。 |
+| year | uint32\_t | 年份。 |
+| montn | uint32\_t | 月份(1-12)。 |
+#### date\_time\_get\_wday 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="date_time_t_date_time_get_wday">获取指定日期是周几(0-6)。
+
+* 函数原型：
+
+```
+int32_t date_time_get_wday (uint32_t year, uint32_t montn, uint32_t day);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | int32\_t | 返回大于等于0表示周几(0-6)，否则表示失败。 |
+| year | uint32\_t | 年份。 |
+| montn | uint32\_t | 月份(1-12)。 |
+| day | uint32\_t | 日(1-31)。 |
 #### date\_time\_global\_init\_ex 函数
 -----------------------
 
@@ -124,6 +168,25 @@ date_time_t* date_time_init (date_time_t* dt);
 | -------- | ----- | --------- |
 | 返回值 | date\_time\_t* | 返回date\_time对象。 |
 | dt | date\_time\_t* | date\_time对象。 |
+#### date\_time\_is\_leap 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="date_time_t_date_time_is_leap">是否是闰年。
+
+* 函数原型：
+
+```
+bool_t date_time_is_leap (uint32_t year);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示是，否则表示否。 |
+| year | uint32\_t | 年份。 |
 #### date\_time\_set 函数
 -----------------------
 

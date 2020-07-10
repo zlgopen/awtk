@@ -17,6 +17,7 @@
 | <a href="#canvas_t_canvas_draw_line">canvas\_draw\_line</a> | 画直线。 |
 | <a href="#canvas_t_canvas_draw_points">canvas\_draw\_points</a> | 画多个点。 |
 | <a href="#canvas_t_canvas_draw_text">canvas\_draw\_text</a> | 绘制文本。 |
+| <a href="#canvas_t_canvas_draw_text_bidi_in_rect">canvas\_draw\_text\_bidi\_in\_rect</a> | 绘制文本(支持Unicode Bidirectional Algorithm)。 |
 | <a href="#canvas_t_canvas_draw_text_in_rect">canvas\_draw\_text\_in\_rect</a> | 绘制文本。 |
 | <a href="#canvas_t_canvas_draw_utf8">canvas\_draw\_utf8</a> | 绘制文本。 |
 | <a href="#canvas_t_canvas_draw_utf8_in_rect">canvas\_draw\_utf8\_in\_rect</a> | 绘制文本。 |
@@ -26,6 +27,7 @@
 | <a href="#canvas_t_canvas_get_clip_rect">canvas\_get\_clip\_rect</a> | 获取裁剪区。 |
 | <a href="#canvas_t_canvas_get_font_height">canvas\_get\_font\_height</a> | 获取字体的高度。 |
 | <a href="#canvas_t_canvas_get_height">canvas\_get\_height</a> | 获取画布的高度。 |
+| <a href="#canvas_t_canvas_get_text_metrics">canvas\_get\_text\_metrics</a> | 获取当前字体的度量信息。 |
 | <a href="#canvas_t_canvas_get_vgcanvas">canvas\_get\_vgcanvas</a> | 获取vgcanvas对象。 |
 | <a href="#canvas_t_canvas_get_width">canvas\_get\_width</a> | 获取画布的宽度。 |
 | <a href="#canvas_t_canvas_init">canvas\_init</a> | 初始化，系统内部调用。 |
@@ -287,6 +289,28 @@ ret_t canvas_draw_text (canvas_t* c, const wchar_t* str, uint32_t nr, xy_t x, xy
 | nr | uint32\_t | 字符数。 |
 | x | xy\_t | x坐标。 |
 | y | xy\_t | y坐标。 |
+#### canvas\_draw\_text\_bidi\_in\_rect 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="canvas_t_canvas_draw_text_bidi_in_rect">绘制文本(支持Unicode Bidirectional Algorithm)。
+
+* 函数原型：
+
+```
+ret_t canvas_draw_text_bidi_in_rect (canvas_t* c, const wchar_t* str, uint32_t nr, const rect_t* r);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| c | canvas\_t* | canvas对象。 |
+| str | const wchar\_t* | 字符串。 |
+| nr | uint32\_t | 字符数。 |
+| r | const rect\_t* | 矩形区域。 |
 #### canvas\_draw\_text\_in\_rect 函数
 -----------------------
 
@@ -478,6 +502,28 @@ wh_t canvas_get_height (canvas_t* c);
 | -------- | ----- | --------- |
 | 返回值 | wh\_t | 返回画布的高度。 |
 | c | canvas\_t* | canvas对象。 |
+#### canvas\_get\_text\_metrics 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="canvas_t_canvas_get_text_metrics">获取当前字体的度量信息。
+
+* 函数原型：
+
+```
+ret_t canvas_get_text_metrics (canvas_t* canvas, float_t* ascent, float_t* descent, float_t* line_hight);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| canvas | canvas\_t* | canvas对象。 |
+| ascent | float\_t* | 用于返回ascent。 |
+| descent | float\_t* | 用于返回descent。 |
+| line\_hight | float\_t* | 用于返回line height。 |
 #### canvas\_get\_vgcanvas 函数
 -----------------------
 

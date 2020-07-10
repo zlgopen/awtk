@@ -22,6 +22,7 @@
 | <a href="#lcd_t_lcd_get_desired_bitmap_format">lcd\_get\_desired\_bitmap\_format</a> | 获取期望的位图格式。绘制期望的位图格式可以提高绘制性能。 |
 | <a href="#lcd_t_lcd_get_height">lcd\_get\_height</a> | 获取高度。 |
 | <a href="#lcd_t_lcd_get_point_color">lcd\_get\_point\_color</a> | 获取指定点的颜色，对于基于非FrameBuffer的LCD，返回当前的fill_color。 |
+| <a href="#lcd_t_lcd_get_text_metrics">lcd\_get\_text\_metrics</a> | 获取当前字体的度量信息。 |
 | <a href="#lcd_t_lcd_get_vgcanvas">lcd\_get\_vgcanvas</a> | 获取矢量图canvas。 |
 | <a href="#lcd_t_lcd_get_width">lcd\_get\_width</a> | 获取宽度。 |
 | <a href="#lcd_t_lcd_is_swappable">lcd\_is\_swappable</a> | 判读lcd是否支持swap。 |
@@ -368,6 +369,28 @@ color_t lcd_get_point_color (lcd_t* lcd, xy_t x, xy_t y);
 | lcd | lcd\_t* | lcd对象。 |
 | x | xy\_t | x坐标。 |
 | y | xy\_t | y坐标。 |
+#### lcd\_get\_text\_metrics 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="lcd_t_lcd_get_text_metrics">获取当前字体的度量信息。
+
+* 函数原型：
+
+```
+ret_t lcd_get_text_metrics (lcd_t* lcd, float_t* ascent, float_t* descent, float_t* line_hight);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| lcd | lcd\_t* | lcd对象。 |
+| ascent | float\_t* | 用于返回ascent。 |
+| descent | float\_t* | 用于返回descent。 |
+| line\_hight | float\_t* | 用于返回line height。 |
 #### lcd\_get\_vgcanvas 函数
 -----------------------
 

@@ -97,6 +97,8 @@
 #### 普通画布
 * [canvas](manual/canvas_t.md)
 
+* [canvas offline](manual/canvas_offline_t.md)
+
 #### 矢量图画布
 
 ![vgcanvas\_overview](manual/images/vgcanvas_t_0.png)

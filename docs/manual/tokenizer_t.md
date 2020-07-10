@@ -24,6 +24,7 @@ tokenizer_deinit(t);
 | <a href="#tokenizer_t_tokenizer_init">tokenizer\_init</a> | 初始化tokenizer对象。 |
 | <a href="#tokenizer_t_tokenizer_init_ex">tokenizer\_init\_ex</a> | 初始化tokenizer对象。 |
 | <a href="#tokenizer_t_tokenizer_next">tokenizer\_next</a> | 获取下一个token。 |
+| <a href="#tokenizer_t_tokenizer_next_expr_until">tokenizer\_next\_expr\_until</a> | 获取下一个expr，该expr直到遇到指定的char。 |
 | <a href="#tokenizer_t_tokenizer_next_float">tokenizer\_next\_float</a> | 获取下一个token，并转换成float。 |
 | <a href="#tokenizer_t_tokenizer_next_int">tokenizer\_next\_int</a> | 获取下一个token，并转换成int。 |
 | <a href="#tokenizer_t_tokenizer_next_until">tokenizer\_next\_until</a> | 获取下一个token，该token直到遇到指定的char。 |
@@ -139,6 +140,26 @@ char* tokenizer_next (tokenizer_t* tokenizer);
 | -------- | ----- | --------- |
 | 返回值 | char* | 成功返回token，失败返回NULL。 |
 | tokenizer | tokenizer\_t* | tokenizer对象。 |
+#### tokenizer\_next\_expr\_until 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="tokenizer_t_tokenizer_next_expr_until">获取下一个expr，该expr直到遇到指定的char。
+
+* 函数原型：
+
+```
+char* tokenizer_next_expr_until (tokenizer_t* tokenizer, const char* str);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | char* | 成功返回token，失败返回NULL。 |
+| tokenizer | tokenizer\_t* | tokenizer对象。 |
+| str | const char* | 字符集。 |
 #### tokenizer\_next\_float 函数
 -----------------------
 

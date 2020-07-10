@@ -57,6 +57,7 @@ vgcanvas_restore(vg);
 | <a href="#vgcanvas_t_vgcanvas_fill_text">vgcanvas\_fill\_text</a> | 绘制文本。 |
 | <a href="#vgcanvas_t_vgcanvas_flush">vgcanvas\_flush</a> | flush |
 | <a href="#vgcanvas_t_vgcanvas_get_height">vgcanvas\_get\_height</a> | 获取高度。 |
+| <a href="#vgcanvas_t_vgcanvas_get_text_metrics">vgcanvas\_get\_text\_metrics</a> | 获取当前字体的度量信息。 |
 | <a href="#vgcanvas_t_vgcanvas_get_width">vgcanvas\_get\_width</a> | 获取宽度。 |
 | <a href="#vgcanvas_t_vgcanvas_intersect_clip_rect">vgcanvas\_intersect\_clip\_rect</a> | 设置一个与前一个裁剪区做交集的矩形裁剪区。 |
 | <a href="#vgcanvas_t_vgcanvas_is_point_in_path">vgcanvas\_is\_point\_in\_path</a> | 检查点是否在当前路径中。 |
@@ -539,6 +540,28 @@ wh_t vgcanvas_get_height (vgcanvas_t* vgcanvas);
 | -------- | ----- | --------- |
 | 返回值 | wh\_t | 返回高度。 |
 | vgcanvas | vgcanvas\_t* | vgcanvas对象。 |
+#### vgcanvas\_get\_text\_metrics 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="vgcanvas_t_vgcanvas_get_text_metrics">获取当前字体的度量信息。
+
+* 函数原型：
+
+```
+ret_t vgcanvas_get_text_metrics (vgcanvas_t* vg, float_t* ascent, float_t* descent, float_t* line_hight);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| vg | vgcanvas\_t* | vgcanvas对象。 |
+| ascent | float\_t* | 用于返回ascent。 |
+| descent | float\_t* | 用于返回descent。 |
+| line\_hight | float\_t* | 用于返回line height。 |
 #### vgcanvas\_get\_width 函数
 -----------------------
 
