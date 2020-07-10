@@ -17,6 +17,10 @@ static ret_t vgcanvas_nanovg_reset(vgcanvas_t* vgcanvas) {
 }
 
 static ret_t vgcanvas_nanovg_flush(vgcanvas_t* vgcanvas) {
+#ifdef WITH_NANOVG_GPU
+  NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
+  nvgEndFrame(vg);
+#endif
   return RET_OK;
 }
 

@@ -132,7 +132,7 @@ ret_t window_manager_default_snap_curr_window(widget_t* widget, widget_t* curr_w
 
 #ifdef WITH_NANOVG_GPU
   vg = lcd_get_vgcanvas(c->lcd);
-  ENSURE(vgcanvas_create_fbo(vg, fbo) == RET_OK);
+  ENSURE(vgcanvas_create_fbo(vg, vg->w, vg->h, fbo) == RET_OK);
   ENSURE(vgcanvas_bind_fbo(vg, fbo) == RET_OK);
   canvas_set_clip_rect(c, NULL);
   ENSURE(widget_on_paint_background(widget, c) == RET_OK);
@@ -183,7 +183,7 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
 
 #ifdef WITH_NANOVG_GPU
   vg = lcd_get_vgcanvas(c->lcd);
-  ENSURE(vgcanvas_create_fbo(vg, fbo) == RET_OK);
+  ENSURE(vgcanvas_create_fbo(vg, vg->w, vg->h, fbo) == RET_OK);
   ENSURE(vgcanvas_bind_fbo(vg, fbo) == RET_OK);
   canvas_set_clip_rect(c, &r);
   ENSURE(widget_on_paint_background(widget, c) == RET_OK);

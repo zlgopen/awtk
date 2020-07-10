@@ -593,7 +593,7 @@ static ret_t vgcanvas_cairo_restore(vgcanvas_t* vgcanvas) {
   return RET_OK;
 }
 
-static ret_t vgcanvas_cairo_create_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
+static ret_t vgcanvas_cairo_create_fbo(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h, framebuffer_object_t* fbo) {
   (void)vgcanvas;
   (void)fbo;
   return RET_NOT_IMPL;

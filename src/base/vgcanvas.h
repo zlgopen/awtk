@@ -35,6 +35,10 @@ typedef struct _framebuffer_object_t {
   int id;
   void* handle;
   float_t ratio;
+  bool_t init;
+  int online_fbo;
+  int offline_fbo;
+  rect_t online_dirty_rect;
 } framebuffer_object_t;
 
 struct _vgcanvas_t;
@@ -125,7 +129,7 @@ typedef wh_t (*vgcanvas_get_height_t)(vgcanvas_t* vg);
 typedef ret_t (*vgcanvas_save_t)(vgcanvas_t* vg);
 typedef ret_t (*vgcanvas_restore_t)(vgcanvas_t* vg);
 
-typedef ret_t (*vgcanvas_create_fbo_t)(vgcanvas_t* vg, framebuffer_object_t* fbo);
+typedef ret_t (*vgcanvas_create_fbo_t)(vgcanvas_t* vg, uint32_t w, uint32_t h, framebuffer_object_t* fbo);
 typedef ret_t (*vgcanvas_destroy_fbo_t)(vgcanvas_t* vg, framebuffer_object_t* fbo);
 typedef ret_t (*vgcanvas_bind_fbo_t)(vgcanvas_t* vg, framebuffer_object_t* fbo);
 typedef ret_t (*vgcanvas_unbind_fbo_t)(vgcanvas_t* vg, framebuffer_object_t* fbo);
@@ -1190,7 +1194,7 @@ wh_t vgcanvas_get_height(vgcanvas_t* vgcanvas);
  */
 ret_t vgcanvas_destroy(vgcanvas_t* vg);
 
-ret_t vgcanvas_create_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo);
+ret_t vgcanvas_create_fbo(vgcanvas_t* vg, uint32_t w, uint32_t h, framebuffer_object_t* fbo);
 ret_t vgcanvas_destroy_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo);
 ret_t vgcanvas_bind_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo);
 ret_t vgcanvas_unbind_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo);

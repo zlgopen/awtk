@@ -187,25 +187,29 @@ static ret_t vgcanvas_nanovg_end_frame(vgcanvas_t* vgcanvas) {
   return RET_OK;
 }
 
-static ret_t vgcanvas_nanovg_create_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
+static ret_t vgcanvas_nanovg_create_fbo(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h, framebuffer_object_t* fbo) {
   NVGLUframebuffer* handle = NULL;
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
 
-  handle = nvgluCreateFramebuffer(vg, (int)(vgcanvas->w * vgcanvas->ratio),
-                                  (int)(vgcanvas->h * vgcanvas->ratio), 0);
+  handle = nvgluCreateFramebuffer(vg, (int)(w * vgcanvas->ratio),
+                                  (int)(h * vgcanvas->ratio), 0);
   return_value_if_fail(handle != NULL, RET_FAIL);
 
-  fbo->w = vgcanvas->w;
-  fbo->h = vgcanvas->h;
+  fbo->w = w;
+  fbo->h = h;
+  fbo->init = FALSE;
   fbo->handle = handle;
   fbo->id = handle->image;
   fbo->ratio = vgcanvas->ratio;
+  fbo->offline_fbo = handle->fbo;
+  fbo->online_fbo = nvgluGetCurrFramebuffer();
 
   return RET_OK;
 }
 
 static ret_t vgcanvas_nanovg_destroy_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
   NVGLUframebuffer* handle = (NVGLUframebuffer*)fbo->handle;
+  handle->fbo = fbo->offline_fbo;
   nvgluDeleteFramebuffer(handle);
   (void)vgcanvas;
 
@@ -213,25 +217,48 @@ static ret_t vgcanvas_nanovg_destroy_fbo(vgcanvas_t* vgcanvas, framebuffer_objec
 }
 
 static ret_t vgcanvas_nanovg_bind_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
-  NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
+  NVGcontext* vg = NULL;
+  vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
   NVGLUframebuffer* handle = (NVGLUframebuffer*)fbo->handle;
+  
+  vg = canvas->vg;
+
+  fbo->online_fbo = nvgluGetCurrFramebuffer();
+  fbo->online_dirty_rect = rect_init(vgcanvas->dirty_rect.x, vgcanvas->dirty_rect.y, vgcanvas->dirty_rect.w, vgcanvas->dirty_rect.h);
+
+  handle->fbo = fbo->offline_fbo;
   vgcanvas->dirty_rect = rect_init(0, 0, fbo->w, fbo->h);
   nvgluBindFramebuffer(handle);
   glViewport(0, 0, fbo->w * fbo->ratio, fbo->h * fbo->ratio);
 
-  glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+  if (!fbo->init) {
+    glEnable(GL_SCISSOR_TEST);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+    glDisable(GL_SCISSOR_TEST);
+    fbo->init = TRUE;
+  }
 
   nvgBeginFrame(vg, fbo->w, fbo->h, fbo->ratio);
 
+  
   return RET_OK;
 }
 
 static ret_t vgcanvas_nanovg_unbind_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
-  NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
+  NVGcontext* vg = NULL;
+  vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
+  NVGLUframebuffer* handle = (NVGLUframebuffer*)fbo->handle;
 
+  vg = canvas->vg;
+
+  handle->fbo = fbo->online_fbo;
   nvgEndFrame(vg);
-  nvgluBindFramebuffer(NULL);
+  nvgluBindFramebuffer(handle);
+
+  vgcanvas->dirty_rect = rect_init(fbo->online_dirty_rect.x, fbo->online_dirty_rect.y, fbo->online_dirty_rect.w, fbo->online_dirty_rect.h);
+  glViewport(0, 0, vgcanvas->w * fbo->ratio, vgcanvas->h * fbo->ratio);
+  nvgBeginFrame(vg, vgcanvas->w, vgcanvas->h, fbo->ratio);
 
   return RET_OK;
 }
@@ -245,7 +272,10 @@ static ret_t vgcanvas_nanovg_fbo_to_bitmap(vgcanvas_t* vgcanvas, framebuffer_obj
   uint8_t* data = NULL;
   uint8_t* img_data = NULL;
 
+  int online_fbo = nvgluGetCurrFramebuffer();
   NVGLUframebuffer* handle = (NVGLUframebuffer*)fbo->handle;
+
+  handle->fbo = fbo->offline_fbo;
   nvgluBindFramebuffer(handle);
   data = TKMEM_ZALLOCN(uint8_t, img->h * img->line_length);
   img_data = (uint8_t*)bitmap_lock_buffer_for_write(img);
@@ -272,8 +302,8 @@ static ret_t vgcanvas_nanovg_fbo_to_bitmap(vgcanvas_t* vgcanvas, framebuffer_obj
   }
 
   bitmap_unlock_buffer(img);
-
-  nvgluBindFramebuffer(NULL);
+  handle->fbo = online_fbo;
+  nvgluBindFramebuffer(handle);
   TKMEM_FREE(data);
   return RET_OK;
 }

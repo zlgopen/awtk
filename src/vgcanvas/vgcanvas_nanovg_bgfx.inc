@@ -45,7 +45,7 @@ static int32_t getFreeViewId(void) {
   return index;
 }
 
-static ret_t vgcanvas_nanovg_create_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo) {
+static ret_t vgcanvas_nanovg_create_fbo(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h, framebuffer_object_t* fbo) {
   struct NVGLUframebuffer* handle = NULL;
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
   curViewId = getFreeViewId();

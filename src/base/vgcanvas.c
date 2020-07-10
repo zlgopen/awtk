@@ -408,10 +408,10 @@ ret_t vgcanvas_end_frame(vgcanvas_t* vg) {
   return vg->vt->end_frame(vg);
 }
 
-ret_t vgcanvas_create_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo) {
+ret_t vgcanvas_create_fbo(vgcanvas_t* vg, uint32_t w, uint32_t h, framebuffer_object_t* fbo) {
   return_value_if_fail(vg != NULL && vg->vt->create_fbo != NULL && fbo != NULL, RET_BAD_PARAMS);
 
-  return vg->vt->create_fbo(vg, fbo);
+  return vg->vt->create_fbo(vg, w, h, fbo);
 }
 
 ret_t vgcanvas_destroy_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo) {

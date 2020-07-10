@@ -20,3 +20,4 @@ env.Program(os.path.join(BIN_DIR, 'demo_animator'), ['demo_animator_app.c']);
 env.Program(os.path.join(BIN_DIR, 'preview_ui'), ['preview_ui.c']);
 env.Program(os.path.join(BIN_DIR, 'demo_desktop'), ['demo_desktop.c']);
 env.Program(os.path.join(BIN_DIR, 'demo_file_browser'), ['demo_file_browser.c']);
+env.Program(os.path.join(BIN_DIR, 'demo_canvas_offline'), ['demo_canvas_offline.c']);
