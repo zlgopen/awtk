@@ -330,6 +330,12 @@ static ret_t input_method_default_request(input_method_t* im, widget_t* widget) 
   input_method_dispatch_candidates(im, "", 0, 0);
   input_method_default_ensure_suggest_words(im);
   if (im->idle_close_id != TK_INVALID_ID) {
+    idle_info_t* info = (idle_info_t*)idle_find(im->idle_close_id);
+
+    if (info != NULL) {
+      TKMEM_FREE(info->ctx);
+      info->ctx = NULL;
+    }
     idle_remove(im->idle_close_id);
     im->idle_close_id = TK_INVALID_ID;
   }
