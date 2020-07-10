@@ -63,37 +63,6 @@ TEST(ImageLoaderStb, basic) {
   bitmap_destroy(&image);
 }
 
-static ret_t add_image_res(const char* filename, const char* name) {
-  bitmap_t image;
-  static uint8_t buff[8092];
-  memset(&image, 0x00, sizeof(image));
-  ret_t ret = load_image(filename, &image);
-  asset_info_t* r = (asset_info_t*)buff;
-  return_value_if_fail(ret == RET_OK, RET_FAIL);
-  wbuffer_t wbuffer;
-  wbuffer_init(&wbuffer, buff, sizeof(buff));
-  strcpy(r->name, name);
-  r->is_in_rom = TRUE;
-  r->type = ASSET_TYPE_IMAGE;
-  r->subtype = ASSET_TYPE_IMAGE_RAW;
-  r->size = image_gen_buff(&image, &wbuffer, FALSE);
-  bitmap_destroy(&image);
-  wbuffer_deinit(&wbuffer);
-  return assets_manager_add(assets_manager(), buff);
-}
-
-TEST(ImageLoaderStb, gen) {
-  bitmap_t image;
-  ASSERT_EQ(add_image_res(PNG_OPAQUE_NAME, "test.png"), RET_OK);
-  ASSERT_EQ(image_manager_get_bitmap(image_manager(), "test.png", &image), RET_OK);
-
-  ASSERT_EQ(32, image.w);
-  ASSERT_EQ(32, image.h);
-  ASSERT_EQ(!!(image.flags & BITMAP_FLAG_IMMUTABLE), true);
-  ASSERT_EQ(!!(image.flags & BITMAP_FLAG_OPAQUE), true);
-  image_manager_unload_unused(image_manager(), 0);
-}
-
 static ret_t load_image_ex(const char* filename, bitmap_t* image, bool_t require_bgra,
                            bool_t enable_bgr565) {
   uint32_t size = 0;
