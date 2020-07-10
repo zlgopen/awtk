@@ -308,6 +308,7 @@ static ret_t lcd_mem_end_frame(lcd_t* lcd) {
 
 static ret_t lcd_mem_destroy(lcd_t* lcd) {
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
+  return_value_if_fail(lcd->begin_frame != NULL, RET_BAD_PARAMS);
 
   if (mem->vgcanvas != NULL) {
     vgcanvas_destroy(mem->vgcanvas);
@@ -321,6 +322,7 @@ static ret_t lcd_mem_destroy(lcd_t* lcd) {
   graphic_buffer_destroy(mem->online_gb);
   graphic_buffer_destroy(mem->offline_gb);
 
+  memset(lcd, 0x00, sizeof(lcd_mem_t));
   TKMEM_FREE(lcd);
 
   return RET_OK;
