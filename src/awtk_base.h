@@ -26,6 +26,7 @@
 #include "base/awtk_config_sample.h"
 #include "base/bitmap.h"
 #include "base/canvas.h"
+#include "base/canvas_offline.h"
 #include "base/children_layouter.h"
 #include "base/children_layouter_factory.h"
 #include "base/clip_board.h"
