@@ -280,7 +280,7 @@ static uint16_t subtype_from_extname(const char* extname) {
     subtype = ASSET_TYPE_IMAGE_JPG;
   } else if (tk_str_ieq(extname, ".jpeg")) {
     subtype = ASSET_TYPE_IMAGE_JPG;
-  } else if (tk_str_ieq(extname, "ttf")) {
+  } else if (tk_str_ieq(extname, ".ttf")) {
     subtype = ASSET_TYPE_FONT_TTF;
   } else {
     log_debug("not supported %s\n", extname);
@@ -421,15 +421,20 @@ asset_info_t* assets_manager_load_asset(assets_manager_t* am, asset_type_t type,
 
 static asset_info_t* assets_manager_load_impl(assets_manager_t* am, asset_type_t type,
                                               const char* name) {
+  asset_info_t* info = NULL;
   if (am->loader == NULL) {
     return NULL;
   }
 
   if (strncmp(name, STR_SCHEMA_FILE, strlen(STR_SCHEMA_FILE)) == 0) {
-    return assets_manager_load_file(am, type, name + strlen(STR_SCHEMA_FILE));
+    info = assets_manager_load_file(am, type, name + strlen(STR_SCHEMA_FILE));
+    if (info != NULL) {
+      assets_manager_add(am, info);
+    }
+    return info;
   } else {
     const char* theme = am->theme ? am->theme : THEME_DEFAULT;
-    asset_info_t* info = assets_manager_load_asset(am, type, theme, name);
+    info = assets_manager_load_asset(am, type, theme, name);
     if (info == NULL && !tk_str_eq(theme, THEME_DEFAULT)) {
       info = assets_manager_load_asset(am, type, THEME_DEFAULT, name);
     }
