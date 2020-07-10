@@ -137,6 +137,16 @@ const char* tokenizer_next(tokenizer_t* tokenizer);
 const char* tokenizer_next_until(tokenizer_t* tokenizer, const char* str);
 
 /**
+ * @method tokenizer_next_expr_until
+ * 获取下一个expr，该expr直到遇到指定的char。
+ * @param {tokenizer_t*} tokenizer tokenizer对象。
+ * @param {const char*} str 字符集。
+ *
+ * @return {char*} 成功返回token，失败返回NULL。
+ */
+const char* tokenizer_next_expr_until(tokenizer_t* tokenizer, const char* str);
+
+/**
  * @method tokenizer_next_int
  * 获取下一个token，并转换成int。
  * @param {tokenizer_t*} tokenizer tokenizer对象。

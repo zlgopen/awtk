@@ -100,3 +100,39 @@ TEST(Tokenizer, until2) {
 
   tokenizer_deinit(t);
 }
+
+TEST(Tokenizer, expr1) {
+  tokenizer_t tokenizer;
+
+  tokenizer_t* t = tokenizer_init_ex(&tokenizer, "{\"a,a\"}", 100, "{}", "=,");
+  ASSERT_EQ(string(tokenizer_next_expr_until(t, ",}")), string("\"a,a\""));
+
+  tokenizer_deinit(t);
+}
+
+TEST(Tokenizer, expr2) {
+  tokenizer_t tokenizer;
+
+  tokenizer_t* t = tokenizer_init_ex(&tokenizer, "{\"{\\\"}\"}", 100, "{}", "=,");
+  ASSERT_EQ(string(tokenizer_next_expr_until(t, ",}")), string("\"{\\\"}\""));
+
+  tokenizer_deinit(t);
+}
+
+TEST(Tokenizer, expr3) {
+  tokenizer_t tokenizer;
+
+  tokenizer_t* t = tokenizer_init_ex(&tokenizer, "{(1+2)+\"aaa\"}", 100, "{}", "=,");
+  ASSERT_EQ(string(tokenizer_next_expr_until(t, ",}")), string("(1+2)+\"aaa\""));
+
+  tokenizer_deinit(t);
+}
+
+TEST(Tokenizer, expr4) {
+  tokenizer_t tokenizer;
+
+  tokenizer_t* t = tokenizer_init_ex(&tokenizer, "{format(\"%d\", 100)}", 100, "{}", "=,");
+  ASSERT_EQ(string(tokenizer_next_expr_until(t, ",}")), string("format(\"%d\", 100)"));
+
+  tokenizer_deinit(t);
+}
