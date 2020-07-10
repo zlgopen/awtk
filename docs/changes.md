@@ -1,5 +1,11 @@
 # 最新动态
 
+* 2020/07/10
+  * 完善tokenizer。
+  * 完善表达式，增加iformat/fformat函数。
+  * 完善资源管理器（感谢俊杰提供补丁）。
+  * 增加离线canvas（感谢智明提供补丁）。
+
 * 2020/07/09
   * 基本控件的文本支持双向排版 (Unicode Bidirectional Algorithm)
   * 完善 font、image 和字符串工具（感谢大恒提供补丁）
