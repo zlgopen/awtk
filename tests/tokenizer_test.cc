@@ -180,9 +180,10 @@ TEST(Tokenizer, expr8) {
 TEST(Tokenizer, expr9) {
   tokenizer_t tokenizer;
 
-  tokenizer_t* t = tokenizer_init_ex(&tokenizer, "{fformat(\"%2.2lf F\", round($value * 1.8 + 32))}", 100, "{}", "=,");
-  ASSERT_EQ(string(tokenizer_next_expr_until(t, ",}")), string("fformat(\"%2.2lf F\", round($value * 1.8 + 32))"));
+  tokenizer_t* t = tokenizer_init_ex(
+      &tokenizer, "{fformat(\"%2.2lf F\", round($value * 1.8 + 32))}", 100, "{}", "=,");
+  ASSERT_EQ(string(tokenizer_next_expr_until(t, ",}")),
+            string("fformat(\"%2.2lf F\", round($value * 1.8 + 32))"));
 
   tokenizer_deinit(t);
 }
-

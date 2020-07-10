@@ -36,15 +36,14 @@ BEGIN_C_DECLS
  *
  */
 typedef struct _canvas_offline_t {
-    canvas_t base;
-    /**
+  canvas_t base;
+  /**
      * @property {bitmap_t*} bitmap
      * @annotation ["readable"]
      * 绑定的离线 bitmap
      */
-    bitmap_t* bitmap;
-}canvas_offline_t;
-
+  bitmap_t* bitmap;
+} canvas_offline_t;
 
 /**
  * @method canvas_offline_create
@@ -114,4 +113,3 @@ ret_t canvas_offline_destroy(canvas_t* canvas);
 END_C_DECLS
 
 #endif /*TK_CANVAS_OFFLINE_H*/
-

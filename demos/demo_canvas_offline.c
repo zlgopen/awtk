@@ -25,17 +25,16 @@
 
 static canvas_t* canvas_offline = NULL;
 
-
 #include "vg_common.inc"
 
 static ret_t on_paint_vgcanvas(void* ctx, event_t* e) {
-  
 #ifndef AWTK_WEB
   paint_event_t* evt = paint_event_cast(e);
   /* 设置离线的 canvas 为当前绘图的画布 */
   canvas_t* c = canvas_offline;
   /* 获取离线的 canvas 对应的离线 bitmap */
-  bitmap_t* offline_bitmap = canvas_offline_get_bitmap(canvas_offline);;
+  bitmap_t* offline_bitmap = canvas_offline_get_bitmap(canvas_offline);
+  ;
   /* 开始离线 canvas 绘图 */
   canvas_offline_begin_draw(canvas_offline);
 
@@ -106,9 +105,8 @@ static ret_t on_snapshot(void* ctx, event_t* e) {
 }
 
 ret_t application_init() {
-
   widget_t* win = window_create(NULL, 0, 0, 0, 0);
-  widget_t* canvas_widget  = canvas_widget_create(win, 0, 0, win->w, win->h);
+  widget_t* canvas_widget = canvas_widget_create(win, 0, 0, win->w, win->h);
   widget_t* button = button_create(win, 0, 0, 0, 0);
   widget_set_self_layout_params(button, "c", "b", "100", "40");
 

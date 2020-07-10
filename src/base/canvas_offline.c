@@ -33,7 +33,6 @@
 #include "window_manager.h"
 #include "canvas_offline.h"
 
-
 #ifdef WITH_NANOVG_GPU
 
 typedef struct _canvas_offline_gpu_t {
@@ -44,7 +43,7 @@ typedef struct _canvas_offline_gpu_t {
   uint32_t online_lcd_h;
   rect_t canvas_clip_rect;
   framebuffer_object_t fbo;
-}canvas_offline_gpu_t;
+} canvas_offline_gpu_t;
 
 #else
 
@@ -55,7 +54,6 @@ typedef struct _canvas_offline_gpu_t {
 
 #endif
 
-
 canvas_t* canvas_offline_create(uint32_t w, uint32_t h, bitmap_format_t format) {
   canvas_t* c = NULL;
   native_window_t* native_window = NULL;
@@ -64,9 +62,9 @@ canvas_t* canvas_offline_create(uint32_t w, uint32_t h, bitmap_format_t format) 
   vgcanvas_t* vg = NULL;
   framebuffer_object_t* fbo = NULL;
   canvas_offline_gpu_t* canvas = NULL;
-#else  
-  lcd_t *lcd = NULL;
-  uint8_t *buff = NULL;
+#else
+  lcd_t* lcd = NULL;
+  uint8_t* buff = NULL;
   bitmap_t* bitmap = NULL;
   canvas_offline_t* canvas = NULL;
 #endif
@@ -160,11 +158,11 @@ ret_t canvas_offline_begin_draw(canvas_t* canvas) {
   if (vg != NULL && c->begin_draw == 0) {
     canvas_get_clip_rect(canvas, &c->canvas_clip_rect);
     c->vg_clip_rect = rect_init(vg->clip_rect.x, vg->clip_rect.y, vg->clip_rect.w, vg->clip_rect.h);
-    
+
     vgcanvas_flush(vg);
-    
+
     vgcanvas_bind_fbo(vg, &c->fbo);
-    
+
     canvas->lcd->w = vg->w = ((canvas_offline_t*)canvas)->bitmap->w;
     canvas->lcd->h = vg->h = ((canvas_offline_t*)canvas)->bitmap->h;
     canvas_set_clip_rect(canvas, NULL);
@@ -194,7 +192,8 @@ ret_t canvas_offline_end_draw(canvas_t* canvas) {
 
     vgcanvas_unbind_fbo(vg, &c->fbo);
 
-    c->base.bitmap->specific = tk_pointer_from_int(c->fbo.id);;
+    c->base.bitmap->specific = tk_pointer_from_int(c->fbo.id);
+    ;
     c->base.bitmap->flags &= (~flag);
     c->base.bitmap->flags |= BITMAP_FLAG_TEXTURE;
 
