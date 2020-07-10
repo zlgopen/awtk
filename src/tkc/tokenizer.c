@@ -134,8 +134,8 @@ const char* tokenizer_next_expr_until(tokenizer_t* tokenizer, const char* str) {
             lparent++;
           } else if (c == ')') {
             lparent--;
-            tokenizer->cursor++;
             if (lparent <= 0) {
+              tokenizer->cursor++;
               break;
             }
           }
