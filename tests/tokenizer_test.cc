@@ -154,3 +154,25 @@ TEST(Tokenizer, expr6) {
 
   tokenizer_deinit(t);
 }
+
+TEST(Tokenizer, expr7) {
+  tokenizer_t tokenizer;
+
+  tokenizer_t* t = tokenizer_init_ex(
+      &tokenizer, "{fformat(tr(\"current temperature %f\"), $value)+\"c\"}", 100, "{}", "=,");
+  ASSERT_EQ(string(tokenizer_next_expr_until(t, ",}")),
+            string("fformat(tr(\"current temperature %f\"), $value)+\"c\""));
+
+  tokenizer_deinit(t);
+}
+
+TEST(Tokenizer, expr8) {
+  tokenizer_t tokenizer;
+
+  tokenizer_t* t =
+      tokenizer_init_ex(&tokenizer, "{a(b(1,2),c(2,3),d(5,6), e(\"()\"))),}", 100, "{}", "=,");
+  ASSERT_EQ(string(tokenizer_next_expr_until(t, ",}")),
+            string("a(b(1,2),c(2,3),d(5,6), e(\"()\")))"));
+
+  tokenizer_deinit(t);
+}

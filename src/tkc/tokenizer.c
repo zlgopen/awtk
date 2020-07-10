@@ -123,15 +123,21 @@ const char* tokenizer_next_expr_until(tokenizer_t* tokenizer, const char* str) {
         tokenizer_skip_quoted_str(tokenizer);
         continue;
       } else if (c == '(') {
+        int32_t lparent = 1;
         tokenizer->cursor++;
         while (tokenizer->str[tokenizer->cursor]) {
           c = tokenizer->str[tokenizer->cursor];
           if (c == '\"') {
             tokenizer_skip_quoted_str(tokenizer);
             continue;
+          } else if (c == '(') {
+            lparent++;
           } else if (c == ')') {
+            lparent--;
             tokenizer->cursor++;
-            break;
+            if (lparent <= 0) {
+              break;
+            }
           }
           tokenizer->cursor++;
         }
