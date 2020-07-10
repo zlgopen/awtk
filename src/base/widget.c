@@ -1298,7 +1298,7 @@ ret_t widget_fill_rect(widget_t* widget, canvas_t* c, rect_t* r, bool_t bg,
     }
   }
 
-  if (image_name != NULL && r->w > 0 && r->h > 0) {
+  if (image_name != NULL && *image_name && r->w > 0 && r->h > 0) {
     if (widget_load_image(widget, image_name, &img) == RET_OK) {
       draw_type = (image_draw_type_t)style_get_int(style, draw_type_key, draw_type);
       canvas_draw_image_ex(c, &img, draw_type, r);
