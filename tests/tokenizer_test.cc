@@ -136,3 +136,21 @@ TEST(Tokenizer, expr4) {
 
   tokenizer_deinit(t);
 }
+
+TEST(Tokenizer, expr5) {
+  tokenizer_t tokenizer;
+
+  tokenizer_t* t = tokenizer_init_ex(&tokenizer, "{a, name=aaa}", 100, "{}", "=,");
+  ASSERT_EQ(string(tokenizer_next_expr_until(t, ",}")), string("a"));
+
+  tokenizer_deinit(t);
+}
+
+TEST(Tokenizer, expr6) {
+  tokenizer_t tokenizer;
+
+  tokenizer_t* t = tokenizer_init_ex(&tokenizer, "{(a+b), name=aaa}", 100, "{}", "=,");
+  ASSERT_EQ(string(tokenizer_next_expr_until(t, ",}")), string("(a+b)"));
+
+  tokenizer_deinit(t);
+}
