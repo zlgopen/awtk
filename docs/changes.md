@@ -1,5 +1,9 @@
 # 最新动态
 
+* 2020/07/11
+  * 完善bidi，widget支持bidi属性。
+  * 完善slide view indicator（感谢朝泽提供补丁）。 
+
 * 2020/07/10
   * 完善tokenizer。
   * 完善表达式，增加iformat/fformat函数。
