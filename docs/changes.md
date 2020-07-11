@@ -2,6 +2,7 @@
 
 * 2020/07/11
   * 完善bidi，widget支持bidi属性。
+  * 完善hscroll_label对bidi的支持。
   * 完善slide view indicator（感谢朝泽提供补丁）。 
 
 * 2020/07/10

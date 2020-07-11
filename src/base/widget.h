@@ -1394,6 +1394,21 @@ ret_t widget_invalidate_force(widget_t* widget, rect_t* r);
 ret_t widget_paint(widget_t* widget, canvas_t* c);
 
 /**
+ * @method widget_draw_text_in_rect
+ * 在canvas绘制一行文本。
+ * @param {widget_t*} widget 控件对象。
+ * @param {canvas_t*} c 画布对象。
+ * @param {const wchar_t*} str 文本。
+ * @param {uint32_t} size 文本长度。
+ * @param {rect_t*} r 矩形区域。
+ * @param {bool_t} ellipses 宽度不够时是否显示省略号。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+*/
+ret_t widget_draw_text_in_rect(widget_t* widget, canvas_t* c, const wchar_t* str, uint32_t size,
+                               rect_t* r, bool_t ellipses);
+
+/**
  * @method widget_dispatch
  * 分发一个事件。
  * @param {widget_t*} widget 控件对象。

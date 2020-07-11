@@ -68,7 +68,9 @@ static ret_t hscroll_label_do_paint_self(widget_t* widget, canvas_t* c, uint32_t
 
   hscroll_label->text_w = canvas_measure_text(c, text->str, text->size);
   if (w < hscroll_label->text_w && hscroll_label->ellipses && !hscroll_label_is_running(widget)) {
-    return hscroll_label_do_paint_self_ellipses(widget, c, left_margin, right_margin);
+    r = rect_init(left_margin, 0, w, widget->h);
+
+    return widget_draw_text_in_rect(widget, c, text->str, text->size, &r, TRUE);
   }
 
   if (w > hscroll_label->text_w) {
@@ -78,11 +80,9 @@ static ret_t hscroll_label_do_paint_self(widget_t* widget, canvas_t* c, uint32_t
   } else {
     canvas_set_text_align(c, ALIGN_H_LEFT, ALIGN_V_MIDDLE);
   }
-
+  
   r = rect_init(left_margin - hscroll_label->xoffset, 0, w, widget->h);
-  canvas_draw_text_in_rect(c, text->str, text->size, &r);
-
-  return RET_OK;
+  return widget_draw_text_in_rect(widget, c, text->str, text->size, &r, FALSE);
 }
 
 static ret_t hscroll_label_on_paint_self(widget_t* widget, canvas_t* c) {
