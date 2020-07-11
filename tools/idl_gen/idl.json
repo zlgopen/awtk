@@ -19755,6 +19755,47 @@
             "desc": "控件对象。"
           },
           {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "画布对象。"
+          },
+          {
+            "type": "const wchar_t*",
+            "name": "str",
+            "desc": "文本。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "文本长度。"
+          },
+          {
+            "type": "rect_t*",
+            "name": "r",
+            "desc": "矩形区域。"
+          },
+          {
+            "type": "bool_t",
+            "name": "ellipses",
+            "desc": "宽度不够时是否显示省略号。"
+          }
+        ],
+        "annotation": {},
+        "desc": "在canvas绘制一行文本。",
+        "name": "widget_draw_text_in_rect",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
             "type": "event_t*",
             "name": "e",
             "desc": "事件。"
@@ -33177,6 +33218,11 @@
             "type": "const char*",
             "name": "bidi_type",
             "desc": "类型。"
+          },
+          {
+            "type": "bool_t",
+            "name": "ellipses",
+            "desc": "如果目标宽度不够，是否显示省略号。"
           }
         ],
         "annotation": {},
