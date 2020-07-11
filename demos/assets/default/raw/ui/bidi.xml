@@ -2,6 +2,11 @@
   <label text="الصين" style:font_size="30" style:font_name="trado"/>
   <label text="مصر" style:font_size="30" style:font_name="trado"/>
   <label text="الظلال أخفى القمر." style:font_size="30" style:font_name="trado"/>
+  <label text="bahrain مصر kuwait" style:font_size="30" style:font_name="trado"/>
+  <label text="الإنسانية إلى شمال غربي سوريا عبر تركيا." style:font_size="30" style:font_name="trado"/>
+  <label text="جامعة كولومبيا عام 2013." style:font_size="30" style:font_name="trado"/>
+  <label text="10 يوليو/ تموز 2020" style:font_size="30" style:font_name="trado"/>
+  <label text="1. جامعة كولومبيا عام." style:font_size="30" style:font_name="trado"/>
   
   <button name="close" self_layout="default(x=center,y=bottom:50,w=50%,h=30)" 
     floating="true" text="Close"/>
