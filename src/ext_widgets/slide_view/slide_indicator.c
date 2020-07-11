@@ -552,7 +552,6 @@ static ret_t slide_indicator_set_indicated_widget(widget_t* widget, widget_t* ta
     widget_on(target, EVT_POINTER_UP, slide_indicator_target_on_pointer_up, widget);
   }
 
-  slide_indicator_set_visible(widget, TRUE);
   slide_indicator_fix_anchor(widget);
 
   return RET_OK;
