@@ -31,6 +31,10 @@ static bidi_type_t bidi_type_from(int fribidi_type) {
       return BIDI_TYPE_RTL;
     case FRIBIDI_PAR_LTR:
       return BIDI_TYPE_LTR;
+    case FRIBIDI_TYPE_RLO:
+      return BIDI_TYPE_RLO;
+    case FRIBIDI_TYPE_LRO:
+      return BIDI_TYPE_LRO;
     case FRIBIDI_PAR_WRTL:
       return BIDI_TYPE_WRTL;
     case FRIBIDI_PAR_WLTR:
@@ -46,12 +50,38 @@ static FriBidiParType bidi_type_to(bidi_type_t type) {
       return FRIBIDI_PAR_RTL;
     case BIDI_TYPE_LTR:
       return FRIBIDI_PAR_LTR;
+    case BIDI_TYPE_RLO:
+      return FRIBIDI_TYPE_RLO;
+    case BIDI_TYPE_LRO:
+      return FRIBIDI_TYPE_LRO;
     case BIDI_TYPE_WRTL:
       return FRIBIDI_PAR_WRTL;
     case BIDI_TYPE_WLTR:
       return FRIBIDI_PAR_WLTR;
     default:
       return FRIBIDI_PAR_ON;
+  }
+}
+
+bidi_type_t bidi_type_from_name(const char* name) {
+  if(name == NULL || *name == '\0') {
+    return BIDI_TYPE_AUTO;
+  }
+
+  if (tk_str_eq(name, "rtl")) {
+    return BIDI_TYPE_RTL;
+  } else if (tk_str_eq(name, "ltr")) {
+    return BIDI_TYPE_LTR;
+  } else if (tk_str_eq(name, "rlo")) {
+    return BIDI_TYPE_RLO;
+  } else if (tk_str_eq(name, "lro")) {
+    return BIDI_TYPE_LRO;
+  } else if (tk_str_eq(name, "wrtl")) {
+    return BIDI_TYPE_WRTL;
+  } else if (tk_str_eq(name, "wltr")) {
+    return BIDI_TYPE_WLTR;
+  } else {
+    return BIDI_TYPE_AUTO;
   }
 }
 

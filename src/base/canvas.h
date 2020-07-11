@@ -535,10 +535,11 @@ ret_t canvas_draw_text_in_rect(canvas_t* c, const wchar_t* str, uint32_t nr, con
  * @param {const wchar_t*} str 字符串。
  * @param {uint32_t} nr 字符数。
  * @param {const rect_t*} r 矩形区域。
+ * @param {const char*} bidi_type 类型。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t canvas_draw_text_bidi_in_rect(canvas_t* c, const wchar_t* str, uint32_t nr, const rect_t* r);
+ret_t canvas_draw_text_bidi_in_rect(canvas_t* c, const wchar_t* str, uint32_t nr, const rect_t* r, const char* bidi_type);
 
 /**
  * @method canvas_draw_utf8_in_rect

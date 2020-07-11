@@ -84,6 +84,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_DIRTY_RECT_TOLERANCE "dirty_rect_tolerance"
 
 /**
+ * @const WIDGET_PROP_BIDI
+ * bidi type(rtl,ltr,auto,wrtl,wltr,lro,rlo)。
+ */
+#define WIDGET_PROP_BIDI "bidi"
+
+/**
  * @const WIDGET_PROP_CANVAS
  * Canvas。
  */

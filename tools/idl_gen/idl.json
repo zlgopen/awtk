@@ -17003,6 +17003,10 @@
         "name": "WIDGET_PROP_DIRTY_RECT_TOLERANCE"
       },
       {
+        "desc": "bidi type(rtl,ltr,auto,wrtl,wltr,lro,rlo)。",
+        "name": "WIDGET_PROP_BIDI"
+      },
+      {
         "desc": "Canvas。",
         "name": "WIDGET_PROP_CANVAS"
       },
@@ -28406,6 +28410,14 @@
         "name": "BIDI_TYPE_RTL"
       },
       {
+        "desc": "Left-To-Right letter Override。",
+        "name": "BIDI_TYPE_LRO"
+      },
+      {
+        "desc": "Right-To-Left letter Override。",
+        "name": "BIDI_TYPE_RLO"
+      },
+      {
         "desc": "Weak Left To Right paragraph。",
         "name": "BIDI_TYPE_WLTR"
       },
@@ -28461,6 +28473,24 @@
       {
         "params": [
           {
+            "type": "const char*",
+            "name": "name",
+            "desc": "类型名称(取值：rtl,ltr,auto,wrtl,wltr,lro,rlo)。"
+          }
+        ],
+        "annotation": {
+          "static": true
+        },
+        "desc": "将bidi类型的名称转换成类型。",
+        "name": "bidi_type_from_name",
+        "return": {
+          "type": "bidi_t*",
+          "desc": "返回bidi对象。"
+        }
+      },
+      {
+        "params": [
+          {
             "type": "bidi_t*",
             "name": "bidi",
             "desc": "bidi对象。"
@@ -28478,7 +28508,7 @@
         ],
         "annotation": {},
         "desc": "将字符串转成用于显示的字符串，输出结果放在bidi->vis_str中。",
-        "name": "widget_close_window",
+        "name": "bidi_log2vis",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -33142,6 +33172,11 @@
             "type": "const rect_t*",
             "name": "r",
             "desc": "矩形区域。"
+          },
+          {
+            "type": "const char*",
+            "name": "bidi_type",
+            "desc": "类型。"
           }
         ],
         "annotation": {},

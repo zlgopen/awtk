@@ -9,6 +9,15 @@ TEST(Bidi, basic) {
   bidi_deinit(b);
 }
 
+TEST(Bidi, type) {
+  ASSERT_EQ(bidi_type_from_name("ltr"), BIDI_TYPE_LTR);
+  ASSERT_EQ(bidi_type_from_name("rtl"), BIDI_TYPE_RTL);
+  ASSERT_EQ(bidi_type_from_name("wltr"), BIDI_TYPE_WLTR);
+  ASSERT_EQ(bidi_type_from_name("wrtl"), BIDI_TYPE_WRTL);
+  ASSERT_EQ(bidi_type_from_name("lro"), BIDI_TYPE_LRO);
+  ASSERT_EQ(bidi_type_from_name("rlo"), BIDI_TYPE_RLO);
+}
+
 TEST(Bidi, auto1) {
   bidi_t bidi;
   wstr_t str;

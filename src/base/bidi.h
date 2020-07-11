@@ -49,6 +49,16 @@ typedef enum _bidi_type_t {
    */
   BIDI_TYPE_RTL,
   /**
+   * @const BIDI_TYPE_LRO
+   * Left-To-Right letter Override。
+   */
+  BIDI_TYPE_LRO,
+  /**
+   * @const BIDI_TYPE_RLO
+   * Right-To-Left letter Override。
+   */
+  BIDI_TYPE_RLO,
+  /**
    * @const BIDI_TYPE_WLTR
    * Weak Left To Right paragraph。
    */
@@ -123,7 +133,17 @@ typedef struct _bidi_t {
 bidi_t* bidi_init(bidi_t* bidi, bool_t alloc_l2v, bool_t alloc_v2l, bidi_type_t type);
 
 /**
- * @method widget_close_window
+ * @method bidi_type_from_name
+ * 将bidi类型的名称转换成类型。
+ * @annotation ["static"]
+ * @param {const char*} name 类型名称(取值：rtl,ltr,auto,wrtl,wltr,lro,rlo)。 
+ *
+ * @return {bidi_t*} 返回bidi对象。
+ */
+bidi_type_t bidi_type_from_name(const char* name);
+
+/**
+ * @method bidi_log2vis
  * 将字符串转成用于显示的字符串，输出结果放在bidi->vis_str中。
  * 
  * @param {bidi_t*} bidi bidi对象。
@@ -158,6 +178,10 @@ static inline ret_t bidi_log2vis(bidi_t* bidi, const wchar_t* str, uint32_t size
   bidi->vis_str_size = size;
 
   return RET_OK;
+}
+
+static bidi_type_t bidi_type_from_name(const char* name) {
+  return BIDI_TYPE_AUTO;
 }
 
 static inline ret_t bidi_deinit(bidi_t* bidi) {
