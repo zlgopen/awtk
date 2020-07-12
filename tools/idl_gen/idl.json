@@ -34094,6 +34094,44 @@
       {
         "params": [
           {
+            "type": "uint32_t",
+            "name": "montn",
+            "desc": "月份(1-12)。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true,
+          "static": true
+        },
+        "desc": "获取指定月份的英文名称(简写)。",
+        "name": "date_time_get_month_name",
+        "return": {
+          "type": "const char*",
+          "desc": "返回指定月份的英文名称(简写)。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "uint32_t",
+            "name": "wday",
+            "desc": "星期几(0-6, Sunday = 0)。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true,
+          "static": true
+        },
+        "desc": "获取周几的英文名称(简写)。",
+        "name": "date_time_get_wday_name",
+        "return": {
+          "type": "const char*",
+          "desc": "返回指定周几的英文名称(简写)。"
+        }
+      },
+      {
+        "params": [
+          {
             "type": "date_time_t*",
             "name": "dt",
             "desc": "date_time对象。"

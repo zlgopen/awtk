@@ -145,7 +145,7 @@ int32_t date_time_get_days(uint32_t year, uint32_t month);
 
 /**
  * @method date_time_get_wday
- * 获取指定日期是周几(0-6)。
+ * 获取指定日期是周几(0-6, Sunday = 0)。。
  *
  * @annotation ["scriptable", "static"]
  * @param {uint32_t} year 年份。
@@ -155,6 +155,28 @@ int32_t date_time_get_days(uint32_t year, uint32_t month);
  * @return {int32_t} 返回大于等于0表示周几(0-6)，否则表示失败。
  */
 int32_t date_time_get_wday(uint32_t year, uint32_t month, uint32_t day);
+
+/**
+ * @method date_time_get_month_name
+ * 获取指定月份的英文名称(简写)。
+ *
+ * @annotation ["scriptable", "static"]
+ * @param {uint32_t} montn 月份(1-12)。
+ *
+ * @return {const char*} 返回指定月份的英文名称(简写)。
+ */
+const char* date_time_get_month_name(uint32_t month);
+
+/**
+ * @method date_time_get_wday_name
+ * 获取周几的英文名称(简写)。
+ *
+ * @annotation ["scriptable", "static"]
+ * @param {uint32_t} wday 星期几(0-6, Sunday = 0)。
+ *
+ * @return {const char*} 返回指定周几的英文名称(简写)。
+ */
+const char* date_time_get_wday_name(uint32_t wday);
 
 /**
  * @method date_time_destroy

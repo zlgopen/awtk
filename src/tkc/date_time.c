@@ -130,5 +130,27 @@ int32_t date_time_get_wday(uint32_t year, uint32_t month, uint32_t day) {
     w = (d + 1 + 2 * m + 3 * (m + 1) / 5 + y + y / 4 + 5) % 7;
   }
 
+  /*Sunday = 0*/
+  w = (w + 1) % 7;
+
   return w;
+}
+
+static const char* s_en_month_names[] = {"Jan", "Feb", "Mar",  "Apr", "May", "Jun",
+                                         "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"};
+
+const char* date_time_get_month_name(uint32_t month) {
+  return_value_if_fail(month >= 1 && month <= 12, NULL);
+
+  return s_en_month_names[month - 1];
+}
+
+static const char* s_en_wday_names[] = {
+    "Sun", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat",
+};
+
+const char* date_time_get_wday_name(uint32_t wday) {
+  return_value_if_fail(wday >= 0 && wday <= 6, NULL);
+
+  return s_en_wday_names[wday];
 }
