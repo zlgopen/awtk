@@ -2,6 +2,7 @@
 
 * 2020/07/12
   * 完善 date\_time：增加 date\_time\_get\_month\_name 和 date\_time\_get\_wday\_name。
+  * 增加 [日期选择控件](https://github.com/zlgopen/awtk-widget-date-picker)。
 
 * 2020/07/11
   * 完善 bidi，widget 支持 bidi 属性。

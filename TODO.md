@@ -98,20 +98,19 @@
 * MVVM 支持
 * python 绑定
 * 事件录制与重放。
+* 代码编辑器。
+* 日期选择器。
+* 音频接口。
+* 支持文本双向排版
 
 ## 短期计划（顺序不定）
 * tree view
 * table view
-* port code editor
-* calendar
-* chart
 * drag & drop
-* 音频接口。
 * 支持 appuim 自动测试
 
 ## 长期计划
 * Accessibility
-* 支持文本双向排版
 * 支持泰文等特殊文字
 * 支持 vue.js
 * 支持粒子产生器

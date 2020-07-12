@@ -298,6 +298,8 @@ pip install Pillow
 
 * [扩展控件实例：代码编辑器](https://github.com/zlgopen/awtk-widget-code-edit)
 
+* [扩展控件实例：日期选择器](https://github.com/zlgopen/awtk-widget-date-picker)
+
 第三方提供：
 
 * [react-awtk](https://github.com/wenyufei2018/react-awtk)
