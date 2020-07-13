@@ -1,5 +1,8 @@
 # 最新动态
 
+* 2020/07/13
+  * 完善API注释（感谢尧燊提供补丁）
+
 * 2020/07/12
   * 完善 date\_time：增加 date\_time\_get\_month\_name 和 date\_time\_get\_wday\_name。
   * 增加 [日期选择控件](https://github.com/zlgopen/awtk-widget-date-picker)。
