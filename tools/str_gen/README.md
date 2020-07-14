@@ -32,3 +32,5 @@ bin/strgen demos/assets/default/raw/strings/strings.xml demos/assets/default/raw
 ```
 bin/strgen demos/assets/default/raw/strings/strings.xml demos/assets/default/inc/strings           
 ```
+
+> 本文以Linux/MacOS为例，Windows可能会微妙差异，请酌情处理。
