@@ -102,12 +102,14 @@ static ret_t lcd_vgcanvas_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) 
   vgcanvas_t* canvas = LCD(lcd)->canvas;
 
   if (w > 1 && h > 1) {
+    vgcanvas_save(canvas);
     vgcanvas_begin_path(canvas);
     vgcanvas_set_antialias(canvas, FALSE);
     vgcanvas_rect(canvas, x, y, w, h);
     vgcanvas_set_fill_color(canvas, lcd->fill_color);
     vgcanvas_fill(canvas);
     vgcanvas_set_antialias(canvas, TRUE);
+    vgcanvas_restore(canvas);
   } else if (w <= 1) {
     vgcanvas_begin_path(canvas);
     vgcanvas_move_to(canvas, x + 0.5f, y);
@@ -171,9 +173,16 @@ static ret_t lcd_vgcanvas_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rec
   int dy = dst->y;
   int dw = dst->w;
   int dh = dst->h;
+  ret_t ret = RET_OK;
   vgcanvas_t* canvas = LCD(lcd)->canvas;
 
-  return vgcanvas_draw_image(canvas, img, sx, sy, sw, sh, dx, dy, dw, dh);
+  vgcanvas_save(canvas);
+  vgcanvas_set_antialias(canvas, FALSE);
+  ret = vgcanvas_draw_image(canvas, img, sx, sy, sw, sh, dx, dy, dw, dh);
+  vgcanvas_set_antialias(canvas, TRUE);
+  vgcanvas_restore(canvas);
+
+  return ret;
 }
 
 static ret_t lcd_vgcanvas_draw_image_matrix(lcd_t* lcd, draw_image_info_t* info) {
