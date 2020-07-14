@@ -61,7 +61,7 @@ int wmain(int argc, wchar_t* argv[]) {
   platform_prepare();
 
   if (argc < 3) {
-    printf("Usage: %S input outputidr [bin] [theme]\n", argv[0]);
+    printf("Usage: %S input outputdir [bin] [theme]\n", argv[0]);
     return 0;
   }
 
