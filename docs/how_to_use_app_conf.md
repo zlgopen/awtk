@@ -30,6 +30,34 @@ AWTK 提供了 [app_conf](https://github.com/zlgopen/awtk/blob/master/docs/manua
 
 > 初始化函数一般在 application_init 函数中调用。所有读写等函数，必须在成功初始化之后才能调用。
 
+配置文件通常保存在用户目录下，比如应用程序的名称为demo，存储格式为json，那么在不同的平台下，存放的位置为：
+
+* linux
+
+```
+～/demo/app_conf.json
+```
+
+* macos
+
+```
+～/demo/app_conf.json
+```
+
+* windows
+
+```
+～/AppData/Local/demo/app_conf.json
+```
+
+* 嵌入式
+
+```
+/appdata/demo/app_conf.json
+```
+
+> 应用程序在启动时，会打印配置文件的位置，以实际位置为准。
+
 * 2.1 使用 ini 格式时的初始方法
 
 包含头文件：
