@@ -57,6 +57,10 @@ ret_t tk_thread_set_stack_size(tk_thread_t* thread, uint32_t stack_size) {
 ret_t tk_thread_set_priority(tk_thread_t* thread, uint32_t priority) {
   return_value_if_fail(thread != NULL, RET_BAD_PARAMS);
 
+  if (thread->running) {
+    rt_thread_control(thread->task, RT_THREAD_CTRL_CHANGE_PRIORITY, &thread->priority);
+  }
+
   return RET_OK;
 }
 
