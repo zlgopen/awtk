@@ -923,6 +923,16 @@ static void widget_draw_stroke_rounded_rect(canvas_t* c, rect_t* r, color_t* col
 
 static inline ret_t widget_draw_fill_rounded_rect_ex(canvas_t* c, rect_t* r, rect_t* bg_r,
                                                      color_t* color, uint32_t radius) {
+  xy_t x = r->x + c->ox;
+  xy_t y = r->y + c->oy;
+  xy_t x2 = x + r->w - 1;
+  xy_t y2 = y + r->h - 1;
+
+  if (x > c->clip_right || x2 < c->clip_left ||
+      y > c->clip_bottom || y2 < c->clip_top) {
+    return RET_OK;
+  }
+  
   if (bg_r == NULL) {
     radius = widget_get_standard_rounded_rect_radius(r, radius);
   } else {
@@ -940,6 +950,16 @@ static inline ret_t widget_draw_fill_rounded_rect_ex(canvas_t* c, rect_t* r, rec
 static inline ret_t widget_draw_stroke_rounded_rect_ex(canvas_t* c, rect_t* r, rect_t* bg_r,
                                                        color_t* color, uint32_t radius,
                                                        uint32_t border_width) {
+  xy_t x = r->x + c->ox;
+  xy_t y = r->y + c->oy;
+  xy_t x2 = x + r->w - 1;
+  xy_t y2 = y + r->h - 1;
+
+  if (x > c->clip_right || x2 < c->clip_left ||
+      y > c->clip_bottom || y2 < c->clip_top) {
+    return RET_OK;
+  }
+
   if (bg_r == NULL) {
     radius = widget_get_standard_rounded_rect_radius(r, radius);
   } else {

@@ -3,6 +3,7 @@
   * 完善 bidi 文档。
   * 修改 mem pool 内存对齐的问题（感谢 imxood 提供补丁）
   * 完善 rtt的tk_thread_set_priority（感谢玖玲提供补丁）
+  * 优化圆角矩形在脏矩形下的效率和修复警告（感谢智明提供补丁）
 
 * 2020/07/15
   * 完善 app conf 文档。

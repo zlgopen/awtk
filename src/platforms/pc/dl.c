@@ -21,6 +21,7 @@
 
 #include "tkc/dl.h"
 #include "tkc/mem.h"
+#include "tkc/utils.h"
 
 #if defined(ANDROID) || defined(IOS) || defined(MACOS) || defined(LINUX)
 #include <dlfcn.h>
