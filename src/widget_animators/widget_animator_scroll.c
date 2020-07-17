@@ -23,21 +23,21 @@
 #include "widget_animators/widget_animator_scroll.h"
 
 static ret_t widget_animator_scroll_update(widget_animator_t* animator, float_t percent) {
-  int xoffset = 0;
-  int yoffset = 0;
+  int64_t xoffset = 0;
+  int64_t yoffset = 0;
   value_t v;
   widget_animator_scroll_t* scroll = (widget_animator_scroll_t*)animator;
   return_value_if_fail(scroll != NULL, RET_BAD_PARAMS);
 
   if (scroll->x_to != scroll->x_from) {
-    xoffset = scroll->x_from + (scroll->x_to - scroll->x_from) * percent;
-    value_set_int(&v, xoffset);
+    xoffset = scroll->x_from + (double)(scroll->x_to - scroll->x_from) * percent;
+    value_set_int64(&v, xoffset);
     widget_set_prop(animator->widget, WIDGET_PROP_XOFFSET, &v);
   }
 
   if (scroll->y_to != scroll->y_from) {
-    yoffset = scroll->y_from + (scroll->y_to - scroll->y_from) * percent;
-    value_set_int(&v, yoffset);
+    yoffset = scroll->y_from + (double)(scroll->y_to - scroll->y_from) * percent;
+    value_set_int64(&v, yoffset);
     widget_set_prop(animator->widget, WIDGET_PROP_YOFFSET, &v);
   }
 
