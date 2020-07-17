@@ -29,12 +29,12 @@ static ret_t widget_animator_prop2_update(widget_animator_t* animator, float_t p
   return_value_if_fail(prop2 != NULL, RET_BAD_PARAMS);
 
   if (prop2->to1 != prop2->from1) {
-    value_set_float(&v, prop2->from1 + (prop2->to1 - prop2->from1) * percent);
+    value_set_double(&v, prop2->from1 + (prop2->to1 - prop2->from1) * percent);
     widget_set_prop(animator->widget, prop2->prop1_name, &v);
   }
 
   if (prop2->to2 != prop2->from2) {
-    value_set_float(&v, prop2->from2 + (prop2->to2 - prop2->from2) * percent);
+    value_set_double(&v, prop2->from2 + (prop2->to2 - prop2->from2) * percent);
     widget_set_prop(animator->widget, prop2->prop2_name, &v);
   }
 
@@ -63,8 +63,8 @@ widget_animator_t* widget_animator_prop2_create(widget_t* widget, uint32_t durat
   return animator;
 }
 
-ret_t widget_animator_prop2_set_params(widget_animator_t* animator, float_t from1, float_t from2,
-                                       float_t to1, float_t to2) {
+ret_t widget_animator_prop2_set_params(widget_animator_t* animator, double from1, double from2,
+                                       double to1, double to2) {
   widget_animator_prop2_t* prop2 = (widget_animator_prop2_t*)animator;
   return_value_if_fail(prop2 != NULL, RET_BAD_PARAMS);
 

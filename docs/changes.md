@@ -1,8 +1,12 @@
 # 最新动态
+* 2020/07/17
+  * 完善 scrollbar 支持大范围滚动。
+  * 完善 widget animator，使用 double 保存属性，避免精度问题。
+
 * 2020/07/16
   * 完善 bidi 文档。
   * 修改 mem pool 内存对齐的问题（感谢 imxood 提供补丁）
-  * 完善 rtt的tk_thread_set_priority（感谢玖玲提供补丁）
+  * 完善 rtt 的 tk_thread_set_priority（感谢玖玲提供补丁）
   * 优化圆角矩形在脏矩形下的效率和修复警告（感谢智明提供补丁）
 
 * 2020/07/15

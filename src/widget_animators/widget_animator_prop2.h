@@ -33,10 +33,10 @@ BEGIN_C_DECLS
 typedef struct _widget_animator_prop2_t {
   widget_animator_t base;
 
-  float_t to1;
-  float_t to2;
-  float_t from1;
-  float_t from2;
+  double to1;
+  double to2;
+  double from1;
+  double from2;
   char prop1_name[TK_NAME_LEN + 1];
   char prop2_name[TK_NAME_LEN + 1];
 } widget_animator_prop2_t;
@@ -61,15 +61,15 @@ widget_animator_t* widget_animator_prop2_create(widget_t* widget, uint32_t durat
  * @method widget_animator_prop2_set_params
  * 设置动画对象的参数。
  * @param {widget_animator_t*} animator 动画对象本身。
- * @param {float_t} from1 x的初值。
- * @param {float_t} from2 y的初值。
- * @param {float_t} to1 x的终值。
- * @param {float_t} to2 y的终值。
+ * @param {double} from1 x的初值。
+ * @param {double} from2 y的初值。
+ * @param {double} to1 x的终值。
+ * @param {double} to2 y的终值。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t widget_animator_prop2_set_params(widget_animator_t* animator, float_t from1, float_t from2,
-                                       float_t to1, float_t to2);
+ret_t widget_animator_prop2_set_params(widget_animator_t* animator, double from1, double from2,
+                                       double to1, double to2);
 
 END_C_DECLS
 
