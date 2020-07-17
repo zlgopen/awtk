@@ -41,14 +41,14 @@ widget_t* scroll_bar_create_desktop_self(widget_t* parent, xy_t x, xy_t y, wh_t 
 
 /*mobile*/
 static ret_t scroll_bar_mobile_get_dragger_size(widget_t* widget, rect_t* r) {
-  int32_t x = 0;
-  int32_t y = 0;
-  int32_t w = 0;
-  int32_t h = 0;
-  int32_t virtual_size = 0;
-  int32_t value = 0;
-  int32_t widget_w = widget->w;
-  int32_t widget_h = widget->h;
+  int64_t x = 0;
+  int64_t y = 0;
+  int64_t w = 0;
+  int64_t h = 0;
+  int64_t virtual_size = 0;
+  int64_t value = 0;
+  int64_t widget_w = widget->w;
+  int64_t widget_h = widget->h;
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
 
   if (scroll_bar->virtual_size <= 0) {
@@ -170,14 +170,14 @@ static ret_t scroll_bar_desktop_on_event(widget_t* widget, event_t* e) {
 }
 
 static ret_t scroll_bar_destop_get_dragger_size(widget_t* widget, rect_t* r) {
-  int32_t x = 0;
-  int32_t y = 0;
-  int32_t w = 0;
-  int32_t h = 0;
-  int32_t virtual_size = 0;
-  int32_t value = 0;
-  int32_t widget_w = widget->w;
-  int32_t widget_h = widget->h;
+  int64_t x = 0;
+  int64_t y = 0;
+  int64_t w = 0;
+  int64_t h = 0;
+  int64_t virtual_size = 0;
+  int64_t value = 0;
+  int64_t widget_w = widget->w;
+  int64_t widget_h = widget->h;
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
 
   memset(r, 0x00, sizeof(rect_t));
@@ -187,7 +187,7 @@ static ret_t scroll_bar_destop_get_dragger_size(widget_t* widget, rect_t* r) {
 
   value = scroll_bar->value;
   if (widget_w > widget_h) {
-    int32_t max_bar_w = widget_w - 2 * widget_h;
+    int64_t max_bar_w = widget_w - 2 * widget_h;
     /*horizon*/
     virtual_size = tk_max(widget_w, scroll_bar->virtual_size);
 
@@ -198,7 +198,7 @@ static ret_t scroll_bar_destop_get_dragger_size(widget_t* widget, rect_t* r) {
     x = (widget_w - w - 2 * widget_h) * value / virtual_size + widget_h;
   } else {
     /*vertical*/
-    int32_t max_bar_h = widget_h - 2 * widget_w;
+    int64_t max_bar_h = widget_h - 2 * widget_w;
     virtual_size = tk_max(widget_h, scroll_bar->virtual_size);
 
     x = 1;
@@ -217,17 +217,19 @@ static ret_t scroll_bar_destop_get_dragger_size(widget_t* widget, rect_t* r) {
 }
 
 ret_t scroll_bar_add_delta_ex(widget_t* widget, int32_t d, bool_t animatable) {
-  int32_t delta = 0;
-  int32_t new_value = 0;
+  int64_t delta = 0;
+  int64_t new_value = 0;
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
 
   if (widget->w > widget->h) {
     if (scroll_bar->virtual_size > widget->w) {
-      delta = d * scroll_bar->virtual_size / (scroll_bar->virtual_size - widget->w);
+      double scale = (double)(scroll_bar->virtual_size) / (scroll_bar->virtual_size - widget->w);
+      delta = d * scale;
     }
   } else {
     if (scroll_bar->virtual_size > widget->h) {
-      delta = d * scroll_bar->virtual_size / (scroll_bar->virtual_size - widget->h);
+      double scale = (double)(scroll_bar->virtual_size) / (scroll_bar->virtual_size - widget->h);
+      delta = d * scale;
     }
   }
 
@@ -263,24 +265,23 @@ static ret_t scroll_bar_on_down_button_clicked(void* ctx, event_t* e) {
 }
 
 static ret_t scroll_bar_on_drag(void* ctx, event_t* e) {
-  int32_t value = 0;
+  int64_t value = 0;
   widget_t* widget = WIDGET(ctx);
-  int32_t widget_w = widget->w;
-  int32_t widget_h = widget->h;
+  int64_t widget_w = widget->w;
+  int64_t widget_h = widget->h;
   scroll_bar_t* scroll_bar = SCROLL_BAR(ctx);
   widget_t* dragger = scroll_bar->dragger;
 
   if (widget_w > widget_h) {
-    int32_t x = scroll_bar->dragger->x;
-    int32_t max_x = (widget_w - 2 * widget_h - dragger->w);
+    int64_t x = scroll_bar->dragger->x;
+    int64_t max_x = (widget_w - 2 * widget_h - dragger->w);
     value = (x - widget_h) * scroll_bar->virtual_size / max_x;
   } else {
-    int32_t y = scroll_bar->dragger->y;
-    int32_t max_y = (widget_h - 2 * widget_w - dragger->h);
+    int64_t y = scroll_bar->dragger->y;
+    int64_t max_y = (widget_h - 2 * widget_w - dragger->h);
     value = (y - widget_w) * scroll_bar->virtual_size / max_y;
   }
 
-  log_debug("value=%d\n", value);
   scroll_bar_set_value(widget, value);
 
   return RET_OK;
