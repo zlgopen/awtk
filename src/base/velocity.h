@@ -42,8 +42,27 @@ typedef struct _velocity_t {
   float ya;
 } velocity_t;
 
+/**
+ * @method velocity_reset
+ * 重置状态。
+ *
+ * @param {velocity_t*} v velocity对象。
+ *
+ * @return {velocity_t*} 返回velocity对象。
+ */
 velocity_t* velocity_reset(velocity_t* v);
 
+/**
+ * @method velocity_update
+ * 更新位置。
+ *
+ * @param {velocity_t*} v velocity对象。
+ * @param {uint32_t} time 时间。
+ * @param {xy_t} x x坐标。
+ * @param {xy_t} y y坐标。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t velocity_update(velocity_t* v, uint32_t time, xy_t x, xy_t y);
 
 END_C_DECLS

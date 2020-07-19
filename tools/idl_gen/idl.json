@@ -5233,22 +5233,22 @@
             "desc": "动画对象本身。"
           },
           {
-            "type": "float_t",
+            "type": "double",
             "name": "from1",
             "desc": "x的初值。"
           },
           {
-            "type": "float_t",
+            "type": "double",
             "name": "from2",
             "desc": "y的初值。"
           },
           {
-            "type": "float_t",
+            "type": "double",
             "name": "to1",
             "desc": "x的终值。"
           },
           {
-            "type": "float_t",
+            "type": "double",
             "name": "to2",
             "desc": "y的终值。"
           }
@@ -5316,12 +5316,12 @@
             "desc": "动画对象本身。"
           },
           {
-            "type": "float_t",
+            "type": "double",
             "name": "from",
             "desc": "prop起始值。"
           },
           {
-            "type": "float_t",
+            "type": "double",
             "name": "to",
             "desc": "prop结束值。"
           }
@@ -14158,7 +14158,55 @@
   },
   {
     "type": "class",
-    "methods": [],
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "velocity_t*",
+            "name": "v",
+            "desc": "velocity对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "重置状态。",
+        "name": "velocity_reset",
+        "return": {
+          "type": "velocity_t*",
+          "desc": "返回velocity对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "velocity_t*",
+            "name": "v",
+            "desc": "velocity对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "time",
+            "desc": "时间。"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标。"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标。"
+          }
+        ],
+        "annotation": {},
+        "desc": "更新位置。",
+        "name": "velocity_update",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
     "events": [],
     "properties": [],
     "header": "base/velocity.h",
