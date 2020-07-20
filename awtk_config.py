@@ -1,6 +1,7 @@
 import os
 import os.path
 import platform
+import shutil
 from shutil import copyfile
 
 TOOLS_PREFIX=''
@@ -287,3 +288,26 @@ os.environ['AWTK_CCFLAGS'] = AWTK_CCFLAGS;
 
 def has_custom_cc():
     return False
+
+def copySharedLib(src, dst, name):
+  if OS_NAME == 'Darwin':
+    src = os.path.join(src, 'bin/lib'+name+'.dylib')
+  elif OS_NAME == 'Linux':
+    src = os.path.join(src, 'bin/lib'+name+'.so')
+  elif OS_NAME == 'Windows':
+    src = os.path.join(src, 'bin/'+name+'.dll')
+  else:
+    print('not support ' + OS_NAME)
+    return
+
+  if not os.path.exists(src):
+    print('Can\'t find ' + src + '. Please build '+name+'before!')
+  else:
+    if not os.path.exists(dst):
+        os.makedirs(dst)
+    shutil.copy(src, dst)
+    print(src + '==>' + dst);
+
+def isBuildShared():
+  return 'WITH_AWTK_SO' in os.environ and os.environ['WITH_AWTK_SO'] == 'true'
+
