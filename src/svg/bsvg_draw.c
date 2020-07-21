@@ -52,7 +52,8 @@ ret_t bsvg_draw_path(draw_ctx_t* ctx, const svg_path_t* path) {
       ctx->x = p->x;
       ctx->y = p->y;
       vgcanvas_move_to(canvas, ctx->x, ctx->y);
-      vgcanvas_path_winding(canvas, 0);
+      /* 屏蔽了 vg 的路径镂空函数，修复 gles 和 agge 的 svg 效果同步的问题，会导致 svg 没有了路径消除的逻辑 */
+      // vgcanvas_path_winding(canvas, 0);
       break;
     }
     case SVG_PATH_M_REL: {
@@ -61,7 +62,8 @@ ret_t bsvg_draw_path(draw_ctx_t* ctx, const svg_path_t* path) {
       ctx->x += p->x;
       ctx->y += p->y;
       vgcanvas_move_to(canvas, ctx->x, ctx->y);
-      vgcanvas_path_winding(canvas, 0);
+      /* 屏蔽了 vg 的路径镂空函数，修复 gles 和 agge 的 svg 效果同步的问题，会导致 svg 没有了路径消除的逻辑 */
+      // vgcanvas_path_winding(canvas, 0);
       break;
     }
     case SVG_PATH_L: {
