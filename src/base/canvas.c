@@ -1873,3 +1873,16 @@ ret_t canvas_get_text_metrics(canvas_t* c, float_t* ascent, float_t* descent, fl
     return RET_FAIL;
   }
 }
+
+#include "ffr_draw_rounded_rect.inc"
+
+ret_t canvas_fill_rounded_rect(canvas_t* c, rect_t* r, rect_t* bg_r, color_t* color,
+                               uint32_t radius) {
+  return widget_draw_fill_rounded_rect_ex(c, r, bg_r, color, radius);
+}
+
+ret_t canvas_stroke_rounded_rect(canvas_t* c, rect_t* r, rect_t* bg_r, color_t* color,
+                                 uint32_t radius, uint32_t border_width) {
+  return widget_draw_stroke_rounded_rect_ex(c, r, bg_r, color, radius, border_width);
+}
+

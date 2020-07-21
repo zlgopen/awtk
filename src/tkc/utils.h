@@ -430,7 +430,17 @@ ret_t default_destroy(void* data);
 int pointer_compare(const void* a, const void* b);
 int compare_always_equal(const void* a, const void* b);
 
+/**
+ * @method tk_is_valid_name
+ *
+ * 判断是否是有效的属性名。
+ *
+ * @param {const char*} name 名字字符串。
+ *
+ * @return {bool_t} 如果名称有效返回TRUE，否则返回FALSE。
+ */
 bool_t tk_is_valid_name(const char* name);
+
 ret_t tk_replace_locale(const char* name, char out[TK_NAME_LEN + 1], const char* locale);
 
 /**
@@ -444,6 +454,18 @@ ret_t tk_replace_locale(const char* name, char out[TK_NAME_LEN + 1], const char*
  * @return {bool_t} 返回TRUE表示是；否则表示不是。
  */
 bool_t tk_str_start_with(const char* str, const char* prefix);
+
+/**
+ * @method tk_under_score_to_camel
+ *
+ * 将下划线名字转成驼峰名字。
+ *
+ * @param {const char*} name 下划线名字。
+ * @param {char*} out 驼峰名字(保存结果)。
+ * @param {uint32_t} max_out_size 结果最大长度。 
+ *
+ * @return {const char* } 返回T驼峰名字。
+ */
 const char* tk_under_score_to_camel(const char* name, char* out, uint32_t max_out_size);
 
 int32_t tk_pointer_to_int(const void* p);

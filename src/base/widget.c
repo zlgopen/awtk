@@ -1264,17 +1264,6 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
 
   return RET_OK;
 }
-#include "ffr_draw_rounded_rect.inc"
-
-ret_t widget_fill_rounded_rect(canvas_t* c, rect_t* r, rect_t* bg_r, color_t* color,
-                               uint32_t radius) {
-  return widget_draw_fill_rounded_rect_ex(c, r, bg_r, color, radius);
-}
-
-ret_t widget_stroke_rounded_rect(canvas_t* c, rect_t* r, rect_t* bg_r, color_t* color,
-                                 uint32_t radius, uint32_t border_width) {
-  return widget_draw_stroke_rounded_rect_ex(c, r, bg_r, color, radius, border_width);
-}
 
 ret_t widget_fill_rect(widget_t* widget, canvas_t* c, rect_t* r, bool_t bg,
                        image_draw_type_t draw_type) {
@@ -1295,9 +1284,9 @@ ret_t widget_fill_rect(widget_t* widget, canvas_t* c, rect_t* r, bool_t bg,
     canvas_set_fill_color(c, color);
     if (radius > 3) {
       if (bg) {
-        ret = widget_fill_rounded_rect(c, r, NULL, &color, radius);
+        ret = canvas_fill_rounded_rect(c, r, NULL, &color, radius);
       } else {
-        ret = widget_fill_rounded_rect(c, r, &bg_r, &color, radius);
+        ret = canvas_fill_rounded_rect(c, r, &bg_r, &color, radius);
       }
       if (ret == RET_FAIL) {
         canvas_fill_rect(c, r->x, r->y, r->w, r->h);
@@ -1366,7 +1355,7 @@ ret_t widget_stroke_border_rect(widget_t* widget, canvas_t* c, rect_t* r) {
     canvas_set_stroke_color(c, bd);
     if (radius > 3) {
       if (border == BORDER_ALL) {
-        if (widget_stroke_rounded_rect(c, r, NULL, &bd, radius, border_width) != RET_OK) {
+        if (canvas_stroke_rounded_rect(c, r, NULL, &bd, radius, border_width) != RET_OK) {
           widget_stroke_border_rect_for_border_type(c, r, bd, border, border_width);
         }
       } else {

@@ -109,7 +109,6 @@ ret_t idle_set_on_destroy(uint32_t idle_id, tk_destroy_t on_destroy, void* on_de
 /**
  * @method idle_dispatch
  * 调用全部idle的函数。
- * @annotation ["private"]
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

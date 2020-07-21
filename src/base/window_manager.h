@@ -213,7 +213,6 @@ ret_t window_manager_post_init(widget_t* widget, wh_t w, wh_t h);
 /**
  * @method window_manager_open_window
  * 打开窗口。
- * @annotation ["private"]
  * @param {widget_t*} widget 窗口管理器对象。
  * @param {widget_t*} window 窗口对象。
  *
@@ -276,7 +275,6 @@ ret_t window_manager_check_and_layout(widget_t* widget);
  *
  *> 一般仅由主循环调用，特殊情况也可以用来注入事件。
  *
- * @annotation ["private"]
  * @param {widget_t*} widget 窗口管理器对象。
  * @param {event_t*} e 事件对象。
  *

@@ -2531,34 +2531,6 @@ ret_t widget_focus_right(widget_t* widget);
 
 ret_t widget_set_focused_internal(widget_t* widget, bool_t focused);
 
-/**
- * @method widget_fill_rounded_rect
- * 填充区域。
- * @annotation ["global"]
- * @param {canvas_t*} c canvas对象。
- * @param {rect_t*} r 矩形。
- * @param {color_t*} color 颜色。
- * @param {uint32_t} radius 圆角半径。
- *
- * @return {ret_t} 返回。
- */
-ret_t widget_fill_rounded_rect(canvas_t* c, rect_t* r, rect_t* bg_r, color_t* color,
-                               uint32_t radius);
-
-/**
- * @method widget_fill_rounded_rect
- * 绘制边框。
- * @annotation ["global"]
- * @param {canvas_t*} c canvas对象。
- * @param {rect_t*} r 矩形。
- * @param {color_t*} color 颜色。
- * @param {uint32_t} radius 圆角半径。
- * @param {uint32_t} border_width 边宽。
- *
- * @return {ret_t} 返回。
- */
-ret_t widget_stroke_rounded_rect(canvas_t* c, rect_t* r, rect_t* bg_r, color_t* color,
-                                 uint32_t radius, uint32_t border_width);
 
 END_C_DECLS
 

@@ -732,6 +732,33 @@ ret_t canvas_get_text_metrics(canvas_t* canvas, float_t* ascent, float_t* descen
 ret_t canvas_begin_frame(canvas_t* c, rect_t* dirty_rect, lcd_draw_mode_t draw_mode);
 
 /**
+ * @method canvas_fill_rounded_rect
+ * 填充区域。
+ * @param {canvas_t*} c canvas对象。
+ * @param {rect_t*} r 矩形。
+ * @param {color_t*} color 颜色。
+ * @param {uint32_t} radius 圆角半径。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t canvas_fill_rounded_rect(canvas_t* c, rect_t* r, rect_t* bg_r, color_t* color,
+                               uint32_t radius);
+
+/**
+ * @method canvas_stroke_rounded_rect
+ * 绘制边框。
+ * @param {canvas_t*} c canvas对象。
+ * @param {rect_t*} r 矩形。
+ * @param {color_t*} color 颜色。
+ * @param {uint32_t} radius 圆角半径。
+ * @param {uint32_t} border_width 边宽。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t canvas_stroke_rounded_rect(canvas_t* c, rect_t* r, rect_t* bg_r, color_t* color,
+                                 uint32_t radius, uint32_t border_width);
+
+/**
  * @method canvas_end_frame
  * 绘制结束。
  *

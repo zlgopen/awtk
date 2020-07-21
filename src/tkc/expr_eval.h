@@ -31,6 +31,14 @@
 
 BEGIN_C_DECLS
 
+
+/**
+ * @class eval_t
+ * @annotation ["fake"]
+ * 表达式。
+ *
+ */
+
 #define EVAL_MAX_STACK_DEPTH 8
 #define EVAL_MAX_NAME_LENGTH 32
 
@@ -79,22 +87,129 @@ typedef struct {
   EvalResult (*get_variable)(const char* name, void* user_data, ExprValue* output);
 } EvalHooks;
 
+/**
+ * @method eval_execute 
+ *
+ * 计算表达式的值。
+ *
+ * @param {const char*} expr 表达式
+ * @param {const EvalHooks*} hooks 回调函数。
+ * @param {void*} ctx 回调函数的上下文。
+ * @param {ExprValue*} output 计算结果。
+ *
+ * @return {EvalResult} 返回EVAL_RESULT_OK表示成功，否则表示失败。
+ */
 EvalResult eval_execute(const char* expr, const EvalHooks* hooks, void* ctx, ExprValue* output);
 
+/**
+ * @method tk_expr_eval
+ *
+ * 计算表达式返回浮点数。
+ *
+ * @param {const char*} expor 表达式
+ *
+ * @return {double} 返回结果。
+ */
 double tk_expr_eval(const char* expr);
+
+/**
+ * @method tk_expr_eval_str
+ *
+ * 计算表达式返回字符串。
+ *
+ * @param {const char*} expor 表达式
+ * @param {char*} result 结果字符串
+ * @param {uint32_t} 最大长度。
+ *
+ * @return {const char*} 返回结果。
+ */
 const char* tk_expr_eval_str(const char* expr, char* result, uint32_t max_size);
 
+/**
+ * @method eval_default_hooks
+ *
+ * 获取内置函数。
+ *
+ * @return {const EvalHooks*} 回调函数列表。
+ */
 const EvalHooks* eval_default_hooks(void);
 
+/**
+ * @method eval_result_to_string
+ *
+ * 将错误码转换成字符串。
+ *
+ * @param {EvalResult} result 值。
+ *
+ * @return {const char*} 返回对应的字符串。
+ */
 const char* eval_result_to_string(EvalResult result);
 
+/**
+ * @method expr_value_init
+ *
+ * 初始化值。
+ * @param {ExprValue*} v 值对象。
+ *
+ * @return {void} 返回void。
+ */
 void expr_value_init(ExprValue* v);
+
+/**
+ * @method expr_value_clear
+ *
+ * 清除值。
+ * @param {ExprValue*} v 值对象。
+ *
+ * @return {void} 返回void。
+ */
 void expr_value_clear(ExprValue* v);
 
+/**
+ * @method expr_value_get_number
+ *
+ * 获取浮点数值。
+ *
+ * @param {const ExprValue*} v 值对象。
+ *
+ * @return {double} 返回浮点数值。
+ */
 double expr_value_get_number(const ExprValue* v);
+
+/**
+ * @method expr_value_set_number
+ *
+ * 设置浮点数值。
+ *
+ * @param {ExprValue*} v 值对象。
+ * @param {double} val 浮点数的值。
+ *
+ * @return {EvalResult} 返回EVAL_RESULT_OK表示成功，否则表示失败。
+ */
 EvalResult expr_value_set_number(ExprValue* v, double val);
 
+/**
+ * @method expr_value_get_string
+ *
+ * 获取字符串。
+ *
+ * @param {const ExprValue*} v 值对象。
+ *
+ * @return {const char*} 返回字符串。
+ */
 const char* expr_value_get_string(const ExprValue* v);
+
+/**
+ * @method expr_value_set_string
+ *
+ * 设置字符串。
+ *
+ * @param {ExprValue*} v 值对象。
+ * @param {const char*} str 字符串。
+ * @param {size_t} len 字符串长度。
+ *
+ * @return {EvalResult} 返回EVAL_RESULT_OK表示成功，否则表示失败。
+ */
 EvalResult expr_value_set_string(ExprValue* v, const char* str, size_t len);
 
 END_C_DECLS

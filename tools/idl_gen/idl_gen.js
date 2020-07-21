@@ -134,6 +134,8 @@ class IDLGen {
     comment.split('\n').forEach(iter => {
       if (iter.indexOf('@method') >= 0) {
         method.name = this.parseName(iter);
+      }else if (iter.indexOf('@class') >= 0) {
+        method.className = this.parseName(iter);
       }else if (iter.indexOf('@alias') >= 0) {
         method.alias = this.parseAlias(iter);
       } else if (iter.indexOf(' @annotation') >= 0) {
@@ -157,6 +159,9 @@ class IDLGen {
       this.result.push(method);
     } else if (method.annotation.private) {
       console.log('skip ' + method.name);
+    } else if (method.className) {
+      let cls = this.getClass(method.className);
+      cls.methods.push(method);
     } else if (this.cls) {
       this.cls.methods.push(method);
     }
@@ -314,10 +319,10 @@ class IDLGen {
         if (end >= 0) {
           const comment = str.substr(0, end + 3);
           if (comment.indexOf('* @') >= 0) {
-            if (comment.indexOf(' @class') >= 0) {
-              this.parseClass(comment);
-            } else if (comment.indexOf(' @method') >= 0) {
+            if (comment.indexOf(' @method') >= 0) {
               this.parseMethod(comment);
+            } else if (comment.indexOf(' @class') >= 0) {
+              this.parseClass(comment);
             } else if (comment.indexOf(' @property') >= 0) {
               this.parseProperty(comment);
             } else if (comment.indexOf(' @event') >= 0) {
