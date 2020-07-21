@@ -425,9 +425,48 @@ ret_t xml_file_expand_read(const char* filename, str_t* s);
  */
 char* tk_str_copy(char* dst, const char* src);
 
+/**
+ * @method dummy_destroy
+ * 
+ * 空的destroy函数。
+ * @param {void*} data 数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t dummy_destroy(void* data);
+
+/**
+ * @method default_destroy
+ * 
+ * 缺省的destroy函数。释放data指向的内存。
+ * @param {void*} data 数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t default_destroy(void* data);
+
+/**
+ * @method pointer_compare
+ * 
+ * 指针比较。
+ *
+ * @param {const void*} a 数据a。
+ * @param {const void*} b 数据b。
+ *
+ * @return {int} 返回0表示相等，返回负数表示小于，返回整数表示大于。
+ */
 int pointer_compare(const void* a, const void* b);
+
+/**
+ * @method compare_always_equal
+ * 
+ * 始终返回相等。
+ *
+ * @param {const void*} a 数据a。
+ * @param {const void*} b 数据b。
+ *
+ * @return {int} 始终返回0。
+ */
 int compare_always_equal(const void* a, const void* b);
 
 /**

@@ -24831,6 +24831,80 @@
       {
         "params": [
           {
+            "type": "void*",
+            "name": "data",
+            "desc": "数据。"
+          }
+        ],
+        "annotation": {},
+        "desc": "空的destroy函数。",
+        "name": "dummy_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "void*",
+            "name": "data",
+            "desc": "数据。"
+          }
+        ],
+        "annotation": {},
+        "desc": "缺省的destroy函数。释放data指向的内存。",
+        "name": "default_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "const void*",
+            "name": "a",
+            "desc": "数据a。"
+          },
+          {
+            "type": "const void*",
+            "name": "b",
+            "desc": "数据b。"
+          }
+        ],
+        "annotation": {},
+        "desc": "指针比较。",
+        "name": "pointer_compare",
+        "return": {
+          "type": "int",
+          "desc": "返回0表示相等，返回负数表示小于，返回整数表示大于。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "const void*",
+            "name": "a",
+            "desc": "数据a。"
+          },
+          {
+            "type": "const void*",
+            "name": "b",
+            "desc": "数据b。"
+          }
+        ],
+        "annotation": {},
+        "desc": "始终返回相等。",
+        "name": "compare_always_equal",
+        "return": {
+          "type": "int",
+          "desc": "始终返回0。"
+        }
+      },
+      {
+        "params": [
+          {
             "type": "const char*",
             "name": "name",
             "desc": "名字字符串。"
