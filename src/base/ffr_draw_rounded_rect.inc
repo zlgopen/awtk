@@ -251,6 +251,7 @@ static inline void widget_image_data2color(unsigned char* d, int32_t x, int32_t 
       rgb->r = *d++;
       rgb->a = 255;
       break;
+#ifdef WITH_LCD_MONO
     case BITMAP_FMT_MONO: {
       uint8_t p = bitmap_mono_get_pixel(d, w, h, x, y);
       color_t c = color_from_mono(p);
@@ -260,6 +261,7 @@ static inline void widget_image_data2color(unsigned char* d, int32_t x, int32_t 
       rgb->a = c.rgba.a;
       break;
     }
+#endif
     default:
       break;
   }
@@ -307,9 +309,11 @@ static inline void widget_image_color2data(unsigned char* d, int32_t x, int32_t 
       *d++ = rgb.g;
       *d++ = rgb.r;
       break;
+#ifdef WITH_LCD_MONO
     case BITMAP_FMT_MONO: 
       bitmap_mono_set_pixel(d, w, h, x, y, rgb.r);
       break;
+#endif
     default:
       break;
   }

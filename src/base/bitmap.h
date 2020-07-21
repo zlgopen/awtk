@@ -270,6 +270,17 @@ ret_t bitmap_mono_dump(const uint8_t* buff, uint32_t w, uint32_t h);
 ret_t bitmap_destroy(bitmap_t* bitmap);
 
 /**
+ * @method bitmap_get_bpp_of_format
+ * 获取位图格式对应的颜色位数。
+ * @annotation ["deconstructor", "scriptable", "gc"]
+ * 
+ * @param {bitmap_format_t} format 位图格式。
+ * 
+ * @return {uint32_t} 成功返回颜色位数，失败返回0。
+ */
+uint32_t bitmap_get_bpp_of_format(bitmap_format_t format);
+
+/**
  * @enum image_draw_type_t
  * @prefix IMAGE_DRAW_
  * @annotation ["scriptable"]
@@ -411,7 +422,6 @@ typedef enum _image_draw_type_t {
 
 /*private*/
 ret_t bitmap_alloc_data(bitmap_t* bitmap);
-uint32_t bitmap_get_bpp_of_format(bitmap_format_t format);
 bool_t rgba_data_is_opaque(const uint8_t* data, uint32_t w, uint32_t h, uint8_t comp);
 
 bitmap_t* bitmap_clone(bitmap_t* bitmap);
