@@ -26,10 +26,6 @@
 #ifndef _COMMON_H
 #define _COMMON_H
 
-#ifdef HAVE_CONFIG_H
-# include <config.h>
-#endif
-
 #include <fribidi-common.h>
 
 #ifndef false
