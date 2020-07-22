@@ -1,8 +1,11 @@
 # 最新动态
 
+* 2020/07/22
+  * 增加 OBJECT\_CMD\_REMOVE\_CHECKED 、OBJECT\_PROP\_CHECKED和 OBJECT\_PROP\_SIZE。
+  
 * 2020/07/21
-  * 完善API文档增加导出函数。
   * 完善文档。
+  * 完善 API 文档增加导出函数。
   * 修改 gles 和 agge 的 svg 效果不一致的问题（感谢智明提供补丁）。
   * 给 bitmap 的函数注释，方便动态类库编译的时候调用其函数（感谢智明提供补丁）。
 
@@ -10,8 +13,8 @@
   * 完善校准窗口。
 
 * 2020/07/19
-  * 完善API文档。
-  * 增加[表格视图](https://github.com/zlgopen/awtk-widget-table-view)
+  * 完善 API 文档。
+  * 增加 [表格视图](https://github.com/zlgopen/awtk-widget-table-view)
 
 * 2020/07/17
   * 完善 scrollbar 支持大范围滚动。

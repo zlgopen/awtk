@@ -603,6 +603,13 @@ float_t object_get_prop_float_by_path(object_t* obj, const char* path, float_t d
 #define OBJECT_CMD_REMOVE "remove"
 
 /**
+ * @const OBJECT_CMD_REMOVE_CHECKED
+ * 删除勾选的属性。
+ *>参数为属性的名称或路径。
+ */
+#define OBJECT_CMD_REMOVE_CHECKED "remove_checked"
+
+/**
  * @const OBJECT_CMD_CLEAR
  * 清除全部属性。
  *>参数为属性的名称或路径。
@@ -622,6 +629,25 @@ float_t object_get_prop_float_by_path(object_t* obj, const char* path, float_t d
  *>参数为属性的名称或路径。
  */
 #define OBJECT_CMD_EDIT "edit"
+
+/**
+ * @enum object_prop_t
+ * @annotation ["scriptable", "string"]
+ * @prefix OBJECT_PROP_
+ * 对象常见属性定义
+ */
+
+/**
+ * @const OBJECT_PROP_SIZE
+ * 属性的个数。
+ */
+#define OBJECT_PROP_SIZE "#size"
+
+/**
+ * @const OBJECT_PROP_CHECKED
+ * 属性是否勾选。
+ */
+#define OBJECT_PROP_CHECKED "checked"
 
 END_C_DECLS
 
