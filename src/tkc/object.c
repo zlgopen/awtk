@@ -324,7 +324,7 @@ bool_t object_can_exec(object_t* obj, const char* name, const char* args) {
 
   if (emitter_dispatch(EMITTER(obj), cmd_exec_event_init(&e, EVT_CMD_CAN_EXEC, name, args)) !=
       RET_OK) {
-    return FALSE;
+    return e.can_exec;
   }
 
   if (obj->vt->can_exec != NULL) {
