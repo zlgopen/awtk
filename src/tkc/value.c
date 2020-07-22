@@ -354,6 +354,9 @@ double value_double(const value_t* v) {
     case VALUE_TYPE_WSTRING: {
       return (double)tk_watof(v->value.wstr);
     }
+    case VALUE_TYPE_BOOL: {
+      return value_bool(v) ? 1 : 0;
+    }
     default:
       break;
   }

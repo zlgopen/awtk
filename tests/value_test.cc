@@ -170,6 +170,12 @@ TEST(value, double) {
   ASSERT_EQ(value_double(&v), 10);
 }
 
+TEST(value, bool_to_double) {
+  value_t v;
+  ASSERT_EQ(&v, value_set_bool(&v, true));
+  ASSERT_EQ(value_double(&v), 1);
+}
+
 TEST(value, strdouble) {
   value_t v;
   ASSERT_EQ(&v, value_set_str(&v, "10"));
