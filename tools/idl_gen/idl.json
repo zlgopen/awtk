@@ -1279,6 +1279,26 @@
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
         }
+      },
+      {
+        "params": [
+          {
+            "type": "bitmap_format_t",
+            "name": "format",
+            "desc": "位图格式。"
+          }
+        ],
+        "annotation": {
+          "deconstructor": true,
+          "scriptable": true,
+          "gc": true
+        },
+        "desc": "获取位图格式对应的颜色位数。",
+        "name": "bitmap_get_bpp_of_format",
+        "return": {
+          "type": "uint32_t",
+          "desc": "成功返回颜色位数，失败返回0。"
+        }
       }
     ],
     "events": [],
@@ -20683,6 +20703,24 @@
             "type": "widget_t*",
             "name": "widget",
             "desc": "控件对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "判断当前控件是否是keyboard。\n\n> keyboard收到pointer事件时，不会让当前控件失去焦点。\n\n在自定义软键盘时，将所有按钮放到一个容器当中，并设置为is_keyboard。\n\n```c\nwidget_set_prop_bool(group, WIDGET_PROP_IS_KEYBOARD, TRUE);\n```",
+        "name": "widget_is_keyboard",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
           },
           {
             "type": "canvas_t*",
@@ -20724,6 +20762,100 @@
         "annotation": {},
         "desc": "根据控件的style绘制背景矩形。",
         "name": "widget_draw_background",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "画布对象。"
+          },
+          {
+            "type": "rect_t*",
+            "name": "r",
+            "desc": "矩形区域。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "根据控件的style绘制边框矩形。",
+        "name": "widget_stroke_border_rect",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "画布对象。"
+          },
+          {
+            "type": "rect_t*",
+            "name": "r",
+            "desc": "矩形区域。"
+          },
+          {
+            "type": "image_draw_type_t",
+            "name": "draw_type",
+            "desc": "图片缺省绘制方式。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "根据控件的style绘制背景矩形。",
+        "name": "widget_fill_bg_rect",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "画布对象。"
+          },
+          {
+            "type": "rect_t*",
+            "name": "r",
+            "desc": "矩形区域。"
+          },
+          {
+            "type": "image_draw_type_t",
+            "name": "draw_type",
+            "desc": "图片缺省绘制方式。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "根据控件的style绘制前景矩形。",
+        "name": "widget_fill_fg_rect",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -20820,6 +20952,52 @@
         "name": "widget_is_point_in",
         "return": {
           "type": "bool_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "event_t*",
+            "name": "e",
+            "desc": "事件。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "递归的分发一个事件到所有target子控件。",
+        "name": "widget_dispatch_to_target",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "event_t*",
+            "name": "e",
+            "desc": "事件。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "递归的分发一个事件到所有key_target子控件。",
+        "name": "widget_dispatch_to_key_target",
+        "return": {
+          "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       },
@@ -20950,6 +21128,124 @@
         "return": {
           "type": "widget_t*",
           "desc": "widget对象本身。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "让控件根据自己当前状态更新style。",
+        "name": "widget_update_style",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "让控件及子控件根据自己当前状态更新style。",
+        "name": "widget_update_style_recursive",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "递归的把父控件的key_target设置为自己。",
+        "name": "widget_set_as_key_target",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "把焦点移动下一个控件。\n\n>widget必须是当前焦点控件。",
+        "name": "widget_focus_next",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "把焦点移动前一个控件。\n\n>widget必须是当前焦点控件。",
+        "name": "widget_focus_prev",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "active",
+            "desc": "控件是否为当前项。"
+          },
+          {
+            "type": "bool_t",
+            "name": "checked",
+            "desc": "控件是否为选中项。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "把控件的状态转成获取style选要的状态，一般只在子类中使用。",
+        "name": "widget_get_state_for_style",
+        "return": {
+          "type": "const char*",
+          "desc": "返回状态值。"
         }
       },
       {
@@ -29671,6 +29967,28 @@
   },
   {
     "type": "enum",
+    "desc": "对象常见属性定义",
+    "consts": [
+      {
+        "desc": "属性的个数。",
+        "name": "OBJECT_PROP_SIZE"
+      },
+      {
+        "desc": "属性是否勾选。",
+        "name": "OBJECT_PROP_CHECKED"
+      }
+    ],
+    "header": "tkc/object.h",
+    "name": "object_prop_t",
+    "prefix": "OBJECT_PROP_",
+    "annotation": {
+      "scriptable": true,
+      "string": true
+    },
+    "level": 1
+  },
+  {
+    "type": "enum",
     "desc": "对象常见命令定义",
     "consts": [
       {
@@ -29692,6 +30010,10 @@
       {
         "desc": "删除属性。\n>参数为属性的名称或路径。",
         "name": "OBJECT_CMD_REMOVE"
+      },
+      {
+        "desc": "删除勾选的属性。\n>参数为属性的名称或路径。",
+        "name": "OBJECT_CMD_REMOVE_CHECKED"
       },
       {
         "desc": "清除全部属性。\n>参数为属性的名称或路径。",
@@ -30885,6 +31207,39 @@
     "level": 1
   },
   {
+    "type": "enum",
+    "desc": "指示器默认绘制的类型。",
+    "consts": [
+      {
+        "desc": "自动选择。",
+        "name": "INDICATOR_DEFAULT_PAINT_AUTO"
+      },
+      {
+        "desc": "实心圆点指示器，当前项填充selected_fg_color，其他填充fg_color。",
+        "name": "INDICATOR_DEFAULT_PAINT_FILL_DOT"
+      },
+      {
+        "desc": "镂空圆点指示器，当前项填充selected_fg_color，其他镂空fg_color。",
+        "name": "INDICATOR_DEFAULT_PAINT_STROKE_DOT"
+      },
+      {
+        "desc": "实心矩形指示器，当前项填充selected_fg_color，其他填充fg_color。",
+        "name": "INDICATOR_DEFAULT_PAINT_FILL_RECT"
+      },
+      {
+        "desc": "镂空矩形指示器，当前项填充selected_fg_color，其他镂空fg_color。",
+        "name": "INDICATOR_DEFAULT_PAINT_STROKE_RECT"
+      }
+    ],
+    "header": "slide_view/slide_indicator.h",
+    "name": "indicator_default_paint_t",
+    "prefix": "INDICATOR_DEFAULT_PAINT_",
+    "annotation": {
+      "scriptable": true
+    },
+    "level": 1
+  },
+  {
     "type": "class",
     "methods": [
       {
@@ -31117,39 +31472,6 @@
     "header": "tkc/matrix.h",
     "desc": "2D矩阵对象。",
     "name": "matrix_t",
-    "level": 1
-  },
-  {
-    "type": "enum",
-    "desc": "指示器默认绘制的类型。",
-    "consts": [
-      {
-        "desc": "自动选择。",
-        "name": "INDICATOR_DEFAULT_PAINT_AUTO"
-      },
-      {
-        "desc": "实心圆点指示器，当前项填充selected_fg_color，其他填充fg_color。",
-        "name": "INDICATOR_DEFAULT_PAINT_FILL_DOT"
-      },
-      {
-        "desc": "镂空圆点指示器，当前项填充selected_fg_color，其他镂空fg_color。",
-        "name": "INDICATOR_DEFAULT_PAINT_STROKE_DOT"
-      },
-      {
-        "desc": "实心矩形指示器，当前项填充selected_fg_color，其他填充fg_color。",
-        "name": "INDICATOR_DEFAULT_PAINT_FILL_RECT"
-      },
-      {
-        "desc": "镂空矩形指示器，当前项填充selected_fg_color，其他镂空fg_color。",
-        "name": "INDICATOR_DEFAULT_PAINT_STROKE_RECT"
-      }
-    ],
-    "header": "slide_view/slide_indicator.h",
-    "name": "indicator_default_paint_t",
-    "prefix": "INDICATOR_DEFAULT_PAINT_",
-    "annotation": {
-      "scriptable": true
-    },
     "level": 1
   },
   {
@@ -37494,6 +37816,24 @@
   },
   {
     "type": "enum",
+    "desc": "缓存不够时丢弃数据的策略。",
+    "consts": [
+      {
+        "desc": "丢弃旧的数据。",
+        "name": "DATA_DISCARD_OLD"
+      },
+      {
+        "desc": "丢弃新的数据。",
+        "name": "DATA_DISCARD_NEW"
+      }
+    ],
+    "header": "misc/ostream_retry.h",
+    "name": "data_discard_policy_t",
+    "prefix": "DATA_DISCARD_",
+    "level": 1
+  },
+  {
+    "type": "enum",
     "desc": "数据资源类型定义。",
     "consts": [
       {
@@ -37520,24 +37860,6 @@
     "header": "tkc/asset_info.h",
     "name": "asset_data_type_t",
     "prefix": "ASSET_DATA_TYPE_",
-    "level": 1
-  },
-  {
-    "type": "enum",
-    "desc": "缓存不够时丢弃数据的策略。",
-    "consts": [
-      {
-        "desc": "丢弃旧的数据。",
-        "name": "DATA_DISCARD_OLD"
-      },
-      {
-        "desc": "丢弃新的数据。",
-        "name": "DATA_DISCARD_NEW"
-      }
-    ],
-    "header": "misc/ostream_retry.h",
-    "name": "data_discard_policy_t",
-    "prefix": "DATA_DISCARD_",
     "level": 1
   },
   {
@@ -37860,6 +38182,33 @@
       {
         "params": [
           {
+            "type": "int",
+            "name": "fd",
+            "desc": "fd."
+          }
+        ],
+        "annotation": {},
+        "desc": "创建ostream对象。",
+        "name": "tk_ostream_serial_create",
+        "return": {
+          "type": "tk_ostream_t*",
+          "desc": "返回ostream对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "serial/ostream_serial.h",
+    "desc": "基于串口实现的输出流。\n\ninput stream base on fd",
+    "name": "tk_ostream_serial_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
             "type": "bsvg_t*",
             "name": "",
             "desc": "。"
@@ -37889,33 +38238,6 @@
     "header": "svg/bsvg.h",
     "desc": "SVG的二进制格式。",
     "name": "bsvg_t",
-    "level": 1
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "int",
-            "name": "fd",
-            "desc": "fd."
-          }
-        ],
-        "annotation": {},
-        "desc": "创建ostream对象。",
-        "name": "tk_ostream_serial_create",
-        "return": {
-          "type": "tk_ostream_t*",
-          "desc": "返回ostream对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "serial/ostream_serial.h",
-    "desc": "基于串口实现的输出流。\n\ninput stream base on fd",
-    "name": "tk_ostream_serial_t",
     "level": 1
   },
   {
@@ -39277,33 +39599,6 @@
     "type": "class",
     "methods": [
       {
-        "params": [],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "创建SDL输入法对象。",
-        "name": "input_method_sdl_create",
-        "return": {
-          "type": "input_method_t*",
-          "desc": "返回输入法对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "input_methods/input_method_sdl.h",
-    "desc": "SDL输入法实现。\n\nSDL输入法使用平台自身的输入法引擎，一般在桌面Linux、MacOS、Windows、Android和iOS上使用。",
-    "name": "input_method_sdl_t",
-    "parent": "input_method_t",
-    "annotation": {
-      "fake": true
-    },
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
         "params": [
           {
             "type": "int",
@@ -39405,8 +39700,8 @@
         "annotation": {
           "constructor": true
         },
-        "desc": "创建空输入法对象。",
-        "name": "input_method_null_create",
+        "desc": "创建SDL输入法对象。",
+        "name": "input_method_sdl_create",
         "return": {
           "type": "input_method_t*",
           "desc": "返回输入法对象。"
@@ -39415,9 +39710,9 @@
     ],
     "events": [],
     "properties": [],
-    "header": "input_methods/input_method_null.h",
-    "desc": "空输入法实现。\n\n在不需要输入法的嵌入式平台使用空的输入法。",
-    "name": "input_method_null_t",
+    "header": "input_methods/input_method_sdl.h",
+    "desc": "SDL输入法实现。\n\nSDL输入法使用平台自身的输入法引擎，一般在桌面Linux、MacOS、Windows、Android和iOS上使用。",
+    "name": "input_method_sdl_t",
     "parent": "input_method_t",
     "annotation": {
       "fake": true
@@ -39557,8 +39852,8 @@
         "annotation": {
           "constructor": true
         },
-        "desc": "创建缺省输入法对象。",
-        "name": "input_method_default_create",
+        "desc": "创建空输入法对象。",
+        "name": "input_method_null_create",
         "return": {
           "type": "input_method_t*",
           "desc": "返回输入法对象。"
@@ -39567,9 +39862,9 @@
     ],
     "events": [],
     "properties": [],
-    "header": "input_methods/input_method_default.h",
-    "desc": "缺省输入法实现。输入法会启用软键盘，但是开发者可以自定义输入法引擎。\n\n目前可以选择不启用输入法引擎或启用拼音输入法引擎。\n\n开发者也可以开发手写输入法或语音输入法，如果实现时遇到问题可以和我们交流。",
-    "name": "input_method_default_t",
+    "header": "input_methods/input_method_null.h",
+    "desc": "空输入法实现。\n\n在不需要输入法的嵌入式平台使用空的输入法。",
+    "name": "input_method_null_t",
     "parent": "input_method_t",
     "annotation": {
       "fake": true
@@ -39960,6 +40255,33 @@
       "scriptable": true
     },
     "parent": "event_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建缺省输入法对象。",
+        "name": "input_method_default_create",
+        "return": {
+          "type": "input_method_t*",
+          "desc": "返回输入法对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "input_methods/input_method_default.h",
+    "desc": "缺省输入法实现。输入法会启用软键盘，但是开发者可以自定义输入法引擎。\n\n目前可以选择不启用输入法引擎或启用拼音输入法引擎。\n\n开发者也可以开发手写输入法或语音输入法，如果实现时遇到问题可以和我们交流。",
+    "name": "input_method_default_t",
+    "parent": "input_method_t",
+    "annotation": {
+      "fake": true
+    },
     "level": 2
   },
   {
@@ -40734,6 +41056,108 @@
       {
         "params": [
           {
+            "type": "event_t*",
+            "name": "event",
+            "desc": "event对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "把event对象转wheel_event_t对象，主要给脚本语言使用。",
+        "name": "wheel_event_cast",
+        "return": {
+          "type": "wheel_event_t*",
+          "desc": "event对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "wheel_event_t*",
+            "name": "event",
+            "desc": "event对象。"
+          },
+          {
+            "type": "void*",
+            "name": "target",
+            "desc": "事件目标。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "type",
+            "desc": "事件类型。"
+          },
+          {
+            "type": "int32_t",
+            "name": "dy",
+            "desc": "滚轮的y值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "初始化事件。",
+        "name": "wheel_event_init",
+        "return": {
+          "type": "event_t*",
+          "desc": "event对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "dy",
+        "desc": "滚轮的y值。",
+        "type": "int32_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "alt",
+        "desc": "alt键是否按下。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "ctrl",
+        "desc": "ctrl键是否按下。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "shift",
+        "desc": "shift键是否按下。",
+        "type": "bool_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      }
+    ],
+    "header": "base/events.h",
+    "desc": "滚轮事件。",
+    "name": "wheel_event_t",
+    "annotation": {
+      "scriptable": true
+    },
+    "parent": "event_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
             "type": "widget_t*",
             "name": "parent",
             "desc": "父控件"
@@ -41122,108 +41546,6 @@
       "design": true,
       "widget": true
     },
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "event_t*",
-            "name": "event",
-            "desc": "event对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": "把event对象转wheel_event_t对象，主要给脚本语言使用。",
-        "name": "wheel_event_cast",
-        "return": {
-          "type": "wheel_event_t*",
-          "desc": "event对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "wheel_event_t*",
-            "name": "event",
-            "desc": "event对象。"
-          },
-          {
-            "type": "void*",
-            "name": "target",
-            "desc": "事件目标。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "type",
-            "desc": "事件类型。"
-          },
-          {
-            "type": "int32_t",
-            "name": "dy",
-            "desc": "滚轮的y值。"
-          }
-        ],
-        "annotation": {},
-        "desc": "初始化事件。",
-        "name": "wheel_event_init",
-        "return": {
-          "type": "event_t*",
-          "desc": "event对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [
-      {
-        "name": "dy",
-        "desc": "滚轮的y值。",
-        "type": "int32_t",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "alt",
-        "desc": "alt键是否按下。",
-        "type": "bool_t",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "ctrl",
-        "desc": "ctrl键是否按下。",
-        "type": "bool_t",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      },
-      {
-        "name": "shift",
-        "desc": "shift键是否按下。",
-        "type": "bool_t",
-        "annotation": {
-          "readable": true,
-          "scriptable": true
-        }
-      }
-    ],
-    "header": "base/events.h",
-    "desc": "滚轮事件。",
-    "name": "wheel_event_t",
-    "annotation": {
-      "scriptable": true
-    },
-    "parent": "event_t",
     "level": 2
   },
   {
@@ -42532,6 +42854,75 @@
   },
   {
     "type": "class",
+    "methods": [],
+    "events": [],
+    "properties": [],
+    "header": "tkc/mem_allocator_debug.h",
+    "desc": "对现有的allocator进行包装，记录分配的内存，用于帮助分析内存的使用和泄露。",
+    "name": "mem_allocator_debug_t",
+    "parent": "mem_allocator_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [],
+    "events": [],
+    "properties": [],
+    "header": "tkc/mem_allocator_lock.h",
+    "desc": "对现有的allocator进行包装，提供互斥功能。",
+    "name": "mem_allocator_lock_t",
+    "parent": "mem_allocator_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [],
+    "events": [],
+    "properties": [],
+    "header": "tkc/mem_allocator_oom.h",
+    "desc": "对现有的allocator进行包装，如果分配内存失败，调用预先设置的回调函数释放内存，然后再重试。",
+    "name": "mem_allocator_oom_t",
+    "parent": "mem_allocator_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [],
+    "events": [],
+    "properties": [],
+    "header": "tkc/mem_allocator_pool.h",
+    "desc": "对现有的allocator进行包装，预先分配一部分内存，用于分配小块内存，可以避免内存碎片。",
+    "name": "mem_allocator_pool_t",
+    "parent": "mem_allocator_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [],
+    "events": [],
+    "properties": [],
+    "header": "tkc/mem_allocator_simple.h",
+    "desc": "简单的内存分配器。",
+    "name": "mem_allocator_simple_t",
+    "parent": "mem_allocator_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [],
+    "events": [],
+    "properties": [],
+    "header": "tkc/mem_allocator_std.h",
+    "desc": "将标准的C的内存分配函数包装成内存分配器。",
+    "name": "mem_allocator_std_t",
+    "parent": "mem_allocator_t",
+    "annotation": {
+      "fake": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
     "methods": [
       {
         "params": [
@@ -42722,75 +43113,6 @@
       "scriptable": true,
       "design": true,
       "widget": true
-    },
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [],
-    "events": [],
-    "properties": [],
-    "header": "tkc/mem_allocator_debug.h",
-    "desc": "对现有的allocator进行包装，记录分配的内存，用于帮助分析内存的使用和泄露。",
-    "name": "mem_allocator_debug_t",
-    "parent": "mem_allocator_t",
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [],
-    "events": [],
-    "properties": [],
-    "header": "tkc/mem_allocator_lock.h",
-    "desc": "对现有的allocator进行包装，提供互斥功能。",
-    "name": "mem_allocator_lock_t",
-    "parent": "mem_allocator_t",
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [],
-    "events": [],
-    "properties": [],
-    "header": "tkc/mem_allocator_oom.h",
-    "desc": "对现有的allocator进行包装，如果分配内存失败，调用预先设置的回调函数释放内存，然后再重试。",
-    "name": "mem_allocator_oom_t",
-    "parent": "mem_allocator_t",
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [],
-    "events": [],
-    "properties": [],
-    "header": "tkc/mem_allocator_pool.h",
-    "desc": "对现有的allocator进行包装，预先分配一部分内存，用于分配小块内存，可以避免内存碎片。",
-    "name": "mem_allocator_pool_t",
-    "parent": "mem_allocator_t",
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [],
-    "events": [],
-    "properties": [],
-    "header": "tkc/mem_allocator_simple.h",
-    "desc": "简单的内存分配器。",
-    "name": "mem_allocator_simple_t",
-    "parent": "mem_allocator_t",
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [],
-    "events": [],
-    "properties": [],
-    "header": "tkc/mem_allocator_std.h",
-    "desc": "将标准的C的内存分配函数包装成内存分配器。",
-    "name": "mem_allocator_std_t",
-    "parent": "mem_allocator_t",
-    "annotation": {
-      "fake": true
     },
     "level": 2
   },
@@ -44005,30 +44327,6 @@
     "type": "class",
     "methods": [
       {
-        "params": [],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "创建子控件布局对象。",
-        "name": "children_layouter_list_view_create",
-        "return": {
-          "type": "children_layouter_t*",
-          "desc": "返回创建子控件布局对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "scroll_view/children_layouter_list_view.h",
-    "desc": "listview的子控件布局算法实现。\n\n> 用法请参考：[listview子控件布局算法](\nhttps://github.com/zlgopen/awtk/blob/master/docs/children_layouter_list_view.md)",
-    "name": "children_layouter_list_view_t",
-    "parent": "children_layouter_t",
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
         "params": [
           {
             "type": "widget_t*",
@@ -44873,6 +45171,30 @@
       "design": true,
       "widget": true
     },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建子控件布局对象。",
+        "name": "children_layouter_list_view_create",
+        "return": {
+          "type": "children_layouter_t*",
+          "desc": "返回创建子控件布局对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "scroll_view/children_layouter_list_view.h",
+    "desc": "listview的子控件布局算法实现。\n\n> 用法请参考：[listview子控件布局算法](\nhttps://github.com/zlgopen/awtk/blob/master/docs/children_layouter_list_view.md)",
+    "name": "children_layouter_list_view_t",
+    "parent": "children_layouter_t",
     "level": 2
   },
   {
@@ -58329,6 +58651,104 @@
       {
         "params": [
           {
+            "type": "widget_t*",
+            "name": "parent",
+            "desc": "父控件"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度"
+          }
+        ],
+        "annotation": {
+          "constructor": true,
+          "scriptable": true
+        },
+        "desc": "创建svg_image对象",
+        "name": "svg_image_create",
+        "return": {
+          "type": "widget_t*",
+          "desc": "对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image对象。"
+          },
+          {
+            "type": "char*",
+            "name": "name",
+            "desc": "图片名称，该图片必须存在于资源管理器。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置控件的图片名称。\n\n> 如果需要显示文件系统中的图片，只需将图片名称换成实际的文件名，并加上\"file://\"前缀即可。",
+        "name": "svg_image_set_image",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "svg_image对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true,
+          "scriptable": true
+        },
+        "desc": "转换为svg_image对象(供脚本语言使用)。",
+        "name": "svg_image_cast",
+        "return": {
+          "type": "widget_t*",
+          "desc": "svg_image对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "svg_image/svg_image.h",
+    "desc": "SVG图片控件。\n\nsvg\\_image\\_t是[image\\_base\\_t](image_base_t.md)的子类控件，image\\_base\\_t的函数均适用于svg\\_image\\_t控件。\n\n在xml中使用\"svg\"标签创建SVG图片控件。如：\n\n```xml\n<svg image=\"girl\"/>\n```\n\n>更多用法请参考：[svg image](\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/svg_image.xml)\n\n在c代码中使用函数svg\\_image\\_create创建SVG图片控件。如：\n\n```c\nwidget_t* image = svg_image_create(win, 10, 10, 200, 200);\nimage_set_image(image, \"girl\");\n```\n\n> 创建之后: 需要用widget\\_set\\_image设置图片名称。\n\n> 完整示例请参考：[svg image demo](\nhttps://github.com/zlgopen/awtk-c-demos/blob/master/demos/svg_image.c)\n\n可用通过style来设置控件的显示风格，如背景和边框等。如：\n\n```xml\n<svg>\n<style name=\"default\">\n<normal border_color=\"green\" fg_color=\"red\" />\n</style>\n</svg>\n```\n\n> 更多用法请参考：[theme default](\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml)",
+    "name": "svg_image_t",
+    "parent": "image_base_t",
+    "annotation": {
+      "scriptable": true,
+      "design": true,
+      "widget": true
+    },
+    "level": 3
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
             "type": "tk_istream_t*",
             "name": "stream",
             "desc": "istream对象。"
@@ -58637,104 +59057,6 @@
     "desc": "输入输出流的接口。",
     "name": "tk_iostream_t",
     "parent": "object_t",
-    "level": 3
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "parent",
-            "desc": "父控件"
-          },
-          {
-            "type": "xy_t",
-            "name": "x",
-            "desc": "x坐标"
-          },
-          {
-            "type": "xy_t",
-            "name": "y",
-            "desc": "y坐标"
-          },
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度"
-          }
-        ],
-        "annotation": {
-          "constructor": true,
-          "scriptable": true
-        },
-        "desc": "创建svg_image对象",
-        "name": "svg_image_create",
-        "return": {
-          "type": "widget_t*",
-          "desc": "对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "image对象。"
-          },
-          {
-            "type": "char*",
-            "name": "name",
-            "desc": "图片名称，该图片必须存在于资源管理器。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "设置控件的图片名称。\n\n> 如果需要显示文件系统中的图片，只需将图片名称换成实际的文件名，并加上\"file://\"前缀即可。",
-        "name": "svg_image_set_image",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "svg_image对象。"
-          }
-        ],
-        "annotation": {
-          "cast": true,
-          "scriptable": true
-        },
-        "desc": "转换为svg_image对象(供脚本语言使用)。",
-        "name": "svg_image_cast",
-        "return": {
-          "type": "widget_t*",
-          "desc": "svg_image对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "svg_image/svg_image.h",
-    "desc": "SVG图片控件。\n\nsvg\\_image\\_t是[image\\_base\\_t](image_base_t.md)的子类控件，image\\_base\\_t的函数均适用于svg\\_image\\_t控件。\n\n在xml中使用\"svg\"标签创建SVG图片控件。如：\n\n```xml\n<svg image=\"girl\"/>\n```\n\n>更多用法请参考：[svg image](\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/svg_image.xml)\n\n在c代码中使用函数svg\\_image\\_create创建SVG图片控件。如：\n\n```c\nwidget_t* image = svg_image_create(win, 10, 10, 200, 200);\nimage_set_image(image, \"girl\");\n```\n\n> 创建之后: 需要用widget\\_set\\_image设置图片名称。\n\n> 完整示例请参考：[svg image demo](\nhttps://github.com/zlgopen/awtk-c-demos/blob/master/demos/svg_image.c)\n\n可用通过style来设置控件的显示风格，如背景和边框等。如：\n\n```xml\n<svg>\n<style name=\"default\">\n<normal border_color=\"green\" fg_color=\"red\" />\n</style>\n</svg>\n```\n\n> 更多用法请参考：[theme default](\nhttps://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml)",
-    "name": "svg_image_t",
-    "parent": "image_base_t",
-    "annotation": {
-      "scriptable": true,
-      "design": true,
-      "widget": true
-    },
     "level": 3
   },
   {
@@ -59334,42 +59656,31 @@
       {
         "params": [
           {
-            "type": "tk_ostream_t*",
-            "name": "real_ostream",
-            "desc": "实际的ostream对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建ostream对象。\n\n本函数自动增加real_ostream的引用计数。",
-        "name": "tk_ostream_buffered_create",
-        "return": {
-          "type": "tk_ostream_t*",
-          "desc": "返回ostream对象。"
-        }
-      },
-      {
-        "params": [
+            "type": "tk_istream_t*",
+            "name": "real_istream",
+            "desc": "实际的istream。"
+          },
           {
-            "type": "tk_ostream_t*",
-            "name": "ostream",
-            "desc": "ostream对象。"
+            "type": "uint32_t",
+            "name": "buffer_size",
+            "desc": "缓冲区的大小。"
           }
         ],
         "annotation": {},
-        "desc": "获取当前缓存数据的长度。",
-        "name": "tk_ostream_buffered_get_size",
+        "desc": "创建istream对象。\n\n本函数自动增加real_ostream的引用计数。",
+        "name": "tk_istream_buffered_create",
         "return": {
-          "type": "uint32_t",
-          "desc": "返回缓存数据的长度。"
+          "type": "tk_istream_t*",
+          "desc": "返回istream对象。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "buffered/ostream_buffered.h",
-    "desc": "先将数据写入一个缓存区，调用flush时才真正写入底层的ostream。",
-    "name": "tk_ostream_buffered_t",
-    "parent": "tk_ostream_t",
+    "header": "buffered/istream_buffered.h",
+    "desc": "缓冲输入流。\n\n如果调用者每次只读取少量数据，可以使用本类对底层istream进行装饰，以提高读取效率。",
+    "name": "tk_istream_buffered_t",
+    "parent": "tk_istream_t",
     "level": 4
   },
   {
@@ -59384,11 +59695,11 @@
           }
         ],
         "annotation": {},
-        "desc": "创建istream对象。\n\n> 只能由iostream_shdlc调用。",
-        "name": "tk_istream_shdlc_create",
+        "desc": "创建ostream对象。\n\n> 只能由iostream_shdlc调用。",
+        "name": "tk_ostream_shdlc_create",
         "return": {
-          "type": "tk_istream_t*",
-          "desc": "返回istream对象。"
+          "type": "tk_ostream_t*",
+          "desc": "返回ostream对象。"
         }
       }
     ],
@@ -59403,12 +59714,17 @@
         "name": "retry_times",
         "desc": "失败重传次数。",
         "type": "uint32_t"
+      },
+      {
+        "name": "compress_threshold",
+        "desc": "激活压缩的阈值。",
+        "type": "uint32_t"
       }
     ],
-    "header": "shdlc/istream_shdlc.h",
-    "desc": "reliable istream base on simple HDLC",
-    "name": "tk_istream_shdlc_t",
-    "parent": "tk_istream_t",
+    "header": "shdlc/ostream_shdlc.h",
+    "desc": "reliable ostream base on simple HDLC",
+    "name": "tk_ostream_shdlc_t",
+    "parent": "tk_ostream_t",
     "level": 4
   },
   {
@@ -60096,11 +60412,11 @@
           }
         ],
         "annotation": {},
-        "desc": "创建ostream对象。\n\n> 只能由iostream_shdlc调用。",
-        "name": "tk_ostream_shdlc_create",
+        "desc": "创建istream对象。\n\n> 只能由iostream_shdlc调用。",
+        "name": "tk_istream_shdlc_create",
         "return": {
-          "type": "tk_ostream_t*",
-          "desc": "返回ostream对象。"
+          "type": "tk_istream_t*",
+          "desc": "返回istream对象。"
         }
       }
     ],
@@ -60115,17 +60431,12 @@
         "name": "retry_times",
         "desc": "失败重传次数。",
         "type": "uint32_t"
-      },
-      {
-        "name": "compress_threshold",
-        "desc": "激活压缩的阈值。",
-        "type": "uint32_t"
       }
     ],
-    "header": "shdlc/ostream_shdlc.h",
-    "desc": "reliable ostream base on simple HDLC",
-    "name": "tk_ostream_shdlc_t",
-    "parent": "tk_ostream_t",
+    "header": "shdlc/istream_shdlc.h",
+    "desc": "reliable istream base on simple HDLC",
+    "name": "tk_istream_shdlc_t",
+    "parent": "tk_istream_t",
     "level": 4
   },
   {
@@ -60267,31 +60578,42 @@
       {
         "params": [
           {
-            "type": "tk_istream_t*",
-            "name": "real_istream",
-            "desc": "实际的istream。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "buffer_size",
-            "desc": "缓冲区的大小。"
+            "type": "tk_ostream_t*",
+            "name": "real_ostream",
+            "desc": "实际的ostream对象。"
           }
         ],
         "annotation": {},
-        "desc": "创建istream对象。\n\n本函数自动增加real_ostream的引用计数。",
-        "name": "tk_istream_buffered_create",
+        "desc": "创建ostream对象。\n\n本函数自动增加real_ostream的引用计数。",
+        "name": "tk_ostream_buffered_create",
         "return": {
-          "type": "tk_istream_t*",
-          "desc": "返回istream对象。"
+          "type": "tk_ostream_t*",
+          "desc": "返回ostream对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_ostream_t*",
+            "name": "ostream",
+            "desc": "ostream对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取当前缓存数据的长度。",
+        "name": "tk_ostream_buffered_get_size",
+        "return": {
+          "type": "uint32_t",
+          "desc": "返回缓存数据的长度。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "buffered/istream_buffered.h",
-    "desc": "缓冲输入流。\n\n如果调用者每次只读取少量数据，可以使用本类对底层istream进行装饰，以提高读取效率。",
-    "name": "tk_istream_buffered_t",
-    "parent": "tk_istream_t",
+    "header": "buffered/ostream_buffered.h",
+    "desc": "先将数据写入一个缓存区，调用flush时才真正写入底层的ostream。",
+    "name": "tk_ostream_buffered_t",
+    "parent": "tk_ostream_t",
     "level": 4
   }
 ]

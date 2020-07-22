@@ -3,6 +3,7 @@
 * 2020/07/22
   * 增加 OBJECT\_CMD\_REMOVE\_CHECKED 、OBJECT\_PROP\_CHECKED和 OBJECT\_PROP\_SIZE。
   * 完善 value\_double，支持bool到double转换。
+  * 完善 API 注释（感谢俊杰提供补丁）。
 
 * 2020/07/21
   * 完善文档。

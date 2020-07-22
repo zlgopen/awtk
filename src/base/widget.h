@@ -1886,7 +1886,7 @@ ret_t widget_unref(widget_t* widget);
  * widget_set_prop_bool(group, WIDGET_PROP_IS_KEYBOARD, TRUE);
  * ```
  *
- * @annotation ["private"]
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -1918,7 +1918,7 @@ ret_t widget_draw_background(widget_t* widget, canvas_t* c);
 /**
  * @method widget_stroke_border_rect
  * 根据控件的style绘制边框矩形。
- * @annotation ["private"]
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {canvas_t*} c 画布对象。
  * @param {rect_t*} r 矩形区域。
@@ -1930,7 +1930,7 @@ ret_t widget_stroke_border_rect(widget_t* widget, canvas_t* c, rect_t* r);
 /**
  * @method widget_fill_bg_rect
  * 根据控件的style绘制背景矩形。
- * @annotation ["private"]
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {canvas_t*} c 画布对象。
  * @param {rect_t*} r 矩形区域。
@@ -1943,7 +1943,7 @@ ret_t widget_fill_bg_rect(widget_t* widget, canvas_t* c, rect_t* r, image_draw_t
 /**
  * @method widget_fill_fg_rect
  * 根据控件的style绘制前景矩形。
- * @annotation ["private"]
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {canvas_t*} c 画布对象。
  * @param {rect_t*} r 矩形区域。
@@ -2002,7 +2002,7 @@ bool_t widget_is_point_in(widget_t* widget, xy_t x, xy_t y, bool_t is_local);
 /**
  * @method widget_dispatch_to_target
  * 递归的分发一个事件到所有target子控件。
- * @annotation ["private"]
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {event_t*} e 事件。
  *
@@ -2013,7 +2013,7 @@ ret_t widget_dispatch_to_target(widget_t* widget, event_t* e);
 /**
  * @method widget_dispatch_to_key_target
  * 递归的分发一个事件到所有key_target子控件。
- * @annotation ["private"]
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {event_t*} e 事件。
  *
@@ -2079,7 +2079,7 @@ widget_t* widget_create(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_
 /**
  * @method widget_update_style
  * 让控件根据自己当前状态更新style。
- * @annotation ["private"]
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -2089,7 +2089,7 @@ ret_t widget_update_style(widget_t* widget);
 /**
  * @method widget_update_style_recursive
  * 让控件及子控件根据自己当前状态更新style。
- * @annotation ["private"]
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -2100,7 +2100,7 @@ ret_t widget_update_style_recursive(widget_t* widget);
  * @method widget_set_as_key_target
  * 递归的把父控件的key_target设置为自己。
  *
- * @annotation ["private"]
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -2112,7 +2112,7 @@ ret_t widget_set_as_key_target(widget_t* widget);
  * 把焦点移动下一个控件。
  *
  *>widget必须是当前焦点控件。
- * @annotation ["private"]
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -2124,7 +2124,7 @@ ret_t widget_focus_next(widget_t* widget);
  * 把焦点移动前一个控件。
  *
  *>widget必须是当前焦点控件。
- * @annotation ["private"]
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -2134,7 +2134,7 @@ ret_t widget_focus_prev(widget_t* widget);
 /**
  * @method widget_get_state_for_style
  * 把控件的状态转成获取style选要的状态，一般只在子类中使用。
- * @annotation ["private"]
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
  * @param {bool_t} active 控件是否为当前项。
  * @param {bool_t} checked 控件是否为选中项。
