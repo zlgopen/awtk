@@ -31,7 +31,6 @@
 
 BEGIN_C_DECLS
 
-
 /**
  * @class eval_t
  * @annotation ["fake"]

@@ -1277,3 +1277,21 @@ TEST(Widget, set_child_text_with_double) {
 
   widget_destroy(view);
 }
+
+TEST(Widget, is_parent_of) {
+  widget_t* view = view_create(NULL, 0, 0, 0, 0);
+  widget_t* label = label_create(view, 0, 0, 0, 0);
+  widget_t* button = button_create(label, 0, 0, 0, 0);
+  widget_set_name(label, "aaa");
+
+  ASSERT_EQ(widget_is_parent_of(view, label), TRUE);
+  ASSERT_EQ(widget_is_direct_parent_of(view, label), TRUE);
+
+  ASSERT_EQ(widget_is_parent_of(view, button), TRUE);
+  ASSERT_EQ(widget_is_direct_parent_of(view, button), FALSE);
+
+  ASSERT_EQ(widget_is_parent_of(label, view), FALSE);
+  ASSERT_EQ(widget_is_direct_parent_of(label, view), FALSE);
+
+  widget_destroy(view);
+}

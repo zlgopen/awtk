@@ -20246,6 +20246,52 @@
             "type": "widget_t*",
             "name": "widget",
             "desc": "控件对象。"
+          },
+          {
+            "type": "widget_t*",
+            "name": "child",
+            "desc": "控件对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "判断当前控件是否是指定控件的父控件(包括非直系)。",
+        "name": "widget_is_parent_of",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回TRUE表示是，否则表示不是。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "widget_t*",
+            "name": "child",
+            "desc": "控件对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "判断当前控件是否是指定控件的直系父控件。",
+        "name": "widget_is_direct_parent_of",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回TRUE表示是，否则表示不是。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
           }
         ],
         "annotation": {
@@ -40242,6 +40288,15 @@
         "name": "result",
         "desc": "执行结果(适用于EXECED)。",
         "type": "ret_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "can_exec",
+        "desc": "执行结果(适用于CAN_EXEC)。",
+        "type": "bool_t",
         "annotation": {
           "readable": true,
           "scriptable": true

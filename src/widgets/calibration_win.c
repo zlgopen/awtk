@@ -87,12 +87,12 @@ static ret_t calibration_win_on_event(widget_t* widget, event_t* e) {
 
   switch (type) {
     case EVT_WINDOW_OPEN: {
-        widget_grab(widget->parent, widget);
-        return RET_OK;
+      widget_grab(widget->parent, widget);
+      return RET_OK;
     }
     case EVT_WINDOW_CLOSE: {
-        widget_ungrab(widget->parent, widget);
-        return RET_OK;
+      widget_ungrab(widget->parent, widget);
+      return RET_OK;
     }
     case EVT_POINTER_UP: {
       point_t* p = win->points + win->cursor;

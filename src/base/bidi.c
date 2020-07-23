@@ -64,7 +64,7 @@ static FriBidiParType bidi_type_to(bidi_type_t type) {
 }
 
 bidi_type_t bidi_type_from_name(const char* name) {
-  if(name == NULL || *name == '\0') {
+  if (name == NULL || *name == '\0') {
     return BIDI_TYPE_AUTO;
   }
 
