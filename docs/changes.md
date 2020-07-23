@@ -1,5 +1,8 @@
 # 最新动态
 
+* 2020/07/23
+  * 修复 opengl 下没有考虑 fbo 返回来的数据为预乘数据的问题和让 opengl 支持预乘贴图显示（感谢智明提供补丁）。
+
 * 2020/07/22
   * 增加 OBJECT\_CMD\_REMOVE\_CHECKED 、OBJECT\_PROP\_CHECKED和 OBJECT\_PROP\_SIZE。
   * 完善 value\_double，支持bool到double转换。

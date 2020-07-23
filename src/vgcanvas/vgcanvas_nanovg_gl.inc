@@ -265,6 +265,7 @@ static ret_t vgcanvas_nanovg_unbind_fbo(vgcanvas_t* vgcanvas, framebuffer_object
 
 static ret_t vgcanvas_nanovg_fbo_to_bitmap(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo,
                                            bitmap_t* img, rect_t* r) {
+  uint32_t i = 0;
   uint32_t x = 0;
   uint32_t y = 0;
   uint32_t height = 0;
@@ -291,9 +292,24 @@ static ret_t vgcanvas_nanovg_fbo_to_bitmap(vgcanvas_t* vgcanvas, framebuffer_obj
 
   p = data + ((img->h - 1) * img->line_length);
 
-  /* 图像数据垂直翻转 */
+  /* 
+   * 图像数据垂直翻转
+   * opengles 出来的数据是预乘的数据，需要反算预乘。 
+   */
   while (TRUE) {
-    tk_memcpy32((uint32_t*)img_data, (uint32_t*)p, img->w);
+    uint8_t* src_data = p;
+    uint8_t* dst_data = img_data;
+    for (i = 0; i < img->w; i++) {
+        if (src_data[3] != 0) {
+          dst_data[0] = (src_data[0] << 8) / src_data[3];
+          dst_data[1] = (src_data[1] << 8) / src_data[3];
+          dst_data[2] = (src_data[2] << 8) / src_data[3];
+        }
+        dst_data[3] = src_data[3];
+
+        src_data += 4;
+        dst_data += 4;
+    }
     if (p == data) {
       break;
     }

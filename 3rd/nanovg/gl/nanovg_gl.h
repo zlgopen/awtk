@@ -610,7 +610,7 @@ static int glnvg__renderCreate(void* uptr) {
       "#endif\n"
       "   strokeAlpha = strokeMask();\n"
       "   if (strokeAlpha < strokeThr) discard;\n"
-      "   color = vec4(color.xyz*color.w,color.w);"
+      "   if (texType == 1) color = vec4(color.xyz*color.w,color.w);"
       "   result = innerCol * color * strokeAlpha;\n"
       " } else if(type == 7) {      // fill color\n"
       "   strokeAlpha = strokeMask();\n"
