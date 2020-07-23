@@ -4148,3 +4148,24 @@ ret_t widget_draw_text_in_rect(widget_t* widget, canvas_t* c, const wchar_t* str
 
   return canvas_draw_text_bidi_in_rect(c, str, size, r, bidi_type, ellipses);
 }
+
+bool_t widget_is_parent_of(widget_t* widget, widget_t* child) {
+  widget_t* iter = NULL;
+  return_value_if_fail(widget != NULL && child != NULL, FALSE);
+
+  iter = child->parent;
+  while (iter != NULL) {
+    if (iter == widget) {
+      return TRUE;
+    }
+    iter = iter->parent;
+  }
+
+  return FALSE;
+}
+
+bool_t widget_is_direct_parent_of(widget_t* widget, widget_t* child) {
+  return_value_if_fail(widget != NULL && child != NULL, FALSE);
+
+  return child->parent == widget;
+}
