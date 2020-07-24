@@ -126,8 +126,8 @@ static ret_t asset_loader_zip_destroy(asset_loader_t* loader) {
 }
 
 static const asset_loader_vtable_t s_asset_loader_zip_vtable = {
-    .load = asset_loader_zip_load, 
-    .exist = asset_loader_zip_exist, 
+    .load = asset_loader_zip_load,
+    .exist = asset_loader_zip_exist,
     .destroy = asset_loader_zip_destroy};
 
 static asset_loader_zip_t* asset_loader_zip_create_default(void) {

@@ -90,8 +90,8 @@ static ret_t asset_loader_default_destroy(asset_loader_t* loader) {
 }
 
 static const asset_loader_vtable_t s_asset_loader_default_vtable = {
-    .load = asset_loader_default_load, 
-    .exist = asset_loader_default_exist, 
+    .load = asset_loader_default_load,
+    .exist = asset_loader_default_exist,
     .destroy = asset_loader_default_destroy};
 
 asset_loader_t* asset_loader_default_create(void) {
