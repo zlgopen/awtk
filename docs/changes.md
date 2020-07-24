@@ -1,11 +1,16 @@
 # 最新动态
 
+* 2020/07/24
+  * 完善 api 注释（感谢朝泽提供补丁）。
+  * 完善 save png（感谢智明提供补丁）。
+  * 增加函数 widget\_is\_parent\_of/widget\_is\_direct\_parent\_of。
+
 * 2020/07/23
   * 修复 opengl 下没有考虑 fbo 返回来的数据为预乘数据的问题和让 opengl 支持预乘贴图显示（感谢智明提供补丁）。
 
 * 2020/07/22
-  * 增加 OBJECT\_CMD\_REMOVE\_CHECKED 、OBJECT\_PROP\_CHECKED和 OBJECT\_PROP\_SIZE。
-  * 完善 value\_double，支持bool到double转换。
+  * 增加 OBJECT\_CMD\_REMOVE\_CHECKED 、OBJECT\_PROP\_CHECKED 和 OBJECT\_PROP\_SIZE。
+  * 完善 value\_double，支持 bool 到 double 转换。
   * 完善 API 注释（感谢俊杰提供补丁）。
 
 * 2020/07/21
