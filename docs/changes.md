@@ -3,6 +3,8 @@
 * 2020/07/24
   * 完善 api 注释（感谢朝泽提供补丁）。
   * 完善 save png（感谢智明提供补丁）。
+  * 完善 android 资源加载（感谢智明提供补丁）。
+  * asset\_loader 接口增加函数 asset\_loader\_exist。
   * 增加函数 widget\_is\_parent\_of/widget\_is\_direct\_parent\_of。
 
 * 2020/07/23

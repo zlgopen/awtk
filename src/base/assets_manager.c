@@ -211,7 +211,7 @@ static asset_info_t* try_load_image(assets_manager_t* am, const char* theme, con
                                                            subpath, name, extname) == RET_OK,
                        NULL);
 
-  if (subtype == ASSET_TYPE_IMAGE_JPG && !file_exist(path)) {
+  if (subtype == ASSET_TYPE_IMAGE_JPG && !asset_loader_exist(am->loader, path)) {
     uint32_t len = strlen(path);
     return_value_if_fail(MAX_PATH > len, NULL);
     memcpy(path + len - 4, ".jpeg", 5);
