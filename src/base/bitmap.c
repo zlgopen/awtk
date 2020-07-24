@@ -608,12 +608,14 @@ static bool_t bitmap_rgba8888_save_png(bitmap_t* bitmap, const char* filename) {
   } else {
     fs_t* fs = os_fs();
     fs_file_t* png_file = fs_open_file(fs, filename, "wb");
-    return_value_if_fail(png_file != NULL, FALSE);
-
-    fs_file_write(png_file, png_data, len);
+    if (png_file != NULL) {
+      fs_file_write(png_file, png_data, len);
+    } else {
+      ENSURE(!" do not open file, do not save png file !");
+    }
+    STBIW_FREE(png_data);
 
     return_value_if_fail(fs_file_close(png_file) == RET_OK, FALSE);
-    STBIW_FREE(png_data);
   }
 
   return TRUE;
