@@ -621,6 +621,37 @@
             "type": "void*",
             "name": "ctx",
             "desc": "事件处理函数上下文。"
+          }
+        ],
+        "annotation": {},
+        "desc": "判断指定的事件和回调函数是否已经注册。",
+        "name": "emitter_exist",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回TRUE表示已经注册，否则表示没有注册。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "emitter_t*",
+            "name": "emitter",
+            "desc": "emitter对象。"
+          },
+          {
+            "type": "event_type_t",
+            "name": "type",
+            "desc": "事件类型。"
+          },
+          {
+            "type": "event_func_t",
+            "name": "on_event",
+            "desc": "事件处理函数。"
+          },
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "事件处理函数上下文。"
           },
           {
             "type": "uint32_t",
@@ -1289,9 +1320,7 @@
           }
         ],
         "annotation": {
-          "deconstructor": true,
-          "scriptable": true,
-          "gc": true
+          "scriptable": true
         },
         "desc": "获取位图格式对应的颜色位数。",
         "name": "bitmap_get_bpp_of_format",
@@ -36556,6 +36585,27 @@
         "return": {
           "type": "asset_info_t*",
           "desc": "返回资源对象(由调用者销毁)。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "asset_loader_t*",
+            "name": "loader",
+            "desc": "loader对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "path",
+            "desc": "资源是路径。"
+          }
+        ],
+        "annotation": {},
+        "desc": "判断指定资源是否存在。\n。",
+        "name": "asset_loader_exist",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回TRUE表示存在，否则不存在。"
         }
       },
       {

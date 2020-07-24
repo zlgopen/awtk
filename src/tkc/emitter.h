@@ -139,6 +139,18 @@ ret_t emitter_dispatch_simple_event(emitter_t* emitter, uint32_t type);
 uint32_t emitter_on(emitter_t* emitter, uint32_t etype, event_func_t handler, void* ctx);
 
 /**
+ * @method emitter_exist
+ * 判断指定的事件和回调函数是否已经注册。
+ * @param {emitter_t*} emitter emitter对象。
+ * @param {event_type_t} type 事件类型。
+ * @param {event_func_t} on_event 事件处理函数。
+ * @param {void*} ctx 事件处理函数上下文。
+ *
+ * @return {bool_t} 返回TRUE表示已经注册，否则表示没有注册。
+ */
+bool_t emitter_exist(emitter_t* emitter, uint32_t etype, event_func_t handler, void* ctx);
+
+/**
  * @method emitter_on_with_tag
  * 注册指定事件的处理函数。
  * @param {emitter_t*} emitter emitter对象。
