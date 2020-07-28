@@ -57766,6 +57766,65 @@
           "type": "widget_t*",
           "desc": "mutable_image对象。"
         }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "mutable_image对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true
+        },
+        "desc": "初始化 mutable_image （提供给继承的子类使用的）",
+        "name": "mutable_image_init",
+        "return": {
+          "type": "widget_t*",
+          "desc": "mutable_image对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "mutable_image对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true
+        },
+        "desc": "释放 mutable_image （提供给继承的子类使用的）",
+        "name": "mutable_image_on_destroy",
+        "return": {
+          "type": "widget_t*",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "mutable_image对象。"
+          },
+          {
+            "type": "canvas_t*",
+            "name": "canvas",
+            "desc": "画布对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true
+        },
+        "desc": "mutable_image 的绘制函数 （提供给继承的子类使用的）",
+        "name": "mutable_image_on_paint_self",
+        "return": {
+          "type": "widget_t*",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
       }
     ],
     "events": [],
