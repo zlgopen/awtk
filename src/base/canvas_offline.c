@@ -223,7 +223,7 @@ ret_t canvas_offline_flush_bitmap(canvas_t* canvas) {
     r = rect_init(0, 0, c->base.bitmap->w, c->base.bitmap->h);
 
     vgcanvas_fbo_to_bitmap(vg, &c->fbo, c->base.bitmap, &r);
-    /* 不能把数据回流到 GPU 中，因为 fbo 颜色数据是预乘数据和水平翻转的数据 */
+    /* 不能把数据回流到 GPU 中，因为 fbo 颜色数据是预乘数据和垂直翻转的数据 */
     // c->base.bitmap->flags |= BITMAP_FLAG_CHANGED;
   }
 #endif

@@ -300,10 +300,14 @@ static ret_t vgcanvas_nanovg_fbo_to_bitmap(vgcanvas_t* vgcanvas, framebuffer_obj
     uint8_t* src_data = p;
     uint8_t* dst_data = img_data;
     for (i = 0; i < img->w; i++) {
-        if (src_data[3] != 0) {
+        if (0x0 < src_data[3] && src_data[3] < 0xff) {
           dst_data[0] = (src_data[0] << 8) / src_data[3];
           dst_data[1] = (src_data[1] << 8) / src_data[3];
           dst_data[2] = (src_data[2] << 8) / src_data[3];
+        } else {
+          dst_data[0] = src_data[0];
+          dst_data[1] = src_data[1];
+          dst_data[2] = src_data[2];
         }
         dst_data[3] = src_data[3];
 
