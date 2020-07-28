@@ -1,0 +1,3 @@
+<window anim_hint="htranslate" fullscreen="true" text="Fullscreen">
+  <image name="close" x="center" y="m" w="100%" h="100%" image="bg_portrait_2"/>
+</window>
