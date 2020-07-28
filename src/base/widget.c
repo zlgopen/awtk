@@ -2836,6 +2836,21 @@ ret_t widget_destroy(widget_t* widget) {
   return widget_unref_async(widget);
 }
 
+static ret_t widget_destroy_on_idle(const idle_info_t* info) {
+  widget_destroy(WIDGET(info->ctx));
+
+  return RET_REMOVE;
+}
+
+ret_t widget_destroy_async(widget_t* widget) {
+  return_value_if_fail(widget != NULL && widget->ref_count > 0 && widget->vt != NULL,
+                       RET_BAD_PARAMS);
+
+  return_value_if_fail(idle_add(widget_destroy_on_idle, widget) != TK_INVALID_ID, RET_FAIL);
+
+  return RET_OK;
+}
+
 static ret_t widget_set_parent_not_dirty(widget_t* widget) {
   widget_t* iter = widget->parent;
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);

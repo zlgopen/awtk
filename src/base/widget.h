@@ -1854,6 +1854,19 @@ widget_t* widget_cast(widget_t* widget);
 ret_t widget_destroy(widget_t* widget);
 
 /**
+ * @method widget_destroy_async
+ * 从父控件中移除控件，并调用unref函数销毁控件。
+ * 
+ * > 一般无需直接调用，关闭窗口时，自动销毁相关控件。
+ * 
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_destroy_async(widget_t* widget);
+
+/**
  * @method widget_ref
  * 增加控件的引用计数。
  * 
