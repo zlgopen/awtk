@@ -1575,6 +1575,28 @@ bool_t widget_get_prop_bool(widget_t* widget, const char* name, bool_t defval);
 bool_t widget_is_window_opened(widget_t* widget);
 
 /**
+ * @method widget_is_parent_of
+ * 判断当前控件是否是指定控件的父控件(包括非直系)。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {widget_t*} child 控件对象。
+ *
+ * @return {bool_t} 返回TRUE表示是，否则表示不是。
+ */
+bool_t widget_is_parent_of(widget_t* widget, widget_t* child);
+
+/**
+ * @method widget_is_direct_parent_of
+ * 判断当前控件是否是指定控件的直系父控件。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {widget_t*} child 控件对象。
+ *
+ * @return {bool_t} 返回TRUE表示是，否则表示不是。
+ */
+bool_t widget_is_direct_parent_of(widget_t* widget, widget_t* child);
+
+/**
  * @method widget_is_window
  * 判断当前控件是否是窗口。
  * @annotation ["scriptable"]
@@ -1830,6 +1852,19 @@ widget_t* widget_cast(widget_t* widget);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_destroy(widget_t* widget);
+
+/**
+ * @method widget_destroy_async
+ * 从父控件中移除控件，并调用unref函数销毁控件。
+ * 
+ * > 一般无需直接调用，关闭窗口时，自动销毁相关控件。
+ * 
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_destroy_async(widget_t* widget);
 
 /**
  * @method widget_ref
@@ -2501,7 +2536,6 @@ ret_t widget_begin_wait_pointer_cursor(widget_t* widget, bool_t ignore_user_inpu
  */
 ret_t widget_end_wait_pointer_cursor(widget_t* widget);
 
-bool_t widget_has_focused_widget_in_window(widget_t* widget);
 /**
  * @method widget_set_style
  * 设置widget私有样式。
@@ -2530,7 +2564,7 @@ ret_t widget_focus_left(widget_t* widget);
 ret_t widget_focus_right(widget_t* widget);
 
 ret_t widget_set_focused_internal(widget_t* widget, bool_t focused);
-
+bool_t widget_has_focused_widget_in_window(widget_t* widget);
 
 END_C_DECLS
 

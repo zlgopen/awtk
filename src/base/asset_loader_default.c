@@ -41,7 +41,23 @@ static asset_info_t* load_asset(uint16_t type, uint16_t subtype, const char* pat
     return NULL;
   }
 }
+
+static bool_t asset_exist(const char* path) {
+  SDL_RWops* rwops = SDL_RWFromFile(path, "r");
+
+  if (rwops != NULL) {
+    rwops->close(rwops);
+    return TRUE;
+  } else {
+    return FALSE;
+  }
+}
+
 #else
+static bool_t asset_exist(const char* path) {
+  return file_exist(path);
+}
+
 static asset_info_t* load_asset(uint16_t type, uint16_t subtype, const char* path,
                                 const char* name) {
   asset_info_t* info = NULL;
@@ -63,6 +79,10 @@ static asset_info_t* asset_loader_default_load(asset_loader_t* loader, uint16_t 
   return load_asset(type, subtype, path, name);
 }
 
+static bool_t asset_loader_default_exist(asset_loader_t* loader, const char* path) {
+  return asset_exist(path);
+}
+
 static ret_t asset_loader_default_destroy(asset_loader_t* loader) {
   TKMEM_FREE(loader);
 
@@ -70,7 +90,9 @@ static ret_t asset_loader_default_destroy(asset_loader_t* loader) {
 }
 
 static const asset_loader_vtable_t s_asset_loader_default_vtable = {
-    .load = asset_loader_default_load, .destroy = asset_loader_default_destroy};
+    .load = asset_loader_default_load,
+    .exist = asset_loader_default_exist,
+    .destroy = asset_loader_default_destroy};
 
 asset_loader_t* asset_loader_default_create(void) {
   asset_loader_t* loader = TKMEM_ZALLOC(asset_loader_t);

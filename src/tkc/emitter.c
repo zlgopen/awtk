@@ -175,6 +175,24 @@ uint32_t emitter_on_with_tag(emitter_t* emitter, uint32_t etype, event_func_t ha
   return iter->id;
 }
 
+bool_t emitter_exist(emitter_t* emitter, uint32_t etype, event_func_t handler, void* ctx) {
+  return_value_if_fail(emitter != NULL, NULL);
+
+  if (emitter->items) {
+    emitter_item_t* iter = emitter->items;
+
+    while (iter != NULL) {
+      if(iter->handler == handler && iter->type == etype && iter->ctx == ctx) {
+        return TRUE;
+      }
+
+      iter = iter->next;
+    }
+  }
+
+  return FALSE;;
+}
+
 uint32_t emitter_on(emitter_t* emitter, uint32_t etype, event_func_t handler, void* ctx) {
   return emitter_on_with_tag(emitter, etype, handler, ctx, 0);
 }

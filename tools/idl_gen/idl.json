@@ -621,6 +621,37 @@
             "type": "void*",
             "name": "ctx",
             "desc": "事件处理函数上下文。"
+          }
+        ],
+        "annotation": {},
+        "desc": "判断指定的事件和回调函数是否已经注册。",
+        "name": "emitter_exist",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回TRUE表示已经注册，否则表示没有注册。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "emitter_t*",
+            "name": "emitter",
+            "desc": "emitter对象。"
+          },
+          {
+            "type": "event_type_t",
+            "name": "type",
+            "desc": "事件类型。"
+          },
+          {
+            "type": "event_func_t",
+            "name": "on_event",
+            "desc": "事件处理函数。"
+          },
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "事件处理函数上下文。"
           },
           {
             "type": "uint32_t",
@@ -1289,9 +1320,7 @@
           }
         ],
         "annotation": {
-          "deconstructor": true,
-          "scriptable": true,
-          "gc": true
+          "scriptable": true
         },
         "desc": "获取位图格式对应的颜色位数。",
         "name": "bitmap_get_bpp_of_format",
@@ -20246,6 +20275,52 @@
             "type": "widget_t*",
             "name": "widget",
             "desc": "控件对象。"
+          },
+          {
+            "type": "widget_t*",
+            "name": "child",
+            "desc": "控件对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "判断当前控件是否是指定控件的父控件(包括非直系)。",
+        "name": "widget_is_parent_of",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回TRUE表示是，否则表示不是。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "widget_t*",
+            "name": "child",
+            "desc": "控件对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "判断当前控件是否是指定控件的直系父控件。",
+        "name": "widget_is_direct_parent_of",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回TRUE表示是，否则表示不是。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
           }
         ],
         "annotation": {
@@ -36518,6 +36593,27 @@
             "type": "asset_loader_t*",
             "name": "loader",
             "desc": "loader对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "path",
+            "desc": "资源是路径。"
+          }
+        ],
+        "annotation": {},
+        "desc": "判断指定资源是否存在。\n。",
+        "name": "asset_loader_exist",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回TRUE表示存在，否则不存在。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "asset_loader_t*",
+            "name": "loader",
+            "desc": "loader对象。"
           }
         ],
         "annotation": {},
@@ -40242,6 +40338,15 @@
         "name": "result",
         "desc": "执行结果(适用于EXECED)。",
         "type": "ret_t",
+        "annotation": {
+          "readable": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "can_exec",
+        "desc": "执行结果(适用于CAN_EXEC)。",
+        "type": "bool_t",
         "annotation": {
           "readable": true,
           "scriptable": true
@@ -57660,6 +57765,65 @@
         "return": {
           "type": "widget_t*",
           "desc": "mutable_image对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "mutable_image对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true
+        },
+        "desc": "初始化 mutable_image （提供给继承的子类使用的）",
+        "name": "mutable_image_init",
+        "return": {
+          "type": "widget_t*",
+          "desc": "mutable_image对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "mutable_image对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true
+        },
+        "desc": "释放 mutable_image （提供给继承的子类使用的）",
+        "name": "mutable_image_on_destroy",
+        "return": {
+          "type": "widget_t*",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "mutable_image对象。"
+          },
+          {
+            "type": "canvas_t*",
+            "name": "canvas",
+            "desc": "画布对象。"
+          }
+        ],
+        "annotation": {
+          "cast": true
+        },
+        "desc": "mutable_image 的绘制函数 （提供给继承的子类使用的）",
+        "name": "mutable_image_on_paint_self",
+        "return": {
+          "type": "widget_t*",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       }
     ],

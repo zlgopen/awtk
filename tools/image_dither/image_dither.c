@@ -2146,15 +2146,5 @@ ret_t image_dither_load_image(const uint8_t* buff, uint32_t buff_size, bitmap_t*
 }
 
 ret_t image_dither_image_wirte_png_file(const char* output_file, bitmap_t* bitmap) {
-  ret_t ret = RET_OK;
-  int32_t bpp = bitmap_get_bpp(bitmap);
-  int32_t line_length = bitmap_get_line_length(bitmap);
-  uint8_t* idata = bitmap_lock_buffer_for_read(bitmap);
-  return_value_if_fail(output_file != NULL && bitmap != NULL, RET_BAD_PARAMS);
-
-  ret = stbi_write_png(output_file, bitmap->w, bitmap->h, bpp, idata, line_length) == 0 ? RET_FAIL
-                                                                                        : RET_OK;
-
-  bitmap_unlock_buffer(bitmap);
-  return ret;
+  return bitmap_save_png(bitmap, output_file);
 }

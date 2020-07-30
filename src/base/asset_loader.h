@@ -31,10 +31,12 @@ typedef struct _asset_loader_t asset_loader_t;
 
 typedef asset_info_t* (*asset_loader_load_t)(asset_loader_t* loader, uint16_t type,
                                              uint16_t subtype, const char* path, const char* name);
+typedef bool_t (*asset_loader_exist_t)(asset_loader_t* loader, const char* path);
 typedef ret_t (*asset_loader_destroy_t)(asset_loader_t* loader);
 
 typedef struct _asset_loader_vtable_t {
   asset_loader_load_t load;
+  asset_loader_exist_t exist;
   asset_loader_destroy_t destroy;
 } asset_loader_vtable_t;
 
@@ -67,6 +69,17 @@ asset_loader_t* asset_loader_create(void);
  */
 asset_info_t* asset_loader_load(asset_loader_t* loader, uint16_t type, uint16_t subtype,
                                 const char* path, const char* name);
+
+/**
+ * @method asset_loader_exist
+ * 判断指定资源是否存在。
+ * 。
+ * @param {asset_loader_t*} loader loader对象。
+ * @param {const char*} path 资源是路径。
+ *
+ * @return {bool_t} 返回TRUE表示存在，否则不存在。
+ */
+bool_t asset_loader_exist(asset_loader_t* loader, const char* path);
 
 /**
  * @method asset_loader_destroy

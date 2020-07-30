@@ -1,11 +1,31 @@
 # 最新动态
+* 2020/07/29
+  * 增加文档《如何续期使用 AWTK Designer》（感谢俊杰提供补丁）。
+
+* 2020/07/28
+  * 英文版 README（感谢陈谭提供）。
+  * mutable_image 增加注释（感谢智明提供补丁）。
+  * 修复 opengl 下截屏的反算预乘时候出现数据溢出问题（感谢智明提供补丁）。
+
+* 2020/07/25
+  * 完善 shift 键的处理。 
+
+* 2020/07/24
+  * 增加函数 emitter\_exist。
+
+* 2020/07/24
+  * 完善 api 注释（感谢朝泽提供补丁）。
+  * 完善 save png（感谢智明提供补丁）。
+  * 完善 android 资源加载（感谢智明提供补丁）。
+  * asset\_loader 接口增加函数 asset\_loader\_exist。
+  * 增加函数 widget\_is\_parent\_of/widget\_is\_direct\_parent\_of。
 
 * 2020/07/23
   * 修复 opengl 下没有考虑 fbo 返回来的数据为预乘数据的问题和让 opengl 支持预乘贴图显示（感谢智明提供补丁）。
 
 * 2020/07/22
-  * 增加 OBJECT\_CMD\_REMOVE\_CHECKED 、OBJECT\_PROP\_CHECKED和 OBJECT\_PROP\_SIZE。
-  * 完善 value\_double，支持bool到double转换。
+  * 增加 OBJECT\_CMD\_REMOVE\_CHECKED 、OBJECT\_PROP\_CHECKED 和 OBJECT\_PROP\_SIZE。
+  * 完善 value\_double，支持 bool 到 double 转换。
   * 完善 API 注释（感谢俊杰提供补丁）。
 
 * 2020/07/21

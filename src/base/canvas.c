@@ -1885,4 +1885,3 @@ ret_t canvas_stroke_rounded_rect(canvas_t* c, rect_t* r, rect_t* bg_r, color_t* 
                                  uint32_t radius, uint32_t border_width) {
   return widget_draw_stroke_rounded_rect_ex(c, r, bg_r, color, radius, border_width);
 }
-

@@ -371,7 +371,7 @@ typedef struct _cmd_exec_event_t {
    * 执行结果(适用于EXECED)。
    */
   ret_t result;
-  
+
   /**
    * @property {bool_t} can_exec
    * @annotation ["readable", "scriptable"]

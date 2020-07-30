@@ -561,13 +561,15 @@ bitmap_t* bitmap_clone(bitmap_t* bitmap) {
   return b;
 }
 
-#if defined(WITH_STB_IMAGE) && defined(HAS_STDIO)
+#if defined(WITH_STB_IMAGE)
 
+#define STBI_WRITE_NO_STDIO
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #define STBI_FREE TKMEM_FREE
 #define STBI_MALLOC TKMEM_ALLOC
 #define STBI_REALLOC(p, s) TKMEM_REALLOC(p, s)
 
+#include "tkc/fs.h"
 #include "stb/stb_image_write.h"
 
 bitmap_t* bitmap_rgba8888_from_bitmap(bitmap_t* bitmap) {
@@ -594,11 +596,28 @@ bitmap_t* bitmap_rgba8888_from_bitmap(bitmap_t* bitmap) {
 }
 
 static bool_t bitmap_rgba8888_save_png(bitmap_t* bitmap, const char* filename) {
+  uint32_t len = 0;
   bitmap_t* t = bitmap;
-  uint32_t* tdata = NULL;
-  tdata = (uint32_t*)bitmap_lock_buffer_for_write(t);
-  stbi_write_png(filename, t->w, t->h, 4, tdata, t->w * 4);
+  uint8_t* tdata = NULL;
+  unsigned char* png_data = NULL;
+  tdata = bitmap_lock_buffer_for_write(t);
+  png_data = stbi_write_png_to_mem(tdata, t->w * 4, t->w, t->h, 4, &len);
   bitmap_unlock_buffer(t);
+
+  if (png_data == NULL) {
+    return_value_if_fail(png_data != NULL, FALSE);
+  } else {
+    fs_t* fs = os_fs();
+    fs_file_t* png_file = fs_open_file(fs, filename, "wb");
+    if (png_file != NULL) {
+      fs_file_write(png_file, png_data, len);
+    } else {
+      ENSURE(!" do not open file, do not save png file !");
+    }
+    STBIW_FREE(png_data);
+
+    return_value_if_fail(fs_file_close(png_file) == RET_OK, FALSE);
+  }
 
   return TRUE;
 }
@@ -623,7 +642,7 @@ bool_t bitmap_save_png(bitmap_t* bitmap, const char* filename) {
   return FALSE;
 }
 
-#endif /*defined(WITH_STB_IMAGE) || defined(HAS_STDIO)*/
+#endif /*defined(WITH_STB_IMAGE)*/
 
 /*helper*/
 #define BIT_OFFSET(xx) (7 - ((xx) % 8))

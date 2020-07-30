@@ -161,10 +161,38 @@ ret_t mutable_image_set_framebuffer(widget_t* widget, uint32_t w, uint32_t h,
  */
 widget_t* mutable_image_cast(widget_t* widget);
 
+/**
+ * @method mutable_image_init
+ * 初始化 mutable_image （提供给继承的子类使用的）
+ *
+ * @annotation ["cast"]
+ * @param {widget_t*} widget mutable_image对象。
+ *
+ * @return {widget_t*} mutable_image对象。
+ */
 widget_t* mutable_image_init(widget_t* widget);
 
+/**
+ * @method mutable_image_on_destroy
+ * 释放 mutable_image （提供给继承的子类使用的）
+ *
+ * @annotation ["cast"]
+ * @param {widget_t*} widget mutable_image对象。
+ *
+ * @return {widget_t*} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t mutable_image_on_destroy(widget_t* widget);
 
+/**
+ * @method mutable_image_on_paint_self
+ * mutable_image 的绘制函数 （提供给继承的子类使用的）
+ *
+ * @annotation ["cast"]
+ * @param {widget_t*} widget mutable_image对象。
+ * @param {canvas_t*} canvas 画布对象。
+ *
+ * @return {widget_t*} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t mutable_image_on_paint_self(widget_t* widget, canvas_t* canvas);
 
 #define WIDGET_TYPE_MUTABLE_IMAGE "mutable_image"

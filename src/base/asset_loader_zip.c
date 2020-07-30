@@ -77,6 +77,13 @@ static void* miniz_awtk_realloc_func(void* opaque, void* address, size_t items, 
   return TKMEM_REALLOC(address, items * size);
 }
 
+static bool_t asset_loader_zip_exist(asset_loader_t* loader, const char* path) {
+  asset_loader_zip_t* zip = (asset_loader_zip_t*)loader;
+  int file_index = mz_zip_reader_locate_file(&(zip->archive), path, NULL, 0);
+
+  return file_index >= 0;
+}
+
 static asset_info_t* asset_loader_zip_load(asset_loader_t* loader, uint16_t type, uint16_t subtype,
                                            const char* path, const char* name) {
   size_t size = 0;
@@ -119,7 +126,9 @@ static ret_t asset_loader_zip_destroy(asset_loader_t* loader) {
 }
 
 static const asset_loader_vtable_t s_asset_loader_zip_vtable = {
-    .load = asset_loader_zip_load, .destroy = asset_loader_zip_destroy};
+    .load = asset_loader_zip_load,
+    .exist = asset_loader_zip_exist,
+    .destroy = asset_loader_zip_destroy};
 
 static asset_loader_zip_t* asset_loader_zip_create_default(void) {
   asset_loader_zip_t* zip = TKMEM_ZALLOC(asset_loader_zip_t);
