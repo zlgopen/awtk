@@ -110,7 +110,7 @@
 * With the UI designer, which also developed with AWTK (https://awtk.zlg.cn). 
 * Use declarative UI description language. user can enable widget animation, window animation, and image display (png/jpg/svg/gif) with one line code.
 
-### 6. High Scalability 
+### 6. Customizable 
 
 * Support extend custom widgets.
 * Support extend custom animations.
