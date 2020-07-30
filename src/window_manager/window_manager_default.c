@@ -451,9 +451,6 @@ static ret_t window_manager_default_open_window(widget_t* widget, widget_t* wind
   window->dirty = FALSE;
   widget->target = window;
 
-  if (!widget_is_keyboard(window)) {
-    widget->key_target = window;
-  }
   widget_invalidate(window, NULL);
 
   widget_set_prop_pointer(window, WIDGET_PROP_NATIVE_WINDOW, wm->native_window);
