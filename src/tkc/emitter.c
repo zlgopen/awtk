@@ -182,7 +182,7 @@ bool_t emitter_exist(emitter_t* emitter, uint32_t etype, event_func_t handler, v
     emitter_item_t* iter = emitter->items;
 
     while (iter != NULL) {
-      if(iter->handler == handler && iter->type == etype && iter->ctx == ctx) {
+      if (iter->handler == handler && iter->type == etype && iter->ctx == ctx) {
         return TRUE;
       }
 
@@ -190,7 +190,8 @@ bool_t emitter_exist(emitter_t* emitter, uint32_t etype, event_func_t handler, v
     }
   }
 
-  return FALSE;;
+  return FALSE;
+  ;
 }
 
 uint32_t emitter_on(emitter_t* emitter, uint32_t etype, event_func_t handler, void* ctx) {

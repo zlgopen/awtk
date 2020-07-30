@@ -296,7 +296,7 @@ ret_t window_base_on_event(widget_t* widget, event_t* e) {
     widget_update_style_recursive(widget);
   } else if (e->type == EVT_WINDOW_OPEN) {
     win->stage = WINDOW_STAGE_OPENED;
-    if(widget->sensitive) {
+    if (widget->sensitive) {
       widget_set_focused_internal(widget, TRUE);
     }
   } else if (e->type == EVT_WINDOW_LOAD) {
@@ -321,7 +321,7 @@ ret_t window_base_on_event(widget_t* widget, event_t* e) {
       widget_unref(win->save_focus_widget);
       win->save_focus_widget = NULL;
     } else if (widget_is_window_manager(widget->parent)) {
-      if(widget->sensitive) {
+      if (widget->sensitive) {
         widget_set_focused_internal(widget, TRUE);
       }
     }

@@ -514,7 +514,7 @@ widget_t* window_manager_find_target(widget_t* widget, void* win, xy_t x, xy_t y
     continue;
   }
 
-  if(p.x >= iter->x && p.y >= iter->y && p.x <= r && p.y <= b) {
+  if (p.x >= iter->x && p.y >= iter->y && p.x <= r && p.y <= b) {
     return iter;
   }
 
