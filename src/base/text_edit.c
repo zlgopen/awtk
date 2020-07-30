@@ -852,6 +852,7 @@ ret_t text_edit_click(text_edit_t* text_edit, xy_t x, xy_t y) {
   DECL_IMPL(text_edit);
   return_value_if_fail(impl != NULL, RET_BAD_PARAMS);
 
+  widget_prepare_text_style(text_edit->widget, text_edit->c);
   point = text_edit_normalize_point(text_edit, x, y);
   stb_textedit_click(text_edit, &(impl->state), point.x, point.y);
   text_edit_layout(text_edit);
@@ -864,6 +865,7 @@ ret_t text_edit_drag(text_edit_t* text_edit, xy_t x, xy_t y) {
   DECL_IMPL(text_edit);
   return_value_if_fail(impl != NULL, RET_BAD_PARAMS);
 
+  widget_prepare_text_style(text_edit->widget, text_edit->c);
   point = text_edit_normalize_point(text_edit, x, y);
   stb_textedit_drag(text_edit, &(impl->state), point.x, point.y);
   text_edit_layout(text_edit);
