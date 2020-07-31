@@ -5017,6 +5017,10 @@
         "name": "EVT_DRAG_END"
       },
       {
+        "desc": "Reset(event_t)。",
+        "name": "EVT_RESET"
+      },
+      {
         "desc": "在指定的时间内(WITH_SCREEN_SAVER_TIME)，没有用户输入事件，由窗口管理器触发。",
         "name": "EVT_SCREEN_SAVER"
       },
@@ -20733,6 +20737,24 @@
         },
         "desc": "从父控件中移除控件，并调用unref函数销毁控件。\n\n> 一般无需直接调用，关闭窗口时，自动销毁相关控件。",
         "name": "widget_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "从父控件中移除控件，并调用unref函数销毁控件。\n\n> 一般无需直接调用，关闭窗口时，自动销毁相关控件。",
+        "name": "widget_destroy_async",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
