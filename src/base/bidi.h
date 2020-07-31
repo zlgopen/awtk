@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   bidi.h
  * Author: AWTK Develop Team
  * Brief:  Unicode Bidirectional Algorithm.

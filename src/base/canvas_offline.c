@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   canvas_offline.c
  * Author: AWTK Develop Team
  * Brief:  offline canvas.
