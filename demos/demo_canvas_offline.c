@@ -34,7 +34,7 @@ static ret_t on_paint_vgcanvas(void* ctx, event_t* e) {
   canvas_t* c = canvas_offline;
   /* 获取离线的 canvas 对应的离线 bitmap */
   bitmap_t* offline_bitmap = canvas_offline_get_bitmap(canvas_offline);
-  ;
+
   /* 开始离线 canvas 绘图 */
   canvas_offline_begin_draw(canvas_offline);
 

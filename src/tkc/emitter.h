@@ -297,13 +297,23 @@ ret_t emitter_destroy(emitter_t* emitter);
  */
 emitter_t* emitter_cast(emitter_t* emitter);
 
+/**
+ * @method emitter_forward
+ * 分发事件
+ *
+ * @annotation ["scriptable"]
+ * @param {void*} ctx emitter对象。
+ * @param {event_t*} e 分发的事件。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t emitter_forward(void* ctx, event_t* e);
+
 #define EMITTER(emitter) ((emitter_t*)(emitter))
 
 /*public for test*/
 ret_t emitter_remove_item(emitter_t* emitter, emitter_item_t* item);
 emitter_item_t* emitter_get_item(emitter_t* emitter, uint32_t index);
-
-ret_t emitter_forward(void* ctx, event_t* e);
 
 END_C_DECLS
 
