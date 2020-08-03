@@ -1,5 +1,9 @@
 # 最新动态
 
+* 2020/08/03
+  * 完善 emitter的注释（感谢智明提供补丁）。
+  * 完善 fragment lcd framebuffer（感谢智明提供补丁）。
+
 * 2020/07/31
   * 增加 EVT_RESET
   * 部分文件增加 UTF8-BOM（感谢陈谭提供补丁）。
