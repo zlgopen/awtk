@@ -53,6 +53,7 @@ static ret_t lcd_mem_fragment_begin_frame(lcd_t* lcd, rect_t* dirty_rect) {
   mem->fb.format = LCD_FORMAT;
   mem->fb.flags = BITMAP_FLAG_OPAQUE;
   mem->fb.line_length = dirty_rect->w * bpp;
+  graphic_buffer_attach(mem->gb, mem->buff, mem->fb.w, mem->fb.h);
 
   return RET_OK;
 }
