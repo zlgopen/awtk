@@ -507,7 +507,30 @@ bool_t tk_str_start_with(const char* str, const char* prefix);
  */
 const char* tk_under_score_to_camel(const char* name, char* out, uint32_t max_out_size);
 
+/**
+ * @method tk_pointer_to_int
+ *
+ * 将指针转换成int。
+ * 
+ * > 常用于将int类型的数据作为回调函数的ctx。
+ * 
+ * @param {const void*} p 指针。
+ * 
+ * @return {int32_t} 返回对应的int数据。
+ */
 int32_t tk_pointer_to_int(const void* p);
+
+/**
+ * @method tk_pointer_from_int
+ *
+ * 将int转换成指针。
+ * 
+ * > 常用于将int类型的数据作为回调函数的ctx。
+ * 
+ * @param {int32_t} v 整数。
+ * 
+ * @return {void*} 返回对应的指针。
+ */
 void* tk_pointer_from_int(int32_t v);
 
 /**

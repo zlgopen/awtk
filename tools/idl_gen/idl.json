@@ -925,6 +925,29 @@
           "type": "emitter_t*",
           "desc": "对象。"
         }
+      },
+      {
+        "params": [
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "emitter对象。"
+          },
+          {
+            "type": "event_t*",
+            "name": "e",
+            "desc": "分发的事件。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "分发事件",
+        "name": "emitter_forward",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
       }
     ],
     "events": [],
@@ -17102,6 +17125,10 @@
         "name": "WIDGET_PROP_H"
       },
       {
+        "desc": "inputing。",
+        "name": "WIDGET_PROP_INPUTING"
+      },
+      {
         "desc": "caret x。",
         "name": "WIDGET_PROP_CARET_X"
       },
@@ -25356,6 +25383,38 @@
         "return": {
           "type": "const char*",
           "desc": "返回T驼峰名字。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "const void*",
+            "name": "p",
+            "desc": "指针。"
+          }
+        ],
+        "annotation": {},
+        "desc": "将指针转换成int。\n\n> 常用于将int类型的数据作为回调函数的ctx。",
+        "name": "tk_pointer_to_int",
+        "return": {
+          "type": "int32_t",
+          "desc": "返回对应的int数据。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "int32_t",
+            "name": "v",
+            "desc": "整数。"
+          }
+        ],
+        "annotation": {},
+        "desc": "将int转换成指针。\n\n> 常用于将int类型的数据作为回调函数的ctx。",
+        "name": "tk_pointer_from_int",
+        "return": {
+          "type": "void*",
+          "desc": "返回对应的指针。"
         }
       },
       {
