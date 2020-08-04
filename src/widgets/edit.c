@@ -1041,7 +1041,7 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_INPUTING)) {
     int64_t delta = (time_now_ms() - edit->last_user_action_time);
-    value_set_bool(v, delta < 1500);
+    value_set_bool(v, delta < 1500 && edit->last_user_action_time > 0);
     return RET_OK;
   }
 

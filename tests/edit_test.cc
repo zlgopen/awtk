@@ -502,19 +502,6 @@ TEST(Edit, value) {
   widget_destroy(w1);
 }
 
-TEST(Edit, intputing1) {
-  value_t v;
-  pointer_event_t evt;
-  widget_t* w1 = edit_create(NULL, 10, 20, 30, 40);
-  pointer_event_init(&evt, EVT_POINTER_DOWN, w1, 0, 0);
-  ASSERT_EQ(widget_get_prop_bool(w1, WIDGET_PROP_INPUTING, TRUE), FALSE);
-
-  widget_dispatch(w1, (event_t*)&evt);
-  ASSERT_EQ(widget_get_prop_bool(w1, WIDGET_PROP_INPUTING, TRUE), TRUE);
-
-  widget_destroy(w1);
-}
-
 TEST(Edit, intputing2) {
   value_t v;
   key_event_t evt;
