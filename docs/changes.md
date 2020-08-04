@@ -2,6 +2,7 @@
 
 * 2020/08/04
   * 完善 keyboard 增加 back/back_to_home 按钮的支持。
+  * edit/mledit/slider 支持 WIDGET_PROP_INPUTING 属性，用于辅助实现 MVVM。
   
 * 2020/08/03
   * 完善 emitter 的注释（感谢智明提供补丁）。
