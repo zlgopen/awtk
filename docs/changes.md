@@ -1,5 +1,8 @@
 # 最新动态
 
+* 2020/08/04
+  * 完善 keyboard 增加 back/back_to_home 按钮的支持。
+  
 * 2020/08/03
   * 完善 emitter 的注释（感谢智明提供补丁）。
   * 完善 fragment lcd framebuffer（感谢智明提供补丁）。

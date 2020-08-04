@@ -229,9 +229,8 @@ event_t* im_commit_event_init(im_commit_event_t* e, const char* text, bool_t rep
   memset(e, 0x00, sizeof(*e));
 
   e->text = text;
-  e->e.target = NULL;
   e->replace = replace;
-  e->e.type = EVT_IM_COMMIT;
+  e->e = event_init(EVT_IM_COMMIT, NULL); 
 
   return (event_t*)e;
 }

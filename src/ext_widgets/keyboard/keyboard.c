@@ -1,5 +1,5 @@
 ﻿/**
- * File:   keyboard.h
+ * File:   keyboard.c
  * Author: AWTK Develop Team
  * Brief:  keyboard
  *
@@ -140,10 +140,13 @@ static ret_t keyboard_set_active_page(widget_t* button, const char* name) {
   return RET_OK;
 }
 
+#define STR_BACK "back"
 #define STR_CLOSE "close"
 #define STR_RETURN "return"
 #define STR_ACTION "action"
 #define STR_KEY_SPACE "space"
+#define STR_BACK_TO_HOME "back_to_home"
+
 #define STR_KEY_OPT "opt:"
 #define STR_KEY_TAB "tab"
 #define STR_KEY_PREFIX "key:"
@@ -197,6 +200,16 @@ static ret_t keyboard_on_button_click(void* ctx, event_t* e) {
   if (tk_str_eq(name, STR_CLOSE)) {
     input_method_request(im, NULL);
 
+    return RET_OK;
+  }
+
+  if (tk_str_eq(name, STR_BACK)) {
+    window_manager_back(window_manager());
+    return RET_OK;
+  }
+
+  if (tk_str_eq(name, STR_BACK_TO_HOME)) {
+    window_manager_back_to_home(window_manager());
     return RET_OK;
   }
 
