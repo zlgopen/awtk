@@ -9,5 +9,7 @@ bidi 类型常量定义。
 | BIDI\_TYPE\_AUTO | 自动检查。 |
 | BIDI\_TYPE\_LTR | Left-To-Right letter。 |
 | BIDI\_TYPE\_RTL | Right-To-Left letter。 |
+| BIDI\_TYPE\_LRO | Left-To-Right letter Override。 |
+| BIDI\_TYPE\_RLO | Right-To-Left letter Override。 |
 | BIDI\_TYPE\_WLTR | Weak Left To Right paragraph。 |
 | BIDI\_TYPE\_WRTL | Weak Right To Left paragraph。 |

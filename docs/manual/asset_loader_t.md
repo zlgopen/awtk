@@ -9,6 +9,7 @@
 | -------- | ------------ | 
 | <a href="#asset_loader_t_asset_loader_create">asset\_loader\_create</a> | 创建缺省的资源加载器。 |
 | <a href="#asset_loader_t_asset_loader_destroy">asset\_loader\_destroy</a> | 销毁loader对象。 |
+| <a href="#asset_loader_t_asset_loader_exist">asset\_loader\_exist</a> | 判断指定资源是否存在。 |
 | <a href="#asset_loader_t_asset_loader_load">asset\_loader\_load</a> | 加载指定的资源。 |
 #### asset\_loader\_create 函数
 -----------------------
@@ -47,6 +48,27 @@ ret_t asset_loader_destroy (asset_loader_t* loader);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | loader | asset\_loader\_t* | loader对象。 |
+#### asset\_loader\_exist 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="asset_loader_t_asset_loader_exist">判断指定资源是否存在。
+。
+
+* 函数原型：
+
+```
+bool_t asset_loader_exist (asset_loader_t* loader, const char* path);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示存在，否则不存在。 |
+| loader | asset\_loader\_t* | loader对象。 |
+| path | const char* | 资源是路径。 |
 #### asset\_loader\_load 函数
 -----------------------
 

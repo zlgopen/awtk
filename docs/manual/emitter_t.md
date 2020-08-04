@@ -15,7 +15,9 @@
 | <a href="#emitter_t_emitter_dispatch">emitter\_dispatch</a> | 分发事件。如果当前分发的回调函数返回RET_REMOVE，该回调函数将被移出。 |
 | <a href="#emitter_t_emitter_dispatch_simple_event">emitter\_dispatch\_simple\_event</a> | 分发事件。 |
 | <a href="#emitter_t_emitter_enable">emitter\_enable</a> | 启用。 |
+| <a href="#emitter_t_emitter_exist">emitter\_exist</a> | 判断指定的事件和回调函数是否已经注册。 |
 | <a href="#emitter_t_emitter_find">emitter\_find</a> | 通过ID查找emitter_item_t，主要用于辅助测试。 |
+| <a href="#emitter_t_emitter_forward">emitter\_forward</a> | 分发事件 |
 | <a href="#emitter_t_emitter_init">emitter\_init</a> | 初始化emitter对象。 |
 | <a href="#emitter_t_emitter_off">emitter\_off</a> | 注销指定事件的处理函数。 |
 | <a href="#emitter_t_emitter_off_by_ctx">emitter\_off\_by\_ctx</a> | 注销指定事件的处理函数。 |
@@ -191,6 +193,28 @@ ret_t emitter_enable (emitter_t* emitter);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | emitter | emitter\_t* | emitter对象。 |
+#### emitter\_exist 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="emitter_t_emitter_exist">判断指定的事件和回调函数是否已经注册。
+
+* 函数原型：
+
+```
+bool_t emitter_exist (emitter_t* emitter, event_type_t type, event_func_t on_event, void* ctx);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示已经注册，否则表示没有注册。 |
+| emitter | emitter\_t* | emitter对象。 |
+| type | event\_type\_t | 事件类型。 |
+| on\_event | event\_func\_t | 事件处理函数。 |
+| ctx | void* | 事件处理函数上下文。 |
 #### emitter\_find 函数
 -----------------------
 
@@ -211,6 +235,26 @@ ret_t emitter_find (emitter_t* emitter, uint32_t id);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | emitter | emitter\_t* | emitter对象。 |
 | id | uint32\_t | emitter\_on返回的ID。 |
+#### emitter\_forward 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="emitter_t_emitter_forward">分发事件
+
+* 函数原型：
+
+```
+ret_t emitter_forward (void* ctx, event_t* e);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| ctx | void* | emitter对象。 |
+| e | event\_t* | 分发的事件。 |
 #### emitter\_init 函数
 -----------------------
 

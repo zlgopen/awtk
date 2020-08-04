@@ -42,7 +42,7 @@ widget_animator_t* widget_animator_prop_create (widget_t* widget, uint32_t durat
 * 函数原型：
 
 ```
-ret_t widget_animator_prop_set_params (widget_animator_t* animator, float_t from, float_t to);
+ret_t widget_animator_prop_set_params (widget_animator_t* animator, double from, double to);
 ```
 
 * 参数说明：
@@ -51,5 +51,5 @@ ret_t widget_animator_prop_set_params (widget_animator_t* animator, float_t from
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | animator | widget\_animator\_t* | 动画对象本身。 |
-| from | float\_t | prop起始值。 |
-| to | float\_t | prop结束值。 |
+| from | double | prop起始值。 |
+| to | double | prop结束值。 |

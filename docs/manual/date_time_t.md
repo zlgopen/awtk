@@ -13,7 +13,9 @@
 | <a href="#date_time_t_date_time_destroy">date\_time\_destroy</a> | 销毁date_time对象(一般供脚本语言中使用)。 |
 | <a href="#date_time_t_date_time_from_time">date\_time\_from\_time</a> | 从time转换而来。 |
 | <a href="#date_time_t_date_time_get_days">date\_time\_get\_days</a> | 获取指定年份月份的天数。 |
-| <a href="#date_time_t_date_time_get_wday">date\_time\_get\_wday</a> | 获取指定日期是周几(0-6)。 |
+| <a href="#date_time_t_date_time_get_month_name">date\_time\_get\_month\_name</a> | 获取指定月份的英文名称(简写)。 |
+| <a href="#date_time_t_date_time_get_wday">date\_time\_get\_wday</a> | 获取指定日期是周几(0-6, Sunday = 0)。。 |
+| <a href="#date_time_t_date_time_get_wday_name">date\_time\_get\_wday\_name</a> | 获取周几的英文名称(简写)。 |
 | <a href="#date_time_t_date_time_global_init_ex">date\_time\_global\_init\_ex</a> | 时间日期全局初始化。 |
 | <a href="#date_time_t_date_time_init">date\_time\_init</a> | 初始为当前日期和时间。 |
 | <a href="#date_time_t_date_time_is_leap">date\_time\_is\_leap</a> | 是否是闰年。 |
@@ -107,12 +109,31 @@ int32_t date_time_get_days (uint32_t year, uint32_t montn);
 | 返回值 | int32\_t | 返回大于0表示天数，否则表示失败。 |
 | year | uint32\_t | 年份。 |
 | montn | uint32\_t | 月份(1-12)。 |
+#### date\_time\_get\_month\_name 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="date_time_t_date_time_get_month_name">获取指定月份的英文名称(简写)。
+
+* 函数原型：
+
+```
+const char* date_time_get_month_name (uint32_t montn);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const char* | 返回指定月份的英文名称(简写)。 |
+| montn | uint32\_t | 月份(1-12)。 |
 #### date\_time\_get\_wday 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="date_time_t_date_time_get_wday">获取指定日期是周几(0-6)。
+> <p id="date_time_t_date_time_get_wday">获取指定日期是周几(0-6, Sunday = 0)。。
 
 * 函数原型：
 
@@ -128,6 +149,25 @@ int32_t date_time_get_wday (uint32_t year, uint32_t montn, uint32_t day);
 | year | uint32\_t | 年份。 |
 | montn | uint32\_t | 月份(1-12)。 |
 | day | uint32\_t | 日(1-31)。 |
+#### date\_time\_get\_wday\_name 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="date_time_t_date_time_get_wday_name">获取周几的英文名称(简写)。
+
+* 函数原型：
+
+```
+const char* date_time_get_wday_name (uint32_t wday);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const char* | 返回指定周几的英文名称(简写)。 |
+| wday | uint32\_t | 星期几(0-6, Sunday = 0)。 |
 #### date\_time\_global\_init\_ex 函数
 -----------------------
 

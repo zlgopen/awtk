@@ -29,6 +29,7 @@ idle_add(something_on_idle, edit);
 | -------- | ------------ | 
 | <a href="#idle_t_idle_add">idle\_add</a> | 增加一个idle。 |
 | <a href="#idle_t_idle_count">idle\_count</a> | 返回idle的个数。 |
+| <a href="#idle_t_idle_dispatch">idle\_dispatch</a> | 调用全部idle的函数。 |
 | <a href="#idle_t_idle_queue">idle\_queue</a> | 用于非GUI线程增加一个idle，本函数向主循环的事件队列中发送一个增加idle的请求。 |
 | <a href="#idle_t_idle_remove">idle\_remove</a> | 删除指定的idle。 |
 | <a href="#idle_t_idle_set_on_destroy">idle\_set\_on\_destroy</a> | 设置一个回调函数，在idle被销毁时调用(方便脚本语言去释放回调函数)。 |
@@ -70,6 +71,24 @@ uint32_t idle_count ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | uint32\_t | 返回idle的个数。 |
+#### idle\_dispatch 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="idle_t_idle_dispatch">调用全部idle的函数。
+
+* 函数原型：
+
+```
+ret_t idle_dispatch ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 #### idle\_queue 函数
 -----------------------
 

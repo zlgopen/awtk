@@ -54,6 +54,7 @@ default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/st
 | <a href="#slider_t_slider_set_min">slider\_set\_min</a> | 设置滑块的最小值。 |
 | <a href="#slider_t_slider_set_step">slider\_set\_step</a> | 设置滑块的拖动的最小单位。 |
 | <a href="#slider_t_slider_set_value">slider\_set\_value</a> | 设置滑块的值。 |
+| <a href="#slider_t_slider_set_value_internal">slider\_set\_value\_internal</a> | 设置滑块的值(public for test)。 |
 | <a href="#slider_t_slider_set_vertical">slider\_set\_vertical</a> | 设置滑块的方向。 |
 ### 属性
 <p id="slider_t_properties">
@@ -219,6 +220,28 @@ ret_t slider_set_value (widget_t* widget, double value);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | value | double | 值 |
+#### slider\_set\_value\_internal 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="slider_t_slider_set_value_internal">设置滑块的值(public for test)。
+
+* 函数原型：
+
+```
+ret_t slider_set_value_internal (widget_t* widget, double value, event_type_t etype, bool_t force);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| value | double | 值。 |
+| etype | event\_type\_t | 触发事件。 |
+| force | bool\_t | 不管有没有变化都设置。 |
 #### slider\_set\_vertical 函数
 -----------------------
 

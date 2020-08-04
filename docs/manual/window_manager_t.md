@@ -15,6 +15,7 @@
 | <a href="#window_manager_t_window_manager_back_to_home">window\_manager\_back\_to\_home</a> | 回到主窗口，关闭之上的全部窗口。 |
 | <a href="#window_manager_t_window_manager_begin_wait_pointer_cursor">window\_manager\_begin\_wait\_pointer\_cursor</a> | 开始等待鼠标指针。 |
 | <a href="#window_manager_t_window_manager_cast">window\_manager\_cast</a> | 转换为window_manager对象(供脚本语言使用)。 |
+| <a href="#window_manager_t_window_manager_dispatch_input_event">window\_manager\_dispatch\_input\_event</a> | 分发输入事件。 |
 | <a href="#window_manager_t_window_manager_dispatch_native_window_event">window\_manager\_dispatch\_native\_window\_event</a> | 处理native window事件。 |
 | <a href="#window_manager_t_window_manager_end_wait_pointer_cursor">window\_manager\_end\_wait\_pointer\_cursor</a> | 结束等待鼠标指针。 |
 | <a href="#window_manager_t_window_manager_get_pointer_pressed">window\_manager\_get\_pointer\_pressed</a> | 获取指针当前是否按下。 |
@@ -24,6 +25,7 @@
 | <a href="#window_manager_t_window_manager_get_top_main_window">window\_manager\_get\_top\_main\_window</a> | 获取最上面的主窗口。 |
 | <a href="#window_manager_t_window_manager_get_top_window">window\_manager\_get\_top\_window</a> | 获取最上面的窗口。 |
 | <a href="#window_manager_t_window_manager_is_animating">window\_manager\_is\_animating</a> | 获取当前窗口动画是否正在播放。 |
+| <a href="#window_manager_t_window_manager_open_window">window\_manager\_open\_window</a> | 打开窗口。 |
 | <a href="#window_manager_t_window_manager_paint">window\_manager\_paint</a> | 绘制。 |
 | <a href="#window_manager_t_window_manager_resize">window\_manager\_resize</a> | 调整原生窗口的大小。 |
 | <a href="#window_manager_t_window_manager_set">window\_manager\_set</a> | 设置缺省的窗口管理器。 |
@@ -151,6 +153,28 @@ widget_t* window_manager_cast (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | window\_manager对象。 |
 | widget | widget\_t* | window\_manager对象。 |
+#### window\_manager\_dispatch\_input\_event 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_manager_t_window_manager_dispatch_input_event">分发输入事件。
+
+> 一般仅由主循环调用，特殊情况也可以用来注入事件。
+
+* 函数原型：
+
+```
+ret_t window_manager_dispatch_input_event (widget_t* widget, event_t* e);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 窗口管理器对象。 |
+| e | event\_t* | 事件对象。 |
 #### window\_manager\_dispatch\_native\_window\_event 函数
 -----------------------
 
@@ -324,6 +348,26 @@ bool_t window_manager_is_animating (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | bool\_t | 返回TRUE表示正在播放，FALSE表示没有播放。 |
 | widget | widget\_t* | 窗口管理器对象。 |
+#### window\_manager\_open\_window 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_manager_t_window_manager_open_window">打开窗口。
+
+* 函数原型：
+
+```
+ret_t window_manager_open_window (widget_t* widget, widget_t* window);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 窗口管理器对象。 |
+| window | widget\_t* | 窗口对象。 |
 #### window\_manager\_paint 函数
 -----------------------
 

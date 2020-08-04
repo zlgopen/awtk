@@ -44,6 +44,9 @@ https://github.com/zlgopen/awtk-c-demos/blob/master/demos/mutable_image.c)
 | -------- | ------------ | 
 | <a href="#mutable_image_t_mutable_image_cast">mutable\_image\_cast</a> | 转换为mutable_image对象(供脚本语言使用)。 |
 | <a href="#mutable_image_t_mutable_image_create">mutable\_image\_create</a> | 创建mutable_image对象 |
+| <a href="#mutable_image_t_mutable_image_init">mutable\_image\_init</a> | 初始化 mutable_image （提供给继承的子类使用的） |
+| <a href="#mutable_image_t_mutable_image_on_destroy">mutable\_image\_on\_destroy</a> | 释放 mutable_image （提供给继承的子类使用的） |
+| <a href="#mutable_image_t_mutable_image_on_paint_self">mutable\_image\_on\_paint\_self</a> | mutable_image 的绘制函数 （提供给继承的子类使用的） |
 | <a href="#mutable_image_t_mutable_image_set_create_image">mutable\_image\_set\_create\_image</a> | 设置create_image回调函数。 |
 | <a href="#mutable_image_t_mutable_image_set_framebuffer">mutable\_image\_set\_framebuffer</a> | 设置framebuffer(当硬件支持多层合成时才用)。 |
 | <a href="#mutable_image_t_mutable_image_set_prepare_image">mutable\_image\_set\_prepare\_image</a> | 设置prepare_image回调函数。 |
@@ -89,6 +92,64 @@ widget_t* mutable_image_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### mutable\_image\_init 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="mutable_image_t_mutable_image_init">初始化 mutable_image （提供给继承的子类使用的）
+
+* 函数原型：
+
+```
+widget_t* mutable_image_init (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | widget\_t* | mutable\_image对象。 |
+| widget | widget\_t* | mutable\_image对象。 |
+#### mutable\_image\_on\_destroy 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="mutable_image_t_mutable_image_on_destroy">释放 mutable_image （提供给继承的子类使用的）
+
+* 函数原型：
+
+```
+widget_t* mutable_image_on_destroy (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | widget\_t* | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | mutable\_image对象。 |
+#### mutable\_image\_on\_paint\_self 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="mutable_image_t_mutable_image_on_paint_self">mutable_image 的绘制函数 （提供给继承的子类使用的）
+
+* 函数原型：
+
+```
+widget_t* mutable_image_on_paint_self (widget_t* widget, canvas_t* canvas);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | widget\_t* | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | mutable\_image对象。 |
+| canvas | canvas\_t* | 画布对象。 |
 #### mutable\_image\_set\_create\_image 函数
 -----------------------
 

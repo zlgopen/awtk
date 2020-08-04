@@ -67,6 +67,7 @@
 | EVT\_DRAG\_START | 开始拖动(event\_t)。 |
 | EVT\_DRAG | 拖动(event\_t)。 |
 | EVT\_DRAG\_END | 结束拖动(event\_t)。 |
+| EVT\_RESET | Reset(event\_t)。 |
 | EVT\_SCREEN\_SAVER | 在指定的时间内(WITH\_SCREEN\_SAVER\_TIME)，没有用户输入事件，由窗口管理器触发。 |
 | EVT\_LOW\_MEMORY | 内存不足(event\_t)。 |
 | EVT\_OUT\_OF\_MEMORY | 内存耗尽(event\_t)。 |

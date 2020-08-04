@@ -43,7 +43,7 @@ widget_animator_t* widget_animator_prop2_create (widget_t* widget, uint32_t dura
 * 函数原型：
 
 ```
-ret_t widget_animator_prop2_set_params (widget_animator_t* animator, float_t from1, float_t from2, float_t to1, float_t to2);
+ret_t widget_animator_prop2_set_params (widget_animator_t* animator, double from1, double from2, double to1, double to2);
 ```
 
 * 参数说明：
@@ -52,7 +52,7 @@ ret_t widget_animator_prop2_set_params (widget_animator_t* animator, float_t fro
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | animator | widget\_animator\_t* | 动画对象本身。 |
-| from1 | float\_t | x的初值。 |
-| from2 | float\_t | y的初值。 |
-| to1 | float\_t | x的终值。 |
-| to2 | float\_t | y的终值。 |
+| from1 | double | x的初值。 |
+| from2 | double | y的初值。 |
+| to1 | double | x的终值。 |
+| to2 | double | y的终值。 |
