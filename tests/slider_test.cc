@@ -146,3 +146,14 @@ TEST(Slider, dec_step) {
 
   widget_destroy(w);
 }
+
+TEST(Slider, inputing) {
+  widget_t* w = slider_create(NULL, 0, 0, 100, 100);
+  slider_t* slider = SLIDER(w);
+
+  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_INPUTING, TRUE), FALSE);
+  slider->dragging = TRUE;
+  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_INPUTING, TRUE), TRUE);
+
+  widget_destroy(w);
+}

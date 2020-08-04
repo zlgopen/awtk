@@ -556,7 +556,7 @@ bool_t value_equal(const value_t* v, const value_t* other) {
       return tk_fequal(v->value.f32, other->value.f32);
     }
     case VALUE_TYPE_DOUBLE: {
-      return tk_fequal(v->value.f64, other->value.f64);
+      return tk_lfequal(v->value.f64, other->value.f64);
     }
     case VALUE_TYPE_STRING: {
       return (v->value.str == other->value.str) || tk_str_eq(v->value.str, other->value.str);

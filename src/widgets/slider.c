@@ -484,6 +484,9 @@ static ret_t slider_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, SLIDER_PROP_SLIDE_WITH_BAR)) {
     value_set_bool(v, slider->slide_with_bar);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_INPUTING)) {
+    value_set_bool(v, slider->dragging);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;

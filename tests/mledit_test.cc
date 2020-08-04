@@ -73,3 +73,42 @@ TEST(MLEdit, events) {
 
   widget_destroy(b);
 }
+
+TEST(MLEdit, intputing1) {
+  value_t v;
+  pointer_event_t evt;
+  widget_t* w1 = mledit_create(NULL, 10, 20, 30, 40);
+  pointer_event_init(&evt, EVT_POINTER_DOWN, w1, 0, 0);
+  ASSERT_EQ(widget_get_prop_bool(w1, WIDGET_PROP_INPUTING, TRUE), FALSE);
+
+  widget_dispatch(w1, (event_t*)&evt);
+  ASSERT_EQ(widget_get_prop_bool(w1, WIDGET_PROP_INPUTING, TRUE), TRUE);
+
+  widget_destroy(w1);
+}
+
+TEST(MLEdit, intputing2) {
+  value_t v;
+  key_event_t evt;
+  widget_t* w1 = mledit_create(NULL, 10, 20, 30, 40);
+  key_event_init(&evt, EVT_KEY_DOWN, w1, 0);
+  ASSERT_EQ(widget_get_prop_bool(w1, WIDGET_PROP_INPUTING, TRUE), FALSE);
+
+  widget_dispatch(w1, (event_t*)&evt);
+  ASSERT_EQ(widget_get_prop_bool(w1, WIDGET_PROP_INPUTING, TRUE), TRUE);
+
+  widget_destroy(w1);
+}
+
+TEST(MLEdit, intputing3) {
+  value_t v;
+  wheel_event_t evt;
+  widget_t* w1 = mledit_create(NULL, 10, 20, 30, 40);
+  wheel_event_init(&evt, EVT_WHEEL, w1, 0);
+  ASSERT_EQ(widget_get_prop_bool(w1, WIDGET_PROP_INPUTING, TRUE), FALSE);
+
+  widget_dispatch(w1, (event_t*)&evt);
+  ASSERT_EQ(widget_get_prop_bool(w1, WIDGET_PROP_INPUTING, TRUE), TRUE);
+
+  widget_destroy(w1);
+}

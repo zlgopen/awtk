@@ -66,6 +66,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_H "h"
 
 /**
+ * @const WIDGET_PROP_INPUTING
+ * inputing。
+ */
+#define WIDGET_PROP_INPUTING "inputing"
+
+/**
  * @const WIDGET_PROP_CARET_X
  * caret x。
  */

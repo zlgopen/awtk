@@ -232,6 +232,7 @@ typedef struct _edit_t {
   edit_pre_input_t pre_input;
   edit_is_valid_char_t is_valid_char;
   edit_is_valid_value_t is_valid_value;
+  uint64_t last_user_action_time;
 } edit_t;
 
 /**

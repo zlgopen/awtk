@@ -337,6 +337,7 @@ enum { TK_NAME_LEN = 31 };
   (((s1) != NULL) && ((s2) != NULL) && *(s1) == *(s2) && wcscmp((s1), (s2)) == 0)
 #endif /*WITH_CPPCHECK*/
 
+#define tk_lfequal(f1, f2) (fabs((f1) - (f2)) < 0.0001)
 #define tk_fequal(f1, f2) (fabs((f1) - (f2)) < 0.0000001)
 
 #define TK_ROUND_TO(size, round_size) ((((size) + round_size - 1) / round_size) * round_size)

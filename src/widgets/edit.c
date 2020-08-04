@@ -28,6 +28,7 @@
 #include "base/idle.h"
 #include "base/timer.h"
 #include "tkc/utils.h"
+#include "tkc/time_now.h"
 #include "base/enums.h"
 #include "base/events.h"
 #include "base/clip_board.h"
@@ -598,6 +599,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       }
       edit_update_status(widget);
       widget_invalidate(widget, NULL);
+      edit->last_user_action_time = e->time;
       break;
     }
     case EVT_POINTER_DOWN_ABORT: {
@@ -611,6 +613,10 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
         text_edit_drag(edit->model, evt.x, evt.y);
         ret = RET_STOP;
       }
+
+      if (evt.pressed) {
+        edit->last_user_action_time = e->time;
+      }
       widget_invalidate(widget, NULL);
       break;
     }
@@ -618,14 +624,17 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       ret = RET_STOP;
       widget_ungrab(widget->parent, widget);
       widget_invalidate(widget, NULL);
+      edit->last_user_action_time = e->time;
       break;
     }
     case EVT_KEY_DOWN: {
+      edit->last_user_action_time = e->time;
       ret = edit_on_key_down(widget, (key_event_t*)e);
       edit_update_status(widget);
       break;
     }
     case EVT_KEY_UP: {
+      edit->last_user_action_time = e->time;
       ret = edit_on_key_up(widget, (key_event_t*)e);
       widget_invalidate(widget, NULL);
       break;
@@ -635,6 +644,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       text_edit_get_state(edit->model, &state);
       im_commit_event_t* evt = (im_commit_event_t*)e;
 
+      edit->last_user_action_time = e->time;
       if (state.preedit) {
         text_edit_preedit_clear(edit->model);
       }
@@ -690,6 +700,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
         edit_inc(edit);
       }
       ret = RET_STOP;
+      edit->last_user_action_time = e->time;
       break;
     }
     case EVT_RESIZE:
@@ -1027,6 +1038,10 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
     text_edit_state_t state;
     text_edit_get_state(edit->model, &state);
     value_set_int(v, state.caret.y);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_INPUTING)) {
+    int64_t delta = (time_now_ms() - edit->last_user_action_time);
+    value_set_bool(v, delta < 1500);
     return RET_OK;
   }
 

@@ -134,6 +134,7 @@ typedef struct _mledit_t {
   uint32_t timer_id;
 
   wstr_t temp;
+  uint64_t last_user_action_time;
 } mledit_t;
 
 /**
