@@ -489,7 +489,8 @@ static ret_t slider_get_prop(widget_t* widget, const char* name, value_t* v) {
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_INPUTING)) {
     int64_t delta = (time_now_ms() - slider->last_user_action_time);
-    bool_t inputing = (delta < TK_INPUTING_TIMEOUT) && (slider->last_user_action_time > 0) && widget->focused;
+    bool_t inputing =
+        (delta < TK_INPUTING_TIMEOUT) && (slider->last_user_action_time > 0) && widget->focused;
 
     value_set_bool(v, inputing || slider->dragging);
     return RET_OK;

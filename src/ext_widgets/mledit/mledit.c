@@ -179,7 +179,8 @@ static ret_t mledit_get_prop(widget_t* widget, const char* name, value_t* v) {
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_INPUTING)) {
     int64_t delta = (time_now_ms() - mledit->last_user_action_time);
-    bool_t inputing = (delta < TK_INPUTING_TIMEOUT) && (mledit->last_user_action_time > 0) && widget->focused;
+    bool_t inputing =
+        (delta < TK_INPUTING_TIMEOUT) && (mledit->last_user_action_time > 0) && widget->focused;
     value_set_bool(v, inputing);
     return RET_OK;
   }

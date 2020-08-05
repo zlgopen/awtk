@@ -230,7 +230,7 @@ event_t* im_commit_event_init(im_commit_event_t* e, const char* text, bool_t rep
 
   e->text = text;
   e->replace = replace;
-  e->e = event_init(EVT_IM_COMMIT, NULL); 
+  e->e = event_init(EVT_IM_COMMIT, NULL);
 
   return (event_t*)e;
 }
