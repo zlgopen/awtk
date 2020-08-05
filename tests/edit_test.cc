@@ -510,6 +510,7 @@ TEST(Edit, intputing2) {
   ASSERT_EQ(widget_get_prop_bool(w1, WIDGET_PROP_INPUTING, TRUE), FALSE);
 
   widget_dispatch(w1, (event_t*)&evt);
+  widget_set_focused(w1, TRUE);
   ASSERT_EQ(widget_get_prop_bool(w1, WIDGET_PROP_INPUTING, TRUE), TRUE);
 
   widget_destroy(w1);
@@ -522,6 +523,7 @@ TEST(Edit, intputing3) {
   wheel_event_init(&evt, EVT_WHEEL, w1, 0);
   ASSERT_EQ(widget_get_prop_bool(w1, WIDGET_PROP_INPUTING, TRUE), FALSE);
 
+  widget_set_focused(w1, TRUE);
   widget_dispatch(w1, (event_t*)&evt);
   ASSERT_EQ(widget_get_prop_bool(w1, WIDGET_PROP_INPUTING, TRUE), TRUE);
 

@@ -81,6 +81,7 @@ TEST(MLEdit, intputing1) {
   pointer_event_init(&evt, EVT_POINTER_DOWN, w1, 0, 0);
   ASSERT_EQ(widget_get_prop_bool(w1, WIDGET_PROP_INPUTING, TRUE), FALSE);
 
+  widget_set_focused(w1, TRUE);
   widget_dispatch(w1, (event_t*)&evt);
   ASSERT_EQ(widget_get_prop_bool(w1, WIDGET_PROP_INPUTING, TRUE), TRUE);
 
@@ -94,6 +95,7 @@ TEST(MLEdit, intputing2) {
   key_event_init(&evt, EVT_KEY_DOWN, w1, 0);
   ASSERT_EQ(widget_get_prop_bool(w1, WIDGET_PROP_INPUTING, TRUE), FALSE);
 
+  widget_set_focused(w1, TRUE);
   widget_dispatch(w1, (event_t*)&evt);
   ASSERT_EQ(widget_get_prop_bool(w1, WIDGET_PROP_INPUTING, TRUE), TRUE);
 
@@ -107,6 +109,7 @@ TEST(MLEdit, intputing3) {
   wheel_event_init(&evt, EVT_WHEEL, w1, 0);
   ASSERT_EQ(widget_get_prop_bool(w1, WIDGET_PROP_INPUTING, TRUE), FALSE);
 
+  widget_set_focused(w1, TRUE);
   widget_dispatch(w1, (event_t*)&evt);
   ASSERT_EQ(widget_get_prop_bool(w1, WIDGET_PROP_INPUTING, TRUE), TRUE);
 
