@@ -4067,11 +4067,19 @@ bitmap_t* widget_take_snapshot_rect(widget_t* widget, rect_t* r) {
   wh_t h = 0;
   canvas_t canvas;
   lcd_t* lcd = NULL;
+  canvas_t* c = NULL;
   uint8_t* buff = NULL;
-  canvas_t* c = &canvas;
   bitmap_t* bitmap = NULL;
   bitmap_t* bitmap_clip = NULL;
+  native_window_t* native_window = NULL;
   return_value_if_fail(widget != NULL && widget->vt != NULL, NULL);
+
+  native_window =
+      (native_window_t*)widget_get_prop_pointer(window_manager(), WIDGET_PROP_NATIVE_WINDOW);
+  return_value_if_fail(native_window != NULL, NULL);
+
+  c = native_window_get_canvas(native_window);
+  return_value_if_fail(c != NULL, NULL);
 
   w = widget->w;
   h = widget->h;
@@ -4082,11 +4090,13 @@ bitmap_t* widget_take_snapshot_rect(widget_t* widget, rect_t* r) {
   buff = bitmap_lock_buffer_for_write(bitmap);
   lcd = lcd_mem_rgba8888_create_single_fb(w, h, buff);
   if (lcd != NULL) {
-    canvas_init(c, lcd, font_manager());
-    canvas_begin_frame(c, r, LCD_DRAW_OFFLINE);
-    widget_paint(widget, c);
-    canvas_end_frame(c);
-    canvas_reset(c);
+    ((lcd_mem_t*)lcd)->vgcanvas = canvas_get_vgcanvas(c);
+    canvas_init(&canvas, lcd, font_manager());
+    canvas_begin_frame(&canvas, r, LCD_DRAW_OFFLINE);
+    widget_paint(widget, &canvas);
+    canvas_end_frame(&canvas);
+    canvas_reset(&canvas);
+    ((lcd_mem_t*)lcd)->vgcanvas = NULL;
     lcd_destroy(lcd);
   }
 

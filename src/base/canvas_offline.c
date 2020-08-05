@@ -132,7 +132,9 @@ canvas_t* canvas_offline_create(uint32_t w, uint32_t h, bitmap_format_t format) 
   bitmap_unlock_buffer(bitmap);
 
   if (lcd != NULL) {
-    canvas_t* c_tmp = canvas_init(&(canvas->base), lcd, c->font_manager);
+    canvas_t* c_tmp = NULL;
+    ((lcd_mem_t*)lcd)->vgcanvas = canvas_get_vgcanvas(c);
+    c_tmp = canvas_init(&(canvas->base), lcd, c->font_manager);
     canvas_set_assets_manager(c_tmp, c->assets_manager);
     canvas_set_global_alpha(&(canvas->base), 0xff);
     canvas_begin_frame(c_tmp, NULL, LCD_DRAW_OFFLINE);
@@ -245,6 +247,7 @@ ret_t canvas_offline_destroy(canvas_t* canvas) {
 
   vgcanvas_destroy_fbo(vg, fbo);
 #else
+  ((lcd_mem_t*)canvas->lcd)->vgcanvas = NULL;
   lcd_destroy(canvas->lcd);
 #endif
   if (bitmap != NULL) {
