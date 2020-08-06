@@ -21,6 +21,7 @@ namespace agge
 		iterator push_back(const T &element);
 		void pop_back();
 		void clear();
+		void clear_cache();
 		void resize(count_t size);
 		void set_end(iterator end);
 		void assign(count_t size, const T &value);
@@ -75,7 +76,18 @@ namespace agge
 
 	template <typename T>
 	inline pod_vector<T>::~pod_vector()
-	{	delete []_begin;	}
+	{	clear_cache();	}
+
+	template <typename T>
+	inline void pod_vector<T>::clear_cache() 
+	{
+		if (_begin != 0) {
+			delete []_begin;
+		}
+		_end = 0;
+		_begin = 0;
+		_limit = 0;
+	}
 
 	template <typename T>
 	inline typename pod_vector<T>::iterator pod_vector<T>::push_back(const T &element)
@@ -175,7 +187,9 @@ namespace agge
 		
 		for (iterator i = _begin; i != _end; )
 			*p++ = *i++;
-		delete []_begin;
+		if (_begin != 0) {
+			delete []_begin;
+		}
 		_begin = buffer;
 		_end = _begin + size;
 		_limit = _begin + new_capacity;

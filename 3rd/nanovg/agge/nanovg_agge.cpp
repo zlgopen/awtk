@@ -110,6 +110,22 @@ static void aggenvg__setLineCap(void* uptr, int lineCap)
       agge->line_style.set_cap(agge::caps::square());
 }
 
+static void aggenvg__clearCacheTexture(AGGENVGcontext* agge) {
+  AGGENVGtexture* textures = NULL;
+  int ntextures = agge->ntextures;
+  int size = sizeof(AGGENVGtexture) * ntextures;
+
+  if (agge->textures != NULL && ntextures > 0) {
+    textures = (AGGENVGtexture*)malloc(size);
+    memcpy(textures, agge->textures, size);
+
+    free(agge->textures);
+    agge->textures = textures;
+    agge->ntextures = ntextures;
+    agge->ctextures = ntextures;
+  }
+}
+
 static AGGENVGtexture* aggenvg__allocTexture(AGGENVGcontext* agge) {
   int i;
   AGGENVGtexture* tex = NULL;
@@ -414,6 +430,15 @@ static void aggenvg__renderDelete(void* uptr) {
   delete agge;
 }
 
+static int aggenvg__clearCache(void* uptr) {
+  AGGENVGcontext* agge = (AGGENVGcontext*)uptr;
+  if (agge == NULL) return -1;
+  agge::rasterizer<agge::clipper<int> >& ras = agge->ras;
+  ras.clear_cache();
+  aggenvg__clearCacheTexture(agge);
+  return 0;
+}
+
 static void nvgInitAGGE(AGGENVGcontext* agge, NVGparams* params, uint32_t w, uint32_t h, uint32_t stride,
                         enum NVGtexture format, uint8_t* data) {
   agge->w = w;
@@ -489,6 +514,7 @@ NVGcontext* nvgCreateAGGE(uint32_t w, uint32_t h, uint32_t stride, enum NVGtextu
   params.renderCancel = aggenvg__renderCancel;
   params.renderFlush = aggenvg__renderFlush;
   params.renderDelete = aggenvg__renderDelete;
+  params.clearCache = aggenvg__clearCache;
   params.userPtr = agge;
   params.edgeAntiAlias = 1;
 

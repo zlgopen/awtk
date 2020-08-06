@@ -137,6 +137,8 @@ typedef ret_t (*vgcanvas_unbind_fbo_t)(vgcanvas_t* vg, framebuffer_object_t* fbo
 typedef ret_t (*vgcanvas_nanovg_fbo_to_bitmap_t)(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo,
                                                  bitmap_t* img, rect_t* r);
 
+typedef ret_t (*vgcanvas_clear_cache_t)(vgcanvas_t* vg);
+
 typedef ret_t (*vgcanvas_destroy_t)(vgcanvas_t* vg);
 
 typedef struct _vgcanvas_vtable_t {
@@ -205,6 +207,8 @@ typedef struct _vgcanvas_vtable_t {
   vgcanvas_bind_fbo_t bind_fbo;
   vgcanvas_unbind_fbo_t unbind_fbo;
   vgcanvas_nanovg_fbo_to_bitmap_t fbo_to_bitmap;
+
+  vgcanvas_clear_cache_t clear_cache;
 
   vgcanvas_destroy_t destroy;
 } vgcanvas_vtable_t;
@@ -1185,6 +1189,15 @@ wh_t vgcanvas_get_width(vgcanvas_t* vgcanvas);
  * @return {wh_t} 返回高度。
  */
 wh_t vgcanvas_get_height(vgcanvas_t* vgcanvas);
+
+/**
+ * @method vgcanvas_clear_cache
+ * 释放vgcanvas对象的缓冲数据。
+ * @param {vgcanvas_t*} vg vgcanvas对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t vgcanvas_clear_cache(vgcanvas_t* vg);
 
 /**
  * @method vgcanvas_destroy

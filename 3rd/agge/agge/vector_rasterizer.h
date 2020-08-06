@@ -36,6 +36,7 @@ namespace agge
 		vector_rasterizer();
 
 		void reset();
+		void clear_cache();
 
 		void line(int x1, int y1, int x2, int y2);
 		void append(const vector_rasterizer &source, int dx, int dy);
@@ -76,6 +77,9 @@ namespace agge
 
 	inline bool vector_rasterizer::empty() const
 	{	return _min_y > _max_y;	}
+
+	inline void vector_rasterizer::clear_cache()
+	{	_cells.clear_cache();	}
 
 	inline bool vector_rasterizer::sorted() const
 	{	return !!_sorted;	}

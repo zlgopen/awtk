@@ -19,6 +19,7 @@ namespace agge
 	public:
 		using vector_rasterizer::reset;
 
+		void clear_cache();
 		void reset_clipping();
 		void set_clipping(const rect<real_t> &window);
 
@@ -76,6 +77,10 @@ namespace agge
 	template <typename ClipperT, typename ScalingT>
 	inline void rasterizer<ClipperT, ScalingT>::reset_clipping()
 	{	_clipper.reset();	}
+
+	template <typename ClipperT, typename ScalingT>
+	inline void rasterizer<ClipperT, ScalingT>::clear_cache()
+	{	vector_rasterizer::clear_cache();	}
 
 	template <typename ClipperT, typename ScalingT>
 	inline void rasterizer<ClipperT, ScalingT>::set_clipping(const rect<real_t> &window)

@@ -599,6 +599,14 @@ static ret_t vgcanvas_nanovg_restore(vgcanvas_t* vgcanvas) {
   return RET_OK;
 }
 
+static ret_t vgcanvas_nanovg_clear_cache(vgcanvas_t* vgcanvas) {
+  NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
+
+  nvgClearCache(vg);
+  nvgDeleteFontByName(vg, NULL);
+  return RET_OK;
+}
+
 static const vgcanvas_vtable_t vt = {
     .reinit = vgcanvas_nanovg_reinit,
     .begin_frame = vgcanvas_nanovg_begin_frame,
@@ -655,4 +663,5 @@ static const vgcanvas_vtable_t vt = {
     .destroy_fbo = vgcanvas_nanovg_destroy_fbo,
     .unbind_fbo = vgcanvas_nanovg_unbind_fbo,
     .fbo_to_bitmap = vgcanvas_nanovg_fbo_to_bitmap,
+    .clear_cache = vgcanvas_nanovg_clear_cache,
     .destroy = vgcanvas_nanovg_destroy};

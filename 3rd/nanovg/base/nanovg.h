@@ -699,6 +699,7 @@ struct NVGparams {
 	void (*setLineCap)(void* uptr, int lineCap);
 	void (*setLineJoin)(void* uptr, int lineJoin);
 
+	int (*clearCache)(void* uptr);
 	int (*renderCreate)(void* uptr);
 	int (*findTexture)(void* uptr, const void* data);
 	void (*setStateXfrom)(void* uptr, float* xform);
@@ -735,6 +736,8 @@ NVGparams* nvgGetParams(NVGcontext* ctx);
 int nvgCreateImageRaw(NVGcontext* ctx, int w, int h, int format, int stride, int imageFlags, const unsigned char* data);
 
 int nvgFindTextureRaw(NVGcontext* ctx, const void* data);
+
+int nvgClearCache(NVGcontext* ctx);
 
 #ifdef __cplusplus
 }

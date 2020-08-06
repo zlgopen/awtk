@@ -2502,6 +2502,13 @@ void nvgCircle(NVGcontext* ctx, float cx, float cy, float r)
 	nvgEllipse(ctx, cx,cy, r,r);
 }
 
+int nvgClearCache(NVGcontext* ctx) {
+	if(ctx->params.clearCache != NULL) {
+		ctx->params.clearCache(ctx->params.userPtr);
+	}
+	return 0;
+}
+
 #ifdef WITH_NANOVG_GPU
 void nvgDebugDumpPathCache(NVGcontext* ctx)
 {

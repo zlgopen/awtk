@@ -518,3 +518,10 @@ ret_t vgcanvas_get_text_metrics(vgcanvas_t* vg, float_t* ascent, float_t* descen
 
   return vg->vt->get_text_metrics(vg, ascent, descent, line_hight);
 }
+
+ret_t vgcanvas_clear_cache(vgcanvas_t* vg) {
+  return_value_if_fail(vg != NULL && vg->vt != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(vg->vt->clear_cache != NULL, RET_BAD_PARAMS);
+
+   return vg->vt->clear_cache(vg);
+}
