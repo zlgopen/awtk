@@ -2,7 +2,8 @@
 
 * 2020/08/06
   * 完善离线 lcd（感谢智明提供补丁）。
-
+  * 完善 slist （感谢智明提供补丁）。
+   
 * 2020/08/04
   * 完善 keyboard 增加 back/back_to_home 按钮的支持。
   * edit/mledit/slider 支持 WIDGET_PROP_INPUTING 属性，用于辅助实现 MVVM。

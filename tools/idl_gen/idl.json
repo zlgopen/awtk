@@ -16066,6 +16066,22 @@
           }
         ],
         "annotation": {},
+        "desc": "释放vgcanvas对象的缓冲数据。",
+        "name": "vgcanvas_clear_cache",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "vgcanvas_t*",
+            "name": "vg",
+            "desc": "vgcanvas对象。"
+          }
+        ],
+        "annotation": {},
         "desc": "销毁vgcanvas对象。",
         "name": "vgcanvas_destroy",
         "return": {
@@ -28474,6 +28490,38 @@
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "slist_t*",
+            "name": "slist",
+            "desc": "单向链表对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "弹出最后一个元素。",
+        "name": "slist_tail_pop",
+        "return": {
+          "type": "ret_t",
+          "desc": "成功返回最后一个元素，失败返回NULL。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "slist_t*",
+            "name": "slist",
+            "desc": "单向链表对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "弹出第一个元素。",
+        "name": "slist_head_pop",
+        "return": {
+          "type": "ret_t",
+          "desc": "成功返回最后一个元素，失败返回NULL。"
         }
       },
       {
