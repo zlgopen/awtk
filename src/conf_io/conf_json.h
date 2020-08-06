@@ -48,7 +48,29 @@ BEGIN_C_DECLS
 object_t* conf_json_load(const char* url, bool_t create_if_not_exist);
 
 /*public for test*/
+
+/**
+ * @method conf_doc_load_json 
+ * 
+ * @annotation ["global"]
+ * 
+ * @param {const char*} data JSON数据。
+ * @param {int32_t} size JSON数据长度。
+ * 
+ * @return {conf_doc_t*} 返回doc对象。
+ */
 conf_doc_t* conf_doc_load_json(const char* data, int32_t size);
+
+/**
+ * @method conf_doc_save_json 
+ * 
+ * @annotation ["global"]
+ * 
+ * @param {conf_doc_t*} doc doc对象。
+ * @param {str_t*} str 返回结果的字符串对象。 
+ * 
+ * @return {object_t*} 返回配置对象。
+ */
 ret_t conf_doc_save_json(conf_doc_t* doc, str_t* str);
 
 END_C_DECLS

@@ -23833,6 +23833,58 @@
     "level": 1
   },
   {
+    "params": [
+      {
+        "type": "const char*",
+        "name": "data",
+        "desc": "JSON数据。"
+      },
+      {
+        "type": "int32_t",
+        "name": "size",
+        "desc": "JSON数据长度。"
+      }
+    ],
+    "annotation": {
+      "global": true
+    },
+    "desc": "",
+    "name": "conf_doc_load_json",
+    "return": {
+      "type": "conf_doc_t*",
+      "desc": "返回doc对象。"
+    },
+    "type": "method",
+    "header": "conf_io/conf_json.h",
+    "level": 1
+  },
+  {
+    "params": [
+      {
+        "type": "conf_doc_t*",
+        "name": "doc",
+        "desc": "doc对象。"
+      },
+      {
+        "type": "str_t*",
+        "name": "str",
+        "desc": "返回结果的字符串对象。"
+      }
+    ],
+    "annotation": {
+      "global": true
+    },
+    "desc": "",
+    "name": "conf_doc_save_json",
+    "return": {
+      "type": "object_t*",
+      "desc": "返回配置对象。"
+    },
+    "type": "method",
+    "header": "conf_io/conf_json.h",
+    "level": 1
+  },
+  {
     "type": "class",
     "methods": [
       {
@@ -36582,95 +36634,6 @@
     "type": "class",
     "methods": [
       {
-        "params": [
-          {
-            "type": "compressor_t*",
-            "name": "compressor",
-            "desc": "compressor对象。"
-          },
-          {
-            "type": "const void*",
-            "name": "data",
-            "desc": "待压缩的数据。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "size",
-            "desc": "数据长度。"
-          },
-          {
-            "type": "wbuffer_t*",
-            "name": "out",
-            "desc": "压缩之后的数据。"
-          }
-        ],
-        "annotation": {},
-        "desc": "压缩数据。",
-        "name": "compressor_compress",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "compressor_t*",
-            "name": "compressor",
-            "desc": "compressor对象。"
-          },
-          {
-            "type": "const void*",
-            "name": "data",
-            "desc": "待解压的数据。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "size",
-            "desc": "数据长度。"
-          },
-          {
-            "type": "wbuffer_t*",
-            "name": "out",
-            "desc": "解压之后的数据。"
-          }
-        ],
-        "annotation": {},
-        "desc": "解压数据。",
-        "name": "compressor_uncompress",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "compressor_t*",
-            "name": "compressor",
-            "desc": "compressor对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "销毁compressor对象。",
-        "name": "compressor_destroy",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "tkc/compressor.h",
-    "desc": "压缩解压接口。",
-    "name": "compressor_t",
-    "level": 1
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
         "params": [],
         "annotation": {},
         "desc": "创建缺省的资源加载器。",
@@ -36759,6 +36722,95 @@
     "header": "base/asset_loader.h",
     "desc": "资源加载器接口。",
     "name": "asset_loader_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "compressor_t*",
+            "name": "compressor",
+            "desc": "compressor对象。"
+          },
+          {
+            "type": "const void*",
+            "name": "data",
+            "desc": "待压缩的数据。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "数据长度。"
+          },
+          {
+            "type": "wbuffer_t*",
+            "name": "out",
+            "desc": "压缩之后的数据。"
+          }
+        ],
+        "annotation": {},
+        "desc": "压缩数据。",
+        "name": "compressor_compress",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "compressor_t*",
+            "name": "compressor",
+            "desc": "compressor对象。"
+          },
+          {
+            "type": "const void*",
+            "name": "data",
+            "desc": "待解压的数据。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "数据长度。"
+          },
+          {
+            "type": "wbuffer_t*",
+            "name": "out",
+            "desc": "解压之后的数据。"
+          }
+        ],
+        "annotation": {},
+        "desc": "解压数据。",
+        "name": "compressor_uncompress",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "compressor_t*",
+            "name": "compressor",
+            "desc": "compressor对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁compressor对象。",
+        "name": "compressor_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "tkc/compressor.h",
+    "desc": "压缩解压接口。",
+    "name": "compressor_t",
     "level": 1
   },
   {
@@ -59949,31 +60001,42 @@
       {
         "params": [
           {
-            "type": "tk_istream_t*",
-            "name": "real_istream",
-            "desc": "实际的istream。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "buffer_size",
-            "desc": "缓冲区的大小。"
+            "type": "tk_ostream_t*",
+            "name": "real_ostream",
+            "desc": "实际的ostream对象。"
           }
         ],
         "annotation": {},
-        "desc": "创建istream对象。\n\n本函数自动增加real_ostream的引用计数。",
-        "name": "tk_istream_buffered_create",
+        "desc": "创建ostream对象。\n\n本函数自动增加real_ostream的引用计数。",
+        "name": "tk_ostream_buffered_create",
         "return": {
-          "type": "tk_istream_t*",
-          "desc": "返回istream对象。"
+          "type": "tk_ostream_t*",
+          "desc": "返回ostream对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_ostream_t*",
+            "name": "ostream",
+            "desc": "ostream对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取当前缓存数据的长度。",
+        "name": "tk_ostream_buffered_get_size",
+        "return": {
+          "type": "uint32_t",
+          "desc": "返回缓存数据的长度。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "buffered/istream_buffered.h",
-    "desc": "缓冲输入流。\n\n如果调用者每次只读取少量数据，可以使用本类对底层istream进行装饰，以提高读取效率。",
-    "name": "tk_istream_buffered_t",
-    "parent": "tk_istream_t",
+    "header": "buffered/ostream_buffered.h",
+    "desc": "先将数据写入一个缓存区，调用flush时才真正写入底层的ostream。",
+    "name": "tk_ostream_buffered_t",
+    "parent": "tk_ostream_t",
     "level": 4
   },
   {
@@ -60871,42 +60934,31 @@
       {
         "params": [
           {
-            "type": "tk_ostream_t*",
-            "name": "real_ostream",
-            "desc": "实际的ostream对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建ostream对象。\n\n本函数自动增加real_ostream的引用计数。",
-        "name": "tk_ostream_buffered_create",
-        "return": {
-          "type": "tk_ostream_t*",
-          "desc": "返回ostream对象。"
-        }
-      },
-      {
-        "params": [
+            "type": "tk_istream_t*",
+            "name": "real_istream",
+            "desc": "实际的istream。"
+          },
           {
-            "type": "tk_ostream_t*",
-            "name": "ostream",
-            "desc": "ostream对象。"
+            "type": "uint32_t",
+            "name": "buffer_size",
+            "desc": "缓冲区的大小。"
           }
         ],
         "annotation": {},
-        "desc": "获取当前缓存数据的长度。",
-        "name": "tk_ostream_buffered_get_size",
+        "desc": "创建istream对象。\n\n本函数自动增加real_ostream的引用计数。",
+        "name": "tk_istream_buffered_create",
         "return": {
-          "type": "uint32_t",
-          "desc": "返回缓存数据的长度。"
+          "type": "tk_istream_t*",
+          "desc": "返回istream对象。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "buffered/ostream_buffered.h",
-    "desc": "先将数据写入一个缓存区，调用flush时才真正写入底层的ostream。",
-    "name": "tk_ostream_buffered_t",
-    "parent": "tk_ostream_t",
+    "header": "buffered/istream_buffered.h",
+    "desc": "缓冲输入流。\n\n如果调用者每次只读取少量数据，可以使用本类对底层istream进行装饰，以提高读取效率。",
+    "name": "tk_istream_buffered_t",
+    "parent": "tk_istream_t",
     "level": 4
   }
 ]
