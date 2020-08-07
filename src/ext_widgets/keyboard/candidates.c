@@ -138,12 +138,13 @@ static ret_t candidates_relayout_children(widget_t* widget) {
   style_t* style = children[0]->astyle;
   canvas_t* c = widget_get_canvas(widget);
   const char* font = system_info_fix_font_name(NULL);
+  int32_t child_margin = style_get_int(style, STYLE_ID_MARGIN, 0);
   uint16_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
 
   canvas_set_font(c, font, font_size);
   for (i = 0; i < nr; i++) {
     iter = children[i];
-    child_w = candidates_calc_child_width(c, iter);
+    child_w = candidates_calc_child_width(c, iter) + child_margin* 2;
     if (iter->text.size) {
       widget_set_visible(iter, TRUE, FALSE);
     } else {
