@@ -213,6 +213,7 @@ static ret_t input_type_open_keyboard(input_method_t* im, const char* keyboard_n
   value_set_str(&v, close_anim_hint);
   widget_set_prop(im->keyboard, WIDGET_PROP_CLOSE_ANIM_HINT, &v);
 
+  widget_off_by_func(win, EVT_WINDOW_CLOSE, input_method_on_win_close, im);
   widget_on(win, EVT_WINDOW_CLOSE, input_method_on_win_close, im);
 
   return RET_OK;
@@ -343,6 +344,7 @@ static ret_t input_method_default_request(input_method_t* im, widget_t* widget) 
   if (widget != NULL) {
     im->widget = widget;
     input_method_default_show_keyboard(im);
+    widget_off_by_func(widget, EVT_DESTROY, input_method_default_on_edit_destroy, im);
     widget_on(widget, EVT_DESTROY, input_method_default_on_edit_destroy, im);
   } else {
     if (im->keyboard != NULL) {
