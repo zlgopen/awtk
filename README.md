@@ -302,6 +302,8 @@ pip install Pillow
 
 * [Examples for Custom Widgets: Table View](https://github.com/zlgopen/awtk-widget-table-view)
 
+* [Examples for Custom Font Loader](https://github.com/zlgopen/awtk-custom-font-loader)
+
 The third party provides: 
 
 * [react-awtk](https://github.com/wenyufei2018/react-awtk)

@@ -219,3 +219,7 @@ COMMON_CCFLAGS=COMMON_CCFLAGS+' -DNATIVE_WINDOW_BORDERLESS=1 '
 * 从 assets/default/raw/styles/default.xml 中去掉不必要的。
 
 * 去掉不必要的图片。一些控件去掉了，相应的图片也没有必要了。
+
+#### 16. 内存不够，内部flash不够，如何加载大字体文件？
+
+请参考：[自定义字体加载器：加载部分字体](https://github.com/zlgopen/awtk-custom-font-loader)
