@@ -22,6 +22,7 @@
 #include <wctype.h>
 #include "tkc/mem.h"
 #include "tkc/utf8.h"
+#include "tkc/fs.h"
 #include "base/bitmap.h"
 #include "common/utils.h"
 #include "font_gen/font_gen.h"
@@ -46,8 +47,12 @@ ret_t font_gen(font_t* font, uint16_t font_size, const char* str, const char* ou
 
   uint32_t size = font_gen_buff(font, font_size, str, &wbuffer);
 
-  output_res_c_source(output_filename, theme, ASSET_TYPE_FONT, ASSET_TYPE_FONT_BMP, wbuffer.data,
-                      size);
+  if(strstr(output_filename, ".bin") != NULL) {
+    file_write(output_filename, wbuffer.data, size);
+  } else {
+    output_res_c_source(output_filename, theme, ASSET_TYPE_FONT, ASSET_TYPE_FONT_BMP, wbuffer.data,
+                        size);
+  }
   wbuffer_deinit(&wbuffer);
 
   return RET_OK;
@@ -57,7 +62,6 @@ uint32_t font_gen_buff(font_t* font, uint16_t font_size, const char* str, wbuffe
   int i = 0;
   glyph_t g;
   int size = 0;
-  uint8_t* p = NULL;
   wchar_t wstr[MAX_CHARS];
   font_vmetrics_t vmetrics = font_get_vmetrics(font, font_size);
 

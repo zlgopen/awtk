@@ -12,7 +12,7 @@ fontgen 从指定的 tff 文件，提取指定字符集（从文件中读取）�
 
 * ttf\_filename tff 文件名。
 * str\_filename 字符集合 （需要哪些字符，就把那些字符放在本文件中，UTF-8 编码，参考 demos/assets/default/raw/fonts/text.txt)。
-* output\_filename 输出文件名。
+* output\_filename 输出文件名。如果文件扩展名为“.bin“，生成二进制格式，否则生成 C 语言常量数据。
 * font\_size 字体大小。
 * mono 是否生成单色字体，目前只有启用 freetype 时才有效。可选。
 
