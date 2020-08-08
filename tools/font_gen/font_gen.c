@@ -86,6 +86,7 @@ uint32_t font_gen_buff(font_t* font, uint16_t font_size, const char* str, wbuffe
     wchar_t c = wstr[i];
 
     header->index[i].c = c;
+    header->index[i].size = 0;
     header->index[i].offset = wbuffer->cursor;
 
     printf("%d/%d: 0x%04x\n", i, size, c);
@@ -101,6 +102,7 @@ uint32_t font_gen_buff(font_t* font, uint16_t font_size, const char* str, wbuffe
       wbuffer_write_uint8(wbuffer, g.pitch);
 
       if (g.data != NULL) {
+        header->index[i].size = data_size;
         wbuffer_write_binary(wbuffer, g.data, data_size);
       }
 

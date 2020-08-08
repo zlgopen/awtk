@@ -28,7 +28,7 @@ BEGIN_C_DECLS
 
 typedef struct _font_bitmap_index_t {
   uint16_t c;
-  uint16_t unused;
+  uint16_t size;
   uint32_t offset;
 } font_bitmap_index_t;
 
