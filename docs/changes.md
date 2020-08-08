@@ -2,7 +2,8 @@
 
 * 2020/08/08
   * 完善 fontgen，支持生成二进制数据。
-  * 增加[自定义字体加载器](https://github.com/zlgopen/awtk-custom-font-loader)，实现加载部分字体。
+  * 增加 [自定义字体加载器](https://github.com/zlgopen/awtk-custom-font-loader)，实现加载部分字体。
+  * 修改输入法中内存临时泄漏（在窗口关闭时会释放）。
 
 * 2020/08/07
   * 候选字控件 (candidate) 支持设置 margin style。
