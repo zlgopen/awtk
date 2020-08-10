@@ -556,9 +556,16 @@ static conf_node_t* conf_doc_get_node(conf_doc_t* doc, const char* path,
     }
 
     if (*token == '[') {
-      iter = conf_node_find_child_by_index(node, tk_atoi(token + 1));
-      /*node must be exist if find by index */
-      return_value_if_fail(iter != NULL, NULL);
+      int32_t index = tk_atoi(token + 1);
+      iter = conf_node_find_child_by_index(node, index);
+      if (iter == NULL) {
+        if (index == conf_node_count_children(node)) {
+          /*append*/
+        } else {
+          /*node must be exist if find by index */
+          return_value_if_fail(iter != NULL, NULL);
+        }
+      }
     } else if (*token == '#') {
       return node;
     } else {
@@ -595,6 +602,10 @@ static conf_node_t* conf_doc_get_node(conf_doc_t* doc, const char* path,
 ret_t conf_doc_set(conf_doc_t* doc, const char* path, const value_t* v) {
   conf_node_t* node = NULL;
   return_value_if_fail(doc != NULL && path != NULL && v != NULL, RET_BAD_PARAMS);
+
+  if (doc->root == NULL) {
+    doc->root = conf_doc_create_node(doc, CONF_NODE_ROOT_NAME);
+  }
 
   node = conf_doc_get_node(doc, path, TRUE);
 

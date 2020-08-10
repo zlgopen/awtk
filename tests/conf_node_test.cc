@@ -33,3 +33,25 @@ TEST(ConfNode, basic) {
 
   conf_doc_destroy(doc);
 }
+
+TEST(ConfNode, set_get) {
+  value_t v;
+  conf_doc_t* doc = conf_doc_create(100);
+
+  ASSERT_EQ(conf_doc_set(doc, "person.[0].name", value_set_str(&v, "jim")), RET_OK); 
+  ASSERT_EQ(conf_doc_set(doc, "person.[1].name", value_set_str(&v, "tom")), RET_OK); 
+  ASSERT_EQ(conf_doc_set(doc, "person.[2].name", value_set_str(&v, "mike")), RET_OK); 
+
+  ASSERT_EQ(conf_doc_get(doc, "person.[0].name", &v), RET_OK); 
+  ASSERT_STREQ(value_str(&v), "jim");
+  
+  ASSERT_EQ(conf_doc_get(doc, "person.[1].name", &v), RET_OK); 
+  ASSERT_STREQ(value_str(&v), "tom");
+  
+  ASSERT_EQ(conf_doc_get(doc, "person.[2].name", &v), RET_OK); 
+  ASSERT_STREQ(value_str(&v), "mike");
+  
+  ASSERT_NE(conf_doc_set(doc, "person.[20].name", value_set_str(&v, "anny")), RET_OK); 
+
+  conf_doc_destroy(doc);
+}
