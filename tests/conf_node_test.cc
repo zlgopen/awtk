@@ -1,4 +1,5 @@
 ﻿#include "gtest/gtest.h"
+#include "conf_io/conf_json.h"
 #include "conf_io/conf_node.h"
 
 TEST(ConfNode, basic) {
@@ -52,6 +53,22 @@ TEST(ConfNode, set_get) {
   ASSERT_STREQ(value_str(&v), "mike");
   
   ASSERT_NE(conf_doc_set(doc, "person.[20].name", value_set_str(&v, "anny")), RET_OK); 
+
+  conf_doc_destroy(doc);
+}
+
+TEST(ConfNode, set_get_str) {
+  value_t v;
+  str_t str;
+  conf_doc_t* doc = conf_doc_create(100);
+
+  str_init(&str, 0);
+  ASSERT_EQ(conf_doc_set(doc, "names.[0]", value_set_str(&v, "jim")), RET_OK); 
+  ASSERT_EQ(conf_doc_set(doc, "names.[1]", value_set_str(&v, "tom")), RET_OK); 
+  ASSERT_EQ(conf_doc_set(doc, "names.[2]", value_set_str(&v, "anny")), RET_OK); 
+
+  ASSERT_EQ(conf_doc_save_json(doc, &str), RET_OK);
+  ASSERT_STREQ(str.str, "{\n    \"names\" : [\n        \"jim\",\n        \"tom\",\n        \"anny\"\n    ]\n}");
 
   conf_doc_destroy(doc);
 }

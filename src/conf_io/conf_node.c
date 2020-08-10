@@ -560,6 +560,9 @@ static conf_node_t* conf_doc_get_node(conf_doc_t* doc, const char* path,
       iter = conf_node_find_child_by_index(node, index);
       if (iter == NULL) {
         if (index == conf_node_count_children(node)) {
+          if(index == 0) {
+            node->node_type = CONF_NODE_ARRAY;
+          }
           /*append*/
         } else {
           /*node must be exist if find by index */
