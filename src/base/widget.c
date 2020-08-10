@@ -4103,9 +4103,11 @@ bitmap_t* widget_take_snapshot_rect(widget_t* widget, rect_t* r) {
   bitmap_unlock_buffer(bitmap);
 
   if (r != NULL) {
+    rect_t widget_rect = rect_init(0, 0, widget->w, widget->h);
+    rect_t clip_r = rect_intersect(&widget_rect, r);
     bitmap_clip = bitmap_create_ex(r->w, r->h, r->w * 4, BITMAP_FMT_RGBA8888);
 
-    if (image_copy(bitmap_clip, bitmap, r, 0, 0) == RET_OK) {
+    if (image_copy(bitmap_clip, bitmap, &clip_r, 0, 0) == RET_OK) {
       bitmap_destroy(bitmap);
       return bitmap_clip;
     } else {
