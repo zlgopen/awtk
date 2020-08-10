@@ -24267,6 +24267,84 @@
             "desc": "节点的路径。"
           },
           {
+            "type": "int32_t",
+            "name": "v",
+            "desc": "值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置指定路径节点的值。",
+        "name": "conf_doc_set_int",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "conf_doc_t*",
+            "name": "doc",
+            "desc": "文档对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "path",
+            "desc": "节点的路径。"
+          },
+          {
+            "type": "float",
+            "name": "v",
+            "desc": "值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置指定路径节点的值。",
+        "name": "conf_doc_set_float",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "conf_doc_t*",
+            "name": "doc",
+            "desc": "文档对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "path",
+            "desc": "节点的路径。"
+          },
+          {
+            "type": "const char*",
+            "name": "v",
+            "desc": "值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置指定路径节点的值。",
+        "name": "conf_doc_set_str",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "conf_doc_t*",
+            "name": "doc",
+            "desc": "文档对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "path",
+            "desc": "节点的路径。"
+          },
+          {
             "type": "value_t*",
             "name": "v",
             "desc": "用于返回值。"
@@ -24278,6 +24356,84 @@
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "conf_doc_t*",
+            "name": "doc",
+            "desc": "文档对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "path",
+            "desc": "节点的路径。"
+          },
+          {
+            "type": "int32_t",
+            "name": "defval",
+            "desc": "缺省值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取指定路径节点的值。",
+        "name": "conf_doc_get_int",
+        "return": {
+          "type": "int32_t",
+          "desc": "返回值。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "conf_doc_t*",
+            "name": "doc",
+            "desc": "文档对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "path",
+            "desc": "节点的路径。"
+          },
+          {
+            "type": "float",
+            "name": "defval",
+            "desc": "缺省值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取指定路径节点的值。",
+        "name": "conf_doc_get_float",
+        "return": {
+          "type": "float",
+          "desc": "返回值。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "conf_doc_t*",
+            "name": "doc",
+            "desc": "文档对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "path",
+            "desc": "节点的路径。"
+          },
+          {
+            "type": "const char*",
+            "name": "defval",
+            "desc": "缺省值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取指定路径节点的值。",
+        "name": "conf_doc_get_str",
+        "return": {
+          "type": "const char*",
+          "desc": "返回值。"
         }
       },
       {

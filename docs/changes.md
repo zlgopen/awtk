@@ -1,5 +1,8 @@
 # 最新动态
 
+* 2020/08/10
+  * 完善 conf_node 增加一些 wrapper 函数。
+
 * 2020/08/08
   * 完善 fontgen，支持生成二进制数据。
   * 增加 [自定义字体加载器](https://github.com/zlgopen/awtk-custom-font-loader)，实现加载部分字体。

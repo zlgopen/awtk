@@ -455,7 +455,9 @@ ret_t conf_node_set_value(conf_node_t* node, const value_t* v) {
       }
       break;
     }
-    default: { return RET_NOT_IMPL; }
+    default: {
+      return RET_NOT_IMPL;
+    }
   }
   node->node_type = CONF_NODE_SIMPLE;
 
@@ -519,7 +521,9 @@ ret_t conf_node_get_value(conf_node_t* node, value_t* v) {
       value_set_str(v, node->value.small_str);
       break;
     }
-    default: { return RET_NOT_IMPL; }
+    default: {
+      return RET_NOT_IMPL;
+    }
   }
 
   return RET_OK;
@@ -772,4 +776,46 @@ ret_t conf_doc_add_child(conf_doc_t* doc, const char* path) {
   return_value_if_fail(new_node != NULL, RET_OOM);
 
   return conf_doc_append_child(doc, node, new_node);
+}
+
+int32_t conf_doc_get_int(conf_doc_t* doc, const char* path, int32_t defval) {
+  value_t vv;
+  if (conf_doc_get(doc, path, &vv) == RET_OK) {
+    return value_int32(&vv);
+  } else {
+    return defval;
+  }
+}
+
+float conf_doc_get_float(conf_doc_t* doc, const char* path, float defval) {
+  value_t vv;
+  if (conf_doc_get(doc, path, &vv) == RET_OK) {
+    return value_float32(&vv);
+  } else {
+    return defval;
+  }
+}
+
+const char* conf_doc_get_str(conf_doc_t* doc, const char* path, const char* defval) {
+  value_t vv;
+  if (conf_doc_get(doc, path, &vv) == RET_OK) {
+    return value_str(&vv);
+  } else {
+    return defval;
+  }
+}
+
+ret_t conf_doc_set_int(conf_doc_t* doc, const char* path, int32_t v) {
+  value_t vv;
+  return conf_doc_set(doc, path, value_set_int32(&vv, v));
+}
+
+ret_t conf_doc_set_float(conf_doc_t* doc, const char* path, float v) {
+  value_t vv;
+  return conf_doc_set(doc, path, value_set_float32(&vv, v));
+}
+
+ret_t conf_doc_set_str(conf_doc_t* doc, const char* path, const char* v) {
+  value_t vv;
+  return conf_doc_set(doc, path, value_set_str(&vv, v));
 }
