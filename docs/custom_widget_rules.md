@@ -152,11 +152,31 @@ ret_t number_label_set_format(widget_t* widget, const char* format);
  * @method number_label_register
  * 注册数值文本控件。
  *
- * @annotation ["scriptable", "static"]
+ * @annotation ["global"]
  *
  * @return {ret_t} 返回 RET_OK 表示成功，否则表示失败。
  */
 ret_t number_label_register(void);
+```
+
+### 2.7 获取支持的渲染模式的函数名
+
+目前可选的渲染模式有OpenGL、AGGE-BGR565、AGGE-BGRA8888、AGGE-MONO；默认支持全部模式，模式之间以“|”间隔，可根据实际情况修改。
+
+获取支持的渲染模式的函数名必须以动态库名为前缀，加上"_supported_render_mode"。该函数无参数，并返回 const char*。
+
+如：
+
+```c
+/**
+ * @method number_label_supported_render_mode
+ * 获取支持的渲染模式。
+ *
+ * @annotation ["global"]
+ *
+ * @return {const char*} 返回 RET_OK 表示成功，否则表示失败。
+ */
+const char* number_label_supported_render_mode(void);
 ```
 
 ## 3. 注释格式
@@ -183,3 +203,29 @@ node ../awtk/tools/dll_def_gen/index.js idl/idl.json src/number_label.def
 ```
 
 > 使用这些工具需要安装 [nodejs](https://nodejs.org/zh-cn/)
+
+## 4. 依赖的 AWTK 版本
+
+可以在自定义控件项目的 project.json 文件中设置该动态库依赖的 AWTK 版本。
+
+如：
+```json
+{
+  ...
+  "usesSdk": {
+    "awtk:minSdkVersion": "20030",
+    "awtk:maxSdkVersion": "20050",
+    "awtk:targetSdkVersion": "20050"
+  }
+  ...
+}
+```
+
+* 参数 awtk:minSdkVersion 是可选的，表示兼容的最低版本。
+
+* 参数 awtk:maxSdkVersion 是可选的，表示兼容的最高版本。
+
+* 参数 awtk:targetSdkVersion 是可选的，表示最佳版本。
+
+> 上述版本号对应发布的 AWTK 中 component.json 文件中的 "release_id"
+> 注意：如果没有显式设置，则认为兼容所有版本。
