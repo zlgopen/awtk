@@ -200,13 +200,13 @@ elif OS_NAME == 'Windows':
     OS_LIBS=['gdi32', 'user32','winmm.lib','imm32.lib','version.lib','shell32.lib','ole32.lib','Oleaut32.lib','Advapi32.lib','DelayImp.lib','psapi.lib']
     OS_FLAGS='-DWIN32 -D_WIN32 -DWINDOWS /EHsc -D_CONSOLE  /DEBUG /Od  /FS /Z7 /utf-8'
     if TARGET_ARCH == 'x86':
-      OS_LINKFLAGS='/MACHINE:X86 /DEBUG ' + WIN32_AWTK_RES + ' '
+      OS_LINKFLAGS='/MACHINE:X86 /DEBUG \"' + WIN32_AWTK_RES + '\" '
       OS_SUBSYSTEM_CONSOLE='/SUBSYSTEM:CONSOLE,5.01  '
       OS_SUBSYSTEM_WINDOWS='/SUBSYSTEM:WINDOWS,5.01  '
       COMMON_CCFLAGS = COMMON_CCFLAGS + ' -D_WIN32 '
     else:
       OS_FLAGS = OS_FLAGS + ' -DWITH_64BIT_CPU '
-      OS_LINKFLAGS='/MACHINE:X64 /DEBUG ' + WIN32_AWTK_RES + ' '
+      OS_LINKFLAGS='/MACHINE:X64 /DEBUG \"' + WIN32_AWTK_RES + '\" '
       OS_SUBSYSTEM_CONSOLE='/SUBSYSTEM:CONSOLE  '
       OS_SUBSYSTEM_WINDOWS='/SUBSYSTEM:WINDOWS  '
       COMMON_CCFLAGS = COMMON_CCFLAGS + ' -D_WIN64 '
@@ -299,7 +299,9 @@ def copySharedLib(src, dst, name):
   else:
     print('not support ' + OS_NAME)
     return
-
+	
+  src = os.path.normpath(src);
+  dst = os.path.normpath(dst);
   if not os.path.exists(src):
     print('Can\'t find ' + src + '. Please build '+name+'before!')
   else:
