@@ -204,7 +204,7 @@ node ../awtk/tools/dll_def_gen/index.js idl/idl.json src/number_label.def
 
 > 使用这些工具需要安装 [nodejs](https://nodejs.org/zh-cn/)
 
-## 4. 依赖的 AWTK 版本
+## 5. 依赖的 AWTK 版本
 
 可以在自定义控件项目的 project.json 文件中设置该动态库依赖的 AWTK 版本。
 
@@ -213,9 +213,9 @@ node ../awtk/tools/dll_def_gen/index.js idl/idl.json src/number_label.def
 {
   ...
   "usesSdk": {
-    "awtk:minSdkVersion": "20030",
-    "awtk:maxSdkVersion": "20050",
-    "awtk:targetSdkVersion": "20050"
+    "awtk:minSdkVersion": "20070",
+    "awtk:maxSdkVersion": "20090",
+    "awtk:targetSdkVersion": "20090"
   }
   ...
 }
@@ -229,3 +229,60 @@ node ../awtk/tools/dll_def_gen/index.js idl/idl.json src/number_label.def
 
 > 上述版本号对应发布的 AWTK 中 component.json 文件中的 "release_id"
 > 注意：如果没有显式设置，则认为兼容所有版本。
+
+## 6. Designer新建控件的初始状态
+
+默认情况下，从Designer的控件列表的自定义分组中拖出一个控件，其属性为控件 create 时的初值，样式为全透明。
+
+如果需要指定新建控件的初始状态，可以在控件的class注释上补充如下格式的注释。
+
+```c
+/**
+...
+ * ```xml
+ * <!-- ui -->
+ * 控件初始属性的xml描述（如果描述中包含子控件，会同时创建）
+ * ```
+...
+ * ```xml
+ * <!-- style -->
+ * 控件默认样式的xml描述（如果描述中包含其它控件的样式，会同时添加到default.xml样式文件）
+ * ```
+...
+ */
+```
+
+如：
+
+```c
+/**
+ * @class number_label_t
+ * @parent widget_t
+ * @annotation ["scriptable","design","widget"]
+ * 数值文本控件。
+ *
+ * 在xml中使用"number\_label"标签创建数值文本控件。如：
+ *
+ * ```xml
+ * <!-- ui -->
+ * <number_label x="c" y="50" w="24" h="140" value="-128" format="%.4lf" decimal_font_size_scale="0.5"/>
+ * ```
+ *
+ * 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：
+ * 
+ * ```xml
+ * <!-- style -->
+ * <number_label>
+ *   <style name="default" font_size="32">
+ *     <normal text_color="black" />
+ *   </style>
+ *   <style name="green" font_name="led" font_size="32">
+ *     <normal text_color="green" />
+ *   </style>
+ * </number_label>
+ * ```
+ */
+```
+
+> Designer新建控件时会根据上述描述初始化控件的属性及样式，但会忽略x、y、w、h属性。
+
