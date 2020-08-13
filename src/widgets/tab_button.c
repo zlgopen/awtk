@@ -164,7 +164,7 @@ ret_t tab_button_set_value(widget_t* widget, bool_t value) {
         return_value_if_fail(index >= 0, RET_BAD_PARAMS);
 
         widget_set_value(pages, index);
-      } else if (tab_button->ui == NULL) {
+      } else if (tab_button->ui == NULL && !widget->loading) {
         tab_button_load_ui(tab_button, pages);
       }
     } else {
