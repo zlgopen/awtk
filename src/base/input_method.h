@@ -139,6 +139,17 @@ typedef struct _im_commit_event_t {
 } im_commit_event_t;
 
 /**
+ * @method im_commit_event_init
+ * 初始化im_commit事件。
+ * @param {im_commit_event_t*} e 事件对象。
+ * @param {const char*} text 文本。
+ * @param {bool_t} replace 是否替代当前的内容。
+ *
+ * @return {event_t*} 返回事件对象。
+ */
+event_t* im_commit_event_init(im_commit_event_t* e, const char* text, bool_t replace);
+
+/**
  * @class im_action_button_info_event_t
  * @parent event_t
  * 设置软键盘上的action按钮的信息事件。
@@ -530,9 +541,6 @@ input_method_t* input_method(void);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t input_method_set(input_method_t* im);
-
-/*public for internal use*/
-event_t* im_commit_event_init(im_commit_event_t* e, const char* text, bool_t replace);
 
 #define IM_LANG_DIGIT "123"
 #define IM_LANG_LOWER "abc"

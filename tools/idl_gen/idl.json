@@ -24293,6 +24293,32 @@
             "desc": "节点的路径。"
           },
           {
+            "type": "bool_t",
+            "name": "v",
+            "desc": "值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置指定路径节点的值。",
+        "name": "conf_doc_set_bool",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "conf_doc_t*",
+            "name": "doc",
+            "desc": "文档对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "path",
+            "desc": "节点的路径。"
+          },
+          {
             "type": "float",
             "name": "v",
             "desc": "值。"
@@ -24381,6 +24407,32 @@
         "name": "conf_doc_get_int",
         "return": {
           "type": "int32_t",
+          "desc": "返回值。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "conf_doc_t*",
+            "name": "doc",
+            "desc": "文档对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "path",
+            "desc": "节点的路径。"
+          },
+          {
+            "type": "bool_t",
+            "name": "defval",
+            "desc": "缺省值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取指定路径节点的值。",
+        "name": "conf_doc_get_bool",
+        "return": {
+          "type": "bool_t",
           "desc": "返回值。"
         }
       },
@@ -53912,7 +53964,34 @@
   },
   {
     "type": "class",
-    "methods": [],
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "im_commit_event_t*",
+            "name": "e",
+            "desc": "事件对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "text",
+            "desc": "文本。"
+          },
+          {
+            "type": "bool_t",
+            "name": "replace",
+            "desc": "是否替代当前的内容。"
+          }
+        ],
+        "annotation": {},
+        "desc": "初始化im_commit事件。",
+        "name": "im_commit_event_init",
+        "return": {
+          "type": "event_t*",
+          "desc": "返回事件对象。"
+        }
+      }
+    ],
     "events": [],
     "properties": [
       {
