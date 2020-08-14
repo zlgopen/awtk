@@ -76,6 +76,7 @@ static ret_t app_conf_prepare_default(const char* url, const char* default_url) 
 }
 
 ret_t app_conf_init(conf_load_t load, const char* app_name, const char* extname) {
+  object_t* obj = NULL;
 #ifdef APP_CONF_URL
   char path[MAX_PATH + 1];
   const char* app_conf_name = APP_CONF_URL;
@@ -85,7 +86,6 @@ ret_t app_conf_init(conf_load_t load, const char* app_name, const char* extname)
   char app_conf_name[MAX_PATH + 1];
 
   fs_t* fs = os_fs();
-  object_t* obj = NULL;
 
   return_value_if_fail(app_name != NULL && load != NULL, RET_BAD_PARAMS);
   return_value_if_fail(fs != NULL, RET_NOT_FOUND);
