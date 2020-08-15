@@ -939,9 +939,7 @@
             "desc": "分发的事件。"
           }
         ],
-        "annotation": {
-          "scriptable": true
-        },
+        "annotation": {},
         "desc": "分发事件",
         "name": "emitter_forward",
         "return": {

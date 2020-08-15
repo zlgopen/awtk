@@ -301,7 +301,6 @@ emitter_t* emitter_cast(emitter_t* emitter);
  * @method emitter_forward
  * 分发事件
  *
- * @annotation ["scriptable"]
  * @param {void*} ctx emitter对象。
  * @param {event_t*} e 分发的事件。
  *
