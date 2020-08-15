@@ -42,6 +42,10 @@ class AppHelperBase:
     def add_libs(self, APP_LIBS):
         self.APP_LIBS += APP_LIBS
         return self
+    
+    def add_libpath(self, APP_LIBPATH):
+        self.APP_LIBPATH += APP_LIBPATH
+        return self
 
     def add_cpppath(self, APP_CPPPATH):
         self.APP_CPPPATH += APP_CPPPATH
