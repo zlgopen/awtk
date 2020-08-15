@@ -31,11 +31,13 @@ slist_destroy(slist);
 | <a href="#slist_t_slist_destroy">slist\_destroy</a> | 清除单向链表中的元素，并释放单向链表对象。 |
 | <a href="#slist_t_slist_find">slist\_find</a> | 查找第一个满足条件的元素。 |
 | <a href="#slist_t_slist_foreach">slist\_foreach</a> | 遍历元素。 |
+| <a href="#slist_t_slist_head_pop">slist\_head\_pop</a> | 弹出第一个元素。 |
 | <a href="#slist_t_slist_init">slist\_init</a> | 初始化slist对象 |
 | <a href="#slist_t_slist_prepend">slist\_prepend</a> | 在头部追加一个元素。 |
 | <a href="#slist_t_slist_remove">slist\_remove</a> | 删除第一个满足条件的元素。 |
 | <a href="#slist_t_slist_remove_all">slist\_remove\_all</a> | 删除全部元素。 |
 | <a href="#slist_t_slist_size">slist\_size</a> | 返回元素个数。 |
+| <a href="#slist_t_slist_tail_pop">slist\_tail\_pop</a> | 弹出最后一个元素。 |
 ### 属性
 <p id="slist_t_properties">
 
@@ -183,6 +185,25 @@ ret_t slist_foreach (slist_t* slist, tk_visit_t visit, void* ctx);
 | slist | slist\_t* | 单向链表对象。 |
 | visit | tk\_visit\_t | 遍历函数。 |
 | ctx | void* | 遍历函数的上下文。 |
+#### slist\_head\_pop 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="slist_t_slist_head_pop">弹出第一个元素。
+
+* 函数原型：
+
+```
+ret_t slist_head_pop (slist_t* slist);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 成功返回最后一个元素，失败返回NULL。 |
+| slist | slist\_t* | 单向链表对象。 |
 #### slist\_init 函数
 -----------------------
 
@@ -281,6 +302,25 @@ int32_t slist_size (slist_t* slist);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | int32\_t | 返回元素个数。 |
+| slist | slist\_t* | 单向链表对象。 |
+#### slist\_tail\_pop 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="slist_t_slist_tail_pop">弹出最后一个元素。
+
+* 函数原型：
+
+```
+ret_t slist_tail_pop (slist_t* slist);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 成功返回最后一个元素，失败返回NULL。 |
 | slist | slist\_t* | 单向链表对象。 |
 #### compare 属性
 -----------------------

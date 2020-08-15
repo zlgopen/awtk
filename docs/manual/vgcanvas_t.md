@@ -44,6 +44,7 @@ vgcanvas_restore(vg);
 | <a href="#vgcanvas_t_vgcanvas_begin_path">vgcanvas\_begin\_path</a> | 清除之前的路径，并重新开始一条路径。 |
 | <a href="#vgcanvas_t_vgcanvas_bezier_to">vgcanvas\_bezier\_to</a> | 生成一条三次贝塞尔曲线。 |
 | <a href="#vgcanvas_t_vgcanvas_cast">vgcanvas\_cast</a> | 转换为vgcanvas对象(供脚本语言使用)。 |
+| <a href="#vgcanvas_t_vgcanvas_clear_cache">vgcanvas\_clear\_cache</a> | 释放vgcanvas对象的缓冲数据。 |
 | <a href="#vgcanvas_t_vgcanvas_clear_rect">vgcanvas\_clear\_rect</a> | 用颜色清除指定矩形区域。 |
 | <a href="#vgcanvas_t_vgcanvas_clip_rect">vgcanvas\_clip\_rect</a> | 矩形裁剪。 |
 | <a href="#vgcanvas_t_vgcanvas_close_path">vgcanvas\_close\_path</a> | 闭合路径。 |
@@ -249,6 +250,25 @@ vgcanvas_t* vgcanvas_cast (vgcanvas_t* vg);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | vgcanvas\_t* | vgcanvas对象。 |
+| vg | vgcanvas\_t* | vgcanvas对象。 |
+#### vgcanvas\_clear\_cache 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="vgcanvas_t_vgcanvas_clear_cache">释放vgcanvas对象的缓冲数据。
+
+* 函数原型：
+
+```
+ret_t vgcanvas_clear_cache (vgcanvas_t* vg);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
 #### vgcanvas\_clear\_rect 函数
 -----------------------

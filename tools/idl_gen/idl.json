@@ -1341,7 +1341,8 @@
           }
         ],
         "annotation": {
-          "scriptable": true
+          "scriptable": true,
+          "static": true
         },
         "desc": "获取位图格式对应的颜色位数。",
         "name": "bitmap_get_bpp_of_format",
@@ -6991,8 +6992,12 @@
           }
         ],
         "annotation": {},
-        "desc": "初始化glyph_cache对象。\n\nreturn {glyph_cache_t*} 返回cache对象。",
-        "name": "glyph_cache_init"
+        "desc": "初始化glyph_cache对象。",
+        "name": "glyph_cache_init",
+        "return": {
+          "type": "glyph_cache_t*",
+          "desc": "返回cache对象。"
+        }
       },
       {
         "params": [

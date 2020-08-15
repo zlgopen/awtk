@@ -51,7 +51,7 @@ typedef struct _glyph_cache_t {
  * @param {uint32_t} capacity 最大容量。
  * @param {tk_destroy_t} destroy_glyph 销毁函数。
  * 
- * return {glyph_cache_t*} 返回cache对象。
+ * @return {glyph_cache_t*} 返回cache对象。
  */
 glyph_cache_t* glyph_cache_init(glyph_cache_t* cache, uint32_t capacity,
                                 tk_destroy_t destroy_glyph);

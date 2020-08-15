@@ -17,6 +17,10 @@
 | <a href="#conf_doc_t_conf_doc_destroy_node">conf\_doc\_destroy\_node</a> | 销毁节点对象。 |
 | <a href="#conf_doc_t_conf_doc_exists">conf\_doc\_exists</a> | 判断指定路径的节点是否存在。 |
 | <a href="#conf_doc_t_conf_doc_get">conf\_doc\_get</a> | 获取指定路径节点的值。 |
+| <a href="#conf_doc_t_conf_doc_get_bool">conf\_doc\_get\_bool</a> | 获取指定路径节点的值。 |
+| <a href="#conf_doc_t_conf_doc_get_float">conf\_doc\_get\_float</a> | 获取指定路径节点的值。 |
+| <a href="#conf_doc_t_conf_doc_get_int">conf\_doc\_get\_int</a> | 获取指定路径节点的值。 |
+| <a href="#conf_doc_t_conf_doc_get_str">conf\_doc\_get\_str</a> | 获取指定路径节点的值。 |
 | <a href="#conf_doc_t_conf_doc_is_first">conf\_doc\_is\_first</a> | 检查指定节点是否在兄弟节点中排第一。 |
 | <a href="#conf_doc_t_conf_doc_is_last">conf\_doc\_is\_last</a> | 检查指定节点是否在兄弟节点中排最后。 |
 | <a href="#conf_doc_t_conf_doc_move_down">conf\_doc\_move\_down</a> | 和后一个兄弟节点交换位置。 |
@@ -27,6 +31,10 @@
 | <a href="#conf_doc_t_conf_doc_remove_children">conf\_doc\_remove\_children</a> | 删除全部子节点。 |
 | <a href="#conf_doc_t_conf_doc_remove_sibling">conf\_doc\_remove\_sibling</a> | 删除指定的兄弟节点。 |
 | <a href="#conf_doc_t_conf_doc_set">conf\_doc\_set</a> | 设置指定路径节点的值。 |
+| <a href="#conf_doc_t_conf_doc_set_bool">conf\_doc\_set\_bool</a> | 设置指定路径节点的值。 |
+| <a href="#conf_doc_t_conf_doc_set_float">conf\_doc\_set\_float</a> | 设置指定路径节点的值。 |
+| <a href="#conf_doc_t_conf_doc_set_int">conf\_doc\_set\_int</a> | 设置指定路径节点的值。 |
+| <a href="#conf_doc_t_conf_doc_set_str">conf\_doc\_set\_str</a> | 设置指定路径节点的值。 |
 ### 属性
 <p id="conf_doc_t_properties">
 
@@ -234,6 +242,90 @@ ret_t conf_doc_get (conf_doc_t* doc, const char* path, value_t* v);
 | doc | conf\_doc\_t* | 文档对象。 |
 | path | const char* | 节点的路径。 |
 | v | value\_t* | 用于返回值。 |
+#### conf\_doc\_get\_bool 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="conf_doc_t_conf_doc_get_bool">获取指定路径节点的值。
+
+* 函数原型：
+
+```
+bool_t conf_doc_get_bool (conf_doc_t* doc, const char* path, bool_t defval);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回值。 |
+| doc | conf\_doc\_t* | 文档对象。 |
+| path | const char* | 节点的路径。 |
+| defval | bool\_t | 缺省值。 |
+#### conf\_doc\_get\_float 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="conf_doc_t_conf_doc_get_float">获取指定路径节点的值。
+
+* 函数原型：
+
+```
+float conf_doc_get_float (conf_doc_t* doc, const char* path, float defval);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | float | 返回值。 |
+| doc | conf\_doc\_t* | 文档对象。 |
+| path | const char* | 节点的路径。 |
+| defval | float | 缺省值。 |
+#### conf\_doc\_get\_int 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="conf_doc_t_conf_doc_get_int">获取指定路径节点的值。
+
+* 函数原型：
+
+```
+int32_t conf_doc_get_int (conf_doc_t* doc, const char* path, int32_t defval);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | int32\_t | 返回值。 |
+| doc | conf\_doc\_t* | 文档对象。 |
+| path | const char* | 节点的路径。 |
+| defval | int32\_t | 缺省值。 |
+#### conf\_doc\_get\_str 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="conf_doc_t_conf_doc_get_str">获取指定路径节点的值。
+
+* 函数原型：
+
+```
+const char* conf_doc_get_str (conf_doc_t* doc, const char* path, const char* defval);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const char* | 返回值。 |
+| doc | conf\_doc\_t* | 文档对象。 |
+| path | const char* | 节点的路径。 |
+| defval | const char* | 缺省值。 |
 #### conf\_doc\_is\_first 函数
 -----------------------
 
@@ -438,6 +530,90 @@ ret_t conf_doc_set (conf_doc_t* doc, const char* path, const value_t* v);
 | doc | conf\_doc\_t* | 文档对象。 |
 | path | const char* | 节点的路径。 |
 | v | const value\_t* | 值。 |
+#### conf\_doc\_set\_bool 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="conf_doc_t_conf_doc_set_bool">设置指定路径节点的值。
+
+* 函数原型：
+
+```
+ret_t conf_doc_set_bool (conf_doc_t* doc, const char* path, bool_t v);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| doc | conf\_doc\_t* | 文档对象。 |
+| path | const char* | 节点的路径。 |
+| v | bool\_t | 值。 |
+#### conf\_doc\_set\_float 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="conf_doc_t_conf_doc_set_float">设置指定路径节点的值。
+
+* 函数原型：
+
+```
+ret_t conf_doc_set_float (conf_doc_t* doc, const char* path, float v);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| doc | conf\_doc\_t* | 文档对象。 |
+| path | const char* | 节点的路径。 |
+| v | float | 值。 |
+#### conf\_doc\_set\_int 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="conf_doc_t_conf_doc_set_int">设置指定路径节点的值。
+
+* 函数原型：
+
+```
+ret_t conf_doc_set_int (conf_doc_t* doc, const char* path, int32_t v);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| doc | conf\_doc\_t* | 文档对象。 |
+| path | const char* | 节点的路径。 |
+| v | int32\_t | 值。 |
+#### conf\_doc\_set\_str 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="conf_doc_t_conf_doc_set_str">设置指定路径节点的值。
+
+* 函数原型：
+
+```
+ret_t conf_doc_set_str (conf_doc_t* doc, const char* path, const char* v);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| doc | conf\_doc\_t* | 文档对象。 |
+| path | const char* | 节点的路径。 |
+| v | const char* | 值。 |
 #### root 属性
 -----------------------
 > <p id="conf_doc_t_root">根节点。

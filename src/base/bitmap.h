@@ -272,7 +272,7 @@ ret_t bitmap_destroy(bitmap_t* bitmap);
 /**
  * @method bitmap_get_bpp_of_format
  * 获取位图格式对应的颜色位数。
- * @annotation ["scriptable"]
+ * @annotation ["scriptable", "static"]
  * 
  * @param {bitmap_format_t} format 位图格式。
  * 
