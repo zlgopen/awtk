@@ -98,10 +98,12 @@ static ret_t system_info_normalize_app_root_try_path(system_info_t* info, char* 
 
   if (!app_root_is_valid(path)) {
     path_build(app_root, MAX_PATH, path, "res", NULL);
+    log_debug("try set app_root:%s\n", app_root);
     if (app_root_is_valid(app_root)) {
       return system_info_set_app_root(info, app_root);
     } else {
       path_build(app_root, MAX_PATH, path, "demos", NULL);
+     log_debug("try set app_root:%s\n", app_root);
       if (app_root_is_valid(app_root)) {
         return system_info_set_app_root(info, app_root);
       } else {
