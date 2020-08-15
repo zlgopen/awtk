@@ -3951,15 +3951,19 @@ bool_t widget_is_opened_popup(widget_t* widget) {
 }
 
 ret_t widget_reset_canvas(widget_t* widget) {
+#ifndef AWTK_WEB
   rect_t rect;
   canvas_t* c = widget_get_canvas(widget);
-
   return_value_if_fail(c != NULL, RET_BAD_PARAMS);
   rect = rect_init(0, 0, c->lcd->w, c->lcd->h);
   canvas_set_clip_rect(c, &rect);
 
   c->font = NULL;
   return vgcanvas_reset(canvas_get_vgcanvas(c));
+#else
+  (void)widget;
+  return RET_OK;
+#endif /*AWTK_WEB*/
 }
 
 widget_t* widget_ref(widget_t* widget) {
