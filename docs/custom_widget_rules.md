@@ -265,7 +265,7 @@ node ../awtk/tools/dll_def_gen/index.js idl/idl.json src/number_label.def
  *
  * ```xml
  * <!-- ui -->
- * <number_label x="c" y="50" w="24" h="140" value="-128" format="%.4lf" decimal_font_size_scale="0.5"/>
+ * <number_label x="c" y="50" w="24" h="100" value="40" format="%.4lf" decimal_font_size_scale="0.5"/>
  * ```
  *
  * 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：
@@ -284,5 +284,5 @@ node ../awtk/tools/dll_def_gen/index.js idl/idl.json src/number_label.def
  */
 ```
 
-> Designer新建控件时会根据上述描述初始化控件的属性及样式，但会忽略x、y、w、h属性。
+> Designer新建控件时会根据上述描述初始化控件的属性及样式，但会忽略x、y属性。
 
