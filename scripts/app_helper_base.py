@@ -212,6 +212,10 @@ class AppHelperBase:
             if len(lan) >= 2:
                 APP_DEFAULT_COUNTRY = lan[1]
 
+        RES_ROOT = ARGUMENTS.get('RES_ROOT', '')
+        if len(RES_ROOT) > 0:
+            APP_RES_ROOT = RES_ROOT
+
         SHARED = ARGUMENTS.get('SHARED', '')
         if len(SHARED) > 0 and SHARED.lower().startswith('f'):
             self.BUILD_SHARED = False
