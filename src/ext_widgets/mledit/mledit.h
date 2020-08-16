@@ -42,7 +42,7 @@ BEGIN_C_DECLS
  * ```
  *
  * > 更多用法请参考：[mledit.xml](
- * https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/mledit.xml)
+ * https://github.com/zlgopen/awtk/blob/master/design/default/ui/mledit.xml)
  *
  * 在c代码中使用函数mledit\_create创建多行编辑器控件。如：
  *

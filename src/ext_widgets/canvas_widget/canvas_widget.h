@@ -43,7 +43,7 @@ BEGIN_C_DECLS
  * ```
  *
  * > 更多用法请参考：
- * [canvas_widget.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/vgcanvas.xml)
+ * [canvas_widget.xml](https://github.com/zlgopen/awtk/blob/master/design/default/ui/vgcanvas.xml)
  *
  * 在c代码中使用函数canvas\_widget\_create创建画布控件。如：
  *

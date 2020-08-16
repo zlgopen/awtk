@@ -17,7 +17,7 @@ button\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适�
 ```
 
 > 更多用法请参考：
-[button.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/button.xml)
+[button.xml](https://github.com/zlgopen/awtk/blob/master/design/default/ui/button.xml)
 
 在c代码中使用函数button\_create创建按钮控件。如：
 
@@ -45,7 +45,7 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 
 > 更多用法请参考：
 [theme
-default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L31)
+default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L31)
 ----------------------------------
 ### 函数
 <p id="button_t_methods">

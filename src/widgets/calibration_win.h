@@ -55,7 +55,7 @@ typedef ret_t (*calibration_win_on_click_t)(void* ctx, uint32_t index, point_t p
  * ```
  *
  * > 更多用法请参考：
- * [window.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/calibration_win.xml)
+ * [window.xml](https://github.com/zlgopen/awtk/blob/master/design/default/ui/calibration_win.xml)
  *
  * 在c代码中使用函数calibration\_win\_create创建窗口。如：
  *

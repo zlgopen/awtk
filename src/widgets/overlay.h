@@ -47,7 +47,7 @@ BEGIN_C_DECLS
  * ```
  *
  * >
- * 更多用法请参考：[overlay.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/)
+ * 更多用法请参考：[overlay.xml](https://github.com/zlgopen/awtk/blob/master/design/default/ui/)
  *
  * 在c代码中使用函数overlay\_create创建窗口。如：
  *
@@ -67,7 +67,7 @@ BEGIN_C_DECLS
  * ```
  *
  * > 更多用法请参考：[theme
- * default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L0)
+ * default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L0)
  */
 typedef struct _overlay_t {
   window_base_t overlay;

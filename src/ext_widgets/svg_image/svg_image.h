@@ -42,7 +42,7 @@ BEGIN_C_DECLS
  * ```
  *
  * >更多用法请参考：[svg image](
- * https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/svg_image.xml)
+ * https://github.com/zlgopen/awtk/blob/master/design/default/ui/svg_image.xml)
  *
  * 在c代码中使用函数svg\_image\_create创建SVG图片控件。如：
  *
@@ -67,7 +67,7 @@ BEGIN_C_DECLS
  * ```
  *
  * > 更多用法请参考：[theme default](
- * https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml)
+ * https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml)
  *
  */
 typedef struct _svg_image_t {

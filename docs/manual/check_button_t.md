@@ -19,7 +19,7 @@ check\_button\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数�
 ```
 
 > 更多用法请参考：
-[button.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/basic.xml)
+[button.xml](https://github.com/zlgopen/awtk/blob/master/design/default/ui/basic.xml)
 
 在c代码中使用函数check\_button\_create创建多选按钮控件。如：
 
@@ -55,7 +55,7 @@ widget_on(button, EVT_VALUE_CHANGED, on_changed, NULL);
 
 > 更多用法请参考：
 [theme
-default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L227)
+default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L227)
 ----------------------------------
 ### 函数
 <p id="check_button_t_methods">

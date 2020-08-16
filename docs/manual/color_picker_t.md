@@ -18,7 +18,7 @@ color\_picker\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数�
 ```
 
 > 更多用法请参考：
-[color\_picker](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/color_picker.xml)
+[color\_picker](https://github.com/zlgopen/awtk/blob/master/design/default/ui/color_picker.xml)
 
 其中的子控件必须按下列规则命名：
 

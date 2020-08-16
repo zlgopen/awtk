@@ -15,7 +15,7 @@ text\_selector\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数
 ```
 
 > 更多用法请参考：[text\_selector.xml](
-https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/text_selector.xml)
+https://github.com/zlgopen/awtk/blob/master/design/default/ui/text_selector.xml)
 
 在c代码中使用函数text\_selector\_create创建文本选择器控件。如：
 
@@ -38,7 +38,7 @@ https://github.com/zlgopen/awtk-c-demos/blob/master/demos/text_selector.c)
 ```
 
 > 更多用法请参考：[theme default](
-https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L443)
+https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L443)
 ----------------------------------
 ### 函数
 <p id="text_selector_t_methods">

@@ -52,7 +52,7 @@ BEGIN_C_DECLS
  * ```
  *
  * > 更多用法请参考：
- * [image.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/images.xml)
+ * [image.xml](https://github.com/zlgopen/awtk/blob/master/design/default/ui/images.xml)
  *
  * 在c代码中使用函数image\_create创建图片控件。如：
  *
@@ -87,7 +87,7 @@ BEGIN_C_DECLS
  *
  * > 更多用法请参考：
  * [theme
- * default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L313)
+ * default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L313)
  *
  */
 typedef struct _image_t {

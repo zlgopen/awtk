@@ -36,7 +36,7 @@ file\_browser\_view\_t负责关联文件/文件夹数据到子控件上，子控
 
 完整示例请参考：
 
-https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/file_chooser_for_open.xml
+https://github.com/zlgopen/awtk/blob/master/design/default/ui/file_chooser_for_open.xml
 ----------------------------------
 ### 函数
 <p id="file_browser_view_t_methods">

@@ -44,7 +44,7 @@ BEGIN_C_DECLS
  * ```
  *
  * > 更多用法请参考：
- * [basic demo](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/basic.xml)
+ * [basic demo](https://github.com/zlgopen/awtk/blob/master/design/default/ui/basic.xml)
  *
  * 在c代码中使用函数progress\_bar\_create创建进度条控件。如：
  *
@@ -65,7 +65,7 @@ BEGIN_C_DECLS
  *
  * > 更多用法请参考：
  * [theme
- * default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L183)
+ * default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L183)
  *
  */
 typedef struct _progress_bar_t {

@@ -43,7 +43,7 @@ BEGIN_C_DECLS
  * ```
  *
  * > 更多用法请参考：[switch.xml](
- * https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/switch.xml)
+ * https://github.com/zlgopen/awtk/blob/master/design/default/ui/switch.xml)
  *
  * 在c代码中使用函数switch\_create创建开关控件。如：
  *
@@ -64,7 +64,7 @@ BEGIN_C_DECLS
  * ```
  *
  * > 更多用法请参考：[theme default](
- * https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L452)
+ * https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L452)
  *
  */
 typedef struct _switch_t {

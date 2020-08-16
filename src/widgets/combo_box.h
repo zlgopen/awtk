@@ -74,7 +74,7 @@ typedef widget_t* (*combo_box_custom_open_popup_t)(widget_t* combobox);
  * </popup>
  * ```
  *
- * > 更多用法请参考：[combo_box.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/combo_box.xml)
+ * > 更多用法请参考：[combo_box.xml](https://github.com/zlgopen/awtk/blob/master/design/default/ui/combo_box.xml)
  *
  * 
  *
@@ -147,7 +147,7 @@ typedef widget_t* (*combo_box_custom_open_popup_t)(widget_t* combobox);
  * ```
  * 
  * > 更多用法请参考：[theme
- *default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L422)
+ *default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L422)
  *
  */
 typedef struct _combo_box_t {

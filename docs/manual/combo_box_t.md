@@ -38,7 +38,7 @@ language.xml:
 </popup>
 ```
 
-> 更多用法请参考：[combo_box.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/combo_box.xml)
+> 更多用法请参考：[combo_box.xml](https://github.com/zlgopen/awtk/blob/master/design/default/ui/combo_box.xml)
 
 
 
@@ -111,7 +111,7 @@ demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/combo_box.c)
 ```
 
 > 更多用法请参考：[theme
-default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L422)
+default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L422)
 ----------------------------------
 ### 函数
 <p id="combo_box_t_methods">

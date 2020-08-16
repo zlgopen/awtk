@@ -51,6 +51,6 @@ python scripts/update_res.py all x1 mono
 ## 预览mono test查看运行效果
 
 ```
-./bin/preview_ui demos/assets/default/raw/ui/mono_test.xml 
+./bin/preview_ui design/default/ui/mono_test.xml 
 ```
 

@@ -24,7 +24,7 @@
 ### 1.3 拷贝3rd/gpinyin/data/gpinyin.dat到资源目录的data目录。
 
 ```
-cp 3rd/gpinyin/data/gpinyin.dat demos/assets/default/raw/data/gpinyin.dat
+cp 3rd/gpinyin/data/gpinyin.dat design/default/data/gpinyin.dat
 ```
 
 ## 2.更新联想词库

@@ -65,7 +65,7 @@ typedef bool_t (*edit_is_valid_char_t)(widget_t* widget, wchar_t c);
  * > XXX：需要在min/max/step之前设置input\_type。
  *
  * >更多用法请参考：
- * [edit.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/edit.xml)
+ * [edit.xml](https://github.com/zlgopen/awtk/blob/master/design/default/ui/edit.xml)
  *
  * 在c代码中使用函数edit\_create创建编辑器控件。如：
  *
@@ -93,7 +93,7 @@ typedef bool_t (*edit_is_valid_char_t)(widget_t* widget, wchar_t c);
  *
  * > 更多用法请参考：
  * [theme
- *default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L104)
+ *default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L104)
  *
  */
 typedef struct _edit_t {

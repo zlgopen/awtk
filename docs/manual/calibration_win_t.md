@@ -15,7 +15,7 @@ window\_base\_t的函数均适用于calibration\_win\_t控件。
 ```
 
 > 更多用法请参考：
-[window.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/calibration_win.xml)
+[window.xml](https://github.com/zlgopen/awtk/blob/master/design/default/ui/calibration_win.xml)
 
 在c代码中使用函数calibration\_win\_create创建窗口。如：
 

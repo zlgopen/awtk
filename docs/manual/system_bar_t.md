@@ -29,7 +29,7 @@ window\_base\_t的函数均适用于system\_bar\_t控件。
 ```
 
 > 更多用法请参考：
-[system_bar](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/system_bar.xml)
+[system_bar](https://github.com/zlgopen/awtk/blob/master/design/default/ui/system_bar.xml)
 
 在c代码中使用函数system\_bar\_create创建system\_bar窗口。如：
 
@@ -50,7 +50,7 @@ widget_t* win = system_bar_create(NULL, 0, 0, 320, 30);
 ```
 
 > 更多用法请参考：
-[system_bar.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/system_bar.xml)
+[system_bar.xml](https://github.com/zlgopen/awtk/blob/master/design/default/styles/system_bar.xml)
 ----------------------------------
 ### 函数
 <p id="system_bar_t_methods">

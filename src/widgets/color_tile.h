@@ -45,7 +45,7 @@ BEGIN_C_DECLS
  * ```
  *
  * > 更多用法请参考：
- * [color_tile](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/color_picker_rgb.xml)
+ * [color_tile](https://github.com/zlgopen/awtk/blob/master/design/default/ui/color_picker_rgb.xml)
  *
  * 在c代码中使用函数color_tile\_create创建色块控件。如：
  *

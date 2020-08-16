@@ -15,7 +15,7 @@ text="<image name=&quota;bricks&quota;/><font align_v=&quota;middle&quota;>hello
 >
 
 > 更多用法请参考：
-[rich_text.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/rich_text.xml)
+[rich_text.xml](https://github.com/zlgopen/awtk/blob/master/design/default/ui/rich_text.xml)
 
 在c代码中使用函数rich\_text\_create创建图文混排控件。如：
 

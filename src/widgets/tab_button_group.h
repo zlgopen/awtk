@@ -49,7 +49,7 @@ BEGIN_C_DECLS
  * ```
  *
  * > 更多用法请参考：
- * [tab control](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/)
+ * [tab control](https://github.com/zlgopen/awtk/blob/master/design/default/ui/)
  *
  * 可用通过style来设置控件的显示风格，如颜色等等。如：
  *

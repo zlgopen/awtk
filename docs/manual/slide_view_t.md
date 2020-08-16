@@ -22,7 +22,7 @@ slide\_view\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均
 ```
 
 > 更多用法请参考：[slide_view.xml](
-https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/slide_view.xml)
+https://github.com/zlgopen/awtk/blob/master/design/default/ui/slide_view.xml)
 
 在c代码中使用函数slide\_view\_create创建滑动视图控件。如：
 
@@ -45,7 +45,7 @@ https://github.com/zlgopen/awtk-c-demos/blob/master/demos/slide_view.c)
 > 如果希望背景图片跟随滚动，请将背景图片设置到页面上，否则设置到slide\_view上。
 
 > 更多用法请参考：[theme default](
-https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L458)
+https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L458)
 ----------------------------------
 ### 函数
 <p id="slide_view_t_methods">

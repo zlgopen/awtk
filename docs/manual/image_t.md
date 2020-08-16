@@ -23,7 +23,7 @@ image\_t是[image\_base\_t](image_base_t.md)的子类控件，image\_base\_t的�
 ```
 
 > 更多用法请参考：
-[image.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/images.xml)
+[image.xml](https://github.com/zlgopen/awtk/blob/master/design/default/ui/images.xml)
 
 在c代码中使用函数image\_create创建图片控件。如：
 
@@ -58,7 +58,7 @@ image_set_image(image, "earth");
 
 > 更多用法请参考：
 [theme
-default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L313)
+default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L313)
 ----------------------------------
 ### 函数
 <p id="image_t_methods">

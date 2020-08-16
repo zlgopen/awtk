@@ -21,7 +21,7 @@ list\_view\_h\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数�
 
 
 > 更多用法请参考：[list\_view\_h.xml](
-https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/list_view_h.xml)
+https://github.com/zlgopen/awtk/blob/master/design/default/ui/list_view_h.xml)
 
 在c代码中使用函数list\_view\_h\_create创建水平列表视图控件。如：
 

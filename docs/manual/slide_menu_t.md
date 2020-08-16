@@ -21,7 +21,7 @@ slide\_menu\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均
 ```
 
 > 更多用法请参考：[slide_menu.xml](
-https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/slide_menu.xml)
+https://github.com/zlgopen/awtk/blob/master/design/default/ui/slide_menu.xml)
 
 在c代码中使用函数slide\_menu\_create创建左右滑动菜单控件。如：
 
@@ -61,7 +61,7 @@ https://github.com/zlgopen/awtk-c-demos/blob/master/demos/slide_menu.c)
 ```
 
 > 更多用法请参考：[theme default](
-https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L493)
+https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L493)
 ----------------------------------
 ### 函数
 <p id="slide_menu_t_methods">

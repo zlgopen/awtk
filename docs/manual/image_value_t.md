@@ -24,7 +24,7 @@ image\_value\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数�
 ```
 
 > 更多用法请参考：
-[image\_value](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/image_value.xml)
+[image\_value](https://github.com/zlgopen/awtk/blob/master/design/default/ui/image_value.xml)
 
 在c代码中使用函数image\_value\_create创建图片值控件。如：
 

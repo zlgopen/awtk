@@ -18,7 +18,7 @@
 </column>
 ```
 
-> 完整示例请参考 [styles/button.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/button.xml)
+> 完整示例请参考 [styles/button.xml](https://github.com/zlgopen/awtk/blob/master/design/default/styles/button.xml)
 
 ## 二、在 UI 文件中引用
 
@@ -36,4 +36,4 @@
   </column>
 ```
 
-> 完整示例请参考 [ui/button.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/button.xml)
+> 完整示例请参考 [ui/button.xml](https://github.com/zlgopen/awtk/blob/master/design/default/ui/button.xml)

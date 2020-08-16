@@ -14,9 +14,9 @@
 如果需要显示文件系统中的图片，只需将图片名称换成实际的文件名，并加上"file://"前缀即可。如：
 
 ```
-<image draw_type="center" image="file://./demos/assets/default/raw/images/xx/flag_CN.png" />
-<gif image="file://./demos/assets/default/raw/images/x2/bee.gif" />
-<svg image="file://./demos/assets/default/raw/images/svg/china.bsvg" />
+<image draw_type="center" image="file://./design/default/images/xx/flag_CN.png" />
+<gif image="file://./design/default/images/x2/bee.gif" />
+<svg image="file://./design/default/images/svg/china.bsvg" />
 ```
 ----------------------------------
 ### 函数

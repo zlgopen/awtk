@@ -15,7 +15,7 @@ guage\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适用
 ```
 
 > 更多用法请参考：
-[guage.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/guage.xml)
+[guage.xml](https://github.com/zlgopen/awtk/blob/master/design/default/ui/guage.xml)
 
 在c代码中使用函数guage\_create创建表盘控件。如：
 
@@ -36,7 +36,7 @@ guage_set_image(guage, "guage_bg");
 
 > 更多用法请参考：
 [theme
-default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml)
+default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml)
 ----------------------------------
 ### 函数
 <p id="guage_t_methods">

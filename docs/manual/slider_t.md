@@ -15,7 +15,7 @@ slider\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均适�
 ```
 
 > 更多用法请参考：
-[basic](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/basic.xml)
+[basic](https://github.com/zlgopen/awtk/blob/master/design/default/ui/basic.xml)
 
 在c代码中使用函数slider\_create创建滑块控件。如：
 
@@ -40,7 +40,7 @@ widget_on(slider, EVT_VALUE_CHANGING, on_changing, NULL);
 
 > 更多用法请参考：
 [theme
-default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L179)
+default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L179)
 ----------------------------------
 ### 函数
 <p id="slider_t_methods">

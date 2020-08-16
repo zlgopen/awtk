@@ -37,7 +37,7 @@ BEGIN_C_DECLS
  * 如果不需要滚动，可以用view控件配置适当的layout参数作为列表控件。
  *
  * 列表视图中的列表项可以固定高度，也可以使用不同高度。请参考[变高列表项](
- *https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/list_view_vh.xml)
+ *https://github.com/zlgopen/awtk/blob/master/design/default/ui/list_view_vh.xml)
  *
  * 列表视图控件的中可以有滚动条，也可以没有滚动条。
  * 可以使用移动设备风格的滚动条，也可以使用桌面风格的滚动条。
@@ -64,7 +64,7 @@ BEGIN_C_DECLS
  *
  *
  * > 更多用法请参考：[list\_view\_m.xml](
- *https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/list_view_m.xml)
+ *https://github.com/zlgopen/awtk/blob/master/design/default/ui/list_view_m.xml)
  *
  * 在c代码中使用函数list\_view\_create创建列表视图控件。如：
  *

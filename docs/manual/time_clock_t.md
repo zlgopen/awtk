@@ -14,7 +14,7 @@ hour_image="clock_hour" minute_image="clock_minute" second_image="clock_second"/
 ```
 
 > 更多用法请参考：[time\_clock.xml](
-https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/time_clock.xml)
+https://github.com/zlgopen/awtk/blob/master/design/default/ui/time_clock.xml)
 
 在c代码中使用函数time\_clock\_create创建模拟时钟控件。如：
 

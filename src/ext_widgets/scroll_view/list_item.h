@@ -53,7 +53,7 @@ BEGIN_C_DECLS
  * ```
  *
  * > 更多用法请参考：[list\_view\_m.xml](
- *https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/list_view_m.xml)
+ *https://github.com/zlgopen/awtk/blob/master/design/default/ui/list_view_m.xml)
  *
  * 在c代码中使用函数list\_item\_create创建列表项控件。如：
  *
@@ -74,7 +74,7 @@ BEGIN_C_DECLS
  * ```
  *
  * > 更多用法请参考：[theme default](
- *https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L372)
+ *https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L372)
  *
  */
 typedef struct _list_item_t {

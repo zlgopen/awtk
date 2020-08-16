@@ -90,7 +90,7 @@ x="0" y="0" w="100%" h="100%" children_layout="default(r=4,c=4,s=2,m=2)">
 ```
 
 > 更多用法请参考：
-[kb_default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/kb_default.xml)
+[kb_default](https://github.com/zlgopen/awtk/blob/master/design/default/ui/kb_default.xml)
 ----------------------------------
 ### 函数
 <p id="keyboard_t_methods">

@@ -44,7 +44,7 @@ tab\_button\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均
 标签按钮一般放在标签按钮分组中，布局由标签按钮分组控件决定，不需要指定自己的布局参数和坐标。
 
 > 更多用法请参考：
-[tab control](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/)
+[tab control](https://github.com/zlgopen/awtk/blob/master/design/default/ui/)
 
 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：
 

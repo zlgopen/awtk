@@ -13,7 +13,7 @@ digit\_clock\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数�
 ```
 
 > 更多用法请参考：[digit\_clock.xml](
-https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/digit_clock.xml)
+https://github.com/zlgopen/awtk/blob/master/design/default/ui/digit_clock.xml)
 
 在c代码中使用函数digit\_clock\_create创建数字时钟控件。如：
 
@@ -34,7 +34,7 @@ https://github.com/zlgopen/awtk-c-demos/blob/master/demos/digit_clock.c)
 ```
 
 > 更多用法请参考：[theme default](
-https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L138)
+https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L138)
 ----------------------------------
 ### 函数
 <p id="digit_clock_t_methods">

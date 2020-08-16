@@ -156,7 +156,7 @@ typedef enum _dialog_quit_code_t {
  * ```
  *
  * > 更多用法请参考：
- * [dialog.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/)
+ * [dialog.xml](https://github.com/zlgopen/awtk/blob/master/design/default/ui/)
  *
  * > 完整C代码示例请参考：
  *
@@ -174,7 +174,7 @@ typedef enum _dialog_quit_code_t {
  *
  * > 更多用法请参考：
  * [theme default]
- * (https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L324)
+ * (https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L324)
  *
  */
 typedef struct _dialog_t {

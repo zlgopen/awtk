@@ -17,7 +17,7 @@ gif\_image\_t是[image\_base\_t](image_base_t.md)的子类控件，image\_base\_
 
 >更多用法请参考：
 [gif
-image](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/gif_image.xml)
+image](https://github.com/zlgopen/awtk/blob/master/design/default/ui/gif_image.xml)
 
 在c代码中使用函数gif\_image\_create创建GIF图片控件。如：
 
@@ -44,7 +44,7 @@ https://github.com/zlgopen/awtk-c-demos/blob/master/demos/gif_image.c)
 ```
 
 > 更多用法请参考：[theme default](
-https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml)
+https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml)
 ----------------------------------
 ### 函数
 <p id="gif_image_t_methods">

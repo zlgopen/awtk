@@ -62,7 +62,7 @@ BEGIN_C_DECLS
  * ```
  *
  * > 更多用法请参考：
- * [tab control](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/)
+ * [tab control](https://github.com/zlgopen/awtk/blob/master/design/default/ui/)
  *
  */
 typedef struct _tab_control_t {

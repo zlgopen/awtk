@@ -108,7 +108,7 @@ ret_t widget_set_opacity(widget_t* widget, uint8_t opacity);
 
 #### 8. 如何定制缺省软键盘界面？
 
-软键盘可以根据自己的情况进行调整，可以修改 demos/assets/default/raw/ui/kb_default.xml。
+软键盘可以根据自己的情况进行调整，可以修改 design/default/ui/kb_default.xml。
 
 * 修改 active 的值可以改变初始页面。
 

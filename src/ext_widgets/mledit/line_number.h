@@ -46,7 +46,7 @@ BEGIN_C_DECLS
  * ```
  *
  * > 更多用法请参考：[mledit.xml](
- *https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/mledit.xml)
+ *https://github.com/zlgopen/awtk/blob/master/design/default/ui/mledit.xml)
  *
  * 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：
  *
@@ -60,7 +60,7 @@ BEGIN_C_DECLS
  *
  * > 更多用法请参考：
  * [theme default](
- *https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L556)
+ *https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L556)
  *
  */
 typedef struct _line_number_t {

@@ -586,13 +586,13 @@ ret_t application_exit() {
 
 ## 8. 缺省配置
   
-  * 位置。缺省配置放到资源中，位于：demos/assets/default/raw/data
+  * 位置。缺省配置放到资源中，位于：design/default/data
   
   * 命名：应用程序名 + '.' + 文件扩展名。
 
   * 文件扩展名与初始化时指定的格式一致。 
 
-比如，下面的例子中，应用程序名 demo，扩展名为 json。所以对应的缺省配置文件为：demos/assets/default/raw/demo.json
+比如，下面的例子中，应用程序名 demo，扩展名为 json。所以对应的缺省配置文件为：design/default/demo.json
 
 ```c
   ENSURE(app_conf_init_json("demo") == RET_OK);

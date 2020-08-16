@@ -24,7 +24,7 @@ widget\_t的函数均适用于pages\_t控件。
 ```
 
 > 更多用法请参考：
-[tab control](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/)
+[tab control](https://github.com/zlgopen/awtk/blob/master/design/default/ui/)
 ----------------------------------
 ### 函数
 <p id="pages_t_methods">

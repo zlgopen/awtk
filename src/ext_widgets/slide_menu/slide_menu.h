@@ -51,7 +51,7 @@ BEGIN_C_DECLS
  * ```
  *
  * > 更多用法请参考：[slide_menu.xml](
- * https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/slide_menu.xml)
+ * https://github.com/zlgopen/awtk/blob/master/design/default/ui/slide_menu.xml)
  *
  * 在c代码中使用函数slide\_menu\_create创建左右滑动菜单控件。如：
  *
@@ -91,7 +91,7 @@ BEGIN_C_DECLS
  * ```
  *
  * > 更多用法请参考：[theme default](
- * https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L493)
+ * https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L493)
  *
  */
 typedef struct _slide_menu_t {

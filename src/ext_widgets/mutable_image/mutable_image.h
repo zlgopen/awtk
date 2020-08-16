@@ -52,7 +52,7 @@ typedef bitmap_t* (*mutable_image_create_image_t)(void* ctx, bitmap_format_t for
  *
  * >更多用法请参考：
  * [mutable
- * image](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/mutable_image.xml)
+ * image](https://github.com/zlgopen/awtk/blob/master/design/default/ui/mutable_image.xml)
  *
  * 在c代码中使用函数mutable\_image\_create创建mutable图片控件。如：
  *

@@ -17,7 +17,7 @@ guage\_pointer\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数
 ```
 
 > 更多用法请参考：
-[guage.xml](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/guage.xml)
+[guage.xml](https://github.com/zlgopen/awtk/blob/master/design/default/ui/guage.xml)
 
 在c代码中使用函数guage\_pointer\_create创建仪表指针控件。如：
 

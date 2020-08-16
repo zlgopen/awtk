@@ -18,7 +18,7 @@ slide\_indicator\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函�
 ```
 
 > 更多用法请参考：[slide\_view.xml](
-https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/slide_view.xml)
+https://github.com/zlgopen/awtk/blob/master/design/default/ui/slide_view.xml)
 
 在c代码中使用函数slide\_indicator\_create创建指示器控件。如：
 
@@ -33,7 +33,7 @@ widget_t* slide_indicator = slide_indicator_create(parent, 0, 0, 0, 0);
 ```
 
 > 更多用法请参考：[theme default](
-https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L350)
+https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L350)
 ----------------------------------
 ### 函数
 <p id="slide_indicator_t_methods">

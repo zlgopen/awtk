@@ -16,7 +16,7 @@ progress\_bar\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数�
 ```
 
 > 更多用法请参考：
-[basic demo](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/ui/basic.xml)
+[basic demo](https://github.com/zlgopen/awtk/blob/master/design/default/ui/basic.xml)
 
 在c代码中使用函数progress\_bar\_create创建进度条控件。如：
 
@@ -37,7 +37,7 @@ widget_t* progress_bar = progress_bar_create(win, 10, 10, 128, 30);
 
 > 更多用法请参考：
 [theme
-default](https://github.com/zlgopen/awtk/blob/master/demos/assets/default/raw/styles/default.xml#L183)
+default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L183)
 ----------------------------------
 ### 函数
 <p id="progress_bar_t_methods">
