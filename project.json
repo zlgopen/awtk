@@ -1,11 +1,5 @@
 {
-  "name": "awtk",
-  "version": "1.0.0",
-  "date": "2020-08-16",
-  "team": "AWTK Develop Team",
-  "author": "Li XianJing <xianjimli@hotmail.com>",
-  "desc": "awtk",
-  "copyright": "Guangzhou ZHIYUAN Electronics Co.,Ltd.",
+  "name": "awtk-demos",
   "appType": "APP_MOBILE",
   "hardware": "RT1050",
   "entry": "main",
@@ -24,11 +18,20 @@
         "packaged": true,
         "fonts": {
           "default": {
-            "text": " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~，。？！确定取消"
+            "text": " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
+          },
+          "ap": {
+            "text": " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
+          },
+          "default_full": {
+            "text": " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
+          },
+          "trado": {
+            "text": " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
           }
         },
         "lcd": {
-          "width": "320",
+          "width": "800",
           "height": "480",
           "colorDepth": "16bit",
           "colorFormat": "BGR(A)"
@@ -38,6 +41,6 @@
   },
   "creator": {
     "name": "AWTK Designer",
-    "version": "0.1.5"
+    "version": "0.1.6"
   }
 }

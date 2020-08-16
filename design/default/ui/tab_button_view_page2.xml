@@ -1,0 +1,5 @@
+<view w="100%" h="100%" children_layout="default(c=1,r=3)">
+    <label text="tab_button_view_page2.xml" /> 
+    <label name="text" text="page2" /> 
+    <button name="close"  x="c" y="bottom:100" w="80" h="40" text="Close" />
+</view>
