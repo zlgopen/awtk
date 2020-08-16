@@ -1,0 +1,43 @@
+{
+  "name": "awtk",
+  "version": "1.0.0",
+  "date": "2020-08-16",
+  "team": "AWTK Develop Team",
+  "author": "Li XianJing <xianjimli@hotmail.com>",
+  "desc": "awtk",
+  "copyright": "Guangzhou ZHIYUAN Electronics Co.,Ltd.",
+  "appType": "APP_MOBILE",
+  "hardware": "RT1050",
+  "entry": "main",
+  "assets": {
+    "activedTheme": "default",
+    "outputDir": "res",
+    "loadFrom": "any",
+    "const": "resource_data",
+    "screenDPR": "x1",
+    "defaultLanguage": "zh",
+    "defaultCountry": "CN",
+    "themes": {
+      "default": {
+        "activedSystemBar": "system_bar",
+        "activedBottomSystemBar": "system_bar_b",
+        "packaged": true,
+        "fonts": {
+          "default": {
+            "text": " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~，。？！确定取消"
+          }
+        },
+        "lcd": {
+          "width": "320",
+          "height": "480",
+          "colorDepth": "16bit",
+          "colorFormat": "BGR(A)"
+        }
+      }
+    }
+  },
+  "creator": {
+    "name": "AWTK Designer",
+    "version": "0.1.5"
+  }
+}
