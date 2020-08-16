@@ -1,6 +1,32 @@
 #include "awtk.h"
 #include "base/assets_manager.h"
 #ifndef WITH_FS_RES
+#include "default/inc/strings/en_US.data"
+#include "default/inc/strings/zh_CN.data"
+#include "default/inc/styles/big_font.data"
+#include "default/inc/styles/button.data"
+#include "default/inc/styles/calibration.data"
+#include "default/inc/styles/color.data"
+#include "default/inc/styles/default.data"
+#include "default/inc/styles/dialog.data"
+#include "default/inc/styles/dialog_confirm.data"
+#include "default/inc/styles/dialog_info.data"
+#include "default/inc/styles/dialog_toast.data"
+#include "default/inc/styles/dialog_warn.data"
+#include "default/inc/styles/digit_clock.data"
+#include "default/inc/styles/edit.data"
+#include "default/inc/styles/file_browser.data"
+#include "default/inc/styles/guage.data"
+#include "default/inc/styles/keyboard.data"
+#include "default/inc/styles/list_view_dynamic.data"
+#include "default/inc/styles/slide_menu.data"
+#include "default/inc/styles/system_bar.data"
+#include "default/inc/styles/system_bar_bottom.data"
+#include "default/inc/styles/tab_bottom.data"
+#include "default/inc/styles/tab_bottom_compact.data"
+#include "default/inc/styles/tab_list.data"
+#include "default/inc/styles/tab_top.data"
+#include "default/inc/styles/tab_top_compact.data"
 #include "default/inc/ui/animation.data"
 #include "default/inc/ui/animator.data"
 #include "default/inc/ui/auto_play.data"
@@ -134,32 +160,6 @@
 #include "default/inc/ui/time_clock.data"
 #include "default/inc/ui/vgcanvas.data"
 #include "default/inc/ui/vtranslate.data"
-#include "default/inc/strings/en_US.data"
-#include "default/inc/strings/zh_CN.data"
-#include "default/inc/styles/big_font.data"
-#include "default/inc/styles/button.data"
-#include "default/inc/styles/calibration.data"
-#include "default/inc/styles/color.data"
-#include "default/inc/styles/default.data"
-#include "default/inc/styles/dialog.data"
-#include "default/inc/styles/dialog_confirm.data"
-#include "default/inc/styles/dialog_info.data"
-#include "default/inc/styles/dialog_toast.data"
-#include "default/inc/styles/dialog_warn.data"
-#include "default/inc/styles/digit_clock.data"
-#include "default/inc/styles/edit.data"
-#include "default/inc/styles/file_browser.data"
-#include "default/inc/styles/guage.data"
-#include "default/inc/styles/keyboard.data"
-#include "default/inc/styles/list_view_dynamic.data"
-#include "default/inc/styles/slide_menu.data"
-#include "default/inc/styles/system_bar.data"
-#include "default/inc/styles/system_bar_bottom.data"
-#include "default/inc/styles/tab_bottom.data"
-#include "default/inc/styles/tab_bottom_compact.data"
-#include "default/inc/styles/tab_list.data"
-#include "default/inc/styles/tab_top.data"
-#include "default/inc/styles/tab_top_compact.data"
 #include "default/inc/xml/test.data"
 #include "default/inc/data/a_b_c_any.data"
 #include "default/inc/data/com_zlg_app_json.data"
@@ -314,13 +314,14 @@
 #include "default/inc/images/pointer_1.bsvg"
 #include "default/inc/images/pointer_4.bsvg"
 #endif /*WITH_VGCANVAS*/
-#if defined(WITH_TRUETYPE_FONT)
+#ifdef WITH_TRUETYPE_FONT
 #include "default/inc/fonts/ap.res"
 #include "default/inc/fonts/default.res"
 #include "default/inc/fonts/default_full.res"
 #include "default/inc/fonts/trado.res"
 #else /*WITH_TRUETYPE_FONT*/
 #endif /*WITH_TRUETYPE_FONT*/
+#include "default/inc/scripts/dummy.res"
 #endif /*WITH_FS_RES*/
 
 ret_t assets_init_default(void) {
@@ -330,6 +331,32 @@ ret_t assets_init_default(void) {
   assets_manager_preload(am, ASSET_TYPE_FONT, "default");
   assets_manager_preload(am, ASSET_TYPE_STYLE, "default");
 #else
+  assets_manager_add(am, strings_en_US);
+  assets_manager_add(am, strings_zh_CN);
+  assets_manager_add(am, style_big_font);
+  assets_manager_add(am, style_button);
+  assets_manager_add(am, style_calibration);
+  assets_manager_add(am, style_color);
+  assets_manager_add(am, style_default);
+  assets_manager_add(am, style_dialog);
+  assets_manager_add(am, style_dialog_confirm);
+  assets_manager_add(am, style_dialog_info);
+  assets_manager_add(am, style_dialog_toast);
+  assets_manager_add(am, style_dialog_warn);
+  assets_manager_add(am, style_digit_clock);
+  assets_manager_add(am, style_edit);
+  assets_manager_add(am, style_file_browser);
+  assets_manager_add(am, style_guage);
+  assets_manager_add(am, style_keyboard);
+  assets_manager_add(am, style_list_view_dynamic);
+  assets_manager_add(am, style_slide_menu);
+  assets_manager_add(am, style_system_bar);
+  assets_manager_add(am, style_system_bar_bottom);
+  assets_manager_add(am, style_tab_bottom);
+  assets_manager_add(am, style_tab_bottom_compact);
+  assets_manager_add(am, style_tab_list);
+  assets_manager_add(am, style_tab_top);
+  assets_manager_add(am, style_tab_top_compact);
   assets_manager_add(am, ui_animation);
   assets_manager_add(am, ui_animator);
   assets_manager_add(am, ui_auto_play);
@@ -463,32 +490,6 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, ui_time_clock);
   assets_manager_add(am, ui_vgcanvas);
   assets_manager_add(am, ui_vtranslate);
-  assets_manager_add(am, strings_en_US);
-  assets_manager_add(am, strings_zh_CN);
-  assets_manager_add(am, style_big_font);
-  assets_manager_add(am, style_button);
-  assets_manager_add(am, style_calibration);
-  assets_manager_add(am, style_color);
-  assets_manager_add(am, style_default);
-  assets_manager_add(am, style_dialog);
-  assets_manager_add(am, style_dialog_confirm);
-  assets_manager_add(am, style_dialog_info);
-  assets_manager_add(am, style_dialog_toast);
-  assets_manager_add(am, style_dialog_warn);
-  assets_manager_add(am, style_digit_clock);
-  assets_manager_add(am, style_edit);
-  assets_manager_add(am, style_file_browser);
-  assets_manager_add(am, style_guage);
-  assets_manager_add(am, style_keyboard);
-  assets_manager_add(am, style_list_view_dynamic);
-  assets_manager_add(am, style_slide_menu);
-  assets_manager_add(am, style_system_bar);
-  assets_manager_add(am, style_system_bar_bottom);
-  assets_manager_add(am, style_tab_bottom);
-  assets_manager_add(am, style_tab_bottom_compact);
-  assets_manager_add(am, style_tab_list);
-  assets_manager_add(am, style_tab_top);
-  assets_manager_add(am, style_tab_top_compact);
   assets_manager_add(am, xml_test);
   assets_manager_add(am, data_a_b_c_any);
   assets_manager_add(am, data_com_zlg_app_json);
@@ -631,10 +632,6 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, image_visible);
   assets_manager_add(am, image_warn);
   assets_manager_add(am, image_zh);
-  assets_manager_add(am, font_ap);
-  assets_manager_add(am, font_default);
-  assets_manager_add(am, font_default_full);
-  assets_manager_add(am, font_trado);
 #ifdef WITH_VGCANVAS
   assets_manager_add(am, image_ball);
   assets_manager_add(am, image_china);
@@ -644,6 +641,14 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, image_pointer_1);
   assets_manager_add(am, image_pointer_4);
 #endif /*WITH_VGCANVAS*/
+#ifdef WITH_TRUETYPE_FONT
+  assets_manager_add(am, font_ap);
+  assets_manager_add(am, font_default);
+  assets_manager_add(am, font_default_full);
+  assets_manager_add(am, font_trado);
+#else /*WITH_TRUETYPE_FONT*/
+#endif /*WITH_TRUETYPE_FONT*/
+  assets_manager_add(am, script_dummy);
 #endif
 
   tk_init_assets();
