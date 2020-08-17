@@ -302,6 +302,10 @@ def copySharedLib(src, dst, name):
 	
   src = os.path.normpath(src);
   dst = os.path.normpath(dst);
+
+  if os.path.dirname(src) == dst:
+      return
+
   if not os.path.exists(src):
     print('Can\'t find ' + src + '. Please build '+name+'before!')
   else:
