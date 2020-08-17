@@ -1,23 +1,38 @@
 {
-  "name":"demoui",
-  "version":"1.0",
-  "assets" : "res/assets",
-  "author" : "xianjimli@hotmail.com",
-  "copyright" : "Guangzhou ZHIYUAN Electronics Co.,Ltd.",
+  "name": "demoui",
+  "version": "1.0",
+  "assets": "res/assets",
+  "author": "xianjimli@hotmail.com",
+  "copyright": "Guangzhou ZHIYUAN Electronics Co.,Ltd.",
   "web": {
-    "app_type":"c",
-    "sources":["demos/demo_ui_app.c", "demos/assets.c"],
-    "config" : {
-      "fontScale":"0.8",
-      "defaultFont":"sans"
+    "app_type": "c",
+    "sources": [
+      "demos/assets.c",
+      "demos/demo_ui_app.c"
+    ],
+    "config": {
+      "fontScale": "0.8",
+      "defaultFont": "sans"
     }
   },
-  "android" : {
-    "app_name":"org.zlgopen.demoui",
-    "sources":["demos/assets.c", "demos/assets.h",	"demos/demo_ui_app.c",	"demos/vg_common.inc",  "res/assets.inc", "res/assets/__assets_default.inc"]
+  "android": {
+    "app_name": "org.zlgopen.demoui",
+    "sources": [
+      "demos/assets.c",
+      "demos/demo_ui_app.c",
+      "demos/vg_common.inc",
+      "res/assets.inc",
+      "res/assets/__assets_default.inc"
+    ]
   },
-  "ios" : {
-    "app_name":"org.zlgopen.demoui",
-    "sources":["demos/assets.c", "demos/assets.h",	"demos/demo_ui_app.c",	"demos/vg_common.inc",  "res/assets.inc", "res/assets/__assets_default.inc"]
+  "ios": {
+    "app_name": "org.zlgopen.demoui",
+    "sources": [
+      "demos/assets.c",
+      "demos/demo_ui_app.c",
+      "demos/vg_common.inc",
+      "res/assets.inc",
+      "res/assets/__assets_default.inc"
+    ]
   }
 }
