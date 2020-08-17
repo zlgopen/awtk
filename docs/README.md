@@ -42,11 +42,12 @@
 * [为 512K Flash 优化空间](how_to_optimize_for_512K_flash.md)
 * [如何绘制旋转文字](how_to_draw_rotate_text.md)
 * [如何修改 Windows 下应用程序的图标](https://github.com/zlgopen/awtk/blob/master/win32_res/README.md)
-* [如何使用离线画布](how_to_use_canvas_offline.md)
+* [项目描述文件 project.json 介绍](awtk_project_description_file.md)
 
 ### 2.HowTos
 * [AWTK 调试技巧](debug_tips.md)
 * [AWTK 优化技巧](optimation.md)
+* [如何使用离线画布](how_to_use_canvas_offline.md)
 * [如何加入中文输入法](chinese_ime.md) 
 * [如何在 Visual Studio 中调试 AWTK](vs_debug.md)
 * [如何在非 GUI 线程操作 GUI 控件](how_to_non_gui_thread_operate_widget.md)
@@ -72,7 +73,7 @@
 * [如何实现弹出菜单](how_to_impl_popup_menu.md)
 * [如何用 edit 控件编辑日期](how_to_edit_date.md)
 * [如何用 edit 控件编辑时间](how_to_edit_time.md)
-* [如何用 edit 控件编辑IP地址](how_to_edit_ip_addr.md)
+* [如何用 edit 控件编辑 IP 地址](how_to_edit_ip_addr.md)
 * [如何支持 unicode bidirectional algorithm](how_to_enable_bidi.md)
 * [如何续期使用 AWTK Designer](how_to_renewal_awtk_designer.md)
 
