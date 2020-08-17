@@ -145,6 +145,7 @@ def run(awtk_root):
 
     AWTK_ROOT = awtk_root
     APP_ROOT = common.getcwd()
+    action = common.get_action()
     if APP_ROOT.endswith('scripts'):
         APP_ROOT = os.path.dirname(APP_ROOT)
 
@@ -160,6 +161,8 @@ def run(awtk_root):
     ASSETS_ROOT = common.join_path(APP_ROOT, 'design')
     ASSET_C = common.join_path(APP_ROOT, 'res/assets.inc')
     OUTPUT_ROOT = common.join_path(APP_ROOT, 'res/assets')
+    if action == 'json':
+        ASSET_C = common.join_path(APP_ROOT, 'assets_web.js')
 
     use_default_theme_config()
     if not is_dependencies_ok():
@@ -178,6 +181,5 @@ def run(awtk_root):
         common.update_res()
 
         if isinstance(THEMES[0], dict):
-            action = common.get_action()
             if action != 'clean' and action != 'web' and action != 'json' and action != 'pinyin':
                 common.gen_res_c(False)

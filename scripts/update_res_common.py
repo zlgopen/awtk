@@ -932,10 +932,6 @@ def gen_res_web_c():
     result += '#include "base/assets_manager.h"\n'
 
     result += gen_assets_includes(join_path(OUTPUT_DIR, 'inc/images/*.bsvg'), None, False)
-    if IS_GENERATE_INC_RES:
-        result += gen_assets_includes(join_path(OUTPUT_DIR, 'inc/images/*.res'), None, False)
-    else:
-        result += gen_assets_includes(join_path(OUTPUT_DIR, 'inc/images/*.data'), None, False)
     result += gen_assets_includes(join_path(OUTPUT_DIR, 'inc/strings/*.data'), None, False)
     result += gen_assets_includes(join_path(OUTPUT_DIR, 'inc/styles/*.data'), None, False)
     result += gen_assets_includes(join_path(OUTPUT_DIR, 'inc/ui/*.data'), None, False)
@@ -948,10 +944,6 @@ def gen_res_web_c():
     result += ''
 
     result += gen_assets_adds(join_path(OUTPUT_DIR, 'inc/images/*.bsvg'))
-    if IS_GENERATE_INC_RES:
-        result += gen_assets_adds(join_path(OUTPUT_DIR, 'inc/images/*.res'))
-    else:
-        result += gen_assets_adds(join_path(OUTPUT_DIR, 'inc/images/*.data'))
     result += gen_assets_adds(join_path(OUTPUT_DIR, 'inc/strings/*.data'))
     result += gen_assets_adds(join_path(OUTPUT_DIR, 'inc/styles/*.data'))
     result += gen_assets_adds(join_path(OUTPUT_DIR, 'inc/ui/*.data'))

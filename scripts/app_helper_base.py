@@ -79,6 +79,7 @@ class AppHelperBase:
         self.APP_BIN_DIR = os.path.join(APP_ROOT, 'bin')
         self.APP_LIB_DIR = os.path.join(APP_ROOT, 'lib')
         self.APP_SRC = os.path.join(APP_ROOT, 'src')
+        self.APP_RES = os.path.join(APP_ROOT, 'res')
         
         mkdir_if_not_exist(self.APP_BIN_DIR);
         mkdir_if_not_exist(self.APP_LIB_DIR);
@@ -238,7 +239,7 @@ class AppHelperBase:
 
         APP_LINKFLAGS = ''
         AWTK_LIBS = self.AWTK_LIBS
-        APP_CPPPATH = [self.APP_SRC]
+        APP_CPPPATH = [self.APP_SRC, self.APP_RES]
         APP_LIBPATH = [self.APP_LIB_DIR]
         AWTK_CCFLAGS = awtk.CCFLAGS
 
