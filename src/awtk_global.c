@@ -234,6 +234,7 @@ ret_t tk_init(wh_t w, wh_t h, app_type_t app_type, const char* app_name, const c
 }
 
 ret_t tk_deinit_internal(void) {
+  idle_manager_dispatch(idle_manager());
 #ifndef WITHOUT_CLIPBOARD
   clip_board_destroy(clip_board());
   clip_board_set(NULL);
@@ -256,6 +257,7 @@ ret_t tk_deinit_internal(void) {
   widget_factory_destroy(widget_factory());
   widget_factory_set(NULL);
 
+  idle_manager_dispatch(idle_manager());
 #ifndef WITHOUT_INPUT_METHOD
   input_method_destroy(input_method());
   input_method_set(NULL);
@@ -269,7 +271,6 @@ ret_t tk_deinit_internal(void) {
   timer_manager_destroy(timer_manager());
   timer_manager_set(NULL);
 
-  idle_manager_dispatch(idle_manager());
   idle_manager_destroy(idle_manager());
   idle_manager_set(NULL);
 
