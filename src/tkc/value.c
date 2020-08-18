@@ -631,10 +631,8 @@ ret_t value_destroy(value_t* v) {
 value_t* value_set_object(value_t* v, object_t* value) {
   return_value_if_fail(v != NULL && value != NULL, NULL);
 
-  v->type = VALUE_TYPE_OBJECT;
   v->value.object = value;
-
-  return v;
+  return value_init(v, VALUE_TYPE_OBJECT);
 }
 
 object_t* value_object(const value_t* v) {
