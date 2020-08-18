@@ -5,11 +5,10 @@
 using std::string;
 
 TEST(SystemInfo, basic) {
-  system_info_t* info = system_info_create(APP_DESKTOP, "awtk", "./");
+  system_info_t* info = system_info_create(APP_DESKTOP, "awtk", NULL);
 
   ASSERT_EQ(info->app_type, APP_DESKTOP);
   ASSERT_STREQ(info->app_name, "awtk");
-  ASSERT_EQ(strstr(info->app_root, "demos") != NULL, TRUE);
 
   ASSERT_EQ(system_info_set_lcd_w(info, 100), RET_OK);
   ASSERT_EQ(info->lcd_w, 100);

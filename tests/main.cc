@@ -48,7 +48,7 @@ GTEST_API_ int main(int argc, char** argv) {
 
   return_value_if_fail(platform_prepare() == RET_OK, RET_FAIL);
   socket_init();
-  system_info_init(APP_SIMULATOR, NULL, "./demos");
+  system_info_init(APP_SIMULATOR, NULL, NULL);
   tk_init_internal();
 
   assets_init();

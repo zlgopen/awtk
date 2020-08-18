@@ -80,7 +80,7 @@ TEST(ImageManager, locale) {
 #ifdef WITH_FS_RES
 TEST(ImageManager, fs) {
   bitmap_t bmp;
-  const char* filename = "file://./demos/assets/default/raw/images/xx/flag_CN.png";
+  const char* filename = "file://./res/assets/default/raw/images/xx/flag_CN.png";
 
   memset(&bmp, 0x00, sizeof(bmp));
   ASSERT_EQ(image_manager_get_bitmap(image_manager(), filename, &bmp), RET_OK);
