@@ -92,7 +92,7 @@
 * [将 AWTK 移植到 STM32H743(TencentOS) 平台（推荐）](https://github.com/zlgopen/awtk-stm32h743iitx-tencentos/blob/master/docs/stm32h743iitx_port.md)
 
 ### 5. 技术笔记
-* [LCD 接口的三种实现方式](lcd.md)
+* [LCD 接口的几种实现方式](lcd.md)
 * [FrameBuffer 的几种使用方式](framebuffer.md)
 
 ### 6. 其它
