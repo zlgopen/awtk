@@ -281,7 +281,6 @@ class AppHelperBase:
 
     def call(self, DefaultEnvironment):
         awtk = self.awtk
-
         CPPPATH = awtk.CPPPATH + self.APP_CPPPATH
         LINKFLAGS = awtk.LINKFLAGS + self.APP_LINKFLAGS
         LIBS = self.APP_LIBS + self.AWTK_LIBS
@@ -293,9 +292,9 @@ class AppHelperBase:
 
         for iter in self.DEPENDS_LIBS:
             if 'shared_libs' in iter:
-                LIBS += iter['shared_libs']
+                LIBS = iter['shared_libs'] + LIBS
             if 'static_libs' in iter:
-                LIBS += iter['static_libs']
+                LIBS = iter['static_libs'] + LIBS
             CPPPATH += [os.path.join(os.path.abspath(iter['root']), 'src')]
             LIBPATH += [os.path.join(os.path.abspath(iter['root']), 'lib')]
             LIBPATH += [os.path.join(os.path.abspath(iter['root']), 'bin')]
