@@ -216,6 +216,7 @@ class AppHelperBase:
         RES_ROOT = ARGUMENTS.get('RES_ROOT', '')
         if len(RES_ROOT) > 0:
             APP_RES_ROOT = RES_ROOT
+            self.APP_RES = os.path.abspath(os.path.join(self.APP_BIN_DIR, RES_ROOT))
 
         SHARED = ARGUMENTS.get('SHARED', '')
         if len(SHARED) > 0 and SHARED.lower().startswith('f'):
