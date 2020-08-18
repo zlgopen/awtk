@@ -562,7 +562,7 @@ bitmap_t* bitmap_clone(bitmap_t* bitmap) {
 }
 
 #if defined(WITH_STB_IMAGE)
-
+#define STB_IMAGE_STATIC 1
 #define STBI_WRITE_NO_STDIO
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #define STBI_FREE TKMEM_FREE
@@ -596,7 +596,7 @@ bitmap_t* bitmap_rgba8888_from_bitmap(bitmap_t* bitmap) {
 }
 
 static bool_t bitmap_rgba8888_save_png(bitmap_t* bitmap, const char* filename) {
-  uint32_t len = 0;
+  int32_t len = 0;
   bitmap_t* t = bitmap;
   uint8_t* tdata = NULL;
   unsigned char* png_data = NULL;
