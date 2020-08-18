@@ -604,7 +604,9 @@ ret_t value_reset(value_t* v) {
         break;
       }
       case VALUE_TYPE_OBJECT: {
-        object_unref(v->value.object);
+        object_t* obj = v->value.object;
+        v->value.object = NULL;
+        OBJECT_UNREF(obj);
         break;
       }
       default:
