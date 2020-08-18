@@ -606,6 +606,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_REPEAT "repeat"
 
 /**
+ * @const WIDGET_PROP_LONG_PRESS_TIME
+ * 触发长按事件的时间(ms)。
+ */
+#define WIDGET_PROP_LONG_PRESS_TIME "long_press_time"
+
+/**
  * @const WIDGET_PROP_ENABLE_LONG_PRESS
  * 是否启用长按。
  */
