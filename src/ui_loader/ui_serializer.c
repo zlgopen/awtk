@@ -120,6 +120,7 @@ ret_t ui_widget_serialize(ui_builder_t* writer, widget_t* widget) {
 ret_t widget_to_xml(widget_t* widget, str_t* str) {
   ui_xml_writer_t ui_xml_writer;
   return_value_if_fail(widget != NULL && str != NULL, RET_BAD_PARAMS);
+  str_set(str, "<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>\r\n");
 
   return ui_widget_serialize(ui_xml_writer_init(&ui_xml_writer, str), widget);
 }

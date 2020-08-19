@@ -49,7 +49,7 @@ TEST(ScrollBar, to_xml) {
   str_init(&str, 1024);
 
   ASSERT_EQ(widget_to_xml(w, &str), RET_OK);
-  ASSERT_EQ(string(str.str), string("<scroll_bar_d x=\"10\" y=\"20\" w=\"30\" h=\"400\" "
+  ASSERT_EQ(string(str.str), string("<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>\r\n<scroll_bar_d x=\"10\" y=\"20\" w=\"30\" h=\"400\" "
                                     "animatable=\"true\">\n</scroll_bar_d>\n"));
 
   str_reset(&str);

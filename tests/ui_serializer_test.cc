@@ -17,7 +17,7 @@ TEST(UISerializer, basic) {
   str_init(&str, 1024);
   widget_to_xml(w, &str);
 
-  ASSERT_EQ(string(str.str), "<button x=\"10\" y=\"20\" w=\"30\" h=\"40\">\n</button>\n");
+  ASSERT_EQ(string(str.str), "<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>\r\n<button x=\"10\" y=\"20\" w=\"30\" h=\"40\">\n</button>\n");
 
   str_reset(&str);
   widget_destroy(w);
@@ -31,7 +31,7 @@ TEST(UISerializer, repeat) {
   widget_to_xml(w, &str);
 
   ASSERT_EQ(string(str.str),
-            "<button x=\"10\" y=\"20\" w=\"30\" h=\"40\" repeat=\"100\">\n</button>\n");
+            "<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>\r\n<button x=\"10\" y=\"20\" w=\"30\" h=\"40\" repeat=\"100\">\n</button>\n");
 
   str_reset(&str);
   widget_destroy(w);
@@ -45,7 +45,7 @@ TEST(UISerializer, layout_self) {
   widget_to_xml(w, &str);
 
   ASSERT_EQ(string(str.str),
-            "<button x=\"10\" y=\"20\" w=\"30\" h=\"40\" "
+            "<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>\r\n<button x=\"10\" y=\"20\" w=\"30\" h=\"40\" "
             "self_layout=\"default(x=r:100,y=m:10,w=0,h=10%)\">\n</button>\n");
 
   str_reset(&str);
@@ -61,7 +61,7 @@ TEST(UISerializer, layout_self1) {
   widget_to_xml(w, &str);
 
   ASSERT_EQ(string(str.str),
-            "<button x=\"10\" y=\"20\" w=\"30\" h=\"40\" "
+            "<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>\r\n<button x=\"10\" y=\"20\" w=\"30\" h=\"40\" "
             "self_layout=\"default(x=c:100,y=b:10,w=0,h=10%)\">\n</button>\n");
 
   str_reset(&str);
