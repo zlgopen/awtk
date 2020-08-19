@@ -306,8 +306,14 @@ static ret_t conf_json_save_node_value_simple(conf_node_t* node, str_t* str, uin
       while (*s) {
         if (*s == '\"') {
           return_value_if_fail(str_append_char(str, '\\') == RET_OK, RET_OOM);
+          return_value_if_fail(str_append_char(str, *s) == RET_OK, RET_OOM);
+        } else if (*s == '\r') {
+          return_value_if_fail(str_append(str, "\\r") == RET_OK, RET_OOM);
+        } else if (*s == '\n') {
+          return_value_if_fail(str_append(str, "\\n") == RET_OK, RET_OOM);
+        } else {
+          return_value_if_fail(str_append_char(str, *s) == RET_OK, RET_OOM);
         }
-        return_value_if_fail(str_append_char(str, *s) == RET_OK, RET_OOM);
         s++;
       }
     }
