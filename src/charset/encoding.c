@@ -27,8 +27,8 @@
 #endif/*WIN32*/
 
 #if defined(LINUX) || defined(MACOS)
-#define WITH_ICONV 1
 #include <iconv.h>
+#define WITH_ICONV 1
 #endif
 
 #ifdef WITH_ICONV 
@@ -83,6 +83,9 @@ static ret_t encoding_convert_impl(encoding_name_t from, const char* from_str, u
   iconv_close(icv);
   return ret;
 }
+#else
+/*for embedded system*/
+#include "impl/encoding_conv.inc"
 #endif /*WITH_ICONV*/
 
 ret_t encoding_convert(encoding_name_t from, const char* from_str, uint32_t from_size,
