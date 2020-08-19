@@ -13,6 +13,7 @@ BASE_SOURCES=Glob('layouters/*.c') + \
   Glob('ui_loader/*.c') + \
   Glob('xml/*.c') + \
   Glob('svg/*.c') + \
+  Glob('charset/*.c') + \
   Glob('clip_board/*.c') + \
   Glob('font_loader/*.c') + \
   Glob('blend/*.c') + \

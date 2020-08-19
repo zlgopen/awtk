@@ -163,7 +163,7 @@ OS_WHOLE_ARCHIVE=''
 if OS_NAME == 'Darwin':
   TOOLS_NAME = ''
   OS_FLAGS='-g -Wall -fPIC '
-  OS_LIBS = ['stdc++', 'pthread', 'm', 'dl']
+  OS_LIBS = ['stdc++', 'iconv','pthread', 'm', 'dl']
   OS_LINKFLAGS='-framework IOKit -framework Cocoa -framework QuartzCore -framework OpenGL -weak_framework Metal -weak_framework MetalKit'
   COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DHAS_SEM_OPEN '
   COMMON_CCFLAGS = COMMON_CCFLAGS + ' -D__APPLE__ -DHAS_PTHREAD -DMACOS '
@@ -174,7 +174,7 @@ if OS_NAME == 'Darwin':
 elif OS_NAME == 'Linux':
   TOOLS_NAME = ''
   OS_FLAGS='-g -Wall -fPIC ' 
-  OS_LIBS = ['GL', 'gtk-3','gdk-3','Xext', 'X11', 'sndio','stdc++', 'pthread', 'm', 'dl', 'asound']
+  OS_LIBS = ['GL', 'gtk-3','gdk-3','Xext', 'X11', 'sndio','stdc++', 'iconv', 'pthread', 'm', 'dl', 'asound']
   COMMON_CFLAGS=COMMON_CFLAGS+' -std=gnu99 '
   COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DLINUX -DHAS_PTHREAD'
   COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DSDL_REAL_API -DSDL_TIMER_UNIX -DSDL_VIDEO_DRIVER_X11 -DSDL_VIDEO_DRIVER_X11_SUPPORTS_GENERIC_EVENTS '
