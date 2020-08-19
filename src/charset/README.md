@@ -1,84 +1,22 @@
-﻿/**
- * File:   encoding.h
- * Author: AWTK Develop Team
- * Brief:  encoding conversion
- *
- * Copyright (c) 2020 - 2020  Guangzhou ZHIYUAN Electronics Co.,Ltd.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; withto even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * License file for more details.
- *
- */
+# 字符集转换函数
 
-/**
- * History:
- * ================================================================
- * 2020-08-19 Li XianJing <xianjimli@hotmail.com> created
- *
- */
+* 本模块属于可选组件，使用时需要自己包含头文件。
 
-#ifndef TK_ENCODING_H
-#define TK_ENCODING_H
+```
+#include "charset/encoding.h"
+```
 
-#include "tkc/types_def.h"
+* 使用示例：
 
-BEGIN_C_DECLS
+```c
+  char gbk[32];
+  const char* str = "中文";
+  encoding_utf8_to_gbk(str, strlen(str), gbk, sizeof(gbk));
+```
 
-/**
- * @enum encoding_name_t
- * 编码名称。
- */
+* API 描述
 
-typedef enum _encoding_name_t {
-  /**
-   * @const ENCODING_UTF8
-   * UTF-8。
-   */
-  ENCODING_UTF8 = 0,
-  /**
-   * @const ENCODING_UTF16
-   * UTF-16。
-   */
-  ENCODING_UTF16,
-  /**
-   * @const ENCODING_UTF32
-   * UTF-32。
-   */
-  ENCODING_UTF32,
-  /**
-   * @const ENCODING_GBK
-   * GBK。
-   */
-  ENCODING_GBK,
-  /**
-   * @const ENCODING_BIG
-   * BIG5-2003。
-   */
-  ENCODING_BIG,
-  /**
-   * @const ENCODING_GB2312
-   * GB_2312-80。
-   */
-  ENCODING_GB2312,
-  /**
-   * @const ENCODING_GB18030
-   * GB18030。
-   */
-  ENCODING_GB18030
-} encoding_name_t;
-
-/**
- * @class encoding_t
- * @annotation ["fake"]
- * encoding conversion
- *
- * 示例：
- *
- * ```c
- * ```
- */
+```c
 
 /**
  * @method encoding_convert
@@ -135,7 +73,7 @@ ret_t encoding_utf8_to_gbk(const char* from_str, uint32_t from_size, char* to_st
  */
 ret_t encoding_gbk_to_utf8(const char* from_str, uint32_t from_size, char* to_str,
                            uint32_t to_size);
+```
 
-END_C_DECLS
-
-#endif /*TK_ENCODING_H*/
+## 其它
+* windows 下的 iconv 实现是从 win_iconv.inc [win-iconv](https://github.com/win-iconv/win-iconv) 改造来，版权属于原作者。

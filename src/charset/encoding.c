@@ -21,8 +21,17 @@
 
 #include "encoding.h"
 
+#ifdef WIN32
+#include "win_iconv.inc"
+#define WITH_ICONV 1
+#endif/*WIN32*/
+
 #if defined(LINUX) || defined(MACOS)
+#define WITH_ICONV 1
 #include <iconv.h>
+#endif
+
+#ifdef WITH_ICONV 
 static const char* get_native_encoding_name(encoding_name_t name) {
   switch (name) {
     case ENCODING_UTF8: {
@@ -74,14 +83,7 @@ static ret_t encoding_convert_impl(encoding_name_t from, const char* from_str, u
   iconv_close(icv);
   return ret;
 }
-#elif defined(WIN32)
-static ret_t encoding_convert_impl(encoding_name_t from, const char* from_str, uint32_t from_size,
-                                   encoding_name_t to, char* to_str, uint32_t to_size) {
-  return RET_OK;
-}
-#else
-
-#endif
+#endif /*WITH_ICONV*/
 
 ret_t encoding_convert(encoding_name_t from, const char* from_str, uint32_t from_size,
                        encoding_name_t to, char* to_str, uint32_t to_size) {

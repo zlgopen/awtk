@@ -17636,6 +17636,10 @@
         "name": "WIDGET_PROP_REPEAT"
       },
       {
+        "desc": "触发长按事件的时间(ms)。",
+        "name": "WIDGET_PROP_LONG_PRESS_TIME"
+      },
+      {
         "desc": "是否启用长按。",
         "name": "WIDGET_PROP_ENABLE_LONG_PRESS"
       },
@@ -23191,6 +23195,167 @@
     "header": "tkc/value_desc.h",
     "name": "arg_desc_flags_t",
     "prefix": "ARG_DESC_FLAGS_",
+    "level": 1
+  },
+  {
+    "type": "enum",
+    "desc": "编码名称。",
+    "consts": [
+      {
+        "desc": "UTF-8。",
+        "name": "ENCODING_UTF8"
+      },
+      {
+        "desc": "UTF-16。",
+        "name": "ENCODING_UTF16"
+      },
+      {
+        "desc": "UTF-32。",
+        "name": "ENCODING_UTF32"
+      },
+      {
+        "desc": "GBK。",
+        "name": "ENCODING_GBK"
+      },
+      {
+        "desc": "BIG5-2003。",
+        "name": "ENCODING_BIG"
+      },
+      {
+        "desc": "GB_2312-80。",
+        "name": "ENCODING_GB2312"
+      },
+      {
+        "desc": "GB18030。",
+        "name": "ENCODING_GB18030"
+      }
+    ],
+    "header": "charset/encoding.h",
+    "name": "encoding_name_t",
+    "prefix": "ENCODING_NAME_",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "encoding_name_t",
+            "name": "from",
+            "desc": "源字符串的编码名称。"
+          },
+          {
+            "type": "const char*",
+            "name": "",
+            "desc": "。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "from_size",
+            "desc": "源字符串的长度。"
+          },
+          {
+            "type": "encoding_name_t",
+            "name": "to",
+            "desc": "目标字符串的编码名称。"
+          },
+          {
+            "type": "const char*",
+            "name": "",
+            "desc": "。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "to_size",
+            "desc": "目标字符串的长度。"
+          }
+        ],
+        "annotation": {
+          "static": true
+        },
+        "desc": "字符集转换。",
+        "name": "encoding_convert",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "",
+            "desc": "。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "from_size",
+            "desc": "源字符串的长度。"
+          },
+          {
+            "type": "const char*",
+            "name": "",
+            "desc": "。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "to_size",
+            "desc": "目标字符串的长度。"
+          }
+        ],
+        "annotation": {
+          "static": true
+        },
+        "desc": "将utf8转换成gbk编码。",
+        "name": "encoding_utf8_to_gbk",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "",
+            "desc": "。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "from_size",
+            "desc": "源字符串的长度。"
+          },
+          {
+            "type": "const char*",
+            "name": "",
+            "desc": "。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "to_size",
+            "desc": "目标字符串的长度。"
+          }
+        ],
+        "annotation": {
+          "static": true
+        },
+        "desc": "将gbk转换成utf8编码。",
+        "name": "encoding_gbk_to_utf8",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "charset/encoding.h",
+    "desc": "encoding conversion\n\n示例：\n\n```c\n```",
+    "name": "encoding_t",
+    "annotation": {
+      "fake": true
+    },
     "level": 1
   },
   {
@@ -36805,6 +36970,100 @@
       {
         "params": [],
         "annotation": {},
+        "desc": "创建缺省的资源加载器。",
+        "name": "asset_loader_create",
+        "return": {
+          "type": "asset_loader_t*",
+          "desc": "返回loader对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "asset_loader_t*",
+            "name": "loader",
+            "desc": "loader对象。"
+          },
+          {
+            "type": "uint16_t",
+            "name": "type",
+            "desc": "资源类型。"
+          },
+          {
+            "type": "uint16_t",
+            "name": "subtype",
+            "desc": "资源子类型。"
+          },
+          {
+            "type": "const char*",
+            "name": "path",
+            "desc": "路径。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "名称。"
+          }
+        ],
+        "annotation": {},
+        "desc": "加载指定的资源。",
+        "name": "asset_loader_load",
+        "return": {
+          "type": "asset_info_t*",
+          "desc": "返回资源对象(由调用者销毁)。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "asset_loader_t*",
+            "name": "loader",
+            "desc": "loader对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "path",
+            "desc": "资源是路径。"
+          }
+        ],
+        "annotation": {},
+        "desc": "判断指定资源是否存在。\n。",
+        "name": "asset_loader_exist",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回TRUE表示存在，否则不存在。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "asset_loader_t*",
+            "name": "loader",
+            "desc": "loader对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁loader对象。",
+        "name": "asset_loader_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "base/asset_loader.h",
+    "desc": "资源加载器接口。",
+    "name": "asset_loader_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {},
         "desc": "创建cond。",
         "name": "tk_cond_create",
         "return": {
@@ -36897,100 +37156,6 @@
     "header": "tkc/cond.h",
     "desc": "条件变量。",
     "name": "tk_cond_t",
-    "level": 1
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [],
-        "annotation": {},
-        "desc": "创建缺省的资源加载器。",
-        "name": "asset_loader_create",
-        "return": {
-          "type": "asset_loader_t*",
-          "desc": "返回loader对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "asset_loader_t*",
-            "name": "loader",
-            "desc": "loader对象。"
-          },
-          {
-            "type": "uint16_t",
-            "name": "type",
-            "desc": "资源类型。"
-          },
-          {
-            "type": "uint16_t",
-            "name": "subtype",
-            "desc": "资源子类型。"
-          },
-          {
-            "type": "const char*",
-            "name": "path",
-            "desc": "路径。"
-          },
-          {
-            "type": "const char*",
-            "name": "name",
-            "desc": "名称。"
-          }
-        ],
-        "annotation": {},
-        "desc": "加载指定的资源。",
-        "name": "asset_loader_load",
-        "return": {
-          "type": "asset_info_t*",
-          "desc": "返回资源对象(由调用者销毁)。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "asset_loader_t*",
-            "name": "loader",
-            "desc": "loader对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "path",
-            "desc": "资源是路径。"
-          }
-        ],
-        "annotation": {},
-        "desc": "判断指定资源是否存在。\n。",
-        "name": "asset_loader_exist",
-        "return": {
-          "type": "bool_t",
-          "desc": "返回TRUE表示存在，否则不存在。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "asset_loader_t*",
-            "name": "loader",
-            "desc": "loader对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "销毁loader对象。",
-        "name": "asset_loader_destroy",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "base/asset_loader.h",
-    "desc": "资源加载器接口。",
-    "name": "asset_loader_t",
     "level": 1
   },
   {
@@ -39171,62 +39336,45 @@
             "desc": "高度。"
           },
           {
+            "type": "bitmap_format_t",
+            "name": "format",
+            "desc": "离线lcd的格式。一般用 BITMAP_FMT_BGR565 或 BITMAP_FMT_RGBA8888。"
+          },
+          {
             "type": "lcd_flush_t",
             "name": "flush",
-            "desc": "用于刷新数据到硬件的回调函数。"
+            "desc": "回调函数，用于刷新GUI数据到实际的LCD。"
+          },
+          {
+            "type": "lcd_resize_t",
+            "name": "on_resize",
+            "desc": "用于调整LCD的大小。一般用NULL即可。"
           },
           {
             "type": "lcd_destroy_t",
             "name": "on_destroy",
-            "desc": "销毁lcd时的回调函数。"
+            "desc": "lcd销毁时的回调函数。"
           },
           {
             "type": "void*",
             "name": "ctx",
-            "desc": "flush/on_destroy回调函数的上下文。"
+            "desc": "回调函数的上下文。"
           }
         ],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "创建单色LCD对象。",
-        "name": "lcd_mono_create",
+        "annotation": {},
+        "desc": "创建lcd对象。",
+        "name": "lcd_mem_special_create",
         "return": {
           "type": "lcd_t*",
-          "desc": "lcd对象。"
+          "desc": "返回lcd对象。"
         }
       }
     ],
     "events": [],
-    "properties": [
-      {
-        "name": "data",
-        "desc": "Framebuffer首地址。",
-        "type": "uint8_t*",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "ctx",
-        "desc": "flush/on_destroy回调函数的上下文信息。",
-        "type": "void*",
-        "annotation": {
-          "private": true
-        }
-      },
-      {
-        "name": "on_destroy",
-        "desc": "lcd销毁时的回调函数。",
-        "type": "lcd_destroy_t",
-        "annotation": {
-          "private": true
-        }
-      }
-    ],
-    "header": "lcd/lcd_mono.h",
-    "desc": "单色LCD。\n\nlcd\\_mono是一个特殊的Framebuffer，它用一个比特来表示一个pixel。\n\nlcd\\_mono只是负责硬件无关的逻辑处理，调用者需要在创建时提供一个flush回调函数，\n在flush函数中把脏矩形中的数据刷新到硬件中。",
-    "name": "lcd_mono_t",
+    "properties": [],
+    "header": "lcd/lcd_mem_special.h",
+    "desc": "特殊的LCD。\n\n通过重载flush函数来提交GUI绘制的结果到硬件。适用于：\n\n* lcd 硬件不支持framebuffer，如SPI接口的屏。\n* lcd 硬件支持framebuffer，但是其格式特殊，AWTK目前不支持。可以用flush进行格式转换。",
+    "name": "lcd_mem_special_t",
     "parent": "lcd_t",
     "level": 2
   },
@@ -42610,45 +42758,62 @@
             "desc": "高度。"
           },
           {
-            "type": "bitmap_format_t",
-            "name": "format",
-            "desc": "离线lcd的格式。一般用 BITMAP_FMT_BGR565 或 BITMAP_FMT_RGBA8888。"
-          },
-          {
             "type": "lcd_flush_t",
             "name": "flush",
-            "desc": "回调函数，用于刷新GUI数据到实际的LCD。"
-          },
-          {
-            "type": "lcd_resize_t",
-            "name": "on_resize",
-            "desc": "用于调整LCD的大小。一般用NULL即可。"
+            "desc": "用于刷新数据到硬件的回调函数。"
           },
           {
             "type": "lcd_destroy_t",
             "name": "on_destroy",
-            "desc": "lcd销毁时的回调函数。"
+            "desc": "销毁lcd时的回调函数。"
           },
           {
             "type": "void*",
             "name": "ctx",
-            "desc": "回调函数的上下文。"
+            "desc": "flush/on_destroy回调函数的上下文。"
           }
         ],
-        "annotation": {},
-        "desc": "创建lcd对象。",
-        "name": "lcd_mem_special_create",
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建单色LCD对象。",
+        "name": "lcd_mono_create",
         "return": {
           "type": "lcd_t*",
-          "desc": "返回lcd对象。"
+          "desc": "lcd对象。"
         }
       }
     ],
     "events": [],
-    "properties": [],
-    "header": "lcd/lcd_mem_special.h",
-    "desc": "特殊的LCD。\n\n通过重载flush函数来提交GUI绘制的结果到硬件。适用于：\n\n* lcd 硬件不支持framebuffer，如SPI接口的屏。\n* lcd 硬件支持framebuffer，但是其格式特殊，AWTK目前不支持。可以用flush进行格式转换。",
-    "name": "lcd_mem_special_t",
+    "properties": [
+      {
+        "name": "data",
+        "desc": "Framebuffer首地址。",
+        "type": "uint8_t*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "ctx",
+        "desc": "flush/on_destroy回调函数的上下文信息。",
+        "type": "void*",
+        "annotation": {
+          "private": true
+        }
+      },
+      {
+        "name": "on_destroy",
+        "desc": "lcd销毁时的回调函数。",
+        "type": "lcd_destroy_t",
+        "annotation": {
+          "private": true
+        }
+      }
+    ],
+    "header": "lcd/lcd_mono.h",
+    "desc": "单色LCD。\n\nlcd\\_mono是一个特殊的Framebuffer，它用一个比特来表示一个pixel。\n\nlcd\\_mono只是负责硬件无关的逻辑处理，调用者需要在创建时提供一个flush回调函数，\n在flush函数中把脏矩形中的数据刷新到硬件中。",
+    "name": "lcd_mono_t",
     "parent": "lcd_t",
     "level": 2
   },
@@ -48383,6 +48548,29 @@
             "desc": "控件对象。"
           },
           {
+            "type": "uint32_t",
+            "name": "long_press_time",
+            "desc": "触发长按事件的时间(毫秒)。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置触发长按事件的时间。",
+        "name": "button_set_long_press_time",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
             "type": "bool_t",
             "name": "enable_long_press",
             "desc": "是否启用长按事件。"
@@ -48429,6 +48617,19 @@
         "name": "enable_long_press",
         "desc": "是否启用长按事件，为true时才触发长按事件。\n\n触发长按事件后不再触发点击事件。\n缺省不启用。",
         "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "long_press_time",
+        "desc": "触发长按事件的时间(ms)",
+        "type": "uint32_t",
         "annotation": {
           "set_prop": true,
           "get_prop": true,

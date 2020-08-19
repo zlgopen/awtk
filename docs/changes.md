@@ -3,7 +3,8 @@
 * 2020/08/19
   * 完善 app conf 保存 json 时字符串转义处理。
   * 完整 ui serializer，增加 xml 预处理指令。
-  
+  * 增加[字符集编码转换函数](https://github.com/zlgopen/awtk/tree/master/src/charset/README.md)。
+
 * 2020/08/18
   * 修复了一些潜在的内存泄露。
   * button 支持设置长按时间。
