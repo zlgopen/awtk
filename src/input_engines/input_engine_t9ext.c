@@ -305,6 +305,37 @@ static ret_t input_engine_t9ext_search(input_engine_t* engine, const char* keys)
 }
 
 static ret_t input_engine_t9ext_set_lang(input_engine_t* engine, const char* lang) {
+  input_engine_t9ext_t* t9 = (input_engine_t9ext_t*)engine;
+  return_value_if_fail(engine != NULL, RET_BAD_PARAMS);
+
+  event_t e = event_init(EVT_IM_LANG_CHANGED, engine->im);
+ 
+  log_debug("input_engine_t9ext_set_lang: %s\n", lang);
+  if(tk_str_eq (lang, "123")){
+    t9->mode = INPUT_MODE_DIGIT;
+  }else if (tk_str_eq (lang, "abc")){
+    t9->mode = INPUT_MODE_LOWER;
+  }else if (tk_str_eq (lang, "ABC")){
+    t9->mode = INPUT_MODE_UPPER;
+  }else if (tk_str_eq (lang, "pinyin")){
+    t9->mode = INPUT_MODE_ZH;
+  }else {
+    log_debug("not support lang:%s\n", lang);
+  }
+
+  input_engine_reset_input(engine);
+
+  t9->index = 0;
+  t9->last_c = 0;
+  if (t9->timer_id != TK_INVALID_ID) {
+    timer_remove(t9->timer_id);
+    t9->timer_id = TK_INVALID_ID;
+    input_method_dispatch_preedit_confirm(engine->im);
+  }
+
+  input_method_dispatch(engine->im, &e);
+  input_method_dispatch_candidates(engine->im, engine->candidates, 0, -1);
+
   return RET_OK;
 }
 
