@@ -47,6 +47,40 @@ static ret_t edit_auto_fix(widget_t* widget);
 static ret_t edit_update_status(widget_t* widget);
 static ret_t edit_select_all_async(const idle_info_t* info);
 
+static ret_t edit_save_text(widget_t* widget) {
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
+
+  if (edit->cancelable) {
+    wstr_set(&(edit->saved_text), widget->text.str);
+  }
+
+  return RET_OK;
+}
+
+static ret_t edit_rollback_text(widget_t* widget) {
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
+
+  if (edit->cancelable) {
+    widget_set_text(widget, edit->saved_text.str);
+  }
+
+  return RET_OK;
+}
+
+static ret_t edit_commit_text(widget_t* widget) {
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
+
+  if (edit->cancelable) {
+    wstr_set(&(edit->saved_text), widget->text.str);
+    edit_update_status(widget);
+  }
+
+  return RET_OK;
+}
+
 static ret_t edit_dispatch_event(widget_t* widget, event_type_t type) {
   event_t evt = event_init(type, widget);
   widget_dispatch(widget, &evt);
@@ -381,16 +415,26 @@ static ret_t edit_auto_fix_default(widget_t* widget) {
 }
 
 static ret_t edit_update_status(widget_t* widget) {
+  edit_t* edit = EDIT(widget);
   if (widget->text.size == 0) {
     if (widget->focused) {
       widget_set_state(widget, WIDGET_STATE_EMPTY_FOCUS);
     } else {
       widget_set_state(widget, WIDGET_STATE_EMPTY);
     }
-  } else if (widget->focused) {
-    widget_set_state(widget, WIDGET_STATE_FOCUSED);
   } else {
-    widget_set_state(widget, WIDGET_STATE_NORMAL);
+    if (edit->cancelable) {
+      if(!wstr_equal(&(edit->saved_text), &(widget->text))) {
+        widget_set_state(widget, WIDGET_STATE_CHANGED);
+        return RET_OK;
+      }
+    }
+
+    if (widget->focused) {
+      widget_set_state(widget, WIDGET_STATE_FOCUSED);
+    } else {
+      widget_set_state(widget, WIDGET_STATE_NORMAL);
+    }
   }
 
   return RET_OK;
@@ -683,12 +727,14 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       }
       text_edit_unselect(edit->model);
       edit_dispatch_event(widget, EVT_VALUE_CHANGED);
+      edit_commit_text(widget);
       break;
     }
     case EVT_FOCUS: {
       if (edit->open_im_when_focused) {
         edit_on_focused(widget);
       }
+      edit_save_text(widget);
       break;
     }
     case EVT_WHEEL: {
@@ -712,6 +758,14 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
     case EVT_VALUE_CHANGING: {
       edit_update_status(widget);
       widget_invalidate(widget, NULL);
+      break;
+    }
+    case EVT_IM_CLEAR: {
+      edit_clear(edit);
+      break;
+    }
+    case EVT_IM_CANCEL: {
+      edit_rollback_text(widget);
       break;
     }
     case EVT_IM_ACTION: {
@@ -787,6 +841,15 @@ ret_t edit_set_readonly(widget_t* widget, bool_t readonly) {
   return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
 
   edit->readonly = readonly;
+
+  return RET_OK;
+}
+
+ret_t edit_set_cancelable(widget_t* widget, bool_t cancelable) {
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
+
+  edit->cancelable = cancelable;
 
   return RET_OK;
 }
@@ -969,6 +1032,9 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_READONLY)) {
     value_set_bool(v, edit->readonly);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_CANCELABLE)) {
+    value_set_bool(v, edit->cancelable);
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_AUTO_FIX)) {
     value_set_bool(v, edit->auto_fix);
     return RET_OK;
@@ -1121,6 +1187,9 @@ ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_READONLY)) {
     edit->readonly = value_bool(v);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_CANCELABLE)) {
+    edit->cancelable = value_bool(v);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_AUTO_FIX)) {
     edit->auto_fix = value_bool(v);
@@ -1379,6 +1448,7 @@ ret_t edit_clear(edit_t* edit) {
 
   widget->text.size = 0;
   text_edit_set_cursor(edit->model, 0xffffffff);
+  edit_update_status(widget);
 
   return widget_invalidate_force(widget, NULL);
 }
@@ -1449,6 +1519,7 @@ ret_t edit_on_destroy(widget_t* widget) {
   TKMEM_FREE(edit->tr_tips);
   TKMEM_FREE(edit->keyboard);
   TKMEM_FREE(edit->action_text);
+  wstr_reset(&(edit->saved_text));
   text_edit_destroy(edit->model);
 
   return RET_OK;
@@ -1470,6 +1541,7 @@ const char* const s_edit_properties[] = {WIDGET_PROP_MIN,
                                          WIDGET_PROP_STEP,
                                          WIDGET_PROP_INPUT_TYPE,
                                          WIDGET_PROP_READONLY,
+                                         WIDGET_PROP_CANCELABLE,
                                          WIDGET_PROP_AUTO_FIX,
                                          WIDGET_PROP_MARGIN,
                                          WIDGET_PROP_LEFT_MARGIN,
@@ -1544,6 +1616,7 @@ widget_t* edit_create_ex(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy
   ENSURE(edit->model != NULL);
 
   widget_set_text(widget, L"");
+  wstr_init(&(edit->saved_text), 0);
   edit_set_password_visible(widget, FALSE);
   edit_set_action_text(widget, ACTION_TEXT_DONE);
 

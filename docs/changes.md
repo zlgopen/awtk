@@ -1,5 +1,9 @@
 # 最新动态
 
+* 2020/08/20
+  * 软键盘支持“clear"/"cancel"两个功能按钮。
+  * edit 支持cancelable属性，为TRUE时，如果内容有变化，会设置编辑器的状态为changed，所以此时编辑器需要支持changed状态的style。
+
 * 2020/08/19
   * 完善 app conf 保存 json 时字符串转义处理。
   * 完整 ui serializer，增加 xml 预处理指令。

@@ -61,6 +61,8 @@ BEGIN_C_DECLS
  *| tab            | tab键           |
  *| space          | 空格键          |
  *| close          | 关闭软键盘       |
+ *| clear          | 清除编辑器的内容 |
+ *| cancel         | 恢复编辑器的内容 |
  *| back           | 关闭当前窗口     |
  *| back_to_home   | 返回home窗口    |
  *| 前缀key:        | 键值           |

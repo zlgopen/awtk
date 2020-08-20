@@ -396,6 +396,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_READONLY "readonly"
 
 /**
+ * @const WIDGET_PROP_CANCELABLE
+ * 是否可取消。
+ */
+#define WIDGET_PROP_CANCELABLE "cancelable"
+
+/**
  * @const WIDGET_PROP_PASSWORD_VISIBLE
  * 密码是否可见。
  */
@@ -1265,6 +1271,12 @@ typedef enum _window_closable_t {
  * 正常状态。
  */
 #define WIDGET_STATE_NORMAL "normal"
+
+/**
+ * @const WIDGET_STATE_CHANGED
+ * 内容被修改的状态。
+ */
+#define WIDGET_STATE_CHANGED "changed"
 
 /**
  * @const WIDGET_STATE_PRESSED

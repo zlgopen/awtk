@@ -4995,6 +4995,14 @@
         "name": "EVT_IM_COMMIT"
       },
       {
+        "desc": "清除编辑器内容(event_t)。",
+        "name": "EVT_IM_CLEAR"
+      },
+      {
+        "desc": "取消编辑，恢复之前的内容(event_t)。",
+        "name": "EVT_IM_CANCEL"
+      },
+      {
         "desc": "进入预编辑状态(event_t)。",
         "name": "EVT_IM_PREEDIT"
       },
@@ -17496,6 +17504,10 @@
         "name": "WIDGET_PROP_READONLY"
       },
       {
+        "desc": "是否可取消。",
+        "name": "WIDGET_PROP_CANCELABLE"
+      },
+      {
         "desc": "密码是否可见。",
         "name": "WIDGET_PROP_PASSWORD_VISIBLE"
       },
@@ -18112,6 +18124,10 @@
       {
         "desc": "正常状态。",
         "name": "WIDGET_STATE_NORMAL"
+      },
+      {
+        "desc": "内容被修改的状态。",
+        "name": "WIDGET_STATE_CHANGED"
       },
       {
         "desc": "指针按下状态。",
@@ -23247,8 +23263,8 @@
           },
           {
             "type": "const char*",
-            "name": "",
-            "desc": "。"
+            "name": "from_str",
+            "desc": "源字符串。"
           },
           {
             "type": "uint32_t",
@@ -23268,7 +23284,7 @@
           {
             "type": "uint32_t",
             "name": "to_size",
-            "desc": "目标字符串的长度。"
+            "desc": "目标字符串的最大长度。"
           }
         ],
         "annotation": {
@@ -23285,8 +23301,8 @@
         "params": [
           {
             "type": "const char*",
-            "name": "",
-            "desc": "。"
+            "name": "from_str",
+            "desc": "源字符串(utf8)。"
           },
           {
             "type": "uint32_t",
@@ -23295,13 +23311,13 @@
           },
           {
             "type": "const char*",
-            "name": "",
-            "desc": "。"
+            "name": "to_str",
+            "desc": "目标字符串(gbk)。"
           },
           {
             "type": "uint32_t",
             "name": "to_size",
-            "desc": "目标字符串的长度。"
+            "desc": "目标字符串的最大长度。"
           }
         ],
         "annotation": {
@@ -23318,8 +23334,8 @@
         "params": [
           {
             "type": "const char*",
-            "name": "",
-            "desc": "。"
+            "name": "from_str",
+            "desc": "源字符串(gbk)。"
           },
           {
             "type": "uint32_t",
@@ -23334,7 +23350,7 @@
           {
             "type": "uint32_t",
             "name": "to_size",
-            "desc": "目标字符串的长度。"
+            "desc": "目标字符串的最大长度。"
           }
         ],
         "annotation": {
@@ -41538,6 +41554,29 @@
           },
           {
             "type": "bool_t",
+            "name": "cancelable",
+            "desc": "是否为可撤销修。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置编辑器是否为可撤销修改。",
+        "name": "edit_set_cancelable",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          },
+          {
+            "type": "bool_t",
             "name": "auto_fix",
             "desc": "自动改正。"
           }
@@ -42134,6 +42173,19 @@
         "name": "step",
         "desc": "步长。\n作为数值型编辑器时，一次增加和减少时的数值。",
         "type": "double",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "cancelable",
+        "desc": "是否支持撤销编辑。如果为TRUE，在失去焦点之前可以撤销所有修改(恢复获得焦点之前的内容)。\n\n> * 1.一般配合keyboard的\"cancel\"按钮使用。\n> * 2.为TRUE时，如果内容有变化，会设置编辑器的状态为changed，所以此时编辑器需要支持changed状态的style。",
+        "type": "bool_t",
         "annotation": {
           "set_prop": true,
           "get_prop": true,
@@ -57229,7 +57281,7 @@
     "events": [],
     "properties": [],
     "header": "keyboard/keyboard.h",
-    "desc": "软键盘。\n\n软键盘是一个特殊的窗口，由编辑器通过输入法自动打开和关闭。\n\n这里介绍一下定制软键盘的方法：\n\n编辑器输入类型和软键盘UI资源文件的对应关系:\n\n| 输入类型       | 软键盘UI资源文件|\n|----------------|:---------------:|\n| INPUT\\_PHONE    | kb\\_phone.xml    |\n| INPUT\\_INT      | kb\\_int.xml      |\n| INPUT\\_FLOAT    | kb\\_float.xml    |\n| INPUT\\_UINT     | kb\\_uint.xml     |\n| INPUT\\_UFLOAT   | kb\\_ufloat.xml   |\n| INPUT\\_HEX      | kb\\_hex.xml      |\n| INPUT\\_EMAIL    | kb\\_ascii.xml    |\n| INPUT\\_PASSWORD | kb\\_ascii.xml    |\n| INPUT\\_CUSTOM   | 使用自定义的键盘 |\n| 其它            | kb\\_default.xml  |\n\nkeyboard中按钮子控件的名称有些特殊要求：\n\n|  名称          | 功能            |\n|----------------|:---------------:|\n| return         | 回车键          |\n| action         | 定制按钮        |\n| backspace      | 删除键          |\n| tab            | tab键           |\n| space          | 空格键          |\n| close          | 关闭软键盘       |\n| back           | 关闭当前窗口     |\n| back_to_home   | 返回home窗口    |\n| 前缀key:        | 键值           |\n| 前缀hard_key:   | 模拟物理键盘    |\n| 前缀page:       | 切换到页面      |\n| 前缀opt:        | 多个字符选择一个，点击切换到下一个，超时提交字符(用于实现九宫格输入) |\n\n示例：\n\n* 按键\"a\"，提交输入法处理。\n\n```xml\n<button repeat=\"300\" name=\"key:a\" text=\"a\"/>\n```\n\n* 字符\"a\"，直接提交到编辑器。\n\n```xml\n<button repeat=\"300\" name=\"a\" text=\"a\"/>\n```\n\n* 模拟物理键盘数字\"1\"，触发key down/up事件（可以用来选择候选字）。\n\n```xml\n<button repeat=\"300\" name=\"hard_key:1\" text=\"1\"/>\n```\n\n* 九宫格输入\n\n```xml\n<button repeat=\"300\" name=\"opt:._@/#\" text=\"._@/#\"/>\n<button repeat=\"300\" name=\"opt:abc\" text=\"abc\"/>\n<button repeat=\"300\" name=\"opt:def\" text=\"def\"/>\n```\n\n\n* 输入语言切换\n\n有的输入法，同时支持输入多种语言。\n比如T9，可以同时支持中文和英文输入，配合软键盘随时切换输入的语言。\n\n可以在pages的页面里指定lang属性，切换到该页面时会设置输入法的语言。如：\n\n```xml\n<pages x=\"0\" y=\"bottom\" w=\"100%\" h=\"-28\" active=\"2\">\n<view name=\"lower\" lang=\"en_us\"\nx=\"0\" y=\"0\" w=\"100%\" h=\"100%\" children_layout=\"default(r=4,c=4,s=2,m=2)\">\n...\n</view>\n<view name=\"chinese\" lang=\"zh_cn\"\nx=\"0\" y=\"0\" w=\"100%\" h=\"100%\" children_layout=\"default(r=4,c=4,s=2,m=2)\">\n...\n</view>\n</pages>\n```\n\n> 更多用法请参考：\n[kb_default](https://github.com/zlgopen/awtk/blob/master/design/default/ui/kb_default.xml)",
+    "desc": "软键盘。\n\n软键盘是一个特殊的窗口，由编辑器通过输入法自动打开和关闭。\n\n这里介绍一下定制软键盘的方法：\n\n编辑器输入类型和软键盘UI资源文件的对应关系:\n\n| 输入类型       | 软键盘UI资源文件|\n|----------------|:---------------:|\n| INPUT\\_PHONE    | kb\\_phone.xml    |\n| INPUT\\_INT      | kb\\_int.xml      |\n| INPUT\\_FLOAT    | kb\\_float.xml    |\n| INPUT\\_UINT     | kb\\_uint.xml     |\n| INPUT\\_UFLOAT   | kb\\_ufloat.xml   |\n| INPUT\\_HEX      | kb\\_hex.xml      |\n| INPUT\\_EMAIL    | kb\\_ascii.xml    |\n| INPUT\\_PASSWORD | kb\\_ascii.xml    |\n| INPUT\\_CUSTOM   | 使用自定义的键盘 |\n| 其它            | kb\\_default.xml  |\n\nkeyboard中按钮子控件的名称有些特殊要求：\n\n|  名称          | 功能            |\n|----------------|:---------------:|\n| return         | 回车键          |\n| action         | 定制按钮        |\n| backspace      | 删除键          |\n| tab            | tab键           |\n| space          | 空格键          |\n| close          | 关闭软键盘       |\n| clear          | 清除编辑器的内容 |\n| cancel         | 恢复编辑器的内容 |\n| back           | 关闭当前窗口     |\n| back_to_home   | 返回home窗口    |\n| 前缀key:        | 键值           |\n| 前缀hard_key:   | 模拟物理键盘    |\n| 前缀page:       | 切换到页面      |\n| 前缀opt:        | 多个字符选择一个，点击切换到下一个，超时提交字符(用于实现九宫格输入) |\n\n示例：\n\n* 按键\"a\"，提交输入法处理。\n\n```xml\n<button repeat=\"300\" name=\"key:a\" text=\"a\"/>\n```\n\n* 字符\"a\"，直接提交到编辑器。\n\n```xml\n<button repeat=\"300\" name=\"a\" text=\"a\"/>\n```\n\n* 模拟物理键盘数字\"1\"，触发key down/up事件（可以用来选择候选字）。\n\n```xml\n<button repeat=\"300\" name=\"hard_key:1\" text=\"1\"/>\n```\n\n* 九宫格输入\n\n```xml\n<button repeat=\"300\" name=\"opt:._@/#\" text=\"._@/#\"/>\n<button repeat=\"300\" name=\"opt:abc\" text=\"abc\"/>\n<button repeat=\"300\" name=\"opt:def\" text=\"def\"/>\n```\n\n\n* 输入语言切换\n\n有的输入法，同时支持输入多种语言。\n比如T9，可以同时支持中文和英文输入，配合软键盘随时切换输入的语言。\n\n可以在pages的页面里指定lang属性，切换到该页面时会设置输入法的语言。如：\n\n```xml\n<pages x=\"0\" y=\"bottom\" w=\"100%\" h=\"-28\" active=\"2\">\n<view name=\"lower\" lang=\"en_us\"\nx=\"0\" y=\"0\" w=\"100%\" h=\"100%\" children_layout=\"default(r=4,c=4,s=2,m=2)\">\n...\n</view>\n<view name=\"chinese\" lang=\"zh_cn\"\nx=\"0\" y=\"0\" w=\"100%\" h=\"100%\" children_layout=\"default(r=4,c=4,s=2,m=2)\">\n...\n</view>\n</pages>\n```\n\n> 更多用法请参考：\n[kb_default](https://github.com/zlgopen/awtk/blob/master/design/default/ui/kb_default.xml)",
     "name": "keyboard_t",
     "parent": "window_base_t",
     "annotation": {

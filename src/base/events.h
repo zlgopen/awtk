@@ -291,6 +291,16 @@ typedef enum _event_type_t {
    */
   EVT_IM_COMMIT,
   /**
+   * @const EVT_IM_CLEAR
+   * 清除编辑器内容(event_t)。
+   */
+  EVT_IM_CLEAR,
+  /**
+   * @const EVT_IM_CANCEL
+   * 取消编辑，恢复之前的内容(event_t)。
+   */
+  EVT_IM_CANCEL,
+  /**
    * @const EVT_IM_PREEDIT
    * 进入预编辑状态(event_t)。
    */

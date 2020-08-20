@@ -165,6 +165,9 @@ TEST(Edit, basic) {
 
   ASSERT_EQ(edit_set_readonly(b, TRUE), RET_OK);
   ASSERT_EQ(EDIT(b)->readonly, TRUE);
+  
+  ASSERT_EQ(edit_set_cancelable(b, TRUE), RET_OK);
+  ASSERT_EQ(EDIT(b)->cancelable, TRUE);
 
   value_set_bool(&v1, FALSE);
   ASSERT_EQ(widget_set_prop(b, WIDGET_PROP_READONLY, &v1), RET_OK);

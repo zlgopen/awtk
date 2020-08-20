@@ -2868,7 +2868,7 @@ static ret_t widget_set_parent_not_dirty(widget_t* widget) {
 
 ret_t widget_invalidate(widget_t* widget, rect_t* r) {
   rect_t rself;
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);
 
   if (widget->dirty) {
     return RET_OK;
