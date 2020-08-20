@@ -43,6 +43,13 @@ typedef struct _canvas_offline_t {
      * 绑定的离线 bitmap
      */
   bitmap_t* bitmap;
+
+  /* private */
+  /* 保存在线的 vg 和 canvas 的裁减区 */
+  rect_t vg_clip_rect;
+  rect_t canvas_clip_rect;
+  /*确保 begin_draw / end_draw 配对使用*/
+  int32_t begin_draw;
 } canvas_offline_t;
 
 /**
@@ -58,6 +65,18 @@ typedef struct _canvas_offline_t {
  * @return {canvas_t*} 成功返回 canvas ，失败返回 NULL。
  */
 canvas_t* canvas_offline_create(uint32_t w, uint32_t h, bitmap_format_t format);
+
+/**
+ * @method canvas_offline_clear_canvas
+ * 把离线 canvas 清除所有数据，并把背景设置为全透明
+ * 该函数调用前必须要先 canvas_offline_begin_draw 函数。
+ * 该函数用来解决离线 canvas 多次绘图半透效果后导致半透效果无效的问题。
+ *
+ * @param {canvas_t*} canvas 离线 canvas 对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t canvas_offline_clear_canvas(canvas_t* canvas);
 
 /**
  * @method canvas_offline_begin_draw
