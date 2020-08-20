@@ -10,6 +10,7 @@
 | -------- | ------- | 
 | WIDGET\_STATE\_NONE | 无效状态。 |
 | WIDGET\_STATE\_NORMAL | 正常状态。 |
+| WIDGET\_STATE\_CHANGED | 内容被修改的状态。 |
 | WIDGET\_STATE\_PRESSED | 指针按下状态。 |
 | WIDGET\_STATE\_OVER | 指针悬浮状态。 |
 | WIDGET\_STATE\_DISABLE | 禁用状态。 |

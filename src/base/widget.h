@@ -2287,6 +2287,10 @@ ret_t widget_set_self_layout_params(widget_t* widget, const char* x, const char*
 /**
  * @method widget_set_style_int
  * 设置整数类型的style。
+ *
+ * > * [state 的取值](https://github.com/zlgopen/awtk/blob/master/docs/manual/widget_state_t.md)
+ * > * [name 的取值](https://github.com/zlgopen/awtk/blob/master/docs/theme.md)
+ *
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {const char*} state_and_name 状态和名字，用英文的冒号分隔。
@@ -2299,6 +2303,10 @@ ret_t widget_set_style_int(widget_t* widget, const char* state_and_name, int32_t
 /**
  * @method widget_set_style_str
  * 设置字符串类型的style。
+ *
+ * > * [state 的取值](https://github.com/zlgopen/awtk/blob/master/docs/manual/widget_state_t.md)
+ * > * [name 的取值](https://github.com/zlgopen/awtk/blob/master/docs/theme.md)
+ *
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {const char*} state_and_name 状态和名字，用英文的冒号分隔。
@@ -2311,6 +2319,10 @@ ret_t widget_set_style_str(widget_t* widget, const char* state_and_name, const c
 /**
  * @method widget_set_style_color
  * 设置颜色类型的style。
+ *
+ * > * [state 的取值](https://github.com/zlgopen/awtk/blob/master/docs/manual/widget_state_t.md)
+ * > * [name 的取值](https://github.com/zlgopen/awtk/blob/master/docs/theme.md)
+ *
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {const char*} state_and_name 状态和名字，用英文的冒号分隔。

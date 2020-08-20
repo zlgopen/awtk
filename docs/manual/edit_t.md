@@ -68,6 +68,7 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | <a href="#edit_t_edit_get_int">edit\_get\_int</a> | 获取int类型的值。 |
 | <a href="#edit_t_edit_set_action_text">edit\_set\_action\_text</a> | 设置软键盘上action按钮的文本。 |
 | <a href="#edit_t_edit_set_auto_fix">edit\_set\_auto\_fix</a> | 设置编辑器是否为自动改正。 |
+| <a href="#edit_t_edit_set_cancelable">edit\_set\_cancelable</a> | 设置编辑器是否为可撤销修改。 |
 | <a href="#edit_t_edit_set_cursor">edit\_set\_cursor</a> | 设置输入框的光标坐标。 |
 | <a href="#edit_t_edit_set_dec_value">edit\_set\_dec\_value</a> | 设置减少值的回调函数。 |
 | <a href="#edit_t_edit_set_double">edit\_set\_double</a> | 设置double类型的值。 |
@@ -97,6 +98,7 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | <a href="#edit_t_action_text">action\_text</a> | char* | 软键盘上action按钮的文本。内置取值有： |
 | <a href="#edit_t_auto_fix">auto\_fix</a> | bool\_t | 输入无效时，是否自动改正。 |
 | <a href="#edit_t_bottom_margin">bottom\_margin</a> | uint8\_t | 下边距。 |
+| <a href="#edit_t_cancelable">cancelable</a> | bool\_t | 是否支持撤销编辑。如果为TRUE，在失去焦点之前可以撤销所有修改(恢复获得焦点之前的内容)。 |
 | <a href="#edit_t_input_type">input\_type</a> | input\_type\_t | 输入类型。 |
 | <a href="#edit_t_keyboard">keyboard</a> | char* | 自定义软键盘名称。AWTK优先查找keyboard属性设置的键盘文件名（该键盘的XML文件需要在default\raw\ui目录下存在），如果keyboard为空就找input_type设置的键盘类型 |
 | <a href="#edit_t_left_margin">left\_margin</a> | uint8\_t | 左边距。 |
@@ -238,6 +240,26 @@ ret_t edit_set_auto_fix (widget_t* widget, bool_t auto_fix);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
 | auto\_fix | bool\_t | 自动改正。 |
+#### edit\_set\_cancelable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="edit_t_edit_set_cancelable">设置编辑器是否为可撤销修改。
+
+* 函数原型：
+
+```
+ret_t edit_set_cancelable (widget_t* widget, bool_t cancelable);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | widget对象。 |
+| cancelable | bool\_t | 是否为可撤销修。 |
 #### edit\_set\_cursor 函数
 -----------------------
 
@@ -711,6 +733,25 @@ ret_t edit_set_tr_tips (widget_t* widget, const char* tr_tips);
 > <p id="edit_t_bottom_margin">下边距。
 
 * 类型：uint8\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### cancelable 属性
+-----------------------
+> <p id="edit_t_cancelable">是否支持撤销编辑。如果为TRUE，在失去焦点之前可以撤销所有修改(恢复获得焦点之前的内容)。
+
+> * 1.一般配合keyboard的"cancel"按钮使用。
+> * 2.为TRUE时，如果内容有变化，会设置编辑器的状态为changed，所以此时编辑器需要支持changed状态的style。
+
+* 类型：bool\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

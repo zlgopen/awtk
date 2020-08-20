@@ -66,6 +66,7 @@
 | WIDGET\_PROP\_KEYBOARD | 自定义软键盘资源名称。 |
 | WIDGET\_PROP\_DEFAULT\_FOCUSED\_CHILD | 缺省获得焦点的子控件(可用控件名或类型)。 |
 | WIDGET\_PROP\_READONLY | 只读模式。 |
+| WIDGET\_PROP\_CANCELABLE | 是否可取消。 |
 | WIDGET\_PROP\_PASSWORD\_VISIBLE | 密码是否可见。 |
 | WIDGET\_PROP\_ACTIVE | 是否处于active状态。 |
 | WIDGET\_PROP\_VERTICAL | 是否为垂直模式。 |
@@ -101,6 +102,7 @@
 | WIDGET\_PROP\_XSLIDABLE | X方向是否可拖动。 |
 | WIDGET\_PROP\_YSLIDABLE | Y方向是否可拖动。 |
 | WIDGET\_PROP\_REPEAT | 重复次数。 |
+| WIDGET\_PROP\_LONG\_PRESS\_TIME | 触发长按事件的时间(ms)。 |
 | WIDGET\_PROP\_ENABLE\_LONG\_PRESS | 是否启用长按。 |
 | WIDGET\_PROP\_ANIMATABLE | 是否启用动画。 |
 | WIDGET\_PROP\_AUTO\_HIDE\_SCROLL\_BAR | 是否自动隐藏滚动条。 |

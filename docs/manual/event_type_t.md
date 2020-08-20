@@ -56,6 +56,8 @@
 | EVT\_REQUEST\_CLOSE\_WINDOW | 请求关闭窗口的事件(event\_t)。 |
 | EVT\_TOP\_WINDOW\_CHANGED | 顶层窗口改变的事件(window\_event\_t)。 |
 | EVT\_IM\_COMMIT | 输入法提交输入的文本事件(im\_commit\_event\_t)。 |
+| EVT\_IM\_CLEAR | 清除编辑器内容(event\_t)。 |
+| EVT\_IM\_CANCEL | 取消编辑，恢复之前的内容(event\_t)。 |
 | EVT\_IM\_PREEDIT | 进入预编辑状态(event\_t)。 |
 | EVT\_IM\_PREEDIT\_CONFIRM | 确认预编辑内容，退出预编辑状态(event\_t)。 |
 | EVT\_IM\_PREEDIT\_ABORT | 删除预编辑内容，退出预编辑状态event\_t)。 |
