@@ -47,7 +47,7 @@ ret_t font_gen(font_t* font, uint16_t font_size, const char* str, const char* ou
 
   uint32_t size = font_gen_buff(font, font_size, str, &wbuffer);
 
-  if(strstr(output_filename, ".bin") != NULL) {
+  if (strstr(output_filename, ".bin") != NULL) {
     file_write(output_filename, wbuffer.data, size);
   } else {
     output_res_c_source(output_filename, theme, ASSET_TYPE_FONT, ASSET_TYPE_FONT_BMP, wbuffer.data,

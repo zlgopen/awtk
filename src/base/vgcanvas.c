@@ -523,5 +523,5 @@ ret_t vgcanvas_clear_cache(vgcanvas_t* vg) {
   return_value_if_fail(vg != NULL && vg->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(vg->vt->clear_cache != NULL, RET_BAD_PARAMS);
 
-   return vg->vt->clear_cache(vg);
+  return vg->vt->clear_cache(vg);
 }

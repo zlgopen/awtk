@@ -455,9 +455,7 @@ ret_t conf_node_set_value(conf_node_t* node, const value_t* v) {
       }
       break;
     }
-    default: {
-      return RET_NOT_IMPL;
-    }
+    default: { return RET_NOT_IMPL; }
   }
   node->node_type = CONF_NODE_SIMPLE;
 
@@ -521,9 +519,7 @@ ret_t conf_node_get_value(conf_node_t* node, value_t* v) {
       value_set_str(v, node->value.small_str);
       break;
     }
-    default: {
-      return RET_NOT_IMPL;
-    }
+    default: { return RET_NOT_IMPL; }
   }
 
   return RET_OK;
@@ -560,7 +556,7 @@ static conf_node_t* conf_doc_get_node(conf_doc_t* doc, const char* path,
       iter = conf_node_find_child_by_index(node, index);
       if (iter == NULL) {
         if (index == conf_node_count_children(node)) {
-          if(index == 0) {
+          if (index == 0) {
             node->node_type = CONF_NODE_ARRAY;
           }
           /*append*/

@@ -204,21 +204,21 @@ static ret_t keyboard_on_button_click(void* ctx, event_t* e) {
 
     return RET_OK;
   }
-  
+
   if (tk_str_eq(name, STR_CLEAR)) {
     event_t e = event_init(EVT_IM_CLEAR, NULL);
     input_method_dispatch_to_widget(im, &e);
 
     return RET_OK;
   }
-  
+
   if (tk_str_eq(name, STR_CANCEL)) {
     event_t e = event_init(EVT_IM_CANCEL, NULL);
     input_method_dispatch_to_widget(im, &e);
 
     return RET_OK;
   }
-  
+
   if (tk_str_eq(name, STR_BACK)) {
     window_manager_back(window_manager());
     return RET_OK;

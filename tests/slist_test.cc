@@ -83,12 +83,11 @@ TEST(SList, tail_pop) {
   ASSERT_EQ(slist_append(s, TO_POINTER(4)), RET_OK);
   ASSERT_EQ(slist_append(s, TO_POINTER(5)), RET_OK);
 
-
   ASSERT_EQ(TO_INT(slist_tail_pop(s)), 5);
   ASSERT_EQ(TO_INT(slist_head_pop(s)), 1);
 
   ASSERT_EQ(slist_size(s), 3);
-  
+
   ASSERT_EQ(TO_INT(slist_tail_pop(s)), 4);
   ASSERT_EQ(TO_INT(slist_head_pop(s)), 2);
 

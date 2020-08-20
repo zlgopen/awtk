@@ -165,7 +165,7 @@ TEST(Edit, basic) {
 
   ASSERT_EQ(edit_set_readonly(b, TRUE), RET_OK);
   ASSERT_EQ(EDIT(b)->readonly, TRUE);
-  
+
   ASSERT_EQ(edit_set_cancelable(b, TRUE), RET_OK);
   ASSERT_EQ(EDIT(b)->cancelable, TRUE);
 

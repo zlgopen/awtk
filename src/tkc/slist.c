@@ -181,7 +181,7 @@ void* slist_head_pop(slist_t* slist) {
 
   iter = slist->first;
   return_value_if_fail(iter != NULL, NULL);
-  
+
   slist->first = iter->next;
 
   data = iter->data;

@@ -1,0 +1,25 @@
+<keyboard theme="keyboard" x="0" y="bottom" w="100%" h="40%">
+  <column style="placeholder" x="0" y="0" w="100%" h="30">
+    <button name="close" style="close" x="r:1" y="1" w="28" h="28" text="x" />
+  </column>
+  <pages x="0" y="30" w="100%" h="-30" active="0">
+    <view name="upper" x="0" y="0" w="100%" h="100%" children_layout="default(r=4,c=4,s=2,m=4)">
+        <button repeat="300" name="1" text="1"/>
+        <button repeat="300" name="2" text="2"/>
+        <button repeat="300" name="3" text="3"/>
+        <button repeat="300" name="4" text="4"/>
+        <button repeat="300" name="5" text="5"/>
+        <button repeat="300" name="6" text="6"/>
+        <button repeat="300" name="7" text="7"/>
+        <button repeat="300" name="8" text="8"/>
+        <button repeat="300" name="9" text="9"/>
+        <button repeat="300" name="-" style="highlight" text="-"/>
+        <button repeat="300" name="0" text="0"/>
+        <button repeat="300" name="key:backspace" style="highlight"><image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
+        <button name="clear" text="Clear"/>
+        <button name="cancel" text="Cancel"/>
+        <button name="close" text="Close"/>
+        <button name="back" text="Back"/>
+    </view>
+  </pages>
+</keyboard>

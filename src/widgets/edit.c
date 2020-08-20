@@ -424,7 +424,7 @@ static ret_t edit_update_status(widget_t* widget) {
     }
   } else {
     if (edit->cancelable) {
-      if(!wstr_equal(&(edit->saved_text), &(widget->text))) {
+      if (!wstr_equal(&(edit->saved_text), &(widget->text))) {
         widget_set_state(widget, WIDGET_STATE_CHANGED);
         return RET_OK;
       }

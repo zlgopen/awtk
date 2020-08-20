@@ -24,14 +24,14 @@
 #ifdef WIN32
 #include "win_iconv.inc"
 #define WITH_ICONV 1
-#endif/*WIN32*/
+#endif /*WIN32*/
 
 #if defined(LINUX) || defined(MACOS)
 #include <iconv.h>
 #define WITH_ICONV 1
 #endif
 
-#ifdef WITH_ICONV 
+#ifdef WITH_ICONV
 static const char* get_native_encoding_name(encoding_name_t name) {
   switch (name) {
     case ENCODING_UTF8: {

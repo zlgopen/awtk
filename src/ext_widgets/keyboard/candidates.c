@@ -144,7 +144,7 @@ static ret_t candidates_relayout_children(widget_t* widget) {
   canvas_set_font(c, font, font_size);
   for (i = 0; i < nr; i++) {
     iter = children[i];
-    child_w = candidates_calc_child_width(c, iter) + child_margin* 2;
+    child_w = candidates_calc_child_width(c, iter) + child_margin * 2;
     if (iter->text.size) {
       widget_set_visible(iter, TRUE, FALSE);
     } else {
