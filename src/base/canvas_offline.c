@@ -194,7 +194,8 @@ ret_t canvas_offline_begin_draw(canvas_t* canvas) {
   c = (canvas_offline_gpu_t*)canvas;
   if (vg != NULL && canvas_offline->begin_draw == 0) {
     canvas_get_clip_rect(canvas, &canvas_offline->canvas_clip_rect);
-    canvas_offline->vg_clip_rect = rect_init(vg->clip_rect.x, vg->clip_rect.y, vg->clip_rect.w, vg->clip_rect.h);
+    canvas_offline->vg_clip_rect =
+        rect_init(vg->clip_rect.x, vg->clip_rect.y, vg->clip_rect.w, vg->clip_rect.h);
 
     vgcanvas_flush(vg);
 
@@ -209,7 +210,8 @@ ret_t canvas_offline_begin_draw(canvas_t* canvas) {
   if (canvas_offline->begin_draw == 0) {
     canvas_get_clip_rect(canvas, &canvas_offline->canvas_clip_rect);
     if (vg != NULL) {
-      canvas_offline->vg_clip_rect = rect_init(vg->clip_rect.x, vg->clip_rect.y, vg->clip_rect.w, vg->clip_rect.h);
+      canvas_offline->vg_clip_rect =
+          rect_init(vg->clip_rect.x, vg->clip_rect.y, vg->clip_rect.w, vg->clip_rect.h);
 
       vgcanvas_save(vg);
       vgcanvas_clip_rect(vg, 0, 0, vg->w, vg->h);
@@ -255,7 +257,8 @@ ret_t canvas_offline_end_draw(canvas_t* canvas) {
   if (canvas_offline->begin_draw == 0) {
     canvas_set_clip_rect(canvas, &canvas_offline->canvas_clip_rect);
     if (vg != NULL) {
-      vgcanvas_clip_rect(vg, canvas_offline->vg_clip_rect.x, canvas_offline->vg_clip_rect.y, canvas_offline->vg_clip_rect.w, canvas_offline->vg_clip_rect.h);
+      vgcanvas_clip_rect(vg, canvas_offline->vg_clip_rect.x, canvas_offline->vg_clip_rect.y,
+                         canvas_offline->vg_clip_rect.w, canvas_offline->vg_clip_rect.h);
       vgcanvas_restore(vg);
     }
   }
