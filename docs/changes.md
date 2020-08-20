@@ -2,7 +2,10 @@
 
 * 2020/08/20
   * 软键盘支持“clear"/"cancel"两个功能按钮。
-  * edit 支持cancelable属性，为TRUE时，如果内容有变化，会设置编辑器的状态为changed，所以此时编辑器需要支持changed状态的style。
+  * 修复 opengles 截屏的时候反算预乘时候数据溢出问题（感谢智明提供补丁）。
+  * 修复离线 canvas 在 agge 下有可能导致原来（感谢智明提供补丁）。
+  * edit 支持 cancelable 属性，为 TRUE 时，如果内容有变化，会设置编辑器的状态为 changed，所以此时编辑器需要支持 changed 状态的 style。
+
 
 * 2020/08/19
   * 完善 app conf 保存 json 时字符串转义处理。
