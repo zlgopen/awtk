@@ -3071,6 +3071,9 @@ ret_t widget_set_style (widget_t* widget, const char* state_and_name, const valu
 
 > <p id="widget_t_widget_set_style_color">设置颜色类型的style。
 
+> * [state 的取值](https://github.com/zlgopen/awtk/blob/master/docs/manual/widget_state_t.md)
+> * [name 的取值](https://github.com/zlgopen/awtk/blob/master/docs/theme.md)
+
 * 函数原型：
 
 ```
@@ -3092,6 +3095,9 @@ ret_t widget_set_style_color (widget_t* widget, const char* state_and_name, uint
 
 > <p id="widget_t_widget_set_style_int">设置整数类型的style。
 
+> * [state 的取值](https://github.com/zlgopen/awtk/blob/master/docs/manual/widget_state_t.md)
+> * [name 的取值](https://github.com/zlgopen/awtk/blob/master/docs/theme.md)
+
 * 函数原型：
 
 ```
@@ -3112,6 +3118,9 @@ ret_t widget_set_style_int (widget_t* widget, const char* state_and_name, int32_
 * 函数功能：
 
 > <p id="widget_t_widget_set_style_str">设置字符串类型的style。
+
+> * [state 的取值](https://github.com/zlgopen/awtk/blob/master/docs/manual/widget_state_t.md)
+> * [name 的取值](https://github.com/zlgopen/awtk/blob/master/docs/theme.md)
 
 * 函数原型：
 

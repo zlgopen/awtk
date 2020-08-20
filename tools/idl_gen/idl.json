@@ -21772,7 +21772,7 @@
         "annotation": {
           "scriptable": true
         },
-        "desc": "设置整数类型的style。",
+        "desc": "设置整数类型的style。\n\n> * [state 的取值](https://github.com/zlgopen/awtk/blob/master/docs/manual/widget_state_t.md)\n> * [name 的取值](https://github.com/zlgopen/awtk/blob/master/docs/theme.md)",
         "name": "widget_set_style_int",
         "return": {
           "type": "ret_t",
@@ -21800,7 +21800,7 @@
         "annotation": {
           "scriptable": true
         },
-        "desc": "设置字符串类型的style。",
+        "desc": "设置字符串类型的style。\n\n> * [state 的取值](https://github.com/zlgopen/awtk/blob/master/docs/manual/widget_state_t.md)\n> * [name 的取值](https://github.com/zlgopen/awtk/blob/master/docs/theme.md)",
         "name": "widget_set_style_str",
         "return": {
           "type": "ret_t",
@@ -21828,7 +21828,7 @@
         "annotation": {
           "scriptable": true
         },
-        "desc": "设置颜色类型的style。",
+        "desc": "设置颜色类型的style。\n\n> * [state 的取值](https://github.com/zlgopen/awtk/blob/master/docs/manual/widget_state_t.md)\n> * [name 的取值](https://github.com/zlgopen/awtk/blob/master/docs/theme.md)",
         "name": "widget_set_style_color",
         "return": {
           "type": "ret_t",
