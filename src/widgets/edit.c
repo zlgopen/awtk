@@ -1446,7 +1446,7 @@ ret_t edit_clear(edit_t* edit) {
   widget_t* widget = WIDGET(edit);
   return_value_if_fail(widget != NULL && edit != NULL, RET_BAD_PARAMS);
 
-  widget->text.size = 0;
+  wstr_set(&(widget->text), L"");
   text_edit_set_cursor(edit->model, 0xffffffff);
   edit_update_status(widget);
 
