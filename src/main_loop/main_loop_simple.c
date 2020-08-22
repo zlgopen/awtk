@@ -53,6 +53,8 @@ ret_t main_loop_post_pointer_event(main_loop_t* l, bool_t pressed, xy_t x, xy_t 
   pointer_event_t event;
   main_loop_simple_t* loop = (main_loop_simple_t*)l;
 
+  memset(&r, 0x00, sizeof(r));
+  memset(&event, 0x00, sizeof(event));
   return_value_if_fail(loop != NULL, RET_BAD_PARAMS);
 
   event.x = x;
@@ -96,6 +98,9 @@ ret_t main_loop_post_key_event(main_loop_t* l, bool_t pressed, uint8_t key) {
   event_queue_req_t r;
   key_event_t event;
   main_loop_simple_t* loop = (main_loop_simple_t*)l;
+  
+  memset(&r, 0x00, sizeof(r));
+  memset(&event, 0x00, sizeof(event));
   return_value_if_fail(loop != NULL, RET_BAD_PARAMS);
 
   loop->last_key = key;
