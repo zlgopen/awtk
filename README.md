@@ -280,6 +280,12 @@ pip install Pillow
 
 * [Template Project](https://github.com/zlgopen/awtk-hello)
 
+* [MVVM Template Project](https://github.com/zlgopen/awtk-mvvm-c-hello)
+
+* [awtk-restful-httpd](https://github.com/zlgopen/awtk-restful-httpd)
+
+* [Auto Test Engine](https://github.com/zlgopen/awtk-ui-automation)
+
 * [Demonstration Codes with C Program](https://github.com/zlgopen/awtk-c-demos)
 
 * [Wonderful Examples](https://github.com/zlgopen/awtk-examples)

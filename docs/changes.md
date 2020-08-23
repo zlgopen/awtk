@@ -1,5 +1,9 @@
 # 最新动态
 
+* 2020/08/23
+  * 新增 [awtk-restful-httpd](https://github.com/zlgopen/awtk-restful-httpd)
+  * 新增 [自动测试引擎](https://github.com/zlgopen/awtk-ui-automation)
+
 * 2020/08/21
   * 修复 main_loop_simple.c 事件部分成员没有初始化的问题（感谢梦幻櫻花提供补丁）。
 

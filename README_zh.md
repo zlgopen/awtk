@@ -280,6 +280,12 @@ pip install Pillow
 
 * [模板工程](https://github.com/zlgopen/awtk-hello)
 
+* [MVVM 模板工程](https://github.com/zlgopen/awtk-mvvm-c-hello)
+
+* [awtk-restful-httpd](https://github.com/zlgopen/awtk-restful-httpd)
+
+* [自动测试引擎](https://github.com/zlgopen/awtk-ui-automation)
+
 * [C 示例代码](https://github.com/zlgopen/awtk-c-demos)
 
 * [精彩示例](https://github.com/zlgopen/awtk-examples)
@@ -311,7 +317,6 @@ pip install Pillow
 * [扩展控件实例：二维码](https://github.com/CUITzhaoqi/awtk-qr)
 
 * [扩展控件实例：圆形滑块](https://github.com/longyuwlz/awtk_slider_circle)
-
 
 ## 九、文档
 
