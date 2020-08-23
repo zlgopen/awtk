@@ -405,6 +405,10 @@ ret_t edit_set_select_none_when_focused(widget_t* widget, bool_t select_none_whe
 /**
  * @method edit_set_open_im_when_focused
  * 设置编辑器是否在获得焦点时打开输入法。
+ *
+ *> * 设置默认焦点时，打开窗口时不弹出软键盘。
+ *> * 用键盘切换焦点时，编辑器获得焦点时不弹出软键盘。
+ *
  * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
  * @param {bool_t} open_im_when_focused 是否在获得焦点时打开输入法。
