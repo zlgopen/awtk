@@ -310,7 +310,7 @@ pip install Pillow
 
 * [扩展控件实例：表格视图](https://github.com/zlgopen/awtk-widget-table-view)
 
-* [仿微信列表项](https://github.com/zlgopen/awtk-widget-slidable-row)
+* [扩展控件实例：仿微信列表项](https://github.com/zlgopen/awtk-widget-slidable-row)
 
 * [自定义字体加载器：加载部分字体](https://github.com/zlgopen/awtk-custom-font-loader)
 
