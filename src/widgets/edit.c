@@ -1092,7 +1092,9 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
         value_set_double(v, d);
         break;
       }
-      default: { value_set_wstr(v, widget->text.str); }
+      default: {
+        value_set_wstr(v, widget->text.str);
+      }
     }
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_CARET_X)) {
@@ -1450,6 +1452,9 @@ ret_t edit_clear(edit_t* edit) {
   text_edit_set_cursor(edit->model, 0xffffffff);
   edit_update_status(widget);
 
+  if (edit->fix_value != NULL) {
+    edit->fix_value(widget);
+  }
   return widget_invalidate_force(widget, NULL);
 }
 

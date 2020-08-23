@@ -1,6 +1,7 @@
 # 最新动态
 
 * 2020/08/23
+  * 修复 edit 编辑 ip/date/time 时，cancel 编辑时的问题。
   * 新增 [awtk-restful-httpd](https://github.com/zlgopen/awtk-restful-httpd)
   * 新增 [自动测试引擎](https://github.com/zlgopen/awtk-ui-automation)
 
