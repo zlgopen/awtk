@@ -780,6 +780,18 @@ ret_t widget_use_style(widget_t* widget, const char* style);
 ret_t widget_set_text_utf8(widget_t* widget, const char* text);
 
 /**
+ * @method widget_get_text_utf8
+ * 获取控件的文本。
+ * 只是对widget\_get\_prop的包装，文本的意义由子类控件决定。
+ * @param {widget_t*} widget 控件对象。
+ * @param {char*}  text 用于返回文本。
+ * @param {uint32_t} size text内存长度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_get_text_utf8(widget_t* widget, char* text, uint32_t size);
+
+/**
  * @method widget_set_child_text_utf8
  * 设置子控件的文本。
  * 只是对widget\_set\_prop的包装，文本的意义由子类控件决定。

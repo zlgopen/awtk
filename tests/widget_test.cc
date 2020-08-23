@@ -1295,3 +1295,18 @@ TEST(Widget, is_parent_of) {
 
   widget_destroy(view);
 }
+
+TEST(Widget, get_text_utf8) {
+  char text[32];
+  widget_t* w = button_create(NULL, 0, 0, 0, 0);
+
+  widget_set_text(w, L"ok");
+  ASSERT_EQ(widget_get_text_utf8(w, text, sizeof(text)), RET_OK);
+  ASSERT_STREQ(text, "ok");
+
+  widget_set_text(w, L"中文");
+  ASSERT_EQ(widget_get_text_utf8(w, text, sizeof(text)), RET_OK);
+  ASSERT_STREQ(text, "中文");
+
+  widget_destroy(w);
+}

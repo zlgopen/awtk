@@ -18906,6 +18906,32 @@
             "desc": "控件对象。"
           },
           {
+            "type": "char*",
+            "name": "text",
+            "desc": "用于返回文本。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "text内存长度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取控件的文本。\n只是对widget\\_get\\_prop的包装，文本的意义由子类控件决定。",
+        "name": "widget_get_text_utf8",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
             "type": "const char*",
             "name": "name",
             "desc": "子控件的名称。"
@@ -33940,6 +33966,22 @@
         "return": {
           "type": "canvas_t*",
           "desc": "成功返回 canvas ，失败返回 NULL。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "canvas",
+            "desc": "离线 canvas 对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "把离线 canvas 清除所有数据，并把背景设置为全透明\n该函数调用前必须要先 canvas_offline_begin_draw 函数。\n该函数用来解决离线 canvas 多次绘图半透效果后导致半透效果无效的问题。",
+        "name": "canvas_offline_clear_canvas",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       },
       {

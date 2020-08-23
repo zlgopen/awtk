@@ -276,6 +276,27 @@ ret_t widget_set_text_utf8(widget_t* widget, const char* text) {
   return widget_set_prop(widget, WIDGET_PROP_TEXT, value_set_str(&v, text));
 }
 
+ret_t widget_get_text_utf8(widget_t* widget, char* text, uint32_t size) {
+  value_t v;
+  ret_t ret = RET_OK;
+  return_value_if_fail(widget != NULL && text != NULL && size > 0, RET_BAD_PARAMS);
+
+  value_set_str(&v, NULL);
+  memset(text, 0x00, size);
+  if (widget_get_prop(widget, WIDGET_PROP_TEXT, &v) == RET_OK) {
+    if (v.type == VALUE_TYPE_STRING) {
+      tk_strncpy(text, value_str(&v), size - 1);
+      tk_utf8_from_utf16(value_wstr(&v), text, size);
+      ret = RET_OK;
+    } else if (v.type == VALUE_TYPE_WSTRING) {
+      tk_utf8_from_utf16(value_wstr(&v), text, size);
+      ret = RET_OK;
+    }
+  }
+
+  return ret;
+}
+
 image_manager_t* widget_get_image_manager(widget_t* widget) {
   image_manager_t* ret = image_manager();
   return_value_if_fail(widget != NULL && widget->vt != NULL, ret);
