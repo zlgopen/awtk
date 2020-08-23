@@ -173,6 +173,8 @@
 git clone https://github.com/zlgopen/awtk.git
 ```
 
+> 国内用户推荐使用：https://hub.fastgit.org/zlgopen/awtk.git
+
 > Windows 下可以用带 GUI 的 git 下载代码。
 
 **更新代码（在 awtk 目录下运行）**
