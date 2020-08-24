@@ -31,6 +31,40 @@
 
 static ret_t mledit_update_status(widget_t* widget);
 
+static ret_t mledit_save_text(widget_t* widget) {
+  mledit_t* mledit = MLEDIT(widget);
+  return_value_if_fail(mledit != NULL, RET_BAD_PARAMS);
+
+  if (mledit->cancelable) {
+    wstr_set(&(mledit->saved_text), widget->text.str);
+  }
+
+  return RET_OK;
+}
+
+static ret_t mledit_rollback_text(widget_t* widget) {
+  mledit_t* mledit = MLEDIT(widget);
+  return_value_if_fail(mledit != NULL, RET_BAD_PARAMS);
+
+  if (mledit->cancelable) {
+    widget_set_text(widget, mledit->saved_text.str);
+  }
+
+  return RET_OK;
+}
+
+static ret_t mledit_commit_text(widget_t* widget) {
+  mledit_t* mledit = MLEDIT(widget);
+  return_value_if_fail(mledit != NULL, RET_BAD_PARAMS);
+
+  if (mledit->cancelable) {
+    wstr_set(&(mledit->saved_text), widget->text.str);
+    mledit_update_status(widget);
+  }
+
+  return RET_OK;
+}
+
 static ret_t mledit_dispatch_event(widget_t* widget, event_type_t type) {
   event_t evt = event_init(type, widget);
   widget_dispatch(widget, &evt);
@@ -104,6 +138,15 @@ ret_t mledit_set_readonly(widget_t* widget, bool_t readonly) {
   return RET_OK;
 }
 
+ret_t mledit_set_cancelable(widget_t* widget, bool_t cancelable) {
+  mledit_t* mledit = MLEDIT(widget);
+  return_value_if_fail(mledit != NULL, RET_BAD_PARAMS);
+
+  mledit->cancelable = cancelable;
+
+  return RET_OK;
+}
+
 ret_t mledit_set_wrap_word(widget_t* widget, bool_t wrap_word) {
   mledit_t* mledit = MLEDIT(widget);
   return_value_if_fail(mledit != NULL, RET_BAD_PARAMS);
@@ -130,6 +173,9 @@ static ret_t mledit_get_prop(widget_t* widget, const char* name, value_t* v) {
   return_value_if_fail(mledit != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
   if (tk_str_eq(name, WIDGET_PROP_READONLY)) {
     value_set_bool(v, mledit->readonly);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_CANCELABLE)) {
+    value_set_bool(v, mledit->cancelable);
     return RET_OK;
   } else if (tk_str_eq(name, MLEDIT_PROP_WRAP_WORD)) {
     value_set_bool(v, mledit->wrap_word);
@@ -203,7 +249,9 @@ static ret_t mledit_set_text(widget_t* widget, const value_t* v) {
   if (!wstr_equal(&(widget->text), &str)) {
     wstr_set(&(widget->text), str.str);
     mledit_reset_text_edit_layout(mledit->model);
+    text_edit_layout(mledit->model);
     mledit_dispatch_event(widget, EVT_VALUE_CHANGED);
+    mledit_update_status(widget);
   }
 
   wstr_reset(&str);
@@ -219,6 +267,9 @@ static ret_t mledit_set_prop(widget_t* widget, const char* name, const value_t* 
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_READONLY)) {
     mledit->readonly = value_bool(v);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_CANCELABLE)) {
+    mledit->cancelable = value_bool(v);
     return RET_OK;
   } else if (tk_str_eq(name, MLEDIT_PROP_WRAP_WORD)) {
     mledit_set_wrap_word(widget, value_bool(v));
@@ -287,6 +338,7 @@ static ret_t mledit_on_destroy(widget_t* widget) {
   TKMEM_FREE(mledit->tips);
   TKMEM_FREE(mledit->tr_tips);
   TKMEM_FREE(mledit->keyboard);
+  wstr_reset(&(mledit->saved_text));
   text_edit_destroy(mledit->model);
 
   return RET_OK;
@@ -365,16 +417,27 @@ static ret_t mledit_update_caret(const timer_info_t* timer) {
 }
 
 static ret_t mledit_update_status(widget_t* widget) {
+  mledit_t* mledit = MLEDIT(widget);
+
   if (widget->text.size == 0) {
     if (widget->focused) {
       widget_set_state(widget, WIDGET_STATE_EMPTY_FOCUS);
     } else {
       widget_set_state(widget, WIDGET_STATE_EMPTY);
     }
-  } else if (widget->focused) {
-    widget_set_state(widget, WIDGET_STATE_FOCUSED);
   } else {
-    widget_set_state(widget, WIDGET_STATE_NORMAL);
+    if (mledit->cancelable) {
+      if (!wstr_equal(&(mledit->saved_text), &(widget->text))) {
+        widget_set_state(widget, WIDGET_STATE_CHANGED);
+        return RET_OK;
+      }
+    }
+
+    if (widget->focused) {
+      widget_set_state(widget, WIDGET_STATE_FOCUSED);
+    } else {
+      widget_set_state(widget, WIDGET_STATE_NORMAL);
+    }
   }
 
   return RET_OK;
@@ -544,11 +607,16 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       widget_invalidate(widget, NULL);
       break;
     }
+    case EVT_IM_CANCEL: {
+      mledit_rollback_text(widget);
+      break;
+    }
     case EVT_BLUR: {
       input_method_request(input_method(), NULL);
 
       mledit_update_status(widget);
       mledit_dispatch_event(widget, EVT_VALUE_CHANGED);
+      mledit_commit_text(widget);
       break;
     }
     case EVT_FOCUS: {
@@ -560,6 +628,7 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
         mledit_request_input_method(widget);
         idle_add(mledit_focus_set_cursor, mledit);
       }
+      mledit_save_text(widget);
       break;
     }
     case EVT_WHEEL: {
@@ -710,6 +779,7 @@ static ret_t mledit_init_idle_func(const idle_info_t* info) {
 }
 
 const char* s_mledit_properties[] = {WIDGET_PROP_READONLY,
+                                     WIDGET_PROP_CANCELABLE,
                                      WIDGET_PROP_MARGIN,
                                      WIDGET_PROP_LEFT_MARGIN,
                                      WIDGET_PROP_RIGHT_MARGIN,
@@ -754,6 +824,7 @@ widget_t* mledit_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   mledit->scroll_line = 1.0f;
   wstr_init(&(mledit->temp), 0);
   widget_set_text(widget, L"");
+  wstr_init(&(mledit->saved_text), 0);
 
   mledit_update_status(widget);
   widget_add_idle(widget, mledit_init_idle_func);

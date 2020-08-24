@@ -128,12 +128,23 @@ typedef struct _mledit_t {
    * 鼠标一次滚动行数。
    */
   uint32_t scroll_line;
+  
+  /**
+   * @property {bool_t} cancelable
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 是否支持撤销编辑。如果为TRUE，在失去焦点之前可以撤销所有修改(恢复获得焦点之前的内容)。
+   *
+   * > * 1.一般配合keyboard的"cancel"按钮使用。
+   * > * 2.为TRUE时，如果内容有变化，会设置编辑器的状态为changed，所以此时编辑器需要支持changed状态的style。
+   */
+  bool_t cancelable;
 
   /*private*/
   text_edit_t* model;
   uint32_t timer_id;
 
   wstr_t temp;
+  wstr_t saved_text;
   uint64_t last_user_action_time;
 } mledit_t;
 
@@ -171,6 +182,17 @@ widget_t* mledit_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t mledit_set_readonly(widget_t* widget, bool_t readonly);
+
+/**
+ * @method mledit_set_cancelable
+ * 设置编辑器是否为可撤销修改。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {bool_t} cancelable 是否为可撤销修。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t mledit_set_cancelable(widget_t* widget, bool_t cancelable);
 
 /**
  * @method mledit_set_focus

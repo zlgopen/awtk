@@ -8,6 +8,17 @@
 #include "base/window.h"
 #include "common.h"
 
+TEST(MLEdit, basic) {
+  widget_t* b = mledit_create(NULL, 10, 20, 30, 40);
+  
+  ASSERT_EQ(MLEDIT(b)->readonly, FALSE);
+  ASSERT_EQ(widget_set_prop_bool(b, WIDGET_PROP_READONLY, TRUE), RET_OK);
+  ASSERT_EQ(MLEDIT(b)->readonly, TRUE);
+  ASSERT_EQ(widget_get_prop_bool(b, WIDGET_PROP_READONLY, FALSE), TRUE);
+
+  widget_destroy(b);
+}
+
 TEST(MLEdit, int) {
   value_t v1;
   value_t v2;
