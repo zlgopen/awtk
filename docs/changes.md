@@ -4,7 +4,8 @@
   * mledit 支持 cancelable 属性，为 TRUE 时，如果内容有变化，会设置编辑器的状态为 changed，所以此时编辑器需要支持 changed 状态的 style。
   * 完善 windows 时间函数。
   * 完善 edit pattern
-   
+  * edit 格式编辑时，获得焦点时，把光标设置到最前面。
+
 * 2020/08/23
   * 修复 edit 编辑 ip/date/time 时，cancel 编辑时的问题。
   * 新增 [awtk-restful-httpd](https://github.com/zlgopen/awtk-restful-httpd)

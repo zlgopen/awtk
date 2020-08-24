@@ -612,6 +612,10 @@ static ret_t edit_select_all_async(const idle_info_t* info) {
   edit_t* edit = EDIT(info->ctx);
   text_edit_select_all(edit->model);
 
+  if (edit->fix_value != NULL) {
+    text_edit_set_cursor(edit->model, 0);
+  }
+
   return RET_REMOVE;
 }
 
