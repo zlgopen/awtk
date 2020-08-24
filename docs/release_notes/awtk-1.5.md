@@ -213,21 +213,27 @@
 ### 4. 新增控件
 
  * [二维码](https://github.com/zlgopen/awtk-widget-qr)
+
  ![](https://github.com/zlgopen/awtk-widget-qr/raw/master/docs/images/ui.jpg)
 
  * [number-label](https://github.com/zlgopen/awtk-widget-number-label)
+
  ![](https://github.com/zlgopen/awtk-widget-number-label/raw/master/docs/images/ui.jpg)
  
  * [代码编辑器](https://github.com/zlgopen/awtk-widget-code-edit)
+
  ![](https://github.com/zlgopen/awtk-widget-code-edit/raw/master/docs/images/ui.jpg)
 
  * [日期选择器](https://github.com/zlgopen/awtk-widget-date-picker)
+ 
  ![](https://github.com/zlgopen/awtk-widget-date-picker/raw/master/docs/images/ui.jpg)
 
  * [表格视图](https://github.com/zlgopen/awtk-widget-table-view)
+
  ![](https://github.com/zlgopen/awtk-widget-table-view/raw/master/docs/images/ui.png)
 
  * [仿微信列表项](https://github.com/zlgopen/awtk-widget-slidable-row)
+ 
  ![](https://github.com/zlgopen/awtk-widget-slidable-row/raw/master/docs/images/ui1.png)
 
 
