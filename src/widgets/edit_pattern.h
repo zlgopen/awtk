@@ -120,6 +120,7 @@ static bool_t edit_pattern_is_valid_char(widget_t* widget, wchar_t c, wchar_t se
         /*如果时sep，而且当前字符也时sep，光标往后移动一个位置*/
         text_edit_set_cursor(edit->model, cursor + 1);
       }
+      
       return FALSE;
     }
 
@@ -153,7 +154,11 @@ static bool_t edit_pattern_is_valid_char(widget_t* widget, wchar_t c, wchar_t se
         } else if (text->str[cursor] == sep) {
           /*输入到下一个part*/
           if (text->str[cursor] == sep) {
-            text_edit_set_cursor(edit->model, cursor + 1);
+            if (text->str[cursor + 1] == sep || text->str[cursor + 1] == 0) {
+              text_edit_set_cursor(edit->model, cursor + 1);
+            } else {
+              text_edit_set_select(edit->model, cursor + 1, cursor + 2);
+            }
           } else {
             text_edit_set_select(edit->model, cursor + 1, cursor + 2);
           }
