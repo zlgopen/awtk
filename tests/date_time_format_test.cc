@@ -10,7 +10,7 @@ TEST(DateTimeFormat, basic) {
 
   str_from_wstr(&s, str.str);
 #ifdef WIN32
-  ASSERT_STREQ(s.str, "00-00-00");
+  ASSERT_STREQ(s.str, "70-01-01");
 #elif defined(MACOS)
   ASSERT_STREQ(s.str, "70-01-01");
 #else

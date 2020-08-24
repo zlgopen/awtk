@@ -64,12 +64,40 @@ static ret_t date_time_get_now_impl(date_time_t* dt) {
 }
 
 static ret_t date_time_set_now_impl(date_time_t* dt) {
-  return RET_NOT_IMPL;
+  SYSTEMTIME wtm;
+  memset(&wtm, 0x00, sizeof(wtm));
+
+  wtm.wMinute = dt->minute;
+  wtm.wSecond = dt->second;
+  wtm.wHour = dt->hour;
+  wtm.wDay = dt->day;
+  wtm.wMonth = dt->month;
+  wtm.wYear = dt->year;
+
+  if (SetLocalTime(&wtm)) {
+    return RET_OK;
+  } else {
+    log_debug("SetLocalTime failed\n");
+    return RET_FAIL;
+  }
 }
 
 static ret_t date_time_from_time_impl(date_time_t* dt, uint64_t timeval) {
-  /*TODO*/
-  return RET_NOT_IMPL;
+  time_t tm = timeval;
+  struct tm* t = localtime(&tm);
+  return_value_if_fail(dt != NULL, RET_BAD_PARAMS);
+
+  memset(dt, 0x00, sizeof(date_time_t));
+
+  dt->second = t->tm_sec;
+  dt->minute = t->tm_min;
+  dt->hour = t->tm_hour;
+  dt->day = t->tm_mday;
+  dt->month = t->tm_mon + 1;
+  dt->year = t->tm_year + 1900;
+  dt->wday = t->tm_wday;
+
+  return RET_OK;
 }
 
 #else

@@ -81,3 +81,21 @@ TEST(DateTime, wday) {
   ASSERT_EQ(date_time_get_wday(1000, 7, 13), 0);
   ASSERT_EQ(date_time_get_wday(1000, 7, 14), 1);
 }
+
+TEST(DateTime, from_time) {
+  date_time_t dt;
+  date_time_t now;
+  time_t t = time(0);
+  date_time_init(&now);
+  ASSERT_EQ(date_time_from_time(&dt, t), RET_OK);
+  ASSERT_EQ(dt.year, now.year);
+  ASSERT_EQ(dt.month, now.month);
+  ASSERT_EQ(dt.day, now.day);
+  ASSERT_EQ(dt.hour, now.hour);
+}
+
+TEST(DateTime, set_time) {
+  date_time_t now;
+  date_time_init(&now);
+  date_time_set(&now);
+}
