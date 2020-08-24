@@ -74,6 +74,7 @@ TEST(IOStreamSHDLC, small) {
   ASSERT_EQ(memcmp(rbuff, sbuff, data_size), 0);
 
   tk_thread_join(t);
+  tk_thread_destroy(t);
 
   OBJECT_UNREF(a_tcp);
   OBJECT_UNREF(a_io);
@@ -99,6 +100,7 @@ TEST(IOStreamSHDLC, large) {
   ASSERT_EQ(memcmp(rbuff, sbuff, data_size), 0);
 
   tk_thread_join(t);
+  tk_thread_destroy(t);
 
   OBJECT_UNREF(a_tcp);
   OBJECT_UNREF(a_io);
@@ -136,6 +138,7 @@ TEST(IOStreamSHDLC, noisy) {
   ASSERT_EQ(memcmp(rbuff, sbuff, data_size), 0);
 
   tk_thread_join(t);
+  tk_thread_destroy(t);
 
   OBJECT_UNREF(a_tcp);
   OBJECT_UNREF(a_io);
