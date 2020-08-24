@@ -198,7 +198,7 @@
   * 完善 graphic\_buffer\_default
   * 增加 tk\_mem\_is\_valid\_addr
   * 完善 edit 注释（感谢俊杰提供补丁）。
-   *  gif 隐藏后不再刷新。 
+  *  gif 隐藏后不再刷新。 
   * 完善 ui loader（感谢 dog2nd_Zhao 提供补丁）。
 
 * 2020/06/30
