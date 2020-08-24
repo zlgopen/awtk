@@ -94,6 +94,7 @@ ret_t tk_thread_start(tk_thread_t* thread);
 /**
  * @method tk_thread_join
  * 等待线程退出。
+ * 必须调用 tk_thread_destroy 函数来释放线程资源，以免出现内存泄漏的问题。
  * @param {tk_thread_t*}    thread thread对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
@@ -112,6 +113,7 @@ void* tk_thread_get_args(tk_thread_t* thread);
 /**
  * @method tk_thread_destroy
  * 销毁thread对象。
+ * 在销毁对象前必须调用 tk_thread_join 函数等待退出线程
  * @param {tk_thread_t*}    thread thread对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

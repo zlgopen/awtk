@@ -381,7 +381,10 @@ int serial_close(serial_handle_t handle) {
   CloseHandle(dev);
 
   handle->closed = TRUE;
-  tk_thread_join(handle->thread);
+  if (handle->thread != NULL) {
+    tk_thread_join(handle->thread);
+    tk_thread_destroy(handle->thread);
+  }
 
   socket_close(handle->client_fd);
   socket_close(handle->server_fd);
