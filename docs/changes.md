@@ -5,6 +5,7 @@
   * 完善 windows 时间函数。
   * 完善 edit pattern
   * edit 格式编辑时，获得焦点时，把光标设置到最前面。
+  * 修复 serial helper 和测试程序中内存泄漏（感谢智明提供补丁）。
 
 * 2020/08/23
   * 修复 edit 编辑 ip/date/time 时，cancel 编辑时的问题。
