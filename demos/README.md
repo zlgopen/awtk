@@ -2,7 +2,6 @@
 
 ### 源文件和目录介绍
 
-* demo\_main.c 所有入口函数。
 * demo1\_app.c 演示按传统方式创建界面。
 * demo\_ui\_app.c 演示各种控件和动画效果(不适合作为编写代码参考，编写代码请参考：https://github.com/zlgopen/awtk-c-demos)。
 * demo\_animator\_app.c 演示控件动画。 
