@@ -243,10 +243,21 @@ static ret_t vgcanvas_nanovg_clip_rect(vgcanvas_t* vgcanvas, float_t x, float_t 
   /* 判断如果 vg 没有旋转和缩放的坐标系，直接使用 rect_intersect 函数做交集提高效率 */
   if (vgcanvas_nanovg_is_system_orientation_0_or_180(xform) ||
       vgcanvas_nanovg_is_system_orientation_90_or_270(xform)) {
+    bool_t is_int = tk_abs(vgcanvas->ratio - (uint32_t)vgcanvas->ratio) < 0.001f;
     r1 = rect_init(x, y, w, h);
     cilp_rect = rect_intersect((const rect_t*)&vgcanvas->dirty_rect, (const rect_t*)&r1);
-    nvgScissor(vg, (float_t)cilp_rect.x, (float_t)cilp_rect.y, (float_t)cilp_rect.w,
-               (float_t)cilp_rect.h);
+    if (is_int) {
+      x = cilp_rect.x;
+      y = cilp_rect.y;
+      w = cilp_rect.w;
+      h = cilp_rect.h;
+    } else {
+      x = ((uint32_t)(cilp_rect.x * vgcanvas->ratio)) / vgcanvas->ratio;
+      y = ((uint32_t)(cilp_rect.y * vgcanvas->ratio)) / vgcanvas->ratio;
+      w = ((uint32_t)(cilp_rect.w * vgcanvas->ratio)) / vgcanvas->ratio;
+      h = ((uint32_t)(cilp_rect.h * vgcanvas->ratio)) / vgcanvas->ratio;
+    }
+    nvgScissor(vg, x, y, w, h);
   } else {
     nvgIntersectScissorForOtherRect(
         vg, x, y, w, h, (float_t)vgcanvas->dirty_rect.x, (float_t)vgcanvas->dirty_rect.y,

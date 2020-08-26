@@ -1362,8 +1362,8 @@ static int glnvg__VertsInScissor(const NVGvertex* verts, int nr, NVGscissor* sci
 
   float l = cx - hw;
   float t = cy - hh;
-  float r = l + 2 * hw - 1;
-  float b = t + 2 * hh - 1;
+  float r = l + 2 * hw;
+  float b = t + 2 * hh;
 
   for (i = 0; i < nr; i++) {
     const NVGvertex* iter = verts + i;
