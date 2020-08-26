@@ -563,7 +563,8 @@ bitmap_t* bitmap_clone(bitmap_t* bitmap) {
 
 #if defined(WITH_STB_IMAGE)
 #define STB_IMAGE_STATIC 1
-#define STBI_WRITE_NO_STDIO
+#define STBI_WRITE_NO_STDIO 1
+#define STB_IMAGE_WRITE_STATIC 1
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #define STBI_FREE TKMEM_FREE
 #define STBI_MALLOC TKMEM_ALLOC
