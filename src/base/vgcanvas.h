@@ -51,6 +51,7 @@ typedef ret_t (*vgcanvas_end_frame_t)(vgcanvas_t* vg);
 
 typedef ret_t (*vgcanvas_reset_t)(vgcanvas_t* vg);
 typedef ret_t (*vgcanvas_flush_t)(vgcanvas_t* vg);
+typedef ret_t (*vgcanvas_reset_curr_state_t)(vgcanvas_t* vg);
 typedef ret_t (*vgcanvas_clear_rect_t)(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h,
                                        color_t color);
 
@@ -148,6 +149,7 @@ typedef struct _vgcanvas_vtable_t {
   vgcanvas_reset_t reset;
   vgcanvas_flush_t flush;
   vgcanvas_clear_rect_t clear_rect;
+  vgcanvas_reset_curr_state_t reset_curr_state;
 
   vgcanvas_begin_path_t begin_path;
   vgcanvas_move_to_t move_to;
@@ -428,13 +430,23 @@ ret_t vgcanvas_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h, uint32_t stride,
 
 /**
  * @method vgcanvas_reset
- * 重置状态。
+ * 重置所有状态。
  *
  * @param {vgcanvas_t*} vg vgcanvas对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t vgcanvas_reset(vgcanvas_t* vg);
+
+/**
+ * @method vgcanvas_reset
+ * 重置当前状态。
+ *
+ * @param {vgcanvas_t*} vg vgcanvas对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t vgcanvas_reset_curr_state(vgcanvas_t* vg);
 
 /**
  * @method vgcanvas_flush

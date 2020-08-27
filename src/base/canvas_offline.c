@@ -196,6 +196,8 @@ ret_t canvas_offline_begin_draw(canvas_t* canvas) {
     canvas_get_clip_rect(canvas, &canvas_offline->canvas_clip_rect);
     canvas_offline->vg_clip_rect =
         rect_init(vg->clip_rect.x, vg->clip_rect.y, vg->clip_rect.w, vg->clip_rect.h);
+    c->online_lcd_w = canvas->lcd->w;
+    c->online_lcd_h = canvas->lcd->h;
 
     vgcanvas_flush(vg);
 
@@ -214,6 +216,7 @@ ret_t canvas_offline_begin_draw(canvas_t* canvas) {
           rect_init(vg->clip_rect.x, vg->clip_rect.y, vg->clip_rect.w, vg->clip_rect.h);
 
       vgcanvas_save(vg);
+      vgcanvas_reset_curr_state(vg);
       vgcanvas_clip_rect(vg, 0, 0, vg->w, vg->h);
     }
     canvas_set_clip_rect(canvas, NULL);
@@ -243,6 +246,7 @@ ret_t canvas_offline_end_draw(canvas_t* canvas) {
     canvas->lcd->w = vg->w = c->online_lcd_w;
     canvas->lcd->h = vg->h = c->online_lcd_h;
 
+    vgcanvas_restore(vg);
     vgcanvas_unbind_fbo(vg, &c->fbo);
 
     c->base.bitmap->specific = tk_pointer_from_int(c->fbo.id);
@@ -251,7 +255,6 @@ ret_t canvas_offline_end_draw(canvas_t* canvas) {
     c->base.bitmap->flags |= BITMAP_FLAG_TEXTURE;
 
     canvas_set_clip_rect(canvas, &canvas_offline->canvas_clip_rect);
-    vgcanvas_restore(vg);
   }
 #else
   if (canvas_offline->begin_draw == 0) {

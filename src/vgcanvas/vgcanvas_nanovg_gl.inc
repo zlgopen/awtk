@@ -239,8 +239,9 @@ static ret_t vgcanvas_nanovg_bind_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t
     fbo->init = TRUE;
   }
 
-  nvgBeginFrame(vg, fbo->w, fbo->h, fbo->ratio);
-
+  nvgBeginFrameEx(vg, fbo->w, fbo->h, fbo->ratio, FALSE);
+  nvgSave(vg);
+  nvgReset(vg);
   
   return RET_OK;
 }
@@ -253,12 +254,13 @@ static ret_t vgcanvas_nanovg_unbind_fbo(vgcanvas_t* vgcanvas, framebuffer_object
   vg = canvas->vg;
 
   handle->fbo = fbo->online_fbo;
+  nvgRestore(vg);
   nvgEndFrame(vg);
   nvgluBindFramebuffer(handle);
 
   vgcanvas->dirty_rect = rect_init(fbo->online_dirty_rect.x, fbo->online_dirty_rect.y, fbo->online_dirty_rect.w, fbo->online_dirty_rect.h);
   glViewport(0, 0, vgcanvas->w * fbo->ratio, vgcanvas->h * fbo->ratio);
-  nvgBeginFrame(vg, vgcanvas->w, vgcanvas->h, fbo->ratio);
+  nvgBeginFrameEx(vg, vgcanvas->w, vgcanvas->h, fbo->ratio, FALSE);
 
   return RET_OK;
 }

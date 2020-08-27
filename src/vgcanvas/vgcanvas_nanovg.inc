@@ -16,6 +16,12 @@ static ret_t vgcanvas_nanovg_reset(vgcanvas_t* vgcanvas) {
   return RET_OK;
 }
 
+static ret_t vgcanvas_nanovg_reset_curr_state(vgcanvas_t* vgcanvas) {
+  NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
+  nvgReset(vg);
+  return RET_OK;
+}
+
 static ret_t vgcanvas_nanovg_flush(vgcanvas_t* vgcanvas) {
 #ifdef WITH_NANOVG_GPU
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
@@ -622,6 +628,7 @@ static const vgcanvas_vtable_t vt = {
     .reinit = vgcanvas_nanovg_reinit,
     .begin_frame = vgcanvas_nanovg_begin_frame,
     .reset = vgcanvas_nanovg_reset,
+    .reset_curr_state = vgcanvas_nanovg_reset_curr_state,
     .flush = vgcanvas_nanovg_flush,
     .clear_rect = vgcanvas_nanovg_clear_rect,
     .begin_path = vgcanvas_nanovg_begin_path,
