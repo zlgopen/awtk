@@ -201,6 +201,10 @@ static ret_t lcd_mem_special_resize(lcd_t* lcd, wh_t w, wh_t h, uint32_t line_le
   lcd_destroy((lcd_t*)(special->lcd_mem));
   special->lcd_mem = lcd_mem_special_create_lcd_mem(w, h, special->format);
 
+  if (special->lcd_mem != NULL) {
+    special->lcd_mem->base.flush = NULL;
+  }
+
   if (special->on_resize != NULL) {
     special->on_resize(lcd, w, h, line_length);
   }
