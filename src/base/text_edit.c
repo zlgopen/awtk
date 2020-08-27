@@ -512,10 +512,11 @@ static int32_t text_edit_calc_x(text_edit_t* text_edit, row_info_t* iter) {
   canvas_t* c = text_edit->c;
   widget_t* widget = text_edit->widget;
   wstr_t* text = &(widget->text);
+  wchar_t chr = impl->mask ? impl->mask_char : 0;
   text_layout_info_t* layout_info = &(impl->layout_info);
   align_h_t align_h = widget_get_text_align_h(text_edit->widget);
 
-  uint32_t row_width = text_edit_measure_text(c, text->str + iter->offset, 0, iter->length);
+  uint32_t row_width = text_edit_measure_text(c, text->str + iter->offset, chr, iter->length);
   if (row_width < layout_info->w) {
     switch (align_h) {
       case ALIGN_H_CENTER: {
