@@ -1293,9 +1293,13 @@ ret_t widget_fill_rect(widget_t* widget, canvas_t* c, rect_t* r, bool_t bg,
   style_t* style = widget->astyle;
   color_t trans = color_init(0, 0, 0, 0);
   uint32_t radius = style_get_int(style, STYLE_ID_ROUND_RADIUS, 0);
-  rect_t bg_r = rect_init(widget->x, widget->y, widget->w, widget->h);
   const char* color_key = bg ? STYLE_ID_BG_COLOR : STYLE_ID_FG_COLOR;
   const char* image_key = bg ? STYLE_ID_BG_IMAGE : STYLE_ID_FG_IMAGE;
+  rect_t bg_r = rect_init(widget->x, widget->y, widget->w, widget->h);
+  uint32_t radius_tl = style_get_int(style, STYLE_ID_ROUND_RADIUS_TOP_LETF, radius);
+  uint32_t radius_tr = style_get_int(style, STYLE_ID_ROUND_RADIUS_TOP_RIGHT, radius);
+  uint32_t radius_bl = style_get_int(style, STYLE_ID_ROUND_RADIUS_BOTTOM_LETF, radius);
+  uint32_t radius_br = style_get_int(style, STYLE_ID_ROUND_RADIUS_BOTTOM_RIGHT, radius);
   const char* draw_type_key = bg ? STYLE_ID_BG_IMAGE_DRAW_TYPE : STYLE_ID_FG_IMAGE_DRAW_TYPE;
 
   color_t color = style_get_color(style, color_key, trans);
@@ -1303,11 +1307,11 @@ ret_t widget_fill_rect(widget_t* widget, canvas_t* c, rect_t* r, bool_t bg,
 
   if (color.rgba.a && r->w > 0 && r->h > 0) {
     canvas_set_fill_color(c, color);
-    if (radius > 3) {
+    if (radius_tl > 3 || radius_tr > 3 || radius_bl > 3 || radius_br > 3) {
       if (bg) {
-        ret = canvas_fill_rounded_rect(c, r, NULL, &color, radius);
+        ret = canvas_fill_rounded_rect_ex(c, r, NULL, &color, radius_tl, radius_tr, radius_bl, radius_br);
       } else {
-        ret = canvas_fill_rounded_rect(c, r, &bg_r, &color, radius);
+        ret = canvas_fill_rounded_rect_ex(c, r, &bg_r, &color, radius_tl, radius_tr, radius_bl, radius_br);
       }
       if (ret == RET_FAIL) {
         canvas_fill_rect(c, r->x, r->y, r->w, r->h);
@@ -1371,12 +1375,16 @@ ret_t widget_stroke_border_rect(widget_t* widget, canvas_t* c, rect_t* r) {
   uint32_t radius = style_get_int(style, STYLE_ID_ROUND_RADIUS, 0);
   int32_t border = style_get_int(style, STYLE_ID_BORDER, BORDER_ALL);
   uint32_t border_width = style_get_int(style, STYLE_ID_BORDER_WIDTH, 1);
+  uint32_t radius_tl = style_get_int(style, STYLE_ID_ROUND_RADIUS_TOP_LETF, radius);
+  uint32_t radius_tr = style_get_int(style, STYLE_ID_ROUND_RADIUS_TOP_RIGHT, radius);
+  uint32_t radius_bl = style_get_int(style, STYLE_ID_ROUND_RADIUS_BOTTOM_LETF, radius);
+  uint32_t radius_br = style_get_int(style, STYLE_ID_ROUND_RADIUS_BOTTOM_RIGHT, radius);
 
   if (bd.rgba.a) {
     canvas_set_stroke_color(c, bd);
-    if (radius > 3) {
+    if (radius_tl > 3 || radius_tr > 3 || radius_bl > 3 || radius_br > 3) {
       if (border == BORDER_ALL) {
-        if (canvas_stroke_rounded_rect(c, r, NULL, &bd, radius, border_width) != RET_OK) {
+        if (canvas_stroke_rounded_rect_ex(c, r, NULL, &bd, radius_tl, radius_tr, radius_bl, radius_br, border_width) != RET_OK) {
           widget_stroke_border_rect_for_border_type(c, r, bd, border, border_width);
         }
       } else {

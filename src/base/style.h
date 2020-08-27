@@ -243,6 +243,30 @@ BEGIN_C_DECLS
 #define STYLE_ID_ROUND_RADIUS "round_radius"
 
 /**
+ * @const STYLE_ID_ROUND_RADIUS_TOP_LETF
+ * 左上角圆角半径(仅在WITH_VGCANVAS定义时生效)。
+ */
+#define STYLE_ID_ROUND_RADIUS_TOP_LETF "round_radius_top_left"
+
+/**
+ * @const STYLE_ID_ROUND_RADIUS_TOP_RIGHT
+ * 右上角圆角半径(仅在WITH_VGCANVAS定义时生效)。
+ */
+#define STYLE_ID_ROUND_RADIUS_TOP_RIGHT "round_radius_top_right"
+
+/**
+ * @const STYLE_ID_ROUND_RADIUS_BOTTOM_LETF
+ * 左下角圆角半径(仅在WITH_VGCANVAS定义时生效)。
+ */
+#define STYLE_ID_ROUND_RADIUS_BOTTOM_LETF "round_radius_bottom_left"
+
+/**
+ * @const STYLE_ID_ROUND_RADIUS_BOTTOM_RIGHT
+ * 右下角圆角半径(仅在WITH_VGCANVAS定义时生效)。
+ */
+#define STYLE_ID_ROUND_RADIUS_BOTTOM_RIGHT "round_radius_bottom_right"
+
+/**
  * @const STYLE_ID_CHILDREN_LAYOUT
  * 子控件布局参数。
  */

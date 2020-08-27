@@ -746,6 +746,25 @@ ret_t canvas_fill_rounded_rect(canvas_t* c, rect_t* r, rect_t* bg_r, color_t* co
                                uint32_t radius);
 
 /**
+ * @method canvas_fill_rounded_rect_ex
+ * 填充区域。
+ * 半径半径小于等于2，则表示该角为直角，如果全部角都为直角则返回RET_FAIL。（如果全是直角，该函数效率没有canvas_fill_rect函数快）
+ * 如果各个半径都不一样的话，就是会使用vg，如果不支持vg就会返回RET_FAIL（直角的情况除外）。
+ * @param {canvas_t*} c canvas对象。
+ * @param {rect_t*} r 矩形。
+ * @param {color_t*} color 颜色。
+ * @param {uint32_t} radius_tl 左上角圆角半径。
+ * @param {uint32_t} radius_tr 右上角圆角半径。
+ * @param {uint32_t} radius_bl 左下角圆角半径。
+ * @param {uint32_t} radius_br 右下角圆角半径。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t canvas_fill_rounded_rect_ex(canvas_t* c, rect_t* r, rect_t* bg_r, color_t* color,
+                               uint32_t radius_tl, uint32_t radius_tr, 
+                               uint32_t radius_bl, uint32_t radius_br);
+
+/**
  * @method canvas_stroke_rounded_rect
  * 绘制边框。
  * @param {canvas_t*} c canvas对象。
@@ -758,6 +777,26 @@ ret_t canvas_fill_rounded_rect(canvas_t* c, rect_t* r, rect_t* bg_r, color_t* co
  */
 ret_t canvas_stroke_rounded_rect(canvas_t* c, rect_t* r, rect_t* bg_r, color_t* color,
                                  uint32_t radius, uint32_t border_width);
+
+/**
+ * @method canvas_stroke_rounded_rect_ex
+ * 绘制边框。
+ * 半径半径小于等于2，则表示该角为直角，如果全部角都为直角则返回RET_FAIL。（如果全是直角，该函数效率没有canvas_stroke_rect函数快）
+ * 如果各个半径都不一样的话，就是会使用vg，如果不支持vg就会返回RET_FAIL（直角的情况除外）。
+ * @param {canvas_t*} c canvas对象。
+ * @param {rect_t*} r 矩形。
+ * @param {color_t*} color 颜色。
+ * @param {uint32_t} radius_tl 左上角圆角半径。
+ * @param {uint32_t} radius_tr 右上角圆角半径。
+ * @param {uint32_t} radius_bl 左下角圆角半径。
+ * @param {uint32_t} radius_br 右下角圆角半径。
+ * @param {uint32_t} border_width 边宽。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t canvas_stroke_rounded_rect_ex(canvas_t* c, rect_t* r, rect_t* bg_r, color_t* color,
+                                 uint32_t radius_tl, uint32_t radius_tr, 
+                                 uint32_t radius_bl, uint32_t radius_br, uint32_t border_width);
 
 /**
  * @method canvas_end_frame
