@@ -120,7 +120,7 @@ static bool_t edit_pattern_is_valid_char(widget_t* widget, wchar_t c, wchar_t se
         /*如果时sep，而且当前字符也时sep，光标往后移动一个位置*/
         text_edit_set_cursor(edit->model, cursor + 1);
       }
-      
+
       return FALSE;
     }
 

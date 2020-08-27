@@ -778,20 +778,13 @@ static ret_t mledit_init_idle_func(const idle_info_t* info) {
   return RET_REMOVE;
 }
 
-const char* s_mledit_properties[] = {WIDGET_PROP_READONLY,
-                                     WIDGET_PROP_CANCELABLE,
-                                     WIDGET_PROP_MARGIN,
-                                     WIDGET_PROP_LEFT_MARGIN,
-                                     WIDGET_PROP_RIGHT_MARGIN,
-                                     WIDGET_PROP_TOP_MARGIN,
-                                     WIDGET_PROP_BOTTOM_MARGIN,
-                                     WIDGET_PROP_TIPS,
-                                     WIDGET_PROP_TR_TIPS,
-                                     WIDGET_PROP_KEYBOARD,
-                                     MLEDIT_PROP_MAX_LINES,
-                                     MLEDIT_PROP_WRAP_WORD,
-                                     MLEDIT_PROP_SCROLL_LINE,
-                                     NULL};
+const char* s_mledit_properties[] = {WIDGET_PROP_READONLY,      WIDGET_PROP_CANCELABLE,
+                                     WIDGET_PROP_MARGIN,        WIDGET_PROP_LEFT_MARGIN,
+                                     WIDGET_PROP_RIGHT_MARGIN,  WIDGET_PROP_TOP_MARGIN,
+                                     WIDGET_PROP_BOTTOM_MARGIN, WIDGET_PROP_TIPS,
+                                     WIDGET_PROP_TR_TIPS,       WIDGET_PROP_KEYBOARD,
+                                     MLEDIT_PROP_MAX_LINES,     MLEDIT_PROP_WRAP_WORD,
+                                     MLEDIT_PROP_SCROLL_LINE,   NULL};
 
 TK_DECL_VTABLE(mledit) = {.size = sizeof(mledit_t),
                           .type = WIDGET_TYPE_MLEDIT,

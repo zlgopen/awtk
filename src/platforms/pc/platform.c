@@ -78,8 +78,8 @@ static ret_t date_time_set_now_impl(date_time_t* dt) {
     return RET_OK;
   } else {
     uint32_t last_error = (uint32_t)GetLastError();
-    log_debug("SetLocalTime(%d-%d-%d %d:%d:%d) failed: %u\n", (int)wtm.wYear, (int)wtm.wMonth, (int)wtm.wDay,
-              (int)wtm.wHour, (int)wtm.wMinute, (int)wtm.wSecond, last_error);
+    log_debug("SetLocalTime(%d-%d-%d %d:%d:%d) failed: %u\n", (int)wtm.wYear, (int)wtm.wMonth,
+              (int)wtm.wDay, (int)wtm.wHour, (int)wtm.wMinute, (int)wtm.wSecond, last_error);
     return RET_FAIL;
   }
 }

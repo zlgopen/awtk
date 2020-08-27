@@ -128,7 +128,7 @@ typedef struct _mledit_t {
    * 鼠标一次滚动行数。
    */
   uint32_t scroll_line;
-  
+
   /**
    * @property {bool_t} cancelable
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
