@@ -1,9 +1,12 @@
 # 最新动态
-* 2020/08/26
+* 2020/08/27
   * 增加函数 wst\_count\_char
   * edit 增加对 password/email 长度限制。
   * 修改 edit password 居中的问题。
-  
+  * 修复agge模式下修改窗口（SDL窗口）大小后出现报错警告（感谢智明提供补丁）。
+  * 增加圆角矩形支持设置不同的圆角半径，不改变原来的函数，新增两个函数 canvas_fill_rounded_rect_ex 和 canvas_stroke_rounded_rect_ex 函数来支持改功能（感谢智明提供补丁）。
+  * 修复了离线 canvas 在使用在线 vg 绘图的时候，保存和还原 vg 的数据堆栈信息不正确导致画面异常的问题，给 vg 新增了一个 vgcanvas_reset_curr_state 来清除当前的 vg 状态数据（给 agge 模式下使用，清除 vg 堆栈对离线 canvas 的绘图产生影响）和在 nanovg 中新增了 nvgBeginFrameEx 函数（用于给绑定 fbo 时候使用，以免破坏 vg 的堆栈数据）（感谢智明提供补丁）。
+
 * 2020/08/25
   * 修复 nanovg 在解析部分字体的是有可能因为顶点过多导致缓冲区不够大产生中断问题（感谢智明提供补丁）。
   * 修复 nanovg 在 win10 或者 win8 的高分屏上有概率出现裁减区虚化的问题（感谢智明提供补丁）。
