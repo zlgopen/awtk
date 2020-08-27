@@ -284,6 +284,19 @@ static bool_t edit_is_number(widget_t* widget) {
          input_type == INPUT_UFLOAT || input_type == INPUT_HEX;
 }
 
+static bool_t edit_is_size_valid(widget_t* widget) {
+  edit_t* edit = EDIT(widget);
+  uint32_t size = widget->text.size;
+  uint32_t min = (uint32_t)(edit->min);
+  uint32_t max = (uint32_t)(edit->max);
+
+  if (min == max && min == 0) {
+    return TRUE;
+  }
+
+  return (min <= size && size <= max);
+}
+
 static bool_t edit_is_valid_value_default(widget_t* widget) {
   wstr_t* text = NULL;
   edit_t* edit = EDIT(widget);
@@ -292,16 +305,17 @@ static bool_t edit_is_valid_value_default(widget_t* widget) {
   text = &(widget->text);
 
   switch (edit->input_type) {
+    case INPUT_EMAIL:
+    case INPUT_PASSWORD:
     case INPUT_TEXT: {
-      uint32_t size = text->size;
-      uint32_t min = (uint32_t)(edit->min);
-      uint32_t max = (uint32_t)(edit->max);
+      if (edit_is_size_valid(widget)) {
+        if (edit->input_type == INPUT_EMAIL) {
+          return wstr_count_char(text, '@') == 1;
+        }
 
-      if (min == max && min == 0) {
         return TRUE;
       }
-
-      return min <= size && size <= max;
+      return FALSE;
     }
     case INPUT_INT:
     case INPUT_UINT: {
@@ -337,14 +351,6 @@ static bool_t edit_is_valid_value_default(widget_t* widget) {
 
       return min <= v && v <= max;
     }
-    case INPUT_EMAIL: {
-      if (text->size > 0) {
-        const wchar_t* p = wcs_chr(text->str, '@');
-        return text->size > 0 && p != NULL && p != text->str && wcs_chr(p + 1, '@') == NULL;
-      } else {
-        return FALSE;
-      }
-    }
     default:
       break;
   }
@@ -366,6 +372,7 @@ static ret_t edit_auto_fix_default(widget_t* widget) {
 
       if (size > max) {
         text->size = max;
+        text->str[max] = 0;
       }
 
       break;
@@ -1096,9 +1103,7 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
         value_set_double(v, d);
         break;
       }
-      default: {
-        value_set_wstr(v, widget->text.str);
-      }
+      default: { value_set_wstr(v, widget->text.str); }
     }
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_CARET_X)) {
@@ -1149,25 +1154,17 @@ ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
 
   input_type = edit->input_type;
   if (tk_str_eq(name, WIDGET_PROP_MIN)) {
-    if (input_type == INPUT_INT || input_type == INPUT_UINT) {
-      edit->min = value_int(v);
-    } else if (input_type == INPUT_TEXT) {
-      edit->min = value_int(v);
-    } else if (input_type == INPUT_FLOAT || input_type == INPUT_UFLOAT) {
+    if (input_type == INPUT_FLOAT || input_type == INPUT_UFLOAT) {
       edit->min = value_double(v);
     } else {
-      return RET_NOT_FOUND;
+      edit->min = value_int(v);
     }
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_MAX)) {
-    if (input_type == INPUT_INT || input_type == INPUT_UINT) {
-      edit->max = value_int(v);
-    } else if (input_type == INPUT_TEXT) {
-      edit->max = value_int(v);
-    } else if (input_type == INPUT_FLOAT || input_type == INPUT_UFLOAT) {
+    if (input_type == INPUT_FLOAT || input_type == INPUT_UFLOAT) {
       edit->max = value_double(v);
     } else {
-      return RET_NOT_FOUND;
+      edit->max = value_int(v);
     }
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_STEP)) {

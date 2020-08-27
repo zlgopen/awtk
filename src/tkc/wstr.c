@@ -455,3 +455,19 @@ ret_t wstr_normalize_newline(wstr_t* str, wchar_t newline) {
 
   return RET_OK;
 }
+
+uint32_t wstr_count_char(wstr_t* str, wchar_t c) {
+  uint32_t i = 0;
+  uint32_t n = 0;
+  wchar_t* p = NULL;
+  return_value_if_fail(str != NULL, 0);
+
+  p = str->str;
+  for (i = 0; i < str->size; i++) {
+    if (p[i] == c) {
+      n++;
+    }
+  }
+
+  return n;
+}

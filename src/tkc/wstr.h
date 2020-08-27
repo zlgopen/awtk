@@ -281,6 +281,16 @@ ret_t wstr_trim_float_zero(wstr_t* str);
 ret_t wstr_normalize_newline(wstr_t* str, wchar_t newline);
 
 /**
+ * @method wstr_count_char
+ * 统计指定字符的个数。
+ * @param {wstr_t*} str str对象。
+ * @param {wchar_t} c 字符。
+ *
+ * @return {uint32_t} 返回指定字符的个数。
+ */
+uint32_t wstr_count_char(wstr_t* str, wchar_t c);
+
+/**
  * @method wstr_reset
  * 重置字符串为空。
  * @param {wstr_t*} str str对象。

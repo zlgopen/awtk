@@ -532,3 +532,48 @@ TEST(Edit, intputing3) {
 
   widget_destroy(w1);
 }
+
+TEST(Edit, is_valid_password) {
+  widget_t* e = edit_create(NULL, 10, 20, 30, 40);
+
+  edit_set_input_type(e, INPUT_PASSWORD);
+  widget_set_prop_int(e, WIDGET_PROP_MIN, 4);
+  widget_set_prop_int(e, WIDGET_PROP_MAX, 8);
+  widget_set_text_utf8(e, "12");
+  ASSERT_EQ(edit_is_valid_value(e), FALSE);
+  
+  widget_set_text_utf8(e, "1234");
+  ASSERT_EQ(edit_is_valid_value(e), TRUE);
+  
+  widget_set_text_utf8(e, "1234abcd");
+  ASSERT_EQ(edit_is_valid_value(e), TRUE);
+  
+  widget_set_text_utf8(e, "1234abcdef");
+  ASSERT_EQ(edit_is_valid_value(e), FALSE);
+
+  widget_destroy(e);
+}
+
+TEST(Edit, is_valid_email) {
+  widget_t* e = edit_create(NULL, 10, 20, 30, 40);
+
+  edit_set_input_type(e, INPUT_EMAIL);
+  widget_set_prop_int(e, WIDGET_PROP_MIN, 4);
+  widget_set_prop_int(e, WIDGET_PROP_MAX, 8);
+  widget_set_text_utf8(e, "12");
+  ASSERT_EQ(edit_is_valid_value(e), FALSE);
+  
+  widget_set_text_utf8(e, "12@@@22");
+  ASSERT_EQ(edit_is_valid_value(e), FALSE);
+  
+  widget_set_text_utf8(e, "12@34");
+  ASSERT_EQ(edit_is_valid_value(e), TRUE);
+  
+  widget_set_text_utf8(e, "1234@ab");
+  ASSERT_EQ(edit_is_valid_value(e), TRUE);
+  
+  widget_set_text_utf8(e, "1234a@bcdef");
+  ASSERT_EQ(edit_is_valid_value(e), FALSE);
+
+  widget_destroy(e);
+}

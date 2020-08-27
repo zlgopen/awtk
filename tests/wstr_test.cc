@@ -343,3 +343,13 @@ TEST(WStr, append_len) {
 
   wstr_reset(&str);
 }
+
+TEST(WStr, count) {
+  wstr_t str;
+  wstr_init(&str, 0);
+  ASSERT_EQ(wstr_set(&str, L"123@123"), RET_OK);
+  ASSERT_EQ(wstr_count_char(&str, '#'), 0); 
+  ASSERT_EQ(wstr_count_char(&str, '@'), 1); 
+  ASSERT_EQ(wstr_count_char(&str, '1'), 2); 
+  wstr_reset(&str);
+}
