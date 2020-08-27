@@ -761,8 +761,8 @@ ret_t canvas_fill_rounded_rect(canvas_t* c, rect_t* r, rect_t* bg_r, color_t* co
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t canvas_fill_rounded_rect_ex(canvas_t* c, rect_t* r, rect_t* bg_r, color_t* color,
-                               uint32_t radius_tl, uint32_t radius_tr, 
-                               uint32_t radius_bl, uint32_t radius_br);
+                                  uint32_t radius_tl, uint32_t radius_tr, uint32_t radius_bl,
+                                  uint32_t radius_br);
 
 /**
  * @method canvas_stroke_rounded_rect
@@ -795,8 +795,8 @@ ret_t canvas_stroke_rounded_rect(canvas_t* c, rect_t* r, rect_t* bg_r, color_t* 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t canvas_stroke_rounded_rect_ex(canvas_t* c, rect_t* r, rect_t* bg_r, color_t* color,
-                                 uint32_t radius_tl, uint32_t radius_tr, 
-                                 uint32_t radius_bl, uint32_t radius_br, uint32_t border_width);
+                                    uint32_t radius_tl, uint32_t radius_tr, uint32_t radius_bl,
+                                    uint32_t radius_br, uint32_t border_width);
 
 /**
  * @method canvas_end_frame

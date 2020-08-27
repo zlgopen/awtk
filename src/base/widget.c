@@ -1309,9 +1309,11 @@ ret_t widget_fill_rect(widget_t* widget, canvas_t* c, rect_t* r, bool_t bg,
     canvas_set_fill_color(c, color);
     if (radius_tl > 3 || radius_tr > 3 || radius_bl > 3 || radius_br > 3) {
       if (bg) {
-        ret = canvas_fill_rounded_rect_ex(c, r, NULL, &color, radius_tl, radius_tr, radius_bl, radius_br);
+        ret = canvas_fill_rounded_rect_ex(c, r, NULL, &color, radius_tl, radius_tr, radius_bl,
+                                          radius_br);
       } else {
-        ret = canvas_fill_rounded_rect_ex(c, r, &bg_r, &color, radius_tl, radius_tr, radius_bl, radius_br);
+        ret = canvas_fill_rounded_rect_ex(c, r, &bg_r, &color, radius_tl, radius_tr, radius_bl,
+                                          radius_br);
       }
       if (ret == RET_FAIL) {
         canvas_fill_rect(c, r->x, r->y, r->w, r->h);
@@ -1384,7 +1386,8 @@ ret_t widget_stroke_border_rect(widget_t* widget, canvas_t* c, rect_t* r) {
     canvas_set_stroke_color(c, bd);
     if (radius_tl > 3 || radius_tr > 3 || radius_bl > 3 || radius_br > 3) {
       if (border == BORDER_ALL) {
-        if (canvas_stroke_rounded_rect_ex(c, r, NULL, &bd, radius_tl, radius_tr, radius_bl, radius_br, border_width) != RET_OK) {
+        if (canvas_stroke_rounded_rect_ex(c, r, NULL, &bd, radius_tl, radius_tr, radius_bl,
+                                          radius_br, border_width) != RET_OK) {
           widget_stroke_border_rect_for_border_type(c, r, bd, border, border_width);
         }
       } else {
