@@ -72,6 +72,15 @@ BEGIN_C_DECLS
 typedef struct _overlay_t {
   window_base_t overlay;
 
+  /**
+   * @property {bool_t} click_through
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 点击穿透。点击没有子控件的位置，是否穿透到底层窗口。
+   *
+   * 缺省不启用。
+   *
+   */
+  bool_t click_through;
 } overlay_t;
 
 /**
@@ -87,6 +96,17 @@ typedef struct _overlay_t {
  * @return {widget_t*} 对象。
  */
 widget_t* overlay_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
+
+/**
+ * @method button_set_click_through
+ * 设置是否启用点击穿透。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {bool_t}  click_through 是否启用点击穿透。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t button_set_click_through(widget_t* widget, bool_t click_through);
 
 /**
  * @method overlay_cast

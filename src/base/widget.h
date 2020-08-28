@@ -76,6 +76,7 @@ typedef ret_t (*widget_get_prop_t)(widget_t* widget, const char* name, value_t* 
 typedef ret_t (*widget_get_prop_default_value_t)(widget_t* widget, const char* name, value_t* v);
 typedef ret_t (*widget_set_prop_t)(widget_t* widget, const char* name, const value_t* v);
 typedef ret_t (*widget_on_copy_t)(widget_t* widget, widget_t* other);
+typedef bool_t (*widget_is_point_in_t)(widget_t* widget, xy_t x, xy_t y);
 typedef widget_t* (*widget_find_target_t)(widget_t* widget, xy_t x, xy_t y);
 typedef widget_t* (*widget_create_t)(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 typedef ret_t (*widget_on_destroy_t)(widget_t* widget);
@@ -159,6 +160,7 @@ struct _widget_vtable_t {
   widget_set_prop_t set_prop;
   widget_invalidate_t invalidate;
   widget_find_target_t find_target;
+  widget_is_point_in_t is_point_in;
   widget_get_prop_default_value_t get_prop_default_value;
 
   widget_on_copy_t on_copy;

@@ -3388,7 +3388,11 @@ bool_t widget_is_point_in(widget_t* widget, xy_t x, xy_t y, bool_t is_local) {
     widget_to_local(widget, &p);
   }
 
-  return (p.x >= 0 && p.y >= 0 && p.x < widget->w && p.y < widget->h);
+  if (widget->vt->is_point_in != NULL) {
+    return widget->vt->is_point_in(widget, p.x, p.y);
+  } else {
+    return (p.x >= 0 && p.y >= 0 && p.x < widget->w && p.y < widget->h);
+  }
 }
 
 const char* widget_get_type(widget_t* widget) {

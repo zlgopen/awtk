@@ -624,6 +624,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_ENABLE_LONG_PRESS "enable_long_press"
 
 /**
+ * @const WIDGET_PROP_CLICK_THROUGH
+ * 是否启用点击穿透。
+ */
+#define WIDGET_PROP_CLICK_THROUGH "click_through"
+
+/**
  * @const WIDGET_PROP_ANIMATABLE
  * 是否启用动画。
  */

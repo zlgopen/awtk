@@ -11047,6 +11047,27 @@
             "type": "wstr_t*",
             "name": "str",
             "desc": "str对象。"
+          },
+          {
+            "type": "wchar_t",
+            "name": "c",
+            "desc": "字符。"
+          }
+        ],
+        "annotation": {},
+        "desc": "统计指定字符的个数。",
+        "name": "wstr_count_char",
+        "return": {
+          "type": "uint32_t",
+          "desc": "返回指定字符的个数。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "wstr_t*",
+            "name": "str",
+            "desc": "str对象。"
           }
         ],
         "annotation": {},
@@ -12038,6 +12059,22 @@
       {
         "desc": "圆角半径(仅在WITH_VGCANVAS定义时生效)。",
         "name": "STYLE_ID_ROUND_RADIUS"
+      },
+      {
+        "desc": "左上角圆角半径(仅在WITH_VGCANVAS定义时生效)。",
+        "name": "STYLE_ID_ROUND_RADIUS_TOP_LETF"
+      },
+      {
+        "desc": "右上角圆角半径(仅在WITH_VGCANVAS定义时生效)。",
+        "name": "STYLE_ID_ROUND_RADIUS_TOP_RIGHT"
+      },
+      {
+        "desc": "左下角圆角半径(仅在WITH_VGCANVAS定义时生效)。",
+        "name": "STYLE_ID_ROUND_RADIUS_BOTTOM_LETF"
+      },
+      {
+        "desc": "右下角圆角半径(仅在WITH_VGCANVAS定义时生效)。",
+        "name": "STYLE_ID_ROUND_RADIUS_BOTTOM_RIGHT"
       },
       {
         "desc": "子控件布局参数。",
@@ -14553,7 +14590,23 @@
           }
         ],
         "annotation": {},
-        "desc": "重置状态。",
+        "desc": "重置所有状态。",
+        "name": "vgcanvas_reset",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "vgcanvas_t*",
+            "name": "vg",
+            "desc": "vgcanvas对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "重置当前状态。",
         "name": "vgcanvas_reset",
         "return": {
           "type": "ret_t",
@@ -17654,6 +17707,10 @@
       {
         "desc": "是否启用长按。",
         "name": "WIDGET_PROP_ENABLE_LONG_PRESS"
+      },
+      {
+        "desc": "是否启用点击穿透。",
+        "name": "WIDGET_PROP_CLICK_THROUGH"
       },
       {
         "desc": "是否启用动画。",
@@ -27119,7 +27176,7 @@
           }
         ],
         "annotation": {},
-        "desc": "等待线程退出。",
+        "desc": "等待线程退出。\n必须调用 tk_thread_destroy 函数来释放线程资源，以免出现内存泄漏的问题。",
         "name": "tk_thread_join",
         "return": {
           "type": "ret_t",
@@ -27151,7 +27208,7 @@
           }
         ],
         "annotation": {},
-        "desc": "销毁thread对象。",
+        "desc": "销毁thread对象。\n在销毁对象前必须调用 tk_thread_join 函数等待退出线程",
         "name": "tk_thread_destroy",
         "return": {
           "type": "ret_t",
@@ -35420,6 +35477,52 @@
           },
           {
             "type": "uint32_t",
+            "name": "radius_tl",
+            "desc": "左上角圆角半径。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "radius_tr",
+            "desc": "右上角圆角半径。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "radius_bl",
+            "desc": "左下角圆角半径。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "radius_br",
+            "desc": "右下角圆角半径。"
+          }
+        ],
+        "annotation": {},
+        "desc": "填充区域。\n半径半径小于等于2，则表示该角为直角，如果全部角都为直角则返回RET_FAIL。（如果全是直角，该函数效率没有canvas_fill_rect函数快）\n如果各个半径都不一样的话，就是会使用vg，如果不支持vg就会返回RET_FAIL（直角的情况除外）。",
+        "name": "canvas_fill_rounded_rect_ex",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "rect_t*",
+            "name": "r",
+            "desc": "矩形。"
+          },
+          {
+            "type": "color_t*",
+            "name": "color",
+            "desc": "颜色。"
+          },
+          {
+            "type": "uint32_t",
             "name": "radius",
             "desc": "圆角半径。"
           },
@@ -35432,6 +35535,57 @@
         "annotation": {},
         "desc": "绘制边框。",
         "name": "canvas_stroke_rounded_rect",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "rect_t*",
+            "name": "r",
+            "desc": "矩形。"
+          },
+          {
+            "type": "color_t*",
+            "name": "color",
+            "desc": "颜色。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "radius_tl",
+            "desc": "左上角圆角半径。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "radius_tr",
+            "desc": "右上角圆角半径。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "radius_bl",
+            "desc": "左下角圆角半径。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "radius_br",
+            "desc": "右下角圆角半径。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "border_width",
+            "desc": "边宽。"
+          }
+        ],
+        "annotation": {},
+        "desc": "绘制边框。\n半径半径小于等于2，则表示该角为直角，如果全部角都为直角则返回RET_FAIL。（如果全是直角，该函数效率没有canvas_stroke_rect函数快）\n如果各个半径都不一样的话，就是会使用vg，如果不支持vg就会返回RET_FAIL（直角的情况除外）。",
+        "name": "canvas_stroke_rounded_rect_ex",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -41672,7 +41826,7 @@
         "annotation": {
           "scriptable": true
         },
-        "desc": "设置编辑器是否在获得焦点时打开输入法。",
+        "desc": "设置编辑器是否在获得焦点时打开输入法。\n\n> * 设置默认焦点时，打开窗口时不弹出软键盘。\n> * 用键盘切换焦点时，编辑器获得焦点时不弹出软键盘。",
         "name": "edit_set_open_im_when_focused",
         "return": {
           "type": "ret_t",
@@ -50403,6 +50557,29 @@
           },
           {
             "type": "bool_t",
+            "name": "cancelable",
+            "desc": "是否为可撤销修。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置编辑器是否为可撤销修改。",
+        "name": "mledit_set_cancelable",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          },
+          {
+            "type": "bool_t",
             "name": "focus",
             "desc": "是否为焦点。"
           }
@@ -50745,6 +50922,19 @@
         "name": "scroll_line",
         "desc": "鼠标一次滚动行数。",
         "type": "uint32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "cancelable",
+        "desc": "是否支持撤销编辑。如果为TRUE，在失去焦点之前可以撤销所有修改(恢复获得焦点之前的内容)。\n\n> * 1.一般配合keyboard的\"cancel\"按钮使用。\n> * 2.为TRUE时，如果内容有变化，会设置编辑器的状态为changed，所以此时编辑器需要支持changed状态的style。",
+        "type": "bool_t",
         "annotation": {
           "set_prop": true,
           "get_prop": true,
@@ -59817,6 +60007,29 @@
           {
             "type": "widget_t*",
             "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "click_through",
+            "desc": "是否启用点击穿透。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置是否启用点击穿透。",
+        "name": "button_set_click_through",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
             "desc": "overlay对象。"
           }
         ],
@@ -59833,7 +60046,21 @@
       }
     ],
     "events": [],
-    "properties": [],
+    "properties": [
+      {
+        "name": "click_through",
+        "desc": "点击穿透。点击没有子控件的位置，是否穿透到底层窗口。\n\n缺省不启用。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      }
+    ],
     "header": "widgets/overlay.h",
     "desc": "overlay窗口。\n\noverlay窗口有点类似于非模态的dialog，但是它位置和大小是完全自由的，窗口管理器不会对它做任何限制。\n\n如果overlay窗口有透明或半透效果，则不支持窗口动画，但可以通过移动窗口位置来实现类似动画的效果。\n\noverlay\\_t是[window\\_base\\_t](window_base_t.md)的子类控件，window\\_base\\_t的函数均适用于overlay\\_t控件。\n\n在xml中使用\"overlay\"标签创建窗口。需要指定坐标和大小，可以指定主题和动画名称。如：\n\n```xml\n<overlay theme=\"basic\" x=\"100\" y=\"100\" w=\"200\" h=\"300\">\n...\n</overlay>\n```\n\n>\n更多用法请参考：[overlay.xml](https://github.com/zlgopen/awtk/blob/master/design/default/ui/)\n\n在c代码中使用函数overlay\\_create创建窗口。如：\n\n```c\nwidget_t* overlay = overlay_create(NULL, 100, 100, 200, 300);\n```\n\n> 完整示例请参考：[overlay\ndemo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/)\n\n可用通过style来设置窗口的风格，如背景颜色或图片等。如：\n\n```xml\n<style name=\"bricks\">\n<normal bg_image=\"bricks\"  bg_image_draw_type=\"repeat\"/>\n</style>\n```\n\n> 更多用法请参考：[theme\ndefault](https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L0)",
     "name": "overlay_t",

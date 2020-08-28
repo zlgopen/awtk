@@ -174,21 +174,16 @@ widget_t* widget_find_target_default(widget_t* widget, xy_t x, xy_t y) {
   }
 
   widget_to_local(widget, &p);
-  xx = p.x;
-  yy = p.y;
   WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
-  if (yy < iter->y || yy >= (iter->y + iter->h)) {
-    continue;
-  }
-
-  if (xx < iter->x || xx >= (iter->x + iter->w)) {
-    continue;
-  }
-
   if (!iter->sensitive || !iter->enable) {
     continue;
   }
 
+  xx = p.x - iter->x;
+  yy = p.y - iter->y;
+  if (!widget_is_point_in(iter, xx, yy, TRUE)) {
+    continue;
+  }
   return iter;
   WIDGET_FOR_EACH_CHILD_END();
 

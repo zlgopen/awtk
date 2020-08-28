@@ -500,9 +500,6 @@ widget_t* window_manager_find_target(widget_t* widget, void* win, xy_t x, xy_t y
 
   widget_to_local(widget, &p);
   WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
-  xy_t r = iter->x + iter->w;
-  xy_t b = iter->y + iter->h;
-
   if (win != NULL) {
     nw = (native_window_t*)widget_get_prop_pointer(iter, WIDGET_PROP_NATIVE_WINDOW);
     if (nw == NULL || nw->handle != win) {
@@ -514,7 +511,7 @@ widget_t* window_manager_find_target(widget_t* widget, void* win, xy_t x, xy_t y
     continue;
   }
 
-  if (p.x >= iter->x && p.y >= iter->y && p.x <= r && p.y <= b) {
+  if (widget_is_point_in(iter, x, y, FALSE)) {
     return iter;
   }
 
