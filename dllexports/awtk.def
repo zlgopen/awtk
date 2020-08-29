@@ -1991,7 +1991,7 @@ EXPORTS
     image_set_draw_type @1989
     image_cast @1990
     overlay_create @1991
-    button_set_click_through @1992
+    overlay_set_click_through @1992
     overlay_cast @1993
     popup_create @1994
     popup_cast @1995

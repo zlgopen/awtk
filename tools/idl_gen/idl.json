@@ -60019,7 +60019,7 @@
           "scriptable": true
         },
         "desc": "设置是否启用点击穿透。",
-        "name": "button_set_click_through",
+        "name": "overlay_set_click_through",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"

@@ -98,7 +98,7 @@ typedef struct _overlay_t {
 widget_t* overlay_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
- * @method button_set_click_through
+ * @method overlay_set_click_through
  * 设置是否启用点击穿透。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
@@ -106,7 +106,7 @@ widget_t* overlay_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t button_set_click_through(widget_t* widget, bool_t click_through);
+ret_t overlay_set_click_through(widget_t* widget, bool_t click_through);
 
 /**
  * @method overlay_cast
