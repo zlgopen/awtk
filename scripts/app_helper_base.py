@@ -10,6 +10,21 @@ def mkdir_if_not_exist(fullpath):
     else:
         os.makedirs(fullpath)
 
+def load_project_json(filename):
+    try:
+        with open(filename, encoding="UTF-8") as f:
+            info = json.load(f);
+            return info 
+    except:
+        return None
+
+def get_project_w(info):
+    return info['assets']['themes']['default']['lcd']['width']
+
+def get_project_h(info):
+    return info['assets']['themes']['default']['lcd']['height']
+
+
 class AppHelperBase:
     def set_deps(self, DEPENDS_LIBS):
         self.DEPENDS_LIBS = DEPENDS_LIBS
@@ -175,29 +190,15 @@ class AppHelperBase:
         print('  LINUX_FB=false')
         sys.exit(0)
 
-    def load_project_json(filename):
-        try:
-            with open(filename, encoding="UTF-8") as f:
-                info = json.load(f);
-                return info 
-        except:
-            return None
-
-    def get_project_w(info):
-        return info['assets']['themes']['default']['lcd']['width']
-
-    def get_project_h(info):
-        return info['assets']['themes']['default']['lcd']['height']
-
     def parseArgs(self, awtk, ARGUMENTS):
         BUILD_SHARED = True
         GEN_IDL_DEF = True
         LCD_WIDTH = '320'
         LCD_HEIGHT = '480'
-        config = AppHelperBase.load_project_json('project.json')
+        config = load_project_json('project.json')
         if config and 'assets' in config:
-            LCD_WIDTH = AppHelperBase.get_project_w(config);
-            LCD_HEIGHT = AppHelperBase.get_project_h(config);
+            LCD_WIDTH = get_project_w(config);
+            LCD_HEIGHT = get_project_h(config);
 
         APP_DEFAULT_FONT = 'default'
         APP_THEME = 'default'
