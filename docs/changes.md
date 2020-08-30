@@ -1,5 +1,8 @@
 # 最新动态
 
+* 2020/08/30
+  * 完善 app helper脚本，从project.json读取lcd width/height
+
 * 2020/08/28
   * overlay 增加 click_throgh 属性，允许 overlay 窗口在没点击到子控件时，穿透到底层窗口。
 
