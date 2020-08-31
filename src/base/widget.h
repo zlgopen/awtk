@@ -2340,7 +2340,13 @@ ret_t widget_set_style_str(widget_t* widget, const char* state_and_name, const c
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {const char*} state_and_name 状态和名字，用英文的冒号分隔。
- * @param {uint32_t} value 值。
+ * @param {uint32_t} value 值。颜色值一般用十六进制表示，每两个数字表示一个颜色通道，从高位到低位，依次是ABGR。
+ * 
+ * 在下面这个例子中，R=0x11 G=0x22 B=0x33 A=0xFF
+ * 
+ * ```c
+ *  widget_set_style_color(label, "style:normal:bg_color", 0xFF332211);
+ * ```
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

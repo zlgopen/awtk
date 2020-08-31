@@ -39,7 +39,7 @@ AWTK 的主题按控件进行分类，每种控件可以有多种不同的风格
 
 参考：
 
-* [完整示例(default.xml)](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml)
+* [完整示例 (default.xml)](https://github.com/zlgopen/awtk/blob/master/demos/assets/raw/styles/default.xml)
 
 * [控件状态定义](manual/widget_state_t.md)
 
@@ -213,24 +213,46 @@ ret_t widget_set_style_str(widget_t* widget, const char* state_and_name, const c
 /**
  * @method widget_set_style_color
  * 设置颜色类型的 style。
+ *
+ * > * [state 的取值](https://github.com/zlgopen/awtk/blob/master/docs/manual/widget_state_t.md)
+ * > * [name 的取值](https://github.com/zlgopen/awtk/blob/master/docs/theme.md)
+ *
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {const char*} state_and_name 状态和名字，用英文的冒号分隔。
- * @param {uint32_t} value 值。
+ * @param {uint32_t} value 值。颜色值一般用十六进制表示，每两个数字表示一个颜色通道，从高位到低位，依次是 ABGR。
+ * 
+ * 在下面这个例子中，R=0x11 G=0x22 B=0x33 A=0xFF
+ * 
+ * ```c
+ *  widget_set_style_color(label, "normal:bg_color", 0xFF332211);
+ * ```
  *
  * @return {ret_t} 返回 RET_OK 表示成功，否则表示失败。
  */
-
+ret_t widget_set_style_color(widget_t* widget, const char* state_and_name, uint32_t value);
 ```
 
 示例：
 
 ```
-widget_set_style_int(b, "font_size", 24);
-widget_set_style_str(b, "style:focused:text_color", "red");
+  widget_set_style_int(label,  "normal:font_size", 24);
+  widget_set_style_str(label, "normal:text_color", "red");
+  widget_set_style_str(label, "normal:border_color", "#FF0000");
+  widget_set_style_color(label, "normal:bg_color", 0xFF00FF00);
 ```
 
 > inline style 会消耗更多内存，而且不方便切换主题，一般应该尽量避免使用。
+
+#### 注意：
+
+* 用 widget\_set\_style\_color 设置颜色时：
+
+> 颜色值一般用十六进制表示，每两个数字表示一个颜色通道，从高位到低位，依次是 ABGR。
+
+* 用 widget\_set\_style\_str 设置颜色时：
+
+> 颜色值如果用#开头，用十六进制表示，每两个数字表示一个颜色通道，从高位到低位，依次是 RGBA 或 RGB。
 
 ### 七、相关文档
 
