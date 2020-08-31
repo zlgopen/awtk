@@ -241,7 +241,7 @@ COMMON_CCFLAGS=COMMON_CCFLAGS+' -DNATIVE_WINDOW_BORDERLESS=1 '
 widget_t* window_open_and_close(const char* name, widget_t* to_close);
 ```
 
-#### 18. 如何当前的语言？
+#### 18. 如何设置当前的语言？
 
 使用下面的函数即可：
 
