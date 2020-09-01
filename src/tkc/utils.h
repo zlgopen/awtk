@@ -512,7 +512,8 @@ const char* tk_under_score_to_camel(const char* name, char* out, uint32_t max_ou
  *
  * 将指针转换成int。
  * 
- * > 常用于将int类型的数据作为回调函数的ctx。
+ *>与tk_pointer_from_int配套使用，也就是pointer本身必须就是整数，而不是指针，否则pointer会被截断。
+ * 
  * 
  * @param {const void*} p 指针。
  * 
