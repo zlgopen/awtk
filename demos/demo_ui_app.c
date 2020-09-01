@@ -284,9 +284,9 @@ static ret_t on_paint_vgcanvas(void* ctx, event_t* e) {
 }
 
 static ret_t on_timer_show_toast(const timer_info_t* info) {
-    dialog_toast("Hello AWTK!\nThis is a toast(3)!", 2000);
+  dialog_toast("Hello AWTK!\nThis is a toast(3)!", 2000);
 
-    return RET_REMOVE;
+  return RET_REMOVE;
 }
 
 static ret_t on_open_window(void* ctx, event_t* e) {
