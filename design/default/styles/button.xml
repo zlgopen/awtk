@@ -6,6 +6,24 @@
     <disable    bg_color="gray" text_color="#d0d0d0" />
   </style>
   
+  <style name="round_top" border_color="#a0a0a0"  text_color="black" 
+    round_radius_top_left="8"
+    round_radius_top_right ="8">
+    <normal     bg_color="#f0f0f0" />
+    <pressed    bg_color="#c0c0c0" x_offset="1" y_offset="1"/>
+    <over       bg_color="#e0e0e0" />
+    <disable    bg_color="gray" text_color="#d0d0d0" />
+  </style>
+  
+  <style name="round_bottom" border_color="#a0a0a0"  text_color="black" 
+    round_radius_bottom_left="8"
+    round_radius_bottom_right ="8">
+    <normal     bg_color="#f0f0f0" />
+    <pressed    bg_color="#c0c0c0" x_offset="1" y_offset="1"/>
+    <over       bg_color="#e0e0e0" />
+    <disable    bg_color="gray" text_color="#d0d0d0" />
+  </style>
+  
   <style name="icon" icon="earth" border_color="#a0a0a0"  text_color="black">
     <normal     bg_color="#f0f0f0" />
     <pressed    bg_color="#c0c0c0" x_offset="3" y_offset="3" />
