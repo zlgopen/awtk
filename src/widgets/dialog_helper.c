@@ -44,6 +44,7 @@ widget_t* dialog_create_simple(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
 }
 
 #include "base/window_manager.h"
+#include "dialog_toast.inc"
 
 #define OK_STYLE_NAME "default"
 #define CANCEL_STYLE_NAME "default"
@@ -58,14 +59,6 @@ static ret_t on_ok_to_quit(void* ctx, event_t* e) {
 static ret_t on_cancel_to_quit(void* ctx, event_t* e) {
   widget_t* dlg = WIDGET(ctx);
   dialog_quit(dlg, RET_FAIL);
-
-  return RET_REMOVE;
-}
-
-static ret_t on_timer_to_quit(const timer_info_t* info) {
-  widget_t* dlg = WIDGET(info->ctx);
-
-  dialog_quit(dlg, 0);
 
   return RET_REMOVE;
 }
@@ -108,34 +101,11 @@ static widget_t* dialog_create_label(const char* text) {
 }
 
 ret_t dialog_toast(const char* text, uint32_t duration) {
-  char params[128];
-  int32_t margin = 10;
-  widget_t* label = NULL;
-  widget_t* dialog = NULL;
-  return_value_if_fail(text != NULL && duration >= 1000, RET_BAD_PARAMS);
-
-  label = dialog_create_label(text);
-  return_value_if_fail(label != NULL, RET_OOM);
-
-  dialog = dialog_create(NULL, 0, 0, label->w + 2 * margin, label->h + 2 * margin);
-  goto_error_if_fail(dialog != NULL);
-
-  widget_set_prop_str(dialog, WIDGET_PROP_ANIM_HINT, "fade(duration=500)");
-  widget_set_prop_str(dialog, WIDGET_PROP_THEME, "dialog_toast");
-  widget_add_child(dialog, label);
-
-  tk_snprintf(params, sizeof(params) - 1, "default(x=%d, y=%d, w=%d, h=%d)", margin, margin,
-              label->w, label->h);
-  widget_set_self_layout(label, params);
-
-  widget_on(dialog, EVT_POINTER_UP, on_ok_to_quit, dialog);
-  widget_add_timer(dialog, on_timer_to_quit, duration);
-
-  return (ret_t)dialog_modal(dialog);
-error:
-  widget_destroy(label);
-
-  return RET_FAIL;
+  dialog_toast_t* dialog_toast = dialog_toast_manager();
+  return_value_if_fail(dialog_toast != NULL, RET_OOM);
+  
+  ENSURE(dialog_toast_push_message(dialog_toast, text, duration) != NULL);
+  return dialog_toast_model(dialog_toast);
 }
 
 ret_t dialog_info_ex(const char* text, const char* title_text, const char* theme) {
