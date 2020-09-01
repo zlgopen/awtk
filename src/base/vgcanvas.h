@@ -439,7 +439,7 @@ ret_t vgcanvas_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h, uint32_t stride,
 ret_t vgcanvas_reset(vgcanvas_t* vg);
 
 /**
- * @method vgcanvas_reset
+ * @method vgcanvas_reset_curr_state
  * 重置当前状态。
  *
  * @param {vgcanvas_t*} vg vgcanvas对象。

@@ -147,7 +147,7 @@ const static frr_draw_arc_info_table_t WIDGET_DRAW_ARC_INFO_TABLE[FRR_VERTEXT_TY
     {FRR_QUADRANT_THIRD_F, FRR_QUADRANT_THIRD_S},     //左下角
     {FRR_QUADRANT_FOURTH_F, FRR_QUADRANT_FOURTH_S}};  //右下角
 
-static inline int32_t ffr_frr_image_get_buff_point(frr_image_info_t* info, int32_t x,
+static inline int32_t frr_image_get_buff_point(frr_image_info_t* info, int32_t x,
                                                       int32_t y) {
 #if defined(WITH_LCD_MONO)
   return 0;
@@ -354,7 +354,7 @@ static inline void ffr_draw_antialiasing_for_point(frr_image_info_t* image_info,
   if (canvas->clip_left <= px && px <= canvas->clip_right && canvas->clip_top <= py &&
       py <= canvas->clip_bottom) {
     IMAGE_COLOR2COLOR_BLEND(n_color, o_color, a);
-    p = ffr_frr_image_get_buff_point(image_info, px, py);
+    p = frr_image_get_buff_point(image_info, px, py);
     if (p >= 0) {
       ffr_image_color2data(image_info->dst + p, px, py, image_info->w, image_info->h, image_info->format, n_color);
     }
@@ -441,7 +441,7 @@ static inline void ffr_draw_circluar_point_to_quadrant(frr_image_info_t* image_i
     y += c->oy;
 
     if (w > 0 && h > 0) {
-      p = ffr_frr_image_get_buff_point(image_info, x, y);
+      p = frr_image_get_buff_point(image_info, x, y);
       if (p >= 0) {
         ffr_image_data2color(image_info->dst + p, x, y, image_info->w, image_info->h, image_info->format, &o_color);
 
@@ -480,7 +480,7 @@ static inline void ffr_draw_circluar_point_to_quadrant_hline(frr_image_info_t* i
     }
 
     if (w > 0 && h > 0) {
-      p = ffr_frr_image_get_buff_point(image_info, x + c->ox, y + c->oy);
+      p = frr_image_get_buff_point(image_info, x + c->ox, y + c->oy);
       if (p >= 0) {
         ffr_image_data2color(image_info->dst + p, x + c->ox, y + c->oy, image_info->w, image_info->h, image_info->format, &o_color);
 
