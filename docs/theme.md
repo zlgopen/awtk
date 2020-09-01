@@ -73,7 +73,11 @@ AWTK 的主题按控件进行分类，每种控件可以有多种不同的风格
 * margin_left 左边距。
 * margin_right 右边距。
 * spacer 间距（目前仅用于文本和图标之间）。
-* round\_radius 背景和边框的圆角半径（仅在定义 WITH\_VGCANVAS 时有效）。
+* round\_radius 背景和边框的圆角半径。
+* round\_radius\_top\_left 背景和边框的左上角圆角半径。
+* round\_radius\_top\_right 背景和边框的右上角圆角半径。
+* round\_radius\_bottom\_left 背景和边框的左下角圆角半径。
+* round\_radius\_bottom\_right 背景和边框的右下角圆角半径。
 * border\_width 边框线宽（仅在定义 WITH\_VGCANVAS 时有效）。
 * self\_layout 自身布局参数。请参考 [控件布局参数文档](layout.md)
 * children\_layout 子控件布局参数。请参考 [控件布局参数文档](layout.md)
