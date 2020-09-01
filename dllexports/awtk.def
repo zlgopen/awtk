@@ -533,7 +533,7 @@ EXPORTS
     vgcanvas_cast @531
     vgcanvas_reinit @532
     vgcanvas_reset @533
-    vgcanvas_reset @534
+    vgcanvas_reset_curr_state @534
     vgcanvas_flush @535
     vgcanvas_begin_frame @536
     vgcanvas_clear_rect @537

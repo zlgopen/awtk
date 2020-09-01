@@ -14607,7 +14607,7 @@
         ],
         "annotation": {},
         "desc": "重置当前状态。",
-        "name": "vgcanvas_reset",
+        "name": "vgcanvas_reset_curr_state",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -21905,13 +21905,13 @@
           {
             "type": "uint32_t",
             "name": "value",
-            "desc": "值。"
+            "desc": "值。颜色值一般用十六进制表示，每两个数字表示一个颜色通道，从高位到低位，依次是ABGR。"
           }
         ],
         "annotation": {
           "scriptable": true
         },
-        "desc": "设置颜色类型的style。\n\n> * [state 的取值](https://github.com/zlgopen/awtk/blob/master/docs/manual/widget_state_t.md)\n> * [name 的取值](https://github.com/zlgopen/awtk/blob/master/docs/theme.md)",
+        "desc": "设置颜色类型的style。\n\n> * [state 的取值](https://github.com/zlgopen/awtk/blob/master/docs/manual/widget_state_t.md)\n> * [name 的取值](https://github.com/zlgopen/awtk/blob/master/docs/theme.md)\n\n\n在下面这个例子中，R=0x11 G=0x22 B=0x33 A=0xFF\n\n```c\nwidget_set_style_color(label, \"style:normal:bg_color\", 0xFF332211);\n```",
         "name": "widget_set_style_color",
         "return": {
           "type": "ret_t",
@@ -26069,7 +26069,7 @@
           }
         ],
         "annotation": {},
-        "desc": "将指针转换成int。\n\n> 常用于将int类型的数据作为回调函数的ctx。",
+        "desc": "将指针转换成int。\n\n>与tk_pointer_from_int配套使用，也就是pointer本身必须就是整数，而不是指针，否则pointer会被截断。",
         "name": "tk_pointer_to_int",
         "return": {
           "type": "int32_t",
