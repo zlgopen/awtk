@@ -76,6 +76,7 @@
 * [如何用 edit 控件编辑 IP 地址](how_to_edit_ip_addr.md)
 * [如何支持 unicode bidirectional algorithm](how_to_enable_bidi.md)
 * [如何续期使用 AWTK Designer](how_to_renewal_awtk_designer.md)
+* [如何将生成的可执行文件和资源打包](how_to_release_app.md)
 
 ### 3. 内部原理
 * [AWTK 脚本绑定原理](script_binding.md)
