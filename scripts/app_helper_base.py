@@ -4,6 +4,7 @@ import json
 import shutil
 import platform
 
+PLATFORM = platform.system();
 def mkdir_if_not_exist(fullpath):
     if os.path.exists(fullpath):
         print(fullpath+' exist.')
@@ -58,24 +59,54 @@ class AppHelperBase:
         self.APP_LIBS += APP_LIBS
         return self
     
+    def add_platform_libs(self, plat, APP_LIBS):
+        if plat == platform.system():
+            self.APP_LIBS += APP_LIBS
+        return self
+
     def add_libpath(self, APP_LIBPATH):
         self.APP_LIBPATH += APP_LIBPATH
+        return self
+    
+    def add_platform_libpath(self, plat, APP_LIBPATH):
+        if plat == platform.system():
+            self.APP_LIBPATH += APP_LIBPATH
         return self
 
     def add_cpppath(self, APP_CPPPATH):
         self.APP_CPPPATH += APP_CPPPATH
+        return self
+    
+    def add_platform_cpppath(self, plat, APP_CPPPATH):
+        if plat == platform.system():
+            self.APP_CPPPATH += APP_CPPPATH
         return self
 
     def add_ccflags(self, APP_CCFLAGS):
         self.APP_CCFLAGS += APP_CCFLAGS
         return self
 
+    def add_platform_ccflags(self, plat, APP_CCFLAGS):
+        if plat == platform.system():
+            self.APP_CCFLAGS += APP_CCFLAGS
+        return self
+
     def add_cxxflags(self, APP_CXXFLAGS):
         self.APP_CXXFLAGS += APP_CXXFLAGS
+        return self
+    
+    def add_platform_cxxflags(self, plat, APP_CXXFLAGS):
+        if plat == platform.system():
+            self.APP_CXXFLAGS += APP_CXXFLAGS
         return self
 
     def add_linkflags(self, APP_LINKFLAGS):
         self.APP_LINKFLAGS += APP_LINKFLAGS
+        return self
+
+    def add_platform_linkflags(self, plat, APP_LINKFLAGS):
+        if plat == platform.system():
+            self.APP_LINKFLAGS += APP_LINKFLAGS
         return self
 
     def __init__(self, ARGUMENTS):
