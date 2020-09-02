@@ -207,7 +207,7 @@ scons
  If scons and the dependent software pack aren't installed, please run the following command in the terminal:
 
 ```
-sudo apt-get install scons libsndio-dev libgtk-3-dev libglu1-mesa libglu1-mesa-dev libgl1-mesa-glx libgl1-mesa-dev libasound2-dev git vim clang-format
+sudo apt-get install scons libsndio-dev libgtk-3-dev libglu1-mesa libglu1-mesa-dev libgl1-mesa-glx libgl1-mesa-dev libasound2-dev git vim clang-format libharfbuzz-dev
 ```
 
 Compile and run (Enter the awtk directory and run the following command in the terminal): 
