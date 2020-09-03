@@ -83,7 +83,7 @@ static ret_t dialog_toast_on_idle_create_dialog(const idle_info_t* info) {
   ret = dialog_toast_init(dialog_toast, FALSE);
   return_value_if_fail(ret == RET_OK, ret);
   if (dialog_toast->message_list.size > 0) {
-    dialog_toast_message_t* message = (dialog_toast_message_t*)darray_pop(&(dialog_toast->message_list));
+    dialog_toast_message_t* message = (dialog_toast_message_t*)darray_tail(&(dialog_toast->message_list));
     dialog_toast_set_curr_message(dialog_toast, message, message->duration);
   } else {
     dialog_toast_close(dialog_toast);
@@ -180,7 +180,7 @@ static ret_t dialog_toast_on_idle_close(const idle_info_t* info) {
 
 static ret_t dialog_toast_close(dialog_toast_t* dialog_toast) {
   return_value_if_fail(dialog_toast != NULL, RET_BAD_PARAMS);
-  if (dialog_toast != NULL && dialog_toast->is_empty) {
+  if (dialog_toast != NULL && dialog_toast->is_empty && !dialog_toast->is_closing) {
     dialog_toast->is_closing = TRUE;
     idle_add(dialog_toast_on_idle_close, dialog_toast->toast);
   }
@@ -277,7 +277,7 @@ static ret_t dialog_toast_model(dialog_toast_t* dialog_toast) {
   return_value_if_fail(dialog_toast != NULL && dialog_toast->toast != NULL, RET_BAD_PARAMS);
 #ifdef AWTK_WEB
   log_debug("awtk web not support dialog_modal\n");
-  return DIALOG_QUIT_NONE;
+  return RET_FAIL;
 #else
   log_debug("%s run\n", __FUNCTION__);
   main_loop_run(main_loop());
