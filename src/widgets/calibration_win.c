@@ -113,12 +113,12 @@ static ret_t calibration_win_on_event(widget_t* widget, event_t* e) {
       if (win->cursor == PT_MAX_NR) {
         if (win->on_done != NULL) {
           if (win->on_done(win->on_done_ctx, win->points) == RET_OK) {
-            window_close(widget);
+            window_close_force(widget);
           } else {
             win->cursor = 0;
           }
         } else {
-          window_close(widget);
+          window_close_force(widget);
         }
 #if 0        
         p = win->points;
