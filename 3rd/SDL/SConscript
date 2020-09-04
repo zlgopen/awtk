@@ -58,6 +58,7 @@ elif OS_NAME == 'Linux':
     '/usr/lib/x86_64-linux-gnu/glib-2.0/include',
     '/usr/include/ibus-1.0',
     'include',
+    '/usr/include/harfbuzz',
     'gen',
     'src/video/khronos',
     'src/audio/alsa',

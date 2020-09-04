@@ -27,6 +27,7 @@
 #define _FRIBIDI_COMMON_H
 
 #define HAVE_STDLIB_H 1
+#include <string.h>
 
 #ifdef DONT_HAVE_FRIBIDI_CONFIG_H
 # define FRIBIDI "fribidi"
