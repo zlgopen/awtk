@@ -233,7 +233,6 @@ ret_t ring_buffer_read_len(ring_buffer_t* ring_buffer, void* buff, uint32_t size
   return_value_if_fail(ring_buffer != NULL && buff != NULL, RET_BAD_PARAMS);
 
   if (ring_buffer_size(ring_buffer) >= size) {
-    ring_buffer->full = FALSE;
     return ring_buffer_read(ring_buffer, buff, size) == size ? RET_OK : RET_FAIL;
   } else {
     return RET_FAIL;
@@ -243,7 +242,7 @@ ret_t ring_buffer_read_len(ring_buffer_t* ring_buffer, void* buff, uint32_t size
 ret_t ring_buffer_skip(ring_buffer_t* ring_buffer, uint32_t size) {
   return_value_if_fail(ring_buffer != NULL, RET_BAD_PARAMS);
 
-  if (ring_buffer_size(ring_buffer) >= size) {
+  if (ring_buffer_size(ring_buffer) >= size && size > 0) {
     ring_buffer->full = FALSE;
     ring_buffer->r = (ring_buffer->r + size) % ring_buffer->capacity;
 
