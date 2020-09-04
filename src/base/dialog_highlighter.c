@@ -49,15 +49,19 @@ dialog_highlighter_t* dialog_highlighter_create(const dialog_highlighter_vtable_
   return h;
 }
 
-ret_t dialog_highlighter_prepare(dialog_highlighter_t* h, canvas_t* c) {
+ret_t dialog_highlighter_prepare_ex(dialog_highlighter_t* h, canvas_t* c, canvas_t* canvas_offline) {
   return_value_if_fail(h != NULL && h->vt != NULL && c != NULL, RET_BAD_PARAMS);
 
   h->canvas = c;
   if (h->vt->prepare != NULL) {
-    return h->vt->prepare(h, c);
+    return h->vt->prepare(h, canvas_offline);
   }
 
   return RET_NOT_IMPL;
+}
+
+ret_t dialog_highlighter_prepare(dialog_highlighter_t* h, canvas_t* c) {
+  return dialog_highlighter_prepare_ex(h, c, c);
 }
 
 ret_t dialog_highlighter_set_bg(dialog_highlighter_t* h, bitmap_t* img, framebuffer_object_t* fbo) {

@@ -275,6 +275,24 @@ bitmap_t* canvas_offline_get_bitmap(canvas_t* canvas) {
   return c->bitmap;
 }
 
+ret_t canvas_offline_bitmap_move_to_new_bitmap(canvas_t* canvas, bitmap_t* bitmap) {
+  bool_t should_free_handle;
+  bitmap_t* canvas_bitmap = NULL;
+  return_value_if_fail(canvas != NULL && bitmap != NULL, RET_BAD_PARAMS);
+
+  should_free_handle = bitmap->should_free_handle;
+  canvas_bitmap = ((canvas_offline_t*)canvas)->bitmap;
+
+  memcpy(bitmap, canvas_bitmap, sizeof(bitmap_t));
+
+  TKMEM_FREE(canvas_bitmap);
+  bitmap->should_free_handle = should_free_handle;
+
+  ((canvas_offline_t*)canvas)->bitmap = NULL;
+
+  return RET_OK;
+}
+
 ret_t canvas_offline_flush_bitmap(canvas_t* canvas) {
 #ifdef WITH_NANOVG_GPU
   rect_t r;

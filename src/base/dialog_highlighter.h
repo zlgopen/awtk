@@ -140,6 +140,17 @@ ret_t dialog_highlighter_set_bg_clip_rect(dialog_highlighter_t* h, rect_t* clip_
 ret_t dialog_highlighter_prepare(dialog_highlighter_t* h, canvas_t* c);
 
 /**
+ * @method dialog_highlighter_prepare_ex
+ * 初始化。在绘制完背景，在截图前调用。
+ * @param {dialog_highlighter_t*} h 对话框高亮策略对象。
+ * @param {canvas_t*} c 画布。
+ * @param {canvas_t*} canvas_offline 离线画布。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t dialog_highlighter_prepare_ex(dialog_highlighter_t* h, canvas_t* c, canvas_t* canvas_offline);
+
+/**
  * @method dialog_highlighter_draw
  * 绘制背景。
  * @param {dialog_highlighter_t*} h 对话框高亮策略对象。

@@ -109,6 +109,17 @@ ret_t canvas_offline_end_draw(canvas_t* canvas);
 bitmap_t* canvas_offline_get_bitmap(canvas_t* canvas);
 
 /**
+ * @method canvas_offline_bitmap_move_to_new_bitmap
+ * 把离线 canvas 的离线 bitmap 移动赋值给新的 bitmap。
+ * 移动赋值后原来的离线 canvas 的离线 bitmap 就会被置空。
+ *
+ * @param {canvas_t*} canvas 离线 canvas 对象。
+ *
+ * @return {bitmap_t*} 返回 bitmap_t 对象表示成功，返回 NULL 表示失败。
+ */
+ret_t canvas_offline_bitmap_move_to_new_bitmap(canvas_t* canvas, bitmap_t* bitmap);
+
+/**
  * @method canvas_offline_flush_bitmap
  * 把离线 canvas 的数据放到绑定的 bitmap 中
  * 该函数只有在 opengl 模式才需要调用，是否把显存中的数据回传到内存中。
