@@ -1,6 +1,7 @@
 # 最新动态
 * 2020/09/06
   * 支持多点手势识别事件（旋转和缩放），目前对接 SDL 的多点手势事件，支持 Android、iOS、windows、linux(desktop) 和 MacOS。其它系统需要自己识别后上报事件。
+  * 增加函数widget\_set\_child\_text\_with\_int
 
 * 2020/09/04
   * 完善 ringbuffer（感谢网友 J, 提供补丁）

@@ -49,7 +49,8 @@ dialog_highlighter_t* dialog_highlighter_create(const dialog_highlighter_vtable_
   return h;
 }
 
-ret_t dialog_highlighter_prepare_ex(dialog_highlighter_t* h, canvas_t* c, canvas_t* canvas_offline) {
+ret_t dialog_highlighter_prepare_ex(dialog_highlighter_t* h, canvas_t* c,
+                                    canvas_t* canvas_offline) {
   return_value_if_fail(h != NULL && h->vt != NULL && c != NULL, RET_BAD_PARAMS);
 
   h->canvas = c;

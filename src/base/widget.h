@@ -825,6 +825,20 @@ ret_t widget_set_child_text_with_double(widget_t* widget, const char* name, cons
                                         double value);
 
 /**
+ * @method widget_set_child_text_with_int
+ * 用一个整数去设置子控件的文本。
+ * 只是对widget\_set\_prop的包装，文本的意义由子类控件决定。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*}  name 子控件的名称。
+ * @param {const char*}  format 格式字符串(如："%d")。
+ * @param {int} value 值。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_child_text_with_int(widget_t* widget, const char* name, const char* format,
+                                     int value);
+/**
  * @method widget_set_tr_text
  * 获取翻译之后的文本，然后调用widget_set_text。
  * @annotation ["scriptable"]

@@ -431,7 +431,7 @@ typedef enum _event_type_t {
    */
   EVT_SCROLL_END,
 
- /**
+  /**
    * @const EVT_MULTI_GESTURE
    * 多点触摸手势(multi_gesture_event_t)。
    */
@@ -844,7 +844,7 @@ typedef struct _multi_gesture_event_t {
    * @annotation ["readable", "scriptable"]
    * touch device id。
    */
-  int64_t touch_id;  
+  int64_t touch_id;
   /**
    * @property {xy_t} x
    * @annotation ["readable", "scriptable"]
@@ -901,8 +901,9 @@ multi_gesture_event_t* multi_gesture_event_cast(event_t* event);
  *
  * @return {event_t*} event对象。
  */
-event_t* multi_gesture_event_init(multi_gesture_event_t* event, void* target, int64_t touch_id, int32_t x,
-                            int32_t y, float rotation, float distance, uint32_t fingers);
+event_t* multi_gesture_event_init(multi_gesture_event_t* event, void* target, int64_t touch_id,
+                                  int32_t x, int32_t y, float rotation, float distance,
+                                  uint32_t fingers);
 
 END_C_DECLS
 

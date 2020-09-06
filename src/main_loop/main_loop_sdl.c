@@ -94,7 +94,8 @@ static ret_t main_loop_sdl2_dispatch_wheel_event(main_loop_simple_t* loop, SDL_E
   return RET_OK;
 }
 
-static ret_t main_loop_sdl2_dispatch_multi_gesture_event(main_loop_simple_t* loop, SDL_Event* sdl_event) {
+static ret_t main_loop_sdl2_dispatch_multi_gesture_event(main_loop_simple_t* loop,
+                                                         SDL_Event* sdl_event) {
   multi_gesture_event_t event;
   widget_t* widget = loop->base.wm;
   int32_t x = sdl_event->mgesture.x;
@@ -103,7 +104,8 @@ static ret_t main_loop_sdl2_dispatch_multi_gesture_event(main_loop_simple_t* loo
   float distance = sdl_event->mgesture.dDist;
   uint64_t touch_id = sdl_event->mgesture.touchId;
   uint32_t fingers = sdl_event->mgesture.numFingers;
-  event_t* e = multi_gesture_event_init(&event, widget, touch_id, x, y, rotation, distance, fingers);
+  event_t* e =
+      multi_gesture_event_init(&event, widget, touch_id, x, y, rotation, distance, fingers);
 
   log_debug("multi gesture: %lld %d %d %f %f %d\n", touch_id, x, y, rotation, distance, fingers);
 

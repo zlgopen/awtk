@@ -4205,7 +4205,19 @@ ret_t widget_set_child_text_utf8(widget_t* widget, const char* name, const char*
 
 ret_t widget_set_child_text_with_double(widget_t* widget, const char* name, const char* format,
                                         double value) {
-  char text[64];
+  char text[128];
+  widget_t* child = widget_lookup(widget, name, TRUE);
+  return_value_if_fail(child != NULL && format != NULL, RET_BAD_PARAMS);
+
+  memset(text, 0x00, sizeof(text));
+  tk_snprintf(text, sizeof(text) - 1, format, value);
+
+  return widget_set_text_utf8(child, text);
+}
+
+ret_t widget_set_child_text_with_int(widget_t* widget, const char* name, const char* format,
+                                     int value) {
+  char text[128];
   widget_t* child = widget_lookup(widget, name, TRUE);
   return_value_if_fail(child != NULL && format != NULL, RET_BAD_PARAMS);
 
