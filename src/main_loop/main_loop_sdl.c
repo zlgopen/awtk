@@ -98,8 +98,8 @@ static ret_t main_loop_sdl2_dispatch_multi_gesture_event(main_loop_simple_t* loo
                                                          SDL_Event* sdl_event) {
   multi_gesture_event_t event;
   widget_t* widget = loop->base.wm;
-  int32_t x = sdl_event->mgesture.x;
-  int32_t y = sdl_event->mgesture.y;
+  int32_t x = sdl_event->mgesture.x * widget->w;
+  int32_t y = sdl_event->mgesture.y * wigdet->h;
   float rotation = sdl_event->mgesture.dTheta;
   float distance = sdl_event->mgesture.dDist;
   uint64_t touch_id = sdl_event->mgesture.touchId;
