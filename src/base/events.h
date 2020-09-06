@@ -430,6 +430,13 @@ typedef enum _event_type_t {
    * scroll view结束滚动(event_t)。
    */
   EVT_SCROLL_END,
+
+ /**
+   * @const EVT_MULTI_GESTURE
+   * 多点触摸手势(multi_gesture_event_t)。
+   */
+  EVT_MULTI_GESTURE,
+
   /**
    * @const EVT_REQ_START
    * event queue其它请求编号起始值。
@@ -823,6 +830,79 @@ event_t* window_event_init(window_event_t* event, uint32_t type, void* target, w
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t pointer_event_rotate(pointer_event_t* evt, system_info_t* info);
+
+/**
+ * @class multi_gesture_event_t
+ * @annotation ["scriptable"]
+ * @parent event_t
+ * 指针事件。
+ */
+typedef struct _multi_gesture_event_t {
+  event_t e;
+  /**
+   * @property {int64_t} touch_id
+   * @annotation ["readable", "scriptable"]
+   * touch device id。
+   */
+  int64_t touch_id;  
+  /**
+   * @property {xy_t} x
+   * @annotation ["readable", "scriptable"]
+   * 中心点x坐标。
+   */
+  xy_t x;
+  /**
+   * @property {xy_t} y
+   * @annotation ["readable", "scriptable"]
+   * 中心点y坐标。
+   */
+  xy_t y;
+  /**
+   * @property {float} rotation
+   * @annotation ["readable", "scriptable"]
+   * 旋转角度(幅度)。
+   */
+  float rotation;
+  /**
+   * @property {float} distance
+   * @annotation ["readable", "scriptable"]
+   * 两点间的距离。
+   */
+  float distance;
+  /**
+   * @property {uint32_t} fingers 
+   * @annotation ["readable", "scriptable"]
+   * 本事件用到手指数。
+   */
+  uint32_t fingers;
+} multi_gesture_event_t;
+
+/**
+ * @method multi_gesture_event_cast
+ * @annotation ["cast", "scriptable"]
+ * 把event对象转multi_gesture_event_t对象，主要给脚本语言使用。
+ * @param {event_t*} event event对象。
+ *
+ * @return {multi_gesture_event_t*} event对象。
+ */
+multi_gesture_event_t* multi_gesture_event_cast(event_t* event);
+
+/**
+ * @method multi_gesture_event_init
+ * 初始化事件。
+ * @param {multi_gesture_event_t*} event event对象。
+ * @param {void*} target 事件目标。
+ * @param {uint32_t} touch_id touch device id。
+ * @param {int32_t} x x的值。
+ * @param {int32_t} y y的值。
+ * @param {float} rotation 旋转角度(幅度)。
+ * @param {float} distance 两点间的距离。
+ * @param {uint32_t} fingers 本事件用到手指数。
+ *
+ * @return {event_t*} event对象。
+ */
+event_t* multi_gesture_event_init(multi_gesture_event_t* event, void* target, int64_t touch_id, int32_t x,
+                            int32_t y, float rotation, float distance, uint32_t fingers);
 
 END_C_DECLS
 

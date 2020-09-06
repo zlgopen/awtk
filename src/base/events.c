@@ -170,3 +170,27 @@ event_t* window_event_init(window_event_t* event, uint32_t type, void* target, w
 
   return (event_t*)event;
 }
+
+multi_gesture_event_t* multi_gesture_event_cast(event_t* event) {
+  return_value_if_fail(event != NULL, NULL);
+  return_value_if_fail(event->type == EVT_MULTI_GESTURE, NULL);
+
+  return (multi_gesture_event_t*)event;
+}
+
+event_t* multi_gesture_event_init(multi_gesture_event_t* event, void* target, int64_t touch_id, int32_t x,
+                            int32_t y, float rotation, float distance, uint32_t fingers)  {
+  return_value_if_fail(event != NULL, NULL);
+  memset(event, 0x00, sizeof(multi_gesture_event_t));
+
+  event->e = event_init(EVT_MULTI_GESTURE, target);
+
+  event->x = x;
+  event->y = y;
+  event->rotation = rotation;
+  event->touch_id = touch_id;
+  event->distance = distance;
+  event->fingers = fingers;
+
+  return (event_t*)event;
+}

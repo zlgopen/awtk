@@ -2335,6 +2335,25 @@ ret_t widget_on_wheel(widget_t* widget, wheel_event_t* e) {
   return ret;
 }
 
+ret_t widget_on_multi_gesture(widget_t* widget, multi_gesture_event_t* e) {
+  ret_t ret = RET_OK;
+  widget_t* target = NULL;
+  return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
+
+  widget_ref(widget);
+  target = widget_find_target(widget, e->x, e->y);
+  if (target != NULL) {
+    ret = widget_dispatch(target, (event_t*)e);
+  }
+
+  if (ret != RET_STOP) {
+    ret = widget_dispatch(widget, (event_t*)e);
+  }
+  widget_unref(widget);
+
+  return ret;
+}
+
 static ret_t widget_dispatch_leave_event(widget_t* widget, pointer_event_t* e) {
   widget_t* target = widget;
 

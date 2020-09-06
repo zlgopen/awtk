@@ -222,6 +222,11 @@ ret_t input_device_status_on_input_event(input_device_status_t* ids, widget_t* w
       widget_on_wheel(widget, evt);
       break;
     }
+    case EVT_MULTI_GESTURE: {
+      multi_gesture_event_t* evt = (multi_gesture_event_t*)e;
+      widget_on_multi_gesture(widget, evt);
+      break;
+    }
     default:
       break;
   }

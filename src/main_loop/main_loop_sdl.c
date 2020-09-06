@@ -94,6 +94,25 @@ static ret_t main_loop_sdl2_dispatch_wheel_event(main_loop_simple_t* loop, SDL_E
   return RET_OK;
 }
 
+static ret_t main_loop_sdl2_dispatch_multi_gesture_event(main_loop_simple_t* loop, SDL_Event* sdl_event) {
+  multi_gesture_event_t event;
+  widget_t* widget = loop->base.wm;
+  int32_t x = sdl_event->mgesture.x;
+  int32_t y = sdl_event->mgesture.y;
+  float rotation = sdl_event->mgesture.dTheta;
+  float distance = sdl_event->mgesture.dDist;
+  uint64_t touch_id = sdl_event->mgesture.touchId;
+  uint32_t fingers = sdl_event->mgesture.numFingers;
+  event_t* e = multi_gesture_event_init(&event, widget, touch_id, x, y, rotation, distance, fingers);
+
+  log_debug("multi gesture: %lld %d %d %f %f %d\n", touch_id, x, y, rotation, distance, fingers);
+
+  event.e.native_window_handle = NULL;
+  window_manager_dispatch_input_event(widget, e);
+
+  return RET_OK;
+}
+
 static ret_t main_loop_sdl2_dispatch_mouse_event(main_loop_simple_t* loop, SDL_Event* sdl_event) {
   pointer_event_t event;
   int type = sdl_event->type;
@@ -251,6 +270,10 @@ static ret_t main_loop_sdl2_dispatch(main_loop_simple_t* loop) {
       }
       case SDL_MOUSEWHEEL: {
         ret = main_loop_sdl2_dispatch_wheel_event(loop, &event);
+        break;
+      }
+      case SDL_MULTIGESTURE: {
+        ret = main_loop_sdl2_dispatch_multi_gesture_event(loop, &event);
         break;
       }
       case SDL_WINDOWEVENT: {
