@@ -835,7 +835,7 @@ ret_t pointer_event_rotate(pointer_event_t* evt, system_info_t* info);
  * @class multi_gesture_event_t
  * @annotation ["scriptable"]
  * @parent event_t
- * 指针事件。
+ * 多点触摸手势事件。
  */
 typedef struct _multi_gesture_event_t {
   event_t e;
@@ -860,13 +860,13 @@ typedef struct _multi_gesture_event_t {
   /**
    * @property {float} rotation
    * @annotation ["readable", "scriptable"]
-   * 旋转角度(幅度)。
+   * 旋转角度(幅度)增量。
    */
   float rotation;
   /**
    * @property {float} distance
    * @annotation ["readable", "scriptable"]
-   * 两点间的距离。
+   * 两点间的距离增量。(-1,0)表示缩小，(0-1)表示增加。
    */
   float distance;
   /**
@@ -895,8 +895,8 @@ multi_gesture_event_t* multi_gesture_event_cast(event_t* event);
  * @param {uint32_t} touch_id touch device id。
  * @param {int32_t} x x的值。
  * @param {int32_t} y y的值。
- * @param {float} rotation 旋转角度(幅度)。
- * @param {float} distance 两点间的距离。
+ * @param {float} rotation 旋转角度(幅度)增量。
+ * @param {float} distance 两点间的距离增量。(-1,0)表示缩小，(0-1)表示增加。
  * @param {uint32_t} fingers 本事件用到手指数。
  *
  * @return {event_t*} event对象。
