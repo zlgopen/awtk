@@ -624,6 +624,13 @@ float_t object_get_prop_float_by_path(object_t* obj, const char* path, float_t d
 #define OBJECT_CMD_ADD "add"
 
 /**
+ * @const OBJECT_CMD_DETAIL
+ * 显示对象详细信息。
+ *>参数为属性的名称或路径。
+ */
+#define OBJECT_CMD_DETAIL "detail"
+
+/**
  * @const OBJECT_CMD_EDIT
  * 编辑子项。
  *>参数为属性的名称或路径。
