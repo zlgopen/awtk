@@ -37,6 +37,20 @@ ret_t tk_istream_seek(tk_istream_t* stream, uint32_t offset) {
   return stream->seek(stream, offset);
 }
 
+int32_t tk_istream_tell(tk_istream_t* stream) {
+  return_value_if_fail(stream != NULL, -1);
+  return_value_if_fail(stream->tell != NULL, -1);
+
+  return stream->tell(stream);
+}
+
+bool_t tk_istream_eos(tk_istream_t* stream) {
+  return_value_if_fail(stream != NULL, TRUE);
+  return_value_if_fail(stream->eos != NULL, TRUE);
+
+  return stream->eos(stream);
+}
+
 ret_t tk_istream_wait_for_data(tk_istream_t* stream, uint32_t timeout_ms) {
   return_value_if_fail(stream != NULL, RET_BAD_PARAMS);
   return_value_if_fail(stream->wait_for_data != NULL, RET_NOT_IMPL);
@@ -153,3 +167,55 @@ int32_t tk_istream_read_line(tk_istream_t* stream, void* buff, uint32_t max_size
 
   return offset;
 }
+
+ret_t tk_istream_read_line_str(tk_istream_t* stream, str_t* str) {
+  char line[64];
+  int32_t size = 0;
+  bool_t got_end_line = FALSE;
+  return_value_if_fail(stream != NULL && str != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(stream->tell != NULL && stream->seek != NULL && stream->eos != NULL, RET_BAD_PARAMS);
+
+  str_set(str, "");
+  if(tk_istream_eos(stream)) { 
+    return RET_DONE;
+  }
+
+  while(!tk_istream_eos(stream) && got_end_line == FALSE) {
+    size = tk_istream_read(stream, line, sizeof(line)-1);
+    if(size >= 0) {
+      int32_t i = 0;
+      for(i = 0; i < size; i++) {
+        if(line[i] == '\r' || line[i] == '\n') {
+          got_end_line = TRUE;
+          break;
+        }
+      }
+      ENSURE(str_append_with_len(str, line, i) == RET_OK);
+
+      /*not found end line*/
+      if (i == size) {
+        continue;
+      }
+
+      if(line[i] == '\r') {
+        i++;
+        if(line[i] == '\n') { 
+          i++;
+        }
+      } else if(line[i] == '\n') {
+        i++;
+      }
+
+      if(i < size) {
+        int32_t pos = tk_istream_tell(stream);
+        pos = pos - (size - i);
+        ENSURE(tk_istream_seek(stream, pos) == RET_OK);
+      }
+    } else {
+      break;
+    }
+  }
+
+  return RET_OK;
+}
+
