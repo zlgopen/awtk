@@ -87,18 +87,17 @@ TEST(IStreamMem, read_line) {
   str_init(&str, 1024);
   ASSERT_EQ(tk_istream_read_line_str(is, &str), RET_OK);
   ASSERT_STREQ(str.str, "1111");
-  
+
   ASSERT_EQ(tk_istream_read_line_str(is, &str), RET_OK);
   ASSERT_STREQ(str.str, "2222");
-  
+
   ASSERT_EQ(tk_istream_read_line_str(is, &str), RET_OK);
   ASSERT_STREQ(str.str, "");
-  
+
   ASSERT_EQ(tk_istream_read_line_str(is, &str), RET_OK);
   ASSERT_STREQ(str.str, "3333");
-  
+
   ASSERT_NE(tk_istream_read_line_str(is, &str), RET_OK);
 
   object_unref(OBJECT(is));
 }
-

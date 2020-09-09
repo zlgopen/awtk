@@ -173,19 +173,20 @@ ret_t tk_istream_read_line_str(tk_istream_t* stream, str_t* str) {
   int32_t size = 0;
   bool_t got_end_line = FALSE;
   return_value_if_fail(stream != NULL && str != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(stream->tell != NULL && stream->seek != NULL && stream->eos != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(stream->tell != NULL && stream->seek != NULL && stream->eos != NULL,
+                       RET_BAD_PARAMS);
 
   str_set(str, "");
-  if(tk_istream_eos(stream)) { 
+  if (tk_istream_eos(stream)) {
     return RET_DONE;
   }
 
-  while(!tk_istream_eos(stream) && got_end_line == FALSE) {
-    size = tk_istream_read(stream, line, sizeof(line)-1);
-    if(size >= 0) {
+  while (!tk_istream_eos(stream) && got_end_line == FALSE) {
+    size = tk_istream_read(stream, line, sizeof(line) - 1);
+    if (size >= 0) {
       int32_t i = 0;
-      for(i = 0; i < size; i++) {
-        if(line[i] == '\r' || line[i] == '\n') {
+      for (i = 0; i < size; i++) {
+        if (line[i] == '\r' || line[i] == '\n') {
           got_end_line = TRUE;
           break;
         }
@@ -197,16 +198,16 @@ ret_t tk_istream_read_line_str(tk_istream_t* stream, str_t* str) {
         continue;
       }
 
-      if(line[i] == '\r') {
+      if (line[i] == '\r') {
         i++;
-        if(line[i] == '\n') { 
+        if (line[i] == '\n') {
           i++;
         }
-      } else if(line[i] == '\n') {
+      } else if (line[i] == '\n') {
         i++;
       }
 
-      if(i < size) {
+      if (i < size) {
         int32_t pos = tk_istream_tell(stream);
         pos = pos - (size - i);
         ENSURE(tk_istream_seek(stream, pos) == RET_OK);
@@ -218,4 +219,3 @@ ret_t tk_istream_read_line_str(tk_istream_t* stream, str_t* str) {
 
   return RET_OK;
 }
-
