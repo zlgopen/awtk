@@ -40,7 +40,7 @@ ret_t image_format_set(image_format_t* image_format, const wchar_t* format) {
       image_format->mono = TRUE;
     }
 
-    if (wcsstr(format, L"bgra")) {
+    if (wcsstr(format, L"bgr")) {
       image_format->require_bgra = TRUE;
     }
 
