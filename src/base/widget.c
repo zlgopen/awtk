@@ -1773,9 +1773,11 @@ ret_t widget_set_prop_str(widget_t* widget, const char* name, const char* str) {
 
 const char* widget_get_prop_str(widget_t* widget, const char* name, const char* defval) {
   value_t v;
-  return_value_if_fail(widget_get_prop(widget, name, &v) == RET_OK, defval);
-
-  return value_str(&v);
+  if (widget_get_prop(widget, name, &v) == RET_OK) {
+    return value_str(&v);
+  } else {
+    return defval;
+  }
 }
 
 ret_t widget_set_prop_pointer(widget_t* widget, const char* name, void* pointer) {
@@ -1819,9 +1821,11 @@ ret_t widget_set_prop_bool(widget_t* widget, const char* name, bool_t num) {
 
 bool_t widget_get_prop_bool(widget_t* widget, const char* name, bool_t defval) {
   value_t v;
-  return_value_if_fail(widget_get_prop(widget, name, &v) == RET_OK, defval);
-
-  return value_bool(&v);
+  if (widget_get_prop(widget, name, &v) == RET_OK) {
+    return value_bool(&v);
+  } else {
+    return defval;
+  }
 }
 
 ret_t widget_on_paint_background(widget_t* widget, canvas_t* c) {
