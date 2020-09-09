@@ -2,6 +2,7 @@
 * 2020/09/09
   * istream 增加eos/tell接口。
   * 增加函数tk\_istream\_read\_line\_str
+  * 去掉一些不必要的警告信息（感谢福明提供补丁）。
 
 * 2020/09/06
   * 支持多点手势识别事件（旋转和缩放），目前对接 SDL 的多点手势事件，支持 Android、iOS、windows、linux(desktop) 和 MacOS。其它系统需要自己识别后上报事件。
