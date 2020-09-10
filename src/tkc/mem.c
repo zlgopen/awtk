@@ -38,6 +38,11 @@ static mem_allocator_t* s_allocator = NULL;
 #ifdef HAS_STD_MALLOC
 #include "tkc/mem_allocator_std.h"
 
+#ifdef ENABLE_MEM_LEAK_CHECK
+#include "tkc/mem_allocator_lock.h"
+static mem_allocator_lock_t s_lock;
+#endif /*ENABLE_MEM_LEAK_CHECK*/
+
 bool_t tk_mem_is_valid_addr(void* addr) {
   return ((uint64_t)addr > 0x10000);
 }
@@ -51,6 +56,7 @@ static mem_allocator_t* mem_allocator_get(void) {
   s_allocator = mem_allocator_std_init(&std);
 #ifdef ENABLE_MEM_LEAK_CHECK
   s_allocator = mem_allocator_debug_init(&s_debug, s_allocator);
+  s_allocator = mem_allocator_lock_init(&s_lock, s_allocator);
 #endif /*ENABLE_MEM_LEAK_CHECK*/
   s_allocator = mem_allocator_oom_init(&s_oom, s_allocator);
 
