@@ -57,7 +57,11 @@ static ret_t widget_unref_async(widget_t* widget);
 static ret_t widget_destroy_sync(widget_t* widget);
 static ret_t widget_ensure_style_mutable(widget_t* widget);
 static ret_t widget_dispatch_blur_event(widget_t* widget);
+/*虚函数的包装*/
 static ret_t widget_on_paint_done(widget_t* widget, canvas_t* c);
+static ret_t widget_on_paint_begin(widget_t* widget, canvas_t* c);
+static ret_t widget_on_paint_end(widget_t* widget, canvas_t* c);
+
 
 typedef widget_t* (*widget_find_wanted_focus_widget_t)(widget_t* widget, darray_t* all_focusable);
 static ret_t widget_move_focus(widget_t* widget, widget_find_wanted_focus_widget_t find);
@@ -1889,7 +1893,7 @@ ret_t widget_on_paint_border(widget_t* widget, canvas_t* c) {
   return ret;
 }
 
-ret_t widget_on_paint_begin(widget_t* widget, canvas_t* c) {
+static ret_t widget_on_paint_begin(widget_t* widget, canvas_t* c) {
   paint_event_t e;
   ret_t ret = RET_OK;
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
@@ -1915,7 +1919,7 @@ static ret_t widget_on_paint_done(widget_t* widget, canvas_t* c) {
   return ret;
 }
 
-ret_t widget_on_paint_end(widget_t* widget, canvas_t* c) {
+static ret_t widget_on_paint_end(widget_t* widget, canvas_t* c) {
   paint_event_t e;
   ret_t ret = RET_OK;
   return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
