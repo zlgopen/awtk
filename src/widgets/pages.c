@@ -36,17 +36,20 @@ static ret_t pages_on_target_destroy(void* ctx, event_t* evt) {
 static ret_t pages_save_target(widget_t* widget) {
   widget_t* target = NULL;
   pages_t* pages = PAGES(widget);
-  widget_t* active_view = widget_get_child(widget, pages->active);
 
-  if (active_view != NULL) {
-    target = active_view;
-    while (target->target != NULL) {
-      target = target->target;
-    }
+  if (widget->children != NULL && widget->children->size > pages->active) {
+    widget_t* active_view = widget_get_child(widget, pages->active);
 
-    if (target != NULL) {
-      widget_set_prop_pointer(active_view, "save_target", target);
-      widget_on(target, EVT_DESTROY, pages_on_target_destroy, active_view);
+    if (active_view != NULL) {
+      target = active_view;
+      while (target->target != NULL) {
+        target = target->target;
+      }
+
+      if (target != NULL) {
+        widget_set_prop_pointer(active_view, "save_target", target);
+        widget_on(target, EVT_DESTROY, pages_on_target_destroy, active_view);
+      }
     }
   }
 
@@ -140,7 +143,7 @@ static ret_t pages_on_paint_children(widget_t* widget, canvas_t* c) {
   pages_t* pages = PAGES(widget);
   return_value_if_fail(widget != NULL && pages != NULL, RET_BAD_PARAMS);
 
-  if (widget->children == NULL) {
+  if (widget->children == NULL || widget->children->size == 0) {
     return RET_OK;
   }
 

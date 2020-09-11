@@ -151,7 +151,9 @@ static ret_t tab_button_group_ensure_active(widget_t* widget) {
   }
   WIDGET_FOR_EACH_CHILD_END();
 
-  widget_set_value(first, TRUE);
+  if (first != NULL) {
+    widget_set_value(first, TRUE);
+  }
 
   return RET_OK;
 }

@@ -422,7 +422,10 @@ static ret_t wm_on_locale_changed(void* ctx, event_t* e) {
 
   font_manager_unload_all(fm);
   image_manager_unload_all(imm);
-  widget_reset_canvas(widget_get_child(widget, 0));
+
+  if (widget_count_children(widget) > 0) {
+    widget_reset_canvas(widget_get_child(widget, 0));
+  }
 
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
   widget_re_translate_text(iter);

@@ -3,6 +3,8 @@
   * 支持 packed 图片。
   * 增加 [如何使用 packed 图](docs/how_to_use_packed_image.md)
   * 修复32位LCD窗口动画截图的问题（感谢朝泽提供补丁）。
+  * 消除一些不必要的告警；
+  * 修正在key\_down事件销毁grab\_keys属性为true的控件会导致访问NULL指针的问题
 
 * 2020/09/10
   * 重构 widget。

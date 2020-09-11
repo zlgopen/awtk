@@ -489,7 +489,10 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
   uint32_t type = e->type;
   mledit_t* mledit = MLEDIT(widget);
   return_value_if_fail(widget != NULL && mledit != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(widget->visible, RET_OK);
+
+  if (!widget->visible) {
+    return RET_OK;
+  }
 
   switch (type) {
     case EVT_POINTER_DOWN: {

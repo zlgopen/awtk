@@ -128,7 +128,9 @@ static ret_t color_component_on_paint_self(widget_t* widget, canvas_t* c) {
 static ret_t color_component_on_destroy(widget_t* widget) {
   color_component_t* color_component = COLOR_COMPONENT(widget);
 
-  bitmap_destroy((color_component->image));
+  if (color_component->image != NULL) {
+    bitmap_destroy((color_component->image));
+  }
 
   return RET_OK;
 }

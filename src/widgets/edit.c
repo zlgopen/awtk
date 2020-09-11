@@ -630,7 +630,10 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
   uint32_t type = e->type;
   edit_t* edit = EDIT(widget);
   return_value_if_fail(widget != NULL && edit != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(widget->visible, RET_OK);
+
+  if (!widget->visible) {
+    return RET_OK;
+  }
 
   if (edit->readonly) {
     if (type == EVT_RESIZE || type == EVT_MOVE_RESIZE) {

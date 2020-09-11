@@ -85,9 +85,12 @@ ret_t widget_set_self_layout(widget_t* widget, const char* params) {
       return RET_OK;
     }
     self_layouter_destroy(widget->self_layout);
+    widget->self_layout = NULL;
   }
 
-  widget->self_layout = self_layouter_create(params);
+  if (params[0] != '\0') {
+    widget->self_layout = self_layouter_create(params);
+  }
 
   if (widget->self_layout != NULL) {
     str_set(&(widget->self_layout->params), params);
