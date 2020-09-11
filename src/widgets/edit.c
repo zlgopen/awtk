@@ -113,7 +113,6 @@ ret_t edit_on_paint_self(widget_t* widget, canvas_t* c) {
   edit_t* edit = EDIT(widget);
   return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
 
-  edit->model->c = c;
   if (edit->readonly) {
     if (tk_str_eq(widget->vt->type, WIDGET_TYPE_COMBO_BOX))
       text_edit_set_cursor(edit->model, 0);

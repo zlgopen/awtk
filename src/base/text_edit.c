@@ -44,6 +44,7 @@
 
 #include "stb/stb_textedit.h"
 
+#define GET_CANVAS(text_edit) widget_get_canvas(WIDGET(text_edit->widget))
 typedef struct _text_layout_info_t {
   int32_t w;
   int32_t h;
@@ -94,6 +95,7 @@ typedef struct _text_edit_impl_t {
   bool_t mask;
   wstr_t tips;
 
+  bool_t need_layout;
   void* on_state_changed_ctx;
   text_edit_on_state_changed_t on_state_changed;
 } text_edit_impl_t;
@@ -266,7 +268,7 @@ static row_info_t* text_edit_single_line_layout_line(text_edit_t* text_edit, uin
   uint32_t y = 0;
   uint32_t caret_x = 0;
   DECL_IMPL(text_edit);
-  canvas_t* c = text_edit->c;
+  canvas_t* c = GET_CANVAS(text_edit);
   wstr_t* text = &(text_edit->widget->text);
   STB_TexteditState* state = &(impl->state);
   row_info_t* row = impl->rows->info + row_num;
@@ -305,7 +307,7 @@ static row_info_t* text_edit_multi_line_layout_line(text_edit_t* text_edit, uint
   uint32_t x = 0;
   DECL_IMPL(text_edit);
   wchar_t last_char = 0;
-  canvas_t* c = text_edit->c;
+  canvas_t* c = GET_CANVAS(text_edit);
   wstr_t* text = &(text_edit->widget->text);
   STB_TexteditState* state = &(impl->state);
   row_info_t* row = impl->rows->info + row_num;
@@ -393,22 +395,20 @@ static ret_t text_edit_layout_impl(text_edit_t* text_edit) {
   uint32_t offset = 0;
   DECL_IMPL(text_edit);
   row_info_t* iter = NULL;
+  canvas_t* c = GET_CANVAS(text_edit);
   uint32_t max_rows = impl->rows->capacity;
   wstr_t* text = &(text_edit->widget->text);
   uint32_t size = text_edit->widget->text.size;
   text_layout_info_t* layout_info = &(impl->layout_info);
-  uint32_t char_w = canvas_measure_text(text_edit->c, text->str, 1) + CHAR_SPACING;
+  uint32_t char_w = canvas_measure_text(c, text->str, 1) + CHAR_SPACING;
   impl->caret.x = 0;
   impl->caret.y = 0;
   impl->rows->size = 0;
 
-  if (text_edit->c == NULL) {
-    return RET_OK;
-  }
+  return_value_if_fail(c != NULL, RET_BAD_PARAMS);
 
-  widget_prepare_text_style(text_edit->widget, text_edit->c);
-  impl->line_height = text_edit->c->font_size * FONT_BASELINE;
-
+  widget_prepare_text_style(text_edit->widget, c);
+  impl->line_height = c->font_size * FONT_BASELINE;
   widget_get_text_layout_info(text_edit->widget, layout_info);
 
   if (layout_info->w < char_w) {
@@ -428,7 +428,7 @@ static ret_t text_edit_layout_impl(text_edit_t* text_edit) {
     impl->state.cursor = offset;
     impl->last_line_number = max_rows;
     text_edit_set_caret_pos(impl, iter->x, offset ? impl->line_height * (i - 1) : 0,
-                            text_edit->c->font_size);
+                            c->font_size);
   } else if (offset < size) {
     text->size = offset;
     text->str[offset] = 0;
@@ -442,7 +442,7 @@ static ret_t text_edit_layout_impl(text_edit_t* text_edit) {
 }
 
 ret_t text_edit_layout(text_edit_t* text_edit) {
-  if (text_edit == NULL || text_edit->c == NULL || text_edit->widget == NULL ||
+  if (text_edit == NULL || GET_CANVAS(text_edit) == NULL || text_edit->widget == NULL ||
       text_edit->widget->initializing || text_edit->widget->loading) {
     return RET_BAD_PARAMS;
   }
@@ -452,8 +452,9 @@ ret_t text_edit_layout(text_edit_t* text_edit) {
 
 static void text_edit_layout_for_stb(StbTexteditRow* row, STB_TEXTEDIT_STRING* str, int offset) {
   DECL_IMPL(str);
-  if (str->c == NULL) return;
-  uint32_t font_size = str->c->font_size;
+  canvas_t* c = GET_CANVAS(str);
+  if (c == NULL) return;
+  uint32_t font_size = c->font_size;
   row_info_t* info = rows_find_by_offset(impl->rows, offset);
 
   if (info != NULL) {
@@ -509,7 +510,7 @@ static ret_t text_edit_paint_tips_text(text_edit_t* text_edit, canvas_t* c) {
 
 static int32_t text_edit_calc_x(text_edit_t* text_edit, row_info_t* iter) {
   DECL_IMPL(text_edit);
-  canvas_t* c = text_edit->c;
+  canvas_t* c = GET_CANVAS(text_edit);
   widget_t* widget = text_edit->widget;
   wstr_t* text = &(widget->text);
   wchar_t chr = impl->mask ? impl->mask_char : 0;
@@ -657,10 +658,7 @@ static ret_t text_edit_do_paint(text_edit_t* text_edit, canvas_t* c) {
   DECL_IMPL(text_edit);
   return_value_if_fail(text_edit != NULL && c != NULL, RET_BAD_PARAMS);
 
-  if (text_edit->c != NULL) {
-    text_edit->c = c;
-  } else {
-    text_edit->c = c;
+  if (impl->need_layout) {
     text_edit_layout(text_edit);
   }
 
@@ -693,10 +691,7 @@ ret_t text_edit_paint(text_edit_t* text_edit, canvas_t* c) {
   DECL_IMPL(text_edit);
   text_layout_info_t* layout_info = &(impl->layout_info);
 
-  if (text_edit->c != NULL) {
-    text_edit->c = c;
-  } else {
-    text_edit->c = c;
+  if (impl->need_layout) {
     text_edit_layout(text_edit);
   }
 
@@ -730,7 +725,7 @@ static int text_edit_get_char_width(STB_TEXTEDIT_STRING* str, int pos, int offse
   if (chr == STB_TEXTEDIT_NEWLINE) {
     return STB_TEXTEDIT_GETWIDTH_NEWLINE;
   } else {
-    return canvas_measure_text(str->c, &chr, 1) + CHAR_SPACING;
+    return canvas_measure_text(GET_CANVAS(str), &chr, 1) + CHAR_SPACING;
   }
 }
 
@@ -783,6 +778,7 @@ text_edit_t* text_edit_create(widget_t* widget, bool_t single_line) {
   impl = TKMEM_ZALLOC(text_edit_impl_t);
   return_value_if_fail(impl != NULL, NULL);
 
+  impl->need_layout = TRUE;
   impl->wrap_word = !single_line;
   impl->text_edit.widget = widget;
   impl->single_line = single_line;
@@ -835,7 +831,6 @@ ret_t text_edit_set_max_rows(text_edit_t* text_edit, uint32_t max_rows) {
 ret_t text_edit_set_canvas(text_edit_t* text_edit, canvas_t* canvas) {
   return_value_if_fail(text_edit != NULL && canvas != NULL, RET_BAD_PARAMS);
 
-  text_edit->c = canvas;
   text_edit_layout(text_edit);
 
   return RET_OK;
@@ -859,7 +854,7 @@ ret_t text_edit_click(text_edit_t* text_edit, xy_t x, xy_t y) {
   DECL_IMPL(text_edit);
   return_value_if_fail(impl != NULL, RET_BAD_PARAMS);
 
-  widget_prepare_text_style(text_edit->widget, text_edit->c);
+  widget_prepare_text_style(text_edit->widget, GET_CANVAS(text_edit));
   point = text_edit_normalize_point(text_edit, x, y);
   stb_textedit_click(text_edit, &(impl->state), point.x, point.y);
   text_edit_layout(text_edit);
@@ -872,7 +867,7 @@ ret_t text_edit_drag(text_edit_t* text_edit, xy_t x, xy_t y) {
   DECL_IMPL(text_edit);
   return_value_if_fail(impl != NULL, RET_BAD_PARAMS);
 
-  widget_prepare_text_style(text_edit->widget, text_edit->c);
+  widget_prepare_text_style(text_edit->widget, GET_CANVAS(text_edit));
   point = text_edit_normalize_point(text_edit, x, y);
   stb_textedit_drag(text_edit, &(impl->state), point.x, point.y);
   text_edit_layout(text_edit);

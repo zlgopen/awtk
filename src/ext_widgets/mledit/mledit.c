@@ -639,10 +639,11 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       widget_t* vscroll_bar = widget_lookup_by_type(widget, WIDGET_TYPE_SCROLL_BAR_DESKTOP, TRUE);
 
       if (vscroll_bar != NULL) {
+        int32_t font_size = style_get_int(widget->astyle, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
         if (delta > 0) {
-          scroll_bar_add_delta(vscroll_bar, -text_edit->c->font_size * mledit->scroll_line);
+          scroll_bar_add_delta(vscroll_bar, -font_size * mledit->scroll_line);
         } else if (delta < 0) {
-          scroll_bar_add_delta(vscroll_bar, text_edit->c->font_size * mledit->scroll_line);
+          scroll_bar_add_delta(vscroll_bar, font_size * mledit->scroll_line);
         }
       } else {
         if (delta > 0) {

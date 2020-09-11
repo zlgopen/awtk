@@ -57,7 +57,6 @@ typedef ret_t (*text_edit_on_state_changed_t)(void* ctx, text_edit_state_t* stat
  * @class text_edit_t
  */
 typedef struct _text_edit_t {
-  canvas_t* c;
   widget_t* widget;
 
 } text_edit_t;
