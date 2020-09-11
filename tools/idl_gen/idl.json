@@ -25236,6 +25236,37 @@
           "type": "uint32_t",
           "desc": "返回字符出现的次数。"
         }
+      },
+      {
+        "params": [
+          {
+            "type": "uint32_t",
+            "name": "img_w",
+            "desc": "图片宽度。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "img_h",
+            "desc": "图片宽度。"
+          },
+          {
+            "type": "const char*",
+            "name": "region",
+            "desc": "region。"
+          },
+          {
+            "type": "rect_t*",
+            "name": "r",
+            "desc": "返回具体位置。"
+          }
+        ],
+        "annotation": {},
+        "desc": "解析子图的区域信息。",
+        "name": "image_region_parse",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
       }
     ],
     "events": [],
@@ -35284,6 +35315,44 @@
         },
         "desc": "绘制图片。",
         "name": "canvas_draw_image_ex",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "bitmap_t*",
+            "name": "img",
+            "desc": "图片对象。"
+          },
+          {
+            "type": "image_draw_type_t",
+            "name": "draw_type",
+            "desc": "绘制类型。"
+          },
+          {
+            "type": "rect_t*",
+            "name": "src",
+            "desc": "源区域。"
+          },
+          {
+            "type": "rect_t*",
+            "name": "dst",
+            "desc": "目的区域。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "绘制图片。",
+        "name": "canvas_draw_image_ex2",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
