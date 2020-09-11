@@ -575,7 +575,10 @@ def gen_res_all_font():
                     gen_res_bitmap_font(input_dir, font_options, THEME)
 
             # 对default_full的特殊处理，兼容awtk的demos
-            IS_AWTK_DEMO = INPUT_DIR == join_path(AWTK_ROOT, 'demos/assets/default/raw')
+            IS_AWTK_DEMO = False
+            if os.path.exists('scripts/update_res_common.py'):
+                IS_AWTK_DEMO = True
+
             raw = join_path(INPUT_DIR, 'fonts/default_full.ttf')
             if IS_AWTK_DEMO and os.path.exists(raw):
                 text = join_path(INPUT_DIR, 'fonts/text.txt')

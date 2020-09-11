@@ -462,6 +462,12 @@
 #include "assets/default/inc/fonts/default_full.res"
 #include "assets/default/inc/fonts/trado.res"
 #else /*WITH_TRUETYPE_FONT*/
+#include "assets/default/inc/fonts/default_16.data"
+#include "assets/default/inc/fonts/default_18.data"
+#include "assets/default/inc/fonts/default_20.data"
+#include "assets/default/inc/fonts/default_24.data"
+#include "assets/default/inc/fonts/default_32.data"
+#include "assets/default/inc/fonts/default_96.data"
 #endif /*WITH_TRUETYPE_FONT*/
 #include "assets/default/inc/scripts/dummy.res"
 #endif /*WITH_FS_RES*/
@@ -794,6 +800,12 @@ ret_t assets_init(void) {
   assets_manager_add(am, font_default_full);
   assets_manager_add(am, font_trado);
 #else /*WITH_TRUETYPE_FONT*/
+  assets_manager_add(am, font_default_16);
+  assets_manager_add(am, font_default_18);
+  assets_manager_add(am, font_default_20);
+  assets_manager_add(am, font_default_24);
+  assets_manager_add(am, font_default_32);
+  assets_manager_add(am, font_default_96);
 #endif /*WITH_TRUETYPE_FONT*/
   assets_manager_add(am, script_dummy);
 #endif
