@@ -832,3 +832,39 @@ uint32_t tk_wstr_count_c(const wchar_t* str, wchar_t c) {
 
   return nr;
 }
+
+ret_t image_region_parse(uint32_t img_w, uint32_t img_h, const char* region, rect_t* r) {
+  return_value_if_fail(r != NULL && region != NULL, RET_BAD_PARAMS);
+  if (*region == '#') {
+    region++;
+  }
+
+  if (strncmp(region, "xywh(", 5) == 0) {
+    int x = 0;
+    int y = 0;
+    int w = 0;
+    int h = 0;
+    ENSURE(tk_sscanf(region, "xywh(%d,%d,%d,%d)", &x, &y, &w, &h) == 4);
+
+    *r = rect_init(x, y, w, h);
+    return RET_OK;
+  } else if (strncmp(region, "grid(", 5) == 0) {
+    int rows = 0;
+    int cols = 0;
+    int row = 0;
+    int col = 0;
+    int tile_w = 0;
+    int tile_h = 0;
+    ENSURE(tk_sscanf(region, "grid(%d,%d,%d,%d)", &rows, &cols, &row, &col) == 4);
+    return_value_if_fail(rows > 0 && cols > 0 && row >= 0 && col >= 0, RET_FAIL);
+    return_value_if_fail(rows > row && cols > col, RET_FAIL);
+
+    tile_w = img_w / cols;
+    tile_h = img_h / rows;
+
+    *r = rect_init(col * tile_w, row * tile_h, tile_w, tile_h);
+    return RET_OK;
+  }
+
+  return RET_FAIL;
+}

@@ -128,6 +128,7 @@ lcd_t* lcd_log_init(wh_t w, wh_t h) {
 
   base->w = w;
   base->h = h;
+  base->ratio = 1;
   base->support_dirty_rect = TRUE;
 
   return base;

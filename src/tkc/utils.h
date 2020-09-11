@@ -23,6 +23,7 @@
 #define TK_UTILS_H
 
 #include "tkc/str.h"
+#include "tkc/rect.h"
 #include "tkc/types_def.h"
 
 BEGIN_C_DECLS
@@ -578,6 +579,20 @@ wchar_t* tk_wstr_dup_utf8(const char* str);
  * @return {uint32_t} 返回字符出现的次数。
  */
 uint32_t tk_wstr_count_c(const wchar_t* str, wchar_t c);
+
+/**
+ * @method image_region_parse
+ *
+ * 解析子图的区域信息。
+ *
+ * @param {uint32_t} img_w 图片宽度。
+ * @param {uint32_t} img_h 图片宽度。
+ * @param {const char*} region region。
+ * @param {rect_t*} r 返回具体位置。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t image_region_parse(uint32_t img_w, uint32_t img_h, const char* region, rect_t* r);
 
 const char* tk_normalize_key_name(const char* name, char fixed_name[TK_NAME_LEN + 1]);
 

@@ -1,18 +1,22 @@
 # 最新动态
+* 2020/09/11
+  * 支持 packed 图片。
+  * 增加 [如何使用 packed 图](docs/how_to_use_packed_image.md)
+
 * 2020/09/10
-  * 重构widget。
+  * 重构 widget。
   * 修复使用标准内存分配器同时启用内存泄漏检测时没有加锁的问题。
 
 * 2020/09/09
-  * istream 增加eos/tell接口。
-  * 增加函数tk\_istream\_read\_line\_str
+  * istream 增加 eos/tell 接口。
+  * 增加函数 tk\_istream\_read\_line\_str
   * 去掉一些不必要的警告信息（感谢福明提供补丁）。
-  * 完善image_gen（感谢朝泽提供补丁）。
+  * 完善 image_gen（感谢朝泽提供补丁）。
 
 * 2020/09/06
   * 支持多点手势识别事件（旋转和缩放），目前对接 SDL 的多点手势事件，支持 Android、iOS、windows、linux(desktop) 和 MacOS。其它系统需要自己识别后上报事件。
-  * 增加函数widget\_set\_child\_text\_with\_int
-  * 增加[《利用 app_helper 编写 SConstruct》](docs/app_helper_usage.md)
+  * 增加函数 widget\_set\_child\_text\_with\_int
+  * 增加 [《利用 app_helper 编写 SConstruct》](docs/app_helper_usage.md)
 
 * 2020/09/04
   * 完善 ringbuffer（感谢网友 J, 提供补丁）

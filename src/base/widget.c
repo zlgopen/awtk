@@ -62,7 +62,6 @@ static ret_t widget_on_paint_done(widget_t* widget, canvas_t* c);
 static ret_t widget_on_paint_begin(widget_t* widget, canvas_t* c);
 static ret_t widget_on_paint_end(widget_t* widget, canvas_t* c);
 
-
 typedef widget_t* (*widget_find_wanted_focus_widget_t)(widget_t* widget, darray_t* all_focusable);
 static ret_t widget_move_focus(widget_t* widget, widget_find_wanted_focus_widget_t find);
 
@@ -1328,9 +1327,34 @@ ret_t widget_fill_rect(widget_t* widget, canvas_t* c, rect_t* r, bool_t bg,
   }
 
   if (image_name != NULL && *image_name && r->w > 0 && r->h > 0) {
+    char name[MAX_PATH + 1];
+    const char* region = strrchr(image_name, '#');
+    if (region != NULL) {
+      memset(name, 0x00, sizeof(name));
+      tk_strncpy(name, image_name, region - image_name);
+      image_name = name;
+    }
+
     if (widget_load_image(widget, image_name, &img) == RET_OK) {
       draw_type = (image_draw_type_t)style_get_int(style, draw_type_key, draw_type);
-      canvas_draw_image_ex(c, &img, draw_type, r);
+
+      if (region == NULL) {
+        canvas_draw_image_ex(c, &img, draw_type, r);
+      } else {
+        rect_t src;
+        rect_t dst = *r;
+        if (tk_str_eq(region, "#")) {
+          src = rect_init(widget->x, widget->y, widget->w, widget->h);
+        } else if (tk_str_eq(region, "#g")) {
+          point_t p = {widget->x, widget->y};
+          widget_to_global(widget, &p);
+          src = rect_init(p.x, p.y, widget->w, widget->h);
+        } else {
+          image_region_parse(img.w, img.h, region, &src);
+        }
+
+        canvas_draw_image_ex2(c, &img, draw_type, &src, &dst);
+      }
     }
   }
 

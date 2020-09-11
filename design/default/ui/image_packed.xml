@@ -1,0 +1,16 @@
+<window>
+  <view style="image_packed" x="c" y="m" w="320" h="216" children_layout="default(r=4,c=3)">
+    <button style="num_1"/>
+    <button style="num_2"/>
+    <button style="num_3"/>
+    <button style="num_4"/>
+    <button style="num_5"/>
+    <button style="num_6"/>
+    <button style="num_7"/>
+    <button style="num_8"/>
+    <button style="num_9"/>
+    <button style="dot"/>
+    <button style="num_0"/>
+    <button style="backspace"/>
+  </view>
+</window>

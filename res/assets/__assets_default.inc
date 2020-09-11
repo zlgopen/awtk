@@ -27,6 +27,7 @@
 #include "default/inc/styles/system_bar.data"
 #include "default/inc/styles/tab_bottom_compact.data"
 #include "default/inc/styles/dialog_warn.data"
+#include "default/inc/styles/image_packed.data"
 #include "default/inc/ui/menu_up_right.data"
 #include "default/inc/ui/kb_ascii.data"
 #include "default/inc/ui/vgcanvas.data"
@@ -159,6 +160,7 @@
 #include "default/inc/ui/color_picker_rgb.data"
 #include "default/inc/ui/tab_bottom_compact.data"
 #include "default/inc/ui/popup.data"
+#include "default/inc/ui/image_packed.data"
 #include "default/inc/ui/kb_uint.data"
 #include "default/inc/ui/scroll_view_v.data"
 #include "default/inc/xml/test.data"
@@ -227,6 +229,7 @@
 #include "default/inc/images/arrow_left_n.res"
 #include "default/inc/images/middle_on.res"
 #include "default/inc/images/bricks.res"
+#include "default/inc/images/image_packed_bg.res"
 #include "default/inc/images/msg.res"
 #include "default/inc/images/play_o.res"
 #include "default/inc/images/play_n.res"
@@ -286,6 +289,7 @@
 #include "default/inc/images/clock_minute.res"
 #include "default/inc/images/cross.res"
 #include "default/inc/images/clock.res"
+#include "default/inc/images/image_packed_fg.res"
 #include "default/inc/images/find.res"
 #include "default/inc/images/ani9.res"
 #include "default/inc/images/arrow_up_p.res"
@@ -358,6 +362,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, style_system_bar);
   assets_manager_add(am, style_tab_bottom_compact);
   assets_manager_add(am, style_dialog_warn);
+  assets_manager_add(am, style_image_packed);
   assets_manager_add(am, ui_menu_up_right);
   assets_manager_add(am, ui_kb_ascii);
   assets_manager_add(am, ui_vgcanvas);
@@ -490,6 +495,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, ui_color_picker_rgb);
   assets_manager_add(am, ui_tab_bottom_compact);
   assets_manager_add(am, ui_popup);
+  assets_manager_add(am, ui_image_packed);
   assets_manager_add(am, ui_kb_uint);
   assets_manager_add(am, ui_scroll_view_v);
   assets_manager_add(am, xml_test);
@@ -557,6 +563,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, image_arrow_left_n);
   assets_manager_add(am, image_middle_on);
   assets_manager_add(am, image_bricks);
+  assets_manager_add(am, image_image_packed_bg);
   assets_manager_add(am, image_msg);
   assets_manager_add(am, image_play_o);
   assets_manager_add(am, image_play_n);
@@ -616,6 +623,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, image_clock_minute);
   assets_manager_add(am, image_cross);
   assets_manager_add(am, image_clock);
+  assets_manager_add(am, image_image_packed_fg);
   assets_manager_add(am, image_find);
   assets_manager_add(am, image_ani9);
   assets_manager_add(am, image_arrow_up_p);

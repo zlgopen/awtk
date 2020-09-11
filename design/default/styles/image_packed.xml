@@ -1,0 +1,55 @@
+<button>
+	<style name="num_1">
+		<normal />
+		<pressed bg_image="image_packed_fg#xywh(0,0,106,54)" />
+	</style>
+	<style name="num_2">
+		<normal />
+		<pressed bg_image="image_packed_fg#xywh(106,0,106,54)" />
+	</style>
+	<style name="num_3">
+		<normal />
+		<pressed bg_image="image_packed_fg#grid(4,3,0,2)" />
+	</style>
+	<style name="num_4">
+		<normal />
+		<pressed bg_image="image_packed_fg#grid(4,3,1,0)" />
+	</style>
+	<style name="num_5">
+		<normal />
+		<pressed bg_image="image_packed_fg#grid(4,3,1,1)" />
+	</style>
+	<style name="num_6">
+		<normal />
+		<pressed bg_image="image_packed_fg#grid(4,3,1,2)" />
+	</style>
+	<style name="num_7">
+		<normal />
+		<pressed bg_image="image_packed_fg#grid(4,3,2,0)" />
+	</style>
+	<style name="num_8">
+		<normal />
+		<pressed bg_image="image_packed_fg#grid(4,3,2,1)" />
+	</style>
+	<style name="num_9">
+		<normal />
+		<pressed bg_image="image_packed_fg#grid(4,3,2,2)" />
+	</style>
+	<style name="dot">
+		<normal />
+		<pressed bg_image="image_packed_fg#" />
+	</style>
+	<style name="num_0">
+		<normal />
+		<pressed bg_image="image_packed_fg#" />
+	</style>
+	<style name="backspace">
+		<normal />
+		<pressed bg_image="image_packed_fg#" />
+	</style>
+</button>
+<view>
+	<style name="image_packed">
+		<normal bg_image="image_packed_bg" />
+	</style>
+</view>

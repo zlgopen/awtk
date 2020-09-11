@@ -368,3 +368,42 @@ TEST(Utils, tk_watoi_n) {
   ASSERT_EQ(tk_watoi_n(L"1234", 3), 123);
   ASSERT_EQ(tk_watoi_n(L"1234", 4), 1234);
 }
+
+TEST(Utils, image_region_parse) {
+  rect_t r;
+  ASSERT_EQ(image_region_parse(100, 100, "xywh(1,2,3,4)", &r), RET_OK);
+  ASSERT_EQ(r.x, 1);
+  ASSERT_EQ(r.y, 2);
+  ASSERT_EQ(r.w, 3);
+  ASSERT_EQ(r.h, 4);
+
+  ASSERT_EQ(image_region_parse(200, 200, "xywh(0,0,106,72)", &r), RET_OK);
+  ASSERT_EQ(r.x, 0);
+  ASSERT_EQ(r.y, 0);
+  ASSERT_EQ(r.w, 106);
+  ASSERT_EQ(r.h, 72);
+
+  ASSERT_EQ(image_region_parse(100, 100, "grid(4,4,0,0)", &r), RET_OK);
+  ASSERT_EQ(r.x, 0);
+  ASSERT_EQ(r.y, 0);
+  ASSERT_EQ(r.w, 25);
+  ASSERT_EQ(r.h, 25);
+
+  ASSERT_EQ(image_region_parse(100, 100, "grid(4,4,1,0)", &r), RET_OK);
+  ASSERT_EQ(r.x, 0);
+  ASSERT_EQ(r.y, 25);
+  ASSERT_EQ(r.w, 25);
+  ASSERT_EQ(r.h, 25);
+
+  ASSERT_EQ(image_region_parse(100, 100, "grid(4,4,1,1)", &r), RET_OK);
+  ASSERT_EQ(r.x, 25);
+  ASSERT_EQ(r.y, 25);
+  ASSERT_EQ(r.w, 25);
+  ASSERT_EQ(r.h, 25);
+
+  ASSERT_EQ(image_region_parse(100, 100, "grid(4,4,3,3)", &r), RET_OK);
+  ASSERT_EQ(r.x, 75);
+  ASSERT_EQ(r.y, 75);
+  ASSERT_EQ(r.w, 25);
+  ASSERT_EQ(r.h, 25);
+}

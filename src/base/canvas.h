@@ -603,6 +603,22 @@ ret_t canvas_draw_image_ex(canvas_t* c, bitmap_t* img, image_draw_type_t draw_ty
                            const rect_t* dst);
 
 /**
+ * @method canvas_draw_image_ex2
+ * 绘制图片。
+ *
+ * @annotation ["scriptable"]
+ * @param {canvas_t*} c canvas对象。
+ * @param {bitmap_t*} img 图片对象。
+ * @param {image_draw_type_t} draw_type 绘制类型。
+ * @param {rect_t*} src 源区域。
+ * @param {rect_t*} dst 目的区域。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t canvas_draw_image_ex2(canvas_t* c, bitmap_t* img, image_draw_type_t draw_type, rect_t* src,
+                            rect_t* dst);
+
+/**
  * @method canvas_get_vgcanvas
  * 获取vgcanvas对象。
  *
