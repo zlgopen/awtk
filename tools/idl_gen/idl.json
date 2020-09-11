@@ -18981,7 +18981,7 @@
         "annotation": {
           "scriptable": true
         },
-        "desc": "启用指定的主题。",
+        "desc": "启用指定的style。",
         "name": "widget_use_style",
         "return": {
           "type": "ret_t",
@@ -20713,6 +20713,114 @@
           {
             "type": "widget_t*",
             "name": "widget",
+            "desc": "widget对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "检查控件是否是system bar类型。",
+        "name": "widget_is_system_bar",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回FALSE表示不是，否则表示是。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "检查控件是否是普通窗口类型。",
+        "name": "widget_is_normal_window",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回FALSE表示不是，否则表示是。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "检查控件是否是对话框类型。",
+        "name": "widget_is_dialog",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回FALSE表示不是，否则表示是。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "检查控件是否是弹出窗口类型。",
+        "name": "widget_is_popup",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回FALSE表示不是，否则表示是。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "检查控件弹出窗口控件是否已经打开了（而非挂起状态）。",
+        "name": "widget_is_opened_popup",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回FALSE表示不是，否则表示是。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "判断当前控件是否是keyboard。\n\n> keyboard收到pointer事件时，不会让当前控件失去焦点。\n\n在自定义软键盘时，将所有按钮放到一个容器当中，并设置为is_keyboard。\n\n```c\nwidget_set_prop_bool(group, WIDGET_PROP_IS_KEYBOARD, TRUE);\n```",
+        "name": "widget_is_keyboard",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
             "desc": "控件对象。"
           }
         ],
@@ -21160,24 +21268,6 @@
         },
         "desc": "减少控件的引用计数。引用计数为0时销毁控件。",
         "name": "widget_unref",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "控件对象。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "判断当前控件是否是keyboard。\n\n> keyboard收到pointer事件时，不会让当前控件失去焦点。\n\n在自定义软键盘时，将所有按钮放到一个容器当中，并设置为is_keyboard。\n\n```c\nwidget_set_prop_bool(group, WIDGET_PROP_IS_KEYBOARD, TRUE);\n```",
-        "name": "widget_is_keyboard",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -21714,96 +21804,6 @@
         "return": {
           "type": "const char*",
           "desc": "返回状态值。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "widget对象。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "检查控件是否是system bar类型。",
-        "name": "widget_is_system_bar",
-        "return": {
-          "type": "bool_t",
-          "desc": "返回FALSE表示不是，否则表示是。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "widget对象。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "检查控件是否是普通窗口类型。",
-        "name": "widget_is_normal_window",
-        "return": {
-          "type": "bool_t",
-          "desc": "返回FALSE表示不是，否则表示是。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "widget对象。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "检查控件是否是对话框类型。",
-        "name": "widget_is_dialog",
-        "return": {
-          "type": "bool_t",
-          "desc": "返回FALSE表示不是，否则表示是。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "widget对象。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "检查控件是否是弹出窗口类型。",
-        "name": "widget_is_popup",
-        "return": {
-          "type": "bool_t",
-          "desc": "返回FALSE表示不是，否则表示是。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "widget_t*",
-            "name": "widget",
-            "desc": "widget对象。"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "检查控件弹出窗口控件是否已经打开了（而非挂起状态）。",
-        "name": "widget_is_opened_popup",
-        "return": {
-          "type": "bool_t",
-          "desc": "返回FALSE表示不是，否则表示是。"
         }
       },
       {
@@ -30948,6 +30948,10 @@
       {
         "desc": "增加子项。\n>参数为属性的名称或路径。",
         "name": "OBJECT_CMD_ADD"
+      },
+      {
+        "desc": "显示对象详细信息。\n>参数为属性的名称或路径。",
+        "name": "OBJECT_CMD_DETAIL"
       },
       {
         "desc": "编辑子项。\n>参数为属性的名称或路径。",
@@ -54261,12 +54265,12 @@
           {
             "type": "float",
             "name": "rotation",
-            "desc": "旋转角度(幅度)。"
+            "desc": "旋转角度(幅度)增量。"
           },
           {
             "type": "float",
             "name": "distance",
-            "desc": "两点间的距离。"
+            "desc": "两点间的距离增量。(-1,0)表示缩小，(0-1)表示增加。"
           },
           {
             "type": "uint32_t",
@@ -54314,7 +54318,7 @@
       },
       {
         "name": "rotation",
-        "desc": "旋转角度(幅度)。",
+        "desc": "旋转角度(幅度)增量。",
         "type": "float",
         "annotation": {
           "readable": true,
@@ -54323,7 +54327,7 @@
       },
       {
         "name": "distance",
-        "desc": "两点间的距离。",
+        "desc": "两点间的距离增量。(-1,0)表示缩小，(0-1)表示增加。",
         "type": "float",
         "annotation": {
           "readable": true,
@@ -54341,7 +54345,7 @@
       }
     ],
     "header": "base/events.h",
-    "desc": "指针事件。",
+    "desc": "多点触摸手势事件。",
     "name": "multi_gesture_event_t",
     "annotation": {
       "scriptable": true
@@ -58822,6 +58826,38 @@
             "type": "tk_istream_t*",
             "name": "stream",
             "desc": "istream对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取当前读取位置。",
+        "name": "tk_istream_tell",
+        "return": {
+          "type": "int32_t",
+          "desc": "返回负数表示失败，否则返回当前读取位置。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_istream_t*",
+            "name": "stream",
+            "desc": "istream对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "判断数据是否读完。",
+        "name": "tk_istream_eos",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回TRUE表示数据读完，否则表示还有数据。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_istream_t*",
+            "name": "stream",
+            "desc": "istream对象。"
           },
           {
             "type": "uint32_t",
@@ -58914,6 +58950,23 @@
           "type": "int32_t",
           "desc": "返回负数表示读取失败，否则返回实际读取数据的长度。"
         }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_istream_t*",
+            "name": "stream",
+            "desc": "istream对象。"
+          },
+          {
+            "type": "str_t*",
+            "name": "str",
+            "desc": "返回数据的str对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "读取一行数据。",
+        "name": "tk_istream_read_line_str"
       }
     ],
     "events": [],
