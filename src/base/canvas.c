@@ -1564,7 +1564,7 @@ ret_t canvas_draw_image_ex2(canvas_t* c, bitmap_t* img, image_draw_type_t draw_t
   rect_t src;
   rect_t r_fix;
   rect_t* dst = canvas_fix_rect(dst_in, &r_fix);
-  return_value_if_fail(bitmap_check_rect(img, src_in), FALSE);
+  return_value_if_fail(bitmap_check_rect(img, src_in), RET_BAD_PARAMS);
   return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
 
   switch (draw_type) {
@@ -1782,7 +1782,6 @@ ret_t canvas_draw_text_in_rect(canvas_t* c, const wchar_t* str, uint32_t nr, con
 static ret_t canvas_draw_text_in_rect_ellipses(canvas_t* c, const wchar_t* str, uint32_t nr,
                                                const rect_t* r_in, bidi_type_t type) {
   uint32_t i = 0;
-  uint32_t x = 0;
   rect_t r = *r_in;
   float_t text_w = 0;
   float_t ellipses_w = canvas_measure_text(c, STR_ELLIPSES, wcslen(STR_ELLIPSES));
@@ -1958,3 +1957,5 @@ ret_t canvas_stroke_rounded_rect_ex(canvas_t* c, rect_t* r, rect_t* bg_r, color_
   return ffr_draw_stroke_rounded_rect_ex(c, r, bg_r, color, radius_tl, radius_tr, radius_bl,
                                          radius_br, border_width);
 }
+
+#include "canvas_offline.inc"
