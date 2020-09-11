@@ -2,6 +2,7 @@
 * 2020/09/11
   * 支持 packed 图片。
   * 增加 [如何使用 packed 图](docs/how_to_use_packed_image.md)
+  * 修复32位LCD窗口动画截图的问题（感谢朝泽提供补丁）。
 
 * 2020/09/10
   * 重构 widget。

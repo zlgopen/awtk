@@ -152,6 +152,7 @@ ret_t window_manager_default_snap_curr_window(widget_t* widget, widget_t* curr_w
   canvas_offline_flush_bitmap(canvas);
   ENSURE(canvas_offline_bitmap_move_to_new_bitmap(canvas, img) == RET_OK);
   ENSURE(canvas_offline_destroy(canvas) == RET_OK);
+  img->flags |= BITMAP_FLAG_OPAQUE;
 #endif
 
   return RET_OK;
@@ -237,6 +238,7 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
   canvas_offline_flush_bitmap(canvas);
   ENSURE(canvas_offline_bitmap_move_to_new_bitmap(canvas, img) == RET_OK);
   ENSURE(canvas_offline_destroy(canvas) == RET_OK);
+  img->flags |= BITMAP_FLAG_OPAQUE;
 #endif /*WITH_NANOVG_GPU*/
 
   if (dialog_highlighter != NULL) {
