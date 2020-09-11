@@ -427,8 +427,7 @@ static ret_t text_edit_layout_impl(text_edit_t* text_edit) {
   if (impl->state.cursor > offset && !impl->single_line) {
     impl->state.cursor = offset;
     impl->last_line_number = max_rows;
-    text_edit_set_caret_pos(impl, iter->x, offset ? impl->line_height * (i - 1) : 0,
-                            c->font_size);
+    text_edit_set_caret_pos(impl, iter->x, offset ? impl->line_height * (i - 1) : 0, c->font_size);
   } else if (offset < size) {
     text->size = offset;
     text->str[offset] = 0;
