@@ -7,8 +7,8 @@
     "activedTheme": "default",
     "outputDir": "res",
     "loadFrom": "any",
-    "const": "resource_data",
     "screenDPR": "x1",
+    "const": "",
     "defaultLanguage": "zh",
     "defaultCountry": "CN",
     "themes": {
