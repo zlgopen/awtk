@@ -1,4 +1,7 @@
 # 最新动态
+* 2020/09/15
+  * 支持长按键事件
+
 * 2020/09/11
   * 支持 packed 图片。
   * 增加 [如何使用 packed 图](docs/how_to_use_packed_image.md)

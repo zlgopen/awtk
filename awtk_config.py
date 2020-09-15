@@ -162,7 +162,7 @@ OS_PROJECTS=[]
 OS_WHOLE_ARCHIVE=''
 if OS_NAME == 'Darwin':
   TOOLS_NAME = ''
-  OS_FLAGS='-g -Wall -fPIC '
+  OS_FLAGS='-g -Wall -fPIC -DWITHOUT_GLAD=1 '
   OS_LIBS = ['stdc++', 'iconv','pthread', 'm', 'dl']
   OS_LINKFLAGS='-framework IOKit -framework Cocoa -framework QuartzCore -framework OpenGL -weak_framework Metal -weak_framework MetalKit'
   COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DHAS_SEM_OPEN '

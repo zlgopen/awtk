@@ -20,6 +20,7 @@
  */
 
 #include "tkc/mem.h"
+#include "tkc/time_now.h"
 #include "base/keys.h"
 #include "base/system_info.h"
 #include "base/input_device_status.h"
@@ -29,6 +30,89 @@ input_device_status_t* input_device_status_init(input_device_status_t* ids) {
   memset(ids, 0x00, sizeof(input_device_status_t));
 
   return ids;
+}
+
+static key_pressed_info_t* input_device_status_find_press_info(input_device_status_t* ids,
+                                                               uint32_t key) {
+  uint32_t i = 0;
+  for (i = 0; i < MAX_PRESSED_KEYS_NR; i++) {
+    key_pressed_info_t* iter = ids->pressed_info + i;
+    if (iter->key == key) {
+      return iter;
+    }
+  }
+
+  return NULL;
+}
+
+static bool_t input_device_status_has_pressed_key(input_device_status_t* ids) {
+  uint32_t i = 0;
+  for (i = 0; i < MAX_PRESSED_KEYS_NR; i++) {
+    key_pressed_info_t* iter = ids->pressed_info + i;
+    if (iter->key) {
+      return TRUE;
+    }
+  }
+
+  return FALSE;
+}
+
+static ret_t input_device_status_dispatch_long_press(input_device_status_t* ids) {
+  uint32_t i = 0;
+  key_event_t evt;
+  uint64_t now = time_now_ms();
+  widget_t* widget = ids->widget;
+
+  for (i = 0; i < MAX_PRESSED_KEYS_NR; i++) {
+    key_pressed_info_t* iter = ids->pressed_info + i;
+    if (iter->key && !iter->emitted) {
+      uint64_t t = now - iter->time;
+      if (t >= TK_LONG_PRESS_TIME) {
+        key_event_init(&evt, EVT_KEY_LONG_PRESS, widget, iter->key);
+        widget_on_keydown(widget, &evt);
+        log_debug("long press:%d\n", iter->key);
+        iter->emitted = TRUE;
+      }
+    }
+  }
+
+  return RET_OK;
+}
+
+static ret_t long_press_check_on_timer(const timer_info_t* info) {
+  input_device_status_t* ids = (input_device_status_t*)(info->ctx);
+
+  input_device_status_dispatch_long_press(ids);
+
+  if (input_device_status_has_pressed_key(ids)) {
+    return RET_REPEAT;
+  } else {
+    ids->long_press_check_timer = TK_INVALID_ID;
+    return RET_REMOVE;
+  }
+}
+
+static ret_t input_device_status_update_key_press_info(input_device_status_t* ids, uint32_t key,
+                                                       bool_t down) {
+  key_pressed_info_t* info = input_device_status_find_press_info(ids, key);
+
+  if (down) {
+    if (info == NULL) {
+      info = input_device_status_find_press_info(ids, 0);
+      return_value_if_fail(info != NULL, RET_BAD_PARAMS);
+      info->key = key;
+      info->time = time_now_ms();
+    }
+
+    if (ids->long_press_check_timer == TK_INVALID_ID) {
+      ids->long_press_check_timer = timer_add(long_press_check_on_timer, ids, TK_LONG_PRESS_TIME);
+    }
+  } else {
+    return_value_if_fail(info != NULL, RET_BAD_PARAMS);
+    memset(info, 0x00, sizeof(key_pressed_info_t));
+  }
+
+  return RET_OK;
 }
 
 static ret_t input_device_status_update_key_status(input_device_status_t* ids, uint32_t key,
@@ -62,6 +146,7 @@ static ret_t input_device_status_update_key_status(input_device_status_t* ids, u
       ids->capslock = !(ids->capslock);
     }
   }
+  input_device_status_update_key_press_info(ids, key, down);
 
   return RET_OK;
 }
@@ -148,6 +233,7 @@ static ret_t input_device_status_init_key_event(input_device_status_t* ids, key_
 ret_t input_device_status_on_input_event(input_device_status_t* ids, widget_t* widget, event_t* e) {
   return_value_if_fail(ids != NULL && e != NULL, RET_BAD_PARAMS);
 
+  ids->widget = widget;
   switch (e->type) {
     case EVT_POINTER_DOWN: {
       pointer_event_t* evt = (pointer_event_t*)e;

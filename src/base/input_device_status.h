@@ -26,6 +26,14 @@
 
 BEGIN_C_DECLS
 
+#define MAX_PRESSED_KEYS_NR 16
+
+typedef struct _key_pressed_info_t {
+  uint32_t key;
+  uint32_t emitted;
+  uint64_t time;
+} key_pressed_info_t;
+
 /**
  * @class input_device_status_t
  * 输入设备状态管理器。本类仅供窗口管理器内部使用。
@@ -47,6 +55,9 @@ typedef struct _input_device_status_t {
   xy_t last_x;
   xy_t last_y;
   bool_t pressed;
+  widget_t* widget;
+  uint32_t long_press_check_timer;
+  key_pressed_info_t pressed_info[MAX_PRESSED_KEYS_NR + 1];
 } input_device_status_t;
 
 /**

@@ -2198,14 +2198,19 @@ ret_t widget_on_keydown(widget_t* widget, key_event_t* e) {
 
   widget_ref(widget);
   widget_map_key(widget, e);
-  ret = widget_on_keydown_impl(widget, e);
-  if (widget->feedback) {
-    ui_feedback_request(widget, (event_t*)e);
-  }
+  if (e->e.type == EVT_KEY_DOWN) {
+    ret = widget_on_keydown_impl(widget, e);
+    if (widget->feedback) {
+      ui_feedback_request(widget, (event_t*)e);
+    }
 
-  e->key = key;
-  if (ret != RET_STOP) {
-    ret = widget_on_keydown_general(widget, e);
+    e->key = key;
+    if (ret != RET_STOP) {
+      ret = widget_on_keydown_general(widget, e);
+    }
+  } else if (e->e.type == EVT_KEY_LONG_PRESS) {
+    return_if_equal(widget_on_keydown_children(widget, e), RET_STOP);
+    ret = widget_on_keydown_after_children(widget, e);
   }
   widget_unref(widget);
 

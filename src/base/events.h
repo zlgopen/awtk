@@ -122,6 +122,11 @@ typedef enum _event_type_t {
    */
   EVT_KEY_DOWN,
   /**
+   * @const EVT_KEY_LONG_PRESS
+   * 键长按事件名(key_event_t)。
+   */
+  EVT_KEY_LONG_PRESS,
+  /**
    * @const EVT_KEY_DOWN_BEFORE_CHILDREN
    * 键按下事件名，在子控件处理之前触发(key_event_t)。
    */
