@@ -728,7 +728,9 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_BLUR: {
-      input_method_request(input_method(), NULL);
+      if (edit->close_im_when_blured) {
+        input_method_request(input_method(), NULL);
+      }
 
       edit_update_status(widget);
       if (!edit_is_valid_value(widget)) {
@@ -890,6 +892,15 @@ ret_t edit_set_open_im_when_focused(widget_t* widget, bool_t open_im_when_focuse
   return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
 
   edit->open_im_when_focused = open_im_when_focused;
+
+  return RET_OK;
+}
+
+ret_t edit_set_close_im_when_blured(widget_t* widget, bool_t close_im_when_blured) {
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
+
+  edit->close_im_when_blured = close_im_when_blured;
 
   return RET_OK;
 }
@@ -1057,6 +1068,9 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_OPEN_IM_WHEN_FOCUSED)) {
     value_set_bool(v, edit->open_im_when_focused);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_CLOSE_IM_WHEN_BLURED)) {
+    value_set_bool(v, edit->close_im_when_blured);
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_LEFT_MARGIN)) {
     value_set_int(v, edit->left_margin);
     return RET_OK;
@@ -1204,6 +1218,9 @@ ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_OPEN_IM_WHEN_FOCUSED)) {
     edit->open_im_when_focused = value_bool(v);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_CLOSE_IM_WHEN_BLURED)) {
+    edit->close_im_when_blured = value_bool(v);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_MARGIN)) {
     int margin = value_int(v);
@@ -1613,6 +1630,7 @@ widget_t* edit_create_ex(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy
   edit->right_margin = 2;
   edit->top_margin = 2;
   edit->bottom_margin = 2;
+  edit->close_im_when_blured = TRUE;
   edit->open_im_when_focused = TRUE;
   edit_set_text_limit(widget, 0, 1024);
 

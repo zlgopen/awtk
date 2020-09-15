@@ -134,6 +134,14 @@ typedef struct _edit_t {
    */
   bool_t open_im_when_focused;
   /**
+   * @property {bool_t} close_im_when_blured
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 
+   * 是否在失去焦点时关闭输入法(默认是)。
+   *
+   */
+  bool_t close_im_when_blured;
+  /**
    * @property {uint8_t} top_margin
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 上边距。
@@ -416,6 +424,18 @@ ret_t edit_set_select_none_when_focused(widget_t* widget, bool_t select_none_whe
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t edit_set_open_im_when_focused(widget_t* widget, bool_t open_im_when_focused);
+
+/**
+ * @method edit_set_close_im_when_blured
+ * 设置编辑器是否在失去焦点时关闭输入法。
+ *
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {bool_t} close_im_when_blured 是否是否在失去焦点时关闭输入法。在失去焦点时关闭输入法。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t edit_set_close_im_when_blured(widget_t* widget, bool_t close_im_when_blured);
 
 /**
  * @method edit_set_input_type
