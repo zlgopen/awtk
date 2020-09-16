@@ -248,15 +248,33 @@ bool_t edit_is_valid_char(widget_t* widget, wchar_t c) {
   }
 }
 
+static bool_t edit_has_selection(widget_t* widget) {
+  text_edit_state_t state;
+  edit_t* edit = EDIT(widget);
+  text_edit_get_state(edit->model, &state);
+
+  return state.select_start != state.select_end;
+}
+
 ret_t edit_input_char(widget_t* widget, wchar_t c) {
+  edit_t* edit = EDIT(widget);
   ret_t ret = RET_BAD_PARAMS;
+  bool_t has_selection1 = FALSE;
+  bool_t has_selection2 = FALSE;
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
+  has_selection1 = edit_has_selection(widget);
   if (edit_pre_input(widget, c) == RET_STOP) {
     return RET_OK;
   }
+  has_selection2 = edit_has_selection(widget);
 
   if (edit_is_valid_char(widget, c)) {
+    if (has_selection1 != has_selection2) {
+      /*selection was cleared by edit_pre_input, should not overwrite the next char*/
+      text_edit_unselect(edit->model);
+    }
+
     ret = edit_do_input_char(widget, c);
     edit_dispatch_event(widget, EVT_VALUE_CHANGING);
   }
