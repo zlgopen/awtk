@@ -964,7 +964,7 @@ static ret_t ffr_draw_fill_rounded_rect(canvas_t* c, const rect_t* r, const colo
 
 static ret_t ffr_draw_stroke_rounded_rect(canvas_t* c, const rect_t* r, const color_t* color, uint32_t radius_tl, uint32_t radius_tr, uint32_t radius_bl, uint32_t radius_br,
                                             uint32_t border_width) {
-                                              
+  color_t tc = *color;                                          
   uint32_t radius = radius_tl != 0 ? radius_tl : (radius_tr != 0 ? radius_tr : (radius_bl != 0 ? radius_bl : radius_br));
 
 #ifndef WITH_NANOVG_GPU
@@ -1009,27 +1009,27 @@ static ret_t ffr_draw_stroke_rounded_rect(canvas_t* c, const rect_t* r, const co
 
     Wu_D_Circle(radius, &point_list_45, point_pix_cache_list);
 
-    canvas_set_stroke_color(c, *color);
+    canvas_set_stroke_color(c, tc);
 
     ffr_image_info_create(&image_info, c);
-    color->rgba.a = color->rgba.a * c->global_alpha / 0xff;
+    tc.rgba.a = tc.rgba.a * c->global_alpha / 0xff;
 
     if (radius_tr > 0) {
       ffr_draw_arc_point_list(&image_info, c, v_x2, v_y1, x2, y1, angle_h, angle_v, radius, FRR_VERTEXT_TYPE_TOP_REIGHT,
-                                color, &tmp_point_list_45, &point_list_45, FALSE);  // 右上角
+                                &tc, &tmp_point_list_45, &point_list_45, FALSE);  // 右上角
     }
     if (radius_tl > 0) {
       ffr_draw_arc_point_list(&image_info, c, v_x1, v_y1, x1, y1, angle_h, angle_v, radius, FRR_VERTEXT_TYPE_TOP_LEFT,
-                                 color, &tmp_point_list_45, &point_list_45, FALSE);  // 左上角
+                                 &tc, &tmp_point_list_45, &point_list_45, FALSE);  // 左上角
     }
     if (radius_bl > 0) {
       ffr_draw_arc_point_list(&image_info, c, v_x1, v_y2, x1, y2, angle_h, angle_v, radius, FRR_VERTEXT_TYPE_BOTTOM_LEFT,
-                                color, &tmp_point_list_45, &point_list_45, FALSE);  // 左下角
+                                &tc, &tmp_point_list_45, &point_list_45, FALSE);  // 左下角
     }
 
     if (radius_br > 0) {
       ffr_draw_arc_point_list(&image_info, c, v_x2, v_y2, x2, y2, angle_h, angle_v, radius, FRR_VERTEXT_TYPE_BOTTOM_REIGHT,
-                                color, &tmp_point_list_45, &point_list_45, FALSE);  // 右下角
+                                &tc, &tmp_point_list_45, &point_list_45, FALSE);  // 右下角
     }
 
     if (mid_lenght_v != 0) {
@@ -1097,7 +1097,7 @@ static ret_t ffr_draw_stroke_rounded_rect(canvas_t* c, const rect_t* r, const co
       frr_draw_info_t draw_infos[FRR_VERTEXT_TYPE_COUNT] = {0};
       ffr_draw_rounded_rect_draw_info_init(draw_infos, r, radius_tl, radius_tr, radius_bl, radius_br);
 
-      ffr_draw_rounded_rect_draw_with_vg(c, vg, border_width, color, draw_infos);
+      ffr_draw_rounded_rect_draw_with_vg(c, vg, border_width, &tc, draw_infos);
     } else {
       return RET_FAIL;
     }
