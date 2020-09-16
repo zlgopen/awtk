@@ -4889,6 +4889,10 @@
         "name": "EVT_KEY_DOWN"
       },
       {
+        "desc": "键长按事件名(key_event_t)。",
+        "name": "EVT_KEY_LONG_PRESS"
+      },
+      {
         "desc": "键按下事件名，在子控件处理之前触发(key_event_t)。",
         "name": "EVT_KEY_DOWN_BEFORE_CHILDREN"
       },
@@ -9991,7 +9995,7 @@
             "desc": "lcd对象。"
           },
           {
-            "type": "rect_t*",
+            "type": "const rect_t*",
             "name": "dirty_rect",
             "desc": "需要绘制的区域。"
           },
@@ -10017,7 +10021,7 @@
             "desc": "lcd对象。"
           },
           {
-            "type": "rect_t*",
+            "type": "const rect_t*",
             "name": "rect",
             "desc": "裁剪区域。"
           }
@@ -10407,7 +10411,7 @@
             "desc": "字模"
           },
           {
-            "type": "rect_t*",
+            "type": "const rect_t*",
             "name": "src",
             "desc": "只绘制指定区域的部分。"
           },
@@ -10505,12 +10509,12 @@
             "desc": "图片。"
           },
           {
-            "type": "rect_t*",
+            "type": "const rect_t*",
             "name": "src",
             "desc": "只绘制指定区域的部分。"
           },
           {
-            "type": "rect_t*",
+            "type": "const rect_t*",
             "name": "dst",
             "desc": "绘制到目标区域。"
           }
@@ -17740,6 +17744,10 @@
         "name": "WIDGET_PROP_OPEN_IM_WHEN_FOCUSED"
       },
       {
+        "desc": "编辑器在失去焦点时是否关闭输入法。",
+        "name": "WIDGET_PROP_CLOSE_IM_WHEN_BLURED"
+      },
+      {
         "desc": "X最小值。",
         "name": "WIDGET_PROP_X_MIN"
       },
@@ -20812,8 +20820,8 @@
         "desc": "判断当前控件是否是keyboard。\n\n> keyboard收到pointer事件时，不会让当前控件失去焦点。\n\n在自定义软键盘时，将所有按钮放到一个容器当中，并设置为is_keyboard。\n\n```c\nwidget_set_prop_bool(group, WIDGET_PROP_IS_KEYBOARD, TRUE);\n```",
         "name": "widget_is_keyboard",
         "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
+          "type": "bool_t",
+          "desc": "返回FALSE表示不是，否则表示是。"
         }
       },
       {
@@ -24590,7 +24598,7 @@
           }
         ],
         "annotation": {},
-        "desc": "将src所指向的字符串复制到dst，最多复制len个字符串。",
+        "desc": "将src所指向的字符串复制到dst，最多复制len个字符串，并在[len]位置添加'\\0'。\n\n> 请确保dst的长度>=(len+1)",
         "name": "tk_strncpy",
         "return": {
           "type": "char*",
@@ -35267,12 +35275,12 @@
             "desc": "图片对象。"
           },
           {
-            "type": "rect_t*",
+            "type": "const rect_t*",
             "name": "src",
             "desc": "源区域。"
           },
           {
-            "type": "rect_t*",
+            "type": "const rect_t*",
             "name": "dst",
             "desc": "目的区域。"
           }
@@ -35305,7 +35313,7 @@
             "desc": "绘制类型。"
           },
           {
-            "type": "rect_t*",
+            "type": "const rect_t*",
             "name": "dst",
             "desc": "目的区域。"
           }
@@ -35338,12 +35346,12 @@
             "desc": "绘制类型。"
           },
           {
-            "type": "rect_t*",
+            "type": "const rect_t*",
             "name": "src",
             "desc": "源区域。"
           },
           {
-            "type": "rect_t*",
+            "type": "const rect_t*",
             "name": "dst",
             "desc": "目的区域。"
           }
@@ -35561,7 +35569,7 @@
             "desc": "canvas对象。"
           },
           {
-            "type": "rect_t*",
+            "type": "const rect_t*",
             "name": "dirty_rect",
             "desc": "脏矩形。"
           },
@@ -35587,12 +35595,12 @@
             "desc": "canvas对象。"
           },
           {
-            "type": "rect_t*",
+            "type": "const rect_t*",
             "name": "r",
             "desc": "矩形。"
           },
           {
-            "type": "color_t*",
+            "type": "const color_t*",
             "name": "color",
             "desc": "颜色。"
           },
@@ -35618,12 +35626,12 @@
             "desc": "canvas对象。"
           },
           {
-            "type": "rect_t*",
+            "type": "const rect_t*",
             "name": "r",
             "desc": "矩形。"
           },
           {
-            "type": "color_t*",
+            "type": "const color_t*",
             "name": "color",
             "desc": "颜色。"
           },
@@ -35664,12 +35672,12 @@
             "desc": "canvas对象。"
           },
           {
-            "type": "rect_t*",
+            "type": "const rect_t*",
             "name": "r",
             "desc": "矩形。"
           },
           {
-            "type": "color_t*",
+            "type": "const color_t*",
             "name": "color",
             "desc": "颜色。"
           },
@@ -35700,12 +35708,12 @@
             "desc": "canvas对象。"
           },
           {
-            "type": "rect_t*",
+            "type": "const rect_t*",
             "name": "r",
             "desc": "矩形。"
           },
           {
-            "type": "color_t*",
+            "type": "const color_t*",
             "name": "color",
             "desc": "颜色。"
           },
@@ -41993,6 +42001,29 @@
             "desc": "widget对象。"
           },
           {
+            "type": "bool_t",
+            "name": "close_im_when_blured",
+            "desc": "是否是否在失去焦点时关闭输入法。在失去焦点时关闭输入法。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置编辑器是否在失去焦点时关闭输入法。",
+        "name": "edit_set_close_im_when_blured",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          },
+          {
             "type": "input_type_t",
             "name": "type",
             "desc": "输入类型。"
@@ -42364,6 +42395,19 @@
       {
         "name": "open_im_when_focused",
         "desc": "获得焦点时打开输入法。\n\n> 主要用于没有指针设备的情况，否则每次切换焦点时都打开输入法。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "close_im_when_blured",
+        "desc": "是否在失去焦点时关闭输入法(默认是)。",
         "type": "bool_t",
         "annotation": {
           "set_prop": true,
@@ -59035,7 +59079,11 @@
         ],
         "annotation": {},
         "desc": "读取一行数据。",
-        "name": "tk_istream_read_line_str"
+        "name": "tk_istream_read_line_str",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
       }
     ],
     "events": [],

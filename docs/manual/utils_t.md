@@ -12,6 +12,7 @@
 | <a href="#utils_t_dummy_destroy">dummy\_destroy</a> | 空的destroy函数。 |
 | <a href="#utils_t_filename_to_name">filename\_to\_name</a> | 从完整文件名中获取文件名。 |
 | <a href="#utils_t_filename_to_name_ex">filename\_to\_name\_ex</a> | 从完整文件名中获取文件名。 |
+| <a href="#utils_t_image_region_parse">image\_region\_parse</a> | 解析子图的区域信息。 |
 | <a href="#utils_t_pointer_compare">pointer\_compare</a> | 指针比较。 |
 | <a href="#utils_t_tk_atob">tk\_atob</a> | 将字符串转换为布尔类型。 |
 | <a href="#utils_t_tk_atof">tk\_atof</a> | 将字符串转换为浮点类型。 |
@@ -40,7 +41,7 @@
 | <a href="#utils_t_tk_strcpy">tk\_strcpy</a> | 将src所指向的字符串复制到dst。 |
 | <a href="#utils_t_tk_strdup">tk\_strdup</a> | 字符串拷贝函数。 |
 | <a href="#utils_t_tk_strlen">tk\_strlen</a> | 获取字符串的长度。str为空时返回0。 |
-| <a href="#utils_t_tk_strncpy">tk\_strncpy</a> | 将src所指向的字符串复制到dst，最多复制len个字符串。 |
+| <a href="#utils_t_tk_strncpy">tk\_strncpy</a> | 将src所指向的字符串复制到dst，最多复制len个字符串，并在[len]位置添加'\0'。 |
 | <a href="#utils_t_tk_strndup">tk\_strndup</a> | 字符串拷贝函数，最多复制len个字符串。 |
 | <a href="#utils_t_tk_strtol">tk\_strtol</a> | 将字符串转换为长整形。 |
 | <a href="#utils_t_tk_under_score_to_camel">tk\_under\_score\_to\_camel</a> | 将下划线名字转成驼峰名字。 |
@@ -153,6 +154,28 @@ ret_t filename_to_name_ex (const char* filename, char* str, uint32_t size, bool_
 | str | char* | 用于返回文件名。 |
 | size | uint32\_t | 文件名(str参数)的最大长度。 |
 | remove\_extname | bool\_t | 是否移除扩展名。 |
+#### image\_region\_parse 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_image_region_parse">解析子图的区域信息。
+
+* 函数原型：
+
+```
+ret_t image_region_parse (uint32_t img_w, uint32_t img_h, const char* region, rect_t* r);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| img\_w | uint32\_t | 图片宽度。 |
+| img\_h | uint32\_t | 图片宽度。 |
+| region | const char* | region。 |
+| r | rect\_t* | 返回具体位置。 |
 #### pointer\_compare 函数
 -----------------------
 
@@ -446,7 +469,7 @@ void* tk_pointer_from_int (int32_t v);
 
 > <p id="utils_t_tk_pointer_to_int">将指针转换成int。
 
-> 常用于将int类型的数据作为回调函数的ctx。
+>与tk_pointer_from_int配套使用，也就是pointer本身必须就是整数，而不是指针，否则pointer会被截断。
 
 * 函数原型：
 
@@ -723,7 +746,9 @@ uint32_t tk_strlen (const char* str);
 
 * 函数功能：
 
-> <p id="utils_t_tk_strncpy">将src所指向的字符串复制到dst，最多复制len个字符串。
+> <p id="utils_t_tk_strncpy">将src所指向的字符串复制到dst，最多复制len个字符串，并在[len]位置添加'\0'。
+
+> 请确保dst的长度>=(len+1)
 
 * 函数原型：
 

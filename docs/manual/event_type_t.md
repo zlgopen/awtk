@@ -23,6 +23,7 @@
 | EVT\_FOCUS | 得到焦点事件名(event\_t)。 |
 | EVT\_BLUR | 失去焦点事件名(event\_t)。 |
 | EVT\_KEY\_DOWN | 键按下事件名(key\_event\_t)。 |
+| EVT\_KEY\_LONG\_PRESS | 键长按事件名(key\_event\_t)。 |
 | EVT\_KEY\_DOWN\_BEFORE\_CHILDREN | 键按下事件名，在子控件处理之前触发(key\_event\_t)。 |
 | EVT\_KEY\_REPEAT | 按键repeat事件名(key\_event\_t)。 |
 | EVT\_KEY\_UP | 键抬起事件名(key\_event\_t)。 |
@@ -83,6 +84,7 @@
 | EVT\_SCROLL\_START | scroll view开始滚动(event\_t)。 |
 | EVT\_SCROLL | scroll view滚动(event\_t)。 |
 | EVT\_SCROLL\_END | scroll view结束滚动(event\_t)。 |
+| EVT\_MULTI\_GESTURE | 多点触摸手势(multi\_gesture\_event\_t)。 |
 | EVT\_REQ\_START | event queue其它请求编号起始值。 |
 | EVT\_USER\_START | 用户定义事件起始值。 |
 | EVT\_NONE | 无效事件名称。 |

@@ -80,6 +80,7 @@
 | WIDGET\_PROP\_AUTO\_FIX | 是否启用自动更正功能。 |
 | WIDGET\_PROP\_SELECT\_NONE\_WHEN\_FOCUSED | 编辑器在获得焦点时是否不选中文本。 |
 | WIDGET\_PROP\_OPEN\_IM\_WHEN\_FOCUSED | 编辑器在获得焦点时是否打开输入法。 |
+| WIDGET\_PROP\_CLOSE\_IM\_WHEN\_BLURED | 编辑器在失去焦点时是否关闭输入法。 |
 | WIDGET\_PROP\_X\_MIN | X最小值。 |
 | WIDGET\_PROP\_X\_MAX | X最大值。 |
 | WIDGET\_PROP\_Y\_MIN | Y最小值。 |
@@ -104,6 +105,7 @@
 | WIDGET\_PROP\_REPEAT | 重复次数。 |
 | WIDGET\_PROP\_LONG\_PRESS\_TIME | 触发长按事件的时间(ms)。 |
 | WIDGET\_PROP\_ENABLE\_LONG\_PRESS | 是否启用长按。 |
+| WIDGET\_PROP\_CLICK\_THROUGH | 是否启用点击穿透。 |
 | WIDGET\_PROP\_ANIMATABLE | 是否启用动画。 |
 | WIDGET\_PROP\_AUTO\_HIDE\_SCROLL\_BAR | 是否自动隐藏滚动条。 |
 | WIDGET\_PROP\_IMAGE | 图片名称。 |

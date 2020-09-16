@@ -24,6 +24,7 @@ wstr_reset(&s);
 | <a href="#wstr_t_wstr_append">wstr\_append</a> | 追加字符串。 |
 | <a href="#wstr_t_wstr_append_with_len">wstr\_append\_with\_len</a> | 追加字符串。 |
 | <a href="#wstr_t_wstr_clear">wstr\_clear</a> | 清除字符串内容。 |
+| <a href="#wstr_t_wstr_count_char">wstr\_count\_char</a> | 统计指定字符的个数。 |
 | <a href="#wstr_t_wstr_equal">wstr\_equal</a> | 判断两个字符是否相同。 |
 | <a href="#wstr_t_wstr_from_float">wstr\_from\_float</a> | 用浮点数初始化字符串。 |
 | <a href="#wstr_t_wstr_from_int">wstr\_from\_int</a> | 用整数初始化字符串。 |
@@ -130,6 +131,26 @@ ret_t wstr_clear (wstr_t* str);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | wstr\_t* | str对象。 |
+#### wstr\_count\_char 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="wstr_t_wstr_count_char">统计指定字符的个数。
+
+* 函数原型：
+
+```
+uint32_t wstr_count_char (wstr_t* str, wchar_t c);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint32\_t | 返回指定字符的个数。 |
+| str | wstr\_t* | str对象。 |
+| c | wchar\_t | 字符。 |
 #### wstr\_equal 函数
 -----------------------
 

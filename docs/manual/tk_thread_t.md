@@ -42,6 +42,7 @@ tk_thread_t* tk_thread_create (tk_thread_entry_t entry, void* args);
 * 函数功能：
 
 > <p id="tk_thread_t_tk_thread_destroy">销毁thread对象。
+在销毁对象前必须调用 tk_thread_join 函数等待退出线程
 
 * 函数原型：
 
@@ -80,6 +81,7 @@ void* tk_thread_get_args (tk_thread_t* thread);
 * 函数功能：
 
 > <p id="tk_thread_t_tk_thread_join">等待线程退出。
+必须调用 tk_thread_destroy 函数来释放线程资源，以免出现内存泄漏的问题。
 
 * 函数原型：
 

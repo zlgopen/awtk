@@ -102,6 +102,7 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | <a href="#widget_t_widget_get_prop_str">widget\_get\_prop\_str</a> | 获取字符串格式的属性。 |
 | <a href="#widget_t_widget_get_state_for_style">widget\_get\_state\_for\_style</a> | 把控件的状态转成获取style选要的状态，一般只在子类中使用。 |
 | <a href="#widget_t_widget_get_text">widget\_get\_text</a> | 获取控件的文本。 |
+| <a href="#widget_t_widget_get_text_utf8">widget\_get\_text\_utf8</a> | 获取控件的文本。 |
 | <a href="#widget_t_widget_get_type">widget\_get\_type</a> | 获取当前控件的类型名称。 |
 | <a href="#widget_t_widget_get_value">widget\_get\_value</a> | 获取控件的值。只是对widget\_get\_prop的包装，值的意义由子类控件决定。 |
 | <a href="#widget_t_widget_get_window">widget\_get\_window</a> | 获取当前控件所在的窗口。 |
@@ -161,6 +162,7 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | <a href="#widget_t_widget_set_as_key_target">widget\_set\_as\_key\_target</a> | 递归的把父控件的key_target设置为自己。 |
 | <a href="#widget_t_widget_set_child_text_utf8">widget\_set\_child\_text\_utf8</a> | 设置子控件的文本。 |
 | <a href="#widget_t_widget_set_child_text_with_double">widget\_set\_child\_text\_with\_double</a> | 用一个浮点数去设置子控件的文本。 |
+| <a href="#widget_t_widget_set_child_text_with_int">widget\_set\_child\_text\_with\_int</a> | 用一个整数去设置子控件的文本。 |
 | <a href="#widget_t_widget_set_children_layout">widget\_set\_children\_layout</a> | 设置子控件的布局参数。 |
 | <a href="#widget_t_widget_set_dirty_rect_tolerance">widget\_set\_dirty\_rect\_tolerance</a> | 设置控件脏矩形超出控件本身大小的最大范围(一般不用指定)。 |
 | <a href="#widget_t_widget_set_enable">widget\_set\_enable</a> | 设置控件的可用性。 |
@@ -208,7 +210,7 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | <a href="#widget_t_widget_update_pointer_cursor">widget\_update\_pointer\_cursor</a> | 更新鼠标指针。 |
 | <a href="#widget_t_widget_update_style">widget\_update\_style</a> | 让控件根据自己当前状态更新style。 |
 | <a href="#widget_t_widget_update_style_recursive">widget\_update\_style\_recursive</a> | 让控件及子控件根据自己当前状态更新style。 |
-| <a href="#widget_t_widget_use_style">widget\_use\_style</a> | 启用指定的主题。 |
+| <a href="#widget_t_widget_use_style">widget\_use\_style</a> | 启用指定的style。 |
 ### 属性
 <p id="widget_t_properties">
 
@@ -1390,6 +1392,28 @@ const wchar_t* widget_get_text (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | const wchar\_t* | 返回文本。 |
 | widget | widget\_t* | 控件对象。 |
+#### widget\_get\_text\_utf8 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_get_text_utf8">获取控件的文本。
+只是对widget\_get\_prop的包装，文本的意义由子类控件决定。
+
+* 函数原型：
+
+```
+ret_t widget_get_text_utf8 (widget_t* widget, char* text, uint32_t size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| text | char* | 用于返回文本。 |
+| size | uint32\_t | text内存长度。 |
 #### widget\_get\_type 函数
 -----------------------
 
@@ -1692,14 +1716,14 @@ widget_set_prop_bool(group, WIDGET_PROP_IS_KEYBOARD, TRUE);
 * 函数原型：
 
 ```
-ret_t widget_is_keyboard (widget_t* widget);
+bool_t widget_is_keyboard (widget_t* widget);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| 返回值 | bool\_t | 返回FALSE表示不是，否则表示是。 |
 | widget | widget\_t* | 控件对象。 |
 #### widget\_is\_normal\_window 函数
 -----------------------
@@ -2633,6 +2657,29 @@ ret_t widget_set_child_text_with_double (widget_t* widget, const char* name, con
 | name | const char* | 子控件的名称。 |
 | format | const char* | 格式字符串(如："%2.2lf")。 |
 | value | double | 浮点数值。 |
+#### widget\_set\_child\_text\_with\_int 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_set_child_text_with_int">用一个整数去设置子控件的文本。
+只是对widget\_set\_prop的包装，文本的意义由子类控件决定。
+
+* 函数原型：
+
+```
+ret_t widget_set_child_text_with_int (widget_t* widget, const char* name, const char* format, int value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| name | const char* | 子控件的名称。 |
+| format | const char* | 格式字符串(如："%d")。 |
+| value | int | 值。 |
 #### widget\_set\_children\_layout 函数
 -----------------------
 
@@ -3074,6 +3121,13 @@ ret_t widget_set_style (widget_t* widget, const char* state_and_name, const valu
 > * [state 的取值](https://github.com/zlgopen/awtk/blob/master/docs/manual/widget_state_t.md)
 > * [name 的取值](https://github.com/zlgopen/awtk/blob/master/docs/theme.md)
 
+
+在下面这个例子中，R=0x11 G=0x22 B=0x33 A=0xFF
+
+```c
+widget_set_style_color(label, "style:normal:bg_color", 0xFF332211);
+```
+
 * 函数原型：
 
 ```
@@ -3087,7 +3141,7 @@ ret_t widget_set_style_color (widget_t* widget, const char* state_and_name, uint
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | state\_and\_name | const char* | 状态和名字，用英文的冒号分隔。 |
-| value | uint32\_t | 值。 |
+| value | uint32\_t | 值。颜色值一般用十六进制表示，每两个数字表示一个颜色通道，从高位到低位，依次是ABGR。 |
 #### widget\_set\_style\_int 函数
 -----------------------
 
@@ -3639,7 +3693,7 @@ ret_t widget_update_style_recursive (widget_t* widget);
 
 * 函数功能：
 
-> <p id="widget_t_widget_use_style">启用指定的主题。
+> <p id="widget_t_widget_use_style">启用指定的style。
 
 * 函数原型：
 

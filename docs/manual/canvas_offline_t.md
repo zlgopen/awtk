@@ -8,6 +8,8 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#canvas_offline_t_canvas_offline_begin_draw">canvas\_offline\_begin\_draw</a> | 设置离线 canvas 开始绘图 |
+| <a href="#canvas_offline_t_canvas_offline_bitmap_move_to_new_bitmap">canvas\_offline\_bitmap\_move\_to\_new\_bitmap</a> | 把离线 canvas 的离线 bitmap 移动赋值给新的 bitmap。 |
+| <a href="#canvas_offline_t_canvas_offline_clear_canvas">canvas\_offline\_clear\_canvas</a> | 把离线 canvas 清除所有数据，并把背景设置为全透明 |
 | <a href="#canvas_offline_t_canvas_offline_create">canvas\_offline\_create</a> | 创建一个离线的 canvas |
 | <a href="#canvas_offline_t_canvas_offline_destroy">canvas\_offline\_destroy</a> | 释放离线 canvas 和离线 bitmap |
 | <a href="#canvas_offline_t_canvas_offline_end_draw">canvas\_offline\_end\_draw</a> | 设置离线 canvas 结束绘图 |
@@ -30,6 +32,47 @@
 
 ```
 ret_t canvas_offline_begin_draw (canvas_t* canvas);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| canvas | canvas\_t* | 离线 canvas 对象。 |
+#### canvas\_offline\_bitmap\_move\_to\_new\_bitmap 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="canvas_offline_t_canvas_offline_bitmap_move_to_new_bitmap">把离线 canvas 的离线 bitmap 移动赋值给新的 bitmap。
+移动赋值后原来的离线 canvas 的离线 bitmap 就会被置空。
+
+* 函数原型：
+
+```
+bitmap_t* canvas_offline_bitmap_move_to_new_bitmap (canvas_t* canvas);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bitmap\_t* | 返回 bitmap\_t 对象表示成功，返回 NULL 表示失败。 |
+| canvas | canvas\_t* | 离线 canvas 对象。 |
+#### canvas\_offline\_clear\_canvas 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="canvas_offline_t_canvas_offline_clear_canvas">把离线 canvas 清除所有数据，并把背景设置为全透明
+该函数调用前必须要先 canvas_offline_begin_draw 函数。
+该函数用来解决离线 canvas 多次绘图半透效果后导致半透效果无效的问题。
+
+* 函数原型：
+
+```
+ret_t canvas_offline_clear_canvas (canvas_t* canvas);
 ```
 
 * 参数说明：

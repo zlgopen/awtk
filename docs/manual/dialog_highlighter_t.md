@@ -14,6 +14,7 @@
 | <a href="#dialog_highlighter_t_dialog_highlighter_draw">dialog\_highlighter\_draw</a> | 绘制背景。 |
 | <a href="#dialog_highlighter_t_dialog_highlighter_is_dynamic">dialog\_highlighter\_is\_dynamic</a> | 是否是动态绘制(方便外层优化)。 |
 | <a href="#dialog_highlighter_t_dialog_highlighter_prepare">dialog\_highlighter\_prepare</a> | 初始化。在绘制完背景，在截图前调用。 |
+| <a href="#dialog_highlighter_t_dialog_highlighter_prepare_ex">dialog\_highlighter\_prepare\_ex</a> | 初始化。在绘制完背景，在截图前调用。 |
 | <a href="#dialog_highlighter_t_dialog_highlighter_set_bg">dialog\_highlighter\_set\_bg</a> | 设置背景图片。 |
 | <a href="#dialog_highlighter_t_dialog_highlighter_set_bg_clip_rect">dialog\_highlighter\_set\_bg\_clip\_rect</a> | 设置背景图片的显示裁减区。 |
 ### 属性
@@ -124,6 +125,27 @@ ret_t dialog_highlighter_prepare (dialog_highlighter_t* h, canvas_t* c);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | h | dialog\_highlighter\_t* | 对话框高亮策略对象。 |
 | c | canvas\_t* | 画布。 |
+#### dialog\_highlighter\_prepare\_ex 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="dialog_highlighter_t_dialog_highlighter_prepare_ex">初始化。在绘制完背景，在截图前调用。
+
+* 函数原型：
+
+```
+ret_t dialog_highlighter_prepare_ex (dialog_highlighter_t* h, canvas_t* c, canvas_t* canvas_offline);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| h | dialog\_highlighter\_t* | 对话框高亮策略对象。 |
+| c | canvas\_t* | 画布。 |
+| canvas\_offline | canvas\_t* | 离线画布。 |
 #### dialog\_highlighter\_set\_bg 函数
 -----------------------
 

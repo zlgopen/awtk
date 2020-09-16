@@ -14,4 +14,5 @@
 | OBJECT\_CMD\_REMOVE\_CHECKED | 删除勾选的属性。>参数为属性的名称或路径。 |
 | OBJECT\_CMD\_CLEAR | 清除全部属性。>参数为属性的名称或路径。 |
 | OBJECT\_CMD\_ADD | 增加子项。>参数为属性的名称或路径。 |
+| OBJECT\_CMD\_DETAIL | 显示对象详细信息。>参数为属性的名称或路径。 |
 | OBJECT\_CMD\_EDIT | 编辑子项。>参数为属性的名称或路径。 |

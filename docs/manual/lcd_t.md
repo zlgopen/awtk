@@ -65,7 +65,7 @@
 * 函数原型：
 
 ```
-ret_t lcd_begin_frame (lcd_t* lcd, rect_t* dirty_rect, lcd_draw_mode_t anim_mode);
+ret_t lcd_begin_frame (lcd_t* lcd, const rect_t* dirty_rect, lcd_draw_mode_t anim_mode);
 ```
 
 * 参数说明：
@@ -74,7 +74,7 @@ ret_t lcd_begin_frame (lcd_t* lcd, rect_t* dirty_rect, lcd_draw_mode_t anim_mode
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | lcd | lcd\_t* | lcd对象。 |
-| dirty\_rect | rect\_t* | 需要绘制的区域。 |
+| dirty\_rect | const rect\_t* | 需要绘制的区域。 |
 | anim\_mode | lcd\_draw\_mode\_t | 动画模式，如果可能，直接画到显存而不是离线的framebuffer。 |
 #### lcd\_destroy 函数
 -----------------------
@@ -105,7 +105,7 @@ ret_t lcd_destroy (lcd_t* lcd);
 * 函数原型：
 
 ```
-ret_t lcd_draw_glyph (lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x, xy_t y);
+ret_t lcd_draw_glyph (lcd_t* lcd, glyph_t* glyph, const rect_t* src, xy_t x, xy_t y);
 ```
 
 * 参数说明：
@@ -115,7 +115,7 @@ ret_t lcd_draw_glyph (lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x, xy_t y);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | lcd | lcd\_t* | lcd对象。 |
 | glyph | glyph\_t* | 字模 |
-| src | rect\_t* | 只绘制指定区域的部分。 |
+| src | const rect\_t* | 只绘制指定区域的部分。 |
 | x | xy\_t | x坐标。 |
 | y | xy\_t | y坐标。 |
 #### lcd\_draw\_hline 函数
@@ -150,7 +150,7 @@ ret_t lcd_draw_hline (lcd_t* lcd, xy_t x, xy_t y, xy_t w);
 * 函数原型：
 
 ```
-ret_t lcd_draw_image (lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst);
+ret_t lcd_draw_image (lcd_t* lcd, bitmap_t* img, const rect_t* src, const rect_t* dst);
 ```
 
 * 参数说明：
@@ -160,8 +160,8 @@ ret_t lcd_draw_image (lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | lcd | lcd\_t* | lcd对象。 |
 | img | bitmap\_t* | 图片。 |
-| src | rect\_t* | 只绘制指定区域的部分。 |
-| dst | rect\_t* | 绘制到目标区域。 |
+| src | const rect\_t* | 只绘制指定区域的部分。 |
+| dst | const rect\_t* | 绘制到目标区域。 |
 #### lcd\_draw\_image\_matrix 函数
 -----------------------
 
@@ -502,7 +502,7 @@ ret_t lcd_resize (lcd_t* lcd, wh_t w, wh_t h, uint32_t line_length);
 * 函数原型：
 
 ```
-ret_t lcd_set_clip_rect (lcd_t* lcd, rect_t* rect);
+ret_t lcd_set_clip_rect (lcd_t* lcd, const rect_t* rect);
 ```
 
 * 参数说明：
@@ -511,7 +511,7 @@ ret_t lcd_set_clip_rect (lcd_t* lcd, rect_t* rect);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | lcd | lcd\_t* | lcd对象。 |
-| rect | rect\_t* | 裁剪区域。 |
+| rect | const rect\_t* | 裁剪区域。 |
 #### lcd\_set\_fill\_color 函数
 -----------------------
 
