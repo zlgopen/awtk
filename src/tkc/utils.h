@@ -202,7 +202,9 @@ char* tk_strcpy(char* dst, const char* src);
 /**
  * @method tk_strncpy
  *
- * 将src所指向的字符串复制到dst，最多复制len个字符串。
+ * 将src所指向的字符串复制到dst，最多复制len个字符串，并在[len]位置添加'\0'。
+ *
+ *> 请确保dst的长度>=(len+1)
  *
  * @param {char*} dst 目标字符串。
  * @param {const char*} src 原字符串。
