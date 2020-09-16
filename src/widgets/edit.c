@@ -45,6 +45,7 @@
 
 static ret_t edit_auto_fix(widget_t* widget);
 static ret_t edit_update_status(widget_t* widget);
+static ret_t edit_pre_input(widget_t* widget, uint32_t key);
 static ret_t edit_select_all_async(const idle_info_t* info);
 
 static ret_t edit_save_text(widget_t* widget) {
@@ -250,6 +251,10 @@ bool_t edit_is_valid_char(widget_t* widget, wchar_t c) {
 ret_t edit_input_char(widget_t* widget, wchar_t c) {
   ret_t ret = RET_BAD_PARAMS;
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  if (edit_pre_input(widget, c) == RET_STOP) {
+    return RET_OK;
+  }
 
   if (edit_is_valid_char(widget, c)) {
     ret = edit_do_input_char(widget, c);
@@ -1714,18 +1719,42 @@ ret_t edit_set_pre_input(widget_t* widget, edit_pre_input_t pre_input) {
 }
 
 ret_t edit_pre_input_with_sep(widget_t* widget, uint32_t key, char sep) {
-  edit_t* edit = EDIT(widget);
   text_edit_state_t state;
-  text_edit_unselect(edit->model);
+  edit_t* edit = EDIT(widget);
+  wstr_t* text = &(widget->text);
+
   text_edit_get_state(edit->model, &state);
+  if (state.select_start < state.select_end) {
+    uint32_t i = 0;
+    wchar_t* s = text->str + state.select_start;
+    wchar_t* d = text->str + state.select_start;
+
+    for (i = state.select_start; i < state.select_end; i++, s++) {
+      if (*s == sep) {
+        *d++ = sep;
+      }
+    }
+
+    for (; i < text->size; i++) {
+      *d++ = *s++;
+    }
+    text->size = d - text->str;
+    *d = 0;
+
+    text_edit_unselect(edit->model);
+    text_edit_set_cursor(edit->model, state.select_start);
+    if (key == TK_KEY_BACKSPACE || key == TK_KEY_DELETE) {
+      return RET_STOP;
+    }
+  }
 
   if (key == TK_KEY_BACKSPACE && state.cursor > 0) {
-    if (widget->text.str[state.cursor - 1] == sep) {
+    if (text->str[state.cursor - 1] == sep) {
       text_edit_set_cursor(edit->model, state.cursor - 1);
       return RET_STOP;
     }
   } else if (key == TK_KEY_DELETE) {
-    if (widget->text.str[state.cursor] == sep) {
+    if (text->str[state.cursor] == sep) {
       text_edit_set_cursor(edit->model, state.cursor + 1);
       return RET_STOP;
     }
