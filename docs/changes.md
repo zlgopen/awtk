@@ -1,19 +1,22 @@
 # 最新动态
 * 2020/09/16
-  * 完善API注释。
+  * 完善 API 注释。
   * 将一些参数改成常量指针。
-  * 更新文档。
+  * 修改离线 canvas 的文档
+  * 支持用户外部重载自定义离线 canvas 和统一窗口动画的代码（感谢智明提供补丁）。
+  * 统一窗口动画配合修改 awtk-web 的 fbo 和窗口动画的代码（感谢智明提供补丁）。
+  * 修复 dialog_toast 在 web 卡主的问题和修复同时插入导致动画异常的问题以及增加注释（感谢智明提供补丁）。
 
 * 2020/09/15
   * 支持长按键事件
-  * edit 增加 closei\_im\_when\_blured属性。
+  * edit 增加 closei\_im\_when\_blured 属性。
 
 * 2020/09/11
   * 支持 packed 图片。
   * 增加 [如何使用 packed 图](docs/how_to_use_packed_image.md)
-  * 修复32位LCD窗口动画截图的问题（感谢朝泽提供补丁）。
+  * 修复 32 位 LCD 窗口动画截图的问题（感谢朝泽提供补丁）。
   * 消除一些不必要的告警；
-  * 修正在key\_down事件销毁grab\_keys属性为true的控件会导致访问NULL指针的问题
+  * 修正在 key\_down 事件销毁 grab\_keys 属性为 true 的控件会导致访问 NULL 指针的问题
 
 * 2020/09/10
   * 重构 widget。
