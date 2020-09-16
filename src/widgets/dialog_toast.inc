@@ -19,6 +19,18 @@
  *
  */
 
+/*
+ *  该文件的功能是服务于 dialog_toast 函数，dialog_toast 函数为仿照 android 的 showToast 函数的功能开发的。
+ *  dialog_toast 函数的功能分别是：
+ *  1，按照时间长度显示用户输入文字信息。
+ *  2，当同时有多出调用地方调用 dialog_toast 函数的显示原则为：
+ *    1) 显示最后一个调用的信息，当最后一个信息显示时间到后，检查倒数第二个信息的时间是否已经到了，直到找到还没有到时间的信息。
+ *    2) 如果没有找到可以显示的信息，就退出显示 dialog。
+ *  3，当退出 dialog 后，还是没有发现有新的信息加入，那就释放所有的内存和单例对象。
+ * 
+ */
+
+
 #include "tkc/darray.h"
 #include "base/dialog.h"
 #include "base/main_loop.h"
@@ -34,6 +46,7 @@ typedef struct _dialog_toast_message_t {
 typedef struct _dialog_toast_t {
   widget_t* toast;
   bool_t is_empty;
+  bool_t is_opening;
   bool_t is_closing;
   darray_t message_list;
   uint32_t curr_timer_id;
@@ -49,11 +62,28 @@ static ret_t dialog_toast_on_destroy(void* ctx, event_t* e);
 static ret_t dialog_toast_on_click_to_quit(void* ctx, event_t* e);
 static ret_t dialog_toast_set_curr_message(dialog_toast_t* dialog_toast, dialog_toast_message_t* message, uint32_t duration);
 
+static ret_t dialog_toast_on_dialog_will_open(void* ctx, event_t* e) {
+  dialog_toast_t* dialog_toast = DIALOG_TOAST(ctx);
+  dialog_toast->is_opening = TRUE;
+  return RET_REMOVE;
+}
+
+static ret_t dialog_toast_on_dialog_open(void* ctx, event_t* e) {
+  dialog_toast_t* dialog_toast = DIALOG_TOAST(ctx);
+  dialog_toast->is_opening = FALSE;
+  /* 播放完打开窗口动画后，重新显示信息，同时解决有可能在播放动画期间加入信息导致播放动画不正确的问题 */
+  if (dialog_toast->message_list.size > 0) {
+    dialog_toast_message_t* message = (dialog_toast_message_t*)darray_tail(&(dialog_toast->message_list));
+    dialog_toast_set_curr_message(dialog_toast, message, message->duration);
+  }
+  return RET_REMOVE;
+}
 
 static ret_t dialog_toast_init(dialog_toast_t* dialog_toast, bool_t init_list) {
 
   return_value_if_fail(dialog_toast != NULL, RET_BAD_PARAMS);
 
+  dialog_toast->is_opening = FALSE;
   dialog_toast->is_closing = FALSE;
   dialog_toast->curr_timer_id = TK_INVALID_ID;
   dialog_toast->toast = dialog_create(NULL, 0, 0, 0, 0);
@@ -68,7 +98,9 @@ static ret_t dialog_toast_init(dialog_toast_t* dialog_toast, bool_t init_list) {
     widget_set_prop_str(dialog_toast->toast, WIDGET_PROP_ANIM_HINT, "fade(duration=500)");
 
     widget_on(dialog_toast->toast, EVT_DESTROY, dialog_toast_on_destroy, dialog_toast);
+    widget_on(dialog_toast->toast, EVT_WINDOW_OPEN, dialog_toast_on_dialog_open, dialog_toast);
     widget_on(dialog_toast->toast, EVT_POINTER_UP, dialog_toast_on_click_to_quit, dialog_toast);
+    widget_on(dialog_toast->toast, EVT_WINDOW_WILL_OPEN, dialog_toast_on_dialog_will_open, dialog_toast);
 
     return RET_OK;
   }
@@ -82,6 +114,7 @@ static ret_t dialog_toast_on_idle_create_dialog(const idle_info_t* info) {
 
   ret = dialog_toast_init(dialog_toast, FALSE);
   return_value_if_fail(ret == RET_OK, ret);
+  /* 检查是否在关闭窗口动画的过程中加入新的信息 */
   if (dialog_toast->message_list.size > 0) {
     dialog_toast_message_t* message = (dialog_toast_message_t*)darray_tail(&(dialog_toast->message_list));
     dialog_toast_set_curr_message(dialog_toast, message, message->duration);
@@ -118,8 +151,12 @@ static ret_t dialog_toast_quit(dialog_toast_t* dialog_toast) {
     if (message_list->size > 0) {
       dialog_toast_message_t* message = (dialog_toast_message_t*)darray_tail(message_list);
       int32_t diff_time = message->duration + message->start_time - now;
-      /* dialog_toast_quit 函数中一定会释放正在显示的信息 */
+      /* 
+       * dialog_toast_quit 函数中一定会释放正在显示的信息。
+       * 释放正在显示的信息后，检查队列中是否有没有过期的信息。
+       */
       if (diff_time > 0 && !first) {
+        /* 在宏观时间轴上，之前加入的信息的时间也是在跑的，所以只要显示剩余的时间 */
         dialog_toast_set_curr_message(dialog_toast, message, diff_time);
         dialog_toast->is_empty = FALSE;
         break;
@@ -133,13 +170,21 @@ static ret_t dialog_toast_quit(dialog_toast_t* dialog_toast) {
           timer_remove(dialog_toast->curr_timer_id);
           dialog_toast->curr_timer_id = TK_INVALID_ID;
         }
+#ifndef AWTK_WEB
         main_loop_quit(main_loop());
+#endif
       }
       first = FALSE;
     }
     dialog_toast->is_empty = dialog_toast->message_list.size == 0;
   }while (message_list->size > 0);
 
+#ifdef AWTK_WEB
+  /* 因为 web 状态下，不支持模态，所以当队列中没有信息了，就马上退出 dialog */
+  if (dialog_toast->is_empty) {
+    dialog_toast_close(dialog_toast);
+  }
+#endif
   return RET_OK;
 }
 
@@ -210,10 +255,12 @@ static ret_t dialog_toast_set_curr_message(dialog_toast_t* dialog_toast, dialog_
   margin_right = style_get_int(style, STYLE_ID_MARGIN_RIGHT, margin);
   margin_bottom = style_get_int(style, STYLE_ID_MARGIN_BOTTOM, margin);
 
+  /* 移除前一个显示信息的计时器 */
   if (dialog_toast->curr_timer_id != TK_INVALID_ID) {
     ENSURE(timer_remove(dialog_toast->curr_timer_id) == RET_OK);
   }
 
+  /* 添加新一个信息的计时器 */
   dialog_toast->curr_timer_id = timer_add(dialog_toast_on_timer_to_quit, dialog_toast, duration);
   ENSURE(dialog_toast->curr_timer_id != TK_INVALID_ID);
 
@@ -254,7 +301,7 @@ static dialog_toast_message_t* dialog_toast_push_message(dialog_toast_t* dialog_
     goto_error_if_fail(ret == RET_OK);
 
     /* 在关闭 dialog 动画期间不显示消息，等完成关闭动画后重新创建 dialog 再显示消息 */
-    if (!dialog_toast->is_closing) {
+    if (!dialog_toast->is_closing && !dialog_toast->is_opening) {
       ret = dialog_toast_set_curr_message(dialog_toast, message, duration);
       goto_error_if_fail(ret == RET_OK);
     }
