@@ -53,11 +53,11 @@ static ret_t lcd_vgcanvas_set_font_size(lcd_t* lcd, uint32_t size) {
   return vgcanvas_set_font_size(LCD(lcd)->canvas, size);
 }
 
-static ret_t lcd_vgcanvas_begin_frame(lcd_t* lcd, rect_t* dirty_rect) {
+static ret_t lcd_vgcanvas_begin_frame(lcd_t* lcd, const rect_t* dirty_rect) {
   return vgcanvas_begin_frame(LCD(lcd)->canvas, dirty_rect);
 }
 
-static ret_t lcd_vgcanvas_set_clip_rect(lcd_t* lcd, rect_t* r) {
+static ret_t lcd_vgcanvas_set_clip_rect(lcd_t* lcd, const rect_t* r) {
   return vgcanvas_clip_rect(LCD(lcd)->canvas, r->x, r->y, r->w, r->h);
 }
 
@@ -164,7 +164,7 @@ static ret_t lcd_vgcanvas_draw_points(lcd_t* lcd, point_t* points, uint32_t nr) 
   return RET_OK;
 }
 
-static ret_t lcd_vgcanvas_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
+static ret_t lcd_vgcanvas_draw_image(lcd_t* lcd, bitmap_t* img, const rect_t* src, const rect_t* dst) {
   int sx = src->x;
   int sy = src->y;
   int sw = src->w;
@@ -187,8 +187,8 @@ static ret_t lcd_vgcanvas_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rec
 
 static ret_t lcd_vgcanvas_draw_image_matrix(lcd_t* lcd, draw_image_info_t* info) {
   matrix_t* m = &(info->matrix);
-  rect_t* s = &(info->src);
-  rect_t* d = &(info->dst);
+  const rect_t* s = &(info->src);
+  const rect_t* d = &(info->dst);
   vgcanvas_t* canvas = LCD(lcd)->canvas;
   vgcanvas_save(canvas);
   vgcanvas_set_transform(canvas, m->a0, m->a1, m->a2, m->a3, m->a4, m->a5);

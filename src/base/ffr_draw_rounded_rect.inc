@@ -518,7 +518,7 @@ static inline void Wu_D_Circle(int32_t r, darray_t* point_list,
 
 static void ffr_draw_stroke_arc_point_list(frr_image_info_t* image_info, canvas_t* c, int32_t x_h,
                                               int32_t y_v, int32_t xc, int32_t yc,
-                                              frr_quadrant_t type, color_t* color,
+                                              frr_quadrant_t type, const color_t* color,
                                               darray_t* point_list, bool_t is_last_antialiasing) {
   uint32_t i = 0;
   void** elms = point_list->elms;
@@ -537,7 +537,7 @@ static void ffr_draw_stroke_arc_point_list(frr_image_info_t* image_info, canvas_
 
 static void ffr_draw_fill_arc_point_list(frr_image_info_t* image_info, canvas_t* c, int32_t x_h,
                                             int32_t y_v, int32_t xc, int32_t yc, frr_quadrant_t type,
-                                            color_t* color, darray_t* point_list) {
+                                            const color_t* color, darray_t* point_list) {
   uint32_t i = 0;
   void** elms = point_list->elms;
   for (i = 0; i < point_list->size; i++) {
@@ -586,7 +586,7 @@ static void ffr_push_arc_point_list(float_t angle_1, float_t angle_2, int32_t r,
 static void ffr_draw_arc_point_list(frr_image_info_t* image_info, canvas_t* c, int32_t x_h,
                                        int32_t y_v, int32_t xc, int32_t yc, float_t angle_h,
                                        float_t angle_v, int32_t r, uint32_t quadrant_id,
-                                       color_t* color, darray_t* point_list,
+                                       const color_t* color, darray_t* point_list,
                                        darray_t* point_list_45, bool_t is_fill) {
   float_t angle_v_1 = 0.0f;
   float_t angle_h_1 = 0.0f;
@@ -643,7 +643,7 @@ static void ffr_draw_arc_point_list(frr_image_info_t* image_info, canvas_t* c, i
 }
 #endif
 
-static void ffr_draw_rounded_rect_draw_with_vg(canvas_t* c, vgcanvas_t* vg, uint32_t border_width, color_t* color, frr_draw_info_t draw_infos[FRR_VERTEXT_TYPE_COUNT]) {
+static void ffr_draw_rounded_rect_draw_with_vg(canvas_t* c, vgcanvas_t* vg, uint32_t border_width, const color_t* color, frr_draw_info_t draw_infos[FRR_VERTEXT_TYPE_COUNT]) {
     vgcanvas_save(vg);
 
     if (border_width > 0) {
@@ -695,7 +695,7 @@ static void ffr_draw_rounded_rect_draw_with_vg(canvas_t* c, vgcanvas_t* vg, uint
     vgcanvas_restore(vg);
 }
 
-static inline void ffr_get_standard_rounded_rect_radius(rect_t* r, uint32_t* radius_tl, uint32_t* radius_tr, 
+static inline void ffr_get_standard_rounded_rect_radius(const rect_t* r, uint32_t* radius_tl, uint32_t* radius_tr, 
                                                     uint32_t* radius_bl, uint32_t* radius_br) {
   int32_t w = r->w / 2;
   int32_t h = r->h / 2;
@@ -735,6 +735,7 @@ static int32_t ffr_get_rounded_rect_mid_length(uint32_t radius, uint32_t total_l
   return mid_lenght;
 }
 
+#ifndef WITH_NANOVG_GPU
 static void ffr_draw_rounded_rect_draw_circle_limit(frr_vertex_type_t type, int32_t x, int32_t y, float_t w1, float_t w2, float_t h1, float_t h2, int32_t mid_lenght_v, int32_t mid_lenght_h, int32_t* v, int32_t* h) {
   int32_t h_x1 = x + (int32_t)w2;
   int32_t h_x2 = x + (int32_t)w2 + mid_lenght_h;
@@ -763,8 +764,9 @@ static void ffr_draw_rounded_rect_draw_circle_limit(frr_vertex_type_t type, int3
     break;
   }
 }
+#endif/*WITH_NANOVG_GPU*/
 
-static void ffr_draw_rounded_rect_draw_info_init(frr_draw_info_t draw_infos[FRR_VERTEXT_TYPE_COUNT], rect_t* r, uint32_t radius_tl, uint32_t radius_tr, uint32_t radius_bl, uint32_t radius_br) {
+static void ffr_draw_rounded_rect_draw_info_init(frr_draw_info_t draw_infos[FRR_VERTEXT_TYPE_COUNT], const rect_t* r, uint32_t radius_tl, uint32_t radius_tr, uint32_t radius_bl, uint32_t radius_br) {
   int32_t i = 0;
   int32_t j = 0;
   int32_t x = r->x;
@@ -831,7 +833,7 @@ inline static bool_t ffr_draw_rounded_radius_equal(uint32_t radius_tl, uint32_t 
   return TRUE;
 }
 
-static ret_t ffr_draw_fill_rounded_rect(canvas_t* c, rect_t* r, color_t* color, uint32_t radius_tl, uint32_t radius_tr, uint32_t radius_bl, uint32_t radius_br) {
+static ret_t ffr_draw_fill_rounded_rect(canvas_t* c, const rect_t* r, const color_t* color, uint32_t radius_tl, uint32_t radius_tr, uint32_t radius_bl, uint32_t radius_br) {
 
   uint32_t radius = radius_tl != 0 ? radius_tl : (radius_tr != 0 ? radius_tr : (radius_bl != 0 ? radius_bl : radius_br));
 
@@ -960,7 +962,7 @@ static ret_t ffr_draw_fill_rounded_rect(canvas_t* c, rect_t* r, color_t* color, 
   return RET_OK;
 }
 
-static ret_t ffr_draw_stroke_rounded_rect(canvas_t* c, rect_t* r, color_t* color, uint32_t radius_tl, uint32_t radius_tr, uint32_t radius_bl, uint32_t radius_br,
+static ret_t ffr_draw_stroke_rounded_rect(canvas_t* c, const rect_t* r, const color_t* color, uint32_t radius_tl, uint32_t radius_tr, uint32_t radius_bl, uint32_t radius_br,
                                             uint32_t border_width) {
                                               
   uint32_t radius = radius_tl != 0 ? radius_tl : (radius_tr != 0 ? radius_tr : (radius_bl != 0 ? radius_bl : radius_br));
@@ -1103,14 +1105,15 @@ static ret_t ffr_draw_stroke_rounded_rect(canvas_t* c, rect_t* r, color_t* color
   return RET_OK;
 }
 
-static inline ret_t ffr_draw_fill_rounded_rect_ex(canvas_t* c, rect_t* r, rect_t* bg_r,
-                                                  color_t* color, uint32_t radius_tl, uint32_t radius_tr, 
+static inline ret_t ffr_draw_fill_rounded_rect_ex(canvas_t* c, const rect_t* r, const rect_t* bg_r,
+                                                  const color_t* color, uint32_t radius_tl, uint32_t radius_tr, 
                                                   uint32_t radius_bl, uint32_t radius_br) {
   uint32_t radius = 0;
   xy_t x = r->x + c->ox;
   xy_t y = r->y + c->oy;
   xy_t x2 = x + r->w - 1;
   xy_t y2 = y + r->h - 1;
+  color_t tc = *color;
 
   if (x > c->clip_right || x2 < c->clip_left ||
       y > c->clip_bottom || y2 < c->clip_top) {
@@ -1128,12 +1131,12 @@ static inline ret_t ffr_draw_fill_rounded_rect_ex(canvas_t* c, rect_t* r, rect_t
     return RET_FAIL;
   }
 
-  color->rgba.a = color->rgba.a * c->global_alpha / 0xff;
-  return ffr_draw_fill_rounded_rect(c, r, color, radius_tl, radius_tr, radius_bl, radius_br);
+  tc.rgba.a = tc.rgba.a * c->global_alpha / 0xff;
+  return ffr_draw_fill_rounded_rect(c, r, &tc, radius_tl, radius_tr, radius_bl, radius_br);
 }
 
-static inline ret_t ffr_draw_stroke_rounded_rect_ex(canvas_t* c, rect_t* r, rect_t* bg_r,
-                                                    color_t* color, uint32_t radius_tl, uint32_t radius_tr, 
+static inline ret_t ffr_draw_stroke_rounded_rect_ex(canvas_t* c, const rect_t* r, const rect_t* bg_r,
+                                                    const color_t* color, uint32_t radius_tl, uint32_t radius_tr, 
                                                     uint32_t radius_bl, uint32_t radius_br, uint32_t border_width) {
   uint32_t radius = 0;
   xy_t x = r->x + c->ox;

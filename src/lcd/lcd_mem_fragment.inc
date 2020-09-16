@@ -40,7 +40,7 @@ typedef struct _lcd_mem_fragment_t {
   pixel_t buff[FRAGMENT_FRAME_BUFFER_SIZE];
 } lcd_mem_fragment_t;
 
-static ret_t lcd_mem_fragment_begin_frame(lcd_t* lcd, rect_t* dirty_rect) {
+static ret_t lcd_mem_fragment_begin_frame(lcd_t* lcd, const rect_t* dirty_rect) {
   lcd_mem_fragment_t* mem = (lcd_mem_fragment_t*)lcd;
   uint32_t bpp = bitmap_get_bpp_of_format(LCD_FORMAT);
 
@@ -158,7 +158,7 @@ static color_t lcd_mem_fragment_get_point_color(lcd_t* lcd, xy_t x, xy_t y) {
   return c;
 }
 
-static ret_t lcd_mem_fragment_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x, xy_t y) {
+static ret_t lcd_mem_fragment_draw_glyph(lcd_t* lcd, glyph_t* glyph, const rect_t* src, xy_t x, xy_t y) {
   lcd_mem_fragment_t* mem = (lcd_mem_fragment_t*)lcd;
 
   wh_t i = 0;
@@ -201,7 +201,7 @@ static ret_t lcd_mem_fragment_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src
   return RET_OK;
 }
 
-static ret_t lcd_mem_fragment_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
+static ret_t lcd_mem_fragment_draw_image(lcd_t* lcd, bitmap_t* img, const rect_t* src, const rect_t* dst) {
   lcd_mem_fragment_t* mem = (lcd_mem_fragment_t*)lcd;
 
   ret_t ret = RET_OK;

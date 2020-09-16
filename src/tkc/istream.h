@@ -172,6 +172,7 @@ int32_t tk_istream_read_line(tk_istream_t* stream, void* buff, uint32_t max_size
  * @param {tk_istream_t*} stream istream对象。
  * @param {str_t*} str 返回数据的str对象。
  *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  *
  */
 ret_t tk_istream_read_line_str(tk_istream_t* stream, str_t* str);

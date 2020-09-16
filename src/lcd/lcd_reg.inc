@@ -49,7 +49,7 @@ static inline ret_t lcd_reg_write_data_fill(lcd_t* lcd, pixel_t data, wh_t w, wh
   return RET_OK;
 }
 
-static ret_t lcd_reg_begin_frame(lcd_t* lcd, rect_t* dirty_rect) {
+static ret_t lcd_reg_begin_frame(lcd_t* lcd, const rect_t* dirty_rect) {
   lcd->dirty_rect = *dirty_rect;
 
   return RET_OK;
@@ -105,7 +105,7 @@ static ret_t lcd_reg_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
   return RET_OK;
 }
 
-static ret_t lcd_reg_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x, xy_t y) {
+static ret_t lcd_reg_draw_glyph(lcd_t* lcd, glyph_t* glyph, const rect_t* src, xy_t x, xy_t y) {
   wh_t i = 0;
   wh_t j = 0;
   wh_t sx = src->x;
@@ -137,7 +137,7 @@ static ret_t lcd_reg_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x,
   return RET_OK;
 }
 
-static ret_t lcd_reg_draw_image_bgr565(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
+static ret_t lcd_reg_draw_image_bgr565(lcd_t* lcd, bitmap_t* img, const rect_t* src, const rect_t* dst) {
   wh_t i = 0;
   wh_t j = 0;
   xy_t x = dst->x;
@@ -180,7 +180,7 @@ static ret_t lcd_reg_draw_image_bgr565(lcd_t* lcd, bitmap_t* img, rect_t* src, r
   return RET_OK;
 }
 
-static ret_t lcd_reg_draw_image_8888(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
+static ret_t lcd_reg_draw_image_8888(lcd_t* lcd, bitmap_t* img, const rect_t* src, const rect_t* dst) {
   wh_t i = 0;
   wh_t j = 0;
   uint8_t a = 0;
@@ -257,7 +257,7 @@ static ret_t lcd_reg_draw_image_8888(lcd_t* lcd, bitmap_t* img, rect_t* src, rec
   return RET_OK;
 }
 
-static ret_t lcd_reg_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
+static ret_t lcd_reg_draw_image(lcd_t* lcd, bitmap_t* img, const rect_t* src, const rect_t* dst) {
   if (img->format == BITMAP_FMT_BGR565) {
     return lcd_reg_draw_image_bgr565(lcd, img, src, dst);
   } else if (img->format == BITMAP_FMT_RGBA8888 || img->format == BITMAP_FMT_BGRA8888) {

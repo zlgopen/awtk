@@ -34,7 +34,7 @@
 static ret_t canvas_draw_fps(canvas_t* c);
 static ret_t canvas_draw_icon_ex(canvas_t* c, bitmap_t* img, const rect_t* src_r, xy_t cx, xy_t cy);
 static ret_t canvas_draw_image_center_ex(canvas_t* c, bitmap_t* img, const rect_t* src_r,
-                                         rect_t* dst_in);
+                                         const rect_t* dst_in);
 
 static bool_t bitmap_check_rect(bitmap_t* img, const rect_t* r) {
   return_value_if_fail(img != NULL && r != NULL, FALSE);
@@ -335,7 +335,7 @@ float_t canvas_measure_utf8(canvas_t* c, const char* str) {
   return ret;
 }
 
-ret_t canvas_begin_frame(canvas_t* c, rect_t* dirty_rect, lcd_draw_mode_t draw_mode) {
+ret_t canvas_begin_frame(canvas_t* c, const rect_t* dirty_rect, lcd_draw_mode_t draw_mode) {
   ret_t ret = RET_OK;
   return_value_if_fail(c != NULL, RET_BAD_PARAMS);
   if (c->began_frame) {
@@ -644,7 +644,7 @@ ret_t canvas_draw_utf8(canvas_t* c, const char* str, xy_t x, xy_t y) {
   return ret;
 }
 
-static ret_t canvas_do_draw_image(canvas_t* c, bitmap_t* img, rect_t* s, rect_t* d) {
+static ret_t canvas_do_draw_image(canvas_t* c, bitmap_t* img, const rect_t* s, const rect_t* d) {
   rect_t src;
   rect_t dst;
 
@@ -682,7 +682,7 @@ static ret_t canvas_do_draw_image(canvas_t* c, bitmap_t* img, rect_t* s, rect_t*
   return lcd_draw_image(c->lcd, img, &src, &dst);
 }
 
-ret_t canvas_draw_image(canvas_t* c, bitmap_t* img, rect_t* src, rect_t* dst_in) {
+ret_t canvas_draw_image(canvas_t* c, bitmap_t* img, const rect_t* src, const rect_t* dst_in) {
   rect_t d;
   rect_t r_fix;
   rect_t* dst = canvas_fix_rect(dst_in, &r_fix);
@@ -697,8 +697,8 @@ ret_t canvas_draw_image(canvas_t* c, bitmap_t* img, rect_t* src, rect_t* dst_in)
   return canvas_do_draw_image(c, img, src, &d);
 }
 
-static ret_t canvas_draw_image_repeat_default(canvas_t* c, bitmap_t* img, rect_t* src_in,
-                                              rect_t* dst_in, wh_t dst_w, wh_t dst_h) {
+static ret_t canvas_draw_image_repeat_default(canvas_t* c, bitmap_t* img, const rect_t* src_in,
+                                              const rect_t* dst_in, wh_t dst_w, wh_t dst_h) {
   rect_t s;
   rect_t d;
   xy_t x = 0;
@@ -740,8 +740,8 @@ static ret_t canvas_draw_image_repeat_default(canvas_t* c, bitmap_t* img, rect_t
   return RET_OK;
 }
 
-static ret_t canvas_draw_image_repeat_x_impl(canvas_t* c, bitmap_t* img, rect_t* src_in,
-                                             rect_t* dst_in) {
+static ret_t canvas_draw_image_repeat_x_impl(canvas_t* c, bitmap_t* img, const rect_t* src_in,
+                                             const rect_t* dst_in) {
   rect_t d;
   return_value_if_fail(
       c != NULL && c->lcd != NULL && img != NULL && src_in != NULL && dst_in != NULL,
@@ -759,8 +759,8 @@ static ret_t canvas_draw_image_repeat_x_impl(canvas_t* c, bitmap_t* img, rect_t*
   return canvas_draw_image_repeat_default(c, img, src_in, dst_in, src_in->w, dst_in->h);
 }
 
-static ret_t canvas_draw_image_repeat_y_impl(canvas_t* c, bitmap_t* img, rect_t* src_in,
-                                             rect_t* dst_in) {
+static ret_t canvas_draw_image_repeat_y_impl(canvas_t* c, bitmap_t* img, const rect_t* src_in,
+                                             const rect_t* dst_in) {
   rect_t d;
   return_value_if_fail(
       c != NULL && c->lcd != NULL && img != NULL && src_in != NULL && dst_in != NULL,
@@ -778,8 +778,8 @@ static ret_t canvas_draw_image_repeat_y_impl(canvas_t* c, bitmap_t* img, rect_t*
   return canvas_draw_image_repeat_default(c, img, src_in, dst_in, dst_in->w, src_in->h);
 }
 
-static ret_t canvas_draw_image_repeat_impl(canvas_t* c, bitmap_t* img, rect_t* src_in,
-                                           rect_t* dst_in) {
+static ret_t canvas_draw_image_repeat_impl(canvas_t* c, bitmap_t* img, const rect_t* src_in,
+                                           const rect_t* dst_in) {
   rect_t d;
   return_value_if_fail(
       c != NULL && c->lcd != NULL && img != NULL && src_in != NULL && dst_in != NULL,
@@ -797,7 +797,7 @@ static ret_t canvas_draw_image_repeat_impl(canvas_t* c, bitmap_t* img, rect_t* s
   return canvas_draw_image_repeat_default(c, img, src_in, dst_in, src_in->w, src_in->h);
 }
 
-ret_t canvas_draw_image_repeat(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
+ret_t canvas_draw_image_repeat(canvas_t* c, bitmap_t* img, const rect_t* dst_in) {
   rect_t s;
   rect_t r_fix;
   rect_t* dst = canvas_fix_rect(dst_in, &r_fix);
@@ -812,7 +812,7 @@ ret_t canvas_draw_image_repeat(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
   return RET_OK;
 }
 
-ret_t canvas_draw_image_repeat9(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
+ret_t canvas_draw_image_repeat9(canvas_t* c, bitmap_t* img, const rect_t* dst_in) {
   rect_t s;
   rect_t d;
   xy_t x = 0;
@@ -913,7 +913,7 @@ ret_t canvas_draw_image_repeat9(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
   return RET_OK;
 }
 
-ret_t canvas_draw_image_repeat_x(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
+ret_t canvas_draw_image_repeat_x(canvas_t* c, bitmap_t* img, const rect_t* dst_in) {
   rect_t s;
   rect_t r_fix;
   rect_t* dst = canvas_fix_rect(dst_in, &r_fix);
@@ -929,7 +929,7 @@ ret_t canvas_draw_image_repeat_x(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
   return RET_OK;
 }
 
-ret_t canvas_draw_image_repeat3_x(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
+ret_t canvas_draw_image_repeat3_x(canvas_t* c, bitmap_t* img, const rect_t* dst_in) {
   rect_t s;
   rect_t d;
   xy_t y = 0;
@@ -986,7 +986,7 @@ ret_t canvas_draw_image_repeat3_x(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
   return RET_OK;
 }
 
-ret_t canvas_draw_image_repeat_y(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
+ret_t canvas_draw_image_repeat_y(canvas_t* c, bitmap_t* img, const rect_t* dst_in) {
   rect_t s;
   rect_t r_fix;
   rect_t* dst = canvas_fix_rect(dst_in, &r_fix);
@@ -1000,7 +1000,7 @@ ret_t canvas_draw_image_repeat_y(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
   return RET_OK;
 }
 
-ret_t canvas_draw_image_repeat3_y(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
+ret_t canvas_draw_image_repeat3_y(canvas_t* c, bitmap_t* img, const rect_t* dst_in) {
   rect_t s;
   rect_t d;
   xy_t x = 0;
@@ -1057,7 +1057,7 @@ ret_t canvas_draw_image_repeat3_y(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
   return RET_OK;
 }
 
-ret_t canvas_draw_image_repeat_y_inverse(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
+ret_t canvas_draw_image_repeat_y_inverse(canvas_t* c, bitmap_t* img, const rect_t* dst_in) {
   rect_t s;
   rect_t d;
   xy_t y = 0;
@@ -1092,7 +1092,7 @@ ret_t canvas_draw_image_repeat_y_inverse(canvas_t* c, bitmap_t* img, rect_t* dst
   return RET_OK;
 }
 
-ret_t canvas_draw_image_patch3_y_scale_x(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
+ret_t canvas_draw_image_patch3_y_scale_x(canvas_t* c, bitmap_t* img, const rect_t* dst_in) {
   rect_t s;
   rect_t d;
   wh_t h = 0;
@@ -1136,7 +1136,7 @@ ret_t canvas_draw_image_patch3_y_scale_x(canvas_t* c, bitmap_t* img, rect_t* dst
   return RET_OK;
 }
 
-ret_t canvas_draw_image_patch3_y(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
+ret_t canvas_draw_image_patch3_y(canvas_t* c, bitmap_t* img, const rect_t* dst_in) {
   rect_t s;
   rect_t d;
   xy_t x = 0;
@@ -1183,7 +1183,7 @@ ret_t canvas_draw_image_patch3_y(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
   return RET_OK;
 }
 
-ret_t canvas_draw_image_patch3_x_scale_y(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
+ret_t canvas_draw_image_patch3_x_scale_y(canvas_t* c, bitmap_t* img, const rect_t* dst_in) {
   rect_t s;
   rect_t d;
   wh_t w = 0;
@@ -1227,7 +1227,7 @@ ret_t canvas_draw_image_patch3_x_scale_y(canvas_t* c, bitmap_t* img, rect_t* dst
   return RET_OK;
 }
 
-ret_t canvas_draw_image_patch3_x(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
+ret_t canvas_draw_image_patch3_x(canvas_t* c, bitmap_t* img, const rect_t* dst_in) {
   rect_t s;
   rect_t d;
   xy_t y = 0;
@@ -1273,7 +1273,7 @@ ret_t canvas_draw_image_patch3_x(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
   return RET_OK;
 }
 
-ret_t canvas_draw_image_patch9(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
+ret_t canvas_draw_image_patch9(canvas_t* c, bitmap_t* img, const rect_t* dst_in) {
   rect_t s;
   rect_t d;
   xy_t x = 0;
@@ -1379,7 +1379,7 @@ ret_t canvas_end_frame(canvas_t* c) {
   return lcd_end_frame(c->lcd);
 }
 
-ret_t canvas_draw_image_scale_w(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
+ret_t canvas_draw_image_scale_w(canvas_t* c, bitmap_t* img, const rect_t* dst_in) {
   rect_t s;
   rect_t d;
   wh_t src_h = 0;
@@ -1404,7 +1404,7 @@ ret_t canvas_draw_image_scale_w(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
   return canvas_draw_image(c, img, &s, &d);
 }
 
-ret_t canvas_draw_image_scale_h(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
+ret_t canvas_draw_image_scale_h(canvas_t* c, bitmap_t* img, const rect_t* dst_in) {
   rect_t s;
   rect_t d;
   wh_t src_w = 0;
@@ -1429,7 +1429,7 @@ ret_t canvas_draw_image_scale_h(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
   return canvas_draw_image(c, img, &s, &d);
 }
 
-ret_t canvas_draw_image_scale(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
+ret_t canvas_draw_image_scale(canvas_t* c, bitmap_t* img, const rect_t* dst_in) {
   rect_t s;
   rect_t d;
   float scale = 0;
@@ -1456,7 +1456,7 @@ ret_t canvas_draw_image_scale(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
   return canvas_draw_image(c, img, &s, &d);
 }
 
-ret_t canvas_draw_image_scale_down(canvas_t* c, bitmap_t* img, rect_t* src, rect_t* dst_in) {
+ret_t canvas_draw_image_scale_down(canvas_t* c, bitmap_t* img, const rect_t* src, const rect_t* dst_in) {
   rect_t d;
   float scale = 0;
   float scalex = 0;
@@ -1559,8 +1559,8 @@ ret_t canvas_draw_image_ex(canvas_t* c, bitmap_t* img, image_draw_type_t draw_ty
   }
 }
 
-ret_t canvas_draw_image_ex2(canvas_t* c, bitmap_t* img, image_draw_type_t draw_type, rect_t* src_in,
-                            rect_t* dst_in) {
+ret_t canvas_draw_image_ex2(canvas_t* c, bitmap_t* img, image_draw_type_t draw_type, const rect_t* src_in,
+                            const rect_t* dst_in) {
   rect_t src;
   rect_t r_fix;
   rect_t* dst = canvas_fix_rect(dst_in, &r_fix);
@@ -1624,7 +1624,7 @@ ret_t canvas_draw_icon(canvas_t* c, bitmap_t* img, xy_t cx, xy_t cy) {
   return canvas_draw_icon_ex(c, img, &src, cx, cy);
 }
 
-ret_t canvas_draw_icon_in_rect(canvas_t* c, bitmap_t* img, rect_t* r_in) {
+ret_t canvas_draw_icon_in_rect(canvas_t* c, bitmap_t* img, const rect_t* r_in) {
   rect_t r_fix;
   rect_t* r = canvas_fix_rect(r_in, &r_fix);
   return_value_if_fail(c != NULL && c->lcd != NULL && img != NULL && r != NULL, RET_BAD_PARAMS);
@@ -1633,7 +1633,7 @@ ret_t canvas_draw_icon_in_rect(canvas_t* c, bitmap_t* img, rect_t* r_in) {
 }
 
 static ret_t canvas_draw_image_center_ex(canvas_t* c, bitmap_t* img, const rect_t* src_r,
-                                         rect_t* dst_in) {
+                                         const rect_t* dst_in) {
   xy_t dx = 0;
   xy_t dy = 0;
   xy_t sx = 0;
@@ -1670,7 +1670,7 @@ static ret_t canvas_draw_image_center_ex(canvas_t* c, bitmap_t* img, const rect_
   return canvas_draw_image(c, img, &src, dst);
 }
 
-ret_t canvas_draw_image_center(canvas_t* c, bitmap_t* img, rect_t* dst_in) {
+ret_t canvas_draw_image_center(canvas_t* c, bitmap_t* img, const rect_t* dst_in) {
   rect_t src;
   return_value_if_fail(c != NULL && img != NULL && dst_in != NULL, RET_BAD_PARAMS);
   src = rect_init(0, 0, img->w, img->h);
@@ -1808,7 +1808,6 @@ ret_t canvas_draw_text_bidi_in_rect(canvas_t* c, const wchar_t* str, uint32_t nr
                                     const rect_t* r_in, const char* bidi_type, bool_t ellipses) {
   bidi_t b;
   ret_t ret = RET_FAIL;
-  float_t text_w = canvas_measure_text(c, str, nr);
   return_value_if_fail(c != NULL && str != NULL && r_in != NULL, RET_BAD_PARAMS);
 
   bidi_init(&b, FALSE, FALSE, bidi_type_from_name(bidi_type));
@@ -1933,25 +1932,25 @@ ret_t canvas_get_text_metrics(canvas_t* c, float_t* ascent, float_t* descent, fl
 
 #include "ffr_draw_rounded_rect.inc"
 
-ret_t canvas_fill_rounded_rect(canvas_t* c, rect_t* r, rect_t* bg_r, color_t* color,
+ret_t canvas_fill_rounded_rect(canvas_t* c, const rect_t* r, const rect_t* bg_r, const color_t* color,
                                uint32_t radius) {
   return ffr_draw_fill_rounded_rect_ex(c, r, bg_r, color, radius, radius, radius, radius);
 }
 
-ret_t canvas_stroke_rounded_rect(canvas_t* c, rect_t* r, rect_t* bg_r, color_t* color,
+ret_t canvas_stroke_rounded_rect(canvas_t* c, const rect_t* r, const rect_t* bg_r, const color_t* color,
                                  uint32_t radius, uint32_t border_width) {
   return ffr_draw_stroke_rounded_rect_ex(c, r, bg_r, color, radius, radius, radius, radius,
                                          border_width);
 }
 
-ret_t canvas_fill_rounded_rect_ex(canvas_t* c, rect_t* r, rect_t* bg_r, color_t* color,
+ret_t canvas_fill_rounded_rect_ex(canvas_t* c, const rect_t* r, const rect_t* bg_r, const color_t* color,
                                   uint32_t radius_tl, uint32_t radius_tr, uint32_t radius_bl,
                                   uint32_t radius_br) {
   return ffr_draw_fill_rounded_rect_ex(c, r, bg_r, color, radius_tl, radius_tr, radius_bl,
                                        radius_br);
 }
 
-ret_t canvas_stroke_rounded_rect_ex(canvas_t* c, rect_t* r, rect_t* bg_r, color_t* color,
+ret_t canvas_stroke_rounded_rect_ex(canvas_t* c, const rect_t* r, const rect_t* bg_r, const color_t* color,
                                     uint32_t radius_tl, uint32_t radius_tr, uint32_t radius_bl,
                                     uint32_t radius_br, uint32_t border_width) {
   return ffr_draw_stroke_rounded_rect_ex(c, r, bg_r, color, radius_tl, radius_tr, radius_bl,

@@ -1701,7 +1701,7 @@ bool_t widget_is_opened_popup(widget_t* widget);
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ * @return {bool_t} 返回FALSE表示不是，否则表示是。
  */
 bool_t widget_is_keyboard(widget_t* widget);
 

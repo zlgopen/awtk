@@ -41,8 +41,8 @@ typedef struct _draw_image_info_t {
 struct _lcd_t;
 typedef struct _lcd_t lcd_t;
 
-typedef ret_t (*lcd_begin_frame_t)(lcd_t* lcd, rect_t* dirty_rect);
-typedef ret_t (*lcd_set_clip_rect_t)(lcd_t* lcd, rect_t* rect);
+typedef ret_t (*lcd_begin_frame_t)(lcd_t* lcd, const rect_t* dirty_rect);
+typedef ret_t (*lcd_set_clip_rect_t)(lcd_t* lcd, const rect_t* rect);
 typedef ret_t (*lcd_get_clip_rect_t)(lcd_t* lcd, rect_t* rect);
 typedef ret_t (*lcd_resize_t)(lcd_t* lcd, wh_t w, wh_t h, uint32_t line_length);
 typedef ret_t (*lcd_get_text_metrics_t)(lcd_t* lcd, float_t* ascent, float_t* descent,
@@ -55,7 +55,7 @@ typedef ret_t (*lcd_set_fill_color_t)(lcd_t* lcd, color_t color);
 typedef ret_t (*lcd_set_font_name_t)(lcd_t* lcd, const char* name);
 typedef ret_t (*lcd_set_font_size_t)(lcd_t* lcd, uint32_t size);
 
-typedef ret_t (*lcd_draw_image_repeat_t)(lcd_t* lcd, bitmap_t* img, rect_t* src_in, rect_t* dst_in,
+typedef ret_t (*lcd_draw_image_repeat_t)(lcd_t* lcd, bitmap_t* img, const rect_t* src_in, const rect_t* dst_in,
                                          wh_t dst_w, wh_t dst_h);
 
 typedef ret_t (*lcd_draw_vline_t)(lcd_t* lcd, xy_t x, xy_t y, wh_t h);
@@ -66,11 +66,11 @@ typedef color_t (*lcd_get_point_color_t)(lcd_t* lcd, xy_t x, xy_t y);
 typedef ret_t (*lcd_fill_rect_t)(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h);
 typedef ret_t (*lcd_stroke_rect_t)(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h);
 
-typedef ret_t (*lcd_draw_glyph_t)(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x, xy_t y);
+typedef ret_t (*lcd_draw_glyph_t)(lcd_t* lcd, glyph_t* glyph, const rect_t* src, xy_t x, xy_t y);
 typedef float_t (*lcd_measure_text_t)(lcd_t* lcd, const wchar_t* str, uint32_t nr);
 typedef ret_t (*lcd_draw_text_t)(lcd_t* lcd, const wchar_t* str, uint32_t nr, xy_t x, xy_t y);
 
-typedef ret_t (*lcd_draw_image_t)(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst);
+typedef ret_t (*lcd_draw_image_t)(lcd_t* lcd, bitmap_t* img, const rect_t* src, const rect_t* dst);
 typedef ret_t (*lcd_draw_image_matrix_t)(lcd_t* lcd, draw_image_info_t* info);
 typedef vgcanvas_t* (*lcd_get_vgcanvas_t)(lcd_t* lcd);
 typedef ret_t (*lcd_take_snapshot_t)(lcd_t* lcd, bitmap_t* img, bool_t auto_rotate);
@@ -285,22 +285,22 @@ struct _lcd_t {
  * @method lcd_begin_frame
  * 准备绘制。
  * @param {lcd_t*} lcd lcd对象。
- * @param {rect_t*} dirty_rect 需要绘制的区域。
+ * @param {const rect_t*} dirty_rect 需要绘制的区域。
  * @param {lcd_draw_mode_t} anim_mode 动画模式，如果可能，直接画到显存而不是离线的framebuffer。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t lcd_begin_frame(lcd_t* lcd, rect_t* dirty_rect, lcd_draw_mode_t draw_mode);
+ret_t lcd_begin_frame(lcd_t* lcd, const rect_t* dirty_rect, lcd_draw_mode_t draw_mode);
 
 /**
  * @method lcd_set_clip_rect
  * 设置裁剪区域。
  * @param {lcd_t*} lcd lcd对象。
- * @param {rect_t*} rect 裁剪区域。
+ * @param {const rect_t*} rect 裁剪区域。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t lcd_set_clip_rect(lcd_t* lcd, rect_t* rect);
+ret_t lcd_set_clip_rect(lcd_t* lcd, const rect_t* rect);
 
 /**
  * @method lcd_get_clip_rect
@@ -462,13 +462,13 @@ ret_t lcd_stroke_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h);
  * 绘制字符。如果实现了measure_text/draw_text则不需要实现本函数。
  * @param {lcd_t*} lcd lcd对象。
  * @param {glyph_t*} glyph 字模
- * @param {rect_t*} src 只绘制指定区域的部分。
+ * @param {const rect_t*} src 只绘制指定区域的部分。
  * @param {xy_t} x x坐标。
  * @param {xy_t} y y坐标。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t lcd_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x, xy_t y);
+ret_t lcd_draw_glyph(lcd_t* lcd, glyph_t* glyph, const rect_t* src, xy_t x, xy_t y);
 
 /**
  * @method lcd_measure_text
@@ -499,12 +499,12 @@ ret_t lcd_draw_text(lcd_t* lcd, const wchar_t* str, uint32_t nr, xy_t x, xy_t y)
  * 绘制图片。
  * @param {lcd_t*} lcd lcd对象。
  * @param {bitmap_t*} img 图片。
- * @param {rect_t*} src 只绘制指定区域的部分。
- * @param {rect_t*} dst 绘制到目标区域。
+ * @param {const rect_t*} src 只绘制指定区域的部分。
+ * @param {const rect_t*} dst 绘制到目标区域。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t lcd_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst);
+ret_t lcd_draw_image(lcd_t* lcd, bitmap_t* img, const rect_t* src, const rect_t* dst);
 
 /**
  * @method lcd_draw_image_matrix

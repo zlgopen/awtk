@@ -74,7 +74,7 @@ static bitmap_t* lcd_mem_init_online_fb(lcd_t* lcd, bitmap_t* fb, lcd_orientatio
   return fb;
 }
 
-static ret_t lcd_mem_begin_frame(lcd_t* lcd, rect_t* dirty_rect) {
+static ret_t lcd_mem_begin_frame(lcd_t* lcd, const rect_t* dirty_rect) {
 #if WITH_LCD_CLEAR_ALPHA
   rect_t r;
   bitmap_t fb;
@@ -168,7 +168,7 @@ static color_t lcd_mem_get_point_color(lcd_t* lcd, xy_t x, xy_t y) {
   return c;
 }
 
-static ret_t lcd_mem_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x, xy_t y) {
+static ret_t lcd_mem_draw_glyph(lcd_t* lcd, glyph_t* glyph, const rect_t* src, xy_t x, xy_t y) {
   wh_t i = 0;
   wh_t j = 0;
   wh_t sx = src->x;
@@ -208,8 +208,8 @@ static ret_t lcd_mem_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x,
 
 static ret_t lcd_mem_draw_image_matrix(lcd_t* lcd, draw_image_info_t* info) {
   matrix_t* m = &(info->matrix);
-  rect_t* s = &(info->src);
-  rect_t* d = &(info->dst);
+  const rect_t* s = &(info->src);
+  const rect_t* d = &(info->dst);
   vgcanvas_t* canvas = lcd_get_vgcanvas(lcd);
 
   if (canvas != NULL) {
@@ -226,7 +226,7 @@ static ret_t lcd_mem_draw_image_matrix(lcd_t* lcd, draw_image_info_t* info) {
   return RET_NOT_IMPL;
 }
 
-static ret_t lcd_mem_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
+static ret_t lcd_mem_draw_image(lcd_t* lcd, bitmap_t* img, const rect_t* src, const rect_t* dst) {
   bitmap_t fb;
   ret_t ret = RET_OK;
   bool_t is_opaque = (img->flags & BITMAP_FLAG_OPAQUE || img->format == BITMAP_FMT_RGB565);
@@ -278,7 +278,7 @@ static ret_t lcd_mem_take_snapshot(lcd_t* lcd, bitmap_t* img, bool_t auto_rotate
 static ret_t lcd_mem_flush(lcd_t* lcd) {
   bitmap_t online_fb;
   bitmap_t offline_fb;
-  rect_t* r = &(lcd->dirty_rect);
+  const rect_t* r = &(lcd->dirty_rect);
   system_info_t* info = system_info();
   lcd_orientation_t o = info->lcd_orientation;
 

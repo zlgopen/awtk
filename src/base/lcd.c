@@ -23,7 +23,7 @@
 #include "tkc/time_now.h"
 #include "base/system_info.h"
 
-ret_t lcd_begin_frame(lcd_t* lcd, rect_t* dirty_rect, lcd_draw_mode_t draw_mode) {
+ret_t lcd_begin_frame(lcd_t* lcd, const rect_t* dirty_rect, lcd_draw_mode_t draw_mode) {
   return_value_if_fail(lcd != NULL && lcd->begin_frame != NULL, RET_BAD_PARAMS);
 
   lcd->draw_mode = draw_mode;
@@ -40,7 +40,7 @@ ret_t lcd_begin_frame(lcd_t* lcd, rect_t* dirty_rect, lcd_draw_mode_t draw_mode)
   return lcd->begin_frame(lcd, dirty_rect);
 }
 
-ret_t lcd_set_clip_rect(lcd_t* lcd, rect_t* rect) {
+ret_t lcd_set_clip_rect(lcd_t* lcd, const rect_t* rect) {
   return_value_if_fail(lcd != NULL && lcd->set_clip_rect != NULL, RET_BAD_PARAMS);
 
   return lcd->set_clip_rect(lcd, rect);
@@ -174,7 +174,7 @@ color_t lcd_get_point_color(lcd_t* lcd, xy_t x, xy_t y) {
   }
 }
 
-ret_t lcd_draw_image(lcd_t* lcd, bitmap_t* img, rect_t* src, rect_t* dst) {
+ret_t lcd_draw_image(lcd_t* lcd, bitmap_t* img, const rect_t* src, const rect_t* dst) {
   return_value_if_fail(lcd != NULL && lcd->draw_image != NULL && src != NULL && dst != NULL,
                        RET_BAD_PARAMS);
 
@@ -191,7 +191,7 @@ ret_t lcd_draw_image_matrix(lcd_t* lcd, draw_image_info_t* info) {
   return RET_NOT_IMPL;
 }
 
-ret_t lcd_draw_glyph(lcd_t* lcd, glyph_t* glyph, rect_t* src, xy_t x, xy_t y) {
+ret_t lcd_draw_glyph(lcd_t* lcd, glyph_t* glyph, const rect_t* src, xy_t x, xy_t y) {
   return_value_if_fail(lcd != NULL && lcd->draw_glyph != NULL && glyph != NULL && src != NULL,
                        RET_BAD_PARAMS);
 
