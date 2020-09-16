@@ -72,6 +72,30 @@ ret_t canvas_offline_begin_draw(canvas_t* canvas);
 ret_t canvas_offline_end_draw(canvas_t* canvas);
 
 /**
+ * @method canvas_offline_clear_canvas
+ * 把离线 canvas 清除所有数据，并把背景设置为全透明（注意：该离线 canvas 需要有透明通道）
+ * 该函数调用前必须要先 canvas_offline_begin_draw 函数。
+ * 该函数用来解决离线 canvas 多次绘图半透效果后导致半透效果无效的问题。
+ *
+ * @param {canvas_t*} canvas 离线 canvas 对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t canvas_offline_clear_canvas(canvas_t* canvas);
+
+/**
+ * @method canvas_offline_bitmap_move_to_new_bitmap
+ * 把离线 canvas 的离线 bitmap 移动赋值给新的 bitmap。
+ * 移动赋值后原来的离线 canvas 的离线 bitmap 就会被置空。
+ * 备注：在移动赋值之前会先调用 canvas_offline_flush_bitmap 把数据回流到内存中。
+ *
+ * @param {canvas_t*} canvas 离线 canvas 对象。
+ *
+ * @return {bitmap_t*} 返回 bitmap_t 对象表示成功，返回 NULL 表示失败。
+ */
+ret_t canvas_offline_bitmap_move_to_new_bitmap(canvas_t* canvas, bitmap_t* bitmap);
+
+/**
  * @method canvas_offline_flush_bitmap
  * 把离线 canvas 的数据放到绑定的 bitmap 中
  * 该函数只有在 opengl 模式才需要调用，是否把显存中的数据回传到内存中。
@@ -127,7 +151,24 @@ ret_t canvas_offline_flush_bitmap(canvas_t* canvas);
 ret_t canvas_offline_destroy(canvas_t* canvas);
 ```
 
+### 四，用户自定义特殊的离线画布 canvas
 
+​	由于有一些特别平台不能直接使用 awtk 提供的离线 canvas，只能通过平台的一些特殊的接口来实现离线画布 canvas，所以 awtk 的离线 canvas 提供了一个给外部重载离线 canvas 的函数的方法。
+
+​	通过定义 WITH_CANVAS_OFFLINE_CUSTION 宏，并且用户自行重写下面的函数，并且返回值必须是 RET_OK 或者非 NULL：
+
+| 函数名字                                        | 作用                                                       |
+| ----------------------------------------------- | ---------------------------------------------------------- |
+| canvas_offline_custom_create                    | 用户自定义 canvas_offline_create                           |
+| canvas_offline_custom_clear_canvas              | 用户自定义 canvas_offline_custom_clear_canvas              |
+| canvas_offline_custom_begin_draw                | 用户自定义 canvas_offline_custom_begin_draw                |
+| canvas_offline_custom_end_draw                  | 用户自定义 canvas_offline_custom_end_draw                  |
+| canvas_offline_custom_get_bitmap                | 用户自定义 canvas_offline_custom_get_bitmap                |
+| canvas_offline_custom_bitmap_move_to_new_bitmap | 用户自定义 canvas_offline_custom_bitmap_move_to_new_bitmap |
+| canvas_offline_custom_flush_bitmap              | 用户自定义 canvas_offline_custom_flush_bitmap              |
+| canvas_offline_custom_destroy                   | 用户自定义 canvas_offline_custom_destroy                   |
+
+> 备注：如果用户只需要部分函数的实现的话，可以把其他的函数返回 RET_FAIL 或者 NULL ，即可以让离线画布 canvas 函数执行回 awtk 的原来的代码逻辑。
 
 > 具体用法请参考 
 > [demo\_offline\_canvas.c](https://github.com/zlgopen/awtk/blob/master/demos/demo_canvas_offline.c)
