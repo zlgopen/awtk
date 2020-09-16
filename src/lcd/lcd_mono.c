@@ -127,7 +127,8 @@ static ret_t lcd_mono_draw_glyph(lcd_t* lcd, glyph_t* glyph, const rect_t* src, 
   return lcd_mono_draw_data(lcd, glyph->data, glyph->w, glyph->h, src, x, y, !pixel);
 }
 
-static ret_t lcd_mono_draw_image_mono(lcd_t* lcd, bitmap_t* img, const rect_t* src, const rect_t* dst) {
+static ret_t lcd_mono_draw_image_mono(lcd_t* lcd, bitmap_t* img, const rect_t* src,
+                                      const rect_t* dst) {
   ret_t ret = RET_OK;
   const uint8_t* data = NULL;
   return_value_if_fail(src->w == dst->w && src->h == dst->h, RET_OK);

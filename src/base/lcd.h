@@ -55,8 +55,8 @@ typedef ret_t (*lcd_set_fill_color_t)(lcd_t* lcd, color_t color);
 typedef ret_t (*lcd_set_font_name_t)(lcd_t* lcd, const char* name);
 typedef ret_t (*lcd_set_font_size_t)(lcd_t* lcd, uint32_t size);
 
-typedef ret_t (*lcd_draw_image_repeat_t)(lcd_t* lcd, bitmap_t* img, const rect_t* src_in, const rect_t* dst_in,
-                                         wh_t dst_w, wh_t dst_h);
+typedef ret_t (*lcd_draw_image_repeat_t)(lcd_t* lcd, bitmap_t* img, const rect_t* src_in,
+                                         const rect_t* dst_in, wh_t dst_w, wh_t dst_h);
 
 typedef ret_t (*lcd_draw_vline_t)(lcd_t* lcd, xy_t x, xy_t y, wh_t h);
 typedef ret_t (*lcd_draw_hline_t)(lcd_t* lcd, xy_t x, xy_t y, wh_t w);

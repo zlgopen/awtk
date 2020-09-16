@@ -116,7 +116,6 @@ static widget_t* window_manager_find_prev_any_window(widget_t* widget) {
 }
 
 ret_t window_manager_default_snap_curr_window(widget_t* widget, widget_t* curr_win, bitmap_t* img) {
-
   canvas_t* c = NULL;
   rect_t r = {0};
   canvas_t* canvas = NULL;
@@ -145,7 +144,6 @@ ret_t window_manager_default_snap_curr_window(widget_t* widget, widget_t* curr_w
 }
 
 ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_win, bitmap_t* img) {
-
   rect_t r = {0};
   canvas_t* c = NULL;
   canvas_t* canvas = NULL;

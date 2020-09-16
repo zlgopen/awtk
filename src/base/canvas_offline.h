@@ -237,7 +237,7 @@ ret_t canvas_offline_custom_flush_bitmap(canvas_t* canvas);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t canvas_offline_custom_destroy(canvas_t* canvas);
-  
+
 #endif
 
 END_C_DECLS

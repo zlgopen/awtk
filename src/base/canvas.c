@@ -1456,7 +1456,8 @@ ret_t canvas_draw_image_scale(canvas_t* c, bitmap_t* img, const rect_t* dst_in) 
   return canvas_draw_image(c, img, &s, &d);
 }
 
-ret_t canvas_draw_image_scale_down(canvas_t* c, bitmap_t* img, const rect_t* src, const rect_t* dst_in) {
+ret_t canvas_draw_image_scale_down(canvas_t* c, bitmap_t* img, const rect_t* src,
+                                   const rect_t* dst_in) {
   rect_t d;
   float scale = 0;
   float scalex = 0;
@@ -1559,8 +1560,8 @@ ret_t canvas_draw_image_ex(canvas_t* c, bitmap_t* img, image_draw_type_t draw_ty
   }
 }
 
-ret_t canvas_draw_image_ex2(canvas_t* c, bitmap_t* img, image_draw_type_t draw_type, const rect_t* src_in,
-                            const rect_t* dst_in) {
+ret_t canvas_draw_image_ex2(canvas_t* c, bitmap_t* img, image_draw_type_t draw_type,
+                            const rect_t* src_in, const rect_t* dst_in) {
   rect_t src;
   rect_t r_fix;
   rect_t* dst = canvas_fix_rect(dst_in, &r_fix);
@@ -1932,27 +1933,27 @@ ret_t canvas_get_text_metrics(canvas_t* c, float_t* ascent, float_t* descent, fl
 
 #include "ffr_draw_rounded_rect.inc"
 
-ret_t canvas_fill_rounded_rect(canvas_t* c, const rect_t* r, const rect_t* bg_r, const color_t* color,
-                               uint32_t radius) {
+ret_t canvas_fill_rounded_rect(canvas_t* c, const rect_t* r, const rect_t* bg_r,
+                               const color_t* color, uint32_t radius) {
   return ffr_draw_fill_rounded_rect_ex(c, r, bg_r, color, radius, radius, radius, radius);
 }
 
-ret_t canvas_stroke_rounded_rect(canvas_t* c, const rect_t* r, const rect_t* bg_r, const color_t* color,
-                                 uint32_t radius, uint32_t border_width) {
+ret_t canvas_stroke_rounded_rect(canvas_t* c, const rect_t* r, const rect_t* bg_r,
+                                 const color_t* color, uint32_t radius, uint32_t border_width) {
   return ffr_draw_stroke_rounded_rect_ex(c, r, bg_r, color, radius, radius, radius, radius,
                                          border_width);
 }
 
-ret_t canvas_fill_rounded_rect_ex(canvas_t* c, const rect_t* r, const rect_t* bg_r, const color_t* color,
-                                  uint32_t radius_tl, uint32_t radius_tr, uint32_t radius_bl,
-                                  uint32_t radius_br) {
+ret_t canvas_fill_rounded_rect_ex(canvas_t* c, const rect_t* r, const rect_t* bg_r,
+                                  const color_t* color, uint32_t radius_tl, uint32_t radius_tr,
+                                  uint32_t radius_bl, uint32_t radius_br) {
   return ffr_draw_fill_rounded_rect_ex(c, r, bg_r, color, radius_tl, radius_tr, radius_bl,
                                        radius_br);
 }
 
-ret_t canvas_stroke_rounded_rect_ex(canvas_t* c, const rect_t* r, const rect_t* bg_r, const color_t* color,
-                                    uint32_t radius_tl, uint32_t radius_tr, uint32_t radius_bl,
-                                    uint32_t radius_br, uint32_t border_width) {
+ret_t canvas_stroke_rounded_rect_ex(canvas_t* c, const rect_t* r, const rect_t* bg_r,
+                                    const color_t* color, uint32_t radius_tl, uint32_t radius_tr,
+                                    uint32_t radius_bl, uint32_t radius_br, uint32_t border_width) {
   return ffr_draw_stroke_rounded_rect_ex(c, r, bg_r, color, radius_tl, radius_tr, radius_bl,
                                          radius_br, border_width);
 }

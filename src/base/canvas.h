@@ -615,8 +615,8 @@ ret_t canvas_draw_image_ex(canvas_t* c, bitmap_t* img, image_draw_type_t draw_ty
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t canvas_draw_image_ex2(canvas_t* c, bitmap_t* img, image_draw_type_t draw_type, const rect_t* src,
-                            const rect_t* dst);
+ret_t canvas_draw_image_ex2(canvas_t* c, bitmap_t* img, image_draw_type_t draw_type,
+                            const rect_t* src, const rect_t* dst);
 
 /**
  * @method canvas_get_vgcanvas
@@ -684,7 +684,8 @@ ret_t canvas_draw_image_repeat3_y(canvas_t* c, bitmap_t* img, const rect_t* dst_
 ret_t canvas_draw_image_scale(canvas_t* c, bitmap_t* img, const rect_t* dst);
 ret_t canvas_draw_image_scale_w(canvas_t* c, bitmap_t* img, const rect_t* dst);
 ret_t canvas_draw_image_scale_h(canvas_t* c, bitmap_t* img, const rect_t* dst);
-ret_t canvas_draw_image_scale_down(canvas_t* c, bitmap_t* img, const rect_t* src, const rect_t* dst);
+ret_t canvas_draw_image_scale_down(canvas_t* c, bitmap_t* img, const rect_t* src,
+                                   const rect_t* dst);
 
 /**
  * @method canvas_draw_line
@@ -758,8 +759,8 @@ ret_t canvas_begin_frame(canvas_t* c, const rect_t* dirty_rect, lcd_draw_mode_t 
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t canvas_fill_rounded_rect(canvas_t* c, const rect_t* r, const rect_t* bg_r, const color_t* color,
-                               uint32_t radius);
+ret_t canvas_fill_rounded_rect(canvas_t* c, const rect_t* r, const rect_t* bg_r,
+                               const color_t* color, uint32_t radius);
 
 /**
  * @method canvas_fill_rounded_rect_ex
@@ -776,9 +777,9 @@ ret_t canvas_fill_rounded_rect(canvas_t* c, const rect_t* r, const rect_t* bg_r,
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t canvas_fill_rounded_rect_ex(canvas_t* c, const rect_t* r, const rect_t* bg_r, const color_t* color,
-                                  uint32_t radius_tl, uint32_t radius_tr, uint32_t radius_bl,
-                                  uint32_t radius_br);
+ret_t canvas_fill_rounded_rect_ex(canvas_t* c, const rect_t* r, const rect_t* bg_r,
+                                  const color_t* color, uint32_t radius_tl, uint32_t radius_tr,
+                                  uint32_t radius_bl, uint32_t radius_br);
 
 /**
  * @method canvas_stroke_rounded_rect
@@ -791,8 +792,8 @@ ret_t canvas_fill_rounded_rect_ex(canvas_t* c, const rect_t* r, const rect_t* bg
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t canvas_stroke_rounded_rect(canvas_t* c, const rect_t* r, const rect_t* bg_r, const color_t* color,
-                                 uint32_t radius, uint32_t border_width);
+ret_t canvas_stroke_rounded_rect(canvas_t* c, const rect_t* r, const rect_t* bg_r,
+                                 const color_t* color, uint32_t radius, uint32_t border_width);
 
 /**
  * @method canvas_stroke_rounded_rect_ex
@@ -810,9 +811,9 @@ ret_t canvas_stroke_rounded_rect(canvas_t* c, const rect_t* r, const rect_t* bg_
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t canvas_stroke_rounded_rect_ex(canvas_t* c, const rect_t* r, const rect_t* bg_r, const color_t* color,
-                                    uint32_t radius_tl, uint32_t radius_tr, uint32_t radius_bl,
-                                    uint32_t radius_br, uint32_t border_width);
+ret_t canvas_stroke_rounded_rect_ex(canvas_t* c, const rect_t* r, const rect_t* bg_r,
+                                    const color_t* color, uint32_t radius_tl, uint32_t radius_tr,
+                                    uint32_t radius_bl, uint32_t radius_br, uint32_t border_width);
 
 /**
  * @method canvas_end_frame
