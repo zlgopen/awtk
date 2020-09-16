@@ -93,7 +93,6 @@ struct _dialog_highlighter_t {
   rect_t clip_rect;
 
   /*private*/
-  framebuffer_object_t fbo;
   const dialog_highlighter_vtable_t* vt;
 };
 
@@ -113,11 +112,10 @@ dialog_highlighter_t* dialog_highlighter_create(const dialog_highlighter_vtable_
  * 设置背景图片。
  * @param {dialog_highlighter_t*} h 对话框高亮策略对象。
  * @param {bitmap_t*} img 背景截图。
- * @param {framebuffer_object_t*} fbo fbo对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t dialog_highlighter_set_bg(dialog_highlighter_t* h, bitmap_t* img, framebuffer_object_t* fbo);
+ret_t dialog_highlighter_set_bg(dialog_highlighter_t* h, bitmap_t* img);
 
 /**
  * @method dialog_highlighter_set_bg_clip_rect

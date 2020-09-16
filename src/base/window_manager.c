@@ -526,27 +526,25 @@ widget_t* window_manager_find_target(widget_t* widget, void* win, xy_t x, xy_t y
   return NULL;
 }
 
-ret_t window_manager_snap_curr_window(widget_t* widget, widget_t* curr_win, bitmap_t* img,
-                                      framebuffer_object_t* fbo, bool_t auto_rotate) {
+ret_t window_manager_snap_curr_window(widget_t* widget, widget_t* curr_win, bitmap_t* img) {
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(wm != NULL && wm->vt != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(curr_win != NULL && img != NULL && fbo != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(curr_win != NULL && img != NULL, RET_BAD_PARAMS);
 
   if (wm->vt->snap_curr_window != NULL) {
-    return wm->vt->snap_curr_window(widget, curr_win, img, fbo, auto_rotate);
+    return wm->vt->snap_curr_window(widget, curr_win, img);
   }
 
   return RET_NOT_IMPL;
 }
 
-ret_t window_manager_snap_prev_window(widget_t* widget, widget_t* prev_win, bitmap_t* img,
-                                      framebuffer_object_t* fbo, bool_t auto_rotate) {
+ret_t window_manager_snap_prev_window(widget_t* widget, widget_t* prev_win, bitmap_t* img) {
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(wm != NULL && wm->vt != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(prev_win != NULL && img != NULL && fbo != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(prev_win != NULL && img != NULL, RET_BAD_PARAMS);
 
   if (wm->vt->snap_prev_window != NULL) {
-    return wm->vt->snap_prev_window(widget, prev_win, img, fbo, auto_rotate);
+    return wm->vt->snap_prev_window(widget, prev_win, img);
   }
 
   return RET_NOT_IMPL;

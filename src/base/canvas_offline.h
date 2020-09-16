@@ -68,7 +68,7 @@ canvas_t* canvas_offline_create(uint32_t w, uint32_t h, bitmap_format_t format);
 
 /**
  * @method canvas_offline_clear_canvas
- * 把离线 canvas 清除所有数据，并把背景设置为全透明
+ * 清除离线 canvas 所有数据，并把背景设置为全透明（注意：该离线 canvas 需要有透明通道）
  * 该函数调用前必须要先 canvas_offline_begin_draw 函数。
  * 该函数用来解决离线 canvas 多次绘图半透效果后导致半透效果无效的问题。
  *
@@ -112,10 +112,12 @@ bitmap_t* canvas_offline_get_bitmap(canvas_t* canvas);
  * @method canvas_offline_bitmap_move_to_new_bitmap
  * 把离线 canvas 的离线 bitmap 移动赋值给新的 bitmap。
  * 移动赋值后原来的离线 canvas 的离线 bitmap 就会被置空。
+ * 备注：在移动赋值之前会先调用 canvas_offline_flush_bitmap 把数据回流到内存中。
  *
  * @param {canvas_t*} canvas 离线 canvas 对象。
+ * @param {bitmap_t*} bitmap 新的 bitmap 对象。
  *
- * @return {bitmap_t*} 返回 bitmap_t 对象表示成功，返回 NULL 表示失败。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t canvas_offline_bitmap_move_to_new_bitmap(canvas_t* canvas, bitmap_t* bitmap);
 
@@ -139,6 +141,104 @@ ret_t canvas_offline_flush_bitmap(canvas_t* canvas);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t canvas_offline_destroy(canvas_t* canvas);
+
+/*
+ * WITH_CANVAS_OFFLINE_CUSTION 宏提供给用户在外部自定义离线 canvas 的机会，
+ * 主要是用于给用户在外部定义一些特殊的离线 canvas 使用的，而这些特殊的离线 canvas 很大概率和平台相关的，
+ * 所以可以通过 WITH_CANVAS_OFFLINE_CUSTION 宏来外部实现自定义离线 canvas 的效果。
+ */
+#ifdef WITH_CANVAS_OFFLINE_CUSTION
+/**
+ * @method canvas_offline_custom_create
+ * @export none
+ * 用户自定义 canvas_offline_create
+ * 
+ * @param {uint32_t} w 离线 canvas 的宽。
+ * @param {uint32_t} h 离线 canvas 的高。
+ * @param {bitmap_format_t} format 离线 canvas 的格式。
+ *
+ * @return {canvas_t*} 成功返回 canvas ，失败返回 NULL。
+ */
+canvas_t* canvas_offline_custom_create(uint32_t w, uint32_t h, bitmap_format_t format);
+
+/**
+ * @method canvas_offline_custom_clear_canvas
+ * @export none
+ * 用户自定义 canvas_offline_custom_clear_canvas
+ *
+ * @param {canvas_t*} canvas 离线 canvas 对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t canvas_offline_custom_clear_canvas(canvas_t* canvas);
+
+/**
+ * @method canvas_offline_custom_begin_draw
+ * @export none
+ * 用户自定义 canvas_offline_custom_begin_draw
+ *
+ * @param {canvas_t*} canvas 离线 canvas 对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t canvas_offline_custom_begin_draw(canvas_t* canvas);
+
+/**
+ * @method canvas_offline_custom_end_draw
+ * @export none
+ * 用户自定义 canvas_offline_custom_end_draw
+ *
+ * @param {canvas_t*} canvas 离线 canvas 对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t canvas_offline_custom_end_draw(canvas_t* canvas);
+
+/**
+ * @method canvas_offline_custom_get_bitmap
+ * @export none
+ * 用户自定义 canvas_offline_custom_get_bitmap
+ *
+ * @param {canvas_t*} canvas 离线 canvas 对象。
+ *
+ * @return {bitmap_t*} 返回 bitmap_t 对象表示成功，返回 NULL 表示失败。
+ */
+bitmap_t* canvas_offline_custom_get_bitmap(canvas_t* canvas);
+
+/**
+ * @method canvas_offline_custom_bitmap_move_to_new_bitmap
+ * @export none
+ * 用户自定义 canvas_offline_custom_bitmap_move_to_new_bitmap
+ *
+ * @param {canvas_t*} canvas 离线 canvas 对象。
+ *
+ * @return {bitmap_t*} 返回 bitmap_t 对象表示成功，返回 NULL 表示失败。
+ */
+ret_t canvas_offline_custom_bitmap_move_to_new_bitmap(canvas_t* canvas, bitmap_t* bitmap);
+
+/**
+ * @method canvas_offline_custom_flush_bitmap
+ * @export none
+ * 用户自定义 canvas_offline_custom_flush_bitmap
+ *
+ * @param {canvas_t*} canvas 离线 canvas 对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t canvas_offline_custom_flush_bitmap(canvas_t* canvas);
+
+/**
+ * @method canvas_offline_custom_destroy
+ * @export none
+ * 用户自定义 canvas_offline_custom_destroy
+ *
+ * @param {canvas_t*} canvas 离线 canvas 对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t canvas_offline_custom_destroy(canvas_t* canvas);
+  
+#endif
 
 END_C_DECLS
 

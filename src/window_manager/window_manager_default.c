@@ -115,65 +115,46 @@ static widget_t* window_manager_find_prev_any_window(widget_t* widget) {
   return NULL;
 }
 
-ret_t window_manager_default_snap_curr_window(widget_t* widget, widget_t* curr_win, bitmap_t* img,
-                                              framebuffer_object_t* fbo, bool_t auto_rotate) {
+ret_t window_manager_default_snap_curr_window(widget_t* widget, widget_t* curr_win, bitmap_t* img) {
+
   canvas_t* c = NULL;
-#ifdef WITH_NANOVG_GPU
-  vgcanvas_t* vg = NULL;
-#else
   rect_t r = {0};
   canvas_t* canvas = NULL;
-#endif /*WITH_NANOVG_GPU*/
 
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
-  return_value_if_fail(img != NULL && fbo != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(wm != NULL && curr_win != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(img != NULL && wm != NULL && curr_win != NULL, RET_BAD_PARAMS);
 
   c = native_window_get_canvas(wm->native_window);
   window_manager_check_and_layout(widget);
 
-#ifdef WITH_NANOVG_GPU
-  vg = lcd_get_vgcanvas(c->lcd);
-  ENSURE(vgcanvas_create_fbo(vg, vg->w, vg->h, fbo) == RET_OK);
-  ENSURE(vgcanvas_bind_fbo(vg, fbo) == RET_OK);
-  canvas_set_clip_rect(c, NULL);
-  ENSURE(widget_on_paint_background(widget, c) == RET_OK);
-  ENSURE(widget_paint(curr_win, c) == RET_OK);
-  ENSURE(vgcanvas_unbind_fbo(vg, fbo) == RET_OK);
-  fbo_to_img(fbo, img);
-#else
-  canvas = canvas_offline_create(c->lcd->w, c->lcd->h, lcd_get_desired_bitmap_format(c->lcd));
   r = rect_init(curr_win->x, curr_win->y, curr_win->w, curr_win->h);
+
+  canvas_save(c);
+  canvas = canvas_offline_create(c->lcd->w, c->lcd->h, lcd_get_desired_bitmap_format(c->lcd));
   canvas_offline_begin_draw(canvas);
   canvas_set_clip_rect(canvas, &r);
   ENSURE(widget_on_paint_background(widget, canvas) == RET_OK);
   ENSURE(widget_paint(curr_win, canvas) == RET_OK);
   canvas_offline_end_draw(canvas);
-  canvas_offline_flush_bitmap(canvas);
   ENSURE(canvas_offline_bitmap_move_to_new_bitmap(canvas, img) == RET_OK);
   ENSURE(canvas_offline_destroy(canvas) == RET_OK);
   img->flags |= BITMAP_FLAG_OPAQUE;
-#endif
+  canvas_restore(c);
 
   return RET_OK;
 }
 
-ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_win, bitmap_t* img,
-                                              framebuffer_object_t* fbo, bool_t auto_rotate) {
+ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_win, bitmap_t* img) {
+
   rect_t r = {0};
   canvas_t* c = NULL;
-#ifdef WITH_NANOVG_GPU
-  vgcanvas_t* vg = NULL;
-#else
   canvas_t* canvas = NULL;
-#endif /*WITH_NANOVG_GPU*/
 
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
   dialog_highlighter_t* dialog_highlighter = NULL;
   int32_t end = -1, start = -1;
 
-  return_value_if_fail(img != NULL && fbo != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(wm != NULL && prev_win != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(img != NULL && wm != NULL && prev_win != NULL, RET_BAD_PARAMS);
 
   c = native_window_get_canvas(wm->native_window);
   dialog_highlighter = wm->dialog_highlighter;
@@ -189,31 +170,7 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
 
   r = rect_init(prev_win->x, prev_win->y, prev_win->w, prev_win->h);
 
-#ifdef WITH_NANOVG_GPU
-  vg = lcd_get_vgcanvas(c->lcd);
-  ENSURE(vgcanvas_create_fbo(vg, vg->w, vg->h, fbo) == RET_OK);
-  ENSURE(vgcanvas_bind_fbo(vg, fbo) == RET_OK);
-  canvas_set_clip_rect(c, &r);
-  ENSURE(widget_on_paint_background(widget, c) == RET_OK);
-  window_manager_paint_system_bar(widget, c);
-  {
-    widget_t** children = (widget_t**)(widget->children->elms);
-    for (; start <= end; ++start) {
-      widget_t* iter = children[start];
-      if (widget_is_system_bar(iter) || !iter->visible) continue;
-      /* 过滤 curr_win 的对象 */
-      if (iter != wm->curr_win) {
-        ENSURE(widget_paint(iter, c) == RET_OK);
-      }
-    }
-  }
-
-  if (dialog_highlighter != NULL) {
-    dialog_highlighter_prepare(dialog_highlighter, c);
-  }
-  ENSURE(vgcanvas_unbind_fbo(vg, fbo) == RET_OK);
-  fbo_to_img(fbo, img);
-#else
+  canvas_save(c);
   canvas = canvas_offline_create(c->lcd->w, c->lcd->h, lcd_get_desired_bitmap_format(c->lcd));
   canvas_offline_begin_draw(canvas);
   canvas_set_clip_rect(canvas, &r);
@@ -235,14 +192,13 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
     dialog_highlighter_prepare_ex(dialog_highlighter, c, canvas);
   }
   canvas_offline_end_draw(canvas);
-  canvas_offline_flush_bitmap(canvas);
   ENSURE(canvas_offline_bitmap_move_to_new_bitmap(canvas, img) == RET_OK);
   ENSURE(canvas_offline_destroy(canvas) == RET_OK);
   img->flags |= BITMAP_FLAG_OPAQUE;
-#endif /*WITH_NANOVG_GPU*/
+  canvas_restore(c);
 
   if (dialog_highlighter != NULL) {
-    dialog_highlighter_set_bg(dialog_highlighter, img, fbo);
+    dialog_highlighter_set_bg(dialog_highlighter, img);
     dialog_highlighter_set_bg_clip_rect(dialog_highlighter, &r);
   }
   wm->curr_win = NULL;
@@ -307,8 +263,7 @@ static ret_t window_manager_prepare_dialog_highlighter(widget_t* widget, widget_
                                                        widget_t* curr_win) {
   if (window_manager_default_create_dialog_highlighter(widget, curr_win) == RET_OK) {
     bitmap_t img = {0};
-    framebuffer_object_t fbo = {0};
-    window_manager_default_snap_prev_window(widget, prev_win, &img, &fbo, TRUE);
+    window_manager_default_snap_prev_window(widget, prev_win, &img);
 
     return RET_OK;
   }
@@ -1253,14 +1208,12 @@ static ret_t window_manager_default_native_window_resized(widget_t* widget, void
 
   if (wm->dialog_highlighter != NULL) {
     bitmap_t img;
-    framebuffer_object_t fbo;
     widget_t* prev = window_manager_get_prev_window(widget);
 
     memset(&img, 0x00, sizeof(img));
-    memset(&fbo, 0x00, sizeof(fbo));
     if (prev != NULL) {
       dialog_highlighter_clear_image(wm->dialog_highlighter);
-      window_manager_default_snap_prev_window(widget, prev, &img, &fbo, FALSE);
+      window_manager_default_snap_prev_window(widget, prev, &img);
     }
   }
 

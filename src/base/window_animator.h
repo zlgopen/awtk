@@ -142,8 +142,6 @@ struct _window_animator_t {
   canvas_t* canvas;
   float_t time_percent;
 
-  framebuffer_object_t prev_fbo;
-  framebuffer_object_t curr_fbo;
   dialog_highlighter_t* dialog_highlighter;
 
   const window_animator_vtable_t* vt;

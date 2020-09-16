@@ -51,11 +51,9 @@ typedef ret_t (*window_manager_dispatch_native_window_event_t)(widget_t* widget,
                                                                void* handle);
 
 typedef ret_t (*window_manager_snap_curr_window_t)(widget_t* widget, widget_t* curr_win,
-                                                   bitmap_t* img, framebuffer_object_t* fbo,
-                                                   bool_t auto_rotate);
+                                                   bitmap_t* img);
 typedef ret_t (*window_manager_snap_prev_window_t)(widget_t* widget, widget_t* prev_win,
-                                                   bitmap_t* img, framebuffer_object_t* fbo,
-                                                   bool_t auto_rotate);
+                                                   bitmap_t* img);
 typedef dialog_highlighter_t* (*window_manager_get_dialog_highlighter_t)(widget_t* widget);
 typedef ret_t (*window_manager_resize_t)(widget_t* widget, wh_t w, wh_t h);
 
@@ -399,11 +397,9 @@ ret_t window_manager_end_wait_pointer_cursor(widget_t* widget);
 ret_t window_manager_resize(widget_t* widget, wh_t w, wh_t h);
 
 /*public for animators*/
-ret_t window_manager_snap_curr_window(widget_t* widget, widget_t* curr_win, bitmap_t* img,
-                                      framebuffer_object_t* fbo, bool_t auto_rotate);
+ret_t window_manager_snap_curr_window(widget_t* widget, widget_t* curr_win, bitmap_t* img);
 
-ret_t window_manager_snap_prev_window(widget_t* widget, widget_t* prev_win, bitmap_t* img,
-                                      framebuffer_object_t* fbo, bool_t auto_rotate);
+ret_t window_manager_snap_prev_window(widget_t* widget, widget_t* prev_win, bitmap_t* img);
 
 dialog_highlighter_t* window_manager_get_dialog_highlighter(widget_t* widget);
 

@@ -104,18 +104,10 @@ static ret_t window_animator_draw_prev_window(window_animator_t* wa);
 static ret_t window_animator_draw_curr_window(window_animator_t* wa);
 
 static ret_t window_animator_open_destroy(window_animator_t* wa) {
-#ifdef WITH_NANOVG_GPU
-  vgcanvas_t* vg = lcd_get_vgcanvas(wa->canvas->lcd);
-  if (wa->dialog_highlighter == NULL) {
-    vgcanvas_destroy_fbo(vg, &(wa->prev_fbo));
-  }
-  vgcanvas_destroy_fbo(vg, &(wa->curr_fbo));
-#else
   if (wa->dialog_highlighter == NULL) {
     bitmap_destroy(&(wa->prev_img));
   }
   bitmap_destroy(&(wa->curr_img));
-#endif /*WITH_NANOVG_GPU*/
 
   memset(wa, 0x00, sizeof(window_animator_t));
   TKMEM_FREE(wa);
@@ -157,9 +149,6 @@ ret_t window_animator_update(window_animator_t* wa, uint32_t time_ms) {
 
 ret_t window_animator_destroy(window_animator_t* wa) {
   return_value_if_fail(wa != NULL, RET_FAIL);
-#ifdef AWTK_WEB
-  EM_ASM_INT({ return VGCanvas.animateEnd(); }, 0);
-#endif /*AWTK_WEB*/
 
   if (wa->open) {
     return window_animator_open_destroy(wa);
@@ -242,7 +231,6 @@ static ret_t window_animator_init(window_animator_t* wa) {
 ret_t window_animator_prepare(window_animator_t* wa, canvas_t* c, widget_t* prev_win,
                               widget_t* curr_win) {
   widget_t* wm = prev_win->parent;
-  bool_t auto_rotate = !window_animator_is_overlap(wa);
 
   wa->canvas = c;
   wa->prev_win = prev_win;
@@ -251,8 +239,8 @@ ret_t window_animator_prepare(window_animator_t* wa, canvas_t* c, widget_t* prev
   wa->duration = wa->duration ? wa->duration : 500;
 
   window_animator_init(wa);
-  window_manager_snap_prev_window(wm, prev_win, &(wa->prev_img), &(wa->prev_fbo), auto_rotate);
-  window_manager_snap_curr_window(wm, curr_win, &(wa->curr_img), &(wa->curr_fbo), auto_rotate);
+  window_manager_snap_prev_window(wm, prev_win, &(wa->prev_img));
+  window_manager_snap_curr_window(wm, curr_win, &(wa->curr_img));
   wa->dialog_highlighter = window_manager_get_dialog_highlighter(wm);
 
   return RET_OK;
@@ -276,10 +264,6 @@ window_animator_t* window_animator_create(bool_t open, const window_animator_vta
   wa->vt = vt;
   wa->open = open;
   wa->easing = easing_get(EASING_CUBIC_OUT);
-
-#ifdef AWTK_WEB
-  EM_ASM_INT({ return VGCanvas.animateBegin(); }, 0);
-#endif /*AWTK_WEB*/
 
   return wa;
 }
