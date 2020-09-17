@@ -86,7 +86,6 @@ TEST(MLEdit, events) {
 }
 
 TEST(MLEdit, intputing1) {
-  value_t v;
   pointer_event_t evt;
   widget_t* w1 = mledit_create(NULL, 10, 20, 30, 40);
   pointer_event_init(&evt, EVT_POINTER_DOWN, w1, 0, 0);
@@ -100,7 +99,6 @@ TEST(MLEdit, intputing1) {
 }
 
 TEST(MLEdit, intputing2) {
-  value_t v;
   key_event_t evt;
   widget_t* w1 = mledit_create(NULL, 10, 20, 30, 40);
   key_event_init(&evt, EVT_KEY_DOWN, w1, 0);
@@ -114,7 +112,6 @@ TEST(MLEdit, intputing2) {
 }
 
 TEST(MLEdit, intputing3) {
-  value_t v;
   wheel_event_t evt;
   widget_t* w1 = mledit_create(NULL, 10, 20, 30, 40);
   wheel_event_init(&evt, EVT_WHEEL, w1, 0);

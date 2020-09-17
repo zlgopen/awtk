@@ -127,7 +127,6 @@ bool xml_buff_to_str_gen(const char* buff, StrGen* sg) {
 
 bool xml_to_str_gen(const char* input_file, const char* output_dir, const char* theme, bool bin) {
   StrGen sg;
-  uint8_t* p = NULL;
   char path[MAX_PATH + 1];
 
   return_value_if_fail(input_file != NULL && output_dir != NULL, false);

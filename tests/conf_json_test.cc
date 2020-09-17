@@ -29,7 +29,6 @@ TEST(ConfJson, basic1) {
 
 TEST(Json, clear) {
   value_t v;
-  conf_node_t* node = NULL;
   const char* data = " {\"hello\" : { \"name\" : \"tom\", \"age\" : 100  }  } ";
   conf_doc_t* doc = conf_doc_load_json(data, -1);
 
@@ -44,7 +43,6 @@ TEST(Json, clear) {
 
 TEST(Json, clear_array) {
   value_t v;
-  conf_node_t* node = NULL;
   const char* data = " {\"hello\" : [{\"a\":1},{\"b\":2}]  } ";
   conf_doc_t* doc = conf_doc_load_json(data, -1);
 
@@ -59,8 +57,6 @@ TEST(Json, clear_array) {
 
 TEST(ConfJson, name) {
   value_t v;
-  str_t str;
-  conf_node_t* node = NULL;
   const char* data = " {\"tom\" : { \"name\" : \"tom\", \"age\" : 100  }  } ";
 
   conf_doc_t* doc = conf_doc_load_json(data, -1);
@@ -85,8 +81,6 @@ TEST(ConfJson, name) {
 
 TEST(ConfJson, size1) {
   value_t v;
-  str_t str;
-  conf_node_t* node = NULL;
   const char* data = " {\"tom\" : { \"name\" : \"tom\", \"age\" : 100  }  } ";
 
   conf_doc_t* doc = conf_doc_load_json(data, -1);
@@ -102,8 +96,6 @@ TEST(ConfJson, size1) {
 
 TEST(ConfJson, size2) {
   value_t v;
-  str_t str;
-  conf_node_t* node = NULL;
   const char* data = " {\"data\" : [1,2,3,4,5]  } ";
 
   conf_doc_t* doc = conf_doc_load_json(data, -1);
@@ -116,8 +108,6 @@ TEST(ConfJson, size2) {
 
 TEST(ConfJson, size3) {
   value_t v;
-  str_t str;
-  conf_node_t* node = NULL;
   const char* data = " {\"data\" : [{\"name\":\"tom\"},{\"name\":\"jack\"}]  } ";
 
   conf_doc_t* doc = conf_doc_load_json(data, -1);
@@ -130,8 +120,6 @@ TEST(ConfJson, size3) {
 
 TEST(ConfJson, size4) {
   value_t v;
-  str_t str;
-  conf_node_t* node = NULL;
   const char* data = " {\"data\" : [{\"name\":\"tom\"},{\"name\":\"jack\"}]  } ";
 
   conf_doc_t* doc = conf_doc_load_json(data, -1);
@@ -145,7 +133,6 @@ TEST(ConfJson, size4) {
 TEST(ConfJson, escape) {
   value_t v;
   str_t str;
-  conf_node_t* node = NULL;
   const char* data = " {\"name\" : \"\\\"tom\\\"\"}";
 
   conf_doc_t* doc = conf_doc_load_json(data, -1);
@@ -213,7 +200,6 @@ TEST(Json, file) {
 }
 
 TEST(Json, exec) {
-  value_t v;
   object_t* conf = conf_json_load("file://./tests/testdata/test.json", TRUE);
 
   ASSERT_EQ(object_can_exec(conf, OBJECT_CMD_MOVE_UP, "group.key"), FALSE);

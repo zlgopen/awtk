@@ -506,7 +506,6 @@ TEST(Edit, value) {
 }
 
 TEST(Edit, intputing2) {
-  value_t v;
   key_event_t evt;
   widget_t* w1 = edit_create(NULL, 10, 20, 30, 40);
   key_event_init(&evt, EVT_KEY_DOWN, w1, 0);
@@ -520,7 +519,6 @@ TEST(Edit, intputing2) {
 }
 
 TEST(Edit, intputing3) {
-  value_t v;
   wheel_event_t evt;
   widget_t* w1 = edit_create(NULL, 10, 20, 30, 40);
   wheel_event_init(&evt, EVT_WHEEL, w1, 0);

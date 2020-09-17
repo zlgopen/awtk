@@ -88,24 +88,6 @@ bool Style::Merge(Style& other) {
   return true;
 }
 
-static uint8_t* write_str(uint8_t* buff, const string& str) {
-  memcpy(buff, str.c_str(), str.size() + 1);
-
-  return buff + str.size() + 1;
-}
-
-static uint8_t* write_binary(uint8_t* buff, void* data, uint32_t size) {
-  memcpy(buff, data, size);
-
-  return buff + size;
-}
-
-static uint8_t* write_uint32(uint8_t* buff, uint32_t value) {
-  save_uint32(buff, value);
-
-  return buff;
-}
-
 ret_t Style::Output(wbuffer_t* wbuffer) {
   uint32_t size = 0;
   style_name_value_header_t nv;

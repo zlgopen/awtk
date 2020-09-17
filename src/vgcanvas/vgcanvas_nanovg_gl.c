@@ -41,6 +41,7 @@
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
 #else
+#define GL_GLEXT_PROTOTYPES 1
 #include <SDL_opengl.h>
 #include <SDL_opengl_glext.h>
 #endif /*IOS*/

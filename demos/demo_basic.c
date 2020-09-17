@@ -71,6 +71,7 @@ ret_t application_init() {
   widget_t* system_bar = window_open("system_bar");
   widget_t* win = window_open("basic");
 
+  (void)system_bar;
   widget_set_prop_str(win, WIDGET_PROP_CLICKABLE, "no");
 
   widget_add_timer(win, on_timer, 1000);

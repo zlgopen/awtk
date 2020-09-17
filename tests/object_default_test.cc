@@ -427,7 +427,6 @@ TEST(ObjectDefault, path) {
 }
 
 TEST(ObjectDefault, cmd_events) {
-  value_t v;
   string log;
   object_t* obj = object_default_create();
   object_default_t* o = OBJECT_DEFAULT(obj);

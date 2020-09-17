@@ -7,7 +7,6 @@
 static void TestStrGen(const char* strs[]) {
   StrGen sg;
   size_t nr = 0;
-  uint8_t* p = NULL;
   uint8_t buff[1024 * 4];
   vector<string> vstrs;
   for (size_t i = 0; strs[i]; i++) {

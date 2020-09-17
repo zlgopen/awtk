@@ -274,7 +274,6 @@ TEST(Ini, file) {
 
 TEST(Ini, index) {
   value_t v;
-  conf_node_t* node = NULL;
   conf_doc_t* doc = conf_doc_load_ini("[hello]\n[ world ]\n[awtk]\nname=aaa\n");
 
   ASSERT_EQ(conf_doc_get(doc, "hello.#index", &v), RET_OK);
@@ -290,8 +289,6 @@ TEST(Ini, index) {
 }
 
 TEST(Ini, last_first) {
-  value_t v;
-  conf_node_t* node = NULL;
   conf_doc_t* doc = conf_doc_load_ini("[hello]\n[ world ]\n[awtk]\nname=aaa\n");
 
   ASSERT_EQ(conf_doc_is_last(doc, "hello"), FALSE);
@@ -307,7 +304,6 @@ TEST(Ini, last_first) {
 
 TEST(Ini, move_up) {
   value_t v;
-  conf_node_t* node = NULL;
   conf_doc_t* doc = conf_doc_load_ini("[hello]\n[ world ]\n[awtk]\nname=aaa\n");
 
   ASSERT_EQ(conf_doc_move_up(doc, "hello"), RET_FAIL);
@@ -344,7 +340,6 @@ TEST(Ini, move_up) {
 
 TEST(Ini, clear) {
   value_t v;
-  conf_node_t* node = NULL;
   conf_doc_t* doc = conf_doc_load_ini("[hello]\n name=aaa\n");
 
   ASSERT_EQ(conf_doc_get(doc, "hello.#size", &v), RET_OK);

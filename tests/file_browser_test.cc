@@ -225,11 +225,11 @@ TEST(FileBrowser, compare_by_size) {
   memset(&b, 0x00, sizeof(b));
 
   a.size = 100;
-  a.name = "a.txt";
+  a.name = (char*)"a.txt";
   a.is_reg_file = TRUE;
 
   b.size = 200;
-  b.name = "b.txt";
+  b.name = (char*)"b.txt";
   b.is_reg_file = TRUE;
 
   ASSERT_EQ(fb_compare_by_size(&a, &b) < 0, TRUE);
@@ -248,11 +248,11 @@ TEST(FileBrowser, compare_by_mtime) {
   memset(&b, 0x00, sizeof(b));
 
   a.mtime = 100;
-  a.name = "a.txt";
+  a.name = (char*)"a.txt";
   a.is_reg_file = TRUE;
 
   b.mtime = 200;
-  b.name = "b.txt";
+  b.name = (char*)"b.txt";
   b.is_reg_file = TRUE;
 
   ASSERT_EQ(fb_compare_by_mtime(&a, &b) < 0, TRUE);
@@ -270,10 +270,10 @@ TEST(FileBrowser, compare_by_name) {
   memset(&a, 0x00, sizeof(a));
   memset(&b, 0x00, sizeof(b));
 
-  a.name = "a.jpg";
+  a.name = (char*)"a.jpg";
   a.is_reg_file = TRUE;
 
-  b.name = "b.txt";
+  b.name = (char*)"b.txt";
   b.is_reg_file = TRUE;
 
   ASSERT_EQ(fb_compare_by_name(&a, &b) < 0, TRUE);
@@ -290,10 +290,10 @@ TEST(FileBrowser, compare_by_type) {
   memset(&a, 0x00, sizeof(a));
   memset(&b, 0x00, sizeof(b));
 
-  a.name = "a.jpg";
+  a.name = (char*)"a.jpg";
   a.is_reg_file = TRUE;
 
-  b.name = "b.txt";
+  b.name = (char*)"b.txt";
   b.is_reg_file = TRUE;
 
   ASSERT_EQ(fb_compare_by_type(&a, &b) < 0, TRUE);
@@ -310,10 +310,10 @@ TEST(FileBrowser, compare_dir_file) {
   memset(&a, 0x00, sizeof(a));
   memset(&b, 0x00, sizeof(b));
 
-  a.name = "b";
+  a.name = (char*)"b";
   a.is_dir = TRUE;
 
-  b.name = "a";
+  b.name = (char*)"a";
   b.is_reg_file = TRUE;
 
   ASSERT_EQ(fb_compare_by_type(&a, &b) < 0, TRUE);
