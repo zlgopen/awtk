@@ -107,8 +107,6 @@ static ret_t main_loop_sdl2_dispatch_multi_gesture_event(main_loop_simple_t* loo
   event_t* e =
       multi_gesture_event_init(&event, widget, touch_id, x, y, rotation, distance, fingers);
 
-  log_debug("multi gesture: %lld %d %d %f %f %d\n", touch_id, x, y, rotation, distance, fingers);
-
   event.e.native_window_handle = NULL;
   window_manager_dispatch_input_event(widget, e);
 

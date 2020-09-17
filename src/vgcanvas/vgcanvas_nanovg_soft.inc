@@ -130,7 +130,6 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
   int32_t i = 0;
   int32_t f = 0;
   uint8_t* img_data = NULL;
-  uint32_t bpp = bitmap_get_bpp(img);
   vgcanvas_nanovg_soft_texture_t* texture = NULL;
 
   if (img->flags & BITMAP_FLAG_TEXTURE) {

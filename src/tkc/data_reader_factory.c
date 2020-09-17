@@ -82,9 +82,9 @@ data_reader_t* data_reader_factory_create_reader(data_reader_factory_t* factory,
 
   if (p != NULL) {
     return_value_if_fail((p - url) < TK_NAME_LEN, NULL);
-    strncpy(protocol, url, p - url);
+    tk_strncpy(protocol, url, p - url);
   } else {
-    strncpy(protocol, "file", 4);
+    tk_strncpy(protocol, "file", 4);
   }
 
   iter = darray_find(&(factory->creators), (void*)protocol);
