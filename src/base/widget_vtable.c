@@ -22,7 +22,9 @@
 #include "base/widget_vtable.h"
 #include "tkc/mem.h"
 
-ret_t widget_invalidate_default(widget_t* widget, rect_t* r) {
+ret_t widget_invalidate_default(widget_t* widget, const rect_t* rect) {
+  rect_t t = *rect;
+  rect_t* r = &t;
   if (widget->vt->scrollable) {
     int32_t ox = widget_get_prop_int(widget, WIDGET_PROP_XOFFSET, 0);
     int32_t oy = widget_get_prop_int(widget, WIDGET_PROP_YOFFSET, 0);

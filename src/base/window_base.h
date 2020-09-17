@@ -223,7 +223,16 @@ ret_t window_base_on_destroy(widget_t* widget);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t window_base_on_event(widget_t* widget, event_t* e);
-ret_t window_base_invalidate(widget_t* widget, rect_t* r);
+
+/**
+ * @method window_base_invalidate
+ * 窗口on_invalidate函数的缺省实现。
+ * @param {widget_t*} widget window_base对象。
+ * @param {const rect_t*} rect rect对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t window_base_invalidate(widget_t* widget, const rect_t* rect);
 
 /**
  * @method window_base_on_paint_begin

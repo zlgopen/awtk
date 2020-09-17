@@ -259,7 +259,9 @@ ret_t window_base_on_destroy(widget_t* widget) {
   return RET_OK;
 }
 
-ret_t window_base_invalidate(widget_t* widget, rect_t* r) {
+ret_t window_base_invalidate(widget_t* widget, const rect_t* rect) {
+  rect_t t = *rect;
+  rect_t* r = &t;
   native_window_t* nw = NULL;
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 

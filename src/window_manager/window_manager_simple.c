@@ -33,7 +33,7 @@
 #include "window_manager/window_manager_simple.h"
 
 ret_t window_manager_paint_system_bar(widget_t* widget, canvas_t* c);
-static ret_t window_manager_simple_invalidate(widget_t* widget, rect_t* r);
+static ret_t window_manager_simple_invalidate(widget_t* widget, const rect_t* r);
 static ret_t window_manager_simple_do_open_window(widget_t* wm, widget_t* window);
 static ret_t window_manager_simple_layout_child(widget_t* widget, widget_t* window);
 
@@ -232,7 +232,7 @@ static ret_t window_manager_simple_paint(widget_t* widget) {
   return ret;
 }
 
-static ret_t window_manager_simple_invalidate(widget_t* widget, rect_t* r) {
+static ret_t window_manager_simple_invalidate(widget_t* widget, const rect_t* r) {
   window_manager_simple_t* wm = WINDOW_MANAGER_SIMPLE(widget);
 
   if (wm->native_window != NULL) {

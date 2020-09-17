@@ -231,11 +231,11 @@ native_window_t* native_window_create(widget_t* widget);
  * @method native_window_invalidate
  * 请求重绘指定区域。
  * @param {native_window_t*} win win对象。
- * @param {rect_t*} r 重绘区域。
+ * @param {const rect_t*} r 重绘区域。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t native_window_invalidate(native_window_t* win, rect_t* r);
+ret_t native_window_invalidate(native_window_t* win, const rect_t* r);
 
 ret_t native_window_swap_buffer(native_window_t* win);
 ret_t native_window_gl_make_current(native_window_t* win);

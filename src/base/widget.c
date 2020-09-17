@@ -1289,7 +1289,7 @@ ret_t widget_draw_icon_text(widget_t* widget, canvas_t* c, const char* icon, wst
   return RET_OK;
 }
 
-ret_t widget_fill_rect(widget_t* widget, canvas_t* c, rect_t* r, bool_t bg,
+ret_t widget_fill_rect(widget_t* widget, canvas_t* c, const rect_t* r, bool_t bg,
                        image_draw_type_t draw_type) {
   bitmap_t img;
   ret_t ret = RET_OK;
@@ -1361,7 +1361,7 @@ ret_t widget_fill_rect(widget_t* widget, canvas_t* c, rect_t* r, bool_t bg,
   return RET_OK;
 }
 
-static inline ret_t widget_stroke_border_rect_for_border_type(canvas_t* c, rect_t* r, color_t bd,
+static inline ret_t widget_stroke_border_rect_for_border_type(canvas_t* c, const rect_t* r, color_t bd,
                                                               int32_t border,
                                                               uint32_t border_width) {
   wh_t w = r->w;
@@ -1398,7 +1398,7 @@ static inline ret_t widget_stroke_border_rect_for_border_type(canvas_t* c, rect_
   return RET_OK;
 }
 
-ret_t widget_stroke_border_rect(widget_t* widget, canvas_t* c, rect_t* r) {
+ret_t widget_stroke_border_rect(widget_t* widget, canvas_t* c, const rect_t* r) {
   style_t* style = widget->astyle;
   color_t trans = color_init(0, 0, 0, 0);
   color_t bd = style_get_color(style, STYLE_ID_BORDER_COLOR, trans);
@@ -1434,11 +1434,11 @@ ret_t widget_draw_background(widget_t* widget, canvas_t* c) {
   return widget_fill_rect(widget, c, &r, TRUE, IMAGE_DRAW_CENTER);
 }
 
-ret_t widget_fill_bg_rect(widget_t* widget, canvas_t* c, rect_t* r, image_draw_type_t draw_type) {
+ret_t widget_fill_bg_rect(widget_t* widget, canvas_t* c, const rect_t* r, image_draw_type_t draw_type) {
   return widget_fill_rect(widget, c, r, TRUE, draw_type);
 }
 
-ret_t widget_fill_fg_rect(widget_t* widget, canvas_t* c, rect_t* r, image_draw_type_t draw_type) {
+ret_t widget_fill_fg_rect(widget_t* widget, canvas_t* c, const rect_t* r, image_draw_type_t draw_type) {
   return widget_fill_rect(widget, c, r, FALSE, draw_type);
 }
 
@@ -2952,7 +2952,7 @@ static ret_t widget_set_parent_not_dirty(widget_t* widget) {
   return RET_OK;
 }
 
-ret_t widget_invalidate(widget_t* widget, rect_t* r) {
+ret_t widget_invalidate(widget_t* widget, const rect_t* r) {
   rect_t rself;
   return_value_if_fail(widget != NULL && widget->vt != NULL, RET_BAD_PARAMS);
 
@@ -2975,7 +2975,7 @@ ret_t widget_invalidate(widget_t* widget, rect_t* r) {
   }
 }
 
-ret_t widget_invalidate_force(widget_t* widget, rect_t* r) {
+ret_t widget_invalidate_force(widget_t* widget, const rect_t* r) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   widget->dirty = FALSE;
@@ -4109,14 +4109,14 @@ ret_t widget_close_window(widget_t* widget) {
 }
 
 #if defined(FRAGMENT_FRAME_BUFFER_SIZE)
-bitmap_t* widget_take_snapshot_rect(widget_t* widget, rect_t* r) {
+bitmap_t* widget_take_snapshot_rect(widget_t* widget, const rect_t* r) {
   log_warn("not supported yet\n");
   return NULL;
 }
 
 #elif defined(WITH_NANOVG_GPU)
 
-bitmap_t* widget_take_snapshot_rect(widget_t* widget, rect_t* r) {
+bitmap_t* widget_take_snapshot_rect(widget_t* widget, const rect_t* r) {
   bitmap_t* img;
   uint32_t w = 0;
   uint32_t h = 0;
@@ -4156,7 +4156,7 @@ bitmap_t* widget_take_snapshot_rect(widget_t* widget, rect_t* r) {
 
 #else
 #include "lcd/lcd_mem_rgba8888.h"
-bitmap_t* widget_take_snapshot_rect(widget_t* widget, rect_t* r) {
+bitmap_t* widget_take_snapshot_rect(widget_t* widget, const rect_t* r) {
   wh_t w = 0;
   wh_t h = 0;
   canvas_t canvas;
@@ -4275,7 +4275,7 @@ ret_t widget_end_wait_pointer_cursor(widget_t* widget) {
 }
 
 ret_t widget_draw_text_in_rect(widget_t* widget, canvas_t* c, const wchar_t* str, uint32_t size,
-                               rect_t* r, bool_t ellipses) {
+                               const rect_t* r, bool_t ellipses) {
   const char* bidi_type = widget_get_bidi(widget);
   return_value_if_fail(widget != NULL && c != NULL && str != NULL && r != NULL, RET_BAD_PARAMS);
 

@@ -88,7 +88,7 @@ canvas_t native_window_get_canvas (native_window_t* win);
 * 函数原型：
 
 ```
-ret_t native_window_invalidate (native_window_t* win, rect_t* r);
+ret_t native_window_invalidate (native_window_t* win, const rect_t* r);
 ```
 
 * 参数说明：
@@ -97,7 +97,7 @@ ret_t native_window_invalidate (native_window_t* win, rect_t* r);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | win | native\_window\_t* | win对象。 |
-| r | rect\_t* | 重绘区域。 |
+| r | const rect\_t* | 重绘区域。 |
 #### native\_window\_maximize 函数
 -----------------------
 

@@ -40,10 +40,10 @@
 #include "pixel_ops.inc"
 #include "fill_image.inc"
 
-ret_t fill_bgra8888_rect(bitmap_t* fb, rect_t* dst, color_t c) {
+ret_t fill_bgra8888_rect(bitmap_t* fb, const rect_t* dst, color_t c) {
   return fill_image(fb, dst, c);
 }
 
-ret_t clear_bgra8888_rect(bitmap_t* fb, rect_t* dst, color_t c) {
+ret_t clear_bgra8888_rect(bitmap_t* fb, const rect_t* dst, color_t c) {
   return clear_image(fb, dst, c);
 }

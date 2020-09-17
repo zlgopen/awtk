@@ -32,33 +32,6 @@ static bool_t hscroll_label_is_running(widget_t* widget) {
   return hscroll_label->timer_id != TK_INVALID_ID;
 }
 
-static ret_t hscroll_label_do_paint_self_ellipses(widget_t* widget, canvas_t* c,
-                                                  uint32_t left_margin, uint32_t right_margin) {
-  uint32_t i = 0;
-  uint32_t x = 0;
-  uint32_t last_x = 0;
-  wstr_t* text = &(widget->text);
-  uint32_t y = (widget->h - c->font_size) / 2;
-  uint32_t right = widget->w - right_margin;
-  uint32_t ellipses_w = canvas_measure_text(c, L"...", 3);
-
-  for (i = 0; i < text->size; i++) {
-    x = canvas_measure_text(c, text->str, i + 1) + left_margin;
-
-    if ((x + ellipses_w) >= right) {
-      x = last_x;
-      break;
-    }
-
-    last_x = x;
-  }
-
-  canvas_draw_text(c, text->str, i, left_margin, y);
-  canvas_draw_text(c, L"...", 3, x + 3, y);
-
-  return RET_OK;
-}
-
 static ret_t hscroll_label_do_paint_self(widget_t* widget, canvas_t* c, uint32_t left_margin,
                                          uint32_t right_margin) {
   rect_t r = {0, 0, 0, 0};

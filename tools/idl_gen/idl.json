@@ -4389,11 +4389,6 @@
             "type": "bitmap_t*",
             "name": "img",
             "desc": "背景截图。"
-          },
-          {
-            "type": "framebuffer_object_t*",
-            "name": "fbo",
-            "desc": "fbo对象。"
           }
         ],
         "annotation": {},
@@ -14770,7 +14765,7 @@
             "desc": "vgcanvas对象。"
           },
           {
-            "type": "rect_t*",
+            "type": "const rect_t*",
             "name": "dirty_rect",
             "desc": "需要绘制的区域。"
           }
@@ -18504,8 +18499,8 @@
         "desc": "控件。"
       },
       {
-        "type": "rect_t*",
-        "name": "r",
+        "type": "const rect_t*",
+        "name": "rect",
         "desc": "无效化区域。"
       }
     ],
@@ -18516,7 +18511,7 @@
     "name": "widget_invalidate_default",
     "return": {
       "type": "ret_t",
-      "desc": "返回。"
+      "desc": "返回RET_OK表示成功，否则表示失败。"
     },
     "type": "method",
     "header": "base/widget_vtable.h",
@@ -18540,6 +18535,10 @@
     },
     "desc": "",
     "name": "widget_on_paint_self_default",
+    "return": {
+      "type": "ret_t",
+      "desc": "返回RET_OK表示成功，否则表示失败。"
+    },
     "type": "method",
     "header": "base/widget_vtable.h",
     "level": 1
@@ -18551,6 +18550,10 @@
     },
     "desc": "",
     "name": "widget_on_paint_children_default",
+    "return": {
+      "type": "ret_t",
+      "desc": "返回RET_OK表示成功，否则表示失败。"
+    },
     "type": "method",
     "header": "base/widget_vtable.h",
     "level": 1
@@ -18562,6 +18565,10 @@
     },
     "desc": "",
     "name": "widget_on_keydown_default",
+    "return": {
+      "type": "ret_t",
+      "desc": "返回RET_OK表示成功，否则表示失败。"
+    },
     "type": "method",
     "header": "base/widget_vtable.h",
     "level": 1
@@ -18573,6 +18580,10 @@
     },
     "desc": "",
     "name": "widget_on_keyup_default",
+    "return": {
+      "type": "ret_t",
+      "desc": "返回RET_OK表示成功，否则表示失败。"
+    },
     "type": "method",
     "header": "base/widget_vtable.h",
     "level": 1
@@ -18584,6 +18595,10 @@
     },
     "desc": "",
     "name": "widget_on_pointer_down_default",
+    "return": {
+      "type": "ret_t",
+      "desc": "返回RET_OK表示成功，否则表示失败。"
+    },
     "type": "method",
     "header": "base/widget_vtable.h",
     "level": 1
@@ -18595,6 +18610,10 @@
     },
     "desc": "",
     "name": "widget_on_pointer_move_default",
+    "return": {
+      "type": "ret_t",
+      "desc": "返回RET_OK表示成功，否则表示失败。"
+    },
     "type": "method",
     "header": "base/widget_vtable.h",
     "level": 1
@@ -18606,6 +18625,10 @@
     },
     "desc": "",
     "name": "widget_on_pointer_up_default",
+    "return": {
+      "type": "ret_t",
+      "desc": "返回RET_OK表示成功，否则表示失败。"
+    },
     "type": "method",
     "header": "base/widget_vtable.h",
     "level": 1
@@ -18617,6 +18640,10 @@
     },
     "desc": "",
     "name": "widget_on_copy_default",
+    "return": {
+      "type": "ret_t",
+      "desc": "返回RET_OK表示成功，否则表示失败。"
+    },
     "type": "method",
     "header": "base/widget_vtable.h",
     "level": 1
@@ -18628,6 +18655,10 @@
     },
     "desc": "",
     "name": "widget_get_prop_default",
+    "return": {
+      "type": "ret_t",
+      "desc": "返回RET_OK表示成功，否则表示失败。"
+    },
     "type": "method",
     "header": "base/widget_vtable.h",
     "level": 1
@@ -18639,6 +18670,10 @@
     },
     "desc": "",
     "name": "widget_set_prop_default",
+    "return": {
+      "type": "ret_t",
+      "desc": "返回RET_OK表示成功，否则表示失败。"
+    },
     "type": "method",
     "header": "base/widget_vtable.h",
     "level": 1
@@ -18681,6 +18716,10 @@
     },
     "desc": "",
     "name": "widget_on_paint_null",
+    "return": {
+      "type": "ret_t",
+      "desc": "返回RET_OK表示成功，否则表示失败。"
+    },
     "type": "method",
     "header": "base/widget_vtable.h",
     "level": 1
@@ -20180,7 +20219,7 @@
             "desc": "控件对象。"
           },
           {
-            "type": "rect_t*",
+            "type": "const rect_t*",
             "name": "r",
             "desc": "矩形对象(widget本地坐标)。"
           }
@@ -20201,7 +20240,7 @@
             "desc": "控件对象。"
           },
           {
-            "type": "rect_t*",
+            "type": "const rect_t*",
             "name": "r",
             "desc": "矩形对象(widget本地坐标)。"
           }
@@ -20260,7 +20299,7 @@
             "desc": "文本长度。"
           },
           {
-            "type": "rect_t*",
+            "type": "const rect_t*",
             "name": "r",
             "desc": "矩形区域。"
           },
@@ -21346,7 +21385,7 @@
             "desc": "画布对象。"
           },
           {
-            "type": "rect_t*",
+            "type": "const rect_t*",
             "name": "r",
             "desc": "矩形区域。"
           }
@@ -21374,7 +21413,7 @@
             "desc": "画布对象。"
           },
           {
-            "type": "rect_t*",
+            "type": "const rect_t*",
             "name": "r",
             "desc": "矩形区域。"
           },
@@ -21407,7 +21446,7 @@
             "desc": "画布对象。"
           },
           {
-            "type": "rect_t*",
+            "type": "const rect_t*",
             "name": "r",
             "desc": "矩形区域。"
           },
@@ -22040,7 +22079,7 @@
             "desc": "控件对象。"
           },
           {
-            "type": "rect_t*",
+            "type": "const rect_t*",
             "name": "r",
             "desc": "截屏区域（输入NULL，则为控件全区域截屏）。"
           }
@@ -34140,7 +34179,7 @@
           }
         ],
         "annotation": {},
-        "desc": "把离线 canvas 清除所有数据，并把背景设置为全透明\n该函数调用前必须要先 canvas_offline_begin_draw 函数。\n该函数用来解决离线 canvas 多次绘图半透效果后导致半透效果无效的问题。",
+        "desc": "清除离线 canvas 所有数据，并把背景设置为全透明（注意：该离线 canvas 需要有透明通道）\n该函数调用前必须要先 canvas_offline_begin_draw 函数。\n该函数用来解决离线 canvas 多次绘图半透效果后导致半透效果无效的问题。",
         "name": "canvas_offline_clear_canvas",
         "return": {
           "type": "ret_t",
@@ -34201,14 +34240,19 @@
             "type": "canvas_t*",
             "name": "canvas",
             "desc": "离线 canvas 对象。"
+          },
+          {
+            "type": "bitmap_t*",
+            "name": "bitmap",
+            "desc": "新的 bitmap 对象。"
           }
         ],
         "annotation": {},
-        "desc": "把离线 canvas 的离线 bitmap 移动赋值给新的 bitmap。\n移动赋值后原来的离线 canvas 的离线 bitmap 就会被置空。",
+        "desc": "把离线 canvas 的离线 bitmap 移动赋值给新的 bitmap。\n移动赋值后原来的离线 canvas 的离线 bitmap 就会被置空。\n备注：在移动赋值之前会先调用 canvas_offline_flush_bitmap 把数据回流到内存中。",
         "name": "canvas_offline_bitmap_move_to_new_bitmap",
         "return": {
-          "type": "bitmap_t*",
-          "desc": "返回 bitmap_t 对象表示成功，返回 NULL 表示失败。"
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
         }
       },
       {
@@ -34238,6 +34282,152 @@
         "annotation": {},
         "desc": "释放离线 canvas 和离线 bitmap",
         "name": "canvas_offline_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "uint32_t",
+            "name": "w",
+            "desc": "离线 canvas 的宽。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "h",
+            "desc": "离线 canvas 的高。"
+          },
+          {
+            "type": "bitmap_format_t",
+            "name": "format",
+            "desc": "离线 canvas 的格式。"
+          }
+        ],
+        "annotation": {},
+        "desc": "用户自定义 canvas_offline_create",
+        "name": "canvas_offline_custom_create",
+        "export": "none",
+        "return": {
+          "type": "canvas_t*",
+          "desc": "成功返回 canvas ，失败返回 NULL。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "canvas",
+            "desc": "离线 canvas 对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "用户自定义 canvas_offline_custom_clear_canvas",
+        "name": "canvas_offline_custom_clear_canvas",
+        "export": "none",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "canvas",
+            "desc": "离线 canvas 对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "用户自定义 canvas_offline_custom_begin_draw",
+        "name": "canvas_offline_custom_begin_draw",
+        "export": "none",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "canvas",
+            "desc": "离线 canvas 对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "用户自定义 canvas_offline_custom_end_draw",
+        "name": "canvas_offline_custom_end_draw",
+        "export": "none",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "canvas",
+            "desc": "离线 canvas 对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "用户自定义 canvas_offline_custom_get_bitmap",
+        "name": "canvas_offline_custom_get_bitmap",
+        "export": "none",
+        "return": {
+          "type": "bitmap_t*",
+          "desc": "返回 bitmap_t 对象表示成功，返回 NULL 表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "canvas",
+            "desc": "离线 canvas 对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "用户自定义 canvas_offline_custom_bitmap_move_to_new_bitmap",
+        "name": "canvas_offline_custom_bitmap_move_to_new_bitmap",
+        "export": "none",
+        "return": {
+          "type": "bitmap_t*",
+          "desc": "返回 bitmap_t 对象表示成功，返回 NULL 表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "canvas",
+            "desc": "离线 canvas 对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "用户自定义 canvas_offline_custom_flush_bitmap",
+        "name": "canvas_offline_custom_flush_bitmap",
+        "export": "none",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "canvas",
+            "desc": "离线 canvas 对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "用户自定义 canvas_offline_custom_destroy",
+        "name": "canvas_offline_custom_destroy",
+        "export": "none",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -35741,6 +35931,11 @@
             "type": "uint32_t",
             "name": "border_width",
             "desc": "边宽。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "border_model",
+            "desc": "边框类型。"
           }
         ],
         "annotation": {},
@@ -55388,6 +55583,27 @@
             "desc": "window_base对象。"
           },
           {
+            "type": "const rect_t*",
+            "name": "rect",
+            "desc": "rect对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "窗口on_invalidate函数的缺省实现。",
+        "name": "window_base_invalidate",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "window_base对象。"
+          },
+          {
             "type": "canvas_t*",
             "name": "c",
             "desc": "canvas对象。"
@@ -57349,7 +57565,7 @@
             "desc": "win对象。"
           },
           {
-            "type": "rect_t*",
+            "type": "const rect_t*",
             "name": "r",
             "desc": "重绘区域。"
           }
@@ -58707,7 +58923,7 @@
             "desc": "目标图片对象。"
           },
           {
-            "type": "rect_t*",
+            "type": "const rect_t*",
             "name": "dst_r",
             "desc": "要填充的目标区域。"
           },
@@ -58733,7 +58949,7 @@
             "desc": "目标图片对象。"
           },
           {
-            "type": "rect_t*",
+            "type": "const rect_t*",
             "name": "dst_r",
             "desc": "要填充的目标区域。"
           },
@@ -58764,7 +58980,7 @@
             "desc": "源图片对象。"
           },
           {
-            "type": "rect_t*",
+            "type": "const rect_t*",
             "name": "src_r",
             "desc": "要拷贝的区域。"
           },
@@ -58800,7 +59016,7 @@
             "desc": "源图片对象。"
           },
           {
-            "type": "rect_t*",
+            "type": "const rect_t*",
             "name": "src_r",
             "desc": "要旋转并拷贝的区域。"
           },
@@ -58831,12 +59047,12 @@
             "desc": "源图片对象。"
           },
           {
-            "type": "rect_t*",
+            "type": "const rect_t*",
             "name": "dst_r",
             "desc": "目的区域。"
           },
           {
-            "type": "rect_t*",
+            "type": "const rect_t*",
             "name": "src_r",
             "desc": "源区域。"
           },

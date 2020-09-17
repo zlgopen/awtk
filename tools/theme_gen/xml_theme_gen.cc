@@ -188,7 +188,6 @@ uint32_t xml_gen_buff(const char* xml, uint8_t* output, uint32_t max_size) {
 
   return_value_if_fail(b.gen.Output(&wbuffer) != RET_OK, 0);
 
-  uint32_t size = wbuffer.cursor;
   wbuffer_deinit(&wbuffer);
 
   xml_parser_destroy(parser);

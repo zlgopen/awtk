@@ -33,11 +33,11 @@ BEGIN_C_DECLS
  * @annotation ["global"]
  *
  * @param {widget_t*} widget 控件。
- * @param {rect_t*} r 无效化区域。
+ * @param {const rect_t*} rect 无效化区域。
  *
- * @return {ret_t} 返回。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t widget_invalidate_default(widget_t* widget, rect_t* r);
+ret_t widget_invalidate_default(widget_t* widget, const rect_t* rect);
 /**
  * @method widget_on_event_default
  * @annotation ["global"]
@@ -46,52 +46,62 @@ ret_t widget_on_event_default(widget_t* widget, event_t* e);
 /**
  * @method widget_on_paint_self_default
  * @annotation ["global"]
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_on_paint_self_default(widget_t* widget, canvas_t* c);
 /**
  * @method widget_on_paint_children_default
  * @annotation ["global"]
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_on_paint_children_default(widget_t* widget, canvas_t* c);
 /**
  * @method widget_on_keydown_default
  * @annotation ["global"]
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_on_keydown_default(widget_t* widget, key_event_t* e);
 /**
  * @method widget_on_keyup_default
  * @annotation ["global"]
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_on_keyup_default(widget_t* widget, key_event_t* e);
 ret_t widget_on_click_default(widget_t* widget, pointer_event_t* e);
 /**
  * @method widget_on_pointer_down_default
  * @annotation ["global"]
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_on_pointer_down_default(widget_t* widget, pointer_event_t* e);
 /**
  * @method widget_on_pointer_move_default
  * @annotation ["global"]
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_on_pointer_move_default(widget_t* widget, pointer_event_t* e);
 /**
  * @method widget_on_pointer_up_default
  * @annotation ["global"]
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_on_pointer_up_default(widget_t* widget, pointer_event_t* e);
 /**
  * @method widget_on_copy_default
  * @annotation ["global"]
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_on_copy_default(widget_t* widget, widget_t* other);
 /**
  * @method widget_get_prop_default
  * @annotation ["global"]
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_get_prop_default(widget_t* widget, const char* name, value_t* v);
 /**
  * @method widget_set_prop_default
  * @annotation ["global"]
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_set_prop_default(widget_t* widget, const char* name, const value_t* v);
 
@@ -118,6 +128,7 @@ ret_t widget_destroy_default(widget_t* widget);
  * @method widget_on_paint_null
  * 
  * @annotation ["global"]
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  *
  */
 ret_t widget_on_paint_null(widget_t* widget, canvas_t* c);

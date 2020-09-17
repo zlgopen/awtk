@@ -11,7 +11,7 @@ static ret_t vgcanvas_nanovg_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h, uint
 }
 
 static inline void vgcanvas_nanovg_set_offline_fb(vgcanvas_nanovg_t* canvas, uint32_t w,
-                                                  uint32_t h, rect_t* dirty_rect) {
+                                                  uint32_t h, const rect_t* dirty_rect) {
   GLint default_fbo = 0;
 
 #if WITH_LCD_CLEAR_ALPHA
@@ -114,7 +114,7 @@ static inline void vgcanvas_nanovg_offline_fb_flush(vgcanvas_nanovg_t* canvas) {
   }
 }
 
-static ret_t vgcanvas_nanovg_begin_frame(vgcanvas_t* vgcanvas, rect_t* dirty_rect) {
+static ret_t vgcanvas_nanovg_begin_frame(vgcanvas_t* vgcanvas, const rect_t* dirty_rect) {
   float_t angle = 0.0f;
   float_t anchor_x = 0.0f;
   float_t anchor_y = 0.0f;
@@ -266,7 +266,7 @@ static ret_t vgcanvas_nanovg_unbind_fbo(vgcanvas_t* vgcanvas, framebuffer_object
 }
 
 static ret_t vgcanvas_nanovg_fbo_to_bitmap(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo,
-                                           bitmap_t* img, rect_t* r) {
+                                           bitmap_t* img, const rect_t* r) {
   uint32_t i = 0;
   uint32_t x = 0;
   uint32_t y = 0;

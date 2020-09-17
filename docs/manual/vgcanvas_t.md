@@ -179,7 +179,7 @@ ret_t vgcanvas_arc_to (vgcanvas_t* vg, float_t x1, float_t y1, float_t x2, float
 * 函数原型：
 
 ```
-ret_t vgcanvas_begin_frame (vgcanvas_t* vg, rect_t* dirty_rect);
+ret_t vgcanvas_begin_frame (vgcanvas_t* vg, const rect_t* dirty_rect);
 ```
 
 * 参数说明：
@@ -188,7 +188,7 @@ ret_t vgcanvas_begin_frame (vgcanvas_t* vg, rect_t* dirty_rect);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
-| dirty\_rect | rect\_t* | 需要绘制的区域。 |
+| dirty\_rect | const rect\_t* | 需要绘制的区域。 |
 #### vgcanvas\_begin\_path 函数
 -----------------------
 

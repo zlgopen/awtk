@@ -156,7 +156,7 @@ ret_t dialog_highlighter_prepare_ex (dialog_highlighter_t* h, canvas_t* c, canva
 * 函数原型：
 
 ```
-ret_t dialog_highlighter_set_bg (dialog_highlighter_t* h, bitmap_t* img, framebuffer_object_t* fbo);
+ret_t dialog_highlighter_set_bg (dialog_highlighter_t* h, bitmap_t* img);
 ```
 
 * 参数说明：
@@ -166,7 +166,6 @@ ret_t dialog_highlighter_set_bg (dialog_highlighter_t* h, bitmap_t* img, framebu
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | h | dialog\_highlighter\_t* | 对话框高亮策略对象。 |
 | img | bitmap\_t* | 背景截图。 |
-| fbo | framebuffer\_object\_t* | fbo对象。 |
 #### dialog\_highlighter\_set\_bg\_clip\_rect 函数
 -----------------------
 

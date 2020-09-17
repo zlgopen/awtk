@@ -46,7 +46,7 @@ static fragment_frame_buffer_t* fragment_frame_buffer_init(fragment_frame_buffer
 }
 
 static fragment_frame_buffer_t* fragment_frame_buffer_begin_frame(fragment_frame_buffer_t* ffb,
-                                                                  rect_t* r) {
+                                                                  const rect_t* r) {
   uint32_t nr = 0;
   return_value_if_fail(ffb != NULL && r != NULL, NULL);
 
@@ -158,7 +158,7 @@ static inline ret_t fragment_frame_buffer_set_window(fragment_frame_buffer_t* ff
 }
 
 static inline ret_t fragment_frame_buffer_image_copy(fragment_frame_buffer_t* ffb, bitmap_t* img,
-                                                     rect_t* src, rect_t* dst) {
+                                                     const rect_t* src, const rect_t* dst) {
   uint32_t i = 0;
   uint32_t x = ffb->win.x + ffb->cursor_x;
   uint32_t y = ffb->win.y + ffb->cursor_y;

@@ -75,7 +75,7 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 * 函数原型：
 
 ```
-ret_t image_blend (bitmap_t* dst, bitmap_t* src, rect_t* dst_r, rect_t* src_r, uint8_t global_alpha);
+ret_t image_blend (bitmap_t* dst, bitmap_t* src, const rect_t* dst_r, const rect_t* src_r, uint8_t global_alpha);
 ```
 
 * 参数说明：
@@ -85,8 +85,8 @@ ret_t image_blend (bitmap_t* dst, bitmap_t* src, rect_t* dst_r, rect_t* src_r, u
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败，返回失败则上层用软件实现。 |
 | dst | bitmap\_t* | 目标图片对象。 |
 | src | bitmap\_t* | 源图片对象。 |
-| dst\_r | rect\_t* | 目的区域。 |
-| src\_r | rect\_t* | 源区域。 |
+| dst\_r | const rect\_t* | 目的区域。 |
+| src\_r | const rect\_t* | 源区域。 |
 | global\_alpha | uint8\_t | 全局alpha。 |
 #### image\_clear 函数
 -----------------------
@@ -98,7 +98,7 @@ ret_t image_blend (bitmap_t* dst, bitmap_t* src, rect_t* dst_r, rect_t* src_r, u
 * 函数原型：
 
 ```
-ret_t image_clear (bitmap_t* dst, rect_t* dst_r, color_t c);
+ret_t image_clear (bitmap_t* dst, const rect_t* dst_r, color_t c);
 ```
 
 * 参数说明：
@@ -107,7 +107,7 @@ ret_t image_clear (bitmap_t* dst, rect_t* dst_r, color_t c);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败，返回失败则上层用软件实现。 |
 | dst | bitmap\_t* | 目标图片对象。 |
-| dst\_r | rect\_t* | 要填充的目标区域。 |
+| dst\_r | const rect\_t* | 要填充的目标区域。 |
 | c | color\_t | 颜色。 |
 #### image\_copy 函数
 -----------------------
@@ -119,7 +119,7 @@ ret_t image_clear (bitmap_t* dst, rect_t* dst_r, color_t c);
 * 函数原型：
 
 ```
-ret_t image_copy (bitmap_t* dst, bitmap_t* src, rect_t* src_r, xy_t dx, xy_t dy);
+ret_t image_copy (bitmap_t* dst, bitmap_t* src, const rect_t* src_r, xy_t dx, xy_t dy);
 ```
 
 * 参数说明：
@@ -129,7 +129,7 @@ ret_t image_copy (bitmap_t* dst, bitmap_t* src, rect_t* src_r, xy_t dx, xy_t dy)
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败，返回失败则上层用软件实现。 |
 | dst | bitmap\_t* | 目标图片对象。 |
 | src | bitmap\_t* | 源图片对象。 |
-| src\_r | rect\_t* | 要拷贝的区域。 |
+| src\_r | const rect\_t* | 要拷贝的区域。 |
 | dx | xy\_t | 目标位置的x坐标。 |
 | dy | xy\_t | 目标位置的y坐标。 |
 #### image\_fill 函数
@@ -142,7 +142,7 @@ ret_t image_copy (bitmap_t* dst, bitmap_t* src, rect_t* src_r, xy_t dx, xy_t dy)
 * 函数原型：
 
 ```
-ret_t image_fill (bitmap_t* dst, rect_t* dst_r, color_t c);
+ret_t image_fill (bitmap_t* dst, const rect_t* dst_r, color_t c);
 ```
 
 * 参数说明：
@@ -151,7 +151,7 @@ ret_t image_fill (bitmap_t* dst, rect_t* dst_r, color_t c);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败，返回失败则上层用软件实现。 |
 | dst | bitmap\_t* | 目标图片对象。 |
-| dst\_r | rect\_t* | 要填充的目标区域。 |
+| dst\_r | const rect\_t* | 要填充的目标区域。 |
 | c | color\_t | 颜色。 |
 #### image\_rotate 函数
 -----------------------
@@ -163,7 +163,7 @@ ret_t image_fill (bitmap_t* dst, rect_t* dst_r, color_t c);
 * 函数原型：
 
 ```
-ret_t image_rotate (bitmap_t* dst, bitmap_t* src, rect_t* src_r, lcd_orientation_t o);
+ret_t image_rotate (bitmap_t* dst, bitmap_t* src, const rect_t* src_r, lcd_orientation_t o);
 ```
 
 * 参数说明：
@@ -173,7 +173,7 @@ ret_t image_rotate (bitmap_t* dst, bitmap_t* src, rect_t* src_r, lcd_orientation
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败，返回失败则上层用软件实现。 |
 | dst | bitmap\_t* | 目标图片对象。 |
 | src | bitmap\_t* | 源图片对象。 |
-| src\_r | rect\_t* | 要旋转并拷贝的区域。 |
+| src\_r | const rect\_t* | 要旋转并拷贝的区域。 |
 | o | lcd\_orientation\_t | 旋转角度(一般支持90度即可)。 |
 #### window\_cast 函数
 -----------------------

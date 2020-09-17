@@ -23,6 +23,6 @@
 
 #include "base/bitmap.h"
 
-ret_t rotate_rgba8888_image(bitmap_t* fb, bitmap_t* img, rect_t* src, lcd_orientation_t o);
+ret_t rotate_rgba8888_image(bitmap_t* fb, bitmap_t* img, const rect_t* src, lcd_orientation_t o);
 
 #endif /*TK_ROTATE_IMAGE_RGBA8888_H*/

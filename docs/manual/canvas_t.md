@@ -1051,7 +1051,7 @@ ret_t canvas_stroke_rounded_rect (canvas_t* c, const rect_t* r, const color_t* c
 * 函数原型：
 
 ```
-ret_t canvas_stroke_rounded_rect_ex (canvas_t* c, const rect_t* r, const color_t* color, uint32_t radius_tl, uint32_t radius_tr, uint32_t radius_bl, uint32_t radius_br, uint32_t border_width);
+ret_t canvas_stroke_rounded_rect_ex (canvas_t* c, const rect_t* r, const color_t* color, uint32_t radius_tl, uint32_t radius_tr, uint32_t radius_bl, uint32_t radius_br, uint32_t border_width, uint32_t border_model);
 ```
 
 * 参数说明：
@@ -1067,6 +1067,7 @@ ret_t canvas_stroke_rounded_rect_ex (canvas_t* c, const rect_t* r, const color_t
 | radius\_bl | uint32\_t | 左下角圆角半径。 |
 | radius\_br | uint32\_t | 右下角圆角半径。 |
 | border\_width | uint32\_t | 边宽。 |
+| border\_model | uint32\_t | 边框类型。 |
 #### canvas\_translate 函数
 -----------------------
 

@@ -638,7 +638,6 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       key_event_t kevt;
       wheel_event_t* evt = (wheel_event_t*)e;
       int32_t delta = evt->dy;
-      text_edit_t* text_edit = mledit->model;
       widget_t* vscroll_bar = widget_lookup_by_type(widget, WIDGET_TYPE_SCROLL_BAR_DESKTOP, TRUE);
 
       if (vscroll_bar != NULL) {

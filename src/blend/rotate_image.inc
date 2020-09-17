@@ -1,4 +1,4 @@
-﻿static ret_t rotate_image(bitmap_t* dst, bitmap_t* src, rect_t* src_r, lcd_orientation_t o) {
+﻿static ret_t rotate_image(bitmap_t* dst, bitmap_t* src, const rect_t* src_r, lcd_orientation_t o) {
   xy_t dx = 0;
   xy_t dy = 0;
   uint32_t i = 0;

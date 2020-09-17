@@ -23,7 +23,7 @@
 
 #include "base/bitmap.h"
 
-ret_t blend_image_bgr888_rgb565(bitmap_t* dst, bitmap_t* src, rect_t* dst_r, rect_t* src_r,
+ret_t blend_image_bgr888_rgb565(bitmap_t* dst, bitmap_t* src, const rect_t* dst_r, const rect_t* src_r,
                                 uint8_t a);
 
 #endif /*TK_BLEND_IMAGE_BGR888_RGB565_H*/

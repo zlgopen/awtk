@@ -1,6 +1,6 @@
 ﻿#include "tkc/utils.h"
 
-static ret_t clear_image(bitmap_t* dst, rect_t* dst_r, color_t c) {
+static ret_t clear_image(bitmap_t* dst, const rect_t* dst_r, color_t c) {
   int y = 0;
   int w = dst_r->w;
   int h = dst_r->h;
@@ -46,7 +46,7 @@ static ret_t clear_image(bitmap_t* dst, rect_t* dst_r, color_t c) {
   return RET_OK;
 }
 
-static ret_t fill_image(bitmap_t* dst, rect_t* dst_r, color_t c) {
+static ret_t fill_image(bitmap_t* dst, const rect_t* dst_r, color_t c) {
   uint32_t a = c.rgba.a;
 
   if (a > 0xf8) {

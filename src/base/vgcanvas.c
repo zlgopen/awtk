@@ -390,7 +390,7 @@ ret_t vgcanvas_set_miter_limit(vgcanvas_t* vg, float_t value) {
   return vg->vt->set_miter_limit(vg, value);
 }
 
-ret_t vgcanvas_begin_frame(vgcanvas_t* vg, rect_t* dirty_rect) {
+ret_t vgcanvas_begin_frame(vgcanvas_t* vg, const rect_t* dirty_rect) {
   return_value_if_fail(vg != NULL && vg->vt->begin_frame != NULL, RET_BAD_PARAMS);
 
   return vg->vt->begin_frame(vg, dirty_rect);
@@ -488,7 +488,7 @@ ret_t fbo_to_img(framebuffer_object_t* fbo, bitmap_t* img) {
   return RET_OK;
 }
 
-ret_t vgcanvas_fbo_to_bitmap(vgcanvas_t* vg, framebuffer_object_t* fbo, bitmap_t* img, rect_t* r) {
+ret_t vgcanvas_fbo_to_bitmap(vgcanvas_t* vg, framebuffer_object_t* fbo, bitmap_t* img, const rect_t* r) {
   return_value_if_fail(vg != NULL && fbo != NULL && img != NULL, RET_BAD_PARAMS);
   if (vg->vt != NULL && vg->vt->fbo_to_bitmap != NULL) {
     return vg->vt->fbo_to_bitmap(vg, fbo, img, r);

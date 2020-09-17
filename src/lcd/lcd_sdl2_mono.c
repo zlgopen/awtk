@@ -62,8 +62,8 @@ static ret_t lcd_sdl2_mono_flush(lcd_t* lcd) {
   int pitch = 0;
   void* addr = NULL;
   lcd_mono_t* mono = (lcd_mono_t*)(lcd);
-  rect_t* dr = &(lcd->dirty_rect);
-  rect_t* fps_r = &(lcd->fps_rect);
+  const rect_t* dr = &(lcd->dirty_rect);
+  const rect_t* fps_r = &(lcd->fps_rect);
   mono_info_t* info = (mono_info_t*)(mono->ctx);
 
   memset(&src, 0x00, sizeof(src));

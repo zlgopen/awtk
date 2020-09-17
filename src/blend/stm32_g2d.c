@@ -52,7 +52,7 @@
 #define PIXEL_FORMAT_BGRA8888 0X00
 #define PIXEL_FORMAT_BGR565 0X02
 
-ret_t g2d_fill_rect(bitmap_t* fb, rect_t* dst, color_t c) {
+ret_t g2d_fill_rect(bitmap_t* fb, const rect_t* dst, color_t c) {
   uint16_t x = 0;
   uint16_t y = 0;
   uint16_t w = 0;
@@ -109,7 +109,7 @@ ret_t g2d_fill_rect(bitmap_t* fb, rect_t* dst, color_t c) {
   return RET_OK;
 }
 
-ret_t g2d_copy_image(bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t x, xy_t y) {
+ret_t g2d_copy_image(bitmap_t* fb, bitmap_t* img, const rect_t* src, xy_t x, xy_t y) {
   uint32_t o_addr = 0;
   uint16_t o_offline = 0;
   uint16_t o_format = 0;
@@ -190,7 +190,7 @@ ret_t g2d_copy_image(bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t x, xy_t y) {
   return RET_OK;
 }
 
-ret_t g2d_rotate_image(bitmap_t* fb, bitmap_t* img, rect_t* src, lcd_orientation_t o) {
+ret_t g2d_rotate_image(bitmap_t* fb, bitmap_t* img, const rect_t* src, lcd_orientation_t o) {
   (void)fb;
   (void)img;
   (void)src;
@@ -199,7 +199,7 @@ ret_t g2d_rotate_image(bitmap_t* fb, bitmap_t* img, rect_t* src, lcd_orientation
   return RET_NOT_IMPL;
 }
 
-ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* dst, rect_t* src, uint8_t global_alpha) {
+ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, const rect_t* dst, const rect_t* src, uint8_t global_alpha) {
   uint32_t o_addr = 0;
   uint16_t o_offline = 0;
   uint16_t o_format = 0;

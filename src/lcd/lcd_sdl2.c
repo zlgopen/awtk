@@ -71,8 +71,8 @@ static ret_t lcd_sdl2_flush(lcd_t* lcd) {
   bitmap_t dst;
   int pitch = 0;
   void* addr = NULL;
-  rect_t* dr = &(lcd->dirty_rect);
-  rect_t* fps_r = &(lcd->fps_rect);
+  const rect_t* dr = &(lcd->dirty_rect);
+  const rect_t* fps_r = &(lcd->fps_rect);
   lcd_mem_special_t* special = (lcd_mem_special_t*)lcd;
   special_info_t* info = (special_info_t*)(special->ctx);
 

@@ -77,7 +77,7 @@ rect_t native_window_calc_dirty_rect(native_window_t* win) {
   return rect_fix(&r, win->rect.w, win->rect.h);
 }
 
-ret_t native_window_invalidate(native_window_t* win, rect_t* r) {
+ret_t native_window_invalidate(native_window_t* win, const rect_t* r) {
   rect_t* dr = NULL;
   return_value_if_fail(win != NULL, RET_BAD_PARAMS);
 

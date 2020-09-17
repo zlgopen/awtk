@@ -30,6 +30,6 @@
 
 #include "rotate_image.inc"
 
-ret_t rotate_rgba8888_image(bitmap_t* fb, bitmap_t* img, rect_t* src, lcd_orientation_t o) {
+ret_t rotate_rgba8888_image(bitmap_t* fb, bitmap_t* img, const rect_t* src, lcd_orientation_t o) {
   return rotate_image(fb, img, src, o);
 }

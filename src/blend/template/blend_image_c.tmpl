@@ -39,7 +39,7 @@
 #include "pixel_ops.inc"
 #include "blend_image.inc"
 
-ret_t blend_image_{dst}_{src}(bitmap_t* dst, bitmap_t* src, rect_t* dst_r, rect_t* src_r, uint8_t a) {
+ret_t blend_image_{dst}_{src}(bitmap_t* dst, bitmap_t* src, const rect_t* dst_r, const rect_t* src_r, uint8_t a) {
   return_value_if_fail(dst != NULL && src != NULL && src_r != NULL && dst_r != NULL,
                        RET_BAD_PARAMS);
   return_value_if_fail(dst->format == BITMAP_FMT_{DST} && src->format == BITMAP_FMT_{SRC}, RET_BAD_PARAMS);

@@ -23,8 +23,8 @@
 
 #include "base/bitmap.h"
 
-ret_t fill_bgr888_rect(bitmap_t* fb, rect_t* dst, color_t c);
+ret_t fill_bgr888_rect(bitmap_t* fb, const rect_t* dst, color_t c);
 
-ret_t clear_bgr888_rect(bitmap_t* fb, rect_t* dst, color_t c);
+ret_t clear_bgr888_rect(bitmap_t* fb, const rect_t* dst, color_t c);
 
 #endif /*TK_FILL_IMAGE_BGR888_H*/

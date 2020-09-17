@@ -37,7 +37,7 @@
 static ret_t window_manager_animate_done(widget_t* widget);
 static ret_t window_manager_default_inc_fps(widget_t* widget);
 static ret_t window_manager_default_update_fps(widget_t* widget);
-static ret_t window_manager_default_invalidate(widget_t* widget, rect_t* r);
+static ret_t window_manager_default_invalidate(widget_t* widget, const rect_t* r);
 static ret_t window_manager_default_get_client_r(widget_t* widget, rect_t* r);
 static ret_t window_manager_default_do_open_window(widget_t* wm, widget_t* window);
 static ret_t window_manager_default_layout_child(widget_t* widget, widget_t* window);
@@ -773,7 +773,7 @@ static ret_t window_manager_default_paint(widget_t* widget) {
   return ret;
 }
 
-static ret_t window_manager_default_invalidate(widget_t* widget, rect_t* r) {
+static ret_t window_manager_default_invalidate(widget_t* widget, const rect_t* r) {
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
 
   if (wm->native_window != NULL) {

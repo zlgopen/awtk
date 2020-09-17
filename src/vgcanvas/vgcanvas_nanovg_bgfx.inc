@@ -13,7 +13,7 @@ static ret_t vgcanvas_nanovg_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h, uint
   return RET_OK;
 }
 
-static ret_t vgcanvas_nanovg_begin_frame(vgcanvas_t* vgcanvas, rect_t* dirty_rect) {
+static ret_t vgcanvas_nanovg_begin_frame(vgcanvas_t* vgcanvas, const rect_t* dirty_rect) {
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
 
   setBGFXViewRect(0, 0, 0, vgcanvas->w, vgcanvas->h);
@@ -90,7 +90,7 @@ static ret_t vgcanvas_nanovg_unbind_fbo(vgcanvas_t* vgcanvas, framebuffer_object
 }
 
 static ret_t vgcanvas_nanovg_fbo_to_imageData(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo,
-                                              bitmap_t* img, rect_t* r) {
+                                              bitmap_t* img, const rect_t* r) {
   return RET_NOT_IMPL;
 }
 

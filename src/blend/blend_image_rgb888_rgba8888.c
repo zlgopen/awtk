@@ -41,7 +41,7 @@
 #include "pixel_ops.inc"
 #include "blend_image.inc"
 
-ret_t blend_image_rgb888_rgba8888(bitmap_t* dst, bitmap_t* src, rect_t* dst_r, rect_t* src_r,
+ret_t blend_image_rgb888_rgba8888(bitmap_t* dst, bitmap_t* src, const rect_t* dst_r, const rect_t* src_r,
                                   uint8_t a) {
   return_value_if_fail(dst != NULL && src != NULL && src_r != NULL && dst_r != NULL,
                        RET_BAD_PARAMS);

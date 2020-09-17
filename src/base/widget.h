@@ -50,7 +50,7 @@
 
 BEGIN_C_DECLS
 
-typedef ret_t (*widget_invalidate_t)(widget_t* widget, rect_t* r);
+typedef ret_t (*widget_invalidate_t)(widget_t* widget, const rect_t* r);
 typedef ret_t (*widget_on_event_t)(widget_t* widget, event_t* e);
 typedef ret_t (*widget_on_event_before_children_t)(widget_t* widget, event_t* e);
 typedef ret_t (*widget_on_paint_background_t)(widget_t* widget, canvas_t* c);
@@ -1396,22 +1396,22 @@ ret_t widget_off_by_tag(widget_t* widget, uint32_t tag);
  * @method widget_invalidate
  * 请求重绘指定的区域，如果widget->dirty已经为TRUE，直接返回。
  * @param {widget_t*} widget 控件对象。
- * @param {rect_t*} r 矩形对象(widget本地坐标)。
+ * @param {const rect_t*} r 矩形对象(widget本地坐标)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t widget_invalidate(widget_t* widget, rect_t* r);
+ret_t widget_invalidate(widget_t* widget, const rect_t* r);
 
 /**
  * @method widget_invalidate_force
  * 请求强制重绘控件。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {rect_t*} r 矩形对象(widget本地坐标)。
+ * @param {const rect_t*} r 矩形对象(widget本地坐标)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t widget_invalidate_force(widget_t* widget, rect_t* r);
+ret_t widget_invalidate_force(widget_t* widget, const rect_t* r);
 
 /**
  * @method widget_paint
@@ -1430,13 +1430,13 @@ ret_t widget_paint(widget_t* widget, canvas_t* c);
  * @param {canvas_t*} c 画布对象。
  * @param {const wchar_t*} str 文本。
  * @param {uint32_t} size 文本长度。
- * @param {rect_t*} r 矩形区域。
+ * @param {const rect_t*} r 矩形区域。
  * @param {bool_t} ellipses 宽度不够时是否显示省略号。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
 */
 ret_t widget_draw_text_in_rect(widget_t* widget, canvas_t* c, const wchar_t* str, uint32_t size,
-                               rect_t* r, bool_t ellipses);
+                               const rect_t* r, bool_t ellipses);
 
 /**
  * @method widget_dispatch
@@ -2036,11 +2036,11 @@ ret_t widget_draw_background(widget_t* widget, canvas_t* c);
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {canvas_t*} c 画布对象。
- * @param {rect_t*} r 矩形区域。
+ * @param {const rect_t*} r 矩形区域。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t widget_stroke_border_rect(widget_t* widget, canvas_t* c, rect_t* r);
+ret_t widget_stroke_border_rect(widget_t* widget, canvas_t* c, const rect_t* r);
 
 /**
  * @method widget_fill_bg_rect
@@ -2048,12 +2048,12 @@ ret_t widget_stroke_border_rect(widget_t* widget, canvas_t* c, rect_t* r);
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {canvas_t*} c 画布对象。
- * @param {rect_t*} r 矩形区域。
+ * @param {const rect_t*} r 矩形区域。
  * @param {image_draw_type_t} draw_type 图片缺省绘制方式。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t widget_fill_bg_rect(widget_t* widget, canvas_t* c, rect_t* r, image_draw_type_t draw_type);
+ret_t widget_fill_bg_rect(widget_t* widget, canvas_t* c, const rect_t* r, image_draw_type_t draw_type);
 
 /**
  * @method widget_fill_fg_rect
@@ -2061,12 +2061,12 @@ ret_t widget_fill_bg_rect(widget_t* widget, canvas_t* c, rect_t* r, image_draw_t
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {canvas_t*} c 画布对象。
- * @param {rect_t*} r 矩形区域。
+ * @param {const rect_t*} r 矩形区域。
  * @param {image_draw_type_t} draw_type 图片缺省绘制方式。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t widget_fill_fg_rect(widget_t* widget, canvas_t* c, rect_t* r, image_draw_type_t draw_type);
+ret_t widget_fill_fg_rect(widget_t* widget, canvas_t* c, const rect_t* r, image_draw_type_t draw_type);
 
 /**
  * @method widget_prepare_text_style
@@ -2399,11 +2399,11 @@ bitmap_t* widget_take_snapshot(widget_t* widget);
  *``` 
  *
  * @param {widget_t*} widget 控件对象。
- * @param {rect_t*} r 截屏区域（输入NULL，则为控件全区域截屏）。
+ * @param {const rect_t*} r 截屏区域（输入NULL，则为控件全区域截屏）。
  *
  * @return {bitmap_t*} 返回位图对象。
  */
-bitmap_t* widget_take_snapshot_rect(widget_t* widget, rect_t* r);
+bitmap_t* widget_take_snapshot_rect(widget_t* widget, const rect_t* r);
 
 /**
  * @method widget_get_canvas

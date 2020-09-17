@@ -844,7 +844,7 @@ ret_t widget_draw_background (widget_t* widget, canvas_t* c);
 * 函数原型：
 
 ```
-ret_t widget_draw_text_in_rect (widget_t* widget, canvas_t* c, const wchar_t* str, uint32_t size, rect_t* r, bool_t ellipses);
+ret_t widget_draw_text_in_rect (widget_t* widget, canvas_t* c, const wchar_t* str, uint32_t size, const rect_t* r, bool_t ellipses);
 ```
 
 * 参数说明：
@@ -856,7 +856,7 @@ ret_t widget_draw_text_in_rect (widget_t* widget, canvas_t* c, const wchar_t* st
 | c | canvas\_t* | 画布对象。 |
 | str | const wchar\_t* | 文本。 |
 | size | uint32\_t | 文本长度。 |
-| r | rect\_t* | 矩形区域。 |
+| r | const rect\_t* | 矩形区域。 |
 | ellipses | bool\_t | 宽度不够时是否显示省略号。 |
 #### widget\_end\_wait\_pointer\_cursor 函数
 -----------------------
@@ -926,7 +926,7 @@ bool_t widget_equal (widget_t* widget, widget_t* other);
 * 函数原型：
 
 ```
-ret_t widget_fill_bg_rect (widget_t* widget, canvas_t* c, rect_t* r, image_draw_type_t draw_type);
+ret_t widget_fill_bg_rect (widget_t* widget, canvas_t* c, const rect_t* r, image_draw_type_t draw_type);
 ```
 
 * 参数说明：
@@ -936,7 +936,7 @@ ret_t widget_fill_bg_rect (widget_t* widget, canvas_t* c, rect_t* r, image_draw_
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | c | canvas\_t* | 画布对象。 |
-| r | rect\_t* | 矩形区域。 |
+| r | const rect\_t* | 矩形区域。 |
 | draw\_type | image\_draw\_type\_t | 图片缺省绘制方式。 |
 #### widget\_fill\_fg\_rect 函数
 -----------------------
@@ -948,7 +948,7 @@ ret_t widget_fill_bg_rect (widget_t* widget, canvas_t* c, rect_t* r, image_draw_
 * 函数原型：
 
 ```
-ret_t widget_fill_fg_rect (widget_t* widget, canvas_t* c, rect_t* r, image_draw_type_t draw_type);
+ret_t widget_fill_fg_rect (widget_t* widget, canvas_t* c, const rect_t* r, image_draw_type_t draw_type);
 ```
 
 * 参数说明：
@@ -958,7 +958,7 @@ ret_t widget_fill_fg_rect (widget_t* widget, canvas_t* c, rect_t* r, image_draw_
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | c | canvas\_t* | 画布对象。 |
-| r | rect\_t* | 矩形区域。 |
+| r | const rect\_t* | 矩形区域。 |
 | draw\_type | image\_draw\_type\_t | 图片缺省绘制方式。 |
 #### widget\_find\_animator 函数
 -----------------------
@@ -1590,7 +1590,7 @@ ret_t widget_insert_child (widget_t* widget, uint32_t index, widget_t* child);
 * 函数原型：
 
 ```
-ret_t widget_invalidate (widget_t* widget, rect_t* r);
+ret_t widget_invalidate (widget_t* widget, const rect_t* r);
 ```
 
 * 参数说明：
@@ -1599,7 +1599,7 @@ ret_t widget_invalidate (widget_t* widget, rect_t* r);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
-| r | rect\_t* | 矩形对象(widget本地坐标)。 |
+| r | const rect\_t* | 矩形对象(widget本地坐标)。 |
 #### widget\_invalidate\_force 函数
 -----------------------
 
@@ -1610,7 +1610,7 @@ ret_t widget_invalidate (widget_t* widget, rect_t* r);
 * 函数原型：
 
 ```
-ret_t widget_invalidate_force (widget_t* widget, rect_t* r);
+ret_t widget_invalidate_force (widget_t* widget, const rect_t* r);
 ```
 
 * 参数说明：
@@ -1619,7 +1619,7 @@ ret_t widget_invalidate_force (widget_t* widget, rect_t* r);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
-| r | rect\_t* | 矩形对象(widget本地坐标)。 |
+| r | const rect\_t* | 矩形对象(widget本地坐标)。 |
 #### widget\_is\_designing\_window 函数
 -----------------------
 
@@ -3396,7 +3396,7 @@ ret_t widget_stop_animator (widget_t* widget, const char* name);
 * 函数原型：
 
 ```
-ret_t widget_stroke_border_rect (widget_t* widget, canvas_t* c, rect_t* r);
+ret_t widget_stroke_border_rect (widget_t* widget, canvas_t* c, const rect_t* r);
 ```
 
 * 参数说明：
@@ -3406,7 +3406,7 @@ ret_t widget_stroke_border_rect (widget_t* widget, canvas_t* c, rect_t* r);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | c | canvas\_t* | 画布对象。 |
-| r | rect\_t* | 矩形区域。 |
+| r | const rect\_t* | 矩形区域。 |
 #### widget\_take\_snapshot 函数
 -----------------------
 
@@ -3452,7 +3452,7 @@ bitmap_destroy(bitmap);
 * 函数原型：
 
 ```
-bitmap_t* widget_take_snapshot_rect (widget_t* widget, rect_t* r);
+bitmap_t* widget_take_snapshot_rect (widget_t* widget, const rect_t* r);
 ```
 
 * 参数说明：
@@ -3461,7 +3461,7 @@ bitmap_t* widget_take_snapshot_rect (widget_t* widget, rect_t* r);
 | -------- | ----- | --------- |
 | 返回值 | bitmap\_t* | 返回位图对象。 |
 | widget | widget\_t* | 控件对象。 |
-| r | rect\_t* | 截屏区域（输入NULL，则为控件全区域截屏）。 |
+| r | const rect\_t* | 截屏区域（输入NULL，则为控件全区域截屏）。 |
 #### widget\_to\_global 函数
 -----------------------
 
