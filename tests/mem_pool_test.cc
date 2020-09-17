@@ -34,7 +34,7 @@ TEST(MemPool, basic2) {
   ASSERT_EQ(pool->block_size, 16);
   ASSERT_EQ(pool->used, 0);
   ASSERT_EQ(pool->bits_size, 4);
-
+  ASSERT_EQ(mem_pool_match_size(pool, 9), TRUE);
   addr = mem_pool_get(pool);
   ASSERT_EQ(addr != NULL, true);
   ASSERT_EQ(mem_pool_put(pool, addr), RET_OK);

@@ -52,6 +52,40 @@ TEST(Edit, time_full_fix) {
   widget_set_text_utf8(w, "180:60:03");
   ASSERT_EQ(edit_time_full_fix_ex(w, TRUE), RET_OK);
   ASSERT_EQ(wcscmp(w->text.str, L"18:00:03"), 0);
+  
+  widget_set_text_utf8(w, "180:60:03");
+  ASSERT_EQ(edit_time_full_fix(w), RET_OK);
+  ASSERT_EQ(wcscmp(w->text.str, L"18:00:03"), 0);
+
+  widget_destroy(w);
+}
+
+TEST(Edit, time_full_inc_dec) {
+  widget_t* w = edit_create(NULL, 10, 20, 30, 40);
+
+  widget_set_text_utf8(w, "18:12:01");
+  ASSERT_EQ(edit_time_full_inc_value(w), RET_OK);
+  ASSERT_EQ(wcscmp(w->text.str, L"18:12:02"), 0);
+  
+  ASSERT_EQ(edit_time_full_dec_value(w), RET_OK);
+  ASSERT_EQ(wcscmp(w->text.str, L"18:12:01"), 0);
+
+  widget_destroy(w);
+}
+
+TEST(Edit, time_full_is_valid_char) {
+  widget_t* w = edit_create(NULL, 10, 20, 30, 40);
+
+  widget_set_text_utf8(w, "18:12:0");
+  ASSERT_EQ(edit_time_full_is_valid_char(w, '0'), TRUE);
+  ASSERT_EQ(edit_time_full_pre_input(w, '0'), RET_OK);
+  
+  widget_set_text_utf8(w, "18:12:01");
+  ASSERT_EQ(edit_time_full_is_valid_char(w, '0'), FALSE);
+  ASSERT_EQ(edit_time_full_pre_input(w, '0'), RET_OK);
+  
+  widget_set_text_utf8(w, "18:12:0");
+  ASSERT_EQ(edit_time_full_is_valid_char(w, 'a'), FALSE);
 
   widget_destroy(w);
 }
