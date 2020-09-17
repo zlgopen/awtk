@@ -45,7 +45,7 @@ TEST(Edit, time_fix) {
   widget_set_text_utf8(w, "180:60");
   ASSERT_EQ(edit_time_fix_ex(w, TRUE), RET_OK);
   ASSERT_EQ(wcscmp(w->text.str, L"18:00"), 0);
-  
+
   widget_set_text_utf8(w, "180:60");
   ASSERT_EQ(edit_time_fix(w), RET_OK);
   ASSERT_EQ(wcscmp(w->text.str, L"18:00"), 0);
@@ -71,7 +71,7 @@ TEST(Edit, time_is_valid_char) {
   widget_set_text_utf8(w, "18:1");
   ASSERT_EQ(edit_time_pre_input(w, '0'), RET_OK);
   ASSERT_EQ(edit_time_is_valid_char(w, '0'), TRUE);
-  
+
   widget_set_text_utf8(w, "18:11");
   ASSERT_EQ(edit_time_pre_input(w, '0'), RET_OK);
   ASSERT_EQ(edit_time_is_valid_char(w, '0'), FALSE);

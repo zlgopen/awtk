@@ -199,7 +199,8 @@ ret_t g2d_rotate_image(bitmap_t* fb, bitmap_t* img, const rect_t* src, lcd_orien
   return RET_NOT_IMPL;
 }
 
-ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, const rect_t* dst, const rect_t* src, uint8_t global_alpha) {
+ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, const rect_t* dst, const rect_t* src,
+                      uint8_t global_alpha) {
   uint32_t o_addr = 0;
   uint16_t o_offline = 0;
   uint16_t o_format = 0;

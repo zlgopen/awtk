@@ -488,7 +488,8 @@ ret_t fbo_to_img(framebuffer_object_t* fbo, bitmap_t* img) {
   return RET_OK;
 }
 
-ret_t vgcanvas_fbo_to_bitmap(vgcanvas_t* vg, framebuffer_object_t* fbo, bitmap_t* img, const rect_t* r) {
+ret_t vgcanvas_fbo_to_bitmap(vgcanvas_t* vg, framebuffer_object_t* fbo, bitmap_t* img,
+                             const rect_t* r) {
   return_value_if_fail(vg != NULL && fbo != NULL && img != NULL, RET_BAD_PARAMS);
   if (vg->vt != NULL && vg->vt->fbo_to_bitmap != NULL) {
     return vg->vt->fbo_to_bitmap(vg, fbo, img, r);

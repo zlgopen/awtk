@@ -46,7 +46,7 @@ TEST(Edit, ipv4_fix) {
   widget_set_text_utf8(w, "1922.268.0.1");
   ASSERT_EQ(edit_ipv4_fix_ex(w, TRUE), RET_OK);
   ASSERT_EQ(wcscmp(w->text.str, L"192.26.0.1"), 0);
-  
+
   widget_set_text_utf8(w, "1922.268.1.1");
   ASSERT_EQ(edit_ipv4_fix(w), RET_OK);
   ASSERT_EQ(wcscmp(w->text.str, L"192.26.1.1"), 0);
@@ -60,7 +60,7 @@ TEST(Edit, ipv4_inc_dec) {
   widget_set_text_utf8(w, "192.26.0.1");
   ASSERT_EQ(edit_ipv4_inc_value(w), RET_OK);
   ASSERT_EQ(wcscmp(w->text.str, L"192.26.0.2"), 0);
-  
+
   ASSERT_EQ(edit_ipv4_dec_value(w), RET_OK);
   ASSERT_EQ(wcscmp(w->text.str, L"192.26.0.1"), 0);
 
@@ -73,7 +73,7 @@ TEST(Edit, ipv4_is_valid_char) {
   widget_set_text_utf8(w, "192.268.0.1");
   ASSERT_EQ(edit_ipv4_is_valid_char(w, '0'), TRUE);
   ASSERT_EQ(edit_ipv4_pre_input(w, '0'), RET_OK);
-  
+
   widget_set_text_utf8(w, "192.268.0.199");
   ASSERT_EQ(edit_ipv4_is_valid_char(w, '0'), FALSE);
   ASSERT_EQ(edit_ipv4_pre_input(w, '0'), RET_OK);

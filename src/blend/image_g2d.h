@@ -86,7 +86,8 @@ ret_t image_rotate(bitmap_t* dst, bitmap_t* src, const rect_t* src_r, lcd_orient
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败，返回失败则上层用软件实现。
  */
-ret_t image_blend(bitmap_t* dst, bitmap_t* src, const rect_t* dst_r, const rect_t* src_r, uint8_t global_alpha);
+ret_t image_blend(bitmap_t* dst, bitmap_t* src, const rect_t* dst_r, const rect_t* src_r,
+                  uint8_t global_alpha);
 
 END_C_DECLS
 

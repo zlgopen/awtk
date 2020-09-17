@@ -52,7 +52,7 @@ TEST(Edit, date_fix) {
   widget_set_text_utf8(w, "20200/21/03");
   ASSERT_EQ(edit_date_fix_ex(w, TRUE), RET_OK);
   ASSERT_EQ(wcscmp(w->text.str, L"2020/01/03"), 0);
-  
+
   widget_set_text_utf8(w, "20200/21/03");
   ASSERT_EQ(edit_date_fix(w), RET_OK);
   ASSERT_EQ(wcscmp(w->text.str, L"2020/01/03"), 0);
@@ -86,7 +86,7 @@ TEST(Edit, is_valid_char) {
   widget_set_text_utf8(w, "20200/12/0");
   ASSERT_EQ(edit_date_is_valid_char(w, '1'), TRUE);
   ASSERT_EQ(edit_date_pre_input(w, '1'), RET_OK);
-  
+
   widget_set_text_utf8(w, "20200/12/01");
   ASSERT_EQ(edit_date_is_valid_char(w, '1'), FALSE);
 

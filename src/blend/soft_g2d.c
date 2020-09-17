@@ -223,7 +223,8 @@ ret_t soft_rotate_image(bitmap_t* dst, bitmap_t* src, const rect_t* src_r, lcd_o
   return RET_NOT_IMPL;
 }
 
-ret_t soft_blend_image(bitmap_t* dst, bitmap_t* src, const rect_t* dst_r, const rect_t* src_r, uint8_t alpha) {
+ret_t soft_blend_image(bitmap_t* dst, bitmap_t* src, const rect_t* dst_r, const rect_t* src_r,
+                       uint8_t alpha) {
   return_value_if_fail(dst != NULL && src != NULL && src_r != NULL && dst_r != NULL,
                        RET_BAD_PARAMS);
 

@@ -1361,8 +1361,8 @@ ret_t widget_fill_rect(widget_t* widget, canvas_t* c, const rect_t* r, bool_t bg
   return RET_OK;
 }
 
-static inline ret_t widget_stroke_border_rect_for_border_type(canvas_t* c, const rect_t* r, color_t bd,
-                                                              int32_t border,
+static inline ret_t widget_stroke_border_rect_for_border_type(canvas_t* c, const rect_t* r,
+                                                              color_t bd, int32_t border,
                                                               uint32_t border_width) {
   wh_t w = r->w;
   wh_t h = r->h;
@@ -1434,11 +1434,13 @@ ret_t widget_draw_background(widget_t* widget, canvas_t* c) {
   return widget_fill_rect(widget, c, &r, TRUE, IMAGE_DRAW_CENTER);
 }
 
-ret_t widget_fill_bg_rect(widget_t* widget, canvas_t* c, const rect_t* r, image_draw_type_t draw_type) {
+ret_t widget_fill_bg_rect(widget_t* widget, canvas_t* c, const rect_t* r,
+                          image_draw_type_t draw_type) {
   return widget_fill_rect(widget, c, r, TRUE, draw_type);
 }
 
-ret_t widget_fill_fg_rect(widget_t* widget, canvas_t* c, const rect_t* r, image_draw_type_t draw_type) {
+ret_t widget_fill_fg_rect(widget_t* widget, canvas_t* c, const rect_t* r,
+                          image_draw_type_t draw_type) {
   return widget_fill_rect(widget, c, r, FALSE, draw_type);
 }
 

@@ -2053,7 +2053,8 @@ ret_t widget_stroke_border_rect(widget_t* widget, canvas_t* c, const rect_t* r);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t widget_fill_bg_rect(widget_t* widget, canvas_t* c, const rect_t* r, image_draw_type_t draw_type);
+ret_t widget_fill_bg_rect(widget_t* widget, canvas_t* c, const rect_t* r,
+                          image_draw_type_t draw_type);
 
 /**
  * @method widget_fill_fg_rect
@@ -2066,7 +2067,8 @@ ret_t widget_fill_bg_rect(widget_t* widget, canvas_t* c, const rect_t* r, image_
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t widget_fill_fg_rect(widget_t* widget, canvas_t* c, const rect_t* r, image_draw_type_t draw_type);
+ret_t widget_fill_fg_rect(widget_t* widget, canvas_t* c, const rect_t* r,
+                          image_draw_type_t draw_type);
 
 /**
  * @method widget_prepare_text_style

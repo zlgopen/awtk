@@ -70,8 +70,8 @@ static inline void blend_a_bgr565_bgra8888(uint8_t* dst, uint8_t* src, uint8_t a
 #include "pixel_ops.inc"
 #include "blend_image.inc"
 
-ret_t blend_image_bgr565_bgra8888(bitmap_t* dst, bitmap_t* src, const rect_t* dst_r, const rect_t* src_r,
-                                  uint8_t a) {
+ret_t blend_image_bgr565_bgra8888(bitmap_t* dst, bitmap_t* src, const rect_t* dst_r,
+                                  const rect_t* src_r, uint8_t a) {
   return_value_if_fail(dst != NULL && src != NULL && src_r != NULL && dst_r != NULL,
                        RET_BAD_PARAMS);
   return_value_if_fail(dst->format == BITMAP_FMT_BGR565 && src->format == BITMAP_FMT_BGRA8888,

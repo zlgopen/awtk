@@ -76,7 +76,8 @@ static ret_t lcd_mem_special_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t 
   return lcd_fill_rect(mem, x, y, w, h);
 }
 
-static ret_t lcd_mem_special_draw_glyph(lcd_t* lcd, glyph_t* glyph, const rect_t* src, xy_t x, xy_t y) {
+static ret_t lcd_mem_special_draw_glyph(lcd_t* lcd, glyph_t* glyph, const rect_t* src, xy_t x,
+                                        xy_t y) {
   lcd_mem_special_t* special = (lcd_mem_special_t*)lcd;
   lcd_t* mem = (lcd_t*)(special->lcd_mem);
   mem->text_color = lcd->text_color;
@@ -92,7 +93,8 @@ static ret_t lcd_mem_special_draw_image_matrix(lcd_t* lcd, draw_image_info_t* in
   return lcd_draw_image_matrix(mem, info);
 }
 
-static ret_t lcd_mem_special_draw_image(lcd_t* lcd, bitmap_t* img, const rect_t* src, const rect_t* dst) {
+static ret_t lcd_mem_special_draw_image(lcd_t* lcd, bitmap_t* img, const rect_t* src,
+                                        const rect_t* dst) {
   lcd_mem_special_t* special = (lcd_mem_special_t*)lcd;
   lcd_t* mem = (lcd_t*)(special->lcd_mem);
 
