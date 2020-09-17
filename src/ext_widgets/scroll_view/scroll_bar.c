@@ -114,11 +114,17 @@ static ret_t scroll_bar_desktop_on_click(widget_t* widget, pointer_event_t* e) {
     } else {
       delta = widget->w;
     }
+    if (scroll_bar->dragger->x <= p.y && p.x <= (scroll_bar->dragger->x + scroll_bar->dragger->w)) {
+      return RET_OK;
+    }
   } else {
     if (p.y < scroll_bar->dragger->y) {
       delta = -widget->h;
     } else {
       delta = widget->h;
+    }
+    if (scroll_bar->dragger->y <= p.y && p.y <= (scroll_bar->dragger->y + scroll_bar->dragger->h)) {
+      return RET_OK;
     }
   }
 
