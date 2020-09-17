@@ -1953,7 +1953,8 @@ ret_t canvas_fill_rounded_rect_ex(canvas_t* c, const rect_t* r, const rect_t* bg
 
 ret_t canvas_stroke_rounded_rect_ex(canvas_t* c, const rect_t* r, const rect_t* bg_r,
                                     const color_t* color, uint32_t radius_tl, uint32_t radius_tr,
-                                    uint32_t radius_bl, uint32_t radius_br, uint32_t border_width, int32_t border_model) {
+                                    uint32_t radius_bl, uint32_t radius_br, uint32_t border_width,
+                                    int32_t border_model) {
   return ffr_draw_stroke_rounded_rect_ex(c, r, bg_r, color, radius_tl, radius_tr, radius_bl,
                                          radius_br, border_width, border_model);
 }

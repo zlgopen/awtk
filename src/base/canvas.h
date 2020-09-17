@@ -814,7 +814,8 @@ ret_t canvas_stroke_rounded_rect(canvas_t* c, const rect_t* r, const rect_t* bg_
  */
 ret_t canvas_stroke_rounded_rect_ex(canvas_t* c, const rect_t* r, const rect_t* bg_r,
                                     const color_t* color, uint32_t radius_tl, uint32_t radius_tr,
-                                    uint32_t radius_bl, uint32_t radius_br, uint32_t border_width, int32_t border_model);
+                                    uint32_t radius_bl, uint32_t radius_br, uint32_t border_width,
+                                    int32_t border_model);
 
 /**
  * @method canvas_end_frame

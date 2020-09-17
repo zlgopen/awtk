@@ -1413,8 +1413,8 @@ ret_t widget_stroke_border_rect(widget_t* widget, canvas_t* c, rect_t* r) {
   if (bd.rgba.a) {
     canvas_set_stroke_color(c, bd);
     if (radius_tl > 3 || radius_tr > 3 || radius_bl > 3 || radius_br > 3) {
-      if (canvas_stroke_rounded_rect_ex(c, r, NULL, &bd, radius_tl, radius_tr, radius_bl,
-                                        radius_br, border_width, border) != RET_OK) {
+      if (canvas_stroke_rounded_rect_ex(c, r, NULL, &bd, radius_tl, radius_tr, radius_bl, radius_br,
+                                        border_width, border) != RET_OK) {
         widget_stroke_border_rect_for_border_type(c, r, bd, border, border_width);
       }
     } else {
