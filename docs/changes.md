@@ -1,12 +1,13 @@
 # 最新动态
 
 * 2020/09/18
-  * EVT\_VALUE\_WILL\_CHANGE、EVT\_VALUE\_CHANGING和EVT\_VALUE\_CHANGED事件结构改为value\_change\_event\_t，从中可以获得旧值和新值。
-  * EVT\_VALUE\_WILL\_CHANGE 事件返回RET\_STOP可以阻止修改值。
-  * event\_t 结构体增加size，避免结构体用错导致内存越界访问。
-  * 修改stm32编译问题（感谢智明提供补丁）。
+  * EVT\_VALUE\_WILL\_CHANGE、EVT\_VALUE\_CHANGING 和 EVT\_VALUE\_CHANGED 事件结构改为 value\_change\_event\_t，从中可以获得旧值和新值。
+  * EVT\_VALUE\_WILL\_CHANGE 事件返回 RET\_STOP 可以阻止修改值。
+  * event\_t 结构体增加 size，避免结构体用错导致内存越界访问。
+  * 修改 stm32 编译问题（感谢智明提供补丁）。
   * 完善编译脚本（感谢朝泽提供补丁）。
-
+  * 在 application_init 之前设置默认语言。
+  
 * 2020/09/17
   * 修复一些警告。
   * 将一些参数改成常量指针。
@@ -17,7 +18,7 @@
   * 完善 API 注释。
   * 将一些参数改成常量指针。
   * 修改离线 canvas 的文档（感谢智明提供补丁）。
-  * 修复edit带格式编辑时，输入没有清除选中内容的bug。
+  * 修复 edit 带格式编辑时，输入没有清除选中内容的 bug。
   * 支持用户外部重载自定义离线 canvas 和统一窗口动画的代码（感谢智明提供补丁）。
   * 统一窗口动画配合修改 awtk-web 的 fbo 和窗口动画的代码（感谢智明提供补丁）。
   * 修复 dialog_toast 在 web 卡主的问题和修复同时插入导致动画异常的问题以及增加注释（感谢智明提供补丁）。
