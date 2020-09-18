@@ -1,4 +1,5 @@
 #include "tkc/utils.h"
+#include "base/types_def.h"
 
 static enum NVGtexture bitmap_format_to_nanovg(bitmap_format_t format) {
   enum NVGtexture f = NVG_TEXTURE_BGRA;
@@ -142,7 +143,7 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
     }
   }
 
-  flag = (int)vgcanvas_nanovg_bitmap_flag_to_NVGimageFlags(img->flags);
+  flag = (int)vgcanvas_nanovg_bitmap_flag_to_NVGimageFlags((bitmap_flag_t)(img->flags));
 
   switch (img->format) {
     case BITMAP_FMT_RGBA8888: {

@@ -38,12 +38,12 @@ BEGIN_C_DECLS
  * @export none
  * 用颜色填充指定的区域。
  * @param {bitmap_t*} fb framebuffer对象。
- * @param {rect_t*} dst 要填充的目标区域。
+ * @param {const rect_t*} dst 要填充的目标区域。
  * @param {color_t} c 颜色。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败，返回失败则上层用软件实现。
  */
-ret_t g2d_fill_rect(bitmap_t* fb, rect_t* dst, color_t c);
+ret_t g2d_fill_rect(bitmap_t* fb, const rect_t* dst, color_t c);
 
 /**
  * @method g2d_copy_image
@@ -51,13 +51,13 @@ ret_t g2d_fill_rect(bitmap_t* fb, rect_t* dst, color_t c);
  * 把图片指定的区域拷贝到framebuffer中。
  * @param {bitmap_t*} fb framebuffer对象。
  * @param {bitmap_t*} img 图片对象。
- * @param {rect_t*} src 要拷贝的区域。
+ * @param {const rect_t*} src 要拷贝的区域。
  * @param {xy_t} dx 目标位置的x坐标。
  * @param {xy_t} dy 目标位置的y坐标。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败，返回失败则上层用软件实现。
  */
-ret_t g2d_copy_image(bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t dx, xy_t dy);
+ret_t g2d_copy_image(bitmap_t* fb, bitmap_t* img, const rect_t* src, xy_t dx, xy_t dy);
 
 /**
  * @method g2d_rotate_image
@@ -65,12 +65,12 @@ ret_t g2d_copy_image(bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t dx, xy_t dy)
  * 把图片指定的区域进行旋转并拷贝到framebuffer相应的区域，本函数主要用于辅助实现横屏和竖屏的切换，一般支持90度旋转即可。
  * @param {bitmap_t*} fb framebuffer对象。
  * @param {bitmap_t*} img 图片对象。
- * @param {rect_t*} src 要旋转并拷贝的区域。
+ * @param {const rect_t*} src 要旋转并拷贝的区域。
  * @param {lcd_orientation_t} o 旋转角度(一般支持90度即可)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败，返回失败则上层用软件实现。
  */
-ret_t g2d_rotate_image(bitmap_t* fb, bitmap_t* img, rect_t* src, lcd_orientation_t o);
+ret_t g2d_rotate_image(bitmap_t* fb, bitmap_t* img, const rect_t* src, lcd_orientation_t o);
 
 /**
  * @method g2d_blend_image
@@ -80,13 +80,13 @@ ret_t g2d_rotate_image(bitmap_t* fb, bitmap_t* img, rect_t* src, lcd_orientation
  * 2.硬件不支持全局alpha，global_alpha!=0xff时返回NOT_IMPL。
  * @param {bitmap_t*} fb framebuffer对象。
  * @param {bitmap_t*} img 图片对象。
- * @param {rect_t*} dst 目的区域。
- * @param {rect_t*} src 源区域。
+ * @param {const rect_t*} dst 目的区域。
+ * @param {const rect_t*} src 源区域。
  * @param {uint8_t} global_alpha 全局alpha。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败，返回失败则上层用软件实现。
  */
-ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, rect_t* dst, rect_t* src, uint8_t global_alpha);
+ret_t g2d_blend_image(bitmap_t* fb, bitmap_t* img, const rect_t* dst, const rect_t* src, uint8_t global_alpha);
 
 END_C_DECLS
 

@@ -1,4 +1,5 @@
 ﻿#include "tkc/utils.h"
+#include "base/types_def.h"
 
 static ret_t nanovg_on_bitmap_destroy(bitmap_t* img) {
   int32_t id = tk_pointer_to_int(img->specific);
@@ -41,7 +42,7 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
     return i;
   }
 
-  flag = (int)vgcanvas_nanovg_bitmap_flag_to_NVGimageFlags(img->flags);
+  flag = (int)vgcanvas_nanovg_bitmap_flag_to_NVGimageFlags((bitmap_flag_t)(img->flags));
 
   if (bpp * img->w == img->line_length) {
     data = (uint8_t*)(img_data);

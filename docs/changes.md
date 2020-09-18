@@ -4,6 +4,7 @@
   * EVT\_VALUE\_WILL\_CHANGE、EVT\_VALUE\_CHANGING和EVT\_VALUE\_CHANGED事件结构改为value\_change\_event\_t，从中可以获得旧值和新值。
   * EVT\_VALUE\_WILL\_CHANGE 事件返回RET\_STOP可以阻止修改值。
   * event\_t 结构体增加size，避免结构体用错导致内存越界访问。
+  * 修改stm32编译问题（感谢智明提供补丁）。
 
 * 2020/09/17
   * 修复一些警告。
