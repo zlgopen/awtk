@@ -754,7 +754,7 @@ ret_t slide_view_set_active(widget_t* widget, uint32_t active) {
     value_change_event_t evt;
 
     slide_view_save_target(widget);
-    
+
     value_change_event_init(&evt, EVT_VALUE_WILL_CHANGE, widget);
     value_set_uint32(&(evt.old_value), slide_view->active);
     value_set_uint32(&(evt.new_value), active);

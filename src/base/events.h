@@ -562,14 +562,14 @@ typedef struct _value_change_event_t {
    * @annotation ["readable"]
    * 旧值。
    */
-   value_t old_value;
-  
+  value_t old_value;
+
   /**
    * @property {value_t} new_value
    * @annotation ["readable"]
    * 新值。
    */
-   value_t new_value;
+  value_t new_value;
 } value_change_event_t;
 
 /**

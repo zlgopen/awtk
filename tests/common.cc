@@ -149,6 +149,5 @@ ret_t widget_dispatch_click(widget_t* widget) {
   widget_dispatch(widget, pointer_event_init(&evt, EVT_POINTER_DOWN, widget, 1, 1));
   widget_dispatch(widget, pointer_event_init(&evt, EVT_POINTER_UP, widget, 1, 1));
 
-
   return RET_OK;
 }

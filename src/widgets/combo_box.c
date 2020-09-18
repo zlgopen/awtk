@@ -645,7 +645,6 @@ static ret_t combo_box_set_selected_index_ex(widget_t* widget, uint32_t index, w
     value_set_uint32(&(evt.new_value), index);
 
     if (widget_dispatch(widget, (event_t*)&evt) != RET_STOP) {
-
       if (widget->emitter != NULL) {
         emitter_disable(widget->emitter);
       }

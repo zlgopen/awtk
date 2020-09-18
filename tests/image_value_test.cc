@@ -106,7 +106,6 @@ TEST(ImageValue, add_delta_n) {
   widget_destroy(w);
 }
 
-
 #include "log_change_events.inc"
 
 TEST(ImageValue, change_value) {
@@ -141,7 +140,7 @@ TEST(ImageValue, change_value_by_ui) {
   widget_t* w = image_value_create(NULL, 10, 20, 30, 40);
   value_change_event_t evt;
   memset(&evt, 0x00, sizeof(evt));
-  
+
   ASSERT_EQ(widget_set_prop_int(w, WIDGET_PROP_MIN, 1), RET_OK);
   ASSERT_EQ(widget_set_prop_int(w, WIDGET_PROP_MAX, 5), RET_OK);
 

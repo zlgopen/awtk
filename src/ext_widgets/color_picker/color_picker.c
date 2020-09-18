@@ -391,7 +391,6 @@ static ret_t color_picker_update_color(widget_t* widget, color_t color) {
       widget_dispatch(widget, (event_t*)&evt);
       widget_invalidate(widget, NULL);
     }
-
   }
 
   return RET_OK;

@@ -174,7 +174,7 @@ ret_t image_value_add_delta(widget_t* widget) {
       value = max;
     }
 
-    image_value_set_value(widget, value); 
+    image_value_set_value(widget, value);
   }
 
   return RET_OK;

@@ -107,7 +107,7 @@ event_t* done_event_init(done_event_t* event, ret_t result) {
   return_value_if_fail(event != NULL, NULL);
   memset(event, 0x00, sizeof(*event));
 
-  event->e = event_init(EVT_DONE,NULL);
+  event->e = event_init(EVT_DONE, NULL);
   event->e.size = sizeof(*event);
   event->result = result;
 
@@ -147,7 +147,7 @@ event_t* cmd_exec_event_init(cmd_exec_event_t* event, uint32_t type, const char*
   return_value_if_fail(event != NULL, NULL);
   memset(event, 0x00, sizeof(*event));
 
-  event->e = event_init(type,NULL);
+  event->e = event_init(type, NULL);
   event->e.size = sizeof(*event);
   event->name = name;
   event->args = value;
