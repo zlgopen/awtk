@@ -44,7 +44,11 @@ ret_t guage_pointer_set_angle(widget_t* widget, int32_t angle) {
       guage_pointer->angle = angle;
       evt.e.type = EVT_VALUE_CHANGED;
       widget_dispatch(widget, (event_t*)&evt);
-      widget_invalidate(widget, NULL);
+      if (widget->parent != NULL) {
+        widget_invalidate(widget->parent, NULL);
+      } else {
+        widget_invalidate(widget, NULL);
+      }
     }
   }
 
