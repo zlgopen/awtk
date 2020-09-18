@@ -134,7 +134,7 @@ def on_generate_res_event():
            common.on_generate_res_after(generate_res.on_generate_res_after)
 
 
-def run(awtk_root):
+def run(awtk_root, is_excluded_file_handler = None):
     global AWTK_ROOT
     global TOOLS_ROOT
     global THEMES
@@ -177,6 +177,7 @@ def run(awtk_root):
         common.set_app_theme(APP_THEME)
         common.set_enable_generate_inc_res(IS_GENERATE_INC_RES)
         common.set_enable_generate_inc_bitmap(IS_GENERATE_INC_BITMAP)
+        common.set_is_excluded_file_handler(is_excluded_file_handler)
         on_generate_res_event()
         common.update_res()
 

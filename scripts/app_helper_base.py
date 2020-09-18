@@ -13,17 +13,31 @@ def mkdir_if_not_exist(fullpath):
 
 def load_project_json(filename):
     try:
-        with open(filename, encoding="UTF-8") as f:
-            info = json.load(f);
-            return info 
+        if sys.version_info >= (3, 0):
+            with open(filename, 'r', encoding='utf8') as f:
+                info = json.load(f);
+                return info
+        else:
+            with open(filename, 'r') as f:
+                info = json.load(f);
+                return info
     except:
         return None
 
-def get_project_w(info):
-    return info['assets']['themes']['default']['lcd']['width']
+def get_project_w(info, theme):
+    return info['assets']['themes'][theme]['lcd']['width']
 
-def get_project_h(info):
-    return info['assets']['themes']['default']['lcd']['height']
+def get_project_h(info, theme):
+    return info['assets']['themes'][theme]['lcd']['height']
+
+def get_project_theme(info):
+    return info['assets']['activedTheme']
+
+def get_project_language(info):
+    return info['assets']['defaultLanguage']
+
+def get_project_country(info):
+    return info['assets']['defaultCountry']
 
 
 class AppHelperBase:
@@ -112,40 +126,45 @@ class AppHelperBase:
     def __init__(self, ARGUMENTS):
         APP_ROOT = os.path.normpath(os.getcwd())
 
-        self.APP_LIBS = []
+        self.ARGUMENTS = ARGUMENTS
         self.DEF_FILE = None
         self.DEF_FILE_PROCESSOR = None
         self.DEPENDS_LIBS = []
-        self.APP_ROOT = APP_ROOT
         self.GEN_IDL_DEF = True
         self.BUILD_SHARED = True
-        self.ARGUMENTS = ARGUMENTS
         self.LINUX_FB = ARGUMENTS.get('LINUX_FB', '') != ''
         self.AWTK_ROOT = self.getAwtkRoot()
+        self.awtk = self.getAwtkConfig()
+        self.AWTK_LIBS = self.awtk.LIBS
+        self.AWTK_CCFLAGS = self.awtk.CCFLAGS
+        self.APP_ROOT = APP_ROOT
         self.APP_BIN_DIR = os.path.join(APP_ROOT, 'bin')
         self.APP_LIB_DIR = os.path.join(APP_ROOT, 'lib')
         self.APP_SRC = os.path.join(APP_ROOT, 'src')
         self.APP_RES = os.path.join(APP_ROOT, 'res')
-        
+        self.APP_LIBS = []
+        self.APP_LIBPATH = [self.APP_LIB_DIR]
+        self.APP_LINKFLAGS = ''
+        self.APP_CPPPATH = [self.APP_SRC, self.APP_RES]
+        self.APP_TOOLS = None
+
         mkdir_if_not_exist(self.APP_BIN_DIR);
         mkdir_if_not_exist(self.APP_LIB_DIR);
-
-        sys.path.insert(0, self.AWTK_ROOT)
-        import awtk_config as awtk
-
-        self.awtk = awtk
-        self.AWTK_LIBS = awtk.LIBS
-        self.AWTK_SHARED_LIBS = awtk.SHARED_LIBS
 
         os.environ['APP_SRC'] = self.APP_SRC
         os.environ['APP_ROOT'] = self.APP_ROOT
         os.environ['BIN_DIR'] = self.APP_BIN_DIR
         os.environ['LIB_DIR'] = self.APP_LIB_DIR
 
-        self.parseArgs(awtk, ARGUMENTS)
+        self.parseArgs(self.awtk, ARGUMENTS)
 
         print("AWTK_ROOT:" + self.AWTK_ROOT)
         print(ARGUMENTS)
+
+    def getAwtkConfig(self):
+        sys.path.insert(0, self.AWTK_ROOT)
+        import awtk_config as awtk
+        return awtk
 
     def saveUsesSdkInfo(self):
         awtk = self.awtk
@@ -181,7 +200,7 @@ class AppHelperBase:
                 f.write(content)
 
     def isBuildShared(self):
-        return 'WITH_AWTK_SO' in os.environ and os.environ['WITH_AWTK_SO'] == 'true' and self.BUILD_SHARED 
+        return 'WITH_AWTK_SO' in os.environ and os.environ['WITH_AWTK_SO'] == 'true' and self.BUILD_SHARED
 
     def copyAwtkSharedLib(self):
         self.awtk.copySharedLib(self.AWTK_ROOT, self.APP_BIN_DIR, 'awtk')
@@ -222,20 +241,21 @@ class AppHelperBase:
         sys.exit(0)
 
     def parseArgs(self, awtk, ARGUMENTS):
-        BUILD_SHARED = True
-        GEN_IDL_DEF = True
+        APP_RES_ROOT = '../res'
+        APP_THEME = 'default'
         LCD_WIDTH = '320'
         LCD_HEIGHT = '480'
-        config = load_project_json('project.json')
-        if config and 'assets' in config:
-            LCD_WIDTH = get_project_w(config);
-            LCD_HEIGHT = get_project_h(config);
-
         APP_DEFAULT_FONT = 'default'
-        APP_THEME = 'default'
-        APP_RES_ROOT = '../res'
         APP_DEFAULT_LANGUAGE = 'zh'
         APP_DEFAULT_COUNTRY = 'CN'
+
+        config = load_project_json('project.json')
+        if config and 'assets' in config:
+            APP_THEME = get_project_theme(config)
+            LCD_WIDTH = get_project_w(config, APP_THEME)
+            LCD_HEIGHT = get_project_h(config, APP_THEME)
+            APP_DEFAULT_LANGUAGE = get_project_language(config)
+            APP_DEFAULT_COUNTRY = get_project_country(config)
 
         if ARGUMENTS.get('HELP', ''):
             self.showHelp()
@@ -270,12 +290,12 @@ class AppHelperBase:
             self.APP_RES = os.path.abspath(os.path.join(self.APP_BIN_DIR, RES_ROOT))
 
         SHARED = ARGUMENTS.get('SHARED', '')
-        if len(SHARED) > 0 and SHARED.lower().startswith('f'):
-            self.BUILD_SHARED = False
+        if len(SHARED) > 0:
+            self.BUILD_SHARED = not SHARED.lower().startswith('f')
 
         IDL_DEF = ARGUMENTS.get('IDL_DEF', '')
-        if len(IDL_DEF) > 0 and IDL_DEF.lower().startswith('f'):
-            GEN_IDL_DEF = False
+        if len(IDL_DEF) > 0:
+            self.GEN_IDL_DEF = not IDL_DEF.lower().startswith('f')
 
         APP_CCFLAGS = ' -DLCD_WIDTH=' + LCD_WIDTH + ' -DLCD_HEIGHT=' + LCD_HEIGHT + ' '
         APP_CCFLAGS = APP_CCFLAGS + ' -DAPP_DEFAULT_FONT=\\\"' + APP_DEFAULT_FONT + '\\\" '
@@ -287,39 +307,25 @@ class AppHelperBase:
             APP_DEFAULT_COUNTRY + '\\\" '
         APP_CCFLAGS = APP_CCFLAGS + ' -DAPP_ROOT=\"\\\"' + \
             self.APP_ROOT + '\\\"\" '
-        os.environ['BUILD_SHARED'] = str(self.isBuildShared())
-
-        APP_LINKFLAGS = ''
-        AWTK_LIBS = self.AWTK_LIBS
-        APP_CPPPATH = [self.APP_SRC, self.APP_RES]
-        APP_LIBPATH = [self.APP_LIB_DIR]
-        AWTK_CCFLAGS = awtk.CCFLAGS
-
-        if platform.system() == 'Linux':
-            APP_LINKFLAGS += ' -Wl,-rpath=' + self.APP_BIN_DIR + ' '
-
-        if not self.isBuildShared() and hasattr(awtk, 'AWTK_CCFLAGS'):
-            AWTK_CCFLAGS = awtk.AWTK_CCFLAGS
-
-        if self.isBuildShared():
-            APP_LIBPATH = [self.APP_BIN_DIR, self.APP_LIB_DIR]
-            AWTK_LIBS = self.AWTK_SHARED_LIBS
-
-        APP_TOOLS = None
-        if hasattr(awtk, 'TOOLS_NAME') and awtk.TOOLS_NAME != '':
-            APP_TOOLS = [awtk.TOOLS_NAME]
-
-        self.AWTK_LIBS = AWTK_LIBS
-        self.AWTK_CCFLAGS = AWTK_CCFLAGS
-        self.APP_TOOLS = APP_TOOLS
         self.APP_CCFLAGS = APP_CCFLAGS
-        self.APP_LIBPATH = APP_LIBPATH
-        self.APP_CPPPATH = APP_CPPPATH
-        self.APP_LINKFLAGS = APP_LINKFLAGS
-        self.GEN_IDL_DEF = GEN_IDL_DEF
         self.APP_CXXFLAGS = self.APP_CCFLAGS
 
+        if platform.system() == 'Linux':
+            self.APP_LINKFLAGS += ' -Wl,-rpath=' + self.APP_BIN_DIR + ' '
+
+        if not self.isBuildShared() and hasattr(awtk, 'AWTK_CCFLAGS'):
+            self.AWTK_CCFLAGS = awtk.AWTK_CCFLAGS
+
+        if self.isBuildShared():
+            self.AWTK_LIBS = awtk.SHARED_LIBS
+            self.APP_LIBPATH = [self.APP_BIN_DIR, self.APP_LIB_DIR]
+
+        if hasattr(awtk, 'TOOLS_NAME') and awtk.TOOLS_NAME != '':
+            self.APP_TOOLS = [awtk.TOOLS_NAME]
+
+        os.environ['BUILD_SHARED'] = str(self.isBuildShared())
         print(LCD_WIDTH, LCD_HEIGHT)
+
     def prepare(self):
         if self.GEN_IDL_DEF and not self.LINUX_FB:
             self.genIdlAndDef()
@@ -330,7 +336,7 @@ class AppHelperBase:
         self.saveUsesSdkInfo()
 
     def getAwtkRoot(self):
-        return os.path.abspath('../../awtk')
+        return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
     def call(self, DefaultEnvironment):
         awtk = self.awtk
