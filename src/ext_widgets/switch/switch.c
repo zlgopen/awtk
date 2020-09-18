@@ -346,12 +346,17 @@ ret_t switch_set_value(widget_t* widget, bool_t value) {
   return_value_if_fail(aswitch != NULL, RET_BAD_PARAMS);
 
   if (aswitch->value != value) {
-    event_t e = event_init(EVT_VALUE_WILL_CHANGE, widget);
-    widget_dispatch(widget, &e);
-    aswitch->value = value;
-    e = event_init(EVT_VALUE_CHANGED, widget);
-    widget_dispatch(widget, &e);
-    widget_invalidate(widget, NULL);
+    value_change_event_t evt;
+    value_change_event_init(&evt, EVT_VALUE_WILL_CHANGE, widget);
+    value_set_bool(&(evt.old_value), aswitch->value);
+    value_set_bool(&(evt.new_value), value);
+
+    if (widget_dispatch(widget, (event_t*)&evt) != RET_STOP) {
+      aswitch->value = value;
+      evt.e.type = EVT_VALUE_CHANGED;
+      widget_dispatch(widget, (event_t*)&evt);
+      widget_invalidate(widget, NULL);
+    }
   }
 
   if (value) {

@@ -751,16 +751,22 @@ ret_t slide_view_set_active(widget_t* widget, uint32_t active) {
   return_value_if_fail(slide_view != NULL, RET_BAD_PARAMS);
 
   if (slide_view->active != active && widget->children != NULL) {
-    event_t evt = event_init(EVT_VALUE_WILL_CHANGE, widget);
+    value_change_event_t evt;
 
     slide_view_save_target(widget);
-    widget_dispatch(widget, &evt);
-    slide_view->active = active;
-    evt = event_init(EVT_VALUE_CHANGED, widget);
-    widget_dispatch(widget, &evt);
-    slide_view_restore_target(widget);
+    
+    value_change_event_init(&evt, EVT_VALUE_WILL_CHANGE, widget);
+    value_set_uint32(&(evt.old_value), slide_view->active);
+    value_set_uint32(&(evt.new_value), active);
 
-    widget_invalidate(widget, NULL);
+    if (widget_dispatch(widget, (event_t*)&evt) != RET_STOP) {
+      slide_view->active = active;
+      evt.e.type = EVT_VALUE_CHANGED;
+      widget_dispatch(widget, (event_t*)&evt);
+      widget_invalidate(widget, NULL);
+    }
+
+    slide_view_restore_target(widget);
   } else {
     slide_view->active = active;
   }

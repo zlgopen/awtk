@@ -222,3 +222,33 @@ TEST(ComboBox, clone) {
   widget_destroy(w2);
   str_reset(&str);
 }
+
+TEST(ComboBOx, change_value) {
+  const char* options = "0:none;1:red;2:green;3:blue";
+  widget_t* w = combo_box_create(NULL, 10, 20, 30, 40);
+  value_change_event_t evt;
+  memset(&evt, 0x00, sizeof(evt));
+
+  ASSERT_EQ(combo_box_set_options(w, options), RET_OK);
+  widget_on(w, EVT_VALUE_WILL_CHANGE, on_value_will_changed_accept, NULL);
+  widget_on(w, EVT_VALUE_CHANGED, on_value_changed, &evt);
+  ASSERT_EQ(widget_set_prop_int(w, WIDGET_PROP_VALUE, 3), RET_OK);
+  ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_VALUE, 0), 3);
+
+  ASSERT_EQ(value_int(&(evt.old_value)), 0);
+  ASSERT_EQ(value_int(&(evt.new_value)), 3);
+
+  widget_destroy(w);
+}
+
+TEST(ComboBOx, change_value_abort) {
+  widget_t* w = combo_box_create(NULL, 10, 20, 30, 40);
+  value_change_event_t evt;
+  memset(&evt, 0x00, sizeof(evt));
+
+  widget_on(w, EVT_VALUE_WILL_CHANGE, on_value_will_changed_abort, NULL);
+  ASSERT_EQ(widget_set_prop_int(w, WIDGET_PROP_VALUE, 3), RET_OK);
+  ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_VALUE, 3), 0);
+
+  widget_destroy(w);
+}

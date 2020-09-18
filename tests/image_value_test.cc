@@ -3,6 +3,7 @@
 #include "base/layout.h"
 #include "font_dummy.h"
 #include "lcd_log.h"
+#include "common.h"
 #include "gtest/gtest.h"
 #include "image_value/image_value.h"
 
@@ -101,6 +102,55 @@ TEST(ImageValue, add_delta_n) {
 
   ASSERT_EQ(image_value_add_delta(w), RET_OK);
   ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_VALUE, 0), 5);
+
+  widget_destroy(w);
+}
+
+
+#include "log_change_events.inc"
+
+TEST(ImageValue, change_value) {
+  widget_t* w = image_value_create(NULL, 10, 20, 30, 40);
+  value_change_event_t evt;
+  memset(&evt, 0x00, sizeof(evt));
+
+  widget_on(w, EVT_VALUE_WILL_CHANGE, on_value_will_changed_accept, NULL);
+  widget_on(w, EVT_VALUE_CHANGED, on_value_changed, &evt);
+  ASSERT_EQ(widget_set_prop_int(w, WIDGET_PROP_VALUE, 3), RET_OK);
+  ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_VALUE, 0), 3);
+
+  ASSERT_EQ(value_int(&(evt.old_value)), 0);
+  ASSERT_EQ(value_int(&(evt.new_value)), 3);
+
+  widget_destroy(w);
+}
+
+TEST(ImageValue, change_value_abort) {
+  widget_t* w = image_value_create(NULL, 10, 20, 30, 40);
+  value_change_event_t evt;
+  memset(&evt, 0x00, sizeof(evt));
+
+  widget_on(w, EVT_VALUE_WILL_CHANGE, on_value_will_changed_abort, NULL);
+  ASSERT_EQ(widget_set_prop_int(w, WIDGET_PROP_VALUE, 3), RET_OK);
+  ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_VALUE, 3), 0);
+
+  widget_destroy(w);
+}
+
+TEST(ImageValue, change_value_by_ui) {
+  widget_t* w = image_value_create(NULL, 10, 20, 30, 40);
+  value_change_event_t evt;
+  memset(&evt, 0x00, sizeof(evt));
+  
+  ASSERT_EQ(widget_set_prop_int(w, WIDGET_PROP_MIN, 1), RET_OK);
+  ASSERT_EQ(widget_set_prop_int(w, WIDGET_PROP_MAX, 5), RET_OK);
+
+  widget_on(w, EVT_VALUE_WILL_CHANGE, on_value_will_changed_accept, NULL);
+  widget_on(w, EVT_VALUE_CHANGED, on_value_changed, &evt);
+  ASSERT_EQ(widget_set_prop_int(w, WIDGET_PROP_CLICK_ADD_DELTA, 1), RET_OK);
+  widget_dispatch_click(w);
+  ASSERT_EQ(value_int(&(evt.old_value)), 0);
+  ASSERT_EQ(value_int(&(evt.new_value)), 1);
 
   widget_destroy(w);
 }

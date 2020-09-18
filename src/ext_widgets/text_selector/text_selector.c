@@ -296,11 +296,17 @@ static ret_t text_selector_set_selected_index_only(text_selector_t* text_selecto
   return_value_if_fail(widget != NULL && text_selector != NULL, RET_BAD_PARAMS);
 
   if (index != text_selector->selected_index) {
-    event_t e = event_init(EVT_VALUE_WILL_CHANGE, widget);
-    widget_dispatch(widget, &e);
-    text_selector->selected_index = index;
-    e = event_init(EVT_VALUE_CHANGED, widget);
-    widget_dispatch(widget, &e);
+    value_change_event_t evt;
+    value_change_event_init(&evt, EVT_VALUE_WILL_CHANGE, widget);
+    value_set_uint32(&(evt.old_value), text_selector->selected_index);
+    value_set_uint32(&(evt.new_value), index);
+
+    if (widget_dispatch(widget, (event_t*)&evt) != RET_STOP) {
+      text_selector->selected_index = index;
+      evt.e.type = EVT_VALUE_CHANGED;
+      widget_dispatch(widget, (event_t*)&evt);
+      widget_invalidate(widget, NULL);
+    }
   }
 
   widget_invalidate(widget, NULL);

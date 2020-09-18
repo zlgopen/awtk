@@ -31,6 +31,7 @@ event_t event_init(uint32_t type, void* target) {
   e.type = type;
   e.target = target;
   e.time = time_now_ms();
+  e.size = sizeof(e);
 
   return e;
 }
@@ -69,7 +70,8 @@ event_t* prop_change_event_init(prop_change_event_t* event, uint32_t type, const
   return_value_if_fail(event != NULL, NULL);
   memset(event, 0x00, sizeof(*event));
 
-  event->e.type = type;
+  event->e = event_init(type, NULL);
+  event->e.size = sizeof(*event);
   event->name = name;
   event->value = value;
 
@@ -87,7 +89,8 @@ event_t* progress_event_init(progress_event_t* event, uint32_t percent) {
   return_value_if_fail(event != NULL, NULL);
   memset(event, 0x00, sizeof(*event));
 
-  event->e.type = EVT_PROGRESS;
+  event->e = event_init(EVT_PROGRESS, NULL);
+  event->e.size = sizeof(*event);
   event->percent = percent;
 
   return (event_t*)(event);
@@ -104,7 +107,8 @@ event_t* done_event_init(done_event_t* event, ret_t result) {
   return_value_if_fail(event != NULL, NULL);
   memset(event, 0x00, sizeof(*event));
 
-  event->e.type = EVT_DONE;
+  event->e = event_init(EVT_DONE,NULL);
+  event->e.size = sizeof(*event);
   event->result = result;
 
   return (event_t*)(event);
@@ -121,7 +125,8 @@ event_t* error_event_init(error_event_t* event, int32_t code, const char* messag
   return_value_if_fail(event != NULL, NULL);
   memset(event, 0x00, sizeof(*event));
 
-  event->e.type = EVT_ERROR;
+  event->e = event_init(EVT_ERROR, NULL);
+  event->e.size = sizeof(*event);
   event->code = code;
   event->message = message;
 
@@ -142,7 +147,8 @@ event_t* cmd_exec_event_init(cmd_exec_event_t* event, uint32_t type, const char*
   return_value_if_fail(event != NULL, NULL);
   memset(event, 0x00, sizeof(*event));
 
-  event->e.type = type;
+  event->e = event_init(type,NULL);
+  event->e.size = sizeof(*event);
   event->name = name;
   event->args = value;
 

@@ -382,12 +382,12 @@ ret_t slider_set_value_internal(widget_t* widget, double value, event_type_t ety
   }
 
   if (slider->value != value || force) {
-    event_t evt = event_init(etype, widget);
-
+    value_change_event_t evt;
+    value_change_event_init(&evt, etype, widget);
+    value_set_double(&(evt.old_value), slider->value);
+    value_set_double(&(evt.new_value), value);
     slider->value = value;
-    widget_invalidate(widget, NULL);
-    widget_dispatch(widget, &evt);
-    widget_invalidate(widget, NULL);
+    widget_dispatch(widget, (event_t*)&evt);
   }
 
   return RET_OK;
@@ -402,8 +402,13 @@ ret_t slider_set_value(widget_t* widget, double value) {
   }
 
   if (slider->value != value) {
-    event_t e = event_init(EVT_VALUE_WILL_CHANGE, widget);
-    widget_dispatch(widget, &e);
+    value_change_event_t evt;
+    value_change_event_init(&evt, EVT_VALUE_WILL_CHANGE, widget);
+    value_set_uint32(&(evt.old_value), slider->value);
+    value_set_uint32(&(evt.new_value), value);
+    if (widget_dispatch(widget, (event_t*)&evt) == RET_STOP) {
+      return RET_OK;
+    }
 
     return slider_set_value_internal(widget, value, EVT_VALUE_CHANGED, FALSE);
   }

@@ -111,3 +111,33 @@ TEST(CheckButton, radio1) {
 
   widget_destroy(g);
 }
+
+TEST(CheckButton, change_value) {
+  widget_t* w = check_button_create(NULL, 0, 0, 100, 100);
+  value_change_event_t evt;
+  memset(&evt, 0x00, sizeof(evt));
+
+  ASSERT_EQ(widget_set_prop_bool(w, WIDGET_PROP_VALUE, FALSE), RET_OK);
+  widget_on(w, EVT_VALUE_WILL_CHANGE, on_value_will_changed_accept, NULL);
+  widget_on(w, EVT_VALUE_CHANGED, on_value_changed, &evt);
+  ASSERT_EQ(widget_set_prop_bool(w, WIDGET_PROP_VALUE, TRUE), RET_OK);
+  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_VALUE, FALSE), TRUE);
+
+  ASSERT_EQ(value_bool(&(evt.old_value)), FALSE);
+  ASSERT_EQ(value_bool(&(evt.new_value)), TRUE);
+
+  widget_destroy(w);
+}
+
+TEST(CheckButton, change_value_abort) {
+  widget_t* w = check_button_create(NULL, 0, 0, 100, 100);
+  value_change_event_t evt;
+  memset(&evt, 0x00, sizeof(evt));
+
+  ASSERT_EQ(widget_set_prop_bool(w, WIDGET_PROP_VALUE, FALSE), RET_OK);
+  widget_on(w, EVT_VALUE_WILL_CHANGE, on_value_will_changed_abort, NULL);
+  ASSERT_EQ(widget_set_prop_bool(w, WIDGET_PROP_VALUE, TRUE), RET_OK);
+  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_VALUE, TRUE), FALSE);
+
+  widget_destroy(w);
+}

@@ -83,8 +83,12 @@ static ret_t edit_commit_text(widget_t* widget) {
 }
 
 static ret_t edit_dispatch_event(widget_t* widget, event_type_t type) {
-  event_t evt = event_init(type, widget);
-  widget_dispatch(widget, &evt);
+  value_change_event_t evt;
+  value_change_event_init(&evt, type, widget);
+  value_set_wstr(&(evt.old_value), widget->text.str);
+  value_set_wstr(&(evt.new_value), widget->text.str);
+
+  widget_dispatch(widget, (event_t*)&evt);
 
   return RET_OK;
 }

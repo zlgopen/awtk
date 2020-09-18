@@ -25,6 +25,7 @@
 wheel_event_t* wheel_event_cast(event_t* event) {
   return_value_if_fail(event != NULL, NULL);
   return_value_if_fail(event->type == EVT_WHEEL, NULL);
+  return_value_if_fail(event->size == sizeof(wheel_event_t), NULL);
 
   return (wheel_event_t*)event;
 }
@@ -33,6 +34,7 @@ orientation_event_t* orientation_event_cast(event_t* event) {
   return_value_if_fail(event != NULL, NULL);
   return_value_if_fail(
       event->type == EVT_ORIENTATION_CHANGED || event->type == EVT_ORIENTATION_WILL_CHANGED, NULL);
+  return_value_if_fail(event->size == sizeof(orientation_event_t), NULL);
 
   return (orientation_event_t*)event;
 }
@@ -40,14 +42,24 @@ orientation_event_t* orientation_event_cast(event_t* event) {
 pointer_event_t* pointer_event_cast(event_t* event) {
   return_value_if_fail(event != NULL, NULL);
   return_value_if_fail(event->type >= EVT_POINTER_DOWN && event->type <= EVT_CLICK, NULL);
+  return_value_if_fail(event->size == sizeof(pointer_event_t), NULL);
 
   return (pointer_event_t*)event;
+}
+
+value_change_event_t* value_change_event_cast(event_t* event) {
+  return_value_if_fail(event != NULL, NULL);
+  return_value_if_fail(event->type >= EVT_VALUE_WILL_CHANGE && event->type <= EVT_VALUE_CHANGING, NULL);
+  return_value_if_fail(event->size == sizeof(value_change_event_t), NULL);
+
+  return (value_change_event_t*)event;
 }
 
 key_event_t* key_event_cast(event_t* event) {
   return_value_if_fail(event != NULL, NULL);
   return_value_if_fail(event->type >= EVT_KEY_DOWN && event->type <= EVT_KEY_UP_BEFORE_CHILDREN,
                        NULL);
+  return_value_if_fail(event->size == sizeof(key_event_t), NULL);
 
   return (key_event_t*)event;
 }
@@ -57,6 +69,7 @@ paint_event_t* paint_event_cast(event_t* event) {
   return_value_if_fail(
       event->type == EVT_PAINT || event->type == EVT_BEFORE_PAINT || event->type == EVT_AFTER_PAINT,
       NULL);
+  return_value_if_fail(event->size == sizeof(paint_event_t), NULL);
 
   return (paint_event_t*)event;
 }
@@ -66,6 +79,7 @@ window_event_t* window_event_cast(event_t* event) {
   return_value_if_fail(event->type == EVT_WINDOW_WILL_OPEN || event->type == EVT_WINDOW_OPEN ||
                            event->type == EVT_WINDOW_CLOSE,
                        NULL);
+  return_value_if_fail(event->size == sizeof(window_event_t), NULL);
 
   return (window_event_t*)event;
 }
@@ -113,6 +127,7 @@ event_t* wheel_event_init(wheel_event_t* event, uint32_t type, void* target, int
   memset(event, 0x00, sizeof(wheel_event_t));
 
   event->e = event_init(type, target);
+  event->e.size = sizeof(*event);
   event->dy = dy;
 
   return (event_t*)event;
@@ -124,6 +139,7 @@ event_t* orientation_event_init(orientation_event_t* event, uint32_t type, void*
   memset(event, 0x00, sizeof(orientation_event_t));
 
   event->e = event_init(type, target);
+  event->e.size = sizeof(*event);
   event->orientation = orientation;
 
   return (event_t*)event;
@@ -132,11 +148,21 @@ event_t* orientation_event_init(orientation_event_t* event, uint32_t type, void*
 event_t* pointer_event_init(pointer_event_t* event, uint32_t type, void* target, int32_t x,
                             int32_t y) {
   return_value_if_fail(event != NULL, NULL);
-  memset(event, 0x00, sizeof(pointer_event_t));
+  memset(event, 0x00, sizeof(*event));
 
   event->e = event_init(type, target);
+  event->e.size = sizeof(*event);
   event->x = x;
   event->y = y;
+
+  return (event_t*)event;
+}
+
+event_t* value_change_event_init(value_change_event_t* event, uint32_t type, void* target) {
+  return_value_if_fail(event != NULL, NULL);
+  memset(event, 0x00, sizeof(*event));
+  event->e = event_init(type, target);
+  event->e.size = sizeof(*event);
 
   return (event_t*)event;
 }
@@ -146,6 +172,7 @@ event_t* key_event_init(key_event_t* event, uint32_t type, void* target, int32_t
   memset(event, 0x00, sizeof(key_event_t));
 
   event->e = event_init(type, target);
+  event->e.size = sizeof(*event);
   event->key = key;
 
   return (event_t*)event;
@@ -156,6 +183,7 @@ event_t* paint_event_init(paint_event_t* event, uint32_t type, void* target, can
   memset(event, 0x00, sizeof(paint_event_t));
 
   event->e = event_init(type, target);
+  event->e.size = sizeof(*event);
   event->c = c;
 
   return (event_t*)event;
@@ -174,6 +202,7 @@ event_t* window_event_init(window_event_t* event, uint32_t type, void* target, w
 multi_gesture_event_t* multi_gesture_event_cast(event_t* event) {
   return_value_if_fail(event != NULL, NULL);
   return_value_if_fail(event->type == EVT_MULTI_GESTURE, NULL);
+  return_value_if_fail(event->size == sizeof(multi_gesture_event_t), NULL);
 
   return (multi_gesture_event_t*)event;
 }
@@ -185,6 +214,7 @@ event_t* multi_gesture_event_init(multi_gesture_event_t* event, void* target, in
   memset(event, 0x00, sizeof(multi_gesture_event_t));
 
   event->e = event_init(EVT_MULTI_GESTURE, target);
+  event->e.size = sizeof(*event);
 
   event->x = x;
   event->y = y;

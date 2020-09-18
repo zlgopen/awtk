@@ -85,14 +85,18 @@ static ret_t check_button_set_value_only(widget_t* widget, bool_t value) {
   return_value_if_fail(check_button != NULL, RET_BAD_PARAMS);
 
   if (check_button->value != value) {
-    event_t e = event_init(EVT_VALUE_WILL_CHANGE, widget);
-    widget_dispatch(widget, &e);
-    check_button->value = value;
-    e = event_init(EVT_VALUE_CHANGED, widget);
-    widget_dispatch(widget, &e);
+    value_change_event_t evt;
+    value_change_event_init(&evt, EVT_VALUE_WILL_CHANGE, widget);
+    value_set_uint32(&(evt.old_value), check_button->value);
+    value_set_uint32(&(evt.new_value), value);
 
-    widget_set_need_update_style(widget);
-    widget_invalidate_force(widget, NULL);
+    if (widget_dispatch(widget, (event_t*)&evt) != RET_STOP) {
+      check_button->value = value;
+      evt.e.type = EVT_VALUE_CHANGED;
+      widget_dispatch(widget, (event_t*)&evt);
+      widget_set_need_update_style(widget);
+      widget_invalidate_force(widget, NULL);
+    }
   }
 
   return RET_OK;

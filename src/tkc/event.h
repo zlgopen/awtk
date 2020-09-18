@@ -114,6 +114,12 @@ typedef struct _event_t {
    */
   uint32_t type;
   /**
+   * @property {int32_t} size
+   * @annotation ["readable", "scriptable"]
+   * 结构体的大小。
+   */
+  uint32_t size;
+  /**
    * @property {uint64_t} time
    * @annotation ["readable", "scriptable"]
    * 事件发生的时间。

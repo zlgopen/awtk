@@ -67,16 +67,22 @@ static ret_t tab_button_set_value_only(widget_t* widget, bool_t value) {
   return_value_if_fail(tab_button != NULL, RET_BAD_PARAMS);
 
   if (tab_button->value != value) {
-    event_t e = event_init(EVT_VALUE_WILL_CHANGE, widget);
-    widget_dispatch(widget, &e);
-    tab_button->value = value;
-    if (!value) {
-      value_set_bool(&v, value);
-      widget_set_prop(widget, WIDGET_PROP_VALUE, &v);
+    value_change_event_t evt;
+    value_change_event_init(&evt, EVT_VALUE_WILL_CHANGE, widget);
+    value_set_bool(&(evt.old_value), tab_button->value);
+    value_set_bool(&(evt.new_value), value);
+
+    if (widget_dispatch(widget, (event_t*)&evt) != RET_STOP) {
+      tab_button->value = value;
+      if (!value) {
+        value_set_bool(&v, value);
+        widget_set_prop(widget, WIDGET_PROP_VALUE, &v);
+      }
+      widget_set_need_update_style(widget);
+
+      evt.e.type = EVT_VALUE_CHANGED;
+      widget_dispatch(widget, (event_t*)&evt);
     }
-    e = event_init(EVT_VALUE_CHANGED, widget);
-    widget_dispatch(widget, &e);
-    widget_set_need_update_style(widget);
   }
 
   return RET_OK;

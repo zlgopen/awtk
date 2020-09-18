@@ -97,12 +97,17 @@ ret_t progress_circle_set_value(widget_t* widget, float_t value) {
   return_value_if_fail(progress_circle != NULL, RET_BAD_PARAMS);
 
   if (progress_circle->value != value) {
-    event_t e = event_init(EVT_VALUE_WILL_CHANGE, widget);
-    widget_dispatch(widget, &e);
-    progress_circle->value = value;
-    e = event_init(EVT_VALUE_CHANGED, widget);
-    widget_dispatch(widget, &e);
-    widget_invalidate(widget, NULL);
+    value_change_event_t evt;
+    value_change_event_init(&evt, EVT_VALUE_WILL_CHANGE, widget);
+    value_set_float(&(evt.old_value), progress_circle->value);
+    value_set_float(&(evt.new_value), value);
+
+    if (widget_dispatch(widget, (event_t*)&evt) != RET_STOP) {
+      progress_circle->value = value;
+      evt.e.type = EVT_VALUE_CHANGED;
+      widget_dispatch(widget, (event_t*)&evt);
+      widget_invalidate(widget, NULL);
+    }
   }
 
   return RET_OK;

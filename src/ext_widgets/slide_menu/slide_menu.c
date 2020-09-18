@@ -439,13 +439,17 @@ static ret_t slide_menu_set_value_only(slide_menu_t* slide_menu, int32_t index) 
   widget_t* widget = WIDGET(slide_menu);
 
   if (index != slide_menu->value) {
-    event_t e = event_init(EVT_VALUE_WILL_CHANGE, widget);
-    widget_dispatch(widget, &e);
+    value_change_event_t evt;
+    value_change_event_init(&evt, EVT_VALUE_WILL_CHANGE, widget);
+    value_set_int(&(evt.old_value), slide_menu->value);
+    value_set_int(&(evt.new_value), index);
 
-    slide_menu->value = index;
-
-    e = event_init(EVT_VALUE_CHANGED, widget);
-    widget_dispatch(widget, &e);
+    if (widget_dispatch(widget, (event_t*)&evt) != RET_STOP) {
+      slide_menu->value = index;
+      evt.e.type = EVT_VALUE_CHANGED;
+      widget_dispatch(widget, (event_t*)&evt);
+      widget_invalidate(widget, NULL);
+    }
   }
 
   return RET_OK;

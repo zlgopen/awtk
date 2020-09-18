@@ -556,11 +556,17 @@ ret_t scroll_bar_set_value(widget_t* widget, int32_t value) {
   return_value_if_fail(scroll_bar != NULL, RET_BAD_PARAMS);
 
   if (scroll_bar->value != value) {
-    event_t e = event_init(EVT_VALUE_CHANGED, widget);
+    value_change_event_t evt;
+    value_change_event_init(&evt, EVT_VALUE_WILL_CHANGE, widget);
+    value_set_int(&(evt.old_value), scroll_bar->value);
+    value_set_int(&(evt.new_value), value);
 
-    scroll_bar_set_value_only(widget, value);
-    widget_dispatch(widget, &e);
-    widget_invalidate(widget, NULL);
+    if (widget_dispatch(widget, (event_t*)&evt) != RET_STOP) {
+      scroll_bar_set_value_only(widget, value);
+      evt.e.type = EVT_VALUE_CHANGED;
+      widget_dispatch(widget, (event_t*)&evt);
+      widget_invalidate(widget, NULL);
+    }
   }
 
   return RET_OK;

@@ -377,14 +377,21 @@ static ret_t color_picker_update_color(widget_t* widget, color_t color) {
   }
 
   if (color_picker->c.color != color.color) {
-    event_t e = event_init(EVT_VALUE_WILL_CHANGE, widget);
-    widget_dispatch(widget, &e);
-    color_picker->c = color;
-    color_hex_str(color_picker->c, color_picker->value);
-    color_picker_sync_children(widget);
-    e = event_init(EVT_VALUE_CHANGED, widget);
-    widget_dispatch(widget, &e);
-    widget_invalidate(widget, NULL);
+    value_change_event_t evt;
+    value_change_event_init(&evt, EVT_VALUE_WILL_CHANGE, widget);
+    value_set_uint32(&(evt.old_value), color_picker->c.color);
+    value_set_uint32(&(evt.new_value), color.color);
+
+    if (widget_dispatch(widget, (event_t*)&evt) != RET_STOP) {
+      color_picker->c = color;
+      color_hex_str(color_picker->c, color_picker->value);
+      color_picker_sync_children(widget);
+
+      evt.e.type = EVT_VALUE_CHANGED;
+      widget_dispatch(widget, (event_t*)&evt);
+      widget_invalidate(widget, NULL);
+    }
+
   }
 
   return RET_OK;

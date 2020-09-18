@@ -30,16 +30,31 @@ static ret_t color_component_update_sv(widget_t* widget);
 static ret_t color_component_ensure_image(widget_t* widget);
 static ret_t color_component_set_type(widget_t* widget, const char* type);
 
+static ret_t color_component_dispatch_change_event(widget_t* widget, uint32_t etype) {
+  uint32_t value = 0;
+  value_change_event_t evt;
+  value_change_event_init(&evt, etype, widget);
+  color_component_t* color_component = COLOR_COMPONENT(widget);
+
+  value = (color_component->color_x & 0xffff) << 16;
+  value |= color_component->color_y;
+
+  value_set_uint32(&(evt.old_value), value);
+  value_set_uint32(&(evt.new_value), value);
+  widget_dispatch(widget, (event_t*)&evt);
+  widget_invalidate_force(widget, NULL);
+
+  return RET_OK;
+}
+
 static ret_t color_component_update_pressed(widget_t* widget, pointer_event_t* e) {
   point_t p = {e->x, e->y};
-  event_t evt = event_init(EVT_VALUE_CHANGING, widget);
   color_component_t* color_component = COLOR_COMPONENT(widget);
 
   widget_to_local(widget, &p);
   color_component->color_x = tk_clampi(p.x, 0, widget->w);
   color_component->color_y = tk_clampi(p.y, 0, widget->h);
-  widget_invalidate_force(widget, NULL);
-  widget_dispatch(widget, &evt);
+  color_component_dispatch_change_event(widget, EVT_VALUE_CHANGING);
 
   return RET_OK;
 }
@@ -67,8 +82,7 @@ static ret_t color_component_on_event(widget_t* widget, event_t* e) {
     case EVT_POINTER_UP: {
       widget_ungrab(widget->parent, widget);
       if (component->pressed) {
-        event_t changed = event_init(EVT_VALUE_CHANGED, widget);
-        widget_dispatch(widget, &changed);
+        color_component_dispatch_change_event(widget, EVT_VALUE_CHANGING);
         component->pressed = FALSE;
       }
       break;

@@ -1566,9 +1566,9 @@ static ret_t widget_on_grabbed_keys(void* ctx, event_t* e) {
 
       if (win == top_win) {
         if (e->type == EVT_KEY_DOWN) {
-          ret = widget_on_keydown(widget, (key_event_t*)e);
+          ret = widget_on_keydown(widget, key_event_cast(e));
         } else {
-          ret = widget_on_keyup(widget, (key_event_t*)e);
+          ret = widget_on_keyup(widget, key_event_cast(e));
         }
       }
     }

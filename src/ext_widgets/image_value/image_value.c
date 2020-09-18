@@ -162,21 +162,19 @@ ret_t image_value_add_delta(widget_t* widget) {
   return_value_if_fail(image_value != NULL, RET_BAD_PARAMS);
 
   if (image_value->click_add_delta) {
+    float_t value = image_value->value;
     float_t min = tk_min(image_value->min, image_value->max);
     float_t max = tk_max(image_value->min, image_value->max);
     return_value_if_fail(min < max, RET_BAD_PARAMS);
 
-    widget_dispatch_simple_event(widget, EVT_VALUE_WILL_CHANGE);
-    image_value->value += image_value->click_add_delta;
-
-    if (image_value->value > max) {
-      image_value->value = min;
-    } else if (image_value->value < min) {
-      image_value->value = max;
+    value = image_value->value + image_value->click_add_delta;
+    if (value > max) {
+      value = min;
+    } else if (value < min) {
+      value = max;
     }
 
-    widget_dispatch_simple_event(widget, EVT_VALUE_CHANGED);
-    widget_invalidate(widget, NULL);
+    image_value_set_value(widget, value); 
   }
 
   return RET_OK;
@@ -265,13 +263,17 @@ ret_t image_value_set_value(widget_t* widget, float_t value) {
   return_value_if_fail(image_value != NULL, RET_BAD_PARAMS);
 
   if (image_value->value != value) {
-    event_t e = event_init(EVT_VALUE_WILL_CHANGE, widget);
+    value_change_event_t evt;
+    value_change_event_init(&evt, EVT_VALUE_WILL_CHANGE, widget);
+    value_set_float(&(evt.old_value), image_value->value);
+    value_set_float(&(evt.new_value), value);
 
-    widget_dispatch(widget, &e);
-    image_value->value = value;
-    e = event_init(EVT_VALUE_CHANGED, widget);
-    widget_dispatch(widget, &e);
-    widget_invalidate(widget, NULL);
+    if (widget_dispatch(widget, (event_t*)&evt) != RET_STOP) {
+      image_value->value = value;
+      evt.e.type = EVT_VALUE_CHANGED;
+      widget_dispatch(widget, (event_t*)&evt);
+      widget_invalidate(widget, NULL);
+    }
   }
 
   return RET_OK;

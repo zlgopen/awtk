@@ -107,15 +107,18 @@ ret_t progress_bar_set_value(widget_t* widget, float_t value) {
   return_value_if_fail(progress_bar != NULL, RET_BAD_PARAMS);
 
   if (progress_bar->value != value) {
-    event_t e = event_init(EVT_VALUE_WILL_CHANGE, widget);
+    value_change_event_t evt;
+    value_change_event_init(&evt, EVT_VALUE_WILL_CHANGE, widget);
+    value_set_float(&(evt.old_value), progress_bar->value);
+    value_set_float(&(evt.new_value), value);
 
-    widget_dispatch(widget, &e);
-    progress_bar->value = value;
-    e = event_init(EVT_VALUE_CHANGED, widget);
-    widget_dispatch(widget, &e);
-
-    progress_bar_update_text(widget);
-    widget_invalidate(widget, NULL);
+    if (widget_dispatch(widget, (event_t*)&evt) != RET_STOP) {
+      progress_bar->value = value;
+      progress_bar_update_text(widget);
+      evt.e.type = EVT_VALUE_CHANGED;
+      widget_dispatch(widget, (event_t*)&evt);
+      widget_invalidate(widget, NULL);
+    }
   }
 
   return RET_OK;

@@ -99,15 +99,20 @@ ret_t pages_set_active(widget_t* widget, uint32_t index) {
   return_value_if_fail(pages != NULL, RET_BAD_PARAMS);
 
   if (pages->active != index && widget->children != NULL) {
-    event_t evt = event_init(EVT_VALUE_WILL_CHANGE, widget);
+    value_change_event_t evt;
 
     pages_save_target(widget);
-    widget_dispatch(widget, &evt);
-    pages->active = index;
-    evt = event_init(EVT_VALUE_CHANGED, widget);
-    widget_dispatch(widget, &evt);
+    value_change_event_init(&evt, EVT_VALUE_WILL_CHANGE, widget);
+    value_set_uint32(&(evt.old_value), pages->active);
+    value_set_uint32(&(evt.new_value), index);
+
+    if (widget_dispatch(widget, (event_t*)&evt) != RET_STOP) {
+      pages->active = index;
+      evt.e.type = EVT_VALUE_CHANGED;
+      widget_dispatch(widget, (event_t*)&evt);
+      widget_invalidate(widget, NULL);
+    }
     pages_restore_target(widget);
-    widget_invalidate(widget, NULL);
   } else {
     pages->active = index;
   }
