@@ -192,10 +192,10 @@ int main(int argc, char* argv[]) {
 #endif /*ENABLE_CURSOR*/
 
   GLOBAL_INIT();
-  application_init();
 #if defined(APP_DEFAULT_LANGUAGE) && defined(APP_DEFAULT_COUNTRY)
   locale_info_change(locale_info(), APP_DEFAULT_LANGUAGE, APP_DEFAULT_COUNTRY);
 #endif /*APP_DEFAULT_LANGUAGE and APP_DEFAULT_LANGUAGE*/
+  application_init();
   tk_run();
   application_exit();
   GLOBAL_EXIT();
