@@ -359,7 +359,7 @@ ret_t switch_set_value(widget_t* widget, bool_t value) {
     }
   }
 
-  if (value) {
+  if (aswitch->value) {
     aswitch->xoffset = 0;
   } else {
     aswitch->xoffset = aswitch->max_xoffset_ratio * widget->w;
