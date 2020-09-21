@@ -336,7 +336,10 @@ class AppHelperBase:
         self.saveUsesSdkInfo()
 
     def getAwtkRoot(self):
-        return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        AWTK_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        if self.LINUX_FB:
+            AWTK_ROOT = os.path.join(os.path.dirname(AWTK_ROOT), 'awtk-linux-fb')
+        return AWTK_ROOT
 
     def call(self, DefaultEnvironment):
         awtk = self.awtk
