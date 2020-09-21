@@ -6,6 +6,7 @@
   * 修复 demo 资源的问题，方便 designer 打开。
   * 修复部分事情初始化的问题（感谢俊杰提供补丁）。
   * 完善编译脚本（感谢朝泽提供补丁）。
+  * 修复 valgrind 发现的内存泄露。
 
 * 2020/09/18
   * EVT\_VALUE\_WILL\_CHANGE、EVT\_VALUE\_CHANGING 和 EVT\_VALUE\_CHANGED 事件结构改为 value\_change\_event\_t，从中可以获得旧值和新值。

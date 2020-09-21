@@ -455,6 +455,7 @@ ret_t canvas_offline_destroy(canvas_t* canvas) {
   if (bitmap != NULL) {
     bitmap_destroy(bitmap);
   }
+  canvas_reset(canvas);
   TKMEM_FREE(canvas);
 
   return RET_OK;
