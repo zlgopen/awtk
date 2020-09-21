@@ -1,5 +1,9 @@
 # 最新动态
 
+* 2020/09/19
+  * 更新 dll 导出函数列表。
+  * 增加 TK\_KEY\_LONG\_PRESS\_TIME，让触屏长按和键盘长按可以设置为不同的时间。
+
 * 2020/09/18
   * EVT\_VALUE\_WILL\_CHANGE、EVT\_VALUE\_CHANGING 和 EVT\_VALUE\_CHANGED 事件结构改为 value\_change\_event\_t，从中可以获得旧值和新值。
   * EVT\_VALUE\_WILL\_CHANGE 事件返回 RET\_STOP 可以阻止修改值。

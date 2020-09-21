@@ -67,7 +67,7 @@ static ret_t input_device_status_dispatch_long_press(input_device_status_t* ids)
     key_pressed_info_t* iter = ids->pressed_info + i;
     if (iter->key && !iter->emitted) {
       uint64_t t = now - iter->time;
-      if (t >= TK_LONG_PRESS_TIME) {
+      if (t >= TK_KEY_LONG_PRESS_TIME) {
         key_event_init(&evt, EVT_KEY_LONG_PRESS, widget, iter->key);
         widget_on_keydown(widget, &evt);
         log_debug("long press:%d\n", iter->key);
@@ -105,7 +105,7 @@ static ret_t input_device_status_update_key_press_info(input_device_status_t* id
     }
 
     if (ids->long_press_check_timer == TK_INVALID_ID) {
-      ids->long_press_check_timer = timer_add(long_press_check_on_timer, ids, TK_LONG_PRESS_TIME);
+      ids->long_press_check_timer = timer_add(long_press_check_on_timer, ids, TK_KEY_LONG_PRESS_TIME);
     }
   } else {
     return_value_if_fail(info != NULL, RET_BAD_PARAMS);
