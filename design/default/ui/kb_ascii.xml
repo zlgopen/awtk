@@ -108,7 +108,7 @@
         <button repeat="300" name="$" text="$"/>
         <button repeat="300" name="@" text="@"/>
         <button repeat="300" name="'" text="'"/>
-        <button repeat="300" name="quota" text="&quota;"/>
+        <button repeat="300" name="&quot;" text="&quot;"/>
       </group_box>
       <group_box children_layout="default(r=1,c=10,s=2,m=4)">
         <button name="page:symbol" style="highlight" text="#+="/>
@@ -159,7 +159,7 @@
         <button repeat="300" name="?" text="?"/>
         <button repeat="300" name="!" text="!"/>
         <button repeat="300" name="'" text="'"/>
-        <button repeat="300" name="&quota;" text=">"/>
+        <button repeat="300" name=">" text=">"/>
         <button repeat="300" name="key:backspace" style="highlight"><image draw_type="icon" image="backspace" x="center" y="middle" w="100%" h="100%"/></button>
       </group_box>
       <group_box children_layout="default(r=1,c=0,s=2,m=4)">

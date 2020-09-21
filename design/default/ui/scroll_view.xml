@@ -12,5 +12,5 @@
   <image image="earth" x="300" y="300" w="30" h="30" text="4"/>
   <image image="earth" x="370" y="370" w="30" h="30" text="4"/>
   <image image="earth" x="400" y="400" w="30" h="30" text="4"/>
-  </scroll>
+  </scroll_view>
 </window>

@@ -16,5 +16,5 @@
     <button text="12" />
     <button text="13" />
     <button text="14" />
-  </scroll>
+  </scroll_view>
 </window>

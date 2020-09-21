@@ -45,7 +45,7 @@
         </button>
         <button repeat="300" name="$" text="$"/>
         <button repeat="300" name="@" text="@"/>
-        <button repeat="300" name="&quota;" text="&quota;"/>
+        <button repeat="300" name="&quot;" text="&quot;"/>
         <button repeat="300" name="'" text="'"/>
         <button name="page:chinese" style="highlight">
           <image draw_type="icon" image="zh" x="center" y="middle" w="100%" h="100%"/>

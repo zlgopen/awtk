@@ -39,7 +39,7 @@
     <radio_button style="middle"/>
     <radio_button style="right"/>
     <check_button style="mute"/>
-  </grid>
+  </row>
   
   <grid x="20" y="bottom:10" w="80%" h="40" children_layout="default(r=1,c=5,x=2,s=10)">
     <image draw_type="icon" image="earth" 

@@ -162,7 +162,7 @@ ret_t str_decode_xml_entity_with_len(str_t* str, const char* text, uint32_t len)
       } else if (strncmp(s, "amp;", 4) == 0) {
         c = '&';
         s += 4;
-      } else if (strncmp(s, "quot;", 5) == 0) {
+      } else if (strncmp(s, "quot;", 5) == 0 || strncmp(s, "quota;", 6) == 0) {
         c = '\"';
         s += 5;
       } else if (strncmp(s, "nbsp;", 5) == 0) {

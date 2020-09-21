@@ -39,7 +39,7 @@
         <button name="page:lower" style="highlight" text="abc"/>
         <button repeat="300" name="$" text="$"/>
         <button repeat="300" name="@" text="@"/>
-        <button repeat="300" name="&quota;" text="&quota;"/>
+        <button repeat="300" name="&quot;" text="&quot;"/>
         <button repeat="300" name="'" text="'"/>
         <button name="page:upper" style="highlight" text="ABC"/>
         <button repeat="300" name="#" text="#"/>

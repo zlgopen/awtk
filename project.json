@@ -8,7 +8,7 @@
     "outputDir": "res",
     "loadFrom": "any",
     "screenDPR": "x1",
-    "const": "",
+    "const": "resource_data",
     "defaultLanguage": "zh",
     "defaultCountry": "CN",
     "themes": {
@@ -41,6 +41,6 @@
   },
   "creator": {
     "name": "AWTK Designer",
-    "version": "0.1.6"
+    "version": "0.1.7"
   }
 }

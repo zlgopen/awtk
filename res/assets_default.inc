@@ -207,12 +207,6 @@
 #include "assets/default/inc/images/battery_4.res"
 #include "assets/default/inc/images/battery_5.res"
 #include "assets/default/inc/images/bee.res"
-#include "assets/default/inc/images/bg_landscape_1.res"
-#include "assets/default/inc/images/bg_landscape_2.res"
-#include "assets/default/inc/images/bg_landscape_3.res"
-#include "assets/default/inc/images/bg_portrait_1.res"
-#include "assets/default/inc/images/bg_portrait_2.res"
-#include "assets/default/inc/images/bg_portrait_3.res"
 #include "assets/default/inc/images/bricks.res"
 #include "assets/default/inc/images/check.res"
 #include "assets/default/inc/images/checked.res"
@@ -309,143 +303,6 @@
 #include "assets/default/inc/images/warn.res"
 #include "assets/default/inc/images/zh.res"
 #else
-#include "assets/default/inc/images/1.data"
-#include "assets/default/inc/images/2.data"
-#include "assets/default/inc/images/3.data"
-#include "assets/default/inc/images/active_dot.data"
-#include "assets/default/inc/images/ani1.data"
-#include "assets/default/inc/images/ani2.data"
-#include "assets/default/inc/images/ani3.data"
-#include "assets/default/inc/images/ani4.data"
-#include "assets/default/inc/images/ani5.data"
-#include "assets/default/inc/images/ani6.data"
-#include "assets/default/inc/images/ani7.data"
-#include "assets/default/inc/images/ani8.data"
-#include "assets/default/inc/images/ani9.data"
-#include "assets/default/inc/images/ania.data"
-#include "assets/default/inc/images/anib.data"
-#include "assets/default/inc/images/anic.data"
-#include "assets/default/inc/images/arrow_down_n.data"
-#include "assets/default/inc/images/arrow_down_o.data"
-#include "assets/default/inc/images/arrow_down_p.data"
-#include "assets/default/inc/images/arrow_left_n.data"
-#include "assets/default/inc/images/arrow_left_o.data"
-#include "assets/default/inc/images/arrow_left_p.data"
-#include "assets/default/inc/images/arrow_right_n.data"
-#include "assets/default/inc/images/arrow_right_o.data"
-#include "assets/default/inc/images/arrow_right_p.data"
-#include "assets/default/inc/images/arrow_up_n.data"
-#include "assets/default/inc/images/arrow_up_o.data"
-#include "assets/default/inc/images/arrow_up_p.data"
-#include "assets/default/inc/images/backspace.data"
-#include "assets/default/inc/images/battery_0.data"
-#include "assets/default/inc/images/battery_1.data"
-#include "assets/default/inc/images/battery_2.data"
-#include "assets/default/inc/images/battery_3.data"
-#include "assets/default/inc/images/battery_4.data"
-#include "assets/default/inc/images/battery_5.data"
-#include "assets/default/inc/images/bee.data"
-#include "assets/default/inc/images/bg_landscape_1.data"
-#include "assets/default/inc/images/bg_landscape_2.data"
-#include "assets/default/inc/images/bg_landscape_3.data"
-#include "assets/default/inc/images/bg_portrait_1.data"
-#include "assets/default/inc/images/bg_portrait_2.data"
-#include "assets/default/inc/images/bg_portrait_3.data"
-#include "assets/default/inc/images/bricks.data"
-#include "assets/default/inc/images/check.data"
-#include "assets/default/inc/images/checked.data"
-#include "assets/default/inc/images/clock.data"
-#include "assets/default/inc/images/clock_bg.data"
-#include "assets/default/inc/images/clock_hour.data"
-#include "assets/default/inc/images/clock_minute.data"
-#include "assets/default/inc/images/clock_second.data"
-#include "assets/default/inc/images/close_d.data"
-#include "assets/default/inc/images/close_n.data"
-#include "assets/default/inc/images/close_o.data"
-#include "assets/default/inc/images/close_p.data"
-#include "assets/default/inc/images/contact.data"
-#include "assets/default/inc/images/contact_active.data"
-#include "assets/default/inc/images/cross.data"
-#include "assets/default/inc/images/cursor.data"
-#include "assets/default/inc/images/cursor_hand.data"
-#include "assets/default/inc/images/cursor_text.data"
-#include "assets/default/inc/images/dialog_title.data"
-#include "assets/default/inc/images/discovery.data"
-#include "assets/default/inc/images/discovery_active.data"
-#include "assets/default/inc/images/dot.data"
-#include "assets/default/inc/images/earth.data"
-#include "assets/default/inc/images/edit_clear_n.data"
-#include "assets/default/inc/images/edit_clear_o.data"
-#include "assets/default/inc/images/edit_clear_p.data"
-#include "assets/default/inc/images/empty.data"
-#include "assets/default/inc/images/en.data"
-#include "assets/default/inc/images/file.data"
-#include "assets/default/inc/images/find.data"
-#include "assets/default/inc/images/flag_CN.data"
-#include "assets/default/inc/images/flag_none.data"
-#include "assets/default/inc/images/flag_US.data"
-#include "assets/default/inc/images/folder.data"
-#include "assets/default/inc/images/green_btn_n.data"
-#include "assets/default/inc/images/green_btn_o.data"
-#include "assets/default/inc/images/green_btn_p.data"
-#include "assets/default/inc/images/guage_bg.data"
-#include "assets/default/inc/images/guage_pointer.data"
-#include "assets/default/inc/images/image_packed_bg.data"
-#include "assets/default/inc/images/image_packed_fg.data"
-#include "assets/default/inc/images/info.data"
-#include "assets/default/inc/images/invisible.data"
-#include "assets/default/inc/images/left_off.data"
-#include "assets/default/inc/images/left_on.data"
-#include "assets/default/inc/images/logo.data"
-#include "assets/default/inc/images/me.data"
-#include "assets/default/inc/images/message.data"
-#include "assets/default/inc/images/me_active.data"
-#include "assets/default/inc/images/middle_off.data"
-#include "assets/default/inc/images/middle_on.data"
-#include "assets/default/inc/images/msg.data"
-#include "assets/default/inc/images/msg_active.data"
-#include "assets/default/inc/images/muted.data"
-#include "assets/default/inc/images/num_0.data"
-#include "assets/default/inc/images/num_1.data"
-#include "assets/default/inc/images/num_2.data"
-#include "assets/default/inc/images/num_3.data"
-#include "assets/default/inc/images/num_4.data"
-#include "assets/default/inc/images/num_5.data"
-#include "assets/default/inc/images/num_6.data"
-#include "assets/default/inc/images/num_7.data"
-#include "assets/default/inc/images/num_8.data"
-#include "assets/default/inc/images/num_9.data"
-#include "assets/default/inc/images/num_dot.data"
-#include "assets/default/inc/images/play_n.data"
-#include "assets/default/inc/images/play_o.data"
-#include "assets/default/inc/images/play_p.data"
-#include "assets/default/inc/images/progress_circle.data"
-#include "assets/default/inc/images/question.data"
-#include "assets/default/inc/images/radio_checked.data"
-#include "assets/default/inc/images/radio_unchecked.data"
-#include "assets/default/inc/images/red_btn_n.data"
-#include "assets/default/inc/images/red_btn_o.data"
-#include "assets/default/inc/images/red_btn_p.data"
-#include "assets/default/inc/images/return_up.data"
-#include "assets/default/inc/images/rgb.data"
-#include "assets/default/inc/images/rgba.data"
-#include "assets/default/inc/images/right_off.data"
-#include "assets/default/inc/images/right_on.data"
-#include "assets/default/inc/images/shift.data"
-#include "assets/default/inc/images/shifton.data"
-#include "assets/default/inc/images/slider_bg.data"
-#include "assets/default/inc/images/slider_drag.data"
-#include "assets/default/inc/images/slider_drag_o.data"
-#include "assets/default/inc/images/slider_drag_p.data"
-#include "assets/default/inc/images/slider_fg.data"
-#include "assets/default/inc/images/slider_v_bg.data"
-#include "assets/default/inc/images/slider_v_fg.data"
-#include "assets/default/inc/images/switch.data"
-#include "assets/default/inc/images/unchecked.data"
-#include "assets/default/inc/images/unmuted.data"
-#include "assets/default/inc/images/visible.data"
-#include "assets/default/inc/images/warn.data"
-#include "assets/default/inc/images/zh.data"
 #endif /*WITH_STB_IMAGE*/
 #ifdef WITH_VGCANVAS
 #include "assets/default/inc/images/ball.bsvg"
@@ -457,17 +314,8 @@
 #include "assets/default/inc/images/pointer_4.bsvg"
 #endif /*WITH_VGCANVAS*/
 #ifdef WITH_TRUETYPE_FONT
-#include "assets/default/inc/fonts/ap.res"
 #include "assets/default/inc/fonts/default.res"
-#include "assets/default/inc/fonts/default_full.res"
-#include "assets/default/inc/fonts/trado.res"
 #else /*WITH_TRUETYPE_FONT*/
-#include "assets/default/inc/fonts/default_16.data"
-#include "assets/default/inc/fonts/default_18.data"
-#include "assets/default/inc/fonts/default_20.data"
-#include "assets/default/inc/fonts/default_24.data"
-#include "assets/default/inc/fonts/default_32.data"
-#include "assets/default/inc/fonts/default_96.data"
 #endif /*WITH_TRUETYPE_FONT*/
 #include "assets/default/inc/scripts/dummy.res"
 #endif /*WITH_FS_RES*/
@@ -684,12 +532,6 @@ ret_t assets_init(void) {
   assets_manager_add(am, image_battery_4);
   assets_manager_add(am, image_battery_5);
   assets_manager_add(am, image_bee);
-  assets_manager_add(am, image_bg_landscape_1);
-  assets_manager_add(am, image_bg_landscape_2);
-  assets_manager_add(am, image_bg_landscape_3);
-  assets_manager_add(am, image_bg_portrait_1);
-  assets_manager_add(am, image_bg_portrait_2);
-  assets_manager_add(am, image_bg_portrait_3);
   assets_manager_add(am, image_bricks);
   assets_manager_add(am, image_check);
   assets_manager_add(am, image_checked);
@@ -795,17 +637,8 @@ ret_t assets_init(void) {
   assets_manager_add(am, image_pointer_4);
 #endif /*WITH_VGCANVAS*/
 #ifdef WITH_TRUETYPE_FONT
-  assets_manager_add(am, font_ap);
   assets_manager_add(am, font_default);
-  assets_manager_add(am, font_default_full);
-  assets_manager_add(am, font_trado);
 #else /*WITH_TRUETYPE_FONT*/
-  assets_manager_add(am, font_default_16);
-  assets_manager_add(am, font_default_18);
-  assets_manager_add(am, font_default_20);
-  assets_manager_add(am, font_default_24);
-  assets_manager_add(am, font_default_32);
-  assets_manager_add(am, font_default_96);
 #endif /*WITH_TRUETYPE_FONT*/
   assets_manager_add(am, script_dummy);
 #endif
