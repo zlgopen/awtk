@@ -594,7 +594,14 @@ static ret_t text_edit_paint_line(text_edit_t* text_edit, canvas_t* c, row_info_
         canvas_set_text_color(c, text_color);
       }
 
-      canvas_draw_text(c, &chr, 1, rx, ry);
+      /*FIXME: 密码编辑时，*字符本身偏高，看起来不像居中。但是无法拿到字模信息，只好手工修正一下。*/
+      if (impl->mask && impl->mask_char == '*') {
+        int32_t oy = c->font_size / 6;
+        canvas_draw_text(c, &chr, 1, rx, ry + oy);
+      } else {
+        canvas_draw_text(c, &chr, 1, rx, ry);
+      }
+
       x += char_w + CHAR_SPACING;
     }
   }
@@ -617,11 +624,6 @@ static ret_t text_edit_paint_real_text(text_edit_t* text_edit, canvas_t* c) {
 
     if (impl->single_line) {
       y = (layout_info->h - c->font_size) / 2 + layout_info->margin_t;
-
-      /*FIXME: 密码编辑时，*字符本身偏高，看起来不像居中。但是无法拿到字模信息，只好手工修正一下。*/
-      if (impl->mask && impl->mask_char == '*') {
-        y += c->font_size / 6;
-      }
 
     } else {
       y = i * line_height + layout_info->margin_t;

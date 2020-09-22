@@ -1,7 +1,8 @@
 # 最新动态
 * 2020/09/22
-  * rich text 增加 yslidable 属性。
   * 完善 scroll bar。
+  * 修复密码选中不居中的问题。
+  * rich text 增加 yslidable 属性。
 
 * 2020/09/21
   * 更新 dll 导出函数列表。
