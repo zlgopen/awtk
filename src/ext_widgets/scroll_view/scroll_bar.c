@@ -281,11 +281,20 @@ static ret_t scroll_bar_on_drag(void* ctx, event_t* e) {
   if (widget_w > widget_h) {
     int64_t x = scroll_bar->dragger->x;
     int64_t max_x = (widget_w - 2 * widget_h - dragger->w);
-    value = (x - widget_h) * scroll_bar->virtual_size / max_x;
+    if (max_x <= 0) {
+      value = 0;
+    } else {
+      value = (x - widget_h) * scroll_bar->virtual_size / max_x;
+    }
   } else {
     int64_t y = scroll_bar->dragger->y;
     int64_t max_y = (widget_h - 2 * widget_w - dragger->h);
-    value = (y - widget_w) * scroll_bar->virtual_size / max_y;
+
+    if (max_y <= 0) {
+      value = 0;
+    } else {
+      value = (y - widget_w) * scroll_bar->virtual_size / max_y;
+    }
   }
 
   scroll_bar_set_value(widget, value);
