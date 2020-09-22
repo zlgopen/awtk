@@ -1646,8 +1646,8 @@ static ret_t canvas_draw_image_center_ex(canvas_t* c, bitmap_t* img, const rect_
   rect_t* dst = canvas_fix_rect(dst_in, &r_fix);
   return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
 
-  dx = dst->x + ((dst->w - src_r->w) >> 1);
-  dy = dst->y + ((dst->h - src_r->h) >> 1);
+  dx = ((dst->w - src_r->w) >> 1);
+  dy = ((dst->h - src_r->h) >> 1);
 
   if (dx < 0) {
     sx = -dx;
@@ -1664,6 +1664,10 @@ static ret_t canvas_draw_image_center_ex(canvas_t* c, bitmap_t* img, const rect_
   } else {
     sh = src_r->h;
   }
+
+
+  dx += dst->x;
+  dy += dst->y;
 
   src = rect_init(sx + src_r->x, sy + src_r->y, sw, sh);
   *dst = rect_init(dx, dy, sw, sh);
