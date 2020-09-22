@@ -361,19 +361,20 @@ static ret_t rich_text_on_event(widget_t* widget, event_t* e) {
   ret_t ret = RET_OK;
   uint16_t type = e->type;
   rich_text_t* rich_text = RICH_TEXT(widget);
+  bool_t yslidable = rich_text->yslidable;
   bool_t scrollable = rich_text_is_scollable(widget);
   return_value_if_fail(rich_text != NULL, RET_BAD_PARAMS);
 
   switch (type) {
     case EVT_POINTER_DOWN:
       rich_text->pressed = TRUE;
-      if (scrollable) {
+      if (scrollable && yslidable) {
         widget_grab(widget->parent, widget);
         rich_text_on_pointer_down(rich_text, (pointer_event_t*)e);
       }
       break;
     case EVT_POINTER_MOVE: {
-      if (scrollable) {
+      if (scrollable && yslidable) {
         pointer_event_t* evt = (pointer_event_t*)e;
         if (evt->pressed && rich_text->pressed) {
           rich_text_on_pointer_move(rich_text, evt);
@@ -385,7 +386,7 @@ static ret_t rich_text_on_event(widget_t* widget, event_t* e) {
     }
     case EVT_POINTER_UP: {
       rich_text->pressed = FALSE;
-      if (scrollable) {
+      if (scrollable && yslidable) {
         rich_text_on_pointer_up(rich_text, (pointer_event_t*)e);
         widget_ungrab(widget->parent, widget);
         ret = RET_STOP;
@@ -449,6 +450,9 @@ static ret_t rich_text_set_prop(widget_t* widget, const char* name, const value_
   } else if (tk_str_eq(name, WIDGET_PROP_YOFFSET)) {
     rich_text->yoffset = value_int(v);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_YSLIDABLE)) {
+    rich_text->yslidable = value_bool(v);
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_XOFFSET)) {
     return RET_OK;
   }
@@ -474,6 +478,8 @@ static ret_t rich_text_get_prop(widget_t* widget, const char* name, value_t* v) 
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_VIRTUAL_H)) {
     value_set_int(v, rich_text->content_h + 2 * rich_text->margin);
+  } else if (tk_str_eq(name, WIDGET_PROP_YSLIDABLE)) {
+    value_set_bool(v, rich_text->yslidable);
     return RET_OK;
   }
 
@@ -482,6 +488,15 @@ static ret_t rich_text_get_prop(widget_t* widget, const char* name, value_t* v) 
 
 static ret_t rich_text_on_destroy(widget_t* widget) {
   return rich_text_reset(widget);
+}
+
+ret_t rich_text_set_yslidable(widget_t* widget, bool_t yslidable) {
+  rich_text_t* rich_text = RICH_TEXT(widget);
+  return_value_if_fail(rich_text != NULL, RET_FAIL);
+
+  rich_text->yslidable = yslidable;
+
+  return RET_OK;
 }
 
 static const char* s_rich_text_clone_properties[] = {WIDGET_PROP_MARGIN, WIDGET_PROP_LINE_GAP,
@@ -498,7 +513,12 @@ TK_DECL_VTABLE(rich_text) = {.size = sizeof(rich_text_t),
                              .on_paint_self = rich_text_on_paint_self};
 
 widget_t* rich_text_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
-  return widget_create(parent, TK_REF_VTABLE(rich_text), x, y, w, h);
+  widget_t* widget = widget_create(parent, TK_REF_VTABLE(rich_text), x, y, w, h);
+  rich_text_t* rich_text = RICH_TEXT(widget);
+
+  rich_text->yslidable = TRUE;
+
+  return widget;
 }
 
 ret_t rich_text_set_text(widget_t* widget, const char* text) {
@@ -507,6 +527,9 @@ ret_t rich_text_set_text(widget_t* widget, const char* text) {
 
   wstr_set_utf8(&(widget->text), text);
   rich_text->need_reset = TRUE;
+  rich_text->line_gap = 5;
+  rich_text->margin = 2;
+
   return RET_OK;
 }
 

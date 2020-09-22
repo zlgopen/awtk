@@ -99,6 +99,13 @@ typedef struct _rich_text_t {
    * 边距。
    */
   uint32_t margin;
+  
+  /**
+   * @property {bool_t} yslidable
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 标识控件是否允许上下拖动。
+   */
+  bool_t yslidable;
 
   /**
    * @property {int32_t} yoffset
@@ -106,7 +113,7 @@ typedef struct _rich_text_t {
    * y偏移。
    */
   int32_t yoffset;
-
+  
   /**
    * @property {bool_t} need_reset
    * @annotation ["readable"]
@@ -150,6 +157,17 @@ widget_t* rich_text_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t rich_text_set_text(widget_t* widget, const char* text);
+
+/**
+ * @method rich_text_set_yslidable
+ * 设置是否允许y方向滑动。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {bool_t} yslidable 是否允许滑动。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t rich_text_set_yslidable(widget_t* widget, bool_t yslidable);
 
 /**
  * @method rich_text_cast

@@ -1,6 +1,9 @@
 # 最新动态
+* 2020/09/22
+  * rich text 增加 yslidable 属性。
+  * 完善 scroll bar。
 
-* 2020/09/19
+* 2020/09/21
   * 更新 dll 导出函数列表。
   * 增加 TK\_KEY\_LONG\_PRESS\_TIME，让触屏长按和键盘长按可以设置为不同的时间。
   * 修复 demo 资源的问题，方便 designer 打开。
