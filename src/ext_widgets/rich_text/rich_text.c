@@ -478,6 +478,7 @@ static ret_t rich_text_get_prop(widget_t* widget, const char* name, value_t* v) 
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_VIRTUAL_H)) {
     value_set_int(v, rich_text->content_h + 2 * rich_text->margin);
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_YSLIDABLE)) {
     value_set_bool(v, rich_text->yslidable);
     return RET_OK;
