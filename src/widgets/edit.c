@@ -813,12 +813,10 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
     case EVT_IM_ACTION: {
       if (tk_str_eq(edit->action_text, ACTION_TEXT_DONE)) {
         input_method_request(input_method(), NULL);
-        ret = RET_STOP;
       } else if (tk_str_eq(edit->action_text, ACTION_TEXT_NEXT)) {
         widget_focus_next(widget);
-        ret = RET_STOP;
       }
-      log_debug("action button\n");
+      log_debug("action button:%s\n", edit->action_text);
       break;
     }
     default:
