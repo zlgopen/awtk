@@ -38,7 +38,8 @@ ret_t image_base_on_event(widget_t* widget, event_t* e) {
     case EVT_POINTER_UP: {
       if (image->clickable) {
         pointer_event_t evt = *(pointer_event_t*)e;
-        pointer_event_init(&evt, EVT_CLICK, widget, evt.x, evt.y);
+        evt.e = event_init(EVT_CLICK, widget);
+        evt.e.size = sizeof(pointer_event_t);
         widget_dispatch(widget, (event_t*)&evt);
       }
 

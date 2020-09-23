@@ -47,7 +47,11 @@ static ret_t button_on_repeat(const timer_info_t* info) {
   widget = WIDGET(info->ctx);
   return_value_if_fail(button != NULL && widget != NULL, RET_REMOVE);
 
-  pointer_event_init(&evt, EVT_CLICK, widget, 0, 0);
+  evt.x = 0;
+  evt.y = 0;
+  evt.e = event_init(EVT_CLICK, widget);
+  evt.e.size = sizeof(pointer_event_t);
+
   button->repeat_nr++;
   widget_dispatch(widget, (event_t*)&evt);
 
@@ -71,7 +75,10 @@ static ret_t button_on_long_press(const timer_info_t* info) {
   widget_t* widget = WIDGET(info->ctx);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  pointer_event_init(&evt, EVT_LONG_PRESS, widget, 0, 0);
+  evt.x = 0;
+  evt.y = 0;
+  evt.e = event_init(EVT_LONG_PRESS, widget);
+  evt.e.size = sizeof(pointer_event_t);
 
   button_pointer_up_cleanup(widget);
   widget_dispatch(widget, (event_t*)&evt);
@@ -107,7 +114,8 @@ static ret_t button_on_event(widget_t* widget, event_t* e) {
     case EVT_POINTER_UP: {
       pointer_event_t evt = *(pointer_event_t*)e;
       if (button->pressed && widget_is_point_in(widget, evt.x, evt.y, FALSE)) {
-        pointer_event_init(&evt, EVT_CLICK, widget, evt.x, evt.y);
+        evt.e = event_init(EVT_CLICK, widget);
+        evt.e.size = sizeof(pointer_event_t);
         button_pointer_up_cleanup(widget);
         widget_dispatch(widget, (event_t*)&evt);
       } else {
