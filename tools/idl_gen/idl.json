@@ -50079,6 +50079,29 @@
           {
             "type": "widget_t*",
             "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "yslidable",
+            "desc": "是否允许滑动。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置是否允许y方向滑动。",
+        "name": "rich_text_set_yslidable",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
             "desc": "rich_text对象。"
           }
         ],
@@ -50113,6 +50136,19 @@
         "name": "margin",
         "desc": "边距。",
         "type": "uint32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "yslidable",
+        "desc": "标识控件是否允许上下拖动。",
+        "type": "bool_t",
         "annotation": {
           "set_prop": true,
           "get_prop": true,

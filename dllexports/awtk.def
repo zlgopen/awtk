@@ -1,2065 +1,2066 @@
 LIBRARY   awtk
 EXPORTS
-    event_cast @1
-    event_create @2
-    event_destroy @3
-    event_init @4
-    rect_create @5
-    rect_set @6
-    rect_cast @7
-    rect_destroy @8
-    rect_scale @9
-    rect_init @10
-    rect_merge @11
-    rect_contains @12
-    rect_fix @13
-    rect_intersect @14
-    emitter_create @15
-    emitter_init @16
-    emitter_dispatch @17
-    emitter_dispatch_simple_event @18
-    emitter_on @19
-    emitter_exist @20
-    emitter_on_with_tag @21
-    emitter_off @22
-    emitter_off_by_func @23
-    emitter_off_by_ctx @24
-    emitter_off_by_tag @25
-    emitter_set_on_destroy @26
-    emitter_find @27
-    emitter_enable @28
-    emitter_disable @29
-    emitter_size @30
-    emitter_deinit @31
-    emitter_destroy @32
-    emitter_cast @33
-    emitter_forward @34
-    bitmap_create @35
-    bitmap_create_ex @36
-    bitmap_get_bpp @37
-    bitmap_lock_buffer_for_read @38
-    bitmap_lock_buffer_for_write @39
-    bitmap_unlock_buffer @40
-    bitmap_get_pixel @41
-    bitmap_set_line_length @42
-    bitmap_get_line_length @43
-    bitmap_init_from_rgba @44
-    bitmap_init @45
-    bitmap_save_png @46
-    bitmap_mono_dump @47
-    bitmap_destroy @48
-    bitmap_get_bpp_of_format @49
-    value_set_bool @50
-    value_bool @51
-    value_set_int8 @52
-    value_int8 @53
-    value_set_uint8 @54
-    value_uint8 @55
-    value_set_int16 @56
-    value_int16 @57
-    value_set_uint16 @58
-    value_uint16 @59
-    value_set_int32 @60
-    value_int32 @61
-    value_set_uint32 @62
-    value_uint32 @63
-    value_set_int64 @64
-    value_int64 @65
-    value_set_uint64 @66
-    value_uint64 @67
-    value_set_pointer @68
-    value_pointer @69
-    value_set_float @70
-    value_float @71
-    value_set_float32 @72
-    value_float32 @73
-    value_set_double @74
-    value_double @75
-    value_set_str @76
-    value_dup_str @77
-    value_set_wstr @78
-    value_str @79
-    value_wstr @80
-    value_is_null @81
-    value_equal @82
-    value_int @83
-    value_set_int @84
-    value_set_object @85
-    value_object @86
-    value_set_token @87
-    value_token @88
-    value_set_sized_str @89
-    value_sized_str @90
-    value_set_binary_data @91
-    value_binary_data @92
-    value_set_ubjson @93
-    value_ubjson @94
-    value_copy @95
-    value_deep_copy @96
-    value_create @97
-    value_destroy @98
-    value_reset @99
-    value_cast @100
-    object_unref @101
-    object_ref @102
-    object_create @103
-    object_get_type @104
-    object_get_desc @105
-    object_get_size @106
-    object_is_collection @107
-    object_set_name @108
-    object_compare @109
-    object_get_prop @110
-    object_get_prop_str @111
-    object_get_prop_pointer @112
-    object_get_prop_object @113
-    object_get_prop_int @114
-    object_get_prop_bool @115
-    object_get_prop_float @116
-    object_remove_prop @117
-    object_set_prop @118
-    object_set_prop_str @119
-    object_set_prop_pointer @120
-    object_set_prop_object @121
-    object_set_prop_int @122
-    object_set_prop_bool @123
-    object_set_prop_float @124
-    object_copy_prop @125
-    object_foreach_prop @126
-    object_has_prop @127
-    object_eval @128
-    object_can_exec @129
-    object_exec @130
-    object_notify_changed @131
-    object_get_prop_by_path @132
-    object_get_prop_str_by_path @133
-    object_get_prop_pointer_by_path @134
-    object_get_prop_object_by_path @135
-    object_get_prop_int_by_path @136
-    object_get_prop_bool_by_path @137
-    object_get_prop_float_by_path @138
-    tk_init @139
-    tk_run @140
-    tk_quit @141
-    tk_get_pointer_x @142
-    tk_get_pointer_y @143
-    tk_is_pointer_pressed @144
-    tk_set_lcd_orientation @145
-    tk_init_assets @146
-    tk_init_internal @147
-    tk_deinit_internal @148
-    tk_exit @149
-    asset_loader_default_create @150
-    asset_loader_zip_create @151
-    asset_loader_zip_create_with_reader @152
-    children_layouter_factory @153
-    children_layouter_factory_set @154
-    children_layouter_factory_create @155
-    children_layouter_factory_register @156
-    children_layouter_factory_create_layouter @157
-    children_layouter_factory_destroy @158
-    children_layouter_to_string @159
-    children_layouter_layout @160
-    children_layouter_get_param @161
-    children_layouter_set_param @162
-    children_layouter_set_param_str @163
-    children_layouter_get_param_float @164
-    children_layouter_get_param_int @165
-    children_layouter_is_valid @166
-    children_layouter_destroy @167
-    children_layouter_create @168
-    children_layouter_clone @169
-    clip_board @170
-    clip_board_set @171
-    clip_board_clear @172
-    clip_board_set_data @173
-    clip_board_get_data @174
-    clip_board_destroy @175
-    clip_board_set_text @176
-    clip_board_get_text @177
-    data_reader_asset_create @178
-    dialog_highlighter_factory @179
-    dialog_highlighter_factory_set @180
-    dialog_highlighter_factory_create @181
-    dialog_highlighter_factory_register @182
-    dialog_highlighter_factory_create_highlighter @183
-    dialog_highlighter_factory_destroy @184
-    dialog_highlighter_create @185
-    dialog_highlighter_set_bg @186
-    dialog_highlighter_set_bg_clip_rect @187
-    dialog_highlighter_prepare @188
-    dialog_highlighter_prepare_ex @189
-    dialog_highlighter_draw @190
-    dialog_highlighter_is_dynamic @191
-    dialog_highlighter_destroy @192
-    xml_builder_get_attr @193
-    asset_type_find_by_value @194
-    find_item @195
-    find_item_by_value @196
-    keys_type_find @197
-    keys_type_find_by_value @198
-    event_recorder_player_start_record @199
-    event_recorder_player_start_play @200
-    event_recorder_player_stop_record @201
-    event_recorder_player_stop_play @202
-    tk_widgets_init @203
-    widget_animator_scroll_create @204
-    widget_animator_scroll_set_params @205
-    widget_animator_prop2_create @206
-    widget_animator_prop2_set_params @207
-    widget_animator_prop_create @208
-    widget_animator_prop_set_params @209
-    ubjson_writer_init @210
-    ubjson_writer_write_key @211
-    ubjson_writer_write_null @212
-    ubjson_writer_write_noop @213
-    ubjson_writer_write_true @214
-    ubjson_writer_write_false @215
-    ubjson_writer_write_int @216
-    ubjson_writer_write_int8 @217
-    ubjson_writer_write_uint8 @218
-    ubjson_writer_write_int16 @219
-    ubjson_writer_write_int32 @220
-    ubjson_writer_write_int64 @221
-    ubjson_writer_write_float32 @222
-    ubjson_writer_write_float64 @223
-    ubjson_writer_write_char @224
-    ubjson_writer_write_str @225
-    ubjson_writer_write_str_len @226
-    ubjson_writer_write_object @227
-    ubjson_writer_write_array_begin @228
-    ubjson_writer_write_array_end @229
-    ubjson_writer_write_object_begin @230
-    ubjson_writer_write_object_end @231
-    ubjson_writer_write_data @232
-    ubjson_writer_write_kv_object_begin @233
-    ubjson_writer_write_kv_object @234
-    ubjson_writer_write_kv_int @235
-    ubjson_writer_write_kv_int64 @236
-    ubjson_writer_write_kv_float @237
-    ubjson_writer_write_kv_double @238
-    ubjson_writer_write_kv_bool @239
-    ubjson_writer_write_kv_str @240
-    ubjson_writer_write_kv_str_len @241
-    ubjson_writer_write_kv_value @242
-    ubjson_parse @243
-    ubjson_to_object @244
-    ubjson_dump @245
-    wcs_dup @246
-    wcs_len @247
-    font_loader_load @248
-    font_manager @249
-    font_manager_set @250
-    font_manager_create @251
-    font_manager_init @252
-    font_manager_set_assets_manager @253
-    font_manager_add_font @254
-    font_manager_get_font @255
-    font_manager_unload_font @256
-    font_manager_shrink_cache @257
-    font_manager_unload_all @258
-    font_manager_deinit @259
-    font_manager_destroy @260
-    glyph_create @261
-    glyph_clone @262
-    glyph_destroy @263
-    font_get_vmetrics @264
-    font_match @265
-    font_get_glyph @266
-    font_shrink_cache @267
-    font_destroy @268
-    glyph_cache_init @269
-    glyph_cache_add @270
-    glyph_cache_lookup @271
-    glyph_cache_shrink @272
-    glyph_cache_deinit @273
-    graphic_buffer_create_for_bitmap @274
-    graphic_buffer_create_with_data @275
-    graphic_buffer_lock_for_read @276
-    graphic_buffer_lock_for_write @277
-    graphic_buffer_unlock @278
-    graphic_buffer_attach @279
-    graphic_buffer_is_valid_for @280
-    graphic_buffer_destroy @281
-    idle_add @282
-    idle_queue @283
-    idle_remove @284
-    idle_set_on_destroy @285
-    idle_dispatch @286
-    idle_count @287
-    wcs_cmp @288
-    image_loader_load @289
-    image_loader_register @290
-    image_loader_unregister @291
-    image_loader_load_image @292
-    image_manager @293
-    image_manager_set @294
-    image_manager_create @295
-    image_manager_init @296
-    image_manager_get_bitmap @297
-    image_manager_preload @298
-    image_manager_unload_unused @299
-    image_manager_unload_all @300
-    image_manager_unload_bitmap @301
-    image_manager_update_specific @302
-    image_manager_set_assets_manager @303
-    image_manager_deinit @304
-    image_manager_destroy @305
-    input_device_status_init @306
-    input_device_status_on_input_event @307
-    input_engine_create @308
-    input_engine_destroy @309
-    input_engine_reset_input @310
-    input_engine_input @311
-    input_engine_search @312
-    wcs_cpy @313
-    wcs_chr @314
-    wstr_init @315
-    wstr_set @316
-    wstr_clear @317
-    wstr_set_utf8 @318
-    wstr_get_utf8 @319
-    wstr_remove @320
-    wstr_insert @321
-    wstr_append @322
-    wstr_append_with_len @323
-    wstr_push @324
-    wstr_pop @325
-    wstr_push_int @326
-    wstr_equal @327
-    wstr_from_int @328
-    wstr_from_float @329
-    wstr_from_value @330
-    wstr_to_int @331
-    wstr_to_float @332
-    wstr_add_float @333
-    wstr_trim_float_zero @334
-    wstr_normalize_newline @335
-    wstr_count_char @336
-    wstr_reset @337
-    input_method_dispatch @338
-    input_method_dispatch_to_widget @339
-    input_method_on @340
-    input_method_off @341
-    input_method_request @342
-    input_method_update_action_button_info @343
-    input_method_dispatch_action @344
-    input_method_commit_text @345
-    input_method_set_lang @346
-    input_method_get_lang @347
-    input_method_commit_text_ex @348
-    input_method_dispatch_key @349
-    input_method_dispatch_keys @350
-    input_method_dispatch_preedit @351
-    input_method_dispatch_preedit_confirm @352
-    input_method_dispatch_preedit_abort @353
-    input_method_dispatch_candidates @354
-    input_method_dispatch_pre_candidates @355
-    input_method_create @356
-    input_method_destroy @357
-    input_method @358
-    input_method_set @359
-    widget_layout_self @360
-    widget_layout_children_default @361
-    widget_layout_floating_children @362
-    widget_get_children_for_layout @363
-    waitable_ring_buffer_create @364
-    waitable_ring_buffer_read @365
-    waitable_ring_buffer_write @366
-    waitable_ring_buffer_destroy @367
-    lcd_begin_frame @368
-    lcd_set_clip_rect @369
-    lcd_get_clip_rect @370
-    lcd_resize @371
-    lcd_set_global_alpha @372
-    lcd_set_text_color @373
-    lcd_set_stroke_color @374
-    lcd_set_fill_color @375
-    lcd_set_font_name @376
-    lcd_set_font_size @377
-    lcd_draw_vline @378
-    lcd_draw_hline @379
-    lcd_draw_points @380
-    lcd_get_point_color @381
-    lcd_fill_rect @382
-    lcd_stroke_rect @383
-    lcd_draw_glyph @384
-    lcd_measure_text @385
-    lcd_draw_text @386
-    lcd_draw_image @387
-    lcd_draw_image_matrix @388
-    lcd_get_vgcanvas @389
-    lcd_take_snapshot @390
-    lcd_get_desired_bitmap_format @391
-    lcd_get_width @392
-    lcd_get_height @393
-    lcd_is_swappable @394
-    lcd_end_frame @395
-    lcd_get_text_metrics @396
-    lcd_destroy @397
-    locale_info @398
-    locale_info_set @399
-    locale_info_create @400
-    locale_info_tr @401
-    locale_info_change @402
-    locale_info_on @403
-    locale_info_off @404
-    locale_info_set_assets_manager @405
-    locale_info_reload @406
-    locale_info_destroy @407
-    main_loop @408
-    main_loop_add_event_source @409
-    main_loop_remove_event_source @410
-    waitable_action_queue_create @411
-    waitable_action_queue_recv @412
-    waitable_action_queue_send @413
-    waitable_action_queue_destroy @414
-    self_layouter_factory @415
-    self_layouter_factory_set @416
-    self_layouter_factory_create @417
-    self_layouter_factory_register @418
-    self_layouter_factory_create_layouter @419
-    self_layouter_factory_destroy @420
-    self_layouter_to_string @421
-    self_layouter_layout @422
-    self_layouter_get_param @423
-    self_layouter_set_param @424
-    self_layouter_set_param_str @425
-    self_layouter_get_param_float @426
-    self_layouter_get_param_int @427
-    self_layouter_destroy @428
-    self_layouter_create @429
-    self_layouter_clone @430
-    shortcut_init @431
-    shortcut_init_with_str @432
-    shortcut_equal @433
-    shortcut_match @434
-    assets_manager @435
-    assets_manager_set @436
-    assets_manager_create @437
-    assets_manager_init @438
-    assets_manager_set_res_root @439
-    assets_manager_set_theme @440
-    assets_manager_set_system_info @441
-    assets_manager_set_locale_info @442
-    assets_manager_add @443
-    assets_manager_add_data @444
-    assets_manager_ref @445
-    assets_manager_unref @446
-    assets_manager_find_in_cache @447
-    assets_manager_load @448
-    assets_manager_preload @449
-    assets_manager_set_loader @450
-    assets_manager_set_custom_build_asset_dir @451
-    assets_manager_set_custom_load_asset @452
-    assets_manager_clear_cache @453
-    assets_manager_clear_all @454
-    assets_manager_deinit @455
-    assets_manager_destroy @456
-    assets_manager_load_file @457
-    style_factory_create_style @458
-    style_factory @459
-    style_factory_set @460
-    style_notify_widget_state_changed @461
-    style_is_valid @462
-    style_get_int @463
-    style_get_color @464
-    style_get_str @465
-    style_set @466
-    style_is_mutable @467
-    style_destroy @468
-    style_normalize_value @469
-    suggest_words_create @470
-    suggest_words_find @471
-    suggest_words_destroy @472
-    text_edit_create @473
-    text_edit_set_canvas @474
-    text_edit_click @475
-    text_edit_drag @476
-    text_edit_paste @477
-    text_edit_cut @478
-    text_edit_copy @479
-    text_edit_key_down @480
-    text_edit_key_up @481
-    text_edit_set_select @482
-    text_edit_select_all @483
-    text_edit_unselect @484
-    text_edit_set_cursor @485
-    text_edit_get_cursor @486
-    text_edit_get_state @487
-    text_edit_set_wrap_word @488
-    text_edit_invert_caret_visible @489
-    text_edit_set_caret_visible @490
-    text_edit_set_max_rows @491
-    text_edit_set_mask @492
-    text_edit_set_tips @493
-    text_edit_set_mask_char @494
-    text_edit_paint @495
-    text_edit_layout @496
-    text_edit_set_offset @497
-    text_edit_set_on_state_changed @498
-    text_edit_destroy @499
-    text_edit_preedit_clear @500
-    text_edit_preedit @501
-    text_edit_preedit_confirm @502
-    text_edit_preedit_abort @503
-    theme @504
-    theme_set @505
-    theme_create @506
-    theme_init @507
-    theme_find_style @508
-    theme_deinit @509
-    theme_destroy @510
-    timer_add @511
-    timer_queue @512
-    timer_remove @513
-    timer_reset @514
-    timer_modify @515
-    timer_set_on_destroy @516
-    timer_count @517
-    timer_next_time @518
-    ui_builder_on_widget_start @519
-    ui_builder_on_widget_prop @520
-    ui_builder_on_widget_prop_end @521
-    ui_builder_on_widget_end @522
-    ui_builder_on_start @523
-    ui_builder_on_end @524
-    ui_feedback_request @525
-    ui_feedback_init @526
-    ui_loader_load @527
-    ui_loader_load_widget @528
-    velocity_reset @529
-    velocity_update @530
-    vgcanvas_create @531
-    vgcanvas_cast @532
-    vgcanvas_reinit @533
-    vgcanvas_reset @534
-    vgcanvas_reset_curr_state @535
-    vgcanvas_flush @536
-    vgcanvas_begin_frame @537
-    vgcanvas_clear_rect @538
-    vgcanvas_begin_path @539
-    vgcanvas_move_to @540
-    vgcanvas_line_to @541
-    vgcanvas_quad_to @542
-    vgcanvas_bezier_to @543
-    vgcanvas_arc_to @544
-    vgcanvas_arc @545
-    vgcanvas_is_point_in_path @546
-    vgcanvas_rect @547
-    vgcanvas_rounded_rect @548
-    vgcanvas_ellipse @549
-    vgcanvas_close_path @550
-    vgcanvas_path_winding @551
-    vgcanvas_rotate @552
-    vgcanvas_scale @553
-    vgcanvas_translate @554
-    vgcanvas_transform @555
-    vgcanvas_set_transform @556
-    vgcanvas_clip_rect @557
-    vgcanvas_intersect_clip_rect @558
-    vgcanvas_fill @559
-    vgcanvas_stroke @560
-    vgcanvas_paint @561
-    vgcanvas_set_font @562
-    vgcanvas_set_font_size @563
-    vgcanvas_set_text_align @564
-    vgcanvas_set_text_baseline @565
-    vgcanvas_get_text_metrics @566
-    vgcanvas_fill_text @567
-    vgcanvas_measure_text @568
-    vgcanvas_draw_image @569
-    vgcanvas_draw_icon @570
-    vgcanvas_set_antialias @571
-    vgcanvas_set_global_alpha @572
-    vgcanvas_set_line_width @573
-    vgcanvas_set_fill_color @574
-    vgcanvas_set_fill_color_str @575
-    vgcanvas_set_fill_linear_gradient @576
-    vgcanvas_set_fill_radial_gradient @577
-    vgcanvas_set_stroke_color @578
-    vgcanvas_set_stroke_color_str @579
-    vgcanvas_set_stroke_linear_gradient @580
-    vgcanvas_set_stroke_radial_gradient @581
-    vgcanvas_set_line_cap @582
-    vgcanvas_set_line_join @583
-    vgcanvas_set_miter_limit @584
-    vgcanvas_save @585
-    vgcanvas_restore @586
-    vgcanvas_end_frame @587
-    vgcanvas_get_width @588
-    vgcanvas_get_height @589
-    vgcanvas_clear_cache @590
-    vgcanvas_destroy @591
-    widget_animator_create @592
-    widget_animator_manager @593
-    widget_animator_manager_set @594
-    widget_animator_manager_create @595
-    widget_animator_manager_init @596
-    widget_animator_manager_deinit @597
-    widget_animator_manager_destroy @598
-    widget_animator_manager_add @599
-    widget_animator_manager_remove @600
-    widget_animator_manager_count @601
-    widget_animator_manager_start @602
-    widget_animator_manager_stop @603
-    widget_animator_manager_pause @604
-    widget_animator_manager_find @605
-    widget_animator_manager_remove_all @606
-    widget_animator_manager_set_time_scale @607
-    widget_animator_manager_time_elapse @608
-    widget_animator_init @609
-    widget_animator_set_name @610
-    widget_animator_set_yoyo @611
-    widget_animator_set_repeat @612
-    widget_animator_set_reversed @613
-    widget_animator_set_time_scale @614
-    widget_animator_on @615
-    widget_animator_off @616
-    widget_animator_start @617
-    widget_animator_stop @618
-    widget_animator_pause @619
-    widget_animator_set_destroy_when_done @620
-    widget_animator_destroy @621
-    widget_invalidate_default @622
-    widget_on_event_default @623
-    widget_on_paint_self_default @624
-    widget_on_paint_children_default @625
-    widget_on_keydown_default @626
-    widget_on_keyup_default @627
-    widget_on_pointer_down_default @628
-    widget_on_pointer_move_default @629
-    widget_on_pointer_up_default @630
-    widget_on_copy_default @631
-    widget_get_prop_default @632
-    widget_set_prop_default @633
-    widget_find_target_default @634
-    widget_on_paint_null @635
-    widget_count_children @636
-    widget_get_child @637
-    widget_get_native_window @638
-    widget_index_of @639
-    widget_close_window @640
-    widget_move @641
-    widget_resize @642
-    widget_move_resize @643
-    widget_set_value @644
-    widget_animate_value_to @645
-    widget_add_value @646
-    widget_set_text @647
-    widget_use_style @648
-    widget_set_text_utf8 @649
-    widget_get_text_utf8 @650
-    widget_set_child_text_utf8 @651
-    widget_set_child_text_with_double @652
-    widget_set_child_text_with_int @653
-    widget_set_tr_text @654
-    widget_get_value @655
-    widget_get_text @656
-    widget_to_local @657
-    widget_to_global @658
-    widget_to_screen @659
-    widget_set_name @660
-    widget_set_theme @661
-    widget_set_pointer_cursor @662
-    widget_set_animation @663
-    widget_create_animator @664
-    widget_start_animator @665
-    widget_set_animator_time_scale @666
-    widget_pause_animator @667
-    widget_find_animator @668
-    widget_stop_animator @669
-    widget_destroy_animator @670
-    widget_set_enable @671
-    widget_set_feedback @672
-    widget_set_floating @673
-    widget_set_focused @674
-    widget_set_focusable @675
-    widget_set_state @676
-    widget_set_opacity @677
-    widget_set_dirty_rect_tolerance @678
-    widget_destroy_children @679
-    widget_add_child @680
-    widget_remove_child @681
-    widget_insert_child @682
-    widget_restack @683
-    widget_child @684
-    widget_lookup @685
-    widget_lookup_by_type @686
-    widget_set_visible @687
-    widget_set_visible_only @688
-    widget_set_sensitive @689
-    widget_on @690
-    widget_on_with_tag @691
-    widget_off @692
-    widget_child_on @693
-    widget_off_by_func @694
-    widget_off_by_ctx @695
-    widget_off_by_tag @696
-    widget_invalidate @697
-    widget_invalidate_force @698
-    widget_paint @699
-    widget_draw_text_in_rect @700
-    widget_dispatch @701
-    widget_dispatch_simple_event @702
-    widget_dispatch_recursive @703
-    widget_get_prop @704
-    widget_get_prop_default_value @705
-    widget_set_prop @706
-    widget_set_prop_str @707
-    widget_get_prop_str @708
-    widget_set_prop_pointer @709
-    widget_get_prop_pointer @710
-    widget_set_prop_int @711
-    widget_get_prop_int @712
-    widget_set_prop_bool @713
-    widget_get_prop_bool @714
-    widget_is_window_opened @715
-    widget_is_parent_of @716
-    widget_is_direct_parent_of @717
-    widget_is_window @718
-    widget_is_system_bar @719
-    widget_is_normal_window @720
-    widget_is_dialog @721
-    widget_is_popup @722
-    widget_is_opened_popup @723
-    widget_is_keyboard @724
-    widget_is_designing_window @725
-    widget_is_window_manager @726
-    widget_grab @727
-    widget_ungrab @728
-    widget_foreach @729
-    widget_get_window @730
-    widget_get_window_manager @731
-    widget_get_type @732
-    widget_clone @733
-    widget_equal @734
-    widget_add_timer @735
-    widget_remove_timer @736
-    widget_add_idle @737
-    widget_load_image @738
-    widget_unload_image @739
-    widget_load_asset @740
-    widget_unload_asset @741
-    widget_cast @742
-    widget_destroy @743
-    widget_destroy_async @744
-    widget_ref @745
-    widget_unref @746
-    widget_paint_helper @747
-    widget_draw_background @748
-    widget_stroke_border_rect @749
-    widget_fill_bg_rect @750
-    widget_fill_fg_rect @751
-    widget_prepare_text_style @752
-    widget_measure_text @753
-    widget_dispatch_event_to_target_recursive @754
-    widget_is_point_in @755
-    widget_dispatch_to_target @756
-    widget_dispatch_to_key_target @757
-    widget_find_target @758
-    widget_re_translate_text @759
-    widget_init @760
-    widget_create @761
-    widget_update_style @762
-    widget_update_style_recursive @763
-    widget_set_as_key_target @764
-    widget_focus_next @765
-    widget_focus_prev @766
-    widget_get_state_for_style @767
-    widget_layout @768
-    widget_layout_children @769
-    widget_set_self_layout @770
-    widget_set_children_layout @771
-    widget_set_self_layout_params @772
-    widget_set_style_int @773
-    widget_set_style_str @774
-    widget_set_style_color @775
-    widget_take_snapshot @776
-    widget_take_snapshot_rect @777
-    widget_get_canvas @778
-    widget_reset_canvas @779
-    widget_on_paint_background @780
-    widget_on_paint_self @781
-    widget_on_paint_children @782
-    widget_on_paint_border @783
-    widget_is_instance_of @784
-    widget_set_need_relayout_children @785
-    widget_ensure_visible_in_viewport @786
-    widget_focus_first @787
-    widget_get_locale_info @788
-    widget_get_image_manager @789
-    widget_get_assets_manager @790
-    widget_get_font_manager @791
-    widget_update_pointer_cursor @792
-    widget_begin_wait_pointer_cursor @793
-    widget_end_wait_pointer_cursor @794
-    widget_set_style @795
-    widget_calc_icon_text_rect @796
-    widget_to_xml @797
-    window_animator_factory @798
-    window_animator_factory_set @799
-    window_animator_factory_create @800
-    window_animator_factory_register @801
-    window_animator_factory_create_animator @802
-    window_animator_factory_destroy @803
-    window_animator_create_for_open @804
-    window_animator_create_for_close @805
-    window_animator_update @806
-    window_animator_begin_frame @807
-    window_animator_end_frame @808
-    window_animator_destroy @809
-    window_animator_create @810
-    encoding_convert @811
-    encoding_utf8_to_gbk @812
-    encoding_gbk_to_utf8 @813
-    app_conf_init_ini @814
-    app_conf_init_json @815
-    app_conf_init_ubjson @816
-    app_conf_init @817
-    app_conf_set_instance @818
-    app_conf_get_instance @819
-    app_conf_save @820
-    app_conf_reload @821
-    app_conf_on_changed @822
-    app_conf_off_changed @823
-    app_conf_off_changed_by_ctx @824
-    app_conf_deinit @825
-    app_conf_set @826
-    app_conf_get @827
-    app_conf_exist @828
-    app_conf_set_int @829
-    app_conf_set_int64 @830
-    app_conf_set_bool @831
-    app_conf_set_double @832
-    app_conf_set_str @833
-    app_conf_set_wstr @834
-    app_conf_get_int @835
-    app_conf_get_int64 @836
-    app_conf_get_bool @837
-    app_conf_get_double @838
-    app_conf_get_str @839
-    app_conf_get_wstr @840
-    app_conf_remove @841
-    tk_atoi @842
-    tk_atob @843
-    tk_atof @844
-    tk_str_cmp @845
-    tk_str_icmp @846
-    tk_watoi @847
-    tk_watoi_n @848
-    tk_watob @849
-    tk_watof @850
-    tk_skip_to_num @851
-    tk_itoa @852
-    tk_ftoa @853
-    tk_strtol @854
-    tk_strcpy @855
-    tk_strncpy @856
-    tk_strdup @857
-    tk_wstrdup @858
-    tk_strndup @859
-    tk_strlen @860
-    tk_str_append @861
-    tk_memset16 @862
-    tk_memset24 @863
-    tk_memset32 @864
-    tk_memcpy16 @865
-    tk_memcpy32 @866
-    tk_pixel_copy @867
-    tk_snprintf @868
-    tk_sscanf @869
-    filename_to_name @870
-    filename_to_name_ex @871
-    xml_file_expand_read @872
-    tk_str_copy @873
-    dummy_destroy @874
-    default_destroy @875
-    pointer_compare @876
-    compare_always_equal @877
-    tk_is_valid_name @878
-    tk_str_start_with @879
-    tk_under_score_to_camel @880
-    tk_pointer_to_int @881
-    tk_pointer_from_int @882
-    tk_str_toupper @883
-    tk_str_tolower @884
-    tk_wstr_dup_utf8 @885
-    tk_wstr_count_c @886
-    image_region_parse @887
-    tk_utf8_from_utf16 @888
-    tk_utf8_from_utf16_ex @889
-    tk_utf8_to_utf16 @890
-    conf_doc_load_json @891
-    conf_doc_save_json @892
-    conf_doc_create @893
-    conf_doc_create_node @894
-    conf_doc_destroy_node @895
-    conf_doc_append_sibling @896
-    conf_doc_append_child @897
-    conf_doc_remove_sibling @898
-    conf_doc_remove_child @899
-    conf_doc_remove_child_by_name @900
-    conf_doc_remove_children @901
-    conf_doc_set @902
-    conf_doc_set_int @903
-    conf_doc_set_bool @904
-    conf_doc_set_float @905
-    conf_doc_set_str @906
-    conf_doc_get @907
-    conf_doc_get_int @908
-    conf_doc_get_bool @909
-    conf_doc_get_float @910
-    conf_doc_get_str @911
-    conf_doc_remove @912
-    conf_doc_clear @913
-    conf_doc_move_up @914
-    conf_doc_move_down @915
-    conf_doc_exists @916
-    conf_doc_is_first @917
-    conf_doc_is_last @918
-    conf_doc_add_child @919
-    conf_doc_destroy @920
-    conf_node_get_name @921
-    conf_node_find_child @922
-    conf_node_find_sibling @923
-    conf_node_set_value @924
-    conf_node_get_value @925
-    conf_node_get_first_child @926
-    conf_node_set_first_child @927
-    tokenizer_init @928
-    tokenizer_init_ex @929
-    tokenizer_has_more @930
-    tokenizer_next @931
-    tokenizer_next_until @932
-    tokenizer_next_expr_until @933
-    tokenizer_next_int @934
-    tokenizer_next_float @935
-    tokenizer_deinit @936
-    dialog_highlighter_default_create @937
-    SDL_ShowCursor @938
-    SDL_WarpMouseInWindow @939
-    SDL_GetDefaultCursor @940
-    SDL_SetCursor @941
-    SDL_FreeCursor @942
-    SDL_CreateSystemCursor @943
-    SDL_GetMouseFocus @944
-    timer_manager @945
-    timer_manager_set @946
-    timer_manager_create @947
-    timer_manager_init @948
-    timer_manager_deinit @949
-    timer_manager_destroy @950
-    timer_manager_add @951
-    timer_manager_remove @952
-    timer_manager_reset @953
-    timer_manager_find @954
-    timer_manager_count @955
-    timer_manager_next_time @956
-    timer_manager_append @957
-    time_now_s @958
-    time_now_ms @959
-    tk_thread_create @960
-    tk_thread_set_name @961
-    tk_thread_set_stack_size @962
-    tk_thread_set_priority @963
-    tk_thread_start @964
-    tk_thread_join @965
-    tk_thread_get_args @966
-    tk_thread_destroy @967
-    tk_thread_self @968
-    str_init @969
-    str_extend @970
-    str_eq @971
-    str_set @972
-    str_clear @973
-    str_set_with_len @974
-    str_append @975
-    str_append_more @976
-    str_append_with_len @977
-    str_insert @978
-    str_insert_with_len @979
-    str_remove @980
-    str_append_char @981
-    str_append_int @982
-    str_append_double @983
-    str_append_json_str @984
-    str_append_json_int_pair @985
-    str_append_json_str_pair @986
-    str_append_json_double_pair @987
-    str_append_json_bool_pair @988
-    str_pop @989
-    str_unescape @990
-    str_decode_xml_entity @991
-    str_decode_xml_entity_with_len @992
-    str_from_int @993
-    str_from_float @994
-    str_from_value @995
-    str_from_wstr @996
-    str_from_wstr_with_len @997
-    str_to_int @998
-    str_to_float @999
-    str_end_with @1000
-    str_start_with @1001
-    str_trim @1002
-    str_trim_left @1003
-    str_trim_right @1004
-    str_replace @1005
-    str_to_lower @1006
-    str_to_upper @1007
-    str_expand_vars @1008
-    str_reset @1009
-    tk_ext_widgets_init @1010
-    str_str_value @1011
-    str_str_name @1012
-    tk_socketpair @1013
-    file_browser_create @1014
-    file_browser_set_cwd @1015
-    file_browser_create_dir @1016
-    file_browser_create_file @1017
-    file_browser_remove @1018
-    file_browser_enter @1019
-    file_browser_up @1020
-    file_browser_refresh @1021
-    file_browser_set_filter @1022
-    file_browser_set_compare @1023
-    file_browser_sort_by_name @1024
-    file_browser_sort_by_type @1025
-    file_browser_sort_by_size @1026
-    file_browser_sort_by_mtime @1027
-    file_browser_get_items_nr @1028
-    file_browser_get_item @1029
-    file_browser_set_ignore_hidden_files @1030
-    file_browser_destroy @1031
-    tcp_listen @1032
-    tcp_accept @1033
-    tcp_connect @1034
-    udp_listen @1035
-    udp_connect @1036
-    socket_init @1037
-    socket_deinit @1038
-    socket_close @1039
-    socket_bind @1040
-    socket_wait_for_data @1041
-    socket_set_blocking @1042
-    socket_resolve @1043
-    slist_create @1044
-    slist_init @1045
-    slist_find @1046
-    slist_remove @1047
-    slist_remove_all @1048
-    slist_append @1049
-    slist_prepend @1050
-    slist_foreach @1051
-    slist_tail_pop @1052
-    slist_head_pop @1053
-    slist_size @1054
-    slist_count @1055
-    slist_deinit @1056
-    slist_destroy @1057
-    tk_semaphore_create @1058
-    tk_semaphore_wait @1059
-    tk_semaphore_post @1060
-    tk_semaphore_destroy @1061
-    rom_fopen @1062
-    rom_fopen_buff @1063
-    rom_ftell @1064
-    rom_feof @1065
-    rom_fseek @1066
-    rom_fread @1067
-    rom_fwrite @1068
-    rom_fclose @1069
-    ring_buffer_create @1070
-    ring_buffer_is_full @1071
-    ring_buffer_is_empty @1072
-    ring_buffer_size @1073
-    ring_buffer_free_size @1074
-    ring_buffer_capacity @1075
-    ring_buffer_read @1076
-    ring_buffer_peek @1077
-    ring_buffer_write @1078
-    ring_buffer_read_len @1079
-    ring_buffer_skip @1080
-    ring_buffer_write_len @1081
-    ring_buffer_reset @1082
-    ring_buffer_set_read_cursor @1083
-    ring_buffer_set_read_cursor_delta @1084
-    ring_buffer_set_write_cursor @1085
-    ring_buffer_set_write_cursor_delta @1086
-    ring_buffer_ensure_write_space @1087
-    ring_buffer_destroy @1088
-    bidi_init @1089
-    bidi_type_from_name @1090
-    bidi_log2vis @1091
-    bidi_deinit @1092
-    xml_parser_create @1093
-    xml_parser_set_builder @1094
-    xml_parser_set_trim_text @1095
-    xml_parser_parse @1096
-    xml_parser_parse_file @1097
-    xml_parser_destroy @1098
-    qaction_create @1099
-    qaction_set_on_event @1100
-    qaction_exec @1101
-    qaction_notify @1102
-    qaction_destroy @1103
-    get_time_ms64 @1104
-    sleep_ms @1105
-    platform_prepare @1106
-    path_basename @1107
-    path_extname @1108
-    path_dirname @1109
-    path_normalize @1110
-    path_abs @1111
-    path_is_abs @1112
-    path_build @1113
-    path_replace_basename @1114
-    path_replace_extname @1115
-    path_cwd @1116
-    path_exe @1117
-    path_app_root @1118
-    path_exist @1119
-    named_value_create @1120
-    named_value_init @1121
-    named_value_cast @1122
-    named_value_set_name @1123
-    named_value_set_value @1124
-    named_value_get_value @1125
-    named_value_deinit @1126
-    named_value_destroy @1127
-    tk_mutex_create @1128
-    tk_mutex_lock @1129
-    tk_mutex_try_lock @1130
-    tk_mutex_unlock @1131
-    tk_mutex_destroy @1132
-    tk_mutex_nest_create @1133
-    tk_mutex_nest_lock @1134
-    tk_mutex_nest_try_lock @1135
-    tk_mutex_nest_unlock @1136
-    tk_mutex_nest_destroy @1137
-    tk_alloc @1138
-    tk_calloc @1139
-    tk_realloc @1140
-    tk_free @1141
-    tk_mem_dump @1142
-    tk_mem_is_valid_addr @1143
-    matrix_init @1144
-    matrix_identity @1145
-    matrix_invert @1146
-    matrix_set @1147
-    matrix_multiply @1148
-    matrix_translate @1149
-    matrix_scale @1150
-    matrix_rotate @1151
-    matrix_transform_point @1152
-    log_get_log_level @1153
-    log_set_log_level @1154
-    int_str_value @1155
-    int_str_name @1156
-    idle_manager @1157
-    idle_manager_set @1158
-    idle_manager_create @1159
-    idle_manager_init @1160
-    idle_manager_deinit @1161
-    idle_manager_destroy @1162
-    idle_manager_count @1163
-    idle_manager_remove_all @1164
-    idle_manager_remove @1165
-    idle_manager_append @1166
-    idle_manager_find @1167
-    idle_manager_add @1168
-    func_call_parser_init @1169
-    func_call_parser_parse @1170
-    func_call_parser_deinit @1171
-    func_call_parse @1172
-    fs_open_file @1173
-    fs_remove_file @1174
-    fs_file_exist @1175
-    fs_file_rename @1176
-    fs_open_dir @1177
-    fs_create_dir @1178
-    fs_remove_dir @1179
-    fs_dir_exist @1180
-    fs_dir_rename @1181
-    fs_get_file_size @1182
-    fs_get_disk_info @1183
-    fs_stat @1184
-    fs_get_exe @1185
-    fs_get_user_storage_path @1186
-    fs_get_cwd @1187
-    os_fs @1188
-    file_exist @1189
-    file_remove @1190
-    file_get_size @1191
-    file_read @1192
-    file_read_part @1193
-    file_write @1194
-    fs_dir_rewind @1195
-    fs_dir_read @1196
-    fs_dir_close @1197
-    fs_file_read @1198
-    fs_file_write @1199
-    fs_file_printf @1200
-    fs_file_seek @1201
-    fs_file_truncate @1202
-    fs_file_close @1203
-    fs_file_sync @1204
-    fs_file_stat @1205
-    fs_file_eof @1206
-    fs_file_tell @1207
-    fs_file_size @1208
-    eval_execute @1209
-    tk_expr_eval @1210
-    tk_expr_eval_str @1211
-    eval_default_hooks @1212
-    eval_result_to_string @1213
-    expr_value_init @1214
-    expr_value_clear @1215
-    expr_value_get_number @1216
-    expr_value_set_number @1217
-    expr_value_get_string @1218
-    expr_value_set_string @1219
-    canvas_offline_create @1220
-    canvas_offline_clear_canvas @1221
-    canvas_offline_begin_draw @1222
-    canvas_offline_end_draw @1223
-    canvas_offline_get_bitmap @1224
-    canvas_offline_bitmap_move_to_new_bitmap @1225
-    canvas_offline_flush_bitmap @1226
-    canvas_offline_destroy @1227
-    event_source_manager_init @1228
-    event_source_manager_deinit @1229
-    event_source_manager_get_wakeup_time @1230
-    event_source_manager_dispatch @1231
-    event_source_manager_add @1232
-    event_source_manager_remove @1233
-    event_source_manager_remove_by_tag @1234
-    event_source_manager_destroy @1235
-    canvas_init @1236
-    canvas_get_width @1237
-    canvas_get_height @1238
-    canvas_get_clip_rect @1239
-    canvas_set_clip_rect @1240
-    canvas_set_clip_rect_ex @1241
-    canvas_set_fill_color @1242
-    canvas_set_text_color @1243
-    canvas_set_stroke_color @1244
-    canvas_set_fill_color_str @1245
-    canvas_set_text_color_str @1246
-    canvas_set_stroke_color_str @1247
-    canvas_set_global_alpha @1248
-    canvas_translate @1249
-    canvas_untranslate @1250
-    canvas_draw_vline @1251
-    canvas_draw_hline @1252
-    canvas_draw_points @1253
-    canvas_fill_rect @1254
-    canvas_stroke_rect @1255
-    canvas_set_font @1256
-    canvas_set_text_align @1257
-    canvas_measure_text @1258
-    canvas_get_font_height @1259
-    canvas_measure_utf8 @1260
-    canvas_draw_text @1261
-    canvas_draw_utf8 @1262
-    canvas_draw_text_in_rect @1263
-    canvas_draw_text_bidi_in_rect @1264
-    canvas_draw_utf8_in_rect @1265
-    canvas_draw_icon @1266
-    canvas_draw_image @1267
-    canvas_draw_image_ex @1268
-    canvas_draw_image_ex2 @1269
-    canvas_get_vgcanvas @1270
-    canvas_cast @1271
-    canvas_reset @1272
-    canvas_draw_image_at @1273
-    canvas_draw_line @1274
-    canvas_set_font_manager @1275
-    canvas_set_assets_manager @1276
-    canvas_get_text_metrics @1277
-    canvas_begin_frame @1278
-    canvas_fill_rounded_rect @1279
-    canvas_fill_rounded_rect_ex @1280
-    canvas_stroke_rounded_rect @1281
-    canvas_stroke_rounded_rect_ex @1282
-    canvas_end_frame @1283
-    easing_get @1284
-    tk_dl_open @1285
-    tk_dl_sym @1286
-    tk_dl_close @1287
-    date_time_create @1288
-    date_time_init @1289
-    date_time_set @1290
-    date_time_from_time @1291
-    date_time_is_leap @1292
-    date_time_get_days @1293
-    date_time_get_wday @1294
-    date_time_get_month_name @1295
-    date_time_get_wday_name @1296
-    date_time_destroy @1297
-    date_time_global_init_ex @1298
-    data_writer_write @1299
-    data_writer_destroy @1300
-    data_writer_factory @1301
-    data_writer_factory_set @1302
-    data_writer_factory_create @1303
-    data_writer_factory_register @1304
-    data_writer_factory_create_writer @1305
-    data_writer_factory_destroy @1306
-    data_writer_file_create @1307
-    data_reader_read @1308
-    data_reader_get_size @1309
-    data_reader_destroy @1310
-    data_reader_read_all @1311
-    data_reader_factory @1312
-    data_reader_factory_set @1313
-    data_reader_factory_create @1314
-    data_reader_factory_register @1315
-    data_reader_factory_create_reader @1316
-    data_reader_factory_destroy @1317
-    data_reader_file_create @1318
-    darray_create @1319
-    darray_init @1320
-    darray_find @1321
-    darray_bsearch_index @1322
-    darray_bsearch @1323
-    darray_get @1324
-    darray_find_index @1325
-    darray_remove @1326
-    darray_remove_index @1327
-    darray_remove_all @1328
-    darray_sort @1329
-    darray_find_all @1330
-    darray_pop @1331
-    darray_tail @1332
-    darray_head @1333
-    darray_push @1334
-    darray_count @1335
-    darray_clear @1336
-    darray_foreach @1337
-    darray_deinit @1338
-    darray_destroy @1339
-    tk_cond_create @1340
-    tk_cond_wait @1341
-    tk_cond_wait_timeout @1342
-    tk_cond_signal @1343
-    tk_cond_destroy @1344
-    asset_loader_create @1345
-    asset_loader_load @1346
-    asset_loader_exist @1347
-    asset_loader_destroy @1348
-    tk_cond_var_create @1349
-    tk_cond_var_wait @1350
-    tk_cond_var_awake @1351
-    tk_cond_var_destroy @1352
-    compressor_compress @1353
-    compressor_uncompress @1354
-    compressor_destroy @1355
-    color_init @1356
-    color_create @1357
-    color_from_str @1358
-    color_r @1359
-    color_g @1360
-    color_b @1361
-    color_a @1362
-    color_cast @1363
-    color_destroy @1364
-    color_hex_str @1365
-    color_rgba_str @1366
-    color_parse @1367
-    rbuffer_init @1368
-    rbuffer_has_more @1369
-    rbuffer_skip @1370
-    rbuffer_read_uint8 @1371
-    rbuffer_read_uint16 @1372
-    rbuffer_read_uint32 @1373
-    rbuffer_read_float @1374
-    rbuffer_read_binary @1375
-    rbuffer_read_string @1376
-    rbuffer_peek_uint8 @1377
-    rbuffer_peek_uint16 @1378
-    rbuffer_peek_uint32 @1379
-    wbuffer_init @1380
-    wbuffer_init_extendable @1381
-    wbuffer_extend_capacity @1382
-    wbuffer_deinit @1383
-    wbuffer_skip @1384
-    wbuffer_write_uint8 @1385
-    wbuffer_write_uint16 @1386
-    wbuffer_write_uint32 @1387
-    wbuffer_write_float @1388
-    wbuffer_write_binary @1389
-    wbuffer_write_string @1390
-    wbuffer_has_room @1391
-    async_call @1392
-    async_call_init @1393
-    async_call_deinit @1394
-    asset_info_create @1395
-    asset_info_destroy @1396
-    asset_info_unref @1397
-    asset_info_ref @1398
-    action_thread_create @1399
-    action_thread_create_with_queue @1400
-    action_thread_exec @1401
-    action_thread_set_on_idle @1402
-    action_thread_set_on_quit @1403
-    action_thread_destroy @1404
-    action_thread_pool_create @1405
-    action_thread_pool_exec @1406
-    action_thread_pool_destroy @1407
-    bsvg_init @1408
-    bsvg_to_svg @1409
-    svg_to_bsvg @1410
-    action_queue_create @1411
-    action_queue_recv @1412
-    action_queue_send @1413
-    action_queue_destroy @1414
-    tk_ostream_serial_create @1415
-    guage_pointer_create @1416
-    guage_pointer_cast @1417
-    guage_pointer_set_angle @1418
-    guage_pointer_set_image @1419
-    guage_pointer_set_anchor @1420
-    lcd_mem_rgba8888_create @1421
-    lcd_mem_rgba8888_create_single_fb @1422
-    lcd_mem_rgba8888_create_double_fb @1423
-    lcd_mem_rgba8888_create_three_fb @1424
-    wheel_event_cast @1425
-    wheel_event_init @1426
-    view_create @1427
-    view_set_default_focused_child @1428
-    view_cast @1429
-    tab_control_create @1430
-    tab_control_cast @1431
-    tab_button_create @1432
-    tab_button_cast @1433
-    tab_button_set_value @1434
-    tab_button_set_icon @1435
-    tab_button_set_active_icon @1436
-    tab_button_set_load_ui @1437
-    tab_button_group_create @1438
-    tab_button_group_set_compact @1439
-    tab_button_group_set_scrollable @1440
-    tab_button_group_cast @1441
-    slider_create @1442
-    slider_cast @1443
-    slider_set_value @1444
-    slider_set_min @1445
-    slider_set_max @1446
-    slider_set_step @1447
-    slider_set_bar_size @1448
-    slider_set_vertical @1449
-    slider_set_value_internal @1450
-    row_create @1451
-    row_cast @1452
-    progress_bar_create @1453
-    progress_bar_cast @1454
-    progress_bar_set_value @1455
-    progress_bar_set_max @1456
-    progress_bar_set_vertical @1457
-    progress_bar_set_show_text @1458
-    progress_bar_get_percent @1459
-    pages_create @1460
-    pages_cast @1461
-    pages_set_active @1462
-    pages_set_active_by_name @1463
-    label_create @1464
-    label_set_length @1465
-    label_resize_to_content @1466
-    label_cast @1467
-    group_box_create @1468
-    group_box_cast @1469
-    grid_create @1470
-    grid_cast @1471
-    grid_item_create @1472
-    grid_item_cast @1473
-    edit_create @1474
-    edit_cast @1475
-    edit_get_int @1476
-    edit_get_double @1477
-    edit_set_int @1478
-    edit_set_double @1479
-    edit_set_text_limit @1480
-    edit_set_int_limit @1481
-    edit_set_float_limit @1482
-    edit_set_readonly @1483
-    edit_set_cancelable @1484
-    edit_set_auto_fix @1485
-    edit_set_select_none_when_focused @1486
-    edit_set_open_im_when_focused @1487
-    edit_set_close_im_when_blured @1488
-    edit_set_input_type @1489
-    edit_set_action_text @1490
-    edit_set_tips @1491
-    edit_set_tr_tips @1492
-    edit_set_keyboard @1493
-    edit_set_password_visible @1494
-    edit_set_focus @1495
-    edit_set_cursor @1496
-    edit_set_is_valid_char @1497
-    edit_set_is_valid_value @1498
-    edit_set_fix_value @1499
-    edit_set_inc_value @1500
-    edit_set_dec_value @1501
-    edit_set_pre_input @1502
-    dragger_create @1503
-    dragger_cast @1504
-    dragger_set_range @1505
-    digit_clock_create @1506
-    digit_clock_cast @1507
-    digit_clock_set_format @1508
-    dialog_title_create @1509
-    dialog_title_cast @1510
-    dialog_client_create @1511
-    dialog_client_cast @1512
-    combo_box_item_create @1513
-    combo_box_item_cast @1514
-    combo_box_item_set_checked @1515
-    combo_box_item_set_value @1516
-    lcd_mono_create @1517
-    lcd_mem_special_create @1518
-    lcd_mem_rgb888_create @1519
-    lcd_mem_rgb888_create_single_fb @1520
-    lcd_mem_rgb888_create_double_fb @1521
-    lcd_mem_rgb888_create_three_fb @1522
-    lcd_mem_rgb565_create @1523
-    lcd_mem_rgb565_create_single_fb @1524
-    lcd_mem_rgb565_create_double_fb @1525
-    lcd_mem_rgb565_create_three_fb @1526
-    lcd_mem_bgra8888_create @1527
-    lcd_mem_bgra8888_create_single_fb @1528
-    lcd_mem_bgra8888_create_double_fb @1529
-    lcd_mem_bgra8888_create_three_fb @1530
-    lcd_mem_bgr888_create @1531
-    lcd_mem_bgr888_create_single_fb @1532
-    lcd_mem_bgr888_create_double_fb @1533
-    lcd_mem_bgr888_create_three_fb @1534
-    lcd_mem_bgr565_create @1535
-    lcd_mem_bgr565_create_single_fb @1536
-    lcd_mem_bgr565_create_double_fb @1537
-    lcd_mem_bgr565_create_three_fb @1538
-    self_layouter_menu_create @1539
-    self_layouter_default_create @1540
-    children_layouter_default_create @1541
-    input_method_sdl_create @1542
-    input_method_null_create @1543
-    event_source_fd_create @1544
-    event_source_idle_create @1545
-    event_source_manager_default_create @1546
-    input_method_default_create @1547
-    event_source_timer_create @1548
-    event_source_get_fd @1549
-    event_source_dispatch @1550
-    event_source_set_tag @1551
-    event_source_check @1552
-    event_source_get_wakeup_time @1553
-    prop_change_event_cast @1554
-    prop_change_event_init @1555
-    progress_event_cast @1556
-    progress_event_init @1557
-    done_event_cast @1558
-    done_event_init @1559
-    error_event_cast @1560
-    error_event_init @1561
-    cmd_exec_event_cast @1562
-    cmd_exec_event_init @1563
-    image_loader_stb @1564
-    stb_load_image @1565
-    font_loader_stb @1566
-    font_stb_create @1567
-    font_loader_ft @1568
-    font_loader_bitmap @1569
-    time_clock_create @1570
-    time_clock_cast @1571
-    time_clock_set_hour @1572
-    time_clock_set_minute @1573
-    time_clock_set_second @1574
-    time_clock_set_hour_image @1575
-    time_clock_set_minute_image @1576
-    time_clock_set_second_image @1577
-    time_clock_set_bg_image @1578
-    time_clock_set_image @1579
-    time_clock_set_hour_anchor @1580
-    time_clock_set_minute_anchor @1581
-    time_clock_set_second_anchor @1582
-    text_selector_create @1583
-    text_selector_cast @1584
-    text_selector_reset_options @1585
-    text_selector_count_options @1586
-    text_selector_append_option @1587
-    text_selector_set_options @1588
-    text_selector_set_range_options @1589
-    text_selector_get_option @1590
-    text_selector_get_value @1591
-    text_selector_set_value @1592
-    text_selector_get_text @1593
-    text_selector_set_text @1594
-    text_selector_set_selected_index @1595
-    text_selector_set_visible_nr @1596
-    switch_create @1597
-    switch_set_value @1598
-    switch_cast @1599
-    column_create @1600
-    column_cast @1601
-    color_tile_create @1602
-    color_tile_cast @1603
-    color_tile_set_bg_color @1604
-    color_tile_set_border_color @1605
-    color_tile_set_value @1606
-    slide_view_create @1607
-    slide_view_cast @1608
-    slide_view_set_auto_play @1609
-    slide_view_set_active @1610
-    slide_view_set_vertical @1611
-    slide_view_set_anim_hint @1612
-    slide_view_set_loop @1613
-    clip_view_create @1614
-    clip_view_cast @1615
-    check_button_create @1616
-    check_button_create_radio @1617
-    check_button_set_value @1618
-    check_button_get_checked_button @1619
-    check_button_cast @1620
-    slide_indicator_create @1621
-    slide_indicator_create_linear @1622
-    slide_indicator_create_arc @1623
-    slide_indicator_cast @1624
-    slide_indicator_set_value @1625
-    slide_indicator_set_max @1626
-    slide_indicator_set_default_paint @1627
-    slide_indicator_set_auto_hide @1628
-    slide_indicator_set_margin @1629
-    slide_indicator_set_spacing @1630
-    slide_indicator_set_size @1631
-    slide_indicator_set_anchor @1632
-    slide_indicator_set_indicated_target @1633
-    slide_menu_create @1634
-    slide_menu_cast @1635
-    slide_menu_set_value @1636
-    slide_menu_set_align_v @1637
-    slide_menu_set_min_scale @1638
-    scroll_view_create @1639
-    scroll_view_cast @1640
-    scroll_view_set_virtual_w @1641
-    scroll_view_set_virtual_h @1642
-    scroll_view_set_xslidable @1643
-    scroll_view_set_yslidable @1644
-    scroll_view_set_offset @1645
-    scroll_view_set_speed_scale @1646
-    scroll_view_scroll_to @1647
-    scroll_view_scroll_delta_to @1648
-    scroll_bar_create @1649
-    scroll_bar_cast @1650
-    scroll_bar_create_mobile @1651
-    scroll_bar_create_desktop @1652
-    scroll_bar_set_params @1653
-    scroll_bar_scroll_to @1654
-    scroll_bar_set_value @1655
-    scroll_bar_add_delta @1656
-    scroll_bar_scroll_delta @1657
-    scroll_bar_set_value_only @1658
-    scroll_bar_is_mobile @1659
-    list_view_create @1660
-    list_view_set_item_height @1661
-    list_view_set_default_item_height @1662
-    list_view_set_auto_hide_scroll_bar @1663
-    list_view_cast @1664
-    list_view_reinit @1665
-    list_view_h_create @1666
-    list_view_h_set_item_width @1667
-    list_view_h_set_spacing @1668
-    list_view_h_cast @1669
-    list_item_create @1670
-    list_item_cast @1671
-    children_layouter_list_view_create @1672
-    hscroll_label_create @1673
-    hscroll_label_set_lull @1674
-    hscroll_label_set_duration @1675
-    hscroll_label_set_only_focus @1676
-    hscroll_label_set_only_parent_focus @1677
-    hscroll_label_set_loop @1678
-    hscroll_label_set_yoyo @1679
-    hscroll_label_set_ellipses @1680
-    hscroll_label_set_xoffset @1681
-    hscroll_label_start @1682
-    hscroll_label_stop @1683
-    hscroll_label_cast @1684
-    button_create @1685
-    button_cast @1686
-    button_set_repeat @1687
-    button_set_long_press_time @1688
-    button_set_enable_long_press @1689
-    button_group_create @1690
-    button_group_cast @1691
-    app_bar_create @1692
-    app_bar_cast @1693
-    orientation_event_cast @1694
-    orientation_event_init @1695
-    rich_text_create @1696
-    rich_text_set_text @1697
-    rich_text_cast @1698
-    rich_text_view_create @1699
-    rich_text_view_cast @1700
-    progress_circle_create @1701
-    progress_circle_cast @1702
-    progress_circle_set_value @1703
-    progress_circle_set_max @1704
-    progress_circle_set_line_width @1705
-    progress_circle_set_start_angle @1706
-    progress_circle_set_unit @1707
-    progress_circle_set_line_cap @1708
-    progress_circle_set_show_text @1709
-    progress_circle_set_counter_clock_wise @1710
-    value_change_event_cast @1711
-    value_change_event_init @1712
-    pointer_event_cast @1713
-    pointer_event_init @1714
-    mledit_create @1715
-    mledit_set_readonly @1716
-    mledit_set_cancelable @1717
-    mledit_set_focus @1718
-    mledit_set_wrap_word @1719
-    mledit_set_max_lines @1720
-    mledit_set_tips @1721
-    mledit_set_tr_tips @1722
-    mledit_set_keyboard @1723
-    mledit_set_cursor @1724
-    mledit_set_scroll_line @1725
-    mledit_cast @1726
-    line_number_create @1727
-    line_number_set_top_margin @1728
-    line_number_set_bottom_margin @1729
-    line_number_set_line_height @1730
-    line_number_set_yoffset @1731
-    line_number_cast @1732
-    lang_indicator_create @1733
-    lang_indicator_set_image @1734
-    lang_indicator_cast @1735
-    ui_xml_writer_init @1736
-    candidates_create @1737
-    candidates_cast @1738
-    candidates_set_pre @1739
-    candidates_set_select_by_num @1740
-    candidates_set_auto_hide @1741
-    candidates_set_button_style @1742
-    image_value_create @1743
-    image_value_set_image @1744
-    image_value_set_format @1745
-    image_value_set_click_add_delta @1746
-    image_value_set_value @1747
-    image_value_set_min @1748
-    image_value_set_max @1749
-    image_value_cast @1750
-    image_animation_create @1751
-    image_animation_set_loop @1752
-    image_animation_set_image @1753
-    image_animation_set_interval @1754
-    image_animation_set_delay @1755
-    image_animation_set_auto_play @1756
-    image_animation_set_sequence @1757
-    image_animation_set_range_sequence @1758
-    image_animation_play @1759
-    image_animation_stop @1760
-    image_animation_pause @1761
-    image_animation_next @1762
-    image_animation_set_format @1763
-    image_animation_set_unload_after_paint @1764
-    image_animation_cast @1765
-    guage_create @1766
-    guage_cast @1767
-    guage_set_image @1768
-    guage_set_draw_type @1769
-    xml_ui_loader @1770
-    default_ui_loader @1771
-    file_chooser_create @1772
-    file_chooser_set_init_dir @1773
-    file_chooser_set_filter @1774
-    file_chooser_cast @1775
-    file_chooser_choose_file_for_save @1776
-    file_chooser_choose_file_for_open @1777
-    file_chooser_choose_folder @1778
-    file_chooser_get_dir @1779
-    file_chooser_get_filename @1780
-    file_chooser_is_aborted @1781
-    file_chooser_destroy @1782
-    file_browser_view_create @1783
-    file_browser_view_cast @1784
-    file_browser_view_set_init_dir @1785
-    file_browser_view_set_filter @1786
-    file_browser_view_reload @1787
-    file_browser_view_set_ignore_hidden_files @1788
-    file_browser_view_set_sort_ascending @1789
-    file_browser_view_set_show_check_button @1790
-    file_browser_view_set_sort_by @1791
-    file_browser_view_get_selected_items @1792
-    file_browser_view_get_cwd @1793
-    file_browser_view_create_dir @1794
-    file_browser_view_create_file @1795
-    draggable_create @1796
-    draggable_cast @1797
-    draggable_set_top @1798
-    draggable_set_bottom @1799
-    draggable_set_left @1800
-    draggable_set_right @1801
-    draggable_set_vertical_only @1802
-    draggable_set_horizontal_only @1803
-    draggable_set_drag_window @1804
-    ui_builder_default @1805
-    color_picker_create @1806
-    color_picker_set_color @1807
-    color_picker_cast @1808
-    color_component_create @1809
-    color_component_set_color @1810
-    color_component_set_hsv @1811
-    color_component_get_h @1812
-    color_component_get_s @1813
-    color_component_get_v @1814
-    color_component_cast @1815
-    ui_binary_writer_init @1816
-    canvas_widget_create @1817
-    canvas_widget_cast @1818
-    key_event_cast @1819
-    key_event_init @1820
-    paint_event_cast @1821
-    paint_event_init @1822
-    window_event_cast @1823
-    window_event_init @1824
-    pointer_event_rotate @1825
-    multi_gesture_event_cast @1826
-    multi_gesture_event_init @1827
-    compressor_miniz_create @1828
-    image_base_set_image @1829
-    image_base_set_rotation @1830
-    image_base_set_scale @1831
-    image_base_set_anchor @1832
-    image_base_set_selected @1833
-    image_base_set_selectable @1834
-    image_base_set_clickable @1835
-    image_base_cast @1836
-    window_manager @1837
-    window_manager_cast @1838
-    window_manager_set @1839
-    window_manager_get_top_main_window @1840
-    window_manager_get_top_window @1841
-    window_manager_get_prev_window @1842
-    window_manager_get_pointer_x @1843
-    window_manager_get_pointer_y @1844
-    window_manager_get_pointer_pressed @1845
-    window_manager_is_animating @1846
-    window_manager_open_window @1847
-    window_manager_paint @1848
-    window_manager_dispatch_input_event @1849
-    window_manager_set_show_fps @1850
-    window_manager_set_screen_saver_time @1851
-    window_manager_set_cursor @1852
-    window_manager_back @1853
-    window_manager_back_to_home @1854
-    window_manager_back_to @1855
-    window_manager_dispatch_native_window_event @1856
-    window_manager_begin_wait_pointer_cursor @1857
-    window_manager_end_wait_pointer_cursor @1858
-    window_manager_resize @1859
-    window_base_on_destroy @1860
-    window_base_on_event @1861
-    window_base_invalidate @1862
-    window_base_on_paint_begin @1863
-    window_base_on_paint_end @1864
-    window_base_on_paint_self @1865
-    window_base_get_prop @1866
-    window_base_set_prop @1867
-    window_base_create @1868
-    window_base_cast @1869
-    widget_factory @1870
-    widget_factory_set @1871
-    widget_factory_create @1872
-    widget_factory_register @1873
-    widget_factory_create_widget @1874
-    widget_factory_destroy @1875
-    im_commit_event_init @1876
-    style_mutable_set_name @1877
-    style_mutable_set_int @1878
-    style_mutable_set_color @1879
-    style_mutable_set_str @1880
-    style_mutable_foreach @1881
-    style_mutable_get_value @1882
-    style_mutable_set_value @1883
-    style_mutable_copy @1884
-    style_mutable_reset @1885
-    style_mutable_cast @1886
-    style_mutable_create @1887
-    style_mutable_register @1888
-    style_const_create @1889
-    calibration_win_create @1890
-    calibration_win_set_on_done @1891
-    calibration_win_set_on_click @1892
-    calibration_win_cast @1893
-    native_window_move @1894
-    native_window_resize @1895
-    native_window_minimize @1896
-    native_window_maximize @1897
-    native_window_restore @1898
-    native_window_center @1899
-    native_window_show_border @1900
-    native_window_set_fullscreen @1901
-    native_window_set_cursor @1902
-    native_window_get_canvas @1903
-    native_window_create @1904
-    native_window_invalidate @1905
-    conf_ini_load @1906
-    conf_json_load @1907
-    conf_obj_create @1908
-    conf_obj_get_doc @1909
-    conf_obj_save @1910
-    conf_obj_set_readonly @1911
-    conf_ubjson_load @1912
-    timer_info_cast @1913
-    gif_image_create @1914
-    gif_image_cast @1915
-    keyboard_create @1916
-    keyboard_close @1917
-    keyboard_cast @1918
-    mutable_image_create @1919
-    mutable_image_set_prepare_image @1920
-    mutable_image_set_create_image @1921
-    mutable_image_set_framebuffer @1922
-    mutable_image_cast @1923
-    mutable_image_init @1924
-    mutable_image_on_destroy @1925
-    mutable_image_on_paint_self @1926
-    tk_ostream_write @1927
-    tk_ostream_seek @1928
-    tk_ostream_write_len @1929
-    tk_ostream_write_byte @1930
-    tk_ostream_flush @1931
-    object_locker_create @1932
-    object_default_create @1933
-    object_default_clone @1934
-    object_default_unref @1935
-    object_default_clear_props @1936
-    object_default_find_prop @1937
-    object_compositor_create @1938
-    object_array_create @1939
-    object_array_clone @1940
-    object_array_unref @1941
-    object_array_clear_props @1942
-    window_create @1943
-    window_create_default @1944
-    window_set_fullscreen @1945
-    window_open @1946
-    window_open_and_close @1947
-    window_close @1948
-    window_close_force @1949
-    window_cast @1950
-    image_fill @1951
-    image_clear @1952
-    image_copy @1953
-    image_rotate @1954
-    image_blend @1955
-    tk_istream_read @1956
-    tk_istream_seek @1957
-    tk_istream_tell @1958
-    tk_istream_eos @1959
-    tk_istream_wait_for_data @1960
-    tk_istream_flush @1961
-    tk_istream_read_len @1962
-    tk_istream_read_line @1963
-    tk_istream_read_line_str @1964
-    tk_iostream_get_istream @1965
-    tk_iostream_get_ostream @1966
-    tk_iostream_read @1967
-    tk_iostream_read_len @1968
-    tk_iostream_write @1969
-    tk_iostream_write_len @1970
-    svg_image_create @1971
-    svg_image_set_image @1972
-    svg_image_cast @1973
-    idle_info_cast @1974
-    combo_box_create @1975
-    combo_box_cast @1976
-    combo_box_set_open_window @1977
-    combo_box_reset_options @1978
-    combo_box_count_options @1979
-    combo_box_set_selected_index @1980
-    combo_box_set_localize_options @1981
-    combo_box_set_value @1982
-    combo_box_set_item_height @1983
-    combo_box_append_option @1984
-    combo_box_set_options @1985
-    combo_box_set_custom_open_popup @1986
-    combo_box_get_option @1987
-    combo_box_get_value @1988
-    combo_box_get_text @1989
-    system_info @1990
-    system_info_init @1991
-    system_info_deinit @1992
-    system_info_set_font_scale @1993
-    system_info_set_default_font @1994
-    system_info_set_lcd_w @1995
-    system_info_set_lcd_h @1996
-    system_info_set_lcd_type @1997
-    system_info_set_lcd_orientation @1998
-    system_info_set_device_pixel_ratio @1999
-    system_info_fix_font_name @2000
-    system_info_create @2001
-    image_create @2002
-    image_set_draw_type @2003
-    image_cast @2004
-    overlay_create @2005
-    overlay_set_click_through @2006
-    overlay_cast @2007
-    popup_create @2008
-    popup_cast @2009
-    popup_set_close_when_click @2010
-    popup_set_close_when_click_outside @2011
-    spin_box_create @2012
-    spin_box_cast @2013
-    system_bar_create @2014
-    system_bar_cast @2015
-    dialog_create @2016
-    dialog_create_simple @2017
-    dialog_cast @2018
-    dialog_get_title @2019
-    dialog_get_client @2020
-    dialog_open @2021
-    dialog_set_title @2022
-    dialog_modal @2023
-    dialog_quit @2024
-    dialog_is_quited @2025
-    dialog_is_modal @2026
-    dialog_toast @2027
-    dialog_info @2028
-    dialog_warn @2029
-    dialog_confirm @2030
-    tk_istream_tcp_create @2031
-    tk_istream_udp_create @2032
-    tk_istream_udp_set_target_with_host @2033
-    tk_istream_udp_set_target_with_addr @2034
-    tk_ostream_tcp_create @2035
-    tk_istream_shdlc_create @2036
-    tk_ostream_udp_create @2037
-    tk_ostream_udp_set_target_with_host @2038
-    tk_ostream_udp_set_target_with_addr @2039
-    tk_istream_buffered_create @2040
-    tk_iostream_mem_create @2041
-    combo_box_ex_create @2042
-    tk_istream_mem_create @2043
-    tk_ostream_mem_create @2044
-    tk_ostream_retry_create @2045
-    tk_ostream_retry_set_max_retry_times @2046
-    tk_ostream_retry_set_max_buffer_size @2047
-    tk_ostream_retry_clear_buffer @2048
-    tk_ostream_retry_set_discard_policy @2049
-    tk_ostream_buffered_create @2050
-    tk_ostream_buffered_get_size @2051
-    tk_iostream_shdlc_create @2052
-    tk_iostream_noisy_create @2053
-    tk_ostream_noisy_create @2054
-    tk_iostream_serial_create @2055
-    tk_iostream_serial_config @2056
-    tk_istream_serial_create @2057
-    tk_ostream_shdlc_create @2058
-    tk_ostream_file_create @2059
-    tk_iostream_tcp_create @2060
-    tk_iostream_udp_create_client @2061
-    tk_iostream_udp_create @2062
-    tk_istream_file_create @2063
+    event_cast
+    event_create
+    event_destroy
+    event_init
+    rect_create
+    rect_set
+    rect_cast
+    rect_destroy
+    rect_scale
+    rect_init
+    rect_merge
+    rect_contains
+    rect_fix
+    rect_intersect
+    emitter_create
+    emitter_init
+    emitter_dispatch
+    emitter_dispatch_simple_event
+    emitter_on
+    emitter_exist
+    emitter_on_with_tag
+    emitter_off
+    emitter_off_by_func
+    emitter_off_by_ctx
+    emitter_off_by_tag
+    emitter_set_on_destroy
+    emitter_find
+    emitter_enable
+    emitter_disable
+    emitter_size
+    emitter_deinit
+    emitter_destroy
+    emitter_cast
+    emitter_forward
+    bitmap_create
+    bitmap_create_ex
+    bitmap_get_bpp
+    bitmap_lock_buffer_for_read
+    bitmap_lock_buffer_for_write
+    bitmap_unlock_buffer
+    bitmap_get_pixel
+    bitmap_set_line_length
+    bitmap_get_line_length
+    bitmap_init_from_rgba
+    bitmap_init
+    bitmap_save_png
+    bitmap_mono_dump
+    bitmap_destroy
+    bitmap_get_bpp_of_format
+    value_set_bool
+    value_bool
+    value_set_int8
+    value_int8
+    value_set_uint8
+    value_uint8
+    value_set_int16
+    value_int16
+    value_set_uint16
+    value_uint16
+    value_set_int32
+    value_int32
+    value_set_uint32
+    value_uint32
+    value_set_int64
+    value_int64
+    value_set_uint64
+    value_uint64
+    value_set_pointer
+    value_pointer
+    value_set_float
+    value_float
+    value_set_float32
+    value_float32
+    value_set_double
+    value_double
+    value_set_str
+    value_dup_str
+    value_set_wstr
+    value_str
+    value_wstr
+    value_is_null
+    value_equal
+    value_int
+    value_set_int
+    value_set_object
+    value_object
+    value_set_token
+    value_token
+    value_set_sized_str
+    value_sized_str
+    value_set_binary_data
+    value_binary_data
+    value_set_ubjson
+    value_ubjson
+    value_copy
+    value_deep_copy
+    value_create
+    value_destroy
+    value_reset
+    value_cast
+    object_unref
+    object_ref
+    object_create
+    object_get_type
+    object_get_desc
+    object_get_size
+    object_is_collection
+    object_set_name
+    object_compare
+    object_get_prop
+    object_get_prop_str
+    object_get_prop_pointer
+    object_get_prop_object
+    object_get_prop_int
+    object_get_prop_bool
+    object_get_prop_float
+    object_remove_prop
+    object_set_prop
+    object_set_prop_str
+    object_set_prop_pointer
+    object_set_prop_object
+    object_set_prop_int
+    object_set_prop_bool
+    object_set_prop_float
+    object_copy_prop
+    object_foreach_prop
+    object_has_prop
+    object_eval
+    object_can_exec
+    object_exec
+    object_notify_changed
+    object_get_prop_by_path
+    object_get_prop_str_by_path
+    object_get_prop_pointer_by_path
+    object_get_prop_object_by_path
+    object_get_prop_int_by_path
+    object_get_prop_bool_by_path
+    object_get_prop_float_by_path
+    tk_init
+    tk_run
+    tk_quit
+    tk_get_pointer_x
+    tk_get_pointer_y
+    tk_is_pointer_pressed
+    tk_set_lcd_orientation
+    tk_init_assets
+    tk_init_internal
+    tk_deinit_internal
+    tk_exit
+    asset_loader_default_create
+    asset_loader_zip_create
+    asset_loader_zip_create_with_reader
+    children_layouter_factory
+    children_layouter_factory_set
+    children_layouter_factory_create
+    children_layouter_factory_register
+    children_layouter_factory_create_layouter
+    children_layouter_factory_destroy
+    children_layouter_to_string
+    children_layouter_layout
+    children_layouter_get_param
+    children_layouter_set_param
+    children_layouter_set_param_str
+    children_layouter_get_param_float
+    children_layouter_get_param_int
+    children_layouter_is_valid
+    children_layouter_destroy
+    children_layouter_create
+    children_layouter_clone
+    clip_board
+    clip_board_set
+    clip_board_clear
+    clip_board_set_data
+    clip_board_get_data
+    clip_board_destroy
+    clip_board_set_text
+    clip_board_get_text
+    data_reader_asset_create
+    dialog_highlighter_factory
+    dialog_highlighter_factory_set
+    dialog_highlighter_factory_create
+    dialog_highlighter_factory_register
+    dialog_highlighter_factory_create_highlighter
+    dialog_highlighter_factory_destroy
+    dialog_highlighter_create
+    dialog_highlighter_set_bg
+    dialog_highlighter_set_bg_clip_rect
+    dialog_highlighter_prepare
+    dialog_highlighter_prepare_ex
+    dialog_highlighter_draw
+    dialog_highlighter_is_dynamic
+    dialog_highlighter_destroy
+    xml_builder_get_attr
+    asset_type_find_by_value
+    find_item
+    find_item_by_value
+    keys_type_find
+    keys_type_find_by_value
+    event_recorder_player_start_record
+    event_recorder_player_start_play
+    event_recorder_player_stop_record
+    event_recorder_player_stop_play
+    tk_widgets_init
+    widget_animator_scroll_create
+    widget_animator_scroll_set_params
+    widget_animator_prop2_create
+    widget_animator_prop2_set_params
+    widget_animator_prop_create
+    widget_animator_prop_set_params
+    ubjson_writer_init
+    ubjson_writer_write_key
+    ubjson_writer_write_null
+    ubjson_writer_write_noop
+    ubjson_writer_write_true
+    ubjson_writer_write_false
+    ubjson_writer_write_int
+    ubjson_writer_write_int8
+    ubjson_writer_write_uint8
+    ubjson_writer_write_int16
+    ubjson_writer_write_int32
+    ubjson_writer_write_int64
+    ubjson_writer_write_float32
+    ubjson_writer_write_float64
+    ubjson_writer_write_char
+    ubjson_writer_write_str
+    ubjson_writer_write_str_len
+    ubjson_writer_write_object
+    ubjson_writer_write_array_begin
+    ubjson_writer_write_array_end
+    ubjson_writer_write_object_begin
+    ubjson_writer_write_object_end
+    ubjson_writer_write_data
+    ubjson_writer_write_kv_object_begin
+    ubjson_writer_write_kv_object
+    ubjson_writer_write_kv_int
+    ubjson_writer_write_kv_int64
+    ubjson_writer_write_kv_float
+    ubjson_writer_write_kv_double
+    ubjson_writer_write_kv_bool
+    ubjson_writer_write_kv_str
+    ubjson_writer_write_kv_str_len
+    ubjson_writer_write_kv_value
+    ubjson_parse
+    ubjson_to_object
+    ubjson_dump
+    wcs_dup
+    wcs_len
+    font_loader_load
+    font_manager
+    font_manager_set
+    font_manager_create
+    font_manager_init
+    font_manager_set_assets_manager
+    font_manager_add_font
+    font_manager_get_font
+    font_manager_unload_font
+    font_manager_shrink_cache
+    font_manager_unload_all
+    font_manager_deinit
+    font_manager_destroy
+    glyph_create
+    glyph_clone
+    glyph_destroy
+    font_get_vmetrics
+    font_match
+    font_get_glyph
+    font_shrink_cache
+    font_destroy
+    glyph_cache_init
+    glyph_cache_add
+    glyph_cache_lookup
+    glyph_cache_shrink
+    glyph_cache_deinit
+    graphic_buffer_create_for_bitmap
+    graphic_buffer_create_with_data
+    graphic_buffer_lock_for_read
+    graphic_buffer_lock_for_write
+    graphic_buffer_unlock
+    graphic_buffer_attach
+    graphic_buffer_is_valid_for
+    graphic_buffer_destroy
+    idle_add
+    idle_queue
+    idle_remove
+    idle_set_on_destroy
+    idle_dispatch
+    idle_count
+    wcs_cmp
+    image_loader_load
+    image_loader_register
+    image_loader_unregister
+    image_loader_load_image
+    image_manager
+    image_manager_set
+    image_manager_create
+    image_manager_init
+    image_manager_get_bitmap
+    image_manager_preload
+    image_manager_unload_unused
+    image_manager_unload_all
+    image_manager_unload_bitmap
+    image_manager_update_specific
+    image_manager_set_assets_manager
+    image_manager_deinit
+    image_manager_destroy
+    input_device_status_init
+    input_device_status_on_input_event
+    input_engine_create
+    input_engine_destroy
+    input_engine_reset_input
+    input_engine_input
+    input_engine_search
+    wcs_cpy
+    wcs_chr
+    wstr_init
+    wstr_set
+    wstr_clear
+    wstr_set_utf8
+    wstr_get_utf8
+    wstr_remove
+    wstr_insert
+    wstr_append
+    wstr_append_with_len
+    wstr_push
+    wstr_pop
+    wstr_push_int
+    wstr_equal
+    wstr_from_int
+    wstr_from_float
+    wstr_from_value
+    wstr_to_int
+    wstr_to_float
+    wstr_add_float
+    wstr_trim_float_zero
+    wstr_normalize_newline
+    wstr_count_char
+    wstr_reset
+    input_method_dispatch
+    input_method_dispatch_to_widget
+    input_method_on
+    input_method_off
+    input_method_request
+    input_method_update_action_button_info
+    input_method_dispatch_action
+    input_method_commit_text
+    input_method_set_lang
+    input_method_get_lang
+    input_method_commit_text_ex
+    input_method_dispatch_key
+    input_method_dispatch_keys
+    input_method_dispatch_preedit
+    input_method_dispatch_preedit_confirm
+    input_method_dispatch_preedit_abort
+    input_method_dispatch_candidates
+    input_method_dispatch_pre_candidates
+    input_method_create
+    input_method_destroy
+    input_method
+    input_method_set
+    widget_layout_self
+    widget_layout_children_default
+    widget_layout_floating_children
+    widget_get_children_for_layout
+    waitable_ring_buffer_create
+    waitable_ring_buffer_read
+    waitable_ring_buffer_write
+    waitable_ring_buffer_destroy
+    lcd_begin_frame
+    lcd_set_clip_rect
+    lcd_get_clip_rect
+    lcd_resize
+    lcd_set_global_alpha
+    lcd_set_text_color
+    lcd_set_stroke_color
+    lcd_set_fill_color
+    lcd_set_font_name
+    lcd_set_font_size
+    lcd_draw_vline
+    lcd_draw_hline
+    lcd_draw_points
+    lcd_get_point_color
+    lcd_fill_rect
+    lcd_stroke_rect
+    lcd_draw_glyph
+    lcd_measure_text
+    lcd_draw_text
+    lcd_draw_image
+    lcd_draw_image_matrix
+    lcd_get_vgcanvas
+    lcd_take_snapshot
+    lcd_get_desired_bitmap_format
+    lcd_get_width
+    lcd_get_height
+    lcd_is_swappable
+    lcd_end_frame
+    lcd_get_text_metrics
+    lcd_destroy
+    locale_info
+    locale_info_set
+    locale_info_create
+    locale_info_tr
+    locale_info_change
+    locale_info_on
+    locale_info_off
+    locale_info_set_assets_manager
+    locale_info_reload
+    locale_info_destroy
+    main_loop
+    main_loop_add_event_source
+    main_loop_remove_event_source
+    waitable_action_queue_create
+    waitable_action_queue_recv
+    waitable_action_queue_send
+    waitable_action_queue_destroy
+    self_layouter_factory
+    self_layouter_factory_set
+    self_layouter_factory_create
+    self_layouter_factory_register
+    self_layouter_factory_create_layouter
+    self_layouter_factory_destroy
+    self_layouter_to_string
+    self_layouter_layout
+    self_layouter_get_param
+    self_layouter_set_param
+    self_layouter_set_param_str
+    self_layouter_get_param_float
+    self_layouter_get_param_int
+    self_layouter_destroy
+    self_layouter_create
+    self_layouter_clone
+    shortcut_init
+    shortcut_init_with_str
+    shortcut_equal
+    shortcut_match
+    assets_manager
+    assets_manager_set
+    assets_manager_create
+    assets_manager_init
+    assets_manager_set_res_root
+    assets_manager_set_theme
+    assets_manager_set_system_info
+    assets_manager_set_locale_info
+    assets_manager_add
+    assets_manager_add_data
+    assets_manager_ref
+    assets_manager_unref
+    assets_manager_find_in_cache
+    assets_manager_load
+    assets_manager_preload
+    assets_manager_set_loader
+    assets_manager_set_custom_build_asset_dir
+    assets_manager_set_custom_load_asset
+    assets_manager_clear_cache
+    assets_manager_clear_all
+    assets_manager_deinit
+    assets_manager_destroy
+    assets_manager_load_file
+    style_factory_create_style
+    style_factory
+    style_factory_set
+    style_notify_widget_state_changed
+    style_is_valid
+    style_get_int
+    style_get_color
+    style_get_str
+    style_set
+    style_is_mutable
+    style_destroy
+    style_normalize_value
+    suggest_words_create
+    suggest_words_find
+    suggest_words_destroy
+    text_edit_create
+    text_edit_set_canvas
+    text_edit_click
+    text_edit_drag
+    text_edit_paste
+    text_edit_cut
+    text_edit_copy
+    text_edit_key_down
+    text_edit_key_up
+    text_edit_set_select
+    text_edit_select_all
+    text_edit_unselect
+    text_edit_set_cursor
+    text_edit_get_cursor
+    text_edit_get_state
+    text_edit_set_wrap_word
+    text_edit_invert_caret_visible
+    text_edit_set_caret_visible
+    text_edit_set_max_rows
+    text_edit_set_mask
+    text_edit_set_tips
+    text_edit_set_mask_char
+    text_edit_paint
+    text_edit_layout
+    text_edit_set_offset
+    text_edit_set_on_state_changed
+    text_edit_destroy
+    text_edit_preedit_clear
+    text_edit_preedit
+    text_edit_preedit_confirm
+    text_edit_preedit_abort
+    theme
+    theme_set
+    theme_create
+    theme_init
+    theme_find_style
+    theme_deinit
+    theme_destroy
+    timer_add
+    timer_queue
+    timer_remove
+    timer_reset
+    timer_modify
+    timer_set_on_destroy
+    timer_count
+    timer_next_time
+    ui_builder_on_widget_start
+    ui_builder_on_widget_prop
+    ui_builder_on_widget_prop_end
+    ui_builder_on_widget_end
+    ui_builder_on_start
+    ui_builder_on_end
+    ui_feedback_request
+    ui_feedback_init
+    ui_loader_load
+    ui_loader_load_widget
+    velocity_reset
+    velocity_update
+    vgcanvas_create
+    vgcanvas_cast
+    vgcanvas_reinit
+    vgcanvas_reset
+    vgcanvas_reset_curr_state
+    vgcanvas_flush
+    vgcanvas_begin_frame
+    vgcanvas_clear_rect
+    vgcanvas_begin_path
+    vgcanvas_move_to
+    vgcanvas_line_to
+    vgcanvas_quad_to
+    vgcanvas_bezier_to
+    vgcanvas_arc_to
+    vgcanvas_arc
+    vgcanvas_is_point_in_path
+    vgcanvas_rect
+    vgcanvas_rounded_rect
+    vgcanvas_ellipse
+    vgcanvas_close_path
+    vgcanvas_path_winding
+    vgcanvas_rotate
+    vgcanvas_scale
+    vgcanvas_translate
+    vgcanvas_transform
+    vgcanvas_set_transform
+    vgcanvas_clip_rect
+    vgcanvas_intersect_clip_rect
+    vgcanvas_fill
+    vgcanvas_stroke
+    vgcanvas_paint
+    vgcanvas_set_font
+    vgcanvas_set_font_size
+    vgcanvas_set_text_align
+    vgcanvas_set_text_baseline
+    vgcanvas_get_text_metrics
+    vgcanvas_fill_text
+    vgcanvas_measure_text
+    vgcanvas_draw_image
+    vgcanvas_draw_icon
+    vgcanvas_set_antialias
+    vgcanvas_set_global_alpha
+    vgcanvas_set_line_width
+    vgcanvas_set_fill_color
+    vgcanvas_set_fill_color_str
+    vgcanvas_set_fill_linear_gradient
+    vgcanvas_set_fill_radial_gradient
+    vgcanvas_set_stroke_color
+    vgcanvas_set_stroke_color_str
+    vgcanvas_set_stroke_linear_gradient
+    vgcanvas_set_stroke_radial_gradient
+    vgcanvas_set_line_cap
+    vgcanvas_set_line_join
+    vgcanvas_set_miter_limit
+    vgcanvas_save
+    vgcanvas_restore
+    vgcanvas_end_frame
+    vgcanvas_get_width
+    vgcanvas_get_height
+    vgcanvas_clear_cache
+    vgcanvas_destroy
+    widget_animator_create
+    widget_animator_manager
+    widget_animator_manager_set
+    widget_animator_manager_create
+    widget_animator_manager_init
+    widget_animator_manager_deinit
+    widget_animator_manager_destroy
+    widget_animator_manager_add
+    widget_animator_manager_remove
+    widget_animator_manager_count
+    widget_animator_manager_start
+    widget_animator_manager_stop
+    widget_animator_manager_pause
+    widget_animator_manager_find
+    widget_animator_manager_remove_all
+    widget_animator_manager_set_time_scale
+    widget_animator_manager_time_elapse
+    widget_animator_init
+    widget_animator_set_name
+    widget_animator_set_yoyo
+    widget_animator_set_repeat
+    widget_animator_set_reversed
+    widget_animator_set_time_scale
+    widget_animator_on
+    widget_animator_off
+    widget_animator_start
+    widget_animator_stop
+    widget_animator_pause
+    widget_animator_set_destroy_when_done
+    widget_animator_destroy
+    widget_invalidate_default
+    widget_on_event_default
+    widget_on_paint_self_default
+    widget_on_paint_children_default
+    widget_on_keydown_default
+    widget_on_keyup_default
+    widget_on_pointer_down_default
+    widget_on_pointer_move_default
+    widget_on_pointer_up_default
+    widget_on_copy_default
+    widget_get_prop_default
+    widget_set_prop_default
+    widget_find_target_default
+    widget_on_paint_null
+    widget_count_children
+    widget_get_child
+    widget_get_native_window
+    widget_index_of
+    widget_close_window
+    widget_move
+    widget_resize
+    widget_move_resize
+    widget_set_value
+    widget_animate_value_to
+    widget_add_value
+    widget_set_text
+    widget_use_style
+    widget_set_text_utf8
+    widget_get_text_utf8
+    widget_set_child_text_utf8
+    widget_set_child_text_with_double
+    widget_set_child_text_with_int
+    widget_set_tr_text
+    widget_get_value
+    widget_get_text
+    widget_to_local
+    widget_to_global
+    widget_to_screen
+    widget_set_name
+    widget_set_theme
+    widget_set_pointer_cursor
+    widget_set_animation
+    widget_create_animator
+    widget_start_animator
+    widget_set_animator_time_scale
+    widget_pause_animator
+    widget_find_animator
+    widget_stop_animator
+    widget_destroy_animator
+    widget_set_enable
+    widget_set_feedback
+    widget_set_floating
+    widget_set_focused
+    widget_set_focusable
+    widget_set_state
+    widget_set_opacity
+    widget_set_dirty_rect_tolerance
+    widget_destroy_children
+    widget_add_child
+    widget_remove_child
+    widget_insert_child
+    widget_restack
+    widget_child
+    widget_lookup
+    widget_lookup_by_type
+    widget_set_visible
+    widget_set_visible_only
+    widget_set_sensitive
+    widget_on
+    widget_on_with_tag
+    widget_off
+    widget_child_on
+    widget_off_by_func
+    widget_off_by_ctx
+    widget_off_by_tag
+    widget_invalidate
+    widget_invalidate_force
+    widget_paint
+    widget_draw_text_in_rect
+    widget_dispatch
+    widget_dispatch_simple_event
+    widget_dispatch_recursive
+    widget_get_prop
+    widget_get_prop_default_value
+    widget_set_prop
+    widget_set_prop_str
+    widget_get_prop_str
+    widget_set_prop_pointer
+    widget_get_prop_pointer
+    widget_set_prop_int
+    widget_get_prop_int
+    widget_set_prop_bool
+    widget_get_prop_bool
+    widget_is_window_opened
+    widget_is_parent_of
+    widget_is_direct_parent_of
+    widget_is_window
+    widget_is_system_bar
+    widget_is_normal_window
+    widget_is_dialog
+    widget_is_popup
+    widget_is_opened_popup
+    widget_is_keyboard
+    widget_is_designing_window
+    widget_is_window_manager
+    widget_grab
+    widget_ungrab
+    widget_foreach
+    widget_get_window
+    widget_get_window_manager
+    widget_get_type
+    widget_clone
+    widget_equal
+    widget_add_timer
+    widget_remove_timer
+    widget_add_idle
+    widget_load_image
+    widget_unload_image
+    widget_load_asset
+    widget_unload_asset
+    widget_cast
+    widget_destroy
+    widget_destroy_async
+    widget_ref
+    widget_unref
+    widget_paint_helper
+    widget_draw_background
+    widget_stroke_border_rect
+    widget_fill_bg_rect
+    widget_fill_fg_rect
+    widget_prepare_text_style
+    widget_measure_text
+    widget_dispatch_event_to_target_recursive
+    widget_is_point_in
+    widget_dispatch_to_target
+    widget_dispatch_to_key_target
+    widget_find_target
+    widget_re_translate_text
+    widget_init
+    widget_create
+    widget_update_style
+    widget_update_style_recursive
+    widget_set_as_key_target
+    widget_focus_next
+    widget_focus_prev
+    widget_get_state_for_style
+    widget_layout
+    widget_layout_children
+    widget_set_self_layout
+    widget_set_children_layout
+    widget_set_self_layout_params
+    widget_set_style_int
+    widget_set_style_str
+    widget_set_style_color
+    widget_take_snapshot
+    widget_take_snapshot_rect
+    widget_get_canvas
+    widget_reset_canvas
+    widget_on_paint_background
+    widget_on_paint_self
+    widget_on_paint_children
+    widget_on_paint_border
+    widget_is_instance_of
+    widget_set_need_relayout_children
+    widget_ensure_visible_in_viewport
+    widget_focus_first
+    widget_get_locale_info
+    widget_get_image_manager
+    widget_get_assets_manager
+    widget_get_font_manager
+    widget_update_pointer_cursor
+    widget_begin_wait_pointer_cursor
+    widget_end_wait_pointer_cursor
+    widget_set_style
+    widget_calc_icon_text_rect
+    widget_to_xml
+    window_animator_factory
+    window_animator_factory_set
+    window_animator_factory_create
+    window_animator_factory_register
+    window_animator_factory_create_animator
+    window_animator_factory_destroy
+    window_animator_create_for_open
+    window_animator_create_for_close
+    window_animator_update
+    window_animator_begin_frame
+    window_animator_end_frame
+    window_animator_destroy
+    window_animator_create
+    encoding_convert
+    encoding_utf8_to_gbk
+    encoding_gbk_to_utf8
+    app_conf_init_ini
+    app_conf_init_json
+    app_conf_init_ubjson
+    app_conf_init
+    app_conf_set_instance
+    app_conf_get_instance
+    app_conf_save
+    app_conf_reload
+    app_conf_on_changed
+    app_conf_off_changed
+    app_conf_off_changed_by_ctx
+    app_conf_deinit
+    app_conf_set
+    app_conf_get
+    app_conf_exist
+    app_conf_set_int
+    app_conf_set_int64
+    app_conf_set_bool
+    app_conf_set_double
+    app_conf_set_str
+    app_conf_set_wstr
+    app_conf_get_int
+    app_conf_get_int64
+    app_conf_get_bool
+    app_conf_get_double
+    app_conf_get_str
+    app_conf_get_wstr
+    app_conf_remove
+    tk_atoi
+    tk_atob
+    tk_atof
+    tk_str_cmp
+    tk_str_icmp
+    tk_watoi
+    tk_watoi_n
+    tk_watob
+    tk_watof
+    tk_skip_to_num
+    tk_itoa
+    tk_ftoa
+    tk_strtol
+    tk_strcpy
+    tk_strncpy
+    tk_strdup
+    tk_wstrdup
+    tk_strndup
+    tk_strlen
+    tk_str_append
+    tk_memset16
+    tk_memset24
+    tk_memset32
+    tk_memcpy16
+    tk_memcpy32
+    tk_pixel_copy
+    tk_snprintf
+    tk_sscanf
+    filename_to_name
+    filename_to_name_ex
+    xml_file_expand_read
+    tk_str_copy
+    dummy_destroy
+    default_destroy
+    pointer_compare
+    compare_always_equal
+    tk_is_valid_name
+    tk_str_start_with
+    tk_under_score_to_camel
+    tk_pointer_to_int
+    tk_pointer_from_int
+    tk_str_toupper
+    tk_str_tolower
+    tk_wstr_dup_utf8
+    tk_wstr_count_c
+    image_region_parse
+    tk_utf8_from_utf16
+    tk_utf8_from_utf16_ex
+    tk_utf8_to_utf16
+    conf_doc_load_json
+    conf_doc_save_json
+    conf_doc_create
+    conf_doc_create_node
+    conf_doc_destroy_node
+    conf_doc_append_sibling
+    conf_doc_append_child
+    conf_doc_remove_sibling
+    conf_doc_remove_child
+    conf_doc_remove_child_by_name
+    conf_doc_remove_children
+    conf_doc_set
+    conf_doc_set_int
+    conf_doc_set_bool
+    conf_doc_set_float
+    conf_doc_set_str
+    conf_doc_get
+    conf_doc_get_int
+    conf_doc_get_bool
+    conf_doc_get_float
+    conf_doc_get_str
+    conf_doc_remove
+    conf_doc_clear
+    conf_doc_move_up
+    conf_doc_move_down
+    conf_doc_exists
+    conf_doc_is_first
+    conf_doc_is_last
+    conf_doc_add_child
+    conf_doc_destroy
+    conf_node_get_name
+    conf_node_find_child
+    conf_node_find_sibling
+    conf_node_set_value
+    conf_node_get_value
+    conf_node_get_first_child
+    conf_node_set_first_child
+    tokenizer_init
+    tokenizer_init_ex
+    tokenizer_has_more
+    tokenizer_next
+    tokenizer_next_until
+    tokenizer_next_expr_until
+    tokenizer_next_int
+    tokenizer_next_float
+    tokenizer_deinit
+    dialog_highlighter_default_create
+    SDL_ShowCursor
+    SDL_WarpMouseInWindow
+    SDL_GetDefaultCursor
+    SDL_SetCursor
+    SDL_FreeCursor
+    SDL_CreateSystemCursor
+    SDL_GetMouseFocus
+    timer_manager
+    timer_manager_set
+    timer_manager_create
+    timer_manager_init
+    timer_manager_deinit
+    timer_manager_destroy
+    timer_manager_add
+    timer_manager_remove
+    timer_manager_reset
+    timer_manager_find
+    timer_manager_count
+    timer_manager_next_time
+    timer_manager_append
+    time_now_s
+    time_now_ms
+    tk_thread_create
+    tk_thread_set_name
+    tk_thread_set_stack_size
+    tk_thread_set_priority
+    tk_thread_start
+    tk_thread_join
+    tk_thread_get_args
+    tk_thread_destroy
+    tk_thread_self
+    str_init
+    str_extend
+    str_eq
+    str_set
+    str_clear
+    str_set_with_len
+    str_append
+    str_append_more
+    str_append_with_len
+    str_insert
+    str_insert_with_len
+    str_remove
+    str_append_char
+    str_append_int
+    str_append_double
+    str_append_json_str
+    str_append_json_int_pair
+    str_append_json_str_pair
+    str_append_json_double_pair
+    str_append_json_bool_pair
+    str_pop
+    str_unescape
+    str_decode_xml_entity
+    str_decode_xml_entity_with_len
+    str_from_int
+    str_from_float
+    str_from_value
+    str_from_wstr
+    str_from_wstr_with_len
+    str_to_int
+    str_to_float
+    str_end_with
+    str_start_with
+    str_trim
+    str_trim_left
+    str_trim_right
+    str_replace
+    str_to_lower
+    str_to_upper
+    str_expand_vars
+    str_reset
+    tk_ext_widgets_init
+    str_str_value
+    str_str_name
+    tk_socketpair
+    file_browser_create
+    file_browser_set_cwd
+    file_browser_create_dir
+    file_browser_create_file
+    file_browser_remove
+    file_browser_enter
+    file_browser_up
+    file_browser_refresh
+    file_browser_set_filter
+    file_browser_set_compare
+    file_browser_sort_by_name
+    file_browser_sort_by_type
+    file_browser_sort_by_size
+    file_browser_sort_by_mtime
+    file_browser_get_items_nr
+    file_browser_get_item
+    file_browser_set_ignore_hidden_files
+    file_browser_destroy
+    tcp_listen
+    tcp_accept
+    tcp_connect
+    udp_listen
+    udp_connect
+    socket_init
+    socket_deinit
+    socket_close
+    socket_bind
+    socket_wait_for_data
+    socket_set_blocking
+    socket_resolve
+    slist_create
+    slist_init
+    slist_find
+    slist_remove
+    slist_remove_all
+    slist_append
+    slist_prepend
+    slist_foreach
+    slist_tail_pop
+    slist_head_pop
+    slist_size
+    slist_count
+    slist_deinit
+    slist_destroy
+    tk_semaphore_create
+    tk_semaphore_wait
+    tk_semaphore_post
+    tk_semaphore_destroy
+    rom_fopen
+    rom_fopen_buff
+    rom_ftell
+    rom_feof
+    rom_fseek
+    rom_fread
+    rom_fwrite
+    rom_fclose
+    ring_buffer_create
+    ring_buffer_is_full
+    ring_buffer_is_empty
+    ring_buffer_size
+    ring_buffer_free_size
+    ring_buffer_capacity
+    ring_buffer_read
+    ring_buffer_peek
+    ring_buffer_write
+    ring_buffer_read_len
+    ring_buffer_skip
+    ring_buffer_write_len
+    ring_buffer_reset
+    ring_buffer_set_read_cursor
+    ring_buffer_set_read_cursor_delta
+    ring_buffer_set_write_cursor
+    ring_buffer_set_write_cursor_delta
+    ring_buffer_ensure_write_space
+    ring_buffer_destroy
+    bidi_init
+    bidi_type_from_name
+    bidi_log2vis
+    bidi_deinit
+    xml_parser_create
+    xml_parser_set_builder
+    xml_parser_set_trim_text
+    xml_parser_parse
+    xml_parser_parse_file
+    xml_parser_destroy
+    qaction_create
+    qaction_set_on_event
+    qaction_exec
+    qaction_notify
+    qaction_destroy
+    get_time_ms64
+    sleep_ms
+    platform_prepare
+    path_basename
+    path_extname
+    path_dirname
+    path_normalize
+    path_abs
+    path_is_abs
+    path_build
+    path_replace_basename
+    path_replace_extname
+    path_cwd
+    path_exe
+    path_app_root
+    path_exist
+    named_value_create
+    named_value_init
+    named_value_cast
+    named_value_set_name
+    named_value_set_value
+    named_value_get_value
+    named_value_deinit
+    named_value_destroy
+    tk_mutex_create
+    tk_mutex_lock
+    tk_mutex_try_lock
+    tk_mutex_unlock
+    tk_mutex_destroy
+    tk_mutex_nest_create
+    tk_mutex_nest_lock
+    tk_mutex_nest_try_lock
+    tk_mutex_nest_unlock
+    tk_mutex_nest_destroy
+    tk_alloc
+    tk_calloc
+    tk_realloc
+    tk_free
+    tk_mem_dump
+    tk_mem_is_valid_addr
+    matrix_init
+    matrix_identity
+    matrix_invert
+    matrix_set
+    matrix_multiply
+    matrix_translate
+    matrix_scale
+    matrix_rotate
+    matrix_transform_point
+    log_get_log_level
+    log_set_log_level
+    int_str_value
+    int_str_name
+    idle_manager
+    idle_manager_set
+    idle_manager_create
+    idle_manager_init
+    idle_manager_deinit
+    idle_manager_destroy
+    idle_manager_count
+    idle_manager_remove_all
+    idle_manager_remove
+    idle_manager_append
+    idle_manager_find
+    idle_manager_add
+    func_call_parser_init
+    func_call_parser_parse
+    func_call_parser_deinit
+    func_call_parse
+    fs_open_file
+    fs_remove_file
+    fs_file_exist
+    fs_file_rename
+    fs_open_dir
+    fs_create_dir
+    fs_remove_dir
+    fs_dir_exist
+    fs_dir_rename
+    fs_get_file_size
+    fs_get_disk_info
+    fs_stat
+    fs_get_exe
+    fs_get_user_storage_path
+    fs_get_cwd
+    os_fs
+    file_exist
+    file_remove
+    file_get_size
+    file_read
+    file_read_part
+    file_write
+    fs_dir_rewind
+    fs_dir_read
+    fs_dir_close
+    fs_file_read
+    fs_file_write
+    fs_file_printf
+    fs_file_seek
+    fs_file_truncate
+    fs_file_close
+    fs_file_sync
+    fs_file_stat
+    fs_file_eof
+    fs_file_tell
+    fs_file_size
+    eval_execute
+    tk_expr_eval
+    tk_expr_eval_str
+    eval_default_hooks
+    eval_result_to_string
+    expr_value_init
+    expr_value_clear
+    expr_value_get_number
+    expr_value_set_number
+    expr_value_get_string
+    expr_value_set_string
+    canvas_offline_create
+    canvas_offline_clear_canvas
+    canvas_offline_begin_draw
+    canvas_offline_end_draw
+    canvas_offline_get_bitmap
+    canvas_offline_bitmap_move_to_new_bitmap
+    canvas_offline_flush_bitmap
+    canvas_offline_destroy
+    event_source_manager_init
+    event_source_manager_deinit
+    event_source_manager_get_wakeup_time
+    event_source_manager_dispatch
+    event_source_manager_add
+    event_source_manager_remove
+    event_source_manager_remove_by_tag
+    event_source_manager_destroy
+    canvas_init
+    canvas_get_width
+    canvas_get_height
+    canvas_get_clip_rect
+    canvas_set_clip_rect
+    canvas_set_clip_rect_ex
+    canvas_set_fill_color
+    canvas_set_text_color
+    canvas_set_stroke_color
+    canvas_set_fill_color_str
+    canvas_set_text_color_str
+    canvas_set_stroke_color_str
+    canvas_set_global_alpha
+    canvas_translate
+    canvas_untranslate
+    canvas_draw_vline
+    canvas_draw_hline
+    canvas_draw_points
+    canvas_fill_rect
+    canvas_stroke_rect
+    canvas_set_font
+    canvas_set_text_align
+    canvas_measure_text
+    canvas_get_font_height
+    canvas_measure_utf8
+    canvas_draw_text
+    canvas_draw_utf8
+    canvas_draw_text_in_rect
+    canvas_draw_text_bidi_in_rect
+    canvas_draw_utf8_in_rect
+    canvas_draw_icon
+    canvas_draw_image
+    canvas_draw_image_ex
+    canvas_draw_image_ex2
+    canvas_get_vgcanvas
+    canvas_cast
+    canvas_reset
+    canvas_draw_image_at
+    canvas_draw_line
+    canvas_set_font_manager
+    canvas_set_assets_manager
+    canvas_get_text_metrics
+    canvas_begin_frame
+    canvas_fill_rounded_rect
+    canvas_fill_rounded_rect_ex
+    canvas_stroke_rounded_rect
+    canvas_stroke_rounded_rect_ex
+    canvas_end_frame
+    easing_get
+    tk_dl_open
+    tk_dl_sym
+    tk_dl_close
+    date_time_create
+    date_time_init
+    date_time_set
+    date_time_from_time
+    date_time_is_leap
+    date_time_get_days
+    date_time_get_wday
+    date_time_get_month_name
+    date_time_get_wday_name
+    date_time_destroy
+    date_time_global_init_ex
+    data_writer_write
+    data_writer_destroy
+    data_writer_factory
+    data_writer_factory_set
+    data_writer_factory_create
+    data_writer_factory_register
+    data_writer_factory_create_writer
+    data_writer_factory_destroy
+    data_writer_file_create
+    data_reader_read
+    data_reader_get_size
+    data_reader_destroy
+    data_reader_read_all
+    data_reader_factory
+    data_reader_factory_set
+    data_reader_factory_create
+    data_reader_factory_register
+    data_reader_factory_create_reader
+    data_reader_factory_destroy
+    data_reader_file_create
+    darray_create
+    darray_init
+    darray_find
+    darray_bsearch_index
+    darray_bsearch
+    darray_get
+    darray_find_index
+    darray_remove
+    darray_remove_index
+    darray_remove_all
+    darray_sort
+    darray_find_all
+    darray_pop
+    darray_tail
+    darray_head
+    darray_push
+    darray_count
+    darray_clear
+    darray_foreach
+    darray_deinit
+    darray_destroy
+    tk_cond_create
+    tk_cond_wait
+    tk_cond_wait_timeout
+    tk_cond_signal
+    tk_cond_destroy
+    asset_loader_create
+    asset_loader_load
+    asset_loader_exist
+    asset_loader_destroy
+    tk_cond_var_create
+    tk_cond_var_wait
+    tk_cond_var_awake
+    tk_cond_var_destroy
+    compressor_compress
+    compressor_uncompress
+    compressor_destroy
+    color_init
+    color_create
+    color_from_str
+    color_r
+    color_g
+    color_b
+    color_a
+    color_cast
+    color_destroy
+    color_hex_str
+    color_rgba_str
+    color_parse
+    rbuffer_init
+    rbuffer_has_more
+    rbuffer_skip
+    rbuffer_read_uint8
+    rbuffer_read_uint16
+    rbuffer_read_uint32
+    rbuffer_read_float
+    rbuffer_read_binary
+    rbuffer_read_string
+    rbuffer_peek_uint8
+    rbuffer_peek_uint16
+    rbuffer_peek_uint32
+    wbuffer_init
+    wbuffer_init_extendable
+    wbuffer_extend_capacity
+    wbuffer_deinit
+    wbuffer_skip
+    wbuffer_write_uint8
+    wbuffer_write_uint16
+    wbuffer_write_uint32
+    wbuffer_write_float
+    wbuffer_write_binary
+    wbuffer_write_string
+    wbuffer_has_room
+    async_call
+    async_call_init
+    async_call_deinit
+    asset_info_create
+    asset_info_destroy
+    asset_info_unref
+    asset_info_ref
+    action_thread_create
+    action_thread_create_with_queue
+    action_thread_exec
+    action_thread_set_on_idle
+    action_thread_set_on_quit
+    action_thread_destroy
+    action_thread_pool_create
+    action_thread_pool_exec
+    action_thread_pool_destroy
+    bsvg_init
+    bsvg_to_svg
+    svg_to_bsvg
+    action_queue_create
+    action_queue_recv
+    action_queue_send
+    action_queue_destroy
+    tk_ostream_serial_create
+    guage_pointer_create
+    guage_pointer_cast
+    guage_pointer_set_angle
+    guage_pointer_set_image
+    guage_pointer_set_anchor
+    lcd_mem_rgba8888_create
+    lcd_mem_rgba8888_create_single_fb
+    lcd_mem_rgba8888_create_double_fb
+    lcd_mem_rgba8888_create_three_fb
+    wheel_event_cast
+    wheel_event_init
+    view_create
+    view_set_default_focused_child
+    view_cast
+    tab_control_create
+    tab_control_cast
+    tab_button_create
+    tab_button_cast
+    tab_button_set_value
+    tab_button_set_icon
+    tab_button_set_active_icon
+    tab_button_set_load_ui
+    tab_button_group_create
+    tab_button_group_set_compact
+    tab_button_group_set_scrollable
+    tab_button_group_cast
+    slider_create
+    slider_cast
+    slider_set_value
+    slider_set_min
+    slider_set_max
+    slider_set_step
+    slider_set_bar_size
+    slider_set_vertical
+    slider_set_value_internal
+    row_create
+    row_cast
+    progress_bar_create
+    progress_bar_cast
+    progress_bar_set_value
+    progress_bar_set_max
+    progress_bar_set_vertical
+    progress_bar_set_show_text
+    progress_bar_get_percent
+    pages_create
+    pages_cast
+    pages_set_active
+    pages_set_active_by_name
+    label_create
+    label_set_length
+    label_resize_to_content
+    label_cast
+    group_box_create
+    group_box_cast
+    grid_create
+    grid_cast
+    grid_item_create
+    grid_item_cast
+    edit_create
+    edit_cast
+    edit_get_int
+    edit_get_double
+    edit_set_int
+    edit_set_double
+    edit_set_text_limit
+    edit_set_int_limit
+    edit_set_float_limit
+    edit_set_readonly
+    edit_set_cancelable
+    edit_set_auto_fix
+    edit_set_select_none_when_focused
+    edit_set_open_im_when_focused
+    edit_set_close_im_when_blured
+    edit_set_input_type
+    edit_set_action_text
+    edit_set_tips
+    edit_set_tr_tips
+    edit_set_keyboard
+    edit_set_password_visible
+    edit_set_focus
+    edit_set_cursor
+    edit_set_is_valid_char
+    edit_set_is_valid_value
+    edit_set_fix_value
+    edit_set_inc_value
+    edit_set_dec_value
+    edit_set_pre_input
+    dragger_create
+    dragger_cast
+    dragger_set_range
+    digit_clock_create
+    digit_clock_cast
+    digit_clock_set_format
+    dialog_title_create
+    dialog_title_cast
+    dialog_client_create
+    dialog_client_cast
+    combo_box_item_create
+    combo_box_item_cast
+    combo_box_item_set_checked
+    combo_box_item_set_value
+    lcd_mono_create
+    lcd_mem_special_create
+    lcd_mem_rgb888_create
+    lcd_mem_rgb888_create_single_fb
+    lcd_mem_rgb888_create_double_fb
+    lcd_mem_rgb888_create_three_fb
+    lcd_mem_rgb565_create
+    lcd_mem_rgb565_create_single_fb
+    lcd_mem_rgb565_create_double_fb
+    lcd_mem_rgb565_create_three_fb
+    lcd_mem_bgra8888_create
+    lcd_mem_bgra8888_create_single_fb
+    lcd_mem_bgra8888_create_double_fb
+    lcd_mem_bgra8888_create_three_fb
+    lcd_mem_bgr888_create
+    lcd_mem_bgr888_create_single_fb
+    lcd_mem_bgr888_create_double_fb
+    lcd_mem_bgr888_create_three_fb
+    lcd_mem_bgr565_create
+    lcd_mem_bgr565_create_single_fb
+    lcd_mem_bgr565_create_double_fb
+    lcd_mem_bgr565_create_three_fb
+    self_layouter_menu_create
+    self_layouter_default_create
+    children_layouter_default_create
+    input_method_sdl_create
+    input_method_null_create
+    event_source_fd_create
+    event_source_idle_create
+    event_source_manager_default_create
+    input_method_default_create
+    event_source_timer_create
+    event_source_get_fd
+    event_source_dispatch
+    event_source_set_tag
+    event_source_check
+    event_source_get_wakeup_time
+    prop_change_event_cast
+    prop_change_event_init
+    progress_event_cast
+    progress_event_init
+    done_event_cast
+    done_event_init
+    error_event_cast
+    error_event_init
+    cmd_exec_event_cast
+    cmd_exec_event_init
+    image_loader_stb
+    stb_load_image
+    font_loader_stb
+    font_stb_create
+    font_loader_ft
+    font_loader_bitmap
+    time_clock_create
+    time_clock_cast
+    time_clock_set_hour
+    time_clock_set_minute
+    time_clock_set_second
+    time_clock_set_hour_image
+    time_clock_set_minute_image
+    time_clock_set_second_image
+    time_clock_set_bg_image
+    time_clock_set_image
+    time_clock_set_hour_anchor
+    time_clock_set_minute_anchor
+    time_clock_set_second_anchor
+    text_selector_create
+    text_selector_cast
+    text_selector_reset_options
+    text_selector_count_options
+    text_selector_append_option
+    text_selector_set_options
+    text_selector_set_range_options
+    text_selector_get_option
+    text_selector_get_value
+    text_selector_set_value
+    text_selector_get_text
+    text_selector_set_text
+    text_selector_set_selected_index
+    text_selector_set_visible_nr
+    switch_create
+    switch_set_value
+    switch_cast
+    column_create
+    column_cast
+    color_tile_create
+    color_tile_cast
+    color_tile_set_bg_color
+    color_tile_set_border_color
+    color_tile_set_value
+    slide_view_create
+    slide_view_cast
+    slide_view_set_auto_play
+    slide_view_set_active
+    slide_view_set_vertical
+    slide_view_set_anim_hint
+    slide_view_set_loop
+    clip_view_create
+    clip_view_cast
+    check_button_create
+    check_button_create_radio
+    check_button_set_value
+    check_button_get_checked_button
+    check_button_cast
+    slide_indicator_create
+    slide_indicator_create_linear
+    slide_indicator_create_arc
+    slide_indicator_cast
+    slide_indicator_set_value
+    slide_indicator_set_max
+    slide_indicator_set_default_paint
+    slide_indicator_set_auto_hide
+    slide_indicator_set_margin
+    slide_indicator_set_spacing
+    slide_indicator_set_size
+    slide_indicator_set_anchor
+    slide_indicator_set_indicated_target
+    slide_menu_create
+    slide_menu_cast
+    slide_menu_set_value
+    slide_menu_set_align_v
+    slide_menu_set_min_scale
+    scroll_view_create
+    scroll_view_cast
+    scroll_view_set_virtual_w
+    scroll_view_set_virtual_h
+    scroll_view_set_xslidable
+    scroll_view_set_yslidable
+    scroll_view_set_offset
+    scroll_view_set_speed_scale
+    scroll_view_scroll_to
+    scroll_view_scroll_delta_to
+    scroll_bar_create
+    scroll_bar_cast
+    scroll_bar_create_mobile
+    scroll_bar_create_desktop
+    scroll_bar_set_params
+    scroll_bar_scroll_to
+    scroll_bar_set_value
+    scroll_bar_add_delta
+    scroll_bar_scroll_delta
+    scroll_bar_set_value_only
+    scroll_bar_is_mobile
+    list_view_create
+    list_view_set_item_height
+    list_view_set_default_item_height
+    list_view_set_auto_hide_scroll_bar
+    list_view_cast
+    list_view_reinit
+    list_view_h_create
+    list_view_h_set_item_width
+    list_view_h_set_spacing
+    list_view_h_cast
+    list_item_create
+    list_item_cast
+    children_layouter_list_view_create
+    hscroll_label_create
+    hscroll_label_set_lull
+    hscroll_label_set_duration
+    hscroll_label_set_only_focus
+    hscroll_label_set_only_parent_focus
+    hscroll_label_set_loop
+    hscroll_label_set_yoyo
+    hscroll_label_set_ellipses
+    hscroll_label_set_xoffset
+    hscroll_label_start
+    hscroll_label_stop
+    hscroll_label_cast
+    button_create
+    button_cast
+    button_set_repeat
+    button_set_long_press_time
+    button_set_enable_long_press
+    button_group_create
+    button_group_cast
+    app_bar_create
+    app_bar_cast
+    orientation_event_cast
+    orientation_event_init
+    rich_text_create
+    rich_text_set_text
+    rich_text_set_yslidable
+    rich_text_cast
+    rich_text_view_create
+    rich_text_view_cast
+    progress_circle_create
+    progress_circle_cast
+    progress_circle_set_value
+    progress_circle_set_max
+    progress_circle_set_line_width
+    progress_circle_set_start_angle
+    progress_circle_set_unit
+    progress_circle_set_line_cap
+    progress_circle_set_show_text
+    progress_circle_set_counter_clock_wise
+    value_change_event_cast
+    value_change_event_init
+    pointer_event_cast
+    pointer_event_init
+    mledit_create
+    mledit_set_readonly
+    mledit_set_cancelable
+    mledit_set_focus
+    mledit_set_wrap_word
+    mledit_set_max_lines
+    mledit_set_tips
+    mledit_set_tr_tips
+    mledit_set_keyboard
+    mledit_set_cursor
+    mledit_set_scroll_line
+    mledit_cast
+    line_number_create
+    line_number_set_top_margin
+    line_number_set_bottom_margin
+    line_number_set_line_height
+    line_number_set_yoffset
+    line_number_cast
+    lang_indicator_create
+    lang_indicator_set_image
+    lang_indicator_cast
+    ui_xml_writer_init
+    candidates_create
+    candidates_cast
+    candidates_set_pre
+    candidates_set_select_by_num
+    candidates_set_auto_hide
+    candidates_set_button_style
+    image_value_create
+    image_value_set_image
+    image_value_set_format
+    image_value_set_click_add_delta
+    image_value_set_value
+    image_value_set_min
+    image_value_set_max
+    image_value_cast
+    image_animation_create
+    image_animation_set_loop
+    image_animation_set_image
+    image_animation_set_interval
+    image_animation_set_delay
+    image_animation_set_auto_play
+    image_animation_set_sequence
+    image_animation_set_range_sequence
+    image_animation_play
+    image_animation_stop
+    image_animation_pause
+    image_animation_next
+    image_animation_set_format
+    image_animation_set_unload_after_paint
+    image_animation_cast
+    guage_create
+    guage_cast
+    guage_set_image
+    guage_set_draw_type
+    xml_ui_loader
+    default_ui_loader
+    file_chooser_create
+    file_chooser_set_init_dir
+    file_chooser_set_filter
+    file_chooser_cast
+    file_chooser_choose_file_for_save
+    file_chooser_choose_file_for_open
+    file_chooser_choose_folder
+    file_chooser_get_dir
+    file_chooser_get_filename
+    file_chooser_is_aborted
+    file_chooser_destroy
+    file_browser_view_create
+    file_browser_view_cast
+    file_browser_view_set_init_dir
+    file_browser_view_set_filter
+    file_browser_view_reload
+    file_browser_view_set_ignore_hidden_files
+    file_browser_view_set_sort_ascending
+    file_browser_view_set_show_check_button
+    file_browser_view_set_sort_by
+    file_browser_view_get_selected_items
+    file_browser_view_get_cwd
+    file_browser_view_create_dir
+    file_browser_view_create_file
+    draggable_create
+    draggable_cast
+    draggable_set_top
+    draggable_set_bottom
+    draggable_set_left
+    draggable_set_right
+    draggable_set_vertical_only
+    draggable_set_horizontal_only
+    draggable_set_drag_window
+    ui_builder_default
+    color_picker_create
+    color_picker_set_color
+    color_picker_cast
+    color_component_create
+    color_component_set_color
+    color_component_set_hsv
+    color_component_get_h
+    color_component_get_s
+    color_component_get_v
+    color_component_cast
+    ui_binary_writer_init
+    canvas_widget_create
+    canvas_widget_cast
+    key_event_cast
+    key_event_init
+    paint_event_cast
+    paint_event_init
+    window_event_cast
+    window_event_init
+    pointer_event_rotate
+    multi_gesture_event_cast
+    multi_gesture_event_init
+    compressor_miniz_create
+    image_base_set_image
+    image_base_set_rotation
+    image_base_set_scale
+    image_base_set_anchor
+    image_base_set_selected
+    image_base_set_selectable
+    image_base_set_clickable
+    image_base_cast
+    window_manager
+    window_manager_cast
+    window_manager_set
+    window_manager_get_top_main_window
+    window_manager_get_top_window
+    window_manager_get_prev_window
+    window_manager_get_pointer_x
+    window_manager_get_pointer_y
+    window_manager_get_pointer_pressed
+    window_manager_is_animating
+    window_manager_open_window
+    window_manager_paint
+    window_manager_dispatch_input_event
+    window_manager_set_show_fps
+    window_manager_set_screen_saver_time
+    window_manager_set_cursor
+    window_manager_back
+    window_manager_back_to_home
+    window_manager_back_to
+    window_manager_dispatch_native_window_event
+    window_manager_begin_wait_pointer_cursor
+    window_manager_end_wait_pointer_cursor
+    window_manager_resize
+    window_base_on_destroy
+    window_base_on_event
+    window_base_invalidate
+    window_base_on_paint_begin
+    window_base_on_paint_end
+    window_base_on_paint_self
+    window_base_get_prop
+    window_base_set_prop
+    window_base_create
+    window_base_cast
+    widget_factory
+    widget_factory_set
+    widget_factory_create
+    widget_factory_register
+    widget_factory_create_widget
+    widget_factory_destroy
+    im_commit_event_init
+    style_mutable_set_name
+    style_mutable_set_int
+    style_mutable_set_color
+    style_mutable_set_str
+    style_mutable_foreach
+    style_mutable_get_value
+    style_mutable_set_value
+    style_mutable_copy
+    style_mutable_reset
+    style_mutable_cast
+    style_mutable_create
+    style_mutable_register
+    style_const_create
+    calibration_win_create
+    calibration_win_set_on_done
+    calibration_win_set_on_click
+    calibration_win_cast
+    native_window_move
+    native_window_resize
+    native_window_minimize
+    native_window_maximize
+    native_window_restore
+    native_window_center
+    native_window_show_border
+    native_window_set_fullscreen
+    native_window_set_cursor
+    native_window_get_canvas
+    native_window_create
+    native_window_invalidate
+    conf_ini_load
+    conf_json_load
+    conf_obj_create
+    conf_obj_get_doc
+    conf_obj_save
+    conf_obj_set_readonly
+    conf_ubjson_load
+    timer_info_cast
+    gif_image_create
+    gif_image_cast
+    keyboard_create
+    keyboard_close
+    keyboard_cast
+    mutable_image_create
+    mutable_image_set_prepare_image
+    mutable_image_set_create_image
+    mutable_image_set_framebuffer
+    mutable_image_cast
+    mutable_image_init
+    mutable_image_on_destroy
+    mutable_image_on_paint_self
+    tk_ostream_write
+    tk_ostream_seek
+    tk_ostream_write_len
+    tk_ostream_write_byte
+    tk_ostream_flush
+    object_locker_create
+    object_default_create
+    object_default_clone
+    object_default_unref
+    object_default_clear_props
+    object_default_find_prop
+    object_compositor_create
+    object_array_create
+    object_array_clone
+    object_array_unref
+    object_array_clear_props
+    window_create
+    window_create_default
+    window_set_fullscreen
+    window_open
+    window_open_and_close
+    window_close
+    window_close_force
+    window_cast
+    image_fill
+    image_clear
+    image_copy
+    image_rotate
+    image_blend
+    tk_istream_read
+    tk_istream_seek
+    tk_istream_tell
+    tk_istream_eos
+    tk_istream_wait_for_data
+    tk_istream_flush
+    tk_istream_read_len
+    tk_istream_read_line
+    tk_istream_read_line_str
+    tk_iostream_get_istream
+    tk_iostream_get_ostream
+    tk_iostream_read
+    tk_iostream_read_len
+    tk_iostream_write
+    tk_iostream_write_len
+    svg_image_create
+    svg_image_set_image
+    svg_image_cast
+    idle_info_cast
+    combo_box_create
+    combo_box_cast
+    combo_box_set_open_window
+    combo_box_reset_options
+    combo_box_count_options
+    combo_box_set_selected_index
+    combo_box_set_localize_options
+    combo_box_set_value
+    combo_box_set_item_height
+    combo_box_append_option
+    combo_box_set_options
+    combo_box_set_custom_open_popup
+    combo_box_get_option
+    combo_box_get_value
+    combo_box_get_text
+    system_info
+    system_info_init
+    system_info_deinit
+    system_info_set_font_scale
+    system_info_set_default_font
+    system_info_set_lcd_w
+    system_info_set_lcd_h
+    system_info_set_lcd_type
+    system_info_set_lcd_orientation
+    system_info_set_device_pixel_ratio
+    system_info_fix_font_name
+    system_info_create
+    image_create
+    image_set_draw_type
+    image_cast
+    overlay_create
+    overlay_set_click_through
+    overlay_cast
+    popup_create
+    popup_cast
+    popup_set_close_when_click
+    popup_set_close_when_click_outside
+    spin_box_create
+    spin_box_cast
+    system_bar_create
+    system_bar_cast
+    dialog_create
+    dialog_create_simple
+    dialog_cast
+    dialog_get_title
+    dialog_get_client
+    dialog_open
+    dialog_set_title
+    dialog_modal
+    dialog_quit
+    dialog_is_quited
+    dialog_is_modal
+    dialog_toast
+    dialog_info
+    dialog_warn
+    dialog_confirm
+    tk_istream_tcp_create
+    tk_istream_udp_create
+    tk_istream_udp_set_target_with_host
+    tk_istream_udp_set_target_with_addr
+    tk_ostream_tcp_create
+    tk_istream_shdlc_create
+    tk_ostream_udp_create
+    tk_ostream_udp_set_target_with_host
+    tk_ostream_udp_set_target_with_addr
+    tk_istream_buffered_create
+    tk_iostream_mem_create
+    combo_box_ex_create
+    tk_istream_mem_create
+    tk_ostream_mem_create
+    tk_ostream_retry_create
+    tk_ostream_retry_set_max_retry_times
+    tk_ostream_retry_set_max_buffer_size
+    tk_ostream_retry_clear_buffer
+    tk_ostream_retry_set_discard_policy
+    tk_ostream_buffered_create
+    tk_ostream_buffered_get_size
+    tk_iostream_shdlc_create
+    tk_iostream_noisy_create
+    tk_ostream_noisy_create
+    tk_iostream_serial_create
+    tk_iostream_serial_config
+    tk_istream_serial_create
+    tk_ostream_shdlc_create
+    tk_ostream_file_create
+    tk_iostream_tcp_create
+    tk_iostream_udp_create_client
+    tk_iostream_udp_create
+    tk_istream_file_create
