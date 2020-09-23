@@ -14218,6 +14218,10 @@
       {
         "desc": "水平居中，垂直居中。",
         "name": "ICON_AT_CENTRE"
+      },
+      {
+        "desc": "水平居中，垂直居中。",
+        "name": "ICON_AT_CENTER"
       }
     ],
     "header": "base/types_def.h",

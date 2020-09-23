@@ -34,9 +34,9 @@
 | EVT\_RESIZE | 调整Widget大小的事件名(event\_t)。 |
 | EVT\_WILL\_MOVE\_RESIZE | 即将调整Widget大小/位置的事件名(event\_t)。 |
 | EVT\_MOVE\_RESIZE | 调整Widget大小/位置的事件名(event\_t)。 |
-| EVT\_VALUE\_WILL\_CHANGE | 控件的值即将改变的事件名(event\_t)。 |
-| EVT\_VALUE\_CHANGED | 控件的值改变的事件名(event\_t)。 |
-| EVT\_VALUE\_CHANGING | 控件的值持续改变(如编辑器正在编辑)的事件名(event\_t)。 |
+| EVT\_VALUE\_WILL\_CHANGE | 控件的值即将改变的事件名(value\_change\_event\_t)。 |
+| EVT\_VALUE\_CHANGED | 控件的值改变的事件名(value\_change\_event\_t)。 |
+| EVT\_VALUE\_CHANGING | 控件的值持续改变(如编辑器正在编辑)的事件名(value\_change\_event\_t)。 |
 | EVT\_PAINT | 绘制的事件名(paint\_event\_t)。 |
 | EVT\_BEFORE\_PAINT | 即将绘制的事件名(paint\_event\_t)。 |
 | EVT\_AFTER\_PAINT | 绘制完成的事件名(paint\_event\_t)。 |

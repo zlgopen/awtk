@@ -16,6 +16,7 @@
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
+| <a href="#event_t_size">size</a> | int32\_t | 结构体的大小。 |
 | <a href="#event_t_target">target</a> | void* | 事件发生的目标对象。 |
 | <a href="#event_t_time">time</a> | uint64\_t | 事件发生的时间。 |
 | <a href="#event_t_type">type</a> | int32\_t | 类型。 |
@@ -102,6 +103,17 @@ event_t event_init (uint32_t type, void* target);
 | 返回值 | event\_t | 事件对象。 |
 | type | uint32\_t | 事件类型。 |
 | target | void* | 目标对象。 |
+#### size 属性
+-----------------------
+> <p id="event_t_size">结构体的大小。
+
+* 类型：int32\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可脚本化   | 是 |
 #### target 属性
 -----------------------
 > <p id="event_t_target">事件发生的目标对象。

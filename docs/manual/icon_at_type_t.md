@@ -12,3 +12,4 @@
 | ICON\_AT\_TOP | 水平居中，垂直顶部(not used now)。 |
 | ICON\_AT\_BOTTOM | 水平居中，垂直低部(not used now)。 |
 | ICON\_AT\_CENTRE | 水平居中，垂直居中。 |
+| ICON\_AT\_CENTER | 水平居中，垂直居中。 |

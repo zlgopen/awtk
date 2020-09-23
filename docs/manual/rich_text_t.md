@@ -59,6 +59,7 @@ widget_set_self_layout_params(rich_text, "center", "middle", "100%", "100%");
 | <a href="#rich_text_t_rich_text_cast">rich\_text\_cast</a> | 转换为rich_text对象(供脚本语言使用)。 |
 | <a href="#rich_text_t_rich_text_create">rich\_text\_create</a> | 创建rich_text对象 |
 | <a href="#rich_text_t_rich_text_set_text">rich\_text\_set\_text</a> | 设置文本。 |
+| <a href="#rich_text_t_rich_text_set_yslidable">rich\_text\_set\_yslidable</a> | 设置是否允许y方向滑动。 |
 ### 属性
 <p id="rich_text_t_properties">
 
@@ -68,6 +69,7 @@ widget_set_self_layout_params(rich_text, "center", "middle", "100%", "100%");
 | <a href="#rich_text_t_margin">margin</a> | uint32\_t | 边距。 |
 | <a href="#rich_text_t_need_reset">need\_reset</a> | bool\_t | 标识控件是否需要重新绘图。 |
 | <a href="#rich_text_t_yoffset">yoffset</a> | int32\_t | y偏移。 |
+| <a href="#rich_text_t_yslidable">yslidable</a> | bool\_t | 标识控件是否允许上下拖动。 |
 #### rich\_text\_cast 函数
 -----------------------
 
@@ -130,6 +132,26 @@ ret_t rich_text_set_text (widget_t* widget, char* text);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | text | char* | 文本。 |
+#### rich\_text\_set\_yslidable 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="rich_text_t_rich_text_set_yslidable">设置是否允许y方向滑动。
+
+* 函数原型：
+
+```
+ret_t rich_text_set_yslidable (widget_t* widget, bool_t yslidable);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| yslidable | bool\_t | 是否允许滑动。 |
 #### line\_gap 属性
 -----------------------
 > <p id="rich_text_t_line_gap">行间距。
@@ -182,6 +204,22 @@ ret_t rich_text_set_text (widget_t* widget, char* text);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### yslidable 属性
+-----------------------
+> <p id="rich_text_t_yslidable">标识控件是否允许上下拖动。
+
+* 类型：bool\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
 | 可在XML中设置 | 是 |
 | 可通过widget\_get\_prop读取 | 是 |
 | 可通过widget\_set\_prop修改 | 是 |

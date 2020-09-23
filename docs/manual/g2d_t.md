@@ -23,7 +23,7 @@
 * 函数原型：
 
 ```
-ret_t g2d_blend_image (bitmap_t* fb, bitmap_t* img, rect_t* dst, rect_t* src, uint8_t global_alpha);
+ret_t g2d_blend_image (bitmap_t* fb, bitmap_t* img, const rect_t* dst, const rect_t* src, uint8_t global_alpha);
 ```
 
 * 参数说明：
@@ -33,8 +33,8 @@ ret_t g2d_blend_image (bitmap_t* fb, bitmap_t* img, rect_t* dst, rect_t* src, ui
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败，返回失败则上层用软件实现。 |
 | fb | bitmap\_t* | framebuffer对象。 |
 | img | bitmap\_t* | 图片对象。 |
-| dst | rect\_t* | 目的区域。 |
-| src | rect\_t* | 源区域。 |
+| dst | const rect\_t* | 目的区域。 |
+| src | const rect\_t* | 源区域。 |
 | global\_alpha | uint8\_t | 全局alpha。 |
 #### g2d\_copy\_image 函数
 -----------------------
@@ -46,7 +46,7 @@ ret_t g2d_blend_image (bitmap_t* fb, bitmap_t* img, rect_t* dst, rect_t* src, ui
 * 函数原型：
 
 ```
-ret_t g2d_copy_image (bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t dx, xy_t dy);
+ret_t g2d_copy_image (bitmap_t* fb, bitmap_t* img, const rect_t* src, xy_t dx, xy_t dy);
 ```
 
 * 参数说明：
@@ -56,7 +56,7 @@ ret_t g2d_copy_image (bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t dx, xy_t dy
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败，返回失败则上层用软件实现。 |
 | fb | bitmap\_t* | framebuffer对象。 |
 | img | bitmap\_t* | 图片对象。 |
-| src | rect\_t* | 要拷贝的区域。 |
+| src | const rect\_t* | 要拷贝的区域。 |
 | dx | xy\_t | 目标位置的x坐标。 |
 | dy | xy\_t | 目标位置的y坐标。 |
 #### g2d\_fill\_rect 函数
@@ -69,7 +69,7 @@ ret_t g2d_copy_image (bitmap_t* fb, bitmap_t* img, rect_t* src, xy_t dx, xy_t dy
 * 函数原型：
 
 ```
-ret_t g2d_fill_rect (bitmap_t* fb, rect_t* dst, color_t c);
+ret_t g2d_fill_rect (bitmap_t* fb, const rect_t* dst, color_t c);
 ```
 
 * 参数说明：
@@ -78,7 +78,7 @@ ret_t g2d_fill_rect (bitmap_t* fb, rect_t* dst, color_t c);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败，返回失败则上层用软件实现。 |
 | fb | bitmap\_t* | framebuffer对象。 |
-| dst | rect\_t* | 要填充的目标区域。 |
+| dst | const rect\_t* | 要填充的目标区域。 |
 | c | color\_t | 颜色。 |
 #### g2d\_rotate\_image 函数
 -----------------------
@@ -90,7 +90,7 @@ ret_t g2d_fill_rect (bitmap_t* fb, rect_t* dst, color_t c);
 * 函数原型：
 
 ```
-ret_t g2d_rotate_image (bitmap_t* fb, bitmap_t* img, rect_t* src, lcd_orientation_t o);
+ret_t g2d_rotate_image (bitmap_t* fb, bitmap_t* img, const rect_t* src, lcd_orientation_t o);
 ```
 
 * 参数说明：
@@ -100,5 +100,5 @@ ret_t g2d_rotate_image (bitmap_t* fb, bitmap_t* img, rect_t* src, lcd_orientatio
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败，返回失败则上层用软件实现。 |
 | fb | bitmap\_t* | framebuffer对象。 |
 | img | bitmap\_t* | 图片对象。 |
-| src | rect\_t* | 要旋转并拷贝的区域。 |
+| src | const rect\_t* | 要旋转并拷贝的区域。 |
 | o | lcd\_orientation\_t | 旋转角度(一般支持90度即可)。 |
