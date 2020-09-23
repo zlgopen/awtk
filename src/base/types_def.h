@@ -180,6 +180,11 @@ typedef enum _icon_at_type_t {
    * 水平居中，垂直居中。
    */
   ICON_AT_CENTRE = 5,
+  /**
+   * @const ICON_AT_CENTER
+   * 水平居中，垂直居中。
+   */
+  ICON_AT_CENTER = ICON_AT_CENTRE
 } icon_at_type_t;
 
 /**
