@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef IMAGE_GEN_H
-#define IMAGE_GEN_H
+#ifndef IMAGE_DITHER_H
+#define IMAGE_DITHER_H
 
 #include "widgets/image.h"
 
@@ -33,4 +33,4 @@ ret_t image_dither_image_wirte_png_file(const char* output_file, bitmap_t* image
 
 END_C_DECLS
 
-#endif /*IMAGE_GEN_H*/
+#endif /*IMAGE_DITHER_H*/
