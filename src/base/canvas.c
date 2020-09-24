@@ -586,26 +586,37 @@ ret_t canvas_draw_char(canvas_t* c, wchar_t chr, xy_t x, xy_t y) {
   return canvas_draw_char_impl(c, chr, c->ox + x, c->oy + y);
 }
 
-static ret_t canvas_draw_text_impl(canvas_t* c, const wchar_t* str, uint32_t nr, xy_t x, xy_t y) {
+static ret_t canvas_draw_text_impl(canvas_t* c, const wchar_t* str, uint32_t nr, xy_t x, xy_t y,
+                                   bool_t line_breaker) {
   glyph_t g;
   uint32_t i = 0;
   xy_t left = x;
-  uint64_t start_time = time_now_ms();
   font_vmetrics_t vmetrics = font_get_vmetrics(c->font, c->font_size);
   font_size_t font_size = c->font_size;
   int32_t baseline = vmetrics.ascent;
 
   for (i = 0; i < nr; i++) {
     wchar_t chr = str[i];
-    if (chr == '\r') {
-      if (str[i + 1] != '\n') {
+
+    if (chr == '\r' || chr == '\n') {
+      if ((i + 1) == nr) {
+        break;
+      }
+
+      if (chr == '\r' && str[i + 1] == '\n') {
+        i++;
+      }
+
+      if (line_breaker) {
         y += font_size;
         x = left;
+        continue;
+      } else {
+        chr = ' ';
       }
-    } else if (chr == '\r') {
-      y += font_size;
-      x = left;
-    } else if (font_get_glyph(c->font, chr, c->font_size, &g) == RET_OK) {
+    }
+
+    if (font_get_glyph(c->font, chr, c->font_size, &g) == RET_OK) {
       xy_t xx = x + g.x;
       xy_t yy = y + g.y + baseline;
 
@@ -616,8 +627,6 @@ static ret_t canvas_draw_text_impl(canvas_t* c, const wchar_t* str, uint32_t nr,
     }
   }
 
-  y = time_now_ms() - start_time;
-
   return RET_OK;
 }
 
@@ -626,7 +635,7 @@ ret_t canvas_draw_text(canvas_t* c, const wchar_t* str, uint32_t nr, xy_t x, xy_
   if (c->lcd->draw_text != NULL) {
     return lcd_draw_text(c->lcd, str, nr, c->ox + x, c->oy + y);
   } else {
-    return canvas_draw_text_impl(c, str, nr, c->ox + x, c->oy + y);
+    return canvas_draw_text_impl(c, str, nr, c->ox + x, c->oy + y, FALSE);
   }
 }
 
@@ -1664,7 +1673,6 @@ static ret_t canvas_draw_image_center_ex(canvas_t* c, bitmap_t* img, const rect_
   } else {
     sh = src_r->h;
   }
-
 
   dx += dst->x;
   dy += dst->y;
