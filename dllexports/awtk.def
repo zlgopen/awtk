@@ -944,6 +944,14 @@ EXPORTS
     SDL_FreeCursor
     SDL_CreateSystemCursor
     SDL_GetMouseFocus
+    SDL_MixAudioFormat
+    SDL_DequeueAudio
+    SDL_QueueAudio
+    SDL_GetQueuedAudioSize
+    SDL_ClearQueuedAudio
+    SDL_PauseAudioDevice
+    SDL_CloseAudioDevice
+    SDL_OpenAudioDevice
     timer_manager
     timer_manager_set
     timer_manager_create
@@ -1307,6 +1315,10 @@ EXPORTS
     data_writer_factory_create_writer
     data_writer_factory_destroy
     data_writer_file_create
+    asset_loader_create
+    asset_loader_load
+    asset_loader_exist
+    asset_loader_destroy
     data_reader_read
     data_reader_get_size
     data_reader_destroy
@@ -1344,10 +1356,6 @@ EXPORTS
     tk_cond_wait_timeout
     tk_cond_signal
     tk_cond_destroy
-    asset_loader_create
-    asset_loader_load
-    asset_loader_exist
-    asset_loader_destroy
     tk_cond_var_create
     tk_cond_var_wait
     tk_cond_var_awake
@@ -1420,10 +1428,10 @@ EXPORTS
     guage_pointer_set_angle
     guage_pointer_set_image
     guage_pointer_set_anchor
-    lcd_mem_rgba8888_create
-    lcd_mem_rgba8888_create_single_fb
-    lcd_mem_rgba8888_create_double_fb
-    lcd_mem_rgba8888_create_three_fb
+    lcd_mem_bgra8888_create
+    lcd_mem_bgra8888_create_single_fb
+    lcd_mem_bgra8888_create_double_fb
+    lcd_mem_bgra8888_create_three_fb
     wheel_event_cast
     wheel_event_init
     view_create
@@ -1518,6 +1526,10 @@ EXPORTS
     combo_box_item_set_value
     lcd_mono_create
     lcd_mem_special_create
+    lcd_mem_rgba8888_create
+    lcd_mem_rgba8888_create_single_fb
+    lcd_mem_rgba8888_create_double_fb
+    lcd_mem_rgba8888_create_three_fb
     lcd_mem_rgb888_create
     lcd_mem_rgb888_create_single_fb
     lcd_mem_rgb888_create_double_fb
@@ -1526,10 +1538,6 @@ EXPORTS
     lcd_mem_rgb565_create_single_fb
     lcd_mem_rgb565_create_double_fb
     lcd_mem_rgb565_create_three_fb
-    lcd_mem_bgra8888_create
-    lcd_mem_bgra8888_create_single_fb
-    lcd_mem_bgra8888_create_double_fb
-    lcd_mem_bgra8888_create_three_fb
     lcd_mem_bgr888_create
     lcd_mem_bgr888_create_single_fb
     lcd_mem_bgr888_create_double_fb

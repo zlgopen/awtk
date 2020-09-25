@@ -26893,6 +26893,94 @@
     "level": 1
   },
   {
+    "params": [],
+    "annotation": {
+      "global": true
+    },
+    "desc": "",
+    "name": "SDL_MixAudioFormat",
+    "type": "method",
+    "header": "src/dllexports.h",
+    "level": 1
+  },
+  {
+    "params": [],
+    "annotation": {
+      "global": true
+    },
+    "desc": "",
+    "name": "SDL_DequeueAudio",
+    "type": "method",
+    "header": "src/dllexports.h",
+    "level": 1
+  },
+  {
+    "params": [],
+    "annotation": {
+      "global": true
+    },
+    "desc": "",
+    "name": "SDL_QueueAudio",
+    "type": "method",
+    "header": "src/dllexports.h",
+    "level": 1
+  },
+  {
+    "params": [],
+    "annotation": {
+      "global": true
+    },
+    "desc": "",
+    "name": "SDL_GetQueuedAudioSize",
+    "type": "method",
+    "header": "src/dllexports.h",
+    "level": 1
+  },
+  {
+    "params": [],
+    "annotation": {
+      "global": true
+    },
+    "desc": "",
+    "name": "SDL_ClearQueuedAudio",
+    "type": "method",
+    "header": "src/dllexports.h",
+    "level": 1
+  },
+  {
+    "params": [],
+    "annotation": {
+      "global": true
+    },
+    "desc": "",
+    "name": "SDL_PauseAudioDevice",
+    "type": "method",
+    "header": "src/dllexports.h",
+    "level": 1
+  },
+  {
+    "params": [],
+    "annotation": {
+      "global": true
+    },
+    "desc": "",
+    "name": "SDL_CloseAudioDevice",
+    "type": "method",
+    "header": "src/dllexports.h",
+    "level": 1
+  },
+  {
+    "params": [],
+    "annotation": {
+      "global": true
+    },
+    "desc": "",
+    "name": "SDL_OpenAudioDevice",
+    "type": "method",
+    "header": "src/dllexports.h",
+    "level": 1
+  },
+  {
     "type": "class",
     "methods": [
       {
@@ -36811,6 +36899,100 @@
     "type": "class",
     "methods": [
       {
+        "params": [],
+        "annotation": {},
+        "desc": "创建缺省的资源加载器。",
+        "name": "asset_loader_create",
+        "return": {
+          "type": "asset_loader_t*",
+          "desc": "返回loader对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "asset_loader_t*",
+            "name": "loader",
+            "desc": "loader对象。"
+          },
+          {
+            "type": "uint16_t",
+            "name": "type",
+            "desc": "资源类型。"
+          },
+          {
+            "type": "uint16_t",
+            "name": "subtype",
+            "desc": "资源子类型。"
+          },
+          {
+            "type": "const char*",
+            "name": "path",
+            "desc": "路径。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "名称。"
+          }
+        ],
+        "annotation": {},
+        "desc": "加载指定的资源。",
+        "name": "asset_loader_load",
+        "return": {
+          "type": "asset_info_t*",
+          "desc": "返回资源对象(由调用者销毁)。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "asset_loader_t*",
+            "name": "loader",
+            "desc": "loader对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "path",
+            "desc": "资源是路径。"
+          }
+        ],
+        "annotation": {},
+        "desc": "判断指定资源是否存在。\n。",
+        "name": "asset_loader_exist",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回TRUE表示存在，否则不存在。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "asset_loader_t*",
+            "name": "loader",
+            "desc": "loader对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁loader对象。",
+        "name": "asset_loader_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "base/asset_loader.h",
+    "desc": "资源加载器接口。",
+    "name": "asset_loader_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
         "params": [
           {
             "type": "data_reader_t*",
@@ -37642,100 +37824,6 @@
     "header": "tkc/cond.h",
     "desc": "条件变量。",
     "name": "tk_cond_t",
-    "level": 1
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [],
-        "annotation": {},
-        "desc": "创建缺省的资源加载器。",
-        "name": "asset_loader_create",
-        "return": {
-          "type": "asset_loader_t*",
-          "desc": "返回loader对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "asset_loader_t*",
-            "name": "loader",
-            "desc": "loader对象。"
-          },
-          {
-            "type": "uint16_t",
-            "name": "type",
-            "desc": "资源类型。"
-          },
-          {
-            "type": "uint16_t",
-            "name": "subtype",
-            "desc": "资源子类型。"
-          },
-          {
-            "type": "const char*",
-            "name": "path",
-            "desc": "路径。"
-          },
-          {
-            "type": "const char*",
-            "name": "name",
-            "desc": "名称。"
-          }
-        ],
-        "annotation": {},
-        "desc": "加载指定的资源。",
-        "name": "asset_loader_load",
-        "return": {
-          "type": "asset_info_t*",
-          "desc": "返回资源对象(由调用者销毁)。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "asset_loader_t*",
-            "name": "loader",
-            "desc": "loader对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "path",
-            "desc": "资源是路径。"
-          }
-        ],
-        "annotation": {},
-        "desc": "判断指定资源是否存在。\n。",
-        "name": "asset_loader_exist",
-        "return": {
-          "type": "bool_t",
-          "desc": "返回TRUE表示存在，否则不存在。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "asset_loader_t*",
-            "name": "loader",
-            "desc": "loader对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "销毁loader对象。",
-        "name": "asset_loader_destroy",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "base/asset_loader.h",
-    "desc": "资源加载器接口。",
-    "name": "asset_loader_t",
     "level": 1
   },
   {
@@ -39977,7 +40065,7 @@
         ],
         "annotation": {},
         "desc": "创建lcd对象。",
-        "name": "lcd_mem_rgba8888_create",
+        "name": "lcd_mem_bgra8888_create",
         "return": {
           "type": "lcd_t*",
           "desc": "返回lcd对象。"
@@ -40003,7 +40091,7 @@
         ],
         "annotation": {},
         "desc": "创建single fb lcd对象。",
-        "name": "lcd_mem_rgba8888_create_single_fb",
+        "name": "lcd_mem_bgra8888_create_single_fb",
         "return": {
           "type": "lcd_t*",
           "desc": "返回lcd对象。"
@@ -40034,7 +40122,7 @@
         ],
         "annotation": {},
         "desc": "创建double fb lcd对象。",
-        "name": "lcd_mem_rgba8888_create_double_fb",
+        "name": "lcd_mem_bgra8888_create_double_fb",
         "return": {
           "type": "lcd_t*",
           "desc": "返回lcd对象。"
@@ -40070,7 +40158,7 @@
         ],
         "annotation": {},
         "desc": "创建three fb lcd对象。",
-        "name": "lcd_mem_rgba8888_create_three_fb",
+        "name": "lcd_mem_bgra8888_create_three_fb",
         "return": {
           "type": "lcd_t*",
           "desc": "返回lcd对象。"
@@ -40079,9 +40167,9 @@
     ],
     "events": [],
     "properties": [],
-    "header": "lcd/lcd_mem_rgba8888.h",
+    "header": "lcd/lcd_mem_bgra8888.h",
     "desc": "",
-    "name": "lcd_mem_rgba8888_t",
+    "name": "lcd_mem_bgra8888_t",
     "parent": "lcd_t",
     "annotation": {
       "fake": true
@@ -43680,6 +43768,140 @@
         ],
         "annotation": {},
         "desc": "创建lcd对象。",
+        "name": "lcd_mem_rgba8888_create",
+        "return": {
+          "type": "lcd_t*",
+          "desc": "返回lcd对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "fbuff",
+            "desc": "帧率缓冲区。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建single fb lcd对象。",
+        "name": "lcd_mem_rgba8888_create_single_fb",
+        "return": {
+          "type": "lcd_t*",
+          "desc": "返回lcd对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "online_fb",
+            "desc": "在线帧率缓冲区。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "offline_fb",
+            "desc": "离线帧率缓冲区。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建double fb lcd对象。",
+        "name": "lcd_mem_rgba8888_create_double_fb",
+        "return": {
+          "type": "lcd_t*",
+          "desc": "返回lcd对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "online_fb",
+            "desc": "在线帧率缓冲区。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "offline_fb",
+            "desc": "离线帧率缓冲区。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "next_fb",
+            "desc": "待显示的帧率缓冲区。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建three fb lcd对象。",
+        "name": "lcd_mem_rgba8888_create_three_fb",
+        "return": {
+          "type": "lcd_t*",
+          "desc": "返回lcd对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "lcd/lcd_mem_rgba8888.h",
+    "desc": "",
+    "name": "lcd_mem_rgba8888_t",
+    "parent": "lcd_t",
+    "annotation": {
+      "fake": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度。"
+          },
+          {
+            "type": "bool_t",
+            "name": "alloc",
+            "desc": "是否分配内存。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建lcd对象。",
         "name": "lcd_mem_rgb888_create",
         "return": {
           "type": "lcd_t*",
@@ -43974,140 +44196,6 @@
     "desc": "片段的LCD。\n\n在一些低端平台没有足够的内存提供一个完整的framebuffer，此时我们用一小块内存模拟framebuffer，\n每次只画屏幕上一小块。这样可以有些避免屏幕闪烁的问题。",
     "name": "lcd_mem_fragment_t",
     "parent": "lcd_t",
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度。"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度。"
-          },
-          {
-            "type": "bool_t",
-            "name": "alloc",
-            "desc": "是否分配内存。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建lcd对象。",
-        "name": "lcd_mem_bgra8888_create",
-        "return": {
-          "type": "lcd_t*",
-          "desc": "返回lcd对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度。"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度。"
-          },
-          {
-            "type": "uint8_t*",
-            "name": "fbuff",
-            "desc": "帧率缓冲区。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建single fb lcd对象。",
-        "name": "lcd_mem_bgra8888_create_single_fb",
-        "return": {
-          "type": "lcd_t*",
-          "desc": "返回lcd对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度。"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度。"
-          },
-          {
-            "type": "uint8_t*",
-            "name": "online_fb",
-            "desc": "在线帧率缓冲区。"
-          },
-          {
-            "type": "uint8_t*",
-            "name": "offline_fb",
-            "desc": "离线帧率缓冲区。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建double fb lcd对象。",
-        "name": "lcd_mem_bgra8888_create_double_fb",
-        "return": {
-          "type": "lcd_t*",
-          "desc": "返回lcd对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度。"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度。"
-          },
-          {
-            "type": "uint8_t*",
-            "name": "online_fb",
-            "desc": "在线帧率缓冲区。"
-          },
-          {
-            "type": "uint8_t*",
-            "name": "offline_fb",
-            "desc": "离线帧率缓冲区。"
-          },
-          {
-            "type": "uint8_t*",
-            "name": "next_fb",
-            "desc": "待显示的帧率缓冲区。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建three fb lcd对象。",
-        "name": "lcd_mem_bgra8888_create_three_fb",
-        "return": {
-          "type": "lcd_t*",
-          "desc": "返回lcd对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "lcd/lcd_mem_bgra8888.h",
-    "desc": "",
-    "name": "lcd_mem_bgra8888_t",
-    "parent": "lcd_t",
-    "annotation": {
-      "fake": true
-    },
     "level": 2
   },
   {
