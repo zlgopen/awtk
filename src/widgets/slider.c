@@ -388,6 +388,7 @@ ret_t slider_set_value_internal(widget_t* widget, double value, event_type_t ety
     value_set_double(&(evt.new_value), value);
     slider->value = value;
     widget_dispatch(widget, (event_t*)&evt);
+    widget_invalidate(widget, NULL);
   }
 
   return RET_OK;
