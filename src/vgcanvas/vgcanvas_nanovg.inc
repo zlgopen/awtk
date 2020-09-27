@@ -350,6 +350,9 @@ static ret_t vgcanvas_nanovg_set_font(vgcanvas_t* vgcanvas, const char* name) {
 
     if (r != NULL && r->subtype == ASSET_TYPE_FONT_TTF) {
       font_id = nvgCreateFontMem(vg, name, (unsigned char*)r->data, r->size, 0);
+      if (font_id < 0) {
+        log_warn("load font %s failed\n", name);
+      }
     }
 
     if (r != NULL) {
@@ -415,24 +418,24 @@ static float_t vgcanvas_nanovg_measure_text(vgcanvas_t* vgcanvas, const char* te
 }
 
 #ifdef WITH_NANOVG_GPU
-static ret_t vgcanvas_nanovg_get_text_metrics(vgcanvas_t* vgcanvas, float_t* ascent, 
-                                      float_t* descent, float_t* line_hight) {
+static ret_t vgcanvas_nanovg_get_text_metrics(vgcanvas_t* vgcanvas, float_t* ascent,
+                                              float_t* descent, float_t* line_hight) {
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
 
   float a = 0;
-  float  d = 0;
-  float  h = 0;
+  float d = 0;
+  float h = 0;
 
   nvgTextMetrics(vg, &a, &d, &h);
-  if(ascent != NULL) {
+  if (ascent != NULL) {
     *ascent = a;
   }
 
-  if(descent != NULL) {
+  if (descent != NULL) {
     *descent = d;
   }
 
-  if(line_hight != NULL) {
+  if (line_hight != NULL) {
     *line_hight = h;
   }
 
@@ -440,7 +443,7 @@ static ret_t vgcanvas_nanovg_get_text_metrics(vgcanvas_t* vgcanvas, float_t* asc
 }
 #else
 #define vgcanvas_nanovg_get_text_metrics NULL
-#endif/*WITH_NANOVG_GPU*/
+#endif /*WITH_NANOVG_GPU*/
 
 static ret_t vgcanvas_nanovg_draw_image(vgcanvas_t* vgcanvas, bitmap_t* img, float_t sx, float_t sy,
                                         float_t sw, float_t sh, float_t dx, float_t dy, float_t dw,

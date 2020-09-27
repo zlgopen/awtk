@@ -50,7 +50,7 @@
 
 * 2020/09/15
   * 支持长按键事件
-  * edit 增加 closei\_im\_when\_blured 属性。
+  * edit 增加 close\_im\_when\_blured 属性。
 
 * 2020/09/11
   * 支持 packed 图片。
