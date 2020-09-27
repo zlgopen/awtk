@@ -952,6 +952,9 @@ EXPORTS
     SDL_PauseAudioDevice
     SDL_CloseAudioDevice
     SDL_OpenAudioDevice
+    SDL_WasInit
+    SDL_Init
+    SDL_GetError
     timer_manager
     timer_manager_set
     timer_manager_create
@@ -1308,6 +1311,10 @@ EXPORTS
     date_time_global_init_ex
     data_writer_write
     data_writer_destroy
+    asset_loader_create
+    asset_loader_load
+    asset_loader_exist
+    asset_loader_destroy
     data_writer_factory
     data_writer_factory_set
     data_writer_factory_create
@@ -1315,10 +1322,6 @@ EXPORTS
     data_writer_factory_create_writer
     data_writer_factory_destroy
     data_writer_file_create
-    asset_loader_create
-    asset_loader_load
-    asset_loader_exist
-    asset_loader_destroy
     data_reader_read
     data_reader_get_size
     data_reader_destroy
@@ -1428,10 +1431,10 @@ EXPORTS
     guage_pointer_set_angle
     guage_pointer_set_image
     guage_pointer_set_anchor
-    lcd_mem_bgra8888_create
-    lcd_mem_bgra8888_create_single_fb
-    lcd_mem_bgra8888_create_double_fb
-    lcd_mem_bgra8888_create_three_fb
+    lcd_mem_bgr888_create
+    lcd_mem_bgr888_create_single_fb
+    lcd_mem_bgr888_create_double_fb
+    lcd_mem_bgr888_create_three_fb
     wheel_event_cast
     wheel_event_init
     view_create
@@ -1538,10 +1541,10 @@ EXPORTS
     lcd_mem_rgb565_create_single_fb
     lcd_mem_rgb565_create_double_fb
     lcd_mem_rgb565_create_three_fb
-    lcd_mem_bgr888_create
-    lcd_mem_bgr888_create_single_fb
-    lcd_mem_bgr888_create_double_fb
-    lcd_mem_bgr888_create_three_fb
+    lcd_mem_bgra8888_create
+    lcd_mem_bgra8888_create_single_fb
+    lcd_mem_bgra8888_create_double_fb
+    lcd_mem_bgra8888_create_three_fb
     lcd_mem_bgr565_create
     lcd_mem_bgr565_create_single_fb
     lcd_mem_bgr565_create_double_fb

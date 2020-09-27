@@ -109,3 +109,23 @@
  *
  */
 
+
+/**
+ * @method SDL_WasInit
+ *
+ * @annotation ["global"]
+ *
+ */
+
+/**
+ * @method SDL_Init
+ *
+ * @annotation ["global"]
+ *
+ */
+/**
+ * @method SDL_GetError
+ *
+ * @annotation ["global"]
+ *
+ */

@@ -26981,6 +26981,39 @@
     "level": 1
   },
   {
+    "params": [],
+    "annotation": {
+      "global": true
+    },
+    "desc": "",
+    "name": "SDL_WasInit",
+    "type": "method",
+    "header": "src/dllexports.h",
+    "level": 1
+  },
+  {
+    "params": [],
+    "annotation": {
+      "global": true
+    },
+    "desc": "",
+    "name": "SDL_Init",
+    "type": "method",
+    "header": "src/dllexports.h",
+    "level": 1
+  },
+  {
+    "params": [],
+    "annotation": {
+      "global": true
+    },
+    "desc": "",
+    "name": "SDL_GetError",
+    "type": "method",
+    "header": "src/dllexports.h",
+    "level": 1
+  },
+  {
     "type": "class",
     "methods": [
       {
@@ -36768,6 +36801,100 @@
     "methods": [
       {
         "params": [],
+        "annotation": {},
+        "desc": "创建缺省的资源加载器。",
+        "name": "asset_loader_create",
+        "return": {
+          "type": "asset_loader_t*",
+          "desc": "返回loader对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "asset_loader_t*",
+            "name": "loader",
+            "desc": "loader对象。"
+          },
+          {
+            "type": "uint16_t",
+            "name": "type",
+            "desc": "资源类型。"
+          },
+          {
+            "type": "uint16_t",
+            "name": "subtype",
+            "desc": "资源子类型。"
+          },
+          {
+            "type": "const char*",
+            "name": "path",
+            "desc": "路径。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "名称。"
+          }
+        ],
+        "annotation": {},
+        "desc": "加载指定的资源。",
+        "name": "asset_loader_load",
+        "return": {
+          "type": "asset_info_t*",
+          "desc": "返回资源对象(由调用者销毁)。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "asset_loader_t*",
+            "name": "loader",
+            "desc": "loader对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "path",
+            "desc": "资源是路径。"
+          }
+        ],
+        "annotation": {},
+        "desc": "判断指定资源是否存在。\n。",
+        "name": "asset_loader_exist",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回TRUE表示存在，否则不存在。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "asset_loader_t*",
+            "name": "loader",
+            "desc": "loader对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁loader对象。",
+        "name": "asset_loader_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "base/asset_loader.h",
+    "desc": "资源加载器接口。",
+    "name": "asset_loader_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
         "annotation": {
           "constructor": true
         },
@@ -36893,100 +37020,6 @@
     "header": "tkc/data_writer_factory.h",
     "desc": "data writer工厂。",
     "name": "data_writer_factory_t",
-    "level": 1
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [],
-        "annotation": {},
-        "desc": "创建缺省的资源加载器。",
-        "name": "asset_loader_create",
-        "return": {
-          "type": "asset_loader_t*",
-          "desc": "返回loader对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "asset_loader_t*",
-            "name": "loader",
-            "desc": "loader对象。"
-          },
-          {
-            "type": "uint16_t",
-            "name": "type",
-            "desc": "资源类型。"
-          },
-          {
-            "type": "uint16_t",
-            "name": "subtype",
-            "desc": "资源子类型。"
-          },
-          {
-            "type": "const char*",
-            "name": "path",
-            "desc": "路径。"
-          },
-          {
-            "type": "const char*",
-            "name": "name",
-            "desc": "名称。"
-          }
-        ],
-        "annotation": {},
-        "desc": "加载指定的资源。",
-        "name": "asset_loader_load",
-        "return": {
-          "type": "asset_info_t*",
-          "desc": "返回资源对象(由调用者销毁)。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "asset_loader_t*",
-            "name": "loader",
-            "desc": "loader对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "path",
-            "desc": "资源是路径。"
-          }
-        ],
-        "annotation": {},
-        "desc": "判断指定资源是否存在。\n。",
-        "name": "asset_loader_exist",
-        "return": {
-          "type": "bool_t",
-          "desc": "返回TRUE表示存在，否则不存在。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "asset_loader_t*",
-            "name": "loader",
-            "desc": "loader对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "销毁loader对象。",
-        "name": "asset_loader_destroy",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "base/asset_loader.h",
-    "desc": "资源加载器接口。",
-    "name": "asset_loader_t",
     "level": 1
   },
   {
@@ -40065,7 +40098,7 @@
         ],
         "annotation": {},
         "desc": "创建lcd对象。",
-        "name": "lcd_mem_bgra8888_create",
+        "name": "lcd_mem_bgr888_create",
         "return": {
           "type": "lcd_t*",
           "desc": "返回lcd对象。"
@@ -40091,7 +40124,7 @@
         ],
         "annotation": {},
         "desc": "创建single fb lcd对象。",
-        "name": "lcd_mem_bgra8888_create_single_fb",
+        "name": "lcd_mem_bgr888_create_single_fb",
         "return": {
           "type": "lcd_t*",
           "desc": "返回lcd对象。"
@@ -40122,7 +40155,7 @@
         ],
         "annotation": {},
         "desc": "创建double fb lcd对象。",
-        "name": "lcd_mem_bgra8888_create_double_fb",
+        "name": "lcd_mem_bgr888_create_double_fb",
         "return": {
           "type": "lcd_t*",
           "desc": "返回lcd对象。"
@@ -40158,7 +40191,7 @@
         ],
         "annotation": {},
         "desc": "创建three fb lcd对象。",
-        "name": "lcd_mem_bgra8888_create_three_fb",
+        "name": "lcd_mem_bgr888_create_three_fb",
         "return": {
           "type": "lcd_t*",
           "desc": "返回lcd对象。"
@@ -40167,9 +40200,9 @@
     ],
     "events": [],
     "properties": [],
-    "header": "lcd/lcd_mem_bgra8888.h",
+    "header": "lcd/lcd_mem_bgr888.h",
     "desc": "",
-    "name": "lcd_mem_bgra8888_t",
+    "name": "lcd_mem_bgr888_t",
     "parent": "lcd_t",
     "annotation": {
       "fake": true
@@ -44221,7 +44254,7 @@
         ],
         "annotation": {},
         "desc": "创建lcd对象。",
-        "name": "lcd_mem_bgr888_create",
+        "name": "lcd_mem_bgra8888_create",
         "return": {
           "type": "lcd_t*",
           "desc": "返回lcd对象。"
@@ -44247,7 +44280,7 @@
         ],
         "annotation": {},
         "desc": "创建single fb lcd对象。",
-        "name": "lcd_mem_bgr888_create_single_fb",
+        "name": "lcd_mem_bgra8888_create_single_fb",
         "return": {
           "type": "lcd_t*",
           "desc": "返回lcd对象。"
@@ -44278,7 +44311,7 @@
         ],
         "annotation": {},
         "desc": "创建double fb lcd对象。",
-        "name": "lcd_mem_bgr888_create_double_fb",
+        "name": "lcd_mem_bgra8888_create_double_fb",
         "return": {
           "type": "lcd_t*",
           "desc": "返回lcd对象。"
@@ -44314,7 +44347,7 @@
         ],
         "annotation": {},
         "desc": "创建three fb lcd对象。",
-        "name": "lcd_mem_bgr888_create_three_fb",
+        "name": "lcd_mem_bgra8888_create_three_fb",
         "return": {
           "type": "lcd_t*",
           "desc": "返回lcd对象。"
@@ -44323,9 +44356,9 @@
     ],
     "events": [],
     "properties": [],
-    "header": "lcd/lcd_mem_bgr888.h",
+    "header": "lcd/lcd_mem_bgra8888.h",
     "desc": "",
-    "name": "lcd_mem_bgr888_t",
+    "name": "lcd_mem_bgra8888_t",
     "parent": "lcd_t",
     "annotation": {
       "fake": true
