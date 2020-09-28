@@ -50,6 +50,8 @@ typedef struct _canvas_offline_t {
   rect_t canvas_clip_rect;
   /*确保 begin_draw / end_draw 配对使用*/
   int32_t begin_draw;
+  uint32_t lcd_w;
+  uint32_t lcd_h;
 } canvas_offline_t;
 
 /**

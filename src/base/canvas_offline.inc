@@ -53,8 +53,6 @@
 
 typedef struct _canvas_offline_gpu_t {
   canvas_offline_t base;
-  uint32_t online_lcd_w;
-  uint32_t online_lcd_h;
   framebuffer_object_t* fbo;
 } canvas_offline_gpu_t;
 
@@ -82,6 +80,7 @@ canvas_t* canvas_offline_create(uint32_t w, uint32_t h, bitmap_format_t format) 
   uint8_t* buff = NULL;
   bitmap_t* bitmap = NULL;
   canvas_offline_t* canvas = NULL;
+  system_info_t* info = system_info();
 #endif
 
 #ifdef WITH_CANVAS_OFFLINE_CUSTION
@@ -132,8 +131,8 @@ canvas_t* canvas_offline_create(uint32_t w, uint32_t h, bitmap_format_t format) 
 #endif
 
   canvas->base.begin_draw = 0;
-  canvas->online_lcd_w = c->lcd->w;
-  canvas->online_lcd_h = c->lcd->h;
+  canvas->base.lcd_w = c->lcd->w;
+  canvas->base.lcd_h = c->lcd->h;
 
   vg = lcd_get_vgcanvas(c->lcd);
   return_value_if_fail(c != NULL && vg != NULL, NULL);
@@ -151,6 +150,9 @@ canvas_t* canvas_offline_create(uint32_t w, uint32_t h, bitmap_format_t format) 
 
   canvas->begin_draw = 0;
   canvas->bitmap = bitmap_create_ex(w, h, 0, format);
+
+  canvas->lcd_w = info->lcd_w;
+  canvas->lcd_h = info->lcd_h;
 
   bitmap = canvas->bitmap;
 
@@ -245,8 +247,8 @@ ret_t canvas_offline_begin_draw(canvas_t* canvas) {
     canvas_get_clip_rect(canvas, &canvas_offline->canvas_clip_rect);
     canvas_offline->vg_clip_rect =
         rect_init(vg->clip_rect.x, vg->clip_rect.y, vg->clip_rect.w, vg->clip_rect.h);
-    c->online_lcd_w = canvas->lcd->w;
-    c->online_lcd_h = canvas->lcd->h;
+    c->base.lcd_w = canvas->lcd->w;
+    c->base.lcd_h = canvas->lcd->h;
 
     vgcanvas_flush(vg);
 
@@ -299,8 +301,8 @@ ret_t canvas_offline_end_draw(canvas_t* canvas) {
   if (vg != NULL && canvas_offline->begin_draw == 0) {
     uint16_t flag = BITMAP_FLAG_CHANGED;
 
-    canvas->lcd->w = vg->w = c->online_lcd_w;
-    canvas->lcd->h = vg->h = c->online_lcd_h;
+    canvas->lcd->w = vg->w = c->base.lcd_w;
+    canvas->lcd->h = vg->h = c->base.lcd_h;
 
     vgcanvas_restore(vg);
     vgcanvas_unbind_fbo(vg, c->fbo);
@@ -431,6 +433,8 @@ ret_t canvas_offline_destroy(canvas_t* canvas) {
 #ifdef WITH_NANOVG_GPU
   vgcanvas_t* vg = NULL;
   framebuffer_object_t* fbo = NULL;
+#else
+  system_info_t* info = system_info();
 #endif
 
   return_value_if_fail(canvas != NULL, RET_BAD_PARAMS);
@@ -449,6 +453,8 @@ ret_t canvas_offline_destroy(canvas_t* canvas) {
     vgcanvas_destroy_fbo(vg, fbo);
   }
 #else
+  system_info_set_lcd_w(info, ((canvas_offline_t*)canvas)->lcd_w);
+  system_info_set_lcd_h(info, ((canvas_offline_t*)canvas)->lcd_h);
   ((lcd_mem_t*)canvas->lcd)->vgcanvas = NULL;
   lcd_destroy(canvas->lcd);
 #endif
