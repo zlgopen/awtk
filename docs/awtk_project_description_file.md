@@ -46,8 +46,9 @@ AWTK Designer（下面简称 Designer）创建的项目均有一个项目描述�
   },
   "creator": {
     "name": "AWTK Designer",
-    "version": "0.1.6"
+    "version": "1.0.0"
   },
+  "awtkRoot": "${DesignerPath}/SDK/awtk",
   "usesSdk": {
     "awtk:minSdkVersion": "20070",
     "awtk:maxSdkVersion": "20090",
@@ -221,3 +222,19 @@ usesSdk 是可选的，表示项目依赖的SDK的信息。
 
 > 上述版本号对应发布的 AWTK 中 component.json 文件中的 "release_id"
 > 注意：如果没有显式设置，则认为兼容所有版本。
+
+## 14. awtkRoot
+
+对于1.0.0以上版本的Designer，awtkRoot 是必须的，用于指定项目编译时（即点击 Designer 工具栏上的编译按钮启动编译时）依赖的 AWTK 的路径。
+
+默认为 “${DesignerPath}/SDK/awtk”。
+
+其中， “${DesignerPath}” 表示 Designer 的安装目录。
+
+> 使用 scons 进行编译时，可以通过 AWTK_ROOT 参数手动设置 AWTK 的路径，比如：
+
+```cmd
+scons AWTK_ROOT=c:/AWTK/SDK/awtk
+```
+
+
