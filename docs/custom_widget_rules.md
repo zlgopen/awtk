@@ -286,3 +286,44 @@ node ../awtk/tools/dll_def_gen/index.js idl/idl.json src/number_label.def
 
 > Designer新建控件时会根据上述描述初始化控件的属性及样式，但会忽略x、y属性。
 
+## 7. Designer中的图标
+
+如果需要修改自定义控件在Designer中的图标，请将图标存放到指定位置。
+
+### 7.1 库的图标
+
+库的图标指在 Designer 的“选择模板”或者“模板管理”页面上用于标识自定义控件库或者描述其功能的图标，大小为 60*60 像素。
+
+默认为自定义控件库的 docs/images/design_widget_preview.png。
+
+> 如果不指定，则显示为空。
+
+### 7.2 控件列表上的图标
+
+控件列表上的图标指在 Designer 的控件列表上该控件的图标，大小为 48*48 像素。
+
+默认为自定义控件库的 docs/images/design_widget_list.png。
+
+> 如果不指定，则显示默认图标。
+
+### 7.3 对象浏览器上的图标
+
+对象浏览器上的图标指在 Designer 的对象浏览器上该控件类型的对象左侧显示的图标，大小为 16*16 像素。
+
+默认为自定义控件库的 docs/images/design_widget_object.png。
+
+> 如果不指定，则显示默认图标。
+
+## 8. src 目录中的源代码使用相对路径的方式 include 头文件
+
+为了避免使用自定义控件库时需设置一遍编译时的 include 目录，提高用户体验，要求在源代码中 include 头文件时使用相对路径的形式。
+
+比如，number_label.h、number_label.c 在同一个目录，则在 number_label.c 中按如下方式 include：
+
+```c
+...
+#include "number_label.h"
+...
+```
+
+> 如果不使用相对路径的方式，则请在自定义控件库的 README.md 文件中注明该库需要 include 的目录。

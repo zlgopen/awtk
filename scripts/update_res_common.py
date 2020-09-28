@@ -57,7 +57,8 @@ def emit_generate_res_before(type):
             'theme': THEME,
             'imagegen_options': IMAGEGEN_OPTIONS,
             'input': INPUT_DIR,
-            'output': OUTPUT_DIR
+            'output': OUTPUT_DIR,
+            'awtk_root': AWTK_ROOT
         }
         ON_GENERATE_RES_BEFORE(ctx)
 
@@ -69,7 +70,8 @@ def emit_generate_res_after(type):
             'theme': THEME,
             'imagegen_options': IMAGEGEN_OPTIONS,
             'input': INPUT_DIR,
-            'output': OUTPUT_DIR
+            'output': OUTPUT_DIR,
+            'awtk_root': AWTK_ROOT
         }
         ON_GENERATE_RES_AFTER(ctx)
 
