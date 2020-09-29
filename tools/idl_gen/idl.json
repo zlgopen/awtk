@@ -14683,8 +14683,8 @@
         "desc": "创建vgcanvas。",
         "name": "vgcanvas_create",
         "return": {
-          "type": "vgcanvas_t",
-          "desc": "返回vgcanvas"
+          "type": "vgcanvas_t*",
+          "desc": "返回vgcanvas对象。"
         }
       },
       {
