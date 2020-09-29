@@ -583,7 +583,11 @@ const asset_info_t* assets_manager_ref(assets_manager_t* am, asset_type_t type, 
   const asset_info_t* info = NULL;
   locale_info_t* locale_info = assets_manager_get_locale_info(am);
 
-  return_value_if_fail(am != NULL && name != NULL && *name, NULL);
+  return_value_if_fail(am != NULL && name != NULL, NULL);
+  if (*name == '\0') {
+    return NULL;
+  }
+
   if (strstr(name, TK_LOCALE_MAGIC) != NULL) {
     char locale[TK_NAME_LEN + 1];
     char real_name[TK_NAME_LEN + 1];
