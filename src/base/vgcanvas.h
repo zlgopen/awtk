@@ -397,7 +397,7 @@ struct _vgcanvas_t {
  * @param {bitmap_format_t} format 如果data是framebuffer，format指定data的格式。
  * @param {void*} data framebuffer或其它ctx。
  *
- * @return {vgcanvas_t} 返回vgcanvas
+ * @return {vgcanvas_t*} 返回vgcanvas对象。
  */
 vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_format_t format,
                             void* data);
