@@ -1,29 +1,30 @@
 # 最新动态
 * 2020/09/29
-  * 删除了assets_manager_ref函数的空字符串的警告信息（感谢智明提供补丁）。
-  * 修复vgcanvas_create函数返回值的注释（感谢兆坤提供补丁）。
+  * 删除了 assets\_manager\_ref 函数的空字符串的警告信息（感谢智明提供补丁）。
+  * 修复 vgcanvas\_create 函数返回值的注释（感谢兆坤提供补丁）。
+  * 修改 sdl release mouse capture 的时机，缓解 Ubuntun 调试时鼠标僵死的问题（感谢商 YUN 涛提供建议）。
 
 * 2020/09/28
   * 完善自定义控件文档（感谢朝泽提供补丁）。
-  * 完善project.json和文档（感谢朝泽提供补丁）。
-  * 完善离线canvas对旋转的处理（感谢智明提供补丁）。
+  * 完善 project.json 和文档（感谢朝泽提供补丁）。
+  * 完善离线 canvas 对旋转的处理（感谢智明提供补丁）。
   
 * 2020/09/25
-  * 修改image dither工具mac编译问题（感谢suzp1984提供补丁）。
-  * 完善canvas换行处理（感谢智明提供补丁）。
-  * 修复slider刷新的问题（感谢智明提供补丁）。
+  * 修改 image dither 工具 mac 编译问题（感谢 suzp1984 提供补丁）。
+  * 完善 canvas 换行处理（感谢智明提供补丁）。
+  * 修复 slider 刷新的问题（感谢智明提供补丁）。
 
 * 2020/09/23
-  * 完善dll导出函数（感谢朝泽提供补丁）。
+  * 完善 dll 导出函数（感谢朝泽提供补丁）。
   * 修复部分事情初始化的问题（感谢俊杰提供补丁）。
-  * 修复assets.c在RT1052上路径的问题（感谢俊杰提供补丁）。
-  * 将contre改为center(保留centre，兼容以前的代码)。
+  * 修复 assets.c 在 RT1052 上路径的问题（感谢俊杰提供补丁）。
+  * 将 contre 改为 center（保留 centre，兼容以前的代码）。
 
 * 2020/09/22
   * 完善 scroll bar。
   * 修复密码选中不居中的问题。
   * rich text 增加 yslidable 属性。
-  * 完善 edit 的action事件。
+  * 完善 edit 的 action 事件。
 
 * 2020/09/21
   * 更新 dll 导出函数列表。
