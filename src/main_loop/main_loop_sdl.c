@@ -136,6 +136,7 @@ static ret_t main_loop_sdl2_dispatch_mouse_event(main_loop_simple_t* loop, SDL_E
     }
     case SDL_MOUSEBUTTONUP: {
       if (sdl_event->button.button == 1) {
+        SDL_CaptureMouse(FALSE);
         pointer_event_init(&event, EVT_POINTER_UP, widget, sdl_event->button.x,
                            sdl_event->button.y);
         event.button = sdl_event->button.button;
@@ -144,7 +145,6 @@ static ret_t main_loop_sdl2_dispatch_mouse_event(main_loop_simple_t* loop, SDL_E
 
         window_manager_dispatch_input_event(widget, (event_t*)&event);
         loop->pressed = 0;
-        SDL_CaptureMouse(FALSE);
       } else if (sdl_event->button.button == 3) {
         pointer_event_init(&event, EVT_CONTEXT_MENU, widget, sdl_event->button.x,
                            sdl_event->button.y);
@@ -225,6 +225,7 @@ static ret_t main_loop_sdl2_dispatch_window_event(main_loop_simple_t* loop, SDL_
       log_debug("Window %d gained keyboard focus\n", event->window.windowID);
       break;
     case SDL_WINDOWEVENT_FOCUS_LOST:
+      SDL_CaptureMouse(FALSE);
       log_debug("Window %d lost keyboard focus\n", event->window.windowID);
       break;
 #if SDL_VERSION_ATLEAST(2, 0, 5)
