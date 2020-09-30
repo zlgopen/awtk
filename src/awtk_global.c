@@ -23,6 +23,7 @@
 #include "tkc/mem.h"
 #include "base/idle.h"
 #include "base/timer.h"
+#include "tkc/thread.h"
 #include "tkc/time_now.h"
 #include "base/locale_info.h"
 #include "tkc/platform.h"
@@ -86,6 +87,8 @@
 #include "image_loader_web.h"
 #endif /*AWTK_WEB*/
 
+static uint64_t s_ui_thread_id = 0;
+
 static ret_t tk_add_font(const asset_info_t* res) {
   if (res->subtype == ASSET_TYPE_FONT_BMP) {
 #ifdef WITH_BITMAP_FONT
@@ -145,6 +148,7 @@ static ret_t awtk_mem_on_out_of_memory(void* ctx, uint32_t tried_times, uint32_t
 ret_t tk_init_internal(void) {
   font_loader_t* font_loader = NULL;
 
+  s_ui_thread_id = tk_thread_self();
 #ifdef WITH_DATA_READER_WRITER
   data_writer_factory_set(data_writer_factory_create());
   data_reader_factory_set(data_reader_factory_create());
@@ -361,4 +365,84 @@ int32_t tk_get_pointer_y(void) {
 
 bool_t tk_is_pointer_pressed(void) {
   return window_manager_get_pointer_pressed(window_manager());
+}
+
+bool_t tk_is_ui_thread(void) {
+  return s_ui_thread_id == tk_thread_self();
+}
+
+typedef struct _idle_callback_info_t {
+  void* ctx;
+  bool_t done;
+  bool_t sync;
+  ret_t result;
+  tk_callback_t func;
+} idle_callback_info_t;
+
+static idle_callback_info_t* idle_callback_info_create(tk_callback_t func, void* ctx) {
+  idle_callback_info_t* info = TKMEM_ZALLOC(idle_callback_info_t);
+  return_value_if_fail(info != NULL, NULL);
+
+  info->func = func;
+  info->ctx = ctx;
+
+  return info;
+}
+
+static ret_t idle_callback_info_destroy(idle_callback_info_t* info) {
+  return_value_if_fail(info != NULL && info->func != NULL, RET_BAD_PARAMS);
+
+  memset(info, 0x00, sizeof(*info));
+  TKMEM_FREE(info);
+
+  return RET_OK;
+}
+
+static ret_t idle_func_of_callback(const idle_info_t* info) {
+  idle_callback_info_t* cinfo = (idle_callback_info_t*)(info->ctx);
+  ret_t ret = cinfo->func(cinfo->ctx);
+
+  if (cinfo->sync) {
+    cinfo->done = TRUE;
+    cinfo->result = ret;
+    /*call by sync not allow repeat*/
+    assert(ret != RET_REPEAT);
+    return RET_REMOVE;
+  } else {
+    if (ret != RET_REPEAT) {
+      idle_callback_info_destroy(cinfo);
+      ret = RET_REMOVE;
+    }
+
+    return ret;
+  }
+}
+
+ret_t tk_run_in_ui_thread(tk_callback_t func, void* ctx, bool_t wait_until_done) {
+  return_value_if_fail(func != NULL, RET_BAD_PARAMS);
+
+  if (tk_is_ui_thread()) {
+    return func(ctx);
+  } else {
+    idle_callback_info_t* info = idle_callback_info_create(func, ctx);
+    return_value_if_fail(info != NULL, RET_OOM);
+
+    info->sync = wait_until_done;
+    if (idle_queue(idle_func_of_callback, info) == RET_OK) {
+      ret_t ret = RET_OK;
+
+      if (wait_until_done) {
+        while (!(info->done)) {
+          sleep_ms(20);
+        }
+        ret = info->result;
+        idle_callback_info_destroy(info);
+      }
+
+      return ret;
+    } else {
+      idle_callback_info_destroy(info);
+      return RET_FAIL;
+    }
+  }
 }

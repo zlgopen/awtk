@@ -3,6 +3,7 @@
   * 删除了 assets\_manager\_ref 函数的空字符串的警告信息（感谢智明提供补丁）。
   * 修复 vgcanvas\_create 函数返回值的注释（感谢兆坤提供补丁）。
   * 修改 sdl release mouse capture 的时机，缓解 Ubuntun 调试时鼠标僵死的问题（感谢商 YUN 涛提供建议）。
+  * 增加函数 tk\_run\_in\_ui\_thread，让后台线程在 UI 线程执行指定的函数，它是对 idle\_queue 的包装，支持等待调用完成。
 
 * 2020/09/28
   * 完善自定义控件文档（感谢朝泽提供补丁）。
