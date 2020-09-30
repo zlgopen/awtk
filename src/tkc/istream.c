@@ -90,7 +90,6 @@ int32_t tk_istream_read_len(tk_istream_t* stream, void* buff, uint32_t max_size,
     if (ret == RET_TIMEOUT) {
       now = time_now_ms();
       if (now > end) {
-        log_debug("read timeout.\n");
         break;
       } else {
         continue;
@@ -124,7 +123,6 @@ int32_t tk_istream_read_len(tk_istream_t* stream, void* buff, uint32_t max_size,
 
     now = time_now_ms();
     if (now > end) {
-      log_debug("read timeout\n");
       break;
     }
   } while (remain_bytes > 0);
@@ -156,7 +154,6 @@ int32_t tk_istream_read_line(tk_istream_t* stream, void* buff, uint32_t max_size
     offset += read_bytes;
     remain_bytes -= read_bytes;
     if (time_now_ms() > end) {
-      log_debug("read timeout\n");
       break;
     }
 
