@@ -55,7 +55,7 @@ AWTK目前支持3种LCD实现方式，不同的实现方式对旋转的支持有
 
 ### 二、基于FrameBuffer的LCD(lcd\_mem)
 
-基于FrameBuffer的LCD(lcd\_mem)，AWTK对旋转90度做了支持。调用tk\_set\_lcd\_orientation后AWTK会做以下几件事：
+基于FrameBuffer的LCD(lcd\_mem)，AWTK对旋转90/180/270度做了支持。调用tk\_set\_lcd\_orientation后AWTK会做以下几件事：
 
 
 * 1.对触摸事件的坐标进行转换。
@@ -68,8 +68,7 @@ AWTK目前支持3种LCD实现方式，不同的实现方式对旋转的支持有
 
 ### 三、基于VGCanvas的LCD(lcd\_vgcanvas)
 
-基于VGCanvas的LCD(lcd\_vgcanvas)主要用于PC和手机应用程序，目前还没有需求，暂未支持。
-
+> 最新版本已经支持旋转。
 
 
 
