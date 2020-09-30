@@ -149,6 +149,8 @@ EXPORTS
     tk_init_internal
     tk_deinit_internal
     tk_exit
+    tk_is_ui_thread
+    tk_run_in_ui_thread
     asset_loader_default_create
     asset_loader_zip_create
     asset_loader_zip_create_with_reader

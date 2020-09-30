@@ -3613,6 +3613,42 @@
       {
         "params": [],
         "annotation": {},
+        "desc": "判断当前线程是否是UI线程。",
+        "name": "tk_is_ui_thread",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回TRUE表示是，否则表示否。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "tk_callback_t",
+            "name": "func",
+            "desc": "函数。"
+          },
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "回调函数的上下文。"
+          },
+          {
+            "type": "bool_t",
+            "name": "wait_until_done",
+            "desc": "是否等待完成。"
+          }
+        ],
+        "annotation": {},
+        "desc": "后台线程在UI线程执行指定的函数。",
+        "name": "tk_run_in_ui_thread",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {},
         "desc": "创建缺省的资源加载器。",
         "name": "asset_loader_default_create",
         "return": {
