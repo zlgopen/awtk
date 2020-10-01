@@ -2013,6 +2013,7 @@ EXPORTS
     system_info_init
     system_info_deinit
     system_info_set_font_scale
+    system_info_set_app_root
     system_info_set_default_font
     system_info_set_lcd_w
     system_info_set_lcd_h

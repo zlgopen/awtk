@@ -47,9 +47,9 @@ static bool_t app_root_is_valid(const char* app_root) {
   return path_exist(res_root);
 }
 
-static ret_t system_info_set_app_root(system_info_t* info, const char* app_root) {
+ret_t system_info_set_app_root(system_info_t* info, const char* app_root) {
   if (app_root != NULL) {
-    info->app_root = tk_strdup(app_root);
+    info->app_root = tk_str_copy(info->app_root, app_root);
     log_debug("app_root=%s\n", app_root);
   }
 

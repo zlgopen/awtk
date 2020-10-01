@@ -172,6 +172,17 @@ ret_t system_info_deinit(void);
 ret_t system_info_set_font_scale(system_info_t* info, float_t font_scale);
 
 /**
+ * @method system_info_set_app_root
+ * 设置app root。
+ *
+ * @param {system_info_t* info} info system_info对象。
+ * @param {const char*} app_root app root。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t system_info_set_app_root(system_info_t* info, const char* app_root);
+
+/**
  * @method system_info_set_default_font
  * 设置缺省字体。
  *

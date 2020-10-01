@@ -60650,6 +60650,27 @@
           },
           {
             "type": "const char*",
+            "name": "app_root",
+            "desc": "app root。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置app root。",
+        "name": "system_info_set_app_root",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "system_info_t* info",
+            "name": "info",
+            "desc": "system_info对象。"
+          },
+          {
+            "type": "const char*",
             "name": "default_font",
             "desc": "缺省字体。"
           }
