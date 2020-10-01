@@ -226,6 +226,12 @@ static ret_t mledit_get_prop(widget_t* widget, const char* name, value_t* v) {
     text_edit_get_state(mledit->model, &state);
     value_set_int(v, state.caret.y - state.oy);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_OPEN_IM_WHEN_FOCUSED)) {
+    value_set_bool(v, mledit->open_im_when_focused);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_CLOSE_IM_WHEN_BLURED)) {
+    value_set_bool(v, mledit->close_im_when_blured);
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_INPUTING)) {
     int64_t delta = (time_now_ms() - mledit->last_user_action_time);
     bool_t inputing =
@@ -282,6 +288,12 @@ static ret_t mledit_set_prop(widget_t* widget, const char* name, const value_t* 
     return RET_OK;
   } else if (tk_str_eq(name, MLEDIT_PROP_SCROLL_LINE)) {
     mledit_set_scroll_line(widget, value_int(v));
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_OPEN_IM_WHEN_FOCUSED)) {
+    mledit->open_im_when_focused = value_bool(v);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_CLOSE_IM_WHEN_BLURED)) {
+    mledit->close_im_when_blured = value_bool(v);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_MARGIN)) {
     int margin = value_int(v);
@@ -618,8 +630,9 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       break;
     }
     case EVT_BLUR: {
-      input_method_request(input_method(), NULL);
-
+      if (mledit->close_im_when_blured) {
+        input_method_request(input_method(), NULL);
+      }
       mledit_update_status(widget);
       mledit_dispatch_event(widget, EVT_VALUE_CHANGED);
       mledit_commit_text(widget);
@@ -631,7 +644,10 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       }
 
       if (widget->target == NULL) {
-        mledit_request_input_method(widget);
+        if (mledit->open_im_when_focused) {
+          mledit_request_input_method(widget);
+        }
+
         idle_add(mledit_focus_set_cursor, mledit);
       }
       mledit_save_text(widget);
@@ -759,6 +775,24 @@ static ret_t mledit_on_scroll_bar_value_changed(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+ret_t mledit_set_open_im_when_focused(widget_t* widget, bool_t open_im_when_focused) {
+  mledit_t* mledit = MLEDIT(widget);
+  return_value_if_fail(mledit != NULL, RET_BAD_PARAMS);
+
+  mledit->open_im_when_focused = open_im_when_focused;
+
+  return RET_OK;
+}
+
+ret_t mledit_set_close_im_when_blured(widget_t* widget, bool_t close_im_when_blured) {
+  mledit_t* mledit = MLEDIT(widget);
+  return_value_if_fail(mledit != NULL, RET_BAD_PARAMS);
+
+  mledit->close_im_when_blured = close_im_when_blured;
+
+  return RET_OK;
+}
+
 static ret_t mledit_on_add_child(widget_t* widget, widget_t* child) {
   mledit_t* mledit = MLEDIT(widget);
   const char* type = widget_get_type(child);
@@ -784,13 +818,22 @@ static ret_t mledit_init_idle_func(const idle_info_t* info) {
   return RET_REMOVE;
 }
 
-const char* s_mledit_properties[] = {WIDGET_PROP_READONLY,      WIDGET_PROP_CANCELABLE,
-                                     WIDGET_PROP_MARGIN,        WIDGET_PROP_LEFT_MARGIN,
-                                     WIDGET_PROP_RIGHT_MARGIN,  WIDGET_PROP_TOP_MARGIN,
-                                     WIDGET_PROP_BOTTOM_MARGIN, WIDGET_PROP_TIPS,
-                                     WIDGET_PROP_TR_TIPS,       WIDGET_PROP_KEYBOARD,
-                                     MLEDIT_PROP_MAX_LINES,     MLEDIT_PROP_WRAP_WORD,
-                                     MLEDIT_PROP_SCROLL_LINE,   NULL};
+const char* s_mledit_properties[] = {WIDGET_PROP_READONLY,
+                                     WIDGET_PROP_CANCELABLE,
+                                     WIDGET_PROP_MARGIN,
+                                     WIDGET_PROP_LEFT_MARGIN,
+                                     WIDGET_PROP_RIGHT_MARGIN,
+                                     WIDGET_PROP_TOP_MARGIN,
+                                     WIDGET_PROP_BOTTOM_MARGIN,
+                                     WIDGET_PROP_TIPS,
+                                     WIDGET_PROP_TR_TIPS,
+                                     WIDGET_PROP_KEYBOARD,
+                                     WIDGET_PROP_OPEN_IM_WHEN_FOCUSED,
+                                     WIDGET_PROP_CLOSE_IM_WHEN_BLURED,
+                                     MLEDIT_PROP_MAX_LINES,
+                                     MLEDIT_PROP_WRAP_WORD,
+                                     MLEDIT_PROP_SCROLL_LINE,
+                                     NULL};
 
 TK_DECL_VTABLE(mledit) = {.size = sizeof(mledit_t),
                           .type = WIDGET_TYPE_MLEDIT,
@@ -823,6 +866,8 @@ widget_t* mledit_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   mledit->scroll_line = 1.0f;
   wstr_init(&(mledit->temp), 0);
   widget_set_text(widget, L"");
+  mledit->close_im_when_blured = TRUE;
+  mledit->open_im_when_focused = TRUE;
   wstr_init(&(mledit->saved_text), 0);
 
   mledit_update_status(widget);

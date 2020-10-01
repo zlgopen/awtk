@@ -1,4 +1,8 @@
 # 最新动态
+
+* 2020/10/01
+  * mledit 增加 open\_im\_when\_focused 和 close\_im\_when\_blured 属性。
+  
 * 2020/09/29
   * 删除了 assets\_manager\_ref 函数的空字符串的警告信息（感谢智明提供补丁）。
   * 修复 vgcanvas\_create 函数返回值的注释（感谢兆坤提供补丁）。

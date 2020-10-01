@@ -138,7 +138,22 @@ typedef struct _mledit_t {
    * > * 2.为TRUE时，如果内容有变化，会设置编辑器的状态为changed，所以此时编辑器需要支持changed状态的style。
    */
   bool_t cancelable;
-
+  /**
+   * @property {bool_t} open_im_when_focused
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 获得焦点时打开输入法。
+   *
+   * > 主要用于没有指针设备的情况，否则每次切换焦点时都打开输入法。
+   */
+  bool_t open_im_when_focused;
+  /**
+   * @property {bool_t} close_im_when_blured
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 
+   * 是否在失去焦点时关闭输入法(默认是)。
+   *
+   */
+  bool_t close_im_when_blured;
   /*private*/
   text_edit_t* model;
   uint32_t timer_id;
@@ -282,6 +297,33 @@ ret_t mledit_set_cursor(widget_t* widget, uint32_t cursor);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t mledit_set_scroll_line(widget_t* widget, uint32_t scroll_line);
+
+/**
+ * @method mledit_set_open_im_when_focused
+ * 设置编辑器是否在获得焦点时打开输入法。
+ *
+ *> * 设置默认焦点时，打开窗口时不弹出软键盘。
+ *> * 用键盘切换焦点时，编辑器获得焦点时不弹出软键盘。
+ *
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {bool_t} open_im_when_focused 是否在获得焦点时打开输入法。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t mledit_set_open_im_when_focused(widget_t* widget, bool_t open_im_when_focused);
+
+/**
+ * @method mledit_set_close_im_when_blured
+ * 设置编辑器是否在失去焦点时关闭输入法。
+ *
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {bool_t} close_im_when_blured 是否是否在失去焦点时关闭输入法。在失去焦点时关闭输入法。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t mledit_set_close_im_when_blured(widget_t* widget, bool_t close_im_when_blured);
 
 /**
  * @method mledit_cast

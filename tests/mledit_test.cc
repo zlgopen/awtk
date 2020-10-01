@@ -123,3 +123,23 @@ TEST(MLEdit, intputing3) {
 
   widget_destroy(w1);
 }
+
+TEST(MLEdit, open_im_when_focused) {
+  widget_t* w1 = mledit_create(NULL, 10, 20, 30, 40);
+  ASSERT_EQ(widget_get_prop_bool(w1, WIDGET_PROP_OPEN_IM_WHEN_FOCUSED, FALSE), TRUE);
+  
+  mledit_set_open_im_when_focused(w1, FALSE);
+  ASSERT_EQ(widget_get_prop_bool(w1, WIDGET_PROP_OPEN_IM_WHEN_FOCUSED, TRUE), FALSE);
+
+  widget_destroy(w1);
+}
+
+TEST(MLEdit, close_im_when_blured) {
+  widget_t* w1 = mledit_create(NULL, 10, 20, 30, 40);
+  ASSERT_EQ(widget_get_prop_bool(w1, WIDGET_PROP_CLOSE_IM_WHEN_BLURED, FALSE), TRUE);
+  
+  mledit_set_close_im_when_blured(w1, FALSE);
+  ASSERT_EQ(widget_get_prop_bool(w1, WIDGET_PROP_CLOSE_IM_WHEN_BLURED, TRUE), FALSE);
+
+  widget_destroy(w1);
+}
