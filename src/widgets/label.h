@@ -142,10 +142,6 @@ widget_t* label_cast(widget_t* widget);
 TK_EXTERN_VTABLE(label);
 
 /*public for test*/
-uint32_t line_breaker_count(const wchar_t* str);
-typedef ret_t (*line_breaker_on_line_t)(void* ctx, uint32_t index, const wchar_t* str,
-                                        uint32_t size);
-ret_t line_breaker_break(const wchar_t* str, line_breaker_on_line_t on_line, void* ctx);
 
 END_C_DECLS
 

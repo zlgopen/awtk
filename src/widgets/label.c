@@ -25,58 +25,6 @@
 #include "base/widget_vtable.h"
 #include "base/window_manager.h"
 
-uint32_t line_breaker_count(const wchar_t* str) {
-  uint32_t lines = 1;
-  const wchar_t* p = str;
-
-  while (*p) {
-    if (*p == '\r') {
-      p++;
-      if (*p == '\n') {
-        p++;
-      }
-      lines++;
-    } else if (*p == '\n') {
-      p++;
-      lines++;
-    } else {
-      p++;
-    }
-  }
-
-  return lines;
-}
-
-ret_t line_breaker_break(const wchar_t* str, line_breaker_on_line_t on_line, void* ctx) {
-  uint32_t i = 0;
-  uint32_t line_len = 0;
-  const wchar_t* end = str;
-  const wchar_t* start = str;
-  uint32_t lines = line_breaker_count(str);
-
-  for (i = 0; (i < lines) && *start; i++) {
-    while (*end != '\r' && *end != '\n' && *end) {
-      end++;
-    }
-    line_len = end - start;
-
-    on_line(ctx, i, start, line_len);
-
-    if (*end == '\r') {
-      end++;
-      if (*end == '\n') {
-        end++;
-      }
-    } else {
-      end++;
-    }
-
-    start = end;
-  }
-
-  return RET_OK;
-}
-
 typedef struct _ctx_info_t {
   uint32_t x;
   int32_t y;
@@ -136,12 +84,12 @@ static ret_t label_paint_text_mlines(widget_t* widget, canvas_t* c, const wchar_
 
   widget_prepare_text_style(widget, c);
 
-  return line_breaker_break(str, label_on_line, &ctx);
+  return line_break(str, label_on_line, &ctx);
 }
 
 static ret_t label_paint_text(widget_t* widget, canvas_t* c, const wchar_t* str, uint32_t size) {
   label_t* label = LABEL(widget);
-  uint32_t lines = line_breaker_count(str);
+  uint32_t lines = line_break_count(str);
 
   if (lines > 1) {
     return label_paint_text_mlines(widget, c, str, size, lines);
@@ -201,7 +149,7 @@ ret_t label_resize_to_content(widget_t* widget, uint32_t min_w, uint32_t max_w, 
   ctx.widget = widget;
   ctx.line_height = c->font_size;
 
-  line_breaker_break(widget->text.str, label_on_line_measure, &ctx);
+  line_break(widget->text.str, label_on_line_measure, &ctx);
 
   w = ctx.w + 10;
   w = tk_min(w, max_w);

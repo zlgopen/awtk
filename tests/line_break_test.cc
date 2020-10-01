@@ -1,62 +1,57 @@
-﻿#include "gtest/gtest.h"
-#include <stdlib.h>
-#include "wordbreak.h"
-#include "linebreak.h"
+﻿#include "base/canvas.h"
+#include "widgets/label.h"
+#include "base/widget.h"
 #include "base/line_break.h"
+#include "font_dummy.h"
+#include "lcd_log.h"
+#include "gtest/gtest.h"
+#include <stdlib.h>
 
-void set_wordbreaks_wchar(const wchar_t* s, size_t len, const char* lang, char* brks) {
-  if (sizeof(wchar_t) == 2) {
-    set_wordbreaks_utf16((const utf16_t*)s, len, lang, brks);
+
+TEST(line_break, line_break_count) {
+  ASSERT_EQ(line_break_count(L"a"), 1);
+  ASSERT_EQ(line_break_count(L"ab"), 1);
+  ASSERT_EQ(line_break_count(L"a\nb"), 2);
+  ASSERT_EQ(line_break_count(L"\na\nb"), 3);
+  ASSERT_EQ(line_break_count(L"\na\nb\n"), 4);
+  ASSERT_EQ(line_break_count(L"\na\nb\r"), 4);
+  ASSERT_EQ(line_break_count(L"\na\nb\r\n"), 4);
+  ASSERT_EQ(line_break_count(L"\na\rb\r"), 4);
+  ASSERT_EQ(line_break_count(L"\na\rb\r\r"), 5);
+  ASSERT_EQ(line_break_count(L"\na\r\nb\r\r"), 5);
+  ASSERT_EQ(line_break_count(L"\na\r\rb\r\r"), 6);
+}
+
+static void test_str(const wchar_t* s1, const wchar_t* s2, uint32_t size) {
+  if (size == 0) {
+    ASSERT_EQ(*s1, 0);
   } else {
-    set_wordbreaks_utf32((const utf32_t*)s, len, lang, brks);
+    ASSERT_EQ(memcmp(s1, s2, size * sizeof(wchar_t)), 0);
   }
 }
 
-void set_linebreaks_wchar(const wchar_t* s, size_t len, const char* lang, char* brks) {
-  if (sizeof(wchar_t) == 2) {
-    set_linebreaks_utf16((const utf16_t*)s, len, lang, brks);
-  } else {
-    set_linebreaks_utf32((const utf32_t*)s, len, lang, brks);
-  }
+static ret_t test_on_line(void* ctx, uint32_t index, const wchar_t* str, uint32_t size) {
+  const wchar_t** strs = (const wchar_t**)ctx;
+  test_str(strs[index], str, size);
+
+  return RET_OK;
 }
 
-static void dump_word_breaks(const wchar_t* s, char* brks, uint32_t size) {
-  uint32_t i = 0;
-  for (i = 0; i < size; i++) {
-    printf("break:%c: %d\n", (char)s[i], (int)brks[i]);
-  }
+TEST(line_break, line_break1) {
+  const wchar_t* strs[] = {L"a", NULL};
+  ASSERT_EQ(line_break(L"a", test_on_line, (void*)strs), RET_OK);
 }
 
-TEST(LineBreak, word) {
-  init_wordbreak();
-  char brks[128] = {0};
-  const wchar_t* str = L"It is ok\nhello world";
-
-  set_wordbreaks_wchar(str, wcslen(str), "", brks);
-  dump_word_breaks(str, brks, wcslen(str));
+TEST(line_break, line_break2) {
+  const wchar_t* strs[] = {L"a", L"b", NULL};
+  ASSERT_EQ(line_break(L"a\rb", test_on_line, (void*)strs), RET_OK);
+  ASSERT_EQ(line_break(L"a\nb", test_on_line, (void*)strs), RET_OK);
+  ASSERT_EQ(line_break(L"a\r\nb", test_on_line, (void*)strs), RET_OK);
 }
 
-TEST(LineBreak, line) {
-  init_linebreak();
-  char brks[128] = {0};
-  const wchar_t* str = L"It is ok\nhello world";
-
-  set_linebreaks_wchar(str, wcslen(str), "", brks);
-  dump_word_breaks(str, brks, wcslen(str));
-}
-
-TEST(LineBreak, chars) {
-  init_linebreak();
-  const wchar_t* str = L"中文，英\n文,";
-
-  ASSERT_EQ(is_line_breakable(str[0], str[1], ""), LINEBREAK_ALLOWBREAK);
-  ASSERT_EQ(is_line_breakable(str[1], str[2], ""), LINEBREAK_NOBREAK);
-  ASSERT_EQ(is_line_breakable(str[2], str[3], ""), LINEBREAK_ALLOWBREAK);
-  ASSERT_EQ(is_line_breakable(str[4], str[5], ""), LINEBREAK_MUSTBREAK);
-}
-
-TEST(LineBreak, chars_word) {
-  ASSERT_EQ(word_break_check(' ', 'h'), LINE_BREAK_ALLOW);
-  ASSERT_EQ(word_break_check('k', ' '), LINE_BREAK_ALLOW);
-  ASSERT_EQ(word_break_check('k', 'o'), LINE_BREAK_NO);
+TEST(line_break, line_break3) {
+  const wchar_t* strs[] = {L"a", L"b", L"", NULL};
+  ASSERT_EQ(line_break(L"a\rb\r", test_on_line, (void*)strs), RET_OK);
+  ASSERT_EQ(line_break(L"a\nb\n", test_on_line, (void*)strs), RET_OK);
+  ASSERT_EQ(line_break(L"a\r\nb\r\n", test_on_line, (void*)strs), RET_OK);
 }

@@ -399,6 +399,10 @@ EXPORTS
     lcd_end_frame
     lcd_get_text_metrics
     lcd_destroy
+    line_break_check
+    word_break_check
+    line_break_count
+    line_break
     locale_info
     locale_info_set
     locale_info_create
@@ -1311,12 +1315,12 @@ EXPORTS
     date_time_get_wday_name
     date_time_destroy
     date_time_global_init_ex
-    data_writer_write
-    data_writer_destroy
     asset_loader_create
     asset_loader_load
     asset_loader_exist
     asset_loader_destroy
+    data_writer_write
+    data_writer_destroy
     data_writer_factory
     data_writer_factory_set
     data_writer_factory_create
@@ -1433,10 +1437,10 @@ EXPORTS
     guage_pointer_set_angle
     guage_pointer_set_image
     guage_pointer_set_anchor
-    lcd_mem_bgr888_create
-    lcd_mem_bgr888_create_single_fb
-    lcd_mem_bgr888_create_double_fb
-    lcd_mem_bgr888_create_three_fb
+    lcd_mem_bgr565_create
+    lcd_mem_bgr565_create_single_fb
+    lcd_mem_bgr565_create_double_fb
+    lcd_mem_bgr565_create_three_fb
     wheel_event_cast
     wheel_event_init
     view_create
@@ -1547,10 +1551,10 @@ EXPORTS
     lcd_mem_bgra8888_create_single_fb
     lcd_mem_bgra8888_create_double_fb
     lcd_mem_bgra8888_create_three_fb
-    lcd_mem_bgr565_create
-    lcd_mem_bgr565_create_single_fb
-    lcd_mem_bgr565_create_double_fb
-    lcd_mem_bgr565_create_three_fb
+    lcd_mem_bgr888_create
+    lcd_mem_bgr888_create_single_fb
+    lcd_mem_bgr888_create_double_fb
+    lcd_mem_bgr888_create_three_fb
     self_layouter_menu_create
     self_layouter_default_create
     children_layouter_default_create
@@ -1739,6 +1743,8 @@ EXPORTS
     mledit_set_keyboard
     mledit_set_cursor
     mledit_set_scroll_line
+    mledit_set_open_im_when_focused
+    mledit_set_close_im_when_blured
     mledit_cast
     line_number_create
     line_number_set_top_margin

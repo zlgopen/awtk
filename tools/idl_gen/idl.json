@@ -10983,6 +10983,126 @@
     "level": 1
   },
   {
+    "type": "enum",
+    "desc": "换行类型。",
+    "consts": [
+      {
+        "desc": "必须换行。",
+        "name": "LINE_BREAK_MUST"
+      },
+      {
+        "desc": "可以换行。",
+        "name": "LINE_BREAK_ALLOW"
+      },
+      {
+        "desc": "不可以换行。",
+        "name": "LINE_BREAK_NO"
+      }
+    ],
+    "header": "base/line_break.h",
+    "name": "line_break_type_t",
+    "prefix": "LINE_BREAK_",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "wchar_t",
+            "name": "c1",
+            "desc": "前面的字符。"
+          },
+          {
+            "type": "wchar_t",
+            "name": "c2",
+            "desc": "后面的字符。"
+          }
+        ],
+        "annotation": {},
+        "desc": "检查两个字符之间是否允许换行。",
+        "name": "line_break_check",
+        "return": {
+          "type": "line_break_type_t",
+          "desc": "返回类型。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "wchar_t",
+            "name": "c1",
+            "desc": "前面的字符。"
+          },
+          {
+            "type": "wchar_t",
+            "name": "c2",
+            "desc": "后面的字符。"
+          }
+        ],
+        "annotation": {},
+        "desc": "检查两个字符之间是否允许单词分割。",
+        "name": "word_break_check",
+        "return": {
+          "type": "line_break_type_t",
+          "desc": "返回类型。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "const wchar_t*",
+            "name": "str",
+            "desc": "字符串。"
+          }
+        ],
+        "annotation": {},
+        "desc": "统计行数。",
+        "name": "line_break_count",
+        "return": {
+          "type": "uint32_t",
+          "desc": "返回行数。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "const wchar_t*",
+            "name": "str",
+            "desc": "字符串。"
+          },
+          {
+            "type": "line_break_on_line_t",
+            "name": "on_line",
+            "desc": "回调函数。"
+          },
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "回调函数的上下文。"
+          }
+        ],
+        "annotation": {},
+        "desc": "解析字符串，对于每一行调用on_line函数。",
+        "name": "line_break",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "base/line_break.h",
+    "desc": "换行相关函数。",
+    "name": "line_break_check",
+    "annotation": {
+      "fake": true
+    },
+    "level": 1
+  },
+  {
     "type": "class",
     "methods": [
       {
@@ -36778,64 +36898,6 @@
     "type": "class",
     "methods": [
       {
-        "params": [
-          {
-            "type": "data_writer_t*",
-            "name": "writer",
-            "desc": "writer对象。"
-          },
-          {
-            "type": "uint64_t",
-            "name": "offset",
-            "desc": "偏移量。"
-          },
-          {
-            "type": "const void*",
-            "name": "data",
-            "desc": "数据缓冲区。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "size",
-            "desc": "数据长度。"
-          }
-        ],
-        "annotation": {},
-        "desc": "在指定位置写入数据。",
-        "name": "data_writer_write",
-        "return": {
-          "type": "int32_t",
-          "desc": "返回实际读取数据的长度。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "data_writer_t*",
-            "name": "writer",
-            "desc": "writer对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "销毁writer对象。",
-        "name": "data_writer_destroy",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "tkc/data_writer.h",
-    "desc": "数据写入接口。\n\n>用于抽象flash等外部设备。",
-    "name": "data_writer_t",
-    "level": 1
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
         "params": [],
         "annotation": {},
         "desc": "创建缺省的资源加载器。",
@@ -36924,6 +36986,64 @@
     "header": "base/asset_loader.h",
     "desc": "资源加载器接口。",
     "name": "asset_loader_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "data_writer_t*",
+            "name": "writer",
+            "desc": "writer对象。"
+          },
+          {
+            "type": "uint64_t",
+            "name": "offset",
+            "desc": "偏移量。"
+          },
+          {
+            "type": "const void*",
+            "name": "data",
+            "desc": "数据缓冲区。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "数据长度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "在指定位置写入数据。",
+        "name": "data_writer_write",
+        "return": {
+          "type": "int32_t",
+          "desc": "返回实际读取数据的长度。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "data_writer_t*",
+            "name": "writer",
+            "desc": "writer对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁writer对象。",
+        "name": "data_writer_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "tkc/data_writer.h",
+    "desc": "数据写入接口。\n\n>用于抽象flash等外部设备。",
+    "name": "data_writer_t",
     "level": 1
   },
   {
@@ -40134,7 +40254,7 @@
         ],
         "annotation": {},
         "desc": "创建lcd对象。",
-        "name": "lcd_mem_bgr888_create",
+        "name": "lcd_mem_bgr565_create",
         "return": {
           "type": "lcd_t*",
           "desc": "返回lcd对象。"
@@ -40160,7 +40280,7 @@
         ],
         "annotation": {},
         "desc": "创建single fb lcd对象。",
-        "name": "lcd_mem_bgr888_create_single_fb",
+        "name": "lcd_mem_bgr565_create_single_fb",
         "return": {
           "type": "lcd_t*",
           "desc": "返回lcd对象。"
@@ -40191,7 +40311,7 @@
         ],
         "annotation": {},
         "desc": "创建double fb lcd对象。",
-        "name": "lcd_mem_bgr888_create_double_fb",
+        "name": "lcd_mem_bgr565_create_double_fb",
         "return": {
           "type": "lcd_t*",
           "desc": "返回lcd对象。"
@@ -40227,7 +40347,7 @@
         ],
         "annotation": {},
         "desc": "创建three fb lcd对象。",
-        "name": "lcd_mem_bgr888_create_three_fb",
+        "name": "lcd_mem_bgr565_create_three_fb",
         "return": {
           "type": "lcd_t*",
           "desc": "返回lcd对象。"
@@ -40236,9 +40356,9 @@
     ],
     "events": [],
     "properties": [],
-    "header": "lcd/lcd_mem_bgr888.h",
+    "header": "lcd/lcd_mem_bgr565.h",
     "desc": "",
-    "name": "lcd_mem_bgr888_t",
+    "name": "lcd_mem_bgr565_t",
     "parent": "lcd_t",
     "annotation": {
       "fake": true
@@ -44424,7 +44544,7 @@
         ],
         "annotation": {},
         "desc": "创建lcd对象。",
-        "name": "lcd_mem_bgr565_create",
+        "name": "lcd_mem_bgr888_create",
         "return": {
           "type": "lcd_t*",
           "desc": "返回lcd对象。"
@@ -44450,7 +44570,7 @@
         ],
         "annotation": {},
         "desc": "创建single fb lcd对象。",
-        "name": "lcd_mem_bgr565_create_single_fb",
+        "name": "lcd_mem_bgr888_create_single_fb",
         "return": {
           "type": "lcd_t*",
           "desc": "返回lcd对象。"
@@ -44481,7 +44601,7 @@
         ],
         "annotation": {},
         "desc": "创建double fb lcd对象。",
-        "name": "lcd_mem_bgr565_create_double_fb",
+        "name": "lcd_mem_bgr888_create_double_fb",
         "return": {
           "type": "lcd_t*",
           "desc": "返回lcd对象。"
@@ -44517,7 +44637,7 @@
         ],
         "annotation": {},
         "desc": "创建three fb lcd对象。",
-        "name": "lcd_mem_bgr565_create_three_fb",
+        "name": "lcd_mem_bgr888_create_three_fb",
         "return": {
           "type": "lcd_t*",
           "desc": "返回lcd对象。"
@@ -44526,9 +44646,9 @@
     ],
     "events": [],
     "properties": [],
-    "header": "lcd/lcd_mem_bgr565.h",
+    "header": "lcd/lcd_mem_bgr888.h",
     "desc": "",
-    "name": "lcd_mem_bgr565_t",
+    "name": "lcd_mem_bgr888_t",
     "parent": "lcd_t",
     "annotation": {
       "fake": true
@@ -51305,6 +51425,52 @@
           {
             "type": "widget_t*",
             "name": "widget",
+            "desc": "widget对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "open_im_when_focused",
+            "desc": "是否在获得焦点时打开输入法。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置编辑器是否在获得焦点时打开输入法。\n\n> * 设置默认焦点时，打开窗口时不弹出软键盘。\n> * 用键盘切换焦点时，编辑器获得焦点时不弹出软键盘。",
+        "name": "mledit_set_open_im_when_focused",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "close_im_when_blured",
+            "desc": "是否是否在失去焦点时关闭输入法。在失去焦点时关闭输入法。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置编辑器是否在失去焦点时关闭输入法。",
+        "name": "mledit_set_close_im_when_blured",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
             "desc": "mledit对象。"
           }
         ],
@@ -51479,6 +51645,32 @@
       {
         "name": "cancelable",
         "desc": "是否支持撤销编辑。如果为TRUE，在失去焦点之前可以撤销所有修改(恢复获得焦点之前的内容)。\n\n> * 1.一般配合keyboard的\"cancel\"按钮使用。\n> * 2.为TRUE时，如果内容有变化，会设置编辑器的状态为changed，所以此时编辑器需要支持changed状态的style。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "open_im_when_focused",
+        "desc": "获得焦点时打开输入法。\n\n> 主要用于没有指针设备的情况，否则每次切换焦点时都打开输入法。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "close_im_when_blured",
+        "desc": "是否在失去焦点时关闭输入法(默认是)。",
         "type": "bool_t",
         "annotation": {
           "set_prop": true,
