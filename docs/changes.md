@@ -1,7 +1,12 @@
 # 最新动态
 
+* 2020/10/02
+  * 更新文档。
+  * 修复macos编译问题(感谢提[suzp1984](https://github.com/suzp1984)供补丁)
+
 * 2020/10/01
   * mledit 增加 open\_im\_when\_focused 和 close\_im\_when\_blured 属性。
+  * 重构 label，把部分函数移动到 line_break 中。
   
 * 2020/09/29
   * 删除了 assets\_manager\_ref 函数的空字符串的警告信息（感谢智明提供补丁）。

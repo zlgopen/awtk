@@ -310,6 +310,8 @@ pip install Pillow
 
 * [Examples for Custom Widgets: ios/android like list item](https://github.com/zlgopen/awtk-widget-slidable-row)
 
+* [Examples for Custom Widgets: VLabel](https://github.com/zlgopen/awtk-widget-vlabel)
+
 * [Examples for Custom Font Loader](https://github.com/zlgopen/awtk-custom-font-loader)
 
 The third party provides: 
