@@ -24,6 +24,7 @@
 #include "widgets/label.h"
 #include "base/widget_vtable.h"
 #include "base/window_manager.h"
+#include "base/line_break.h"
 
 typedef struct _ctx_info_t {
   uint32_t x;
