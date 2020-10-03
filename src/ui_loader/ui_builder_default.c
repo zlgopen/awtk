@@ -41,6 +41,7 @@ static ret_t ui_builder_default_on_widget_start(ui_builder_t* b, const widget_de
   if (widget == NULL) {
     log_debug("%s: not supported type %s\n", __FUNCTION__, type);
     assert(!"not supported");
+    return RET_FAIL;
   }
 
   b->widget = widget;
