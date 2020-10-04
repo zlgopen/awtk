@@ -1,13 +1,17 @@
 # 最新动态
 
+* 2020/10/03-04
+  * 解析时遇到没有注册的控件打印警告，并用 view 代替。
+  * 增加 [vscode 实时预览插件](https://github.com/zlgopen/awtk-vscode-plugin)。
+
 * 2020/10/02
   * 更新文档。
-  * 修复macos编译问题(感谢提[suzp1984](https://github.com/suzp1984)供补丁)
+  * 修复 macos 编译问题（感谢提 [suzp1984t pu](https://github.com/suzp1984) 供补丁）
 
 * 2020/10/01
   * mledit 增加 open\_im\_when\_focused 和 close\_im\_when\_blured 属性。
   * 重构 label，把部分函数移动到 line_break 中。
-  
+  * 增加 [垂直文本控件](https://github.com/zlgopen/awtk-widget-vlabel)
 * 2020/09/29
   * 删除了 assets\_manager\_ref 函数的空字符串的警告信息（感谢智明提供补丁）。
   * 修复 vgcanvas\_create 函数返回值的注释（感谢兆坤提供补丁）。
@@ -2999,7 +3003,7 @@
   * 完善 vgcanvas，增加 paint 接口。
 
 * 2018/09/25
-  * 完成 text\_selector 控件基本功能。
+  * 完成 text\_selector 控件基本��能。
 
 * 2018/09/24
   * 更新文档。
