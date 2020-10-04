@@ -40,10 +40,10 @@ static ret_t ui_builder_default_on_widget_start(ui_builder_t* b, const widget_de
   widget = widget_factory_create_widget(widget_factory(), type, parent, x, y, w, h);
   if (widget == NULL) {
     log_debug("%s: not supported type %s\n", __FUNCTION__, type);
-    assert(!"not supported");
-    return RET_FAIL;
+    widget = widget_factory_create_widget(widget_factory(), WIDGET_TYPE_VIEW, parent, x, y, w, h);
   }
-
+  return_value_if_fail(widget != NULL, RET_OOM);
+  
   b->widget = widget;
   b->widget->loading = TRUE;
   if (b->root == NULL) {
