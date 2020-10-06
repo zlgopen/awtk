@@ -12908,7 +12908,7 @@
     ],
     "header": "base/style.h",
     "name": "style_id_t",
-    "prefix": "STYLE",
+    "prefix": "STYLE_ID_",
     "annotation": {
       "scriptable": true,
       "string": true
@@ -18595,7 +18595,7 @@
     ],
     "header": "base/widget_consts.h",
     "name": "widget_state_t",
-    "prefix": "WIDGET_",
+    "prefix": "WIDGET_STATE_",
     "annotation": {
       "scriptable": true,
       "string": true
