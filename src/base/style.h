@@ -29,7 +29,7 @@ BEGIN_C_DECLS
 
 /**
  * @enum style_id_t
- * @prefix STYLE
+ * @prefix STYLE_ID_
  * @annotation ["scriptable", "string"]
  * style常量定义。
  */

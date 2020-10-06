@@ -1267,7 +1267,7 @@ typedef enum _window_closable_t {
 /**
  * @enum widget_state_t
  * @annotation ["scriptable", "string"]
- * @prefix WIDGET_
+ * @prefix WIDGET_STATE_
  * 控件状态常量定义。
  *
  * 这里指定常用的状态值，扩展控件可以在自己的头文件中定义私有的状态。
