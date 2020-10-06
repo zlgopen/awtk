@@ -193,10 +193,10 @@ git pull
 
 ### Mac
 
-如果没有安装 scons 和 sdl2，请在终端运行下面的命令 （假定已安装 brew)：
+如果没有安装 nodejs, scons 和 sdl2，请在终端运行下面的命令 （假定已安装 brew)：
 
 ```
-brew install scons sdl2
+brew install scons sdl2 node
 ```
 
 编译运行 （在终端下，进入 awtk 所在的目录，并运行下列命令）：
@@ -211,7 +211,7 @@ scons
 如果没有安装 scons 和依赖的软件包，请在终端运行下面的命令：
 
 ```
-sudo apt-get install gcc g++ scons libsndio-dev libgtk-3-dev libglu1-mesa libglu1-mesa-dev libgl1-mesa-glx libgl1-mesa-dev libasound2-dev git vim clang-format libharfbuzz-dev
+sudo apt-get install gcc g++ scons libsndio-dev libgtk-3-dev libglu1-mesa libglu1-mesa-dev libgl1-mesa-glx libgl1-mesa-dev libasound2-dev git vim clang-format libharfbuzz-dev nodejs
 ```
 
 编译运行 （在终端下，进入 awtk 所在的目录，并运行下列命令）：
@@ -233,6 +233,8 @@ scons
 pip install pywin32
 ```
 
+如果没有安装nodejs，请到 [nodejs](https://nodejs.org/en/)下载并安装。
+
 编译运行 （在命令行模式下，进入 awtk 所在的目录，并运行下列命令）：
 
 ```
@@ -240,10 +242,18 @@ scons
 bin\demoui
 ```
 
-> 如果没有安装 PIL，请用 pip 安装。
+### 所有平台
+
+* 如果 PIL 没有安装，请用 pip 安装：
 
 ```
 pip install Pillow
+```
+
+* 如果 glob 没有安装，请用 npm 安装：
+
+```
+npm install -g glob
 ```
 
 ## 五、在线演示

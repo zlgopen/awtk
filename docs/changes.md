@@ -1,5 +1,11 @@
 # 最新动态
 
+2020/10/06
+  * 完善 README.md，增加 nodejs 和 glob 安装方法。
+
+2020/10/05
+  * 增加用于生成智能提示数据的工具。
+  
 * 2020/10/03-04
   * 解析时遇到没有注册的控件打印警告，并用 view 代替。
   * 增加 [vscode 实时预览插件](https://github.com/zlgopen/awtk-vscode-plugin)。

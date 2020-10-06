@@ -190,9 +190,10 @@ git pull
 
 ### Mac
 
-If scons and sdl2 aren't installed, please run the following command in the terminal (assuming that brew has been installed):
+If nodejs, scons and sdl2 aren't installed, please run the following command in the terminal (assuming that brew has been installed):
+
 ```
-brew install scons sdl2
+brew install scons sdl2 node
 ```
 
 Compile and run (Enter the directory where awtk is and run the following command in the terminal): 
@@ -207,7 +208,7 @@ scons
  If scons and the dependent software pack aren't installed, please run the following command in the terminal:
 
 ```
-sudo apt-get install gcc g++ scons libsndio-dev libgtk-3-dev libglu1-mesa libglu1-mesa-dev libgl1-mesa-glx libgl1-mesa-dev libasound2-dev git vim clang-format libharfbuzz-dev
+sudo apt-get install gcc g++ scons libsndio-dev libgtk-3-dev libglu1-mesa libglu1-mesa-dev libgl1-mesa-glx libgl1-mesa-dev libasound2-dev git vim clang-format libharfbuzz-dev nodejs
 ```
 
 Compile and run (Enter the awtk directory and run the following command in the terminal): 
@@ -231,15 +232,26 @@ pip install pywin32
 
 Compile and run (Enter the awtk directory and run the following command in the terminal): 
 
+
+Install [nodejs](https://nodejs.org/en/)
+
 ```
 scons
 bin\demoui
 ```
 
+### for all platforms
+
 > If PIL isn't installed, please use pip install:
 
 ```
 pip install Pillow
+```
+
+> If nodejs glob isn't installed, please use npm install:
+
+```
+npm install -g glob
 ```
 
 ## V. Online Demonstration
