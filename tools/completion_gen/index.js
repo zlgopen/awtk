@@ -22,6 +22,9 @@ function genUICompletion(json) {
   result.widgets = widgets.map((iter) => {
     let w = {}
     w.name = iter.name.replace(/_t$/, '');
+    if(iter.parent) {
+      w.parent = iter.parent.replace(/_t$/, '');
+    }
     w.desc = iter.desc.split('\n')[0].trim('\r\n ');
 
     let props = iter.properties.filter((iter) => {
@@ -76,7 +79,7 @@ function genStyleCompletion(json) {
 }
 
 function genCompletion(json) {
-//  genUICompletion(json);
+  genUICompletion(json);
   genStyleCompletion(json);
 }
 
