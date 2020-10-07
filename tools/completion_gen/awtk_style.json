@@ -1,0 +1,262 @@
+{
+	"styleIDs": [
+		{
+			"name": "bg_color",
+			"desc": "背景颜色。"
+		},
+		{
+			"name": "fg_color",
+			"desc": "前景颜色。"
+		},
+		{
+			"name": "mask_color",
+			"desc": "蒙版颜色。"
+		},
+		{
+			"name": "font_name",
+			"desc": "字体名称。"
+		},
+		{
+			"name": "font_size",
+			"desc": "字体大小。"
+		},
+		{
+			"name": "font_style",
+			"desc": "字体风格(粗体、斜体等)。"
+		},
+		{
+			"name": "text_color",
+			"desc": "文本颜色。"
+		},
+		{
+			"name": "highlight_font_name",
+			"desc": "高亮文本的字体名称。"
+		},
+		{
+			"name": "highlight_font_size",
+			"desc": "高亮文本的字体大小。"
+		},
+		{
+			"name": "highlight_text_color",
+			"desc": "高亮文本的文本颜色。"
+		},
+		{
+			"name": "tips_text_color",
+			"desc": "提示文本颜色。"
+		},
+		{
+			"name": "text_align_h",
+			"desc": "文本水平对齐的方式。"
+		},
+		{
+			"name": "text_align_v",
+			"desc": "文本垂直对齐的方式。"
+		},
+		{
+			"name": "border_color",
+			"desc": "边框颜色。"
+		},
+		{
+			"name": "border_width",
+			"desc": "边框线宽。"
+		},
+		{
+			"name": "border",
+			"desc": "边框类型。"
+		},
+		{
+			"name": "bg_image",
+			"desc": "图片的名称。"
+		},
+		{
+			"name": "bg_image_draw_type",
+			"desc": "图片的显示方式。"
+		},
+		{
+			"name": "icon",
+			"desc": "图标的名称。"
+		},
+		{
+			"name": "fg_image",
+			"desc": "图片的名称。"
+		},
+		{
+			"name": "fg_image_draw_type",
+			"desc": "图片的显示方式。"
+		},
+		{
+			"name": "spacer",
+			"desc": "间距。"
+		},
+		{
+			"name": "margin",
+			"desc": "边距。"
+		},
+		{
+			"name": "margin_left",
+			"desc": "左边距。"
+		},
+		{
+			"name": "margin_right",
+			"desc": "右边距。"
+		},
+		{
+			"name": "margin_top",
+			"desc": "顶边距。"
+		},
+		{
+			"name": "margin_bottom",
+			"desc": "底边距。"
+		},
+		{
+			"name": "icon_at",
+			"desc": "图标的位置。"
+		},
+		{
+			"name": "active_icon",
+			"desc": "Active图标的名称。"
+		},
+		{
+			"name": "x_offset",
+			"desc": "X方向的偏移，方便实现按下的效果。"
+		},
+		{
+			"name": "y_offset",
+			"desc": "Y方向的偏移，方便实现按下的效果。"
+		},
+		{
+			"name": "selected_bg_color",
+			"desc": "编辑器中选中区域的背景颜色。"
+		},
+		{
+			"name": "selected_fg_color",
+			"desc": "编辑器中选中区域的前景颜色。"
+		},
+		{
+			"name": "selected_text_color",
+			"desc": "编辑器中选中区域的文本颜色。"
+		},
+		{
+			"name": "round_radius",
+			"desc": "圆角半径(仅在WITH_VGCANVAS定义时生效)。"
+		},
+		{
+			"name": "round_radius_top_letf",
+			"desc": "左上角圆角半径(仅在WITH_VGCANVAS定义时生效)。"
+		},
+		{
+			"name": "round_radius_top_right",
+			"desc": "右上角圆角半径(仅在WITH_VGCANVAS定义时生效)。"
+		},
+		{
+			"name": "round_radius_bottom_letf",
+			"desc": "左下角圆角半径(仅在WITH_VGCANVAS定义时生效)。"
+		},
+		{
+			"name": "round_radius_bottom_right",
+			"desc": "右下角圆角半径(仅在WITH_VGCANVAS定义时生效)。"
+		},
+		{
+			"name": "children_layout",
+			"desc": "子控件布局参数。"
+		},
+		{
+			"name": "self_layout",
+			"desc": "控件布局参数。"
+		}
+	],
+	"widgetStates": [
+		{
+			"name": "none",
+			"desc": "无效状态。"
+		},
+		{
+			"name": "normal",
+			"desc": "正常状态。"
+		},
+		{
+			"name": "changed",
+			"desc": "内容被修改的状态。"
+		},
+		{
+			"name": "pressed",
+			"desc": "指针按下状态。"
+		},
+		{
+			"name": "over",
+			"desc": "指针悬浮状态。"
+		},
+		{
+			"name": "disable",
+			"desc": "禁用状态。"
+		},
+		{
+			"name": "focused",
+			"desc": "聚焦状态。"
+		},
+		{
+			"name": "checked",
+			"desc": "勾选状态。"
+		},
+		{
+			"name": "unchecked",
+			"desc": "没勾选状态。"
+		},
+		{
+			"name": "empty",
+			"desc": "编辑器无内容状态。"
+		},
+		{
+			"name": "empty_focus",
+			"desc": "编辑器无内容同时聚焦的状态。"
+		},
+		{
+			"name": "error",
+			"desc": "输入错误状态。"
+		},
+		{
+			"name": "selected",
+			"desc": "选中状态。"
+		},
+		{
+			"name": "normal_of_checked",
+			"desc": "正常状态(选中项)。"
+		},
+		{
+			"name": "pressed_of_checked",
+			"desc": "指针按下状态(选中项)。"
+		},
+		{
+			"name": "over_of_checked",
+			"desc": "指针悬浮状态(选中项)。"
+		},
+		{
+			"name": "disable_of_checked",
+			"desc": "禁用状态(选中项)。"
+		},
+		{
+			"name": "focused_of_checked",
+			"desc": "焦点状态(选中项)。"
+		},
+		{
+			"name": "normal_of_active",
+			"desc": "正常状态(当前项)。"
+		},
+		{
+			"name": "pressed_of_active",
+			"desc": "指针按下状态(当前项)。"
+		},
+		{
+			"name": "over_of_active",
+			"desc": "指针悬浮状态(当前项)。"
+		},
+		{
+			"name": "disable_of_active",
+			"desc": "禁用状态(当前项)。"
+		},
+		{
+			"name": "focused_of_active",
+			"desc": "焦点状态(当前项)。"
+		}
+	]
+}

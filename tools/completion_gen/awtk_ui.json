@@ -1,0 +1,1604 @@
+{
+	"widgets": [
+		{
+			"name": "widget",
+			"desc": "**widget_t** 是所有控件、窗口和窗口管理器的基类。",
+			"props": [
+				{
+					"name": "x",
+					"desc": "x坐标(相对于父控件的x坐标)。",
+					"type": "xy_t"
+				},
+				{
+					"name": "y",
+					"desc": "y坐标(相对于父控件的y坐标)。",
+					"type": "xy_t"
+				},
+				{
+					"name": "w",
+					"desc": "宽度。",
+					"type": "wh_t"
+				},
+				{
+					"name": "h",
+					"desc": "高度。",
+					"type": "wh_t"
+				},
+				{
+					"name": "name",
+					"desc": "控件名字。",
+					"type": "char*"
+				},
+				{
+					"name": "pointer_cursor",
+					"desc": "鼠标光标图片名称。",
+					"type": "char*"
+				},
+				{
+					"name": "tr_text",
+					"desc": "保存用于翻译的字符串。",
+					"type": "char*"
+				},
+				{
+					"name": "style",
+					"desc": "style的名称。",
+					"type": "char*"
+				},
+				{
+					"name": "animation",
+					"desc": "动画参数。请参考[控件动画](https://github.com/zlgopen/awtk/blob/master/docs/widget_animator.md)",
+					"type": "char*"
+				},
+				{
+					"name": "enable",
+					"desc": "启用/禁用状态。",
+					"type": "bool_t"
+				},
+				{
+					"name": "feedback",
+					"desc": "是否启用按键音、触屏音和震动等反馈。",
+					"type": "bool_t"
+				},
+				{
+					"name": "visible",
+					"desc": "是否可见。",
+					"type": "bool_t"
+				},
+				{
+					"name": "sensitive",
+					"desc": "是否接受用户事件。",
+					"type": "bool_t"
+				},
+				{
+					"name": "focusable",
+					"desc": "是否支持焦点停留。",
+					"type": "bool_t"
+				},
+				{
+					"name": "with_focus_state",
+					"desc": "是否支持焦点状态。\n> 如果希望style支持焦点状态，但有不希望焦点停留，可用本属性。",
+					"type": "bool_t"
+				},
+				{
+					"name": "floating",
+					"desc": "标识控件是否启用浮动布局，不受父控件的children_layout的控制。",
+					"type": "bool_t"
+				},
+				{
+					"name": "dirty_rect_tolerance",
+					"desc": "脏矩形超出控件本身大小的最大范围(一般不用指定)。\n\n> 如果 border 太粗或 offset 太大等原因，导致脏矩形超出控件本身大小太多（大于缺省值）时，才需要指定。",
+					"type": "uint16_t"
+				}
+			]
+		},
+		{
+			"name": "guage_pointer",
+			"parent": "widget",
+			"desc": "仪表指针控件。",
+			"props": [
+				{
+					"name": "angle",
+					"desc": "指针角度。12点钟方向为0度，顺时钟方向为正，单位为度。",
+					"type": "int32_t"
+				},
+				{
+					"name": "image",
+					"desc": "指针图片。\n\n图片须垂直向上，图片的中心点为旋转方向。",
+					"type": "char*"
+				},
+				{
+					"name": "anchor_x",
+					"desc": "图片旋转锚点x坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)",
+					"type": "char*"
+				},
+				{
+					"name": "anchor_y",
+					"desc": "图片旋转锚点x坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)",
+					"type": "char*"
+				}
+			]
+		},
+		{
+			"name": "view",
+			"parent": "widget",
+			"desc": "一个通用的容器控件。",
+			"props": [
+				{
+					"name": "default_focused_child",
+					"desc": "缺省获得焦点的子控件(可用控件名或类型)。\n\n> view作为pages/slideview的直接子控件才需要设置。\n> 正常情况下，一个窗口只能指定一个初始焦点。\n> 但是对于pages/slideview来说，可能希望每一个页面都有一个初始焦点，此时可用default\\_focused\\_child来指定。",
+					"type": "char*"
+				}
+			]
+		},
+		{
+			"name": "tab_control",
+			"parent": "widget",
+			"desc": "标签控件。",
+			"props": []
+		},
+		{
+			"name": "tab_button",
+			"parent": "widget",
+			"desc": "标签按钮控件。",
+			"props": [
+				{
+					"name": "value",
+					"desc": "值。",
+					"type": "bool_t"
+				},
+				{
+					"name": "load_ui",
+					"desc": "激活后加载的UI名字。",
+					"type": "char*"
+				},
+				{
+					"name": "active_icon",
+					"desc": "当前项的图标的名称。",
+					"type": "char*"
+				},
+				{
+					"name": "icon",
+					"desc": "非当前项的图标的名称。",
+					"type": "char*"
+				}
+			]
+		},
+		{
+			"name": "tab_button_group",
+			"parent": "widget",
+			"desc": "标签按钮分组控件。",
+			"props": [
+				{
+					"name": "compact",
+					"desc": "紧凑型排版子控件(缺省FALSE)。",
+					"type": "bool_t"
+				},
+				{
+					"name": "scrollable",
+					"desc": "是否支持滚动(缺省FALSE)。\n\n> 紧凑型排版子控件时才支持滚动。",
+					"type": "bool_t"
+				}
+			]
+		},
+		{
+			"name": "slider",
+			"parent": "widget",
+			"desc": "滑块控件。",
+			"props": [
+				{
+					"name": "value",
+					"desc": "值。",
+					"type": "double"
+				},
+				{
+					"name": "min",
+					"desc": "最小值。",
+					"type": "double"
+				},
+				{
+					"name": "max",
+					"desc": "最大值。",
+					"type": "double"
+				},
+				{
+					"name": "step",
+					"desc": "拖动的最小单位。",
+					"type": "double"
+				},
+				{
+					"name": "vertical",
+					"desc": "滑块的是否为垂直方向。",
+					"type": "bool_t"
+				},
+				{
+					"name": "bar_size",
+					"desc": "轴的宽度或高度（单位：像素），为0表示为控件的宽度或高度的一半，缺省为0。",
+					"type": "uint32_t"
+				},
+				{
+					"name": "dragger_size",
+					"desc": "滑块的宽度或高度（单位：像素），缺省为10。",
+					"type": "uint32_t"
+				},
+				{
+					"name": "dragger_adapt_to_icon",
+					"desc": "滑块的宽度或高度是否与icon适应，缺省为true。",
+					"type": "bool_t"
+				},
+				{
+					"name": "slide_with_bar",
+					"desc": "是否允许在轴上滑动来改变滑块位置，缺省为FALSE。",
+					"type": "bool_t"
+				}
+			]
+		},
+		{
+			"name": "row",
+			"parent": "widget",
+			"desc": "row。一个简单的容器控件，用于水平排列其子控件。",
+			"props": []
+		},
+		{
+			"name": "progress_bar",
+			"parent": "widget",
+			"desc": "进度条控件。",
+			"props": [
+				{
+					"name": "value",
+					"desc": "进度条的值[0-max]。",
+					"type": "float_t"
+				},
+				{
+					"name": "max",
+					"desc": "最大值(缺省为100)。",
+					"type": "float_t"
+				},
+				{
+					"name": "vertical",
+					"desc": "进度条的是否为垂直方向。",
+					"type": "bool_t"
+				},
+				{
+					"name": "show_text",
+					"desc": "是否显示文本。",
+					"type": "bool_t"
+				}
+			]
+		},
+		{
+			"name": "pages",
+			"parent": "widget",
+			"desc": "页面管理控件。",
+			"props": [
+				{
+					"name": "active",
+					"desc": "当前活跃的page。",
+					"type": "uint32_t"
+				}
+			]
+		},
+		{
+			"name": "label",
+			"parent": "widget",
+			"desc": "文本控件。用于显示一行或多行文本。",
+			"props": [
+				{
+					"name": "length",
+					"desc": "显示字符的个数(小余0时全部显示)。\n主要用于动态改变显示字符的个数，来实现类似[拨号中...]的动画效果。",
+					"type": "int32_t"
+				}
+			]
+		},
+		{
+			"name": "group_box",
+			"parent": "widget",
+			"desc": "分组控件。",
+			"props": []
+		},
+		{
+			"name": "grid",
+			"parent": "widget",
+			"desc": "grid控件。一个简单的容器控件，用于网格排列一组控件。",
+			"props": []
+		},
+		{
+			"name": "grid_item",
+			"parent": "widget",
+			"desc": "grid_item。一个简单的容器控件，一般作为grid的子控件。",
+			"props": []
+		},
+		{
+			"name": "edit",
+			"parent": "widget",
+			"desc": "单行编辑器控件。",
+			"props": [
+				{
+					"name": "readonly",
+					"desc": "编辑器是否为只读。",
+					"type": "bool_t"
+				},
+				{
+					"name": "password_visible",
+					"desc": "密码是否可见。",
+					"type": "bool_t"
+				},
+				{
+					"name": "auto_fix",
+					"desc": "输入无效时，是否自动改正。",
+					"type": "bool_t"
+				},
+				{
+					"name": "select_none_when_focused",
+					"desc": "获得焦点时不选中文本。\n\n> 主要用于没有指针设备的情况，否则软键盘无法取消选中文本。",
+					"type": "bool_t"
+				},
+				{
+					"name": "open_im_when_focused",
+					"desc": "获得焦点时打开输入法。\n\n> 主要用于没有指针设备的情况，否则每次切换焦点时都打开输入法。",
+					"type": "bool_t"
+				},
+				{
+					"name": "close_im_when_blured",
+					"desc": "是否在失去焦点时关闭输入法(默认是)。",
+					"type": "bool_t"
+				},
+				{
+					"name": "top_margin",
+					"desc": "上边距。",
+					"type": "uint8_t"
+				},
+				{
+					"name": "bottom_margin",
+					"desc": "下边距。",
+					"type": "uint8_t"
+				},
+				{
+					"name": "left_margin",
+					"desc": "左边距。",
+					"type": "uint8_t"
+				},
+				{
+					"name": "right_margin",
+					"desc": "右边距。",
+					"type": "uint8_t"
+				},
+				{
+					"name": "tips",
+					"desc": "输入提示。",
+					"type": "char*"
+				},
+				{
+					"name": "tr_tips",
+					"desc": "保存用于翻译的提示信息。",
+					"type": "char*"
+				},
+				{
+					"name": "action_text",
+					"desc": "软键盘上action按钮的文本。内置取值有：\n\n* next 将焦点切换到下一个控件。\n* done 完成，关闭软键盘。\n\n也可以使用其它文本，比如send表示发送。这个需要自己实现相应的功能，处理EVT\\_IM\\_ACTION事件即可。",
+					"type": "char*"
+				},
+				{
+					"name": "keyboard",
+					"desc": "自定义软键盘名称。AWTK优先查找keyboard属性设置的键盘文件名（该键盘的XML文件需要在default\\raw\\ui目录下存在），如果keyboard为空就找input_type设置的键盘类型",
+					"type": "char*"
+				},
+				{
+					"name": "input_type",
+					"desc": "输入类型。",
+					"type": "input_type_t"
+				},
+				{
+					"name": "min",
+					"desc": "最小值或最小长度。",
+					"type": "double"
+				},
+				{
+					"name": "max",
+					"desc": "最大值或最大长度。",
+					"type": "double"
+				},
+				{
+					"name": "step",
+					"desc": "步长。\n作为数值型编辑器时，一次增加和减少时的数值。",
+					"type": "double"
+				},
+				{
+					"name": "cancelable",
+					"desc": "是否支持撤销编辑。如果为TRUE，在失去焦点之前可以撤销所有修改(恢复获得焦点之前的内容)。\n\n> * 1.一般配合keyboard的\"cancel\"按钮使用。\n> * 2.为TRUE时，如果内容有变化，会设置编辑器的状态为changed，所以此时编辑器需要支持changed状态的style。",
+					"type": "bool_t"
+				}
+			]
+		},
+		{
+			"name": "dragger",
+			"parent": "widget",
+			"desc": "dragger控件。",
+			"props": [
+				{
+					"name": "x_min",
+					"desc": "x坐标的最小值。",
+					"type": "xy_t"
+				},
+				{
+					"name": "y_min",
+					"desc": "y坐标的最小值。",
+					"type": "xy_t"
+				},
+				{
+					"name": "x_max",
+					"desc": "x坐标的最大值。",
+					"type": "xy_t"
+				},
+				{
+					"name": "y_max",
+					"desc": "y坐标的最大值。",
+					"type": "xy_t"
+				}
+			]
+		},
+		{
+			"name": "digit_clock",
+			"parent": "widget",
+			"desc": "数字时钟控件。",
+			"props": [
+				{
+					"name": "format",
+					"desc": "显示格式。\n\n* Y 代表年(完整显示)\n* M 代表月(1-12)\n* D 代表日(1-31)\n* h 代表时(0-23)\n* m 代表分(0-59)\n* s 代表秒(0-59)\n* w 代表星期(0-6)\n* W 代表星期的英文缩写(支持翻译)\n* YY 代表年(只显示末两位)\n* MM 代表月(01-12)\n* DD 代表日(01-31)\n* hh 代表时(00-23)\n* mm 代表分(00-59)\n* ss 代表秒(00-59)\n* MMM 代表月的英文缩写(支持翻译)\n\n如 日期时间为：2018/11/12 9:10:20\n* \"Y/M/D\"显示为\"2018/11/12\"\n* \"Y-M-D\"显示为\"2018-11-12\"\n* \"Y-M-D h:m:s\"显示为\"2018-11-12 9:10:20\"\n* \"Y-M-D hh:mm:ss\"显示为\"2018-11-12 09:10:20\"",
+					"type": "char*"
+				}
+			]
+		},
+		{
+			"name": "dialog_title",
+			"parent": "widget",
+			"desc": "对话框标题控件。",
+			"props": []
+		},
+		{
+			"name": "dialog_client",
+			"parent": "widget",
+			"desc": "对话框客户区控件。",
+			"props": []
+		},
+		{
+			"name": "combo_box_item",
+			"parent": "widget",
+			"desc": "ComboBox Item控件。",
+			"props": [
+				{
+					"name": "value",
+					"desc": "值。",
+					"type": "int32_t"
+				},
+				{
+					"name": "checked",
+					"desc": "是否被选中。",
+					"type": "bool_t"
+				}
+			]
+		},
+		{
+			"name": "time_clock",
+			"parent": "widget",
+			"desc": "模拟时钟控件。",
+			"props": [
+				{
+					"name": "hour",
+					"desc": "小时。",
+					"type": "int32_t"
+				},
+				{
+					"name": "minute",
+					"desc": "分钟。",
+					"type": "int32_t"
+				},
+				{
+					"name": "second",
+					"desc": "秒。",
+					"type": "int32_t"
+				},
+				{
+					"name": "image",
+					"desc": "中心图片。",
+					"type": "char*"
+				},
+				{
+					"name": "bg_image",
+					"desc": "背景图片。",
+					"type": "char*"
+				},
+				{
+					"name": "hour_image",
+					"desc": "时针图片。",
+					"type": "char*"
+				},
+				{
+					"name": "minute_image",
+					"desc": "分针图片。",
+					"type": "char*"
+				},
+				{
+					"name": "second_image",
+					"desc": "秒针图片。",
+					"type": "char*"
+				},
+				{
+					"name": "hour_anchor_x",
+					"desc": "时针图片旋转锚点x坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)",
+					"type": "char*"
+				},
+				{
+					"name": "hour_anchor_y",
+					"desc": "时针图片旋转锚点y坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)",
+					"type": "char*"
+				},
+				{
+					"name": "minute_anchor_x",
+					"desc": "分针图片旋转锚点x坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)",
+					"type": "char*"
+				},
+				{
+					"name": "minute_anchor_y",
+					"desc": "分针图片旋转锚点y坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)",
+					"type": "char*"
+				},
+				{
+					"name": "second_anchor_x",
+					"desc": "秒针图片旋转锚点x坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)",
+					"type": "char*"
+				},
+				{
+					"name": "second_anchor_y",
+					"desc": "秒针图片旋转锚点y坐标。(后面加上px为像素点，不加px为相对百分比坐标0.0f到1.0f)",
+					"type": "char*"
+				}
+			]
+		},
+		{
+			"name": "text_selector",
+			"parent": "widget",
+			"desc": "文本选择器控件，通常用于选择日期和时间等。",
+			"props": [
+				{
+					"name": "visible_nr",
+					"desc": "可见的选项数量(只能是3或者5，缺省为5)。",
+					"type": "uint32_t"
+				},
+				{
+					"name": "selected_index",
+					"desc": "当前选中的选项。",
+					"type": "int32_t"
+				},
+				{
+					"name": "options",
+					"desc": "设置可选项(冒号分隔值和文本，分号分隔选项，如:1:red;2:green;3:blue)。\n对于数值选项，也可以指定一个范围，用『-』分隔起始值、结束值和格式。\n如：\"1-7-%02d\"表示1到7，格式为『02d』，格式为可选，缺省为『%d』。",
+					"type": "char*"
+				}
+			]
+		},
+		{
+			"name": "switch",
+			"parent": "widget",
+			"desc": "开关控件。",
+			"props": [
+				{
+					"name": "value",
+					"desc": "值。",
+					"type": "bool_t"
+				},
+				{
+					"name": "max_xoffset_ratio",
+					"desc": "当开关处于关闭时，图片偏移相对于图片宽度的比例(缺省为1/3)。",
+					"type": "float_t"
+				}
+			]
+		},
+		{
+			"name": "column",
+			"parent": "widget",
+			"desc": "column。一个简单的容器控件，垂直排列其子控件。",
+			"props": []
+		},
+		{
+			"name": "color_tile",
+			"parent": "widget",
+			"desc": "色块控件。",
+			"props": [
+				{
+					"name": "bg_color",
+					"desc": "背景颜色。",
+					"type": "const char*"
+				},
+				{
+					"name": "border_color",
+					"desc": "边框颜色。",
+					"type": "const char*"
+				}
+			]
+		},
+		{
+			"name": "slide_view",
+			"parent": "widget",
+			"desc": "滑动视图。",
+			"props": [
+				{
+					"name": "vertical",
+					"desc": "是否为上下滑动模式。",
+					"type": "bool_t"
+				},
+				{
+					"name": "auto_play",
+					"desc": "自动播放。0表示禁止自动播放，非0表示自动播放时每一页播放的时间。",
+					"type": "uint16_t"
+				},
+				{
+					"name": "loop",
+					"desc": "循环切换模式。\n\n向后切换：切换到最后一页时，再往后切换就到第一页。\n向前切换：切换到第一页时，再往前切换就到最后一页。",
+					"type": "bool_t"
+				},
+				{
+					"name": "anim_hint",
+					"desc": "页面切换效果。",
+					"type": "char*"
+				}
+			]
+		},
+		{
+			"name": "clip_view",
+			"parent": "widget",
+			"desc": "一个裁剪子控件的容器控件。",
+			"props": []
+		},
+		{
+			"name": "check_button",
+			"parent": "widget",
+			"desc": "勾选按钮控件(单选/多选)。",
+			"props": [
+				{
+					"name": "value",
+					"desc": "值(勾选为TRUE，非勾选为FALSE)。",
+					"type": "bool_t"
+				}
+			]
+		},
+		{
+			"name": "slide_indicator",
+			"parent": "widget",
+			"desc": "slide_view的指示器控件。",
+			"props": [
+				{
+					"name": "value",
+					"desc": "值(缺省为0)。",
+					"type": "uint32_t"
+				},
+				{
+					"name": "max",
+					"desc": "最大值(缺省为100)。",
+					"type": "uint32_t"
+				},
+				{
+					"name": "default_paint",
+					"desc": "指示器的类型。",
+					"type": "indicator_default_paint_t"
+				},
+				{
+					"name": "auto_hide",
+					"desc": "自动隐藏。0表示禁止，非0表示无操作后延迟多久隐藏。",
+					"type": "uint16_t"
+				},
+				{
+					"name": "margin",
+					"desc": "指示器与边缘的边距。",
+					"type": "int32_t"
+				},
+				{
+					"name": "spacing",
+					"desc": "指示器的中心之间的间距（圆弧显示时，间距的单位为弧度，否则为像素）。",
+					"type": "float_t"
+				},
+				{
+					"name": "size",
+					"desc": "指示器的大小。",
+					"type": "uint32_t"
+				},
+				{
+					"name": "anchor_x",
+					"desc": "锚点x坐标。",
+					"type": "float_t"
+				},
+				{
+					"name": "anchor_y",
+					"desc": "锚点y坐标。",
+					"type": "float_t"
+				},
+				{
+					"name": "indicated_target",
+					"desc": "指示器指示的目标。",
+					"type": "char*"
+				}
+			]
+		},
+		{
+			"name": "slide_menu",
+			"parent": "widget",
+			"desc": "左右滑动菜单控件。",
+			"props": [
+				{
+					"name": "value",
+					"desc": "值。代表当前选中项的索引。",
+					"type": "int32_t"
+				},
+				{
+					"name": "align_v",
+					"desc": "垂直对齐方式。",
+					"type": "align_v_t"
+				},
+				{
+					"name": "min_scale",
+					"desc": "最小缩放比例。",
+					"type": "float_t"
+				}
+			]
+		},
+		{
+			"name": "scroll_view",
+			"parent": "widget",
+			"desc": "滚动视图。",
+			"props": [
+				{
+					"name": "virtual_w",
+					"desc": "虚拟宽度。",
+					"type": "wh_t"
+				},
+				{
+					"name": "virtual_h",
+					"desc": "虚拟高度。",
+					"type": "wh_t"
+				},
+				{
+					"name": "xoffset",
+					"desc": "x偏移量。",
+					"type": "int32_t"
+				},
+				{
+					"name": "yoffset",
+					"desc": "y偏移量。",
+					"type": "int32_t"
+				},
+				{
+					"name": "xspeed_scale",
+					"desc": "x偏移速度比例。",
+					"type": "float_t"
+				},
+				{
+					"name": "yspeed_scale",
+					"desc": "y偏移速度比例。",
+					"type": "float_t"
+				},
+				{
+					"name": "xslidable",
+					"desc": "是否允许x方向滑动。",
+					"type": "bool_t"
+				},
+				{
+					"name": "yslidable",
+					"desc": "是否允许y方向滑动。",
+					"type": "bool_t"
+				}
+			]
+		},
+		{
+			"name": "scroll_bar",
+			"parent": "widget",
+			"desc": "滚动条控件。",
+			"props": [
+				{
+					"name": "virtual_size",
+					"desc": "虚拟宽度或高度。",
+					"type": "int32_t"
+				},
+				{
+					"name": "value",
+					"desc": "当前的值。",
+					"type": "int32_t"
+				},
+				{
+					"name": "row",
+					"desc": "行的高度。",
+					"type": "int32_t"
+				},
+				{
+					"name": "animatable",
+					"desc": "滚动时是否启用动画。",
+					"type": "bool_t"
+				}
+			]
+		},
+		{
+			"name": "list_view",
+			"parent": "widget",
+			"desc": "列表视图控件。",
+			"props": [
+				{
+					"name": "item_height",
+					"desc": "列表项的高度。如果 item_height > 0，所有列表项使用固定高度，否则使用列表项自身的高度。",
+					"type": "int32_t"
+				},
+				{
+					"name": "default_item_height",
+					"desc": "列表项的缺省高度。如果item_height <= 0 而且列表项自身的高度 <= 0，则使用缺省高度。",
+					"type": "int32_t"
+				},
+				{
+					"name": "auto_hide_scroll_bar",
+					"desc": "如果不需要滚动条时，自动隐藏滚动条。",
+					"type": "bool_t"
+				}
+			]
+		},
+		{
+			"name": "list_view_h",
+			"parent": "widget",
+			"desc": "水平列表视图控件。",
+			"props": [
+				{
+					"name": "item_width",
+					"desc": "列表项的宽度。",
+					"type": "int32_t"
+				},
+				{
+					"name": "spacing",
+					"desc": "间距。",
+					"type": "int32_t"
+				}
+			]
+		},
+		{
+			"name": "list_item",
+			"parent": "widget",
+			"desc": "列表项控件。",
+			"props": []
+		},
+		{
+			"name": "hscroll_label",
+			"parent": "widget",
+			"desc": "可水平滚动的文本控件，方便实现长文本滚动。",
+			"props": [
+				{
+					"name": "only_focus",
+					"desc": "只有处于focus时才滚动(缺省否)。",
+					"type": "bool_t"
+				},
+				{
+					"name": "only_parent_focus",
+					"desc": "只有父控件处于focus时才滚动(缺省否)。",
+					"type": "bool_t"
+				},
+				{
+					"name": "loop",
+					"desc": "loop是否循环滚动(缺省FALSE)。",
+					"type": "bool_t"
+				},
+				{
+					"name": "yoyo",
+					"desc": "是否往返滚动(缺省FALSE)。",
+					"type": "bool_t"
+				},
+				{
+					"name": "ellipses",
+					"desc": "文本显示不下时，在行尾显示省略号(缺省FALSE)。",
+					"type": "bool_t"
+				},
+				{
+					"name": "lull",
+					"desc": "滚动之间的间歇时间(ms)，缺省3000ms。",
+					"type": "int32_t"
+				}
+			]
+		},
+		{
+			"name": "button",
+			"parent": "widget",
+			"desc": "按钮控件。",
+			"props": [
+				{
+					"name": "repeat",
+					"desc": "重复触发EVT\\_CLICK事件的时间间隔。\n\n为0则不重复触发EVT\\_CLICK事件。",
+					"type": "int32_t"
+				},
+				{
+					"name": "enable_long_press",
+					"desc": "是否启用长按事件，为true时才触发长按事件。\n\n触发长按事件后不再触发点击事件。\n缺省不启用。",
+					"type": "bool_t"
+				},
+				{
+					"name": "long_press_time",
+					"desc": "触发长按事件的时间(ms)",
+					"type": "uint32_t"
+				}
+			]
+		},
+		{
+			"name": "button_group",
+			"parent": "widget",
+			"desc": "Button Group控件。一个简单的容器控件，用于容纳一组按钮控件。",
+			"props": []
+		},
+		{
+			"name": "app_bar",
+			"parent": "widget",
+			"desc": "app_bar控件。",
+			"props": []
+		},
+		{
+			"name": "rich_text",
+			"parent": "widget",
+			"desc": "图文混排控件，实现简单的图文混排。",
+			"props": [
+				{
+					"name": "line_gap",
+					"desc": "行间距。",
+					"type": "uint32_t"
+				},
+				{
+					"name": "margin",
+					"desc": "边距。",
+					"type": "uint32_t"
+				},
+				{
+					"name": "yslidable",
+					"desc": "标识控件是否允许上下拖动。",
+					"type": "bool_t"
+				}
+			]
+		},
+		{
+			"name": "rich_text_view",
+			"parent": "widget",
+			"desc": "rich_text_view是一个专用容器，用来放rich text和 scroll bar，并在两者之间建立联系。",
+			"props": []
+		},
+		{
+			"name": "progress_circle",
+			"parent": "widget",
+			"desc": "进度圆环控件。",
+			"props": [
+				{
+					"name": "value",
+					"desc": "值(缺省为0)。",
+					"type": "float_t"
+				},
+				{
+					"name": "max",
+					"desc": "最大值(缺省为100)。",
+					"type": "uint32_t"
+				},
+				{
+					"name": "start_angle",
+					"desc": "起始角度(单位为度，缺省-90)。",
+					"type": "int32_t"
+				},
+				{
+					"name": "line_width",
+					"desc": "环线的厚度(缺省为8)。",
+					"type": "uint32_t"
+				},
+				{
+					"name": "unit",
+					"desc": "单元(缺省无)。",
+					"type": "char*"
+				},
+				{
+					"name": "line_cap",
+					"desc": "线帽类型(round:圆头，square:方头)。",
+					"type": "char*"
+				},
+				{
+					"name": "counter_clock_wise",
+					"desc": "是否为逆时针方向(缺省为FALSE)。",
+					"type": "bool_t"
+				},
+				{
+					"name": "show_text",
+					"desc": "是否显示文本(缺省为TRUE)。",
+					"type": "bool_t"
+				}
+			]
+		},
+		{
+			"name": "mledit",
+			"parent": "widget",
+			"desc": "多行编辑器控件。",
+			"props": [
+				{
+					"name": "readonly",
+					"desc": "编辑器是否为只读。",
+					"type": "bool_t"
+				},
+				{
+					"name": "top_margin",
+					"desc": "上边距。",
+					"type": "uint8_t"
+				},
+				{
+					"name": "bottom_margin",
+					"desc": "下边距。",
+					"type": "uint8_t"
+				},
+				{
+					"name": "left_margin",
+					"desc": "左边距。",
+					"type": "uint8_t"
+				},
+				{
+					"name": "right_margin",
+					"desc": "右边距。",
+					"type": "uint8_t"
+				},
+				{
+					"name": "tips",
+					"desc": "输入提示。",
+					"type": "char*"
+				},
+				{
+					"name": "tr_tips",
+					"desc": "保存用于翻译的提示信息。",
+					"type": "char*"
+				},
+				{
+					"name": "keyboard",
+					"desc": "自定义软键盘名称。",
+					"type": "char*"
+				},
+				{
+					"name": "wrap_word",
+					"desc": "是否自动折行。",
+					"type": "bool_t"
+				},
+				{
+					"name": "max_lines",
+					"desc": "最大行数。",
+					"type": "uint32_t"
+				},
+				{
+					"name": "scroll_line",
+					"desc": "鼠标一次滚动行数。",
+					"type": "uint32_t"
+				},
+				{
+					"name": "cancelable",
+					"desc": "是否支持撤销编辑。如果为TRUE，在失去焦点之前可以撤销所有修改(恢复获得焦点之前的内容)。\n\n> * 1.一般配合keyboard的\"cancel\"按钮使用。\n> * 2.为TRUE时，如果内容有变化，会设置编辑器的状态为changed，所以此时编辑器需要支持changed状态的style。",
+					"type": "bool_t"
+				},
+				{
+					"name": "open_im_when_focused",
+					"desc": "获得焦点时打开输入法。\n\n> 主要用于没有指针设备的情况，否则每次切换焦点时都打开输入法。",
+					"type": "bool_t"
+				},
+				{
+					"name": "close_im_when_blured",
+					"desc": "是否在失去焦点时关闭输入法(默认是)。",
+					"type": "bool_t"
+				}
+			]
+		},
+		{
+			"name": "line_number",
+			"parent": "widget",
+			"desc": "行号。多行编辑器的行号。",
+			"props": []
+		},
+		{
+			"name": "lang_indicator",
+			"parent": "widget",
+			"desc": "输入法语言指示器。",
+			"props": [
+				{
+					"name": "image",
+					"desc": "如果希望用图片格式显示，本属性用于指定图片的前缀。",
+					"type": "char*"
+				}
+			]
+		},
+		{
+			"name": "candidates",
+			"parent": "widget",
+			"desc": "输入法候选字词控件。",
+			"props": [
+				{
+					"name": "pre",
+					"desc": "是否为预候选字。\n\n> 预候选字: 在有的输入法中，比如T9硬键盘输入时，按下12两个键时，预候选字会显示可用的拼音列表。\n> 从预候选字列表中选择拼音，再查询拼音对应的候选字列表。",
+					"type": "bool_t"
+				},
+				{
+					"name": "select_by_num",
+					"desc": "是否启用用数字选择候选字。比如按下1选择第1个候选字，按下2选择第2个候选字。",
+					"type": "bool_t"
+				},
+				{
+					"name": "auto_hide",
+					"desc": "没有候选字时，是否自动隐藏控件。",
+					"type": "bool_t"
+				},
+				{
+					"name": "button_style",
+					"desc": "按钮的style名称。",
+					"type": "char*"
+				}
+			]
+		},
+		{
+			"name": "image_value",
+			"parent": "widget",
+			"desc": "图片值控件。",
+			"props": [
+				{
+					"name": "image",
+					"desc": "图片名称的前缀。",
+					"type": "char*"
+				},
+				{
+					"name": "format",
+					"desc": "数值到字符串转换时的格式，缺省为\"%d\"。",
+					"type": "char*"
+				},
+				{
+					"name": "click_add_delta",
+					"desc": "点击时加上一个增量。",
+					"type": "float_t"
+				},
+				{
+					"name": "value",
+					"desc": "值。",
+					"type": "float_t"
+				},
+				{
+					"name": "min",
+					"desc": "最小值(如果设置了click\\_add\\_delta，到达最小值后回到最大值)。",
+					"type": "float_t"
+				},
+				{
+					"name": "max",
+					"desc": "最大值(如果设置了click\\_add\\_delta，到达最大值后回到最小值)。",
+					"type": "float_t"
+				}
+			]
+		},
+		{
+			"name": "image_animation",
+			"parent": "widget",
+			"desc": "图片动画控件，指定一个图片前缀，依次显示指定序列的图片，从而形成动画效果。",
+			"props": [
+				{
+					"name": "image",
+					"desc": "图片名称的前缀。",
+					"type": "char*"
+				},
+				{
+					"name": "sequence",
+					"desc": "播放的序列，字符可选值为数字和英文大小写字母，字符可以重复。如：0123456789或者123123abcd。",
+					"type": "char*"
+				},
+				{
+					"name": "start_index",
+					"desc": "图片起始序数。",
+					"type": "uint32_t"
+				},
+				{
+					"name": "end_index",
+					"desc": "图片结束序数。",
+					"type": "uint32_t"
+				},
+				{
+					"name": "loop",
+					"desc": "是否循环播放。",
+					"type": "bool_t"
+				},
+				{
+					"name": "auto_play",
+					"desc": "是否自动播放。",
+					"type": "bool_t"
+				},
+				{
+					"name": "unload_after_paint",
+					"desc": "绘制完成后unload图片，以释放内存空间。",
+					"type": "bool_t"
+				},
+				{
+					"name": "format",
+					"desc": "索引到图片名转换时的格式，缺省为\"%s%d\"。",
+					"type": "char*"
+				},
+				{
+					"name": "interval",
+					"desc": "每张图片播放的时间(毫秒)。",
+					"type": "uint32_t"
+				},
+				{
+					"name": "delay",
+					"desc": "自动播放时延迟播放的时间(毫秒)。",
+					"type": "uint32_t"
+				}
+			]
+		},
+		{
+			"name": "guage",
+			"parent": "widget",
+			"desc": "表盘控件。",
+			"props": [
+				{
+					"name": "image",
+					"desc": "背景图片。",
+					"type": "char*"
+				},
+				{
+					"name": "draw_type",
+					"desc": "图片的绘制方式。",
+					"type": "image_draw_type_t"
+				}
+			]
+		},
+		{
+			"name": "file_browser_view",
+			"parent": "widget",
+			"desc": "文件管理/浏览/选择控件。",
+			"props": [
+				{
+					"name": "init_dir",
+					"desc": "初始文件夹。",
+					"type": "char*"
+				},
+				{
+					"name": "filter",
+					"desc": "过滤规则。",
+					"type": "char*"
+				},
+				{
+					"name": "ignore_hidden_files",
+					"desc": "是否忽略隐藏文件。",
+					"type": "bool_t"
+				},
+				{
+					"name": "sort_ascending",
+					"desc": "是否为升序排序。",
+					"type": "bool_t"
+				},
+				{
+					"name": "show_check_button",
+					"desc": "是否显示checkbutton。",
+					"type": "bool_t"
+				},
+				{
+					"name": "sort_by",
+					"desc": "排序方式。可选值(name, size, mtime, type)。",
+					"type": "char*"
+				}
+			]
+		},
+		{
+			"name": "draggable",
+			"parent": "widget",
+			"desc": "将draggable放入目标控件，即可让目标控件或当前窗口可以被拖动。",
+			"props": [
+				{
+					"name": "top",
+					"desc": "拖动范围的顶部限制。缺省为父控件的顶部。",
+					"type": "int32_t"
+				},
+				{
+					"name": "bottom",
+					"desc": "拖动范围的底部限制。缺省为父控件的底部。",
+					"type": "int32_t"
+				},
+				{
+					"name": "left",
+					"desc": "拖动范围的左边限制。缺省为父控件的左边。",
+					"type": "int32_t"
+				},
+				{
+					"name": "right",
+					"desc": "拖动范围的右边限制。缺省为父控件的右边边。",
+					"type": "int32_t"
+				},
+				{
+					"name": "vertical_only",
+					"desc": "只允许垂直拖动。",
+					"type": "bool_t"
+				},
+				{
+					"name": "horizontal_only",
+					"desc": "只允许水平拖动。",
+					"type": "bool_t"
+				},
+				{
+					"name": "drag_window",
+					"desc": "拖动窗口而不是父控件。比如放在对话框的titlebar上，拖动titlebar其实是希望拖动对话框。",
+					"type": "bool_t"
+				}
+			]
+		},
+		{
+			"name": "color_picker",
+			"parent": "widget",
+			"desc": "颜色选择器。",
+			"props": [
+				{
+					"name": "value",
+					"desc": "颜色。",
+					"type": "const char*"
+				}
+			]
+		},
+		{
+			"name": "color_component",
+			"parent": "widget",
+			"desc": "颜色选择器的颜色分量。",
+			"props": []
+		},
+		{
+			"name": "canvas_widget",
+			"parent": "widget",
+			"desc": "画布控件。",
+			"props": []
+		},
+		{
+			"name": "image_base",
+			"parent": "widget",
+			"desc": "图片控件基类。",
+			"props": [
+				{
+					"name": "image",
+					"desc": "图片的名称。",
+					"type": "char*"
+				},
+				{
+					"name": "anchor_x",
+					"desc": "锚点X(0-1)。0在控件左边，0.5在控件中间，1在控件右边。",
+					"type": "float_t"
+				},
+				{
+					"name": "anchor_y",
+					"desc": "锚点Y(0-1)。0在控件顶部，0.5在控件中间，1在控件底部。",
+					"type": "float_t"
+				},
+				{
+					"name": "scale_x",
+					"desc": "控件在X方向上的缩放比例。",
+					"type": "float_t"
+				},
+				{
+					"name": "scale_y",
+					"desc": "控件在Y方向上的缩放比例。",
+					"type": "float_t"
+				},
+				{
+					"name": "rotation",
+					"desc": "控件的旋转角度(幅度)。",
+					"type": "float_t"
+				},
+				{
+					"name": "clickable",
+					"desc": "点击时，是否触发EVT_CLICK事件。",
+					"type": "bool_t"
+				},
+				{
+					"name": "selectable",
+					"desc": "是否设置选中状态。",
+					"type": "bool_t"
+				}
+			]
+		},
+		{
+			"name": "window_base",
+			"parent": "widget",
+			"desc": "窗口。",
+			"props": [
+				{
+					"name": "theme",
+					"desc": "主题资源的名称。\n每个窗口都可以有独立的主题文件，如果没指定，则使用系统缺省的主题文件。\n主题是一个XML文件，放在assets/raw/styles目录下。\n请参考[主题](https://github.com/zlgopen/awtk/blob/master/docs/theme.md)",
+					"type": "char*"
+				},
+				{
+					"name": "disable_anim",
+					"desc": "禁用窗口动画。",
+					"type": "bool_t"
+				},
+				{
+					"name": "closable",
+					"desc": "收到EVT_REQUEST_CLOSE_WINDOW是否自动关闭窗口。\n\n如果关闭窗口时，需要用户确认:\n\n* 1.将closable设置为WINDOW\\_CLOSABLE\\_CONFIRM\n\n* 2.处理窗口的EVT\\_REQUEST\\_CLOSE\\_WINDOW事件\n\n> closable在XML中取值为：yes/no/confirm，缺省为yes。",
+					"type": "window_closable_t"
+				},
+				{
+					"name": "open_anim_hint",
+					"desc": "打开窗口动画的名称。\n请参考[窗口动画](https://github.com/zlgopen/awtk/blob/master/docs/window_animator.md)",
+					"type": "char*"
+				},
+				{
+					"name": "close_anim_hint",
+					"desc": "关闭窗口动画的名称。\n请参考[窗口动画](https://github.com/zlgopen/awtk/blob/master/docs/window_animator.md)",
+					"type": "char*"
+				},
+				{
+					"name": "move_focus_prev_key",
+					"desc": "向前移动焦点的键值。\n\n请参考[控件焦点](https://github.com/zlgopen/awtk/blob/master/docs/widget_focus.md)",
+					"type": "char*"
+				},
+				{
+					"name": "move_focus_next_key",
+					"desc": "向后移动焦点的键值。\n\n请参考[控件焦点](https://github.com/zlgopen/awtk/blob/master/docs/widget_focus.md)",
+					"type": "char*"
+				},
+				{
+					"name": "move_focus_up_key",
+					"desc": "向上移动焦点的键值。\n\n请参考[控件焦点](https://github.com/zlgopen/awtk/blob/master/docs/widget_focus.md)",
+					"type": "char*"
+				},
+				{
+					"name": "move_focus_down_key",
+					"desc": "向下移动焦点的键值。\n\n请参考[控件焦点](https://github.com/zlgopen/awtk/blob/master/docs/widget_focus.md)",
+					"type": "char*"
+				},
+				{
+					"name": "move_focus_left_key",
+					"desc": "向左移动焦点的键值。\n\n请参考[控件焦点](https://github.com/zlgopen/awtk/blob/master/docs/widget_focus.md)",
+					"type": "char*"
+				},
+				{
+					"name": "move_focus_right_key",
+					"desc": "向右移动焦点的键值。\n\n请参考[控件焦点](https://github.com/zlgopen/awtk/blob/master/docs/widget_focus.md)",
+					"type": "char*"
+				}
+			]
+		},
+		{
+			"name": "calibration_win",
+			"parent": "window_base",
+			"desc": "电阻屏校准窗口。",
+			"props": []
+		},
+		{
+			"name": "gif_image",
+			"parent": "image_base",
+			"desc": "GIF图片控件。",
+			"props": []
+		},
+		{
+			"name": "keyboard",
+			"parent": "window_base",
+			"desc": "软键盘。",
+			"props": []
+		},
+		{
+			"name": "mutable_image",
+			"parent": "image_base",
+			"desc": "mutable图片控件。",
+			"props": []
+		},
+		{
+			"name": "window",
+			"parent": "window_base",
+			"desc": "窗口。",
+			"props": [
+				{
+					"name": "fullscreen",
+					"desc": "是否全屏。\n\n>这里全屏是指与LCD相同大小，而非让SDL窗口全屏。",
+					"type": "bool_t"
+				}
+			]
+		},
+		{
+			"name": "svg_image",
+			"parent": "image_base",
+			"desc": "SVG图片控件。",
+			"props": []
+		},
+		{
+			"name": "combo_box",
+			"parent": "edit",
+			"desc": "下拉列表控件。",
+			"props": [
+				{
+					"name": "open_window",
+					"desc": "为点击按钮时，要打开窗口的名称。",
+					"type": "char*"
+				},
+				{
+					"name": "selected_index",
+					"desc": "当前选中的选项。",
+					"type": "int32_t"
+				},
+				{
+					"name": "value",
+					"desc": "值。",
+					"type": "int32_t"
+				},
+				{
+					"name": "localize_options",
+					"desc": "是否本地化(翻译)选项(缺省为TRUE)。",
+					"type": "bool_t"
+				},
+				{
+					"name": "options",
+					"desc": "设置可选项(冒号分隔值和文本，分号分隔选项，如:1:red;2:green;3:blue)。",
+					"type": "char*"
+				},
+				{
+					"name": "item_height",
+					"desc": "下拉选项的高度。如果open_window为空，则使用缺省高度。",
+					"type": "int32_t"
+				}
+			]
+		},
+		{
+			"name": "image",
+			"parent": "image_base",
+			"desc": "图片控件。",
+			"props": [
+				{
+					"name": "draw_type",
+					"desc": "图片的绘制方式(仅在没有旋转和缩放时生效)。",
+					"type": "image_draw_type_t"
+				}
+			]
+		},
+		{
+			"name": "overlay",
+			"parent": "window_base",
+			"desc": "overlay窗口。",
+			"props": [
+				{
+					"name": "click_through",
+					"desc": "点击穿透。点击没有子控件的位置，是否穿透到底层窗口。\n\n缺省不启用。",
+					"type": "bool_t"
+				}
+			]
+		},
+		{
+			"name": "popup",
+			"parent": "window_base",
+			"desc": "弹出窗口。",
+			"props": [
+				{
+					"name": "close_when_click",
+					"desc": "点击时是否关闭窗口。",
+					"type": "bool_t"
+				},
+				{
+					"name": "close_when_click_outside",
+					"desc": "点击到窗口外时是否关闭窗口。",
+					"type": "bool_t"
+				}
+			]
+		},
+		{
+			"name": "spin_box",
+			"parent": "edit",
+			"desc": "spinbox控件。",
+			"props": []
+		},
+		{
+			"name": "system_bar",
+			"parent": "window_base",
+			"desc": "system\\_bar窗口。",
+			"props": []
+		},
+		{
+			"name": "dialog",
+			"parent": "window_base",
+			"desc": "对话框。 对话框是一种特殊的窗口，大小和位置可以自由设置。",
+			"props": [
+				{
+					"name": "highlight",
+					"desc": "对话框高亮策略。\n\n> 请参考 [对话框高亮策略](https://github.com/zlgopen/awtk/blob/master/docs/dialog_highlight.md)",
+					"type": "const char*"
+				}
+			]
+		},
+		{
+			"name": "combo_box_ex",
+			"parent": "combo_box",
+			"desc": "可滚动的combo_box控件。",
+			"props": []
+		}
+	]
+}
