@@ -42,7 +42,8 @@ typedef struct _label_line_parser_t {
   bool_t is_force_break;
 } label_line_parser_t;
 
-ret_t label_line_parser_init(label_line_parser_t* parser, canvas_t* c, const wchar_t* str,
+static ret_t label_line_parser_next(label_line_parser_t* parser);
+static ret_t label_line_parser_init(label_line_parser_t* parser, canvas_t* c, const wchar_t* str,
                              uint32_t size, uint32_t font_size, uint32_t width) {
   return_value_if_fail(parser != NULL && str != NULL && size > 0, RET_BAD_PARAMS);
   return_value_if_fail(font_size > 0 && width > font_size, RET_BAD_PARAMS);
@@ -76,7 +77,7 @@ ret_t label_line_parser_init(label_line_parser_t* parser, canvas_t* c, const wch
   return RET_OK;
 }
 
-ret_t label_line_parser_next(label_line_parser_t* parser) {
+static ret_t label_line_parser_next(label_line_parser_t* parser) {
   int32_t w = 0;
   int32_t char_w = 0;
   const wchar_t* p = NULL;
@@ -129,11 +130,8 @@ static ret_t label_paint_text_mlines(widget_t* widget, canvas_t* c, label_line_p
   int32_t x = 0;
   int32_t y = 0;
   int32_t w = 0;
-  int32_t h = 0;
-  int32_t right = 0;
   int32_t h_text = 0;
   style_t* style = widget->astyle;
-  label_t* label = LABEL(widget);
   int32_t font_size = c->font_size;
   int32_t margin = style_get_int(style, STYLE_ID_MARGIN, 2);
   int32_t spacer = style_get_int(style, STYLE_ID_SPACER, 2);
@@ -144,7 +142,6 @@ static ret_t label_paint_text_mlines(widget_t* widget, canvas_t* c, label_line_p
   x = margin;
   y = margin;
   w = widget->w - margin - margin;
-  h = widget->h - margin - margin;
   h_text = p->total_lines * line_height;
 
   switch (align_v) {
@@ -190,7 +187,6 @@ static ret_t label_paint_text_mlines(widget_t* widget, canvas_t* c, label_line_p
 
 static ret_t label_paint_text(widget_t* widget, canvas_t* c, const wchar_t* str, uint32_t size) {
   label_line_parser_t p;
-  label_t* label = LABEL(widget);
   style_t* style = widget->astyle;
   int32_t margin = style_get_int(style, STYLE_ID_MARGIN, 2);
   int32_t w = widget->w - margin - margin;
