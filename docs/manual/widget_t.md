@@ -160,6 +160,7 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | <a href="#widget_t_widget_set_animation">widget\_set\_animation</a> | 设置控件的动画参数(仅用于在UI文件使用)。 |
 | <a href="#widget_t_widget_set_animator_time_scale">widget\_set\_animator\_time\_scale</a> | 设置动画的时间倍率，<0: 时间倒退，<1: 时间变慢，>1 时间变快。 |
 | <a href="#widget_t_widget_set_as_key_target">widget\_set\_as\_key\_target</a> | 递归的把父控件的key_target设置为自己。 |
+| <a href="#widget_t_widget_set_auto_adjust_size">widget\_set\_auto\_adjust\_size</a> | 设置控件是否根据子控件和文本自动调整控件自身大小。 |
 | <a href="#widget_t_widget_set_child_text_utf8">widget\_set\_child\_text\_utf8</a> | 设置子控件的文本。 |
 | <a href="#widget_t_widget_set_child_text_with_double">widget\_set\_child\_text\_with\_double</a> | 用一个浮点数去设置子控件的文本。 |
 | <a href="#widget_t_widget_set_child_text_with_int">widget\_set\_child\_text\_with\_int</a> | 用一个整数去设置子控件的文本。 |
@@ -218,6 +219,7 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | -------- | ----- | ------------ | 
 | <a href="#widget_t_animation">animation</a> | char* | 动画参数。请参考[控件动画](https://github.com/zlgopen/awtk/blob/master/docs/widget_animator.md) |
 | <a href="#widget_t_astyle">astyle</a> | style\_t* | Style对象。 |
+| <a href="#widget_t_auto_adjust_size">auto\_adjust\_size</a> | bool\_t | 是否根据子控件和文本自动调整控件自身大小。 |
 | <a href="#widget_t_auto_created">auto\_created</a> | bool\_t | 是否由父控件自动创建。 |
 | <a href="#widget_t_children">children</a> | darray\_t* | 全部子控件。 |
 | <a href="#widget_t_children_layout">children\_layout</a> | children\_layouter\_t* | 子控件布局器。请参考[控件布局参数](https://github.com/zlgopen/awtk/blob/master/docs/layout.md) |
@@ -260,10 +262,10 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | -------- | ----- | ------- | 
 | EVT\_WILL\_MOVE | event\_t | 控件移动前触发。 |
 | EVT\_MOVE | event\_t | 控件移动后触发。 |
-| EVT\_WILL\_RESIZE | event\_t | 控件调整大小前触发。 |
-| EVT\_RESIZE | event\_t | 控件调整大小后触发。 |
-| EVT\_WILL\_MOVE\_RESIZE | event\_t | 控件移动并调整大小前触发。 |
-| EVT\_MOVE\_RESIZE | event\_t | 控件移动并调整大小后触发。 |
+| EVT\_WILL\_RESIZE | event\_t | 控件调整控件自身大小前触发。 |
+| EVT\_RESIZE | event\_t | 控件调整控件自身大小后触发。 |
+| EVT\_WILL\_MOVE\_RESIZE | event\_t | 控件移动并调整控件自身大小前触发。 |
+| EVT\_MOVE\_RESIZE | event\_t | 控件移动并调整控件自身大小后触发。 |
 | EVT\_PROP\_WILL\_CHANGE | prop\_change\_event\_t | 控件属性改变前触发(通过set\_prop设置属性，才会触发)。 |
 | EVT\_PROP\_CHANGED | prop\_change\_event\_t | 控件属性改变后触发(通过set\_prop设置属性，才会触发)。 |
 | EVT\_BEFORE\_PAINT | paint\_event\_t | 控件绘制前触发。 |
@@ -2612,6 +2614,26 @@ ret_t widget_set_as_key_target (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
+#### widget\_set\_auto\_adjust\_size 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_set_auto_adjust_size">设置控件是否根据子控件和文本自动调整控件自身大小。
+
+* 函数原型：
+
+```
+ret_t widget_set_auto_adjust_size (widget_t* widget, bool_t auto_adjust_size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| auto\_adjust\_size | bool\_t | 是否根据子控件和文本自动调整控件自身大小。 |
 #### widget\_set\_child\_text\_utf8 函数
 -----------------------
 
@@ -3734,6 +3756,22 @@ ret_t widget_use_style (widget_t* widget, const char* style);
 | -------- | ----- |
 | 可直接读取 | 是 |
 | 可直接修改 | 否 |
+#### auto\_adjust\_size 属性
+-----------------------
+> <p id="widget_t_auto_adjust_size">是否根据子控件和文本自动调整控件自身大小。
+
+* 类型：bool\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 是 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### auto\_created 属性
 -----------------------
 > <p id="widget_t_auto_created">是否由父控件自动创建。

@@ -18,8 +18,10 @@ TK全局对象。
 | <a href="#global_t_tk_init_assets">tk\_init\_assets</a> | 初始化资源。 |
 | <a href="#global_t_tk_init_internal">tk\_init\_internal</a> | init。 |
 | <a href="#global_t_tk_is_pointer_pressed">tk\_is\_pointer\_pressed</a> | 获取全局指针是否按下。 |
+| <a href="#global_t_tk_is_ui_thread">tk\_is\_ui\_thread</a> | 判断当前线程是否是UI线程。 |
 | <a href="#global_t_tk_quit">tk\_quit</a> | 退出TK事件主循环。 |
 | <a href="#global_t_tk_run">tk\_run</a> | 进入TK事件主循环。 |
+| <a href="#global_t_tk_run_in_ui_thread">tk\_run\_in\_ui\_thread</a> | 后台线程在UI线程执行指定的函数。 |
 | <a href="#global_t_tk_set_lcd_orientation">tk\_set\_lcd\_orientation</a> | 设置屏幕的旋转方向(XXX:目前仅支持0度和90度)。 |
 #### asset\_loader\_default\_create 函数
 -----------------------
@@ -229,6 +231,24 @@ bool_t tk_is_pointer_pressed ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | bool\_t | 返回全局指针是否按下。 |
+#### tk\_is\_ui\_thread 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="global_t_tk_is_ui_thread">判断当前线程是否是UI线程。
+
+* 函数原型：
+
+```
+bool_t tk_is_ui_thread ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示是，否则表示否。 |
 #### tk\_quit 函数
 -----------------------
 
@@ -265,6 +285,27 @@ ret_t tk_run ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+#### tk\_run\_in\_ui\_thread 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="global_t_tk_run_in_ui_thread">后台线程在UI线程执行指定的函数。
+
+* 函数原型：
+
+```
+ret_t tk_run_in_ui_thread (tk_callback_t func, void* ctx, bool_t wait_until_done);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| func | tk\_callback\_t | 函数。 |
+| ctx | void* | 回调函数的上下文。 |
+| wait\_until\_done | bool\_t | 是否等待完成。 |
 #### tk\_set\_lcd\_orientation 函数
 -----------------------
 

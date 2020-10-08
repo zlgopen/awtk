@@ -14,6 +14,7 @@
 | <a href="#system_info_t_system_info_deinit">system\_info\_deinit</a> | 释放system_info对象。 |
 | <a href="#system_info_t_system_info_fix_font_name">system\_info\_fix\_font\_name</a> | 修正字体名称，如果为NULL，返回缺省字体。 |
 | <a href="#system_info_t_system_info_init">system\_info\_init</a> | 初始化system_info对象。 |
+| <a href="#system_info_t_system_info_set_app_root">system\_info\_set\_app\_root</a> | 设置app root。 |
 | <a href="#system_info_t_system_info_set_default_font">system\_info\_set\_default\_font</a> | 设置缺省字体。 |
 | <a href="#system_info_t_system_info_set_device_pixel_ratio">system\_info\_set\_device\_pixel\_ratio</a> | 设置LCD密度。 |
 | <a href="#system_info_t_system_info_set_font_scale">system\_info\_set\_font\_scale</a> | 设置字体缩放比例。 |
@@ -136,6 +137,26 @@ ret_t system_info_init (app_type_t app_type, const char* app_name, const char* a
 | app\_type | app\_type\_t | 应用程序的类型。 |
 | app\_name | const char* | 应用程序的名称。 |
 | app\_root | const char* | 应用程序的根目录，用于定位资源文件。 |
+#### system\_info\_set\_app\_root 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="system_info_t_system_info_set_app_root">设置app root。
+
+* 函数原型：
+
+```
+ret_t system_info_set_app_root (system_info_t* info info, const char* app_root);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| info | system\_info\_t* info | system\_info对象。 |
+| app\_root | const char* | app root。 |
 #### system\_info\_set\_default\_font 函数
 -----------------------
 

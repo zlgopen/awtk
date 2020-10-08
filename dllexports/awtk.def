@@ -678,6 +678,7 @@ EXPORTS
     widget_destroy_animator
     widget_set_enable
     widget_set_feedback
+    widget_set_auto_adjust_size
     widget_set_floating
     widget_set_focused
     widget_set_focusable

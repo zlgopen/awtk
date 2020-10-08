@@ -349,14 +349,14 @@ ret_t vgcanvas_close_path (vgcanvas_t* vg);
 * 函数原型：
 
 ```
-vgcanvas_t vgcanvas_create (uint32_t w, uint32_t h, uint32_t stride, bitmap_format_t format, void* data);
+vgcanvas_t* vgcanvas_create (uint32_t w, uint32_t h, uint32_t stride, bitmap_format_t format, void* data);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | vgcanvas\_t | 返回vgcanvas |
+| 返回值 | vgcanvas\_t* | 返回vgcanvas对象。 |
 | w | uint32\_t | 宽度 |
 | h | uint32\_t | 高度 |
 | stride | uint32\_t | 一行占用的字节数。 |

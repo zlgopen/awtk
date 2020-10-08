@@ -17711,6 +17711,10 @@
         "name": "WIDGET_PROP_MAX_W"
       },
       {
+        "desc": "根据子控件和文本自动调整大小。",
+        "name": "WIDGET_PROP_AUTO_ADJUST_SIZE"
+      },
+      {
         "desc": "子控件布局参数。",
         "name": "WIDGET_PROP_CHILDREN_LAYOUT"
       },
@@ -19827,6 +19831,29 @@
         },
         "desc": "设置控件是否启用反馈。",
         "name": "widget_set_feedback",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "auto_adjust_size",
+            "desc": "是否根据子控件和文本自动调整控件自身大小。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置控件是否根据子控件和文本自动调整控件自身大小。",
+        "name": "widget_set_auto_adjust_size",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -22688,22 +22715,22 @@
       },
       {
         "name": "EVT_WILL_RESIZE",
-        "desc": "控件调整大小前触发。",
+        "desc": "控件调整控件自身大小前触发。",
         "type": "event_t"
       },
       {
         "name": "EVT_RESIZE",
-        "desc": "控件调整大小后触发。",
+        "desc": "控件调整控件自身大小后触发。",
         "type": "event_t"
       },
       {
         "name": "EVT_WILL_MOVE_RESIZE",
-        "desc": "控件移动并调整大小前触发。",
+        "desc": "控件移动并调整控件自身大小前触发。",
         "type": "event_t"
       },
       {
         "name": "EVT_MOVE_RESIZE",
-        "desc": "控件移动并调整大小后触发。",
+        "desc": "控件移动并调整控件自身大小后触发。",
         "type": "event_t"
       },
       {
@@ -22976,6 +23003,20 @@
       {
         "name": "with_focus_state",
         "desc": "是否支持焦点状态。\n> 如果希望style支持焦点状态，但有不希望焦点停留，可用本属性。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "writable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "auto_adjust_size",
+        "desc": "是否根据子控件和文本自动调整控件自身大小。",
         "type": "bool_t",
         "annotation": {
           "set_prop": true,
