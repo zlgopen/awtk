@@ -679,6 +679,8 @@ EXPORTS
     widget_set_enable
     widget_set_feedback
     widget_set_auto_adjust_size
+    widget_set_grab_focus
+    widget_set_return_key_to_grab_focus
     widget_set_floating
     widget_set_focused
     widget_set_focusable

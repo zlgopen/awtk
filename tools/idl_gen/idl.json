@@ -17715,6 +17715,10 @@
         "name": "WIDGET_PROP_AUTO_ADJUST_SIZE"
       },
       {
+        "desc": "窗口是否保持单例。",
+        "name": "WIDGET_PROP_SINGLE_INSTANCE"
+      },
+      {
         "desc": "子控件布局参数。",
         "name": "WIDGET_PROP_CHILDREN_LAYOUT"
       },
@@ -17961,6 +17965,14 @@
       {
         "desc": "最大值。",
         "name": "WIDGET_PROP_MAX"
+      },
+      {
+        "desc": "是否抓住焦点。抓住焦点之后，方向键不再切换焦点。",
+        "name": "WIDGET_PROP_GRAB_FOCUS"
+      },
+      {
+        "desc": "用回车键来触发grab focus状态。",
+        "name": "WIDGET_PROP_RETURN_KEY_TO_GRAB_FOCUS"
       },
       {
         "desc": "让窗口管理器直接把按键发给自己。",
@@ -18531,6 +18543,10 @@
       {
         "desc": "聚焦状态。",
         "name": "WIDGET_STATE_FOCUSED"
+      },
+      {
+        "desc": "focus grabed状态。",
+        "name": "WIDGET_STATE_FOCUS_GRABED"
       },
       {
         "desc": "勾选状态。",
@@ -19854,6 +19870,52 @@
         },
         "desc": "设置控件是否根据子控件和文本自动调整控件自身大小。",
         "name": "widget_set_auto_adjust_size",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "grab_focus",
+            "desc": "是否抓住焦点。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置控件是否抓住焦点。\n\n> 抓住焦点之后，方向键不再切换焦点。",
+        "name": "widget_set_grab_focus",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "return_key_to_grab_focus",
+            "desc": "是否用回车键来触发grab focus状态。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置控件是否用回车键来触发grab focus状态。",
+        "name": "widget_set_return_key_to_grab_focus",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -22715,22 +22777,22 @@
       },
       {
         "name": "EVT_WILL_RESIZE",
-        "desc": "控件调整控件自身大小前触发。",
+        "desc": "控件调整大小前触发。",
         "type": "event_t"
       },
       {
         "name": "EVT_RESIZE",
-        "desc": "控件调整控件自身大小后触发。",
+        "desc": "控件调整大小后触发。",
         "type": "event_t"
       },
       {
         "name": "EVT_WILL_MOVE_RESIZE",
-        "desc": "控件移动并调整控件自身大小前触发。",
+        "desc": "控件移动并调整大小前触发。",
         "type": "event_t"
       },
       {
         "name": "EVT_MOVE_RESIZE",
-        "desc": "控件移动并调整控件自身大小后触发。",
+        "desc": "控件移动并调整大小后触发。",
         "type": "event_t"
       },
       {
@@ -22966,7 +23028,6 @@
           "set_prop": true,
           "get_prop": true,
           "readable": true,
-          "writable": true,
           "persitent": true,
           "design": true,
           "scriptable": true
@@ -22980,7 +23041,6 @@
           "set_prop": true,
           "get_prop": true,
           "readable": true,
-          "writable": true,
           "persitent": true,
           "design": true,
           "scriptable": true
@@ -22994,7 +23054,6 @@
           "set_prop": true,
           "get_prop": true,
           "readable": true,
-          "writable": true,
           "persitent": true,
           "design": true,
           "scriptable": true
@@ -23008,7 +23067,6 @@
           "set_prop": true,
           "get_prop": true,
           "readable": true,
-          "writable": true,
           "persitent": true,
           "design": true,
           "scriptable": true
@@ -23016,13 +23074,35 @@
       },
       {
         "name": "auto_adjust_size",
-        "desc": "是否根据子控件和文本自动调整控件自身大小。",
+        "desc": "是否根据子控件和文本自动调整控件自身大小。\n\n> 为true时，最好不要使用child_layout，否则可能有冲突。",
         "type": "bool_t",
         "annotation": {
           "set_prop": true,
           "get_prop": true,
           "readable": true,
-          "writable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "grab_focus",
+        "desc": "是否抓住焦点。抓住焦点之后，方向键不再切换焦点。\n\n> 此时可以用上下键修改控件的值，主要在只有左右键和OK键时的硬件平台使用。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true
+        }
+      },
+      {
+        "name": "return_key_to_grab_focus",
+        "desc": "是否用回车键来触发grab focus状态。\n\n> 在只有方向键和OK键时的硬件平台，配合grab_focus使用：\n> * 先用方向键切换焦点，切换到指定的控件。\n> * 再按OK键进入编辑状态，此时用方向键修改值。\n> * 完成后按OK键，退出编辑状态。\n> * 方向键继续用于切换焦点。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
           "persitent": true,
           "design": true,
           "scriptable": true
@@ -56410,6 +56490,19 @@
         "name": "move_focus_right_key",
         "desc": "向右移动焦点的键值。\n\n请参考[控件焦点](https://github.com/zlgopen/awtk/blob/master/docs/widget_focus.md)",
         "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "single_instance",
+        "desc": "单例。如果窗口存在，先关闭再打开。",
+        "type": "bool_t",
         "annotation": {
           "set_prop": true,
           "get_prop": true,
