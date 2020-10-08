@@ -20,8 +20,17 @@ static ret_t on_window_open(void* ctx, event_t* e) {
 }
 
 static widget_t* window_open_with_name(const char* name, widget_t* to_close) {
-  widget_t* win = ui_loader_load_widget(name);
+  widget_t* wm = window_manager();
+  widget_t* win = widget_child(wm, name);
 
+  if(win != NULL) {
+    bool_t single_instance = widget_get_prop_bool(win, WIDGET_PROP_SINGLE_INSTANCE, FALSE);
+    if(single_instance) {
+      window_manager_close_window_force(wm, win); 
+    }
+  }
+
+  win = ui_loader_load_widget(name);
   if (win != NULL) {
     widget_on(win, EVT_WINDOW_OPEN, on_window_open, to_close);
   }

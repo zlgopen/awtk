@@ -5,7 +5,7 @@
 
   <row x="0" y="40" w="100%" h="30" children_layout="default(r=1,c=3,xm=2,s=10)">
     <button name="inc_value" text="Inc" focusable="true" focus="true"/>
-    <button name="close" text="Close" focusable="true"/>
+    <button name="open:main" text="Home" focusable="true"/>
     <button name="dec_value" text="Dec" focusable="true" style:focused:text_color="red"/>
   </row>
 

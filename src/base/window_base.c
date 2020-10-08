@@ -173,6 +173,9 @@ ret_t window_base_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_MOVE_FOCUS_RIGHT_KEY)) {
     value_set_str(v, window_base->move_focus_right_key);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_SINGLE_INSTANCE)) {
+    value_set_bool(v, window_base->single_instance);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -219,6 +222,9 @@ ret_t window_base_set_prop(widget_t* widget, const char* name, const value_t* v)
   } else if (tk_str_eq(name, WIDGET_PROP_MOVE_FOCUS_RIGHT_KEY)) {
     window_base->move_focus_right_key =
         tk_str_copy(window_base->move_focus_right_key, value_str(v));
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_SINGLE_INSTANCE)) {
+    window_base->single_instance = value_bool(v);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_CLOSABLE)) {
     if (v->type == VALUE_TYPE_STRING) {

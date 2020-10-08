@@ -195,6 +195,13 @@ typedef struct _window_base_t {
    * 请参考[控件焦点](https://github.com/zlgopen/awtk/blob/master/docs/widget_focus.md)
    */
   char* move_focus_right_key;
+  
+  /**
+   * @property {bool_t} single_instance
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 单例。如果窗口存在，先关闭再打开。
+   */
+  bool_t single_instance;
 
   /*private*/
   const asset_info_t* res_theme;

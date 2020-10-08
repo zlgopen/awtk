@@ -150,6 +150,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_AUTO_ADJUST_SIZE "auto_adjust_size"
 
 /**
+ * @const WIDGET_PROP_SINGLE_INSTANCE
+ * 窗口是否保持单例。
+ */
+#define WIDGET_PROP_SINGLE_INSTANCE "single_instance"
+
+/**
  * @const WIDGET_PROP_CHILDREN_LAYOUT
  * 子控件布局参数。
  */

@@ -42,6 +42,12 @@ TEST(Window, basic) {
   ASSERT_EQ(widget_get_prop(w, WIDGET_PROP_THEME, &v2), RET_OK);
   ASSERT_EQ(strcmp(value_str(&v2), value_str(&v1)), 0);
 
+  ASSERT_EQ(widget_set_prop_bool(w, WIDGET_PROP_SINGLE_INSTANCE, TRUE), RET_OK);
+  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_SINGLE_INSTANCE, FALSE), TRUE);
+
+  ASSERT_EQ(widget_set_prop_bool(w, WIDGET_PROP_SINGLE_INSTANCE, FALSE), RET_OK);
+  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_SINGLE_INSTANCE, TRUE), FALSE);
+
   widget_destroy(w);
 }
 
