@@ -351,6 +351,8 @@ struct _widget_t {
    * @property {bool_t} auto_adjust_size
    * @annotation ["set_prop","get_prop","readable","writable","persitent","design","scriptable"]
    * 是否根据子控件和文本自动调整控件自身大小。
+   * 
+   *> 为true时，最好不要使用child_layout，否则可能有冲突。
    */
   uint8_t auto_adjust_size: 1;
 
