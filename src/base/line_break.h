@@ -33,23 +33,24 @@ typedef ret_t (*line_break_on_line_t)(void* ctx, uint32_t index, const wchar_t* 
  * @prefix LINE_BREAK_
  * 换行类型。
  */
-typedef enum _line_break_type_t { 
+typedef enum _line_break_type_t {
   /**
    * @const LINE_BREAK_MUST
    * 必须换行。
    */
-  LINE_BREAK_MUST = 0, 
+  LINE_BREAK_MUST = 0,
   /**
    * @const LINE_BREAK_ALLOW
    * 可以换行。
    */
-  LINE_BREAK_ALLOW, 
+  LINE_BREAK_ALLOW,
   /**
    * @const LINE_BREAK_NO
    * 不可以换行。
    */
-  LINE_BREAK_NO 
-} break_type_t, line_break_type_t;
+  LINE_BREAK_NO
+} break_type_t,
+    line_break_type_t;
 
 /**
  * @class line_break_check
@@ -106,4 +107,3 @@ ret_t line_break(const wchar_t* str, line_break_on_line_t on_line, void* ctx);
 END_C_DECLS
 
 #endif /*TK_LINE_BREAK_H*/
-

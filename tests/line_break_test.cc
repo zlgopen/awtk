@@ -7,7 +7,6 @@
 #include "gtest/gtest.h"
 #include <stdlib.h>
 
-
 TEST(line_break, line_break_count) {
   ASSERT_EQ(line_break_count(L"a"), 1);
   ASSERT_EQ(line_break_count(L"ab"), 1);

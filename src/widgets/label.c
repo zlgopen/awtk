@@ -44,7 +44,7 @@ typedef struct _label_line_parser_t {
 
 static ret_t label_line_parser_next(label_line_parser_t* parser);
 static ret_t label_line_parser_init(label_line_parser_t* parser, canvas_t* c, const wchar_t* str,
-                             uint32_t size, uint32_t font_size, uint32_t width) {
+                                    uint32_t size, uint32_t font_size, uint32_t width) {
   return_value_if_fail(parser != NULL && str != NULL && size > 0, RET_BAD_PARAMS);
   return_value_if_fail(font_size > 0 && width > font_size, RET_BAD_PARAMS);
 
@@ -323,9 +323,9 @@ static ret_t label_on_event(widget_t* widget, event_t* e) {
   return_value_if_fail(label != NULL && widget != NULL, RET_BAD_PARAMS);
 
   switch (type) {
-    case EVT_RESIZE: 
+    case EVT_RESIZE:
     case EVT_MOVE_RESIZE: {
-      if(widget->auto_adjust_size) {
+      if (widget->auto_adjust_size) {
         label_auto_adust_size(widget);
         break;
       }

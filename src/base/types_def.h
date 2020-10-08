@@ -274,7 +274,7 @@ typedef struct _widget_animator_t widget_animator_t;
 #define TK_LONG_PRESS_TIME 1000
 #ifndef TK_KEY_LONG_PRESS_TIME
 #define TK_KEY_LONG_PRESS_TIME TK_LONG_PRESS_TIME
-#endif/*TK_KEY_LONG_PRESS_TIME*/
+#endif /*TK_KEY_LONG_PRESS_TIME*/
 
 #ifdef WITH_WIDGET_TYPE_CHECK
 #define TK_REF_VTABLE(vt) &(g_##vt##_vtable)

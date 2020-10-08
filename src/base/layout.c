@@ -36,14 +36,14 @@ static ret_t widget_auto_adjust_size(widget_t* widget) {
   }
 
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
-    int32_t right = iter->x + iter->w + margin;
-    int32_t bottom = iter->y + iter->h + margin;
-    if (right > w) {
-      w = right;
-    }
-    if (bottom > h) {
-      h = bottom;
-    }
+  int32_t right = iter->x + iter->w + margin;
+  int32_t bottom = iter->y + iter->h + margin;
+  if (right > w) {
+    w = right;
+  }
+  if (bottom > h) {
+    h = bottom;
+  }
   WIDGET_FOR_EACH_CHILD_END();
 
   widget->w = w;
@@ -56,7 +56,7 @@ ret_t widget_layout(widget_t* widget) {
   widget_layout_self(widget);
   widget_layout_children(widget);
 
-  if(widget->auto_adjust_size) {
+  if (widget->auto_adjust_size) {
     widget_auto_adjust_size(widget);
   }
 

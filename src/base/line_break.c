@@ -148,4 +148,3 @@ ret_t line_break(const wchar_t* str, line_break_on_line_t on_line, void* ctx) {
 
   return RET_OK;
 }
-

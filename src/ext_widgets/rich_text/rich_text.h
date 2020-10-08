@@ -99,7 +99,7 @@ typedef struct _rich_text_t {
    * 边距。
    */
   uint32_t margin;
-  
+
   /**
    * @property {bool_t} yslidable
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
@@ -113,7 +113,7 @@ typedef struct _rich_text_t {
    * y偏移。
    */
   int32_t yoffset;
-  
+
   /**
    * @property {bool_t} need_reset
    * @annotation ["readable"]

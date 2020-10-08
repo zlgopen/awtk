@@ -346,7 +346,7 @@ struct _widget_t {
    * > 如果希望style支持焦点状态，但有不希望焦点停留，可用本属性。
    */
   uint8_t with_focus_state : 1;
-  
+
   /**
    * @property {bool_t} auto_adjust_size
    * @annotation ["set_prop","get_prop","readable","writable","persitent","design","scriptable"]
@@ -354,7 +354,7 @@ struct _widget_t {
    * 
    *> 为true时，最好不要使用child_layout，否则可能有冲突。
    */
-  uint8_t auto_adjust_size: 1;
+  uint8_t auto_adjust_size : 1;
 
   /**
    * @property {bool_t} focused

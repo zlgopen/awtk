@@ -105,7 +105,8 @@ static ret_t input_device_status_update_key_press_info(input_device_status_t* id
     }
 
     if (ids->long_press_check_timer == TK_INVALID_ID) {
-      ids->long_press_check_timer = timer_add(long_press_check_on_timer, ids, TK_KEY_LONG_PRESS_TIME);
+      ids->long_press_check_timer =
+          timer_add(long_press_check_on_timer, ids, TK_KEY_LONG_PRESS_TIME);
     }
   } else {
     return_value_if_fail(info != NULL, RET_BAD_PARAMS);
