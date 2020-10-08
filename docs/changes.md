@@ -2,7 +2,7 @@
 
 2020/10/08
   * 增加 auto\_adjust\_size 属性。为 true 时，根据子控件以及文本调整空间自身大小（此时最好不要使用 child_layout，否则可能有冲突）。
-  * 窗口增加 single_instance 属性。为 true 时，如果窗口已经打开，先关闭旧的，再打开新的。
+  * 窗口增加 single\_instance 属性。为 true 时，如果窗口已经打开，先关闭旧的，再打开新的。
 
 2020/10/07
   * label 支持自动换行。
