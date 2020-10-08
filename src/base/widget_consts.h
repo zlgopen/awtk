@@ -144,6 +144,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_MAX_W "max_w"
 
 /**
+ * @const WIDGET_PROP_AUTO_ADJUST_SIZE
+ * 根据子控件和文本自动调整大小。
+ */
+#define WIDGET_PROP_AUTO_ADJUST_SIZE "auto_adjust_size"
+
+/**
  * @const WIDGET_PROP_CHILDREN_LAYOUT
  * 子控件布局参数。
  */

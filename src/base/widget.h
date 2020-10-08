@@ -346,6 +346,13 @@ struct _widget_t {
    * > 如果希望style支持焦点状态，但有不希望焦点停留，可用本属性。
    */
   uint8_t with_focus_state : 1;
+  
+  /**
+   * @property {bool_t} auto_adjust_size
+   * @annotation ["set_prop","get_prop","readable","writable","persitent","design","scriptable"]
+   * 是否根据子控件和文本自动调整控件自身大小。
+   */
+  uint8_t auto_adjust_size: 1;
 
   /**
    * @property {bool_t} focused
@@ -1095,6 +1102,17 @@ ret_t widget_set_enable(widget_t* widget, bool_t enable);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_set_feedback(widget_t* widget, bool_t feedback);
+
+/**
+ * @method widget_set_auto_adjust_size
+ * 设置控件是否根据子控件和文本自动调整控件自身大小。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {bool_t} auto_adjust_size 是否根据子控件和文本自动调整控件自身大小。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_auto_adjust_size(widget_t* widget, bool_t auto_adjust_size);
 
 /**
  * @method widget_set_floating

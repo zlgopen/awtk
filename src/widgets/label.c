@@ -294,6 +294,54 @@ static ret_t label_set_prop(widget_t* widget, const char* name, const value_t* v
   return RET_NOT_FOUND;
 }
 
+static ret_t label_auto_adust_size(widget_t* widget) {
+  wh_t w = 0;
+  int32_t margin = 0;
+  int32_t spacer = 0;
+  int32_t line_height = 0;
+  style_t* style = NULL;
+  label_line_parser_t p;
+  label_t* label = LABEL(widget);
+  canvas_t* c = widget_get_canvas(widget);
+  return_value_if_fail(label != NULL && c != NULL && widget->astyle != NULL, RET_BAD_PARAMS);
+
+  style = widget->astyle;
+  margin = style_get_int(style, STYLE_ID_MARGIN, 2);
+  spacer = style_get_int(style, STYLE_ID_SPACER, 2);
+  line_height = c->font_size + spacer;
+
+  w = widget->w - 2 * margin;
+  widget_prepare_text_style(widget, c);
+  return_value_if_fail(
+      label_line_parser_init(&p, c, widget->text.str, widget->text.size, c->font_size, w) == RET_OK,
+      RET_BAD_PARAMS);
+
+  widget->h = line_height * p.total_lines;
+
+  return RET_OK;
+}
+
+static ret_t label_on_event(widget_t* widget, event_t* e) {
+  uint16_t type = e->type;
+  label_t* label = LABEL(widget);
+  return_value_if_fail(label != NULL && widget != NULL, RET_BAD_PARAMS);
+
+  switch (type) {
+    case EVT_RESIZE: 
+    case EVT_MOVE_RESIZE: {
+      if(widget->auto_adjust_size) {
+        label_auto_adust_size(widget);
+        break;
+      }
+      break;
+    }
+    default:
+      break;
+  }
+
+  return RET_OK;
+}
+
 static const char* const s_label_properties[] = {WIDGET_PROP_LENGTH, NULL};
 
 TK_DECL_VTABLE(label) = {.size = sizeof(label_t),
@@ -304,6 +352,7 @@ TK_DECL_VTABLE(label) = {.size = sizeof(label_t),
                          .create = label_create,
                          .set_prop = label_set_prop,
                          .get_prop = label_get_prop,
+                         .on_event = label_on_event,
                          .on_paint_self = label_on_paint_self};
 
 widget_t* label_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {

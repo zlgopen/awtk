@@ -593,6 +593,14 @@ ret_t widget_set_feedback(widget_t* widget, bool_t feedback) {
   return RET_OK;
 }
 
+ret_t widget_set_auto_adjust_size(widget_t* widget, bool_t auto_adjust_size) {
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  widget->auto_adjust_size = auto_adjust_size;
+
+  return RET_OK;
+}
+
 ret_t widget_set_floating(widget_t* widget, bool_t floating) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
@@ -1632,6 +1640,8 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
     widget_set_enable(widget, value_bool(v));
   } else if (tk_str_eq(name, WIDGET_PROP_FEEDBACK)) {
     widget->feedback = value_bool(v);
+  } else if (tk_str_eq(name, WIDGET_PROP_AUTO_ADJUST_SIZE)) {
+    widget->auto_adjust_size = value_bool(v);
   } else if (tk_str_eq(name, WIDGET_PROP_NAME)) {
     widget_set_name(widget, value_str(v));
   } else if (tk_str_eq(name, WIDGET_PROP_TR_TEXT)) {
@@ -1729,6 +1739,8 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
     value_set_bool(v, widget->enable);
   } else if (tk_str_eq(name, WIDGET_PROP_FEEDBACK)) {
     value_set_bool(v, widget->feedback);
+  } else if (tk_str_eq(name, WIDGET_PROP_AUTO_ADJUST_SIZE)) {
+    value_set_bool(v, widget->auto_adjust_size);
   } else if (tk_str_eq(name, WIDGET_PROP_NAME)) {
     value_set_str(v, widget->name);
   } else if (tk_str_eq(name, WIDGET_PROP_ANIMATION)) {
@@ -2999,6 +3011,7 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t*
   widget->enable = TRUE;
   widget->visible = TRUE;
   widget->feedback = FALSE;
+  widget->auto_adjust_size = FALSE;
   widget->sensitive = TRUE;
   widget->emitter = NULL;
   widget->children = NULL;
@@ -3084,6 +3097,8 @@ ret_t widget_get_prop_default_value(widget_t* widget, const char* name, value_t*
   } else if (tk_str_eq(name, WIDGET_PROP_FOCUSED)) {
     value_set_bool(v, FALSE);
   } else if (tk_str_eq(name, WIDGET_PROP_FEEDBACK)) {
+    value_set_bool(v, FALSE);
+  } else if (tk_str_eq(name, WIDGET_PROP_AUTO_ADJUST_SIZE)) {
     value_set_bool(v, FALSE);
   } else {
     if (widget->vt->get_prop_default_value) {
@@ -3218,6 +3233,7 @@ static const char* const s_widget_persistent_props[] = {WIDGET_PROP_NAME,
                                                         WIDGET_PROP_OPACITY,
                                                         WIDGET_PROP_FOCUSED,
                                                         WIDGET_PROP_FEEDBACK,
+                                                        WIDGET_PROP_AUTO_ADJUST_SIZE,
                                                         WIDGET_PROP_FOCUSABLE,
                                                         WIDGET_PROP_SENSITIVE,
                                                         WIDGET_PROP_WITH_FOCUS_STATE,
@@ -3242,6 +3258,7 @@ static ret_t widget_copy_base_props(widget_t* widget, widget_t* other) {
   widget->floating = other->floating;
   widget->opacity = other->opacity;
   widget->feedback = other->feedback;
+  widget->auto_adjust_size = other->auto_adjust_size;
   widget->focusable = other->focusable;
   widget->sensitive = other->sensitive;
   widget->auto_created = other->auto_created;

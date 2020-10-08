@@ -25,9 +25,40 @@
 #include "base/self_layouter_factory.h"
 #include "base/children_layouter_factory.h"
 
+static ret_t widget_auto_adjust_size(widget_t* widget) {
+  int32_t margin = 0;
+  int32_t w = widget->w;
+  int32_t h = widget->h;
+  style_t* style = widget->astyle;
+
+  if (style != NULL) {
+    margin = style_get_int(style, STYLE_ID_MARGIN, margin);
+  }
+
+  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+    int32_t right = iter->x + iter->w + margin;
+    int32_t bottom = iter->y + iter->h + margin;
+    if (right > w) {
+      w = right;
+    }
+    if (bottom > h) {
+      h = bottom;
+    }
+  WIDGET_FOR_EACH_CHILD_END();
+
+  widget->w = w;
+  widget->h = h;
+
+  return RET_OK;
+}
+
 ret_t widget_layout(widget_t* widget) {
   widget_layout_self(widget);
   widget_layout_children(widget);
+
+  if(widget->auto_adjust_size) {
+    widget_auto_adjust_size(widget);
+  }
 
   return RET_OK;
 }
