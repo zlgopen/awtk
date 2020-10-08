@@ -322,26 +322,26 @@ struct _widget_t {
   uint8_t feedback : 1;
   /**
    * @property {bool_t} visible
-   * @annotation ["set_prop","get_prop","readable","writable","persitent","design","scriptable"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 是否可见。
    */
   uint8_t visible : 1;
   /**
    * @property {bool_t} sensitive
-   * @annotation ["set_prop","get_prop","readable","writable","persitent","design","scriptable"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 是否接受用户事件。
    */
   uint8_t sensitive : 1;
   /**
    * @property {bool_t} focusable
-   * @annotation ["set_prop","get_prop","readable","writable","persitent","design","scriptable"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 是否支持焦点停留。
    */
   uint8_t focusable : 1;
 
   /**
    * @property {bool_t} with_focus_state
-   * @annotation ["set_prop","get_prop","readable","writable","persitent","design","scriptable"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 是否支持焦点状态。
    * > 如果希望style支持焦点状态，但有不希望焦点停留，可用本属性。
    */
@@ -349,12 +349,34 @@ struct _widget_t {
 
   /**
    * @property {bool_t} auto_adjust_size
-   * @annotation ["set_prop","get_prop","readable","writable","persitent","design","scriptable"]
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 是否根据子控件和文本自动调整控件自身大小。
    * 
    *> 为true时，最好不要使用child_layout，否则可能有冲突。
    */
   uint8_t auto_adjust_size : 1;
+  
+  /**
+   * @property {bool_t} grab_focus
+   * @annotation ["set_prop","get_prop","readable"]
+   * 是否抓住焦点。抓住焦点之后，方向键不再切换焦点。
+   * 
+   *> 此时可以用上下键修改控件的值，主要在只有左右键和OK键时的硬件平台使用。
+   */
+  uint8_t grab_focus : 1;
+  
+  /**
+   * @property {bool_t} return_key_to_grab_focus
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 是否用回车键来触发grab focus状态。
+   * 
+   * > 在只有方向键和OK键时的硬件平台，配合grab_focus使用：
+   * > * 先用方向键切换焦点，切换到指定的控件。
+   * > * 再按OK键进入编辑状态，此时用方向键修改值。
+   * > * 完成后按OK键，退出编辑状态。
+   * > * 方向键继续用于切换焦点。
+   */
+  uint8_t return_key_to_grab_focus : 1;
 
   /**
    * @property {bool_t} focused
@@ -1115,6 +1137,30 @@ ret_t widget_set_feedback(widget_t* widget, bool_t feedback);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_set_auto_adjust_size(widget_t* widget, bool_t auto_adjust_size);
+
+/**
+ * @method widget_set_grab_focus
+ * 设置控件是否抓住焦点。
+ *
+ * > 抓住焦点之后，方向键不再切换焦点。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {bool_t} grab_focus 是否抓住焦点。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_grab_focus(widget_t* widget, bool_t grab_focus);
+
+/**
+ * @method widget_set_return_key_to_grab_focus
+ * 设置控件是否用回车键来触发grab focus状态。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {bool_t} return_key_to_grab_focus 是否用回车键来触发grab focus状态。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_set_return_key_to_grab_focus(widget_t* widget, bool_t return_key_to_grab_focus);
 
 /**
  * @method widget_set_floating
