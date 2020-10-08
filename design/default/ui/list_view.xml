@@ -3,6 +3,7 @@
     <button name="open:list_view_m" text="Mobile Style"/>
     <button name="open:list_view_vh" text="Variable Height"/>
     <button name="open:list_view_h" text="Horizontal"/>
+    <button name="open:list_view_auto_resize" text="Auto Adjust Size"/>
     <button name="open:image_list" text="Image List"/>
     <button name="open:select1" text="Single Choose"/>
     <button name="open:selectm" text="Multiple Choose"/>

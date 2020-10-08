@@ -1,0 +1,295 @@
+<window anim_hint="htranslate" text="auto_adjust_size">
+  <list_view x="0"  y="0" w="100%" h="-50" default_item_height="60">
+    <scroll_view name="view" x="0"  y="0" w="-12" h="100%">
+      <list_item h="128" style="odd_clickable" children_layout="default(r=1,c=0)" auto_adjust_size="true">
+        <image draw_type="icon" w="30" image="earth"/>
+        <label w="-30" auto_adjust_size="true">
+    <property name="text">
+大江东去，浪淘尽，千古风流人物。
+故垒西边，人道是，三国周郎赤壁。
+乱石穿空，惊涛拍岸，卷起千堆雪。
+江山如画，一时多少豪杰。
+遥想公瑾当年，小乔初嫁了，雄姿英发。
+羽扇纶巾，谈笑间，樯橹灰飞烟灭。
+故国神游，多情应笑我，早生华发。
+人生如梦，一尊还酹江月。
+    </property>
+        </label>
+      </list_item>
+      <list_item h="128" style="even_clickable" children_layout="default(c=1,r=0)" auto_adjust_size="true">
+        <image draw_type="icon" h="30" image="earth"/>
+        <label h="-30" auto_adjust_size="true">
+    <property name="text">
+蒹葭苍苍，白露为霜。所谓伊人，在水一方。
+溯洄从之，道阻且长；溯游从之，宛在水中央。
+蒹葭凄凄，白露未晞[1]。所谓伊人，在水之湄。
+溯洄从之，道阻且跻；溯游从之，宛在水中坻。
+蒹葭采采，白露未已，所谓伊人，在水之涘[2]。
+溯洄从之，道阻且右；溯游从之，宛在水中沚
+    </property>
+        </label>
+      </list_item>
+      <list_item h="128" style="odd_clickable" auto_adjust_size="true">
+        <image draw_type="icon" x="r:10" y="m" w="30" h="30" image="earth"/>
+        <label h="100%" w="100%" auto_adjust_size="true">
+    <property name="text">
+长恨歌
+
+【作者】白居易 【朝代】唐
+
+汉皇重色思倾国，御宇多年求不得。
+
+杨家有女初长成，养在深闺人未识。
+
+天生丽质难自弃，一朝选在君王侧。
+
+回眸一笑百媚生，六宫粉黛无颜色。
+
+春寒赐浴华清池，温泉水滑洗凝脂。
+
+侍儿扶起娇无力，始是新承恩泽时。
+
+云鬓花颜金步摇，芙蓉帐暖度春宵。
+
+春宵苦短日高起，从此君王不早朝。
+
+承欢侍宴无闲暇，春从春游夜专夜。
+
+后宫佳丽三千人，三千宠爱在一身。
+
+金屋妆成娇侍夜，玉楼宴罢醉和春。
+
+姊妹弟兄皆列土，可怜光彩生门户。
+
+遂令天下父母心，不重生男重生女。
+
+骊宫高处入青云，仙乐风飘处处闻。
+
+缓歌慢舞凝丝竹，尽日君王看不足。
+
+渔阳鼙鼓动地来，惊破霓裳羽衣曲。
+
+九重城阙烟尘生，千乘万骑西南行。
+
+翠华摇摇行复止，西出都门百余里。
+
+六军不发无奈何，宛转蛾眉马前死。
+
+花钿委地无人收，翠翘金雀玉搔头。
+
+君王掩面救不得，回看血泪相和流。
+
+黄埃散漫风萧索，云栈萦纡登剑阁。
+
+峨嵋山下少人行，旌旗无光日色薄。
+
+蜀江水碧蜀山青，圣主朝朝暮暮情。
+
+行宫见月伤心色，夜雨闻铃肠断声。
+
+天旋地转回龙驭，到此踌躇不能去。
+
+马嵬坡下泥土中，不见玉颜空死处。
+
+君臣相顾尽沾衣，东望都门信马归。
+
+归来池苑皆依旧，太液芙蓉未央柳。
+
+芙蓉如面柳如眉，对此如何不泪垂。
+
+春风桃李花开夜，秋雨梧桐叶落时。
+
+西宫南苑多秋草，落叶满阶红不扫。
+
+梨园弟子白发新，椒房阿监青娥老。
+
+夕殿萤飞思悄然，孤灯挑尽未成眠。
+
+迟迟钟鼓初长夜，耿耿星河欲曙天。
+
+鸳鸯瓦冷霜华重，翡翠衾寒谁与共。
+
+悠悠生死别经年，魂魄不曾来入梦。
+
+临邛道士鸿都客，能以精诚致魂魄。
+
+为感君王辗转思，遂教方士殷勤觅。
+
+排空驭气奔如电，升天入地求之遍。
+
+上穷碧落下黄泉，两处茫茫皆不见。
+
+忽闻海上有仙山，山在虚无缥渺间。
+
+楼阁玲珑五云起，其中绰约多仙子。
+
+中有一人字太真，雪肤花貌参差是。
+
+金阙西厢叩玉扃，转教小玉报双成。
+
+闻道汉家天子使，九华帐里梦魂惊。
+
+揽衣推枕起徘徊，珠箔银屏迤逦开。
+
+云鬓半偏新睡觉，花冠不整下堂来。
+
+风吹仙袂飘飖举，犹似霓裳羽衣舞。
+
+玉容寂寞泪阑干，梨花一枝春带雨。
+
+含情凝睇谢君王，一别音容两渺茫。
+
+昭阳殿里恩爱绝，蓬莱宫中日月长。
+
+回头下望人寰处，不见长安见尘雾。
+
+惟将旧物表深情，钿合金钗寄将去。
+
+钗留一股合一扇，钗擘黄金合分钿。
+
+但教心似金钿坚，天上人间会相见。
+
+临别殷勤重寄词，词中有誓两心知。
+
+七月七日长生殿，夜半无人私语时。
+
+在天愿作比翼鸟，在地愿为连理枝。
+
+天长地久有时尽，此恨绵绵无绝期。
+    </property>
+        </label>
+      </list_item>
+      <list_item h="128" style="even_clickable" auto_adjust_size="true">
+        <label h="100%" w="100%" auto_adjust_size="true">
+          <property name="text">
+Tang Emperor Xuanzhong lusted after a beauty worthy of taking a country to war for,
+For so many years of his reign, unfulfilled his wish remained.
+There was a Yang family whose daughter had come of age,
+She was well kempt in her boudoir unknown to the social scene.
+Yet her natural beauty had spelt her destiny that could not be forsaken,
+Into the palace she did go and by the Emperor's side she was received.
+As she turned her head, one smile enchanted all,
+Outshining all women in the Palace who in comparison had their colour lost.
+In spring chill, the Emperor bestowed on her a bath in the Splendid Pond,
+A natural thermal spa with salubrious waters to her milky skin cleanse;
+A maid helped to support her lady-like delicacy,
+Thus began the Emperor's adoration of this fair lady.
+She had a florid face and cloud-soft hair adorned with glittering golden beads that swayed,
+Behind bedchamber curtains painted with lotus, springtime passion was in play;
+Springtime passion made speed of night and in no time the sun had risen high,
+The Emperor stopped attending the morning assembly on state affairs.
+Pleasing the Emperor and accompanying him at banquets took up all of her time,
+Springtime is for garden wayfaring and the night-time for bedchamber private affairs.
+The Emperor's beauty mansions held three thousand fair ladies,
+Whom the Emperor could have adored but he chose to dote on Lady Yang alone.
+In her gilded chamber she prepared for the Emperor's night entertainment,
+After a banquet on a majestic pavilion she'd waver down in sensual high.
+All of her brothers and sisters were awarded with prominent official titles,
+All the power and glory because of her on one family fell.
+Hence all fathers and mothers of the world,
+Would rather than boys girls bear and raise.
+The Li Palace soared into the sky among clouds,
+From there heavenly music drifted in the wind far and wide.
+Soothing singing and amatory dancing intertwined with strings and pipes,
+The Emperor indulged day and night ever wanting more.
+Until suddenly war drums from Yuyang had the capital's earth quaking,
+Sprung out of tune was Lady Yang's dance in the Rainbow Dress and Feather Robe.
+
+The revolt stormed near bringing smoke and dust to the palace towers,
+The Emperor decided to south-west retreat with his cavalry of tens of thousands.
+The Emperor's coach with a jade flower flag made way and stops now and again,
+West of the capital for mere tens of miles they rode;
+Then the army refused to continue course, the Emperor in dilemma had to consent
+To the now wailing Lady's execution at once in front of horses for all to see.
+Strangled she was, her bejewelled hair pieces were left scattered on the ground,
+Jade and golden ornaments that used to adorn her hair.
+The Emperor could not the fair lady rescue nor bear to watch,
+When he did look back, he wept tears that flowed also blood.
+The bleakness lingered in the bitter wind storming the yellow earth sky high,
+The retreat continued through alpine passes from the Cloudy to the Sword-like.
+The foot of the Emei Mountains in the Shu region used to little traffic see,
+Yet lacklustre was the feel of the Emperor's flag and daylight appeared weak.
+The waters of Shu were blue and its mountains green,
+The Emperor however was day after day consumed by the remembrance of love lost.
+At his temporary residence, the moon offered nothing but added to his grieve,
+The rain and bells at night rang the sound of his heart broken in pieces.
+
+After moving heaven and earth, the Emperor returned in his dragon coach,
+Stopping at where his Lady died, unable to move on, long he lingered.
+For beneath the soil of the Mawei Slopes must be where his lady lied,
+Though her beautiful face of pure jade might have in vain sacrificed.
+The Emperor and his courtiers looked on, their collars damp with tears,
+Their loosely reigned horses sauntered eastward towards the capital gates.
+The palace gardens and ponds were as they had always been in their comeback,
+The hibiscus in the Taiye Pond blossomed, the willows in the Weiyang Mansion thrived;
+The hibiscus was like the late Lady's face and the willows her eyebrows,
+With such scenery, how could the Emperor not be reminded of the Lady's countenance?
+How they had seen together the peach and plum blossoms in the spring breeze,
+How they had watched the leaves leave phoenix trees in autumn rain.
+The Emperor now resided in the south-western mansion full of autumn vegetation,
+Where stairs were covered in reddened leaves and no one would come by to sweep.
+The operatic circle students' hair had begun to turn grey,
+Eunuchs and maids at the late Lady's mansion had aged and faded away.
+The palace had a lonely place become, even fireflies of night could not it enliven,
+The Emperor's lament would wear a lone candle to its end on sleepless nights.
+Night-hour gongs gonged the start of long nights,
+Starry light lighted so bright resembling daybreak time.
+Palace roof figurines of mandarin ducks were covered cold in heavy frost,
+With whom could the Emperor share the now warmth-lacking kingfisher feather quilt?
+In a daze, the passing of the late Lady had been a year in time,
+Yet her spirit never once the Emperor's dream entered for a rendezvous.
+
+A Taoist priest from Lingqiong of the region of Shu,
+Claimed to with his sincere and pure faith dead spirits reach;
+As the Emperor seemed forever engrossed in the remembrance of the late Lady,
+The priest was summoned to seek attentively for her spirit.
+In lightening speed he glided in thin air and navigated the clouds,
+He searched everywhere in the sky and on the earth but failed to her spirit find;
+He exhausted all avenues in heaven and the nether world,
+Boundless and vast as they were, he could not her existence bring to light.
+Then he heard of tales of a celestial mountain in the sea,
+That lay in the mid of misty nowhere.
+In the mountains amongst clouds of rainbow colours existed delicate architecture,
+And there lived many beautiful fairies.
+Of them there was a fairy named True Faith, same as the late Lady,
+With whom the fairy shared much similar snow-white skin and flowery face.
+The priest came to the gate of the golden West Hall to knock on a door of jade,
+And asked the heavenly maid and matron to their fairy lady notify.
+Upon hearing the arrival of the Emperor's envoy,
+The Lady resting behind her canopy of nine flowers was startled and aroused;
+She pushed aside her pillow to get dressed, then she hesitated and paced,
+Surrounded she was by veils of golden beads and silvery mirror panes.
+Her luxuriant mane was lopsided from having just woken up,
+She came to the main hall with her crooked laureate unadjusted.
+Her clothes and sleeves were fluttering in the breeze,
+It was like a scene from the Lady's dance of the Rainbow Dress and Feather Robe.
+Her beauty is marred by loneliness with her tears in streams,
+Muck like a pear flower blooming after the rain.
+She gazed at the priest in silence to her gratitude to the Emperor convey,
+Since parting they could not each other's voice hear nor visage behold.
+Their warmth and love were left behind in the Mansion of Morning Sun,
+Her days in the fairy court were long and indefinitely prolonged was time.
+When she looked back to the temporal world,
+She could not see Changan the capital but dusty and misty skies.
+What remained of the bygone days were two keepsakes,
+A jewellery casket and a golden hairpin for the priest to the Emperor take.
+One half of the hairpin and one tray of the casket she would keep,
+Breaking the pin and the box into parts;
+She hoped the Emperor's love would be as unflinching as their pledge,
+So they could be reunited in heaven or on earth in another life.
+Upon bidding farewell to the Emperor's emissary she reminded him repeatedly,
+To relay to the Emperor a poem wherein contained their secret oath,
+Once on the seventh night of the seventh moon in the Hall of Eternity,
+When no one was around they whispered words of love in the depth of night:
+"In heaven above let us be one-winged birds and only in pairs fly,
+On earth let us be neighbouring trees with our branches intertwined."
+Yet even if eternal heaven and earth ever had an end,
+Never-ending would be this couple's immortal regret.
+    </property>
+        </label>
+      </list_item>
+    </scroll_view>
+    <scroll_bar_d name="bar" x="right" y="0" w="12" h="100%" value="0"/>
+  </list_view>
+  <button name="close" x="center" y="bottom:10" w="50%" h="30" text="close"/>
+</window>

@@ -84,6 +84,7 @@
 #include "default/inc/ui/language.data"
 #include "default/inc/ui/linear_gradient.data"
 #include "default/inc/ui/list_view.data"
+#include "default/inc/ui/list_view_auto_resize.data"
 #include "default/inc/ui/list_view_d.data"
 #include "default/inc/ui/list_view_dynamic.data"
 #include "default/inc/ui/list_view_h.data"
@@ -410,6 +411,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, ui_language);
   assets_manager_add(am, ui_linear_gradient);
   assets_manager_add(am, ui_list_view);
+  assets_manager_add(am, ui_list_view_auto_resize);
   assets_manager_add(am, ui_list_view_d);
   assets_manager_add(am, ui_list_view_dynamic);
   assets_manager_add(am, ui_list_view_h);
