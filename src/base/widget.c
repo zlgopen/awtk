@@ -612,6 +612,9 @@ ret_t widget_set_grab_focus(widget_t* widget, bool_t grab_focus) {
 ret_t widget_set_return_key_to_grab_focus(widget_t* widget, bool_t return_key_to_grab_focus) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
+  if (return_key_to_grab_focus) {
+    widget->focusable = TRUE;
+  }
   widget->return_key_to_grab_focus = return_key_to_grab_focus;
 
   return RET_OK;
@@ -1663,7 +1666,7 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_AUTO_ADJUST_SIZE)) {
     widget->auto_adjust_size = value_bool(v);
   } else if (tk_str_eq(name, WIDGET_PROP_RETURN_KEY_TO_GRAB_FOCUS)) {
-    widget->return_key_to_grab_focus = value_bool(v);
+    widget_set_return_key_to_grab_focus(widget, value_bool(v));
   } else if (tk_str_eq(name, WIDGET_PROP_GRAB_FOCUS)) {
     widget->grab_focus = value_bool(v);
   } else if (tk_str_eq(name, WIDGET_PROP_NAME)) {
