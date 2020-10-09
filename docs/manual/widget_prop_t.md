@@ -25,6 +25,7 @@
 | WIDGET\_PROP\_MIN\_W | 最小宽度。 |
 | WIDGET\_PROP\_MAX\_W | 最大宽度。 |
 | WIDGET\_PROP\_AUTO\_ADJUST\_SIZE | 根据子控件和文本自动调整大小。 |
+| WIDGET\_PROP\_SINGLE\_INSTANCE | 窗口是否保持单例。 |
 | WIDGET\_PROP\_CHILDREN\_LAYOUT | 子控件布局参数。 |
 | WIDGET\_PROP\_LAYOUT | 子控件布局参数(过时)。 |
 | WIDGET\_PROP\_SELF\_LAYOUT | 控件布局参数。 |

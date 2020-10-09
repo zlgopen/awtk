@@ -173,6 +173,7 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | <a href="#widget_t_widget_set_focused">widget\_set\_focused</a> | 设置控件是否获得焦点。 |
 | <a href="#widget_t_widget_set_name">widget\_set\_name</a> | 设置控件的名称。 |
 | <a href="#widget_t_widget_set_need_relayout_children">widget\_set\_need\_relayout\_children</a> | 设置控件需要relayout标识。 |
+| <a href="#widget_t_widget_set_need_update_style">widget\_set\_need\_update\_style</a> | 设置需要更新Style。 |
 | <a href="#widget_t_widget_set_opacity">widget\_set\_opacity</a> | 设置控件的不透明度。 |
 | <a href="#widget_t_widget_set_pointer_cursor">widget\_set\_pointer\_cursor</a> | 设置鼠标指针的图片名。 |
 | <a href="#widget_t_widget_set_prop">widget\_set\_prop</a> | 设置控件指定属性的值。 |
@@ -262,10 +263,10 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | -------- | ----- | ------- | 
 | EVT\_WILL\_MOVE | event\_t | 控件移动前触发。 |
 | EVT\_MOVE | event\_t | 控件移动后触发。 |
-| EVT\_WILL\_RESIZE | event\_t | 控件调整控件自身大小前触发。 |
-| EVT\_RESIZE | event\_t | 控件调整控件自身大小后触发。 |
-| EVT\_WILL\_MOVE\_RESIZE | event\_t | 控件移动并调整控件自身大小前触发。 |
-| EVT\_MOVE\_RESIZE | event\_t | 控件移动并调整控件自身大小后触发。 |
+| EVT\_WILL\_RESIZE | event\_t | 控件调整大小前触发。 |
+| EVT\_RESIZE | event\_t | 控件调整大小后触发。 |
+| EVT\_WILL\_MOVE\_RESIZE | event\_t | 控件移动并调整大小前触发。 |
+| EVT\_MOVE\_RESIZE | event\_t | 控件移动并调整大小后触发。 |
 | EVT\_PROP\_WILL\_CHANGE | prop\_change\_event\_t | 控件属性改变前触发(通过set\_prop设置属性，才会触发)。 |
 | EVT\_PROP\_CHANGED | prop\_change\_event\_t | 控件属性改变后触发(通过set\_prop设置属性，才会触发)。 |
 | EVT\_BEFORE\_PAINT | paint\_event\_t | 控件绘制前触发。 |
@@ -2882,6 +2883,25 @@ ret_t widget_set_need_relayout_children (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回。 |
 | widget | widget\_t* | 控件对象。 |
+#### widget\_set\_need\_update\_style 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_set_need_update_style">设置需要更新Style。
+
+* 函数原型：
+
+```
+ret_t widget_set_need_update_style (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。。 |
+| widget | widget\_t* | 控件对象。 |
 #### widget\_set\_opacity 函数
 -----------------------
 
@@ -3760,12 +3780,14 @@ ret_t widget_use_style (widget_t* widget, const char* style);
 -----------------------
 > <p id="widget_t_auto_adjust_size">是否根据子控件和文本自动调整控件自身大小。
 
+> 为true时，最好不要使用child_layout，否则可能有冲突。
+
 * 类型：bool\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |
 | 可直接读取 | 是 |
-| 可直接修改 | 是 |
+| 可直接修改 | 否 |
 | 可持久化   | 是 |
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
@@ -3916,7 +3938,7 @@ ret_t widget_use_style (widget_t* widget, const char* style);
 | 特性 | 是否支持 |
 | -------- | ----- |
 | 可直接读取 | 是 |
-| 可直接修改 | 是 |
+| 可直接修改 | 否 |
 | 可持久化   | 是 |
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
@@ -4074,7 +4096,7 @@ ret_t widget_use_style (widget_t* widget, const char* style);
 | 特性 | 是否支持 |
 | -------- | ----- |
 | 可直接读取 | 是 |
-| 可直接修改 | 是 |
+| 可直接修改 | 否 |
 | 可持久化   | 是 |
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
@@ -4142,7 +4164,7 @@ ret_t widget_use_style (widget_t* widget, const char* style);
 | 特性 | 是否支持 |
 | -------- | ----- |
 | 可直接读取 | 是 |
-| 可直接修改 | 是 |
+| 可直接修改 | 否 |
 | 可持久化   | 是 |
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |
@@ -4185,7 +4207,7 @@ ret_t widget_use_style (widget_t* widget, const char* style);
 | 特性 | 是否支持 |
 | -------- | ----- |
 | 可直接读取 | 是 |
-| 可直接修改 | 是 |
+| 可直接修改 | 否 |
 | 可持久化   | 是 |
 | 可脚本化   | 是 |
 | 可在IDE中设置 | 是 |

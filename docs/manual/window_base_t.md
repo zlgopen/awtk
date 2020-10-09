@@ -44,9 +44,24 @@
 | <a href="#window_base_t_move_focus_right_key">move\_focus\_right\_key</a> | char* | 向右移动焦点的键值。 |
 | <a href="#window_base_t_move_focus_up_key">move\_focus\_up\_key</a> | char* | 向上移动焦点的键值。 |
 | <a href="#window_base_t_open_anim_hint">open\_anim\_hint</a> | char* | 打开窗口动画的名称。 |
+| <a href="#window_base_t_single_instance">single\_instance</a> | bool\_t | 单例。如果窗口存在，先关闭再打开。 |
 | <a href="#window_base_t_stage">stage</a> | char* | 窗口当前处于的状态。 |
 | <a href="#window_base_t_theme">theme</a> | char* | 主题资源的名称。 |
 | <a href="#window_base_t_theme_obj">theme\_obj</a> | theme\_t* | 窗口的常量主题数据。 |
+### 事件
+<p id="window_base_t_events">
+
+| 事件名称 | 类型  | 说明 | 
+| -------- | ----- | ------- | 
+| EVT\_WINDOW\_WILL\_OPEN | event\_t | 窗口即将打开事件。
+如果有窗口动画，在窗口动画开始前触发。如果没有窗口动画，在窗口被加载后的下一次循环中触发。 |
+| EVT\_WINDOW\_OPEN | event\_t | 窗口打开事件。
+如果有窗口动画，在窗口动画完成时触发。如果没有窗口动画，在窗口被加载后的下一次循环中触发。 |
+| EVT\_WINDOW\_TO\_BACKGROUND | event\_t | 窗口被切换到后台事件。
+打开新窗口时，当前窗口被切换到后台时，对当前窗口触发本事件。 |
+| EVT\_WINDOW\_TO\_FOREGROUND | event\_t | 窗口被切换到前台事件。
+关闭当前窗口时，前一个窗口被切换到前台时，对前一个窗口触发本事件。 |
+| EVT\_WINDOW\_CLOSE | event\_t | 窗口关闭事件。 |
 #### window\_base\_cast 函数
 -----------------------
 
@@ -464,6 +479,22 @@ ret_t window_base_set_prop (widget_t* widget, const char* name, const value_t* v
 请参考[窗口动画](https://github.com/zlgopen/awtk/blob/master/docs/window_animator.md)
 
 * 类型：char*
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### single\_instance 属性
+-----------------------
+> <p id="window_base_t_single_instance">单例。如果窗口存在，先关闭再打开。
+
+* 类型：bool\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

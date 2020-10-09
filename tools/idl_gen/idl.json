@@ -56248,7 +56248,33 @@
         }
       }
     ],
-    "events": [],
+    "events": [
+      {
+        "name": "EVT_WINDOW_WILL_OPEN",
+        "desc": "窗口即将打开事件。\n如果有窗口动画，在窗口动画开始前触发。如果没有窗口动画，在窗口被加载后的下一次循环中触发。",
+        "type": "event_t"
+      },
+      {
+        "name": "EVT_WINDOW_OPEN",
+        "desc": "窗口打开事件。\n如果有窗口动画，在窗口动画完成时触发。如果没有窗口动画，在窗口被加载后的下一次循环中触发。",
+        "type": "event_t"
+      },
+      {
+        "name": "EVT_WINDOW_TO_BACKGROUND",
+        "desc": "窗口被切换到后台事件。\n打开新窗口时，当前窗口被切换到后台时，对当前窗口触发本事件。",
+        "type": "event_t"
+      },
+      {
+        "name": "EVT_WINDOW_TO_FOREGROUND",
+        "desc": "窗口被切换到前台事件。\n关闭当前窗口时，前一个窗口被切换到前台时，对前一个窗口触发本事件。",
+        "type": "event_t"
+      },
+      {
+        "name": "EVT_WINDOW_CLOSE",
+        "desc": "窗口关闭事件。",
+        "type": "event_t"
+      }
+    ],
     "properties": [
       {
         "name": "theme",
