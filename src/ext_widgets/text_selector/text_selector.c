@@ -647,7 +647,11 @@ ret_t text_selector_set_visible_nr(widget_t* widget, uint32_t visible_nr) {
   text_selector_t* text_selector = TEXT_SELECTOR(widget);
   return_value_if_fail(text_selector != NULL, RET_BAD_PARAMS);
 
-  text_selector->visible_nr = visible_nr == 3 ? 3 : 5;
+  if(visible_nr > 1) {
+    text_selector->visible_nr = visible_nr == 3 ? 3 : 5;
+  } else {
+    text_selector->visible_nr = 1;
+  }
   text_selector_sync_yoffset_with_selected_index(text_selector);
 
   return widget_invalidate(widget, NULL);
