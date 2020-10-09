@@ -679,8 +679,6 @@ EXPORTS
     widget_set_enable
     widget_set_feedback
     widget_set_auto_adjust_size
-    widget_set_grab_focus
-    widget_set_return_key_to_grab_focus
     widget_set_floating
     widget_set_focused
     widget_set_focusable
@@ -805,6 +803,7 @@ EXPORTS
     widget_end_wait_pointer_cursor
     widget_set_style
     widget_calc_icon_text_rect
+    widget_set_need_update_style
     widget_to_xml
     window_animator_factory
     window_animator_factory_set

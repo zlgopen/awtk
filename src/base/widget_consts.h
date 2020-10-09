@@ -528,20 +528,6 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_MAX "max"
 
 /**
- * @const WIDGET_PROP_GRAB_FOCUS
- * 是否抓住焦点。抓住焦点之后，方向键不再切换焦点。
- *
- */
-#define WIDGET_PROP_GRAB_FOCUS "grab_focus"
-
-/**
- * @const WIDGET_PROP_RETURN_KEY_TO_GRAB_FOCUS
- * 用回车键来触发grab focus状态。
- *
- */
-#define WIDGET_PROP_RETURN_KEY_TO_GRAB_FOCUS "return_key_to_grab_focus"
-
-/**
  * @const WIDGET_PROP_GRAB_KEYS
  * 让窗口管理器直接把按键发给自己。
  */
@@ -1338,12 +1324,6 @@ typedef enum _window_closable_t {
  * 聚焦状态。
  */
 #define WIDGET_STATE_FOCUSED "focused"
-
-/**
- * @const WIDGET_STATE_FOCUS_GRABED
- * focus grabed状态。
- */
-#define WIDGET_STATE_FOCUS_GRABED "focus_grabed"
 
 /**
  * @const WIDGET_STATE_CHECKED

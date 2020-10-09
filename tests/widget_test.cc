@@ -1311,28 +1311,3 @@ TEST(Widget, get_text_utf8) {
   widget_destroy(w);
 }
 
-TEST(Widget, grab_focus) {
-  widget_t* w = window_create(NULL, 0, 0, 400, 300);
-
-  ASSERT_EQ(w->grab_focus, FALSE);
-  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_GRAB_FOCUS, TRUE), FALSE);
-  ASSERT_EQ(widget_set_prop_str(w, WIDGET_PROP_GRAB_FOCUS, "true"), RET_OK);
-  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_GRAB_FOCUS, FALSE), TRUE);
-  ASSERT_EQ(w->grab_focus, TRUE);
-
-  widget_destroy(w);
-}
-
-
-TEST(Widget, return_key_to_grab_focus) {
-  widget_t* w = window_create(NULL, 0, 0, 400, 300);
-
-  ASSERT_EQ(w->return_key_to_grab_focus, FALSE);
-  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_RETURN_KEY_TO_GRAB_FOCUS, TRUE), FALSE);
-  ASSERT_EQ(widget_set_prop_str(w, WIDGET_PROP_RETURN_KEY_TO_GRAB_FOCUS, "true"), RET_OK);
-  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_RETURN_KEY_TO_GRAB_FOCUS, FALSE), TRUE);
-  ASSERT_EQ(w->return_key_to_grab_focus, TRUE);
-
-  widget_destroy(w);
-}
-

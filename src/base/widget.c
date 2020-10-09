@@ -601,25 +601,6 @@ ret_t widget_set_auto_adjust_size(widget_t* widget, bool_t auto_adjust_size) {
   return RET_OK;
 }
 
-ret_t widget_set_grab_focus(widget_t* widget, bool_t grab_focus) {
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
-
-  widget->grab_focus = grab_focus;
-
-  return RET_OK;
-}
-
-ret_t widget_set_return_key_to_grab_focus(widget_t* widget, bool_t return_key_to_grab_focus) {
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
-
-  if (return_key_to_grab_focus) {
-    widget->focusable = TRUE;
-  }
-  widget->return_key_to_grab_focus = return_key_to_grab_focus;
-
-  return RET_OK;
-}
-
 ret_t widget_set_floating(widget_t* widget, bool_t floating) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
@@ -703,11 +684,7 @@ const char* widget_get_state_for_style(widget_t* widget, bool_t active, bool_t c
   if (widget_is_focusable(widget) || widget_with_focus_state(widget)) {
     if (widget->focused) {
       if (tk_str_eq(state, WIDGET_STATE_NORMAL)) {
-        if(widget->grab_focus) {
-          state = WIDGET_STATE_FOCUS_GRABED;
-        } else {
-          state = WIDGET_STATE_FOCUSED;
-        }
+        state = WIDGET_STATE_FOCUSED;
       }
     } else {
       if (tk_str_eq(state, WIDGET_STATE_FOCUSED)) {
@@ -1665,10 +1642,6 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
     widget->feedback = value_bool(v);
   } else if (tk_str_eq(name, WIDGET_PROP_AUTO_ADJUST_SIZE)) {
     widget->auto_adjust_size = value_bool(v);
-  } else if (tk_str_eq(name, WIDGET_PROP_RETURN_KEY_TO_GRAB_FOCUS)) {
-    widget_set_return_key_to_grab_focus(widget, value_bool(v));
-  } else if (tk_str_eq(name, WIDGET_PROP_GRAB_FOCUS)) {
-    widget->grab_focus = value_bool(v);
   } else if (tk_str_eq(name, WIDGET_PROP_NAME)) {
     widget_set_name(widget, value_str(v));
   } else if (tk_str_eq(name, WIDGET_PROP_TR_TEXT)) {
@@ -1768,10 +1741,6 @@ ret_t widget_get_prop(widget_t* widget, const char* name, value_t* v) {
     value_set_bool(v, widget->feedback);
   } else if (tk_str_eq(name, WIDGET_PROP_AUTO_ADJUST_SIZE)) {
     value_set_bool(v, widget->auto_adjust_size);
-  } else if (tk_str_eq(name, WIDGET_PROP_GRAB_FOCUS)) {
-    value_set_bool(v, widget->grab_focus);
-  } else if (tk_str_eq(name, WIDGET_PROP_RETURN_KEY_TO_GRAB_FOCUS)) {
-    value_set_bool(v, widget->return_key_to_grab_focus);
   } else if (tk_str_eq(name, WIDGET_PROP_NAME)) {
     value_set_str(v, widget->name);
   } else if (tk_str_eq(name, WIDGET_PROP_ANIMATION)) {
@@ -2308,10 +2277,6 @@ static ret_t widget_on_keyup_impl(widget_t* widget, key_event_t* e) {
     }
     widget_dispatch(widget, pointer_event_init(&click, EVT_CLICK, widget, 0, 0));
 
-    ret = RET_STOP;
-  } if (widget->return_key_to_grab_focus && key_code_is_enter(e->key)) {
-    widget_set_grab_focus(widget, !(widget->grab_focus));
-    widget_set_need_update_style(widget);
     ret = RET_STOP;
   } else if (widget_is_move_focus_next_key(widget, e)) {
     if (widget_is_focusable(widget)) {
@@ -3135,10 +3100,6 @@ ret_t widget_get_prop_default_value(widget_t* widget, const char* name, value_t*
     value_set_bool(v, FALSE);
   } else if (tk_str_eq(name, WIDGET_PROP_AUTO_ADJUST_SIZE)) {
     value_set_bool(v, FALSE);
-  } else if (tk_str_eq(name, WIDGET_PROP_GRAB_FOCUS)) {
-    value_set_bool(v, FALSE);
-  } else if (tk_str_eq(name, WIDGET_PROP_RETURN_KEY_TO_GRAB_FOCUS)) {
-    value_set_bool(v, FALSE);
   } else {
     if (widget->vt->get_prop_default_value) {
       ret = widget->vt->get_prop_default_value(widget, name, v);
@@ -3273,7 +3234,6 @@ static const char* const s_widget_persistent_props[] = {WIDGET_PROP_NAME,
                                                         WIDGET_PROP_FOCUSED,
                                                         WIDGET_PROP_FEEDBACK,
                                                         WIDGET_PROP_AUTO_ADJUST_SIZE,
-                                                        WIDGET_PROP_RETURN_KEY_TO_GRAB_FOCUS,
                                                         WIDGET_PROP_FOCUSABLE,
                                                         WIDGET_PROP_SENSITIVE,
                                                         WIDGET_PROP_WITH_FOCUS_STATE,
