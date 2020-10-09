@@ -590,6 +590,7 @@ ret_t window_manager_dispatch_window_event(widget_t* window, event_type_t type) 
 
   evt.window = window;
   evt.e = event_init(type, window->parent);
+  evt.e.size = sizeof(evt);
 
   if (type == EVT_WINDOW_OPEN) {
     window_manager_dispatch_top_window_changed(window->parent);
