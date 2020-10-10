@@ -147,6 +147,15 @@ ret_t lcd_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
   return lcd->fill_rect(lcd, x, y, w, h);
 }
 
+ret_t lcd_clear_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
+  return_value_if_fail(lcd != NULL && lcd->clear_rect != NULL, RET_BAD_PARAMS);
+  if (w == 0 || h == 0) {
+    return RET_BAD_PARAMS;
+  }
+
+  return lcd->clear_rect(lcd, x, y, w, h);
+}
+
 ret_t lcd_stroke_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
   return_value_if_fail(lcd != NULL && lcd->stroke_rect != NULL, RET_BAD_PARAMS);
 

@@ -80,6 +80,23 @@ static ret_t lcd_mem_fragment_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t
   return lcd_mem_fragment_fill_rect_with_color(lcd, x, y, w, h, lcd->fill_color);
 }
 
+static ret_t lcd_mem_fragment_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
+  lcd_mem_fragment_t* mem = (lcd_mem_fragment_t*)lcd;
+
+  bitmap_t* fb = &(mem->fb);
+  uint32_t dx = x - mem->x;
+  uint32_t dy = y - mem->y;
+  color_t c = lcd->fill_color;
+  rect_t r = rect_init(dx, dy, w, h);
+
+  assert(x >= mem->x && y >= mem->y);
+  assert(w <= mem->fb.w && h <= mem->fb.h);
+
+  c.rgba.a = (c.rgba.a * lcd->global_alpha) / 0xff;
+
+  return image_clear(fb, &r, c);
+}
+
 static ret_t lcd_mem_fragment_draw_hline(lcd_t* lcd, xy_t x, xy_t y, wh_t w) {
   lcd_mem_fragment_t* mem = (lcd_mem_fragment_t*)lcd;
   assert(x >= mem->x && y >= mem->y);

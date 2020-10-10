@@ -64,6 +64,7 @@ typedef ret_t (*lcd_draw_points_t)(lcd_t* lcd, point_t* points, uint32_t nr);
 typedef color_t (*lcd_get_point_color_t)(lcd_t* lcd, xy_t x, xy_t y);
 
 typedef ret_t (*lcd_fill_rect_t)(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h);
+typedef ret_t (*lcd_clear_rect_t)(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h);
 typedef ret_t (*lcd_stroke_rect_t)(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h);
 
 typedef ret_t (*lcd_draw_glyph_t)(lcd_t* lcd, glyph_t* glyph, const rect_t* src, xy_t x, xy_t y);
@@ -170,6 +171,7 @@ struct _lcd_t {
   lcd_draw_vline_t draw_vline;
   lcd_draw_hline_t draw_hline;
   lcd_fill_rect_t fill_rect;
+  lcd_clear_rect_t clear_rect;
   lcd_stroke_rect_t stroke_rect;
   lcd_draw_image_t draw_image;
   lcd_draw_image_matrix_t draw_image_matrix;
@@ -445,8 +447,21 @@ color_t lcd_get_point_color(lcd_t* lcd, xy_t x, xy_t y);
 ret_t lcd_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
+ * @method lcd_clear_rect
+ * 填充实心矩形。
+ * @param {lcd_t*} lcd lcd对象。
+ * @param {xy_t} x x坐标。
+ * @param {xy_t} y y坐标。
+ * @param {wh_t} w 宽度。
+ * @param {wh_t} h 高度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t lcd_clear_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h);
+
+/**
  * @method lcd_stroke_rect
- * 绘制矩形。
+ * 绘制矩形边框。
  * @param {lcd_t*} lcd lcd对象。
  * @param {xy_t} x x坐标。
  * @param {xy_t} y y坐标。

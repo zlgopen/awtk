@@ -129,6 +129,15 @@ static ret_t lcd_vgcanvas_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) 
   return RET_OK;
 }
 
+static ret_t lcd_vgcanvas_clear_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
+  vgcanvas_t* canvas = LCD(lcd)->canvas;
+
+  vgcanvas_save(canvas);
+  vgcanvas_clear_rect(canvas, x, y, w, h, lcd->fill_color);
+  vgcanvas_restore(canvas);
+  return RET_OK;
+}
+
 static ret_t lcd_vgcanvas_stroke_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
   float_t offset_1 = 1.0f / lcd->ratio;
   float_t offset_5 = 0.5f / lcd->ratio;
@@ -278,6 +287,7 @@ lcd_t* lcd_vgcanvas_init(wh_t w, wh_t h, vgcanvas_t* canvas) {
   base->draw_vline = lcd_vgcanvas_draw_vline;
   base->draw_hline = lcd_vgcanvas_draw_hline;
   base->fill_rect = lcd_vgcanvas_fill_rect;
+  base->clear_rect = lcd_vgcanvas_clear_rect;
   base->stroke_rect = lcd_vgcanvas_stroke_rect;
   base->draw_image = lcd_vgcanvas_draw_image;
   base->draw_image_matrix = lcd_vgcanvas_draw_image_matrix;

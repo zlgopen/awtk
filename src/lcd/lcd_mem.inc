@@ -105,6 +105,16 @@ static ret_t lcd_mem_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
   return lcd_mem_fill_rect_with_color(lcd, x, y, w, h, lcd->fill_color);
 }
 
+static ret_t lcd_mem_clear_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
+  bitmap_t fb;
+  rect_t r = rect_init(x, y, w, h);
+  color_t c = lcd->fill_color;
+  c.rgba.a = (c.rgba.a * lcd->global_alpha) / 0xff;
+
+  lcd_mem_init_drawing_fb(lcd, &fb);
+  return image_clear(&fb, &r, c);
+}
+
 static ret_t lcd_mem_draw_hline(lcd_t* lcd, xy_t x, xy_t y, wh_t w) {
   return lcd_mem_fill_rect_with_color(lcd, x, y, w, 1, lcd->stroke_color);
 }
@@ -365,6 +375,7 @@ static lcd_t* lcd_mem_create(wh_t w, wh_t h, bool_t alloc) {
   base->draw_vline = lcd_mem_draw_vline;
   base->draw_hline = lcd_mem_draw_hline;
   base->fill_rect = lcd_mem_fill_rect;
+  base->clear_rect = lcd_mem_clear_rect;
   base->draw_image = lcd_mem_draw_image;
   base->draw_image_matrix = lcd_mem_draw_image_matrix;
   base->draw_glyph = lcd_mem_draw_glyph;
