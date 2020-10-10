@@ -130,7 +130,7 @@ typedef struct _im_commit_event_t {
   const char* text;
 
   /**
-   * @property {bool_t} replace;
+   * @property {bool_t} replace
    * @annotation ["readable"]
    * 是否替换原来的文本。
    */
@@ -192,9 +192,9 @@ typedef struct _im_candidates_event_t {
   uint32_t candidates_nr;
 
   /**
-   * @property {int32_t} selected;
+   * @property {int32_t} selected
    * @annotation ["readable"]
-   * 缺省选中某个候选字，小余0不选择任何候选字 。
+   * 缺省选中某个候选字，小于0不选择任何候选字。
    */
   int32_t selected;
 } im_candidates_event_t;

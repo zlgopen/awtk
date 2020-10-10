@@ -21097,6 +21097,24 @@
         "annotation": {
           "scriptable": true
         },
+        "desc": "检查控件是否是overlay窗口类型。",
+        "name": "widget_is_overlay",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回FALSE表示不是，否则表示是。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "widget对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "检查控件弹出窗口控件是否已经打开了（而非挂起状态）。",
         "name": "widget_is_opened_popup",
         "return": {
@@ -57295,7 +57313,7 @@
         }
       },
       {
-        "name": "replace;",
+        "name": "replace",
         "desc": "是否替换原来的文本。",
         "type": "bool_t",
         "annotation": {
@@ -57739,8 +57757,8 @@
         }
       },
       {
-        "name": "selected;",
-        "desc": "缺省选中某个候选字，小余0不选择任何候选字 。",
+        "name": "selected",
+        "desc": "缺省选中某个候选字，小于0不选择任何候选字。",
         "type": "int32_t",
         "annotation": {
           "readable": true
@@ -61812,7 +61830,7 @@
         "name": "dialog_modal",
         "return": {
           "type": "dialog_quit_code_t",
-          "desc": "返回退出吗。"
+          "desc": "返回退出码。"
         }
       },
       {

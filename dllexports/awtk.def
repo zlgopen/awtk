@@ -729,6 +729,7 @@ EXPORTS
     widget_is_normal_window
     widget_is_dialog
     widget_is_popup
+    widget_is_overlay
     widget_is_opened_popup
     widget_is_keyboard
     widget_is_designing_window

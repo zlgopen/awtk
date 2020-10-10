@@ -2,7 +2,8 @@
 
 2020/10/10
   * window_manager_back 支持 overlay 和 popup。
-
+  * 完善 API 注释（感谢兆坤提供补丁）。
+  
 2020/10/09
   * 把 grab\_focus 和 return\_key\_to\_grab\_focus 属性移到 title\_value 自定义控件。
 

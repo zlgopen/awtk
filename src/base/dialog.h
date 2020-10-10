@@ -286,7 +286,7 @@ ret_t dialog_set_title(widget_t* widget, const char* title);
  * @annotation ["scriptable"]
  * @param {widget_t*} widget dialog对象。
  *
- * @return {dialog_quit_code_t} 返回退出吗。
+ * @return {dialog_quit_code_t} 返回退出码。
  */
 dialog_quit_code_t dialog_modal(widget_t* widget);
 
