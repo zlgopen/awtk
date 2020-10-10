@@ -1,9 +1,11 @@
 # 最新动态
 
 2020/10/10
-  * window_manager_back 支持 overlay 和 popup。
+  * window\_manager\_back 支持 overlay 和 popup。
   * 完善 API 注释（感谢兆坤提供补丁）。
-  
+  * canvas 增加了 clear\_rect 的函数，和 fill\_rect 函数公用一个颜色（感谢智明提供补丁）。
+  * 优化了 blend 函数的拷贝判断，当背景色为透明时候，把前景色拷贝到背景上面，不在做混合计算（感谢智明提供补丁）。
+
 2020/10/09
   * 把 grab\_focus 和 return\_key\_to\_grab\_focus 属性移到 title\_value 自定义控件。
 
