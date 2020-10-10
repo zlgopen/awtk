@@ -281,17 +281,21 @@
     <normal  />
     <pressed />
     <over    />
+    <focused text_color="green"/>
     <normal_of_checked icon="check" />
     <pressed_of_checked icon="check" />
     <over_of_checked icon="check" />
+    <focused_of_checked text_color="green" icon="check"/>
   </style>
   <style name="even_icon_right" icon_at="right" text_color="black" margin="4" bg_color="#eaeaea">
     <normal  />
     <pressed />
     <over    />
+    <focused text_color="green"/>
     <normal_of_checked icon="check" />
     <pressed_of_checked icon="check" />
     <over_of_checked icon="check" />
+    <focused_of_checked text_color="green" icon="check"/>
   </style>
 </check_button>
 
@@ -334,17 +338,21 @@
     <normal  />
     <pressed />
     <over    />
+    <focused text_color="green"/>
     <normal_of_checked icon="check" />
     <pressed_of_checked icon="check" />
     <over_of_checked icon="check" />
+    <focused_of_checked text_color="green" icon="check"/>
   </style>
   <style name="even_icon_right" text_color="black" margin="4" icon_at="right" bg_color="#eaeaea">
     <normal  />
     <pressed />
     <over    />
+    <focused text_color="green"/>
     <normal_of_checked icon="check" />
     <pressed_of_checked icon="check" />
     <over_of_checked icon="check" />
+    <focused_of_checked text_color="green" icon="check"/>
   </style>
 </radio_button>
 
