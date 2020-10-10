@@ -355,7 +355,7 @@ struct _widget_t {
    *> 为true时，最好不要使用child_layout，否则可能有冲突。
    */
   uint8_t auto_adjust_size : 1;
-  
+
   /**
    * @property {bool_t} focused
    * @annotation ["readable"]
@@ -1695,6 +1695,16 @@ bool_t widget_is_dialog(widget_t* widget);
  * @return {bool_t} 返回FALSE表示不是，否则表示是。
  */
 bool_t widget_is_popup(widget_t* widget);
+
+/**
+ * @method widget_is_overlay
+ * 检查控件是否是overlay窗口类型。
+ *
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @return {bool_t} 返回FALSE表示不是，否则表示是。
+ */
+bool_t widget_is_overlay(widget_t* widget);
 
 /**
  * @method widget_is_opened_popup

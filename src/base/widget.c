@@ -4054,6 +4054,10 @@ bool_t widget_is_popup(widget_t* widget) {
   return tk_str_eq(widget->vt->type, WIDGET_TYPE_POPUP);
 }
 
+bool_t widget_is_overlay(widget_t* widget) {
+  return tk_str_eq(widget->vt->type, WIDGET_TYPE_OVERLAY);
+}
+
 bool_t widget_is_opened_popup(widget_t* widget) {
   int32_t stage = widget_get_prop_int(widget, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE);
   return tk_str_eq(widget->vt->type, WIDGET_TYPE_POPUP) && stage == WINDOW_STAGE_OPENED;

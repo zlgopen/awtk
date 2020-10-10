@@ -64,6 +64,8 @@ static ret_t window_manager_default_impl_back(widget_t* widget) {
     } else {
       window_close(top);
     }
+  } else if (!widget_is_system_bar(top)) {
+    window_close(top);
   }
 
   return RET_OK;

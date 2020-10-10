@@ -1,12 +1,15 @@
 # 最新动态
 
+2020/10/10
+  * window_manager_back 支持 overlay 和 popup。
+
 2020/10/09
-  把 grab\_focus 和 return\_key\_to\_grab\_focus 属性移到 title\_value 自定义控件。
+  * 把 grab\_focus 和 return\_key\_to\_grab\_focus 属性移到 title\_value 自定义控件。
 
 2020/10/08
   * 增加 auto\_adjust\_size 属性。为 true 时，根据子控件以及文本调整空间自身大小（此时最好不要使用 child\_layout，否则可能有冲突）。
   * 窗口增加 single\_instance 属性。为 true 时，如果窗口已经打开，先关闭旧的，再打开新的。
-  * 增加 grab\_focus 和 return\_key\_to\_grab\_focus 属性，用于辅助实现只用方向键和OK键的硬件。
+  * 增加 grab\_focus 和 return\_key\_to\_grab\_focus 属性，用于辅助实现只用方向键和 OK 键的硬件。
 
 2020/10/07
   * label 支持自动换行。
