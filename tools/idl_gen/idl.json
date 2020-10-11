@@ -10543,7 +10543,43 @@
           }
         ],
         "annotation": {},
-        "desc": "绘制矩形。",
+        "desc": "填充实心矩形。",
+        "name": "lcd_clear_rect",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "lcd_t*",
+            "name": "lcd",
+            "desc": "lcd对象。"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标。"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标。"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "绘制矩形边框。",
         "name": "lcd_stroke_rect",
         "return": {
           "type": "ret_t",
@@ -17771,6 +17807,10 @@
         "name": "WIDGET_PROP_LENGTH"
       },
       {
+        "desc": "自动换行。",
+        "name": "WIDGET_PROP_LINE_WRAP"
+      },
+      {
         "desc": "文本。",
         "name": "WIDGET_PROP_TEXT"
       },
@@ -20791,7 +20831,9 @@
             "desc": "属性的值。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "设置指针格式的属性。",
         "name": "widget_set_prop_pointer",
         "return": {
@@ -20812,7 +20854,9 @@
             "desc": "属性的名称。"
           }
         ],
-        "annotation": {},
+        "annotation": {
+          "scriptable": true
+        },
         "desc": "获取指针格式的属性。",
         "name": "widget_get_prop_pointer",
         "return": {
@@ -35447,8 +35491,46 @@
         "annotation": {
           "scriptable": true
         },
-        "desc": "填充矩形。",
+        "desc": "绘制矩形。",
         "name": "canvas_fill_rect",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "canvas对象。"
+          },
+          {
+            "type": "xy_t",
+            "name": "x",
+            "desc": "x坐标。"
+          },
+          {
+            "type": "xy_t",
+            "name": "y",
+            "desc": "y坐标。"
+          },
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "填充矩形。",
+        "name": "canvas_clear_rect",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -42028,6 +42110,29 @@
             "desc": "控件对象。"
           },
           {
+            "type": "bool_t",
+            "name": "line_wrap",
+            "desc": "是否自动换行。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置是否自动换行。",
+        "name": "label_set_line_wrap",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
             "type": "uint32_t",
             "name": "min_w",
             "desc": "最小宽度。"
@@ -42084,6 +42189,19 @@
         "name": "length",
         "desc": "显示字符的个数(小余0时全部显示)。\n主要用于动态改变显示字符的个数，来实现类似[拨号中...]的动画效果。",
         "type": "int32_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "line_wrap",
+        "desc": "是否自动换行。",
+        "type": "bool_t",
         "annotation": {
           "set_prop": true,
           "get_prop": true,

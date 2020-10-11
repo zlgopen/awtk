@@ -1548,6 +1548,7 @@ const char* widget_get_prop_str(widget_t* widget, const char* name, const char* 
 /**
  * @method widget_set_prop_pointer
  * 设置指针格式的属性。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {const char*} name 属性的名称。
  * @param {void**} v 属性的值。
@@ -1559,6 +1560,7 @@ ret_t widget_set_prop_pointer(widget_t* widget, const char* name, void* v);
 /**
  * @method widget_get_prop_pointer
  * 获取指针格式的属性。
+ * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {const char*} name 属性的名称。
  *

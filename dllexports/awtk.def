@@ -384,6 +384,7 @@ EXPORTS
     lcd_draw_points
     lcd_get_point_color
     lcd_fill_rect
+    lcd_clear_rect
     lcd_stroke_rect
     lcd_draw_glyph
     lcd_measure_text
@@ -1274,6 +1275,7 @@ EXPORTS
     canvas_draw_hline
     canvas_draw_points
     canvas_fill_rect
+    canvas_clear_rect
     canvas_stroke_rect
     canvas_set_font
     canvas_set_text_align
@@ -1485,6 +1487,7 @@ EXPORTS
     pages_set_active_by_name
     label_create
     label_set_length
+    label_set_line_wrap
     label_resize_to_content
     label_cast
     group_box_create
