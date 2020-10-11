@@ -50,3 +50,13 @@ TEST(Label, clone) {
   widget_destroy(w1);
   widget_destroy(w2);
 }
+
+TEST(Label, line_wrap) {
+  widget_t* l = label_create(NULL, 10, 20, 30, 40);
+  ASSERT_EQ(LABEL(l)->line_wrap, TRUE);
+  ASSERT_EQ(widget_set_prop_bool(l, WIDGET_PROP_LINE_WRAP, FALSE), RET_OK);
+  ASSERT_EQ(widget_get_prop_bool(l, WIDGET_PROP_LINE_WRAP, TRUE), FALSE);
+  ASSERT_EQ(LABEL(l)->line_wrap, FALSE);
+
+  widget_destroy(l);
+}

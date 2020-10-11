@@ -1,5 +1,8 @@
 # 最新动态
 
+2020/10/11
+  * label 增加 line\_wrap 属性。
+  
 2020/10/10
   * window\_manager\_back 支持 overlay 和 popup。
   * 完善 API 注释（感谢兆坤提供补丁）。

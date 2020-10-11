@@ -187,6 +187,7 @@ static ret_t label_paint_text_mlines(widget_t* widget, canvas_t* c, label_line_p
 
 static ret_t label_paint_text(widget_t* widget, canvas_t* c, const wchar_t* str, uint32_t size) {
   label_line_parser_t p;
+  label_t* label = LABEL(widget);
   style_t* style = widget->astyle;
   int32_t margin = style_get_int(style, STYLE_ID_MARGIN, 2);
   int32_t w = widget->w - margin - margin;
@@ -195,7 +196,7 @@ static ret_t label_paint_text(widget_t* widget, canvas_t* c, const wchar_t* str,
       label_line_parser_init(&p, c, widget->text.str, widget->text.size, c->font_size, w) == RET_OK,
       RET_BAD_PARAMS);
 
-  if (p.total_lines > 1) {
+  if (p.total_lines > 1 && label->line_wrap) {
     return label_paint_text_mlines(widget, c, &p);
   } else {
     wstr_t str = widget->text;
@@ -261,6 +262,14 @@ ret_t label_set_length(widget_t* widget, int32_t length) {
   return widget_invalidate_force(widget, NULL);
 }
 
+ret_t label_set_line_wrap(widget_t* widget, bool_t line_wrap) {
+  label_t* label = LABEL(widget);
+  return_value_if_fail(label != NULL, RET_BAD_PARAMS);
+  label->line_wrap = line_wrap;
+
+  return widget_invalidate_force(widget, NULL);
+}
+
 static ret_t label_get_prop(widget_t* widget, const char* name, value_t* v) {
   label_t* label = LABEL(widget);
   return_value_if_fail(label != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
@@ -272,6 +281,9 @@ static ret_t label_get_prop(widget_t* widget, const char* name, value_t* v) {
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_LENGTH)) {
     value_set_int(v, label->length);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_LINE_WRAP)) {
+    value_set_bool(v, label->line_wrap);
     return RET_OK;
   }
 
@@ -285,6 +297,8 @@ static ret_t label_set_prop(widget_t* widget, const char* name, const value_t* v
     return wstr_from_value(&(widget->text), v);
   } else if (tk_str_eq(name, WIDGET_PROP_LENGTH)) {
     return label_set_length(widget, tk_roundi(value_float(v)));
+  } else if (tk_str_eq(name, WIDGET_PROP_LINE_WRAP)) {
+    return label_set_line_wrap(widget, value_bool(v));
   }
 
   return RET_NOT_FOUND;
@@ -357,6 +371,7 @@ widget_t* label_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   return_value_if_fail(label != NULL, NULL);
 
   label->length = -1;
+  label->line_wrap = TRUE;
 
   return widget;
 }

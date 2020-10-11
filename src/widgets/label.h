@@ -83,6 +83,13 @@ typedef struct _label_t {
    * 主要用于动态改变显示字符的个数，来实现类似[拨号中...]的动画效果。
    */
   int32_t length;
+  
+  /**
+   * @property {bool_t} line_wrap
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 是否自动换行。
+   */
+  bool_t line_wrap;
 } label_t;
 
 /**
@@ -109,6 +116,17 @@ widget_t* label_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t label_set_length(widget_t* widget, int32_t length);
+
+/**
+ * @method label_set_line_wrap
+ * 设置是否自动换行。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {bool_t}  line_wrap 是否自动换行。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t label_set_line_wrap(widget_t* widget, bool_t line_wrap);
 
 /**
  * @method label_resize_to_content

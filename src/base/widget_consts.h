@@ -234,6 +234,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_LENGTH "length"
 
 /**
+ * @const WIDGET_PROP_LINE_WRAP
+ * 自动换行。
+ */
+#define WIDGET_PROP_LINE_WRAP "line_wrap"
+
+/**
  * @const WIDGET_PROP_TEXT
  * 文本。
  */
