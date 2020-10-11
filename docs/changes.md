@@ -2,7 +2,8 @@
 
 2020/10/11
   * label 增加 line\_wrap 属性。
-  
+  * 完善输入法。如果 keyboard 与 edit 没有重叠，不再上推窗口。
+
 2020/10/10
   * window\_manager\_back 支持 overlay 和 popup。
   * 完善 API 注释（感谢兆坤提供补丁）。

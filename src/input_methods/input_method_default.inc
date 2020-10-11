@@ -146,7 +146,7 @@ static ret_t input_method_on_win_close(void* ctx, event_t* e) {
     widget_get_prop(im->keyboard, WIDGET_PROP_CLOSE_ANIM_HINT, &v);
     if (im->idle_close_id == TK_INVALID_ID) {
       window_close_force(im->keyboard);
-      
+
       im->keyboard = NULL;
       im->widget = NULL;
       im->win = NULL;
@@ -161,6 +161,21 @@ static ret_t input_method_default_on_keyboard_open(void* ctx, event_t* e) {
   im->busy = FALSE;
 
   return RET_REMOVE;
+}
+
+static bool_t is_key_board_overlap_edit(widget_t* keyboard, widget_t* edit) {
+  point_t p = {0, 0};
+  widget_to_screen(edit, &p);
+
+  if (p.x > keyboard->x && p.x < (keyboard->x + keyboard->w)) {
+    return TRUE;
+  }
+
+  if (keyboard->x > p.x && keyboard->x < (p.x + edit->w)) {
+    return TRUE;
+  }
+
+  return FALSE;
 }
 
 static ret_t input_type_open_keyboard(input_method_t* im, const char* keyboard_name,
@@ -189,13 +204,17 @@ static ret_t input_type_open_keyboard(input_method_t* im, const char* keyboard_n
   widget_on(im->keyboard, EVT_DESTROY, input_method_default_on_keyboard_destroy, im);
 
   if ((p.y + widget->h) > im->keyboard->y) {
-    close_anim_hint = "vtranslate";
-    open_anim_hint = close_anim_hint;
-
     im->win = win;
-    im->win_delta_y = win->y + win->h - im->keyboard->y;
+    if (is_key_board_overlap_edit(widget, im->keyboard)) {
+      im->win_delta_y = win->y + win->h - im->keyboard->y;
+      close_anim_hint = "vtranslate";
+    } else {
+      im->win_delta_y = 0;
+      close_anim_hint = "popup";
+    }
+    open_anim_hint = close_anim_hint;
     widget_on(im->keyboard, EVT_WINDOW_OPEN, on_push_window, im);
-  } else if (win->y + win->h < im->keyboard->y) {
+  } else if ((win->y + win->h) < im->keyboard->y) {
     /*when new keyboard height is not eq old keyboard height*/
     close_anim_hint = "vtranslate";
     im->win_delta_y += win->y + win->h - im->keyboard->y;
