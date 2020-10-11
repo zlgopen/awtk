@@ -1289,11 +1289,11 @@ widget_t* widget_lookup_by_type(widget_t* widget, const char* type, bool_t recur
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {bool_t} visible 是否可见。
- * @param {bool_t} recursive 是否递归设置全部子控件。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t widget_set_visible(widget_t* widget, bool_t visible, bool_t recursive);
+/*为了避免脚本绑定时冲突，去掉了recursive参数。为了兼容旧版本，只好改成可变参数。*/
+ret_t widget_set_visible(widget_t* widget, bool_t visible, ...);
 
 /**
  * @method widget_set_visible_only

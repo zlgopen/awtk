@@ -20246,11 +20246,6 @@
             "type": "bool_t",
             "name": "visible",
             "desc": "是否可见。"
-          },
-          {
-            "type": "bool_t",
-            "name": "recursive",
-            "desc": "是否递归设置全部子控件。"
           }
         ],
         "annotation": {

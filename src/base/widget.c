@@ -1003,12 +1003,8 @@ ret_t widget_set_visible_only(widget_t* widget, bool_t visible) {
   return RET_OK;
 }
 
-ret_t widget_set_visible(widget_t* widget, bool_t visible, bool_t recursive) {
-  if (recursive) {
-    widget_set_visible_recursive(widget, visible);
-  } else {
-    widget_set_visible_self(widget, visible);
-  }
+ret_t widget_set_visible(widget_t* widget, bool_t visible, ...) {
+  widget_set_visible_self(widget, visible);
 
   return widget_invalidate(widget, NULL);
 }
