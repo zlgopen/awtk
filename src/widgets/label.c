@@ -40,13 +40,15 @@ typedef struct _label_line_parser_t {
   const wchar_t* line;
   uint32_t line_size;
   bool_t is_force_break;
+  bool_t line_wrap;
 } label_line_parser_t;
 
 static ret_t label_line_parser_next(label_line_parser_t* parser);
 static ret_t label_line_parser_init(label_line_parser_t* parser, canvas_t* c, const wchar_t* str,
-                                    uint32_t size, uint32_t font_size, uint32_t width) {
+                                    uint32_t size, uint32_t font_size, uint32_t width,
+                                    bool_t line_wrap) {
   return_value_if_fail(parser != NULL && str != NULL && size > 0, RET_BAD_PARAMS);
-  return_value_if_fail(font_size > 0 && width > font_size, RET_BAD_PARAMS);
+  return_value_if_fail(font_size > 0, RET_BAD_PARAMS);
 
   memset(parser, 0x00, sizeof(label_line_parser_t));
 
@@ -55,7 +57,7 @@ static ret_t label_line_parser_init(label_line_parser_t* parser, canvas_t* c, co
   parser->size = size;
   parser->width = width;
   parser->font_size = font_size;
-
+  parser->line_wrap = line_wrap;
   parser->line = str;
   parser->line_size = 0;
   parser->is_force_break = FALSE;
@@ -107,18 +109,22 @@ static ret_t label_line_parser_next(label_line_parser_t* parser) {
       break;
     }
 
-    char_w = canvas_measure_text(c, p, 1) + 1;
-    if ((w + char_w) > parser->width) {
-      if (line_break_check(p[0], p[1]) == LINE_BREAK_NO) {
-        if (p > parser->line) {
-          p--;
+    if (parser->line_wrap) {
+      char_w = canvas_measure_text(c, p, 1) + 1;
+      if ((w + char_w) > parser->width) {
+        if (line_break_check(p[0], p[1]) == LINE_BREAK_NO) {
+          if (p > parser->line) {
+            p--;
+          }
         }
+        break;
       }
-      break;
-    }
 
-    p++;
-    w = canvas_measure_text(c, parser->line, p - parser->line);
+      p++;
+      w = canvas_measure_text(c, parser->line, p - parser->line);
+    } else {
+      p++;
+    }
   }
 
   parser->line_size = p - parser->line;
@@ -192,11 +198,11 @@ static ret_t label_paint_text(widget_t* widget, canvas_t* c, const wchar_t* str,
   int32_t margin = style_get_int(style, STYLE_ID_MARGIN, 2);
   int32_t w = widget->w - margin - margin;
 
-  return_value_if_fail(
-      label_line_parser_init(&p, c, widget->text.str, widget->text.size, c->font_size, w) == RET_OK,
-      RET_BAD_PARAMS);
+  return_value_if_fail(label_line_parser_init(&p, c, widget->text.str, widget->text.size,
+                                              c->font_size, w, label->line_wrap) == RET_OK,
+                       RET_BAD_PARAMS);
 
-  if (p.total_lines > 1 && label->line_wrap) {
+  if (p.total_lines > 1) {
     return label_paint_text_mlines(widget, c, &p);
   } else {
     wstr_t str = widget->text;
@@ -242,9 +248,9 @@ ret_t label_resize_to_content(widget_t* widget, uint32_t min_w, uint32_t max_w, 
   w = canvas_measure_text(c, widget->text.str, widget->text.size) + 2 * margin;
 
   w = tk_clampi(w, min_w, max_w);
-  return_value_if_fail(
-      label_line_parser_init(&p, c, widget->text.str, widget->text.size, c->font_size, w) == RET_OK,
-      RET_BAD_PARAMS);
+  return_value_if_fail(label_line_parser_init(&p, c, widget->text.str, widget->text.size,
+                                              c->font_size, w, label->line_wrap) == RET_OK,
+                       RET_BAD_PARAMS);
 
   h = p.total_lines * line_height + 2 * margin;
   h = tk_clampi(h, min_h, max_h);
@@ -322,9 +328,9 @@ static ret_t label_auto_adust_size(widget_t* widget) {
 
   w = widget->w - 2 * margin;
   widget_prepare_text_style(widget, c);
-  return_value_if_fail(
-      label_line_parser_init(&p, c, widget->text.str, widget->text.size, c->font_size, w) == RET_OK,
-      RET_BAD_PARAMS);
+  return_value_if_fail(label_line_parser_init(&p, c, widget->text.str, widget->text.size,
+                                              c->font_size, w, label->line_wrap) == RET_OK,
+                       RET_BAD_PARAMS);
 
   widget->h = line_height * p.total_lines;
 
