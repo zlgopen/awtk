@@ -1551,7 +1551,7 @@ const char* widget_get_prop_str(widget_t* widget, const char* name, const char* 
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {const char*} name 属性的名称。
- * @param {void**} v 属性的值。
+ * @param {void*} v 属性的值。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
