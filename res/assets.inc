@@ -34,8 +34,8 @@ ret_t assets_init(void) {
   return assets_init_internal(APP_THEME);
 }
 
-static ret_t widget_set_theme_without_file_system(widget_t* widget, const char* name) {
 #ifndef WITH_FS_RES
+static ret_t widget_set_theme_without_file_system(widget_t* widget, const char* name) {
   const asset_info_t* info = NULL;
   event_t e = event_init(EVT_THEME_CHANGED, NULL);
   widget_t* wm = widget_get_window_manager(widget);
@@ -65,10 +65,8 @@ static ret_t widget_set_theme_without_file_system(widget_t* widget, const char* 
   log_debug("theme changed: %s\n", name);
 
   return RET_OK;
-#else /*WITH_FS_RES*/
-  return RET_NOT_IMPL;
-#endif /*WITH_FS_RES*/
 }
+#endif /*WITH_FS_RES*/
 
 ret_t assets_set_global_theme(const char* name) {
 #ifdef WITH_FS_RES
