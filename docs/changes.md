@@ -1,5 +1,9 @@
 # 最新动态
 
+2020/10/12
+  * 完善api注释（感谢朝泽提供补丁）。
+  * 完善fragment framebuffer（感谢智明提供补丁）。 
+
 2020/10/11
   * label 增加 line\_wrap 属性。
   * 完善输入法。如果 keyboard 与 edit 没有重叠，不再上推窗口。

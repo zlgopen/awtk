@@ -80,7 +80,7 @@ static ret_t lcd_mem_fragment_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t
   return lcd_mem_fragment_fill_rect_with_color(lcd, x, y, w, h, lcd->fill_color);
 }
 
-static ret_t lcd_mem_fragment_fill_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
+static ret_t lcd_mem_fragment_clear_rect(lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h) {
   lcd_mem_fragment_t* mem = (lcd_mem_fragment_t*)lcd;
 
   bitmap_t* fb = &(mem->fb);
@@ -303,6 +303,7 @@ lcd_t* lcd_mem_fragment_create(wh_t w, wh_t h) {
   base->draw_vline = lcd_mem_fragment_draw_vline;
   base->draw_hline = lcd_mem_fragment_draw_hline;
   base->fill_rect = lcd_mem_fragment_fill_rect;
+  base->clear_rect = lcd_mem_fragment_clear_rect;
   base->draw_image = lcd_mem_fragment_draw_image;
   base->draw_glyph = lcd_mem_fragment_draw_glyph;
   base->draw_points = lcd_mem_fragment_draw_points;
