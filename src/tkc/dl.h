@@ -62,6 +62,18 @@ void* tk_dl_sym(tk_dl_t* dl, const char* name);
  */
 ret_t tk_dl_close(tk_dl_t* dl);
 
+#ifndef TK_DLL_EXT_NAME
+
+#ifdef WIN32
+#define TK_DLL_EXT_NAME ".dll"
+#elif defined MACOS
+#define TK_DLL_EXT_NAME ".dylib"
+#else
+#define TK_DLL_EXT_NAME ".so"
+#endif
+
+#endif/*TK_DLL_EXT_NAME*/
+
 END_C_DECLS
 
 #endif /*TK_DL_H*/
