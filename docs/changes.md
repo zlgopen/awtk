@@ -2,7 +2,9 @@
 
 2020/10/13
   * 增加plugin\_manager。 
-  * 将tkc编译成独立的动态库，给没有GUI库使用。
+  * label的line\_wrap属性，缺省改为FALSE。
+  * 将tkc编译成独立的动态库，给非GUI的库使用。
+  * 增加属性 disallow\_children\_focusable（感谢智明提供补丁）。
 
 2020/10/12
   * 完善api注释（感谢朝泽提供补丁）。

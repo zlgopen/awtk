@@ -377,7 +377,7 @@ widget_t* label_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   return_value_if_fail(label != NULL, NULL);
 
   label->length = -1;
-  label->line_wrap = TRUE;
+  label->line_wrap = FALSE;
 
   return widget;
 }
