@@ -66,9 +66,12 @@ ret_t tk_dl_close(tk_dl_t* dl);
 
 #ifdef WIN32
 #define TK_DLL_EXT_NAME ".dll"
+#define TK_DLL_PRE_NAME ""
 #elif defined MACOS
+#define TK_DLL_PRE_NAME "lib"
 #define TK_DLL_EXT_NAME ".dylib"
 #else
+#define TK_DLL_PRE_NAME "lib"
 #define TK_DLL_EXT_NAME ".so"
 #endif
 

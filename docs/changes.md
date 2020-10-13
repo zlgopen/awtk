@@ -1,8 +1,12 @@
 # 最新动态
 
+2020/10/13
+  * 增加plugin\_manager。 
+
 2020/10/12
   * 完善api注释（感谢朝泽提供补丁）。
   * 完善fragment framebuffer（感谢智明提供补丁）。 
+  * 完善label对line\_wrap的处理。
 
 2020/10/11
   * label 增加 line\_wrap 属性。
