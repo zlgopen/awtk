@@ -44,6 +44,9 @@ class AppHelperBase:
     def set_deps(self, DEPENDS_LIBS):
         self.DEPENDS_LIBS = DEPENDS_LIBS
         return self
+    def set_src_dir(self, SRC_DIR):
+        self.SRC_DIR = SRC_DIR
+        return self
 
     def set_libs(self, APP_LIBS):
         self.APP_LIBS = APP_LIBS
@@ -130,6 +133,7 @@ class AppHelperBase:
     def __init__(self, ARGUMENTS):
         APP_ROOT = os.path.normpath(os.getcwd())
 
+        self.SRC_DIR = 'src'
         self.ARGUMENTS = ARGUMENTS
         self.DEF_FILE = None
         self.DEF_FILE_PROCESSOR = None
@@ -227,7 +231,7 @@ class AppHelperBase:
         dll_def_gen_tools = os.path.join(
             self.AWTK_ROOT, 'tools/dll_def_gen/index.js')
 
-        cmd = 'node ' + '"' + idl_gen_tools + '"' + ' idl/idl.json ' + 'src'
+        cmd = 'node ' + '"' + idl_gen_tools + '"' + ' idl/idl.json ' + self.SRC_DIR
         if os.system(cmd) != 0:
             print('exe cmd: ' + cmd + ' failed.')
 

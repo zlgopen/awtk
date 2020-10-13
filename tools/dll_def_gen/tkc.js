@@ -3,7 +3,7 @@ const path = require('path')
 const DefGenerator = require('./def_generator')
 
 
-let inputIDL = path.normalize(path.join(__dirname, '../idl_gen/tkc_idl.json'));
+let inputIDL = path.normalize(path.join(__dirname, '../idl_gen/tkc.json'));
 let outputDef = '../../dllexports/tkc.def';
 let withIndex = false;
 

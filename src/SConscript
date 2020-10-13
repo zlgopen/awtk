@@ -107,17 +107,20 @@ env.Library(os.path.join(LIB_DIR, 'tkc_static'), TK_SOURCES, LIBS=[])
 TKC_DEPS_LIBS=[]
 OS_NAME = platform.system()
 TKC_LINKFLAGS = env['LINKFLAGS'];
+TKC_STATIC_LIBS = ['conf_io', 'ubjson', 'streams', 'tkc_static', 'compressors', 'miniz']
+TKC_LINK_ALL=' -Wl,--whole-archive -lstreams -lconf_io -lubjson -ltkc_static -lcompressors -lminiz -Wl,--no-whole-archive'
 
 if OS_NAME == 'Windows':
   if TOOLS_NAME == '' :
-    TKC_DEPS_LIBS=['tkc_static', 'SDL2', 'user32','winmm.lib','advapi32.lib','shell32.lib', 'ole32.lib']
+    TKC_DEPS_LIBS= TKC_STATIC_LIBS + ['SDL2', 'user32','winmm.lib','advapi32.lib','shell32.lib', 'ole32.lib']
     TKC_LINKFLAGS += ' /DEF:"dllexports/tkc.def" '
   elif TOOLS_NAME == 'mingw':
-    TKC_LINKFLAGS +=' -Wl,--whole-archive -ltkc_static -Wl,--no-whole-archive'
+    TKC_LINKFLAGS += TKC_LINK_ALL
 elif OS_NAME == 'Darwin':
+  TKC_DEPS_LIBS= TKC_STATIC_LIBS
   TKC_LINKFLAGS +=' -all_load '
 elif OS_NAME == 'Linux':
-  TKC_LINKFLAGS +=' -Wl,--whole-archive -ltkc_static -Wl,--no-whole-archive'
+  TKC_LINKFLAGS += TKC_LINK_ALL
 
 env.SharedLibrary(os.path.join(BIN_DIR, 'tkc'), [], LIBS=TKC_DEPS_LIBS, LINKFLAGS=TKC_LINKFLAGS); 
 
