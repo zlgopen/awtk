@@ -8,6 +8,7 @@ NANOVG_BACKEND=os.environ['NANOVG_BACKEND'];
 VGCANVAS=os.environ['VGCANVAS'];
 NATIVE_WINDOW = os.environ['NATIVE_WINDOW'];
 GRAPHIC_BUFFER = os.environ['GRAPHIC_BUFFER'];
+TOOLS_NAME = os.environ['TOOLS_NAME'] 
 
 BASE_SOURCES=Glob('layouters/*.c') + \
   Glob('base/*.c') + \
@@ -103,11 +104,22 @@ if env['PLATFORM'] == 'win32' and os.environ['TOOLS_NAME'] != '':
 TK_SOURCES=Glob('tkc/*.c') + Glob('platforms/pc/*.c')
 env.Library(os.path.join(LIB_DIR, 'tkc_static'), TK_SOURCES, LIBS=[])
 
-TKC_LINKFLAGS =''
 TKC_DEPS_LIBS=[]
-if platform.system() == 'Windows':
-  EXPORT_DEF = ' /DEF:"dllexports/tkc.def" '
-env.SharedLibrary(os.path.join(BIN_DIR, 'tkc'), TK_SOURCES, LIBS=TKC_DEPS_LIBS, LINKFLAGS=TKC_LINKFLAGS); 
+OS_NAME = platform.system()
+TKC_LINKFLAGS = env['LINKFLAGS'];
+
+if OS_NAME == 'Windows':
+  if TOOLS_NAME == '' :
+    TKC_DEPS_LIBS=['tkc_static', 'SDL2', 'user32','winmm.lib','advapi32.lib','shell32.lib', 'ole32.lib']
+    TKC_LINKFLAGS += ' /DEF:"dllexports/tkc.def" '
+  elif TOOLS_NAME == 'mingw':
+    TKC_LINKFLAGS +=' -Wl,--whole-archive -ltkc_static -Wl,--no-whole-archive'
+elif OS_NAME == 'Darwin':
+  TKC_LINKFLAGS +=' -all_load '
+elif OS_NAME == 'Linux':
+  TKC_LINKFLAGS +=' -Wl,--whole-archive -ltkc_static -Wl,--no-whole-archive'
+
+env.SharedLibrary(os.path.join(BIN_DIR, 'tkc'), [], LIBS=TKC_DEPS_LIBS, LINKFLAGS=TKC_LINKFLAGS); 
 
 env.Library(os.path.join(LIB_DIR, 'base'), BASE_SOURCES, LIBS=[])
 WIDGETS_SOURCES=Glob('widgets/*.c')
