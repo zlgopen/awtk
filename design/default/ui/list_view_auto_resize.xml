@@ -160,7 +160,7 @@
         </label>
       </list_item>
       <list_item h="128" style="even_clickable" auto_adjust_size="true">
-        <label h="100%" w="100%" auto_adjust_size="true">
+        <label h="100%" w="100%" auto_adjust_size="true" line_wrap="true">
           <property name="text">
 Tang Emperor Xuanzhong lusted after a beauty worthy of taking a country to war for,
 For so many years of his reign, unfulfilled his wish remained.
