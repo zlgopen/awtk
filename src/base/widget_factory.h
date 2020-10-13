@@ -30,7 +30,7 @@ BEGIN_C_DECLS
 
 /**
  * @class widget_factory_t
- * @parent emitter
+ * @parent emitter_t
  * 控件工厂对象。
  *
  * 提供通过类型创建控件的能力。

@@ -34,7 +34,7 @@ typedef ret_t (*event_source_on_event_t)(event_source_t* source);
 
 /**
  * @class event_source_t
- * @parent object
+ * @parent object_t
  *
  * 表示一个事件源。
  *

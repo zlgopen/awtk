@@ -111,7 +111,7 @@ ret_t socket_set_blocking(int sock, bool_t blocking);
 struct sockaddr* socket_resolve(const char* host, int port, struct sockaddr_in* addr);
 
 /**
- * @class udp_t
+ * @class tcp_t
  * @annotation ["fake"]
  */
 

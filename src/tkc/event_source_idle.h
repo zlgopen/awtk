@@ -32,7 +32,7 @@ typedef struct _event_source_idle_t event_source_idle_t;
 
 /**
  * @class event_source_idle_t
- * @parent object
+ * @parent object_t
  *
  * idle事件源。
  *
