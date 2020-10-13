@@ -112,7 +112,11 @@ static ret_t label_line_parser_next(label_line_parser_t* parser) {
     if (parser->line_wrap) {
       char_w = canvas_measure_text(c, p, 1) + 1;
       if ((w + char_w) > parser->width) {
-        if (line_break_check(p[0], p[1]) == LINE_BREAK_NO) {
+        return_value_if_fail(p > parser->line, RET_FAIL);
+
+        if (line_break_check(*(p - 1), *p) == LINE_BREAK_NO) {
+          return_value_if_fail(p != parser->line + 1, RET_FAIL);
+
           if (p > parser->line) {
             p--;
           }
@@ -141,8 +145,8 @@ static ret_t label_paint_text_mlines(widget_t* widget, canvas_t* c, label_line_p
   int32_t font_size = c->font_size;
   int32_t margin = style_get_int(style, STYLE_ID_MARGIN, 2);
   int32_t spacer = style_get_int(style, STYLE_ID_SPACER, 2);
-  align_v_t align_v = (align_v_t)style_get_int(style, STYLE_ID_TEXT_ALIGN_V, ALIGN_V_TOP);
-  align_h_t align_h = (align_h_t)style_get_int(style, STYLE_ID_TEXT_ALIGN_H, ALIGN_H_LEFT);
+  align_v_t align_v = (align_v_t)style_get_int(style, STYLE_ID_TEXT_ALIGN_V, ALIGN_V_MIDDLE);
+  align_h_t align_h = (align_h_t)style_get_int(style, STYLE_ID_TEXT_ALIGN_H, ALIGN_H_CENTER);
   int32_t line_height = font_size + spacer;
 
   x = margin;
