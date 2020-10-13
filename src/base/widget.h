@@ -111,6 +111,10 @@ struct _widget_vtable_t {
    */
   uint32_t focusable : 1;
   /**
+   * 在查找focusable的控件时，是否跳过子控件。
+   */
+  uint32_t disallow_children_focusable : 1;
+  /**
    * 收到空格键触发click事件。
    *
    */

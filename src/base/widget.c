@@ -3615,6 +3615,9 @@ static ret_t widget_on_visit_focusable(void* ctx, const void* data) {
     darray_push(all_focusable, widget);
   }
 
+  if (widget->vt->disallow_children_focusable) {
+    return RET_SKIP;
+  }
   return RET_OK;
 }
 
