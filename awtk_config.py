@@ -36,7 +36,7 @@ TK_3RD_ROOT   = joinPath(TK_ROOT, '3rd')
 TK_TOOLS_ROOT = joinPath(TK_ROOT, 'tools')
 TK_DEMO_ROOT  = joinPath(TK_ROOT, 'demos')
 GTEST_ROOT    = joinPath(TK_ROOT, '3rd/gtest/googletest')
-AWTK_STATIC_LIBS=['awtk_global', 'extwidgets', 'widgets', 'base', 'gpinyin', 'streams', 'conf_io', 'ubjson', 'compressors', 'fribidi', 'miniz', 'tkc', 'linebreak']
+AWTK_STATIC_LIBS=['awtk_global', 'extwidgets', 'widgets', 'base', 'gpinyin', 'streams', 'conf_io', 'ubjson', 'compressors', 'fribidi', 'miniz', 'tkc_static', 'linebreak']
 
 #INPUT_ENGINE='null'
 #INPUT_ENGINE='spinyin'
@@ -189,7 +189,7 @@ elif OS_NAME == 'Linux':
 
   OS_LINKFLAGS=' -Wl,-rpath=' + os.path.abspath(TK_LIB_DIR) + ' '
   AWTK_DLL_DEPS_LIBS = NANOVG_BACKEND_LIBS + ['SDL2', 'glad'] + OS_LIBS
-  OS_WHOLE_ARCHIVE =' -Wl,--whole-archive -lawtk_global -lextwidgets -lwidgets -lbase -lgpinyin -lstreams -lconf_io -lubjson -lcompressors -lfribidi -lminiz -ltkc -llinebreak -Wl,--no-whole-archive'
+  OS_WHOLE_ARCHIVE =' -Wl,--whole-archive -lawtk_global -lextwidgets -lwidgets -lbase -lgpinyin -lstreams -lconf_io -lubjson -lcompressors -lfribidi -lminiz -ltkc_static -llinebreak -Wl,--no-whole-archive'
 
 elif OS_NAME == 'Windows':
   if not os.path.exists(os.path.abspath(TK_BIN_DIR)) :
@@ -219,7 +219,7 @@ elif OS_NAME == 'Windows':
     OS_LINKFLAGS=' -Wl,-rpath=' + os.path.abspath(TK_LIB_DIR) + ' '
     COMMON_CFLAGS=COMMON_CFLAGS+' -std=gnu99 '
     COMMON_CCFLAGS=COMMON_CCFLAGS+' -U__FLT_EVAL_METHOD__ -D__FLT_EVAL_METHOD__=0 -DUNICODE -DDECLSPEC=  ' 
-    OS_WHOLE_ARCHIVE =' -Wl,--whole-archive -lawtk_global -lextwidgets -lwidgets -lbase -lgpinyin -lstreams -lconf_io -lubjson -lcompressors -lfribidi -lminiz -ltkc -llinebreak -Wl,--no-whole-archive'
+    OS_WHOLE_ARCHIVE =' -Wl,--whole-archive -lawtk_global -lextwidgets -lwidgets -lbase -lgpinyin -lstreams -lconf_io -lubjson -lcompressors -lfribidi -lminiz -ltkc_static -llinebreak -Wl,--no-whole-archive'
     AWTK_DLL_DEPS_LIBS = AWTK_STATIC_LIBS + NANOVG_BACKEND_LIBS + ['SDL2', 'glad'] + OS_LIBS
     
   #OS_FLAGS='-DWIN32 -D_WIN32 -DWINDOWS /EHsc -D_CONSOLE  /DEBUG /Od  /FS /Z7 -D_DEBUG /MDd '

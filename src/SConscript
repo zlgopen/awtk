@@ -1,5 +1,6 @@
 import os
 import copy
+import platform
 
 BIN_DIR=os.environ['BIN_DIR'];
 LIB_DIR=os.environ['LIB_DIR'];
@@ -100,7 +101,14 @@ if env['PLATFORM'] == 'win32' and os.environ['TOOLS_NAME'] != '':
   env['SPAWN'] = buf.ourspawn
   
 TK_SOURCES=Glob('tkc/*.c') + Glob('platforms/pc/*.c')
-env.Library(os.path.join(LIB_DIR, 'tkc'), TK_SOURCES, LIBS=[])
+env.Library(os.path.join(LIB_DIR, 'tkc_static'), TK_SOURCES, LIBS=[])
+
+TKC_LINKFLAGS =''
+TKC_DEPS_LIBS=[]
+if platform.system() == 'Windows':
+  EXPORT_DEF = ' /DEF:"dllexports/tkc.def" '
+env.SharedLibrary(os.path.join(BIN_DIR, 'tkc'), TK_SOURCES, LIBS=TKC_DEPS_LIBS, LINKFLAGS=TKC_LINKFLAGS); 
+
 env.Library(os.path.join(LIB_DIR, 'base'), BASE_SOURCES, LIBS=[])
 WIDGETS_SOURCES=Glob('widgets/*.c')
 env.Library(os.path.join(LIB_DIR, 'widgets'), WIDGETS_SOURCES, LIBS=[])

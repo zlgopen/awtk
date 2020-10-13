@@ -1052,11 +1052,11 @@ EXPORTS
     file_browser_get_item
     file_browser_set_ignore_hidden_files
     file_browser_destroy
+    udp_listen
+    udp_connect
     tcp_listen
     tcp_accept
     tcp_connect
-    udp_listen
-    udp_connect
     socket_init
     socket_deinit
     socket_close
@@ -1124,6 +1124,12 @@ EXPORTS
     qaction_exec
     qaction_notify
     qaction_destroy
+    plugin_manager_create
+    plugin_manager_refresh
+    plugin_manager_reload
+    plugin_manager_dump
+    plugin_manager_exist
+    plugin_manager_destroy
     get_time_ms64
     sleep_ms
     platform_prepare
@@ -1309,6 +1315,10 @@ EXPORTS
     tk_dl_open
     tk_dl_sym
     tk_dl_close
+    asset_loader_create
+    asset_loader_load
+    asset_loader_exist
+    asset_loader_destroy
     date_time_create
     date_time_init
     date_time_set
@@ -1320,10 +1330,6 @@ EXPORTS
     date_time_get_wday_name
     date_time_destroy
     date_time_global_init_ex
-    asset_loader_create
-    asset_loader_load
-    asset_loader_exist
-    asset_loader_destroy
     data_writer_write
     data_writer_destroy
     data_writer_factory
@@ -1429,6 +1435,7 @@ EXPORTS
     action_thread_pool_create
     action_thread_pool_exec
     action_thread_pool_destroy
+    tk_ostream_serial_create
     bsvg_init
     bsvg_to_svg
     svg_to_bsvg
@@ -1436,16 +1443,15 @@ EXPORTS
     action_queue_recv
     action_queue_send
     action_queue_destroy
-    tk_ostream_serial_create
     guage_pointer_create
     guage_pointer_cast
     guage_pointer_set_angle
     guage_pointer_set_image
     guage_pointer_set_anchor
-    lcd_mem_bgr565_create
-    lcd_mem_bgr565_create_single_fb
-    lcd_mem_bgr565_create_double_fb
-    lcd_mem_bgr565_create_three_fb
+    lcd_mem_bgr888_create
+    lcd_mem_bgr888_create_single_fb
+    lcd_mem_bgr888_create_double_fb
+    lcd_mem_bgr888_create_three_fb
     wheel_event_cast
     wheel_event_init
     view_create
@@ -1557,25 +1563,30 @@ EXPORTS
     lcd_mem_bgra8888_create_single_fb
     lcd_mem_bgra8888_create_double_fb
     lcd_mem_bgra8888_create_three_fb
-    lcd_mem_bgr888_create
-    lcd_mem_bgr888_create_single_fb
-    lcd_mem_bgr888_create_double_fb
-    lcd_mem_bgr888_create_three_fb
+    lcd_mem_bgr565_create
+    lcd_mem_bgr565_create_single_fb
+    lcd_mem_bgr565_create_double_fb
+    lcd_mem_bgr565_create_three_fb
     self_layouter_menu_create
     self_layouter_default_create
     children_layouter_default_create
-    input_method_sdl_create
-    input_method_null_create
-    event_source_fd_create
-    event_source_idle_create
+    column_create
+    column_cast
+    color_tile_create
+    color_tile_cast
+    color_tile_set_bg_color
+    color_tile_set_border_color
+    color_tile_set_value
     event_source_manager_default_create
-    input_method_default_create
-    event_source_timer_create
-    event_source_get_fd
-    event_source_dispatch
-    event_source_set_tag
-    event_source_check
-    event_source_get_wakeup_time
+    input_method_sdl_create
+    clip_view_create
+    clip_view_cast
+    check_button_create
+    check_button_create_radio
+    check_button_set_value
+    check_button_get_checked_button
+    check_button_cast
+    input_method_null_create
     prop_change_event_cast
     prop_change_event_init
     progress_event_cast
@@ -1586,6 +1597,7 @@ EXPORTS
     error_event_init
     cmd_exec_event_cast
     cmd_exec_event_init
+    input_method_default_create
     image_loader_stb
     stb_load_image
     font_loader_stb
@@ -1605,6 +1617,11 @@ EXPORTS
     time_clock_set_hour_anchor
     time_clock_set_minute_anchor
     time_clock_set_second_anchor
+    button_create
+    button_cast
+    button_set_repeat
+    button_set_long_press_time
+    button_set_enable_long_press
     text_selector_create
     text_selector_cast
     text_selector_reset_options
@@ -1622,13 +1639,12 @@ EXPORTS
     switch_create
     switch_set_value
     switch_cast
-    column_create
-    column_cast
-    color_tile_create
-    color_tile_cast
-    color_tile_set_bg_color
-    color_tile_set_border_color
-    color_tile_set_value
+    button_group_create
+    button_group_cast
+    app_bar_create
+    app_bar_cast
+    orientation_event_cast
+    orientation_event_init
     slide_view_create
     slide_view_cast
     slide_view_set_auto_play
@@ -1636,13 +1652,6 @@ EXPORTS
     slide_view_set_vertical
     slide_view_set_anim_hint
     slide_view_set_loop
-    clip_view_create
-    clip_view_cast
-    check_button_create
-    check_button_create_radio
-    check_button_set_value
-    check_button_get_checked_button
-    check_button_cast
     slide_indicator_create
     slide_indicator_create_linear
     slide_indicator_create_arc
@@ -1694,6 +1703,12 @@ EXPORTS
     list_view_h_cast
     list_item_create
     list_item_cast
+    value_change_event_cast
+    value_change_event_init
+    pointer_event_cast
+    pointer_event_init
+    ui_xml_writer_init
+    xml_ui_loader
     children_layouter_list_view_create
     hscroll_label_create
     hscroll_label_set_lull
@@ -1707,21 +1722,11 @@ EXPORTS
     hscroll_label_start
     hscroll_label_stop
     hscroll_label_cast
-    button_create
-    button_cast
-    button_set_repeat
-    button_set_long_press_time
-    button_set_enable_long_press
-    button_group_create
-    button_group_cast
-    app_bar_create
-    app_bar_cast
-    orientation_event_cast
-    orientation_event_init
     rich_text_create
     rich_text_set_text
     rich_text_set_yslidable
     rich_text_cast
+    default_ui_loader
     rich_text_view_create
     rich_text_view_cast
     progress_circle_create
@@ -1734,10 +1739,7 @@ EXPORTS
     progress_circle_set_line_cap
     progress_circle_set_show_text
     progress_circle_set_counter_clock_wise
-    value_change_event_cast
-    value_change_event_init
-    pointer_event_cast
-    pointer_event_init
+    ui_builder_default
     mledit_create
     mledit_set_readonly
     mledit_set_cancelable
@@ -1761,7 +1763,7 @@ EXPORTS
     lang_indicator_create
     lang_indicator_set_image
     lang_indicator_cast
-    ui_xml_writer_init
+    ui_binary_writer_init
     candidates_create
     candidates_cast
     candidates_set_pre
@@ -1795,8 +1797,10 @@ EXPORTS
     guage_cast
     guage_set_image
     guage_set_draw_type
-    xml_ui_loader
-    default_ui_loader
+    key_event_cast
+    key_event_init
+    paint_event_cast
+    paint_event_init
     file_chooser_create
     file_chooser_set_init_dir
     file_chooser_set_filter
@@ -1830,7 +1834,9 @@ EXPORTS
     draggable_set_vertical_only
     draggable_set_horizontal_only
     draggable_set_drag_window
-    ui_builder_default
+    window_event_cast
+    window_event_init
+    pointer_event_rotate
     color_picker_create
     color_picker_set_color
     color_picker_cast
@@ -1841,19 +1847,10 @@ EXPORTS
     color_component_get_s
     color_component_get_v
     color_component_cast
-    ui_binary_writer_init
-    canvas_widget_create
-    canvas_widget_cast
-    key_event_cast
-    key_event_init
-    paint_event_cast
-    paint_event_init
-    window_event_cast
-    window_event_init
-    pointer_event_rotate
     multi_gesture_event_cast
     multi_gesture_event_init
-    compressor_miniz_create
+    canvas_widget_create
+    canvas_widget_cast
     image_base_set_image
     image_base_set_rotation
     image_base_set_scale
@@ -1862,6 +1859,8 @@ EXPORTS
     image_base_set_selectable
     image_base_set_clickable
     image_base_cast
+    im_commit_event_init
+    compressor_miniz_create
     window_manager
     window_manager_cast
     window_manager_set
@@ -1901,7 +1900,7 @@ EXPORTS
     widget_factory_register
     widget_factory_create_widget
     widget_factory_destroy
-    im_commit_event_init
+    style_const_create
     style_mutable_set_name
     style_mutable_set_int
     style_mutable_set_color
@@ -1914,23 +1913,47 @@ EXPORTS
     style_mutable_cast
     style_mutable_create
     style_mutable_register
-    style_const_create
-    calibration_win_create
-    calibration_win_set_on_done
-    calibration_win_set_on_click
-    calibration_win_cast
-    native_window_move
-    native_window_resize
-    native_window_minimize
-    native_window_maximize
-    native_window_restore
-    native_window_center
-    native_window_show_border
-    native_window_set_fullscreen
-    native_window_set_cursor
-    native_window_get_canvas
-    native_window_create
-    native_window_invalidate
+    combo_box_create
+    combo_box_cast
+    combo_box_set_open_window
+    combo_box_reset_options
+    combo_box_count_options
+    combo_box_set_selected_index
+    combo_box_set_localize_options
+    combo_box_set_value
+    combo_box_set_item_height
+    combo_box_append_option
+    combo_box_set_options
+    combo_box_set_custom_open_popup
+    combo_box_get_option
+    combo_box_get_value
+    combo_box_get_text
+    system_info
+    system_info_init
+    system_info_deinit
+    system_info_set_font_scale
+    system_info_set_app_root
+    system_info_set_default_font
+    system_info_set_lcd_w
+    system_info_set_lcd_h
+    system_info_set_lcd_type
+    system_info_set_lcd_orientation
+    system_info_set_device_pixel_ratio
+    system_info_fix_font_name
+    system_info_create
+    window_create
+    window_create_default
+    window_set_fullscreen
+    window_open
+    window_open_and_close
+    window_close
+    window_close_force
+    window_cast
+    image_fill
+    image_clear
+    image_copy
+    image_rotate
+    image_blend
     conf_ini_load
     conf_json_load
     conf_obj_create
@@ -1939,6 +1962,21 @@ EXPORTS
     conf_obj_set_readonly
     conf_ubjson_load
     timer_info_cast
+    dialog_create
+    dialog_create_simple
+    dialog_cast
+    dialog_get_title
+    dialog_get_client
+    dialog_open
+    dialog_set_title
+    dialog_modal
+    dialog_quit
+    dialog_is_quited
+    dialog_is_modal
+    dialog_toast
+    dialog_info
+    dialog_warn
+    dialog_confirm
     gif_image_create
     gif_image_cast
     keyboard_create
@@ -1968,19 +2006,9 @@ EXPORTS
     object_array_clone
     object_array_unref
     object_array_clear_props
-    window_create
-    window_create_default
-    window_set_fullscreen
-    window_open
-    window_open_and_close
-    window_close
-    window_close_force
-    window_cast
-    image_fill
-    image_clear
-    image_copy
-    image_rotate
-    image_blend
+    svg_image_create
+    svg_image_set_image
+    svg_image_cast
     tk_istream_read
     tk_istream_seek
     tk_istream_tell
@@ -1996,79 +2024,56 @@ EXPORTS
     tk_iostream_read_len
     tk_iostream_write
     tk_iostream_write_len
-    svg_image_create
-    svg_image_set_image
-    svg_image_cast
     idle_info_cast
-    combo_box_create
-    combo_box_cast
-    combo_box_set_open_window
-    combo_box_reset_options
-    combo_box_count_options
-    combo_box_set_selected_index
-    combo_box_set_localize_options
-    combo_box_set_value
-    combo_box_set_item_height
-    combo_box_append_option
-    combo_box_set_options
-    combo_box_set_custom_open_popup
-    combo_box_get_option
-    combo_box_get_value
-    combo_box_get_text
-    system_info
-    system_info_init
-    system_info_deinit
-    system_info_set_font_scale
-    system_info_set_app_root
-    system_info_set_default_font
-    system_info_set_lcd_w
-    system_info_set_lcd_h
-    system_info_set_lcd_type
-    system_info_set_lcd_orientation
-    system_info_set_device_pixel_ratio
-    system_info_fix_font_name
-    system_info_create
-    image_create
-    image_set_draw_type
-    image_cast
-    overlay_create
-    overlay_set_click_through
-    overlay_cast
+    calibration_win_create
+    calibration_win_set_on_done
+    calibration_win_set_on_click
+    calibration_win_cast
+    event_source_get_fd
+    event_source_dispatch
+    event_source_set_tag
+    event_source_check
+    event_source_get_wakeup_time
+    event_source_timer_create
+    event_source_idle_create
+    event_source_fd_create
+    native_window_move
+    native_window_resize
+    native_window_minimize
+    native_window_maximize
+    native_window_restore
+    native_window_center
+    native_window_show_border
+    native_window_set_fullscreen
+    native_window_set_cursor
+    native_window_get_canvas
+    native_window_create
+    native_window_invalidate
+    system_bar_create
+    system_bar_cast
+    spin_box_create
+    spin_box_cast
     popup_create
     popup_cast
     popup_set_close_when_click
     popup_set_close_when_click_outside
-    spin_box_create
-    spin_box_cast
-    system_bar_create
-    system_bar_cast
-    dialog_create
-    dialog_create_simple
-    dialog_cast
-    dialog_get_title
-    dialog_get_client
-    dialog_open
-    dialog_set_title
-    dialog_modal
-    dialog_quit
-    dialog_is_quited
-    dialog_is_modal
-    dialog_toast
-    dialog_info
-    dialog_warn
-    dialog_confirm
+    overlay_create
+    overlay_set_click_through
+    overlay_cast
+    image_create
+    image_set_draw_type
+    image_cast
+    tk_istream_file_create
     tk_istream_tcp_create
-    tk_istream_udp_create
-    tk_istream_udp_set_target_with_host
-    tk_istream_udp_set_target_with_addr
     tk_ostream_tcp_create
-    tk_istream_shdlc_create
+    tk_iostream_udp_create_client
+    tk_iostream_udp_create
     tk_ostream_udp_create
     tk_ostream_udp_set_target_with_host
     tk_ostream_udp_set_target_with_addr
-    tk_istream_buffered_create
+    tk_iostream_tcp_create
     tk_iostream_mem_create
-    combo_box_ex_create
+    tk_ostream_file_create
     tk_istream_mem_create
     tk_ostream_mem_create
     tk_ostream_retry_create
@@ -2076,17 +2081,18 @@ EXPORTS
     tk_ostream_retry_set_max_buffer_size
     tk_ostream_retry_clear_buffer
     tk_ostream_retry_set_discard_policy
+    tk_istream_udp_create
+    tk_istream_udp_set_target_with_host
+    tk_istream_udp_set_target_with_addr
     tk_ostream_buffered_create
     tk_ostream_buffered_get_size
-    tk_iostream_shdlc_create
     tk_iostream_noisy_create
     tk_ostream_noisy_create
     tk_iostream_serial_create
     tk_iostream_serial_config
     tk_istream_serial_create
+    tk_iostream_shdlc_create
+    tk_istream_buffered_create
+    tk_istream_shdlc_create
+    combo_box_ex_create
     tk_ostream_shdlc_create
-    tk_ostream_file_create
-    tk_iostream_tcp_create
-    tk_iostream_udp_create_client
-    tk_iostream_udp_create
-    tk_istream_file_create
