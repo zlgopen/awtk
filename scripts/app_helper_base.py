@@ -48,6 +48,11 @@ class AppHelperBase:
         self.SRC_DIR = SRC_DIR
         return self
 
+    def set_tkc_only(self):
+        self.AWTK_LIBS = ['tkc']
+
+        return self
+
     def set_libs(self, APP_LIBS):
         self.APP_LIBS = APP_LIBS
         return self
