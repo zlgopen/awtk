@@ -45,10 +45,11 @@ def use_theme_config_from_project_json():
     if len(assets['themes']) == 0:
         return
 
-    if assets['const'] == 'resource_data':
-        IS_GENERATE_INC_BITMAP = False
-    else:
-        IS_GENERATE_INC_RES = False
+    if assets['const'] != 'all_data':
+        if assets['const'] == 'resource_data':
+            IS_GENERATE_INC_BITMAP = False
+        else:
+            IS_GENERATE_INC_RES = False
 
     if 'screenDPR' in assets:
         DPI = assets['screenDPR']
@@ -140,8 +141,8 @@ def run(awtk_root, is_excluded_file_handler = None):
     global THEMES
     global APP_ROOT
     global ASSETS_ROOT
+    global IS_GENERATE_INC_RES
     global IS_GENERATE_INC_BITMAP
-    global IS_GENERATE_INC_BITMAP 
 
     AWTK_ROOT = awtk_root
     APP_ROOT = common.getcwd()
@@ -165,6 +166,7 @@ def run(awtk_root, is_excluded_file_handler = None):
         ASSET_C = common.join_path(APP_ROOT, 'assets_web.js')
 
     use_default_theme_config()
+
     if not is_dependencies_ok():
         print('For details, please read scripts/README.md.')
     elif len(THEMES) == 0:

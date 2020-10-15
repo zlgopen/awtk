@@ -6,7 +6,7 @@
     "outputDir": "res",
     "loadFrom": "any",
     "screenDPR": "x1",
-    "const": "resource_data",
+    "const": "all_data",
     "defaultLanguage": "zh",
     "defaultCountry": "CN",
     "themes": {
