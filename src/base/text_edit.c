@@ -95,7 +95,7 @@ typedef struct _text_edit_impl_t {
   bool_t mask;
   wstr_t tips;
 
-  bool_t need_layout;
+  bool_t is_first_time_layout;
   void* on_state_changed_ctx;
   text_edit_on_state_changed_t on_state_changed;
 } text_edit_impl_t;
@@ -659,10 +659,6 @@ static ret_t text_edit_do_paint(text_edit_t* text_edit, canvas_t* c) {
   DECL_IMPL(text_edit);
   return_value_if_fail(text_edit != NULL && c != NULL, RET_BAD_PARAMS);
 
-  if (impl->need_layout) {
-    text_edit_layout(text_edit);
-  }
-
   widget_prepare_text_style(text_edit->widget, c);
 
   new_line_height = c->font_size * FONT_BASELINE;
@@ -692,8 +688,9 @@ ret_t text_edit_paint(text_edit_t* text_edit, canvas_t* c) {
   DECL_IMPL(text_edit);
   text_layout_info_t* layout_info = &(impl->layout_info);
 
-  if (impl->need_layout) {
+  if (impl->is_first_time_layout) {
     text_edit_layout(text_edit);
+    impl->is_first_time_layout = FALSE;
   }
 
   canvas_get_clip_rect(c, &save_r);
@@ -779,7 +776,7 @@ text_edit_t* text_edit_create(widget_t* widget, bool_t single_line) {
   impl = TKMEM_ZALLOC(text_edit_impl_t);
   return_value_if_fail(impl != NULL, NULL);
 
-  impl->need_layout = TRUE;
+  impl->is_first_time_layout = TRUE;
   impl->wrap_word = !single_line;
   impl->text_edit.widget = widget;
   impl->single_line = single_line;
