@@ -230,6 +230,30 @@ static ret_t label_on_paint_self(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
+static wh_t label_get_text_line_max_w(widget_t* widget, canvas_t* c) {
+  uint32_t i = 0;
+  wh_t line_w = 0;
+  wh_t line_max_w = 0;
+  uint32_t start = 0, n = 0;
+  wchar_t* str = widget->text.str;
+  uint32_t size = widget->text.size;
+
+  for (i = 0; i < size; i++) {
+    wchar_t chr = str[i];
+    if (chr == '\r' || chr == '\n' || i == size - 1) {
+      n = i - start;
+      line_w = canvas_measure_text(c, str + start, n);
+      line_max_w = tk_max(line_max_w, line_w);
+      start = i;
+      if (chr == '\r' && (i + 1) <= size && str[i + 1] == '\n') {
+        start++;
+      }
+    }
+  }
+  
+  return line_max_w;
+}
+
 ret_t label_resize_to_content(widget_t* widget, uint32_t min_w, uint32_t max_w, uint32_t min_h,
                               uint32_t max_h) {
   wh_t w = 0;
@@ -246,14 +270,14 @@ ret_t label_resize_to_content(widget_t* widget, uint32_t min_w, uint32_t max_w, 
   style = widget->astyle;
   margin = style_get_int(style, STYLE_ID_MARGIN, 2);
   spacer = style_get_int(style, STYLE_ID_SPACER, 2);
-  line_height = c->font_size + spacer;
 
   widget_prepare_text_style(widget, c);
-  w = canvas_measure_text(c, widget->text.str, widget->text.size) + 2 * margin;
+  line_height = c->font_size + spacer;
+  w = label_get_text_line_max_w(widget, c);
 
   w = tk_clampi(w, min_w, max_w);
   return_value_if_fail(label_line_parser_init(&p, c, widget->text.str, widget->text.size,
-                                              c->font_size, w, label->line_wrap) == RET_OK,
+                                              c->font_size, w - 2 * margin, label->line_wrap) == RET_OK,
                        RET_BAD_PARAMS);
 
   h = p.total_lines * line_height + 2 * margin;
@@ -328,10 +352,10 @@ static ret_t label_auto_adust_size(widget_t* widget) {
   style = widget->astyle;
   margin = style_get_int(style, STYLE_ID_MARGIN, 2);
   spacer = style_get_int(style, STYLE_ID_SPACER, 2);
-  line_height = c->font_size + spacer;
 
   w = widget->w - 2 * margin;
   widget_prepare_text_style(widget, c);
+  line_height = c->font_size + spacer;
   return_value_if_fail(label_line_parser_init(&p, c, widget->text.str, widget->text.size,
                                               c->font_size, w, label->line_wrap) == RET_OK,
                        RET_BAD_PARAMS);
