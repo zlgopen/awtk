@@ -31,10 +31,13 @@
 #include "text_selector/text_selector.h"
 #include "widget_animators/widget_animator_scroll.h"
 
+static ret_t text_selector_set_all_options_localize_text(widget_t* widget);
+
 const char* s_text_selector_properties[] = {
     WIDGET_PROP_TEXT,           WIDGET_PROP_VALUE,
     WIDGET_PROP_OPTIONS,        TEXT_SELECTOR_PROP_VISIBLE_NR,
-    WIDGET_PROP_SELECTED_INDEX, NULL};
+    WIDGET_PROP_SELECTED_INDEX, WIDGET_PROP_LOCALIZE_OPTIONS,
+    TEXT_SELECTOR_PROP_Y_SPEED_SCALE, NULL};
 
 static ret_t text_selector_paint_mask(widget_t* widget, canvas_t* c) {
   int32_t i = 0;
@@ -97,7 +100,7 @@ static ret_t text_selector_paint_self(widget_t* widget, canvas_t* c) {
   while (iter != NULL) {
     r.y = y - yoffset;
     if ((r.y + item_height) >= 0 && r.y < widget->h) {
-      canvas_draw_text_in_rect(c, iter->text, wcslen(iter->text), &r);
+      canvas_draw_text_in_rect(c, iter->text.str, iter->text.size, &r);
     }
 
     i++;
@@ -131,6 +134,10 @@ static ret_t text_selector_on_destroy(widget_t* widget) {
 
   str_reset(&(text_selector->text));
   text_selector_reset_options(widget);
+
+  if (text_selector->locale_info_id != TK_INVALID_ID) {
+    locale_info_off(locale_info(), text_selector->locale_info_id);
+  }
 
   return RET_OK;
 }
@@ -234,6 +241,12 @@ static ret_t text_selector_get_prop(widget_t* widget, const char* name, value_t*
   } else if (tk_str_eq(name, WIDGET_PROP_OPTIONS)) {
     value_set_str(v, text_selector->options);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_LOCALIZE_OPTIONS)) {
+    value_set_bool(v, text_selector->localize_options);
+    return RET_OK;
+  } else if (tk_str_eq(name, TEXT_SELECTOR_PROP_Y_SPEED_SCALE)) {
+    value_set_float(v, text_selector->yspeed_scale);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -263,6 +276,10 @@ static ret_t text_selector_set_prop(widget_t* widget, const char* name, const va
   } else if (tk_str_eq(name, WIDGET_PROP_OPTIONS)) {
     text_selector_set_options(widget, value_str(v));
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_LOCALIZE_OPTIONS)) {
+    return text_selector_set_localize_options(widget, value_bool(v));
+  } else if (tk_str_eq(name, TEXT_SELECTOR_PROP_Y_SPEED_SCALE)) {
+    return text_selector_set_yspeed_scale(widget, value_float(v));
   }
 
   return RET_NOT_FOUND;
@@ -385,7 +402,7 @@ static ret_t text_selector_on_pointer_up(text_selector_t* text_selector, pointer
   int32_t item_height = widget->h / text_selector->visible_nr;
 
   velocity_update(v, e->e.time, e->x, e->y);
-  yoffset_end = text_selector->yoffset - v->yv;
+  yoffset_end = text_selector->yoffset - v->yv * text_selector->yspeed_scale;
 
   if (e->y == text_selector->ydown) {
     /*click*/
@@ -397,7 +414,7 @@ static ret_t text_selector_on_pointer_up(text_selector_t* text_selector, pointer
     if (index == mid_index) {
       return RET_OK;
     } else {
-      yoffset_end = text_selector->yoffset + item_height * (index - mid_index);
+      yoffset_end = text_selector->yoffset + item_height * (index - mid_index) * text_selector->yspeed_scale;
     }
   }
 
@@ -483,6 +500,17 @@ static ret_t text_selector_on_event(widget_t* widget, event_t* e) {
   return ret;
 }
 
+static ret_t text_selector_on_locale_changed(void* ctx, event_t* e) {
+  widget_t* widget = WIDGET(ctx);
+  text_selector_t* text_selector = TEXT_SELECTOR(widget);
+
+  if (text_selector->localize_options) {
+    text_selector_set_all_options_localize_text(widget);
+  }
+
+  return RET_OK;
+}
+
 TK_DECL_VTABLE(text_selector) = {.size = sizeof(text_selector_t),
                                  .inputable = TRUE,
                                  .type = WIDGET_TYPE_TEXT_SELECTOR,
@@ -503,6 +531,9 @@ widget_t* text_selector_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
 
   text_selector->visible_nr = 5;
   text_selector->pressed = FALSE;
+  text_selector->yspeed_scale = 1.0f;
+
+  text_selector->locale_info_id = TK_INVALID_ID;
 
   text_selector_sync_yoffset_with_selected_index(text_selector);
   return widget;
@@ -517,6 +548,8 @@ ret_t text_selector_reset_options(widget_t* widget) {
   iter = text_selector->option_items;
   while (iter != NULL) {
     next = iter->next;
+    TKMEM_FREE(iter->tr_text);
+    wstr_reset(&(iter->text));
     TKMEM_FREE(iter);
     iter = next;
   }
@@ -526,22 +559,55 @@ ret_t text_selector_reset_options(widget_t* widget) {
   return RET_OK;
 }
 
+static ret_t text_selector_set_options_localize_text(widget_t* widget, text_selector_option_t* option) {
+  const char* tr_text = NULL;
+  text_selector_t* text_selector = TEXT_SELECTOR(widget);
+  return_value_if_fail(widget != NULL && text_selector != NULL && option != NULL, RET_BAD_PARAMS);
+
+  if (text_selector->localize_options) {
+    tr_text = locale_info_tr(widget_get_locale_info(widget), option->tr_text);
+    wstr_set_utf8(&(option->text), tr_text);
+  } else {
+    wstr_set_utf8(&(option->text), option->tr_text);
+  }
+
+  return RET_OK;
+}
+
+static ret_t text_selector_set_all_options_localize_text(widget_t* widget) {
+  text_selector_option_t* iter = NULL;
+  text_selector_t* text_selector = TEXT_SELECTOR(widget);
+  return_value_if_fail(widget != NULL && text_selector != NULL, RET_BAD_PARAMS);
+
+  iter = text_selector->option_items;
+  while (iter != NULL) {
+    text_selector_set_options_localize_text(widget, iter);
+    iter = iter->next;
+  }
+
+  return RET_OK;
+}
+
 ret_t text_selector_append_option(widget_t* widget, int32_t value, const char* text) {
   int32_t size = 0;
+  int32_t text_len = 0;
   text_selector_option_t* iter = NULL;
   text_selector_option_t* option = NULL;
   text_selector_t* text_selector = TEXT_SELECTOR(widget);
 
   return_value_if_fail(text_selector != NULL && text != NULL, RET_BAD_PARAMS);
-  size = sizeof(text_selector_option_t) + (strlen(text) + 1) * sizeof(wchar_t);
+  text_len = strlen(text) + 1;
+  size = sizeof(text_selector_option_t);
 
   option = (text_selector_option_t*)TKMEM_ALLOC(size);
   return_value_if_fail(option != NULL, RET_OOM);
 
   memset(option, 0x00, size);
+  wstr_init(&(option->text), 0);
+  option->tr_text = tk_str_copy(option->tr_text, text);
 
   option->value = value;
-  tk_utf8_to_utf16(text, option->text, strlen(text) + 1);
+  text_selector_set_options_localize_text(widget, option);
 
   if (text_selector->option_items != NULL) {
     iter = text_selector->option_items;
@@ -599,7 +665,7 @@ int32_t text_selector_get_option_by_text(widget_t* widget, const char* text) {
   wstr_set_utf8(&str, text);
   iter = text_selector->option_items;
   while (iter != NULL) {
-    if (wcscmp(str.str, iter->text) == 0) {
+    if (wcscmp(str.str, iter->text.str) == 0) {
       wstr_reset(&str);
       return i;
     }
@@ -683,7 +749,7 @@ const char* text_selector_get_text(widget_t* widget) {
   option = text_selector_get_option(widget, text_selector->selected_index);
 
   if (option != NULL) {
-    str_from_wstr(&(text_selector->text), option->text);
+    str_from_wstr(&(text_selector->text), option->text.str);
 
     return text_selector->text.str;
   }
@@ -697,6 +763,32 @@ ret_t text_selector_set_text(widget_t* widget, const char* text) {
   return_value_if_fail(text_selector != NULL && index >= 0, RET_BAD_PARAMS);
 
   return text_selector_set_selected_index(widget, index);
+}
+
+ret_t text_selector_set_localize_options(widget_t* widget, bool_t localize_options) {
+  text_selector_t* text_selector = TEXT_SELECTOR(widget);
+  return_value_if_fail(text_selector != NULL, RET_BAD_PARAMS);
+
+  text_selector->localize_options = localize_options;
+
+  if (text_selector->localize_options) {
+    text_selector->locale_info_id = locale_info_on(locale_info(), EVT_LOCALE_CHANGED, text_selector_on_locale_changed, widget);
+  } else {
+    if (text_selector->locale_info_id != TK_INVALID_ID) {
+      locale_info_off(locale_info(), text_selector->locale_info_id);
+    }
+  }
+
+  return text_selector_set_all_options_localize_text(widget);
+}
+
+ret_t text_selector_set_yspeed_scale(widget_t* widget, float_t yspeed_scale) {
+  text_selector_t* text_selector = TEXT_SELECTOR(widget);
+  return_value_if_fail(text_selector != NULL, RET_BAD_PARAMS);
+
+  text_selector->yspeed_scale = yspeed_scale;
+
+  return RET_OK;
 }
 
 widget_t* text_selector_cast(widget_t* widget) {

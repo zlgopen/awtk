@@ -31,7 +31,8 @@ BEGIN_C_DECLS
 typedef struct _text_selector_option_t {
   int32_t value;
   struct _text_selector_option_t* next;
-  wchar_t text[2];
+  char* tr_text;
+  wstr_t text;
 } text_selector_option_t;
 
 /**
@@ -103,6 +104,20 @@ typedef struct _text_selector_t {
    */
   char* options;
 
+  /**
+   * @property {bool_t} localize_options
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 是否本地化(翻译)选项(缺省为TRUE)。
+   */
+  bool_t localize_options;
+
+  /**
+   * @property {bool_t} yspeed_scale
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * y偏移速度比例。
+   */
+  float_t yspeed_scale;
+
   /*private*/
   str_t text;
   int32_t ydown;
@@ -112,6 +127,7 @@ typedef struct _text_selector_t {
   velocity_t velocity;
   widget_animator_t* wa;
   text_selector_option_t* option_items;
+  uint32_t locale_info_id;
 } text_selector_t;
 
 /**
@@ -279,8 +295,31 @@ ret_t text_selector_set_selected_index(widget_t* widget, uint32_t index);
  */
 ret_t text_selector_set_visible_nr(widget_t* widget, uint32_t visible_nr);
 
+/**
+ * @method text_selector_set_localize_options
+ * 设置是否本地化(翻译)选项。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget text_selector对象。
+ * @param {bool_t} localize_options 是否本地化(翻译)选项。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t text_selector_set_localize_options(widget_t* widget, bool_t localize_options);
+
+/**
+ * @method text_selector_set_yspeed_scale
+ * 设置Y轴偏移速度比例。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {float_t} yspeed_scale y偏移速度比例。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t text_selector_set_yspeed_scale(widget_t* widget, float_t yspeed_scale);
+
 #define TEXT_SELECTOR_PROP_VISIBLE_NR "visible_nr"
 #define WIDGET_TYPE_TEXT_SELECTOR "text_selector"
+#define TEXT_SELECTOR_PROP_Y_SPEED_SCALE "yspeed_scale"
 #define TEXT_SELECTOR(widget) ((text_selector_t*)(text_selector_cast(WIDGET(widget))))
 
 /*public for subclass and runtime type check*/

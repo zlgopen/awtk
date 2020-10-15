@@ -149,7 +149,7 @@ TEST(TextSelector, range) {
   for (i = 0; i < n; i++) {
     text_selector_option_t* iter = text_selector_get_option(w, i);
     ASSERT_EQ(iter->value, i + 1);
-    tk_utf8_from_utf16(iter->text, text1, sizeof(text1) - 1);
+    tk_utf8_from_utf16(iter->text.str, text1, sizeof(text1) - 1);
     tk_snprintf(text2, sizeof(text2) - 1, "%d", i + 1);
     ASSERT_STREQ(text1, text2);
   }
@@ -171,7 +171,7 @@ TEST(TextSelector, range_format) {
   for (i = 0; i < n; i++) {
     text_selector_option_t* iter = text_selector_get_option(w, i);
     ASSERT_EQ(iter->value, i + 1);
-    tk_utf8_from_utf16(iter->text, text1, sizeof(text1) - 1);
+    tk_utf8_from_utf16(iter->text.str, text1, sizeof(text1) - 1);
     tk_snprintf(text2, sizeof(text2) - 1, "%4d", i + 1);
     ASSERT_STREQ(text1, text2);
   }
@@ -193,7 +193,7 @@ TEST(TextSelector, range_format2) {
   for (i = 0; i < n; i++) {
     text_selector_option_t* iter = text_selector_get_option(w, i);
     ASSERT_EQ(iter->value, i + 1);
-    tk_utf8_from_utf16(iter->text, text1, sizeof(text1) - 1);
+    tk_utf8_from_utf16(iter->text.str, text1, sizeof(text1) - 1);
     tk_snprintf(text2, sizeof(text2) - 1, "item%4X", i + 1);
     ASSERT_STREQ(text1, text2);
   }
@@ -229,4 +229,58 @@ TEST(TextSelector, change_value_abort) {
   ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_SELECTED_INDEX, 3), 0);
 
   widget_destroy(w);
+}
+
+TEST(TextSelector, yspeed_scale) {
+  widget_t* w = text_selector_create(NULL, 10, 20, 30, 40);
+  text_selector_t* text_selector = TEXT_SELECTOR(w);
+
+  text_selector_set_yspeed_scale(w, 0.1f);
+
+  ASSERT_EQ(text_selector->yspeed_scale, 0.1f);
+
+  widget_destroy(w);
+}
+
+#include "awtk.h"
+TEST(TextSelector, localize_options) {
+  char text1[64];
+  widget_t* w = NULL;
+  widget_t* win = NULL;
+  text_selector_option_t* iter = NULL;
+
+  assets_manager_create(30);
+  locale_info_set(locale_info_create(NULL, NULL));
+  win = window_create(NULL, 0,0,0,0);
+  w = text_selector_create(win, 10, 20, 30, 40);
+
+  text_selector_parse_options(w, "1:ok;2:cancel;");
+  ASSERT_EQ(text_selector_count_options(w), 2);
+  
+  text_selector_set_localize_options(w, TRUE);
+
+  memset(text1, 0x0, sizeof(text1));
+  iter = text_selector_get_option(w, 0);
+  tk_utf8_from_utf16(iter->text.str, text1, sizeof(text1) - 1);
+  ASSERT_STREQ(text1, locale_info_tr(widget_get_locale_info(w), "ok"));
+
+  memset(text1, 0x0, sizeof(text1));
+  iter = text_selector_get_option(w, 1);
+  tk_utf8_from_utf16(iter->text.str, text1, sizeof(text1) - 1);
+  ASSERT_STREQ(text1, locale_info_tr(widget_get_locale_info(w), "cancel"));
+
+  locale_info_change(locale_info(), "zh_CN", "CN");
+
+  memset(text1, 0x0, sizeof(text1));
+  iter = text_selector_get_option(w, 0);
+  tk_utf8_from_utf16(iter->text.str, text1, sizeof(text1) - 1);
+  ASSERT_STREQ(text1, locale_info_tr(widget_get_locale_info(w), "ok"));
+
+  memset(text1, 0x0, sizeof(text1));
+  iter = text_selector_get_option(w, 1);
+  tk_utf8_from_utf16(iter->text.str, text1, sizeof(text1) - 1);
+  ASSERT_STREQ(text1, locale_info_tr(widget_get_locale_info(w), "cancel"));
+
+  widget_destroy(win);
+  locale_info_destroy(locale_info());
 }
