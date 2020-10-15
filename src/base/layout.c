@@ -30,6 +30,9 @@ static ret_t widget_auto_adjust_size(widget_t* widget) {
   int32_t w = widget->w;
   int32_t h = widget->h;
   style_t* style = widget->astyle;
+  event_t e = event_init(EVT_WILL_RESIZE, widget);
+  widget_dispatch(widget, &e);
+  widget_invalidate_force(widget, NULL);
 
   if (style != NULL) {
     margin = style_get_int(style, STYLE_ID_MARGIN, margin);
@@ -48,6 +51,11 @@ static ret_t widget_auto_adjust_size(widget_t* widget) {
 
   widget->w = w;
   widget->h = h;
+
+  widget_invalidate_force(widget, NULL);
+
+  e.type = EVT_RESIZE;
+  widget_dispatch(widget, &e);
 
   return RET_OK;
 }

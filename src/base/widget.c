@@ -597,7 +597,7 @@ ret_t widget_set_auto_adjust_size(widget_t* widget, bool_t auto_adjust_size) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   widget->auto_adjust_size = auto_adjust_size;
-
+  widget_layout(widget);
   return RET_OK;
 }
 
@@ -1637,7 +1637,7 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_FEEDBACK)) {
     widget->feedback = value_bool(v);
   } else if (tk_str_eq(name, WIDGET_PROP_AUTO_ADJUST_SIZE)) {
-    widget->auto_adjust_size = value_bool(v);
+    widget_set_auto_adjust_size(widget, value_bool(v));
   } else if (tk_str_eq(name, WIDGET_PROP_NAME)) {
     widget_set_name(widget, value_str(v));
   } else if (tk_str_eq(name, WIDGET_PROP_TR_TEXT)) {
