@@ -33,11 +33,14 @@
 
 static ret_t text_selector_set_all_options_localize_text(widget_t* widget);
 
-const char* s_text_selector_properties[] = {
-    WIDGET_PROP_TEXT,           WIDGET_PROP_VALUE,
-    WIDGET_PROP_OPTIONS,        TEXT_SELECTOR_PROP_VISIBLE_NR,
-    WIDGET_PROP_SELECTED_INDEX, WIDGET_PROP_LOCALIZE_OPTIONS,
-    TEXT_SELECTOR_PROP_Y_SPEED_SCALE, NULL};
+const char* s_text_selector_properties[] = {WIDGET_PROP_TEXT,
+                                            WIDGET_PROP_VALUE,
+                                            WIDGET_PROP_OPTIONS,
+                                            TEXT_SELECTOR_PROP_VISIBLE_NR,
+                                            WIDGET_PROP_SELECTED_INDEX,
+                                            WIDGET_PROP_LOCALIZE_OPTIONS,
+                                            TEXT_SELECTOR_PROP_Y_SPEED_SCALE,
+                                            NULL};
 
 static ret_t text_selector_paint_mask(widget_t* widget, canvas_t* c) {
   int32_t i = 0;
@@ -414,7 +417,8 @@ static ret_t text_selector_on_pointer_up(text_selector_t* text_selector, pointer
     if (index == mid_index) {
       return RET_OK;
     } else {
-      yoffset_end = text_selector->yoffset + item_height * (index - mid_index) * text_selector->yspeed_scale;
+      yoffset_end =
+          text_selector->yoffset + item_height * (index - mid_index) * text_selector->yspeed_scale;
     }
   }
 
@@ -559,7 +563,8 @@ ret_t text_selector_reset_options(widget_t* widget) {
   return RET_OK;
 }
 
-static ret_t text_selector_set_options_localize_text(widget_t* widget, text_selector_option_t* option) {
+static ret_t text_selector_set_options_localize_text(widget_t* widget,
+                                                     text_selector_option_t* option) {
   const char* tr_text = NULL;
   text_selector_t* text_selector = TEXT_SELECTOR(widget);
   return_value_if_fail(widget != NULL && text_selector != NULL && option != NULL, RET_BAD_PARAMS);
@@ -713,7 +718,7 @@ ret_t text_selector_set_visible_nr(widget_t* widget, uint32_t visible_nr) {
   text_selector_t* text_selector = TEXT_SELECTOR(widget);
   return_value_if_fail(text_selector != NULL, RET_BAD_PARAMS);
 
-  if(visible_nr > 1) {
+  if (visible_nr > 1) {
     text_selector->visible_nr = visible_nr == 3 ? 3 : 5;
   } else {
     text_selector->visible_nr = 1;
@@ -772,7 +777,8 @@ ret_t text_selector_set_localize_options(widget_t* widget, bool_t localize_optio
   text_selector->localize_options = localize_options;
 
   if (text_selector->localize_options) {
-    text_selector->locale_info_id = locale_info_on(locale_info(), EVT_LOCALE_CHANGED, text_selector_on_locale_changed, widget);
+    text_selector->locale_info_id =
+        locale_info_on(locale_info(), EVT_LOCALE_CHANGED, text_selector_on_locale_changed, widget);
   } else {
     if (text_selector->locale_info_id != TK_INVALID_ID) {
       locale_info_off(locale_info(), text_selector->locale_info_id);

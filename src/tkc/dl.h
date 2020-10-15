@@ -75,7 +75,7 @@ ret_t tk_dl_close(tk_dl_t* dl);
 #define TK_DLL_EXT_NAME ".so"
 #endif
 
-#endif/*TK_DLL_EXT_NAME*/
+#endif /*TK_DLL_EXT_NAME*/
 
 END_C_DECLS
 

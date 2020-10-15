@@ -1310,4 +1310,3 @@ TEST(Widget, get_text_utf8) {
 
   widget_destroy(w);
 }
-

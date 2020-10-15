@@ -23,10 +23,10 @@ static widget_t* window_open_with_name(const char* name, widget_t* to_close) {
   widget_t* wm = window_manager();
   widget_t* win = widget_child(wm, name);
 
-  if(win != NULL) {
+  if (win != NULL) {
     bool_t single_instance = widget_get_prop_bool(win, WIDGET_PROP_SINGLE_INSTANCE, FALSE);
-    if(single_instance) {
-      window_manager_close_window_force(wm, win); 
+    if (single_instance) {
+      window_manager_close_window_force(wm, win);
     }
   }
 

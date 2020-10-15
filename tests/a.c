@@ -1,7 +1,7 @@
 #if defined(_WIN32)
-      #define DLL_EXPORT __declspec(dllexport)
+#define DLL_EXPORT __declspec(dllexport)
 #else
-      #define DLL_EXPORT /**< API export macro */
+#define DLL_EXPORT /**< API export macro */
 #endif
 
 #include "tkc/utils.h"

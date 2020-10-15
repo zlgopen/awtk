@@ -536,7 +536,7 @@ static ret_t canvas_clear_rect_impl(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h)
   y2 = tk_min(y2, c->clip_bottom);
   w = x2 - x + 1;
   h = y2 - y + 1;
- 
+
   return lcd_clear_rect(c->lcd, x, y, w, h);
 }
 

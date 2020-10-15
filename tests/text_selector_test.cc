@@ -251,12 +251,12 @@ TEST(TextSelector, localize_options) {
 
   assets_manager_create(30);
   locale_info_set(locale_info_create(NULL, NULL));
-  win = window_create(NULL, 0,0,0,0);
+  win = window_create(NULL, 0, 0, 0, 0);
   w = text_selector_create(win, 10, 20, 30, 40);
 
   text_selector_parse_options(w, "1:ok;2:cancel;");
   ASSERT_EQ(text_selector_count_options(w), 2);
-  
+
   text_selector_set_localize_options(w, TRUE);
 
   memset(text1, 0x0, sizeof(text1));

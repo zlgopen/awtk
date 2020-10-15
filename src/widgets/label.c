@@ -250,7 +250,7 @@ static wh_t label_get_text_line_max_w(widget_t* widget, canvas_t* c) {
       }
     }
   }
-  
+
   return line_max_w;
 }
 
@@ -276,9 +276,10 @@ ret_t label_resize_to_content(widget_t* widget, uint32_t min_w, uint32_t max_w, 
   w = label_get_text_line_max_w(widget, c);
 
   w = tk_clampi(w, min_w, max_w);
-  return_value_if_fail(label_line_parser_init(&p, c, widget->text.str, widget->text.size,
-                                              c->font_size, w - 2 * margin, label->line_wrap) == RET_OK,
-                       RET_BAD_PARAMS);
+  return_value_if_fail(
+      label_line_parser_init(&p, c, widget->text.str, widget->text.size, c->font_size,
+                             w - 2 * margin, label->line_wrap) == RET_OK,
+      RET_BAD_PARAMS);
 
   h = p.total_lines * line_height + 2 * margin;
   h = tk_clampi(h, min_h, max_h);
