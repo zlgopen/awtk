@@ -1,5 +1,8 @@
 # 最新动态
 
+2020/10/15
+  * 完善脚本，支持同时生成.data/.res（感谢朝泽提供补丁）。
+
 2020/10/13
   * 增加plugin\_manager。 
   * label的line\_wrap属性，缺省改为FALSE。
