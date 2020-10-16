@@ -1,5 +1,9 @@
 # 最新动态
 
+2020/10/16
+  * image\_animation 支持运行时修改interval。
+  * image\_animation 支持WIDGET\_PROP\_EXEC控制动画的启动、暂停和停止。
+
 2020/10/15
   * 完善脚本，支持同时生成.data/.res（感谢朝泽提供补丁）。
   * 修复mledit的拉动条不能拖动的问题（感谢智明提供补丁）。
