@@ -982,19 +982,6 @@ ret_t widget_set_sensitive(widget_t* widget, bool_t sensitive) {
   return RET_OK;
 }
 
-static ret_t widget_set_visible_recursive(widget_t* widget, bool_t visible) {
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
-
-  widget->visible = visible;
-  widget_set_need_relayout_children(widget->parent);
-
-  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
-  widget_set_visible_recursive(iter, visible);
-  WIDGET_FOR_EACH_CHILD_END()
-
-  return RET_OK;
-}
-
 ret_t widget_set_visible_only(widget_t* widget, bool_t visible) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 

@@ -595,13 +595,11 @@ static ret_t text_selector_set_all_options_localize_text(widget_t* widget) {
 
 ret_t text_selector_append_option(widget_t* widget, int32_t value, const char* text) {
   int32_t size = 0;
-  int32_t text_len = 0;
   text_selector_option_t* iter = NULL;
   text_selector_option_t* option = NULL;
   text_selector_t* text_selector = TEXT_SELECTOR(widget);
 
   return_value_if_fail(text_selector != NULL && text != NULL, RET_BAD_PARAMS);
-  text_len = strlen(text) + 1;
   size = sizeof(text_selector_option_t);
 
   option = (text_selector_option_t*)TKMEM_ALLOC(size);

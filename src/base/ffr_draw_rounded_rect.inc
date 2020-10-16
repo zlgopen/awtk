@@ -682,6 +682,7 @@ static bool_t ffr_draw_rounded_radius_equal(uint32_t radius_tl, uint32_t radius_
 
 #endif
 
+#ifndef WITH_NANOVG_GPU
 static void ffr_draw_rounded_rect_draw_circle_limit(frr_vertex_type_t type, int32_t x, int32_t y, float_t w1, float_t w2, float_t h1, float_t h2, int32_t mid_lenght_v, int32_t mid_lenght_h, int32_t* v, int32_t* h) {
   int32_t h_x1 = x + (int32_t)w2;
   int32_t h_x2 = x + (int32_t)w2 + mid_lenght_h;
@@ -710,6 +711,7 @@ static void ffr_draw_rounded_rect_draw_circle_limit(frr_vertex_type_t type, int3
     break;
   }
 }
+#endif
 
 static float_t ffr_draw_rounded_get_vertex_angle_by_border_model(int32_t border_model, frr_vertex_type_t type, bool_t is_h, float_t default_angle) {
 
