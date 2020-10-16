@@ -1636,6 +1636,8 @@ EXPORTS
     text_selector_set_text
     text_selector_set_selected_index
     text_selector_set_visible_nr
+    text_selector_set_localize_options
+    text_selector_set_yspeed_scale
     switch_create
     switch_set_value
     switch_cast
@@ -1793,6 +1795,7 @@ EXPORTS
     image_animation_set_format
     image_animation_set_unload_after_paint
     image_animation_cast
+    image_animation_is_playing
     guage_create
     guage_cast
     guage_set_image

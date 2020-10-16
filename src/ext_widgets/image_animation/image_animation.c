@@ -143,7 +143,23 @@ static ret_t image_animation_set_prop(widget_t* widget, const char* name, const 
   image_animation_t* image_animation = IMAGE_ANIMATION(widget);
   return_value_if_fail(image_animation != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (tk_str_eq(name, IMAGE_ANIMATION_PROP_LOOP)) {
+  if (tk_str_eq(name, WIDGET_PROP_EXEC)) {
+    const char* action = value_str(v);
+    if (tk_str_eq(action, WIDGET_EXEC_START_ANIMATOR)) {
+      if (!image_animation_is_playing(widget)) {
+        image_animation_play(widget);
+      }
+    } else if (tk_str_eq(action, WIDGET_EXEC_STOP_ANIMATOR)) {
+      if (image_animation_is_playing(widget)) {
+        image_animation_stop(widget);
+      }
+    } else if (tk_str_eq(action, WIDGET_EXEC_PAUSE_ANIMATOR)) {
+      if (image_animation_is_playing(widget)) {
+        image_animation_pause(widget);
+      }
+    }
+    return RET_OK;
+  } else if (tk_str_eq(name, IMAGE_ANIMATION_PROP_LOOP)) {
     return image_animation_set_loop(widget, value_bool(v));
   } else if (tk_str_eq(name, WIDGET_PROP_IMAGE)) {
     return image_animation_set_image(widget, value_str(v));
@@ -398,8 +414,14 @@ ret_t image_animation_update(widget_t* widget) {
 
 static ret_t image_animation_on_update(const timer_info_t* info) {
   widget_t* widget = WIDGET(info->ctx);
+  image_animation_t* image_animation = IMAGE_ANIMATION(widget);
+  ret_t ret = image_animation_update(widget);
 
-  return image_animation_update(widget);
+  if (info->duration != image_animation->interval) {
+    timer_modify(info->id, image_animation->interval);
+  }
+
+  return ret;
 }
 
 ret_t image_animation_play(widget_t* widget) {
@@ -412,6 +434,13 @@ ret_t image_animation_play(widget_t* widget) {
   }
 
   return RET_OK;
+}
+
+bool_t image_animation_is_playing(widget_t* widget) {
+  image_animation_t* image_animation = IMAGE_ANIMATION(widget);
+  return_value_if_fail(image_animation != NULL, RET_BAD_PARAMS);
+
+  return image_animation->timer_id != TK_INVALID_ID;
 }
 
 ret_t image_animation_stop(widget_t* widget) {

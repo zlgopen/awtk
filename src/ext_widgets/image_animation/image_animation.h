@@ -314,6 +314,16 @@ ret_t image_animation_set_unload_after_paint(widget_t* widget, bool_t unload_aft
  */
 widget_t* image_animation_cast(widget_t* widget);
 
+/**
+ * @method image_animation_is_playing
+ * 判断是否在播放。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget image_animation对象。
+ *
+ * @return {bool_t} 返回TRUE表示是，否则表示否。
+ */
+bool_t image_animation_is_playing(widget_t* widget);
+
 #define IMAGE_ANIMATION_PROP_LOOP "loop"
 #define IMAGE_ANIMATION_PROP_SEQUENCE "sequence"
 #define IMAGE_ANIMATION_PROP_START_INDEX "start_index"

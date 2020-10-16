@@ -47343,6 +47343,52 @@
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
         }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "text_selector对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "localize_options",
+            "desc": "是否本地化(翻译)选项。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置是否本地化(翻译)选项。",
+        "name": "text_selector_set_localize_options",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
+            "type": "float_t",
+            "name": "yspeed_scale",
+            "desc": "y偏移速度比例。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置Y轴偏移速度比例。",
+        "name": "text_selector_set_yspeed_scale",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
       }
     ],
     "events": [
@@ -47388,6 +47434,32 @@
         "name": "options",
         "desc": "设置可选项(冒号分隔值和文本，分号分隔选项，如:1:red;2:green;3:blue)。\n对于数值选项，也可以指定一个范围，用『-』分隔起始值、结束值和格式。\n如：\"1-7-%02d\"表示1到7，格式为『02d』，格式为可选，缺省为『%d』。",
         "type": "char*",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "localize_options",
+        "desc": "是否本地化(翻译)选项(缺省为TRUE)。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "yspeed_scale",
+        "desc": "y偏移速度比例。",
+        "type": "bool_t",
         "annotation": {
           "set_prop": true,
           "get_prop": true,
@@ -53126,6 +53198,24 @@
         "return": {
           "type": "widget_t*",
           "desc": "image_animation对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "image_animation对象。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "判断是否在播放。",
+        "name": "image_animation_is_playing",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回TRUE表示是，否则表示否。"
         }
       }
     ],
