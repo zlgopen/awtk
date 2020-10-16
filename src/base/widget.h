@@ -2655,6 +2655,11 @@ ret_t widget_on_pointer_move(widget_t* widget, pointer_event_t* e);
 ret_t widget_on_pointer_up(widget_t* widget, pointer_event_t* e);
 ret_t widget_on_context_menu(widget_t* widget, pointer_event_t* e);
 
+#define WIDGET_EXEC_START_ANIMATOR "start_animator"
+#define WIDGET_EXEC_STOP_ANIMATOR "stop_animator"
+#define WIDGET_EXEC_PAUSE_ANIMATOR "pause_animator"
+#define WIDGET_EXEC_DESTROY_ANIMATOR "destroy_animator"
+
 END_C_DECLS
 
 #endif /*TK_WIDGET_H*/

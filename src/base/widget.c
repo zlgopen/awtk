@@ -1521,10 +1521,11 @@ ret_t widget_paint(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-static const widget_cmd_t s_widget_cmds[] = {{"start_animator", widget_start_animator},
-                                             {"stop_animator", widget_stop_animator},
-                                             {"pause_animator", widget_pause_animator},
-                                             {"destroy_animator", widget_destroy_animator}};
+static const widget_cmd_t s_widget_cmds[] = {
+    {WIDGET_EXEC_START_ANIMATOR, widget_start_animator},
+    {WIDGET_EXEC_STOP_ANIMATOR, widget_stop_animator},
+    {WIDGET_EXEC_PAUSE_ANIMATOR, widget_pause_animator},
+    {WIDGET_EXEC_DESTROY_ANIMATOR, widget_destroy_animator}};
 
 static ret_t widget_do_exec(widget_t* widget, const char* cmd, const char* args) {
   uint32_t i = 0;
@@ -1599,7 +1600,10 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
   return_value_if_fail(widget->vt != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_EXEC)) {
-    return widget_exec(widget, value_str(v));
+    ret = widget_exec(widget, value_str(v));
+    if (ret != RET_NOT_FOUND) {
+      return ret;
+    }
   }
 
   e.value = v;
