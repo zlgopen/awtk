@@ -90,6 +90,13 @@ typedef struct _window_manager_vtable_t {
 typedef struct _window_manager_t {
   widget_t widget;
 
+  /**
+   * @property {emitter_t*} global_emitter
+   * @annotation ["readable"]
+   * 全局事情分发器。
+   */
+  emitter_t* global_emitter;
+
   /*private*/
   bool_t show_fps;
   bool_t ignore_input_events;

@@ -1,27 +1,30 @@
 # 最新动态
 
+2020/10/18
+  * 引入 wm->global_emitter，避免 window manager 按键事件触发两次的问题。
+
 2020/10/16
-  * image\_animation 支持运行时修改interval。
-  * image\_animation 支持WIDGET\_PROP\_EXEC控制动画的启动、暂停和停止。
+  * image\_animation 支持运行时修改 interval。
+  * image\_animation 支持 WIDGET\_PROP\_EXEC 控制动画的启动、暂停和停止。
 
 2020/10/15
-  * 完善脚本，支持同时生成.data/.res（感谢朝泽提供补丁）。
-  * 修复mledit的拉动条不能拖动的问题（感谢智明提供补丁）。
+  * 完善脚本，支持同时生成。data/.res（感谢朝泽提供补丁）。
+  * 修复 mledit 的拉动条不能拖动的问题（感谢智明提供补丁）。
   * text\_selector 增加 y 轴速度比例和支持本地翻译功能 （感谢智明提供补丁）。
   * 修复 dialog\_toast 不支持文字长度自适应和修改字号的问题（感谢智明提供补丁）。
   * 修改 widget 的 auto\_adjust\_size 为 true 的时候，也支持 xywh 为绝对值时自动调整（感谢智明提供补丁）。
 
 2020/10/13
-  * 增加plugin\_manager。 
-  * label的line\_wrap属性，缺省改为FALSE。
-  * 将tkc编译成独立的动态库，给非GUI的库使用。
-  * 完善label的line\_wrap处理（感谢朝泽提供补丁）。 
+  * 增加 plugin\_manager。 
+  * label 的 line\_wrap 属性，缺省改为 FALSE。
+  * 将 tkc 编译成独立的动态库，给非 GUI 的库使用。
+  * 完善 label 的 line\_wrap 处理（感谢朝泽提供补丁）。 
   * 增加属性 disallow\_children\_focusable（感谢智明提供补丁）。
 
 2020/10/12
-  * 完善api注释（感谢朝泽提供补丁）。
-  * 完善fragment framebuffer（感谢智明提供补丁）。 
-  * 完善label对line\_wrap的处理。
+  * 完善 api 注释（感谢朝泽提供补丁）。
+  * 完善 fragment framebuffer（感谢智明提供补丁）。 
+  * 完善 label 对 line\_wrap 的处理。
 
 2020/10/11
   * label 增加 line\_wrap 属性。

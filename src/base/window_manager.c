@@ -274,6 +274,7 @@ ret_t window_manager_paint(widget_t* widget) {
 }
 
 ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e) {
+  void* target = NULL;
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(e != NULL, RET_BAD_PARAMS);
   return_value_if_fail(wm != NULL && wm->vt != NULL, RET_BAD_PARAMS);
@@ -285,10 +286,12 @@ ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e) {
     return RET_STOP;
   }
 
-  if (widget_dispatch(widget, e) == RET_STOP) {
+  target = e->target;
+  if (emitter_dispatch(wm->global_emitter, e) == RET_STOP) {
     return RET_STOP;
   }
 
+  e->target = target;
   return wm->vt->dispatch_input_event(widget, e);
 }
 
@@ -457,6 +460,14 @@ ret_t window_manager_on_theme_changed(widget_t* widget) {
   return RET_OK;
 }
 
+static ret_t window_manager_on_destroy(void* ctx, event_t* e) {
+  window_manager_t* wm = WINDOW_MANAGER(ctx);
+  emitter_destroy(wm->global_emitter);
+  wm->global_emitter = NULL;
+
+  return RET_OK;
+}
+
 widget_t* window_manager_init(window_manager_t* wm, const widget_vtable_t* wvt,
                               const window_manager_vtable_t* vt) {
   widget_t* widget = WIDGET(wm);
@@ -465,7 +476,9 @@ widget_t* window_manager_init(window_manager_t* wm, const widget_vtable_t* wvt,
   widget_init(widget, NULL, wvt, 0, 0, 0, 0);
   locale_info_on(locale_info(), EVT_LOCALE_CHANGED, wm_on_locale_changed, wm);
   wm->vt = vt;
-
+  wm->global_emitter = emitter_create();
+  widget_on(widget, EVT_DESTROY, window_manager_on_destroy, widget);
+  
   return widget;
 }
 

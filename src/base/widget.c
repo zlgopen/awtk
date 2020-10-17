@@ -1573,9 +1573,9 @@ static ret_t widget_on_grabbed_keys(void* ctx, event_t* e) {
 
 static ret_t widget_on_ungrab_keys(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
-  widget_t* wm = widget_get_window_manager(widget);
+  window_manager_t* wm = WINDOW_MANAGER(widget_get_window_manager(widget));
 
-  widget_off_by_tag(wm, tk_pointer_to_int(widget));
+  emitter_off_by_tag(wm->global_emitter, tk_pointer_to_int(widget));
 
   return RET_REMOVE;
 }
@@ -1667,13 +1667,13 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
       }
 
       if (tk_str_eq(name, WIDGET_PROP_GRAB_KEYS)) {
-        widget_t* wm = widget_get_window_manager(widget);
+        window_manager_t* wm = WINDOW_MANAGER(widget_get_window_manager(widget));
 
         if (value_bool(v)) {
           widget_on(widget, EVT_DESTROY, widget_on_ungrab_keys, widget);
-          widget_on_with_tag(wm, EVT_KEY_DOWN, widget_on_grabbed_keys, widget,
+          emitter_on_with_tag(wm->global_emitter, EVT_KEY_DOWN, widget_on_grabbed_keys, widget,
                              tk_pointer_to_int(widget));
-          widget_on_with_tag(wm, EVT_KEY_UP, widget_on_grabbed_keys, widget,
+          emitter_on_with_tag(wm->global_emitter, EVT_KEY_UP, widget_on_grabbed_keys, widget,
                              tk_pointer_to_int(widget));
         }
       }
