@@ -100,7 +100,7 @@ int tcp_listen(int port) {
 
   return_value_if_fail(socket_bind(sock, port) == RET_OK, -1);
 
-  if (listen(sock, 1) < 0) {
+  if (listen(sock, 5) < 0) {
     log_debug("listen error\n");
     return -1;
   }
