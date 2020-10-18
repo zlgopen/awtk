@@ -23,6 +23,7 @@
 #include "tkc/time_now.h"
 #include "base/keys.h"
 #include "base/system_info.h"
+#include "base/window_manager.h"
 #include "base/input_device_status.h"
 
 input_device_status_t* input_device_status_init(input_device_status_t* ids) {
@@ -68,8 +69,15 @@ static ret_t input_device_status_dispatch_long_press(input_device_status_t* ids)
     if (iter->key && !iter->emitted) {
       uint64_t t = now - iter->time;
       if (t >= TK_KEY_LONG_PRESS_TIME) {
-        key_event_init(&evt, EVT_KEY_LONG_PRESS, widget, iter->key);
-        widget_on_keydown(widget, &evt);
+        window_manager_t* wm = WINDOW_MANAGER(window_manager());
+        event_t* e = key_event_init(&evt, EVT_KEY_LONG_PRESS, wm->global_emitter, iter->key);
+
+        input_device_status_init_key_event(ids, &evt);
+        if (emitter_dispatch(wm->global_emitter, e) != RET_STOP) {
+          e->target = widget;
+          widget_on_keydown(widget, &evt);
+        }
+
         log_debug("long press:%d\n", iter->key);
         iter->emitted = TRUE;
       }
