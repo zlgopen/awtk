@@ -249,8 +249,6 @@ TEST(TextSelector, localize_options) {
   widget_t* win = NULL;
   text_selector_option_t* iter = NULL;
 
-  assets_manager_create(30);
-  locale_info_set(locale_info_create(NULL, NULL));
   win = window_create(NULL, 0, 0, 0, 0);
   w = text_selector_create(win, 10, 20, 30, 40);
 
@@ -282,5 +280,4 @@ TEST(TextSelector, localize_options) {
   ASSERT_STREQ(text1, locale_info_tr(widget_get_locale_info(w), "cancel"));
 
   widget_destroy(win);
-  locale_info_destroy(locale_info());
 }
