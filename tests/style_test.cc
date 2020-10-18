@@ -20,6 +20,7 @@ TEST(Style, normalize_str) {
   ASSERT_EQ(style_normalize_value("font_name", "sans", &v), RET_OK);
   ASSERT_EQ(v.type, VALUE_TYPE_STRING);
   ASSERT_STREQ(value_str(&v), "sans");
+  value_reset(&v);
 }
 
 TEST(Style, normalize_border_left_right) {

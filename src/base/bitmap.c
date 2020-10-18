@@ -46,19 +46,23 @@ ret_t bitmap_destroy(bitmap_t* bitmap) {
   }
 
   if (bitmap->should_free_data) {
-    if (bitmap->buffer != NULL) {
-      graphic_buffer_destroy(bitmap->buffer);
-    }
+    TKMEM_FREE(bitmap->data_free_ptr);
+  }
 
-    if (bitmap->gif_delays) {
-      TKMEM_FREE(bitmap->gif_delays);
-      bitmap->gif_delays = NULL;
-    }
+  if (bitmap->buffer != NULL) {
+    graphic_buffer_destroy(bitmap->buffer);
+  }
+
+  if (bitmap->gif_delays != NULL) {
+    TKMEM_FREE(bitmap->gif_delays);
+    bitmap->gif_delays = NULL;
   }
 
   if (bitmap->should_free_handle) {
     memset(bitmap, 0x00, sizeof(bitmap_t));
     TKMEM_FREE(bitmap);
+  } else {
+    memset(bitmap, 0x00, sizeof(bitmap_t));
   }
 
   return RET_OK;

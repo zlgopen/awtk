@@ -29,5 +29,6 @@ TEST(Bidi, auto1) {
   bidi_t* b = bidi_init(&bidi, FALSE, FALSE, BIDI_TYPE_RTL);
   ASSERT_EQ(bidi_log2vis(b, str.str, str.size), RET_OK);
 
+  wstr_reset(&str);
   bidi_deinit(b);
 }

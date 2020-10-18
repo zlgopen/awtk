@@ -23,6 +23,7 @@ TEST(AppConf, basic) {
   ASSERT_STREQ(app_conf_get_str("str", NULL), "123");
 
   ASSERT_EQ(app_conf_deinit(), RET_OK);
+  OBJECT_UNREF(obj);
 }
 
 static ret_t on_prop_changed(void* ctx, event_t* e) {
@@ -53,6 +54,7 @@ TEST(AppConf, event) {
   ASSERT_EQ(count, 2);
 
   ASSERT_EQ(app_conf_deinit(), RET_OK);
+  OBJECT_UNREF(obj);
 }
 
 TEST(AppConf, init) {

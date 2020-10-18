@@ -200,6 +200,7 @@ static void bitmap_gen(bitmap_t* b, uint32_t w, uint32_t h) {
 
   gen_data((uint8_t*)(data), w, h);
   b->buffer = GRAPHIC_BUFFER_CREATE_WITH_DATA(data, w, h, BITMAP_FMT_MONO);
+  b->data_free_ptr = data;
 
   return;
 }
@@ -214,6 +215,7 @@ static void test_draw_bitmap(lcd_t* lcd, uint32_t x, uint32_t y, uint32_t w, uin
   lcd_check_data(lcd, (uint8_t*)(bdata), x, y, w, h);
   bitmap_unlock_buffer(&b);
   graphic_buffer_destroy(b.buffer);
+  TKMEM_FREE(b.data_free_ptr);
 }
 
 TEST(LcdMono, draw_bitmap) {

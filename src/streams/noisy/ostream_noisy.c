@@ -84,6 +84,9 @@ static ret_t tk_ostream_noisy_get_prop(object_t* obj, const char* name, value_t*
 }
 
 static ret_t tk_ostream_noisy_on_destroy(object_t* obj) {
+  tk_ostream_noisy_t* ostream_noisy = TK_OSTREAM_NOISY(obj);
+  wbuffer_deinit(&(ostream_noisy->wb));
+
   return RET_OK;
 }
 

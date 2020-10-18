@@ -550,6 +550,7 @@ TEST(Edit, is_valid_password) {
   ASSERT_EQ(edit_is_valid_value(e), FALSE);
 
   widget_destroy(e);
+  idle_dispatch();
 }
 
 TEST(Edit, is_valid_email) {
@@ -574,4 +575,5 @@ TEST(Edit, is_valid_email) {
   ASSERT_EQ(edit_is_valid_value(e), FALSE);
 
   widget_destroy(e);
+  idle_dispatch();
 }

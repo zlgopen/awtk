@@ -45,10 +45,10 @@ static ret_t object_destroy(object_t* obj) {
     ret = obj->vt->on_destroy(obj);
   }
 
-  obj->vt = NULL;
-  obj->ref_count = 0;
   emitter_deinit((emitter_t*)obj);
   TKMEM_FREE(obj->name);
+  
+  memset(obj, 0x00, obj->vt->size);
   TKMEM_FREE(obj);
 
   return ret;

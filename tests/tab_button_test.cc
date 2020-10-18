@@ -80,6 +80,7 @@ TEST(TabButton, change_value) {
   ASSERT_EQ(value_bool(&(evt.new_value)), TRUE);
 
   widget_destroy(w);
+  idle_dispatch();
 }
 
 TEST(TabButton, change_value_abort) {
@@ -94,4 +95,5 @@ TEST(TabButton, change_value_abort) {
   ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_VALUE, TRUE), FALSE);
 
   widget_destroy(w);
+  idle_dispatch();
 }

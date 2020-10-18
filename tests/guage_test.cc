@@ -9,4 +9,5 @@ TEST(Guage, cast) {
   ASSERT_EQ(guage, guage_cast(guage));
 
   widget_destroy(w);
+  idle_dispatch();
 }

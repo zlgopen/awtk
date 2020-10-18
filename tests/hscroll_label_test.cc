@@ -39,4 +39,5 @@ TEST(HScrollLabel, basic) {
   ASSERT_EQ(w, hscroll_label_cast(w));
 
   widget_destroy(w);
+  idle_dispatch();
 }

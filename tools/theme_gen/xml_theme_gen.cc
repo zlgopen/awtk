@@ -58,8 +58,8 @@ static void xml_gen_style(xml_builder_t* b, Style& s, const char** attrs) {
       } else {
         s.AddInt(name, value_int(&v));
       }
-      value_reset(&v);
     }
+    value_reset(&v);
 
     i += 2;
   }
@@ -186,7 +186,7 @@ uint32_t xml_gen_buff(const char* xml, uint8_t* output, uint32_t max_size) {
   wbuffer_t wbuffer;
   wbuffer_init(&wbuffer, output, max_size);
 
-  return_value_if_fail(b.gen.Output(&wbuffer) != RET_OK, 0);
+  b.gen.Output(&wbuffer);
 
   wbuffer_deinit(&wbuffer);
 

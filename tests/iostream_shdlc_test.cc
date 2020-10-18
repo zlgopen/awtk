@@ -143,4 +143,5 @@ TEST(IOStreamSHDLC, noisy) {
   OBJECT_UNREF(a_io);
   OBJECT_UNREF(b_tcp);
   OBJECT_UNREF(b_io);
+  OBJECT_UNREF(b_noisy);
 }

@@ -15,4 +15,5 @@ TEST(TabButtonGroup, cast) {
   ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_SCROLLABLE, FALSE), TRUE);
 
   widget_destroy(w);
+  idle_dispatch();
 }

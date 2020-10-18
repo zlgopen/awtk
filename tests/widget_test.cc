@@ -1227,6 +1227,7 @@ TEST(Widget, exec) {
   ASSERT_EQ(widget_set_prop_str(w, WIDGET_PROP_EXEC, NULL), RET_NOT_FOUND);
 
   widget_destroy(w);
+  idle_dispatch();
 }
 
 TEST(Widget, tr_text) {

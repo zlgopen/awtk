@@ -82,6 +82,7 @@ uint32_t font_gen_buff(font_t* font, uint16_t font_size, const char* str, wbuffe
   header->descent = vmetrics.descent;
   header->line_gap = vmetrics.line_gap;
 
+  memset(&g, 0x00, sizeof(g));
   for (i = 0; i < size; i++) {
     wchar_t c = wstr[i];
 

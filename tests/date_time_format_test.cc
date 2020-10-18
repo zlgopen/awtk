@@ -9,7 +9,8 @@ TEST(DateTimeFormat, basic) {
   wstr_format_time(&str, "YY-MM-DD", 0);
 
   str_from_wstr(&s, str.str);
-  ASSERT_STREQ(s.str, "70-01-01");
+  ASSERT_EQ(strcmp(s.str, "70-01-01") == 0 || strcmp(s.str, "69-12-31") == 0, true);
+
   str_reset(&s);
   wstr_reset(&str);
 }

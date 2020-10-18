@@ -225,6 +225,7 @@ ret_t plugin_manager_destroy(plugin_manager_t* plugin_manager) {
   return_value_if_fail(plugin_manager != NULL, RET_BAD_PARAMS);
   plugin_manager_unload(plugin_manager);
 
+  TKMEM_FREE(plugin_manager->path);
   darray_deinit(&(plugin_manager->plugins));
   TKMEM_FREE(plugin_manager);
 

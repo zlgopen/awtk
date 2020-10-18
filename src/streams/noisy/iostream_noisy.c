@@ -25,7 +25,7 @@
 static ret_t tk_iostream_noisy_on_destroy(object_t* obj) {
   tk_iostream_noisy_t* iostream_noisy = TK_IOSTREAM_NOISY(obj);
 
-  OBJECT_UNREF(iostream_noisy->istream);
+  OBJECT_UNREF(iostream_noisy->ostream);
   OBJECT_UNREF(iostream_noisy->real_iostream);
 
   return RET_OK;

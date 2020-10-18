@@ -23,10 +23,12 @@
 #include "tkc/asset_info.h"
 
 asset_info_t* asset_info_create(uint16_t type, uint16_t subtype, const char* name, int32_t size) {
-  asset_info_t* info = TKMEM_ALLOC(sizeof(asset_info_t) + size);
+  uint32_t total = sizeof(asset_info_t) + size + 1;
+  asset_info_t* info = TKMEM_ALLOC(total);
   return_value_if_fail(info != NULL, NULL);
 
-  memset(info, 0x00, sizeof(asset_info_t));
+  memset(info, 0x00, total);
+
   info->size = size;
   info->type = type;
   info->subtype = subtype;

@@ -73,4 +73,5 @@ TEST(ConfNode, set_get_str) {
       "{\n    \"names\" : [\n        \"jim\",\n        \"tom\",\n        \"anny\"\n    ]\n}");
 
   conf_doc_destroy(doc);
+  str_reset(&str);
 }

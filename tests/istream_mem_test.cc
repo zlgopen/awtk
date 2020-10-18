@@ -99,5 +99,6 @@ TEST(IStreamMem, read_line) {
 
   ASSERT_NE(tk_istream_read_line_str(is, &str), RET_OK);
 
+  str_reset(&str);
   object_unref(OBJECT(is));
 }

@@ -9,6 +9,7 @@ TEST(GuagePointer, cast) {
   EXPECT_EQ(w, guage_pointer_cast(w));
 
   widget_destroy(w);
+  idle_dispatch();
 }
 
 TEST(GuagePointer, set_angle) {
@@ -31,6 +32,7 @@ TEST(GuagePointer, set_angle) {
   EXPECT_TRUE(guage_pointer_set_angle(guage_pointer, 370) == RET_OK);
 
   widget_destroy(w);
+  idle_dispatch();
 }
 
 TEST(GuagePointer, set_image) {
@@ -53,6 +55,7 @@ TEST(GuagePointer, set_image) {
   EXPECT_STREQ(guage_pointer_tmp->image, IMAGE_NAME);
 
   widget_destroy(w);
+  idle_dispatch();
 }
 
 TEST(GuagePointer, set_anchor) {
@@ -86,4 +89,5 @@ TEST(GuagePointer, set_anchor) {
   EXPECT_TRUE(tk_atoi(guage_pointer_tmp->anchor_y) == 300);
 
   widget_destroy(w);
+  idle_dispatch();
 }

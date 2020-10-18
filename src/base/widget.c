@@ -117,6 +117,7 @@ static ret_t widget_real_destroy(widget_t* widget) {
   TKMEM_FREE(widget->style);
   TKMEM_FREE(widget->tr_text);
   TKMEM_FREE(widget->animation);
+  TKMEM_FREE(widget->pointer_cursor);
 
   memset(widget, 0x00, sizeof(widget_t));
   TKMEM_FREE(widget);
@@ -1659,6 +1660,8 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
     } else if (tk_str_eq(name, WIDGET_PROP_TEXT)) {
       wstr_from_value(&(widget->text), v);
       ret = RET_OK;
+    } else if (tk_str_eq(name, WIDGET_PROP_EXEC)) {
+      ret = RET_NOT_FOUND;
     } else if (tk_str_start_with(name, "style:")) {
       return widget_set_style(widget, name + 6, v);
     } else {

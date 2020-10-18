@@ -7,4 +7,5 @@ TEST(Grid, cast) {
   ASSERT_EQ(w, grid_cast(w));
 
   widget_destroy(w);
+  idle_dispatch();
 }

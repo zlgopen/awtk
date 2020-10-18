@@ -7,4 +7,5 @@ TEST(GroupBox, cast) {
   ASSERT_EQ(w, group_box_cast(w));
 
   widget_destroy(w);
+  idle_dispatch();
 }
