@@ -1,8 +1,9 @@
 # 最新动态
 
 2020/10/18
-  * 引入 wm->global_emitter，避免 window manager 按键事件触发两次的问题。
-
+  * 引入 wm->global\_emitter，避免 window manager 按键事件触发两次的问题。
+  * 修改 valgrind 发现的内存问题。
+  
 2020/10/16
   * image\_animation 支持运行时修改 interval。
   * image\_animation 支持 WIDGET\_PROP\_EXEC 控制动画的启动、暂停和停止。
