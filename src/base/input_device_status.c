@@ -26,6 +26,8 @@
 #include "base/window_manager.h"
 #include "base/input_device_status.h"
 
+static ret_t input_device_status_init_key_event(input_device_status_t* ids, key_event_t* evt);
+
 input_device_status_t* input_device_status_init(input_device_status_t* ids) {
   return_value_if_fail(ids != NULL, NULL);
   memset(ids, 0x00, sizeof(input_device_status_t));
