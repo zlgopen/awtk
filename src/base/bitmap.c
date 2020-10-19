@@ -46,16 +46,16 @@ ret_t bitmap_destroy(bitmap_t* bitmap) {
   }
 
   if (bitmap->should_free_data) {
+    if (bitmap->buffer != NULL) {
+      graphic_buffer_destroy(bitmap->buffer);
+    }
+
+    if (bitmap->gif_delays != NULL) {
+      TKMEM_FREE(bitmap->gif_delays);
+      bitmap->gif_delays = NULL;
+    }
+
     TKMEM_FREE(bitmap->data_free_ptr);
-  }
-
-  if (bitmap->buffer != NULL) {
-    graphic_buffer_destroy(bitmap->buffer);
-  }
-
-  if (bitmap->gif_delays != NULL) {
-    TKMEM_FREE(bitmap->gif_delays);
-    bitmap->gif_delays = NULL;
   }
 
   if (bitmap->should_free_handle) {
@@ -462,6 +462,7 @@ ret_t bitmap_init(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t form
     bitmap_alloc_data(bitmap);
   } else {
     bitmap->buffer = GRAPHIC_BUFFER_CREATE_WITH_DATA(data, w, h, format);
+    bitmap->should_free_handle = TRUE;
   }
 
   return bitmap->buffer != NULL ? RET_OK : RET_OOM;

@@ -15,6 +15,8 @@ static void init_image(bitmap_t* fb, bitmap_t* img, bitmap_format_t format) {
 
   bitmap_init(fb, FB_W, FB_H, format, fb_buff);
   bitmap_init(img, IMG_W, IMG_H, format, img_buff);
+  fb->should_free_data = TRUE;
+  img->should_free_data = TRUE;
 
   memset(s_fb_buff, 0x00, sizeof(s_fb_buff));
   memset(s_img_buff, 0xfe, sizeof(s_img_buff));
