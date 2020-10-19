@@ -343,6 +343,7 @@ ret_t window_base_on_event(widget_t* widget, event_t* e) {
     } else {
       win->grab_count_when_to_foreground = 0;
     }
+  } else if (e->type == EVT_BLUR) {
     if (win->save_focus_widget) {
       widget_unref(win->save_focus_widget);
       win->save_focus_widget = NULL;
