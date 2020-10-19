@@ -75,7 +75,9 @@ static system_info_t* assets_manager_get_system_info(assets_manager_t* am) {
   return am->system_info != NULL ? am->system_info : system_info();
 }
 
-static const char* assets_manager_get_res_root(assets_manager_t* am) {
+const char* assets_manager_get_res_root(assets_manager_t* am) {
+  return_value_if_fail(am != NULL, NULL);
+
   if (am->res_root != NULL) {
     return am->res_root;
   } else {

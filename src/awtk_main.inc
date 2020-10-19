@@ -57,10 +57,8 @@ END_C_DECLS
 #define APP_RES_ROOT NULL
 #endif /*APP_RES_ROOT*/
 
-#ifdef IOS
 #include "base/asset_loader_zip.h"
 
-#endif /*IOS*/
 #ifdef USE_GUI_MAIN
 int gui_app_start(int lcd_w, int lcd_h) {
   tk_init(lcd_w, lcd_h, APP_MOBILE, APP_NAME, APP_RES_ROOT);
@@ -124,7 +122,7 @@ int WINAPI wWinMain(HINSTANCE hinstance, HINSTANCE hprevinstance, LPWSTR lpcmdli
   str_from_wstr(&str, lpcmdline);
   command_line_to_argv(str.str, argv, &argc);
   str.str = NULL;
-  
+
   TK_ENABLE_CONSOLE();
 
 #ifdef ON_CMD_LINE

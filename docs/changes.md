@@ -1,5 +1,8 @@
 # 最新动态
 
+2020/10/19
+  * 修改了由于路径问题导致 asset\_loader\_zip 无法正常加载资源的问题（感谢朝泽提供补丁）。
+
 2020/10/18
   * 引入 wm->global\_emitter，避免 window manager 按键事件触发两次的问题。
   * 修改 valgrind 发现的内存问题。

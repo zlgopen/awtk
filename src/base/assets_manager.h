@@ -129,6 +129,15 @@ assets_manager_t* assets_manager_create(uint32_t init_nr);
 assets_manager_t* assets_manager_init(assets_manager_t* am, uint32_t init_nr);
 
 /**
+ * @method assets_manager_get_res_root
+ * 获取资源所在的目录(其下目录结构请参考demos)。
+ * @param {assets_manager_t*} am asset manager对象。
+ *
+ * @return {const char*} 返回资源所在的目录。
+ */
+const char* assets_manager_get_res_root(assets_manager_t* am);
+
+/**
  * @method assets_manager_set_res_root
  * 设置资源所在的目录(其下目录结构请参考demos)。
  * @param {assets_manager_t*} am asset manager对象。

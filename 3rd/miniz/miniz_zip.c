@@ -1305,8 +1305,10 @@ static MZ_FORCEINLINE int mz_zip_filename_compare(const mz_zip_array *pCentral_d
     pE = pL + MZ_MIN(l_len, r_len);
     while (pL < pE)
     {
-        if ((l = MZ_TOLOWER(*pL)) != (r = MZ_TOLOWER(*pR)))
-            break;
+        if (*pR != '\\' || *pL != '/') {
+            if ((l = MZ_TOLOWER(*pL)) != (r = MZ_TOLOWER(*pR)))
+                break;
+        }
         pL++;
         pR++;
     }
