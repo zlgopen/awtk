@@ -234,7 +234,7 @@ static ret_t text_edit_set_caret_pos(text_edit_impl_t* impl, uint32_t x, uint32_
     layout_info->ox = caret_left - layout_info->margin_l;
   }
 
-  if (view_right < caret_right) {
+  if (view_right < caret_right || (view_left > caret_left + layout_info->w)) {
     layout_info->ox = caret_right - layout_info->w;
   }
 
