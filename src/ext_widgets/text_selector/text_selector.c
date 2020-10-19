@@ -317,12 +317,16 @@ static ret_t text_selector_set_selected_index_only(text_selector_t* text_selecto
 
   if (index != text_selector->selected_index) {
     value_change_event_t evt;
+    text_selector_option_t* option = text_selector_get_option(widget, index);
     value_change_event_init(&evt, EVT_VALUE_WILL_CHANGE, widget);
     value_set_uint32(&(evt.old_value), text_selector->selected_index);
     value_set_uint32(&(evt.new_value), index);
 
     if (widget_dispatch(widget, (event_t*)&evt) != RET_STOP) {
       text_selector->selected_index = index;
+      if (widget->tr_text != NULL) {
+        widget->tr_text = tk_str_copy(widget->tr_text, option->tr_text);
+      }
       evt.e.type = EVT_VALUE_CHANGED;
       widget_dispatch(widget, (event_t*)&evt);
       widget_invalidate(widget, NULL);
