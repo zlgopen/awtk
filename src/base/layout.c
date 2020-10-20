@@ -31,9 +31,6 @@ static ret_t widget_auto_adjust_size(widget_t* widget) {
   int32_t h = 0;
   style_t* style = widget->astyle;
   event_t e = event_init(EVT_WILL_RESIZE, widget);
-  if (widget->children == NULL || widget->children->size <= 0) {
-    return RET_OK;
-  }
   widget_dispatch(widget, &e);
   widget_invalidate_force(widget, NULL);
 
@@ -52,8 +49,10 @@ static ret_t widget_auto_adjust_size(widget_t* widget) {
   }
   WIDGET_FOR_EACH_CHILD_END();
 
-  widget->w = w;
-  widget->h = h;
+  if (w != 0 && h != 0) {
+    widget->w = w;
+    widget->h = h;
+  }
 
   widget_invalidate_force(widget, NULL);
 
