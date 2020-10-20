@@ -242,7 +242,7 @@ static wh_t label_get_text_line_max_w(widget_t* widget, canvas_t* c) {
     wchar_t chr = str[i];
     if (chr == '\r' || chr == '\n' || i == size - 1) {
       n = i - start;
-      line_w = canvas_measure_text(c, str + start, n);
+      line_w = canvas_measure_text(c, str + start, n + 1);
       line_max_w = tk_max(line_max_w, line_w);
       start = i;
       if (chr == '\r' && (i + 1) <= size && str[i + 1] == '\n') {
@@ -353,14 +353,20 @@ static ret_t label_auto_adust_size(widget_t* widget) {
   style = widget->astyle;
   margin = style_get_int(style, STYLE_ID_MARGIN, 2);
   spacer = style_get_int(style, STYLE_ID_SPACER, 2);
-
-  w = widget->w - 2 * margin;
   widget_prepare_text_style(widget, c);
   line_height = c->font_size + spacer;
+
+  if (label->line_wrap) {
+    w = widget->w;
+  } else {
+    w = label_get_text_line_max_w(widget, c);
+  }
+
   return_value_if_fail(label_line_parser_init(&p, c, widget->text.str, widget->text.size,
-                                              c->font_size, w, label->line_wrap) == RET_OK,
+                                              c->font_size, w - 2 * margin, label->line_wrap) == RET_OK,
                        RET_BAD_PARAMS);
 
+  widget->w = w;
   widget->h = line_height * p.total_lines;
 
   return RET_OK;
