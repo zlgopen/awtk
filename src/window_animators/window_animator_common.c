@@ -97,7 +97,6 @@ ret_t window_animator_to_right_draw_curr(window_animator_t* wa) {
   return lcd_draw_image(c->lcd, &(wa->curr_img), rect_scale(&src, wa->ratio), &dst);
 }
 
-static bool_t window_animator_is_overlap(window_animator_t* wa);
 static ret_t window_animator_paint_system_bar(window_animator_t* wa);
 static ret_t window_animator_update_percent(window_animator_t* wa);
 static ret_t window_animator_draw_prev_window(window_animator_t* wa);
@@ -120,12 +119,6 @@ static ret_t window_animator_close_destroy(window_animator_t* wa) {
   widget_destroy(wa->curr_win);
 
   return window_animator_open_destroy(wa);
-}
-
-static bool_t window_animator_is_overlap(window_animator_t* wa) {
-  return_value_if_fail(wa != NULL && wa->vt != NULL, FALSE);
-
-  return wa->vt->overlap;
 }
 
 ret_t window_animator_update(window_animator_t* wa, uint32_t time_ms) {
@@ -177,43 +170,6 @@ static ret_t window_animator_paint_system_bar(window_animator_t* wa) {
   }
 
   return RET_OK;
-}
-
-static ret_t window_animator_begin_frame_normal(window_animator_t* wa) {
-#ifdef WITH_NANOVG_GPU
-  ENSURE(canvas_begin_frame(wa->canvas, NULL, LCD_DRAW_ANIMATION) == RET_OK);
-#else
-  rect_t r;
-  widget_t* wm = wa->curr_win->parent;
-  r = rect_init(wm->x, wm->y, wm->w, wm->h);
-  ENSURE(canvas_begin_frame(wa->canvas, &r, LCD_DRAW_ANIMATION) == RET_OK);
-#endif
-
-  return window_animator_paint_system_bar(wa);
-}
-
-static ret_t window_animator_begin_frame_overlap(window_animator_t* wa) {
-#ifdef WITH_NANOVG_GPU
-  ENSURE(canvas_begin_frame(wa->canvas, NULL, LCD_DRAW_ANIMATION) == RET_OK);
-#else
-  rect_t r;
-  widget_t* w = NULL;
-
-  if (wa->percent > 0) {
-    w = wa->curr_win;
-  } else {
-    w = wa->curr_win->parent;
-  }
-
-  if (dialog_highlighter_is_dynamic(wa->dialog_highlighter)) {
-    w = wa->curr_win->parent;
-  }
-
-  r = rect_init(w->x, w->y, w->w, w->h);
-  ENSURE(canvas_begin_frame(wa->canvas, &r, LCD_DRAW_ANIMATION_OVERLAP) == RET_OK);
-#endif
-
-  return window_animator_paint_system_bar(wa);
 }
 
 #ifdef WITH_WINDOW_ANIMATORS
@@ -323,11 +279,9 @@ ret_t window_animator_overlap_default_draw_prev(window_animator_t* wa) {
 ret_t window_animator_begin_frame(window_animator_t* wa) {
   return_value_if_fail(wa != NULL, RET_OK);
 
-  if (window_animator_is_overlap(wa)) {
-    return window_animator_begin_frame_overlap(wa);
-  } else {
-    return window_animator_begin_frame_normal(wa);
-  }
+  ENSURE(canvas_begin_frame(wa->canvas, NULL, LCD_DRAW_ANIMATION) == RET_OK);
+
+  return window_animator_paint_system_bar(wa);
 }
 
 ret_t window_animator_end_frame(window_animator_t* wa) {
