@@ -149,18 +149,51 @@ static ret_t rich_text_on_paint_text(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
+static bool_t rich_text_is_need_reset_from_style(rich_text_t* rich_text, char* font_name, uint16_t font_size, color_t color, align_v_t align_v) {
+
+  if (tk_str_cmp(rich_text->default_font_name, font_name) != 0) {
+    return TRUE;
+  }
+
+  if (rich_text->default_font_size != font_size) {
+    return TRUE;
+  }
+
+  if (rich_text->default_color.color != color.color) {
+    return TRUE;
+  }
+
+  if (rich_text->default_align_v != align_v) {
+    return TRUE;
+  }
+
+  return FALSE;
+}
+
 static ret_t rich_text_ensure_render_node(widget_t* widget, canvas_t* c) {
+  style_t* style = widget->astyle;
   rich_text_t* rich_text = RICH_TEXT(widget);
-  return_value_if_fail(widget != NULL && rich_text != NULL, RET_BAD_PARAMS);
+  const char* default_font_name = style_get_str(style, STYLE_ID_FONT_NAME, NULL);
+  uint16_t default_font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
+  color_t default_color = style_get_color(style, STYLE_ID_TEXT_COLOR, color_init(0, 0, 0, 0xff));
+  align_v_t default_align_v = (align_v_t)style_get_int(style, STYLE_ID_TEXT_ALIGN_V, ALIGN_V_BOTTOM);
+  return_value_if_fail(widget != NULL && rich_text != NULL && style != NULL, RET_BAD_PARAMS);
+
+  rich_text->need_reset = rich_text_is_need_reset_from_style(rich_text, default_font_name, default_font_size, default_color, default_align_v);
 
   if (rich_text->need_reset) {
     str_t str;
     str_init(&str, widget->text.size * 4 + 1);
     str_from_wstr(&str, widget->text.str);
     rich_text_reset(widget);
-    rich_text->node = rich_text_parse(str.str, str.size);
+    rich_text->node = rich_text_parse(str.str, str.size, default_font_name, default_font_size, default_color, default_align_v);
     str_reset(&str);
     rich_text->need_reset = FALSE;
+
+    rich_text->default_color = default_color;
+    rich_text->default_align_v = default_align_v;
+    rich_text->default_font_size = default_font_size;
+    rich_text->default_font_name = default_font_name;
   }
 
   if (rich_text->render_node != NULL) {

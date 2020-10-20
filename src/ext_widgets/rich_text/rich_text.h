@@ -131,6 +131,11 @@ typedef struct _rich_text_t {
   velocity_t velocity;
   int32_t yoffset_save;
   rich_text_render_node_t* render_node;
+
+  color_t default_color;
+  align_v_t default_align_v;
+  uint16_t default_font_size;
+  const char* default_font_name;
 } rich_text_t;
 
 /**
