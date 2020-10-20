@@ -462,7 +462,7 @@ ret_t bitmap_init(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t form
     bitmap_alloc_data(bitmap);
   } else {
     bitmap->buffer = GRAPHIC_BUFFER_CREATE_WITH_DATA(data, w, h, format);
-    bitmap->should_free_handle = TRUE;
+    bitmap->should_free_data = TRUE;
   }
 
   return bitmap->buffer != NULL ? RET_OK : RET_OOM;
