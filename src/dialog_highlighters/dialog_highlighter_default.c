@@ -52,11 +52,12 @@ static ret_t dialog_highlighter_default_draw_mask_system_bar(canvas_t* c, uint8_
   return RET_OK;
 }
 
-static ret_t dialog_highlighter_default_draw_mask_from_percent(dialog_highlighter_t* h, canvas_t* c, float_t percent) {
+static ret_t dialog_highlighter_default_draw_mask_from_percent(dialog_highlighter_t* h, canvas_t* c,
+                                                               float_t percent) {
   dialog_highlighter_default_t* dh = (dialog_highlighter_default_t*)h;
 
   return_value_if_fail(dh != NULL && c != NULL, RET_BAD_PARAMS);
-  
+
   if (dh->start_alpha != dh->end_alpha) {
     uint8_t a = ((dh->end_alpha - dh->start_alpha) * percent) + dh->start_alpha;
     return dialog_highlighter_default_draw_mask(c, a);

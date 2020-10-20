@@ -478,7 +478,7 @@ widget_t* window_manager_init(window_manager_t* wm, const widget_vtable_t* wvt,
   wm->vt = vt;
   wm->global_emitter = emitter_create();
   widget_on(widget, EVT_DESTROY, window_manager_on_destroy, widget);
-  
+
   return widget;
 }
 

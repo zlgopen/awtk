@@ -26,7 +26,8 @@
 
 BEGIN_C_DECLS
 
-rich_text_node_t* rich_text_parse(const char* str, uint32_t size, char* font_name, uint16_t font_size, color_t color, align_v_t align_v);
+rich_text_node_t* rich_text_parse(const char* str, uint32_t size, char* font_name,
+                                  uint16_t font_size, color_t color, align_v_t align_v);
 
 END_C_DECLS
 

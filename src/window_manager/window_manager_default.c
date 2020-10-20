@@ -143,18 +143,21 @@ ret_t window_manager_default_snap_curr_window(widget_t* widget, widget_t* curr_w
   return RET_OK;
 }
 
-static ret_t window_manager_default_snap_prev_window_draw_dialog_highlighter_and_get_alpha(widget_t* widget, canvas_t* c, uint8_t* alpha){
+static ret_t window_manager_default_snap_prev_window_draw_dialog_highlighter_and_get_alpha(
+    widget_t* widget, canvas_t* c, uint8_t* alpha) {
   value_t v;
   return_value_if_fail(widget != NULL && c != NULL, FALSE);
   if (widget_get_prop(widget, WIDGET_PROP_HIGHLIGHT, &v) == RET_OK) {
     const char* args = value_str(&v);
     dialog_highlighter_factory_t* f = dialog_highlighter_factory();
-    dialog_highlighter_t* dialog_highlighter = dialog_highlighter_factory_create_highlighter(f, args, widget);
+    dialog_highlighter_t* dialog_highlighter =
+        dialog_highlighter_factory_create_highlighter(f, args, widget);
 
     if (dialog_highlighter != NULL) {
       dialog_highlighter_draw_mask(dialog_highlighter, c, 1.0f);
       *alpha = dialog_highlighter_get_alpha(dialog_highlighter, 1.0f);
-      widget_off_by_func(widget, EVT_DESTROY, dialog_highlighter_on_dialog_destroy, dialog_highlighter);
+      widget_off_by_func(widget, EVT_DESTROY, dialog_highlighter_on_dialog_destroy,
+                         dialog_highlighter);
       dialog_highlighter_destroy(dialog_highlighter);
       return RET_OK;
     }
@@ -173,7 +176,9 @@ static bool_t window_manager_default_is_dialog_highlighter(widget_t* widget) {
   return FALSE;
 }
 
-static widget_t* window_manager_default_find_top_dialog_highlighter(widget_t* widget, widget_t* prev_win, widget_t* curr_win) {
+static widget_t* window_manager_default_find_top_dialog_highlighter(widget_t* widget,
+                                                                    widget_t* prev_win,
+                                                                    widget_t* curr_win) {
   int32_t i = 0;
   widget_t* dialog = NULL;
   widget_t** children = (widget_t**)(widget->children->elms);
@@ -237,7 +242,8 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
         /* 给前面的高亮对话框叠加黑色色块 */
         if (widget_is_dialog(iter)) {
           uint8_t a = 0x0;
-          window_manager_default_snap_prev_window_draw_dialog_highlighter_and_get_alpha(iter, canvas, &a);
+          window_manager_default_snap_prev_window_draw_dialog_highlighter_and_get_alpha(iter,
+                                                                                        canvas, &a);
           if (dialog_highlighter != NULL) {
             dialog_highlighter_set_system_bar_alpha(dialog_highlighter, a);
           }
@@ -730,7 +736,8 @@ static ret_t window_manager_animate_done(widget_t* widget) {
         window_manager_dispatch_window_event(prev_win, EVT_WINDOW_TO_BACKGROUND);
       }
       if (!curr_win_is_normal_window) {
-        top_dialog_highligth = window_manager_default_find_top_dialog_highlighter(widget, prev_win, curr_win_is_keyboard ? curr_win : NULL);
+        top_dialog_highligth = window_manager_default_find_top_dialog_highlighter(
+            widget, prev_win, curr_win_is_keyboard ? curr_win : NULL);
       }
       window_manager_dispatch_window_event(curr_win, EVT_WINDOW_OPEN);
     } else {
@@ -738,15 +745,15 @@ static ret_t window_manager_animate_done(widget_t* widget) {
       if (!curr_win_is_keyboard) {
         window_manager_animate_done_set_window_foreground(widget, prev_win, curr_win);
       }
-      top_dialog_highligth = window_manager_default_find_top_dialog_highlighter(widget, prev_win, curr_win);
-
-    }  
+      top_dialog_highligth =
+          window_manager_default_find_top_dialog_highlighter(widget, prev_win, curr_win);
+    }
     /* 制作一张没有最后一个对话框的高亮背景贴图 */
     if (top_dialog_highligth != NULL) {
-        widget_t* tmp_curr_win = wm->curr_win;
-        wm->curr_win = top_dialog_highligth;
-        window_manager_create_highlighter(widget, top_dialog_highligth);
-        wm->curr_win = tmp_curr_win;
+      widget_t* tmp_curr_win = wm->curr_win;
+      wm->curr_win = top_dialog_highligth;
+      window_manager_create_highlighter(widget, top_dialog_highligth);
+      wm->curr_win = tmp_curr_win;
     }
 
     if (wm->pending_close_window != NULL) {

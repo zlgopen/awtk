@@ -31,7 +31,8 @@ typedef struct _dialog_highlighter_t dialog_highlighter_t;
 
 typedef ret_t (*dialog_highlighter_set_system_bar_alpha_t)(dialog_highlighter_t* h, uint8_t alpha);
 typedef uint8_t (*dialog_highlighter_get_alpha_t)(dialog_highlighter_t* h, float_t percent);
-typedef ret_t (*dialog_highlighter_draw_mask_t)(dialog_highlighter_t* h, canvas_t* c, float_t percent);
+typedef ret_t (*dialog_highlighter_draw_mask_t)(dialog_highlighter_t* h, canvas_t* c,
+                                                float_t percent);
 typedef ret_t (*dialog_highlighter_prepare_t)(dialog_highlighter_t* h, canvas_t* c);
 typedef ret_t (*dialog_highlighter_draw_t)(dialog_highlighter_t* h, float_t percent);
 typedef bool_t (*dialog_highlighter_is_dynamic_t)(dialog_highlighter_t* h);

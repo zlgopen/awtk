@@ -1675,9 +1675,9 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
         if (value_bool(v)) {
           widget_on(widget, EVT_DESTROY, widget_on_ungrab_keys, widget);
           emitter_on_with_tag(wm->global_emitter, EVT_KEY_DOWN, widget_on_grabbed_keys, widget,
-                             tk_pointer_to_int(widget));
+                              tk_pointer_to_int(widget));
           emitter_on_with_tag(wm->global_emitter, EVT_KEY_UP, widget_on_grabbed_keys, widget,
-                             tk_pointer_to_int(widget));
+                              tk_pointer_to_int(widget));
         }
       }
 

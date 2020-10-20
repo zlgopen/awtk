@@ -87,7 +87,7 @@ ret_t dialog_highlighter_set_system_bar_alpha(dialog_highlighter_t* h, uint8_t a
     return h->vt->set_system_bar_alpha(h, alpha);
   }
 
-  return RET_NOT_IMPL; 
+  return RET_NOT_IMPL;
 }
 
 uint8_t dialog_highlighter_get_alpha(dialog_highlighter_t* h, float_t percent) {
@@ -97,7 +97,7 @@ uint8_t dialog_highlighter_get_alpha(dialog_highlighter_t* h, float_t percent) {
     return h->vt->get_alpha(h, percent);
   }
 
-  return 0x0; 
+  return 0x0;
 }
 
 ret_t dialog_highlighter_draw(dialog_highlighter_t* h, float_t percent) {

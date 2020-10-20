@@ -367,9 +367,10 @@ static ret_t label_auto_adjust_size(widget_t* widget) {
     w = label_get_text_line_max_w(widget, c);
   }
 
-  return_value_if_fail(label_line_parser_init(&p, c, widget->text.str, widget->text.size,
-                                              c->font_size, w - 2 * margin, label->line_wrap) == RET_OK,
-                       RET_BAD_PARAMS);
+  return_value_if_fail(
+      label_line_parser_init(&p, c, widget->text.str, widget->text.size, c->font_size,
+                             w - 2 * margin, label->line_wrap) == RET_OK,
+      RET_BAD_PARAMS);
 
   widget->w = w;
   widget->h = line_height * p.total_lines;
