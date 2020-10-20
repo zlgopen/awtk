@@ -36,6 +36,55 @@ static ret_t dialog_highlighter_default_draw_mask(canvas_t* c, uint8_t alpha) {
   return RET_OK;
 }
 
+static ret_t dialog_highlighter_default_draw_mask_system_bar(canvas_t* c, uint8_t alpha) {
+  if (alpha > 1) {
+    widget_t* widget = window_manager();
+    color_t mask = color_init(0, 0, 0, alpha);
+
+    WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
+    if (widget_is_system_bar(iter)) {
+      canvas_set_fill_color(c, mask);
+      canvas_fill_rect(c, iter->x, iter->y, iter->w, iter->h);
+    }
+    WIDGET_FOR_EACH_CHILD_END()
+  }
+
+  return RET_OK;
+}
+
+static ret_t dialog_highlighter_default_draw_mask_from_percent(dialog_highlighter_t* h, canvas_t* c, float_t percent) {
+  dialog_highlighter_default_t* dh = (dialog_highlighter_default_t*)h;
+
+  return_value_if_fail(dh != NULL && c != NULL, RET_BAD_PARAMS);
+  
+  if (dh->start_alpha != dh->end_alpha) {
+    uint8_t a = ((dh->end_alpha - dh->start_alpha) * percent) + dh->start_alpha;
+    return dialog_highlighter_default_draw_mask(c, a);
+  } else {
+    return dialog_highlighter_default_draw_mask(c, dh->end_alpha);
+  }
+}
+
+ret_t dialog_highlighter_default_set_system_bar_alpha(dialog_highlighter_t* h, uint8_t alpha) {
+  dialog_highlighter_default_t* dh = (dialog_highlighter_default_t*)h;
+  return_value_if_fail(dh != NULL, RET_BAD_PARAMS);
+  /* 计算叠加的 system_bar 的高亮透明度 */
+  dh->system_bar_alpha = (dh->system_bar_alpha * (0xff - alpha)) >> 8;
+
+  return RET_OK;
+}
+
+uint8_t dialog_highlighter_default_get_alpha(dialog_highlighter_t* h, float_t percent) {
+  dialog_highlighter_default_t* dh = (dialog_highlighter_default_t*)h;
+  return_value_if_fail(dh != NULL, 0x0);
+
+  if (dh->start_alpha == dh->end_alpha) {
+    return dh->start_alpha;
+  } else {
+    return (0xff * (dh->end_alpha - dh->start_alpha) * percent) / 0xff;
+  }
+}
+
 static ret_t dialog_highlighter_default_prepare(dialog_highlighter_t* h, canvas_t* c) {
   dialog_highlighter_default_t* dh = (dialog_highlighter_default_t*)h;
   return_value_if_fail(h != NULL && h->vt != NULL && c != NULL, RET_BAD_PARAMS);
@@ -79,6 +128,10 @@ static ret_t dialog_highlighter_default_draw(dialog_highlighter_t* h, float_t pe
   if (dh->start_alpha != dh->end_alpha) {
     uint8_t a = ((dh->end_alpha - dh->start_alpha) * percent) + dh->start_alpha;
     dialog_highlighter_default_draw_mask(c, a);
+  } else {
+    /* 解决黑色色块绘制到贴图导致 system_bar 的颜色不同步的问题 */
+    uint8_t a = 0xff - ((dh->system_bar_alpha * (0xff - dh->end_alpha)) >> 8);
+    dialog_highlighter_default_draw_mask_system_bar(c, a);
   }
 
   return RET_OK;
@@ -95,6 +148,9 @@ static const dialog_highlighter_vtable_t s_dialog_highlighter_default_vt = {
     .desc = "dialog_highlighter_default_t",
     .size = sizeof(dialog_highlighter_default_t),
     .prepare = dialog_highlighter_default_prepare,
+    .draw_mask = dialog_highlighter_default_draw_mask_from_percent,
+    .set_system_bar_alpha = dialog_highlighter_default_set_system_bar_alpha,
+    .get_alpha = dialog_highlighter_default_get_alpha,
     .is_dynamic = dialog_highlighter_default_is_dynamic,
     .draw = dialog_highlighter_default_draw};
 
@@ -106,6 +162,7 @@ dialog_highlighter_t* dialog_highlighter_default_create(object_t* args) {
 
   dh->end_alpha = 0;
   dh->start_alpha = 0;
+  dh->system_bar_alpha = 0xff;
 
   if (object_get_prop(args, DIALOG_HIGHLIGHTER_DEFAULT_ARG_ALPHA, &v) == RET_OK) {
     dh->start_alpha = value_int(&v);

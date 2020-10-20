@@ -51,6 +51,12 @@ struct _dialog_highlighter_default_t {
    * 结束alpha，打开对话框的动画结束(直到对话框被关闭)时的alpha值。
    */
   uint8_t end_alpha;
+
+  /**
+   * @property {uint8_t} system_bar_alpha
+   * 由于在没有过度动画的情况下，截图中已经包括黑色色块，为了让 system_bar 也同步高亮部分的色块透明。
+   */
+  uint8_t system_bar_alpha;
 };
 
 /**

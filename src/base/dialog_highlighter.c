@@ -80,11 +80,41 @@ ret_t dialog_highlighter_set_bg_clip_rect(dialog_highlighter_t* h, rect_t* clip_
   return RET_OK;
 }
 
+ret_t dialog_highlighter_set_system_bar_alpha(dialog_highlighter_t* h, uint8_t alpha) {
+  return_value_if_fail(h != NULL && h->vt != NULL, RET_BAD_PARAMS);
+
+  if (h->vt->set_system_bar_alpha != NULL) {
+    return h->vt->set_system_bar_alpha(h, alpha);
+  }
+
+  return RET_NOT_IMPL; 
+}
+
+uint8_t dialog_highlighter_get_alpha(dialog_highlighter_t* h, float_t percent) {
+  return_value_if_fail(h != NULL && h->vt != NULL, 0x0);
+
+  if (h->vt->get_alpha != NULL) {
+    return h->vt->get_alpha(h, percent);
+  }
+
+  return 0x0; 
+}
+
 ret_t dialog_highlighter_draw(dialog_highlighter_t* h, float_t percent) {
   return_value_if_fail(h != NULL && h->vt != NULL, RET_BAD_PARAMS);
 
   if (h->vt->draw != NULL) {
     return h->vt->draw(h, percent);
+  }
+
+  return RET_NOT_IMPL;
+}
+
+ret_t dialog_highlighter_draw_mask(dialog_highlighter_t* h, canvas_t* c, float_t percent) {
+  return_value_if_fail(h != NULL && h->vt != NULL, RET_BAD_PARAMS);
+
+  if (h->vt->draw_mask != NULL) {
+    return h->vt->draw_mask(h, c, percent);
   }
 
   return RET_NOT_IMPL;

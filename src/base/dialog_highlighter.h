@@ -29,6 +29,9 @@ BEGIN_C_DECLS
 struct _dialog_highlighter_t;
 typedef struct _dialog_highlighter_t dialog_highlighter_t;
 
+typedef ret_t (*dialog_highlighter_set_system_bar_alpha_t)(dialog_highlighter_t* h, uint8_t alpha);
+typedef uint8_t (*dialog_highlighter_get_alpha_t)(dialog_highlighter_t* h, float_t percent);
+typedef ret_t (*dialog_highlighter_draw_mask_t)(dialog_highlighter_t* h, canvas_t* c, float_t percent);
 typedef ret_t (*dialog_highlighter_prepare_t)(dialog_highlighter_t* h, canvas_t* c);
 typedef ret_t (*dialog_highlighter_draw_t)(dialog_highlighter_t* h, float_t percent);
 typedef bool_t (*dialog_highlighter_is_dynamic_t)(dialog_highlighter_t* h);
@@ -42,8 +45,11 @@ typedef struct _dialog_highlighter_vtable_t {
   uint32_t size;
   dialog_highlighter_draw_t draw;
   dialog_highlighter_prepare_t prepare;
+  dialog_highlighter_draw_mask_t draw_mask;
+  dialog_highlighter_get_alpha_t get_alpha;
   dialog_highlighter_is_dynamic_t is_dynamic;
   dialog_highlighter_on_destroy_t on_destroy;
+  dialog_highlighter_set_system_bar_alpha_t set_system_bar_alpha;
 } dialog_highlighter_vtable_t;
 
 /**
@@ -149,6 +155,26 @@ ret_t dialog_highlighter_prepare(dialog_highlighter_t* h, canvas_t* c);
 ret_t dialog_highlighter_prepare_ex(dialog_highlighter_t* h, canvas_t* c, canvas_t* canvas_offline);
 
 /**
+ * @method dialog_highlighter_set_system_bar_alpha
+ * 设置 sytem_bar 的高亮透明值。
+ * @param {dialog_highlighter_t*} h 对话框高亮策略对象。
+ * @param {uint8_t} alpha 设置 sytem_bar 的高亮透明值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t dialog_highlighter_set_system_bar_alpha(dialog_highlighter_t* h, uint8_t alpha);
+
+/**
+ * @method dialog_highlighter_get_alpha
+ * 获取高亮的透明度。
+ * @param {dialog_highlighter_t*} h 对话框高亮策略对象。
+ * @param {float_t} percent 高亮的百分比。
+ *
+ * @return {uint8_t} 返回透明度。
+ */
+uint8_t dialog_highlighter_get_alpha(dialog_highlighter_t* h, float_t percent);
+
+/**
  * @method dialog_highlighter_draw
  * 绘制背景。
  * @param {dialog_highlighter_t*} h 对话框高亮策略对象。
@@ -157,6 +183,17 @@ ret_t dialog_highlighter_prepare_ex(dialog_highlighter_t* h, canvas_t* c, canvas
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t dialog_highlighter_draw(dialog_highlighter_t* h, float_t percent);
+
+/**
+ * @method dialog_highlighter_draw_mask
+ * 绘制背景高亮部分。
+ * @param {dialog_highlighter_t*} h 对话框高亮策略对象。
+ * @param {canvas_t*} c 画布。
+ * @param {float_t} percent 高亮的百分比。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t dialog_highlighter_draw_mask(dialog_highlighter_t* h, canvas_t* c, float_t percent);
 
 /**
  * @method dialog_highlighter_is_dynamic

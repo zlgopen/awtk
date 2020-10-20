@@ -143,6 +143,59 @@ ret_t window_manager_default_snap_curr_window(widget_t* widget, widget_t* curr_w
   return RET_OK;
 }
 
+static ret_t window_manager_default_snap_prev_window_draw_dialog_highlighter_and_get_alpha(widget_t* widget, canvas_t* c, uint8_t* alpha){
+  value_t v;
+  return_value_if_fail(widget != NULL && c != NULL, FALSE);
+  if (widget_get_prop(widget, WIDGET_PROP_HIGHLIGHT, &v) == RET_OK) {
+    const char* args = value_str(&v);
+    dialog_highlighter_factory_t* f = dialog_highlighter_factory();
+    dialog_highlighter_t* dialog_highlighter = dialog_highlighter_factory_create_highlighter(f, args, widget);
+
+    if (dialog_highlighter != NULL) {
+      dialog_highlighter_draw_mask(dialog_highlighter, c, 1.0f);
+      *alpha = dialog_highlighter_get_alpha(dialog_highlighter, 1.0f);
+      widget_off_by_func(widget, EVT_DESTROY, dialog_highlighter_on_dialog_destroy, dialog_highlighter);
+      dialog_highlighter_destroy(dialog_highlighter);
+      return RET_OK;
+    }
+  }
+  return RET_FAIL;
+}
+
+static bool_t window_manager_default_is_dialog_highlighter(widget_t* widget) {
+  value_t v;
+  return_value_if_fail(widget != NULL, FALSE);
+
+  if (widget_is_dialog(widget) && widget_get_prop(widget, WIDGET_PROP_HIGHLIGHT, &v) == RET_OK) {
+    return TRUE;
+  }
+
+  return FALSE;
+}
+
+static widget_t* window_manager_default_find_top_dialog_highlighter(widget_t* widget, widget_t* prev_win, widget_t* curr_win) {
+  int32_t i = 0;
+  widget_t* dialog = NULL;
+  widget_t** children = (widget_t**)(widget->children->elms);
+  i = widget->children->size - 1;
+
+  for (; i >= 0; i--) {
+    value_t v;
+    widget_t* iter = children[i];
+    if (iter == prev_win) {
+      break;
+    }
+    if (iter == curr_win) {
+      continue;
+    }
+    if (window_manager_default_is_dialog_highlighter(iter)) {
+      dialog = iter;
+      break;
+    }
+  }
+  return dialog;
+}
+
 ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_win, bitmap_t* img) {
   rect_t r = {0};
   canvas_t* c = NULL;
@@ -181,6 +234,15 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
       if (widget_is_system_bar(iter) || !iter->visible) continue;
       /* 过滤 curr_win 的对象 */
       if (iter != wm->curr_win) {
+        /* 给前面的高亮对话框叠加黑色色块 */
+        if (widget_is_dialog(iter)) {
+          uint8_t a = 0x0;
+          window_manager_default_snap_prev_window_draw_dialog_highlighter_and_get_alpha(iter, canvas, &a);
+          if (dialog_highlighter != NULL) {
+            dialog_highlighter_set_system_bar_alpha(dialog_highlighter, a);
+          }
+        }
+
         ENSURE(widget_paint(iter, canvas) == RET_OK);
       }
     }
@@ -473,7 +535,7 @@ static ret_t window_manager_default_close_window(widget_t* widget, widget_t* win
 
     widget_remove_child(widget, window);
     idle_add(window_manager_idle_destroy_window, window);
-
+    /* 这里是解决没有结束动画，但是 prev_win 是高亮的对话框的情况 */
     prev_win = window_manager_get_top_window(widget);
     if (prev_win != NULL) {
       if (!widget_is_keyboard(window)) {
@@ -649,9 +711,11 @@ static ret_t window_manager_animate_done_set_window_foreground(widget_t* widget,
 static ret_t window_manager_animate_done(widget_t* widget) {
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
   bool_t curr_win_is_keyboard = widget_is_keyboard(wm->animator->curr_win);
+  bool_t curr_win_is_normal_window = widget_is_normal_window(wm->animator->curr_win);
 
   if (wm->animator != NULL) {
     bool_t is_open = wm->animator->open;
+    widget_t* top_dialog_highligth = NULL;
     widget_t* prev_win = wm->animator->prev_win;
     widget_t* curr_win = wm->animator->curr_win;
     window_animator_destroy(wm->animator);
@@ -661,15 +725,28 @@ static ret_t window_manager_animate_done(widget_t* widget) {
     wm->ignore_user_input = FALSE;
 
     if (is_open) {
+      /* 结束打开窗口动画后 */
       if (!curr_win_is_keyboard) {
         window_manager_dispatch_window_event(prev_win, EVT_WINDOW_TO_BACKGROUND);
       }
+      if (!curr_win_is_normal_window) {
+        top_dialog_highligth = window_manager_default_find_top_dialog_highlighter(widget, prev_win, curr_win_is_keyboard ? curr_win : NULL);
+      }
       window_manager_dispatch_window_event(curr_win, EVT_WINDOW_OPEN);
     } else {
+      /* 结束关闭窗口动画后 */
       if (!curr_win_is_keyboard) {
         window_manager_animate_done_set_window_foreground(widget, prev_win, curr_win);
-        window_manager_create_highlighter(widget, prev_win);
       }
+      top_dialog_highligth = window_manager_default_find_top_dialog_highlighter(widget, prev_win, curr_win);
+
+    }  
+    /* 制作一张没有最后一个对话框的高亮背景贴图 */
+    if (top_dialog_highligth != NULL) {
+        widget_t* tmp_curr_win = wm->curr_win;
+        wm->curr_win = top_dialog_highligth;
+        window_manager_create_highlighter(widget, top_dialog_highligth);
+        wm->curr_win = tmp_curr_win;
     }
 
     if (wm->pending_close_window != NULL) {
