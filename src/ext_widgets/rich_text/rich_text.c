@@ -149,7 +149,7 @@ static ret_t rich_text_on_paint_text(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-static bool_t rich_text_is_need_reset_from_style(rich_text_t* rich_text, char* font_name,
+static bool_t rich_text_is_need_reset_from_style(rich_text_t* rich_text, const char* font_name,
                                                  uint16_t font_size, color_t color,
                                                  align_v_t align_v) {
   if (tk_str_cmp(rich_text->default_font_name, font_name) != 0) {
@@ -181,7 +181,7 @@ static ret_t rich_text_ensure_render_node(widget_t* widget, canvas_t* c) {
       (align_v_t)style_get_int(style, STYLE_ID_TEXT_ALIGN_V, ALIGN_V_BOTTOM);
   return_value_if_fail(widget != NULL && rich_text != NULL && style != NULL, RET_BAD_PARAMS);
 
-  rich_text->need_reset = rich_text_is_need_reset_from_style(
+  rich_text->need_reset = rich_text->need_reset || rich_text_is_need_reset_from_style(
       rich_text, default_font_name, default_font_size, default_color, default_align_v);
 
   if (rich_text->need_reset) {

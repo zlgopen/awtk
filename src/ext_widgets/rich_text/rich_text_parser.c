@@ -160,7 +160,7 @@ static void xml_rich_text_destroy(XmlBuilder* thiz) {
   return;
 }
 
-static XmlBuilder* builder_init(xml_builder_t* b, char* font_name, uint16_t font_size,
+static XmlBuilder* builder_init(xml_builder_t* b, const char* font_name, uint16_t font_size,
                                 color_t color, align_v_t align_v) {
   int32_t i = 0;
   memset(b, 0x00, sizeof(xml_builder_t));
@@ -174,17 +174,17 @@ static XmlBuilder* builder_init(xml_builder_t* b, char* font_name, uint16_t font
 
   for (i = 0; i < MAX_FONT_LEVEL; i++) {
     rich_text_font_t* iter = b->fonts + i;
-    iter->name = font_name;
     iter->size = font_size;
     iter->color = color;
     iter->align_v = align_v;
+    iter->name = font_name == NULL ? NULL : tk_strdup(font_name);
   }
   str_init(&(b->temp), 100);
 
   return &(b->builder);
 }
 
-rich_text_node_t* rich_text_parse(const char* str, uint32_t size, char* font_name,
+rich_text_node_t* rich_text_parse(const char* str, uint32_t size, const char* font_name,
                                   uint16_t font_size, color_t color, align_v_t align_v) {
   xml_builder_t b;
   XmlParser* parser = NULL;
