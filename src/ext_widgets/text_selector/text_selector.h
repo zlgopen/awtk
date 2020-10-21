@@ -107,16 +107,23 @@ typedef struct _text_selector_t {
   /**
    * @property {bool_t} localize_options
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 是否本地化(翻译)选项(缺省为TRUE)。
+   * 是否本地化(翻译)选项(缺省为FALSE)。
    */
   bool_t localize_options;
 
   /**
-   * @property {bool_t} yspeed_scale
+   * @property {float_t} yspeed_scale
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * y偏移速度比例。
    */
   float_t yspeed_scale;
+
+  /**
+   * @property {bool_t} loop_options
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 是否循环选项(缺省为FALSE)。
+   */
+  bool_t loop_options;
 
   /*private*/
   str_t text;
@@ -307,6 +314,17 @@ ret_t text_selector_set_visible_nr(widget_t* widget, uint32_t visible_nr);
 ret_t text_selector_set_localize_options(widget_t* widget, bool_t localize_options);
 
 /**
+ * @method text_selector_set_loop_options
+ * 设置是否循环选项。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget text_selector对象。
+ * @param {bool_t} loop_options 是否循环选项。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t text_selector_set_loop_options(widget_t* widget, bool_t loop_options);
+
+/**
  * @method text_selector_set_yspeed_scale
  * 设置Y轴偏移速度比例。
  * @annotation ["scriptable"]
@@ -319,6 +337,7 @@ ret_t text_selector_set_yspeed_scale(widget_t* widget, float_t yspeed_scale);
 
 #define TEXT_SELECTOR_PROP_VISIBLE_NR "visible_nr"
 #define WIDGET_TYPE_TEXT_SELECTOR "text_selector"
+#define TEXT_SELECTOR_PROP_LOOP_OPTIONS "loop_options"
 #define TEXT_SELECTOR_PROP_Y_SPEED_SCALE "yspeed_scale"
 #define TEXT_SELECTOR(widget) ((text_selector_t*)(text_selector_cast(WIDGET(widget))))
 
