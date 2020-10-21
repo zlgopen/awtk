@@ -294,7 +294,7 @@ node ../awtk/tools/dll_def_gen/index.js idl/idl.json src/number_label.def
 
 库的图标指在 Designer 的“选择模板”或者“模板管理”页面上用于标识自定义控件库或者描述其功能的图标，大小为 60*60 像素。
 
-默认为自定义控件库的 docs/images/design_widget_preview.png。
+默认为自定义控件库的 docs/images/widget_preview.png。
 
 > 如果不指定，则显示为空。
 
@@ -302,17 +302,19 @@ node ../awtk/tools/dll_def_gen/index.js idl/idl.json src/number_label.def
 
 控件列表上的图标指在 Designer 的控件列表上该控件的图标，大小为 48*48 像素。
 
-默认为自定义控件库的 docs/images/design_widget_list.png。
+默认为自定义控件库的 docs/images/widget_list.png。
 
 > 如果不指定，则显示默认图标。
+> 如果自定义控件库包含多个控件，可以用“widget_list_”前缀 + 控件类型名的形式，为控件单独指定图标，比如“widget_list_number_label.png”。
 
 ### 7.3 对象浏览器上的图标
 
 对象浏览器上的图标指在 Designer 的对象浏览器上该控件类型的对象左侧显示的图标，大小为 16*16 像素。
 
-默认为自定义控件库的 docs/images/design_widget_object.png。
+默认为自定义控件库的 docs/images/widget_obj.png。
 
 > 如果不指定，则显示默认图标。
+> 如果自定义控件库包含多个控件，可以用“widget_obj_”前缀 + 控件类型名的形式，为控件单独指定图标，比如“widget_obj_number_label.png”。
 
 ## 8. src 目录中的源代码使用相对路径的方式 include 头文件
 
