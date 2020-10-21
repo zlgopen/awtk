@@ -50,6 +50,7 @@ class AppHelperBase:
 
     def set_tkc_only(self):
         self.AWTK_LIBS = ['tkc']
+        self.TKC_ONLY = True
 
         return self
 
@@ -139,6 +140,7 @@ class AppHelperBase:
         APP_ROOT = os.path.normpath(os.getcwd())
 
         self.SRC_DIR = 'src'
+        self.TKC_ONLY = False 
         self.ARGUMENTS = ARGUMENTS
         self.DEF_FILE = None
         self.DEF_FILE_PROCESSOR = None
@@ -221,7 +223,11 @@ class AppHelperBase:
         return 'WITH_AWTK_SO' in os.environ and os.environ['WITH_AWTK_SO'] == 'true' and self.BUILD_SHARED
 
     def copyAwtkSharedLib(self):
-        self.awtk.copySharedLib(self.AWTK_ROOT, self.APP_BIN_DIR, 'awtk')
+        if self.TKC_ONLY:
+            self.awtk.copySharedLib(self.AWTK_ROOT, self.APP_BIN_DIR, 'tkc')
+        else:
+            self.awtk.copySharedLib(self.AWTK_ROOT, self.APP_BIN_DIR, 'awtk')
+
         for iter in self.DEPENDS_LIBS:
             for so in iter['shared_libs']:
                 self.awtk.copySharedLib(iter['root'], self.APP_BIN_DIR, so)
