@@ -326,9 +326,7 @@ static ret_t dialog_toast_set_curr_message(dialog_toast_t* dialog_toast, dialog_
   } else {
     label = label_create(dialog_toast->toast, 0, 0, 0, 0);
     return_value_if_fail(label != NULL, RET_OOM);
-    if (message->text != NULL) {
-      widget_set_tr_text(label, message->text);
-    }
+    widget_set_tr_text(label, message->text);
     return RET_OK;
   }
  
