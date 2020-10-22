@@ -18,9 +18,9 @@ static ret_t nanovg_on_bitmap_destroy(bitmap_t* img) {
 static int vgcanvas_nanovg_bitmap_flag_to_NVGimageFlags(bitmap_flag_t flags) {
 
   if(flags & BITMAP_FLAG_PREMULTI_ALPHA) {
-    return NVG_IMAGE_PREMULTIPLIED | NVG_IMAGE_NEAREST;
+    return NVG_IMAGE_PREMULTIPLIED;
   }
-  return NVG_IMAGE_NEAREST;
+  return 0;
 }
 
 static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img) {
