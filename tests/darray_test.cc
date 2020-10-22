@@ -29,6 +29,14 @@ TEST(DArrayTest, create) {
   darray_destroy(darray);
 }
 
+TEST(DArrayTest, create0) {
+  darray_t* darray = darray_create(0, NULL, NULL);
+  ASSERT_EQ(darray->size, 0);
+  ASSERT_EQ(darray->elms == NULL, true);
+  ASSERT_EQ(darray->capacity, 0);
+  darray_destroy(darray);
+}
+
 TEST(DArrayTest, stack) {
   char* p = NULL;
   darray_t* darray = darray_create(10, NULL, NULL);

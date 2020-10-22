@@ -335,7 +335,7 @@ ret_t darray_deinit(darray_t* darray) {
 }
 
 ret_t darray_destroy(darray_t* darray) {
-  return_value_if_fail(darray != NULL && darray->elms != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(darray != NULL, RET_BAD_PARAMS);
 
   darray_deinit(darray);
   TKMEM_FREE(darray);
