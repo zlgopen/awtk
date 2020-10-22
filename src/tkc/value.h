@@ -629,6 +629,17 @@ sized_str_t* value_sized_str(const value_t* v);
 value_t* value_set_binary_data(value_t* v, void* data, uint32_t size);
 
 /**
+ * @method value_dup_binary_data
+ * 设置类型为binary_data的值(复制数据)。
+ * @param {value_t*} v  value对象。
+ * @param {const void*}  value 待设置的值。
+ * @param {uint32_t}  size 长度。
+ *
+ * @return {value_t*} value对象本身。
+ */
+value_t* value_dup_binary_data(value_t* v, const void* data, uint32_t size);
+
+/**
  * @method value_binary_data
  * 获取为binary_data的值。
  * @param {value_t*} v value对象。

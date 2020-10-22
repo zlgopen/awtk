@@ -91,6 +91,7 @@ EXPORTS
     value_set_sized_str
     value_sized_str
     value_set_binary_data
+    value_dup_binary_data
     value_binary_data
     value_set_ubjson
     value_ubjson
@@ -191,7 +192,10 @@ EXPORTS
     dialog_highlighter_set_bg_clip_rect
     dialog_highlighter_prepare
     dialog_highlighter_prepare_ex
+    dialog_highlighter_set_system_bar_alpha
+    dialog_highlighter_get_alpha
     dialog_highlighter_draw
+    dialog_highlighter_draw_mask
     dialog_highlighter_is_dynamic
     dialog_highlighter_destroy
     xml_builder_get_attr
@@ -445,6 +449,7 @@ EXPORTS
     assets_manager_set
     assets_manager_create
     assets_manager_init
+    assets_manager_get_res_root
     assets_manager_set_res_root
     assets_manager_set_theme
     assets_manager_set_system_info
@@ -1637,6 +1642,7 @@ EXPORTS
     text_selector_set_selected_index
     text_selector_set_visible_nr
     text_selector_set_localize_options
+    text_selector_set_loop_options
     text_selector_set_yspeed_scale
     switch_create
     switch_set_value

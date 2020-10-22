@@ -2837,6 +2837,32 @@
             "type": "value_t*",
             "name": "v",
             "desc": "value对象。"
+          },
+          {
+            "type": "const void*",
+            "name": "value",
+            "desc": "待设置的值。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "长度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置类型为binary_data的值(复制数据)。",
+        "name": "value_dup_binary_data",
+        "return": {
+          "type": "value_t*",
+          "desc": "value对象本身。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "value_t*",
+            "name": "v",
+            "desc": "value对象。"
           }
         ],
         "annotation": {},

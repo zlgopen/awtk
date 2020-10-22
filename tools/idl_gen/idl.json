@@ -2297,6 +2297,32 @@
             "type": "value_t*",
             "name": "v",
             "desc": "value对象。"
+          },
+          {
+            "type": "const void*",
+            "name": "value",
+            "desc": "待设置的值。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "长度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置类型为binary_data的值(复制数据)。",
+        "name": "value_dup_binary_data",
+        "return": {
+          "type": "value_t*",
+          "desc": "value对象本身。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "value_t*",
+            "name": "v",
+            "desc": "value对象。"
           }
         ],
         "annotation": {},
@@ -4520,6 +4546,48 @@
             "desc": "对话框高亮策略对象。"
           },
           {
+            "type": "uint8_t",
+            "name": "alpha",
+            "desc": "设置 sytem_bar 的高亮透明值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置 sytem_bar 的高亮透明值。",
+        "name": "dialog_highlighter_set_system_bar_alpha",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "dialog_highlighter_t*",
+            "name": "h",
+            "desc": "对话框高亮策略对象。"
+          },
+          {
+            "type": "float_t",
+            "name": "percent",
+            "desc": "高亮的百分比。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取高亮的透明度。",
+        "name": "dialog_highlighter_get_alpha",
+        "return": {
+          "type": "uint8_t",
+          "desc": "返回透明度。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "dialog_highlighter_t*",
+            "name": "h",
+            "desc": "对话框高亮策略对象。"
+          },
+          {
             "type": "float_t",
             "name": "percent",
             "desc": "动画进度(0-1)，1表示打开已经完成。"
@@ -4528,6 +4596,32 @@
         "annotation": {},
         "desc": "绘制背景。",
         "name": "dialog_highlighter_draw",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "dialog_highlighter_t*",
+            "name": "h",
+            "desc": "对话框高亮策略对象。"
+          },
+          {
+            "type": "canvas_t*",
+            "name": "c",
+            "desc": "画布。"
+          },
+          {
+            "type": "float_t",
+            "name": "percent",
+            "desc": "高亮的百分比。"
+          }
+        ],
+        "annotation": {},
+        "desc": "绘制背景高亮部分。",
+        "name": "dialog_highlighter_draw_mask",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -12157,6 +12251,22 @@
         "return": {
           "type": "assets_manager_t*",
           "desc": "返回asset manager对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "assets_manager_t*",
+            "name": "am",
+            "desc": "asset manager对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取资源所在的目录(其下目录结构请参考demos)。",
+        "name": "assets_manager_get_res_root",
+        "return": {
+          "type": "const char*",
+          "desc": "返回资源所在的目录。"
         }
       },
       {
@@ -23089,7 +23199,7 @@
       },
       {
         "name": "auto_adjust_size",
-        "desc": "是否根据子控件和文本自动调整控件自身大小。\n\n> 为true时，最好不要使用child_layout，否则可能有冲突。",
+        "desc": "是否根据子控件和文本自动调整控件自身大小。\n\n> 为true时，最好不要使用child_layout，否则可能有冲突。\n> 注意：只是调整控件的本身的宽高，不会修改控件本身的位置。",
         "type": "bool_t",
         "annotation": {
           "set_prop": true,
@@ -27076,6 +27186,11 @@
       {
         "name": "end_alpha",
         "desc": "结束alpha，打开对话框的动画结束(直到对话框被关闭)时的alpha值。",
+        "type": "uint8_t"
+      },
+      {
+        "name": "system_bar_alpha",
+        "desc": "由于在没有过度动画的情况下，截图中已经包括黑色色块，为了让 system_bar 也同步高亮部分的色块透明。",
         "type": "uint8_t"
       }
     ],
@@ -47372,6 +47487,29 @@
           {
             "type": "widget_t*",
             "name": "widget",
+            "desc": "text_selector对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "loop_options",
+            "desc": "是否循环选项。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置是否循环选项。",
+        "name": "text_selector_set_loop_options",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
             "desc": "控件对象。"
           },
           {
@@ -47445,7 +47583,7 @@
       },
       {
         "name": "localize_options",
-        "desc": "是否本地化(翻译)选项(缺省为TRUE)。",
+        "desc": "是否本地化(翻译)选项(缺省为FALSE)。",
         "type": "bool_t",
         "annotation": {
           "set_prop": true,
@@ -47459,6 +47597,19 @@
       {
         "name": "yspeed_scale",
         "desc": "y偏移速度比例。",
+        "type": "float_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "loop_options",
+        "desc": "是否循环选项(缺省为FALSE)。",
         "type": "bool_t",
         "annotation": {
           "set_prop": true,
@@ -56297,7 +56448,16 @@
       }
     ],
     "events": [],
-    "properties": [],
+    "properties": [
+      {
+        "name": "global_emitter",
+        "desc": "全局事情分发器。",
+        "type": "emitter_t*",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
     "header": "base/window_manager.h",
     "desc": "窗口管理器。",
     "name": "window_manager_t",

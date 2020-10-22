@@ -114,6 +114,7 @@ EXPORTS
     value_set_sized_str
     value_sized_str
     value_set_binary_data
+    value_dup_binary_data
     value_binary_data
     value_set_ubjson
     value_ubjson
