@@ -73,7 +73,7 @@ static ret_t text_selector_paint_mask(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-static int32_t text_selector_range_value(int32_t value, int32_t min_yoffset, int32_t max_yoffset, int32_t item_height, int32_t empty_item_height, bool_t loop_options) {
+static int32_t text_selector_range_yoffset(int32_t value, int32_t min_yoffset, int32_t max_yoffset, int32_t item_height, int32_t empty_item_height, bool_t loop_options) {
 
   if (value < min_yoffset) {
     if (loop_options) {
@@ -127,16 +127,24 @@ static ret_t text_selector_paint_self(widget_t* widget, canvas_t* c) {
     i = 0;
   }
 
-  yoffset = text_selector_range_value(yoffset, min_yoffset, max_yoffset, item_height, empty_item_height, text_selector->loop_options);
+  yoffset = text_selector_range_yoffset(yoffset, min_yoffset, max_yoffset, item_height, empty_item_height, text_selector->loop_options);
 
   while (iter != NULL) {
     r.y = y - yoffset;
 
     if (text_selector->loop_options) {
-      if (yoffset <= 0 && (int32_t)(y) > tolal_height + yoffset) {
-        r.y = y - tolal_height - item_height - yoffset;
-      } else if (yoffset - max_yoffset + item_height >= (int32_t)(y) - item_height) {
-        r.y = empty_item_height + item_height + y + max_yoffset - yoffset;
+      if (yoffset <= 0 && r.y > tolal_height) {
+        /* 当 yoffset <= 0 说明顶部有空位，需要显示，
+         * r.y 是选项加上 yoffset ，如果 r.y 大于 tolal_height 说明这个选项是加上 yoffset 后偏移出来的尾部。
+         * 然后把该选项设置到顶部的空位上面。
+         */
+        r.y = r.y - tolal_height - item_height;
+      } else if (r.y + max_yoffset < empty_item_height) {
+        /* max_yoffset 为总队列长度，而 r.y 一定为负数，empty_item_height 是做多的剩余空位高度
+         * 符合该条件的选项，等于是选项加上 yoffset 后大于总队列长度，意味着选项为偏移出来的头部。
+         * 然后把该选项设置到尾部的空位上面。
+         */
+        r.y = empty_item_height + item_height + r.y + max_yoffset;
       }
     }
 
@@ -413,11 +421,12 @@ static ret_t text_selector_on_scroll_done(void* ctx, event_t* e) {
   return_value_if_fail(text_selector != NULL, RET_BAD_PARAMS);
 
   text_selector->wa = NULL;
-  text_selector_sync_selected_index_with_yoffset(text_selector);
 
   if (text_selector->loop_options) {
-    text_selector->yoffset = text_selector_range_value(text_selector->yoffset, min_yoffset, max_yoffset, item_height, empty_item_height, text_selector->loop_options);
+    text_selector->yoffset = text_selector_range_yoffset(text_selector->yoffset, min_yoffset, max_yoffset, item_height, empty_item_height, text_selector->loop_options);
   }
+
+  text_selector_sync_selected_index_with_yoffset(text_selector);
 
   return RET_REMOVE;
 }
