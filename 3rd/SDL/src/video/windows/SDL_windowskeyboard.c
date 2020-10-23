@@ -370,7 +370,7 @@ IME_Init(SDL_VideoData *videodata, HWND hwnd)
     videodata->ime_available = SDL_TRUE;
     IME_UpdateInputLocale(videodata);
     IME_SetupAPI(videodata);
-    //videodata->ime_uiless = UILess_SetupSinks(videodata);//win10 ����ʾ����
+    //videodata->ime_uiless = UILess_SetupSinks(videodata);//win10 不显示问题
     IME_UpdateInputLocale(videodata);
     IME_Disable(videodata, hwnd);
 }
@@ -879,7 +879,7 @@ IME_HandleMessage(HWND hwnd, UINT msg, WPARAM wParam, LPARAM *lParam, SDL_VideoD
         IME_InputLangChanged(videodata);
         break;
     case WM_IME_SETCONTEXT:
-        //*lParam = 0;  //win7 �����л����������ʾ����
+        //*lParam = 0;  //win7 窗口切换后输入框不显示问题
         break;
     case WM_IME_STARTCOMPOSITION:
         //trap = SDL_TRUE;
