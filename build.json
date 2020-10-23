@@ -6,6 +6,7 @@
   "copyright": "Guangzhou ZHIYUAN Electronics Co.,Ltd.",
   "web": {
     "app_type": "c",
+    "assets": "design",
     "sources": [
       "demos/assets.c",
       "demos/demo_ui_app.c"
