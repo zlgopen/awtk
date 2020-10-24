@@ -695,10 +695,12 @@ value_t* value_dup_binary_data(value_t* v, const void* data, uint32_t size) {
   return_value_if_fail(new_data != NULL, NULL);
   memcpy(new_data, data, size);
 
+  value_init(v, VALUE_TYPE_BINARY);
   v->value.binary_data.data = new_data;
   v->value.binary_data.size = size;
+  v->free_handle = TRUE;
 
-  return value_init(v, VALUE_TYPE_BINARY);
+	return v;
 }
 
 binary_data_t* value_binary_data(const value_t* v) {
