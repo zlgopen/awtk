@@ -288,10 +288,9 @@ ret_t label_resize_to_content(widget_t* widget, uint32_t min_w, uint32_t max_w, 
       tmp_w = max_w - 2 * margin;
     }
   }
-  return_value_if_fail(
-      label_line_parser_init(&p, c, widget->text.str, widget->text.size, c->font_size,
-                             tmp_w, label->line_wrap) == RET_OK,
-      RET_BAD_PARAMS);
+  return_value_if_fail(label_line_parser_init(&p, c, widget->text.str, widget->text.size,
+                                              c->font_size, tmp_w, label->line_wrap) == RET_OK,
+                       RET_BAD_PARAMS);
 
   h = p.total_lines * line_height + 2 * margin;
   h = tk_clampi(h, min_h, max_h);
@@ -381,10 +380,9 @@ static ret_t label_auto_adjust_size(widget_t* widget) {
     w = tmp_w + 2 * margin;
   }
 
-  return_value_if_fail(
-      label_line_parser_init(&p, c, widget->text.str, widget->text.size, c->font_size,
-                             tmp_w, label->line_wrap) == RET_OK,
-      RET_BAD_PARAMS);
+  return_value_if_fail(label_line_parser_init(&p, c, widget->text.str, widget->text.size,
+                                              c->font_size, tmp_w, label->line_wrap) == RET_OK,
+                       RET_BAD_PARAMS);
 
   widget->w = w;
   widget->h = line_height * p.total_lines;

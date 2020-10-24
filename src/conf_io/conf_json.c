@@ -479,4 +479,3 @@ ret_t conf_json_save_as(object_t* obj, const char* url) {
 
   return RET_OK;
 }
-

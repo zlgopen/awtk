@@ -7,7 +7,8 @@ using std::string;
 
 TEST(RichTextParser, basic) {
   const char* str = "text";
-  rich_text_node_t* node = rich_text_parse(str, strlen(str), NULL, TK_DEFAULT_FONT_SIZE, color_init(0, 0, 0, 0xff), ALIGN_V_BOTTOM);
+  rich_text_node_t* node = rich_text_parse(str, strlen(str), NULL, TK_DEFAULT_FONT_SIZE,
+                                           color_init(0, 0, 0, 0xff), ALIGN_V_BOTTOM);
 
   ASSERT_EQ(node->type, RICH_TEXT_TEXT);
   ASSERT_EQ(rich_text_node_count(node), 1);
@@ -18,7 +19,8 @@ TEST(RichTextParser, basic) {
 
 TEST(RichTextParser, font) {
   const char* str = "<font color=\"#123456\" size=\"12\" name=\"test\">text</font>";
-  rich_text_node_t* node = rich_text_parse(str, strlen(str), NULL, TK_DEFAULT_FONT_SIZE, color_init(0, 0, 0, 0xff), ALIGN_V_BOTTOM);
+  rich_text_node_t* node = rich_text_parse(str, strlen(str), NULL, TK_DEFAULT_FONT_SIZE,
+                                           color_init(0, 0, 0, 0xff), ALIGN_V_BOTTOM);
 
   ASSERT_EQ(node->type, RICH_TEXT_TEXT);
   ASSERT_EQ(rich_text_node_count(node), 1);
@@ -35,7 +37,8 @@ TEST(RichTextParser, font) {
 
 TEST(RichTextParser, b) {
   const char* str = "<b>text</b>";
-  rich_text_node_t* node = rich_text_parse(str, strlen(str), NULL, TK_DEFAULT_FONT_SIZE, color_init(0, 0, 0, 0xff), ALIGN_V_BOTTOM);
+  rich_text_node_t* node = rich_text_parse(str, strlen(str), NULL, TK_DEFAULT_FONT_SIZE,
+                                           color_init(0, 0, 0, 0xff), ALIGN_V_BOTTOM);
 
   ASSERT_EQ(node->type, RICH_TEXT_TEXT);
   ASSERT_EQ(rich_text_node_count(node), 1);
@@ -47,7 +50,8 @@ TEST(RichTextParser, b) {
 
 TEST(RichTextParser, i) {
   const char* str = "<i>text</i>";
-  rich_text_node_t* node = rich_text_parse(str, strlen(str), NULL, TK_DEFAULT_FONT_SIZE, color_init(0, 0, 0, 0xff), ALIGN_V_BOTTOM);
+  rich_text_node_t* node = rich_text_parse(str, strlen(str), NULL, TK_DEFAULT_FONT_SIZE,
+                                           color_init(0, 0, 0, 0xff), ALIGN_V_BOTTOM);
 
   ASSERT_EQ(node->type, RICH_TEXT_TEXT);
   ASSERT_EQ(rich_text_node_count(node), 1);
@@ -59,7 +63,8 @@ TEST(RichTextParser, i) {
 
 TEST(RichTextParser, u) {
   const char* str = "<u>text</u>";
-  rich_text_node_t* node = rich_text_parse(str, strlen(str), NULL, TK_DEFAULT_FONT_SIZE, color_init(0, 0, 0, 0xff), ALIGN_V_BOTTOM);
+  rich_text_node_t* node = rich_text_parse(str, strlen(str), NULL, TK_DEFAULT_FONT_SIZE,
+                                           color_init(0, 0, 0, 0xff), ALIGN_V_BOTTOM);
 
   ASSERT_EQ(node->type, RICH_TEXT_TEXT);
   ASSERT_EQ(rich_text_node_count(node), 1);
@@ -71,7 +76,8 @@ TEST(RichTextParser, u) {
 
 TEST(RichTextParser, image) {
   const char* str = "<image name=\"earth\" w=\"12\" h=\"34\"/>text";
-  rich_text_node_t* node = rich_text_parse(str, strlen(str), NULL, TK_DEFAULT_FONT_SIZE, color_init(0, 0, 0, 0xff), ALIGN_V_BOTTOM);
+  rich_text_node_t* node = rich_text_parse(str, strlen(str), NULL, TK_DEFAULT_FONT_SIZE,
+                                           color_init(0, 0, 0, 0xff), ALIGN_V_BOTTOM);
 
   ASSERT_EQ(node->type, RICH_TEXT_IMAGE);
   ASSERT_EQ(node->u.image.name, string("earth"));
@@ -87,7 +93,8 @@ TEST(RichTextParser, image) {
 
 TEST(RichTextParser, bu) {
   const char* str = "<b><u>text</u></b>";
-  rich_text_node_t* node = rich_text_parse(str, strlen(str), NULL, TK_DEFAULT_FONT_SIZE, color_init(0, 0, 0, 0xff), ALIGN_V_BOTTOM);
+  rich_text_node_t* node = rich_text_parse(str, strlen(str), NULL, TK_DEFAULT_FONT_SIZE,
+                                           color_init(0, 0, 0, 0xff), ALIGN_V_BOTTOM);
 
   ASSERT_EQ(node->type, RICH_TEXT_TEXT);
   ASSERT_EQ(rich_text_node_count(node), 1);
@@ -100,7 +107,8 @@ TEST(RichTextParser, bu) {
 
 TEST(RichTextParser, bui) {
   const char* str = "<b><u><i>text</i></u></b>";
-  rich_text_node_t* node = rich_text_parse(str, strlen(str), NULL, TK_DEFAULT_FONT_SIZE, color_init(0, 0, 0, 0xff), ALIGN_V_BOTTOM);
+  rich_text_node_t* node = rich_text_parse(str, strlen(str), NULL, TK_DEFAULT_FONT_SIZE,
+                                           color_init(0, 0, 0, 0xff), ALIGN_V_BOTTOM);
 
   ASSERT_EQ(node->type, RICH_TEXT_TEXT);
   ASSERT_EQ(rich_text_node_count(node), 1);
@@ -114,7 +122,8 @@ TEST(RichTextParser, bui) {
 
 TEST(RichTextParser, bui1) {
   const char* str = "<b>bold<u>underline<i>italic</i></u></b>";
-  rich_text_node_t* node = rich_text_parse(str, strlen(str), NULL, TK_DEFAULT_FONT_SIZE, color_init(0, 0, 0, 0xff), ALIGN_V_BOTTOM);
+  rich_text_node_t* node = rich_text_parse(str, strlen(str), NULL, TK_DEFAULT_FONT_SIZE,
+                                           color_init(0, 0, 0, 0xff), ALIGN_V_BOTTOM);
 
   ASSERT_EQ(node->type, RICH_TEXT_TEXT);
   ASSERT_EQ(node->u.text.font.bold, TRUE);
@@ -135,7 +144,8 @@ TEST(RichTextParser, bui1) {
 
 TEST(RichTextParser, bui2) {
   const char* str = "<b><u><i>italic</i>underline</u>bold</b>";
-  rich_text_node_t* node = rich_text_parse(str, strlen(str), NULL, TK_DEFAULT_FONT_SIZE, color_init(0, 0, 0, 0xff), ALIGN_V_BOTTOM);
+  rich_text_node_t* node = rich_text_parse(str, strlen(str), NULL, TK_DEFAULT_FONT_SIZE,
+                                           color_init(0, 0, 0, 0xff), ALIGN_V_BOTTOM);
 
   ASSERT_EQ(node->type, RICH_TEXT_TEXT);
   ASSERT_EQ(node->u.text.font.bold, TRUE);

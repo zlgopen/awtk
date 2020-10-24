@@ -73,8 +73,9 @@ static ret_t text_selector_paint_mask(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-static int32_t text_selector_range_yoffset(int32_t value, int32_t min_yoffset, int32_t max_yoffset, int32_t item_height, int32_t empty_item_height, bool_t loop_options) {
-
+static int32_t text_selector_range_yoffset(int32_t value, int32_t min_yoffset, int32_t max_yoffset,
+                                           int32_t item_height, int32_t empty_item_height,
+                                           bool_t loop_options) {
   if (value < min_yoffset) {
     if (loop_options) {
       int32_t tmp = max_yoffset + empty_item_height + item_height;
@@ -127,7 +128,8 @@ static ret_t text_selector_paint_self(widget_t* widget, canvas_t* c) {
     i = 0;
   }
 
-  yoffset = text_selector_range_yoffset(yoffset, min_yoffset, max_yoffset, item_height, empty_item_height, text_selector->loop_options);
+  yoffset = text_selector_range_yoffset(yoffset, min_yoffset, max_yoffset, item_height,
+                                        empty_item_height, text_selector->loop_options);
 
   while (iter != NULL) {
     r.y = y - yoffset;
@@ -296,7 +298,7 @@ static ret_t text_selector_get_prop(widget_t* widget, const char* name, value_t*
   } else if (tk_str_eq(name, TEXT_SELECTOR_PROP_Y_SPEED_SCALE)) {
     value_set_float(v, text_selector->yspeed_scale);
     return RET_OK;
-  } else if (tk_str_eq(name,TEXT_SELECTOR_PROP_LOOP_OPTIONS)) {
+  } else if (tk_str_eq(name, TEXT_SELECTOR_PROP_LOOP_OPTIONS)) {
     value_set_bool(v, text_selector->loop_options);
     return RET_OK;
   }
@@ -423,7 +425,9 @@ static ret_t text_selector_on_scroll_done(void* ctx, event_t* e) {
   text_selector->wa = NULL;
 
   if (text_selector->loop_options) {
-    text_selector->yoffset = text_selector_range_yoffset(text_selector->yoffset, min_yoffset, max_yoffset, item_height, empty_item_height, text_selector->loop_options);
+    text_selector->yoffset =
+        text_selector_range_yoffset(text_selector->yoffset, min_yoffset, max_yoffset, item_height,
+                                    empty_item_height, text_selector->loop_options);
   }
 
   text_selector_sync_selected_index_with_yoffset(text_selector);

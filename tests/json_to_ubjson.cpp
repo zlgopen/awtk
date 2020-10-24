@@ -22,7 +22,7 @@ static ret_t application_init(void) {
 
   data_reader_factory_set(reader_factory);
   data_reader_factory_register(reader_factory, "file", data_reader_file_create);
-  
+
   data_writer_factory_set(writer_factory);
   data_writer_factory_register(writer_factory, "file", data_writer_file_create);
 
@@ -41,7 +41,7 @@ static ret_t application_deinit(void) {
 int main(int argc, char* argv[]) {
   platform_prepare();
 
-  if(argc != 3) {
+  if (argc != 3) {
     log_info("Usage: %s ubjson_filename json_filename\n", argv[0]);
     return -1;
   }
