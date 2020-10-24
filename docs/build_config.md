@@ -8,7 +8,7 @@
 
 * name 应用程序名称（不支持中文和特殊符号）。
 * version 版本号。
-* assets 资源所在的目录（相对于配置文件所在的目录，一般使用"res/assets"）。
+* assets 资源所在的目录（相对于配置文件所在的目录，android/ios 一般使用"res/assets", web 一般使用 design）。
 * sources 源文件列表（相对于配置文件所在的目录）。文件名支持通配符如*.c。只要添加应用程序本身和使用的第三方库的源码即可，AWTK 本身用到的代码会自动添加。
 * includes 头文件搜索路径列表（相对于配置文件所在的目录）。
 
@@ -38,23 +38,28 @@ http://192.168.1.117:8080/demoui/index.html?width=480&height=800&fontScale=0.8&d
 ```
   "web": {
     "app_type": "c",
+    "assets": "design",
     "sources": [
       "demos/assets.c",
       "demos/demo_ui_app.c"
     ],
+    "config": {
+      "fontScale": "0.8",
+      "defaultFont": "sans"
+    }
+  },
 ```
 
 用 Javascript 写的 demoui 的配置文件：
 
 ```
-  "web": {
-    "app_type":"js",
-    "sources":["demoui.js"],
-    "config" : { 
-      "fontScale":"0.8",
-      "defaultFont":"sans"
-    }   
-  }, 
+{
+  "name":"demouijs",
+  "version":"1.0",
+  "app_type":"js",
+  "assets": "design",  
+  "sources":["./design/default/scripts/basic.js"]
+}
 ```
 
 ## 三、android 平台选项
@@ -88,6 +93,20 @@ android 平台选项放在 android 子键下面，目前支持以下选项：
 ```
 "defines":" HAVE_CONFIG_H=1 BUILDING_LIBCURL=1 WITH_CURL=1 ",
 ```
+
+```
+  "ios": {
+    "app_name": "org.zlgopen.demoui",
+    "sources": [
+      "demos/assets.c",
+      "demos/demo_ui_app.c",
+      "demos/vg_common.inc",
+      "res/assets.inc",
+      "res/assets/__assets_default.inc"
+    ]
+  }
+```
+
 ## 五、完整示例
 
 下面是 demoui 的完整示例
@@ -101,6 +120,7 @@ android 平台选项放在 android 子键下面，目前支持以下选项：
   "copyright": "Guangzhou ZHIYUAN Electronics Co.,Ltd.",
   "web": {
     "app_type": "c",
+    "assets": "design",
     "sources": [
       "demos/assets.c",
       "demos/demo_ui_app.c"
@@ -131,6 +151,7 @@ android 平台选项放在 android 子键下面，目前支持以下选项：
     ]
   }
 }
+
 ```
 
 ## 六、示例与参考
@@ -139,4 +160,6 @@ android 平台选项放在 android 子键下面，目前支持以下选项：
 
 * [awtk-hello 的配置文件](https://github.com/zlgopen/awtk-hello/blob/master/build.json)
 
-* [Android/IOS 原始插件](https://github.com/zlgopen/awtk-mobile-plugins/blob/master/build.json)
+* [Android/IOS 插件的配置文件](https://github.com/zlgopen/awtk-mobile-plugins/blob/master/build.json)
+
+* [awtk-web-js 的配置文件](https://github.com/zlgopen/awtk-jerryscript/blob/master/build_web.json)

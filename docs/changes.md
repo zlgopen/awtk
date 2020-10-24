@@ -6,7 +6,8 @@
   * 增加函数 conf\_ubjson\_save\_as
   * 增加工具 json\_to\_ubjson
   * 增加工具 ubjson\_to\_json
-
+  * 更新 build config 文档
+  
 2020/10/23
 	* 完善 text_selector 控件循环显示功能（感谢智明提供补丁）。
   * 修改设置 visible 没有触发 layout 的问题（感谢朝泽提供补丁）。
