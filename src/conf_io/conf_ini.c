@@ -289,3 +289,16 @@ object_t* conf_ini_load(const char* url, bool_t create_if_not_exist) {
   return conf_obj_create(conf_doc_save_ini_writer, conf_doc_load_ini_reader, url,
                          create_if_not_exist);
 }
+
+ret_t conf_ini_save_as(object_t* obj, const char* url) {
+  data_writer_t* writer = NULL;
+  conf_doc_t* doc = conf_obj_get_doc(obj);
+  return_value_if_fail(doc != NULL && url != NULL, RET_BAD_PARAMS);
+  writer = data_writer_factory_create_writer(data_writer_factory(), url);
+  return_value_if_fail(writer != NULL, RET_BAD_PARAMS);
+
+  conf_doc_save_ini_writer(doc, writer);
+  data_writer_destroy(writer);
+
+  return RET_OK;
+}

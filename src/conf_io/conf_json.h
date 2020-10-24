@@ -47,6 +47,18 @@ BEGIN_C_DECLS
  */
 object_t* conf_json_load(const char* url, bool_t create_if_not_exist);
 
+/**
+ * @method conf_json_save_as
+ * 将doc对象保存到指定URL。
+ * @annotation ["static"]
+ * 
+ * @param {object_t*} obj doc对象。
+ * @param {const char*} url 保存的位置。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败
+ */
+ret_t conf_json_save_as(object_t* obj, const char* url);
+
 /*public for test*/
 
 /**
@@ -67,7 +79,7 @@ conf_doc_t* conf_doc_load_json(const char* data, int32_t size);
  * @annotation ["global"]
  * 
  * @param {conf_doc_t*} doc doc对象。
- * @param {str_t*} str 返回结果的字符串对象。 
+ * @param {str_t*} str 保存结果。
  * 
  * @return {object_t*} 返回配置对象。
  */

@@ -35,6 +35,8 @@ env.Program(os.path.join(BIN_DIR, 'waitable_action_queue_test'), ["waitable_acti
 env.Program(os.path.join(BIN_DIR, 'waitable_ring_buffer_test'), ["waitable_ring_buffer_test.cpp"])
 env.Program(os.path.join(BIN_DIR, 'action_thread_test'), ["action_thread_test.cpp"])
 #env.Program(os.path.join(BIN_DIR, 'action_thread_pool_test'), ["action_thread_pool_test.cpp"])
+env.Program(os.path.join(BIN_DIR, 'json_to_ubjson'), ["json_to_ubjson.cpp"])
+env.Program(os.path.join(BIN_DIR, 'ubjson_to_json'), ["ubjson_to_json.cpp"])
 
 env.SharedLibrary(os.path.join(BIN_DIR+"/plugins_for_test", 'a'), ["a.c"])
 env.SharedLibrary(os.path.join(BIN_DIR+"/plugins_for_test", 'b'), ["b.c"])

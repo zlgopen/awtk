@@ -24,6 +24,8 @@
 #include "tkc/buffer.h"
 #include "ubjson/ubjson_parser.h"
 #include "conf_io/conf_ubjson.h"
+#include "tkc/data_reader_factory.h"
+#include "tkc/data_writer_factory.h"
 
 static ret_t conf_ubjson_save_node(conf_node_t* node, ubjson_writer_t* writer);
 static ret_t conf_ubjson_save_node_value(conf_node_t* node, ubjson_writer_t* writer);
@@ -135,9 +137,9 @@ static ret_t ubjson_conf_on_key_value(void* ctx, const char* key, value_t* v) {
   if (v->type == VALUE_TYPE_TOKEN) {
     uint32_t token = value_token(v);
     if (token == UBJSON_MARKER_OBJECT_END || token == UBJSON_MARKER_ARRAY_END) {
-      return_value_if_fail(current->parent != NULL, RET_BAD_PARAMS);
-
-      parser->node = current->parent;
+      if (current->parent != NULL) {
+        parser->node = current->parent;
+      }
       return RET_OK;
     }
   }
@@ -231,3 +233,17 @@ object_t* conf_ubjson_load(const char* url, bool_t create_if_not_exist) {
   return conf_obj_create(conf_doc_save_ubjson_writer, conf_doc_load_ubjson_reader, url,
                          create_if_not_exist);
 }
+
+ret_t conf_ubjson_save_as(object_t* obj, const char* url) {
+  data_writer_t* writer = NULL;
+  conf_doc_t* doc = conf_obj_get_doc(obj);
+  return_value_if_fail(doc != NULL && url != NULL, RET_BAD_PARAMS);
+  writer = data_writer_factory_create_writer(data_writer_factory(), url);
+  return_value_if_fail(writer != NULL, RET_BAD_PARAMS);
+
+  conf_doc_save_ubjson_writer(doc, writer);
+  data_writer_destroy(writer);
+
+  return RET_OK;
+}
+

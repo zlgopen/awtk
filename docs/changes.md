@@ -1,13 +1,20 @@
 # 最新动态
 
+2020/10/24
+  * 增加函数 conf\_ini\_save\_as
+  * 增加函数 conf\_json\_save\_as
+  * 增加函数 conf\_ubjson\_save\_as
+  * 增加工具 json\_to\_ubjson
+  * 增加工具 ubjson\_to\_json
+
 2020/10/23
 	* 完善 text_selector 控件循环显示功能（感谢智明提供补丁）。
-  * 修改设置visible没有触发layout的问题（感谢朝泽提供补丁）。
+  * 修改设置 visible 没有触发 layout 的问题（感谢朝泽提供补丁）。
   * 修改ＳＤＬ注释乱码的问题（感谢智明提供补丁）。
 
 2020/10/22
   * OpenGL 模式下的图片采样算法由相邻采样改为线性采样，主要为了提高图片旋转缩放效果（感谢智明提供补丁）。 
-  * 修改darray的elms为NULL是内存泄漏的问题（感谢兆坤提供补丁）。
+  * 修改 darray 的 elms 为 NULL 是内存泄漏的问题（感谢兆坤提供补丁）。
 
 2020/10/21
   * awtk-web 修复编译报错问题（感谢智明提供补丁）。

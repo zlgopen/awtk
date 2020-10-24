@@ -48,8 +48,43 @@ BEGIN_C_DECLS
  */
 object_t* conf_ubjson_load(const char* url, bool_t create_if_not_exist);
 
-/*public for test*/
+/**
+ * @method conf_ubjson_save_as
+ * 将doc对象保存到指定URL。
+ * @annotation ["static"]
+ * 
+ * @param {object_t*} obj doc对象。
+ * @param {const char*} url 保存的位置。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败
+ */
+ret_t conf_ubjson_save_as(object_t* obj, const char* url);
+
+/**
+ * @method conf_doc_load_ubjson
+ *
+ * 从缓存区加载ubjson格式的conf doc对象。
+ *
+ * @annotation ["global"]
+ * 
+ * @param {const void*} data 数据。
+ * @param {uint32_t} size 数据长度。
+ * 
+ * @return {conf_doc_t*} 返回conf_doc对象。
+ */
 conf_doc_t* conf_doc_load_ubjson(const void* data, uint32_t size);
+
+/**
+ * @method conf_doc_save_ubjson
+ * 
+ * 保存conf doc对象为ubjson格式。 
+ * @annotation ["global"]
+ * 
+ * @param {conf_doc_t*} doc conf doc对象。
+ * @param {ubjson_writer_t*} writer ubjson writer对象。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败
+ */
 ret_t conf_doc_save_ubjson(conf_doc_t* doc, ubjson_writer_t* writer);
 
 END_C_DECLS

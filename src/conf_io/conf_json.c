@@ -22,6 +22,8 @@
 #include "tkc/mem.h"
 #include "tkc/utils.h"
 #include "conf_io/conf_json.h"
+#include "tkc/data_reader_factory.h"
+#include "tkc/data_writer_factory.h"
 
 typedef enum _parser_state_t {
   STATE_NONE = 0,
@@ -464,3 +466,17 @@ object_t* conf_json_load(const char* url, bool_t create_if_not_exist) {
   return conf_obj_create(conf_doc_save_json_writer, conf_doc_load_json_reader, url,
                          create_if_not_exist);
 }
+
+ret_t conf_json_save_as(object_t* obj, const char* url) {
+  data_writer_t* writer = NULL;
+  conf_doc_t* doc = conf_obj_get_doc(obj);
+  return_value_if_fail(doc != NULL && url != NULL, RET_BAD_PARAMS);
+  writer = data_writer_factory_create_writer(data_writer_factory(), url);
+  return_value_if_fail(writer != NULL, RET_BAD_PARAMS);
+
+  conf_doc_save_json_writer(doc, writer);
+  data_writer_destroy(writer);
+
+  return RET_OK;
+}
+

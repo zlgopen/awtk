@@ -47,8 +47,44 @@ BEGIN_C_DECLS
  */
 object_t* conf_ini_load(const char* url, bool_t create_if_not_exist);
 
+/**
+ * @method conf_ini_save_as
+ * 将doc对象保存到指定URL。
+ * @annotation ["static"]
+ * 
+ * @param {object_t*} obj doc对象。
+ * @param {const char*} url 保存的位置。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败
+ */
+ret_t conf_ini_save_as(object_t* obj, const char* url);
+
 /*public for test*/
+
+/**
+ * @method conf_doc_load_ini
+ *
+ * 从缓存区加载ini格式的conf doc对象。
+ *
+ * @annotation ["global"]
+ * 
+ * @param {const char*} data 数据。
+ * 
+ * @return {conf_doc_t*} 返回conf_doc对象。
+ */
 conf_doc_t* conf_doc_load_ini(const char* data);
+
+/**
+ * @method conf_doc_save_ini
+ * 
+ * 保存conf doc对象为ini格式。 
+ * @annotation ["global"]
+ * 
+ * @param {conf_doc_t*} doc conf doc对象。
+ * @param {str_t*} str 保存结果。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败
+ */
 ret_t conf_doc_save_ini(conf_doc_t* doc, str_t* str);
 
 END_C_DECLS
