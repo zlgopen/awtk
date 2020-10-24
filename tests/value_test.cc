@@ -276,6 +276,27 @@ TEST(ValueTest, deepcopy) {
   value_reset(&other);
 }
 
+TEST(ValueTest, deepcopy_binary) {
+  value_t v;
+  value_t other;
+  const char* str = "str";
+	binary_data_t* bin1 = NULL;
+	binary_data_t* bin2 = NULL;
+
+  ASSERT_EQ(&other, value_set_binary_data(&other, (void*)str, 4));
+  ASSERT_EQ(value_deep_copy(&v, &other), RET_OK);
+
+	bin1 = value_binary_data(&v);
+	bin2 = value_binary_data(&other);
+
+	ASSERT_STREQ((const char*)(bin1->data), str);
+	ASSERT_STREQ((const char*)(bin2->data), str);
+	ASSERT_EQ(bin1->data != bin2->data, true);
+
+  value_reset(&v);
+  value_reset(&other);
+}
+
 TEST(ValueTest, copy_str) {
   value_t v;
   value_t other;

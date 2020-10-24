@@ -66,8 +66,12 @@ ret_t named_value_set_value(named_value_t* nv, const value_t* value) {
     return RET_OK;
   }
 
-  value_reset(&(nv->value));
-  return value_deep_copy(&(nv->value), value);
+  if (!value_equal(value, &(nv->value))) {
+    value_reset(&(nv->value));
+    return value_deep_copy(&(nv->value), value);
+  }
+
+  return RET_OK;
 }
 
 ret_t named_value_deinit(named_value_t* nv) {
