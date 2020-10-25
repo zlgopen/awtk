@@ -363,7 +363,7 @@ TEST(ObjectDefault, clone) {
   ASSERT_EQ(object_set_prop_str(obj, "a", "123"), RET_OK);
   ASSERT_EQ(object_set_prop_str(obj, "b", "abc"), RET_OK);
 
-  clone = object_default_clone(OBJECT_DEFAULT(obj));
+  clone = object_clone(obj);
   ASSERT_EQ(object_eval(clone, "$a+$b", &v), RET_OK);
   ASSERT_EQ(string(value_str(&v)), string("123abc"));
 

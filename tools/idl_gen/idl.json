@@ -2547,6 +2547,24 @@
       {
         "params": [
           {
+            "type": "object_t*",
+            "name": "obj",
+            "desc": "object对象。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "clone对象。",
+        "name": "object_clone",
+        "return": {
+          "type": "object_t*",
+          "desc": "返回object对象。"
+        }
+      },
+      {
+        "params": [
+          {
             "type": "const object_vtable_t*",
             "name": "vt",
             "desc": "虚函数表。"
@@ -25719,6 +25737,53 @@
     "level": 1
   },
   {
+    "params": [
+      {
+        "type": "const char*",
+        "name": "data",
+        "desc": "数据。"
+      }
+    ],
+    "annotation": {
+      "global": true
+    },
+    "desc": "从缓存区加载ini格式的conf doc对象。",
+    "name": "conf_doc_load_ini",
+    "return": {
+      "type": "conf_doc_t*",
+      "desc": "返回conf_doc对象。"
+    },
+    "type": "method",
+    "header": "conf_io/conf_ini.h",
+    "level": 1
+  },
+  {
+    "params": [
+      {
+        "type": "conf_doc_t*",
+        "name": "doc",
+        "desc": "conf doc对象。"
+      },
+      {
+        "type": "str_t*",
+        "name": "str",
+        "desc": "保存结果。"
+      }
+    ],
+    "annotation": {
+      "global": true
+    },
+    "desc": "保存conf doc对象为ini格式。",
+    "name": "conf_doc_save_ini",
+    "return": {
+      "type": "ret_t",
+      "desc": "返回RET_OK表示成功，否则表示失败"
+    },
+    "type": "method",
+    "header": "conf_io/conf_ini.h",
+    "level": 1
+  },
+  {
     "type": "class",
     "methods": [
       {
@@ -25851,7 +25916,7 @@
       {
         "type": "str_t*",
         "name": "str",
-        "desc": "返回结果的字符串对象。"
+        "desc": "保存结果。"
       }
     ],
     "annotation": {
@@ -27152,6 +27217,58 @@
     "header": "tkc/tokenizer.h",
     "desc": "从字符串中解析出一个一个的token。\n\n```c\ntokenizer_t tokenizer;\ntokenizer_t* t = tokenizer_init(&tokenizer, \"20,111.2,22.3,333.3,44,555.5\", 0xffffff, \",\");\n\nwhile(tokenizer_has_more(t)) {\ndouble v = tokenizer_next_float(t, 0);\nlog_debug(\"%lf\\n\", v);\n}\n\ntokenizer_deinit(t);\n```",
     "name": "tokenizer_t",
+    "level": 1
+  },
+  {
+    "params": [
+      {
+        "type": "const void*",
+        "name": "data",
+        "desc": "数据。"
+      },
+      {
+        "type": "uint32_t",
+        "name": "size",
+        "desc": "数据长度。"
+      }
+    ],
+    "annotation": {
+      "global": true
+    },
+    "desc": "从缓存区加载ubjson格式的conf doc对象。",
+    "name": "conf_doc_load_ubjson",
+    "return": {
+      "type": "conf_doc_t*",
+      "desc": "返回conf_doc对象。"
+    },
+    "type": "method",
+    "header": "conf_io/conf_ubjson.h",
+    "level": 1
+  },
+  {
+    "params": [
+      {
+        "type": "conf_doc_t*",
+        "name": "doc",
+        "desc": "conf doc对象。"
+      },
+      {
+        "type": "ubjson_writer_t*",
+        "name": "writer",
+        "desc": "ubjson writer对象。"
+      }
+    ],
+    "annotation": {
+      "global": true
+    },
+    "desc": "保存conf doc对象为ubjson格式。",
+    "name": "conf_doc_save_ubjson",
+    "return": {
+      "type": "ret_t",
+      "desc": "返回RET_OK表示成功，否则表示失败"
+    },
+    "type": "method",
+    "header": "conf_io/conf_ubjson.h",
     "level": 1
   },
   {
@@ -36829,6 +36946,100 @@
     "level": 1
   },
   {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {},
+        "desc": "创建缺省的资源加载器。",
+        "name": "asset_loader_create",
+        "return": {
+          "type": "asset_loader_t*",
+          "desc": "返回loader对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "asset_loader_t*",
+            "name": "loader",
+            "desc": "loader对象。"
+          },
+          {
+            "type": "uint16_t",
+            "name": "type",
+            "desc": "资源类型。"
+          },
+          {
+            "type": "uint16_t",
+            "name": "subtype",
+            "desc": "资源子类型。"
+          },
+          {
+            "type": "const char*",
+            "name": "path",
+            "desc": "路径。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "名称。"
+          }
+        ],
+        "annotation": {},
+        "desc": "加载指定的资源。",
+        "name": "asset_loader_load",
+        "return": {
+          "type": "asset_info_t*",
+          "desc": "返回资源对象(由调用者销毁)。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "asset_loader_t*",
+            "name": "loader",
+            "desc": "loader对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "path",
+            "desc": "资源是路径。"
+          }
+        ],
+        "annotation": {},
+        "desc": "判断指定资源是否存在。\n。",
+        "name": "asset_loader_exist",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回TRUE表示存在，否则不存在。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "asset_loader_t*",
+            "name": "loader",
+            "desc": "loader对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁loader对象。",
+        "name": "asset_loader_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "base/asset_loader.h",
+    "desc": "资源加载器接口。",
+    "name": "asset_loader_t",
+    "level": 1
+  },
+  {
     "type": "enum",
     "desc": "缓动作动画常量定义。",
     "consts": [
@@ -36999,100 +37210,6 @@
     "header": "tkc/dl.h",
     "desc": "动态链接库对象。",
     "name": "tk_dl_t",
-    "level": 1
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [],
-        "annotation": {},
-        "desc": "创建缺省的资源加载器。",
-        "name": "asset_loader_create",
-        "return": {
-          "type": "asset_loader_t*",
-          "desc": "返回loader对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "asset_loader_t*",
-            "name": "loader",
-            "desc": "loader对象。"
-          },
-          {
-            "type": "uint16_t",
-            "name": "type",
-            "desc": "资源类型。"
-          },
-          {
-            "type": "uint16_t",
-            "name": "subtype",
-            "desc": "资源子类型。"
-          },
-          {
-            "type": "const char*",
-            "name": "path",
-            "desc": "路径。"
-          },
-          {
-            "type": "const char*",
-            "name": "name",
-            "desc": "名称。"
-          }
-        ],
-        "annotation": {},
-        "desc": "加载指定的资源。",
-        "name": "asset_loader_load",
-        "return": {
-          "type": "asset_info_t*",
-          "desc": "返回资源对象(由调用者销毁)。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "asset_loader_t*",
-            "name": "loader",
-            "desc": "loader对象。"
-          },
-          {
-            "type": "const char*",
-            "name": "path",
-            "desc": "资源是路径。"
-          }
-        ],
-        "annotation": {},
-        "desc": "判断指定资源是否存在。\n。",
-        "name": "asset_loader_exist",
-        "return": {
-          "type": "bool_t",
-          "desc": "返回TRUE表示存在，否则不存在。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "asset_loader_t*",
-            "name": "loader",
-            "desc": "loader对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "销毁loader对象。",
-        "name": "asset_loader_destroy",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "base/asset_loader.h",
-    "desc": "资源加载器接口。",
-    "name": "asset_loader_t",
     "level": 1
   },
   {
@@ -40637,134 +40754,24 @@
     "type": "class",
     "methods": [
       {
-        "params": [
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度。"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度。"
-          },
-          {
-            "type": "bool_t",
-            "name": "alloc",
-            "desc": "是否分配内存。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建lcd对象。",
-        "name": "lcd_mem_bgr888_create",
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建控件自身布局对象。",
+        "name": "self_layouter_menu_create",
         "return": {
-          "type": "lcd_t*",
-          "desc": "返回lcd对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度。"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度。"
-          },
-          {
-            "type": "uint8_t*",
-            "name": "fbuff",
-            "desc": "帧率缓冲区。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建single fb lcd对象。",
-        "name": "lcd_mem_bgr888_create_single_fb",
-        "return": {
-          "type": "lcd_t*",
-          "desc": "返回lcd对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度。"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度。"
-          },
-          {
-            "type": "uint8_t*",
-            "name": "online_fb",
-            "desc": "在线帧率缓冲区。"
-          },
-          {
-            "type": "uint8_t*",
-            "name": "offline_fb",
-            "desc": "离线帧率缓冲区。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建double fb lcd对象。",
-        "name": "lcd_mem_bgr888_create_double_fb",
-        "return": {
-          "type": "lcd_t*",
-          "desc": "返回lcd对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度。"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度。"
-          },
-          {
-            "type": "uint8_t*",
-            "name": "online_fb",
-            "desc": "在线帧率缓冲区。"
-          },
-          {
-            "type": "uint8_t*",
-            "name": "offline_fb",
-            "desc": "离线帧率缓冲区。"
-          },
-          {
-            "type": "uint8_t*",
-            "name": "next_fb",
-            "desc": "待显示的帧率缓冲区。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建three fb lcd对象。",
-        "name": "lcd_mem_bgr888_create_three_fb",
-        "return": {
-          "type": "lcd_t*",
-          "desc": "返回lcd对象。"
+          "type": "self_layouter_t*",
+          "desc": "返回创建控件自身布局对象。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "lcd/lcd_mem_bgr888.h",
-    "desc": "",
-    "name": "lcd_mem_bgr888_t",
-    "parent": "lcd_t",
-    "annotation": {
-      "fake": true
-    },
+    "header": "layouters/self_layouter_menu.h",
+    "desc": "menu的控件自身布局算法实现(一般用于popup或dialog窗口)。\n\n> 用法请参考：[缺省控件自身布局算法](\nhttps://github.com/zlgopen/awtk/blob/master/docs/self_layouter_menu.md)",
+    "name": "self_layouter_menu_t",
+    "parent": "self_layouter_t",
     "level": 2
   },
   {
@@ -44982,6 +44989,140 @@
         ],
         "annotation": {},
         "desc": "创建lcd对象。",
+        "name": "lcd_mem_bgr888_create",
+        "return": {
+          "type": "lcd_t*",
+          "desc": "返回lcd对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "fbuff",
+            "desc": "帧率缓冲区。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建single fb lcd对象。",
+        "name": "lcd_mem_bgr888_create_single_fb",
+        "return": {
+          "type": "lcd_t*",
+          "desc": "返回lcd对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "online_fb",
+            "desc": "在线帧率缓冲区。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "offline_fb",
+            "desc": "离线帧率缓冲区。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建double fb lcd对象。",
+        "name": "lcd_mem_bgr888_create_double_fb",
+        "return": {
+          "type": "lcd_t*",
+          "desc": "返回lcd对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "online_fb",
+            "desc": "在线帧率缓冲区。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "offline_fb",
+            "desc": "离线帧率缓冲区。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "next_fb",
+            "desc": "待显示的帧率缓冲区。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建three fb lcd对象。",
+        "name": "lcd_mem_bgr888_create_three_fb",
+        "return": {
+          "type": "lcd_t*",
+          "desc": "返回lcd对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "lcd/lcd_mem_bgr888.h",
+    "desc": "",
+    "name": "lcd_mem_bgr888_t",
+    "parent": "lcd_t",
+    "annotation": {
+      "fake": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度。"
+          },
+          {
+            "type": "bool_t",
+            "name": "alloc",
+            "desc": "是否分配内存。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建lcd对象。",
         "name": "lcd_mem_bgr565_create",
         "return": {
           "type": "lcd_t*",
@@ -45091,30 +45232,6 @@
     "annotation": {
       "fake": true
     },
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "创建控件自身布局对象。",
-        "name": "self_layouter_menu_create",
-        "return": {
-          "type": "self_layouter_t*",
-          "desc": "返回创建控件自身布局对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "layouters/self_layouter_menu.h",
-    "desc": "menu的控件自身布局算法实现(一般用于popup或dialog窗口)。\n\n> 用法请参考：[缺省控件自身布局算法](\nhttps://github.com/zlgopen/awtk/blob/master/docs/self_layouter_menu.md)",
-    "name": "self_layouter_menu_t",
-    "parent": "self_layouter_t",
     "level": 2
   },
   {
@@ -59298,6 +59415,29 @@
           "type": "object_t*",
           "desc": "返回配置对象。"
         }
+      },
+      {
+        "params": [
+          {
+            "type": "object_t*",
+            "name": "obj",
+            "desc": "doc对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "url",
+            "desc": "保存的位置。"
+          }
+        ],
+        "annotation": {
+          "static": true
+        },
+        "desc": "将doc对象保存到指定URL。",
+        "name": "conf_ini_save_as",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败"
+        }
       }
     ],
     "events": [],
@@ -59335,6 +59475,29 @@
         "return": {
           "type": "object_t*",
           "desc": "返回配置对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "object_t*",
+            "name": "obj",
+            "desc": "doc对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "url",
+            "desc": "保存的位置。"
+          }
+        ],
+        "annotation": {
+          "static": true
+        },
+        "desc": "将doc对象保存到指定URL。",
+        "name": "conf_json_save_as",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败"
         }
       }
     ],
@@ -59474,6 +59637,29 @@
         "return": {
           "type": "object_t*",
           "desc": "返回配置对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "object_t*",
+            "name": "obj",
+            "desc": "doc对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "url",
+            "desc": "保存的位置。"
+          }
+        ],
+        "annotation": {
+          "static": true
+        },
+        "desc": "将doc对象保存到指定URL。",
+        "name": "conf_ubjson_save_as",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败"
         }
       }
     ],

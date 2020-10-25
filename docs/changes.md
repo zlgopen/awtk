@@ -1,5 +1,7 @@
 # 最新动态
 
+2020/10/25
+  * 增加object\_clone。
 2020/10/24
   * 增加函数 conf\_ini\_save\_as
   * 增加函数 conf\_json\_save\_as

@@ -103,6 +103,7 @@ EXPORTS
     value_cast
     object_unref
     object_ref
+    object_clone
     object_create
     object_get_type
     object_get_desc
@@ -902,6 +903,8 @@ EXPORTS
     tk_wstr_dup_utf8
     tk_wstr_count_c
     image_region_parse
+    conf_doc_load_ini
+    conf_doc_save_ini
     tk_utf8_from_utf16
     tk_utf8_from_utf16_ex
     tk_utf8_to_utf16
@@ -951,6 +954,8 @@ EXPORTS
     tokenizer_next_int
     tokenizer_next_float
     tokenizer_deinit
+    conf_doc_load_ubjson
+    conf_doc_save_ubjson
     dialog_highlighter_default_create
     SDL_ShowCursor
     SDL_WarpMouseInWindow
@@ -1317,13 +1322,13 @@ EXPORTS
     canvas_stroke_rounded_rect_ex
     canvas_end_frame
     easing_get
-    tk_dl_open
-    tk_dl_sym
-    tk_dl_close
     asset_loader_create
     asset_loader_load
     asset_loader_exist
     asset_loader_destroy
+    tk_dl_open
+    tk_dl_sym
+    tk_dl_close
     date_time_create
     date_time_init
     date_time_set
@@ -1453,10 +1458,7 @@ EXPORTS
     guage_pointer_set_angle
     guage_pointer_set_image
     guage_pointer_set_anchor
-    lcd_mem_bgr888_create
-    lcd_mem_bgr888_create_single_fb
-    lcd_mem_bgr888_create_double_fb
-    lcd_mem_bgr888_create_three_fb
+    self_layouter_menu_create
     wheel_event_cast
     wheel_event_init
     view_create
@@ -1568,11 +1570,14 @@ EXPORTS
     lcd_mem_bgra8888_create_single_fb
     lcd_mem_bgra8888_create_double_fb
     lcd_mem_bgra8888_create_three_fb
+    lcd_mem_bgr888_create
+    lcd_mem_bgr888_create_single_fb
+    lcd_mem_bgr888_create_double_fb
+    lcd_mem_bgr888_create_three_fb
     lcd_mem_bgr565_create
     lcd_mem_bgr565_create_single_fb
     lcd_mem_bgr565_create_double_fb
     lcd_mem_bgr565_create_three_fb
-    self_layouter_menu_create
     self_layouter_default_create
     children_layouter_default_create
     column_create
@@ -1964,12 +1969,15 @@ EXPORTS
     image_rotate
     image_blend
     conf_ini_load
+    conf_ini_save_as
     conf_json_load
+    conf_json_save_as
     conf_obj_create
     conf_obj_get_doc
     conf_obj_save
     conf_obj_set_readonly
     conf_ubjson_load
+    conf_ubjson_save_as
     timer_info_cast
     dialog_create
     dialog_create_simple

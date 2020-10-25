@@ -36,6 +36,7 @@ EXPORTS
     rect_intersect
     object_unref
     object_ref
+    object_clone
     object_create
     object_get_type
     object_get_desc
@@ -124,14 +125,20 @@ EXPORTS
     value_destroy
     value_reset
     value_cast
-    rom_fopen
-    rom_fopen_buff
-    rom_ftell
-    rom_feof
-    rom_fseek
-    rom_fread
-    rom_fwrite
-    rom_fclose
+    slist_create
+    slist_init
+    slist_find
+    slist_remove
+    slist_remove_all
+    slist_append
+    slist_prepend
+    slist_foreach
+    slist_tail_pop
+    slist_head_pop
+    slist_size
+    slist_count
+    slist_deinit
+    slist_destroy
     asset_info_create
     asset_info_destroy
     asset_info_unref
@@ -246,6 +253,7 @@ EXPORTS
     action_thread_pool_create
     action_thread_pool_exec
     action_thread_pool_destroy
+    conf_doc_load_ubjson
     conf_node_get_name
     conf_node_find_child
     conf_node_find_sibling
@@ -291,6 +299,8 @@ EXPORTS
     conf_doc_destroy
     conf_doc_save_json
     conf_doc_load_json
+    conf_doc_save_ini
+    conf_doc_load_ini
     app_conf_set_instance
     app_conf_get_instance
     app_conf_save
@@ -315,9 +325,6 @@ EXPORTS
     app_conf_get_str
     app_conf_get_wstr
     app_conf_remove
-    app_conf_init
-    app_conf_init_ubjson
-    app_conf_init_json
     eval_execute
     tk_expr_eval
     tk_expr_eval_str
@@ -369,7 +376,7 @@ EXPORTS
     func_call_parser_parse
     func_call_parser_deinit
     func_call_parse
-    app_conf_init_ini
+    app_conf_init
     idle_manager
     idle_manager_set
     idle_manager_create
@@ -384,7 +391,8 @@ EXPORTS
     idle_manager_add
     int_str_value
     int_str_name
-    tk_ostream_serial_create
+    app_conf_init_ubjson
+    app_conf_init_json
     log_get_log_level
     log_set_log_level
     matrix_init
@@ -396,6 +404,8 @@ EXPORTS
     matrix_scale
     matrix_rotate
     matrix_transform_point
+    app_conf_init_ini
+    tk_ostream_serial_create
     ubjson_writer_init
     ubjson_writer_write_key
     ubjson_writer_write_null
@@ -433,9 +443,6 @@ EXPORTS
     ubjson_to_object
     ubjson_dump
     wcs_dup
-    wcs_len
-    wcs_cmp
-    wcs_cpy
     tk_alloc
     tk_calloc
     tk_realloc
@@ -460,6 +467,9 @@ EXPORTS
     named_value_get_value
     named_value_deinit
     named_value_destroy
+    wcs_len
+    wcs_cmp
+    wcs_cpy
     wcs_chr
     wstr_init
     wstr_set
@@ -484,14 +494,6 @@ EXPORTS
     wstr_normalize_newline
     wstr_count_char
     wstr_reset
-    waitable_ring_buffer_create
-    waitable_ring_buffer_read
-    waitable_ring_buffer_write
-    waitable_ring_buffer_destroy
-    waitable_action_queue_create
-    waitable_action_queue_recv
-    waitable_action_queue_send
-    waitable_action_queue_destroy
     path_basename
     path_extname
     path_dirname
@@ -538,30 +540,24 @@ EXPORTS
     ring_buffer_set_write_cursor_delta
     ring_buffer_ensure_write_space
     ring_buffer_destroy
+    rom_fopen
+    rom_fopen_buff
+    rom_ftell
+    rom_feof
+    rom_fseek
+    rom_fread
+    rom_fwrite
+    rom_fclose
+    tk_semaphore_create
+    tk_semaphore_wait
+    tk_semaphore_post
+    tk_semaphore_destroy
     action_thread_create
     action_thread_create_with_queue
     action_thread_exec
     action_thread_set_on_idle
     action_thread_set_on_quit
     action_thread_destroy
-    tk_semaphore_create
-    tk_semaphore_wait
-    tk_semaphore_post
-    tk_semaphore_destroy
-    slist_create
-    slist_init
-    slist_find
-    slist_remove
-    slist_remove_all
-    slist_append
-    slist_prepend
-    slist_foreach
-    slist_tail_pop
-    slist_head_pop
-    slist_size
-    slist_count
-    slist_deinit
-    slist_destroy
     socket_init
     socket_deinit
     socket_close
@@ -629,6 +625,10 @@ EXPORTS
     tk_thread_self
     time_now_s
     time_now_ms
+    waitable_ring_buffer_create
+    waitable_ring_buffer_read
+    waitable_ring_buffer_write
+    waitable_ring_buffer_destroy
     timer_manager
     timer_manager_set
     timer_manager_create
@@ -700,6 +700,11 @@ EXPORTS
     tk_wstr_dup_utf8
     tk_wstr_count_c
     image_region_parse
+    waitable_action_queue_create
+    waitable_action_queue_recv
+    waitable_action_queue_send
+    waitable_action_queue_destroy
+    conf_doc_save_ubjson
     event_source_manager_default_create
     prop_change_event_cast
     prop_change_event_init
@@ -711,37 +716,29 @@ EXPORTS
     error_event_init
     cmd_exec_event_cast
     cmd_exec_event_init
-    conf_obj_create
-    conf_obj_get_doc
-    conf_obj_save
-    conf_obj_set_readonly
+    object_locker_create
     event_source_fd_create
-    event_source_idle_create
+    tk_iostream_get_istream
+    tk_iostream_get_ostream
+    tk_iostream_read
+    tk_iostream_read_len
+    tk_iostream_write
+    tk_iostream_write_len
+    idle_info_cast
     object_array_create
     object_array_clone
     object_array_unref
     object_array_clear_props
-    event_source_timer_create
-    event_source_get_fd
-    event_source_dispatch
-    event_source_set_tag
-    event_source_check
-    event_source_get_wakeup_time
-    conf_ubjson_load
-    timer_info_cast
-    conf_json_load
     conf_ini_load
-    tk_ostream_write
-    tk_ostream_seek
-    tk_ostream_write_len
-    tk_ostream_write_byte
-    tk_ostream_flush
-    object_locker_create
+    conf_ini_save_as
+    object_compositor_create
     object_default_create
     object_default_clone
     object_default_unref
     object_default_clear_props
     object_default_find_prop
+    conf_json_load
+    conf_json_save_as
     tk_istream_read
     tk_istream_seek
     tk_istream_tell
@@ -751,43 +748,54 @@ EXPORTS
     tk_istream_read_len
     tk_istream_read_line
     tk_istream_read_line_str
-    object_compositor_create
-    idle_info_cast
-    tk_iostream_get_istream
-    tk_iostream_get_ostream
-    tk_iostream_read
-    tk_iostream_read_len
-    tk_iostream_write
-    tk_iostream_write_len
-    tk_iostream_mem_create
-    tk_iostream_serial_create
-    tk_iostream_serial_config
-    tk_ostream_noisy_create
-    tk_iostream_shdlc_create
-    tk_istream_shdlc_create
+    tk_ostream_write
+    tk_ostream_seek
+    tk_ostream_write_len
+    tk_ostream_write_byte
+    tk_ostream_flush
+    event_source_get_fd
+    event_source_dispatch
+    event_source_set_tag
+    event_source_check
+    event_source_get_wakeup_time
+    event_source_timer_create
+    timer_info_cast
+    event_source_idle_create
+    conf_obj_create
+    conf_obj_get_doc
+    conf_obj_save
+    conf_obj_set_readonly
+    conf_ubjson_load
+    conf_ubjson_save_as
+    tk_istream_buffered_create
     tk_ostream_shdlc_create
-    tk_iostream_noisy_create
+    tk_iostream_udp_create_client
+    tk_iostream_udp_create
+    tk_iostream_tcp_create
+    tk_istream_tcp_create
+    tk_istream_udp_create
+    tk_istream_udp_set_target_with_host
+    tk_istream_udp_set_target_with_addr
+    tk_ostream_tcp_create
+    tk_ostream_file_create
+    tk_iostream_mem_create
+    tk_istream_mem_create
+    tk_ostream_mem_create
+    tk_istream_file_create
     tk_ostream_retry_create
     tk_ostream_retry_set_max_retry_times
     tk_ostream_retry_set_max_buffer_size
     tk_ostream_retry_clear_buffer
     tk_ostream_retry_set_discard_policy
-    tk_ostream_mem_create
-    tk_istream_mem_create
+    tk_iostream_noisy_create
+    tk_ostream_noisy_create
+    tk_iostream_serial_create
+    tk_iostream_serial_config
     tk_istream_serial_create
+    tk_ostream_buffered_create
+    tk_ostream_buffered_get_size
+    tk_iostream_shdlc_create
+    tk_istream_shdlc_create
     tk_ostream_udp_create
     tk_ostream_udp_set_target_with_host
     tk_ostream_udp_set_target_with_addr
-    tk_ostream_tcp_create
-    tk_istream_udp_create
-    tk_istream_udp_set_target_with_host
-    tk_istream_udp_set_target_with_addr
-    tk_iostream_udp_create_client
-    tk_iostream_udp_create
-    tk_iostream_tcp_create
-    tk_ostream_file_create
-    tk_istream_file_create
-    tk_ostream_buffered_create
-    tk_ostream_buffered_get_size
-    tk_istream_buffered_create
-    tk_istream_tcp_create

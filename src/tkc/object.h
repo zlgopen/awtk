@@ -38,6 +38,7 @@ typedef ret_t (*object_foreach_prop_t)(object_t* obj, tk_visit_t on_prop, void* 
 typedef ret_t (*object_set_prop_t)(object_t* obj, const char* name, const value_t* v);
 typedef bool_t (*object_can_exec_t)(object_t* obj, const char* name, const char* args);
 typedef ret_t (*object_exec_t)(object_t* obj, const char* name, const char* args);
+typedef object_t* (*object_clone_t)(object_t* obj);
 
 struct _object_vtable_t {
   const char* type;
@@ -52,6 +53,7 @@ struct _object_vtable_t {
   object_remove_prop_t remove_prop;
   object_foreach_prop_t foreach_prop;
   object_can_exec_t can_exec;
+  object_clone_t clone;
   object_exec_t exec;
 };
 
@@ -107,6 +109,17 @@ ret_t object_unref(object_t* obj);
  * @return {object_t*} 返回object对象。
  */
 object_t* object_ref(object_t* obj);
+
+/**
+ * @method object_clone
+ * clone对象。
+ *
+ * @annotation ["constructor"]
+ * @param {object_t*} obj object对象。
+ *
+ * @return {object_t*} 返回object对象。
+ */
+object_t* object_clone(object_t* obj);
 
 /**
  * @method object_create

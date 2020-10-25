@@ -91,6 +91,12 @@ object_t* object_ref(object_t* obj) {
   return obj;
 }
 
+object_t* object_clone(object_t* obj) {
+  return_value_if_fail(obj != NULL && obj->vt != NULL && obj->vt->clone != NULL, NULL);
+
+  return obj->vt->clone(obj);
+}
+
 static ret_t object_get_prop_by_name(object_t* obj, const char* name, value_t* v) {
   ret_t ret = RET_NOT_FOUND;
   return_value_if_fail(obj != NULL && obj->vt != NULL, RET_BAD_PARAMS);

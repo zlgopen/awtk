@@ -285,7 +285,7 @@ static const object_vtable_t s_object_default_vtable = {
     .size = sizeof(object_default_t),
     .is_collection = FALSE,
     .on_destroy = object_default_on_destroy,
-
+    .clone = (object_clone_t)object_default_clone,
     .compare = object_default_compare,
     .get_prop = object_default_get_prop,
     .set_prop = object_default_set_prop,
