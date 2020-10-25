@@ -1041,10 +1041,11 @@ static ret_t window_manager_default_is_animating(widget_t* widget, bool_t* playi
 }
 
 ret_t window_manager_default_on_event(widget_t* widget, event_t* e) {
+  window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+
   if (e->type == EVT_ORIENTATION_WILL_CHANGED) {
     orientation_event_t* evt = orientation_event_cast(e);
     lcd_orientation_t orientation = evt->orientation;
-    window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
     lcd_t* lcd = native_window_get_canvas(wm->native_window)->lcd;
 
     wh_t w = wm->lcd_w;
@@ -1061,6 +1062,8 @@ ret_t window_manager_default_on_event(widget_t* widget, event_t* e) {
     widget_dispatch(widget, e);
   } else if (e->type == EVT_THEME_CHANGED) {
     window_manager_on_theme_changed(widget);
+  } else if (e->type == EVT_TOP_WINDOW_CHANGED) {
+    input_device_status_abort_all_pressed_keys(&(wm->input_device_status));
   }
 
   return RET_OK;

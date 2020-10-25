@@ -60,6 +60,20 @@ static bool_t input_device_status_has_pressed_key(input_device_status_t* ids) {
   return FALSE;
 }
 
+ret_t input_device_status_abort_all_pressed_keys(input_device_status_t* ids) {
+  uint32_t i = 0;
+  return_value_if_fail(ids != NULL, RET_BAD_PARAMS);
+
+  for (i = 0; i < MAX_PRESSED_KEYS_NR; i++) {
+    key_pressed_info_t* iter = ids->pressed_info + i;
+    if (iter->key) {
+      iter->should_abort = TRUE;
+    }
+  }
+
+  return RET_OK;
+}
+
 static ret_t input_device_status_dispatch_long_press(input_device_status_t* ids) {
   uint32_t i = 0;
   key_event_t evt;
@@ -68,7 +82,7 @@ static ret_t input_device_status_dispatch_long_press(input_device_status_t* ids)
 
   for (i = 0; i < MAX_PRESSED_KEYS_NR; i++) {
     key_pressed_info_t* iter = ids->pressed_info + i;
-    if (iter->key && !iter->emitted) {
+    if (iter->key && !iter->emitted && !iter->should_abort) {
       uint64_t t = now - iter->time;
       if (t >= TK_KEY_LONG_PRESS_TIME) {
         window_manager_t* wm = WINDOW_MANAGER(window_manager());
@@ -295,19 +309,27 @@ ret_t input_device_status_on_input_event(input_device_status_t* ids, widget_t* w
     }
     case EVT_KEY_DOWN: {
       key_event_t* evt = (key_event_t*)e;
+      key_pressed_info_t* info = input_device_status_find_press_info(ids, evt->key);
 
       input_device_status_update_key_status(ids, evt->key, TRUE);
       input_device_status_init_key_event(ids, evt);
       input_device_status_shift_key(ids, evt);
-      widget_on_keydown(widget, evt);
+
+      if (info == NULL || !info->should_abort) {
+        widget_on_keydown(widget, evt);
+      }
       break;
     }
     case EVT_KEY_UP: {
       key_event_t* evt = (key_event_t*)e;
+      key_pressed_info_t* info = input_device_status_find_press_info(ids, evt->key);
 
       input_device_status_init_key_event(ids, evt);
       input_device_status_shift_key(ids, evt);
-      widget_on_keyup(widget, evt);
+
+      if (info == NULL || !info->should_abort) {
+        widget_on_keyup(widget, evt);
+      }
 
       input_device_status_update_key_status(ids, evt->key, FALSE);
       break;

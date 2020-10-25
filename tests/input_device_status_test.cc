@@ -178,3 +178,39 @@ TEST(InputDeviceStatus, pointer) {
 
   widget_destroy(w);
 }
+
+TEST(InputDeviceStatus, should_abort) {
+  key_event_t e;
+  widget_t* w = button_create(NULL, 0, 0, 0, 0);
+  input_device_status_t input_device_status;
+  input_device_status_t* ids = input_device_status_init(&input_device_status);
+
+  widget_on(w, EVT_KEY_DOWN, on_event, w);
+  widget_on(w, EVT_KEY_UP, on_event, w);
+
+  e.key = TK_KEY_CAPSLOCK;
+  e.e = event_init(EVT_KEY_DOWN, NULL);
+  input_device_status_on_input_event(ids, w, (event_t*)(&e));
+  ASSERT_EQ(s_log, "keydown");
+
+  input_device_status_abort_all_pressed_keys(ids);
+
+  s_log = ""; 
+  e.key = TK_KEY_CAPSLOCK;
+  e.e = event_init(EVT_KEY_DOWN, NULL);
+  input_device_status_on_input_event(ids, w, (event_t*)(&e));
+  ASSERT_EQ(s_log, "");
+
+  s_log = ""; 
+  e.e = event_init(EVT_KEY_UP, NULL);
+  input_device_status_on_input_event(ids, w, (event_t*)(&e));
+  ASSERT_EQ(s_log, "");
+  
+  s_log = ""; 
+  e.key = TK_KEY_CAPSLOCK;
+  e.e = event_init(EVT_KEY_DOWN, NULL);
+  input_device_status_on_input_event(ids, w, (event_t*)(&e));
+  ASSERT_EQ(s_log, "keydown");
+
+  widget_destroy(w);
+}

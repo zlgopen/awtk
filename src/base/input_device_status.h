@@ -32,6 +32,11 @@ typedef struct _key_pressed_info_t {
   uint32_t key;
   uint32_t emitted;
   uint64_t time;
+ /*
+  * 窗口切换时，旧窗口按下的键，一直不松开，会持续触发PRESS，可能会干扰新窗口的用户功能。
+  * 所在窗口切换时，abort全部已经按下的键，直到按键松开。
+  */
+  bool_t should_abort; 
 } key_pressed_info_t;
 
 /**
@@ -80,6 +85,19 @@ input_device_status_t* input_device_status_init(input_device_status_t* ids);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t input_device_status_on_input_event(input_device_status_t* ids, widget_t* widget, event_t* e);
+
+/**
+ * @method input_device_status_abort_all_pressed_keys
+ * 取消全部已经按下的键。
+ *
+ * 窗口切换时，旧窗口按下的键，一直不松开，会持续触发PRESS，可能会干扰新窗口的用户功能。
+ * 所在窗口切换时，abort全部已经按下的键，直到按键松开。
+ * 
+ * @param {input_device_status_t*} ids 输入设备状态管理器对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t input_device_status_abort_all_pressed_keys(input_device_status_t* ids);
 
 END_C_DECLS
 
