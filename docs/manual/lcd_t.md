@@ -8,6 +8,7 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#lcd_t_lcd_begin_frame">lcd\_begin\_frame</a> | 准备绘制。 |
+| <a href="#lcd_t_lcd_clear_rect">lcd\_clear\_rect</a> | 填充实心矩形。 |
 | <a href="#lcd_t_lcd_destroy">lcd\_destroy</a> | 销毁lcd对象。 |
 | <a href="#lcd_t_lcd_draw_glyph">lcd\_draw\_glyph</a> | 绘制字符。如果实现了measure_text/draw_text则不需要实现本函数。 |
 | <a href="#lcd_t_lcd_draw_hline">lcd\_draw\_hline</a> | 绘制一条水平线。 |
@@ -35,7 +36,7 @@
 | <a href="#lcd_t_lcd_set_global_alpha">lcd\_set\_global\_alpha</a> | 设置全局alpha。 |
 | <a href="#lcd_t_lcd_set_stroke_color">lcd\_set\_stroke\_color</a> | 设置线条颜色。 |
 | <a href="#lcd_t_lcd_set_text_color">lcd\_set\_text\_color</a> | 设置文本颜色。 |
-| <a href="#lcd_t_lcd_stroke_rect">lcd\_stroke\_rect</a> | 绘制矩形。 |
+| <a href="#lcd_t_lcd_stroke_rect">lcd\_stroke\_rect</a> | 绘制矩形边框。 |
 | <a href="#lcd_t_lcd_take_snapshot">lcd\_take\_snapshot</a> | 拍摄快照，一般用于窗口动画，只有framebuffer模式，才支持。 |
 ### 属性
 <p id="lcd_t_properties">
@@ -76,6 +77,29 @@ ret_t lcd_begin_frame (lcd_t* lcd, const rect_t* dirty_rect, lcd_draw_mode_t ani
 | lcd | lcd\_t* | lcd对象。 |
 | dirty\_rect | const rect\_t* | 需要绘制的区域。 |
 | anim\_mode | lcd\_draw\_mode\_t | 动画模式，如果可能，直接画到显存而不是离线的framebuffer。 |
+#### lcd\_clear\_rect 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="lcd_t_lcd_clear_rect">填充实心矩形。
+
+* 函数原型：
+
+```
+ret_t lcd_clear_rect (lcd_t* lcd, xy_t x, xy_t y, wh_t w, wh_t h);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| lcd | lcd\_t* | lcd对象。 |
+| x | xy\_t | x坐标。 |
+| y | xy\_t | y坐标。 |
+| w | wh\_t | 宽度。 |
+| h | wh\_t | 高度。 |
 #### lcd\_destroy 函数
 -----------------------
 
@@ -637,7 +661,7 @@ ret_t lcd_set_text_color (lcd_t* lcd, color_t color);
 
 * 函数功能：
 
-> <p id="lcd_t_lcd_stroke_rect">绘制矩形。
+> <p id="lcd_t_lcd_stroke_rect">绘制矩形边框。
 
 * 函数原型：
 

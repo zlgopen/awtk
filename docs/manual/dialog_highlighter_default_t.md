@@ -18,6 +18,7 @@
 | -------- | ----- | ------------ | 
 | <a href="#dialog_highlighter_default_t_end_alpha">end\_alpha</a> | uint8\_t | 结束alpha，打开对话框的动画结束(直到对话框被关闭)时的alpha值。 |
 | <a href="#dialog_highlighter_default_t_start_alpha">start\_alpha</a> | uint8\_t | 起始alpha，打开对话框的动画开始时的alpha值。 |
+| <a href="#dialog_highlighter_default_t_system_bar_alpha">system\_bar\_alpha</a> | uint8\_t | 由于在没有过度动画的情况下，截图中已经包括黑色色块，为了让 system_bar 也同步高亮部分的色块透明。 |
 #### dialog\_highlighter\_default\_create 函数
 -----------------------
 
@@ -46,6 +47,12 @@ dialog_highlighter_t* dialog_highlighter_default_create (object_t* args);
 #### start\_alpha 属性
 -----------------------
 > <p id="dialog_highlighter_default_t_start_alpha">起始alpha，打开对话框的动画开始时的alpha值。
+
+* 类型：uint8\_t
+
+#### system\_bar\_alpha 属性
+-----------------------
+> <p id="dialog_highlighter_default_t_system_bar_alpha">由于在没有过度动画的情况下，截图中已经包括黑色色块，为了让 system_bar 也同步高亮部分的色块透明。
 
 * 类型：uint8\_t
 

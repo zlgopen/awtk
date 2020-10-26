@@ -52,12 +52,14 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L1
 | <a href="#label_t_label_create">label\_create</a> | 创建label对象 |
 | <a href="#label_t_label_resize_to_content">label\_resize\_to\_content</a> | 根据文本内容调节控件大小。 |
 | <a href="#label_t_label_set_length">label\_set\_length</a> | 设置显示字符的个数(小余0时全部显示)。。 |
+| <a href="#label_t_label_set_line_wrap">label\_set\_line\_wrap</a> | 设置是否自动换行。 |
 ### 属性
 <p id="label_t_properties">
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#label_t_length">length</a> | int32\_t | 显示字符的个数(小余0时全部显示)。 |
+| <a href="#label_t_line_wrap">line\_wrap</a> | bool\_t | 是否自动换行。 |
 #### label\_cast 函数
 -----------------------
 
@@ -143,12 +145,48 @@ ret_t label_set_length (widget_t* widget, int32_t length);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | length | int32\_t | 最大可显示字符个数。 |
+#### label\_set\_line\_wrap 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="label_t_label_set_line_wrap">设置是否自动换行。
+
+* 函数原型：
+
+```
+ret_t label_set_line_wrap (widget_t* widget, bool_t line_wrap);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| line\_wrap | bool\_t | 是否自动换行。 |
 #### length 属性
 -----------------------
 > <p id="label_t_length">显示字符的个数(小余0时全部显示)。
 主要用于动态改变显示字符的个数，来实现类似[拨号中...]的动画效果。
 
 * 类型：int32\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### line\_wrap 属性
+-----------------------
+> <p id="label_t_line_wrap">是否自动换行。
+
+* 类型：bool\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

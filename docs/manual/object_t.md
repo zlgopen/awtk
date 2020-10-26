@@ -10,6 +10,7 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#object_t_object_can_exec">object\_can\_exec</a> | 检查是否可以执行指定的命令。 |
+| <a href="#object_t_object_clone">object\_clone</a> | clone对象。 |
 | <a href="#object_t_object_compare">object\_compare</a> | 比较两个对象。 |
 | <a href="#object_t_object_copy_prop">object\_copy\_prop</a> | 拷贝指定的属性。 |
 | <a href="#object_t_object_create">object\_create</a> | 创建对象。 |
@@ -75,6 +76,25 @@ bool_t object_can_exec (object_t* obj, const char* name, const char* args);
 | obj | object\_t* | object对象。 |
 | name | const char* | 命令的名称。 |
 | args | const char* | 命令的参数。 |
+#### object\_clone 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_t_object_clone">clone对象。
+
+* 函数原型：
+
+```
+object_t* object_clone (object_t* obj);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | object\_t* | 返回object对象。 |
+| obj | object\_t* | object对象。 |
 #### object\_compare 函数
 -----------------------
 

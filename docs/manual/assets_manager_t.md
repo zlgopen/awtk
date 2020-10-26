@@ -44,6 +44,7 @@ ui      UI描述数据。
 | <a href="#assets_manager_t_assets_manager_deinit">assets\_manager\_deinit</a> | 释放全部资源。 |
 | <a href="#assets_manager_t_assets_manager_destroy">assets\_manager\_destroy</a> | 释放全部资源并销毁asset manager对象。 |
 | <a href="#assets_manager_t_assets_manager_find_in_cache">assets\_manager\_find\_in\_cache</a> | 在资源管理器的缓存中查找指定的资源(不引用)。 |
+| <a href="#assets_manager_t_assets_manager_get_res_root">assets\_manager\_get\_res\_root</a> | 获取资源所在的目录(其下目录结构请参考demos)。 |
 | <a href="#assets_manager_t_assets_manager_init">assets\_manager\_init</a> | 初始化资源管理器。 |
 | <a href="#assets_manager_t_assets_manager_load">assets\_manager\_load</a> | 从文件系统中加载指定的资源，并缓存到内存中。在定义了宏WITH\_FS\_RES时才生效。 |
 | <a href="#assets_manager_t_assets_manager_load_file">assets\_manager\_load\_file</a> | 获取path里的资源。 |
@@ -237,6 +238,25 @@ asset_info_t* assets_manager_find_in_cache (assets_manager_t* am, asset_type_t t
 | am | assets\_manager\_t* | asset manager对象。 |
 | type | asset\_type\_t | 资源的类型。 |
 | name | char* | 资源的名称。 |
+#### assets\_manager\_get\_res\_root 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="assets_manager_t_assets_manager_get_res_root">获取资源所在的目录(其下目录结构请参考demos)。
+
+* 函数原型：
+
+```
+const char* assets_manager_get_res_root (assets_manager_t* am);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const char* | 返回资源所在的目录。 |
+| am | assets\_manager\_t* | asset manager对象。 |
 #### assets\_manager\_init 函数
 -----------------------
 

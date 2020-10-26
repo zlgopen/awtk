@@ -39,6 +39,7 @@
 | WIDGET\_PROP\_POINTER\_CURSOR | 鼠标指针。 |
 | WIDGET\_PROP\_VALUE | 值。 |
 | WIDGET\_PROP\_LENGTH | 长度。 |
+| WIDGET\_PROP\_LINE\_WRAP | 自动换行。 |
 | WIDGET\_PROP\_TEXT | 文本。 |
 | WIDGET\_PROP\_TR\_TEXT | 待翻译文本。 |
 | WIDGET\_PROP\_STYLE | style。 |

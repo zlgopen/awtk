@@ -120,6 +120,7 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | <a href="#widget_t_widget_is_keyboard">widget\_is\_keyboard</a> | 判断当前控件是否是keyboard。 |
 | <a href="#widget_t_widget_is_normal_window">widget\_is\_normal\_window</a> | 检查控件是否是普通窗口类型。 |
 | <a href="#widget_t_widget_is_opened_popup">widget\_is\_opened\_popup</a> | 检查控件弹出窗口控件是否已经打开了（而非挂起状态）。 |
+| <a href="#widget_t_widget_is_overlay">widget\_is\_overlay</a> | 检查控件是否是overlay窗口类型。 |
 | <a href="#widget_t_widget_is_parent_of">widget\_is\_parent\_of</a> | 判断当前控件是否是指定控件的父控件(包括非直系)。 |
 | <a href="#widget_t_widget_is_point_in">widget\_is\_point\_in</a> | 判断一个点是否在控件内。 |
 | <a href="#widget_t_widget_is_popup">widget\_is\_popup</a> | 检查控件是否是弹出窗口类型。 |
@@ -1766,6 +1767,25 @@ bool_t widget_is_opened_popup (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | bool\_t | 返回FALSE表示不是，否则表示是。 |
 | widget | widget\_t* | widget对象。 |
+#### widget\_is\_overlay 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_is_overlay">检查控件是否是overlay窗口类型。
+
+* 函数原型：
+
+```
+bool_t widget_is_overlay (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回FALSE表示不是，否则表示是。 |
+| widget | widget\_t* | widget对象。 |
 #### widget\_is\_parent\_of 函数
 -----------------------
 
@@ -3017,7 +3037,7 @@ ret_t widget_set_prop_int (widget_t* widget, const char* name, int32_t v);
 * 函数原型：
 
 ```
-ret_t widget_set_prop_pointer (widget_t* widget, const char* name, void** v);
+ret_t widget_set_prop_pointer (widget_t* widget, const char* name, void* v);
 ```
 
 * 参数说明：
@@ -3027,7 +3047,7 @@ ret_t widget_set_prop_pointer (widget_t* widget, const char* name, void** v);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | name | const char* | 属性的名称。 |
-| v | void** | 属性的值。 |
+| v | void* | 属性的值。 |
 #### widget\_set\_prop\_str 函数
 -----------------------
 
@@ -3347,7 +3367,7 @@ ret_t widget_set_value (widget_t* widget, int32_t value);
 * 函数原型：
 
 ```
-ret_t widget_set_visible (widget_t* widget, bool_t visible, bool_t recursive);
+ret_t widget_set_visible (widget_t* widget, bool_t visible);
 ```
 
 * 参数说明：
@@ -3357,7 +3377,6 @@ ret_t widget_set_visible (widget_t* widget, bool_t visible, bool_t recursive);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | visible | bool\_t | 是否可见。 |
-| recursive | bool\_t | 是否递归设置全部子控件。 |
 #### widget\_set\_visible\_only 函数
 -----------------------
 
@@ -3781,6 +3800,7 @@ ret_t widget_use_style (widget_t* widget, const char* style);
 > <p id="widget_t_auto_adjust_size">是否根据子控件和文本自动调整控件自身大小。
 
 > 为true时，最好不要使用child_layout，否则可能有冲突。
+> 注意：只是调整控件的本身的宽高，不会修改控件本身的位置。
 
 * 类型：bool\_t
 

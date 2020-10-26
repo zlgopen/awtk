@@ -53,20 +53,26 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L4
 | <a href="#text_selector_t_text_selector_get_text">text\_selector\_get\_text</a> | 获取text_selector的文本。 |
 | <a href="#text_selector_t_text_selector_get_value">text\_selector\_get\_value</a> | 获取text_selector的值。 |
 | <a href="#text_selector_t_text_selector_reset_options">text\_selector\_reset\_options</a> | 重置所有选项。 |
+| <a href="#text_selector_t_text_selector_set_localize_options">text\_selector\_set\_localize\_options</a> | 设置是否本地化(翻译)选项。 |
+| <a href="#text_selector_t_text_selector_set_loop_options">text\_selector\_set\_loop\_options</a> | 设置是否循环选项。 |
 | <a href="#text_selector_t_text_selector_set_options">text\_selector\_set\_options</a> | 设置选项。 |
 | <a href="#text_selector_t_text_selector_set_range_options">text\_selector\_set\_range\_options</a> | 设置一系列的整数选项。 |
 | <a href="#text_selector_t_text_selector_set_selected_index">text\_selector\_set\_selected\_index</a> | 设置第index个选项为当前选中的选项。 |
 | <a href="#text_selector_t_text_selector_set_text">text\_selector\_set\_text</a> | 设置text_selector的文本。 |
 | <a href="#text_selector_t_text_selector_set_value">text\_selector\_set\_value</a> | 设置text_selector的值。 |
 | <a href="#text_selector_t_text_selector_set_visible_nr">text\_selector\_set\_visible\_nr</a> | 设置可见的选项数。 |
+| <a href="#text_selector_t_text_selector_set_yspeed_scale">text\_selector\_set\_yspeed\_scale</a> | 设置Y轴偏移速度比例。 |
 ### 属性
 <p id="text_selector_t_properties">
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
+| <a href="#text_selector_t_localize_options">localize\_options</a> | bool\_t | 是否本地化(翻译)选项(缺省为FALSE)。 |
+| <a href="#text_selector_t_loop_options">loop\_options</a> | bool\_t | 是否循环选项(缺省为FALSE)。 |
 | <a href="#text_selector_t_options">options</a> | char* | 设置可选项(冒号分隔值和文本，分号分隔选项，如:1:red;2:green;3:blue)。 |
 | <a href="#text_selector_t_selected_index">selected\_index</a> | int32\_t | 当前选中的选项。 |
 | <a href="#text_selector_t_visible_nr">visible\_nr</a> | uint32\_t | 可见的选项数量(只能是3或者5，缺省为5)。 |
+| <a href="#text_selector_t_yspeed_scale">yspeed\_scale</a> | float\_t | y偏移速度比例。 |
 ### 事件
 <p id="text_selector_t_events">
 
@@ -233,6 +239,46 @@ ret_t text_selector_reset_options (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | text\_selector对象。 |
+#### text\_selector\_set\_localize\_options 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="text_selector_t_text_selector_set_localize_options">设置是否本地化(翻译)选项。
+
+* 函数原型：
+
+```
+ret_t text_selector_set_localize_options (widget_t* widget, bool_t localize_options);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | text\_selector对象。 |
+| localize\_options | bool\_t | 是否本地化(翻译)选项。 |
+#### text\_selector\_set\_loop\_options 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="text_selector_t_text_selector_set_loop_options">设置是否循环选项。
+
+* 函数原型：
+
+```
+ret_t text_selector_set_loop_options (widget_t* widget, bool_t loop_options);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | text\_selector对象。 |
+| loop\_options | bool\_t | 是否循环选项。 |
 #### text\_selector\_set\_options 函数
 -----------------------
 
@@ -355,6 +401,58 @@ ret_t text_selector_set_visible_nr (widget_t* widget, uint32_t visible_nr);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | text\_selector对象。 |
 | visible\_nr | uint32\_t | 选项数。 |
+#### text\_selector\_set\_yspeed\_scale 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="text_selector_t_text_selector_set_yspeed_scale">设置Y轴偏移速度比例。
+
+* 函数原型：
+
+```
+ret_t text_selector_set_yspeed_scale (widget_t* widget, float_t yspeed_scale);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| yspeed\_scale | float\_t | y偏移速度比例。 |
+#### localize\_options 属性
+-----------------------
+> <p id="text_selector_t_localize_options">是否本地化(翻译)选项(缺省为FALSE)。
+
+* 类型：bool\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### loop\_options 属性
+-----------------------
+> <p id="text_selector_t_loop_options">是否循环选项(缺省为FALSE)。
+
+* 类型：bool\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### options 属性
 -----------------------
 > <p id="text_selector_t_options">设置可选项(冒号分隔值和文本，分号分隔选项，如:1:red;2:green;3:blue)。
@@ -394,6 +492,22 @@ ret_t text_selector_set_visible_nr (widget_t* widget, uint32_t visible_nr);
 > <p id="text_selector_t_visible_nr">可见的选项数量(只能是3或者5，缺省为5)。
 
 * 类型：uint32\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### yspeed\_scale 属性
+-----------------------
+> <p id="text_selector_t_yspeed_scale">y偏移速度比例。
+
+* 类型：float\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

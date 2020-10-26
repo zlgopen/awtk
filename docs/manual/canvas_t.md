@@ -9,6 +9,7 @@
 | -------- | ------------ | 
 | <a href="#canvas_t_canvas_begin_frame">canvas\_begin\_frame</a> | 绘制开始。 |
 | <a href="#canvas_t_canvas_cast">canvas\_cast</a> | 转换为canvas对象(供脚本语言使用)。 |
+| <a href="#canvas_t_canvas_clear_rect">canvas\_clear\_rect</a> | 填充矩形。 |
 | <a href="#canvas_t_canvas_draw_hline">canvas\_draw\_hline</a> | 画水平线。 |
 | <a href="#canvas_t_canvas_draw_icon">canvas\_draw\_icon</a> | 绘制图标。 |
 | <a href="#canvas_t_canvas_draw_image">canvas\_draw\_image</a> | 绘制图片。 |
@@ -24,7 +25,7 @@
 | <a href="#canvas_t_canvas_draw_utf8_in_rect">canvas\_draw\_utf8\_in\_rect</a> | 绘制文本。 |
 | <a href="#canvas_t_canvas_draw_vline">canvas\_draw\_vline</a> | 画垂直线。 |
 | <a href="#canvas_t_canvas_end_frame">canvas\_end\_frame</a> | 绘制结束。 |
-| <a href="#canvas_t_canvas_fill_rect">canvas\_fill\_rect</a> | 填充矩形。 |
+| <a href="#canvas_t_canvas_fill_rect">canvas\_fill\_rect</a> | 绘制矩形。 |
 | <a href="#canvas_t_canvas_fill_rounded_rect">canvas\_fill\_rounded\_rect</a> | 填充区域。 |
 | <a href="#canvas_t_canvas_fill_rounded_rect_ex">canvas\_fill\_rounded\_rect\_ex</a> | 填充区域。 |
 | <a href="#canvas_t_canvas_get_clip_rect">canvas\_get\_clip\_rect</a> | 获取裁剪区。 |
@@ -117,6 +118,29 @@ canvas_t* canvas_cast (canvas_t* c);
 | -------- | ----- | --------- |
 | 返回值 | canvas\_t* | canvas对象。 |
 | c | canvas\_t* | canvas对象。 |
+#### canvas\_clear\_rect 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="canvas_t_canvas_clear_rect">填充矩形。
+
+* 函数原型：
+
+```
+ret_t canvas_clear_rect (canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| c | canvas\_t* | canvas对象。 |
+| x | xy\_t | x坐标。 |
+| y | xy\_t | y坐标。 |
+| w | wh\_t | 宽度。 |
+| h | wh\_t | 高度。 |
 #### canvas\_draw\_hline 函数
 -----------------------
 
@@ -456,7 +480,7 @@ ret_t canvas_end_frame (canvas_t* c);
 
 * 函数功能：
 
-> <p id="canvas_t_canvas_fill_rect">填充矩形。
+> <p id="canvas_t_canvas_fill_rect">绘制矩形。
 
 * 函数原型：
 

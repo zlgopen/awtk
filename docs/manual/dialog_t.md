@@ -327,7 +327,7 @@ dialog_quit_code_t dialog_modal (widget_t* widget);
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | dialog\_quit\_code\_t | 返回退出吗。 |
+| 返回值 | dialog\_quit\_code\_t | 返回退出码。 |
 | widget | widget\_t* | dialog对象。 |
 #### dialog\_open 函数
 -----------------------

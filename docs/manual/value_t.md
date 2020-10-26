@@ -24,6 +24,7 @@ value_set_int(&v, 100);
 | <a href="#value_t_value_deep_copy">value\_deep\_copy</a> | 深拷贝value的值。 |
 | <a href="#value_t_value_destroy">value\_destroy</a> | 销毁value对象。 |
 | <a href="#value_t_value_double">value\_double</a> | 获取类型为double的值。 |
+| <a href="#value_t_value_dup_binary_data">value\_dup\_binary\_data</a> | 设置类型为binary_data的值(复制数据)。 |
 | <a href="#value_t_value_dup_str">value\_dup\_str</a> | 设置类型为字符串的值(并拷贝字符串)。 |
 | <a href="#value_t_value_equal">value\_equal</a> | 判断两个value是否相同。 |
 | <a href="#value_t_value_float">value\_float</a> | 获取类型为float\_t的值。 |
@@ -222,6 +223,27 @@ double value_double (value_t* v);
 | -------- | ----- | --------- |
 | 返回值 | double | 值。 |
 | v | value\_t* | value对象。 |
+#### value\_dup\_binary\_data 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="value_t_value_dup_binary_data">设置类型为binary_data的值(复制数据)。
+
+* 函数原型：
+
+```
+value_t* value_dup_binary_data (value_t* v, const void* value, uint32_t size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | value\_t* | value对象本身。 |
+| v | value\_t* | value对象。 |
+| value | const void* | 待设置的值。 |
+| size | uint32\_t | 长度。 |
 #### value\_dup\_str 函数
 -----------------------
 

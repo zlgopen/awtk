@@ -32,6 +32,12 @@
 | <a href="#window_manager_t_window_manager_set_cursor">window\_manager\_set\_cursor</a> | 设置鼠标指针。 |
 | <a href="#window_manager_t_window_manager_set_screen_saver_time">window\_manager\_set\_screen\_saver\_time</a> | 设置屏保时间。 |
 | <a href="#window_manager_t_window_manager_set_show_fps">window\_manager\_set\_show\_fps</a> | 设置是否显示FPS。 |
+### 属性
+<p id="window_manager_t_properties">
+
+| 属性名称 | 类型 | 说明 | 
+| -------- | ----- | ------------ | 
+| <a href="#window_manager_t_global_emitter">global\_emitter</a> | emitter\_t* | 全局事情分发器。 |
 #### window\_manager 函数
 -----------------------
 
@@ -489,3 +495,13 @@ ret_t window_manager_set_show_fps (widget_t* widget, bool_t show_fps);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 窗口管理器对象。 |
 | show\_fps | bool\_t | 是否显示FPS。 |
+#### global\_emitter 属性
+-----------------------
+> <p id="window_manager_t_global_emitter">全局事情分发器。
+
+* 类型：emitter\_t*
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |

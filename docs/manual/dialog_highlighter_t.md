@@ -12,11 +12,14 @@
 | <a href="#dialog_highlighter_t_dialog_highlighter_create">dialog\_highlighter\_create</a> | 创建对话框高亮策略对象。 |
 | <a href="#dialog_highlighter_t_dialog_highlighter_destroy">dialog\_highlighter\_destroy</a> | 销毁对话框高亮策略对象。 |
 | <a href="#dialog_highlighter_t_dialog_highlighter_draw">dialog\_highlighter\_draw</a> | 绘制背景。 |
+| <a href="#dialog_highlighter_t_dialog_highlighter_draw_mask">dialog\_highlighter\_draw\_mask</a> | 绘制背景高亮部分。 |
+| <a href="#dialog_highlighter_t_dialog_highlighter_get_alpha">dialog\_highlighter\_get\_alpha</a> | 获取高亮的透明度。 |
 | <a href="#dialog_highlighter_t_dialog_highlighter_is_dynamic">dialog\_highlighter\_is\_dynamic</a> | 是否是动态绘制(方便外层优化)。 |
 | <a href="#dialog_highlighter_t_dialog_highlighter_prepare">dialog\_highlighter\_prepare</a> | 初始化。在绘制完背景，在截图前调用。 |
 | <a href="#dialog_highlighter_t_dialog_highlighter_prepare_ex">dialog\_highlighter\_prepare\_ex</a> | 初始化。在绘制完背景，在截图前调用。 |
 | <a href="#dialog_highlighter_t_dialog_highlighter_set_bg">dialog\_highlighter\_set\_bg</a> | 设置背景图片。 |
 | <a href="#dialog_highlighter_t_dialog_highlighter_set_bg_clip_rect">dialog\_highlighter\_set\_bg\_clip\_rect</a> | 设置背景图片的显示裁减区。 |
+| <a href="#dialog_highlighter_t_dialog_highlighter_set_system_bar_alpha">dialog\_highlighter\_set\_system\_bar\_alpha</a> | 设置 sytem_bar 的高亮透明值。 |
 ### 属性
 <p id="dialog_highlighter_t_properties">
 
@@ -86,6 +89,47 @@ ret_t dialog_highlighter_draw (dialog_highlighter_t* h, float_t percent);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | h | dialog\_highlighter\_t* | 对话框高亮策略对象。 |
 | percent | float\_t | 动画进度(0-1)，1表示打开已经完成。 |
+#### dialog\_highlighter\_draw\_mask 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="dialog_highlighter_t_dialog_highlighter_draw_mask">绘制背景高亮部分。
+
+* 函数原型：
+
+```
+ret_t dialog_highlighter_draw_mask (dialog_highlighter_t* h, canvas_t* c, float_t percent);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| h | dialog\_highlighter\_t* | 对话框高亮策略对象。 |
+| c | canvas\_t* | 画布。 |
+| percent | float\_t | 高亮的百分比。 |
+#### dialog\_highlighter\_get\_alpha 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="dialog_highlighter_t_dialog_highlighter_get_alpha">获取高亮的透明度。
+
+* 函数原型：
+
+```
+uint8_t dialog_highlighter_get_alpha (dialog_highlighter_t* h, float_t percent);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint8\_t | 返回透明度。 |
+| h | dialog\_highlighter\_t* | 对话框高亮策略对象。 |
+| percent | float\_t | 高亮的百分比。 |
 #### dialog\_highlighter\_is\_dynamic 函数
 -----------------------
 
@@ -186,6 +230,26 @@ ret_t dialog_highlighter_set_bg_clip_rect (dialog_highlighter_t* h, rect_t* clip
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | h | dialog\_highlighter\_t* | 对话框高亮策略对象。 |
 | clip\_rect | rect\_t* | 背景显示裁减区。 |
+#### dialog\_highlighter\_set\_system\_bar\_alpha 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="dialog_highlighter_t_dialog_highlighter_set_system_bar_alpha">设置 sytem_bar 的高亮透明值。
+
+* 函数原型：
+
+```
+ret_t dialog_highlighter_set_system_bar_alpha (dialog_highlighter_t* h, uint8_t alpha);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| h | dialog\_highlighter\_t* | 对话框高亮策略对象。 |
+| alpha | uint8\_t | 设置 sytem\_bar 的高亮透明值。 |
 #### canvas 属性
 -----------------------
 > <p id="dialog_highlighter_t_canvas">画布。
