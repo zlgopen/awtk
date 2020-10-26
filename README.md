@@ -22,7 +22,7 @@
 #### AWTK Designer - the UI design tool:
 
 * It is no longer necessary to write XML by yourself.
-* Design the UI by drag and drop. What you see is what you get.
+* Design the UI by dragging and dropping. What you see is what you get.
 * Support quick preview and pack resources with one-click.
 * Registration and download: https://awtk.zlg.cn
 
@@ -224,7 +224,7 @@ scons
 
 > Please install python (64-bit python shall be installed for a 64-bit system), scons and Visual Studio C++ (version>=2017) first.
 
->  If pywin32 isn't installed, please use pip install:
+>  If pywin32 isn't installed, please use pip to install:
 
 ```
 pip install pywin32
@@ -242,13 +242,13 @@ bin\demoui
 
 ### for all platforms
 
-> If PIL isn't installed, please use pip install:
+> If PIL isn't installed, please use pip to install:
 
 ```
 pip install Pillow
 ```
 
-> If nodejs glob isn't installed, please use npm install:
+> If nodejs glob isn't installed, please use npm to install:
 
 ```
 npm install -g glob
