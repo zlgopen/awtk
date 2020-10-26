@@ -22,6 +22,7 @@
 #include "tkc/mem.h"
 #include "tkc/utils.h"
 #include "conf_io/conf_ini.h"
+#include "tkc/data_writer_factory.h"
 
 typedef enum _parser_state_t {
   STATE_NONE = 0,
