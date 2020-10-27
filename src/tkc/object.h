@@ -53,8 +53,8 @@ struct _object_vtable_t {
   object_remove_prop_t remove_prop;
   object_foreach_prop_t foreach_prop;
   object_can_exec_t can_exec;
-  object_clone_t clone;
   object_exec_t exec;
+  object_clone_t clone;
 };
 
 /**
