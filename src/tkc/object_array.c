@@ -109,11 +109,20 @@ static ret_t object_array_append(object_t* obj, const value_t* v) {
   return RET_OK;
 }
 
+static int32_t object_array_parse_index(const char* name) {
+  if (isdigit(*name)) {
+    return tk_atoi(name);
+  } else if (*name == '[') {
+    return tk_atoi(name + 1);
+  } else {
+    return -1;
+  }
+}
+
 static ret_t object_array_remove_prop(object_t* obj, const char* name) {
   ret_t ret = RET_NOT_FOUND;
-  int32_t index = tk_atoi(name);
+  int32_t index = object_array_parse_index(name);
   object_array_t* o = OBJECT_ARRAY(obj);
-  return_value_if_fail(isdigit(*name), RET_NOT_FOUND);
 
   if (index >= 0 && index < o->props_size) {
     value_t* iter = o->props + index;
@@ -127,7 +136,7 @@ static ret_t object_array_remove_prop(object_t* obj, const char* name) {
 static ret_t object_array_set_prop(object_t* obj, const char* name, const value_t* v) {
   ret_t ret = RET_NOT_FOUND;
   object_array_t* o = OBJECT_ARRAY(obj);
-  int32_t index = tk_atoi(name);
+  int32_t index = object_array_parse_index(name);
   return_value_if_fail(object_array_extend(obj) == RET_OK, RET_OOM);
 
   if (isdigit(*name) && index >= 0 && index < o->props_size) {
@@ -147,11 +156,11 @@ static ret_t object_array_get_prop(object_t* obj, const char* name, value_t* v) 
   ret_t ret = RET_NOT_FOUND;
   object_array_t* o = OBJECT_ARRAY(obj);
 
-  if (tk_str_eq(name, "length") || tk_str_eq(name, "size")) {
+  if (tk_str_eq(name, "length") || tk_str_eq(name, "size") || tk_str_eq(name, "#size")) {
     value_set_int(v, o->props_size);
     ret = RET_OK;
-  } else if (isdigit(*name)) {
-    int32_t index = tk_atoi(name);
+  } else {
+    int32_t index = object_array_parse_index(name);
     if (index >= 0 && index < o->props_size) {
       value_t* iter = o->props + index;
       ret = value_copy(v, iter);
