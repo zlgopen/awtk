@@ -240,6 +240,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_LINE_WRAP "line_wrap"
 
 /**
+ * @const WIDGET_PROP_WORD_WRAP
+ * 是否允许单词中换行。
+ */
+#define WIDGET_PROP_WORD_WRAP "word_wrap"
+
+/**
  * @const WIDGET_PROP_TEXT
  * 文本。
  */

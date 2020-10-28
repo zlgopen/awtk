@@ -90,6 +90,13 @@ typedef struct _label_t {
    * 是否自动换行。
    */
   bool_t line_wrap;
+
+  /**
+   * @property {bool_t} word_wrap
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 是否允许单词中换行。(需要开启自动换行才有效果)
+   */
+  bool_t word_wrap;
 } label_t;
 
 /**
@@ -127,6 +134,17 @@ ret_t label_set_length(widget_t* widget, int32_t length);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t label_set_line_wrap(widget_t* widget, bool_t line_wrap);
+
+/**
+ * @method label_set_word_wrap
+ * 设置是否允许单词中换行。(需要开启自动换行才有效果)
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {bool_t}  word_wrap 是否允许单词中换行。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t label_set_word_wrap(widget_t* widget, bool_t word_wrap);
 
 /**
  * @method label_resize_to_content

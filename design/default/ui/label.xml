@@ -1,17 +1,15 @@
 <window children_layout="default(c=3,r=4)">
-  <label style="left">
+  <label style="left" line_wrap="true" word_wrap="true" >
     <property name="text">
 it
 is
-a
-multi-line
-sample
+a multiline sample
 (left)
     </property>
   </label>
 
   <label style="center" tr_text="multi line text"/>
-  <label style="right" text="it\nis\na\nmulti-line\nsample\n(right)"/>
+  <label style="right" line_wrap="true" text="it\nis\na multiline sample\n(right)"/>
   
   <label style="center_top"  text="it\nis\na\nmulti-line\nsample\n(center_top)"/>
   <label style="center" text="it\nis\na\nmulti-line\nsample\n(center)"/>

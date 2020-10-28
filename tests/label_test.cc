@@ -60,3 +60,13 @@ TEST(Label, line_wrap) {
 
   widget_destroy(l);
 }
+
+TEST(Label, word_wrap) {
+  widget_t* l = label_create(NULL, 10, 20, 30, 40);
+  ASSERT_EQ(LABEL(l)->word_wrap, FALSE);
+  ASSERT_EQ(widget_set_prop_bool(l, WIDGET_PROP_WORD_WRAP, TRUE), RET_OK);
+  ASSERT_EQ(widget_get_prop_bool(l, WIDGET_PROP_WORD_WRAP, FALSE), TRUE);
+  ASSERT_EQ(LABEL(l)->word_wrap, TRUE);
+
+  widget_destroy(l);
+}
