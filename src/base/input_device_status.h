@@ -32,11 +32,11 @@ typedef struct _key_pressed_info_t {
   uint32_t key;
   uint32_t emitted;
   uint64_t time;
- /*
+  /*
   * 窗口切换时，旧窗口按下的键，一直不松开，会持续触发PRESS，可能会干扰新窗口的用户功能。
   * 所在窗口切换时，abort全部已经按下的键，直到按键松开。
   */
-  bool_t should_abort; 
+  bool_t should_abort;
 } key_pressed_info_t;
 
 /**

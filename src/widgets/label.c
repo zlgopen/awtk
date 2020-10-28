@@ -209,9 +209,10 @@ static ret_t label_paint_text(widget_t* widget, canvas_t* c, const wchar_t* str,
   int32_t margin = style_get_int(style, STYLE_ID_MARGIN, 2);
   int32_t w = widget->w - margin - margin;
 
-  return_value_if_fail(label_line_parser_init(&p, c, widget->text.str, widget->text.size,
-                                              c->font_size, w, label->line_wrap, label->word_wrap) == RET_OK,
-                       RET_BAD_PARAMS);
+  return_value_if_fail(
+      label_line_parser_init(&p, c, widget->text.str, widget->text.size, c->font_size, w,
+                             label->line_wrap, label->word_wrap) == RET_OK,
+      RET_BAD_PARAMS);
 
   if (p.total_lines > 1) {
     return label_paint_text_mlines(widget, c, &p);
@@ -294,9 +295,10 @@ ret_t label_resize_to_content(widget_t* widget, uint32_t min_w, uint32_t max_w, 
       tmp_w = max_w - 2 * margin;
     }
   }
-  return_value_if_fail(label_line_parser_init(&p, c, widget->text.str, widget->text.size,
-                                              c->font_size, tmp_w, label->line_wrap, label->word_wrap) == RET_OK,
-                       RET_BAD_PARAMS);
+  return_value_if_fail(
+      label_line_parser_init(&p, c, widget->text.str, widget->text.size, c->font_size, tmp_w,
+                             label->line_wrap, label->word_wrap) == RET_OK,
+      RET_BAD_PARAMS);
 
   h = p.total_lines * line_height + 2 * margin;
   h = tk_clampi(h, min_h, max_h);
@@ -399,9 +401,10 @@ static ret_t label_auto_adjust_size(widget_t* widget) {
     w = tmp_w + 2 * margin;
   }
 
-  return_value_if_fail(label_line_parser_init(&p, c, widget->text.str, widget->text.size,
-                                              c->font_size, tmp_w, label->line_wrap, label->word_wrap) == RET_OK,
-                       RET_BAD_PARAMS);
+  return_value_if_fail(
+      label_line_parser_init(&p, c, widget->text.str, widget->text.size, c->font_size, tmp_w,
+                             label->line_wrap, label->word_wrap) == RET_OK,
+      RET_BAD_PARAMS);
 
   widget->w = w;
   widget->h = line_height * p.total_lines;
@@ -430,7 +433,8 @@ static ret_t label_on_event(widget_t* widget, event_t* e) {
   return RET_OK;
 }
 
-static const char* const s_label_properties[] = {WIDGET_PROP_LENGTH, WIDGET_PROP_LINE_WRAP, WIDGET_PROP_WORD_WRAP, NULL};
+static const char* const s_label_properties[] = {WIDGET_PROP_LENGTH, WIDGET_PROP_LINE_WRAP,
+                                                 WIDGET_PROP_WORD_WRAP, NULL};
 
 TK_DECL_VTABLE(label) = {.size = sizeof(label_t),
                          .type = WIDGET_TYPE_LABEL,

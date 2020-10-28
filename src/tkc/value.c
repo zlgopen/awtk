@@ -430,7 +430,7 @@ ret_t value_deep_copy(value_t* dst, const value_t* src) {
     case VALUE_TYPE_UBJSON: {
       if (src->value.binary_data.data != NULL) {
         uint32_t size = src->value.binary_data.size;
-				void* data = TKMEM_ALLOC(size);
+        void* data = TKMEM_ALLOC(size);
         return_value_if_fail(data != NULL, RET_OOM);
 
         dst->free_handle = TRUE;
@@ -567,7 +567,7 @@ bool_t value_equal(const value_t* v, const value_t* other) {
     case VALUE_TYPE_WSTRING: {
       return (v->value.wstr == other->value.wstr) || tk_wstr_eq(v->value.wstr, other->value.wstr);
     }
-    case VALUE_TYPE_BINARY: 
+    case VALUE_TYPE_BINARY:
     case VALUE_TYPE_UBJSON: {
       return (v->value.binary_data.data == other->value.binary_data.data);
     }
@@ -707,7 +707,7 @@ value_t* value_dup_binary_data(value_t* v, const void* data, uint32_t size) {
   v->value.binary_data.size = size;
   v->free_handle = TRUE;
 
-	return v;
+  return v;
 }
 
 binary_data_t* value_binary_data(const value_t* v) {

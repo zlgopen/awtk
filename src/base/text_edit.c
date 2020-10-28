@@ -296,7 +296,7 @@ static row_info_t* text_edit_single_line_layout_line(text_edit_t* text_edit, uin
   caret_x = caret_text_w;
   caret_left = layout_info->margin_l + caret_x;
   view_left = layout_info->ox + layout_info->margin_l;
-  if ((text_w < layout_info->w) || 
+  if ((text_w < layout_info->w) ||
       (view_left + c->font_size >= caret_left && state->cursor == text->size)) {
     layout_info->ox = 0;
     if (align_h == ALIGN_H_RIGHT) {
