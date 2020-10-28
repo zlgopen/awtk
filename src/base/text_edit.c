@@ -235,7 +235,11 @@ static ret_t text_edit_set_caret_pos(text_edit_impl_t* impl, uint32_t x, uint32_
   }
 
   if (view_right < caret_right || (view_left > caret_left + layout_info->w)) {
-    layout_info->ox = caret_right - layout_info->w;
+    layout_info->ox = caret_right - layout_info->w - layout_info->margin_l;
+  }
+
+  if (layout_info->ox < 0) {
+    layout_info->ox = 0;
   }
 
   if (impl->wrap_word) {
@@ -267,6 +271,8 @@ static row_info_t* text_edit_single_line_layout_line(text_edit_t* text_edit, uin
                                                      uint32_t offset) {
   uint32_t y = 0;
   uint32_t caret_x = 0;
+  uint32_t view_left = 0;
+  uint32_t caret_left = 0;
   DECL_IMPL(text_edit);
   canvas_t* c = GET_CANVAS(text_edit);
   wstr_t* text = &(text_edit->widget->text);
@@ -288,7 +294,10 @@ static row_info_t* text_edit_single_line_layout_line(text_edit_t* text_edit, uin
   layout_info->virtual_h = tk_max(y, layout_info->widget_h);
 
   caret_x = caret_text_w;
-  if (text_w < layout_info->w) {
+  caret_left = layout_info->margin_l + caret_x;
+  view_left = layout_info->ox + layout_info->margin_l;
+  if ((text_w < layout_info->w) || 
+      (view_left + c->font_size >= caret_left && state->cursor == text->size)) {
     layout_info->ox = 0;
     if (align_h == ALIGN_H_RIGHT) {
       caret_x = layout_info->w - (text_w - caret_text_w);
