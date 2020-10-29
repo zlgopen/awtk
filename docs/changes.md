@@ -1,8 +1,11 @@
 # 最新动态
 
+2020/10/29
+  * 完善dialog\_highlighter\_factory\_create\_highlighter （感谢俊杰提供补丁）。
+
 2020/10/28
-  * label 控件增加word\_wrap属性（感谢智明提供补丁）。。
-  * 修复edit光标的bug（感谢智明提供补丁）。。
+  * label 控件增加word\_wrap属性（感谢智明提供补丁）。
+  * 修复edit光标的bug（感谢智明提供补丁）。
 
 2020/10/27
   * 完善object\_array（感谢朝泽提供补丁）。

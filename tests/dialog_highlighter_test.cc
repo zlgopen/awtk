@@ -38,6 +38,13 @@ TEST(DialogHighLigters, start_alpha) {
   dialog_highlighter_destroy(h);
 }
 
+TEST(DialogHighLigters, null) {
+  const char* args = NULL;
+  dialog_highlighter_factory_t* f = dialog_highlighter_factory();
+  dialog_highlighter_t* h = dialog_highlighter_factory_create_highlighter(f, args, NULL);
+  ASSERT_EQ(h == NULL, true);
+}
+
 TEST(DialogHighLigters, end_alpha) {
   const char* args = "default(end_alpha=123)";
   dialog_highlighter_factory_t* f = dialog_highlighter_factory();

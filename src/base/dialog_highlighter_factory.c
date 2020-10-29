@@ -93,7 +93,7 @@ dialog_highlighter_t* dialog_highlighter_factory_create_highlighter(
   dialog_highlighter_t* h = NULL;
   const creator_item_t* iter = NULL;
   return_value_if_fail(factory != NULL, NULL);
-  args_obj = func_call_parse(args, strlen(args));
+  args_obj = func_call_parse(args, tk_strlen(args));
   return_value_if_fail(args_obj != NULL, NULL);
 
   iter = darray_find(&(factory->creators), (void*)args_obj->name);
