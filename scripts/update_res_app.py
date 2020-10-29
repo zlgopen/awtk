@@ -45,7 +45,10 @@ def use_theme_config_from_project_json():
     if len(assets['themes']) == 0:
         return
 
-    if assets['const'] != 'all_data':
+    if 'loadFrom' in assets and assets['loadFrom'] == 'fs':
+        IS_GENERATE_INC_BITMAP = False
+        IS_GENERATE_INC_RES = False
+    elif 'const' in assets and assets['const'] != 'all_data':
         if assets['const'] == 'resource_data':
             IS_GENERATE_INC_BITMAP = False
         else:
@@ -136,11 +139,14 @@ def on_generate_res_event():
 
 
 def run(awtk_root, is_excluded_file_handler = None):
+    global DPI
     global AWTK_ROOT
     global TOOLS_ROOT
     global THEMES
+    global APP_THEME
     global APP_ROOT
     global ASSETS_ROOT
+    global OUTPUT_ROOT
     global IS_GENERATE_INC_RES
     global IS_GENERATE_INC_BITMAP
 
@@ -160,12 +166,13 @@ def run(awtk_root, is_excluded_file_handler = None):
     TOOLS_ROOT = common.join_path(AWTK_ROOT, 'bin')
     AWTK_ROOT = common.join_path(APP_ROOT, AWTK_ROOT)
     ASSETS_ROOT = common.join_path(APP_ROOT, 'design')
-    ASSET_C = common.join_path(APP_ROOT, 'res/assets.inc')
     OUTPUT_ROOT = common.join_path(APP_ROOT, 'res/assets')
-    if action == 'json':
-        ASSET_C = common.join_path(APP_ROOT, 'assets_web.js')
 
     use_default_theme_config()
+
+    ASSET_C = common.join_path(OUTPUT_ROOT, '../assets.inc')
+    if action == 'json':
+        ASSET_C = common.join_path(APP_ROOT, 'assets_web.js')
 
     if not is_dependencies_ok():
         print('For details, please read scripts/README.md.')

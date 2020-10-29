@@ -1,5 +1,7 @@
 # 最新动态
 
+2020/10/30
+  * 完善编译脚本（感谢朝泽提供补丁）。
 2020/10/29
   * 完善dialog\_highlighter\_factory\_create\_highlighter （感谢俊杰提供补丁）。
   * 完善tab button pointer事件处理（感谢智明提供补丁）。
