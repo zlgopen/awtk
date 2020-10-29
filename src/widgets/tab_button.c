@@ -26,18 +26,38 @@
 #include "base/image_manager.h"
 #include "base/widget_vtable.h"
 
+static ret_t tab_button_pointer_up_cleanup(widget_t* widget) {
+  tab_button_t* tab_button = TAB_BUTTON(widget);
+  return_value_if_fail(tab_button != NULL, RET_BAD_PARAMS);
+
+  widget_set_state(widget, WIDGET_STATE_NORMAL);
+  tab_button->pressed = FALSE;
+  widget_ungrab(widget->parent, widget);
+
+  return RET_OK;
+}
+
 static ret_t tab_button_on_event(widget_t* widget, event_t* e) {
   uint16_t type = e->type;
+  tab_button_t* tab_button = TAB_BUTTON(widget);
   switch (type) {
     case EVT_POINTER_DOWN: {
       widget_set_state(widget, WIDGET_STATE_PRESSED);
+      tab_button->pressed = TRUE;
+      widget_grab(widget->parent, widget);
       break;
     }
     case EVT_POINTER_UP: {
-      tab_button_set_value(widget, TRUE);
-      widget_set_state(widget, WIDGET_STATE_NORMAL);
+      pointer_event_t evt = *(pointer_event_t*)e;
+      if (tab_button->pressed && widget_is_point_in(widget, evt.x, evt.y, FALSE)) {
+        tab_button_set_value(widget, TRUE);
+      }
+      tab_button_pointer_up_cleanup(widget);
       break;
     }
+    case EVT_POINTER_DOWN_ABORT:
+      tab_button_pointer_up_cleanup(widget);
+      break;
     case EVT_POINTER_LEAVE:
       widget_set_state(widget, WIDGET_STATE_NORMAL);
       break;
@@ -295,7 +315,7 @@ ret_t tab_button_set_active_icon(widget_t* widget, const char* name) {
   return RET_OK;
 }
 
-static ret_t tab_button_ex_open_idle_func(const idle_info_t* idle) {
+static ret_t tab_button_open_idle_func(const idle_info_t* idle) {
   widget_t* widget = WIDGET(idle->ctx);
   tab_button_t* tab_button = TAB_BUTTON(widget);
   return_value_if_fail(tab_button != NULL && widget != NULL, RET_BAD_PARAMS);
@@ -315,7 +335,7 @@ widget_t* tab_button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 
   tab_button_set_value_only(widget, FALSE);
 
-  idle_add(tab_button_ex_open_idle_func, widget);
+  idle_add(tab_button_open_idle_func, widget);
 
   return widget;
 }

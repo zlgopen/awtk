@@ -119,6 +119,7 @@ typedef struct _tab_button_t {
 
   /*private*/
   widget_t* ui;
+  bool_t pressed;
 } tab_button_t;
 
 /**

@@ -2,6 +2,7 @@
 
 2020/10/29
   * 完善dialog\_highlighter\_factory\_create\_highlighter （感谢俊杰提供补丁）。
+  * 完善tab button pointer事件处理（感谢智明提供补丁）。
 
 2020/10/28
   * label 控件增加word\_wrap属性（感谢智明提供补丁）。
