@@ -4,6 +4,7 @@
   * 完善编译脚本（感谢朝泽提供补丁）。
   * 增加main\_loop\_remove\_event\_source\_by\_tag函数。
   * 完善API注释。
+  * 完善object\_default，支持按序号获取属性。
 
 2020/10/29
   * 完善dialog\_highlighter\_factory\_create\_highlighter （感谢俊杰提供补丁）。

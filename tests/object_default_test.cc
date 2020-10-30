@@ -443,3 +443,18 @@ TEST(ObjectDefault, cmd_events) {
 
   ASSERT_EQ(log, "6:8:8:destroy:");
 }
+
+TEST(ObjectDefault, size) {
+  object_t* obj = object_default_create();
+
+  ASSERT_EQ(object_get_prop_int(obj, OBJECT_PROP_SIZE, 0), 0);
+  ASSERT_EQ(object_set_prop_str(obj, "a", "123"), RET_OK);
+  ASSERT_EQ(object_get_prop_int(obj, OBJECT_PROP_SIZE, 0), 1);
+  ASSERT_EQ(object_set_prop_str(obj, "b", "abc"), RET_OK);
+  ASSERT_EQ(object_get_prop_int(obj, OBJECT_PROP_SIZE, 0), 2);
+
+  ASSERT_STREQ(object_get_prop_str(obj, "[0]"), "123");
+  ASSERT_STREQ(object_get_prop_str(obj, "[1]"), "abc");
+
+  object_unref(obj);
+}

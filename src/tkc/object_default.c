@@ -99,6 +99,15 @@ static int32_t object_default_find(named_value_t* start, uint32_t nr, const char
   int32_t result = 0;
   int32_t high = nr - 1;
   named_value_t* iter = NULL;
+  return_value_if_fail(name != NULL, -1);
+
+  if (name[0] == '[') {
+    int32_t index = tk_atoi(name + 1);
+
+    if (index >= 0 && index < nr) {
+      return index;
+    }
+  }
 
   while (low <= high) {
     mid = low + ((high - low) >> 1);
@@ -171,7 +180,7 @@ static ret_t object_default_remove_prop(object_t* obj, const char* name) {
     }
 
     iter = o->props + index;
-    if (tk_str_eq(iter->name, name)) {
+    if (tk_str_eq(iter->name, name) || *name == '[') {
       named_value_deinit(iter);
       ret = object_default_clean_invalid_props(obj);
     }
@@ -221,6 +230,11 @@ static ret_t object_default_get_prop(object_t* obj, const char* name, value_t* v
   ret_t ret = RET_NOT_FOUND;
   object_default_t* o = OBJECT_DEFAULT(obj);
 
+  if (tk_str_eq(name, OBJECT_PROP_SIZE)) {
+    value_set_uint32(v, o->props_size);
+    return RET_OK;
+  }
+
   if (o->props_size > 0) {
     named_value_t* iter = NULL;
     int32_t index = object_default_find(o->props, o->props_size, name);
@@ -230,7 +244,7 @@ static ret_t object_default_get_prop(object_t* obj, const char* name, value_t* v
     }
 
     iter = o->props + index;
-    if (tk_str_eq(iter->name, name)) {
+    if (tk_str_eq(iter->name, name) || *name == '[') {
       ret = value_copy(v, &(iter->value));
     }
   }
