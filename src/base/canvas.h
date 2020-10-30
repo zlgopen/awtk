@@ -408,7 +408,9 @@ ret_t canvas_fill_rect(canvas_t* c, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
  * @method canvas_clear_rect
- * 填充矩形。
+ * 用填充颜色填充指定矩形。
+ * 
+ *> 如果lcd的颜色格式带alpha通道，连同alpha的值一起修改。
  *
  * @annotation ["scriptable"]
  * @param {canvas_t*} c canvas对象。
