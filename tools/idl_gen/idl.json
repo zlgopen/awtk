@@ -8097,6 +8097,22 @@
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
         }
+      },
+      {
+        "params": [
+          {
+            "type": "input_device_status_t*",
+            "name": "ids",
+            "desc": "输入设备状态管理器对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "取消全部已经按下的键。\n\n窗口切换时，旧窗口按下的键，一直不松开，会持续触发PRESS，可能会干扰新窗口的用户功能。\n所在窗口切换时，abort全部已经按下的键，直到按键松开。",
+        "name": "input_device_status_abort_all_pressed_keys",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
       }
     ],
     "events": [],
@@ -11552,6 +11568,27 @@
         "annotation": {},
         "desc": "删除event_source。",
         "name": "main_loop_remove_event_source",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "main_loop_t*",
+            "name": "l",
+            "desc": "main_loop对象。"
+          },
+          {
+            "type": "void*",
+            "name": "tag",
+            "desc": "tag。"
+          }
+        ],
+        "annotation": {},
+        "desc": "删除event_source。",
+        "name": "main_loop_remove_event_source_by_tag",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -17937,6 +17974,10 @@
       {
         "desc": "自动换行。",
         "name": "WIDGET_PROP_LINE_WRAP"
+      },
+      {
+        "desc": "是否允许单词中换行。",
+        "name": "WIDGET_PROP_WORD_WRAP"
       },
       {
         "desc": "文本。",
@@ -42386,6 +42427,29 @@
             "desc": "控件对象。"
           },
           {
+            "type": "bool_t",
+            "name": "word_wrap",
+            "desc": "是否允许单词中换行。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置是否允许单词中换行。(需要开启自动换行才有效果)",
+        "name": "label_set_word_wrap",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
             "type": "uint32_t",
             "name": "min_w",
             "desc": "最小宽度。"
@@ -42454,6 +42518,19 @@
       {
         "name": "line_wrap",
         "desc": "是否自动换行。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "word_wrap",
+        "desc": "是否允许单词中换行。(需要开启自动换行才有效果)",
         "type": "bool_t",
         "annotation": {
           "set_prop": true,

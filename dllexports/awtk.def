@@ -314,6 +314,7 @@ EXPORTS
     image_manager_destroy
     input_device_status_init
     input_device_status_on_input_event
+    input_device_status_abort_all_pressed_keys
     input_engine_create
     input_engine_destroy
     input_engine_reset_input
@@ -422,6 +423,7 @@ EXPORTS
     main_loop
     main_loop_add_event_source
     main_loop_remove_event_source
+    main_loop_remove_event_source_by_tag
     waitable_action_queue_create
     waitable_action_queue_recv
     waitable_action_queue_send
@@ -1501,6 +1503,7 @@ EXPORTS
     label_create
     label_set_length
     label_set_line_wrap
+    label_set_word_wrap
     label_resize_to_content
     label_cast
     group_box_create

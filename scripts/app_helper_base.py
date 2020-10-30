@@ -379,6 +379,9 @@ class AppHelperBase:
         APP_TOOLS = self.APP_TOOLS
         CXXFLAGS = self.APP_CXXFLAGS
 
+        if self.TKC_ONLY:
+            CCFLAGS += ' -DTKC_ONLY=1 '
+
         for iter in self.DEPENDS_LIBS:
             if 'shared_libs' in iter:
                 LIBS = iter['shared_libs'] + LIBS

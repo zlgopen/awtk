@@ -110,6 +110,16 @@ ret_t main_loop_add_event_source(main_loop_t* l, event_source_t* source);
  */
 ret_t main_loop_remove_event_source(main_loop_t* l, event_source_t* source);
 
+/**
+ * @method main_loop_remove_event_source_by_tag
+ * 删除event_source。
+ * @param {main_loop_t*} l main_loop对象。
+ * @param {void*} tag tag。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t main_loop_remove_event_source_by_tag(main_loop_t* l, void* tag);
+
 END_C_DECLS
 
 #endif /*TK_MAIN_LOOP_H*/
