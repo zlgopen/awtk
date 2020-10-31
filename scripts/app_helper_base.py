@@ -381,6 +381,8 @@ class AppHelperBase:
 
         if self.TKC_ONLY:
             CCFLAGS += ' -DTKC_ONLY=1 '
+        else:
+            CCFLAGS += ' -DWITH_AWTK=1 '
 
         for iter in self.DEPENDS_LIBS:
             if 'shared_libs' in iter:
