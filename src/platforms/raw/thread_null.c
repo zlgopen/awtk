@@ -61,6 +61,3 @@ ret_t tk_thread_destroy(tk_thread_t* thread) {
   return RET_NOT_IMPL;
 }
 
-uint64_t tk_thread_self(void) {
-  return (uint64_t)0;
-}
