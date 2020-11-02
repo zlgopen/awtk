@@ -2,6 +2,7 @@
 
 2020/11/02
   * 修改system info中的内存泄露（感谢朝泽提供补丁）。
+  * image/tab\_button支持space/return触发click事件。
 
 2020/10/30
   * 完善编译脚本（感谢朝泽提供补丁）。

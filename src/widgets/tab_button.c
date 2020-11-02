@@ -286,6 +286,8 @@ static ret_t tab_button_on_destroy(widget_t* widget) {
 static const char* s_tab_button_clone_properties[] = {WIDGET_PROP_VALUE, NULL};
 TK_DECL_VTABLE(tab_button) = {.size = sizeof(tab_button_t),
                               .type = WIDGET_TYPE_TAB_BUTTON,
+                              .space_key_to_activate = TRUE,
+                              .return_key_to_activate = TRUE,
                               .clone_properties = s_tab_button_clone_properties,
                               .parent = TK_PARENT_VTABLE(widget),
                               .create = tab_button_create,

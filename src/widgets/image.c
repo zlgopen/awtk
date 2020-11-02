@@ -120,6 +120,8 @@ static ret_t image_on_copy(widget_t* widget, widget_t* other) {
 
 TK_DECL_VTABLE(image) = {.size = sizeof(image_t),
                          .type = WIDGET_TYPE_IMAGE,
+                         .space_key_to_activate = TRUE,
+                         .return_key_to_activate = TRUE,
                          .clone_properties = s_image_properties,
                          .persistent_properties = s_image_properties,
                          .parent = TK_PARENT_VTABLE(image_base),
