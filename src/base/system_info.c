@@ -151,8 +151,14 @@ static ret_t system_info_normalize_app_root(system_info_t* info, const char* app
   return RET_FAIL;
 }
 #else
+ret_t system_info_set_app_root(system_info_t* info, const char* app_root) {
+  info->app_root = tk_str_copy(info->app_root, app_root);
+
+  return RET_OK;
+}
+
 static ret_t system_info_normalize_app_root(system_info_t* info, const char* app_root_default) {
-  info->app_root = tk_strdup(app_root_default);
+  info->app_root = tk_str_copy(info->app_root, app_root_default);
 
   return RET_OK;
 }
