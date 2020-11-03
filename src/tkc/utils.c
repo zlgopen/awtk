@@ -493,6 +493,45 @@ ret_t filename_to_name(const char* filename, char* str, uint32_t size) {
 }
 
 #define INCLUDE_XML "<?include"
+#define TAG_PROPERTY "property"
+#define CHAR_DOUDLE_QUOTE '\"'
+#define CHAR_SINGLE_QUOTE '\''
+
+typedef enum _xml_property_close_state_t {
+  XML_PROPERTY_CLOSE_STATE_CLOSE = 0x0,
+  XML_PROPERTY_CLOSE_STATE_OPEN_PROPERTY,
+  XML_PROPERTY_CLOSE_STATE_OPEN_DOUDLE_QUOTE,
+  XML_PROPERTY_CLOSE_STATE_OPEN_SINGLE_QUOTE,
+} xml_property_close_state_t;
+
+static bool_t xml_property_is_close(const char* start, const char* end)  {
+  const char* tmp = start;
+  xml_property_close_state_t close_state = XML_PROPERTY_CLOSE_STATE_CLOSE;
+
+  while (tmp != end) {
+    if (*tmp == CHAR_DOUDLE_QUOTE) {
+      if (close_state == XML_PROPERTY_CLOSE_STATE_OPEN_DOUDLE_QUOTE) {
+        close_state = XML_PROPERTY_CLOSE_STATE_CLOSE;
+      } else if (close_state == XML_PROPERTY_CLOSE_STATE_CLOSE) {
+        close_state = XML_PROPERTY_CLOSE_STATE_OPEN_DOUDLE_QUOTE;
+      }
+    } else if (*tmp == CHAR_SINGLE_QUOTE) {
+      if (close_state == XML_PROPERTY_CLOSE_STATE_OPEN_SINGLE_QUOTE) {
+        close_state = XML_PROPERTY_CLOSE_STATE_CLOSE;
+      } else if (close_state == XML_PROPERTY_CLOSE_STATE_CLOSE) {
+        close_state = XML_PROPERTY_CLOSE_STATE_OPEN_SINGLE_QUOTE;
+      }
+    } else if (strstr(tmp, TAG_PROPERTY) == tmp) {
+      if (close_state == XML_PROPERTY_CLOSE_STATE_OPEN_PROPERTY) {
+        close_state = XML_PROPERTY_CLOSE_STATE_CLOSE;
+      } else if (close_state == XML_PROPERTY_CLOSE_STATE_CLOSE) {
+        close_state = XML_PROPERTY_CLOSE_STATE_OPEN_PROPERTY;
+      }
+    }
+    tmp++;
+  }
+  return close_state == XML_PROPERTY_CLOSE_STATE_CLOSE;
+}
 
 ret_t xml_file_expand(const char* filename, str_t* s, const char* data) {
   str_t ss;
@@ -503,6 +542,12 @@ ret_t xml_file_expand(const char* filename, str_t* s, const char* data) {
 
   str_init(&ss, 1024);
   while (p != NULL) {
+    
+    /* 过滤在属性中的 INCLUDE_XML */
+    if (!xml_property_is_close(start, p)) {
+      break;
+    }
+
     str_set(&ss, "");
     str_append_with_len(s, start, p - start);
 
