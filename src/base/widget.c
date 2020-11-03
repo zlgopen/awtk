@@ -1572,11 +1572,27 @@ static ret_t widget_on_grabbed_keys(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static widget_t* widget_get_top_widget_grab_key(widget_t* widget) {
+  return_value_if_fail(widget != NULL, NULL);
+  WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
+  value_t v;
+  widget_t* widget_grab_key = widget_get_top_widget_grab_key(iter);
+  if (widget_grab_key == NULL && iter != NULL && iter->visible) {
+    ret_t ret = object_get_prop(iter->custom_props, WIDGET_PROP_GRAB_KEYS, &v);
+    if (ret == RET_OK && value_bool(&v)) {
+      return iter;
+    }
+  }
+  WIDGET_FOR_EACH_CHILD_END();
+
+  return NULL;
+}
+
 static ret_t widget_on_ungrab_keys(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   window_manager_t* wm = WINDOW_MANAGER(widget_get_window_manager(widget));
 
-  emitter_off_by_tag(wm->global_emitter, tk_pointer_to_int(widget));
+  wm->widget_grab_key = widget_get_top_widget_grab_key(WIDGET(wm));
 
   return RET_REMOVE;
 }
@@ -1674,10 +1690,7 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
 
         if (value_bool(v)) {
           widget_on(widget, EVT_DESTROY, widget_on_ungrab_keys, widget);
-          emitter_on_with_tag(wm->global_emitter, EVT_KEY_DOWN, widget_on_grabbed_keys, widget,
-                              tk_pointer_to_int(widget));
-          emitter_on_with_tag(wm->global_emitter, EVT_KEY_UP, widget_on_grabbed_keys, widget,
-                              tk_pointer_to_int(widget));
+          wm->widget_grab_key = widget;
         }
       }
 

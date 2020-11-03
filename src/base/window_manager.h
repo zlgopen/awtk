@@ -99,6 +99,7 @@ typedef struct _window_manager_t {
 
   /*private*/
   bool_t show_fps;
+  widget_t* widget_grab_key;
   bool_t ignore_input_events;
   bool_t show_waiting_pointer_cursor;
   const window_manager_vtable_t* vt;

@@ -256,6 +256,7 @@ static ret_t input_device_status_init_key_event(input_device_status_t* ids, key_
 }
 
 ret_t input_device_status_on_input_event(input_device_status_t* ids, widget_t* widget, event_t* e) {
+  window_manager_t* wm = WINDOW_MANAGER(widget_get_window_manager(widget));
   return_value_if_fail(ids != NULL && e != NULL, RET_BAD_PARAMS);
 
   ids->widget = widget;
@@ -316,7 +317,11 @@ ret_t input_device_status_on_input_event(input_device_status_t* ids, widget_t* w
       input_device_status_shift_key(ids, evt);
 
       if (info == NULL || !info->should_abort) {
-        widget_on_keydown(widget, evt);
+        if (wm->widget_grab_key != NULL) {
+          widget_on_keydown(wm->widget_grab_key, evt);
+        } else {
+          widget_on_keydown(widget, evt);
+        }
       }
       break;
     }
@@ -328,7 +333,11 @@ ret_t input_device_status_on_input_event(input_device_status_t* ids, widget_t* w
       input_device_status_shift_key(ids, evt);
 
       if (info == NULL || !info->should_abort) {
-        widget_on_keyup(widget, evt);
+        if (wm->widget_grab_key != NULL) {
+          widget_on_keyup(wm->widget_grab_key, evt);
+        } else {
+          widget_on_keyup(widget, evt);
+        }
       }
 
       input_device_status_update_key_status(ids, evt->key, FALSE);
