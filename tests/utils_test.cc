@@ -236,6 +236,7 @@ TEST(Utils, xml_file_expand) {
   str_replace(&s, "\r\n", "\n");
   ASSERT_EQ(string(s.str), "<window><mledit><property name=\"text\"><?include filename=\"button.xml\"?></property></mledit><label />\n</window>");
 
+  str_reset(&s);
 }
 
 TEST(Utils, xml_file_expand_read) {
