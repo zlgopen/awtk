@@ -50,9 +50,14 @@ static ret_t tab_button_on_event(widget_t* widget, event_t* e) {
     case EVT_POINTER_UP: {
       pointer_event_t evt = *(pointer_event_t*)e;
       if (tab_button->pressed && widget_is_point_in(widget, evt.x, evt.y, FALSE)) {
-        tab_button_set_value(widget, TRUE);
+        evt.e.type = EVT_CLICK;
+        widget_dispatch(widget, (event_t*)&(evt));
       }
       tab_button_pointer_up_cleanup(widget);
+      break;
+    }
+    case EVT_CLICK: {
+      tab_button_set_value(widget, TRUE);
       break;
     }
     case EVT_POINTER_DOWN_ABORT:
