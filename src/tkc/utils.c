@@ -504,7 +504,7 @@ typedef enum _xml_property_close_state_t {
   XML_PROPERTY_CLOSE_STATE_OPEN_SINGLE_QUOTE,
 } xml_property_close_state_t;
 
-static bool_t xml_property_is_close(const char* start, const char* end) {
+static xml_property_close_state_t xml_property_get_close_state(const char* start, const char* end) {
   const char* tmp = start;
   xml_property_close_state_t close_state = XML_PROPERTY_CLOSE_STATE_CLOSE;
 
@@ -530,7 +530,7 @@ static bool_t xml_property_is_close(const char* start, const char* end) {
     }
     tmp++;
   }
-  return close_state == XML_PROPERTY_CLOSE_STATE_CLOSE;
+  return close_state;
 }
 
 ret_t xml_file_expand(const char* filename, str_t* s, const char* data) {
@@ -543,33 +543,52 @@ ret_t xml_file_expand(const char* filename, str_t* s, const char* data) {
   str_init(&ss, 1024);
   while (p != NULL) {
     /* 过滤在属性中的 INCLUDE_XML */
-    if (!xml_property_is_close(start, p)) {
-      break;
-    }
+    xml_property_close_state_t close_state = xml_property_get_close_state(start, p);
+    if (close_state == XML_PROPERTY_CLOSE_STATE_CLOSE) {
+      str_set(&ss, "");
+      str_append_with_len(s, start, p - start);
 
-    str_set(&ss, "");
-    str_append_with_len(s, start, p - start);
-
-    /*<include filename="subfilename">*/
-    while (*p != '\"' && *p != '\0') {
+      /*<include filename="subfilename">*/
+      while (*p != '\"' && *p != '\0') {
+        p++;
+      }
+      return_value_if_fail(*p == '\"', RET_FAIL);
       p++;
-    }
-    return_value_if_fail(*p == '\"', RET_FAIL);
-    p++;
-    while (*p != '\"' && *p != '\0') {
-      str_append_char(&ss, *p++);
-    }
-    return_value_if_fail(*p == '\"', RET_FAIL);
-    while (*p != '>' && *p != '\0') {
+      while (*p != '\"' && *p != '\0') {
+        str_append_char(&ss, *p++);
+      }
+      return_value_if_fail(*p == '\"', RET_FAIL);
+      while (*p != '>' && *p != '\0') {
+        p++;
+      }
+      return_value_if_fail(*p == '>', RET_FAIL);
       p++;
+
+      path_replace_basename(subfilename, MAX_PATH, filename, ss.str);
+      xml_file_expand_read(subfilename, &ss);
+
+      str_append(s, ss.str);
+    } else {
+      int size = 0;
+      char* str_end = NULL;
+      char* include_string_end = strstr(p, "?>");
+      if (close_state == XML_PROPERTY_CLOSE_STATE_OPEN_PROPERTY) {
+        str_end = TAG_PROPERTY;
+        size = tk_strlen(TAG_PROPERTY);
+      } else if (close_state == XML_PROPERTY_CLOSE_STATE_OPEN_SINGLE_QUOTE) {
+        size = 1;
+        str_end = "\'";
+      } else if (close_state == XML_PROPERTY_CLOSE_STATE_OPEN_DOUDLE_QUOTE) {
+        size = 1;
+        str_end = "\"";
+      }
+      if (str_end == NULL) {
+        log_error("do not find close property string !");
+      } else {
+        p = strstr(include_string_end, str_end) + size;
+        str_append_with_len(s, start, p - start);
+      }
     }
-    return_value_if_fail(*p == '>', RET_FAIL);
-    p++;
-
-    path_replace_basename(subfilename, MAX_PATH, filename, ss.str);
-    xml_file_expand_read(subfilename, &ss);
-
-    str_append(s, ss.str);
 
     start = p;
     p = strstr(start, INCLUDE_XML);

@@ -598,6 +598,9 @@ ret_t image_region_parse(uint32_t img_w, uint32_t img_h, const char* region, rec
 
 const char* tk_normalize_key_name(const char* name, char fixed_name[TK_NAME_LEN + 1]);
 
+/*public for test*/
+ret_t xml_file_expand(const char* filename, str_t* s, const char* data);
+
 END_C_DECLS
 
 #endif /*TK_UTILS_H*/
