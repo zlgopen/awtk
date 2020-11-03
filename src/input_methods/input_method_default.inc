@@ -184,6 +184,7 @@ static ret_t input_type_open_keyboard(input_method_t* im, const char* keyboard_n
   point_t p = {0, 0};
   widget_t* widget = im->widget;
   widget_t* win = widget_get_window(widget);
+  bool_t win_is_keyboard = widget_is_keyboard(win);
   const char* close_anim_hint = WINDOW_ANIMATOR_POPUP;
   const char* open_anim_hint = open_anim ? close_anim_hint : "";
 
@@ -214,7 +215,7 @@ static ret_t input_type_open_keyboard(input_method_t* im, const char* keyboard_n
     }
     open_anim_hint = close_anim_hint;
     widget_on(im->keyboard, EVT_WINDOW_OPEN, on_push_window, im);
-  } else if ((win->y + win->h) < im->keyboard->y) {
+  } else if (win_is_keyboard && (win->y + win->h) < im->keyboard->y) {
     /*when new keyboard height is not eq old keyboard height*/
     close_anim_hint = "vtranslate";
     im->win_delta_y += win->y + win->h - im->keyboard->y;
