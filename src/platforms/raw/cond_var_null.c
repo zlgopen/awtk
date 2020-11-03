@@ -49,4 +49,3 @@ ret_t tk_cond_wait_timeout(tk_cond_t* cond, tk_mutex_t* mutex, uint32_t ms) {
 ret_t tk_cond_wait(tk_cond_t* cond, tk_mutex_t* mutex) {
   return RET_NOT_IMPL;
 }
-

@@ -504,7 +504,7 @@ typedef enum _xml_property_close_state_t {
   XML_PROPERTY_CLOSE_STATE_OPEN_SINGLE_QUOTE,
 } xml_property_close_state_t;
 
-static bool_t xml_property_is_close(const char* start, const char* end)  {
+static bool_t xml_property_is_close(const char* start, const char* end) {
   const char* tmp = start;
   xml_property_close_state_t close_state = XML_PROPERTY_CLOSE_STATE_CLOSE;
 
@@ -542,7 +542,6 @@ ret_t xml_file_expand(const char* filename, str_t* s, const char* data) {
 
   str_init(&ss, 1024);
   while (p != NULL) {
-    
     /* 过滤在属性中的 INCLUDE_XML */
     if (!xml_property_is_close(start, p)) {
       break;

@@ -60,4 +60,3 @@ ret_t tk_thread_join(tk_thread_t* thread) {
 ret_t tk_thread_destroy(tk_thread_t* thread) {
   return RET_NOT_IMPL;
 }
-
