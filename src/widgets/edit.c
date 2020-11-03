@@ -619,6 +619,14 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
     if (app_type != APP_DESKTOP && app_type != APP_MOBILE) {
       edit_input_char(widget, (wchar_t)key);
     }
+  } else {
+    if (widget->emitter != NULL) {
+      void* saved_target = e->e.target;
+
+      e->e.target = widget;
+      emitter_dispatch(widget->emitter, (event_t*)e);
+      e->e.target = saved_target;
+    }
   }
 
   return RET_STOP;
