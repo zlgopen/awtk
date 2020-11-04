@@ -401,6 +401,7 @@ class AppHelperBase:
                 LD=awtk.LD,
                 AR=awtk.AR,
                 STRIP=awtk.STRIP,
+                RANLIB=awtk.RANLIB,
                 TOOLS=APP_TOOLS,
                 CPPPATH=CPPPATH,
                 LINKFLAGS=LINKFLAGS,
