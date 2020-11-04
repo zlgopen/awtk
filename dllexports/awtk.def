@@ -463,6 +463,7 @@ EXPORTS
     assets_manager_unref
     assets_manager_find_in_cache
     assets_manager_load
+    assets_manager_unload
     assets_manager_preload
     assets_manager_set_loader
     assets_manager_set_custom_build_asset_dir
@@ -1438,6 +1439,7 @@ EXPORTS
     asset_info_destroy
     asset_info_unref
     asset_info_ref
+    asset_info_get_formatted_name
     action_thread_create
     action_thread_create_with_queue
     action_thread_exec

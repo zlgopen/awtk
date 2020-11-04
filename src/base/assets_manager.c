@@ -459,6 +459,18 @@ asset_info_t* assets_manager_load(assets_manager_t* am, asset_type_t type, const
   return assets_manager_load_impl(am, type, name);
 }
 
+ret_t assets_manager_unload(assets_manager_t* am, asset_type_t type, const char* name) {
+  return_value_if_fail(am != NULL && name != NULL, RET_BAD_PARAMS);
+
+  const asset_info_t* info = assets_manager_find_in_cache(am, type, name);
+
+  if (info != NULL) {
+    return assets_manager_unref(am, info);
+  }
+
+  return RET_OK;
+}
+
 ret_t assets_manager_set(assets_manager_t* am) {
   s_assets_manager = am;
 
@@ -552,15 +564,18 @@ ret_t assets_manager_add_data(assets_manager_t* am, const char* name, uint16_t t
 const asset_info_t* assets_manager_find_in_cache(assets_manager_t* am, asset_type_t type,
                                                  const char* name) {
   uint32_t i = 0;
+  const char* assets_name = NULL;
   const asset_info_t* iter = NULL;
   const asset_info_t** all = NULL;
   return_value_if_fail(am != NULL && name != NULL, NULL);
+
+  assets_name = asset_info_get_formatted_name(name);
 
   all = (const asset_info_t**)(am->assets.elms);
 
   for (i = 0; i < am->assets.size; i++) {
     iter = all[i];
-    if (type == iter->type && strcmp(name, iter->name) == 0) {
+    if (type == iter->type && strcmp(assets_name, iter->name) == 0) {
       return iter;
     }
   }

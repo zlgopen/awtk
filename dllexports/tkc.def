@@ -143,6 +143,7 @@ EXPORTS
     asset_info_destroy
     asset_info_unref
     asset_info_ref
+    asset_info_get_formatted_name
     async_call
     async_call_init
     async_call_deinit

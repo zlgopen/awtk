@@ -3466,6 +3466,22 @@
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
         }
+      },
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "未格式化名字。"
+          }
+        ],
+        "annotation": {},
+        "desc": "把资源名字格式化为符合标准长度的字符串。",
+        "name": "asset_info_get_formatted_name",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回格式化后的名字。"
+        }
       }
     ],
     "events": [],

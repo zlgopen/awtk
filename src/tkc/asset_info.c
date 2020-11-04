@@ -22,9 +22,25 @@
 #include "tkc/mem.h"
 #include "tkc/asset_info.h"
 
+const char* asset_info_get_formatted_name(const char* name) {
+  uint32_t len = 0;
+  return_value_if_fail(name != NULL, NULL);
+  len = tk_strlen(name);
+  if (len < TK_NAME_LEN) {
+    return name;
+  } else {
+    uint32_t p = len - TK_NAME_LEN;
+    return name + p;
+  }
+}
+
 asset_info_t* asset_info_create(uint16_t type, uint16_t subtype, const char* name, int32_t size) {
+  asset_info_t* info = NULL;
   uint32_t total = sizeof(asset_info_t) + size + 1;
-  asset_info_t* info = TKMEM_ALLOC(total);
+  const char* asset_name = asset_info_get_formatted_name(name);
+  return_value_if_fail(asset_name != NULL, NULL);
+
+  info = TKMEM_ALLOC(total);
   return_value_if_fail(info != NULL, NULL);
 
   memset(info, 0x00, total);
@@ -34,7 +50,11 @@ asset_info_t* asset_info_create(uint16_t type, uint16_t subtype, const char* nam
   info->subtype = subtype;
   info->refcount = 1;
   info->is_in_rom = FALSE;
-  strncpy(info->name, name, TK_NAME_LEN);
+  strncpy(info->name, asset_name, TK_NAME_LEN);
+
+  if(asset_name != name) {
+    log_warn("[warn] asset name max length is %d , so old name : \"%s\" format to new name : \"%s\" !", TK_NAME_LEN + 1, name, asset_name);
+  }
 
   return info;
 }

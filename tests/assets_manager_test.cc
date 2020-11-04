@@ -38,6 +38,41 @@ TEST(AssetsManager, file_image) {
   assets_manager_destroy(rm);
 }
 
+#include "tkc/path.h"
+#include "tkc/utils.h"
+#include "base/system_info.h"
+
+TEST(AssetsManager, long_name) {
+  asset_info_t* r = NULL;
+  const char* ratio = "x1";
+  char path[MAX_PATH] = {0};
+  const char* name = "earth.png";
+  system_info_t* sysinfo = system_info();
+  uint32_t len = tk_strlen(STR_SCHEMA_FILE);
+  assets_manager_t* am = assets_manager_create(10);
+  const char* res_root = assets_manager_get_res_root(am);
+
+  if (sysinfo->device_pixel_ratio >= 3) {
+    ratio = "x3";
+  } else if (sysinfo->device_pixel_ratio >= 2) {
+    ratio = "x2";
+  }
+
+  tk_str_append(path, MAX_PATH, STR_SCHEMA_FILE);
+  path_build(path + len, MAX_PATH - len, res_root, "assets", "default", "raw", "images", ratio, NULL);
+  tk_str_append(path, MAX_PATH, "/");
+  tk_str_append(path, MAX_PATH, name);
+
+  r = assets_manager_load(am, ASSET_TYPE_IMAGE, path);
+  ASSERT_EQ(r != NULL, true);
+  ASSERT_EQ(assets_manager_find_in_cache(am, ASSET_TYPE_IMAGE, path) != NULL, true);
+  ASSERT_EQ(asset_info_unref(r), RET_OK);
+  ASSERT_EQ(assets_manager_unload(am, ASSET_TYPE_IMAGE, path), RET_OK);
+  ASSERT_EQ(assets_manager_find_in_cache(am, ASSET_TYPE_IMAGE, path) == NULL, true);
+
+  assets_manager_destroy(am);
+}
+
 TEST(AssetsManager, file_script) {
   const asset_info_t* r = NULL;
   assets_manager_t* rm = assets_manager_create(10);

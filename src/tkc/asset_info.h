@@ -353,6 +353,17 @@ ret_t asset_info_unref(asset_info_t* info);
  */
 ret_t asset_info_ref(asset_info_t* info);
 
+/**
+ * @method asset_info_get_formatted_name
+ *
+ * 把资源名字格式化为符合标准长度的字符串。
+ *
+ * @param {const char*} name 未格式化名字。
+ *
+ * @return {ret_t} 返回格式化后的名字。
+ */
+const char* asset_info_get_formatted_name(const char* name);
+
 END_C_DECLS
 
 #endif /*TK_ASSET_INFO_H*/
