@@ -64,7 +64,7 @@ cd -
 ### 7. 更新绑定代码
 
 ```
-https://github.com/zlgopen/awtk-binding
+git clone https://github.com/zlgopen/awtk-binding
 cd awtk-binding
 ./gen.sh
 cd -
@@ -73,6 +73,7 @@ cd -
 ### 8. 同步绑定代码到需要的语言
 
 ```
+git clone https://github.com/zlgopen/awtk-jerryscript
 cd awtk-jerryscript
 ./sync.sh
 scons
@@ -81,3 +82,4 @@ scons
 ### 9. 注意
 
  * 开发应用程序时记得拷贝自定义控件的 style 到资源中。
+ * 如果代码下载太慢，可以从fastgit下载。
