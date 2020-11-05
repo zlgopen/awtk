@@ -144,14 +144,15 @@ ret_t ubjson_writer_write_int32(ubjson_writer_t* writer, int32_t value) {
 }
 
 ret_t ubjson_writer_write_int(ubjson_writer_t* writer, int32_t value) {
-  if (value < 128) {
+  if (tk_abs(value) < 128) {
     return ubjson_writer_write_int8(writer, (int8_t)value);
-  } else if (value < 30000) {
+  } else if (tk_abs(value) < 32768) {
     return ubjson_writer_write_int16(writer, (int16_t)value);
   } else {
     return ubjson_writer_write_int32(writer, value);
   }
 }
+
 ret_t ubjson_writer_write_int64(ubjson_writer_t* writer, int64_t value) {
   return_value_if_fail(writer != NULL, RET_BAD_PARAMS);
   return_value_if_fail(ubjson_writer_write_marker(writer, UBJSON_MARKER_INT64) == RET_OK, RET_OOM);
