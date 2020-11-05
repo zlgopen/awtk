@@ -229,7 +229,12 @@ typedef enum _ret_t {
    * @const RET_EOS
    * End of Stream
    */
-  RET_EOS
+  RET_EOS,
+  /**
+   * @const RET_NOT_MODIFIED
+   * 没有改变。
+   */
+  RET_NOT_MODIFIED,
 } ret_t;
 
 #include "tkc/log.h"

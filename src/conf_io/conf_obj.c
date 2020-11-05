@@ -36,6 +36,7 @@ typedef struct _conf_obj_t {
   conf_doc_save_t save;
   conf_doc_load_t load;
   bool_t readonly;
+  bool_t modified;
 } conf_obj_t;
 
 static conf_obj_t* conf_obj_cast(object_t* obj);
@@ -45,6 +46,7 @@ static ret_t conf_obj_move_up(object_t* obj, const char* name) {
   conf_obj_t* o = CONF_OBJ(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
+  o->modified = TRUE;
   return conf_doc_move_up(o->doc, name);
 }
 
@@ -52,6 +54,7 @@ static ret_t conf_obj_move_down(object_t* obj, const char* name) {
   conf_obj_t* o = CONF_OBJ(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
+  o->modified = TRUE;
   return conf_doc_move_down(o->doc, name);
 }
 
@@ -63,6 +66,7 @@ static ret_t conf_obj_remove_prop(object_t* obj, const char* name) {
     return RET_NOT_IMPL;
   }
 
+  o->modified = TRUE;
   return conf_doc_remove(o->doc, name);
 }
 
@@ -74,6 +78,7 @@ static ret_t conf_obj_clear(object_t* obj, const char* name) {
     return RET_NOT_IMPL;
   }
 
+  o->modified = TRUE;
   return conf_doc_clear(o->doc, name);
 }
 
@@ -85,6 +90,7 @@ static ret_t conf_obj_set_prop(object_t* obj, const char* name, const value_t* v
     return RET_NOT_IMPL;
   }
 
+  o->modified = TRUE;
   return conf_doc_set(o->doc, name, v);
 }
 
@@ -106,6 +112,10 @@ ret_t conf_obj_save(object_t* obj) {
 
   ret = o->save(o->doc, writer);
   data_writer_destroy(writer);
+
+  if (ret == RET_OK) {
+    o->modified = FALSE;
+  }
 
   return ret;
 }
@@ -193,7 +203,13 @@ static ret_t conf_obj_exec(object_t* obj, const char* name, const char* args) {
   }
 
   if (tk_str_ieq(name, OBJECT_CMD_SAVE)) {
-    ret = conf_obj_save(obj);
+    if (tk_str_eq(args, "force")) {
+      ret = conf_obj_save(obj);
+    } else if(o->modified) {
+      ret = conf_obj_save(obj);
+    } else {
+      ret = RET_NOT_MODIFIED;
+    }
   } else if (tk_str_ieq(name, OBJECT_CMD_RELOAD)) {
     conf_obj_reload(obj);
     ret = RET_ITEMS_CHANGED;
