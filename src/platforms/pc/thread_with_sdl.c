@@ -264,7 +264,13 @@ ret_t tk_thread_start(tk_thread_t* thread) {
 }
 
 ret_t tk_thread_join(tk_thread_t* thread) {
-  return_value_if_fail(thread != NULL, RET_BAD_PARAMS);
+  uint64_t tid = tk_thread_self();
+  return_value_if_fail(thread != NULL && thread->thread != NULL, RET_BAD_PARAMS);
+
+  if (tid == (uint64_t)SDL_GetThreadID(thread->thread)) {
+    return RET_OK;
+  }
+
   if (thread->running) {
     if (thread->thread) {
       SDL_WaitThread(thread->thread, NULL);
