@@ -65,6 +65,7 @@ TEST(AssetsManager, long_name) {
 
   r = assets_manager_load(am, ASSET_TYPE_IMAGE, path);
   ASSERT_EQ(r != NULL, true);
+  ASSERT_EQ(assets_manager_add(am, r), RET_OK);
   ASSERT_EQ(assets_manager_find_in_cache(am, ASSET_TYPE_IMAGE, path) != NULL, true);
   ASSERT_EQ(asset_info_unref(r), RET_OK);
   ASSERT_EQ(assets_manager_unload(am, ASSET_TYPE_IMAGE, path), RET_OK);
