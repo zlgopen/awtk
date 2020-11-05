@@ -81,9 +81,9 @@ data_reader_t* data_reader_asset_create(const char* assetname) {
 
   if (asset->info == NULL) {
     TKMEM_FREE(asset);
+  } else {
+    assets_manager_unref(am, asset->info);
   }
-
-  assets_manager_unref(am, asset->info);
 
   return (data_reader_t*)asset;
 }
