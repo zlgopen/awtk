@@ -168,7 +168,12 @@ typedef enum _value_format_type_t {
    * @const VALUE_FORMAT_TYPE_UBJSON
    * UBJSON格式。
    */
-  VALUE_FORMAT_TYPE_UBJSON
+  VALUE_FORMAT_TYPE_UBJSON,
+  /**
+   * @const VALUE_FORMAT_TYPE_JS
+   * JS格式。
+   */
+  VALUE_FORMAT_TYPE_JS
 } value_format_type_t;
 
 /**
