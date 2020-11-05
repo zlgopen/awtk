@@ -430,7 +430,8 @@ static asset_info_t* assets_manager_load_impl(assets_manager_t* am, asset_type_t
 
   if (strncmp(name, STR_SCHEMA_FILE, strlen(STR_SCHEMA_FILE)) == 0) {
     info = assets_manager_load_file(am, type, name + strlen(STR_SCHEMA_FILE));
-    if (info != NULL) {
+    /* 保持和 assets_manager_load_asset 函数内部中的调用 assets_manager_add 的逻辑一样 */
+    if (info != NULL && type != ASSET_TYPE_IMAGE) {
       assets_manager_add(am, info);
     }
     return info;

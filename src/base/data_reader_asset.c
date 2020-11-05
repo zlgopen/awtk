@@ -71,16 +71,19 @@ static data_reader_vtable_t s_data_reader_asset_vtable = {
 
 data_reader_t* data_reader_asset_create(const char* assetname) {
   data_reader_asset_t* asset = NULL;
+  assets_manager_t* am = assets_manager();
   return_value_if_fail(assetname != NULL, NULL);
   asset = TKMEM_ZALLOC(data_reader_asset_t);
-  return_value_if_fail(asset != NULL, NULL);
+  return_value_if_fail(asset != NULL && am != NULL, NULL);
 
   asset->data_reader.vt = &s_data_reader_asset_vtable;
-  asset->info = assets_manager_ref(assets_manager(), ASSET_TYPE_DATA, assetname);
+  asset->info = assets_manager_ref(am, ASSET_TYPE_DATA, assetname);
 
   if (asset->info == NULL) {
     TKMEM_FREE(asset);
   }
+
+  assets_manager_unref(am, asset->info);
 
   return (data_reader_t*)asset;
 }
