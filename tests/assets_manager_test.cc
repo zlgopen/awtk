@@ -1,6 +1,9 @@
 ﻿#include "base/assets_manager.h"
 #include "gtest/gtest.h"
 #include "tkc/str.h"
+#include "tkc/path.h"
+#include "tkc/utils.h"
+#include "base/system_info.h"
 
 TEST(AssetsManager, basic) {
   const asset_info_t* null_res = NULL;
@@ -26,6 +29,131 @@ TEST(AssetsManager, basic) {
   assets_manager_destroy(rm);
 }
 
+static bool_t load_assets_refcount_is_no_problem(assets_manager_t* rm, asset_type_t type, const char* name) {
+  const asset_info_t* r = NULL;
+  r = assets_manager_ref(rm, type, name);
+
+  if (r == NULL) {
+    return FALSE;
+  }
+  if (!((r->refcount == 1 && !assets_manager_is_save_assets_list(type)) ||
+        (r->refcount == 2 && assets_manager_is_save_assets_list(type)))) {
+    return FALSE;
+  }
+  if (assets_manager_unref(rm, r) != RET_OK) {
+    return FALSE;
+  }
+
+  return TRUE;
+}
+
+static bool_t file_path_load_assets_refcount_is_no_problem(assets_manager_t* rm, asset_type_t type, const char* name) {
+  asset_info_t* r = NULL;
+  const char* ratio = "x1";
+  char path[MAX_PATH] = {0};
+  const char* type_dir = NULL;
+  system_info_t* sysinfo = system_info();
+  uint32_t len = tk_strlen(STR_SCHEMA_FILE);
+  const char* res_root = assets_manager_get_res_root(rm);
+
+  if (sysinfo->device_pixel_ratio >= 3) {
+    ratio = "x3";
+  } else if (sysinfo->device_pixel_ratio >= 2) {
+    ratio = "x2";
+  }
+
+  switch (type) {
+    case ASSET_TYPE_FONT: {
+      type_dir = "fonts";
+      break;
+    }
+    case ASSET_TYPE_SCRIPT: {
+      type_dir = "scripts";
+      break;
+    }
+    case ASSET_TYPE_STYLE: {
+      type_dir = "styles";
+      break;
+    }
+    case ASSET_TYPE_STRINGS: {
+      type_dir = "strings";
+      break;
+    }
+    case ASSET_TYPE_IMAGE: {
+      type_dir = "images";
+      break;
+    }
+    case ASSET_TYPE_UI: {
+      type_dir = "ui";
+      break;
+    }
+    case ASSET_TYPE_XML: {
+      type_dir = "xml";
+      break;
+    }
+    case ASSET_TYPE_DATA: {
+      type_dir = "data";
+      break;
+    }
+    default:
+      break;
+  }
+  if (type_dir == NULL) {
+    return FALSE;
+  }
+
+  tk_str_append(path, MAX_PATH, STR_SCHEMA_FILE);
+  if (type == ASSET_TYPE_IMAGE) {
+    path_build(path + len, MAX_PATH - len, res_root, "assets", "default", "raw", type_dir, ratio, NULL);
+  } else {
+    path_build(path + len, MAX_PATH - len, res_root, "assets", "default", "raw", type_dir, NULL);
+  }
+  tk_str_append(path, MAX_PATH, "/");
+  tk_str_append(path, MAX_PATH, name);
+
+  r = assets_manager_load(rm, type, path);
+
+  if (r == NULL) {
+    return FALSE;
+  }
+  if (!((r->refcount == 1 && !assets_manager_is_save_assets_list(type)) ||
+        (r->refcount == 2 && assets_manager_is_save_assets_list(type)))) {
+    return FALSE;
+  }
+  if (assets_manager_unref(rm, r) != RET_OK) {
+    return FALSE;
+  }
+
+  return TRUE;
+}
+
+TEST(AssetsManager, load_assets_refcount) {
+  const asset_info_t* r = NULL;
+  assets_manager_t* rm = assets_manager_create(10);
+
+  ASSERT_EQ(load_assets_refcount_is_no_problem(rm, ASSET_TYPE_UI, "main"), TRUE);
+  ASSERT_EQ(load_assets_refcount_is_no_problem(rm, ASSET_TYPE_IMAGE, "earth"), TRUE);
+  ASSERT_EQ(load_assets_refcount_is_no_problem(rm, ASSET_TYPE_SCRIPT, "dummy"), TRUE);
+  ASSERT_EQ(load_assets_refcount_is_no_problem(rm, ASSET_TYPE_XML, "test"), TRUE);
+  ASSERT_EQ(load_assets_refcount_is_no_problem(rm, ASSET_TYPE_DATA, "test.dat"), TRUE);
+
+  ASSERT_EQ(load_assets_refcount_is_no_problem(rm, ASSET_TYPE_FONT, "default"), TRUE);
+  ASSERT_EQ(load_assets_refcount_is_no_problem(rm, ASSET_TYPE_STYLE, "default"), TRUE);
+  ASSERT_EQ(load_assets_refcount_is_no_problem(rm, ASSET_TYPE_STRINGS, "zh_CN"), TRUE);
+
+  ASSERT_EQ(file_path_load_assets_refcount_is_no_problem(rm, ASSET_TYPE_UI, "main.bin"), TRUE);
+  ASSERT_EQ(file_path_load_assets_refcount_is_no_problem(rm, ASSET_TYPE_IMAGE, "earth.png"), TRUE);
+  ASSERT_EQ(file_path_load_assets_refcount_is_no_problem(rm, ASSET_TYPE_SCRIPT, "dummy.js"), TRUE);
+  ASSERT_EQ(file_path_load_assets_refcount_is_no_problem(rm, ASSET_TYPE_XML, "test.xml"), TRUE);
+  ASSERT_EQ(file_path_load_assets_refcount_is_no_problem(rm, ASSET_TYPE_DATA, "test.dat"), TRUE);
+
+  ASSERT_EQ(file_path_load_assets_refcount_is_no_problem(rm, ASSET_TYPE_FONT, "default.ttf"), TRUE);
+  ASSERT_EQ(file_path_load_assets_refcount_is_no_problem(rm, ASSET_TYPE_STYLE, "default.bin"), TRUE);
+  ASSERT_EQ(file_path_load_assets_refcount_is_no_problem(rm, ASSET_TYPE_STRINGS, "zh_CN.bin"), TRUE);
+
+  assets_manager_destroy(rm);
+}
+
 TEST(AssetsManager, file_image) {
   const asset_info_t* r = NULL;
   assets_manager_t* rm = assets_manager_create(10);
@@ -37,10 +165,6 @@ TEST(AssetsManager, file_image) {
 
   assets_manager_destroy(rm);
 }
-
-#include "tkc/path.h"
-#include "tkc/utils.h"
-#include "base/system_info.h"
 
 TEST(AssetsManager, long_name) {
   asset_info_t* r = NULL;
@@ -68,8 +192,6 @@ TEST(AssetsManager, long_name) {
   ASSERT_EQ(assets_manager_add(am, r), RET_OK);
   ASSERT_EQ(assets_manager_find_in_cache(am, ASSET_TYPE_IMAGE, path) != NULL, true);
   ASSERT_EQ(asset_info_unref(r), RET_OK);
-  ASSERT_EQ(assets_manager_unload(am, ASSET_TYPE_IMAGE, path), RET_OK);
-  ASSERT_EQ(assets_manager_find_in_cache(am, ASSET_TYPE_IMAGE, path) == NULL, true);
 
   assets_manager_destroy(am);
 }
@@ -80,6 +202,9 @@ TEST(AssetsManager, file_script) {
 
   r = assets_manager_ref(rm, ASSET_TYPE_SCRIPT, "dummy");
   ASSERT_EQ(r != NULL, true);
+  ASSERT_EQ(r->refcount, 1);
+
+  ASSERT_EQ(assets_manager_add(rm, r), RET_OK);
   ASSERT_EQ(r->refcount, 2);
 
   r = assets_manager_find_in_cache(rm, ASSET_TYPE_SCRIPT, "dummy");

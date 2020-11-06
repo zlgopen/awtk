@@ -463,7 +463,6 @@ EXPORTS
     assets_manager_unref
     assets_manager_find_in_cache
     assets_manager_load
-    assets_manager_unload
     assets_manager_preload
     assets_manager_set_loader
     assets_manager_set_custom_build_asset_dir

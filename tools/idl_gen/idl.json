@@ -12590,34 +12590,6 @@
           {
             "type": "char*",
             "name": "name",
-            "desc": "资源的名称"
-          }
-        ],
-        "annotation": {
-          "scriptable": true
-        },
-        "desc": "卸载指定的资源。",
-        "name": "assets_manager_unload",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "assets_manager_t*",
-            "name": "am",
-            "desc": "asset manager对象。"
-          },
-          {
-            "type": "asset_type_t",
-            "name": "type",
-            "desc": "资源的类型。"
-          },
-          {
-            "type": "char*",
-            "name": "name",
             "desc": "资源的名称。"
           }
         ],
@@ -23970,6 +23942,10 @@
       {
         "desc": "UBJSON格式。",
         "name": "VALUE_FORMAT_TYPE_UBJSON"
+      },
+      {
+        "desc": "JS格式。",
+        "name": "VALUE_FORMAT_TYPE_JS"
       }
     ],
     "header": "tkc/value_desc.h",
@@ -27023,6 +26999,10 @@
       {
         "desc": "End of Stream",
         "name": "RET_EOS"
+      },
+      {
+        "desc": "没有改变。",
+        "name": "RET_NOT_MODIFIED"
       }
     ],
     "header": "tkc/types_def.h",

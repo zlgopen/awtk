@@ -16693,6 +16693,10 @@
       {
         "desc": "End of Stream",
         "name": "RET_EOS"
+      },
+      {
+        "desc": "没有改变。",
+        "name": "RET_NOT_MODIFIED"
       }
     ],
     "header": "tkc/types_def.h",
@@ -17902,6 +17906,10 @@
       {
         "desc": "UBJSON格式。",
         "name": "VALUE_FORMAT_TYPE_UBJSON"
+      },
+      {
+        "desc": "JS格式。",
+        "name": "VALUE_FORMAT_TYPE_JS"
       }
     ],
     "header": "tkc/value_desc.h",

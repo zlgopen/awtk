@@ -316,6 +316,14 @@ asset_info_t* assets_manager_load_file(assets_manager_t* am, asset_type_t type, 
   return NULL;
 }
 
+bool_t assets_manager_is_save_assets_list(asset_type_t type) {
+  /* 资源列表暂时只保存字体资源，风格资源和字符串资源 */
+  if (type == ASSET_TYPE_FONT || type == ASSET_TYPE_STYLE || type == ASSET_TYPE_STRINGS) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
 asset_info_t* assets_manager_load_asset(assets_manager_t* am, asset_type_t type, const char* theme,
                                         const char* name) {
   asset_info_t* info = NULL;
@@ -354,40 +362,40 @@ asset_info_t* assets_manager_load_asset(assets_manager_t* am, asset_type_t type,
     }
     case ASSET_TYPE_IMAGE: {
       if ((info = try_load_image(am, theme, name, ASSET_TYPE_IMAGE_PNG, TRUE)) != NULL) {
-        return info;
+        break;
       }
 
       if ((info = try_load_image(am, theme, name, ASSET_TYPE_IMAGE_BMP, TRUE)) != NULL) {
-        return info;
+        break;
       }
 
       if ((info = try_load_image(am, theme, name, ASSET_TYPE_IMAGE_JPG, TRUE)) != NULL) {
-        return info;
+        break;
       }
 
       if ((info = try_load_image(am, theme, name, ASSET_TYPE_IMAGE_GIF, TRUE)) != NULL) {
-        return info;
+        break;
       }
 
       /*try ratio-insensitive image.*/
       if ((info = try_load_image(am, theme, name, ASSET_TYPE_IMAGE_PNG, FALSE)) != NULL) {
-        return info;
+        break;
       }
 
       if ((info = try_load_image(am, theme, name, ASSET_TYPE_IMAGE_BMP, FALSE)) != NULL) {
-        return info;
+        break;
       }
 
       if ((info = try_load_image(am, theme, name, ASSET_TYPE_IMAGE_JPG, FALSE)) != NULL) {
-        return info;
+        break;
       }
 
       if ((info = try_load_image(am, theme, name, ASSET_TYPE_IMAGE_GIF, FALSE)) != NULL) {
-        return info;
+        break;
       }
 
       if ((info = try_load_image(am, theme, name, ASSET_TYPE_IMAGE_BSVG, FALSE)) != NULL) {
-        return info;
+        break;
       }
 
       break;
@@ -414,7 +422,7 @@ asset_info_t* assets_manager_load_asset(assets_manager_t* am, asset_type_t type,
       break;
   }
 
-  if (info != NULL) {
+  if (info != NULL && assets_manager_is_save_assets_list(type)) {
     assets_manager_add(am, info);
   }
 
@@ -431,7 +439,7 @@ static asset_info_t* assets_manager_load_impl(assets_manager_t* am, asset_type_t
   if (strncmp(name, STR_SCHEMA_FILE, strlen(STR_SCHEMA_FILE)) == 0) {
     info = assets_manager_load_file(am, type, name + strlen(STR_SCHEMA_FILE));
     /* 保持和 assets_manager_load_asset 函数内部中的调用 assets_manager_add 的逻辑一样 */
-    if (info != NULL && type != ASSET_TYPE_IMAGE) {
+    if (info != NULL && assets_manager_is_save_assets_list(type)) {
       assets_manager_add(am, info);
     }
     return info;
@@ -458,18 +466,6 @@ asset_info_t* assets_manager_load(assets_manager_t* am, asset_type_t type, const
   }
 
   return assets_manager_load_impl(am, type, name);
-}
-
-ret_t assets_manager_unload(assets_manager_t* am, asset_type_t type, const char* name) {
-  return_value_if_fail(am != NULL && name != NULL, RET_BAD_PARAMS);
-
-  const asset_info_t* info = assets_manager_find_in_cache(am, type, name);
-
-  if (info != NULL) {
-    return assets_manager_unref(am, info);
-  }
-
-  return RET_OK;
 }
 
 ret_t assets_manager_set(assets_manager_t* am) {

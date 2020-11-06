@@ -53,7 +53,7 @@ asset_info_t* asset_info_create(uint16_t type, uint16_t subtype, const char* nam
   strncpy(info->name, asset_name, TK_NAME_LEN);
 
   if(asset_name != name) {
-    log_warn("[warn] asset name max length is %d , so old name : \"%s\" format to new name : \"%s\" !", TK_NAME_LEN + 1, name, asset_name);
+    log_warn("[warn] asset name max length is %d , so old name : \"%s\" format to new name : \"%s\" ! \r\n", TK_NAME_LEN + 1, name, asset_name);
   }
 
   return info;
