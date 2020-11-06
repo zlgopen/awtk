@@ -349,14 +349,27 @@ static bool_t edit_is_valid_value_default(widget_t* widget) {
       int32_t min = (int32_t)(edit->min);
       int32_t max = (int32_t)(edit->max);
 
-      if (text->size == 0) {
+      if (text->size == 0 || text->size > 11) {
         return FALSE;
       }
 
       if (min == max) {
         return TRUE;
       }
+
       wstr_to_int(text, &v);
+      if (text->size >= 10) {
+        wstr_t str;
+        bool_t result = FALSE;
+
+        wstr_init(&str, 32);
+        wstr_from_int(&str, v);
+        result = wstr_equal(&str, text);
+        wstr_reset(&str);
+        if (!result) {
+          return FALSE;
+        }
+      }
 
       return min <= v && v <= max;
     }
@@ -1152,7 +1165,9 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
         value_set_double(v, d);
         break;
       }
-      default: { value_set_wstr(v, widget->text.str); }
+      default: {
+        value_set_wstr(v, widget->text.str);
+      }
     }
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_CARET_X)) {
