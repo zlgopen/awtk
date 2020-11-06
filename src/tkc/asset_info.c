@@ -20,6 +20,7 @@
  */
 
 #include "tkc/mem.h"
+#include "tkc/utils.h"
 #include "tkc/asset_info.h"
 
 const char* asset_info_get_formatted_name(const char* name) {
