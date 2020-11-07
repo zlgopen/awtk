@@ -298,3 +298,9 @@ export NODE_PATH="$(npm root -g)"
 pip3 install Pillow
 ```
 
+如果系统同时安装了python2，可以加个alias。
+
+```
+alias python=python3
+```
+
