@@ -273,3 +273,19 @@ ret_t locale_info_change(locale_info_t* locale_info, const char* language, const
 ```
 design/default/styles/keyboard.xml
 ```
+
+#### 21.如何处理：Cannot find module 'glob'
+
+一般来说，执行下面的命令即可：
+
+```
+npm install -g glob
+```
+
+
+在Linux/MacOS上，有时仍然出现错误，可以通过下面的命令，设置NODE_PATH环境变量：
+
+
+```
+export NODE_PATH="$(npm root -g)"
+```
