@@ -289,3 +289,12 @@ npm install -g glob
 ```
 export NODE_PATH="$(npm root -g)"
 ```
+
+#### 22.如何处理 ImportError: No module named PIL
+
+这个需要安装Pillow模块(python)，运行下面的命令可以安装：
+
+```
+pip3 install Pillow
+```
+
