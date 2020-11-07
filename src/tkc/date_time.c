@@ -150,7 +150,7 @@ static const char* s_en_wday_names[] = {
 };
 
 const char* date_time_get_wday_name(uint32_t wday) {
-  return_value_if_fail(wday >= 0 && wday <= 6, NULL);
+  return_value_if_fail(wday <= 6, NULL);
 
   return s_en_wday_names[wday];
 }
