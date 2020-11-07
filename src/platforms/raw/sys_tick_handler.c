@@ -31,6 +31,12 @@ uint64_t get_time_ms64() {
   return g_sys_tick;
 }
 
+#ifndef HAS_GET_TIME_US64
+uint64_t get_time_us64() {
+  return g_sys_tick * 1000;
+}
+#endif/*HAS_GET_TIME_US64*/
+
 void sleep_ms(uint32_t ms) {
   uint32_t count = 0;
   uint64_t start = get_time_ms64();

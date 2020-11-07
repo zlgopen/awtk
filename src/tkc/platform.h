@@ -34,11 +34,19 @@ BEGIN_C_DECLS
 
 /**
  * @method get_time_ms64
- * 获取当前时间。
+ * 获取当前时间(毫秒)。
  *
  * @return {uint64_t} 成功返回当前时间。
  */
 uint64_t get_time_ms64(void);
+
+/**
+ * @method get_time_us64
+ * 获取当前时间(微秒)。
+ *
+ * @return {uint64_t} 成功返回当前时间。
+ */
+uint64_t get_time_us64(void);
 
 /**
  * @method sleep_ms

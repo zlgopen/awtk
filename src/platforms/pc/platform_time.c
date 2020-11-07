@@ -27,6 +27,12 @@ uint64_t stm_now_ms() {
   return now / 1000000;
 }
 
+uint64_t stm_now_us() {
+  uint64_t now = stm_now();
+
+  return now / 1000;
+}
+
 void stm_time_init(void) {
   stm_setup();
 }

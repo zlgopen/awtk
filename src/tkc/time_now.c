@@ -22,6 +22,10 @@
 #include "tkc/time_now.h"
 #include "tkc/platform.h"
 
+uint64_t time_now_us(void) {
+  return get_time_us64();
+}
+
 uint64_t time_now_ms(void) {
   return get_time_ms64();
 }

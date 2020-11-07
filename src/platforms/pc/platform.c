@@ -169,10 +169,15 @@ static ret_t date_time_from_time_impl(date_time_t* dt, uint64_t timeval) {
 #endif
 
 uint64_t stm_now_ms();
+uint64_t stm_now_us();
 void stm_time_init(void);
 
 uint64_t get_time_ms64() {
   return stm_now_ms();
+}
+
+uint64_t get_time_us64() {
+  return stm_now_us();
 }
 
 static const date_time_vtable_t s_date_time_vtable = {
