@@ -13173,8 +13173,18 @@
       {
         "params": [],
         "annotation": {},
-        "desc": "获取当前时间。",
+        "desc": "获取当前时间(毫秒)。",
         "name": "get_time_ms64",
+        "return": {
+          "type": "uint64_t",
+          "desc": "成功返回当前时间。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {},
+        "desc": "获取当前时间(微秒)。",
+        "name": "get_time_us64",
         "return": {
           "type": "uint64_t",
           "desc": "成功返回当前时间。"
@@ -15964,6 +15974,19 @@
           "type": "uint64_t",
           "desc": "返回当前时间(毫秒)。"
         }
+      },
+      {
+        "params": [],
+        "annotation": {
+          "scriptable": true,
+          "static": true
+        },
+        "desc": "获取当前时间(微秒)。",
+        "name": "time_now_us",
+        "return": {
+          "type": "uint64_t",
+          "desc": "返回当前时间(微秒)。"
+        }
       }
     ],
     "events": [],
@@ -17384,6 +17407,37 @@
         "annotation": {},
         "desc": "将可变参数(...)按照format格式化字符串，并将字符串复制到str中。",
         "name": "tk_snprintf",
+        "return": {
+          "type": "int",
+          "desc": "返回格式化后的字符串长度+1。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "char*",
+            "name": "str",
+            "desc": "目标字符串。"
+          },
+          {
+            "type": "size_t",
+            "name": "size",
+            "desc": "拷贝字节数。"
+          },
+          {
+            "type": "const char*",
+            "name": "format",
+            "desc": "格式化字符串。"
+          },
+          {
+            "type": "va_list",
+            "name": "ap",
+            "desc": "可变参数。"
+          }
+        ],
+        "annotation": {},
+        "desc": "将可变参数ap按照format格式化字符串，并将字符串复制到str中。",
+        "name": "tk_vsnprintf",
         "return": {
           "type": "int",
           "desc": "返回格式化后的字符串长度+1。"

@@ -886,6 +886,7 @@ EXPORTS
     tk_memcpy32
     tk_pixel_copy
     tk_snprintf
+    tk_vsnprintf
     tk_sscanf
     filename_to_name
     filename_to_name_ex
@@ -992,6 +993,7 @@ EXPORTS
     timer_manager_append
     time_now_s
     time_now_ms
+    time_now_us
     tk_thread_create
     tk_thread_set_name
     tk_thread_set_stack_size
@@ -1143,6 +1145,7 @@ EXPORTS
     plugin_manager_exist
     plugin_manager_destroy
     get_time_ms64
+    get_time_us64
     sleep_ms
     platform_prepare
     path_basename

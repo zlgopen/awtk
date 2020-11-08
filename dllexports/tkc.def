@@ -509,6 +509,7 @@ EXPORTS
     path_app_root
     path_exist
     get_time_ms64
+    get_time_us64
     sleep_ms
     platform_prepare
     plugin_manager_create
@@ -626,6 +627,7 @@ EXPORTS
     tk_thread_self
     time_now_s
     time_now_ms
+    time_now_us
     waitable_ring_buffer_create
     waitable_ring_buffer_read
     waitable_ring_buffer_write
@@ -682,6 +684,7 @@ EXPORTS
     tk_memcpy32
     tk_pixel_copy
     tk_snprintf
+    tk_vsnprintf
     tk_sscanf
     filename_to_name
     filename_to_name_ex

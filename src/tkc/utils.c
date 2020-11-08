@@ -443,11 +443,19 @@ extern int vsnprintf(char* str, size_t size, const char* format, va_list ap);
 int tk_snprintf(char* str, size_t size, const char* format, ...) {
   int ret = 0;
   va_list va;
+  return_value_if_fail(str != NULL && format != NULL, 0);
+
   va_start(va, format);
-  ret = vsnprintf(str, size, format, va);
+  ret = tk_vsnprintf(str, size, format, va);
   va_end(va);
 
   return ret;
+}
+
+int tk_vsnprintf(char* str, size_t size, const char* format, va_list ap) {
+  return_value_if_fail(str != NULL && format != NULL, 0);
+
+  return vsnprintf(str, size, format, ap);
 }
 
 int tk_sscanf(const char* str, const char* format, ...) {
