@@ -33925,6 +33925,73 @@
       {
         "params": [
           {
+            "type": "object_t*",
+            "name": "obj",
+            "desc": "脚本执行上下文。"
+          },
+          {
+            "type": "const char*",
+            "name": "script",
+            "desc": "脚本代码。"
+          },
+          {
+            "type": "value_t*",
+            "name": "result",
+            "desc": "执行结果。"
+          }
+        ],
+        "annotation": {},
+        "desc": "",
+        "name": "fscript_eval",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "tkc/fscript.h",
+    "desc": "一个简易的函数式脚本。",
+    "name": "fscript_t",
+    "annotation": {
+      "fake": true
+    },
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [],
+    "events": [],
+    "properties": [
+      {
+        "name": "size",
+        "desc": "参数个数。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "args",
+        "desc": "参数列表。",
+        "type": "value_t*",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "tkc/fscript.h",
+    "desc": "扩展函数的参数。",
+    "name": "fscript_args_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
             "type": "fs_t*",
             "name": "fs",
             "desc": "文件系统对象，一般赋值为os_fs()。"
@@ -37028,27 +37095,6 @@
     "level": 1
   },
   {
-    "params": [
-      {
-        "type": "easing_type_t",
-        "name": "type",
-        "desc": "类型。"
-      }
-    ],
-    "annotation": {
-      "global": true
-    },
-    "desc": "获取对应类型的操作函数。",
-    "name": "easing_get",
-    "return": {
-      "type": "easing_func_t",
-      "desc": "返回对应的操作函数地址。"
-    },
-    "type": "method",
-    "header": "tkc/easing.h",
-    "level": 1
-  },
-  {
     "type": "class",
     "methods": [
       {
@@ -37140,6 +37186,27 @@
     "header": "base/asset_loader.h",
     "desc": "资源加载器接口。",
     "name": "asset_loader_t",
+    "level": 1
+  },
+  {
+    "params": [
+      {
+        "type": "easing_type_t",
+        "name": "type",
+        "desc": "类型。"
+      }
+    ],
+    "annotation": {
+      "global": true
+    },
+    "desc": "获取对应类型的操作函数。",
+    "name": "easing_get",
+    "return": {
+      "type": "easing_func_t",
+      "desc": "返回对应的操作函数地址。"
+    },
+    "type": "method",
+    "header": "tkc/easing.h",
     "level": 1
   },
   {
@@ -40020,6 +40087,24 @@
   },
   {
     "type": "enum",
+    "desc": "缓存不够时丢弃数据的策略。",
+    "consts": [
+      {
+        "desc": "丢弃旧的数据。",
+        "name": "DATA_DISCARD_OLD"
+      },
+      {
+        "desc": "丢弃新的数据。",
+        "name": "DATA_DISCARD_NEW"
+      }
+    ],
+    "header": "misc/ostream_retry.h",
+    "name": "data_discard_policy_t",
+    "prefix": "DATA_DISCARD_",
+    "level": 1
+  },
+  {
+    "type": "enum",
     "desc": "图片资源类型定义。",
     "consts": [
       {
@@ -40092,24 +40177,6 @@
     "header": "tkc/asset_info.h",
     "name": "asset_script_type_t",
     "prefix": "ASSET_SCRIPT_TYPE_",
-    "level": 1
-  },
-  {
-    "type": "enum",
-    "desc": "缓存不够时丢弃数据的策略。",
-    "consts": [
-      {
-        "desc": "丢弃旧的数据。",
-        "name": "DATA_DISCARD_OLD"
-      },
-      {
-        "desc": "丢弃新的数据。",
-        "name": "DATA_DISCARD_NEW"
-      }
-    ],
-    "header": "misc/ostream_retry.h",
-    "name": "data_discard_policy_t",
-    "prefix": "DATA_DISCARD_",
     "level": 1
   },
   {
@@ -40211,6 +40278,33 @@
     "annotation": {
       "scriptable": true
     },
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "int",
+            "name": "fd",
+            "desc": "fd."
+          }
+        ],
+        "annotation": {},
+        "desc": "创建ostream对象。",
+        "name": "tk_ostream_serial_create",
+        "return": {
+          "type": "tk_ostream_t*",
+          "desc": "返回ostream对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "serial/ostream_serial.h",
+    "desc": "基于串口实现的输出流。\n\ninput stream base on fd",
+    "name": "tk_ostream_serial_t",
     "level": 1
   },
   {
@@ -40454,33 +40548,6 @@
     "header": "tkc/action_thread_pool.h",
     "desc": "action线程池。",
     "name": "action_thread_pool_t",
-    "level": 1
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [
-          {
-            "type": "int",
-            "name": "fd",
-            "desc": "fd."
-          }
-        ],
-        "annotation": {},
-        "desc": "创建ostream对象。",
-        "name": "tk_ostream_serial_create",
-        "return": {
-          "type": "tk_ostream_t*",
-          "desc": "返回ostream对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "serial/ostream_serial.h",
-    "desc": "基于串口实现的输出流。\n\ninput stream base on fd",
-    "name": "tk_ostream_serial_t",
     "level": 1
   },
   {
@@ -40873,24 +40940,134 @@
     "type": "class",
     "methods": [
       {
-        "params": [],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "创建控件自身布局对象。",
-        "name": "self_layouter_menu_create",
+        "params": [
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度。"
+          },
+          {
+            "type": "bool_t",
+            "name": "alloc",
+            "desc": "是否分配内存。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建lcd对象。",
+        "name": "lcd_mem_bgr565_create",
         "return": {
-          "type": "self_layouter_t*",
-          "desc": "返回创建控件自身布局对象。"
+          "type": "lcd_t*",
+          "desc": "返回lcd对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "fbuff",
+            "desc": "帧率缓冲区。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建single fb lcd对象。",
+        "name": "lcd_mem_bgr565_create_single_fb",
+        "return": {
+          "type": "lcd_t*",
+          "desc": "返回lcd对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "online_fb",
+            "desc": "在线帧率缓冲区。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "offline_fb",
+            "desc": "离线帧率缓冲区。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建double fb lcd对象。",
+        "name": "lcd_mem_bgr565_create_double_fb",
+        "return": {
+          "type": "lcd_t*",
+          "desc": "返回lcd对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "wh_t",
+            "name": "w",
+            "desc": "宽度。"
+          },
+          {
+            "type": "wh_t",
+            "name": "h",
+            "desc": "高度。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "online_fb",
+            "desc": "在线帧率缓冲区。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "offline_fb",
+            "desc": "离线帧率缓冲区。"
+          },
+          {
+            "type": "uint8_t*",
+            "name": "next_fb",
+            "desc": "待显示的帧率缓冲区。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建three fb lcd对象。",
+        "name": "lcd_mem_bgr565_create_three_fb",
+        "return": {
+          "type": "lcd_t*",
+          "desc": "返回lcd对象。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "layouters/self_layouter_menu.h",
-    "desc": "menu的控件自身布局算法实现(一般用于popup或dialog窗口)。\n\n> 用法请参考：[缺省控件自身布局算法](\nhttps://github.com/zlgopen/awtk/blob/master/docs/self_layouter_menu.md)",
-    "name": "self_layouter_menu_t",
-    "parent": "self_layouter_t",
+    "header": "lcd/lcd_mem_bgr565.h",
+    "desc": "",
+    "name": "lcd_mem_bgr565_t",
+    "parent": "lcd_t",
+    "annotation": {
+      "fake": true
+    },
     "level": 2
   },
   {
@@ -45259,146 +45436,12 @@
     "type": "class",
     "methods": [
       {
-        "params": [
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度。"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度。"
-          },
-          {
-            "type": "bool_t",
-            "name": "alloc",
-            "desc": "是否分配内存。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建lcd对象。",
-        "name": "lcd_mem_bgr565_create",
-        "return": {
-          "type": "lcd_t*",
-          "desc": "返回lcd对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度。"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度。"
-          },
-          {
-            "type": "uint8_t*",
-            "name": "fbuff",
-            "desc": "帧率缓冲区。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建single fb lcd对象。",
-        "name": "lcd_mem_bgr565_create_single_fb",
-        "return": {
-          "type": "lcd_t*",
-          "desc": "返回lcd对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度。"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度。"
-          },
-          {
-            "type": "uint8_t*",
-            "name": "online_fb",
-            "desc": "在线帧率缓冲区。"
-          },
-          {
-            "type": "uint8_t*",
-            "name": "offline_fb",
-            "desc": "离线帧率缓冲区。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建double fb lcd对象。",
-        "name": "lcd_mem_bgr565_create_double_fb",
-        "return": {
-          "type": "lcd_t*",
-          "desc": "返回lcd对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "wh_t",
-            "name": "w",
-            "desc": "宽度。"
-          },
-          {
-            "type": "wh_t",
-            "name": "h",
-            "desc": "高度。"
-          },
-          {
-            "type": "uint8_t*",
-            "name": "online_fb",
-            "desc": "在线帧率缓冲区。"
-          },
-          {
-            "type": "uint8_t*",
-            "name": "offline_fb",
-            "desc": "离线帧率缓冲区。"
-          },
-          {
-            "type": "uint8_t*",
-            "name": "next_fb",
-            "desc": "待显示的帧率缓冲区。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建three fb lcd对象。",
-        "name": "lcd_mem_bgr565_create_three_fb",
-        "return": {
-          "type": "lcd_t*",
-          "desc": "返回lcd对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "lcd/lcd_mem_bgr565.h",
-    "desc": "",
-    "name": "lcd_mem_bgr565_t",
-    "parent": "lcd_t",
-    "annotation": {
-      "fake": true
-    },
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
         "params": [],
         "annotation": {
           "constructor": true
         },
         "desc": "创建控件自身布局对象。",
-        "name": "self_layouter_default_create",
+        "name": "self_layouter_menu_create",
         "return": {
           "type": "self_layouter_t*",
           "desc": "返回创建控件自身布局对象。"
@@ -45407,34 +45450,10 @@
     ],
     "events": [],
     "properties": [],
-    "header": "layouters/self_layouter_default.h",
-    "desc": "缺省的控件自身布局算法实现。\n\n> 用法请参考：[缺省控件自身布局算法](\nhttps://github.com/zlgopen/awtk/blob/master/docs/self_layouter_default.md)",
-    "name": "self_layouter_default_t",
+    "header": "layouters/self_layouter_menu.h",
+    "desc": "menu的控件自身布局算法实现(一般用于popup或dialog窗口)。\n\n> 用法请参考：[缺省控件自身布局算法](\nhttps://github.com/zlgopen/awtk/blob/master/docs/self_layouter_menu.md)",
+    "name": "self_layouter_menu_t",
     "parent": "self_layouter_t",
-    "level": 2
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
-        "params": [],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "创建子控件布局对象。",
-        "name": "children_layouter_default_create",
-        "return": {
-          "type": "children_layouter_t*",
-          "desc": "返回创建子控件布局对象。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "layouters/children_layouter_default.h",
-    "desc": "缺省的子控件布局算法实现。\n\n> 用法请参考：[缺省子控件布局算法](\nhttps://github.com/zlgopen/awtk/blob/master/docs/children_layouter_default.md)",
-    "name": "children_layouter_default_t",
-    "parent": "children_layouter_t",
     "level": 2
   },
   {
@@ -45718,23 +45737,20 @@
         "annotation": {
           "constructor": true
         },
-        "desc": "创建SDL输入法对象。",
-        "name": "input_method_sdl_create",
+        "desc": "创建控件自身布局对象。",
+        "name": "self_layouter_default_create",
         "return": {
-          "type": "input_method_t*",
-          "desc": "返回输入法对象。"
+          "type": "self_layouter_t*",
+          "desc": "返回创建控件自身布局对象。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "input_methods/input_method_sdl.h",
-    "desc": "SDL输入法实现。\n\nSDL输入法使用平台自身的输入法引擎，一般在桌面Linux、MacOS、Windows、Android和iOS上使用。",
-    "name": "input_method_sdl_t",
-    "parent": "input_method_t",
-    "annotation": {
-      "fake": true
-    },
+    "header": "layouters/self_layouter_default.h",
+    "desc": "缺省的控件自身布局算法实现。\n\n> 用法请参考：[缺省控件自身布局算法](\nhttps://github.com/zlgopen/awtk/blob/master/docs/self_layouter_default.md)",
+    "name": "self_layouter_default_t",
+    "parent": "self_layouter_t",
     "level": 2
   },
   {
@@ -45998,23 +46014,20 @@
         "annotation": {
           "constructor": true
         },
-        "desc": "创建空输入法对象。",
-        "name": "input_method_null_create",
+        "desc": "创建子控件布局对象。",
+        "name": "children_layouter_default_create",
         "return": {
-          "type": "input_method_t*",
-          "desc": "返回输入法对象。"
+          "type": "children_layouter_t*",
+          "desc": "返回创建子控件布局对象。"
         }
       }
     ],
     "events": [],
     "properties": [],
-    "header": "input_methods/input_method_null.h",
-    "desc": "空输入法实现。\n\n在不需要输入法的嵌入式平台使用空的输入法。",
-    "name": "input_method_null_t",
-    "parent": "input_method_t",
-    "annotation": {
-      "fake": true
-    },
+    "header": "layouters/children_layouter_default.h",
+    "desc": "缺省的子控件布局算法实现。\n\n> 用法请参考：[缺省子控件布局算法](\nhttps://github.com/zlgopen/awtk/blob/master/docs/children_layouter_default.md)",
+    "name": "children_layouter_default_t",
+    "parent": "children_layouter_t",
     "level": 2
   },
   {
@@ -46410,6 +46423,60 @@
       "scriptable": true
     },
     "parent": "event_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建SDL输入法对象。",
+        "name": "input_method_sdl_create",
+        "return": {
+          "type": "input_method_t*",
+          "desc": "返回输入法对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "input_methods/input_method_sdl.h",
+    "desc": "SDL输入法实现。\n\nSDL输入法使用平台自身的输入法引擎，一般在桌面Linux、MacOS、Windows、Android和iOS上使用。",
+    "name": "input_method_sdl_t",
+    "parent": "input_method_t",
+    "annotation": {
+      "fake": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建空输入法对象。",
+        "name": "input_method_null_create",
+        "return": {
+          "type": "input_method_t*",
+          "desc": "返回输入法对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "input_methods/input_method_null.h",
+    "desc": "空输入法实现。\n\n在不需要输入法的嵌入式平台使用空的输入法。",
+    "name": "input_method_null_t",
+    "parent": "input_method_t",
+    "annotation": {
+      "fake": true
+    },
     "level": 2
   },
   {

@@ -1214,6 +1214,7 @@ EXPORTS
     func_call_parser_parse
     func_call_parser_deinit
     func_call_parse
+    fscript_eval
     fs_open_file
     fs_remove_file
     fs_file_exist
@@ -1326,11 +1327,11 @@ EXPORTS
     canvas_stroke_rounded_rect
     canvas_stroke_rounded_rect_ex
     canvas_end_frame
-    easing_get
     asset_loader_create
     asset_loader_load
     asset_loader_exist
     asset_loader_destroy
+    easing_get
     tk_dl_open
     tk_dl_sym
     tk_dl_close
@@ -1442,6 +1443,7 @@ EXPORTS
     asset_info_unref
     asset_info_ref
     asset_info_get_formatted_name
+    tk_ostream_serial_create
     action_thread_create
     action_thread_create_with_queue
     action_thread_exec
@@ -1451,7 +1453,6 @@ EXPORTS
     action_thread_pool_create
     action_thread_pool_exec
     action_thread_pool_destroy
-    tk_ostream_serial_create
     bsvg_init
     bsvg_to_svg
     svg_to_bsvg
@@ -1464,7 +1465,10 @@ EXPORTS
     guage_pointer_set_angle
     guage_pointer_set_image
     guage_pointer_set_anchor
-    self_layouter_menu_create
+    lcd_mem_bgr565_create
+    lcd_mem_bgr565_create_single_fb
+    lcd_mem_bgr565_create_double_fb
+    lcd_mem_bgr565_create_three_fb
     wheel_event_cast
     wheel_event_init
     view_create
@@ -1581,12 +1585,7 @@ EXPORTS
     lcd_mem_bgr888_create_single_fb
     lcd_mem_bgr888_create_double_fb
     lcd_mem_bgr888_create_three_fb
-    lcd_mem_bgr565_create
-    lcd_mem_bgr565_create_single_fb
-    lcd_mem_bgr565_create_double_fb
-    lcd_mem_bgr565_create_three_fb
-    self_layouter_default_create
-    children_layouter_default_create
+    self_layouter_menu_create
     column_create
     column_cast
     color_tile_create
@@ -1595,7 +1594,7 @@ EXPORTS
     color_tile_set_border_color
     color_tile_set_value
     event_source_manager_default_create
-    input_method_sdl_create
+    self_layouter_default_create
     clip_view_create
     clip_view_cast
     check_button_create
@@ -1603,7 +1602,7 @@ EXPORTS
     check_button_set_value
     check_button_get_checked_button
     check_button_cast
-    input_method_null_create
+    children_layouter_default_create
     prop_change_event_cast
     prop_change_event_init
     progress_event_cast
@@ -1614,6 +1613,8 @@ EXPORTS
     error_event_init
     cmd_exec_event_cast
     cmd_exec_event_init
+    input_method_sdl_create
+    input_method_null_create
     input_method_default_create
     image_loader_stb
     stb_load_image

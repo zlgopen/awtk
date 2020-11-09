@@ -125,20 +125,10 @@ EXPORTS
     value_destroy
     value_reset
     value_cast
-    slist_create
-    slist_init
-    slist_find
-    slist_remove
-    slist_remove_all
-    slist_append
-    slist_prepend
-    slist_foreach
-    slist_tail_pop
-    slist_head_pop
-    slist_size
-    slist_count
-    slist_deinit
-    slist_destroy
+    tk_semaphore_create
+    tk_semaphore_wait
+    tk_semaphore_post
+    tk_semaphore_destroy
     asset_info_create
     asset_info_destroy
     asset_info_unref
@@ -373,6 +363,7 @@ EXPORTS
     file_read
     file_read_part
     file_write
+    fscript_eval
     func_call_parser_init
     func_call_parser_parse
     func_call_parser_deinit
@@ -550,16 +541,26 @@ EXPORTS
     rom_fread
     rom_fwrite
     rom_fclose
-    tk_semaphore_create
-    tk_semaphore_wait
-    tk_semaphore_post
-    tk_semaphore_destroy
     action_thread_create
     action_thread_create_with_queue
     action_thread_exec
     action_thread_set_on_idle
     action_thread_set_on_quit
     action_thread_destroy
+    slist_create
+    slist_init
+    slist_find
+    slist_remove
+    slist_remove_all
+    slist_append
+    slist_prepend
+    slist_foreach
+    slist_tail_pop
+    slist_head_pop
+    slist_size
+    slist_count
+    slist_deinit
+    slist_destroy
     socket_init
     socket_deinit
     socket_close

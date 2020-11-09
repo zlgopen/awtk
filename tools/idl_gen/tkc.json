@@ -3065,89 +3065,40 @@
       {
         "params": [
           {
-            "type": "tk_destroy_t",
-            "name": "destroy",
-            "desc": "元素销毁函数。"
+            "type": "uint32_t",
+            "name": "value",
+            "desc": "初始值。"
           },
           {
-            "type": "tk_compare_t",
-            "name": "compare",
-            "desc": "元素比较函数。"
+            "type": "const char*",
+            "name": "name",
+            "desc": "名称。"
           }
         ],
-        "annotation": {
-          "constructor": true
-        },
-        "desc": "创建slist对象",
-        "name": "slist_create",
+        "annotation": {},
+        "desc": "创建信号量对象。",
+        "name": "tk_semaphore_create",
         "return": {
-          "type": "slist_t*",
-          "desc": "单向链表对象。"
+          "type": "tk_semaphore_t*",
+          "desc": "semaphore对象。"
         }
       },
       {
         "params": [
           {
-            "type": "slist_t*",
-            "name": "slist",
-            "desc": "单向链表对象。"
+            "type": "tk_semaphore_t*",
+            "name": "semaphore",
+            "desc": "信号量对象。"
           },
           {
-            "type": "tk_destroy_t",
-            "name": "destroy",
-            "desc": "元素销毁函数。"
-          },
-          {
-            "type": "tk_compare_t",
-            "name": "compare",
-            "desc": "元素比较函数。"
+            "type": "uint32_t",
+            "name": "timeout_ms",
+            "desc": "超时时间。"
           }
         ],
         "annotation": {},
-        "desc": "初始化slist对象",
-        "name": "slist_init",
-        "return": {
-          "type": "slist_t*",
-          "desc": "单向链表对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "slist_t*",
-            "name": "slist",
-            "desc": "单向链表对象。"
-          },
-          {
-            "type": "void*",
-            "name": "ctx",
-            "desc": "比较函数的上下文。"
-          }
-        ],
-        "annotation": {},
-        "desc": "查找第一个满足条件的元素。",
-        "name": "slist_find",
-        "return": {
-          "type": "void*",
-          "desc": "如果找到，返回满足条件的对象，否则返回NULL。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "slist_t*",
-            "name": "slist",
-            "desc": "单向链表对象。"
-          },
-          {
-            "type": "void*",
-            "name": "ctx",
-            "desc": "比较函数的上下文。"
-          }
-        ],
-        "annotation": {},
-        "desc": "删除第一个满足条件的元素。",
-        "name": "slist_remove",
+        "desc": "获取资源。",
+        "name": "tk_semaphore_wait",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -3156,14 +3107,14 @@
       {
         "params": [
           {
-            "type": "slist_t*",
-            "name": "slist",
-            "desc": "单向链表对象。"
+            "type": "tk_semaphore_t*",
+            "name": "semaphore",
+            "desc": "信号量对象。"
           }
         ],
         "annotation": {},
-        "desc": "删除全部元素。",
-        "name": "slist_remove_all",
+        "desc": "释放资源。",
+        "name": "tk_semaphore_post",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -3172,167 +3123,14 @@
       {
         "params": [
           {
-            "type": "slist_t*",
-            "name": "slist",
-            "desc": "单向链表对象。"
-          },
-          {
-            "type": "void*",
-            "name": "data",
-            "desc": "待追加的元素。"
+            "type": "tk_semaphore_t*",
+            "name": "semaphore",
+            "desc": "信号量对象。"
           }
         ],
         "annotation": {},
-        "desc": "在尾巴追加一个元素。",
-        "name": "slist_append",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "slist_t*",
-            "name": "slist",
-            "desc": "单向链表对象。"
-          },
-          {
-            "type": "void*",
-            "name": "data",
-            "desc": "待追加的元素。"
-          }
-        ],
-        "annotation": {},
-        "desc": "在头部追加一个元素。",
-        "name": "slist_prepend",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "slist_t*",
-            "name": "slist",
-            "desc": "单向链表对象。"
-          },
-          {
-            "type": "tk_visit_t",
-            "name": "visit",
-            "desc": "遍历函数。"
-          },
-          {
-            "type": "void*",
-            "name": "ctx",
-            "desc": "遍历函数的上下文。"
-          }
-        ],
-        "annotation": {},
-        "desc": "遍历元素。",
-        "name": "slist_foreach",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "slist_t*",
-            "name": "slist",
-            "desc": "单向链表对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "弹出最后一个元素。",
-        "name": "slist_tail_pop",
-        "return": {
-          "type": "ret_t",
-          "desc": "成功返回最后一个元素，失败返回NULL。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "slist_t*",
-            "name": "slist",
-            "desc": "单向链表对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "弹出第一个元素。",
-        "name": "slist_head_pop",
-        "return": {
-          "type": "ret_t",
-          "desc": "成功返回最后一个元素，失败返回NULL。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "slist_t*",
-            "name": "slist",
-            "desc": "单向链表对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "返回元素个数。",
-        "name": "slist_size",
-        "return": {
-          "type": "int32_t",
-          "desc": "返回元素个数。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "slist_t*",
-            "name": "slist",
-            "desc": "单向链表对象。"
-          },
-          {
-            "type": "void*",
-            "name": "ctx",
-            "desc": "比较函数的上下文。"
-          }
-        ],
-        "annotation": {},
-        "desc": "返回满足条件元素的个数。",
-        "name": "slist_count",
-        "return": {
-          "type": "int32_t",
-          "desc": "返回元素个数。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "slist_t*",
-            "name": "slist",
-            "desc": "单向链表对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "清除单向链表中的元素。",
-        "name": "slist_deinit",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "slist_t*",
-            "name": "slist",
-            "desc": "单向链表对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "清除单向链表中的元素，并释放单向链表对象。",
-        "name": "slist_destroy",
+        "desc": "销毁信号量对象。",
+        "name": "tk_semaphore_destroy",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -3340,35 +3138,10 @@
       }
     ],
     "events": [],
-    "properties": [
-      {
-        "name": "first",
-        "desc": "首节点。",
-        "type": "slist_node_t*",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "destroy",
-        "desc": "元素销毁函数。",
-        "type": "tk_destroy_t",
-        "annotation": {
-          "readable": true
-        }
-      },
-      {
-        "name": "compare",
-        "desc": "元素比较函数。",
-        "type": "tk_compare_t",
-        "annotation": {
-          "readable": true
-        }
-      }
-    ],
-    "header": "tkc/slist.h",
-    "desc": "单向链表\n\n用slist\\_init初始化时，用slist\\_deinit释放。如：\n\n```c\nslist_t slist;\nslist_init(&slist, destroy, compare);\n...\nslist_deinit(&slist);\n```\n\n用slist\\_create创建时，用slist\\_destroy销毁。如：\n\n```c\nslist_t* slist = slist_create(destroy, compare);\n...\nslist_destroy(slist);\n```",
-    "name": "slist_t",
+    "properties": [],
+    "header": "tkc/semaphore.h",
+    "desc": "信号量。",
+    "name": "tk_semaphore_t",
     "level": 1
   },
   {
@@ -9278,6 +9051,73 @@
   },
   {
     "type": "class",
+    "methods": [],
+    "events": [],
+    "properties": [
+      {
+        "name": "size",
+        "desc": "参数个数。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "args",
+        "desc": "参数列表。",
+        "type": "value_t*",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "tkc/fscript.h",
+    "desc": "扩展函数的参数。",
+    "name": "fscript_args_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "object_t*",
+            "name": "obj",
+            "desc": "脚本执行上下文。"
+          },
+          {
+            "type": "const char*",
+            "name": "script",
+            "desc": "脚本代码。"
+          },
+          {
+            "type": "value_t*",
+            "name": "result",
+            "desc": "执行结果。"
+          }
+        ],
+        "annotation": {},
+        "desc": "",
+        "name": "fscript_eval",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "tkc/fscript.h",
+    "desc": "一个简易的函数式脚本。",
+    "name": "fscript_t",
+    "annotation": {
+      "fake": true
+    },
+    "level": 1
+  },
+  {
+    "type": "class",
     "methods": [
       {
         "params": [
@@ -14238,91 +14078,6 @@
     "type": "class",
     "methods": [
       {
-        "params": [
-          {
-            "type": "uint32_t",
-            "name": "value",
-            "desc": "初始值。"
-          },
-          {
-            "type": "const char*",
-            "name": "name",
-            "desc": "名称。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建信号量对象。",
-        "name": "tk_semaphore_create",
-        "return": {
-          "type": "tk_semaphore_t*",
-          "desc": "semaphore对象。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tk_semaphore_t*",
-            "name": "semaphore",
-            "desc": "信号量对象。"
-          },
-          {
-            "type": "uint32_t",
-            "name": "timeout_ms",
-            "desc": "超时时间。"
-          }
-        ],
-        "annotation": {},
-        "desc": "获取资源。",
-        "name": "tk_semaphore_wait",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tk_semaphore_t*",
-            "name": "semaphore",
-            "desc": "信号量对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "释放资源。",
-        "name": "tk_semaphore_post",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "tk_semaphore_t*",
-            "name": "semaphore",
-            "desc": "信号量对象。"
-          }
-        ],
-        "annotation": {},
-        "desc": "销毁信号量对象。",
-        "name": "tk_semaphore_destroy",
-        "return": {
-          "type": "ret_t",
-          "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      }
-    ],
-    "events": [],
-    "properties": [],
-    "header": "tkc/semaphore.h",
-    "desc": "信号量。",
-    "name": "tk_semaphore_t",
-    "level": 1
-  },
-  {
-    "type": "class",
-    "methods": [
-      {
         "params": [],
         "annotation": {
           "constructor": true
@@ -14472,6 +14227,318 @@
     "header": "tkc/action_thread.h",
     "desc": "执行action的线程。\n\n> 每个线程都有一个action queue，可以是共享的queue，也可以是私有的queue。",
     "name": "action_thread_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "tk_destroy_t",
+            "name": "destroy",
+            "desc": "元素销毁函数。"
+          },
+          {
+            "type": "tk_compare_t",
+            "name": "compare",
+            "desc": "元素比较函数。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建slist对象",
+        "name": "slist_create",
+        "return": {
+          "type": "slist_t*",
+          "desc": "单向链表对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "slist_t*",
+            "name": "slist",
+            "desc": "单向链表对象。"
+          },
+          {
+            "type": "tk_destroy_t",
+            "name": "destroy",
+            "desc": "元素销毁函数。"
+          },
+          {
+            "type": "tk_compare_t",
+            "name": "compare",
+            "desc": "元素比较函数。"
+          }
+        ],
+        "annotation": {},
+        "desc": "初始化slist对象",
+        "name": "slist_init",
+        "return": {
+          "type": "slist_t*",
+          "desc": "单向链表对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "slist_t*",
+            "name": "slist",
+            "desc": "单向链表对象。"
+          },
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "比较函数的上下文。"
+          }
+        ],
+        "annotation": {},
+        "desc": "查找第一个满足条件的元素。",
+        "name": "slist_find",
+        "return": {
+          "type": "void*",
+          "desc": "如果找到，返回满足条件的对象，否则返回NULL。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "slist_t*",
+            "name": "slist",
+            "desc": "单向链表对象。"
+          },
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "比较函数的上下文。"
+          }
+        ],
+        "annotation": {},
+        "desc": "删除第一个满足条件的元素。",
+        "name": "slist_remove",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "slist_t*",
+            "name": "slist",
+            "desc": "单向链表对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "删除全部元素。",
+        "name": "slist_remove_all",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "slist_t*",
+            "name": "slist",
+            "desc": "单向链表对象。"
+          },
+          {
+            "type": "void*",
+            "name": "data",
+            "desc": "待追加的元素。"
+          }
+        ],
+        "annotation": {},
+        "desc": "在尾巴追加一个元素。",
+        "name": "slist_append",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "slist_t*",
+            "name": "slist",
+            "desc": "单向链表对象。"
+          },
+          {
+            "type": "void*",
+            "name": "data",
+            "desc": "待追加的元素。"
+          }
+        ],
+        "annotation": {},
+        "desc": "在头部追加一个元素。",
+        "name": "slist_prepend",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "slist_t*",
+            "name": "slist",
+            "desc": "单向链表对象。"
+          },
+          {
+            "type": "tk_visit_t",
+            "name": "visit",
+            "desc": "遍历函数。"
+          },
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "遍历函数的上下文。"
+          }
+        ],
+        "annotation": {},
+        "desc": "遍历元素。",
+        "name": "slist_foreach",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "slist_t*",
+            "name": "slist",
+            "desc": "单向链表对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "弹出最后一个元素。",
+        "name": "slist_tail_pop",
+        "return": {
+          "type": "ret_t",
+          "desc": "成功返回最后一个元素，失败返回NULL。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "slist_t*",
+            "name": "slist",
+            "desc": "单向链表对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "弹出第一个元素。",
+        "name": "slist_head_pop",
+        "return": {
+          "type": "ret_t",
+          "desc": "成功返回最后一个元素，失败返回NULL。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "slist_t*",
+            "name": "slist",
+            "desc": "单向链表对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "返回元素个数。",
+        "name": "slist_size",
+        "return": {
+          "type": "int32_t",
+          "desc": "返回元素个数。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "slist_t*",
+            "name": "slist",
+            "desc": "单向链表对象。"
+          },
+          {
+            "type": "void*",
+            "name": "ctx",
+            "desc": "比较函数的上下文。"
+          }
+        ],
+        "annotation": {},
+        "desc": "返回满足条件元素的个数。",
+        "name": "slist_count",
+        "return": {
+          "type": "int32_t",
+          "desc": "返回元素个数。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "slist_t*",
+            "name": "slist",
+            "desc": "单向链表对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "清除单向链表中的元素。",
+        "name": "slist_deinit",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "slist_t*",
+            "name": "slist",
+            "desc": "单向链表对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "清除单向链表中的元素，并释放单向链表对象。",
+        "name": "slist_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "first",
+        "desc": "首节点。",
+        "type": "slist_node_t*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "destroy",
+        "desc": "元素销毁函数。",
+        "type": "tk_destroy_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "compare",
+        "desc": "元素比较函数。",
+        "type": "tk_compare_t",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "tkc/slist.h",
+    "desc": "单向链表\n\n用slist\\_init初始化时，用slist\\_deinit释放。如：\n\n```c\nslist_t slist;\nslist_init(&slist, destroy, compare);\n...\nslist_deinit(&slist);\n```\n\n用slist\\_create创建时，用slist\\_destroy销毁。如：\n\n```c\nslist_t* slist = slist_create(destroy, compare);\n...\nslist_destroy(slist);\n```",
+    "name": "slist_t",
     "level": 1
   },
   {
