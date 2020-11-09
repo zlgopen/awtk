@@ -1548,30 +1548,6 @@ static ret_t widget_exec(widget_t* widget, const char* str) {
   }
 }
 
-static ret_t widget_on_grabbed_keys(void* ctx, event_t* e) {
-  if (e->type == EVT_KEY_DOWN || e->type == EVT_KEY_UP) {
-    ret_t ret = RET_OK;
-    widget_t* widget = WIDGET(ctx);
-    widget_t* win = widget_get_window(widget);
-
-    if (win != NULL && widget_is_window_manager(win->parent)) {
-      widget_t* top_win = window_manager_get_top_window(win->parent);
-
-      if (win == top_win) {
-        if (e->type == EVT_KEY_DOWN) {
-          ret = widget_on_keydown(widget, key_event_cast(e));
-        } else {
-          ret = widget_on_keyup(widget, key_event_cast(e));
-        }
-      }
-    }
-
-    return ret;
-  }
-
-  return RET_OK;
-}
-
 static widget_t* widget_get_top_widget_grab_key(widget_t* widget) {
   return_value_if_fail(widget != NULL, NULL);
   WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
@@ -3579,10 +3555,14 @@ ret_t widget_set_as_key_target(widget_t* widget) {
         widget_set_focused_internal(widget->parent->key_target, FALSE);
       }
 
-      parent->key_target = widget;
-      widget_set_as_key_target(parent);
+      if (parent->key_target != widget) {
+        parent->key_target = widget;
+        widget_set_as_key_target(parent);
+      }
     }
-    widget_set_need_update_style(widget);
+    if (widget->key_target != NULL && widget->focused != widget->key_target->focused) {
+      widget_set_need_update_style(widget);
+    }
   }
 
   return RET_OK;
