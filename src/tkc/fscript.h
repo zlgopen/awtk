@@ -17,6 +17,7 @@
 #ifndef TK_FSCRIPTS_H
 #define TK_FSCRIPTS_H
 
+#include "tkc/str.h"
 #include "tkc/object.h"
 
 BEGIN_C_DECLS
@@ -43,6 +44,13 @@ typedef struct _fscript_args_t {
    * 参数列表。
    */
   value_t args[FSCRIPT_MAX_ARGS];
+
+  /**
+   * @property {str_t*} str
+   * @annotation ["readable"]
+   * 函数实现时可以临时使用的字符串对象，可以避免频繁分配内存。
+   */
+  str_t* str;
 } fscript_args_t;
 
 typedef ret_t (*fscript_func_t)(object_t* obj, fscript_args_t* args, value_t* v);

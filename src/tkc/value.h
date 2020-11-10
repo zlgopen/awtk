@@ -507,6 +507,18 @@ value_t* value_set_wstr(value_t* v, const wchar_t* value);
 const char* value_str(const value_t* v);
 
 /**
+ * @method value_str_ex
+ * 获取类型为字符串的值。
+ * @annotation ["scriptable"]
+ * @param {value_t*} v value对象。
+ * @param {char*} buff 用于格式转换的缓冲区。
+ * @param {uint32_t} size 缓冲区大小。
+ *
+ * @return {const char*} 值。
+ */
+const char* value_str_ex(const value_t* v, char* buff, uint32_t size);
+
+/**
  * @method value_wstr
  * 获取类型为宽字符串的值。
  * @param {value_t*} v value对象。

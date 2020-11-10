@@ -20,6 +20,7 @@
  */
 
 #include "tkc/mem.h"
+#include "tkc/utf8.h"
 #include "tkc/value.h"
 #include "tkc/utils.h"
 #include "tkc/object.h"
@@ -37,7 +38,9 @@ bool_t value_bool(const value_t* v) {
     case VALUE_TYPE_WSTRING: {
       return tk_watob(v->value.wstr);
     }
-    default: { return value_int(v) ? TRUE : FALSE; }
+    default: {
+      return value_int(v) ? TRUE : FALSE;
+    }
   }
 }
 
@@ -509,7 +512,9 @@ int value_int(const value_t* v) {
     case VALUE_TYPE_WSTRING: {
       return tk_watoi(v->value.wstr);
     }
-    default: { assert(!"not supported type"); }
+    default: {
+      assert(!"not supported type");
+    }
   }
 
   return 0;
@@ -731,4 +736,23 @@ binary_data_t* value_ubjson(const value_t* v) {
   return_value_if_fail(v->type == VALUE_TYPE_UBJSON, NULL);
 
   return (binary_data_t*)&(v->value.binary_data);
+}
+
+const char* value_str_ex(const value_t* v, char* buff, uint32_t size) {
+  return_value_if_fail(v != NULL && buff != NULL && size > 0, NULL);
+
+  if (v->type == VALUE_TYPE_STRING) {
+    return value_str(v);
+  } else if (v->type == VALUE_TYPE_DOUBLE || v->type == VALUE_TYPE_FLOAT32 ||
+             v->type == VALUE_TYPE_FLOAT) {
+    tk_snprintf(buff, size, "%lf", value_double(v));
+  } else if (v->type == VALUE_TYPE_WSTRING) {
+    tk_utf8_from_utf16(value_wstr, buff, size);
+  } else if (v->type == VALUE_TYPE_BOOL) {
+    tk_snprintf(buff, size, "%s", value_bool(v) ? "true" : "false");
+  } else {
+    tk_snprintf(buff, size, "%d", value_int(v));
+  }
+
+  return buff;
 }
