@@ -50,7 +50,21 @@ static ret_t text_selector_paint_mask(widget_t* widget, canvas_t* c) {
   style_t* style = widget->astyle;
   color_t trans = color_init(0, 0, 0, 0);
   easing_func_t easing = easing_get(EASING_CUBIC_IN);
+  color_t fc = style_get_color(style, STYLE_ID_FG_COLOR, trans);
+  const char* fg_image = style_get_str(style, STYLE_ID_FG_IMAGE, NULL);
   color_t mask_color = style_get_color(style, STYLE_ID_MASK_COLOR, trans);
+
+  text_selector_t* text_selector = TEXT_SELECTOR(widget);
+  int32_t visible_nr = text_selector->visible_nr;
+  int32_t item_height = widget->h / text_selector->visible_nr;
+
+  if (fc.rgba.a) {
+    canvas_set_stroke_color(c, fc);
+    for (i = 1; i < visible_nr; i++) {
+      y = i * item_height;
+      canvas_draw_hline(c, 0, y, widget->w);
+    }
+  }
 
   if (mask_color.rgba.a) {
     for (i = 0; i < n; i++) {
@@ -69,6 +83,16 @@ static ret_t text_selector_paint_mask(widget_t* widget, canvas_t* c) {
       canvas_draw_hline(c, 0, y, widget->w);
     }
   }
+
+  if (fg_image != NULL && *fg_image) {
+    bitmap_t img;
+    rect_t r = rect_init(0, 0, widget->w, widget->h);
+    if (widget_load_image(widget, fg_image, &img) == RET_OK) {
+      image_draw_type_t draw_type = (image_draw_type_t)style_get_int(style, STYLE_ID_FG_IMAGE_DRAW_TYPE, IMAGE_DRAW_CENTER);
+      canvas_draw_image_ex(c, &img, draw_type, (const rect_t*)&r);
+    }
+  }
+
 
   return RET_OK;
 }
@@ -94,19 +118,55 @@ static int32_t text_selector_range_yoffset(int32_t value, int32_t min_yoffset, i
   return value;
 }
 
+static ret_t text_selector_prepare_highlight_style(widget_t* widget, canvas_t* c, float_t d, bool_t set_color) {
+  style_t* style = widget->astyle;
+  color_t trans = color_init(0, 0, 0, 0);
+  color_t tc = style_get_color(style, STYLE_ID_TEXT_COLOR, trans);
+  color_t hg_tc = style_get_color(style, STYLE_ID_HIGHLIGHT_TEXT_COLOR, trans);
+  const char* font_name = style_get_str(style, STYLE_ID_FONT_NAME, NULL);
+  uint16_t font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
+  uint16_t hg_font_size = style_get_int(style, STYLE_ID_HIGHLIGHT_FONT_SIZE, font_size);
+  const char* hg_font_name = style_get_str(style, STYLE_ID_HIGHLIGHT_FONT_NAME, font_name);
+  uint16_t tmp_font_size = hg_font_size;
+
+  if (hg_tc.rgba.a > 0 && set_color) {
+    canvas_set_text_color(c, hg_tc);
+  } else {
+    canvas_set_text_color(c, tc);
+  }
+
+  if (hg_font_size != font_size) {
+    if (d >= 1.0f) {
+      tmp_font_size = hg_font_size;
+    } else {
+      tmp_font_size = font_size + tk_roundi((hg_font_size - font_size) * d);
+    }
+  }
+  canvas_set_font(c, hg_font_name, tmp_font_size);
+
+  return RET_OK;
+}
+
+static ret_t text_selector_paint_text(widget_t* widget, canvas_t* c, rect_t* r, text_selector_option_t* iter, int32_t empty_item_height, int32_t item_height) {
+  uint32_t d = tk_abs(r->y - empty_item_height);
+
+  if (d < item_height) {
+    text_selector_prepare_highlight_style(widget, c, (item_height - d) / (float_t)item_height, d < item_height / 2);
+  } else {
+    widget_prepare_text_style(widget, c);
+  }
+  return canvas_draw_text_in_rect(c, iter->text.str, iter->text.size, r);
+}
+
 static ret_t text_selector_paint_self(widget_t* widget, canvas_t* c) {
   text_selector_option_t* iter = NULL;
   text_selector_t* text_selector = TEXT_SELECTOR(widget);
-  return_value_if_fail(widget != NULL && text_selector != NULL, RET_BAD_PARAMS);
 
   uint32_t y = 0;
   uint32_t i = 0;
-  style_t* style = widget->astyle;
-  color_t trans = color_init(0, 0, 0, 0);
   int32_t yoffset = text_selector->yoffset;
   int32_t visible_nr = text_selector->visible_nr;
-  int32_t item_height = widget->h / text_selector->visible_nr;
-  color_t fc = style_get_color(style, STYLE_ID_FG_COLOR, trans);
+  int32_t item_height = widget->h / visible_nr;
   rect_t r = rect_init(0, 0, widget->w, item_height);
 
   int32_t options_nr = text_selector_count_options(widget);
@@ -117,16 +177,6 @@ static ret_t text_selector_paint_self(widget_t* widget, canvas_t* c) {
 
   widget_prepare_text_style(widget, c);
   iter = text_selector->option_items;
-
-  if (fc.rgba.a) {
-    canvas_set_stroke_color(c, fc);
-    for (i = 1; i < visible_nr; i++) {
-      y = i * item_height;
-      canvas_draw_hline(c, 0, y, widget->w);
-    }
-    y = 0;
-    i = 0;
-  }
 
   yoffset = text_selector_range_yoffset(yoffset, min_yoffset, max_yoffset, item_height,
                                         empty_item_height, text_selector->loop_options);
@@ -151,7 +201,7 @@ static ret_t text_selector_paint_self(widget_t* widget, canvas_t* c) {
     }
 
     if ((r.y + item_height) >= 0 && r.y < widget->h) {
-      canvas_draw_text_in_rect(c, iter->text.str, iter->text.size, &r);
+      text_selector_paint_text(widget, c, &r, iter, empty_item_height, item_height);
     }
 
     i++;
