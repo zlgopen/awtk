@@ -507,8 +507,11 @@
   <style name="default" fg_color="#a0a0a0"  text_color="black" text_align_h="center">
     <normal     bg_color="#f0f0f0"/>
   </style>
-  <style name="dark" fg_color="#a0a0a0"  text_color="black" text_align_h="center">
-    <normal     bg_color="#ffffff" mask_color="#404040" border_color="#404040"/>
+  <style name="dark"  text_color="black" text_color="black" text_align_h="center">
+    <normal   highlight_font_size="30" highlight_text_color="#00ff00" bg_color="#ffffff" mask_color="#404040" border_color="#404040"/>
+  </style>
+ <style name="image" fg_image="text_selector_border" text_color="black" text_align_h="center">
+    <normal    highlight_font_size="30" highlight_text_color="#00ff00"  bg_color="#ffffff"  border_color="#404040"/>
   </style>
 </text_selector>
 
