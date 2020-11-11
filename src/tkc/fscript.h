@@ -60,6 +60,8 @@ typedef ret_t (*fscript_func_t)(object_t* obj, fscript_args_t* args, value_t* v)
  * @annotation ["fake"]
  * 
  * 一个简易的函数式脚本。
+ * 用法请参考：https://github.com/zlgopen/awtk/blob/master/docs/fscript.md
+ *
  */
 
 /**

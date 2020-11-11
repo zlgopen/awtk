@@ -203,6 +203,7 @@ ret_t platform_prepare(void) {
 #endif /*HAS_STD_MALLOC*/
 
   date_time_global_init_ex(&s_date_time_vtable);
+  srandom(time(0));
 
   return RET_OK;
 }

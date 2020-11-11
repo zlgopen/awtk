@@ -9,6 +9,12 @@ TEST(Utils, basic) {
   char str[32];
 
   ASSERT_EQ(tk_atoi("100"), 100);
+  ASSERT_EQ(tk_atoi("0xff"), 0xff);
+  ASSERT_EQ(tk_atoi("0x1"), 0x1);
+  ASSERT_EQ(tk_atoi("0xf"), 0xf);
+  ASSERT_EQ(tk_atoi("0Xf"), 0xf);
+  ASSERT_EQ(tk_atoi("0b11"), 3);
+  ASSERT_EQ(tk_atoi("0B101"), 5);
   ASSERT_EQ(tk_watoi(L"100"), 100);
   ASSERT_EQ(tk_atof("100"), 100);
   ASSERT_EQ(tk_atof("1e2"), 100);

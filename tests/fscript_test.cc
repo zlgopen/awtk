@@ -89,7 +89,7 @@ TEST(FScript, convert) {
 	value_reset(&v);
 	
 	fscript_eval(obj, "str(123)", &v);
-	ASSERT_STREQ(value_str(&v), "123.000000");
+	ASSERT_STREQ(value_str(&v), "123");
 	value_reset(&v);
 	
 	fscript_eval(obj, "str(int(123))", &v);
@@ -499,6 +499,29 @@ TEST(FScript, sqrt) {
 	object_t* obj = object_default_create();
 	
 	fscript_eval(obj, "sqrt(4)", &v);
+	ASSERT_EQ(value_int(&v), 2);
+	value_reset(&v);
+	
+	OBJECT_UNREF(obj);
+}
+
+TEST(FScript, complex) {
+	value_t v;
+	object_t* obj = object_default_create();
+	
+	fscript_eval(obj, "sub(sum(sqrt(4), sqrt(9)), 1)", &v);
+	ASSERT_EQ(value_int(&v), 4);
+	value_reset(&v);
+	
+	fscript_eval(obj, "if(true, 123, sub(sum(sqrt(4), sqrt(9)), 1))", &v);
+	ASSERT_EQ(value_int(&v), 123);
+	value_reset(&v);
+	
+	fscript_eval(obj, "if(false, 123, sub(sum(sqrt(4), sqrt(9)), 1))", &v);
+	ASSERT_EQ(value_int(&v), 4);
+	value_reset(&v);
+	
+	fscript_eval(obj, "sqrt(if(<(3, 1), 123, sub(sum(sqrt(4), sqrt(9)), 1)))", &v);
 	ASSERT_EQ(value_int(&v), 2);
 	value_reset(&v);
 	
