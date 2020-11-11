@@ -74,6 +74,9 @@ typedef ret_t (*fscript_func_t)(object_t* obj, fscript_args_t* args, value_t* v)
  */
 ret_t fscript_eval(object_t* obj, const char* script, value_t* result);
 
+/*注册自定义函数时，属性名的前缀。*/
+#define STR_FSCRIPT_FUNCTION_PREFIX "function."
+
 END_C_DECLS
 
 #endif /*TK_FSCRIPTS_H*/

@@ -1165,3 +1165,30 @@ time_now_us()
 ```
 time_now_us()
 ```
+
+### 5. 自定义函数
+
+定义函数
+
+```c
+static ret_t func_foo(object_t* obj, fscript_args_t* args, value_t* v) {
+  value_set_int(v, 123);
+
+  return RET_OK;
+}
+```
+
+注册和使用
+
+```c
+  value_t v;
+  object_t* obj = object_default_create();
+  object_set_prop_pointer(obj, "function.foo", (void*)func_foo);
+
+  fscript_eval(obj, "foo()", &v);
+  value_reset(&v);
+
+  OBJECT_UNREF(obj);
+```
+
+

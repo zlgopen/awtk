@@ -524,3 +524,21 @@ TEST(FScript, complex) {
 
   OBJECT_UNREF(obj);
 }
+
+static ret_t func_foo(object_t* obj, fscript_args_t* args, value_t* v) {
+  value_set_int(v, 123);
+
+  return RET_OK;
+}
+
+TEST(FScript, func) {
+  value_t v;
+  object_t* obj = object_default_create();
+  object_set_prop_pointer(obj, "function.foo", (void*)func_foo);
+
+  fscript_eval(obj, "foo()", &v);
+  ASSERT_EQ(value_int(&v), 123);
+  value_reset(&v);
+
+  OBJECT_UNREF(obj);
+}

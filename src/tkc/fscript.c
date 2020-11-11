@@ -1007,6 +1007,7 @@ static const func_entry_t s_builtin_funcs[] = {
 static fscript_func_t fscript_lookup(fscript_t* fscript, const char* name, uint32_t size) {
   uint32_t i = 0;
   char func_name[TK_NAME_LEN + 1];
+  char full_func_name[2 * TK_NAME_LEN + 1];
 
   tk_strncpy(func_name, name, tk_min(size, TK_NAME_LEN));
   for (i = 0; i < ARRAY_SIZE(s_builtin_funcs); i++) {
@@ -1015,5 +1016,7 @@ static fscript_func_t fscript_lookup(fscript_t* fscript, const char* name, uint3
     }
   }
 
-  return (fscript_func_t)object_get_prop_pointer(fscript->obj, func_name);
+  tk_snprintf(full_func_name, sizeof(full_func_name)-1, "%s%s", STR_FSCRIPT_FUNCTION_PREFIX, func_name);
+  return (fscript_func_t)object_get_prop_pointer(fscript->obj, full_func_name);
 }
+
