@@ -317,3 +317,190 @@ TEST(FScript, eq) {
 	value_reset(&v);
 	OBJECT_UNREF(obj);
 }
+
+TEST(FScript, trim) {
+	value_t v;
+	object_t* obj = object_default_create();
+	
+	fscript_eval(obj, "trim(\" aaa \")", &v);
+	ASSERT_STREQ(value_str(&v), "aaa");
+	value_reset(&v);
+	
+	fscript_eval(obj, "trim(\"aaa \")", &v);
+	ASSERT_STREQ(value_str(&v), "aaa");
+	value_reset(&v);
+	
+	OBJECT_UNREF(obj);
+}
+
+TEST(FScript, len) {
+	value_t v;
+	object_t* obj = object_default_create();
+	
+	fscript_eval(obj, "len(\"aaa\")", &v);
+	ASSERT_EQ(value_int(&v), 3);
+	value_reset(&v);
+	
+	fscript_eval(obj, "len(\"\")", &v);
+	ASSERT_EQ(value_int(&v), 0);
+	value_reset(&v);
+	
+	
+	OBJECT_UNREF(obj);
+}
+
+TEST(FScript, toupper) {
+	value_t v;
+	object_t* obj = object_default_create();
+	
+	fscript_eval(obj, "toupper(\"aaa\")", &v);
+	ASSERT_STREQ(value_str(&v), "AAA");
+	value_reset(&v);
+	
+	fscript_eval(obj, "trim(\"AAA\")", &v);
+	ASSERT_STREQ(value_str(&v), "AAA");
+	value_reset(&v);
+	
+	OBJECT_UNREF(obj);
+}
+
+TEST(FScript, tolower) {
+	value_t v;
+	object_t* obj = object_default_create();
+	
+	fscript_eval(obj, "tolower(\"aaa\")", &v);
+	ASSERT_STREQ(value_str(&v), "aaa");
+	value_reset(&v);
+	
+	fscript_eval(obj, "tolower(\"AAA\")", &v);
+	ASSERT_STREQ(value_str(&v), "aaa");
+	value_reset(&v);
+	
+	OBJECT_UNREF(obj);
+}
+
+TEST(FScript, replace) {
+	value_t v;
+	object_t* obj = object_default_create();
+	
+	fscript_eval(obj, "replace(\"aaa\", \"a\", \"B\")", &v);
+	ASSERT_STREQ(value_str(&v), "BBB");
+	value_reset(&v);
+	
+	fscript_eval(obj, "replace(\"aaa123\", \"a\", \"\")", &v);
+	ASSERT_STREQ(value_str(&v), "123");
+	value_reset(&v);
+	
+	
+	OBJECT_UNREF(obj);
+}
+
+TEST(FScript, contains) {
+	value_t v;
+	object_t* obj = object_default_create();
+	
+	fscript_eval(obj, "contains(\"aaa\", \"a\")", &v);
+	ASSERT_EQ(value_bool(&v), true);
+	value_reset(&v);
+	
+	fscript_eval(obj, "contains(\"aaa\", \"A\")", &v);
+	ASSERT_EQ(value_bool(&v), false);
+	value_reset(&v);
+	
+	OBJECT_UNREF(obj);
+}
+
+TEST(FScript, substr) {
+	value_t v;
+	object_t* obj = object_default_create();
+	
+	fscript_eval(obj, "substr(\"1234567\", 1, 3)", &v);
+	ASSERT_STREQ(value_str(&v), "234");
+	value_reset(&v);
+	
+	fscript_eval(obj, "substr(\"1234567\", 0, 3)", &v);
+	ASSERT_STREQ(value_str(&v), "123");
+	value_reset(&v);
+	
+	fscript_eval(obj, "substr(\"1234567\", 0, 300)", &v);
+	ASSERT_STREQ(value_str(&v), "1234567");
+	value_reset(&v);
+	
+	
+	OBJECT_UNREF(obj);
+}
+
+TEST(FScript, min) {
+	value_t v;
+	object_t* obj = object_default_create();
+	
+	fscript_eval(obj, "min(100, 50)", &v);
+	ASSERT_EQ(value_int(&v), 50);
+	value_reset(&v);
+	
+	fscript_eval(obj, "min(50, 100)", &v);
+	ASSERT_EQ(value_int(&v), 50);
+	value_reset(&v);
+	
+	OBJECT_UNREF(obj);
+}
+
+TEST(FScript, max) {
+	value_t v;
+	object_t* obj = object_default_create();
+	
+	fscript_eval(obj, "max(100, 50)", &v);
+	ASSERT_EQ(value_int(&v), 100);
+	value_reset(&v);
+	
+	fscript_eval(obj, "max(50, 100)", &v);
+	ASSERT_EQ(value_int(&v), 100);
+	value_reset(&v);
+	
+	OBJECT_UNREF(obj);
+}
+
+TEST(FScript, clamp) {
+	value_t v;
+	object_t* obj = object_default_create();
+	
+	fscript_eval(obj, "clamp(100, 50, 200)", &v);
+	ASSERT_EQ(value_int(&v), 100);
+	value_reset(&v);
+	
+	fscript_eval(obj, "clamp(10, 50, 200)", &v);
+	ASSERT_EQ(value_int(&v), 50);
+	value_reset(&v);
+	
+	fscript_eval(obj, "clamp(1000, 50, 200)", &v);
+	ASSERT_EQ(value_int(&v), 200);
+	value_reset(&v);
+	
+	OBJECT_UNREF(obj);
+}
+
+TEST(FScript, pow) {
+	value_t v;
+	object_t* obj = object_default_create();
+	
+	fscript_eval(obj, "pow(3, 2)", &v);
+	ASSERT_EQ(value_int(&v), 9);
+	value_reset(&v);
+	
+	fscript_eval(obj, "pow(3, 0)", &v);
+	ASSERT_EQ(value_int(&v), 1);
+	value_reset(&v);
+	
+	OBJECT_UNREF(obj);
+}
+
+TEST(FScript, sqrt) {
+	value_t v;
+	object_t* obj = object_default_create();
+	
+	fscript_eval(obj, "sqrt(4)", &v);
+	ASSERT_EQ(value_int(&v), 2);
+	value_reset(&v);
+	
+	OBJECT_UNREF(obj);
+}

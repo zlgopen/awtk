@@ -384,8 +384,7 @@ static ret_t fscript_exec_func(fscript_t* fscript, value_t* result) {
 
 static ret_t fscript_exec(fscript_t* fscript, value_t* result) {
   char c = '\0';
-  ret_t ret = RET_FAIL;
-
+  ret_t ret = RET_OK;
   while (fscript->cursor[0]) {
     ret = fscript_exec_func(fscript, result);
 
@@ -399,7 +398,7 @@ static ret_t fscript_exec(fscript_t* fscript, value_t* result) {
     }
   }
 
-  return RET_OK;
+  return ret;
 }
 
 ret_t fscript_eval(object_t* obj, const char* script, value_t* result) {
@@ -411,14 +410,15 @@ ret_t fscript_eval(object_t* obj, const char* script, value_t* result) {
   value_set_int(&v, 0);
   fscript_init(&fscript, obj, script);
   ret = fscript_exec(&fscript, &v);
-  fscript_deinit(&fscript);
 
   if (result != NULL) {
     value_deep_copy(result, &v);
   }
-  value_reset(&v);
 
-  return RET_OK;
+  value_reset(&v);
+  fscript_deinit(&fscript);
+
+  return ret;
 }
 
 static ret_t func_sum(object_t* obj, fscript_args_t* args, value_t* result) {
@@ -896,6 +896,21 @@ static ret_t func_replace(object_t* obj, fscript_args_t* args, value_t* result) 
   return RET_OK;
 }
 
+static ret_t func_contains(object_t* obj, fscript_args_t* args, value_t* result) {
+  const char* org = NULL;
+  const char* target = NULL;
+  value_set_bool(result, FALSE);
+  return_value_if_fail(args->size == 2, RET_BAD_PARAMS);
+
+  org = value_str(args->args);
+  target = value_str(args->args+1);
+  return_value_if_fail(org != NULL && target != NULL, RET_BAD_PARAMS);
+  value_set_bool(result, strstr(org, target) != NULL);
+
+  return RET_OK;
+}
+
+
 static ret_t func_exec(object_t* obj, fscript_args_t* args, value_t* result) {
   return_value_if_fail(args->size == 2, RET_BAD_PARAMS);
   value_set_bool(result,
@@ -918,70 +933,71 @@ static ret_t func_unset(object_t* obj, fscript_args_t* args, value_t* result) {
 }
 
 static const func_entry_t s_builtin_funcs[] = {
-    {"noop", func_noop},
-    {"sum", func_sum},
-    {"+", func_sum},
-    {"int", func_int},
-    {"float", func_float},
-    {"join", func_join},
-    {"str", func_str},
-    {"if", func_if},
-    {"set", func_set},
-    {"get", func_get},
-    {"print", func_print},
-    {"iformat", func_iformat},
-    {"fformat", func_fformat},
+    {"abs", func_abs},
+    {"acos", func_acos},
     {"and", func_and},
-    {"&&", func_and},
-    {"or", func_or},
-    {"||", func_or},
-    {"not", func_not},
-    {"&", func_bit_and},
-    {"|", func_bit_or},
-    {"^", func_bit_nor},
-    {"~", func_bit_not},
-    {"!", func_not},
+    {"asin", func_asin},
+    {"atan", func_atan},
+    {"clamp", func_clamp},
+    {"contains", func_contains},
+    {"cos", func_cos},
     {"div", func_div},
-    {"/", func_div},
-    {"%", func_mod},
+    {"eq", func_eq},
+    {"exec", func_exec},
+    {"fformat", func_fformat},
+    {"float", func_float},
+    {"ge", func_ge},
+    {"get", func_get},
+    {"great", func_great},
+    {"if", func_if},
+    {"iformat", func_iformat},
+    {"int", func_int},
+    {"join", func_join},
+    {"le", func_le},
+    {"len", func_len},
+    {"less", func_less},
+    {"max", func_max},
+    {"min", func_min},
     {"mul", func_mul},
-    {"*", func_mul},
-    {"sub", func_sub},
-    {"-", func_sub},
+    {"noop", func_noop},
+    {"not", func_not},
+    {"or", func_or},
     {"pow", func_pow},
-    {"sqrt", func_sqrt},
+    {"print", func_print},
     {"random", func_random},
+    {"replace", func_replace},
+    {"set", func_set},
+    {"sin", func_sin},
+    {"sqrt", func_sqrt},
+    {"str", func_str},
+    {"sub", func_sub},
+    {"substr", func_substr},
+    {"sum", func_sum},
+    {"tan", func_tan},
     {"time_now", func_time_now},
     {"time_now_ms", func_time_now_ms},
     {"time_now_us", func_time_now_us},
-    {"le", func_le},
-    {"<=", func_le},
-    {"less", func_less},
-    {"<", func_less},
-    {"ge", func_ge},
-    {">=", func_ge},
-    {"great", func_great},
-    {">", func_great},
-    {"eq", func_eq},
-    {"==", func_eq},
-    {"sin", func_sin},
-    {"cos", func_cos},
-    {"tan", func_tan},
-    {"asin", func_asin},
-    {"acos", func_acos},
-    {"atan", func_atan},
-    {"min", func_min},
-    {"max", func_max},
-    {"clamp", func_clamp},
-    {"abs", func_abs},
-    {"len", func_len},
-    {"toupper", func_toupper},
     {"tolower", func_tolower},
+    {"toupper", func_toupper},
     {"trim", func_trim},
-    {"substr", func_substr},
-    {"replace", func_replace},
-    {"exec", func_exec},
     {"unset", func_unset},
+    {"&&", func_and},
+    {"&", func_bit_and},
+    {"^", func_bit_nor},
+    {"~", func_bit_not},
+    {"|", func_bit_or},
+    {"/", func_div},
+    {"==", func_eq},
+    {">=", func_ge},
+    {">", func_great},
+    {"<=", func_le},
+    {"<", func_less},
+    {"%", func_mod},
+    {"*", func_mul},
+    {"!", func_not},
+    {"||", func_or},
+    {"-", func_sub},
+    {"+", func_sum},
 };
 
 static fscript_func_t fscript_lookup(fscript_t* fscript, const char* name, uint32_t size) {

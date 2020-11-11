@@ -344,7 +344,23 @@ replace(str, old, new)
 #### 示例
 
 ```
-substr("ab cd", "ab", "hello")
+replace("ab cd", "ab", "hello")
+```
+
+#### contains
+
+> contains子字符串。
+
+##### 原型
+
+```
+contains(str, substr)
+```
+
+#### 示例
+
+```
+contains("ab cd", "ab")
 ```
 
 ### 运算函数
