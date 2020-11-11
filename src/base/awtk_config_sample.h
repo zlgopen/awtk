@@ -186,7 +186,7 @@
  */
 
 /**
- * 对于低端平台，如果内存不足以提供完整的FrameBuffer，请定义本宏启用局部FrameBuffer，可大幅度提高渲染性能。
+ * 对于低端平台，如果内存不足以提供完整的FrameBuffer，请定义本宏启用局部FrameBuffer，可大幅度提高渲染性能。(单位是像素个数)
  *
  * #define FRAGMENT_FRAME_BUFFER_SIZE 32 * 1024
  */
