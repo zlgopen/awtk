@@ -37,7 +37,7 @@ typedef struct _fscript_args_t {
    * 参数个数。
    */
   uint32_t size;
-  
+
   /**
    * @property {value_t*} args
    * @annotation ["readable"]
@@ -77,4 +77,3 @@ ret_t fscript_eval(object_t* obj, const char* script, value_t* result);
 END_C_DECLS
 
 #endif /*TK_FSCRIPTS_H*/
-

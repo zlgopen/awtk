@@ -348,7 +348,6 @@ ret_t assets_manager_destroy(assets_manager_t* am);
  */
 asset_info_t* assets_manager_load_file(assets_manager_t* am, asset_type_t type, const char* path);
 
-
 /*public for test*/
 bool_t assets_manager_is_save_assets_list(asset_type_t type);
 

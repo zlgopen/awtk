@@ -247,7 +247,7 @@ static token_t* fscript_get_token(fscript_t* fscript) {
         t->type = TOKEN_NUMBER;
         do {
           c = fscript_get_char(fscript);
-          if(c == '\0') {
+          if (c == '\0') {
             break;
           }
         } while (isxdigit(c) || c == '.' || c == 'x' || c == 'X' || c == 'b' || c == 'B');

@@ -218,10 +218,17 @@ TEST(Utils, xml_file_expand) {
   str_t s;
   str_init(&s, 0);
   const char* filename = "./tests/testdata/main.xml";
-  const char* xml_string = "<window><?include filename=\"button.xml\"?><?include filename=\"label.xml\"?></window>";
-  const char* xml_string_1 = "<window><mledit text=\"<?include filename=\"button.xml\"?>\"/><?include filename=\"label.xml\"?></window>";
-  const char* xml_string_2 = "<window><mledit text=\"<?include filename=\"button.xml\"?>\"/><?include filename=\"label.xml\"?><mledit text=\"<?include filename=\"button.xml\"?>\"/></window>";
-  const char* xml_string_3 = "<window><mledit><property name=\"text\"><?include filename=\"button.xml\"?></property></mledit><?include filename=\"label.xml\"?></window>";
+  const char* xml_string =
+      "<window><?include filename=\"button.xml\"?><?include filename=\"label.xml\"?></window>";
+  const char* xml_string_1 =
+      "<window><mledit text=\"<?include filename=\"button.xml\"?>\"/><?include "
+      "filename=\"label.xml\"?></window>";
+  const char* xml_string_2 =
+      "<window><mledit text=\"<?include filename=\"button.xml\"?>\"/><?include "
+      "filename=\"label.xml\"?><mledit text=\"<?include filename=\"button.xml\"?>\"/></window>";
+  const char* xml_string_3 =
+      "<window><mledit><property name=\"text\"><?include "
+      "filename=\"button.xml\"?></property></mledit><?include filename=\"label.xml\"?></window>";
 
   ASSERT_EQ(xml_file_expand(filename, &s, xml_string), RET_OK);
   str_replace(&s, "\r\n", "\n");
@@ -230,17 +237,22 @@ TEST(Utils, xml_file_expand) {
   str_init(&s, 0);
   ASSERT_EQ(xml_file_expand(filename, &s, xml_string_1), RET_OK);
   str_replace(&s, "\r\n", "\n");
-  ASSERT_EQ(string(s.str), "<window><mledit text=\"<?include filename=\"button.xml\"?>\"/><label />\n</window>");
+  ASSERT_EQ(string(s.str),
+            "<window><mledit text=\"<?include filename=\"button.xml\"?>\"/><label />\n</window>");
 
   str_init(&s, 0);
   ASSERT_EQ(xml_file_expand(filename, &s, xml_string_2), RET_OK);
   str_replace(&s, "\r\n", "\n");
-  ASSERT_EQ(string(s.str), "<window><mledit text=\"<?include filename=\"button.xml\"?>\"/><label />\n<mledit text=\"<?include filename=\"button.xml\"?>\"/></window>");
+  ASSERT_EQ(string(s.str),
+            "<window><mledit text=\"<?include filename=\"button.xml\"?>\"/><label />\n<mledit "
+            "text=\"<?include filename=\"button.xml\"?>\"/></window>");
 
   str_init(&s, 0);
   ASSERT_EQ(xml_file_expand(filename, &s, xml_string_3), RET_OK);
   str_replace(&s, "\r\n", "\n");
-  ASSERT_EQ(string(s.str), "<window><mledit><property name=\"text\"><?include filename=\"button.xml\"?></property></mledit><label />\n</window>");
+  ASSERT_EQ(string(s.str),
+            "<window><mledit><property name=\"text\"><?include "
+            "filename=\"button.xml\"?></property></mledit><label />\n</window>");
 
   str_reset(&s);
 }

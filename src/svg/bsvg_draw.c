@@ -240,7 +240,9 @@ ret_t bsvg_draw_path(draw_ctx_t* ctx, const svg_path_t* path) {
       break;
     }
     case SVG_PATH_NULL:
-    default: { break; }
+    default: {
+      break;
+    }
   }
   ctx->last_type = path->type;
 

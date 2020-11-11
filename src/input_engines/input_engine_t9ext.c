@@ -351,7 +351,9 @@ static const char* input_engine_t9ext_get_lang(input_engine_t* engine) {
     case INPUT_MODE_UPPER: {
       return IM_LANG_UPPER;
     }
-    default: { return "pinyin"; }
+    default: {
+      return "pinyin";
+    }
   }
 }
 

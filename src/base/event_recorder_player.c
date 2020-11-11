@@ -139,7 +139,9 @@ static ret_t event_recorder_player_record(event_recorder_player_t* p, event_t* e
       memcpy(&event, e, sizeof(wheel_event_t));
       break;
     }
-    default: { return RET_OK; }
+    default: {
+      return RET_OK;
+    }
   }
 
   ENSURE(fs_file_write(p->fp, &event, sizeof(log_event_t)) == sizeof(log_event_t));

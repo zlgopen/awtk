@@ -29,7 +29,8 @@ TEST(AssetsManager, basic) {
   assets_manager_destroy(rm);
 }
 
-static bool_t load_assets_refcount_is_no_problem(assets_manager_t* rm, asset_type_t type, const char* name) {
+static bool_t load_assets_refcount_is_no_problem(assets_manager_t* rm, asset_type_t type,
+                                                 const char* name) {
   const asset_info_t* r = NULL;
   r = assets_manager_ref(rm, type, name);
 
@@ -47,7 +48,8 @@ static bool_t load_assets_refcount_is_no_problem(assets_manager_t* rm, asset_typ
   return TRUE;
 }
 
-static bool_t file_path_load_assets_refcount_is_no_problem(assets_manager_t* rm, asset_type_t type, const char* name) {
+static bool_t file_path_load_assets_refcount_is_no_problem(assets_manager_t* rm, asset_type_t type,
+                                                           const char* name) {
   asset_info_t* r = NULL;
   const char* ratio = "x1";
   char path[MAX_PATH] = {0};
@@ -104,7 +106,8 @@ static bool_t file_path_load_assets_refcount_is_no_problem(assets_manager_t* rm,
 
   tk_str_append(path, MAX_PATH, STR_SCHEMA_FILE);
   if (type == ASSET_TYPE_IMAGE) {
-    path_build(path + len, MAX_PATH - len, res_root, "assets", "default", "raw", type_dir, ratio, NULL);
+    path_build(path + len, MAX_PATH - len, res_root, "assets", "default", "raw", type_dir, ratio,
+               NULL);
   } else {
     path_build(path + len, MAX_PATH - len, res_root, "assets", "default", "raw", type_dir, NULL);
   }
@@ -148,8 +151,10 @@ TEST(AssetsManager, load_assets_refcount) {
   ASSERT_EQ(file_path_load_assets_refcount_is_no_problem(rm, ASSET_TYPE_DATA, "test.dat"), TRUE);
 
   ASSERT_EQ(file_path_load_assets_refcount_is_no_problem(rm, ASSET_TYPE_FONT, "default.ttf"), TRUE);
-  ASSERT_EQ(file_path_load_assets_refcount_is_no_problem(rm, ASSET_TYPE_STYLE, "default.bin"), TRUE);
-  ASSERT_EQ(file_path_load_assets_refcount_is_no_problem(rm, ASSET_TYPE_STRINGS, "zh_CN.bin"), TRUE);
+  ASSERT_EQ(file_path_load_assets_refcount_is_no_problem(rm, ASSET_TYPE_STYLE, "default.bin"),
+            TRUE);
+  ASSERT_EQ(file_path_load_assets_refcount_is_no_problem(rm, ASSET_TYPE_STRINGS, "zh_CN.bin"),
+            TRUE);
 
   assets_manager_destroy(rm);
 }
@@ -183,7 +188,8 @@ TEST(AssetsManager, long_name) {
   }
 
   tk_str_append(path, MAX_PATH, STR_SCHEMA_FILE);
-  path_build(path + len, MAX_PATH - len, res_root, "assets", "default", "raw", "images", ratio, NULL);
+  path_build(path + len, MAX_PATH - len, res_root, "assets", "default", "raw", "images", ratio,
+             NULL);
   tk_str_append(path, MAX_PATH, "/");
   tk_str_append(path, MAX_PATH, name);
 

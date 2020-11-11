@@ -455,7 +455,9 @@ ret_t conf_node_set_value(conf_node_t* node, const value_t* v) {
       }
       break;
     }
-    default: { return RET_NOT_IMPL; }
+    default: {
+      return RET_NOT_IMPL;
+    }
   }
   node->node_type = CONF_NODE_SIMPLE;
 
@@ -519,7 +521,9 @@ ret_t conf_node_get_value(conf_node_t* node, value_t* v) {
       value_set_str(v, node->value.small_str);
       break;
     }
-    default: { return RET_NOT_IMPL; }
+    default: {
+      return RET_NOT_IMPL;
+    }
   }
 
   return RET_OK;

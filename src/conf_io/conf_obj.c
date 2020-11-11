@@ -205,7 +205,7 @@ static ret_t conf_obj_exec(object_t* obj, const char* name, const char* args) {
   if (tk_str_ieq(name, OBJECT_CMD_SAVE)) {
     if (tk_str_eq(args, "force")) {
       ret = conf_obj_save(obj);
-    } else if(o->modified) {
+    } else if (o->modified) {
       ret = conf_obj_save(obj);
     } else {
       ret = RET_NOT_MODIFIED;

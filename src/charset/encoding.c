@@ -55,7 +55,9 @@ static const char* get_native_encoding_name(encoding_name_t name) {
     case ENCODING_GB18030: {
       return "GB18030";
     }
-    default: { return NULL; }
+    default: {
+      return NULL;
+    }
   }
 }
 

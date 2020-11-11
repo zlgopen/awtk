@@ -88,11 +88,11 @@ static ret_t text_selector_paint_mask(widget_t* widget, canvas_t* c) {
     bitmap_t img;
     rect_t r = rect_init(0, 0, widget->w, widget->h);
     if (widget_load_image(widget, fg_image, &img) == RET_OK) {
-      image_draw_type_t draw_type = (image_draw_type_t)style_get_int(style, STYLE_ID_FG_IMAGE_DRAW_TYPE, IMAGE_DRAW_CENTER);
+      image_draw_type_t draw_type =
+          (image_draw_type_t)style_get_int(style, STYLE_ID_FG_IMAGE_DRAW_TYPE, IMAGE_DRAW_CENTER);
       canvas_draw_image_ex(c, &img, draw_type, (const rect_t*)&r);
     }
   }
-
 
   return RET_OK;
 }
@@ -118,7 +118,8 @@ static int32_t text_selector_range_yoffset(int32_t value, int32_t min_yoffset, i
   return value;
 }
 
-static ret_t text_selector_prepare_highlight_style(widget_t* widget, canvas_t* c, float_t d, bool_t set_color) {
+static ret_t text_selector_prepare_highlight_style(widget_t* widget, canvas_t* c, float_t d,
+                                                   bool_t set_color) {
   style_t* style = widget->astyle;
   color_t trans = color_init(0, 0, 0, 0);
   color_t tc = style_get_color(style, STYLE_ID_TEXT_COLOR, trans);
@@ -147,11 +148,14 @@ static ret_t text_selector_prepare_highlight_style(widget_t* widget, canvas_t* c
   return RET_OK;
 }
 
-static ret_t text_selector_paint_text(widget_t* widget, canvas_t* c, rect_t* r, text_selector_option_t* iter, int32_t empty_item_height, int32_t item_height) {
+static ret_t text_selector_paint_text(widget_t* widget, canvas_t* c, rect_t* r,
+                                      text_selector_option_t* iter, int32_t empty_item_height,
+                                      int32_t item_height) {
   uint32_t d = tk_abs(r->y - empty_item_height);
 
   if (d < item_height) {
-    text_selector_prepare_highlight_style(widget, c, (item_height - d) / (float_t)item_height, d < item_height / 2);
+    text_selector_prepare_highlight_style(widget, c, (item_height - d) / (float_t)item_height,
+                                          d < item_height / 2);
   } else {
     widget_prepare_text_style(widget, c);
   }

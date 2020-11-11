@@ -6,7 +6,7 @@
 int main(int argc, char* argv[]) {
   platform_prepare();
 
-  if(argc != 2) {
+  if (argc != 2) {
     printf("Usage: %s script\n", argv[0]);
     return 0;
   } else {
@@ -16,7 +16,7 @@ int main(int argc, char* argv[]) {
     fscript_eval(obj, argv[1], &v);
     value_reset(&v);
     OBJECT_UNREF(obj);
-    log_debug("cost: %d us\n", (int)(time_now_us()-start));
+    log_debug("cost: %d us\n", (int)(time_now_us() - start));
   }
 
   return 0;

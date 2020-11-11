@@ -778,7 +778,7 @@ static EvalResult parse_unary(EvalContext* ctx, ExprValue* output) {
 
   for (;;) {
     if (ctx->token.type == EVAL_TOKEN_TYPE_NOT) {
-      not = !not;
+      not = !not ;
 
       result = get_token(ctx);
       if (result != EVAL_RESULT_OK) return result;
@@ -804,7 +804,7 @@ static EvalResult parse_unary(EvalContext* ctx, ExprValue* output) {
     if (neg) {
       value.v.val = -value.v.val;
     }
-    if (not) {
+    if (not ) {
       value.v.val = !value.v.val;
     }
     if (bit_not) {
@@ -812,7 +812,7 @@ static EvalResult parse_unary(EvalContext* ctx, ExprValue* output) {
     }
   }
   if (value.type == EXPR_VALUE_TYPE_STRING) {
-    if (not) {
+    if (not ) {
       expr_value_set_number(&value, !value.v.str.size);
     }
   }
