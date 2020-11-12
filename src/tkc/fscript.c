@@ -19,6 +19,9 @@
 #include "tkc/time_now.h"
 #include "tkc/fscript.h"
 
+static ret_t func_set(object_t* obj, fscript_args_t* args, value_t* result);
+static ret_t func_get(object_t* obj, fscript_args_t* args, value_t* result);
+
 static ret_t func_args_push_str(fscript_args_t* args, const char* str, uint32_t size) {
   char* new_str = NULL;
   return_value_if_fail(str != NULL && args->size < FSCRIPT_MAX_ARGS, RET_BAD_PARAMS);
@@ -167,6 +170,65 @@ static ret_t fscript_skip_seperators(fscript_t* fscript) {
   return RET_OK;
 }
 
+#define TOKEN_INIT(t, ttype, str) \
+  t->type = ttype;                \
+  t->token = str->str;            \
+  t->size = str->size;
+
+static ret_t fscript_parse_str(fscript_t* fscript) {
+  char c = '\0';
+  bool_t escape = FALSE;
+  str_t* str = &(fscript->temp);
+  token_t* t = &(fscript->token);
+
+  str_set(str, "");
+  do {
+    c = fscript_get_char(fscript);
+    if ((!escape && c == '\"') || c == '\0') {
+      break;
+    }
+    if (!escape && c == '\\') {
+      escape = TRUE;
+      continue;
+    }
+    if (escape) {
+      escape = FALSE;
+    }
+    str_append_char(str, c);
+  } while (TRUE);
+
+  TOKEN_INIT(t, TOKEN_STR, str);
+  if (c != '\0' && c != '\"') {
+    fscript_unget_char(fscript, c);
+  }
+
+  return RET_OK;
+}
+
+static ret_t fscript_parse_id_or_number(fscript_t* fscript, token_type_t def_type) {
+  char c = '\0';
+  str_t* str = &(fscript->temp);
+  token_t* t = &(fscript->token);
+
+  str_set(str, "");
+  do {
+    c = fscript_get_char(fscript);
+    if (c != '(' && c != ')' && c != ',' && c != '\"' && c != '\0') {
+      str_append_char(str, c);
+    } else {
+      break;
+    }
+  } while (TRUE);
+
+  str_trim(str, " \t\r\n");
+  TOKEN_INIT(t, (c == '(' ? TOKEN_FUNC : def_type), str);
+  if (c != '\0') {
+    fscript_unget_char(fscript, c);
+  }
+
+  return RET_OK;
+}
+
 static token_t* fscript_get_token(fscript_t* fscript) {
   char c = 0;
   token_t* t = &(fscript->token);
@@ -221,55 +283,19 @@ static token_t* fscript_get_token(fscript_t* fscript) {
       return t;
     }
     case '\"': {
-      t->type = TOKEN_STR;
-      t->token = fscript->cursor;
-      do {
-        c = fscript_get_char(fscript);
-      } while (c != '\"' && c != '\0');
-      t->size = fscript->cursor - t->token;
-      if (c == '\"') {
-        t->size--;
-      }
+      fscript_parse_str(fscript);
       return t;
     }
     default: {
-      if (isalpha(c) || c == '_') {
-        do {
-          c = fscript_get_char(fscript);
-        } while (isalpha(c) || isdigit(c) || c == '_' || c == '.');
-        if (c == '(') {
-          t->type = TOKEN_FUNC;
-        } else {
-          t->type = TOKEN_ID;
-        }
-        fscript_unget_char(fscript, c);
-      } else if (c == '+' || c == '-' || isdigit(c)) {
-        t->type = TOKEN_NUMBER;
-        do {
-          c = fscript_get_char(fscript);
-          if (c == '\0') {
-            break;
-          }
-        } while (isxdigit(c) || c == '.' || c == 'x' || c == 'X' || c == 'b' || c == 'B');
-
-        if (c == '(') {
-          t->type = TOKEN_FUNC;
-        }
-        fscript_unget_char(fscript, c);
+      fscript_unget_char(fscript, c);
+      if (c == '+' || c == '-' || isdigit(c)) {
+        fscript_parse_id_or_number(fscript, TOKEN_NUMBER);
       } else {
-        fscript_set_error(fscript, "unexpected char.");
+        fscript_parse_id_or_number(fscript, TOKEN_ID);
       }
-
-      if (c) {
-        t->size = fscript->cursor - t->token - 1;
-      } else {
-        t->size = fscript->cursor - t->token;
-      }
-
       return t;
     }
   }
-  return NULL;
 }
 
 static ret_t fscript_expect_token(fscript_t* fscript, token_type_t type, const char* msg) {
@@ -290,6 +316,7 @@ static ret_t fscript_exec_func(fscript_t* fscript, value_t* result) {
   value_t v;
   bool_t done = FALSE;
   fscript_args_t args;
+  str_t* str = &(fscript->temp);
   token_t* t = fscript_get_token(fscript);
   fscript_func_t func = fscript_lookup(fscript, t->token, t->size);
   bool_t is_if = t && t->size == 2 && strncmp(t->token, "if", 2) == 0;
@@ -313,7 +340,15 @@ static ret_t fscript_exec_func(fscript_t* fscript, value_t* result) {
         } else if (t->token[0] == 'f' && strncmp(t->token, "false", 5) == 0) {
           func_args_push(&args, value_set_bool(&v, FALSE));
         } else {
-          func_args_push_str(&args, t->token, t->size);
+          if(args.size > 0 || (func != func_get && func != func_set && args.size == 0)) {
+            if(object_get_prop(fscript->obj, str->str, &v) == RET_OK) {
+              func_args_push(&args, &v);
+            } else {
+              func_args_push_str(&args, t->token, t->size);
+            }
+          } else {
+            func_args_push_str(&args, t->token, t->size);
+          }
         }
         break;
       }
@@ -527,7 +562,7 @@ static ret_t func_iformat(object_t* obj, fscript_args_t* args, value_t* result) 
   format = value_str(args->args);
   return_value_if_fail(format != NULL, RET_BAD_PARAMS);
 
-  tk_snprintf(str->str, str->size - 1, format, value_int(args->args + 1));
+  tk_snprintf(str->str, str->capacity - 1, format, value_int(args->args + 1));
   value_set_str(result, str->str);
 
   return RET_OK;
@@ -540,7 +575,7 @@ static ret_t func_fformat(object_t* obj, fscript_args_t* args, value_t* result) 
   format = value_str(args->args);
   return_value_if_fail(format != NULL, RET_BAD_PARAMS);
 
-  tk_snprintf(str->str, str->size - 1, format, value_double(args->args + 1));
+  tk_snprintf(str->str, str->capacity - 1, format, value_double(args->args + 1));
   value_set_str(result, str->str);
 
   return RET_OK;
@@ -1019,4 +1054,3 @@ static fscript_func_t fscript_lookup(fscript_t* fscript, const char* name, uint3
   tk_snprintf(full_func_name, sizeof(full_func_name)-1, "%s%s", STR_FSCRIPT_FUNCTION_PREFIX, func_name);
   return (fscript_func_t)object_get_prop_pointer(fscript->obj, full_func_name);
 }
-
