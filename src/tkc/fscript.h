@@ -68,7 +68,7 @@ typedef ret_t (*fscript_func_t)(object_t* obj, fscript_args_t* args, value_t* v)
  * @method fscript_eval
  * @param {object_t*} obj 脚本执行上下文。
  * @param {const char*} script 脚本代码。
- * @param {value_t*} result 执行结果。
+ * @param {value_t*} result 执行结果(调用者需要用value_reset函数清除result)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
