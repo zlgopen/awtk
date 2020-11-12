@@ -111,7 +111,7 @@ TEST(FScript, join) {
 TEST(FScript, set) {
   value_t v;
   object_t* obj = object_default_create();
-  fscript_eval(obj, "set(a, 123)sum(get(a), 321)", &v);
+  fscript_eval(obj, "set(a, 123)sum(a, 321)", &v);
   ASSERT_EQ(value_int(&v), 444);
   value_reset(&v);
 

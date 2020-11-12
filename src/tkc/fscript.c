@@ -20,7 +20,6 @@
 #include "tkc/fscript.h"
 
 static ret_t func_set(object_t* obj, fscript_args_t* args, value_t* result);
-static ret_t func_get(object_t* obj, fscript_args_t* args, value_t* result);
 
 static ret_t func_args_push_str(fscript_args_t* args, const char* str, uint32_t size) {
   char* new_str = NULL;
@@ -340,7 +339,7 @@ static ret_t fscript_exec_func(fscript_t* fscript, value_t* result) {
         } else if (t->token[0] == 'f' && strncmp(t->token, "false", 5) == 0) {
           func_args_push(&args, value_set_bool(&v, FALSE));
         } else {
-          if(args.size > 0 || (func != func_get && func != func_set && args.size == 0)) {
+          if(args.size > 0 || (func != func_set && args.size == 0)) {
             if(object_get_prop(fscript->obj, str->str, &v) == RET_OK) {
               func_args_push(&args, &v);
             } else {
@@ -526,18 +525,6 @@ static ret_t func_set(object_t* obj, fscript_args_t* args, value_t* result) {
     value_set_bool(result, TRUE);
   } else {
     value_set_bool(result, FALSE);
-  }
-
-  return RET_OK;
-}
-
-static ret_t func_get(object_t* obj, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 2 || args->size == 1, RET_BAD_PARAMS);
-
-  if (object_get_prop(obj, value_str(args->args), result) != RET_OK) {
-    if (args->size == 2) {
-      value_deep_copy(result, args->args + 1);
-    }
   }
 
   return RET_OK;
@@ -972,7 +959,6 @@ static ret_t func_unset(object_t* obj, fscript_args_t* args, value_t* result) {
 }
 
 static const func_entry_t s_builtin_funcs[] = {
-    {"get", func_get},
     {"set", func_set},
     {"max", func_max},
     {"min", func_min},
