@@ -2558,9 +2558,35 @@
         "annotation": {
           "scriptable": true
         },
-        "desc": "设置类型为字符串的值(并拷贝字符串)。\n\n> 供脚本语言使用。",
+        "desc": "设置类型为字符串的值(并拷贝字符串)。",
         "name": "value_dup_str",
         "alias": "value_set_str",
+        "return": {
+          "type": "value_t*",
+          "desc": "value对象本身。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "value_t*",
+            "name": "v",
+            "desc": "value对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "value",
+            "desc": "待设置的值。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "len",
+            "desc": "长度。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置类型为字符串的值(并拷贝字符串)。",
+        "name": "value_dup_str_with_len",
         "return": {
           "type": "value_t*",
           "desc": "value对象本身。"
@@ -7727,7 +7753,15 @@
       {
         "name": "size",
         "desc": "参数个数。",
-        "type": "uint32_t",
+        "type": "uint16_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "capacity",
+        "desc": "目前最大容量。",
+        "type": "uint16_t",
         "annotation": {
           "readable": true
         }
@@ -7768,11 +7802,69 @@
             "type": "const char*",
             "name": "script",
             "desc": "脚本代码。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建引擎对象。",
+        "name": "fscript_create",
+        "return": {
+          "type": "fscript_t*",
+          "desc": "返回fscript对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "fscript_t*",
+            "name": "fscript",
+            "desc": "脚本引擎对象。"
           },
           {
             "type": "value_t*",
             "name": "result",
-            "desc": "执行结果。"
+            "desc": "执行结果(调用者需要用value_reset函数清除result)。"
+          }
+        ],
+        "annotation": {},
+        "desc": "",
+        "name": "fscript_exec",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "fscript_t*",
+            "name": "fscript",
+            "desc": "脚本引擎对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁引擎对象。",
+        "name": "fscript_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "object_t*",
+            "name": "obj",
+            "desc": "脚本执行上下文。"
+          },
+          {
+            "type": "const char*",
+            "name": "script",
+            "desc": "脚本代码。"
+          },
+          {
+            "type": "value_t*",
+            "name": "result",
+            "desc": "执行结果(调用者需要用value_reset函数清除result)。"
           }
         ],
         "annotation": {},
@@ -7787,7 +7879,7 @@
     "events": [],
     "properties": [],
     "header": "tkc/fscript.h",
-    "desc": "一个简易的函数式脚本。",
+    "desc": "一个简易的函数式脚本引擎。\n用法请参考：https://github.com/zlgopen/awtk/blob/master/docs/fscript.md",
     "name": "fscript_t",
     "annotation": {
       "fake": true

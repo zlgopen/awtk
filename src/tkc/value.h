@@ -476,7 +476,6 @@ value_t* value_set_str(value_t* v, const char* value);
  * @method value_dup_str
  * 设置类型为字符串的值(并拷贝字符串)。
  *
- * > 供脚本语言使用。
  * @alias value_set_str
  * @annotation ["scriptable"]
  * @param {value_t*} v     value对象。
@@ -485,6 +484,18 @@ value_t* value_set_str(value_t* v, const char* value);
  * @return {value_t*} value对象本身。
  */
 value_t* value_dup_str(value_t* v, const char* value);
+
+/**
+ * @method value_dup_str_with_len
+ * 设置类型为字符串的值(并拷贝字符串)。
+ *
+ * @param {value_t*} v     value对象。
+ * @param {const char*}   value 待设置的值。
+ * @param {uint32_t} len 长度。
+ *
+ * @return {value_t*} value对象本身。
+ */
+value_t* value_dup_str_with_len(value_t* v, const char* value, uint32_t len);
 
 /**
  * @method value_set_wstr

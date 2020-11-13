@@ -101,6 +101,7 @@ EXPORTS
     value_double
     value_set_str
     value_dup_str
+    value_dup_str_with_len
     value_set_wstr
     value_str
     value_str_ex
@@ -302,6 +303,9 @@ EXPORTS
     file_read
     file_read_part
     file_write
+    fscript_create
+    fscript_exec
+    fscript_destroy
     fscript_eval
     func_call_parser_init
     func_call_parser_parse

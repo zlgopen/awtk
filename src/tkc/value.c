@@ -384,6 +384,16 @@ value_t* value_dup_str(value_t* v, const char* value) {
   return v;
 }
 
+value_t* value_dup_str_with_len(value_t* v, const char* value, uint32_t len) {
+  return_value_if_fail(v != NULL, NULL);
+
+  value_init(v, VALUE_TYPE_STRING);
+  v->value.str = tk_strndup(value, len);
+  v->free_handle = TRUE;
+
+  return v;
+}
+
 value_t* value_set_wstr(value_t* v, const wchar_t* value) {
   return_value_if_fail(v != NULL, NULL);
 
@@ -747,7 +757,7 @@ const char* value_str_ex(const value_t* v, char* buff, uint32_t size) {
              v->type == VALUE_TYPE_FLOAT) {
     tk_snprintf(buff, size, "%lf", value_double(v));
   } else if (v->type == VALUE_TYPE_WSTRING) {
-    tk_utf8_from_utf16(value_wstr, buff, size);
+    tk_utf8_from_utf16(value_wstr(v), buff, size);
   } else if (v->type == VALUE_TYPE_BOOL) {
     tk_snprintf(buff, size, "%s", value_bool(v) ? "true" : "false");
   } else {

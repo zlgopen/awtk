@@ -334,10 +334,13 @@ enum { TK_NAME_LEN = 31 };
 
 #ifdef WITH_CPPCHECK
 #define tk_str_eq strcmp
-#define tk_str_eq strcasecmp
+#define tk_str_ieq strcasecmp
+#define tk_str_eq_with_len strncmp
 #else
 #define tk_str_eq(s1, s2) \
   (((s1) != NULL) && ((s2) != NULL) && *(s1) == *(s2) && strcmp((s1), (s2)) == 0)
+#define tk_str_eq_with_len(s1, s2, len) \
+  (((s1) != NULL) && ((s2) != NULL) && *(s1) == *(s2) && strncmp((s1), (s2), len) == 0)
 #define tk_str_ieq(s1, s2) (((s1) != NULL) && ((s2) != NULL) && strcasecmp((s1), (s2)) == 0)
 
 #define tk_wstr_eq(s1, s2) \

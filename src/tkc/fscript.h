@@ -32,18 +32,24 @@ BEGIN_C_DECLS
  */
 typedef struct _fscript_args_t {
   /**
-   * @property {uint32_t} size
+   * @property {uint16_t} size
    * @annotation ["readable"]
    * 参数个数。
    */
-  uint32_t size;
+  uint16_t size;
+  /**
+   * @property {uint16_t} capacity
+   * @annotation ["readable"]
+   * 目前最大容量。
+   */
+  uint16_t capacity;
 
   /**
    * @property {value_t*} args
    * @annotation ["readable"]
    * 参数列表。
    */
-  value_t args[FSCRIPT_MAX_ARGS];
+  value_t* args;
 
   /**
    * @property {str_t*} str
@@ -59,10 +65,40 @@ typedef ret_t (*fscript_func_t)(object_t* obj, fscript_args_t* args, value_t* v)
  * @class fscript_t
  * @annotation ["fake"]
  * 
- * 一个简易的函数式脚本。
+ * 一个简易的函数式脚本引擎。
  * 用法请参考：https://github.com/zlgopen/awtk/blob/master/docs/fscript.md
  *
  */
+struct _fscript_t;
+typedef struct _fscript_t fscript_t;
+
+/**
+ * @method fscript_create
+ * 创建引擎对象。
+ * @param {object_t*} obj 脚本执行上下文。
+ * @param {const char*} script 脚本代码。
+ *
+ * @return {fscript_t*} 返回fscript对象。
+ */
+fscript_t* fscript_create(object_t* obj, const char* script);
+
+/**
+ * @method fscript_exec
+ * @param {fscript_t*} fscript 脚本引擎对象。
+ * @param {value_t*} result 执行结果(调用者需要用value_reset函数清除result)。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t fscript_exec(fscript_t* fscript, value_t* result);
+
+/**
+ * @method fscript_destroy
+ * 销毁引擎对象。
+ * @param {fscript_t*} fscript 脚本引擎对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t fscript_destroy(fscript_t* fscript);
 
 /**
  * @method fscript_eval
