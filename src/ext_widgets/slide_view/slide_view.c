@@ -315,11 +315,16 @@ static widget_t* slide_view_find_target(widget_t* widget, xy_t x, xy_t y) {
   return widget_get_child(widget, slide_view->active);
 }
 
+static uint32_t slide_view_get_page_max_number(widget_t* widget) {
+  return_value_if_fail(widget != NULL, 0);
+  return widget_count_children(widget);
+}
+
 static ret_t slide_view_get_prop(widget_t* widget, const char* name, value_t* v) {
   slide_view_t* slide_view = SLIDE_VIEW(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (tk_str_eq(name, WIDGET_PROP_VALUE) || tk_str_eq(name, WIDGET_PROP_ACTIVE)) {
+  if (tk_str_eq(name, WIDGET_PROP_VALUE) || tk_str_eq(name, WIDGET_PROP_ACTIVE) || tk_str_eq(name, WIDGET_PROP_CURR_PAGE)) {
     value_set_int(v, slide_view->active);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_VERTICAL)) {
@@ -340,6 +345,9 @@ static ret_t slide_view_get_prop(widget_t* widget, const char* name, value_t* v)
   } else if (tk_str_eq(name, WIDGET_PROP_YOFFSET)) {
     value_set_int(v, slide_view->yoffset);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_PAGE_MAX_NUMBER)) {
+    value_set_uint32(v, slide_view_get_page_max_number(widget));
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -349,7 +357,7 @@ static ret_t slide_view_set_prop(widget_t* widget, const char* name, const value
   slide_view_t* slide_view = SLIDE_VIEW(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (tk_str_eq(name, WIDGET_PROP_VALUE) || tk_str_eq(name, WIDGET_PROP_ACTIVE)) {
+  if (tk_str_eq(name, WIDGET_PROP_VALUE) || tk_str_eq(name, WIDGET_PROP_ACTIVE) || tk_str_eq(name, WIDGET_PROP_CURR_PAGE)) {
     return slide_view_set_active(widget, value_int(v));
   } else if (tk_str_eq(name, WIDGET_PROP_VERTICAL)) {
     return slide_view_set_vertical(widget, value_bool(v));
@@ -763,6 +771,7 @@ ret_t slide_view_set_active(widget_t* widget, uint32_t active) {
       slide_view->active = active;
       evt.e.type = EVT_VALUE_CHANGED;
       widget_dispatch(widget, (event_t*)&evt);
+      widget_dispatch_simple_event(widget, EVT_PAGE_CHANGED);
       widget_invalidate(widget, NULL);
     }
 

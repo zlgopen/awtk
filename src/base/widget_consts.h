@@ -438,6 +438,18 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_ACTIVE "active"
 
 /**
+ * @const WIDGET_PROP_CURR_PAGE
+ * 当前页。
+ */
+#define WIDGET_PROP_CURR_PAGE "curr_page"
+
+/**
+ * @const WIDGET_PROP_PAGE_MAX_NUMBER
+ * 页面最大个数。
+ */
+#define WIDGET_PROP_PAGE_MAX_NUMBER "page_max_number"
+
+/**
  * @const WIDGET_PROP_VERTICAL
  * 是否为垂直模式。
  */

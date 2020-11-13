@@ -435,12 +435,16 @@ typedef enum _event_type_t {
    * scroll view结束滚动(event_t)。
    */
   EVT_SCROLL_END,
-
   /**
    * @const EVT_MULTI_GESTURE
    * 多点触摸手势(multi_gesture_event_t)。
    */
   EVT_MULTI_GESTURE,
+  /**
+   * @const EVT_PAGE_CHANGED
+   * 页面改变了(event_t)。
+   */
+  EVT_PAGE_CHANGED,
 
   /**
    * @const EVT_REQ_START

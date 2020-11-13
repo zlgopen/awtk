@@ -22,6 +22,7 @@
 #ifndef TK_SLIDE_INDICATOR_H
 #define TK_SLIDE_INDICATOR_H
 
+#include "tkc/darray.h"
 #include "base/widget.h"
 
 BEGIN_C_DECLS
@@ -167,17 +168,22 @@ typedef struct _slide_indicator_t {
   /**
    * @property {char*} indicated_target
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 指示器指示的目标。
+   * 指示器指示的目标控件的名称。
    */
   char* indicated_target;
 
   /*private*/
-  uint8_t inited : 1;
+  uint8_t pressed : 1;
   uint8_t anchor_x_fixed : 1;
   uint8_t anchor_y_fixed : 1;
   uint8_t chilren_indicated : 1;
+  bool_t reset_icon_rect_list;
   widget_animator_t* wa_opactiy;
   widget_t* indicated_widget;
+  uint64_t last_move_point_time;
+  point_t last_move_point;
+  uint32_t check_hide_idle;
+  darray_t icon_rect_list;
 } slide_indicator_t;
 
 /**
@@ -326,11 +332,11 @@ ret_t slide_indicator_set_anchor(widget_t* widget, const char* anchor_x, const c
  * 设置指示器指示的目标。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget slide_indicator对象。
- * @param {const char*} indicated_target 指示器指示的目标
+ * @param {const char*} target_name 指示器指示的目标控件的名称
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t slide_indicator_set_indicated_target(widget_t* widget, const char* indicated_target);
+ret_t slide_indicator_set_indicated_target(widget_t* widget, const char* target_name);
 
 #define SLIDE_INDICATOR(widget) ((slide_indicator_t*)(slide_indicator_cast(WIDGET(widget))))
 #define SLIDE_INDICATOR_PROP_DEFAULT_PAINT "default_paint"
