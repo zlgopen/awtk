@@ -37,6 +37,8 @@ typedef struct _mem_info_t {
   uint32_t size;
   uint32_t used_bytes;
   uint32_t used_block_nr;
+  uint32_t used_max_bytes;
+  uint32_t used_max_block_nr;
   free_node_t* free_list;
 } mem_info_t;
 
@@ -112,6 +114,13 @@ static void* tk_alloc_impl(mem_allocator_t* allocator, uint32_t s) {
   /*返回可用的内存*/
   info->used_block_nr++;
   info->used_bytes += iter->size;
+
+  if(info->used_block_nr > info->used_max_block_nr) {
+     info->used_max_block_nr = info->used_block_nr;
+  }
+  if(info->used_bytes > info->used_max_bytes) {
+    info->used_max_bytes = info->used_bytes;
+  }
 
   return (char*)iter + sizeof(uint32_t);
 }
@@ -255,7 +264,8 @@ static inline void mem_allocator_simple_free(mem_allocator_t* allocator, void* p
 
 static inline ret_t mem_allocator_simple_dump(mem_allocator_t* allocator) {
   mem_info_t* info = &(MEM_ALLOCATOR_SIMPLE(allocator)->info);
-  log_debug("used: %d bytes %d blocks\n", info->used_bytes, info->used_block_nr);
+  log_debug("used: %u(max=%u) bytes %u(max=%u) blocks\n", 
+    info->used_bytes, info->used_max_bytes, info->used_block_nr, info->used_max_block_nr);
   (void)info;
 
   return RET_OK;
