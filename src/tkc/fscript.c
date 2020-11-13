@@ -109,7 +109,7 @@ static ret_t fscript_func_call_destroy(fscript_func_call_t* call) {
 
   while (iter != NULL) {
     next = iter->next;
-    func_args_deinit(&(call->args));
+    func_args_deinit(&(iter->args));
     TKMEM_FREE(iter);
     iter = next;
   }
