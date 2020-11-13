@@ -792,20 +792,6 @@ static ret_t func_sub(object_t* obj, fscript_args_t* args, value_t* result) {
   return RET_OK;
 }
 
-static ret_t func_pow(object_t* obj, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 2, RET_BAD_PARAMS);
-  value_set_double(result, pow(value_double(args->args), value_double(args->args + 1)));
-
-  return RET_OK;
-}
-
-static ret_t func_sqrt(object_t* obj, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
-  value_set_double(result, sqrt(value_double(args->args)));
-
-  return RET_OK;
-}
-
 static ret_t func_random(object_t* obj, fscript_args_t* args, value_t* result) {
   long v = random();
   if (args->size == 2) {
@@ -897,6 +883,20 @@ static ret_t func_eq(object_t* obj, fscript_args_t* args, value_t* result) {
   return RET_OK;
 }
 
+#ifndef AWTK_LITE
+static ret_t func_pow(object_t* obj, fscript_args_t* args, value_t* result) {
+  return_value_if_fail(args->size == 2, RET_BAD_PARAMS);
+  value_set_double(result, pow(value_double(args->args), value_double(args->args + 1)));
+
+  return RET_OK;
+}
+
+static ret_t func_sqrt(object_t* obj, fscript_args_t* args, value_t* result) {
+  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
+  value_set_double(result, sqrt(value_double(args->args)));
+
+  return RET_OK;
+}
 static ret_t func_sin(object_t* obj, fscript_args_t* args, value_t* result) {
   return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
   value_set_double(result, sin(value_double(args->args)));
@@ -938,6 +938,7 @@ static ret_t func_atan(object_t* obj, fscript_args_t* args, value_t* result) {
 
   return RET_OK;
 }
+#endif /*AWTK_LITE*/
 
 static ret_t func_min(object_t* obj, fscript_args_t* args, value_t* result) {
   double v1 = 0;
@@ -1141,13 +1142,19 @@ static const func_entry_t s_builtin_funcs[] = {
     {"trim", func_trim, 1},
     {"&&", func_and, 2},
     {"abs", func_abs, 1},
+    {"clamp", func_clamp, 3},
+#ifndef AWTK_LITE
     {"acos", func_acos, 1},
     {"and", func_and, 2},
     {"asin", func_asin, 1},
     {"atan", func_atan, 1},
-    {"clamp", func_clamp, 3},
-    {"contains", func_contains, 2},
     {"cos", func_cos, 1},
+    {"sin", func_sin, 1},
+    {"sqrt", func_sqrt, 1},
+    {"tan", func_tan, 1},
+    {"pow", func_pow, 2},
+#endif /*AWTK_LITE*/
+    {"contains", func_contains, 2},
     {"div", func_div, 2},
     {"eq", func_eq, 2},
     {"ge", func_ge, 2},
@@ -1159,12 +1166,8 @@ static const func_entry_t s_builtin_funcs[] = {
     {"noop", func_noop, 0},
     {"not", func_not, 1},
     {"or", func_or, 2},
-    {"pow", func_pow, 2},
     {"random", func_random, 2},
     {"replace", func_replace, 3},
-    {"sin", func_sin, 1},
-    {"sqrt", func_sqrt, 1},
-    {"tan", func_tan, 1},
     {"time_now_ms", func_time_now_ms, 0},
     {"time_now_us", func_time_now_us, 0},
     {"&", func_bit_and, 2},

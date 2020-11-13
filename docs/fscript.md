@@ -5,10 +5,19 @@
 fscript 是一个极简的脚本引擎，借鉴了函数语言中一些思路，主要用于低端嵌入式系统，让用户轻松扩展现有系统，而不需要重新编译和下载固件。
 
 * 特色：
-  * 小内存。最低开销小于 500 字节。
+  * 小内存。最低开销小于 400 字节。
   * 小巧。核心代码 600 行，扩展函数 600 行。
   * 灵活。支持多条语句、函数嵌套调用和变量定义。
   * 强大。超过 50 个内置函数，支持用 C 语言扩展函数。
+
+> 如果不需要数学函数，可以定义 AWTK_LITE 宏。
+
+> keil -O1 编译结果：
+
+```  
+      Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
+      5108        134       1051          0          0      27871   fscript.o
+```
 
 * 限制：
   * 不支持循环。
@@ -76,7 +85,7 @@ if(false, print("a"), print("b"))
 if(true, print("a"), print("b"))
 ```
 
-## 4.函数
+## 4. 函数
 
 ### 4.1 基本函数 
 
@@ -1173,5 +1182,3 @@ static ret_t func_foo(object_t* obj, fscript_args_t* args, value_t* v) {
 
   OBJECT_UNREF(obj);
 ```
-
-
