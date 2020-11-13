@@ -89,12 +89,17 @@ static ret_t func_args_init(fscript_args_t* args, uint16_t init_args_capacity) {
   return RET_OK;
 }
 
+static ret_t fscript_func_call_destroy(fscript_func_call_t* call);
 static ret_t func_args_deinit(fscript_args_t* args) {
   uint32_t i = 0;
-
   for (i = 0; i < args->size; i++) {
     value_t* v = args->args + i;
-    v->type = v->type == VALUE_TYPE_JSCRIPT_ID ? VALUE_TYPE_STRING : v->type;
+    if (v->type == VALUE_TYPE_JSCRIPT_FUNC) {
+    	v->type = VALUE_TYPE_POINTER;
+   		fscript_func_call_destroy((fscript_func_call_t*)value_pointer(v));
+    } else {
+    	v->type = v->type == VALUE_TYPE_JSCRIPT_ID ? VALUE_TYPE_STRING : v->type;
+    }
     value_reset(args->args + i);
   }
   TKMEM_FREE(args->args);
@@ -241,6 +246,7 @@ ret_t fscript_destroy(fscript_t* fscript) {
   str_reset(&(fscript->str));
   fscript_func_call_destroy(fscript->first);
   memset(fscript, 0x00, sizeof(fscript_t));
+	TKMEM_FREE(fscript);
 
   return RET_OK;
 }
