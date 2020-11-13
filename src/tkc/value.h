@@ -139,6 +139,7 @@ typedef enum _value_type_t {
   VALUE_TYPE_TOKEN,
 } value_type_t;
 
+#pragma pack(push, 1)
 typedef struct _binary_data_t {
   uint32_t size;
   void* data;
@@ -191,6 +192,7 @@ struct _value_t {
     sized_str_t sized_str;
   } value;
 };
+#pragma pack(pop)
 
 /**
  * @method value_set_bool
