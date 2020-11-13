@@ -1,3 +1,4 @@
+#include "tkc/mem.h"
 #include "tkc/utils.h"
 #include "tkc/platform.h"
 #include "tkc/time_now.h"
@@ -7,6 +8,7 @@
 int main(int argc, char* argv[]) {
   platform_prepare();
 
+  tk_mem_dump();
   if (argc < 2) {
     printf("Usage: %s script\n", argv[0]);
     return 0;
@@ -15,6 +17,7 @@ int main(int argc, char* argv[]) {
     uint64_t start = time_now_us();
     const char* code = argv[1];
     object_t* obj = object_default_create();
+    tk_mem_dump();
     if(argc == 3) {
       /*stress test*/
       uint32_t i = 0;
@@ -32,6 +35,7 @@ int main(int argc, char* argv[]) {
     OBJECT_UNREF(obj);
     log_debug("cost: %d us\n", (int)(time_now_us() - start));
   }
+  tk_mem_dump();
 
   return 0;
 }

@@ -643,7 +643,7 @@ static ret_t func_join(object_t* obj, fscript_args_t* args, value_t* result) {
   value_set_bool(result, TRUE);
   for (i = 1; i < args->size; i++) {
     if (i > 1) {
-      str_append(str, value_str(args->args));
+      str_append(str, value_str_ex(args->args, buff, sizeof(buff)));
     }
     str_append(str, value_str_ex(args->args + i, buff, sizeof(buff)));
   }
