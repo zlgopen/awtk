@@ -773,29 +773,65 @@ static void ffr_draw_rounded_rect_draw_fill_with_vg(canvas_t* c, vgcanvas_t* vg,
   vgcanvas_restore(vg);
 }
 
-static void ffr_draw_rounded_rect_draw_stroke_with_vg(canvas_t* c, vgcanvas_t* vg, uint32_t border_width, const color_t* color, frr_draw_info_t draw_infos[FRR_VERTEXT_TYPE_COUNT], int32_t border_model) {
+static frr_vertex_type_t ffr_draw_rounded_rect_get_stroke_start_vertext(int32_t border_model) {
+  frr_vertex_type_t start_vertext = FRR_VERTEXT_TYPE_TOP_REIGHT;
 
-  vgcanvas_save(vg);
+  if (border_model == BORDER_TOP) {
+    start_vertext = FRR_VERTEXT_TYPE_TOP_REIGHT;
+  } else if (border_model == BORDER_BOTTOM) {
+    start_vertext = FRR_VERTEXT_TYPE_BOTTOM_LEFT;
+  } else if (border_model == BORDER_RIGHT) {
+    start_vertext = FRR_VERTEXT_TYPE_BOTTOM_REIGHT;
+  } else if (border_model == BORDER_LEFT) {
+    start_vertext = FRR_VERTEXT_TYPE_TOP_LEFT;
+  } else if (border_model == (BORDER_TOP | BORDER_LEFT | BORDER_BOTTOM)) {
+    start_vertext = FRR_VERTEXT_TYPE_TOP_REIGHT;
+  } else if (border_model == (BORDER_LEFT | BORDER_BOTTOM | BORDER_RIGHT)) {
+    start_vertext = FRR_VERTEXT_TYPE_TOP_LEFT;
+  } else if (border_model == (BORDER_BOTTOM | BORDER_RIGHT | BORDER_TOP)) {
+    start_vertext = FRR_VERTEXT_TYPE_BOTTOM_LEFT;
+  } else if (border_model == (BORDER_RIGHT | BORDER_TOP | BORDER_LEFT)) {
+    start_vertext = FRR_VERTEXT_TYPE_BOTTOM_REIGHT;
+  } else if (border_model == (BORDER_TOP | BORDER_LEFT)) {
+    start_vertext = FRR_VERTEXT_TYPE_TOP_REIGHT;
+  } else if (border_model == (BORDER_LEFT | BORDER_BOTTOM)) {
+    start_vertext = FRR_VERTEXT_TYPE_TOP_LEFT;
+  } else if (border_model == (BORDER_BOTTOM | BORDER_RIGHT)) {
+    start_vertext = FRR_VERTEXT_TYPE_BOTTOM_LEFT;
+  } else if (border_model == (BORDER_RIGHT | BORDER_TOP)) {
+    start_vertext = FRR_VERTEXT_TYPE_BOTTOM_REIGHT;
+  } else if (border_model == (BORDER_RIGHT | BORDER_LEFT)) {
+    start_vertext = FRR_VERTEXT_TYPE_BOTTOM_REIGHT;
+  }
 
-  vgcanvas_set_stroke_color(vg, *color);
-  vgcanvas_set_line_width(vg, (float_t)border_width);
+  return start_vertext;
+}
 
-  vgcanvas_translate(vg, (float_t)c->ox, (float_t)c->oy);
-
-  vgcanvas_begin_path(vg);
-
+static void ffr_draw_rounded_rect_draw_stroke_top_right_with_vg(vgcanvas_t* vg, frr_draw_info_t draw_infos[FRR_VERTEXT_TYPE_COUNT], int32_t border_model, bool_t start) {
   if (draw_infos[FRR_VERTEXT_TYPE_TOP_REIGHT].radius > 0) { // 右上角
     if ((border_model & BORDER_TOP) != 0 || (border_model & BORDER_RIGHT) != 0) {
       float_t tmp_angle_h = ffr_draw_rounded_get_vertex_angle_by_border_model(border_model, FRR_VERTEXT_TYPE_TOP_REIGHT, TRUE, draw_infos[FRR_VERTEXT_TYPE_TOP_REIGHT].angle_h);
       float_t tmp_angle_v = ffr_draw_rounded_get_vertex_angle_by_border_model(border_model, FRR_VERTEXT_TYPE_TOP_REIGHT, FALSE, draw_infos[FRR_VERTEXT_TYPE_TOP_REIGHT].angle_v);
-
+      
+      if ((border_model & BORDER_RIGHT) == 0 && M_FRR_PI_4 < draw_infos[FRR_VERTEXT_TYPE_TOP_REIGHT].angle_v) {
+        float_t d = FFR_DRAW_SIN_45 * draw_infos[FRR_VERTEXT_TYPE_TOP_REIGHT].radius;
+        float_t move_x = draw_infos[FRR_VERTEXT_TYPE_TOP_REIGHT].x + d;
+        float_t move_y = draw_infos[FRR_VERTEXT_TYPE_TOP_REIGHT].y - d;
+        vgcanvas_move_to(vg, move_x, move_y);
+      }
       vgcanvas_arc(vg, draw_infos[FRR_VERTEXT_TYPE_TOP_REIGHT].x, draw_infos[FRR_VERTEXT_TYPE_TOP_REIGHT].y, draw_infos[FRR_VERTEXT_TYPE_TOP_REIGHT].radius, 
                     M_PI + M_FRR_PI_2 + tmp_angle_v, M_PI + M_PI - tmp_angle_h, TRUE);
     }
   } else {
-    vgcanvas_move_to(vg, draw_infos[FRR_VERTEXT_TYPE_TOP_REIGHT].x, draw_infos[FRR_VERTEXT_TYPE_TOP_REIGHT].y);
+    if (!start && (border_model & BORDER_RIGHT) != 0) {
+      vgcanvas_line_to(vg, draw_infos[FRR_VERTEXT_TYPE_TOP_REIGHT].x, draw_infos[FRR_VERTEXT_TYPE_TOP_REIGHT].y);
+    } else {
+      vgcanvas_move_to(vg, draw_infos[FRR_VERTEXT_TYPE_TOP_REIGHT].x, draw_infos[FRR_VERTEXT_TYPE_TOP_REIGHT].y);
+    }
   }
+}
 
+static void ffr_draw_rounded_rect_draw_stroke_top_left_with_vg(vgcanvas_t* vg, frr_draw_info_t draw_infos[FRR_VERTEXT_TYPE_COUNT], int32_t border_model, bool_t start) {
   if (draw_infos[FRR_VERTEXT_TYPE_TOP_LEFT].radius > 0) { // 左上角
     if ((border_model & BORDER_TOP) != 0 || (border_model & BORDER_LEFT) != 0) {
       float_t tmp_angle_h = ffr_draw_rounded_get_vertex_angle_by_border_model(border_model, FRR_VERTEXT_TYPE_TOP_LEFT, TRUE, draw_infos[FRR_VERTEXT_TYPE_TOP_LEFT].angle_h);
@@ -811,9 +847,15 @@ static void ffr_draw_rounded_rect_draw_stroke_with_vg(canvas_t* c, vgcanvas_t* v
                   M_PI + tmp_angle_h, M_PI + M_FRR_PI_2 - tmp_angle_v, TRUE); 
     }
   } else {
-    vgcanvas_line_to(vg, draw_infos[FRR_VERTEXT_TYPE_TOP_LEFT].x, draw_infos[FRR_VERTEXT_TYPE_TOP_LEFT].y);
+    if (!start && (border_model & BORDER_TOP) != 0) {
+      vgcanvas_line_to(vg, draw_infos[FRR_VERTEXT_TYPE_TOP_LEFT].x, draw_infos[FRR_VERTEXT_TYPE_TOP_LEFT].y);
+    } else {
+      vgcanvas_move_to(vg, draw_infos[FRR_VERTEXT_TYPE_TOP_LEFT].x, draw_infos[FRR_VERTEXT_TYPE_TOP_LEFT].y);
+    }
   }
+}
 
+static void ffr_draw_rounded_rect_draw_stroke_bottom_left_with_vg(vgcanvas_t* vg, frr_draw_info_t draw_infos[FRR_VERTEXT_TYPE_COUNT], int32_t border_model, bool_t start) {
   if (draw_infos[FRR_VERTEXT_TYPE_BOTTOM_LEFT].radius > 0) { // 左下角
     if ((border_model & BORDER_BOTTOM) != 0 || (border_model & BORDER_LEFT) != 0) {
       float_t tmp_angle_h = ffr_draw_rounded_get_vertex_angle_by_border_model(border_model, FRR_VERTEXT_TYPE_BOTTOM_LEFT, TRUE, draw_infos[FRR_VERTEXT_TYPE_BOTTOM_LEFT].angle_h);
@@ -829,9 +871,15 @@ static void ffr_draw_rounded_rect_draw_stroke_with_vg(canvas_t* c, vgcanvas_t* v
                   M_FRR_PI_2 + tmp_angle_v, M_PI - tmp_angle_h, TRUE); 
     }
   } else {
-    vgcanvas_line_to(vg, draw_infos[FRR_VERTEXT_TYPE_BOTTOM_LEFT].x, draw_infos[FRR_VERTEXT_TYPE_BOTTOM_LEFT].y);
+    if (!start && (border_model & BORDER_LEFT) != 0) {
+      vgcanvas_line_to(vg, draw_infos[FRR_VERTEXT_TYPE_BOTTOM_LEFT].x, draw_infos[FRR_VERTEXT_TYPE_BOTTOM_LEFT].y);
+    } else {
+      vgcanvas_move_to(vg, draw_infos[FRR_VERTEXT_TYPE_BOTTOM_LEFT].x, draw_infos[FRR_VERTEXT_TYPE_BOTTOM_LEFT].y);
+    }
   }
+}
 
+static void ffr_draw_rounded_rect_draw_stroke_bottom_right_with_vg(vgcanvas_t* vg, frr_draw_info_t draw_infos[FRR_VERTEXT_TYPE_COUNT], int32_t border_model, bool_t start) {
   if (draw_infos[FRR_VERTEXT_TYPE_BOTTOM_REIGHT].radius > 0) { // 右下角
     if ((border_model & BORDER_BOTTOM) != 0 || (border_model & BORDER_RIGHT) != 0) {
       float_t tmp_angle_h = ffr_draw_rounded_get_vertex_angle_by_border_model(border_model, FRR_VERTEXT_TYPE_BOTTOM_REIGHT, TRUE, draw_infos[FRR_VERTEXT_TYPE_BOTTOM_REIGHT].angle_h);
@@ -847,11 +895,52 @@ static void ffr_draw_rounded_rect_draw_stroke_with_vg(canvas_t* c, vgcanvas_t* v
                   tmp_angle_h, M_FRR_PI_2 - tmp_angle_v, TRUE); 
     }
   } else {
-    vgcanvas_line_to(vg, draw_infos[FRR_VERTEXT_TYPE_BOTTOM_REIGHT].x, draw_infos[FRR_VERTEXT_TYPE_BOTTOM_REIGHT].y);
+    if (!start && (border_model & BORDER_BOTTOM) != 0) {
+      vgcanvas_line_to(vg, draw_infos[FRR_VERTEXT_TYPE_BOTTOM_REIGHT].x, draw_infos[FRR_VERTEXT_TYPE_BOTTOM_REIGHT].y);
+    } else {
+      vgcanvas_move_to(vg, draw_infos[FRR_VERTEXT_TYPE_BOTTOM_REIGHT].x, draw_infos[FRR_VERTEXT_TYPE_BOTTOM_REIGHT].y);
+    }
+  }
+}
+
+static void ffr_draw_rounded_rect_draw_stroke_with_vg(canvas_t* c, vgcanvas_t* vg, uint32_t border_width, const color_t* color, frr_draw_info_t draw_infos[FRR_VERTEXT_TYPE_COUNT], int32_t border_model) {
+  uint32_t i = 0;
+  uint32_t n = 0;
+  frr_vertex_type_t start_vertext = ffr_draw_rounded_rect_get_stroke_start_vertext(border_model);
+  vgcanvas_save(vg);
+
+  vgcanvas_set_stroke_color(vg, *color);
+  vgcanvas_set_line_width(vg, (float_t)border_width);
+
+  vgcanvas_translate(vg, (float_t)c->ox, (float_t)c->oy);
+
+  vgcanvas_begin_path(vg);
+  
+  i = start_vertext;
+
+  for (; n < FRR_VERTEXT_TYPE_COUNT; i++, n++) {
+    frr_vertex_type_t vertext = (frr_vertex_type_t)(i % FRR_VERTEXT_TYPE_COUNT);
+    switch (vertext)
+    {
+    case FRR_VERTEXT_TYPE_TOP_REIGHT :
+      ffr_draw_rounded_rect_draw_stroke_top_right_with_vg(vg, draw_infos, border_model, start_vertext == FRR_VERTEXT_TYPE_TOP_REIGHT);
+      break;
+    case FRR_VERTEXT_TYPE_TOP_LEFT :
+      ffr_draw_rounded_rect_draw_stroke_top_left_with_vg(vg, draw_infos, border_model, start_vertext == FRR_VERTEXT_TYPE_TOP_LEFT);
+      break;
+    case FRR_VERTEXT_TYPE_BOTTOM_REIGHT :
+      ffr_draw_rounded_rect_draw_stroke_bottom_right_with_vg(vg, draw_infos, border_model, start_vertext == FRR_VERTEXT_TYPE_BOTTOM_REIGHT);
+      break;
+    case FRR_VERTEXT_TYPE_BOTTOM_LEFT :
+      ffr_draw_rounded_rect_draw_stroke_bottom_left_with_vg(vg, draw_infos, border_model, start_vertext == FRR_VERTEXT_TYPE_BOTTOM_LEFT);
+      break;
+    default:
+      break;
+    }
   }
 
-  if ((border_model & BORDER_RIGHT) != 0) {
-    vgcanvas_line_to(vg, draw_infos[FRR_VERTEXT_TYPE_TOP_REIGHT].x + draw_infos[FRR_VERTEXT_TYPE_TOP_REIGHT].radius, draw_infos[FRR_VERTEXT_TYPE_TOP_REIGHT].y);
+  if (border_model == BORDER_ALL) {
+    vgcanvas_close_path(vg);
   }
 
   vgcanvas_stroke(vg);
