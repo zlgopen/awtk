@@ -43,7 +43,6 @@ typedef struct _fscript_args_t {
    * 目前最大容量。
    */
   uint16_t capacity;
-
   /**
    * @property {value_t*} args
    * @annotation ["readable"]
@@ -51,15 +50,15 @@ typedef struct _fscript_args_t {
    */
   value_t* args;
 
-  /**
-   * @property {str_t*} str
-   * @annotation ["readable"]
-   * 函数实现时可以临时使用的字符串对象，可以避免频繁分配内存。
-   */
-  str_t* str;
 } fscript_args_t;
 
-typedef ret_t (*fscript_func_t)(object_t* obj, fscript_args_t* args, value_t* v);
+struct _fscript_func_call_t;
+typedef struct _fscript_func_call_t fscript_func_call_t;
+
+struct _fscript_t;
+typedef struct _fscript_t fscript_t;
+
+typedef ret_t (*fscript_func_t)(fscript_t* fscript, fscript_args_t* args, value_t* v);
 
 /**
  * @class fscript_t
@@ -69,8 +68,24 @@ typedef ret_t (*fscript_func_t)(object_t* obj, fscript_args_t* args, value_t* v)
  * 用法请参考：https://github.com/zlgopen/awtk/blob/master/docs/fscript.md
  *
  */
-struct _fscript_t;
-typedef struct _fscript_t fscript_t;
+typedef struct _fscript_t {
+  /**
+   * @property {str_t} str
+   * @annotation ["readable"]
+   * C语言实现函数可以使用这个变量，可以有效避免内存分配。
+   */  
+  str_t str;
+  /**
+   * @property {object_t*} obj
+   * @annotation ["readable"]
+   * 脚本执行上下文。
+   */  
+  object_t* obj;
+
+  /*private*/
+  fscript_func_call_t* first;
+} fscript_t;
+
 
 /**
  * @method fscript_create

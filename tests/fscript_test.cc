@@ -525,7 +525,7 @@ TEST(FScript, complex) {
   OBJECT_UNREF(obj);
 }
 
-static ret_t func_foo(object_t* obj, fscript_args_t* args, value_t* v) {
+static ret_t func_foo(fscript_t* fscript, fscript_args_t* args, value_t* v) {
   value_set_int(v, 123);
 
   return RET_OK;
