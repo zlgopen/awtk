@@ -170,6 +170,22 @@ fscript_t* fscript_create_impl(fscript_parser_t* parser) {
   return fscript;
 }
 
+static ret_t fscript_get_var(fscript_t* fscript, const char* name, value_t* value) {
+  if (name[0] && !name[1]) {
+    int32_t index = name[0] - 'a';
+    if (index >= 0 && index < ARRAY_SIZE(fscript->fast_vars)) {
+      value_copy(value, fscript->fast_vars + index);
+      return RET_OK;
+    }
+  }
+
+  if (object_get_prop(fscript->obj, name, value) != RET_OK) {
+    value_set_str(value, name);
+  }
+
+  return RET_OK;
+}
+
 static ret_t fscript_exec_func(fscript_t* fscript, fscript_func_call_t* iter, value_t* result) {
   uint32_t i = 0;
   ret_t ret = RET_OK;
@@ -186,8 +202,8 @@ static ret_t fscript_exec_func(fscript_t* fscript, fscript_func_call_t* iter, va
       s->type = VALUE_TYPE_STRING;
       if (iter->func == func_set && i == 0) {
         value_copy(d, s); /*func_set accept id/str as first param*/
-      } else if (object_get_prop(fscript->obj, value_str(s), d) != RET_OK) {
-        value_copy(d, s);
+      } else {
+        fscript_get_var(fscript, value_str(s), d);
       }
     } else if (s->type == VALUE_TYPE_JSCRIPT_FUNC) {
       s->type = VALUE_TYPE_POINTER;
@@ -662,9 +678,23 @@ static ret_t func_if(fscript_t* fscript, fscript_args_t* args, value_t* result) 
 }
 
 static ret_t func_set(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  const char* name = NULL;
+  value_t* value = NULL;
   return_value_if_fail(args->size == 2, RET_BAD_PARAMS);
+  name = value_str(args->args);
+  value = args->args + 1;
+  return_value_if_fail(name != NULL, RET_BAD_PARAMS);
 
-  if (object_set_prop(fscript->obj, value_str(args->args), args->args + 1) == RET_OK) {
+  if (name[0] && !name[1]) {
+    int32_t index = name[0] - 'a';
+    if (index >= 0 && index < ARRAY_SIZE(fscript->fast_vars)) {
+      value_deep_copy(fscript->fast_vars + index, value);
+      value_set_bool(result, TRUE);
+      return RET_OK;
+    }
+  }
+
+  if (object_set_prop(fscript->obj, name, value) == RET_OK) {
     value_set_bool(result, TRUE);
   } else {
     value_set_bool(result, FALSE);
@@ -1083,8 +1113,8 @@ static ret_t func_contains(fscript_t* fscript, fscript_args_t* args, value_t* re
 
 static ret_t func_exec(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   return_value_if_fail(args->size == 2, RET_BAD_PARAMS);
-  value_set_bool(result,
-                 object_exec(fscript->obj, value_str(args->args), value_str(args->args + 1)) == RET_OK);
+  value_set_bool(result, object_exec(fscript->obj, value_str(args->args),
+                                     value_str(args->args + 1)) == RET_OK);
 
   return RET_OK;
 }
@@ -1097,7 +1127,8 @@ static ret_t func_noop(fscript_t* fscript, fscript_args_t* args, value_t* result
 
 static ret_t func_unset(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
-  value_set_bool(result, object_exec(fscript->obj, OBJECT_CMD_REMOVE, value_str(args->args)) == RET_OK);
+  value_set_bool(result,
+                 object_exec(fscript->obj, OBJECT_CMD_REMOVE, value_str(args->args)) == RET_OK);
 
   return RET_OK;
 }

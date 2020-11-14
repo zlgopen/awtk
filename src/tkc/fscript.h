@@ -82,6 +82,12 @@ typedef struct _fscript_t {
    */  
   object_t* obj;
 
+  /**
+   * @property {value_t*} fast_vars
+   * @annotation ["readable"]
+   * 快速访问变量。在脚本可以用a/b/c/d来访问，需要优化时使用。
+   */  
+  value_t fast_vars[4];
   /*private*/
   fscript_func_call_t* first;
 } fscript_t;
