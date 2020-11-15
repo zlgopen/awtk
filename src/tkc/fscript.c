@@ -160,7 +160,7 @@ fscript_t* fscript_create_impl(fscript_parser_t* parser) {
   fscript_t* fscript = TKMEM_ZALLOC(fscript_t);
   return_value_if_fail(fscript != NULL, NULL);
   fscript->str = parser->temp;
-  fscript->obj = OBJECT_REF(parser->obj);
+  fscript->obj = parser->obj;
   fscript->first = parser->first;
 
   parser->obj = NULL;
@@ -246,11 +246,14 @@ ret_t fscript_exec(fscript_t* fscript, value_t* result) {
 }
 
 ret_t fscript_destroy(fscript_t* fscript) {
+  uint32_t i = 0;
   return_value_if_fail(fscript != NULL, RET_FAIL);
 
-  OBJECT_UNREF(fscript->obj);
   str_reset(&(fscript->str));
   fscript_func_call_destroy(fscript->first);
+  for (i = 0; i < ARRAY_SIZE(fscript->fast_vars); i++) {
+    value_reset(fscript->fast_vars + i);
+  }
   memset(fscript, 0x00, sizeof(fscript_t));
   TKMEM_FREE(fscript);
 
