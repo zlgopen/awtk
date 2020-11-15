@@ -610,6 +610,17 @@ uint32_t tk_wstr_count_c(const wchar_t* str, wchar_t c);
  */
 ret_t image_region_parse(uint32_t img_w, uint32_t img_h, const char* region, rect_t* r);
 
+/**
+ * @method object_to_json
+ * 将对象转换成json字符串。
+ *
+ * @param {object_t*} obj object对象。
+ * @param {str_t*} str 用于返回结果。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_to_json(object_t* obj, str_t* str);
+
 const char* tk_normalize_key_name(const char* name, char fixed_name[TK_NAME_LEN + 1]);
 
 /*public for test*/

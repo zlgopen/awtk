@@ -544,3 +544,4 @@ float_t object_get_prop_float_by_path(object_t* obj, const char* path, float_t d
     return defval;
   }
 }
+

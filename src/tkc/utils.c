@@ -24,6 +24,8 @@
 #include "tkc/utf8.h"
 #include "tkc/path.h"
 #include "tkc/utils.h"
+#include "tkc/object.h"
+#include "tkc/named_value.h"
 
 const char* tk_skip_to_num(const char* str) {
   const char* p = str;
@@ -945,4 +947,87 @@ ret_t image_region_parse(uint32_t img_w, uint32_t img_h, const char* region, rec
   }
 
   return RET_FAIL;
+}
+
+typedef struct _to_json_ctx_t {
+  object_t* obj;
+  str_t* str;
+  uint32_t index;
+} to_json_ctx_t;
+
+static ret_t escape_json_str(str_t* str, const char* p) {
+  str_append_char(str, '\"');
+  if (p != NULL) {
+    while (*p) {
+      if (*p == '\"' || *p == '\\') {
+        str_append_char(str, '\\');
+      }
+      str_append_char(str, *p);
+      p++;
+    }
+  }
+  str_append_char(str, '\"');
+
+  return RET_OK;
+}
+
+static ret_t to_json_on_prop(void* ctx, const void* data) {
+  named_value_t* nv = (named_value_t*)data;
+  to_json_ctx_t* info = (to_json_ctx_t*)ctx;
+
+  if (info->index > 0) {
+    str_append_char(info->str, ',');
+  }
+
+  if (!object_is_collection(info->obj)) {
+    str_append_more(info->str, "\"", nv->name, "\":", NULL);
+  }
+
+  switch (nv->value.type) {
+    case VALUE_TYPE_OBJECT: {
+      str_t str;
+      str_init(&str, 100);
+      object_to_json(value_object(&(nv->value)), &str);
+      str_append(info->str, str.str);
+      str_reset(&str);
+      break;
+    }
+    case VALUE_TYPE_STRING: {
+      escape_json_str(info->str, value_str(&(nv->value)));
+      break;
+    }
+    case VALUE_TYPE_WSTRING: {
+      str_t str;
+      str_init(&str, 100);
+      str_from_wstr(&str, value_wstr(&(nv->value)));
+      escape_json_str(info->str, str.str);
+      str_reset(&str);
+      break;
+    }
+    default: {
+      char buff[32];
+      str_append(info->str, value_str_ex(&(nv->value), buff, sizeof(buff) - 1));
+      break;
+    }
+  }
+
+  info->index++;
+  return RET_OK;
+}
+
+ret_t object_to_json(object_t* obj, str_t* str) {
+  to_json_ctx_t ctx = {obj, str, 0};
+  return_value_if_fail(obj != NULL && str != NULL, RET_BAD_PARAMS);
+
+  if (object_is_collection(obj)) {
+    str_set(str, "[");
+    object_foreach_prop(obj, to_json_on_prop, &ctx);
+    str_append_char(str, ']');
+  } else {
+    str_set(str, "{");
+    object_foreach_prop(obj, to_json_on_prop, &ctx);
+    str_append_char(str, '}');
+  }
+
+  return RET_OK;
 }

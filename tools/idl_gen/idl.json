@@ -2380,7 +2380,7 @@
         "annotation": {
           "scriptable": true
         },
-        "desc": "获取指定属性的浮点数类型的值。",
+        "desc": "获取指定属性的浮点数类型的值。\n\ne",
         "name": "object_get_prop_float_by_path",
         "return": {
           "type": "float_t",
@@ -8096,6 +8096,10 @@
       {
         "desc": "多点触摸手势(multi_gesture_event_t)。",
         "name": "EVT_MULTI_GESTURE"
+      },
+      {
+        "desc": "页面改变了(event_t)。",
+        "name": "EVT_PAGE_CHANGED"
       },
       {
         "desc": "event queue其它请求编号起始值。",
@@ -18309,6 +18313,14 @@
       {
         "desc": "是否处于active状态。",
         "name": "WIDGET_PROP_ACTIVE"
+      },
+      {
+        "desc": "当前页。",
+        "name": "WIDGET_PROP_CURR_PAGE"
+      },
+      {
+        "desc": "页面最大个数。",
+        "name": "WIDGET_PROP_PAGE_MAX_NUMBER"
       },
       {
         "desc": "是否为垂直模式。",
@@ -31420,14 +31432,6 @@
         "annotation": {
           "readable": true
         }
-      },
-      {
-        "name": "str",
-        "desc": "函数实现时可以临时使用的字符串对象，可以避免频繁分配内存。",
-        "type": "str_t*",
-        "annotation": {
-          "readable": true
-        }
       }
     ],
     "header": "tkc/fscript.h",
@@ -31524,7 +31528,32 @@
       }
     ],
     "events": [],
-    "properties": [],
+    "properties": [
+      {
+        "name": "str",
+        "desc": "C语言实现函数可以使用这个变量，可以有效避免内存分配。",
+        "type": "str_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "obj",
+        "desc": "脚本执行上下文。",
+        "type": "object_t*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "fast_vars",
+        "desc": "快速访问变量。在脚本可以用a/b/c/d来访问，需要优化时使用。",
+        "type": "value_t*",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
     "header": "tkc/fscript.h",
     "desc": "一个简易的函数式脚本引擎。\n用法请参考：https://github.com/zlgopen/awtk/blob/master/docs/fscript.md",
     "name": "fscript_t",
@@ -38389,6 +38418,27 @@
         "annotation": {},
         "desc": "解析子图的区域信息。",
         "name": "image_region_parse",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "object_t*",
+            "name": "obj",
+            "desc": "object对象。"
+          },
+          {
+            "type": "str_t*",
+            "name": "str",
+            "desc": "用于返回结果。"
+          }
+        ],
+        "annotation": {},
+        "desc": "将对象转换成json字符串。",
+        "name": "object_to_json",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -50056,8 +50106,8 @@
           },
           {
             "type": "const char*",
-            "name": "indicated_target",
-            "desc": "指示器指示的目标"
+            "name": "target_name",
+            "desc": "指示器指示的目标控件的名称"
           }
         ],
         "annotation": {
@@ -50192,7 +50242,7 @@
       },
       {
         "name": "indicated_target",
-        "desc": "指示器指示的目标。",
+        "desc": "指示器指示的目标控件的名称。",
         "type": "char*",
         "annotation": {
           "set_prop": true,

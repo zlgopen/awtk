@@ -22,6 +22,7 @@
 #ifndef TK_OBJECT_H
 #define TK_OBJECT_H
 
+#include "tkc/str.h"
 #include "tkc/emitter.h"
 
 BEGIN_C_DECLS
@@ -560,7 +561,7 @@ bool_t object_get_prop_bool_by_path(object_t* obj, const char* path, bool_t defv
  * @param {object_t*} obj object对象。
  * @param {const char*} path 属性的path。
  * @param {float_t} defval 缺省值。
- *
+ e
  * @return {float_t} 返回指定属性的浮点数类型的值。
  */
 float_t object_get_prop_float_by_path(object_t* obj, const char* path, float_t defval);

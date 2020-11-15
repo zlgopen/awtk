@@ -1379,6 +1379,7 @@ EXPORTS
     tk_wstr_dup_utf8
     tk_wstr_count_c
     image_region_parse
+    object_to_json
     waitable_action_queue_create
     waitable_action_queue_recv
     waitable_action_queue_send

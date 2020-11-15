@@ -1,6 +1,8 @@
 ﻿#include <string>
 #include "tkc/mem.h"
 #include "tkc/utils.h"
+#include "tkc/object_default.h"
+#include "tkc/object_array.h"
 #include "gtest/gtest.h"
 
 using std::string;
@@ -456,3 +458,34 @@ TEST(Utils, image_region_parse) {
   ASSERT_EQ(r.w, 25);
   ASSERT_EQ(r.h, 25);
 }
+
+TEST(Utils, to_json) {
+  str_t str;
+  value_t v;
+  object_t* obj = object_default_create();
+  object_t* addr = object_default_create();
+  object_t* arr = object_array_create();
+  object_set_prop_str(obj, "name", "jim");
+  object_set_prop_int(obj, "age", 100);
+
+  object_set_prop_int(arr, "-1", 1); 
+  object_set_prop_int(arr, "-1", 2); 
+  object_set_prop_str(arr, "-1", "abc"); 
+  value_set_wstr(&v, L"hello");
+  object_set_prop(arr, "-1", &v); 
+
+  object_set_prop_str(addr, "country", "zh");
+  object_set_prop_str(addr, "city", "sz");
+
+  object_set_prop_object(obj, "addr", addr);
+  object_set_prop_object(obj, "arr", arr);
+
+  str_init(&str, 1000);
+  ASSERT_EQ(object_to_json(obj, &str), RET_OK);
+  ASSERT_STREQ(str.str, "{\"addr\":{\"city\":\"sz\",\"country\":\"zh\"},\"age\":100,\"arr\":[1,2,\"abc\",\"hello\"],\"name\":\"jim\"}");
+
+  str_reset(&str);
+  OBJECT_UNREF(obj);
+  OBJECT_UNREF(addr);
+}
+
