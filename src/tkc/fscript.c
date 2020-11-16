@@ -187,10 +187,12 @@ static ret_t fscript_get_var(fscript_t* fscript, const char* name, value_t* valu
 }
 
 static ret_t fscript_exec_func(fscript_t* fscript, fscript_func_call_t* iter, value_t* result) {
+  value_t v;
   uint32_t i = 0;
   ret_t ret = RET_OK;
   fscript_args_t args;
 
+  value_set_int(&v, 0);
   func_args_init(&args, iter->args.size);
   args.size = iter->args.size;
   return_value_if_fail((args.args != NULL || args.size == 0), RET_OOM);
@@ -207,17 +209,19 @@ static ret_t fscript_exec_func(fscript_t* fscript, fscript_func_call_t* iter, va
       }
     } else if (s->type == VALUE_TYPE_JSCRIPT_FUNC) {
       s->type = VALUE_TYPE_POINTER;
+
       fscript_func_call_t* func = (fscript_func_call_t*)value_pointer(s);
       if (i > 0 && iter->func == func_if) {
         if (value_bool(args.args) && i == 1) {
-          fscript_exec_func(fscript, func, d);
+          fscript_exec_func(fscript, func, &v);
         }
         if (!value_bool(args.args) && i == 2) {
-          fscript_exec_func(fscript, func, d);
+          fscript_exec_func(fscript, func, &v);
         }
       } else {
-        fscript_exec_func(fscript, func, d);
+        fscript_exec_func(fscript, func, &v);
       }
+      value_deep_copy(d, &v);
     } else {
       value_copy(d, s);
     }
