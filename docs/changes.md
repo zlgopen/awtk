@@ -2,6 +2,8 @@
 
 2020/11/15
   * 增加函数object\_to\_json。
+  * expr\_eval添加对类似‘$temp.[0].value’格式的变量的支持（感谢朝泽提供补丁）
+  * object添加object\_set\_prop\_by\_path、object\_can\_exec\_by\_path、object\_exec\_by\_path的接口（感谢朝泽提供补丁）
 
 2020/11/14
   * 修复android不能熄屏的问题。
