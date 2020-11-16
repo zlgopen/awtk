@@ -118,6 +118,14 @@ static int is_dp(char c) {
   return (c == '.');
 }
 
+static int is_open_square_bracket(char c) {
+  return (c == '[');
+}
+
+static int is_close_square_bracket(char c) {
+  return (c == ']');
+}
+
 static int is_number(char c) {
   return is_xdigit(c) || is_dp(c);
 }
@@ -536,6 +544,45 @@ static EvalResult get_name(EvalContext* ctx, EvalTokenType type) {
   return EVAL_RESULT_OK;
 }
 
+static EvalResult get_variable_name(EvalContext* ctx, EvalTokenType type) {
+  char c;
+  int length = 0;
+  bool_t has_open_square_bracket = FALSE;
+
+  for (;;) {
+    c = get_char(ctx);
+    if (has_open_square_bracket) {
+      if (is_close_square_bracket(c)) {
+        has_open_square_bracket = FALSE;
+      } else {
+        if (!is_digit(c)) {
+          if (c == '\0') return EVAL_RESULT_EXPECTED_CLOSE_BRACKET;
+          return EVAL_RESULT_UNEXPECTED_CHAR;
+        }
+      }
+    } else if (is_dp(c)) {
+      if (is_dp(ctx->token.value.name[length - 1])) return EVAL_RESULT_UNEXPECTED_CHAR;
+    } else if (is_open_square_bracket(c)) {
+      has_open_square_bracket = TRUE;
+    } else {
+      if (!is_name(c)) break;
+    }
+
+    if (length >= (EVAL_MAX_NAME_LENGTH - 1)) return EVAL_RESULT_NAME_TOO_LONG;
+
+    ctx->token.value.name[length++] = c;
+  }
+
+  if (is_dp(ctx->token.value.name[length - 1])) return EVAL_RESULT_UNEXPECTED_CHAR;
+
+  put_char(ctx);
+
+  ctx->token.type = type;
+  ctx->token.value.name[length] = '\0';
+
+  return EVAL_RESULT_OK;
+}
+
 static EvalResult get_string(EvalContext* ctx, EvalTokenType type) {
   char c;
   char last_c = '\0';
@@ -578,7 +625,7 @@ static EvalResult get_token(EvalContext* ctx) {
       put_char(ctx);
       return get_name(ctx, EVAL_TOKEN_TYPE_FUNC);
     } else if (c == '$') {
-      return get_name(ctx, EVAL_TOKEN_TYPE_VARIABLE);
+      return get_variable_name(ctx, EVAL_TOKEN_TYPE_VARIABLE);
     } else if (c == '"') {
       return get_string(ctx, EVAL_TOKEN_TYPE_STRING);
     } else
@@ -778,7 +825,7 @@ static EvalResult parse_unary(EvalContext* ctx, ExprValue* output) {
 
   for (;;) {
     if (ctx->token.type == EVAL_TOKEN_TYPE_NOT) {
-      not = !not ;
+      not = !not;
 
       result = get_token(ctx);
       if (result != EVAL_RESULT_OK) return result;
@@ -804,7 +851,7 @@ static EvalResult parse_unary(EvalContext* ctx, ExprValue* output) {
     if (neg) {
       value.v.val = -value.v.val;
     }
-    if (not ) {
+    if (not) {
       value.v.val = !value.v.val;
     }
     if (bit_not) {
@@ -812,7 +859,7 @@ static EvalResult parse_unary(EvalContext* ctx, ExprValue* output) {
     }
   }
   if (value.type == EXPR_VALUE_TYPE_STRING) {
-    if (not ) {
+    if (not) {
       expr_value_set_number(&value, !value.v.str.size);
     }
   }
