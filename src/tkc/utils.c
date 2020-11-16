@@ -252,15 +252,20 @@ const char* tk_ftoa(char* str, int len, double value) {
 
 char* tk_strcpy(char* dst, const char* src) {
   return_value_if_fail(dst != NULL && src != NULL, NULL);
-
-  return strcpy(dst, src);
+  if (dst != src) {
+    return strcpy(dst, src);
+  } else {
+    return dst;
+  }
 }
 
 char* tk_strncpy(char* dst, const char* src, size_t len) {
   return_value_if_fail(dst != NULL && src != NULL, NULL);
 
-  strncpy(dst, src, len);
-  dst[len] = '\0';
+  if (dst != src) {
+    strncpy(dst, src, len);
+    dst[len] = '\0';
+  }
 
   return dst;
 }
