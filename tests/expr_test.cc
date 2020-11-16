@@ -1,6 +1,32 @@
 ﻿#include "tkc/expr_eval.h"
 #include "gtest/gtest.h"
 
+static EvalResult test_get_variable(const char* name, void* user_data, ExprValue* output) {
+  const EvalHooks* hooks = eval_default_hooks();
+
+  if (tk_str_eq(name, "value")) {
+    expr_value_set_number(output, 1.23);
+    return EVAL_RESULT_OK;
+  } else if (tk_str_eq(name, "string")) {
+    expr_value_set_string(output, "it's a string", strlen("it's a string"));
+    return EVAL_RESULT_OK;
+  } else if (tk_str_eq(name, "a.value")) {
+    expr_value_set_number(output, 4.56);
+    return EVAL_RESULT_OK;
+  } else if (tk_str_eq(name, "a.string")) {
+    expr_value_set_string(output, "it's a string in a", strlen("it's a string in a"));
+    return EVAL_RESULT_OK;
+  } else if (tk_str_eq(name, "a.[0].value")) {
+    expr_value_set_number(output, 7.89);
+    return EVAL_RESULT_OK;
+  } else if (tk_str_eq(name, "a.[0].string")) {
+    expr_value_set_string(output, "it's a string in a.[0]", strlen("it's a string in a.[0]"));
+    return EVAL_RESULT_OK;
+  }
+
+  return hooks->get_variable(name, user_data, output);
+}
+
 TEST(ExprEval, basic) {
   ASSERT_EQ(0, tk_expr_eval("10%2"));
   ASSERT_EQ(1, tk_expr_eval("1 ? 1 : 2"));
@@ -79,4 +105,55 @@ TEST(ExprEval, iformat) {
   char result[128];
   ASSERT_STREQ("123", tk_expr_eval_str("iformat(\"%d\", 123)", result, sizeof(result)));
   ASSERT_STREQ("temp:123", tk_expr_eval_str("iformat(\"temp:%d\", 123)", result, sizeof(result)));
+}
+
+TEST(ExprEval, variable) {
+  EvalHooks hooks;
+  ExprValue result;
+  EvalResult ret;
+
+  hooks.get_variable = test_get_variable;
+
+  ret = eval_execute("$value", &hooks, NULL, &result);
+  ASSERT_EQ(ret, EVAL_RESULT_OK);
+  ASSERT_EQ(expr_value_get_number(&result), 1.23);
+
+  ret = eval_execute("$string", &hooks, NULL, &result);
+  ASSERT_EQ(ret, EVAL_RESULT_OK);
+  ASSERT_STREQ(expr_value_get_string(&result), "it's a string");
+
+  ret = eval_execute("$a.value", &hooks, NULL, &result);
+  ASSERT_EQ(ret, EVAL_RESULT_OK);
+  ASSERT_EQ(expr_value_get_number(&result), 4.56);
+
+  ret = eval_execute("$a.string", &hooks, NULL, &result);
+  ASSERT_EQ(ret, EVAL_RESULT_OK);
+  ASSERT_STREQ(expr_value_get_string(&result), "it's a string in a");
+
+  ret = eval_execute("$a.[0].value", &hooks, NULL, &result);
+  ASSERT_EQ(ret, EVAL_RESULT_OK);
+  ASSERT_EQ(expr_value_get_number(&result), 7.89);
+
+  ret = eval_execute("$a.[0].string", &hooks, NULL, &result);
+  ASSERT_EQ(ret, EVAL_RESULT_OK);
+  ASSERT_STREQ(expr_value_get_string(&result), "it's a string in a.[0]");
+
+  ret = eval_execute(" $a.[0].string ", &hooks, NULL, &result);
+  ASSERT_EQ(ret, EVAL_RESULT_OK);
+  ASSERT_STREQ(expr_value_get_string(&result), "it's a string in a.[0]");
+
+  ret = eval_execute("$a.[0.string", &hooks, NULL, &result);
+  ASSERT_EQ(ret, EVAL_RESULT_UNEXPECTED_CHAR);
+
+  ret = eval_execute("$a.[a].string", &hooks, NULL, &result);
+  ASSERT_EQ(ret, EVAL_RESULT_UNEXPECTED_CHAR);
+
+  ret = eval_execute("$a.[0", &hooks, NULL, &result);
+  ASSERT_EQ(ret, EVAL_RESULT_EXPECTED_CLOSE_BRACKET);
+
+  ret = eval_execute("$a..string", &hooks, NULL, &result);
+  ASSERT_EQ(ret, EVAL_RESULT_UNEXPECTED_CHAR);
+
+  ret = eval_execute("$a.string.", &hooks, NULL, &result);
+  ASSERT_EQ(ret, EVAL_RESULT_UNEXPECTED_CHAR);
 }

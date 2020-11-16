@@ -18,6 +18,11 @@ static ret_t event_dump(void* ctx, event_t* e) {
     cmd_exec_event_t* evt = (cmd_exec_event_t*)e;
     str += evt->name;
     str += ":";
+
+    if (e->type == EVT_CMD_CAN_EXEC && tk_str_eq(evt->name, "ok")) {
+      evt->can_exec = TRUE;
+      return RET_STOP;
+    }
   } else if (e->type == EVT_DESTROY) {
     str += "destroy:";
   }
@@ -317,6 +322,39 @@ TEST(ObjectDefault, exec) {
   object_unref(obj);
 }
 
+TEST(ObjectDefault, exec_by_path) {
+  object_t* root = object_default_create();
+  object_t* obja = object_default_create();
+  object_t* obja1 = object_default_create();
+  object_t* obja2 = object_default_create();
+
+  ASSERT_EQ(object_can_exec(root, "test", "123"), FALSE);
+  ASSERT_EQ(object_exec(root, "test", "123"), RET_NOT_IMPL);
+
+  ASSERT_EQ(object_can_exec_by_path(root, "a.test", "123"), FALSE);
+  ASSERT_EQ(object_exec_by_path(root, "a.test", "123"), RET_NOT_FOUND);
+  ASSERT_EQ(object_can_exec_by_path(root, "a.1.test", "123"), FALSE);
+  ASSERT_EQ(object_exec_by_path(root, "a.1.test", "123"), RET_NOT_FOUND);
+  ASSERT_EQ(object_can_exec_by_path(root, "a.2.test", "123"), FALSE);
+  ASSERT_EQ(object_exec_by_path(root, "a.2.test", "123"), RET_NOT_FOUND);
+
+  ASSERT_EQ(object_set_prop_object(root, "a", obja), RET_OK);
+  ASSERT_EQ(object_set_prop_object(obja, "1", obja1), RET_OK);
+  ASSERT_EQ(object_set_prop_object(obja, "2", obja2), RET_OK);
+
+  ASSERT_EQ(object_can_exec_by_path(root, "a.test", "123"), FALSE);
+  ASSERT_EQ(object_exec_by_path(root, "a.test", "123"), RET_NOT_IMPL);
+  ASSERT_EQ(object_can_exec_by_path(root, "a.1.test", "123"), FALSE);
+  ASSERT_EQ(object_exec_by_path(root, "a.1.test", "123"), RET_NOT_IMPL);
+  ASSERT_EQ(object_can_exec_by_path(root, "a.2.test", "123"), FALSE);
+  ASSERT_EQ(object_exec_by_path(root, "a.2.test", "123"), RET_NOT_IMPL);
+
+  object_unref(root);
+  object_unref(obja);
+  object_unref(obja1);
+  object_unref(obja2);
+}
+
 TEST(ObjectDefault, has_prop) {
   object_t* obj = object_default_create();
 
@@ -388,34 +426,49 @@ TEST(ObjectDefault, path) {
   ASSERT_EQ(object_set_prop_int(obja, "value", 123), RET_OK);
   ASSERT_EQ(object_get_prop_by_path(root, "a.value", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 123);
+  ASSERT_EQ(object_set_prop_by_path(root, "a.value", value_set_int(&v, 789)), RET_OK);
+  ASSERT_EQ(object_get_prop_int(obja, "value", 0), 789);
 
   ASSERT_EQ(object_set_prop_int(objb, "value", 123), RET_OK);
   ASSERT_EQ(object_get_prop_by_path(root, "b.value", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 123);
+  ASSERT_EQ(object_set_prop_by_path(root, "b.value", value_set_int(&v, 789)), RET_OK);
+  ASSERT_EQ(object_get_prop_int(objb, "value", 0), 789);
 
   ASSERT_EQ(object_set_prop_object(obja, "1", obja1), RET_OK);
   ASSERT_EQ(object_set_prop_int(obja1, "value", 456), RET_OK);
   ASSERT_EQ(object_get_prop_by_path(root, "a.1.value", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 456);
+  ASSERT_EQ(object_set_prop_by_path(root, "a.1.value", value_set_int(&v, 123)), RET_OK);
+  ASSERT_EQ(object_get_prop_int(obja1, "value", 0), 123);
 
   ASSERT_EQ(object_set_prop_object(obja, "2", obja2), RET_OK);
   ASSERT_EQ(object_set_prop_int(obja2, "value", 56), RET_OK);
   ASSERT_EQ(object_get_prop_by_path(root, "a.2.value", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 56);
+  ASSERT_EQ(object_set_prop_by_path(root, "a.2.value", value_set_int(&v, 123)), RET_OK);
+  ASSERT_EQ(object_get_prop_int(obja2, "value", 0), 123);
 
   ASSERT_EQ(object_set_prop_object(objb, "1", objb1), RET_OK);
   ASSERT_EQ(object_set_prop_int(objb1, "value", 56), RET_OK);
   ASSERT_EQ(object_get_prop_by_path(root, "b.1.value", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 56);
+  ASSERT_EQ(object_set_prop_by_path(root, "b.1.value", value_set_int(&v, 123)), RET_OK);
+  ASSERT_EQ(object_get_prop_int(objb1, "value", 0), 123);
 
   ASSERT_EQ(object_set_prop_object(objb, "2", objb2), RET_OK);
   ASSERT_EQ(object_set_prop_int(objb2, "value", 156), RET_OK);
   ASSERT_EQ(object_get_prop_by_path(root, "b.2.value", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 156);
+  ASSERT_EQ(object_set_prop_by_path(root, "b.2.value", value_set_int(&v, 123)), RET_OK);
+  ASSERT_EQ(object_get_prop_int(objb2, "value", 0), 123);
 
-  ASSERT_NE(object_get_prop_by_path(root, "a.a.value", &v), RET_OK);
-  ASSERT_NE(object_get_prop_by_path(root, "b.a.value", &v), RET_OK);
-  ASSERT_NE(object_get_prop_by_path(root, "c.value", &v), RET_OK);
+  ASSERT_EQ(object_get_prop_by_path(root, "a.a.value", &v), RET_NOT_FOUND);
+  ASSERT_EQ(object_get_prop_by_path(root, "b.a.value", &v), RET_NOT_FOUND);
+  ASSERT_EQ(object_get_prop_by_path(root, "c.value", &v), RET_NOT_FOUND);
+  ASSERT_EQ(object_set_prop_by_path(root, "a.a.value", value_set_int(&v, 123)), RET_NOT_FOUND);
+  ASSERT_EQ(object_set_prop_by_path(root, "b.a.value", value_set_int(&v, 123)), RET_NOT_FOUND);
+  ASSERT_EQ(object_set_prop_by_path(root, "c.value", value_set_int(&v, 123)), RET_NOT_FOUND);
 
   object_unref(root);
   object_unref(obja);
@@ -437,11 +490,56 @@ TEST(ObjectDefault, cmd_events) {
   emitter_on((emitter_t*)o, EVT_DESTROY, event_dump, &log);
 
   ASSERT_EQ(object_can_exec(obj, "6", NULL), FALSE);
+  ASSERT_EQ(object_can_exec(obj, "ok", NULL), TRUE);
   ASSERT_NE(object_exec(obj, "8", NULL), RET_OK);
 
   object_unref(obj);
 
-  ASSERT_EQ(log, "6:8:8:destroy:");
+  ASSERT_EQ(log, "6:ok:8:8:destroy:");
+}
+
+TEST(ObjectDefault, cmd_events_by_path) {
+  string log;
+  uint32_t i;
+  object_t* root = object_default_create();
+  object_t* obja = object_default_create();
+  object_t* obja1 = object_default_create();
+  object_t* obja2 = object_default_create();
+  object_t* objs[] = {root, obja, obja1, obja2};
+
+  ASSERT_EQ(object_set_prop_object(root, "a", obja), RET_OK);
+  ASSERT_EQ(object_set_prop_object(obja, "1", obja1), RET_OK);
+  ASSERT_EQ(object_set_prop_object(obja, "2", obja2), RET_OK);
+
+  for (i = 0; i < ARRAY_SIZE(objs); i++) {
+    emitter_on((emitter_t*)objs[i], EVT_CMD_CAN_EXEC, event_dump, &log);
+    emitter_on((emitter_t*)objs[i], EVT_CMD_WILL_EXEC, event_dump, &log);
+    emitter_on((emitter_t*)objs[i], EVT_CMD_EXECED, event_dump, &log);
+    emitter_on((emitter_t*)objs[i], EVT_DESTROY, event_dump, &log);
+  }
+
+  ASSERT_EQ(object_can_exec_by_path(root, "6", NULL), FALSE);
+  ASSERT_EQ(object_can_exec_by_path(root, "ok", NULL), TRUE);
+  ASSERT_NE(object_exec_by_path(root, "8", NULL), RET_OK);
+
+  ASSERT_EQ(object_can_exec_by_path(root, "a.6", NULL), FALSE);
+  ASSERT_EQ(object_can_exec_by_path(root, "a.ok", NULL), TRUE);
+  ASSERT_NE(object_exec_by_path(root, "a.8", NULL), RET_OK);
+
+  ASSERT_EQ(object_can_exec_by_path(root, "a.1.6", NULL), FALSE);
+  ASSERT_EQ(object_can_exec_by_path(root, "a.1.ok", NULL), TRUE);
+  ASSERT_NE(object_exec_by_path(root, "a.1.8", NULL), RET_OK);
+
+  ASSERT_EQ(object_can_exec_by_path(root, "a.2.6", NULL), FALSE);
+  ASSERT_EQ(object_can_exec_by_path(root, "a.2.ok", NULL), TRUE);
+  ASSERT_NE(object_exec_by_path(root, "a.2.8", NULL), RET_OK);
+
+  object_unref(root);
+  object_unref(obja);
+  object_unref(obja1);
+  object_unref(obja2);
+
+  ASSERT_EQ(log, "6:ok:8:8:6:ok:8:8:6:ok:8:8:6:ok:8:8:destroy:destroy:destroy:destroy:");
 }
 
 TEST(ObjectDefault, size) {

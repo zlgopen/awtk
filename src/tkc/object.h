@@ -566,6 +566,122 @@ bool_t object_get_prop_bool_by_path(object_t* obj, const char* path, bool_t defv
  */
 float_t object_get_prop_float_by_path(object_t* obj, const char* path, float_t defval);
 
+/**
+ * @method object_set_prop_by_path
+ * 设置指定属性的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} path 属性的path。
+ * @param {value_t*} value 属性的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_set_prop_by_path(object_t* obj, const char* path, const value_t* value);
+
+/**
+ * @method object_set_prop_str_by_path
+ * 设置指定属性的字符串类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} path 属性的path。
+ * @param {const char*} value 属性的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_set_prop_str_by_path(object_t* obj, const char* path, const char* value);
+
+/**
+ * @method object_set_prop_pointer_by_path
+ * 设置指定属性的指针类型的值。
+ *
+ * @param {object_t*} obj object对象。
+ * @param {const char*} path 属性的path。
+ * @param {void*} value 属性的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_set_prop_pointer_by_path(object_t* obj, const char* path, void* value);
+
+/**
+ * @method object_set_prop_object_by_path
+ * 设置指定属性的object类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} path 属性的path。
+ * @param {object_t*} value 属性的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_set_prop_object_by_path(object_t* obj, const char* path, object_t* value);
+
+/**
+ * @method object_set_prop_int_by_path
+ * 设置指定属性的整数类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} path 属性的path。
+ * @param {int32_t} value 属性的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_set_prop_int_by_path(object_t* obj, const char* path, int32_t value);
+
+/**
+ * @method object_set_prop_bool_by_path
+ * 设置指定属性的bool类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} path 属性的path。
+ * @param {bool_t} value 属性的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_set_prop_bool_by_path(object_t* obj, const char* path, bool_t value);
+
+/**
+ * @method object_set_prop_float_by_path
+ * 设置指定属性的浮点数类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} path 属性的path。
+ * @param {float_t} value 属性的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_set_prop_float_by_path(object_t* obj, const char* path, float_t value);
+
+/**
+ * @method object_can_exec_by_path
+ * 检查是否可以执行指定的命令。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} path 命令的path。
+ * @param {const char*} args 命令的参数。
+ *
+ * @return {bool_t} 返回TRUE表示可以执行，否则表示不可以执行。
+ */
+bool_t object_can_exec_by_path(object_t* obj, const char* path, const char* args);
+
+/**
+ * @method object_exec_by_path
+ * 执行指定的命令。
+ *
+ * @alias execute_by_path
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} path 命令的path。
+ * @param {const char*} args 命令的参数。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_exec_by_path(object_t* obj, const char* path, const char* args);
+
 #define OBJECT(obj) ((object_t*)(obj))
 
 #define OBJECT_REF(obj) object_ref((object_t*)(obj))

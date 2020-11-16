@@ -110,20 +110,17 @@ static ret_t object_get_prop_by_name(object_t* obj, const char* name, value_t* v
   return ret;
 }
 
-ret_t object_get_prop_by_path(object_t* obj, const char* name, value_t* v) {
+static ret_t object_get_prop_by_path_with_len(object_t* obj, const char* path, uint32_t len,
+                                              value_t* v) {
   char* p = NULL;
-  uint32_t len = 0;
-  char path[MAX_PATH + 1];
+  char temp[MAX_PATH + 1];
+  const char* name = temp;
   ret_t ret = RET_NOT_FOUND;
-  return_value_if_fail(obj != NULL && obj->vt != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(name != NULL && v != NULL, RET_BAD_PARAMS);
-
-  len = strlen(name);
   return_value_if_fail(len <= MAX_PATH, RET_BAD_PARAMS);
 
-  memcpy(path, name, len + 1);
+  memcpy(temp, path, len);
+  temp[len] = '\0';
 
-  name = path;
   do {
     p = strchr(name, '.');
     if (p != NULL) {
@@ -142,6 +139,7 @@ ret_t object_get_prop_by_path(object_t* obj, const char* name, value_t* v) {
     if (v->type == VALUE_TYPE_OBJECT) {
       obj = value_object(v);
     } else {
+      ret = RET_BAD_PARAMS;
       break;
     }
 
@@ -149,6 +147,15 @@ ret_t object_get_prop_by_path(object_t* obj, const char* name, value_t* v) {
   } while (p != NULL);
 
   return ret;
+}
+
+ret_t object_get_prop_by_path(object_t* obj, const char* path, value_t* v) {
+  uint32_t len = 0;
+  return_value_if_fail(obj != NULL && obj->vt != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(path != NULL && v != NULL, RET_BAD_PARAMS);
+
+  len = strlen(path);
+  return object_get_prop_by_path_with_len(obj, path, len, v);
 }
 
 ret_t object_get_prop(object_t* obj, const char* name, value_t* v) {
@@ -545,3 +552,123 @@ float_t object_get_prop_float_by_path(object_t* obj, const char* path, float_t d
   }
 }
 
+ret_t object_set_prop_by_path(object_t* obj, const char* path, const value_t* value) {
+  const char* name;
+  return_value_if_fail(path != NULL, RET_BAD_PARAMS);
+
+  name = path + strlen(path);
+  while (path <= --name) {
+    if (name[0] == '.') break;
+  }
+  name++;
+
+  if (name == path) {
+    return object_set_prop(obj, name, value);
+  } else {
+    ret_t ret = RET_OK;
+    value_t v;
+    uint32_t len = name - path - 1;
+    return_value_if_fail(obj != NULL && obj->vt != NULL, RET_BAD_PARAMS);
+    return_value_if_fail(value != NULL, RET_BAD_PARAMS);
+
+    ret = object_get_prop_by_path_with_len(obj, path, len, &v);
+    if (ret != RET_OK) {
+      return ret;
+    }
+    return object_set_prop(value_object(&v), name, value);
+  }
+}
+
+ret_t object_set_prop_str_by_path(object_t* obj, const char* name, const char* value) {
+  value_t v;
+  value_set_str(&v, value);
+
+  return object_set_prop_by_path(obj, name, &v);
+}
+
+ret_t object_set_prop_pointer_by_path(object_t* obj, const char* name, void* value) {
+  value_t v;
+  value_set_pointer(&v, value);
+
+  return object_set_prop_by_path(obj, name, &v);
+}
+
+ret_t object_set_prop_object_by_path(object_t* obj, const char* name, object_t* value) {
+  value_t v;
+  value_set_object(&v, value);
+
+  return object_set_prop_by_path(obj, name, &v);
+}
+
+ret_t object_set_prop_int_by_path(object_t* obj, const char* name, int32_t value) {
+  value_t v;
+  value_set_int(&v, value);
+
+  return object_set_prop_by_path(obj, name, &v);
+}
+
+ret_t object_set_prop_bool_by_path(object_t* obj, const char* name, bool_t value) {
+  value_t v;
+  value_set_bool(&v, value);
+
+  return object_set_prop_by_path(obj, name, &v);
+}
+
+ret_t object_set_prop_float_by_path(object_t* obj, const char* name, float_t value) {
+  value_t v;
+  value_set_float(&v, value);
+
+  return object_set_prop_by_path(obj, name, &v);
+}
+
+bool_t object_can_exec_by_path(object_t* obj, const char* path, const char* args) {
+  const char* name;
+  return_value_if_fail(path != NULL, FALSE);
+
+  name = path + strlen(path);
+  while (path <= --name) {
+    if (name[0] == '.') break;
+  }
+  name++;
+
+  if (name == path) {
+    return object_can_exec(obj, name, args);
+  } else {
+    value_t v;
+    uint32_t len = name - path - 1;
+    return_value_if_fail(obj != NULL && obj->vt != NULL, FALSE);
+
+    if (object_get_prop_by_path_with_len(obj, path, len, &v) != RET_OK) {
+      return FALSE;
+    }
+
+    return object_can_exec(value_object(&v), name, args);
+  }
+}
+
+ret_t object_exec_by_path(object_t* obj, const char* path, const char* args) {
+  const char* name;
+  return_value_if_fail(path != NULL, RET_BAD_PARAMS);
+
+  name = path + strlen(path);
+  while (path <= --name) {
+    if (name[0] == '.') break;
+  }
+  name++;
+
+  if (name == path) {
+    return object_exec(obj, name, args);
+  } else {
+    ret_t ret = RET_OK;
+    value_t v;
+    uint32_t len = name - path - 1;
+    return_value_if_fail(obj != NULL && obj->vt != NULL, RET_BAD_PARAMS);
+
+    ret = object_get_prop_by_path_with_len(obj, path, len, &v);
+    if (ret != RET_OK) {
+      return ret;
+    }
+
+    return object_exec(value_object(&v), name, args);
+  }
+}
