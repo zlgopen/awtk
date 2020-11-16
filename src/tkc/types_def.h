@@ -284,25 +284,25 @@ typedef enum _ret_t {
 #define ENSURE(p) assert(p)
 #define goto_error_if_fail(p)                           \
   if (!(p)) {                                           \
-    log_warn("%s:%d " #p "\n", __FUNCTION__, __LINE__); \
+    log_warn("%s:%d condition(" #p ") failed!\n", __FUNCTION__, __LINE__); \
     goto error;                                         \
   }
 
 #define break_if_fail(p)                                \
   if (!(p)) {                                           \
-    log_warn("%s:%d " #p "\n", __FUNCTION__, __LINE__); \
+    log_warn("%s:%d condition(" #p ") failed!\n", __FUNCTION__, __LINE__); \
     break;                                              \
   }
 
 #define return_if_fail(p)                               \
   if (!(p)) {                                           \
-    log_warn("%s:%d " #p "\n", __FUNCTION__, __LINE__); \
+    log_warn("%s:%d condition(" #p ") failed!\n", __FUNCTION__, __LINE__); \
     return;                                             \
   }
 
 #define return_value_if_fail(p, value)                  \
   if (!(p)) {                                           \
-    log_warn("%s:%d " #p "\n", __FUNCTION__, __LINE__); \
+    log_warn("%s:%d condition(" #p ") failed!\n", __FUNCTION__, __LINE__); \
     return (value);                                     \
   }
 
