@@ -32,7 +32,7 @@
 ### 1.4 带触屏的 T9 输入法引擎
 
 * 文件：input\_engine\_t9.c       
-* 宏：WITH\_IME\_SPINYIN：
+* 宏：WITHi\_IME\_T9
 * 软键盘：
     * 缺省软键盘：demos/assets/default/raw/ui/kb\_default\_t9.xml
     * ascii 软键盘：demos/assets/default/raw/ui/kb\_ascii\_t9.xml
