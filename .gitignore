@@ -30,3 +30,4 @@ test.bin
 release
 event_log.bin
 res/assets/default/inc/fonts/default_full.res
+*.log
