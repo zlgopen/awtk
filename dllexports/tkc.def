@@ -73,6 +73,15 @@ EXPORTS
     object_get_prop_int_by_path
     object_get_prop_bool_by_path
     object_get_prop_float_by_path
+    object_set_prop_by_path
+    object_set_prop_str_by_path
+    object_set_prop_pointer_by_path
+    object_set_prop_object_by_path
+    object_set_prop_int_by_path
+    object_set_prop_bool_by_path
+    object_set_prop_float_by_path
+    object_can_exec_by_path
+    object_exec_by_path
     value_set_bool
     value_bool
     value_set_int8
@@ -407,6 +416,10 @@ EXPORTS
     ring_buffer_set_write_cursor_delta
     ring_buffer_ensure_write_space
     ring_buffer_destroy
+    rlog_create
+    rlog_write
+    rlog_print
+    rlog_destroy
     rom_fopen
     rom_fopen_buff
     rom_ftell
@@ -783,6 +796,7 @@ EXPORTS
     tk_ostream_buffered_get_size
     tk_istream_file_create
     tk_ostream_file_create
+    tk_ostream_file_create_ex
     tk_iostream_tcp_create
     tk_iostream_udp_create_client
     tk_iostream_udp_create

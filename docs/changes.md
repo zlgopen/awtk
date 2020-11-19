@@ -1,5 +1,8 @@
 # 最新动态
 
+2020/11/19
+  * 增加函数tk\_ostream\_file\_create\_ex
+
 2020/11/18
   * 增加rlog用于循环记录log。
 

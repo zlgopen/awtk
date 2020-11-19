@@ -55,6 +55,19 @@ struct _tk_ostream_file_t {
  */
 tk_ostream_t* tk_ostream_file_create(const char* filename);
 
+/**
+ * @method tk_ostream_file_create_ex
+ *
+ * 创建ostream对象。
+ *
+ * @param {const char*} filename 文件名。
+ * @param {const char*} mode 模式。
+ *
+ * @return {tk_ostream_t*} 返回ostream对象。
+ *
+ */
+tk_ostream_t* tk_ostream_file_create_ex(const char* filename, const char* mode);
+
 #define TK_OSTREAM_FILE(obj) ((tk_ostream_file_t*)(obj))
 
 END_C_DECLS

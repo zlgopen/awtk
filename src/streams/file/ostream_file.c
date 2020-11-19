@@ -59,12 +59,16 @@ static const object_vtable_t s_tk_ostream_file_vtable = {.type = "tk_ostream_fil
                                                          .set_prop = tk_ostream_file_set_prop};
 
 tk_ostream_t* tk_ostream_file_create(const char* filename) {
+  return tk_ostream_file_create_ex(filename, "wb+");
+}
+
+tk_ostream_t* tk_ostream_file_create_ex(const char* filename, const char* mode) {
   object_t* obj = NULL;
   fs_file_t* file = NULL;
   tk_ostream_file_t* ostream_file = NULL;
   return_value_if_fail(filename != NULL, NULL);
 
-  file = fs_open_file(os_fs(), filename, "wb+");
+  file = fs_open_file(os_fs(), filename, mode);
   return_value_if_fail(file != NULL, NULL);
 
   obj = object_create(&s_tk_ostream_file_vtable);

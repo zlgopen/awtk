@@ -2386,6 +2386,257 @@
           "type": "float_t",
           "desc": "返回指定属性的浮点数类型的值。"
         }
+      },
+      {
+        "params": [
+          {
+            "type": "object_t*",
+            "name": "obj",
+            "desc": "object对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "path",
+            "desc": "属性的path。"
+          },
+          {
+            "type": "value_t*",
+            "name": "value",
+            "desc": "属性的值。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置指定属性的值。",
+        "name": "object_set_prop_by_path",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "object_t*",
+            "name": "obj",
+            "desc": "object对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "path",
+            "desc": "属性的path。"
+          },
+          {
+            "type": "const char*",
+            "name": "value",
+            "desc": "属性的值。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置指定属性的字符串类型的值。",
+        "name": "object_set_prop_str_by_path",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "object_t*",
+            "name": "obj",
+            "desc": "object对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "path",
+            "desc": "属性的path。"
+          },
+          {
+            "type": "void*",
+            "name": "value",
+            "desc": "属性的值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置指定属性的指针类型的值。",
+        "name": "object_set_prop_pointer_by_path",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "object_t*",
+            "name": "obj",
+            "desc": "object对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "path",
+            "desc": "属性的path。"
+          },
+          {
+            "type": "object_t*",
+            "name": "value",
+            "desc": "属性的值。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置指定属性的object类型的值。",
+        "name": "object_set_prop_object_by_path",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "object_t*",
+            "name": "obj",
+            "desc": "object对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "path",
+            "desc": "属性的path。"
+          },
+          {
+            "type": "int32_t",
+            "name": "value",
+            "desc": "属性的值。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置指定属性的整数类型的值。",
+        "name": "object_set_prop_int_by_path",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "object_t*",
+            "name": "obj",
+            "desc": "object对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "path",
+            "desc": "属性的path。"
+          },
+          {
+            "type": "bool_t",
+            "name": "value",
+            "desc": "属性的值。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置指定属性的bool类型的值。",
+        "name": "object_set_prop_bool_by_path",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "object_t*",
+            "name": "obj",
+            "desc": "object对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "path",
+            "desc": "属性的path。"
+          },
+          {
+            "type": "float_t",
+            "name": "value",
+            "desc": "属性的值。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置指定属性的浮点数类型的值。",
+        "name": "object_set_prop_float_by_path",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "object_t*",
+            "name": "obj",
+            "desc": "object对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "path",
+            "desc": "命令的path。"
+          },
+          {
+            "type": "const char*",
+            "name": "args",
+            "desc": "命令的参数。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "检查是否可以执行指定的命令。",
+        "name": "object_can_exec_by_path",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回TRUE表示可以执行，否则表示不可以执行。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "object_t*",
+            "name": "obj",
+            "desc": "object对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "path",
+            "desc": "命令的path。"
+          },
+          {
+            "type": "const char*",
+            "name": "args",
+            "desc": "命令的参数。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "执行指定的命令。",
+        "name": "object_exec_by_path",
+        "alias": "execute_by_path",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
       }
     ],
     "events": [],
@@ -34595,6 +34846,109 @@
         "params": [
           {
             "type": "const char*",
+            "name": "filename_pattern",
+            "desc": "用来确定文件名的路径和文件名。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "max_size",
+            "desc": "log文件占用最大磁盘空间(字节)。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "buff_size",
+            "desc": "用于指定print时的buff大小。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true,
+          "constructor": true
+        },
+        "desc": "创建rlog对象。\n\n```c\nrlog_t* log = rlog_create(\"./logs/%d.log\", 1020*1024, 256);\nrlog_write(log, \"hello\\n\");\nrlog_destroy(log);\n```",
+        "name": "rlog_create",
+        "return": {
+          "type": "rlog_t*",
+          "desc": "返回rlog对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "rlog_t*",
+            "name": "log",
+            "desc": "日志对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "str",
+            "desc": "日志字符串。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "写入一条日志记录。",
+        "name": "rlog_write",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "rlog_t*",
+            "name": "log",
+            "desc": "日志对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "format",
+            "desc": "格式字符串。"
+          }
+        ],
+        "annotation": {},
+        "desc": "写入一条日志记录。",
+        "name": "rlog_print",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "rlog_t*",
+            "name": "log",
+            "desc": "日志对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁日志对象。",
+        "name": "rlog_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "tkc/rlog.h",
+    "desc": "循环记录日志(支持多线程访问)。\n如果我们把日志写入文件中，随着时间的推移，日志文件会越来越大，最终占满这个磁盘，出现不可预料的错误。\nrlog提供一个循环记录日志的功能，让日志文件始终不会超出指定的大小，达到指定大小后再从头开始写。\n\n> 为了实现简单，我们把日志文件分成0和1两个文件，先写文件0，到达指定最大值的一半时，再写文件1。\n> 文件1到达指定最大值的一半时，删除文件0，并将文件1改名为文件0，重新创建文件1，继续写文件1，重复此过程。",
+    "name": "rlog_t",
+    "annotation": {
+      "scriptable": true
+    },
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "const char*",
             "name": "name",
             "desc": "文件名。"
           },
@@ -63277,6 +63631,27 @@
         "annotation": {},
         "desc": "创建ostream对象。",
         "name": "tk_ostream_file_create",
+        "return": {
+          "type": "tk_ostream_t*",
+          "desc": "返回ostream对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "filename",
+            "desc": "文件名。"
+          },
+          {
+            "type": "const char*",
+            "name": "mode",
+            "desc": "模式。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建ostream对象。",
+        "name": "tk_ostream_file_create_ex",
         "return": {
           "type": "tk_ostream_t*",
           "desc": "返回ostream对象。"
