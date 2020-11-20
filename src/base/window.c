@@ -61,6 +61,11 @@ ret_t window_set_fullscreen(widget_t* widget, bool_t fullscreen) {
   window_t* window = WINDOW(widget);
   return_value_if_fail(window != NULL, RET_BAD_PARAMS);
 
+  if (system_info()->app_type != APP_SIMULATOR) {
+     native_window_t* native_window = widget_get_native_window(widget);
+     native_window_set_fullscreen(native_window, fullscreen);
+  }
+
   if (window->fullscreen != fullscreen) {
     window->fullscreen = fullscreen;
     widget_layout_children(widget->parent);
