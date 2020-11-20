@@ -1293,6 +1293,10 @@ static ret_t window_manager_default_native_window_resized(widget_t* widget, void
     h = w;
   }
 
+  if (widget->w == w && widget->h == h) {
+    return RET_OK;
+  }
+
   window_manager_default_resize(widget, w, h);
   native_window_on_resized(nw, w, h);
 
