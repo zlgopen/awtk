@@ -145,8 +145,10 @@ TEST(Timer, suspend_and_resume) {
 }
 
 TEST(Timer, modify) {
+  uint32_t id = 0;
   timer_manager_t* tm = timer_manager_create(timer_get_time);
-  uint32_t id = timer_manager_add(tm, timer_once, NULL, 100);
+  timer_set_time(200);
+  id = timer_manager_add(tm, timer_once, NULL, 100);
 
   timer_set_time(200);
   timer_modify(id, 200);
