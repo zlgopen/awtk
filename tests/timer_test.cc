@@ -106,6 +106,44 @@ TEST(Timer, reset) {
   timer_manager_destroy(tm);
 }
 
+TEST(Timer, suspend_and_resume) {
+   uint32_t id = 0;
+  timer_manager_t* s_timer_manager = NULL;
+  timer_manager_t* tm = timer_manager_create(timer_get_time);
+  timer_set_time(0);
+
+  s_timer_manager = timer_manager();
+  timer_manager_set(tm);
+  id = timer_manager_add(tm, timer_repeat, NULL, 100);
+
+  timer_set_time(100);
+
+  timer_clear_log();
+  ASSERT_EQ(timer_manager_dispatch(tm), RET_OK);
+  ASSERT_EQ(timer_manager_count(tm), 1);
+  ASSERT_EQ(s_log, "r:");
+
+  timer_set_time(200);
+  ASSERT_EQ(timer_suspend(id), RET_OK);
+  ASSERT_EQ(timer_manager_dispatch(tm), RET_OK);
+  ASSERT_EQ(timer_manager_count(tm), 1);
+  ASSERT_EQ(s_log, "r:");
+
+  timer_set_time(300);
+  ASSERT_EQ(timer_manager_dispatch(tm), RET_OK);
+  ASSERT_EQ(timer_manager_count(tm), 1);
+  ASSERT_EQ(s_log, "r:");
+  ASSERT_EQ(timer_resume(id), RET_OK);
+
+  timer_set_time(400);
+  ASSERT_EQ(timer_manager_dispatch(tm), RET_OK);
+  ASSERT_EQ(timer_manager_count(tm), 1);
+  ASSERT_EQ(s_log, "r:r:");
+
+  timer_manager_set(s_timer_manager);
+  timer_manager_destroy(tm);
+}
+
 TEST(Timer, modify) {
   timer_manager_t* tm = timer_manager_create(timer_get_time);
   uint32_t id = timer_manager_add(tm, timer_once, NULL, 100);

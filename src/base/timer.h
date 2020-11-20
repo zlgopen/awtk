@@ -106,6 +106,26 @@ ret_t timer_remove(uint32_t timer_id);
 ret_t timer_reset(uint32_t timer_id);
 
 /**
+ * @method timer_suspend
+ * 挂起指定的timer，一般用于不断循环触发的计时器。
+ * @annotation ["scriptable", "static"]
+ * @param {uint32_t} timer_id timerID。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t timer_suspend(uint32_t timer_id);
+
+/**
+ * @method timer_resume
+ * 唤醒挂起指定的timer，并且重置定时器重新开始计时
+ * @annotation ["scriptable", "static"]
+ * @param {uint32_t} timer_id timerID。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t timer_resume(uint32_t timer_id);
+
+/**
  * @method timer_modify
  * 修改指定的timer的duration，修改之后定时器重新开始计时。
  * @annotation ["scriptable", "static"]

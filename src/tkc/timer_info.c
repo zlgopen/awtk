@@ -52,6 +52,7 @@ timer_info_t* timer_info_create(timer_manager_t* tm, timer_func_t on_timer, void
   return_value_if_fail(timer != NULL, NULL);
 
   timer->ctx = ctx;
+  timer->suspend = FALSE;
   timer->on_timer = on_timer;
   timer->duration = duration;
 

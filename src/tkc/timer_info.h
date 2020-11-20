@@ -107,6 +107,13 @@ struct _timer_info_t {
    */
   void* on_destroy_ctx;
 
+  /**
+   * @property {bool_t} suspend
+   * @annotation ["readable"]
+   * 定时器是否为挂起状态。
+   */
+  bool_t suspend;
+
   /*private*/
   bool_t busy;
   uint64_t last_dispatch_time;
