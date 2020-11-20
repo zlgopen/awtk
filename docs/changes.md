@@ -1,5 +1,10 @@
 # 最新动态
 
+2020/11/20
+  * 完善label（感谢智明提供补丁）。
+  * 增加timer\_resume/timer\_suspend（感谢智明提供补丁）。
+  * 完善window\_set\_fullscreen支持native window。
+
 2020/11/19
   * 增加函数tk\_ostream\_file\_create\_ex
 
