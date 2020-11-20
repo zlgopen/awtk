@@ -20,7 +20,6 @@
  */
 
 #include "awtk.h"
-#include "assets.h"
 
 static ret_t on_fullscreen(void* ctx, event_t* e) {
   widget_t* btn = WIDGET(e->target);
