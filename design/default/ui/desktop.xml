@@ -1,4 +1,4 @@
-<window anim_hint="htranslate">
+<window theme="button" anim_hint="htranslate">
   <column style="buttons">
     <button name="open:dialog1" style="round" enable_long_press="true" text="Long Press"/>
     <button style="red_btn" text="Text"/>
