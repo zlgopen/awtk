@@ -59,9 +59,14 @@ static ret_t window_get_prop(widget_t* widget, const char* name, value_t* v) {
 
 ret_t window_set_fullscreen(widget_t* widget, bool_t fullscreen) {
   window_t* window = WINDOW(widget);
+  bool_t change_native_window = system_info()->app_type != APP_SIMULATOR;
   return_value_if_fail(window != NULL, RET_BAD_PARAMS);
 
-  if (system_info()->app_type != APP_SIMULATOR) {
+#if defined(ANDROID) || defined(IOS)
+  change_native_window = TRUE;
+#endif/*ANDROID || IOS*/
+
+  if (change_native_window) {
      native_window_t* native_window = widget_get_native_window(widget);
      native_window_set_fullscreen(native_window, fullscreen);
   }
