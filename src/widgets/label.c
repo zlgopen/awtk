@@ -385,7 +385,7 @@ static ret_t label_auto_adjust_size(widget_t* widget) {
   label_line_parser_t p;
   label_t* label = LABEL(widget);
   canvas_t* c = widget_get_canvas(widget);
-  return_value_if_fail(label != NULL && c != NULL && widget->astyle != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(label != NULL && c != NULL && widget->astyle != NULL && widget->text.size > 0, RET_BAD_PARAMS);
 
   style = widget->astyle;
   margin = style_get_int(style, STYLE_ID_MARGIN, 2);
