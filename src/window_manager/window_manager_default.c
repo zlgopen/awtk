@@ -1276,16 +1276,21 @@ ret_t window_manager_paint_system_bar(widget_t* widget, canvas_t* c) {
 static ret_t window_manager_default_native_window_resized(widget_t* widget, void* handle) {
   uint32_t w = 0;
   uint32_t h = 0;
-  system_info_t* info = system_info();
+  native_window_info_t ainfo;
+  int32_t lcd_orientation = system_info()->lcd_orientation;
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
   native_window_t* nw = WINDOW_MANAGER_DEFAULT(widget)->native_window;
 
-  if (info->lcd_orientation == LCD_ORIENTATION_90 || info->lcd_orientation == LCD_ORIENTATION_270) {
-    w = info->lcd_h;
-    h = info->lcd_w;
-  } else {
-    w = info->lcd_w;
-    h = info->lcd_h;
+  return_value_if_fail(native_window_get_info(wm->native_window, &ainfo) == RET_OK, RET_FAIL);
+
+  w = ainfo.w;
+  h = ainfo.h;
+  system_info_set_lcd_w(system_info(), w);
+  system_info_set_lcd_h(system_info(), h);
+
+  if (lcd_orientation == LCD_ORIENTATION_90 || lcd_orientation == LCD_ORIENTATION_270) {
+    w = h;
+    h = w;
   }
 
   window_manager_default_resize(widget, w, h);
