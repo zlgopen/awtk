@@ -760,6 +760,8 @@ const char* value_str_ex(const value_t* v, char* buff, uint32_t size) {
     tk_utf8_from_utf16(value_wstr(v), buff, size);
   } else if (v->type == VALUE_TYPE_BOOL) {
     tk_snprintf(buff, size, "%s", value_bool(v) ? "true" : "false");
+  } else if (v->type == VALUE_TYPE_UINT8 || v->type == VALUE_TYPE_UINT16 || v->type == VALUE_TYPE_UINT32) {
+    tk_snprintf(buff, size, "%u", value_uint32(v));
   } else {
     tk_snprintf(buff, size, "%d", value_int(v));
   }

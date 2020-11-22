@@ -636,6 +636,48 @@ static ret_t func_int(fscript_t* fscript, fscript_args_t* args, value_t* result)
   return RET_OK;
 }
 
+static ret_t func_i8(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
+  value_set_int8(result, value_int8(args->args));
+  return RET_OK;
+}
+
+static ret_t func_i16(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
+  value_set_int16(result, value_int16(args->args));
+  return RET_OK;
+}
+
+static ret_t func_i32(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
+  value_set_int(result, value_int(args->args));
+  return RET_OK;
+}
+
+static ret_t func_u8(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
+  value_set_uint8(result, value_uint8(args->args));
+  return RET_OK;
+}
+
+static ret_t func_u16(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
+  value_set_uint16(result, value_uint16(args->args));
+  return RET_OK;
+}
+
+static ret_t func_u32(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
+  value_set_uint32(result, value_uint32(args->args));
+  return RET_OK;
+}
+
+static ret_t func_f32(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
+  value_set_float32(result, value_float32(args->args));
+  return RET_OK;
+}
+
 static ret_t func_float(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
   value_set_double(result, value_double(args->args));
@@ -1162,6 +1204,13 @@ static const func_entry_t s_builtin_funcs[] = {
     {"join", func_join, 8},
     {"if", func_if, 3},
     {"int", func_int, 1},
+    {"i8", func_i8, 1},
+    {"i16", func_i16, 1},
+    {"i32", func_i32, 1},
+    {"u8", func_u8, 1},
+    {"u16", func_u16, 1},
+    {"u32", func_u32, 1},
+    {"f32", func_f32, 1},
     {"float", func_float, 1},
     {"iformat", func_iformat, 2},
     {"fformat", func_fformat, 2},
