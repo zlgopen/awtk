@@ -228,6 +228,7 @@ static ret_t fscript_exec_func(fscript_t* fscript, fscript_func_call_t* iter, va
     s->type = save_type;
   }
 
+  value_set_int(result, 0);
   ret = iter->func(fscript, &args, result);
   func_args_deinit(&args);
 
