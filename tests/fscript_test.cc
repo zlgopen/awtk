@@ -51,6 +51,14 @@ TEST(FScript, if1) {
   OBJECT_UNREF(obj);
 }
 
+TEST(FScript, while1) {
+  value_t v;
+  object_t* obj = object_default_create();
+  fscript_eval(obj, "set(a,0);set(b,0);while(<=(a,100), set(b, +(b, a)),set(a, +(a,1)));int(b)", &v);
+  ASSERT_EQ(value_int(&v), 5050);
+  value_reset(&v);
+}
+
 TEST(FScript, if2) {
   value_t v;
   object_t* obj = object_default_create();

@@ -1,59 +1,60 @@
 # 最新动态
 
 2020/11/23
-  * fscript支持comment。
+  * fscript 支持 comment。
+  * fscript 支持 while 语句。
 
 2020/11/20
-  * 完善label（感谢智明提供补丁）。
-  * 增加timer\_resume/timer\_suspend（感谢智明提供补丁）。
-  * 完善window\_set\_fullscreen支持native window。
+  * 完善 label（感谢智明提供补丁）。
+  * 增加 timer\_resume/timer\_suspend（感谢智明提供补丁）。
+  * 完善 window\_set\_fullscreen 支持 native window。
 
 2020/11/19
-  * 增加函数tk\_ostream\_file\_create\_ex
+  * 增加函数 tk\_ostream\_file\_create\_ex
 
 2020/11/18
-  * 增加rlog用于循环记录log。
+  * 增加 rlog 用于循环记录 log。
 
 2020/11/15
-  * 增加函数object\_to\_json。
-  * expr\_eval添加对类似‘$temp.[0].value’格式的变量的支持（感谢朝泽提供补丁）
-  * object添加object\_set\_prop\_by\_path、object\_can\_exec\_by\_path、object\_exec\_by\_path的接口（感谢朝泽提供补丁）
-  * 完善fscript（感谢剑超提供补丁）。
-  * 完善调试信息（感谢MooYin提供补丁）。
+  * 增加函数 object\_to\_json。
+  * expr\_eval 添加对类似‘$temp.[0].value’格式的变量的支持（感谢朝泽提供补丁）
+  * object 添加 object\_set\_prop\_by\_path、object\_can\_exec\_by\_path、object\_exec\_by\_path 的接口（感谢朝泽提供补丁）
+  * 完善 fscript（感谢剑超提供补丁）。
+  * 完善调试信息（感谢 MooYin 提供补丁）。
 
 2020/11/14
-  * 修复android不能熄屏的问题。
+  * 修复 android 不能熄屏的问题。
 
 2020/11/13
   * 修复圆角矩形启用局部圆角导致边无法缺失的问题（感谢智明提供补丁）。
-  * 完善slide\_indicator（感谢智明提供补丁）。
+  * 完善 slide\_indicator（感谢智明提供补丁）。
 
 2020/11/11
-  * 增加fscript的文档。
-  * 完善text\_selector,支持设置选中项的风格（感谢智明提供补丁）
-  * 增加bitmap\_lock\_buffer\_for\_write参数检测（感谢俊杰提供补丁）
+  * 增加 fscript 的文档。
+  * 完善 text\_selector, 支持设置选中项的风格（感谢智明提供补丁）
+  * 增加 bitmap\_lock\_buffer\_for\_write 参数检测（感谢俊杰提供补丁）
 
 2020/11/09
-  * 增加一个简单的函数式执行引擎(fscript)。 
+  * 增加一个简单的函数式执行引擎 (fscript)。 
   * 修复不同的控件来回获取焦点导致脏矩形为全屏的问题（感谢智明提供补丁）
   * 修复在播放 dialog\_toast 打开动画的同时点击退出导致 dialog\_toast 无法退出的问题（感谢智明提供补丁）
 
 2020/11/08
-  * 增加函数tk\_vsnprintf
+  * 增加函数 tk\_vsnprintf
 
 2020/11/07
-	* 完整FAQ
-	* 增加函数timei\_now\_us
+	* 完整 FAQ
+	* 增加函数 timei\_now\_us
 
 2020/11/06
   * 完善资源管理器（感谢智明提供补丁）。
 
 2020/11/05
-  * 完善ubjson保存逻辑（感谢王程提供补丁）。
+  * 完善 ubjson 保存逻辑（感谢王程提供补丁）。
 
 2020/11/04
-  * 完善直接加载file://资源的逻辑（感谢智明提供补丁）。
-  * 增加文档[自定义控件支持脚本绑定](binding_custom_widget.md)
+  * 完善直接加载 file://资源的逻辑（感谢智明提供补丁）。
+  * 增加文档 [自定义控件支持脚本绑定](binding_custom_widget.md)
   * 修复测试用例的错误（感谢智明提供补丁）。
   * 修复 datai\_reader\_asset 如果加载资源失败，导致修改计数器失败，从而导致崩溃的问题（感谢智明提供补丁）。
 
@@ -65,27 +66,27 @@
   * 增加支持 edit 控件可以添加非规定的按键触发事件（感谢智明提供补丁）。
   * 修复了 grab_keys 属性和按键事件冲突的问题（感谢智明提供补丁）。
   * 修复了 keyboard 对顶部窗口的移动位置不正确的问题（感谢雨欣、智明提供补丁）。
-  * 修复了使用 global_emitter 后，在窗口退出的时候释放对应的消息同时之前的消息分发返回值为 RET_STOP 会导致无法删除 global_emitter 队列中的对应消息（感谢智明提供补丁）。。
+  * 修复了使用 global_emitter 后，在窗口退出的时候释放对应的消息同时之前的消息分发返回值为 RET_STOP 会导致无法删除 global_emitter 队列中的对应消息（感谢智明提供补丁）。
 
 2020/11/02
-  * 修改system info中的内存泄露（感谢朝泽提供补丁）。
-  * image/tab\_button支持space/return触发click事件。
+  * 修改 system info 中的内存泄露（感谢朝泽提供补丁）。
+  * image/tab\_button 支持 space/return 触发 click 事件。
 2020/10/30
   * 完善编译脚本（感谢朝泽提供补丁）。
-  * 增加main\_loop\_remove\_event\_source\_by\_tag函数。
-  * 完善API注释。
-  * 完善object\_default，支持按序号获取属性。
+  * 增加 main\_loop\_remove\_event\_source\_by\_tag 函数。
+  * 完善 API 注释。
+  * 完善 object\_default，支持按序号获取属性。
 
 2020/10/29
-  * 完善dialog\_highlighter\_factory\_create\_highlighter （感谢俊杰提供补丁）。
-  * 完善tab button pointer事件处理（感谢智明提供补丁）。
+  * 完善 dialog\_highlighter\_factory\_create\_highlighter （感谢俊杰提供补丁）。
+  * 完善 tab button pointer 事件处理（感谢智明提供补丁）。
 
 2020/10/28
-  * label 控件增加word\_wrap属性（感谢智明提供补丁）。
-  * 修复edit光标的bug（感谢智明提供补丁）。
+  * label 控件增加 word\_wrap 属性（感谢智明提供补丁）。
+  * 修复 edit 光标的 bug（感谢智明提供补丁）。
 
 2020/10/27
-  * 完善object\_array（感谢朝泽提供补丁）。
+  * 完善 object\_array（感谢朝泽提供补丁）。
 
 2020/10/26
   * 更新文档。
@@ -94,7 +95,6 @@
 2020/10/25
   * 增加 object\_clone。
   * 窗口切换时，旧窗口按下的键，一直不松开，会持续触发 PRESS，可能会干扰新窗口的用户功能。在窗口切换时，abort 全部已经按下的键，直到按键松开。
-
 
 2020/10/24
   * 增加函数 conf\_ini\_save\_as

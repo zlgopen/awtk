@@ -14,6 +14,7 @@ int main(int argc, char* argv[]) {
     return 0;
   } else {
     value_t v;
+    char buff[64];
     uint64_t start = time_now_us();
     const char* code = argv[1];
     object_t* obj = object_default_create();
@@ -30,6 +31,7 @@ int main(int argc, char* argv[]) {
       fscript_destroy(fscript);
     } else {
       fscript_eval(obj, code, &v);
+      log_debug("result:%s\n", value_str_ex(&v, buff, sizeof(buff)-1));
       value_reset(&v);
     }
     OBJECT_UNREF(obj);

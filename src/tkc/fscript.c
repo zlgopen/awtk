@@ -29,6 +29,7 @@ struct _fscript_func_call_t {
 #define VALUE_TYPE_JSCRIPT_FUNC VALUE_TYPE_JSCRIPT_ID + 1
 
 static ret_t func_if(fscript_t* fscript, fscript_args_t* args, value_t* result);
+static ret_t func_while(fscript_t* fscript, fscript_args_t* args, value_t* result);
 static ret_t func_set(fscript_t* fscript, fscript_args_t* args, value_t* result);
 
 static value_t* value_set_func(value_t* v, fscript_func_call_t* func) {
@@ -186,7 +187,75 @@ static ret_t fscript_get_var(fscript_t* fscript, const char* name, value_t* valu
   return RET_OK;
 }
 
-static ret_t fscript_exec_func(fscript_t* fscript, fscript_func_call_t* iter, value_t* result) {
+static ret_t fscript_eval_arg(fscript_t* fscript, fscript_func_call_t* iter, uint32_t i,
+                              value_t* d) {
+  value_t v;
+  value_t* s = iter->args.args + i;
+  int32_t save_type = s->type;
+  if (s->type == VALUE_TYPE_JSCRIPT_ID) {
+    s->type = VALUE_TYPE_STRING;
+    if (iter->func == func_set && i == 0) {
+      value_copy(d, s); /*func_set accept id/str as first param*/
+    } else {
+      fscript_get_var(fscript, value_str(s), d);
+    }
+  } else if (s->type == VALUE_TYPE_JSCRIPT_FUNC) {
+    s->type = VALUE_TYPE_POINTER;
+
+    fscript_func_call_t* func = (fscript_func_call_t*)value_pointer(s);
+    fscript_exec_func(fscript, func, &v);
+    value_deep_copy(d, &v);
+  } else {
+    value_copy(d, s);
+  }
+  s->type = save_type;
+
+  return RET_OK;
+}
+
+static ret_t fscript_exec_if(fscript_t* fscript, fscript_func_call_t* iter, value_t* result) {
+  value_t condition;
+  return_value_if_fail(iter->args.size == 3, RET_FAIL);
+  value_set_int(&condition, 0);
+
+  fscript_eval_arg(fscript, iter, 0, &condition);
+  if (value_bool(&condition)) {
+    fscript_eval_arg(fscript, iter, 1, result);
+  } else {
+    fscript_eval_arg(fscript, iter, 2, result);
+  }
+
+  return RET_OK;
+}
+
+static ret_t fscript_exec_while(fscript_t* fscript, fscript_func_call_t* iter, value_t* result) {
+  value_t condition;
+  return_value_if_fail(iter->args.size > 1, RET_FAIL);
+  value_set_int(&condition, 0);
+
+  while (fscript_eval_arg(fscript, iter, 0, &condition) == RET_OK && value_bool(&condition)) {
+    uint32_t i = 1;
+    for (i = 1; i < iter->args.size; i++) {
+      value_reset(result);
+      fscript_eval_arg(fscript, iter, i, result);
+    }
+  }
+
+  return RET_OK;
+}
+
+static ret_t fscript_exec_core_func(fscript_t* fscript, fscript_func_call_t* iter,
+                                    value_t* result) {
+  if (iter->func == func_if) {
+    return fscript_exec_if(fscript, iter, result);
+  } else if (iter->func == func_while) {
+    return fscript_exec_while(fscript, iter, result);
+  }
+
+  return RET_NOT_FOUND;
+}
+
+static ret_t fscript_exec_ext_func(fscript_t* fscript, fscript_func_call_t* iter, value_t* result) {
   value_t v;
   uint32_t i = 0;
   ret_t ret = RET_OK;
@@ -197,35 +266,7 @@ static ret_t fscript_exec_func(fscript_t* fscript, fscript_func_call_t* iter, va
   args.size = iter->args.size;
   return_value_if_fail((args.args != NULL || args.size == 0), RET_OOM);
   for (i = 0; i < iter->args.size; i++) {
-    value_t* s = iter->args.args + i;
-    value_t* d = args.args + i;
-    int32_t save_type = s->type;
-    if (s->type == VALUE_TYPE_JSCRIPT_ID) {
-      s->type = VALUE_TYPE_STRING;
-      if (iter->func == func_set && i == 0) {
-        value_copy(d, s); /*func_set accept id/str as first param*/
-      } else {
-        fscript_get_var(fscript, value_str(s), d);
-      }
-    } else if (s->type == VALUE_TYPE_JSCRIPT_FUNC) {
-      s->type = VALUE_TYPE_POINTER;
-
-      fscript_func_call_t* func = (fscript_func_call_t*)value_pointer(s);
-      if (i > 0 && iter->func == func_if) {
-        if (value_bool(args.args) && i == 1) {
-          fscript_exec_func(fscript, func, &v);
-        }
-        if (!value_bool(args.args) && i == 2) {
-          fscript_exec_func(fscript, func, &v);
-        }
-      } else {
-        fscript_exec_func(fscript, func, &v);
-      }
-      value_deep_copy(d, &v);
-    } else {
-      value_copy(d, s);
-    }
-    s->type = save_type;
+    fscript_eval_arg(fscript, iter, i, args.args + i);
   }
 
   value_set_int(result, 0);
@@ -233,6 +274,14 @@ static ret_t fscript_exec_func(fscript_t* fscript, fscript_func_call_t* iter, va
   func_args_deinit(&args);
 
   return ret;
+}
+
+static ret_t fscript_exec_func(fscript_t* fscript, fscript_func_call_t* iter, value_t* result) {
+  if (fscript_exec_core_func(fscript, iter, result) == RET_NOT_FOUND) {
+    return_value_if_fail(fscript_exec_ext_func(fscript, iter, result) == RET_OK, RET_FAIL);
+  }
+
+  return RET_OK;
 }
 
 ret_t fscript_exec(fscript_t* fscript, value_t* result) {
@@ -561,13 +610,13 @@ static ret_t fscript_parse(fscript_parser_t* parser) {
   while (parser->cursor[0]) {
     token_t* t = fscript_parser_get_token(parser);
     if (t != NULL && t->type == TOKEN_FUNC) {
-      bool_t is_comment = (t->size == 1 && t->token[0] == '#'); 
+      bool_t is_comment = (t->size == 1 && t->token[0] == '#');
       acall = fscript_func_call_create(parser, t->token, t->size);
       return_value_if_fail(acall != NULL, RET_BAD_PARAMS);
       fscript_parser_unget_token(parser);
       fscript_parse_func(parser, acall);
 
-      if(is_comment) {
+      if (is_comment) {
         log_debug("skip comment\n");
         fscript_func_call_destroy(acall);
       } else {
@@ -723,14 +772,10 @@ static ret_t func_join(fscript_t* fscript, fscript_args_t* args, value_t* result
 }
 
 static ret_t func_if(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 3, RET_BAD_PARAMS);
+  return RET_OK;
+}
 
-  if (value_bool(args->args)) {
-    value_deep_copy(result, args->args + 1);
-  } else {
-    value_deep_copy(result, args->args + 2);
-  }
-
+static ret_t func_while(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   return RET_OK;
 }
 
@@ -1209,6 +1254,7 @@ static const func_entry_t s_builtin_funcs[] = {
     {"exec", func_exec, 2},
     {"join", func_join, 8},
     {"if", func_if, 3},
+    {"while", func_while, 10},
     {"int", func_int, 1},
     {"i8", func_i8, 1},
     {"i16", func_i16, 1},
