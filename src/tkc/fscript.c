@@ -424,6 +424,7 @@ static token_t* fscript_parser_get_token(fscript_parser_t* parser) {
       t->type = TOKEN_COMMA;
       return t;
     }
+    case '#':
     case '>':
     case '<':
     case '!':
@@ -560,17 +561,23 @@ static ret_t fscript_parse(fscript_parser_t* parser) {
   while (parser->cursor[0]) {
     token_t* t = fscript_parser_get_token(parser);
     if (t != NULL && t->type == TOKEN_FUNC) {
+      bool_t is_comment = (t->size == 1 && t->token[0] == '#'); 
       acall = fscript_func_call_create(parser, t->token, t->size);
       return_value_if_fail(acall != NULL, RET_BAD_PARAMS);
-
       fscript_parser_unget_token(parser);
       fscript_parse_func(parser, acall);
-      if (last == NULL) {
-        parser->first = acall;
+
+      if(is_comment) {
+        log_debug("skip comment\n");
+        fscript_func_call_destroy(acall);
       } else {
-        last->next = acall;
+        if (last == NULL) {
+          parser->first = acall;
+        } else {
+          last->next = acall;
+        }
+        last = acall;
       }
-      last = acall;
     }
     fscript_parser_skip_seperators(parser);
     c = fscript_parser_get_char(parser);
@@ -1170,8 +1177,6 @@ static ret_t func_exec(fscript_t* fscript, fscript_args_t* args, value_t* result
 }
 
 static ret_t func_noop(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  value_set_bool(result, TRUE);
-
   return RET_OK;
 }
 
@@ -1247,6 +1252,7 @@ static const func_entry_t s_builtin_funcs[] = {
     {"len", func_len, 1},
     {"less", func_less, 2},
     {"mul", func_mul, 2},
+    {"#", func_noop, 0},
     {"noop", func_noop, 0},
     {"not", func_not, 1},
     {"or", func_or, 2},
