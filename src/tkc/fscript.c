@@ -31,6 +31,7 @@ struct _fscript_func_call_t {
 static ret_t func_if(fscript_t* fscript, fscript_args_t* args, value_t* result);
 static ret_t func_while(fscript_t* fscript, fscript_args_t* args, value_t* result);
 static ret_t func_set(fscript_t* fscript, fscript_args_t* args, value_t* result);
+static ret_t fscript_exec_func(fscript_t* fscript, fscript_func_call_t* iter, value_t* result);
 
 static value_t* value_set_func(value_t* v, fscript_func_call_t* func) {
   value_set_pointer(v, func);
