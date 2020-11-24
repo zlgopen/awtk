@@ -4,37 +4,49 @@ import json
 import shutil
 import platform
 
-PLATFORM = platform.system();
+PLATFORM = platform.system()
+
+
+def join_path(root, sub):
+    return os.path.abspath(os.path.join(root, sub))
+
+
 def mkdir_if_not_exist(fullpath):
     if os.path.exists(fullpath):
         print(fullpath+' exist.')
     else:
         os.makedirs(fullpath)
 
+
 def load_project_json(filename):
     try:
         if sys.version_info >= (3, 0):
             with open(filename, 'r', encoding='utf8') as f:
-                info = json.load(f);
+                info = json.load(f)
                 return info
         else:
             with open(filename, 'r') as f:
-                info = json.load(f);
+                info = json.load(f)
                 return info
     except:
         return None
 
+
 def get_project_w(info, theme):
     return info['assets']['themes'][theme]['lcd']['width']
+
 
 def get_project_h(info, theme):
     return info['assets']['themes'][theme]['lcd']['height']
 
+
 def get_project_theme(info):
     return info['assets']['activedTheme']
 
+
 def get_project_language(info):
     return info['assets']['defaultLanguage']
+
 
 def get_project_country(info):
     return info['assets']['defaultCountry']
@@ -44,6 +56,7 @@ class AppHelperBase:
     def set_deps(self, DEPENDS_LIBS):
         self.DEPENDS_LIBS = DEPENDS_LIBS
         return self
+
     def set_src_dir(self, SRC_DIR):
         self.SRC_DIR = SRC_DIR
         return self
@@ -81,7 +94,7 @@ class AppHelperBase:
     def add_libs(self, APP_LIBS):
         self.APP_LIBS += APP_LIBS
         return self
-    
+
     def add_platform_libs(self, plat, PLATFORM_LIBS):
         if plat == PLATFORM:
             self.PLATFORM_LIBS += PLATFORM_LIBS
@@ -90,7 +103,7 @@ class AppHelperBase:
     def add_libpath(self, APP_LIBPATH):
         self.APP_LIBPATH += APP_LIBPATH
         return self
-    
+
     def add_platform_libpath(self, plat, APP_LIBPATH):
         if plat == PLATFORM:
             self.APP_LIBPATH += APP_LIBPATH
@@ -99,7 +112,7 @@ class AppHelperBase:
     def add_cpppath(self, APP_CPPPATH):
         self.APP_CPPPATH += APP_CPPPATH
         return self
-    
+
     def add_platform_cpppath(self, plat, APP_CPPPATH):
         if plat == PLATFORM:
             self.APP_CPPPATH += APP_CPPPATH
@@ -108,7 +121,7 @@ class AppHelperBase:
     def add_ccflags(self, APP_CCFLAGS):
         self.APP_CCFLAGS += APP_CCFLAGS
         return self
-    
+
     def add_cflags(self, APP_CFLAGS):
         self.APP_CFLAGS += APP_CFLAGS
         return self
@@ -121,7 +134,7 @@ class AppHelperBase:
     def add_cxxflags(self, APP_CXXFLAGS):
         self.APP_CXXFLAGS += APP_CXXFLAGS
         return self
-    
+
     def add_platform_cxxflags(self, plat, APP_CXXFLAGS):
         if plat == PLATFORM:
             self.APP_CXXFLAGS += APP_CXXFLAGS
@@ -140,7 +153,7 @@ class AppHelperBase:
         APP_ROOT = os.path.normpath(os.getcwd())
 
         self.SRC_DIR = 'src'
-        self.TKC_ONLY = False 
+        self.TKC_ONLY = False
         self.ARGUMENTS = ARGUMENTS
         self.DEF_FILE = None
         self.DEF_FILE_PROCESSOR = None
@@ -165,8 +178,8 @@ class AppHelperBase:
         self.PLATFORM_LIBS = []
         self.APP_TOOLS = None
 
-        mkdir_if_not_exist(self.APP_BIN_DIR);
-        mkdir_if_not_exist(self.APP_LIB_DIR);
+        mkdir_if_not_exist(self.APP_BIN_DIR)
+        mkdir_if_not_exist(self.APP_LIB_DIR)
 
         os.environ['APP_SRC'] = self.APP_SRC
         os.environ['APP_ROOT'] = self.APP_ROOT
@@ -174,8 +187,7 @@ class AppHelperBase:
         os.environ['LIB_DIR'] = self.APP_LIB_DIR
         os.environ['LINUX_FB'] = 'false'
         if self.LINUX_FB:
-          os.environ['LINUX_FB'] = 'true'
-          
+            os.environ['LINUX_FB'] = 'true'
 
         self.parseArgs(self.awtk, ARGUMENTS)
 
@@ -312,7 +324,8 @@ class AppHelperBase:
         RES_ROOT = ARGUMENTS.get('RES_ROOT', '')
         if len(RES_ROOT) > 0:
             APP_RES_ROOT = RES_ROOT
-            self.APP_RES = os.path.abspath(os.path.join(self.APP_BIN_DIR, RES_ROOT))
+            self.APP_RES = os.path.abspath(
+                os.path.join(self.APP_BIN_DIR, RES_ROOT))
 
         SHARED = ARGUMENTS.get('SHARED', '')
         if len(SHARED) > 0:
@@ -332,7 +345,7 @@ class AppHelperBase:
             APP_DEFAULT_COUNTRY + '\\\" '
         APP_CCFLAGS = APP_CCFLAGS + ' -DAPP_ROOT=\"\\\"' + \
             self.APP_ROOT + '\\\"\" '
-        self.APP_CFLAGS = '' 
+        self.APP_CFLAGS = ''
         self.APP_CCFLAGS = APP_CCFLAGS
         self.APP_CXXFLAGS = self.APP_CCFLAGS
 
@@ -364,7 +377,8 @@ class AppHelperBase:
     def getAwtkRoot(self):
         AWTK_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         if self.LINUX_FB:
-            AWTK_ROOT = os.path.join(os.path.dirname(AWTK_ROOT), 'awtk-linux-fb')
+            AWTK_ROOT = os.path.join(
+                os.path.dirname(AWTK_ROOT), 'awtk-linux-fb')
         return AWTK_ROOT
 
     def call(self, DefaultEnvironment):
@@ -389,9 +403,25 @@ class AppHelperBase:
                 LIBS = iter['shared_libs'] + LIBS
             if 'static_libs' in iter:
                 LIBS = iter['static_libs'] + LIBS
-            CPPPATH += [os.path.join(os.path.abspath(iter['root']), 'src')]
-            LIBPATH += [os.path.join(os.path.abspath(iter['root']), 'lib')]
-            LIBPATH += [os.path.join(os.path.abspath(iter['root']), 'bin')]
+            if 'cxxflags' in iter:
+                CXXFLAGS += " " + iter['cxxflags'] + " "
+            if 'cflags' in iter:
+                CFLAGS += " " + iter['cflags'] + " "
+            if 'ccflags' in iter:
+                CCFLAGS += " " + iter['ccflags'] + " "
+
+            if 'cpppath' in iter:
+                for f in iter['cpppath']:
+                    CPPPATH = CPPPATH + [join_path(iter['root'], f)]
+            else:
+                CPPPATH += [join_path(iter['root'], 'src')]
+
+            if 'libpath' in iter:
+                for f in iter['libpath']:
+                    LIBPATH = LIBPATH + [join_path(iter['root'], f)]
+            else:
+                LIBPATH += [join_path(iter['root'], 'lib')]
+                LIBPATH += [join_path(iter['root'], 'bin')]
 
         self.prepare()
         if hasattr(awtk, 'CC'):
