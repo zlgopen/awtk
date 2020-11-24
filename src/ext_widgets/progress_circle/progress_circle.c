@@ -85,7 +85,7 @@ static ret_t progress_circle_on_paint_self(widget_t* widget, canvas_t* c) {
     const char* unit = progress_circle->unit != NULL ? progress_circle->unit : "";
     tk_snprintf(s, sizeof(s), "%u%s", (uint32_t)(progress_circle->value), unit);
 
-    widget_set_text_utf8(widget, s);
+    wstr_set_utf8(&(widget->text), s);
     widget_paint_helper(widget, c, NULL, NULL);
   }
 
