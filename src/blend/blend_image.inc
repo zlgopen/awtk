@@ -11,7 +11,7 @@ static inline void blend_a(uint8_t* dst, uint8_t* src, uint8_t alpha, bool_t pre
   uint8_t a = alpha == 0xff ? srgba.a : ((srgba.a * alpha) >> 8);
   /* 前景色的透明度大于 0xf8 或者背景色的透明度小于 0x08，则可以直接使用前景色 */
   if (a > 0xf8 || drgba.a < 0x08) {
-    pixel_dst_t p = pixel_dst_from_rgb(srgba.r, srgba.g, srgba.b);
+    pixel_dst_t p = pixel_dst_from_rgba(srgba.r, srgba.g, srgba.b, srgba.a);
     *d = p;
   } else if (a > 0x08) {
     if (premulti_alpha) {
