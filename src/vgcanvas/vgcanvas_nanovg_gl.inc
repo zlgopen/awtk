@@ -85,25 +85,24 @@ static inline void vgcanvas_nanovg_offline_fb_flush(vgcanvas_nanovg_t* canvas) {
 #if defined NANOVG_GL3
     glBindVertexArray(shader_info->vao);
 #endif
+    glEnableVertexAttribArray(shader_info->coord_loc);
+    glEnableVertexAttribArray(shader_info->position_loc);
 
     glBindBuffer(GL_ARRAY_BUFFER, shader_info->vboIds[0]);
     glVertexAttribPointer(shader_info->position_loc, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), 0);
-    glEnableVertexAttribArray(shader_info->position_loc);
 
     glBindBuffer(GL_ARRAY_BUFFER, shader_info->vboIds[1]);
     glVertexAttribPointer(shader_info->coord_loc, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), 0);
-    glEnableVertexAttribArray(shader_info->coord_loc);
 
     // Bind the texture
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, offline_fb->textureId);
     glUniform1i(shader_info->screentexture_loc, 0);
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, shader_info->vboIds[2]);
-    glDrawElements(GL_TRIANGLES, sizeof(shader_info->indexs) / sizeof(GLuint), GL_UNSIGNED_INT, 0);
+    glDrawArrays(GL_TRIANGLES, 0, shader_info->draw_arrays);
 
-    glDisableVertexAttribArray(shader_info->position_loc);
     glDisableVertexAttribArray(shader_info->coord_loc);
+    glDisableVertexAttribArray(shader_info->position_loc);
 
     glBindTexture(GL_TEXTURE_2D, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);

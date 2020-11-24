@@ -65,8 +65,8 @@ typedef struct _vgcanvas_nanovg_screen_shader_info_t {
   GLuint coord_loc;
   GLuint position_loc;
   GLuint screentexture_loc;
-  GLuint indexs[6];
-  GLuint vboIds[3];
+  GLuint vboIds[2];
+  uint32_t draw_arrays;
 #if defined NANOVG_GL3
   GLuint vao;
 #endif
@@ -170,11 +170,12 @@ static inline GLuint vgcanvas_create_LoadShader(const char* g_strShaderHeader,
 }
 
 vgcanvas_nanovg_screen_shader_info_t* vgcanvas_create_init_screen_shader() {
-  const GLuint indexs[] = {0, 1, 3, 1, 2, 3};
 
   const GLfloat vertexs[] = {
       // Position
       1.0f,  1.0f,  0.0f,  // top right
+      1.0f,  -1.0f, 0.0f,  // bottm right
+      -1.0f, 1.0f,  0.0f,   // top left
       1.0f,  -1.0f, 0.0f,  // bottm right
       -1.0f, -1.0f, 0.0f,  // bottm left
       -1.0f, 1.0f,  0.0f   // top left
@@ -183,6 +184,8 @@ vgcanvas_nanovg_screen_shader_info_t* vgcanvas_create_init_screen_shader() {
   const GLfloat tcoords[] = {
       // texture coords
       1.0f, 1.0f,  // top right
+      1.0f, 0.0f,  // bottm right
+      0.0f, 1.0f,   // top left
       1.0f, 0.0f,  // bottm right
       0.0f, 0.0f,  // bottm left
       0.0f, 1.0f   // top left
@@ -248,8 +251,6 @@ vgcanvas_nanovg_screen_shader_info_t* vgcanvas_create_init_screen_shader() {
       (vgcanvas_nanovg_screen_shader_info_t*)TKMEM_ZALLOC(vgcanvas_nanovg_screen_shader_info_t);
   return_value_if_fail(shader_info != NULL, NULL);
 
-  memcpy(shader_info->indexs, indexs, sizeof(indexs));
-
   shader_info->program_object =
       vgcanvas_create_LoadShader(vgcanvas_nanovg_shader_header, vertex_shader, fragment_shader);
 
@@ -265,6 +266,8 @@ vgcanvas_nanovg_screen_shader_info_t* vgcanvas_create_init_screen_shader() {
 
   glGenBuffers(sizeof(shader_info->vboIds) / sizeof(GLuint), shader_info->vboIds);
 
+  shader_info->draw_arrays = ARRAY_SIZE(vertexs) / 3;
+
 #if defined NANOVG_GL3
   glGenVertexArrays(1, &shader_info->vao);
 
@@ -275,10 +278,6 @@ vgcanvas_nanovg_screen_shader_info_t* vgcanvas_create_init_screen_shader() {
   glBindBuffer(GL_ARRAY_BUFFER, shader_info->vboIds[1]);
   glBufferData(GL_ARRAY_BUFFER, sizeof(tcoords), tcoords, GL_STATIC_DRAW);
 
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, shader_info->vboIds[2]);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(shader_info->indexs), shader_info->indexs,
-               GL_STATIC_DRAW);
-
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindVertexArray(0);
 #else
@@ -287,9 +286,6 @@ vgcanvas_nanovg_screen_shader_info_t* vgcanvas_create_init_screen_shader() {
 
   glBindBuffer(GL_ARRAY_BUFFER, shader_info->vboIds[1]);
   glBufferData(GL_ARRAY_BUFFER, sizeof(tcoords), tcoords, GL_STATIC_DRAW);
-
-  glBindBuffer(GL_ARRAY_BUFFER, shader_info->vboIds[2]);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(shader_info->indexs), shader_info->indexs, GL_STATIC_DRAW);
 
   glBindBuffer(GL_ARRAY_BUFFER, 0);
 #endif
@@ -355,6 +351,10 @@ static vgcanvas_nanovg_offline_fb_t* vgcanvas_create_offline_fb(uint32_t width, 
     log_debug("Framebuffer object is not complete! \r\n");
     return FALSE;
   }
+
+  glViewport(0, 0, width, height);
+  glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
   glBindTexture(GL_TEXTURE_2D, 0);
   glBindFramebuffer(GL_FRAMEBUFFER, default_fbo);
