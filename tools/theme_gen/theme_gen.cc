@@ -70,6 +70,7 @@ bool Style::AddString(const string& name, const string& value) {
 bool Style::Reset() {
   this->int_values.clear();
   this->str_values.clear();
+  this->datas.clear();
 
   return true;
 }

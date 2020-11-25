@@ -72,6 +72,7 @@ class Style {
   string state;
   vector<NameIntValue> int_values;
   vector<NameStringValue> str_values;
+  vector<Style> datas;
 };
 
 class ThemeGen {

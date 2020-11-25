@@ -31,15 +31,21 @@
 #include "tkc/buffer.h"
 #include "base/assets_manager.h"
 
+#define TAG_PROPERTY "property"
+
 typedef struct _xml_builder_t {
   XmlBuilder builder;
   ThemeGen gen;
   Style widget_style;
   Style share_style;
+  Style state_style;
 
   uint16_t level;
   string style_name;
   string widget_type;
+
+  bool_t is_property;
+  char property_name[TK_NAME_LEN * 2 + 2];
 } xml_builder_t;
 
 static void xml_gen_style(xml_builder_t* b, Style& s, const char** attrs) {
@@ -93,45 +99,126 @@ static void xml_gen_on_style(xml_builder_t* b, const char* tag, const char** att
 }
 
 static void xml_gen_on_state(xml_builder_t* b, const char* tag, const char** attrs) {
-  const char* state = tag;
-  Style s(b->widget_type, b->style_name, state);
+  b->state_style.Reset();
 
-  s.Merge(b->widget_style);
-  s.Merge(b->share_style);
-  xml_gen_style(b, s, attrs);
+  b->state_style.widget_type = b->widget_type;
+  b->state_style.name = b->style_name;
+  b->state_style.state = tag;
 
-  b->gen.AddStyle(s);
+  xml_gen_style(b, b->state_style, attrs);
+}
+
+static void xml_gen_on_start_property(XmlBuilder* thiz, const char* tag, const char** attrs) {
+  uint32_t i = 0;
+  xml_builder_t* b = (xml_builder_t*)thiz;
+
+  while (attrs[i] != NULL) {
+    const char* key = attrs[i];
+    const char* value = attrs[i + 1];
+    if (tk_str_eq(key, "name")) {
+      tk_strncpy(b->property_name, value, TK_NAME_LEN * 2 + 1);
+      break;
+    }
+  }
 }
 
 static void xml_gen_on_start(XmlBuilder* thiz, const char* tag, const char** attrs) {
   xml_builder_t* b = (xml_builder_t*)thiz;
 
-  if (b->level == 0) {
-    xml_gen_on_widget(b, tag, attrs);
-  } else if (b->level == 1) {
-    xml_gen_on_style(b, tag, attrs);
+  if (tk_str_eq(tag, TAG_PROPERTY)) {
+    b->is_property = TRUE;
+    xml_gen_on_start_property(thiz, tag, attrs);
   } else {
-    xml_gen_on_state(b, tag, attrs);
-  }
+    b->is_property = FALSE;
 
-  b->level++;
+    if (b->level == 0) {
+      xml_gen_on_widget(b, tag, attrs);
+    } else if (b->level == 1) {
+      xml_gen_on_style(b, tag, attrs);
+    } else {
+      xml_gen_on_state(b, tag, attrs);
+    }
+    b->level++;
+  }
 
   return;
 }
 
+static void xml_gen_on_widget_end(XmlBuilder* thiz) {
+  xml_builder_t* b = (xml_builder_t*)thiz;
+  
+  for (int i = 0; i < b->widget_style.datas.size(); i++) {
+    Style &style = b->widget_style.datas[i];
+    for (int j = 0; j < style.datas.size(); j++) {
+      Style state;
+      state.Merge(b->widget_style);
+      state.Merge(style);
+      state.Merge(style.datas[j]);
+      state.widget_type = style.datas[j].widget_type;
+      state.name = style.datas[j].name;
+      state.state = style.datas[j].state;
+
+      b->gen.AddStyle(state);
+    }
+  }
+}
+
+static void xml_gen_on_style_end(XmlBuilder* thiz) {
+  xml_builder_t* b = (xml_builder_t*)thiz;
+  b->widget_style.datas.push_back(b->share_style);
+  b->share_style.Reset();
+}
+
+static void xml_gen_on_state_end(XmlBuilder* thiz) {
+  xml_builder_t* b = (xml_builder_t*)thiz;
+  b->share_style.datas.push_back(b->state_style);
+  b->state_style.Reset();
+}
+
 static void xml_gen_on_end(XmlBuilder* thiz, const char* tag) {
-  (void)thiz;
   (void)tag;
   xml_builder_t* b = (xml_builder_t*)thiz;
-  b->level--;
+
+  if (tk_str_eq(tag, TAG_PROPERTY)) {
+    b->is_property = FALSE;
+  } else {
+    if (b->level == 1) {
+      xml_gen_on_widget_end(thiz);
+    } else if (b->level == 2) {
+      xml_gen_on_style_end(thiz);
+    } else if (b->level == 3) {
+      xml_gen_on_state_end(thiz);
+    }
+    b->level--;
+  }
 
   return;
 }
 
 static void xml_gen_on_text(XmlBuilder* thiz, const char* text, size_t length) {
-  (void)thiz;
-  (void)text;
-  (void)length;
+  xml_builder_t* b = (xml_builder_t*)thiz;
+
+  if (b->is_property) {
+    Style* s;
+    value_t v;
+    ENSURE(style_normalize_value(b->property_name, text, &v) == RET_OK);
+
+    if (b->level == 1) {
+      s = &(b->widget_style);
+    } else if (b->level == 2) {
+      s = &(b->share_style);
+    } else if (b->level == 3) {
+      s = &(b->state_style);
+    }
+
+    if (v.type == VALUE_TYPE_STRING) {
+      s->AddString(b->property_name, value_str(&v));
+    } else {
+      s->AddInt(b->property_name, value_int(&v));
+    }
+    value_reset(&v);
+  }
+
   return;
 }
 

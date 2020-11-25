@@ -196,6 +196,26 @@ TEST(ThemeGen, inher) {
   ASSERT_EQ(style_data_get_str(style_data, STYLE_ID_FONT_NAME, ""), string("serif"));
 }
 
+TEST(ThemeGen, cdata) {
+  uint8_t buff[1024];
+  theme_t theme;
+  const uint8_t* style_data = NULL;
+  const char* str =
+      "<button><property name=\"font_size\"><![CDATA[12]]></property>\
+       <style name=\"yellow\"><property name=\"font_name\"><![CDATA[sans]]></property>\
+       <over bg_color=\"yellow\" fg_color=\"#fafbfc\"><property name=\"text_color\"><![CDATA[#fdfeff]]></property>\
+       </over></style></button>";
+
+  xml_gen_buff(str, buff, sizeof(buff));
+  theme.data = buff;
+
+  style_data = theme_find_style(&theme, WIDGET_TYPE_BUTTON, "yellow", WIDGET_STATE_OVER);
+  ASSERT_EQ(style_data != NULL, true);
+  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_FONT_SIZE, 0), 12);
+  ASSERT_EQ(style_data_get_str(style_data, STYLE_ID_FONT_NAME, ""), string("sans"));
+  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_TEXT_COLOR, 0), 0xfffffefd);
+}
+
 TEST(ThemeGen, border) {
   uint8_t buff[1024];
   theme_t theme;
