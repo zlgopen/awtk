@@ -3,7 +3,6 @@
 #ifndef WITH_FS_RES
 #include "assets/default/inc/strings/zh_CN.data"
 #include "assets/default/inc/strings/en_US.data"
-#include "assets/default/inc/styles/slide_menu.data"
 #include "assets/default/inc/styles/digit_clock.data"
 #include "assets/default/inc/styles/dialog_toast.data"
 #include "assets/default/inc/styles/edit.data"
@@ -466,7 +465,6 @@ ret_t assets_init(void) {
 #else
   assets_manager_add(am, strings_zh_CN);
   assets_manager_add(am, strings_en_US);
-  assets_manager_add(am, style_slide_menu);
   assets_manager_add(am, style_digit_clock);
   assets_manager_add(am, style_dialog_toast);
   assets_manager_add(am, style_edit);
