@@ -845,7 +845,10 @@ static EvalResult parse_unary(EvalContext* ctx, ExprValue* output) {
   }
 
   result = parse_term(ctx, &value);
-  if (result != EVAL_RESULT_OK) return result;
+  if (result != EVAL_RESULT_OK) {
+    expr_value_clear(&value);
+    return result;
+  }
 
   if (value.type == EXPR_VALUE_TYPE_NUMBER) {
     if (neg) {
@@ -885,19 +888,25 @@ static EvalResult parse_product(EvalContext* ctx, ExprValue* output) {
     if (type == EVAL_TOKEN_TYPE_MULTIPLY || type == EVAL_TOKEN_TYPE_DIVIDE ||
         type == EVAL_TOKEN_TYPE_MODEL) {
       result = get_token(ctx);
-      if (result != EVAL_RESULT_OK) return result;
+      if (result != EVAL_RESULT_OK) {
+        expr_value_clear(&lhs);
+        return result;
+      }
 
       result = parse_unary(ctx, &rhs);
-      if (result != EVAL_RESULT_OK) return result;
+      if (result != EVAL_RESULT_OK) {
+        expr_value_clear(&lhs);
+        return result;
+      }
 
       expr_value_op(&lhs, &rhs, (EvalTokenType)type);
+      expr_value_clear(&rhs);
     } else {
       break;
     }
   }
 
   *output = lhs;
-  expr_value_clear(&rhs);
 
   return EVAL_RESULT_OK;
 }
@@ -917,19 +926,25 @@ static EvalResult parse_sum(EvalContext* ctx, ExprValue* output) {
     int type = ctx->token.type;
     if (type == EVAL_TOKEN_TYPE_ADD || type == EVAL_TOKEN_TYPE_SUBTRACT) {
       result = get_token(ctx);
-      if (result != EVAL_RESULT_OK) return result;
+      if (result != EVAL_RESULT_OK) {
+        expr_value_clear(&lhs);
+        return result;
+      }
 
       result = parse_product(ctx, &rhs);
-      if (result != EVAL_RESULT_OK) return result;
+      if (result != EVAL_RESULT_OK) {
+        expr_value_clear(&lhs);
+        return result;
+      }
 
       expr_value_op(&lhs, &rhs, (EvalTokenType)type);
+      expr_value_clear(&rhs);
     } else {
       break;
     }
   }
 
   *output = lhs;
-  expr_value_clear(&rhs);
 
   return EVAL_RESULT_OK;
 }
@@ -950,19 +965,25 @@ static EvalResult parse_compare(EvalContext* ctx, ExprValue* output) {
     if (type == EVAL_TOKEN_TYPE_E || type == EVAL_TOKEN_TYPE_L || type == EVAL_TOKEN_TYPE_G ||
         type == EVAL_TOKEN_TYPE_NE || type == EVAL_TOKEN_TYPE_LE || type == EVAL_TOKEN_TYPE_GE) {
       result = get_token(ctx);
-      if (result != EVAL_RESULT_OK) return result;
+      if (result != EVAL_RESULT_OK) {
+        expr_value_clear(&lhs);
+        return result;
+      }
 
       result = parse_sum(ctx, &rhs);
-      if (result != EVAL_RESULT_OK) return result;
+      if (result != EVAL_RESULT_OK) {
+        expr_value_clear(&lhs);
+        return result;
+      }
 
       expr_value_op(&lhs, &rhs, (EvalTokenType)type);
+      expr_value_clear(&rhs);
     } else {
       break;
     }
   }
 
   *output = lhs;
-  expr_value_clear(&rhs);
 
   return EVAL_RESULT_OK;
 }
@@ -983,19 +1004,25 @@ static EvalResult parse_logic(EvalContext* ctx, ExprValue* output) {
     if (type == EVAL_TOKEN_TYPE_OR || type == EVAL_TOKEN_TYPE_AND ||
         type == EVAL_TOKEN_TYPE_BITS_OR || type == EVAL_TOKEN_TYPE_BITS_AND) {
       result = get_token(ctx);
-      if (result != EVAL_RESULT_OK) return result;
+      if (result != EVAL_RESULT_OK) {
+        expr_value_clear(&lhs);
+        return result;
+      }
 
       result = parse_compare(ctx, &rhs);
-      if (result != EVAL_RESULT_OK) return result;
+      if (result != EVAL_RESULT_OK) {
+        expr_value_clear(&lhs);
+        return result;
+      }
 
       expr_value_op(&lhs, &rhs, (EvalTokenType)type);
+      expr_value_clear(&rhs);
     } else {
       break;
     }
   }
 
   *output = lhs;
-  expr_value_clear(&rhs);
 
   return EVAL_RESULT_OK;
 }
