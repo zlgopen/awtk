@@ -404,6 +404,15 @@ ret_t window_manager_end_wait_pointer_cursor(widget_t* widget);
  */
 ret_t window_manager_resize(widget_t* widget, wh_t w, wh_t h);
 
+/**
+ * @method window_manager_close_all
+ * 关闭全部窗口。
+ * @annotation ["scriptable"]
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t window_manager_close_all(widget_t* widget);
+
 /*public for animators*/
 ret_t window_manager_snap_curr_window(widget_t* widget, widget_t* curr_win, bitmap_t* img);
 

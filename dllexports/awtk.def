@@ -81,6 +81,7 @@ EXPORTS
     object_can_exec
     object_exec
     object_notify_changed
+    object_has_prop_by_path
     object_get_prop_by_path
     object_get_prop_str_by_path
     object_get_prop_pointer_by_path
@@ -525,6 +526,8 @@ EXPORTS
     timer_queue
     timer_remove
     timer_reset
+    timer_suspend
+    timer_resume
     timer_modify
     timer_set_on_destroy
     timer_count
@@ -1557,6 +1560,7 @@ EXPORTS
     window_manager_begin_wait_pointer_cursor
     window_manager_end_wait_pointer_cursor
     window_manager_resize
+    window_manager_close_all
     compressor_miniz_create
     canvas_widget_create
     canvas_widget_cast

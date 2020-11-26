@@ -255,6 +255,7 @@ ret_t tk_deinit_internal(void) {
   image_manager_destroy(image_manager());
   image_manager_set(NULL);
 
+  window_manager_close_all(window_manager());
   widget_destroy(window_manager());
   window_manager_set(NULL);
 

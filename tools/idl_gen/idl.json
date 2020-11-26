@@ -2219,6 +2219,29 @@
             "type": "const char*",
             "name": "path",
             "desc": "属性的path，各级之间用.分隔。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "检查是否存在指定的属性。",
+        "name": "object_has_prop_by_path",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回TRUE表示存在，否则表示不存在。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "object_t*",
+            "name": "obj",
+            "desc": "object对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "path",
+            "desc": "属性的path，各级之间用.分隔。"
           },
           {
             "type": "value_t*",
@@ -14797,6 +14820,44 @@
         },
         "desc": "重置指定的timer，重置之后定时器重新开始计时。",
         "name": "timer_reset",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "uint32_t",
+            "name": "timer_id",
+            "desc": "timerID。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true,
+          "static": true
+        },
+        "desc": "挂起指定的timer，一般用于不断循环触发的计时器。",
+        "name": "timer_suspend",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "uint32_t",
+            "name": "timer_id",
+            "desc": "timerID。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true,
+          "static": true
+        },
+        "desc": "唤醒挂起指定的timer，并且重置定时器重新开始计时",
+        "name": "timer_resume",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
@@ -44051,6 +44112,18 @@
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
         }
+      },
+      {
+        "params": [],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "关闭全部窗口。",
+        "name": "window_manager_close_all",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
       }
     ],
     "events": [],
@@ -62294,6 +62367,14 @@
         "name": "on_destroy_ctx",
         "desc": "定时器销毁时的回调函数上下文。",
         "type": "void*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "suspend",
+        "desc": "定时器是否为挂起状态。",
+        "type": "bool_t",
         "annotation": {
           "readable": true
         }

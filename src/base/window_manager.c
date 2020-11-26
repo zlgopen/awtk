@@ -642,3 +642,14 @@ ret_t window_manager_end_wait_pointer_cursor(widget_t* widget) {
     return RET_NOT_IMPL;
   }
 }
+
+ret_t window_manager_close_all(widget_t* widget) {
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+  window_manager_close_window_force(widget, iter);
+  WIDGET_FOR_EACH_CHILD_END();
+
+  return RET_OK;
+}
+

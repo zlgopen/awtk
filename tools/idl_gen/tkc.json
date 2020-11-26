@@ -1793,6 +1793,29 @@
             "type": "const char*",
             "name": "path",
             "desc": "属性的path，各级之间用.分隔。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "检查是否存在指定的属性。",
+        "name": "object_has_prop_by_path",
+        "return": {
+          "type": "bool_t",
+          "desc": "返回TRUE表示存在，否则表示不存在。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "object_t*",
+            "name": "obj",
+            "desc": "object对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "path",
+            "desc": "属性的path，各级之间用.分隔。"
           },
           {
             "type": "value_t*",
@@ -21230,6 +21253,14 @@
         "name": "on_destroy_ctx",
         "desc": "定时器销毁时的回调函数上下文。",
         "type": "void*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "suspend",
+        "desc": "定时器是否为挂起状态。",
+        "type": "bool_t",
         "annotation": {
           "readable": true
         }
