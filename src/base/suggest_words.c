@@ -132,9 +132,9 @@ suggest_words_t* suggest_words_create(const asset_info_t* res) {
 }
 
 ret_t suggest_words_destroy(suggest_words_t* suggest_words) {
-  return_value_if_fail(suggest_words != NULL, RET_BAD_PARAMS);
-
-  TKMEM_FREE(suggest_words);
+  if (suggest_words != NULL) {
+    TKMEM_FREE(suggest_words);
+  }
 
   return RET_OK;
 }

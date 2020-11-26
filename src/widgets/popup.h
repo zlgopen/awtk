@@ -94,8 +94,16 @@ typedef struct _popup_t {
    */
   bool_t close_when_click_outside;
 
+  /**
+   * @property {uint32_t} close_when_timeout
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 超时后自动关闭窗口(ms)。
+   */
+  uint32_t close_when_timeout;
+
   /*private*/
   bool_t is_outside;
+  uint32_t timer_id;
 } popup_t;
 
 /**
@@ -143,6 +151,17 @@ ret_t popup_set_close_when_click(widget_t* widget, bool_t close_when_click);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t popup_set_close_when_click_outside(widget_t* widget, bool_t close_when_click_outside);
+
+/**
+ * @method popup_set_close_when_timeout
+ * 设置超时关闭时间(ms)。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {uint32_t} close_when_timeout 大于0时，为定时器时间(ms)，超时关闭窗口。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t popup_set_close_when_timeout(widget_t* widget, uint32_t close_when_timeout);
 
 #define POPUP(widget) ((popup_t*)(popup_cast(WIDGET(widget))))
 

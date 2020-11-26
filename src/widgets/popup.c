@@ -41,6 +41,9 @@ static ret_t popup_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_CLOSE_WHEN_CLICK_OUTSIDE)) {
     value_set_bool(v, popup->close_when_click_outside);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_CLOSE_WHEN_TIMEOUT)) {
+    value_set_uint32(v, popup->close_when_timeout);
+    return RET_OK;
   }
 
   return window_base_get_prop(widget, name, v);
@@ -55,6 +58,9 @@ static ret_t popup_set_prop(widget_t* widget, const char* name, const value_t* v
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_CLOSE_WHEN_CLICK_OUTSIDE)) {
     popup->close_when_click_outside = value_bool(v);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_CLOSE_WHEN_TIMEOUT)) {
+    popup_set_close_when_timeout(widget, value_uint32(v));
     return RET_OK;
   }
 
@@ -211,6 +217,29 @@ ret_t popup_set_close_when_click_outside(widget_t* widget, bool_t close_when_cli
   return_value_if_fail(popup != NULL, RET_FAIL);
 
   popup->close_when_click_outside = close_when_click_outside;
+
+  return RET_OK;
+}
+
+static ret_t popup_on_timeout(const timer_info_t* info) {
+  window_close(WIDGET(info->ctx));
+
+  return RET_REMOVE;
+}
+
+ret_t popup_set_close_when_timeout(widget_t* widget, uint32_t close_when_timeout) {
+  popup_t* popup = POPUP(widget);
+  return_value_if_fail(popup != NULL, RET_FAIL);
+
+  popup->close_when_timeout = close_when_timeout;
+  if (popup->timer_id != TK_INVALID_ID) {
+    timer_remove(popup->timer_id);
+    popup->timer_id = TK_INVALID_ID;
+  }
+
+  if (close_when_timeout > 0) {
+    popup->timer_id = timer_add(popup_on_timeout, widget, close_when_timeout);
+  }
 
   return RET_OK;
 }

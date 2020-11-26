@@ -816,6 +816,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_CLOSE_WHEN_CLICK_OUTSIDE "close_when_click_outside"
 
 /**
+ * @const WIDGET_PROP_CLOSE_WHEN_TIMEOUT
+ * 超时后关闭窗口。
+ */
+#define WIDGET_PROP_CLOSE_WHEN_TIMEOUT "close_when_timeout"
+
+/**
  * @const WIDGET_PROP_LINE_GAP
  * 行间距。
  */

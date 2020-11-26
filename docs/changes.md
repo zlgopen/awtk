@@ -4,6 +4,7 @@
   * 添加object\_has\_prop\_by\_path接口（感谢朝泽提供补丁）。
   * 修正expr\_eval内存泄漏的问题（感谢朝泽提供补丁）。
   * 增加window\_manager\_close\_all。
+  * popup窗口增加close\_when\_timeout属性。
 
 2020/11/25
  * 完善theme gen支持更长属性（感谢福明提供补丁）。

@@ -42,14 +42,14 @@ ret_t timer_reset(uint32_t timer_id) {
 }
 
 ret_t timer_suspend(uint32_t timer_id) {
-  timer_info_t* timer = timer_find(timer_id);
+  timer_info_t* timer = (timer_info_t*)timer_find(timer_id);
   return_value_if_fail(timer != NULL, RET_BAD_PARAMS);
   timer->suspend = TRUE;
   return RET_OK;
 }
 
 ret_t timer_resume(uint32_t timer_id) {
-  timer_info_t* timer = timer_find(timer_id);
+  timer_info_t* timer = (timer_info_t*)timer_find(timer_id);
   return_value_if_fail(timer != NULL, RET_BAD_PARAMS);
   timer->suspend = FALSE;
   
