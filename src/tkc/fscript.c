@@ -172,21 +172,27 @@ fscript_t* fscript_create_impl(fscript_parser_t* parser) {
   return fscript;
 }
 
-static ret_t fscript_get_var(fscript_t* fscript, const char* name, value_t* value) {
+static value_t* fscript_get_fast_var(fscript_t* fscript, const char* name) {
   if (name[0] && !name[1]) {
     int32_t index = name[0] - 'a';
     if (index >= 0 && index < ARRAY_SIZE(fscript->fast_vars)) {
-      value_copy(value, fscript->fast_vars + index);
-      return RET_OK;
+      return fscript->fast_vars + index;
     }
   }
 
-  if (object_get_prop(fscript->obj, name, value) != RET_OK) {
-    value_set_str(value, name);
-  }
-
-  return RET_OK;
+  return NULL;
 }
+
+static ret_t fscript_get_var(fscript_t* fscript, const char* name, value_t* value) {
+  value_t* var = fscript_get_fast_var(fscript, name);
+  return var != NULL ? value_copy(value, var) : object_get_prop(fscript->obj, name, value);
+}
+
+static ret_t fscript_set_var(fscript_t* fscript, const char* name, const value_t* value) {
+  value_t* var = fscript_get_fast_var(fscript, name);
+  return var != NULL ? value_deep_copy(var, value) : object_set_prop(fscript->obj, name, value);
+}
+
 
 static ret_t fscript_eval_arg(fscript_t* fscript, fscript_func_call_t* iter, uint32_t i,
                               value_t* d) {
@@ -782,26 +788,11 @@ static ret_t func_while(fscript_t* fscript, fscript_args_t* args, value_t* resul
 
 static ret_t func_set(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   const char* name = NULL;
-  value_t* value = NULL;
   return_value_if_fail(args->size == 2, RET_BAD_PARAMS);
   name = value_str(args->args);
-  value = args->args + 1;
   return_value_if_fail(name != NULL, RET_BAD_PARAMS);
 
-  if (name[0] && !name[1]) {
-    int32_t index = name[0] - 'a';
-    if (index >= 0 && index < ARRAY_SIZE(fscript->fast_vars)) {
-      value_deep_copy(fscript->fast_vars + index, value);
-      value_set_bool(result, TRUE);
-      return RET_OK;
-    }
-  }
-
-  if (object_set_prop(fscript->obj, name, value) == RET_OK) {
-    value_set_bool(result, TRUE);
-  } else {
-    value_set_bool(result, FALSE);
-  }
+  value_set_bool(result, fscript_set_var(fscript, name, args->args + 1) == RET_OK);
 
   return RET_OK;
 }
