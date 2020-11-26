@@ -373,8 +373,6 @@ ret_t object_exec(object_t* obj, const char* name, const char* args) {
 bool_t object_has_prop(object_t* obj, const char* name) {
   value_t v;
   ret_t ret = RET_OK;
-  return_value_if_fail(name != NULL, FALSE);
-  return_value_if_fail(obj != NULL && obj->vt != NULL && obj->ref_count >= 0, FALSE);
 
   ret = object_get_prop(obj, name, &v);
   if (ret == RET_OK) {
@@ -496,6 +494,18 @@ uint32_t object_get_size(object_t* obj) {
   return_value_if_fail(obj != NULL && obj->vt != NULL, 0);
 
   return obj->vt->size;
+}
+
+bool_t object_has_prop_by_path(object_t* obj, const char* path) {
+  value_t v;
+  ret_t ret = RET_OK;
+
+  ret = object_get_prop_by_path(obj, path, &v);
+  if (ret == RET_OK) {
+    value_reset(&v);
+  }
+
+  return ret == RET_OK;
 }
 
 const char* object_get_prop_str_by_path(object_t* obj, const char* path) {

@@ -480,6 +480,18 @@ ret_t object_exec(object_t* obj, const char* name, const char* args);
 ret_t object_notify_changed(object_t* obj);
 
 /**
+ * @method object_has_prop_by_path
+ * 检查是否存在指定的属性。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} path 属性的path，各级之间用.分隔。
+ *
+ * @return {bool_t} 返回TRUE表示存在，否则表示不存在。
+ */
+bool_t object_has_prop_by_path(object_t* obj, const char* path);
+
+/**
  * @method object_get_prop_by_path
  * 获取指定path属性的值。
  *
