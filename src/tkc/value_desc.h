@@ -173,7 +173,12 @@ typedef enum _value_format_type_t {
    * @const VALUE_FORMAT_TYPE_JS
    * JS格式。
    */
-  VALUE_FORMAT_TYPE_JS
+  VALUE_FORMAT_TYPE_JS,
+  /**
+   * @const VALUE_FORMAT_TYPE_CSV
+   * CSV格式。
+   */
+  VALUE_FORMAT_TYPE_CSV
 } value_format_type_t;
 
 /**
