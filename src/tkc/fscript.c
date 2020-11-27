@@ -180,7 +180,13 @@ static value_t* fscript_get_fast_var(fscript_t* fscript, const char* name) {
 }
 
 static ret_t fscript_get_var(fscript_t* fscript, const char* name, value_t* value) {
-  value_t* var = fscript_get_fast_var(fscript, name);
+  value_t* var = NULL;
+  value_set_int(value, 0);
+  return_value_if_fail(name != NULL, RET_BAD_PARAMS);
+  if (*name == '$') {
+    name += 1;
+  }
+  var = fscript_get_fast_var(fscript, name);
   return var != NULL ? value_copy(value, var) : object_get_prop(fscript->obj, name, value);
 }
 
@@ -429,7 +435,8 @@ static ret_t fscript_parser_parse_id_or_number(fscript_parser_t* parser, token_t
 
   do {
     c = fscript_parser_get_char(parser);
-    if (isxdigit(c) || isdigit(c) || isalpha(c) || c == '.' || c == '_') {
+    if (isxdigit(c) || isdigit(c) || isalpha(c) || c == '.' || c == '_' || c == '[' || c == ']' ||
+        c == '#') {
       str_append_char(str, c);
     } else {
       break;

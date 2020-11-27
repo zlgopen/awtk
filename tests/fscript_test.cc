@@ -846,12 +846,31 @@ TEST(FExr, var) {
   value_t v;
   object_t* obj = object_default_create();
 
-  fexpr_eval(obj, 'set(a,100);(a+100)*2', &v);
+  fexpr_eval(obj, "set(a,100);(a+100)*2", &v);
   ASSERT_EQ(value_int(&v), 400);
   value_reset(&v);
 
-  fexpr_eval(obj, 'set(a,100);set(a, (a+100)*2);a+100', &v);
+  fexpr_eval(obj, "set(a,100);set(a, (a+100)*2);a+100", &v);
   ASSERT_EQ(value_int(&v), 500);
+  value_reset(&v);
+
+  OBJECT_UNREF(obj);
+}
+
+TEST(FExr, var_name) {
+  value_t v;
+  object_t* obj = object_default_create();
+
+  fexpr_eval(obj, "set(a.b.c,100);(a.b.c+100)*2", &v);
+  ASSERT_EQ(value_int(&v), 400);
+  value_reset(&v);
+
+  fexpr_eval(obj, "set(a.b.c#size,100);(a.b.c#size+100)*2", &v);
+  ASSERT_EQ(value_int(&v), 400);
+  value_reset(&v);
+  
+  fexpr_eval(obj, "set(a.b.c[0]#size,100);(a.b.c[0]#size+100)*2", &v);
+  ASSERT_EQ(value_int(&v), 400);
   value_reset(&v);
 
   OBJECT_UNREF(obj);
