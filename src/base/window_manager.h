@@ -408,6 +408,7 @@ ret_t window_manager_resize(widget_t* widget, wh_t w, wh_t h);
  * @method window_manager_close_all
  * 关闭全部窗口。
  * @annotation ["scriptable"]
+ * @param {widget_t*} widget 窗口管理器对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
