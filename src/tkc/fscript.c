@@ -66,7 +66,7 @@ static ret_t func_args_extend(fscript_args_t* args) {
 
 static ret_t func_args_push(fscript_args_t* args, value_t* v) {
   return_value_if_fail(v != NULL && func_args_extend(args) == RET_OK, RET_BAD_PARAMS);
-  value_copy(args->args + args->size++, v);
+  args->args[args->size++] = *v;
   v->free_handle = FALSE;
   value_reset(v);
 
@@ -151,6 +151,7 @@ typedef struct _fscript_parser_t {
   fscript_func_call_t* first;
 } fscript_parser_t;
 
+static ret_t fexpr_parse(fscript_parser_t* parser, value_t* result);
 static fscript_func_call_t* fscript_func_call_create(fscript_parser_t* parser, const char* name,
                                                      uint32_t size);
 
@@ -789,7 +790,6 @@ static ret_t fexpr_parse_function(fscript_parser_t* parser, value_t* result) {
 }
 
 static ret_t fexpr_parse_term(fscript_parser_t* parser, value_t* result) {
-  value_t v;
   ret_t ret = RET_OK;
   token_t* t = fscript_parser_get_token(parser);
   value_set_int(result, 0);
