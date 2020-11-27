@@ -378,6 +378,7 @@ static ret_t switch_get_prop(widget_t* widget, const char* name, value_t* v) {
     value_set_bool(v, aswitch->value);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_YOFFSET)) {
+    value_set_int(v, 0);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_XOFFSET)) {
     value_set_int(v, aswitch->xoffset);
