@@ -117,6 +117,20 @@ static ret_t lcd_sdl2_mono_destroy(lcd_t* lcd) {
   return RET_OK;
 }
 
+ret_t lcd_sdl2_mono_reinit(lcd_t* lcd, wh_t w, wh_t h, uint32_t line_length) {
+  mono_info_t* info = NULL;
+  lcd_mono_t* mono = (lcd_mono_t*)(lcd);
+  return_value_if_fail(mono != NULL, RET_BAD_PARAMS);
+
+  info = (mono_info_t*)(mono->ctx);
+  return_value_if_fail(info != NULL, RET_BAD_PARAMS);
+  (void)line_length;
+
+  SDL_DestroyTexture(info->texture);
+
+  return mono_info_create_texture(info, w, h);
+}
+
 lcd_t* lcd_sdl2_mono_init(SDL_Renderer* render) {
   int w = 0;
   int h = 0;

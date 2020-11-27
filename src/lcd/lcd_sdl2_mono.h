@@ -29,6 +29,8 @@ BEGIN_C_DECLS
 
 lcd_t* lcd_sdl2_mono_init(SDL_Renderer* render);
 
+ret_t lcd_sdl2_mono_reinit(lcd_t* lcd, wh_t w, wh_t h, uint32_t line_length);
+
 END_C_DECLS
 
 #endif /*LCD_SDL_MONO_H*/
