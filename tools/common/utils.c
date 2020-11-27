@@ -279,6 +279,12 @@ bool_t end_with(const char* p, const char* str) {
   return strncmp(p + strlen(p) - strlen(str), str, strlen(str)) == 0;
 }
 
+bool_t case_end_with(const char* p, const char* str) {
+  return_value_if_fail(p != NULL && str != NULL && strlen(p) >= strlen(str), FALSE);
+
+  return tk_str_ieq(p + strlen(p) - strlen(str), str);
+}
+
 const char* to_lower(char* str) {
   char* p = str;
 

@@ -49,6 +49,7 @@ const char* skip_char(const char* p, char c);
 const char* skip_to_next(const char* p, char c);
 bool_t start_with(const char* p, const char* str);
 bool_t end_with(const char* p, const char* str);
+bool_t case_end_with(const char* p, const char* str);
 const char* get_next_token(const char* p, char* token, char c);
 
 const char* filter_name(char* name);

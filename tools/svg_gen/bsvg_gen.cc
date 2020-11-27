@@ -67,7 +67,7 @@ static ret_t gen_floder(const char* in_flodername, const char* out_flodername, c
   char in_name[MAX_PATH] = {0};
   char out_name[MAX_PATH] = {0};
   while (fs_dir_read(dir, &item) != RET_FAIL) {
-    if (item.is_reg_file && end_with(item.name, ".svg")) {
+    if (item.is_reg_file && case_end_with(item.name, ".svg")) {
       str_t str_name;
       char ext_array[MAX_PATH] = {0};
       path_extname(item.name, ext_array, MAX_PATH);

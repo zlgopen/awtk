@@ -74,7 +74,7 @@ static ret_t gen_floder(const char* in_flodername, const char* out_flodername, b
     fs_create_dir(os_fs(), out_flodername);
   }
   while (fs_dir_read(dir, &item) != RET_FAIL) {
-    if (item.is_reg_file && end_with(item.name, c_xml)) {
+    if (item.is_reg_file && case_end_with(item.name, c_xml)) {
       str_t str_name;
       str_t sub_res_name;
 
@@ -85,6 +85,7 @@ static ret_t gen_floder(const char* in_flodername, const char* out_flodername, b
       str_set(&str_name, item.name);
 
       path_build(in_name, MAX_PATH, in_flodername, str_name.str, NULL);
+      str_to_lower(&str_name);
       str_replace(&str_name, c_xml, "");
 
       str_append(&sub_res_name, str_name.str);

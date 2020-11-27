@@ -29,40 +29,40 @@ static ret_t gen_one(const char* in_filename, const char* out_filename, const ch
     uint8_t* input_buff = NULL;
     input_buff = (uint8_t*)read_file(in_filename, &size);
     return_value_if_fail(input_buff != NULL, RET_FAIL);
-    if (end_with(in_filename, ".ttf")) {
+    if (case_end_with(in_filename, ".ttf")) {
       output_res_c_source(out_filename, theme, ASSET_TYPE_FONT, ASSET_TYPE_FONT_TTF, input_buff,
                           size);
-    } else if (end_with(in_filename, ".png")) {
+    } else if (case_end_with(in_filename, ".png")) {
       output_res_c_source(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_PNG, input_buff,
                           size);
-    } else if (end_with(in_filename, ".bmp")) {
+    } else if (case_end_with(in_filename, ".bmp")) {
       output_res_c_source(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_BMP, input_buff,
                           size);
-    } else if (end_with(in_filename, ".jpg")) {
+    } else if (case_end_with(in_filename, ".jpg")) {
       output_res_c_source(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_JPG, input_buff,
                           size);
-    } else if (end_with(in_filename, ".jpeg")) {
+    } else if (case_end_with(in_filename, ".jpeg")) {
       output_res_c_source(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_JPG, input_buff,
                           size);
-    } else if (end_with(in_filename, ".gif")) {
+    } else if (case_end_with(in_filename, ".gif")) {
       output_res_c_source(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_GIF, input_buff,
                           size);
-    } else if (end_with(in_filename, ".lz4")) {
+    } else if (case_end_with(in_filename, ".lz4")) {
       output_res_c_source(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_LZ4, input_buff,
                           size);
-    } else if (end_with(in_filename, ".webp")) {
+    } else if (case_end_with(in_filename, ".webp")) {
       output_res_c_source(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_WEBP, input_buff,
                           size);
-    } else if (end_with(in_filename, ".js")) {
+    } else if (case_end_with(in_filename, ".js")) {
       output_res_c_source(out_filename, theme, ASSET_TYPE_SCRIPT, ASSET_TYPE_SCRIPT_JS, input_buff,
                           size);
-    } else if (end_with(in_filename, ".lua")) {
+    } else if (case_end_with(in_filename, ".lua")) {
       output_res_c_source(out_filename, theme, ASSET_TYPE_SCRIPT, ASSET_TYPE_SCRIPT_LUA, input_buff,
                           size);
-    } else if (end_with(in_filename, ".py")) {
+    } else if (case_end_with(in_filename, ".py")) {
       output_res_c_source(out_filename, theme, ASSET_TYPE_SCRIPT, ASSET_TYPE_SCRIPT_PYTHON,
                           input_buff, size);
-    } else if (end_with(in_filename, ".xml")) {
+    } else if (case_end_with(in_filename, ".xml")) {
       output_res_c_source(out_filename, theme, ASSET_TYPE_XML, 0, input_buff, size);
     } else if (strstr(in_filename, "images") != NULL) {
       output_res_c_source(out_filename, theme, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_OTHER, input_buff,
@@ -76,16 +76,16 @@ static ret_t gen_one(const char* in_filename, const char* out_filename, const ch
         name++;
       }
 
-      if (end_with(in_filename, ".txt")) {
+      if (case_end_with(in_filename, ".txt")) {
         output_res_c_source_ex(out_filename, theme, ASSET_TYPE_DATA, ASSET_TYPE_DATA_TEXT,
                                input_buff, size, name);
-      } else if (end_with(in_filename, ".json")) {
+      } else if (case_end_with(in_filename, ".json")) {
         output_res_c_source_ex(out_filename, theme, ASSET_TYPE_DATA, ASSET_TYPE_DATA_JSON,
                                input_buff, size, name);
-      } else if (end_with(in_filename, ".bin")) {
+      } else if (case_end_with(in_filename, ".bin")) {
         output_res_c_source_ex(out_filename, theme, ASSET_TYPE_DATA, ASSET_TYPE_DATA_BIN,
                                input_buff, size, name);
-      } else if (end_with(in_filename, ".dat")) {
+      } else if (case_end_with(in_filename, ".dat")) {
         output_res_c_source_ex(out_filename, theme, ASSET_TYPE_DATA, ASSET_TYPE_DATA_DAT,
                                input_buff, size, name);
       } else {
