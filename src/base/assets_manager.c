@@ -612,11 +612,13 @@ const asset_info_t* assets_manager_ref(assets_manager_t* am, asset_type_t type, 
     const char* language = locale_info->language;
     const char* country = locale_info->country;
 
-    tk_snprintf(locale, sizeof(locale) - 1, "%s_%s", language, country);
-    tk_replace_locale(name, real_name, locale);
-    info = assets_manager_ref_impl(am, type, real_name);
-    if (info != NULL) {
-      return info;
+    if (strlen(language) > 0 && strlen(country) > 0) {
+      tk_snprintf(locale, sizeof(locale) - 1, "%s_%s", language, country);
+      tk_replace_locale(name, real_name, locale);
+      info = assets_manager_ref_impl(am, type, real_name);
+      if (info != NULL) {
+        return info;
+      }
     }
 
     tk_replace_locale(name, real_name, language);

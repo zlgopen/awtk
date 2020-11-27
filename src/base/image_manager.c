@@ -226,10 +226,12 @@ ret_t image_manager_get_bitmap(image_manager_t* imm, const char* name, bitmap_t*
     const char* language = locale_info()->language;
     const char* country = locale_info()->country;
 
-    tk_snprintf(locale, sizeof(locale) - 1, "%s_%s", language, country);
-    tk_replace_locale(name, real_name, locale);
-    if (image_manager_get_bitmap_impl(imm, real_name, image) == RET_OK) {
-      return RET_OK;
+    if (strlen(language) > 0 && strlen(country) > 0) {
+      tk_snprintf(locale, sizeof(locale) - 1, "%s_%s", language, country);
+      tk_replace_locale(name, real_name, locale);
+      if (image_manager_get_bitmap_impl(imm, real_name, image) == RET_OK) {
+        return RET_OK;
+      }
     }
 
     tk_replace_locale(name, real_name, language);
