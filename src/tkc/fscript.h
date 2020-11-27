@@ -104,6 +104,16 @@ typedef struct _fscript_t {
 fscript_t* fscript_create(object_t* obj, const char* script);
 
 /**
+ * @method fscript_create_with_expr
+ * 通过表达式字符串创建引擎对象。
+ * @param {object_t*} obj 脚本执行上下文。
+ * @param {const char*} expr 表达式。
+ *
+ * @return {fscript_t*} 返回fscript对象。
+ */
+fscript_t* fscript_create_with_expr(object_t* obj, const char* expr);
+
+/**
  * @method fscript_exec
  * @param {fscript_t*} fscript 脚本引擎对象。
  * @param {value_t*} result 执行结果(调用者需要用value_reset函数清除result)。
@@ -123,6 +133,7 @@ ret_t fscript_destroy(fscript_t* fscript);
 
 /**
  * @method fscript_eval
+ * 执行一段脚本。
  * @param {object_t*} obj 脚本执行上下文。
  * @param {const char*} script 脚本代码。
  * @param {value_t*} result 执行结果(调用者需要用value_reset函数清除result)。
@@ -130,6 +141,17 @@ ret_t fscript_destroy(fscript_t* fscript);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t fscript_eval(object_t* obj, const char* script, value_t* result);
+
+/**
+ * @method fexpr_eval
+ * 表达式计算。
+ * @param {object_t*} obj 脚本执行上下文。
+ * @param {const char*} expr 表达式。
+ * @param {value_t*} result 执行结果(调用者需要用value_reset函数清除result)。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t fexpr_eval(object_t* obj, const char* expr, value_t* result);
 
 /*注册自定义函数时，属性名的前缀。*/
 #define STR_FSCRIPT_FUNCTION_PREFIX "function."
