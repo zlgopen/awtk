@@ -1145,7 +1145,8 @@ static ret_t func_print(fscript_t* fscript, fscript_args_t* args, value_t* resul
   uint32_t i = 0;
   value_set_bool(result, TRUE);
   for (i = 0; i < args->size; i++) {
-    log_info("%s ", value_str_ex(args->args + i, buff, sizeof(buff)));
+    char buff[32];
+    log_info("%s ", value_str_ex(args->args + i, buff, sizeof(buff)-1));
   }
   log_info("\n");
 
