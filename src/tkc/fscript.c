@@ -156,20 +156,6 @@ static ret_t fexpr_parse(fscript_parser_t* parser, value_t* result);
 static fscript_func_call_t* fscript_func_call_create(fscript_parser_t* parser, const char* name,
                                                      uint32_t size);
 
-fscript_t* fscript_create_impl(fscript_parser_t* parser) {
-  fscript_t* fscript = TKMEM_ZALLOC(fscript_t);
-  return_value_if_fail(fscript != NULL, NULL);
-  fscript->str = parser->temp;
-  fscript->obj = parser->obj;
-  fscript->first = parser->first;
-
-  parser->obj = NULL;
-  parser->first = NULL;
-  parser->temp.str = NULL;
-
-  return fscript;
-}
-
 static value_t* fscript_get_fast_var(fscript_t* fscript, const char* name) {
   if (name[0] && !name[1]) {
     int32_t index = name[0] - 'a';
@@ -691,45 +677,10 @@ static ret_t fscript_parse(fscript_parser_t* parser) {
   return ret;
 }
 
-fscript_t* fscript_create(object_t* obj, const char* script) {
-  ret_t ret = RET_OK;
-  fscript_t* fscript = NULL;
-  fscript_parser_t parser;
-  return_value_if_fail(script != NULL, NULL);
-
-  fscript_parser_init(&parser, obj, script);
-  ret = fscript_parse(&parser);
-  if (ret == RET_OK) {
-    fscript = fscript_create_impl(&parser);
-    fscript_parser_deinit(&parser);
-  } else {
-    log_warn("parser error:%s\n", script);
-    fscript_parser_deinit(&parser);
-  }
-
-  return fscript;
-}
-
 ret_t fscript_eval(object_t* obj, const char* script, value_t* result) {
   value_t v;
   ret_t ret = RET_OK;
   fscript_t* fscript = fscript_create(obj, script);
-  return_value_if_fail(fscript != NULL, RET_BAD_PARAMS);
-
-  value_set_int(&v, 0);
-  if (fscript_exec(fscript, &v) == RET_OK && result != NULL) {
-    value_deep_copy(result, &v);
-  }
-  value_reset(&v);
-  fscript_destroy(fscript);
-
-  return ret;
-}
-
-ret_t fexpr_eval(object_t* obj, const char* expr, value_t* result) {
-  value_t v;
-  ret_t ret = RET_OK;
-  fscript_t* fscript = fscript_create_with_expr(obj, expr);
   return_value_if_fail(fscript != NULL, RET_BAD_PARAMS);
 
   value_set_int(&v, 0);
@@ -824,7 +775,7 @@ static ret_t fexpr_parse_unary(fscript_parser_t* parser, value_t* result) {
     c = fscript_parser_get_char(parser);
   }
 
-  if (c) {
+  if (c || parser->token.valid) {
     value_t v;
     if (c == '!' || c == '~') {
       char next = c;
@@ -1022,7 +973,21 @@ static ret_t fexpr_parse(fscript_parser_t* parser, value_t* result) {
   return ret;
 }
 
-fscript_t* fscript_create_with_expr(object_t* obj, const char* expr) {
+fscript_t* fscript_create_impl(fscript_parser_t* parser) {
+  fscript_t* fscript = TKMEM_ZALLOC(fscript_t);
+  return_value_if_fail(fscript != NULL, NULL);
+  fscript->str = parser->temp;
+  fscript->obj = parser->obj;
+  fscript->first = parser->first;
+
+  parser->obj = NULL;
+  parser->first = NULL;
+  parser->temp.str = NULL;
+
+  return fscript;
+}
+
+fscript_t* fscript_create(object_t* obj, const char* expr) {
   value_t v;
   ret_t ret = RET_OK;
   fscript_parser_t parser;
@@ -1793,4 +1758,3 @@ static fscript_func_call_t* fscript_func_call_create(fscript_parser_t* parser, c
 
   return call;
 }
-

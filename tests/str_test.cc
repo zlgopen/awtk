@@ -252,7 +252,7 @@ TEST(Str, expand_vars) {
 
   str_set(s, "");
   ASSERT_EQ(str_expand_vars(s, "123${abc+$x}456", vars), RET_OK);
-  ASSERT_STREQ(s->str, "123456");
+  ASSERT_STREQ(s->str, "123100456");
 
   object_unref(vars);
   str_reset(s);

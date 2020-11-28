@@ -76,11 +76,11 @@ TEST(FScript, if2) {
 TEST(FScript, if3) {
   value_t v;
   object_t* obj = object_default_create();
-  fscript_eval(obj, "if(true, sum(1, 2), sum(1, 2, 3)", &v);
+  fscript_eval(obj, "if(true, sum(1, 2), sum(1, 2, 3))", &v);
   ASSERT_EQ(value_int(&v), 3);
   value_reset(&v);
 
-  fscript_eval(obj, "if(false, sum(1, 2), sum(1, 2, 3)", &v);
+  fscript_eval(obj, "if(false, sum(1, 2), sum(1, 2, 3))", &v);
   ASSERT_EQ(value_int(&v), 6);
   value_reset(&v);
   OBJECT_UNREF(obj);
@@ -556,7 +556,7 @@ TEST(FExr, term1) {
   value_t v;
   object_t* obj = object_default_create();
 
-  fexpr_eval(obj, "2", &v);
+  fscript_eval(obj, "2", &v);
   ASSERT_EQ(value_int(&v), 2);
   value_reset(&v);
 
@@ -567,15 +567,15 @@ TEST(FExr, term2) {
   value_t v;
   object_t* obj = object_default_create();
 
-  fexpr_eval(obj, "(2)", &v);
+  fscript_eval(obj, "(2)", &v);
   ASSERT_EQ(value_int(&v), 2);
   value_reset(&v);
 
-  fexpr_eval(obj, "( 2 + 2 )", &v);
+  fscript_eval(obj, "( 2 + 2 )", &v);
   ASSERT_EQ(value_int(&v), 4);
   value_reset(&v);
 
-  fexpr_eval(obj, "( 2+2 )", &v);
+  fscript_eval(obj, "( 2+2 )", &v);
   ASSERT_EQ(value_int(&v), 4);
   value_reset(&v);
 
@@ -586,15 +586,15 @@ TEST(FExr, term3) {
   value_t v;
   object_t* obj = object_default_create();
 
-  fexpr_eval(obj, "sqrt(4)", &v);
+  fscript_eval(obj, "sqrt(4)", &v);
   ASSERT_EQ(value_int(&v), 2);
   value_reset(&v);
 
-  fexpr_eval(obj, "sum(4,4)", &v);
+  fscript_eval(obj, "sum(4,4)", &v);
   ASSERT_EQ(value_int(&v), 8);
   value_reset(&v);
 
-  fexpr_eval(obj, "sum( 4 , 2, 2)", &v);
+  fscript_eval(obj, "sum( 4 , 2, 2)", &v);
   ASSERT_EQ(value_int(&v), 8);
   value_reset(&v);
 
@@ -605,43 +605,43 @@ TEST(FExr, sum) {
   value_t v;
   object_t* obj = object_default_create();
 
-  fexpr_eval(obj, "1+1", &v);
+  fscript_eval(obj, "1+1", &v);
   ASSERT_EQ(value_int(&v), 2);
   value_reset(&v);
 
-  fexpr_eval(obj, "1+(1)", &v);
+  fscript_eval(obj, "1+(1)", &v);
   ASSERT_EQ(value_int(&v), 2);
   value_reset(&v);
 
-  fexpr_eval(obj, "(1)+(1)", &v);
+  fscript_eval(obj, "(1)+(1)", &v);
   ASSERT_EQ(value_int(&v), 2);
   value_reset(&v);
 
-  fexpr_eval(obj, "(1+1)+(1+1)", &v);
+  fscript_eval(obj, "(1+1)+(1+1)", &v);
   ASSERT_EQ(value_int(&v), 4);
   value_reset(&v);
 
-  fexpr_eval(obj, "sum(1+1)+sum(1+1)", &v);
+  fscript_eval(obj, "sum(1+1)+sum(1+1)", &v);
   ASSERT_EQ(value_int(&v), 4);
   value_reset(&v);
 
-  fexpr_eval(obj, "1-1", &v);
+  fscript_eval(obj, "1-1", &v);
   ASSERT_EQ(value_int(&v), 0);
   value_reset(&v);
 
-  fexpr_eval(obj, "1-(1)", &v);
+  fscript_eval(obj, "1-(1)", &v);
   ASSERT_EQ(value_int(&v), 0);
   value_reset(&v);
 
-  fexpr_eval(obj, "(1)-(1)", &v);
+  fscript_eval(obj, "(1)-(1)", &v);
   ASSERT_EQ(value_int(&v), 0);
   value_reset(&v);
 
-  fexpr_eval(obj, "(1+1)-(1+1)", &v);
+  fscript_eval(obj, "(1+1)-(1+1)", &v);
   ASSERT_EQ(value_int(&v), 0);
   value_reset(&v);
 
-  fexpr_eval(obj, "sum(1+1)-sum(1+1)", &v);
+  fscript_eval(obj, "sum(1+1)-sum(1+1)", &v);
   ASSERT_EQ(value_int(&v), 0);
   value_reset(&v);
 
@@ -652,43 +652,43 @@ TEST(FExr, product) {
   value_t v;
   object_t* obj = object_default_create();
 
-  fexpr_eval(obj, "1*1", &v);
+  fscript_eval(obj, "1*1", &v);
   ASSERT_EQ(value_int(&v), 1);
   value_reset(&v);
 
-  fexpr_eval(obj, "1*(1)", &v);
+  fscript_eval(obj, "1*(1)", &v);
   ASSERT_EQ(value_int(&v), 1);
   value_reset(&v);
 
-  fexpr_eval(obj, "(1)*(1)", &v);
+  fscript_eval(obj, "(1)*(1)", &v);
   ASSERT_EQ(value_int(&v), 1);
   value_reset(&v);
 
-  fexpr_eval(obj, "(1+1)*(1+1)", &v);
+  fscript_eval(obj, "(1+1)*(1+1)", &v);
   ASSERT_EQ(value_int(&v), 4);
   value_reset(&v);
 
-  fexpr_eval(obj, "sum(1+1)*sum(1+1)", &v);
+  fscript_eval(obj, "sum(1+1)*sum(1+1)", &v);
   ASSERT_EQ(value_int(&v), 4);
   value_reset(&v);
 
-  fexpr_eval(obj, "1/1", &v);
+  fscript_eval(obj, "1/1", &v);
   ASSERT_EQ(value_int(&v), 1);
   value_reset(&v);
 
-  fexpr_eval(obj, "1/(1)", &v);
+  fscript_eval(obj, "1/(1)", &v);
   ASSERT_EQ(value_int(&v), 1);
   value_reset(&v);
 
-  fexpr_eval(obj, "(1)/(1)", &v);
+  fscript_eval(obj, "(1)/(1)", &v);
   ASSERT_EQ(value_int(&v), 1);
   value_reset(&v);
 
-  fexpr_eval(obj, "(1+1)/(1+1)", &v);
+  fscript_eval(obj, "(1+1)/(1+1)", &v);
   ASSERT_EQ(value_int(&v), 1);
   value_reset(&v);
 
-  fexpr_eval(obj, "sum(1+1)/sum(1+1)", &v);
+  fscript_eval(obj, "sum(1+1)/sum(1+1)", &v);
   ASSERT_EQ(value_int(&v), 1);
   value_reset(&v);
 
@@ -699,19 +699,19 @@ TEST(FExr, or) {
   value_t v;
   object_t* obj = object_default_create();
 
-  fexpr_eval(obj, "true||true", &v);
+  fscript_eval(obj, "true||true", &v);
   ASSERT_EQ(value_bool(&v), true);
   value_reset(&v);
 
-  fexpr_eval(obj, "true||false", &v);
+  fscript_eval(obj, "true||false", &v);
   ASSERT_EQ(value_bool(&v), true);
   value_reset(&v);
 
-  fexpr_eval(obj, "true||0", &v);
+  fscript_eval(obj, "true||0", &v);
   ASSERT_EQ(value_bool(&v), true);
   value_reset(&v);
 
-  fexpr_eval(obj, "false||false", &v);
+  fscript_eval(obj, "false||false", &v);
   ASSERT_EQ(value_bool(&v), false);
   value_reset(&v);
 
@@ -722,19 +722,19 @@ TEST(FExr, and) {
   value_t v;
   object_t* obj = object_default_create();
 
-  fexpr_eval(obj, "true && true", &v);
+  fscript_eval(obj, "true && true", &v);
   ASSERT_EQ(value_bool(&v), true);
   value_reset(&v);
 
-  fexpr_eval(obj, "true&&false", &v);
+  fscript_eval(obj, "true&&false", &v);
   ASSERT_EQ(value_bool(&v), false);
   value_reset(&v);
 
-  fexpr_eval(obj, "true && 0", &v);
+  fscript_eval(obj, "true && 0", &v);
   ASSERT_EQ(value_bool(&v), false);
   value_reset(&v);
 
-  fexpr_eval(obj, "false && false", &v);
+  fscript_eval(obj, "false && false", &v);
   ASSERT_EQ(value_bool(&v), false);
   value_reset(&v);
 
@@ -745,19 +745,19 @@ TEST(FExr, bit_or) {
   value_t v;
   object_t* obj = object_default_create();
 
-  fexpr_eval(obj, "1|2", &v);
+  fscript_eval(obj, "1|2", &v);
   ASSERT_EQ(value_int(&v), 3);
   value_reset(&v);
 
-  fexpr_eval(obj, "1|1", &v);
+  fscript_eval(obj, "1|1", &v);
   ASSERT_EQ(value_int(&v), 1);
   value_reset(&v);
 
-  fexpr_eval(obj, "1|0", &v);
+  fscript_eval(obj, "1|0", &v);
   ASSERT_EQ(value_int(&v), 1);
   value_reset(&v);
 
-  fexpr_eval(obj, "3|0", &v);
+  fscript_eval(obj, "3|0", &v);
   ASSERT_EQ(value_int(&v), 3);
   value_reset(&v);
 
@@ -768,19 +768,19 @@ TEST(FExr, bit_and) {
   value_t v;
   object_t* obj = object_default_create();
 
-  fexpr_eval(obj, "1&2", &v);
+  fscript_eval(obj, "1&2", &v);
   ASSERT_EQ(value_int(&v), 0);
   value_reset(&v);
 
-  fexpr_eval(obj, "1&1", &v);
+  fscript_eval(obj, "1&1", &v);
   ASSERT_EQ(value_int(&v), 1);
   value_reset(&v);
 
-  fexpr_eval(obj, "1&0", &v);
+  fscript_eval(obj, "1&0", &v);
   ASSERT_EQ(value_int(&v), 0);
   value_reset(&v);
 
-  fexpr_eval(obj, "3 & 0", &v);
+  fscript_eval(obj, "3 & 0", &v);
   ASSERT_EQ(value_int(&v), 0);
   value_reset(&v);
 
@@ -791,19 +791,19 @@ TEST(FExr, if) {
   value_t v;
   object_t* obj = object_default_create();
 
-  fexpr_eval(obj, "1<2?1:2", &v);
+  fscript_eval(obj, "1<2?1:2", &v);
   ASSERT_EQ(value_int(&v), 1);
   value_reset(&v);
 
-  fexpr_eval(obj, "1>2?1:2", &v);
+  fscript_eval(obj, "1>2?1:2", &v);
   ASSERT_EQ(value_int(&v), 2);
   value_reset(&v);
 
-  fexpr_eval(obj, "(1<2)?1:2", &v);
+  fscript_eval(obj, "(1<2)?1:2", &v);
   ASSERT_EQ(value_int(&v), 1);
   value_reset(&v);
 
-  fexpr_eval(obj, "(1>2)?(1):(2)", &v);
+  fscript_eval(obj, "(1>2)?(1):(2)", &v);
   ASSERT_EQ(value_int(&v), 2);
   value_reset(&v);
 
@@ -814,27 +814,27 @@ TEST(FExr, unary) {
   value_t v;
   object_t* obj = object_default_create();
 
-  fexpr_eval(obj, "!true", &v);
+  fscript_eval(obj, "!true", &v);
   ASSERT_EQ(value_bool(&v), FALSE);
   value_reset(&v);
 
-  fexpr_eval(obj, "!!true", &v);
+  fscript_eval(obj, "!!true", &v);
   ASSERT_EQ(value_bool(&v), TRUE);
   value_reset(&v);
 
-  fexpr_eval(obj, "!!!true", &v);
+  fscript_eval(obj, "!!!true", &v);
   ASSERT_EQ(value_bool(&v), FALSE);
   value_reset(&v);
 
-  fexpr_eval(obj, "~1", &v);
+  fscript_eval(obj, "~1", &v);
   ASSERT_EQ(value_int32(&v), -2);
   value_reset(&v);
 
-  fexpr_eval(obj, "~~1", &v);
+  fscript_eval(obj, "~~1", &v);
   ASSERT_EQ(value_uint32(&v), 1);
   value_reset(&v);
 
-  fexpr_eval(obj, "~~~1", &v);
+  fscript_eval(obj, "~~~1", &v);
   ASSERT_EQ(value_uint32(&v), -2);
   value_reset(&v);
 
@@ -846,11 +846,11 @@ TEST(FExr, var) {
   value_t v;
   object_t* obj = object_default_create();
 
-  fexpr_eval(obj, "set(a,100);(a+100)*2", &v);
+  fscript_eval(obj, "set(a,100);(a+100)*2", &v);
   ASSERT_EQ(value_int(&v), 400);
   value_reset(&v);
 
-  fexpr_eval(obj, "set(a,100);set(a, (a+100)*2);a+100", &v);
+  fscript_eval(obj, "set(a,100);set(a, (a+100)*2);a+100", &v);
   ASSERT_EQ(value_int(&v), 500);
   value_reset(&v);
 
@@ -861,15 +861,15 @@ TEST(FExr, var_name) {
   value_t v;
   object_t* obj = object_default_create();
 
-  fexpr_eval(obj, "set(a.b.c,100);(a.b.c+100)*2", &v);
+  fscript_eval(obj, "set(a.b.c,100);(a.b.c+100)*2", &v);
   ASSERT_EQ(value_int(&v), 400);
   value_reset(&v);
 
-  fexpr_eval(obj, "set(a.b.c#size,100);(a.b.c#size+100)*2", &v);
+  fscript_eval(obj, "set(a.b.c#size,100);(a.b.c#size+100)*2", &v);
   ASSERT_EQ(value_int(&v), 400);
   value_reset(&v);
   
-  fexpr_eval(obj, "set(a.b.c[0]#size,100);(a.b.c[0]#size+100)*2", &v);
+  fscript_eval(obj, "set(a.b.c[0]#size,100);(a.b.c[0]#size+100)*2", &v);
   ASSERT_EQ(value_int(&v), 400);
   value_reset(&v);
 

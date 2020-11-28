@@ -369,12 +369,12 @@ TEST(ObjectDefault, expr_number) {
   value_t v;
   object_t* obj = object_default_create();
 
-  ASSERT_EQ(object_set_prop_float(obj, "a", 123), RET_OK);
-  ASSERT_EQ(object_set_prop_float(obj, "b", 456), RET_OK);
-  ASSERT_EQ(object_eval(obj, "$a+$b", &v), RET_OK);
+  ASSERT_EQ(object_set_prop_float(obj, "aa", 123), RET_OK);
+  ASSERT_EQ(object_set_prop_float(obj, "bb", 456), RET_OK);
+  ASSERT_EQ(object_eval(obj, "$aa+$bb", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 123 + 456);
 
-  ASSERT_EQ(object_eval(obj, "($a+$b)*2", &v), RET_OK);
+  ASSERT_EQ(object_eval(obj, "($aa+$bb)*2", &v), RET_OK);
   ASSERT_EQ(value_int(&v), (123 + 456) * 2);
 
   object_unref(obj);
@@ -384,9 +384,9 @@ TEST(ObjectDefault, expr_str) {
   value_t v;
   object_t* obj = object_default_create();
 
-  ASSERT_EQ(object_set_prop_str(obj, "a", "123"), RET_OK);
-  ASSERT_EQ(object_set_prop_str(obj, "b", "abc"), RET_OK);
-  ASSERT_EQ(object_eval(obj, "$a+$b", &v), RET_OK);
+  ASSERT_EQ(object_set_prop_str(obj, "aa", "123"), RET_OK);
+  ASSERT_EQ(object_set_prop_str(obj, "bb", "abc"), RET_OK);
+  ASSERT_EQ(object_eval(obj, "$aa+$bb", &v), RET_OK);
   ASSERT_EQ(string(value_str(&v)), string("123abc"));
 
   value_reset(&v);
@@ -398,11 +398,11 @@ TEST(ObjectDefault, clone) {
   object_t* clone = NULL;
   object_t* obj = object_default_create();
 
-  ASSERT_EQ(object_set_prop_str(obj, "a", "123"), RET_OK);
-  ASSERT_EQ(object_set_prop_str(obj, "b", "abc"), RET_OK);
+  ASSERT_EQ(object_set_prop_str(obj, "aa", "123"), RET_OK);
+  ASSERT_EQ(object_set_prop_str(obj, "bb", "abc"), RET_OK);
 
   clone = object_clone(obj);
-  ASSERT_EQ(object_eval(clone, "$a+$b", &v), RET_OK);
+  ASSERT_EQ(object_eval(clone, "$aa+$bb", &v), RET_OK);
   ASSERT_EQ(string(value_str(&v)), string("123abc"));
 
   value_reset(&v);
