@@ -19,8 +19,9 @@
  *
  */
 
-#include "base/lcd.h"
 #include "tkc/mem.h"
+#include "tkc/utils.h"
+#include "base/lcd.h"
 #include "tkc/time_now.h"
 #include "base/system_info.h"
 
