@@ -1175,7 +1175,7 @@ static ret_t func_set(fscript_t* fscript, fscript_args_t* args, value_t* result)
 
 static ret_t func_expr(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   return_value_if_fail(args->size >= 1, RET_BAD_PARAMS);
-  value_copy(result, args->args + args->size - 1);
+  value_deep_copy(result, args->args + args->size - 1);
 
   return RET_OK;
 }
