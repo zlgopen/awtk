@@ -370,7 +370,7 @@ static ret_t fscript_parser_skip_seperators(fscript_parser_t* parser) {
 
   do {
     c = fscript_parser_get_char(parser);
-  } while (isspace(c) || c == ';' || c < 0);
+  } while (isspace(c) || c == ';' || (int)c < 0);
   fscript_parser_unget_char(parser, c);
 
   return RET_OK;
@@ -636,45 +636,6 @@ static ret_t fscript_parse_func(fscript_parser_t* parser, fscript_func_call_t* c
   }
 
   return RET_OK;
-}
-
-static ret_t fscript_parse(fscript_parser_t* parser) {
-  char c = '\0';
-  ret_t ret = RET_OK;
-  fscript_func_call_t* acall = NULL;
-  fscript_func_call_t* last = NULL;
-
-  while (parser->cursor[0]) {
-    token_t* t = fscript_parser_get_token(parser);
-    if (t != NULL && t->type == TOKEN_FUNC) {
-      bool_t is_comment = (t->size == 1 && t->token[0] == '#');
-      acall = fscript_func_call_create(parser, t->token, t->size);
-      return_value_if_fail(acall != NULL, RET_BAD_PARAMS);
-      fscript_parser_unget_token(parser);
-      fscript_parse_func(parser, acall);
-
-      if (is_comment) {
-        log_debug("skip comment\n");
-        fscript_func_call_destroy(acall);
-      } else {
-        if (last == NULL) {
-          parser->first = acall;
-        } else {
-          last->next = acall;
-        }
-        last = acall;
-      }
-    }
-    fscript_parser_skip_seperators(parser);
-    c = fscript_parser_get_char(parser);
-    if (c) {
-      fscript_parser_unget_char(parser, c);
-    } else {
-      break;
-    }
-  }
-
-  return ret;
 }
 
 ret_t fscript_eval(object_t* obj, const char* script, value_t* result) {
@@ -1181,7 +1142,6 @@ static ret_t func_expr(fscript_t* fscript, fscript_args_t* args, value_t* result
 }
 
 static ret_t func_print(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  char buff[64];
   uint32_t i = 0;
   value_set_bool(result, TRUE);
   for (i = 0; i < args->size; i++) {
