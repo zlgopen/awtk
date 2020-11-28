@@ -18,6 +18,7 @@
 #include "tkc/utils.h"
 #include "tkc/time_now.h"
 #include "tkc/fscript.h"
+#include "tkc/object_default.h"
 
 struct _fscript_func_call_t {
   fscript_func_t func;
@@ -182,7 +183,7 @@ static value_t* fscript_get_fast_var(fscript_t* fscript, const char* name) {
 
 static ret_t fscript_get_var(fscript_t* fscript, const char* name, value_t* value) {
   value_t* var = NULL;
-  value_set_int(value, 0);
+  value_set_str(value, NULL);
   return_value_if_fail(name != NULL, RET_BAD_PARAMS);
   if (*name == '$') {
     name += 1;
@@ -694,7 +695,7 @@ fscript_t* fscript_create(object_t* obj, const char* script) {
   ret_t ret = RET_OK;
   fscript_t* fscript = NULL;
   fscript_parser_t parser;
-  return_value_if_fail(obj != NULL && script != NULL, NULL);
+  return_value_if_fail(script != NULL, NULL);
 
   fscript_parser_init(&parser, obj, script);
   ret = fscript_parse(&parser);
@@ -866,7 +867,7 @@ static ret_t fsexpr_parse_product(fscript_parser_t* parser, value_t* result) {
   token_t* t = NULL;
   fscript_args_t* args = NULL;
   fscript_func_call_t* acall = NULL;
-  fexpr_parse_unary(parser, result);
+  return_value_if_fail(fexpr_parse_unary(parser, result) == RET_OK, RET_FAIL);
 
   while (TRUE) {
     t = fscript_parser_get_token_ex(parser, TRUE);
@@ -1027,7 +1028,7 @@ fscript_t* fscript_create_with_expr(object_t* obj, const char* expr) {
   fscript_parser_t parser;
   fscript_t* fscript = NULL;
   fscript_args_t* args = NULL;
-  return_value_if_fail(obj != NULL && expr != NULL, NULL);
+  return_value_if_fail(expr != NULL, NULL);
 
   fscript_parser_init(&parser, obj, expr);
   parser.first = fscript_func_call_create(&parser, "expr", 4);
@@ -1067,11 +1068,39 @@ fscript_t* fscript_create_with_expr(object_t* obj, const char* expr) {
 static ret_t func_sum(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   double v = 0;
   uint32_t i = 0;
+  bool_t has_str = FALSE;
+  bool_t has_float = FALSE;
+  return_value_if_fail(args->size > 0, RET_BAD_PARAMS);
 
   for (i = 0; i < args->size; i++) {
-    v += value_double(args->args + i);
+    int type = args->args[i].type;
+    if (type == VALUE_TYPE_STRING) {
+      has_str = TRUE;
+    }
+    if (type == VALUE_TYPE_FLOAT || type == VALUE_TYPE_DOUBLE || type == VALUE_TYPE_FLOAT32) {
+      has_float = TRUE;
+    }
   }
-  value_set_double(result, v);
+
+  if (has_str) {
+    str_t str;
+    char buff[32];
+    str_init(&str, 100);
+    for (i = 0; i < args->size; i++) {
+      str_append(&str, value_str_ex(args->args + i, buff, sizeof(buff) - 1));
+    }
+    value_dup_str(result, str.str);
+    str_reset(&str);
+  } else {
+    for (i = 0; i < args->size; i++) {
+      v += value_double(args->args + i);
+    }
+    if (has_float) {
+      value_set_double(result, v);
+    } else {
+      value_set_int(result, (int)v);
+    }
+  }
 
   return RET_OK;
 }
@@ -1499,13 +1528,27 @@ static ret_t func_clamp(fscript_t* fscript, fscript_args_t* args, value_t* resul
   return RET_OK;
 }
 
+static ret_t func_round(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
+  value_set_double(result, round(value_double(args->args)));
+  return RET_OK;
+}
+
+static ret_t func_floor(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
+  value_set_double(result, floor(value_double(args->args)));
+  return RET_OK;
+}
+
+static ret_t func_ceil(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
+  value_set_double(result, ceil(value_double(args->args)));
+  return RET_OK;
+}
+
 static ret_t func_abs(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  double v1 = 0;
   return_value_if_fail(args->size == 3, RET_BAD_PARAMS);
-
-  v1 = value_double(args->args);
-  value_set_double(result, tk_abs(v1));
-
+  value_set_double(result, tk_abs(value_double(args->args)));
   return RET_OK;
 }
 
@@ -1659,11 +1702,13 @@ static const func_entry_t s_builtin_funcs[] = {
     {"u32", func_u32, 1},
     {"f32", func_f32, 1},
     {"float", func_float, 1},
+    {"number", func_float, 1},
     {"iformat", func_iformat, 2},
     {"fformat", func_fformat, 2},
     {"time_now", func_time_now, 0},
     {"unset", func_unset, 1},
     {"str", func_str, 1},
+    {"string", func_str, 1},
     {"sub", func_sub, 2},
     {"substr", func_substr, 3},
     {"sum", func_sum, 8},
@@ -1672,6 +1717,9 @@ static const func_entry_t s_builtin_funcs[] = {
     {"trim", func_trim, 1},
     {"&&", func_and, 2},
     {"abs", func_abs, 1},
+    {"round", func_round, 1},
+    {"floor", func_floor, 1},
+    {"ceil", func_ceil, 1},
     {"clamp", func_clamp, 3},
 #ifndef AWTK_LITE
     {"acos", func_acos, 1},
@@ -1735,14 +1783,14 @@ static fscript_func_call_t* fscript_func_call_create(fscript_parser_t* parser, c
               func_name);
   func = (fscript_func_t)object_get_prop_pointer(parser->obj, full_func_name);
 
-  if (func != NULL) {
-    call->func = func;
-    func_args_init(&(call->args), 2);
-
-    return call;
-  } else {
-    TKMEM_FREE(call);
-    log_warn("not found func:%s\n", func_name);
+  if (func == NULL) {
+    func = func_noop;
+    log_warn("not found %s\n", func_name);
   }
-  return NULL;
+
+  call->func = func;
+  func_args_init(&(call->args), 2);
+
+  return call;
 }
+
