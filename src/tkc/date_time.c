@@ -25,6 +25,7 @@
 static date_time_get_now_t s_date_time_get_now;
 static date_time_set_now_t s_date_time_set_now;
 static date_time_from_time_t s_date_time_from_time;
+static date_time_to_time_t s_date_time_to_time;
 
 ret_t date_time_global_init_ex(const date_time_vtable_t* vt) {
   return_value_if_fail(vt != NULL, RET_BAD_PARAMS);
@@ -32,6 +33,7 @@ ret_t date_time_global_init_ex(const date_time_vtable_t* vt) {
   s_date_time_get_now = vt->get_now;
   s_date_time_set_now = vt->set_now;
   s_date_time_from_time = vt->from_time;
+  s_date_time_to_time = vt->to_time;
 
   return RET_OK;
 }
@@ -153,4 +155,12 @@ const char* date_time_get_wday_name(uint32_t wday) {
   return_value_if_fail(wday <= 6, NULL);
 
   return s_en_wday_names[wday];
+}
+
+ret_t date_time_add_delta(date_time_t* dt, int64_t delta) {
+  uint64_t t = 0;
+  return_value_if_fail(dt != NULL && s_date_time_to_time != NULL, RET_BAD_PARAMS);
+  t = s_date_time_to_time(dt) + delta;
+
+  return s_date_time_from_time(dt, t);
 }

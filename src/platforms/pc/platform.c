@@ -84,24 +84,6 @@ static ret_t date_time_set_now_impl(date_time_t* dt) {
   }
 }
 
-static ret_t date_time_from_time_impl(date_time_t* dt, uint64_t timeval) {
-  time_t tm = timeval;
-  struct tm* t = localtime(&tm);
-  return_value_if_fail(dt != NULL, RET_BAD_PARAMS);
-
-  memset(dt, 0x00, sizeof(date_time_t));
-
-  dt->second = t->tm_sec;
-  dt->minute = t->tm_min;
-  dt->hour = t->tm_hour;
-  dt->day = t->tm_mday;
-  dt->month = t->tm_mon + 1;
-  dt->year = t->tm_year + 1900;
-  dt->wday = t->tm_wday;
-
-  return RET_OK;
-}
-
 #else
 #include <sys/time.h>
 #include <unistd.h>
@@ -148,6 +130,8 @@ static ret_t date_time_set_now_impl(date_time_t* dt) {
   return RET_OK;
 }
 
+#endif
+
 static ret_t date_time_from_time_impl(date_time_t* dt, uint64_t timeval) {
   time_t tm = timeval;
   struct tm* t = localtime(&tm);
@@ -166,7 +150,22 @@ static ret_t date_time_from_time_impl(date_time_t* dt, uint64_t timeval) {
   return RET_OK;
 }
 
-#endif
+static uint64_t date_time_to_time_impl(date_time_t* dt) {
+  time_t tm = 0;
+  struct tm* t = localtime(&tm);
+  return_value_if_fail(dt != NULL, RET_BAD_PARAMS);
+
+  t->tm_sec = dt->second;
+  t->tm_min = dt->minute;
+  t->tm_hour = dt->hour;
+  t->tm_mday = dt->day;
+  t->tm_mon = dt->month - 1;
+  t->tm_year = dt->year - 1900;
+  t->tm_wday = dt->wday;
+
+  return (uint64_t)mktime (t);
+}
+
 
 uint64_t stm_now_ms();
 uint64_t stm_now_us();
@@ -181,7 +180,11 @@ uint64_t get_time_us64() {
 }
 
 static const date_time_vtable_t s_date_time_vtable = {
-    date_time_get_now_impl, date_time_set_now_impl, date_time_from_time_impl};
+    date_time_get_now_impl, 
+    date_time_set_now_impl, 
+    date_time_from_time_impl,
+    date_time_to_time_impl,
+};
 
 void sleep_ms(uint32_t ms) {
 #ifdef WIN32

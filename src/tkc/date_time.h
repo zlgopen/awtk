@@ -121,6 +121,18 @@ ret_t date_time_set(date_time_t* dt);
 ret_t date_time_from_time(date_time_t* dt, uint64_t time);
 
 /**
+ * @method date_time_add_delta
+ * 加上一个偏移量(s)。
+ *
+ * @annotation ["scriptable"]
+ * @param {date_time_t*} dt date_time对象。
+ * @param {int64_t} 偏移量(s)。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t date_time_add_delta(date_time_t* dt, int64_t delta);
+
+/**
  * @method date_time_is_leap
  * 是否是闰年。
  *
@@ -192,11 +204,13 @@ ret_t date_time_destroy(date_time_t* dt);
 typedef ret_t (*date_time_get_now_t)(date_time_t* dt);
 typedef ret_t (*date_time_set_now_t)(date_time_t* dt);
 typedef ret_t (*date_time_from_time_t)(date_time_t* dt, uint64_t time);
+typedef uint64_t (*date_time_to_time_t)(date_time_t* dt);
 
 typedef struct _date_time_vtable_t {
   date_time_get_now_t get_now;
   date_time_set_now_t set_now;
   date_time_from_time_t from_time;
+  date_time_to_time_t to_time;
 } date_time_vtable_t;
 
 /**

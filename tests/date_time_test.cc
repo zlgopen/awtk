@@ -99,3 +99,51 @@ TEST(DateTime, set_time) {
   date_time_init(&now);
   date_time_set(&now);
 }
+
+TEST(DateTime, delta) {
+  date_time_t dt;
+  date_time_init(&dt);
+  dt.day = 20;
+  date_time_add_delta(&dt, 24 * 3600);
+  ASSERT_EQ(dt.day, 21);
+  date_time_add_delta(&dt, -24 * 3600);
+  ASSERT_EQ(dt.day, 20);
+  
+  dt.year = 2020;
+  dt.month = 11;
+  dt.day = 20;
+  date_time_add_delta(&dt, 24 * 3600);
+  ASSERT_EQ(dt.day, 21);
+  date_time_add_delta(&dt, -24 * 3600);
+  ASSERT_EQ(dt.day, 20);
+
+  dt.year = 2020;
+  dt.month = 11;
+  dt.day = 1;
+  date_time_add_delta(&dt, -24 * 3600);
+  ASSERT_EQ(dt.day, 31);
+
+  dt.year = 2020;
+  dt.month = 12;
+  dt.day = 31;
+  date_time_add_delta(&dt, 24 * 3600);
+  ASSERT_EQ(dt.day, 1);
+  ASSERT_EQ(dt.year, 2021);
+
+  dt.year = 2020;
+  dt.month = 12;
+  dt.day = 31;
+  dt.hour = 23;
+  dt.minute = 50;
+  date_time_add_delta(&dt, 3600);
+  ASSERT_EQ(dt.day, 1);
+  ASSERT_EQ(dt.year, 2021);  
+  
+  dt.year = 2020;
+  dt.month = 1;
+  dt.day = 1;
+  dt.hour = 1;
+  date_time_add_delta(&dt, -2*3600);
+  ASSERT_EQ(dt.day, 31);
+  ASSERT_EQ(dt.year, 2019);    
+}

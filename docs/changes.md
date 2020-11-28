@@ -1,21 +1,24 @@
 # 最新动态
 
+2020/11/28  
+  * 增加函数 date\_time\_add\_delta。
+
 2020/11/27
-  * 修复window manager中的注释（感谢朝泽提供补丁）。
-  * 修复switch中get prop没有初始化的问题（感谢俊杰提供补丁）。
+  * 修复 window manager 中的注释（感谢朝泽提供补丁）。
+  * 修复 switch 中 get prop 没有初始化的问题（感谢俊杰提供补丁）。
   * 修复资源大写时程序无法使用资源问题（感谢培煌提供补丁）。
   * 修复国家语言为空字符串时图片资源获取不正确的问题（感谢培煌提供补丁）。
-  * 修复pc上面mono的桌面应用程序模式改变窗口大小后导致程序崩溃（感谢智明提供补丁）。
-  * fscript支持表达式解析，用以替换expr\_eval。
+  * 修复 pc 上面 mono 的桌面应用程序模式改变窗口大小后导致程序崩溃（感谢智明提供补丁）。
+  * fscript 支持表达式解析，用以替换 expr\_eval。
 
 2020/11/26
-  * 添加object\_has\_prop\_by\_path接口（感谢朝泽提供补丁）。
-  * 修正expr\_eval内存泄漏的问题（感谢朝泽提供补丁）。
-  * 增加window\_manager\_close\_all。
-  * popup窗口增加close\_when\_timeout属性。
+  * 添加 object\_has\_prop\_by\_path 接口（感谢朝泽提供补丁）。
+  * 修正 expr\_eval 内存泄漏的问题（感谢朝泽提供补丁）。
+  * 增加 window\_manager\_close\_all。
+  * popup 窗口增加 close\_when\_timeout 属性。
 
 2020/11/25
- * 完善theme gen支持更长属性（感谢福明提供补丁）。
+ * 完善 theme gen 支持更长属性（感谢福明提供补丁）。
 
 2020/11/24
   * 更新编译脚本。
