@@ -2,6 +2,7 @@
 
 2020/11/28  
   * 增加函数 date\_time\_add\_delta。
+  * 完善 lcd\_set\_font\_name。
 
 2020/11/27
   * 修复 window manager 中的注释（感谢朝泽提供补丁）。

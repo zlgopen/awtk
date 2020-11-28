@@ -234,7 +234,7 @@ struct _lcd_t {
    * @annotation ["readable"]
    * 字体名称。
    */
-  const char* font_name;
+  char* font_name;
   /**
    * @property {uint32_t} font_size
    * @annotation ["readable"]

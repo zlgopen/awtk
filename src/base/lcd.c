@@ -20,6 +20,7 @@
  */
 
 #include "base/lcd.h"
+#include "tkc/mem.h"
 #include "tkc/time_now.h"
 #include "base/system_info.h"
 
@@ -99,7 +100,7 @@ ret_t lcd_set_fill_color(lcd_t* lcd, color_t color) {
 ret_t lcd_set_font_name(lcd_t* lcd, const char* name) {
   return_value_if_fail(lcd != NULL, RET_BAD_PARAMS);
 
-  lcd->font_name = name;
+  lcd->font_name = tk_str_copy(lcd->font_name, name);
   if (lcd->set_font_name != NULL) {
     lcd->set_font_name(lcd, name);
   }
@@ -272,7 +273,7 @@ bool_t lcd_is_swappable(lcd_t* lcd) {
 
 ret_t lcd_destroy(lcd_t* lcd) {
   return_value_if_fail(lcd != NULL && lcd->destroy != NULL, RET_BAD_PARAMS);
-
+  TKMEM_FREE(lcd->font_name);
   return lcd->destroy(lcd);
 }
 
