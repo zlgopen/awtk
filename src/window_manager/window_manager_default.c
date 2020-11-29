@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   window_manager_default.c
  * Author: AWTK Develop Team
  * Brief:  default window manager
@@ -146,7 +146,7 @@ ret_t window_manager_default_snap_curr_window(widget_t* widget, widget_t* curr_w
 static ret_t window_manager_default_snap_prev_window_draw_dialog_highlighter_and_get_alpha(
     widget_t* widget, canvas_t* c, uint8_t* alpha) {
   value_t v;
-  return_value_if_fail(widget != NULL && c != NULL, FALSE);
+  return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
   if (widget_get_prop(widget, WIDGET_PROP_HIGHLIGHT, &v) == RET_OK) {
     const char* args = value_str(&v);
     dialog_highlighter_factory_t* f = dialog_highlighter_factory();
@@ -163,42 +163,6 @@ static ret_t window_manager_default_snap_prev_window_draw_dialog_highlighter_and
     }
   }
   return RET_FAIL;
-}
-
-static bool_t window_manager_default_is_dialog_highlighter(widget_t* widget) {
-  value_t v;
-  return_value_if_fail(widget != NULL, FALSE);
-
-  if (widget_is_dialog(widget) && widget_get_prop(widget, WIDGET_PROP_HIGHLIGHT, &v) == RET_OK) {
-    return TRUE;
-  }
-
-  return FALSE;
-}
-
-static widget_t* window_manager_default_find_top_dialog_highlighter(widget_t* widget,
-                                                                    widget_t* prev_win,
-                                                                    widget_t* curr_win) {
-  int32_t i = 0;
-  widget_t* dialog = NULL;
-  widget_t** children = (widget_t**)(widget->children->elms);
-  i = widget->children->size - 1;
-
-  for (; i >= 0; i--) {
-    value_t v;
-    widget_t* iter = children[i];
-    if (iter == prev_win) {
-      break;
-    }
-    if (iter == curr_win) {
-      continue;
-    }
-    if (window_manager_default_is_dialog_highlighter(iter)) {
-      dialog = iter;
-      break;
-    }
-  }
-  return dialog;
 }
 
 ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_win, bitmap_t* img) {
@@ -714,6 +678,41 @@ static ret_t window_manager_animate_done_set_window_foreground(widget_t* widget,
   return RET_OK;
 }
 
+static bool_t window_manager_default_is_dialog_highlighter(widget_t* widget) {
+  value_t v;
+  return_value_if_fail(widget != NULL, FALSE);
+
+  if (widget_is_dialog(widget) && widget_get_prop(widget, WIDGET_PROP_HIGHLIGHT, &v) == RET_OK) {
+    return TRUE;
+  }
+
+  return FALSE;
+}
+
+static widget_t* window_manager_default_find_top_dialog_highlighter(widget_t* widget,
+                                                                    widget_t* prev_win,
+                                                                    widget_t* curr_win) {
+  int32_t i = 0;
+  widget_t* dialog = NULL;
+  widget_t** children = (widget_t**)(widget->children->elms);
+  i = widget->children->size - 1;
+
+  for (; i >= 0; i--) {
+    widget_t* iter = children[i];
+    if (iter == prev_win) {
+      break;
+    }
+    if (iter == curr_win) {
+      continue;
+    }
+    if (window_manager_default_is_dialog_highlighter(iter)) {
+      dialog = iter;
+      break;
+    }
+  }
+  return dialog;
+}
+                                                                    
 static ret_t window_manager_animate_done(widget_t* widget) {
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
   bool_t curr_win_is_keyboard = widget_is_keyboard(wm->animator->curr_win);
