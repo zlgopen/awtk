@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   slide_indicator.h
  * Author: AWTK Develop Team
  * Brief:  slide_indicator
@@ -320,7 +320,7 @@ static ret_t slide_indicator_paint_one(widget_t* widget, canvas_t* c, rect_t* r,
 }
 
 static ret_t slide_indicator_paint_arc(widget_t* widget, canvas_t* c) {
-
+  uint32_t i = 0;
   slide_indicator_t* slide_indicator = SLIDE_INDICATOR(widget);
   darray_t* icon_rect_list = &(slide_indicator->icon_rect_list);
 
@@ -366,7 +366,7 @@ static ret_t slide_indicator_paint_arc(widget_t* widget, canvas_t* c) {
     slide_indicator->reset_icon_rect_list = FALSE;
   }
 
-  for (size_t i = 0; i < icon_rect_list->size; i++) {
+  for (i = 0; i < icon_rect_list->size; i++) {
     rect_t* tmp = (rect_t*)darray_get(icon_rect_list, i);
     slide_indicator_paint_one(widget, c, tmp, i == slide_indicator->value);
   }
@@ -375,7 +375,7 @@ static ret_t slide_indicator_paint_arc(widget_t* widget, canvas_t* c) {
 }
 
 static ret_t slide_indicator_paint_linear(widget_t* widget, canvas_t* c) {
-  
+  uint32_t i = 0;
   slide_indicator_t* slide_indicator = SLIDE_INDICATOR(widget);
   darray_t* icon_rect_list = &(slide_indicator->icon_rect_list);
 
@@ -431,7 +431,7 @@ static ret_t slide_indicator_paint_linear(widget_t* widget, canvas_t* c) {
     slide_indicator->reset_icon_rect_list = FALSE;
   }
 
-  for (size_t i = 0; i < icon_rect_list->size; i++) {
+  for (i = 0; i < icon_rect_list->size; i++) {
     rect_t* tmp = (rect_t*)darray_get(icon_rect_list, i);
     slide_indicator_paint_one(widget, c, tmp, i == slide_indicator->value);
   }
