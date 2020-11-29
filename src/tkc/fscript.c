@@ -125,6 +125,7 @@ typedef enum _token_type_t {
   TOKEN_LPAREN,
   TOKEN_RPAREN,
   TOKEN_COMMA,
+  TOKEN_SEMICOLON,
   /*for expr*/
   TOKEN_QUESTION,
   TOKEN_COLON,
@@ -194,7 +195,7 @@ static ret_t fscript_eval_arg(fscript_t* fscript, fscript_func_call_t* iter, uin
     if (iter->func == func_set && i == 0) {
       value_copy(d, s); /*func_set accept id/str as first param*/
     } else {
-      fscript_get_var(fscript, value_str(s), d);
+      return_value_if_fail(fscript_get_var(fscript, value_str(s), d) == RET_OK, RET_FAIL);
     }
   } else if (s->type == VALUE_TYPE_JSCRIPT_FUNC) {
     fscript_exec_func(fscript, value_func(s), &v);
@@ -361,6 +362,7 @@ static ret_t fscript_parser_set_error(fscript_parser_t* parser, const char* str)
   return_value_if_fail(parser != NULL && str != NULL, RET_BAD_PARAMS);
 
   parser->error = tk_str_copy(parser->error, str);
+  log_warn("code: \"%s\"\n", parser->str);
   log_warn("at line(%u) col (%u): %s\n", parser->row, parser->col, str);
 
   return RET_OK;
@@ -371,7 +373,7 @@ static ret_t fscript_parser_skip_seperators(fscript_parser_t* parser) {
 
   do {
     c = fscript_parser_get_char(parser);
-  } while (isspace(c) || c == ';' || (int)c < 0);
+  } while (isspace(c) || (int)c < 0);
   fscript_parser_unget_char(parser, c);
 
   return RET_OK;
@@ -470,6 +472,10 @@ static token_t* fscript_parser_get_token_ex(fscript_parser_t* parser, bool_t ope
     }
     case ',': {
       t->type = TOKEN_COMMA;
+      return t;
+    }
+    case ';': {
+      t->type = TOKEN_SEMICOLON;
       return t;
     }
     case '?': {
@@ -579,61 +585,6 @@ static ret_t token_to_value(token_t* t, value_t* v) {
     }
   } else {
     return RET_FAIL;
-  }
-
-  return RET_OK;
-}
-
-static ret_t fscript_parse_func(fscript_parser_t* parser, fscript_func_call_t* call) {
-  value_t v;
-  bool_t done = FALSE;
-  fscript_args_t* args = &(call->args);
-  token_t* t = fscript_parser_get_token(parser);
-
-  fscript_parser_expect_token(parser, TOKEN_LPAREN, "expect \"(\"");
-  while (parser->error == NULL && t != NULL && t->type != TOKEN_RPAREN) {
-    t = fscript_parser_get_token(parser);
-    if (t == NULL) {
-      fscript_parser_expect_token(parser, TOKEN_LPAREN, "expect \")\"");
-      return RET_FAIL;
-    }
-
-    switch (t->type) {
-      case TOKEN_FUNC: {
-        fscript_parser_unget_token(parser);
-        fscript_func_call_t* acall = fscript_func_call_create(parser, t->token, t->size);
-        return_value_if_fail(acall != NULL, RET_BAD_PARAMS);
-        fscript_parse_func(parser, acall);
-        value_set_func(&v, acall);
-        func_args_push(args, &v);
-        break;
-      }
-      case TOKEN_ID:
-      case TOKEN_STR:
-      case TOKEN_NUMBER: {
-        token_to_value(t, &v);
-        func_args_push(args, &v);
-        break;
-      }
-      case TOKEN_RPAREN: {
-        done = TRUE;
-        break;
-      }
-      default: {
-        fscript_parser_set_error(parser, "unexpected token:");
-        break;
-      }
-    }
-
-    if (done) {
-      break;
-    }
-
-    t = fscript_parser_get_token(parser);
-    if (t == NULL) {
-      fscript_parser_expect_token(parser, TOKEN_LPAREN, "expect \")\"");
-      break;
-    }
   }
 
   return RET_OK;
@@ -971,8 +922,10 @@ fscript_t* fscript_create(object_t* obj, const char* expr) {
         break;
       }
 
-      if (t->type != TOKEN_COMMA) {
+      if (t->type == TOKEN_FUNC || t->type == TOKEN_ID || t->type == TOKEN_NUMBER || t->type == TOKEN_STR) {
         fscript_parser_unget_token(&parser);
+      } else if(t->type != TOKEN_COMMA && t->type != TOKEN_SEMICOLON) {
+      	fscript_parser_set_error(&parser, "unexpected token\n");
       }
     } else {
       break;
