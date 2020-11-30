@@ -126,7 +126,7 @@ ret_t date_time_from_time(date_time_t* dt, uint64_t time);
  *
  * @annotation ["scriptable"]
  * @param {date_time_t*} dt date_time对象。
- * @param {int64_t} 偏移量(s)。
+ * @param {int64_t} delta 偏移量(s)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
