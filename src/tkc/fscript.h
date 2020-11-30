@@ -55,11 +55,6 @@ typedef struct _fscript_args_t {
 struct _fscript_func_call_t;
 typedef struct _fscript_func_call_t fscript_func_call_t;
 
-struct _fscript_t;
-typedef struct _fscript_t fscript_t;
-
-typedef ret_t (*fscript_func_t)(fscript_t* fscript, fscript_args_t* args, value_t* v);
-
 /**
  * @class fscript_t
  * @annotation ["fake"]
@@ -92,6 +87,7 @@ typedef struct _fscript_t {
   fscript_func_call_t* first;
 } fscript_t;
 
+typedef ret_t (*fscript_func_t)(fscript_t* fscript, fscript_args_t* args, value_t* v);
 
 /**
  * @method fscript_create
