@@ -99,6 +99,7 @@ static ret_t combo_box_set_text(widget_t* widget, const char* text, const wchar_
   if (value_widget == NULL) {
     value_widget = widget;
   } else {
+    TKMEM_FREE(widget->tr_text);
     widget_set_text(widget, L"");
   }
 
