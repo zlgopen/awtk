@@ -58,6 +58,7 @@ TEST(FScript, while1) {
                &v);
   ASSERT_EQ(value_int(&v), 5050);
   value_reset(&v);
+  OBJECT_UNREF(obj);
 }
 
 TEST(FScript, if2) {
