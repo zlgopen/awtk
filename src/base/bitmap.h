@@ -261,9 +261,19 @@ bool_t bitmap_save_png(bitmap_t* bitmap, const char* filename);
 ret_t bitmap_mono_dump(const uint8_t* buff, uint32_t w, uint32_t h);
 
 /**
+ * @method bitmap_destroy_with_self
+ * 销毁图片(for script only)。
+ * @alias bitmap_destroy
+ * @annotation ["deconstructor", "scriptable", "gc"]
+ * @param {bitmap_t*} bitmap bitmap对象。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t bitmap_destroy_with_self(bitmap_t* bitmap);
+
+/**
  * @method bitmap_destroy
  * 销毁图片。
- * @annotation ["deconstructor", "scriptable", "gc"]
+ * @annotation ["deconstructor"]
  * @param {bitmap_t*} bitmap bitmap对象。
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

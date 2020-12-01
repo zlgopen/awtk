@@ -34,6 +34,13 @@ bitmap_t* bitmap_create(void) {
   return bitmap;
 }
 
+ret_t bitmap_destroy_with_self(bitmap_t* bitmap) {
+  return_value_if_fail(bitmap != NULL, RET_BAD_PARAMS);
+  bitmap->should_free_handle = TRUE;
+
+  return bitmap_destroy(bitmap);
+}
+
 ret_t bitmap_destroy(bitmap_t* bitmap) {
   return_value_if_fail(bitmap != NULL, RET_BAD_PARAMS);
 

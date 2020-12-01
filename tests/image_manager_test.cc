@@ -20,16 +20,16 @@ TEST(ImageManager, basic) {
 TEST(ImageManager, allloc) {
   bitmap_t* bmp = bitmap_create();
   ASSERT_EQ(image_manager_get_bitmap(image_manager(), "checked", bmp), RET_OK);
-  bitmap_destroy(bmp);
+  bitmap_destroy_with_self(bmp);
 
   bmp = bitmap_create();
   ASSERT_EQ(image_manager_lookup(image_manager(), "checked", bmp), RET_OK);
   ASSERT_EQ(image_manager_get_bitmap(image_manager(), "not found", bmp), RET_NOT_FOUND);
-  bitmap_destroy(bmp);
+  bitmap_destroy_with_self(bmp);
 
   bmp = bitmap_create();
   ASSERT_EQ(image_manager_lookup(image_manager(), "unchecked", bmp), RET_NOT_FOUND);
-  bitmap_destroy(bmp);
+  bitmap_destroy_with_self(bmp);
 
   ASSERT_EQ(image_manager_unload_unused(image_manager(), 0), RET_OK);
 }
