@@ -235,12 +235,15 @@ TEST(Utils, xml_file_expand) {
   ASSERT_EQ(xml_file_expand(filename, &s, xml_string), RET_OK);
   str_replace(&s, "\r\n", "\n");
   ASSERT_EQ(string(s.str), "<window><button />\n<label />\n</window>");
+  str_reset(&s);
 
   str_init(&s, 0);
   ASSERT_EQ(xml_file_expand(filename, &s, xml_string_1), RET_OK);
   str_replace(&s, "\r\n", "\n");
   ASSERT_EQ(string(s.str),
             "<window><mledit text=\"<?include filename=\"button.xml\"?>\"/><label />\n</window>");
+  str_reset(&s);
+
 
   str_init(&s, 0);
   ASSERT_EQ(xml_file_expand(filename, &s, xml_string_2), RET_OK);
@@ -248,6 +251,7 @@ TEST(Utils, xml_file_expand) {
   ASSERT_EQ(string(s.str),
             "<window><mledit text=\"<?include filename=\"button.xml\"?>\"/><label />\n<mledit "
             "text=\"<?include filename=\"button.xml\"?>\"/></window>");
+  str_reset(&s);
 
   str_init(&s, 0);
   ASSERT_EQ(xml_file_expand(filename, &s, xml_string_3), RET_OK);
@@ -486,6 +490,7 @@ TEST(Utils, to_json) {
 
   str_reset(&str);
   OBJECT_UNREF(obj);
+  OBJECT_UNREF(arr);
   OBJECT_UNREF(addr);
 }
 

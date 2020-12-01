@@ -147,6 +147,7 @@ ret_t rlog_destroy(rlog_t* log) {
   my_return_value_if_fail(log != NULL, RET_BAD_PARAMS);
   TKMEM_FREE(log->buff);
   fs_file_close(log->fp);
+  TKMEM_FREE(log->filename_pattern);
   tk_mutex_nest_destroy(log->mutex);
   memset(log, 0x00, sizeof(rlog_t));
   TKMEM_FREE(log);

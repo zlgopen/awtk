@@ -859,6 +859,7 @@ static ret_t fexpr_parse(fscript_parser_t* parser, value_t* result) {
   fscript_args_t* args = NULL;
   fscript_func_call_t* acall = NULL;
 
+  value_set_str(&v, NULL);
   if (fexpr_parse_logic(parser, result) == RET_OK) {
     t = fscript_parser_get_token(parser);
     if (t && t->type == TOKEN_QUESTION) {
