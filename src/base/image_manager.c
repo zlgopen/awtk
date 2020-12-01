@@ -74,6 +74,17 @@ image_manager_t* image_manager_create(void) {
   return image_manager_init(imm);
 }
 
+static locale_info_t* image_manager_get_locale_info(image_manager_t* imm) {
+  return_value_if_fail(imm != NULL, NULL);
+  locale_info_t* locale = locale_info();
+
+  if (imm->assets_manager != NULL && imm->assets_manager->locale_info != NULL) {
+    locale = imm->assets_manager->locale_info;
+  }
+
+  return locale;
+}
+
 image_manager_t* image_manager_init(image_manager_t* imm) {
   return_value_if_fail(imm != NULL, NULL);
 
@@ -219,12 +230,13 @@ ret_t image_manager_get_bitmap_exprs(image_manager_t* imm, const char* exprs, bi
 
 ret_t image_manager_get_bitmap(image_manager_t* imm, const char* name, bitmap_t* image) {
   return_value_if_fail(imm != NULL && name != NULL && image != NULL, RET_BAD_PARAMS);
+  locale_info_t* locale_info = image_manager_get_locale_info(imm);
 
   if (strstr(name, TK_LOCALE_MAGIC) != NULL) {
     char locale[TK_NAME_LEN + 1];
     char real_name[TK_NAME_LEN + 1];
-    const char* language = locale_info()->language;
-    const char* country = locale_info()->country;
+    const char* language = locale_info->language;
+    const char* country = locale_info->country;
 
     if (strlen(language) > 0 && strlen(country) > 0) {
       tk_snprintf(locale, sizeof(locale) - 1, "%s_%s", language, country);
