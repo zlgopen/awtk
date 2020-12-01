@@ -284,6 +284,7 @@ ret_t fscript_exec(fscript_t* fscript, value_t* result) {
   fscript_func_call_t* iter = NULL;
   return_value_if_fail(fscript != NULL, RET_FAIL);
 
+  value_set_str(result, NULL);
   iter = fscript->first;
   while (iter != NULL) {
     return_value_if_fail(iter->func != NULL, RET_FAIL);
@@ -623,7 +624,6 @@ ret_t fscript_eval(object_t* obj, const char* script, value_t* result) {
   fscript_t* fscript = fscript_create(obj, script);
   return_value_if_fail(fscript != NULL, RET_BAD_PARAMS);
 
-  value_set_int(&v, 0);
   if (fscript_exec(fscript, &v) == RET_OK && result != NULL) {
     value_deep_copy(result, &v);
   }
