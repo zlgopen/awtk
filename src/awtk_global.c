@@ -257,12 +257,12 @@ ret_t tk_deinit_internal(void) {
 
   window_manager_close_all(window_manager());
   widget_destroy(window_manager());
-  window_manager_set(NULL);
 
   widget_factory_destroy(widget_factory());
   widget_factory_set(NULL);
 
   idle_manager_dispatch(idle_manager());
+  window_manager_set(NULL);
 #ifndef WITHOUT_INPUT_METHOD
   input_method_destroy(input_method());
   input_method_set(NULL);
