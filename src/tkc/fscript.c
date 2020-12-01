@@ -923,10 +923,11 @@ fscript_t* fscript_create(object_t* obj, const char* expr) {
         break;
       }
 
-      if (t->type == TOKEN_FUNC || t->type == TOKEN_ID || t->type == TOKEN_NUMBER || t->type == TOKEN_STR) {
+      if (t->type == TOKEN_FUNC || t->type == TOKEN_ID || t->type == TOKEN_NUMBER ||
+          t->type == TOKEN_STR) {
         fscript_parser_unget_token(&parser);
-      } else if(t->type != TOKEN_COMMA && t->type != TOKEN_SEMICOLON) {
-      	fscript_parser_set_error(&parser, "unexpected token\n");
+      } else if (t->type != TOKEN_COMMA && t->type != TOKEN_SEMICOLON) {
+        fscript_parser_set_error(&parser, "unexpected token\n");
       }
     } else {
       break;
@@ -1101,7 +1102,7 @@ static ret_t func_print(fscript_t* fscript, fscript_args_t* args, value_t* resul
   value_set_bool(result, TRUE);
   for (i = 0; i < args->size; i++) {
     char buff[32];
-    log_info("%s ", value_str_ex(args->args + i, buff, sizeof(buff)-1));
+    log_info("%s ", value_str_ex(args->args + i, buff, sizeof(buff) - 1));
   }
   log_info("\n");
 

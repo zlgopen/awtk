@@ -183,11 +183,11 @@ static widget_t* slide_indicator_find_target(widget_t* widget) {
   widget_t* parent = NULL;
   return_value_if_fail(widget != NULL, NULL);
   parent = widget->parent;
-  
+
   WIDGET_FOR_EACH_CHILD_BEGIN(parent, iter, i)
   if (iter != NULL) {
     if (widget_get_prop(iter, WIDGET_PROP_CURR_PAGE, &v) == RET_OK &&
-        widget_get_prop(iter, WIDGET_PROP_PAGE_MAX_NUMBER, &v) == RET_OK ) {
+        widget_get_prop(iter, WIDGET_PROP_PAGE_MAX_NUMBER, &v) == RET_OK) {
       return iter;
     }
   }
@@ -370,7 +370,7 @@ static ret_t slide_indicator_paint_arc(widget_t* widget, canvas_t* c) {
     rect_t* tmp = (rect_t*)darray_get(icon_rect_list, i);
     slide_indicator_paint_one(widget, c, tmp, i == slide_indicator->value);
   }
-  
+
   return RET_OK;
 }
 
@@ -383,7 +383,7 @@ static ret_t slide_indicator_paint_linear(widget_t* widget, canvas_t* c) {
     rect_t r;
     uint32_t i = 0;
     bool_t ccw = FALSE;
-    uint32_t offset = 0;  
+    uint32_t offset = 0;
     uint32_t nr = slide_indicator->max;
     uint32_t size = slide_indicator->size;
     float_t cx = slide_indicator->anchor_x;
@@ -392,7 +392,7 @@ static ret_t slide_indicator_paint_linear(widget_t* widget, canvas_t* c) {
     uint32_t margin = slide_indicator->margin;
     uint32_t spacing = slide_indicator->spacing;
     uint32_t half_size = slide_indicator->size >> 1;
-  
+
     if (cx > widget->w / 2 || cy < widget->h / 2) {
       ccw = TRUE;
     }
@@ -427,7 +427,7 @@ static ret_t slide_indicator_paint_linear(widget_t* widget, canvas_t* c) {
         r.x += spacing;
       }
     }
-    
+
     slide_indicator->reset_icon_rect_list = FALSE;
   }
 
@@ -435,7 +435,6 @@ static ret_t slide_indicator_paint_linear(widget_t* widget, canvas_t* c) {
     rect_t* tmp = (rect_t*)darray_get(icon_rect_list, i);
     slide_indicator_paint_one(widget, c, tmp, i == slide_indicator->value);
   }
-  
 
   return RET_OK;
 }
@@ -461,8 +460,8 @@ static ret_t slide_indicator_set_visible(widget_t* widget, bool_t visible) {
   }
 
   if (!visible && slide_indicator->auto_hide) {
-    slide_indicator->wa_opactiy = 
-        widget_animator_opacity_create(widget, SLIDE_INDICATOR_HIDE_ANIMATOR_TIME, 0, EASING_SIN_INOUT);
+    slide_indicator->wa_opactiy = widget_animator_opacity_create(
+        widget, SLIDE_INDICATOR_HIDE_ANIMATOR_TIME, 0, EASING_SIN_INOUT);
     widget_animator_on(slide_indicator->wa_opactiy, EVT_ANIM_END, slide_indicator_on_animate_end,
                        slide_indicator);
     widget_animator_opacity_set_params(slide_indicator->wa_opactiy, 0xff, 0);
@@ -504,7 +503,7 @@ static ret_t slide_indicator_target_on_move_resize(void* ctx, event_t* e) {
   return widget_invalidate_force(indicator, NULL);
 }
 
-static ret_t  slide_indicator_target_on_pointer_move(void* ctx, event_t* e) {
+static ret_t slide_indicator_target_on_pointer_move(void* ctx, event_t* e) {
   widget_t* indicator = WIDGET(ctx);
   slide_indicator_t* slide_indicator = SLIDE_INDICATOR(indicator);
   return_value_if_fail(slide_indicator != NULL, RET_BAD_PARAMS);
@@ -587,7 +586,8 @@ ret_t slide_indicator_on_paint_begin(widget_t* widget, canvas_t* c) {
   return_value_if_fail(widget != NULL && slide_indicator != NULL, RET_BAD_PARAMS);
 
   if (slide_indicator->chilren_indicated) {
-    if (widget_get_prop(slide_indicator->indicated_widget, WIDGET_PROP_PAGE_MAX_NUMBER, &v) == RET_OK) {
+    if (widget_get_prop(slide_indicator->indicated_widget, WIDGET_PROP_PAGE_MAX_NUMBER, &v) ==
+        RET_OK) {
       slide_indicator->max = value_uint32(&v);
     }
   }
@@ -647,19 +647,19 @@ static ret_t slide_indicator_on_event(widget_t* widget, event_t* e) {
   return_value_if_fail(slide_indicator != NULL && widget != NULL, RET_BAD_PARAMS);
 
   switch (type) {
-    case EVT_POINTER_DOWN: 
+    case EVT_POINTER_DOWN:
       slide_indicator->pressed = TRUE;
       widget_set_state(widget, WIDGET_STATE_PRESSED);
       break;
     case EVT_POINTER_MOVE:
       slide_indicator_target_on_pointer_move(widget, e);
       break;
-    case EVT_POINTER_UP: 
+    case EVT_POINTER_UP:
       if (slide_indicator->pressed) {
         pointer_event_t* evt = (pointer_event_t*)e;
         slide_indicator_on_click(widget, evt->x, evt->y);
       }
-    case EVT_POINTER_DOWN_ABORT: 
+    case EVT_POINTER_DOWN_ABORT:
       slide_indicator->pressed = FALSE;
       widget_set_state(widget, WIDGET_STATE_NORMAL);
       break;
@@ -684,7 +684,7 @@ ret_t slide_indicator_on_idle_chech_hide(const idle_info_t* idle) {
       slide_indicator_set_visible(widget, FALSE);
     }
   }
-  
+
   return RET_REPEAT;
 }
 
@@ -793,7 +793,8 @@ ret_t slide_indicator_set_value(widget_t* widget, uint32_t value) {
       widget_invalidate(widget, NULL);
 
       if (slide_indicator->indicated_widget != NULL) {
-        if (widget_get_prop(slide_indicator->indicated_widget, WIDGET_PROP_CURR_PAGE, &v) != RET_OK) {
+        if (widget_get_prop(slide_indicator->indicated_widget, WIDGET_PROP_CURR_PAGE, &v) !=
+            RET_OK) {
           widget_get_prop(slide_indicator->indicated_widget, WIDGET_PROP_VALUE, &v);
         }
         if (value != value_int(&v)) {
@@ -891,8 +892,7 @@ ret_t slide_indicator_set_indicated_target(widget_t* widget, const char* target_
   slide_indicator_reset_indicated_widget(widget);
   TKMEM_FREE(slide_indicator->indicated_target);
 
-  slide_indicator->indicated_target =
-      tk_str_copy(slide_indicator->indicated_target, target_name);
+  slide_indicator->indicated_target = tk_str_copy(slide_indicator->indicated_target, target_name);
 
   return RET_OK;
 }

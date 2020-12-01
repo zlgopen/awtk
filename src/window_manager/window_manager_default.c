@@ -712,7 +712,7 @@ static widget_t* window_manager_default_find_top_dialog_highlighter(widget_t* wi
   }
   return dialog;
 }
-                                                                    
+
 static ret_t window_manager_animate_done(widget_t* widget) {
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
   bool_t curr_win_is_keyboard = widget_is_keyboard(wm->animator->curr_win);

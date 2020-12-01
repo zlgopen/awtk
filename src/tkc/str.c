@@ -583,7 +583,7 @@ ret_t str_expand_vars(str_t* str, const char* src, const object_t* obj) {
 
     if (c == '$') {
       if (strncmp(p, "${}", 3) == 0) {
-        p+=3;
+        p += 3;
       } else if (p[1] && p[2]) {
         p = expand_var(str, p + 2, obj);
       } else {

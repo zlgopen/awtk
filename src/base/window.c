@@ -64,11 +64,11 @@ ret_t window_set_fullscreen(widget_t* widget, bool_t fullscreen) {
 
 #if defined(ANDROID) || defined(IOS)
   change_native_window = TRUE;
-#endif/*ANDROID || IOS*/
+#endif /*ANDROID || IOS*/
 
   if (change_native_window) {
-     native_window_t* native_window = widget_get_native_window(widget);
-     native_window_set_fullscreen(native_window, fullscreen);
+    native_window_t* native_window = widget_get_native_window(widget);
+    native_window_set_fullscreen(native_window, fullscreen);
   }
 
   if (window->fullscreen != fullscreen) {

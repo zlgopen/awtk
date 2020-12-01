@@ -652,4 +652,3 @@ ret_t window_manager_close_all(widget_t* widget) {
 
   return RET_OK;
 }
-

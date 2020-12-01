@@ -244,7 +244,6 @@ TEST(Utils, xml_file_expand) {
             "<window><mledit text=\"<?include filename=\"button.xml\"?>\"/><label />\n</window>");
   str_reset(&s);
 
-
   str_init(&s, 0);
   ASSERT_EQ(xml_file_expand(filename, &s, xml_string_2), RET_OK);
   str_replace(&s, "\r\n", "\n");
@@ -472,11 +471,11 @@ TEST(Utils, to_json) {
   object_set_prop_str(obj, "name", "jim");
   object_set_prop_int(obj, "age", 100);
 
-  object_set_prop_int(arr, "-1", 1); 
-  object_set_prop_int(arr, "-1", 2); 
-  object_set_prop_str(arr, "-1", "abc"); 
+  object_set_prop_int(arr, "-1", 1);
+  object_set_prop_int(arr, "-1", 2);
+  object_set_prop_str(arr, "-1", "abc");
   value_set_wstr(&v, L"hello");
-  object_set_prop(arr, "-1", &v); 
+  object_set_prop(arr, "-1", &v);
 
   object_set_prop_str(addr, "country", "zh");
   object_set_prop_str(addr, "city", "sz");
@@ -486,11 +485,12 @@ TEST(Utils, to_json) {
 
   str_init(&str, 1000);
   ASSERT_EQ(object_to_json(obj, &str), RET_OK);
-  ASSERT_STREQ(str.str, "{\"addr\":{\"city\":\"sz\",\"country\":\"zh\"},\"age\":100,\"arr\":[1,2,\"abc\",\"hello\"],\"name\":\"jim\"}");
+  ASSERT_STREQ(str.str,
+               "{\"addr\":{\"city\":\"sz\",\"country\":\"zh\"},\"age\":100,\"arr\":[1,2,\"abc\","
+               "\"hello\"],\"name\":\"jim\"}");
 
   str_reset(&str);
   OBJECT_UNREF(obj);
   OBJECT_UNREF(arr);
   OBJECT_UNREF(addr);
 }
-

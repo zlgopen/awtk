@@ -842,7 +842,6 @@ TEST(FExr, unary) {
   OBJECT_UNREF(obj);
 }
 
-
 TEST(FExr, var) {
   value_t v;
   object_t* obj = object_default_create();
@@ -869,7 +868,7 @@ TEST(FExr, var_name) {
   fscript_eval(obj, "set(a.b.c#size,100);(a.b.c#size+100)*2", &v);
   ASSERT_EQ(value_int(&v), 400);
   value_reset(&v);
-  
+
   fscript_eval(obj, "set(a.b.c[0]#size,100);(a.b.c[0]#size+100)*2", &v);
   ASSERT_EQ(value_int(&v), 400);
   value_reset(&v);

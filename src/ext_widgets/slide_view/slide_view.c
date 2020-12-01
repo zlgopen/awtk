@@ -324,7 +324,8 @@ static ret_t slide_view_get_prop(widget_t* widget, const char* name, value_t* v)
   slide_view_t* slide_view = SLIDE_VIEW(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (tk_str_eq(name, WIDGET_PROP_VALUE) || tk_str_eq(name, WIDGET_PROP_ACTIVE) || tk_str_eq(name, WIDGET_PROP_CURR_PAGE)) {
+  if (tk_str_eq(name, WIDGET_PROP_VALUE) || tk_str_eq(name, WIDGET_PROP_ACTIVE) ||
+      tk_str_eq(name, WIDGET_PROP_CURR_PAGE)) {
     value_set_int(v, slide_view->active);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_VERTICAL)) {
@@ -357,7 +358,8 @@ static ret_t slide_view_set_prop(widget_t* widget, const char* name, const value
   slide_view_t* slide_view = SLIDE_VIEW(widget);
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
-  if (tk_str_eq(name, WIDGET_PROP_VALUE) || tk_str_eq(name, WIDGET_PROP_ACTIVE) || tk_str_eq(name, WIDGET_PROP_CURR_PAGE)) {
+  if (tk_str_eq(name, WIDGET_PROP_VALUE) || tk_str_eq(name, WIDGET_PROP_ACTIVE) ||
+      tk_str_eq(name, WIDGET_PROP_CURR_PAGE)) {
     return slide_view_set_active(widget, value_int(v));
   } else if (tk_str_eq(name, WIDGET_PROP_VERTICAL)) {
     return slide_view_set_vertical(widget, value_bool(v));

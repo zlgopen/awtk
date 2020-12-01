@@ -107,7 +107,7 @@ TEST(Timer, reset) {
 }
 
 TEST(Timer, suspend_and_resume) {
-   uint32_t id = 0;
+  uint32_t id = 0;
   timer_manager_t* s_timer_manager = NULL;
   timer_manager_t* tm = timer_manager_create(timer_get_time);
   timer_set_time(0);

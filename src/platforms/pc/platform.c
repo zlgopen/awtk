@@ -163,9 +163,8 @@ static uint64_t date_time_to_time_impl(date_time_t* dt) {
   t->tm_year = dt->year - 1900;
   t->tm_wday = dt->wday;
 
-  return (uint64_t)mktime (t);
+  return (uint64_t)mktime(t);
 }
-
 
 uint64_t stm_now_ms();
 uint64_t stm_now_us();
@@ -180,8 +179,8 @@ uint64_t get_time_us64() {
 }
 
 static const date_time_vtable_t s_date_time_vtable = {
-    date_time_get_now_impl, 
-    date_time_set_now_impl, 
+    date_time_get_now_impl,
+    date_time_set_now_impl,
     date_time_from_time_impl,
     date_time_to_time_impl,
 };

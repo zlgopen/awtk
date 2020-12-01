@@ -68,20 +68,20 @@ typedef struct _fscript_t {
    * @property {str_t} str
    * @annotation ["readable"]
    * C语言实现函数可以使用这个变量，可以有效避免内存分配。
-   */  
+   */
   str_t str;
   /**
    * @property {object_t*} obj
    * @annotation ["readable"]
    * 脚本执行上下文。
-   */  
+   */
   object_t* obj;
 
   /**
    * @property {value_t*} fast_vars
    * @annotation ["readable"]
    * 快速访问变量。在脚本可以用a/b/c/d来访问，需要优化时使用。
-   */  
+   */
   value_t fast_vars[4];
   /*private*/
   fscript_func_call_t* first;

@@ -146,9 +146,9 @@ static void xml_gen_on_start(XmlBuilder* thiz, const char* tag, const char** att
 
 static void xml_gen_on_widget_end(XmlBuilder* thiz) {
   xml_builder_t* b = (xml_builder_t*)thiz;
-  
+
   for (int i = 0; i < b->widget_style.datas.size(); i++) {
-    Style &style = b->widget_style.datas[i];
+    Style& style = b->widget_style.datas[i];
     for (int j = 0; j < style.datas.size(); j++) {
       Style state;
       state.Merge(b->widget_style);

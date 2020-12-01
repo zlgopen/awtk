@@ -42,7 +42,7 @@ typedef struct _rlog_t {
   fs_file_t* fp;
   char* buff;
   char* filename_pattern;
-  
+
   uint32_t index;
   uint32_t max_size;
   uint32_t buff_size;

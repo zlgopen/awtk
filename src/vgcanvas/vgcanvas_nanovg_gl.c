@@ -170,12 +170,11 @@ static inline GLuint vgcanvas_create_LoadShader(const char* g_strShaderHeader,
 }
 
 vgcanvas_nanovg_screen_shader_info_t* vgcanvas_create_init_screen_shader() {
-
   const GLfloat vertexs[] = {
       // Position
       1.0f,  1.0f,  0.0f,  // top right
       1.0f,  -1.0f, 0.0f,  // bottm right
-      -1.0f, 1.0f,  0.0f,   // top left
+      -1.0f, 1.0f,  0.0f,  // top left
       1.0f,  -1.0f, 0.0f,  // bottm right
       -1.0f, -1.0f, 0.0f,  // bottm left
       -1.0f, 1.0f,  0.0f   // top left
@@ -185,7 +184,7 @@ vgcanvas_nanovg_screen_shader_info_t* vgcanvas_create_init_screen_shader() {
       // texture coords
       1.0f, 1.0f,  // top right
       1.0f, 0.0f,  // bottm right
-      0.0f, 1.0f,   // top left
+      0.0f, 1.0f,  // top left
       1.0f, 0.0f,  // bottm right
       0.0f, 0.0f,  // bottm left
       0.0f, 1.0f   // top left

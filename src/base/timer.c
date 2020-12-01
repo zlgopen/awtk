@@ -52,7 +52,7 @@ ret_t timer_resume(uint32_t timer_id) {
   timer_info_t* timer = (timer_info_t*)timer_find(timer_id);
   return_value_if_fail(timer != NULL, RET_BAD_PARAMS);
   timer->suspend = FALSE;
-  
+
   return timer_reset(timer_id);
 }
 

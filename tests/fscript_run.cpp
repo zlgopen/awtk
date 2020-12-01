@@ -19,19 +19,19 @@ int main(int argc, char* argv[]) {
     const char* code = argv[1];
     object_t* obj = object_default_create();
     tk_mem_dump();
-    if(argc == 3) {
+    if (argc == 3) {
       /*stress test*/
       uint32_t i = 0;
       uint32_t times = tk_atoi(argv[2]);
       fscript_t* fscript = fscript_create(obj, code);
-      for(i = 0; i < times; i++) {
+      for (i = 0; i < times; i++) {
         fscript_exec(fscript, &v);
         value_reset(&v);
       }
       fscript_destroy(fscript);
     } else {
       fscript_eval(obj, code, &v);
-      log_debug("result:%s\n", value_str_ex(&v, buff, sizeof(buff)-1));
+      log_debug("result:%s\n", value_str_ex(&v, buff, sizeof(buff) - 1));
       value_reset(&v);
     }
     OBJECT_UNREF(obj);
