@@ -1334,6 +1334,25 @@
           "scriptable": true,
           "gc": true
         },
+        "desc": "销毁图片(for script only)。",
+        "name": "bitmap_destroy_with_self",
+        "alias": "bitmap_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "bitmap_t*",
+            "name": "bitmap",
+            "desc": "bitmap对象。"
+          }
+        ],
+        "annotation": {
+          "deconstructor": true
+        },
         "desc": "销毁图片。",
         "name": "bitmap_destroy",
         "return": {
