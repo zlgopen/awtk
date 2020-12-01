@@ -363,6 +363,7 @@ static ret_t fscript_parser_set_error(fscript_parser_t* parser, const char* str)
 
   parser->error = tk_str_copy(parser->error, str);
   log_warn("code: \"%s\"\n", parser->str);
+  log_warn("token: \"%s\"\n", parser->token.token);
   log_warn("at line(%u) col (%u): %s\n", parser->row, parser->col, str);
 
   return RET_OK;
@@ -445,6 +446,7 @@ static ret_t fscript_parser_parse_id_or_number(fscript_parser_t* parser, token_t
 
 static token_t* fscript_parser_get_token_ex(fscript_parser_t* parser, bool_t operator) {
   char c = 0;
+  str_t* str = &(parser->temp);
   token_t* t = &(parser->token);
 
   if (t->valid) {
@@ -455,8 +457,9 @@ static token_t* fscript_parser_get_token_ex(fscript_parser_t* parser, bool_t ope
   fscript_parser_skip_seperators(parser);
   c = fscript_parser_get_char(parser);
 
+  str_set_with_len(str, &c, 1);
+  t->token = str->str;
   t->size = 1;
-  t->token = parser->cursor - 1;
   switch (c) {
     case '\0': {
       t->type = TOKEN_EOF;
@@ -486,36 +489,60 @@ static token_t* fscript_parser_get_token_ex(fscript_parser_t* parser, bool_t ope
       t->type = TOKEN_COLON;
       return t;
     }
-    case '#':
-    case '>':
-    case '<':
-    case '!':
-    case '=':
     case '*':
     case '/':
     case '%':
-    case '|':
     case '^':
-    case '~':
-    case '&': {
+    case '#': {
+      t->type = TOKEN_FUNC;
+      return t;
+    }
+    case '>':
+    case '<':
+    case '=': {
       c = fscript_parser_get_char(parser);
-      if (c == '(' || isspace(c) || isdigit(c) || isalpha(c)) {
-        if (!isspace(c)) {
-          fscript_parser_unget_char(parser, c);
-        }
-        t->size = parser->cursor - t->token - 1;
+      if (str->str[0] == c || c == '=') {
+        str_append_char(str, c);
       } else {
-        t->size = parser->cursor - t->token;
-      }
-
-      if (t->size == 2) {
-        if ((t->token[0] == '!' && t->token[1] == '!') ||
-            (t->token[0] == '~' && t->token[1] == '~')) {
-          t->size = 1;
-          fscript_parser_unget_char(parser, c);
-        }
+        fscript_parser_unget_char(parser, c);
       }
       t->type = TOKEN_FUNC;
+      t->size = str->size;
+      return t;
+    }
+    case '~':
+    case '!': {
+      c = fscript_parser_get_char(parser);
+      if (c == '=') {
+        str_append_char(str, c);
+      } else {
+        fscript_parser_unget_char(parser, c);
+        do {
+          fscript_parser_skip_seperators(parser);
+          c = fscript_parser_get_char(parser);
+          if (c == str->str[0]) {
+            str_append_char(str, c);
+          } else {
+            fscript_parser_unget_char(parser, c);
+            break;
+          }
+        } while (TRUE);
+      }
+      t->type = TOKEN_FUNC;
+      t->size = str->size;
+      return t;
+    }
+    case '|':
+    case '&': {
+      c = fscript_parser_get_char(parser);
+      if (c == str->str[0]) {
+        str_append_char(str, c);
+      } else {
+        fscript_parser_unget_char(parser, c);
+      }
+
+      t->type = TOKEN_FUNC;
+      t->size = str->size;
       return t;
     }
     case '\"': {
@@ -680,47 +707,38 @@ static ret_t fexpr_parse_unary(fscript_parser_t* parser, value_t* result) {
   char c = '\0';
   fscript_args_t* args = NULL;
   fscript_func_call_t* acall = NULL;
-
-  fscript_parser_skip_seperators(parser);
-  if (parser->token.valid) {
-    c = parser->token.token[0];
-  } else {
-    c = fscript_parser_get_char(parser);
+  token_t* t = fscript_parser_get_token_ex(parser, TRUE);
+  if (t == NULL || t->type == TOKEN_EOF) {
+    return RET_OK;
   }
 
-  if (c || parser->token.valid) {
+  c = t->token[0];
+  if (c == '!' || c == '~') {
     value_t v;
-    if (c == '!' || c == '~') {
-      char next = c;
-      bool_t valid = TRUE;
-      parser->token.valid = FALSE;
-      while (TRUE) {
-        fscript_parser_skip_seperators(parser);
-        next = fscript_parser_get_char(parser);
-        if (next == c) {
-          valid = !valid;
-        } else {
-          fscript_parser_unget_char(parser, next);
-          break;
-        }
-      }
-
-      if (valid) {
-        acall = fscript_func_call_create(parser, &c, 1);
-        return_value_if_fail(acall != NULL, RET_OOM);
-        args = &(acall->args);
-        value_set_func(result, acall);
-        return_value_if_fail(fexpr_parse_term(parser, &v) == RET_OK, RET_FAIL);
-        func_args_push(args, &v);
+    uint32_t i = 0;
+    bool_t valid = FALSE;
+    for (i = 0; i < t->size; i++) {
+      if (t->token[i] != c) {
+        fscript_parser_set_error(parser, "unexpected token");
+        return RET_FAIL;
       } else {
-        return_value_if_fail(fexpr_parse_term(parser, result) == RET_OK, RET_FAIL);
+        valid = !valid;
       }
+    }
+
+    if (valid) {
+      acall = fscript_func_call_create(parser, &c, 1);
+      return_value_if_fail(acall != NULL, RET_OOM);
+      args = &(acall->args);
+      value_set_func(result, acall);
+      return_value_if_fail(fexpr_parse_term(parser, &v) == RET_OK, RET_FAIL);
+      func_args_push(args, &v);
     } else {
-      if (!parser->token.valid) {
-        fscript_parser_unget_char(parser, c);
-      }
       return_value_if_fail(fexpr_parse_term(parser, result) == RET_OK, RET_FAIL);
     }
+  } else {
+    fscript_parser_unget_token(parser);
+    return_value_if_fail(fexpr_parse_term(parser, result) == RET_OK, RET_FAIL);
   }
 
   return RET_OK;
@@ -804,7 +822,8 @@ static ret_t fexpr_parse_compare(fscript_parser_t* parser, value_t* result) {
     return RET_OK;
   }
 
-  if (t->token[0] == '>' || t->token[0] == '<' || t->token[0] == '=') {
+  if (t->token[0] == '>' || t->token[0] == '<' || t->token[0] == '=' ||
+      (t->token[0] == '!' && t->token[1] == '=')) {
     acall = fscript_func_call_create(parser, t->token, t->size);
     return_value_if_fail(acall != NULL, RET_OOM);
     args = &(acall->args);
@@ -1239,21 +1258,18 @@ static ret_t func_random(fscript_t* fscript, fscript_args_t* args, value_t* resu
 }
 
 static ret_t func_time_now(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
   value_set_uint64(result, time_now_s());
 
   return RET_OK;
 }
 
 static ret_t func_time_now_ms(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
   value_set_uint64(result, time_now_ms());
 
   return RET_OK;
 }
 
 static ret_t func_time_now_us(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
   value_set_uint64(result, time_now_us());
 
   return RET_OK;
@@ -1297,6 +1313,18 @@ static ret_t func_great(fscript_t* fscript, fscript_args_t* args, value_t* resul
     value_set_bool(result, tk_str_cmp(value_str(args->args), value_str(args->args + 1)) > 0);
   } else {
     value_set_bool(result, value_double(args->args) > value_double(args->args + 1));
+  }
+
+  return RET_OK;
+}
+
+static ret_t func_not_eq(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  return_value_if_fail(args->size == 2, RET_BAD_PARAMS);
+
+  if (args->args[0].type == VALUE_TYPE_STRING && args->args[1].type == VALUE_TYPE_STRING) {
+    value_set_bool(result, !tk_str_eq(value_str(args->args), value_str(args->args + 1)));
+  } else {
+    value_set_bool(result, !tk_fequal(value_double(args->args), value_double(args->args + 1)));
   }
 
   return RET_OK;
@@ -1564,6 +1592,7 @@ static const func_entry_t s_builtin_funcs[] = {
     {"max", func_max, 2},
     {"min", func_min, 2},
     {"==", func_eq, 2},
+    {"!=", func_not_eq, 2},
     {">=", func_ge, 2},
     {">", func_great, 2},
     {"<=", func_le, 2},

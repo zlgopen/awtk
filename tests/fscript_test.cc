@@ -875,3 +875,34 @@ TEST(FExr, var_name) {
 
   OBJECT_UNREF(obj);
 }
+
+TEST(FExpr, not_eq) {
+  value_t v;
+  object_t* obj = object_default_create();
+
+  fscript_eval(obj, "1 != 2", &v);
+  ASSERT_EQ(value_bool(&v), true);
+  value_reset(&v);
+
+  fscript_eval(obj, "2!=2", &v);
+  ASSERT_EQ(value_bool(&v), false);
+  value_reset(&v);
+  
+  fscript_eval(obj, "1.0 != 2.0", &v);
+  ASSERT_EQ(value_bool(&v), true);
+  value_reset(&v);
+
+  fscript_eval(obj, "2.0!=2.0", &v);
+  ASSERT_EQ(value_bool(&v), false);
+  value_reset(&v);
+  
+  fscript_eval(obj, "\"a\" != \"a\"", &v);
+  ASSERT_EQ(value_bool(&v), false);
+  value_reset(&v);
+  
+  fscript_eval(obj, "\"a\" != \"b\"", &v);
+  ASSERT_EQ(value_bool(&v), true);
+  value_reset(&v);
+
+  OBJECT_UNREF(obj);
+}
