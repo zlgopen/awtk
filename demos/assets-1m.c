@@ -78,7 +78,6 @@
 #include "../res/assets/default/inc/ui/spinbox.data"
 #include "../res/assets/default/inc/ui/label.data"
 #include "../res/assets/default/inc/ui/gif_image.data"
-#include "../res/assets/default/inc/ui/auto_play_portrait.data"
 #include "../res/assets/default/inc/ui/text_selector.data"
 #include "../res/assets/default/inc/ui/tab_top_compact.data"
 #include "../res/assets/default/inc/ui/slide_view_h.data"
@@ -87,7 +86,6 @@
 #include "../res/assets/default/inc/ui/stroke_gradient.data"
 #include "../res/assets/default/inc/ui/slide_view_h1.data"
 #include "../res/assets/default/inc/ui/basic.data"
-#include "../res/assets/default/inc/ui/auto_play.data"
 #include "../res/assets/default/inc/ui/guage.data"
 #include "../res/assets/default/inc/ui/color_picker_full.data"
 #include "../res/assets/default/inc/ui/dialog1.data"
@@ -150,7 +148,6 @@
 #include "../res/assets/default/inc/images/num_2.res"
 #include "../res/assets/default/inc/images/en.res"
 #include "../res/assets/default/inc/images/slider_drag_o.res"
-#include "../res/assets/default/inc/images/guage_bg.res"
 #include "../res/assets/default/inc/images/battery_3.res"
 #include "../res/assets/default/inc/images/num_3.res"
 #include "../res/assets/default/inc/images/arrow_left_n.res"
@@ -187,7 +184,6 @@
 #include "../res/assets/default/inc/images/right_on.res"
 #include "../res/assets/default/inc/images/guage_pointer.res"
 #include "../res/assets/default/inc/images/left_off.res"
-#include "../res/assets/default/inc/images/progress_circle.res"
 #include "../res/assets/default/inc/images/red_btn_o.res"
 #include "../res/assets/default/inc/images/slider_drag.res"
 #include "../res/assets/default/inc/images/unchecked.res"
@@ -224,7 +220,6 @@
 #include "../res/assets/default/inc/images/close_o.data"
 #include "../res/assets/default/inc/images/battery_1.data"
 #include "../res/assets/default/inc/images/slider_bg.data"
-#include "../res/assets/default/inc/images/progress_circle.data"
 #include "../res/assets/default/inc/images/muted.data"
 #include "../res/assets/default/inc/images/num_8.data"
 #include "../res/assets/default/inc/images/shift.data"
@@ -243,7 +238,6 @@
 #include "../res/assets/default/inc/images/left_on.data"
 #include "../res/assets/default/inc/images/question.data"
 #include "../res/assets/default/inc/images/invisible.data"
-#include "../res/assets/default/inc/images/guage_bg.data"
 #include "../res/assets/default/inc/images/num_5.data"
 #include "../res/assets/default/inc/images/num_dot.data"
 #include "../res/assets/default/inc/images/arrow_right_n.data"
@@ -328,7 +322,6 @@
 #include "../res/assets/default/inc/images/china.bsvg"
 #include "../res/assets/default/inc/images/pointer_1.bsvg"
 #include "../res/assets/default/inc/images/pointer.bsvg"
-#include "../res/assets/default/inc/images/girl.bsvg"
 #endif /*WITH_VGCANVAS*/
 #if defined(WITH_STB_FONT) || defined(WITH_FT_FONT)
 #include "../res/assets/default/inc/fonts/default.res"
@@ -399,7 +392,6 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_spinbox);
   assets_manager_add(am, ui_label);
   assets_manager_add(am, ui_gif_image);
-  assets_manager_add(am, ui_auto_play_portrait);
   assets_manager_add(am, ui_text_selector);
   assets_manager_add(am, ui_tab_top_compact);
   assets_manager_add(am, ui_slide_view_h);
@@ -408,7 +400,6 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_stroke_gradient);
   assets_manager_add(am, ui_slide_view_h1);
   assets_manager_add(am, ui_basic);
-  assets_manager_add(am, ui_auto_play);
   assets_manager_add(am, ui_guage);
   assets_manager_add(am, ui_color_picker_full);
   assets_manager_add(am, ui_dialog1);
@@ -441,7 +432,6 @@ ret_t assets_init(void) {
   assets_manager_add(am, image_close_o);
   assets_manager_add(am, image_battery_1);
   assets_manager_add(am, image_slider_bg);
-  assets_manager_add(am, image_progress_circle);
   assets_manager_add(am, image_muted);
   assets_manager_add(am, image_num_8);
   assets_manager_add(am, image_shift);
@@ -459,7 +449,6 @@ ret_t assets_init(void) {
   assets_manager_add(am, image_left_on);
   assets_manager_add(am, image_question);
   assets_manager_add(am, image_invisible);
-  assets_manager_add(am, image_guage_bg);
   assets_manager_add(am, image_num_5);
   assets_manager_add(am, image_num_dot);
   assets_manager_add(am, image_arrow_right_n);
@@ -564,7 +553,6 @@ ret_t assets_init(void) {
   assets_manager_add(am, image_china);
   assets_manager_add(am, image_pointer_1);
   assets_manager_add(am, image_pointer);
-  assets_manager_add(am, image_girl);
 #endif /*WITH_VGCANVAS*/
 #endif
 
