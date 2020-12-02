@@ -1,5 +1,8 @@
 # 最新动态
 
+2020/12/02
+  * 修复slide\_menu.xml的问题（感谢智明提供补丁）
+
 2020/12/01
   * 修改 image\_manager\_get\_bitmap 优先使用 assets\_manager（感谢福明提供补丁）。
   * 复关闭程序销毁 system\_bar 时未解绑事件出现野指针导致程序崩溃（感谢雨欣提供补丁）。

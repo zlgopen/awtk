@@ -4,4 +4,4 @@
     <pressed    bg_image="1" bg_image_draw_type="scale" y_offset="1"/>
     <over       bg_image="1" bg_image_draw_type="scale" />
   </style>
-<button>
+</button>
