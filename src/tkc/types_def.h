@@ -330,7 +330,10 @@ typedef ret_t (*tk_visit_t)(void* ctx, const void* data);
 typedef ret_t (*tk_callback_t)(void* ctx);
 
 /*TK_NAME_LEN+1 must aligned to 4*/
-enum { TK_NAME_LEN = 31 };
+enum { 
+  TK_NAME_LEN = 31,
+  TK_FUNC_NAME_LEN = 63
+};
 
 #ifdef WITH_CPPCHECK
 #define tk_str_eq strcmp
