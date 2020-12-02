@@ -200,7 +200,7 @@ static ret_t fscript_eval_arg(fscript_t* fscript, fscript_func_call_t* iter, uin
     if (iter->func == func_set && i == 0) {
       value_copy(d, s); /*func_set accept id/str as first param*/
     } else {
-      return_value_if_fail(fscript_get_var(fscript, value_str(s), d) == RET_OK, RET_FAIL);
+      fscript_get_var(fscript, value_str(s), d);
     }
   } else if (s->type == VALUE_TYPE_JSCRIPT_FUNC) {
     fscript_exec_func(fscript, value_func(s), &v);
