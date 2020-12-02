@@ -215,6 +215,7 @@ static ret_t tk_istream_shdlc_on_destroy(object_t* obj) {
 
   ENSURE(ring_buffer_destroy(istream_shdlc->rb) == RET_OK);
   ENSURE(wbuffer_deinit(&(istream_shdlc->wb)) == RET_OK);
+  ENSURE(wbuffer_deinit(&(istream_shdlc->wb_compress)) == RET_OK);
   ENSURE(compressor_destroy(istream_shdlc->compressor) == RET_OK);
 
   return RET_OK;
