@@ -2,6 +2,7 @@
 
 2020/12/02
   * 修复slide\_menu.xml的问题（感谢智明提供补丁）
+  * 将get\_time\_us64缺省实现移动time\_now.c，避免部分嵌入式平台编译问题（感谢陈谭提供补丁）
 
 2020/12/01
   * 修改 image\_manager\_get\_bitmap 优先使用 assets\_manager（感谢福明提供补丁）。
