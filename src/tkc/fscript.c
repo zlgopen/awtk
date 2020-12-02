@@ -169,6 +169,7 @@ static value_t* fscript_get_fast_var(fscript_t* fscript, const char* name) {
 }
 
 static ret_t fscript_get_var(fscript_t* fscript, const char* name, value_t* value) {
+  ret_t ret = RET_OK;
   value_t* var = NULL;
   value_set_str(value, NULL);
   return_value_if_fail(name != NULL, RET_BAD_PARAMS);
@@ -176,7 +177,11 @@ static ret_t fscript_get_var(fscript_t* fscript, const char* name, value_t* valu
     name += 1;
   }
   var = fscript_get_fast_var(fscript, name);
-  return var != NULL ? value_copy(value, var) : object_get_prop(fscript->obj, name, value);
+  ret = var != NULL ? value_copy(value, var) : object_get_prop(fscript->obj, name, value);
+  if (ret != RET_OK) {
+    log_warn("get var %s failed\n", name);
+  }
+  return ret;
 }
 
 static ret_t fscript_set_var(fscript_t* fscript, const char* name, const value_t* value) {
