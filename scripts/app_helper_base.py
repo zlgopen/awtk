@@ -385,7 +385,7 @@ class AppHelperBase:
         awtk = self.awtk
         CPPPATH = awtk.CPPPATH + self.APP_CPPPATH
         LINKFLAGS = awtk.LINKFLAGS + self.APP_LINKFLAGS
-        LIBS = self.APP_LIBS + self.AWTK_LIBS + self.PLATFORM_LIBS
+        LIBS = self.AWTK_LIBS + self.PLATFORM_LIBS
         LIBPATH = self.APP_LIBPATH + awtk.LIBPATH
         CFLAGS = self.APP_CFLAGS + self.AWTK_CFLAGS
         CCFLAGS = self.APP_CCFLAGS + self.AWTK_CCFLAGS
@@ -422,6 +422,7 @@ class AppHelperBase:
             else:
                 LIBPATH += [join_path(iter['root'], 'lib')]
                 LIBPATH += [join_path(iter['root'], 'bin')]
+        LIBS = self.APP_LIBS + LIBS
 
         self.prepare()
         if hasattr(awtk, 'CC'):
