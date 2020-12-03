@@ -51,6 +51,12 @@ def get_project_language(info):
 def get_project_country(info):
     return info['assets']['defaultCountry']
 
+def get_project_res_root(info):
+    res_root = info['assets']['outputDir']
+    if os.path.isabs(res_root):
+        return res_root
+    else: 
+        return '../' + res_root
 
 class AppHelperBase:
     def set_deps(self, DEPENDS_LIBS):
@@ -293,6 +299,7 @@ class AppHelperBase:
             LCD_HEIGHT = get_project_h(config, APP_THEME)
             APP_DEFAULT_LANGUAGE = get_project_language(config)
             APP_DEFAULT_COUNTRY = get_project_country(config)
+            APP_RES_ROOT = get_project_res_root(config)
 
         if ARGUMENTS.get('HELP', ''):
             self.showHelp()
