@@ -81,5 +81,6 @@ uint32_t image_gen_buff(bitmap_t* image, wbuffer_t* wbuffer, bool_t mono) {
   wbuffer->cursor = cursor;
   TKMEM_FREE(header);
 
-  return size + sizeof(bitmap_header_t);
+  assert((size + header_size) == cursor);
+  return wbuffer->cursor;
 }
