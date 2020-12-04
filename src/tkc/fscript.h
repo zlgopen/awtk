@@ -128,6 +128,32 @@ ret_t fscript_destroy(fscript_t* fscript);
  */
 ret_t fscript_eval(object_t* obj, const char* script, value_t* result);
 
+/**
+ * @method fscript_global_init
+ * 全局初始化。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t fscript_global_init(void);
+
+/**
+ * @method fscript_register_func
+ * 注册全局自定义函数。
+ * @param {const char*} name 函数名(无需加函数前缀)。
+ * @param {fscript_func_t*} func 函数指针。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t fscript_register_func(const char* name, fscript_func_t func);
+
+/**
+ * @method fscript_global_deinit
+ * 全局释放。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t fscript_global_deinit(void);
+
 /*注册自定义函数时，属性名的前缀。*/
 #define STR_FSCRIPT_FUNCTION_PREFIX "function."
 

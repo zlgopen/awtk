@@ -1676,6 +1676,7 @@ static const func_entry_t s_builtin_funcs[] = {
     {"+", func_sum, 8},
 };
 
+static object_t* s_global_funcs;
 static fscript_func_call_t* fscript_func_call_create(fscript_parser_t* parser, const char* name,
                                                      uint32_t size) {
   uint32_t i = 0;
@@ -1695,9 +1696,15 @@ static fscript_func_call_t* fscript_func_call_create(fscript_parser_t* parser, c
     }
   }
 
-  tk_snprintf(full_func_name, sizeof(full_func_name) - 1, "%s%s", STR_FSCRIPT_FUNCTION_PREFIX,
-              func_name);
-  func = (fscript_func_t)object_get_prop_pointer(parser->obj, full_func_name);
+  if (s_global_funcs != NULL) {
+    func = (fscript_func_t)object_get_prop_pointer(s_global_funcs, func_name);
+  }
+
+  if (func == NULL) {
+    tk_snprintf(full_func_name, sizeof(full_func_name) - 1, "%s%s", STR_FSCRIPT_FUNCTION_PREFIX,
+                func_name);
+    func = (fscript_func_t)object_get_prop_pointer(parser->obj, full_func_name);
+  }
 
   if (func == NULL) {
     func = func_noop;
@@ -1708,4 +1715,23 @@ static fscript_func_call_t* fscript_func_call_create(fscript_parser_t* parser, c
   func_args_init(&(call->args), 2);
 
   return call;
+}
+
+ret_t fscript_global_init(void) {
+  return RET_OK;
+}
+
+ret_t fscript_global_deinit(void) {
+  OBJECT_UNREF(s_global_funcs);
+  return RET_OK;
+}
+
+#include "tkc/object_default.h"
+ret_t fscript_register_func(const char* name, fscript_func_t func) {
+  return_value_if_fail(name != NULL && func != NULL, RET_BAD_PARAMS);
+  if (s_global_funcs == NULL) {
+    s_global_funcs = object_default_create();
+  }
+
+  return object_set_prop_pointer(s_global_funcs, name, func);
 }

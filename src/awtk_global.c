@@ -21,6 +21,7 @@
 
 #include "awtk.h"
 #include "tkc/mem.h"
+#include "tkc/fscript.h"
 #include "base/idle.h"
 #include "base/timer.h"
 #include "tkc/thread.h"
@@ -149,6 +150,7 @@ ret_t tk_init_internal(void) {
   font_loader_t* font_loader = NULL;
 
   s_ui_thread_id = tk_thread_self();
+  fscript_global_init();
 #ifdef WITH_DATA_READER_WRITER
   data_writer_factory_set(data_writer_factory_create());
   data_reader_factory_set(data_reader_factory_create());
@@ -309,6 +311,7 @@ ret_t tk_deinit_internal(void) {
 #endif /*WITH_DATA_READER_WRITER*/
 
   system_info_deinit();
+  fscript_global_deinit();
 
   return RET_OK;
 }

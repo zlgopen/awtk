@@ -1,15 +1,18 @@
 # 最新动态
 
+2020/12/04
+  * fscript 支持注册全局函数。
+  
 2020/12/03
   * 完善编译脚本（感谢培煌提供补丁）。
-  * 修复image gen多写4字节数据的问题。
+  * 修复 image gen 多写 4 字节数据的问题。
 
 2020/12/02
-  * 完善fscript。
-  * 修复shdlc内存泄露（感谢朝泽提供补丁）。
-  * 减小assets-1m.c的体积（感谢智明提供补丁）
-  * 修复slide\_menu.xml的问题（感谢智明提供补丁）
-  * 将get\_time\_us64缺省实现移动time\_now.c，避免部分嵌入式平台编译问题（感谢陈谭提供补丁）
+  * 完善 fscript。
+  * 修复 shdlc 内存泄露（感谢朝泽提供补丁）。
+  * 减小 assets-1m.c 的体积（感谢智明提供补丁）
+  * 修复 slide\_menu.xml 的问题（感谢智明提供补丁）
+  * 将 get\_time\_us64 缺省实现移动 time\_now.c，避免部分嵌入式平台编译问题（感谢陈谭提供补丁）
 
 2020/12/01
   * 修改 image\_manager\_get\_bitmap 优先使用 assets\_manager（感谢福明提供补丁）。

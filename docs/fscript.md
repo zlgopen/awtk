@@ -1351,7 +1351,7 @@ time_now_us()
 
 ### 5. 自定义函数
 
-定义函数
+#### 5.1 定义函数
 
 ```c
 static ret_t func_foo(object_t* obj, fscript_args_t* args, value_t* v) {
@@ -1361,7 +1361,7 @@ static ret_t func_foo(object_t* obj, fscript_args_t* args, value_t* v) {
 }
 ```
 
-注册和使用
+#### 5.2 注册和使用私有函数
 
 ```c
   value_t v;
@@ -1373,6 +1373,17 @@ static ret_t func_foo(object_t* obj, fscript_args_t* args, value_t* v) {
 
   OBJECT_UNREF(obj);
 ```
+
+#### 5.3 注册全局函数
+
+* 初始化时调用
+
+```
+fscript_register_func("foo", func_foo);
+
+```
+
+#### 5.1 定义私有函数
 
 ### 6. 性能测量与优化
 

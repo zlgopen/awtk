@@ -906,3 +906,16 @@ TEST(FExpr, not_eq) {
 
   OBJECT_UNREF(obj);
 }
+
+TEST(FScript, global_func) {
+  value_t v;
+  object_t* obj = object_default_create();
+  fscript_register_func("foo", func_foo);
+
+  fscript_eval(obj, "foo()", &v);
+  ASSERT_EQ(value_int(&v), 123);
+  value_reset(&v);
+
+  OBJECT_UNREF(obj);
+}
+
