@@ -7939,6 +7939,47 @@
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
         }
+      },
+      {
+        "params": [],
+        "annotation": {},
+        "desc": "全局初始化。",
+        "name": "fscript_global_init",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "函数名(无需加函数前缀)。"
+          },
+          {
+            "type": "fscript_func_t*",
+            "name": "func",
+            "desc": "函数指针。"
+          }
+        ],
+        "annotation": {},
+        "desc": "注册全局自定义函数。",
+        "name": "fscript_register_func",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {},
+        "desc": "全局释放。",
+        "name": "fscript_global_deinit",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
       }
     ],
     "events": [],

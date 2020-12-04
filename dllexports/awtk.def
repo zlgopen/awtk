@@ -1116,6 +1116,9 @@ EXPORTS
     fscript_exec
     fscript_destroy
     fscript_eval
+    fscript_global_init
+    fscript_register_func
+    fscript_global_deinit
     func_call_parser_init
     func_call_parser_parse
     func_call_parser_deinit
