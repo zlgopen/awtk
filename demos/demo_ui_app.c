@@ -289,6 +289,16 @@ static ret_t on_timer_show_toast(const timer_info_t* info) {
   return RET_REMOVE;
 }
 
+static ret_t on_switch_to_window(void* ctx, event_t* e) {
+  const char* name = (const char*)ctx;
+  widget_t* win = widget_get_window(WIDGET(e->target));
+  widget_t* home = widget_lookup(window_manager(), name, TRUE);
+
+  window_manager_switch_to(window_manager(), win, home, TRUE);
+
+  return RET_OK;
+}
+
 static ret_t on_open_window(void* ctx, event_t* e) {
   const char* name = (const char*)ctx;
 
@@ -303,7 +313,13 @@ static ret_t on_open_window(void* ctx, event_t* e) {
   } else if (tk_str_eq(name, "confirm")) {
     dialog_confirm(NULL, "Hello AWTK!\nAre you sure to close?");
   } else {
-    open_window(name, NULL);
+    widget_t* target = widget_lookup(window_manager(), name, TRUE);
+    if (target != NULL) {
+      widget_t* win = widget_get_window(WIDGET(e->target));
+      window_manager_switch_to(window_manager(), win, target, FALSE);
+    } else {
+      open_window(name, NULL);
+    }
   }
 
   (void)e;
@@ -612,7 +628,8 @@ static ret_t install_one(void* ctx, const void* iter) {
       if (tk_str_eq(name, "open:menu_point")) {
         widget_on(widget, EVT_CONTEXT_MENU, on_context_menu, win);
       }
-
+    } else if (strstr(name, "switch_to:") != NULL) {
+      widget_on(widget, EVT_CLICK, on_switch_to_window, (void*)(name + sizeof("switch_to")));
     } else if (tk_str_eq(name, "paint_linear_gradient")) {
       widget_on(widget, EVT_PAINT, on_paint_linear_gradient, NULL);
     } else if (tk_str_eq(name, "paint_radial_gradient")) {

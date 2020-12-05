@@ -355,6 +355,31 @@ ret_t window_manager_back_to(widget_t* widget, const char* target) {
   }
 }
 
+ret_t window_manager_switch_to(widget_t* widget, widget_t* curr_win, widget_t* target_win,
+                               bool_t close) {
+  window_manager_t* wm = WINDOW_MANAGER(widget);
+  return_value_if_fail(wm != NULL && wm->vt != NULL, RET_BAD_PARAMS);
+
+  window_manager_close_keyboard(widget);
+
+  if (target_win == curr_win || target_win == NULL) {
+    return RET_OK;
+  }
+
+  if (wm->vt->switch_to != NULL) {
+    return wm->vt->switch_to(widget, curr_win, target_win, close);
+  } else {
+    widget_restack(target_win, 0xffffff);
+    if (close) {
+      window_manager_close_window_force(widget, curr_win);
+    } else {
+      window_manager_dispatch_window_event(curr_win, EVT_WINDOW_TO_BACKGROUND);
+    }
+    window_manager_dispatch_window_event(target_win, EVT_WINDOW_TO_FOREGROUND);
+    return RET_OK;
+  }
+}
+
 ret_t window_manager_back_to_home(widget_t* widget) {
   return window_manager_back_to(widget, NULL);
 }

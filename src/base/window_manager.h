@@ -44,6 +44,8 @@ typedef ret_t (*window_manager_set_cursor_t)(widget_t* widget, const char* curso
 typedef ret_t (*window_manager_post_init_t)(widget_t* widget, wh_t w, wh_t h);
 typedef ret_t (*window_manager_back_t)(widget_t* widget);
 typedef ret_t (*window_manager_back_to_t)(widget_t* widget, const char* name);
+typedef ret_t (*window_manager_switch_to_t)(widget_t* widget, widget_t* curr_win,
+                                            widget_t* target_win, bool_t close);
 typedef ret_t (*window_manager_get_pointer_t)(widget_t* widget, xy_t* x, xy_t* y, bool_t* pressed);
 typedef ret_t (*window_manager_is_animating_t)(widget_t* widget, bool_t* playing);
 
@@ -60,6 +62,7 @@ typedef ret_t (*window_manager_resize_t)(widget_t* widget, wh_t w, wh_t h);
 typedef struct _window_manager_vtable_t {
   window_manager_back_t back;
   window_manager_back_to_t back_to;
+  window_manager_switch_to_t switch_to;
   window_manager_paint_t paint;
   window_manager_post_init_t post_init;
   window_manager_set_cursor_t set_cursor;
@@ -360,6 +363,20 @@ ret_t window_manager_back_to_home(widget_t* widget);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t window_manager_back_to(widget_t* widget, const char* target);
+
+/**
+ * @method window_manager_switch_to
+ * 切换到指定窗口。
+ * 
+ * @param {widget_t*} widget 窗口管理器对象。
+ * @param {widget_t*} curr_win 当前窗口。
+ * @param {widget_t*} target_win 目标窗口。
+ * @param {bool_t} close 是否关闭当前窗口。 
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t window_manager_switch_to(widget_t* widget, widget_t* curr_win, widget_t* target_win,
+                               bool_t close);
 
 /**
  * @method window_manager_dispatch_native_window_event

@@ -1,9 +1,10 @@
 # 最新动态
 
 2020/12/05
-  * 修复theme\_gen可能存在没有初始化变量的问题（感谢朝泽提供补丁）。
-  * 增加EVT\_IM\_START和EVT\_IM\_STOP事件。
-
+  * 修复 theme\_gen 可能存在没有初始化变量的问题（感谢朝泽提供补丁）。
+  * 增加 EVT\_IM\_START 和 EVT\_IM\_STOP 事件。
+  * 增加函数 window\_manager\_switch\_to。
+  
 2020/12/04
   * fscript 支持注册全局函数。
   

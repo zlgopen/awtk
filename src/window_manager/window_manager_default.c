@@ -385,6 +385,34 @@ static ret_t window_manager_check_if_need_open_animation(const idle_info_t* info
   return RET_REMOVE;
 }
 
+static ret_t on_window_switch_done(void* ctx, event_t* e) {
+  widget_t* to_close = WIDGET(ctx);
+  log_debug("window %s close\n", to_close->name);
+  window_manager_close_window_force(to_close->parent, to_close);
+
+  return RET_REMOVE;
+}
+
+static ret_t window_manager_default_switch_to(widget_t* widget, widget_t* curr_win,
+                                              widget_t* target_win, bool_t close) {
+  window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+  return_value_if_fail(curr_win != NULL && target_win != NULL && wm != NULL, RET_BAD_PARAMS);
+
+  wm->ready_animator = FALSE;
+  widget_restack(target_win, 0xffffff);
+  if (close) {
+    widget_on(target_win, EVT_WINDOW_TO_FOREGROUND, on_window_switch_done, curr_win);
+  }
+
+  if (window_manager_create_animator(wm, target_win, TRUE) != RET_OK) {
+    window_manager_dispatch_window_event(curr_win, EVT_WINDOW_TO_BACKGROUND);
+    window_manager_dispatch_window_event(target_win, EVT_WINDOW_TO_FOREGROUND);
+    widget_invalidate_force(target_win, NULL);
+  }
+
+  return RET_OK;
+}
+
 static ret_t window_manager_dispatch_window_open(widget_t* curr_win) {
   window_manager_dispatch_window_event(curr_win, EVT_WINDOW_WILL_OPEN);
 
@@ -738,7 +766,12 @@ static ret_t window_manager_animate_done(widget_t* widget) {
         top_dialog_highligth = window_manager_default_find_top_dialog_highlighter(
             widget, prev_win, curr_win_is_keyboard ? curr_win : NULL);
       }
-      window_manager_dispatch_window_event(curr_win, EVT_WINDOW_OPEN);
+      if (widget_is_window_opened(curr_win)) {
+        //for swtich to
+        window_manager_dispatch_window_event(curr_win, EVT_WINDOW_TO_FOREGROUND);
+      } else {
+        window_manager_dispatch_window_event(curr_win, EVT_WINDOW_OPEN);
+      }
     } else {
       /* 结束关闭窗口动画后 */
       if (!curr_win_is_keyboard) {
@@ -1330,6 +1363,7 @@ static window_manager_vtable_t s_window_manager_self_vtable = {
     .get_pointer = window_manager_default_get_pointer,
     .is_animating = window_manager_default_is_animating,
     .close_window = window_manager_default_close_window,
+    .switch_to = window_manager_default_switch_to,
     .set_show_fps = window_manager_default_set_show_fps,
     .get_prev_window = window_manager_default_get_prev_window,
     .close_window_force = window_manager_default_close_window_force,
