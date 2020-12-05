@@ -8275,6 +8275,14 @@
         "name": "EVT_TOP_WINDOW_CHANGED"
       },
       {
+        "desc": "输入法启动(event_t)。",
+        "name": "EVT_IM_START"
+      },
+      {
+        "desc": "输入法停止(event_t)。",
+        "name": "EVT_IM_STOP"
+      },
+      {
         "desc": "输入法提交输入的文本事件(im_commit_event_t)。",
         "name": "EVT_IM_COMMIT"
       },
@@ -43884,6 +43892,37 @@
         },
         "desc": "回到指定的窗口，关闭之上的全部窗口。\n\n> 如果顶层窗口时模态对话框，用DIALOG\\_QUIT\\_NONE调用dialog\\_quit。",
         "name": "window_manager_back_to",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "窗口管理器对象。"
+          },
+          {
+            "type": "widget_t*",
+            "name": "curr_win",
+            "desc": "当前窗口。"
+          },
+          {
+            "type": "widget_t*",
+            "name": "target_win",
+            "desc": "目标窗口。"
+          },
+          {
+            "type": "bool_t",
+            "name": "close",
+            "desc": "是否关闭当前窗口。"
+          }
+        ],
+        "annotation": {},
+        "desc": "切换到指定窗口。",
+        "name": "window_manager_switch_to",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"

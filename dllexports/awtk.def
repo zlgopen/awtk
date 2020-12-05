@@ -1550,6 +1550,7 @@ EXPORTS
     window_manager_back
     window_manager_back_to_home
     window_manager_back_to
+    window_manager_switch_to
     window_manager_dispatch_native_window_event
     window_manager_begin_wait_pointer_cursor
     window_manager_end_wait_pointer_cursor
