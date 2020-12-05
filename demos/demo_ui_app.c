@@ -855,6 +855,16 @@ static ret_t wm_on_request_quit(void* ctx, event_t* evt) {
   return RET_OK;
 }
 
+static ret_t wm_on_ime_start(void* ctx, event_t* evt) {
+  log_debug("wm_on_ime_start\n");
+  return RET_OK;
+}
+
+static ret_t wm_on_ime_stop(void* ctx, event_t* evt) {
+  log_debug("wm_on_ime_stop\n");
+  return RET_OK;
+}
+
 ret_t application_init() {
   char path[MAX_PATH + 1];
   widget_t* wm = window_manager();
@@ -870,6 +880,8 @@ ret_t application_init() {
   widget_on(wm, EVT_LOW_MEMORY, wm_on_low_memory, wm);
   widget_on(wm, EVT_OUT_OF_MEMORY, wm_on_out_of_memory, wm);
   widget_on(wm, EVT_REQUEST_QUIT_APP, wm_on_request_quit, wm);
+  widget_on(wm, EVT_IM_START, wm_on_ime_start, wm);
+  widget_on(wm, EVT_IM_STOP, wm_on_ime_stop, wm);
 
   fs_get_user_storage_path(os_fs(), path);
   log_debug("user storage path:%s\n", path);

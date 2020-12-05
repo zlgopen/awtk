@@ -291,6 +291,16 @@ typedef enum _event_type_t {
    */
   EVT_TOP_WINDOW_CHANGED,
   /**
+   * @const EVT_IM_START
+   * 输入法启动(event_t)。
+   */
+  EVT_IM_START,
+  /**
+   * @const EVT_IM_STOP
+   * 输入法停止(event_t)。
+   */
+  EVT_IM_STOP,
+  /**
    * @const EVT_IM_COMMIT
    * 输入法提交输入的文本事件(im_commit_event_t)。
    */
