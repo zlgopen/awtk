@@ -199,9 +199,7 @@ static void xml_gen_on_text(XmlBuilder* thiz, const char* text, size_t length) {
   xml_builder_t* b = (xml_builder_t*)thiz;
 
   if (b->is_property) {
-    Style* s;
-    value_t v;
-    ENSURE(style_normalize_value(b->property_name, text, &v) == RET_OK);
+    Style* s = NULL;
 
     if (b->level == 1) {
       s = &(b->widget_style);
@@ -211,12 +209,17 @@ static void xml_gen_on_text(XmlBuilder* thiz, const char* text, size_t length) {
       s = &(b->state_style);
     }
 
-    if (v.type == VALUE_TYPE_STRING) {
-      s->AddString(b->property_name, value_str(&v));
-    } else {
-      s->AddInt(b->property_name, value_int(&v));
+    if (s != NULL) {
+      value_t v;
+      ENSURE(style_normalize_value(b->property_name, text, &v) == RET_OK);
+
+      if (v.type == VALUE_TYPE_STRING) {
+        s->AddString(b->property_name, value_str(&v));
+      } else {
+        s->AddInt(b->property_name, value_int(&v));
+      }
+      value_reset(&v);
     }
-    value_reset(&v);
   }
 
   return;
@@ -267,6 +270,8 @@ uint32_t xml_gen_buff(const char* xml, uint8_t* output, uint32_t max_size) {
   xml_builder_t b;
   return_value_if_fail(xml != NULL && output != NULL, 0);
 
+  memset(&b, 0x00, sizeof(b));
+
   XmlParser* parser = xml_parser_create();
   xml_parser_set_builder(parser, builder_init(b));
   xml_parser_parse(parser, xml, strlen(xml));
@@ -287,6 +292,8 @@ bool xml_gen(const char* input_file, const char* output_file, const char* theme,
   xml_builder_t b;
   wbuffer_t wbuffer;
   return_value_if_fail(input_file != NULL && output_file != NULL, false);
+
+  memset(&b, 0x00, sizeof(b));
 
   wbuffer_init_extendable(&wbuffer);
   XmlParser* parser = xml_parser_create();
