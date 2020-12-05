@@ -200,7 +200,9 @@ static ret_t fscript_eval_arg(fscript_t* fscript, fscript_func_call_t* iter, uin
     if (iter->func == func_set && i == 0) {
       value_copy(d, s); /*func_set accept id/str as first param*/
     } else {
-      fscript_get_var(fscript, value_str(s), d);
+      if (fscript_get_var(fscript, value_str(s), d) != RET_OK) {
+        value_copy(d, s);
+      }
     }
   } else if (s->type == VALUE_TYPE_JSCRIPT_FUNC) {
     fscript_exec_func(fscript, value_func(s), &v);
@@ -1565,10 +1567,13 @@ static ret_t func_contains(fscript_t* fscript, fscript_args_t* args, value_t* re
 }
 
 static ret_t func_exec(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  char buff[64];
+  const char* cmd = NULL;
+  const char* cmd_args = NULL;
   return_value_if_fail(args->size == 2, RET_BAD_PARAMS);
-  value_set_bool(result, object_exec(fscript->obj, value_str(args->args),
-                                     value_str(args->args + 1)) == RET_OK);
-
+  cmd = value_str(args->args);
+  cmd_args = value_str_ex(args->args + 1, buff, sizeof(buff) - 1);
+  value_set_bool(result, object_exec(fscript->obj, cmd, cmd_args) == RET_OK);
   return RET_OK;
 }
 
