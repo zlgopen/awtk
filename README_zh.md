@@ -296,7 +296,15 @@ npm install -g glob
 
 * [MVVM 模板工程](https://github.com/zlgopen/awtk-mvvm-c-hello)
 
-* [awtk-restful-httpd](https://github.com/zlgopen/awtk-restful-httpd)
+* [CSV文件操作](https://github.com/zlgopen/awtk-csv-file)
+
+* [数据库Repository](https://github.com/zlgopen/awtk-database-repository)
+
+* [Sqlite 基于 AWTK 的移植](https://github.com/zlgopen/awtk-sqlite3)
+
+* [VSCode实时预览插件](https://github.com/zlgopen/awtk-vscode-plugin)
+
+* [为嵌入式平台开发的RESTful的Web服务](https://github.com/zlgopen/awtk-restful-httpd)
 
 * [自动测试引擎](https://github.com/zlgopen/awtk-ui-automation)
 

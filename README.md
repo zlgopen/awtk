@@ -294,6 +294,14 @@ npm install -g glob
 
 * [MVVM Template Project](https://github.com/zlgopen/awtk-mvvm-c-hello)
 
+* [awtk-csv-file](https://github.com/zlgopen/awtk-csv-file)
+
+* [awtk-database-repository](https://github.com/zlgopen/awtk-database-repository)
+
+* [awtk-sqlite3](https://github.com/zlgopen/awtk-sqlite3)
+
+* [awtk-vscode-plugin](https://github.com/zlgopen/awtk-vscode-plugin)
+
 * [awtk-restful-httpd](https://github.com/zlgopen/awtk-restful-httpd)
 
 * [Auto Test Engine](https://github.com/zlgopen/awtk-ui-automation)
