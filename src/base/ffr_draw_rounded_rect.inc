@@ -184,7 +184,7 @@ static inline int32_t frr_image_get_buff_point(frr_image_info_t* info, int32_t x
 
   return_value_if_fail(info != NULL, -1);
 
-  if (x < 0 || x > (int32_t)info->w || y < 0 || y > (int32_t)info->h || info->stride == 0 ||
+  if (x < 0 || x >= (int32_t)info->w || y < 0 || y >= (int32_t)info->h || info->stride == 0 ||
       info->bpp == 0) {
     return p;
   }
@@ -192,7 +192,7 @@ static inline int32_t frr_image_get_buff_point(frr_image_info_t* info, int32_t x
   dx = x - info->dx;
   dy = y - info->dy;
 
-  if (dx < 0 || dx > (int32_t)info->dw || dy < 0 || dy > (int32_t)info->dh) {
+  if (dx < 0 || dx >= (int32_t)info->dw || dy < 0 || dy >= (int32_t)info->dh) {
     return p;
   }
 
@@ -509,11 +509,9 @@ static inline void ffr_draw_circluar_point_to_quadrant_hline(frr_image_info_t* i
       p = frr_image_get_buff_point(image_info, x + c->ox, y + c->oy);
       if (p >= 0) {
         ffr_image_data2color(image_info->dst + p, x + c->ox, y + c->oy, image_info->w, image_info->h, image_info->format, &o_color);
-
-        canvas_fill_rect(c, x_h, y, w, 1);
-
-        ffr_draw_antialiasing_for_point(image_info, c, x + c->ox, y + c->oy, e, color, o_color);
       }
+      canvas_fill_rect(c, x_h, y, w, 1);
+      ffr_draw_antialiasing_for_point(image_info, c, x + c->ox, y + c->oy, e, color, o_color);
     }
   }
 }
