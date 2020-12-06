@@ -194,14 +194,18 @@ static ret_t fscript_eval_arg(fscript_t* fscript, fscript_func_call_t* iter, uin
   value_t v;
   value_t* s = iter->args.args + i;
   int32_t save_type = s->type;
-  value_set_int(&v, 0);
+  value_set_str(&v, NULL);
   if (s->type == VALUE_TYPE_JSCRIPT_ID) {
     s->type = VALUE_TYPE_STRING;
     if (iter->func == func_set && i == 0) {
       value_copy(d, s); /*func_set accept id/str as first param*/
     } else {
-      if (fscript_get_var(fscript, value_str(s), d) != RET_OK) {
-        value_copy(d, s);
+      const char* name = value_str(s);
+      if (fscript_get_var(fscript, name, d) != RET_OK) {
+        if (name == NULL || *name != '$') {
+          /*if it is not $var, consider id as string*/
+          value_copy(d, s);
+        }
       }
     }
   } else if (s->type == VALUE_TYPE_JSCRIPT_FUNC) {

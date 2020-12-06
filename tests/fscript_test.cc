@@ -919,3 +919,17 @@ TEST(FScript, global_func) {
   OBJECT_UNREF(obj);
 }
 
+TEST(FExr, var_dollar) {
+  value_t v;
+  object_t* obj = object_default_create();
+
+  fscript_eval(obj, "aaa+\"b\"", &v);
+  ASSERT_STREQ(value_str(&v), "aaab");
+  value_reset(&v);
+  
+  fscript_eval(obj, "$aaa+\"b\"", &v);
+  ASSERT_STREQ(value_str(&v), "b");
+  value_reset(&v);
+
+  OBJECT_UNREF(obj);
+}
