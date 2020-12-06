@@ -543,6 +543,10 @@ static ret_t window_manager_default_close_window(widget_t* widget, widget_t* win
     }
   }
 
+  if (widget->children == NULL || widget->children->size == 0) {
+    widget_invalidate_force(widget, NULL);
+  }
+
   return RET_OK;
 }
 
@@ -661,7 +665,13 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
   }
 #else
   if (native_window_begin_frame(wm->native_window, LCD_DRAW_NORMAL) == RET_OK) {
-    ENSURE(widget_paint(WIDGET(wm), c) == RET_OK);
+    if (widget->children == NULL || widget->children->size == 0) {
+      color_t bg = color_init(0xff, 0xff, 0xff, 0xff);
+      canvas_set_fill_color(c, bg);
+      canvas_fill_rect(c, 0, 0, widget->w, widget->h);
+    } else {
+      ENSURE(widget_paint(WIDGET(wm), c) == RET_OK);
+    }
     window_manager_paint_cursor(widget, c);
     native_window_end_frame(wm->native_window);
   }
