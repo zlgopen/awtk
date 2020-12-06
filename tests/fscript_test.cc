@@ -887,7 +887,7 @@ TEST(FExpr, not_eq) {
   fscript_eval(obj, "2!=2", &v);
   ASSERT_EQ(value_bool(&v), false);
   value_reset(&v);
-  
+
   fscript_eval(obj, "1.0 != 2.0", &v);
   ASSERT_EQ(value_bool(&v), true);
   value_reset(&v);
@@ -895,11 +895,11 @@ TEST(FExpr, not_eq) {
   fscript_eval(obj, "2.0!=2.0", &v);
   ASSERT_EQ(value_bool(&v), false);
   value_reset(&v);
-  
+
   fscript_eval(obj, "\"a\" != \"a\"", &v);
   ASSERT_EQ(value_bool(&v), false);
   value_reset(&v);
-  
+
   fscript_eval(obj, "\"a\" != \"b\"", &v);
   ASSERT_EQ(value_bool(&v), true);
   value_reset(&v);
@@ -926,7 +926,7 @@ TEST(FExr, var_dollar) {
   fscript_eval(obj, "aaa+\"b\"", &v);
   ASSERT_STREQ(value_str(&v), "aaab");
   value_reset(&v);
-  
+
   fscript_eval(obj, "$aaa+\"b\"", &v);
   ASSERT_STREQ(value_str(&v), "b");
   value_reset(&v);
