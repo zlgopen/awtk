@@ -161,6 +161,8 @@
 
 ### 10. 开放源码，免费商用 (LGPL)。
 
+> 欢迎对照 [《GUI 引擎评价指标》](https://github.com/zlgopen/gui-lib-evaluation) 进行评测。
+
 ## 四、模拟运行：
 
 ### 下载代码
