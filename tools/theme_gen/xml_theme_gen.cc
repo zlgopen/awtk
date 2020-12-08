@@ -262,6 +262,7 @@ static XmlBuilder* builder_init(xml_builder_t& b) {
   b.level = 0;
   b.style_name = TK_DEFAULT_STYLE;
   b.widget_type = "";
+  b.is_property = FALSE;
 
   return &(b.builder);
 }
@@ -269,8 +270,6 @@ static XmlBuilder* builder_init(xml_builder_t& b) {
 uint32_t xml_gen_buff(const char* xml, uint8_t* output, uint32_t max_size) {
   xml_builder_t b;
   return_value_if_fail(xml != NULL && output != NULL, 0);
-
-  memset(&b, 0x00, sizeof(b));
 
   XmlParser* parser = xml_parser_create();
   xml_parser_set_builder(parser, builder_init(b));
@@ -292,8 +291,6 @@ bool xml_gen(const char* input_file, const char* output_file, const char* theme,
   xml_builder_t b;
   wbuffer_t wbuffer;
   return_value_if_fail(input_file != NULL && output_file != NULL, false);
-
-  memset(&b, 0x00, sizeof(b));
 
   wbuffer_init_extendable(&wbuffer);
   XmlParser* parser = xml_parser_create();
