@@ -13,6 +13,7 @@
 | <a href="#utils_t_filename_to_name">filename\_to\_name</a> | 从完整文件名中获取文件名。 |
 | <a href="#utils_t_filename_to_name_ex">filename\_to\_name\_ex</a> | 从完整文件名中获取文件名。 |
 | <a href="#utils_t_image_region_parse">image\_region\_parse</a> | 解析子图的区域信息。 |
+| <a href="#utils_t_object_to_json">object\_to\_json</a> | 将对象转换成json字符串。 |
 | <a href="#utils_t_pointer_compare">pointer\_compare</a> | 指针比较。 |
 | <a href="#utils_t_tk_atob">tk\_atob</a> | 将字符串转换为布尔类型。 |
 | <a href="#utils_t_tk_atof">tk\_atof</a> | 将字符串转换为浮点类型。 |
@@ -45,6 +46,7 @@
 | <a href="#utils_t_tk_strndup">tk\_strndup</a> | 字符串拷贝函数，最多复制len个字符串。 |
 | <a href="#utils_t_tk_strtol">tk\_strtol</a> | 将字符串转换为长整形。 |
 | <a href="#utils_t_tk_under_score_to_camel">tk\_under\_score\_to\_camel</a> | 将下划线名字转成驼峰名字。 |
+| <a href="#utils_t_tk_vsnprintf">tk\_vsnprintf</a> | 将可变参数ap按照format格式化字符串，并将字符串复制到str中。 |
 | <a href="#utils_t_tk_watob">tk\_watob</a> | 将宽字符串转换为布尔类型。 |
 | <a href="#utils_t_tk_watof">tk\_watof</a> | 将宽字符串转换为浮点类型。 |
 | <a href="#utils_t_tk_watoi">tk\_watoi</a> | 将宽字符串转换为整形。 |
@@ -176,6 +178,26 @@ ret_t image_region_parse (uint32_t img_w, uint32_t img_h, const char* region, re
 | img\_h | uint32\_t | 图片宽度。 |
 | region | const char* | region。 |
 | r | rect\_t* | 返回具体位置。 |
+#### object\_to\_json 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_object_to_json">将对象转换成json字符串。
+
+* 函数原型：
+
+```
+ret_t object_to_json (object_t* obj, str_t* str);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| obj | object\_t* | object对象。 |
+| str | str\_t* | 用于返回结果。 |
 #### pointer\_compare 函数
 -----------------------
 
@@ -826,6 +848,28 @@ const char* tk_under_score_to_camel (const char* name, char* out, uint32_t max_o
 | name | const char* | 下划线名字。 |
 | out | char* | 驼峰名字(保存结果)。 |
 | max\_out\_size | uint32\_t | 结果最大长度。 |
+#### tk\_vsnprintf 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_vsnprintf">将可变参数ap按照format格式化字符串，并将字符串复制到str中。
+
+* 函数原型：
+
+```
+int tk_vsnprintf (char* str, size_t size, const char* format, va_list ap);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | int | 返回格式化后的字符串长度+1。 |
+| str | char* | 目标字符串。 |
+| size | size\_t | 拷贝字节数。 |
+| format | const char* | 格式化字符串。 |
+| ap | va\_list | 可变参数。 |
 #### tk\_watob 函数
 -----------------------
 

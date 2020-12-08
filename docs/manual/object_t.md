@@ -10,12 +10,14 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#object_t_object_can_exec">object\_can\_exec</a> | 检查是否可以执行指定的命令。 |
+| <a href="#object_t_object_can_exec_by_path">object\_can\_exec\_by\_path</a> | 检查是否可以执行指定的命令。 |
 | <a href="#object_t_object_clone">object\_clone</a> | clone对象。 |
 | <a href="#object_t_object_compare">object\_compare</a> | 比较两个对象。 |
 | <a href="#object_t_object_copy_prop">object\_copy\_prop</a> | 拷贝指定的属性。 |
 | <a href="#object_t_object_create">object\_create</a> | 创建对象。 |
 | <a href="#object_t_object_eval">object\_eval</a> | 计算一个表达式，表达式中引用的变量从prop中获取。 |
 | <a href="#object_t_object_exec">object\_exec</a> | 执行指定的命令。 |
+| <a href="#object_t_object_exec_by_path">object\_exec\_by\_path</a> | 执行指定的命令。 |
 | <a href="#object_t_object_foreach_prop">object\_foreach\_prop</a> | 遍历所有属性。 |
 | <a href="#object_t_object_get_desc">object\_get\_desc</a> | 获取对象的描述信息。 |
 | <a href="#object_t_object_get_prop">object\_get\_prop</a> | 获取指定属性的值。 |
@@ -35,6 +37,7 @@
 | <a href="#object_t_object_get_size">object\_get\_size</a> | 获取对象占用内存的大小。 |
 | <a href="#object_t_object_get_type">object\_get\_type</a> | 获取对象的类型名称。 |
 | <a href="#object_t_object_has_prop">object\_has\_prop</a> | 检查是否存在指定的属性。 |
+| <a href="#object_t_object_has_prop_by_path">object\_has\_prop\_by\_path</a> | 检查是否存在指定的属性。 |
 | <a href="#object_t_object_is_collection">object\_is\_collection</a> | 判断对象是否是集合。 |
 | <a href="#object_t_object_notify_changed">object\_notify\_changed</a> | 触发EVT_PROPS_CHANGED事件。 |
 | <a href="#object_t_object_ref">object\_ref</a> | 引用计数加1。 |
@@ -42,11 +45,18 @@
 | <a href="#object_t_object_set_name">object\_set\_name</a> | 设置对象的名称。 |
 | <a href="#object_t_object_set_prop">object\_set\_prop</a> | 设置指定属性的值。 |
 | <a href="#object_t_object_set_prop_bool">object\_set\_prop\_bool</a> | 设置指定属性的bool类型的值。 |
+| <a href="#object_t_object_set_prop_bool_by_path">object\_set\_prop\_bool\_by\_path</a> | 设置指定属性的bool类型的值。 |
+| <a href="#object_t_object_set_prop_by_path">object\_set\_prop\_by\_path</a> | 设置指定属性的值。 |
 | <a href="#object_t_object_set_prop_float">object\_set\_prop\_float</a> | 设置指定属性的浮点数类型的值。 |
+| <a href="#object_t_object_set_prop_float_by_path">object\_set\_prop\_float\_by\_path</a> | 设置指定属性的浮点数类型的值。 |
 | <a href="#object_t_object_set_prop_int">object\_set\_prop\_int</a> | 设置指定属性的整数类型的值。 |
+| <a href="#object_t_object_set_prop_int_by_path">object\_set\_prop\_int\_by\_path</a> | 设置指定属性的整数类型的值。 |
 | <a href="#object_t_object_set_prop_object">object\_set\_prop\_object</a> | 设置指定属性的object类型的值。 |
+| <a href="#object_t_object_set_prop_object_by_path">object\_set\_prop\_object\_by\_path</a> | 设置指定属性的object类型的值。 |
 | <a href="#object_t_object_set_prop_pointer">object\_set\_prop\_pointer</a> | 设置指定属性的指针类型的值。 |
+| <a href="#object_t_object_set_prop_pointer_by_path">object\_set\_prop\_pointer\_by\_path</a> | 设置指定属性的指针类型的值。 |
 | <a href="#object_t_object_set_prop_str">object\_set\_prop\_str</a> | 设置指定属性的字符串类型的值。 |
+| <a href="#object_t_object_set_prop_str_by_path">object\_set\_prop\_str\_by\_path</a> | 设置指定属性的字符串类型的值。 |
 | <a href="#object_t_object_unref">object\_unref</a> | 引用计数减1。引用计数为0时，销毁对象。 |
 ### 属性
 <p id="object_t_properties">
@@ -75,6 +85,27 @@ bool_t object_can_exec (object_t* obj, const char* name, const char* args);
 | 返回值 | bool\_t | 返回TRUE表示可以执行，否则表示不可以执行。 |
 | obj | object\_t* | object对象。 |
 | name | const char* | 命令的名称。 |
+| args | const char* | 命令的参数。 |
+#### object\_can\_exec\_by\_path 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_t_object_can_exec_by_path">检查是否可以执行指定的命令。
+
+* 函数原型：
+
+```
+bool_t object_can_exec_by_path (object_t* obj, const char* path, const char* args);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示可以执行，否则表示不可以执行。 |
+| obj | object\_t* | object对象。 |
+| path | const char* | 命令的path。 |
 | args | const char* | 命令的参数。 |
 #### object\_clone 函数
 -----------------------
@@ -198,6 +229,27 @@ ret_t object_exec (object_t* obj, const char* name, const char* args);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | obj | object\_t* | object对象。 |
 | name | const char* | 命令的名称。 |
+| args | const char* | 命令的参数。 |
+#### object\_exec\_by\_path 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_t_object_exec_by_path">执行指定的命令。
+
+* 函数原型：
+
+```
+ret_t object_exec_by_path (object_t* obj, const char* path, const char* args);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| obj | object\_t* | object对象。 |
+| path | const char* | 命令的path。 |
 | args | const char* | 命令的参数。 |
 #### object\_foreach\_prop 函数
 -----------------------
@@ -350,6 +402,8 @@ float_t object_get_prop_float (object_t* obj, const char* name, float_t defval);
 * 函数功能：
 
 > <p id="object_t_object_get_prop_float_by_path">获取指定属性的浮点数类型的值。
+
+e
 
 * 函数原型：
 
@@ -585,6 +639,26 @@ bool_t object_has_prop (object_t* obj, const char* name);
 | 返回值 | bool\_t | 返回TRUE表示存在，否则表示不存在。 |
 | obj | object\_t* | object对象。 |
 | name | const char* | 属性的名称。 |
+#### object\_has\_prop\_by\_path 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_t_object_has_prop_by_path">检查是否存在指定的属性。
+
+* 函数原型：
+
+```
+bool_t object_has_prop_by_path (object_t* obj, const char* path);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示存在，否则表示不存在。 |
+| obj | object\_t* | object对象。 |
+| path | const char* | 属性的path，各级之间用.分隔。 |
 #### object\_is\_collection 函数
 -----------------------
 
@@ -724,6 +798,48 @@ ret_t object_set_prop_bool (object_t* obj, const char* name, bool_t value);
 | obj | object\_t* | object对象。 |
 | name | const char* | 属性的名称。 |
 | value | bool\_t | 属性的值。 |
+#### object\_set\_prop\_bool\_by\_path 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_t_object_set_prop_bool_by_path">设置指定属性的bool类型的值。
+
+* 函数原型：
+
+```
+ret_t object_set_prop_bool_by_path (object_t* obj, const char* path, bool_t value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| obj | object\_t* | object对象。 |
+| path | const char* | 属性的path。 |
+| value | bool\_t | 属性的值。 |
+#### object\_set\_prop\_by\_path 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_t_object_set_prop_by_path">设置指定属性的值。
+
+* 函数原型：
+
+```
+ret_t object_set_prop_by_path (object_t* obj, const char* path, value_t* value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| obj | object\_t* | object对象。 |
+| path | const char* | 属性的path。 |
+| value | value\_t* | 属性的值。 |
 #### object\_set\_prop\_float 函数
 -----------------------
 
@@ -744,6 +860,27 @@ ret_t object_set_prop_float (object_t* obj, const char* name, float_t value);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | obj | object\_t* | object对象。 |
 | name | const char* | 属性的名称。 |
+| value | float\_t | 属性的值。 |
+#### object\_set\_prop\_float\_by\_path 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_t_object_set_prop_float_by_path">设置指定属性的浮点数类型的值。
+
+* 函数原型：
+
+```
+ret_t object_set_prop_float_by_path (object_t* obj, const char* path, float_t value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| obj | object\_t* | object对象。 |
+| path | const char* | 属性的path。 |
 | value | float\_t | 属性的值。 |
 #### object\_set\_prop\_int 函数
 -----------------------
@@ -766,6 +903,27 @@ ret_t object_set_prop_int (object_t* obj, const char* name, int32_t value);
 | obj | object\_t* | object对象。 |
 | name | const char* | 属性的名称。 |
 | value | int32\_t | 属性的值。 |
+#### object\_set\_prop\_int\_by\_path 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_t_object_set_prop_int_by_path">设置指定属性的整数类型的值。
+
+* 函数原型：
+
+```
+ret_t object_set_prop_int_by_path (object_t* obj, const char* path, int32_t value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| obj | object\_t* | object对象。 |
+| path | const char* | 属性的path。 |
+| value | int32\_t | 属性的值。 |
 #### object\_set\_prop\_object 函数
 -----------------------
 
@@ -786,6 +944,27 @@ ret_t object_set_prop_object (object_t* obj, const char* name, object_t* value);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | obj | object\_t* | object对象。 |
 | name | const char* | 属性的名称。 |
+| value | object\_t* | 属性的值。 |
+#### object\_set\_prop\_object\_by\_path 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_t_object_set_prop_object_by_path">设置指定属性的object类型的值。
+
+* 函数原型：
+
+```
+ret_t object_set_prop_object_by_path (object_t* obj, const char* path, object_t* value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| obj | object\_t* | object对象。 |
+| path | const char* | 属性的path。 |
 | value | object\_t* | 属性的值。 |
 #### object\_set\_prop\_pointer 函数
 -----------------------
@@ -808,6 +987,27 @@ ret_t object_set_prop_pointer (object_t* obj, const char* name, void* value);
 | obj | object\_t* | object对象。 |
 | name | const char* | 属性的名称。 |
 | value | void* | 属性的值。 |
+#### object\_set\_prop\_pointer\_by\_path 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_t_object_set_prop_pointer_by_path">设置指定属性的指针类型的值。
+
+* 函数原型：
+
+```
+ret_t object_set_prop_pointer_by_path (object_t* obj, const char* path, void* value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| obj | object\_t* | object对象。 |
+| path | const char* | 属性的path。 |
+| value | void* | 属性的值。 |
 #### object\_set\_prop\_str 函数
 -----------------------
 
@@ -828,6 +1028,27 @@ ret_t object_set_prop_str (object_t* obj, const char* name, const char* value);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | obj | object\_t* | object对象。 |
 | name | const char* | 属性的名称。 |
+| value | const char* | 属性的值。 |
+#### object\_set\_prop\_str\_by\_path 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="object_t_object_set_prop_str_by_path">设置指定属性的字符串类型的值。
+
+* 函数原型：
+
+```
+ret_t object_set_prop_str_by_path (object_t* obj, const char* path, const char* value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| obj | object\_t* | object对象。 |
+| path | const char* | 属性的path。 |
 | value | const char* | 属性的值。 |
 #### object\_unref 函数
 -----------------------

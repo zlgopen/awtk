@@ -26,6 +26,7 @@ value_set_int(&v, 100);
 | <a href="#value_t_value_double">value\_double</a> | 获取类型为double的值。 |
 | <a href="#value_t_value_dup_binary_data">value\_dup\_binary\_data</a> | 设置类型为binary_data的值(复制数据)。 |
 | <a href="#value_t_value_dup_str">value\_dup\_str</a> | 设置类型为字符串的值(并拷贝字符串)。 |
+| <a href="#value_t_value_dup_str_with_len">value\_dup\_str\_with\_len</a> | 设置类型为字符串的值(并拷贝字符串)。 |
 | <a href="#value_t_value_equal">value\_equal</a> | 判断两个value是否相同。 |
 | <a href="#value_t_value_float">value\_float</a> | 获取类型为float\_t的值。 |
 | <a href="#value_t_value_float32">value\_float32</a> | 获取类型为float的值。 |
@@ -61,6 +62,7 @@ value_set_int(&v, 100);
 | <a href="#value_t_value_set_wstr">value\_set\_wstr</a> | 设置类型为宽字符串的值。 |
 | <a href="#value_t_value_sized_str">value\_sized\_str</a> | 获取为sized_str的值。 |
 | <a href="#value_t_value_str">value\_str</a> | 获取类型为字符串的值。 |
+| <a href="#value_t_value_str_ex">value\_str\_ex</a> | 获取类型为字符串的值。 |
 | <a href="#value_t_value_token">value\_token</a> | 获取token的值。 |
 | <a href="#value_t_value_ubjson">value\_ubjson</a> | 获取为ubjson的值。 |
 | <a href="#value_t_value_uint16">value\_uint16</a> | 获取类型为uint16的值。 |
@@ -251,8 +253,6 @@ value_t* value_dup_binary_data (value_t* v, const void* value, uint32_t size);
 
 > <p id="value_t_value_dup_str">设置类型为字符串的值(并拷贝字符串)。
 
-> 供脚本语言使用。
-
 * 函数原型：
 
 ```
@@ -266,6 +266,27 @@ value_t* value_dup_str (value_t* v, const char* value);
 | 返回值 | value\_t* | value对象本身。 |
 | v | value\_t* | value对象。 |
 | value | const char* | 待设置的值。 |
+#### value\_dup\_str\_with\_len 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="value_t_value_dup_str_with_len">设置类型为字符串的值(并拷贝字符串)。
+
+* 函数原型：
+
+```
+value_t* value_dup_str_with_len (value_t* v, const char* value, uint32_t len);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | value\_t* | value对象本身。 |
+| v | value\_t* | value对象。 |
+| value | const char* | 待设置的值。 |
+| len | uint32\_t | 长度。 |
 #### value\_equal 函数
 -----------------------
 
@@ -956,6 +977,27 @@ const char* value_str (value_t* v);
 | -------- | ----- | --------- |
 | 返回值 | const char* | 值。 |
 | v | value\_t* | value对象。 |
+#### value\_str\_ex 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="value_t_value_str_ex">获取类型为字符串的值。
+
+* 函数原型：
+
+```
+const char* value_str_ex (value_t* v, char* buff, uint32_t size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const char* | 值。 |
+| v | value\_t* | value对象。 |
+| buff | char* | 用于格式转换的缓冲区。 |
+| size | uint32\_t | 缓冲区大小。 |
 #### value\_token 函数
 -----------------------
 

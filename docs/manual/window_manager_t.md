@@ -15,6 +15,7 @@
 | <a href="#window_manager_t_window_manager_back_to_home">window\_manager\_back\_to\_home</a> | 回到主窗口，关闭之上的全部窗口。 |
 | <a href="#window_manager_t_window_manager_begin_wait_pointer_cursor">window\_manager\_begin\_wait\_pointer\_cursor</a> | 开始等待鼠标指针。 |
 | <a href="#window_manager_t_window_manager_cast">window\_manager\_cast</a> | 转换为window_manager对象(供脚本语言使用)。 |
+| <a href="#window_manager_t_window_manager_close_all">window\_manager\_close\_all</a> | 关闭全部窗口。 |
 | <a href="#window_manager_t_window_manager_dispatch_input_event">window\_manager\_dispatch\_input\_event</a> | 分发输入事件。 |
 | <a href="#window_manager_t_window_manager_dispatch_native_window_event">window\_manager\_dispatch\_native\_window\_event</a> | 处理native window事件。 |
 | <a href="#window_manager_t_window_manager_end_wait_pointer_cursor">window\_manager\_end\_wait\_pointer\_cursor</a> | 结束等待鼠标指针。 |
@@ -32,6 +33,7 @@
 | <a href="#window_manager_t_window_manager_set_cursor">window\_manager\_set\_cursor</a> | 设置鼠标指针。 |
 | <a href="#window_manager_t_window_manager_set_screen_saver_time">window\_manager\_set\_screen\_saver\_time</a> | 设置屏保时间。 |
 | <a href="#window_manager_t_window_manager_set_show_fps">window\_manager\_set\_show\_fps</a> | 设置是否显示FPS。 |
+| <a href="#window_manager_t_window_manager_switch_to">window\_manager\_switch\_to</a> | 切换到指定窗口。 |
 ### 属性
 <p id="window_manager_t_properties">
 
@@ -159,6 +161,25 @@ widget_t* window_manager_cast (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | window\_manager对象。 |
 | widget | widget\_t* | window\_manager对象。 |
+#### window\_manager\_close\_all 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_manager_t_window_manager_close_all">关闭全部窗口。
+
+* 函数原型：
+
+```
+ret_t window_manager_close_all (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 窗口管理器对象。 |
 #### window\_manager\_dispatch\_input\_event 函数
 -----------------------
 
@@ -495,6 +516,28 @@ ret_t window_manager_set_show_fps (widget_t* widget, bool_t show_fps);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 窗口管理器对象。 |
 | show\_fps | bool\_t | 是否显示FPS。 |
+#### window\_manager\_switch\_to 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_manager_t_window_manager_switch_to">切换到指定窗口。
+
+* 函数原型：
+
+```
+ret_t window_manager_switch_to (widget_t* widget, widget_t* curr_win, widget_t* target_win, bool_t close);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 窗口管理器对象。 |
+| curr\_win | widget\_t* | 当前窗口。 |
+| target\_win | widget\_t* | 目标窗口。 |
+| close | bool\_t | 是否关闭当前窗口。 |
 #### global\_emitter 属性
 -----------------------
 > <p id="window_manager_t_global_emitter">全局事情分发器。

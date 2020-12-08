@@ -40,6 +40,7 @@
 | WIDGET\_PROP\_VALUE | 值。 |
 | WIDGET\_PROP\_LENGTH | 长度。 |
 | WIDGET\_PROP\_LINE\_WRAP | 自动换行。 |
+| WIDGET\_PROP\_WORD\_WRAP | 是否允许单词中换行。 |
 | WIDGET\_PROP\_TEXT | 文本。 |
 | WIDGET\_PROP\_TR\_TEXT | 待翻译文本。 |
 | WIDGET\_PROP\_STYLE | style。 |
@@ -72,6 +73,8 @@
 | WIDGET\_PROP\_CANCELABLE | 是否可取消。 |
 | WIDGET\_PROP\_PASSWORD\_VISIBLE | 密码是否可见。 |
 | WIDGET\_PROP\_ACTIVE | 是否处于active状态。 |
+| WIDGET\_PROP\_CURR\_PAGE | 当前页。 |
+| WIDGET\_PROP\_PAGE\_MAX\_NUMBER | 页面最大个数。 |
 | WIDGET\_PROP\_VERTICAL | 是否为垂直模式。 |
 | WIDGET\_PROP\_SHOW\_TEXT | 是否显示文本。 |
 | WIDGET\_PROP\_XOFFSET | X方向的偏移。 |
@@ -133,6 +136,7 @@
 | WIDGET\_PROP\_SELECTED\_INDEX | 被选中项的索引。 |
 | WIDGET\_PROP\_CLOSE\_WHEN\_CLICK | 点击窗口时关闭窗口。 |
 | WIDGET\_PROP\_CLOSE\_WHEN\_CLICK\_OUTSIDE | 点击窗口外部时关闭窗口。 |
+| WIDGET\_PROP\_CLOSE\_WHEN\_TIMEOUT | 超时后关闭窗口。 |
 | WIDGET\_PROP\_LINE\_GAP | 行间距。 |
 | WIDGET\_PROP\_BG\_COLOR | 背景颜色(仅仅使用于color tile)。 |
 | WIDGET\_PROP\_BORDER\_COLOR | 边框颜色(仅仅使用于color tile)。 |

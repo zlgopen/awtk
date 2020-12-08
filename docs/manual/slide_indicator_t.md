@@ -62,7 +62,7 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L3
 | <a href="#slide_indicator_t_anchor_y">anchor\_y</a> | float\_t | 锚点y坐标。 |
 | <a href="#slide_indicator_t_auto_hide">auto\_hide</a> | uint16\_t | 自动隐藏。0表示禁止，非0表示无操作后延迟多久隐藏。 |
 | <a href="#slide_indicator_t_default_paint">default\_paint</a> | indicator\_default\_paint\_t | 指示器的类型。 |
-| <a href="#slide_indicator_t_indicated_target">indicated\_target</a> | char* | 指示器指示的目标。 |
+| <a href="#slide_indicator_t_indicated_target">indicated\_target</a> | char* | 指示器指示的目标控件的名称。 |
 | <a href="#slide_indicator_t_margin">margin</a> | int32\_t | 指示器与边缘的边距。 |
 | <a href="#slide_indicator_t_max">max</a> | uint32\_t | 最大值(缺省为100)。 |
 | <a href="#slide_indicator_t_size">size</a> | uint32\_t | 指示器的大小。 |
@@ -227,7 +227,7 @@ ret_t slide_indicator_set_default_paint (widget_t* widget, indicator_default_pai
 * 函数原型：
 
 ```
-ret_t slide_indicator_set_indicated_target (widget_t* widget, const char* indicated_target);
+ret_t slide_indicator_set_indicated_target (widget_t* widget, const char* target_name);
 ```
 
 * 参数说明：
@@ -236,7 +236,7 @@ ret_t slide_indicator_set_indicated_target (widget_t* widget, const char* indica
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | slide\_indicator对象。 |
-| indicated\_target | const char* | 指示器指示的目标 |
+| target\_name | const char* | 指示器指示的目标控件的名称 |
 #### slide\_indicator\_set\_margin 函数
 -----------------------
 
@@ -403,7 +403,7 @@ ret_t slide_indicator_set_value (widget_t* widget, uint32_t value);
 | 可通过widget\_set\_prop修改 | 是 |
 #### indicated\_target 属性
 -----------------------
-> <p id="slide_indicator_t_indicated_target">指示器指示的目标。
+> <p id="slide_indicator_t_indicated_target">指示器指示的目标控件的名称。
 
 * 类型：char*
 

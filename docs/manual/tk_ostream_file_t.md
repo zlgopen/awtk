@@ -10,6 +10,7 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#tk_ostream_file_t_tk_ostream_file_create">tk\_ostream\_file\_create</a> | 创建ostream对象。 |
+| <a href="#tk_ostream_file_t_tk_ostream_file_create_ex">tk\_ostream\_file\_create\_ex</a> | 创建ostream对象。 |
 #### tk\_ostream\_file\_create 函数
 -----------------------
 
@@ -29,3 +30,23 @@ tk_ostream_t* tk_ostream_file_create (const char* filename);
 | -------- | ----- | --------- |
 | 返回值 | tk\_ostream\_t* | 返回ostream对象。 |
 | filename | const char* | 文件名。 |
+#### tk\_ostream\_file\_create\_ex 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="tk_ostream_file_t_tk_ostream_file_create_ex">创建ostream对象。
+
+* 函数原型：
+
+```
+tk_ostream_t* tk_ostream_file_create_ex (const char* filename, const char* mode);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | tk\_ostream\_t* | 返回ostream对象。 |
+| filename | const char* | 文件名。 |
+| mode | const char* | 模式。 |

@@ -10,6 +10,7 @@
 | <a href="#bitmap_t_bitmap_create">bitmap\_create</a> | 创建图片对象(一般供脚本语言中使用)。 |
 | <a href="#bitmap_t_bitmap_create_ex">bitmap\_create\_ex</a> | 创建图片对象。 |
 | <a href="#bitmap_t_bitmap_destroy">bitmap\_destroy</a> | 销毁图片。 |
+| <a href="#bitmap_t_bitmap_destroy_with_self">bitmap\_destroy\_with\_self</a> | 销毁图片(for script only)。 |
 | <a href="#bitmap_t_bitmap_get_bpp">bitmap\_get\_bpp</a> | 获取图片一个像素占用的字节数。 |
 | <a href="#bitmap_t_bitmap_get_bpp_of_format">bitmap\_get\_bpp\_of\_format</a> | 获取位图格式对应的颜色位数。 |
 | <a href="#bitmap_t_bitmap_get_line_length">bitmap\_get\_line\_length</a> | 获取每一行占用内存的字节数。 |
@@ -85,6 +86,25 @@ bitmap_t* bitmap_create_ex (uint32_t w, uint32_t h, uint32_t line_length, bitmap
 
 ```
 ret_t bitmap_destroy (bitmap_t* bitmap);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| bitmap | bitmap\_t* | bitmap对象。 |
+#### bitmap\_destroy\_with\_self 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="bitmap_t_bitmap_destroy_with_self">销毁图片(for script only)。
+
+* 函数原型：
+
+```
+ret_t bitmap_destroy_with_self (bitmap_t* bitmap);
 ```
 
 * 参数说明：

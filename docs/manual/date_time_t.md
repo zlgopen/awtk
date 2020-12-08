@@ -9,6 +9,7 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#date_time_t_date_time_add_delta">date\_time\_add\_delta</a> | 加上一个偏移量(s)。 |
 | <a href="#date_time_t_date_time_create">date\_time\_create</a> | 创建date_time对象，并初始为当前日期和时间(一般供脚本语言中使用)。 |
 | <a href="#date_time_t_date_time_destroy">date\_time\_destroy</a> | 销毁date_time对象(一般供脚本语言中使用)。 |
 | <a href="#date_time_t_date_time_from_time">date\_time\_from\_time</a> | 从time转换而来。 |
@@ -32,6 +33,26 @@
 | <a href="#date_time_t_second">second</a> | int32\_t | 秒(0 - 59)。 |
 | <a href="#date_time_t_wday">wday</a> | int32\_t | 星期几(0-6, Sunday = 0)。 |
 | <a href="#date_time_t_year">year</a> | int32\_t | 年。 |
+#### date\_time\_add\_delta 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="date_time_t_date_time_add_delta">加上一个偏移量(s)。
+
+* 函数原型：
+
+```
+ret_t date_time_add_delta (date_time_t* dt, int64_t delta);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| dt | date\_time\_t* | date\_time对象。 |
+| delta | int64\_t | 偏移量(s)。 |
 #### date\_time\_create 函数
 -----------------------
 

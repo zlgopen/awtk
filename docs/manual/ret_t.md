@@ -27,3 +27,4 @@
 | RET\_CRC | CRC错误。 |
 | RET\_IO | IO错误。 |
 | RET\_EOS | End of Stream |
+| RET\_NOT\_MODIFIED | 没有改变。 |

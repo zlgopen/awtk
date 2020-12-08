@@ -9,7 +9,7 @@
 | -------- | ------------ | 
 | <a href="#canvas_t_canvas_begin_frame">canvas\_begin\_frame</a> | 绘制开始。 |
 | <a href="#canvas_t_canvas_cast">canvas\_cast</a> | 转换为canvas对象(供脚本语言使用)。 |
-| <a href="#canvas_t_canvas_clear_rect">canvas\_clear\_rect</a> | 填充矩形。 |
+| <a href="#canvas_t_canvas_clear_rect">canvas\_clear\_rect</a> | 用填充颜色填充指定矩形。 |
 | <a href="#canvas_t_canvas_draw_hline">canvas\_draw\_hline</a> | 画水平线。 |
 | <a href="#canvas_t_canvas_draw_icon">canvas\_draw\_icon</a> | 绘制图标。 |
 | <a href="#canvas_t_canvas_draw_image">canvas\_draw\_image</a> | 绘制图片。 |
@@ -123,7 +123,9 @@ canvas_t* canvas_cast (canvas_t* c);
 
 * 函数功能：
 
-> <p id="canvas_t_canvas_clear_rect">填充矩形。
+> <p id="canvas_t_canvas_clear_rect">用填充颜色填充指定矩形。
+
+> 如果lcd的颜色格式带alpha通道，连同alpha的值一起修改。
 
 * 函数原型：
 

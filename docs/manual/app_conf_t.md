@@ -5,6 +5,12 @@
 底层实现可以是任何格式，比如INI，XML，JSON和UBJSON。
 
 对于树状的文档，key可以是多级的，用.分隔。如network.ip。
+
+conf-io是可选组件，需要自己包含头文件，否则64位数据类型会被截断成32位的数据。
+
+```c
+#include "conf_io/app_conf.h"
+```
 ----------------------------------
 ### 函数
 <p id="app_conf_t_methods">
