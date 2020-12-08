@@ -166,10 +166,22 @@
  * #define FRAGMENT_FRAME_BUFFER_SIZE 32 * 1024
  */
 
- /**
+/**
  * 启用widget类型检查，请定义本宏(除非编译器不支持，否则请定义它)。
  *
  * #define WITH_WIDGET_TYPE_CHECK 1
+ */
+
+/**
+ * 开启自定义的离线 canvas，如果板子使用特殊的画布的话，需要定义该宏来定义特殊离线 canvas 函数
+ * 
+ * #define WITH_CANVAS_OFFLINE_CUSTION 1
+ */
+
+/**
+ * 开启透明色背景的刷新机制，一般使用在多图层的透明背景使用
+ * 
+ * #define WITH_LCD_CLEAR_ALPHA 1
  */
 ```
 
