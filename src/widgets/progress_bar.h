@@ -94,6 +94,12 @@ typedef struct _progress_bar_t {
    * 是否显示文本。
    */
   bool_t show_text;
+  /**
+   * @property {bool_t} reverse
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 是否反向显示。如果为TRUE，水平方向从右向左表示增加，垂直方向从上到下表示增加。
+   */
+  bool_t reverse;
 } progress_bar_t;
 
 /**
@@ -174,6 +180,17 @@ ret_t progress_bar_set_vertical(widget_t* widget, bool_t vertical);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t progress_bar_set_show_text(widget_t* widget, bool_t show_text);
+
+/**
+ * @method progress_bar_set_reverse
+ * 设置进度条是否反向。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {bool_t}  reverse 是否反向。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t progress_bar_set_reverse(widget_t* widget, bool_t reverse);
 
 /**
  * @method progress_bar_get_percent

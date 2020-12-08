@@ -7,7 +7,7 @@
     <progress_bar value="10" show_text="true" 
       animation="value(from=0, to=100, yoyo_times=1000, duration=6000)"/>
     
-    <progress_bar value="10" style="round" show_text="true" 
+    <progress_bar value="10" style="round" show_text="true" reverse="true"
       animation="value(from=0, to=100, yoyo_times=1000, duration=6000)"/>
     
     <progress_bar style ="img" value="30" show_text="true" 
@@ -22,7 +22,7 @@
     <slider style="img_v" value="20" vertical="true" />
     <slider style="img_v" value="30" min="5" max="50" step="5" vertical="true"/>
 
-    <progress_bar value="10" vertical="true" show_text="true" 
+    <progress_bar value="10" vertical="true" show_text="true" reverse="true" 
       animation="value(from=0, to=100, yoyo_times=1000, duration=6000)"/>
     
     <progress_bar style="round" value="10" vertical="true"

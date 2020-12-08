@@ -51,17 +51,18 @@ static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
   float_t progress = progress_bar_get_progress(widget);
   uint32_t progress_w = widget->w * progress;
   uint32_t progress_h = widget->h * progress;
+  bool_t reverse = progress_bar->reverse;
 
   if (progress_bar->vertical) {
     r.x = 0;
-    r.y = 0;
     r.w = widget->w;
     r.h = widget->h - progress_h;
+    r.y = reverse ? progress_h : 0;
   } else {
     r.y = 0;
     r.h = widget->h;
     r.w = widget->w - progress_w;
-    r.x = widget->w - r.w;
+    r.x = reverse ? 0 : (widget->w - r.w);
   }
 
   if (radius || bg_image != NULL) {
@@ -74,12 +75,12 @@ static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
     r.x = 0;
     r.w = widget->w;
     r.h = progress_h;
-    r.y = widget->h - r.h;
+    r.y = reverse ? 0 : widget->h - r.h;
   } else {
     r.h = widget->h;
     r.w = progress_w;
     r.y = 0;
-    r.x = 0;
+    r.x = reverse ? (widget->w - progress_w): 0;
   }
   widget_fill_fg_rect(widget, c, &r, draw_type);
 
@@ -142,6 +143,15 @@ ret_t progress_bar_set_show_text(widget_t* widget, bool_t show_text) {
   return widget_invalidate(widget, NULL);
 }
 
+ret_t progress_bar_set_reverse(widget_t* widget, bool_t reverse) {
+  progress_bar_t* progress_bar = PROGRESS_BAR(widget);
+  return_value_if_fail(progress_bar != NULL, RET_BAD_PARAMS);
+
+  progress_bar->reverse = reverse;
+
+  return widget_invalidate(widget, NULL);
+}
+
 static ret_t progress_bar_get_prop(widget_t* widget, const char* name, value_t* v) {
   progress_bar_t* progress_bar = PROGRESS_BAR(widget);
   return_value_if_fail(progress_bar != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
@@ -157,6 +167,9 @@ static ret_t progress_bar_get_prop(widget_t* widget, const char* name, value_t* 
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_SHOW_TEXT)) {
     value_set_bool(v, progress_bar->show_text);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_REVERSE)) {
+    value_set_bool(v, progress_bar->reverse);
     return RET_OK;
   }
 
@@ -174,6 +187,8 @@ static ret_t progress_bar_set_prop(widget_t* widget, const char* name, const val
     return progress_bar_set_vertical(widget, value_bool(v));
   } else if (tk_str_eq(name, WIDGET_PROP_SHOW_TEXT)) {
     return progress_bar_set_show_text(widget, value_bool(v));
+  } else if (tk_str_eq(name, WIDGET_PROP_REVERSE)) {
+    return progress_bar_set_reverse(widget, value_bool(v));
   }
 
   return RET_NOT_FOUND;
