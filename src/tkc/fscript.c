@@ -1073,9 +1073,22 @@ static ret_t func_float(fscript_t* fscript, fscript_args_t* args, value_t* resul
 
 static ret_t func_str(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   str_t* str = &(fscript->str);
-  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
-  str_from_value(str, args->args);
-  value_set_str(result, str->str);
+  return_value_if_fail(args->size >= 1, RET_BAD_PARAMS);
+
+  if(args->args->type == VALUE_TYPE_POINTER) {
+    bool_t force_pointer_as_str = args->size == 2 && value_bool(args->args+1);
+    if(force_pointer_as_str) {
+      value_set_str(result, (const char*)value_pointer(args->args));
+    } else {
+      char buff[16];
+      tk_snprintf(buff, sizeof(buff)-1, "%p", value_pointer(args->args));
+      str_set(str, buff);
+      value_set_str(result, str->str);
+    }
+  } else {
+    str_from_value(str, args->args);
+    value_set_str(result, str->str);
+  }
 
   return RET_OK;
 }
@@ -1668,6 +1681,7 @@ static const func_entry_t s_builtin_funcs[] = {
     {"mul", func_mul, 2},
     {"#", func_noop, 0},
     {"noop", func_noop, 0},
+    {"seq", func_noop, 4},
     {"not", func_not, 1},
     {"or", func_or, 2},
     {"random", func_random, 2},

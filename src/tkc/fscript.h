@@ -22,7 +22,7 @@
 
 BEGIN_C_DECLS
 
-#define FSCRIPT_MAX_ARGS 8
+#define FSCRIPT_MAX_ARGS 32
 
 /**
  * @class fscript_args_t

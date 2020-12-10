@@ -196,6 +196,35 @@ print(join(",", a, b))
 noop()
 ```
 
+#### seq
+
+> 把组合多条语句组合成一条语句。方便在if语句中执行多条语句。
+----------------------------
+
+##### 原型
+
+```
+seq(s1, s2, s3, ...)
+```
+
+示例
+
+```js
+if(
+    msg.topic == "eof", 
+    seq(
+        print(msg.topic),
+        set(aborted, true),
+        #("文件读取完毕，关闭定时器"),
+        set(flow.timer.enable, false)
+    ),
+    seq(
+        print(str(msg.payload, true)),
+        set(msg.payload, toupper(str(msg.payload, true)))
+    )
+)
+```
+
 #### if
 
 > 条件执行。如果第一个参数为 true，执行第二个参数，否则执行第三个参数。
@@ -442,13 +471,16 @@ float("123")
 ##### 原型
 
 ```
-str(var)
+str(var [,force_pointer_as_str])
 ```
+
+> force\_pointer\_as\_str 如果输入参数是POINTER类型，是否将强制转换成字符串。
 
 #### 示例
 
 ```
 str(int(123))
+str(msg.payload, true)
 ```
 
 #### iformat
