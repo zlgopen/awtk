@@ -45,7 +45,7 @@ TEST(Fs, read_line1) {
 
   file_write(filename, str, strlen(str));
 
-  fs_file_t* f = fs_open_file(os_fs(), filename, "r");
+  fs_file_t* f = fs_open_file(os_fs(), filename, "rb");
 
   ASSERT_EQ(fs_file_read_line(f, buff, sizeof(buff)-1), 1);
   ASSERT_STREQ(buff, "1");
@@ -82,7 +82,7 @@ TEST(Fs, read_line2) {
 
   file_write(filename, str, strlen(str));
 
-  fs_file_t* f = fs_open_file(os_fs(), filename, "r");
+  fs_file_t* f = fs_open_file(os_fs(), filename, "rb");
 
   ASSERT_EQ(fs_file_read_line(f, buff, sizeof(buff)-1), 127);
   ASSERT_EQ(fs_file_eof(f), FALSE);
@@ -103,7 +103,7 @@ TEST(Fs, read_line3) {
 
   file_write(filename, str, strlen(str));
 
-  fs_file_t* f = fs_open_file(os_fs(), filename, "r");
+  fs_file_t* f = fs_open_file(os_fs(), filename, "rb");
 
   ASSERT_EQ(fs_file_read_line(f, buff, sizeof(buff)-1), 128);
   ASSERT_EQ(fs_file_eof(f), FALSE);
@@ -124,7 +124,7 @@ TEST(Fs, read_line4) {
 
   file_write(filename, str, strlen(str));
 
-  fs_file_t* f = fs_open_file(os_fs(), filename, "r");
+  fs_file_t* f = fs_open_file(os_fs(), filename, "rb");
 
   ASSERT_EQ(fs_file_read_line(f, buff, sizeof(buff)-1), 127);
   ASSERT_EQ(fs_file_read_line(f, buff, sizeof(buff)-1), 3);

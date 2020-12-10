@@ -150,6 +150,7 @@ int32_t fs_file_read(fs_file_t* file, void* buffer, uint32_t size);
  * @method fs_file_read_line
  *
  * 读取一行文本。
+ * > 需要用二进制格式打开，否则Windows下，系统会修改换行符。
  *
  * @param {fs_file_t*} file 文件对象。
  * @param {char*} buffer 用于返回数据的缓冲区。
