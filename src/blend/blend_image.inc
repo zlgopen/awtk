@@ -4,20 +4,20 @@
 #ifndef blend_a
 
 static inline void blend_a(uint8_t* dst, uint8_t* src, uint8_t alpha, bool_t premulti_alpha) {
-  pixel_dst_t* d = (pixel_dst_t*)dst;
-  pixel_src_t* s = (pixel_src_t*)src;
-  rgba_t srgba = pixel_src_to_rgba((*s));
+  pixel_src_t s = *(pixel_src_t*)src;
+  rgba_t srgba = pixel_src_to_rgba(s);
   uint8_t a = alpha == 0xff ? srgba.a : ((srgba.a * alpha) >> 8);
   /* 前景色的透明度大于 0xf8，则可以直接使用前景色 */
   if (a > 0xf8) {
     pixel_dst_t p = pixel_dst_from_rgba(srgba.r, srgba.g, srgba.b, srgba.a);
-    *d = p;
+    *(pixel_dst_t*)dst = p;
   } else if (a > 0x08) {
-    rgba_t drgba = pixel_dst_to_rgba((*d));
+    pixel_dst_t d = *(pixel_dst_t*)dst;
+    rgba_t drgba = pixel_dst_to_rgba(d);
     /* 背景色的透明度小于 0x08，则可以直接使用前景色 */
     if (drgba.a < 0x08) {
       pixel_dst_t p = pixel_dst_from_rgba(srgba.r, srgba.g, srgba.b, srgba.a);
-      *d = p;
+      *(pixel_dst_t*)dst = p;
     } else {
       if (premulti_alpha) {
         if(alpha <= 0xf8) {
@@ -25,9 +25,9 @@ static inline void blend_a(uint8_t* dst, uint8_t* src, uint8_t alpha, bool_t pre
           srgba.g = (srgba.g * alpha) >> 8;
           srgba.b = (srgba.b * alpha) >> 8;
         }
-        *d = blend_rgba_premulti(drgba, srgba, 0xff - a);
+        *(pixel_dst_t*)dst = blend_rgba_premulti(drgba, srgba, 0xff - a);
       } else  {
-        *d = blend_rgba(drgba, srgba, a);
+        *(pixel_dst_t*)dst = blend_rgba(drgba, srgba, a);
       }
     }
   }
