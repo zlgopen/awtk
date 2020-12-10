@@ -124,6 +124,9 @@ ret_t canvas_set_assets_manager(canvas_t* c, assets_manager_t* assets_manager) {
   if (vgcanvas != NULL) {
     vgcanvas_set_assets_manager(vgcanvas, assets_manager);
   }
+  if (c->font_manager != NULL) {
+    font_manager_set_assets_manager(c->font_manager, assets_manager);
+  }
 
   return RET_OK;
 }

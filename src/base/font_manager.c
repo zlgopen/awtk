@@ -117,21 +117,21 @@ font_t* font_manager_load(font_manager_t* fm, const char* name, uint32_t size) {
 #if WITH_BITMAP_FONT
     char font_name[MAX_PATH];
     font_manager_fix_bitmap_font_name(font_name, name, size);
-    info = assets_manager_ref(assets_manager(), ASSET_TYPE_FONT, font_name);
+    info = assets_manager_ref(fm->assets_manager, ASSET_TYPE_FONT, font_name);
     if (info != NULL) {
       name = font_name;
     }
 #endif
 
     if (info == NULL) {
-      info = assets_manager_ref(assets_manager(), ASSET_TYPE_FONT, name);
+      info = assets_manager_ref(fm->assets_manager, ASSET_TYPE_FONT, name);
     }
 
     if (info != NULL) {
       if (info->subtype == fm->loader->type) {
         font = font_loader_load(fm->loader, name, info->data, info->size);
       }
-      assets_manager_unref(assets_manager(), info);
+      assets_manager_unref(fm->assets_manager, info);
     }
   }
 
