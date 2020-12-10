@@ -64,6 +64,7 @@ ret_t slide_indicator_set_anchor_x(widget_t* widget, const char* anchor) {
   }
   slide_indicator->anchor_x = val;
   slide_indicator->anchor_x_fixed = TRUE;
+  slide_indicator->reset_icon_rect_list = TRUE;
   return RET_OK;
 }
 
@@ -78,6 +79,7 @@ ret_t slide_indicator_set_anchor_y(widget_t* widget, const char* anchor) {
   }
   slide_indicator->anchor_y = val;
   slide_indicator->anchor_y_fixed = TRUE;
+  slide_indicator->reset_icon_rect_list = TRUE;
   return RET_OK;
 }
 
@@ -215,7 +217,7 @@ static ret_t slide_indicator_on_layout_children(widget_t* widget) {
       }
     }
   }
-
+  slide_indicator->reset_icon_rect_list = TRUE;
   return widget_layout_children_default(widget);
 }
 
@@ -350,7 +352,7 @@ static ret_t slide_indicator_paint_arc(widget_t* widget, canvas_t* c) {
     offset = ccw ? (center - offset - 3 * M_PI / 2) : (center + offset + M_PI / 2);
 
     r = rect_init(0, 0, size, size);
-    darray_deinit(icon_rect_list);
+    darray_clear(icon_rect_list);
     for (i = 0; i < nr; i++) {
       rect_t* tmp = TKMEM_ZALLOC(rect_t);
       if (ccw) {
@@ -416,7 +418,7 @@ static ret_t slide_indicator_paint_linear(widget_t* widget, canvas_t* c) {
         r = rect_init(cx - offset, widget->h - margin - size, size, size);
       }
     }
-    darray_deinit(icon_rect_list);
+    darray_clear(icon_rect_list);
     for (i = 0; i < nr; i++) {
       rect_t* tmp = TKMEM_ZALLOC(rect_t);
       memcpy(tmp, &r, sizeof(rect_t));
@@ -618,6 +620,8 @@ ret_t slide_indicator_on_destroy(widget_t* widget) {
     idle_remove(slide_indicator->check_hide_idle);
   }
 
+  darray_deinit(&(slide_indicator->icon_rect_list));
+
   slide_indicator_reset_indicated_widget(widget);
   TKMEM_FREE(slide_indicator->indicated_target);
 
@@ -647,6 +651,11 @@ static ret_t slide_indicator_on_event(widget_t* widget, event_t* e) {
   return_value_if_fail(slide_indicator != NULL && widget != NULL, RET_BAD_PARAMS);
 
   switch (type) {
+    case EVT_MOVE: 
+    case EVT_RESIZE:
+    case EVT_MOVE_RESIZE:
+      slide_indicator->reset_icon_rect_list = TRUE;
+      break;
     case EVT_POINTER_DOWN:
       slide_indicator->pressed = TRUE;
       widget_set_state(widget, WIDGET_STATE_PRESSED);
