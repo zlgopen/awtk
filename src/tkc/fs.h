@@ -147,6 +147,19 @@ struct _fs_file_t {
 int32_t fs_file_read(fs_file_t* file, void* buffer, uint32_t size);
 
 /**
+ * @method fs_file_read_line
+ *
+ * 读取一行文本。
+ *
+ * @param {fs_file_t*} file 文件对象。
+ * @param {char*} buffer 用于返回数据的缓冲区。
+ * @param {uint32_t} size 缓冲区大小。
+ *
+ * @return {int32_t} 返回实际读取的字节数。
+ */
+int32_t fs_file_read_line(fs_file_t* file, char* buffer, uint32_t size);
+
+/**
  * @method fs_file_write
  *
  * 写入文件。

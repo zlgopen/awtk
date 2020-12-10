@@ -383,3 +383,57 @@ ret_t fs_test(fs_t* fs) {
   fs_test_file(fs);
   return fs_test_dir(fs);
 }
+
+int32_t fs_file_read_line(fs_file_t* file, char* buffer, uint32_t size) {
+  char tbuff[128];
+  char* d = buffer;
+  char* s = tbuff;
+  int32_t i = 0;
+  int32_t ret = 0;
+  int64_t offset = 0;
+  bool_t done = FALSE;
+  return_value_if_fail(file != NULL && buffer != NULL && size > 1, 0);
+
+  while (((d - buffer) < size) && !done) {
+    offset = fs_file_tell(file);
+    ret = fs_file_read(file, tbuff, sizeof(tbuff) - 1);
+    if (ret <= 0) {
+      break;
+    }
+    tbuff[ret] = '\0';
+    for (i = 0; (i < ret) && ((d - buffer) < size); i++) {
+      offset++;
+      if (s[i] == '\r') {
+        i++;
+        if (s[i] == '\n') {
+          offset++;
+        } else if (s[i] == '\0') {
+          char c = 0;
+          fs_file_read(file, &c, 1);
+          if (c == '\n') {
+            offset++;
+          }
+        }
+        done = TRUE;
+        break;
+      } else if (s[i] == '\n') {
+        done = TRUE;
+        break;
+      } else {
+        *d++ = s[i];
+      }
+    }
+
+    if (ret < (sizeof(tbuff) - 1)) {
+      break;
+    }
+  }
+
+  ret = d - buffer;
+  if (ret > 0) {
+    *d = '\0';
+    fs_file_seek(file, offset);
+  }
+
+  return ret;
+}

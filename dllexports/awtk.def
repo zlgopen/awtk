@@ -1077,6 +1077,7 @@ EXPORTS
     event_source_manager_remove_by_tag
     event_source_manager_destroy
     fs_file_read
+    fs_file_read_line
     fs_file_write
     fs_file_printf
     fs_file_seek
@@ -1926,6 +1927,7 @@ EXPORTS
     progress_bar_set_max
     progress_bar_set_vertical
     progress_bar_set_show_text
+    progress_bar_set_reverse
     progress_bar_get_percent
     row_create
     row_cast

@@ -18514,6 +18514,10 @@
         "name": "WIDGET_PROP_VALUE"
       },
       {
+        "desc": "进度条反向显示。",
+        "name": "WIDGET_PROP_REVERSE"
+      },
+      {
         "desc": "长度。",
         "name": "WIDGET_PROP_LENGTH"
       },
@@ -30744,6 +30748,32 @@
         "annotation": {},
         "desc": "读取文件。",
         "name": "fs_file_read",
+        "return": {
+          "type": "int32_t",
+          "desc": "返回实际读取的字节数。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "fs_file_t*",
+            "name": "file",
+            "desc": "文件对象。"
+          },
+          {
+            "type": "char*",
+            "name": "buffer",
+            "desc": "用于返回数据的缓冲区。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "缓冲区大小。"
+          }
+        ],
+        "annotation": {},
+        "desc": "读取一行文本。",
+        "name": "fs_file_read_line",
         "return": {
           "type": "int32_t",
           "desc": "返回实际读取的字节数。"
@@ -57826,6 +57856,29 @@
             "type": "widget_t*",
             "name": "widget",
             "desc": "控件对象。"
+          },
+          {
+            "type": "bool_t",
+            "name": "reverse",
+            "desc": "是否反向。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置进度条是否反向。",
+        "name": "progress_bar_set_reverse",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
           }
         ],
         "annotation": {
@@ -57894,6 +57947,19 @@
       {
         "name": "show_text",
         "desc": "是否显示文本。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "reverse",
+        "desc": "是否反向显示。如果为TRUE，水平方向从右向左表示增加，垂直方向从上到下表示增加。",
         "type": "bool_t",
         "annotation": {
           "set_prop": true,
@@ -62702,6 +62768,11 @@
             "type": "combo_box_custom_open_popup_t",
             "name": "open_popup",
             "desc": "回调函数。"
+          },
+          {
+            "type": "combo_box_custom_on_layout_combobox_popup_t",
+            "name": "on_layout_combobox_popup",
+            "desc": "layout 的回调函数。"
           }
         ],
         "annotation": {},

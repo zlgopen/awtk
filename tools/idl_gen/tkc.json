@@ -7029,6 +7029,32 @@
             "desc": "文件对象。"
           },
           {
+            "type": "char*",
+            "name": "buffer",
+            "desc": "用于返回数据的缓冲区。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "缓冲区大小。"
+          }
+        ],
+        "annotation": {},
+        "desc": "读取一行文本。",
+        "name": "fs_file_read_line",
+        "return": {
+          "type": "int32_t",
+          "desc": "返回实际读取的字节数。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "fs_file_t*",
+            "name": "file",
+            "desc": "文件对象。"
+          },
+          {
             "type": "const void*",
             "name": "buffer",
             "desc": "数据缓冲区。"
@@ -17711,7 +17737,7 @@
     "events": [],
     "properties": [],
     "header": "conf_io/app_conf.h",
-    "desc": "应用程序的配置信息。\n\n底层实现可以是任何格式，比如INI，XML，JSON和UBJSON。\n\n对于树状的文档，key可以是多级的，用.分隔。如network.ip。",
+    "desc": "应用程序的配置信息。\n\n底层实现可以是任何格式，比如INI，XML，JSON和UBJSON。\n\n对于树状的文档，key可以是多级的，用.分隔。如network.ip。\n\nconf-io是可选组件，需要自己包含头文件，否则64位数据类型会被截断成32位的数据。\n\n```c\n#include \"conf_io/app_conf.h\"\n```",
     "name": "app_conf_t",
     "annotation": {
       "fake": true,
