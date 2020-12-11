@@ -600,6 +600,20 @@ ret_t fs_get_user_storage_path(fs_t* fs, char path[MAX_PATH + 1]);
 ret_t fs_get_cwd(fs_t* fs, char path[MAX_PATH + 1]);
 
 /**
+ * @method fs_build_user_storage_file_name
+ *
+ * 生成一个保存数据文件的完整路径的文件名。
+ *
+ * @param {char*} filename 用于返回完整路径的文件名。
+ * @param {const char*} appname 应用程序的名称。
+ * @param {const char*} name 文件名(不包括路径)。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t fs_build_user_storage_file_name(char filename[MAX_PATH + 1], const char* appname,
+                                                const char* name);
+
+/**
  * @method os_fs
  * 获取缺省的文件系统对象。
  * @annotation ["constructor"]

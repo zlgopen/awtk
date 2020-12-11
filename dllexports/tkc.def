@@ -297,6 +297,7 @@ EXPORTS
     fs_get_exe
     fs_get_user_storage_path
     fs_get_cwd
+    fs_build_user_storage_file_name
     os_fs
     file_exist
     file_remove

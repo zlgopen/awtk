@@ -437,3 +437,17 @@ int32_t fs_file_read_line(fs_file_t* file, char* buffer, uint32_t size) {
 
   return ret;
 }
+
+ret_t fs_build_user_storage_file_name(char filename[MAX_PATH + 1], const char* appname,
+                                                const char* name) {
+  char home[MAX_PATH + 1];
+  char path[MAX_PATH + 1];
+  return_value_if_fail(filename != NULL && appname != NULL && name != NULL, RET_FAIL);
+  return_value_if_fail(fs_get_user_storage_path(os_fs(), home) == RET_OK, RET_FAIL);
+  return_value_if_fail(path_build(path, MAX_PATH, home, appname, NULL) == RET_OK, RET_FAIL);
+  if (!path_exist(path)) {
+    fs_create_dir(os_fs(), path);
+  }
+
+  return path_build(filename, MAX_PATH, path, name, NULL);
+}

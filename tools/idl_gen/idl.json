@@ -30772,7 +30772,7 @@
           }
         ],
         "annotation": {},
-        "desc": "读取一行文本。",
+        "desc": "读取一行文本。\n> 需要用二进制格式打开，否则Windows下，系统会修改换行符。",
         "name": "fs_file_read_line",
         "return": {
           "type": "int32_t",
@@ -31425,6 +31425,32 @@
         "annotation": {},
         "desc": "获取当前所在目录。",
         "name": "fs_get_cwd",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "char*",
+            "name": "filename",
+            "desc": "用于返回完整路径的文件名。"
+          },
+          {
+            "type": "const char*",
+            "name": "appname",
+            "desc": "应用程序的名称。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "文件名(不包括路径)。"
+          }
+        ],
+        "annotation": {},
+        "desc": "生成一个保存数据文件的完整路径的文件名。",
+        "name": "fs_build_user_storage_file_name",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"

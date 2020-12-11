@@ -1,5 +1,8 @@
 # 最新动态
 
+2020/12/11
+  * 增加函数fs\_build\_user\_storage\_file\_name。
+
 2020/12/10
   * 完善fscript，增加函数seq。
   * 增加函数fs\_file\_read\_line。
