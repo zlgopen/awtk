@@ -1,7 +1,10 @@
 # 最新动态
 
 2020/12/11
+  * 完善测试（感谢智明提供补丁）。
   * 增加函数fs\_build\_user\_storage\_file\_name。
+  * 水平视图支持按页滚动，请参考design/default/ui/list\_view\_h1.xml （感谢智明提供补丁）
+
 
 2020/12/10
   * 完善fscript，增加函数seq。
