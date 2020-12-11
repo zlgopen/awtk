@@ -35,6 +35,7 @@ TEST(FontManager, loader) {
   font_manager_t font_manager;
 
   font_manager_init(&font_manager, font_loader_truetype());
+  font_manager_set_assets_manager(&font_manager, assets_manager());
   ASSERT_EQ(font_manager_get_font(&font_manager, "ap", 20) != NULL, true);
   font_manager_deinit(&font_manager);
 }
@@ -43,6 +44,7 @@ TEST(FontManager, unload) {
   font_manager_t font_manager;
 
   font_manager_init(&font_manager, font_loader_truetype());
+  font_manager_set_assets_manager(&font_manager, assets_manager());
   ASSERT_EQ(font_manager_get_font(&font_manager, "ap", 20) != NULL, true);
 
   ASSERT_EQ(font_manager_unload_font(&font_manager, "ap", 0), RET_OK);
