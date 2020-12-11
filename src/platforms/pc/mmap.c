@@ -49,7 +49,7 @@ mmap_t* mmap_create(const char* filename, bool_t writable, bool_t shared) {
   goto_error_if_fail(hFile != INVALID_HANDLE_VALUE);
   handle = CreateFileMapping(hFile, NULL, flProtect, 0, size, NULL);
   goto_error_if_fail(handle != NULL);
-  dwDesiredAccess = shared ? FILE_MAP_WRITE : FILE_MAP_READ;
+  dwDesiredAccess = writable ? FILE_MAP_ALL_ACCESS : FILE_MAP_READ;
 
   map->size = size;
   map->fd = (void*)hFile;
