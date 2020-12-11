@@ -33314,6 +33314,83 @@
     "type": "class",
     "methods": [
       {
+        "params": [
+          {
+            "type": "mmap_t*",
+            "name": "mmap",
+            "desc": "mmap对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "filename",
+            "desc": "文件名。"
+          },
+          {
+            "type": "bool_t",
+            "name": "writable",
+            "desc": "是否可写。"
+          },
+          {
+            "type": "bool_t",
+            "name": "shared",
+            "desc": "是否共享。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "初始化mmap对象。",
+        "name": "mmap_create",
+        "return": {
+          "type": "mmap_t*",
+          "desc": "mmap对象本身。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "mmap_t*",
+            "name": "mmap",
+            "desc": "mmap对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁mmap。",
+        "name": "mmap_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "data",
+        "desc": "内存地址。",
+        "type": "void*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "size",
+        "desc": "数据长度。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "tkc/mmap.h",
+    "desc": "把文件内容映射到内存。",
+    "name": "mmap_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
         "params": [],
         "annotation": {},
         "desc": "创建嵌套互斥锁。",
@@ -49720,6 +49797,29 @@
             "desc": "控件对象。"
           },
           {
+            "type": "bool_t",
+            "name": "snap_to_page",
+            "desc": "是否按页面对齐。"
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置滚动时offset是否按页面对齐。",
+        "name": "scroll_view_set_snap_to_page",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "控件对象。"
+          },
+          {
             "type": "int32_t",
             "name": "xoffset",
             "desc": "x偏移量。"
@@ -49750,12 +49850,12 @@
           {
             "type": "float_t",
             "name": "xspeed_scale",
-            "desc": "x偏移速度比例。。"
+            "desc": "x偏移速度比例。"
           },
           {
             "type": "float_t",
             "name": "yspeed_scale",
-            "desc": "y偏移速度比例。。"
+            "desc": "y偏移速度比例。"
           }
         ],
         "annotation": {
@@ -49947,6 +50047,19 @@
       {
         "name": "yslidable",
         "desc": "是否允许y方向滑动。",
+        "type": "bool_t",
+        "annotation": {
+          "set_prop": true,
+          "get_prop": true,
+          "readable": true,
+          "persitent": true,
+          "design": true,
+          "scriptable": true
+        }
+      },
+      {
+        "name": "snap_to_page",
+        "desc": "滚动时offset是否按页面对齐。",
         "type": "bool_t",
         "annotation": {
           "set_prop": true,

@@ -1156,6 +1156,8 @@ EXPORTS
     tk_free
     tk_mem_dump
     tk_mem_is_valid_addr
+    mmap_create
+    mmap_destroy
     tk_mutex_nest_create
     tk_mutex_nest_lock
     tk_mutex_nest_try_lock
@@ -1724,6 +1726,7 @@ EXPORTS
     scroll_view_set_virtual_h
     scroll_view_set_xslidable
     scroll_view_set_yslidable
+    scroll_view_set_snap_to_page
     scroll_view_set_offset
     scroll_view_set_speed_scale
     scroll_view_scroll_to

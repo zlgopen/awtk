@@ -31,25 +31,24 @@
 
 mmap_t* mmap_create(const char* filename, bool_t writable, bool_t shared) {
 #ifdef WIN32
-  wchar_t wfilename[MAX_PATH+1];
+  DWORD err = 0;
+  mmap_t* map = NULL;
+  wchar_t wfilename[MAX_PATH + 1];
   HANDLE hFile = INVALID_HANDLE_VALUE;
   HANDLE handle = INVALID_HANDLE_VALUE;
   DWORD flProtect = writable ? PAGE_READWRITE : PAGE_READONLY;
-  DWORD dwDesiredAccess = writable ? GENERIC_WRITE : GENERIC_READ;
+  DWORD dwDesiredAccess = writable ? GENERIC_WRITE | GENERIC_READ : GENERIC_READ;
   uint32_t size = file_get_size(filename);
   return_value_if_fail(filename != NULL && size > 0, NULL);
 
+  map = TKMEM_ZALLOC(mmap_t);
+  goto_error_if_fail(map != NULL);
   tk_utf8_to_utf16(filename, wfilename, MAX_PATH);
-  hFile = CreateFileW(wfilename,
-                       dwDesiredAccess,
-                       0,  
-                       NULL,  
-                       OPEN_EXISTING,
-                       FILE_ATTRIBUTE_NORMAL,
-                       NULL);
-  return_value_if_fail(hFile != INVALID_HANDLE_VALUE, NULL);
-  handle = CreateFileMapping(hFile, NULL, flProtect, DWORD_HI(0), DWORD_LO(size), NULL);
+  hFile =
+      CreateFileW(wfilename, dwDesiredAccess, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
   goto_error_if_fail(hFile != INVALID_HANDLE_VALUE);
+  handle = CreateFileMapping(hFile, NULL, flProtect, 0, size, NULL);
+  goto_error_if_fail(handle != NULL);
   dwDesiredAccess = shared ? FILE_MAP_WRITE : FILE_MAP_READ;
 
   map->size = size;
@@ -59,6 +58,8 @@ mmap_t* mmap_create(const char* filename, bool_t writable, bool_t shared) {
 
   return map;
 error:
+  err = GetLastError();
+  log_debug("err=%u\n", err);
   if (hFile != INVALID_HANDLE_VALUE) {
     CloseHandle(hFile);
   }
@@ -111,15 +112,15 @@ ret_t mmap_destroy(mmap_t* map) {
   fd = (HANDLE)(map->fd);
   handle = (HANDLE)(map->handle);
 
-  if(fd != INVALID_HANDLE_VALUE) {
+  if (fd != INVALID_HANDLE_VALUE) {
     CloseHandle(fd);
   }
 
-  if(handle != INVALID_HANDLE_VALUE) {
+  if (handle != INVALID_HANDLE_VALUE) {
     CloseHandle(handle);
   }
 
-  if(map->data != NULL) {
+  if (map->data != NULL) {
     UnmapViewOfFile(map->data);
   }
 

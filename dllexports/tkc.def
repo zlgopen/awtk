@@ -347,6 +347,8 @@ EXPORTS
     tk_free
     tk_mem_dump
     tk_mem_is_valid_addr
+    mmap_create
+    mmap_destroy
     tk_mutex_nest_create
     tk_mutex_nest_lock
     tk_mutex_nest_try_lock
