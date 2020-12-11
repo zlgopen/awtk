@@ -27,6 +27,7 @@
 #include "scroll_view/scroll_bar.h"
 #include "scroll_view/scroll_view.h"
 #include "scroll_view/list_view.h"
+#include "scroll_view/list_view_h.h"
 #include "scroll_view/children_layouter_list_view.h"
 
 static const char* children_layouter_list_view_to_string(children_layouter_t* layouter) {
@@ -77,6 +78,10 @@ static const char* children_layouter_list_view_to_string(children_layouter_t* la
     str_append(str, "keep_invisible=true,");
   }
 
+  if (layout->hlayouter) {
+    str_append(str, "hlayouter=true,");
+  }
+
   str_trim_right(str, ",");
   str_append(str, ")");
 
@@ -123,6 +128,12 @@ static ret_t children_layouter_list_view_set_param(children_layouter_t* layouter
         l->keep_invisible = value_bool(v);
       } else if (strstr(name, "disable") != NULL || name[1] == 'd') {
         l->keep_disable = value_bool(v);
+      }
+      break;
+    }
+    case 'h': {
+      if (strstr(name, "layouter") != NULL || name[1] == 'l') {
+        l->hlayouter = value_bool(v);
       }
       break;
     }
@@ -175,6 +186,12 @@ static ret_t children_layouter_list_view_get_param(children_layouter_t* layouter
         return RET_OK;
       }
       break;
+    }    
+    case 'h': {
+      if (strstr(name, "layouter") != NULL || name[1] == 'l') {
+        value_set_bool(v, l->hlayouter);
+      }
+      break;
     }
     default: {
       assert(!"not support param");
@@ -185,7 +202,7 @@ static ret_t children_layouter_list_view_get_param(children_layouter_t* layouter
   return RET_FAIL;
 }
 
-static ret_t children_layouter_list_view_layout(children_layouter_t* layouter, widget_t* widget) {
+static ret_t children_layouter_for_list_view_layout(children_layouter_t* layouter, widget_t* widget) {
   int32_t spacing = 0;
   int32_t x_margin = 0;
   int32_t y_margin = 0;
@@ -351,6 +368,75 @@ static ret_t children_layouter_list_view_layout(children_layouter_t* layouter, w
   }
 
   return RET_OK;
+}
+
+static ret_t children_layouter_for_list_view_h_layout(children_layouter_t* layouter, widget_t* widget) {
+  int32_t virtual_w = 0;
+  list_view_h_t* list_view_h = NULL;
+  scroll_view_t* scroll_view = SCROLL_VIEW(widget);
+  children_layouter_list_view_t* l = (children_layouter_list_view_t*)layouter;
+  return_value_if_fail(widget != NULL && scroll_view != NULL && l != NULL, RET_BAD_PARAMS);
+ 
+  list_view_h = LIST_VIEW_H(widget->parent);
+  return_value_if_fail(list_view_h != NULL, RET_BAD_PARAMS);
+
+  if (widget->children != NULL && l->cols > 0) {
+    int32_t i = 0;
+    int32_t nw = 0;
+    int32_t x = l->x_margin;
+    int32_t y = l->y_margin;
+    uint32_t cols = l->cols;
+    widget_t** children = NULL;
+    darray_t children_for_layout;
+    int32_t spacing = l->spacing;
+    int32_t h = widget->h - l->y_margin * 2;
+    int32_t w = widget->w - l->x_margin * 2;
+    int32_t oy = l->y_margin - l->item_height - spacing;
+    uint32_t item_w = (w - (cols - 1) * spacing) / cols;
+
+    widget_layout_floating_children(widget);
+    darray_init(&children_for_layout, widget->children->size, NULL, NULL);
+
+    return_value_if_fail(
+        widget_get_children_for_layout(widget, &children_for_layout, l->keep_disable,
+                                       l->keep_invisible) == RET_OK,
+        RET_BAD_PARAMS);
+
+    children = (widget_t**)(children_for_layout.elms);
+    y = oy;
+    virtual_w = w;
+    for (i = 0; i < children_for_layout.size; i++) {
+      widget_t* iter = children[i];
+
+      if (i % cols == 0) {
+        x = l->x_margin + w * nw;
+        y += l->item_height + spacing;
+        if (y + l->item_height + spacing > h) {
+          nw++;
+          x += w;
+          virtual_w += w;
+          y = oy + l->item_height + spacing;
+        }
+      } else {
+        x += item_w + spacing;
+      }
+
+      widget_move_resize(iter, x, y, item_w, l->item_height);
+      widget_layout(iter);
+    }
+    scroll_view_set_virtual_w(list_view_h->scroll_view, virtual_w);
+  }
+
+  return RET_OK;
+}
+
+static ret_t children_layouter_list_view_layout(children_layouter_t* layouter, widget_t* widget) {
+  children_layouter_list_view_t* l = (children_layouter_list_view_t*)layouter;
+  if (l->hlayouter) {
+    return children_layouter_for_list_view_h_layout(layouter, widget);
+  } else {
+    return children_layouter_for_list_view_layout(layouter, widget);
+  }
 }
 
 static bool_t children_layouter_list_view_is_valid(children_layouter_t* layouter) {

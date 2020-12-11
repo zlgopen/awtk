@@ -139,6 +139,7 @@
 #include "assets/default/inc/ui/select1.data"
 #include "assets/default/inc/ui/hscroll_label.data"
 #include "assets/default/inc/ui/slide_left.data"
+#include "assets/default/inc/ui/list_view_h1.data"
 #include "assets/default/inc/ui/image_animation.data"
 #include "assets/default/inc/ui/image_value.data"
 #include "assets/default/inc/ui/slide_view.data"
@@ -602,6 +603,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_select1);
   assets_manager_add(am, ui_hscroll_label);
   assets_manager_add(am, ui_slide_left);
+  assets_manager_add(am, ui_list_view_h1);
   assets_manager_add(am, ui_image_animation);
   assets_manager_add(am, ui_image_value);
   assets_manager_add(am, ui_slide_view);

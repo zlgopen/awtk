@@ -102,33 +102,36 @@ static ret_t list_view_h_on_scroll_view_layout_children(widget_t* widget) {
   list_view_h_t* list_view_h = LIST_VIEW_H(widget->parent);
   return_value_if_fail(list_view_h != NULL, RET_BAD_PARAMS);
 
-  spacing = list_view_h->spacing;
-  item_width = list_view_h->item_width;
+  if (widget->children_layout != NULL) {
+    children_layouter_layout(widget->children_layout, widget);
+  } else {
+    spacing = list_view_h->spacing;
+    item_width = list_view_h->item_width;
 
-  if (widget->children != NULL) {
-    int32_t i = 0;
-    int32_t x = 0;
-    int32_t y = 0;
-    int32_t w = item_width;
-    int32_t h = widget->h;
-    int32_t n = widget->children->size;
-    widget_t** children = (widget_t**)(widget->children->elms);
+    if (widget->children != NULL) {
+      int32_t i = 0;
+      int32_t x = 0;
+      int32_t y = 0;
+      int32_t w = item_width;
+      int32_t h = widget->h;
+      int32_t n = widget->children->size;
+      widget_t** children = (widget_t**)(widget->children->elms);
 
-    for (i = 0; i < n; i++) {
-      widget_t* iter = children[i];
+      for (i = 0; i < n; i++) {
+        widget_t* iter = children[i];
 
-      widget_move_resize(iter, x, y, w, h);
-      widget_layout(iter);
+        widget_move_resize(iter, x, y, w, h);
+        widget_layout(iter);
 
-      x = iter->x + iter->w + spacing;
+        x = iter->x + iter->w + spacing;
+      }
+
+      if (x > virtual_w) {
+        virtual_w = x;
+      }
     }
-
-    if (x > virtual_w) {
-      virtual_w = x;
-    }
+    scroll_view_set_virtual_w(list_view_h->scroll_view, virtual_w);
   }
-
-  scroll_view_set_virtual_w(list_view_h->scroll_view, virtual_w);
   scroll_view_set_xslidable(list_view_h->scroll_view, TRUE);
   scroll_view_set_yslidable(list_view_h->scroll_view, FALSE);
 
