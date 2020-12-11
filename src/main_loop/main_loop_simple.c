@@ -48,6 +48,22 @@ static ret_t main_loop_simple_recv_event_mutex(main_loop_t* l, event_queue_req_t
   return ret;
 }
 
+ret_t main_loop_post_multi_gesture_event(main_loop_t* l, multi_gesture_event_t* event) {
+  event_queue_req_t r;
+  multi_gesture_event_t evt;
+  main_loop_simple_t* loop = (main_loop_simple_t*)l;
+
+  memset(&r, 0x00, sizeof(r));
+  memset(&evt, 0x00, sizeof(multi_gesture_event_t));
+  return_value_if_fail(loop != NULL, RET_BAD_PARAMS);
+
+  memcpy(&evt, event, sizeof(multi_gesture_event_t));
+
+  r.multi_gesture_event = evt;
+
+  return main_loop_queue_event(l, &r);
+}
+
 ret_t main_loop_post_pointer_event(main_loop_t* l, bool_t pressed, xy_t x, xy_t y) {
   event_queue_req_t r;
   pointer_event_t event;
@@ -150,6 +166,9 @@ static ret_t main_loop_dispatch_events(main_loop_simple_t* loop) {
         break;
       case REQ_ADD_TIMER:
         timer_add(r.add_timer.func, r.add_timer.e.target, r.add_timer.duration);
+        break;
+      case EVT_MULTI_GESTURE :
+        window_manager_dispatch_input_event(widget, (event_t*)&(r.multi_gesture_event));
         break;
       default: {
         if (r.event.target != NULL) {
