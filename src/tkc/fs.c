@@ -21,6 +21,7 @@
 
 #include "tkc/fs.h"
 #include "tkc/mem.h"
+#include "tkc/path.h"
 
 int32_t fs_file_read(fs_file_t* file, void* buffer, uint32_t size) {
   return_value_if_fail(file != NULL && file->vt != NULL && buffer != NULL && file->vt->read != NULL,
