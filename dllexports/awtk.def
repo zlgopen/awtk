@@ -1546,6 +1546,7 @@ EXPORTS
     window_manager_get_pointer_pressed
     window_manager_is_animating
     window_manager_open_window
+    window_manager_close_window_force
     window_manager_paint
     window_manager_dispatch_input_event
     window_manager_set_show_fps

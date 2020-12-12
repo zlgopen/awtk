@@ -43871,6 +43871,27 @@
             "type": "widget_t*",
             "name": "widget",
             "desc": "窗口管理器对象。"
+          },
+          {
+            "type": "widget_t*",
+            "name": "window",
+            "desc": "窗口对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "强制立即关闭窗口。\n\n> 本函数不会执行窗口动画。",
+        "name": "window_manager_close_window_force",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "窗口管理器对象。"
           }
         ],
         "annotation": {},

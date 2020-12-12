@@ -245,7 +245,6 @@ ret_t window_manager_close_window(widget_t* widget, widget_t* window);
  * 强制立即关闭窗口。
  *
  *> 本函数不会执行窗口动画。
- * @annotation ["private"]
  * @param {widget_t*} widget 窗口管理器对象。
  * @param {widget_t*} window 窗口对象。
  *
