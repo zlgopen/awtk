@@ -112,16 +112,16 @@ ret_t mmap_destroy(mmap_t* map) {
   fd = (HANDLE)(map->fd);
   handle = (HANDLE)(map->handle);
 
+  if (map->data != NULL) {
+    UnmapViewOfFile(map->data);
+  }
+
   if (fd != INVALID_HANDLE_VALUE) {
     CloseHandle(fd);
   }
 
   if (handle != INVALID_HANDLE_VALUE) {
     CloseHandle(handle);
-  }
-
-  if (map->data != NULL) {
-    UnmapViewOfFile(map->data);
   }
 
   memset(map, 0x00, sizeof(mmap_t));

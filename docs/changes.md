@@ -1,15 +1,18 @@
 # 最新动态
 
+2020/12/12
+  * 在支持 mmap/FileMapping 的系统，优先使用 mmap 加载大资源。
+  
 2020/12/11
-  * 增加mmap。
+  * 增加 mmap。
   * 完善测试（感谢智明提供补丁）。
   * 增加多点手势算法（感谢智明提供补丁）
-  * 增加函数fs\_build\_user\_storage\_file\_name。
-  * 水平视图支持按页滚动，请参考design/default/ui/list\_view\_h1.xml （感谢智明提供补丁）
+  * 增加函数 fs\_build\_user\_storage\_file\_name。
+  * 水平视图支持按页滚动，请参考 design/default/ui/list\_view\_h1.xml （感谢智明提供补丁）
 
 2020/12/10
-  * 完善fscript，增加函数seq。
-  * 增加函数fs\_file\_read\_line。
+  * 完善 fscript，增加函数 seq。
+  * 增加函数 fs\_file\_read\_line。
   * 优化融合算法针对目标位图为非 cache 的情况（感谢智明提供补丁） 
   * 修改窗口设置字体管理器和图片管理器不正常的问题（感谢智明提供补丁） 
   * 修复 slide\_indicator 改变大小后无法刷新点的位置和清除点区域列表的问题（感谢智明提供补丁） 
@@ -23,7 +26,7 @@
 
 2020/12/06
   * 窗口全部关闭后清屏。
-  * 完善draw\_rounded\_rect（感谢智明提供补丁）
+  * 完善 draw\_rounded\_rect（感谢智明提供补丁）
 
 2020/12/05
   * 修复 theme\_gen 可能存在没有初始化变量的问题（感谢朝泽提供补丁）。

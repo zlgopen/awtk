@@ -53,6 +53,18 @@ asset_info_t* asset_info_create(uint16_t type, uint16_t subtype, const char* nam
   info->is_in_rom = FALSE;
   strncpy(info->name, asset_name, TK_NAME_LEN);
 
+#ifdef LOAD_ASSET_WITH_MMAP
+  if (size > 0) {
+    info->data = TKMEM_ALLOC(size + 1);
+    if (info->data != NULL) {
+      memset(info->data, 0x00, size + 1);
+    } else {
+      TKMEM_FREE(info);
+      return NULL;
+    }
+  }
+#endif /*LOAD_ASSET_WITH_MMAP*/
+
   if (asset_name != name) {
     log_warn(
         "[warn] asset name max length is %d , so old name : \"%s\" format to new name : \"%s\" ! "
@@ -67,8 +79,15 @@ ret_t asset_info_destroy(asset_info_t* info) {
   return_value_if_fail(info != NULL, RET_BAD_PARAMS);
 
   if (!(info->is_in_rom)) {
-    memset(info, 0x00, sizeof(asset_info_t));
+#ifdef LOAD_ASSET_WITH_MMAP
+    if (info->map != NULL) {
+      mmap_destroy(info->map);
+    } else if (info->data != NULL) {
+      TKMEM_FREE(info->data);
+    }
+#endif /*LOAD_ASSET_WITH_MMAP*/
 
+    memset(info, 0x00, sizeof(asset_info_t));
     TKMEM_FREE(info);
   }
 

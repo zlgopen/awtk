@@ -22,7 +22,11 @@
 #ifndef TK_ASSET_INFO_H
 #define TK_ASSET_INFO_H
 
+#ifdef LOAD_ASSET_WITH_MMAP
+#include "tkc/mmap.h"
+#else
 #include "tkc/types_def.h"
+#endif/*LOAD_ASSET_WITH_MMAP*/
 
 BEGIN_C_DECLS
 
@@ -300,7 +304,12 @@ typedef struct _asset_info_t {
    * 名称。
    */
   char name[TK_NAME_LEN + 1];
+#ifdef LOAD_ASSET_WITH_MMAP
+  uint8_t* data;
+  mmap_t* map;
+#else
   uint8_t data[4];
+#endif/*LOAD_ASSET_WITH_MMAP*/
 } asset_info_t;
 
 /**
