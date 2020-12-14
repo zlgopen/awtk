@@ -1,0 +1,5 @@
+<overlay text="overlay" x="100" y="100" w="150" h="40" always_on_top="true">
+  <draggable drag_window="true"/>
+  <image image="logo" x="c" y="m" w="100%" h="100%"/> 
+  <button x="10" y="m" w="16" h="16" name="close" text="x"/>
+</overlay>

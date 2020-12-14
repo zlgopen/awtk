@@ -29,6 +29,8 @@ static ret_t overlay_set_prop(widget_t* widget, const char* name, const value_t*
 
   if (tk_str_eq(name, WIDGET_PROP_CLICK_THROUGH)) {
     return overlay_set_click_through(widget, value_bool(v));
+  } else if (tk_str_eq(name, WIDGET_PROP_ALWAYS_ON_TOP)) {
+    return overlay_set_always_on_top(widget, value_bool(v));
   }
 
   return window_base_set_prop(widget, name, v);
@@ -40,6 +42,9 @@ static ret_t overlay_get_prop(widget_t* widget, const char* name, value_t* v) {
 
   if (tk_str_eq(name, WIDGET_PROP_CLICK_THROUGH)) {
     value_set_bool(v, overlay->click_through);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_ALWAYS_ON_TOP)) {
+    value_set_bool(v, overlay->always_on_top);
     return RET_OK;
   }
 
@@ -68,7 +73,7 @@ static bool_t overlay_is_point_in(widget_t* widget, xy_t x, xy_t y) {
 
 static const char* const s_overlay_properties[] = {
     WIDGET_PROP_MOVE_FOCUS_PREV_KEY, WIDGET_PROP_MOVE_FOCUS_NEXT_KEY, WIDGET_PROP_THEME,
-    WIDGET_PROP_CLICK_THROUGH, NULL};
+    WIDGET_PROP_CLICK_THROUGH, WIDGET_PROP_ALWAYS_ON_TOP, NULL};
 
 TK_DECL_VTABLE(overlay) = {.type = WIDGET_TYPE_OVERLAY,
                            .size = sizeof(overlay_t),
@@ -101,6 +106,15 @@ ret_t overlay_set_click_through(widget_t* widget, bool_t click_through) {
   return_value_if_fail(overlay != NULL, RET_BAD_PARAMS);
 
   overlay->click_through = click_through;
+
+  return RET_OK;
+}
+
+ret_t overlay_set_always_on_top(widget_t* widget, bool_t always_on_top) {
+  overlay_t* overlay = OVERLAY(widget);
+  return_value_if_fail(overlay != NULL, RET_BAD_PARAMS);
+
+  overlay->always_on_top = always_on_top;
 
   return RET_OK;
 }

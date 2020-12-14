@@ -830,6 +830,7 @@ static ret_t window_manager_paint_animation(widget_t* widget, canvas_t* c) {
   widget_dispatch(widget, paint_event_init(&e, EVT_BEFORE_PAINT, widget, c));
 
   ret_t ret = window_animator_update(wm->animator, start_time);
+  window_manager_default_paint_always_on_top(widget, c);
 
   widget_dispatch(widget, paint_event_init(&e, EVT_AFTER_PAINT, widget, c));
 
@@ -915,6 +916,18 @@ static widget_t* window_manager_default_get_prev_window(widget_t* widget) {
   return wm->prev_win;
 }
 
+static ret_t window_manager_default_paint_always_on_top(widget_t* widget, canvas_t* c) {
+  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+  if (iter->visible) {
+    if (widget_get_prop_bool(iter, WIDGET_PROP_ALWAYS_ON_TOP, FALSE)) {
+      widget_paint(iter, c);
+    }
+  }
+  WIDGET_FOR_EACH_CHILD_END()
+
+  return RET_OK;
+}
+
 static ret_t window_manager_default_on_paint_children(widget_t* widget, canvas_t* c) {
   int32_t start = 0;
   bool_t has_fullscreen_win = FALSE;
@@ -964,6 +977,8 @@ static ret_t window_manager_default_on_paint_children(widget_t* widget, canvas_t
     }
   }
   WIDGET_FOR_EACH_CHILD_END()
+  
+  window_manager_default_paint_always_on_top(widget, c);
 
   return RET_OK;
 }

@@ -72,6 +72,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_INPUTING "inputing"
 
 /**
+ * @const WIDGET_PROP_ALWAYS_ON_TOP
+ * always on top。
+ */
+#define WIDGET_PROP_ALWAYS_ON_TOP "always_on_top"
+
+/**
  * @const WIDGET_PROP_CARET_X
  * caret x。
  */

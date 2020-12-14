@@ -532,9 +532,24 @@ widget_t* window_manager_find_target_by_win(widget_t* widget, void* win) {
   return NULL;
 }
 
+static bool_t window_manager_is_win_valid_target(widget_t* iter, void* win) {
+  if (win != NULL) {
+    native_window_t* nw =
+        (native_window_t*)widget_get_prop_pointer(iter, WIDGET_PROP_NATIVE_WINDOW);
+    if (nw == NULL || nw->handle != win) {
+      return FALSE;
+    }
+  }
+
+  if (!iter->visible || !iter->sensitive || !iter->enable) {
+    return FALSE;
+  }
+
+  return TRUE;
+}
+
 widget_t* window_manager_find_target(widget_t* widget, void* win, xy_t x, xy_t y) {
   point_t p = {x, y};
-  native_window_t* nw = NULL;
   return_value_if_fail(widget != NULL, NULL);
 
   if (widget->grab_widget != NULL) {
@@ -543,14 +558,17 @@ widget_t* window_manager_find_target(widget_t* widget, void* win, xy_t x, xy_t y
 
   widget_to_local(widget, &p);
   WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
-  if (win != NULL) {
-    nw = (native_window_t*)widget_get_prop_pointer(iter, WIDGET_PROP_NATIVE_WINDOW);
-    if (nw == NULL || nw->handle != win) {
-      continue;
-    }
+  if (!window_manager_is_win_valid_target(iter, win)) {
+    continue;
   }
+  if (widget_get_prop_bool(iter, WIDGET_PROP_ALWAYS_ON_TOP, FALSE) &&
+      widget_is_point_in(iter, x, y, FALSE)) {
+    return iter;
+  }
+  WIDGET_FOR_EACH_CHILD_END()
 
-  if (!iter->visible || !iter->sensitive || !iter->enable) {
+  WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
+  if (!window_manager_is_win_valid_target(iter, win)) {
     continue;
   }
 

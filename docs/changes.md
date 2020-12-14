@@ -1,5 +1,8 @@
 # 最新动态
 
+2020/12/14
+  * overlay窗口支持always\_on\_top属性。
+
 2020/12/12
   * 在支持 mmap/FileMapping 的系统，优先使用 mmap 加载大资源。
   

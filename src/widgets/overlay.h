@@ -81,6 +81,16 @@ typedef struct _overlay_t {
    *
    */
   bool_t click_through;
+  
+  /**
+   * @property {bool_t} always_on_top
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 是否总在最上面。
+   *
+   * 缺省不启用。
+   *
+   */
+  bool_t always_on_top;
 } overlay_t;
 
 /**
@@ -107,6 +117,17 @@ widget_t* overlay_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t overlay_set_click_through(widget_t* widget, bool_t click_through);
+
+/**
+ * @method overlay_set_always_on_top
+ * 设置是否总是在最上面。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {bool_t}  always_on_top 是否总是在最上面。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t overlay_set_always_on_top(widget_t* widget, bool_t always_on_top);
 
 /**
  * @method overlay_cast
