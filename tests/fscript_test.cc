@@ -105,7 +105,7 @@ TEST(FScript, convert) {
   fscript_eval(obj, "str(int(123))", &v);
   ASSERT_STREQ(value_str(&v), "123");
   value_reset(&v);
- 
+
   const char* str = "abc123";
   object_set_prop_pointer(obj, "abc", (void*)str);
 

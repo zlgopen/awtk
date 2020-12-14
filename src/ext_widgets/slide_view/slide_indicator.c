@@ -651,7 +651,7 @@ static ret_t slide_indicator_on_event(widget_t* widget, event_t* e) {
   return_value_if_fail(slide_indicator != NULL && widget != NULL, RET_BAD_PARAMS);
 
   switch (type) {
-    case EVT_MOVE: 
+    case EVT_MOVE:
     case EVT_RESIZE:
     case EVT_MOVE_RESIZE:
       slide_indicator->reset_icon_rect_list = TRUE;

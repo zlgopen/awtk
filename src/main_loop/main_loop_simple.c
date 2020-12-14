@@ -167,7 +167,7 @@ static ret_t main_loop_dispatch_events(main_loop_simple_t* loop) {
       case REQ_ADD_TIMER:
         timer_add(r.add_timer.func, r.add_timer.e.target, r.add_timer.duration);
         break;
-      case EVT_MULTI_GESTURE :
+      case EVT_MULTI_GESTURE:
         window_manager_dispatch_input_event(widget, (event_t*)&(r.multi_gesture_event));
         break;
       default: {

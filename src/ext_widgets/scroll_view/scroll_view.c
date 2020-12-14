@@ -29,8 +29,8 @@
 #include "base/image_manager.h"
 #include "widget_animators/widget_animator_scroll.h"
 
-#define SCROLL_VIEW_DEFAULT_XSPEED_SCALE  2.0f
-#define SCROLL_VIEW_DEFAULT_YSPEED_SCALE  2.0f
+#define SCROLL_VIEW_DEFAULT_XSPEED_SCALE 2.0f
+#define SCROLL_VIEW_DEFAULT_YSPEED_SCALE 2.0f
 
 static ret_t scroll_view_update_virtual_size(widget_t* widget) {
   int32_t virtual_w = 0;
@@ -486,7 +486,7 @@ static ret_t scroll_view_set_curr_page(widget_t* widget, int32_t new_page) {
   }
   scroll_view->snap_to_page = FALSE;
   scroll_view_scroll_to(widget, scroll_view->xoffset_end, scroll_view->yoffset_end,
-                          TK_ANIMATING_TIME);
+                        TK_ANIMATING_TIME);
   scroll_view->snap_to_page = TRUE;
   return RET_OK;
 }
@@ -522,7 +522,7 @@ static ret_t scroll_view_get_prop(widget_t* widget, const char* name, value_t* v
   } else if (tk_str_eq(name, SCROLL_VIEW_SNAP_TO_PAGE)) {
     value_set_float(v, scroll_view->snap_to_page);
     return RET_OK;
-  } 
+  }
   if (scroll_view->snap_to_page) {
     if (tk_str_eq(name, WIDGET_PROP_PAGE_MAX_NUMBER)) {
       value_set_uint32(v, scroll_view_get_page_max_number(widget));
@@ -578,9 +578,11 @@ static ret_t scroll_view_set_prop(widget_t* widget, const char* name, const valu
 }
 
 static const char* s_scroll_view_clone_properties[] = {
-    WIDGET_PROP_VIRTUAL_W,     WIDGET_PROP_VIRTUAL_H,     WIDGET_PROP_XSLIDABLE,
-    WIDGET_PROP_YSLIDABLE,     WIDGET_PROP_XOFFSET,       WIDGET_PROP_YOFFSET,
-    SCROLL_VIEW_X_SPEED_SCALE, SCROLL_VIEW_Y_SPEED_SCALE, SCROLL_VIEW_SNAP_TO_PAGE, NULL};
+    WIDGET_PROP_VIRTUAL_W,     WIDGET_PROP_VIRTUAL_H,
+    WIDGET_PROP_XSLIDABLE,     WIDGET_PROP_YSLIDABLE,
+    WIDGET_PROP_XOFFSET,       WIDGET_PROP_YOFFSET,
+    SCROLL_VIEW_X_SPEED_SCALE, SCROLL_VIEW_Y_SPEED_SCALE,
+    SCROLL_VIEW_SNAP_TO_PAGE,  NULL};
 TK_DECL_VTABLE(scroll_view) = {.size = sizeof(scroll_view_t),
                                .type = WIDGET_TYPE_SCROLL_VIEW,
                                .scrollable = TRUE,

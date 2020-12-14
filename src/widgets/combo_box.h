@@ -346,7 +346,9 @@ ret_t combo_box_set_options(widget_t* widget, const char* options);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t combo_box_set_custom_open_popup(widget_t* widget, combo_box_custom_open_popup_t open_popup, combo_box_custom_on_layout_combobox_popup_t on_layout_combobox_popup);
+ret_t combo_box_set_custom_open_popup(
+    widget_t* widget, combo_box_custom_open_popup_t open_popup,
+    combo_box_custom_on_layout_combobox_popup_t on_layout_combobox_popup);
 
 /**
  * @method combo_box_get_option

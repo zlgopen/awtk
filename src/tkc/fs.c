@@ -440,7 +440,7 @@ int32_t fs_file_read_line(fs_file_t* file, char* buffer, uint32_t size) {
 }
 
 ret_t fs_build_user_storage_file_name(char filename[MAX_PATH + 1], const char* appname,
-                                                const char* name) {
+                                      const char* name) {
   char home[MAX_PATH + 1];
   char path[MAX_PATH + 1];
   return_value_if_fail(filename != NULL && appname != NULL && name != NULL, RET_FAIL);

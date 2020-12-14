@@ -186,7 +186,7 @@ static ret_t children_layouter_list_view_get_param(children_layouter_t* layouter
         return RET_OK;
       }
       break;
-    }    
+    }
     case 'h': {
       if (strstr(name, "layouter") != NULL || name[1] == 'l') {
         value_set_bool(v, l->hlayouter);
@@ -202,7 +202,8 @@ static ret_t children_layouter_list_view_get_param(children_layouter_t* layouter
   return RET_FAIL;
 }
 
-static ret_t children_layouter_for_list_view_layout(children_layouter_t* layouter, widget_t* widget) {
+static ret_t children_layouter_for_list_view_layout(children_layouter_t* layouter,
+                                                    widget_t* widget) {
   int32_t spacing = 0;
   int32_t x_margin = 0;
   int32_t y_margin = 0;
@@ -370,13 +371,14 @@ static ret_t children_layouter_for_list_view_layout(children_layouter_t* layoute
   return RET_OK;
 }
 
-static ret_t children_layouter_for_list_view_h_layout(children_layouter_t* layouter, widget_t* widget) {
+static ret_t children_layouter_for_list_view_h_layout(children_layouter_t* layouter,
+                                                      widget_t* widget) {
   int32_t virtual_w = 0;
   list_view_h_t* list_view_h = NULL;
   scroll_view_t* scroll_view = SCROLL_VIEW(widget);
   children_layouter_list_view_t* l = (children_layouter_list_view_t*)layouter;
   return_value_if_fail(widget != NULL && scroll_view != NULL && l != NULL, RET_BAD_PARAMS);
- 
+
   list_view_h = LIST_VIEW_H(widget->parent);
   return_value_if_fail(list_view_h != NULL, RET_BAD_PARAMS);
 

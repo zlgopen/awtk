@@ -2,7 +2,6 @@
 #include "tkc/mmap.h"
 #include "gtest/gtest.h"
 
-
 TEST(MMap, read) {
   const char* str = "test";
   const char* filename = "test.bin";
@@ -22,10 +21,10 @@ TEST(MMap, write) {
   ASSERT_EQ(map->size, strlen(str));
   ASSERT_EQ(memcmp(map->data, str, strlen(str)) == 0, TRUE);
   memcpy(map->data, "1234", 4);
-  
+
   str = "1234";
   ASSERT_EQ(memcmp(map->data, str, strlen(str)) == 0, TRUE);
   mmap_destroy(map);
-  
+
   file_remove(filename);
 }

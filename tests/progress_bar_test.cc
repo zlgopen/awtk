@@ -15,7 +15,7 @@ TEST(progress_bar, basic) {
   ASSERT_EQ(widget_set_prop(s, WIDGET_PROP_VERTICAL, &v1), RET_OK);
   ASSERT_EQ(widget_get_prop(s, WIDGET_PROP_VERTICAL, &v2), RET_OK);
   ASSERT_EQ(value_bool(&v1), value_bool(&v2));
-  
+
   value_set_bool(&v1, TRUE);
   ASSERT_EQ(widget_set_prop(s, WIDGET_PROP_REVERSE, &v1), RET_OK);
   ASSERT_EQ(widget_get_prop(s, WIDGET_PROP_REVERSE, &v2), RET_OK);

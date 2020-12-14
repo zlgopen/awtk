@@ -27,8 +27,8 @@
 #include "ext_widgets/scroll_view/scroll_bar.h"
 #include "ext_widgets/combo_box_ex/combo_box_ex.h"
 
-#define COMBO_BOX_EX_DEFAULT_MAXNR     5
-#define COMBO_BOX_EX_DEFAULT_MARGIN    2
+#define COMBO_BOX_EX_DEFAULT_MAXNR 5
+#define COMBO_BOX_EX_DEFAULT_MARGIN 2
 
 static ret_t combo_box_ex_create_popup_items(combo_box_t* combo_box, widget_t* parent) {
   combo_box_option_t* iter = NULL;
@@ -128,7 +128,8 @@ widget_t* combo_box_ex_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) 
   return_value_if_fail(combo_box != NULL, NULL);
 
   widget_set_prop_str(combo_box, WIDGET_PROP_TYPE, WIDGET_TYPE_COMBO_BOX_EX);
-  combo_box_set_custom_open_popup(combo_box, custom_open_popup, combo_box_ex_on_layout_children_for_combobox_popup);
+  combo_box_set_custom_open_popup(combo_box, custom_open_popup,
+                                  combo_box_ex_on_layout_children_for_combobox_popup);
 
   return combo_box;
 }

@@ -75,4 +75,3 @@ ret_t mmap_destroy(mmap_t* mmap);
 END_C_DECLS
 
 #endif /*TK_MMAP_H*/
-

@@ -611,7 +611,7 @@ ret_t fs_get_cwd(fs_t* fs, char path[MAX_PATH + 1]);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t fs_build_user_storage_file_name(char filename[MAX_PATH + 1], const char* appname,
-                                                const char* name);
+                                      const char* name);
 
 /**
  * @method os_fs

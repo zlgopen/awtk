@@ -81,7 +81,7 @@ typedef struct _overlay_t {
    *
    */
   bool_t click_through;
-  
+
   /**
    * @property {bool_t} always_on_top
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]

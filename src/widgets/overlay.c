@@ -73,7 +73,7 @@ static bool_t overlay_is_point_in(widget_t* widget, xy_t x, xy_t y) {
 
 static const char* const s_overlay_properties[] = {
     WIDGET_PROP_MOVE_FOCUS_PREV_KEY, WIDGET_PROP_MOVE_FOCUS_NEXT_KEY, WIDGET_PROP_THEME,
-    WIDGET_PROP_CLICK_THROUGH, WIDGET_PROP_ALWAYS_ON_TOP, NULL};
+    WIDGET_PROP_CLICK_THROUGH,       WIDGET_PROP_ALWAYS_ON_TOP,       NULL};
 
 TK_DECL_VTABLE(overlay) = {.type = WIDGET_TYPE_OVERLAY,
                            .size = sizeof(overlay_t),

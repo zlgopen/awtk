@@ -978,7 +978,7 @@ static ret_t window_manager_default_on_paint_children(widget_t* widget, canvas_t
     }
   }
   WIDGET_FOR_EACH_CHILD_END()
-  
+
   window_manager_default_paint_always_on_top(widget, c);
 
   return RET_OK;

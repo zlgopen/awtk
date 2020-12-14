@@ -47,25 +47,25 @@ TEST(Fs, read_line1) {
 
   fs_file_t* f = fs_open_file(os_fs(), filename, "rb");
 
-  ASSERT_EQ(fs_file_read_line(f, buff, sizeof(buff)-1), 1);
+  ASSERT_EQ(fs_file_read_line(f, buff, sizeof(buff) - 1), 1);
   ASSERT_STREQ(buff, "1");
   ASSERT_EQ(fs_file_eof(f), FALSE);
-  
-  ASSERT_EQ(fs_file_read_line(f, buff, sizeof(buff)-1), 2);
+
+  ASSERT_EQ(fs_file_read_line(f, buff, sizeof(buff) - 1), 2);
   ASSERT_STREQ(buff, "22");
   ASSERT_EQ(fs_file_eof(f), FALSE);
-  
-  ASSERT_EQ(fs_file_read_line(f, buff, sizeof(buff)-1), 3);
+
+  ASSERT_EQ(fs_file_read_line(f, buff, sizeof(buff) - 1), 3);
   ASSERT_STREQ(buff, "333");
   ASSERT_EQ(fs_file_eof(f), FALSE);
-  
+
   ASSERT_EQ(fs_file_read_line(f, buff, 3), 3);
   ASSERT_STREQ(buff, "444");
   ASSERT_EQ(fs_file_eof(f), FALSE);
-  
+
   ASSERT_EQ(fs_file_read_line(f, buff, 3), 1);
   ASSERT_STREQ(buff, "4");
-  
+
   ASSERT_EQ(fs_file_read_line(f, buff, 3), 0);
   ASSERT_EQ(fs_file_eof(f), TRUE);
 
@@ -76,17 +76,18 @@ TEST(Fs, read_line1) {
 
 TEST(Fs, read_line2) {
   char buff[256];
-  const char* str = \
-"1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
+  const char* str =
+      "11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"
+      "11111111111111111111111111111111111";
   const char* filename = "test.bin";
 
   file_write(filename, str, strlen(str));
 
   fs_file_t* f = fs_open_file(os_fs(), filename, "rb");
 
-  ASSERT_EQ(fs_file_read_line(f, buff, sizeof(buff)-1), 127);
+  ASSERT_EQ(fs_file_read_line(f, buff, sizeof(buff) - 1), 127);
   ASSERT_EQ(fs_file_eof(f), FALSE);
-  
+
   ASSERT_EQ(fs_file_read_line(f, buff, 3), 0);
   ASSERT_EQ(fs_file_eof(f), TRUE);
 
@@ -97,17 +98,18 @@ TEST(Fs, read_line2) {
 
 TEST(Fs, read_line3) {
   char buff[256];
-  const char* str = \
-"11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111\r\n";
+  const char* str =
+      "11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"
+      "111111111111111111111111111111111111\r\n";
   const char* filename = "test.bin";
 
   file_write(filename, str, strlen(str));
 
   fs_file_t* f = fs_open_file(os_fs(), filename, "rb");
 
-  ASSERT_EQ(fs_file_read_line(f, buff, sizeof(buff)-1), 128);
+  ASSERT_EQ(fs_file_read_line(f, buff, sizeof(buff) - 1), 128);
   ASSERT_EQ(fs_file_eof(f), FALSE);
-  
+
   ASSERT_EQ(fs_file_read_line(f, buff, 3), 0);
   ASSERT_EQ(fs_file_eof(f), TRUE);
 
@@ -118,18 +120,19 @@ TEST(Fs, read_line3) {
 
 TEST(Fs, read_line4) {
   char buff[256];
-  const char* str = \
-"1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111\r\nabc";
+  const char* str =
+      "11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"
+      "11111111111111111111111111111111111\r\nabc";
   const char* filename = "test.bin";
 
   file_write(filename, str, strlen(str));
 
   fs_file_t* f = fs_open_file(os_fs(), filename, "rb");
 
-  ASSERT_EQ(fs_file_read_line(f, buff, sizeof(buff)-1), 127);
-  ASSERT_EQ(fs_file_read_line(f, buff, sizeof(buff)-1), 3);
+  ASSERT_EQ(fs_file_read_line(f, buff, sizeof(buff) - 1), 127);
+  ASSERT_EQ(fs_file_read_line(f, buff, sizeof(buff) - 1), 3);
   ASSERT_EQ(fs_file_eof(f), FALSE);
-  
+
   ASSERT_EQ(fs_file_read_line(f, buff, 3), 0);
   ASSERT_EQ(fs_file_eof(f), TRUE);
 

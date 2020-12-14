@@ -80,7 +80,7 @@ static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
     r.h = widget->h;
     r.w = progress_w;
     r.y = 0;
-    r.x = reverse ? (widget->w - progress_w): 0;
+    r.x = reverse ? (widget->w - progress_w) : 0;
   }
   widget_fill_fg_rect(widget, c, &r, draw_type);
 

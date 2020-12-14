@@ -26,7 +26,7 @@
 #include "tkc/mmap.h"
 #else
 #include "tkc/types_def.h"
-#endif/*LOAD_ASSET_WITH_MMAP*/
+#endif /*LOAD_ASSET_WITH_MMAP*/
 
 BEGIN_C_DECLS
 
@@ -309,7 +309,7 @@ typedef struct _asset_info_t {
   mmap_t* map;
 #else
   uint8_t data[4];
-#endif/*LOAD_ASSET_WITH_MMAP*/
+#endif /*LOAD_ASSET_WITH_MMAP*/
 } asset_info_t;
 
 /**
