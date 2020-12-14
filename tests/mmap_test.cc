@@ -22,13 +22,10 @@ TEST(MMap, write) {
   ASSERT_EQ(map->size, strlen(str));
   ASSERT_EQ(memcmp(map->data, str, strlen(str)) == 0, TRUE);
   memcpy(map->data, "1234", 4);
-  mmap_destroy(map);
   
   str = "1234";
-  map = mmap_create(filename, TRUE, FALSE);
-  ASSERT_EQ(map->size, strlen(str));
   ASSERT_EQ(memcmp(map->data, str, strlen(str)) == 0, TRUE);
   mmap_destroy(map);
-
+  
   file_remove(filename);
 }

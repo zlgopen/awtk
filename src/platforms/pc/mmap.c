@@ -132,11 +132,11 @@ ret_t mmap_destroy(mmap_t* map) {
   int fd = 0;
   return_value_if_fail(map != NULL, RET_BAD_PARAMS);
   fd = tk_pointer_to_int(map->fd);
-  if (fd >= 0) {
-    close(fd);
-  }
   if (map->data != NULL) {
     munmap(map->data, map->size);
+  }
+  if (fd >= 0) {
+    close(fd);
   }
   memset(map, 0x00, sizeof(mmap_t));
   TKMEM_FREE(map);
