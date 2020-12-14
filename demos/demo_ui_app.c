@@ -736,6 +736,7 @@ static ret_t timer_preload(const timer_info_t* timer) {
 /*    window_open("system_bar_bottom");*/
 #endif /*MOBILE_APP*/
 
+    open_window("top", NULL);
     open_window("main", win);
 
     return RET_REMOVE;
