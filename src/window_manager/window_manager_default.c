@@ -41,6 +41,7 @@ static ret_t window_manager_default_invalidate(widget_t* widget, const rect_t* r
 static ret_t window_manager_default_get_client_r(widget_t* widget, rect_t* r);
 static ret_t window_manager_default_do_open_window(widget_t* wm, widget_t* window);
 static ret_t window_manager_default_layout_child(widget_t* widget, widget_t* window);
+static ret_t window_manager_default_paint_always_on_top(widget_t* widget, canvas_t* c);
 static ret_t window_manager_default_layout_system_bar(widget_t* widget, widget_t* window);
 static ret_t window_manager_default_create_dialog_highlighter(widget_t* widget, widget_t* curr_win);
 static ret_t window_manager_default_layout_not_system_bar(widget_t* widget, widget_t* window,
