@@ -83,7 +83,8 @@ ret_t font_manager_set_assets_manager(font_manager_t* fm, assets_manager_t* am) 
   }
 
   fm->assets_manager = am;
-  emitter_on(EMITTER(fm->assets_manager), EVT_ASSET_MANAGER_CLEAR_CACHE, font_manager_on_clear_cache, fm);
+  emitter_on(EMITTER(fm->assets_manager), EVT_ASSET_MANAGER_CLEAR_CACHE,
+             font_manager_on_clear_cache, fm);
 
   return RET_OK;
 }

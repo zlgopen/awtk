@@ -472,7 +472,8 @@ asset_info_t* assets_manager_load(assets_manager_t* am, asset_type_t type, const
   }
   info = assets_manager_load_impl(am, type, name);
   if (info != NULL) {
-    emitter_dispatch(EMITTER(am), assets_event_init(&e, am, EVT_ASSET_MANAGER_LOAD_ASSET, info->type, info));
+    emitter_dispatch(EMITTER(am),
+                     assets_event_init(&e, am, EVT_ASSET_MANAGER_LOAD_ASSET, info->type, info));
   }
   return info;
 }
@@ -661,7 +662,8 @@ ret_t assets_manager_unref(assets_manager_t* am, const asset_info_t* info) {
     return RET_OK;
   }
   if (info->refcount == 1) {
-    emitter_dispatch(EMITTER(am), assets_event_init(&e, am, EVT_ASSET_MANAGER_UNLOAD_ASSET, info->type, info));
+    emitter_dispatch(EMITTER(am),
+                     assets_event_init(&e, am, EVT_ASSET_MANAGER_UNLOAD_ASSET, info->type, info));
   }
   return asset_info_unref((asset_info_t*)info);
 }
@@ -675,7 +677,8 @@ ret_t assets_manager_clear_cache(assets_manager_t* am, asset_type_t type) {
   info.type = type;
   return_value_if_fail(am != NULL, RET_BAD_PARAMS);
   ret = darray_remove_all(&(am->assets), NULL, &info);
-  emitter_dispatch(EMITTER(am), assets_event_init(&e, am, EVT_ASSET_MANAGER_CLEAR_CACHE, type, NULL));
+  emitter_dispatch(EMITTER(am),
+                   assets_event_init(&e, am, EVT_ASSET_MANAGER_CLEAR_CACHE, type, NULL));
   return ret;
 }
 

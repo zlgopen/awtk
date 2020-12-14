@@ -1016,7 +1016,8 @@ typedef struct _assets_event_t {
  *
  * @return {event_t*} event对象。
  */
-event_t* assets_event_init(assets_event_t* event, assets_manager_t* am, uint32_t type, asset_type_t asset_type, asset_info_t* asset_info);
+event_t* assets_event_init(assets_event_t* event, assets_manager_t* am, uint32_t type,
+                           asset_type_t asset_type, asset_info_t* asset_info);
 
 END_C_DECLS
 
