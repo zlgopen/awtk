@@ -223,12 +223,12 @@
           },
           {
             "type": "event_type_t",
-            "name": "type",
+            "name": "etype",
             "desc": "事件类型。"
           },
           {
             "type": "event_func_t",
-            "name": "on_event",
+            "name": "handler",
             "desc": "事件处理函数。"
           },
           {

@@ -21,6 +21,7 @@
 
 #include "tkc/mem.h"
 #include "tkc/utils.h"
+#include "base/events.h"
 #include "base/system_info.h"
 #include "base/font_manager.h"
 
@@ -60,14 +61,29 @@ font_manager_t* font_manager_init(font_manager_t* fm, font_loader_t* loader) {
   darray_init(&(fm->fonts), 2, (tk_destroy_t)font_destroy, (tk_compare_t)font_cmp);
 
   fm->loader = loader;
+  fm->assets_manager = NULL;
 
   return fm;
+}
+
+ret_t font_manager_on_clear_cache(void* ctx, event_t* e) {
+  assets_event_t* evt = (assets_event_t*)e;
+  font_manager_t* fm = (font_manager_t*)ctx;
+  if (evt->type == ASSET_TYPE_FONT) {
+    font_manager_unload_all(fm);
+  }
+  return RET_OK;
 }
 
 ret_t font_manager_set_assets_manager(font_manager_t* fm, assets_manager_t* am) {
   return_value_if_fail(fm != NULL, RET_BAD_PARAMS);
 
+  if (fm->assets_manager != NULL && fm->assets_manager != am) {
+    emitter_off_by_ctx(EMITTER(fm->assets_manager), fm);
+  }
+
   fm->assets_manager = am;
+  emitter_on(EMITTER(fm->assets_manager), EVT_ASSET_MANAGER_CLEAR_CACHE, font_manager_on_clear_cache, fm);
 
   return RET_OK;
 }
@@ -200,6 +216,7 @@ ret_t font_manager_deinit(font_manager_t* fm) {
 
 ret_t font_manager_destroy(font_manager_t* fm) {
   return_value_if_fail(fm != NULL, RET_BAD_PARAMS);
+  emitter_off_by_ctx(EMITTER(fm->assets_manager), fm);
   font_manager_deinit(fm);
   TKMEM_FREE(fm);
 

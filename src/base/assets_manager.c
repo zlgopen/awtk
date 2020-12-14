@@ -463,13 +463,18 @@ assets_manager_t* assets_manager(void) {
 }
 
 asset_info_t* assets_manager_load(assets_manager_t* am, asset_type_t type, const char* name) {
+  assets_event_t e;
+  asset_info_t* info = NULL;
   return_value_if_fail(am != NULL && name != NULL, NULL);
 
   if (am->custom_load_asset != NULL) {
     return am->custom_load_asset(am->custom_load_asset_ctx, type, name);
   }
-
-  return assets_manager_load_impl(am, type, name);
+  info = assets_manager_load_impl(am, type, name);
+  if (info != NULL) {
+    emitter_dispatch(EMITTER(am), assets_event_init(&e, am, EVT_ASSET_MANAGER_LOAD_ASSET, info->type, info));
+  }
+  return info;
 }
 
 ret_t assets_manager_set(assets_manager_t* am) {
@@ -480,6 +485,7 @@ ret_t assets_manager_set(assets_manager_t* am) {
 
 assets_manager_t* assets_manager_create(uint32_t init_nr) {
   assets_manager_t* am = TKMEM_ZALLOC(assets_manager_t);
+  emitter_init(EMITTER(am));
 
   return assets_manager_init(am, init_nr);
 }
@@ -647,24 +653,30 @@ const asset_info_t* assets_manager_ref(assets_manager_t* am, asset_type_t type, 
 }
 
 ret_t assets_manager_unref(assets_manager_t* am, const asset_info_t* info) {
+  assets_event_t e;
   return_value_if_fail(info != NULL, RET_BAD_PARAMS);
 
   if (am == NULL) {
     /*asset manager was destroied*/
     return RET_OK;
   }
-
+  if (info->refcount == 1) {
+    emitter_dispatch(EMITTER(am), assets_event_init(&e, am, EVT_ASSET_MANAGER_UNLOAD_ASSET, info->type, info));
+  }
   return asset_info_unref((asset_info_t*)info);
 }
 
 ret_t assets_manager_clear_cache(assets_manager_t* am, asset_type_t type) {
+  assets_event_t e;
   asset_info_t info;
+  ret_t ret = RET_OK;
 
   memset(&info, 0x00, sizeof(info));
   info.type = type;
   return_value_if_fail(am != NULL, RET_BAD_PARAMS);
-
-  return darray_remove_all(&(am->assets), NULL, &info);
+  ret = darray_remove_all(&(am->assets), NULL, &info);
+  emitter_dispatch(EMITTER(am), assets_event_init(&e, am, EVT_ASSET_MANAGER_CLEAR_CACHE, type, NULL));
+  return ret;
 }
 
 ret_t assets_manager_preload(assets_manager_t* am, asset_type_t type, const char* name) {
@@ -705,6 +717,7 @@ ret_t assets_manager_set_custom_load_asset(assets_manager_t* am,
 
 ret_t assets_manager_destroy(assets_manager_t* am) {
   return_value_if_fail(am != NULL, RET_BAD_PARAMS);
+  emitter_deinit(EMITTER(am));
   assets_manager_deinit(am);
 
   if (am == assets_manager()) {

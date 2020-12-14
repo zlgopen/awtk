@@ -130,8 +130,8 @@ ret_t emitter_dispatch_simple_event(emitter_t* emitter, uint32_t type);
  * 注册指定事件的处理函数。
  * @annotation ["scriptable:custom"]
  * @param {emitter_t*} emitter emitter对象。
- * @param {event_type_t} type 事件类型。
- * @param {event_func_t} on_event 事件处理函数。
+ * @param {event_type_t} etype 事件类型。
+ * @param {event_func_t} handler 事件处理函数。
  * @param {void*} ctx 事件处理函数上下文。
  *
  * @return {uint32_t} 返回id，用于emitter_off。

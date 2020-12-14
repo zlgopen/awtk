@@ -455,6 +455,21 @@ typedef enum _event_type_t {
    * 页面改变了(event_t)。
    */
   EVT_PAGE_CHANGED,
+  /**
+   * @const EVT_ASSET_MANAGER_LOAD_ASSET
+   * 资源管理加载某个资源(assets_event_t)。
+   */
+  EVT_ASSET_MANAGER_LOAD_ASSET,
+  /**
+   * @const EVT_ASSET_MANAGER_UNLOAD_ASSET
+   * 资源管理卸载某个资源(assets_event_t)。
+   */
+  EVT_ASSET_MANAGER_UNLOAD_ASSET,
+  /**
+   * @const EVT_ASSET_MANAGER_CLEAR_CACHE
+   * 资源管理移除同种资源缓存(assets_event_t)。
+   */
+  EVT_ASSET_MANAGER_CLEAR_CACHE,
 
   /**
    * @const EVT_REQ_START
@@ -923,7 +938,7 @@ typedef struct _multi_gesture_event_t {
   /**
    * @property {float} rotation
    * @annotation ["readable", "scriptable"]
-   * 旋转角度(幅度)增量。
+   * 旋转角度(幅度)增量。（单位弧度）
    */
   float rotation;
   /**
@@ -967,6 +982,41 @@ multi_gesture_event_t* multi_gesture_event_cast(event_t* event);
 event_t* multi_gesture_event_init(multi_gesture_event_t* event, void* target, int64_t touch_id,
                                   int32_t x, int32_t y, float rotation, float distance,
                                   uint32_t fingers);
+
+/**
+ * @class assets_event_t
+ * @annotation ["scriptable"]
+ * @parent event_t
+ * 资源事件，由资源管理器触发。
+ */
+typedef struct _assets_event_t {
+  event_t e;
+  /**
+   * @property {asset_type_t*} type 
+   * @annotation ["readable", "scriptable"]
+   * 触发事件的资源类型
+   */
+  asset_type_t type;
+  /**
+   * @property {asset_info_t*} asset_info 
+   * @annotation ["readable", "scriptable"]
+   * 触发事件的资源对象
+   */
+  asset_info_t* asset_info;
+} assets_event_t;
+
+/**
+ * @method window_event_init
+ * 初始化事件。
+ * @param {window_event_t*} event event对象。
+ * @param {assets_manager_t*} am 事件目标资源管理器。
+ * @param {uint32_t} type 事件类型。
+ * @param {asset_type_t} asset_type 资源类型。
+ * @param {asset_info_t*} asset_info 资源对象。
+ *
+ * @return {event_t*} event对象。
+ */
+event_t* assets_event_init(assets_event_t* event, assets_manager_t* am, uint32_t type, asset_type_t asset_type, asset_info_t* asset_info);
 
 END_C_DECLS
 

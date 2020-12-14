@@ -226,3 +226,15 @@ event_t* multi_gesture_event_init(multi_gesture_event_t* event, void* target, in
 
   return (event_t*)event;
 }
+
+event_t* assets_event_init(assets_event_t* event, assets_manager_t* am, uint32_t type, asset_type_t asset_type, asset_info_t* asset_info) {
+  return_value_if_fail(event != NULL, NULL);
+  memset(event, 0x00, sizeof(assets_event_t));
+
+  event->e = event_init(type, am);
+  event->e.size = sizeof(*event);
+
+  event->type = asset_type;
+  event->asset_info = asset_info;
+  return (event_t*)event;
+}

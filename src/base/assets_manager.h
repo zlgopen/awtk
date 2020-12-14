@@ -23,6 +23,7 @@
 #define TK_ASSETS_MANAGER_H
 
 #include "tkc/darray.h"
+#include "tkc/emitter.h"
 #include "tkc/asset_info.h"
 #include "base/types_def.h"
 #include "base/asset_loader.h"
@@ -38,6 +39,7 @@ typedef asset_info_t* (*assets_manager_load_asset_t)(assets_manager_t* am, asset
 
 /**
  * @class assets_manager_t
+ * @parent emitter_t
  * @annotation ["scriptable"]
  * 资源管理器。
  * 这里的资源管理器并非Windows下的文件浏览器，而是负责对各种资源，比如字体、主题、图片、界面数据、字符串和其它数据的进行集中管理的组件。引入资源管理器的目的有以下几个：
@@ -71,8 +73,9 @@ typedef asset_info_t* (*assets_manager_load_asset_t)(assets_manager_t* am, asset
  *
  */
 struct _assets_manager_t {
-  darray_t assets;
+  emitter_t emitter;
 
+  darray_t assets;
   /*private*/
   char* theme;
   char* res_root;
