@@ -65,7 +65,7 @@ typedef struct _multi_touch_point_event_t {
    */ 
   multi_event_type_t type;
   /**
-   * @property {uint8_t} touch_id
+   * @property {int64_t} touch_id
    * @annotation ["readable", "scriptable"]
    * touch device id。
    */
@@ -83,28 +83,78 @@ typedef struct _multi_touch_point_event_t {
    */
   xy_t y;
   /**
-   * @property {uint8_t} finger_id
+   * @property {uint32_t} finger_id
    * @annotation ["readable", "scriptable"]
    * 点击手指 ID
    */
   uint32_t finger_id;
 } multi_touch_point_event_t;
 
+/**
+ * @class multi_gesture_finger_t
+ * @annotation ["scriptable"]
+ * @parent event_t
+ * 点击手指信息
+ */
 typedef struct _multi_gesture_finger_t {
+  /**
+   * @property {int64_t} finger_id
+   * @annotation ["readable", "scriptable"]
+   * 点击手指 ID
+   */
   int64_t finger_id;
+  /**
+   * @property {xy_t} x
+   * @annotation ["readable", "scriptable"]
+   * 点击手指 X
+   */
   xy_t x;
+  /**
+   * @property {xy_t} y
+   * @annotation ["readable", "scriptable"]
+   * 点击手指 Y
+   */
   xy_t y;
 } multi_gesture_finger_t;
 
+/**
+ * @class multi_gesture_touch_fingers_t
+ * @annotation ["scriptable"]
+ * @parent event_t
+ * 可识别手指类型多点触控对象
+ */
 typedef struct _multi_gesture_touch_fingers_t {
+  /**
+   * @property {int64_t} touch_id
+   * @annotation ["readable", "scriptable"]
+   * touch device id。
+   */
   int64_t touch_id;
-  float dtheta;
-  float d_dist;
+  /**
+   * @property {float_t} dtheta
+   * @annotation ["readable", "scriptable"]
+   * 旋转角度(幅度)增量。（单位弧度）
+   */
+  float_t dtheta;
+  /**
+   * @property {float_t} d_dist
+   * @annotation ["readable", "scriptable"]
+   * 两点间的距离增量。(-1,0)表示缩小，(0-1)表示增加。
+   */
+  float_t d_dist;
+  /* private */
   pointf_t centroid;
   darray_t last_point;
 } multi_gesture_touch_fingers_t;
 
-static ret_t multi_gesture_gesture_touch_fingers_destroy(multi_gesture_touch_fingers_t* touch) {
+/**
+ * @method multi_gesture_gesture_touch_fingers_destroy
+ * 释放可识别手指类型的对象
+ * @param {multi_gesture_touch_fingers_t*} touch 可识别手指类型的对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t multi_gesture_gesture_touch_fingers_destroy(multi_gesture_touch_fingers_t* touch) {
   return_value_if_fail(touch != NULL, RET_BAD_PARAMS);
 
   darray_deinit(&(touch->last_point));
@@ -119,7 +169,14 @@ static int multi_gesture_finger_compare(const void* a, const void* b) {
   return finger_id - touch->finger_id;
 }
 
-static multi_gesture_touch_fingers_t* multi_gesture_touch_fingers_create(int32_t finger_size) {
+/**
+ * @method multi_gesture_touch_fingers_create
+ * 创建可识别手指类型的对象
+ * @param {int32_t} finger_size 可识别手指个数。
+ *
+ * @return {multi_gesture_touch_fingers_t*} 成功返回可识别手指类型的对象，失败返回NULL。
+ */
+multi_gesture_touch_fingers_t* multi_gesture_touch_fingers_create(int32_t finger_size) {
   multi_gesture_touch_fingers_t* touch = TKMEM_ZALLOC(multi_gesture_touch_fingers_t);
   return_value_if_fail(touch != NULL, NULL);
   darray_init(&(touch->last_point), finger_size, default_destroy, multi_gesture_finger_compare);
@@ -265,6 +322,16 @@ static bool_t multi_gesture_get_event_form_fingers(multi_gesture_touch_fingers_t
   return is_out_event;
 }
 
+/**
+ * @method multi_gesture_post_event_form_fingers
+ * 发送多点触控消息
+ * @param {main_loop_t*} loop 主循环对象
+ * @param {multi_gesture_touch_fingers_t*} touch 可识别手指类型的对象。
+ * @param {uint32_t} point_size 手指个数
+ * @param {multi_touch_point_event_t*} points 手指数据数组
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t multi_gesture_post_event_form_fingers(main_loop_t* loop, multi_gesture_touch_fingers_t* touch, uint32_t point_size, multi_touch_point_event_t* points) {
   uint32_t i = 0;
   multi_gesture_event_t multi_gesture_event;
@@ -291,14 +358,33 @@ ret_t multi_gesture_post_event_form_fingers(main_loop_t* loop, multi_gesture_tou
 #define MULTI_GESTURE_DIST_MIN_RANGE  1.0f
 #endif
 
+/**
+ * @class multi_gesture_touch_fingers_t
+ * @annotation ["scriptable"]
+ * @parent event_t
+ * 不可识别手指类型多点触控对象
+ */
 typedef struct _multi_gesture_touch_points_t {
+  /**
+   * @property {int64_t} touch_id
+   * @annotation ["readable", "scriptable"]
+   * touch device id。
+   */
   int64_t touch_id;
+  /* private */
   float_t last_dist;
   uint32_t last_dist_lenght;
   slist_t last_dist_list;
 } multi_gesture_touch_points_t;
 
-static ret_t multi_gesture_gesture_touch_points_destroy(multi_gesture_touch_points_t* touch) {
+/**
+ * @method multi_gesture_gesture_touch_points_destroy
+ * 释放不可识别手指类型的对象
+ * @param {multi_gesture_touch_points_t*} touch 不可识别手指类型的对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t multi_gesture_gesture_touch_points_destroy(multi_gesture_touch_points_t* touch) {
   return_value_if_fail(touch != NULL, RET_BAD_PARAMS);
 
   slist_deinit(&(touch->last_dist_list));
@@ -307,7 +393,14 @@ static ret_t multi_gesture_gesture_touch_points_destroy(multi_gesture_touch_poin
   return RET_OK;
 }
 
-static multi_gesture_touch_points_t* multi_gesture_touch_points_create(uint32_t last_dist_lenght) {
+/**
+ * @method multi_gesture_touch_points_create
+ * 创建不可识别手指类型的对象
+ * @param {uint32_t} last_dist_lenght 均值滤波的缓冲长度。
+ *
+ * @return {multi_gesture_touch_points_t*} 成功返回不可识别手指类型的对象，失败返回NULL。
+ */
+multi_gesture_touch_points_t* multi_gesture_touch_points_create(uint32_t last_dist_lenght) {
   multi_gesture_touch_points_t* touch = TKMEM_ZALLOC(multi_gesture_touch_points_t);
   return_value_if_fail(touch != NULL, NULL);
   touch->last_dist_lenght = last_dist_lenght;
@@ -342,6 +435,16 @@ static float_t multi_gesture_touch_get_last_d_dists(multi_gesture_touch_points_t
   return d_dists / size;
 }
 
+/**
+ * @method multi_gesture_post_event_form_points
+ * 发送多点触控消息
+ * @param {main_loop_t*} loop 主循环对象
+ * @param {multi_gesture_touch_points_t*} touch 不可识别手指类型的对象。
+ * @param {uint32_t} point_size 手指个数
+ * @param {multi_touch_point_event_t*} points 手指数据数组
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t multi_gesture_post_event_form_points(main_loop_t* loop, multi_gesture_touch_points_t* touch, uint32_t point_size, multi_touch_point_event_t* points) {
   uint32_t i = 0;
   float_t t_dist = 0.0f;
