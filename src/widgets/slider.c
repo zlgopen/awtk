@@ -294,7 +294,7 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
         }
 
         value = slider->saved_value + delta;
-        value = tk_clampi(value, slider->min, slider->max);
+        value = tk_clamp(value, slider->min, slider->max);
         slider_set_value_internal(widget, (double)value, EVT_VALUE_CHANGING, FALSE);
       }
 
@@ -373,7 +373,7 @@ ret_t slider_set_value_internal(widget_t* widget, double value, event_type_t ety
   return_value_if_fail(slider != NULL, RET_BAD_PARAMS);
 
   step = slider->step;
-  value = tk_clampi(value, slider->min, slider->max);
+  value = tk_clamp(value, slider->min, slider->max);
 
   if (step > 0) {
     offset = value - slider->min;
