@@ -340,13 +340,13 @@ ret_t multi_gesture_post_event_form_fingers(main_loop_t* loop, multi_gesture_tou
     multi_touch_point_event_t* point = &(points[i]);
     if (multi_gesture_get_event_form_fingers(touch, point, &multi_gesture_event)) {
 	    // printf("centroid:(%f, %f), dtheta:%f, d_dist:%f, num_down_fingers:%d \r\n", touch->centroid.x, touch->centroid.y, touch->dtheta, touch->d_dist, touch->last_point.size);
-      multi_gesture_event_init(&multi_gesture_event, window_manager(), touch->touch_id, touch->centroid.x, touch->centroid.y,
-                              touch->dtheta, touch->d_dist, touch->last_point.size);
+      multi_gesture_event_init(&multi_gesture_event, window_manager(), touch->centroid.x, touch->centroid.y,
+                              touch->dtheta, touch->d_dist);
       main_loop_post_multi_gesture_event(loop, &multi_gesture_event);
     }
   }
   if (point_size > 0 && touch->last_point.size == 0) {
-    multi_gesture_event_init(&multi_gesture_event, window_manager(), touch->touch_id, 0, 0, 0, 0, 0);
+    multi_gesture_event_init(&multi_gesture_event, window_manager(), 0, 0, 0, 0);
     main_loop_post_multi_gesture_event(loop, &multi_gesture_event);
   }
   return RET_OK;
@@ -492,12 +492,12 @@ ret_t multi_gesture_post_event_form_points(main_loop_t* loop, multi_gesture_touc
     }
     
     // printf("out_dist:%f, t_dist:%f, %f, d_dist:%f \r\n", touch->last_dist, t_dist, sqrtf(t), d_dist);
-    multi_gesture_event_init(&multi_gesture_event, window_manager(), touch->touch_id, centroid.x, centroid.y, 0, d_dist, num_down_fingers);
+    multi_gesture_event_init(&multi_gesture_event, window_manager(), centroid.x, centroid.y, 0, d_dist);
     main_loop_post_multi_gesture_event(loop, &multi_gesture_event);
   }
 
   if (num_down_fingers == 0 && touch->last_dist != 0) {
-    multi_gesture_event_init(&multi_gesture_event, window_manager(), touch->touch_id, 0, 0, 0, 0, 0);
+    multi_gesture_event_init(&multi_gesture_event, window_manager(), 0, 0, 0, 0);
     main_loop_post_multi_gesture_event(loop, &multi_gesture_event);
   }
 

@@ -102,10 +102,8 @@ static ret_t main_loop_sdl2_dispatch_multi_gesture_event(main_loop_simple_t* loo
   int32_t y = sdl_event->mgesture.y * widget->h;
   float rotation = sdl_event->mgesture.dTheta;
   float distance = sdl_event->mgesture.dDist;
-  uint64_t touch_id = sdl_event->mgesture.touchId;
-  uint32_t fingers = sdl_event->mgesture.numFingers;
   event_t* e =
-      multi_gesture_event_init(&event, widget, touch_id, x, y, rotation, distance, fingers);
+      multi_gesture_event_init(&event, widget, x, y, rotation, distance);
 
   event.e.native_window_handle = NULL;
   window_manager_dispatch_input_event(widget, e);
