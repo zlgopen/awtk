@@ -5,7 +5,7 @@ valgrind 是 Linux 下一个强大的内存调试工具，特别擅长查找内�
 
 由于 valgrind 对 SDL 应用程序不太友好，需要在 linux-fb 模式下编译和运行 AWTK 应用程序。
 
-在 VmWare 中，安装 Ubuntu 18 后，可以参考这个文档编译和运行 AWTK: [UbuntuVM](https://github.com/zlgopen/awtk-linux-fb/blob/master/README.UbuntuVM.md)
+在 VmWare 中，安装 Ubuntu 18 后，可以参考这个文档编译和运行 AWTK: [UbuntuVM](https://github.com/zlgopen/awtk-linux-fb/blob/master/docs/how_to_use_in_vmware.md)
 
 * 安装 valgrind
 
