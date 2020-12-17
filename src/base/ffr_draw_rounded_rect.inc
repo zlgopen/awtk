@@ -1384,5 +1384,8 @@ static inline ret_t ffr_draw_stroke_rounded_rect_ex(canvas_t* c, const rect_t* r
     return RET_FAIL;
   }
   tc.rgba.a = tc.rgba.a * c->global_alpha / 0xff;
+  if (border_model == (BORDER_LEFT | BORDER_RIGHT | BORDER_TOP | BORDER_BOTTOM)) {
+    border_model = BORDER_ALL;
+  }
   return ffr_draw_stroke_rounded_rect(c, r, &tc, radius_tl, radius_tr, radius_bl, radius_br, border_width, border_model);
 }
