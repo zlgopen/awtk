@@ -87,7 +87,7 @@ static ret_t tk_iostream_serial_exec(object_t* obj, const char* name, const char
   if (tk_str_eq(name, TK_STREAM_CMD_IFLUSH)) {
     return object_exec(OBJECT(s->istream), TK_STREAM_CMD_IFLUSH, args);
   } else if (tk_str_eq(name, TK_STREAM_CMD_OFLUSH)) {
-    return object_exec(OBJECT(s->ostream), TK_STREAM_CMD_IFLUSH, args);
+    return object_exec(OBJECT(s->ostream), TK_STREAM_CMD_OFLUSH, args);
   } else if (tk_str_eq(name, TK_IOSTREAM_SERIAL_CMD_CONFIG)) {
     int ret =
         serial_config(s->fd, s->baudrate, s->bytesize, s->stopbits, s->flowcontrol, s->parity);
