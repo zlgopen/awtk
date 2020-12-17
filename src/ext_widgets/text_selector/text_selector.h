@@ -84,7 +84,7 @@ typedef struct _text_selector_t {
   /**
    * @property {uint32_t} visible_nr
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 可见的选项数量(只能是3或者5，缺省为5)。
+   * 可见的选项数量(只能是1或者3或者5，缺省为5)。
    */
   uint32_t visible_nr;
 

@@ -489,7 +489,7 @@ ret_t text_selector_set_yspeed_scale (widget_t* widget, float_t yspeed_scale);
 | 可通过widget\_set\_prop修改 | 是 |
 #### visible\_nr 属性
 -----------------------
-> <p id="text_selector_t_visible_nr">可见的选项数量(只能是3或者5，缺省为5)。
+> <p id="text_selector_t_visible_nr">可见的选项数量(只能是1或者3或者5，缺省为5)。
 
 * 类型：uint32\_t
 
