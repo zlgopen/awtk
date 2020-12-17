@@ -406,15 +406,25 @@ static ret_t fscript_parser_parse_str(fscript_parser_t* parser) {
   str_set(str, "");
   do {
     c = fscript_parser_get_char(parser);
-    if ((!escape && c == '\"') || c == '\0') {
-      break;
-    }
-    if (!escape && c == '\\') {
-      escape = TRUE;
+    if (escape) {
+      if (c == 'r') {
+        str_append_char(str, '\r');
+      } else if (c == 'n') {
+        str_append_char(str, '\n');
+      } else if (c == 't') {
+        str_append_char(str, '\t');
+      } else {
+        str_append_char(str, c);
+      }
+      escape = FALSE;
       continue;
     }
-    if (escape) {
-      escape = FALSE;
+
+    if (c == '\"' || c == '\0') {
+      break;
+    } else if (c == '\\') {
+      escape = TRUE;
+      continue;
     }
     str_append_char(str, c);
   } while (TRUE);
