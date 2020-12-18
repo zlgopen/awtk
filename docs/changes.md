@@ -2,6 +2,7 @@
 
 2020/12/18
   * 增加函数 fs\_get\_temp\_path、fs\_remove\_dir_r、fs\_create\_dir\_r 和 fs\_change\_dir。
+  * 修改 date\_time\_get\_wday 的 BUG（感谢忠吉发现问题）
 
 2020/12/17
   * fscript 字符串支持换行符。

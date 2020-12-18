@@ -57,6 +57,7 @@ TEST(DateTime, wday_name) {
 }
 
 TEST(DateTime, wday) {
+  ASSERT_EQ(date_time_get_wday(2020, 1, 1), 3);
   ASSERT_EQ(date_time_get_wday(2020, 7, 8), 3);
   ASSERT_EQ(date_time_get_wday(2020, 7, 9), 4);
   ASSERT_EQ(date_time_get_wday(2020, 7, 10), 5);

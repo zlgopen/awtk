@@ -113,27 +113,23 @@ int32_t date_time_get_days(uint32_t year, uint32_t month) {
 
   return days;
 }
-
+/**
+ * 实现参考：https://github.com/Franceskynov/zeller/blob/master/zeller.js
+ */
 int32_t date_time_get_wday(uint32_t year, uint32_t month, uint32_t day) {
-  int32_t w = 0;
-  uint32_t y = year;
-  uint32_t m = month;
-  uint32_t d = day;
-
+  int w = 0;
+  int a = 0;
+  int y = 0;
+  int m = 0;
+  return_value_if_fail(year <= 10000, -1);
+  return_value_if_fail(day >= 1 && day <= 31, -1);
   return_value_if_fail(month >= 1 && month <= 12, -1);
   return_value_if_fail(date_time_get_days(year, month) >= day && day > 0, -1);
 
-  /*参考：https://baike.baidu.com/item/%E8%94%A1%E5%8B%92%E5%85%AC%E5%BC%8F/10491767*/
-  if (y >= 1582 && m >= 10 && d > 4) {
-    /*1582年10月4日后：w = (d + 1+ 2*m+3*(m+1)/5+y+y/4-y/100+y/400)%7;*/
-    w = (d + 1 + 2 * m + 3 * (m + 1) / 5 + y + y / 4 - y / 100 + y / 400) % 7;
-  } else {
-    /*1582年10月4日前：w = (d+1+2*m+3*(m+1)/5+y+y/4+5) % 7;*/
-    w = (d + 1 + 2 * m + 3 * (m + 1) / 5 + y + y / 4 + 5) % 7;
-  }
-
-  /*Sunday = 0*/
-  w = (w + 1) % 7;
+  a = ((14 - month) / 12);
+  y = (year - a);
+  m = (month + (12 * a) - 2);
+  w = (((day + y + (y / 4)) - (y / 100) + (y / 400) + (31 * m) / 12) % 7);
 
   return w;
 }
