@@ -173,30 +173,6 @@ EXPORTS
     asset_loader_load
     asset_loader_exist
     asset_loader_destroy
-    assets_manager
-    assets_manager_set
-    assets_manager_create
-    assets_manager_init
-    assets_manager_get_res_root
-    assets_manager_set_res_root
-    assets_manager_set_theme
-    assets_manager_set_system_info
-    assets_manager_set_locale_info
-    assets_manager_add
-    assets_manager_add_data
-    assets_manager_ref
-    assets_manager_unref
-    assets_manager_find_in_cache
-    assets_manager_load
-    assets_manager_preload
-    assets_manager_set_loader
-    assets_manager_set_custom_build_asset_dir
-    assets_manager_set_custom_load_asset
-    assets_manager_clear_cache
-    assets_manager_clear_all
-    assets_manager_deinit
-    assets_manager_destroy
-    assets_manager_load_file
     bidi_init
     bidi_type_from_name
     bidi_log2vis
@@ -1105,6 +1081,7 @@ EXPORTS
     fs_stat
     fs_get_exe
     fs_get_user_storage_path
+    fs_get_temp_path
     fs_get_cwd
     fs_build_user_storage_file_name
     os_fs
@@ -1480,6 +1457,30 @@ EXPORTS
     xml_parser_parse
     xml_parser_parse_file
     xml_parser_destroy
+    assets_manager
+    assets_manager_set
+    assets_manager_create
+    assets_manager_init
+    assets_manager_get_res_root
+    assets_manager_set_res_root
+    assets_manager_set_theme
+    assets_manager_set_system_info
+    assets_manager_set_locale_info
+    assets_manager_add
+    assets_manager_add_data
+    assets_manager_ref
+    assets_manager_unref
+    assets_manager_find_in_cache
+    assets_manager_load
+    assets_manager_preload
+    assets_manager_set_loader
+    assets_manager_set_custom_build_asset_dir
+    assets_manager_set_custom_load_asset
+    assets_manager_clear_cache
+    assets_manager_clear_all
+    assets_manager_deinit
+    assets_manager_destroy
+    assets_manager_load_file
     wheel_event_cast
     wheel_event_init
     orientation_event_cast
@@ -1497,6 +1498,7 @@ EXPORTS
     pointer_event_rotate
     multi_gesture_event_cast
     multi_gesture_event_init
+    window_event_init
     image_base_set_image
     image_base_set_rotation
     image_base_set_scale
@@ -2104,6 +2106,7 @@ EXPORTS
     image_cast
     overlay_create
     overlay_set_click_through
+    overlay_set_always_on_top
     overlay_cast
     popup_create
     popup_cast

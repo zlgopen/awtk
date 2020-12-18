@@ -199,6 +199,13 @@ ret_t fs_get_user_storage_path(fs_t* fs, char path[MAX_PATH + 1]) {
   return fs->get_user_storage_path(fs, path);
 }
 
+ret_t fs_get_temp_path(fs_t* fs, char path[MAX_PATH + 1]) {
+  return_value_if_fail(fs != NULL && fs->get_temp_path != NULL && path != NULL,
+                       RET_BAD_PARAMS);
+
+  return fs->get_temp_path(fs, path);
+}
+
 ret_t fs_get_cwd(fs_t* fs, char path[MAX_PATH + 1]) {
   return_value_if_fail(fs != NULL && fs->get_cwd != NULL && path != NULL, RET_BAD_PARAMS);
 
