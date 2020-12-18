@@ -140,3 +140,17 @@ TEST(Fs, read_line4) {
 
   file_remove(filename);
 }
+
+TEST(Fs, create_dir_r) {
+  char cwd[MAX_PATH + 1];
+  ASSERT_EQ(fs_get_cwd(os_fs(), cwd), RET_OK);
+
+  ASSERT_EQ(fs_create_dir_r(os_fs(), "a/b/c/d"), RET_OK);
+  ASSERT_EQ(fs_dir_exist(os_fs(), "a/b/c/d"), TRUE);
+  ASSERT_EQ(file_write("a/b/c/d/test.txt", "hello", 5), RET_OK);
+  ASSERT_EQ(fs_change_dir(os_fs(), "a/b/c/d"), RET_OK);
+  ASSERT_EQ(fs_change_dir(os_fs(), cwd), RET_OK);
+
+  ASSERT_EQ(fs_remove_dir_r(os_fs(), "a"), RET_OK);
+  ASSERT_EQ(fs_dir_exist(os_fs(), "a"), FALSE);
+}

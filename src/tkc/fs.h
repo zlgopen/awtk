@@ -376,6 +376,7 @@ typedef ret_t (*fs_file_rename_t)(fs_t* fs, const char* name, const char* new_na
 typedef fs_dir_t* (*fs_open_dir_t)(fs_t* fs, const char* name);
 typedef ret_t (*fs_remove_dir_t)(fs_t* fs, const char* name);
 typedef ret_t (*fs_create_dir_t)(fs_t* fs, const char* name);
+typedef ret_t (*fs_change_dir_t)(fs_t* fs, const char* name);
 typedef bool_t (*fs_dir_exist_t)(fs_t* fs, const char* name);
 typedef ret_t (*fs_dir_rename_t)(fs_t* fs, const char* name, const char* new_name);
 
@@ -402,6 +403,7 @@ struct _fs_t {
 
   fs_open_dir_t open_dir;
   fs_create_dir_t create_dir;
+  fs_change_dir_t change_dir;
   fs_remove_dir_t remove_dir;
   fs_dir_exist_t dir_exist;
   fs_dir_rename_t dir_rename;
@@ -478,6 +480,18 @@ ret_t fs_file_rename(fs_t* fs, const char* name, const char* new_name);
 fs_dir_t* fs_open_dir(fs_t* fs, const char* name);
 
 /**
+ * @method fs_change_dir
+ *
+ * 修改当前目录。
+ *
+ * @param {fs_t*} fs 文件系统对象，一般赋值为os_fs()。
+ * @param {const char*} name 目录名称。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t fs_change_dir(fs_t* fs, const char* name);
+
+/**
  * @method fs_create_dir
  *
  * 创建目录。
@@ -500,6 +514,30 @@ ret_t fs_create_dir(fs_t* fs, const char* name);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t fs_remove_dir(fs_t* fs, const char* name);
+
+/**
+ * @method fs_create_dir_r
+ *
+ * 递归创建目录。
+ *
+ * @param {fs_t*} fs 文件系统对象，一般赋值为os_fs()。
+ * @param {const char*} name 目录名称。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t fs_create_dir_r(fs_t* fs, const char* name);
+
+/**
+ * @method fs_remove_dir_r
+ *
+ * 递归刪除目录。
+ *
+ * @param {fs_t*} fs 文件系统对象，一般赋值为os_fs()。
+ * @param {const char*} name 目录名称。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t fs_remove_dir_r(fs_t* fs, const char* name);
 
 /**
  * @method fs_dir_exist

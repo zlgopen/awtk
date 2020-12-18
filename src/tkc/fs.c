@@ -155,6 +155,12 @@ ret_t fs_remove_dir(fs_t* fs, const char* name) {
   return fs->remove_dir(fs, name);
 }
 
+ret_t fs_change_dir(fs_t* fs, const char* name) {
+  return_value_if_fail(fs != NULL && fs->change_dir != NULL && name != NULL, RET_BAD_PARAMS);
+
+  return fs->change_dir(fs, name);
+}
+
 ret_t fs_create_dir(fs_t* fs, const char* name) {
   return_value_if_fail(fs != NULL && fs->create_dir != NULL && name != NULL, RET_BAD_PARAMS);
 
@@ -200,8 +206,7 @@ ret_t fs_get_user_storage_path(fs_t* fs, char path[MAX_PATH + 1]) {
 }
 
 ret_t fs_get_temp_path(fs_t* fs, char path[MAX_PATH + 1]) {
-  return_value_if_fail(fs != NULL && fs->get_temp_path != NULL && path != NULL,
-                       RET_BAD_PARAMS);
+  return_value_if_fail(fs != NULL && fs->get_temp_path != NULL && path != NULL, RET_BAD_PARAMS);
 
   return fs->get_temp_path(fs, path);
 }
@@ -458,4 +463,59 @@ ret_t fs_build_user_storage_file_name(char filename[MAX_PATH + 1], const char* a
   }
 
   return path_build(filename, MAX_PATH, path, name, NULL);
+}
+
+#include "tkc/tokenizer.h"
+
+ret_t fs_create_dir_r(fs_t* fs, const char* name) {
+  char path[MAX_PATH + 1];
+  tokenizer_t tokenizer;
+  tokenizer_t* t = NULL;
+  return_value_if_fail(fs != NULL && name != NULL, RET_BAD_PARAMS);
+  t = tokenizer_init(&tokenizer, name, strlen(name), "/\\");
+  return_value_if_fail(t != NULL, RET_BAD_PARAMS);
+  while (tokenizer_has_more(t)) {
+    tokenizer_next(t);
+    tk_strncpy(path, name, tk_min(MAX_PATH, t->cursor));
+    if (!fs_dir_exist(fs, path)) {
+      fs_create_dir(fs, path);
+    }
+  }
+  tokenizer_deinit(t);
+
+  return RET_OK;
+}
+
+ret_t fs_remove_dir_r(fs_t* fs, const char* name) {
+  fs_item_t item;
+  ret_t ret = RET_OK;
+  fs_dir_t* dir = NULL;
+  return_value_if_fail(fs != NULL && name != NULL, RET_BAD_PARAMS);
+
+  dir = fs_open_dir(fs, name);
+  return_value_if_fail(dir != NULL, RET_BAD_PARAMS);
+  do {
+    if (fs_dir_read(dir, &item) != RET_OK) {
+      break;
+    }
+
+    if (tk_str_eq(item.name, ".") || tk_str_eq(item.name, "..")) {
+      continue;
+    } else {
+      char subname[MAX_PATH + 1];
+      path_build(subname, MAX_PATH, name, item.name, NULL);
+      if (item.is_dir) {
+        ret = fs_remove_dir_r(fs, subname);
+      } else {
+        ret = fs_remove_file(fs, subname);
+      }
+    }
+    if (ret != RET_OK) {
+      break;
+    }
+  } while (TRUE);
+  fs_dir_close(dir);
+  ret = fs_remove_dir(fs, name);
+
+  return ret;
 }

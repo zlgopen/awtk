@@ -1,25 +1,24 @@
 # 最新动态
 
 2020/12/18
-  * 增加函数fs\_get\_temp\_path。
+  * 增加函数 fs\_get\_temp\_path、fs\_remove\_dir_r、fs\_create\_dir\_r 和 fs\_change\_dir。
 
 2020/12/17
   * fscript 字符串支持换行符。
-  * 完善text selector的注释（感谢福明提供补丁）
+  * 完善 text selector 的注释（感谢福明提供补丁）
   * 修复强制退出的时候释放部分窗口没有释放的问题 （感谢智明提供补丁）
   * 修复圆角矩形边框类型为上下左右的时候显示不正常（感谢智明提供补丁） 
 
 2020/12/16
-  * 完善hscroll\_label，点击时取消暂停。
+  * 完善 hscroll\_label，点击时取消暂停。
 
 2020/12/15
   * 修复 slider 的 step 浮点数会退化为整数的问题（感谢智明提供补丁）
   * 修复 font\_manager 增加了消息事件后导致内存泄漏（感谢智明提供补丁）
   * 移除多点触控消息类型的 touch\_id 和 fingers 成员变量（感谢智明提供补丁）
 
-
 2020/12/14
-  * overlay窗口支持always\_on\_top属性。
+  * overlay 窗口支持 always\_on\_top 属性。
   * 完善多少触摸手势算法注释（感谢智明提供补丁）
   * how\_to\_use\_multi\_gesture 文档（感谢智明提供补丁）
   * 增加资源管理器的消息机制和修改字库管理器接收资源管理器的消息（感谢智明提供补丁） 

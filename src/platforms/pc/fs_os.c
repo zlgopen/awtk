@@ -328,6 +328,24 @@ static ret_t fs_os_remove_dir(fs_t* fs, const char* name) {
   }
 }
 
+static ret_t fs_os_change_dir(fs_t* fs, const char* name) {
+  (void)fs;
+  return_value_if_fail(name != NULL, RET_FAIL);
+#if defined(WIN32)
+  wchar_t* w_name = tk_wstr_dup_utf8(name);
+  int8_t ret = _wchdir(w_name);
+  TKMEM_FREE(w_name);
+  if (ret == 0) {
+#else
+  if (chdir(name) == 0) {
+#endif
+    return RET_OK;
+  } else {
+    perror(name);
+    return RET_FAIL;
+  }
+}
+
 static ret_t fs_os_create_dir(fs_t* fs, const char* name) {
   (void)fs;
   return_value_if_fail(name != NULL, RET_FAIL);
@@ -430,7 +448,7 @@ static ret_t fs_os_get_temp_path(fs_t* fs, char path[MAX_PATH + 1]) {
 
   return RET_OK;
 #elif defined(WIN32)
-  WCHAR tempdir[MAX_PATH+1];
+  WCHAR tempdir[MAX_PATH + 1];
   DWORD ret = GetTempPathW(tempdir, MAX_PATH);
   str_t str;
   str_init(&str, MAX_PATH);
@@ -529,6 +547,7 @@ static const fs_t s_os_fs = {.open_file = fs_os_open_file,
                              .open_dir = fs_os_open_dir,
                              .remove_dir = fs_os_remove_dir,
                              .create_dir = fs_os_create_dir,
+                             .change_dir = fs_os_change_dir,
                              .dir_exist = fs_os_dir_exist,
                              .dir_rename = fs_os_dir_rename,
 
