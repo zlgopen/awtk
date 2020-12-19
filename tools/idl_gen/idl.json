@@ -30684,6 +30684,27 @@
           }
         ],
         "annotation": {},
+        "desc": "修改当前目录。",
+        "name": "fs_change_dir",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "fs_t*",
+            "name": "fs",
+            "desc": "文件系统对象，一般赋值为os_fs()。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "目录名称。"
+          }
+        ],
+        "annotation": {},
         "desc": "创建目录。",
         "name": "fs_create_dir",
         "return": {
@@ -30707,6 +30728,48 @@
         "annotation": {},
         "desc": "刪除目录。",
         "name": "fs_remove_dir",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "fs_t*",
+            "name": "fs",
+            "desc": "文件系统对象，一般赋值为os_fs()。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "目录名称。"
+          }
+        ],
+        "annotation": {},
+        "desc": "递归创建目录。",
+        "name": "fs_create_dir_r",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "fs_t*",
+            "name": "fs",
+            "desc": "文件系统对象，一般赋值为os_fs()。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "目录名称。"
+          }
+        ],
+        "annotation": {},
+        "desc": "递归刪除目录。",
+        "name": "fs_remove_dir_r",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"

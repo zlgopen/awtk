@@ -287,8 +287,11 @@ EXPORTS
     fs_file_exist
     fs_file_rename
     fs_open_dir
+    fs_change_dir
     fs_create_dir
     fs_remove_dir
+    fs_create_dir_r
+    fs_remove_dir_r
     fs_dir_exist
     fs_dir_rename
     fs_get_file_size
