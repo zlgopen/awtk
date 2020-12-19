@@ -15,6 +15,7 @@
 #include <io.h>
 #include <direct.h>
 #include <Shlobj.h>
+#include <fileapi.h>
 #define unlink _unlink
 #define rename MoveFileA
 #define ftruncate _chsize
@@ -449,7 +450,7 @@ static ret_t fs_os_get_temp_path(fs_t* fs, char path[MAX_PATH + 1]) {
   return RET_OK;
 #elif defined(WIN32)
   WCHAR tempdir[MAX_PATH + 1];
-  DWORD ret = GetTempPathW(tempdir, MAX_PATH);
+  DWORD ret = GetTempPathW(MAX_PATH, tempdir);
   str_t str;
   str_init(&str, MAX_PATH);
   str_from_wstr(&str, tempdir);
