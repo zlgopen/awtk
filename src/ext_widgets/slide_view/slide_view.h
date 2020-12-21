@@ -121,6 +121,11 @@ typedef struct _slide_view_t {
   bool_t dragged;
   bool_t pressed;
   velocity_t velocity;
+
+  /*for animation*/
+  widget_t* prev;
+  widget_t* next;
+
 } slide_view_t;
 
 /**
@@ -178,6 +183,18 @@ ret_t slide_view_set_auto_play(widget_t* widget, uint16_t auto_play);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t slide_view_set_active(widget_t* widget, uint32_t index);
+
+/**
+ * @method slide_view_set_active_ex
+ * 设置当前页的序号。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget slide_view对象。
+ * @param {uint32_t} index 当前页的序号。
+ * @param {bool_t} animate enable animation.
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t slide_view_set_active_ex(widget_t* widget, uint32_t index, bool_t animate);
 
 /**
  * @method slide_view_set_vertical

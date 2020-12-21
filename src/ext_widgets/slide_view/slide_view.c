@@ -26,6 +26,8 @@
 #include "slide_view/slide_view.h"
 #include "widget_animators/widget_animator_scroll.h"
 
+static ret_t slide_view_set_active_no_animate(widget_t* widget, uint32_t active);
+
 static bool_t anim_hint_is_overlap(slide_view_t* slide_view) {
   return tk_str_eq(slide_view->anim_hint, "overlap") ||
          tk_str_eq(slide_view->anim_hint, "overlap_with_alpha");
@@ -131,14 +133,16 @@ static ret_t slide_view_on_scroll_done(void* ctx, event_t* e) {
   return_value_if_fail(widget != NULL && slide_view != NULL, RET_BAD_PARAMS);
 
   if (slide_view->xoffset > 0 || slide_view->yoffset > 0) {
-    slide_view_activate_prev(slide_view);
+    slide_view_set_active_no_animate(widget, widget_index_of(slide_view->prev));
   } else if (slide_view->xoffset < 0 || slide_view->yoffset < 0) {
-    slide_view_activate_next(slide_view);
+    slide_view_set_active_no_animate(widget, widget_index_of(slide_view->next));
   }
 
   slide_view->xoffset = 0;
   slide_view->yoffset = 0;
   slide_view->animating = FALSE;
+  slide_view->prev = NULL;
+  slide_view->next = NULL;
 
   widget->dirty = FALSE;
   widget_invalidate(widget, NULL);
@@ -146,19 +150,35 @@ static ret_t slide_view_on_scroll_done(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t slide_view_animate_to(slide_view_t* slide_view, int32_t xoffset, int32_t yoffset,
+                                   int32_t xoffset_end, int32_t yoffset_end) {
+  widget_animator_t* a = NULL;
+  widget_t* widget = WIDGET(slide_view);
+
+  a = widget_animator_scroll_create(widget, TK_ANIMATING_TIME, 0, EASING_SIN_INOUT);
+  return_value_if_fail(a != NULL, RET_OOM);
+
+  widget_animator_scroll_set_params(a, xoffset, yoffset, xoffset_end, yoffset_end);
+  widget_animator_on(a, EVT_ANIM_END, slide_view_on_scroll_done, slide_view);
+  widget_animator_start(a);
+  slide_view->animating = TRUE;
+
+  return RET_OK;
+}
+
 static ret_t slide_view_on_pointer_up(slide_view_t* slide_view, pointer_event_t* e) {
+  int32_t xoffset_end = 0;
+  int32_t yoffset_end = 0;
+  int32_t xoffset = slide_view->xoffset;
+  int32_t yoffset = slide_view->yoffset;
   uint32_t v_threshhold = 100;
   widget_t* widget = WIDGET(slide_view);
   velocity_t* v = &(slide_view->velocity);
-  widget_animator_t* animator =
-      widget_animator_scroll_create(widget, TK_ANIMATING_TIME, 0, EASING_SIN_INOUT);
 
   velocity_update(v, e->e.time, e->x, e->y);
   if (slide_view->vertical) {
     int32_t h = widget->h;
-    int32_t yoffset_end = 0;
     int32_t yv = tk_abs(v->yv);
-    int32_t yoffset = slide_view->yoffset;
     bool_t rollback = (yv < v_threshhold) && (tk_abs(yoffset) < h / 2);
 
     if (yoffset > 0 && slide_view_get_prev(slide_view) == NULL) {
@@ -173,13 +193,9 @@ static ret_t slide_view_on_pointer_up(slide_view_t* slide_view, pointer_event_t*
     if (!rollback) {
       yoffset_end = yoffset > 0 ? h : -h;
     }
-
-    widget_animator_scroll_set_params(animator, 0, yoffset, 0, yoffset_end);
   } else {
     int32_t w = widget->w;
-    int32_t xoffset_end = 0;
     int32_t xv = tk_abs(v->xv);
-    int32_t xoffset = slide_view->xoffset;
     bool_t rollback = (xv < v_threshhold) && (tk_abs(xoffset) < w / 2);
 
     if (xoffset > 0 && slide_view_get_prev(slide_view) == NULL) {
@@ -194,15 +210,9 @@ static ret_t slide_view_on_pointer_up(slide_view_t* slide_view, pointer_event_t*
     if (!rollback) {
       xoffset_end = xoffset > 0 ? w : -w;
     }
-
-    widget_animator_scroll_set_params(animator, xoffset, 0, xoffset_end, 0);
   }
 
-  slide_view->animating = TRUE;
-  widget_animator_on(animator, EVT_ANIM_END, slide_view_on_scroll_done, slide_view);
-  widget_animator_start(animator);
-
-  return RET_OK;
+  return slide_view_animate_to(slide_view, xoffset, yoffset, xoffset_end, yoffset_end);
 }
 
 static ret_t slide_view_on_pointer_move(slide_view_t* slide_view, pointer_event_t* e) {
@@ -235,6 +245,9 @@ static ret_t slide_view_on_event(widget_t* widget, event_t* e) {
       slide_view->pressed = TRUE;
       widget_grab(widget->parent, widget);
       slide_view_on_pointer_down(slide_view, (pointer_event_t*)e);
+      slide_view->prev = slide_view_get_prev(slide_view);
+      slide_view->next = slide_view_get_next(slide_view);
+
       break;
     case EVT_POINTER_UP: {
       if (slide_view->pressed) {
@@ -484,7 +497,7 @@ static ret_t slide_view_paint_prev_next_v_overlap(slide_view_t* slide_view, canv
 
 static ret_t slide_view_paint_children_v_gt(slide_view_t* slide_view, canvas_t* c, rect_t* save_r) {
   int32_t yoffset = tk_abs(slide_view->yoffset);
-  widget_t* prev = slide_view_get_prev(slide_view);
+  widget_t* prev = slide_view->prev;
   widget_t* active = widget_get_child(WIDGET(slide_view), slide_view->active);
 
   if (anim_hint_is_overlap(slide_view)) {
@@ -495,8 +508,8 @@ static ret_t slide_view_paint_children_v_gt(slide_view_t* slide_view, canvas_t* 
 }
 
 static ret_t slide_view_paint_children_v_lt(slide_view_t* slide_view, canvas_t* c, rect_t* save_r) {
+  widget_t* next = slide_view->next;
   int32_t yoffset = WIDGET(slide_view)->h - tk_abs(slide_view->yoffset);
-  widget_t* next = slide_view_get_next(slide_view);
   widget_t* active = widget_get_child(WIDGET(slide_view), slide_view->active);
 
   if (anim_hint_is_overlap(slide_view)) {
@@ -598,7 +611,7 @@ static ret_t slide_view_paint_prev_next_h_overlap(slide_view_t* slide_view, canv
 
 static ret_t slide_view_paint_children_h_gt(slide_view_t* slide_view, canvas_t* c, rect_t* save_r) {
   int32_t xoffset = tk_abs(slide_view->xoffset);
-  widget_t* prev = slide_view_get_prev(slide_view);
+  widget_t* prev = slide_view->prev;
   widget_t* active = widget_get_child(WIDGET(slide_view), slide_view->active);
 
   if (anim_hint_is_overlap(slide_view)) {
@@ -609,8 +622,8 @@ static ret_t slide_view_paint_children_h_gt(slide_view_t* slide_view, canvas_t* 
 }
 
 static ret_t slide_view_paint_children_h_lt(slide_view_t* slide_view, canvas_t* c, rect_t* save_r) {
+  widget_t* next = slide_view->next;
   int32_t xoffset = WIDGET(slide_view)->w - tk_abs(slide_view->xoffset);
-  widget_t* next = slide_view_get_next(slide_view);
   widget_t* active = widget_get_child(WIDGET(slide_view), slide_view->active);
 
   if (anim_hint_is_overlap(slide_view)) {
@@ -756,7 +769,7 @@ static ret_t slide_view_restore_target(widget_t* widget) {
   return RET_OK;
 }
 
-ret_t slide_view_set_active(widget_t* widget, uint32_t active) {
+static ret_t slide_view_set_active_no_animate(widget_t* widget, uint32_t active) {
   slide_view_t* slide_view = SLIDE_VIEW(widget);
   return_value_if_fail(slide_view != NULL, RET_BAD_PARAMS);
 
@@ -783,6 +796,41 @@ ret_t slide_view_set_active(widget_t* widget, uint32_t active) {
   }
 
   return RET_OK;
+}
+
+static ret_t slide_view_set_active_animate(widget_t* widget, uint32_t active) {
+  int32_t xoffset_end = 0;
+  int32_t yoffset_end = 0;
+  slide_view_t* slide_view = SLIDE_VIEW(widget);
+  uint32_t old_active = slide_view->active;
+
+  if (old_active < active) {
+    slide_view->prev = NULL;
+    slide_view->next = widget_get_child(widget, active);
+    xoffset_end = slide_view->vertical ? 0 : -widget->w;
+    yoffset_end = slide_view->vertical ? -widget->h : 0;
+  } else {
+    slide_view->next = NULL;
+    slide_view->prev = widget_get_child(widget, active);
+    xoffset_end = slide_view->vertical ? 0 : widget->w;
+    yoffset_end = slide_view->vertical ? widget->h : 0;
+  }
+
+  return slide_view_animate_to(slide_view, 0, 0, xoffset_end, yoffset_end);
+}
+
+ret_t slide_view_set_active_ex(widget_t* widget, uint32_t index, bool_t animate) {
+  slide_view_t* slide_view = SLIDE_VIEW(widget);
+
+  if (widget_count_children(widget) < 2 || slide_view->active == index || !animate) {
+    return slide_view_set_active_no_animate(widget, index);
+  } else {
+    return slide_view_set_active_animate(widget, index);
+  }
+}
+
+ret_t slide_view_set_active(widget_t* widget, uint32_t active) {
+  return slide_view_set_active_ex(widget, active, TRUE);
 }
 
 ret_t slide_view_set_vertical(widget_t* widget, bool_t vertical) {
@@ -826,22 +874,21 @@ widget_t* slide_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 }
 
 static ret_t slide_view_on_timer_next(const timer_info_t* timer) {
+  int32_t xoffset_end = 0;
+  int32_t yoffset_end = 0;
   widget_t* widget = WIDGET(timer->ctx);
   slide_view_t* slide_view = SLIDE_VIEW(timer->ctx);
-  return_value_if_fail(slide_view != NULL, RET_BAD_PARAMS);
-
-  widget_animator_t* animator =
-      widget_animator_scroll_create(widget, TK_ANIMATING_TIME, 0, EASING_SIN_INOUT);
+  return_value_if_fail(slide_view != NULL, RET_REMOVE);
+  return_value_if_fail(!slide_view->animating, RET_REPEAT);
 
   if (slide_view->vertical) {
-    widget_animator_scroll_set_params(animator, 0, 0, 0, -widget->h);
+    yoffset_end = -widget->h;
   } else {
-    widget_animator_scroll_set_params(animator, 0, 0, -widget->w, 0);
+    xoffset_end = -widget->w;
   }
 
-  slide_view->animating = TRUE;
-  widget_animator_on(animator, EVT_ANIM_END, slide_view_on_scroll_done, slide_view);
-  widget_animator_start(animator);
+  slide_view->next = slide_view_get_next(slide_view);
+  slide_view_animate_to(slide_view, 0, 0, xoffset_end, yoffset_end);
 
   return RET_REPEAT;
 }
