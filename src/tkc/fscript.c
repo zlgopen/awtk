@@ -1766,5 +1766,5 @@ ret_t fscript_register_func(const char* name, fscript_func_t func) {
     s_global_funcs = object_default_create();
   }
 
-  return object_set_prop_pointer(s_global_funcs, name, func);
+  return object_set_prop_pointer(s_global_funcs, name, (void*)func);
 }
