@@ -821,8 +821,9 @@ static ret_t slide_view_set_active_animate(widget_t* widget, uint32_t active) {
 
 ret_t slide_view_set_active_ex(widget_t* widget, uint32_t index, bool_t animate) {
   slide_view_t* slide_view = SLIDE_VIEW(widget);
+  widget_t* win = widget_get_window(widget);
 
-  if (widget_count_children(widget) < 2 || slide_view->active == index || !animate) {
+  if (widget_count_children(widget) < 2 || slide_view->active == index || !animate || win == NULL) {
     return slide_view_set_active_no_animate(widget, index);
   } else {
     return slide_view_set_active_animate(widget, index);
