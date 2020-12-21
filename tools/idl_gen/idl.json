@@ -51052,6 +51052,34 @@
             "desc": "slide_view对象。"
           },
           {
+            "type": "uint32_t",
+            "name": "index",
+            "desc": "当前页的序号。"
+          },
+          {
+            "type": "bool_t",
+            "name": "animate",
+            "desc": "enable animation."
+          }
+        ],
+        "annotation": {
+          "scriptable": true
+        },
+        "desc": "设置当前页的序号。",
+        "name": "slide_view_set_active_ex",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "widget_t*",
+            "name": "widget",
+            "desc": "slide_view对象。"
+          },
+          {
             "type": "bool_t",
             "name": "vertical",
             "desc": "TRUE表示上下滑动，FALSE表示左右滑动。"

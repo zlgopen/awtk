@@ -1759,6 +1759,7 @@ EXPORTS
     slide_view_cast
     slide_view_set_auto_play
     slide_view_set_active
+    slide_view_set_active_ex
     slide_view_set_vertical
     slide_view_set_anim_hint
     slide_view_set_loop

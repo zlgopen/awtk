@@ -1,5 +1,9 @@
 # 最新动态
 
+2020/12/21
+  * 增加 slide\_view\_set\_active\_ex 以控制是否启用动画。
+  * slide\_view\_set\_active 默认启用动画。
+
 2020/12/18
   * 增加函数 fs\_get\_temp\_path、fs\_remove\_dir_r、fs\_create\_dir\_r 和 fs\_change\_dir。
   * 修改 date\_time\_get\_wday 的 BUG（感谢忠吉发现问题）

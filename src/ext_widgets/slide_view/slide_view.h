@@ -175,7 +175,7 @@ ret_t slide_view_set_auto_play(widget_t* widget, uint16_t auto_play);
 
 /**
  * @method slide_view_set_active
- * 设置当前页的序号。
+ * 设置当前页的序号(默认启用动画)。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget slide_view对象。
  * @param {uint32_t} index 当前页的序号。
@@ -190,7 +190,7 @@ ret_t slide_view_set_active(widget_t* widget, uint32_t index);
  * @annotation ["scriptable"]
  * @param {widget_t*} widget slide_view对象。
  * @param {uint32_t} index 当前页的序号。
- * @param {bool_t} animate enable animation.
+ * @param {bool_t} animate 是否启用动画。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
