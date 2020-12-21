@@ -499,6 +499,30 @@ def gen_res_all_data():
 
     emit_generate_res_after('data')
 
+def gen_res_all_flows():
+    if not THEME_PACKAGED and THEME != 'default':
+        return
+
+    raw = join_path(INPUT_DIR, 'flows')
+    if not os.path.exists(raw):
+        return
+
+    emit_generate_res_before('flows')
+
+    if IS_GENERATE_RAW:
+        if INPUT_DIR != join_path(OUTPUT_DIR, 'raw'):
+            dst = join_path(OUTPUT_DIR, 'raw/flows')
+            if os.path.exists(dst):
+                remove_dir(dst)
+            copy_dir(raw, dst)
+
+    if IS_GENERATE_INC_RES or IS_GENERATE_INC_BITMAP:
+        inc = join_path(OUTPUT_DIR, 'inc/flows')
+        make_dirs(inc)
+        resgen(raw, inc, THEME, '.flows')
+
+    emit_generate_res_after('flows')
+
 
 def gen_res_all_xml():
     if not THEME_PACKAGED and THEME != 'default':
@@ -673,6 +697,7 @@ def gen_res_all():
     gen_res_all_ui()
     gen_res_all_style()
     gen_res_all_data()
+    gen_res_all_flows()
     gen_res_all_xml()
     emit_generate_res_after('all')
     print('=========================================================')
@@ -1077,6 +1102,9 @@ def update_res():
         gen_res_c()
     elif ACTION == 'data':
         theme_foreach(gen_res_all_data)
+        gen_res_c()
+    elif ACTION == 'flows':
+        theme_foreach(gen_res_all_flows)
         gen_res_c()
     elif ACTION == 'xml':
         theme_foreach(gen_res_all_xml)
