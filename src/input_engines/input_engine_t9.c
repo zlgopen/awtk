@@ -49,7 +49,7 @@ static ret_t input_engine_t9_reset_input(input_engine_t* engine) {
 }
 
 static const wchar_t* s_table_num_chars[] = {
-    L"", L"ABC", L"DEF", L"GHI", L"JKL", L"MNO", L"PQRS", L"TUV", L"WXYZ", L"",
+    L"", L"", L"ABC", L"DEF", L"GHI", L"JKL", L"MNO", L"PQRS", L"TUV", L"WXYZ", L"",
 };
 
 static ret_t input_engine_table_search(input_engine_t* engine, const char* keys) {
