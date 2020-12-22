@@ -1,5 +1,10 @@
 # 最新动态
 
+2020/12/22
+  * 增加FLOW资源类型。
+  * 增加函数tk\_strncpy\_s。
+  * data\_reader\_asset支持除data之外的其它资源类型。
+
 2020/12/21
   * 增加 slide\_view\_set\_active\_ex 以控制是否启用动画。
   * slide\_view\_set\_active 默认启用动画。
