@@ -1129,6 +1129,8 @@ static ret_t ffr_draw_fill_rounded_rect(canvas_t* c, const rect_t* r, const colo
 
       canvas_fill_rect(c, tmp_x, y, tmp_w, (wh_t)h1);  //上边矩形
 
+      tmp_x = v_x1;
+      tmp_w = mid_lenght_h;
       if (radius_bl == 0) {
         tmp_x = x;
         tmp_w += radius;
