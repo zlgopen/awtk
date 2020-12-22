@@ -86,6 +86,11 @@ typedef enum _asset_type_t {
   ASSET_TYPE_SCRIPT,
 
   /**
+   * @const ASSET_TYPE_FLOW
+   * 流图资源。
+   */
+  ASSET_TYPE_FLOW,
+  /**
    * @const ASSET_TYPE_DATA
    * 其它数据资源。
    */

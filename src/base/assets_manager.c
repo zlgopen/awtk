@@ -104,13 +104,18 @@ static ret_t build_asset_filename_one_theme(char* path, uint32_t size, const cha
                                             const char* theme, const char* ratio,
                                             const char* subpath, const char* name,
                                             const char* extname) {
+  const char* pextname = NULL;
   char sep[2] = {TK_PATH_SEP, 0};
 
   return_value_if_fail(
       build_asset_dir_one_theme(path, size, res_root, theme, ratio, subpath) == RET_OK, RET_FAIL);
   return_value_if_fail(tk_str_append(path, size, sep) == RET_OK, RET_FAIL);
   return_value_if_fail(tk_str_append(path, size, name) == RET_OK, RET_FAIL);
-  return_value_if_fail(tk_str_append(path, size, extname) == RET_OK, RET_FAIL);
+ 
+  pextname = strrchr(name, '.');
+  if (pextname == NULL || !tk_str_eq(pextname, extname)) {
+    return_value_if_fail(tk_str_append(path, size, extname) == RET_OK, RET_FAIL);
+  }
 
   return RET_OK;
 }
@@ -238,6 +243,10 @@ static asset_info_t* try_load_assets(assets_manager_t* am, const char* theme, co
       subpath = "scripts";
       break;
     }
+    case ASSET_TYPE_FLOW: {
+      subpath = "flows";
+      break;
+    }
     case ASSET_TYPE_STYLE: {
       subpath = "styles";
       break;
@@ -348,6 +357,12 @@ asset_info_t* assets_manager_load_asset(assets_manager_t* am, asset_type_t type,
       }
 
       if ((info = try_load_assets(am, theme, name, ".lua", type, ASSET_TYPE_SCRIPT_LUA)) != NULL) {
+        break;
+      }
+      break;
+    }
+    case ASSET_TYPE_FLOW: {
+      if ((info = try_load_assets(am, theme, name, ".json", type, ASSET_TYPE_SCRIPT_JS)) != NULL) {
         break;
       }
       break;
