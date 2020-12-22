@@ -172,6 +172,17 @@ TEST(Utils, tk_strncpy) {
   ASSERT_EQ(string(tk_strncpy(dst, str, strlen(str) + 1)), string(str));
 }
 
+TEST(Utils, tk_strncpy_s) {
+  char dst[32];
+  const char* str = "hello world";
+
+  ASSERT_EQ(tk_strncpy_s(dst, 0, str, 4), (const char*)NULL);
+  ASSERT_EQ(string(tk_strncpy_s(dst, 1, str, 4)), string(""));
+  ASSERT_EQ(string(tk_strncpy_s(dst, 2, str, 4)), string("h"));
+  ASSERT_EQ(string(tk_strncpy_s(dst, 3, str, strlen(str))), string("he"));
+  ASSERT_EQ(string(tk_strncpy_s(dst, sizeof(dst), str, strlen(str) + 1)), string(str));
+}
+
 TEST(Utils, filename_to_name) {
   char name[TK_NAME_LEN + 1];
 

@@ -207,12 +207,26 @@ char* tk_strcpy(char* dst, const char* src);
  *> 请确保dst的长度>=(len+1)
  *
  * @param {char*} dst 目标字符串。
- * @param {const char*} src 原字符串。
+ * @param {const char*} src 源字符串。
  * @param {size_t} len 要复制的字符串个数。
  *
  * @return {char*} 返回目标字符串。
  */
 char* tk_strncpy(char* dst, const char* src, size_t len);
+
+/**
+ * @method tk_strncpy_s
+ *
+ * 将src所指向的字符串复制到dst，最多复制min(dst_len-1, src_len)个字符串，并在[len]位置添加'\0'。
+ *
+ * @param {char*} dst 目标字符串。
+ * @param {size_t} dst_len 目标字符串内存长度。
+ * @param {const char*} src 源字符串。
+ * @param {size_t} src_len 要复制的字符串个数。
+ *
+ * @return {char*} 返回目标字符串。
+ */
+char* tk_strncpy_s(char* dst, size_t dst_len, const char* src, size_t src_len);
 
 /**
  * @method tk_strdup
