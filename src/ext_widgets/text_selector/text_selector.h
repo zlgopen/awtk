@@ -105,18 +105,18 @@ typedef struct _text_selector_t {
   char* options;
 
   /**
-   * @property {bool_t} localize_options
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 是否本地化(翻译)选项(缺省为FALSE)。
-   */
-  bool_t localize_options;
-
-  /**
    * @property {float_t} yspeed_scale
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * y偏移速度比例。
    */
   float_t yspeed_scale;
+
+  /**
+   * @property {bool_t} localize_options
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 是否本地化(翻译)选项(缺省为FALSE)。
+   */
+  bool_t localize_options;
 
   /**
    * @property {bool_t} loop_options
@@ -126,15 +126,18 @@ typedef struct _text_selector_t {
   bool_t loop_options;
 
   /*private*/
+  bool_t pressed;
+  bool_t is_init;
   str_t text;
   int32_t ydown;
   int32_t yoffset;
   int32_t yoffset_save;
-  bool_t pressed;
   velocity_t velocity;
   widget_animator_t* wa;
-  text_selector_option_t* option_items;
+  int32_t draw_widget_y;
+  int32_t draw_widget_h;
   uint32_t locale_info_id;
+  text_selector_option_t* option_items;
 } text_selector_t;
 
 /**

@@ -32,6 +32,7 @@
 #include "widget_animators/widget_animator_scroll.h"
 
 static ret_t text_selector_set_all_options_localize_text(widget_t* widget);
+static ret_t text_selector_sync_yoffset_with_selected_index(text_selector_t* text_selector);
 
 const char* s_text_selector_properties[] = {WIDGET_PROP_TEXT,
                                             WIDGET_PROP_VALUE,
@@ -56,7 +57,7 @@ static ret_t text_selector_paint_mask(widget_t* widget, canvas_t* c) {
 
   text_selector_t* text_selector = TEXT_SELECTOR(widget);
   int32_t visible_nr = text_selector->visible_nr;
-  int32_t item_height = widget->h / text_selector->visible_nr;
+  int32_t item_height = text_selector->draw_widget_h / visible_nr;
 
   if (fc.rgba.a) {
     canvas_set_stroke_color(c, fc);
@@ -170,14 +171,15 @@ static ret_t text_selector_paint_self(widget_t* widget, canvas_t* c) {
   uint32_t i = 0;
   int32_t yoffset = text_selector->yoffset;
   int32_t visible_nr = text_selector->visible_nr;
-  int32_t item_height = widget->h / visible_nr;
+  int32_t item_height = text_selector->draw_widget_h / visible_nr;
   rect_t r = rect_init(0, 0, widget->w, item_height);
 
   int32_t options_nr = text_selector_count_options(widget);
   int32_t empty_item_height = (text_selector->visible_nr / 2) * item_height;
   int32_t min_yoffset = -empty_item_height;
-  int32_t max_yoffset = (options_nr * item_height + empty_item_height) - widget->h;
+  int32_t max_yoffset = (options_nr * item_height + empty_item_height) - text_selector->draw_widget_h;
   int32_t tolal_height = max_yoffset + empty_item_height;
+  return_value_if_fail(options_nr > 0, RET_BAD_PARAMS);
 
   widget_prepare_text_style(widget, c);
   iter = text_selector->option_items;
@@ -218,18 +220,47 @@ static ret_t text_selector_paint_self(widget_t* widget, canvas_t* c) {
 
 static ret_t text_selector_on_paint_self(widget_t* widget, canvas_t* c) {
   rect_t r_save;
+  text_selector_t* text_selector = TEXT_SELECTOR(widget);
   rect_t r = rect_init(c->ox, c->oy, widget->w, widget->h);
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget != NULL && text_selector != NULL, RET_BAD_PARAMS);
 
   canvas_get_clip_rect(c, &r_save);
   r = rect_intersect(&r_save, &r);
   if (r.w > 0 && r.h > 0) {
+    canvas_translate(c, 0, text_selector->draw_widget_y);
     canvas_set_clip_rect(c, &r);
     text_selector_paint_self(widget, c);
     text_selector_paint_mask(widget, c);
     canvas_set_clip_rect(c, &r_save);
+    canvas_untranslate(c, 0, text_selector->draw_widget_y);
   }
 
+  return RET_OK;
+}
+
+static ret_t text_selector_set_real_draw_info(widget_t* widget) {
+  int32_t tmp_h = 0;
+  text_selector_t* text_selector = TEXT_SELECTOR(widget);
+  return_value_if_fail(text_selector != NULL, RET_BAD_PARAMS);
+  tmp_h = widget->h % text_selector->visible_nr;
+  if (tmp_h == 0) {
+    text_selector->draw_widget_y = 0;
+    text_selector->draw_widget_h = widget->h;
+  } else {
+    text_selector->draw_widget_y = tmp_h / 2;
+    text_selector->draw_widget_h = widget->h - tmp_h;
+  }
+  return RET_OK;
+}
+
+static ret_t text_selector_on_layout_children(widget_t* widget) {
+  text_selector_t* text_selector = TEXT_SELECTOR(widget);
+  return_value_if_fail(text_selector != NULL, RET_BAD_PARAMS);
+  text_selector_set_real_draw_info(widget);
+  if (!text_selector->is_init) {
+    text_selector_sync_yoffset_with_selected_index(text_selector);
+    text_selector->is_init = TRUE;
+  }
   return RET_OK;
 }
 
@@ -446,9 +477,8 @@ static ret_t text_selector_set_selected_index_only(text_selector_t* text_selecto
 }
 
 static ret_t text_selector_sync_selected_index_with_yoffset(text_selector_t* text_selector) {
-  widget_t* widget = WIDGET(text_selector);
   int32_t mid_index = text_selector->visible_nr / 2;
-  int32_t item_height = widget->h / text_selector->visible_nr;
+  int32_t item_height = text_selector->draw_widget_h / text_selector->visible_nr;
   int32_t selected_index = text_selector->yoffset / item_height + mid_index;
 
   return text_selector_set_selected_index_only(text_selector, selected_index);
@@ -457,7 +487,7 @@ static ret_t text_selector_sync_selected_index_with_yoffset(text_selector_t* tex
 static ret_t text_selector_sync_yoffset_with_selected_index(text_selector_t* text_selector) {
   widget_t* widget = WIDGET(text_selector);
   int32_t mid_index = text_selector->visible_nr / 2;
-  int32_t item_height = widget->h / text_selector->visible_nr;
+  int32_t item_height = text_selector->draw_widget_h / text_selector->visible_nr;
 
   text_selector->yoffset = (text_selector->selected_index - mid_index) * item_height;
 
@@ -470,10 +500,10 @@ static ret_t text_selector_on_scroll_done(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   text_selector_t* text_selector = TEXT_SELECTOR(ctx);
   int32_t options_nr = text_selector_count_options(widget);
-  int32_t item_height = widget->h / text_selector->visible_nr;
+  int32_t item_height = text_selector->draw_widget_h / text_selector->visible_nr;
   int32_t empty_item_height = (text_selector->visible_nr / 2) * item_height;
   int32_t min_yoffset = -empty_item_height;
-  int32_t max_yoffset = (options_nr * item_height + empty_item_height) - widget->h;
+  int32_t max_yoffset = (options_nr * item_height + empty_item_height) - text_selector->draw_widget_h;
   return_value_if_fail(text_selector != NULL, RET_BAD_PARAMS);
 
   text_selector->wa = NULL;
@@ -493,10 +523,10 @@ static ret_t text_selector_scroll_to(widget_t* widget, int32_t yoffset_end) {
   int32_t yoffset = 0;
   text_selector_t* text_selector = TEXT_SELECTOR(widget);
   int32_t options_nr = text_selector_count_options(widget);
-  int32_t item_height = widget->h / text_selector->visible_nr;
+  int32_t item_height = text_selector->draw_widget_h / text_selector->visible_nr;
   int32_t empty_item_height = (text_selector->visible_nr / 2) * item_height;
   int32_t min_yoffset = -empty_item_height;
-  int32_t max_yoffset = (options_nr * item_height + empty_item_height) - widget->h;
+  int32_t max_yoffset = (options_nr * item_height + empty_item_height) - text_selector->draw_widget_h;
 
   if (!text_selector->loop_options) {
     if (yoffset_end < min_yoffset) {
@@ -529,7 +559,7 @@ static ret_t text_selector_on_pointer_up(text_selector_t* text_selector, pointer
   int32_t yoffset_end = 0;
   widget_t* widget = WIDGET(text_selector);
   velocity_t* v = &(text_selector->velocity);
-  int32_t item_height = widget->h / text_selector->visible_nr;
+  int32_t item_height = text_selector->draw_widget_h / text_selector->visible_nr;
 
   velocity_update(v, e->e.time, e->x, e->y);
   yoffset_end = text_selector->yoffset - v->yv * text_selector->yspeed_scale;
@@ -650,6 +680,7 @@ TK_DECL_VTABLE(text_selector) = {.size = sizeof(text_selector_t),
                                  .parent = TK_PARENT_VTABLE(widget),
                                  .create = text_selector_create,
                                  .on_paint_self = text_selector_on_paint_self,
+                                 .on_layout_children = text_selector_on_layout_children,
                                  .set_prop = text_selector_set_prop,
                                  .get_prop = text_selector_get_prop,
                                  .on_destroy = text_selector_on_destroy,
@@ -662,11 +693,11 @@ widget_t* text_selector_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
 
   text_selector->visible_nr = 5;
   text_selector->pressed = FALSE;
+  text_selector->is_init = FALSE;
   text_selector->yspeed_scale = 1.0f;
 
   text_selector->locale_info_id = TK_INVALID_ID;
 
-  text_selector_sync_yoffset_with_selected_index(text_selector);
   return widget;
 }
 
