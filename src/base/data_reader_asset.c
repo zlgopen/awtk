@@ -20,7 +20,10 @@
  */
 
 #include "tkc/mem.h"
+#include "tkc/utils.h"
 #include "tkc/asset_info.h"
+
+#include "base/enums.h"
 #include "base/assets_manager.h"
 #include "base/data_reader_asset.h"
 
@@ -70,14 +73,28 @@ static data_reader_vtable_t s_data_reader_asset_vtable = {
 };
 
 data_reader_t* data_reader_asset_create(const char* assetname) {
+  const char* p = NULL;
+  char type[TK_NAME_LEN+1];
   data_reader_asset_t* asset = NULL;
+  const key_type_value_t* kv = NULL;
   assets_manager_t* am = assets_manager();
   return_value_if_fail(assetname != NULL, NULL);
   asset = TKMEM_ZALLOC(data_reader_asset_t);
   return_value_if_fail(asset != NULL && am != NULL, NULL);
 
+  p = strchr(assetname, '/');
+  if(p != NULL) {
+    tk_strncpy_s(type, sizeof(type), assetname, p - assetname);
+    assetname = p + 1;
+  } else {
+    strcpy(type, "data");
+  }
+
+  kv = asset_type_find(type);
+  return_value_if_fail(kv != NULL, NULL);
+
   asset->data_reader.vt = &s_data_reader_asset_vtable;
-  asset->info = assets_manager_ref(am, ASSET_TYPE_DATA, assetname);
+  asset->info = assets_manager_ref(am, kv->value, assetname);
 
   if (asset->info == NULL) {
     TKMEM_FREE(asset);
