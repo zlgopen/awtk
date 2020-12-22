@@ -183,6 +183,7 @@ ret_t tk_init_internal(void) {
 #endif /*WITHOUT_INPUT_METHOD*/
   return_value_if_fail(locale_info_set(locale_info_create(NULL, NULL)) == RET_OK, RET_FAIL);
   return_value_if_fail(font_manager_set(font_manager_create(font_loader)) == RET_OK, RET_FAIL);
+  return_value_if_fail(font_manager_set_assets_manager(font_manager(), assets_manager()) == RET_OK, RET_FAIL);
   return_value_if_fail(image_manager_set(image_manager_create()) == RET_OK, RET_FAIL);
 #ifndef WITHOUT_WINDOW_ANIMATORS
   return_value_if_fail(window_animator_factory_set(window_animator_factory_create()) == RET_OK,
