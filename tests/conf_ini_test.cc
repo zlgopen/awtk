@@ -367,3 +367,21 @@ TEST(Ini, readonly) {
 
   OBJECT_UNREF(conf);
 }
+
+TEST(Ini, load1) {
+  object_t* conf = conf_ini_load(NULL, FALSE);
+  ASSERT_EQ(conf, (object_t*)NULL);
+  
+  conf = conf_ini_load(NULL, TRUE);
+  ASSERT_NE(conf, (object_t*)NULL);
+
+  OBJECT_UNREF(conf);
+}
+
+TEST(Ini, create) {
+  object_t* conf = conf_ini_create();
+  ASSERT_NE(conf, (object_t*)NULL);
+  ASSERT_EQ(object_set_prop_int(conf, "value", 123), RET_OK);
+  ASSERT_EQ(object_get_prop_int(conf, "value", 0), 123);
+  OBJECT_UNREF(conf);
+}

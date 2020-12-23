@@ -138,12 +138,14 @@ static ret_t conf_obj_load(object_t* obj) {
   return RET_OK;
 }
 
-static ret_t conf_obj_load_or_create(object_t* obj) {
+static ret_t conf_obj_load_or_create(object_t* obj, bool_t create_if_not_exist) {
   conf_obj_t* o = CONF_OBJ(obj);
 
-  conf_obj_load(obj);
+  if (o->url != NULL) {
+    conf_obj_load(obj);
+  }
 
-  if (o->doc == NULL) {
+  if (o->doc == NULL && create_if_not_exist) {
     o->doc = conf_doc_create(20);
   }
 
@@ -163,7 +165,7 @@ static ret_t conf_obj_reload(object_t* obj) {
   conf_doc_destroy(o->doc);
   o->doc = NULL;
 
-  return conf_obj_load_or_create(obj);
+  return conf_obj_load_or_create(obj, FALSE);
 }
 
 static bool_t conf_obj_can_exec(object_t* obj, const char* name, const char* args) {
@@ -296,7 +298,8 @@ object_t* conf_obj_create(conf_doc_save_t save, conf_doc_load_t load, const char
                           bool_t create_if_not_exist) {
   conf_obj_t* o = NULL;
   object_t* obj = NULL;
-  return_value_if_fail(save != NULL && load != NULL && url != NULL && *url, NULL);
+  return_value_if_fail(save != NULL && load != NULL, NULL);
+  return_value_if_fail((url != NULL && *url) || create_if_not_exist, NULL);
 
   obj = object_create(&s_conf_obj_vtable);
   o = CONF_OBJ(obj);
@@ -305,12 +308,12 @@ object_t* conf_obj_create(conf_doc_save_t save, conf_doc_load_t load, const char
   o->save = save;
   o->load = load;
   o->url = tk_strdup(url);
-  if (o->url == NULL) {
+  if (o->url == NULL && url != NULL) {
     OBJECT_UNREF(o);
   }
   return_value_if_fail(o != NULL, NULL);
 
-  conf_obj_load_or_create(obj);
+  conf_obj_load_or_create(obj, create_if_not_exist);
 
   if (o->doc == NULL || o->doc->root == NULL) {
     TKMEM_FREE(o->url);

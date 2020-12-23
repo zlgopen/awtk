@@ -227,3 +227,21 @@ TEST(Json, exec) {
 
   OBJECT_UNREF(conf);
 }
+
+TEST(Json, load1) {
+  object_t* conf = conf_json_load(NULL, FALSE);
+  ASSERT_EQ(conf, (object_t*)NULL);
+  
+  conf = conf_json_load(NULL, TRUE);
+  ASSERT_NE(conf, (object_t*)NULL);
+
+  OBJECT_UNREF(conf);
+}
+
+TEST(Json, create) {
+  object_t* conf = conf_json_create();
+  ASSERT_NE(conf, (object_t*)NULL);
+  ASSERT_EQ(object_set_prop_int(conf, "value", 123), RET_OK);
+  ASSERT_EQ(object_get_prop_int(conf, "value", 0), 123);
+  OBJECT_UNREF(conf);
+}

@@ -788,14 +788,17 @@ EXPORTS
     tk_ostream_write_byte
     tk_ostream_flush
     timer_info_cast
+    conf_ini_create
     conf_ini_load
     conf_ini_save_as
+    conf_json_create
     conf_json_load
     conf_json_save_as
     conf_obj_create
     conf_obj_get_doc
     conf_obj_save
     conf_obj_set_readonly
+    conf_ubjson_create
     conf_ubjson_load
     conf_ubjson_save_as
     tk_istream_buffered_create

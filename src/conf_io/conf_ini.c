@@ -303,3 +303,8 @@ ret_t conf_ini_save_as(object_t* obj, const char* url) {
 
   return RET_OK;
 }
+
+object_t* conf_ini_create(void) {
+  return conf_ini_load(NULL, TRUE);
+}
+

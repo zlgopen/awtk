@@ -250,3 +250,8 @@ ret_t conf_ubjson_save_as(object_t* obj, const char* url) {
 
   return RET_OK;
 }
+
+object_t* conf_ubjson_create(void) {
+  return conf_ubjson_load(NULL, TRUE);
+}
+

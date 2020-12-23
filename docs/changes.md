@@ -2,8 +2,11 @@
 
 2020/12/23
   * 完善文档。
-  * 增加 data\_reade\r_mem。
+  * 增加 data\_reader\_mem。
   * 增加 data\_writer\_wbuffer。
+  * 增加 conf\_ini\_create。
+  * 增加 conf\_json\_create。
+  * 增加 conf\_ubjson\_create。
 
 2020/12/22
   * 增加 FLOW 资源类型。

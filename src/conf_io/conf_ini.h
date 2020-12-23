@@ -36,7 +36,17 @@ BEGIN_C_DECLS
  */
 
 /**
+ * @method conf_ini_create 
+ * 创建一个空的conf对象。 
+ * @annotation ["constructor"]
+ * 
+ * @return {object_t*} 返回配置对象。
+ */
+object_t* conf_ini_create(void);
+
+/**
  * @method conf_ini_load 
+ * 从指定URL加载INI对象。 
  * 
  * @annotation ["constructor"]
  * 

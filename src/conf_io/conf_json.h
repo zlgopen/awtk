@@ -36,8 +36,17 @@ BEGIN_C_DECLS
  */
 
 /**
- * @method conf_json_load 
+ * @method conf_json_create 
+ * 创建一个空的conf对象。 
+ * @annotation ["constructor"]
  * 
+ * @return {object_t*} 返回配置对象。
+ */
+object_t* conf_json_create(void);
+
+/**
+ * @method conf_json_load 
+ * 从指定URL加载JSON对象。 
  * @annotation ["constructor"]
  * 
  * @param {const char*} url 路径(通常是文件路径)。

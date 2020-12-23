@@ -139,3 +139,21 @@ TEST(UbJson, file) {
 
   OBJECT_UNREF(conf);
 }
+
+TEST(Ubjson, load1) {
+  object_t* conf = conf_ubjson_load(NULL, FALSE);
+  ASSERT_EQ(conf, (object_t*)NULL);
+  
+  conf = conf_ubjson_load(NULL, TRUE);
+  ASSERT_NE(conf, (object_t*)NULL);
+
+  OBJECT_UNREF(conf);
+}
+
+TEST(Ubjson, create) {
+  object_t* conf = conf_ubjson_create();
+  ASSERT_NE(conf, (object_t*)NULL);
+  ASSERT_EQ(object_set_prop_int(conf, "value", 123), RET_OK);
+  ASSERT_EQ(object_get_prop_int(conf, "value", 0), 123);
+  OBJECT_UNREF(conf);
+}

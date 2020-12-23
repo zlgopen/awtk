@@ -60975,6 +60975,18 @@
     "type": "class",
     "methods": [
       {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建一个空的conf对象。",
+        "name": "conf_ini_create",
+        "return": {
+          "type": "object_t*",
+          "desc": "返回配置对象。"
+        }
+      },
+      {
         "params": [
           {
             "type": "const char*",
@@ -60990,7 +61002,7 @@
         "annotation": {
           "constructor": true
         },
-        "desc": "",
+        "desc": "从指定URL加载INI对象。",
         "name": "conf_ini_load",
         "return": {
           "type": "object_t*",
@@ -61036,6 +61048,18 @@
     "type": "class",
     "methods": [
       {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建一个空的conf对象。",
+        "name": "conf_json_create",
+        "return": {
+          "type": "object_t*",
+          "desc": "返回配置对象。"
+        }
+      },
+      {
         "params": [
           {
             "type": "const char*",
@@ -61051,7 +61075,7 @@
         "annotation": {
           "constructor": true
         },
-        "desc": "",
+        "desc": "从指定URL加载JSON对象。",
         "name": "conf_json_load",
         "return": {
           "type": "object_t*",
@@ -61198,6 +61222,18 @@
     "type": "class",
     "methods": [
       {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建一个空的conf对象。",
+        "name": "conf_ubjson_create",
+        "return": {
+          "type": "object_t*",
+          "desc": "返回配置对象。"
+        }
+      },
+      {
         "params": [
           {
             "type": "const char*",
@@ -61213,7 +61249,7 @@
         "annotation": {
           "constructor": true
         },
-        "desc": "",
+        "desc": "从指定URL加载UBJSON对象。",
         "name": "conf_ubjson_load",
         "return": {
           "type": "object_t*",
