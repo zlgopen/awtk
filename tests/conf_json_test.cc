@@ -245,3 +245,28 @@ TEST(Json, create) {
   ASSERT_EQ(object_get_prop_int(conf, "value", 0), 123);
   OBJECT_UNREF(conf);
 }
+
+#include "tkc/data_reader_mem.h"
+#include "tkc/data_writer_wbuffer.h"
+
+TEST(Json, save_as) {
+  wbuffer_t wb;
+  char url[MAX_PATH+1];
+  object_t* conf = conf_json_create();
+  ASSERT_NE(conf, (object_t*)NULL);
+  ASSERT_EQ(object_set_prop_int(conf, "value", 123), RET_OK);
+  ASSERT_EQ(object_get_prop_int(conf, "value", 0), 123);
+  wbuffer_init_extendable(&wb);
+  data_writer_wbuffer_build_url(&wb, url);
+
+  ASSERT_EQ(conf_json_save_as(conf, url), RET_OK);
+  OBJECT_UNREF(conf);
+
+  data_reader_mem_build_url(wb.data, wb.cursor, url);
+  conf = conf_json_load(url, FALSE);
+  ASSERT_NE(conf, (object_t*)NULL);
+  
+  ASSERT_EQ(object_get_prop_int(conf, "value", 0), 123);
+  wbuffer_deinit(&wb); 
+  OBJECT_UNREF(conf);
+}
