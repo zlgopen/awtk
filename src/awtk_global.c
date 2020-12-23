@@ -40,7 +40,9 @@
 #include "tkc/data_reader_factory.h"
 #include "tkc/data_writer_factory.h"
 #include "tkc/data_writer_file.h"
+#include "tkc/data_writer_wbuffer.h"
 #include "tkc/data_reader_file.h"
+#include "tkc/data_reader_mem.h"
 #include "base/data_reader_asset.h"
 #endif /*WITH_DATA_READER_WRITER*/
 
@@ -157,6 +159,8 @@ ret_t tk_init_internal(void) {
   data_writer_factory_register(data_writer_factory(), "file", data_writer_file_create);
   data_reader_factory_register(data_reader_factory(), "file", data_reader_file_create);
   data_reader_factory_register(data_reader_factory(), "asset", data_reader_asset_create);
+  data_reader_factory_register(data_reader_factory(), "mem", data_reader_mem_create);
+  data_writer_factory_register(data_writer_factory(), "wbuffer", data_writer_wbuffer_create);
 #endif /*WITH_DATA_READER_WRITER*/
 
 #ifdef WITH_STB_IMAGE
