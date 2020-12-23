@@ -86,9 +86,9 @@ data_reader_t* data_reader_mem_create(const char* memname) {
 }
 
 const char* data_reader_mem_build_url(const void* buffer, uint32_t size,
-                                      char url[TK_NAME_LEN + 1]) {
+                                      char url[MAX_PATH + 1]) {
   return_value_if_fail(buffer != NULL, NULL);
-  tk_snprintf(url, TK_NAME_LEN, "mem://%p:%u", buffer, size);
+  tk_snprintf(url, MAX_PATH, "mem://%p:%u", buffer, size);
 
   return url;
 }

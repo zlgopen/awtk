@@ -4,7 +4,7 @@
 
 TEST(DataWriterWbuffer, wbuffer) {
   wbuffer_t wb;
-  char url[TK_NAME_LEN + 1];
+  char url[MAX_PATH + 1];
   data_writer_t* writer = NULL;
   data_writer_factory_t* f = data_writer_factory_create();
 

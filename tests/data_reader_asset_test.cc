@@ -25,12 +25,14 @@ TEST(DataReaderAsset, basic) {
 TEST(DataReaderAsset, data) {
   char data[256];
   uint32_t size = 0;
+  char url[MAX_PATH+1];
   data_reader_t* reader = NULL;
   data_reader_factory_t* f = data_reader_factory_create();
 
   ASSERT_EQ(data_reader_factory_register(f, "asset", data_reader_asset_create), RET_OK);
 
-  reader = data_reader_factory_create_reader(f, "asset://data/test.json");
+  data_reader_asset_build_url("test.json", ASSET_TYPE_DATA, url);
+  reader = data_reader_factory_create_reader(f, url);
   ASSERT_EQ(reader != NULL, true);
 
   memset(data, 0x00, sizeof(data));
@@ -45,12 +47,14 @@ TEST(DataReaderAsset, data) {
 TEST(DataReaderAsset, ui) {
   char data[32];
   uint32_t size = 0;
+  char url[MAX_PATH+1];
   data_reader_t* reader = NULL;
   data_reader_factory_t* f = data_reader_factory_create();
 
   ASSERT_EQ(data_reader_factory_register(f, "asset", data_reader_asset_create), RET_OK);
 
-  reader = data_reader_factory_create_reader(f, "asset://ui/main");
+  data_reader_asset_build_url("main", ASSET_TYPE_UI, url);
+  reader = data_reader_factory_create_reader(f, url);
   ASSERT_EQ(reader != NULL, true);
 
   memset(data, 0x00, sizeof(data));
@@ -65,12 +69,14 @@ TEST(DataReaderAsset, ui) {
 TEST(DataReaderAsset, style) {
   char data[32];
   uint32_t size = 0;
+  char url[MAX_PATH+1];
   data_reader_t* reader = NULL;
   data_reader_factory_t* f = data_reader_factory_create();
 
   ASSERT_EQ(data_reader_factory_register(f, "asset", data_reader_asset_create), RET_OK);
 
-  reader = data_reader_factory_create_reader(f, "asset://style/default");
+  data_reader_asset_build_url("default", ASSET_TYPE_STYLE, url);
+  reader = data_reader_factory_create_reader(f, url);
   ASSERT_EQ(reader != NULL, true);
 
   memset(data, 0x00, sizeof(data));

@@ -6873,22 +6873,6 @@
           "type": "const char*",
           "desc": "返回文本数据。"
         }
-      },
-      {
-        "params": [
-          {
-            "type": "const char*",
-            "name": "assetname",
-            "desc": "资源的名称。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建基于asset的data reader。",
-        "name": "data_reader_asset_create",
-        "return": {
-          "type": "data_reader_t*",
-          "desc": "返回data reader对象。"
-        }
       }
     ],
     "events": [],
@@ -26934,6 +26918,10 @@
         "name": "ASSET_TYPE_SCRIPT"
       },
       {
+        "desc": "流图资源。",
+        "name": "ASSET_TYPE_FLOW"
+      },
+      {
         "desc": "其它数据资源。",
         "name": "ASSET_TYPE_DATA"
       }
@@ -29172,22 +29160,6 @@
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
         }
-      },
-      {
-        "params": [
-          {
-            "type": "const char*",
-            "name": "filename",
-            "desc": "文件名。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建基于文件的data reader。",
-        "name": "data_reader_file_create",
-        "return": {
-          "type": "data_reader_t*",
-          "desc": "返回data reader对象。"
-        }
       }
     ],
     "events": [],
@@ -29398,22 +29370,6 @@
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
-        }
-      },
-      {
-        "params": [
-          {
-            "type": "const char*",
-            "name": "filename",
-            "desc": "文件名。"
-          }
-        ],
-        "annotation": {},
-        "desc": "创建基于文件的data writer。",
-        "name": "data_writer_file_create",
-        "return": {
-          "type": "data_writer_t*",
-          "desc": "返回data writer对象。"
         }
       }
     ],
@@ -37678,7 +37634,7 @@
           {
             "type": "const char*",
             "name": "src",
-            "desc": "原字符串。"
+            "desc": "源字符串。"
           },
           {
             "type": "size_t",
@@ -37689,6 +37645,37 @@
         "annotation": {},
         "desc": "将src所指向的字符串复制到dst，最多复制len个字符串，并在[len]位置添加'\\0'。\n\n> 请确保dst的长度>=(len+1)",
         "name": "tk_strncpy",
+        "return": {
+          "type": "char*",
+          "desc": "返回目标字符串。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "char*",
+            "name": "dst",
+            "desc": "目标字符串。"
+          },
+          {
+            "type": "size_t",
+            "name": "dst_len",
+            "desc": "目标字符串内存长度。"
+          },
+          {
+            "type": "const char*",
+            "name": "src",
+            "desc": "源字符串。"
+          },
+          {
+            "type": "size_t",
+            "name": "src_len",
+            "desc": "要复制的字符串个数。"
+          }
+        ],
+        "annotation": {},
+        "desc": "将src所指向的字符串复制到dst，最多复制min(dst_len-1, src_len)个字符串，并在[len]位置添加'\\0'。",
+        "name": "tk_strncpy_s",
         "return": {
           "type": "char*",
           "desc": "返回目标字符串。"
@@ -41433,6 +41420,67 @@
     "parent": "emitter_t",
     "annotation": {
       "scriptable": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "assetname",
+            "desc": "资源的名称。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建基于asset的data reader。\n\n> 不要直接调用，而是注册到 data\\_reader\\_factory后，通过data\\_reader\\_factory调用。",
+        "name": "data_reader_asset_create",
+        "return": {
+          "type": "data_reader_t*",
+          "desc": "返回data reader对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "资源的名称。"
+          },
+          {
+            "type": "asset_type_t",
+            "name": "type",
+            "desc": "资源的类型。"
+          },
+          {
+            "type": "char*",
+            "name": "url",
+            "desc": "生成的URL。"
+          }
+        ],
+        "annotation": {
+          "static": true
+        },
+        "desc": "构造内存URL。",
+        "name": "data_reader_asset_build_url",
+        "return": {
+          "type": "const char*",
+          "desc": "返回URL。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "base/data_reader_asset.h",
+    "desc": "基于资源实现的 data_reader。通过 data_reader_factory 创建 reader 时，URL的格式如下(请用函数data_reader_asset_build_url生成)：\n\n```\nasset://type/name\n```",
+    "name": "data_reader_asset_t",
+    "parent": "data_reader_t",
+    "annotation": {
+      "fake": true
     },
     "level": 2
   },
@@ -51037,7 +51085,7 @@
         "annotation": {
           "scriptable": true
         },
-        "desc": "设置当前页的序号。",
+        "desc": "设置当前页的序号(默认启用动画)。",
         "name": "slide_view_set_active",
         "return": {
           "type": "ret_t",
@@ -51059,7 +51107,7 @@
           {
             "type": "bool_t",
             "name": "animate",
-            "desc": "enable animation."
+            "desc": "是否启用动画。"
           }
         ],
         "annotation": {
@@ -51809,9 +51857,9 @@
         }
       },
       {
-        "name": "localize_options",
-        "desc": "是否本地化(翻译)选项(缺省为FALSE)。",
-        "type": "bool_t",
+        "name": "yspeed_scale",
+        "desc": "y偏移速度比例。",
+        "type": "float_t",
         "annotation": {
           "set_prop": true,
           "get_prop": true,
@@ -51822,9 +51870,9 @@
         }
       },
       {
-        "name": "yspeed_scale",
-        "desc": "y偏移速度比例。",
-        "type": "float_t",
+        "name": "localize_options",
+        "desc": "是否本地化(翻译)选项(缺省为FALSE)。",
+        "type": "bool_t",
         "annotation": {
           "set_prop": true,
           "get_prop": true,
@@ -53764,6 +53812,189 @@
     "desc": "单色LCD。\n\nlcd\\_mono是一个特殊的Framebuffer，它用一个比特来表示一个pixel。\n\nlcd\\_mono只是负责硬件无关的逻辑处理，调用者需要在创建时提供一个flush回调函数，\n在flush函数中把脏矩形中的数据刷新到硬件中。",
     "name": "lcd_mono_t",
     "parent": "lcd_t",
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "filename",
+            "desc": "文件名。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建基于文件的data reader。\n> 不要直接调用，而是注册到 data\\_reader\\_factory后，通过data\\_reader\\_factory调用。",
+        "name": "data_reader_file_create",
+        "return": {
+          "type": "data_reader_t*",
+          "desc": "返回data reader对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "tkc/data_reader_file.h",
+    "desc": "基于文件实现的 data_reader。通过 data_reader_factory 创建 reader 时，URL的格式如下(请用函数data_reader_file_build_url生成)：\n\n```\nfile://filename\n```",
+    "name": "data_reader_file_t",
+    "parent": "data_reader_t",
+    "annotation": {
+      "fake": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "memname",
+            "desc": "内存地址和大小的字符串格式表示 。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建基于内存的 data reader。\n\n> 不要直接调用，而是注册到 data\\_reader\\_factory后，通过data\\_reader\\_factory调用。",
+        "name": "data_reader_mem_create",
+        "return": {
+          "type": "data_reader_t*",
+          "desc": "返回data reader对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "mem_t*",
+            "name": "mem",
+            "desc": "内存的地址。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "内存的长度。"
+          },
+          {
+            "type": "char*",
+            "name": "url",
+            "desc": "生成的URL。"
+          }
+        ],
+        "annotation": {
+          "static": true
+        },
+        "desc": "构造内存URL。",
+        "name": "data_reader_mem_build_url",
+        "return": {
+          "type": "const char*",
+          "desc": "返回URL。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "tkc/data_reader_mem.h",
+    "desc": "基于内存实现的 data_reader。通过 data_reader_factory 创建 reader 时，URL的格式如下(请用函数data_reader_mem_build_url生成)：\n\n```\nmem://addr:size\n```",
+    "name": "data_reader_mem_t",
+    "parent": "data_reader_t",
+    "annotation": {
+      "fake": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "filename",
+            "desc": "文件名。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建基于文件的data writer。\n\n> 不要直接调用，而是注册到 data\\_writer\\_factory后，通过data\\_writer\\_factory调用",
+        "name": "data_writer_file_create",
+        "return": {
+          "type": "data_writer_t*",
+          "desc": "返回data writer对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "tkc/data_writer_file.h",
+    "desc": "基于文件实现的 data_writer。通过 data_writer_factory 创建 writer 时，URL的格式如下：\n\n```\nfile://filename\n```",
+    "name": "data_writer_file_t",
+    "parent": "data_writer_t",
+    "annotation": {
+      "fake": true
+    },
+    "level": 2
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "wbuffer_name",
+            "desc": "wbuffer地址的字符串格式表示 。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建基于wbuffer的data writer。\n\n> 不要直接调用，而是注册到 data\\_writer\\_factory后，通过data\\_writer\\_factory调用",
+        "name": "data_writer_wbuffer_create",
+        "return": {
+          "type": "data_writer_t*",
+          "desc": "返回data writer对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "wbuffer_t*",
+            "name": "wbuffer",
+            "desc": "wbuffer对象。"
+          },
+          {
+            "type": "char*",
+            "name": "url",
+            "desc": "生成的URL。"
+          }
+        ],
+        "annotation": {
+          "static": true
+        },
+        "desc": "构造wbuffer的URL。",
+        "name": "data_writer_wbuffer_build_url",
+        "return": {
+          "type": "const char*",
+          "desc": "返回URL。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [],
+    "header": "tkc/data_writer_wbuffer.h",
+    "desc": "基于内存实现的 data_writer。通过 data_writer_factory 创建 writer 时，URL的格式如下(请用函数data_writer_wbuffer_build_url生成)：\n\n```\nwbuffer://addr\n```",
+    "name": "data_writer_wbuffer_t",
+    "parent": "data_writer_t",
+    "annotation": {
+      "fake": true
+    },
     "level": 2
   },
   {

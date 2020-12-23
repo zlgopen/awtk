@@ -1,12 +1,17 @@
 # 最新动态
 
+2020/12/23
+  * 完善文档。
+  * 增加 data\_reade\r_mem。
+  * 增加 data\_writer\_wbuffer。
+
 2020/12/22
-  * 增加FLOW资源类型。
-  * 增加函数tk\_strncpy\_s。
-  * data\_reader\_asset支持除data之外的其它资源类型。
+  * 增加 FLOW 资源类型。
+  * 增加函数 tk\_strncpy\_s。
+  * data\_reader\_asset 支持除 data 之外的其它资源类型。
   * 修复圆角矩形 agge 填充下边的角的时候没有复位的问题（感谢智明提供补丁） 
   * 修复加载 UI 比字库资源要早导致 UI 显示不正常的问题（感谢智明提供补丁） 
-  * 修复text_selector 控件在高度无法整除显示个数后导致偏移不正常的问题（感谢智明提供补丁）  
+  * 修复 text_selector 控件在高度无法整除显示个数后导致偏移不正常的问题（感谢智明提供补丁）  
 
 2020/12/21
   * 增加 slide\_view\_set\_active\_ex 以控制是否启用动画。

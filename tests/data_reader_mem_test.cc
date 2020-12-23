@@ -4,7 +4,7 @@
 
 TEST(DataReaderMem, basic) {
   char buffer[32];
-  char url[TK_NAME_LEN + 1];
+  char url[MAX_PATH + 1];
   const char* data = "hello world";
   data_reader_t* reader = NULL;
   data_reader_factory_t* f = data_reader_factory_create();

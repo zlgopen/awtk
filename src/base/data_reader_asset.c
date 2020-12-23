@@ -74,7 +74,7 @@ static data_reader_vtable_t s_data_reader_asset_vtable = {
 
 data_reader_t* data_reader_asset_create(const char* assetname) {
   const char* p = NULL;
-  char type[TK_NAME_LEN+1];
+  char type[TK_NAME_LEN + 1];
   data_reader_asset_t* asset = NULL;
   const key_type_value_t* kv = NULL;
   assets_manager_t* am = assets_manager();
@@ -83,7 +83,7 @@ data_reader_t* data_reader_asset_create(const char* assetname) {
   return_value_if_fail(asset != NULL && am != NULL, NULL);
 
   p = strchr(assetname, '/');
-  if(p != NULL) {
+  if (p != NULL) {
     tk_strncpy_s(type, sizeof(type), assetname, p - assetname);
     assetname = p + 1;
   } else {
@@ -101,4 +101,14 @@ data_reader_t* data_reader_asset_create(const char* assetname) {
   }
 
   return (data_reader_t*)asset;
+}
+
+const char* data_reader_asset_build_url(const char* name, asset_type_t type,
+                                        char url[MAX_PATH + 1]) {
+  const key_type_value_t* kv = asset_type_find_by_value(type);
+  return_value_if_fail(kv != NULL && name != NULL, NULL);
+
+  tk_snprintf(url, MAX_PATH, "asset://%s/%s", kv->name, name);
+
+  return url;
 }

@@ -29,12 +29,12 @@ typedef struct _data_writer_wbuffer_t {
 } data_writer_wbuffer_t;
 
 static int32_t data_writer_wbuffer_write(data_writer_t* writer, uint64_t offset, const void* data,
-                                      uint32_t size) {
+                                         uint32_t size) {
   data_writer_wbuffer_t* wbuffer = (data_writer_wbuffer_t*)writer;
   return_value_if_fail(wbuffer_extend_capacity(wbuffer->wbuffer, offset + size) == RET_OK, 0);
 
   wbuffer->wbuffer->cursor = offset;
- 
+
   return wbuffer_write_binary(wbuffer->wbuffer, data, size) == RET_OK ? size : 0;
 }
 
@@ -66,9 +66,9 @@ data_writer_t* data_writer_wbuffer_create(const char* wbuffername) {
   return (data_writer_t*)wbuffer;
 }
 
-const char* data_writer_wbuffer_build_url(wbuffer_t* buffer, char url[TK_NAME_LEN+1]) {
+const char* data_writer_wbuffer_build_url(wbuffer_t* buffer, char url[MAX_PATH + 1]) {
   return_value_if_fail(buffer != NULL, NULL);
-  tk_snprintf(url, TK_NAME_LEN, "wbuffer://%p", buffer);
+  tk_snprintf(url, MAX_PATH, "wbuffer://%p", buffer);
 
   return url;
 }

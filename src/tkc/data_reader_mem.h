@@ -26,11 +26,24 @@
 #include "tkc/data_reader.h"
 
 BEGIN_C_DECLS
+/**
+ * @class data_reader_mem_t
+ * @parent data_reader_t
+ * @annotation ["fake"]
+ * 基于内存实现的 data_reader。通过 data_reader_factory 创建 reader 时，URL的格式如下(请用函数data_reader_mem_build_url生成)：
+ * 
+ * ```
+ * mem://addr:size
+ * ```
+ */
 
 /**
  * @method data_reader_mem_create
- * 创建基于文件的data reader。
- * @param {const char*} memname 文件名。
+ * 创建基于内存的 data reader。
+ * 
+ * > 不要直接调用，而是注册到 data\_reader\_factory后，通过data\_reader\_factory调用。
+ * @annotation ["constructor"]
+ * @param {const char*} memname 内存地址和大小的字符串格式表示 。
  *
  * @return {data_reader_t*} 返回data reader对象。
  */
@@ -38,14 +51,16 @@ data_reader_t* data_reader_mem_create(const char* memname);
 
 /**
  * @method data_reader_mem_build_url
- *
- * @param {mem_t*} mem pointer to mem 。
- * @param {uint32_t} size memory size
- * @param {char*} url url.
+ * 构造内存URL。
+ * @annotation ["static"]
+ * 
+ * @param {mem_t*} mem 内存的地址。
+ * @param {uint32_t} size 内存的长度。
+ * @param {char*} url 生成的URL。
  *
  * @return {const char*} 返回URL。
  */
-const char* data_reader_mem_build_url(const void* buffer, uint32_t size, char url[TK_NAME_LEN + 1]);
+const char* data_reader_mem_build_url(const void* buffer, uint32_t size, char url[MAX_PATH + 1]);
 
 #define DATA_READER_MEM(reader) ((data_reader_t*)(reader))
 
