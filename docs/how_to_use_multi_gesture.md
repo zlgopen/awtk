@@ -12,9 +12,9 @@
 | 是否需要提供手指 ID      | 是             | 否                 |
 | 触摸消息是否提供距离增量 | 是             | 是                 |
 | 触摸消息是否提供中心点   | 是             | 是                 |
-| 触摸消息是否提供旋转角度 | 是             | 否                 |
+| 触摸消息是否提供旋转角度 | 是             | 只支持两个手指头   |
 
-> 备注：因为某些触摸硬件是无法提供具体的手指 ID 的，所以 AWTK 特别提供一种不需要手指 ID 的多点触控机制，但是这个机制提供出来的消息是无法提供旋转角度的，所以用户需要更加具体情况来旋转使用。
+> 备注：因为某些触摸硬件是无法提供具体的手指 ID 的，所以 AWTK 特别提供一种不需要手指 ID 的多点触控机制，但是这个机制提供出来的消息是只能支持两个手指头的旋转数据，所以用户需要更加具体情况来旋转使用。
 
 ### 二，多点触控的API
 
@@ -40,7 +40,7 @@ ret_t multi_gesture_gesture_touch_fingers_destroy(multi_gesture_touch_fingers_t*
 multi_gesture_touch_fingers_t* multi_gesture_touch_fingers_create(int32_t finger_size);
 
 /**
- * @method multi_gesture_post_event_form_fingers
+ * @method multi_gesture_post_event_from_fingers
  * 发送多点触控消息
  * @param {main_loop_t*} loop 主循环对象
  * @param {multi_gesture_touch_fingers_t*} touch 可识别手指类型的对象。
@@ -49,7 +49,7 @@ multi_gesture_touch_fingers_t* multi_gesture_touch_fingers_create(int32_t finger
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t multi_gesture_post_event_form_fingers(main_loop_t* loop, multi_gesture_touch_fingers_t* touch, uint32_t point_size, multi_touch_point_event_t* points);
+ret_t multi_gesture_post_event_from_fingers(main_loop_t* loop, multi_gesture_touch_fingers_t* touch, uint32_t point_size, multi_touch_point_event_t* points);
 ```
 
 #### 	2.不可识别手指类型
@@ -74,7 +74,7 @@ ret_t multi_gesture_gesture_touch_points_destroy(multi_gesture_touch_points_t* t
 multi_gesture_touch_points_t* multi_gesture_touch_points_create(uint32_t last_dist_lenght);
 
 /**
- * @method multi_gesture_post_event_form_points
+ * @method multi_gesture_post_event_from_points
  * 发送多点触控消息
  * @param {main_loop_t*} loop 主循环对象
  * @param {multi_gesture_touch_points_t*} touch 不可识别手指类型的对象。
@@ -83,7 +83,7 @@ multi_gesture_touch_points_t* multi_gesture_touch_points_create(uint32_t last_di
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t multi_gesture_post_event_form_points(main_loop_t* loop, multi_gesture_touch_points_t* touch, uint32_t point_size, multi_touch_point_event_t* points);
+ret_t multi_gesture_post_event_from_points(main_loop_t* loop, multi_gesture_touch_points_t* touch, uint32_t point_size, multi_touch_point_event_t* points);
 ```
 
 > 具体用法请参考
@@ -103,88 +103,102 @@ ret_t multi_gesture_post_event_form_points(main_loop_t* loop, multi_gesture_touc
 /* 省略了一部分无关代码 */
 
 #include "base/multi_gesture.inc"
-static uint8_t last_touch_number = 0;
 static multi_gesture_touch_points_t* touch_points = NULL;
 static multi_gesture_touch_fingers_t* touch_fingers = NULL;
 static multi_touch_point_event_t s_points[CT_MAX_TOUCH];
 
-extern u32* ltdc_framebuf[2];
-#define online_fb_addr (uint8_t*)ltdc_framebuf[0]
-#define offline_fb_addr (uint8_t*)ltdc_framebuf[1]
+static int last_x = 0;
+static int last_y = 0;
+static bool_t one_press = FALSE;
+static bool_t mult_press = FALSE;
+void platform_disaptch_input_down(main_loop_t* loop, int32_t fingers, int32_t last_fingers) {
+	int32_t i = 0;
+	uint8_t num_down_fingers = 0;
+    /* 当前手指个数为 1，并且之前的手指格式为 0 或者 1 的时候，发送普通点击消息 */
+	if (fingers == 1 && (last_fingers == 0 || last_fingers == 1)) {
+		if (tp_dev.sta & TP_PRES_DOWN) {
+            /* 记录已经触发了普通点击 */
+			one_press = TRUE;
+			last_x = tp_dev.y[0];
+			last_y = lcdltdc.pheight - tp_dev.x[0];
+			main_loop_post_pointer_event(loop, TRUE, last_x, last_y);
+		}
+	} else {
+        /* 把数据转为多点触控的结构体 */
+		for(i = 0; i < CT_MAX_TOUCH; i++) {
+				s_points[i].touch_id = 0;
+				s_points[i].finger_id = i;
+				if (tp_dev.sta & (1<<i) && (!(tp_dev.y[i] == 0 && tp_dev.x[i] == 0))) {
+					num_down_fingers++;
+					if (!(tp_dev.y[i] == 0 && tp_dev.x[i] == 0)) {
+						s_points[i].x = tp_dev.y[i];
+						s_points[i].y = lcdltdc.pheight - tp_dev.x[i];
+					}
+					s_points[i].type = (s_points[i].type == EVT_MULTI_TOUCH_UP) ? EVT_MULTI_TOUCH_DOWN : EVT_MULTI_TOUCH_MOVE;
+				} else {
+					if (s_points[i].type == EVT_MULTI_TOUCH_MOVE || s_points[i].type == EVT_MULTI_TOUCH_DOWN) {
+						num_down_fingers++;
+					}
+					s_points[i].x = 0;
+					s_points[i].y = 0;
+					s_points[i].type = EVT_MULTI_TOUCH_UP;
+				}
+		}
+        /* 记录已经触发了多点触控 */
+		mult_press = TRUE;
+        /* 使用可识别手指类型发送多点触控消息 */
+		multi_gesture_post_event_from_fingers(loop, touch_fingers, num_down_fingers, s_points);
+        /* 使用不可识别手指类型发送多点触控消息 */
+		//multi_gesture_post_event_from_points(loop, touch_points, num_down_fingers, s_points);
+  }
+}
 
+void platform_disaptch_input_up(main_loop_t* loop, int32_t last_fingers) {
+    /* 如果触发了普通点击，就发送普通点击控弹起事件 */
+	if (one_press) {
+        /* 复位 */
+		one_press = FALSE;
+        /* 发送普通点击弹起事件 */
+		main_loop_post_pointer_event(loop, FALSE, last_x, last_y);
+	}
+    /* 如果触发了多点触控，就发送多点触控弹起事件 */
+	if (mult_press) {
+		int i = 0;
+		for(i = 0; i < CT_MAX_TOUCH; i++) {
+			s_points[i].type = EVT_MULTI_TOUCH_UP;
+		}
+        /* 复位 */
+		mult_press = FALSE;
+        /* 使用可识别手指类型发送多点触控弹起事件消息 */
+		multi_gesture_post_event_from_fingers(loop, touch_fingers, last_fingers, s_points);
+        /* 使用不可识别手指类型发送多点触控弹起事件消息 */
+		//multi_gesture_post_event_from_points(loop, touch_points, last_fingers, s_points);
+	}
+}
 
 uint8_t platform_disaptch_input(main_loop_t* loop) {
-  int x = 0;
-  int y = 0;
-  int32_t i = 0;
-  int32_t touch_id = 0;
-  uint8_t key = KEY_Scan(0);
+	int32_t i = 0;
+	uint8_t touch_number = 0;
+	static uint8_t last_touch_number = 0;
 	
-  uint8_t touch_number = 0;
-  uint8_t num_down_fingers = 0;
+	tp_dev.scan(0);
+	/* 计算当前有多少只手指按下 */
+	for(i = 0; i < CT_MAX_TOUCH; i++) {
+		if (tp_dev.sta & (1<<i)) {
+			touch_number++;
+		}
+	}
+	/* 手指个数变化了，所以发送弹起事件 */
+	if (touch_number != last_touch_number) {
+		platform_disaptch_input_up(loop, last_touch_number);
+	}
+    /* 手指个数大于 0 需要发送按下消息 */
+	if (touch_number > 0) {
+		platform_disaptch_input_down(loop, touch_number, last_touch_number);
+	}
+	last_touch_number = touch_number;
 	
-  tp_dev.scan(0);
-
-  x = tp_dev.x[0];
-  y = tp_dev.y[0];
-
-  y = lcdltdc.pheight - tp_dev.x[0];
-  x = tp_dev.y[0];
-  /* 计算当前有多少只手指按下 */
-  for(i = 0; i < CT_MAX_TOUCH; i++) {
-      if (tp_dev.sta & (1<<i)) {
-          touch_number++;
-      }
-  }
-  /* 由于有手指弹起，所以清空多点触控的转态，并且给 AWTK 发送多点触控弹起的消息 */
-  if (touch_number < last_touch_number) {
-      for(i = 0; i < CT_MAX_TOUCH; i++) {
-          s_points[i].type = EVT_MULTI_TOUCH_UP;
-      }
-      /* 使用可识别手指类型发送多点触控消息 */
-      multi_gesture_post_event_form_fingers(loop, touch_fingers, last_touch_number, s_points);
-      /* 使用不可识别手指类型发送多点触控消息 */
-      //multi_gesture_post_event_form_points(loop, touch_points, last_touch_number, s_points);
-  }
-  /* 把手指数据转换为 multi_touch_point_event_t 类型 */
-  for(i = 0; i < CT_MAX_TOUCH; i++) {
-      s_points[i].touch_id = touch_id;
-      s_points[i].finger_id = i;
-      if (tp_dev.sta & (1<<i) && (!(tp_dev.y[i] == 0 && tp_dev.x[i] == 0))) {
-          num_down_fingers++;
-          if (!(tp_dev.y[i] == 0 && tp_dev.x[i] == 0)) {
-              s_points[i].x = tp_dev.y[i];
-              s_points[i].y = lcdltdc.pheight - tp_dev.x[i];
-          }
-          s_points[i].type = (s_points[i].type == EVT_MULTI_TOUCH_UP) ? EVT_MULTI_TOUCH_DOWN : EVT_MULTI_TOUCH_MOVE;
-      } else {
-          if (s_points[i].type == EVT_MULTI_TOUCH_MOVE || s_points[i].type == EVT_MULTI_TOUCH_DOWN) {
-              num_down_fingers++;
-          }
-          s_points[i].x = 0;
-          s_points[i].y = 0;
-          s_points[i].type = EVT_MULTI_TOUCH_UP;
-      }
-   }
-
-  /* 使用可识别手指类型发送多点触控消息 */
-  multi_gesture_post_event_form_fingers(loop, touch_fingers, num_down_fingers, s_points);
-  /* 使用不可识别手指类型发送多点触控消息 */
-  //multi_gesture_post_event_form_points(loop, touch_points, num_down_fingers, s_points);
-
-  /* 当只有一个手指的时候转为单点触控 */
-  if (touch_number == 1) {
-      if (tp_dev.sta & TP_PRES_DOWN) {
-          main_loop_post_pointer_event(loop, TRUE, x, y);
-      } else {
-          main_loop_post_pointer_event(loop, FALSE, x, y);
-      }
-  } else if (last_touch_number == 1) {
-      /* 当由单点触控转为多点触控的时候，要给控件发送弹起消息，以免导致消息混乱 */
-      main_loop_post_pointer_event(loop, FALSE, x, y);
-  }
-  last_touch_number = touch_number;
-  return 0;
+	return 0;
 }
 
 extern lcd_t* stm32f429_create_lcd(wh_t w, wh_t h);

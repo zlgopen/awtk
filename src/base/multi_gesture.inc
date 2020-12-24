@@ -35,20 +35,20 @@
  */
 typedef enum _multi_event_type_t {
   /**
+   * @const EVT_MULTI_TOUCH_UP
+   * 多点触摸抬起事件名(multi_touch_event_t)。
+   */
+  EVT_MULTI_TOUCH_UP = 0x0,
+  /**
    * @const EVT_MULTI_TOUCH_DOWN
    * 多点触摸按下事件名(multi_touch_event_t)。
    */  
-  EVT_MULTI_TOUCH_DOWN = 0x0,
+  EVT_MULTI_TOUCH_DOWN,
   /**
    * @const EVT_MULTI_TOUCH_MOVE
    * 多点触摸点移动事件名(multi_touch_event_t)。
    */
   EVT_MULTI_TOUCH_MOVE,
-  /**
-   * @const EVT_MULTI_TOUCH_UP
-   * 多点触摸抬起事件名(multi_touch_event_t)。
-   */
-  EVT_MULTI_TOUCH_UP
 } multi_event_type_t;
 
 /**
@@ -179,6 +179,8 @@ static int multi_gesture_finger_compare(const void* a, const void* b) {
 multi_gesture_touch_fingers_t* multi_gesture_touch_fingers_create(int32_t finger_size) {
   multi_gesture_touch_fingers_t* touch = TKMEM_ZALLOC(multi_gesture_touch_fingers_t);
   return_value_if_fail(touch != NULL, NULL);
+  touch->centroid.x = 0;
+  touch->centroid.y = 0;
   darray_init(&(touch->last_point), finger_size, default_destroy, multi_gesture_finger_compare);
   return touch;
 }
@@ -253,8 +255,9 @@ static bool_t multi_gesture_get_event_form_fingers(multi_gesture_touch_fingers_t
     } else if (type == EVT_MULTI_TOUCH_MOVE && num_down_fingers > 1) {
       multi_gesture_finger_t* finger = multi_gesture_get_finger_last_point(touch, finger_id);
       return_value_if_fail(finger != NULL, FALSE);
-      float dx = x - finger->x;
-      float dy = y - finger->y;
+      float_t delta_theta = 0.0f;
+      float_t dx = x - finger->x;
+      float_t dy = y - finger->y;
 
       last_p.x = x - dx;
       last_p.y = y - dy;
@@ -289,6 +292,10 @@ static bool_t multi_gesture_get_event_form_fingers(multi_gesture_touch_fingers_t
           d_dist = 0;
           dtheta = 0;
         } /* To avoid impossible values */
+        delta_theta = tk_abs(touch->dtheta - dtheta);
+        if (delta_theta < 0.01f || delta_theta > M_PI / 2) {
+          dtheta = 0;
+        }
 
         /* touch->gestureLast[j].d_dist = d_dist;
                 touch->gestureLast[j].dtheta = dtheta;
@@ -323,7 +330,7 @@ static bool_t multi_gesture_get_event_form_fingers(multi_gesture_touch_fingers_t
 }
 
 /**
- * @method multi_gesture_post_event_form_fingers
+ * @method multi_gesture_post_event_from_fingers
  * 发送多点触控消息
  * @param {main_loop_t*} loop 主循环对象
  * @param {multi_gesture_touch_fingers_t*} touch 可识别手指类型的对象。
@@ -332,12 +339,14 @@ static bool_t multi_gesture_get_event_form_fingers(multi_gesture_touch_fingers_t
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t multi_gesture_post_event_form_fingers(main_loop_t* loop, multi_gesture_touch_fingers_t* touch, uint32_t point_size, multi_touch_point_event_t* points) {
+ret_t multi_gesture_post_event_from_fingers(main_loop_t* loop, multi_gesture_touch_fingers_t* touch, uint32_t point_size, multi_touch_point_event_t* points) {
   uint32_t i = 0;
   multi_gesture_event_t multi_gesture_event;
   return_value_if_fail(loop != NULL && touch != NULL && points != NULL, RET_BAD_PARAMS);
+  // printf("-------------------------------------------- \r\n");
   for (; i < point_size; i++) {
     multi_touch_point_event_t* point = &(points[i]);
+    // printf("point:(%d, %d), type:%d \r\n", point->x, point->y, point->type);
     if (multi_gesture_get_event_form_fingers(touch, point, &multi_gesture_event)) {
 	    // printf("centroid:(%f, %f), dtheta:%f, d_dist:%f, num_down_fingers:%d \r\n", touch->centroid.x, touch->centroid.y, touch->dtheta, touch->d_dist, touch->last_point.size);
       multi_gesture_event_init(&multi_gesture_event, window_manager(), touch->centroid.x, touch->centroid.y,
@@ -345,9 +354,14 @@ ret_t multi_gesture_post_event_form_fingers(main_loop_t* loop, multi_gesture_tou
       main_loop_post_multi_gesture_event(loop, &multi_gesture_event);
     }
   }
-  if (point_size > 0 && touch->last_point.size == 0) {
+  if (point_size == 0 || (point_size > 0 && touch->last_point.size == 0)) {
     multi_gesture_event_init(&multi_gesture_event, window_manager(), 0, 0, 0, 0);
     main_loop_post_multi_gesture_event(loop, &multi_gesture_event);
+    if (point_size == 0) {
+      touch->centroid.x = 0;
+      touch->centroid.y = 0;
+      darray_clear(&(touch->last_point));
+    }
   }
   return RET_OK;
 }
@@ -373,8 +387,11 @@ typedef struct _multi_gesture_touch_points_t {
   int64_t touch_id;
   /* private */
   float_t last_dist;
-  uint32_t last_dist_lenght;
+  uint32_t last_dist_length;
   slist_t last_dist_list;
+  uint32_t num_down_fingers;
+
+  pointf_t last_vector;
 } multi_gesture_touch_points_t;
 
 /**
@@ -396,14 +413,14 @@ ret_t multi_gesture_gesture_touch_points_destroy(multi_gesture_touch_points_t* t
 /**
  * @method multi_gesture_touch_points_create
  * 创建不可识别手指类型的对象
- * @param {uint32_t} last_dist_lenght 均值滤波的缓冲长度。
+ * @param {uint32_t} last_dist_length 缩放比例均值滤波的缓冲长度。
  *
  * @return {multi_gesture_touch_points_t*} 成功返回不可识别手指类型的对象，失败返回NULL。
  */
-multi_gesture_touch_points_t* multi_gesture_touch_points_create(uint32_t last_dist_lenght) {
+multi_gesture_touch_points_t* multi_gesture_touch_points_create(uint32_t last_dist_length) {
   multi_gesture_touch_points_t* touch = TKMEM_ZALLOC(multi_gesture_touch_points_t);
   return_value_if_fail(touch != NULL, NULL);
-  touch->last_dist_lenght = last_dist_lenght;
+  touch->last_dist_length = last_dist_length;
   slist_init(&(touch->last_dist_list), default_destroy, NULL);
   return touch;
 }
@@ -419,7 +436,7 @@ static float_t multi_gesture_touch_get_last_d_dists(multi_gesture_touch_points_t
 
   *tmp = dists;
   slist = &(touch->last_dist_list);
-  if (touch->last_dist_lenght <= slist_size(slist)) {
+  if (touch->last_dist_length <= slist_size(slist)) {
     void* data = slist_head_pop(slist);
     TKMEM_FREE(data);
   }
@@ -435,8 +452,42 @@ static float_t multi_gesture_touch_get_last_d_dists(multi_gesture_touch_points_t
   return d_dists / size;
 }
 
+static float_t multi_gesture_touch_get_dtheta(multi_gesture_touch_points_t* touch, point_t point1, point_t point2, float_t dist) {
+  float_t dtheta = 0.0f;
+  pointf_t v1 = {(point1.x - point2.x) / dist, (point1.y - point2.y) / dist};
+  pointf_t v2 = {(point2.x - point1.x) / dist, (point2.y - point1.y) / dist};
+  return_value_if_fail(touch != NULL, RET_BAD_PARAMS);
+  if (touch->last_vector.x == 0 && touch->last_vector.y == 0 || dist == 0) {
+    touch->last_vector.x = v1.x;
+    touch->last_vector.y = v1.y;
+  } else {
+    float_t dtheta1 = atan2f(touch->last_vector.x * v1.y - touch->last_vector.y * v1.x, touch->last_vector.x * v1.x + touch->last_vector.y * v1.y);
+    float_t dtheta2 = atan2f(touch->last_vector.x * v2.y - touch->last_vector.y * v2.x, touch->last_vector.x * v2.x + touch->last_vector.y * v2.y);
+
+    if (tk_abs(dtheta1) > tk_abs(dtheta2)) {
+      dtheta = dtheta2;
+      touch->last_vector.x = v2.x;
+      touch->last_vector.y = v2.y;
+    } else {
+      dtheta = dtheta1;
+      touch->last_vector.x = v1.x;
+      touch->last_vector.y = v1.y;
+    }
+  }
+  return dtheta;
+}
+
+static ret_t multi_gesture_touch_points_reset(multi_gesture_touch_points_t* touch) {
+  return_value_if_fail(touch != NULL, RET_BAD_PARAMS);
+  touch->last_dist = 0;
+  touch->last_vector.x = 0;
+  touch->last_vector.y = 0;
+  slist_remove_all(&(touch->last_dist_list));
+  return RET_OK;
+}
+
 /**
- * @method multi_gesture_post_event_form_points
+ * @method multi_gesture_post_event_from_points
  * 发送多点触控消息
  * @param {main_loop_t*} loop 主循环对象
  * @param {multi_gesture_touch_points_t*} touch 不可识别手指类型的对象。
@@ -445,43 +496,68 @@ static float_t multi_gesture_touch_get_last_d_dists(multi_gesture_touch_points_t
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t multi_gesture_post_event_form_points(main_loop_t* loop, multi_gesture_touch_points_t* touch, uint32_t point_size, multi_touch_point_event_t* points) {
+ret_t multi_gesture_post_event_from_points(main_loop_t* loop, multi_gesture_touch_points_t* touch, uint32_t point_size, multi_touch_point_event_t* points) {
   uint32_t i = 0;
   float_t t_dist = 0.0f;
   float_t d_dist = 0.0f;
+  float_t d_theta = 0.0f;
+  point_t* point_list = NULL;
   uint32_t num_down_fingers = 0;
   pointf_t centroid = { 0.0f, 0.0f };
   multi_gesture_event_t multi_gesture_event;
-  point_t* point_list = TKMEM_ZALLOCN(point_t, point_size);
-  return_value_if_fail(loop != NULL && point_list != NULL && points != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(loop != NULL && points != NULL, RET_BAD_PARAMS);
+
+  point_list = TKMEM_ZALLOCN(point_t, point_size);
+  return_value_if_fail(point_list != NULL, RET_OOM);
+
   if (point_size < 2) {
-    touch->last_dist = 0;
-    slist_remove_all(&(touch->last_dist_list));
+    TKMEM_FREE(point_list);
+    multi_gesture_touch_points_reset(touch);
     return RET_OK;
   }
 
+  // printf("---------------------------------------\r\n");
   for (i = 0; i < point_size; i++) {
     multi_touch_point_event_t* point = &(points[i]);
     uint32_t type = point->type;
-    if (type == EVT_MULTI_TOUCH_DOWN || type == EVT_MULTI_TOUCH_MOVE) {
-      // printf("x:%d, y:%d, num_down_fingers:%d \r\n", point->x, point->y, num_down_fingers);
+    if (type == EVT_MULTI_TOUCH_MOVE) {
+      // printf("x:%d, y:%d \r\n", point->x, point->y);
       point_list[num_down_fingers].x = point->x;
       point_list[num_down_fingers].y = point->y;
       num_down_fingers++;
     }
   }
   
-  if (num_down_fingers > 1) {
-    uint32_t t = 0;
-    for (i = 0; i < num_down_fingers; i++) {
-      int32_t x = point_list[i].x;
-      int32_t y = point_list[i].y;
-      centroid.x = (centroid.x * (i - 1) + x) / i;
-      centroid.y = (centroid.y * (i - 1) + y) / i;
-
-      t += (x * x + y * y);
+  if (num_down_fingers > 1 && touch->num_down_fingers == num_down_fingers) {
+    if (num_down_fingers == 2) {
+      int32_t x = point_list[0].x;
+      int32_t y = point_list[0].y;
+      centroid.x = x;
+      centroid.y = y;
+      for (i = 1; i < num_down_fingers; i++) {
+        x -= point_list[i].x;
+        y -= point_list[i].y;
+        centroid.x = (centroid.x * (i - 1) + point_list[i].x) / i;
+        centroid.y = (centroid.y * (i - 1) + point_list[i].y) / i;
+      }
+      t_dist = sqrtf(x * x + y * y);
+      d_theta = multi_gesture_touch_get_dtheta(touch, point_list[0], point_list[1], t_dist);
+    } else {
+      touch->last_vector.x = 0;
+      touch->last_vector.y = 0;
+      centroid.x = point_list[i].x;
+      centroid.y = point_list[i].y;
+      for (i = 1; i < num_down_fingers; i++) {
+        centroid.x = (centroid.x * (i - 1) + point_list[i].x) / i;
+        centroid.y = (centroid.y * (i - 1) + point_list[i].y) / i;
+      }
+      for (i = 0; i < num_down_fingers; i++) {
+        float_t x = point_list[i].x - centroid.x;
+        float_t y = point_list[i].y - centroid.y;
+        t_dist += sqrtf(x * x + y * y);
+      }
     }
-    t_dist = sqrtf(t);
+
     t_dist = multi_gesture_touch_get_last_d_dists(touch, t_dist);
     if (touch->last_dist != 0) {
       d_dist = t_dist - touch->last_dist;
@@ -491,10 +567,13 @@ ret_t multi_gesture_post_event_form_points(main_loop_t* loop, multi_gesture_touc
       }
     }
     
-    // printf("out_dist:%f, t_dist:%f, %f, d_dist:%f \r\n", touch->last_dist, t_dist, sqrtf(t), d_dist);
-    multi_gesture_event_init(&multi_gesture_event, window_manager(), centroid.x, centroid.y, 0, d_dist);
+    // printf("last_dist:%f, t_dist:%f, d_dist:%f, d_theta:%f, f:%d \r\n", touch->last_dist, t_dist, d_dist, d_theta, num_down_fingers);
+    multi_gesture_event_init(&multi_gesture_event, window_manager(), centroid.x, centroid.y, d_theta, d_dist);
     main_loop_post_multi_gesture_event(loop, &multi_gesture_event);
+  } else {
+    multi_gesture_touch_points_reset(touch);
   }
+  touch->num_down_fingers = num_down_fingers;
 
   if (num_down_fingers == 0 && touch->last_dist != 0) {
     multi_gesture_event_init(&multi_gesture_event, window_manager(), 0, 0, 0, 0);
@@ -505,6 +584,7 @@ ret_t multi_gesture_post_event_form_points(main_loop_t* loop, multi_gesture_touc
   if (t_dist == 0) {
     slist_remove_all(&(touch->last_dist_list));
   }
+  TKMEM_FREE(point_list);
   return RET_OK;
 }
 
