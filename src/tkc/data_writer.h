@@ -42,7 +42,7 @@ typedef struct _data_writer_vtable_t {
  * @class data_writer_t
  * 数据写入接口。
  *
- * >用于抽象flash等外部设备。
+ * >对可写的媒介，如内存、文件、flash和其它媒介提供一个统一的写入接口。
  *
  */
 struct _data_writer_t {
