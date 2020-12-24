@@ -25,8 +25,8 @@
 typedef struct _data_reader_mem_t {
   data_reader_t data_reader;
 
-  const void* data;
   uint32_t size;
+  const uint8_t* data;
 } data_reader_mem_t;
 
 static int32_t data_reader_mem_read(data_reader_t* reader, uint64_t offset, void* data,
@@ -67,7 +67,7 @@ static const data_reader_vtable_t s_data_reader_mem_vtable = {
 data_reader_t* data_reader_mem_create(const char* memname) {
   int32_t nr = 0;
   uint32_t size = 0;
-  const void* data = NULL;
+  const uint8_t* data = NULL;
   data_reader_mem_t* mem = NULL;
   return_value_if_fail(memname != NULL, NULL);
   mem = TKMEM_ZALLOC(data_reader_mem_t);
