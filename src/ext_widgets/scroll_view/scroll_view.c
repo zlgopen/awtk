@@ -529,7 +529,7 @@ static ret_t scroll_view_get_prop(widget_t* widget, const char* name, value_t* v
     value_set_float(v, scroll_view->yspeed_scale);
     return RET_OK;
   } else if (tk_str_eq(name, SCROLL_VIEW_SNAP_TO_PAGE)) {
-    value_set_float(v, scroll_view->snap_to_page);
+    value_set_bool(v, scroll_view->snap_to_page);
     return RET_OK;
   }
   if (scroll_view->snap_to_page) {
