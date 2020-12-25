@@ -77,6 +77,8 @@ static ret_t gen_floder(const char* in_flodername, const char* out_flodername, b
     if (item.is_reg_file && case_end_with(item.name, c_xml)) {
       str_t str_name;
       str_t sub_res_name;
+      char ext_array[MAX_PATH] = {0};
+      path_extname(item.name, ext_array, MAX_PATH);
 
       str_init(&sub_res_name, 0);
       str_set(&sub_res_name, res_name);
@@ -85,8 +87,8 @@ static ret_t gen_floder(const char* in_flodername, const char* out_flodername, b
       str_set(&str_name, item.name);
 
       path_build(in_name, MAX_PATH, in_flodername, str_name.str, NULL);
-      str_to_lower(&str_name);
-      str_replace(&str_name, c_xml, "");
+
+      str_replace(&str_name, ext_array, "");
 
       str_append(&sub_res_name, str_name.str);
 
