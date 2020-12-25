@@ -36,7 +36,7 @@ static ret_t candidates_on_button_focused(void* ctx, event_t* e) {
   input_method_t* im = input_method();
   wstr_t* text = &(button->text);
   candidates_t* candidates = CANDIDATES(ctx);
-  return_value_if_fail(im != NULL && text->size > 0, RET_FAIL);
+  return_value_if_fail(im != NULL && candidates != NULL && text->size > 0, RET_FAIL);
   tk_utf8_from_utf16(text->str, str, sizeof(str) - 1);
 
   if (candidates->pre) {
@@ -299,10 +299,12 @@ static ret_t candidates_set_prop(widget_t* widget, const char* name, const value
 }
 
 static ret_t candidates_move_focus(widget_t* widget, bool_t next) {
+  uint32_t nr = 0;
   widget_t* focus = NULL;
   int32_t next_focus = 0;
   candidates_t* candidates = CANDIDATES(widget);
-  uint32_t nr = candidates->candidates_nr;
+  return_value_if_fail(candidates != NULL, RET_BAD_PARAMS);
+  nr = candidates->candidates_nr;
 
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
   if (iter->focused) {
@@ -324,11 +326,12 @@ static ret_t candidates_move_focus(widget_t* widget, bool_t next) {
 }
 
 static ret_t candidates_on_keyup(widget_t* widget, key_event_t* e) {
+    uint32_t nr = 0;
   ret_t ret = RET_OK;
   widget_t* child = NULL;
   candidates_t* candidates = CANDIDATES(widget);
-  uint32_t nr = candidates->candidates_nr;
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget != NULL && candidates != NULL, RET_BAD_PARAMS);
+  nr = candidates->candidates_nr;
 
   if (nr > 1) {
     if (e->key >= TK_KEY_1 && e->key <= TK_KEY_9 && candidates->select_by_num) {
@@ -383,6 +386,7 @@ static ret_t candidates_on_im_candidates_event(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   candidates_t* candidates = CANDIDATES(widget);
   im_candidates_event_t* evt = (im_candidates_event_t*)e;
+  return_value_if_fail(candidates != NULL && evt != NULL, RET_BAD_PARAMS);
 
   candidates->is_suggest = FALSE;
   if (candidates->pre) {

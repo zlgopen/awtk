@@ -36,6 +36,7 @@ static ret_t pages_on_target_destroy(void* ctx, event_t* evt) {
 static ret_t pages_save_target(widget_t* widget) {
   widget_t* target = NULL;
   pages_t* pages = PAGES(widget);
+  return_value_if_fail(pages != NULL, RET_BAD_PARAMS);
 
   if (widget->children != NULL && widget->children->size > pages->active) {
     widget_t* active_view = widget_get_child(widget, pages->active);
@@ -58,8 +59,10 @@ static ret_t pages_save_target(widget_t* widget) {
 
 static ret_t pages_restore_target(widget_t* widget) {
   widget_t* target = NULL;
+  widget_t* active_view = NULL;
   pages_t* pages = PAGES(widget);
-  widget_t* active_view = widget_get_child(widget, pages->active);
+  return_value_if_fail(pages != NULL, RET_BAD_PARAMS);
+  active_view = widget_get_child(widget, pages->active);
 
   if (active_view != NULL) {
     target = WIDGET(widget_get_prop_pointer(active_view, "save_target"));

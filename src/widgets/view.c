@@ -47,6 +47,7 @@ static ret_t view_set_prop(widget_t* widget, const char* name, const value_t* v)
 
 static ret_t view_on_destroy(widget_t* widget) {
   view_t* view = VIEW(widget);
+  return_value_if_fail(view != NULL, RET_BAD_PARAMS);
   TKMEM_FREE(view->default_focused_child);
 
   return RET_OK;

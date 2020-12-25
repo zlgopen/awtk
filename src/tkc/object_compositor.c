@@ -25,10 +25,17 @@
 #include "tkc/object_compositor.h"
 
 static ret_t object_compositor_on_destroy(object_t* obj) {
+  emitter_t* obj1 = NULL;
+  emitter_t* obj2 = NULL;
   object_compositor_t* o = OBJECT_COMPOSITOR(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+  
+  obj1 = EMITTER(o->obj1);
+  obj2 = EMITTER(o->obj2);
+  return_value_if_fail(obj1 != NULL && obj2 != NULL, RET_BAD_PARAMS);
 
-  emitter_off_by_ctx(EMITTER(o->obj1), o);
-  emitter_off_by_ctx(EMITTER(o->obj2), o);
+  emitter_off_by_ctx(obj1, o);
+  emitter_off_by_ctx(obj1, o);
   OBJECT_UNREF(o->obj1);
   OBJECT_UNREF(o->obj2);
 
@@ -41,7 +48,7 @@ static int32_t object_compositor_compare(object_t* obj, object_t* other) {
 
 static ret_t object_compositor_remove_prop(object_t* obj, const char* name) {
   object_compositor_t* o = OBJECT_COMPOSITOR(obj);
-
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
   if (object_remove_prop(o->obj1, name) == RET_OK) {
     return RET_OK;
   }
@@ -51,7 +58,7 @@ static ret_t object_compositor_remove_prop(object_t* obj, const char* name) {
 
 static ret_t object_compositor_set_prop(object_t* obj, const char* name, const value_t* v) {
   object_compositor_t* o = OBJECT_COMPOSITOR(obj);
-
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
   if (object_set_prop(o->obj1, name, v) == RET_OK) {
     return RET_OK;
   }
@@ -61,7 +68,7 @@ static ret_t object_compositor_set_prop(object_t* obj, const char* name, const v
 
 static ret_t object_compositor_get_prop(object_t* obj, const char* name, value_t* v) {
   object_compositor_t* o = OBJECT_COMPOSITOR(obj);
-
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
   if (object_get_prop(o->obj1, name, v) == RET_OK) {
     return RET_OK;
   }
@@ -72,7 +79,7 @@ static ret_t object_compositor_get_prop(object_t* obj, const char* name, value_t
 static ret_t object_compositor_foreach_prop(object_t* obj, tk_visit_t on_prop, void* ctx) {
   ret_t ret = RET_OK;
   object_compositor_t* o = OBJECT_COMPOSITOR(obj);
-
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
   ret = object_foreach_prop(o->obj1, on_prop, ctx);
   if (ret != RET_STOP) {
     ret = object_foreach_prop(o->obj2, on_prop, ctx);
@@ -83,7 +90,7 @@ static ret_t object_compositor_foreach_prop(object_t* obj, tk_visit_t on_prop, v
 
 static bool_t object_compositor_can_exec(object_t* obj, const char* name, const char* args) {
   object_compositor_t* o = OBJECT_COMPOSITOR(obj);
-
+  return_value_if_fail(o != NULL, FALSE);
   if (object_can_exec(o->obj1, name, args)) {
     return TRUE;
   }
@@ -93,7 +100,7 @@ static bool_t object_compositor_can_exec(object_t* obj, const char* name, const 
 
 static ret_t object_compositor_exec(object_t* obj, const char* name, const char* args) {
   object_compositor_t* o = OBJECT_COMPOSITOR(obj);
-
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
   if (object_exec(o->obj1, name, args) == RET_OK) {
     return RET_OK;
   }

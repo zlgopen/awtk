@@ -29,7 +29,7 @@ const char* self_layouter_default_to_string(self_layouter_t* layouter) {
   char value[32];
   str_t* str = &(layouter->params);
   self_layouter_default_t* layout = (self_layouter_default_t*)layouter;
-
+  return_value_if_fail(layout != NULL, NULL);
   str_set(str, "default(");
   memset(value, 0x00, sizeof(value));
 
@@ -136,7 +136,7 @@ const char* self_layouter_default_to_string(self_layouter_t* layouter) {
 
 ret_t self_layouter_default_get_param(self_layouter_t* layouter, const char* name, value_t* v) {
   self_layouter_default_t* l = (self_layouter_default_t*)layouter;
-
+  return_value_if_fail(l != NULL, RET_BAD_PARAMS);
   switch (*name) {
     case 'x': {
       if (name[1]) {
@@ -185,6 +185,7 @@ ret_t self_layouter_default_set_param(self_layouter_t* layouter, const char* nam
                                       const value_t* v) {
   const char* value = value_str(v);
   self_layouter_default_t* layout = (self_layouter_default_t*)layouter;
+  return_value_if_fail(layout != NULL, RET_BAD_PARAMS);
 
   switch (*name) {
     case 'x': {
@@ -359,7 +360,7 @@ ret_t widget_layout_self_with_rect(self_layouter_t* layouter, widget_t* widget, 
   rect_t r = rect_init(widget->x, widget->y, widget->w, widget->h);
   self_layouter_default_t* l = (self_layouter_default_t*)layouter;
 
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget != NULL && area != NULL, RET_BAD_PARAMS);
 
   if (self_layouter_default_is_valid(layouter)) {
     widget_layout_calc(l, &r, area->w, area->h);
@@ -379,6 +380,7 @@ ret_t self_layouter_default_layout(self_layouter_t* layouter, widget_t* widget, 
 
 static ret_t self_layouter_default_destroy(self_layouter_t* layouter) {
   self_layouter_default_t* l = (self_layouter_default_t*)layouter;
+  return_value_if_fail(layouter != NULL, RET_BAD_PARAMS);
   str_reset(&(layouter->params));
   TKMEM_FREE(l);
 
@@ -387,7 +389,7 @@ static ret_t self_layouter_default_destroy(self_layouter_t* layouter) {
 
 static self_layouter_t* self_layouter_default_clone(self_layouter_t* layouter) {
   self_layouter_default_t* l = TKMEM_ZALLOC(self_layouter_default_t);
-
+  return_value_if_fail(l != NULL, NULL);
   memcpy(l, layouter, sizeof(*l));
   str_init(&(l->layouter.params), 0);
   str_set(&(l->layouter.params), layouter->params.str);

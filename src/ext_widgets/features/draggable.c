@@ -160,10 +160,11 @@ static ret_t draggable_on_paint_self(widget_t* widget, canvas_t* c) {
 
 static ret_t draggable_on_parent_pointer_down(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
-
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
   if (widget->enable) {
     pointer_event_t* evt = (pointer_event_t*)e;
     draggable_t* draggable = DRAGGABLE(widget);
+    return_value_if_fail(draggable != NULL, RET_BAD_PARAMS);
     widget_t* target = draggable->drag_window ? widget_get_window(widget) : widget->parent;
 
     draggable->pressed = TRUE;
@@ -179,8 +180,12 @@ static ret_t draggable_on_parent_pointer_down(void* ctx, event_t* e) {
 }
 
 static ret_t draggable_move_target(widget_t* widget, xy_t x, xy_t y) {
+  widget_t* target = NULL;
   draggable_t* draggable = DRAGGABLE(widget);
-  widget_t* target = draggable->drag_window ? widget_get_window(widget) : widget->parent;
+  return_value_if_fail(draggable != NULL, RET_BAD_PARAMS);
+
+  target = draggable->drag_window ? widget_get_window(widget) : widget->parent;
+  return_value_if_fail(target != NULL, RET_BAD_PARAMS);
 
   xy_t min_x = draggable->left != DRAGGABLE_UNSPECIFIED_NUM ? draggable->left : 0;
   xy_t min_y = draggable->top != DRAGGABLE_UNSPECIFIED_NUM ? draggable->top : 0;
@@ -202,6 +207,7 @@ static ret_t draggable_move_target(widget_t* widget, xy_t x, xy_t y) {
 static ret_t draggable_on_parent_pointer_move(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   draggable_t* draggable = DRAGGABLE(widget);
+  return_value_if_fail(widget != NULL && draggable != NULL, RET_BAD_PARAMS);
 
   if (widget->enable && draggable->pressed) {
     xy_t x = 0;
@@ -221,13 +227,18 @@ static ret_t draggable_on_parent_pointer_move(void* ctx, event_t* e) {
 
 static ret_t draggable_on_parent_pointer_up(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   if (widget->enable) {
+    int32_t dx, dy;
+    widget_t* target = NULL;
     draggable_t* draggable = DRAGGABLE(widget);
+    return_value_if_fail(draggable != NULL, RET_BAD_PARAMS);
+
     draggable->pressed = FALSE;
-    widget_t* target = draggable->drag_window ? widget_get_window(widget) : widget->parent;
-    int32_t dx = target->x - draggable->saved_position.x;
-    int32_t dy = target->y - draggable->saved_position.y;
+    target = draggable->drag_window ? widget_get_window(widget) : widget->parent;
+    dx = target->x - draggable->saved_position.x;
+    dy = target->y - draggable->saved_position.y;
 
     if (tk_abs(dx) > 5 || tk_abs(dy) > 5) {
       pointer_event_t abort;

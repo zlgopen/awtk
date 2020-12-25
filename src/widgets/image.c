@@ -111,6 +111,7 @@ static const char* const s_image_properties[] = {WIDGET_PROP_IMAGE,      WIDGET_
 static ret_t image_on_copy(widget_t* widget, widget_t* other) {
   image_t* image = IMAGE(widget);
   image_t* image_other = IMAGE(other);
+  return_value_if_fail(image != NULL && image_other != NULL, RET_BAD_PARAMS);
 
   image_base_on_copy(widget, other);
   image->draw_type = image_other->draw_type;

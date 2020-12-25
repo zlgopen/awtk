@@ -131,7 +131,6 @@ static bool_t file_path_load_assets_refcount_is_no_problem(assets_manager_t* rm,
 }
 
 TEST(AssetsManager, load_assets_refcount) {
-  const asset_info_t* r = NULL;
   assets_manager_t* rm = assets_manager_create(10);
 
   ASSERT_EQ(load_assets_refcount_is_no_problem(rm, ASSET_TYPE_UI, "main"), TRUE);

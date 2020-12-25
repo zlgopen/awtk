@@ -27,8 +27,9 @@
 #include "mutable_image/mutable_image.h"
 
 static bitmap_format_t mutable_image_get_disire_format(widget_t* widget, canvas_t* c) {
-  mutable_image_t* mutable_image = MUTABLE_IMAGE(widget);
   bitmap_format_t format = BITMAP_FMT_NONE;
+  mutable_image_t* mutable_image = MUTABLE_IMAGE(widget);
+  return_value_if_fail(mutable_image != NULL, format);
 
   if (mutable_image->fb != NULL) {
     format = (bitmap_format_t)(mutable_image->fb->format);

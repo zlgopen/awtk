@@ -27,7 +27,7 @@
 static void object_default_check(object_default_t* o) {
 #ifndef NDEBUG
   uint32_t i = 0;
-
+  return_if_fail(o != NULL);
   for (i = 0; i < o->props_size; i++) {
     named_value_t* iter = o->props + i;
     if (i > 0) {
@@ -42,7 +42,7 @@ static void object_default_check(object_default_t* o) {
 
 static ret_t object_default_clean_invalid_props(object_t* obj) {
   object_default_t* o = OBJECT_DEFAULT(obj);
-
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
   if (o->props_size > 0) {
     uint32_t i = 0;
     named_value_t* dst = o->props;
@@ -81,7 +81,7 @@ ret_t object_default_clear_props(object_t* obj) {
 
 static ret_t object_default_on_destroy(object_t* obj) {
   object_default_t* o = OBJECT_DEFAULT(obj);
-
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
   object_default_clear_props(obj);
   o->props_capacity = 0;
   TKMEM_FREE(o->props);
@@ -90,6 +90,7 @@ static ret_t object_default_on_destroy(object_t* obj) {
 }
 
 static int32_t object_default_compare(object_t* obj, object_t* other) {
+  return_value_if_fail(obj != NULL && other != NULL, -1);
   return tk_str_cmp(obj->name, other->name);
 }
 
@@ -99,7 +100,7 @@ static int32_t object_default_find(named_value_t* start, uint32_t nr, const char
   int32_t result = 0;
   int32_t high = nr - 1;
   named_value_t* iter = NULL;
-  return_value_if_fail(name != NULL, -1);
+  return_value_if_fail(name != NULL && start != NULL, -1);
 
   if (name[0] == '[') {
     int32_t index = tk_atoi(name + 1);
@@ -129,7 +130,7 @@ static int32_t object_default_find(named_value_t* start, uint32_t nr, const char
 static ret_t object_default_extend(object_t* obj) {
   ret_t ret = RET_OOM;
   object_default_t* o = OBJECT_DEFAULT(obj);
-
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
   if (o->props_size < o->props_capacity) {
     ret = RET_OK;
   } else {
@@ -170,7 +171,7 @@ static ret_t object_default_insert_prop_at(object_t* obj, int32_t index, const c
 static ret_t object_default_remove_prop(object_t* obj, const char* name) {
   ret_t ret = RET_NOT_FOUND;
   object_default_t* o = OBJECT_DEFAULT(obj);
-
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
   if (o->props_size > 0) {
     named_value_t* iter = NULL;
     int32_t index = object_default_find(o->props, o->props_size, name);
@@ -229,7 +230,7 @@ static ret_t object_default_set_prop(object_t* obj, const char* name, const valu
 static ret_t object_default_get_prop(object_t* obj, const char* name, value_t* v) {
   ret_t ret = RET_NOT_FOUND;
   object_default_t* o = OBJECT_DEFAULT(obj);
-
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
   if (tk_str_eq(name, OBJECT_PROP_SIZE)) {
     value_set_uint32(v, o->props_size);
     return RET_OK;
@@ -255,7 +256,7 @@ static ret_t object_default_get_prop(object_t* obj, const char* name, value_t* v
 static ret_t object_default_foreach_prop(object_t* obj, tk_visit_t on_prop, void* ctx) {
   ret_t ret = RET_OK;
   object_default_t* o = OBJECT_DEFAULT(obj);
-
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
   if (o->props_size > 0) {
     uint32_t i = 0;
 
@@ -309,7 +310,7 @@ static const object_vtable_t s_object_default_vtable = {
 object_t* object_default_create(void) {
   uint32_t init_capacity = 5;
   object_t* obj = object_create(&s_object_default_vtable);
-
+  return_value_if_fail(obj != NULL, NULL);
   if (init_capacity > 0) {
     object_default_t* o = OBJECT_DEFAULT(obj);
 

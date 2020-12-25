@@ -746,6 +746,7 @@ static ret_t canvas_draw_image_repeat_default(canvas_t* c, bitmap_t* img, const 
   wh_t dh = 0;
   rect_t r_fix;
   rect_t* dst = canvas_fix_rect(dst_in, &r_fix);
+  return_value_if_fail(c != NULL && img != NULL && dst != NULL && src_in != NULL && dst_in != NULL, RET_BAD_PARAMS);
 
   s.x = src_in->x;
   s.y = src_in->y;

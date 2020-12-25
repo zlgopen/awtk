@@ -713,8 +713,10 @@ static ret_t slide_view_on_target_destroy(void* ctx, event_t* evt) {
 
 static ret_t slide_view_save_target(widget_t* widget) {
   widget_t* target = NULL;
+  widget_t* active_view = NULL;
   slide_view_t* slide_view = SLIDE_VIEW(widget);
-  widget_t* active_view = widget_get_child(widget, slide_view->active);
+  return_value_if_fail(slide_view != NULL, RET_BAD_PARAMS);
+  active_view = widget_get_child(widget, slide_view->active);
 
   if (active_view != NULL) {
     target = active_view;
@@ -733,8 +735,10 @@ static ret_t slide_view_save_target(widget_t* widget) {
 
 static ret_t slide_view_restore_target(widget_t* widget) {
   widget_t* target = NULL;
+  widget_t* active_view = NULL;
   slide_view_t* slide_view = SLIDE_VIEW(widget);
-  widget_t* active_view = widget_get_child(widget, slide_view->active);
+  return_value_if_fail(slide_view != NULL, RET_BAD_PARAMS);
+  active_view = widget_get_child(widget, slide_view->active);
 
   if (active_view != NULL) {
     target = WIDGET(widget_get_prop_pointer(active_view, "save_target"));
@@ -801,8 +805,10 @@ static ret_t slide_view_set_active_no_animate(widget_t* widget, uint32_t active)
 static ret_t slide_view_set_active_animate(widget_t* widget, uint32_t active) {
   int32_t xoffset_end = 0;
   int32_t yoffset_end = 0;
+  uint32_t old_active = 0;
   slide_view_t* slide_view = SLIDE_VIEW(widget);
-  uint32_t old_active = slide_view->active;
+  return_value_if_fail(slide_view != NULL, RET_BAD_PARAMS);
+  old_active = slide_view->active;
 
   if (old_active < active) {
     slide_view->prev = NULL;

@@ -27,7 +27,7 @@
 
 static ret_t object_array_clean_invalid_props(object_t* obj) {
   object_array_t* o = OBJECT_ARRAY(obj);
-
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
   if (o->props_size > 0) {
     uint32_t i = 0;
     value_t* dst = o->props;
@@ -66,6 +66,7 @@ ret_t object_array_clear_props(object_t* obj) {
 
 static ret_t object_array_on_destroy(object_t* obj) {
   object_array_t* o = OBJECT_ARRAY(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
   object_array_clear_props(obj);
   o->props_capacity = 0;
@@ -81,6 +82,7 @@ static int32_t object_array_compare(object_t* obj, object_t* other) {
 static ret_t object_array_extend(object_t* obj) {
   ret_t ret = RET_OOM;
   object_array_t* o = OBJECT_ARRAY(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
   if (o->props_size < o->props_capacity) {
     ret = RET_OK;
@@ -101,6 +103,7 @@ static ret_t object_array_extend(object_t* obj) {
 
 static ret_t object_array_append(object_t* obj, const value_t* v) {
   object_array_t* o = OBJECT_ARRAY(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
   return_value_if_fail(object_array_extend(obj) == RET_OK, RET_OOM);
 
   value_deep_copy(o->props + o->props_size, v);
@@ -123,7 +126,7 @@ static ret_t object_array_remove_prop(object_t* obj, const char* name) {
   ret_t ret = RET_NOT_FOUND;
   int32_t index = object_array_parse_index(name);
   object_array_t* o = OBJECT_ARRAY(obj);
-
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
   if (index >= 0 && index < o->props_size) {
     value_t* iter = o->props + index;
     value_reset(iter);
@@ -155,6 +158,7 @@ static ret_t object_array_set_prop(object_t* obj, const char* name, const value_
 static ret_t object_array_get_prop(object_t* obj, const char* name, value_t* v) {
   ret_t ret = RET_NOT_FOUND;
   object_array_t* o = OBJECT_ARRAY(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, "length") || tk_str_eq(name, "size") || tk_str_eq(name, "#size")) {
     value_set_int(v, o->props_size);
@@ -173,6 +177,7 @@ static ret_t object_array_get_prop(object_t* obj, const char* name, value_t* v) 
 static ret_t object_array_foreach_prop(object_t* obj, tk_visit_t on_prop, void* ctx) {
   ret_t ret = RET_OK;
   object_array_t* o = OBJECT_ARRAY(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
   if (o->props_size > 0) {
     uint32_t i = 0;
@@ -214,7 +219,7 @@ static const object_vtable_t s_object_array_vtable = {.type = "object_array",
 
 static object_t* object_array_create_with_capacity(uint32_t init_capacity) {
   object_t* obj = object_create(&s_object_array_vtable);
-
+  return_value_if_fail(obj != NULL, NULL);
   if (init_capacity > 0) {
     object_array_t* o = OBJECT_ARRAY(obj);
 

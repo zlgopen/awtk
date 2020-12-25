@@ -264,6 +264,7 @@ ret_t image_transform(widget_t* widget, canvas_t* c) {
 ret_t image_base_on_copy(widget_t* widget, widget_t* other) {
   image_base_t* image = IMAGE_BASE(widget);
   image_base_t* image_other = IMAGE_BASE(other);
+  return_value_if_fail(image != NULL && image_other != NULL, RET_BAD_PARAMS);
 
   image->anchor_x = image_other->anchor_x;
   image->anchor_y = image_other->anchor_y;

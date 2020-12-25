@@ -29,7 +29,7 @@
 
 static bool_t rich_text_is_scollable(widget_t* widget) {
   rich_text_t* rich_text = RICH_TEXT(widget);
-
+  return_value_if_fail(rich_text != NULL, FALSE);
   return (rich_text->content_h + rich_text->margin * 2) > widget->h;
 }
 
@@ -53,11 +53,12 @@ static ret_t rich_text_reset(widget_t* widget) {
 static ret_t rich_text_on_paint_text(widget_t* widget, canvas_t* c) {
   rect_t r;
   rect_t r_save;
+  int32_t yoffset = 0;
   int32_t align_h = ALIGN_H_LEFT;
   rich_text_render_node_t* iter = NULL;
   rich_text_t* rich_text = RICH_TEXT(widget);
-  int32_t yoffset = rich_text->yoffset;
   return_value_if_fail(widget != NULL && rich_text != NULL && c != NULL, RET_BAD_PARAMS);
+  yoffset = rich_text->yoffset;
 
   if (widget->w <= rich_text->margin << 1 || widget->h <= rich_text->margin << 1) {
     return RET_OK;
@@ -152,6 +153,7 @@ static ret_t rich_text_on_paint_text(widget_t* widget, canvas_t* c) {
 static bool_t rich_text_is_need_reset_from_style(rich_text_t* rich_text, const char* font_name,
                                                  uint16_t font_size, color_t color,
                                                  align_v_t align_v) {
+  return_value_if_fail(rich_text != NULL && font_name != NULL, FALSE);
   if (tk_str_cmp(rich_text->default_font_name, font_name) != 0) {
     return TRUE;
   }
@@ -172,8 +174,8 @@ static bool_t rich_text_is_need_reset_from_style(rich_text_t* rich_text, const c
 }
 
 static ret_t rich_text_ensure_render_node(widget_t* widget, canvas_t* c) {
-  style_t* style = widget->astyle;
   rich_text_t* rich_text = RICH_TEXT(widget);
+  style_t* style = widget != NULL ? widget->astyle : NULL;
   const char* default_font_name = style_get_str(style, STYLE_ID_FONT_NAME, NULL);
   uint16_t default_font_size = style_get_int(style, STYLE_ID_FONT_SIZE, TK_DEFAULT_FONT_SIZE);
   color_t default_color = style_get_color(style, STYLE_ID_TEXT_COLOR, color_init(0, 0, 0, 0xff));
@@ -245,9 +247,10 @@ static ret_t rich_text_on_scroll_done(void* ctx, event_t* e) {
 
 ret_t rich_text_scroll_to(widget_t* widget, int32_t yoffset_end) {
   int32_t yoffset = 0;
+  int32_t virtual_h = 0;
   rich_text_t* rich_text = RICH_TEXT(widget);
-  int32_t virtual_h = rich_text->content_h + rich_text->margin * 2;
   return_value_if_fail(rich_text != NULL, RET_FAIL);
+  virtual_h = rich_text->content_h + rich_text->margin * 2;
 
   if (!rich_text_is_scollable(widget)) {
     rich_text->yoffset = 0;
@@ -301,6 +304,7 @@ ret_t rich_text_scroll_delta_to(widget_t* widget, int32_t yoffset_delta) {
 
 static uint32_t rich_text_get_row_height(widget_t* widget) {
   rich_text_t* rich_text = RICH_TEXT(widget);
+  return_value_if_fail(rich_text != NULL, 30);
   if (rich_text->render_node != NULL) {
     int32_t row_height = tk_max(rich_text->render_node->rect.h, 30);
 
@@ -312,6 +316,7 @@ static uint32_t rich_text_get_row_height(widget_t* widget) {
 
 static ret_t rich_text_on_pointer_down(rich_text_t* rich_text, pointer_event_t* e) {
   velocity_t* v = &(rich_text->velocity);
+  return_value_if_fail(v != NULL, RET_BAD_PARAMS);
 
   velocity_reset(v);
   rich_text->ydown = e->y;
@@ -323,8 +328,12 @@ static ret_t rich_text_on_pointer_down(rich_text_t* rich_text, pointer_event_t* 
 }
 
 static ret_t rich_text_on_pointer_move(rich_text_t* rich_text, pointer_event_t* e) {
-  velocity_t* v = &(rich_text->velocity);
-  int32_t dy = e->y - rich_text->ydown;
+  int32_t dy = 0;
+  velocity_t* v = NULL;
+  return_value_if_fail(rich_text != NULL, RET_BAD_PARAMS);
+  v = &(rich_text->velocity);
+  dy = e->y - rich_text->ydown;
+
   velocity_update(v, e->e.time, e->x, e->y);
 
   if (rich_text->wa == NULL && dy) {
@@ -336,9 +345,11 @@ static ret_t rich_text_on_pointer_move(rich_text_t* rich_text, pointer_event_t* 
 }
 
 static ret_t rich_text_on_pointer_up(rich_text_t* rich_text, pointer_event_t* e) {
+  velocity_t* v = NULL;
   int32_t yoffset_end = 0;
   widget_t* widget = WIDGET(rich_text);
-  velocity_t* v = &(rich_text->velocity);
+  return_value_if_fail(rich_text != NULL && widget != NULL, RET_BAD_PARAMS);
+  v = &(rich_text->velocity);
 
   velocity_update(v, e->e.time, e->x, e->y);
   yoffset_end = rich_text->yoffset - v->yv;
@@ -359,25 +370,34 @@ static ret_t rich_text_up(widget_t* widget) {
 }
 
 static ret_t rich_text_pagedown(widget_t* widget) {
+  int32_t h = 0;
+  int32_t pageh = 0;
   rich_text_t* rich_text = RICH_TEXT(widget);
   uint32_t row_height = rich_text_get_row_height(widget);
-  int32_t h = widget->h - rich_text->margin * 2 - 30;
-  int32_t pageh = tk_max(h, row_height);
+  return_value_if_fail(rich_text != NULL && widget != NULL, RET_BAD_PARAMS);
+
+  h = widget->h - rich_text->margin * 2 - 30;
+  pageh = tk_max(h, row_height);
 
   return rich_text_scroll_delta_to(widget, pageh);
 }
 
 static ret_t rich_text_pageup(widget_t* widget) {
+  int32_t h = 0;
+  int32_t pageh = 0;
   rich_text_t* rich_text = RICH_TEXT(widget);
   uint32_t row_height = rich_text_get_row_height(widget);
-  int32_t h = widget->h - rich_text->margin * 2 - 30;
-  int32_t pageh = tk_max(h, row_height);
+  return_value_if_fail(rich_text != NULL && widget != NULL, RET_BAD_PARAMS);
+
+  h = widget->h - rich_text->margin * 2 - 30;
+  pageh = tk_max(h, row_height);
 
   return rich_text_scroll_delta_to(widget, -pageh);
 }
 
 static ret_t rich_text_on_key_down(widget_t* widget, key_event_t* evt) {
   ret_t ret = RET_OK;
+  return_value_if_fail(evt != NULL, RET_BAD_PARAMS);
 
   if (evt->key == TK_KEY_PAGEDOWN) {
     rich_text_pagedown(widget);
@@ -398,11 +418,13 @@ static ret_t rich_text_on_key_down(widget_t* widget, key_event_t* evt) {
 
 static ret_t rich_text_on_event(widget_t* widget, event_t* e) {
   ret_t ret = RET_OK;
-  uint16_t type = e->type;
+  uint16_t type = 0;
+  bool_t yslidable = FALSE;
   rich_text_t* rich_text = RICH_TEXT(widget);
-  bool_t yslidable = rich_text->yslidable;
   bool_t scrollable = rich_text_is_scollable(widget);
-  return_value_if_fail(rich_text != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(rich_text != NULL && e != NULL, RET_BAD_PARAMS);
+  type = e->type;
+  yslidable = rich_text->yslidable;
 
   switch (type) {
     case EVT_POINTER_DOWN:
@@ -555,6 +577,7 @@ TK_DECL_VTABLE(rich_text) = {.size = sizeof(rich_text_t),
 widget_t* rich_text_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(rich_text), x, y, w, h);
   rich_text_t* rich_text = RICH_TEXT(widget);
+  return_value_if_fail(rich_text != NULL, NULL);
 
   rich_text->yslidable = TRUE;
 

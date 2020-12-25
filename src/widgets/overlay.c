@@ -55,6 +55,7 @@ static bool_t overlay_is_point_in(widget_t* widget, xy_t x, xy_t y) {
   xy_t xx = 0;
   xy_t yy = 0;
   overlay_t* overlay = OVERLAY(widget);
+  return_value_if_fail(overlay != NULL, RET_BAD_PARAMS);
 
   if (overlay->click_through) {
     WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)

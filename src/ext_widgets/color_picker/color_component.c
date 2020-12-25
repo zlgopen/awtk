@@ -35,7 +35,7 @@ static ret_t color_component_dispatch_change_event(widget_t* widget, uint32_t et
   value_change_event_t evt;
   value_change_event_init(&evt, etype, widget);
   color_component_t* color_component = COLOR_COMPONENT(widget);
-
+  return_value_if_fail(color_component != NULL, RET_BAD_PARAMS);
   value = (color_component->color_x & 0xffff) << 16;
   value |= color_component->color_y;
 
@@ -50,7 +50,7 @@ static ret_t color_component_dispatch_change_event(widget_t* widget, uint32_t et
 static ret_t color_component_update_pressed(widget_t* widget, pointer_event_t* e) {
   point_t p = {e->x, e->y};
   color_component_t* color_component = COLOR_COMPONENT(widget);
-
+  return_value_if_fail(color_component != NULL, RET_BAD_PARAMS);
   widget_to_local(widget, &p);
   color_component->color_x = tk_clampi(p.x, 0, widget->w);
   color_component->color_y = tk_clampi(p.y, 0, widget->h);
@@ -101,6 +101,7 @@ static ret_t color_component_on_paint_self(widget_t* widget, canvas_t* c) {
   wh_t h = widget->h;
   bitmap_t* image = NULL;
   color_component_t* color_component = COLOR_COMPONENT(widget);
+  return_value_if_fail(color_component != NULL, RET_BAD_PARAMS);
   xy_t x = tk_max(0, tk_min(color_component->color_x, (w - 1)));
   xy_t y = tk_max(0, tk_min(color_component->color_y, (h - 1)));
 
@@ -141,7 +142,7 @@ static ret_t color_component_on_paint_self(widget_t* widget, canvas_t* c) {
 
 static ret_t color_component_on_destroy(widget_t* widget) {
   color_component_t* color_component = COLOR_COMPONENT(widget);
-
+  return_value_if_fail(color_component != NULL, RET_BAD_PARAMS);
   if (color_component->image != NULL) {
     bitmap_destroy((color_component->image));
   }

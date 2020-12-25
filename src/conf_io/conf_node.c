@@ -676,7 +676,7 @@ static conf_node_t* conf_node_get_prev(conf_node_t* node) {
   return_value_if_fail(node != NULL && node->parent != NULL, NULL);
   iter = conf_node_get_first_child(node->parent);
 
-  if (iter == node) {
+  if (iter == node || iter == NULL) {
     return NULL;
   }
 

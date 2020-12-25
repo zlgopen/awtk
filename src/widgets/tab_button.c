@@ -40,6 +40,7 @@ static ret_t tab_button_pointer_up_cleanup(widget_t* widget) {
 static ret_t tab_button_on_event(widget_t* widget, event_t* e) {
   uint16_t type = e->type;
   tab_button_t* tab_button = TAB_BUTTON(widget);
+  return_value_if_fail(tab_button != NULL && e != NULL, RET_BAD_PARAMS);
   switch (type) {
     case EVT_POINTER_DOWN: {
       widget_set_state(widget, WIDGET_STATE_PRESSED);

@@ -31,7 +31,7 @@ static const char* children_layouter_default_to_string(children_layouter_t* layo
   char temp[32];
   str_t* str = &(layouter->params);
   children_layouter_default_t* layout = (children_layouter_default_t*)layouter;
-
+  return_value_if_fail(layout != NULL, NULL);
   str_set(str, "default(");
   if (layout->cols_is_width) {
     tk_snprintf(temp, sizeof(temp) - 1, "w=%d,", (int)(layout->cols));
@@ -86,7 +86,7 @@ static ret_t children_layouter_default_set_param(children_layouter_t* layouter, 
                                                  const value_t* v) {
   int val = value_int(v);
   children_layouter_default_t* l = (children_layouter_default_t*)layouter;
-
+  return_value_if_fail(l != NULL, RET_BAD_PARAMS);
   switch (*name) {
     case 'w': {
       l->cols = val;
@@ -155,7 +155,7 @@ static ret_t children_layouter_default_set_param(children_layouter_t* layouter, 
 static ret_t children_layouter_default_get_param(children_layouter_t* layouter, const char* name,
                                                  value_t* v) {
   children_layouter_default_t* l = (children_layouter_default_t*)layouter;
-
+  return_value_if_fail(l != NULL, RET_BAD_PARAMS);
   switch (*name) {
     case 'w': {
       if (l->cols_is_width) {
@@ -247,7 +247,7 @@ static ret_t children_layouter_default_layout(children_layouter_t* layouter, wid
   widget_t** children = NULL;
   darray_t children_for_layout;
   children_layouter_default_t* layout = (children_layouter_default_t*)layouter;
-
+  return_value_if_fail(layout != NULL, RET_BAD_PARAMS);
   if (widget->children == NULL) {
     return RET_OK;
   }
@@ -417,12 +417,13 @@ error:
 
 static bool_t children_layouter_default_is_valid(children_layouter_t* layouter) {
   children_layouter_default_t* l = (children_layouter_default_t*)layouter;
-
+  return_value_if_fail(l != NULL, FALSE);
   return (l->rows == 0 && l->cols == 0) ? FALSE : TRUE;
 }
 
 static ret_t children_layouter_default_destroy(children_layouter_t* layouter) {
   children_layouter_default_t* l = (children_layouter_default_t*)layouter;
+  return_value_if_fail(layouter != NULL, RET_BAD_PARAMS);
   str_reset(&(layouter->params));
   TKMEM_FREE(l);
 
@@ -431,7 +432,7 @@ static ret_t children_layouter_default_destroy(children_layouter_t* layouter) {
 
 static children_layouter_t* children_layouter_default_clone(children_layouter_t* layouter) {
   children_layouter_default_t* l = TKMEM_ZALLOC(children_layouter_default_t);
-
+  return_value_if_fail(l != NULL, NULL);
   memcpy(l, layouter, sizeof(*l));
   str_init(&(l->layouter.params), 0);
   str_set(&(l->layouter.params), layouter->params.str);

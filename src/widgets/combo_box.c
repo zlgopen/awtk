@@ -61,6 +61,7 @@ static ret_t combo_box_set_selected_index_ex(widget_t* widget, uint32_t index, w
 static ret_t combo_box_on_copy(widget_t* widget, widget_t* other) {
   combo_box_t* combo_box = COMBO_BOX(widget);
   combo_box_t* combo_box_other = COMBO_BOX(other);
+  return_value_if_fail(combo_box != NULL && combo_box_other != NULL, RET_BAD_PARAMS);
 
   edit_on_copy(widget, other);
 
@@ -257,7 +258,7 @@ static ret_t combo_box_on_layout_children(widget_t* widget) {
 
 static uint32_t edit_get_right_margin(widget_t* widget) {
   int32_t right_margin = 0;
-  style_t* style = widget->astyle;
+  style_t* style = widget != NULL ? widget->astyle : NULL;
 
   right_margin = widget_get_prop_int(widget, WIDGET_PROP_RIGHT_MARGIN, 0);
 
@@ -275,6 +276,7 @@ static uint32_t edit_get_right_margin(widget_t* widget) {
 static ret_t combo_box_on_key_event(widget_t* widget, key_event_t* evt) {
   ret_t ret = RET_OK;
   edit_t* edit = EDIT(WIDGET(widget));
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
 
   if (evt->key == TK_KEY_UP) {
     ret = RET_STOP;
@@ -303,7 +305,7 @@ static ret_t combo_box_on_event(widget_t* widget, event_t* e) {
   ret_t ret = RET_OK;
   combo_box_t* combo_box = COMBO_BOX(widget);
   edit_t* edit = EDIT(WIDGET(combo_box));
-  return_value_if_fail(combo_box != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(combo_box != NULL && edit != NULL && e != NULL, RET_BAD_PARAMS);
 
   switch (e->type) {
     case EVT_WIDGET_LOAD: {
@@ -392,7 +394,7 @@ widget_t* combo_box_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h
   widget_t* widget = edit_create_ex(parent, TK_REF_VTABLE(combo_box), x, y, w, h);
   combo_box_t* combo_box = COMBO_BOX(widget);
   edit_t* edit = EDIT(WIDGET(combo_box));
-  return_value_if_fail(combo_box != NULL, NULL);
+  return_value_if_fail(combo_box != NULL && edit != NULL, NULL);
 
   edit->left_margin = 0;
   edit->right_margin = 0;
@@ -405,6 +407,7 @@ widget_t* combo_box_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h
 static ret_t combo_box_on_item_click(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   widget_t* item = WIDGET(e->target);
+  return_value_if_fail(widget != NULL && item != NULL, RET_BAD_PARAMS);
 
   combo_box_set_selected_index_ex(widget, widget_index_of(item), item);
 
@@ -419,6 +422,7 @@ static ret_t combo_box_on_item_click(void* ctx, event_t* e) {
 static ret_t combo_box_visit_item(void* ctx, const void* data) {
   widget_t* iter = WIDGET(data);
   combo_box_t* combo_box = COMBO_BOX(ctx);
+  return_value_if_fail(combo_box != NULL && iter != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(widget_get_type(iter), WIDGET_TYPE_COMBO_BOX_ITEM)) {
     int32_t index = widget_index_of(iter);
@@ -471,14 +475,20 @@ ret_t combo_box_combobox_popup_on_close_func(void* ctx, event_t* e) {
 
 static widget_t* combo_box_create_popup(combo_box_t* combo_box) {
   value_t v;
+  int32_t w = 0;
+  int32_t h = 0;
+  int32_t nr = 0;
   char params[128];
+  widget_t* win = NULL;
+  int32_t item_height = 0;
   widget_t* widget = WIDGET(combo_box);
   int32_t margin = COMBO_BOX_DEFAULT_MARGIN;
-  int32_t item_height = combo_box->item_height;
-  int32_t nr = combo_box_count_options(widget);
-  int32_t w = widget->w;
-  int32_t h = nr * item_height + 2 * margin;
-  widget_t* win = popup_create(NULL, 0, 0, w, h);
+  return_value_if_fail(combo_box != NULL && widget != NULL, NULL);
+  item_height = combo_box->item_height;
+  nr = combo_box_count_options(widget);
+  w = widget->w;
+  h = nr * item_height + 2 * margin;
+  win = popup_create(NULL, 0, 0, w, h);
 
   value_set_bool(&v, TRUE);
   widget_set_prop(win, WIDGET_PROP_CLOSE_WHEN_CLICK_OUTSIDE, &v);

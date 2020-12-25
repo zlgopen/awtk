@@ -109,6 +109,7 @@ ret_t guage_pointer_set_anchor(widget_t* widget, const char* anchor_x, const cha
 static ret_t guage_pointer_load_svg_asset(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   guage_pointer_t* guage_pointer = GUAGE_POINTER(widget);
+  return_value_if_fail(guage_pointer != NULL, RET_BAD_PARAMS);
 
   if (guage_pointer->image != NULL) {
     const asset_info_t* asset = widget_load_asset(widget, ASSET_TYPE_IMAGE, guage_pointer->image);
@@ -133,7 +134,7 @@ ret_t guage_pointer_set_image(widget_t* widget, const char* image) {
   widget_t* win = widget_get_window(widget);
   guage_pointer_t* guage_pointer = GUAGE_POINTER(widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(image != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(image != NULL && guage_pointer != NULL, RET_BAD_PARAMS);
   guage_pointer->image = tk_str_copy(guage_pointer->image, image);
 
   if (guage_pointer->image != NULL) {
@@ -199,14 +200,17 @@ static ret_t guage_pointer_on_destroy(widget_t* widget) {
 }
 
 static ret_t guage_pointer_paint_default(widget_t* widget, vgcanvas_t* vg) {
-  float_t w = widget->w;
-  float_t h = widget->h;
-  float_t cx = w * 0.5f;
-  float_t cy = h * 0.5f;
-  style_t* style = widget->astyle;
+  float_t w, h;
+  float_t cx, cy;
+  color_t bg, fg;
   color_t black = color_init(0, 0, 0, 0xff);
-  color_t bg = style_get_color(style, STYLE_ID_BG_COLOR, black);
-  color_t fg = style_get_color(style, STYLE_ID_FG_COLOR, black);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  w = widget->w;
+  h = widget->h;
+  cx = w * 0.5f;
+  cy = h * 0.5f;
+  bg = style_get_color(widget->astyle, STYLE_ID_BG_COLOR, black);
+  fg = style_get_color(widget->astyle, STYLE_ID_FG_COLOR, black);
 
   vgcanvas_begin_path(vg);
   vgcanvas_move_to(vg, cx, 0);
@@ -230,6 +234,7 @@ static ret_t guage_pointer_on_paint_self(widget_t* widget, canvas_t* c) {
   float_t anchor_y = 0;
   vgcanvas_t* vg = canvas_get_vgcanvas(c);
   guage_pointer_t* guage_pointer = GUAGE_POINTER(widget);
+  return_value_if_fail(guage_pointer != NULL && widget != NULL, RET_BAD_PARAMS);
 
   anchor_x = guage_pointer_get_anchor_for_str(widget->w, guage_pointer->anchor_x);
   anchor_y = guage_pointer_get_anchor_for_str(widget->h, guage_pointer->anchor_y);
@@ -285,6 +290,7 @@ TK_DECL_VTABLE(guage_pointer) = {.size = sizeof(guage_pointer_t),
 widget_t* guage_pointer_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   guage_pointer_t* guage_pointer =
       GUAGE_POINTER(widget_create(parent, TK_REF_VTABLE(guage_pointer), x, y, w, h));
+  return_value_if_fail(guage_pointer != NULL, NULL);
   guage_pointer->anchor_x = tk_strdup("0.5");
   guage_pointer->anchor_y = tk_strdup("0.5");
   return (widget_t*)guage_pointer;

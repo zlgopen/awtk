@@ -34,7 +34,7 @@ static const char* children_layouter_list_view_to_string(children_layouter_t* la
   char temp[32];
   str_t* str = &(layouter->params);
   children_layouter_list_view_t* layout = (children_layouter_list_view_t*)layouter;
-
+  return_value_if_fail(layout != NULL, NULL);
   memset(temp, 0, sizeof(temp));
   str_set(str, "list_view(");
   str_append(str, temp);
@@ -434,6 +434,7 @@ static ret_t children_layouter_for_list_view_h_layout(children_layouter_t* layou
 
 static ret_t children_layouter_list_view_layout(children_layouter_t* layouter, widget_t* widget) {
   children_layouter_list_view_t* l = (children_layouter_list_view_t*)layouter;
+  return_value_if_fail(l != NULL, RET_BAD_PARAMS);
   if (l->hlayouter) {
     return children_layouter_for_list_view_h_layout(layouter, widget);
   } else {
@@ -447,6 +448,7 @@ static bool_t children_layouter_list_view_is_valid(children_layouter_t* layouter
 
 static ret_t children_layouter_list_view_destroy(children_layouter_t* layouter) {
   children_layouter_list_view_t* l = (children_layouter_list_view_t*)layouter;
+  return_value_if_fail(l != NULL, RET_BAD_PARAMS);
   str_reset(&(layouter->params));
   TKMEM_FREE(l);
 
@@ -455,7 +457,7 @@ static ret_t children_layouter_list_view_destroy(children_layouter_t* layouter) 
 
 static children_layouter_t* children_layouter_list_view_clone(children_layouter_t* layouter) {
   children_layouter_list_view_t* l = TKMEM_ZALLOC(children_layouter_list_view_t);
-
+  return_value_if_fail(l != NULL, NULL);
   memcpy(l, layouter, sizeof(*l));
   str_init(&(l->layouter.params), 0);
   str_set(&(l->layouter.params), layouter->params.str);

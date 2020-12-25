@@ -140,6 +140,7 @@ static ret_t conf_obj_load(object_t* obj) {
 
 static ret_t conf_obj_load_or_create(object_t* obj, bool_t create_if_not_exist) {
   conf_obj_t* o = CONF_OBJ(obj);
+  return_value_if_fail(o != NULL, RET_FAIL);
 
   if (o->url != NULL) {
     conf_obj_load(obj);

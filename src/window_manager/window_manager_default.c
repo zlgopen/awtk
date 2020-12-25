@@ -125,6 +125,7 @@ ret_t window_manager_default_snap_curr_window(widget_t* widget, widget_t* curr_w
   return_value_if_fail(img != NULL && wm != NULL && curr_win != NULL, RET_BAD_PARAMS);
 
   c = native_window_get_canvas(wm->native_window);
+  return_value_if_fail(c != NULL && c->lcd != NULL, RET_BAD_PARAMS);
   window_manager_check_and_layout(widget);
 
   r = rect_init(curr_win->x, curr_win->y, curr_win->w, curr_win->h);
@@ -178,6 +179,7 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
   return_value_if_fail(img != NULL && wm != NULL && prev_win != NULL, RET_BAD_PARAMS);
 
   c = native_window_get_canvas(wm->native_window);
+  return_value_if_fail(c != NULL && c->lcd != NULL, RET_BAD_PARAMS);
   dialog_highlighter = wm->dialog_highlighter;
   window_manager_check_and_layout(widget);
 
@@ -1100,14 +1102,16 @@ static ret_t window_manager_default_is_animating(widget_t* widget, bool_t* playi
 
 ret_t window_manager_default_on_event(widget_t* widget, event_t* e) {
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
-
+  return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
   if (e->type == EVT_ORIENTATION_WILL_CHANGED) {
-    orientation_event_t* evt = orientation_event_cast(e);
-    lcd_orientation_t orientation = evt->orientation;
-    lcd_t* lcd = native_window_get_canvas(wm->native_window)->lcd;
-
     wh_t w = wm->lcd_w;
     wh_t h = wm->lcd_h;
+    lcd_orientation_t orientation;
+    orientation_event_t* evt = orientation_event_cast(e);
+    lcd_t* lcd = native_window_get_canvas(wm->native_window)->lcd;
+    return_value_if_fail(lcd != NULL && evt != NULL, RET_FAIL);
+    orientation = evt->orientation;
+
     if (orientation == LCD_ORIENTATION_90 || orientation == LCD_ORIENTATION_270) {
       w = wm->lcd_h;
       h = wm->lcd_w;

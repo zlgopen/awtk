@@ -29,7 +29,7 @@ static ret_t list_item_on_paint_self(widget_t* widget, canvas_t* c) {
 
 static ret_t list_item_on_parent_pointer_up(void* ctx, event_t* e) {
   list_item_t* list_item = LIST_ITEM(ctx);
-
+  return_value_if_fail(list_item != NULL, RET_BAD_PARAMS);
   list_item->dragged = FALSE;
   list_item->pressed = FALSE;
   list_item->downed = FALSE;

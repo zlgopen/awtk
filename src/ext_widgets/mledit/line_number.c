@@ -71,7 +71,7 @@ static ret_t line_number_on_paint_self(widget_t* widget, canvas_t* c) {
   rect_t clip_r = {0, 0, 0, 0};
   rect_t edit_r = {0, 0, 0, 0};
   line_number_t* line_number = LINE_NUMBER(widget);
-
+  return_value_if_fail(line_number != NULL, RET_BAD_PARAMS);
   canvas_get_clip_rect(c, &save_r);
 
   edit_r = rect_init(c->ox, c->oy + line_number->top_margin, widget->w,

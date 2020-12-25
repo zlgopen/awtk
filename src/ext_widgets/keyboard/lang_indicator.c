@@ -55,6 +55,7 @@ static ret_t lang_indicator_set_prop(widget_t* widget, const char* name, const v
 
 static ret_t lang_indicator_on_destroy(widget_t* widget) {
   lang_indicator_t* lang_indicator = LANG_INDICATOR(widget);
+  return_value_if_fail(lang_indicator != NULL, RET_BAD_PARAMS);
   input_method_off(input_method(), lang_indicator->event_id);
 
   lang_indicator->event_id = TK_INVALID_ID;
@@ -67,6 +68,7 @@ static ret_t lang_indicator_on_paint_self(widget_t* widget, canvas_t* c) {
   wstr_t* str = &(widget->text);
   lang_indicator_t* lang_indicator = LANG_INDICATOR(widget);
   const char* lang = input_method_get_lang(input_method());
+  return_value_if_fail(lang_indicator != NULL, RET_BAD_PARAMS);
 
   if (lang_indicator->image != NULL) {
     char icon[128];
@@ -92,7 +94,7 @@ TK_DECL_VTABLE(lang_indicator) = {.size = sizeof(lang_indicator_t),
 widget_t* lang_indicator_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(lang_indicator), x, y, w, h);
   lang_indicator_t* lang_indicator = LANG_INDICATOR(widget);
-
+  return_value_if_fail(lang_indicator != NULL, NULL);
   lang_indicator->event_id =
       input_method_on(input_method(), EVT_IM_LANG_CHANGED, lang_indicator_on_lang_changed, widget);
 

@@ -162,9 +162,11 @@ ret_t assets_manager_build_asset_filename(assets_manager_t* am, char* path, uint
                                           const char* theme, bool_t ratio_sensitive,
                                           const char* subpath, const char* name,
                                           const char* extname) {
+  const char* ratio = NULL;
   const char* res_root = assets_manager_get_res_root(am);
   system_info_t* sysinfo = assets_manager_get_system_info(am);
-  const char* ratio = device_pixel_ratio_to_str(sysinfo->device_pixel_ratio);
+  return_value_if_fail(sysinfo != NULL, RET_BAD_PARAMS);
+  ratio = device_pixel_ratio_to_str(sysinfo->device_pixel_ratio);
 
   if (ratio_sensitive) {
     if (build_asset_filename_custom(am, path, size, theme, ratio, subpath, name, extname) ==

@@ -255,6 +255,7 @@ bool_t edit_is_valid_char(widget_t* widget, wchar_t c) {
 static bool_t edit_has_selection(widget_t* widget) {
   text_edit_state_t state;
   edit_t* edit = EDIT(widget);
+  return_value_if_fail(edit != NULL, FALSE);
   text_edit_get_state(edit->model, &state);
 
   return state.select_start != state.select_end;
@@ -489,6 +490,7 @@ static ret_t edit_update_status(widget_t* widget) {
 static ret_t edit_do_request_input_method(widget_t* widget) {
   edit_t* edit = EDIT(widget);
   input_method_t* im = input_method();
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
   input_method_request(im, widget);
   if (edit->action_text != NULL) {
     const char* action_text = locale_info_tr(widget_get_locale_info(widget), edit->action_text);
@@ -519,7 +521,7 @@ static ret_t edit_request_input_method(widget_t* widget) {
 
 static ret_t edit_on_focused(widget_t* widget) {
   edit_t* edit = EDIT(widget);
-
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
   if (edit->timer_id == TK_INVALID_ID) {
     edit->timer_id = timer_add(edit_update_caret, widget, 600);
   }
@@ -568,7 +570,7 @@ static ret_t edit_paste(widget_t* widget) {
 
 static ret_t edit_pre_input(widget_t* widget, uint32_t key) {
   edit_t* edit = EDIT(widget);
-
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
   if (edit->pre_input != NULL) {
     return edit->pre_input(widget, key);
   }
@@ -579,7 +581,7 @@ static ret_t edit_pre_input(widget_t* widget, uint32_t key) {
 static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
   uint32_t key = e->key;
   edit_t* edit = EDIT(widget);
-
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
   if (edit_pre_input(widget, key) == RET_STOP) {
     return RET_STOP;
   }
@@ -649,7 +651,7 @@ static ret_t edit_on_key_up(widget_t* widget, key_event_t* e) {
   int key = e->key;
   ret_t ret = RET_OK;
   edit_t* edit = EDIT(widget);
-
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
   if (key_code_is_enter(key)) {
     if (edit->timer_id == TK_INVALID_ID) {
       edit_on_focused(widget);
@@ -664,6 +666,7 @@ static ret_t edit_on_key_up(widget_t* widget, key_event_t* e) {
 
 static ret_t edit_select_all_async(const idle_info_t* info) {
   edit_t* edit = EDIT(info->ctx);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
   text_edit_select_all(edit->model);
 
   if (edit->fix_value != NULL) {
@@ -849,6 +852,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
 
 static ret_t edit_on_re_translate(widget_t* widget) {
   edit_t* edit = EDIT(widget);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
   if (edit->tr_tips != NULL) {
     const char* tr_tips = locale_info_tr(widget_get_locale_info(widget), edit->tr_tips);
     edit_set_tips(widget, tr_tips);
@@ -1024,7 +1028,7 @@ ret_t edit_set_action_text(widget_t* widget, const char* action_text) {
 static ret_t edit_apply_tr_text_before_paint(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   edit_t* edit = EDIT(widget);
-
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
   if (edit->tr_tips != NULL) {
     const char* tr_tips = locale_info_tr(widget_get_locale_info(widget), edit->tr_tips);
     edit_set_tips(widget, tr_tips);
@@ -1631,7 +1635,7 @@ const char* const s_edit_properties[] = {WIDGET_PROP_MIN,
 ret_t edit_on_copy(widget_t* widget, widget_t* other) {
   edit_t* edit = EDIT(widget);
   edit_t* edit_other = EDIT(other);
-
+  return_value_if_fail(edit != NULL && edit_other != NULL, RET_BAD_PARAMS);
   edit->tips = tk_str_copy(edit->tips, edit_other->tips);
   edit->tr_tips = tk_str_copy(edit->tr_tips, edit_other->tr_tips);
 
@@ -1763,9 +1767,11 @@ ret_t edit_set_pre_input(widget_t* widget, edit_pre_input_t pre_input) {
 
 ret_t edit_pre_input_with_sep(widget_t* widget, uint32_t key, char sep) {
   text_edit_state_t state;
+  wstr_t* text = NULL;
   edit_t* edit = EDIT(widget);
-  wstr_t* text = &(widget->text);
+  return_value_if_fail(edit != NULL && widget != NULL, RET_BAD_PARAMS);
 
+  text = &(widget->text);
   text_edit_get_state(edit->model, &state);
   if (state.select_start < state.select_end) {
     uint32_t i = 0;
@@ -1809,9 +1815,12 @@ ret_t edit_pre_input_with_sep(widget_t* widget, uint32_t key, char sep) {
 ret_t edit_add_value_with_sep(widget_t* widget, int delta, char sep) {
   char c = 0;
   uint32_t cursor = 0;
+  wstr_t* text = NULL;
   text_edit_state_t state;
   edit_t* edit = EDIT(widget);
-  wstr_t* text = &(widget->text);
+  return_value_if_fail(edit != NULL && widget != NULL, RET_BAD_PARAMS);
+
+  text = &(widget->text);
   text_edit_get_state(edit->model, &state);
 
   if (text->size == 0) {
@@ -1863,7 +1872,7 @@ ret_t edit_dec(edit_t* edit) {
 
 static ret_t edit_auto_fix(widget_t* widget) {
   edit_t* edit = EDIT(widget);
-
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
   if (edit->fix_value != NULL) {
     return edit->fix_value(widget);
   } else {
@@ -1873,6 +1882,7 @@ static ret_t edit_auto_fix(widget_t* widget) {
 
 bool_t edit_is_valid_value(widget_t* widget) {
   edit_t* edit = EDIT(widget);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
   if (edit->is_valid_value != NULL) {
     return edit->is_valid_value(widget);
   } else {
