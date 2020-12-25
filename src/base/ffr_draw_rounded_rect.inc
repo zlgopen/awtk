@@ -1254,19 +1254,37 @@ static ret_t ffr_draw_stroke_rounded_rect(canvas_t* c, const rect_t* r, const co
       uint32_t tmp_h1 = mid_lenght_v;
       uint32_t tmp_h2 = mid_lenght_v;
       if (radius_tl == 0) {
-        tmp_y1 = y + 1;
-        tmp_h1 += radius - 1;
+        if (border_model & BORDER_TOP) {
+          tmp_y1 = y + 1;
+          tmp_h1 += radius - 1;
+        } else {
+          tmp_y1 = y;
+          tmp_h1 += radius;
+        }
       }
       if (radius_bl == 0) {
-        tmp_h1 += radius - 1;
+        if (border_model & BORDER_BOTTOM) {
+          tmp_h1 += radius - 1;
+        } else {
+          tmp_h1 += radius;
+        }
       }
 
       if (radius_tr == 0) {
-        tmp_y2 = y + 1;
-        tmp_h2 += radius - 1;
+        if (border_model & BORDER_TOP) {
+          tmp_y2 = y + 1;
+          tmp_h2 += radius - 1;
+        } else {
+          tmp_y2 = y;
+          tmp_h2 += radius;
+        }
       }
       if (radius_br == 0) {
-        tmp_h2 += radius - 1;
+        if (border_model & BORDER_BOTTOM) {
+          tmp_h2 += radius - 1;
+        } else {
+          tmp_h2 += radius;
+        }
       }
       if (border_model & BORDER_LEFT) {
         canvas_draw_vline(c, x, tmp_y1, tmp_h1);                      //左边边
