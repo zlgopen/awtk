@@ -164,21 +164,26 @@ static ret_t text_selector_paint_text(widget_t* widget, canvas_t* c, rect_t* r,
 }
 
 static ret_t text_selector_paint_self(widget_t* widget, canvas_t* c) {
-  text_selector_option_t* iter = NULL;
-  text_selector_t* text_selector = TEXT_SELECTOR(widget);
-
+  rect_t r;
   uint32_t y = 0;
   uint32_t i = 0;
-  int32_t yoffset = text_selector->yoffset;
-  int32_t visible_nr = text_selector->visible_nr;
-  int32_t item_height = text_selector->draw_widget_h / visible_nr;
-  rect_t r = rect_init(0, 0, widget->w, item_height);
+  text_selector_option_t* iter = NULL;
+  int32_t max_yoffset, tolal_height;
+  int32_t yoffset, visible_nr, item_height;
+  int32_t options_nr, empty_item_height, min_yoffset;
+  text_selector_t* text_selector = TEXT_SELECTOR(widget);
+  return_value_if_fail(text_selector != NULL, RET_BAD_PARAMS);
 
-  int32_t options_nr = text_selector_count_options(widget);
-  int32_t empty_item_height = (text_selector->visible_nr / 2) * item_height;
-  int32_t min_yoffset = -empty_item_height;
-  int32_t max_yoffset = (options_nr * item_height + empty_item_height) - text_selector->draw_widget_h;
-  int32_t tolal_height = max_yoffset + empty_item_height;
+  yoffset = text_selector->yoffset;
+  visible_nr = text_selector->visible_nr;
+  item_height = text_selector->draw_widget_h / visible_nr;
+  r = rect_init(0, 0, widget->w, item_height);
+
+  options_nr = text_selector_count_options(widget);
+  empty_item_height = (text_selector->visible_nr / 2) * item_height;
+  min_yoffset = -empty_item_height;
+  max_yoffset = (options_nr * item_height + empty_item_height) - text_selector->draw_widget_h;
+  tolal_height = max_yoffset + empty_item_height;
   return_value_if_fail(options_nr > 0, RET_BAD_PARAMS);
 
   widget_prepare_text_style(widget, c);
@@ -427,9 +432,7 @@ static ret_t text_selector_set_prop(widget_t* widget, const char* name, const va
 }
 
 static ret_t text_selector_on_pointer_down(text_selector_t* text_selector, pointer_event_t* e) {
-  velocity_t* v = NULL;
-  return_value_if_fail(text_selector != NULL && e != NULL, RET_BAD_PARAMS);
-  v = &(text_selector->velocity);
+  velocity_t* v = &(text_selector->velocity);
 
   velocity_reset(v);
   text_selector->ydown = e->y;
@@ -440,11 +443,8 @@ static ret_t text_selector_on_pointer_down(text_selector_t* text_selector, point
   return RET_OK;
 }
 static ret_t text_selector_on_pointer_move(text_selector_t* text_selector, pointer_event_t* e) {
-  int32_t dy = 0;
-  velocity_t* v = NULL;
-  return_value_if_fail(text_selector != NULL && e != NULL, RET_BAD_PARAMS);
-  v = &(text_selector->velocity);
-  dy = e->y - text_selector->ydown;
+  velocity_t* v = &(text_selector->velocity);
+  int32_t dy = e->y - text_selector->ydown;
   velocity_update(v, e->e.time, e->x, e->y);
 
   if (text_selector->wa == NULL && dy) {
@@ -502,14 +502,20 @@ static ret_t text_selector_sync_yoffset_with_selected_index(text_selector_t* tex
 }
 
 static ret_t text_selector_on_scroll_done(void* ctx, event_t* e) {
+  int32_t options_nr = 0;
+  int32_t item_height = 0;
+  int32_t min_yoffset = 0;
+  int32_t max_yoffset = 0;
+  int32_t empty_item_height = 0;
   widget_t* widget = WIDGET(ctx);
   text_selector_t* text_selector = TEXT_SELECTOR(ctx);
-  int32_t options_nr = text_selector_count_options(widget);
-  int32_t item_height = text_selector->draw_widget_h / text_selector->visible_nr;
-  int32_t empty_item_height = (text_selector->visible_nr / 2) * item_height;
-  int32_t min_yoffset = -empty_item_height;
-  int32_t max_yoffset = (options_nr * item_height + empty_item_height) - text_selector->draw_widget_h;
-  return_value_if_fail(text_selector != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(text_selector != NULL && widget != NULL, RET_BAD_PARAMS);
+
+  options_nr = text_selector_count_options(widget);
+  item_height = text_selector->draw_widget_h / text_selector->visible_nr;
+  empty_item_height = (text_selector->visible_nr / 2) * item_height;
+  min_yoffset = -empty_item_height;
+  max_yoffset = (options_nr * item_height + empty_item_height) - text_selector->draw_widget_h;
 
   text_selector->wa = NULL;
 
@@ -526,12 +532,17 @@ static ret_t text_selector_on_scroll_done(void* ctx, event_t* e) {
 
 static ret_t text_selector_scroll_to(widget_t* widget, int32_t yoffset_end) {
   int32_t yoffset = 0;
+  int32_t item_height = 0;
+  int32_t min_yoffset = 0;
+  int32_t max_yoffset = 0;
+  int32_t empty_item_height = 0;
   text_selector_t* text_selector = TEXT_SELECTOR(widget);
   int32_t options_nr = text_selector_count_options(widget);
-  int32_t item_height = text_selector->draw_widget_h / text_selector->visible_nr;
-  int32_t empty_item_height = (text_selector->visible_nr / 2) * item_height;
-  int32_t min_yoffset = -empty_item_height;
-  int32_t max_yoffset = (options_nr * item_height + empty_item_height) - text_selector->draw_widget_h;
+  return_value_if_fail(text_selector != NULL, RET_BAD_PARAMS);
+  item_height = text_selector->draw_widget_h / text_selector->visible_nr;
+  empty_item_height = (text_selector->visible_nr / 2) * item_height;
+  min_yoffset = -empty_item_height;
+  max_yoffset = (options_nr * item_height + empty_item_height) - text_selector->draw_widget_h;
 
   if (!text_selector->loop_options) {
     if (yoffset_end < min_yoffset) {
@@ -592,7 +603,7 @@ static ret_t text_selector_on_pointer_up(text_selector_t* text_selector, pointer
 static ret_t text_selector_up(widget_t* widget) {
   int32_t yoffset = 0;
   text_selector_t* text_selector = TEXT_SELECTOR(widget);
-  return_value_if_fail(widget != NULL && text_selector != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(text_selector != NULL, RET_BAD_PARAMS);
   yoffset = text_selector->yoffset - (widget->h / text_selector->visible_nr);
 
   return text_selector_scroll_to(widget, yoffset);
@@ -601,7 +612,7 @@ static ret_t text_selector_up(widget_t* widget) {
 static ret_t text_selector_down(widget_t* widget) {
   int32_t yoffset = 0;
   text_selector_t* text_selector = TEXT_SELECTOR(widget);
-  return_value_if_fail(widget != NULL && text_selector != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(text_selector != NULL, RET_BAD_PARAMS);
   yoffset = text_selector->yoffset + (widget->h / text_selector->visible_nr);
 
   return text_selector_scroll_to(widget, yoffset);
@@ -611,7 +622,7 @@ static ret_t text_selector_on_event(widget_t* widget, event_t* e) {
   ret_t ret = RET_OK;
   uint16_t type = e->type;
   text_selector_t* text_selector = TEXT_SELECTOR(widget);
-  return_value_if_fail(widget != NULL && text_selector != NULL && e != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(text_selector != NULL && e != NULL, RET_BAD_PARAMS);
 
   switch (type) {
     case EVT_POINTER_DOWN:
@@ -675,7 +686,6 @@ static ret_t text_selector_on_locale_changed(void* ctx, event_t* e) {
   widget_t* widget = WIDGET(ctx);
   text_selector_t* text_selector = TEXT_SELECTOR(widget);
   return_value_if_fail(text_selector != NULL, RET_BAD_PARAMS);
-
   if (text_selector->localize_options) {
     text_selector_set_all_options_localize_text(widget);
   }
