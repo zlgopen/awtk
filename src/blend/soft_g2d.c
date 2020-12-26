@@ -241,12 +241,12 @@ ret_t soft_blend_image(bitmap_t* dst, bitmap_t* src, const rect_t* dst_r, const 
         case BITMAP_FMT_RGBA8888: {
           return blend_image_bgr565_rgba8888(dst, src, dst_r, src_r, alpha);
         }
+        case BITMAP_FMT_BGRA8888: {
+          return blend_image_bgr565_bgra8888(dst, src, dst_r, src_r, alpha);
+        }
 #ifndef LCD_BGR565_LITE
         case BITMAP_FMT_RGB565: {
           return blend_image_bgr565_rgb565(dst, src, dst_r, src_r, alpha);
-        }
-        case BITMAP_FMT_BGRA8888: {
-          return blend_image_bgr565_bgra8888(dst, src, dst_r, src_r, alpha);
         }
 #endif /*LCD_BGR565_LITE*/
         default:
