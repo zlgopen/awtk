@@ -33,8 +33,13 @@ typedef ret_t (*input_engine_input_t)(input_engine_t* engine, int key);
 typedef ret_t (*input_engine_set_lang_t)(input_engine_t* engine, const char* lang);
 typedef const char* (*input_engine_get_lang_t)(input_engine_t* engine);
 
+#ifndef TK_IM_MAX_INPUT_CHARS
 #define TK_IM_MAX_INPUT_CHARS 15
-#define TK_IM_MAX_CANDIDATE_CHARS 255
+#endif/*TK_IM_MAX_INPUT_CHARS*/
+
+#ifndef TK_IM_MAX_CANDIDATE_CHARS
+#define TK_IM_MAX_CANDIDATE_CHARS 1023
+#endif/*TK_IM_MAX_CANDIDATE_CHARS*/
 
 /**
  * @class input_engine_t
