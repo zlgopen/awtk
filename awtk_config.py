@@ -318,3 +318,15 @@ def copySharedLib(src, dst, name):
 def isBuildShared():
   return 'WITH_AWTK_SO' in os.environ and os.environ['WITH_AWTK_SO'] == 'true'
 
+def genIdlAndDef():
+    cmds = [
+            'node tools/idl_gen/tkc.js tools/idl_gen/tkc.json',
+            'node tools/idl_gen/index.js tools/idl_gen/idl.json',
+            'node tools/dll_def_gen/index.js tools/idl_gen/idl.json  dllexports/awtk.def false',
+            'node tools/dll_def_gen/index.js tools/idl_gen/tkc.json  dllexports/tkc.def false'
+    ];
+
+    for cmd in cmds:
+        print(cmd)
+        if os.system(cmd) != 0:
+            print('exe cmd: ' + cmd + ' failed.')

@@ -5,6 +5,7 @@ APP_TOOLS = None
 if awtk.TOOLS_NAME != '' :
   APP_TOOLS = [awtk.TOOLS_NAME]
 
+awtk.genIdlAndDef();
 DefaultEnvironment(TOOLS = APP_TOOLS,
   CCFLAGS = awtk.AWTK_CCFLAGS,
   LIBS = awtk.LIBS,

@@ -4,6 +4,10 @@ const glob = require('glob')
 const IDLGen = require('./idl_gen.js')
 
 let outputIDL = 'tkc.json';
+if(process.argv.length == 3) {
+  outputIDL = process.argv[2];
+}
+
 let sourcesPath = [
     path.normalize(path.join(__dirname, '../../src/tkc')), 
     path.normalize(path.join(__dirname, '../../src/ubjson')), 

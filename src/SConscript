@@ -127,7 +127,7 @@ env.SharedLibrary(os.path.join(BIN_DIR, 'tkc'), [], LIBS=TKC_DEPS_LIBS, LINKFLAG
 env.Library(os.path.join(LIB_DIR, 'base'), BASE_SOURCES, LIBS=[])
 WIDGETS_SOURCES=Glob('widgets/*.c')
 env.Library(os.path.join(LIB_DIR, 'widgets'), WIDGETS_SOURCES, LIBS=[])
-EXT_WIDGETS_SOURCES=Glob('ext_widgets/*.c') + Glob('ext_widgets/*/*.c') 
+EXT_WIDGETS_SOURCES=Glob('ext_widgets/*.c') + Glob('ext_widgets/*/*.c') +  Glob('custom_widgets/*.c') + Glob('custom_widgets/*/*.c')
 env.Library(os.path.join(LIB_DIR, 'extwidgets'), EXT_WIDGETS_SOURCES, LIBS=[])
 env.Library(os.path.join(LIB_DIR, 'awtk_global'), ['awtk_global.c'], LIBS=[])
 

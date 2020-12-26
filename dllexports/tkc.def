@@ -536,6 +536,16 @@ EXPORTS
     tokenizer_next_int
     tokenizer_next_float
     tokenizer_deinit
+    url_create
+    url_set_schema
+    url_set_user_name
+    url_set_password
+    url_set_host
+    url_set_port
+    url_set_path
+    url_set_param
+    url_get_param
+    url_destroy
     tk_utf8_from_utf16
     tk_utf8_from_utf16_ex
     tk_utf8_to_utf16

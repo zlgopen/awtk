@@ -6009,7 +6009,7 @@
     "events": [],
     "properties": [],
     "header": "tkc/data_reader.h",
-    "desc": "数据读取接口。\n\n>用于抽象flash等外部设备。",
+    "desc": "数据读取接口。\n\n>对可读的媒介，如内存、文件、flash、资源和其它媒介提供一个统一的读取接口。",
     "name": "data_reader_t",
     "level": 1
   },
@@ -6183,7 +6183,7 @@
     "events": [],
     "properties": [],
     "header": "tkc/data_writer.h",
-    "desc": "数据写入接口。\n\n>用于抽象flash等外部设备。",
+    "desc": "数据写入接口。\n\n>对可写的媒介，如内存、文件、flash和其它媒介提供一个统一的写入接口。",
     "name": "data_writer_t",
     "level": 1
   },
@@ -14062,6 +14062,279 @@
     "annotation": {
       "scriptable": true
     },
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "const char*",
+            "name": "surl",
+            "desc": "字符串格式的URL。"
+          }
+        ],
+        "annotation": {},
+        "desc": "创建URL对象。",
+        "name": "url_create",
+        "return": {
+          "type": "url_t*",
+          "desc": "返回URL对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "url_t*",
+            "name": "url",
+            "desc": "url对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "schema",
+            "desc": "schema。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置schema。",
+        "name": "url_set_schema",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "url_t*",
+            "name": "url",
+            "desc": "url对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "user_name",
+            "desc": "用户名。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置用户名。",
+        "name": "url_set_user_name",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "url_t*",
+            "name": "url",
+            "desc": "url对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "password",
+            "desc": "密码。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置密码。",
+        "name": "url_set_password",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "url_t*",
+            "name": "url",
+            "desc": "url对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "host",
+            "desc": "主机名。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置主机名。",
+        "name": "url_set_host",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "url_t*",
+            "name": "url",
+            "desc": "url对象。"
+          },
+          {
+            "type": "int32_t",
+            "name": "port",
+            "desc": "端口。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置端口。",
+        "name": "url_set_port",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "url_t*",
+            "name": "url",
+            "desc": "url对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "path",
+            "desc": "路径。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置路径。",
+        "name": "url_set_path",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "url_t*",
+            "name": "url",
+            "desc": "url对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "参数名。"
+          },
+          {
+            "type": "const char*",
+            "name": "value",
+            "desc": "参数值。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置参数。",
+        "name": "url_set_param",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "url_t*",
+            "name": "url",
+            "desc": "url对象。"
+          },
+          {
+            "type": "const char*",
+            "name": "name",
+            "desc": "参数名。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取参数。",
+        "name": "url_get_param",
+        "return": {
+          "type": "const char*",
+          "desc": "返回指定参数名的参数值。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "url_t*",
+            "name": "url",
+            "desc": "url对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁url对象。",
+        "name": "url_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "schema",
+        "desc": "schema。",
+        "type": "char*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "user_name",
+        "desc": "用户名。",
+        "type": "char*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "password",
+        "desc": "密码。",
+        "type": "char*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "host",
+        "desc": "主机名。",
+        "type": "char*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "path",
+        "desc": "路径。",
+        "type": "char*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "port",
+        "desc": "端口。",
+        "type": "int32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "params",
+        "desc": "参数集合。",
+        "type": "object_t*",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "tkc/url.h",
+    "desc": "URL",
+    "name": "url_t",
     "level": 1
   },
   {
