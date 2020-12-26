@@ -1,5 +1,8 @@
 # 最新动态
 
+2020/12/27
+  * 修改TK\_IM\_MAX\_CANDIDATE\_CHARS偏小，导致输入法部分汉字无法输入的问题（感谢智明提供补丁）
+
 2020/12/26
   * 完善soft\_blend\_image，在定义了LCD\_BGR565\_LITE时仍然支持BGRA8888格式。
 
