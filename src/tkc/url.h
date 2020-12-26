@@ -24,6 +24,8 @@
 
 #include "tkc/object.h"
 
+BEGIN_C_DECLS
+
 /**
  * @class url_t
  * URL
@@ -78,8 +80,6 @@ typedef struct _url_t {
    */
   object_t* params;
 }url_t;
-
-BEGIN_C_DECLS
 
 /**
  * @method url_create
