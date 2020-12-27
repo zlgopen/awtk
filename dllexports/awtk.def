@@ -875,6 +875,45 @@ EXPORTS
     conf_node_set_first_child
     conf_doc_load_ubjson
     conf_doc_save_ubjson
+    fifo_create
+    fifo_init
+    fifo_clone
+    fifo_part_clone
+    fifo_at_abs
+    fifo_at
+    fifo_set_abs
+    fifo_set
+    fifo_get_abs
+    fifo_get
+    fifo_prev
+    fifo_next
+    fifo_tail
+    fifo_head
+    fifo_index_of
+    fifo_count
+    fifo_find
+    fifo_find_index
+    fifo_push
+    fifo_pop
+    fifo_npush
+    fifo_npop
+    fifo_clear
+    fifo_foreach
+    fifo_deinit
+    fifo_destroy
+    chart_view_register
+    chart_view_supported_render_mode
+    axis_data_create
+    axis_data_destroy
+    chart_animator_create
+    chart_animator_fifo_float_value_create
+    chart_animator_fifo_colorful_value_create
+    chart_animator_fifo_minmax_value_create
+    chart_animator_fifo_value_set_params
+    vlabel_register
+    vlabel_supported_render_mode
+    vlabel_line_parser_init
+    vlabel_line_parser_next
     dialog_highlighter_default_create
     SDL_ShowCursor
     SDL_WarpMouseInWindow
@@ -1577,6 +1616,61 @@ EXPORTS
     window_manager_resize
     window_manager_close_all
     compressor_miniz_create
+    axis_create
+    axis_on_destroy
+    axis_set_range
+    axis_get_range
+    axis_set_offset
+    axis_get_offset
+    axis_set_data
+    axis_set_data_from_series
+    axis_set_need_update_data
+    axis_cast
+    widget_is_axis
+    chart_view_create
+    chart_view_set_top_series
+    chart_view_cast
+    series_create
+    series_count
+    series_set
+    series_rset
+    series_push
+    series_at
+    series_get_current
+    series_is_point_in
+    series_index_of_point_in
+    series_to_local
+    series_set_tooltip_format
+    series_get_tooltip
+    series_set_capacity
+    series_set_unit_size
+    series_set_new_period
+    series_set_title
+    series_get_title
+    series_cast
+    widget_is_series
+    tooltip_create
+    tooltip_create_default
+    tooltip_move
+    tooltip_cast
+    widget_is_tooltip
+    pie_slice_create
+    pie_slice_cast
+    pie_slice_set_value
+    pie_slice_set_max
+    pie_slice_set_inner_radius
+    pie_slice_set_start_angle
+    pie_slice_set_unit
+    pie_slice_set_show_text
+    pie_slice_set_is_exploded
+    pie_slice_set_counter_clock_wise
+    pie_slice_set_semicircle
+    pie_slice_set_exploded
+    pie_slice_set_exploded_4_others
+    pie_slice_set_exploded_4_all
+    vlabel_create
+    vlabel_cast
+    vlabel_set_right_to_left
     canvas_widget_create
     canvas_widget_cast
     color_component_create
@@ -2048,6 +2142,14 @@ EXPORTS
     conf_ubjson_create
     conf_ubjson_load
     conf_ubjson_save_as
+    bar_series_create
+    bar_series_cast
+    line_series_create
+    line_series_cast
+    x_axis_create
+    x_axis_cast
+    y_axis_create
+    y_axis_cast
     gif_image_create
     gif_image_cast
     keyboard_create
@@ -2140,6 +2242,10 @@ EXPORTS
     spin_box_cast
     system_bar_create
     system_bar_cast
+    bar_series_minmax_create
+    widget_is_bar_series_minmax
+    line_series_colorful_create
+    widget_is_line_series_colorful
     combo_box_ex_create
     tk_istream_buffered_create
     tk_ostream_buffered_create
