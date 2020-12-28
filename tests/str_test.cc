@@ -318,3 +318,43 @@ TEST(Str, append_more2) {
 
   str_reset(s);
 }
+
+TEST(Str, encode_hex_basic) {
+  str_t str;
+  str_t* s = NULL;
+  s = str_init(&str, 100);
+  uint8_t data[] = {1, 0x01, 0x0a, 0x2a};
+  ASSERT_EQ(str_encode_hex(s, data, sizeof(data), NULL), RET_OK);
+  ASSERT_STREQ(s->str, "01010a2a");
+  str_reset(s);
+}
+
+TEST(Str, encode_hex_upper) {
+  str_t str;
+  str_t* s = NULL;
+  s = str_init(&str, 100);
+  uint8_t data[] = {1, 0x01, 0x0a, 0x2a};
+  ASSERT_EQ(str_encode_hex(s, data, sizeof(data), "%02X"), RET_OK);
+  ASSERT_STREQ(s->str, "01010A2A");
+  str_reset(s);
+}
+
+TEST(Str, encode_hex_sep) {
+  str_t str;
+  str_t* s = NULL;
+  s = str_init(&str, 100);
+  uint8_t data[] = {1, 0x01, 0x0a, 0x2a};
+  ASSERT_EQ(str_encode_hex(s, data, sizeof(data), "%02X "), RET_OK);
+  ASSERT_STREQ(s->str, "01 01 0A 2A ");
+  str_reset(s);
+}
+
+TEST(Str, encode_hex_sep1) {
+  str_t str;
+  str_t* s = NULL;
+  s = str_init(&str, 100);
+  uint8_t data[] = {1, 0x01, 0x0a, 0x2a};
+  ASSERT_EQ(str_encode_hex(s, data, sizeof(data), "0x%02X "), RET_OK);
+  ASSERT_STREQ(s->str, "0x01 0x01 0x0A 0x2A ");
+  str_reset(s);
+}

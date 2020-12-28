@@ -492,6 +492,7 @@ EXPORTS
     str_from_wstr_with_len
     str_to_int
     str_to_float
+    str_encode_hex
     str_end_with
     str_start_with
     str_trim

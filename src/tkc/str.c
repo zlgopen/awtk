@@ -673,3 +673,20 @@ ret_t str_append_json_bool_pair(str_t* str, const char* key, bool_t value) {
 
   return RET_OK;
 }
+
+ret_t str_encode_hex(str_t* str, const uint8_t* data, uint32_t size, const char* format) {
+  char tstr[64];
+  uint32_t i = 0;
+  return_value_if_fail(str != NULL && data != NULL, RET_BAD_PARAMS);
+
+  if (format == NULL) {
+    format = "%02x";
+  }
+
+  for (i = 0; i < size; i++) {
+    tk_snprintf(tstr, sizeof(tstr) - 1, format, data[i]);
+    return_value_if_fail(str_append(str, tstr) == RET_OK, RET_OOM);
+  }
+
+  return RET_OK;
+}

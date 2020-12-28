@@ -403,6 +403,18 @@ ret_t str_to_int(str_t* str, int32_t* v);
 ret_t str_to_float(str_t* str, double* v);
 
 /**
+ * @method str_encode_hex
+ * 把二进制的数据编码成16进制格式的字符串。
+ * @param {str_t*} str str对象。
+ * @param {const uint8_t*} data 数据。
+ * @param {uint32_t} size 数据长度。
+ * @param {const char*} format 格式(如:"%02x" 表示生成小写)
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_encode_hex(str_t* str, const uint8_t* data, uint32_t size, const char* format);
+
+/**
  * @method str_end_with
  * 判断字符串是否以指定的子串结尾。
  * @param {str_t*} str str对象。

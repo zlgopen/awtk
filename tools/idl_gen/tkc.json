@@ -13003,6 +13003,37 @@
             "desc": "str对象。"
           },
           {
+            "type": "const uint8_t*",
+            "name": "data",
+            "desc": "数据。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "size",
+            "desc": "数据长度。"
+          },
+          {
+            "type": "const char*",
+            "name": "format",
+            "desc": "格式(如:\"%02x\" 表示生成小写)"
+          }
+        ],
+        "annotation": {},
+        "desc": "把二进制的数据编码成16进制格式的字符串。",
+        "name": "str_encode_hex",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "str_t*",
+            "name": "str",
+            "desc": "str对象。"
+          },
+          {
             "type": "char*",
             "name": "text",
             "desc": "子字符串。"
