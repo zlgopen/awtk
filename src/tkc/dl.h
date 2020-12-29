@@ -62,6 +62,14 @@ void* tk_dl_sym(tk_dl_t* dl, const char* name);
  */
 ret_t tk_dl_close(tk_dl_t* dl);
 
+/**
+ * @method tk_dl_error
+ * Show last error
+ *
+ * @return {const char*} 返回error message.
+ */
+const char* tk_dl_error(void);
+
 #ifndef TK_DLL_EXT_NAME
 
 #ifdef WIN32

@@ -93,6 +93,10 @@ static plugin_t* plugin_create(const char* path, const char* lib_name,
 
   path_build(filename, MAX_PATH, path, lib_name, NULL);
   handle = tk_dl_open(filename);
+
+  if (handle == NULL) {
+    log_debug("dlopen %s failed: %s\n", filename, tk_dl_error());
+  }
   return_value_if_fail(handle != NULL, NULL);
 
   plugin = TKMEM_ZALLOC(plugin_t);
