@@ -64,7 +64,7 @@ ret_t tk_dl_close(tk_dl_t* dl);
 
 /**
  * @method tk_dl_error
- * Show last error
+ * 获取最后的错误信息。
  *
  * @return {const char*} 返回error message.
  */
