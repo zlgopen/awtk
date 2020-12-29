@@ -60,7 +60,7 @@ data_writer_t* data_writer_wbuffer_create(const char* wbuffer_name);
  *
  * @return {const char*} 返回URL。
  */
-const char* data_writer_wbuffer_build_url(wbuffer_t* buffer, char url[MAX_PATH+1]);
+const char* data_writer_wbuffer_build_url(wbuffer_t* buffer, char url[MAX_PATH + 1]);
 
 #define DATA_WRITER_WBUFFER(writer) ((data_writer_t*)(writer))
 

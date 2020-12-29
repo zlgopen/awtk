@@ -271,10 +271,10 @@ char* tk_strncpy(char* dst, const char* src, size_t len) {
 }
 
 char* tk_strncpy_s(char* dst, size_t dst_len, const char* src, size_t src_len) {
-  size_t len = 0; 
+  size_t len = 0;
   return_value_if_fail(dst != NULL && src != NULL && dst_len > 0, NULL);
 
-  len = tk_min(dst_len-1, src_len);
+  len = tk_min(dst_len - 1, src_len);
 
   return tk_strncpy(dst, src, len);
 }

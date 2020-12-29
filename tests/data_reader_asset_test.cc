@@ -25,7 +25,7 @@ TEST(DataReaderAsset, basic) {
 TEST(DataReaderAsset, data) {
   char data[256];
   uint32_t size = 0;
-  char url[MAX_PATH+1];
+  char url[MAX_PATH + 1];
   data_reader_t* reader = NULL;
   data_reader_factory_t* f = data_reader_factory_create();
 
@@ -47,7 +47,7 @@ TEST(DataReaderAsset, data) {
 TEST(DataReaderAsset, ui) {
   char data[32];
   uint32_t size = 0;
-  char url[MAX_PATH+1];
+  char url[MAX_PATH + 1];
   data_reader_t* reader = NULL;
   data_reader_factory_t* f = data_reader_factory_create();
 
@@ -69,7 +69,7 @@ TEST(DataReaderAsset, ui) {
 TEST(DataReaderAsset, style) {
   char data[32];
   uint32_t size = 0;
-  char url[MAX_PATH+1];
+  char url[MAX_PATH + 1];
   data_reader_t* reader = NULL;
   data_reader_factory_t* f = data_reader_factory_create();
 

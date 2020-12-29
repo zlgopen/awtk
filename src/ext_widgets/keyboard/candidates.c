@@ -326,7 +326,7 @@ static ret_t candidates_move_focus(widget_t* widget, bool_t next) {
 }
 
 static ret_t candidates_on_keyup(widget_t* widget, key_event_t* e) {
-    uint32_t nr = 0;
+  uint32_t nr = 0;
   ret_t ret = RET_OK;
   widget_t* child = NULL;
   candidates_t* candidates = CANDIDATES(widget);

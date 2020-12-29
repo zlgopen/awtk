@@ -23,4 +23,3 @@ TEST(DataWriterFactory, basic) {
 
   data_writer_factory_destroy(f);
 }
-

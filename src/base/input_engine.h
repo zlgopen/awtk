@@ -35,11 +35,11 @@ typedef const char* (*input_engine_get_lang_t)(input_engine_t* engine);
 
 #ifndef TK_IM_MAX_INPUT_CHARS
 #define TK_IM_MAX_INPUT_CHARS 15
-#endif/*TK_IM_MAX_INPUT_CHARS*/
+#endif /*TK_IM_MAX_INPUT_CHARS*/
 
 #ifndef TK_IM_MAX_CANDIDATE_CHARS
 #define TK_IM_MAX_CANDIDATE_CHARS 1023
-#endif/*TK_IM_MAX_CANDIDATE_CHARS*/
+#endif /*TK_IM_MAX_CANDIDATE_CHARS*/
 
 /**
  * @class input_engine_t

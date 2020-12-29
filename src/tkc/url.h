@@ -79,7 +79,7 @@ typedef struct _url_t {
    * 参数集合。
    */
   object_t* params;
-}url_t;
+} url_t;
 
 /**
  * @method url_create

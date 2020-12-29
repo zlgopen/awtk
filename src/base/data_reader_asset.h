@@ -60,7 +60,8 @@ data_reader_t* data_reader_asset_create(const char* assetname);
  *
  * @return {const char*} 返回URL。
  */
-const char* data_reader_asset_build_url(const char* name, asset_type_t type, char url[MAX_PATH + 1]);
+const char* data_reader_asset_build_url(const char* name, asset_type_t type,
+                                        char url[MAX_PATH + 1]);
 
 #define DATA_READER_ASSET(reader) ((data_reader_t*)(reader))
 

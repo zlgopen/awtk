@@ -60,7 +60,7 @@ static const key_type_value_t asset_type_value[] = {
     {"font", 0, ASSET_TYPE_FONT},       {"image", 0, ASSET_TYPE_IMAGE},
     {"style", 0, ASSET_TYPE_STYLE},     {"ui", 0, ASSET_TYPE_UI},
     {"strings", 0, ASSET_TYPE_STRINGS}, {"xml", 0, ASSET_TYPE_XML},
-    {"flow", 0, ASSET_TYPE_FLOW},     {"data", 0, ASSET_TYPE_DATA},
+    {"flow", 0, ASSET_TYPE_FLOW},       {"data", 0, ASSET_TYPE_DATA},
     {"script", 0, ASSET_TYPE_SCRIPT},
 };
 

@@ -111,7 +111,7 @@ static ret_t build_asset_filename_one_theme(char* path, uint32_t size, const cha
       build_asset_dir_one_theme(path, size, res_root, theme, ratio, subpath) == RET_OK, RET_FAIL);
   return_value_if_fail(tk_str_append(path, size, sep) == RET_OK, RET_FAIL);
   return_value_if_fail(tk_str_append(path, size, name) == RET_OK, RET_FAIL);
- 
+
   pextname = strrchr(name, '.');
   if (pextname == NULL || !tk_str_eq(pextname, extname)) {
     return_value_if_fail(tk_str_append(path, size, extname) == RET_OK, RET_FAIL);
@@ -679,8 +679,8 @@ ret_t assets_manager_unref(assets_manager_t* am, const asset_info_t* info) {
     return RET_OK;
   }
   if (info->refcount == 1) {
-    emitter_dispatch(EMITTER(am),
-                     assets_event_init(&e, am, EVT_ASSET_MANAGER_UNLOAD_ASSET, info->type, (asset_info_t*)info));
+    emitter_dispatch(EMITTER(am), assets_event_init(&e, am, EVT_ASSET_MANAGER_UNLOAD_ASSET,
+                                                    info->type, (asset_info_t*)info));
   }
   return asset_info_unref((asset_info_t*)info);
 }

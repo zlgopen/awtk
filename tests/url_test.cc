@@ -1,15 +1,14 @@
 ﻿#include "tkc/url.h"
 #include "gtest/gtest.h"
 
-
 TEST(URL, basic) {
   url_t* url = url_create(NULL);
   ASSERT_EQ(url->schema == NULL, true);
   ASSERT_EQ(url->host == NULL, true);
   ASSERT_EQ(url->path == NULL, true);
   ASSERT_EQ(url->params == NULL, true);
-  ASSERT_EQ(url->user_name== NULL, true);
-  ASSERT_EQ(url->password== NULL, true);
+  ASSERT_EQ(url->user_name == NULL, true);
+  ASSERT_EQ(url->password == NULL, true);
   ASSERT_EQ(url->port, 0);
   url_destroy(url);
 }
@@ -20,8 +19,8 @@ TEST(URL, noschema) {
   ASSERT_STREQ(url->host, "www.zlg.cn");
   ASSERT_EQ(url->path == NULL, true);
   ASSERT_EQ(url->params == NULL, true);
-  ASSERT_EQ(url->user_name== NULL, true);
-  ASSERT_EQ(url->password== NULL, true);
+  ASSERT_EQ(url->user_name == NULL, true);
+  ASSERT_EQ(url->password == NULL, true);
   ASSERT_EQ(url->port, 80);
   url_destroy(url);
 }
@@ -32,8 +31,8 @@ TEST(URL, noschema2) {
   ASSERT_STREQ(url->host, "www.zlg.cn");
   ASSERT_EQ(url->path == NULL, true);
   ASSERT_EQ(url->params == NULL, true);
-  ASSERT_EQ(url->user_name== NULL, true);
-  ASSERT_EQ(url->password== NULL, true);
+  ASSERT_EQ(url->user_name == NULL, true);
+  ASSERT_EQ(url->password == NULL, true);
   ASSERT_EQ(url->port, 8080);
   url_destroy(url);
 }
@@ -44,8 +43,8 @@ TEST(URL, noschema3) {
   ASSERT_STREQ(url->host, "www.zlg.cn");
   ASSERT_STREQ(url->path, "abc");
   ASSERT_EQ(url->params == NULL, true);
-  ASSERT_EQ(url->user_name== NULL, true);
-  ASSERT_EQ(url->password== NULL, true);
+  ASSERT_EQ(url->user_name == NULL, true);
+  ASSERT_EQ(url->password == NULL, true);
   ASSERT_EQ(url->port, 8080);
   url_destroy(url);
 }
@@ -56,8 +55,8 @@ TEST(URL, noschema4) {
   ASSERT_STREQ(url->host, "www.zlg.cn");
   ASSERT_STREQ(url->path, "abc");
   ASSERT_EQ(url->params == NULL, true);
-  ASSERT_EQ(url->user_name== NULL, true);
-  ASSERT_EQ(url->password== NULL, true);
+  ASSERT_EQ(url->user_name == NULL, true);
+  ASSERT_EQ(url->password == NULL, true);
   ASSERT_EQ(url->port, 80);
   url_destroy(url);
 }
@@ -68,8 +67,8 @@ TEST(URL, http) {
   ASSERT_STREQ(url->host, "www.zlg.cn");
   ASSERT_EQ(url->path == NULL, true);
   ASSERT_EQ(url->params == NULL, true);
-  ASSERT_EQ(url->user_name== NULL, true);
-  ASSERT_EQ(url->password== NULL, true);
+  ASSERT_EQ(url->user_name == NULL, true);
+  ASSERT_EQ(url->password == NULL, true);
   ASSERT_EQ(url->port, 80);
   url_destroy(url);
 }
@@ -80,8 +79,8 @@ TEST(URL, http1) {
   ASSERT_STREQ(url->host, "www.zlg.cn");
   ASSERT_EQ(url->path == NULL, true);
   ASSERT_EQ(url->params == NULL, true);
-  ASSERT_EQ(url->user_name== NULL, true);
-  ASSERT_EQ(url->password== NULL, true);
+  ASSERT_EQ(url->user_name == NULL, true);
+  ASSERT_EQ(url->password == NULL, true);
   ASSERT_EQ(url->port, 8080);
   url_destroy(url);
 }
@@ -92,8 +91,8 @@ TEST(URL, http2) {
   ASSERT_STREQ(url->host, "www.zlg.cn");
   ASSERT_STREQ(url->path, "abc");
   ASSERT_EQ(url->params == NULL, true);
-  ASSERT_EQ(url->user_name== NULL, true);
-  ASSERT_EQ(url->password== NULL, true);
+  ASSERT_EQ(url->user_name == NULL, true);
+  ASSERT_EQ(url->password == NULL, true);
   ASSERT_EQ(url->port, 80);
   url_destroy(url);
 }
@@ -103,8 +102,8 @@ TEST(URL, http3) {
   ASSERT_STREQ(url->schema, "http");
   ASSERT_STREQ(url->host, "www.zlg.cn");
   ASSERT_EQ(url->params != NULL, true);
-  ASSERT_EQ(url->user_name== NULL, true);
-  ASSERT_EQ(url->password== NULL, true);
+  ASSERT_EQ(url->user_name == NULL, true);
+  ASSERT_EQ(url->password == NULL, true);
   ASSERT_EQ(url->port, 80);
   ASSERT_STREQ(url_get_param(url, "name"), "jim");
   url_destroy(url);
@@ -116,8 +115,8 @@ TEST(URL, http4) {
   ASSERT_STREQ(url->host, "www.zlg.cn");
   ASSERT_STREQ(url->path, "abc");
   ASSERT_EQ(url->params != NULL, true);
-  ASSERT_EQ(url->user_name== NULL, true);
-  ASSERT_EQ(url->password== NULL, true);
+  ASSERT_EQ(url->user_name == NULL, true);
+  ASSERT_EQ(url->password == NULL, true);
   ASSERT_EQ(url->port, 80);
   ASSERT_STREQ(url_get_param(url, "name"), "jim");
   url_destroy(url);
@@ -129,8 +128,8 @@ TEST(URL, http5) {
   ASSERT_STREQ(url->host, "www.zlg.cn");
   ASSERT_STREQ(url->path, "abc");
   ASSERT_EQ(url->params != NULL, true);
-  ASSERT_EQ(url->user_name== NULL, true);
-  ASSERT_EQ(url->password== NULL, true);
+  ASSERT_EQ(url->user_name == NULL, true);
+  ASSERT_EQ(url->password == NULL, true);
   ASSERT_EQ(url->port, 80);
   ASSERT_STREQ(url_get_param(url, "name"), "jim");
   url_destroy(url);
@@ -142,8 +141,8 @@ TEST(URL, http6) {
   ASSERT_STREQ(url->host, "www.zlg.cn");
   ASSERT_STREQ(url->path, "abc");
   ASSERT_EQ(url->params != NULL, true);
-  ASSERT_EQ(url->user_name== NULL, true);
-  ASSERT_EQ(url->password== NULL, true);
+  ASSERT_EQ(url->user_name == NULL, true);
+  ASSERT_EQ(url->password == NULL, true);
   ASSERT_EQ(url->port, 80);
   ASSERT_STREQ(url_get_param(url, "name"), "jim");
   ASSERT_STREQ(url_get_param(url, "age"), "100");
@@ -156,8 +155,8 @@ TEST(URL, http7) {
   ASSERT_STREQ(url->host, "www.zlg.cn");
   ASSERT_STREQ(url->path, "abc");
   ASSERT_EQ(url->params != NULL, true);
-  ASSERT_EQ(url->user_name== NULL, true);
-  ASSERT_EQ(url->password== NULL, true);
+  ASSERT_EQ(url->user_name == NULL, true);
+  ASSERT_EQ(url->password == NULL, true);
   ASSERT_EQ(url->port, 80);
   ASSERT_STREQ(url_get_param(url, "name"), "jim");
   ASSERT_STREQ(url_get_param(url, "age"), "100");
@@ -291,4 +290,3 @@ TEST(URL, asset) {
 
   url_destroy(url);
 }
-

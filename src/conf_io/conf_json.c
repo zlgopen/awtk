@@ -483,4 +483,3 @@ ret_t conf_json_save_as(object_t* obj, const char* url) {
 object_t* conf_json_create(void) {
   return conf_json_load(NULL, TRUE);
 }
-

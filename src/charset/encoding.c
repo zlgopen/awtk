@@ -33,7 +33,7 @@
 
 #if defined(ANDROID)
 #undef WITH_ICONV
-#endif/*ANDROID*/
+#endif /*ANDROID*/
 
 #ifdef WITH_ICONV
 static const char* get_native_encoding_name(encoding_name_t name) {

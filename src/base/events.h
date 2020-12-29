@@ -965,8 +965,8 @@ multi_gesture_event_t* multi_gesture_event_cast(event_t* event);
  *
  * @return {event_t*} event对象。
  */
-event_t* multi_gesture_event_init(multi_gesture_event_t* event, void* target,
-                                  int32_t x, int32_t y, float rotation, float distance);
+event_t* multi_gesture_event_init(multi_gesture_event_t* event, void* target, int32_t x, int32_t y,
+                                  float rotation, float distance);
 
 /**
  * @class assets_event_t

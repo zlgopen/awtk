@@ -734,7 +734,7 @@ static ret_t mledit_sync_scrollbar(widget_t* widget, text_edit_state_t* state) {
   mledit_t* mledit = MLEDIT(widget);
   return_value_if_fail(mledit != NULL, RET_BAD_PARAMS);
   virtual_h = (state->last_line_number + 1) * state->line_height + mledit->top_margin +
-                   mledit->bottom_margin;
+              mledit->bottom_margin;
   vscroll_bar = widget_lookup_by_type(widget, WIDGET_TYPE_SCROLL_BAR_DESKTOP, TRUE);
 
   if (vscroll_bar != NULL) {

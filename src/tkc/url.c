@@ -74,8 +74,8 @@ static url_t* url_parse(url_t* url, const char* surl) {
   while (TRUE) {
     switch (state) {
       case STATE_START: {
-        if(!isspace(*p)) {
-          if(*p == '/' || *p == '\\' || strncmp(p, "./", 2) == 0 || strncmp(p, ".\\", 2) == 0) {
+        if (!isspace(*p)) {
+          if (*p == '/' || *p == '\\' || strncmp(p, "./", 2) == 0 || strncmp(p, ".\\", 2) == 0) {
             goto_error_if_fail(url_set_schema(url, STR_FILE) == RET_OK);
             state = STATE_PATH;
           } else {
@@ -228,7 +228,7 @@ static url_t* url_parse(url_t* url, const char* surl) {
 
   return url_fix(url);
 error:
-  
+
   str_reset(&str);
   url_destroy(url);
 
@@ -318,4 +318,3 @@ ret_t url_destroy(url_t* url) {
 
   return RET_OK;
 }
-

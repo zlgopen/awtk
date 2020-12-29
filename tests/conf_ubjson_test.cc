@@ -143,7 +143,7 @@ TEST(UbJson, file) {
 TEST(Ubjson, load1) {
   object_t* conf = conf_ubjson_load(NULL, FALSE);
   ASSERT_EQ(conf, (object_t*)NULL);
-  
+
   conf = conf_ubjson_load(NULL, TRUE);
   ASSERT_NE(conf, (object_t*)NULL);
 
@@ -163,7 +163,7 @@ TEST(Ubjson, create) {
 
 TEST(Ubjson, save_as) {
   wbuffer_t wb;
-  char url[MAX_PATH+1];
+  char url[MAX_PATH + 1];
   object_t* conf = conf_ubjson_create();
   ASSERT_NE(conf, (object_t*)NULL);
   ASSERT_EQ(object_set_prop_int(conf, "value", 123), RET_OK);
@@ -177,8 +177,8 @@ TEST(Ubjson, save_as) {
   data_reader_mem_build_url(wb.data, wb.cursor, url);
   conf = conf_ubjson_load(url, FALSE);
   ASSERT_NE(conf, (object_t*)NULL);
-  
+
   ASSERT_EQ(object_get_prop_int(conf, "value", 0), 123);
-  wbuffer_deinit(&wb); 
+  wbuffer_deinit(&wb);
   OBJECT_UNREF(conf);
 }

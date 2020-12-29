@@ -29,7 +29,7 @@ static ret_t object_compositor_on_destroy(object_t* obj) {
   emitter_t* obj2 = NULL;
   object_compositor_t* o = OBJECT_COMPOSITOR(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
-  
+
   obj1 = EMITTER(o->obj1);
   obj2 = EMITTER(o->obj2);
   return_value_if_fail(obj1 != NULL && obj2 != NULL, RET_BAD_PARAMS);
