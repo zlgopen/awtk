@@ -235,26 +235,27 @@ static ret_t window_animator_update_percent_default(window_animator_t* wa) {
 }
 
 static ret_t window_animator_update_percent(window_animator_t* wa) {
+  ret_t ret = RET_OK;
   return_value_if_fail(wa != NULL && wa->vt != NULL, RET_BAD_PARAMS);
 
   if (wa->vt->update_percent != NULL) {
-    return wa->vt->update_percent(wa);
+    ret = wa->vt->update_percent(wa);
   } else {
-    return window_animator_update_percent_default(wa);
+    ret = window_animator_update_percent_default(wa);
   }
+  if (wa->percent >= 1) {
+    wa->percent = 0.999f;
+  } else if (wa->percent < 0) {
+    wa->percent = 0.0f;
+  }
+  return ret;
 }
 
 static ret_t window_animator_draw_prev_window(window_animator_t* wa) {
   return_value_if_fail(wa != NULL && wa->vt != NULL && wa->vt->draw_prev_window, RET_BAD_PARAMS);
 
   if (wa->dialog_highlighter != NULL) {
-    float_t percent = wa->percent;
-    /*always < 1 to tell highlighter that it is animating.*/
-    if (percent >= 1) {
-      percent = 0.999;
-    }
-
-    return dialog_highlighter_draw(wa->dialog_highlighter, percent);
+    return dialog_highlighter_draw(wa->dialog_highlighter, wa->percent);
   } else {
     return wa->vt->draw_prev_window(wa);
   }

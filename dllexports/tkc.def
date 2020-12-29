@@ -34,6 +34,55 @@ EXPORTS
     rect_contains
     rect_fix
     rect_intersect
+    object_unref
+    object_ref
+    object_clone
+    object_create
+    object_get_type
+    object_get_desc
+    object_get_size
+    object_is_collection
+    object_set_name
+    object_compare
+    object_get_prop
+    object_get_prop_str
+    object_get_prop_pointer
+    object_get_prop_object
+    object_get_prop_int
+    object_get_prop_bool
+    object_get_prop_float
+    object_remove_prop
+    object_set_prop
+    object_set_prop_str
+    object_set_prop_pointer
+    object_set_prop_object
+    object_set_prop_int
+    object_set_prop_bool
+    object_set_prop_float
+    object_copy_prop
+    object_foreach_prop
+    object_has_prop
+    object_eval
+    object_can_exec
+    object_exec
+    object_notify_changed
+    object_has_prop_by_path
+    object_get_prop_by_path
+    object_get_prop_str_by_path
+    object_get_prop_pointer_by_path
+    object_get_prop_object_by_path
+    object_get_prop_int_by_path
+    object_get_prop_bool_by_path
+    object_get_prop_float_by_path
+    object_set_prop_by_path
+    object_set_prop_str_by_path
+    object_set_prop_pointer_by_path
+    object_set_prop_object_by_path
+    object_set_prop_int_by_path
+    object_set_prop_bool_by_path
+    object_set_prop_float_by_path
+    object_can_exec_by_path
+    object_exec_by_path
     value_set_bool
     value_bool
     value_set_int8
@@ -88,59 +137,15 @@ EXPORTS
     value_destroy
     value_reset
     value_cast
-    object_unref
-    object_ref
-    object_clone
-    object_create
-    object_get_type
-    object_get_desc
-    object_get_size
-    object_is_collection
-    object_set_name
-    object_compare
-    object_get_prop
-    object_get_prop_str
-    object_get_prop_pointer
-    object_get_prop_object
-    object_get_prop_int
-    object_get_prop_bool
-    object_get_prop_float
-    object_remove_prop
-    object_set_prop
-    object_set_prop_str
-    object_set_prop_pointer
-    object_set_prop_object
-    object_set_prop_int
-    object_set_prop_bool
-    object_set_prop_float
-    object_copy_prop
-    object_foreach_prop
-    object_has_prop
-    object_eval
-    object_can_exec
-    object_exec
-    object_notify_changed
-    object_has_prop_by_path
-    object_get_prop_by_path
-    object_get_prop_str_by_path
-    object_get_prop_pointer_by_path
-    object_get_prop_object_by_path
-    object_get_prop_int_by_path
-    object_get_prop_bool_by_path
-    object_get_prop_float_by_path
-    object_set_prop_by_path
-    object_set_prop_str_by_path
-    object_set_prop_pointer_by_path
-    object_set_prop_object_by_path
-    object_set_prop_int_by_path
-    object_set_prop_bool_by_path
-    object_set_prop_float_by_path
-    object_can_exec_by_path
-    object_exec_by_path
-    rlog_create
-    rlog_write
-    rlog_print
-    rlog_destroy
+    action_thread_pool_create
+    action_thread_pool_exec
+    action_thread_pool_destroy
+    action_thread_create
+    action_thread_create_with_queue
+    action_thread_exec
+    action_thread_set_on_idle
+    action_thread_set_on_quit
+    action_thread_destroy
     asset_info_create
     asset_info_destroy
     asset_info_unref
@@ -224,14 +229,6 @@ EXPORTS
     data_reader_factory_register
     data_reader_factory_create_reader
     data_reader_factory_destroy
-    conf_doc_load_ubjson
-    conf_node_get_name
-    conf_node_find_child
-    conf_node_find_sibling
-    conf_node_set_value
-    conf_node_get_value
-    conf_node_get_first_child
-    conf_node_set_first_child
     data_reader_read
     data_reader_get_size
     data_reader_destroy
@@ -261,39 +258,6 @@ EXPORTS
     tk_dl_close
     tk_dl_error
     easing_get
-    action_thread_pool_create
-    action_thread_pool_exec
-    action_thread_pool_destroy
-    conf_doc_create
-    conf_doc_create_node
-    conf_doc_destroy_node
-    conf_doc_append_sibling
-    conf_doc_append_child
-    conf_doc_remove_sibling
-    conf_doc_remove_child
-    conf_doc_remove_child_by_name
-    conf_doc_remove_children
-    conf_doc_set
-    conf_doc_set_int
-    conf_doc_set_bool
-    conf_doc_set_float
-    conf_doc_set_str
-    conf_doc_get
-    conf_doc_get_int
-    conf_doc_get_bool
-    conf_doc_get_float
-    conf_doc_get_str
-    conf_doc_remove
-    conf_doc_clear
-    conf_doc_move_up
-    conf_doc_move_down
-    conf_doc_exists
-    conf_doc_is_first
-    conf_doc_is_last
-    conf_doc_add_child
-    conf_doc_destroy
-    conf_doc_save_json
-    conf_doc_load_json
     event_source_manager_init
     event_source_manager_deinit
     event_source_manager_get_wakeup_time
@@ -302,36 +266,6 @@ EXPORTS
     event_source_manager_remove
     event_source_manager_remove_by_tag
     event_source_manager_destroy
-    conf_doc_save_ini
-    conf_doc_load_ini
-    app_conf_set_instance
-    app_conf_get_instance
-    app_conf_save
-    app_conf_reload
-    app_conf_on_changed
-    app_conf_off_changed
-    app_conf_off_changed_by_ctx
-    app_conf_deinit
-    app_conf_set
-    app_conf_get
-    app_conf_exist
-    app_conf_set_int
-    app_conf_set_int64
-    app_conf_set_bool
-    app_conf_set_double
-    app_conf_set_str
-    app_conf_set_wstr
-    app_conf_get_int
-    app_conf_get_int64
-    app_conf_get_bool
-    app_conf_get_double
-    app_conf_get_str
-    app_conf_get_wstr
-    app_conf_remove
-    app_conf_init
-    app_conf_init_ubjson
-    app_conf_init_json
-    app_conf_init_ini
     fs_file_read
     fs_file_read_line
     fs_file_write
@@ -385,7 +319,6 @@ EXPORTS
     func_call_parser_parse
     func_call_parser_deinit
     func_call_parse
-    tk_ostream_serial_create
     idle_manager
     idle_manager_set
     idle_manager_create
@@ -400,39 +333,6 @@ EXPORTS
     idle_manager_add
     int_str_value
     int_str_name
-    ubjson_writer_init
-    ubjson_writer_write_key
-    ubjson_writer_write_null
-    ubjson_writer_write_noop
-    ubjson_writer_write_true
-    ubjson_writer_write_false
-    ubjson_writer_write_int
-    ubjson_writer_write_int8
-    ubjson_writer_write_uint8
-    ubjson_writer_write_int16
-    ubjson_writer_write_int32
-    ubjson_writer_write_int64
-    ubjson_writer_write_float32
-    ubjson_writer_write_float64
-    ubjson_writer_write_char
-    ubjson_writer_write_str
-    ubjson_writer_write_str_len
-    ubjson_writer_write_object
-    ubjson_writer_write_array_begin
-    ubjson_writer_write_array_end
-    ubjson_writer_write_object_begin
-    ubjson_writer_write_object_end
-    ubjson_writer_write_data
-    ubjson_writer_write_kv_object_begin
-    ubjson_writer_write_kv_object
-    ubjson_writer_write_kv_int
-    ubjson_writer_write_kv_int64
-    ubjson_writer_write_kv_float
-    ubjson_writer_write_kv_double
-    ubjson_writer_write_kv_bool
-    ubjson_writer_write_kv_str
-    ubjson_writer_write_kv_str_len
-    ubjson_writer_write_kv_value
     log_get_log_level
     log_set_log_level
     matrix_init
@@ -444,14 +344,6 @@ EXPORTS
     matrix_scale
     matrix_rotate
     matrix_transform_point
-    ubjson_parse
-    ubjson_to_object
-    ubjson_dump
-    wcs_dup
-    wcs_len
-    wcs_cmp
-    wcs_cpy
-    wcs_chr
     tk_alloc
     tk_calloc
     tk_realloc
@@ -478,37 +370,6 @@ EXPORTS
     named_value_get_value
     named_value_deinit
     named_value_destroy
-    wstr_init
-    wstr_set
-    wstr_clear
-    wstr_set_utf8
-    wstr_get_utf8
-    wstr_remove
-    wstr_insert
-    wstr_append
-    wstr_append_with_len
-    wstr_push
-    wstr_pop
-    wstr_push_int
-    wstr_equal
-    wstr_from_int
-    wstr_from_float
-    wstr_from_value
-    wstr_to_int
-    wstr_to_float
-    wstr_add_float
-    wstr_trim_float_zero
-    wstr_normalize_newline
-    wstr_count_char
-    wstr_reset
-    waitable_ring_buffer_create
-    waitable_ring_buffer_read
-    waitable_ring_buffer_write
-    waitable_ring_buffer_destroy
-    waitable_action_queue_create
-    waitable_action_queue_recv
-    waitable_action_queue_send
-    waitable_action_queue_destroy
     path_basename
     path_extname
     path_dirname
@@ -556,12 +417,10 @@ EXPORTS
     ring_buffer_set_write_cursor_delta
     ring_buffer_ensure_write_space
     ring_buffer_destroy
-    action_thread_create
-    action_thread_create_with_queue
-    action_thread_exec
-    action_thread_set_on_idle
-    action_thread_set_on_quit
-    action_thread_destroy
+    rlog_create
+    rlog_write
+    rlog_print
+    rlog_destroy
     rom_fopen
     rom_fopen_buff
     rom_ftell
@@ -741,6 +600,147 @@ EXPORTS
     tk_wstr_count_c
     image_region_parse
     object_to_json
+    waitable_action_queue_create
+    waitable_action_queue_recv
+    waitable_action_queue_send
+    waitable_action_queue_destroy
+    waitable_ring_buffer_create
+    waitable_ring_buffer_read
+    waitable_ring_buffer_write
+    waitable_ring_buffer_destroy
+    wstr_init
+    wstr_set
+    wstr_clear
+    wstr_set_utf8
+    wstr_get_utf8
+    wstr_remove
+    wstr_insert
+    wstr_append
+    wstr_append_with_len
+    wstr_push
+    wstr_pop
+    wstr_push_int
+    wstr_equal
+    wstr_from_int
+    wstr_from_float
+    wstr_from_value
+    wstr_to_int
+    wstr_to_float
+    wstr_add_float
+    wstr_trim_float_zero
+    wstr_normalize_newline
+    wstr_count_char
+    wstr_reset
+    wcs_chr
+    wcs_cpy
+    wcs_cmp
+    wcs_len
+    wcs_dup
+    ubjson_parse
+    ubjson_to_object
+    ubjson_dump
+    ubjson_writer_init
+    ubjson_writer_write_key
+    ubjson_writer_write_null
+    ubjson_writer_write_noop
+    ubjson_writer_write_true
+    ubjson_writer_write_false
+    ubjson_writer_write_int
+    ubjson_writer_write_int8
+    ubjson_writer_write_uint8
+    ubjson_writer_write_int16
+    ubjson_writer_write_int32
+    ubjson_writer_write_int64
+    ubjson_writer_write_float32
+    ubjson_writer_write_float64
+    ubjson_writer_write_char
+    ubjson_writer_write_str
+    ubjson_writer_write_str_len
+    ubjson_writer_write_object
+    ubjson_writer_write_array_begin
+    ubjson_writer_write_array_end
+    ubjson_writer_write_object_begin
+    ubjson_writer_write_object_end
+    ubjson_writer_write_data
+    ubjson_writer_write_kv_object_begin
+    ubjson_writer_write_kv_object
+    ubjson_writer_write_kv_int
+    ubjson_writer_write_kv_int64
+    ubjson_writer_write_kv_float
+    ubjson_writer_write_kv_double
+    ubjson_writer_write_kv_bool
+    ubjson_writer_write_kv_str
+    ubjson_writer_write_kv_str_len
+    ubjson_writer_write_kv_value
+    tk_ostream_serial_create
+    app_conf_init_ini
+    app_conf_init_json
+    app_conf_init_ubjson
+    app_conf_init
+    app_conf_set_instance
+    app_conf_get_instance
+    app_conf_save
+    app_conf_reload
+    app_conf_on_changed
+    app_conf_off_changed
+    app_conf_off_changed_by_ctx
+    app_conf_deinit
+    app_conf_set
+    app_conf_get
+    app_conf_exist
+    app_conf_set_int
+    app_conf_set_int64
+    app_conf_set_bool
+    app_conf_set_double
+    app_conf_set_str
+    app_conf_set_wstr
+    app_conf_get_int
+    app_conf_get_int64
+    app_conf_get_bool
+    app_conf_get_double
+    app_conf_get_str
+    app_conf_get_wstr
+    app_conf_remove
+    conf_doc_load_ini
+    conf_doc_save_ini
+    conf_doc_load_json
+    conf_doc_save_json
+    conf_doc_create
+    conf_doc_create_node
+    conf_doc_destroy_node
+    conf_doc_append_sibling
+    conf_doc_append_child
+    conf_doc_remove_sibling
+    conf_doc_remove_child
+    conf_doc_remove_child_by_name
+    conf_doc_remove_children
+    conf_doc_set
+    conf_doc_set_int
+    conf_doc_set_bool
+    conf_doc_set_float
+    conf_doc_set_str
+    conf_doc_get
+    conf_doc_get_int
+    conf_doc_get_bool
+    conf_doc_get_float
+    conf_doc_get_str
+    conf_doc_remove
+    conf_doc_clear
+    conf_doc_move_up
+    conf_doc_move_down
+    conf_doc_exists
+    conf_doc_is_first
+    conf_doc_is_last
+    conf_doc_add_child
+    conf_doc_destroy
+    conf_node_get_name
+    conf_node_find_child
+    conf_node_find_sibling
+    conf_node_set_value
+    conf_node_get_value
+    conf_node_get_first_child
+    conf_node_set_first_child
+    conf_doc_load_ubjson
     conf_doc_save_ubjson
     data_reader_file_create
     data_reader_mem_create
@@ -759,9 +759,21 @@ EXPORTS
     error_event_init
     cmd_exec_event_cast
     cmd_exec_event_init
-    object_compositor_create
-    timer_info_cast
+    event_source_fd_create
+    event_source_idle_create
+    event_source_timer_create
+    event_source_get_fd
+    event_source_dispatch
+    event_source_set_tag
+    event_source_check
+    event_source_get_wakeup_time
     idle_info_cast
+    tk_iostream_get_istream
+    tk_iostream_get_ostream
+    tk_iostream_read
+    tk_iostream_read_len
+    tk_iostream_write
+    tk_iostream_write_len
     tk_istream_read
     tk_istream_seek
     tk_istream_tell
@@ -775,26 +787,7 @@ EXPORTS
     object_array_clone
     object_array_unref
     object_array_clear_props
-    conf_ini_create
-    conf_ini_load
-    conf_ini_save_as
-    event_source_get_fd
-    event_source_dispatch
-    event_source_set_tag
-    event_source_check
-    event_source_get_wakeup_time
-    event_source_timer_create
-    conf_json_create
-    conf_json_load
-    conf_json_save_as
-    tk_iostream_get_istream
-    tk_iostream_get_ostream
-    tk_iostream_read
-    tk_iostream_read_len
-    tk_iostream_write
-    tk_iostream_write_len
-    event_source_idle_create
-    event_source_fd_create
+    object_compositor_create
     object_default_create
     object_default_clone
     object_default_unref
@@ -806,6 +799,13 @@ EXPORTS
     tk_ostream_write_len
     tk_ostream_write_byte
     tk_ostream_flush
+    timer_info_cast
+    conf_ini_create
+    conf_ini_load
+    conf_ini_save_as
+    conf_json_create
+    conf_json_load
+    conf_json_save_as
     conf_obj_create
     conf_obj_get_doc
     conf_obj_save
@@ -813,15 +813,19 @@ EXPORTS
     conf_ubjson_create
     conf_ubjson_load
     conf_ubjson_save_as
-    tk_istream_file_create
-    tk_ostream_shdlc_create
-    tk_iostream_udp_create_client
-    tk_iostream_udp_create
+    tk_istream_buffered_create
     tk_ostream_buffered_create
     tk_ostream_buffered_get_size
-    tk_istream_buffered_create
+    tk_istream_file_create
     tk_ostream_file_create
     tk_ostream_file_create_ex
+    tk_iostream_tcp_create
+    tk_iostream_udp_create_client
+    tk_iostream_udp_create
+    tk_istream_tcp_create
+    tk_istream_udp_create
+    tk_istream_udp_set_target_with_host
+    tk_istream_udp_set_target_with_addr
     tk_ostream_tcp_create
     tk_ostream_udp_create
     tk_ostream_udp_set_target_with_host
@@ -829,7 +833,6 @@ EXPORTS
     tk_iostream_mem_create
     tk_istream_mem_create
     tk_ostream_mem_create
-    tk_iostream_tcp_create
     tk_ostream_retry_create
     tk_ostream_retry_set_max_retry_times
     tk_ostream_retry_set_max_buffer_size
@@ -840,9 +843,6 @@ EXPORTS
     tk_iostream_serial_create
     tk_iostream_serial_config
     tk_istream_serial_create
-    tk_istream_tcp_create
     tk_iostream_shdlc_create
     tk_istream_shdlc_create
-    tk_istream_udp_create
-    tk_istream_udp_set_target_with_host
-    tk_istream_udp_set_target_with_addr
+    tk_ostream_shdlc_create
