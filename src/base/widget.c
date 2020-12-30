@@ -3557,8 +3557,8 @@ ret_t widget_set_as_key_target(widget_t* widget) {
 
       if (parent->key_target != widget) {
         parent->key_target = widget;
-        widget_set_as_key_target(parent);
       }
+      widget_set_as_key_target(parent);
     }
     if (widget->key_target != NULL && widget->focused != widget->key_target->focused) {
       widget_set_need_update_style(widget);
