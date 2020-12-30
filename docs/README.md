@@ -45,6 +45,7 @@
 * [项目描述文件 project.json 介绍](awtk_project_description_file.md)
 * [利用 app_helper 编写 SConstruct](app_helper_usage.md)
 * [自定义控件支持脚本绑定](binding_custom_widget.md)
+* [编写跨平台的代码](cross_platform_programming.md)
 
 ### 2.HowTos
 * [AWTK 调试技巧](debug_tips.md)

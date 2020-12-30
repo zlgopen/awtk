@@ -1,33 +1,34 @@
 # 最新动态
 
 2020/12/30
-  * 修复widget\_set\_as\_key\_target导致tab控件焦点的问题。
-  * 修改edit设置焦点后没有更新style的问题。
+  * 修复 widget\_set\_as\_key\_target 导致 tab 控件焦点的问题。
+  * 修改 edit 设置焦点后没有更新 style 的问题。
+  * 增加 [《编写跨平台的代码》](docs/cross_platform_programming.md)
 
 2020/12/29
-  * 增加tk\_dl\_error
-  * 修复窗口动画百分比大于1或者小于0时候导致崩溃的问题（感谢智明提供补丁）
+  * 增加 tk\_dl\_error
+  * 修复窗口动画百分比大于 1 或者小于 0 时候导致崩溃的问题（感谢智明提供补丁）
 
 2020/12/28
-  * 增加函数str\_encode\_hex。
+  * 增加函数 str\_encode\_hex。
 
 2020/12/27
-  * 完善编译脚本，自动生成idl/def文件。
-  * 修改TK\_IM\_MAX\_CANDIDATE\_CHARS偏小，导致输入法部分汉字无法输入的问题（感谢智明提供补丁）
+  * 完善编译脚本，自动生成 idl/def 文件。
+  * 修改 TK\_IM\_MAX\_CANDIDATE\_CHARS 偏小，导致输入法部分汉字无法输入的问题（感谢智明提供补丁）
 
 2020/12/26
-  * 完善soft\_blend\_image，在定义了LCD\_BGR565\_LITE时仍然支持BGRA8888格式。
+  * 完善 soft\_blend\_image，在定义了 LCD\_BGR565\_LITE 时仍然支持 BGRA8888 格式。
 
 2020/12/25
-  * 增加url解析器(url\_t)。
-  * 修复infer发现的警告（感谢智明提供补丁）
+  * 增加 url 解析器 (url\_t)。
+  * 修复 infer 发现的警告（感谢智明提供补丁）
   * 修复圆角矩形缺失边的时候少了一个像素点（感谢智明提供补丁）
-  * 修复生成ui资源时，如果资源名称存在大写，被替换成小写的问题(感谢培煌提供补丁）。
-  * 修复scroll\_view\_set\_prop获取SCROLL\_VIEW\_SNAP\_TO\_PAGE属性的类型错误(感谢福明提供补丁) 。
+  * 修复生成 ui 资源时，如果资源名称存在大写，被替换成小写的问题（感谢培煌提供补丁）。
+  * 修复 scroll\_view\_set\_prop 获取 SCROLL\_VIEW\_SNAP\_TO\_PAGE 属性的类型错误（感谢福明提供补丁） 。
 
 2020/12/24
   * 完善多点手势识别算法（感谢智明提供补丁）
-  * 修复data\_reader\_mem在Windows下编译不过的问题。
+  * 修复 data\_reader\_mem 在 Windows 下编译不过的问题。
 
 2020/12/23
   * 完善文档。
