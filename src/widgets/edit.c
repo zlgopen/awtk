@@ -533,6 +533,7 @@ static ret_t edit_on_focused(widget_t* widget) {
       idle_add(edit_select_all_async, edit);
     }
   }
+  edit_update_status(widget);
 
   return RET_OK;
 }

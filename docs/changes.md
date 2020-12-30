@@ -2,6 +2,7 @@
 
 2020/12/30
   * 修复widget\_set\_as\_key\_target导致tab控件焦点的问题。
+  * 修改edit设置焦点后没有更新style的问题。
 
 2020/12/29
   * 增加tk\_dl\_error
