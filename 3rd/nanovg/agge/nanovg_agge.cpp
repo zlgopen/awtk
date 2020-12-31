@@ -288,6 +288,15 @@ static agge::pixel32_rgba to_pixel32_rgba(NVGcolor rgba) {
   return agge::pixel32_rgba(rgba.r * 255, rgba.g * 255, rgba.b * 255, rgba.a * 255);
 }
 
+static int clip_rect_is_zero(NVGscissor* scissor) {
+  int w = (int)(scissor->extent[0] + 0.5f);
+  int h = (int)(scissor->extent[1] + 0.5f);
+  if (w == 0 || h == 0) {
+    return 0;
+  }
+  return 1;
+}
+
 template <typename PixelT>
 void renderPaint(AGGENVGcontext* agge, NVGpaint* paint) {
   agge::renderer& ren = agge->ren;
@@ -371,6 +380,7 @@ template <typename PixelT>
 void renderFill(void* uptr, NVGpaint* paint, NVGcompositeOperationState compositeOperation,
                 NVGscissor* scissor, float fringe, const float* bounds, const NVGpath* paths,
                 int npaths) {
+  if(clip_rect_is_zero(scissor) == 0) return; 
   AGGENVGcontext* agge = (AGGENVGcontext*)uptr;
   agge::rasterizer<agge::clipper<int> >& ras = agge->ras;
 
@@ -397,7 +407,7 @@ template <typename PixelT>
 void renderStroke(void* uptr, NVGpaint* paint, NVGcompositeOperationState compositeOperation,
                   NVGscissor* scissor, float fringe, float strokeWidth, const NVGpath* paths,
                   int npaths) {
-  if(paths->count <= 0) return; 
+  if(paths->count <= 0 || clip_rect_is_zero(scissor) == 0) return; 
   AGGENVGcontext* agge = (AGGENVGcontext*)uptr;
   agge::stroke& line_style = agge->line_style;
   agge::rasterizer<agge::clipper<int> >& ras = agge->ras;
