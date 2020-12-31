@@ -47055,7 +47055,7 @@
             "desc": "image_value对象。"
           },
           {
-            "type": "float_t",
+            "type": "double",
             "name": "delta",
             "desc": "增量。"
           }
@@ -47078,7 +47078,7 @@
             "desc": "image_value对象。"
           },
           {
-            "type": "float_t",
+            "type": "double",
             "name": "value",
             "desc": "值。"
           }
@@ -47101,7 +47101,7 @@
             "desc": "image_min对象。"
           },
           {
-            "type": "float_t",
+            "type": "double",
             "name": "min",
             "desc": "最小值。"
           }
@@ -47124,7 +47124,7 @@
             "desc": "image_max对象。"
           },
           {
-            "type": "float_t",
+            "type": "double",
             "name": "max",
             "desc": "最大值。"
           }
@@ -47201,7 +47201,7 @@
       {
         "name": "click_add_delta",
         "desc": "点击时加上一个增量。",
-        "type": "float_t",
+        "type": "double",
         "annotation": {
           "set_prop": true,
           "get_prop": true,
@@ -47214,7 +47214,7 @@
       {
         "name": "value",
         "desc": "值。",
-        "type": "float_t",
+        "type": "double",
         "annotation": {
           "set_prop": true,
           "get_prop": true,
@@ -47227,7 +47227,7 @@
       {
         "name": "min",
         "desc": "最小值(如果设置了click\\_add\\_delta，到达最小值后回到最大值)。",
-        "type": "float_t",
+        "type": "double",
         "annotation": {
           "set_prop": true,
           "get_prop": true,
@@ -47240,7 +47240,7 @@
       {
         "name": "max",
         "desc": "最大值(如果设置了click\\_add\\_delta，到达最大值后回到最小值)。",
-        "type": "float_t",
+        "type": "double",
         "annotation": {
           "set_prop": true,
           "get_prop": true,
