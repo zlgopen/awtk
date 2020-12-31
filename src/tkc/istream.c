@@ -125,6 +125,8 @@ int32_t tk_istream_read_len(tk_istream_t* stream, void* buff, uint32_t max_size,
     if (now > end) {
       break;
     }
+
+    log_debug("read: %d/%u\n", offset, max_size);
   } while (remain_bytes > 0);
 
   return offset;

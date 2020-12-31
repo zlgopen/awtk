@@ -19,6 +19,7 @@
  *
  */
 
+#include "tkc/platform.h"
 #include "tkc/time_now.h"
 #include "tkc/ostream.h"
 
@@ -50,10 +51,18 @@ int32_t tk_ostream_write_len(tk_ostream_t* stream, const void* buff, uint32_t ma
   now = time_now_ms();
   end = now + timeout_ms;
   do {
+    errno = 0;
     write_bytes = tk_ostream_write(stream, p + offset, remain_bytes);
 
     if (write_bytes <= 0) {
-      break;
+      if (errno != EAGAIN) {
+        break;
+      } else {
+        sleep_ms(20);
+        log_debug("write: %d/%d\n", offset, max_size);
+        log_debug("write:again, sleep 20ms\n");
+        continue;
+      }
     }
 
     offset += write_bytes;
@@ -68,6 +77,7 @@ int32_t tk_ostream_write_len(tk_ostream_t* stream, const void* buff, uint32_t ma
       log_debug("write timeout\n");
       break;
     }
+    log_debug("write: %d/%d\n", offset, max_size);
   } while (remain_bytes > 0);
 
   return offset;
