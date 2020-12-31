@@ -105,13 +105,13 @@ static ret_t image_value_get_prop(widget_t* widget, const char* name, value_t* v
   return_value_if_fail(image_value != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
-    value_set_float(v, image_value->value);
+    value_set_double(v, image_value->value);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_MIN)) {
-    value_set_float(v, image_value->min);
+    value_set_double(v, image_value->min);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_MAX)) {
-    value_set_float(v, image_value->max);
+    value_set_double(v, image_value->max);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_IMAGE)) {
     value_set_str(v, image_value->image);
@@ -120,7 +120,7 @@ static ret_t image_value_get_prop(widget_t* widget, const char* name, value_t* v
     value_set_str(v, image_value->format);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_CLICK_ADD_DELTA)) {
-    value_set_float(v, image_value->click_add_delta);
+    value_set_double(v, image_value->click_add_delta);
     return RET_OK;
   }
 
@@ -131,17 +131,17 @@ static ret_t image_value_set_prop(widget_t* widget, const char* name, const valu
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
-    return image_value_set_value(widget, value_float(v));
+    return image_value_set_value(widget, value_double(v));
   } else if (tk_str_eq(name, WIDGET_PROP_MIN)) {
-    return image_value_set_min(widget, value_float(v));
+    return image_value_set_min(widget, value_double(v));
   } else if (tk_str_eq(name, WIDGET_PROP_MAX)) {
-    return image_value_set_max(widget, value_float(v));
+    return image_value_set_max(widget, value_double(v));
   } else if (tk_str_eq(name, WIDGET_PROP_IMAGE)) {
     return image_value_set_image(widget, value_str(v));
   } else if (tk_str_eq(name, WIDGET_PROP_FORMAT)) {
     return image_value_set_format(widget, value_str(v));
   } else if (tk_str_eq(name, WIDGET_PROP_CLICK_ADD_DELTA)) {
-    return image_value_set_click_add_delta(widget, value_float(v));
+    return image_value_set_click_add_delta(widget, value_double(v));
   }
 
   return RET_NOT_FOUND;
@@ -162,9 +162,9 @@ ret_t image_value_add_delta(widget_t* widget) {
   return_value_if_fail(image_value != NULL, RET_BAD_PARAMS);
 
   if (image_value->click_add_delta) {
-    float_t value = image_value->value;
-    float_t min = tk_min(image_value->min, image_value->max);
-    float_t max = tk_max(image_value->min, image_value->max);
+    double value = image_value->value;
+    double min = tk_min(image_value->min, image_value->max);
+    double max = tk_max(image_value->min, image_value->max);
     return_value_if_fail(min < max, RET_BAD_PARAMS);
 
     value = image_value->value + image_value->click_add_delta;
@@ -258,15 +258,15 @@ ret_t image_value_set_format(widget_t* widget, const char* format) {
   return widget_invalidate(widget, NULL);
 }
 
-ret_t image_value_set_value(widget_t* widget, float_t value) {
+ret_t image_value_set_value(widget_t* widget, double value) {
   image_value_t* image_value = IMAGE_VALUE(widget);
   return_value_if_fail(image_value != NULL, RET_BAD_PARAMS);
 
   if (image_value->value != value) {
     value_change_event_t evt;
     value_change_event_init(&evt, EVT_VALUE_WILL_CHANGE, widget);
-    value_set_float(&(evt.old_value), image_value->value);
-    value_set_float(&(evt.new_value), value);
+    value_set_double(&(evt.old_value), image_value->value);
+    value_set_double(&(evt.new_value), value);
 
     if (widget_dispatch(widget, (event_t*)&evt) != RET_STOP) {
       image_value->value = value;
@@ -279,7 +279,7 @@ ret_t image_value_set_value(widget_t* widget, float_t value) {
   return RET_OK;
 }
 
-ret_t image_value_set_click_add_delta(widget_t* widget, float_t click_add_delta) {
+ret_t image_value_set_click_add_delta(widget_t* widget, double click_add_delta) {
   image_value_t* image_value = IMAGE_VALUE(widget);
   return_value_if_fail(image_value != NULL, RET_BAD_PARAMS);
 
@@ -288,7 +288,7 @@ ret_t image_value_set_click_add_delta(widget_t* widget, float_t click_add_delta)
   return RET_OK;
 }
 
-ret_t image_value_set_min(widget_t* widget, float_t min) {
+ret_t image_value_set_min(widget_t* widget, double min) {
   image_value_t* image_value = IMAGE_VALUE(widget);
   return_value_if_fail(image_value != NULL, RET_BAD_PARAMS);
 
@@ -297,7 +297,7 @@ ret_t image_value_set_min(widget_t* widget, float_t min) {
   return RET_OK;
 }
 
-ret_t image_value_set_max(widget_t* widget, float_t max) {
+ret_t image_value_set_max(widget_t* widget, double max) {
   image_value_t* image_value = IMAGE_VALUE(widget);
   return_value_if_fail(image_value != NULL, RET_BAD_PARAMS);
 

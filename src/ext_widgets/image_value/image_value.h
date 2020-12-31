@@ -86,32 +86,32 @@ typedef struct _image_value_t {
   char* format;
 
   /**
-   * @property {float_t} click_add_delta
+   * @property {double} click_add_delta
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 点击时加上一个增量。
    */
-  float_t click_add_delta;
+  double click_add_delta;
 
   /**
-   * @property {float_t} value
+   * @property {double} value
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 值。
    */
-  float_t value;
+  double value;
 
   /**
-   * @property {float_t} min
+   * @property {double} min
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 最小值(如果设置了click\_add\_delta，到达最小值后回到最大值)。
    */
-  float_t min;
+  double min;
 
   /**
-   * @property {float_t} max
+   * @property {double} max
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 最大值(如果设置了click\_add\_delta，到达最大值后回到最小值)。
    */
-  float_t max;
+  double max;
 
   /*private*/
   bool_t pressed;
@@ -168,44 +168,44 @@ ret_t image_value_set_format(widget_t* widget, const char* format);
  * 设置点击时加上的增量。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget image_value对象。
- * @param {float_t} delta 增量。
+ * @param {double} delta 增量。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t image_value_set_click_add_delta(widget_t* widget, float_t click_add_delta);
+ret_t image_value_set_click_add_delta(widget_t* widget, double click_add_delta);
 
 /**
  * @method image_value_set_value
  * 设置值。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget image_value对象。
- * @param {float_t} value 值。
+ * @param {double} value 值。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t image_value_set_value(widget_t* widget, float_t value);
+ret_t image_value_set_value(widget_t* widget, double value);
 
 /**
  * @method image_value_set_min
  * 设置最小值。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget image_min对象。
- * @param {float_t} min 最小值。
+ * @param {double} min 最小值。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t image_value_set_min(widget_t* widget, float_t min);
+ret_t image_value_set_min(widget_t* widget, double min);
 
 /**
  * @method image_value_set_max
  * 设置最大值。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget image_max对象。
- * @param {float_t} max 最大值。
+ * @param {double} max 最大值。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t image_value_set_max(widget_t* widget, float_t max);
+ret_t image_value_set_max(widget_t* widget, double max);
 
 /**
  * @method image_value_cast
