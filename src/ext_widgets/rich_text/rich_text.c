@@ -153,8 +153,8 @@ static ret_t rich_text_on_paint_text(widget_t* widget, canvas_t* c) {
 static bool_t rich_text_is_need_reset_from_style(rich_text_t* rich_text, const char* font_name,
                                                  uint16_t font_size, color_t color,
                                                  align_v_t align_v) {
-  return_value_if_fail(rich_text != NULL && font_name != NULL, FALSE);
-  if (tk_str_cmp(rich_text->default_font_name, font_name) != 0) {
+  return_value_if_fail(rich_text != NULL, FALSE);
+  if (font_name != NULL && tk_str_cmp(rich_text->default_font_name, font_name) != 0) {
     return TRUE;
   }
 
