@@ -137,6 +137,8 @@ helper.add_platform_cxxflags("Linux", " -DSOME_MACRO=1 ")
 示例：
 
 ```python
+import platform;
+
 OS_NAME=platform.system()
 if OS_NAME == 'Windows':
   sources=Glob('src/windows/*.c')
