@@ -1248,7 +1248,7 @@ static ret_t ffr_draw_stroke_rounded_rect(canvas_t* c, const rect_t* r, const co
                                 color, &tmp_point_list_45, &point_list_45, FALSE);  // 右下角
     }
 
-    if (mid_lenght_v != 0) {
+    if (mid_lenght_v != 0 || radius_tl != 0 || radius_bl != 0 || radius_tr != 0 || radius_br != 0) {
       uint32_t tmp_y1 = v_y1;
       uint32_t tmp_y2 = v_y1;
       uint32_t tmp_h1 = mid_lenght_v;
@@ -1286,15 +1286,15 @@ static ret_t ffr_draw_stroke_rounded_rect(canvas_t* c, const rect_t* r, const co
           tmp_h2 += radius;
         }
       }
-      if (border_model & BORDER_LEFT) {
+      if (border_model & BORDER_LEFT && tmp_h1 != 0) {
         canvas_draw_vline(c, x, tmp_y1, tmp_h1);                      //左边边
       }
-      if (border_model & BORDER_RIGHT) {
+      if (border_model & BORDER_RIGHT && tmp_h2 != 0) {
         canvas_draw_vline(c, (xy_t)(v_x2 + w2 - 1), tmp_y2, tmp_h2);  //右边边
       }
     }
 
-    if (mid_lenght_h != 0) {
+    if (mid_lenght_h != 0 || radius_tl != 0 || radius_bl != 0 || radius_tr != 0 || radius_br != 0) {
       uint32_t tmp_x1 = v_x1;
       uint32_t tmp_x2 = v_x1;
       uint32_t tmp_w1 = mid_lenght_h;
@@ -1316,10 +1316,10 @@ static ret_t ffr_draw_stroke_rounded_rect(canvas_t* c, const rect_t* r, const co
         tmp_w2 += radius;
       }
 
-      if (border_model & BORDER_TOP) {
+      if (border_model & BORDER_TOP && tmp_w1 != 0) {
         canvas_draw_hline(c, tmp_x1, y, tmp_w1);                      //上边边
       }
-      if (border_model & BORDER_BOTTOM) {
+      if (border_model & BORDER_BOTTOM && tmp_w2 != 0) {
         canvas_draw_hline(c, tmp_x2, (xy_t)(v_y2 + h1 - 1), tmp_w2);  //下边边
       }
     }
