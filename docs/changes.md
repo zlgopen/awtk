@@ -1,5 +1,9 @@
 # 最新动态
 
+2020/12/31
+  * 完善串口流iostream serial。
+  * 完善《AWTK是如何保证代码质量的》(感谢忠吉发现问题)
+
 2020/12/30
   * 修复 widget\_set\_as\_key\_target 导致 tab 控件焦点的问题。
   * 修改 edit 设置焦点后没有更新 style 的问题。
