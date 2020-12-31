@@ -104,9 +104,11 @@ static ret_t tk_iostream_serial_exec(object_t* obj, const char* name, const char
 static ret_t tk_iostream_serial_on_destroy(object_t* obj) {
   tk_iostream_serial_t* iostream_serial = TK_IOSTREAM_SERIAL(obj);
 
-  serial_close(iostream_serial->fd);
+  tk_istream_flush(iostream_serial->istream);
+  tk_ostream_flush(iostream_serial->ostream);
   object_unref(OBJECT(iostream_serial->istream));
   object_unref(OBJECT(iostream_serial->ostream));
+  serial_close(iostream_serial->fd);
 
   return RET_OK;
 }
@@ -161,6 +163,8 @@ tk_iostream_t* tk_iostream_serial_create(const char* port) {
   TK_IOSTREAM(obj)->get_ostream = tk_iostream_serial_get_ostream;
 
   object_exec(obj, TK_IOSTREAM_SERIAL_CMD_CONFIG, NULL);
+  tk_istream_flush(iostream_serial->istream);
+  tk_ostream_flush(iostream_serial->ostream);
 
   return TK_IOSTREAM(obj);
 }

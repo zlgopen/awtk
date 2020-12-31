@@ -21,7 +21,7 @@ void do_echo(tk_iostream_t* iostream) {
 
   if (ret >= 0) {
     buff[ret] = '\0';
-    log_debug("read: %s\n", buff);
+    log_debug("read(%d): %s\n", ret, buff);
     ret = tk_ostream_write(ostream, (uint8_t*)buff, ret);
     log_debug("write: %d %s\n", ret, buff);
     sleep_ms(2000);
