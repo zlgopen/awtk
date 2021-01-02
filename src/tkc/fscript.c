@@ -124,6 +124,8 @@ typedef enum _token_type_t {
   TOKEN_NUMBER,
   TOKEN_LPAREN,
   TOKEN_RPAREN,
+  TOKEN_LBRACKET,
+  TOKEN_RBRACKET,
   TOKEN_COMMA,
   TOKEN_SEMICOLON,
   /*for expr*/
@@ -154,6 +156,7 @@ typedef struct _fscript_parser_t {
 } fscript_parser_t;
 
 static ret_t fexpr_parse(fscript_parser_t* parser, value_t* result);
+static ret_t fscript_parse_statements(fscript_parser_t* parser, fscript_func_call_t* acall);
 static fscript_func_call_t* fscript_func_call_create(fscript_parser_t* parser, const char* name,
                                                      uint32_t size);
 
@@ -222,14 +225,16 @@ static ret_t fscript_eval_arg(fscript_t* fscript, fscript_func_call_t* iter, uin
 
 static ret_t fscript_exec_if(fscript_t* fscript, fscript_func_call_t* iter, value_t* result) {
   value_t condition;
-  return_value_if_fail(iter->args.size == 3, RET_FAIL);
+  return_value_if_fail(iter->args.size >= 2, RET_FAIL);
   value_set_int(&condition, 0);
 
   fscript_eval_arg(fscript, iter, 0, &condition);
   if (value_bool(&condition)) {
     fscript_eval_arg(fscript, iter, 1, result);
-  } else {
+  } else if (iter->args.size > 2) {
     fscript_eval_arg(fscript, iter, 2, result);
+  } else {
+    value_set_int(result, 0);
   }
 
   return RET_OK;
@@ -495,6 +500,14 @@ static token_t* fscript_parser_get_token_ex(fscript_parser_t* parser, bool_t ope
       t->type = TOKEN_RPAREN;
       return t;
     }
+    case '{': {
+      t->type = TOKEN_LBRACKET;
+      return t;
+    }
+    case '}': {
+      t->type = TOKEN_RBRACKET;
+      return t;
+    }
     case ',': {
       t->type = TOKEN_COMMA;
       return t;
@@ -655,6 +668,40 @@ ret_t fscript_eval(object_t* obj, const char* script, value_t* result) {
 }
 
 /*expr parser*/
+static ret_t fexpr_parse_block(fscript_parser_t* parser, fscript_func_call_t* acall) {
+  value_t v;
+  fscript_func_call_t* statements = fscript_func_call_create(parser, "expr", 4);
+  return_value_if_fail(statements != NULL, RET_OOM);
+
+  if (fscript_parse_statements(parser, statements) == RET_OK) {
+    func_args_push(&(acall->args), value_set_func(&v, statements));
+  } else {
+    fscript_func_call_destroy(statements);
+  }
+
+  fscript_parser_expect_token(parser, TOKEN_RBRACKET, "expect \"}\"");
+
+  return RET_OK;
+}
+
+static ret_t fexpr_parse_if(fscript_parser_t* parser, fscript_func_call_t* acall) {
+  token_t* t = NULL;
+  fexpr_parse_block(parser, acall);
+  t = fscript_parser_get_token(parser);
+
+  if (t != NULL && t->type == TOKEN_ID && tk_str_eq(t->token, "else")) {
+    fscript_parser_expect_token(parser, TOKEN_LBRACKET, "expect \"{\"");
+    return fexpr_parse_block(parser, acall);
+  } else {
+    fscript_parser_unget_token(parser);
+    return RET_OK;
+  }
+}
+
+static ret_t fexpr_parse_while(fscript_parser_t* parser, fscript_func_call_t* acall) {
+  return fexpr_parse_block(parser, acall);
+}
+
 static ret_t fexpr_parse_function(fscript_parser_t* parser, value_t* result) {
   value_t v;
   fscript_args_t* args = NULL;
@@ -698,6 +745,16 @@ static ret_t fexpr_parse_function(fscript_parser_t* parser, value_t* result) {
     fscript_parser_unget_token(parser);
     fscript_parser_expect_token(parser, TOKEN_COMMA, "expect \",\"");
   } while (TRUE);
+
+  if (acall->func == func_if && acall->args.size == 1) {
+    if (fscript_parser_expect_token(parser, TOKEN_LBRACKET, "expect \"{\"") == RET_OK) {
+      fexpr_parse_if(parser, acall);
+    }
+  } else if (acall->func == func_while && acall->args.size == 1) {
+    if (fscript_parser_expect_token(parser, TOKEN_LBRACKET, "expect \"{\"") == RET_OK) {
+      fexpr_parse_while(parser, acall);
+    }
+  }
 
   return RET_OK;
 }
@@ -941,39 +998,51 @@ fscript_t* fscript_create_impl(fscript_parser_t* parser) {
   return fscript;
 }
 
-fscript_t* fscript_create(object_t* obj, const char* expr) {
+static ret_t fscript_parse_statements(fscript_parser_t* parser, fscript_func_call_t* acall) {
   value_t v;
   ret_t ret = RET_OK;
-  fscript_parser_t parser;
-  fscript_t* fscript = NULL;
   fscript_args_t* args = NULL;
-  return_value_if_fail(expr != NULL, NULL);
+  return_value_if_fail(parser != NULL && acall != NULL, RET_BAD_PARAMS);
 
-  fscript_parser_init(&parser, obj, expr);
-  parser.first = fscript_func_call_create(&parser, "expr", 4);
-  args = &(parser.first->args);
+  args = &(acall->args);
 
   do {
     token_t* t = NULL;
-    ret = fexpr_parse(&parser, &v);
+    ret = fexpr_parse(parser, &v);
     if (ret == RET_OK) {
       func_args_push(args, &v);
-      t = fscript_parser_get_token(&parser);
+      t = fscript_parser_get_token(parser);
       if (t == NULL) {
         break;
       }
 
       if (t->type == TOKEN_FUNC || t->type == TOKEN_ID || t->type == TOKEN_NUMBER ||
           t->type == TOKEN_STR) {
-        fscript_parser_unget_token(&parser);
+        fscript_parser_unget_token(parser);
+      } else if (t->type == TOKEN_RBRACKET) {
+        fscript_parser_unget_token(parser);
+        break;
       } else if (t->type != TOKEN_COMMA && t->type != TOKEN_SEMICOLON) {
-        fscript_parser_set_error(&parser, "unexpected token\n");
+        fscript_parser_set_error(parser, "unexpected token\n");
+        break;
       }
     } else {
       break;
     }
-  } while (parser.token.type != TOKEN_EOF);
+  } while (parser->token.type != TOKEN_EOF);
 
+  return RET_OK;
+}
+
+fscript_t* fscript_create(object_t* obj, const char* expr) {
+  ret_t ret = RET_OK;
+  fscript_parser_t parser;
+  fscript_t* fscript = NULL;
+  return_value_if_fail(expr != NULL, NULL);
+
+  fscript_parser_init(&parser, obj, expr);
+  parser.first = fscript_func_call_create(&parser, "expr", 4);
+  ret = fscript_parse_statements(&parser, parser.first);
   if (ret == RET_OK) {
     fscript = fscript_create_impl(&parser);
     fscript_parser_deinit(&parser);
