@@ -76,22 +76,26 @@ typedef struct _fscript_t {
    * 脚本执行上下文。
    */
   object_t* obj;
-
   /**
    * @property {value_t*} fast_vars
    * @annotation ["readable"]
    * 快速访问变量。在脚本可以用a/b/c/d来访问，需要优化时使用。
    */
   value_t fast_vars[4];
+
   /*private*/
+  ret_t error_code;
+  char* error_message;
+  fscript_func_call_t* curr;
   fscript_func_call_t* first;
+  fscript_func_call_t* error_func;
 } fscript_t;
 
 typedef ret_t (*fscript_func_t)(fscript_t* fscript, fscript_args_t* args, value_t* v);
 
 /**
  * @method fscript_create
- * 创建引擎对象。
+ * 创建引擎对象，并解析代码。
  * @param {object_t*} obj 脚本执行上下文。
  * @param {const char*} script 脚本代码。
  *
@@ -101,12 +105,25 @@ fscript_t* fscript_create(object_t* obj, const char* script);
 
 /**
  * @method fscript_exec
+ * 执行解析后的代码。 
  * @param {fscript_t*} fscript 脚本引擎对象。
  * @param {value_t*} result 执行结果(调用者需要用value_reset函数清除result)。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t fscript_exec(fscript_t* fscript, value_t* result);
+
+/**
+ * @method fscript_set_error
+ * 用于扩展函数设置遇到的错误。
+ * @param {fscript_t*} fscript 脚本引擎对象。
+ * @param {ret_t} code 错误码。
+ * @param {const char*} func 函数名。
+ * @param {const char*} message 错误消息。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t fscript_set_error(fscript_t* fscript, ret_t code, const char* func, const char* message);
 
 /**
  * @method fscript_destroy
@@ -156,6 +173,13 @@ ret_t fscript_global_deinit(void);
 
 /*注册自定义函数时，属性名的前缀。*/
 #define STR_FSCRIPT_FUNCTION_PREFIX "function."
+
+/*用于扩展函数里检查参数*/
+#define FSCRIPT_FUNC_CHECK(predicate, code)                        \
+  if (!(predicate)) {                                              \
+    fscript_set_error(fscript, code, __FUNCTION__, "" #predicate); \
+    return code;                                                   \
+  }
 
 END_C_DECLS
 

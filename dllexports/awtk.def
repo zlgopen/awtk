@@ -1094,6 +1094,7 @@ EXPORTS
     file_write
     fscript_create
     fscript_exec
+    fscript_set_error
     fscript_destroy
     fscript_eval
     fscript_global_init

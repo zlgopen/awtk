@@ -941,3 +941,51 @@ TEST(FExr, var_dollar) {
 
   OBJECT_UNREF(obj);
 }
+
+TEST(FExr, error) {
+  value_t v;
+  object_t* obj = object_default_create();
+
+  fscript_eval(obj, "sin();has_error()", &v);
+  ASSERT_EQ(value_bool(&v), TRUE);
+  value_reset(&v);
+  
+  fscript_eval(obj, "sin(1);has_error()", &v);
+  ASSERT_EQ(value_bool(&v), FALSE);
+  value_reset(&v);
+
+  OBJECT_UNREF(obj);
+}
+
+TEST(FExr, clear_error) {
+  value_t v;
+  object_t* obj = object_default_create();
+
+  fscript_eval(obj, "sin();clear_error();has_error()", &v);
+  ASSERT_EQ(value_bool(&v), FALSE);
+  value_reset(&v);
+
+  OBJECT_UNREF(obj);
+}
+
+TEST(FExr, if_statement1) {
+  value_t v;
+  object_t* obj = object_default_create();
+
+  fscript_eval(obj, "if(1) {1} else {2}", &v);
+  ASSERT_EQ(value_int(&v), 1);
+  value_reset(&v);
+
+  OBJECT_UNREF(obj);
+}
+
+TEST(FExr, if_statement2) {
+  value_t v;
+  object_t* obj = object_default_create();
+
+  fscript_eval(obj, "if(false) {1} else {2}", &v);
+  ASSERT_EQ(value_int(&v), 2);
+  value_reset(&v);
+
+  OBJECT_UNREF(obj);
+}

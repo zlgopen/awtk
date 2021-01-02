@@ -24,6 +24,8 @@ struct _fscript_func_call_t {
   fscript_func_t func;
   fscript_args_t args;
   fscript_func_call_t* next;
+  uint16_t row;
+  uint16_t col;
 };
 
 #define VALUE_TYPE_JSCRIPT_ID 128
@@ -33,6 +35,18 @@ static ret_t func_if(fscript_t* fscript, fscript_args_t* args, value_t* result);
 static ret_t func_while(fscript_t* fscript, fscript_args_t* args, value_t* result);
 static ret_t func_set(fscript_t* fscript, fscript_args_t* args, value_t* result);
 static ret_t fscript_exec_func(fscript_t* fscript, fscript_func_call_t* iter, value_t* result);
+
+ret_t fscript_set_error(fscript_t* fscript, ret_t code, const char* func,
+                               const char* message) {
+  fscript->error_code = code;
+  fscript->error_func = fscript->curr;
+  fscript->error_message = tk_str_copy(fscript->error_message, message);
+  if (code != RET_OK) {
+    log_debug("(%d:%d): %s code=%d %s\n", fscript->curr->row, fscript->curr->col, func, code,
+              message);
+  }
+  return RET_OK;
+}
 
 static value_t* value_set_func(value_t* v, fscript_func_call_t* func) {
   value_set_pointer(v, func);
@@ -150,8 +164,8 @@ typedef struct _fscript_parser_t {
   char c;
   str_t temp;
   char* error;
-  uint32_t row;
-  uint32_t col;
+  uint16_t row;
+  uint16_t col;
   fscript_func_call_t* first;
 } fscript_parser_t;
 
@@ -289,6 +303,7 @@ static ret_t fscript_exec_ext_func(fscript_t* fscript, fscript_func_call_t* iter
 }
 
 static ret_t fscript_exec_func(fscript_t* fscript, fscript_func_call_t* iter, value_t* result) {
+  fscript->curr = iter;
   if (fscript_exec_core_func(fscript, iter, result) == RET_NOT_FOUND) {
     return_value_if_fail(fscript_exec_ext_func(fscript, iter, result) == RET_OK, RET_FAIL);
   }
@@ -994,7 +1009,7 @@ static ret_t fexpr_parse(fscript_parser_t* parser, value_t* result) {
   return_value_if_fail(fexpr_parse_question(parser, result) == RET_OK, RET_FAIL);
 
   t = fscript_parser_get_token_ex(parser, TRUE);
-  if(t != NULL && tk_str_eq(t->token, "=")) {
+  if (t != NULL && tk_str_eq(t->token, "=")) {
     acall = fscript_func_call_create(parser, t->token, t->size);
     return_value_if_fail(acall != NULL, RET_OOM);
     args = &(acall->args);
@@ -1081,12 +1096,22 @@ fscript_t* fscript_create(object_t* obj, const char* expr) {
 
 /*functions*/
 
+static ret_t func_has_error(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  value_set_bool(result, fscript->error_code != RET_OK);
+  return RET_OK;
+}
+
+static ret_t func_clear_error(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  fscript_set_error(fscript, RET_OK, NULL, NULL);
+  return RET_OK;
+}
+
 static ret_t func_sum(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   double v = 0;
   uint32_t i = 0;
   bool_t has_str = FALSE;
   bool_t has_float = FALSE;
-  return_value_if_fail(args->size > 0, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size > 0, RET_BAD_PARAMS);
 
   for (i = 0; i < args->size; i++) {
     int type = args->args[i].type;
@@ -1122,62 +1147,62 @@ static ret_t func_sum(fscript_t* fscript, fscript_args_t* args, value_t* result)
 }
 
 static ret_t func_int(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   value_set_int(result, value_int(args->args));
   return RET_OK;
 }
 
 static ret_t func_i8(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   value_set_int8(result, value_int8(args->args));
   return RET_OK;
 }
 
 static ret_t func_i16(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   value_set_int16(result, value_int16(args->args));
   return RET_OK;
 }
 
 static ret_t func_i32(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   value_set_int(result, value_int(args->args));
   return RET_OK;
 }
 
 static ret_t func_u8(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   value_set_uint8(result, value_uint8(args->args));
   return RET_OK;
 }
 
 static ret_t func_u16(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   value_set_uint16(result, value_uint16(args->args));
   return RET_OK;
 }
 
 static ret_t func_u32(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   value_set_uint32(result, value_uint32(args->args));
   return RET_OK;
 }
 
 static ret_t func_f32(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   value_set_float32(result, value_float32(args->args));
   return RET_OK;
 }
 
 static ret_t func_float(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   value_set_double(result, value_double(args->args));
   return RET_OK;
 }
 
 static ret_t func_str(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   str_t* str = &(fscript->str);
-  return_value_if_fail(args->size >= 1, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
 
   if (args->args->type == VALUE_TYPE_POINTER) {
     bool_t force_pointer_as_str = args->size == 2 && value_bool(args->args + 1);
@@ -1202,7 +1227,7 @@ static ret_t func_join(fscript_t* fscript, fscript_args_t* args, value_t* result
   char buff[64];
   str_t* str = &(fscript->str);
   value_set_bool(result, FALSE);
-  return_value_if_fail(args->size > 1, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size > 1, RET_BAD_PARAMS);
 
   str_set(str, "");
   value_set_bool(result, TRUE);
@@ -1228,9 +1253,9 @@ static ret_t func_while(fscript_t* fscript, fscript_args_t* args, value_t* resul
 
 static ret_t func_set(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   const char* name = NULL;
-  return_value_if_fail(args->size == 2, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   name = value_str(args->args);
-  return_value_if_fail(name != NULL, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(name != NULL, RET_BAD_PARAMS);
 
   value_set_bool(result, fscript_set_var(fscript, name, args->args + 1) == RET_OK);
 
@@ -1238,7 +1263,7 @@ static ret_t func_set(fscript_t* fscript, fscript_args_t* args, value_t* result)
 }
 
 static ret_t func_expr(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size >= 1, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
   value_deep_copy(result, args->args + args->size - 1);
 
   return RET_OK;
@@ -1259,9 +1284,9 @@ static ret_t func_print(fscript_t* fscript, fscript_args_t* args, value_t* resul
 static ret_t func_iformat(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   str_t* str = &(fscript->str);
   const char* format = NULL;
-  return_value_if_fail(args->size == 2, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   format = value_str(args->args);
-  return_value_if_fail(format != NULL, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(format != NULL, RET_BAD_PARAMS);
 
   tk_snprintf(str->str, str->capacity - 1, format, value_int(args->args + 1));
   value_set_str(result, str->str);
@@ -1272,9 +1297,9 @@ static ret_t func_iformat(fscript_t* fscript, fscript_args_t* args, value_t* res
 static ret_t func_fformat(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   str_t* str = &(fscript->str);
   const char* format = NULL;
-  return_value_if_fail(args->size == 2, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   format = value_str(args->args);
-  return_value_if_fail(format != NULL, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(format != NULL, RET_BAD_PARAMS);
 
   tk_snprintf(str->str, str->capacity - 1, format, value_double(args->args + 1));
   value_set_str(result, str->str);
@@ -1283,28 +1308,28 @@ static ret_t func_fformat(fscript_t* fscript, fscript_args_t* args, value_t* res
 }
 
 static ret_t func_and(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 2, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   value_set_bool(result, value_bool(args->args) && value_bool(args->args + 1));
 
   return RET_OK;
 }
 
 static ret_t func_or(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 2, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   value_set_bool(result, value_bool(args->args) || value_bool(args->args + 1));
 
   return RET_OK;
 }
 
 static ret_t func_not(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   value_set_bool(result, !value_bool(args->args));
 
   return RET_OK;
 }
 
 static ret_t func_minus(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   if (args->args[0].type == VALUE_TYPE_INT32) {
     value_set_int(result, -value_int(args->args));
   } else {
@@ -1315,56 +1340,56 @@ static ret_t func_minus(fscript_t* fscript, fscript_args_t* args, value_t* resul
 }
 
 static ret_t func_bit_and(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 2, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   value_set_uint32(result, value_uint32(args->args) & value_uint32(args->args + 1));
 
   return RET_OK;
 }
 
 static ret_t func_bit_or(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 2, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   value_set_uint32(result, value_uint32(args->args) | value_uint32(args->args + 1));
 
   return RET_OK;
 }
 
 static ret_t func_bit_nor(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 2, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   value_set_uint32(result, value_uint32(args->args) ^ value_uint32(args->args + 1));
 
   return RET_OK;
 }
 
 static ret_t func_bit_not(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   value_set_uint32(result, ~value_uint32(args->args));
 
   return RET_OK;
 }
 
 static ret_t func_div(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 2, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   value_set_double(result, value_double(args->args) / value_double(args->args + 1));
 
   return RET_OK;
 }
 
 static ret_t func_mod(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 2, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   value_set_int(result, value_int(args->args) % value_int(args->args + 1));
 
   return RET_OK;
 }
 
 static ret_t func_mul(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 2, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   value_set_double(result, value_double(args->args) * value_double(args->args + 1));
 
   return RET_OK;
 }
 
 static ret_t func_sub(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 2, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   value_set_double(result, value_double(args->args) - value_double(args->args + 1));
 
   return RET_OK;
@@ -1404,7 +1429,7 @@ static ret_t func_time_now_us(fscript_t* fscript, fscript_args_t* args, value_t*
 }
 
 static ret_t func_le(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 2, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   if (args->args[0].type == VALUE_TYPE_STRING && args->args[1].type == VALUE_TYPE_STRING) {
     value_set_bool(result, tk_str_cmp(value_str(args->args), value_str(args->args + 1)) <= 0);
   } else {
@@ -1415,7 +1440,7 @@ static ret_t func_le(fscript_t* fscript, fscript_args_t* args, value_t* result) 
 }
 
 static ret_t func_less(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 2, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   if (args->args[0].type == VALUE_TYPE_STRING && args->args[1].type == VALUE_TYPE_STRING) {
     value_set_bool(result, tk_str_cmp(value_str(args->args), value_str(args->args + 1)) < 0);
   } else {
@@ -1426,7 +1451,7 @@ static ret_t func_less(fscript_t* fscript, fscript_args_t* args, value_t* result
 }
 
 static ret_t func_ge(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 2, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   if (args->args[0].type == VALUE_TYPE_STRING && args->args[1].type == VALUE_TYPE_STRING) {
     value_set_bool(result, tk_str_cmp(value_str(args->args), value_str(args->args + 1)) >= 0);
   } else {
@@ -1436,7 +1461,7 @@ static ret_t func_ge(fscript_t* fscript, fscript_args_t* args, value_t* result) 
 }
 
 static ret_t func_great(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 2, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   if (args->args[0].type == VALUE_TYPE_STRING && args->args[1].type == VALUE_TYPE_STRING) {
     value_set_bool(result, tk_str_cmp(value_str(args->args), value_str(args->args + 1)) > 0);
   } else {
@@ -1447,7 +1472,7 @@ static ret_t func_great(fscript_t* fscript, fscript_args_t* args, value_t* resul
 }
 
 static ret_t func_not_eq(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 2, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
 
   if (args->args[0].type == VALUE_TYPE_STRING && args->args[1].type == VALUE_TYPE_STRING) {
     value_set_bool(result, !tk_str_eq(value_str(args->args), value_str(args->args + 1)));
@@ -1459,7 +1484,7 @@ static ret_t func_not_eq(fscript_t* fscript, fscript_args_t* args, value_t* resu
 }
 
 static ret_t func_eq(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 2, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
 
   if (args->args[0].type == VALUE_TYPE_STRING && args->args[1].type == VALUE_TYPE_STRING) {
     value_set_bool(result, tk_str_eq(value_str(args->args), value_str(args->args + 1)));
@@ -1472,56 +1497,56 @@ static ret_t func_eq(fscript_t* fscript, fscript_args_t* args, value_t* result) 
 
 #ifndef AWTK_LITE
 static ret_t func_pow(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 2, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   value_set_double(result, pow(value_double(args->args), value_double(args->args + 1)));
 
   return RET_OK;
 }
 
 static ret_t func_sqrt(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   value_set_double(result, sqrt(value_double(args->args)));
 
   return RET_OK;
 }
 
 static ret_t func_sin(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   value_set_double(result, sin(value_double(args->args)));
 
   return RET_OK;
 }
 
 static ret_t func_cos(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   value_set_double(result, cos(value_double(args->args)));
 
   return RET_OK;
 }
 
 static ret_t func_tan(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   value_set_double(result, tan(value_double(args->args)));
 
   return RET_OK;
 }
 
 static ret_t func_asin(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   value_set_double(result, asin(value_double(args->args)));
 
   return RET_OK;
 }
 
 static ret_t func_acos(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   value_set_double(result, acos(value_double(args->args)));
 
   return RET_OK;
 }
 
 static ret_t func_atan(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   value_set_double(result, atan(value_double(args->args)));
 
   return RET_OK;
@@ -1531,7 +1556,7 @@ static ret_t func_atan(fscript_t* fscript, fscript_args_t* args, value_t* result
 static ret_t func_min(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   double v1 = 0;
   double v2 = 0;
-  return_value_if_fail(args->size == 2, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
 
   v1 = value_double(args->args);
   v2 = value_double(args->args + 1);
@@ -1543,7 +1568,7 @@ static ret_t func_min(fscript_t* fscript, fscript_args_t* args, value_t* result)
 static ret_t func_max(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   double v1 = 0;
   double v2 = 0;
-  return_value_if_fail(args->size == 2, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
 
   v1 = value_double(args->args);
   v2 = value_double(args->args + 1);
@@ -1556,7 +1581,7 @@ static ret_t func_clamp(fscript_t* fscript, fscript_args_t* args, value_t* resul
   double v1 = 0;
   double v2 = 0;
   double v3 = 0;
-  return_value_if_fail(args->size == 3, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 3, RET_BAD_PARAMS);
 
   v1 = value_double(args->args);
   v2 = value_double(args->args + 1);
@@ -1567,31 +1592,31 @@ static ret_t func_clamp(fscript_t* fscript, fscript_args_t* args, value_t* resul
 }
 
 static ret_t func_round(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   value_set_double(result, round(value_double(args->args)));
   return RET_OK;
 }
 
 static ret_t func_floor(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   value_set_double(result, floor(value_double(args->args)));
   return RET_OK;
 }
 
 static ret_t func_ceil(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   value_set_double(result, ceil(value_double(args->args)));
   return RET_OK;
 }
 
 static ret_t func_abs(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 3, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 3, RET_BAD_PARAMS);
   value_set_double(result, tk_abs(value_double(args->args)));
   return RET_OK;
 }
 
 static ret_t func_len(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
 
   value_set_int(result, tk_strlen(value_str(args->args)));
 
@@ -1600,7 +1625,7 @@ static ret_t func_len(fscript_t* fscript, fscript_args_t* args, value_t* result)
 
 static ret_t func_toupper(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   str_t* str = &(fscript->str);
-  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   str_set(str, value_str(args->args));
   str_to_upper(str);
   value_set_str(result, str->str);
@@ -1610,7 +1635,7 @@ static ret_t func_toupper(fscript_t* fscript, fscript_args_t* args, value_t* res
 
 static ret_t func_tolower(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   str_t* str = &(fscript->str);
-  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   str_set(str, value_str(args->args));
   str_to_lower(str);
   value_set_str(result, str->str);
@@ -1620,7 +1645,7 @@ static ret_t func_tolower(fscript_t* fscript, fscript_args_t* args, value_t* res
 
 static ret_t func_trim(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   str_t* str = &(fscript->str);
-  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   str_set(str, value_str(args->args));
   str_trim(str, " \t\r\n");
   value_set_str(result, str->str);
@@ -1634,12 +1659,12 @@ static ret_t func_substr(fscript_t* fscript, fscript_args_t* args, value_t* resu
   uint32_t total_len = 0;
   uint32_t from = 0;
   uint32_t len = 0;
-  return_value_if_fail(args->size == 3, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 3, RET_BAD_PARAMS);
   org = value_str(args->args);
   from = value_uint32(args->args + 1);
   len = value_uint32(args->args + 2);
   total_len = tk_strlen(org);
-  return_value_if_fail(org != NULL, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(org != NULL, RET_BAD_PARAMS);
 
   if (from < total_len) {
     len = tk_min(len, (total_len - from));
@@ -1658,12 +1683,12 @@ static ret_t func_replace(fscript_t* fscript, fscript_args_t* args, value_t* res
   const char* org = NULL;
   const char* replace = NULL;
   const char* replace_with = NULL;
-  return_value_if_fail(args->size == 3, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 3, RET_BAD_PARAMS);
 
   org = value_str(args->args);
   replace = value_str(args->args + 1);
   replace_with = value_str(args->args + 2);
-  return_value_if_fail(org != NULL && replace != NULL && replace_with != NULL, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(org != NULL && replace != NULL && replace_with != NULL, RET_BAD_PARAMS);
 
   str_set(str, org);
   str_replace(str, replace, replace_with);
@@ -1677,11 +1702,11 @@ static ret_t func_contains(fscript_t* fscript, fscript_args_t* args, value_t* re
   const char* org = NULL;
   const char* target = NULL;
   value_set_bool(result, FALSE);
-  return_value_if_fail(args->size == 2, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
 
   org = value_str(args->args);
   target = value_str(args->args + 1);
-  return_value_if_fail(org != NULL && target != NULL, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(org != NULL && target != NULL, RET_BAD_PARAMS);
   value_set_bool(result, strstr(org, target) != NULL);
 
   return RET_OK;
@@ -1691,7 +1716,7 @@ static ret_t func_exec(fscript_t* fscript, fscript_args_t* args, value_t* result
   char buff[64];
   const char* cmd = NULL;
   const char* cmd_args = NULL;
-  return_value_if_fail(args->size == 2, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   cmd = value_str(args->args);
   cmd_args = value_str_ex(args->args + 1, buff, sizeof(buff) - 1);
   value_set_bool(result, object_exec(fscript->obj, cmd, cmd_args) == RET_OK);
@@ -1703,7 +1728,7 @@ static ret_t func_noop(fscript_t* fscript, fscript_args_t* args, value_t* result
 }
 
 static ret_t func_unset(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  return_value_if_fail(args->size == 1, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   value_set_bool(result,
                  object_exec(fscript->obj, OBJECT_CMD_REMOVE, value_str(args->args)) == RET_OK);
 
@@ -1754,6 +1779,8 @@ static const func_entry_t s_builtin_funcs[] = {
     {"string", func_str, 1},
     {"sub", func_sub, 2},
     {"substr", func_substr, 3},
+    {"has_error", func_has_error, 0},
+    {"clear_error", func_clear_error, 0},
     {"sum", func_sum, 8},
     {"tolower", func_tolower, 1},
     {"toupper", func_toupper, 1},
@@ -1814,6 +1841,8 @@ static fscript_func_call_t* fscript_func_call_create(fscript_parser_t* parser, c
   fscript_func_call_t* call = TKMEM_ZALLOC(fscript_func_call_t);
   return_value_if_fail(call != NULL, NULL);
 
+  call->row = parser->row;
+  call->col = parser->col;
   tk_strncpy(func_name, name, tk_min(size, TK_NAME_LEN));
   for (i = 0; i < ARRAY_SIZE(s_builtin_funcs); i++) {
     const func_entry_t* iter = s_builtin_funcs + i;

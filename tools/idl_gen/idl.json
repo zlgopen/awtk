@@ -31174,7 +31174,7 @@
           }
         ],
         "annotation": {},
-        "desc": "创建引擎对象。",
+        "desc": "创建引擎对象，并解析代码。",
         "name": "fscript_create",
         "return": {
           "type": "fscript_t*",
@@ -31195,8 +31195,39 @@
           }
         ],
         "annotation": {},
-        "desc": "",
+        "desc": "执行解析后的代码。",
         "name": "fscript_exec",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "fscript_t*",
+            "name": "fscript",
+            "desc": "脚本引擎对象。"
+          },
+          {
+            "type": "ret_t",
+            "name": "code",
+            "desc": "错误码。"
+          },
+          {
+            "type": "const char*",
+            "name": "func",
+            "desc": "函数名。"
+          },
+          {
+            "type": "const char*",
+            "name": "message",
+            "desc": "错误消息。"
+          }
+        ],
+        "annotation": {},
+        "desc": "用于扩展函数设置遇到的错误。",
+        "name": "fscript_set_error",
         "return": {
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
