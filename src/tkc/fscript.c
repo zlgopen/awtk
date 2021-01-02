@@ -895,7 +895,7 @@ static ret_t fexpr_parse_compare(fscript_parser_t* parser, value_t* result) {
   return_value_if_fail(fexpr_parse_sum(parser, result) == RET_OK, RET_FAIL);
 
   t = fscript_parser_get_token_ex(parser, TRUE);
-  if (t == NULL || t->type != TOKEN_FUNC) {
+  if (t == NULL || t->type != TOKEN_FUNC || tk_str_eq(t->token, "=")) {
     fscript_parser_unget_token(parser);
     return RET_OK;
   }
@@ -927,7 +927,7 @@ static ret_t fexpr_parse_logic(fscript_parser_t* parser, value_t* result) {
 
   while (TRUE) {
     t = fscript_parser_get_token_ex(parser, TRUE);
-    if (t == NULL || t->type != TOKEN_FUNC) {
+    if (t == NULL || t->type != TOKEN_FUNC || tk_str_eq(t->token, "=")) {
       fscript_parser_unget_token(parser);
       break;
     }
@@ -949,7 +949,7 @@ static ret_t fexpr_parse_logic(fscript_parser_t* parser, value_t* result) {
   return RET_OK;
 }
 
-static ret_t fexpr_parse(fscript_parser_t* parser, value_t* result) {
+static ret_t fexpr_parse_question(fscript_parser_t* parser, value_t* result) {
   value_t v;
   ret_t ret = RET_OK;
   token_t* t = NULL;
@@ -982,6 +982,31 @@ static ret_t fexpr_parse(fscript_parser_t* parser, value_t* result) {
   }
 
   return ret;
+}
+
+static ret_t fexpr_parse(fscript_parser_t* parser, value_t* result) {
+  value_t v;
+  token_t* t = NULL;
+  fscript_args_t* args = NULL;
+  fscript_func_call_t* acall = NULL;
+
+  value_set_int(result, 0);
+  return_value_if_fail(fexpr_parse_question(parser, result) == RET_OK, RET_FAIL);
+
+  t = fscript_parser_get_token_ex(parser, TRUE);
+  if(t != NULL && tk_str_eq(t->token, "=")) {
+    acall = fscript_func_call_create(parser, t->token, t->size);
+    return_value_if_fail(acall != NULL, RET_OOM);
+    args = &(acall->args);
+    func_args_push(args, result);
+    value_set_func(result, acall);
+    fexpr_parse_question(parser, &v);
+    func_args_push(args, &v);
+  } else {
+    fscript_parser_unget_token(parser);
+  }
+
+  return RET_OK;
 }
 
 fscript_t* fscript_create_impl(fscript_parser_t* parser) {
@@ -1694,6 +1719,7 @@ typedef struct _func_entry_t {
 static const func_entry_t s_builtin_funcs[] = {
     {"print", func_print, 4},
     {"expr", func_expr, 4},
+    {"=", func_set, 2},
     {"set", func_set, 2},
     {"max", func_max, 2},
     {"min", func_min, 2},
