@@ -435,7 +435,7 @@ ret_t value_deep_copy(value_t* dst, const value_t* src) {
 
   switch (dst->type) {
     case VALUE_TYPE_STRING: {
-      dst->value.str = tk_strdup(src->value.str);
+      dst->value.str = src->value.str != NULL ? tk_strdup(src->value.str) : NULL;
       dst->free_handle = dst->value.str != NULL;
       break;
     }

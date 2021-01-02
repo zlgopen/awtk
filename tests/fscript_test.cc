@@ -989,3 +989,36 @@ TEST(FExr, if_statement2) {
 
   OBJECT_UNREF(obj);
 }
+
+TEST(FExr, while_statement1) {
+  value_t v;
+  object_t* obj = object_default_create();
+
+  fscript_eval(obj, "abc=0;while(abc<100) {abc = abc+1};abc", &v);
+  ASSERT_EQ(value_int(&v), 100);
+  value_reset(&v);
+
+  OBJECT_UNREF(obj);
+}
+
+TEST(FExr, while_statement2) {
+  value_t v;
+  object_t* obj = object_default_create();
+
+  fscript_eval(obj, "abc=0;while(abc<100) {abc = abc+1;if(abc > 50) {break}};abc", &v);
+  ASSERT_EQ(value_int(&v), 51);
+  value_reset(&v);
+
+  OBJECT_UNREF(obj);
+}
+
+TEST(FExr, while_statement3) {
+  value_t v;
+  object_t* obj = object_default_create();
+
+  fscript_eval(obj, "a=0;b=0;while(a<100) {a=a+1;if((a > 20) && (a<=50)) {continue};b=b+1};b", &v);
+  ASSERT_EQ(value_int(&v), 70);
+  value_reset(&v);
+
+  OBJECT_UNREF(obj);
+}

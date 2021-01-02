@@ -89,6 +89,9 @@ typedef struct _fscript_t {
   fscript_func_call_t* curr;
   fscript_func_call_t* first;
   fscript_func_call_t* error_func;
+  bool_t breaked;
+  bool_t continued;
+  uint8_t while_count;
 } fscript_t;
 
 typedef ret_t (*fscript_func_t)(fscript_t* fscript, fscript_args_t* args, value_t* v);

@@ -36,8 +36,7 @@ static ret_t func_while(fscript_t* fscript, fscript_args_t* args, value_t* resul
 static ret_t func_set(fscript_t* fscript, fscript_args_t* args, value_t* result);
 static ret_t fscript_exec_func(fscript_t* fscript, fscript_func_call_t* iter, value_t* result);
 
-ret_t fscript_set_error(fscript_t* fscript, ret_t code, const char* func,
-                               const char* message) {
+ret_t fscript_set_error(fscript_t* fscript, ret_t code, const char* func, const char* message) {
   fscript->error_code = code;
   fscript->error_func = fscript->curr;
   fscript->error_message = tk_str_copy(fscript->error_message, message);
@@ -218,6 +217,17 @@ static ret_t fscript_eval_arg(fscript_t* fscript, fscript_func_call_t* iter, uin
       value_copy(d, s); /*func_set accept id/str as first param*/
     } else {
       const char* name = value_str(s);
+      if (fscript->while_count > 0) {
+        if (tk_str_eq(name, "break")) {
+          fscript->breaked = TRUE;
+          s->type = save_type;
+          return RET_OK;
+        } else if (tk_str_eq(name, "continue")) {
+          fscript->continued = TRUE;
+          s->type = save_type;
+          return RET_OK;
+        }
+      }
       if (fscript_get_var(fscript, name, d) != RET_OK) {
         if (name == NULL || *name != '$') {
           /*if it is not $var, consider id as string*/
@@ -256,16 +266,29 @@ static ret_t fscript_exec_if(fscript_t* fscript, fscript_func_call_t* iter, valu
 
 static ret_t fscript_exec_while(fscript_t* fscript, fscript_func_call_t* iter, value_t* result) {
   value_t condition;
+  bool_t done = FALSE;
   return_value_if_fail(iter->args.size > 1, RET_FAIL);
-  value_set_int(&condition, 0);
 
-  while (fscript_eval_arg(fscript, iter, 0, &condition) == RET_OK && value_bool(&condition)) {
+  fscript->while_count++;
+  value_set_int(&condition, 0);
+  while (!done && fscript_eval_arg(fscript, iter, 0, &condition) == RET_OK &&
+         value_bool(&condition)) {
     uint32_t i = 1;
+    ret_t ret = RET_OK;
     for (i = 1; i < iter->args.size; i++) {
       value_reset(result);
-      fscript_eval_arg(fscript, iter, i, result);
+      ret = fscript_eval_arg(fscript, iter, i, result);
+      if (fscript->breaked) {
+        done = TRUE;
+        fscript->breaked = FALSE;
+        break;
+      } else if (fscript->continued) {
+        fscript->continued = FALSE;
+        break;
+      }
     }
   }
+  fscript->while_count--;
 
   return RET_OK;
 }
@@ -292,7 +315,11 @@ static ret_t fscript_exec_ext_func(fscript_t* fscript, fscript_func_call_t* iter
   args.size = iter->args.size;
   return_value_if_fail((args.args != NULL || args.size == 0), RET_OOM);
   for (i = 0; i < iter->args.size; i++) {
-    fscript_eval_arg(fscript, iter, i, args.args + i);
+    ret = fscript_eval_arg(fscript, iter, i, args.args + i);
+    if (fscript->breaked || fscript->continued) {
+      func_args_deinit(&args);
+      return RET_OK;
+    }
   }
 
   value_set_int(result, 0);
