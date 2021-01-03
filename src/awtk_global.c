@@ -35,6 +35,7 @@
 #include "base/window_manager.h"
 #include "base/widget_factory.h"
 #include "base/assets_manager.h"
+#include "fscript_ext/fscript_ext.h"
 
 #ifdef WITH_DATA_READER_WRITER
 #include "tkc/data_reader_factory.h"
@@ -153,6 +154,7 @@ ret_t tk_init_internal(void) {
 
   s_ui_thread_id = tk_thread_self();
   fscript_global_init();
+  fscript_ext_init();
 #ifdef WITH_DATA_READER_WRITER
   data_writer_factory_set(data_writer_factory_create());
   data_reader_factory_set(data_reader_factory_create());
