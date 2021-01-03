@@ -137,6 +137,7 @@ EXPORTS
     value_destroy
     value_reset
     value_cast
+    value_type_size
     action_thread_pool_create
     action_thread_pool_exec
     action_thread_pool_destroy
@@ -539,6 +540,17 @@ EXPORTS
     tokenizer_next_int
     tokenizer_next_float
     tokenizer_deinit
+    typed_array_create
+    typed_array_extend
+    typed_array_get
+    typed_array_set
+    typed_array_insert
+    typed_array_remove
+    typed_array_pop
+    typed_array_tail
+    typed_array_push
+    typed_array_clear
+    typed_array_destroy
     url_create
     url_set_schema
     url_set_user_name

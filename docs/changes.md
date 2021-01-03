@@ -1,5 +1,13 @@
 # 最新动态
 
+2021/01/03
+  * 增加typed\_array。
+  * 增加函数value\_type\_size。
+  * fscript中的数学函数移到fscript\_math中，作为可选组件。
+
+2021/01/02
+  * fscript 支持break/continue。
+  
 2021/01/01
   * fscript 支持类似C语言的if/while语句。
   * 完善fscript错误处理。

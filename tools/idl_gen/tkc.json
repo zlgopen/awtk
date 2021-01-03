@@ -3374,6 +3374,24 @@
           "type": "value_t*",
           "desc": "对象。"
         }
+      },
+      {
+        "params": [
+          {
+            "type": "value_type_t",
+            "name": "type",
+            "desc": "类型。"
+          }
+        ],
+        "annotation": {
+          "static": true
+        },
+        "desc": "获取指定类型数据大小。",
+        "name": "value_type_size",
+        "return": {
+          "type": "uint32_t",
+          "desc": "返回对应数据类型的长度。"
+        }
       }
     ],
     "events": [],
@@ -5331,7 +5349,7 @@
             "desc": "数组对象。"
           },
           {
-            "type": "uint32_t*",
+            "type": "uint32_t",
             "name": "capacity",
             "desc": "数组的初始容量。"
           },
@@ -5397,7 +5415,7 @@
         "desc": "二分查找(确保数组有序)。",
         "name": "darray_bsearch_index",
         "return": {
-          "type": "int",
+          "type": "int32_t",
           "desc": "如果找到，返回满足条件的对象的位置，否则返回-1。"
         }
       },
@@ -5465,7 +5483,7 @@
         "desc": "查找第一个满足条件的元素，并返回位置。",
         "name": "darray_find_index",
         "return": {
-          "type": "int",
+          "type": "int32_t",
           "desc": "如果找到，返回满足条件的对象的位置，否则返回-1。"
         }
       },
@@ -14033,6 +14051,291 @@
     "header": "tkc/tokenizer.h",
     "desc": "从字符串中解析出一个一个的token。\n\n```c\ntokenizer_t tokenizer;\ntokenizer_t* t = tokenizer_init(&tokenizer, \"20,111.2,22.3,333.3,44,555.5\", 0xffffff, \",\");\n\nwhile(tokenizer_has_more(t)) {\ndouble v = tokenizer_next_float(t, 0);\nlog_debug(\"%lf\\n\", v);\n}\n\ntokenizer_deinit(t);\n```",
     "name": "tokenizer_t",
+    "level": 1
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "value_type_t",
+            "name": "type",
+            "desc": "元素的类型。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "capacity",
+            "desc": "数组的初始容量(元素个数)。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建typed_array对象。",
+        "name": "typed_array_create",
+        "return": {
+          "type": "typed_array_t*",
+          "desc": "数组对象。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "value_type_t",
+            "name": "type",
+            "desc": "元素的类型。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "capacity",
+            "desc": "数组的容量(元素个数)。"
+          }
+        ],
+        "annotation": {},
+        "desc": "扩展typed_array到指定容量。",
+        "name": "typed_array_extend",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "typed_array_t*",
+            "name": "typed_array",
+            "desc": "数组对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "index",
+            "desc": "序数。"
+          },
+          {
+            "type": "value_t*",
+            "name": "v",
+            "desc": "返回的元素。"
+          }
+        ],
+        "annotation": {},
+        "desc": "获取指定序数的元素。",
+        "name": "typed_array_get",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "typed_array_t*",
+            "name": "typed_array",
+            "desc": "数组对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "index",
+            "desc": "序数。"
+          },
+          {
+            "type": "const value_t*",
+            "name": "v",
+            "desc": "元素。"
+          }
+        ],
+        "annotation": {},
+        "desc": "设置指定序数的元素。",
+        "name": "typed_array_set",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "typed_array_t*",
+            "name": "typed_array",
+            "desc": "数组对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "index",
+            "desc": "序数。"
+          },
+          {
+            "type": "const value_t*",
+            "name": "v",
+            "desc": "元素。"
+          }
+        ],
+        "annotation": {},
+        "desc": "在指定序数插入元素。",
+        "name": "typed_array_insert",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "typed_array_t*",
+            "name": "typed_array",
+            "desc": "数组对象。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "index",
+            "desc": "位置序数。"
+          }
+        ],
+        "annotation": {},
+        "desc": "删除指定位置的元素。",
+        "name": "typed_array_remove",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "typed_array_t*",
+            "name": "typed_array",
+            "desc": "数组对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "弹出最后一个元素。",
+        "name": "typed_array_pop",
+        "return": {
+          "type": "void*",
+          "desc": "成功返回最后一个元素，失败返回NULL。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "typed_array_t*",
+            "name": "typed_array",
+            "desc": "数组对象。"
+          },
+          {
+            "type": "value_t*",
+            "name": "v",
+            "desc": "返回的元素。"
+          }
+        ],
+        "annotation": {},
+        "desc": "返回最后一个元素。",
+        "name": "typed_array_tail",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "typed_array_t*",
+            "name": "typed_array",
+            "desc": "数组对象。"
+          },
+          {
+            "type": "const value_t*",
+            "name": "v",
+            "desc": "待追加的元素。"
+          }
+        ],
+        "annotation": {},
+        "desc": "在尾巴追加一个元素。",
+        "name": "typed_array_push",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "typed_array_t*",
+            "name": "typed_array",
+            "desc": "数组对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "清除全部元素。",
+        "name": "typed_array_clear",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [
+          {
+            "type": "typed_array_t*",
+            "name": "typed_array",
+            "desc": "数组对象。"
+          }
+        ],
+        "annotation": {},
+        "desc": "销毁typed_array对象。",
+        "name": "typed_array_destroy",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "size",
+        "desc": "数组中元素的个数。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "capacity",
+        "desc": "数组的容量大小。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "data",
+        "desc": "数组中的元素。",
+        "type": "uint8_t*",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "type",
+        "desc": "元素的类型。",
+        "type": "value_type_t",
+        "annotation": {
+          "readable": true
+        }
+      },
+      {
+        "name": "element_size",
+        "desc": "单个元素的大小。",
+        "type": "uint32_t",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "tkc/typed_array.h",
+    "desc": "带类型的动态数组，根据元素个数动态调整数组的容量。\n\n示例：\n\n```c\nvalue_t v;\ntyped_array_t* typed_array = typed_array_create(VALUE_TYPE_INT, 10);\ntyped_array_push(a, value_set_int(&v, 123));\ntyped_array_push(a, value_set_int(&v, 234));\n...\ntyped_array_destroy(typed_array);\n```",
+    "name": "typed_array_t",
     "level": 1
   },
   {
