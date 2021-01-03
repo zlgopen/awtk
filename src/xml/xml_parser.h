@@ -54,12 +54,12 @@ XmlParser* xml_parser_create(void);
  *
  * 设置builder。
  *
- * @param {XmlParser*} thiz parser对象。
+ * @param {XmlParser*} parser parser对象。
  * @param {XmlBuilder*} builder builder对象。
  *
  * @return {void} 返回无。
  */
-void xml_parser_set_builder(XmlParser* thiz, XmlBuilder* builder);
+void xml_parser_set_builder(XmlParser* parser, XmlBuilder* builder);
 
 /**
  * @method xml_parser_set_trim_text
@@ -68,48 +68,48 @@ void xml_parser_set_builder(XmlParser* thiz, XmlBuilder* builder);
  *
  * > 默认值为去掉文本两端的空白字符，如果不x希望去掉，调用本函数设置为FALSE。
  *
- * @param {XmlParser*} thiz parser对象。
+ * @param {XmlParser*} parser parser对象。
  * @param {bool_t} trim_text 是否去掉文本两端的空白字符。
  *
  * @return {void} 返回无。
  */
-void xml_parser_set_trim_text(XmlParser* thiz, bool_t trim_text);
+void xml_parser_set_trim_text(XmlParser* parser, bool_t trim_text);
 
 /**
  * @method xml_parser_parse
  *
  * 解析数据。
  *
- * @param {XmlParser*} thiz parser对象。
+ * @param {XmlParser*} parser parser对象。
  * @param {const char*} xml 数据。
  * @param {int} length 数据长度。
  *
  * @return {void} 返回无。
  */
-void xml_parser_parse(XmlParser* thiz, const char* xml, int length);
+void xml_parser_parse(XmlParser* parser, const char* xml, int length);
 
 /**
  * @method xml_parser_parse_file
  *
  * 解析文件。
  *
- * @param {XmlParser*} thiz parser对象。
+ * @param {XmlParser*} parser parser对象。
  * @param {const char*} filename 文件名。
  *
  * @return {void} 返回无。
  */
-void xml_parser_parse_file(XmlParser* thiz, const char* filename);
+void xml_parser_parse_file(XmlParser* parser, const char* filename);
 
 /**
  * @method xml_parser_destroy
  *
  * 销毁parser对象。
  *
- * @param {XmlParser*} thiz parser对象。
+ * @param {XmlParser*} parser parser对象。
  *
  * @return {void} 返回无。
  */
-void xml_parser_destroy(XmlParser* thiz);
+void xml_parser_destroy(XmlParser* parser);
 
 END_C_DECLS
 

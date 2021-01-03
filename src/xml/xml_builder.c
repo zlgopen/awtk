@@ -21,64 +21,64 @@
 
 #include "xml/xml_builder.h"
 
-void xml_builder_on_start(XmlBuilder* thiz, const char* tag, const char** attrs) {
-  return_if_fail(thiz != NULL && thiz->on_start != NULL);
+void xml_builder_on_start(XmlBuilder* builder, const char* tag, const char** attrs) {
+  return_if_fail(builder != NULL && builder->on_start != NULL);
 
-  thiz->on_start(thiz, tag, attrs);
+  builder->on_start(builder, tag, attrs);
 
   return;
 }
 
-void xml_builder_on_end(XmlBuilder* thiz, const char* tag) {
-  return_if_fail(thiz != NULL);
-  if (thiz->on_end != NULL) {
-    thiz->on_end(thiz, tag);
+void xml_builder_on_end(XmlBuilder* builder, const char* tag) {
+  return_if_fail(builder != NULL);
+  if (builder->on_end != NULL) {
+    builder->on_end(builder, tag);
   }
 
   return;
 }
 
-void xml_builder_on_text(XmlBuilder* thiz, const char* text, size_t length) {
-  return_if_fail(thiz != NULL);
-  if (thiz->on_text != NULL) {
-    thiz->on_text(thiz, text, length);
+void xml_builder_on_text(XmlBuilder* builder, const char* text, size_t length) {
+  return_if_fail(builder != NULL);
+  if (builder->on_text != NULL) {
+    builder->on_text(builder, text, length);
   }
 
   return;
 }
 
-void xml_builder_on_comment(XmlBuilder* thiz, const char* text, size_t length) {
-  return_if_fail(thiz != NULL);
-  if (thiz->on_comment != NULL) {
-    thiz->on_comment(thiz, text, length);
+void xml_builder_on_comment(XmlBuilder* builder, const char* text, size_t length) {
+  return_if_fail(builder != NULL);
+  if (builder->on_comment != NULL) {
+    builder->on_comment(builder, text, length);
   }
 
   return;
 }
 
-void xml_builder_on_pi(XmlBuilder* thiz, const char* tag, const char** attrs) {
-  return_if_fail(thiz != NULL);
-  if (thiz->on_pi != NULL) {
-    thiz->on_pi(thiz, tag, attrs);
+void xml_builder_on_pi(XmlBuilder* builder, const char* tag, const char** attrs) {
+  return_if_fail(builder != NULL);
+  if (builder->on_pi != NULL) {
+    builder->on_pi(builder, tag, attrs);
   }
 
   return;
 }
 
-void xml_builder_on_error(XmlBuilder* thiz, int line, int row, const char* message) {
-  return_if_fail(thiz != NULL);
-  if (thiz->on_error != NULL) {
-    thiz->on_error(thiz, line, row, message);
+void xml_builder_on_error(XmlBuilder* builder, int line, int col, const char* message) {
+  return_if_fail(builder != NULL);
+  if (builder->on_error != NULL) {
+    builder->on_error(builder, line, col, message);
   } else {
-    log_debug("%d:%d %s\n", line, row, message);
+    log_debug("%d:%d %s\n", line, col, message);
   }
 
   return;
 }
 
-void xml_builder_destroy(XmlBuilder* thiz) {
-  if (thiz != NULL && thiz->destroy != NULL) {
-    thiz->destroy(thiz);
+void xml_builder_destroy(XmlBuilder* builder) {
+  if (builder != NULL && builder->destroy != NULL) {
+    builder->destroy(builder);
   }
 
   return;
