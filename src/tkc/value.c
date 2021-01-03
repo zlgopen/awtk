@@ -769,3 +769,56 @@ const char* value_str_ex(const value_t* v, char* buff, uint32_t size) {
 
   return buff;
 }
+
+uint32_t value_type_size(value_type_t type) {
+  switch (type) {
+    case VALUE_TYPE_INT8: {
+      return sizeof(int8_t);
+    }
+    case VALUE_TYPE_UINT8: {
+      return sizeof(uint8_t);
+    }
+    case VALUE_TYPE_INT16: {
+      return sizeof(int16_t);
+    }
+    case VALUE_TYPE_UINT16: {
+      return sizeof(uint16_t);
+    }
+    case VALUE_TYPE_INT32: {
+      return sizeof(int32_t);
+    }
+    case VALUE_TYPE_UINT32: {
+      return sizeof(uint32_t);
+    }
+    case VALUE_TYPE_INT64: {
+      return sizeof(int64_t);
+    }
+    case VALUE_TYPE_UINT64: {
+      return sizeof(uint64_t);
+    }
+    case VALUE_TYPE_FLOAT: {
+      return sizeof(float_t);
+    }
+    case VALUE_TYPE_FLOAT32: {
+      return sizeof(float);
+    }
+    case VALUE_TYPE_DOUBLE: {
+      return sizeof(double);
+    }
+    case VALUE_TYPE_OBJECT: 
+    case VALUE_TYPE_STRING: 
+    case VALUE_TYPE_WSTRING: 
+    case VALUE_TYPE_POINTER: {
+      return sizeof(void*);
+    }
+    case VALUE_TYPE_BINARY: {
+      return sizeof(binary_data_t);
+    }
+    case VALUE_TYPE_SIZED_STRING: {
+      return sizeof(sized_str_t);
+    }
+    default: {
+      return sizeof(void*);
+    }
+  }
+}

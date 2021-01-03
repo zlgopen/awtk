@@ -754,6 +754,16 @@ ret_t value_reset(value_t* v);
  */
 value_t* value_cast(value_t* value);
 
+/**
+ * @method value_type_size
+ * 获取指定类型数据大小。
+ * @annotation ["static"]
+ * @param {value_type_t} type 类型。
+ *
+ * @return {uint32_t} 返回对应数据类型的长度。
+ */
+uint32_t value_type_size(value_type_t type);
+
 END_C_DECLS
 
 #endif /*TK_VALUE_H*/
