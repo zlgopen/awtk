@@ -73,7 +73,7 @@ static bool_t darray_extend(darray_t* darray) {
   }
 }
 
-int darray_find_index(darray_t* darray, void* data) {
+int32_t darray_find_index(darray_t* darray, void* data) {
   int32_t i = 0;
   int32_t size = 0;
   void** elms = NULL;
@@ -224,7 +224,7 @@ ret_t darray_find_all(darray_t* darray, tk_compare_t cmp, void* ctx, darray_t* m
 }
 
 void* darray_find(darray_t* darray, void* data) {
-  int pos = darray_find_index(darray, data);
+  int32_t pos = darray_find_index(darray, data);
 
   return pos >= 0 ? darray->elms[pos] : NULL;
 }
@@ -343,11 +343,11 @@ ret_t darray_destroy(darray_t* darray) {
   return RET_OK;
 }
 
-int darray_bsearch_index(darray_t* darray, tk_compare_t cmp, void* ctx) {
-  int low = 0;
-  int mid = 0;
-  int high = 0;
-  int result = 0;
+int32_t darray_bsearch_index(darray_t* darray, tk_compare_t cmp, void* ctx) {
+  int32_t low = 0;
+  int32_t mid = 0;
+  int32_t high = 0;
+  int32_t result = 0;
   void* iter = NULL;
   return_value_if_fail(darray != NULL && darray->size > 0, -1);
 
@@ -375,7 +375,7 @@ int darray_bsearch_index(darray_t* darray, tk_compare_t cmp, void* ctx) {
 }
 
 void* darray_bsearch(darray_t* darray, tk_compare_t cmp, void* ctx) {
-  int index = darray_bsearch_index(darray, cmp, ctx);
+  int32_t index = darray_bsearch_index(darray, cmp, ctx);
   if (index >= 0) {
     return darray->elms[index];
   } else {
