@@ -807,6 +807,10 @@ EXPORTS
     object_default_clear_props
     object_default_find_prop
     object_locker_create
+    object_rbuffer_create
+    object_typed_array_create
+    object_wbuffer_create
+    object_wbuffer_create_extendable
     tk_ostream_write
     tk_ostream_seek
     tk_ostream_write_len

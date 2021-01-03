@@ -53197,6 +53197,26 @@
           "type": "ret_t",
           "desc": "返回RET_OK表示成功，否则表示失败。"
         }
+      },
+      {
+        "params": [],
+        "annotation": {},
+        "desc": "注册object函数。",
+        "name": "fscript_object_register",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {},
+        "desc": "注册typed array函数。",
+        "name": "fscript_typed_array_register",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
       }
     ],
     "events": [],
@@ -63393,6 +63413,150 @@
     "header": "tkc/object_locker.h",
     "desc": "对现有的object对象进行装饰，添加访问互斥功能。",
     "name": "object_locker_t",
+    "parent": "object_t",
+    "level": 3
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "const uint8_t*",
+            "name": "data",
+            "desc": "缓冲区。"
+          },
+          {
+            "type": "uint16_t",
+            "name": "capacity",
+            "desc": "缓冲区的容量。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建rbuffer对象。",
+        "name": "object_rbuffer_create",
+        "return": {
+          "type": "object_t*",
+          "desc": "返回object对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "rbuffer",
+        "desc": "rbuffer对象。",
+        "type": "rbuffer_t*",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "tkc/object_rbuffer.h",
+    "desc": "将rbuffer包装成object。",
+    "name": "object_rbuffer_t",
+    "parent": "object_t",
+    "level": 3
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "value_type_t",
+            "name": "type",
+            "desc": "元素的类型。"
+          },
+          {
+            "type": "uint32_t",
+            "name": "capacity",
+            "desc": "数组的初始容量(元素个数)。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建对象。",
+        "name": "object_typed_array_create",
+        "return": {
+          "type": "object_t*",
+          "desc": "返回object对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "arr",
+        "desc": "typed array对象。",
+        "type": "typed_array_t*",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "tkc/object_typed_array.h",
+    "desc": "将typed_array包装成object。",
+    "name": "object_typed_array_t",
+    "parent": "object_t",
+    "level": 3
+  },
+  {
+    "type": "class",
+    "methods": [
+      {
+        "params": [
+          {
+            "type": "uint8_t*",
+            "name": "data",
+            "desc": "缓冲区。"
+          },
+          {
+            "type": "uint16_t",
+            "name": "capacity",
+            "desc": "缓冲区的容量。"
+          }
+        ],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建wbuffer对象。",
+        "name": "object_wbuffer_create",
+        "return": {
+          "type": "object_t*",
+          "desc": "返回object对象。"
+        }
+      },
+      {
+        "params": [],
+        "annotation": {
+          "constructor": true
+        },
+        "desc": "创建可扩展的wbuffer对象。",
+        "name": "object_wbuffer_create_extendable",
+        "return": {
+          "type": "object_t*",
+          "desc": "返回object对象。"
+        }
+      }
+    ],
+    "events": [],
+    "properties": [
+      {
+        "name": "wbuffer",
+        "desc": "wbuffer对象。",
+        "type": "wbuffer_t*",
+        "annotation": {
+          "readable": true
+        }
+      }
+    ],
+    "header": "tkc/object_wbuffer.h",
+    "desc": "将wbuffer包装成object。",
+    "name": "object_wbuffer_t",
     "parent": "object_t",
     "level": 3
   },

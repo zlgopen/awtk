@@ -5,6 +5,7 @@
 #include "tkc/time_now.h"
 #include "tkc/fscript.h"
 #include "tkc/object_default.h"
+#include "fscript_ext/fscript_ext.h"
 
 static ret_t run_fscript(const char* code, uint32_t times) {
   value_t v;
@@ -45,6 +46,9 @@ static ret_t run_fscript_file(const char* filename, uint32_t times) {
 int main(int argc, char* argv[]) {
   platform_prepare();
 
+  fscript_global_init();
+  fscript_ext_init();
+
   tk_mem_dump();
   if (argc < 2) {
     printf("Usage: %s script\n", argv[0]);
@@ -59,6 +63,7 @@ int main(int argc, char* argv[]) {
     }
   }
   tk_mem_dump();
+  fscript_global_deinit();
 
   return 0;
 }

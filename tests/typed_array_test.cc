@@ -1,4 +1,5 @@
 ﻿#include "tkc/typed_array.h"
+#include "tkc/object_typed_array.h"
 #include "gtest/gtest.h"
 
 TEST(TypedArray, basic) {
@@ -157,6 +158,28 @@ TEST(TypedArray, insert_uint32) {
   ASSERT_EQ(value_uint32(&v), 0x11223344);
   ASSERT_EQ(typed_array_clear(a), RET_OK);
   ASSERT_EQ(a->size, 0);
+
+  typed_array_destroy(a);
+}
+
+TEST(TypedArray, object1) {
+  value_t v;
+  uint8_t i  = 0;
+  object_t* obj = object_typed_array_create(VALUE_TYPE_UINT32, 0);
+  typed_array_t* a = OBJECT_TYPED_ARRAY(obj)->arr;
+
+  ASSERT_EQ(a != NULL, true);
+  ASSERT_EQ(a->element_size, sizeof(uint32_t));
+  for(i = 0; i < 255; i++) {
+    ASSERT_EQ(a->size, i);
+    ASSERT_EQ(typed_array_insert(a, 0, value_set_uint32(&v, i)), RET_OK);
+    ASSERT_EQ(typed_array_get(a, 0, &v), RET_OK);
+    ASSERT_EQ(value_uint32(&v), i);
+  }
+  
+  ASSERT_EQ(object_get_prop_int(obj, "size", 0), i);
+  ASSERT_EQ(object_get_prop_int(obj, "byte_size", 0), i*sizeof(uint32_t));
+  ASSERT_EQ(object_get_prop_pointer(obj, "data"), (void*)a->data);
 
   typed_array_destroy(a);
 }
