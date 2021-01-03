@@ -1813,6 +1813,7 @@ EXPORTS
     font_loader_ft
     font_loader_stb
     font_stb_create
+    fscript_math_register
     image_loader_stb
     stb_load_image
     input_method_default_create

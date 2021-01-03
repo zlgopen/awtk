@@ -52874,6 +52874,16 @@
           "type": "font_t*",
           "desc": "返回字体对象。"
         }
+      },
+      {
+        "params": [],
+        "annotation": {},
+        "desc": "注册数学函数。",
+        "name": "fscript_math_register",
+        "return": {
+          "type": "ret_t",
+          "desc": "返回RET_OK表示成功，否则表示失败。"
+        }
       }
     ],
     "events": [],

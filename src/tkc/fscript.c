@@ -1522,64 +1522,6 @@ static ret_t func_eq(fscript_t* fscript, fscript_args_t* args, value_t* result) 
   return RET_OK;
 }
 
-#ifndef AWTK_LITE
-static ret_t func_pow(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
-  value_set_double(result, pow(value_double(args->args), value_double(args->args + 1)));
-
-  return RET_OK;
-}
-
-static ret_t func_sqrt(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
-  value_set_double(result, sqrt(value_double(args->args)));
-
-  return RET_OK;
-}
-
-static ret_t func_sin(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
-  value_set_double(result, sin(value_double(args->args)));
-
-  return RET_OK;
-}
-
-static ret_t func_cos(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
-  value_set_double(result, cos(value_double(args->args)));
-
-  return RET_OK;
-}
-
-static ret_t func_tan(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
-  value_set_double(result, tan(value_double(args->args)));
-
-  return RET_OK;
-}
-
-static ret_t func_asin(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
-  value_set_double(result, asin(value_double(args->args)));
-
-  return RET_OK;
-}
-
-static ret_t func_acos(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
-  value_set_double(result, acos(value_double(args->args)));
-
-  return RET_OK;
-}
-
-static ret_t func_atan(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
-  value_set_double(result, atan(value_double(args->args)));
-
-  return RET_OK;
-}
-#endif /*AWTK_LITE*/
-
 static ret_t func_min(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   double v1 = 0;
   double v2 = 0;
@@ -1784,6 +1726,7 @@ static const func_entry_t s_builtin_funcs[] = {
     {"!", func_not, 1},
     {"minus", func_minus, 1},
     {"||", func_or, 2},
+    {"and", func_and, 2},
     {"exec", func_exec, 2},
     {"join", func_join, 8},
     {"if", func_if, 3},
@@ -1818,17 +1761,6 @@ static const func_entry_t s_builtin_funcs[] = {
     {"floor", func_floor, 1},
     {"ceil", func_ceil, 1},
     {"clamp", func_clamp, 3},
-#ifndef AWTK_LITE
-    {"acos", func_acos, 1},
-    {"and", func_and, 2},
-    {"asin", func_asin, 1},
-    {"atan", func_atan, 1},
-    {"cos", func_cos, 1},
-    {"sin", func_sin, 1},
-    {"sqrt", func_sqrt, 1},
-    {"tan", func_tan, 1},
-    {"pow", func_pow, 2},
-#endif /*AWTK_LITE*/
     {"contains", func_contains, 2},
     {"div", func_div, 2},
     {"eq", func_eq, 2},
