@@ -2,7 +2,12 @@
 
 2021/01/03
   * 增加typed\_array。
+  * 将object包装成fscript。
   * 增加函数value\_type\_size。
+  * 将typed\_array包装成fscript。
+  * rbuffer包装成对象，方便生命周期管理。
+  * wbuffer包装成对象，方便生命周期管理。
+  * typed\_array包装成对象，方便生命周期管理。
   * fscript中的数学函数移到fscript\_math中，作为可选组件。
 
 2021/01/02
