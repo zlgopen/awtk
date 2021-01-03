@@ -14,7 +14,6 @@
  *
  */
 
-
 #include "tkc/fscript.h"
 
 static ret_t func_pow(fscript_t* fscript, fscript_args_t* args, value_t* result) {
@@ -85,5 +84,3 @@ ret_t fscript_math_register(void) {
 
   return RET_OK;
 }
-
-

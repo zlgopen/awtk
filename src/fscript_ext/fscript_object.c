@@ -47,7 +47,7 @@ static ret_t func_object_get_prop(fscript_t* fscript, fscript_args_t* args, valu
   obj = value_object(args->args);
   return_value_if_fail(obj != NULL, RET_BAD_PARAMS);
 
-  object_get_prop(obj, value_str(args->args+1), result);
+  object_get_prop(obj, value_str(args->args + 1), result);
 
   return RET_OK;
 }
@@ -58,7 +58,7 @@ static ret_t func_object_set_prop(fscript_t* fscript, fscript_args_t* args, valu
   obj = value_object(args->args);
   return_value_if_fail(obj != NULL, RET_BAD_PARAMS);
 
-  value_set_bool(result, object_set_prop(obj, value_str(args->args+1), args->args+2) == RET_OK);
+  value_set_bool(result, object_set_prop(obj, value_str(args->args + 1), args->args + 2) == RET_OK);
 
   return RET_OK;
 }
@@ -78,6 +78,6 @@ ret_t fscript_object_register(void) {
   ENSURE(fscript_register_func("object_unref", func_object_unref) == RET_OK);
   ENSURE(fscript_register_func("object_set", func_object_set_prop) == RET_OK);
   ENSURE(fscript_register_func("object_get", func_object_get_prop) == RET_OK);
-  
+
   return RET_OK;
 }

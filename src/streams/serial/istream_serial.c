@@ -26,7 +26,7 @@
 static int32_t tk_istream_serial_read(tk_istream_t* stream, uint8_t* buff, uint32_t max_size) {
   int32_t ret = 0;
   tk_istream_serial_t* istream_serial = TK_ISTREAM_SERIAL(stream);
- 
+
   errno = 0;
   ret = serial_read(istream_serial->fd, buff, max_size);
   if (ret < 0) {

@@ -37,13 +37,13 @@ static ret_t object_rbuffer_get_prop(object_t* obj, const char* name, value_t* v
   object_rbuffer_t* o = OBJECT_RBUFFER(obj);
   return_value_if_fail(o != NULL && o->rbuffer != NULL, RET_BAD_PARAMS);
 
-  if(tk_str_eq(name, "cursor")) {
+  if (tk_str_eq(name, "cursor")) {
     value_set_uint32(v, o->rbuffer->cursor);
     ret = RET_OK;
-  } else if(tk_str_eq(name, "capacity")) {
+  } else if (tk_str_eq(name, "capacity")) {
     value_set_uint32(v, o->rbuffer->capacity);
     ret = RET_OK;
-  } else if(tk_str_eq(name, "data")) {
+  } else if (tk_str_eq(name, "data")) {
     value_set_pointer(v, (void*)(o->rbuffer->data));
     ret = RET_OK;
   }
@@ -52,13 +52,12 @@ static ret_t object_rbuffer_get_prop(object_t* obj, const char* name, value_t* v
 }
 
 static const object_vtable_t s_object_rbuffer_vtable = {.type = "object_rbuffer",
-                                                       .desc = "object_rbuffer",
-                                                       .size = sizeof(object_rbuffer_t),
-                                                       .is_collection = FALSE,
-                                                       .on_destroy = object_rbuffer_on_destroy,
-                                                       .get_prop = object_rbuffer_get_prop,
-                                                       .set_prop = object_rbuffer_set_prop
-};
+                                                        .desc = "object_rbuffer",
+                                                        .size = sizeof(object_rbuffer_t),
+                                                        .is_collection = FALSE,
+                                                        .on_destroy = object_rbuffer_on_destroy,
+                                                        .get_prop = object_rbuffer_get_prop,
+                                                        .set_prop = object_rbuffer_set_prop};
 
 object_t* object_rbuffer_create(const uint8_t* data, uint32_t capacity) {
   object_t* o = NULL;

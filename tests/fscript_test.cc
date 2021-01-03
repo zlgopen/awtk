@@ -949,7 +949,7 @@ TEST(FExr, error) {
   fscript_eval(obj, "sin();has_error()", &v);
   ASSERT_EQ(value_bool(&v), TRUE);
   value_reset(&v);
-  
+
   fscript_eval(obj, "sin(1);has_error()", &v);
   ASSERT_EQ(value_bool(&v), FALSE);
   value_reset(&v);

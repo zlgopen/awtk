@@ -165,7 +165,7 @@ TEST(Buffer, obj) {
 
   rbuffer_read_string(rbuffer, &str);
   ASSERT_STREQ(str, "hello");
-  
+
   ASSERT_EQ(object_get_prop_int(robj, "cursor", 0), 6);
   ASSERT_EQ(object_get_prop_int(robj, "capacity", 0), 13);
   ASSERT_EQ(object_get_prop_pointer(robj, "data"), (void*)(rbuffer->data));

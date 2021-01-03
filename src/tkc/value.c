@@ -805,9 +805,9 @@ uint32_t value_type_size(value_type_t type) {
     case VALUE_TYPE_DOUBLE: {
       return sizeof(double);
     }
-    case VALUE_TYPE_OBJECT: 
-    case VALUE_TYPE_STRING: 
-    case VALUE_TYPE_WSTRING: 
+    case VALUE_TYPE_OBJECT:
+    case VALUE_TYPE_STRING:
+    case VALUE_TYPE_WSTRING:
     case VALUE_TYPE_POINTER: {
       return sizeof(void*);
     }

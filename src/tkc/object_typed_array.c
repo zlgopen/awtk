@@ -43,13 +43,13 @@ static ret_t object_typed_array_get_prop(object_t* obj, const char* name, value_
   object_typed_array_t* o = OBJECT_TYPED_ARRAY(obj);
   return_value_if_fail(o != NULL && o->arr != NULL, RET_BAD_PARAMS);
 
-  if(tk_str_eq(name, "size")) {
+  if (tk_str_eq(name, "size")) {
     value_set_uint32(v, o->arr->size);
     ret = RET_OK;
-  } else if(tk_str_eq(name, "byte_size")) {
+  } else if (tk_str_eq(name, "byte_size")) {
     value_set_uint32(v, o->arr->size * o->arr->element_size);
     ret = RET_OK;
-  } else if(tk_str_eq(name, "data")) {
+  } else if (tk_str_eq(name, "data")) {
     value_set_pointer(v, o->arr->data);
     ret = RET_OK;
   }
@@ -57,14 +57,14 @@ static ret_t object_typed_array_get_prop(object_t* obj, const char* name, value_
   return ret;
 }
 
-static const object_vtable_t s_object_typed_array_vtable = {.type = "object_typed_array",
-                                                       .desc = "object_typed_array",
-                                                       .size = sizeof(object_typed_array_t),
-                                                       .is_collection = FALSE,
-                                                       .on_destroy = object_typed_array_on_destroy,
-                                                       .get_prop = object_typed_array_get_prop,
-                                                       .set_prop = object_typed_array_set_prop
-};
+static const object_vtable_t s_object_typed_array_vtable = {
+    .type = "object_typed_array",
+    .desc = "object_typed_array",
+    .size = sizeof(object_typed_array_t),
+    .is_collection = FALSE,
+    .on_destroy = object_typed_array_on_destroy,
+    .get_prop = object_typed_array_get_prop,
+    .set_prop = object_typed_array_set_prop};
 
 object_t* object_typed_array_create(value_type_t type, uint32_t capacity) {
   object_t* o = NULL;

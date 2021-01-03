@@ -43,13 +43,13 @@ static ret_t object_wbuffer_get_prop(object_t* obj, const char* name, value_t* v
   object_wbuffer_t* o = OBJECT_WBUFFER(obj);
   return_value_if_fail(o != NULL && o->wbuffer != NULL, RET_BAD_PARAMS);
 
-  if(tk_str_eq(name, "cursor")) {
+  if (tk_str_eq(name, "cursor")) {
     value_set_uint32(v, o->wbuffer->cursor);
     ret = RET_OK;
-  } else if(tk_str_eq(name, "capacity")) {
+  } else if (tk_str_eq(name, "capacity")) {
     value_set_uint32(v, o->wbuffer->capacity);
     ret = RET_OK;
-  } else if(tk_str_eq(name, "data")) {
+  } else if (tk_str_eq(name, "data")) {
     value_set_pointer(v, o->wbuffer->data);
     ret = RET_OK;
   }
@@ -58,13 +58,12 @@ static ret_t object_wbuffer_get_prop(object_t* obj, const char* name, value_t* v
 }
 
 static const object_vtable_t s_object_wbuffer_vtable = {.type = "object_wbuffer",
-                                                       .desc = "object_wbuffer",
-                                                       .size = sizeof(object_wbuffer_t),
-                                                       .is_collection = FALSE,
-                                                       .on_destroy = object_wbuffer_on_destroy,
-                                                       .get_prop = object_wbuffer_get_prop,
-                                                       .set_prop = object_wbuffer_set_prop
-};
+                                                        .desc = "object_wbuffer",
+                                                        .size = sizeof(object_wbuffer_t),
+                                                        .is_collection = FALSE,
+                                                        .on_destroy = object_wbuffer_on_destroy,
+                                                        .get_prop = object_wbuffer_get_prop,
+                                                        .set_prop = object_wbuffer_set_prop};
 
 object_t* object_wbuffer_create_ex(bool_t extendable, uint8_t* data, uint32_t capacity) {
   object_t* o = NULL;
@@ -75,7 +74,7 @@ object_t* object_wbuffer_create_ex(bool_t extendable, uint8_t* data, uint32_t ca
   wrapper = OBJECT_WBUFFER(o);
   return_value_if_fail(wrapper != NULL, NULL);
 
-  if(extendable) {
+  if (extendable) {
     wrapper->wbuffer = wbuffer_init_extendable(&(wrapper->awbuffer));
   } else {
     wrapper->wbuffer = wbuffer_init(&(wrapper->awbuffer), data, capacity);

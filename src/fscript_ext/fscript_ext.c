@@ -22,18 +22,17 @@
 #if defined(LINUX) || defined(WINDOWS) || defined(MACOS) || defined(ANDROID) || defined(IOS)
 #define FSCRIPT_WITH_MATH 1
 #define FSCRIPT_WITH_TYPED_ARRAY 1
-#endif/*PC*/
+#endif /*PC*/
 
 ret_t fscript_ext_init(void) {
   fscript_object_register();
 #ifdef FSCRIPT_WITH_MATH
   fscript_math_register();
-#endif/*FSCRIPT_WITH_MATH*/
+#endif /*FSCRIPT_WITH_MATH*/
 
 #ifdef FSCRIPT_WITH_TYPED_ARRAY
   fscript_typed_array_register();
-#endif/*FSCRIPT_WITH_TYPED_ARRAY*/
+#endif /*FSCRIPT_WITH_TYPED_ARRAY*/
 
   return RET_OK;
 }
-

@@ -20,14 +20,14 @@ void do_send(tk_iostream_t* iostream, const char* filename) {
   return_if_fail(data != NULL);
 
   ret = tk_ostream_write_len(ostream, (uint8_t*)&size, sizeof(size), 1000);
-  ret = tk_ostream_write_len(ostream, (uint8_t*)data, size, 600*1000);
+  ret = tk_ostream_write_len(ostream, (uint8_t*)data, size, 600 * 1000);
   log_debug("send size=%u ret=%d \n", size, ret);
 
   memset(data, 0x00, size);
   ret = tk_istream_read_len(istream, (uint8_t*)&size, sizeof(size), 1000);
   return_if_fail(ret == sizeof(size));
   log_debug("size=%u\n", size);
-  ret = tk_istream_read_len(istream, (uint8_t*)data, size, 600*1000);
+  ret = tk_istream_read_len(istream, (uint8_t*)data, size, 600 * 1000);
 
   if (ret >= 0) {
     data[ret] = '\0';
