@@ -668,10 +668,12 @@ static ret_t fscript_parser_unget_token(fscript_parser_t* parser) {
 
 static ret_t token_to_value(token_t* t, value_t* v) {
   if (t->type == TOKEN_NUMBER) {
-    char number[32];
-    tk_strncpy(number, t->token, tk_min(t->size, sizeof(number) - 1));
+    char number[64];
+    tk_strncpy_s(number, sizeof(number)-1, t->token, t->size);
     if (strchr(number, '.') != NULL) {
       value_set_double(v, tk_atof(number));
+    } else if(t->size > 10) {
+      value_set_int64(v, tk_atol(number));
     } else {
       value_set_int(v, tk_atoi(number));
     }
@@ -1196,6 +1198,12 @@ static ret_t func_i32(fscript_t* fscript, fscript_args_t* args, value_t* result)
   return RET_OK;
 }
 
+static ret_t func_i64(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+  value_set_int64(result, value_int64(args->args));
+  return RET_OK;
+}
+
 static ret_t func_u8(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   value_set_uint8(result, value_uint8(args->args));
@@ -1211,6 +1219,12 @@ static ret_t func_u16(fscript_t* fscript, fscript_args_t* args, value_t* result)
 static ret_t func_u32(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   value_set_uint32(result, value_uint32(args->args));
+  return RET_OK;
+}
+
+static ret_t func_u64(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+  value_set_uint64(result, value_uint64(args->args));
   return RET_OK;
 }
 
@@ -1744,9 +1758,11 @@ static const func_entry_t s_builtin_funcs[] = {
     {"i8", func_i8, 1},
     {"i16", func_i16, 1},
     {"i32", func_i32, 1},
+    {"i64", func_i64, 1},
     {"u8", func_u8, 1},
     {"u16", func_u16, 1},
     {"u32", func_u32, 1},
+    {"u64", func_u64, 1},
     {"f32", func_f32, 1},
     {"float", func_float, 1},
     {"number", func_float, 1},

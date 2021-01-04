@@ -33,6 +33,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
+#include <inttypes.h>
 
 #if defined(HAS_AWTK_CONFIG)
 #include "awtk_config.h"

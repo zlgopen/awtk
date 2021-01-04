@@ -21,13 +21,21 @@
 #include "fscript_ext/fscript_math.h"
 #include "fscript_ext/fscript_endian.h"
 #include "fscript_ext/fscript_object.h"
+#include "fscript_ext/fscript_rbuffer.h"
+#include "fscript_ext/fscript_wbuffer.h"
 #include "fscript_ext/fscript_typed_array.h"
 
 ret_t fscript_ext_init(void) {
   fscript_object_register();
+
 #ifdef FSCRIPT_WITH_CRC
   fscript_crc_register();
 #endif /*FSCRIPT_WITH_CRC*/
+
+#ifdef FSCRIPT_WITH_BUFFER
+  fscript_rbuffer_register();
+  fscript_wbuffer_register();
+#endif /*FSCRIPT_WITH_BUFFER*/
 
 #ifdef FSCRIPT_WITH_MATH
   fscript_math_register();

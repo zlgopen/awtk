@@ -48,22 +48,22 @@ static ret_t func_wbuffer_write(fscript_t* fscript, fscript_args_t* args, value_
   for (i = 1; i < args->size; i++) {
     value_t* iter = args->args + i;
     switch (iter->type) {
-      case VALUE_TYPE_INT8: 
+      case VALUE_TYPE_INT8:
       case VALUE_TYPE_UINT8: {
         wbuffer_write_uint8(obj->wbuffer, value_uint8(iter));
         break;
       }
-      case VALUE_TYPE_INT16: 
+      case VALUE_TYPE_INT16:
       case VALUE_TYPE_UINT16: {
         wbuffer_write_uint16(obj->wbuffer, value_uint16(iter));
         break;
       }
-      case VALUE_TYPE_INT32: 
+      case VALUE_TYPE_INT32:
       case VALUE_TYPE_UINT32: {
         wbuffer_write_uint32(obj->wbuffer, value_uint32(iter));
         break;
       }
-      case VALUE_TYPE_INT64: 
+      case VALUE_TYPE_INT64:
       case VALUE_TYPE_UINT64: {
         wbuffer_write_uint64(obj->wbuffer, value_uint64(iter));
         break;
@@ -101,8 +101,8 @@ static ret_t func_wbuffer_skip(fscript_t* fscript, fscript_args_t* args, value_t
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   obj = OBJECT_WBUFFER(value_object(args->args));
   FSCRIPT_FUNC_CHECK(obj != NULL && obj->wbuffer != NULL, RET_BAD_PARAMS);
-  
-  value_set_bool(result, wbuffer_skip(obj->wbuffer, value_uint32(args->args+1)) == RET_OK);
+
+  value_set_bool(result, wbuffer_skip(obj->wbuffer, value_int32(args->args + 1)) == RET_OK);
 
   return RET_OK;
 }
@@ -112,7 +112,7 @@ static ret_t func_wbuffer_get_data(fscript_t* fscript, fscript_args_t* args, val
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   obj = OBJECT_WBUFFER(value_object(args->args));
   FSCRIPT_FUNC_CHECK(obj != NULL && obj->wbuffer != NULL, RET_BAD_PARAMS);
-  
+
   value_set_pointer(result, obj->wbuffer->data);
 
   return RET_OK;
@@ -123,22 +123,131 @@ static ret_t func_wbuffer_get_cursor(fscript_t* fscript, fscript_args_t* args, v
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   obj = OBJECT_WBUFFER(value_object(args->args));
   FSCRIPT_FUNC_CHECK(obj != NULL && obj->wbuffer != NULL, RET_BAD_PARAMS);
-  
+
   value_set_uint32(result, obj->wbuffer->cursor);
 
   return RET_OK;
 }
 
 static ret_t func_wbuffer_get_capacity(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  wbuffer_t* wb = NULL;
   object_wbuffer_t* obj = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   obj = OBJECT_WBUFFER(value_object(args->args));
   FSCRIPT_FUNC_CHECK(obj != NULL && obj->wbuffer != NULL, RET_BAD_PARAMS);
-  
+
   value_set_uint32(result, obj->wbuffer->capacity);
 
   return RET_OK;
+}
+
+static ret_t func_wbuffer_write_uint8(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  ret_t ret = RET_OK;
+  object_wbuffer_t* obj = NULL;
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+  obj = OBJECT_WBUFFER(value_object(args->args));
+  FSCRIPT_FUNC_CHECK(obj != NULL && obj->wbuffer != NULL, RET_BAD_PARAMS);
+
+  ret = wbuffer_write_uint8(obj->wbuffer, value_uint8(args->args + 1));
+  value_set_bool(result, ret == RET_OK);
+
+  return ret;
+}
+
+static ret_t func_wbuffer_write_uint16(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  ret_t ret = RET_OK;
+  object_wbuffer_t* obj = NULL;
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+  obj = OBJECT_WBUFFER(value_object(args->args));
+  FSCRIPT_FUNC_CHECK(obj != NULL && obj->wbuffer != NULL, RET_BAD_PARAMS);
+
+  ret = wbuffer_write_uint16(obj->wbuffer, value_uint16(args->args + 1));
+  value_set_bool(result, ret == RET_OK);
+
+  return ret;
+}
+
+static ret_t func_wbuffer_write_uint32(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  ret_t ret = RET_OK;
+  object_wbuffer_t* obj = NULL;
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+  obj = OBJECT_WBUFFER(value_object(args->args));
+  FSCRIPT_FUNC_CHECK(obj != NULL && obj->wbuffer != NULL, RET_BAD_PARAMS);
+
+  ret = wbuffer_write_uint32(obj->wbuffer, value_uint32(args->args + 1));
+  value_set_bool(result, ret == RET_OK);
+
+  return ret;
+}
+
+static ret_t func_wbuffer_write_uint64(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  ret_t ret = RET_OK;
+  object_wbuffer_t* obj = NULL;
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+  obj = OBJECT_WBUFFER(value_object(args->args));
+  FSCRIPT_FUNC_CHECK(obj != NULL && obj->wbuffer != NULL, RET_BAD_PARAMS);
+
+  ret = wbuffer_write_uint64(obj->wbuffer, value_uint64(args->args + 1));
+  value_set_bool(result, ret == RET_OK);
+
+  return ret;
+}
+
+static ret_t func_wbuffer_write_float(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  ret_t ret = RET_OK;
+  object_wbuffer_t* obj = NULL;
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+  obj = OBJECT_WBUFFER(value_object(args->args));
+  FSCRIPT_FUNC_CHECK(obj != NULL && obj->wbuffer != NULL, RET_BAD_PARAMS);
+
+  ret = wbuffer_write_float(obj->wbuffer, value_float32(args->args + 1));
+  value_set_bool(result, ret == RET_OK);
+
+  return ret;
+}
+
+static ret_t func_wbuffer_write_double(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  ret_t ret = RET_OK;
+  object_wbuffer_t* obj = NULL;
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+  obj = OBJECT_WBUFFER(value_object(args->args));
+  FSCRIPT_FUNC_CHECK(obj != NULL && obj->wbuffer != NULL, RET_BAD_PARAMS);
+
+  ret = wbuffer_write_double(obj->wbuffer, value_double(args->args + 1));
+  value_set_bool(result, ret == RET_OK);
+
+  return ret;
+}
+
+static ret_t func_wbuffer_write_string(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  ret_t ret = RET_OK;
+  object_wbuffer_t* obj = NULL;
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+  obj = OBJECT_WBUFFER(value_object(args->args));
+  FSCRIPT_FUNC_CHECK(obj != NULL && obj->wbuffer != NULL, RET_BAD_PARAMS);
+
+  ret = wbuffer_write_string(obj->wbuffer, value_str(args->args + 1));
+  value_set_bool(result, ret == RET_OK);
+
+  return ret;
+}
+
+static ret_t func_wbuffer_write_binary(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  void* data = NULL;
+  uint32_t size = 0;
+  ret_t ret = RET_OK;
+  object_wbuffer_t* obj = NULL;
+  FSCRIPT_FUNC_CHECK(args->size == 3, RET_BAD_PARAMS);
+  obj = OBJECT_WBUFFER(value_object(args->args));
+  FSCRIPT_FUNC_CHECK(obj != NULL && obj->wbuffer != NULL, RET_BAD_PARAMS);
+ 
+  data = value_pointer(args->args+1);
+  size = value_uint32(args->args+2);
+  FSCRIPT_FUNC_CHECK(data != NULL && size > 0, RET_BAD_PARAMS);
+
+  ret = wbuffer_write_binary(obj->wbuffer, data, size);
+  value_set_bool(result, ret == RET_OK);
+
+  return ret;
 }
 
 ret_t fscript_wbuffer_register(void) {
@@ -146,12 +255,6 @@ ret_t fscript_wbuffer_register(void) {
   ENSURE(fscript_register_func("wbuffer_attach", func_wbuffer_attach) == RET_OK);
   ENSURE(fscript_register_func("wbuffer_write", func_wbuffer_write) == RET_OK);
   ENSURE(fscript_register_func("wbuffer_skip", func_wbuffer_skip) == RET_OK);
-
-#if 0
-  ENSURE(fscript_register_func("wbuffer_write_int8", func_wbuffer_write_int8) == RET_OK);
-  ENSURE(fscript_register_func("wbuffer_write_int16", func_wbuffer_write_int16) == RET_OK);
-  ENSURE(fscript_register_func("wbuffer_write_int32", func_wbuffer_write_int32) == RET_OK);
-  ENSURE(fscript_register_func("wbuffer_write_int64", func_wbuffer_write_int64) == RET_OK);
 
   ENSURE(fscript_register_func("wbuffer_write_uint8", func_wbuffer_write_uint8) == RET_OK);
   ENSURE(fscript_register_func("wbuffer_write_uint16", func_wbuffer_write_uint16) == RET_OK);
@@ -161,8 +264,7 @@ ret_t fscript_wbuffer_register(void) {
   ENSURE(fscript_register_func("wbuffer_write_float", func_wbuffer_write_float) == RET_OK);
   ENSURE(fscript_register_func("wbuffer_write_double", func_wbuffer_write_double) == RET_OK);
   ENSURE(fscript_register_func("wbuffer_write_string", func_wbuffer_write_string) == RET_OK);
-  ENSURE(fscript_register_func("wbuffer_write_binary", func_wbuffer_write_binaray) == RET_OK);
-#endif
+  ENSURE(fscript_register_func("wbuffer_write_binary", func_wbuffer_write_binary) == RET_OK);
 
   ENSURE(fscript_register_func("wbuffer_get_data", func_wbuffer_get_data) == RET_OK);
   ENSURE(fscript_register_func("wbuffer_get_cursor", func_wbuffer_get_cursor) == RET_OK);

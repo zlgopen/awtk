@@ -6,6 +6,7 @@
   * 完善xml builder的文档。
   * 修复crc32中的问题，并增加api文档。
   * 将crc/endian相关函数包装到fscript。
+  * 将wbuffer/rbuffer相关函数包装到fscript。
   * 完善《如何用 valgrind 查找内存相关》(感谢忠吉发现问题)
 
 2021/01/03

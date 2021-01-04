@@ -67,3 +67,14 @@ TEST(FExr, endian_ntohl) {
   
   OBJECT_UNREF(obj);
 }
+
+TEST(FExr, endian_ntohll) {
+  value_t v;
+  object_t* obj = object_default_create();
+
+  fscript_eval(obj, "ntohll(0x1122334455667788)", &v);
+  ASSERT_EQ(value_uint64(&v), 0x8877665544332211);
+  value_reset(&v);
+  
+  OBJECT_UNREF(obj);
+}

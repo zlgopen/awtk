@@ -34,6 +34,7 @@ ret_t fscript_ext_init(void);
 #define FSCRIPT_WITH_CRC 1
 #define FSCRIPT_WITH_MATH 1
 #define FSCRIPT_WITH_ENDIAN 1
+#define FSCRIPT_WITH_BUFFER 1
 #define FSCRIPT_WITH_TYPED_ARRAY 1
 #define WITH_FSCRIPT_EXT 1 
 #endif /*PC*/

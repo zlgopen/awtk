@@ -175,6 +175,8 @@ int64_t value_int64(const value_t* v) {
 
   if (v->type == VALUE_TYPE_INT64) {
     return v->value.i64;
+  } else if (v->type == VALUE_TYPE_UINT64) {
+    return v->value.u64;
   } else {
     return (int64_t)value_int(v);
   }
@@ -193,6 +195,8 @@ uint64_t value_uint64(const value_t* v) {
 
   if (v->type == VALUE_TYPE_UINT64) {
     return v->value.u64;
+  } else if (v->type == VALUE_TYPE_INT64) {
+    return v->value.i64;
   } else {
     return (uint64_t)value_int(v);
   }
@@ -764,9 +768,9 @@ const char* value_str_ex(const value_t* v, char* buff, uint32_t size) {
              v->type == VALUE_TYPE_UINT32) {
     tk_snprintf(buff, size, "%u", value_uint32(v));
   } else if (v->type == VALUE_TYPE_UINT64) {
-    tk_snprintf(buff, size, "%llu", value_uint64(v));
+    tk_snprintf(buff, size, "%" PRIu64, value_uint64(v));
   } else if (v->type == VALUE_TYPE_INT64) {
-    tk_snprintf(buff, size, "%lld", value_uint64(v));
+    tk_snprintf(buff, size, "%" PRId64, value_int64(v));
   } else {
     tk_snprintf(buff, size, "%d", value_int(v));
   }
