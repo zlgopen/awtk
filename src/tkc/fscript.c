@@ -1522,6 +1522,15 @@ static ret_t func_eq(fscript_t* fscript, fscript_args_t* args, value_t* result) 
   return RET_OK;
 }
 
+static ret_t func_assert(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
+  if (!value_bool(args->args)) {
+    fscript_set_error(fscript, RET_FAIL, __FUNCTION__, args->size > 1 ? value_str(args->args+1):"unkown");
+    assert(0);
+  }
+  return RET_OK;
+}
+
 static ret_t func_min(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   double v1 = 0;
   double v2 = 0;
@@ -1748,6 +1757,7 @@ static const func_entry_t s_builtin_funcs[] = {
     {"str", func_str, 1},
     {"string", func_str, 1},
     {"sub", func_sub, 2},
+    {"assert", func_assert, 2},
     {"substr", func_substr, 3},
     {"has_error", func_has_error, 0},
     {"clear_error", func_clear_error, 0},
