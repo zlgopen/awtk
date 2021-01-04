@@ -82,7 +82,6 @@ str_t* str_init(str_t* str, uint32_t capacity);
 /**
  * @method str_extend
  * 扩展字符串到指定的容量。
- * @annotation ["constructor"]
  * @param {str_t*} str str对象。
  * @param {uint32_t} capacity 初始容量。
  *
