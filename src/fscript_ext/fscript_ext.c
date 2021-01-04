@@ -25,7 +25,15 @@
 #include "fscript_ext/fscript_wbuffer.h"
 #include "fscript_ext/fscript_typed_array.h"
 
+static ret_t func_value_reset(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+  value_reset(args->args);
+  return RET_OK;
+}
+
 ret_t fscript_ext_init(void) {
+  ENSURE(fscript_register_func("value_reset", func_value_reset) == RET_OK);
+
   fscript_object_register();
 
 #ifdef FSCRIPT_WITH_CRC

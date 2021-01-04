@@ -107,6 +107,18 @@ static ret_t func_wbuffer_skip(fscript_t* fscript, fscript_args_t* args, value_t
   return RET_OK;
 }
 
+static ret_t func_wbuffer_rewind(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  object_wbuffer_t* obj = NULL;
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+  obj = OBJECT_WBUFFER(value_object(args->args));
+  FSCRIPT_FUNC_CHECK(obj != NULL && obj->wbuffer != NULL, RET_BAD_PARAMS);
+
+  obj->wbuffer->cursor = 0;
+  value_set_bool(result, TRUE);
+
+  return RET_OK;
+}
+
 static ret_t func_wbuffer_get_data(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   object_wbuffer_t* obj = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
@@ -235,15 +247,23 @@ static ret_t func_wbuffer_write_binary(fscript_t* fscript, fscript_args_t* args,
   void* data = NULL;
   uint32_t size = 0;
   ret_t ret = RET_OK;
+  value_t* v = NULL;
   object_wbuffer_t* obj = NULL;
-  FSCRIPT_FUNC_CHECK(args->size == 3, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size >= 2, RET_BAD_PARAMS);
   obj = OBJECT_WBUFFER(value_object(args->args));
   FSCRIPT_FUNC_CHECK(obj != NULL && obj->wbuffer != NULL, RET_BAD_PARAMS);
  
-  data = value_pointer(args->args+1);
-  size = value_uint32(args->args+2);
-  FSCRIPT_FUNC_CHECK(data != NULL && size > 0, RET_BAD_PARAMS);
-
+  v = args->args+1;
+  if(v->type == VALUE_TYPE_BINARY) {
+    binary_data_t* bin = value_binary_data(v);
+    FSCRIPT_FUNC_CHECK(bin != NULL, RET_BAD_PARAMS);
+    data = bin->data;
+    size = bin->size;
+  } else {
+    data = value_pointer(args->args+1);
+    size = value_uint32(args->args+2);
+    FSCRIPT_FUNC_CHECK(data != NULL && size > 0, RET_BAD_PARAMS);
+  }
   ret = wbuffer_write_binary(obj->wbuffer, data, size);
   value_set_bool(result, ret == RET_OK);
 
@@ -255,6 +275,7 @@ ret_t fscript_wbuffer_register(void) {
   ENSURE(fscript_register_func("wbuffer_attach", func_wbuffer_attach) == RET_OK);
   ENSURE(fscript_register_func("wbuffer_write", func_wbuffer_write) == RET_OK);
   ENSURE(fscript_register_func("wbuffer_skip", func_wbuffer_skip) == RET_OK);
+  ENSURE(fscript_register_func("wbuffer_rewind", func_wbuffer_rewind) == RET_OK);
 
   ENSURE(fscript_register_func("wbuffer_write_uint8", func_wbuffer_write_uint8) == RET_OK);
   ENSURE(fscript_register_func("wbuffer_write_uint16", func_wbuffer_write_uint16) == RET_OK);
