@@ -42,7 +42,7 @@ static ret_t func_crc16(fscript_t* fscript, fscript_args_t* args, value_t* resul
   FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
   return_value_if_fail(get_data_size(args, &data, &size) == RET_OK, RET_BAD_PARAMS);
 
-  value_set_uint16(result, tk_crc16(0, data, size));
+  value_set_uint16(result, tk_crc16(PPPINITFCS16, data, size));
 
   return RET_OK;
 }
@@ -53,7 +53,7 @@ static ret_t func_crc32(fscript_t* fscript, fscript_args_t* args, value_t* resul
   FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
   return_value_if_fail(get_data_size(args, &data, &size) == RET_OK, RET_BAD_PARAMS);
 
-  value_set_uint32(result, tk_crc32(0, data, size));
+  value_set_uint32(result, tk_crc32(PPPINITFCS32, data, size));
 
   return RET_OK;
 }
