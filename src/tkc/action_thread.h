@@ -87,6 +87,19 @@ struct _action_thread_t {
 action_thread_t* action_thread_create(void);
 
 /**
+ * @method action_thread_create
+ * @annotation ["constructor"]
+ * 创建action_thread对象。
+ * 
+ * @param {const char*}  name 名称。
+ * @param {uint32_t}  stack_size 栈的大小。
+ * @param {tk_thread_priority_t}  priority 优先级。
+ *
+ * @return {action_thread_t*} action_thread对象。
+ */
+action_thread_t* action_thread_create_ex(const char* name, uint32_t stack_size, tk_thread_priority_t priority);
+
+/**
  * @method action_thread_create_with_queue
  * @annotation ["constructor"]
  * 创建action_thread对象。
@@ -96,6 +109,20 @@ action_thread_t* action_thread_create(void);
  * @return {action_thread_t*} action_thread对象。
  */
 action_thread_t* action_thread_create_with_queue(waitable_action_queue_t* queue);
+
+/**
+ * @method action_thread_create_with_queue
+ * @annotation ["constructor"]
+ * 创建action_thread对象。
+ *
+ * @param {waitable_action_queue_t*} queue queue对象。
+ * @param {const char*}  name 名称。
+ * @param {uint32_t}  stack_size 栈的大小。
+ * @param {tk_thread_priority_t}  priority 优先级。
+ *
+ * @return {action_thread_t*} action_thread对象。
+ */
+action_thread_t* action_thread_create_with_queue_ex(waitable_action_queue_t* queue, const char* name, uint32_t stack_size, tk_thread_priority_t priority);
 
 /**
  * @method action_thread_exec

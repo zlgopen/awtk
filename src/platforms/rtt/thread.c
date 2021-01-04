@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   thread.c
  * Author: AWTK Develop Team
  * Brief:  thread on rtthread
@@ -34,7 +34,7 @@ struct _tk_thread_t {
 
   const char* name;
   uint32_t stack_size;
-  uint32_t priority;
+  int32_t priority;
   tk_mutex_t* mutex;
 };
 
@@ -54,9 +54,13 @@ ret_t tk_thread_set_stack_size(tk_thread_t* thread, uint32_t stack_size) {
   return RET_OK;
 }
 
-ret_t tk_thread_set_priority(tk_thread_t* thread, uint32_t priority) {
-  return_value_if_fail(thread != NULL, RET_BAD_PARAMS);
+int32_t tk_thread_get_priority_from_platform(tk_thread_priority_t priority) {
+  return 0;
+}
 
+ret_t tk_thread_set_priority(tk_thread_t* thread, tk_thread_priority_t priority) {
+  return_value_if_fail(thread != NULL, RET_BAD_PARAMS);
+  thread->priority = tk_thread_get_priority_from_platform(priority);
   if (thread->running) {
     rt_thread_control(thread->task, RT_THREAD_CTRL_CHANGE_PRIORITY, &thread->priority);
   }

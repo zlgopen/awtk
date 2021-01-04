@@ -45,6 +45,20 @@ typedef struct _action_thread_pool_t {
    */
   uint32_t min_idle_nr;
 
+  /**
+   * @property {uint32_t} stack_size
+   * @annotation ["readable"]
+   * 线程池中的线程栈大小
+   */
+  uint32_t stack_size;
+
+  /**
+   * @property {tk_thread_priority_t} priority
+   * @annotation ["readable"]
+   * 线程池中的线程优先级
+   */
+  tk_thread_priority_t priority;
+
   /*private*/
   tk_mutex_t* mutex;
   waitable_action_queue_t* queue;
@@ -62,6 +76,20 @@ typedef struct _action_thread_pool_t {
  * @return {action_thread_pool_t*} action_thread_pool对象。
  */
 action_thread_pool_t* action_thread_pool_create(uint16_t max_thread_nr, uint16_t min_idle_nr);
+
+/**
+ * @method action_thread_pool_create
+ * @annotation ["constructor"]
+ * 创建action_thread_pool对象。
+ *
+ * @param {uint16_t} max_thread_nr 最大线程数。
+ * @param {uint16_t} min_idle_nr 最小空闲线程数。
+ * @param {uint32_t}  stack_size 栈的大小。
+ * @param {tk_thread_priority_t}  priority 优先级
+ *
+ * @return {action_thread_pool_t*} action_thread_pool对象。
+ */
+action_thread_pool_t* action_thread_pool_create_ex(uint16_t max_thread_nr, uint16_t min_idle_nr, uint32_t stack_size, tk_thread_priority_t priority);
 
 /**
  * @method action_thread_pool_exec

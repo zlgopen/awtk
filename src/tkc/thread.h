@@ -35,6 +35,16 @@ typedef void* (*tk_thread_entry_t)(void* args);
 
 BEGIN_C_DECLS
 
+typedef enum _tk_thread_priority_t {
+    TK_THREAD_PRIORITY_NORMAL = 0x0,
+    TK_THREAD_PRIORITY_IDLE,
+    TK_THREAD_PRIORITY_LOWEST,
+    TK_THREAD_PRIORITY_BELOW_NORAML,
+    TK_THREAD_PRIORITY_ABOVE_NORAML,
+    TK_THREAD_PRIORITY_HIGHEST,
+    TK_THREAD_PRIORITY_TIME_CRITICAL,
+} tk_thread_priority_t;
+
 /**
  * @method tk_thread_create
  * 创建thread对象。
@@ -76,11 +86,24 @@ ret_t tk_thread_set_stack_size(tk_thread_t* thread, uint32_t stack_size);
  *
  * > 部分平台支持。
  * @param {tk_thread_t*} thread thread对象。
- * @param {uint32_t}  priority 优先级。
+ * @param {tk_thread_priority_t}  priority 优先级。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t tk_thread_set_priority(tk_thread_t* thread, uint32_t priority);
+ret_t tk_thread_set_priority(tk_thread_t* thread, tk_thread_priority_t priority);
+
+/**
+ * @method tk_thread_get_priority_from_platform
+ * 获取平台相关的优先级
+ * 
+ * > 部分平台支持。
+ * > 根据 AWTK 通用优先级枚举获取平台相关的优先级
+ * @annotation ["static"]
+ * @param {tk_thread_priority_t}  priority 优先级。
+ *
+ * @return {int32_t} 返回平台相关的优先级。
+ */
+int32_t tk_thread_get_priority_from_platform(tk_thread_priority_t priority);
 
 /**
  * @method tk_thread_start

@@ -199,7 +199,7 @@ struct _tk_thread_t {
   tk_thread_entry_t entry;
   char name[TK_NAME_LEN + 1];
   uint32_t stack_size;
-  uint32_t priority;
+  int32_t priority;
 };
 
 ret_t tk_thread_set_name(tk_thread_t* thread, const char* name) {
@@ -218,10 +218,25 @@ ret_t tk_thread_set_stack_size(tk_thread_t* thread, uint32_t stack_size) {
   return RET_OK;
 }
 
-ret_t tk_thread_set_priority(tk_thread_t* thread, uint32_t priority) {
+int32_t tk_thread_get_priority_from_platform(tk_thread_priority_t priority) {
+  switch (priority)
+  {
+  case TK_THREAD_PRIORITY_LOWEST :
+    return SDL_THREAD_PRIORITY_LOW;
+  case TK_THREAD_PRIORITY_HIGHEST :
+    return SDL_THREAD_PRIORITY_HIGH;
+  case TK_THREAD_PRIORITY_TIME_CRITICAL :
+    return SDL_THREAD_PRIORITY_TIME_CRITICAL;
+  case TK_THREAD_PRIORITY_NORMAL :
+  default:
+    return SDL_THREAD_PRIORITY_NORMAL;
+  }
+}
+
+ret_t tk_thread_set_priority(tk_thread_t* thread, tk_thread_priority_t priority) {
   return_value_if_fail(thread != NULL, RET_BAD_PARAMS);
 
-  thread->priority = priority;
+  thread->priority = tk_thread_get_priority_from_platform(priority);
 
   return RET_OK;
 }
@@ -256,10 +271,16 @@ static int entry(void* arg) {
 
 ret_t tk_thread_start(tk_thread_t* thread) {
   return_value_if_fail(thread != NULL, RET_BAD_PARAMS);
+  if (thread->stack_size == 0) {
+    thread->thread = SDL_CreateThread((SDL_ThreadFunction)(entry), thread->name, thread);
+  } else {
+    thread->thread = SDL_CreateThreadInternal((SDL_ThreadFunction)(entry), thread->name, thread->stack_size, thread);
+  }
 
-  thread->thread = SDL_CreateThread((SDL_ThreadFunction)(entry), thread->name, thread);
   thread->running = thread->thread != NULL;
-
+  if (thread->running) {
+    SDL_SetThreadPriority((SDL_ThreadPriority)(thread->priority));
+  }
   return thread->running ? RET_OK : RET_FAIL;
 }
 

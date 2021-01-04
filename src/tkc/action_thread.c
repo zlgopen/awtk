@@ -82,6 +82,10 @@ error:
 }
 
 action_thread_t* action_thread_create(void) {
+  return action_thread_create_ex(NULL, 0, TK_THREAD_PRIORITY_NORMAL);
+}
+
+action_thread_t* action_thread_create_ex(const char* name, uint32_t stack_size, tk_thread_priority_t priority) {
   action_thread_t* thread = NULL;
   waitable_action_queue_t* queue = waitable_action_queue_create(10);
   return_value_if_fail(queue != NULL, NULL);
@@ -89,6 +93,15 @@ action_thread_t* action_thread_create(void) {
   thread = action_thread_create_internal();
   if (thread != NULL) {
     thread->queue = queue;
+    if (name != NULL) {
+      tk_thread_set_name(thread->thread, name);
+    }
+    if (priority != TK_THREAD_PRIORITY_NORMAL) {
+      tk_thread_set_priority(thread->thread, priority);
+    }
+    if (stack_size != 0) {
+      tk_thread_set_stack_size(thread->thread, stack_size);
+    }
     tk_thread_start(thread->thread);
   } else {
     waitable_action_queue_destroy(queue);
@@ -98,6 +111,10 @@ action_thread_t* action_thread_create(void) {
 }
 
 action_thread_t* action_thread_create_with_queue(waitable_action_queue_t* queue) {
+  return action_thread_create_with_queue_ex(queue, NULL, 0, TK_THREAD_PRIORITY_NORMAL);
+}
+
+action_thread_t* action_thread_create_with_queue_ex(waitable_action_queue_t* queue, const char* name, uint32_t stack_size, tk_thread_priority_t priority) {
   action_thread_t* thread = NULL;
   return_value_if_fail(queue != NULL, NULL);
 
@@ -107,6 +124,16 @@ action_thread_t* action_thread_create_with_queue(waitable_action_queue_t* queue)
   if (thread != NULL) {
     thread->queue = queue;
     thread->is_shared_queue = TRUE;
+
+    if (name != NULL) {
+      tk_thread_set_name(thread->thread, name);
+    }
+    if (priority != TK_THREAD_PRIORITY_NORMAL) {
+      tk_thread_set_priority(thread->thread, priority);
+    }
+    if (stack_size != 0) {
+      tk_thread_set_stack_size(thread->thread, stack_size);
+    }
     tk_thread_start(thread->thread);
   }
 

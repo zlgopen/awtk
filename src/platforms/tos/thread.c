@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   thread.c
  * Author: AWTK Develop Team
  * Brief:  thread on cmsis_os
@@ -34,7 +34,7 @@ struct _tk_thread_t {
 
   const char* name;
   uint32_t stack_size;
-  uint32_t priority;
+  k_prio_t priority;
   void* stackbase;
   tk_mutex_t* mutex;
 };
@@ -55,13 +55,17 @@ ret_t tk_thread_set_stack_size(tk_thread_t* thread, uint32_t stack_size) {
   return RET_OK;
 }
 
-ret_t tk_thread_set_priority(tk_thread_t* thread, uint32_t priority) {
+int32_t tk_thread_get_priority_from_platform(tk_thread_priority_t priority) {
+  return 0;
+}
+
+ret_t tk_thread_set_priority(tk_thread_t* thread, tk_thread_priority_t priority) {
   return_value_if_fail(thread != NULL, RET_BAD_PARAMS);
 
   /*FIXME*/
-  thread->priority = priority;
+  thread->priority = (k_prio_t)tk_thread_get_priority_from_platform(priority);
   if (thread->running) {
-    tos_task_prio_change(&(thread->task), (k_prio_t)priority);
+    tos_task_prio_change(&(thread->task), thread->priority);
   }
 
   return RET_OK;
