@@ -7,11 +7,11 @@ TEST(FExr, cksum) {
   object_t* obj = object_default_create();
 
   fscript_eval(obj, "cksum(\"1\")", &v);
-  ASSERT_EQ(value_int(&v), 65486);
+  ASSERT_EQ(value_uint32(&v), 65486);
   value_reset(&v);
   
   fscript_eval(obj, "cksum(\"123\")", &v);
-  ASSERT_EQ(value_int(&v), 65385);
+  ASSERT_EQ(value_uint32(&v), 65385);
   value_reset(&v);
 
   OBJECT_UNREF(obj);
@@ -22,11 +22,11 @@ TEST(FExr, crc16) {
   object_t* obj = object_default_create();
 
   fscript_eval(obj, "crc16(\"1\")", &v);
-  ASSERT_EQ(value_int(&v), 53362);
+  ASSERT_EQ(value_uint32(&v), 53362);
   value_reset(&v);
   
   fscript_eval(obj, "crc16(\"123\")", &v);
-  ASSERT_EQ(value_int(&v), 40116);
+  ASSERT_EQ(value_uint32(&v), 40116);
   value_reset(&v);
 
   OBJECT_UNREF(obj);
@@ -37,11 +37,11 @@ TEST(FExr, crc32) {
   object_t* obj = object_default_create();
 
   fscript_eval(obj, "crc32(\"1\")", &v);
-  ASSERT_EQ(value_int(&v), 2212294583);
+  ASSERT_EQ(value_uint32(&v), 2212294583);
   value_reset(&v);
   
   fscript_eval(obj, "crc32(\"123\")", &v);
-  ASSERT_EQ(value_int(&v), 2286445522);
+  ASSERT_EQ(value_uint32(&v), 2286445522);
   value_reset(&v);
 
   OBJECT_UNREF(obj);

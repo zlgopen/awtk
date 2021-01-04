@@ -15,14 +15,17 @@
  */
 
 #include "tkc/fscript.h"
+
 #include "fscript_ext/fscript_crc.h"
 #include "fscript_ext/fscript_math.h"
+#include "fscript_ext/fscript_endian.h"
 #include "fscript_ext/fscript_object.h"
 #include "fscript_ext/fscript_typed_array.h"
 
 #if defined(LINUX) || defined(WINDOWS) || defined(MACOS) || defined(ANDROID) || defined(IOS)
 #define FSCRIPT_WITH_CRC 1
 #define FSCRIPT_WITH_MATH 1
+#define FSCRIPT_WITH_ENDIAN 1
 #define FSCRIPT_WITH_TYPED_ARRAY 1
 #endif /*PC*/
 
@@ -34,6 +37,10 @@ ret_t fscript_ext_init(void) {
 
 #ifdef FSCRIPT_WITH_MATH
   fscript_math_register();
+#endif /*FSCRIPT_WITH_MATH*/
+
+#ifdef FSCRIPT_WITH_ENDIAN
+  fscript_endian_register();
 #endif /*FSCRIPT_WITH_MATH*/
 
 #ifdef FSCRIPT_WITH_TYPED_ARRAY
