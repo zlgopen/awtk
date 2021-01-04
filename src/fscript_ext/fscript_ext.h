@@ -30,6 +30,14 @@ BEGIN_C_DECLS
  */
 ret_t fscript_ext_init(void);
 
+#if defined(LINUX) || defined(WINDOWS) || defined(MACOS) || defined(ANDROID) || defined(IOS)
+#define FSCRIPT_WITH_CRC 1
+#define FSCRIPT_WITH_MATH 1
+#define FSCRIPT_WITH_ENDIAN 1
+#define FSCRIPT_WITH_TYPED_ARRAY 1
+#define WITH_FSCRIPT_EXT 1 
+#endif /*PC*/
+
 END_C_DECLS
 
 #endif /*TK_FSCRIPT_EXT_H*/
