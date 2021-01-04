@@ -763,6 +763,10 @@ const char* value_str_ex(const value_t* v, char* buff, uint32_t size) {
   } else if (v->type == VALUE_TYPE_UINT8 || v->type == VALUE_TYPE_UINT16 ||
              v->type == VALUE_TYPE_UINT32) {
     tk_snprintf(buff, size, "%u", value_uint32(v));
+  } else if (v->type == VALUE_TYPE_UINT64) {
+    tk_snprintf(buff, size, "%llu", value_uint64(v));
+  } else if (v->type == VALUE_TYPE_INT64) {
+    tk_snprintf(buff, size, "%lld", value_uint64(v));
   } else {
     tk_snprintf(buff, size, "%d", value_int(v));
   }
