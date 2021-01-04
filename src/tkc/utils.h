@@ -38,13 +38,24 @@ BEGIN_C_DECLS
 /**
  * @method tk_atoi
  *
- * 将字符串转换为整形。
+ * 将字符串转换为整型数。
  *
- * @param {const char*} str 要转换为整形的字符串。
+ * @param {const char*} str 要转换为整型数的字符串。
  *
- * @return {int} 返回转换后的整形。
+ * @return {int} 返回转换后的整型。
  */
 int tk_atoi(const char* str);
+
+/**
+ * @method tk_atol
+ *
+ * 将字符串转换为整型。
+ *
+ * @param {const char*} str 要转换为整型的字符串。
+ *
+ * @return {int} 返回转换后的整型。
+ */
+int64_t tk_atol(const char* str);
 
 /**
  * @method tk_atob
@@ -95,23 +106,23 @@ int32_t tk_str_icmp(const char* a, const char* b);
 /**
  * @method tk_watoi
  *
- * 将宽字符串转换为整形。
+ * 将宽字符串转换为整型。
  *
- * @param {const wchar_t*} str 要转换为整形的宽字符串。
+ * @param {const wchar_t*} str 要转换为整型的宽字符串。
  *
- * @return {int} 返回转换后的整形。
+ * @return {int} 返回转换后的整型。
  */
 int tk_watoi(const wchar_t* str);
 
 /**
  * @method tk_watoi_n
  *
- * 将宽字符串转换为整形。
+ * 将宽字符串转换为整型。
  *
- * @param {const wchar_t*} str 要转换为整形的宽字符串。
+ * @param {const wchar_t*} str 要转换为整型的宽字符串。
  * @param {uint32_t} len 字符串长度。
  *
- * @return {int} 返回转换后的整形。
+ * @return {int} 返回转换后的整型。
  */
 int tk_watoi_n(const wchar_t* str, uint32_t len);
 
@@ -151,11 +162,11 @@ const char* tk_skip_to_num(const char* str);
 /**
  * @method tk_itoa
  *
- * 将整形转换为字符串。
+ * 将整型转换为字符串。
  *
  * @param {char*} str 保存字符串缓冲区。
  * @param {int} len 缓冲区大小。
- * @param {int} n 要转换的整形。
+ * @param {int} n 要转换的整型。
  *
  * @return {const char*} 返回字符串。
  */
@@ -177,15 +188,28 @@ const char* tk_ftoa(char* str, int len, double f);
 /**
  * @method tk_strtol
  *
- * 将字符串转换为长整形。
+ * 将字符串转换为长整型。
  *
- * @param {const char*} str 要转换为长整形的字符串。
+ * @param {const char*} str 要转换为长整型的字符串。
  * @param {const char**} end 对类型char*的对象的引用。
  * @param {int} base 基数。
  *
- * @return {long} 返回转换后的长整形。
+ * @return {long} 返回转换后的长整型。
  */
 long tk_strtol(const char* str, const char** end, int base);
+
+/**
+ * @method tk_strtoll
+ *
+ * 将字符串转换为长整型。
+ *
+ * @param {const char*} str 要转换为长整型的字符串。
+ * @param {const char**} end 对类型char*的对象的引用。
+ * @param {int} base 基数。
+ *
+ * @return {int64_t} 返回转换后的长整型。
+ */
+int64_t tk_strtoll(const char* str, const char** end, int base);
 
 /**
  * @method tk_strcpy

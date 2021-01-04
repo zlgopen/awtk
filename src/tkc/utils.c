@@ -224,6 +224,10 @@ long tk_strtol(const char* str, const char** end, int base) {
   return strtol(str, (char**)end, base);
 }
 
+int64_t tk_strtoll(const char* str, const char** end, int base) {
+  return strtoll(str, (char**)end, base);
+}
+
 const char* tk_itoa(char* str, int len, int n) {
   return_value_if_fail(str != NULL, NULL);
 
@@ -241,6 +245,17 @@ int tk_atoi(const char* str) {
     return tk_strtol(str + 2, NULL, 2);
   } else {
     return tk_strtol(str, NULL, 10);
+  }
+}
+
+int64_t tk_atol(const char* str) {
+  return_value_if_fail(str != NULL, 0);
+  if (str[0] == '0' && (str[1] == 'x' || str[1] == 'X')) {
+    return tk_strtoll(str + 2, NULL, 16);
+  } else if (str[0] == '0' && (str[1] == 'b' || str[1] == 'B')) {
+    return tk_strtoll(str + 2, NULL, 2);
+  } else {
+    return tk_strtoll(str, NULL, 10);
   }
 }
 
