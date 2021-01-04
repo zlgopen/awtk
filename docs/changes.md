@@ -1,5 +1,12 @@
 # 最新动态
 
+2021/01/04
+  * 完善value\_str\_ex。
+  * fscript增加assert函数。
+  * 修复crc32中的问题，并增加api文档。
+  * 将crc/endian相关函数包装到fscript。
+  * 完善xml builder中的问题。
+
 2021/01/03
   * 增加typed\_array。
   * 将object包装成fscript。

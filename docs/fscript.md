@@ -274,6 +274,23 @@ set(a, a+b)
 #(this is a comment)
 ```
 
+####  assert
+
+> 断言
+----------------------------
+
+##### 原型
+
+```
+assert(condition)
+```
+
+#### 示例
+
+```
+assert(1<2)
+```
+
 ####  has_error
 
 > 检查是否之前遇到错误
