@@ -167,14 +167,34 @@ ret_t wbuffer_write_uint16(wbuffer_t* wbuffer, uint16_t value);
 ret_t wbuffer_write_uint32(wbuffer_t* wbuffer, uint32_t value);
 
 /**
- * @method wbuffer_write_float
- * 写入float数据。
+ * @method wbuffer_write_uint64
+ * 写入uint64数据。
  * @param {wbuffer_t*} wbuffer wbuffer对象。
- * @param {float_t} value 要写入的数据。
+ * @param {uint64_t} value 要写入的数据。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t wbuffer_write_float(wbuffer_t* wbuffer, float_t value);
+ret_t wbuffer_write_uint64(wbuffer_t* wbuffer, uint64_t value);
+
+/**
+ * @method wbuffer_write_float
+ * 写入float数据。
+ * @param {wbuffer_t*} wbuffer wbuffer对象。
+ * @param {float} value 要写入的数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t wbuffer_write_float(wbuffer_t* wbuffer, float value);
+
+/**
+ * @method wbuffer_write_double
+ * 写入double数据。
+ * @param {wbuffer_t*} wbuffer wbuffer对象。
+ * @param {double} value 要写入的数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t wbuffer_write_double(wbuffer_t* wbuffer, double value);
 
 /**
  * @method wbuffer_write_binary
@@ -309,14 +329,34 @@ ret_t rbuffer_read_uint16(rbuffer_t* rbuffer, uint16_t* value);
 ret_t rbuffer_read_uint32(rbuffer_t* rbuffer, uint32_t* value);
 
 /**
- * @method rbuffer_read_float
- * 读取float数据。
+ * @method rbuffer_read_uint64
+ * 读取uint64数据。
  * @param {rbuffer_t*} rbuffer rbuffer对象。
- * @param {float_t*} value 返回读取的数据。
+ * @param {uint64_t*} value 返回读取的数据。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t rbuffer_read_float(rbuffer_t* rbuffer, float_t* value);
+ret_t rbuffer_read_uint64(rbuffer_t* rbuffer, uint64_t* value);
+
+/**
+ * @method rbuffer_read_float
+ * 读取float数据。
+ * @param {rbuffer_t*} rbuffer rbuffer对象。
+ * @param {float*} value 返回读取的数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t rbuffer_read_float(rbuffer_t* rbuffer, float* value);
+
+/**
+ * @method rbuffer_read_double
+ * 读取double数据。
+ * @param {rbuffer_t*} rbuffer rbuffer对象。
+ * @param {double*} value 返回读取的数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t rbuffer_read_double(rbuffer_t* rbuffer, double* value);
 
 /**
  * @method rbuffer_read_binary

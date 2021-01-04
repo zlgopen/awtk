@@ -31,9 +31,9 @@ TEST(Buffer, demo2) {
 }
 
 static void testWriteRead(wbuffer_t* wb) {
-  uint8_t v8;
-  uint16_t v16;
-  uint32_t v32;
+  uint8_t v8 = 0;
+  uint16_t v16 = 0;
+  uint32_t v32 = 0;
   rbuffer_t rbuffer;
   rbuffer_t* rb = &rbuffer;
 
@@ -72,13 +72,49 @@ static void testWriteRead(wbuffer_t* wb) {
   }
 }
 
-TEST(Buffer, basic) {
+TEST(Buffer, basic1) {
+  float f32 = 0;
+  double f64 = 0;
+  uint64_t v64 = 0;
+  uint8_t data[128];
+  wbuffer_t wbuffer;
+  rbuffer_t rbuffer;
+  rbuffer_t* rb = &rbuffer;
+
+  ASSERT_EQ(wbuffer_init(&wbuffer, data, sizeof(data)), &wbuffer);
+  ASSERT_EQ(wbuffer_write_uint64(&wbuffer, 0x112233445566), RET_OK);
+  ASSERT_EQ(wbuffer.cursor, sizeof(uint64_t));
+  ASSERT_EQ(rbuffer_init(rb, wbuffer.data, wbuffer.cursor)!= NULL, true);
+  ASSERT_EQ(rbuffer_read_uint64(rb, &v64), RET_OK);
+  ASSERT_EQ(v64, 0x112233445566);
+  ASSERT_EQ(rbuffer_has_more(rb), FALSE);
+
+  ASSERT_EQ(wbuffer_init(&wbuffer, data, sizeof(data)), &wbuffer);
+  ASSERT_EQ(wbuffer_write_float(&wbuffer, 100), RET_OK);
+  ASSERT_EQ(wbuffer.cursor, sizeof(float));
+  ASSERT_EQ(rbuffer_init(rb, wbuffer.data, wbuffer.cursor)!= NULL, true);
+  ASSERT_EQ(rbuffer_read_float(rb, &f32), RET_OK);
+  ASSERT_EQ(f32, 100.0F);
+  ASSERT_EQ(rbuffer_has_more(rb), FALSE);
+  
+  ASSERT_EQ(wbuffer_init(&wbuffer, data, sizeof(data)), &wbuffer);
+  ASSERT_EQ(wbuffer_write_double(&wbuffer, 100), RET_OK);
+  ASSERT_EQ(wbuffer.cursor, sizeof(double));
+  ASSERT_EQ(rbuffer_init(rb, wbuffer.data, wbuffer.cursor)!= NULL, true);
+  ASSERT_EQ(rbuffer_read_double(rb, &f64), RET_OK);
+  ASSERT_EQ(f64, 100.0F);
+  ASSERT_EQ(rbuffer_has_more(rb), FALSE);
+}
+
+TEST(Buffer, basic2) {
   uint8_t data[128];
   wbuffer_t wbuffer;
   ASSERT_EQ(wbuffer_init(&wbuffer, data, sizeof(data)), &wbuffer);
 
-  testWriteRead(&wbuffer);
 }
+  uint64_t v64 = 0;
+  float f32 = 0;
+  double f64 = 0;
 
 TEST(Buffer, extendable) {
   wbuffer_t wbuffer;
