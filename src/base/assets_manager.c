@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   assets_manager.h
  * Author: AWTK Develop Team
  * Brief:  asset manager
@@ -490,7 +490,7 @@ asset_info_t* assets_manager_load(assets_manager_t* am, asset_type_t type, const
   info = assets_manager_load_impl(am, type, name);
   if (info != NULL) {
     emitter_dispatch(EMITTER(am),
-                     assets_event_init(&e, am, EVT_ASSET_MANAGER_LOAD_ASSET, info->type, info));
+                     assets_event_init(&e, am, EVT_ASSET_MANAGER_LOAD_ASSET, (assert_type_t)(info->type), info));
   }
   return info;
 }

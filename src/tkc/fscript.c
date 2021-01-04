@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   fscript.c
  * Author: AWTK Develop Team
  * Brief:  a simple functional script language
@@ -274,10 +274,9 @@ static ret_t fscript_exec_while(fscript_t* fscript, fscript_func_call_t* iter, v
   while (!done && fscript_eval_arg(fscript, iter, 0, &condition) == RET_OK &&
          value_bool(&condition)) {
     uint32_t i = 1;
-    ret_t ret = RET_OK;
     for (i = 1; i < iter->args.size; i++) {
       value_reset(result);
-      ret = fscript_eval_arg(fscript, iter, i, result);
+      fscript_eval_arg(fscript, iter, i, result);
       if (fscript->breaked) {
         done = TRUE;
         fscript->breaked = FALSE;
@@ -1302,6 +1301,7 @@ static ret_t func_print(fscript_t* fscript, fscript_args_t* args, value_t* resul
   for (i = 0; i < args->size; i++) {
     char buff[32];
     log_info("%s ", value_str_ex(args->args + i, buff, sizeof(buff) - 1));
+    (void)buff;
   }
   log_info("\n");
 
