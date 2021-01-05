@@ -65,12 +65,20 @@ static typed_array_t* get_typed_array(fscript_t* fscript, fscript_args_t* args) 
 }
 
 static ret_t func_array_push(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  uint32_t i = 0;
   typed_array_t* arr = NULL;
-  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->size > 1, RET_BAD_PARAMS);
   arr = get_typed_array(fscript, args);
   return_value_if_fail(arr != NULL, RET_BAD_PARAMS);
 
-  value_set_bool(result, typed_array_push(arr, args->args + 1) == RET_OK);
+  for (i = 1; i < args->size; i++) {
+    ret_t ret = typed_array_push(arr, args->args + i);
+    if (ret != RET_OK) {
+      break;
+    }
+  }
+
+  value_set_uint32(result, i - 1);
 
   return RET_OK;
 }

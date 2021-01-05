@@ -1736,7 +1736,7 @@ static ret_t func_unset(fscript_t* fscript, fscript_args_t* args, value_t* resul
   if (var != NULL) {
     value_reset(var);
   } else {
-    object_exec(fscript->obj, OBJECT_CMD_REMOVE, name);
+    object_remove_prop(fscript->obj, name);
   }
   value_set_bool(result, TRUE);
 
