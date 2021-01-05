@@ -2,6 +2,32 @@
 #include "tkc/object_default.h"
 #include "gtest/gtest.h"
 
+TEST(FScript, basic0) {
+  value_t v;
+  object_t* obj = object_default_create();
+  fscript_eval(obj, "1", &v);
+  ASSERT_EQ(1, value_int(&v));
+  value_reset(&v);
+  
+  fscript_eval(obj, "-1", &v);
+  ASSERT_EQ(-1, value_int(&v));
+  value_reset(&v);
+  
+  fscript_eval(obj, "+1", &v);
+  ASSERT_EQ(1, value_int(&v));
+  value_reset(&v);
+  
+  fscript_eval(obj, "true", &v);
+  ASSERT_EQ(TRUE, value_bool(&v));
+  value_reset(&v);
+  
+  fscript_eval(obj, "false", &v);
+  ASSERT_EQ(FALSE, value_bool(&v));
+  value_reset(&v);
+
+  OBJECT_UNREF(obj);
+}
+
 TEST(FScript, basic1) {
   value_t v;
   object_t* obj = object_default_create();
@@ -44,6 +70,21 @@ TEST(FScript, basic5) {
   fscript_eval(obj, "sum \n(1, 2)", &v);
   ASSERT_EQ(3, value_int(&v));
   value_reset(&v);
+  OBJECT_UNREF(obj);
+}
+
+TEST(FScript, basic6) {
+  value_t v;
+  object_t* obj = object_default_create();
+
+  fscript_eval(obj, "unset(a)", &v);
+  ASSERT_EQ(TRUE, value_bool(&v));
+  value_reset(&v);
+  
+  fscript_eval(obj, "unset(abc)", &v);
+  ASSERT_EQ(TRUE, value_bool(&v));
+  value_reset(&v);
+
   OBJECT_UNREF(obj);
 }
 

@@ -21,6 +21,7 @@
 static ret_t func_wbuffer_create(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size == 0, RET_BAD_PARAMS);
   value_set_object(result, object_wbuffer_create_extendable());
+  result->free_handle = TRUE;
 
   return RET_OK;
 }
@@ -34,6 +35,7 @@ static ret_t func_wbuffer_attach(fscript_t* fscript, fscript_args_t* args, value
   FSCRIPT_FUNC_CHECK(data != NULL, RET_BAD_PARAMS);
 
   value_set_object(result, object_wbuffer_create(data, size));
+  result->free_handle = TRUE;
 
   return RET_OK;
 }
@@ -113,7 +115,7 @@ static ret_t func_wbuffer_rewind(fscript_t* fscript, fscript_args_t* args, value
   obj = OBJECT_WBUFFER(value_object(args->args));
   FSCRIPT_FUNC_CHECK(obj != NULL && obj->wbuffer != NULL, RET_BAD_PARAMS);
 
-  obj->wbuffer->cursor = 0;
+  wbuffer_rewind(obj->wbuffer);
   value_set_bool(result, TRUE);
 
   return RET_OK;
@@ -252,16 +254,16 @@ static ret_t func_wbuffer_write_binary(fscript_t* fscript, fscript_args_t* args,
   FSCRIPT_FUNC_CHECK(args->size >= 2, RET_BAD_PARAMS);
   obj = OBJECT_WBUFFER(value_object(args->args));
   FSCRIPT_FUNC_CHECK(obj != NULL && obj->wbuffer != NULL, RET_BAD_PARAMS);
- 
-  v = args->args+1;
-  if(v->type == VALUE_TYPE_BINARY) {
+
+  v = args->args + 1;
+  if (v->type == VALUE_TYPE_BINARY) {
     binary_data_t* bin = value_binary_data(v);
     FSCRIPT_FUNC_CHECK(bin != NULL, RET_BAD_PARAMS);
     data = bin->data;
     size = bin->size;
   } else {
-    data = value_pointer(args->args+1);
-    size = value_uint32(args->args+2);
+    data = value_pointer(args->args + 1);
+    size = value_uint32(args->args + 2);
     FSCRIPT_FUNC_CHECK(data != NULL && size > 0, RET_BAD_PARAMS);
   }
   ret = wbuffer_write_binary(obj->wbuffer, data, size);
@@ -281,6 +283,10 @@ ret_t fscript_wbuffer_register(void) {
   ENSURE(fscript_register_func("wbuffer_write_uint16", func_wbuffer_write_uint16) == RET_OK);
   ENSURE(fscript_register_func("wbuffer_write_uint32", func_wbuffer_write_uint32) == RET_OK);
   ENSURE(fscript_register_func("wbuffer_write_uint64", func_wbuffer_write_uint64) == RET_OK);
+  ENSURE(fscript_register_func("wbuffer_write_int8", func_wbuffer_write_uint8) == RET_OK);
+  ENSURE(fscript_register_func("wbuffer_write_int16", func_wbuffer_write_uint16) == RET_OK);
+  ENSURE(fscript_register_func("wbuffer_write_int32", func_wbuffer_write_uint32) == RET_OK);
+  ENSURE(fscript_register_func("wbuffer_write_int64", func_wbuffer_write_uint64) == RET_OK);
 
   ENSURE(fscript_register_func("wbuffer_write_float", func_wbuffer_write_float) == RET_OK);
   ENSURE(fscript_register_func("wbuffer_write_double", func_wbuffer_write_double) == RET_OK);

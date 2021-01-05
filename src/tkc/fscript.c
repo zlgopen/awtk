@@ -34,6 +34,7 @@ struct _fscript_func_call_t {
 static ret_t func_if(fscript_t* fscript, fscript_args_t* args, value_t* result);
 static ret_t func_while(fscript_t* fscript, fscript_args_t* args, value_t* result);
 static ret_t func_set(fscript_t* fscript, fscript_args_t* args, value_t* result);
+static ret_t func_unset(fscript_t* fscript, fscript_args_t* args, value_t* result);
 static ret_t fscript_exec_func(fscript_t* fscript, fscript_func_call_t* iter, value_t* result);
 
 ret_t fscript_set_error(fscript_t* fscript, ret_t code, const char* func, const char* message) {
@@ -214,7 +215,7 @@ static ret_t fscript_eval_arg(fscript_t* fscript, fscript_func_call_t* iter, uin
   value_set_str(d, NULL);
   if (s->type == VALUE_TYPE_JSCRIPT_ID) {
     s->type = VALUE_TYPE_STRING;
-    if (iter->func == func_set && i == 0) {
+    if ((iter->func == func_set || iter->func == func_unset) && i == 0) {
       value_copy(d, s); /*func_set accept id/str as first param*/
     } else {
       const char* name = value_str(s);
@@ -673,10 +674,10 @@ static ret_t fscript_parser_unget_token(fscript_parser_t* parser) {
 static ret_t token_to_value(token_t* t, value_t* v) {
   if (t->type == TOKEN_NUMBER) {
     char number[64];
-    tk_strncpy_s(number, sizeof(number)-1, t->token, t->size);
+    tk_strncpy_s(number, sizeof(number) - 1, t->token, t->size);
     if (strchr(number, '.') != NULL) {
       value_set_double(v, tk_atof(number));
-    } else if(t->size > 10) {
+    } else if (t->size > 10) {
       value_set_int64(v, tk_atol(number));
     } else {
       value_set_int(v, tk_atoi(number));
@@ -832,7 +833,7 @@ static ret_t fexpr_parse_unary(fscript_parser_t* parser, value_t* result) {
   char c = '\0';
   fscript_args_t* args = NULL;
   fscript_func_call_t* acall = NULL;
-  token_t* t = fscript_parser_get_token_ex(parser, TRUE);
+  token_t* t = fscript_parser_get_token_ex(parser, FALSE);
   if (t == NULL || t->type == TOKEN_EOF) {
     return RET_OK;
   }
@@ -1543,7 +1544,8 @@ static ret_t func_eq(fscript_t* fscript, fscript_args_t* args, value_t* result) 
 static ret_t func_assert(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
   if (!value_bool(args->args)) {
-    fscript_set_error(fscript, RET_FAIL, __FUNCTION__, args->size > 1 ? value_str(args->args+1):"unkown");
+    fscript_set_error(fscript, RET_FAIL, __FUNCTION__,
+                      args->size > 1 ? value_str(args->args + 1) : "unkown");
     assert(0);
   }
   return RET_OK;
@@ -1724,9 +1726,19 @@ static ret_t func_noop(fscript_t* fscript, fscript_args_t* args, value_t* result
 }
 
 static ret_t func_unset(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  value_t* var = NULL;
+  const char* name = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
-  value_set_bool(result,
-                 object_exec(fscript->obj, OBJECT_CMD_REMOVE, value_str(args->args)) == RET_OK);
+  name = value_str(args->args);
+  return_value_if_fail(name != NULL, RET_BAD_PARAMS);
+
+  var = fscript_get_fast_var(fscript, name);
+  if (var != NULL) {
+    value_reset(var);
+  } else {
+    object_exec(fscript->obj, OBJECT_CMD_REMOVE, name);
+  }
+  value_set_bool(result, TRUE);
 
   return RET_OK;
 }
