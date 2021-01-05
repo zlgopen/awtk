@@ -14,5 +14,6 @@
   <button style="image" x="c" y="310" w="30" h="30"/>
   <edit x="c" y="350" w="50%" h="30" tips="input text here"/>
 
-  <button name="close" style="close" text="Close"/>
+  <button x="c:-50" y="b:10" w="80" h="30" name="enlarge" text="Enlarge"/>
+  <button x="c:50" y="b:10" w="80" h="30" name="close" text="Close"/>
 </window>

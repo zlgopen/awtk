@@ -36,6 +36,14 @@ static ret_t on_fullscreen(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t on_click_enlarge(void* ctx, event_t* e) {
+  native_window_t* win = widget_get_native_window(WIDGET(e->target));
+  native_window_resize(win, 840, 480, TRUE);
+
+  return RET_OK;
+}
+
+
 static ret_t on_click_close(void* ctx, event_t* e) {
   tk_quit();
 
@@ -45,6 +53,7 @@ static ret_t on_click_close(void* ctx, event_t* e) {
 ret_t application_init(void) {
   widget_t* win = window_open("desktop");
   widget_child_on(win, "close", EVT_CLICK, on_click_close, NULL);
+  widget_child_on(win, "enlarge", EVT_CLICK, on_click_enlarge, NULL);
   widget_child_on(win, "fullscreen", EVT_CLICK, on_fullscreen, win);
 
   return RET_OK;
