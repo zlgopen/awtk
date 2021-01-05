@@ -97,26 +97,13 @@ typedef struct _wbuffer_t {
 wbuffer_t* wbuffer_init(wbuffer_t* wbuffer, uint8_t* data, uint32_t capacity);
 
 /**
- * @method wbuffer_reset
+ * @method wbuffer_rewind
  * 重置当前写入位置。
  * @annotation ["constructor"]
  * 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t wbuffer_reset(wbuffer_t* wbuffer);
-
-/**
- * @method wbuffer_init_extendable_ex
- * 初始wbuffer对象，容量不够时是否支持自动扩展，使用完成后需要调用wbuffer\_deinit释放资源。
- * 备注：该函数会根据参数 capacity 来设置一个初始容量。
- *
- * @annotation ["constructor"]
- * @param {wbuffer_t*} wbuffer wbuffer对象。
- * @param {uint32_t} capacity capacity 缓冲区的初始容量。
- *
- * @return {wbuffer_t*} wbuffer对象本身。
- */
-wbuffer_t* wbuffer_init_extendable_ex(wbuffer_t* wbuffer, uint32_t capacity);
+ret_t wbuffer_rewind(wbuffer_t* wbuffer);
 
 /**
  * @method wbuffer_init_extendable
@@ -309,6 +296,15 @@ rbuffer_t* rbuffer_init(rbuffer_t* rbuffer, const uint8_t* data, uint32_t capaci
  * @return {bool_t} 返回TRUE表示还有数据可读，否则表示无数据可读。
  */
 bool_t rbuffer_has_more(rbuffer_t* rbuffer);
+
+/**
+ * @method rbuffer_rewind
+ * 重置当前读取位置。
+ * @annotation ["constructor"]
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t rbuffer_rewind(rbuffer_t* rbuffer);
 
 /**
  * @method rbuffer_skip

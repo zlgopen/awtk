@@ -33,7 +33,7 @@ wbuffer_t* wbuffer_init(wbuffer_t* wbuffer, uint8_t* data, uint32_t capacity) {
   return wbuffer;
 }
 
-ret_t wbuffer_reset(wbuffer_t* wbuffer) {
+ret_t wbuffer_rewind(wbuffer_t* wbuffer) {
   return_value_if_fail(wbuffer != NULL, RET_BAD_PARAMS);
 
   wbuffer->cursor = 0;
@@ -80,17 +80,6 @@ ret_t wbuffer_deinit(wbuffer_t* wbuffer) {
   memset(wbuffer, 0x00, sizeof(wbuffer_t));
 
   return RET_OK;
-}
-
-wbuffer_t* wbuffer_init_extendable_ex(wbuffer_t* wbuffer, uint32_t capacity) {
-  return_value_if_fail(wbuffer != NULL, NULL);
-
-  wbuffer->cursor = 0;
-  wbuffer->extendable = TRUE;
-  wbuffer->data = TKMEM_ZALLOCN(uint8_t, capacity);
-  wbuffer->capacity = wbuffer->data == NULL ? 0 : capacity;
-
-  return wbuffer;
 }
 
 wbuffer_t* wbuffer_init_extendable(wbuffer_t* wbuffer) {
@@ -206,6 +195,13 @@ bool_t rbuffer_has_more(rbuffer_t* rbuffer) {
   return_value_if_fail(rbuffer != NULL, FALSE);
 
   return rbuffer->cursor < rbuffer->capacity;
+}
+
+ret_t rbuffer_rewind(rbuffer_t* rbuffer) {
+  return_value_if_fail(rbuffer != NULL, RET_BAD_PARAMS);
+
+  rbuffer->cursor = 0;
+  return RET_OK;
 }
 
 ret_t rbuffer_skip(rbuffer_t* rbuffer, int32_t offset) {
