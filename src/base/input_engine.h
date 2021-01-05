@@ -78,14 +78,6 @@ struct _input_engine_t {
    * 当前按键组合对应的候选字列表。
    */
   wbuffer_t candidates;
-#if TK_IM_MAX_CANDIDATE_CHARS > 0
-  /**
-   * @property {char} candidates
-   * @annotation ["private"]
-   * 当前按键组合对应的候选字列表。
-   */
-  char candidates_buff[TK_IM_MAX_CANDIDATE_CHARS];
-#endif
   /**
    * @property {uint32_t} candidates_nr
    * @annotation ["private"]

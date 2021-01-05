@@ -26,11 +26,9 @@
 ret_t input_engine_init(input_engine_t* engine) {
   ret_t ret = RET_OK;
   return_value_if_fail(engine != NULL, RET_BAD_PARAMS);
-#if TK_IM_MAX_CANDIDATE_CHARS
-  wbuffer_init(&(engine->candidates), engine->candidates_buff, TK_IM_MAX_CANDIDATE_CHARS);
-#else
-  wbuffer_init_extendable_ex(&(engine->candidates), TK_IM_DEFAULT_MAX_CANDIDATE_CHARS);
-#endif
+  wbuffer_init_extendable(&(engine->candidates));
+  wbuffer_extend_capacity(&(engine->candidates), TK_IM_DEFAULT_MAX_CANDIDATE_CHARS);
+
   if (engine->init) {
     ret = engine->init(engine);
   }
@@ -52,7 +50,7 @@ ret_t input_engine_deinit(input_engine_t* engine) {
 ret_t input_engine_reset_candidates(input_engine_t* engine) {
   return_value_if_fail(engine != NULL, RET_BAD_PARAMS);
   engine->candidates_nr = 0;
-  return wbuffer_reset(&(engine->candidates));
+  return wbuffer_rewind(&(engine->candidates));
 }
 
 ret_t input_engine_add_candidate(input_engine_t* engine, const char* str) {

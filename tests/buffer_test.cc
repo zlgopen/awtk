@@ -15,19 +15,38 @@ TEST(Buffer, demo1) {
   wbuffer_deinit(&wbuffer);
 }
 
+TEST(Buffer, rewind) {
+  wbuffer_t wbuffer;
+  const char* str = "hello awtk";
+  wbuffer_init_extendable(&wbuffer);
+  wbuffer_write_string(&wbuffer, str);
+  ASSERT_EQ(wbuffer.cursor, strlen(str)+1);
+  ASSERT_EQ(wbuffer_rewind(&wbuffer), RET_OK);
+  ASSERT_EQ(wbuffer.cursor, 0);
+
+  wbuffer_deinit(&wbuffer);
+}
+
 TEST(Buffer, demo2) {
   uint8_t buff[128];
   wbuffer_t wbuffer;
   rbuffer_t rbuffer;
-  const char* str = NULL;
+  const char* rstr = NULL;
+  const char* wstr = "hello awtk";
   wbuffer_init(&wbuffer, buff, sizeof(buff));
 
-  wbuffer_write_string(&wbuffer, "hello awtk");
+  wbuffer_write_string(&wbuffer, wstr);
 
   rbuffer_init(&rbuffer, wbuffer.data, wbuffer.cursor);
-  rbuffer_read_string(&rbuffer, &str);
+  rbuffer_read_string(&rbuffer, &rstr);
 
-  ASSERT_EQ(string(str), "hello awtk");
+  ASSERT_EQ(rbuffer.cursor, strlen(wstr)+1);
+  ASSERT_EQ(rbuffer_rewind(&rbuffer), RET_OK);
+  ASSERT_EQ(rbuffer.cursor, 0);
+
+  rbuffer_read_string(&rbuffer, &rstr);
+
+  ASSERT_STREQ(rstr, wstr);
 }
 
 static void testWriteRead(wbuffer_t* wb) {
