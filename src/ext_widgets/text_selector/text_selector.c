@@ -485,6 +485,9 @@ static ret_t text_selector_sync_selected_index_with_yoffset(text_selector_t* tex
   int32_t mid_index = text_selector->visible_nr / 2;
   int32_t item_height = text_selector->draw_widget_h / text_selector->visible_nr;
   int32_t selected_index = text_selector->yoffset / item_height + mid_index;
+  if (text_selector->loop_options) {
+    selected_index = selected_index % text_selector_count_options(WIDGET(text_selector));
+  }
 
   return text_selector_set_selected_index_only(text_selector, selected_index);
 }
