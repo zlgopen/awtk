@@ -33,22 +33,19 @@ static ret_t input_engine_null_reset_input(input_engine_t* engine) {
 }
 
 static ret_t input_engine_null_search(input_engine_t* engine, const char* keys) {
-  wbuffer_t wb;
   uint32_t keys_size = strlen(keys);
-  wbuffer_init(&wb, (uint8_t*)(engine->candidates), sizeof(engine->candidates));
+  return_value_if_fail(engine != NULL && keys != NULL, RET_BAD_PARAMS);
+  input_engine_reset_candidates(engine);
 
   if (keys_size > 0) {
-    wbuffer_write_string(&wb, keys);
-    wbuffer_write_string(&wb, "广");
-    wbuffer_write_string(&wb, "州");
-    wbuffer_write_string(&wb, "致");
-    wbuffer_write_string(&wb, "远");
-    wbuffer_write_string(&wb, "电子");
-    wbuffer_write_string(&wb, "有限公司");
-    engine->candidates_nr = 7;
-    input_method_dispatch_candidates(engine->im, engine->candidates, engine->candidates_nr, 0);
-  } else {
-    engine->candidates_nr = 0;
+    input_engine_add_candidate(engine, keys);
+    input_engine_add_candidate(engine, "广");
+    input_engine_add_candidate(engine, "州");
+    input_engine_add_candidate(engine, "致");
+    input_engine_add_candidate(engine, "远");
+    input_engine_add_candidate(engine, "电子");
+    input_engine_add_candidate(engine, "有限公司");
+    input_engine_dispatch_candidates(engine, 0);
   }
 
   return RET_OK;

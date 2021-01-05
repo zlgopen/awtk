@@ -22,7 +22,7 @@
 
 #include "ime_utils.h"
 
-int32_t table_search_index(const table_entry_t* items, uint32_t items_nr, const char* key,
+int32_t ime_utils_table_search_index(const table_entry_t* items, uint32_t items_nr, const char* key,
                            uint32_t key_len, bool_t exact) {
   int r = 0;
   int32_t low = 0;
@@ -50,22 +50,7 @@ int32_t table_search_index(const table_entry_t* items, uint32_t items_nr, const 
   return -1;
 }
 
-static ret_t wbuffer_write_string_if_has_room(wbuffer_t* wb, const char* str) {
-  uint32_t len = 0;
-
-  if (str == NULL) {
-    return RET_OK;
-  }
-
-  len = strlen(str);
-  if (wbuffer_has_room(wb, len + 1)) {
-    return wbuffer_write_string(wb, str);
-  }
-
-  return RET_FAIL;
-}
-
-static uint32_t count_words(const char** words) {
+static uint32_t ime_utils_count_words(const char** words) {
   uint32_t n = 0;
 
   while (words[n] != NULL) n++;
@@ -73,7 +58,7 @@ static uint32_t count_words(const char** words) {
   return n;
 }
 
-uint32_t table_search(const table_entry_t* items, uint32_t items_nr, const char* key,
+uint32_t ime_utils_table_search(const table_entry_t* items, uint32_t items_nr, const char* key,
                       wbuffer_t* result, bool_t exact) {
   uint32_t i = 0;
   uint32_t nr = 0;
@@ -88,18 +73,18 @@ uint32_t table_search(const table_entry_t* items, uint32_t items_nr, const char*
   }
 
   /*match exact*/
-  found = table_search_index(items, items_nr, key, key_len, TRUE);
+  found = ime_utils_table_search_index(items, items_nr, key, key_len, TRUE);
   if (found >= 0) {
     iter = items + found;
 
     if (key_len > 1 && iter->memo != NULL) {
-      if (wbuffer_write_string_if_has_room(result, iter->memo) == RET_OK) {
+      if (wbuffer_write_string(result, iter->memo) == RET_OK) {
         nr++;
       }
     }
 
     while (iter->words[i] != NULL) {
-      if (wbuffer_write_string_if_has_room(result, iter->words[i]) != RET_OK) {
+      if (!tk_str_eq(iter->memo, iter->words[i]) && wbuffer_write_string(result, iter->words[i]) != RET_OK) {
         break;
       }
       i++;
@@ -114,14 +99,14 @@ uint32_t table_search(const table_entry_t* items, uint32_t items_nr, const char*
   }
 
   /*match prefix*/
-  found = table_search_index(items, items_nr, key, key_len, FALSE);
+  found = ime_utils_table_search_index(items, items_nr, key, key_len, FALSE);
   if (found >= 0) {
     uint32_t k = 0;
     uint32_t key_len = strlen(key);
 
     iter = items + found;
     if (key_len > 1 && iter->memo != NULL) {
-      if (wbuffer_write_string_if_has_room(result, iter->memo) == RET_OK) {
+      if (wbuffer_write_string(result, iter->memo) == RET_OK) {
         nr++;
       }
     }
@@ -139,8 +124,8 @@ uint32_t table_search(const table_entry_t* items, uint32_t items_nr, const char*
       for (k = found; k < items_nr; k++) {
         iter = items + k;
         if (strncmp(iter->key, key, key_len) == 0) {
-          if (count_words(iter->words) > i) {
-            if (wbuffer_write_string_if_has_room(result, iter->words[i]) != RET_OK) {
+          if (ime_utils_count_words(iter->words) > i) {
+            if (wbuffer_write_string(result, iter->words[i]) != RET_OK) {
               return nr;
             }
             nr++;
@@ -155,7 +140,7 @@ uint32_t table_search(const table_entry_t* items, uint32_t items_nr, const char*
   return nr;
 }
 
-ret_t input_engine_add_chars(wbuffer_t* wb, const wchar_t** table, char c) {
+uint32_t ime_utils_add_chars(wbuffer_t* wb, const wchar_t** table, char c) {
   char str[8];
   uint32_t n = 0;
   const wchar_t* p = NULL;

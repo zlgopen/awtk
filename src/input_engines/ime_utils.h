@@ -35,10 +35,10 @@ typedef struct _table_entry_t {
   const char** words;
 } table_entry_t;
 
-uint32_t table_search(const table_entry_t* items, uint32_t items_nr, const char* keys,
+uint32_t ime_utils_table_search(const table_entry_t* items, uint32_t items_nr, const char* keys,
                       wbuffer_t* result, bool_t exact);
 
-ret_t input_engine_add_chars(wbuffer_t* wb, const wchar_t** table, char c);
+uint32_t ime_utils_add_chars(wbuffer_t* wb, const wchar_t** table, char c);
 
 END_C_DECLS
 

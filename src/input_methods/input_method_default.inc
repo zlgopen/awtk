@@ -391,6 +391,7 @@ ret_t input_method_default_destroy(input_method_t* im) {
   return_value_if_fail(im != NULL, RET_BAD_PARAMS);
 
   emitter_deinit(&(im->emitter));
+  input_engine_deinit(im->engine);
   input_engine_destroy(im->engine);
   suggest_words_destroy(im->suggest_words);
   assets_manager_unref(assets_manager(), (const asset_info_t*)(im->data));
@@ -410,6 +411,7 @@ input_method_t* input_method_default_create(void) {
 
   emitter_init(&(im->emitter));
   im->engine = input_engine_create(im);
+  input_engine_init(im->engine);
 
   return im;
 }

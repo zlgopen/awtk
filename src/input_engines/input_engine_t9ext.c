@@ -43,7 +43,7 @@ typedef struct _input_engine_t9ext_t {
   input_engine_t input_engine;
 
   input_mode_t mode;
-  char pre_candidates[128];
+  wbuffer_t pre_candidates;
   uint32_t pre_candidates_nr;
 
   /*for lower/upper*/
@@ -74,7 +74,8 @@ static ret_t input_engine_t9ext_input(input_engine_t* engine, int key) {
     }
 
     input_method_dispatch(engine->im, &e);
-    input_method_dispatch_candidates(engine->im, engine->candidates, 0, -1);
+    input_engine_reset_candidates(engine);
+    input_engine_dispatch_candidates(engine, -1);
 
     return RET_OK;
   }
@@ -94,7 +95,7 @@ static ret_t input_engine_t9ext_input(input_engine_t* engine, int key) {
 static ret_t input_engine_t9ext_reset_input(input_engine_t* engine) {
   input_engine_t9ext_t* t9 = (input_engine_t9ext_t*)engine;
 
-  input_method_dispatch_pre_candidates(engine->im, t9->pre_candidates, 0, -1);
+  input_method_dispatch_pre_candidates(engine->im, (const char*)(t9->pre_candidates.data), 0, -1);
 
   return RET_OK;
 }
@@ -149,9 +150,8 @@ static ret_t input_engine_t9ext_preedit_confirm_timer(const timer_info_t* info) 
 static ret_t input_engine_t9ext_search_alpha(input_engine_t* engine, char c,
                                              const wchar_t** table) {
   uint32_t i = 0;
-  wbuffer_t wb;
   input_engine_t9ext_t* t9 = (input_engine_t9ext_t*)engine;
-  return_value_if_fail(c >= '0' && c <= '9', RET_FAIL);
+  return_value_if_fail(c >= '0' && c <= '9' && t9 != NULL, RET_FAIL);
 
   i = c - '0';
   if (t9->timer_id == TK_INVALID_ID) {
@@ -176,9 +176,9 @@ static ret_t input_engine_t9ext_search_alpha(input_engine_t* engine, char c,
   input_engine_t9ext_commit_char(engine, table[i][t9->index]);
   engine->keys.size = 0;
 
-  wbuffer_init(&wb, (uint8_t*)(t9->pre_candidates), sizeof(t9->pre_candidates));
-  t9->pre_candidates_nr = input_engine_add_chars(&wb, table, c);
-  input_method_dispatch_pre_candidates(engine->im, t9->pre_candidates, t9->pre_candidates_nr,
+  wbuffer_reset(&(t9->pre_candidates));
+  t9->pre_candidates_nr = ime_utils_add_chars(&(t9->pre_candidates), table, c);
+  input_method_dispatch_pre_candidates(engine->im, (const char*)(t9->pre_candidates.data), t9->pre_candidates_nr,
                                        t9->index);
 
   return RET_OK;
@@ -193,55 +193,50 @@ static ret_t input_engine_t9ext_search_upper(input_engine_t* engine, const char*
 }
 
 static ret_t input_engine_t9ext_search_zh(input_engine_t* engine, const char* keys) {
-  wbuffer_t wb;
   const char* first = NULL;
   uint32_t keys_size = strlen(keys);
   input_engine_t9ext_t* t9 = (input_engine_t9ext_t*)engine;
+  return_value_if_fail(t9 != NULL, RET_BAD_PARAMS);
 
   if (isdigit(keys[0])) {
     /*map digits to pinyin*/
     const table_entry_t* items = s_t9ext_numbers_pinyin;
     uint32_t items_nr = ARRAY_SIZE(s_t9ext_numbers_pinyin);
 
-    wbuffer_init(&wb, (uint8_t*)(t9->pre_candidates), sizeof(t9->pre_candidates));
+    wbuffer_reset(&(t9->pre_candidates));
 
-    first = (const char*)(wb.data);
+    first = (const char*)(t9->pre_candidates.data);
     if (keys_size == 1) {
       t9->pre_candidates_nr = 1;
-      wbuffer_write_string(&wb, keys);
+      wbuffer_write_string(&(t9->pre_candidates), keys);
     } else {
       t9->pre_candidates_nr = 0;
     }
 
-    t9->pre_candidates_nr += table_search(items, items_nr, keys, &wb, FALSE);
+    t9->pre_candidates_nr += ime_utils_table_search(items, items_nr, keys, &(t9->pre_candidates), FALSE);
     if (t9->pre_candidates_nr == 0) {
       t9->pre_candidates_nr = 1;
-      wbuffer_write_string(&wb, keys);
-      input_method_dispatch_pre_candidates(engine->im, t9->pre_candidates, t9->pre_candidates_nr,
+      wbuffer_write_string(&(t9->pre_candidates), keys);
+      input_method_dispatch_pre_candidates(engine->im, (const char*)(t9->pre_candidates.data), t9->pre_candidates_nr,
                                            0);
     } else {
-      input_method_dispatch_pre_candidates(engine->im, t9->pre_candidates, t9->pre_candidates_nr,
+      input_method_dispatch_pre_candidates(engine->im, (const char*)(t9->pre_candidates.data), t9->pre_candidates_nr,
                                            0);
 
-      wbuffer_init(&wb, (uint8_t*)(engine->candidates), sizeof(engine->candidates));
+      input_engine_reset_candidates(engine);
       if (keys_size == 1) {
-        engine->candidates_nr = input_engine_add_chars(&wb, s_table_num_chars, *keys);
+        input_engine_add_candidates_from_char(engine, s_table_num_chars, *keys);
       } else if (*first) {
         /*map first pinyin to Chinese chars*/
-        const table_entry_t* items = s_pinyin_chinese_items;
-        uint32_t items_nr = ARRAY_SIZE(s_pinyin_chinese_items);
-        engine->candidates_nr = table_search(items, items_nr, first, &wb, TRUE);
+        input_engine_add_candidates_from_string(engine, s_pinyin_chinese_items, ARRAY_SIZE(s_pinyin_chinese_items), first, TRUE);
       }
-      input_method_dispatch_candidates(engine->im, engine->candidates, engine->candidates_nr, -1);
+      input_engine_dispatch_candidates(engine, -1);
     }
   } else {
     /*map pinyin to Chinese chars*/
-    const table_entry_t* items = s_pinyin_chinese_items;
-    uint32_t items_nr = ARRAY_SIZE(s_pinyin_chinese_items);
-
-    wbuffer_init(&wb, (uint8_t*)(engine->candidates), sizeof(engine->candidates));
-    engine->candidates_nr = table_search(items, items_nr, keys, &wb, TRUE);
-    input_method_dispatch_candidates(engine->im, engine->candidates, engine->candidates_nr, -1);
+    input_engine_reset_candidates(engine);
+    input_engine_add_candidates_from_string(engine, s_pinyin_chinese_items, ARRAY_SIZE(s_pinyin_chinese_items), keys, TRUE);
+    input_engine_dispatch_candidates(engine, -1);
   }
 
   return RET_OK;
@@ -254,9 +249,9 @@ static ret_t input_engine_t9ext_search(input_engine_t* engine, const char* keys)
   keys_size = strlen(keys);
 
   if (keys_size == 0) {
-    engine->candidates_nr = 0;
     input_engine_reset_input(engine);
-    input_method_dispatch_candidates(engine->im, engine->candidates, 0, -1);
+    input_engine_reset_candidates(engine);
+    input_engine_dispatch_candidates(engine, -1);
     return RET_OK;
   }
 
@@ -282,18 +277,16 @@ static ret_t input_engine_t9ext_search(input_engine_t* engine, const char* keys)
     }
     default: {
       if (keys[0] == '1') {
-        wbuffer_t wb;
-        wbuffer_init(&wb, (uint8_t*)(t9->pre_candidates), sizeof(t9->pre_candidates));
-
         t9->pre_candidates_nr = 1;
-        wbuffer_write_string(&wb, keys);
+        wbuffer_reset(&(t9->pre_candidates));
+        wbuffer_write_string(&(t9->pre_candidates), keys);
         input_engine_reset_input(engine);
-        input_method_dispatch_pre_candidates(engine->im, t9->pre_candidates, t9->pre_candidates_nr,
+        input_method_dispatch_pre_candidates(engine->im, (const char*)(t9->pre_candidates.data), t9->pre_candidates_nr,
                                              0);
 
-        wbuffer_init(&wb, (uint8_t*)(engine->candidates), sizeof(engine->candidates));
-        engine->candidates_nr = input_engine_add_chars(&wb, s_table_num_chars, '1');
-        input_method_dispatch_candidates(engine->im, engine->candidates, engine->candidates_nr, -1);
+        input_engine_reset_candidates(engine);
+        input_engine_add_candidates_from_char(engine, s_table_num_chars, '1');
+        input_engine_dispatch_candidates(engine, -1);
 
         return RET_OK;
       }
@@ -333,8 +326,10 @@ static ret_t input_engine_t9ext_set_lang(input_engine_t* engine, const char* lan
     input_method_dispatch_preedit_confirm(engine->im);
   }
 
-  input_method_dispatch(engine->im, &e);
-  input_method_dispatch_candidates(engine->im, engine->candidates, 0, -1);
+  input_method_dispatch(engine->im, &e);    
+  input_engine_reset_candidates(engine);
+  input_engine_dispatch_candidates(engine, -1);
+  // input_method_dispatch_candidates(engine->im, (const char*)(engine->candidates.data), 0, -1);
 
   return RET_OK;
 }
@@ -357,6 +352,20 @@ static const char* input_engine_t9ext_get_lang(input_engine_t* engine) {
   }
 }
 
+static ret_t input_engine_t9ext_init(input_engine_t* engine) {
+  input_engine_t9ext_t* t9 = (input_engine_t9ext_t*)engine;
+  return_value_if_fail(engine != NULL && t9 != NULL, RET_BAD_PARAMS);
+  wbuffer_init_extendable_ex(&(t9->pre_candidates), TK_IM_DEFAULT_MAX_CANDIDATE_CHARS);
+  return RET_OK;
+}
+
+static ret_t input_engine_t9ext_deinit(input_engine_t* engine) {
+  input_engine_t9ext_t* t9 = (input_engine_t9ext_t*)engine;
+  return_value_if_fail(engine != NULL && t9 != NULL, RET_BAD_PARAMS);
+  wbuffer_deinit(&(t9->pre_candidates));
+  return RET_OK;
+}
+
 input_engine_t* input_engine_create(input_method_t* im) {
   input_engine_t9ext_t* t9 = TKMEM_ZALLOC(input_engine_t9ext_t);
   input_engine_t* engine = (input_engine_t*)t9;
@@ -367,6 +376,8 @@ input_engine_t* input_engine_create(input_method_t* im) {
   str_init(&(engine->keys), TK_IM_MAX_INPUT_CHARS + 1);
 
   engine->im = im;
+  engine->init = input_engine_t9ext_init;
+  engine->deinit = input_engine_t9ext_deinit;
   engine->input = input_engine_t9ext_input;
   engine->search = input_engine_t9ext_search;
   engine->set_lang = input_engine_t9ext_set_lang;

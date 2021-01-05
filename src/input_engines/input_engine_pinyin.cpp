@@ -44,8 +44,7 @@ static ret_t input_engine_pinyin_reset_input(input_engine_t* engine) {
   return RET_OK;
 }
 
-static ret_t input_engine_pinyin_add_candidate(input_engine_t* engine, wbuffer_t* wb,
-                                               uint32_t index) {
+static ret_t input_engine_pinyin_add_candidate(input_engine_t* engine, uint32_t index) {
   uint32_t i = 0;
   char str[MAX_WORD_LEN * 2 + 1];
   char16 str16[MAX_WORD_LEN + 1];
@@ -61,11 +60,7 @@ static ret_t input_engine_pinyin_add_candidate(input_engine_t* engine, wbuffer_t
 
   tk_utf8_from_utf16(wstr, str, sizeof(str) - 1);
 
-  if ((wb->cursor + strlen(str) + 1) >= wb->capacity) {
-    return RET_FAIL;
-  }
-
-  return wbuffer_write_string(wb, str);
+  return input_engine_add_candidate(engine, str);
 }
 
 static ret_t input_engine_ensure_data(input_engine_t* engine) {
@@ -83,33 +78,28 @@ static ret_t input_engine_ensure_data(input_engine_t* engine) {
 }
 
 static ret_t input_engine_pinyin_search(input_engine_t* engine, const char* keys) {
-  wbuffer_t wb;
   uint32_t i = 0;
   uint32_t keys_size = strlen(keys);
   uint32_t nr = im_search(keys, tk_min(14, keys_size));
 
-  wbuffer_init(&wb, (uint8_t*)(engine->candidates), sizeof(engine->candidates));
-  return_value_if_fail(input_engine_ensure_data(engine) == RET_OK, RET_FAIL);
+  return_value_if_fail(engine != NULL && input_engine_ensure_data(engine) == RET_OK, RET_FAIL);
+  input_engine_reset_candidates(engine);
 
   if (keys_size == 0) {
     input_engine_reset_input(engine);
-    input_method_dispatch_candidates(engine->im, engine->candidates, 0, 0);
+    input_engine_dispatch_candidates(engine, 0);
 
     return RET_OK;
   }
 
-  wbuffer_write_string(&wb, keys);
-  engine->candidates_nr = 1;
-
+  input_engine_add_candidate(engine, keys);
   for (i = 0; i < nr; i++) {
-    if (input_engine_pinyin_add_candidate(engine, &wb, i) == RET_OK) {
-      engine->candidates_nr++;
-    } else {
+    if (input_engine_pinyin_add_candidate(engine, i) != RET_OK) {
       break;
     }
   }
 
-  input_method_dispatch_candidates(engine->im, engine->candidates, engine->candidates_nr, 0);
+  input_engine_dispatch_candidates(engine, 0);
 
   return RET_OK;
 }

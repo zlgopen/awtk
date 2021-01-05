@@ -23,10 +23,14 @@
 #define TK_INPUT_ENGINE_H
 
 #include "tkc/str.h"
+#include "tkc/buffer.h"
 #include "base/types_def.h"
+#include "input_engines/ime_utils.h"
 
 BEGIN_C_DECLS
 
+typedef ret_t (*input_engine_init_t)(input_engine_t* engine);
+typedef ret_t (*input_engine_deinit_t)(input_engine_t* engine);
 typedef ret_t (*input_engine_search_t)(input_engine_t* engine, const char* keys);
 typedef ret_t (*input_engine_reset_input_t)(input_engine_t* engine);
 typedef ret_t (*input_engine_input_t)(input_engine_t* engine, int key);
@@ -37,9 +41,11 @@ typedef const char* (*input_engine_get_lang_t)(input_engine_t* engine);
 #define TK_IM_MAX_INPUT_CHARS 15
 #endif /*TK_IM_MAX_INPUT_CHARS*/
 
+#define TK_IM_DEFAULT_MAX_CANDIDATE_CHARS 255
+
 #ifndef TK_IM_MAX_CANDIDATE_CHARS
-#define TK_IM_MAX_CANDIDATE_CHARS 1023
-#endif /*TK_IM_MAX_CANDIDATE_CHARS*/
+#define TK_IM_MAX_CANDIDATE_CHARS TK_IM_DEFAULT_MAX_CANDIDATE_CHARS
+#endif
 
 /**
  * @class input_engine_t
@@ -67,11 +73,19 @@ struct _input_engine_t {
    */
   str_t keys;
   /**
-   * @property {char*} candidates
+   * @property {wbuffer_t} candidates
    * @annotation ["private"]
    * 当前按键组合对应的候选字列表。
    */
-  char candidates[TK_IM_MAX_CANDIDATE_CHARS + 1];
+  wbuffer_t candidates;
+#if TK_IM_MAX_CANDIDATE_CHARS > 0
+  /**
+   * @property {char} candidates
+   * @annotation ["private"]
+   * 当前按键组合对应的候选字列表。
+   */
+  char candidates_buff[TK_IM_MAX_CANDIDATE_CHARS];
+#endif
   /**
    * @property {uint32_t} candidates_nr
    * @annotation ["private"]
@@ -80,6 +94,8 @@ struct _input_engine_t {
   uint32_t candidates_nr;
 
   /*具体实现需要实现的函数*/
+  input_engine_init_t init;
+  input_engine_deinit_t deinit;
   input_engine_input_t input;
   input_engine_search_t search;
   input_engine_set_lang_t set_lang;
@@ -120,6 +136,78 @@ ret_t input_engine_destroy(input_engine_t* engine);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t input_engine_reset_input(input_engine_t* engine);
+
+/**
+ * @method input_engine_init
+ * 初始化输入法引擎对象。
+ * @param {input_engine_t*} engine 输入法引擎对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t input_engine_init(input_engine_t* engine);
+
+/**
+ * @method input_engine_deinit
+ * 释放输入法引擎对象。
+ * @param {input_engine_t*} engine 输入法引擎对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t input_engine_deinit(input_engine_t* engine);
+
+/**
+ * @method input_engine_reset_candidates
+ * 重置输入法引擎对象。
+ * @param {input_engine_t*} engine 输入法引擎对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t input_engine_reset_candidates(input_engine_t* engine);
+
+/**
+ * @method input_engine_add_candidate
+ * 给输入法引擎对象加入一个候选字。
+ * @param {input_engine_t*} engine 输入法引擎对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t input_engine_add_candidate(input_engine_t* engine, const char* str);
+
+/**
+ * @method input_engine_add_candidates_from_char
+ * 根据字符类型给输入法引擎对象加入所有符合的候选字。
+ * 备注：搜索表是二维数组，需要通过参数 c 来确定使用具体行数。
+ * 
+ * @param {input_engine_t*} engine 输入法引擎对象。
+ * @param {const wchar_t**} table 输入法搜索表。
+ * @param {char} c 需要显示查询的字符。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t input_engine_add_candidates_from_char(input_engine_t* engine, const wchar_t** table, char c);
+
+/**
+ * @method input_engine_add_candidates_from_string
+ * 根据字符串给输入法引擎对象加入所有符合的候选字。
+ * @param {input_engine_t*} engine 输入法引擎对象。
+ * @param {const table_entry_t*} items 输入法搜索表。
+ * @param {uint32_t} items_nr 输入法搜索表长度。
+ * @param {const char*} key 需要显示查询的字符。
+ * @param {bool_t} exact 是否只查询完全匹配的字符串。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t input_engine_add_candidates_from_string(input_engine_t* engine, const table_entry_t* items, uint32_t items_nr, const char* key, bool_t exact);
+
+/**
+ * @method input_engine_dispatch_candidates
+ * 请求显示候选字。
+ * @param {input_engine_t*} engine 输入法引擎对象。
+ * @param {int32_t} selected 缺省选中候选字的序数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t input_engine_dispatch_candidates(input_engine_t* engine, int32_t selected);
 
 /**
  * @engine input_engine_set_lang
