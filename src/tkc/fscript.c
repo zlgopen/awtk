@@ -236,9 +236,7 @@ static ret_t fscript_eval_arg(fscript_t* fscript, fscript_func_call_t* iter, uin
       }
     }
   } else if (s->type == VALUE_TYPE_JSCRIPT_FUNC) {
-    fscript_exec_func(fscript, value_func(s), &v);
-    value_deep_copy(d, &v);
-    value_reset(&v);
+    fscript_exec_func(fscript, value_func(s), d);
   } else {
     value_copy(d, s);
   }
