@@ -211,6 +211,7 @@ static ret_t fscript_eval_arg(fscript_t* fscript, fscript_func_call_t* iter, uin
   value_t* s = iter->args.args + i;
   int32_t save_type = s->type;
   value_set_str(&v, NULL);
+  value_set_str(d, NULL);
   if (s->type == VALUE_TYPE_JSCRIPT_ID) {
     s->type = VALUE_TYPE_STRING;
     if (iter->func == func_set && i == 0) {
@@ -500,6 +501,11 @@ static ret_t fscript_parser_parse_id_or_number(fscript_parser_t* parser, token_t
       break;
     }
   } while (TRUE);
+
+  if (isspace(c)) {
+    fscript_parser_skip_seperators(parser);
+    c = fscript_parser_get_char(parser);
+  }
 
   str_trim(str, " \t\r\n");
   TOKEN_INIT(t, (c == '(' ? TOKEN_FUNC : def_type), str);

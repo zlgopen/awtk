@@ -38,6 +38,15 @@ TEST(FScript, basic4) {
   OBJECT_UNREF(obj);
 }
 
+TEST(FScript, basic5) {
+  value_t v;
+  object_t* obj = object_default_create();
+  fscript_eval(obj, "sum \n(1, 2)", &v);
+  ASSERT_EQ(3, value_int(&v));
+  value_reset(&v);
+  OBJECT_UNREF(obj);
+}
+
 TEST(FScript, if1) {
   value_t v;
   object_t* obj = object_default_create();
