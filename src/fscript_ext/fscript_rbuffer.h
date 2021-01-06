@@ -24,7 +24,7 @@ BEGIN_C_DECLS
 
 /**
  * @method fscript_rbuffer_register
- * 注册rbuffer16/rbuffer32/cksum等函数。
+ * 注册rbuffer相关函数。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

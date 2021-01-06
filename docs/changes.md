@@ -1,5 +1,9 @@
 # 最新动态
 
+2021/01/06
+  * 完善fscript和fscript\_ext。
+  * 将istream/ostream/iostream包装成fscript的函数。
+
 2021/01/05
   * 完善fscript和fscript\_ext。
   * 支持修改输入候选字的个数或者候选字个数自动扩展功能（感谢智明提供补丁）

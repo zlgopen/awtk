@@ -25,16 +25,28 @@
 #include "fscript_ext/fscript_wbuffer.h"
 #include "fscript_ext/fscript_typed_array.h"
 
-static ret_t func_value_reset(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+#include "fscript_ext/fscript_istream.h"
+#include "fscript_ext/fscript_ostream.h"
+#include "fscript_ext/fscript_iostream.h"
+#include "fscript_ext/fscript_iostream_file.h"
+
+static ret_t func_value_is_valid(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
-  value_reset(args->args);
+  value_set_bool(result, args->args->type != VALUE_TYPE_INVALID);
   return RET_OK;
 }
 
 ret_t fscript_ext_init(void) {
-  ENSURE(fscript_register_func("value_reset", func_value_reset) == RET_OK);
+  ENSURE(fscript_register_func("value_is_valid", func_value_is_valid) == RET_OK);
 
   fscript_object_register();
+
+#ifdef FSCRIPT_WITH_STREAM
+  fscript_istream_register();
+  fscript_ostream_register();
+  fscript_iostream_register();
+  fscript_iostream_file_register();
+#endif /*FSCRIPT_WITH_STREAM*/
 
 #ifdef FSCRIPT_WITH_CRC
   fscript_crc_register();
