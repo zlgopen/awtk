@@ -3,6 +3,7 @@
 2021/01/06
   * 完善fscript和fscript\_ext。
   * 将istream/ostream/iostream包装成fscript的函数。
+  * 将tcp/udp/serial包装成fscript的函数。
 
 2021/01/05
   * 完善fscript和fscript\_ext。

@@ -56,7 +56,8 @@ struct _tk_istream_tcp_t {
  */
 tk_istream_t* tk_istream_tcp_create(int sock);
 
-#define TK_ISTREAM_TCP(obj) ((tk_istream_tcp_t*)(obj))
+tk_istream_tcp_t* tk_istream_tcp_cast(tk_istream_t* s);
+#define TK_ISTREAM_TCP(obj) tk_istream_tcp_cast((tk_istream_t*)(obj))
 
 END_C_DECLS
 

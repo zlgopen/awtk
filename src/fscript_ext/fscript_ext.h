@@ -39,7 +39,8 @@ ret_t fscript_ext_init(void);
 #define WITH_FSCRIPT_EXT 1 
 #define FSCRIPT_WITH_STREAM 1
 #define FSCRIPT_WITH_STREAM_FILE 1
-
+#define FSCRIPT_WITH_STREAM_INET 1
+#define FSCRIPT_WITH_STREAM_SERIAL 1
 #endif /*PC*/
 
 END_C_DECLS

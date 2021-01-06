@@ -34,6 +34,7 @@ void do_echo(tk_iostream_t* iostream) {
   }
 
   TKMEM_FREE(buff);
+  sleep_ms(10000);
   object_unref(OBJECT(iostream));
 
   return;

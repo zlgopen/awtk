@@ -29,6 +29,8 @@
 #include "fscript_ext/fscript_ostream.h"
 #include "fscript_ext/fscript_iostream.h"
 #include "fscript_ext/fscript_iostream_file.h"
+#include "fscript_ext/fscript_iostream_inet.h"
+#include "fscript_ext/fscript_iostream_serial.h"
 
 static ret_t func_value_is_valid(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
@@ -45,7 +47,15 @@ ret_t fscript_ext_init(void) {
   fscript_istream_register();
   fscript_ostream_register();
   fscript_iostream_register();
+  #ifdef FSCRIPT_WITH_STREAM_FILE
   fscript_iostream_file_register();
+  #endif/*FSCRIPT_WITH_STREAM_FILE*/
+  #ifdef FSCRIPT_WITH_STREAM_INET
+  fscript_iostream_inet_register();
+  #endif/*FSCRIPT_WITH_STREAM_INET*/
+  #ifdef FSCRIPT_WITH_STREAM_SERIAL
+  fscript_iostream_serial_register();
+  #endif/*FSCRIPT_WITH_STREAM_SERIAL*/
 #endif /*FSCRIPT_WITH_STREAM*/
 
 #ifdef FSCRIPT_WITH_CRC

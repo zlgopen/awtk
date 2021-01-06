@@ -75,3 +75,9 @@ tk_ostream_t* tk_ostream_tcp_create(int sock) {
 
   return TK_OSTREAM(obj);
 }
+
+tk_ostream_tcp_t* tk_ostream_tcp_cast(tk_ostream_t* s) {
+  return_value_if_fail(s != NULL && OBJECT(s)->vt == &s_tk_ostream_tcp_vtable, NULL);
+
+  return (tk_ostream_tcp_t*)s;
+}

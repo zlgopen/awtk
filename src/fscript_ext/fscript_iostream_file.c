@@ -22,6 +22,7 @@
 static ret_t func_istream_file_create(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   const char* mode = NULL;
   const char* filename = NULL;
+  result->type = VALUE_TYPE_INVALID;
   FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
   filename = value_str(args->args);
   mode = args->size > 1 ? value_str(args->args + 1) : "rb";
@@ -36,6 +37,7 @@ static ret_t func_istream_file_create(fscript_t* fscript, fscript_args_t* args, 
 static ret_t func_ostream_file_create(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   const char* mode = NULL;
   const char* filename = NULL;
+  result->type = VALUE_TYPE_INVALID;
   FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
   filename = value_str(args->args);
   mode = args->size > 1 ? value_str(args->args + 1) : "wb+";
