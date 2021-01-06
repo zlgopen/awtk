@@ -203,7 +203,12 @@ static ret_t fscript_get_var(fscript_t* fscript, const char* name, value_t* valu
 
 static ret_t fscript_set_var(fscript_t* fscript, const char* name, const value_t* value) {
   value_t* var = fscript_get_fast_var(fscript, name);
-  return var != NULL ? value_deep_copy(var, value) : object_set_prop(fscript->obj, name, value);
+  if (var != NULL) {
+    value_reset(var);
+    return value_deep_copy(var, value);
+  } else {
+    return object_set_prop(fscript->obj, name, value);
+  }
 }
 
 static ret_t fscript_eval_arg(fscript_t* fscript, fscript_func_call_t* iter, uint32_t i,
