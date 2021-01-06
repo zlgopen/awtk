@@ -33,6 +33,7 @@ typedef struct _tk_ostream_t tk_ostream_t;
 typedef int32_t (*tk_ostream_write_t)(tk_ostream_t* stream, const uint8_t* buff, uint32_t max_size);
 typedef ret_t (*tk_ostream_flush_t)(tk_ostream_t* stream);
 typedef ret_t (*tk_ostream_seek_t)(tk_ostream_t* stream, uint32_t offset);
+typedef int32_t (*tk_ostream_tell_t)(tk_ostream_t* stream);
 
 /**
  * @class tk_ostream_t
@@ -47,6 +48,7 @@ struct _tk_ostream_t {
   tk_ostream_flush_t flush;
   tk_ostream_write_t write;
   tk_ostream_seek_t seek;
+  tk_ostream_tell_t tell;
 };
 
 /**
@@ -75,6 +77,18 @@ int32_t tk_ostream_write(tk_ostream_t* stream, const void* buff, uint32_t max_si
  *
  */
 ret_t tk_ostream_seek(tk_ostream_t* stream, uint32_t offset);
+
+/**
+ * @method tk_ostream_tell
+ *
+ * 获取当前读取位置。
+ *
+ * @param {tk_ostream_t*} stream ostream对象。
+ *
+ * @return {int32_t} 返回负数表示失败，否则返回当前读取位置。
+ *
+ */
+int32_t tk_ostream_tell(tk_ostream_t* stream);
 
 /**
  * @method tk_ostream_write_len
@@ -118,6 +132,8 @@ ret_t tk_ostream_write_byte(tk_ostream_t* stream, uint8_t byte);
 ret_t tk_ostream_flush(tk_ostream_t* stream);
 
 #define TK_OSTREAM(obj) ((tk_ostream_t*)(obj))
+#define TK_OSTREAM_SEEKABLE(obj) (TK_OSTREAM(obj)->seek != NULL)
+#define TK_OSTREAM_TELLABLE(obj) (TK_OSTREAM(obj)->tell != NULL)
 
 END_C_DECLS
 

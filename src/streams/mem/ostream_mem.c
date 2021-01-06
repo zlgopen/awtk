@@ -51,6 +51,12 @@ static ret_t tk_ostream_mem_seek(tk_ostream_t* stream, uint32_t offset) {
   return RET_OK;
 }
 
+static int32_t tk_ostream_mem_tell(tk_ostream_t* stream) {
+  tk_ostream_mem_t* ostream_mem = TK_OSTREAM_MEM(stream);
+
+  return ostream_mem->cursor;
+}
+
 static ret_t tk_ostream_mem_set_prop(object_t* obj, const char* name, const value_t* v) {
   return RET_NOT_FOUND;
 }
@@ -93,6 +99,7 @@ tk_ostream_t* tk_ostream_mem_create(uint8_t* buff, uint32_t size, uint32_t packe
   ostream_mem->packet_size = packet_size;
   TK_OSTREAM(obj)->write = tk_ostream_mem_write;
   TK_OSTREAM(obj)->seek = tk_ostream_mem_seek;
+  TK_OSTREAM(obj)->tell = tk_ostream_mem_tell;
 
   return TK_OSTREAM(obj);
 }

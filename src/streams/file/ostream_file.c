@@ -34,6 +34,12 @@ static ret_t tk_ostream_file_seek(tk_ostream_t* stream, uint32_t offset) {
   return fs_file_seek(ostream_file->file, offset);
 }
 
+static int32_t tk_ostream_file_tell(tk_ostream_t* stream) {
+  tk_ostream_file_t* ostream_file = TK_OSTREAM_FILE(stream);
+
+  return fs_file_tell(ostream_file->file);
+}
+
 static ret_t tk_ostream_file_flush(tk_ostream_t* stream) {
   tk_ostream_file_t* ostream_file = TK_OSTREAM_FILE(stream);
 
@@ -87,6 +93,7 @@ tk_ostream_t* tk_ostream_file_create_ex(const char* filename, const char* mode) 
   ostream_file->file = file;
   TK_OSTREAM(obj)->write = tk_ostream_file_write;
   TK_OSTREAM(obj)->seek = tk_ostream_file_seek;
+  TK_OSTREAM(obj)->tell = tk_ostream_file_tell;
   TK_OSTREAM(obj)->flush = tk_ostream_file_flush;
 
   return TK_OSTREAM(obj);

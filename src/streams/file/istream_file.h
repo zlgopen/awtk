@@ -55,6 +55,19 @@ struct _tk_istream_file_t {
  */
 tk_istream_t* tk_istream_file_create(const char* filename);
 
+/**
+ * @method tk_istream_file_create_ex
+ *
+ * 创建istream对象。
+ *
+ * @param {const char*} filename 文件名。
+ * @param {const char*} mode 模式。
+ *
+ * @return {tk_istream_t*} 返回istream对象。
+ *
+ */
+tk_istream_t* tk_istream_file_create_ex(const char* filename, const char* mode);
+
 #define TK_ISTREAM_FILE(obj) ((tk_istream_file_t*)(obj))
 
 END_C_DECLS

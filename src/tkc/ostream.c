@@ -96,3 +96,11 @@ ret_t tk_ostream_flush(tk_ostream_t* stream) {
 ret_t tk_ostream_write_byte(tk_ostream_t* stream, uint8_t byte) {
   return tk_ostream_write_len(stream, &byte, 1, 1000) == 1 ? RET_OK : RET_FAIL;
 }
+
+int32_t tk_ostream_tell(tk_ostream_t* stream) {
+  return_value_if_fail(stream != NULL, -1);
+  return_value_if_fail(stream->tell != NULL, -1);
+
+  return stream->tell(stream);
+}
+
