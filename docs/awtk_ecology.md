@@ -84,7 +84,6 @@
 | X1000 | Linux    | https://github.com/zlgopen/awtk-port-ingenic | [Ingenic](http://www.ingenic.com.cn)【原厂】 |
 | X1830 | Linux    | https://github.com/zlgopen/awtk-port-ingenic | [Ingenic](http://www.ingenic.com.cn)【原厂】 |
 
-- #### ISSI
 - #### MindMotion
 
 | 芯片         | 操作系统 | 下载地址   | 作者                                               |
@@ -104,14 +103,17 @@
 | RT1052          | AWorksOS | https://github.com/zlgopen/awtk-aworks-rt1052      | [ZLG](http://www.zlg.cn)              |
 | RT1052          | 无       | https://github.com/zlgopen/awtk-easyarm-rt1052-raw | [ZLG](http://www.zlg.cn)              |
 | RT1052          | FreeRTOS | https://github.com/chinachuli/awtk-imxrt1052-raw   | [褚立](https://github.com/chinachuli) |
-| RT1020          | AWorksOS | 请联系作者                                         | [ZLG](http://www.zlg.cn)              |
+| RT1020          | 无       | 请联系作者                                         | [ZLG](http://www.zlg.cn)              |
+| RT1011          | 无       | 请联系作者                                         | [ZLG](http://www.zlg.cn)              |
+| RT1176          | FreeRTOS | 请联系作者                                         | [ZLG](http://www.zlg.cn)              |
+| RT500           | FreeRTOS | 请联系作者                                         | [ZLG](http://www.zlg.cn)              |
 | i.MX6 Cortex-A7 | AWorksOS | 请联系作者                                         | [ZLG](http://www.zlg.cn)              |
 | i.MX6 Cortex-A7 | Linux    | https://github.com/zlgopen/awtk-linux-fb           | [ZLG](http://www.zlg.cn)              |
 | i.MX6 Cortex-A9 | Linux    | https://github.com/zlgopen/awtk-linux-fb           | [ZLG](http://www.zlg.cn)              |
 | i.MX283         | Linux    | https://github.com/zlgopen/awtk-linux-fb           | [ZLG](http://www.zlg.cn)              |
 | LPC54608        | 无       | 请联系作者                                         | [ZLG](http://www.zlg.cn)              |
 | LPC54018        | 无       | 请联系作者                                         | [ZLG](http://www.zlg.cn)              |
-| LPC1768         | 无       | https://github.com/zlgopen/awtk-lpc1768-raw       | [ZLG](http://www.zlg.cn)              |
+| LPC1768         | 无       | https://github.com/zlgopen/awtk-lpc1768-raw        | [ZLG](http://www.zlg.cn)              |
 
 - #### ST
 
@@ -125,6 +127,17 @@
 | STM32F767 | 无        | https://github.com/zlgopen/awtk-stm32f767igtx-raw     | [ZLG](http://www.zlg.cn)           |
 | STM32F769 | FreeRTOS  | https://github.com/wpmyj/awtk-stm32f769-freertos      | [王培明](https://github.com/wpmyj) |
 
+- #### SigmaStar
+
+| 芯片    | 操作系统 | 下载地址   | 作者                                                         |
+| ------- | -------- | ---------- | ------------------------------------------------------------ |
+| SSD201  | Linux    | 请联系作者 | [SigmaStar](http://www.comake.online/index.php?p=products_list&lanmu=2)【原厂】 |
+| SSD202D | Linux    | 请联系作者 | [SigmaStar](http://www.comake.online/index.php?p=products_list&lanmu=2)【原厂】 |
+| SSD212  | Linux    | 请联系作者 | [SigmaStar](http://www.comake.online/index.php?p=products_list&lanmu=2)【原厂】 |
+| SSD210  | Linux    | 请联系作者 | [SigmaStar](http://www.comake.online/index.php?p=products_list&lanmu=2)【原厂】 |
+| SSD222  | Linux    | 请联系作者 | [SigmaStar](http://www.comake.online/index.php?p=products_list&lanmu=2)【原厂】 |
+| SSD268G | Linux    | 请联系作者 | [SigmaStar](http://www.comake.online/index.php?p=products_list&lanmu=2)【原厂】 |
+
 > 以上信息如果有误，或需要补充的，请联系 chentan@zlg.cn 修正
 >
 
@@ -132,20 +145,33 @@
 
 ## 扩展控件
 
-- #### 基本控件
+- #### 基础控件
 
 | 控件名称 | 下载地址                                        | 作者                                               |
 | -------- | ----------------------------------------------- | -------------------------------------------------- |
-| 二维码   | https://github.com/CUITzhaoqi/awtk-qr           | [CUITzhaoqi](http://github.com/CUITzhaoqi/awtk-qr) |
+| 二维码   | https://github.com/zlgopen/awtk-widget-store    | [ZLG](http://www.zlg.cn)                           |
+| 下拉按钮 | https://github.com/zlgopen/awtk-widget-store    | [ZLG](http://www.zlg.cn)                           |
+| 日期选择 | https://github.com/zlgopen/awtk-widget-store    | [ZLG](http://www.zlg.cn)                           |
+| 旋转文本 | https://github.com/zlgopen/awtk-widget-store    | [ZLG](http://www.zlg.cn)                           |
+| 数字显示 | https://github.com/zlgopen/awtk-widget-store    | [ZLG](http://www.zlg.cn)                           |
+| 蒙板视图 | https://github.com/zlgopen/awtk-widget-store    | [ZLG](http://www.zlg.cn)                           |
 | 圆形滑块 | https://github.com/longyuwlz/awtk_slider_circle | [longyuwlz](http://github.com/longyuwlz)           |
 
 - #### 图表控件
 
-| 控件名称 | 下载地址                                 | 作者                     |
-| -------- | ---------------------------------------- | ------------------------ |
-| 饼图     | https://github.com/zlgopen/awtk-examples | [ZLG](http://www.zlg.cn) |
-| 柱状图   | https://github.com/zlgopen/awtk-examples | [ZLG](http://www.zlg.cn) |
-| 曲线图   | https://github.com/zlgopen/awtk-examples | [ZLG](http://www.zlg.cn) |
+| 控件名称 | 下载地址                                     | 作者                     |
+| -------- | -------------------------------------------- | ------------------------ |
+| 饼图     | https://github.com/zlgopen/awtk-widget-store | [ZLG](http://www.zlg.cn) |
+| 柱状图   | https://github.com/zlgopen/awtk-widget-store | [ZLG](http://www.zlg.cn) |
+| 曲线图   | https://github.com/zlgopen/awtk-widget-store | [ZLG](http://www.zlg.cn) |
+| 表格视图 | https://github.com/zlgopen/awtk-widget-store | [ZLG](http://www.zlg.cn) |
+
+- #### 多媒体控件
+
+| 控件名称 | 下载地址                                     | 作者                     |
+| -------- | -------------------------------------------- | ------------------------ |
+| 摄像头   | https://github.com/zlgopen/awtk-widget-store | [ZLG](http://www.zlg.cn) |
+| 视频动画 | https://github.com/zlgopen/awtk-widget-store | [ZLG](http://www.zlg.cn) |
 
 
 
