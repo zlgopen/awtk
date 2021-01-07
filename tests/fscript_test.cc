@@ -88,6 +88,25 @@ TEST(FScript, basic6) {
   OBJECT_UNREF(obj);
 }
 
+TEST(FScript, basic7) {
+  value_t v;
+  object_t* obj = object_default_create();
+
+  fscript_eval(obj, "sum(1, 2)//line comments\n", &v);
+  ASSERT_EQ(value_int(&v), 3);
+  value_reset(&v);
+  
+  fscript_eval(obj, "//comment\r\nsum(1, 2)//line comments\n", &v);
+  ASSERT_EQ(value_int(&v), 3);
+  value_reset(&v);
+  
+  fscript_eval(obj, "/*comment*//**/\r\nsum(1, 2)//line comments\n", &v);
+  ASSERT_EQ(value_int(&v), 3);
+  value_reset(&v);
+
+  OBJECT_UNREF(obj);
+}
+
 TEST(FScript, if1) {
   value_t v;
   object_t* obj = object_default_create();

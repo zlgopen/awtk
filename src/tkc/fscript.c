@@ -434,10 +434,56 @@ static ret_t fscript_parser_set_error(fscript_parser_t* parser, const char* str)
 
 static ret_t fscript_parser_skip_seperators(fscript_parser_t* parser) {
   char c = '\0';
-
   do {
     c = fscript_parser_get_char(parser);
   } while (isspace(c) || (int)c < 0);
+  fscript_parser_unget_char(parser, c);
+
+  return RET_OK;
+}
+
+static ret_t fscript_parser_skip_line_comment(fscript_parser_t* parser) {
+  char c = '\0';
+  do {
+    c = fscript_parser_get_char(parser);
+  } while (c != '\0' && c != '\r' && c != '\n');
+
+  return RET_OK;
+}
+
+static ret_t fscript_parser_skip_block_comment(fscript_parser_t* parser) {
+  char c = '\0';
+  do {
+    c = fscript_parser_get_char(parser);
+    if (c == '*' && parser->cursor[0] == '/') {
+      c = fscript_parser_get_char(parser);
+      break;
+    }
+  } while (c != '\0');
+
+  return RET_OK;
+}
+
+static ret_t fscript_parser_skip_seperators_and_comments(fscript_parser_t* parser) {
+  char c = '\0';
+
+  while (TRUE) {
+    fscript_parser_skip_seperators(parser);
+    c = fscript_parser_get_char(parser);
+    if (c == '/') {
+      if (parser->cursor[0] == '/') {
+        c = fscript_parser_get_char(parser);
+        fscript_parser_skip_line_comment(parser);
+      } else if (parser->cursor[0] == '*') {
+        c = fscript_parser_get_char(parser);
+        fscript_parser_skip_block_comment(parser);
+      } else {
+        break;
+      }
+    } else {
+      break;
+    }
+  }
   fscript_parser_unget_char(parser, c);
 
   return RET_OK;
@@ -509,7 +555,7 @@ static ret_t fscript_parser_parse_id_or_number(fscript_parser_t* parser, token_t
   } while (TRUE);
 
   if (isspace(c)) {
-    fscript_parser_skip_seperators(parser);
+    fscript_parser_skip_seperators_and_comments(parser);
     c = fscript_parser_get_char(parser);
   }
 
@@ -532,7 +578,7 @@ static token_t* fscript_parser_get_token_ex(fscript_parser_t* parser, bool_t ope
     return t;
   }
 
-  fscript_parser_skip_seperators(parser);
+  fscript_parser_skip_seperators_and_comments(parser);
   c = fscript_parser_get_char(parser);
 
   str_set_with_len(str, &c, 1);
@@ -604,7 +650,7 @@ static token_t* fscript_parser_get_token_ex(fscript_parser_t* parser, bool_t ope
       } else {
         fscript_parser_unget_char(parser, c);
         do {
-          fscript_parser_skip_seperators(parser);
+          fscript_parser_skip_seperators_and_comments(parser);
           c = fscript_parser_get_char(parser);
           if (c == str->str[0]) {
             str_append_char(str, c);

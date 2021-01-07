@@ -54,6 +54,22 @@ print("hello fscript")
 * 字符串类型 (string)。UTF-8 字符串，用英文双引号扩起来。
 * 布尔类型 (bool)。标准取值为：true 和 false，非 0 的数值视为 true。
 
+###  注释
+
+格式：
+
+```
+//line comment
+/*block comment*/
+```
+
+#### 示例
+
+```
+//this is line comment
+/*this is block comment*/
+```
+
 ### 函数调用
 
 ```
@@ -256,23 +272,6 @@ set(a, a+b)
 ## 4. 函数
 
 ### 4.1 基本函数 
-
-####  comment
-
-> 注释
-----------------------------
-
-##### 原型
-
-```
-#(comment)
-```
-
-#### 示例
-
-```
-#(this is a comment)
-```
 
 ####  assert
 
