@@ -1,6 +1,16 @@
 ﻿#include "gtest/gtest.h"
 #include "tkc/date_time.h"
 
+TEST(DateTime, convert) {
+  uint64_t now = time(0);
+  date_time_t* dt = date_time_create();
+
+  ASSERT_EQ(date_time_from_time(dt, now), RET_OK);
+  ASSERT_EQ(date_time_to_time(dt), now);
+
+  date_time_destroy(dt);
+}
+
 TEST(DateTime, leap) {
   ASSERT_EQ(date_time_is_leap(1904), TRUE);
   ASSERT_EQ(date_time_is_leap(2000), TRUE);

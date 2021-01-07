@@ -121,6 +121,17 @@ ret_t date_time_set(date_time_t* dt);
 ret_t date_time_from_time(date_time_t* dt, uint64_t time);
 
 /**
+ * @method date_time_to_time
+ * 转换成time。
+ *
+ * @annotation ["scriptable"]
+ * @param {date_time_t*} dt date_time对象。
+ *
+ * @return {uint64_t} 返回time。
+ */
+uint64_t date_time_to_time(date_time_t* dt);
+
+/**
  * @method date_time_add_delta
  * 加上一个偏移量(s)。
  *
