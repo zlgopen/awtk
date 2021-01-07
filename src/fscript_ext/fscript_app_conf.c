@@ -1,7 +1,7 @@
 ﻿/**
- * File:   fscript_fs.c
+ * File:   fscript_app_conf.c
  * Author: AWTK Develop Team
- * Brief:  fs functions for fscript
+ * Brief:  app_conf functions for fscript
  *
  * Copyright (c) 2020 - 2021  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *

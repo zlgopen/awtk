@@ -495,7 +495,7 @@ static ret_t fscript_parser_skip_seperators_and_comments(fscript_parser_t* parse
   t->token = str->str;            \
   t->size = str->size;
 
-static ret_t fscript_parser_parse_str(fscript_parser_t* parser) {
+static ret_t fscript_parser_parse_str(fscript_parser_t* parser, char quota) {
   char c = '\0';
   bool_t escape = FALSE;
   str_t* str = &(parser->temp);
@@ -518,7 +518,7 @@ static ret_t fscript_parser_parse_str(fscript_parser_t* parser) {
       continue;
     }
 
-    if (c == '\"' || c == '\0') {
+    if (c == quota || c == '\0') {
       break;
     } else if (c == '\\') {
       escape = TRUE;
@@ -528,7 +528,7 @@ static ret_t fscript_parser_parse_str(fscript_parser_t* parser) {
   } while (TRUE);
 
   TOKEN_INIT(t, TOKEN_STR, str);
-  if (c != '\0' && c != '\"') {
+  if (c != '\0' && c != quota) {
     fscript_parser_unget_char(parser, c);
   }
 
@@ -678,8 +678,9 @@ static token_t* fscript_parser_get_token_ex(fscript_parser_t* parser, bool_t ope
       t->size = str->size;
       return t;
     }
-    case '\"': {
-      fscript_parser_parse_str(parser);
+    case '\"': 
+    case '\'': {
+      fscript_parser_parse_str(parser, c);
       return t;
     }
     default: {

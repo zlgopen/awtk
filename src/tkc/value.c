@@ -771,6 +771,15 @@ const char* value_str_ex(const value_t* v, char* buff, uint32_t size) {
     tk_snprintf(buff, size, "%" PRIu64, value_uint64(v));
   } else if (v->type == VALUE_TYPE_INT64) {
     tk_snprintf(buff, size, "%" PRId64, value_int64(v));
+  } else if (v->type == VALUE_TYPE_BINARY) {
+    binary_data_t* bin = value_binary_data(v);
+    if(bin != NULL) {
+      tk_snprintf(buff, size, "binary(%p:%u)", bin->data, bin->size);
+    } else {
+      tk_snprintf(buff, size, "(null)");
+    }
+  } else if (v->type == VALUE_TYPE_POINTER) {
+    tk_snprintf(buff, size, "%p", value_pointer(v));
   } else {
     tk_snprintf(buff, size, "%d", value_int(v));
   }

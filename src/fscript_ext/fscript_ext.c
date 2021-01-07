@@ -21,6 +21,7 @@
 #include "fscript_ext/fscript_crc.h"
 #include "fscript_ext/fscript_bits.h"
 #include "fscript_ext/fscript_math.h"
+#include "fscript_ext/fscript_json.h"
 #include "fscript_ext/fscript_endian.h"
 #include "fscript_ext/fscript_object.h"
 #include "fscript_ext/fscript_rbuffer.h"
@@ -109,6 +110,10 @@ ret_t fscript_ext_init(void) {
 #ifdef FSCRIPT_WITH_FS
   fscript_fs_register();
 #endif /*FSCRIPT_WITH_FS*/
+
+#ifdef FSCRIPT_WITH_JSON
+  fscript_json_register();
+#endif /*FSCRIPT_WITH_JSON*/
 
 #ifdef FSCRIPT_WITH_ENDIAN
   fscript_endian_register();

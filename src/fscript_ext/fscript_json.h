@@ -1,7 +1,7 @@
 ﻿/**
- * File:   fscript_app_conf.h
+ * File:   fscript_json.h
  * Author: AWTK Develop Team
- * Brief:  app_conf functions for fscript
+ * Brief:  json functions for fscript
  *
  * Copyright (c) 2020 - 2021  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
@@ -14,8 +14,8 @@
  *
  */
 
-#ifndef TK_FSCRIPT_APP_CONF_H
-#define TK_FSCRIPT_APP_CONF_H
+#ifndef TK_FSCRIPT_JSON_H
+#define TK_FSCRIPT_JSON_H
 
 #include "tkc/str.h"
 #include "tkc/object.h"
@@ -23,13 +23,13 @@
 BEGIN_C_DECLS
 
 /**
- * @method fscript_app_conf_register
- * 注册app_conf函数。
+ * @method fscript_json_register
+ * 注册json函数。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t fscript_app_conf_register(void);
+ret_t fscript_json_register(void);
 
 END_C_DECLS
 
-#endif /*TK_FSCRIPT_APP_CONF_H*/
+#endif /*TK_FSCRIPT_JSON_H*/

@@ -107,6 +107,25 @@ TEST(FScript, basic7) {
   OBJECT_UNREF(obj);
 }
 
+TEST(FScript, basic8) {
+  value_t v;
+  object_t* obj = object_default_create();
+
+  fscript_eval(obj, "\"hello\"", &v);
+  ASSERT_STREQ(value_str(&v), "hello");
+  value_reset(&v);
+  
+  fscript_eval(obj, "\"he\\\"llo\"", &v);
+  ASSERT_STREQ(value_str(&v), "he\"llo");
+  value_reset(&v);
+  
+  fscript_eval(obj, "'he\\\"llo'", &v);
+  ASSERT_STREQ(value_str(&v), "he\"llo");
+  value_reset(&v);
+  
+  OBJECT_UNREF(obj);
+}
+
 TEST(FScript, if1) {
   value_t v;
   object_t* obj = object_default_create();
