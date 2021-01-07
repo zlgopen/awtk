@@ -98,6 +98,78 @@ date_time_t* date_time_create(void);
 date_time_t* date_time_init(date_time_t* dt);
 
 /**
+ * @method date_time_set_year
+ * 设置年。
+ *
+ * @annotation ["scriptable"]
+ * @param {date_time_t*} dt date_time对象。
+ * @param {uint32_t} year 年。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t date_time_set_year(date_time_t* dt, uint32_t year);
+
+/**
+ * @method date_time_set_month
+ * 设置月。
+ *
+ * @annotation ["scriptable"]
+ * @param {date_time_t*} dt date_time对象。
+ * @param {uint32_t} month 月。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t date_time_set_month(date_time_t* dt, uint32_t month);
+
+/**
+ * @method date_time_set_day
+ * 设置日。
+ *
+ * @annotation ["scriptable"]
+ * @param {date_time_t*} dt date_time对象。
+ * @param {uint32_t} day 日。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t date_time_set_day(date_time_t* dt, uint32_t day);
+
+/**
+ * @method date_time_set_hour
+ * 设置小时。
+ *
+ * @annotation ["scriptable"]
+ * @param {date_time_t*} dt date_time对象。
+ * @param {uint32_t} hour 小时。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t date_time_set_hour(date_time_t* dt, uint32_t hour);
+
+/**
+ * @method date_time_set_minute
+ * 设置分钟。
+ *
+ * @annotation ["scriptable"]
+ * @param {date_time_t*} dt date_time对象。
+ * @param {uint32_t} minute 分钟。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t date_time_set_minute(date_time_t* dt, uint32_t minute);
+
+/**
+ * @method date_time_set_second
+ * 设置秒。
+ *
+ * @annotation ["scriptable"]
+ * @param {date_time_t*} dt date_time对象。
+ * @param {uint32_t} second 秒。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t date_time_set_second(date_time_t* dt, uint32_t second);
+
+/**
  * @method date_time_set
  * 设置当前时间。
  *
