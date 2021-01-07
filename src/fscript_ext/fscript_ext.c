@@ -25,6 +25,7 @@
 #include "fscript_ext/fscript_object.h"
 #include "fscript_ext/fscript_rbuffer.h"
 #include "fscript_ext/fscript_wbuffer.h"
+#include "fscript_ext/fscript_app_conf.h"
 #include "fscript_ext/fscript_typed_array.h"
 
 #include "fscript_ext/fscript_istream.h"
@@ -115,6 +116,10 @@ ret_t fscript_ext_init(void) {
 
 #ifdef FSCRIPT_WITH_TYPED_ARRAY
   fscript_typed_array_register();
+#endif /*FSCRIPT_WITH_TYPED_ARRAY*/
+
+#ifdef FSCRIPT_WITH_APP_CONF
+  fscript_app_conf_register();
 #endif /*FSCRIPT_WITH_TYPED_ARRAY*/
 
   return RET_OK;

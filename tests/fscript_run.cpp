@@ -6,6 +6,14 @@
 #include "tkc/fscript.h"
 #include "tkc/object_default.h"
 #include "fscript_ext/fscript_ext.h"
+#include "conf_io/app_conf_init_json.h"
+#include "tkc/data_reader_factory.h"
+#include "tkc/data_writer_factory.h"
+#include "tkc/data_writer_file.h"
+#include "tkc/data_writer_wbuffer.h"
+#include "tkc/data_reader_file.h"
+#include "tkc/data_reader_mem.h"
+#include "base/data_reader_asset.h"
 
 static ret_t run_fscript(const char* code, uint32_t times) {
   value_t v;
@@ -48,7 +56,15 @@ int main(int argc, char* argv[]) {
 
   fscript_global_init();
   fscript_ext_init();
+  data_writer_factory_set(data_writer_factory_create());
+  data_reader_factory_set(data_reader_factory_create());
+  data_writer_factory_register(data_writer_factory(), "file", data_writer_file_create);
+  data_reader_factory_register(data_reader_factory(), "file", data_reader_file_create);
+  data_reader_factory_register(data_reader_factory(), "asset", data_reader_asset_create);
+  data_reader_factory_register(data_reader_factory(), "mem", data_reader_mem_create);
+  data_writer_factory_register(data_writer_factory(), "wbuffer", data_writer_wbuffer_create);
 
+  app_conf_init_json("runFScript");
   tk_mem_dump();
   if (argc < 2) {
     printf("Usage: %s script\n", argv[0]);
@@ -63,6 +79,10 @@ int main(int argc, char* argv[]) {
     }
   }
   tk_mem_dump();
+  data_writer_factory_destroy(data_writer_factory());
+  data_reader_factory_destroy(data_reader_factory());
+  data_writer_factory_set(NULL);
+  data_reader_factory_set(NULL);
   fscript_global_deinit();
 
   return 0;
