@@ -335,6 +335,7 @@ static ret_t fscript_exec_ext_func(fscript_t* fscript, fscript_func_call_t* iter
 
 static ret_t fscript_exec_func(fscript_t* fscript, fscript_func_call_t* iter, value_t* result) {
   fscript->curr = iter;
+  result->type = VALUE_TYPE_INVALID;
   if (fscript_exec_core_func(fscript, iter, result) == RET_NOT_FOUND) {
     return_value_if_fail(fscript_exec_ext_func(fscript, iter, result) == RET_OK, RET_FAIL);
   }

@@ -17,6 +17,7 @@
 #include "tkc/fscript.h"
 
 #include "fscript_ext/fscript_ext.h"
+#include "fscript_ext/fscript_fs.h"
 #include "fscript_ext/fscript_crc.h"
 #include "fscript_ext/fscript_bits.h"
 #include "fscript_ext/fscript_math.h"
@@ -39,8 +40,36 @@ static ret_t func_value_is_valid(fscript_t* fscript, fscript_args_t* args, value
   return RET_OK;
 }
 
+static ret_t func_value_get_binary_size(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+
+  if(args->args->type == VALUE_TYPE_BINARY) {
+    binary_data_t* bin = value_binary_data(args->args);
+    FSCRIPT_FUNC_CHECK(bin != NULL, RET_BAD_PARAMS);
+    value_set_uint32(result, bin->size);
+    return RET_OK;
+  }
+
+  return RET_FAIL;
+}
+
+static ret_t func_value_get_binary_data(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+
+  if(args->args->type == VALUE_TYPE_BINARY) {
+    binary_data_t* bin = value_binary_data(args->args);
+    FSCRIPT_FUNC_CHECK(bin != NULL, RET_BAD_PARAMS);
+    value_set_pointer(result, bin->data);
+    return RET_OK;
+  }
+
+  return RET_FAIL;
+}
+
 ret_t fscript_ext_init(void) {
   ENSURE(fscript_register_func("value_is_valid", func_value_is_valid) == RET_OK);
+  ENSURE(fscript_register_func("value_get_binary_data", func_value_get_binary_data) == RET_OK);
+  ENSURE(fscript_register_func("value_get_binary_size", func_value_get_binary_size) == RET_OK);
 
   fscript_object_register();
 
@@ -75,6 +104,10 @@ ret_t fscript_ext_init(void) {
 #ifdef FSCRIPT_WITH_BITS
   fscript_bits_register();
 #endif /*FSCRIPT_WITH_BITS*/
+
+#ifdef FSCRIPT_WITH_FS
+  fscript_fs_register();
+#endif /*FSCRIPT_WITH_FS*/
 
 #ifdef FSCRIPT_WITH_ENDIAN
   fscript_endian_register();
