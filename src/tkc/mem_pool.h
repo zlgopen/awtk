@@ -37,11 +37,6 @@ typedef struct _mem_pool_t {
   uint8_t* start;
 } mem_pool_t;
 
-#define TK_SET_BIT(v, n) ((v) |= 1UL << (n))
-#define TK_CLEAR_BIT(v, n) ((v) &= ~(1UL << (n)))
-#define TK_TOGGLE_BIT(v, n) ((v) ^= (1UL << (n)))
-#define TK_TEST_BIT(v, n) (((v) >> (n)) & 1U)
-
 static bool_t mem_pool_match_size(mem_pool_t* pool, uint32_t size) {
   return size >= pool->min_block_size && size <= pool->block_size;
 }

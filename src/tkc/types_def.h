@@ -399,4 +399,9 @@ typedef struct _event_source_manager_t event_source_manager_t;
 #define TK_SET_NULL(p) (p) = NULL
 #define TK_ROUND_TO8(size) (((size + 7) >> 3) << 3)
 
+#define TK_SET_BIT(v, n) ((v) |= 1UL << (n))
+#define TK_CLEAR_BIT(v, n) ((v) &= ~(1UL << (n)))
+#define TK_TOGGLE_BIT(v, n) ((v) ^= (1UL << (n)))
+#define TK_TEST_BIT(v, n) (((v) >> (n)) & 1U)
+
 #endif /*TYPES_DEF_H*/

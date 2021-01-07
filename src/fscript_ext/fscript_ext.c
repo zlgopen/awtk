@@ -18,6 +18,7 @@
 
 #include "fscript_ext/fscript_ext.h"
 #include "fscript_ext/fscript_crc.h"
+#include "fscript_ext/fscript_bits.h"
 #include "fscript_ext/fscript_math.h"
 #include "fscript_ext/fscript_endian.h"
 #include "fscript_ext/fscript_object.h"
@@ -70,6 +71,10 @@ ret_t fscript_ext_init(void) {
 #ifdef FSCRIPT_WITH_MATH
   fscript_math_register();
 #endif /*FSCRIPT_WITH_MATH*/
+
+#ifdef FSCRIPT_WITH_BITS
+  fscript_bits_register();
+#endif /*FSCRIPT_WITH_BITS*/
 
 #ifdef FSCRIPT_WITH_ENDIAN
   fscript_endian_register();
