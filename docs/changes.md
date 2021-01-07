@@ -3,6 +3,7 @@
 2021/01/07
   * 完善fscript和fscript\_ext。
   * 增加函数date\_time\_to\_time。
+  * 更新《生态共建计划》文档（感谢陈谭提供补丁）
   * 将fs/bits/app\_conf/json/ubjson包装成fscript的函数。
 
 2021/01/06
