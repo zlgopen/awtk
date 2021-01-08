@@ -15,6 +15,7 @@
  */
 
 #include "tkc/fscript.h"
+#include "tkc/time_now.h"
 #include "tkc/object_date_time.h"
 
 static ret_t func_date_time_create(fscript_t* fscript, fscript_args_t* args, value_t* result) {
@@ -67,11 +68,29 @@ static ret_t func_date_time_set(fscript_t* fscript, fscript_args_t* args, value_
   return RET_OK;
 }
 
+static ret_t func_time_now_us(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  value_set_uint64(result, time_now_us());
+  return RET_OK;
+}
+
+static ret_t func_time_now_ms(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  value_set_uint64(result, time_now_ms());
+  return RET_OK;
+}
+
+static ret_t func_time_now_s(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  value_set_uint64(result, time_now_s());
+  return RET_OK;
+}
+
 ret_t fscript_date_time_register(void) {
   ENSURE(fscript_register_func("date_time_create", func_date_time_create) == RET_OK);
   ENSURE(fscript_register_func("date_time_to_time", func_date_time_to_time) == RET_OK);
   ENSURE(fscript_register_func("date_time_from_time", func_date_time_from_time) == RET_OK);
   ENSURE(fscript_register_func("date_time_set", func_date_time_set) == RET_OK);
+  ENSURE(fscript_register_func("time_now_us", func_time_now_us) == RET_OK);
+  ENSURE(fscript_register_func("time_now_ms", func_time_now_ms) == RET_OK);
+  ENSURE(fscript_register_func("time_now_s", func_time_now_s) == RET_OK);
 
   return RET_OK;
 }

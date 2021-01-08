@@ -25,6 +25,8 @@ assert(dt.hour == 2)
 assert(dt.minute == 3)
 assert(dt.second == 5)
 
-
+print(time_now_us())
+print(time_now_ms())
+print(time_now_s())
 
 
