@@ -163,7 +163,6 @@ static ret_t object_array_remove_prop(object_t* obj, const char* name) {
 
 ret_t object_array_pop(object_t* obj, value_t* v) {
   value_t* last = NULL;
-  ret_t ret = RET_NOT_FOUND;
   object_array_t* o = OBJECT_ARRAY(obj);
   return_value_if_fail(o != NULL && o->size > 0, RET_BAD_PARAMS);
   last = o->props + o->size - 1;
@@ -174,13 +173,12 @@ ret_t object_array_pop(object_t* obj, value_t* v) {
   return RET_OK;
 }
 
-static ret_t object_array_set_prop(object_t* obj, const char* name, const value_t* v) {
+ret_t object_array_set(object_t* obj, uint32_t index, const value_t* v) {
   ret_t ret = RET_NOT_FOUND;
   object_array_t* o = OBJECT_ARRAY(obj);
-  int32_t index = object_array_parse_index(name);
   return_value_if_fail(object_array_extend(obj) == RET_OK, RET_OOM);
 
-  if (isdigit(*name) && index >= 0 && index < o->size) {
+  if (index < o->size) {
     value_t* iter = o->props + index;
     value_reset(iter);
     ret = value_deep_copy(iter, v);
@@ -188,6 +186,24 @@ static ret_t object_array_set_prop(object_t* obj, const char* name, const value_
     ret = object_array_push(obj, v);
   } else {
     ret = RET_BAD_PARAMS;
+  }
+
+  return ret;
+}
+
+static ret_t object_array_set_prop(object_t* obj, const char* name, const value_t* v) {
+  int32_t index = object_array_parse_index(name);
+  return object_array_set(obj, index, v);
+}
+
+ret_t object_array_get(object_t* obj, uint32_t i, value_t* v) {
+  ret_t ret = RET_OK;
+  object_array_t* o = OBJECT_ARRAY(obj);
+  return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
+  if (i < o->size) {
+    value_t* iter = o->props + i;
+    ret = value_copy(v, iter);
   }
 
   return ret;
@@ -201,12 +217,12 @@ static ret_t object_array_get_prop(object_t* obj, const char* name, value_t* v) 
   if (tk_str_eq(name, "length") || tk_str_eq(name, "size") || tk_str_eq(name, "#size")) {
     value_set_int(v, o->size);
     ret = RET_OK;
+  } else if (tk_str_eq(name, "capacity")) {
+    value_set_int(v, o->capacity);
+    ret = RET_OK;
   } else {
     int32_t index = object_array_parse_index(name);
-    if (index >= 0 && index < o->size) {
-      value_t* iter = o->props + index;
-      ret = value_copy(v, iter);
-    }
+    ret = object_array_get(obj, index, v);
   }
 
   return ret;

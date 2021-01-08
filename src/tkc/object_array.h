@@ -174,6 +174,28 @@ ret_t object_array_remove(object_t* obj, uint32_t index);
  */
 ret_t object_array_pop(object_t* obj, value_t* v);
 
+/**
+ * @method object_array_get
+ * 获取指定序数的元素。
+ * @param {object_t*} obj 数组对象。
+ * @param {uint32_t} i 序数。
+ * @param {value_t*} v 返回的元素。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_array_get(object_t* obj, uint32_t i, value_t* v);
+
+/**
+ * @method object_array_set
+ * 设置指定序数的元素。
+ * @param {object_t*} obj 数组对象。
+ * @param {uint32_t} i 序数。
+ * @param {const value_t*} v 元素。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_array_set(object_t* obj, uint32_t i, const value_t* v);
+
 object_array_t* object_array_cast(object_t* obj);
 #define OBJECT_ARRAY(obj) object_array_cast(obj)
 
