@@ -173,13 +173,25 @@ static ret_t fexpr_parse(fscript_parser_t* parser, value_t* result);
 static ret_t fscript_parse_statements(fscript_parser_t* parser, fscript_func_call_t* acall);
 static fscript_func_call_t* fscript_func_call_create(fscript_parser_t* parser, const char* name,
                                                      uint32_t size);
+static inline bool_t is_fast_var(const char* name) {
+  char c = name[1];
+  int32_t index = *name - 'a';
+
+  if(c != '\0' && c != '.') {
+    return FALSE;
+  }
+
+  if(index < 0 || index >= FSCRIPT_FAST_VAR_NR) {
+    return FALSE;
+  }
+
+  return TRUE;
+}
 
 static value_t* fscript_get_fast_var(fscript_t* fscript, const char* name) {
-  if (name[0] && !name[1]) {
-    int32_t index = name[0] - 'a';
-    if (index >= 0 && index < ARRAY_SIZE(fscript->fast_vars)) {
-      return fscript->fast_vars + index;
-    }
+  int32_t index = name[0] - 'a';
+  if (index >= 0 && index < ARRAY_SIZE(fscript->fast_vars)) {
+    return fscript->fast_vars + index;
   }
 
   return NULL;
@@ -187,14 +199,27 @@ static value_t* fscript_get_fast_var(fscript_t* fscript, const char* name) {
 
 static ret_t fscript_get_var(fscript_t* fscript, const char* name, value_t* value) {
   ret_t ret = RET_OK;
-  value_t* var = NULL;
   value_set_str(value, NULL);
   return_value_if_fail(name != NULL, RET_BAD_PARAMS);
   if (*name == '$') {
     name += 1;
   }
-  var = fscript_get_fast_var(fscript, name);
-  ret = var != NULL ? value_copy(value, var) : object_get_prop(fscript->obj, name, value);
+
+  if (is_fast_var(name)) {
+    value_t* var = fscript_get_fast_var(fscript, name);
+    if (name[1] == '.') {
+      object_t* obj = value_object(var);
+      if (obj != NULL) {
+        ret = object_get_prop(obj, name + 2, value);
+      } else {
+        ret = object_get_prop(fscript->obj, name, value);
+      }
+    } else {
+      ret = value_copy(value, var);
+    }
+  } else {
+    ret = object_get_prop(fscript->obj, name, value);
+  }
   if (ret != RET_OK) {
     log_warn("get var %s failed\n", name);
   }
@@ -202,13 +227,25 @@ static ret_t fscript_get_var(fscript_t* fscript, const char* name, value_t* valu
 }
 
 static ret_t fscript_set_var(fscript_t* fscript, const char* name, const value_t* value) {
-  value_t* var = fscript_get_fast_var(fscript, name);
-  if (var != NULL) {
-    value_reset(var);
-    return value_deep_copy(var, value);
+  ret_t ret = RET_FAIL;
+  if (is_fast_var(name)) {
+    value_t* var = fscript_get_fast_var(fscript, name);
+    if (name[1] == '.') {
+      object_t* obj = value_object(var);
+      if (obj != NULL) {
+        ret = object_set_prop(obj, name + 2, value);
+      } else {
+        ret = object_set_prop(fscript->obj, name, value);
+      }
+    } else {
+      value_reset(var);
+      ret = value_deep_copy(var, value);
+    }
   } else {
-    return object_set_prop(fscript->obj, name, value);
+    ret = object_set_prop(fscript->obj, name, value);
   }
+
+  return ret;
 }
 
 static ret_t fscript_eval_arg(fscript_t* fscript, fscript_func_call_t* iter, uint32_t i,
@@ -678,7 +715,7 @@ static token_t* fscript_parser_get_token_ex(fscript_parser_t* parser, bool_t ope
       t->size = str->size;
       return t;
     }
-    case '\"': 
+    case '\"':
     case '\'': {
       fscript_parser_parse_str(parser, c);
       return t;
@@ -1211,7 +1248,7 @@ static ret_t func_sum(fscript_t* fscript, fscript_args_t* args, value_t* result)
 
   if (has_str) {
     str_t str;
-    char buff[32];
+    char buff[64];
     str_init(&str, 100);
     for (i = 0; i < args->size; i++) {
       str_append(&str, value_str_ex(args->args + i, buff, sizeof(buff) - 1));
@@ -1371,7 +1408,7 @@ static ret_t func_print(fscript_t* fscript, fscript_args_t* args, value_t* resul
   uint32_t i = 0;
   value_set_bool(result, TRUE);
   for (i = 0; i < args->size; i++) {
-    char buff[32];
+    char buff[64];
     log_info("%s ", value_str_ex(args->args + i, buff, sizeof(buff) - 1));
     (void)buff;
   }
