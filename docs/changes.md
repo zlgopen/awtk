@@ -1,13 +1,16 @@
 # 最新动态
 
 2021/01/08
+  * 完善typed\_array
+  * 完善object\_array
   * 增加object\_date\_time。
   * 完善fscript和fscript\_ext。
   * 增加date\_time\_set\_xxx系列函数。
-  * 将date\_time包装成fscript的函数。
+  * 将date\_time/object\_array包装成fscript的函数。
   * 完善object\_default，支持通过.访问子对象的属性。
   * 修复xml\_parser中的注释错误（感谢忠吉提供补丁）。
   * 修复widget\_const中的注释错误（感谢福明提供补丁）。
+  * 修复第一次打开软键盘输入单个字符无候选字的问题（感谢雨欣提供补丁）。
 
 2021/01/07
   * 完善fscript和fscript\_ext。

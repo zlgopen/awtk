@@ -80,9 +80,10 @@ static ret_t input_engine_ensure_data(input_engine_t* engine) {
 static ret_t input_engine_pinyin_search(input_engine_t* engine, const char* keys) {
   uint32_t i = 0;
   uint32_t keys_size = strlen(keys);
-  uint32_t nr = im_search(keys, tk_min(14, keys_size));
+  uint32_t nr = 0;
 
   return_value_if_fail(engine != NULL && input_engine_ensure_data(engine) == RET_OK, RET_FAIL);
+  nr = im_search(keys, tk_min(14, keys_size));
   input_engine_reset_candidates(engine);
 
   if (keys_size == 0) {
