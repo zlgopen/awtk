@@ -66,7 +66,7 @@ void xml_parser_set_builder(XmlParser* parser, XmlBuilder* builder);
  *
  * 设置是否去掉文本两端的空白字符。
  *
- * > 默认值为去掉文本两端的空白字符，如果不x希望去掉，调用本函数设置为FALSE。
+ * > 默认值为去掉文本两端的空白字符，如果不希望去掉，调用本函数设置为FALSE。
  *
  * @param {XmlParser*} parser parser对象。
  * @param {bool_t} trim_text 是否去掉文本两端的空白字符。
