@@ -236,3 +236,71 @@ event_t* assets_event_init(assets_event_t* event, assets_manager_t* am, uint32_t
   event->asset_info = asset_info;
   return (event_t*)event;
 }
+
+int32_t event_from_name(const char* name) {
+  return_value_if_fail(name != NULL, EVT_NONE);
+
+  switch (*name) {
+    case 'g': {
+      if (tk_str_eq(name, "global_key_up")) {
+        return EVT_KEY_UP;
+      } else if (tk_str_eq(name, "global_key_down")) {
+        return EVT_KEY_DOWN;
+      } else if (tk_str_eq(name, "global_key_long_press")) {
+        return EVT_KEY_LONG_PRESS;
+      }
+      break;
+    }
+    case 'k': {
+      if (tk_str_eq(name, "key_up")) {
+        return EVT_KEY_UP;
+      } else if (tk_str_eq(name, "key_down")) {
+        return EVT_KEY_DOWN;
+      } else if (tk_str_eq(name, "key_long_press")) {
+        return EVT_KEY_LONG_PRESS;
+      } else if (tk_str_eq(name, "key_down_before_children")) {
+        return EVT_KEY_DOWN_BEFORE_CHILDREN;
+      } else if (tk_str_eq(name, "key_up_before_children")) {
+        return EVT_KEY_UP_BEFORE_CHILDREN;
+      }
+      break;
+    }
+    case 'p': {
+      if (tk_str_eq(name, "pointer_up")) {
+        return EVT_POINTER_UP;
+      } else if (tk_str_eq(name, "pointer_down")) {
+        return EVT_POINTER_DOWN;
+      } else if (tk_str_eq(name, "pointer_move")) {
+        return EVT_POINTER_MOVE;
+      }
+      break;
+    }
+    case 'c': {
+      if (tk_str_eq(name, "click")) {
+        return EVT_CLICK;
+      }
+      break;
+    }
+    case 'w': {
+      if (tk_str_eq(name, "window_close")) {
+        return EVT_WINDOW_CLOSE;
+      } else if (tk_str_eq(name, "window_open")) {
+        return EVT_WINDOW_OPEN;
+      } else if (tk_str_eq(name, "window_will_open")) {
+        return EVT_WINDOW_WILL_OPEN;
+      }
+      break;
+    }
+    case 'v': {
+      if (tk_str_eq(name, "value_changed")) {
+        return EVT_VALUE_CHANGED;
+      } else if (tk_str_eq(name, STR_VALUE_CHANGED_BY_UI)) {
+        return EVT_VALUE_CHANGED;
+      }
+      break;
+    }
+    default:
+      break;
+  }
+  return EVT_NONE;
+}

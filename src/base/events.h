@@ -1004,6 +1004,18 @@ typedef struct _assets_event_t {
 event_t* assets_event_init(assets_event_t* event, assets_manager_t* am, uint32_t type,
                            asset_type_t asset_type, asset_info_t* asset_info);
 
+/**
+ * @method event_from_name
+ * 将事件名转换成事件的值。
+ * @param {const char*} name 事件名。
+ *
+ * @return {int32_t} 返回事件的值。
+ */
+int32_t event_from_name(const char* name) ;
+
+#define STR_GLOBAL_EVENT_PREFIX "global"
+#define STR_VALUE_CHANGED_BY_UI "value_changed_by_ui" 
+
 END_C_DECLS
 
 #endif /**TK_EVENTS_H*/

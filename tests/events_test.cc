@@ -22,3 +22,21 @@ TEST(Events, pointer_event_rotate) {
   ASSERT_EQ(e.y, 309);
   ASSERT_EQ(e.x, 20);
 }
+
+TEST(Events, from_name) {
+  ASSERT_EQ(event_from_name("click"), EVT_CLICK);
+  ASSERT_EQ(event_from_name("window_close"), EVT_WINDOW_CLOSE);
+  ASSERT_EQ(event_from_name("window_open"), EVT_WINDOW_OPEN);
+  ASSERT_EQ(event_from_name("window_will_open"), EVT_WINDOW_WILL_OPEN);
+  ASSERT_EQ(event_from_name("pointer_up"), EVT_POINTER_UP);
+  ASSERT_EQ(event_from_name("pointer_down"), EVT_POINTER_DOWN);
+  ASSERT_EQ(event_from_name("pointer_move"), EVT_POINTER_MOVE);
+  ASSERT_EQ(event_from_name("key_down"), EVT_KEY_DOWN);
+  ASSERT_EQ(event_from_name("key_up"), EVT_KEY_UP);
+  ASSERT_EQ(event_from_name("key_long_press"), EVT_KEY_LONG_PRESS);
+  ASSERT_EQ(event_from_name("global_key_down"), EVT_KEY_DOWN);
+  ASSERT_EQ(event_from_name("global_key_up"), EVT_KEY_UP);
+  ASSERT_EQ(event_from_name("global_key_long_press"), EVT_KEY_LONG_PRESS);
+  ASSERT_EQ(event_from_name("key_down_before_children"), EVT_KEY_DOWN_BEFORE_CHILDREN);
+  ASSERT_EQ(event_from_name("key_up_before_children"), EVT_KEY_UP_BEFORE_CHILDREN);
+}
