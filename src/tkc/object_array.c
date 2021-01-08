@@ -197,7 +197,7 @@ static ret_t object_array_set_prop(object_t* obj, const char* name, const value_
 }
 
 ret_t object_array_get(object_t* obj, uint32_t i, value_t* v) {
-  ret_t ret = RET_OK;
+  ret_t ret = RET_NOT_FOUND;
   object_array_t* o = OBJECT_ARRAY(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
 
