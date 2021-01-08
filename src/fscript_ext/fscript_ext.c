@@ -22,6 +22,7 @@
 #include "fscript_ext/fscript_bits.h"
 #include "fscript_ext/fscript_math.h"
 #include "fscript_ext/fscript_json.h"
+#include "fscript_ext/fscript_array.h"
 #include "fscript_ext/fscript_endian.h"
 #include "fscript_ext/fscript_object.h"
 #include "fscript_ext/fscript_rbuffer.h"
@@ -120,13 +121,17 @@ ret_t fscript_ext_init(void) {
   fscript_endian_register();
 #endif /*FSCRIPT_WITH_MATH*/
 
+#ifdef FSCRIPT_WITH_ARRAY
+  fscript_array_register();
+#endif /*FSCRIPT_WITH_ARRAY*/
+
 #ifdef FSCRIPT_WITH_TYPED_ARRAY
   fscript_typed_array_register();
 #endif /*FSCRIPT_WITH_TYPED_ARRAY*/
 
 #ifdef FSCRIPT_WITH_APP_CONF
   fscript_app_conf_register();
-#endif /*FSCRIPT_WITH_TYPED_ARRAY*/
+#endif /*FSCRIPT_WITH_APP_CONF*/
 
 #ifdef FSCRIPT_WITH_DATE_TIME
   fscript_date_time_register();

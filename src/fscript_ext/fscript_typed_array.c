@@ -17,7 +17,7 @@
 #include "tkc/fscript.h"
 #include "tkc/object_typed_array.h"
 
-static ret_t func_array_create(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+static ret_t func_typed_array_create(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   object_t* obj = NULL;
   uint32_t capacity = 0;
   const char* stype = NULL;
@@ -64,7 +64,7 @@ static typed_array_t* get_typed_array(fscript_t* fscript, fscript_args_t* args) 
   return OBJECT_TYPED_ARRAY(obj)->arr;
 }
 
-static ret_t func_array_push(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+static ret_t func_typed_array_push(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   uint32_t i = 0;
   typed_array_t* arr = NULL;
   FSCRIPT_FUNC_CHECK(args->size > 1, RET_BAD_PARAMS);
@@ -83,7 +83,7 @@ static ret_t func_array_push(fscript_t* fscript, fscript_args_t* args, value_t* 
   return RET_OK;
 }
 
-static ret_t func_array_pop(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+static ret_t func_typed_array_pop(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   typed_array_t* arr = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   arr = get_typed_array(fscript, args);
@@ -92,7 +92,7 @@ static ret_t func_array_pop(fscript_t* fscript, fscript_args_t* args, value_t* r
   return typed_array_pop(arr, result);
 }
 
-static ret_t func_array_set(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+static ret_t func_typed_array_set(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   typed_array_t* arr = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 3, RET_BAD_PARAMS);
   arr = get_typed_array(fscript, args);
@@ -104,7 +104,7 @@ static ret_t func_array_set(fscript_t* fscript, fscript_args_t* args, value_t* r
   return RET_OK;
 }
 
-static ret_t func_array_get(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+static ret_t func_typed_array_get(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   typed_array_t* arr = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   arr = get_typed_array(fscript, args);
@@ -115,51 +115,7 @@ static ret_t func_array_get(fscript_t* fscript, fscript_args_t* args, value_t* r
   return RET_OK;
 }
 
-static ret_t func_array_get_size(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  typed_array_t* arr = NULL;
-  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
-  arr = get_typed_array(fscript, args);
-  return_value_if_fail(arr != NULL, RET_BAD_PARAMS);
-
-  value_set_uint32(result, arr->size);
-
-  return RET_OK;
-}
-
-static ret_t func_array_get_capacity(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  typed_array_t* arr = NULL;
-  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
-  arr = get_typed_array(fscript, args);
-  return_value_if_fail(arr != NULL, RET_BAD_PARAMS);
-
-  value_set_uint32(result, arr->capacity);
-
-  return RET_OK;
-}
-
-static ret_t func_array_get_data(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  typed_array_t* arr = NULL;
-  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
-  arr = get_typed_array(fscript, args);
-  return_value_if_fail(arr != NULL, RET_BAD_PARAMS);
-
-  value_set_pointer(result, arr->data);
-
-  return RET_OK;
-}
-
-static ret_t func_array_get_bytes(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  typed_array_t* arr = NULL;
-  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
-  arr = get_typed_array(fscript, args);
-  return_value_if_fail(arr != NULL, RET_BAD_PARAMS);
-
-  value_set_uint32(result, arr->size * arr->element_size);
-
-  return RET_OK;
-}
-
-static ret_t func_array_insert(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+static ret_t func_typed_array_insert(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   typed_array_t* arr = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 3, RET_BAD_PARAMS);
   arr = get_typed_array(fscript, args);
@@ -171,7 +127,7 @@ static ret_t func_array_insert(fscript_t* fscript, fscript_args_t* args, value_t
   return RET_OK;
 }
 
-static ret_t func_array_remove(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+static ret_t func_typed_array_remove(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   typed_array_t* arr = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   arr = get_typed_array(fscript, args);
@@ -182,7 +138,7 @@ static ret_t func_array_remove(fscript_t* fscript, fscript_args_t* args, value_t
   return RET_OK;
 }
 
-static ret_t func_array_clear(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+static ret_t func_typed_array_clear(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   typed_array_t* arr = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   arr = get_typed_array(fscript, args);
@@ -193,19 +149,54 @@ static ret_t func_array_clear(fscript_t* fscript, fscript_args_t* args, value_t*
   return RET_OK;
 }
 
+static ret_t func_typed_array_join(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  str_t str;
+  value_t v;
+  char buff[64];
+  uint32_t i = 0;
+  bool_t oom = FALSE;
+  const char* sep = NULL;
+  typed_array_t* arr = NULL;
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+  arr = get_typed_array(fscript, args);
+  return_value_if_fail(arr != NULL, RET_BAD_PARAMS);
+  sep = value_str(args->args+1);
+
+  str_init(&str, 100);
+  for(i = 0; i < arr->size; i++) {
+    if(i > 0 && sep != NULL) {
+      if(str_append(&str, sep) == RET_OOM) {
+        oom = TRUE;
+        break;
+      }
+    }
+    typed_array_get(arr, i, &v);
+    if(str_append(&str, value_str_ex(&v, buff, sizeof(buff)-1)) == RET_OOM) {
+        oom = TRUE;
+        break;
+    }
+  }
+ 
+  if(!oom) {
+    value_set_str(result, str.str);
+    result->free_handle = TRUE;
+  } else {
+    str_reset(&str);
+  }
+
+  return RET_OK;
+}
+
 ret_t fscript_typed_array_register(void) {
-  ENSURE(fscript_register_func("typed_array_create", func_array_create) == RET_OK);
-  ENSURE(fscript_register_func("typed_array_push", func_array_push) == RET_OK);
-  ENSURE(fscript_register_func("typed_array_pop", func_array_pop) == RET_OK);
-  ENSURE(fscript_register_func("typed_array_get", func_array_get) == RET_OK);
-  ENSURE(fscript_register_func("typed_array_set", func_array_set) == RET_OK);
-  ENSURE(fscript_register_func("typed_array_get_data", func_array_get_data) == RET_OK);
-  ENSURE(fscript_register_func("typed_array_get_size", func_array_get_size) == RET_OK);
-  ENSURE(fscript_register_func("typed_array_get_capacity", func_array_get_capacity) == RET_OK);
-  ENSURE(fscript_register_func("typed_array_get_bytes", func_array_get_bytes) == RET_OK);
-  ENSURE(fscript_register_func("typed_array_insert", func_array_insert) == RET_OK);
-  ENSURE(fscript_register_func("typed_array_remove", func_array_remove) == RET_OK);
-  ENSURE(fscript_register_func("typed_array_clear", func_array_clear) == RET_OK);
+  ENSURE(fscript_register_func("typed_array_create", func_typed_array_create) == RET_OK);
+  ENSURE(fscript_register_func("typed_array_push", func_typed_array_push) == RET_OK);
+  ENSURE(fscript_register_func("typed_array_pop", func_typed_array_pop) == RET_OK);
+  ENSURE(fscript_register_func("typed_array_get", func_typed_array_get) == RET_OK);
+  ENSURE(fscript_register_func("typed_array_set", func_typed_array_set) == RET_OK);
+  ENSURE(fscript_register_func("typed_array_insert", func_typed_array_insert) == RET_OK);
+  ENSURE(fscript_register_func("typed_array_remove", func_typed_array_remove) == RET_OK);
+  ENSURE(fscript_register_func("typed_array_clear", func_typed_array_clear) == RET_OK);
+  ENSURE(fscript_register_func("typed_array_join", func_typed_array_join) == RET_OK);
 
   return RET_OK;
 }
