@@ -178,7 +178,7 @@ TEST(TypedArray, object1) {
   }
 
   ASSERT_EQ(object_get_prop_int(obj, "size", 0), i);
-  ASSERT_EQ(object_get_prop_int(obj, "byte_size", 0), i * sizeof(uint32_t));
+  ASSERT_EQ(object_get_prop_int(obj, "bytes", 0), i * sizeof(uint32_t));
   ASSERT_EQ(object_get_prop_pointer(obj, "data"), (void*)a->data);
 
   typed_array_destroy(a);
