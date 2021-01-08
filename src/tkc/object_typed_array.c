@@ -46,7 +46,10 @@ static ret_t object_typed_array_get_prop(object_t* obj, const char* name, value_
   if (tk_str_eq(name, "size")) {
     value_set_uint32(v, o->arr->size);
     ret = RET_OK;
-  } else if (tk_str_eq(name, "byte_size")) {
+  } else if (tk_str_eq(name, "capacity")) {
+    value_set_uint32(v, o->arr->capacity);
+    ret = RET_OK;
+  } else if (tk_str_eq(name, "bytes")) {
     value_set_uint32(v, o->arr->size * o->arr->element_size);
     ret = RET_OK;
   } else if (tk_str_eq(name, "data")) {
