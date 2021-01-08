@@ -256,7 +256,6 @@ ret_t emitter_disable(emitter_t* emitter);
 /**
  * @method emitter_size
  * 获取注册的回调函数个数，主要用于辅助测试。
- * @annotation ["scriptable"]
  * @param {emitter_t*} emitter emitter对象。
  *
  * @return {uint32_t} 回调函数个数。
