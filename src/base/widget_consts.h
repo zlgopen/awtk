@@ -883,7 +883,7 @@ BEGIN_C_DECLS
 
 /**
  * @const WIDGET_PROP_WITH_FOCUS_STATE
- * 是否支持焦点状态(如果希望style支持焦点状态，但有不希望焦点停留，可用本属性)。
+ * 是否支持焦点状态(如果希望style支持焦点状态，但又不希望焦点停留，可用本属性)。
  */
 #define WIDGET_PROP_WITH_FOCUS_STATE "with_focus_state"
 
