@@ -977,7 +977,7 @@ event_t* multi_gesture_event_init(multi_gesture_event_t* event, void* target, in
 typedef struct _assets_event_t {
   event_t e;
   /**
-   * @property {asset_type_t*} type 
+   * @property {asset_type_t} type 
    * @annotation ["readable", "scriptable"]
    * 触发事件的资源类型
    */
