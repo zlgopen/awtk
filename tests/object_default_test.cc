@@ -556,3 +556,40 @@ TEST(ObjectDefault, size) {
 
   object_unref(obj);
 }
+
+TEST(ObjectDefault, sub) {
+  object_t* obj = object_default_create();
+  object_t* a = object_default_create();
+  object_t* b = object_default_create();
+
+  object_set_prop_str(obj, "name", "root");
+
+  object_set_prop_str(a, "name", "aaa");
+  object_set_prop_int(a, "age", 100);
+
+  object_set_prop_str(b, "name", "bbb");
+  object_set_prop_int(b, "age", 200);
+
+  ASSERT_EQ(object_set_prop_object(obj, "a", a), RET_OK);
+  ASSERT_EQ(object_set_prop_object(obj, "bbb", b), RET_OK);
+
+  ASSERT_STREQ(object_get_prop_str(obj, "name"), "root");
+  ASSERT_STREQ(object_get_prop_str(obj, "a.name"), "aaa");
+  ASSERT_STREQ(object_get_prop_str(obj, "bbb.name"), "bbb");
+  
+  ASSERT_EQ(object_remove_prop(obj, "a.name"), RET_OK);
+  ASSERT_EQ(object_get_prop_int(obj, "a.age", 0), 100);
+  
+  ASSERT_EQ(object_remove_prop(obj, "bbb.name"), RET_OK);
+  ASSERT_EQ(object_get_prop_int(obj, "bbb.age", 0), 200);
+  
+  ASSERT_EQ(object_remove_prop(obj, "bbb.age"), RET_OK);
+  ASSERT_EQ(object_get_prop_int(obj, "bbb.age", 0), 0);
+  
+  ASSERT_EQ(object_remove_prop(obj, "name"), RET_OK);
+  
+  ASSERT_EQ(object_set_prop_str(obj, "a.name", "AAA"), RET_OK);
+  ASSERT_STREQ(object_get_prop_str(obj, "a.name"), "AAA");
+
+  object_unref(obj);
+}

@@ -127,6 +127,25 @@ static int32_t object_default_find(named_value_t* start, uint32_t nr, const char
   return low;
 }
 
+static object_t* object_default_get_sub_object(object_t* obj, const char* name) {
+  char subname[MAX_PATH + 1];
+  const char* p = strchr(name, '.');
+
+  if (p != NULL) {
+    object_default_t* o = OBJECT_DEFAULT(obj);
+    tk_strncpy_s(subname, MAX_PATH, name, p - name);
+    int32_t index = object_default_find(o->props, o->props_size, subname);
+    if (index >= 0 && index < o->props_size) {
+      named_value_t* nv = o->props + index;
+      if (tk_str_eq(nv->name, subname)) {
+        return value_object(&(nv->value));
+      }
+    }
+  }
+
+  return NULL;
+}
+
 static ret_t object_default_extend(object_t* obj) {
   ret_t ret = RET_OOM;
   object_default_t* o = OBJECT_DEFAULT(obj);
@@ -172,6 +191,15 @@ static ret_t object_default_remove_prop(object_t* obj, const char* name) {
   ret_t ret = RET_NOT_FOUND;
   object_default_t* o = OBJECT_DEFAULT(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
+  if (o->props_size > 0) {
+    object_t* sub = object_default_get_sub_object(obj, name);
+    if (sub != NULL) {
+      name = strchr(name, '.') + 1;
+      return object_remove_prop(sub, name);
+    }
+  }
+
   if (o->props_size > 0) {
     named_value_t* iter = NULL;
     int32_t index = object_default_find(o->props, o->props_size, name);
@@ -195,6 +223,14 @@ static ret_t object_default_set_prop(object_t* obj, const char* name, const valu
   ret_t ret = RET_NOT_FOUND;
   object_default_t* o = OBJECT_DEFAULT(obj);
   return_value_if_fail(object_default_extend(obj) == RET_OK, RET_OOM);
+  
+  if (o->props_size > 0) {
+    object_t* sub = object_default_get_sub_object(obj, name);
+    if (sub != NULL) {
+      name = strchr(name, '.') + 1;
+      return object_set_prop(sub, name, v);
+    }
+  }
 
   if (o->props_size > 0) {
     int32_t index = object_default_find(o->props, o->props_size, name);
@@ -234,6 +270,14 @@ static ret_t object_default_get_prop(object_t* obj, const char* name, value_t* v
   if (tk_str_eq(name, OBJECT_PROP_SIZE)) {
     value_set_uint32(v, o->props_size);
     return RET_OK;
+  }
+
+  if (o->props_size > 0) {
+    object_t* sub = object_default_get_sub_object(obj, name);
+    if (sub != NULL) {
+      name = strchr(name, '.') + 1;
+      return object_get_prop(sub, name, v);
+    }
   }
 
   if (o->props_size > 0) {
