@@ -1,4 +1,4 @@
-<window closable="no" text="Desktop" anim_hint="htranslate" single_instance="true">
+<window text="Desktop" anim_hint="htranslate" single_instance="true">
   <view name="view" x="0" y="0" w="100%" h="100%" children_layout="default(c=1,r=10,m=5,s=5)">
     <label name="label" text="label" />
     <progress_bar name="bar" text="" value="10" />
@@ -55,7 +55,7 @@
         <property name="on:click">
         a = widget_lookup(window, foobar, TRUE)
         if(value_is_null(a)) {
-          a = widget_create("label", widget_lookup(window.view), 0, 0, 0, 0)
+          a = widget_create("label", window.view, 0, 0, 0, 0)
           assert(!value_is_null(a))
 
           widget_set(a, text, "Dynamic created")

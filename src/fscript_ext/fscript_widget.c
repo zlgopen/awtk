@@ -23,6 +23,51 @@
 #include "base/window_manager.h"
 #include "ui_loader/ui_builder_default.h"
 
+static widget_t* find_target_widget(widget_t* widget, const char* path, uint32_t len) {
+  bool_t is_first = TRUE;
+  tokenizer_t tokenizer;
+  widget_t* iter = widget;
+  tokenizer_t* t = NULL;
+  return_value_if_fail(widget != NULL && path != NULL, NULL);
+  t = tokenizer_init(&tokenizer, path, len, ".");
+  return_value_if_fail(t != NULL, NULL);
+
+  while (tokenizer_has_more(t) && iter != NULL) {
+    const char* name = tokenizer_next(t);
+    if (is_first) {
+      if (tk_str_eq(name, STR_PROP_PARENT)) {
+        iter = widget->parent;
+      } else if (tk_str_eq(name, STR_PROP_WINDOW)) {
+        iter = widget_get_window(widget);
+      } else if (tk_str_eq(name, STR_PROP_WINDOW_MANAGER)) {
+        iter = widget_get_window_manager(widget);
+      } else {
+        iter = widget_child(iter, name);
+      }
+      is_first = FALSE;
+    } else {
+      iter = widget_child(iter, name);
+    }
+  }
+  tokenizer_deinit(t);
+
+  return iter;
+}
+
+static widget_t* to_widget(fscript_t* fscript, const value_t* v) {
+  if (v->type == VALUE_TYPE_STRING) {
+    widget_t* self = WIDGET(object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
+    const char* path = value_str(v);
+    return_value_if_fail(path != NULL, NULL);
+
+    return find_target_widget(self, path, strlen(path));
+  } else if (v->type == VALUE_TYPE_POINTER) {
+    return WIDGET(value_pointer(v));
+  } else {
+    return NULL;
+  }
+}
+
 static ret_t func_tr(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   value_dup_str(result, locale_info_tr(locale_info(), value_str(args->args)));
@@ -59,37 +104,6 @@ static ret_t func_window_close(fscript_t* fscript, fscript_args_t* args, value_t
   value_set_bool(result, ret == RET_OK);
 
   return ret;
-}
-
-static widget_t* find_target_widget(widget_t* widget, const char* path, uint32_t len) {
-  bool_t is_first = TRUE;
-  tokenizer_t tokenizer;
-  widget_t* iter = widget;
-  tokenizer_t* t = NULL;
-  return_value_if_fail(widget != NULL && path != NULL, NULL);
-  t = tokenizer_init(&tokenizer, path, len, ".");
-  return_value_if_fail(t != NULL, NULL);
-
-  while (tokenizer_has_more(t) && iter != NULL) {
-    const char* name = tokenizer_next(t);
-    if (is_first) {
-      if (tk_str_eq(name, STR_PROP_PARENT)) {
-        iter = widget->parent;
-      } else if (tk_str_eq(name, STR_PROP_WINDOW)) {
-        iter = widget_get_window(widget);
-      } else if (tk_str_eq(name, STR_PROP_WINDOW_MANAGER)) {
-        iter = widget_get_window_manager(widget);
-      } else {
-        iter = widget_child(iter, name);
-      }
-      is_first = FALSE;
-    } else {
-      iter = widget_child(iter, name);
-    }
-  }
-  tokenizer_deinit(t);
-
-  return iter;
 }
 
 static ret_t widget_set(widget_t* self, const char* path, const value_t* v) {
@@ -148,13 +162,13 @@ static ret_t func_widget_lookup(fscript_t* fscript, fscript_args_t* args, value_
     widget = WIDGET(object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
     path = value_str(args->args);
   } else {
-    widget = WIDGET(value_pointer(args->args));
+    widget = to_widget(fscript, args->args);
     path = value_str(args->args + 1);
     recursive = args->size > 2 ? value_bool(args->args + 2) : FALSE;
   }
   FSCRIPT_FUNC_CHECK(widget != NULL && path != NULL, RET_BAD_PARAMS);
 
-  if(strchr(path, '.') != NULL) {
+  if (strchr(path, '.') != NULL) {
     widget = find_target_widget(widget, path, strlen(path));
   } else {
     widget = widget_lookup(widget, path, recursive);
@@ -173,7 +187,7 @@ static ret_t func_widget_get(fscript_t* fscript, fscript_args_t* args, value_t* 
     widget = WIDGET(object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
     path = value_str(args->args);
   } else {
-    widget = WIDGET(value_pointer(args->args));
+    widget = to_widget(fscript, args->args);
     path = value_str(args->args + 1);
   }
   FSCRIPT_FUNC_CHECK(widget != NULL && path != NULL, RET_BAD_PARAMS);
@@ -193,7 +207,7 @@ static ret_t func_widget_set(fscript_t* fscript, fscript_args_t* args, value_t* 
     path = value_str(args->args);
     v = args->args + 1;
   } else {
-    widget = WIDGET(value_pointer(args->args));
+    widget = to_widget(fscript, args->args);
     path = value_str(args->args + 1);
     v = args->args + 2;
   }
@@ -215,12 +229,12 @@ static ret_t func_widget_create(fscript_t* fscript, fscript_args_t* args, value_
   widget_t* parent = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 6, RET_BAD_PARAMS);
   type = value_str(args->args);
-  parent = value_pointer(args->args+1);
+  parent = to_widget(fscript, args->args + 1);
   return_value_if_fail(type != NULL && parent != NULL, RET_BAD_PARAMS);
-  x = value_int(args->args+2);
-  y = value_int(args->args+3);
-  w = value_int(args->args+4);
-  h = value_int(args->args+5);
+  x = value_int(args->args + 2);
+  y = value_int(args->args + 3);
+  w = value_int(args->args + 4);
+  h = value_int(args->args + 5);
   widget = widget_factory_create_widget(widget_factory(), type, parent, x, y, w, h);
   value_set_pointer(result, widget);
 
@@ -228,8 +242,12 @@ static ret_t func_widget_create(fscript_t* fscript, fscript_args_t* args, value_
 }
 
 static ret_t func_widget_destroy(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  widget_t* widget = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
-  value_set_bool(result, widget_destroy(WIDGET(value_pointer(args->args))) == RET_OK);
+  widget = to_widget(fscript, args->args);
+  FSCRIPT_FUNC_CHECK(widget != NULL, RET_BAD_PARAMS);
+
+  value_set_bool(result, widget_destroy(widget) == RET_OK);
 
   return RET_OK;
 }

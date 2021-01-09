@@ -1582,9 +1582,6 @@ static ret_t widget_exec_code(void* ctx, event_t* evt) {
   return_value_if_fail(obj != NULL && code != NULL, RET_REMOVE);
 
   object_set_prop_pointer(obj, STR_PROP_SELF, widget);
-  object_set_prop_pointer(obj, STR_PROP_PARENT, widget->parent);
-  object_set_prop_pointer(obj, STR_PROP_WINDOW, widget_get_window(widget));
-  object_set_prop_pointer(obj, STR_PROP_WINDOW_MANAGER, widget_get_window_manager(widget));
 
   value_set_int(&result, 0);
   fscript_eval(obj, code, &result);
