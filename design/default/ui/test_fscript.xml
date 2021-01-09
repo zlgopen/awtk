@@ -1,7 +1,39 @@
 <window text="Desktop" anim_hint="htranslate" single_instance="true">
+  <property name="on:window_open">
+    print("window_open")
+  </property>
+  <property name="on:window_will_open">
+    print("window_will_open")
+  </property>
+  <property name="on:window_close">
+    print("window_close")
+  </property>
+
+  <property name="on:key_down">
+    print("keydown:", key, "alt=", alt, "ctrl=", ctrl, "cmd=", cmd, "menu=", menu);
+  </property>
+  <property name="on:key_up">
+    print("keyup:", key, "alt=", alt, "ctrl=", ctrl, "cmd=", cmd, "menu=", menu);
+  </property>
+  <property name="on:key_long_press">
+    print("keyup:", key, "alt=", alt, "ctrl=", ctrl, "cmd=", cmd, "menu=", menu);
+  </property>
+
+  <property name="on:pointer_down">
+    print("pointerdown:", x, y, "alt=", alt, "ctrl=", ctrl, "cmd=", cmd, "menu=", menu);
+  </property>
+  <property name="on:pointer_up">
+    print("pointerup:", x, y, "alt=", alt, "ctrl=", ctrl, "cmd=", cmd, "menu=", menu);
+  </property>
+  <property name="on:click">
+    print("click:", x, y, "alt=", alt, "ctrl=", ctrl, "cmd=", cmd, "menu=", menu);
+  </property>
+
   <view name="view" x="0" y="0" w="100%" h="100%" children_layout="default(c=1,r=12,m=5,s=5)">
     <label name="label" text="label" />
-    <progress_bar name="bar" text="" value="10" />
+    <edit name="edit" tips="text edit" on:focus="print(focus)" on:blur="print(blur, widget_get(self,value))"/>
+    <progress_bar name="bar" text="" value="10" on:value_changed="print(widget_get(self,value))"/>
+    <view name="view" x="0" y="0" w="100%" h="100%" children_layout="default(c=2,r=1,m=2,s=2)">
     <button focusable="true" focused="true" on:click="open(basic_fscript)" text="Basic" />
     <button focusable="true" text="Buttons">
       <property name="on:click">
@@ -11,6 +43,7 @@
           assert(widget_get(win, close.text) == "Back");
       </property>
     </button>
+    </view>
 
     <button focusable="true" text="Test">
       <property name="on:click">

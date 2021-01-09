@@ -1584,6 +1584,40 @@ static ret_t widget_exec_code(void* ctx, event_t* evt) {
 
   object_set_prop_pointer(obj, STR_PROP_SELF, widget);
 
+  switch (evt->type) {
+    case EVT_CLICK:
+    case EVT_POINTER_DOWN:
+    case EVT_POINTER_MOVE:
+    case EVT_POINTER_UP: {
+      pointer_event_t* e = pointer_event_cast(evt);
+      object_set_prop_int(obj, "x", e->x);
+      object_set_prop_int(obj, "y", e->y);
+      object_set_prop_bool(obj, "alt", e->alt);
+      object_set_prop_bool(obj, "cmd", e->cmd);
+      object_set_prop_bool(obj, "menu", e->menu);
+      object_set_prop_bool(obj, "ctrl", e->ctrl);
+      break;
+    }
+    case EVT_KEY_DOWN:
+    case EVT_KEY_LONG_PRESS:
+    case EVT_KEY_UP: {
+      key_event_t* e = key_event_cast(evt);
+      key_type_value_t* kv = keys_type_find_by_value(e->key);
+      if (kv != NULL) {
+        object_set_prop_str(obj, "key", kv->name);
+      } else {
+        object_set_prop_str(obj, "key", "unkown");
+      }
+      object_set_prop_bool(obj, "alt", e->alt);
+      object_set_prop_bool(obj, "cmd", e->cmd);
+      object_set_prop_bool(obj, "menu", e->menu);
+      object_set_prop_bool(obj, "ctrl", e->ctrl);
+      break;
+    }
+    default:
+      break;
+  }
+
   value_set_int(&result, 0);
   fscript_eval(obj, code, &result);
   if (object_get_prop_bool(obj, "RET_STOP", FALSE)) {
@@ -1703,13 +1737,17 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
         }
       }
 
-      if (strncmp(name, STR_ON_EVENT_PREFIX, sizeof(STR_ON_EVENT_PREFIX)-1) == 0) {
-        int32_t etype = event_from_name(name + sizeof(STR_ON_EVENT_PREFIX)-1);
+      if (strncmp(name, STR_ON_EVENT_PREFIX, sizeof(STR_ON_EVENT_PREFIX) - 1) == 0) {
+        int32_t etype = event_from_name(name + sizeof(STR_ON_EVENT_PREFIX) - 1);
         if (etype != EVT_NONE) {
           char* code = tk_strdup(value_str(v));
-          if(code != NULL) {
-            widget_on(widget, etype, widget_exec_code, code);
-            widget_on(widget, EVT_DESTROY, widget_free_code, code);
+          if (code != NULL) {
+            if (strncmp(name, STR_GLOBAL_EVENT_PREFIX, sizeof(STR_GLOBAL_EVENT_PREFIX) - 1) == 0) {
+              widget_on(window_manager(), etype, widget_exec_code, code);
+            } else {
+              widget_on(widget, etype, widget_exec_code, code);
+              widget_on(widget, EVT_DESTROY, widget_free_code, code);
+            }
             ret = RET_OK;
           }
         } else {

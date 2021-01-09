@@ -15,7 +15,7 @@ fscript 是一个极简的脚本引擎，借鉴了函数语言中一些思路，
 
 ```  
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
-      7108        134       1051          0          0      27871   fscript.o
+     10380       1580       1909          4          0      86893   fscript.o
 ```
 
 * 限制：

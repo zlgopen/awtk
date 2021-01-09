@@ -241,6 +241,16 @@ int32_t event_from_name(const char* name) {
   return_value_if_fail(name != NULL, EVT_NONE);
 
   switch (*name) {
+    case 'f': {
+      if (tk_str_eq(name, "focus")) {
+        return EVT_FOCUS;
+      }
+    }
+    case 'b': {
+      if (tk_str_eq(name, "blur")) {
+        return EVT_BLUR;
+      }
+    }
     case 'g': {
       if (tk_str_eq(name, "global_key_up")) {
         return EVT_KEY_UP;

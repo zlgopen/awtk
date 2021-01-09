@@ -77,26 +77,46 @@ static ret_t func_tr(fscript_t* fscript, fscript_args_t* args, value_t* result) 
 
 static ret_t func_window_open(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   widget_t* widget = NULL;
-  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
-  widget = window_open(value_str(args->args));
-  value_set_pointer(result, widget);
+  const char* name = NULL;
+  bool_t close_current = FALSE;
+  bool_t switch_to_if_exist = FALSE;
+  window_manager_t* wm = window_manager();
+  widget_t* self = WIDGET(object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
+  widget_t* curr_win = widget_get_window(self);
+  FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
+  name = value_str(args->args);
+  close_current = args->size > 1 ? value_bool(args->args + 1) : FALSE;
+  switch_to_if_exist = args->size > 2 ? value_bool(args->args + 2) : FALSE;
+  FSCRIPT_FUNC_CHECK(name != NULL, RET_BAD_PARAMS);
 
+  if (switch_to_if_exist) {
+    widget_t* widget = widget_child(wm, name);
+    if (widget != NULL) {
+      window_manager_switch_to(wm, curr_win, widget, close_current);
+      value_set_pointer(result, widget);
+      return RET_OK;
+    }
+  }
+
+  if (close_current) {
+    widget = window_open_and_close(value_str(args->args), curr_win);
+  } else {
+    widget = window_open(value_str(args->args));
+  }
+
+  value_set_pointer(result, widget);
   return RET_OK;
 }
 
 static ret_t func_window_close(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  value_t* v = NULL;
   ret_t ret = RET_OK;
 
   if (args->size == 1) {
-    v = args->args;
-    if (v->type == VALUE_TYPE_STRING) {
-      ret = window_close(widget_child(window_manager(), value_str(v)));
-    } else if (v->type == VALUE_TYPE_POINTER) {
-      ret = window_close(WIDGET(value_pointer(v)));
-    } else {
-      ret = window_manager_back(window_manager());
-    }
+    value_t* v = args->args;
+    window_manager_t* wm = window_manager();
+    widget_t* win = widget_child(wm, value_str(v));
+    FSCRIPT_FUNC_CHECK(win != NULL, RET_BAD_PARAMS);
+    ret = window_manager_close_window_force(wm, win);
   } else {
     widget_t* self = WIDGET(object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
     ret = window_close(widget_get_window(self));
@@ -308,15 +328,16 @@ static ret_t func_widget_remove_timer(fscript_t* fscript, fscript_args_t* args, 
 }
 
 ret_t fscript_widget_register(void) {
-  ENSURE(fscript_register_func("tr", func_tr) == RET_OK);
   ENSURE(fscript_register_func("open", func_window_open) == RET_OK);
   ENSURE(fscript_register_func("close", func_window_close) == RET_OK);
-  ENSURE(fscript_register_func("quit", func_quit) == RET_OK);
   ENSURE(fscript_register_func("back", func_back) == RET_OK);
+  ENSURE(fscript_register_func("back_to_home", func_back_to_home) == RET_OK);
+  ENSURE(fscript_register_func("quit", func_quit) == RET_OK);
+  ENSURE(fscript_register_func("tr", func_tr) == RET_OK);
+
   ENSURE(fscript_register_func("widget_lookup", func_widget_lookup) == RET_OK);
   ENSURE(fscript_register_func("widget_get", func_widget_get) == RET_OK);
   ENSURE(fscript_register_func("widget_set", func_widget_set) == RET_OK);
-  ENSURE(fscript_register_func("back_to_home", func_back_to_home) == RET_OK);
   ENSURE(fscript_register_func("widget_create", func_widget_create) == RET_OK);
   ENSURE(fscript_register_func("widget_destroy", func_widget_destroy) == RET_OK);
   ENSURE(fscript_register_func("start_timer", func_widget_add_timer) == RET_OK);

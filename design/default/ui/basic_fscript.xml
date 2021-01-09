@@ -11,9 +11,9 @@
   </row>
 
   <row x="0" y="80" w="100%" h="30" children_layout="default(r=1,c=3,xm=2,s=10)">
-    <label style="left" name="left" text="Left"/>
-    <label style="center" name="center" text="Center"/>
-    <label style="right" name="right" text="Right"/>
+    <button text="Open" focusable="true" focus="true" on:click="open(test_fscript)"/>
+    <button text="Close" focusable="true" on:click="open(test_fscript, true)"/>
+    <button text="Switch TO" focusable="true" on:click="open(test_fscript, false, true)"/>
   </row>
 
 
