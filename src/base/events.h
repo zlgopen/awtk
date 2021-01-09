@@ -470,7 +470,11 @@ typedef enum _event_type_t {
    * 资源管理移除同种资源缓存(assets_event_t)。
    */
   EVT_ASSET_MANAGER_CLEAR_CACHE,
-
+  /**
+   * @const EVT_TIMER
+   * 定时器(event_t)。
+   */
+  EVT_TIMER,
   /**
    * @const EVT_REQ_START
    * event queue其它请求编号起始值。

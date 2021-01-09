@@ -252,6 +252,61 @@ static ret_t func_widget_destroy(fscript_t* fscript, fscript_args_t* args, value
   return RET_OK;
 }
 
+#define STR_PROP_TIMER_ID "_timer_id_"
+
+static ret_t widget_on_timer(const timer_info_t* info) {
+  widget_t* widget = WIDGET(info->ctx);
+  ret_t ret = widget_dispatch_simple_event(widget, EVT_TIMER);
+  ret = ret == RET_REMOVE ? RET_REMOVE : RET_REPEAT;
+  if (ret == RET_REMOVE) {
+    widget_set_prop_int(widget, STR_PROP_TIMER_ID, TK_INVALID_ID);
+  }
+  return ret;
+}
+
+static ret_t func_widget_add_timer(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  uint32_t id = 0;
+  uint32_t duration = 0;
+  widget_t* self = WIDGET(object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+  duration = value_uint32(args->args);
+  FSCRIPT_FUNC_CHECK(self != NULL && duration > 0, RET_BAD_PARAMS);
+
+  id = widget_get_prop_int(self, STR_PROP_TIMER_ID, TK_INVALID_ID);
+  if (id != TK_INVALID_ID) {
+    timer_remove(id);
+    log_debug("timer exist, remove it.\n");
+  }
+
+  id = widget_add_timer(self, widget_on_timer, duration);
+  value_set_uint32(result, id);
+  widget_set_prop_int(self, STR_PROP_TIMER_ID, id);
+
+  return RET_OK;
+}
+
+static ret_t func_widget_remove_timer(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  uint32_t id = 0;
+  widget_t* widget = WIDGET(object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
+  FSCRIPT_FUNC_CHECK(widget != NULL, RET_BAD_PARAMS);
+  if (args->size > 0) {
+    widget = to_widget(fscript, args->args);
+  }
+  FSCRIPT_FUNC_CHECK(widget != NULL, RET_BAD_PARAMS);
+
+  id = widget_get_prop_int(widget, STR_PROP_TIMER_ID, TK_INVALID_ID);
+  if (id != TK_INVALID_ID) {
+    timer_remove(id);
+    value_set_bool(result, TRUE);
+    widget_set_prop_int(widget, STR_PROP_TIMER_ID, TK_INVALID_ID);
+  } else {
+    value_set_bool(result, FALSE);
+    log_debug("not found timer\n");
+  }
+
+  return RET_OK;
+}
+
 ret_t fscript_widget_register(void) {
   ENSURE(fscript_register_func("tr", func_tr) == RET_OK);
   ENSURE(fscript_register_func("open", func_window_open) == RET_OK);
@@ -264,6 +319,8 @@ ret_t fscript_widget_register(void) {
   ENSURE(fscript_register_func("back_to_home", func_back_to_home) == RET_OK);
   ENSURE(fscript_register_func("widget_create", func_widget_create) == RET_OK);
   ENSURE(fscript_register_func("widget_destroy", func_widget_destroy) == RET_OK);
+  ENSURE(fscript_register_func("start_timer", func_widget_add_timer) == RET_OK);
+  ENSURE(fscript_register_func("stop_timer", func_widget_remove_timer) == RET_OK);
 
   return RET_OK;
 }

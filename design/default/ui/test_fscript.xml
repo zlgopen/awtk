@@ -1,5 +1,5 @@
 <window text="Desktop" anim_hint="htranslate" single_instance="true">
-  <view name="view" x="0" y="0" w="100%" h="100%" children_layout="default(c=1,r=10,m=5,s=5)">
+  <view name="view" x="0" y="0" w="100%" h="100%" children_layout="default(c=1,r=12,m=5,s=5)">
     <label name="label" text="label" />
     <progress_bar name="bar" text="" value="10" />
     <button focusable="true" focused="true" on:click="open(basic_fscript)" text="Basic" />
@@ -29,7 +29,7 @@
       <button focusable="true" text="Inc">
         <property name="on:click">
           <![CDATA[
-        a = widget_lookup(window, bar, TRUE)
+        a = widget_lookup(window, bar, true)
         b = widget_get(a, "value")
         if(b <= 90) {
           widget_set(a, "value", b + 10)
@@ -40,7 +40,7 @@
       <button focusable="true" text="Dec">
         <property name="on:click">
           <![CDATA[
-        a = widget_lookup(window, bar, TRUE)
+        a = widget_lookup(window, bar, true)
         b = widget_get(a, "value")
         if(b >= 10) {
           widget_set(a, "value", b - 10)
@@ -53,7 +53,7 @@
     <view name="view" x="0" y="0" w="100%" h="100%" children_layout="default(c=2,r=1,m=2,s=2)">
       <button focusable="true" text="Create">
         <property name="on:click">
-        a = widget_lookup(window, foobar, TRUE)
+        a = widget_lookup(window, foobar, true)
         if(value_is_null(a)) {
           a = widget_create("label", window.view, 0, 0, 0, 0)
           assert(!value_is_null(a))
@@ -69,7 +69,7 @@
       </button>
       <button focusable="true" text="Destroy">
         <property name="on:click">
-        a = widget_lookup(window, foobar, TRUE)
+        a = widget_lookup(window, foobar, true)
         if(!value_is_null(a)) {
           widget_destroy(a)
         } else {
@@ -82,6 +82,23 @@
     <view name="view" x="0" y="0" w="100%" h="100%" children_layout="default(c=2,r=1,m=2,s=2)">
       <button focusable="true" on:click="close()" text="Close" />
       <button focusable="true" on:click="quit()" text="Quit" />
+    </view>
+    <view name="view" x="0" y="0" w="100%" h="100%" children_layout="default(c=2,r=1,m=2,s=2)">
+      <button name="timer" focusable="true" on:click="start_timer(100)" text="Start Timer">
+        <property name="on:timer">
+          <![CDATA[
+        a = widget_lookup(window, bar, true)
+        b = widget_get(a, "value")
+        if(b < 100) {
+          widget_set(a, "value", b + 1)
+        } else {
+          widget_set(a, "value", 0)
+          stop_timer()
+        }
+]]>
+        </property>
+      </button>
+      <button focusable="true" on:click="stop_timer(parent.timer)" text="Stop Timer" />
     </view>
     <view name="view" x="0" y="0" w="100%" h="100%" children_layout="default(c=2,r=1,m=2,s=2)">
       <button focusable="true" on:click="back()" text="Back" />

@@ -220,9 +220,7 @@ static ret_t fscript_get_var(fscript_t* fscript, const char* name, value_t* valu
   } else {
     ret = object_get_prop(fscript->obj, name, value);
   }
-  if (ret != RET_OK) {
-    log_warn("get var %s failed, treat as string\n", name);
-  }
+
   return ret;
 }
 

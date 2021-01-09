@@ -281,6 +281,12 @@ int32_t event_from_name(const char* name) {
       }
       break;
     }
+    case 't': {
+      if (tk_str_eq(name, "timer")) {
+        return EVT_TIMER;
+      }
+      break;
+    }
     case 'w': {
       if (tk_str_eq(name, "window_close")) {
         return EVT_WINDOW_CLOSE;

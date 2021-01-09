@@ -1576,6 +1576,7 @@ static ret_t widget_on_ungrab_keys(void* ctx, event_t* e) {
 
 static ret_t widget_exec_code(void* ctx, event_t* evt) {
   value_t result;
+  ret_t ret = RET_OK;
   widget_t* widget = WIDGET(evt->target);
   const char* code = (const char*)ctx;
   object_t* obj = object_default_create();
@@ -1585,10 +1586,16 @@ static ret_t widget_exec_code(void* ctx, event_t* evt) {
 
   value_set_int(&result, 0);
   fscript_eval(obj, code, &result);
+  if (object_get_prop_bool(obj, "RET_STOP", FALSE)) {
+    ret = RET_STOP;
+  }
+  if (object_get_prop_bool(obj, "RET_REMOVE", FALSE)) {
+    ret = RET_REMOVE;
+  }
   value_reset(&result);
   OBJECT_UNREF(obj);
 
-  return RET_OK;
+  return ret;
 }
 
 static ret_t widget_free_code(void* ctx, event_t* evt) {
