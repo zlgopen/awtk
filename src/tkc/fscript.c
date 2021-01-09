@@ -1473,33 +1473,6 @@ static ret_t func_minus(fscript_t* fscript, fscript_args_t* args, value_t* resul
   return RET_OK;
 }
 
-static ret_t func_bit_and(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
-  value_set_uint32(result, value_uint32(args->args) & value_uint32(args->args + 1));
-
-  return RET_OK;
-}
-
-static ret_t func_bit_or(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
-  value_set_uint32(result, value_uint32(args->args) | value_uint32(args->args + 1));
-
-  return RET_OK;
-}
-
-static ret_t func_bit_nor(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
-  value_set_uint32(result, value_uint32(args->args) ^ value_uint32(args->args + 1));
-
-  return RET_OK;
-}
-
-static ret_t func_bit_not(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
-  value_set_uint32(result, ~value_uint32(args->args));
-
-  return RET_OK;
-}
 
 static ret_t func_div(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
@@ -1909,10 +1882,6 @@ static const func_entry_t s_builtin_funcs[] = {
     {"replace", func_replace, 3},
     {"time_now_ms", func_time_now_ms, 0},
     {"time_now_us", func_time_now_us, 0},
-    {"&", func_bit_and, 2},
-    {"^", func_bit_nor, 1},
-    {"~", func_bit_not, 1},
-    {"|", func_bit_or, 2},
     {"/", func_div, 2},
     {"%", func_mod, 2},
     {"*", func_mul, 2},

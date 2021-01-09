@@ -398,7 +398,39 @@ static ret_t func_bit_get(fscript_t* fscript, fscript_args_t* args, value_t* res
   return RET_OK;
 }
 
+static ret_t func_bit_and(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+  value_set_uint32(result, value_uint32(args->args) & value_uint32(args->args + 1));
+
+  return RET_OK;
+}
+
+static ret_t func_bit_or(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+  value_set_uint32(result, value_uint32(args->args) | value_uint32(args->args + 1));
+
+  return RET_OK;
+}
+
+static ret_t func_bit_nor(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+  value_set_uint32(result, value_uint32(args->args) ^ value_uint32(args->args + 1));
+
+  return RET_OK;
+}
+
+static ret_t func_bit_not(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+  value_set_uint32(result, ~value_uint32(args->args));
+
+  return RET_OK;
+}
+
 ret_t fscript_bits_register(void) {
+  ENSURE(fscript_register_func("&", func_bit_and) == RET_OK);
+  ENSURE(fscript_register_func("^", func_bit_nor) == RET_OK);
+  ENSURE(fscript_register_func("~", func_bit_not) == RET_OK);
+  ENSURE(fscript_register_func("|", func_bit_or) == RET_OK);
   ENSURE(fscript_register_func("<<", func_lshift) == RET_OK);
   ENSURE(fscript_register_func(">>", func_rshift) == RET_OK);
   ENSURE(fscript_register_func("bit_get", func_bit_get) == RET_OK);
