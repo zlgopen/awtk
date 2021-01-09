@@ -1,0 +1,91 @@
+<window closable="no" text="Desktop" anim_hint="htranslate" single_instance="true">
+  <view name="view" x="0" y="0" w="100%" h="100%" children_layout="default(c=1,r=10,m=5,s=5)">
+    <label name="label" text="label" />
+    <progress_bar name="bar" text="" value="10" />
+    <button focusable="true" focused="true" on:click="open(basic_fscript)" text="Basic" />
+    <button focusable="true" text="Buttons">
+      <property name="on:click">
+          win = open(button_fscript)
+          assert(!value_is_null(win))
+          widget_set(win, close.text, "Back")
+          assert(widget_get(win, close.text) == "Back");
+      </property>
+    </button>
+
+    <button focusable="true" text="Test">
+      <property name="on:click">
+          widget_set(parent, label.text, "Hello");
+          assert(widget_get(parent, label.text) == "Hello");
+
+          widget_set(window, view.label.text, "Hello World");
+          assert(widget_get(window, view.label.text) == "Hello World");
+          
+          widget_set(self, text, "Test...");
+          assert(widget_get(self, text) == "Test...");
+      </property>
+    </button>
+
+    <view name="view" x="0" y="0" w="100%" h="100%" children_layout="default(c=2,r=1,m=2,s=2)">
+      <button focusable="true" text="Inc">
+        <property name="on:click">
+          <![CDATA[
+        a = widget_lookup(window, bar, TRUE)
+        b = widget_get(a, "value")
+        if(b <= 90) {
+          widget_set(a, "value", b + 10)
+        }
+]]>
+        </property>
+      </button>
+      <button focusable="true" text="Dec">
+        <property name="on:click">
+          <![CDATA[
+        a = widget_lookup(window, bar, TRUE)
+        b = widget_get(a, "value")
+        if(b >= 10) {
+          widget_set(a, "value", b - 10)
+        }
+]]>
+        </property>
+      </button>
+    </view>
+
+    <view name="view" x="0" y="0" w="100%" h="100%" children_layout="default(c=2,r=1,m=2,s=2)">
+      <button focusable="true" text="Create">
+        <property name="on:click">
+        a = widget_lookup(window, foobar, TRUE)
+        if(value_is_null(a)) {
+          a = widget_create("label", widget_lookup(window.view), 0, 0, 0, 0)
+          assert(!value_is_null(a))
+
+          widget_set(a, text, "Dynamic created")
+          assert(widget_get(a, text) == "Dynamic created")
+          widget_set(a, name, "foobar")
+          assert(widget_get(a, name) == "foobar")
+        } else {
+          print("foobar exist");
+        }
+        </property>
+      </button>
+      <button focusable="true" text="Destroy">
+        <property name="on:click">
+        a = widget_lookup(window, foobar, TRUE)
+        if(!value_is_null(a)) {
+          widget_destroy(a)
+        } else {
+          print("not found foobar");
+        }
+        </property>
+      </button>
+    </view>
+
+    <view name="view" x="0" y="0" w="100%" h="100%" children_layout="default(c=2,r=1,m=2,s=2)">
+      <button focusable="true" on:click="close()" text="Close" />
+      <button focusable="true" on:click="quit()" text="Quit" />
+    </view>
+    <view name="view" x="0" y="0" w="100%" h="100%" children_layout="default(c=2,r=1,m=2,s=2)">
+      <button focusable="true" on:click="back()" text="Back" />
+      <button focusable="true" on:click="back_to_home()" text="Back To Home" />
+    </view>
+  </view>
+</window>

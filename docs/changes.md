@@ -1,5 +1,9 @@
 # 最新动态
 
+2021/01/09
+  * 将基本的widget函数包装成fscript函数。
+  * 支持用fscript写简单的事件处理函数。
+
 2021/01/08
   * 完善typed\_array
   * 完善object\_array

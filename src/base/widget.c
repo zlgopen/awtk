@@ -22,6 +22,7 @@
 #include "tkc/mem.h"
 #include "tkc/utf8.h"
 #include "tkc/utils.h"
+#include "tkc/fscript.h"
 #include "tkc/color_parser.h"
 #include "tkc/object_default.h"
 
@@ -1573,6 +1574,34 @@ static ret_t widget_on_ungrab_keys(void* ctx, event_t* e) {
   return RET_REMOVE;
 }
 
+static ret_t widget_exec_code(void* ctx, event_t* evt) {
+  value_t result;
+  widget_t* widget = WIDGET(evt->target);
+  const char* code = (const char*)ctx;
+  object_t* obj = object_default_create();
+  return_value_if_fail(obj != NULL && code != NULL, RET_REMOVE);
+
+  object_set_prop_pointer(obj, STR_PROP_SELF, widget);
+  object_set_prop_pointer(obj, STR_PROP_PARENT, widget->parent);
+  object_set_prop_pointer(obj, STR_PROP_WINDOW, widget_get_window(widget));
+  object_set_prop_pointer(obj, STR_PROP_WINDOW_MANAGER, widget_get_window_manager(widget));
+
+  value_set_int(&result, 0);
+  fscript_eval(obj, code, &result);
+  value_reset(&result);
+  OBJECT_UNREF(obj);
+
+  return RET_OK;
+}
+
+static ret_t widget_free_code(void* ctx, event_t* evt) {
+  widget_t* widget = WIDGET(evt->target);
+  widget_off_by_ctx(widget, ctx);
+  TKMEM_FREE(ctx);
+
+  return RET_REMOVE;
+}
+
 ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
   ret_t ret = RET_OK;
   prop_change_event_t e;
@@ -1670,7 +1699,21 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
         }
       }
 
-      ret = object_set_prop(widget->custom_props, name, v);
+      if (strncmp(name, STR_ON_EVENT_PREFIX, sizeof(STR_ON_EVENT_PREFIX)-1) == 0) {
+        int32_t etype = event_from_name(name + sizeof(STR_ON_EVENT_PREFIX)-1);
+        if (etype != EVT_NONE) {
+          char* code = tk_strdup(value_str(v));
+          if(code != NULL) {
+            widget_on(widget, etype, widget_exec_code, code);
+            widget_on(widget, EVT_DESTROY, widget_free_code, code);
+            ret = RET_OK;
+          }
+        } else {
+          log_debug("not found event %s\n", name);
+        }
+      } else {
+        ret = object_set_prop(widget->custom_props, name, v);
+      }
     }
   }
 

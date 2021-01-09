@@ -1,0 +1,17 @@
+<window anim_hint="htranslate" theme="button">
+  <column style="buttons">
+    <button name="open:dialog1" style="round" enable_long_press="true" text="Long Press"/>
+    <button style="red_btn" text="Text"/>
+    <button style="round_top" text="Fullscreen" name="fullscreen"/>
+    <button style="round_bottom">
+      <label y="0" x="0" w="100%" h="100%" text="Text"/>
+      <image image="earth" draw_type="icon" y="0" x="right" w="30" h="100%"/>
+    </button>
+  </column>
+
+  <button style="icon" x="c" y="170" w="60" h="60" text="Text"/>
+  <button style="icon" x="c" y="240" w="60" h="60"/>
+  <button style="image" x="c" y="310" w="30" h="30"/>
+
+  <button on:click="back()" style="close" text="Close"/>
+</window>

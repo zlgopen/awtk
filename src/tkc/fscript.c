@@ -208,8 +208,8 @@ static ret_t fscript_get_var(fscript_t* fscript, const char* name, value_t* valu
   if (is_fast_var(name)) {
     value_t* var = fscript_get_fast_var(fscript, name);
     if (name[1] == '.') {
-      object_t* obj = value_object(var);
-      if (obj != NULL) {
+      if (var->type == VALUE_TYPE_OBJECT) {
+        object_t* obj = value_object(var);
         ret = object_get_prop(obj, name + 2, value);
       } else {
         ret = object_get_prop(fscript->obj, name, value);
@@ -221,7 +221,7 @@ static ret_t fscript_get_var(fscript_t* fscript, const char* name, value_t* valu
     ret = object_get_prop(fscript->obj, name, value);
   }
   if (ret != RET_OK) {
-    log_warn("get var %s failed\n", name);
+    log_warn("get var %s failed, treat as string\n", name);
   }
   return ret;
 }
@@ -231,8 +231,8 @@ static ret_t fscript_set_var(fscript_t* fscript, const char* name, const value_t
   if (is_fast_var(name)) {
     value_t* var = fscript_get_fast_var(fscript, name);
     if (name[1] == '.') {
-      object_t* obj = value_object(var);
-      if (obj != NULL) {
+      if (var->type == VALUE_TYPE_OBJECT) {
+        object_t* obj = value_object(var);
         ret = object_set_prop(obj, name + 2, value);
       } else {
         ret = object_set_prop(fscript->obj, name, value);

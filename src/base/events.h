@@ -1013,6 +1013,7 @@ event_t* assets_event_init(assets_event_t* event, assets_manager_t* am, uint32_t
  */
 int32_t event_from_name(const char* name) ;
 
+#define STR_ON_EVENT_PREFIX "on:"
 #define STR_GLOBAL_EVENT_PREFIX "global"
 #define STR_VALUE_CHANGED_BY_UI "value_changed_by_ui" 
 

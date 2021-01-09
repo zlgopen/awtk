@@ -62,6 +62,7 @@
 #include "default/inc/ui/tab_control.data"
 #include "default/inc/ui/slide_view_v2.data"
 #include "default/inc/ui/animation.data"
+#include "default/inc/ui/basic_fscript.data"
 #include "default/inc/ui/keyboard.data"
 #include "default/inc/ui/kb_hex.data"
 #include "default/inc/ui/popdown.data"
@@ -78,6 +79,7 @@
 #include "default/inc/ui/tab_bottom.data"
 #include "default/inc/ui/list_view_m.data"
 #include "default/inc/ui/slide_view_h_loop.data"
+#include "default/inc/ui/main_fscript.data"
 #include "default/inc/ui/mutable_image.data"
 #include "default/inc/ui/calibration_win.data"
 #include "default/inc/ui/memtest.data"
@@ -135,6 +137,7 @@
 #include "default/inc/ui/menu_right_top.data"
 #include "default/inc/ui/image_list.data"
 #include "default/inc/ui/slide_view_v1.data"
+#include "default/inc/ui/test_fscript.data"
 #include "default/inc/ui/mono_test.data"
 #include "default/inc/ui/select1.data"
 #include "default/inc/ui/hscroll_label.data"
@@ -149,6 +152,7 @@
 #include "default/inc/ui/top.data"
 #include "default/inc/ui/button.data"
 #include "default/inc/ui/menu.data"
+#include "default/inc/ui/button_fscript.data"
 #include "default/inc/ui/file_chooser_for_save.data"
 #include "default/inc/ui/system_bar.data"
 #include "default/inc/ui/menu_right_bottom.data"
@@ -527,6 +531,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, ui_tab_control);
   assets_manager_add(am, ui_slide_view_v2);
   assets_manager_add(am, ui_animation);
+  assets_manager_add(am, ui_basic_fscript);
   assets_manager_add(am, ui_keyboard);
   assets_manager_add(am, ui_kb_hex);
   assets_manager_add(am, ui_popdown);
@@ -543,6 +548,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, ui_tab_bottom);
   assets_manager_add(am, ui_list_view_m);
   assets_manager_add(am, ui_slide_view_h_loop);
+  assets_manager_add(am, ui_main_fscript);
   assets_manager_add(am, ui_mutable_image);
   assets_manager_add(am, ui_calibration_win);
   assets_manager_add(am, ui_memtest);
@@ -600,6 +606,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, ui_menu_right_top);
   assets_manager_add(am, ui_image_list);
   assets_manager_add(am, ui_slide_view_v1);
+  assets_manager_add(am, ui_test_fscript);
   assets_manager_add(am, ui_mono_test);
   assets_manager_add(am, ui_select1);
   assets_manager_add(am, ui_hscroll_label);
@@ -614,6 +621,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, ui_top);
   assets_manager_add(am, ui_button);
   assets_manager_add(am, ui_menu);
+  assets_manager_add(am, ui_button_fscript);
   assets_manager_add(am, ui_file_chooser_for_save);
   assets_manager_add(am, ui_system_bar);
   assets_manager_add(am, ui_menu_right_bottom);

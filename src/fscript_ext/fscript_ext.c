@@ -38,9 +38,19 @@
 #include "fscript_ext/fscript_iostream_inet.h"
 #include "fscript_ext/fscript_iostream_serial.h"
 
+#ifdef FSCRIPT_WITH_WIDGET
+#include "fscript_ext/fscript_widget.h"
+#endif/*FSCRIPT_WITH_WIDGET*/
+
 static ret_t func_value_is_valid(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
   value_set_bool(result, args->args->type != VALUE_TYPE_INVALID);
+  return RET_OK;
+}
+
+static ret_t func_value_is_null(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+  value_set_bool(result, value_pointer(args->args) == NULL || args->args->type == VALUE_TYPE_INVALID);
   return RET_OK;
 }
 
@@ -72,6 +82,7 @@ static ret_t func_value_get_binary_data(fscript_t* fscript, fscript_args_t* args
 
 ret_t fscript_ext_init(void) {
   ENSURE(fscript_register_func("value_is_valid", func_value_is_valid) == RET_OK);
+  ENSURE(fscript_register_func("value_is_null", func_value_is_null) == RET_OK);
   ENSURE(fscript_register_func("value_get_binary_data", func_value_get_binary_data) == RET_OK);
   ENSURE(fscript_register_func("value_get_binary_size", func_value_get_binary_size) == RET_OK);
 
@@ -136,6 +147,10 @@ ret_t fscript_ext_init(void) {
 #ifdef FSCRIPT_WITH_DATE_TIME
   fscript_date_time_register();
 #endif /*FSCRIPT_WITH_DATE_TIME*/
+
+#ifdef FSCRIPT_WITH_WIDGET
+  fscript_widget_register();
+#endif /*FSCRIPT_WITH_WIDGET*/
 
   return RET_OK;
 }

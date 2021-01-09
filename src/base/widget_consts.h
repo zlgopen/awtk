@@ -1529,6 +1529,12 @@ typedef enum _window_closable_t {
  */
 #define WIDGET_CURSOR_SIZEALL "cursor_size_all"
 
+/*for fscript*/
+#define STR_PROP_SELF "self"
+#define STR_PROP_PARENT "parent"
+#define STR_PROP_WINDOW "window"
+#define STR_PROP_WINDOW_MANAGER "window_manager"
+
 END_C_DECLS
 
 #endif /*TK_WIDGET_CONSTS_H*/

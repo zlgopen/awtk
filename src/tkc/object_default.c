@@ -137,7 +137,7 @@ static object_t* object_default_get_sub_object(object_t* obj, const char* name) 
     int32_t index = object_default_find(o->props, o->props_size, subname);
     if (index >= 0 && index < o->props_size) {
       named_value_t* nv = o->props + index;
-      if (tk_str_eq(nv->name, subname)) {
+      if (tk_str_eq(nv->name, subname) && nv->value.type == VALUE_TYPE_OBJECT) {
         return value_object(&(nv->value));
       }
     }
