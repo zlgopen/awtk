@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   object_array.c
  * Author: AWTK Develop Team
  * Brief:  object array
@@ -146,7 +146,7 @@ ret_t object_array_remove(object_t* obj, uint32_t index) {
   ret_t ret = RET_NOT_FOUND;
   object_array_t* o = OBJECT_ARRAY(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
-  if (index >= 0 && index < o->size) {
+  if (index < o->size) {
     value_t* iter = o->props + index;
     value_reset(iter);
     ret = object_array_clean_invalid_props(obj);
@@ -182,7 +182,7 @@ ret_t object_array_set(object_t* obj, uint32_t index, const value_t* v) {
     value_t* iter = o->props + index;
     value_reset(iter);
     ret = value_deep_copy(iter, v);
-  } else if (index == -1) {
+  } else if (index == 0xffffffff) {
     ret = object_array_push(obj, v);
   } else {
     ret = RET_BAD_PARAMS;

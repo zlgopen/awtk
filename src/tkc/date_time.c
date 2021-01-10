@@ -197,7 +197,7 @@ ret_t date_time_set_day(date_time_t* dt, uint32_t day) {
 
 ret_t date_time_set_hour(date_time_t* dt, uint32_t hour) {
   return_value_if_fail(dt != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(hour >=0 && hour < 24, RET_BAD_PARAMS);
+  return_value_if_fail(hour < 24, RET_BAD_PARAMS);
 
   dt->hour = hour;
 
@@ -206,7 +206,7 @@ ret_t date_time_set_hour(date_time_t* dt, uint32_t hour) {
 
 ret_t date_time_set_minute(date_time_t* dt, uint32_t minute) {
   return_value_if_fail(dt != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(minute >=0 && minute < 60, RET_BAD_PARAMS);
+  return_value_if_fail(minute < 60, RET_BAD_PARAMS);
 
   dt->minute = minute;
 
@@ -215,7 +215,7 @@ ret_t date_time_set_minute(date_time_t* dt, uint32_t minute) {
 
 ret_t date_time_set_second(date_time_t* dt, uint32_t second) {
   return_value_if_fail(dt != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(second >=0 && second < 60, RET_BAD_PARAMS);
+  return_value_if_fail(second < 60, RET_BAD_PARAMS);
 
   dt->second = second;
 
