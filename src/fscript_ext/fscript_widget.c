@@ -80,7 +80,7 @@ static ret_t func_window_open(fscript_t* fscript, fscript_args_t* args, value_t*
   const char* name = NULL;
   bool_t close_current = FALSE;
   bool_t switch_to_if_exist = FALSE;
-  window_manager_t* wm = window_manager();
+  widget_t* wm = window_manager();
   widget_t* self = WIDGET(object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
   widget_t* curr_win = widget_get_window(self);
   FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
@@ -113,7 +113,7 @@ static ret_t func_window_close(fscript_t* fscript, fscript_args_t* args, value_t
 
   if (args->size == 1) {
     value_t* v = args->args;
-    window_manager_t* wm = window_manager();
+    widget_t* wm = window_manager();
     widget_t* win = widget_child(wm, value_str(v));
     FSCRIPT_FUNC_CHECK(win != NULL, RET_BAD_PARAMS);
     ret = window_manager_close_window_force(wm, win);

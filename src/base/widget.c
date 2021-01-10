@@ -1602,7 +1602,7 @@ static ret_t widget_exec_code(void* ctx, event_t* evt) {
     case EVT_KEY_LONG_PRESS:
     case EVT_KEY_UP: {
       key_event_t* e = key_event_cast(evt);
-      key_type_value_t* kv = keys_type_find_by_value(e->key);
+      const key_type_value_t* kv = keys_type_find_by_value(e->key);
       if (kv != NULL) {
         object_set_prop_str(obj, "key", kv->name);
       } else {
