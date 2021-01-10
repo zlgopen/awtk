@@ -1,7 +1,7 @@
 # 最新动态
 
 2021/01/10
- * 增加 [《fscript widget 扩展函数》](docs/fscript_widget.md)
+ * 增加 [《fscript widget 扩展函数》](fscript_widget.md)
 
 2021/01/09
   * 将基本的 widget 函数包装成 fscript 函数。
