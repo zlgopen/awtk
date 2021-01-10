@@ -79,6 +79,8 @@ int main(int argc, char* argv[]) {
     }
   }
   tk_mem_dump();
+  app_conf_set_int("foobar", 1);
+  app_conf_save();
   data_writer_factory_destroy(data_writer_factory());
   data_reader_factory_destroy(data_reader_factory());
   data_writer_factory_set(NULL);

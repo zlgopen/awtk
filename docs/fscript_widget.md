@@ -7,7 +7,7 @@
 
 fscript 和其它主流脚本 (lua/js) 相比，最大的优势就是体积小巧，而且 AWTK 本身依赖于 fscript，所以使用 fscript 增加额外代码可以忽略不计数。
 
-在 AWTK 的 UI 文件中直接嵌入 fscript, 有如下优势：
+fscript 并不是要取代 C 或 JS 来开发 AWTK 应用程序，而是一个有益的补充，加快应用程序的开发，在 AWTK 的 UI 文件中直接嵌入 fscript, 有如下优势：
 
 * 1. 在特定情况下，可以极大简化程序的实现。
 
@@ -30,6 +30,34 @@ fscript 和其它主流脚本 (lua/js) 相比，最大的优势就是体积小�
 * 3. 让 MVVM 应用程序有机会去操作界面。
 
 > 理论上，模型是不能操作界面的，但在特殊情况下，确实有操作界面的需求。在保持视图和模型独立的前提下，fscript 让操作界面成为可能。
+
+* 4. 方便生成自定义的组件。很多情况下，需要对现有的控件进行改进和组合，生成新的控件。
+
+比如，我们需要用 text selector 生成一个日期选择控件，用三个 text selector 控件组合成日期选择控件，分别选择年月日。但是 text selector 之间是独立的，而年月和日则是有依赖关系，比如 1 月的天数是 31 天，2 月的天数与年份有关。当然我们可以用 C 代码来建立三者的关系，而用 fscript，不但实现要简单一些，而且由于 xml 和代码在一起，发布和重用也非常方便。
+
+```xml
+  <row x="10" y="30" w="100%" h="150" children_layout="default(row=1,col=3)">
+    <text_selector name="year" options="2000-2050" selected_index="9">
+      <property name="on:value_changed">
+        <![CDATA[
+        a = get_days_of_month(widget_get(parent.year, value), widget_get(parent.month, value))
+        widget_set(parent.day, "options", iformat( "1-%d", a) + "%02d")        
+         ]]>
+      </property>
+    </text_selector>
+    <text_selector name="month" options="1-12-%02d" selected_index="8" loop_options="true">
+      <property name="on:value_changed">
+        <![CDATA[
+        a = get_days_of_month(widget_get(parent.year, value), widget_get(parent.month, value))
+        widget_set(parent.day, "options", iformat( "1-%d", a) + "%02d")
+        ]]>
+      </property>
+    </text_selector>
+    <text_selector name="day" options="1-31-%02d" selected_index="9" />
+  </row>
+```
+
+* 5. 不需要重新编译代码。如果资源文件是在文件系统中，直接更新资源即可，而无需编译和下载固件。
 
 ## 2. 事件处理函数
 

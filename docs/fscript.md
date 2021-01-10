@@ -40,7 +40,7 @@ print("hello fscript")
 
 如：
 ```
-./bin/runFScript @tests/testdata/demo_while1.fs
+./bin/runFScript @tests/fscripts/demo_while1.fs
 ```
 
 ## 3. 语法
@@ -51,6 +51,8 @@ print("hello fscript")
 * 整数类型 (int32)。支持十进制、二进制和十六进制。
 * 字符串类型 (string)。UTF-8 字符串，用英文双引号扩起来。
 * 布尔类型 (bool)。标准取值为：true 和 false，非 0 的数值视为 true。
+* 可以通过扩展实现混合数据类型的数组、固定类型的数组和 map。
+* 可以通过类型转换函数得到各种基本类型。如 int8/int16/int32/int64/uint8/uint16/uint32/uintg64/float/double。
 
 ###  注释
 
@@ -657,7 +659,7 @@ exec("clear", "all")
 
 #### join
 
-> 将多个变量用指定的分隔符拼接起来（最多 7 个字符串），形成一个字符串。
+> 将多个变量用指定的分隔符拼接起来，形成一个字符串。
 
 ----------------------------
 
@@ -729,7 +731,7 @@ tolower("ABC")
 
 #### trim
 
-> 将字符串转换成小写。
+> 去掉字符串两端的空白字符串。
 ----------------------------
 
 ##### 原型
@@ -807,24 +809,13 @@ contains("ab cd", "ab")
 ```
 sum(n1,n2...)
 +(n1,n2...)
+n1+n2
 ```
 
 #### 示例
 
 ```
 print(sum(1, 2, 3))
-```
-
-运行：
-
-```
-./bin/runFScript 'print(sum(1, 2, 3))'
-```
-
-输出：
-
-```
-6.000000
 ```
 
 #### sub
@@ -837,26 +828,14 @@ print(sum(1, 2, 3))
 ```
 sub(n1,n2)
 或
--(n1,n2)
+n1-n2
 ```
 
 #### 示例
 
 ```
 print(sub(2, 1))
-print(-(2, 1))
-```
-
-运行：
-
-```
-./bin/runFScript 'print(sub(2, 1))'
-```
-
-输出：
-
-```
-1.000000
+print(2 - 1)
 ```
 
 #### mul
@@ -869,26 +848,14 @@ print(-(2, 1))
 ```
 mul(n1,n2)
 或
-*(n1,n2)
+n1*n2
 ```
 
 #### 示例
 
 ```
 print(mul(2, 1))
-print(*(2, 1))
-```
-
-运行：
-
-```
-./bin/runFScript 'print(mul(2, 1))'
-```
-
-输出：
-
-```
-2.000000
+print(2 * 1)
 ```
 
 #### div
@@ -901,26 +868,14 @@ print(*(2, 1))
 ```
 div(n1,n2)
 或
-/(n1,n2)
+n1/n2
 ```
 
 #### 示例
 
 ```
 print(div(2, 1))
-print(/(2, 1))
-```
-
-运行：
-
-```
-./bin/runFScript 'print(div(2, 1))'
-```
-
-输出：
-
-```
-2.000000
+print(2/1)
 ```
 
 #### %
@@ -931,27 +886,15 @@ print(/(2, 1))
 ##### 原型
 
 ```
-%(n1,n2)
+n1%n2
 ```
 
 #### 示例
 
 ```
-print(%(23, 7))
+print(23%7)
 ```
 
-运行：
-
-```
-./bin/runFScript 'print(%(23, 7))'
-```
-
-输出：
-
-```
-2.000000
-```
-    
 #### and
 
 > 逻辑与运算。
@@ -961,26 +904,14 @@ print(%(23, 7))
 
 ```
 and(n1,n2)
-&&(n1,n2)
+n1 && n2
 ```
 
 #### 示例
 
 ```
-print(&&(true, false))
-print(&&(true, true))
-```
-
-运行：
-
-```
-./bin/runFScript 'print(and(true, true))'
-```
-
-输出：
-
-```
-true
+print(true && false)
+print(true && true)
 ```
 
 #### or
@@ -992,26 +923,13 @@ true
 
 ```
 or(n1,n2)
-||(n1,n2)
+n1 || n2
 ```
 
 #### 示例
 
 ```
-print(and(true, false))
-print(||(true, true))
-```
-
-运行：
-
-```
-./bin/runFScript 'print(or(true, false))'
-```
-
-输出：
-
-```
-true
+print(a || b)
 ```
 
 #### not
@@ -1031,105 +949,6 @@ not(n1)
 ```
 print(not(true))
 print(!(false))
-```
-
-运行：
-
-```
-./bin/runFScript 'print(not(false))'
-```
-
-输出：
-
-```
-true
-```
-
-#### &
-
-> 位与运算。
-----------------------------
-
-##### 原型
-
-```
-&(n1,n2)
-```
-
-#### 示例
-
-```
-print(&(1, 1))
-```
-
-运行：
-
-```
-./bin/runFScript 'print(&(1, 2))'
-```
-
-输出：
-
-```
-0
-```
-
-#### |
-
-> 位或运算。
-----------------------------
-
-##### 原型
-
-```
-|(1,2)
-```
-
-#### 示例
-
-```
-print(|(1, 2))
-```
-
-运行：
-
-```
-./bin/runFScript 'print(|(1, 2))'
-```
-
-输出：
-
-```
-3
-```
-
-#### ~
-
-> 按位取反运算。
-----------------------------
-
-##### 原型
-
-```
-~(n1)
-```
-
-#### 示例
-
-```
-print(~(1))
-```
-
-运行：
-
-```
-./bin/runFScript 'print(iformat("0x%x", ~(1)))'
-```
-
-输出：
-
-```
-0xfffffffe
 ```
 
 ### 比较函数
@@ -1455,5 +1274,6 @@ runFScript 的第二个参数可以指定运行次数，方便测量某个函数
 
 ### 7. 扩展函数
 
+* [位操作扩展函数](fscript_bits.md)
 * [数学扩展函数](fscript_math.md)
 * [widget 扩展函数](fscript_widget.md)
