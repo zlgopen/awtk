@@ -16,7 +16,6 @@
 
 #include "tkc/mem.h"
 #include "tkc/utils.h"
-#include "tkc/time_now.h"
 #include "tkc/fscript.h"
 #include "tkc/object_default.h"
 
@@ -1517,24 +1516,6 @@ static ret_t func_random(fscript_t* fscript, fscript_args_t* args, value_t* resu
   return RET_OK;
 }
 
-static ret_t func_time_now(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  value_set_uint64(result, time_now_s());
-
-  return RET_OK;
-}
-
-static ret_t func_time_now_ms(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  value_set_uint64(result, time_now_ms());
-
-  return RET_OK;
-}
-
-static ret_t func_time_now_us(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  value_set_uint64(result, time_now_us());
-
-  return RET_OK;
-}
-
 static ret_t func_le(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   if (args->args[0].type == VALUE_TYPE_STRING && args->args[1].type == VALUE_TYPE_STRING) {
@@ -1845,7 +1826,6 @@ static const func_entry_t s_builtin_funcs[] = {
     {"number", func_float, 1},
     {"iformat", func_iformat, 2},
     {"fformat", func_fformat, 2},
-    {"time_now", func_time_now, 0},
     {"unset", func_unset, 1},
     {"str", func_str, 1},
     {"string", func_str, 1},
@@ -1880,8 +1860,6 @@ static const func_entry_t s_builtin_funcs[] = {
     {"or", func_or, 2},
     {"random", func_random, 2},
     {"replace", func_replace, 3},
-    {"time_now_ms", func_time_now_ms, 0},
-    {"time_now_us", func_time_now_us, 0},
     {"/", func_div, 2},
     {"%", func_mod, 2},
     {"*", func_mul, 2},
