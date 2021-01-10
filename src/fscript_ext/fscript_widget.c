@@ -17,6 +17,7 @@
 #include "awtk_global.h"
 #include "tkc/fscript.h"
 #include "tkc/tokenizer.h"
+#include "base/main_loop.h"
 #include "base/window.h"
 #include "base/locale_info.h"
 #include "base/widget_factory.h"
@@ -154,8 +155,16 @@ static ret_t widget_get(widget_t* self, const char* path, value_t* v) {
   return widget_get_prop(widget, prop, v);
 }
 
+static ret_t my_quit_idle(const timer_info_t* timer) {
+  main_loop_t* loop = main_loop();
+
+  loop->app_quited = TRUE;
+
+  return main_loop_quit(loop);
+}
+
 static ret_t func_quit(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  tk_quit();
+  timer_add(my_quit_idle, NULL, 0);
 
   return RET_OK;
 }
