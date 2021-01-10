@@ -124,7 +124,7 @@ TEST(Emitter, remove) {
   id = emitter_on(emitter, type, on_remove, &n);
 
   n = 0;
-  ASSERT_EQ(emitter_dispatch(emitter, &e), RET_REMOVE);
+  ASSERT_EQ(emitter_dispatch(emitter, &e), RET_OK);
   ASSERT_EQ(emitter_size(emitter), 0);
   ASSERT_EQ(n, 4);
 
@@ -166,7 +166,7 @@ TEST(Emitter, remove_in_func) {
 
   id1 = emitter_on(emitter, type, on_event, &n);
   id2 = emitter_on(emitter, type, on_remove_id, &id1);
-  ASSERT_EQ(emitter_dispatch(emitter, &e), RET_REMOVE);
+  ASSERT_EQ(emitter_dispatch(emitter, &e), RET_OK);
   ASSERT_EQ(emitter_size(emitter), 0);
 
   id1 = emitter_on(emitter, type, on_event, &n);

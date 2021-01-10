@@ -119,7 +119,6 @@ ret_t object_array_insert(object_t* obj, uint32_t index, const value_t* v) {
   while (s >= p) {
     *d-- = *s--;
   }
-  value_reset(p);
   value_deep_copy(p, v);
   o->size++;
 
