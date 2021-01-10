@@ -553,6 +553,20 @@ stop_timer(widget)
 stop_timer(parent.timer)
 ```
 
+### 示例参考
 
-### 参考
+* https://github.com/zlgopen/awtk/blob/master/design/default/ui/main_fscript.xml
 
+* https://github.com/zlgopen/awtk/blob/master/design/default/ui/text_selector_fscript.xml
+
+* https://github.com/zlgopen/awtk/blob/master/design/default/ui/button_fscript.xml
+
+* https://github.com/zlgopen/awtk/blob/master/design/default/ui/test_fscript.xml
+
+* https://github.com/zlgopen/awtk/blob/master/design/default/ui/basic_fscript.xml
+
+> 可以用 preview_ui 直接运行。如：
+
+```
+./bin/preview_ui.exe design/default/ui/main_fscript.xml
+```
