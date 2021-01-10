@@ -1742,9 +1742,11 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
         if (etype != EVT_NONE) {
           char* code = tk_strdup(value_str(v));
           if (code != NULL) {
+            name += sizeof(STR_ON_EVENT_PREFIX) - 1;
             if (strncmp(name, STR_GLOBAL_EVENT_PREFIX, sizeof(STR_GLOBAL_EVENT_PREFIX) - 1) == 0) {
-              widget_on(window_manager(), etype, widget_exec_code, code);
-              widget_on(window_manager(), EVT_DESTROY, widget_free_code, code);
+              widget_t* wm = window_manager();
+              widget_on(wm, etype, widget_exec_code, code);
+              widget_on(wm, EVT_DESTROY, widget_free_code, code);
             } else {
               widget_on(widget, etype, widget_exec_code, code);
               widget_on(widget, EVT_DESTROY, widget_free_code, code);
