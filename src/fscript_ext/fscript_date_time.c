@@ -83,6 +83,23 @@ static ret_t func_time_now_s(fscript_t* fscript, fscript_args_t* args, value_t* 
   return RET_OK;
 }
 
+static ret_t func_year_is_leap(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+  value_set_bool(result, date_time_is_leap(value_int32(args->args)));
+  return RET_OK;
+}
+
+static ret_t func_get_days_of_month(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  int32_t year = 0;
+  int32_t month = 0;
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+  year = value_int32(args->args);
+  month = value_int32(args->args+1);
+  value_set_uint32(result, date_time_get_days(year, month));
+
+  return RET_OK;
+}
+
 ret_t fscript_date_time_register(void) {
   ENSURE(fscript_register_func("date_time_create", func_date_time_create) == RET_OK);
   ENSURE(fscript_register_func("date_time_to_time", func_date_time_to_time) == RET_OK);
@@ -91,6 +108,8 @@ ret_t fscript_date_time_register(void) {
   ENSURE(fscript_register_func("time_now_us", func_time_now_us) == RET_OK);
   ENSURE(fscript_register_func("time_now_ms", func_time_now_ms) == RET_OK);
   ENSURE(fscript_register_func("time_now_s", func_time_now_s) == RET_OK);
+  ENSURE(fscript_register_func("is_leap_year", func_year_is_leap) == RET_OK);
+  ENSURE(fscript_register_func("get_days_of_month", func_get_days_of_month) == RET_OK);
 
   return RET_OK;
 }

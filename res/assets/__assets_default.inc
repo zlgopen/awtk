@@ -167,6 +167,7 @@
 #include "default/inc/ui/test_fscript.data"
 #include "default/inc/ui/test_view.data"
 #include "default/inc/ui/text_selector.data"
+#include "default/inc/ui/text_selector_fscript.data"
 #include "default/inc/ui/time_clock.data"
 #include "default/inc/ui/top.data"
 #include "default/inc/ui/vgcanvas.data"
@@ -636,6 +637,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, ui_test_fscript);
   assets_manager_add(am, ui_test_view);
   assets_manager_add(am, ui_text_selector);
+  assets_manager_add(am, ui_text_selector_fscript);
   assets_manager_add(am, ui_time_clock);
   assets_manager_add(am, ui_top);
   assets_manager_add(am, ui_vgcanvas);

@@ -1,71 +1,74 @@
 # 最新动态
 
+2021/01/10
+ * 增加 [《fscript widget 扩展函数》](docs/fscript_widget.md)
+
 2021/01/09
-  * 将基本的widget函数包装成fscript函数。
-  * 支持用fscript写简单的事件处理函数。
+  * 将基本的 widget 函数包装成 fscript 函数。
+  * 支持用 fscript 写简单的事件处理函数。
 
 2021/01/08
-  * 完善typed\_array
-  * 完善object\_array
-  * 增加object\_date\_time。
-  * 完善fscript和fscript\_ext。
-  * 增加date\_time\_set\_xxx系列函数。
-  * 将date\_time/object\_array包装成fscript的函数。
-  * 完善object\_default，支持通过.访问子对象的属性。
-  * 修复xml\_parser中的注释错误（感谢忠吉提供补丁）。
-  * 修复widget\_const中的注释错误（感谢福明提供补丁）。
+  * 完善 typed\_array
+  * 完善 object\_array
+  * 增加 object\_date\_time。
+  * 完善 fscript 和 fscript\_ext。
+  * 增加 date\_time\_set\_xxx 系列函数。
+  * 将 date\_time/object\_array 包装成 fscript 的函数。
+  * 完善 object\_default，支持通过。访问子对象的属性。
+  * 修复 xml\_parser 中的注释错误（感谢忠吉提供补丁）。
+  * 修复 widget\_const 中的注释错误（感谢福明提供补丁）。
   * 修复第一次打开软键盘输入单个字符无候选字的问题（感谢雨欣提供补丁）。
 
 2021/01/07
-  * 完善fscript和fscript\_ext。
-  * 增加函数date\_time\_to\_time。
+  * 完善 fscript 和 fscript\_ext。
+  * 增加函数 date\_time\_to\_time。
   * 更新《生态共建计划》文档（感谢陈谭提供补丁）
-  * 将fs/bits/app\_conf/json/ubjson包装成fscript的函数。
+  * 将 fs/bits/app\_conf/json/ubjson 包装成 fscript 的函数。
 
 2021/01/06
-  * 完善fscript和fscript\_ext。
-  * 将istream/ostream/iostream包装成fscript的函数。
-  * 将tcp/udp/serial包装成fscript的函数。
+  * 完善 fscript 和 fscript\_ext。
+  * 将 istream/ostream/iostream 包装成 fscript 的函数。
+  * 将 tcp/udp/serial 包装成 fscript 的函数。
 
 2021/01/05
-  * 完善fscript和fscript\_ext。
+  * 完善 fscript 和 fscript\_ext。
   * 支持修改输入候选字的个数或者候选字个数自动扩展功能（感谢智明提供补丁）
-  * 修复text\_selector控件循环一圈后头二项的序号出错的问题（感谢智明提供补丁）
+  * 修复 text\_selector 控件循环一圈后头二项的序号出错的问题（感谢智明提供补丁）
   * 增加线程通用优先级枚举和转换函数以及修改了线程池支持修改堆栈等功能（感谢智明提供补丁）
 
 2021/01/04
-  * 完善value\_str\_ex。
-  * fscript增加assert函数。
-  * 完善xml builder的文档。
-  * 修复crc32中的问题，并增加api文档。
-  * 将crc/endian相关函数包装到fscript。
-  * 将wbuffer/rbuffer相关函数包装到fscript。
-  * 完善《如何用 valgrind 查找内存相关》(感谢忠吉发现问题)
+  * 完善 value\_str\_ex。
+  * fscript 增加 assert 函数。
+  * 完善 xml builder 的文档。
+  * 修复 crc32 中的问题，并增加 api 文档。
+  * 将 crc/endian 相关函数包装到 fscript。
+  * 将 wbuffer/rbuffer 相关函数包装到 fscript。
+  * 完善《如何用 valgrind 查找内存相关》（感谢忠吉发现问题）
 
 2021/01/03
-  * 增加typed\_array。
-  * 将object包装成fscript。
-  * 增加函数value\_type\_size。
-  * 将typed\_array包装成fscript。
-  * rbuffer包装成对象，方便生命周期管理。
-  * wbuffer包装成对象，方便生命周期管理。
-  * typed\_array包装成对象，方便生命周期管理。
-  * fscript中的数学函数移到fscript\_math中，作为可选组件。
+  * 增加 typed\_array。
+  * 将 object 包装成 fscript。
+  * 增加函数 value\_type\_size。
+  * 将 typed\_array 包装成 fscript。
+  * rbuffer 包装成对象，方便生命周期管理。
+  * wbuffer 包装成对象，方便生命周期管理。
+  * typed\_array 包装成对象，方便生命周期管理。
+  * fscript 中的数学函数移到 fscript\_math 中，作为可选组件。
 
 2021/01/02
-  * fscript 支持break/continue。
+  * fscript 支持 break/continue。
   
 2021/01/01
-  * fscript 支持类似C语言的if/while语句。
-  * 完善fscript错误处理。
+  * fscript 支持类似 C 语言的 if/while 语句。
+  * 完善 fscript 错误处理。
 
 2020/12/31
-  * 完善串口流iostream serial。
-  * 完善《AWTK是如何保证代码质量的》(感谢忠吉发现问题)
-  * 修复agge的裁剪区宽或者高为0的时候裁剪区无效的问题（感谢智明提供补丁）
+  * 完善串口流 iostream serial。
+  * 完善《AWTK 是如何保证代码质量的》（感谢忠吉发现问题）
+  * 修复 agge 的裁剪区宽或者高为 0 的时候裁剪区无效的问题（感谢智明提供补丁）
   * 修复圆角矩形有直角和圆角共存同时圆角半径大于宽度或者高度后画边显示不完整（感谢智明提供补丁）
-  * rich\_text控件在没有设置字体时，修改字体颜色不会生效问题（感谢福明提供补丁）
-  * image\_value控件在设置数值时由于类型转换导致显示的数据不正确的问题（感谢福明提供补丁）
+  * rich\_text 控件在没有设置字体时，修改字体颜色不会生效问题（感谢福明提供补丁）
+  * image\_value 控件在设置数值时由于类型转换导致显示的数据不正确的问题（感谢福明提供补丁）
 
 2020/12/30
   * 修复 widget\_set\_as\_key\_target 导致 tab 控件焦点的问题。

@@ -1455,4 +1455,5 @@ runFScript 的第二个参数可以指定运行次数，方便测量某个函数
 
 ### 7. 扩展函数
 
-[扩展数学函数](fscript_math.md)
+* [数学扩展函数](fscript_math.md)
+* [widget 扩展函数](fscript_widget.md)
