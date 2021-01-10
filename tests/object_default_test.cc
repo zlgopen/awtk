@@ -592,4 +592,6 @@ TEST(ObjectDefault, sub) {
   ASSERT_STREQ(object_get_prop_str(obj, "a.name"), "AAA");
 
   object_unref(obj);
+  object_unref(a);
+  object_unref(b);
 }

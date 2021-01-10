@@ -236,9 +236,11 @@ TEST(ObjectArray, insert) {
 
   ASSERT_EQ(object_array_pop(obj, &v), RET_OK);
   ASSERT_STREQ(value_str(&v), "hello"); 
+  value_reset(&v);
   
   ASSERT_EQ(object_array_pop(obj, &v), RET_OK);
   ASSERT_STREQ(value_str(&v), "e"); 
+  value_reset(&v);
   
   ASSERT_EQ(object_array_remove(obj, 0), RET_OK);
   ASSERT_STREQ(object_get_prop_str(obj, "0"), "b"); 
