@@ -1744,6 +1744,7 @@ ret_t widget_set_prop(widget_t* widget, const char* name, const value_t* v) {
           if (code != NULL) {
             if (strncmp(name, STR_GLOBAL_EVENT_PREFIX, sizeof(STR_GLOBAL_EVENT_PREFIX) - 1) == 0) {
               widget_on(window_manager(), etype, widget_exec_code, code);
+              widget_on(window_manager(), EVT_DESTROY, widget_free_code, code);
             } else {
               widget_on(widget, etype, widget_exec_code, code);
               widget_on(widget, EVT_DESTROY, widget_free_code, code);
