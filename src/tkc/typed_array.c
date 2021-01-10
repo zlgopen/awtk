@@ -127,7 +127,7 @@ ret_t typed_array_set(typed_array_t* typed_array, uint32_t index, const value_t*
   return_value_if_fail(typed_array->data != NULL && index < typed_array->size, RET_BAD_PARAMS);
   p = typed_array->data + index * typed_array->element_size;
 
-  switch (v->type) {
+  switch (typed_array->type) {
     case VALUE_TYPE_INT8: {
       *(int8_t*)p = value_int8(v);
       return RET_OK;
