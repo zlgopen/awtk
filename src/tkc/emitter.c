@@ -153,7 +153,7 @@ ret_t emitter_dispatch(emitter_t* emitter, event_t* e) {
   emitter->curr_iter = NULL;
   emitter->remove_curr_iter = FALSE;
 
-  return ret;
+  return RET_OK;
 }
 
 uint32_t emitter_on_with_tag(emitter_t* emitter, uint32_t etype, event_func_t handler, void* ctx,
