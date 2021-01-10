@@ -398,6 +398,7 @@ ret_t fscript_destroy(fscript_t* fscript) {
   return_value_if_fail(fscript != NULL, RET_FAIL);
 
   str_reset(&(fscript->str));
+  TKMEM_FREE(fscript->error_message);
   fscript_func_call_destroy(fscript->first);
   for (i = 0; i < ARRAY_SIZE(fscript->fast_vars); i++) {
     value_reset(fscript->fast_vars + i);
