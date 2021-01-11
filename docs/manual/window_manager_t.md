@@ -16,6 +16,7 @@
 | <a href="#window_manager_t_window_manager_begin_wait_pointer_cursor">window\_manager\_begin\_wait\_pointer\_cursor</a> | 开始等待鼠标指针。 |
 | <a href="#window_manager_t_window_manager_cast">window\_manager\_cast</a> | 转换为window_manager对象(供脚本语言使用)。 |
 | <a href="#window_manager_t_window_manager_close_all">window\_manager\_close\_all</a> | 关闭全部窗口。 |
+| <a href="#window_manager_t_window_manager_close_window_force">window\_manager\_close\_window\_force</a> | 强制立即关闭窗口。 |
 | <a href="#window_manager_t_window_manager_dispatch_input_event">window\_manager\_dispatch\_input\_event</a> | 分发输入事件。 |
 | <a href="#window_manager_t_window_manager_dispatch_native_window_event">window\_manager\_dispatch\_native\_window\_event</a> | 处理native window事件。 |
 | <a href="#window_manager_t_window_manager_end_wait_pointer_cursor">window\_manager\_end\_wait\_pointer\_cursor</a> | 结束等待鼠标指针。 |
@@ -180,6 +181,28 @@ ret_t window_manager_close_all (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 窗口管理器对象。 |
+#### window\_manager\_close\_window\_force 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_manager_t_window_manager_close_window_force">强制立即关闭窗口。
+
+> 本函数不会执行窗口动画。
+
+* 函数原型：
+
+```
+ret_t window_manager_close_window_force (widget_t* widget, widget_t* window);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 窗口管理器对象。 |
+| window | widget\_t* | 窗口对象。 |
 #### window\_manager\_dispatch\_input\_event 函数
 -----------------------
 

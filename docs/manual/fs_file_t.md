@@ -27,6 +27,7 @@ fs_file_close(fp);
 | <a href="#fs_file_t_fs_file_eof">fs\_file\_eof</a> | 判断文件是否结束。 |
 | <a href="#fs_file_t_fs_file_printf">fs\_file\_printf</a> | 写入文件。 |
 | <a href="#fs_file_t_fs_file_read">fs\_file\_read</a> | 读取文件。 |
+| <a href="#fs_file_t_fs_file_read_line">fs\_file\_read\_line</a> | 读取一行文本。 |
 | <a href="#fs_file_t_fs_file_seek">fs\_file\_seek</a> | 定位读写指针到指定的位置。 |
 | <a href="#fs_file_t_fs_file_size">fs\_file\_size</a> | 获取文件大小。 |
 | <a href="#fs_file_t_fs_file_stat">fs\_file\_stat</a> | 获取文件信息。 |
@@ -112,6 +113,28 @@ int32_t fs_file_read (fs_file_t* file, void* buffer, uint32_t size);
 | 返回值 | int32\_t | 返回实际读取的字节数。 |
 | file | fs\_file\_t* | 文件对象。 |
 | buffer | void* | 用于返回数据的缓冲区。 |
+| size | uint32\_t | 缓冲区大小。 |
+#### fs\_file\_read\_line 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="fs_file_t_fs_file_read_line">读取一行文本。
+> 需要用二进制格式打开，否则Windows下，系统会修改换行符。
+
+* 函数原型：
+
+```
+int32_t fs_file_read_line (fs_file_t* file, char* buffer, uint32_t size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | int32\_t | 返回实际读取的字节数。 |
+| file | fs\_file\_t* | 文件对象。 |
+| buffer | char* | 用于返回数据的缓冲区。 |
 | size | uint32\_t | 缓冲区大小。 |
 #### fs\_file\_seek 函数
 -----------------------

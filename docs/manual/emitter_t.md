@@ -366,7 +366,7 @@ ret_t emitter_off_by_tag (emitter_t* emitter, uint32_t tag);
 * 函数原型：
 
 ```
-uint32_t emitter_on (emitter_t* emitter, event_type_t type, event_func_t on_event, void* ctx);
+uint32_t emitter_on (emitter_t* emitter, event_type_t etype, event_func_t handler, void* ctx);
 ```
 
 * 参数说明：
@@ -375,8 +375,8 @@ uint32_t emitter_on (emitter_t* emitter, event_type_t type, event_func_t on_even
 | -------- | ----- | --------- |
 | 返回值 | uint32\_t | 返回id，用于emitter\_off。 |
 | emitter | emitter\_t* | emitter对象。 |
-| type | event\_type\_t | 事件类型。 |
-| on\_event | event\_func\_t | 事件处理函数。 |
+| etype | event\_type\_t | 事件类型。 |
+| handler | event\_func\_t | 事件处理函数。 |
 | ctx | void* | 事件处理函数上下文。 |
 #### emitter\_on\_with\_tag 函数
 -----------------------

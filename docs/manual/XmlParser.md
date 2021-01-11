@@ -41,7 +41,7 @@ XmlParser* xml_parser_create ();
 * 函数原型：
 
 ```
-void xml_parser_destroy (XmlParser* thiz);
+void xml_parser_destroy (XmlParser* parser);
 ```
 
 * 参数说明：
@@ -49,7 +49,7 @@ void xml_parser_destroy (XmlParser* thiz);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | void | 返回无。 |
-| thiz | XmlParser* | parser对象。 |
+| parser | XmlParser* | parser对象。 |
 #### xml\_parser\_parse 函数
 -----------------------
 
@@ -60,7 +60,7 @@ void xml_parser_destroy (XmlParser* thiz);
 * 函数原型：
 
 ```
-void xml_parser_parse (XmlParser* thiz, const char* xml, int length);
+void xml_parser_parse (XmlParser* parser, const char* xml, int length);
 ```
 
 * 参数说明：
@@ -68,7 +68,7 @@ void xml_parser_parse (XmlParser* thiz, const char* xml, int length);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | void | 返回无。 |
-| thiz | XmlParser* | parser对象。 |
+| parser | XmlParser* | parser对象。 |
 | xml | const char* | 数据。 |
 | length | int | 数据长度。 |
 #### xml\_parser\_parse\_file 函数
@@ -81,7 +81,7 @@ void xml_parser_parse (XmlParser* thiz, const char* xml, int length);
 * 函数原型：
 
 ```
-void xml_parser_parse_file (XmlParser* thiz, const char* filename);
+void xml_parser_parse_file (XmlParser* parser, const char* filename);
 ```
 
 * 参数说明：
@@ -89,7 +89,7 @@ void xml_parser_parse_file (XmlParser* thiz, const char* filename);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | void | 返回无。 |
-| thiz | XmlParser* | parser对象。 |
+| parser | XmlParser* | parser对象。 |
 | filename | const char* | 文件名。 |
 #### xml\_parser\_set\_builder 函数
 -----------------------
@@ -101,7 +101,7 @@ void xml_parser_parse_file (XmlParser* thiz, const char* filename);
 * 函数原型：
 
 ```
-void xml_parser_set_builder (XmlParser* thiz, XmlBuilder* builder);
+void xml_parser_set_builder (XmlParser* parser, XmlBuilder* builder);
 ```
 
 * 参数说明：
@@ -109,7 +109,7 @@ void xml_parser_set_builder (XmlParser* thiz, XmlBuilder* builder);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | void | 返回无。 |
-| thiz | XmlParser* | parser对象。 |
+| parser | XmlParser* | parser对象。 |
 | builder | XmlBuilder* | builder对象。 |
 #### xml\_parser\_set\_trim\_text 函数
 -----------------------
@@ -118,12 +118,12 @@ void xml_parser_set_builder (XmlParser* thiz, XmlBuilder* builder);
 
 > <p id="XmlParser_xml_parser_set_trim_text">设置是否去掉文本两端的空白字符。
 
-> 默认值为去掉文本两端的空白字符，如果不x希望去掉，调用本函数设置为FALSE。
+> 默认值为去掉文本两端的空白字符，如果不希望去掉，调用本函数设置为FALSE。
 
 * 函数原型：
 
 ```
-void xml_parser_set_trim_text (XmlParser* thiz, bool_t trim_text);
+void xml_parser_set_trim_text (XmlParser* parser, bool_t trim_text);
 ```
 
 * 参数说明：
@@ -131,5 +131,5 @@ void xml_parser_set_trim_text (XmlParser* thiz, bool_t trim_text);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | void | 返回无。 |
-| thiz | XmlParser* | parser对象。 |
+| parser | XmlParser* | parser对象。 |
 | trim\_text | bool\_t | 是否去掉文本两端的空白字符。 |

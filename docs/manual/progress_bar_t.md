@@ -48,6 +48,7 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | <a href="#progress_bar_t_progress_bar_create">progress\_bar\_create</a> | 创建progress_bar对象 |
 | <a href="#progress_bar_t_progress_bar_get_percent">progress\_bar\_get\_percent</a> | 获取进度百分比。 |
 | <a href="#progress_bar_t_progress_bar_set_max">progress\_bar\_set\_max</a> | 设置最大值。 |
+| <a href="#progress_bar_t_progress_bar_set_reverse">progress\_bar\_set\_reverse</a> | 设置进度条是否反向。 |
 | <a href="#progress_bar_t_progress_bar_set_show_text">progress\_bar\_set\_show\_text</a> | 设置进度条的是否显示文本。 |
 | <a href="#progress_bar_t_progress_bar_set_value">progress\_bar\_set\_value</a> | 设置进度条的进度。 |
 | <a href="#progress_bar_t_progress_bar_set_vertical">progress\_bar\_set\_vertical</a> | 设置进度条的方向。 |
@@ -57,6 +58,7 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#progress_bar_t_max">max</a> | float\_t | 最大值(缺省为100)。 |
+| <a href="#progress_bar_t_reverse">reverse</a> | bool\_t | 是否反向显示。如果为TRUE，水平方向从右向左表示增加，垂直方向从上到下表示增加。 |
 | <a href="#progress_bar_t_show_text">show\_text</a> | bool\_t | 是否显示文本。 |
 | <a href="#progress_bar_t_value">value</a> | float\_t | 进度条的值[0-max]。 |
 | <a href="#progress_bar_t_vertical">vertical</a> | bool\_t | 进度条的是否为垂直方向。 |
@@ -150,6 +152,26 @@ ret_t progress_bar_set_max (widget_t* widget, uint32_t max);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | max | uint32\_t | 最大值。 |
+#### progress\_bar\_set\_reverse 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="progress_bar_t_progress_bar_set_reverse">设置进度条是否反向。
+
+* 函数原型：
+
+```
+ret_t progress_bar_set_reverse (widget_t* widget, bool_t reverse);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| reverse | bool\_t | 是否反向。 |
 #### progress\_bar\_set\_show\_text 函数
 -----------------------
 
@@ -215,6 +237,22 @@ ret_t progress_bar_set_vertical (widget_t* widget, bool_t vertical);
 > <p id="progress_bar_t_max">最大值(缺省为100)。
 
 * 类型：float\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### reverse 属性
+-----------------------
+> <p id="progress_bar_t_reverse">是否反向显示。如果为TRUE，水平方向从右向左表示增加，垂直方向从上到下表示增加。
+
+* 类型：bool\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

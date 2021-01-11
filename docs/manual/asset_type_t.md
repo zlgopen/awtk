@@ -14,4 +14,5 @@
 | ASSET\_TYPE\_XML | XML数据资源。 |
 | ASSET\_TYPE\_STRINGS | 字符串数据资源。 |
 | ASSET\_TYPE\_SCRIPT | JS等脚本资源。 |
+| ASSET\_TYPE\_FLOW | 流图资源。 |
 | ASSET\_TYPE\_DATA | 其它数据资源。 |

@@ -71,7 +71,7 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L4
 | <a href="#text_selector_t_loop_options">loop\_options</a> | bool\_t | 是否循环选项(缺省为FALSE)。 |
 | <a href="#text_selector_t_options">options</a> | char* | 设置可选项(冒号分隔值和文本，分号分隔选项，如:1:red;2:green;3:blue)。 |
 | <a href="#text_selector_t_selected_index">selected\_index</a> | int32\_t | 当前选中的选项。 |
-| <a href="#text_selector_t_visible_nr">visible\_nr</a> | uint32\_t | 可见的选项数量(只能是3或者5，缺省为5)。 |
+| <a href="#text_selector_t_visible_nr">visible\_nr</a> | uint32\_t | 可见的选项数量(只能是1或者3或者5，缺省为5)。 |
 | <a href="#text_selector_t_yspeed_scale">yspeed\_scale</a> | float\_t | y偏移速度比例。 |
 ### 事件
 <p id="text_selector_t_events">

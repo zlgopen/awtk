@@ -8,13 +8,14 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#fscript_t_fscript_create">fscript\_create</a> | 创建引擎对象。 |
+| <a href="#fscript_t_fscript_create">fscript\_create</a> | 创建引擎对象，并解析代码。 |
 | <a href="#fscript_t_fscript_destroy">fscript\_destroy</a> | 销毁引擎对象。 |
 | <a href="#fscript_t_fscript_eval">fscript\_eval</a> | 执行一段脚本。 |
-| <a href="#fscript_t_fscript_exec">fscript\_exec</a> |  |
+| <a href="#fscript_t_fscript_exec">fscript\_exec</a> | 执行解析后的代码。 |
 | <a href="#fscript_t_fscript_global_deinit">fscript\_global\_deinit</a> | 全局释放。 |
 | <a href="#fscript_t_fscript_global_init">fscript\_global\_init</a> | 全局初始化。 |
 | <a href="#fscript_t_fscript_register_func">fscript\_register\_func</a> | 注册全局自定义函数。 |
+| <a href="#fscript_t_fscript_set_error">fscript\_set\_error</a> | 用于扩展函数设置遇到的错误。 |
 ### 属性
 <p id="fscript_t_properties">
 
@@ -28,7 +29,7 @@
 
 * 函数功能：
 
-> <p id="fscript_t_fscript_create">创建引擎对象。
+> <p id="fscript_t_fscript_create">创建引擎对象，并解析代码。
 
 * 函数原型：
 
@@ -88,7 +89,7 @@ ret_t fscript_eval (object_t* obj, const char* script, value_t* result);
 
 * 函数功能：
 
-> <p id="fscript_t_fscript_exec">
+> <p id="fscript_t_fscript_exec">执行解析后的代码。
 
 * 函数原型：
 
@@ -159,6 +160,28 @@ ret_t fscript_register_func (const char* name, fscript_func_t* func);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | name | const char* | 函数名(无需加函数前缀)。 |
 | func | fscript\_func\_t* | 函数指针。 |
+#### fscript\_set\_error 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="fscript_t_fscript_set_error">用于扩展函数设置遇到的错误。
+
+* 函数原型：
+
+```
+ret_t fscript_set_error (fscript_t* fscript, ret_t code, const char* func, const char* message);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| fscript | fscript\_t* | 脚本引擎对象。 |
+| code | ret\_t | 错误码。 |
+| func | const char* | 函数名。 |
+| message | const char* | 错误消息。 |
 #### fast\_vars 属性
 -----------------------
 > <p id="fscript_t_fast_vars">快速访问变量。在脚本可以用a/b/c/d来访问，需要优化时使用。

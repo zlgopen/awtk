@@ -36,6 +36,7 @@ str_reset(&s);
 | <a href="#str_t_str_clear">str\_clear</a> | 清除字符串内容。 |
 | <a href="#str_t_str_decode_xml_entity">str\_decode\_xml\_entity</a> | 对XML基本的entity进行解码，目前仅支持&lt;&gt;&quota;&amp;。 |
 | <a href="#str_t_str_decode_xml_entity_with_len">str\_decode\_xml\_entity\_with\_len</a> | 对XML基本的entity进行解码，目前仅支持&lt;&gt;&quota;&amp;。 |
+| <a href="#str_t_str_encode_hex">str\_encode\_hex</a> | 把二进制的数据编码成16进制格式的字符串。 |
 | <a href="#str_t_str_end_with">str\_end\_with</a> | 判断字符串是否以指定的子串结尾。 |
 | <a href="#str_t_str_eq">str\_eq</a> | 判断两个字符串是否相等。 |
 | <a href="#str_t_str_expand_vars">str\_expand\_vars</a> | 将字符串中的变量展开为obj中对应的属性值。 |
@@ -369,6 +370,28 @@ ret_t str_decode_xml_entity_with_len (str_t* str, char* text, uint32_t len);
 | str | str\_t* | str对象。 |
 | text | char* | 要解码的XML文本。 |
 | len | uint32\_t | 字符串长度。 |
+#### str\_encode\_hex 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="str_t_str_encode_hex">把二进制的数据编码成16进制格式的字符串。
+
+* 函数原型：
+
+```
+ret_t str_encode_hex (str_t* str, const uint8_t* data, uint32_t size, const char* format);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | str\_t* | str对象。 |
+| data | const uint8\_t* | 数据。 |
+| size | uint32\_t | 数据长度。 |
+| format | const char* | 格式(如:"%02x" 表示生成小写) |
 #### str\_end\_with 函数
 -----------------------
 

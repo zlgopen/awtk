@@ -86,14 +86,14 @@ void* darray_bsearch (darray_t* darray, tk_compare_t cmp, void* ctx);
 * 函数原型：
 
 ```
-int darray_bsearch_index (darray_t* darray, tk_compare_t cmp, void* ctx);
+int32_t darray_bsearch_index (darray_t* darray, tk_compare_t cmp, void* ctx);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | int | 如果找到，返回满足条件的对象的位置，否则返回-1。 |
+| 返回值 | int32\_t | 如果找到，返回满足条件的对象的位置，否则返回-1。 |
 | darray | darray\_t* | 数组对象。 |
 | cmp | tk\_compare\_t | 比较函数，为NULL则使用内置的比较函数。 |
 | ctx | void* | 比较函数的上下文。 |
@@ -256,14 +256,14 @@ ret_t darray_find_all (darray_t* darray, tk_compare_t cmp, void* ctx, darray_t* 
 * 函数原型：
 
 ```
-int darray_find_index (darray_t* darray, void* ctx);
+int32_t darray_find_index (darray_t* darray, void* ctx);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | int | 如果找到，返回满足条件的对象的位置，否则返回-1。 |
+| 返回值 | int32\_t | 如果找到，返回满足条件的对象的位置，否则返回-1。 |
 | darray | darray\_t* | 数组对象。 |
 | ctx | void* | 比较函数的上下文。 |
 #### darray\_foreach 函数
@@ -336,7 +336,7 @@ void* darray_head (darray_t* darray);
 * 函数原型：
 
 ```
-darray_t* darray_init (darray_t* darray, uint32_t* capacity, tk_destroy_t destroy, tk_compare_t compare);
+darray_t* darray_init (darray_t* darray, uint32_t capacity, tk_destroy_t destroy, tk_compare_t compare);
 ```
 
 * 参数说明：
@@ -345,7 +345,7 @@ darray_t* darray_init (darray_t* darray, uint32_t* capacity, tk_destroy_t destro
 | -------- | ----- | --------- |
 | 返回值 | darray\_t* | 数组对象。 |
 | darray | darray\_t* | 数组对象。 |
-| capacity | uint32\_t* | 数组的初始容量。 |
+| capacity | uint32\_t | 数组的初始容量。 |
 | destroy | tk\_destroy\_t | 元素销毁函数。 |
 | compare | tk\_compare\_t | 元素比较函数。 |
 #### darray\_pop 函数

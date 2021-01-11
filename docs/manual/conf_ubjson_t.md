@@ -9,14 +9,33 @@ conf json对象。
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
-| <a href="#conf_ubjson_t_conf_ubjson_load">conf\_ubjson\_load</a> |  |
+| <a href="#conf_ubjson_t_conf_ubjson_create">conf\_ubjson\_create</a> | 创建一个空的conf对象。 |
+| <a href="#conf_ubjson_t_conf_ubjson_load">conf\_ubjson\_load</a> | 从指定URL加载UBJSON对象。 |
 | <a href="#conf_ubjson_t_conf_ubjson_save_as">conf\_ubjson\_save\_as</a> | 将doc对象保存到指定URL。 |
+#### conf\_ubjson\_create 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="conf_ubjson_t_conf_ubjson_create">创建一个空的conf对象。
+
+* 函数原型：
+
+```
+object_t* conf_ubjson_create ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | object\_t* | 返回配置对象。 |
 #### conf\_ubjson\_load 函数
 -----------------------
 
 * 函数功能：
 
-> <p id="conf_ubjson_t_conf_ubjson_load">
+> <p id="conf_ubjson_t_conf_ubjson_load">从指定URL加载UBJSON对象。
 
 * 函数原型：
 

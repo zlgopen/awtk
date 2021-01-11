@@ -21,6 +21,13 @@
 | <a href="#date_time_t_date_time_init">date\_time\_init</a> | 初始为当前日期和时间。 |
 | <a href="#date_time_t_date_time_is_leap">date\_time\_is\_leap</a> | 是否是闰年。 |
 | <a href="#date_time_t_date_time_set">date\_time\_set</a> | 设置当前时间。 |
+| <a href="#date_time_t_date_time_set_day">date\_time\_set\_day</a> | 设置日。 |
+| <a href="#date_time_t_date_time_set_hour">date\_time\_set\_hour</a> | 设置小时。 |
+| <a href="#date_time_t_date_time_set_minute">date\_time\_set\_minute</a> | 设置分钟。 |
+| <a href="#date_time_t_date_time_set_month">date\_time\_set\_month</a> | 设置月。 |
+| <a href="#date_time_t_date_time_set_second">date\_time\_set\_second</a> | 设置秒。 |
+| <a href="#date_time_t_date_time_set_year">date\_time\_set\_year</a> | 设置年。 |
+| <a href="#date_time_t_date_time_to_time">date\_time\_to\_time</a> | 转换成time。 |
 ### 属性
 <p id="date_time_t_properties">
 
@@ -266,6 +273,145 @@ ret_t date_time_set (date_time_t* dt);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| dt | date\_time\_t* | date\_time对象。 |
+#### date\_time\_set\_day 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="date_time_t_date_time_set_day">设置日。
+
+* 函数原型：
+
+```
+ret_t date_time_set_day (date_time_t* dt, uint32_t day);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| dt | date\_time\_t* | date\_time对象。 |
+| day | uint32\_t | 日。 |
+#### date\_time\_set\_hour 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="date_time_t_date_time_set_hour">设置小时。
+
+* 函数原型：
+
+```
+ret_t date_time_set_hour (date_time_t* dt, uint32_t hour);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| dt | date\_time\_t* | date\_time对象。 |
+| hour | uint32\_t | 小时。 |
+#### date\_time\_set\_minute 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="date_time_t_date_time_set_minute">设置分钟。
+
+* 函数原型：
+
+```
+ret_t date_time_set_minute (date_time_t* dt, uint32_t minute);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| dt | date\_time\_t* | date\_time对象。 |
+| minute | uint32\_t | 分钟。 |
+#### date\_time\_set\_month 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="date_time_t_date_time_set_month">设置月。
+
+* 函数原型：
+
+```
+ret_t date_time_set_month (date_time_t* dt, uint32_t month);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| dt | date\_time\_t* | date\_time对象。 |
+| month | uint32\_t | 月。 |
+#### date\_time\_set\_second 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="date_time_t_date_time_set_second">设置秒。
+
+* 函数原型：
+
+```
+ret_t date_time_set_second (date_time_t* dt, uint32_t second);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| dt | date\_time\_t* | date\_time对象。 |
+| second | uint32\_t | 秒。 |
+#### date\_time\_set\_year 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="date_time_t_date_time_set_year">设置年。
+
+* 函数原型：
+
+```
+ret_t date_time_set_year (date_time_t* dt, uint32_t year);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| dt | date\_time\_t* | date\_time对象。 |
+| year | uint32\_t | 年。 |
+#### date\_time\_to\_time 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="date_time_t_date_time_to_time">转换成time。
+
+* 函数原型：
+
+```
+uint64_t date_time_to_time (date_time_t* dt);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint64\_t | 返回time。 |
 | dt | date\_time\_t* | date\_time对象。 |
 #### day 属性
 -----------------------

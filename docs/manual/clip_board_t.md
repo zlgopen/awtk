@@ -15,7 +15,6 @@
 | <a href="#clip_board_t_clip_board_set">clip\_board\_set</a> | 设置缺省的剪切板对象。 |
 | <a href="#clip_board_t_clip_board_set_data">clip\_board\_set\_data</a> | 设置数据到剪切板中。 |
 | <a href="#clip_board_t_clip_board_set_text">clip\_board\_set\_text</a> | 设置文本(UTF8)数据到剪切板。 |
-| <a href="#clip_board_t_data_reader_asset_create">data\_reader\_asset\_create</a> | 创建基于asset的data reader。 |
 #### clip\_board 函数
 -----------------------
 
@@ -172,22 +171,3 @@ ret_t clip_board_set_text (const char* text);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | text | const char* | 文本。 |
-#### data\_reader\_asset\_create 函数
------------------------
-
-* 函数功能：
-
-> <p id="clip_board_t_data_reader_asset_create">创建基于asset的data reader。
-
-* 函数原型：
-
-```
-data_reader_t* data_reader_asset_create (const char* assetname);
-```
-
-* 参数说明：
-
-| 参数 | 类型 | 说明 |
-| -------- | ----- | --------- |
-| 返回值 | data\_reader\_t* | 返回data reader对象。 |
-| assetname | const char* | 资源的名称。 |

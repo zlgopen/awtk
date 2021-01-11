@@ -8,6 +8,7 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#tk_dl_t_tk_dl_close">tk\_dl\_close</a> | 关闭dl对象。 |
+| <a href="#tk_dl_t_tk_dl_error">tk\_dl\_error</a> | 获取最后的错误信息。 |
 | <a href="#tk_dl_t_tk_dl_open">tk\_dl\_open</a> | 打开动态链接库。 |
 | <a href="#tk_dl_t_tk_dl_sym">tk\_dl\_sym</a> | 获取指定名称函数的地址。 |
 #### tk\_dl\_close 函数
@@ -29,6 +30,24 @@ ret_t tk_dl_close (tk_dl_t* dl);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | dl | tk\_dl\_t* | dl对象。 |
+#### tk\_dl\_error 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="tk_dl_t_tk_dl_error">获取最后的错误信息。
+
+* 函数原型：
+
+```
+const char* tk_dl_error ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const char* | 返回error message. |
 #### tk\_dl\_open 函数
 -----------------------
 

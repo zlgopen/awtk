@@ -28,11 +28,14 @@ rbuffer_read_string(&rbuffer, &str);
 | <a href="#rbuffer_t_rbuffer_peek_uint32">rbuffer\_peek\_uint32</a> | 读取uint32数据，但不改变cursor的位置。 |
 | <a href="#rbuffer_t_rbuffer_peek_uint8">rbuffer\_peek\_uint8</a> | 读取uint8数据，但不改变cursor的位置。 |
 | <a href="#rbuffer_t_rbuffer_read_binary">rbuffer\_read\_binary</a> | 读取指定长度的二进制数据。 |
+| <a href="#rbuffer_t_rbuffer_read_double">rbuffer\_read\_double</a> | 读取double数据。 |
 | <a href="#rbuffer_t_rbuffer_read_float">rbuffer\_read\_float</a> | 读取float数据。 |
 | <a href="#rbuffer_t_rbuffer_read_string">rbuffer\_read\_string</a> | 读取字符串。 |
 | <a href="#rbuffer_t_rbuffer_read_uint16">rbuffer\_read\_uint16</a> | 读取uint16数据。 |
 | <a href="#rbuffer_t_rbuffer_read_uint32">rbuffer\_read\_uint32</a> | 读取uint32数据。 |
+| <a href="#rbuffer_t_rbuffer_read_uint64">rbuffer\_read\_uint64</a> | 读取uint64数据。 |
 | <a href="#rbuffer_t_rbuffer_read_uint8">rbuffer\_read\_uint8</a> | 读取uint8数据。 |
+| <a href="#rbuffer_t_rbuffer_rewind">rbuffer\_rewind</a> | 重置当前读取位置。 |
 | <a href="#rbuffer_t_rbuffer_skip">rbuffer\_skip</a> | 跳过指定的长度。 |
 ### 属性
 <p id="rbuffer_t_properties">
@@ -163,6 +166,26 @@ ret_t rbuffer_read_binary (rbuffer_t* rbuffer, void* data, uint32_t size);
 | rbuffer | rbuffer\_t* | rbuffer对象。 |
 | data | void* | 返回读取的数据。 |
 | size | uint32\_t | 读取的数据长度。 |
+#### rbuffer\_read\_double 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="rbuffer_t_rbuffer_read_double">读取double数据。
+
+* 函数原型：
+
+```
+ret_t rbuffer_read_double (rbuffer_t* rbuffer, double* value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| rbuffer | rbuffer\_t* | rbuffer对象。 |
+| value | double* | 返回读取的数据。 |
 #### rbuffer\_read\_float 函数
 -----------------------
 
@@ -173,7 +196,7 @@ ret_t rbuffer_read_binary (rbuffer_t* rbuffer, void* data, uint32_t size);
 * 函数原型：
 
 ```
-ret_t rbuffer_read_float (rbuffer_t* rbuffer, float_t* value);
+ret_t rbuffer_read_float (rbuffer_t* rbuffer, float* value);
 ```
 
 * 参数说明：
@@ -182,7 +205,7 @@ ret_t rbuffer_read_float (rbuffer_t* rbuffer, float_t* value);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | rbuffer | rbuffer\_t* | rbuffer对象。 |
-| value | float\_t* | 返回读取的数据。 |
+| value | float* | 返回读取的数据。 |
 #### rbuffer\_read\_string 函数
 -----------------------
 
@@ -243,6 +266,26 @@ ret_t rbuffer_read_uint32 (rbuffer_t* rbuffer, uint32_t* value);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | rbuffer | rbuffer\_t* | rbuffer对象。 |
 | value | uint32\_t* | 返回读取的数据。 |
+#### rbuffer\_read\_uint64 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="rbuffer_t_rbuffer_read_uint64">读取uint64数据。
+
+* 函数原型：
+
+```
+ret_t rbuffer_read_uint64 (rbuffer_t* rbuffer, uint64_t* value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| rbuffer | rbuffer\_t* | rbuffer对象。 |
+| value | uint64\_t* | 返回读取的数据。 |
 #### rbuffer\_read\_uint8 函数
 -----------------------
 
@@ -263,6 +306,24 @@ ret_t rbuffer_read_uint8 (rbuffer_t* rbuffer, uint8_t* value);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | rbuffer | rbuffer\_t* | rbuffer对象。 |
 | value | uint8\_t* | 返回读取的数据。 |
+#### rbuffer\_rewind 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="rbuffer_t_rbuffer_rewind">重置当前读取位置。
+
+* 函数原型：
+
+```
+ret_t rbuffer_rewind ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 #### rbuffer\_skip 函数
 -----------------------
 

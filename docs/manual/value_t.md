@@ -64,6 +64,7 @@ value_set_int(&v, 100);
 | <a href="#value_t_value_str">value\_str</a> | 获取类型为字符串的值。 |
 | <a href="#value_t_value_str_ex">value\_str\_ex</a> | 获取类型为字符串的值。 |
 | <a href="#value_t_value_token">value\_token</a> | 获取token的值。 |
+| <a href="#value_t_value_type_size">value\_type\_size</a> | 获取指定类型数据大小。 |
 | <a href="#value_t_value_ubjson">value\_ubjson</a> | 获取为ubjson的值。 |
 | <a href="#value_t_value_uint16">value\_uint16</a> | 获取类型为uint16的值。 |
 | <a href="#value_t_value_uint32">value\_uint32</a> | 获取类型为uint32的值。 |
@@ -1017,6 +1018,25 @@ uint32_t value_token (value_t* v);
 | -------- | ----- | --------- |
 | 返回值 | uint32\_t | 值。 |
 | v | value\_t* | value对象。 |
+#### value\_type\_size 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="value_t_value_type_size">获取指定类型数据大小。
+
+* 函数原型：
+
+```
+uint32_t value_type_size (value_type_t type);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint32\_t | 返回对应数据类型的长度。 |
+| type | value\_type\_t | 类型。 |
 #### value\_ubjson 函数
 -----------------------
 

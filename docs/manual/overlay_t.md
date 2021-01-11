@@ -48,12 +48,14 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | -------- | ------------ | 
 | <a href="#overlay_t_overlay_cast">overlay\_cast</a> | 转换为overlay对象(供脚本语言使用)。 |
 | <a href="#overlay_t_overlay_create">overlay\_create</a> | 创建overlay对象 |
+| <a href="#overlay_t_overlay_set_always_on_top">overlay\_set\_always\_on\_top</a> | 设置是否总是在最上面。 |
 | <a href="#overlay_t_overlay_set_click_through">overlay\_set\_click\_through</a> | 设置是否启用点击穿透。 |
 ### 属性
 <p id="overlay_t_properties">
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
+| <a href="#overlay_t_always_on_top">always\_on\_top</a> | bool\_t | 是否总在最上面。 |
 | <a href="#overlay_t_click_through">click\_through</a> | bool\_t | 点击穿透。点击没有子控件的位置，是否穿透到底层窗口。 |
 #### overlay\_cast 函数
 -----------------------
@@ -97,6 +99,26 @@ widget_t* overlay_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### overlay\_set\_always\_on\_top 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="overlay_t_overlay_set_always_on_top">设置是否总是在最上面。
+
+* 函数原型：
+
+```
+ret_t overlay_set_always_on_top (widget_t* widget, bool_t always_on_top);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| always\_on\_top | bool\_t | 是否总是在最上面。 |
 #### overlay\_set\_click\_through 函数
 -----------------------
 
@@ -117,6 +139,24 @@ ret_t overlay_set_click_through (widget_t* widget, bool_t click_through);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | click\_through | bool\_t | 是否启用点击穿透。 |
+#### always\_on\_top 属性
+-----------------------
+> <p id="overlay_t_always_on_top">是否总在最上面。
+
+缺省不启用。
+
+* 类型：bool\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### click\_through 属性
 -----------------------
 > <p id="overlay_t_click_through">点击穿透。点击没有子控件的位置，是否穿透到底层窗口。

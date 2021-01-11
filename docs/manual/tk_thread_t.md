@@ -10,6 +10,7 @@
 | <a href="#tk_thread_t_tk_thread_create">tk\_thread\_create</a> | 创建thread对象。 |
 | <a href="#tk_thread_t_tk_thread_destroy">tk\_thread\_destroy</a> | 销毁thread对象。 |
 | <a href="#tk_thread_t_tk_thread_get_args">tk\_thread\_get\_args</a> | 获取线程的参数。 |
+| <a href="#tk_thread_t_tk_thread_get_priority_from_platform">tk\_thread\_get\_priority\_from\_platform</a> | 获取平台相关的优先级 |
 | <a href="#tk_thread_t_tk_thread_join">tk\_thread\_join</a> | 等待线程退出。 |
 | <a href="#tk_thread_t_tk_thread_self">tk\_thread\_self</a> | 获取当前线程的原生句柄。 |
 | <a href="#tk_thread_t_tk_thread_set_name">tk\_thread\_set\_name</a> | 设置线程的名称。 |
@@ -75,6 +76,28 @@ void* tk_thread_get_args (tk_thread_t* thread);
 | -------- | ----- | --------- |
 | 返回值 | void* | 返回线程的参数。 |
 | thread | tk\_thread\_t* | thread对象。 |
+#### tk\_thread\_get\_priority\_from\_platform 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="tk_thread_t_tk_thread_get_priority_from_platform">获取平台相关的优先级
+
+> 部分平台支持。
+> 根据 AWTK 通用优先级枚举获取平台相关的优先级
+
+* 函数原型：
+
+```
+int32_t tk_thread_get_priority_from_platform (tk_thread_priority_t priority);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | int32\_t | 返回平台相关的优先级。 |
+| priority | tk\_thread\_priority\_t | 优先级。 |
 #### tk\_thread\_join 函数
 -----------------------
 
@@ -147,7 +170,7 @@ ret_t tk_thread_set_name (tk_thread_t* thread, const char* name);
 * 函数原型：
 
 ```
-ret_t tk_thread_set_priority (tk_thread_t* thread, uint32_t priority);
+ret_t tk_thread_set_priority (tk_thread_t* thread, tk_thread_priority_t priority);
 ```
 
 * 参数说明：
@@ -156,7 +179,7 @@ ret_t tk_thread_set_priority (tk_thread_t* thread, uint32_t priority);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | thread | tk\_thread\_t* | thread对象。 |
-| priority | uint32\_t | 优先级。 |
+| priority | tk\_thread\_priority\_t | 优先级。 |
 #### tk\_thread\_set\_stack\_size 函数
 -----------------------
 

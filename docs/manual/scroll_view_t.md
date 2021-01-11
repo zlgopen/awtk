@@ -45,6 +45,7 @@ widget_t* scroll_view = scroll_view_create(win, 0, 0, 0, 0);
 | <a href="#scroll_view_t_scroll_view_scroll_delta_to">scroll\_view\_scroll\_delta\_to</a> | 滚动到指定的偏移量。 |
 | <a href="#scroll_view_t_scroll_view_scroll_to">scroll\_view\_scroll\_to</a> | 滚动到指定的偏移量。 |
 | <a href="#scroll_view_t_scroll_view_set_offset">scroll\_view\_set\_offset</a> | 设置偏移量。 |
+| <a href="#scroll_view_t_scroll_view_set_snap_to_page">scroll\_view\_set\_snap\_to\_page</a> | 设置滚动时offset是否按页面对齐。 |
 | <a href="#scroll_view_t_scroll_view_set_speed_scale">scroll\_view\_set\_speed\_scale</a> | 设置偏移速度比例。 |
 | <a href="#scroll_view_t_scroll_view_set_virtual_h">scroll\_view\_set\_virtual\_h</a> | 设置虚拟高度。 |
 | <a href="#scroll_view_t_scroll_view_set_virtual_w">scroll\_view\_set\_virtual\_w</a> | 设置虚拟宽度。 |
@@ -55,6 +56,7 @@ widget_t* scroll_view = scroll_view_create(win, 0, 0, 0, 0);
 
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
+| <a href="#scroll_view_t_snap_to_page">snap\_to\_page</a> | bool\_t | 滚动时offset是否按页面对齐。 |
 | <a href="#scroll_view_t_virtual_h">virtual\_h</a> | wh\_t | 虚拟高度。 |
 | <a href="#scroll_view_t_virtual_w">virtual\_w</a> | wh\_t | 虚拟宽度。 |
 | <a href="#scroll_view_t_xoffset">xoffset</a> | int32\_t | x偏移量。 |
@@ -178,6 +180,26 @@ ret_t scroll_view_set_offset (widget_t* widget, int32_t xoffset, int32_t yoffset
 | widget | widget\_t* | 控件对象。 |
 | xoffset | int32\_t | x偏移量。 |
 | yoffset | int32\_t | y偏移量。 |
+#### scroll\_view\_set\_snap\_to\_page 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="scroll_view_t_scroll_view_set_snap_to_page">设置滚动时offset是否按页面对齐。
+
+* 函数原型：
+
+```
+ret_t scroll_view_set_snap_to_page (widget_t* widget, bool_t snap_to_page);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| snap\_to\_page | bool\_t | 是否按页面对齐。 |
 #### scroll\_view\_set\_speed\_scale 函数
 -----------------------
 
@@ -197,8 +219,8 @@ ret_t scroll_view_set_speed_scale (widget_t* widget, float_t xspeed_scale, float
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
-| xspeed\_scale | float\_t | x偏移速度比例。。 |
-| yspeed\_scale | float\_t | y偏移速度比例。。 |
+| xspeed\_scale | float\_t | x偏移速度比例。 |
+| yspeed\_scale | float\_t | y偏移速度比例。 |
 #### scroll\_view\_set\_virtual\_h 函数
 -----------------------
 
@@ -279,6 +301,22 @@ ret_t scroll_view_set_yslidable (widget_t* widget, bool_t yslidable);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | yslidable | bool\_t | 是否允许滑动。 |
+#### snap\_to\_page 属性
+-----------------------
+> <p id="scroll_view_t_snap_to_page">滚动时offset是否按页面对齐。
+
+* 类型：bool\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### virtual\_h 属性
 -----------------------
 > <p id="scroll_view_t_virtual_h">虚拟高度。

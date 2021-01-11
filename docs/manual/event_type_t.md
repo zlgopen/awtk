@@ -88,6 +88,10 @@
 | EVT\_SCROLL\_END | scroll view结束滚动(event\_t)。 |
 | EVT\_MULTI\_GESTURE | 多点触摸手势(multi\_gesture\_event\_t)。 |
 | EVT\_PAGE\_CHANGED | 页面改变了(event\_t)。 |
+| EVT\_ASSET\_MANAGER\_LOAD\_ASSET | 资源管理加载某个资源(assets\_event\_t)。 |
+| EVT\_ASSET\_MANAGER\_UNLOAD\_ASSET | 资源管理卸载某个资源(assets\_event\_t)。 |
+| EVT\_ASSET\_MANAGER\_CLEAR\_CACHE | 资源管理移除同种资源缓存(assets\_event\_t)。 |
+| EVT\_TIMER | 定时器(event\_t)。 |
 | EVT\_REQ\_START | event queue其它请求编号起始值。 |
 | EVT\_USER\_START | 用户定义事件起始值。 |
 | EVT\_NONE | 无效事件名称。 |

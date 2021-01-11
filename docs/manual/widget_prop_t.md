@@ -12,6 +12,7 @@
 | WIDGET\_PROP\_W | 宽度。 |
 | WIDGET\_PROP\_H | 高度。 |
 | WIDGET\_PROP\_INPUTING | inputing。 |
+| WIDGET\_PROP\_ALWAYS\_ON\_TOP | always on top。 |
 | WIDGET\_PROP\_CARET\_X | caret x。 |
 | WIDGET\_PROP\_CARET\_Y | caret y。 |
 | WIDGET\_PROP\_DIRTY\_RECT\_TOLERANCE | 脏矩形超出控件本身大小的最大范围。 |
@@ -38,6 +39,7 @@
 | WIDGET\_PROP\_CLOSABLE | 是否可以关闭。 |
 | WIDGET\_PROP\_POINTER\_CURSOR | 鼠标指针。 |
 | WIDGET\_PROP\_VALUE | 值。 |
+| WIDGET\_PROP\_REVERSE | 进度条反向显示。 |
 | WIDGET\_PROP\_LENGTH | 长度。 |
 | WIDGET\_PROP\_LINE\_WRAP | 自动换行。 |
 | WIDGET\_PROP\_WORD\_WRAP | 是否允许单词中换行。 |
@@ -145,7 +147,7 @@
 | WIDGET\_PROP\_FOCUSED | 是否为焦点控件。 |
 | WIDGET\_PROP\_FOCUS | (过时请用focused)。 |
 | WIDGET\_PROP\_FOCUSABLE | 是否支持焦点停留。 |
-| WIDGET\_PROP\_WITH\_FOCUS\_STATE | 是否支持焦点状态(如果希望style支持焦点状态，但有不希望焦点停留，可用本属性)。 |
+| WIDGET\_PROP\_WITH\_FOCUS\_STATE | 是否支持焦点状态(如果希望style支持焦点状态，但又不希望焦点停留，可用本属性)。 |
 | WIDGET\_PROP\_MOVE\_FOCUS\_PREV\_KEY | 将焦点移到前一个的键值。 |
 | WIDGET\_PROP\_MOVE\_FOCUS\_NEXT\_KEY | 将焦点移到后一个的键值。 |
 | WIDGET\_PROP\_MOVE\_FOCUS\_UP\_KEY | 将焦点向上移动的键值。 |
