@@ -176,11 +176,11 @@ static inline bool_t is_fast_var(const char* name) {
   char c = name[1];
   int32_t index = *name - 'a';
 
-  if(c != '\0' && c != '.') {
+  if (c != '\0' && c != '.') {
     return FALSE;
   }
 
-  if(index < 0 || index >= FSCRIPT_FAST_VAR_NR) {
+  if (index < 0 || index >= FSCRIPT_FAST_VAR_NR) {
     return FALSE;
   }
 
@@ -768,7 +768,14 @@ static ret_t token_to_value(token_t* t, value_t* v) {
     } else if (t->size > 10) {
       value_set_int64(v, tk_atol(number));
     } else {
-      value_set_int(v, tk_atoi(number));
+      const char* str = number;
+      if (str[0] == '0' && (str[1] == 'x' || str[1] == 'X')) {
+        value_set_uint32(v, tk_atol(number));
+      } else if (str[0] == '0' && (str[1] == 'b' || str[1] == 'B')) {
+        value_set_uint32(v, tk_atol(number));
+      } else {
+        value_set_int(v, tk_atoi(number));
+      }
     }
   } else if (t->type == TOKEN_STR) {
     value_dup_str_with_len(v, t->token, t->size);
@@ -1068,7 +1075,7 @@ static ret_t fexpr_parse_logic(fscript_parser_t* parser, value_t* result) {
       break;
     }
 
-    if (t->token[0] == '|' || t->token[0] == '&') {
+    if (t->token[0] == '|' || t->token[0] == '&' || t->token[0] == '^') {
       acall = fscript_func_call_create(parser, t->token, t->size);
       return_value_if_fail(acall != NULL, RET_OOM);
       args = &(acall->args);
@@ -1472,7 +1479,6 @@ static ret_t func_minus(fscript_t* fscript, fscript_args_t* args, value_t* resul
 
   return RET_OK;
 }
-
 
 static ret_t func_div(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
