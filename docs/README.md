@@ -81,7 +81,7 @@
 * [如何续期使用 AWTK Designer](how_to_renewal_awtk_designer.md)
 * [如何将生成的可执行文件和资源打包](how_to_release_app.md)
 * [如何使用多点触控手势算法](how_to_use_multi_gesture.md)
-
+* [如何隐藏滚动条的上下按钮](how_to_hide_up_down_button_of_scrollbar.md)
 * [如何使用 packed 图](how_to_use_packed_image.md)
 
 ### 3. 内部原理
