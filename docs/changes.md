@@ -1,8 +1,11 @@
 # 最新动态
 
 2021/01/11
-  * 修复ios编译问题。
   * 更新文档。
+  * 修复ios编译问题。
+  * 增加 [value 扩展函数](fscript_value.md)
+  * 增加 [object 扩展函数](fscript_object.md)
+  * 增加 [app_conf 扩展函数](fscript_app_conf.md)
 
 2021/01/10
   * 增加 [《fscript widget 扩展函数》](fscript_widget.md)
