@@ -556,7 +556,7 @@
     <normal text_color="green" fg_color="black" />
   </style>
   <style name="image">
-    <normal text_color="gold" fg_image="progress_circle" />
+    <normal text_color="gold" bg_color="#00f6aa" fg_image="progress_circle" />
   </style>
 </progress_circle>
 
