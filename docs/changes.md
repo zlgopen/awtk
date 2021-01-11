@@ -6,6 +6,7 @@
   * 增加 [value 扩展函数](fscript_value.md)
   * 增加 [object 扩展函数](fscript_object.md)
   * 增加 [app_conf 扩展函数](fscript_app_conf.md)
+  * 修改提示信息支持修改tips_text_color风格和多行显示（感谢智明提供补丁）
 
 2021/01/10
   * 增加 [《fscript widget 扩展函数》](fscript_widget.md)

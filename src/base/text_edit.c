@@ -24,6 +24,7 @@
 #include "tkc/mem.h"
 #include "tkc/utf8.h"
 #include "tkc/utils.h"
+#include "tkc/line_parser.h"
 #include "base/events.h"
 #include "base/text_edit.h"
 #include "base/line_break.h"
@@ -94,6 +95,7 @@ typedef struct _text_edit_impl_t {
   wchar_t mask_char;
   bool_t mask;
   wstr_t tips;
+  bool_t is_mlines;
 
   bool_t is_first_time_layout;
   void* on_state_changed_ctx;
@@ -502,15 +504,62 @@ static ret_t text_edit_paint_caret(text_edit_t* text_edit, canvas_t* c) {
   return RET_OK;
 }
 
+static ret_t text_edit_paint_tips_mlines_text(text_edit_t* text_edit, canvas_t* c, line_parser_t* p) {
+  int32_t y = 0;
+  int32_t w = 0;
+  int32_t h_text = 0;
+  int32_t font_size = 0;
+  int32_t line_height = 0;
+  DECL_IMPL(text_edit);
+  text_layout_info_t* layout_info = 0;
+  return_value_if_fail(text_edit != NULL && text_edit->widget != NULL && c != NULL, RET_BAD_PARAMS);
+  
+  font_size = c->font_size;
+  layout_info = &(impl->layout_info);
+  line_height = font_size + style_get_int(text_edit->widget->astyle, STYLE_ID_SPACER, 2);
+  h_text = p->total_lines * line_height;
+
+  w = layout_info->w;
+  y = layout_info->margin_t;
+  while (line_parser_next(p) == RET_OK) {
+    uint32_t size = 0;
+    rect_t r = rect_init(layout_info->margin_l, y, w, font_size);
+
+    if ((y + font_size) > layout_info->h) {
+      break;
+    }
+
+    for (size = 0; size < p->line_size; size++) {
+      if (p->line[size] == '\r' || p->line[size] == '\n') {
+        break;
+      }
+    }
+    canvas_draw_text_in_rect(c, p->line, size, &r);
+
+    y += line_height;
+  }
+  return RET_OK;
+}
+
 static ret_t text_edit_paint_tips_text(text_edit_t* text_edit, canvas_t* c) {
   DECL_IMPL(text_edit);
   wstr_t* text = &(impl->tips);
   text_layout_info_t* layout_info = &(impl->layout_info);
 
   if (text->size > 0) {
-    rect_t r =
-        rect_init(layout_info->margin_l, layout_info->margin_t, layout_info->w, layout_info->h);
-    canvas_draw_text_in_rect(c, text->str, text->size, &r);
+    if (impl->is_mlines) {
+      line_parser_t p;
+      line_parser_init(&p, c, (const wchar_t*)(text->str), text->size, c->font_size, layout_info->w, TRUE, TRUE);
+      if (p.total_lines > 1) {
+        text_edit_paint_tips_mlines_text(text_edit, c, &p);
+      } else {
+        rect_t r = rect_init(layout_info->margin_l, layout_info->margin_t, layout_info->w, layout_info->h);
+        canvas_draw_text_in_rect(c, text->str, text->size, &r);
+      }
+    } else {
+      rect_t r = rect_init(layout_info->margin_l, layout_info->margin_t, layout_info->w, layout_info->h);
+      canvas_draw_text_in_rect(c, text->str, text->size, &r);
+    }
   }
 
   return RET_OK;
@@ -656,10 +705,14 @@ static ret_t text_edit_paint_real_text(text_edit_t* text_edit, canvas_t* c) {
 
 static ret_t text_edit_paint_text(text_edit_t* text_edit, canvas_t* c) {
   widget_t* widget = text_edit->widget;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   if (widget->text.size > 0) {
     return text_edit_paint_real_text(text_edit, c);
   } else {
+    color_t trans = style_get_color(widget->astyle, STYLE_ID_TEXT_COLOR, color_init(0x0, 0x0, 0x0, 0x0));
+    color_t tc = style_get_color(widget->astyle, STYLE_ID_TIPS_TEXT_COLOR, trans);
+    canvas_set_text_color(c, tc);
     return text_edit_paint_tips_text(text_edit, c);
   }
 }
@@ -1218,10 +1271,11 @@ ret_t text_edit_set_mask(text_edit_t* text_edit, bool_t mask) {
   return RET_OK;
 }
 
-ret_t text_edit_set_tips(text_edit_t* text_edit, const char* tips) {
+ret_t text_edit_set_tips(text_edit_t* text_edit, const char* tips, bool_t mlines) {
   DECL_IMPL(text_edit);
   return_value_if_fail(text_edit != NULL, RET_BAD_PARAMS);
 
+  impl->is_mlines = mlines;
   wstr_set_utf8(&(impl->tips), tips);
   text_edit_layout(text_edit);
 

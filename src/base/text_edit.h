@@ -264,10 +264,11 @@ ret_t text_edit_set_mask(text_edit_t* text_edit, bool_t mask);
  * 设置提示信息。
  * @param {text_edit_t*} text_edit text_edit对象。
  * @param {const char*} tips 提示信息。
+ * @param {bool_t} mlines 提示信息是否多行显示。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t text_edit_set_tips(text_edit_t* text_edit, const char* tips);
+ret_t text_edit_set_tips(text_edit_t* text_edit, const char* tips, bool_t mlines);
 
 /**
  * @method text_edit_set_mask_char

@@ -1012,7 +1012,7 @@ ret_t edit_set_tips(widget_t* widget, const char* tips) {
   return_value_if_fail(edit != NULL && tips != NULL, RET_BAD_PARAMS);
 
   edit->tips = tk_str_copy(edit->tips, tips);
-  text_edit_set_tips(edit->model, edit->tips);
+  text_edit_set_tips(edit->model, edit->tips, FALSE);
 
   return RET_OK;
 }

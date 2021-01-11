@@ -80,7 +80,7 @@ ret_t mledit_set_tips(widget_t* widget, const char* tips) {
   return_value_if_fail(mledit != NULL && tips != NULL, RET_BAD_PARAMS);
 
   mledit->tips = tk_str_copy(mledit->tips, tips);
-  text_edit_set_tips(mledit->model, mledit->tips);
+  text_edit_set_tips(mledit->model, mledit->tips, TRUE);
 
   return RET_OK;
 }
