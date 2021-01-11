@@ -1,5 +1,9 @@
 # 最新动态
 
+2021/01/11
+  * 修复ios编译问题。
+  * 更新文档。
+
 2021/01/10
   * 增加 [《fscript widget 扩展函数》](fscript_widget.md)
   * 用valgrind检查内存问题并修改发现的问题。
