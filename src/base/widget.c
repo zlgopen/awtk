@@ -256,6 +256,47 @@ bool_t widget_is_window_opened(widget_t* widget) {
   }
 }
 
+bool_t widget_is_style_exist(widget_t* widget, const char* style_name, const char* state_name) {
+
+  value_t v;
+  const void* data = NULL;
+  const char* style = NULL;
+  const char* state = NULL;
+  theme_t* win_theme = NULL;
+  theme_t* default_theme = NULL;
+  const char* type = widget_get_type(widget);
+  widget_t* win = widget_get_window(widget);
+  return_value_if_fail(widget != NULL && win != NULL, FALSE);
+
+  if (style_name == NULL || *style_name == 0) {
+    style = TK_DEFAULT_STYLE;
+  } else {
+    style = style_name;
+  }
+
+  if (state_name == NULL || *state_name == 0) {
+    state = WIDGET_STATE_NORMAL;
+  } else {
+    state = state_name;
+  }
+
+  if (widget_get_prop(win, WIDGET_PROP_THEME_OBJ, &v) == RET_OK) {
+    win_theme = (theme_t*)value_pointer(&v);
+    if (win_theme != NULL) {
+      data = theme_find_style(win_theme, type, style, state);
+    }
+  }
+  
+  if (data == NULL && widget_get_prop(win, WIDGET_PROP_DEFAULT_THEME_OBJ, &v) == RET_OK) {
+    default_theme = (theme_t*)value_pointer(&v);
+    if (data == NULL) {
+      data = theme_find_style(default_theme, type, style, state);
+    }
+  }
+
+  return data != NULL;
+}
+
 ret_t widget_use_style(widget_t* widget, const char* value) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 

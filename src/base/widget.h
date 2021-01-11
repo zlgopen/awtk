@@ -774,6 +774,18 @@ ret_t widget_add_value(widget_t* widget, int32_t delta);
 ret_t widget_set_text(widget_t* widget, const wchar_t* text);
 
 /**
+ * @method widget_is_style_exist
+ * 查询指定的style是否存在。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const char*}  style_name style的名称（如果为 NULL，则默认为 default）。
+ * @param {const char*}  state_name state的名称（如果为 NULL，则默认为 normal）。
+ *
+ * @return {bool_t} 存在返回 TRUE，不存在返回 FALSE。
+ */
+bool_t widget_is_style_exist(widget_t* widget, const char* style_name, const char* state_name);
+
+/**
  * @method widget_use_style
  * 启用指定的style。
  * @annotation ["scriptable"]
