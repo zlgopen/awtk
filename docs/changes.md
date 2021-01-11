@@ -2,17 +2,18 @@
 
 2021/01/11
   * 更新文档。
-  * 修复ios编译问题。
+  * 修复 ios 编译问题。
   * 增加 [value 扩展函数](fscript_value.md)
   * 增加 [object 扩展函数](fscript_object.md)
   * 增加 [app\_conf 扩展函数](fscript_app_conf.md)
-  * 修改提示信息支持修改tips\_text\_color风格和多行显示（感谢智明提供补丁）
+  * 增加 [CRC 扩展函数](fscript_crc.md)
+  * 修改提示信息支持修改 tips\_text\_color 风格和多行显示（感谢智明提供补丁）
   * 增加通过风格来控制 scroll\_bar 控件无上下按钮的模式（感谢智明提供补丁）
   * 增加圆形进度条增加圆形底环效果（感谢智明提供补丁）
 
 2021/01/10
   * 增加 [《fscript widget 扩展函数》](fscript_widget.md)
-  * 用valgrind检查内存问题并修改发现的问题。
+  * 用 valgrind 检查内存问题并修改发现的问题。
 
 2021/01/09
   * 将基本的 widget 函数包装成 fscript 函数。

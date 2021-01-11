@@ -1276,6 +1276,7 @@ runFScript 的第二个参数可以指定运行次数，方便测量某个函数
 
 * [位操作扩展函数](fscript_bits.md)
 * [数学扩展函数](fscript_math.md)
+* [CRC 扩展函数](fscript_crc.md)
 * [value 扩展函数](fscript_value.md)
 * [widget 扩展函数](fscript_widget.md)
 * [object 扩展函数](fscript_object.md)
