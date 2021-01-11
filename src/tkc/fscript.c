@@ -1640,7 +1640,7 @@ static ret_t func_clamp(fscript_t* fscript, fscript_args_t* args, value_t* resul
 
 static ret_t func_round(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
-  value_set_double(result, round(value_double(args->args)));
+  value_set_double(result, tk_roundi(value_double(args->args)));
   return RET_OK;
 }
 

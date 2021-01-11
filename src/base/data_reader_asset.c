@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   data_reader.c
  * Author: AWTK Develop Team
  * Brief:  data_reader asset
@@ -94,7 +94,7 @@ data_reader_t* data_reader_asset_create(const char* assetname) {
   return_value_if_fail(kv != NULL, NULL);
 
   asset->data_reader.vt = &s_data_reader_asset_vtable;
-  asset->info = assets_manager_ref(am, kv->value, assetname);
+  asset->info = assets_manager_ref(am, (asset_type_t)(kv->value), assetname);
 
   if (asset->info == NULL) {
     TKMEM_FREE(asset);

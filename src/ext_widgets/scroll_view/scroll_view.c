@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   scroll_view.c
  * Author: AWTK Develop Team
  * Brief:  scroll_view
@@ -299,7 +299,7 @@ static ret_t scroll_view_on_pointer_move(scroll_view_t* scroll_view, pointer_eve
   int32_t dx = 0;
   int32_t dy = 0;
   velocity_t* v = NULL;
-  return_value_if_fail(scroll_view != NULL && e != NULL, FALSE);
+  return_value_if_fail(scroll_view != NULL && e != NULL, RET_BAD_PARAMS);
   v = &(scroll_view->velocity);
   dx = e->x - scroll_view->down.x;
   dy = e->y - scroll_view->down.y;
