@@ -32,9 +32,16 @@
 #define CHILD_DOWN "down"
 #define CHILD_DRAGGER "dragger"
 
+#define SCROLL_BAR_UP_BUTTON_STYLE_NAME "scroll_up"
+#define SCROLL_BAR_DOWN_BUTTON_STYLE_NAME "scroll_down"
+#define SCROLL_BAR_LEFT_BUTTON_STYLE_NAME "scroll_left"
+#define SCROLL_BAR_RIGHT_BUTTON_STYLE_NAME "scroll_right"
+
 #ifndef TK_DRAGGER_MIN_SIZE
 #define TK_DRAGGER_MIN_SIZE 10
 #endif /*TK_DRAGGER_MIN_SIZE*/
+
+#define SCROLL_BAR_UP_AND_DOWN_BUTTON_STYLE_IS_EXIST(up, down) ((up) != NULL && (up)->style != NULL && (down) != NULL && (down)->style != NULL)
 
 static ret_t scroll_bar_update_dragger(widget_t* widget);
 widget_t* scroll_bar_create_desktop_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
@@ -159,11 +166,17 @@ static ret_t scroll_bar_desktop_on_event(widget_t* widget, event_t* e) {
       bool_t horizon = widget->w > widget->h;
 
       if (up != NULL) {
-        widget_use_style(up, horizon ? "scroll_left" : "scroll_up");
+        const char* style_name = horizon ? SCROLL_BAR_LEFT_BUTTON_STYLE_NAME : SCROLL_BAR_UP_BUTTON_STYLE_NAME;
+        if (widget_is_style_exist(down, style_name, NULL)) {
+          widget_use_style(up, style_name);
+        }
       }
 
       if (down != NULL) {
-        widget_use_style(down, horizon ? "scroll_right" : "scroll_down");
+        const char* style_name = horizon ? SCROLL_BAR_RIGHT_BUTTON_STYLE_NAME : SCROLL_BAR_DOWN_BUTTON_STYLE_NAME;
+        if (widget_is_style_exist(down, style_name, NULL)) {
+          widget_use_style(down, style_name);
+        }
       }
 
       break;
@@ -180,20 +193,31 @@ static ret_t scroll_bar_destop_get_dragger_size(widget_t* widget, rect_t* r) {
   int64_t y = 0;
   int64_t w = 0;
   int64_t h = 0;
-  int64_t virtual_size = 0;
   int64_t value = 0;
+  int64_t virtual_size = 0;
+  uint32_t button_margin = 0;
   int64_t widget_w = widget->w;
   int64_t widget_h = widget->h;
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
+  widget_t* up = widget_lookup(widget, CHILD_UP, FALSE);
+  widget_t* down = widget_lookup(widget, CHILD_DOWN, FALSE);
 
   memset(r, 0x00, sizeof(rect_t));
   if (scroll_bar->virtual_size <= 0) {
     return RET_OK;
   }
 
+  if (SCROLL_BAR_UP_AND_DOWN_BUTTON_STYLE_IS_EXIST(up, down)) {
+      if (widget_w > widget_h) {
+        button_margin = widget_h;
+      } else {
+        button_margin = widget_w;
+      }
+  }
+
   value = scroll_bar->value;
   if (widget_w > widget_h) {
-    int64_t max_bar_w = widget_w - 2 * widget_h;
+    int64_t max_bar_w = widget_w - 2 * button_margin;
     /*horizon*/
     virtual_size = tk_max(widget_w, scroll_bar->virtual_size);
 
@@ -201,17 +225,17 @@ static ret_t scroll_bar_destop_get_dragger_size(widget_t* widget, rect_t* r) {
     h = widget_h - 2;
     w = (widget_w * max_bar_w) / virtual_size;
     w = tk_max(w, TK_DRAGGER_MIN_SIZE);
-    x = (widget_w - w - 2 * widget_h) * value / virtual_size + widget_h;
+    x = (widget_w - w - 2 * button_margin) * value / virtual_size + button_margin;
   } else {
     /*vertical*/
-    int64_t max_bar_h = widget_h - 2 * widget_w;
+    int64_t max_bar_h = widget_h - 2 * button_margin;
     virtual_size = tk_max(widget_h, scroll_bar->virtual_size);
 
     x = 1;
     w = widget_w - 2;
     h = (widget_h * max_bar_h) / virtual_size;
     h = tk_max(h, TK_DRAGGER_MIN_SIZE);
-    y = (widget_h - h - 2 * widget_w) * value / virtual_size + widget_w;
+    y = (widget_h - h - 2 * button_margin) * value / virtual_size + button_margin;
   }
 
   r->x = x;
@@ -272,28 +296,39 @@ static ret_t scroll_bar_on_down_button_clicked(void* ctx, event_t* e) {
 
 static ret_t scroll_bar_on_drag(void* ctx, event_t* e) {
   int64_t value = 0;
+  uint32_t button_margin = 0;
   widget_t* widget = WIDGET(ctx);
   int64_t widget_w = widget->w;
   int64_t widget_h = widget->h;
   scroll_bar_t* scroll_bar = SCROLL_BAR(ctx);
   widget_t* dragger = scroll_bar->dragger;
+  widget_t* up = widget_lookup(widget, CHILD_UP, FALSE);
+  widget_t* down = widget_lookup(widget, CHILD_DOWN, FALSE);
+
+  if (SCROLL_BAR_UP_AND_DOWN_BUTTON_STYLE_IS_EXIST(up, down)) {
+    if (widget_w > widget_h) {
+      button_margin = widget_h;
+    } else {
+      button_margin = widget_w;
+    }
+  }
 
   if (widget_w > widget_h) {
     int64_t x = scroll_bar->dragger->x;
-    int64_t max_x = (widget_w - 2 * widget_h - dragger->w);
+    int64_t max_x = (widget_w - 2 * button_margin - dragger->w);
     if (max_x <= 0) {
       value = 0;
     } else {
-      value = (x - widget_h) * scroll_bar->virtual_size / max_x;
+      value = (x - button_margin) * scroll_bar->virtual_size / max_x;
     }
   } else {
     int64_t y = scroll_bar->dragger->y;
-    int64_t max_y = (widget_h - 2 * widget_w - dragger->h);
+    int64_t max_y = (widget_h - 2 * button_margin - dragger->h);
 
     if (max_y <= 0) {
       value = 0;
     } else {
-      value = (y - widget_w) * scroll_bar->virtual_size / max_y;
+      value = (y - button_margin) * scroll_bar->virtual_size / max_y;
     }
   }
 
@@ -303,6 +338,7 @@ static ret_t scroll_bar_on_drag(void* ctx, event_t* e) {
 }
 
 static ret_t scroll_bar_on_layout_children(widget_t* widget) {
+  uint32_t button_margin = 0;
   int32_t widget_w = widget->w;
   int32_t widget_h = widget->h;
   rect_t r = rect_init(0, 0, 0, 0);
@@ -311,22 +347,21 @@ static ret_t scroll_bar_on_layout_children(widget_t* widget) {
   widget_t* up = widget_lookup(widget, CHILD_UP, FALSE);
   widget_t* down = widget_lookup(widget, CHILD_DOWN, FALSE);
 
-  if (widget->w > widget->h) {
-    if (up != NULL) {
+  if (SCROLL_BAR_UP_AND_DOWN_BUTTON_STYLE_IS_EXIST(up, down)) {
+    widget_set_visible(up, TRUE);
+    widget_set_visible(down, TRUE);
+    if (widget->w > widget->h) {
+      button_margin = widget_h;
       widget_move_resize(up, 0, 0, widget->h, widget->h);
-    }
-
-    if (down != NULL) {
       widget_move_resize(down, widget->w - widget->h, 0, widget->h, widget->h);
-    }
-  } else {
-    if (up != NULL) {
+    } else {
+      button_margin = widget_w;
       widget_move_resize(up, 0, 0, widget->w, widget->w);
-    }
-
-    if (down != NULL) {
       widget_move_resize(down, 0, widget->h - widget->w, widget->w, widget->w);
     }
+  } else {
+    widget_set_visible(up, FALSE);
+    widget_set_visible(down, FALSE);
   }
 
   if (scroll_bar->virtual_size <= 0) {
@@ -336,11 +371,11 @@ static ret_t scroll_bar_on_layout_children(widget_t* widget) {
 
   if (dragger != NULL) {
     if (widget->w > widget->h) {
-      int32_t max_x = widget_h + (widget_w - 2 * widget_h - r.w);
-      dragger_set_range(dragger, widget_h, r.y, max_x, r.y);
+      int32_t max_x = button_margin + (widget_w - 2 * button_margin - r.w);
+      dragger_set_range(dragger, button_margin, r.y, max_x, r.y);
     } else {
-      int32_t max_y = widget_w + (widget_h - 2 * widget_w - r.h);
-      dragger_set_range(dragger, r.x, widget_w, r.x, max_y);
+      int32_t max_y = button_margin + (widget_h - 2 * button_margin - r.h);
+      dragger_set_range(dragger, r.x, button_margin, r.x, max_y);
     }
 
     widget_move_resize(WIDGET(dragger), r.x, r.y, r.w, r.h);
@@ -381,11 +416,19 @@ static ret_t scroll_bar_create_children(widget_t* widget) {
   widget_on(dragger, EVT_DRAG, scroll_bar_on_drag, widget);
 
   if (widget->w > widget->h) {
-    widget_use_style(up, "scroll_left");
-    widget_use_style(down, "scroll_right");
+    if (widget_is_style_exist(up, SCROLL_BAR_LEFT_BUTTON_STYLE_NAME, NULL)) {
+      widget_use_style(up, SCROLL_BAR_LEFT_BUTTON_STYLE_NAME);
+    }
+    if (widget_is_style_exist(up, SCROLL_BAR_RIGHT_BUTTON_STYLE_NAME, NULL)) {
+      widget_use_style(down, SCROLL_BAR_RIGHT_BUTTON_STYLE_NAME);
+    }
   } else {
-    widget_use_style(up, "scroll_up");
-    widget_use_style(down, "scroll_down");
+    if (widget_is_style_exist(up, SCROLL_BAR_UP_BUTTON_STYLE_NAME, NULL)) {
+      widget_use_style(up, SCROLL_BAR_UP_BUTTON_STYLE_NAME);
+    }
+    if (widget_is_style_exist(up, SCROLL_BAR_DOWN_BUTTON_STYLE_NAME, NULL)) {
+      widget_use_style(down, SCROLL_BAR_DOWN_BUTTON_STYLE_NAME);
+    }
   }
 
   scroll_bar->row = 30;
