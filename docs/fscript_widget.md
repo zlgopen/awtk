@@ -601,6 +601,67 @@ send_key(widget, key_name)
  <button text="Char" on:click="send_key(window.edit, 'a')"/>
 ```
 
+### 5.14 widget\_eval
+
+> 有时，几个事件处理函数的代码是重复的，我们可以把代码放到控件的属性中，通过widget\_eval来执行。
+----------------------------
+
+#### 原型
+```
+```js
+widget_eval(path.prop)
+widget_eval(widget, prop)
+widget_eval(widget, path.prop)
+```
+
+* widget 用作锚点，后面的路径相对于该 widget。self 表示当前控件，parent 表示当前控件的父控件，window 表示当前的窗口，window\_manager 表示窗口管理器。
+
+* prop 可以是简单的属性命名，也可以是 widget 路径+属性名。
+
+### 示例
+
+下面两个事件处理函数的代码是相同。
+
+```xml
+  <row x="10" y="30" w="100%" h="150" children_layout="default(row=1,col=3)">
+    <text_selector name="year" options="2000-2050" selected_index="9">
+      <property name="on:value_changed">
+        <![CDATA[
+        a = get_days_of_month(widget_get(parent.year, value), widget_get(parent.month, value))
+        widget_set(parent.day, "options", iformat( "1-%d", a) + "%02d")        
+         ]]>
+      </property>
+    </text_selector>
+    <text_selector name="month" options="1-12-%02d" selected_index="8" loop_options="true">
+      <property name="on:value_changed">
+        <![CDATA[
+        a = get_days_of_month(widget_get(parent.year, value), widget_get(parent.month, value))
+        widget_set(parent.day, "options", iformat( "1-%d", a) + "%02d")
+        ]]>
+      </property>
+    </text_selector>
+    <text_selector name="day" options="1-31-%02d" selected_index="9" />
+  </row>
+```
+
+我们可以改造成这样：
+
+```xml
+  <row x="10" y="bottom" w="100%" h="150" children_layout="default(row=1,col=3)">
+    <property name="handle_value_changed">
+      <![CDATA[
+      a = get_days_of_month(widget_get(parent.year, value), widget_get(parent.month, value))
+      widget_set(parent.day, "options", iformat( "1-%d", a) + "%02d")        
+       ]]>
+    </property>
+    <text_selector name="year" options="2000-2050" selected_index="9" 
+      on:value_changed="widget_eval(parent.handle_value_changed)" />
+    <text_selector name="month" options="1-12-%02d" selected_index="8" loop_options="true"
+      on:value_changed="widget_eval(parent.handle_value_changed)" />
+    <text_selector name="day" options="1-31-%02d" selected_index="9" />
+  </row>
+```
+
 ### 示例参考
 
 * https://github.com/zlgopen/awtk/blob/master/design/default/ui/main_fscript.xml

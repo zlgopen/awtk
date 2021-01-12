@@ -1680,6 +1680,11 @@ static ret_t func_toupper(fscript_t* fscript, fscript_args_t* args, value_t* res
   return RET_OK;
 }
 
+static ret_t func_eval(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+  return fscript_eval(fscript->obj, value_str(args->args), result);
+}
+
 static ret_t func_tolower(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   str_t* str = &(fscript->str);
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
@@ -1844,6 +1849,7 @@ static const func_entry_t s_builtin_funcs[] = {
     {"sum", func_sum, 8},
     {"tolower", func_tolower, 1},
     {"toupper", func_toupper, 1},
+    {"eval", func_eval, 1},
     {"trim", func_trim, 1},
     {"&&", func_and, 2},
     {"abs", func_abs, 1},

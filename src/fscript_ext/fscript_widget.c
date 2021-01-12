@@ -225,6 +225,28 @@ static ret_t func_widget_get(fscript_t* fscript, fscript_args_t* args, value_t* 
   return widget_get(widget, path, result);
 }
 
+static ret_t func_widget_eval(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  value_t v;
+  widget_t* widget = NULL;
+  const char* path = NULL;
+  FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
+
+  if (args->size == 1) {
+    widget = WIDGET(object_get_prop_pointer(fscript->obj, STR_PROP_SELF));
+    path = value_str(args->args);
+  } else {
+    widget = to_widget(fscript, args->args);
+    path = value_str(args->args + 1);
+  }
+  FSCRIPT_FUNC_CHECK(widget != NULL && path != NULL, RET_BAD_PARAMS);
+
+  if(widget_get(widget, path, &v) == RET_OK) {
+    return fscript_eval(fscript->obj, value_str(&v), result);
+  }
+
+  return RET_OK;
+}
+
 static ret_t func_widget_set(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   value_t* v = NULL;
   ret_t ret = RET_OK;
@@ -372,6 +394,7 @@ ret_t fscript_widget_register(void) {
 
   ENSURE(fscript_register_func("widget_lookup", func_widget_lookup) == RET_OK);
   ENSURE(fscript_register_func("widget_get", func_widget_get) == RET_OK);
+  ENSURE(fscript_register_func("widget_eval", func_widget_eval) == RET_OK);
   ENSURE(fscript_register_func("widget_set", func_widget_set) == RET_OK);
   ENSURE(fscript_register_func("widget_create", func_widget_create) == RET_OK);
   ENSURE(fscript_register_func("widget_destroy", func_widget_destroy) == RET_OK);
