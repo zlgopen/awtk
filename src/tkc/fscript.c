@@ -1686,9 +1686,11 @@ static ret_t func_abs(fscript_t* fscript, fscript_args_t* args, value_t* result)
 }
 
 static ret_t func_len(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  char buff[64];
+  const char* str = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
-
-  value_set_int(result, tk_strlen(value_str(args->args)));
+  str = value_str_ex(args->args, buff, sizeof(buff)-1);
+  value_set_int(result, tk_strlen(str));
 
   return RET_OK;
 }
@@ -1887,6 +1889,7 @@ static const func_entry_t s_builtin_funcs[] = {
     {"great", func_great, 2},
     {"le", func_le, 2},
     {"len", func_len, 1},
+    {"strlen", func_len, 1},
     {"less", func_less, 2},
     {"mul", func_mul, 2},
     {"#", func_noop, 0},

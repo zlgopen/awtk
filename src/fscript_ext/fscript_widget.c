@@ -39,6 +39,8 @@ static widget_t* find_target_widget(widget_t* widget, const char* path, uint32_t
     if (is_first) {
       if (tk_str_eq(name, STR_PROP_PARENT)) {
         iter = widget->parent;
+      } else if (tk_str_eq(name, STR_PROP_SELF)) {
+        iter = widget;
       } else if (tk_str_eq(name, STR_PROP_WINDOW)) {
         iter = widget_get_window(widget);
       } else if (tk_str_eq(name, STR_PROP_WINDOW_MANAGER)) {
