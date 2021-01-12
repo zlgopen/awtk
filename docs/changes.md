@@ -5,6 +5,7 @@
   * fscript widget增加send\_key。
   * fscript增加eval和widget\_eval。
   * 修复agge初始化裁剪区宽高默认为-1的问题（感谢智明提供补丁）
+  * 修改resgen工具生成空文件的资源失败的输出信息（感谢雨欣提供补丁）
 
 2021/01/11
   * 更新文档。

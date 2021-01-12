@@ -123,7 +123,10 @@ static ret_t gen_floder(const char* in_flodername, const char* out_flodername, c
       ret = gen_one(in_name, out_name, theme);
       str_reset(&str_name);
       if (ret == RET_FAIL) {
-        GEN_ERROR(in_name);
+        printf(
+            "gen fail, filename = %s! desc = the resource file is empty, please confirm that the "
+            "resource file has saved data.!\n",
+            in_name);
         break;
       }
     }
@@ -180,7 +183,10 @@ int wmain(int argc, wchar_t* argv[]) {
                is_data_floder(in_filename));
   } else if (in_stat_info.is_reg_file == TRUE) {
     if (gen_one(in_filename, out_filename, theme_name.str) == RET_FAIL) {
-      GEN_ERROR(in_filename);
+      printf(
+          "gen fail, filename = %s! desc = the resource file is empty, please confirm that the "
+          "resource file has saved data.!\n",
+          in_filename);
     }
   } else {
     GEN_ERROR(in_filename);
