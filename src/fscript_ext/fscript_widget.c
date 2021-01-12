@@ -17,6 +17,7 @@
 #include "awtk_global.h"
 #include "tkc/fscript.h"
 #include "tkc/tokenizer.h"
+#include "base/enums.h"
 #include "base/main_loop.h"
 #include "base/window.h"
 #include "base/locale_info.h"
@@ -336,6 +337,31 @@ static ret_t func_widget_remove_timer(fscript_t* fscript, fscript_args_t* args, 
   return RET_OK;
 }
 
+static ret_t func_widget_send_key(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  const char* key = NULL;
+  widget_t* widget = NULL;
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+  widget = to_widget(fscript, args->args);
+  FSCRIPT_FUNC_CHECK(widget != NULL, RET_BAD_PARAMS);
+  key = value_str(args->args+1);
+  FSCRIPT_FUNC_CHECK(key != NULL, RET_BAD_PARAMS);
+
+  if (*key) {
+    key_event_t e;
+    const key_type_value_t* kt = keys_type_find(key);
+    int32_t code = kt != NULL ? kt->value : *key;
+
+    key_event_init(&e, EVT_KEY_DOWN, widget, code);
+    widget_dispatch(widget, (event_t*)&e);
+    key_event_init(&e, EVT_KEY_UP, widget, code);
+    widget_dispatch(widget, (event_t*)&e);
+		
+  }
+  value_set_bool(result, *key != '\0');
+
+  return RET_OK;
+}
+
 ret_t fscript_widget_register(void) {
   ENSURE(fscript_register_func("open", func_window_open) == RET_OK);
   ENSURE(fscript_register_func("close", func_window_close) == RET_OK);
@@ -351,6 +377,7 @@ ret_t fscript_widget_register(void) {
   ENSURE(fscript_register_func("widget_destroy", func_widget_destroy) == RET_OK);
   ENSURE(fscript_register_func("start_timer", func_widget_add_timer) == RET_OK);
   ENSURE(fscript_register_func("stop_timer", func_widget_remove_timer) == RET_OK);
+  ENSURE(fscript_register_func("send_key", func_widget_send_key) == RET_OK);
 
   return RET_OK;
 }

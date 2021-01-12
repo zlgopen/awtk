@@ -1,5 +1,9 @@
 # 最新动态
 
+2021/01/12
+  * 完善 widget\_exec\_code
+  * fscript widget增加send\_key。
+
 2021/01/11
   * 更新文档。
   * 修复 ios 编译问题。

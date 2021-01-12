@@ -1534,6 +1534,7 @@ typedef enum _window_closable_t {
 #define STR_PROP_PARENT "parent"
 #define STR_PROP_WINDOW "window"
 #define STR_PROP_WINDOW_MANAGER "window_manager"
+#define STR_PROP_MODEL "__model__"
 
 END_C_DECLS
 

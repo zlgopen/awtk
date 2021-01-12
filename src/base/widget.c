@@ -257,7 +257,6 @@ bool_t widget_is_window_opened(widget_t* widget) {
 }
 
 bool_t widget_is_style_exist(widget_t* widget, const char* style_name, const char* state_name) {
-
   value_t v;
   const void* data = NULL;
   const char* style = NULL;
@@ -286,7 +285,7 @@ bool_t widget_is_style_exist(widget_t* widget, const char* style_name, const cha
       data = theme_find_style(win_theme, type, style, state);
     }
   }
-  
+
   if (data == NULL && widget_get_prop(win, WIDGET_PROP_DEFAULT_THEME_OBJ, &v) == RET_OK) {
     default_theme = (theme_t*)value_pointer(&v);
     if (data == NULL) {
@@ -1616,11 +1615,20 @@ static ret_t widget_on_ungrab_keys(void* ctx, event_t* e) {
 }
 
 static ret_t widget_exec_code(void* ctx, event_t* evt) {
+  value_t v;
   value_t result;
   ret_t ret = RET_OK;
+  object_t* obj = NULL;
   widget_t* widget = WIDGET(evt->target);
   const char* code = (const char*)ctx;
-  object_t* obj = object_default_create();
+  if (widget_get_prop(widget, STR_PROP_MODEL, &v) == RET_OK) {
+    obj = value_object(&v);
+  }
+  if (obj != NULL) {
+    OBJECT_REF(obj);
+  } else {
+    obj = object_default_create();
+  }
   return_value_if_fail(obj != NULL && code != NULL, RET_REMOVE);
 
   object_set_prop_pointer(obj, STR_PROP_SELF, widget);

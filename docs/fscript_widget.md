@@ -581,6 +581,26 @@ stop_timer(widget)
 stop_timer(parent.timer)
 ```
 
+### 5.13 send_key
+
+> 向指定控件发生按键事件
+----------------------------
+
+#### 原型
+
+```js
+send_key(widget, key_name)
+```
+
+* widget 可以是 widget 对象，也可以是 widget 的路径。
+
+### 示例
+
+```js
+ <button text="Backspace" on:click="send_key(window.edit, 'backspace')"/>
+ <button text="Char" on:click="send_key(window.edit, 'a')"/>
+```
+
 ### 示例参考
 
 * https://github.com/zlgopen/awtk/blob/master/design/default/ui/main_fscript.xml
