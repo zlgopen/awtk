@@ -141,6 +141,25 @@ TEST(FScript, basic9) {
   OBJECT_UNREF(obj);
 }
 
+TEST(FScript, number) {
+  value_t v;
+  object_t* obj = object_default_create();
+  fscript_eval(obj, "0x1122334455667788", &v);
+  ASSERT_EQ(value_int64(&v), 0x1122334455667788);
+  value_reset(&v);
+  
+  fscript_eval(obj, "-0x1122334455667788", &v);
+  ASSERT_EQ(value_int64(&v), -0x1122334455667788);
+  value_reset(&v);
+  
+  fscript_eval(obj, "0x8822334455667788", &v);
+  ASSERT_EQ(value_uint64(&v), 0x8822334455667788);
+  value_reset(&v);
+  
+  OBJECT_UNREF(obj);
+}
+
+
 TEST(FScript, if1) {
   value_t v;
   object_t* obj = object_default_create();

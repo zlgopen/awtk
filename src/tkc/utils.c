@@ -228,6 +228,10 @@ int64_t tk_strtoll(const char* str, const char** end, int base) {
   return strtoll(str, (char**)end, base);
 }
 
+uint64_t tk_strtoull(const char* str, const char** end, int base) {
+  return strtoull(str, (char**)end, base);
+}
+
 const char* tk_itoa(char* str, int len, int n) {
   return_value_if_fail(str != NULL, NULL);
 
@@ -237,11 +241,14 @@ const char* tk_itoa(char* str, int len, int n) {
 }
 #endif /*HAS_NO_LIBC*/
 
+#define IS_HEX_NUM(s) (s[0] == '0' && (s[1] == 'x' || s[1] == 'X'))
+#define IS_BIN_NUM(s) (s[0] == '0' && (s[1] == 'b' || s[1] == 'B'))
+
 int tk_atoi(const char* str) {
   return_value_if_fail(str != NULL, 0);
-  if (str[0] == '0' && (str[1] == 'x' || str[1] == 'X')) {
+  if (IS_HEX_NUM(str)) {
     return tk_strtol(str + 2, NULL, 16);
-  } else if (str[0] == '0' && (str[1] == 'b' || str[1] == 'B')) {
+  } else if (IS_BIN_NUM(str)) {
     return tk_strtol(str + 2, NULL, 2);
   } else {
     return tk_strtol(str, NULL, 10);
@@ -250,12 +257,23 @@ int tk_atoi(const char* str) {
 
 int64_t tk_atol(const char* str) {
   return_value_if_fail(str != NULL, 0);
-  if (str[0] == '0' && (str[1] == 'x' || str[1] == 'X')) {
+  if (IS_HEX_NUM(str)) {
     return tk_strtoll(str + 2, NULL, 16);
-  } else if (str[0] == '0' && (str[1] == 'b' || str[1] == 'B')) {
+  } else if (IS_BIN_NUM(str)) {
     return tk_strtoll(str + 2, NULL, 2);
   } else {
     return tk_strtoll(str, NULL, 10);
+  }
+}
+
+uint64_t tk_atoul(const char* str) {
+  return_value_if_fail(str != NULL, 0);
+  if (IS_HEX_NUM(str)) {
+    return tk_strtoull(str + 2, NULL, 16);
+  } else if (IS_BIN_NUM(str)) {
+    return tk_strtoull(str + 2, NULL, 2);
+  } else {
+    return tk_strtoull(str, NULL, 10);
   }
 }
 

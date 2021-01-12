@@ -1,6 +1,7 @@
 # 最新动态
 
 2021/01/12
+  * 增加函数tk\_atoul
   * 完善 widget\_exec\_code
   * fscript widget增加send\_key。
   * fscript增加eval和widget\_eval。

@@ -765,16 +765,34 @@ static ret_t token_to_value(token_t* t, value_t* v) {
     tk_strncpy_s(number, sizeof(number) - 1, t->token, t->size);
     if (strchr(number, '.') != NULL) {
       value_set_double(v, tk_atof(number));
-    } else if (t->size > 10) {
-      value_set_int64(v, tk_atol(number));
     } else {
+      uint64_t vv = 0;
       const char* str = number;
-      if (str[0] == '0' && (str[1] == 'x' || str[1] == 'X')) {
-        value_set_uint32(v, tk_atol(number));
-      } else if (str[0] == '0' && (str[1] == 'b' || str[1] == 'B')) {
-        value_set_uint32(v, tk_atol(number));
+      bool_t has_minus = FALSE;
+      if (*str == '-') {
+        has_minus = TRUE;
+        str++;
+      }
+
+      vv = tk_atoul(str);
+      if (vv < INT_MAX) {
+        if (has_minus) {
+          value_set_int32(v, -vv);
+        } else {
+          value_set_int32(v, vv);
+        }
+      } else if (vv < UINT32_MAX) {
+        if (has_minus) {
+          value_set_int64(v, -vv);
+        } else {
+          value_set_uint32(v, vv);
+        }
       } else {
-        value_set_int(v, tk_atoi(number));
+        if (has_minus) {
+          value_set_int64(v, -vv);
+        } else {
+          value_set_uint64(v, vv);
+        }
       }
     }
   } else if (t->type == TOKEN_STR) {

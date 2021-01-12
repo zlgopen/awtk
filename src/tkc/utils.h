@@ -53,9 +53,20 @@ int tk_atoi(const char* str);
  *
  * @param {const char*} str 要转换为整型的字符串。
  *
- * @return {int} 返回转换后的整型。
+ * @return {int64_t} 返回转换后的整型。
  */
 int64_t tk_atol(const char* str);
+
+/**
+ * @method tk_atoul
+ *
+ * 将字符串转换为整型。
+ *
+ * @param {const char*} str 要转换为整型的字符串。
+ *
+ * @return {uint64_t} 返回转换后的整型。
+ */
+uint64_t tk_atoul(const char* str);
 
 /**
  * @method tk_atob
