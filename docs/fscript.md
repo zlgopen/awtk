@@ -1289,12 +1289,28 @@ runFScript 的第二个参数可以指定运行次数，方便测量某个函数
  ./bin/runFScript 'set(a, 2); set(b, 3); print(a+b)'
 ```
 
-### 7. 扩展函数
+### 7. 扩展模块
 
-* [位操作扩展函数](fscript_bits.md)
-* [数学扩展函数](fscript_math.md)
-* [CRC 扩展函数](fscript_crc.md)
-* [value 扩展函数](fscript_value.md)
-* [widget 扩展函数](fscript_widget.md)
-* [object 扩展函数](fscript_object.md)
-* [app_conf 扩展函数](fscript_app_conf.md)
+* [位操作扩展模块](fscript_bits.md)
+* [数学扩展模块](fscript_math.md)
+* [CRC 扩展模块](fscript_crc.md)
+* [value 扩展模块](fscript_value.md)
+* [widget 扩展模块](fscript_widget.md)
+* [object 扩展模块](fscript_object.md)
+* [app\_conf 扩展模块](fscript_app_conf.md)
+* [日期和时间扩展模块](fscript_date_time.md)
+* [JSON 扩展模块](fscript_json.md)
+* [大端小端扩展模块](fscript_endian.md)
+* [istream 扩展模块](fscript_istream.md)
+* [ostream 扩展模块](fscript_ostream.md)
+* [iostream 扩展模块](fscript_iostream.md)
+* [TCP/UDP 流扩展模块](fscript_iostream_inet.md)
+* [文件流扩展模块](fscript_iostream_file.md)
+* [串口流扩展模块](fscript_iostream_serial.md)
+* [typed array 扩展模块](fscript_typed_array.md)
+* [写缓冲区扩展模块](fscript_wbuffer.md)
+* [读缓冲区扩展模块](fscript_rbuffer.md)
+
+### 8. 更多示例
+
+请参考 tests/fscripts 目录。

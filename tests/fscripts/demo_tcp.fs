@@ -1,5 +1,7 @@
-#("start tcp echo server first")
-#("socat -v tcp-l:1234,fork exec:'/bin/cat'")
+//
+//start tcp echo server first
+//socat -v tcp-l:1234,fork exec:'/bin/cat'
+//
 
 a = iostream_tcp_create("localhost", 1234)
 b = iostream_get_ostream(a)

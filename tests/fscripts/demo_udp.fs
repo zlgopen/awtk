@@ -1,5 +1,7 @@
-#("start udp echo server first")
-#("./bin/udp_recv 4000")
+//
+// start udp echo server first
+// ./bin/udp_recv 4000
+//
 
 a = iostream_udp_create("localhost", 4000)
 b = iostream_get_ostream(a)

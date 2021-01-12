@@ -1,3 +1,11 @@
+## iostream 扩展函数
+
+### 1.iostream\_get\_istream
+
+### 2.iostream\_get\_ostream
+
+### 更多示例
+```js
 //
 // start serial echo server first
 // ./bin/serial_recv 4000
@@ -16,3 +24,4 @@ assert(istream_read_string(c, 6, 3000) == "hello\n")
 unset(c)
 unset(b)
 unset(a)
+```
