@@ -3,6 +3,7 @@
 2021/01/12
   * 完善 widget\_exec\_code
   * fscript widget增加send\_key。
+  * 修复agge初始化裁剪区宽高默认为-1的问题（感谢智明提供补丁）
 
 2021/01/11
   * 更新文档。

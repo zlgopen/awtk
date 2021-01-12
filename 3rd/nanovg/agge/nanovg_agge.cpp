@@ -291,7 +291,7 @@ static agge::pixel32_rgba to_pixel32_rgba(NVGcolor rgba) {
 static int clip_rect_is_zero(NVGscissor* scissor) {
   int w = (int)(scissor->extent[0] + 0.5f);
   int h = (int)(scissor->extent[1] + 0.5f);
-  if (w == 0 || h == 0) {
+  if (w <= 0 || h <= 0) {
     return 0;
   }
   return 1;
