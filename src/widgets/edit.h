@@ -100,6 +100,68 @@ typedef struct _edit_t {
   widget_t widget;
 
   /**
+   * @property {char*} tips
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 输入提示。
+   */
+  char* tips;
+
+  /**
+   * @property {char*} tr_tips
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 保存用于翻译的提示信息。
+   */
+  char* tr_tips;
+
+  /**
+   * @property {char*} action_text
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 软键盘上action按钮的文本。内置取值有：
+   * 
+   * * next 将焦点切换到下一个控件。
+   * * done 完成，关闭软键盘。
+   * 
+   * 也可以使用其它文本，比如send表示发送。这个需要自己实现相应的功能，处理EVT\_IM\_ACTION事件即可。
+   * 
+   */
+  char* action_text;
+
+  /**
+   * @property {char*} keyboard
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 自定义软键盘名称。AWTK优先查找keyboard属性设置的键盘文件名（该键盘的XML文件需要在default\raw\ui目录下存在），如果keyboard为空就找input_type设置的键盘类型
+   */
+  char* keyboard;
+
+  /**
+   * @property {double} min
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 最小值或最小长度。
+   */
+  double min;
+
+  /**
+   * @property {double} max
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 最大值或最大长度。
+   */
+  double max;
+
+  /**
+   * @property {double} step
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 步长。
+   * 作为数值型编辑器时，一次增加和减少时的数值。
+   */
+  double step;
+
+  /**
+   * @property {input_type_t} input_type
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 输入类型。
+   */
+  input_type_t input_type;
+  /**
    * @property {bool_t} readonly
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 编辑器是否为只读。
@@ -142,93 +204,6 @@ typedef struct _edit_t {
    */
   bool_t close_im_when_blured;
   /**
-   * @property {uint8_t} top_margin
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 上边距。
-   */
-  uint8_t top_margin;
-  /**
-   * @property {uint8_t} bottom_margin
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 下边距。
-   */
-  uint8_t bottom_margin;
-  /**
-   * @property {uint8_t} left_margin
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 左边距。
-   */
-  uint8_t left_margin;
-  /**
-   * @property {uint8_t} right_margin
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 右边距。
-   */
-  uint8_t right_margin;
-
-  /**
-   * @property {char*} tips
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 输入提示。
-   */
-  char* tips;
-
-  /**
-   * @property {char*} tr_tips
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 保存用于翻译的提示信息。
-   */
-  char* tr_tips;
-
-  /**
-   * @property {char*} action_text
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 软键盘上action按钮的文本。内置取值有：
-   * 
-   * * next 将焦点切换到下一个控件。
-   * * done 完成，关闭软键盘。
-   * 
-   * 也可以使用其它文本，比如send表示发送。这个需要自己实现相应的功能，处理EVT\_IM\_ACTION事件即可。
-   * 
-   */
-  char* action_text;
-
-  /**
-   * @property {char*} keyboard
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 自定义软键盘名称。AWTK优先查找keyboard属性设置的键盘文件名（该键盘的XML文件需要在default\raw\ui目录下存在），如果keyboard为空就找input_type设置的键盘类型
-   */
-  char* keyboard;
-
-  /**
-   * @property {input_type_t} input_type
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 输入类型。
-   */
-  input_type_t input_type;
-
-  /**
-   * @property {double} min
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 最小值或最小长度。
-   */
-  double min;
-
-  /**
-   * @property {double} max
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 最大值或最大长度。
-   */
-  double max;
-
-  /**
-   * @property {double} step
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 步长。
-   * 作为数值型编辑器时，一次增加和减少时的数值。
-   */
-  double step;
-  /**
    * @property {bool_t} cancelable
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 是否支持撤销编辑。如果为TRUE，在失去焦点之前可以撤销所有修改(恢复获得焦点之前的内容)。
@@ -239,6 +214,12 @@ typedef struct _edit_t {
   bool_t cancelable;
 
   /*private*/
+  uint8_t margin;
+  uint8_t top_margin;
+  uint8_t bottom_margin;
+  uint8_t left_margin;
+  uint8_t right_margin;
+
   uint32_t idle_id;
   uint32_t timer_id;
   text_edit_t* model;

@@ -44,6 +44,7 @@
 #define PASSWORD_MASK_CHAR '*'
 
 static ret_t edit_auto_fix(widget_t* widget);
+static ret_t edit_reset_layout(widget_t* widget);
 static ret_t edit_update_status(widget_t* widget);
 static ret_t edit_pre_input(widget_t* widget, uint32_t key);
 static ret_t edit_select_all_async(const idle_info_t* info);
@@ -702,8 +703,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
 
   if (edit->readonly) {
     if (type == EVT_RESIZE || type == EVT_MOVE_RESIZE) {
-      text_edit_layout(edit->model);
-      widget_invalidate(widget, NULL);
+      edit_reset_layout(widget);
     }
     return RET_OK;
   }
@@ -825,8 +825,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
     }
     case EVT_RESIZE:
     case EVT_MOVE_RESIZE: {
-      text_edit_layout(edit->model);
-      widget_invalidate(widget, NULL);
+      edit_reset_layout(widget);
       break;
     }
     case EVT_VALUE_CHANGING: {
@@ -1045,6 +1044,14 @@ static ret_t edit_apply_tr_text_before_paint(void* ctx, event_t* e) {
   return RET_REMOVE;
 }
 
+static ret_t edit_reset_layout(widget_t* widget) {
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
+  text_edit_layout(edit->model);
+  widget_invalidate(widget, NULL);
+  return RET_OK;
+}
+
 ret_t edit_set_tr_tips(widget_t* widget, const char* tr_tips) {
   edit_t* edit = EDIT(widget);
   widget_t* win = widget_get_window(widget);
@@ -1130,16 +1137,44 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
     value_set_bool(v, edit->close_im_when_blured);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_LEFT_MARGIN)) {
-    value_set_int(v, edit->left_margin);
+    uint32_t margin = 0;
+    if (widget->astyle != NULL) {
+      TEXT_EDIT_GET_STYLE_MARGIN(widget->astyle, margin, LEFT);
+    }
+    if (margin == 0) {
+      margin = edit->left_margin != 0 ? edit->left_margin : edit->margin;
+    }
+    value_set_int(v, margin);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_RIGHT_MARGIN)) {
-    value_set_int(v, edit->right_margin);
+    uint32_t margin = 0;
+    if (widget->astyle != NULL) {
+      TEXT_EDIT_GET_STYLE_MARGIN(widget->astyle, margin, RIGHT);
+    }
+    if (margin == 0) {
+      margin = edit->right_margin != 0 ? edit->right_margin : edit->margin;
+    }
+    value_set_int(v, margin);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_TOP_MARGIN)) {
-    value_set_int(v, edit->top_margin);
+    uint32_t margin = 0;
+    if (widget->astyle != NULL) {
+      TEXT_EDIT_GET_STYLE_MARGIN(widget->astyle, margin, TOP);
+    }
+    if (margin == 0) {
+      margin = edit->top_margin != 0 ? edit->top_margin : edit->margin;
+    }
+    value_set_int(v, margin);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_BOTTOM_MARGIN)) {
-    value_set_int(v, edit->bottom_margin);
+    uint32_t margin = 0;
+    if (widget->astyle != NULL) {
+      TEXT_EDIT_GET_STYLE_MARGIN(widget->astyle, margin, BOTTOM);
+    }
+    if (margin == 0) {
+      margin = edit->bottom_margin != 0 ? edit->bottom_margin : edit->margin;
+    }
+    value_set_int(v, margin);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_PASSWORD_VISIBLE)) {
     value_set_bool(v, edit->password_visible);
@@ -1284,22 +1319,24 @@ ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
     edit->close_im_when_blured = value_bool(v);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_MARGIN)) {
-    int margin = value_int(v);
-    edit->left_margin = margin;
-    edit->right_margin = margin;
-    edit->top_margin = margin;
-    edit->bottom_margin = margin;
+    edit->margin = value_int(v);
+    edit_reset_layout(widget);
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_LEFT_MARGIN)) {
     edit->left_margin = value_int(v);
+    edit_reset_layout(widget);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_RIGHT_MARGIN)) {
     edit->right_margin = value_int(v);
+    edit_reset_layout(widget);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_TOP_MARGIN)) {
     edit->top_margin = value_int(v);
+    edit_reset_layout(widget);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_BOTTOM_MARGIN)) {
     edit->bottom_margin = value_int(v);
+    edit_reset_layout(widget);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_PASSWORD_VISIBLE)) {
     edit_set_password_visible(widget, value_bool(v));
@@ -1689,10 +1726,11 @@ widget_t* edit_create_ex(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy
   edit_t* edit = EDIT(widget);
   return_value_if_fail(edit != NULL, NULL);
 
-  edit->left_margin = 2;
-  edit->right_margin = 2;
-  edit->top_margin = 2;
-  edit->bottom_margin = 2;
+  edit->margin = 2;
+  edit->top_margin = 0;
+  edit->left_margin = 0;
+  edit->right_margin = 0;
+  edit->bottom_margin = 0;
   edit->close_im_when_blured = TRUE;
   edit->open_im_when_focused = TRUE;
   edit_set_text_limit(widget, 0, 1024);

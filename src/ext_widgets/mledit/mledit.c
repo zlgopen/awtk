@@ -190,16 +190,42 @@ static ret_t mledit_get_prop(widget_t* widget, const char* name, value_t* v) {
     value_set_int(v, mledit->scroll_line);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_LEFT_MARGIN)) {
-    value_set_int(v, mledit->left_margin);
+    uint32_t margin = 0;
+    if (widget->astyle != NULL) {
+      TEXT_EDIT_GET_STYLE_MARGIN(widget->astyle, margin, LEFT);
+    }
+    if (margin == 0) {
+      margin = mledit->left_margin != 0 ? mledit->left_margin : mledit->margin;
+    }
+    value_set_int(v, margin);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_RIGHT_MARGIN)) {
-    value_set_int(v, mledit->right_margin);
+    uint32_t margin = 0;
+    if (widget->astyle != NULL) {
+      TEXT_EDIT_GET_STYLE_MARGIN(widget->astyle, margin, RIGHT);
+    }
+    if (margin == 0) {
+      margin = mledit->right_margin != 0 ? mledit->right_margin : mledit->margin;
+    }
+    value_set_int(v, margin);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_TOP_MARGIN)) {
-    value_set_int(v, mledit->top_margin);
+    uint32_t margin = 0;
+    if (widget->astyle != NULL) {
+      TEXT_EDIT_GET_STYLE_MARGIN(widget->astyle, margin, TOP);
+    }
+    if (margin == 0) {
+      margin = mledit->top_margin != 0 ? mledit->top_margin : mledit->margin;
+    }
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_BOTTOM_MARGIN)) {
-    value_set_int(v, mledit->bottom_margin);
+    uint32_t margin = 0;
+    if (widget->astyle != NULL) {
+      TEXT_EDIT_GET_STYLE_MARGIN(widget->astyle, margin, BOTTOM);
+    }
+    if (margin == 0) {
+      margin = mledit->bottom_margin != 0 ? mledit->bottom_margin : mledit->margin;
+    }
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_TIPS)) {
     value_set_str(v, mledit->tips);
@@ -243,7 +269,8 @@ static ret_t mledit_get_prop(widget_t* widget, const char* name, value_t* v) {
   return RET_NOT_FOUND;
 }
 
-static inline void mledit_reset_text_edit_layout(text_edit_t* text_edit) {
+static void mledit_reset_text_edit_layout(text_edit_t* text_edit) {
+  text_edit_layout(text_edit);
   text_edit_set_offset(text_edit, 0, 0);
   text_edit_set_select(text_edit, 0, 0);
   text_edit_set_cursor(text_edit, text_edit_get_cursor(text_edit));
@@ -296,11 +323,7 @@ static ret_t mledit_set_prop(widget_t* widget, const char* name, const value_t* 
     mledit->close_im_when_blured = value_bool(v);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_MARGIN)) {
-    int margin = value_int(v);
-    mledit->left_margin = margin;
-    mledit->right_margin = margin;
-    mledit->top_margin = margin;
-    mledit->bottom_margin = margin;
+    mledit->margin = value_int(v);
     mledit_reset_text_edit_layout(mledit->model);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_LEFT_MARGIN)) {
@@ -866,10 +889,11 @@ widget_t* mledit_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 
   mledit->model = text_edit_create(widget, FALSE);
   ENSURE(mledit->model != NULL);
-  mledit->left_margin = 1;
-  mledit->top_margin = 1;
-  mledit->right_margin = 1;
-  mledit->bottom_margin = 1;
+  mledit->margin = 1;
+  mledit->top_margin = 0;
+  mledit->left_margin = 0;
+  mledit->right_margin = 0;
+  mledit->bottom_margin = 0;
   mledit->scroll_line = 1.0f;
   wstr_init(&(mledit->temp), 0);
   widget_set_text(widget, L"");

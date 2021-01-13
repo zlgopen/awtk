@@ -60,36 +60,6 @@ typedef struct _mledit_t {
   widget_t widget;
 
   /**
-   * @property {bool_t} readonly
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 编辑器是否为只读。
-   */
-  bool_t readonly;
-  /**
-   * @property {uint8_t} top_margin
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 上边距。
-   */
-  uint8_t top_margin;
-  /**
-   * @property {uint8_t} bottom_margin
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 下边距。
-   */
-  uint8_t bottom_margin;
-  /**
-   * @property {uint8_t} left_margin
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 左边距。
-   */
-  uint8_t left_margin;
-  /**
-   * @property {uint8_t} right_margin
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 右边距。
-   */
-  uint8_t right_margin;
-  /**
    * @property {char*} tips
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 输入提示。
@@ -109,13 +79,6 @@ typedef struct _mledit_t {
   char* keyboard;
 
   /**
-   * @property {bool_t} wrap_word
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 是否自动折行。
-   */
-  bool_t wrap_word;
-
-  /**
    * @property {uint32_t} max_lines
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 最大行数。
@@ -123,11 +86,23 @@ typedef struct _mledit_t {
   uint32_t max_lines;
 
   /**
+   * @property {bool_t} wrap_word
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 是否自动折行。
+   */
+  bool_t wrap_word;
+  /**
    * @property {uint32_t} scroll_line
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 鼠标一次滚动行数。
    */
   uint32_t scroll_line;
+  /**
+   * @property {bool_t} readonly
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 编辑器是否为只读。
+   */
+  bool_t readonly;
 
   /**
    * @property {bool_t} cancelable
@@ -155,6 +130,12 @@ typedef struct _mledit_t {
    */
   bool_t close_im_when_blured;
   /*private*/
+  uint8_t margin;
+  uint8_t top_margin;
+  uint8_t left_margin;
+  uint8_t right_margin;
+  uint8_t bottom_margin;
+
   text_edit_t* model;
   uint32_t timer_id;
 

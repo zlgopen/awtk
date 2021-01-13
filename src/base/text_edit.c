@@ -111,64 +111,28 @@ static align_h_t widget_get_text_align_h(widget_t* widget) {
   return (align_h_t)style_get_int(widget->astyle, STYLE_ID_TEXT_ALIGN_H, ALIGN_H_LEFT);
 }
 
+#define TEXT_EDIT_GET_WIDGET_MARGIN(widget, style, out_value, type) {                      \
+  value_t v;                                                                               \
+  value_set_int(&v, 0);                                                                    \
+  if (widget_get_prop((widget), WIDGET_PROP_##type##_MARGIN, &v) == RET_OK) {              \
+    (out_value) = value_int(&v);                                                           \
+  }                                                                                        \
+  TEXT_EDIT_GET_STYLE_MARGIN(style, out_value, type)                                       \
+}                                                                                          \
+
 static ret_t widget_get_text_layout_info(widget_t* widget, text_layout_info_t* info) {
-  value_t v;
   style_t* style = widget->astyle;
   return_value_if_fail(widget != NULL && info != NULL && style != NULL, RET_BAD_PARAMS);
 
-  value_set_int(&v, 0);
   info->widget_w = widget->w;
   info->widget_h = widget->h;
   info->virtual_w = widget->w;
   info->virtual_h = widget->h;
 
-  if (widget_get_prop(widget, WIDGET_PROP_LEFT_MARGIN, &v) == RET_OK) {
-    info->margin_l = value_int(&v);
-  }
-
-  if (info->margin_l == 0) {
-    info->margin_l = style_get_int(style, STYLE_ID_MARGIN_LEFT, 1);
-  }
-
-  if (info->margin_l == 0) {
-    info->margin_l = style_get_int(style, STYLE_ID_MARGIN, 1);
-  }
-
-  if (widget_get_prop(widget, WIDGET_PROP_RIGHT_MARGIN, &v) == RET_OK) {
-    info->margin_r = value_int(&v);
-  }
-
-  if (info->margin_r == 0) {
-    info->margin_r = style_get_int(style, STYLE_ID_MARGIN_RIGHT, 1);
-  }
-
-  if (info->margin_r == 0) {
-    info->margin_r = style_get_int(style, STYLE_ID_MARGIN, 1);
-  }
-
-  if (widget_get_prop(widget, WIDGET_PROP_TOP_MARGIN, &v) == RET_OK) {
-    info->margin_t = value_int(&v);
-  }
-
-  if (info->margin_t == 0) {
-    info->margin_t = style_get_int(style, STYLE_ID_MARGIN_TOP, 1);
-  }
-
-  if (info->margin_t == 0) {
-    info->margin_t = style_get_int(style, STYLE_ID_MARGIN, 1);
-  }
-
-  if (widget_get_prop(widget, WIDGET_PROP_BOTTOM_MARGIN, &v) == RET_OK) {
-    info->margin_b = value_int(&v);
-  }
-
-  if (info->margin_b == 0) {
-    info->margin_b = style_get_int(style, STYLE_ID_MARGIN_BOTTOM, 1);
-  }
-
-  if (info->margin_b == 0) {
-    info->margin_b = style_get_int(style, STYLE_ID_MARGIN, 1);
-  }
+  TEXT_EDIT_GET_WIDGET_MARGIN(widget, style, info->margin_l, LEFT);
+  TEXT_EDIT_GET_WIDGET_MARGIN(widget, style, info->margin_r, RIGHT);
+  TEXT_EDIT_GET_WIDGET_MARGIN(widget, style, info->margin_t, TOP);
+  TEXT_EDIT_GET_WIDGET_MARGIN(widget, style, info->margin_b, BOTTOM);
 
   info->w = info->widget_w - info->margin_l - info->margin_r;
   info->h = info->widget_h - info->margin_t - info->margin_b;
@@ -724,6 +688,7 @@ static ret_t text_edit_do_paint(text_edit_t* text_edit, canvas_t* c) {
   return_value_if_fail(text_edit != NULL && c != NULL, RET_BAD_PARAMS);
 
   widget_prepare_text_style(text_edit->widget, c);
+  widget_get_text_layout_info(text_edit->widget, &(impl->layout_info));
 
   new_line_height = c->font_size * FONT_BASELINE;
   is_notify = impl->line_height != new_line_height;
