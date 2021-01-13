@@ -1,9 +1,53 @@
 ## JSON 扩展函数
 
 ### 1.json\_load
+
+> 加载 json 数据。
+----------------------------
+
+#### 原型
+
+```js
+json_load(str) => object
+json_load(binary) => object
+json_load(data, size) => object
+```
+
 ### 2.json\_save
+
+> 保存 json 数据。
+----------------------------
+
+#### 原型
+
+```js
+json_save(obj, filename) => bool
+```
+
 ### 3.ubjson\_load
+
+> 加载 ubjson 数据。
+----------------------------
+
+#### 原型
+
+```js
+ubjson_load(binary) => object
+ubjson_load(data, size) => object
+```
+
 ### 4.ubjson\_save
+
+> 保存 ubjson 数据。
+----------------------------
+
+#### 原型
+
+```js
+ubjson_save(obj, filename) => bool
+```
+
+### 完整示例
 
 ```js
 //load from string
@@ -38,4 +82,3 @@ assert(file_remove("test.json"))
 unset(a)
 unset(b)
 ```
-

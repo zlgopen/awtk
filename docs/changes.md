@@ -3,6 +3,7 @@
 2021/01/13
   * 完善 fscript.md。
   * 完善 api 注释（感谢福明提供补丁） 
+  * 增加 [《JSON 扩展模块》](fscript_json.md)
   * 增加 [《文件系统扩展模块》](fscript_fs.md)
   * 增加 [《日期和时间扩展模块》](fscript_date_time.md)
   * 修复 tkc/event.c/event.h 中的错误（感谢忠吉提供补丁）
