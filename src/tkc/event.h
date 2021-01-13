@@ -381,7 +381,7 @@ typedef struct _cmd_exec_event_t {
   /**
    * @property {bool_t} can_exec
    * @annotation ["readable", "scriptable"]
-   * 执行结果(适用于CAN_EXEC)。
+   * 标识命令是否可以执行(适用于CAN_EXEC)。
    */
   bool_t can_exec;
 } cmd_exec_event_t;

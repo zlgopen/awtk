@@ -98,7 +98,7 @@ event_t* progress_event_init(progress_event_t* event, uint32_t percent) {
 
 done_event_t* done_event_cast(event_t* event) {
   return_value_if_fail(event != NULL, NULL);
-  return_value_if_fail(event->type == EVT_PROGRESS, NULL);
+  return_value_if_fail(event->type == EVT_DONE, NULL);
 
   return (done_event_t*)event;
 }
@@ -116,7 +116,7 @@ event_t* done_event_init(done_event_t* event, ret_t result) {
 
 error_event_t* error_event_cast(event_t* event) {
   return_value_if_fail(event != NULL, NULL);
-  return_value_if_fail(event->type == EVT_PROGRESS, NULL);
+  return_value_if_fail(event->type == EVT_ERROR, NULL);
 
   return (error_event_t*)event;
 }
