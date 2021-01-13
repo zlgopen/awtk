@@ -677,6 +677,19 @@ static ret_t edit_select_all_async(const idle_info_t* info) {
   return RET_REMOVE;
 }
 
+static ret_t edit_check_valid_value(widget_t* widget) {
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(widget != NULL && edit != NULL, RET_BAD_PARAMS);
+  if (!edit_is_valid_value(widget)) {
+    if (edit->auto_fix) {
+      edit_auto_fix(widget);
+    } else if (widget->text.size > 0) {
+      widget_set_state(widget, WIDGET_STATE_ERROR);
+    }
+  }
+  return RET_OK;
+}
+
 ret_t edit_on_event(widget_t* widget, event_t* e) {
   ret_t ret = RET_OK;
   uint32_t type = e->type;
@@ -785,13 +798,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       }
 
       edit_update_status(widget);
-      if (!edit_is_valid_value(widget)) {
-        if (edit->auto_fix) {
-          edit_auto_fix(widget);
-        } else if (widget->text.size > 0) {
-          widget_set_state(widget, WIDGET_STATE_ERROR);
-        }
-      }
+      edit_check_valid_value(widget);
       text_edit_unselect(edit->model);
       edit_dispatch_event(widget, EVT_VALUE_CHANGED);
       edit_commit_text(widget);
@@ -1209,6 +1216,7 @@ static ret_t edit_set_text(widget_t* widget, const value_t* v) {
     text_edit_set_cursor(edit->model, widget->text.size);
     edit_dispatch_event(widget, EVT_VALUE_CHANGED);
     edit_update_status(widget);
+    edit_check_valid_value(widget);
   }
 
   wstr_reset(&str);
@@ -1603,13 +1611,15 @@ ret_t edit_on_destroy(widget_t* widget) {
   return RET_OK;
 }
 
-static ret_t edit_hook_children_button(const idle_info_t* info) {
+static ret_t edit_hook_children_button_and_check_valid_value(const idle_info_t* info) {
   widget_t* widget = WIDGET(info->ctx);
   edit_t* edit = EDIT(widget);
   return_value_if_fail(edit != NULL, RET_REMOVE);
 
   widget_foreach(widget, edit_hook_button, widget);
   edit->idle_id = TK_INVALID_ID;
+  
+  edit_check_valid_value(widget);
 
   return RET_REMOVE;
 }
@@ -1689,7 +1699,7 @@ widget_t* edit_create_ex(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy
 
   edit_update_status(widget);
   edit->timer_id = TK_INVALID_ID;
-  edit->idle_id = idle_add(edit_hook_children_button, edit);
+  edit->idle_id = idle_add(edit_hook_children_button_and_check_valid_value, edit);
 
   edit->model = text_edit_create(widget, TRUE);
   ENSURE(edit->model != NULL);
