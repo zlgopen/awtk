@@ -284,7 +284,7 @@ set(a, a+b)
 assert(condition, crash_if_fail) => void
 ```
 
-* crash\_if\_fail 可选。为true时，调用系统的assert，否则只是打印警告。
+* crash\_if\_fail 可选。为 true 时，调用系统的 assert，否则只是打印警告。
 
 #### 示例
 

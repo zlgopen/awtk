@@ -1,20 +1,20 @@
 # 最新动态
 
 2021/01/13
-  * 完善fscript.md。
-  * 完善api注释（感谢福明提供补丁） 
-  * 修复tkc/event.c/event.h中的错误（感谢忠吉提供补丁）
-  * 修复tkc/event.c/event.h中的错误（感谢忠吉提供补丁）
+  * 完善 fscript.md。
+  * 完善 api 注释（感谢福明提供补丁） 
+  * 增加 [文件系统扩展模块](fscript_fs.md)
+  * 修复 tkc/event.c/event.h 中的错误（感谢忠吉提供补丁）
   * 修复 text\_selector 控件空选项时候选值出错问题（感谢智明提供补丁）
   * edit 控件的 text 值设置为错误的值时没有正确显示 error 状态和一开始 xml 上面设置错误值没有正确显示 error 状态（感谢智明提供补丁）
 
 2021/01/12
-  * 增加函数tk\_atoul
+  * 增加函数 tk\_atoul
   * 完善 widget\_exec\_code
-  * fscript widget增加send\_key。
-  * fscript增加eval和widget\_eval。
-  * 修复agge初始化裁剪区宽高默认为-1的问题（感谢智明提供补丁）
-  * 修改resgen工具生成空文件的资源失败的输出信息（感谢雨欣提供补丁）
+  * fscript widget 增加 send\_key。
+  * fscript 增加 eval 和 widget\_eval。
+  * 修复 agge 初始化裁剪区宽高默认为-1 的问题（感谢智明提供补丁）
+  * 修改 resgen 工具生成空文件的资源失败的输出信息（感谢雨欣提供补丁）
 
 2021/01/11
   * 更新文档。

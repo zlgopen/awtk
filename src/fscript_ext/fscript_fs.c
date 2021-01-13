@@ -110,7 +110,7 @@ static ret_t func_file_get_size(fscript_t* fscript, fscript_args_t* args, value_
   filename = value_str(args->args);
   FSCRIPT_FUNC_CHECK(filename != NULL, RET_BAD_PARAMS);
 
-  value_set_uint32(result, file_get_size(filename));
+  value_set_int32(result, file_get_size(filename));
 
   return RET_OK;
 }
