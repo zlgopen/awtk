@@ -4220,7 +4220,7 @@ ret_t widget_use_style (widget_t* widget, const char* style);
 #### with\_focus\_state 属性
 -----------------------
 > <p id="widget_t_with_focus_state">是否支持焦点状态。
-> 如果希望style支持焦点状态，但有不希望焦点停留，可用本属性。
+> 如果希望style支持焦点状态，但又不希望焦点停留，可用本属性。
 
 * 类型：bool\_t
 
