@@ -10,7 +10,7 @@
 #### 原型
 
 ```
-app_conf()
+app_conf() => object
 ```
 
 #### 示例
@@ -27,7 +27,7 @@ assert(object_set(app_conf(), "timeout", 100))
 #### 原型
 
 ```
-app_conf_save()
+app_conf_save() => bool
 ```
 
 #### 示例

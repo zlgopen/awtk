@@ -3,7 +3,8 @@
 2021/01/13
   * 完善 fscript.md。
   * 完善 api 注释（感谢福明提供补丁） 
-  * 增加 [文件系统扩展模块](fscript_fs.md)
+  * 增加 [《文件系统扩展模块》](fscript_fs.md)
+  * 增加 [《日期和时间扩展模块》](fscript_date_time.md)
   * 修复 tkc/event.c/event.h 中的错误（感谢忠吉提供补丁）
   * 修复 text\_selector 控件空选项时候选值出错问题（感谢智明提供补丁）
   * edit 控件的 text 值设置为错误的值时没有正确显示 error 状态和一开始 xml 上面设置错误值没有正确显示 error 状态（感谢智明提供补丁）
