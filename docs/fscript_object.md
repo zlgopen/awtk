@@ -1,6 +1,6 @@
 ## object 扩展函数
 
-object 适用于app\_conf、typed\_array和array等各种对象。
+object 适用于 app\_conf、typed\_array 和 array 等各种对象。
 
 ### 1. object_create
 
@@ -10,7 +10,7 @@ object 适用于app\_conf、typed\_array和array等各种对象。
 #### 原型
 
 ```
-object_create()
+object_create() => value
 ```
 
 #### 示例
@@ -22,12 +22,14 @@ a = object_create()
 ### 2. object_get
 
 > 获取对象的属性。
+
+可以通过 value\_is\_valid 来判断返回值是否有效。
 ----------------------------
 
 #### 原型
 
 ```
-object_get(o, key)
+object_get(o, key) => value
 ```
 
 #### 示例
@@ -44,7 +46,7 @@ print(object_get(a, "age"))
 #### 原型
 
 ```
-object_set(a, key, value)
+object_set(a, key, value) => bool
 ```
 
 #### 示例
@@ -61,7 +63,7 @@ object_set(a, "age", 123);
 #### 原型
 
 ```
-object_remove(a, key)
+object_remove(a, key) => bool
 ```
 
 #### 示例
