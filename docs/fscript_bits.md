@@ -110,7 +110,7 @@ print(n1>>n2)
 #### 原型
 
 ```
-bit_get(n1, n2) -> bool
+bit_get(n1, n2) => bool
 ```
 
 #### 示例
@@ -127,7 +127,7 @@ print(bit_get(0b1010, 1))
 #### 原型
 
 ```
-bit_set(n1, n2)
+bit_set(n1, n2) => value
 ```
 
 #### 示例
@@ -144,7 +144,7 @@ print(bit_set(0b1010, 0))
 #### 原型
 
 ```
-bit_clear(n1, n2)
+bit_clear(n1, n2) => value
 ```
 
 #### 示例
@@ -161,7 +161,7 @@ print(bit_clear(0b1010, 1))
 #### 原型
 
 ```
-bit_toggle(n1, n2)
+bit_toggle(n1, n2) => value
 ```
 
 #### 示例
