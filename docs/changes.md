@@ -8,6 +8,7 @@
   * 修复 text\_selector 控件空选项时候选值出错问题（感谢智明提供补丁）
   * edit 控件的 text 值设置为错误的值时没有正确显示 error 状态和一开始 xml 上面设置错误值没有正确显示 error 状态（感谢智明提供补丁）
   * 修改edit和mledit的边距属性以及优化了这两个控件的结构体布局（感谢智明提供补丁）
+  * 修改统一tr\_text由widget\_re\_translate\_text函数翻译（感谢智明提供补丁）
 
 2021/01/12
   * 增加函数 tk\_atoul

@@ -446,7 +446,8 @@ ret_t widget_set_tr_text(widget_t* widget, const char* text) {
 ret_t widget_re_translate_text(widget_t* widget) {
   if (widget->vt->on_re_translate != NULL) {
     widget->vt->on_re_translate(widget);
-  } else if (widget->tr_text != NULL) {
+  }
+  if (widget->tr_text != NULL) {
     value_t v;
     const char* tr_text = locale_info_tr(widget_get_locale_info(widget), widget->tr_text);
     widget_set_prop(widget, WIDGET_PROP_TEXT, value_set_str(&v, tr_text));
