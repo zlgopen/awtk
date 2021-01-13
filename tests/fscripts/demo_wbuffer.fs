@@ -16,6 +16,7 @@ wbuffer_write_binary(a, "wolrd", 6)
 assert(wbuffer_get_cursor(a)==27)
 
 b=rbuffer_create(wbuffer_get_data(a), wbuffer_get_cursor(a))
+assert(rbuffer_get_capacity(b) == wbuffer_get_cursor(a))
 
 assert(rbuffer_get_cursor(b)==0)
 assert(rbuffer_read_int8(b)== -10)
@@ -34,6 +35,11 @@ assert(rbuffer_read_string(b)=="hello")
 assert(rbuffer_get_cursor(b)==21)
 c = rbuffer_read_binary(b, 6)
 assert(rbuffer_get_cursor(b)==27)
+
+assert(rbuffer_rewind(b))
+assert(rbuffer_skip(b, 1))
+assert(rbuffer_get_cursor(b)==1)
+assert(rbuffer_read_int16(b)==-1122)
 
 wbuffer_rewind(a)
 assert(wbuffer_get_cursor(a)==0)

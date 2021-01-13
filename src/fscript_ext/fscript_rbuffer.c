@@ -18,14 +18,13 @@
 #include "tkc/buffer.h"
 #include "tkc/fscript.h"
 #include "tkc/object_rbuffer.h"
+#include "fscript_utils.h"
 
 static ret_t func_rbuffer_create(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   uint32_t size = 0;
-  uint8_t* data = NULL;
-  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
-  data = (uint8_t*)value_pointer(args->args);
-  size = value_uint32(args->args + 1);
-  FSCRIPT_FUNC_CHECK(data != NULL, RET_BAD_PARAMS);
+  const uint8_t* data = NULL;
+  FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(fargs_get_data_and_size(args, &data, &size) == RET_OK, RET_BAD_PARAMS);
 
   value_set_object(result, object_rbuffer_create(data, size));
   result->free_handle = TRUE;
