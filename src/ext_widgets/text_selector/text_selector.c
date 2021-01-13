@@ -102,16 +102,17 @@ static int32_t text_selector_range_yoffset(int32_t value, int32_t min_yoffset, i
                                            int32_t item_height, int32_t empty_item_height,
                                            bool_t loop_options) {
   if (value < min_yoffset) {
-    if (loop_options) {
-      int32_t tmp = max_yoffset + empty_item_height + item_height;
+    int32_t tmp = max_yoffset + empty_item_height + item_height;
+    if (loop_options && tmp != 0) {
       int32_t n = tk_abs(value / tmp) + 1;
       value = value + tmp * n;
     } else {
       value = min_yoffset;
     }
   } else if (value > max_yoffset) {
-    if (loop_options) {
-      value = value % (max_yoffset + empty_item_height + item_height);
+    int32_t tmp = max_yoffset + empty_item_height + item_height;
+    if (loop_options && tmp != 0) {
+      value = value % tmp;
     } else {
       value = max_yoffset;
     }
