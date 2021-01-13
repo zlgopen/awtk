@@ -281,8 +281,10 @@ set(a, a+b)
 ##### 原型
 
 ```
-assert(condition)
+assert(condition, crash_if_fail) => void
 ```
+
+* crash\_if\_fail 可选。为true时，调用系统的assert，否则只是打印警告。
 
 #### 示例
 
@@ -298,7 +300,7 @@ assert(1<2)
 ##### 原型
 
 ```
-eval(condition)
+eval(condition) => value
 ```
 
 #### 示例
@@ -315,7 +317,7 @@ eval("1+2")
 ##### 原型
 
 ```
-has_error()
+has_error() => bool
 ```
 
 #### 示例
@@ -332,7 +334,7 @@ print(has_error())
 ##### 原型
 
 ```
-clear_error()
+clear_error() => void
 ```
 
 #### 示例
@@ -349,7 +351,7 @@ clear_error()
 ##### 原型
 
 ```
-print(str)
+print(str,...) => void
 ```
 
 #### 示例
@@ -360,8 +362,8 @@ print("hello", "fscript")
 print(1)
 print(true)
 
-set(a, 100)
-set(b, 200)
+a=100
+b=200
 print(a+b)
 print(join(",", a, b))
 ```
@@ -375,7 +377,7 @@ print(join(",", a, b))
 ##### 原型
 
 ```
-set(var, value)
+set(var, value) => bool
 ```
 
 #### 示例
@@ -389,12 +391,16 @@ a=1
 
 > 清除变量。
 
+对于不再使用的变量，特别是对象和字符串，请调用本函数清除掉。
+
+当一个变量重复赋值时，会自动清除之前的数据。
+
 ----------------------------
 
 ##### 原型
 
 ```
-unset(var)
+unset(var) => void
 ```
 
 #### 示例
@@ -412,7 +418,7 @@ unset(a)
 ##### 原型
 
 ```
-int(var)
+int(var) => int32_t
 ```
 
 #### 示例
@@ -430,7 +436,7 @@ int("123")
 ##### 原型
 
 ```
-i8(var)
+i8(var) => int8_t
 ```
 
 #### 示例
@@ -448,7 +454,7 @@ i8("123")
 ##### 原型
 
 ```
-i16(var)
+i16(var) => int16_t
 ```
 
 #### 示例
@@ -466,7 +472,7 @@ i16("123")
 ##### 原型
 
 ```
-i32(var)
+i32(var) => int32_t
 ```
 
 #### 示例
@@ -484,7 +490,7 @@ i32("123")
 ##### 原型
 
 ```
-i64(var)
+i64(var) => int64_t
 ```
 
 #### 示例
@@ -502,7 +508,7 @@ i64("123")
 ##### 原型
 
 ```
-u8(var)
+u8(var) => uint8_t
 ```
 
 #### 示例
@@ -520,7 +526,7 @@ u8("123")
 ##### 原型
 
 ```
-u16(var)
+u16(var) => value(uint16)
 ```
 
 #### 示例
@@ -538,7 +544,7 @@ u16("123")
 ##### 原型
 
 ```
-u32(var)
+u32(var) => uint32_t
 ```
 
 #### 示例
@@ -556,7 +562,7 @@ u32("123")
 ##### 原型
 
 ```
-u64(var)
+u64(var) => uint64_t
 ```
 
 #### 示例
@@ -574,7 +580,7 @@ u64("123")
 ##### 原型
 
 ```
-f32(var)
+f32(var) => float
 ```
 
 #### 示例
@@ -590,7 +596,7 @@ f32("123")
 ##### 原型
 
 ```
-float(var)
+float(var) => double
 ```
 
 #### 示例
@@ -607,7 +613,7 @@ float("123")
 ##### 原型
 
 ```
-str(var [,force_pointer_as_str])
+str(var [,force_pointer_as_str]) => str
 ```
 
 > force\_pointer\_as\_str 如果输入参数是 POINTER 类型，是否将强制转换成字符串。
@@ -627,7 +633,7 @@ str(msg.payload, true)
 ##### 原型
 
 ```
-iformat(format, value)
+iformat(format, value) => str
 ```
 
 #### 示例
@@ -644,7 +650,7 @@ iformat("hello:%d", 123)
 ##### 原型
 
 ```
-fformat(format, value)
+fformat(format, value) => str
 ```
 
 #### 示例
@@ -661,7 +667,7 @@ fformat("hello:%lf", 123)
 ##### 原型
 
 ```
-exec(cmd, arg)
+exec(cmd, arg) => bool
 ```
 
 #### 示例
@@ -683,7 +689,7 @@ exec("clear", "all")
 ##### 原型
 
 ```
-join(seperator, s1, s2, s3...)
+join(seperator, s1, s2, s3...) => str
 ```
 
 #### 示例
@@ -701,7 +707,7 @@ join(",", 1, 2, 3, "abc")
 ##### 原型
 
 ```
-len(str)
+len(str) => uint32_t
 ```
 
 #### 示例
@@ -719,7 +725,7 @@ len("abc")
 ##### 原型
 
 ```
-toupper(str)
+toupper(str) => str
 ```
 
 #### 示例
@@ -737,7 +743,7 @@ touppper("abc")
 ##### 原型
 
 ```
-tolower(str)
+tolower(str) => str
 ```
 
 #### 示例
@@ -754,7 +760,7 @@ tolower("ABC")
 ##### 原型
 
 ```
-trim(str)
+trim(str) => str
 ```
 
 #### 示例
@@ -771,7 +777,7 @@ trm("  abc  ")
 ##### 原型
 
 ```
-substr(str, from, len)
+substr(str, from, len) => str
 ```
 
 #### 示例
@@ -788,7 +794,7 @@ substr("abcd", 1, 2)
 ##### 原型
 
 ```
-replace(str, old, new)
+replace(str, old, new) => str
 ```
 
 #### 示例
@@ -805,7 +811,7 @@ replace("ab cd", "ab", "hello")
 ##### 原型
 
 ```
-contains(str, substr)
+contains(str, substr) => bool
 ```
 
 #### 示例
@@ -1059,8 +1065,8 @@ a != b
 ##### 原型
 
 ```
-random()
-random(min, max)
+random() => int
+random(min, max) => int
 ```
 
 #### round 
@@ -1071,7 +1077,7 @@ random(min, max)
 ##### 原型
 
 ```
-round(v)
+round(v) => double
 ```
 
 #### 示例
@@ -1088,7 +1094,7 @@ round(4.5)
 ##### 原型
 
 ```
-floor(v)
+floor(v) => double
 ```
 
 #### 示例
@@ -1105,13 +1111,13 @@ floor(4.5)
 ##### 原型
 
 ```
-ceil(v)
+ceil(v) => double
 ```
 
 #### 示例
 
 ```
-ceil(4.5)
+ceil(4.5) 
 ```
 
 #### abs 
@@ -1122,7 +1128,7 @@ ceil(4.5)
 ##### 原型
 
 ```
-abs(a)
+abs(a) => double
 ```
 
 #### 示例
@@ -1139,7 +1145,7 @@ abs(1)
 ##### 原型
 
 ```
-min(a, b)
+min(a, b) => double
 ```
 
 #### max 
@@ -1150,13 +1156,13 @@ min(a, b)
 ##### 原型
 
 ```
-max(a, b)
+max(a, b) => double
 ```
 
 #### 示例
 
 ```
-max(1, 2)
+max(1, 2) 
 ```
 
 #### 示例
@@ -1173,7 +1179,7 @@ min(1, 2)
 ##### 原型
 
 ```
-clamp(a, min, max)
+clamp(a, min, max) => double
 ```
 
 #### 示例
@@ -1186,13 +1192,13 @@ clamp(2, 1, 3)
 
 #### time_now 
 
-> 获取当前时间函数 (s)。
+> 获取当前时间戳函数 (s)。
 ----------------------------
 
 ##### 原型
 
 ```
-time\_now()
+time\_now()  => uint64_t
 ```
 
 #### 示例
@@ -1203,13 +1209,13 @@ time_now()
 
 #### time\_now\_ms 
 
-> 获取当前时间函数 (ms)。
+> 获取当前时间戳函数 (ms)。
 ----------------------------
 
 ##### 原型
 
 ```
-time_now_ms()
+time_now_ms()  => uint64_t
 ```
 
 #### 示例
@@ -1220,13 +1226,13 @@ time\_now\_ms()
 
 #### time_now_us 
 
-> 获取当前时间函数 (us)。
+> 获取当前时间戳函数 (us)。
 ----------------------------
 
 ##### 原型
 
 ```
-time_now_us()
+time_now_us() => uint64_t
 ```
 
 #### 示例
@@ -1297,6 +1303,7 @@ runFScript 的第二个参数可以指定运行次数，方便测量某个函数
 * [value 扩展模块](fscript_value.md)
 * [widget 扩展模块](fscript_widget.md)
 * [object 扩展模块](fscript_object.md)
+* [文件系统扩展模块](fscript_fs.md)
 * [app\_conf 扩展模块](fscript_app_conf.md)
 * [日期和时间扩展模块](fscript_date_time.md)
 * [JSON 扩展模块](fscript_json.md)

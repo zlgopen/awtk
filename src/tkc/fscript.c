@@ -1589,13 +1589,13 @@ static ret_t func_eq(fscript_t* fscript, fscript_args_t* args, value_t* result) 
   value_t* v2 = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   v1 = args->args;
-  v2 = args->args+1;
+  v2 = args->args + 1;
 
   if (v1->type == VALUE_TYPE_STRING && v2->type == VALUE_TYPE_STRING) {
     value_set_bool(result, tk_str_eq(value_str(v1), value_str(v2)));
-  } else if(v1->type == VALUE_TYPE_INT64 || v2->type == VALUE_TYPE_INT64){
+  } else if (v1->type == VALUE_TYPE_INT64 || v2->type == VALUE_TYPE_INT64) {
     value_set_bool(result, value_int64(v1) == value_int64(v2));
-  } else if(v1->type == VALUE_TYPE_UINT64 || v2->type == VALUE_TYPE_UINT64){
+  } else if (v1->type == VALUE_TYPE_UINT64 || v2->type == VALUE_TYPE_UINT64) {
     value_set_bool(result, value_uint64(v1) == value_uint64(v2));
   } else {
     value_set_bool(result, tk_fequal(value_double(v1), value_double(v2)));
@@ -1612,14 +1612,19 @@ static ret_t func_not_eq(fscript_t* fscript, fscript_args_t* args, value_t* resu
   return RET_OK;
 }
 
-
 static ret_t func_assert(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
   if (!value_bool(args->args)) {
     fscript_set_error(fscript, RET_FAIL, __FUNCTION__,
                       args->size > 1 ? value_str(args->args + 1) : "unkown");
-    assert(0);
+    if (args->size > 1 && value_bool(args->args + 1)) {
+      assert(0);
+    } else {
+      log_debug("assert failed at: (%d %d)\n", (int)(fscript->curr->row),
+                (int)(fscript->curr->col));
+    }
   }
+
   return RET_OK;
 }
 
@@ -1689,8 +1694,8 @@ static ret_t func_len(fscript_t* fscript, fscript_args_t* args, value_t* result)
   char buff[64];
   const char* str = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
-  str = value_str_ex(args->args, buff, sizeof(buff)-1);
-  value_set_int(result, tk_strlen(str));
+  str = value_str_ex(args->args, buff, sizeof(buff) - 1);
+  value_set_uint32(result, tk_strlen(str));
 
   return RET_OK;
 }

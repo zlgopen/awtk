@@ -110,7 +110,7 @@ print(n1>>n2)
 #### 原型
 
 ```
-bit_get(n1, n2)
+bit_get(n1, n2) -> bool
 ```
 
 #### 示例
