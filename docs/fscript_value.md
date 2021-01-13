@@ -11,7 +11,7 @@ value 相关的辅助函数。
 #### 原型
 
 ```
-value_is_valid(v)
+value_is_valid(v) => bool
 ```
 
 #### 示例
@@ -29,7 +29,7 @@ print(value_is_valid(a))
 #### 原型
 
 ```
-value_is_null(v)
+value_is_null(v) => bool
 ```
 
 #### 示例
@@ -47,7 +47,7 @@ print(value_is_null(a))
 #### 原型
 
 ```
-value_get_binary_data(v)
+value_get_binary_data(v) => pointer_t
 ```
 
 #### 示例
@@ -64,7 +64,7 @@ print(value_get_binary_data(a))
 #### 原型
 
 ```
-value_get_binary_size(v)
+value_get_binary_size(v) => uint32_t
 ```
 
 #### 示例

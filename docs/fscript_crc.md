@@ -10,9 +10,9 @@ Cyclic redundancy check
 #### 原型
 
 ```
-crc16(str)
-crc16(data, size)
-crc16(binary)
+crc16(str) => uint16_t
+crc16(data, size) => uint16_t
+crc16(binary) => uint16_t
 ```
 
 #### 示例
@@ -29,9 +29,9 @@ crc16("hello")
 #### 原型
 
 ```
-crc32(str)
-crc32(data, size)
-crc32(binary)
+crc32(str) => uint32_t
+crc32(data, size) => uint32_t
+crc32(binary) => uint32_t
 ```
 
 #### 示例
@@ -48,9 +48,9 @@ crc32("hello")
 #### 原型
 
 ```
-cksum(str)
-cksum(data, size)
-cksum(binary)
+cksum(str) => uint16_t
+cksum(data, size) => uint16_t
+cksum(binary) => uint16_t
 ```
 
 #### 示例
