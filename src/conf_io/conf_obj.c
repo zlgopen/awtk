@@ -32,6 +32,7 @@ typedef struct _conf_obj_t {
 
   /*private*/
   char* url;
+  char* default_url;
   conf_doc_t* doc;
   conf_doc_save_t save;
   conf_doc_load_t load;
@@ -89,6 +90,11 @@ static ret_t conf_obj_set_prop(object_t* obj, const char* name, const value_t* v
   if (o->readonly) {
     return RET_NOT_IMPL;
   }
+  
+  if (tk_str_eq(name, CONF_OBJ_PROP_DEFAULT_URL)) {
+    o->default_url = tk_str_copy(o->default_url, value_str(v));
+    return RET_OK;
+  }
 
   o->modified = TRUE;
   return conf_doc_set(o->doc, name, v);
@@ -97,6 +103,14 @@ static ret_t conf_obj_set_prop(object_t* obj, const char* name, const value_t* v
 static ret_t conf_obj_get_prop(object_t* obj, const char* name, value_t* v) {
   conf_obj_t* o = CONF_OBJ(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+  
+  if (tk_str_eq(name, CONF_OBJ_PROP_URL)) {
+    value_set_str(v, o->url);
+    return RET_OK;
+  } else if (tk_str_eq(name, CONF_OBJ_PROP_DEFAULT_URL)) {
+    value_set_str(v, o->default_url);
+    return RET_OK;
+  }
 
   return conf_doc_get(o->doc, name, v);
 }
@@ -264,6 +278,7 @@ static ret_t conf_obj_destroy(object_t* obj) {
 
   conf_doc_destroy(o->doc);
   TKMEM_FREE(o->url);
+  TKMEM_FREE(o->default_url);
   o->doc = NULL;
 
   return RET_OK;

@@ -23,6 +23,7 @@
 #include "tkc/mem.h"
 #include "tkc/path.h"
 #include "tkc/utils.h"
+#include "conf_io/conf_obj.h"
 #include "conf_io/app_conf_init.h"
 #include "tkc/data_reader_factory.h"
 #include "tkc/data_writer_factory.h"
@@ -107,14 +108,28 @@ ret_t app_conf_init(conf_load_t load, const char* app_name, const char* extname)
 #endif /*APP_CONF_URL*/
   log_info("app conf: %s\n", app_conf_name);
 
-  tk_snprintf(path, MAX_PATH, "asset://%s.%s", app_name, extname);
+  tk_snprintf(path, MAX_PATH, "asset://data/%s.%s", app_name, extname);
   app_conf_prepare_default(app_conf_name, path);
 
   obj = load(app_conf_name, TRUE);
   return_value_if_fail(obj != NULL, RET_FAIL);
-
   app_conf_set_instance(obj);
+  app_conf_set_str(CONF_OBJ_PROP_DEFAULT_URL, path);
+  app_conf_save();
+
   OBJECT_UNREF(obj);
 
   return RET_OK;
 }
+
+ret_t app_conf_reset(void) {
+  const char* url = app_conf_get_str(CONF_OBJ_PROP_URL, NULL);
+  const char* default_url = app_conf_get_str(CONF_OBJ_PROP_DEFAULT_URL, NULL);
+  return_value_if_fail(url != NULL && default_url != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(data_writer_clear(url) == RET_OK, RET_BAD_PARAMS);
+  return_value_if_fail(app_conf_prepare_default(url, default_url) == RET_OK, RET_BAD_PARAMS);
+  return_value_if_fail(app_conf_reload() == RET_OK, RET_BAD_PARAMS);
+
+  return RET_OK;
+}
+

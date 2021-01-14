@@ -44,6 +44,17 @@ typedef object_t* (*conf_load_t)(const char* url, bool_t create_if_not_exist);
  */
 ret_t app_conf_init(conf_load_t load, const char* app_name, const char* extname);
 
+/**
+ * @method app_conf_reset
+ *
+ * 恢复出厂设置。
+ *
+ * @annotation ["global"]
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t app_conf_reset(void);
+
 END_C_DECLS
 
 #endif /*TK_APP_CONF_INIT_H*/

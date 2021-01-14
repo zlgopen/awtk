@@ -92,3 +92,23 @@ TEST(AppConf, reload) {
 
   ASSERT_EQ(app_conf_deinit(), RET_OK);
 }
+
+TEST(AppConf, reset) {
+  app_conf_init_json("conf_test");
+ 
+  ASSERT_STREQ(app_conf_get_str("name", NULL), "test");
+  ASSERT_EQ(app_conf_get_int("age", 0), 100);
+
+  ASSERT_EQ(app_conf_set_str("name", "awtk"), RET_OK);
+  ASSERT_EQ(app_conf_set_int("age", 200), RET_OK);
+
+  ASSERT_STREQ(app_conf_get_str("name", NULL), "awtk");
+  ASSERT_EQ(app_conf_get_int("age", 0), 200);
+
+  ASSERT_EQ(app_conf_reset(), RET_OK);
+
+  ASSERT_STREQ(app_conf_get_str("name", NULL), "test");
+  ASSERT_EQ(app_conf_get_int("age", 0), 100);
+
+  ASSERT_EQ(app_conf_deinit(), RET_OK);
+}

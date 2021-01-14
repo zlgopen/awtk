@@ -29,8 +29,11 @@
 static object_t* s_conf;
 
 ret_t app_conf_set_instance(object_t* obj) {
-  return_value_if_fail(s_conf == NULL, RET_BAD_PARAMS);
   return_value_if_fail(obj != NULL, RET_BAD_PARAMS);
+
+  if (s_conf != NULL) {
+    OBJECT_UNREF(s_conf);
+  }
 
   s_conf = object_locker_create(obj);
   ENSURE(s_conf != NULL);

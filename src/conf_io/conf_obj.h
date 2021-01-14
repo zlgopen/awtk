@@ -91,6 +91,9 @@ ret_t conf_obj_save(object_t* conf);
  */
 ret_t conf_obj_set_readonly(object_t* conf, bool_t readonly);
 
+#define CONF_OBJ_PROP_URL "__URL__"
+#define CONF_OBJ_PROP_DEFAULT_URL "__DEFAULT_URL__"
+
 END_C_DECLS
 
 #endif /*TK_CONF_OBJ_H*/

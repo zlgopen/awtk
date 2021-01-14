@@ -465,6 +465,23 @@ app_conf_on_changed(app_conf_changed, NULL);
 
 > 回调函数在修改配置的线程调用。如果是后台线程修改配置，在配置变化时，需要更新界面，此时需要用 idle_queue 进行串行化。
 
+3.8 恢复出厂设置
+
+用默认配置文件替换当前配置文件，并重新加载。
+
+```c
+/**
+ * @method app_conf_reset
+ *
+ * 恢复出厂设置。
+ *
+ * @annotation ["global"]
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t app_conf_reset(void);
+```
+
 ## 6. 释放配置相关资源。
 
 ```c
