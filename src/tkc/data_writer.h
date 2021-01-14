@@ -31,10 +31,12 @@ typedef struct _data_writer_t data_writer_t;
 
 typedef int32_t (*data_writer_write_t)(data_writer_t* writer, uint64_t offset, const void* data,
                                        uint32_t size);
+typedef ret_t (*data_writer_truncate_t)(data_writer_t* writer, uint64_t size);
 typedef ret_t (*data_writer_destroy_t)(data_writer_t* writer);
 
 typedef struct _data_writer_vtable_t {
   data_writer_write_t write;
+  data_writer_truncate_t truncate;
   data_writer_destroy_t destroy;
 } data_writer_vtable_t;
 
@@ -63,6 +65,16 @@ struct _data_writer_t {
 int32_t data_writer_write(data_writer_t* writer, uint64_t offset, const void* data, uint32_t size);
 
 /**
+ * @method data_writer_truncate
+ * 截去指定长度之后的数据。
+ * @param {data_writer_t*} writer writer对象。
+ * @param {uint64_t} size 保留长度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t data_writer_truncate(data_writer_t* writer, uint64_t size);
+
+/**
  * @method data_writer_destroy
  * 销毁writer对象。
  * @param {data_writer_t*} writer writer对象。
@@ -70,6 +82,15 @@ int32_t data_writer_write(data_writer_t* writer, uint64_t offset, const void* da
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t data_writer_destroy(data_writer_t* writer);
+
+/**
+ * @method data_writer_clear
+ * 清除指定URL的数据。
+ * @param {const char*} url URL。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t data_writer_clear(const char* url);
 
 #define DATA_WRITER(writer) ((data_writer_t*)(writer))
 

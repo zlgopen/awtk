@@ -20,6 +20,7 @@
  */
 
 #include "tkc/data_writer.h"
+#include "tkc/data_writer_factory.h"
 
 int32_t data_writer_write(data_writer_t* writer, uint64_t offset, const void* data, uint32_t size) {
   return_value_if_fail(writer != NULL && writer->vt != NULL && writer->vt->write != NULL, -1);
@@ -28,9 +29,28 @@ int32_t data_writer_write(data_writer_t* writer, uint64_t offset, const void* da
   return writer->vt->write(writer, offset, data, size);
 }
 
+ret_t data_writer_truncate(data_writer_t* writer, uint64_t size) {
+  return_value_if_fail(writer != NULL && writer->vt != NULL && writer->vt->truncate != NULL,
+                       RET_BAD_PARAMS);
+
+  return writer->vt->truncate(writer, size);
+}
+
 ret_t data_writer_destroy(data_writer_t* writer) {
   return_value_if_fail(writer != NULL && writer->vt != NULL && writer->vt->destroy != NULL,
                        RET_BAD_PARAMS);
 
   return writer->vt->destroy(writer);
 }
+
+ret_t data_writer_clear(const char* url) {
+  ret_t ret = RET_OK;
+  data_writer_t* writer = data_writer_factory_create_writer(data_writer_factory(), url);
+  return_value_if_fail(writer != NULL, RET_BAD_PARAMS);
+
+  ret = data_writer_truncate(writer, 0);
+  data_writer_destroy(writer);
+
+  return ret;
+}
+
