@@ -472,9 +472,13 @@ static ret_t edit_update_status(widget_t* widget) {
     }
   } else {
     if (edit->cancelable) {
-      if (!wstr_equal(&(edit->saved_text), &(widget->text))) {
-        widget_set_state(widget, WIDGET_STATE_CHANGED);
-        return RET_OK;
+      if (widget->loading) {
+        edit_save_text(widget);
+      } else {
+        if (!wstr_equal(&(edit->saved_text), &(widget->text))) {
+          widget_set_state(widget, WIDGET_STATE_CHANGED);
+          return RET_OK;
+        }
       }
     }
 
@@ -974,9 +978,9 @@ ret_t edit_set_input_type(widget_t* widget, input_type_t type) {
   edit->dec_value = NULL;
   edit->is_valid_value = NULL;
 
-  if (type == INPUT_INT || type == INPUT_UINT) {
+  if (edit->step == 0.0 && (type == INPUT_INT || type == INPUT_UINT)) {
     edit->step = 1;
-  } else if (type == INPUT_FLOAT || type == INPUT_UFLOAT) {
+  } else if (edit->step == 0.0 && (type == INPUT_FLOAT || type == INPUT_UFLOAT)) {
     edit->step = 1.0f;
   } else if (type == INPUT_PASSWORD) {
     edit_set_password_visible(widget, edit->password_visible);
@@ -1280,15 +1284,8 @@ ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
     }
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_STEP)) {
-    if (input_type == INPUT_FLOAT || input_type == INPUT_UFLOAT) {
-      edit->step = value_double(v);
-      return RET_OK;
-    } else if (input_type == INPUT_INT || input_type == INPUT_UINT) {
-      edit->step = value_int(v);
-      return RET_OK;
-    } else {
-      return RET_NOT_FOUND;
-    }
+    edit->step = value_double(v);
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_INPUT_TYPE)) {
     if (v->type == VALUE_TYPE_STRING) {
       const key_type_value_t* kv = input_type_find(value_str(v));
@@ -1500,7 +1497,7 @@ static ret_t edit_inc_default(edit_t* edit) {
   switch (input_type) {
     case INPUT_FLOAT:
     case INPUT_UFLOAT: {
-      float_t step = edit->step ? edit->step : 0.1;
+      float_t step = edit->step != 0.0 ? edit->step : 0.1;
       if (text->size == 0) {
         wstr_from_float(text, edit->min);
         wstr_trim_float_zero(text);
@@ -1510,7 +1507,7 @@ static ret_t edit_inc_default(edit_t* edit) {
     }
     case INPUT_INT:
     case INPUT_UINT: {
-      int32_t step = edit->step ? edit->step : 1;
+      int32_t step = edit->step != 0.0 ? edit->step : 1;
       if (text->size == 0) {
         wstr_from_int(text, edit->min);
       }
@@ -1537,7 +1534,7 @@ static ret_t edit_dec_default(edit_t* edit) {
   switch (input_type) {
     case INPUT_FLOAT:
     case INPUT_UFLOAT: {
-      float_t step = edit->step ? edit->step : 0.1;
+      float_t step = edit->step != 0.0 ? edit->step : 0.1;
       if (text->size == 0) {
         wstr_from_float(text, edit->max);
         wstr_trim_float_zero(text);
@@ -1547,7 +1544,7 @@ static ret_t edit_dec_default(edit_t* edit) {
     }
     case INPUT_INT:
     case INPUT_UINT: {
-      int32_t step = edit->step ? edit->step : 1;
+      int32_t step = edit->step != 0.0 ? edit->step : 1;
       if (text->size == 0) {
         wstr_from_int(text, edit->max);
       }
