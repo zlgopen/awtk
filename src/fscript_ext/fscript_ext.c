@@ -40,7 +40,7 @@
 
 #ifdef FSCRIPT_WITH_WIDGET
 #include "fscript_ext/fscript_widget.h"
-#endif/*FSCRIPT_WITH_WIDGET*/
+#endif /*FSCRIPT_WITH_WIDGET*/
 
 static ret_t func_value_is_valid(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
@@ -50,14 +50,15 @@ static ret_t func_value_is_valid(fscript_t* fscript, fscript_args_t* args, value
 
 static ret_t func_value_is_null(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
-  value_set_bool(result, value_pointer(args->args) == NULL || args->args->type == VALUE_TYPE_INVALID);
+  value_set_bool(result,
+                 value_pointer(args->args) == NULL || args->args->type == VALUE_TYPE_INVALID);
   return RET_OK;
 }
 
 static ret_t func_value_get_binary_size(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
 
-  if(args->args->type == VALUE_TYPE_BINARY) {
+  if (args->args->type == VALUE_TYPE_BINARY) {
     binary_data_t* bin = value_binary_data(args->args);
     FSCRIPT_FUNC_CHECK(bin != NULL, RET_BAD_PARAMS);
     value_set_uint32(result, bin->size);
@@ -70,7 +71,7 @@ static ret_t func_value_get_binary_size(fscript_t* fscript, fscript_args_t* args
 static ret_t func_value_get_binary_data(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
 
-  if(args->args->type == VALUE_TYPE_BINARY) {
+  if (args->args->type == VALUE_TYPE_BINARY) {
     binary_data_t* bin = value_binary_data(args->args);
     FSCRIPT_FUNC_CHECK(bin != NULL, RET_BAD_PARAMS);
     value_set_pointer(result, bin->data);
@@ -92,15 +93,15 @@ ret_t fscript_ext_init(void) {
   fscript_istream_register();
   fscript_ostream_register();
   fscript_iostream_register();
-  #ifdef FSCRIPT_WITH_STREAM_FILE
+#ifdef FSCRIPT_WITH_STREAM_FILE
   fscript_iostream_file_register();
-  #endif/*FSCRIPT_WITH_STREAM_FILE*/
-  #ifdef FSCRIPT_WITH_STREAM_INET
+#endif /*FSCRIPT_WITH_STREAM_FILE*/
+#ifdef FSCRIPT_WITH_STREAM_INET
   fscript_iostream_inet_register();
-  #endif/*FSCRIPT_WITH_STREAM_INET*/
-  #ifdef FSCRIPT_WITH_STREAM_SERIAL
+#endif /*FSCRIPT_WITH_STREAM_INET*/
+#ifdef FSCRIPT_WITH_STREAM_SERIAL
   fscript_iostream_serial_register();
-  #endif/*FSCRIPT_WITH_STREAM_SERIAL*/
+#endif /*FSCRIPT_WITH_STREAM_SERIAL*/
 #endif /*FSCRIPT_WITH_STREAM*/
 
 #ifdef FSCRIPT_WITH_CRC

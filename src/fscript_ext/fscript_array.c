@@ -133,24 +133,24 @@ static ret_t func_array_join(fscript_t* fscript, fscript_args_t* args, value_t* 
   obj = value_object(args->args);
   arr = OBJECT_ARRAY(obj);
   return_value_if_fail(arr != NULL, RET_BAD_PARAMS);
-  sep = value_str(args->args+1);
+  sep = value_str(args->args + 1);
 
   str_init(&str, 100);
-  for(i = 0; i < arr->size; i++) {
+  for (i = 0; i < arr->size; i++) {
     value_t* v = arr->props + i;
-    if(i > 0 && sep != NULL) {
-      if(str_append(&str, sep) == RET_OOM) {
+    if (i > 0 && sep != NULL) {
+      if (str_append(&str, sep) == RET_OOM) {
         oom = TRUE;
         break;
       }
     }
-    if(str_append(&str, value_str_ex(v, buff, sizeof(buff)-1)) == RET_OOM) {
-        oom = TRUE;
-        break;
+    if (str_append(&str, value_str_ex(v, buff, sizeof(buff) - 1)) == RET_OOM) {
+      oom = TRUE;
+      break;
     }
   }
- 
-  if(!oom) {
+
+  if (!oom) {
     value_set_str(result, str.str);
     result->free_handle = TRUE;
   } else {

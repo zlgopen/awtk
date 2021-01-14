@@ -149,23 +149,24 @@ static ret_t func_path_create(fscript_t* fscript, fscript_args_t* args, value_t*
 }
 
 static ret_t func_path_get_temp(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  char path[MAX_PATH+1];
+  char path[MAX_PATH + 1];
   FSCRIPT_FUNC_CHECK(path != NULL, RET_BAD_PARAMS);
 
-  if(fs_get_temp_path(os_fs(), path) == RET_OK) {
-    value_dup_str(result, path); 
+  if (fs_get_temp_path(os_fs(), path) == RET_OK) {
+    value_dup_str(result, path);
     return RET_OK;
   }
 
   return RET_FAIL;
 }
 
-static ret_t func_path_get_user_storage_root(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  char path[MAX_PATH+1];
+static ret_t func_path_get_user_storage_root(fscript_t* fscript, fscript_args_t* args,
+                                             value_t* result) {
+  char path[MAX_PATH + 1];
   FSCRIPT_FUNC_CHECK(path != NULL, RET_BAD_PARAMS);
 
-  if(fs_get_user_storage_path(os_fs(), path) == RET_OK) {
-    value_dup_str(result, path); 
+  if (fs_get_user_storage_path(os_fs(), path) == RET_OK) {
+    value_dup_str(result, path);
     return RET_OK;
   }
 
@@ -173,11 +174,11 @@ static ret_t func_path_get_user_storage_root(fscript_t* fscript, fscript_args_t*
 }
 
 static ret_t func_path_get_app_root(fscript_t* fscript, fscript_args_t* args, value_t* result) {
-  char path[MAX_PATH+1];
+  char path[MAX_PATH + 1];
   FSCRIPT_FUNC_CHECK(path != NULL, RET_BAD_PARAMS);
 
-  if(path_app_root(path) == RET_OK) {
-    value_dup_str(result, path); 
+  if (path_app_root(path) == RET_OK) {
+    value_dup_str(result, path);
     return RET_OK;
   }
 
@@ -196,7 +197,8 @@ ret_t fscript_fs_register(void) {
   ENSURE(fscript_register_func("path_exist", func_path_exist) == RET_OK);
   ENSURE(fscript_register_func("path_get_temp", func_path_get_temp) == RET_OK);
   ENSURE(fscript_register_func("path_get_app_root", func_path_get_app_root) == RET_OK);
-  ENSURE(fscript_register_func("path_get_user_storage_root", func_path_get_user_storage_root) == RET_OK);
+  ENSURE(fscript_register_func("path_get_user_storage_root", func_path_get_user_storage_root) ==
+         RET_OK);
 
   return RET_OK;
 }

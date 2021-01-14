@@ -242,7 +242,7 @@ static ret_t func_widget_eval(fscript_t* fscript, fscript_args_t* args, value_t*
   }
   FSCRIPT_FUNC_CHECK(widget != NULL && path != NULL, RET_BAD_PARAMS);
 
-  if(widget_get(widget, path, &v) == RET_OK) {
+  if (widget_get(widget, path, &v) == RET_OK) {
     return fscript_eval(fscript->obj, value_str(&v), result);
   }
 
@@ -367,7 +367,7 @@ static ret_t func_widget_send_key(fscript_t* fscript, fscript_args_t* args, valu
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   widget = to_widget(fscript, args->args);
   FSCRIPT_FUNC_CHECK(widget != NULL, RET_BAD_PARAMS);
-  key = value_str(args->args+1);
+  key = value_str(args->args + 1);
   FSCRIPT_FUNC_CHECK(key != NULL, RET_BAD_PARAMS);
 
   if (*key) {
@@ -379,7 +379,6 @@ static ret_t func_widget_send_key(fscript_t* fscript, fscript_args_t* args, valu
     widget_dispatch(widget, (event_t*)&e);
     key_event_init(&e, EVT_KEY_UP, widget, code);
     widget_dispatch(widget, (event_t*)&e);
-		
   }
   value_set_bool(result, *key != '\0');
 

@@ -160,24 +160,24 @@ static ret_t func_typed_array_join(fscript_t* fscript, fscript_args_t* args, val
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   arr = get_typed_array(fscript, args);
   return_value_if_fail(arr != NULL, RET_BAD_PARAMS);
-  sep = value_str(args->args+1);
+  sep = value_str(args->args + 1);
 
   str_init(&str, 100);
-  for(i = 0; i < arr->size; i++) {
-    if(i > 0 && sep != NULL) {
-      if(str_append(&str, sep) == RET_OOM) {
+  for (i = 0; i < arr->size; i++) {
+    if (i > 0 && sep != NULL) {
+      if (str_append(&str, sep) == RET_OOM) {
         oom = TRUE;
         break;
       }
     }
     typed_array_get(arr, i, &v);
-    if(str_append(&str, value_str_ex(&v, buff, sizeof(buff)-1)) == RET_OOM) {
-        oom = TRUE;
-        break;
+    if (str_append(&str, value_str_ex(&v, buff, sizeof(buff) - 1)) == RET_OOM) {
+      oom = TRUE;
+      break;
     }
   }
- 
-  if(!oom) {
+
+  if (!oom) {
     value_set_str(result, str.str);
     result->free_handle = TRUE;
   } else {

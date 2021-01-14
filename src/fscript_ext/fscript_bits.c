@@ -20,19 +20,19 @@ typedef enum _func_type_t {
   FUNC_LSHIFT = 1,
   FUNC_RSHIFT = 2,
   FUNC_BIT_CLEAR = 3,
-}func_type_t;
+} func_type_t;
 
 static ret_t func_lshift(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   uint32_t n = 0;
   value_t* value = NULL;
   ret_t ret = RET_OK;
-  
+
   result->type = VALUE_TYPE_INVALID;
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   value = args->args;
-  n = value_uint32(args->args+1);
+  n = value_uint32(args->args + 1);
 
-  switch(value->type) {
+  switch (value->type) {
     case VALUE_TYPE_INT8: {
       value_set_int8(result, value_int8(value) << n);
       break;
@@ -78,13 +78,13 @@ static ret_t func_rshift(fscript_t* fscript, fscript_args_t* args, value_t* resu
   uint32_t n = 0;
   value_t* value = NULL;
   ret_t ret = RET_OK;
-  
+
   result->type = VALUE_TYPE_INVALID;
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   value = args->args;
-  n = value_uint32(args->args+1);
+  n = value_uint32(args->args + 1);
 
-  switch(value->type) {
+  switch (value->type) {
     case VALUE_TYPE_INT8: {
       value_set_int8(result, value_int8(value) >> n);
       break;
@@ -130,13 +130,13 @@ static ret_t func_bit_set(fscript_t* fscript, fscript_args_t* args, value_t* res
   uint32_t n = 0;
   value_t* value = NULL;
   ret_t ret = RET_OK;
-  
+
   result->type = VALUE_TYPE_INVALID;
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   value = args->args;
-  n = value_uint32(args->args+1);
+  n = value_uint32(args->args + 1);
 
-  switch(value->type) {
+  switch (value->type) {
     case VALUE_TYPE_INT8: {
       int8_t vv = value_int8(value);
       TK_SET_BIT(vv, n);
@@ -198,13 +198,13 @@ static ret_t func_bit_clear(fscript_t* fscript, fscript_args_t* args, value_t* r
   uint32_t n = 0;
   value_t* value = NULL;
   ret_t ret = RET_OK;
-  
+
   result->type = VALUE_TYPE_INVALID;
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   value = args->args;
-  n = value_uint32(args->args+1);
+  n = value_uint32(args->args + 1);
 
-  switch(value->type) {
+  switch (value->type) {
     case VALUE_TYPE_INT8: {
       int8_t vv = value_int8(value);
       TK_CLEAR_BIT(vv, n);
@@ -266,13 +266,13 @@ static ret_t func_bit_toggle(fscript_t* fscript, fscript_args_t* args, value_t* 
   uint32_t n = 0;
   value_t* value = NULL;
   ret_t ret = RET_OK;
-  
+
   result->type = VALUE_TYPE_INVALID;
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   value = args->args;
-  n = value_uint32(args->args+1);
+  n = value_uint32(args->args + 1);
 
-  switch(value->type) {
+  switch (value->type) {
     case VALUE_TYPE_INT8: {
       int8_t vv = value_int8(value);
       TK_TOGGLE_BIT(vv, n);
@@ -334,13 +334,13 @@ static ret_t func_bit_get(fscript_t* fscript, fscript_args_t* args, value_t* res
   uint32_t n = 0;
   value_t* value = NULL;
   ret_t ret = RET_OK;
-  
+
   result->type = VALUE_TYPE_INVALID;
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   value = args->args;
-  n = value_uint32(args->args+1);
+  n = value_uint32(args->args + 1);
 
-  switch(value->type) {
+  switch (value->type) {
     case VALUE_TYPE_INT8: {
       int8_t vv = value_int8(value);
       bool_t bit = TK_TEST_BIT(vv, n);

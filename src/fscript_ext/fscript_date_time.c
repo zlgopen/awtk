@@ -94,7 +94,7 @@ static ret_t func_get_days_of_month(fscript_t* fscript, fscript_args_t* args, va
   int32_t month = 0;
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
   year = value_int32(args->args);
-  month = value_int32(args->args+1);
+  month = value_int32(args->args + 1);
   value_set_uint32(result, date_time_get_days(year, month));
 
   return RET_OK;

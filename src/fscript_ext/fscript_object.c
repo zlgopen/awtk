@@ -50,7 +50,7 @@ static ret_t func_object_get_prop(fscript_t* fscript, fscript_args_t* args, valu
   if (object_get_prop(obj, value_str(args->args + 1), result) != RET_OK) {
     result->type = VALUE_TYPE_INVALID;
   }
-  
+
   return RET_OK;
 }
 
