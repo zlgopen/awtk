@@ -1,6 +1,10 @@
 # 最新动态
 
 2021/01/14
+  * 增加 [《TCP/UDP 流扩展模块》](fscript_iostream_inet.md)
+  * 增加 [《文件流扩展模块》](fscript_iostream_file.md)
+  * 增加 [《串口流扩展模块》](fscript_iostream_serial.md)
+  * 增加 [《动态数组扩展模块》](fscript_typed_array.md)
   * 增加 [《ostream 扩展模块》](fscript_ostream.md)
   * 增加 [《typed array 扩展模块》](fscript_typed_array.md)
   * 增加 [《写缓冲区扩展模块》](fscript_wbuffer.md)

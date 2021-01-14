@@ -2,6 +2,17 @@
 
 ### 1.iostream\_serial\_create
 
+> 创建串口输入输出流对象。
+----------------------------
+
+#### 原型
+
+```js
+istream_file_create(device, baudrate) => object
+```
+
+### 完整示例
+
 ```js
 //
 // start serial echo server first
@@ -22,4 +33,3 @@ unset(c)
 unset(b)
 unset(a)
 ```
-

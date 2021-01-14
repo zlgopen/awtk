@@ -2,7 +2,27 @@
 
 ### 1.istream\_file\_create
 
+> 创建文件输入流对象。
+----------------------------
+
+#### 原型
+
+```js
+istream_file_create(filename, mode) => object
+```
+
 ### 2.ostream\_file\_create
+
+> 创建文件输出流对象。
+----------------------------
+
+#### 原型
+
+```js
+ostream_file_create(filename, mode) => object
+```
+
+### 完整示例
 
 ```js
 a = ostream_file_create("test.bin", "wb+")

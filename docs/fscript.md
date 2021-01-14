@@ -1264,7 +1264,8 @@ runFScript 的第二个参数可以指定运行次数，方便测量某个函数
 * [TCP/UDP 流扩展模块](fscript_iostream_inet.md)
 * [文件流扩展模块](fscript_iostream_file.md)
 * [串口流扩展模块](fscript_iostream_serial.md)
-* [typed array 扩展模块](fscript_typed_array.md)
+* [动态数组扩展模块](fscript_typed_array.md)
+* [单一类型的动态数组扩展模块](fscript_typed_array.md)
 * [写缓冲区扩展模块](fscript_wbuffer.md)
 * [读缓冲区扩展模块](fscript_rbuffer.md)
 

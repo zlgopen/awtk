@@ -1,5 +1,7 @@
 ## typed array 扩展函数
 
+typed\_array是一个单一类型的动态数组，里面只能放相同类型的元素。
+
 typed\_array 有以下属性：
 
 * data 缓冲区的指针
