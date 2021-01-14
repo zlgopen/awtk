@@ -105,6 +105,7 @@ TEST(AppConf, reset) {
   ASSERT_STREQ(app_conf_get_str("name", NULL), "awtk");
   ASSERT_EQ(app_conf_get_int("age", 0), 200);
 
+  ASSERT_EQ(app_conf_save(), RET_OK);
   ASSERT_EQ(app_conf_reset(), RET_OK);
 
   ASSERT_STREQ(app_conf_get_str("name", NULL), "test");

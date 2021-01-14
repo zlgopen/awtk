@@ -115,7 +115,6 @@ ret_t app_conf_init(conf_load_t load, const char* app_name, const char* extname)
   return_value_if_fail(obj != NULL, RET_FAIL);
   app_conf_set_instance(obj);
   app_conf_set_str(CONF_OBJ_PROP_DEFAULT_URL, path);
-  app_conf_save();
 
   OBJECT_UNREF(obj);
 

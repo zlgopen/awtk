@@ -1,6 +1,7 @@
 # 最新动态
 
 2021/01/14
+  * 增加 app\_conf\_reset 用于恢复出厂设置。
   * 增加 [《TCP/UDP 流扩展模块》](fscript_iostream_inet.md)
   * 增加 [《文件流扩展模块》](fscript_iostream_file.md)
   * 增加 [《串口流扩展模块》](fscript_iostream_serial.md)
