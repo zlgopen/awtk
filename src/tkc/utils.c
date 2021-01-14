@@ -26,6 +26,8 @@
 #include "tkc/utils.h"
 #include "tkc/object.h"
 #include "tkc/named_value.h"
+#include "tkc/data_reader_factory.h"
+#include "tkc/data_writer_factory.h"
 
 const char* tk_skip_to_num(const char* str) {
   const char* p = str;
@@ -1077,4 +1079,39 @@ ret_t object_to_json(object_t* obj, str_t* str) {
   }
 
   return RET_OK;
+}
+
+ret_t data_url_copy(const char* dst_url, const char* src_url) {
+  ret_t ret = RET_OK;
+  return_value_if_fail(dst_url != NULL && src_url != NULL, RET_BAD_PARAMS);
+
+  data_reader_t* reader = data_reader_factory_create_reader(data_reader_factory(), src_url);
+  if (reader != NULL) {
+    uint32_t size = data_reader_get_size(reader);
+    if (size > 0) {
+      data_writer_t* writer = data_writer_factory_create_writer(data_writer_factory(), dst_url);
+      if (writer != NULL) {
+        void* buff = TKMEM_CALLOC(1, size + 1);
+        if (buff != NULL) {
+          int32_t rsize = data_reader_read(reader, 0, buff, size);
+          assert(rsize == size);
+          rsize = data_writer_write(writer, 0, buff, rsize);
+          assert(rsize == size);
+          TKMEM_FREE(buff);
+          log_debug("copy: %s=>%s\n", src_url, dst_url);
+        } else {
+          ret = RET_FAIL;
+        }
+        data_writer_destroy(writer);
+      } else {
+        ret = RET_FAIL;
+        log_debug("open dst(%s) failed\n", dst_url);
+      }
+    } else {
+      log_debug("open src(%s) failed\n", src_url);
+    }
+    data_reader_destroy(reader);
+  }
+
+  return ret;
 }

@@ -670,6 +670,18 @@ ret_t image_region_parse(uint32_t img_w, uint32_t img_h, const char* region, rec
  */
 ret_t object_to_json(object_t* obj, str_t* str);
 
+/**
+ * @method data_url_copy
+ * 
+ * 将数据从源URL拷贝到目标URL。
+ *
+ * @param {const char*} dst_url 目标URL。
+ * @param {const char*} src_url 源URL。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t data_url_copy(const char* dst_url, const char* src_url);
+
 const char* tk_normalize_key_name(const char* name, char fixed_name[TK_NAME_LEN + 1]);
 
 /*public for test*/

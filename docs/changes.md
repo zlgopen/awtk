@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/01/15
+  * 增加data\_url\_copy。
+
 2021/01/14
   * 增加 app\_conf\_reset 用于恢复出厂设置。
   * 增加 [《TCP/UDP 流扩展模块》](fscript_iostream_inet.md)
