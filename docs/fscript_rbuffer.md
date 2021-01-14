@@ -1,5 +1,11 @@
 ## 读缓冲区扩展函数
 
+rbuffer 有以下属性：
+
+* data 缓冲区的指针
+* cursor 当前读的位置
+* capacity 最大容量
+
 ### 1.rbuffer\_create
 
 > 创建 rbuffer 对象。

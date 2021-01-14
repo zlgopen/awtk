@@ -21,7 +21,7 @@ istream_seek(istream, offset) => bool
 #### 原型
 
 ```js
-istream_seek(istream) => uint32_t
+istream_tell(istream) => uint32_t
 ```
 
 > 仅当输入流支持 tell 才能调用本函数。

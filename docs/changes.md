@@ -1,5 +1,11 @@
 # 最新动态
 
+2021/01/14
+  * 增加 [《ostream 扩展模块》](fscript_ostream.md)
+  * 增加 [《typed array 扩展模块》](fscript_typed_array.md)
+  * 增加 [《写缓冲区扩展模块》](fscript_wbuffer.md)
+  * 增加 [《读缓冲区扩展模块》](fscript_rbuffer.md)
+
 2021/01/13
   * 完善 fscript.md。
   * 完善 api 注释（感谢福明提供补丁） 
