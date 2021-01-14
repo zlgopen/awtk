@@ -288,8 +288,8 @@ static ret_t children_layouter_default_layout(children_layouter_t* layouter, wid
   }
 
   if (rows == 1 && cols == 0) { /*hbox*/
-    uint32_t xoffset = x;
-    uint32_t children_w = 0;
+    int32_t xoffset = x;
+    int32_t children_w = 0;
     h = layout_h - 2 * y_margin;
     w = layout_w - 2 * x_margin - (n - 1) * spacing;
 
