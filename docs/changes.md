@@ -5,6 +5,9 @@
   * 增加 [《typed array 扩展模块》](fscript_typed_array.md)
   * 增加 [《写缓冲区扩展模块》](fscript_wbuffer.md)
   * 增加 [《读缓冲区扩展模块》](fscript_rbuffer.md)
+  * 修复 combox 控件的 gtest 的错误（感谢智明提供补丁） 
+  * 修复 children\_layouter\_default 计算偏移出现负数导致数据溢出的问题（感谢智明提供补丁） 
+  * 修复 edit 控件初始化的设置 text 的时候触发 cancelable 属性的消息事件以及修复 edit 控件的步长不受到 ui 的定义属性的位置影响（感谢智明提供补丁） 
 
 2021/01/13
   * 完善 fscript.md。
