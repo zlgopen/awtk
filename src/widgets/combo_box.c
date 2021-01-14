@@ -395,7 +395,7 @@ widget_t* combo_box_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h
   combo_box_t* combo_box = COMBO_BOX(widget);
   edit_t* edit = EDIT(WIDGET(combo_box));
   return_value_if_fail(combo_box != NULL && edit != NULL, NULL);
-
+  edit->margin = 0;
   edit->left_margin = 0;
   edit->right_margin = 0;
   str_init(&(combo_box->text), 32);
