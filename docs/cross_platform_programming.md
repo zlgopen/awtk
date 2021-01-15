@@ -69,6 +69,8 @@ helper.add_platform_libpath("Linux", ["/usr/local/include"])
 helper.add_platform_ccflags("Linux", " -DSOME_MACRO=1 ")
 ```
 
+> ccflags 是字符串格式不是数组
+
 * 添加平台特有的C++文件的预处理参数
 
 ```
@@ -81,11 +83,14 @@ helper.add_platform_ccflags("Linux", " -DSOME_MACRO=1 ")
 helper.add_platform_cxxflags("Linux", " -DSOME_MACRO=1 ")
 ```
 
+> cxxflags 是字符串格式不是数组
+
 * 添加平台特有的链接参数
 
 ```
  add_platform_linkflags(self, platform_name, APP_LINKFLAGS)
 ```
+> linkflags 是字符串格式不是数组
 
 ## 4. 区分各个平台的宏
 
