@@ -1081,6 +1081,7 @@ ret_t object_to_json(object_t* obj, str_t* str) {
   return RET_OK;
 }
 
+#ifdef WITH_DATA_READER_WRITER
 ret_t data_url_copy(const char* dst_url, const char* src_url) {
   ret_t ret = RET_OK;
   return_value_if_fail(dst_url != NULL && src_url != NULL, RET_BAD_PARAMS);
@@ -1115,3 +1116,4 @@ ret_t data_url_copy(const char* dst_url, const char* src_url) {
 
   return ret;
 }
+#endif /*WITH_DATA_READER_WRITER*/
