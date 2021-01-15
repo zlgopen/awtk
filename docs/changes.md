@@ -2,6 +2,7 @@
 
 2021/01/15
   * 增加data\_url\_copy。
+  * 修改tools中拼写错误(floder->folder)。感谢[suzp1984](https://github.com/suzp1984)提供补丁。
 
 2021/01/14
   * 增加 app\_conf\_reset 用于恢复出厂设置。

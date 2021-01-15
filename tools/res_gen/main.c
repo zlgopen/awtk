@@ -98,10 +98,10 @@ static ret_t gen_one(const char* in_filename, const char* out_filename, const ch
   return RET_OK;
 }
 
-static ret_t gen_floder(const char* in_flodername, const char* out_flodername, const char* theme,
-                        const char* extname, bool_t data_floder) {
+static ret_t gen_folder(const char* in_foldername, const char* out_foldername, const char* theme,
+                        const char* extname, bool_t data_folder) {
   ret_t ret = RET_OK;
-  fs_dir_t* dir = fs_open_dir(os_fs(), in_flodername);
+  fs_dir_t* dir = fs_open_dir(os_fs(), in_foldername);
   fs_item_t item;
   char in_name[MAX_PATH] = {0};
   char out_name[MAX_PATH] = {0};
@@ -112,14 +112,14 @@ static ret_t gen_floder(const char* in_flodername, const char* out_flodername, c
       path_extname(item.name, ext_array, MAX_PATH);
       str_init(&str_name, 0);
       str_set(&str_name, item.name);
-      if (!data_floder) {
+      if (!data_folder) {
         str_replace(&str_name, ext_array, "");
       }
       filter_name(str_name.str);
       str_append(&str_name, extname);
 
-      path_build(in_name, MAX_PATH, in_flodername, item.name, NULL);
-      path_build(out_name, MAX_PATH, out_flodername, str_name.str, NULL);
+      path_build(in_name, MAX_PATH, in_foldername, item.name, NULL);
+      path_build(out_name, MAX_PATH, out_foldername, str_name.str, NULL);
       ret = gen_one(in_name, out_name, theme);
       str_reset(&str_name);
       if (ret == RET_FAIL) {
@@ -135,9 +135,9 @@ static ret_t gen_floder(const char* in_flodername, const char* out_flodername, c
   return ret;
 }
 
-bool_t is_data_floder(const char* floder_name) {
+bool_t is_data_folder(const char* folder_name) {
   char basename[MAX_PATH] = {0};
-  path_basename(floder_name, basename, MAX_PATH);
+  path_basename(folder_name, basename, MAX_PATH);
   return tk_str_eq(basename, "data");
 }
 
@@ -179,8 +179,8 @@ int wmain(int argc, wchar_t* argv[]) {
   fs_stat(os_fs(), in_filename, &in_stat_info);
   fs_stat(os_fs(), out_filename, &out_stat_info);
   if (in_stat_info.is_dir == TRUE && out_stat_info.is_dir == TRUE) {
-    gen_floder(in_filename, out_filename, theme_name.str, str_extname.str,
-               is_data_floder(in_filename));
+    gen_folder(in_filename, out_filename, theme_name.str, str_extname.str,
+               is_data_folder(in_filename));
   } else if (in_stat_info.is_reg_file == TRUE) {
     if (gen_one(in_filename, out_filename, theme_name.str) == RET_FAIL) {
       printf(

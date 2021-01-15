@@ -36,10 +36,10 @@ ret_t gen_one(const char* input_file, const char* output_file, const char* theme
   return ret;
 }
 
-static ret_t gen_floder(const char* in_flodername, const char* out_flodername, const char* theme,
+static ret_t gen_folder(const char* in_foldername, const char* out_foldername, const char* theme,
                         bool_t output_bin) {
   ret_t ret = RET_OK;
-  fs_dir_t* dir = fs_open_dir(os_fs(), in_flodername);
+  fs_dir_t* dir = fs_open_dir(os_fs(), in_foldername);
   fs_item_t item;
   char in_name[MAX_PATH] = {0};
   char out_name[MAX_PATH] = {0};
@@ -58,8 +58,8 @@ static ret_t gen_floder(const char* in_flodername, const char* out_flodername, c
         filter_name(str_name.str);
         str_append(&str_name, ".data");
       }
-      path_build(in_name, MAX_PATH, in_flodername, item.name, NULL);
-      path_build(out_name, MAX_PATH, out_flodername, str_name.str, NULL);
+      path_build(in_name, MAX_PATH, in_foldername, item.name, NULL);
+      path_build(out_name, MAX_PATH, out_foldername, str_name.str, NULL);
       ret = gen_one(in_name, out_name, theme, output_bin);
       str_reset(&str_name);
       if (ret == RET_FAIL) {
@@ -105,7 +105,7 @@ int wmain(int argc, wchar_t* argv[]) {
   fs_stat(os_fs(), in_filename, &in_stat_info);
   fs_stat(os_fs(), out_filename, &out_stat_info);
   if (in_stat_info.is_dir == TRUE && out_stat_info.is_dir == TRUE) {
-    gen_floder(in_filename, out_filename, theme_name.str, output_bin);
+    gen_folder(in_filename, out_filename, theme_name.str, output_bin);
   } else if (in_stat_info.is_reg_file == TRUE) {
     gen_one(in_filename, out_filename, theme_name.str, output_bin);
   } else {
