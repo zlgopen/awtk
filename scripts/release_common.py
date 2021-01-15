@@ -107,7 +107,12 @@ def copyExe():
 def copyAssets():
     copyFiles(ASSETS_DIR, '', OUTPUT_DIR, 'assets/')	
 
+def cleanFiles():
+    d = joinPath(OUTPUT_DIR, 'assets/default/inc')
+    shutil.rmtree(d, True)
+
 
 def release():
     copyExe()
     copyAssets()
+    cleanFiles()
