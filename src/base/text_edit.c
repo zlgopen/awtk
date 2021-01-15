@@ -480,7 +480,6 @@ static ret_t text_edit_paint_tips_mlines_text(text_edit_t* text_edit, canvas_t* 
   font_size = c->font_size;
   layout_info = &(impl->layout_info);
   line_height = font_size + style_get_int(text_edit->widget->astyle, STYLE_ID_SPACER, 2);
-  h_text = p->total_lines * line_height;
 
   w = layout_info->w;
   y = layout_info->margin_t;
