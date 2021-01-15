@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   text_edit.c
  * Author: AWTK Develop Team
  * Brief:  text_edit
@@ -471,7 +471,6 @@ static ret_t text_edit_paint_caret(text_edit_t* text_edit, canvas_t* c) {
 static ret_t text_edit_paint_tips_mlines_text(text_edit_t* text_edit, canvas_t* c, line_parser_t* p) {
   int32_t y = 0;
   int32_t w = 0;
-  int32_t h_text = 0;
   int32_t font_size = 0;
   int32_t line_height = 0;
   DECL_IMPL(text_edit);
