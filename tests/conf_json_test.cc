@@ -1,6 +1,71 @@
 ﻿#include "gtest/gtest.h"
 #include "conf_io/conf_json.h"
 
+TEST(ConfJson, arr) {
+  value_t v;
+  str_t str;
+  const char* data = " [[1,2,3], \"abc\"] ";
+  conf_doc_t* doc = conf_doc_load_json(data, -1);
+
+  str_init(&str, 100);
+  conf_doc_save_json(doc, &str);
+
+  ASSERT_EQ(conf_doc_get(doc, "[1]", &v), RET_OK);
+  ASSERT_STREQ(value_str(&v), "abc");
+  
+  ASSERT_EQ(conf_doc_get(doc, "[0].[0]", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 1);
+  
+  ASSERT_EQ(conf_doc_get(doc, "[0].[1]", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 2);
+  
+  ASSERT_EQ(conf_doc_get(doc, "[0].[2]", &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 3);
+
+  str_init(&str, 100);
+  conf_doc_save_json(doc, &str);
+
+  str_reset(&str);
+
+  conf_doc_destroy(doc);
+}
+
+TEST(ConfJson, arr1) {
+  value_t v;
+  str_t str;
+  const char* data = "{\
+    \"y\": 220,\
+    \"wires\": [\
+            [   \
+                \"f3233c29.cc714\"\
+            ],  \
+            [], \
+            [], \
+            [   \
+                \"983b6406.96f448\"\
+            ]   \
+        ]    \
+   }";
+
+  conf_doc_t* doc = conf_doc_load_json(data, -1);
+
+  str_init(&str, 100);
+  conf_doc_save_json(doc, &str);
+  
+  ASSERT_EQ(conf_doc_get(doc, "wires.[0].[0]", &v), RET_OK);
+  ASSERT_STREQ(value_str(&v), "f3233c29.cc714");
+  
+  ASSERT_EQ(conf_doc_get(doc, "wires.[3].[0]", &v), RET_OK);
+  ASSERT_STREQ(value_str(&v), "983b6406.96f448");
+
+  str_init(&str, 100);
+  conf_doc_save_json(doc, &str);
+  log_debug("%s\n", str.str);
+  str_reset(&str);
+
+  conf_doc_destroy(doc);
+}
+
 TEST(ConfJson, basic1) {
   value_t v;
   str_t str;

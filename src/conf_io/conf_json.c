@@ -152,6 +152,12 @@ static ret_t conf_json_parse_array(json_parser_t* parser) {
   conf_node_t* node = NULL;
 
   parser->cursor++;
+  conf_json_skip_spaces(parser);
+  c = parser->data[parser->cursor];
+  if (c == ']') {
+    parser->cursor++;
+    return RET_OK;
+  }
 
   while (parser->cursor < parser->size) {
     tk_snprintf(name, TK_NAME_LEN, "%u", i++);
