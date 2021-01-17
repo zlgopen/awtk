@@ -94,7 +94,7 @@ ret_t Style::Output(wbuffer_t* wbuffer) {
   style_name_value_header_t nv;
 
   size = this->int_values.size() + this->str_values.size();
-  printf("  size=%d widget_type=%s name=%s state=%s\n", size, this->widget_type.c_str(),
+  log_debug("  size=%d widget_type=%s name=%s state=%s\n", size, this->widget_type.c_str(),
          this->name.c_str(), this->state.c_str());
 
   wbuffer_write_uint32(wbuffer, size);
@@ -111,7 +111,7 @@ ret_t Style::Output(wbuffer_t* wbuffer) {
     wbuffer_write_string(wbuffer, name.c_str());
     wbuffer_write_uint32(wbuffer, value);
 
-    printf("    %s=0x%08x\n", name.c_str(), value);
+    log_debug("    %s=0x%08x\n", name.c_str(), value);
   }
 
   size = this->str_values.size();
@@ -128,7 +128,7 @@ ret_t Style::Output(wbuffer_t* wbuffer) {
     wbuffer_write_string(wbuffer, name.c_str());
     wbuffer_write_string(wbuffer, value.c_str());
 
-    printf("    %s=%s\n", name.c_str(), value.c_str());
+    log_debug("    %s=%s\n", name.c_str(), value.c_str());
   }
 
   return RET_OK;
