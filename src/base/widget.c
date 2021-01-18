@@ -1395,7 +1395,7 @@ ret_t widget_fill_rect(widget_t* widget, canvas_t* c, const rect_t* r, bool_t bg
   return RET_OK;
 }
 
-static inline ret_t widget_stroke_border_rect_for_border_type(canvas_t* c, const rect_t* r,
+ret_t widget_stroke_border_rect_for_border_type(canvas_t* c, const rect_t* r,
                                                               color_t bd, int32_t border,
                                                               uint32_t border_width) {
   wh_t w = r->w;

@@ -1,0 +1,20 @@
+<color_tile>
+  <style name="round" border_color="#a0a0a0"  text_color="black" round_radius="8">
+    <normal    />
+  </style>
+  
+  <style name="round_top" border_color="#a0a0a0"  text_color="black" 
+    round_radius_top_left="8"
+    round_radius_top_right ="8">
+    <normal    />
+  </style>
+  
+  <style name="round_bottom" border_color="#a0a0a0"  text_color="black" 
+    round_radius_bottom_left="8"
+    round_radius_bottom_right ="8">
+    <normal    />
+  </style>
+  
+</color_tile>
+
+

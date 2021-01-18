@@ -24,16 +24,91 @@
 #include "widgets/color_tile.h"
 #include "tkc/color_parser.h"
 
-static ret_t color_tile_on_paint_self(widget_t* widget, canvas_t* c) {
+static ret_t color_tile_on_paint_stroke(widget_t* widget, canvas_t* c) {
+  rect_t r;
+  color_t bd;
+  ret_t ret = RET_FAIL;
+  style_t* style = NULL;
+  int32_t border, border_width;
   color_tile_t* color_tile = COLOR_TILE(widget);
+  uint32_t radius, radius_tl, radius_tr, radius_bl, radius_br;
   return_value_if_fail(color_tile != NULL, RET_BAD_PARAMS);
 
-  canvas_set_fill_color(c, color_tile->bg);
-  canvas_fill_rect(c, 0, 0, widget->w, widget->h);
+  style = widget->astyle;
+  r = rect_init(0, 0, widget->w, widget->h);
 
-  canvas_set_stroke_color(c, color_tile->border);
-  canvas_stroke_rect(c, 0, 0, widget->w, widget->h);
+  if (color_tile->border.rgba.a == 0) {
+    bd = style_get_color(style, STYLE_ID_BORDER_COLOR, color_tile->border);
+    if (bd.rgba.a == 0) {
+      return RET_OK;
+    }
+  } else {
+    bd = color_tile->border;
+  }
 
+  border = style_get_int(style, STYLE_ID_BORDER, BORDER_ALL);
+  border_width = style_get_int(style, STYLE_ID_BORDER_WIDTH, 1);
+
+  radius = style_get_int(style, STYLE_ID_ROUND_RADIUS, 0);
+  radius_tl = style_get_int(style, STYLE_ID_ROUND_RADIUS_TOP_LETF, radius);
+  radius_tr = style_get_int(style, STYLE_ID_ROUND_RADIUS_TOP_RIGHT, radius);
+  radius_bl = style_get_int(style, STYLE_ID_ROUND_RADIUS_BOTTOM_LETF, radius);
+  radius_br = style_get_int(style, STYLE_ID_ROUND_RADIUS_BOTTOM_RIGHT, radius);
+  
+  canvas_set_stroke_color(c, bd);
+  if (radius_tl > 3 || radius_tr > 3 || radius_bl > 3 || radius_br > 3) {
+    if (canvas_stroke_rounded_rect_ex(c, &r, NULL, &bd, radius_tl, radius_tr, radius_bl, radius_br,
+                                      border_width, border) != RET_OK) {
+      widget_stroke_border_rect_for_border_type(c, &r, bd, border, border_width);
+    }
+  } else {
+    widget_stroke_border_rect_for_border_type(c, &r, bd, border, border_width);
+  }
+
+  return ret;
+}
+
+static ret_t color_tile_on_paint_fill(widget_t* widget, canvas_t* c) {
+  rect_t r;
+  color_t color;
+  ret_t ret = RET_FAIL;
+  style_t* style = NULL;
+  color_tile_t* color_tile = COLOR_TILE(widget);
+  uint32_t radius, radius_tl, radius_tr, radius_bl, radius_br;
+  return_value_if_fail(color_tile != NULL && widget != NULL, RET_BAD_PARAMS);
+
+  style = widget->astyle;
+  r = rect_init(0, 0, widget->w, widget->h);
+  if (color_tile->bg.rgba.a == 0) {
+    color = style_get_color(style, STYLE_ID_BG_COLOR, color_tile->bg);
+    if (color.rgba.a == 0) {
+      return RET_OK;
+    }
+  } else {
+    color = color_tile->bg;
+  }
+
+  radius = style_get_int(style, STYLE_ID_ROUND_RADIUS, 0);
+  radius_tl = style_get_int(style, STYLE_ID_ROUND_RADIUS_TOP_LETF, radius);
+  radius_tr = style_get_int(style, STYLE_ID_ROUND_RADIUS_TOP_RIGHT, radius);
+  radius_bl = style_get_int(style, STYLE_ID_ROUND_RADIUS_BOTTOM_LETF, radius);
+  radius_br = style_get_int(style, STYLE_ID_ROUND_RADIUS_BOTTOM_RIGHT, radius);
+  
+  canvas_set_fill_color(c, color);
+  if (radius_tl > 3 || radius_tr > 3 || radius_bl > 3 || radius_br > 3) {
+    ret = canvas_fill_rounded_rect_ex(c, &r, NULL, &color, radius_tl, radius_tr, radius_bl, radius_br);
+  }
+  if (ret == RET_FAIL) {
+    ret = canvas_fill_rect(c, r.x, r.y, r.w, r.h);
+  }
+
+  return ret;
+}
+
+static ret_t color_tile_on_paint_self(widget_t* widget, canvas_t* c) {
+  return_value_if_fail(widget != NULL && c != NULL, RET_BAD_PARAMS);
+  color_tile_on_paint_fill(widget, c);
+  color_tile_on_paint_stroke(widget, c);
   return RET_OK;
 }
 

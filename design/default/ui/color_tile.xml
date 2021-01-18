@@ -1,0 +1,9 @@
+<window anim_hint="htranslate" move_focus_prev_key="up" move_focus_next_key="down" text="Basic Controls">
+  <grid x="0" y="0" w="100%" h="100%" children_layout="default(r=4,c=4,xm=2,s=10)">
+    <color_tile style="round" bg_color="red" focusable="true" focus="true"/>
+    <color_tile style="round_top" bg_color="green" focusable="true"/>
+    <color_tile style="round_bottom" bg_color="blue" focusable="true"/>
+    <color_tile bg_color="gold" focusable="true"/>
+  </grid>
+ <button style="close" x="c" y="b:10" w="80" h="30" name="close" text="Close"/>
+</window>

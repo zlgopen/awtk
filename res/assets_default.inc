@@ -4,6 +4,7 @@
 #include "assets/default/inc/strings/zh_CN.data"
 #include "assets/default/inc/strings/en_US.data"
 #include "assets/default/inc/styles/slide_menu.data"
+#include "assets/default/inc/styles/color_tile.data"
 #include "assets/default/inc/styles/digit_clock.data"
 #include "assets/default/inc/styles/dialog_toast.data"
 #include "assets/default/inc/styles/edit.data"
@@ -41,6 +42,7 @@
 #include "assets/default/inc/ui/bidi.data"
 #include "assets/default/inc/ui/progress_circle.data"
 #include "assets/default/inc/ui/combo_box.data"
+#include "assets/default/inc/ui/color_tile.data"
 #include "assets/default/inc/ui/kb_phone.data"
 #include "assets/default/inc/ui/tab_scrollable.data"
 #include "assets/default/inc/ui/main.data"
@@ -475,6 +477,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, strings_zh_CN);
   assets_manager_add(am, strings_en_US);
   assets_manager_add(am, style_slide_menu);
+  assets_manager_add(am, style_color_tile);
   assets_manager_add(am, style_digit_clock);
   assets_manager_add(am, style_dialog_toast);
   assets_manager_add(am, style_edit);
@@ -512,6 +515,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_bidi);
   assets_manager_add(am, ui_progress_circle);
   assets_manager_add(am, ui_combo_box);
+  assets_manager_add(am, ui_color_tile);
   assets_manager_add(am, ui_kb_phone);
   assets_manager_add(am, ui_tab_scrollable);
   assets_manager_add(am, ui_main);
