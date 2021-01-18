@@ -1248,6 +1248,12 @@ ret_t vgcanvas_set_assets_manager(vgcanvas_t* vg, assets_manager_t* assets_manag
 #define VGCANVAS_LINE_CAP_SQUARE "square"
 
 /**
+ * @const VGCANVAS_LINE_CAP_BUTT
+ * 平头。 
+ */
+#define VGCANVAS_LINE_CAP_BUTT "butt"
+
+/**
  * @enum vgcanvas_line_join_t
  * @annotation ["scriptable", "string"]
  * @prefix VGCANVAS_LINE_JOIN_

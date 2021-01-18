@@ -715,7 +715,7 @@ void nvgLineCap(NVGcontext* ctx, int cap)
 {
 	NVGstate* state = nvg__getState(ctx);
 	state->lineCap = cap;
-	if(ctx->params.setLineJoin != NULL)
+	if(ctx->params.setLineCap != NULL)
 	{
 		ctx->params.setLineCap(ctx->params.userPtr, cap);
 	}

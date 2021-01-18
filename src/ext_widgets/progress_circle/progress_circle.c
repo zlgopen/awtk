@@ -94,9 +94,11 @@ static ret_t progress_circle_on_paint_self(widget_t* widget, canvas_t* c) {
     vgcanvas_set_stroke_color(vg, color);
     vgcanvas_set_line_width(vg, progress_circle->line_width);
     if (tk_str_eq(progress_circle->line_cap, VGCANVAS_LINE_CAP_ROUND)) {
-      vgcanvas_set_line_cap(vg, progress_circle->line_cap);
-    } else {
+      vgcanvas_set_line_cap(vg, VGCANVAS_LINE_CAP_ROUND);
+    } else if (tk_str_eq(progress_circle->line_cap, VGCANVAS_LINE_CAP_SQUARE)) {
       vgcanvas_set_line_cap(vg, VGCANVAS_LINE_CAP_SQUARE);
+    } else {
+      vgcanvas_set_line_cap(vg, VGCANVAS_LINE_CAP_BUTT);
     }
     vgcanvas_begin_path(vg);
     if (end_angle > start_angle) {

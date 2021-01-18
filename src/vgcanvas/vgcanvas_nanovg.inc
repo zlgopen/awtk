@@ -573,6 +573,8 @@ static ret_t vgcanvas_nanovg_set_line_cap(vgcanvas_t* vgcanvas, const char* valu
     line_cap = NVG_ROUND;
   } else if (*value == 's') {
     line_cap = NVG_SQUARE;
+  } else if (*value == 'b') {
+    line_cap = NVG_BUTT;
   }
 
   nvgLineCap(vg, line_cap);

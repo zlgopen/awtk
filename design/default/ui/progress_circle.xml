@@ -3,10 +3,10 @@
     <progress_circle max="360" show_text="true" line_cap="square" 
       animation="value(from=0, to=360, yoyo_times=1000, duration=3000, easing=sin_inout)" />
 
-    <progress_circle max="360" show_text="true" start_angle="90" line_cap="square" 
+    <progress_circle max="360" show_text="true" start_angle="90" line_cap="butt" 
       animation="value(from=0, to=300, yoyo_times=1000, duration=3000, easing=sin_inout)" />
 
-    <progress_circle style="image" max="360" show_text="true" start_angle="-213"  
+    <progress_circle style="image" max="360" show_text="true" start_angle="-213" line_cap="round"  
       animation="value(from=0, to=300, yoyo_times=1000, duration=3000, easing=sin_inout)" />
 
     <progress_circle style="image" max="100" show_text="true" start_angle="90" start_angle="-225"  
