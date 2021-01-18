@@ -74,6 +74,9 @@ typedef struct _color_picker_t {
 
   /*private*/
   color_t c;
+  float_t c_r_value;
+  float_t c_g_value;
+  float_t c_b_value;
   bool_t inited;
   color_t init_c;
   int32_t last_hue;
