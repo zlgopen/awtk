@@ -94,11 +94,11 @@ typedef struct _rich_text_t {
   uint32_t line_gap;
 
   /**
-   * @property {uint32_t} margin
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 边距。
+   * @property {int32_t} yoffset
+   * @annotation ["set_prop","get_prop","readable"]
+   * y偏移。
    */
-  uint32_t margin;
+  int32_t yoffset;
 
   /**
    * @property {bool_t} yslidable
@@ -106,13 +106,6 @@ typedef struct _rich_text_t {
    * 标识控件是否允许上下拖动。
    */
   bool_t yslidable;
-
-  /**
-   * @property {int32_t} yoffset
-   * @annotation ["set_prop","get_prop","readable"]
-   * y偏移。
-   */
-  int32_t yoffset;
 
   /**
    * @property {bool_t} need_reset
@@ -132,6 +125,8 @@ typedef struct _rich_text_t {
   int32_t yoffset_save;
   rich_text_render_node_t* render_node;
 
+  int32_t margin;
+  int32_t attribute_margin;
   color_t default_color;
   align_v_t default_align_v;
   uint16_t default_font_size;

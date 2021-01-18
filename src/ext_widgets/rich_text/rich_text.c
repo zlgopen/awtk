@@ -50,6 +50,24 @@ static ret_t rich_text_reset(widget_t* widget) {
   return RET_OK;
 }
 
+static ret_t rich_text_get_margin(widget_t* widget) {
+  int32_t margin = 0;
+  int32_t tmp_margin = 0;
+  rich_text_t* rich_text = RICH_TEXT(widget);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  margin = style_get_int(widget->astyle, STYLE_ID_MARGIN, 0);
+  tmp_margin = rich_text->margin;
+  if (margin != 0) {
+    rich_text->margin = margin;
+  } else {
+    rich_text->margin = rich_text->attribute_margin;
+  }
+  if (tmp_margin != rich_text->margin) {
+    rich_text->need_reset = TRUE;
+  }
+  return RET_OK;
+}
+
 static ret_t rich_text_on_paint_text(widget_t* widget, canvas_t* c) {
   rect_t r;
   rect_t r_save;
@@ -228,6 +246,7 @@ static ret_t rich_text_ensure_render_node(widget_t* widget, canvas_t* c) {
 }
 
 static ret_t rich_text_on_paint_self(widget_t* widget, canvas_t* c) {
+  rich_text_get_margin(widget);
   if (rich_text_ensure_render_node(widget, c) == RET_OK) {
     return rich_text_on_paint_text(widget, c);
   }
@@ -505,8 +524,9 @@ static ret_t rich_text_set_prop(widget_t* widget, const char* name, const value_
     rich_text->need_reset = TRUE;
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_MARGIN)) {
-    rich_text->margin = value_int(v);
+    rich_text->attribute_margin = value_int(v);
     rich_text->need_reset = TRUE;
+    rich_text_get_margin(widget);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_YOFFSET)) {
     rich_text->yoffset = value_int(v);
@@ -529,6 +549,7 @@ static ret_t rich_text_get_prop(widget_t* widget, const char* name, value_t* v) 
     value_set_int(v, rich_text->line_gap);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_MARGIN)) {
+    rich_text_get_margin(widget);
     value_set_int(v, rich_text->margin);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_YOFFSET)) {
