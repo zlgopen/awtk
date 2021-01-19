@@ -32,6 +32,8 @@
 #define SCROLL_VIEW_DEFAULT_XSPEED_SCALE 2.0f
 #define SCROLL_VIEW_DEFAULT_YSPEED_SCALE 2.0f
 
+static uint32_t scroll_view_get_curr_page(widget_t* widget);
+
 static ret_t scroll_view_update_virtual_size(widget_t* widget) {
   int32_t virtual_w = 0;
   int32_t virtual_h = 0;
@@ -97,6 +99,7 @@ static ret_t scroll_view_on_scroll_done(void* ctx, event_t* e) {
   return_value_if_fail(widget != NULL && scroll_view != NULL, RET_BAD_PARAMS);
 
   scroll_view->wa = NULL;
+  scroll_view_get_curr_page(widget);
   widget_invalidate_force(widget, NULL);
   widget_dispatch_simple_event(widget, EVT_SCROLL_END);
   widget_dispatch_simple_event(widget, EVT_PAGE_CHANGED);
@@ -133,16 +136,17 @@ static ret_t scroll_view_fix_end_offset_default(widget_t* widget) {
 }
 
 static int32_t scroll_view_get_snap_to_page_offset_value(widget_t* widget, int32_t offset_end) {
-  uint32_t w = widget->w;
+  uint32_t tmp = 0;
   scroll_view_t* scroll_view = SCROLL_VIEW(widget);
-  if (w != 0) {
-    int32_t n = (int32_t)((offset_end + w * 0.5f) / w);
-    if (scroll_view->curr_page - n > 1) {
-      n = scroll_view->curr_page - 1;
-    } else if (n - scroll_view->curr_page > 1) {
-      n = scroll_view->curr_page + 1;
-    }
-    offset_end = n * w;
+  return_value_if_fail(scroll_view != NULL, offset_end);
+  if (scroll_view->xslidable && !scroll_view->yslidable) {
+    tmp = widget->w;
+  } else if (!scroll_view->xslidable && scroll_view->yslidable) {
+    tmp = widget->h;
+  }
+  if (tmp != 0) {
+    int32_t n = (int32_t)((offset_end + tmp * 0.5f) / tmp);
+    offset_end = n * tmp;
   }
   return offset_end;
 }
