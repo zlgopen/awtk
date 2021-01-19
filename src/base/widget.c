@@ -3557,10 +3557,14 @@ ret_t widget_unload_image(widget_t* widget, bitmap_t* bitmap) {
 }
 
 const asset_info_t* widget_load_asset(widget_t* widget, asset_type_t type, const char* name) {
+  return widget_load_asset_ex(widget, type, 0, name);
+}
+
+const asset_info_t* widget_load_asset_ex(widget_t* widget, asset_type_t type, uint16_t subtype, const char* name) {
   assets_manager_t* am = widget_get_assets_manager(widget);
   return_value_if_fail(widget != NULL && name != NULL && am != NULL, NULL);
 
-  return assets_manager_ref(am, type, name);
+  return assets_manager_ref_ex(am, type, subtype, name);
 }
 
 ret_t widget_unload_asset(widget_t* widget, const asset_info_t* asset) {

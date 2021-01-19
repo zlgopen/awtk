@@ -1961,6 +1961,26 @@ ret_t widget_unload_image(widget_t* widget, bitmap_t* bitmap);
 const asset_info_t* widget_load_asset(widget_t* widget, asset_type_t type, const char* name);
 
 /**
+ * @method widget_load_asset_ex
+ * 加载资源。
+ * @param {widget_t*} widget 控件对象。
+ * @param {asset_type_t} type 资源类型。
+ * @param {uint16_t} subtype 资源子类型。
+ * @param {const char*}  name 资源名。
+ *
+ * 使用示例：
+ *
+ * ```c
+ * const asset_info_t* asset = widget_load_asset_ex(widget, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_BSVG, "mysvg");
+ * ...
+ * widget_unload_asset(widget, asset);
+ * ```
+ *
+ * @return {const asset_info_t*} 返回资源句柄。
+ */
+const asset_info_t* widget_load_asset_ex(widget_t* widget, asset_type_t type, uint16_t subtype, const char* name);
+
+/**
  * @method widget_unload_asset
  * 卸载资源。
  * @param {widget_t*} widget 控件对象。

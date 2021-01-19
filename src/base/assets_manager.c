@@ -51,7 +51,7 @@ static locale_info_t* assets_manager_get_locale_info(assets_manager_t* am) {
 }
 
 #if defined(AWTK_WEB)
-static asset_info_t* assets_manager_load_impl(assets_manager_t* am, asset_type_t type,
+static asset_info_t* assets_manager_load_impl(assets_manager_t* am, asset_type_t type, uint16_t subtype,
                                               const char* name) {
   asset_info_t* info = TKMEM_ALLOC(sizeof(asset_info_t));
   return_value_if_fail(info != NULL, NULL);
@@ -59,7 +59,7 @@ static asset_info_t* assets_manager_load_impl(assets_manager_t* am, asset_type_t
   memset(info, 0x00, sizeof(asset_info_t));
   info->size = 0;
   info->type = type;
-  info->subtype = 0;
+  info->subtype = subtype;
   info->refcount = 1;
   info->is_in_rom = FALSE;
   strncpy(info->name, name, TK_NAME_LEN);
@@ -339,27 +339,36 @@ bool_t assets_manager_is_save_assets_list(asset_type_t type) {
   return FALSE;
 }
 
-asset_info_t* assets_manager_load_asset(assets_manager_t* am, asset_type_t type, const char* theme,
+static asset_info_t* assets_manager_load_asset(assets_manager_t* am, asset_type_t type, uint16_t subtype, const char* theme,
                                         const char* name) {
   asset_info_t* info = NULL;
   switch (type) {
     case ASSET_TYPE_FONT: {
-      if ((info = try_load_assets(am, theme, name, ".ttf", type, ASSET_TYPE_FONT_TTF)) != NULL) {
-        break;
+      if (subtype == 0 || (subtype != 0 && subtype == ASSET_TYPE_FONT_TTF)) {
+        if ((info = try_load_assets(am, theme, name, ".ttf", type, ASSET_TYPE_FONT_TTF)) != NULL) {
+          break;
+        }
       }
 
-      if ((info = try_load_assets(am, theme, name, ".bin", type, ASSET_TYPE_FONT_BMP)) != NULL) {
-        break;
+      if (subtype == 0 || (subtype != 0 && subtype == ASSET_TYPE_FONT_BMP)) {
+        if ((info = try_load_assets(am, theme, name, ".bin", type, ASSET_TYPE_FONT_BMP)) != NULL) {
+          break;
+        }
       }
       break;
     }
     case ASSET_TYPE_SCRIPT: {
-      if ((info = try_load_assets(am, theme, name, ".js", type, ASSET_TYPE_SCRIPT_JS)) != NULL) {
-        break;
+
+      if (subtype == 0 || (subtype != 0 && subtype == ASSET_TYPE_SCRIPT_JS)) {
+        if ((info = try_load_assets(am, theme, name, ".js", type, ASSET_TYPE_SCRIPT_JS)) != NULL) {
+          break;
+        }
       }
 
-      if ((info = try_load_assets(am, theme, name, ".lua", type, ASSET_TYPE_SCRIPT_LUA)) != NULL) {
-        break;
+      if (subtype == 0 || (subtype != 0 && subtype == ASSET_TYPE_SCRIPT_LUA)) {
+        if ((info = try_load_assets(am, theme, name, ".lua", type, ASSET_TYPE_SCRIPT_LUA)) != NULL) {
+          break;
+        }
       }
       break;
     }
@@ -382,6 +391,12 @@ asset_info_t* assets_manager_load_asset(assets_manager_t* am, asset_type_t type,
       break;
     }
     case ASSET_TYPE_IMAGE: {
+      if (subtype != 0) {
+        asset_image_type_t sub_type = (asset_image_type_t)subtype;
+        if ((info = try_load_image(am, theme, name, sub_type, sub_type != ASSET_TYPE_IMAGE_BSVG)) != NULL) {
+          break;
+        }
+      }
       if ((info = try_load_image(am, theme, name, ASSET_TYPE_IMAGE_PNG, TRUE)) != NULL) {
         break;
       }
@@ -450,7 +465,7 @@ asset_info_t* assets_manager_load_asset(assets_manager_t* am, asset_type_t type,
   return info;
 }
 
-static asset_info_t* assets_manager_load_impl(assets_manager_t* am, asset_type_t type,
+static asset_info_t* assets_manager_load_impl(assets_manager_t* am, asset_type_t type, uint16_t subtype,
                                               const char* name) {
   asset_info_t* info = NULL;
   if (am->loader == NULL) {
@@ -466,9 +481,9 @@ static asset_info_t* assets_manager_load_impl(assets_manager_t* am, asset_type_t
     return info;
   } else {
     const char* theme = am->theme ? am->theme : THEME_DEFAULT;
-    info = assets_manager_load_asset(am, type, theme, name);
+    info = assets_manager_load_asset(am, type, subtype, theme, name);
     if (info == NULL && !tk_str_eq(theme, THEME_DEFAULT)) {
-      info = assets_manager_load_asset(am, type, THEME_DEFAULT, name);
+      info = assets_manager_load_asset(am, type, subtype, THEME_DEFAULT, name);
     }
     return info;
   }
@@ -480,14 +495,18 @@ assets_manager_t* assets_manager(void) {
 }
 
 asset_info_t* assets_manager_load(assets_manager_t* am, asset_type_t type, const char* name) {
+  return assets_manager_load_ex(am, type, 0, name);
+}
+
+asset_info_t* assets_manager_load_ex(assets_manager_t* am, asset_type_t type, uint16_t subtype, const char* name) {
   assets_event_t e;
   asset_info_t* info = NULL;
   return_value_if_fail(am != NULL && name != NULL, NULL);
 
   if (am->custom_load_asset != NULL) {
-    return am->custom_load_asset(am->custom_load_asset_ctx, type, name);
+    return am->custom_load_asset(am->custom_load_asset_ctx, type, subtype, name);
   }
-  info = assets_manager_load_impl(am, type, name);
+  info = assets_manager_load_impl(am, type, subtype, name);
   if (info != NULL) {
     emitter_dispatch(EMITTER(am),
                      assets_event_init(&e, am, EVT_ASSET_MANAGER_LOAD_ASSET, (asset_type_t)(info->type), info));
@@ -586,7 +605,7 @@ ret_t assets_manager_add_data(assets_manager_t* am, const char* name, uint16_t t
   return asset_info_unref(info);
 }
 
-const asset_info_t* assets_manager_find_in_cache(assets_manager_t* am, asset_type_t type,
+const asset_info_t* assets_manager_find_in_cache(assets_manager_t* am, asset_type_t type, uint16_t subtype,
                                                  const char* name) {
   uint32_t i = 0;
   const char* assets_name = NULL;
@@ -600,7 +619,8 @@ const asset_info_t* assets_manager_find_in_cache(assets_manager_t* am, asset_typ
 
   for (i = 0; i < am->assets.size; i++) {
     iter = all[i];
-    if (type == iter->type && strcmp(assets_name, iter->name) == 0) {
+    if (type == iter->type && strcmp(assets_name, iter->name) == 0 && 
+       (subtype == 0 || (subtype != 0 && subtype == iter->subtype))) {
       return iter;
     }
   }
@@ -608,12 +628,12 @@ const asset_info_t* assets_manager_find_in_cache(assets_manager_t* am, asset_typ
   return NULL;
 }
 
-static const asset_info_t* assets_manager_ref_impl(assets_manager_t* am, asset_type_t type,
+static const asset_info_t* assets_manager_ref_impl(assets_manager_t* am, asset_type_t type, uint16_t subtype,
                                                    const char* name) {
-  const asset_info_t* info = assets_manager_find_in_cache(am, type, name);
+  const asset_info_t* info = assets_manager_find_in_cache(am, type, subtype, name);
 
   if (info == NULL) {
-    info = assets_manager_load(am, type, name);
+    info = assets_manager_load_ex(am, type, subtype, name);
   } else {
     asset_info_ref((asset_info_t*)info);
   }
@@ -622,6 +642,10 @@ static const asset_info_t* assets_manager_ref_impl(assets_manager_t* am, asset_t
 }
 
 const asset_info_t* assets_manager_ref(assets_manager_t* am, asset_type_t type, const char* name) {
+  return assets_manager_ref_ex(am, type, 0, name);
+}
+
+const asset_info_t* assets_manager_ref_ex(assets_manager_t* am, asset_type_t type, uint16_t subtype, const char* name) {
   const asset_info_t* info = NULL;
   locale_info_t* locale_info = assets_manager_get_locale_info(am);
 
@@ -639,25 +663,25 @@ const asset_info_t* assets_manager_ref(assets_manager_t* am, asset_type_t type, 
     if (strlen(language) > 0 && strlen(country) > 0) {
       tk_snprintf(locale, sizeof(locale) - 1, "%s_%s", language, country);
       tk_replace_locale(name, real_name, locale);
-      info = assets_manager_ref_impl(am, type, real_name);
+      info = assets_manager_ref_impl(am, type, subtype, real_name);
       if (info != NULL) {
         return info;
       }
     }
 
     tk_replace_locale(name, real_name, language);
-    info = assets_manager_ref_impl(am, type, real_name);
+    info = assets_manager_ref_impl(am, type, subtype, real_name);
     if (info != NULL) {
       return info;
     }
 
     tk_replace_locale(name, real_name, "");
-    info = assets_manager_ref_impl(am, type, real_name);
+    info = assets_manager_ref_impl(am, type, subtype, real_name);
     if (info != NULL) {
       return info;
     }
   } else {
-    info = assets_manager_ref_impl(am, type, name);
+    info = assets_manager_ref_impl(am, type, subtype, name);
   }
 
   if (info == NULL && type == ASSET_TYPE_UI) {

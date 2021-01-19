@@ -34,7 +34,7 @@ typedef ret_t (*assets_manager_build_asset_dir_t)(void* ctx, char* path, uint32_
                                                   const char* theme, const char* ratio,
                                                   const char* subpath);
 
-typedef asset_info_t* (*assets_manager_load_asset_t)(assets_manager_t* am, asset_type_t type,
+typedef asset_info_t* (*assets_manager_load_asset_t)(assets_manager_t* am, asset_type_t type, uint16_t subtype,
                                                      const char* name);
 
 /**
@@ -219,6 +219,19 @@ ret_t assets_manager_add_data(assets_manager_t* am, const char* name, uint16_t t
 const asset_info_t* assets_manager_ref(assets_manager_t* am, asset_type_t type, const char* name);
 
 /**
+ * @method assets_manager_ref_ex
+ * 在资源管理器的缓存中查找指定的资源并引用它，如果缓存中不存在，尝试加载该资源。
+ * @annotation ["scriptable"]
+ * @param {assets_manager_t*} am asset manager对象。
+ * @param {asset_type_t} type 资源的类型。
+ * @param {uint16_t} subtype 资源的子类型。
+ * @param {char*} name 资源的名称。
+ *
+ * @return {asset_info_t*} 返回资源。
+ */
+const asset_info_t* assets_manager_ref_ex(assets_manager_t* am, asset_type_t type, uint16_t subtype, const char* name);
+
+/**
  * @method assets_manager_unref
  * 释放指定的资源。
  * @annotation ["scriptable"]
@@ -234,11 +247,12 @@ ret_t assets_manager_unref(assets_manager_t* am, const asset_info_t* info);
  * 在资源管理器的缓存中查找指定的资源(不引用)。
  * @param {assets_manager_t*} am asset manager对象。
  * @param {asset_type_t} type 资源的类型。
+ * @param {uint16_t} subtype 资源的子类型。
  * @param {char*} name 资源的名称。
  *
  * @return {asset_info_t*} 返回资源。
  */
-const asset_info_t* assets_manager_find_in_cache(assets_manager_t* am, asset_type_t type,
+const asset_info_t* assets_manager_find_in_cache(assets_manager_t* am, asset_type_t type, uint16_t subtype,
                                                  const char* name);
 /**
  * @method assets_manager_load
@@ -250,6 +264,18 @@ const asset_info_t* assets_manager_find_in_cache(assets_manager_t* am, asset_typ
  * @return {asset_info_t*} 返回资源。
  */
 asset_info_t* assets_manager_load(assets_manager_t* am, asset_type_t type, const char* name);
+
+/**
+ * @method assets_manager_load_ex
+ * 从文件系统中加载指定的资源，并缓存到内存中。在定义了宏WITH\_FS\_RES时才生效。
+ * @param {assets_manager_t*} am asset manager对象。
+ * @param {asset_type_t} type 资源的类型。
+ * @param {asset_type_t} type 资源的子类型。
+ * @param {char*} name 资源的名称。
+ *
+ * @return {asset_info_t*} 返回资源。
+ */
+asset_info_t* assets_manager_load_ex(assets_manager_t* am, asset_type_t type, uint16_t subtype, const char* name);
 
 /**
  * @method assets_manager_preload
