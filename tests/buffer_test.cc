@@ -20,7 +20,7 @@ TEST(Buffer, rewind) {
   const char* str = "hello awtk";
   wbuffer_init_extendable(&wbuffer);
   wbuffer_write_string(&wbuffer, str);
-  ASSERT_EQ(wbuffer.cursor, strlen(str)+1);
+  ASSERT_EQ(wbuffer.cursor, strlen(str) + 1);
   ASSERT_EQ(wbuffer_rewind(&wbuffer), RET_OK);
   ASSERT_EQ(wbuffer.cursor, 0);
 
@@ -40,7 +40,7 @@ TEST(Buffer, demo2) {
   rbuffer_init(&rbuffer, wbuffer.data, wbuffer.cursor);
   rbuffer_read_string(&rbuffer, &rstr);
 
-  ASSERT_EQ(rbuffer.cursor, strlen(wstr)+1);
+  ASSERT_EQ(rbuffer.cursor, strlen(wstr) + 1);
   ASSERT_EQ(rbuffer_rewind(&rbuffer), RET_OK);
   ASSERT_EQ(rbuffer.cursor, 0);
 
@@ -103,7 +103,7 @@ TEST(Buffer, basic1) {
   ASSERT_EQ(wbuffer_init(&wbuffer, data, sizeof(data)), &wbuffer);
   ASSERT_EQ(wbuffer_write_uint64(&wbuffer, 0x112233445566), RET_OK);
   ASSERT_EQ(wbuffer.cursor, sizeof(uint64_t));
-  ASSERT_EQ(rbuffer_init(rb, wbuffer.data, wbuffer.cursor)!= NULL, true);
+  ASSERT_EQ(rbuffer_init(rb, wbuffer.data, wbuffer.cursor) != NULL, true);
   ASSERT_EQ(rbuffer_read_uint64(rb, &v64), RET_OK);
   ASSERT_EQ(v64, 0x112233445566);
   ASSERT_EQ(rbuffer_has_more(rb), FALSE);
@@ -111,15 +111,15 @@ TEST(Buffer, basic1) {
   ASSERT_EQ(wbuffer_init(&wbuffer, data, sizeof(data)), &wbuffer);
   ASSERT_EQ(wbuffer_write_float(&wbuffer, 100), RET_OK);
   ASSERT_EQ(wbuffer.cursor, sizeof(float));
-  ASSERT_EQ(rbuffer_init(rb, wbuffer.data, wbuffer.cursor)!= NULL, true);
+  ASSERT_EQ(rbuffer_init(rb, wbuffer.data, wbuffer.cursor) != NULL, true);
   ASSERT_EQ(rbuffer_read_float(rb, &f32), RET_OK);
   ASSERT_EQ(f32, 100.0F);
   ASSERT_EQ(rbuffer_has_more(rb), FALSE);
-  
+
   ASSERT_EQ(wbuffer_init(&wbuffer, data, sizeof(data)), &wbuffer);
   ASSERT_EQ(wbuffer_write_double(&wbuffer, 100), RET_OK);
   ASSERT_EQ(wbuffer.cursor, sizeof(double));
-  ASSERT_EQ(rbuffer_init(rb, wbuffer.data, wbuffer.cursor)!= NULL, true);
+  ASSERT_EQ(rbuffer_init(rb, wbuffer.data, wbuffer.cursor) != NULL, true);
   ASSERT_EQ(rbuffer_read_double(rb, &f64), RET_OK);
   ASSERT_EQ(f64, 100.0F);
   ASSERT_EQ(rbuffer_has_more(rb), FALSE);
@@ -129,11 +129,10 @@ TEST(Buffer, basic2) {
   uint8_t data[128];
   wbuffer_t wbuffer;
   ASSERT_EQ(wbuffer_init(&wbuffer, data, sizeof(data)), &wbuffer);
-
 }
-  uint64_t v64 = 0;
-  float f32 = 0;
-  double f64 = 0;
+uint64_t v64 = 0;
+float f32 = 0;
+double f64 = 0;
 
 TEST(Buffer, extendable) {
   wbuffer_t wbuffer;

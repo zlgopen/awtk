@@ -65,7 +65,7 @@ static ret_t pages_on_idle_set_target_focused(const idle_info_t* idle) {
   pages = PAGES(idle->ctx);
   target = pages->target;
 
-  while (target->parent != NULL) {    
+  while (target->parent != NULL) {
     if (target == target->parent->target) {
       break;
     }

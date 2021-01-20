@@ -223,7 +223,7 @@ static ret_t object_default_set_prop(object_t* obj, const char* name, const valu
   ret_t ret = RET_NOT_FOUND;
   object_default_t* o = OBJECT_DEFAULT(obj);
   return_value_if_fail(object_default_extend(obj) == RET_OK, RET_OOM);
-  
+
   if (o->props_size > 0) {
     object_t* sub = object_default_get_sub_object(obj, name);
     if (sub != NULL) {

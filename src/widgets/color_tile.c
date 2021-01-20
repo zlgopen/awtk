@@ -54,7 +54,7 @@ static ret_t color_tile_on_paint_stroke(widget_t* widget, canvas_t* c) {
   radius_tr = style_get_int(style, STYLE_ID_ROUND_RADIUS_TOP_RIGHT, radius);
   radius_bl = style_get_int(style, STYLE_ID_ROUND_RADIUS_BOTTOM_LETF, radius);
   radius_br = style_get_int(style, STYLE_ID_ROUND_RADIUS_BOTTOM_RIGHT, radius);
-  
+
   canvas_set_stroke_color(c, bd);
   if (radius_tl > 3 || radius_tr > 3 || radius_bl > 3 || radius_br > 3) {
     if (canvas_stroke_rounded_rect_ex(c, &r, NULL, &bd, radius_tl, radius_tr, radius_bl, radius_br,
@@ -93,10 +93,11 @@ static ret_t color_tile_on_paint_fill(widget_t* widget, canvas_t* c) {
   radius_tr = style_get_int(style, STYLE_ID_ROUND_RADIUS_TOP_RIGHT, radius);
   radius_bl = style_get_int(style, STYLE_ID_ROUND_RADIUS_BOTTOM_LETF, radius);
   radius_br = style_get_int(style, STYLE_ID_ROUND_RADIUS_BOTTOM_RIGHT, radius);
-  
+
   canvas_set_fill_color(c, color);
   if (radius_tl > 3 || radius_tr > 3 || radius_bl > 3 || radius_br > 3) {
-    ret = canvas_fill_rounded_rect_ex(c, &r, NULL, &color, radius_tl, radius_tr, radius_bl, radius_br);
+    ret = canvas_fill_rounded_rect_ex(c, &r, NULL, &color, radius_tl, radius_tr, radius_bl,
+                                      radius_br);
   }
   if (ret == RET_FAIL) {
     ret = canvas_fill_rect(c, r.x, r.y, r.w, r.h);

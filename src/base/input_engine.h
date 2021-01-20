@@ -189,7 +189,8 @@ ret_t input_engine_add_candidates_from_char(input_engine_t* engine, const wchar_
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t input_engine_add_candidates_from_string(input_engine_t* engine, const table_entry_t* items, uint32_t items_nr, const char* key, bool_t exact);
+ret_t input_engine_add_candidates_from_string(input_engine_t* engine, const table_entry_t* items,
+                                              uint32_t items_nr, const char* key, bool_t exact);
 
 /**
  * @method input_engine_dispatch_candidates

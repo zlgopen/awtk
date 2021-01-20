@@ -111,14 +111,15 @@ static align_h_t widget_get_text_align_h(widget_t* widget) {
   return (align_h_t)style_get_int(widget->astyle, STYLE_ID_TEXT_ALIGN_H, ALIGN_H_LEFT);
 }
 
-#define TEXT_EDIT_GET_WIDGET_MARGIN(widget, style, out_value, type) {                      \
-  value_t v;                                                                               \
-  value_set_int(&v, 0);                                                                    \
-  if (widget_get_prop((widget), WIDGET_PROP_##type##_MARGIN, &v) == RET_OK) {              \
-    (out_value) = value_int(&v);                                                           \
-  }                                                                                        \
-  TEXT_EDIT_GET_STYLE_MARGIN(style, out_value, type)                                       \
-}                                                                                          \
+#define TEXT_EDIT_GET_WIDGET_MARGIN(widget, style, out_value, type)             \
+  {                                                                             \
+    value_t v;                                                                  \
+    value_set_int(&v, 0);                                                       \
+    if (widget_get_prop((widget), WIDGET_PROP_##type##_MARGIN, &v) == RET_OK) { \
+      (out_value) = value_int(&v);                                              \
+    }                                                                           \
+    TEXT_EDIT_GET_STYLE_MARGIN(style, out_value, type)                          \
+  }
 
 static ret_t widget_get_text_layout_info(widget_t* widget, text_layout_info_t* info) {
   style_t* style = widget->astyle;
@@ -468,7 +469,8 @@ static ret_t text_edit_paint_caret(text_edit_t* text_edit, canvas_t* c) {
   return RET_OK;
 }
 
-static ret_t text_edit_paint_tips_mlines_text(text_edit_t* text_edit, canvas_t* c, line_parser_t* p) {
+static ret_t text_edit_paint_tips_mlines_text(text_edit_t* text_edit, canvas_t* c,
+                                              line_parser_t* p) {
   int32_t y = 0;
   int32_t w = 0;
   int32_t font_size = 0;
@@ -476,7 +478,7 @@ static ret_t text_edit_paint_tips_mlines_text(text_edit_t* text_edit, canvas_t* 
   DECL_IMPL(text_edit);
   text_layout_info_t* layout_info = 0;
   return_value_if_fail(text_edit != NULL && text_edit->widget != NULL && c != NULL, RET_BAD_PARAMS);
-  
+
   font_size = c->font_size;
   layout_info = &(impl->layout_info);
   line_height = font_size + style_get_int(text_edit->widget->astyle, STYLE_ID_SPACER, 2);
@@ -511,15 +513,18 @@ static ret_t text_edit_paint_tips_text(text_edit_t* text_edit, canvas_t* c) {
   if (text->size > 0) {
     if (impl->is_mlines) {
       line_parser_t p;
-      line_parser_init(&p, c, (const wchar_t*)(text->str), text->size, c->font_size, layout_info->w, TRUE, TRUE);
+      line_parser_init(&p, c, (const wchar_t*)(text->str), text->size, c->font_size, layout_info->w,
+                       TRUE, TRUE);
       if (p.total_lines > 1) {
         text_edit_paint_tips_mlines_text(text_edit, c, &p);
       } else {
-        rect_t r = rect_init(layout_info->margin_l, layout_info->margin_t, layout_info->w, layout_info->h);
+        rect_t r =
+            rect_init(layout_info->margin_l, layout_info->margin_t, layout_info->w, layout_info->h);
         canvas_draw_text_in_rect(c, text->str, text->size, &r);
       }
     } else {
-      rect_t r = rect_init(layout_info->margin_l, layout_info->margin_t, layout_info->w, layout_info->h);
+      rect_t r =
+          rect_init(layout_info->margin_l, layout_info->margin_t, layout_info->w, layout_info->h);
       canvas_draw_text_in_rect(c, text->str, text->size, &r);
     }
   }
@@ -672,7 +677,8 @@ static ret_t text_edit_paint_text(text_edit_t* text_edit, canvas_t* c) {
   if (widget->text.size > 0) {
     return text_edit_paint_real_text(text_edit, c);
   } else {
-    color_t trans = style_get_color(widget->astyle, STYLE_ID_TEXT_COLOR, color_init(0x0, 0x0, 0x0, 0x0));
+    color_t trans =
+        style_get_color(widget->astyle, STYLE_ID_TEXT_COLOR, color_init(0x0, 0x0, 0x0, 0x0));
     color_t tc = style_get_color(widget->astyle, STYLE_ID_TIPS_TEXT_COLOR, trans);
     canvas_set_text_color(c, tc);
     return text_edit_paint_tips_text(text_edit, c);

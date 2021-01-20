@@ -25,7 +25,9 @@ action_thread_pool_t* action_thread_pool_create(uint16_t max_thread_nr, uint16_t
   return action_thread_pool_create_ex(max_thread_nr, min_idle_nr, 0, TK_THREAD_PRIORITY_NORMAL);
 }
 
-action_thread_pool_t* action_thread_pool_create_ex(uint16_t max_thread_nr, uint16_t min_idle_nr, uint32_t stack_size, tk_thread_priority_t priority) {
+action_thread_pool_t* action_thread_pool_create_ex(uint16_t max_thread_nr, uint16_t min_idle_nr,
+                                                   uint32_t stack_size,
+                                                   tk_thread_priority_t priority) {
   action_thread_pool_t* thread_pool = NULL;
   uint32_t size = sizeof(action_thread_pool_t) + sizeof(action_thread_t*) * max_thread_nr;
 
@@ -105,7 +107,8 @@ static ret_t action_thread_pool_create_thread(action_thread_pool_t* thread_pool)
 
   for (i = 0; i < thread_pool->max_thread_nr; i++) {
     if (thread_pool->threads[i] == NULL) {
-      thread_pool->threads[i] = action_thread_create_with_queue_ex(thread_pool->queue, NULL, thread_pool->stack_size, thread_pool->priority);
+      thread_pool->threads[i] = action_thread_create_with_queue_ex(
+          thread_pool->queue, NULL, thread_pool->stack_size, thread_pool->priority);
       action_thread_set_on_idle(thread_pool->threads[i],
                                 (action_thread_on_idle_t)action_thread_pool_on_thread_idle,
                                 thread_pool);

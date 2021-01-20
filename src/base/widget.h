@@ -1978,7 +1978,8 @@ const asset_info_t* widget_load_asset(widget_t* widget, asset_type_t type, const
  *
  * @return {const asset_info_t*} 返回资源句柄。
  */
-const asset_info_t* widget_load_asset_ex(widget_t* widget, asset_type_t type, uint16_t subtype, const char* name);
+const asset_info_t* widget_load_asset_ex(widget_t* widget, asset_type_t type, uint16_t subtype,
+                                         const char* name);
 
 /**
  * @method widget_unload_asset
@@ -2694,7 +2695,8 @@ ret_t widget_on_context_menu(widget_t* widget, pointer_event_t* e);
 #define WIDGET_EXEC_DESTROY_ANIMATOR "destroy_animator"
 
 /* private */
-ret_t widget_stroke_border_rect_for_border_type(canvas_t* c, const rect_t* r, color_t bd, int32_t border, uint32_t border_width);
+ret_t widget_stroke_border_rect_for_border_type(canvas_t* c, const rect_t* r, color_t bd,
+                                                int32_t border, uint32_t border_width);
 
 END_C_DECLS
 

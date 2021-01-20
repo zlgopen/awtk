@@ -178,8 +178,8 @@ static ret_t input_engine_t9ext_search_alpha(input_engine_t* engine, char c,
 
   wbuffer_reset(&(t9->pre_candidates));
   t9->pre_candidates_nr = ime_utils_add_chars(&(t9->pre_candidates), table, c);
-  input_method_dispatch_pre_candidates(engine->im, (const char*)(t9->pre_candidates.data), t9->pre_candidates_nr,
-                                       t9->index);
+  input_method_dispatch_pre_candidates(engine->im, (const char*)(t9->pre_candidates.data),
+                                       t9->pre_candidates_nr, t9->index);
 
   return RET_OK;
 }
@@ -213,29 +213,32 @@ static ret_t input_engine_t9ext_search_zh(input_engine_t* engine, const char* ke
       t9->pre_candidates_nr = 0;
     }
 
-    t9->pre_candidates_nr += ime_utils_table_search(items, items_nr, keys, &(t9->pre_candidates), FALSE);
+    t9->pre_candidates_nr +=
+        ime_utils_table_search(items, items_nr, keys, &(t9->pre_candidates), FALSE);
     if (t9->pre_candidates_nr == 0) {
       t9->pre_candidates_nr = 1;
       wbuffer_write_string(&(t9->pre_candidates), keys);
-      input_method_dispatch_pre_candidates(engine->im, (const char*)(t9->pre_candidates.data), t9->pre_candidates_nr,
-                                           0);
+      input_method_dispatch_pre_candidates(engine->im, (const char*)(t9->pre_candidates.data),
+                                           t9->pre_candidates_nr, 0);
     } else {
-      input_method_dispatch_pre_candidates(engine->im, (const char*)(t9->pre_candidates.data), t9->pre_candidates_nr,
-                                           0);
+      input_method_dispatch_pre_candidates(engine->im, (const char*)(t9->pre_candidates.data),
+                                           t9->pre_candidates_nr, 0);
 
       input_engine_reset_candidates(engine);
       if (keys_size == 1) {
         input_engine_add_candidates_from_char(engine, s_table_num_chars, *keys);
       } else if (*first) {
         /*map first pinyin to Chinese chars*/
-        input_engine_add_candidates_from_string(engine, s_pinyin_chinese_items, ARRAY_SIZE(s_pinyin_chinese_items), first, TRUE);
+        input_engine_add_candidates_from_string(engine, s_pinyin_chinese_items,
+                                                ARRAY_SIZE(s_pinyin_chinese_items), first, TRUE);
       }
       input_engine_dispatch_candidates(engine, -1);
     }
   } else {
     /*map pinyin to Chinese chars*/
     input_engine_reset_candidates(engine);
-    input_engine_add_candidates_from_string(engine, s_pinyin_chinese_items, ARRAY_SIZE(s_pinyin_chinese_items), keys, TRUE);
+    input_engine_add_candidates_from_string(engine, s_pinyin_chinese_items,
+                                            ARRAY_SIZE(s_pinyin_chinese_items), keys, TRUE);
     input_engine_dispatch_candidates(engine, -1);
   }
 
@@ -281,8 +284,8 @@ static ret_t input_engine_t9ext_search(input_engine_t* engine, const char* keys)
         wbuffer_reset(&(t9->pre_candidates));
         wbuffer_write_string(&(t9->pre_candidates), keys);
         input_engine_reset_input(engine);
-        input_method_dispatch_pre_candidates(engine->im, (const char*)(t9->pre_candidates.data), t9->pre_candidates_nr,
-                                             0);
+        input_method_dispatch_pre_candidates(engine->im, (const char*)(t9->pre_candidates.data),
+                                             t9->pre_candidates_nr, 0);
 
         input_engine_reset_candidates(engine);
         input_engine_add_candidates_from_char(engine, s_table_num_chars, '1');
@@ -326,7 +329,7 @@ static ret_t input_engine_t9ext_set_lang(input_engine_t* engine, const char* lan
     input_method_dispatch_preedit_confirm(engine->im);
   }
 
-  input_method_dispatch(engine->im, &e);    
+  input_method_dispatch(engine->im, &e);
   input_engine_reset_candidates(engine);
   input_engine_dispatch_candidates(engine, -1);
   // input_method_dispatch_candidates(engine->im, (const char*)(engine->candidates.data), 0, -1);

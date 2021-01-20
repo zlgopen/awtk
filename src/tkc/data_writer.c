@@ -53,4 +53,3 @@ ret_t data_writer_clear(const char* url) {
 
   return ret;
 }
-

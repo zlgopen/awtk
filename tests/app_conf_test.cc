@@ -95,7 +95,7 @@ TEST(AppConf, reload) {
 
 TEST(AppConf, reset) {
   app_conf_init_json("conf_test");
- 
+
   ASSERT_STREQ(app_conf_get_str("name", NULL), "test");
   ASSERT_EQ(app_conf_get_int("age", 0), 100);
 

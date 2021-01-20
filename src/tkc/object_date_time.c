@@ -39,13 +39,13 @@ static ret_t object_date_time_set_prop(object_t* obj, const char* name, const va
   object_date_time_t* o = OBJECT_DATE_TIME(obj);
   return_value_if_fail(o != NULL && o->dt != NULL, RET_BAD_PARAMS);
 
-  switch(*name) {
+  switch (*name) {
     case 'y': {
       date_time_set_year(o->dt, value_uint32(v));
       break;
     }
     case 'm': {
-      if(name[1] == 'i') {
+      if (name[1] == 'i') {
         date_time_set_minute(o->dt, value_uint32(v));
       } else {
         date_time_set_month(o->dt, value_uint32(v));
@@ -77,13 +77,13 @@ static ret_t object_date_time_get_prop(object_t* obj, const char* name, value_t*
   object_date_time_t* o = OBJECT_DATE_TIME(obj);
   return_value_if_fail(o != NULL && o->dt != NULL, RET_BAD_PARAMS);
 
-  switch(*name) {
+  switch (*name) {
     case 'y': {
       value_set_uint32(v, o->dt->year);
       break;
     }
     case 'm': {
-      if(name[1] == 'i') {
+      if (name[1] == 'i') {
         value_set_uint32(v, o->dt->minute);
       } else {
         value_set_uint32(v, o->dt->month);
@@ -114,14 +114,13 @@ static ret_t object_date_time_get_prop(object_t* obj, const char* name, value_t*
   return ret;
 }
 
-static const object_vtable_t s_object_date_time_vtable = {
-    .type = "object_date_time",
-    .desc = "object_date_time",
-    .size = sizeof(object_date_time_t),
-    .is_collection = FALSE,
-    .on_destroy = object_date_time_on_destroy,
-    .get_prop = object_date_time_get_prop,
-    .set_prop = object_date_time_set_prop};
+static const object_vtable_t s_object_date_time_vtable = {.type = "object_date_time",
+                                                          .desc = "object_date_time",
+                                                          .size = sizeof(object_date_time_t),
+                                                          .is_collection = FALSE,
+                                                          .on_destroy = object_date_time_on_destroy,
+                                                          .get_prop = object_date_time_get_prop,
+                                                          .set_prop = object_date_time_set_prop};
 
 object_t* object_date_time_create(void) {
   object_t* o = NULL;

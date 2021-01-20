@@ -154,9 +154,9 @@ ret_t tk_init_internal(void) {
 
   s_ui_thread_id = tk_thread_self();
   fscript_global_init();
-#ifdef WITH_FSCRIPT_EXT  
+#ifdef WITH_FSCRIPT_EXT
   fscript_ext_init();
-#endif/*WITH_FSCRIPT_EXT*/  
+#endif /*WITH_FSCRIPT_EXT*/
 
 #ifdef WITH_DATA_READER_WRITER
   data_writer_factory_set(data_writer_factory_create());

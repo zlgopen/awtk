@@ -41,7 +41,8 @@
 #define TK_DRAGGER_MIN_SIZE 10
 #endif /*TK_DRAGGER_MIN_SIZE*/
 
-#define SCROLL_BAR_UP_AND_DOWN_BUTTON_STYLE_IS_EXIST(up, down) ((up) != NULL && (up)->style != NULL && (down) != NULL && (down)->style != NULL)
+#define SCROLL_BAR_UP_AND_DOWN_BUTTON_STYLE_IS_EXIST(up, down) \
+  ((up) != NULL && (up)->style != NULL && (down) != NULL && (down)->style != NULL)
 
 static ret_t scroll_bar_update_dragger(widget_t* widget);
 widget_t* scroll_bar_create_desktop_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
@@ -166,14 +167,16 @@ static ret_t scroll_bar_desktop_on_event(widget_t* widget, event_t* e) {
       bool_t horizon = widget->w > widget->h;
 
       if (up != NULL) {
-        const char* style_name = horizon ? SCROLL_BAR_LEFT_BUTTON_STYLE_NAME : SCROLL_BAR_UP_BUTTON_STYLE_NAME;
+        const char* style_name =
+            horizon ? SCROLL_BAR_LEFT_BUTTON_STYLE_NAME : SCROLL_BAR_UP_BUTTON_STYLE_NAME;
         if (widget_is_style_exist(down, style_name, NULL)) {
           widget_use_style(up, style_name);
         }
       }
 
       if (down != NULL) {
-        const char* style_name = horizon ? SCROLL_BAR_RIGHT_BUTTON_STYLE_NAME : SCROLL_BAR_DOWN_BUTTON_STYLE_NAME;
+        const char* style_name =
+            horizon ? SCROLL_BAR_RIGHT_BUTTON_STYLE_NAME : SCROLL_BAR_DOWN_BUTTON_STYLE_NAME;
         if (widget_is_style_exist(down, style_name, NULL)) {
           widget_use_style(down, style_name);
         }
@@ -208,11 +211,11 @@ static ret_t scroll_bar_destop_get_dragger_size(widget_t* widget, rect_t* r) {
   }
 
   if (SCROLL_BAR_UP_AND_DOWN_BUTTON_STYLE_IS_EXIST(up, down)) {
-      if (widget_w > widget_h) {
-        button_margin = widget_h;
-      } else {
-        button_margin = widget_w;
-      }
+    if (widget_w > widget_h) {
+      button_margin = widget_h;
+    } else {
+      button_margin = widget_w;
+    }
   }
 
   value = scroll_bar->value;

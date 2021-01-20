@@ -12,13 +12,13 @@ TEST(ConfJson, arr) {
 
   ASSERT_EQ(conf_doc_get(doc, "[1]", &v), RET_OK);
   ASSERT_STREQ(value_str(&v), "abc");
-  
+
   ASSERT_EQ(conf_doc_get(doc, "[0].[0]", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 1);
-  
+
   ASSERT_EQ(conf_doc_get(doc, "[0].[1]", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 2);
-  
+
   ASSERT_EQ(conf_doc_get(doc, "[0].[2]", &v), RET_OK);
   ASSERT_EQ(value_int(&v), 3);
 
@@ -33,7 +33,8 @@ TEST(ConfJson, arr) {
 TEST(ConfJson, arr1) {
   value_t v;
   str_t str;
-  const char* data = "{\
+  const char* data =
+      "{\
     \"y\": 220,\
     \"wires\": [\
             [   \
@@ -51,10 +52,10 @@ TEST(ConfJson, arr1) {
 
   str_init(&str, 100);
   conf_doc_save_json(doc, &str);
-  
+
   ASSERT_EQ(conf_doc_get(doc, "wires.[0].[0]", &v), RET_OK);
   ASSERT_STREQ(value_str(&v), "f3233c29.cc714");
-  
+
   ASSERT_EQ(conf_doc_get(doc, "wires.[3].[0]", &v), RET_OK);
   ASSERT_STREQ(value_str(&v), "983b6406.96f448");
 

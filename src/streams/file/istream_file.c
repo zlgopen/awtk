@@ -116,4 +116,3 @@ tk_istream_t* tk_istream_file_create_ex(const char* filename, const char* mode) 
 tk_istream_t* tk_istream_file_create(const char* filename) {
   return tk_istream_file_create_ex(filename, "rb");
 }
-

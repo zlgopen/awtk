@@ -85,7 +85,8 @@ action_thread_t* action_thread_create(void) {
   return action_thread_create_ex(NULL, 0, TK_THREAD_PRIORITY_NORMAL);
 }
 
-action_thread_t* action_thread_create_ex(const char* name, uint32_t stack_size, tk_thread_priority_t priority) {
+action_thread_t* action_thread_create_ex(const char* name, uint32_t stack_size,
+                                         tk_thread_priority_t priority) {
   action_thread_t* thread = NULL;
   waitable_action_queue_t* queue = waitable_action_queue_create(10);
   return_value_if_fail(queue != NULL, NULL);
@@ -114,7 +115,9 @@ action_thread_t* action_thread_create_with_queue(waitable_action_queue_t* queue)
   return action_thread_create_with_queue_ex(queue, NULL, 0, TK_THREAD_PRIORITY_NORMAL);
 }
 
-action_thread_t* action_thread_create_with_queue_ex(waitable_action_queue_t* queue, const char* name, uint32_t stack_size, tk_thread_priority_t priority) {
+action_thread_t* action_thread_create_with_queue_ex(waitable_action_queue_t* queue,
+                                                    const char* name, uint32_t stack_size,
+                                                    tk_thread_priority_t priority) {
   action_thread_t* thread = NULL;
   return_value_if_fail(queue != NULL, NULL);
 

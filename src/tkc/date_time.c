@@ -163,7 +163,7 @@ ret_t date_time_add_delta(date_time_t* dt, int64_t delta) {
 
 uint64_t date_time_to_time(date_time_t* dt) {
   return_value_if_fail(dt != NULL && s_date_time_to_time != NULL, RET_BAD_PARAMS);
-  
+
   return s_date_time_to_time(dt);
 }
 

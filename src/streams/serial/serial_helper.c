@@ -447,10 +447,10 @@ int32_t serial_write(serial_handle_t handle, const uint8_t* buff, uint32_t max_s
 #if defined(IOS)
 #include <sys/termios.h>
 #include <sys/ttycom.h>
-#define IOSSIOSPEED    _IOW('T', 2, speed_t)
+#define IOSSIOSPEED _IOW('T', 2, speed_t)
 #else
 #include <IOKit/serial/ioss.h>
-#endif/*IOS*/
+#endif /*IOS*/
 #endif
 
 serial_handle_t serial_open(const char* port) {

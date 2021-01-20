@@ -26,14 +26,15 @@
 
 BEGIN_C_DECLS
 
-#define TEXT_EDIT_GET_STYLE_MARGIN(style, out_value, type) {                               \
-  if ((out_value) == 0) {                                                                  \
-    (out_value) = style_get_int((style), STYLE_ID_MARGIN_##type, 0);                     \
-  }                                                                                        \
-  if ((out_value) == 0) {                                                                  \
-    (out_value) = style_get_int((style), STYLE_ID_MARGIN, 0);                              \
-  }                                                                                        \
-}                                                                                          \
+#define TEXT_EDIT_GET_STYLE_MARGIN(style, out_value, type)             \
+  {                                                                    \
+    if ((out_value) == 0) {                                            \
+      (out_value) = style_get_int((style), STYLE_ID_MARGIN_##type, 0); \
+    }                                                                  \
+    if ((out_value) == 0) {                                            \
+      (out_value) = style_get_int((style), STYLE_ID_MARGIN, 0);        \
+    }                                                                  \
+  }
 
 /**
  * @class text_edit_state_t

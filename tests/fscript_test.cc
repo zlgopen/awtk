@@ -8,19 +8,19 @@ TEST(FScript, basic0) {
   fscript_eval(obj, "1", &v);
   ASSERT_EQ(1, value_int(&v));
   value_reset(&v);
-  
+
   fscript_eval(obj, "-1", &v);
   ASSERT_EQ(-1, value_int(&v));
   value_reset(&v);
-  
+
   fscript_eval(obj, "+1", &v);
   ASSERT_EQ(1, value_int(&v));
   value_reset(&v);
-  
+
   fscript_eval(obj, "true", &v);
   ASSERT_EQ(TRUE, value_bool(&v));
   value_reset(&v);
-  
+
   fscript_eval(obj, "false", &v);
   ASSERT_EQ(FALSE, value_bool(&v));
   value_reset(&v);
@@ -80,7 +80,7 @@ TEST(FScript, basic6) {
   fscript_eval(obj, "unset(a)", &v);
   ASSERT_EQ(TRUE, value_bool(&v));
   value_reset(&v);
-  
+
   fscript_eval(obj, "unset(abc)", &v);
   ASSERT_EQ(TRUE, value_bool(&v));
   value_reset(&v);
@@ -95,11 +95,11 @@ TEST(FScript, basic7) {
   fscript_eval(obj, "sum(1, 2)//line comments\n", &v);
   ASSERT_EQ(value_int(&v), 3);
   value_reset(&v);
-  
+
   fscript_eval(obj, "//comment\r\nsum(1, 2)//line comments\n", &v);
   ASSERT_EQ(value_int(&v), 3);
   value_reset(&v);
-  
+
   fscript_eval(obj, "/*comment*//**/\r\nsum(1, 2)//line comments\n", &v);
   ASSERT_EQ(value_int(&v), 3);
   value_reset(&v);
@@ -114,15 +114,15 @@ TEST(FScript, basic8) {
   fscript_eval(obj, "\"hello\"", &v);
   ASSERT_STREQ(value_str(&v), "hello");
   value_reset(&v);
-  
+
   fscript_eval(obj, "\"he\\\"llo\"", &v);
   ASSERT_STREQ(value_str(&v), "he\"llo");
   value_reset(&v);
-  
+
   fscript_eval(obj, "'he\\\"llo'", &v);
   ASSERT_STREQ(value_str(&v), "he\"llo");
   value_reset(&v);
-  
+
   OBJECT_UNREF(obj);
 }
 
@@ -133,11 +133,11 @@ TEST(FScript, basic9) {
   fscript_eval(obj, "0xf0112233", &v);
   ASSERT_EQ(value_uint32(&v), 0xf0112233);
   value_reset(&v);
-  
+
   fscript_eval(obj, "0b1100", &v);
   ASSERT_EQ(value_uint32(&v), 0b1100);
   value_reset(&v);
-  
+
   OBJECT_UNREF(obj);
 }
 
@@ -147,18 +147,17 @@ TEST(FScript, number) {
   fscript_eval(obj, "0x1122334455667788", &v);
   ASSERT_EQ(value_int64(&v), 0x1122334455667788);
   value_reset(&v);
-  
+
   fscript_eval(obj, "-0x1122334455667788", &v);
   ASSERT_EQ(value_int64(&v), -0x1122334455667788);
   value_reset(&v);
-  
+
   fscript_eval(obj, "0x8822334455667788", &v);
   ASSERT_EQ(value_uint64(&v), 0x8822334455667788);
   value_reset(&v);
-  
+
   OBJECT_UNREF(obj);
 }
-
 
 TEST(FScript, if1) {
   value_t v;
@@ -1144,4 +1143,3 @@ TEST(FExr, while_statement3) {
 
   OBJECT_UNREF(obj);
 }
-

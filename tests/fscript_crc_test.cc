@@ -9,7 +9,7 @@ TEST(FExr, cksum) {
   fscript_eval(obj, "cksum(\"1\")", &v);
   ASSERT_EQ(value_uint32(&v), 65486);
   value_reset(&v);
-  
+
   fscript_eval(obj, "cksum(\"123\")", &v);
   ASSERT_EQ(value_uint32(&v), 65385);
   value_reset(&v);
@@ -24,7 +24,7 @@ TEST(FExr, crc16) {
   fscript_eval(obj, "crc16(\"1\")", &v);
   ASSERT_EQ(value_uint32(&v), 53362);
   value_reset(&v);
-  
+
   fscript_eval(obj, "crc16(\"123\")", &v);
   ASSERT_EQ(value_uint32(&v), 40116);
   value_reset(&v);
@@ -39,11 +39,10 @@ TEST(FExr, crc32) {
   fscript_eval(obj, "crc32(\"1\")", &v);
   ASSERT_EQ(value_uint32(&v), 2212294583);
   value_reset(&v);
-  
+
   fscript_eval(obj, "crc32(\"123\")", &v);
   ASSERT_EQ(value_uint32(&v), 2286445522);
   value_reset(&v);
 
   OBJECT_UNREF(obj);
 }
-

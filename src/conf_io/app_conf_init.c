@@ -76,7 +76,6 @@ static ret_t app_conf_get_url(char url[MAX_PATH + 1], const char* app_name, cons
   return RET_OK;
 }
 
-
 ret_t app_conf_init(conf_load_t load, const char* app_name, const char* extname) {
   object_t* obj = NULL;
   char path[MAX_PATH + 1];
@@ -111,4 +110,3 @@ ret_t app_conf_reset(void) {
 
   return RET_OK;
 }
-

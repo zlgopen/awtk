@@ -43,7 +43,6 @@ static ret_t on_click_enlarge(void* ctx, event_t* e) {
   return RET_OK;
 }
 
-
 static ret_t on_click_close(void* ctx, event_t* e) {
   tk_quit();
 

@@ -165,19 +165,19 @@ TEST(DateTime, object) {
 
   ASSERT_EQ(object_set_prop_int(obj, "year", 2020), RET_OK);
   ASSERT_EQ(object_get_prop_int(obj, "year", 0), 2020);
-  
+
   ASSERT_EQ(object_set_prop_int(obj, "month", 1), RET_OK);
   ASSERT_EQ(object_get_prop_int(obj, "month", 0), 1);
-  
+
   ASSERT_EQ(object_set_prop_int(obj, "day", 1), RET_OK);
   ASSERT_EQ(object_get_prop_int(obj, "day", 0), 1);
-  
+
   ASSERT_EQ(object_set_prop_int(obj, "hour", 2), RET_OK);
   ASSERT_EQ(object_get_prop_int(obj, "hour", 0), 2);
-  
+
   ASSERT_EQ(object_set_prop_int(obj, "minute", 3), RET_OK);
   ASSERT_EQ(object_get_prop_int(obj, "minute", 0), 3);
-  
+
   ASSERT_EQ(object_set_prop_int(obj, "second", 4), RET_OK);
   ASSERT_EQ(object_get_prop_int(obj, "second", 0), 4);
 

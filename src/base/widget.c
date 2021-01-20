@@ -1395,9 +1395,8 @@ ret_t widget_fill_rect(widget_t* widget, canvas_t* c, const rect_t* r, bool_t bg
   return RET_OK;
 }
 
-ret_t widget_stroke_border_rect_for_border_type(canvas_t* c, const rect_t* r,
-                                                              color_t bd, int32_t border,
-                                                              uint32_t border_width) {
+ret_t widget_stroke_border_rect_for_border_type(canvas_t* c, const rect_t* r, color_t bd,
+                                                int32_t border, uint32_t border_width) {
   wh_t w = r->w;
   wh_t h = r->h;
   xy_t x = r->x + 0.5;
@@ -3560,7 +3559,8 @@ const asset_info_t* widget_load_asset(widget_t* widget, asset_type_t type, const
   return widget_load_asset_ex(widget, type, 0, name);
 }
 
-const asset_info_t* widget_load_asset_ex(widget_t* widget, asset_type_t type, uint16_t subtype, const char* name) {
+const asset_info_t* widget_load_asset_ex(widget_t* widget, asset_type_t type, uint16_t subtype,
+                                         const char* name) {
   assets_manager_t* am = widget_get_assets_manager(widget);
   return_value_if_fail(widget != NULL && name != NULL && am != NULL, NULL);
 

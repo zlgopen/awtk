@@ -773,7 +773,7 @@ const char* value_str_ex(const value_t* v, char* buff, uint32_t size) {
     tk_snprintf(buff, size, "%" PRId64, value_int64(v));
   } else if (v->type == VALUE_TYPE_BINARY) {
     binary_data_t* bin = value_binary_data(v);
-    if(bin != NULL) {
+    if (bin != NULL) {
       tk_snprintf(buff, size, "binary(%p:%u)", bin->data, bin->size);
     } else {
       tk_snprintf(buff, size, "(null)");
@@ -782,7 +782,7 @@ const char* value_str_ex(const value_t* v, char* buff, uint32_t size) {
     tk_snprintf(buff, size, "%p", value_pointer(v));
   } else if (v->type == VALUE_TYPE_OBJECT) {
     object_t* obj = value_object(v);
-    if(obj != NULL) {
+    if (obj != NULL) {
       tk_snprintf(buff, size, "object(%p:%s)", obj, obj->vt->type);
     }
   } else {

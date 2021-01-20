@@ -219,17 +219,16 @@ ret_t tk_thread_set_stack_size(tk_thread_t* thread, uint32_t stack_size) {
 }
 
 int32_t tk_thread_get_priority_from_platform(tk_thread_priority_t priority) {
-  switch (priority)
-  {
-  case TK_THREAD_PRIORITY_LOWEST :
-    return SDL_THREAD_PRIORITY_LOW;
-  case TK_THREAD_PRIORITY_HIGHEST :
-    return SDL_THREAD_PRIORITY_HIGH;
-  case TK_THREAD_PRIORITY_TIME_CRITICAL :
-    return SDL_THREAD_PRIORITY_TIME_CRITICAL;
-  case TK_THREAD_PRIORITY_NORMAL :
-  default:
-    return SDL_THREAD_PRIORITY_NORMAL;
+  switch (priority) {
+    case TK_THREAD_PRIORITY_LOWEST:
+      return SDL_THREAD_PRIORITY_LOW;
+    case TK_THREAD_PRIORITY_HIGHEST:
+      return SDL_THREAD_PRIORITY_HIGH;
+    case TK_THREAD_PRIORITY_TIME_CRITICAL:
+      return SDL_THREAD_PRIORITY_TIME_CRITICAL;
+    case TK_THREAD_PRIORITY_NORMAL:
+    default:
+      return SDL_THREAD_PRIORITY_NORMAL;
   }
 }
 
@@ -274,7 +273,8 @@ ret_t tk_thread_start(tk_thread_t* thread) {
   if (thread->stack_size == 0) {
     thread->thread = SDL_CreateThread((SDL_ThreadFunction)(entry), thread->name, thread);
   } else {
-    thread->thread = SDL_CreateThreadInternal((SDL_ThreadFunction)(entry), thread->name, thread->stack_size, thread);
+    thread->thread = SDL_CreateThreadInternal((SDL_ThreadFunction)(entry), thread->name,
+                                              thread->stack_size, thread);
   }
 
   thread->running = thread->thread != NULL;

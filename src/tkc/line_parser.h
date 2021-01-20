@@ -47,9 +47,9 @@ typedef struct _line_parser_t {
 } line_parser_t;
 
 static ret_t line_parser_next(line_parser_t* parser);
-static ret_t line_parser_init(line_parser_t* parser, canvas_t* c, const wchar_t* str,
-                                    uint32_t size, uint32_t font_size, uint32_t width,
-                                    bool_t line_wrap, bool_t word_wrap) {
+static ret_t line_parser_init(line_parser_t* parser, canvas_t* c, const wchar_t* str, uint32_t size,
+                              uint32_t font_size, uint32_t width, bool_t line_wrap,
+                              bool_t word_wrap) {
   return_value_if_fail(parser != NULL && str != NULL && size > 0, RET_BAD_PARAMS);
   return_value_if_fail(font_size > 0, RET_BAD_PARAMS);
 
@@ -147,7 +147,6 @@ static ret_t line_parser_next(line_parser_t* parser) {
 
   return RET_OK;
 }
-
 
 END_C_DECLS
 

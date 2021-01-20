@@ -89,7 +89,9 @@ action_thread_pool_t* action_thread_pool_create(uint16_t max_thread_nr, uint16_t
  *
  * @return {action_thread_pool_t*} action_thread_pool对象。
  */
-action_thread_pool_t* action_thread_pool_create_ex(uint16_t max_thread_nr, uint16_t min_idle_nr, uint32_t stack_size, tk_thread_priority_t priority);
+action_thread_pool_t* action_thread_pool_create_ex(uint16_t max_thread_nr, uint16_t min_idle_nr,
+                                                   uint32_t stack_size,
+                                                   tk_thread_priority_t priority);
 
 /**
  * @method action_thread_pool_exec

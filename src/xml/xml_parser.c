@@ -237,7 +237,8 @@ static void xml_parser_parse_attrs(XmlParser* parser, char end_char) {
   const char* start = parser->read_ptr;
 
   parser->attrs_nr = 0;
-  for (; *parser->read_ptr != '\0' && parser->attrs_nr < MAX_ATTR_KEY_VALUE_NR; parser->read_ptr++) {
+  for (; *parser->read_ptr != '\0' && parser->attrs_nr < MAX_ATTR_KEY_VALUE_NR;
+       parser->read_ptr++) {
     char c = *parser->read_ptr;
 
     switch (state) {
@@ -268,8 +269,8 @@ static void xml_parser_parse_attrs(XmlParser* parser, char end_char) {
       }
       case STAT_VALUE: {
         if (c == value_end) {
-          parser->attrs[parser->attrs_nr++] =
-              tk_pointer_from_int(xml_parser_strdup(parser, start, parser->read_ptr - start, FALSE));
+          parser->attrs[parser->attrs_nr++] = tk_pointer_from_int(
+              xml_parser_strdup(parser, start, parser->read_ptr - start, FALSE));
           state = STAT_PRE_KEY;
         }
       }

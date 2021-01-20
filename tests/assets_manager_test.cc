@@ -39,8 +39,10 @@ TEST(AssetsManager, basic) {
   ASSERT_EQ(assets_manager_ref(rm, ASSET_TYPE_UI, "ui2"), &ui2);
 
   ASSERT_EQ(assets_manager_ref(rm, ASSET_TYPE_SCRIPT, "script1"), &script1);
-  ASSERT_EQ(assets_manager_ref_ex(rm, ASSET_TYPE_SCRIPT, ASSET_TYPE_SCRIPT_JS, "script1"), &script1);
-  ASSERT_EQ(assets_manager_ref_ex(rm, ASSET_TYPE_SCRIPT, ASSET_TYPE_SCRIPT_LUA, "script1"), &script2);
+  ASSERT_EQ(assets_manager_ref_ex(rm, ASSET_TYPE_SCRIPT, ASSET_TYPE_SCRIPT_JS, "script1"),
+            &script1);
+  ASSERT_EQ(assets_manager_ref_ex(rm, ASSET_TYPE_SCRIPT, ASSET_TYPE_SCRIPT_LUA, "script1"),
+            &script2);
 
   ASSERT_EQ(assets_manager_ref(rm, ASSET_TYPE_FONT, "font1"), &font1);
   ASSERT_EQ(assets_manager_ref_ex(rm, ASSET_TYPE_FONT, ASSET_TYPE_FONT_TTF, "font1"), &font1);
@@ -216,7 +218,8 @@ TEST(AssetsManager, long_name) {
   ASSERT_EQ(r != NULL, true);
   ASSERT_EQ(assets_manager_add(am, r), RET_OK);
   ASSERT_EQ(assets_manager_find_in_cache(am, ASSET_TYPE_IMAGE, 0, path) != NULL, true);
-  ASSERT_EQ(assets_manager_find_in_cache(am, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_PNG, path) != NULL, true);
+  ASSERT_EQ(assets_manager_find_in_cache(am, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_PNG, path) != NULL,
+            true);
   ASSERT_EQ(asset_info_unref(r), RET_OK);
 
   assets_manager_destroy(am);
@@ -349,7 +352,8 @@ TEST(AssetsManager, any) {
 #endif /*WITH_FS_RES*/
 }
 
-static asset_info_t* custom_load_asset(assets_manager_t* am, asset_type_t type, uint16_t subtype, const char* name) {
+static asset_info_t* custom_load_asset(assets_manager_t* am, asset_type_t type, uint16_t subtype,
+                                       const char* name) {
   asset_info_t* info = asset_info_create(ASSET_TYPE_DATA, 0, "test.any", 5);
   memcpy(info->data, "abcd", 5);
 

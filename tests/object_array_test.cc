@@ -211,39 +211,39 @@ TEST(ObjectArray, insert) {
   object_array_t* o = OBJECT_ARRAY(obj);
 
   ASSERT_EQ(object_array_insert(obj, 0, value_set_str(&v, "c")), RET_OK);
-  ASSERT_STREQ(object_get_prop_str(obj, "0"), "c"); 
+  ASSERT_STREQ(object_get_prop_str(obj, "0"), "c");
   ASSERT_EQ(o->size, 1);
 
   ASSERT_EQ(object_array_insert(obj, 1, value_set_str(&v, "d")), RET_OK);
-  ASSERT_STREQ(object_get_prop_str(obj, "1"), "d"); 
+  ASSERT_STREQ(object_get_prop_str(obj, "1"), "d");
   ASSERT_EQ(o->size, 2);
 
   ASSERT_EQ(object_array_insert(obj, 2, value_set_str(&v, "e")), RET_OK);
-  ASSERT_STREQ(object_get_prop_str(obj, "2"), "e"); 
+  ASSERT_STREQ(object_get_prop_str(obj, "2"), "e");
   ASSERT_EQ(o->size, 3);
 
   ASSERT_EQ(object_array_insert(obj, 0, value_set_str(&v, "b")), RET_OK);
-  ASSERT_STREQ(object_get_prop_str(obj, "0"), "b"); 
+  ASSERT_STREQ(object_get_prop_str(obj, "0"), "b");
   ASSERT_EQ(o->size, 4);
 
   ASSERT_EQ(object_array_insert(obj, 0, value_set_str(&v, "a")), RET_OK);
-  ASSERT_STREQ(object_get_prop_str(obj, "0"), "a"); 
+  ASSERT_STREQ(object_get_prop_str(obj, "0"), "a");
   ASSERT_EQ(o->size, 5);
-  
+
   ASSERT_EQ(object_array_push(obj, value_set_str(&v, "hello")), RET_OK);
-  ASSERT_STREQ(object_get_prop_str(obj, "5"), "hello"); 
+  ASSERT_STREQ(object_get_prop_str(obj, "5"), "hello");
   ASSERT_EQ(o->size, 6);
 
   ASSERT_EQ(object_array_pop(obj, &v), RET_OK);
-  ASSERT_STREQ(value_str(&v), "hello"); 
+  ASSERT_STREQ(value_str(&v), "hello");
   value_reset(&v);
-  
+
   ASSERT_EQ(object_array_pop(obj, &v), RET_OK);
-  ASSERT_STREQ(value_str(&v), "e"); 
+  ASSERT_STREQ(value_str(&v), "e");
   value_reset(&v);
-  
+
   ASSERT_EQ(object_array_remove(obj, 0), RET_OK);
-  ASSERT_STREQ(object_get_prop_str(obj, "0"), "b"); 
+  ASSERT_STREQ(object_get_prop_str(obj, "0"), "b");
 
   object_unref(obj);
 }

@@ -69,10 +69,13 @@ ret_t input_engine_add_candidates_from_char(input_engine_t* engine, const wchar_
 #endif
 }
 
-ret_t input_engine_add_candidates_from_string(input_engine_t* engine, const table_entry_t* items, uint32_t items_nr, const char* key, bool_t exact) {
+ret_t input_engine_add_candidates_from_string(input_engine_t* engine, const table_entry_t* items,
+                                              uint32_t items_nr, const char* key, bool_t exact) {
 #if defined(WITH_IME_T9) || defined(WITH_IME_T9EXT) || defined(WITH_IME_SPINYIN)
-  return_value_if_fail(engine != NULL && items != NULL && items_nr > 0 && key != NULL, RET_BAD_PARAMS);
-  engine->candidates_nr += ime_utils_table_search(items, items_nr, key, &(engine->candidates), exact);
+  return_value_if_fail(engine != NULL && items != NULL && items_nr > 0 && key != NULL,
+                       RET_BAD_PARAMS);
+  engine->candidates_nr +=
+      ime_utils_table_search(items, items_nr, key, &(engine->candidates), exact);
   return RET_OK;
 #else
   return RET_NOT_IMPL;
@@ -81,7 +84,8 @@ ret_t input_engine_add_candidates_from_string(input_engine_t* engine, const tabl
 
 ret_t input_engine_dispatch_candidates(input_engine_t* engine, int32_t selected) {
   return_value_if_fail(engine != NULL, RET_BAD_PARAMS);
-  return input_method_dispatch_candidates(engine->im, (const char*)(engine->candidates.data), engine->candidates_nr, selected);
+  return input_method_dispatch_candidates(engine->im, (const char*)(engine->candidates.data),
+                                          engine->candidates_nr, selected);
 }
 
 ret_t input_engine_reset_input(input_engine_t* engine) {

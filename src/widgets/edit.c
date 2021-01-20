@@ -1652,7 +1652,7 @@ static ret_t edit_hook_children_button_and_check_valid_value(const idle_info_t* 
 
   widget_foreach(widget, edit_hook_button, widget);
   edit->idle_id = TK_INVALID_ID;
-  
+
   edit_check_valid_value(widget);
 
   return RET_REMOVE;

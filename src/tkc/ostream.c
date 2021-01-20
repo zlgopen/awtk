@@ -103,4 +103,3 @@ int32_t tk_ostream_tell(tk_ostream_t* stream) {
 
   return stream->tell(stream);
 }
-

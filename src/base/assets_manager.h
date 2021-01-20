@@ -34,8 +34,8 @@ typedef ret_t (*assets_manager_build_asset_dir_t)(void* ctx, char* path, uint32_
                                                   const char* theme, const char* ratio,
                                                   const char* subpath);
 
-typedef asset_info_t* (*assets_manager_load_asset_t)(assets_manager_t* am, asset_type_t type, uint16_t subtype,
-                                                     const char* name);
+typedef asset_info_t* (*assets_manager_load_asset_t)(assets_manager_t* am, asset_type_t type,
+                                                     uint16_t subtype, const char* name);
 
 /**
  * @class assets_manager_t
@@ -229,7 +229,8 @@ const asset_info_t* assets_manager_ref(assets_manager_t* am, asset_type_t type, 
  *
  * @return {asset_info_t*} 返回资源。
  */
-const asset_info_t* assets_manager_ref_ex(assets_manager_t* am, asset_type_t type, uint16_t subtype, const char* name);
+const asset_info_t* assets_manager_ref_ex(assets_manager_t* am, asset_type_t type, uint16_t subtype,
+                                          const char* name);
 
 /**
  * @method assets_manager_unref
@@ -252,8 +253,8 @@ ret_t assets_manager_unref(assets_manager_t* am, const asset_info_t* info);
  *
  * @return {asset_info_t*} 返回资源。
  */
-const asset_info_t* assets_manager_find_in_cache(assets_manager_t* am, asset_type_t type, uint16_t subtype,
-                                                 const char* name);
+const asset_info_t* assets_manager_find_in_cache(assets_manager_t* am, asset_type_t type,
+                                                 uint16_t subtype, const char* name);
 /**
  * @method assets_manager_load
  * 从文件系统中加载指定的资源，并缓存到内存中。在定义了宏WITH\_FS\_RES时才生效。
@@ -275,7 +276,8 @@ asset_info_t* assets_manager_load(assets_manager_t* am, asset_type_t type, const
  *
  * @return {asset_info_t*} 返回资源。
  */
-asset_info_t* assets_manager_load_ex(assets_manager_t* am, asset_type_t type, uint16_t subtype, const char* name);
+asset_info_t* assets_manager_load_ex(assets_manager_t* am, asset_type_t type, uint16_t subtype,
+                                     const char* name);
 
 /**
  * @method assets_manager_preload

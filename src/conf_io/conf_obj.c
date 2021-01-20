@@ -90,7 +90,7 @@ static ret_t conf_obj_set_prop(object_t* obj, const char* name, const value_t* v
   if (o->readonly) {
     return RET_NOT_IMPL;
   }
-  
+
   if (tk_str_eq(name, CONF_OBJ_PROP_DEFAULT_URL)) {
     o->default_url = tk_str_copy(o->default_url, value_str(v));
     return RET_OK;
@@ -103,7 +103,7 @@ static ret_t conf_obj_set_prop(object_t* obj, const char* name, const value_t* v
 static ret_t conf_obj_get_prop(object_t* obj, const char* name, value_t* v) {
   conf_obj_t* o = CONF_OBJ(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
-  
+
   if (tk_str_eq(name, CONF_OBJ_PROP_URL)) {
     value_set_str(v, o->url);
     return RET_OK;

@@ -576,18 +576,18 @@ TEST(ObjectDefault, sub) {
   ASSERT_STREQ(object_get_prop_str(obj, "name"), "root");
   ASSERT_STREQ(object_get_prop_str(obj, "a.name"), "aaa");
   ASSERT_STREQ(object_get_prop_str(obj, "bbb.name"), "bbb");
-  
+
   ASSERT_EQ(object_remove_prop(obj, "a.name"), RET_OK);
   ASSERT_EQ(object_get_prop_int(obj, "a.age", 0), 100);
-  
+
   ASSERT_EQ(object_remove_prop(obj, "bbb.name"), RET_OK);
   ASSERT_EQ(object_get_prop_int(obj, "bbb.age", 0), 200);
-  
+
   ASSERT_EQ(object_remove_prop(obj, "bbb.age"), RET_OK);
   ASSERT_EQ(object_get_prop_int(obj, "bbb.age", 0), 0);
-  
+
   ASSERT_EQ(object_remove_prop(obj, "name"), RET_OK);
-  
+
   ASSERT_EQ(object_set_prop_str(obj, "a.name", "AAA"), RET_OK);
   ASSERT_STREQ(object_get_prop_str(obj, "a.name"), "AAA");
 
