@@ -221,11 +221,14 @@ static ret_t combo_box_on_layout_children_for_combobox_popup(widget_t* widget) {
     int32_t item_height = combo_box->item_height;
     int32_t nr = combo_box_count_options(widget);
     int32_t h = nr * item_height + 2 * margin;
+    if (combo_box->open_window != NULL) {
+      h = combo_box->combobox_popup->h;
+    }
     widget_to_screen(widget, &p);
     if ((p.y + widget->h + h) < combo_box->combobox_popup->parent->h) {
       p.y += widget->h;
     } else if (p.y >= h) {
-      p.y -= widget->h;
+      p.y -= combo_box->combobox_popup->h;
     } else {
       p.y = 0;
     }
@@ -514,6 +517,8 @@ static ret_t combo_box_active(widget_t* widget) {
   return_value_if_fail(widget != NULL && combo_box != NULL, RET_BAD_PARAMS);
   if (combo_box->open_window) {
     win = window_open(combo_box->open_window);
+    combo_box->combobox_popup = win;
+    widget_on(win, EVT_WINDOW_CLOSE, combo_box_combobox_popup_on_close_func, widget);
   }
 
   if (win != NULL) {
