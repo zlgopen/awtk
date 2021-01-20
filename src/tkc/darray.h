@@ -263,6 +263,17 @@ void* darray_head(darray_t* darray);
 ret_t darray_push(darray_t* darray, void* data);
 
 /**
+ * @method darray_insert
+ * 插入一个元素。
+ * @param {darray_t*} darray 数组对象。
+ * @param {uint32_t} index 位置序数。
+ * @param {void*} data 待插入的元素。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t darray_insert(darray_t* darray, uint32_t index, void* data);
+
+/**
  * @method darray_count
  * 返回满足条件元素的个数。
  * @param {darray_t*} darray 单向链表对象。

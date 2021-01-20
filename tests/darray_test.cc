@@ -22,6 +22,27 @@ TEST(DArrayTest, init) {
   darray_deinit(&darray);
 }
 
+TEST(DArrayTest, insert) {
+  darray_t darray;
+  darray_init(&darray, 2, NULL, NULL);
+
+  ASSERT_EQ(darray_insert(&darray, 0, tk_pointer_from_int(3)), RET_OK);
+  ASSERT_EQ(darray_insert(&darray, 0, tk_pointer_from_int(2)), RET_OK);
+  ASSERT_EQ(darray_insert(&darray, 0, tk_pointer_from_int(1)), RET_OK);
+  ASSERT_EQ(darray_insert(&darray, 0, tk_pointer_from_int(0)), RET_OK);
+  ASSERT_EQ(darray.size, 4);
+  ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 0)), 0);
+  ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 1)), 1);
+  ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 2)), 2);
+  ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 3)), 3);
+  
+  ASSERT_EQ(darray_insert(&darray, 1, tk_pointer_from_int(111)), RET_OK);
+  ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 1)), 111);
+  ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 2)), 1);
+
+  darray_deinit(&darray);
+}
+
 TEST(DArrayTest, create) {
   darray_t* darray = darray_create(10, NULL, NULL);
   ASSERT_EQ(darray->size, 0);

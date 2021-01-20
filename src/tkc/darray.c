@@ -251,13 +251,31 @@ void* darray_head(darray_t* darray) {
   return darray->elms[0];
 }
 
-ret_t darray_push(darray_t* darray, void* data) {
+ret_t darray_insert(darray_t* darray, uint32_t index, void* data) {
+  void** s = NULL;
+  void** d = NULL;
+  void** p = NULL;
   return_value_if_fail(darray != NULL, RET_BAD_PARAMS);
+  index = tk_min(index, darray->size);
   return_value_if_fail(darray_extend(darray), RET_OOM);
 
-  darray->elms[darray->size++] = data;
+  p = darray->elms + index;
+  d = darray->elms + darray->size;
+  s = d - 1;
+
+  while (s >= p) {
+    *d-- = *s--;
+  }
+  *p = data;
+  darray->size++;
 
   return RET_OK;
+}
+
+ret_t darray_push(darray_t* darray, void* data) {
+  return_value_if_fail(darray != NULL, RET_BAD_PARAMS);
+  
+  return darray_insert(darray, darray->size, data);
 }
 
 int32_t darray_count(darray_t* darray, void* data) {
