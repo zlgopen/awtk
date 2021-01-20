@@ -138,6 +138,17 @@ ret_t slist_remove_all(slist_t* slist);
 ret_t slist_append(slist_t* slist, void* data);
 
 /**
+ * @method slist_insert
+ * 插入一个元素。
+ * @param {slist_t*} slist 单向链表对象。
+ * @param {uint32_t} index 位置序数。
+ * @param {void*} data 待追加的元素。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t slist_insert(slist_t* slist, uint32_t index, void* data);
+
+/**
  * @method slist_prepend
  * 在头部追加一个元素。
  * @param {slist_t*} slist 单向链表对象。

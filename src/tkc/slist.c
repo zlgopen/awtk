@@ -248,3 +248,29 @@ ret_t slist_destroy(slist_t* slist) {
 
   return RET_OK;
 }
+
+ret_t slist_insert(slist_t* slist, uint32_t index, void* data) {
+  slist_node_t* node = NULL;
+  slist_node_t* iter = NULL;
+  slist_node_t* prev = NULL;
+  return_value_if_fail(slist != NULL, RET_BAD_PARAMS);
+
+  if(index == 0 || slist->first == NULL) {
+    return slist_prepend(slist, data);
+  }
+
+  iter = slist->first;
+  prev = slist->first;
+  while (iter != NULL && index > 0) {
+    index--;
+    prev = iter;
+    iter = iter->next;
+  }
+
+  node = slist_node_create(data);
+  node->next = prev->next;
+  prev->next = node;
+
+  return RET_OK;
+}
+

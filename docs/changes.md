@@ -1,6 +1,7 @@
 # 最新动态
 
 2021/01/20
+  * 增加函数slist\_insert。
   * 增加函数darray\_insert。
   * 修复 page 的 default\_focused\_child 没效果的问题（感谢智明提供补丁）
   * 由于 Ubuntu 默认下不支持 c++11，所以编译 gtest 编译出错的问题（感谢智明提供补丁）
