@@ -63,6 +63,10 @@ typedef struct _pages_t {
    * 当前活跃的page。
    */
   uint32_t active;
+  /* private */
+  uint32_t idle_id;
+  widget_t* target;
+  bool_t is_save;
 } pages_t;
 
 /**
