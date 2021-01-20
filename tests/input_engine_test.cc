@@ -29,24 +29,24 @@ public:
   char* char_candidates;
 
   candidate_info_t() {
-    candidates = nullptr;
+    candidates = NULL;
     candidates_nr = 0;
     char_number = 0;
-    char_candidates = nullptr;
+    char_candidates = NULL;
   }
 
   void deint() {
-    if (candidates != nullptr) {
+    if (candidates != NULL) {
       for (size_t i = 0; i < candidates_nr; i++)
       {
         delete candidates[i];
       }
       delete[] candidates;
-      candidates = nullptr;
+      candidates = NULL;
     }
-    if (char_candidates != nullptr) {
+    if (char_candidates != NULL) {
       delete char_candidates;
-      char_candidates = nullptr;
+      char_candidates = NULL;
     }
     char_number = 0;
     candidates_nr = 0;
