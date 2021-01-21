@@ -25,8 +25,8 @@
 * **graphic_buffer** 图像数据缓冲区。
 * **streams** 各种流的实现(如果不用可以不移植)。
 * **compressors** 压缩算法的实现(如果不用可以不移植)。
-* **file_transfer** 暂时无用。
 * **conf_io** json/jni/ubjson 等配置文件读写。
+* **csv** csv 文件读写。
 
 ## 使用方法
 
