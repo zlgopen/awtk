@@ -119,6 +119,10 @@ static ret_t widget_real_destroy(widget_t* widget) {
   TKMEM_FREE(widget->tr_text);
   TKMEM_FREE(widget->animation);
   TKMEM_FREE(widget->pointer_cursor);
+  OBJECT_UNREF(widget->custom_props);
+  wstr_reset(&(widget->text));
+  style_destroy(widget->astyle);
+  widget->astyle = NULL;
 
   memset(widget, 0x00, sizeof(widget_t));
   TKMEM_FREE(widget);
@@ -3019,15 +3023,6 @@ static ret_t widget_destroy_sync(widget_t* widget) {
     self_layouter_destroy(widget->self_layout);
     widget->self_layout = NULL;
   }
-
-  if (widget->custom_props != NULL) {
-    object_unref(widget->custom_props);
-    widget->custom_props = NULL;
-  }
-
-  wstr_reset(&(widget->text));
-  style_destroy(widget->astyle);
-  widget->astyle = NULL;
 
   widget->destroying = FALSE;
 
