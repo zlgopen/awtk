@@ -15,7 +15,6 @@ BASE_SOURCES=Glob('layouters/*.c') + \
   Glob('ui_loader/*.c') + \
   Glob('fscript_ext/*.c') + \
   Glob('xml/*.c') + \
-  Glob('csv/*.c') + \
   Glob('svg/*.c') + \
   Glob('charset/*.c') + \
   Glob('clip_board/*.c') + \
@@ -109,8 +108,8 @@ env.Library(os.path.join(LIB_DIR, 'tkc_static'), TK_SOURCES, LIBS=[])
 TKC_DEPS_LIBS=[]
 OS_NAME = platform.system()
 TKC_LINKFLAGS = env['LINKFLAGS'];
-TKC_STATIC_LIBS = ['conf_io', 'ubjson', 'streams', 'tkc_static', 'compressors', 'miniz']
-TKC_LINK_ALL=' -Wl,--whole-archive -lstreams -lconf_io -lubjson -ltkc_static -lcompressors -lminiz -Wl,--no-whole-archive'
+TKC_STATIC_LIBS = ['conf_io', 'csv', 'ubjson', 'streams', 'tkc_static', 'compressors', 'miniz']
+TKC_LINK_ALL=' -Wl,--whole-archive -lstreams -lconf_io -lcsv -lubjson -ltkc_static -lcompressors -lminiz -Wl,--no-whole-archive'
 
 if OS_NAME == 'Windows':
   if TOOLS_NAME == '' :
