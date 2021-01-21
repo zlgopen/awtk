@@ -218,6 +218,20 @@ ret_t text_selector_append_option(widget_t* widget, int32_t value, const char* t
 ret_t text_selector_set_options(widget_t* widget, const char* options);
 
 /**
+ * @method text_selector_set_range_options_ex
+ * 设置一系列的整数选项。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget text_selector对象。
+ * @param {int32_t} start 起始值。
+ * @param {uint32_t} nr 个数。
+ * @param {int32_t} step 步长。
+ * @param {const char*} format 选项的格式化。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t text_selector_set_range_options_ex(widget_t* widget, int32_t start, uint32_t nr, int32_t step, const char* format);
+
+/**
  * @method text_selector_set_range_options
  * 设置一系列的整数选项。
  * @annotation ["scriptable"]

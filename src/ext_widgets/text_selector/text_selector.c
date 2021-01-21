@@ -316,7 +316,7 @@ ret_t text_selector_parse_options(widget_t* widget, const char* str) {
   return RET_OK;
 }
 
-static ret_t text_selector_set_range_options_ex(widget_t* widget, int32_t start, uint32_t nr,
+ret_t text_selector_set_range_options_ex(widget_t* widget, int32_t start, uint32_t nr,
                                                 int32_t step, const char* format) {
   char text[64];
   uint32_t i = 0;
@@ -342,17 +342,25 @@ ret_t text_selector_set_options(widget_t* widget, const char* options) {
   if (strchr(options, ':') == NULL && strchr(options, '-') != NULL) {
     int nr = 0;
     int end = 0;
+    int step = 1;
     int start = 0;
-    char format[32];
+    char format[41];
     memset(format, 0x00, sizeof(format));
 
-    nr = tk_sscanf(options, "%d-%d-%31s", &start, &end, format);
+    nr = tk_sscanf(options, "%d-%d-%40s", &start, &end, format);
 
     if (nr < 3) {
       tk_strncpy(format, "%d", sizeof(format) - 1);
+    } else {
+      const char* f = strchr(format, '-');
+      if (f != NULL) {
+        int p = f - format;
+        step = tk_atoi(f + 1);
+        memset(f, 0x0, sizeof(format) - p);
+      }
     }
 
-    return text_selector_set_range_options_ex(widget, start, end - start + 1, 1, format);
+    return text_selector_set_range_options_ex(widget, start, end - start + 1, step, format);
   } else {
     return text_selector_parse_options(widget, options);
   }
