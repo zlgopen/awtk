@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   demo_canvas_offline.c
  * Author: AWTK Develop Team
  * Brief:  demo_canvas_offline
