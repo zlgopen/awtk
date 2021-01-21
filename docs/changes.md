@@ -1,6 +1,8 @@
 # 最新动态
 
 2021/01/21
+  * 完善文档。
+  * 部分文件增加UTF8-BOM（感谢陈谭提供补丁）。
   * 将销毁自定义属性代码放到on\_destroy回调函数之后。
   * 增加csv file，请参考[csv file](../src/csv/README.md)。
   * text\_selector 支持同时修改选项的步长和格式 （感谢智明提供补丁）
