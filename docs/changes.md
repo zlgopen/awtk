@@ -2,6 +2,7 @@
 
 2021/01/21
   * 将销毁自定义属性代码放到on\_destroy回调函数之后。
+  * 增加csv file，请参考[csv file](../src/csv/README.md)。
   * text\_selector 支持同时修改选项的步长和格式 （感谢智明提供补丁）
 
 2021/01/20

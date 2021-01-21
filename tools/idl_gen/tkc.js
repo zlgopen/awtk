@@ -11,6 +11,7 @@ if(process.argv.length == 3) {
 let sourcesPath = [
     path.normalize(path.join(__dirname, '../../src/tkc')), 
     path.normalize(path.join(__dirname, '../../src/ubjson')), 
+    path.normalize(path.join(__dirname, '../../src/csv')), 
     path.normalize(path.join(__dirname, '../../src/streams')), 
     path.normalize(path.join(__dirname, '../../src/conf_io'))].join(';');
 
