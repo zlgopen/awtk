@@ -33,6 +33,15 @@ static ret_t pages_on_target_destroy(void* ctx, event_t* evt) {
   return RET_REMOVE;
 }
 
+static ret_t pages_on_view_destroy(void* ctx, event_t* evt) {
+  widget_t* view = WIDGET(evt->target);
+  widget_t* target = WIDGET(ctx);
+
+  widget_off_by_func(target, EVT_DESTROY, pages_on_target_destroy, view);
+
+  return RET_REMOVE;
+}
+
 static ret_t pages_save_target(widget_t* widget) {
   widget_t* target = NULL;
   pages_t* pages = PAGES(widget);
@@ -51,6 +60,7 @@ static ret_t pages_save_target(widget_t* widget) {
         pages->is_save = TRUE;
         widget_set_prop_pointer(active_view, "save_target", target);
         widget_on(target, EVT_DESTROY, pages_on_target_destroy, active_view);
+        widget_on(active_view, EVT_DESTROY, pages_on_view_destroy, target);
       }
     }
   }
