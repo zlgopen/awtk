@@ -191,6 +191,8 @@ static ret_t main_loop_sdl2_dispatch_window_event(main_loop_simple_t* loop, SDL_
       log_debug("Window %d resized to %dx%d\n", event->window.windowID, event->window.data1,
                 event->window.data2);
       widget_invalidate_force(l->wm, NULL);
+      widget_set_need_relayout_children(l->wm);
+      widget_layout(l->wm);
       break;
     case SDL_WINDOWEVENT_SIZE_CHANGED: {
       event_t e = event_init(EVT_NATIVE_WINDOW_RESIZED, NULL);
