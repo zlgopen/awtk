@@ -174,6 +174,7 @@ static ret_t main_loop_sdl2_dispatch_window_event(main_loop_simple_t* loop, SDL_
   switch (event->window.event) {
     case SDL_WINDOWEVENT_SHOWN:
       log_debug("Window %d shown\n", event->window.windowID);
+      widget_invalidate_force(l->wm, NULL);
       break;
     case SDL_WINDOWEVENT_HIDDEN:
       log_debug("Window %d hidden\n", event->window.windowID);
@@ -189,6 +190,7 @@ static ret_t main_loop_sdl2_dispatch_window_event(main_loop_simple_t* loop, SDL_
     case SDL_WINDOWEVENT_RESIZED:
       log_debug("Window %d resized to %dx%d\n", event->window.windowID, event->window.data1,
                 event->window.data2);
+      widget_invalidate_force(l->wm, NULL);
       break;
     case SDL_WINDOWEVENT_SIZE_CHANGED: {
       event_t e = event_init(EVT_NATIVE_WINDOW_RESIZED, NULL);
