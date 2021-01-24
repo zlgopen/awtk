@@ -168,6 +168,15 @@ static ret_t main_loop_sdl2_dispatch_mouse_event(main_loop_simple_t* loop, SDL_E
   return RET_OK;
 }
 
+static ret_t on_resized_timer(const timer_info_t* info) {
+  widget_t* wm = WIDGET(info->ctx);
+  widget_set_need_relayout_children(wm);
+  widget_invalidate_force(wm, NULL);
+  
+  log_debug("on_resized_timer\n");
+  return RET_REMOVE;
+}
+
 static ret_t main_loop_sdl2_dispatch_window_event(main_loop_simple_t* loop, SDL_Event* event) {
   main_loop_t* l = (main_loop_t*)(loop);
 
@@ -190,9 +199,7 @@ static ret_t main_loop_sdl2_dispatch_window_event(main_loop_simple_t* loop, SDL_
     case SDL_WINDOWEVENT_RESIZED:
       log_debug("Window %d resized to %dx%d\n", event->window.windowID, event->window.data1,
                 event->window.data2);
-      widget_invalidate_force(l->wm, NULL);
-      widget_set_need_relayout_children(l->wm);
-      widget_layout(l->wm);
+      timer_add(on_resized_timer, l->wm, 100);
       break;
     case SDL_WINDOWEVENT_SIZE_CHANGED: {
       event_t e = event_init(EVT_NATIVE_WINDOW_RESIZED, NULL);
@@ -203,6 +210,7 @@ static ret_t main_loop_sdl2_dispatch_window_event(main_loop_simple_t* loop, SDL_
       system_info_set_lcd_w(system_info(), ww);
       system_info_set_lcd_h(system_info(), wh);
       window_manager_dispatch_native_window_event(l->wm, &e, win);
+      timer_add(on_resized_timer, l->wm, 100);
       break;
     }
     case SDL_WINDOWEVENT_MINIMIZED:
