@@ -1,6 +1,7 @@
 # 最新动态
 
 2021/01/25
+  * 修复list\_view\_h中的滑动视图设置children\_layout后无法无法正常滑动的问题(感谢雨欣提供补丁)。
   * 感谢智明提供以下补丁:
     * 重构 list\_view 的布局代码
     * 完善原来的 auto\_hide\_scroll\_bar 属性的显示效果

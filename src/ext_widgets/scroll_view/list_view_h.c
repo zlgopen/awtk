@@ -96,42 +96,55 @@ TK_DECL_VTABLE(list_view_h) = {.type = WIDGET_TYPE_LIST_VIEW_H,
                                .on_paint_self = list_view_h_on_paint_self};
 
 static ret_t list_view_h_on_scroll_view_layout_children(widget_t* widget) {
-  int32_t spacing = 0;
-  int32_t item_width = 0;
-  int32_t virtual_w = widget->w;
   list_view_h_t* list_view_h = LIST_VIEW_H(widget->parent);
   return_value_if_fail(list_view_h != NULL, RET_BAD_PARAMS);
 
+  int32_t i = 0;
+  int32_t x = 0;
+  int32_t y = 0;
+  int32_t w = list_view_h->item_width;
+  int32_t h = widget->h;
+  int32_t spacing = 0;
+  int32_t x_margin = 0;
+  int32_t max_w = 0;
+  int32_t virtual_w = widget->w;
+  int32_t n = widget->children->size;
+  widget_t** children = (widget_t**)(widget->children->elms);
+
   if (widget->children_layout != NULL) {
     children_layouter_layout(widget->children_layout, widget);
+
+    if (tk_str_start_with(children_layouter_to_string(widget->children_layout), "list_view")) {
+      scroll_view_set_xslidable(list_view_h->scroll_view, TRUE);
+      scroll_view_set_yslidable(list_view_h->scroll_view, FALSE);
+      return RET_OK;
+    }
+
+    spacing = children_layouter_get_param_int(widget->children_layout, "spacing", 0);
+    x_margin = children_layouter_get_param_int(widget->children_layout, "x_margin", 0);
   } else {
     spacing = list_view_h->spacing;
-    item_width = list_view_h->item_width;
+  }
 
-    if (widget->children != NULL) {
-      int32_t i = 0;
-      int32_t x = 0;
-      int32_t y = 0;
-      int32_t w = item_width;
-      int32_t h = widget->h;
-      int32_t n = widget->children->size;
-      widget_t** children = (widget_t**)(widget->children->elms);
+  if (widget->children != NULL) {
+    for (i = 0; i < n; i++) {
+      widget_t* iter = children[i];
 
-      for (i = 0; i < n; i++) {
-        widget_t* iter = children[i];
-
+      if (widget->children_layout == NULL) {
         widget_move_resize(iter, x, y, w, h);
         widget_layout(iter);
-
-        x = iter->x + iter->w + spacing;
       }
-
-      if (x > virtual_w) {
-        virtual_w = x;
-      }
+      x = iter->x + iter->w + spacing;
+      max_w = tk_max(max_w, x);
     }
-    scroll_view_set_virtual_w(list_view_h->scroll_view, virtual_w);
   }
+
+  max_w += x_margin - spacing;
+  if (max_w > virtual_w) {
+    virtual_w = max_w;
+  }
+
+  scroll_view_set_virtual_w(list_view_h->scroll_view, virtual_w);
   scroll_view_set_xslidable(list_view_h->scroll_view, TRUE);
   scroll_view_set_yslidable(list_view_h->scroll_view, FALSE);
 
