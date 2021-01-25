@@ -25,12 +25,14 @@
 #include "base/self_layouter_factory.h"
 #include "base/children_layouter_factory.h"
 
-static ret_t widget_auto_adjust_size(widget_t* widget) {
-  int32_t margin = 0;
+ret_t widget_auto_adjust_size(widget_t* widget) {
   int32_t w = 0;
   int32_t h = 0;
-  style_t* style = widget->astyle;
+  int32_t margin = 0;
+  style_t* style = NULL;
   event_t e = event_init(EVT_WILL_RESIZE, widget);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  style = widget->astyle;
   widget_dispatch(widget, &e);
   widget_invalidate_force(widget, NULL);
 

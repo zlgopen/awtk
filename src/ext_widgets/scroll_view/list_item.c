@@ -103,7 +103,7 @@ static ret_t list_item_on_event(widget_t* widget, event_t* e) {
       list_item_remove_timer(widget);
       widget_invalidate_force(widget, NULL);
       widget_set_state(widget, WIDGET_STATE_NORMAL);
-
+      widget_ungrab(widget->parent, widget);
       if (!list_item->dragged && list_item->pressed) {
         pointer_event_t evt = *(pointer_event_t*)e;
         evt.e = event_init(EVT_CLICK, widget);
@@ -113,7 +113,6 @@ static ret_t list_item_on_event(widget_t* widget, event_t* e) {
       list_item->dragged = FALSE;
       list_item->pressed = FALSE;
       list_item->downed = FALSE;
-      widget_ungrab(widget->parent, widget);
       break;
     }
     case EVT_POINTER_MOVE: {

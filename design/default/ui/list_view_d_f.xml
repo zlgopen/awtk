@@ -1,0 +1,92 @@
+<window anim_hint="htranslate" >
+  <list_view x="0"  y="0" w="100%" h="200" item_height="60"  floating_scroll_bar="true" auto_hide_scroll_bar="true" style:normal:border_color="#ff0000" >
+    <scroll_view name="view" x="0"  y="0" w="-12" h="100%" children_layout="list_view(x_margin=5,spacing=10)">
+      <list_item style="odd_clickable" children_layout="default(r=1,c=0)">
+        <image draw_type="icon" w="30" image="earth"/>
+        <label w="-30" text="1.Hello AWTK !"/>
+      </list_item>
+      <list_item style="even_clickable" children_layout="default(r=1,c=0)">
+        <image draw_type="icon" w="30" image="earth"/>
+        <label w="-30" text="2.Hello AWTK !"/>
+      </list_item>
+      <list_item style="odd_clickable" children_layout="default(r=1,c=0)">
+        <image draw_type="icon" w="30" image="earth"/>
+        <label w="-30" text="3.Hello AWTK !"/>
+      </list_item>
+      <list_item style="even_clickable" children_layout="default(r=1,c=0)">
+        <image draw_type="icon" w="30" image="earth"/>
+        <label w="-30" text="4.Hello AWTK !"/>
+      </list_item>
+      <list_item style="odd_clickable" children_layout="default(r=1,c=0)">
+        <image draw_type="icon" w="30" image="earth"/>
+        <label w="-30" text="5.Hello AWTK !"/>
+      </list_item>
+      <list_item style="even_clickable" children_layout="default(r=1,c=0)">
+        <image draw_type="icon" w="30" image="earth"/>
+        <label w="-30" text="6.Hello AWTK !"/>
+      </list_item>
+      <list_item style="odd_clickable" children_layout="default(r=1,c=0)">
+        <image draw_type="icon" w="30" image="earth"/>
+        <label w="-30" text="7.Hello AWTK !"/>
+      </list_item>
+      <list_item style="even_clickable" children_layout="default(r=1,c=0)">
+        <image draw_type="icon" w="30" image="earth"/>
+        <label w="-30" text="8.Hello AWTK !"/>
+      </list_item>
+      <list_item style="odd_clickable" children_layout="default(r=1,c=0)">
+        <image draw_type="icon" w="30" image="earth"/>
+        <label w="-30" text="9.Hello AWTK !"/>
+      </list_item>
+      <list_item style="even_clickable" children_layout="default(r=1,c=0)">
+        <image draw_type="icon" w="30" image="earth"/>
+        <label w="-30" text="10.Hello AWTK !"/>
+      </list_item>
+      <list_item style="odd_clickable" children_layout="default(r=1,c=0)">
+        <image draw_type="icon" w="30" image="earth"/>
+        <label w="-30" text="11.Hello AWTK !"/>
+      </list_item>
+      <list_item style="even_clickable" children_layout="default(r=1,c=0)">
+        <image draw_type="icon" w="30" image="earth"/>
+        <label w="-30" text="12.Hello AWTK !"/>
+      </list_item>
+      <list_item style="odd_clickable" children_layout="default(r=1,c=0)">
+        <image draw_type="icon" w="30" image="earth"/>
+        <label w="-30" text="13.Hello AWTK !"/>
+      </list_item>
+      <list_item style="even_clickable" children_layout="default(r=1,c=0)">
+        <image draw_type="icon" w="30" image="earth"/>
+        <label w="-30" text="14.Hello AWTK !"/>
+      </list_item>
+      <list_item style="even_clickable" name="clone_self" text="Clone Self" />
+      <list_item style="odd_clickable" name="clone_self" text="Clone Self" />
+      <list_item style="even_clickable" name="remove_self" text="Remove Self" />
+      <list_item style="odd_clickable" name="remove_self" text="Remove Self" />
+    </scroll_view>
+    <scroll_bar_d name="bar" x="right" y="0" w="12" h="100%" value="0"/>
+  </list_view>
+  <list_view x="0"  y="210" w="100%" h="200" item_height="60" floating_scroll_bar="true" auto_hide_scroll_bar="true" style:normal:border_color="#ff0000" >
+    <scroll_view name="view" x="0"  y="0" w="-12" h="100%" children_layout="list_view(x_margin=5,spacing=10)">
+      <list_item style="odd_clickable" children_layout="default(r=1,c=0)">
+        <image draw_type="icon" w="30" image="earth"/>
+        <label w="-30" text="1.Hello AWTK !"/>
+      </list_item>
+      <list_item style="even_clickable" name="clone_self" text="Clone Self" />
+      <list_item style="even_clickable" name="remove_self" text="Remove Self1" />
+      <list_item style="even_clickable" name="remove_self" text="Remove Self2" />
+      <list_item style="even_clickable" name="remove_self" text="Remove Self3" />
+      <list_item style="even_clickable" name="remove_self" text="Remove Self4" />
+      <list_item style="even_clickable" name="remove_self" text="Remove Self5" />
+      <list_item style="even_clickable" name="remove_self" text="Remove Self6" />
+      <list_item style="even_clickable" name="remove_self" text="Remove Self7" />
+      <list_item style="even_clickable" name="remove_self" text="Remove Self8" />
+      <list_item style="even_clickable" name="remove_self" text="Remove Self9" />
+      <list_item style="even_clickable" name="remove_self" text="Remove Self10" />
+      <list_item style="even_clickable" name="remove_self" text="Remove Self11" />
+      <list_item style="even_clickable" name="remove_self" text="Remove Self12" />
+      <list_item style="even_clickable" name="remove_self" text="Remove Self13" />
+      <list_item style="even_clickable" name="remove_self" text="Remove Self14" />
+    </scroll_view>
+    <scroll_bar_d name="bar" x="right" y="0" w="12" h="100%" value="0"/>
+  </list_view>
+  <button name="close" x="center" y="bottom:5" w="50%" h="30" text="close"/>
+</window>

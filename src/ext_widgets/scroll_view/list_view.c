@@ -27,6 +27,9 @@
 #include "scroll_view/scroll_bar.h"
 #include "scroll_view/scroll_view.h"
 
+#define LIST_VIEW_FLOATING_SCROLL_BAR_HIDE_TIME           500
+#define LIST_VIEW_FLOATING_SCROLL_BAR_SHOW_TIME           300
+
 static ret_t list_view_on_add_child(widget_t* widget, widget_t* child);
 static ret_t list_view_on_remove_child(widget_t* widget, widget_t* child);
 
@@ -47,6 +50,9 @@ static ret_t list_view_get_prop(widget_t* widget, const char* name, value_t* v) 
   } else if (tk_str_eq(name, WIDGET_PROP_AUTO_HIDE_SCROLL_BAR)) {
     value_set_bool(v, list_view->auto_hide_scroll_bar);
     return RET_OK;
+  } else if (tk_str_eq(name, LIST_VIEW_PROP_FLOATING_SCROLL_BAR)) {
+    value_set_bool(v, list_view->floating_scroll_bar);
+    return RET_OK;
   }
 
   return RET_NOT_FOUND;
@@ -54,8 +60,8 @@ static ret_t list_view_get_prop(widget_t* widget, const char* name, value_t* v) 
 
 static ret_t list_view_on_pointer_up(list_view_t* list_view, pointer_event_t* e) {
   scroll_bar_t* scroll_bar = (scroll_bar_t*)list_view->scroll_bar;
-  if (scroll_bar != NULL && scroll_bar->wa_opactiy == NULL && list_view->scroll_bar->visible) {
-    scroll_bar_hide_by_opacity_animation(list_view->scroll_bar, 500);
+  if (scroll_bar != NULL && scroll_bar->wa_opactiy == NULL && list_view->scroll_bar->visible && scroll_bar_is_mobile(list_view->scroll_bar)) {
+    scroll_bar_hide_by_opacity_animation(list_view->scroll_bar, LIST_VIEW_FLOATING_SCROLL_BAR_HIDE_TIME, LIST_VIEW_FLOATING_SCROLL_BAR_HIDE_TIME);
   }
   return RET_OK;
 }
@@ -72,9 +78,64 @@ static ret_t list_view_set_prop(widget_t* widget, const char* name, const value_
   } else if (tk_str_eq(name, WIDGET_PROP_AUTO_HIDE_SCROLL_BAR)) {
     list_view->auto_hide_scroll_bar = value_bool(v);
     return RET_OK;
+  } else if (tk_str_eq(name, LIST_VIEW_PROP_FLOATING_SCROLL_BAR)) {
+    return list_view_set_floating_scroll_bar(widget, value_bool(v));
   }
 
   return RET_NOT_FOUND;
+}
+
+static ret_t list_view_hanlde_wheel_event(list_view_t* list_view, event_t* e) {
+  wheel_event_t* evt = (wheel_event_t*)e;
+  int32_t delta = -evt->dy;
+  if (list_view->scroll_bar != NULL) {
+    scroll_bar_add_delta(list_view->scroll_bar, delta);
+    log_debug("wheel: %d\n", delta);
+  }
+  return RET_STOP;
+}
+
+static ret_t list_view_on_wheel_before(void* ctx, event_t* e) {
+  return list_view_hanlde_wheel_event(LIST_VIEW(ctx), e);
+}
+
+static bool_t list_view_is_play_floating_scroll_bar_animtion(list_view_t* list_view) {
+  scroll_view_t* scroll_view = NULL;
+  return_value_if_fail(list_view != NULL && list_view->scroll_bar != NULL && list_view->scroll_view != NULL, FALSE);
+  scroll_view = SCROLL_VIEW(list_view->scroll_view);
+  return_value_if_fail(scroll_view != NULL, FALSE);
+  
+  if (list_view->floating_scroll_bar && list_view->scroll_bar->enable && scroll_view->virtual_h >= list_view->widget.h) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+static ret_t list_view_on_pointer_leave(list_view_t* list_view) {
+  return_value_if_fail(list_view != NULL, RET_BAD_PARAMS);
+  if (list_view_is_play_floating_scroll_bar_animtion(list_view)) {
+    widget_t* win = widget_get_window(WIDGET(list_view));
+    list_view->is_over = FALSE;
+    scroll_bar_hide_by_opacity_animation(list_view->scroll_bar, LIST_VIEW_FLOATING_SCROLL_BAR_HIDE_TIME, 0);
+    if (list_view->wheel_before_id != TK_INVALID_ID) {
+      widget_off(win, list_view->wheel_before_id);
+      list_view->wheel_before_id = TK_INVALID_ID;
+    }
+  }
+  return RET_OK;
+}
+
+static ret_t list_view_on_pointer_enter(list_view_t* list_view) {
+  return_value_if_fail(list_view != NULL, RET_BAD_PARAMS);
+  if (list_view_is_play_floating_scroll_bar_animtion(list_view)) {
+    widget_t* win = widget_get_window(WIDGET(list_view));
+    list_view->is_over = TRUE;
+    scroll_bar_show_by_opacity_animation(list_view->scroll_bar, LIST_VIEW_FLOATING_SCROLL_BAR_SHOW_TIME, 0);
+    if (list_view->wheel_before_id == TK_INVALID_ID) {
+      list_view->wheel_before_id = widget_on(win, EVT_WHEEL_BEFORE_CHILDREN, list_view_on_wheel_before, WIDGET(list_view));
+    }
+  }
+  return RET_OK;
 }
 
 static ret_t list_view_on_event(widget_t* widget, event_t* e) {
@@ -84,14 +145,7 @@ static ret_t list_view_on_event(widget_t* widget, event_t* e) {
 
   switch (e->type) {
     case EVT_WHEEL: {
-      wheel_event_t* evt = (wheel_event_t*)e;
-      int32_t delta = -evt->dy;
-      if (list_view->scroll_bar != NULL) {
-        scroll_bar_add_delta(list_view->scroll_bar, delta);
-        log_debug("wheel: %d\n", delta);
-      }
-
-      ret = RET_STOP;
+      ret = list_view_hanlde_wheel_event(list_view, e);
       break;
     }
     case EVT_KEY_DOWN: {
@@ -116,7 +170,16 @@ static ret_t list_view_on_event(widget_t* widget, event_t* e) {
     case EVT_POINTER_UP: {
       pointer_event_t* evt = (pointer_event_t*)e;
       list_view_on_pointer_up(list_view, evt);
-    } break;
+      break;
+    } 
+    case EVT_POINTER_LEAVE: {
+      list_view_on_pointer_leave(list_view);
+      break;
+    }
+    case EVT_POINTER_ENTER: {
+      list_view_on_pointer_enter(list_view);
+      break;
+    }
     default:
       break;
   }
@@ -287,6 +350,7 @@ static ret_t list_view_on_add_child(widget_t* widget, widget_t* child) {
     scroll_view->on_scroll_to = list_view_on_scroll_view_scroll_to;
     scroll_view->on_layout_children = list_view_on_scroll_view_layout_children;
     scroll_view->on_paint_children = list_view_on_scroll_view_paint_children;
+    scroll_view_set_recursive_only(child, FALSE);
 
   } else if (tk_str_eq(type, WIDGET_TYPE_SCROLL_BAR) ||
              tk_str_eq(type, WIDGET_TYPE_SCROLL_BAR_DESKTOP) ||
@@ -405,6 +469,15 @@ ret_t list_view_set_auto_hide_scroll_bar(widget_t* widget, bool_t auto_hide_scro
   return_value_if_fail(list_view != NULL, RET_BAD_PARAMS);
 
   list_view->auto_hide_scroll_bar = auto_hide_scroll_bar;
+
+  return RET_OK;
+}
+
+ret_t list_view_set_floating_scroll_bar(widget_t* widget, bool_t floating_scroll_bar) {
+  list_view_t* list_view = LIST_VIEW(widget);
+  return_value_if_fail(list_view != NULL, RET_BAD_PARAMS);
+
+  list_view->floating_scroll_bar = floating_scroll_bar;
 
   return RET_OK;
 }

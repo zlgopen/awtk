@@ -211,11 +211,11 @@ static ret_t scroll_bar_destop_get_dragger_size(widget_t* widget, rect_t* r) {
   }
 
   if (SCROLL_BAR_UP_AND_DOWN_BUTTON_STYLE_IS_EXIST(up, down)) {
-    if (widget_w > widget_h) {
-      button_margin = widget_h;
-    } else {
-      button_margin = widget_w;
-    }
+      if (widget_w > widget_h) {
+        button_margin = widget_h;
+      } else {
+        button_margin = widget_w;
+      }
   }
 
   value = scroll_bar->value;
@@ -363,8 +363,12 @@ static ret_t scroll_bar_on_layout_children(widget_t* widget) {
       widget_move_resize(down, 0, widget->h - widget->w, widget->w, widget->w);
     }
   } else {
-    widget_set_visible(up, FALSE);
-    widget_set_visible(down, FALSE);
+    if (up != NULL) {
+      widget_set_visible(up, FALSE);
+    } 
+    if (down != NULL) {
+      widget_set_visible(down, FALSE);
+    }
   }
 
   if (scroll_bar->virtual_size <= 0) {
@@ -547,7 +551,9 @@ static ret_t scroll_bar_on_opactiy_animate_end(void* ctx, event_t* e) {
 
   scroll_bar->wa_opactiy = NULL;
 
-  if (scroll_bar_is_mobile(widget)) {
+  if (widget->opacity == 0xff) {
+    widget_set_visible_only(widget, TRUE);
+  } else {
     widget_set_visible_only(widget, FALSE);
   }
 
@@ -563,17 +569,14 @@ ret_t scroll_bar_scroll_to(widget_t* widget, int32_t value, int32_t duration) {
     scroll_bar->wa_value = NULL;
   }
 
-  if (scroll_bar->wa_opactiy != NULL) {
-    widget_animator_destroy(scroll_bar->wa_opactiy);
-    scroll_bar->wa_opactiy = NULL;
-  }
-
   widget_set_opacity(widget, 0xff);
   widget_set_visible_only(widget, TRUE);
   widget_invalidate_force(widget, NULL);
 
   if (scroll_bar->value == value) {
-    scroll_bar_hide_by_opacity_animation(widget, duration);
+    if (scroll_bar_is_mobile(widget)) {
+      scroll_bar_hide_by_opacity_animation(widget, duration, duration);
+    }
     return RET_OK;
   }
 
@@ -585,7 +588,7 @@ ret_t scroll_bar_scroll_to(widget_t* widget, int32_t value, int32_t duration) {
                      scroll_bar);
 
   if (scroll_bar_is_mobile(widget)) {
-    scroll_bar_hide_by_opacity_animation(widget, duration);
+    scroll_bar_hide_by_opacity_animation(widget, duration, duration);
   } else {
     scroll_bar->wa_opactiy = NULL;
   }
@@ -695,16 +698,34 @@ widget_t* scroll_bar_cast(widget_t* widget) {
   return widget;
 }
 
-ret_t scroll_bar_hide_by_opacity_animation(widget_t* widget, int32_t duration) {
+ret_t scroll_bar_hide_by_opacity_animation(widget_t* widget, int32_t duration, int32_t delay) {
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
   return_value_if_fail(scroll_bar != NULL, RET_BAD_PARAMS);
-  if (scroll_bar_is_mobile(widget)) {
-    scroll_bar->wa_opactiy =
-        widget_animator_opacity_create(widget, duration, duration, EASING_SIN_INOUT);
-    widget_animator_on(scroll_bar->wa_opactiy, EVT_ANIM_END, scroll_bar_on_opactiy_animate_end,
-                       scroll_bar);
-    widget_animator_opacity_set_params(scroll_bar->wa_opactiy, 0xff, 0);
-    widget_animator_start(scroll_bar->wa_opactiy);
+  if (scroll_bar->wa_opactiy != NULL) {
+    widget_animator_destroy(scroll_bar->wa_opactiy);
+    scroll_bar->wa_opactiy = NULL;
   }
+  scroll_bar->wa_opactiy =
+      widget_animator_opacity_create(widget, duration, delay, EASING_SIN_INOUT);
+  widget_animator_on(scroll_bar->wa_opactiy, EVT_ANIM_END, scroll_bar_on_opactiy_animate_end,
+                      scroll_bar);
+  widget_animator_opacity_set_params(scroll_bar->wa_opactiy, widget->opacity, 0);
+  widget_animator_start(scroll_bar->wa_opactiy);
+  return RET_OK;
+}
+
+ret_t scroll_bar_show_by_opacity_animation(widget_t* widget, int32_t duration, int32_t delay) {
+  scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
+  return_value_if_fail(scroll_bar != NULL, RET_BAD_PARAMS);
+  if (scroll_bar->wa_opactiy != NULL) {
+    widget_animator_destroy(scroll_bar->wa_opactiy);
+    scroll_bar->wa_opactiy = NULL;
+  }
+  scroll_bar->wa_opactiy =
+      widget_animator_opacity_create(widget, duration, delay, EASING_SIN_INOUT);
+  widget_animator_on(scroll_bar->wa_opactiy, EVT_ANIM_END, scroll_bar_on_opactiy_animate_end,
+                      scroll_bar);
+  widget_animator_opacity_set_params(scroll_bar->wa_opactiy, widget->opacity, 0xff);
+  widget_animator_start(scroll_bar->wa_opactiy);
   return RET_OK;
 }

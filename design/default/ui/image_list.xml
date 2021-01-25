@@ -1,253 +1,253 @@
 <window anim_hint="htranslate">
-  <list_view x="0"  y="0" w="100%" h="-50"> 
+  <list_view x="0"  y="0" w="100%" h="-50" default_item_height="128" > 
     <scroll_view name="view" x="0"  y="0" w="-12" h="100%"
-      children_layout="list_view(item_height=128,cols=3,spacing=2)">
+      children_layout="list_view(cols=3,spacing=2)">
 
-      <list_item style="empty">
+      <list_item style="border" h="150">
         <image selectable="true" x="0" y="0" w="100%" h="-30"
           style="selectable" draw_type="auto" image="1" />
         <label selectable="true" x="0" y="bottom:0" w="100%" h="30"
           text="0" />
       </list_item>
       
-      <list_item style="empty">
+      <list_item style="border" h="100" >
         <image selectable="true" x="0" y="0" w="100%" h="-30"
           style="selectable" draw_type="auto" image="1" />
         <label selectable="true" x="0" y="bottom:0" w="100%" h="30"
           text="0" />
       </list_item>
       
-      <list_item style="empty">
+      <list_item style="border">
         <image selectable="true" x="0" y="0" w="100%" h="-30"
           style="selectable" draw_type="auto" image="1" />
         <label selectable="true" x="0" y="bottom:0" w="100%" h="30"
           text="0" />
       </list_item>
       
-      <list_item style="empty">
+      <list_item style="border">
         <image selectable="true" x="0" y="0" w="100%" h="-30"
           style="selectable" draw_type="auto" image="2" />
         <label selectable="true" x="0" y="bottom:0" w="100%" h="30"
           text="1" />
       </list_item>
       
-      <list_item style="empty">
+      <list_item style="border">
         <image selectable="true" x="0" y="0" w="100%" h="-30"
           style="selectable" draw_type="auto" image="2" />
         <label selectable="true" x="0" y="bottom:0" w="100%" h="30"
           text="1" />
       </list_item>
       
-      <list_item style="empty">
+      <list_item style="border">
         <image selectable="true" x="0" y="0" w="100%" h="-30"
           style="selectable" draw_type="auto" image="2" />
         <label selectable="true" x="0" y="bottom:0" w="100%" h="30"
           text="1" />
       </list_item>
       
-      <list_item style="empty">
+      <list_item style="border">
         <image selectable="true" x="0" y="0" w="100%" h="-30"
           style="selectable" draw_type="auto" image="3" />
         <label selectable="true" x="0" y="bottom:0" w="100%" h="30"
           text="2" />
       </list_item>
       
-      <list_item style="empty">
+      <list_item style="border">
         <image selectable="true" x="0" y="0" w="100%" h="-30"
           style="selectable" draw_type="auto" image="3" />
         <label selectable="true" x="0" y="bottom:0" w="100%" h="30"
           text="2" />
       </list_item>
       
-      <list_item style="empty">
+      <list_item style="border">
         <image selectable="true" x="0" y="0" w="100%" h="-30"
           style="selectable" draw_type="auto" image="3" />
         <label selectable="true" x="0" y="bottom:0" w="100%" h="30"
           text="2" />
       </list_item>
       
-      <list_item style="empty">
+      <list_item style="border">
         <image selectable="true" x="0" y="0" w="100%" h="-30"
           style="selectable" draw_type="auto" image="1" />
         <label selectable="true" x="0" y="bottom:0" w="100%" h="30"
           text="0" />
       </list_item>
       
-      <list_item style="empty">
+      <list_item style="border">
         <image selectable="true" x="0" y="0" w="100%" h="-30"
           style="selectable" draw_type="auto" image="1" />
         <label selectable="true" x="0" y="bottom:0" w="100%" h="30"
           text="0" />
       </list_item>
       
-      <list_item style="empty">
+      <list_item style="border">
         <image selectable="true" x="0" y="0" w="100%" h="-30"
           style="selectable" draw_type="auto" image="1" />
         <label selectable="true" x="0" y="bottom:0" w="100%" h="30"
           text="0" />
       </list_item>
       
-      <list_item style="empty">
+      <list_item style="border">
         <image selectable="true" x="0" y="0" w="100%" h="-30"
           style="selectable" draw_type="auto" image="2" />
         <label selectable="true" x="0" y="bottom:0" w="100%" h="30"
           text="1" />
       </list_item>
       
-      <list_item style="empty">
+      <list_item style="border">
         <image selectable="true" x="0" y="0" w="100%" h="-30"
           style="selectable" draw_type="auto" image="2" />
         <label selectable="true" x="0" y="bottom:0" w="100%" h="30"
           text="1" />
       </list_item>
       
-      <list_item style="empty">
+      <list_item style="border">
         <image selectable="true" x="0" y="0" w="100%" h="-30"
           style="selectable" draw_type="auto" image="2" />
         <label selectable="true" x="0" y="bottom:0" w="100%" h="30"
           text="1" />
       </list_item>
       
-      <list_item style="empty">
+      <list_item style="border">
         <image selectable="true" x="0" y="0" w="100%" h="-30"
           style="selectable" draw_type="auto" image="3" />
         <label selectable="true" x="0" y="bottom:0" w="100%" h="30"
           text="2" />
       </list_item>
       
-      <list_item style="empty">
+      <list_item style="border">
         <image selectable="true" x="0" y="0" w="100%" h="-30"
           style="selectable" draw_type="auto" image="3" />
         <label selectable="true" x="0" y="bottom:0" w="100%" h="30"
           text="2" />
       </list_item>
       
-      <list_item style="empty">
+      <list_item style="border">
         <image selectable="true" x="0" y="0" w="100%" h="-30"
           style="selectable" draw_type="auto" image="3" />
         <label selectable="true" x="0" y="bottom:0" w="100%" h="30"
           text="2" />
       </list_item>
-      <list_item style="empty">
+      <list_item style="border">
         <image selectable="true" x="0" y="0" w="100%" h="-30"
           style="selectable" draw_type="auto" image="1" />
         <label selectable="true" x="0" y="bottom:0" w="100%" h="30"
           text="0" />
       </list_item>
       
-      <list_item style="empty">
+      <list_item style="border">
         <image selectable="true" x="0" y="0" w="100%" h="-30"
           style="selectable" draw_type="auto" image="1" />
         <label selectable="true" x="0" y="bottom:0" w="100%" h="30"
           text="0" />
       </list_item>
       
-      <list_item style="empty">
+      <list_item style="border">
         <image selectable="true" x="0" y="0" w="100%" h="-30"
           style="selectable" draw_type="auto" image="1" />
         <label selectable="true" x="0" y="bottom:0" w="100%" h="30"
           text="0" />
       </list_item>
       
-      <list_item style="empty">
+      <list_item style="border">
         <image selectable="true" x="0" y="0" w="100%" h="-30"
           style="selectable" draw_type="auto" image="2" />
         <label selectable="true" x="0" y="bottom:0" w="100%" h="30"
           text="1" />
       </list_item>
       
-      <list_item style="empty">
+      <list_item style="border">
         <image selectable="true" x="0" y="0" w="100%" h="-30"
           style="selectable" draw_type="auto" image="2" />
         <label selectable="true" x="0" y="bottom:0" w="100%" h="30"
           text="1" />
       </list_item>
       
-      <list_item style="empty">
+      <list_item style="border">
         <image selectable="true" x="0" y="0" w="100%" h="-30"
           style="selectable" draw_type="auto" image="2" />
         <label selectable="true" x="0" y="bottom:0" w="100%" h="30"
           text="1" />
       </list_item>
       
-      <list_item style="empty">
+      <list_item style="border">
         <image selectable="true" x="0" y="0" w="100%" h="-30"
           style="selectable" draw_type="auto" image="3" />
         <label selectable="true" x="0" y="bottom:0" w="100%" h="30"
           text="2" />
       </list_item>
       
-      <list_item style="empty">
+      <list_item style="border">
         <image selectable="true" x="0" y="0" w="100%" h="-30"
           style="selectable" draw_type="auto" image="3" />
         <label selectable="true" x="0" y="bottom:0" w="100%" h="30"
           text="2" />
       </list_item>
       
-      <list_item style="empty">
+      <list_item style="border">
         <image selectable="true" x="0" y="0" w="100%" h="-30"
           style="selectable" draw_type="auto" image="3" />
         <label selectable="true" x="0" y="bottom:0" w="100%" h="30"
           text="2" />
       </list_item>
 
-      <list_item style="empty">
+      <list_item style="border">
         <image selectable="true" x="0" y="0" w="100%" h="-30"
           style="selectable" draw_type="auto" image="1" />
         <label selectable="true" x="0" y="bottom:0" w="100%" h="30"
           text="0" />
       </list_item>
       
-      <list_item style="empty">
+      <list_item style="border">
         <image selectable="true" x="0" y="0" w="100%" h="-30"
           style="selectable" draw_type="auto" image="1" />
         <label selectable="true" x="0" y="bottom:0" w="100%" h="30"
           text="0" />
       </list_item>
       
-      <list_item style="empty">
+      <list_item style="border">
         <image selectable="true" x="0" y="0" w="100%" h="-30"
           style="selectable" draw_type="auto" image="1" />
         <label selectable="true" x="0" y="bottom:0" w="100%" h="30"
           text="0" />
       </list_item>
       
-      <list_item style="empty">
+      <list_item style="border">
         <image selectable="true" x="0" y="0" w="100%" h="-30"
           style="selectable" draw_type="auto" image="2" />
         <label selectable="true" x="0" y="bottom:0" w="100%" h="30"
           text="1" />
       </list_item>
       
-      <list_item style="empty">
+      <list_item style="border">
         <image selectable="true" x="0" y="0" w="100%" h="-30"
           style="selectable" draw_type="auto" image="2" />
         <label selectable="true" x="0" y="bottom:0" w="100%" h="30"
           text="1" />
       </list_item>
       
-      <list_item style="empty">
+      <list_item style="border">
         <image selectable="true" x="0" y="0" w="100%" h="-30"
           style="selectable" draw_type="auto" image="2" />
         <label selectable="true" x="0" y="bottom:0" w="100%" h="30"
           text="1" />
       </list_item>
       
-      <list_item style="empty">
+      <list_item style="border">
         <image selectable="true" x="0" y="0" w="100%" h="-30"
           style="selectable" draw_type="auto" image="3" />
         <label selectable="true" x="0" y="bottom:0" w="100%" h="30"
           text="2" />
       </list_item>
       
-      <list_item style="empty">
+      <list_item style="border">
         <image selectable="true" x="0" y="0" w="100%" h="-30"
           style="selectable" draw_type="auto" image="3" />
         <label selectable="true" x="0" y="bottom:0" w="100%" h="30"
           text="2" />
       </list_item>
       
-      <list_item style="empty">
+      <list_item style="border">
         <image selectable="true" x="0" y="0" w="100%" h="-30"
           style="selectable" draw_type="auto" image="3" />
         <label selectable="true" x="0" y="bottom:0" w="100%" h="30"

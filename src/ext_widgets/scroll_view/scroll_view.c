@@ -34,6 +34,21 @@
 
 static uint32_t scroll_view_get_curr_page(widget_t* widget);
 
+static ret_t scroll_view_get_item_rect(widget_t* parent, widget_t* widget, rect_t* item_rect) {
+  rect_t r;
+  point_t p;
+
+  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+  memset(&p, 0x0, sizeof(point_t));
+  widget_to_screen_ex(iter, parent, &p);
+  r = rect_init(p.x, p.y, iter->w, iter->h);
+  rect_merge(item_rect, &r);
+  scroll_view_get_item_rect(parent, iter, item_rect);
+  WIDGET_FOR_EACH_CHILD_END();
+  
+  return RET_OK;
+}
+
 static ret_t scroll_view_update_virtual_size(widget_t* widget) {
   int32_t virtual_w = 0;
   int32_t virtual_h = 0;
@@ -44,8 +59,17 @@ static ret_t scroll_view_update_virtual_size(widget_t* widget) {
   virtual_h = tk_max(scroll_view->virtual_h, widget->h);
 
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
-  int32_t r = iter->x + iter->w;
-  int32_t b = iter->y + iter->h;
+  int32_t r = 0;
+  int32_t b = 0;
+  if (scroll_view->recursive) {
+    rect_t rect = rect_init(0, 0, iter->w, iter->h);
+    scroll_view_get_item_rect(iter, iter, &rect);
+    r = iter->x + rect.x + rect.w;
+    b = iter->y + rect.y + rect.h;
+  } else {
+    r = iter->x + iter->w;
+    b = iter->y + iter->h;
+  }
   if (r > virtual_w) {
     virtual_w = r;
   }
@@ -581,6 +605,8 @@ static ret_t scroll_view_set_prop(widget_t* widget, const char* name, const valu
   } else if (tk_str_eq(name, SCROLL_VIEW_Y_SPEED_SCALE)) {
     scroll_view->yspeed_scale = value_float(v);
     return RET_OK;
+  } else if (tk_str_eq(name, SCROLL_VIEW_RECURSIVE)) {
+    return scroll_view_set_recursive(widget, value_bool(v));
   } else if (tk_str_eq(name, SCROLL_VIEW_SNAP_TO_PAGE)) {
     return scroll_view_set_snap_to_page(widget, value_bool(v));
   } else if (scroll_view->snap_to_page && tk_str_eq(name, WIDGET_PROP_CURR_PAGE)) {
@@ -701,6 +727,21 @@ ret_t scroll_view_set_snap_to_page(widget_t* widget, bool_t snap_to_page) {
   }
 
   return RET_OK;
+}
+
+ret_t scroll_view_set_recursive_only(widget_t* widget, bool_t recursive) {
+  scroll_view_t* scroll_view = SCROLL_VIEW(widget);
+  return_value_if_fail(scroll_view != NULL, RET_FAIL);
+
+  scroll_view->recursive = recursive;
+  return RET_OK;
+}
+
+ret_t scroll_view_set_recursive(widget_t* widget, bool_t recursive) {
+  ret_t ret = RET_OK;
+  ret = scroll_view_set_recursive_only(widget, recursive);
+  return_value_if_fail(ret == RET_OK, ret);
+  return widget_layout(widget);
 }
 
 widget_t* scroll_view_cast(widget_t* widget) {

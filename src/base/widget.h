@@ -928,6 +928,18 @@ ret_t widget_to_local(widget_t* widget, point_t* p);
 ret_t widget_to_global(widget_t* widget, point_t* p);
 
 /**
+ * @method widget_to_screen_ex
+ * 将控件内的本地坐标根据祖父级控件转换成相对于祖父级控件的屏幕相对坐标。
+ * 备注：如果 parent 不是 widget 控件的父级或者祖父级话，该函数会退化为 widget_to_screen 函数。
+ * @param {widget_t*} widget 控件对象。
+ * @param {widget_t*} parent 祖父级控。
+ * @param {point_t*} p 坐标点。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_to_screen_ex(widget_t* widget, widget_t* parent, point_t* p);
+
+/**
  * @method widget_to_screen
  * 将控件内的本地坐标转换成屏幕上的坐标。
  * @param {widget_t*} widget 控件对象。

@@ -36,7 +36,6 @@ BEGIN_C_DECLS
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_layout_self(widget_t* widget);
-ret_t widget_layout_children(widget_t* widget);
 
 /**
  * @method widget_layout_children_default
@@ -71,6 +70,10 @@ ret_t widget_layout_floating_children(widget_t* widget);
  */
 ret_t widget_get_children_for_layout(widget_t* widget, darray_t* result, bool_t keep_disable,
                                      bool_t keep_invisible);
+
+/* private */
+ret_t widget_layout_children(widget_t* widget);
+ret_t widget_auto_adjust_size(widget_t* widget);
 
 END_C_DECLS
 

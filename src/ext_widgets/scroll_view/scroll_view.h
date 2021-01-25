@@ -128,6 +128,12 @@ typedef struct _scroll_view_t {
    * 滚动时offset是否按页面对齐。
    */
   bool_t snap_to_page;
+  /**
+   * @property {bool_t} recursive
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 是否递归查找全部子控件。
+   */
+  bool_t recursive;
 
   /*private*/
   point_t down;
@@ -247,6 +253,28 @@ ret_t scroll_view_set_yslidable(widget_t* widget, bool_t yslidable);
 ret_t scroll_view_set_snap_to_page(widget_t* widget, bool_t snap_to_page);
 
 /**
+ * @method scroll_view_set_recursive
+ * 设置是否递归查找全部子控件。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {bool_t} recursive 是否递归查找全部子控件。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t scroll_view_set_recursive(widget_t* widget, bool_t recursive);
+
+/**
+ * @method scroll_view_set_recursive_only
+ * 设置是否递归查找全部子控件。(不触发repaint和relayout)。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {bool_t} recursive 是否递归查找全部子控件。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t scroll_view_set_recursive_only(widget_t* widget, bool_t recursive);
+
+/**
  * @method scroll_view_set_offset
  * 设置偏移量。
  * @annotation ["scriptable"]
@@ -300,6 +328,7 @@ ret_t scroll_view_scroll_delta_to(widget_t* widget, int32_t xoffset_delta, int32
 
 #define SCROLL_VIEW(widget) ((scroll_view_t*)(scroll_view_cast(WIDGET(widget))))
 
+#define SCROLL_VIEW_RECURSIVE "recursive"
 #define SCROLL_VIEW_SNAP_TO_PAGE "snap_to_page"
 #define SCROLL_VIEW_X_SPEED_SCALE "xspeed_scale"
 #define SCROLL_VIEW_Y_SPEED_SCALE "yspeed_scale"

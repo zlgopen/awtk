@@ -76,6 +76,14 @@ BEGIN_C_DECLS
  * 如果需要动态修改，可以使用widget\_clone来增加列表项，使用widget\_remove\_child来移出列表项。
  *
  * 可用通过style来设置控件的显示风格，如背景颜色和边框颜色等(一般情况不需要)。
+ * 
+ * 备注：list_view 下的 scroll_view 控件不支持遍历所有子控件的效果。
+ * 
+ * 下面是针对 scroll_bar_d （桌面版）有效果，scroll_bar_m（移动版）没有效果。
+ * 如果 floating_scroll_bar 属性为 TRUE 和 auto_hide_scroll_bar 属性为 TRUE，scroll_view 宽默认为 list_view 的 100% 宽，鼠标在 list_view 上滚动条才显示，不在的就自动隐藏，如果 scroll_view 的高比虚拟高要大的话，滚动条变成不可见，scroll_view 宽不会变。
+ * 如果 floating_scroll_bar 属性为 TRUE 和 auto_hide_scroll_bar 属性为 FALSE ，scroll_view 宽默认为 list_view 的 100% 宽，滚动条不隐藏，如果 scroll_view 的高比虚拟高要大的话，滚动条变成不可见，scroll_view 宽不会变。
+ * 如果 floating_scroll_bar 属性为 FALSE 和 auto_hide_scroll_bar 属性为 FALSE，如果 scroll_view 的高比虚拟高要大的话，滚动条变成不可用，scroll_view 宽不会变。
+ * 如果 floating_scroll_bar 属性为 FALSE 和 auto_hide_scroll_bar 属性为 TRUE，如果 scroll_view 的高比虚拟高要大的话，滚动条变成不可见，scroll_view 宽会合并原来滚动条的宽。
  *
  */
 typedef struct _list_view_t {
@@ -99,9 +107,18 @@ typedef struct _list_view_t {
    */
   bool_t auto_hide_scroll_bar;
 
+  /**
+   * @property {bool_t} floating_scroll_bar
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 滚动条是否悬浮在 scroll_view 上面
+   */
+  bool_t floating_scroll_bar;
+
   /*private*/
+  bool_t is_over;
   widget_t* scroll_view;
   widget_t* scroll_bar;
+  uint32_t wheel_before_id;
 } list_view_t;
 
 /**
@@ -152,6 +169,17 @@ ret_t list_view_set_default_item_height(widget_t* widget, int32_t default_item_h
 ret_t list_view_set_auto_hide_scroll_bar(widget_t* widget, bool_t auto_hide_scroll_bar);
 
 /**
+ * @method list_view_set_floating_scroll_bar
+ * 设置滚动条是否悬浮在 scroll_view 上面。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {bool_t} floating_scroll_bar 滚动条是否悬浮在 scroll_view 上面。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t list_view_set_floating_scroll_bar(widget_t* widget, bool_t floating_scroll_bar);
+
+/**
  * @method list_view_cast
  * 转换为list_view对象(供脚本语言使用)。
  * @annotation ["cast", "scriptable"]
@@ -172,6 +200,8 @@ widget_t* list_view_cast(widget_t* widget);
 ret_t list_view_reinit(widget_t* widget);
 
 #define LIST_VIEW(widget) ((list_view_t*)(list_view_cast(WIDGET(widget))))
+
+#define LIST_VIEW_PROP_FLOATING_SCROLL_BAR "floating_scroll_bar"
 
 /*public for subclass and runtime type check*/
 TK_EXTERN_VTABLE(list_view);

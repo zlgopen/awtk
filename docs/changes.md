@@ -1,5 +1,17 @@
 # 最新动态
 
+2021/01/25
+  * 感谢智明提供以下补丁:
+    * 重构 list\_view 的布局代码
+    * 完善原来的 auto\_hide\_scroll\_bar 属性的显示效果
+    * 完善支持多个列时候，每一项高度不一样显示不正常的问题
+    * 修复 widget\_ensure\_visible\_in\_scroll\_view 滚动不正常的问题。
+    * 增加 floating\_scroll\_bar 属性，list\_view 支持滚动条悬浮效果（类似 vscode 中的滚动条效果，鼠标悬停在哪个 list\_view 上面，鼠标滚动既可以滚动 list\_view 不需要点击鼠标确定焦点）
+    * scroll\_view 增加 recursive 属性可以遍历子控后计算最终的虚拟宽高的功能，由于 scroll\_view 的孙控件不在子控件的区域中也可以通过滚动条找到其孙控件。
+
+2021/01/24
+  * 修改android全屏的问题。
+
 2021/01/22
   * 修改pages崩溃的问题。
 

@@ -3222,11 +3222,11 @@ ret_t widget_get_prop_default_value(widget_t* widget, const char* name, value_t*
   return ret;
 }
 
-ret_t widget_to_screen(widget_t* widget, point_t* p) {
+ret_t widget_to_screen_ex(widget_t* widget, widget_t* parent, point_t* p) {
   widget_t* iter = widget;
   return_value_if_fail(widget != NULL && p != NULL, RET_BAD_PARAMS);
 
-  while (iter != NULL) {
+  while (iter != NULL && iter != parent) {
     if (widget_is_scrollable(iter)) {
       p->x -= widget_get_prop_int(iter, WIDGET_PROP_XOFFSET, 0);
       p->y -= widget_get_prop_int(iter, WIDGET_PROP_YOFFSET, 0);
@@ -3239,6 +3239,10 @@ ret_t widget_to_screen(widget_t* widget, point_t* p) {
   }
 
   return RET_OK;
+}
+
+ret_t widget_to_screen(widget_t* widget, point_t* p) {
+  return widget_to_screen_ex(widget, NULL, p);
 }
 
 ret_t widget_to_local(widget_t* widget, point_t* p) {
@@ -3617,40 +3621,46 @@ bool_t widget_is_instance_of(widget_t* widget, const widget_vtable_t* vt) {
 #endif /*WITH_WIDGET_TYPE_CHECK*/
 }
 
-static ret_t widget_ensure_visible_in_scroll_view(widget_t* widget, widget_t* parent) {
+static ret_t widget_ensure_visible_in_scroll_view(widget_t* scroll_view, widget_t* widget) {
+  rect_t r;
+  point_t p;
   int32_t ox = 0;
   int32_t oy = 0;
   int32_t old_ox = 0;
   int32_t old_oy = 0;
-  return_value_if_fail(widget != NULL && parent != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(widget != NULL && scroll_view != NULL, RET_BAD_PARAMS);
 
-  ox = widget_get_prop_int(parent, WIDGET_PROP_XOFFSET, 0);
-  oy = widget_get_prop_int(parent, WIDGET_PROP_YOFFSET, 0);
+  memset(&p, 0x0, sizeof(point_t));
+  widget_to_screen_ex(widget, scroll_view, &p);
+  r = rect_init(p.x, p.y, widget->w, widget->h);
+
+  ox = widget_get_prop_int(scroll_view, WIDGET_PROP_XOFFSET, 0);
+  oy = widget_get_prop_int(scroll_view, WIDGET_PROP_YOFFSET, 0);
   old_ox = ox;
   old_oy = oy;
 
-  if (oy > widget->y) {
-    oy = widget->y;
+  if (oy > r.y) {
+    oy = r.y;
   }
 
-  if (ox > widget->x) {
-    ox = widget->x;
+  if (ox > r.x) {
+    ox = r.x;
   }
 
-  if ((widget->y + widget->h) > (oy + parent->h)) {
-    oy = widget->y + widget->h - parent->h;
+  if ((r.y + r.h) > (oy + scroll_view->h)) {
+    oy = r.y + r.h - scroll_view->h;
   }
 
-  if ((widget->x + widget->w) > (ox + parent->w)) {
-    ox = widget->x + widget->w - parent->w;
+  if ((r.x + r.w) > (ox + scroll_view->w)) {
+    ox = r.x + r.w - scroll_view->w;
   }
 
   if (ox != old_ox) {
-    widget_set_prop_int(parent, WIDGET_PROP_XOFFSET, ox);
+    widget_set_prop_int(scroll_view, WIDGET_PROP_XOFFSET, ox);
   }
 
   if (oy != old_oy) {
-    widget_set_prop_int(parent, WIDGET_PROP_YOFFSET, oy);
+    widget_set_prop_int(scroll_view, WIDGET_PROP_YOFFSET, oy);
   }
 
   return RET_OK;
@@ -3663,11 +3673,11 @@ ret_t widget_ensure_visible_in_viewport(widget_t* widget) {
   parent = widget->parent;
   while (parent != NULL) {
     if (widget_is_scrollable(parent)) {
-      widget_ensure_visible_in_scroll_view(widget, parent);
+      widget_ensure_visible_in_scroll_view(parent, widget);
+      break;
     }
 
-    widget = parent;
-    parent = widget->parent;
+    parent = parent->parent;
   }
 
   return RET_OK;

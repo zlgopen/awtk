@@ -137,6 +137,7 @@
 #include "default/inc/ui/dialog1.data"
 #include "default/inc/ui/fade.data"
 #include "default/inc/ui/menu_right_top.data"
+#include "default/inc/ui/list_view_d_f.data"
 #include "default/inc/ui/image_list.data"
 #include "default/inc/ui/slide_view_v1.data"
 #include "default/inc/ui/test_fscript.data"
@@ -610,6 +611,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, ui_dialog1);
   assets_manager_add(am, ui_fade);
   assets_manager_add(am, ui_menu_right_top);
+  assets_manager_add(am, ui_list_view_d_f);
   assets_manager_add(am, ui_image_list);
   assets_manager_add(am, ui_slide_view_v1);
   assets_manager_add(am, ui_test_fscript);

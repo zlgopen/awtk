@@ -1,5 +1,6 @@
 <window anim_hint="htranslate" children_layout="default(c=1,h=30,m=5,s=5)">
     <button name="open:list_view_d" text="Desktop Style"/>
+    <button name="open:list_view_d_f" text="Desktop Floating Style"/>
     <button name="open:list_view_m" text="Mobile Style"/>
     <button name="open:list_view_vh" text="Variable Height"/>
     <button name="open:list_view_h" text="Horizontal"/>
