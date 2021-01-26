@@ -129,6 +129,12 @@ typedef struct _scroll_view_t {
    */
   bool_t snap_to_page;
   /**
+   * @property {bool_t} snap_to_page
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 是否每次翻一页（当 snap_to_page 为ture 的时候才有效果，主要用于区分一次翻一页还是一次翻多页）。
+   */
+  bool_t move_to_page;
+  /**
    * @property {bool_t} recursive
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 是否递归查找全部子控件。
@@ -145,6 +151,7 @@ typedef struct _scroll_view_t {
   int32_t yoffset_save;
 
   int32_t curr_page;
+  uint32_t max_page;
 
   velocity_t velocity;
   widget_animator_t* wa;
@@ -253,6 +260,18 @@ ret_t scroll_view_set_yslidable(widget_t* widget, bool_t yslidable);
 ret_t scroll_view_set_snap_to_page(widget_t* widget, bool_t snap_to_page);
 
 /**
+ * @method scroll_view_set_move_to_page
+ * 设置滚动时是否每次翻一页
+ * 备注：当 snap_to_page 为ture 的时候才有效果，主要用于区分一次翻一页还是一次翻多页。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {bool_t} move_to_page 是否每次翻一页。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t scroll_view_set_move_to_page(widget_t* widget, bool_t move_to_page);
+
+/**
  * @method scroll_view_set_recursive
  * 设置是否递归查找全部子控件。
  * @annotation ["scriptable"]
@@ -330,6 +349,7 @@ ret_t scroll_view_scroll_delta_to(widget_t* widget, int32_t xoffset_delta, int32
 
 #define SCROLL_VIEW_RECURSIVE "recursive"
 #define SCROLL_VIEW_SNAP_TO_PAGE "snap_to_page"
+#define SCROLL_VIEW_MOVE_TO_PAGE "move_to_page"
 #define SCROLL_VIEW_X_SPEED_SCALE "xspeed_scale"
 #define SCROLL_VIEW_Y_SPEED_SCALE "yspeed_scale"
 

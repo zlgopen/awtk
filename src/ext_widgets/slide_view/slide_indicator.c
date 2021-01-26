@@ -494,6 +494,15 @@ static ret_t slide_indicator_target_on_value_changed(void* ctx, event_t* e) {
     slide_indicator_set_value(indicator, value_int(&v));
   }
 
+  if (widget_get_prop(widget, WIDGET_PROP_PAGE_MAX_NUMBER, &v) != RET_OK) {
+    uint32_t max = value_int(&v);
+    if (slide_indicator->max != max) {
+      slide_indicator->max = max;
+    }
+  }
+
+  widget_invalidate(widget, NULL);
+
   return RET_OK;
 }
 
