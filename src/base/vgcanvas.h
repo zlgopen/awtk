@@ -38,6 +38,8 @@ typedef struct _framebuffer_object_t {
   bool_t init;
   int online_fbo;
   int offline_fbo;
+  /* 脱离默认的 OpenGL 绘图方法，使用用户自定义的绘图方法，例如用户自定义的着色器等等 */
+  bool_t custom_draw_model;
   rect_t online_dirty_rect;
 } framebuffer_object_t;
 
@@ -131,11 +133,11 @@ typedef ret_t (*vgcanvas_save_t)(vgcanvas_t* vg);
 typedef ret_t (*vgcanvas_restore_t)(vgcanvas_t* vg);
 
 typedef ret_t (*vgcanvas_create_fbo_t)(vgcanvas_t* vg, uint32_t w, uint32_t h,
-                                       framebuffer_object_t* fbo);
+                                        bool_t custom_draw_model, framebuffer_object_t* fbo);
 typedef ret_t (*vgcanvas_destroy_fbo_t)(vgcanvas_t* vg, framebuffer_object_t* fbo);
 typedef ret_t (*vgcanvas_bind_fbo_t)(vgcanvas_t* vg, framebuffer_object_t* fbo);
 typedef ret_t (*vgcanvas_unbind_fbo_t)(vgcanvas_t* vg, framebuffer_object_t* fbo);
-typedef ret_t (*vgcanvas_nanovg_fbo_to_bitmap_t)(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo,
+typedef ret_t (*vgcanvas_fbo_to_bitmap_t)(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo,
                                                  bitmap_t* img, const rect_t* r);
 
 typedef ret_t (*vgcanvas_clear_cache_t)(vgcanvas_t* vg);
@@ -208,7 +210,7 @@ typedef struct _vgcanvas_vtable_t {
   vgcanvas_destroy_fbo_t destroy_fbo;
   vgcanvas_bind_fbo_t bind_fbo;
   vgcanvas_unbind_fbo_t unbind_fbo;
-  vgcanvas_nanovg_fbo_to_bitmap_t fbo_to_bitmap;
+  vgcanvas_fbo_to_bitmap_t fbo_to_bitmap;
 
   vgcanvas_clear_cache_t clear_cache;
 
@@ -1220,10 +1222,59 @@ ret_t vgcanvas_clear_cache(vgcanvas_t* vg);
  */
 ret_t vgcanvas_destroy(vgcanvas_t* vg);
 
-ret_t vgcanvas_create_fbo(vgcanvas_t* vg, uint32_t w, uint32_t h, framebuffer_object_t* fbo);
+/**
+ * @method vgcanvas_create_fbo
+ * 创建 fbo 对象。
+ * @param {vgcanvas_t*} vg vgcanvas对象。
+ * @param {uint32_t} w fbo 对象的宽。
+ * @param {uint32_t} h fbo 对象的高。
+ * @param {bool_t} custom_draw_model 是否脱离 awtk 默认的 OpenGL 绘图方法。
+ * @param {framebuffer_object_t*} fbo 需要创建 fbo 的对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t vgcanvas_create_fbo(vgcanvas_t* vg, uint32_t w, uint32_t h, bool_t custom_draw_model, framebuffer_object_t* fbo);
+
+/**
+ * @method vgcanvas_destroy_fbo
+ * 销毁 fbo 对象。
+ * @param {vgcanvas_t*} vg vgcanvas对象。
+ * @param {framebuffer_object_t*} fbo 需要创建 fbo 的对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t vgcanvas_destroy_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo);
+
+/**
+ * @method vgcanvas_bind_fbo
+ * 绑定 fbo 对象。
+ * @param {vgcanvas_t*} vg vgcanvas对象。
+ * @param {framebuffer_object_t*} fbo 需要创建 fbo 的对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t vgcanvas_bind_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo);
+
+/**
+ * @method vgcanvas_unbind_fbo
+ * 解开绑定 fbo 对象。
+ * @param {vgcanvas_t*} vg vgcanvas对象。
+ * @param {framebuffer_object_t*} fbo 需要创建 fbo 的对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t vgcanvas_unbind_fbo(vgcanvas_t* vg, framebuffer_object_t* fbo);
+
+/**
+ * @method vgcanvas_fbo_to_bitmap
+ * 把 fbo 对象的数据拷贝到 bitmap 中。
+ * @param {vgcanvas_t*} vg vgcanvas对象。
+ * @param {framebuffer_object_t*} fbo 需要创建 fbo 的对象。
+ * @param {bitmap_t*} img 输出的 bitmap 的对象。
+ * @param {const rect_t*} r 需要拷贝的区域。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t vgcanvas_fbo_to_bitmap(vgcanvas_t* vg, framebuffer_object_t* fbo, bitmap_t* img,
                              const rect_t* r);
 ret_t fbo_to_img(framebuffer_object_t* fbo, bitmap_t* img);

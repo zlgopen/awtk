@@ -4288,7 +4288,7 @@ bitmap_t* widget_take_snapshot_rect(widget_t* widget, const rect_t* r) {
   vg = lcd_get_vgcanvas(c->lcd);
   return_value_if_fail(c != NULL && vg != NULL, NULL);
 
-  vgcanvas_create_fbo(vg, vg->w, vg->h, &fbo);
+  vgcanvas_create_fbo(vg, vg->w, vg->h, FALSE, &fbo);
   vgcanvas_bind_fbo(vg, &fbo);
   canvas_set_clip_rect(c, r);
   widget_paint(widget, c);

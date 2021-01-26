@@ -186,7 +186,7 @@ static ret_t vgcanvas_nanovg_end_frame(vgcanvas_t* vgcanvas) {
   return RET_OK;
 }
 
-static ret_t vgcanvas_nanovg_create_fbo(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h, framebuffer_object_t* fbo) {
+static ret_t vgcanvas_nanovg_create_fbo(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h, bool_t custom_draw_model, framebuffer_object_t* fbo) {
   NVGLUframebuffer* handle = NULL;
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
 
@@ -201,6 +201,7 @@ static ret_t vgcanvas_nanovg_create_fbo(vgcanvas_t* vgcanvas, uint32_t w, uint32
   fbo->id = handle->image;
   fbo->ratio = vgcanvas->ratio;
   fbo->offline_fbo = handle->fbo;
+  fbo->custom_draw_model = custom_draw_model;
   fbo->online_fbo = nvgluGetCurrFramebuffer();
 
   return RET_OK;
@@ -228,20 +229,20 @@ static ret_t vgcanvas_nanovg_bind_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t
   handle->fbo = fbo->offline_fbo;
   vgcanvas->dirty_rect = rect_init(0, 0, fbo->w, fbo->h);
   nvgluBindFramebuffer(handle);
-  glViewport(0, 0, fbo->w * fbo->ratio, fbo->h * fbo->ratio);
-
-  if (!fbo->init) {
-    glEnable(GL_SCISSOR_TEST);
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-    glDisable(GL_SCISSOR_TEST);
-    fbo->init = TRUE;
+  if (!fbo->custom_draw_model) {
+    glViewport(0, 0, fbo->w * fbo->ratio, fbo->h * fbo->ratio);
+    if (!fbo->init) {
+      glEnable(GL_SCISSOR_TEST);
+      glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+      glDisable(GL_SCISSOR_TEST);
+      fbo->init = TRUE;
+    }
+    nvgBeginFrameEx(vg, fbo->w, fbo->h, fbo->ratio, FALSE);
+    nvgSave(vg);
+    nvgReset(vg);
   }
 
-  nvgBeginFrameEx(vg, fbo->w, fbo->h, fbo->ratio, FALSE);
-  nvgSave(vg);
-  nvgReset(vg);
-  
   return RET_OK;
 }
 
@@ -253,14 +254,18 @@ static ret_t vgcanvas_nanovg_unbind_fbo(vgcanvas_t* vgcanvas, framebuffer_object
   vg = canvas->vg;
 
   handle->fbo = fbo->online_fbo;
-  nvgRestore(vg);
-  nvgEndFrame(vg);
+  if (!fbo->custom_draw_model) {
+    nvgRestore(vg);
+    nvgEndFrame(vg);
+  }
+
   nvgluBindFramebuffer(handle);
 
   vgcanvas->dirty_rect = rect_init(fbo->online_dirty_rect.x, fbo->online_dirty_rect.y, fbo->online_dirty_rect.w, fbo->online_dirty_rect.h);
   glViewport(0, 0, vgcanvas->w * fbo->ratio, vgcanvas->h * fbo->ratio);
-  nvgBeginFrameEx(vg, vgcanvas->w, vgcanvas->h, fbo->ratio, FALSE);
-
+  if (!fbo->custom_draw_model) {
+    nvgBeginFrameEx(vg, vgcanvas->w, vgcanvas->h, fbo->ratio, FALSE);
+  }
   return RET_OK;
 }
 

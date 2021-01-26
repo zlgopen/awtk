@@ -38,7 +38,7 @@ static enum NVGtexture bitmap_format_to_nanovg(bitmap_format_t format) {
   return f;
 }
 
-static ret_t vgcanvas_nanovg_create_fbo(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h, framebuffer_object_t* fbo) {
+static ret_t vgcanvas_nanovg_create_fbo(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h, bool_t custom_draw_model, framebuffer_object_t* fbo) {
   return RET_NOT_IMPL;
 }
 
