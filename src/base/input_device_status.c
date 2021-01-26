@@ -186,32 +186,34 @@ static const key_shift_t key_shift[] = {
     {'7', '&'}, {'8', '*'}, {'9', '('}, {'0', ')'},  {'-', '_'}, {'=', '+'}, {'[', '{'},
     {']', '}'}, {',', '<'}, {'.', '>'}, {'\\', '|'}, {'/', '?'}, {';', ':'}, {'\'', '\"'}};
 
-static ret_t input_device_status_shift_key(input_device_status_t* ids, key_event_t* e) {
-  char c = (char)e->key;
+static uint32_t input_device_status_get_shift_key_code(input_device_status_t* ids, uint32_t old_key_code) {
+  char c = (char)old_key_code;
 
   if (ids->shift) {
     uint32_t i = 0;
     for (i = 0; i < ARRAY_SIZE(key_shift); i++) {
       if (key_shift[i].key == c) {
-        e->key = key_shift[i].shift_key;
-        return RET_OK;
+        return key_shift[i].shift_key;
       }
     }
   }
 
   if (ids->shift && ids->capslock) {
     if (c >= 'A' && c <= 'Z') {
-      e->key = tolower(c);
+      return tolower(c);
     }
-
-    return RET_OK;
   }
 
   if (ids->shift || ids->capslock) {
     if (c >= 'a' && c <= 'z') {
-      e->key = toupper(c);
+      return toupper(c);
     }
   }
+  return old_key_code;
+}
+
+static ret_t input_device_status_shift_key(input_device_status_t* ids, key_event_t* e) {
+  e->key = input_device_status_get_shift_key_code(ids, e->key);
 
   return RET_OK;
 }
@@ -310,9 +312,10 @@ ret_t input_device_status_on_input_event(input_device_status_t* ids, widget_t* w
     }
     case EVT_KEY_DOWN: {
       key_event_t* evt = (key_event_t*)e;
-      key_pressed_info_t* info = input_device_status_find_press_info(ids, evt->key);
+      uint32_t key = input_device_status_get_shift_key_code(ids, evt->key);
+      key_pressed_info_t* info = input_device_status_find_press_info(ids, key);
 
-      input_device_status_update_key_status(ids, evt->key, TRUE);
+      input_device_status_update_key_status(ids, key, TRUE);
       input_device_status_init_key_event(ids, evt);
       input_device_status_shift_key(ids, evt);
 
