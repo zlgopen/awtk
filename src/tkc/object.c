@@ -216,6 +216,15 @@ float_t object_get_prop_float(object_t* obj, const char* name, float_t defval) {
   }
 }
 
+double object_get_prop_double(object_t* obj, const char* name, double defval) {
+  value_t v;
+  if (object_get_prop(obj, name, &v) == RET_OK) {
+    return value_double(&v);
+  } else {
+    return defval;
+  }
+}
+
 ret_t object_notify_changed(object_t* obj) {
   event_t e = event_init(EVT_PROPS_CHANGED, obj);
 
@@ -285,6 +294,13 @@ ret_t object_set_prop_bool(object_t* obj, const char* name, bool_t value) {
 ret_t object_set_prop_float(object_t* obj, const char* name, float_t value) {
   value_t v;
   value_set_float(&v, value);
+
+  return object_set_prop(obj, name, &v);
+}
+
+ret_t object_set_prop_double(object_t* obj, const char* name, double value) {
+  value_t v;
+  value_set_double(&v, value);
 
   return object_set_prop(obj, name, &v);
 }
@@ -622,5 +638,133 @@ ret_t object_exec_by_path(object_t* obj, const char* path, const char* args) {
     }
 
     return object_exec(value_object(&v), name, args);
+  }
+}
+
+ret_t object_set_prop_int8(object_t* obj, const char* name, int8_t value) {
+  value_t v;
+  value_set_int8(&v, value);
+
+  return object_set_prop(obj, name, &v);
+}
+
+int8_t object_get_prop_int8(object_t* obj, const char* name, int8_t defval) {
+  value_t v;
+  if (object_get_prop(obj, name, &v) == RET_OK) {
+    return value_int8(&v);
+  } else {
+    return defval;
+  }
+}
+
+ret_t object_set_prop_uint8(object_t* obj, const char* name, uint8_t value) {
+  value_t v;
+  value_set_uint8(&v, value);
+
+  return object_set_prop(obj, name, &v);
+}
+
+uint8_t object_get_prop_uint8(object_t* obj, const char* name, uint8_t defval) {
+  value_t v;
+  if (object_get_prop(obj, name, &v) == RET_OK) {
+    return value_uint8(&v);
+  } else {
+    return defval;
+  }
+}
+
+ret_t object_set_prop_int16(object_t* obj, const char* name, int16_t value) {
+  value_t v;
+  value_set_int16(&v, value);
+
+  return object_set_prop(obj, name, &v);
+}
+
+int16_t object_get_prop_int16(object_t* obj, const char* name, int16_t defval) {
+  value_t v;
+  if (object_get_prop(obj, name, &v) == RET_OK) {
+    return value_int16(&v);
+  } else {
+    return defval;
+  }
+}
+
+ret_t object_set_prop_uint16(object_t* obj, const char* name, uint16_t value) {
+  value_t v;
+  value_set_uint16(&v, value);
+
+  return object_set_prop(obj, name, &v);
+}
+
+uint16_t object_get_prop_uint16(object_t* obj, const char* name, uint16_t defval) {
+  value_t v;
+  if (object_get_prop(obj, name, &v) == RET_OK) {
+    return value_uint16(&v);
+  } else {
+    return defval;
+  }
+}
+
+ret_t object_set_prop_int32(object_t* obj, const char* name, int32_t value) {
+  value_t v;
+  value_set_int32(&v, value);
+
+  return object_set_prop(obj, name, &v);
+}
+
+int32_t object_get_prop_int32(object_t* obj, const char* name, int32_t defval) {
+  value_t v;
+  if (object_get_prop(obj, name, &v) == RET_OK) {
+    return value_int32(&v);
+  } else {
+    return defval;
+  }
+}
+
+ret_t object_set_prop_uint32(object_t* obj, const char* name, uint32_t value) {
+  value_t v;
+  value_set_uint32(&v, value);
+
+  return object_set_prop(obj, name, &v);
+}
+
+uint32_t object_get_prop_uint32(object_t* obj, const char* name, uint32_t defval) {
+  value_t v;
+  if (object_get_prop(obj, name, &v) == RET_OK) {
+    return value_uint32(&v);
+  } else {
+    return defval;
+  }
+}
+
+ret_t object_set_prop_int64(object_t* obj, const char* name, int64_t value) {
+  value_t v;
+  value_set_int64(&v, value);
+
+  return object_set_prop(obj, name, &v);
+}
+
+int64_t object_get_prop_int64(object_t* obj, const char* name, int64_t defval) {
+  value_t v;
+  if (object_get_prop(obj, name, &v) == RET_OK) {
+    return value_int64(&v);
+  } else {
+    return defval;
+  }
+}
+
+ret_t object_set_prop_uint64(object_t* obj, const char* name, uint64_t value) {
+  value_t v;
+  value_set_uint64(&v, value);
+
+  return object_set_prop(obj, name, &v);
+}
+
+uint64_t object_get_prop_uint64(object_t* obj, const char* name, uint64_t defval) {
+  value_t v;
+  if (object_get_prop(obj, name, &v) == RET_OK) {
+    return value_uint64(&v);
+  } else {
+    return defval;
   }
 }

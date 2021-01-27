@@ -291,6 +291,19 @@ bool_t object_get_prop_bool(object_t* obj, const char* name, bool_t defval);
 float_t object_get_prop_float(object_t* obj, const char* name, float_t defval);
 
 /**
+ * @method object_get_prop_double
+ * 获取指定属性的浮点数类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ * @param {double} defval 缺省值。
+ *
+ * @return {double} 返回指定属性的浮点数类型的值。
+ */
+double object_get_prop_double(object_t* obj, const char* name, double defval);
+
+/**
  * @method object_remove_prop
  * 删除指定属性。
  *
@@ -391,6 +404,19 @@ ret_t object_set_prop_bool(object_t* obj, const char* name, bool_t value);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t object_set_prop_float(object_t* obj, const char* name, float_t value);
+
+/**
+ * @method object_set_prop_double
+ * 设置指定属性的浮点数类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ * @param {double} value 属性的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_set_prop_double(object_t* obj, const char* name, double value);
 
 /**
  * @method object_copy_prop
@@ -693,6 +719,206 @@ bool_t object_can_exec_by_path(object_t* obj, const char* path, const char* args
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t object_exec_by_path(object_t* obj, const char* path, const char* args);
+
+/**
+ * @method object_get_prop_int8
+ * 获取指定属性的int8类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ * @param {int8_t} defval 缺省值。
+ *
+ * @return {int8_t} 返回指定属性的int8类型的值。
+ */
+int8_t object_get_prop_int8(object_t* obj, const char* name, int8_t defval);
+/**
+ * @method object_set_prop_int8
+ * 设置指定属性的int8类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ * @param {int8_t} value 属性的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_set_prop_int8(object_t* obj, const char* name, int8_t value);
+
+/**
+ * @method object_get_prop_uint8
+ * 获取指定属性的uint8类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ * @param {uint8_t} defval 缺省值。
+ *
+ * @return {uint8_t} 返回指定属性的uint8类型的值。
+ */
+uint8_t object_get_prop_uint8(object_t* obj, const char* name, uint8_t defval);
+/**
+ * @method object_set_prop_uint8
+ * 设置指定属性的uint8类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ * @param {uint8_t} value 属性的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_set_prop_uint8(object_t* obj, const char* name, uint8_t value);
+
+/**
+ * @method object_get_prop_int16
+ * 获取指定属性的int16类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ * @param {int16_t} defval 缺省值。
+ *
+ * @return {int16_t} 返回指定属性的int16类型的值。
+ */
+int16_t object_get_prop_int16(object_t* obj, const char* name, int16_t defval);
+/**
+ * @method object_set_prop_int16
+ * 设置指定属性的int16类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ * @param {int16_t} value 属性的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_set_prop_int16(object_t* obj, const char* name, int16_t value);
+
+/**
+ * @method object_get_prop_uint16
+ * 获取指定属性的uint16类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ * @param {uint16_t} defval 缺省值。
+ *
+ * @return {uint16_t} 返回指定属性的uint16类型的值。
+ */
+uint16_t object_get_prop_uint16(object_t* obj, const char* name, uint16_t defval);
+/**
+ * @method object_set_prop_uint16
+ * 设置指定属性的uint16类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ * @param {uint16_t} value 属性的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_set_prop_uint16(object_t* obj, const char* name, uint16_t value);
+
+/**
+ * @method object_get_prop_int32
+ * 获取指定属性的int32类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ * @param {int32_t} defval 缺省值。
+ *
+ * @return {int32_t} 返回指定属性的int32类型的值。
+ */
+int32_t object_get_prop_int32(object_t* obj, const char* name, int32_t defval);
+/**
+ * @method object_set_prop_int32
+ * 设置指定属性的int32类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ * @param {int32_t} value 属性的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_set_prop_int32(object_t* obj, const char* name, int32_t value);
+
+/**
+ * @method object_get_prop_uint32
+ * 获取指定属性的uint32类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ * @param {uint32_t} defval 缺省值。
+ *
+ * @return {uint32_t} 返回指定属性的uint32类型的值。
+ */
+uint32_t object_get_prop_uint32(object_t* obj, const char* name, uint32_t defval);
+/**
+ * @method object_set_prop_uint32
+ * 设置指定属性的uint32类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ * @param {uint32_t} value 属性的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_set_prop_uint32(object_t* obj, const char* name, uint32_t value);
+
+/**
+ * @method object_get_prop_int64
+ * 获取指定属性的int64类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ * @param {int64_t} defval 缺省值。
+ *
+ * @return {int64_t} 返回指定属性的int64类型的值。
+ */
+int64_t object_get_prop_int64(object_t* obj, const char* name, int64_t defval);
+/**
+ * @method object_set_prop_int64
+ * 设置指定属性的int64类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ * @param {int64_t} value 属性的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_set_prop_int64(object_t* obj, const char* name, int64_t value);
+
+/**
+ * @method object_get_prop_uint64
+ * 获取指定属性的uint64类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ * @param {uint64_t} defval 缺省值。
+ *
+ * @return {uint64_t} 返回指定属性的uint64类型的值。
+ */
+uint64_t object_get_prop_uint64(object_t* obj, const char* name, uint64_t defval);
+/**
+ * @method object_set_prop_uint64
+ * 设置指定属性的uint64类型的值。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj object对象。
+ * @param {const char*} name 属性的名称。
+ * @param {uint64_t} value 属性的值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_set_prop_uint64(object_t* obj, const char* name, uint64_t value);
 
 #define OBJECT(obj) ((object_t*)(obj))
 
