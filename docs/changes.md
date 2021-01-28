@@ -1,5 +1,9 @@
 # 最新动态
 
+2021/01/28
+  * 修改pages\_restore\_target后马上是否焦点对象的问题（感谢智明提供补丁）
+  * 修改pages控件当on\_target\_destroy和on\_view\_destroy上下文被释放的时候导致出错的问题（感谢智明提供补丁）
+
 2021/01/27
   * 为object prop增加了一些包装函数。
 
