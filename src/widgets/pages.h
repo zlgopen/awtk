@@ -64,7 +64,8 @@ typedef struct _pages_t {
    */
   uint32_t active;
   /* private */
-  uint32_t idle_id;
+  uint32_t init_idle_id;
+  uint32_t focused_idle_id;
   widget_t* target;
   bool_t is_save;
 } pages_t;

@@ -126,7 +126,7 @@ static ret_t pages_on_idle_set_target_focused(const idle_info_t* idle) {
 
     widget_set_focused(pages->target, TRUE);
   }
-  pages->idle_id = TK_INVALID_ID;
+  pages->focused_idle_id = TK_INVALID_ID;
   pages->is_save = FALSE;
 
   return RET_OK;
@@ -162,8 +162,8 @@ static ret_t pages_restore_target(widget_t* widget) {
     }
 
     pages->target = target;
-    if (pages->idle_id == TK_INVALID_ID) {
-      pages->idle_id = idle_add(pages_on_idle_set_target_focused, widget);
+    if (pages->focused_idle_id == TK_INVALID_ID) {
+      pages->focused_idle_id = idle_add(pages_on_idle_set_target_focused, widget);
     }
   }
 
@@ -271,11 +271,26 @@ static ret_t pages_on_event(widget_t* widget, event_t* e) {
 }
 
 static ret_t pages_on_idle_init_save_target(const idle_info_t* idle) {
-  widget_t* pages = NULL;
+  pages_t* pages = NULL;
   return_value_if_fail(idle != NULL, RET_BAD_PARAMS);
-  pages = WIDGET(idle->ctx);
+  pages = PAGES(idle->ctx);
 
-  pages_restore_target(pages);
+  pages_restore_target(WIDGET(pages));
+  pages->init_idle_id = TK_INVALID_ID;
+
+  return RET_OK;
+}
+
+static ret_t pages_on_destroy(widget_t* widget) {
+  pages_t* pages = PAGES(widget);
+  return_value_if_fail(pages != NULL, RET_BAD_PARAMS);
+
+  if (pages->init_idle_id != TK_INVALID_ID) {
+    idle_remove(pages->init_idle_id);
+  }
+  if (pages->focused_idle_id != TK_INVALID_ID) {
+    idle_remove(pages->focused_idle_id);
+  }
 
   return RET_OK;
 }
@@ -294,11 +309,14 @@ TK_DECL_VTABLE(pages) = {.size = sizeof(pages_t),
                          .on_paint_children = pages_on_paint_children,
                          .on_event = pages_on_event,
                          .get_prop = pages_get_prop,
-                         .set_prop = pages_set_prop};
+                         .set_prop = pages_set_prop,
+                         .on_destroy = pages_on_destroy};
 
 widget_t* pages_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(pages), x, y, w, h);
-  idle_add(pages_on_idle_init_save_target, widget);
+  pages_t* pages = PAGES(widget);
+  return_value_if_fail(pages != NULL, NULL);
+  pages->init_idle_id = idle_add(pages_on_idle_init_save_target, widget);
   return widget;
 }
 
