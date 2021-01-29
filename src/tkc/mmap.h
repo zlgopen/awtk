@@ -54,7 +54,6 @@ typedef struct _mmap_t {
  * @method mmap_create
  * 初始化mmap对象。
  * @annotation ["constructor"]
- * @param {mmap_t*} mmap mmap对象。
  * @param {const char*} filename 文件名。
  * @param {bool_t} writable 是否可写。
  * @param {bool_t} shared 是否共享。

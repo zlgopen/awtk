@@ -129,9 +129,9 @@ typedef struct _scroll_view_t {
    */
   bool_t snap_to_page;
   /**
-   * @property {bool_t} snap_to_page
+   * @property {bool_t} move_to_page
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 是否每次翻一页（当 snap_to_page 为ture 的时候才有效果，主要用于区分一次翻一页还是一次翻多页）。
+   * 是否每次翻一页（当 move_to_page 为ture 的时候才有效果，主要用于区分一次翻一页还是一次翻多页）。
    */
   bool_t move_to_page;
   /**
