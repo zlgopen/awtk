@@ -98,5 +98,10 @@ elif OS_NAME == 'Linux':
 
 CCFLAGS=os.environ['CCFLAGS'];
 CCFLAGS = CCFLAGS + ' -DSDL_STATIC_LIB -D__FLTUSED__ '
+
+if OS_NAME == 'Linux':
+  if os.environ['SDL_UBUNTU_USE_IME'] == str(True) :
+    CCFLAGS = CCFLAGS + ' -DSDL_USE_IME -DHAVE_FCITX_FRONTEND_H -DHAVE_IBUS_IBUS_H -DHAVE_DBUS_DBUS_H -DHAVE_GETENV '
+
 env.Library(os.path.join(LIB_DIR, 'SDL2'), sources, CPPPATH = CPPPATH, CCFLAGS = CCFLAGS)
 

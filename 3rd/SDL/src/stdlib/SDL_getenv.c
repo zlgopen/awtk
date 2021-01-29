@@ -172,6 +172,7 @@ SDL_setenv(const char *name, const char *value, int overwrite)
 
 /* Retrieve a variable named "name" from the environment */
 #if defined(HAVE_GETENV)
+#include <stdlib.h>
 char *
 SDL_getenv(const char *name)
 {

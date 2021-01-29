@@ -289,6 +289,9 @@ os.environ['STATIC_LIBS'] = ';'.join(STATIC_LIBS)
 os.environ['WITH_AWTK_SO'] = 'true'
 os.environ['AWTK_CCFLAGS'] = AWTK_CCFLAGS;
 
+os.environ['SDL_UBUNTU_USE_IME'] = str(False)
+# os.environ['SDL_UBUNTU_USE_IME'] = str(True)
+
 def has_custom_cc():
     return False
 
