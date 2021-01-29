@@ -176,6 +176,16 @@ ret_t wbuffer_write_uint16(wbuffer_t* wbuffer, uint16_t value);
 ret_t wbuffer_write_uint32(wbuffer_t* wbuffer, uint32_t value);
 
 /**
+ * @method wbuffer_write_int32
+ * 写入int32数据。
+ * @param {wbuffer_t*} wbuffer wbuffer对象。
+ * @param {int32_t} value 要写入的数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t wbuffer_write_int32(wbuffer_t* wbuffer, int32_t value);
+
+/**
  * @method wbuffer_write_uint64
  * 写入uint64数据。
  * @param {wbuffer_t*} wbuffer wbuffer对象。
@@ -347,6 +357,16 @@ ret_t rbuffer_read_uint16(rbuffer_t* rbuffer, uint16_t* value);
 ret_t rbuffer_read_uint32(rbuffer_t* rbuffer, uint32_t* value);
 
 /**
+ * @method rbuffer_read_int32
+ * 读取int32数据。
+ * @param {rbuffer_t*} rbuffer rbuffer对象。
+ * @param {int32_t*} value 返回读取的数据。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t rbuffer_read_int32(rbuffer_t* rbuffer, int32_t* value);
+
+/**
  * @method rbuffer_read_uint64
  * 读取uint64数据。
  * @param {rbuffer_t*} rbuffer rbuffer对象。
@@ -430,12 +450,17 @@ ret_t rbuffer_peek_uint32(rbuffer_t* rbuffer, uint32_t* value);
 #define load_uint32(p, v)                                   \
   (v) = (p[0] | (p[1] << 8) | (p[2] << 16) | (p[3] << 24)); \
   p += 4;
+
+#define load_int32(p, v) load_uint32(p, v)
+
 #define save_uint32(p, v)  \
   p[0] = (v & 0xff);       \
   p[1] = (v >> 8) & 0xff;  \
   p[2] = (v >> 16) & 0xff; \
   p[3] = (v >> 24) & 0xff; \
   p += 4;
+
+#define save_int32(p, v) save_uint32(p, v)
 
 #define load_uint16(p, v)     \
   (v) = (p[0] | (p[1] << 8)); \

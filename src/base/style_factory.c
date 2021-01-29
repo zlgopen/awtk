@@ -19,14 +19,15 @@
  *
  */
 
+#include "base/theme.h"
 #include "base/style_const.h"
 #include "base/style_factory.h"
 
-style_t* style_factory_create_style(style_factory_t* factory, widget_t* widget) {
+style_t* style_factory_create_style(style_factory_t* factory, const char* style_type) {
   if (factory != NULL && factory->create_style != NULL) {
-    return factory->create_style(factory, widget);
+    return factory->create_style(factory, style_type);
   } else {
-    return style_const_create(widget);
+    return style_const_create();
   }
 }
 

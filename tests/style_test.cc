@@ -11,8 +11,13 @@ using std::string;
 TEST(Style, normalize_int) {
   value_t v;
   ASSERT_EQ(style_normalize_value("font_size", "16", &v), RET_OK);
+  ASSERT_EQ(v.type, VALUE_TYPE_UINT32);
+  ASSERT_EQ(value_int32(&v), 16);
+  ASSERT_EQ(value_uint32(&v), 16);
+
+  ASSERT_EQ(style_normalize_value("margin", "-35", &v), RET_OK);
   ASSERT_EQ(v.type, VALUE_TYPE_INT32);
-  ASSERT_EQ(value_int(&v), 16);
+  ASSERT_EQ(value_int(&v), -35);
 }
 
 TEST(Style, normalize_str) {

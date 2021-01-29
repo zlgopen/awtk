@@ -69,7 +69,7 @@ static ret_t window_base_load_theme_obj(widget_t* widget) {
   }
 
   if (window_base->res_theme != NULL) {
-    window_base->theme_obj = theme_create(window_base->res_theme->data);
+    window_base->theme_obj = theme_default_create(window_base->res_theme->data);
   }
 
   return RET_OK;

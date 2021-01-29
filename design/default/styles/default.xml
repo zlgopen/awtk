@@ -174,7 +174,7 @@
   </style>
 
   <style name="left">
-    <normal text_color="red" text_align_h="left" border_color="#a0a0a0" margin="4" />
+    <normal text_color="red" text_align_h="left" border_color="#a0a0a0" margin="-4" />
   </style>
 
   <style name="center">

@@ -59,11 +59,7 @@ static void xml_gen_style(xml_builder_t* b, Style& s, const char** attrs) {
     ENSURE(style_normalize_value(name, value, &v) == RET_OK);
 
     if (strcmp(name, "name") != 0) {
-      if (v.type == VALUE_TYPE_STRING) {
-        s.AddString(name, value_str(&v));
-      } else {
-        s.AddInt(name, value_int(&v));
-      }
+      s.AddValue(name, v);
     }
     value_reset(&v);
 
@@ -147,9 +143,9 @@ static void xml_gen_on_start(XmlBuilder* thiz, const char* tag, const char** att
 static void xml_gen_on_widget_end(XmlBuilder* thiz) {
   xml_builder_t* b = (xml_builder_t*)thiz;
 
-  for (int i = 0; i < b->widget_style.datas.size(); i++) {
+  for (uint32_t i = 0; i < b->widget_style.datas.size(); i++) {
     Style& style = b->widget_style.datas[i];
-    for (int j = 0; j < style.datas.size(); j++) {
+    for (uint32_t j = 0; j < style.datas.size(); j++) {
       Style state;
       state.Merge(b->widget_style);
       state.Merge(style);
@@ -212,12 +208,7 @@ static void xml_gen_on_text(XmlBuilder* thiz, const char* text, size_t length) {
     if (s != NULL) {
       value_t v;
       ENSURE(style_normalize_value(b->property_name, text, &v) == RET_OK);
-
-      if (v.type == VALUE_TYPE_STRING) {
-        s->AddString(b->property_name, value_str(&v));
-      } else {
-        s->AddInt(b->property_name, value_int(&v));
-      }
+      s->AddValue(b->property_name, v);
       value_reset(&v);
     }
   }

@@ -39,97 +39,59 @@ Style::Style(const string& widget_type, const string& name, const string& state)
 Style::~Style() {
 }
 
-bool Style::AddInt(const string& name, int32_t value) {
-  for (vector<NameIntValue>::iterator i = this->int_values.begin(); i != this->int_values.end();
-       i++) {
-    if (i->name == name) {
-      i->value = value;
-      return true;
-    }
-  }
-
-  this->int_values.push_back(NameIntValue(name, value));
-
-  return true;
+bool Style::AddValue(const string& name, int32_t value) {
+  return int_values.AddValue(name, value, VALUE_TYPE_INT32);
 }
 
-bool Style::AddString(const string& name, const string& value) {
-  for (vector<NameStringValue>::iterator i = this->str_values.begin(); i != this->str_values.end();
-       i++) {
-    if (i->name == name) {
-      i->value = value;
-      return true;
+bool Style::AddValue(const string& name, uint32_t value) {
+  return uint_values.AddValue(name, value, VALUE_TYPE_UINT32);
+}
+
+bool Style::AddValue(const string& name, const char* value) {
+  return str_values.AddValue(name, string(value), VALUE_TYPE_STRING);
+}
+
+bool Style::AddValue(const string& name, const value_t& v) {
+  if (v.type == VALUE_TYPE_STRING) {
+    return str_values.AddValue(name, string(value_str(&v)), v.type);
+  } else {
+    if (v.type == VALUE_TYPE_INT32) {
+      return int_values.AddValue(name, value_int(&v), v.type);
+    } else {
+      return uint_values.AddValue(name, value_uint32(&v), v.type);
     }
   }
-
-  this->str_values.push_back(NameStringValue(name, value));
-
   return true;
 }
 
 bool Style::Reset() {
-  this->int_values.clear();
-  this->str_values.clear();
+  this->str_values.Clear();
+  this->int_values.Clear();
+  this->uint_values.Clear();
   this->datas.clear();
 
   return true;
 }
 
 bool Style::Merge(Style& other) {
-  for (vector<NameIntValue>::iterator i = other.int_values.begin(); i != other.int_values.end();
-       i++) {
-    this->AddInt(i->name, i->value);
-  }
-
-  for (vector<NameStringValue>::iterator i = other.str_values.begin(); i != other.str_values.end();
-       i++) {
-    this->AddString(i->name, i->value);
-  }
+  str_values.Merge(other.str_values);
+  int_values.Merge(other.int_values);
+  uint_values.Merge(other.uint_values);
 
   return true;
 }
 
 ret_t Style::Output(wbuffer_t* wbuffer) {
   uint32_t size = 0;
-  style_name_value_header_t nv;
 
-  size = this->int_values.size() + this->str_values.size();
+  size = uint_values.Size() + int_values.Size() + str_values.Size();
   log_debug("  size=%d widget_type=%s name=%s state=%s\n", size, this->widget_type.c_str(),
-            this->name.c_str(), this->state.c_str());
+         this->name.c_str(), this->state.c_str());
 
   wbuffer_write_uint32(wbuffer, size);
-  for (vector<NameIntValue>::iterator i = this->int_values.begin(); i != this->int_values.end();
-       i++) {
-    const string& name = i->name;
-    uint32_t value = i->value;
-
-    nv.type = VALUE_TYPE_UINT32;
-    nv.name_size = name.size() + 1;
-    nv.value_size = sizeof(value);
-
-    wbuffer_write_binary(wbuffer, &nv, sizeof(nv));
-    wbuffer_write_string(wbuffer, name.c_str());
-    wbuffer_write_uint32(wbuffer, value);
-
-    log_debug("    %s=0x%08x\n", name.c_str(), value);
-  }
-
-  size = this->str_values.size();
-  for (vector<NameStringValue>::iterator i = this->str_values.begin(); i != this->str_values.end();
-       i++) {
-    const string& name = i->name;
-    const string& value = i->value;
-
-    nv.type = VALUE_TYPE_STRING;
-    nv.name_size = name.size() + 1;
-    nv.value_size = value.size() + 1;
-
-    wbuffer_write_binary(wbuffer, &nv, sizeof(nv));
-    wbuffer_write_string(wbuffer, name.c_str());
-    wbuffer_write_string(wbuffer, value.c_str());
-
-    log_debug("    %s=%s\n", name.c_str(), value.c_str());
-  }
+  int_values.WriteToWbuffer(wbuffer);
+  uint_values.WriteToWbuffer(wbuffer);
+  str_values.WriteToWbuffer(wbuffer);
 
   return RET_OK;
 }

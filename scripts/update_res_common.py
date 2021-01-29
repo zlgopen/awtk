@@ -928,7 +928,7 @@ def gen_asset_c_entry_with_multi_theme():
     result += '  assets_init_internal(name);\n'
     result += '  locale_info_reload(locale_info);\n\n'
     result += '  info = assets_manager_ref(am, ASSET_TYPE_STYLE, "default");\n'
-    result += '  theme_init(theme(), info->data);\n'
+    result += '  theme_set_theme_data(theme(), info->data);\n'
     result += '  assets_manager_unref(assets_manager(), info);\n\n'
     result += '  widget_dispatch(wm, &e);\n'
     result += '  widget_invalidate_force(wm, NULL);\n\n'

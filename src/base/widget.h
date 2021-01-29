@@ -774,6 +774,18 @@ ret_t widget_add_value(widget_t* widget, int32_t delta);
 ret_t widget_set_text(widget_t* widget, const wchar_t* text);
 
 /**
+ * @method widget_get_window_theme
+ * 获取控件的窗口主题
+ * @param {widget_t*} widget 控件对象。
+ * @param {theme_t**}  win_theme 返回窗口主题。
+ * @param {theme_t**}  default_theme 返回全局默认主题。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_get_window_theme(widget_t* widget, theme_t** win_theme,
+                                     theme_t** default_theme);
+
+/**
  * @method widget_is_style_exist
  * 查询指定的style是否存在。
  * @annotation ["scriptable"]

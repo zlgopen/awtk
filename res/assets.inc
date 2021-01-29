@@ -56,7 +56,7 @@ static ret_t widget_set_theme_without_file_system(widget_t* widget, const char* 
   locale_info_reload(locale_info);
 
   info = assets_manager_ref(am, ASSET_TYPE_STYLE, "default");
-  theme_init(theme(), info->data);
+  theme_set_theme_data(theme(), info->data);
   assets_manager_unref(assets_manager(), info);
 
   widget_dispatch(wm, &e);

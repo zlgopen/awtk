@@ -3,6 +3,7 @@
 #include "base/widget.h"
 #include "tools/theme_gen/xml_theme_gen.h"
 #include "gtest/gtest.h"
+#include "base/style_factory.h"
 #include <stdlib.h>
 
 #include <string>
@@ -12,14 +13,19 @@ TEST(ThemeGen, basic0) {
   uint8_t buff[1024];
   theme_t theme;
   const uint8_t* style_data = NULL;
-  const char* str = "<widget><style><normal bg_color=\"#fafbfc\"/></style></widget>";
+  const char* str = "<widget><style><normal margin=\"-10\" bg_color=\"#fafbfc\"/></style></widget>";
+
+  memset(&theme, 0x0, sizeof(theme_t));
+  style_t* s = style_factory_create_style(NULL, theme_get_style_type(&theme));
 
   xml_gen_buff(str, buff, sizeof(buff));
   theme.data = buff;
 
   style_data = theme_find_style(&theme, WIDGET_TYPE_NONE, TK_DEFAULT_STYLE, WIDGET_STATE_NORMAL);
   ASSERT_EQ(style_data != NULL, true);
-  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_BG_COLOR, 0), 0xfffcfbfa);
+  ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_NORMAL), RET_OK);
+  ASSERT_EQ(style_get_int(s, STYLE_ID_MARGIN, 0), -10);
+  ASSERT_EQ(style_get_uint(s, STYLE_ID_BG_COLOR, 0), 0xfffcfbfa);
 }
 
 TEST(ThemeGen, basic1) {
@@ -30,15 +36,19 @@ TEST(ThemeGen, basic1) {
       "<widget><style><normal bg_color=\"#fafbfc\" fg_color=\"#223344\" font_name=\"sans\" "
       "font_size=\"12\"/></style></widget>";
 
+  memset(&theme, 0x0, sizeof(theme_t));
+  style_t* s = style_factory_create_style(NULL, theme_get_style_type(&theme));
+
   xml_gen_buff(str, buff, sizeof(buff));
   theme.data = buff;
 
   style_data = theme_find_style(&theme, WIDGET_TYPE_NONE, TK_DEFAULT_STYLE, WIDGET_STATE_NORMAL);
   ASSERT_EQ(style_data != NULL, true);
-  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_BG_COLOR, 0), 0xfffcfbfa);
-  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_FG_COLOR, 0), 0xff443322);
-  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_FONT_SIZE, 0), 12);
-  ASSERT_EQ(style_data_get_str(style_data, STYLE_ID_FONT_NAME, ""), string("sans"));
+  ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_NORMAL), RET_OK);
+  ASSERT_EQ(style_get_uint(s, STYLE_ID_BG_COLOR, 0), 0xfffcfbfa);
+  ASSERT_EQ(style_get_uint(s, STYLE_ID_FG_COLOR, 0), 0xff443322);
+  ASSERT_EQ(style_get_int(s, STYLE_ID_FONT_SIZE, 0), 12);
+  ASSERT_EQ(style_get_str(s, STYLE_ID_FONT_NAME, ""), string("sans"));
 }
 
 TEST(ThemeGen, basic2) {
@@ -51,16 +61,19 @@ TEST(ThemeGen, basic2) {
       <style><over bg_color=\"#112233\" fg_color=\"#223344\" font_name=\"sans\" font_size=\"12\"/></style>\
       <style><focus bg_color=\"#112233\" fg_color=\"#223344\" font_name=\"sans\" font_size=\"12\"/></style>\
       </widget>";
+  memset(&theme, 0x0, sizeof(theme_t));
+  style_t* s = style_factory_create_style(NULL, theme_get_style_type(&theme));
 
   xml_gen_buff(str, buff, sizeof(buff));
   theme.data = buff;
 
   style_data = theme_find_style(&theme, WIDGET_TYPE_NONE, TK_DEFAULT_STYLE, WIDGET_STATE_OVER);
   ASSERT_EQ(style_data != NULL, true);
-  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_BG_COLOR, 0), 0xff332211);
-  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_FG_COLOR, 0), 0xff443322);
-  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_FONT_SIZE, 0), 12);
-  ASSERT_EQ(style_data_get_str(style_data, STYLE_ID_FONT_NAME, ""), string("sans"));
+  ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_OVER), RET_OK);
+  ASSERT_EQ(style_get_uint(s, STYLE_ID_BG_COLOR, 0), 0xff332211);
+  ASSERT_EQ(style_get_uint(s, STYLE_ID_FG_COLOR, 0), 0xff443322);
+  ASSERT_EQ(style_get_int(s, STYLE_ID_FONT_SIZE, 0), 12);
+  ASSERT_EQ(style_get_str(s, STYLE_ID_FONT_NAME, ""), string("sans"));
 }
 
 TEST(ThemeGen, basic3) {
@@ -84,16 +97,19 @@ TEST(ThemeGen, basic3) {
         <style name=\"2\"><normal bg_color=\"#112233\" fg_color=\"#223344\" font_name=\"sans\" font_size=\"12\"/></style>\
       </label>\
       ";
+  memset(&theme, 0x0, sizeof(theme_t));
+  style_t* s = style_factory_create_style(NULL, theme_get_style_type(&theme));
 
   xml_gen_buff(str, buff, sizeof(buff));
   theme.data = buff;
 
   style_data = theme_find_style(&theme, WIDGET_TYPE_BUTTON, TK_DEFAULT_STYLE, WIDGET_STATE_NORMAL);
   ASSERT_EQ(style_data != NULL, true);
-  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_BG_COLOR, 0), 0xff332211);
-  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_FG_COLOR, 0), 0xff443322);
-  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_FONT_SIZE, 0), 12);
-  ASSERT_EQ(style_data_get_str(style_data, STYLE_ID_FONT_NAME, ""), string("sans"));
+  ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_NORMAL), RET_OK);
+  ASSERT_EQ(style_get_uint(s, STYLE_ID_BG_COLOR, 0), 0xff332211);
+  ASSERT_EQ(style_get_uint(s, STYLE_ID_FG_COLOR, 0), 0xff443322);
+  ASSERT_EQ(style_get_int(s, STYLE_ID_FONT_SIZE, 0), 12);
+  ASSERT_EQ(style_get_str(s, STYLE_ID_FONT_NAME, ""), string("sans"));
 }
 
 TEST(ThemeGen, basic4) {
@@ -121,16 +137,19 @@ TEST(ThemeGen, basic4) {
         <style name=\"2\"><normal bg_color=\"#112233\" fg_color=\"#223344\" font_name=\"sans\" font_size=\"12\"/></style>\
       </label>\
       ";
+  memset(&theme, 0x0, sizeof(theme_t));
+  style_t* s = style_factory_create_style(NULL, theme_get_style_type(&theme));
 
   xml_gen_buff(str, buff, sizeof(buff));
   theme.data = buff;
 
   style_data = theme_find_style(&theme, WIDGET_TYPE_BUTTON, TK_DEFAULT_STYLE, WIDGET_STATE_OVER);
   ASSERT_EQ(style_data != NULL, true);
-  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_BG_COLOR, 0), 0xff442211);
-  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_FG_COLOR, 0), 0xff553322);
-  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_FONT_SIZE, 0), 12);
-  ASSERT_EQ(style_data_get_str(style_data, STYLE_ID_FONT_NAME, ""), string("sans"));
+  ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_OVER), RET_OK);
+  ASSERT_EQ(style_get_uint(s, STYLE_ID_BG_COLOR, 0), 0xff442211);
+  ASSERT_EQ(style_get_uint(s, STYLE_ID_FG_COLOR, 0), 0xff553322);
+  ASSERT_EQ(style_get_int(s, STYLE_ID_FONT_SIZE, 0), 12);
+  ASSERT_EQ(style_get_str(s, STYLE_ID_FONT_NAME, ""), string("sans"));
 }
 
 TEST(ThemeGen, state) {
@@ -140,20 +159,24 @@ TEST(ThemeGen, state) {
   const char* str =
       "<button><style><over bg_color=\"#f1f2f3\" fg_color=\"#fafbfc\" font_name=\"sans\" font_size=\"12\" /></style></button>\
        <button><style><pressed bg_color=\"rgb(255,255,0)\" fg_color=\"rgba(255,255,0,0.5)\" border_color=\"#ff00ff\"/></style></button>";
+  memset(&theme, 0x0, sizeof(theme_t));
+  style_t* s = style_factory_create_style(NULL, theme_get_style_type(&theme));
 
   xml_gen_buff(str, buff, sizeof(buff));
   theme.data = buff;
 
   style_data = theme_find_style(&theme, WIDGET_TYPE_BUTTON, TK_DEFAULT_STYLE, WIDGET_STATE_OVER);
   ASSERT_EQ(style_data != NULL, true);
-  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_FONT_SIZE, 0), 12);
-  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_BG_COLOR, 0), 0xfff3f2f1);
-  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_FG_COLOR, 0), 0xfffcfbfa);
-  ASSERT_EQ(style_data_get_str(style_data, STYLE_ID_FONT_NAME, ""), string("sans"));
+  ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_OVER), RET_OK);
+  ASSERT_EQ(style_get_int(s, STYLE_ID_FONT_SIZE, 0), 12);
+  ASSERT_EQ(style_get_uint(s, STYLE_ID_BG_COLOR, 0), 0xfff3f2f1);
+  ASSERT_EQ(style_get_uint(s, STYLE_ID_FG_COLOR, 0), 0xfffcfbfa);
+  ASSERT_EQ(style_get_str(s, STYLE_ID_FONT_NAME, ""), string("sans"));
 
   style_data = theme_find_style(&theme, WIDGET_TYPE_BUTTON, TK_DEFAULT_STYLE, WIDGET_STATE_PRESSED);
   ASSERT_EQ(style_data != NULL, true);
-  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_BG_COLOR, 0), 0xff00ffff);
+  ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_PRESSED), RET_OK);
+  ASSERT_EQ(style_get_int(s, STYLE_ID_BG_COLOR, 0), 0xff00ffff);
 }
 
 TEST(ThemeGen, style_type) {
@@ -163,6 +186,8 @@ TEST(ThemeGen, style_type) {
   const char* str =
       "<button><style name=\"yellow\"><over bg_color=\"yellow\" fg_color=\"#fafbfc\" font_name=\"sans\" font_size=\"12\" /></style></button>\
        <button><style name=\"yellow\"><pressed bg_color=\"rgb(255,255,0)\" fg_color=\"rgba(255,255,0,0.5)\" border_color=\"#ff00ff\" /></style></button>";
+  memset(&theme, 0x0, sizeof(theme_t));
+  style_t* s = style_factory_create_style(NULL, theme_get_style_type(&theme));
 
   xml_gen_buff(str, buff, sizeof(buff));
   theme.data = buff;
@@ -180,20 +205,25 @@ TEST(ThemeGen, inher) {
   const uint8_t* style_data = NULL;
   const char* str =
       "<button font_size=\"12\"><style name=\"yellow\" font_name=\"sans\"><over bg_color=\"yellow\" fg_color=\"#fafbfc\" /></style>\
-       <style name=\"yellow\"><pressed bg_color=\"rgb(255,255,0)\" font_name=\"serif\" font_size=\"14\" /></style></button>";
+       <style name=\"yellow\"><pressed margin=\"-10\" bg_color=\"rgb(255,255,0)\" font_name=\"serif\" font_size=\"14\" /></style></button>";
+  memset(&theme, 0x0, sizeof(theme_t));
+  style_t* s = style_factory_create_style(NULL, theme_get_style_type(&theme));
 
   xml_gen_buff(str, buff, sizeof(buff));
   theme.data = buff;
 
   style_data = theme_find_style(&theme, WIDGET_TYPE_BUTTON, "yellow", WIDGET_STATE_OVER);
   ASSERT_EQ(style_data != NULL, true);
-  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_FONT_SIZE, 0), 12);
-  ASSERT_EQ(style_data_get_str(style_data, STYLE_ID_FONT_NAME, ""), string("sans"));
+  ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_OVER), RET_OK);
+  ASSERT_EQ(style_get_int(s, STYLE_ID_FONT_SIZE, 0), 12);
+  ASSERT_EQ(style_get_str(s, STYLE_ID_FONT_NAME, ""), string("sans"));
 
   style_data = theme_find_style(&theme, WIDGET_TYPE_BUTTON, "yellow", WIDGET_STATE_PRESSED);
   ASSERT_EQ(style_data != NULL, true);
-  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_FONT_SIZE, 0), 14);
-  ASSERT_EQ(style_data_get_str(style_data, STYLE_ID_FONT_NAME, ""), string("serif"));
+  ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_PRESSED), RET_OK);
+  ASSERT_EQ(style_get_int(s, STYLE_ID_MARGIN, 0), -10);
+  ASSERT_EQ(style_get_int(s, STYLE_ID_FONT_SIZE, 0), 14);
+  ASSERT_EQ(style_get_str(s, STYLE_ID_FONT_NAME, ""), string("serif"));
 }
 
 TEST(ThemeGen, cdata) {
@@ -205,15 +235,18 @@ TEST(ThemeGen, cdata) {
        <style name=\"yellow\"><property name=\"font_name\"><![CDATA[sans]]></property>\
        <over bg_color=\"yellow\" fg_color=\"#fafbfc\"><property name=\"text_color\"><![CDATA[#fdfeff]]></property>\
        </over></style></button>";
+  memset(&theme, 0x0, sizeof(theme_t));
+  style_t* s = style_factory_create_style(NULL, theme_get_style_type(&theme));
 
   xml_gen_buff(str, buff, sizeof(buff));
   theme.data = buff;
 
   style_data = theme_find_style(&theme, WIDGET_TYPE_BUTTON, "yellow", WIDGET_STATE_OVER);
   ASSERT_EQ(style_data != NULL, true);
-  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_FONT_SIZE, 0), 12);
-  ASSERT_EQ(style_data_get_str(style_data, STYLE_ID_FONT_NAME, ""), string("sans"));
-  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_TEXT_COLOR, 0), 0xfffffefd);
+  ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_OVER), RET_OK);
+  ASSERT_EQ(style_get_int(s, STYLE_ID_FONT_SIZE, 0), 12);
+  ASSERT_EQ(style_get_str(s, STYLE_ID_FONT_NAME, ""), string("sans"));
+  ASSERT_EQ(style_get_uint(s, STYLE_ID_TEXT_COLOR, 0), 0xfffffefd);
 }
 
 TEST(ThemeGen, border) {
@@ -221,35 +254,43 @@ TEST(ThemeGen, border) {
   theme_t theme;
   const uint8_t* style_data = NULL;
   const char* str = "<button><style><normal border=\"left\" /></style></button>";
+
+  memset(&theme, 0x0, sizeof(theme_t));
+  style_t* s = style_factory_create_style(NULL, theme_get_style_type(&theme));
   xml_gen_buff(str, buff, sizeof(buff));
   theme.data = buff;
 
   style_data = theme_find_style(&theme, WIDGET_TYPE_BUTTON, TK_DEFAULT_STYLE, WIDGET_STATE_NORMAL);
-  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_BORDER, 0), BORDER_LEFT);
+  ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_NORMAL), RET_OK);
+  ASSERT_EQ(style_get_int(s, STYLE_ID_BORDER, 0), BORDER_LEFT);
 
   str = "<button><style><normal border=\"right\" /></style></button>";
   xml_gen_buff(str, buff, sizeof(buff));
   theme.data = buff;
   style_data = theme_find_style(&theme, WIDGET_TYPE_BUTTON, TK_DEFAULT_STYLE, WIDGET_STATE_NORMAL);
-  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_BORDER, 0), BORDER_RIGHT);
+  ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_NORMAL), RET_OK);
+  ASSERT_EQ(style_get_int(s, STYLE_ID_BORDER, 0), BORDER_RIGHT);
 
   str = "<button><style><normal border=\"top\" /></style></button>";
   xml_gen_buff(str, buff, sizeof(buff));
   theme.data = buff;
   style_data = theme_find_style(&theme, WIDGET_TYPE_BUTTON, TK_DEFAULT_STYLE, WIDGET_STATE_NORMAL);
-  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_BORDER, 0), BORDER_TOP);
+  ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_NORMAL), RET_OK);
+  ASSERT_EQ(style_get_int(s, STYLE_ID_BORDER, 0), BORDER_TOP);
 
   str = "<button><style><normal border=\"bottom\" /></style></button>";
   xml_gen_buff(str, buff, sizeof(buff));
   theme.data = buff;
   style_data = theme_find_style(&theme, WIDGET_TYPE_BUTTON, TK_DEFAULT_STYLE, WIDGET_STATE_NORMAL);
-  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_BORDER, 0), BORDER_BOTTOM);
+  ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_NORMAL), RET_OK);
+  ASSERT_EQ(style_get_int(s, STYLE_ID_BORDER, 0), BORDER_BOTTOM);
 
   str = "<button><style><normal border=\"all\" /></style></button>";
   xml_gen_buff(str, buff, sizeof(buff));
   theme.data = buff;
   style_data = theme_find_style(&theme, WIDGET_TYPE_BUTTON, TK_DEFAULT_STYLE, WIDGET_STATE_NORMAL);
-  ASSERT_EQ(style_data_get_int(style_data, STYLE_ID_BORDER, 0), BORDER_ALL);
+  ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_NORMAL), RET_OK);
+  ASSERT_EQ(style_get_int(s, STYLE_ID_BORDER, 0), BORDER_ALL);
 }
 
 TEST(ThemeGen, active_state) {
@@ -268,30 +309,38 @@ TEST(ThemeGen, active_state) {
     <over_of_active       text_color=\"#666666\"/> \
   </style> \
 </tab_button>";
+  memset(&theme, 0x0, sizeof(theme_t));
+  style_t* s = style_factory_create_style(NULL, theme_get_style_type(&theme));
 
   xml_gen_buff(str, buff, sizeof(buff));
   theme.data = buff;
 
   style_data = theme_find_style(&theme, WIDGET_TYPE_TAB_BUTTON, "default", WIDGET_STATE_NORMAL);
-  ASSERT_EQ(style_data_get_color(style_data, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x11);
+  ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_NORMAL), RET_OK);
+  ASSERT_EQ(style_get_color(s, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x11);
 
   style_data = theme_find_style(&theme, WIDGET_TYPE_TAB_BUTTON, "default", WIDGET_STATE_PRESSED);
-  ASSERT_EQ(style_data_get_color(style_data, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x22);
+  ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_PRESSED), RET_OK);
+  ASSERT_EQ(style_get_color(s, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x22);
 
   style_data = theme_find_style(&theme, WIDGET_TYPE_TAB_BUTTON, "default", WIDGET_STATE_OVER);
-  ASSERT_EQ(style_data_get_color(style_data, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x33);
+  ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_OVER), RET_OK);
+  ASSERT_EQ(style_get_color(s, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x33);
 
   style_data =
       theme_find_style(&theme, WIDGET_TYPE_TAB_BUTTON, "default", WIDGET_STATE_NORMAL_OF_ACTIVE);
-  ASSERT_EQ(style_data_get_color(style_data, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x44);
+  ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_NORMAL_OF_ACTIVE), RET_OK);
+  ASSERT_EQ(style_get_color(s, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x44);
 
   style_data =
       theme_find_style(&theme, WIDGET_TYPE_TAB_BUTTON, "default", WIDGET_STATE_PRESSED_OF_ACTIVE);
-  ASSERT_EQ(style_data_get_color(style_data, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x55);
+  ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_PRESSED_OF_ACTIVE), RET_OK);
+  ASSERT_EQ(style_get_color(s, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x55);
 
   style_data =
       theme_find_style(&theme, WIDGET_TYPE_TAB_BUTTON, "default", WIDGET_STATE_OVER_OF_ACTIVE);
-  ASSERT_EQ(style_data_get_color(style_data, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x66);
+  ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_OVER_OF_ACTIVE), RET_OK);
+  ASSERT_EQ(style_get_color(s, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x66);
 }
 
 TEST(ThemeGen, selected_state) {
@@ -310,29 +359,37 @@ TEST(ThemeGen, selected_state) {
     <over_of_checked       text_color=\"#666666\"/> \
   </style> \
 </combo_box_item>";
+  memset(&theme, 0x0, sizeof(theme_t));
+  style_t* s = style_factory_create_style(NULL, theme_get_style_type(&theme));
 
   xml_gen_buff(str, buff, sizeof(buff));
   theme.data = buff;
 
   style_data = theme_find_style(&theme, WIDGET_TYPE_COMBO_BOX_ITEM, "default", WIDGET_STATE_NORMAL);
-  ASSERT_EQ(style_data_get_color(style_data, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x11);
+  ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_NORMAL), RET_OK);
+  ASSERT_EQ(style_get_color(s, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x11);
 
   style_data =
       theme_find_style(&theme, WIDGET_TYPE_COMBO_BOX_ITEM, "default", WIDGET_STATE_PRESSED);
-  ASSERT_EQ(style_data_get_color(style_data, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x22);
+  ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_PRESSED), RET_OK);
+  ASSERT_EQ(style_get_color(s, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x22);
 
   style_data = theme_find_style(&theme, WIDGET_TYPE_COMBO_BOX_ITEM, "default", WIDGET_STATE_OVER);
-  ASSERT_EQ(style_data_get_color(style_data, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x33);
+  ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_OVER), RET_OK);
+  ASSERT_EQ(style_get_color(s, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x33);
 
   style_data = theme_find_style(&theme, WIDGET_TYPE_COMBO_BOX_ITEM, "default",
                                 WIDGET_STATE_NORMAL_OF_CHECKED);
-  ASSERT_EQ(style_data_get_color(style_data, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x44);
+  ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_NORMAL_OF_CHECKED), RET_OK);
+  ASSERT_EQ(style_get_color(s, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x44);
 
   style_data = theme_find_style(&theme, WIDGET_TYPE_COMBO_BOX_ITEM, "default",
                                 WIDGET_STATE_PRESSED_OF_CHECKED);
-  ASSERT_EQ(style_data_get_color(style_data, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x55);
+  ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_PRESSED_OF_CHECKED), RET_OK);
+  ASSERT_EQ(style_get_color(s, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x55);
 
   style_data =
       theme_find_style(&theme, WIDGET_TYPE_COMBO_BOX_ITEM, "default", WIDGET_STATE_OVER_OF_CHECKED);
-  ASSERT_EQ(style_data_get_color(style_data, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x66);
+  ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_OVER_OF_CHECKED), RET_OK);
+  ASSERT_EQ(style_get_color(s, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x66);
 }

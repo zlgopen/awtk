@@ -133,6 +133,15 @@ ret_t wbuffer_write_uint32(wbuffer_t* wbuffer, uint32_t value) {
   return RET_OK;
 }
 
+ret_t wbuffer_write_int32(wbuffer_t* wbuffer, int32_t value) {
+  return_value_if_fail(wbuffer_extend_delta(wbuffer, sizeof(value)) == RET_OK, RET_BAD_PARAMS);
+
+  memcpy(wbuffer->data + wbuffer->cursor, &value, sizeof(value));
+  wbuffer->cursor += sizeof(value);
+
+  return RET_OK;
+}
+
 ret_t wbuffer_write_uint64(wbuffer_t* wbuffer, uint64_t value) {
   return_value_if_fail(wbuffer_extend_delta(wbuffer, sizeof(value)) == RET_OK, RET_BAD_PARAMS);
 
@@ -234,6 +243,16 @@ ret_t rbuffer_read_uint16(rbuffer_t* rbuffer, uint16_t* value) {
 }
 
 ret_t rbuffer_read_uint32(rbuffer_t* rbuffer, uint32_t* value) {
+  return_value_if_fail(rbuffer != NULL && rbuffer->data != NULL && value != NULL, RET_BAD_PARAMS);
+  return_value_if_fail((rbuffer->cursor + sizeof(*value)) <= rbuffer->capacity, RET_BAD_PARAMS);
+
+  memcpy(value, rbuffer->data + rbuffer->cursor, sizeof(*value));
+  rbuffer->cursor += sizeof(*value);
+
+  return RET_OK;
+}
+
+ret_t rbuffer_read_int32(rbuffer_t* rbuffer, int32_t* value) {
   return_value_if_fail(rbuffer != NULL && rbuffer->data != NULL && value != NULL, RET_BAD_PARAMS);
   return_value_if_fail((rbuffer->cursor + sizeof(*value)) <= rbuffer->capacity, RET_BAD_PARAMS);
 

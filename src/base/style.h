@@ -283,6 +283,7 @@ typedef struct _style_t style_t;
 
 typedef bool_t (*style_is_valid_t)(style_t* s);
 typedef int32_t (*style_get_int_t)(style_t* s, const char* name, int32_t defval);
+typedef uint32_t (*style_get_uint_t)(style_t* s, const char* name, uint32_t defval);
 typedef color_t (*style_get_color_t)(style_t* s, const char* name, color_t defval);
 typedef const char* (*style_get_str_t)(style_t* s, const char* name, const char* defval);
 
@@ -292,16 +293,24 @@ typedef ret_t (*style_notify_widget_state_changed_t)(style_t* s, widget_t* widge
 
 typedef ret_t (*style_destroy_t)(style_t* s);
 
+typedef ret_t (*style_set_style_data_t)(style_t* s, const uint8_t* data, const char* state);
+typedef const char* (*style_get_style_state_t)(style_t* s);
+typedef const char* (*style_get_style_type_t)(style_t* s);
+
 typedef struct _style_vtable_t {
   bool_t is_mutable;
   style_is_valid_t is_valid;
   style_get_int_t get_int;
+  style_get_uint_t get_uint;
   style_get_str_t get_str;
   style_get_color_t get_color;
   style_notify_widget_state_changed_t notify_widget_state_changed;
 
   style_set_t set;
   style_destroy_t destroy;
+  style_get_style_type_t get_style_type;
+  style_set_style_data_t set_style_data;
+  style_get_style_state_t get_style_state;
 } style_vtable_t;
 
 /**
@@ -359,6 +368,18 @@ bool_t style_is_valid(style_t* s);
 int32_t style_get_int(style_t* s, const char* name, int32_t defval);
 
 /**
+ * @method style_get_uint
+ * 获取指定name的无符号整数格式的值。
+ * @annotation ["scriptable"]
+ * @param {style_t*} s style对象。
+ * @param {const char*} name 属性名。
+ * @param {uint32_t} defval 缺省值。
+ *
+ * @return {uint32_t} 返回无符号整数格式的值。
+ */
+uint32_t style_get_uint(style_t* s, const char* name, uint32_t defval);
+
+/**
  * @method style_get_color
  * 获取指定name的颜色值。
  * @param {style_t*} s style对象。
@@ -395,6 +416,28 @@ const char* style_get_str(style_t* s, const char* name, const char* defval);
 ret_t style_set(style_t* s, const char* state, const char* name, const value_t* value);
 
 /**
+ * @method style_set_style_data
+ * 把风格对象数据设置到风格对象中
+ * @annotation ["scriptable"]
+ * @param {style_t*} s style对象。
+ * @param {const uint8_t*} data 风格对象数据
+ * @param {const char*} state 风格状态
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t style_set_style_data(style_t* s, const uint8_t* data, const char* state);
+
+/**
+ * @method style_get_style_state
+ * 获取风格对象的风格状态
+ * @annotation ["scriptable"]
+ * @param {style_t*} s style对象。
+ *
+ * @return {const char*} 返回风格状态。
+ */
+const char* style_get_style_state(style_t* s);
+
+/**
  * @method style_is_mutable
  * 检查style是否是mutable的。
  * @annotation ["scriptable"]
@@ -403,6 +446,16 @@ ret_t style_set(style_t* s, const char* state, const char* name, const value_t* 
  * @return {bool_t} 返回TRUE表示是，否则表示不是。
  */
 bool_t style_is_mutable(style_t* s);
+
+/**
+ * @method style_get_style_type
+ * 获取 style 的风格类型。
+ * @annotation ["scriptable"]
+ * @param {style_t*} s style对象。
+ *
+ * @return {const char*} 返回风格类型。
+ */
+const char* style_get_style_type(style_t* s);
 
 /**
  * @method style_destroy

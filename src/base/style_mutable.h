@@ -53,12 +53,6 @@ typedef struct _style_mutable_t {
    */
   char* name;
   /**
-   * @property {widget_t*} widget
-   * @annotation ["private"]
-   * 与之关联的控件。
-   */
-  widget_t* widget;
-  /**
    * @property {style_t*} default_style
    * @annotation ["private"]
    * 缺省的style，在mutable中找不到时，再到default_style中找。
@@ -156,6 +150,31 @@ ret_t style_mutable_get_value(style_t* s, const char* state, const char* name, v
 ret_t style_mutable_set_value(style_t* s, const char* state, const char* name, const value_t* v);
 
 /**
+ * @method style_mutable_remove_value
+ * 移除指定名称的值。
+ * 备注：
+ * 如果 state 控件状态为 NULL，name 属性名为 NULL，就清除所有的 mutable 风格。
+ * 如果 state 控件状态为 NULL，name 属性名不为 NULL，清除 state 状态为 normal 的 name 属性。
+ * 如果 state 控件状态不为 NULL，name 属性名为 NULL，就清除所有的 state 状态的风格。
+ * @param {style_t*} s style对象。
+ * @param {const char*} state 控件状态。
+ * @param {const char*} name 属性名。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t style_mutable_remove_value(style_t* s, const char* state, const char* name);
+
+/**
+ * @method style_mutable_set_default_style
+ * 设置 style\_mutable 对象的 default\_style 成员，并且释放原来的 default\_style 成员对象
+ * @param {style_t*} s style对象。
+ * @param {style_t*} default_style 缺省的style。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t style_mutable_set_default_style(style_t* s, style_t* default_style);
+
+/**
  * @method style_mutable_copy
  * 将other对象的数据拷贝到s对象。
  * @param {style_t*} s style对象。
@@ -191,20 +210,11 @@ style_t* style_mutable_cast(style_t* s);
  * > 除了测试程序外不需要直接调用，widget会通过style\_factory\_create创建。
  *
  * @annotation ["constructor", "scriptable"]
- * @param {widget_t*} widget 控件
  * @param {style_t*} default_style 缺省的style。
  *
  * @return {style_t*} style对象。
  */
-style_t* style_mutable_create(widget_t* widget, style_t* default_style);
-
-/**
- * @method style_mutable_register
- * 将自己注册到style\_factory。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t style_mutable_register(void);
+style_t* style_mutable_create(style_t* default_style);
 
 #define STYLE_MUTABLE(s) ((style_mutable_t*)(style_mutable_cast(s)))
 

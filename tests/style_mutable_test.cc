@@ -1,6 +1,7 @@
 ﻿#include "gtest/gtest.h"
 #include "widgets/button.h"
 #include "base/window.h"
+#include "base/style_const.h"
 #include "base/style_mutable.h"
 
 #include <string>
@@ -31,7 +32,8 @@ TEST(StyleMutable, basic) {
   color_t trans = color_init(0, 0, 0, 0);
   widget_t* w = window_create(NULL, 10, 20, 30, 40);
   widget_t* b = button_create(w, 0, 0, 100, 100);
-  style_mutable_t* s = (style_mutable_t*)style_mutable_create(b, NULL);
+  style_t* style_const = style_const_create();
+  style_mutable_t* s = (style_mutable_t*)style_mutable_create(style_const);
   style_t* style = (style_t*)s;
   const char* state_names[] = {WIDGET_STATE_NORMAL, WIDGET_STATE_PRESSED, WIDGET_STATE_OVER,
                                WIDGET_STATE_DISABLE, NULL};
@@ -43,6 +45,7 @@ TEST(StyleMutable, basic) {
     widget_set_state(b, (const char*)state_names[k]);
     style_notify_widget_state_changed(style, b);
     const char* state = (const char*)widget_get_prop_str(b, WIDGET_PROP_STATE_FOR_STYLE, 0);
+    ASSERT_EQ(tk_str_eq(style_get_style_state(style), state), true);
     for (i = 0; i < n; i++) {
       char font_name[32];
       ASSERT_EQ(style_mutable_set_int(style, state, STYLE_ID_FONT_SIZE, i + 1), RET_OK);
@@ -84,7 +87,7 @@ TEST(StyleMutable, basic) {
 TEST(StyleMutable, cast) {
   widget_t* w = window_create(NULL, 10, 20, 30, 40);
   widget_t* b = button_create(w, 0, 0, 100, 100);
-  style_t* style_mutable = style_mutable_create(b, NULL);
+  style_t* style_mutable = style_mutable_create(NULL);
 
   ASSERT_EQ(style_is_mutable(style_mutable), TRUE);
   ASSERT_EQ(style_mutable, style_mutable_cast(style_mutable));
@@ -96,8 +99,8 @@ TEST(StyleMutable, cast) {
 TEST(StyleMutable, copy) {
   color_t c1 = color_init(1, 2, 3, 4);
   color_t c2 = color_init(2, 2, 3, 4);
-  style_t* m1 = style_mutable_create(NULL, NULL);
-  style_t* m2 = style_mutable_create(NULL, NULL);
+  style_t* m1 = style_mutable_create(NULL);
+  style_t* m2 = style_mutable_create(NULL);
 
   style_mutable_set_int(m1, "normal", "font_size", 123);
   style_mutable_set_str(m1, "normal", "font_name", "foo");

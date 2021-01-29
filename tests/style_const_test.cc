@@ -10,9 +10,21 @@ using std::string;
 TEST(StyleConst, basic) {
   widget_t* w = window_create(NULL, 10, 20, 30, 40);
   widget_t* b = button_create(w, 0, 0, 10, 10);
-  style_t* s = style_const_create(b);
+  style_t* s = style_const_create();
 
   ASSERT_EQ(s != NULL, true);
+
+  style_destroy(s);
+  widget_destroy(w);
+}
+
+TEST(StyleConst, get_style_state) {
+  widget_t* w = window_create(NULL, 10, 20, 30, 40);
+  widget_t* b = button_create(w, 0, 0, 10, 10);
+  style_t* s = style_const_create();
+
+  ASSERT_EQ(s != NULL, true);
+  ASSERT_EQ(tk_str_eq(style_get_style_state(s), WIDGET_STATE_NORMAL), true);
 
   style_destroy(s);
   widget_destroy(w);
@@ -22,7 +34,7 @@ TEST(StyleConst, combo_box_item) {
   const char* icon = NULL;
   widget_t* w = window_create(NULL, 10, 20, 30, 40);
   widget_t* b = combo_box_item_create(w, 0, 0, 10, 10);
-  style_t* s = style_const_create(b);
+  style_t* s = style_const_create();
 
   ASSERT_EQ(style_is_mutable(s), FALSE);
   style_notify_widget_state_changed(s, b);

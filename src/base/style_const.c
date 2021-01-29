@@ -25,24 +25,6 @@
 #include "base/widget.h"
 #include "base/style_const.h"
 
-static ret_t widget_get_window_theme(widget_t* widget, theme_t** win_theme,
-                                     theme_t** default_theme) {
-  value_t v;
-  widget_t* win = widget_get_window(widget);
-
-  return_value_if_fail(win != NULL, RET_BAD_PARAMS);
-
-  if (widget_get_prop(win, WIDGET_PROP_THEME_OBJ, &v) == RET_OK) {
-    *win_theme = (theme_t*)value_pointer(&v);
-  }
-
-  if (widget_get_prop(win, WIDGET_PROP_DEFAULT_THEME_OBJ, &v) == RET_OK) {
-    *default_theme = (theme_t*)value_pointer(&v);
-  }
-
-  return RET_OK;
-}
-
 static bool_t is_valid_style_name(const char* str) {
   return str != NULL && *str;
 }
@@ -71,24 +53,23 @@ static const void* widget_get_const_style_data_for_state_impl(widget_t* widget,
   return data;
 }
 
-static const void* widget_get_const_style_data_for_style(widget_t* widget, const char* style_name) {
+static const void* widget_get_const_style_data_for_style(widget_t* widget, style_t* s, const char* style_name) {
   const void* data = NULL;
-  const char* state = widget_get_prop_str(widget, WIDGET_PROP_STATE_FOR_STYLE, widget->state);
-
-  data = widget_get_const_style_data_for_state_impl(widget, style_name, state);
-  if (data == NULL && !tk_str_eq(state, WIDGET_STATE_NORMAL)) {
+  style_const_t* style = (style_const_t*)s;
+  data = widget_get_const_style_data_for_state_impl(widget, style_name, style->state);
+  if (data == NULL && !tk_str_eq(style->state, WIDGET_STATE_NORMAL)) {
     data = widget_get_const_style_data_for_state_impl(widget, style_name, WIDGET_STATE_NORMAL);
   }
 
   return data;
 }
 
-static const void* widget_get_const_style_data(widget_t* widget) {
+static const void* widget_get_const_style_data(widget_t* widget, style_t* s) {
   const char* style_name = is_valid_style_name(widget->style) ? widget->style : TK_DEFAULT_STYLE;
-  const void* data = widget_get_const_style_data_for_style(widget, style_name);
+  const void* data = widget_get_const_style_data_for_style(widget, s, style_name);
 
   if (data == NULL && !tk_str_eq(style_name, TK_DEFAULT_STYLE)) {
-    data = widget_get_const_style_data_for_style(widget, TK_DEFAULT_STYLE);
+    data = widget_get_const_style_data_for_style(widget, s, TK_DEFAULT_STYLE);
   }
 
   return data;
@@ -114,9 +95,13 @@ static ret_t style_const_apply_layout(style_t* s, widget_t* widget) {
 }
 
 static ret_t style_const_notify_widget_state_changed(style_t* s, widget_t* widget) {
+  const char* state = NULL;
   style_const_t* style = (style_const_t*)s;
   const void* old_data = style->data;
-  style->data = widget_get_const_style_data(widget);
+  return_value_if_fail(style != NULL && widget != NULL, RET_BAD_PARAMS);
+  state = widget_get_prop_str(widget, WIDGET_PROP_STATE_FOR_STYLE, widget->state);
+  style->state = tk_str_copy(style->state, state);
+  style->data = widget_get_const_style_data(widget, s);
 
   if (old_data != style->data) {
     style_const_apply_layout(s, widget);
@@ -137,6 +122,12 @@ int32_t style_const_get_int(style_t* s, const char* name, int32_t defval) {
   return style_data_get_int(style->data, name, defval);
 }
 
+uint32_t style_const_get_uint(style_t* s, const char* name, uint32_t defval) {
+  style_const_t* style = (style_const_t*)s;
+
+  return style_data_get_uint(style->data, name, defval);
+}
+
 color_t style_const_get_color(style_t* s, const char* name, color_t defval) {
   style_const_t* style = (style_const_t*)s;
 
@@ -149,7 +140,36 @@ const char* style_const_get_str(style_t* s, const char* name, const char* defval
   return style_data_get_str(style->data, name, defval);
 }
 
+static ret_t style_const_set_style_data(style_t* s, const uint8_t* data, const char* state) {
+  style_const_t* style = (style_const_t*)s;
+  return_value_if_fail(style != NULL, RET_BAD_PARAMS);
+  style->data = data;
+  if (state != NULL) {
+    style->state = tk_str_copy(style->state, state);
+  } else {
+    style->state = tk_str_copy(style->state, WIDGET_STATE_NORMAL);
+  }
+  return RET_OK;
+}
+
+const char* style_const_get_style_state(style_t* s) {
+  style_const_t* style = (style_const_t*)s;
+  return_value_if_fail(style != NULL, NULL);
+  return style->state;
+}
+
+const char* style_const_get_style_type(style_t* s) {
+  style_const_t* style = (style_const_t*)s;
+  return_value_if_fail(style != NULL, NULL);
+  return THEME_DEFAULT_STYLE_TYPE;
+}
+
 static ret_t style_const_destroy(style_t* s) {
+  style_const_t* style = (style_const_t*)s;
+  if (style->state != NULL) {
+    TKMEM_FREE(style->state);
+  }
+
   memset(s, 0x00, sizeof(style_t));
 
   TKMEM_FREE(s);
@@ -162,15 +182,19 @@ static const style_vtable_t style_const_vt = {
     .is_valid = style_const_is_valid,
     .notify_widget_state_changed = style_const_notify_widget_state_changed,
     .get_int = style_const_get_int,
+    .get_uint = style_const_get_uint,
     .get_str = style_const_get_str,
     .get_color = style_const_get_color,
+    .get_style_type = style_const_get_style_type,
+    .get_style_state = style_const_get_style_state,
+    .set_style_data = style_const_set_style_data,
     .destroy = style_const_destroy};
 
-style_t* style_const_create(widget_t* widget) {
+style_t* style_const_create() {
   style_const_t* style = TKMEM_ZALLOC(style_const_t);
   return_value_if_fail(style != NULL, NULL);
 
   style->style.vt = &style_const_vt;
-
+  style->state = tk_str_copy(style->state, WIDGET_STATE_NORMAL);
   return (style_t*)style;
 }
