@@ -1,30 +1,33 @@
 # 最新动态
 
+2021/01/31
+  * 增加文档 [应用程序的类型](app_type.md)
+
 2021/01/29
-  * 修改scroll view注释错误（感谢朝泽提供补丁）
-  * 修改mmap注释错误（感谢网友(QQ631757707)提供补丁）
-  * 支持Ubuntu下使用输入法（感谢智明提供补丁）
-  * 修复风格数据为负数的时候出现的bug（感谢智明提供补丁）
-  * 重构了theme类统一操作风格数据的方法（感谢智明提供补丁）
-  * 修复pages控件设置焦点后马上被释放导致idle空对象问题（感谢智明提供补丁）
+  * 修改 scroll view 注释错误（感谢朝泽提供补丁）
+  * 修改 mmap 注释错误（感谢网友 (QQ631757707) 提供补丁）
+  * 支持 Ubuntu 下使用输入法（感谢智明提供补丁）
+  * 修复风格数据为负数的时候出现的 bug（感谢智明提供补丁）
+  * 重构了 theme 类统一操作风格数据的方法（感谢智明提供补丁）
+  * 修复 pages 控件设置焦点后马上被释放导致 idle 空对象问题（感谢智明提供补丁）
 
 2021/01/28
-  * 修改pages\_restore\_target后马上是否焦点对象的问题（感谢智明提供补丁）
-  * 修改pages控件当on\_target\_destroy和on\_view\_destroy上下文被释放的时候导致出错的问题（感谢智明提供补丁）
+  * 修改 pages\_restore\_target 后马上是否焦点对象的问题（感谢智明提供补丁）
+  * 修改 pages 控件当 on\_target\_destroy 和 on\_view\_destroy 上下文被释放的时候导致出错的问题（感谢智明提供补丁）
 
 2021/01/27
-  * 为object prop增加了一些包装函数。
+  * 为 object prop 增加了一些包装函数。
 
 2021/01/26
-  * 修改注释错误(感谢攀峰提供补丁)。
+  * 修改注释错误（感谢攀峰提供补丁）。
   * 增加支持直接使用 OpenGL API 的机制（感谢智明提供补丁）
   * 修复输入框输入大写的时候没有找到 key\_pressed\_info 类型而报错的问题（感谢智明提供补丁）
-  * 修复awtk源码在\ windows\ 平台的某些PC上编译SDL库出现符号重复定义的问题(感谢雨欣提供补丁)。  
+  * 修复 awtk 源码在、windows\ 平台的某些 PC 上编译 SDL 库出现符号重复定义的问题（感谢雨欣提供补丁）。  
   * 修复 scroll\_view 的 snap\_to\_page 删除 item 不更新页信息问题和增加了是否每次翻一页属性 （感谢智明提供补丁）
 
 2021/01/25
-  * 修复list\_view\_h中的滑动视图设置children\_layout后无法无法正常滑动的问题(感谢雨欣提供补丁)。
-  * 感谢智明提供以下补丁:
+  * 修复 list\_view\_h 中的滑动视图设置 children\_layout 后无法无法正常滑动的问题（感谢雨欣提供补丁）。
+  * 感谢智明提供以下补丁：
     * 重构 list\_view 的布局代码
     * 完善原来的 auto\_hide\_scroll\_bar 属性的显示效果
     * 完善支持多个列时候，每一项高度不一样显示不正常的问题
@@ -33,21 +36,21 @@
     * scroll\_view 增加 recursive 属性可以遍历子控后计算最终的虚拟宽高的功能，由于 scroll\_view 的孙控件不在子控件的区域中也可以通过滚动条找到其孙控件。
 
 2021/01/24
-  * 修改android全屏的问题。
+  * 修改 android 全屏的问题。
 
 2021/01/22
-  * 修改pages崩溃的问题。
+  * 修改 pages 崩溃的问题。
 
 2021/01/21
   * 完善文档。
-  * 部分文件增加UTF8-BOM（感谢陈谭提供补丁）。
-  * 将销毁自定义属性代码放到on\_destroy回调函数之后。
-  * 增加csv file，请参考[csv file](../src/csv/README.md)。
+  * 部分文件增加 UTF8-BOM（感谢陈谭提供补丁）。
+  * 将销毁自定义属性代码放到 on\_destroy 回调函数之后。
+  * 增加 csv file，请参考 [csv file](../src/csv/README.md)。
   * text\_selector 支持同时修改选项的步长和格式 （感谢智明提供补丁）
 
 2021/01/20
-  * 增加函数slist\_insert。
-  * 增加函数darray\_insert。
+  * 增加函数 slist\_insert。
+  * 增加函数 darray\_insert。
   * 修复 page 的 default\_focused\_child 没效果的问题（感谢智明提供补丁）
   * 由于 Ubuntu 默认下不支持 c++11，所以编译 gtest 编译出错的问题（感谢智明提供补丁）
   * 修复 combox 控件设置 open\_window 属性在弹出 popup 窗体后改变整个程序窗口的大小后显示不正常的问题（感谢智明提供补丁）
@@ -64,11 +67,11 @@
   * 修复 color\_picker 控件由于 rgb 精度不够导致 slider 控件移动的问题（感谢智明提供补丁）
 
 2021/01/17
-  * 完善json对空数组的处理。
+  * 完善 json 对空数组的处理。
 
 2021/01/15
-  * 增加data\_url\_copy。
-  * 修改tools中拼写错误(floder->folder)。感谢[suzp1984](https://github.com/suzp1984)提供补丁。
+  * 增加 data\_url\_copy。
+  * 修改 tools 中拼写错误 (floder->folder)。感谢 [suzp1984](https://github.com/suzp1984) 提供补丁。
 
 2021/01/14
   * 增加 app\_conf\_reset 用于恢复出厂设置。
