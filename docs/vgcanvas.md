@@ -13,7 +13,7 @@
 
 其中最后4个是开源的，skia和cairo很强但也很大，不太适合嵌入式环境。nanovg是最简洁最优雅的，可惜它只支持OpenGL。agg是用纯软件实现的，速度相对来说也很快，虽然使用起来有点复杂，但也不失为一个好的选择。经过一番考虑之后，AWTK的canvas根据硬件环境分为三个层次：
 
-* 简约模式。支持基本的绘图函数，但不支持Vector graphics绘图函数，能实现GUI常见功能。适用于低端的硬件环境，如CPU主频小余100M，RAM小余1M的情况。
+* 简约模式。支持基本的绘图函数，但不支持Vector graphics绘图函数，能实现GUI常见功能。适用于低端的硬件环境，如CPU主频小于100M，RAM小于1M的情况。
 
 * 正常模式。支持最基本的绘图函数，和软件实现的Vector graphics绘图函数，由于软件实现的Vector graphics绘图函数性能不高，所以只有在必要的情况下才使用它们。此时采用agg作为Vector graphics library。
 

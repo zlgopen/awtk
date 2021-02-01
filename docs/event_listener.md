@@ -77,6 +77,7 @@ ret_t widget_off(widget_t* widget, uint32_t id);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
+ret_t widget_dispatch(widget_t* widget, event_t* e);
 ```
 
 
