@@ -133,12 +133,12 @@ typedef ret_t (*vgcanvas_save_t)(vgcanvas_t* vg);
 typedef ret_t (*vgcanvas_restore_t)(vgcanvas_t* vg);
 
 typedef ret_t (*vgcanvas_create_fbo_t)(vgcanvas_t* vg, uint32_t w, uint32_t h,
-                                        bool_t custom_draw_model, framebuffer_object_t* fbo);
+                                       bool_t custom_draw_model, framebuffer_object_t* fbo);
 typedef ret_t (*vgcanvas_destroy_fbo_t)(vgcanvas_t* vg, framebuffer_object_t* fbo);
 typedef ret_t (*vgcanvas_bind_fbo_t)(vgcanvas_t* vg, framebuffer_object_t* fbo);
 typedef ret_t (*vgcanvas_unbind_fbo_t)(vgcanvas_t* vg, framebuffer_object_t* fbo);
 typedef ret_t (*vgcanvas_fbo_to_bitmap_t)(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo,
-                                                 bitmap_t* img, const rect_t* r);
+                                          bitmap_t* img, const rect_t* r);
 
 typedef ret_t (*vgcanvas_clear_cache_t)(vgcanvas_t* vg);
 
@@ -1233,7 +1233,8 @@ ret_t vgcanvas_destroy(vgcanvas_t* vg);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t vgcanvas_create_fbo(vgcanvas_t* vg, uint32_t w, uint32_t h, bool_t custom_draw_model, framebuffer_object_t* fbo);
+ret_t vgcanvas_create_fbo(vgcanvas_t* vg, uint32_t w, uint32_t h, bool_t custom_draw_model,
+                          framebuffer_object_t* fbo);
 
 /**
  * @method vgcanvas_destroy_fbo

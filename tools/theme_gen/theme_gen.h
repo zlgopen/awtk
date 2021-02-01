@@ -31,7 +31,7 @@
 using std::string;
 using std::vector;
 
-template<class T>
+template <class T>
 class NameValue {
  public:
   NameValue(const string& name, const T& value, uint32_t type) {
@@ -39,16 +39,16 @@ class NameValue {
     this->type = type;
     this->value = value;
   }
+
  public:
   string name;
   uint32_t type;
   T value;
 };
 
-template<class T>
+template <class T>
 class NameValues {
-private:
-  
+ private:
   void write_value_to_wbuffer(wbuffer_t* wbuffer, const string& name, uint32_t value) {
     wbuffer_write_uint32(wbuffer, value);
     log_debug("    %s=0x%08x\n", name.c_str(), value);
@@ -61,8 +61,9 @@ private:
     wbuffer_write_string(wbuffer, value.c_str());
     log_debug("    %s=%s\n", name.c_str(), value.c_str());
   }
-  
-  void write_value_header_to_wbuffer(wbuffer_t* wbuffer, uint32_t type, const string& name, uint32_t value) {
+
+  void write_value_header_to_wbuffer(wbuffer_t* wbuffer, uint32_t type, const string& name,
+                                     uint32_t value) {
     style_name_value_header_t nv;
     nv.type = type;
     nv.name_size = name.size() + 1;
@@ -70,15 +71,17 @@ private:
     wbuffer_write_binary(wbuffer, &nv, sizeof(nv));
   }
 
-  void write_value_header_to_wbuffer(wbuffer_t* wbuffer, uint32_t type, const string& name, int32_t value) {
+  void write_value_header_to_wbuffer(wbuffer_t* wbuffer, uint32_t type, const string& name,
+                                     int32_t value) {
     style_name_value_header_t nv;
     nv.type = type;
     nv.name_size = name.size() + 1;
     nv.value_size = sizeof(value);
     wbuffer_write_binary(wbuffer, &nv, sizeof(nv));
   }
-  
-  void write_value_header_to_wbuffer(wbuffer_t* wbuffer, uint32_t type, const string& name, const string& value) {
+
+  void write_value_header_to_wbuffer(wbuffer_t* wbuffer, uint32_t type, const string& name,
+                                     const string& value) {
     style_name_value_header_t nv;
     nv.type = type;
     nv.name_size = name.size() + 1;
@@ -86,7 +89,7 @@ private:
     wbuffer_write_binary(wbuffer, &nv, sizeof(nv));
   }
 
-public:
+ public:
   typedef T value_type;
   typedef NameValue<value_type> name_value_type;
   typedef typename vector<name_value_type>::iterator iter_type;
@@ -113,7 +116,8 @@ public:
   }
 
   bool Merge(const NameValues<value_type>& other_values) {
-    for (typename NameValues<value_type>::const_iter_type i = other_values.values.begin(); i != other_values.values.end(); i++) {
+    for (typename NameValues<value_type>::const_iter_type i = other_values.values.begin();
+         i != other_values.values.end(); i++) {
       AddValue(i->name, i->value, i->type);
     }
     return true;
@@ -121,8 +125,7 @@ public:
 
   bool WriteToWbuffer(wbuffer_t* wbuffer) {
     return_value_if_fail(wbuffer != NULL, false);
-    for (iter_type i = this->values.begin(); i != this->values.end();
-        i++) {
+    for (iter_type i = this->values.begin(); i != this->values.end(); i++) {
       const string& name = i->name;
       write_value_header_to_wbuffer(wbuffer, i->type, name, i->value);
       wbuffer_write_string(wbuffer, name.c_str());
@@ -131,7 +134,7 @@ public:
     return true;
   }
 
-  public:
+ public:
   vector<name_value_type> values;
 };
 

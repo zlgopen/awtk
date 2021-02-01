@@ -260,8 +260,7 @@ bool_t widget_is_window_opened(widget_t* widget) {
   }
 }
 
-ret_t widget_get_window_theme(widget_t* widget, theme_t** win_theme,
-                                     theme_t** default_theme) {
+ret_t widget_get_window_theme(widget_t* widget, theme_t** win_theme, theme_t** default_theme) {
   value_t v;
   widget_t* win = widget_get_window(widget);
 
@@ -300,7 +299,8 @@ bool_t widget_is_style_exist(widget_t* widget, const char* style_name, const cha
     state = state_name;
   }
 
-  return_value_if_fail(widget_get_window_theme(widget, &win_theme, &default_theme) == RET_OK, FALSE);
+  return_value_if_fail(widget_get_window_theme(widget, &win_theme, &default_theme) == RET_OK,
+                       FALSE);
 
   if (win_theme != NULL) {
     data = theme_find_style(win_theme, type, style, state);
@@ -837,7 +837,8 @@ static ret_t widget_update_style_object(widget_t* widget) {
     if (widget_is_window_opened(widget)) {
       widget_set_need_update_style(widget);
     }
-  } else if (widget->astyle != NULL && !tk_str_eq(style_get_style_type(widget->astyle), style_type)) {
+  } else if (widget->astyle != NULL &&
+             !tk_str_eq(style_get_style_type(widget->astyle), style_type)) {
     style_t* style = style_factory_create_style(style_factory(), style_type);
     ENSURE(style != NULL);
     if (style_is_mutable(widget->astyle)) {
@@ -3213,7 +3214,8 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t*
     widget->vt = widget_vtable_default();
   }
 
-  if (widget->astyle == NULL && (widget_is_window_manager(widget) || widget_get_window(widget) != NULL)) {
+  if (widget->astyle == NULL &&
+      (widget_is_window_manager(widget) || widget_get_window(widget) != NULL)) {
     widget->astyle = style_factory_create_style(style_factory(), widget_get_style_type(widget));
     ENSURE(widget->astyle != NULL);
     if (widget_is_window_opened(widget)) {

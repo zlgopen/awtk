@@ -172,22 +172,22 @@ TEST(SList, insert) {
   ASSERT_EQ(slist_insert(s, 0, TO_POINTER(0)), RET_OK);
   ASSERT_EQ(slist_insert(s, 1, TO_POINTER(2)), RET_OK);
   ASSERT_EQ(slist_insert(s, 1, TO_POINTER(1)), RET_OK);
-  log="";
+  log = "";
   slist_foreach(s, visit_dump, &log);
   ASSERT_EQ(log, "0:1:2:");
 
   ASSERT_EQ(slist_insert(s, 0, TO_POINTER(5)), RET_OK);
-  log="";
+  log = "";
   slist_foreach(s, visit_dump, &log);
   ASSERT_EQ(log, "5:0:1:2:");
-  
+
   ASSERT_EQ(slist_insert(s, 3, TO_POINTER(6)), RET_OK);
-  log="";
+  log = "";
   slist_foreach(s, visit_dump, &log);
   ASSERT_EQ(log, "5:0:1:6:2:");
-  
+
   ASSERT_EQ(slist_insert(s, 10, TO_POINTER(10)), RET_OK);
-  log="";
+  log = "";
   slist_foreach(s, visit_dump, &log);
   ASSERT_EQ(log, "5:0:1:6:2:10:");
 

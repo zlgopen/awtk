@@ -274,7 +274,7 @@ ret_t darray_insert(darray_t* darray, uint32_t index, void* data) {
 
 ret_t darray_push(darray_t* darray, void* data) {
   return_value_if_fail(darray != NULL, RET_BAD_PARAMS);
-  
+
   return darray_insert(darray, darray->size, data);
 }
 

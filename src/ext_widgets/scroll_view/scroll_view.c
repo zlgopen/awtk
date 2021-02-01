@@ -46,7 +46,7 @@ static ret_t scroll_view_get_item_rect(widget_t* parent, widget_t* widget, rect_
   rect_merge(item_rect, &r);
   scroll_view_get_item_rect(parent, iter, item_rect);
   WIDGET_FOR_EACH_CHILD_END();
-  
+
   return RET_OK;
 }
 
@@ -647,12 +647,10 @@ static ret_t scroll_view_set_prop(widget_t* widget, const char* name, const valu
 }
 
 static const char* s_scroll_view_clone_properties[] = {
-    WIDGET_PROP_VIRTUAL_W,     WIDGET_PROP_VIRTUAL_H,
-    WIDGET_PROP_XSLIDABLE,     WIDGET_PROP_YSLIDABLE,
-    WIDGET_PROP_XOFFSET,       WIDGET_PROP_YOFFSET,
-    SCROLL_VIEW_X_SPEED_SCALE, SCROLL_VIEW_Y_SPEED_SCALE,
-    SCROLL_VIEW_RECURSIVE, SCROLL_VIEW_MOVE_TO_PAGE,
-    SCROLL_VIEW_SNAP_TO_PAGE,  NULL};
+    WIDGET_PROP_VIRTUAL_W,     WIDGET_PROP_VIRTUAL_H,     WIDGET_PROP_XSLIDABLE,
+    WIDGET_PROP_YSLIDABLE,     WIDGET_PROP_XOFFSET,       WIDGET_PROP_YOFFSET,
+    SCROLL_VIEW_X_SPEED_SCALE, SCROLL_VIEW_Y_SPEED_SCALE, SCROLL_VIEW_RECURSIVE,
+    SCROLL_VIEW_MOVE_TO_PAGE,  SCROLL_VIEW_SNAP_TO_PAGE,  NULL};
 TK_DECL_VTABLE(scroll_view) = {.size = sizeof(scroll_view_t),
                                .type = WIDGET_TYPE_SCROLL_VIEW,
                                .scrollable = TRUE,

@@ -39,7 +39,8 @@ static ret_t pages_on_restore_target_destroy(void* ctx, event_t* evt) {
 
 static ret_t pages_on_save_target_destroy(void* ctx, event_t* evt) {
   widget_t* target = WIDGET(evt->target);
-  widget_t* active_view = WIDGET(widget_get_prop_pointer(target, PAGE_SAVE_TARGET_ACTIVE_VIEW_STRING));
+  widget_t* active_view =
+      WIDGET(widget_get_prop_pointer(target, PAGE_SAVE_TARGET_ACTIVE_VIEW_STRING));
   if (active_view != NULL) {
     widget_set_prop_pointer(active_view, PAGE_SAVE_TARGET_STRING, NULL);
     widget_set_prop_int(active_view, VIEW_SAVE_TARGET_DESTROY_EVENT_ID_STRING, 0);
@@ -50,7 +51,8 @@ static ret_t pages_on_save_target_destroy(void* ctx, event_t* evt) {
 
 static ret_t pages_on_save_view_destroy(void* ctx, event_t* evt) {
   widget_t* view = WIDGET(evt->target);
-  uint32_t event_id = (uint32_t)widget_get_prop_int(view, VIEW_SAVE_TARGET_DESTROY_EVENT_ID_STRING, 0);
+  uint32_t event_id =
+      (uint32_t)widget_get_prop_int(view, VIEW_SAVE_TARGET_DESTROY_EVENT_ID_STRING, 0);
   if (event_id != 0) {
     widget_t* target = WIDGET(widget_get_prop_pointer(view, PAGE_SAVE_TARGET_STRING));
     if (target != NULL) {
@@ -81,8 +83,10 @@ static ret_t pages_save_target(widget_t* widget) {
         uint32_t target_event_id = 0;
         pages->is_save = TRUE;
 
-        view_event_id = (uint32_t)widget_get_prop_int(active_view, VIEW_SAVE_VIEW_DESTROY_EVENT_ID_STRING, 0);
-        target_event_id = (uint32_t)widget_get_prop_int(active_view, VIEW_SAVE_TARGET_DESTROY_EVENT_ID_STRING, 0);
+        view_event_id =
+            (uint32_t)widget_get_prop_int(active_view, VIEW_SAVE_VIEW_DESTROY_EVENT_ID_STRING, 0);
+        target_event_id =
+            (uint32_t)widget_get_prop_int(active_view, VIEW_SAVE_TARGET_DESTROY_EVENT_ID_STRING, 0);
 
         if (view_event_id != 0) {
           widget_off(active_view, view_event_id);

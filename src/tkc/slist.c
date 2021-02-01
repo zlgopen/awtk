@@ -255,7 +255,7 @@ ret_t slist_insert(slist_t* slist, uint32_t index, void* data) {
   slist_node_t* prev = NULL;
   return_value_if_fail(slist != NULL, RET_BAD_PARAMS);
 
-  if(index == 0 || slist->first == NULL) {
+  if (index == 0 || slist->first == NULL) {
     return slist_prepend(slist, data);
   }
 
@@ -273,4 +273,3 @@ ret_t slist_insert(slist_t* slist, uint32_t index, void* data) {
 
   return RET_OK;
 }
-

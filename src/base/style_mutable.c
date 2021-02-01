@@ -256,10 +256,10 @@ ret_t style_mutable_remove_value(style_t* s, const char* state, const char* name
     style_item_t* iter = NULL;
     style_item_t* prev = NULL;
     style_item_t* remove_iter = NULL;
-     widget_state_style_t* current = widget_state_style_find(style->styles, state);
+    widget_state_style_t* current = widget_state_style_find(style->styles, state);
     if (current == NULL || current->items == NULL) {
       return RET_NOT_FOUND;
-    } 
+    }
     iter = current->items;
     while (iter) {
       if (tk_str_eq(iter->name, name)) {

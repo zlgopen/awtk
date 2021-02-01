@@ -782,8 +782,7 @@ ret_t widget_set_text(widget_t* widget, const wchar_t* text);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t widget_get_window_theme(widget_t* widget, theme_t** win_theme,
-                                     theme_t** default_theme);
+ret_t widget_get_window_theme(widget_t* widget, theme_t** win_theme, theme_t** default_theme);
 
 /**
  * @method widget_is_style_exist

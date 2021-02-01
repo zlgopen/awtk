@@ -27,8 +27,8 @@
 #include "scroll_view/scroll_bar.h"
 #include "scroll_view/scroll_view.h"
 
-#define LIST_VIEW_FLOATING_SCROLL_BAR_HIDE_TIME           500
-#define LIST_VIEW_FLOATING_SCROLL_BAR_SHOW_TIME           300
+#define LIST_VIEW_FLOATING_SCROLL_BAR_HIDE_TIME 500
+#define LIST_VIEW_FLOATING_SCROLL_BAR_SHOW_TIME 300
 
 static ret_t list_view_on_add_child(widget_t* widget, widget_t* child);
 static ret_t list_view_on_remove_child(widget_t* widget, widget_t* child);
@@ -60,8 +60,11 @@ static ret_t list_view_get_prop(widget_t* widget, const char* name, value_t* v) 
 
 static ret_t list_view_on_pointer_up(list_view_t* list_view, pointer_event_t* e) {
   scroll_bar_t* scroll_bar = (scroll_bar_t*)list_view->scroll_bar;
-  if (scroll_bar != NULL && scroll_bar->wa_opactiy == NULL && list_view->scroll_bar->visible && scroll_bar_is_mobile(list_view->scroll_bar)) {
-    scroll_bar_hide_by_opacity_animation(list_view->scroll_bar, LIST_VIEW_FLOATING_SCROLL_BAR_HIDE_TIME, LIST_VIEW_FLOATING_SCROLL_BAR_HIDE_TIME);
+  if (scroll_bar != NULL && scroll_bar->wa_opactiy == NULL && list_view->scroll_bar->visible &&
+      scroll_bar_is_mobile(list_view->scroll_bar)) {
+    scroll_bar_hide_by_opacity_animation(list_view->scroll_bar,
+                                         LIST_VIEW_FLOATING_SCROLL_BAR_HIDE_TIME,
+                                         LIST_VIEW_FLOATING_SCROLL_BAR_HIDE_TIME);
   }
   return RET_OK;
 }
@@ -101,11 +104,13 @@ static ret_t list_view_on_wheel_before(void* ctx, event_t* e) {
 
 static bool_t list_view_is_play_floating_scroll_bar_animtion(list_view_t* list_view) {
   scroll_view_t* scroll_view = NULL;
-  return_value_if_fail(list_view != NULL && list_view->scroll_bar != NULL && list_view->scroll_view != NULL, FALSE);
+  return_value_if_fail(
+      list_view != NULL && list_view->scroll_bar != NULL && list_view->scroll_view != NULL, FALSE);
   scroll_view = SCROLL_VIEW(list_view->scroll_view);
   return_value_if_fail(scroll_view != NULL, FALSE);
-  
-  if (list_view->floating_scroll_bar && list_view->scroll_bar->enable && scroll_view->virtual_h >= list_view->widget.h) {
+
+  if (list_view->floating_scroll_bar && list_view->scroll_bar->enable &&
+      scroll_view->virtual_h >= list_view->widget.h) {
     return TRUE;
   }
   return FALSE;
@@ -116,7 +121,8 @@ static ret_t list_view_on_pointer_leave(list_view_t* list_view) {
   if (list_view_is_play_floating_scroll_bar_animtion(list_view)) {
     widget_t* win = widget_get_window(WIDGET(list_view));
     list_view->is_over = FALSE;
-    scroll_bar_hide_by_opacity_animation(list_view->scroll_bar, LIST_VIEW_FLOATING_SCROLL_BAR_HIDE_TIME, 0);
+    scroll_bar_hide_by_opacity_animation(list_view->scroll_bar,
+                                         LIST_VIEW_FLOATING_SCROLL_BAR_HIDE_TIME, 0);
     if (list_view->wheel_before_id != TK_INVALID_ID) {
       widget_off(win, list_view->wheel_before_id);
       list_view->wheel_before_id = TK_INVALID_ID;
@@ -130,9 +136,11 @@ static ret_t list_view_on_pointer_enter(list_view_t* list_view) {
   if (list_view_is_play_floating_scroll_bar_animtion(list_view)) {
     widget_t* win = widget_get_window(WIDGET(list_view));
     list_view->is_over = TRUE;
-    scroll_bar_show_by_opacity_animation(list_view->scroll_bar, LIST_VIEW_FLOATING_SCROLL_BAR_SHOW_TIME, 0);
+    scroll_bar_show_by_opacity_animation(list_view->scroll_bar,
+                                         LIST_VIEW_FLOATING_SCROLL_BAR_SHOW_TIME, 0);
     if (list_view->wheel_before_id == TK_INVALID_ID) {
-      list_view->wheel_before_id = widget_on(win, EVT_WHEEL_BEFORE_CHILDREN, list_view_on_wheel_before, WIDGET(list_view));
+      list_view->wheel_before_id =
+          widget_on(win, EVT_WHEEL_BEFORE_CHILDREN, list_view_on_wheel_before, WIDGET(list_view));
     }
   }
   return RET_OK;
@@ -171,7 +179,7 @@ static ret_t list_view_on_event(widget_t* widget, event_t* e) {
       pointer_event_t* evt = (pointer_event_t*)e;
       list_view_on_pointer_up(list_view, evt);
       break;
-    } 
+    }
     case EVT_POINTER_LEAVE: {
       list_view_on_pointer_leave(list_view);
       break;

@@ -596,7 +596,7 @@ static ret_t vgcanvas_cairo_restore(vgcanvas_t* vgcanvas) {
 }
 
 static ret_t vgcanvas_cairo_create_fbo(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h,
-                                        bool_t custom_draw_model, framebuffer_object_t* fbo) {
+                                       bool_t custom_draw_model, framebuffer_object_t* fbo) {
   (void)vgcanvas;
   (void)fbo;
   (void)w;

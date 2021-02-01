@@ -25,8 +25,9 @@
 #include "base/style.h"
 
 ret_t style_notify_widget_state_changed(style_t* s, widget_t* widget) {
-  return_value_if_fail(s != NULL && s->vt != NULL && s->vt->notify_widget_state_changed != NULL && widget != NULL,
-                       RET_BAD_PARAMS);
+  return_value_if_fail(
+      s != NULL && s->vt != NULL && s->vt->notify_widget_state_changed != NULL && widget != NULL,
+      RET_BAD_PARAMS);
   return s->vt->notify_widget_state_changed(s, widget);
 }
 
@@ -35,7 +36,6 @@ uint32_t style_get_uint(style_t* s, const char* name, uint32_t defval) {
 
   return s->vt->get_uint(s, name, defval);
 }
-
 
 int32_t style_get_int(style_t* s, const char* name, int32_t defval) {
   return_value_if_fail(s != NULL && s->vt != NULL && s->vt->get_int != NULL, defval);
@@ -79,7 +79,8 @@ ret_t style_set(style_t* s, const char* state, const char* name, const value_t* 
 }
 
 ret_t style_set_style_data(style_t* s, const uint8_t* data, const char* state) {
-  return_value_if_fail(s != NULL && s->vt != NULL && s->vt->set_style_data != NULL && data != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(s != NULL && s->vt != NULL && s->vt->set_style_data != NULL && data != NULL,
+                       RET_BAD_PARAMS);
   return s->vt->set_style_data(s, data, state);
 }
 

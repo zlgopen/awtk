@@ -172,7 +172,7 @@ static ret_t on_resized_timer(const timer_info_t* info) {
   widget_t* wm = WIDGET(info->ctx);
   widget_set_need_relayout_children(wm);
   widget_invalidate_force(wm, NULL);
-  
+
   log_debug("on_resized_timer\n");
   return RET_REMOVE;
 }

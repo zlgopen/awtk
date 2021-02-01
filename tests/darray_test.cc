@@ -35,7 +35,7 @@ TEST(DArrayTest, insert) {
   ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 1)), 1);
   ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 2)), 2);
   ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 3)), 3);
-  
+
   ASSERT_EQ(darray_insert(&darray, 1, tk_pointer_from_int(111)), RET_OK);
   ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 1)), 111);
   ASSERT_EQ(tk_pointer_to_int(darray_get(&darray, 2)), 1);

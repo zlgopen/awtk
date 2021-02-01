@@ -229,7 +229,8 @@ ret_t text_selector_set_options(widget_t* widget, const char* options);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t text_selector_set_range_options_ex(widget_t* widget, int32_t start, uint32_t nr, int32_t step, const char* format);
+ret_t text_selector_set_range_options_ex(widget_t* widget, int32_t start, uint32_t nr, int32_t step,
+                                         const char* format);
 
 /**
  * @method text_selector_set_range_options

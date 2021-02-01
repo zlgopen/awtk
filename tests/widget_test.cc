@@ -507,7 +507,7 @@ TEST(Widget, update_style2) {
   widget_t* b = button_create(g, 1, 0, 10, 20);
 
   ASSERT_EQ(b->astyle == NULL, TRUE);
-  widget_use_style(b, "edit_clear");  
+  widget_use_style(b, "edit_clear");
   ASSERT_EQ(b->astyle == NULL, TRUE);
   widget_set_style_color(b, "bg_color", 0xff00ff00);
   ASSERT_EQ(b->astyle != NULL, TRUE);

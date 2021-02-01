@@ -27,13 +27,13 @@
 
 BEGIN_C_DECLS
 
-#define THEME_DEFAULT_STYLE_TYPE    "style_const"
+#define THEME_DEFAULT_STYLE_TYPE "style_const"
 
 struct _theme_t;
 typedef struct _theme_t theme_t;
 
-typedef const uint8_t* (*theme_find_style_t)(theme_t* theme, const char* widget_type, const char* name,
-                                const char* widget_state);
+typedef const uint8_t* (*theme_find_style_t)(theme_t* theme, const char* widget_type,
+                                             const char* name, const char* widget_state);
 typedef ret_t (*theme_destroy_t)(theme_t* theme);
 
 typedef ret_t (*theme_set_theme_data_t)(theme_t* theme, const uint8_t* data);

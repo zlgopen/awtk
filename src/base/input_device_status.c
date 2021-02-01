@@ -186,7 +186,8 @@ static const key_shift_t key_shift[] = {
     {'7', '&'}, {'8', '*'}, {'9', '('}, {'0', ')'},  {'-', '_'}, {'=', '+'}, {'[', '{'},
     {']', '}'}, {',', '<'}, {'.', '>'}, {'\\', '|'}, {'/', '?'}, {';', ':'}, {'\'', '\"'}};
 
-static uint32_t input_device_status_get_shift_key_code(input_device_status_t* ids, uint32_t old_key_code) {
+static uint32_t input_device_status_get_shift_key_code(input_device_status_t* ids,
+                                                       uint32_t old_key_code) {
   char c = (char)old_key_code;
 
   if (ids->shift) {

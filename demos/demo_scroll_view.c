@@ -30,7 +30,8 @@ widget_t* scroll_view = NULL;
 #define SCROLL_BAR_V_WIDGT_NAME "bar_v"
 #define BUTTON_SET_FOCUSE_STRING "focused:"
 
-static int32_t scroll_bar_value_to_scroll_view_offset_y(scroll_bar_t* scroll_bar, scroll_view_t* sv) {
+static int32_t scroll_bar_value_to_scroll_view_offset_y(scroll_bar_t* scroll_bar,
+                                                        scroll_view_t* sv) {
   int32_t range = 0;
   float_t percent = 0;
   range = scroll_bar->virtual_size;
@@ -38,7 +39,8 @@ static int32_t scroll_bar_value_to_scroll_view_offset_y(scroll_bar_t* scroll_bar
   return percent * (sv->virtual_h - sv->widget.h);
 }
 
-static int32_t scroll_bar_value_to_scroll_view_offset_x(scroll_bar_t* scroll_bar, scroll_view_t* sv) {
+static int32_t scroll_bar_value_to_scroll_view_offset_x(scroll_bar_t* scroll_bar,
+                                                        scroll_view_t* sv) {
   int32_t range = 0;
   float_t percent = 0;
   range = scroll_bar->virtual_size;
@@ -46,20 +48,22 @@ static int32_t scroll_bar_value_to_scroll_view_offset_x(scroll_bar_t* scroll_bar
   return percent * (sv->virtual_w - sv->widget.w);
 }
 
-static int32_t scroll_bar_value_from_scroll_view_offset_y(scroll_bar_t* scroll_bar, scroll_view_t* sv) {
+static int32_t scroll_bar_value_from_scroll_view_offset_y(scroll_bar_t* scroll_bar,
+                                                          scroll_view_t* sv) {
   int32_t range = 0;
   float_t percent = 0;
-  
+
   range = sv->virtual_h - sv->widget.h;
   percent = range > 0 ? (float_t)sv->yoffset / (float_t)range : 0;
 
   return percent * scroll_bar->virtual_size;
 }
 
-static int32_t scroll_bar_value_from_scroll_view_offset_x(scroll_bar_t* scroll_bar, scroll_view_t* sv) {
+static int32_t scroll_bar_value_from_scroll_view_offset_x(scroll_bar_t* scroll_bar,
+                                                          scroll_view_t* sv) {
   int32_t range = 0;
   float_t percent = 0;
-  
+
   range = sv->virtual_w - sv->widget.w;
   percent = range > 0 ? (float_t)sv->xoffset / (float_t)range : 0;
 
@@ -111,7 +115,8 @@ static ret_t install_one(void* ctx, const void* iter) {
   if (widget->name != NULL) {
     const char* name = widget->name;
     if (strstr(name, BUTTON_SET_FOCUSE_STRING) != NULL) {
-      widget_on(widget, EVT_CLICK, on_set_focuse_item, (void*)(name + tk_strlen(BUTTON_SET_FOCUSE_STRING)));
+      widget_on(widget, EVT_CLICK, on_set_focuse_item,
+                (void*)(name + tk_strlen(BUTTON_SET_FOCUSE_STRING)));
     } else if (tk_str_eq(name, SCROLL_BAR_H_WIDGT_NAME)) {
       bar_h = widget;
       widget_on(widget, EVT_VALUE_CHANGED, scroll_bar_value_changed, widget);

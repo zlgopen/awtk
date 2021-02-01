@@ -53,7 +53,8 @@ static const void* widget_get_const_style_data_for_state_impl(widget_t* widget,
   return data;
 }
 
-static const void* widget_get_const_style_data_for_style(widget_t* widget, style_t* s, const char* style_name) {
+static const void* widget_get_const_style_data_for_style(widget_t* widget, style_t* s,
+                                                         const char* style_name) {
   const void* data = NULL;
   style_const_t* style = (style_const_t*)s;
   data = widget_get_const_style_data_for_state_impl(widget, style_name, style->state);

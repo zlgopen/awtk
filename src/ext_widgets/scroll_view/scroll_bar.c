@@ -211,11 +211,11 @@ static ret_t scroll_bar_destop_get_dragger_size(widget_t* widget, rect_t* r) {
   }
 
   if (SCROLL_BAR_UP_AND_DOWN_BUTTON_STYLE_IS_EXIST(up, down)) {
-      if (widget_w > widget_h) {
-        button_margin = widget_h;
-      } else {
-        button_margin = widget_w;
-      }
+    if (widget_w > widget_h) {
+      button_margin = widget_h;
+    } else {
+      button_margin = widget_w;
+    }
   }
 
   value = scroll_bar->value;
@@ -365,7 +365,7 @@ static ret_t scroll_bar_on_layout_children(widget_t* widget) {
   } else {
     if (up != NULL) {
       widget_set_visible(up, FALSE);
-    } 
+    }
     if (down != NULL) {
       widget_set_visible(down, FALSE);
     }
@@ -708,7 +708,7 @@ ret_t scroll_bar_hide_by_opacity_animation(widget_t* widget, int32_t duration, i
   scroll_bar->wa_opactiy =
       widget_animator_opacity_create(widget, duration, delay, EASING_SIN_INOUT);
   widget_animator_on(scroll_bar->wa_opactiy, EVT_ANIM_END, scroll_bar_on_opactiy_animate_end,
-                      scroll_bar);
+                     scroll_bar);
   widget_animator_opacity_set_params(scroll_bar->wa_opactiy, widget->opacity, 0);
   widget_animator_start(scroll_bar->wa_opactiy);
   return RET_OK;
@@ -724,7 +724,7 @@ ret_t scroll_bar_show_by_opacity_animation(widget_t* widget, int32_t duration, i
   scroll_bar->wa_opactiy =
       widget_animator_opacity_create(widget, duration, delay, EASING_SIN_INOUT);
   widget_animator_on(scroll_bar->wa_opactiy, EVT_ANIM_END, scroll_bar_on_opactiy_animate_end,
-                      scroll_bar);
+                     scroll_bar);
   widget_animator_opacity_set_params(scroll_bar->wa_opactiy, widget->opacity, 0xff);
   widget_animator_start(scroll_bar->wa_opactiy);
   return RET_OK;

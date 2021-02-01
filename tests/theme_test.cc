@@ -131,7 +131,7 @@ TEST(Theme, basic) {
       for (uint32_t k = 0; k < name_nr; k++) {
         char name[32];
         snprintf(name, sizeof(name), "%d", k);
-        uint32_t v =  (uint32_t)style_get_int(s, name, 0);
+        uint32_t v = (uint32_t)style_get_int(s, name, 0);
         ASSERT_EQ(v, k);
       }
       ASSERT_EQ(style_destroy(s), RET_OK);

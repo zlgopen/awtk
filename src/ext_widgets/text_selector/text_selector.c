@@ -316,8 +316,8 @@ ret_t text_selector_parse_options(widget_t* widget, const char* str) {
   return RET_OK;
 }
 
-ret_t text_selector_set_range_options_ex(widget_t* widget, int32_t start, uint32_t nr,
-                                                int32_t step, const char* format) {
+ret_t text_selector_set_range_options_ex(widget_t* widget, int32_t start, uint32_t nr, int32_t step,
+                                         const char* format) {
   char text[64];
   uint32_t i = 0;
   return_value_if_fail(widget != NULL && nr < 300 && format != NULL, RET_BAD_PARAMS);

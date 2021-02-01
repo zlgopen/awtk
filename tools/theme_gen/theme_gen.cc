@@ -86,7 +86,7 @@ ret_t Style::Output(wbuffer_t* wbuffer) {
 
   size = uint_values.Size() + int_values.Size() + str_values.Size();
   log_debug("  size=%d widget_type=%s name=%s state=%s\n", size, this->widget_type.c_str(),
-         this->name.c_str(), this->state.c_str());
+            this->name.c_str(), this->state.c_str());
 
   wbuffer_write_uint32(wbuffer, size);
   int_values.WriteToWbuffer(wbuffer);
