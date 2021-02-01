@@ -47,7 +47,7 @@ typedef const char* (*theme_get_style_type_t)(theme_t* theme);
  * 负责管理缺省的主题数据，方便实现style\_const。
  *
  */
-typedef struct _theme_t {
+struct _theme_t {
   const uint8_t* data;
 
   theme_find_style_t find_style;
@@ -55,7 +55,7 @@ typedef struct _theme_t {
 
   theme_set_theme_data_t set_style_data;
   theme_get_style_type_t get_style_type;
-} theme_t;
+};
 
 /**
  * @method theme
