@@ -61,6 +61,30 @@ private:
     wbuffer_write_string(wbuffer, value.c_str());
     log_debug("    %s=%s\n", name.c_str(), value.c_str());
   }
+  
+  void write_value_header_to_wbuffer(wbuffer_t* wbuffer, uint32_t type, const string& name, uint32_t value) {
+    style_name_value_header_t nv;
+    nv.type = type;
+    nv.name_size = name.size() + 1;
+    nv.value_size = sizeof(value);
+    wbuffer_write_binary(wbuffer, &nv, sizeof(nv));
+  }
+
+  void write_value_header_to_wbuffer(wbuffer_t* wbuffer, uint32_t type, const string& name, int32_t value) {
+    style_name_value_header_t nv;
+    nv.type = type;
+    nv.name_size = name.size() + 1;
+    nv.value_size = sizeof(value);
+    wbuffer_write_binary(wbuffer, &nv, sizeof(nv));
+  }
+  
+  void write_value_header_to_wbuffer(wbuffer_t* wbuffer, uint32_t type, const string& name, const string& value) {
+    style_name_value_header_t nv;
+    nv.type = type;
+    nv.name_size = name.size() + 1;
+    nv.value_size = value.size() + 1;
+    wbuffer_write_binary(wbuffer, &nv, sizeof(nv));
+  }
 
 public:
   typedef T value_type;
@@ -96,17 +120,11 @@ public:
   }
 
   bool WriteToWbuffer(wbuffer_t* wbuffer) {
-    style_name_value_header_t nv;
     return_value_if_fail(wbuffer != NULL, false);
     for (iter_type i = this->values.begin(); i != this->values.end();
         i++) {
       const string& name = i->name;
-
-      nv.type = i->type;
-      nv.name_size = name.size() + 1;
-      nv.value_size = sizeof(value_type);
-
-      wbuffer_write_binary(wbuffer, &nv, sizeof(nv));
+      write_value_header_to_wbuffer(wbuffer, i->type, name, i->value);
       wbuffer_write_string(wbuffer, name.c_str());
       write_value_to_wbuffer(wbuffer, name, i->value);
     }
