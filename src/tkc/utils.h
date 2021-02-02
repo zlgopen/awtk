@@ -409,7 +409,7 @@ void* tk_pixel_copy(void* dst, const void* src, uint32_t size, uint8_t bpp);
  * @param {size_t} size 拷贝字节数。
  * @param {const char*} format 格式化字符串。
  *
- * @return {int} 返回格式化后的字符串长度+1。
+ * @return {int} 返回格式化后的字符串长度。
  */
 int tk_snprintf(char* str, size_t size, const char* format, ...);
 
@@ -423,7 +423,7 @@ int tk_snprintf(char* str, size_t size, const char* format, ...);
  * @param {const char*} format 格式化字符串。
  * @param {va_list} ap 可变参数。
  *
- * @return {int} 返回格式化后的字符串长度+1。
+ * @return {int} 返回格式化后的字符串长度。
  */
 int tk_vsnprintf(char* str, size_t size, const char* format, va_list ap);
 

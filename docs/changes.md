@@ -1,7 +1,8 @@
 # 最新动态
 
 2021/02/02
-  * 增加widget\_get\_style\_type和style\_update\_state
+  * 修改注释错误（感谢网友QQ631757707提供补丁）
+  * 增加widget\_get\_style\_type和style\_update\_state（感谢智明提供补丁）
 
 2021/02/01
   * 完善文档（感谢忠吉提供补丁）。
