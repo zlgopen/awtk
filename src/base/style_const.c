@@ -97,9 +97,10 @@ static ret_t style_const_apply_layout(style_t* s, widget_t* widget) {
 
 static ret_t style_const_notify_widget_state_changed(style_t* s, widget_t* widget) {
   const char* state = NULL;
+  const void* old_data = NULL;
   style_const_t* style = (style_const_t*)s;
-  const void* old_data = style->data;
   return_value_if_fail(style != NULL && widget != NULL, RET_BAD_PARAMS);
+  old_data = style->data;
   state = widget_get_prop_str(widget, WIDGET_PROP_STATE_FOR_STYLE, widget->state);
   style->state = tk_str_copy(style->state, state);
   style->data = widget_get_const_style_data(widget, s);
@@ -111,31 +112,40 @@ static ret_t style_const_notify_widget_state_changed(style_t* s, widget_t* widge
   return RET_OK;
 }
 
-bool_t style_const_is_valid(style_t* s) {
+static ret_t style_const_update_state(style_t* s, theme_t* theme, const char* widget_type, const char* style_name, const char* widget_state) {
+  style_const_t* style = (style_const_t*)s; 
+  const uint8_t* data = theme_find_style(theme, widget_type, style_name, widget_state);
+  return_value_if_fail(data != NULL, RET_NOT_FOUND);
+  style->data = data;
+  style->state = tk_str_copy(style->state, widget_state);
+  return RET_OK;
+}
+
+static bool_t style_const_is_valid(style_t* s) {
   style_const_t* style = (style_const_t*)s;
 
   return style->data != NULL;
 }
 
-int32_t style_const_get_int(style_t* s, const char* name, int32_t defval) {
+static int32_t style_const_get_int(style_t* s, const char* name, int32_t defval) {
   style_const_t* style = (style_const_t*)s;
 
   return style_data_get_int(style->data, name, defval);
 }
 
-uint32_t style_const_get_uint(style_t* s, const char* name, uint32_t defval) {
+static uint32_t style_const_get_uint(style_t* s, const char* name, uint32_t defval) {
   style_const_t* style = (style_const_t*)s;
 
   return style_data_get_uint(style->data, name, defval);
 }
 
-color_t style_const_get_color(style_t* s, const char* name, color_t defval) {
+static color_t style_const_get_color(style_t* s, const char* name, color_t defval) {
   style_const_t* style = (style_const_t*)s;
 
   return style_data_get_color(style->data, name, defval);
 }
 
-const char* style_const_get_str(style_t* s, const char* name, const char* defval) {
+static const char* style_const_get_str(style_t* s, const char* name, const char* defval) {
   style_const_t* style = (style_const_t*)s;
 
   return style_data_get_str(style->data, name, defval);
@@ -153,13 +163,13 @@ static ret_t style_const_set_style_data(style_t* s, const uint8_t* data, const c
   return RET_OK;
 }
 
-const char* style_const_get_style_state(style_t* s) {
+static const char* style_const_get_style_state(style_t* s) {
   style_const_t* style = (style_const_t*)s;
   return_value_if_fail(style != NULL, NULL);
   return style->state;
 }
 
-const char* style_const_get_style_type(style_t* s) {
+static const char* style_const_get_style_type(style_t* s) {
   style_const_t* style = (style_const_t*)s;
   return_value_if_fail(style != NULL, NULL);
   return THEME_DEFAULT_STYLE_TYPE;
@@ -182,6 +192,7 @@ static const style_vtable_t style_const_vt = {
     .is_mutable = FALSE,
     .is_valid = style_const_is_valid,
     .notify_widget_state_changed = style_const_notify_widget_state_changed,
+    .update_state = style_const_update_state,
     .get_int = style_const_get_int,
     .get_uint = style_const_get_uint,
     .get_str = style_const_get_str,

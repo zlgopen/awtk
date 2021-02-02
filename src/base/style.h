@@ -23,6 +23,7 @@
 #define TK_STYLE_H
 
 #include "tkc/color.h"
+#include "base/theme.h"
 #include "base/widget_consts.h"
 
 BEGIN_C_DECLS
@@ -290,6 +291,7 @@ typedef const char* (*style_get_str_t)(style_t* s, const char* name, const char*
 typedef ret_t (*style_set_t)(style_t* s, const char* state, const char* name, const value_t* value);
 
 typedef ret_t (*style_notify_widget_state_changed_t)(style_t* s, widget_t* widget);
+typedef ret_t (*style_update_state_t)(style_t* s, theme_t* theme, const char* widget_type, const char* style_name, const char* widget_state);
 
 typedef ret_t (*style_destroy_t)(style_t* s);
 
@@ -304,6 +306,7 @@ typedef struct _style_vtable_t {
   style_get_uint_t get_uint;
   style_get_str_t get_str;
   style_get_color_t get_color;
+  style_update_state_t update_state;
   style_notify_widget_state_changed_t notify_widget_state_changed;
 
   style_set_t set;
@@ -426,6 +429,21 @@ ret_t style_set(style_t* s, const char* state, const char* name, const value_t* 
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t style_set_style_data(style_t* s, const uint8_t* data, const char* state);
+
+/**
+ * @method style_update_state
+ * 更新风格对象的状态以及对应的数据
+ * 备注：根据 widget_type 和 style_name 以及 widget_state 在 theme 对象中查找对应的数据并且更新到 style 对象中
+ * @annotation ["scriptable"]
+ * @param {style_t*} s style对象。
+ * @param {theme_t*} theme theme对象。
+ * @param {const char*} widget_type 控件的类型名。
+ * @param {const char*} style_name style的名称。
+ * @param {const char*} widget_state 控件的状态。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t style_update_state(style_t* s, theme_t* theme, const char* widget_type, const char* style_name, const char* widget_state);
 
 /**
  * @method style_get_style_state

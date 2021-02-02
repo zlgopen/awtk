@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/02/02
+  * 增加widget\_get\_style\_type和style\_update\_state
+
 2021/02/01
   * 完善文档（感谢忠吉提供补丁）。
   * 修复theme\_t重定义的问题（感谢雨欣提供补丁）。

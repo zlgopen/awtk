@@ -162,7 +162,13 @@ static ret_t style_mutable_notify_widget_state_changed(style_t* s, widget_t* wid
   return style_notify_widget_state_changed(style->default_style, widget);
 }
 
-bool_t style_mutable_is_valid(style_t* s) {
+static ret_t style_mutable_update_state(style_t* s, theme_t* theme, const char* widget_type, const char* style_name, const char* widget_state) {
+  style_mutable_t* style = STYLE_MUTABLE(s);
+  return_value_if_fail(style != NULL, RET_BAD_PARAMS);
+  return style_update_state(style->default_style, theme, widget_type, style_name, widget_state);
+}
+
+static bool_t style_mutable_is_valid(style_t* s) {
   widget_state_style_t* current = NULL;
   style_mutable_t* style = STYLE_MUTABLE(s);
   const char* state = style_get_style_state(s);
@@ -441,6 +447,7 @@ static const style_vtable_t style_mutable_vt = {
     .is_mutable = TRUE,
     .is_valid = style_mutable_is_valid,
     .notify_widget_state_changed = style_mutable_notify_widget_state_changed,
+    .update_state = style_mutable_update_state,
     .get_uint = style_mutable_get_uint,
     .get_int = style_mutable_get_int,
     .get_str = style_mutable_get_str,

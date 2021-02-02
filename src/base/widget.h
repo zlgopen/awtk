@@ -2287,6 +2287,16 @@ widget_t* widget_create(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_
                         wh_t h);
 
 /**
+ * @method widget_get_style_type
+ * 获取 widget 对应风格类型
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ *
+ * @return {const char*} 返回 widget 的对应风格类型。
+ */
+const char* widget_get_style_type(widget_t* widget);
+
+/**
  * @method widget_update_style
  * 让控件根据自己当前状态更新style。
  * @annotation ["scriptable"]

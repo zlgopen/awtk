@@ -814,7 +814,7 @@ ret_t widget_destroy_children(widget_t* widget) {
   return RET_OK;
 }
 
-static const char* widget_get_style_type(widget_t* widget) {
+const char* widget_get_style_type(widget_t* widget) {
   theme_t* win_theme = NULL;
   theme_t* default_theme = NULL;
   const char* style_type = THEME_DEFAULT_STYLE_TYPE;
