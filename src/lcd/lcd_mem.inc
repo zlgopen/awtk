@@ -346,6 +346,7 @@ static ret_t lcd_mem_resize(lcd_t* lcd, wh_t w, wh_t h, uint32_t line_length) {
   lcd->w = w;
   lcd->h = h;
   mem->line_length = tk_max(mem->base.w * bpp, line_length);
+  vgcanvas_clip_rect(mem->vgcanvas, 0, 0, w, h);
 
   return RET_OK;
 }
