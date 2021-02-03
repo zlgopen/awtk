@@ -61,6 +61,43 @@ typedef struct _window_base_t {
   char* theme;
 
   /**
+   * @property {uint16_t} design_w
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 设计时宽度。
+   */
+  uint16_t design_w;
+  /**
+   * @property {uint16_t} design_h
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 设计时高度。
+   */
+  uint16_t design_h;
+  /**
+   * @property {bool_t} auto_scale_x
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 窗口大小与设计时大小不同时，是否自动调整子控件的x坐标。
+   */
+  uint16_t auto_scale_x : 1;
+  /**
+   * @property {bool_t} auto_scale_y
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 窗口大小与设计时大小不同时，是否自动调整子控件的y坐标。
+   */
+  uint16_t auto_scale_y : 1;
+  /**
+   * @property {bool_t} auto_scale_w
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 窗口大小与设计时大小不同时，是否自动调整子控件的宽度。
+   */
+  uint16_t auto_scale_w : 1;
+  /**
+   * @property {bool_t} auto_scale_h
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 窗口大小与设计时大小不同时，是否自动调整子控件的高度。
+   */
+  uint16_t auto_scale_h : 1;
+
+  /**
    * @property {bool_t} disable_anim
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 禁用窗口动画。

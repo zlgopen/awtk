@@ -1,9 +1,10 @@
 # 最新动态
 
-2021/02/02
+2021/02/03
   * 修复缺少 SDL 线程函数的声明的问题（感谢智明提供补丁）
   * 修复改变 lcd 的大小后 vg 的裁剪区没有修改的问题（感谢智明提供补丁）
   * 修复 page 控件套 pages 控件的时候释放子 pages 控件导致父 pages 控件的 target 为野指针的问题（感谢智明提供补丁）
+  * 窗口增加design\_w/design\_h/auto\_scale\_x/auto\_scale\_y/auto\_scale\_w/auto\_scale\_h等参数。
 
 2021/02/02
   * 修改注释错误（感谢网友QQ631757707提供补丁）

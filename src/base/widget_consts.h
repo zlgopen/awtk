@@ -66,6 +66,42 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_H "h"
 
 /**
+ * @const WIDGET_PROP_DESIGN_W
+ * 窗口设计时宽度。
+ */
+#define WIDGET_PROP_DESIGN_W "design_w"
+
+/**
+ * @const WIDGET_PROP_DESIGN_H
+ * 窗口设计时宽度。
+ */
+#define WIDGET_PROP_DESIGN_H "design_h"
+
+/**
+ * @const WIDGET_PROP_AUTO_SCALE_X
+ * 窗口大小与设计时大小不同时，是否自动调整子控件的x坐标。
+ */
+#define WIDGET_PROP_AUTO_SCALE_X "auto_scale_x"
+
+/**
+ * @const WIDGET_PROP_AUTO_SCALE_Y
+ * 窗口大小与设计时大小不同时，是否自动调整子控件的y坐标。
+ */
+#define WIDGET_PROP_AUTO_SCALE_Y "auto_scale_y"
+
+/**
+ * @const WIDGET_PROP_AUTO_SCALE_W
+ * 窗口大小与设计时大小不同时，是否自动调整子控件的宽度。
+ */
+#define WIDGET_PROP_AUTO_SCALE_W "auto_scale_w"
+
+/**
+ * @const WIDGET_PROP_AUTO_SCALE_H
+ * 窗口大小与设计时大小不同时，是否自动调整子控件的高度。
+ */
+#define WIDGET_PROP_AUTO_SCALE_H "auto_scale_h"
+
+/**
  * @const WIDGET_PROP_INPUTING
  * inputing。
  */
