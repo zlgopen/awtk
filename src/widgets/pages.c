@@ -64,6 +64,10 @@ static ret_t pages_on_save_view_destroy(void* ctx, event_t* evt) {
   return RET_REMOVE;
 }
 
+static bool_t pages_target_is_page(widget_t* target) {
+  return target->vt != NULL && tk_str_eq(target->vt->type, WIDGET_TYPE_PAGES);
+}
+
 static ret_t pages_save_target(widget_t* widget) {
   widget_t* target = NULL;
   pages_t* pages = PAGES(widget);
@@ -76,6 +80,9 @@ static ret_t pages_save_target(widget_t* widget) {
       target = active_view;
       while (target->key_target != NULL) {
         target = target->key_target;
+        if (pages_target_is_page(target)) {
+          break;
+        }
       }
 
       if (target != NULL) {
@@ -160,14 +167,18 @@ static ret_t pages_restore_target(widget_t* widget) {
     if (target == NULL || target->parent == NULL) {
       target = active_view;
     }
-    widget_on(target, EVT_DESTROY, pages_on_restore_target_destroy, pages);
-    if (pages->target != NULL) {
-      widget_off_by_ctx(pages->target, pages);
-    }
+    if (pages_target_is_page(target)) {
+      pages_restore_target(target);
+    } else {
+      widget_on(target, EVT_DESTROY, pages_on_restore_target_destroy, pages);
+      if (pages->target != NULL) {
+        widget_off_by_ctx(pages->target, pages);
+      }
 
-    pages->target = target;
-    if (pages->focused_idle_id == TK_INVALID_ID) {
-      pages->focused_idle_id = idle_add(pages_on_idle_set_target_focused, widget);
+      pages->target = target;
+      if (pages->focused_idle_id == TK_INVALID_ID) {
+        pages->focused_idle_id = idle_add(pages_on_idle_set_target_focused, widget);
+      }
     }
   }
 
