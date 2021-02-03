@@ -268,9 +268,8 @@ static int entry(void* arg) {
   return 0;
 }
 
-extern SDL_Thread *
-SDL_CreateThreadInternal(int (SDLCALL * fn) (void *), const char *name,
-                         const size_t stacksize, void *data);
+extern SDL_Thread* SDL_CreateThreadInternal(int(SDLCALL* fn)(void*), const char* name,
+                                            const size_t stacksize, void* data);
 
 ret_t tk_thread_start(tk_thread_t* thread) {
   return_value_if_fail(thread != NULL, RET_BAD_PARAMS);

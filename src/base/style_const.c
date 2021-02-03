@@ -112,8 +112,9 @@ static ret_t style_const_notify_widget_state_changed(style_t* s, widget_t* widge
   return RET_OK;
 }
 
-static ret_t style_const_update_state(style_t* s, theme_t* theme, const char* widget_type, const char* style_name, const char* widget_state) {
-  style_const_t* style = (style_const_t*)s; 
+static ret_t style_const_update_state(style_t* s, theme_t* theme, const char* widget_type,
+                                      const char* style_name, const char* widget_state) {
+  style_const_t* style = (style_const_t*)s;
   const uint8_t* data = theme_find_style(theme, widget_type, style_name, widget_state);
   return_value_if_fail(data != NULL, RET_NOT_FOUND);
   style->data = data;

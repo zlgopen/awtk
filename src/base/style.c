@@ -31,9 +31,9 @@ ret_t style_notify_widget_state_changed(style_t* s, widget_t* widget) {
   return s->vt->notify_widget_state_changed(s, widget);
 }
 
-ret_t style_update_state(style_t* s, theme_t* theme, const char* widget_type, const char* style_name, const char* widget_state) {
-  return_value_if_fail(s != NULL && s->vt != NULL && s->vt->update_state != NULL,
-                       RET_BAD_PARAMS);
+ret_t style_update_state(style_t* s, theme_t* theme, const char* widget_type,
+                         const char* style_name, const char* widget_state) {
+  return_value_if_fail(s != NULL && s->vt != NULL && s->vt->update_state != NULL, RET_BAD_PARAMS);
   return s->vt->update_state(s, theme, widget_type, style_name, widget_state);
 }
 

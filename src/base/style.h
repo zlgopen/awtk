@@ -291,7 +291,8 @@ typedef const char* (*style_get_str_t)(style_t* s, const char* name, const char*
 typedef ret_t (*style_set_t)(style_t* s, const char* state, const char* name, const value_t* value);
 
 typedef ret_t (*style_notify_widget_state_changed_t)(style_t* s, widget_t* widget);
-typedef ret_t (*style_update_state_t)(style_t* s, theme_t* theme, const char* widget_type, const char* style_name, const char* widget_state);
+typedef ret_t (*style_update_state_t)(style_t* s, theme_t* theme, const char* widget_type,
+                                      const char* style_name, const char* widget_state);
 
 typedef ret_t (*style_destroy_t)(style_t* s);
 
@@ -443,7 +444,8 @@ ret_t style_set_style_data(style_t* s, const uint8_t* data, const char* state);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t style_update_state(style_t* s, theme_t* theme, const char* widget_type, const char* style_name, const char* widget_state);
+ret_t style_update_state(style_t* s, theme_t* theme, const char* widget_type,
+                         const char* style_name, const char* widget_state);
 
 /**
  * @method style_get_style_state
