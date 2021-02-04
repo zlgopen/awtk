@@ -4,6 +4,7 @@
   * 增加函数str\_decode\_hex (感谢林福提供)。
   * 增加函数 window\_set\_auto\_scale\_children。
   * 重命名 auto\_scale\_xxx 为 auto\_scale\_children\_xxx。
+  * 增加 network\_interface 接口及linux平台实现(感谢国文提供)。
   * 增加[《如何根据实际分辨率自动调整窗口中子控件的位置大小》](how_to_auto_scale_children.md)
 
 2021/02/03
