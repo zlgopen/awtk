@@ -1,4 +1,8 @@
-<window anim_hint="htranslate" text="Draggable">
+<window anim_hint="htranslate" text="Draggable"
+  design_w="320" design_h="480" 
+  auto_scale_children_x="true" auto_scale_children_y="true" 
+  auto_scale_children_w="true" auto_scale_children_h="true" >
+
   <button text="Drag Me" w="80" h="40" x="10" y="10">
     <draggable />
   </button>

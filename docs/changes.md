@@ -1,23 +1,24 @@
 # 最新动态
 
 2021/02/04
-  * 重命名auto\_scale\_xxx 为 auto\_scale\_children\_xxx
-  * 增加函数window\_set\_auto\_scale\_children。
-
+  * 重命名 auto\_scale\_xxx 为 auto\_scale\_children\_xxx
+  * 增加函数 window\_set\_auto\_scale\_children。
+  * 增加[《如何根据实际分辨率自动调整窗口中子控件的位置大小》](how_to_auto_scale_children.md)
+  
 2021/02/03
   * 修复缺少 SDL 线程函数的声明的问题（感谢智明提供补丁）
   * 修复改变 lcd 的大小后 vg 的裁剪区没有修改的问题（感谢智明提供补丁）
-  * 修复digit_clock 控件在后台窗口无法刷新的问题（感谢雨欣提供补丁）。
+  * 修复 digit_clock 控件在后台窗口无法刷新的问题（感谢雨欣提供补丁）。
   * 修复 page 控件套 pages 控件的时候释放子 pages 控件导致父 pages 控件的 target 为野指针的问题（感谢智明提供补丁）
-  * 窗口增加design\_w/design\_h/auto\_scale\_x/auto\_scale\_y/auto\_scale\_w/auto\_scale\_h等参数。
+  * 窗口增加 design\_w/design\_h/auto\_scale\_x/auto\_scale\_y/auto\_scale\_w/auto\_scale\_h 等参数。
 
 2021/02/02
-  * 修改注释错误（感谢网友QQ631757707提供补丁）
-  * 增加widget\_get\_style\_type和style\_update\_state（感谢智明提供补丁）
+  * 修改注释错误（感谢网友 QQ631757707 提供补丁）
+  * 增加 widget\_get\_style\_type 和 style\_update\_state（感谢智明提供补丁）
 
 2021/02/01
   * 完善文档（感谢忠吉提供补丁）。
-  * 修复theme\_t重定义的问题（感谢雨欣提供补丁）。
+  * 修复 theme\_t 重定义的问题（感谢雨欣提供补丁）。
   * 修复打包主题工具打包字符串的时候偏移值出错的问题（感谢智明提供补丁）
 
 2021/01/31

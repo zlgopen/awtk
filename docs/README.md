@@ -84,6 +84,7 @@
 * [如何使用多点触控手势算法](how_to_use_multi_gesture.md)
 * [如何隐藏滚动条的上下按钮](how_to_hide_up_down_button_of_scrollbar.md)
 * [如何使用 packed 图](how_to_use_packed_image.md)
+* [如何根据实际分辨率自动调整窗口中子控件的位置大小](how_to_auto_scale_children.md)
 
 ### 3. 内部原理
 * [AWTK 脚本绑定原理](script_binding.md)
