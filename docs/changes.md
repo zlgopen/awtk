@@ -1,5 +1,9 @@
 # 最新动态
 
+2021/02/04
+  * 重命名auto\_scale\_xxx 为 auto\_scale\_children\_xxx
+  * 增加函数window\_set\_auto\_scale\_children。
+
 2021/02/03
   * 修复缺少 SDL 线程函数的声明的问题（感谢智明提供补丁）
   * 修复改变 lcd 的大小后 vg 的裁剪区没有修改的问题（感谢智明提供补丁）

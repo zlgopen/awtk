@@ -184,17 +184,17 @@ ret_t window_base_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_DESIGN_H)) {
     value_set_uint32(v, window_base->design_h);
     return RET_OK;
-  } else if (tk_str_eq(name, WIDGET_PROP_AUTO_SCALE_X)) {
-    value_set_bool(v, window_base->auto_scale_x);
+  } else if (tk_str_eq(name, WIDGET_PROP_AUTO_SCALE_CHILDREN_X)) {
+    value_set_bool(v, window_base->auto_scale_children_x);
     return RET_OK;
-  } else if (tk_str_eq(name, WIDGET_PROP_AUTO_SCALE_Y)) {
-    value_set_bool(v, window_base->auto_scale_y);
+  } else if (tk_str_eq(name, WIDGET_PROP_AUTO_SCALE_CHILDREN_Y)) {
+    value_set_bool(v, window_base->auto_scale_children_y);
     return RET_OK;
-  } else if (tk_str_eq(name, WIDGET_PROP_AUTO_SCALE_W)) {
-    value_set_bool(v, window_base->auto_scale_w);
+  } else if (tk_str_eq(name, WIDGET_PROP_AUTO_SCALE_CHILDREN_W)) {
+    value_set_bool(v, window_base->auto_scale_children_w);
     return RET_OK;
-  } else if (tk_str_eq(name, WIDGET_PROP_AUTO_SCALE_H)) {
-    value_set_bool(v, window_base->auto_scale_h);
+  } else if (tk_str_eq(name, WIDGET_PROP_AUTO_SCALE_CHILDREN_H)) {
+    value_set_bool(v, window_base->auto_scale_children_h);
     return RET_OK;
   }
 
@@ -252,17 +252,17 @@ ret_t window_base_set_prop(widget_t* widget, const char* name, const value_t* v)
   } else if (tk_str_eq(name, WIDGET_PROP_DESIGN_H)) {
     window_base->design_h = value_uint32(v);
     return RET_OK;
-  } else if (tk_str_eq(name, WIDGET_PROP_AUTO_SCALE_X)) {
-    window_base->auto_scale_x = value_bool(v);
+  } else if (tk_str_eq(name, WIDGET_PROP_AUTO_SCALE_CHILDREN_X)) {
+    window_base->auto_scale_children_x = value_bool(v);
     return RET_OK;
-  } else if (tk_str_eq(name, WIDGET_PROP_AUTO_SCALE_Y)) {
-    window_base->auto_scale_y = value_bool(v);
+  } else if (tk_str_eq(name, WIDGET_PROP_AUTO_SCALE_CHILDREN_Y)) {
+    window_base->auto_scale_children_y = value_bool(v);
     return RET_OK;
-  } else if (tk_str_eq(name, WIDGET_PROP_AUTO_SCALE_W)) {
-    window_base->auto_scale_w = value_bool(v);
+  } else if (tk_str_eq(name, WIDGET_PROP_AUTO_SCALE_CHILDREN_W)) {
+    window_base->auto_scale_children_w = value_bool(v);
     return RET_OK;
-  } else if (tk_str_eq(name, WIDGET_PROP_AUTO_SCALE_H)) {
-    window_base->auto_scale_h = value_bool(v);
+  } else if (tk_str_eq(name, WIDGET_PROP_AUTO_SCALE_CHILDREN_H)) {
+    window_base->auto_scale_children_h = value_bool(v);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_CLOSABLE)) {
     if (v->type == VALUE_TYPE_STRING) {
@@ -335,28 +335,28 @@ typedef struct _auto_resize_info_t {
   widget_t* window;
   float hscale;
   float vscale;
-  bool_t auto_scale_x;
-  bool_t auto_scale_y;
-  bool_t auto_scale_w;
-  bool_t auto_scale_h;
+  bool_t auto_scale_children_x;
+  bool_t auto_scale_children_y;
+  bool_t auto_scale_children_w;
+  bool_t auto_scale_children_h;
 } auto_resize_info_t;
 
-static ret_t window_base_auto_scale_child(void* ctx, const void* data) {
+static ret_t window_base_auto_scale_children_child(void* ctx, const void* data) {
   auto_resize_info_t* info = (auto_resize_info_t*)ctx;
   widget_t* widget = WIDGET(data);
 
   if (widget != info->window) {
     if (widget->parent->children_layout == NULL && widget->self_layout == NULL) {
-      if (info->auto_scale_x) {
+      if (info->auto_scale_children_x) {
         widget->x *= info->hscale;
       }
-      if (info->auto_scale_w) {
+      if (info->auto_scale_children_w) {
         widget->w *= info->hscale;
       }
-      if (info->auto_scale_y) {
+      if (info->auto_scale_children_y) {
         widget->y *= info->vscale;
       }
-      if (info->auto_scale_h) {
+      if (info->auto_scale_children_h) {
         widget->h *= info->vscale;
       }
     }
@@ -368,18 +368,33 @@ static ret_t window_base_auto_scale_child(void* ctx, const void* data) {
 static ret_t window_base_auto_scale_children(widget_t* widget) {
   auto_resize_info_t info;
   window_base_t* win = WINDOW_BASE(widget);
+  return_value_if_fail(win->design_w > 0 && win->design_h > 0, RET_BAD_PARAMS);
 
   info.window = widget;
   info.hscale = (float)(win->widget.w) / (float)(win->design_w);
   info.vscale = (float)(win->widget.h) / (float)(win->design_h);
-  info.auto_scale_x = win->auto_scale_x;
-  info.auto_scale_y = win->auto_scale_y;
-  info.auto_scale_w = win->auto_scale_w;
-  info.auto_scale_h = win->auto_scale_h;
+  info.auto_scale_children_x = win->auto_scale_children_x;
+  info.auto_scale_children_y = win->auto_scale_children_y;
+  info.auto_scale_children_w = win->auto_scale_children_w;
+  info.auto_scale_children_h = win->auto_scale_children_h;
 
-  widget_foreach(widget, window_base_auto_scale_child, &info);
+  widget_foreach(widget, window_base_auto_scale_children_child, &info);
 
   return RET_OK;
+}
+
+ret_t window_set_auto_scale_children(widget_t* widget, uint32_t design_w, uint32_t design_h) {
+  window_base_t* base = WINDOW_BASE(widget);
+  return_value_if_fail(base != NULL && design_w > 0 && design_h > 0, RET_BAD_PARAMS);
+
+  base->design_w = design_w;
+  base->design_h = design_h;
+  base->auto_scale_children_x = TRUE;
+  base->auto_scale_children_y = TRUE;
+  base->auto_scale_children_w = TRUE;
+  base->auto_scale_children_h = TRUE;
+
+  return window_base_auto_scale_children(widget);
 }
 
 ret_t window_base_on_event(widget_t* widget, event_t* e) {
@@ -398,7 +413,8 @@ ret_t window_base_on_event(widget_t* widget, event_t* e) {
     }
   } else if (e->type == EVT_WINDOW_LOAD) {
     if (win->design_w && win->design_h) {
-      if (win->auto_scale_x || win->auto_scale_y || win->auto_scale_w || win->auto_scale_h) {
+      if (win->auto_scale_children_x || win->auto_scale_children_y || win->auto_scale_children_w ||
+          win->auto_scale_children_h) {
         window_base_auto_scale_children(widget);
       }
     }

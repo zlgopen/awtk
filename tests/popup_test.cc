@@ -29,7 +29,7 @@ TEST(Popup, basic) {
   widget_destroy(w);
 }
 
-TEST(Popup, auto_scale_x) {
+TEST(Popup, auto_scale_children_x) {
   widget_t* w = popup_create(NULL, 0, 0, 400, 600);
   widget_t* b = button_create(w, 10, 20, 30, 40);
 
@@ -41,9 +41,9 @@ TEST(Popup, auto_scale_x) {
   ASSERT_EQ(widget_set_prop_int(w, WIDGET_PROP_DESIGN_H, 300), RET_OK);
   ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_DESIGN_H, 0), 300);
 
-  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_AUTO_SCALE_X, TRUE), FALSE);
-  ASSERT_EQ(widget_set_prop_bool(w, WIDGET_PROP_AUTO_SCALE_X, TRUE), RET_OK);
-  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_AUTO_SCALE_X, FALSE), TRUE);
+  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_AUTO_SCALE_CHILDREN_X, TRUE), FALSE);
+  ASSERT_EQ(widget_set_prop_bool(w, WIDGET_PROP_AUTO_SCALE_CHILDREN_X, TRUE), RET_OK);
+  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_AUTO_SCALE_CHILDREN_X, FALSE), TRUE);
 
   widget_dispatch_simple_event(w, EVT_WINDOW_LOAD);
   ASSERT_EQ(b->x, 20);
@@ -54,7 +54,7 @@ TEST(Popup, auto_scale_x) {
   widget_destroy(w);
 }
 
-TEST(Popup, auto_scale_xy) {
+TEST(Popup, auto_scale_children_xy) {
   widget_t* w = popup_create(NULL, 0, 0, 400, 600);
   widget_t* b = button_create(w, 10, 20, 30, 40);
 
@@ -66,13 +66,13 @@ TEST(Popup, auto_scale_xy) {
   ASSERT_EQ(widget_set_prop_int(w, WIDGET_PROP_DESIGN_H, 300), RET_OK);
   ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_DESIGN_H, 0), 300);
 
-  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_AUTO_SCALE_X, TRUE), FALSE);
-  ASSERT_EQ(widget_set_prop_bool(w, WIDGET_PROP_AUTO_SCALE_X, TRUE), RET_OK);
-  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_AUTO_SCALE_X, FALSE), TRUE);
+  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_AUTO_SCALE_CHILDREN_X, TRUE), FALSE);
+  ASSERT_EQ(widget_set_prop_bool(w, WIDGET_PROP_AUTO_SCALE_CHILDREN_X, TRUE), RET_OK);
+  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_AUTO_SCALE_CHILDREN_X, FALSE), TRUE);
 
-  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_AUTO_SCALE_Y, TRUE), FALSE);
-  ASSERT_EQ(widget_set_prop_bool(w, WIDGET_PROP_AUTO_SCALE_Y, TRUE), RET_OK);
-  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_AUTO_SCALE_Y, FALSE), TRUE);
+  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_AUTO_SCALE_CHILDREN_Y, TRUE), FALSE);
+  ASSERT_EQ(widget_set_prop_bool(w, WIDGET_PROP_AUTO_SCALE_CHILDREN_Y, TRUE), RET_OK);
+  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_AUTO_SCALE_CHILDREN_Y, FALSE), TRUE);
 
   widget_dispatch_simple_event(w, EVT_WINDOW_LOAD);
   ASSERT_EQ(b->x, 20);
@@ -83,7 +83,7 @@ TEST(Popup, auto_scale_xy) {
   widget_destroy(w);
 }
 
-TEST(Popup, auto_scale_xywh) {
+TEST(Popup, auto_scale_children_xywh) {
   widget_t* w = popup_create(NULL, 0, 0, 400, 600);
   widget_t* b = button_create(w, 10, 20, 30, 40);
 
@@ -95,21 +95,21 @@ TEST(Popup, auto_scale_xywh) {
   ASSERT_EQ(widget_set_prop_int(w, WIDGET_PROP_DESIGN_H, 300), RET_OK);
   ASSERT_EQ(widget_get_prop_int(w, WIDGET_PROP_DESIGN_H, 0), 300);
 
-  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_AUTO_SCALE_X, TRUE), FALSE);
-  ASSERT_EQ(widget_set_prop_bool(w, WIDGET_PROP_AUTO_SCALE_X, TRUE), RET_OK);
-  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_AUTO_SCALE_X, FALSE), TRUE);
+  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_AUTO_SCALE_CHILDREN_X, TRUE), FALSE);
+  ASSERT_EQ(widget_set_prop_bool(w, WIDGET_PROP_AUTO_SCALE_CHILDREN_X, TRUE), RET_OK);
+  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_AUTO_SCALE_CHILDREN_X, FALSE), TRUE);
 
-  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_AUTO_SCALE_Y, TRUE), FALSE);
-  ASSERT_EQ(widget_set_prop_bool(w, WIDGET_PROP_AUTO_SCALE_Y, TRUE), RET_OK);
-  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_AUTO_SCALE_Y, FALSE), TRUE);
+  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_AUTO_SCALE_CHILDREN_Y, TRUE), FALSE);
+  ASSERT_EQ(widget_set_prop_bool(w, WIDGET_PROP_AUTO_SCALE_CHILDREN_Y, TRUE), RET_OK);
+  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_AUTO_SCALE_CHILDREN_Y, FALSE), TRUE);
 
-  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_AUTO_SCALE_W, TRUE), FALSE);
-  ASSERT_EQ(widget_set_prop_bool(w, WIDGET_PROP_AUTO_SCALE_W, TRUE), RET_OK);
-  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_AUTO_SCALE_W, FALSE), TRUE);
+  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_AUTO_SCALE_CHILDREN_W, TRUE), FALSE);
+  ASSERT_EQ(widget_set_prop_bool(w, WIDGET_PROP_AUTO_SCALE_CHILDREN_W, TRUE), RET_OK);
+  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_AUTO_SCALE_CHILDREN_W, FALSE), TRUE);
 
-  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_AUTO_SCALE_H, TRUE), FALSE);
-  ASSERT_EQ(widget_set_prop_bool(w, WIDGET_PROP_AUTO_SCALE_H, TRUE), RET_OK);
-  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_AUTO_SCALE_H, FALSE), TRUE);
+  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_AUTO_SCALE_CHILDREN_H, TRUE), FALSE);
+  ASSERT_EQ(widget_set_prop_bool(w, WIDGET_PROP_AUTO_SCALE_CHILDREN_H, TRUE), RET_OK);
+  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_AUTO_SCALE_CHILDREN_H, FALSE), TRUE);
 
   widget_dispatch_simple_event(w, EVT_WINDOW_LOAD);
   ASSERT_EQ(b->x, 20);
