@@ -168,15 +168,9 @@ static ret_t popup_on_event(widget_t* widget, event_t* e) {
   return window_base_on_event(widget, e);
 }
 
-static const char* const s_popup_properties[] = {WIDGET_PROP_ANIM_HINT,
-                                                 WIDGET_PROP_OPEN_ANIM_HINT,
-                                                 WIDGET_PROP_CLOSE_ANIM_HINT,
-                                                 WIDGET_PROP_THEME,
-                                                 WIDGET_PROP_CLOSE_WHEN_CLICK,
+static const char* const s_popup_properties[] = {WIDGET_PROP_CLOSE_WHEN_CLICK,
                                                  WIDGET_PROP_CLOSE_WHEN_CLICK_OUTSIDE,
-                                                 WIDGET_PROP_MOVE_FOCUS_PREV_KEY,
-                                                 WIDGET_PROP_MOVE_FOCUS_NEXT_KEY,
-                                                 NULL};
+                                                 WIDGET_PROP_CLOSE_WHEN_TIMEOUT, NULL};
 
 TK_DECL_VTABLE(popup) = {.size = sizeof(popup_t),
                          .type = WIDGET_TYPE_POPUP,

@@ -503,7 +503,34 @@ ret_t window_close(widget_t* widget) {
   return window_manager_close_window(widget->parent, widget);
 }
 
-TK_DECL_VTABLE(window_base) = {.size = sizeof(window_base_t), .parent = TK_PARENT_VTABLE(widget)};
+static const char* s_window_base_properties[] = {WIDGET_PROP_ANIM_HINT,
+                                                 WIDGET_PROP_OPEN_ANIM_HINT,
+                                                 WIDGET_PROP_DISABLE_ANIM,
+                                                 WIDGET_PROP_NATIVE_WINDOW,
+                                                 WIDGET_PROP_CLOSE_ANIM_HINT,
+                                                 WIDGET_PROP_THEME,
+                                                 WIDGET_PROP_MOVE_FOCUS_PREV_KEY,
+                                                 WIDGET_PROP_MOVE_FOCUS_NEXT_KEY,
+                                                 WIDGET_PROP_MOVE_FOCUS_UP_KEY,
+                                                 WIDGET_PROP_MOVE_FOCUS_DOWN_KEY,
+                                                 WIDGET_PROP_MOVE_FOCUS_LEFT_KEY,
+                                                 WIDGET_PROP_MOVE_FOCUS_RIGHT_KEY,
+                                                 WIDGET_PROP_SINGLE_INSTANCE,
+                                                 WIDGET_PROP_DESIGN_W,
+                                                 WIDGET_PROP_DESIGN_H,
+                                                 WIDGET_PROP_AUTO_SCALE_CHILDREN_X,
+                                                 WIDGET_PROP_AUTO_SCALE_CHILDREN_Y,
+                                                 WIDGET_PROP_AUTO_SCALE_CHILDREN_W,
+                                                 WIDGET_PROP_AUTO_SCALE_CHILDREN_H,
+                                                 WIDGET_PROP_CLOSABLE,
+                                                 NULL};
+
+TK_DECL_VTABLE(window_base) = {
+    .size = sizeof(window_base_t),
+    .parent = TK_PARENT_VTABLE(widget),
+    .clone_properties = s_window_base_properties,
+    .persistent_properties = s_window_base_properties,
+};
 
 widget_t* window_base_cast(widget_t* widget) {
   return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, window_base), NULL);
