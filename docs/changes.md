@@ -1,6 +1,7 @@
 # 最新动态
 
 2021/02/04
+  * 重构pages（感谢智明提供补丁）
   * 增加函数str\_decode\_hex (感谢林福提供)。
   * 增加函数 window\_set\_auto\_scale\_children。
   * 重命名 auto\_scale\_xxx 为 auto\_scale\_children\_xxx。

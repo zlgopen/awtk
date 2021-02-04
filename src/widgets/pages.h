@@ -23,6 +23,7 @@
 #define TK_PAGES_H
 
 #include "base/widget.h"
+#include "tkc/str.h"
 
 BEGIN_C_DECLS
 
@@ -66,7 +67,7 @@ typedef struct _pages_t {
   /* private */
   uint32_t init_idle_id;
   uint32_t focused_idle_id;
-  widget_t* target;
+  str_t str_target;
   bool_t is_save;
 } pages_t;
 
