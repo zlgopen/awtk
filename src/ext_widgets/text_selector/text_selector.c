@@ -352,7 +352,7 @@ ret_t text_selector_set_options(widget_t* widget, const char* options) {
     if (nr < 3) {
       tk_strncpy(format, "%d", sizeof(format) - 1);
     } else {
-      const char* f = strchr(format, '-');
+      char* f = strchr(format, '-');
       if (f != NULL) {
         int p = f - format;
         step = tk_atoi(f + 1);

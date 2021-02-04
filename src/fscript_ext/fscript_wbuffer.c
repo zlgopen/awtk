@@ -33,7 +33,7 @@ static ret_t func_wbuffer_attach(fscript_t* fscript, fscript_args_t* args, value
   FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
   FSCRIPT_FUNC_CHECK(fargs_get_data_and_size(args, &data, &size) == RET_OK, RET_BAD_PARAMS);
 
-  value_set_object(result, object_wbuffer_create(data, size));
+  value_set_object(result, object_wbuffer_create((uint8_t*)data, size));
   result->free_handle = TRUE;
 
   return RET_OK;

@@ -277,7 +277,6 @@ ret_t widget_get_window_theme(widget_t* widget, theme_t** win_theme, theme_t** d
 }
 
 bool_t widget_is_style_exist(widget_t* widget, const char* style_name, const char* state_name) {
-  value_t v;
   const void* data = NULL;
   const char* style = NULL;
   const char* state = NULL;

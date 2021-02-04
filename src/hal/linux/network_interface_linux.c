@@ -19,12 +19,6 @@
  *
  */
 
-#include "tkc/mem.h"
-#include "tkc/utils.h"
-#include "tkc/object_default.h"
-#include "network_interface.h"
-#include <stdio.h>
-#include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/ioctl.h>
@@ -34,6 +28,11 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <net/if.h>
+
+#include "tkc/mem.h"
+#include "tkc/utils.h"
+#include "tkc/object_default.h"
+#include "hal/network_interface.h"
 
 typedef struct _network_interface_linux_t {
   network_interface_t network_interface;

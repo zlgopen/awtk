@@ -396,7 +396,6 @@ static ret_t style_mutable_state_style_free(widget_state_style_t* witer) {
 }
 
 ret_t style_mutable_reset(style_t* s) {
-  style_item_t* iter = NULL;
   widget_state_style_t* witer = NULL;
   style_mutable_t* style = STYLE_MUTABLE(s);
   return_value_if_fail(style != NULL, RET_BAD_PARAMS);

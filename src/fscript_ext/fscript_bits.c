@@ -71,7 +71,7 @@ static ret_t func_lshift(fscript_t* fscript, fscript_args_t* args, value_t* resu
     }
   }
 
-  return RET_OK;
+  return ret;
 }
 
 static ret_t func_rshift(fscript_t* fscript, fscript_args_t* args, value_t* result) {
@@ -123,7 +123,7 @@ static ret_t func_rshift(fscript_t* fscript, fscript_args_t* args, value_t* resu
     }
   }
 
-  return RET_OK;
+  return ret;
 }
 
 static ret_t func_bit_set(fscript_t* fscript, fscript_args_t* args, value_t* result) {
@@ -191,7 +191,7 @@ static ret_t func_bit_set(fscript_t* fscript, fscript_args_t* args, value_t* res
     }
   }
 
-  return RET_OK;
+  return ret;
 }
 
 static ret_t func_bit_clear(fscript_t* fscript, fscript_args_t* args, value_t* result) {
@@ -259,7 +259,7 @@ static ret_t func_bit_clear(fscript_t* fscript, fscript_args_t* args, value_t* r
     }
   }
 
-  return RET_OK;
+  return ret;
 }
 
 static ret_t func_bit_toggle(fscript_t* fscript, fscript_args_t* args, value_t* result) {
@@ -327,7 +327,7 @@ static ret_t func_bit_toggle(fscript_t* fscript, fscript_args_t* args, value_t* 
     }
   }
 
-  return RET_OK;
+  return ret;
 }
 
 static ret_t func_bit_get(fscript_t* fscript, fscript_args_t* args, value_t* result) {
@@ -395,7 +395,7 @@ static ret_t func_bit_get(fscript_t* fscript, fscript_args_t* args, value_t* res
     }
   }
 
-  return RET_OK;
+  return ret;
 }
 
 static ret_t func_bit_and(fscript_t* fscript, fscript_args_t* args, value_t* result) {
