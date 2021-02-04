@@ -690,3 +690,24 @@ ret_t str_encode_hex(str_t* str, const uint8_t* data, uint32_t size, const char*
 
   return RET_OK;
 }
+
+ret_t str_decode_hex(str_t* str, uint8_t* data, uint32_t size) {
+  uint8_t* dend = data + size;
+  char* p;
+  char v[3];
+  return_value_if_fail(str != NULL && data != NULL, RET_BAD_PARAMS);
+
+  for (p = str->str; p < str->str + str->size && data < dend; p += 2) {
+    while (p[0] == ' ') {
+      p++;
+    }
+    if (p[0] == '0' && (p[1] == 'x' || p[1] == 'X')) {
+      p += 2;
+    }
+    tk_strncpy(v, p, 2);
+    *data = tk_strtol(v, 0, 16);
+    data++;
+  }
+
+  return RET_OK;
+}

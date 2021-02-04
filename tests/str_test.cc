@@ -358,3 +358,28 @@ TEST(Str, encode_hex_sep1) {
   ASSERT_STREQ(s->str, "0x01 0x01 0x0A 0x2A ");
   str_reset(s);
 }
+TEST(Str, decode_hex) {
+  str_t str;
+  ret_t ret;
+  uint8_t data[6];
+
+  memset(data, 0, sizeof(data));
+  str_init(&str, 100);
+  str_append(&str, "fF fe 12    0x65");
+  str_decode_hex(&str, data, sizeof(data));
+  ASSERT_TRUE(data[0] == 0xff && data[1] == 0xfe && data[2] == 0x12 && data[3] == 0x65);
+
+  str_append(&str, "ya    e8");
+  str_decode_hex(&str, data, sizeof(data));
+  ASSERT_TRUE(data[0] == 0xff && data[1] == 0xfe && data[2] == 0x12 && data[3] == 0x65);
+  ASSERT_TRUE(data[4] == 0 && data[5] == 0xe8);
+
+  ret = str_append(&str, "6b  33");
+  ASSERT_EQ(ret, RET_OK);
+  str_decode_hex(&str, data, sizeof(data));
+  ASSERT_TRUE(data[0] == 0xff && data[1] == 0xfe && data[2] == 0x12 && data[3] == 0x65);
+  ASSERT_TRUE(data[4] == 0);
+  ASSERT_EQ(data[5], 0xe8);
+
+  str_reset(&str);
+}

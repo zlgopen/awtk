@@ -414,6 +414,17 @@ ret_t str_to_float(str_t* str, double* v);
 ret_t str_encode_hex(str_t* str, const uint8_t* data, uint32_t size, const char* format);
 
 /**
+ * @method str_encode_hex
+ * 把16进制格式的字符串解码成字符串。
+ * @param {str_t*} str str对象。
+ * @param {uint8_t*} data 数据缓存区(返回)。
+ * @param {uint32_t} size 数据最大长度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t str_decode_hex(str_t* str, uint8_t* data, uint32_t size);
+
+/**
  * @method str_end_with
  * 判断字符串是否以指定的子串结尾。
  * @param {str_t*} str str对象。
