@@ -356,7 +356,7 @@ ret_t text_selector_set_options(widget_t* widget, const char* options) {
       if (f != NULL) {
         int p = f - format;
         step = tk_atoi(f + 1);
-        memset(f, 0x0, sizeof(format) - p);
+        memset((void*)f, 0x0, sizeof(format) - p);
       }
     }
 
