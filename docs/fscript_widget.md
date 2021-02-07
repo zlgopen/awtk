@@ -433,37 +433,31 @@ widget_set(widget, path.prop, value)
 > 设置当前控件的 value
 
 ```
-widset_set(self, value, 12)
+widget_set(self, value, 12)
 ```
 
 > 设置当前控件下名为 bar 控件的 value
 
 ```
-widset_set(self, bar.value, 12)
+widget_set(self, bar.value, 12)
 ```
 
 > 设置当前控件的父控件下名为 bar 控件的 value
 
 ```
-widset_set(self, bar.value, "abcd")
-```
-
-> 设置当前控件的父控件下名为 bar 控件的 value
-
-```
-widset_set(parent, bar.value, 1.2)
+widget_set(parent, bar.value, 1.2)
 ```
 
 > 设置当前窗口下名为 bar 控件的 value
 
 ```
-widset_set(window, bar.value, "hello")
+widget_set(window, bar.value, "hello")
 ```
 
 > 设置当前窗口下名为 view 控件下名为 bar 控件的 value
 
 ```
-widset_set(window, view.bar.value, 12)
+widget_set(window, view.bar.value, 12)
 ```
 
 ### 5.10 widget_create
