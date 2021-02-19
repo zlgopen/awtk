@@ -88,7 +88,6 @@ static ret_t lcd_sdl2_flush(lcd_t* lcd) {
     bitmap_init(&src, lcd->w, lcd->h, special->format, special->lcd_mem->offline_fb);
     image_copy(&dst, &src, dr, dr->x, dr->y);
     SDL_UnlockTexture(info->texture);
-    log_debug("dirty_rect: %d %d %d %d\n", dr->x, dr->y, dr->w, dr->h);
 
     SDL_RenderCopy(info->render, info->texture, &sr, &sr);
 
