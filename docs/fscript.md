@@ -191,6 +191,24 @@ if(a < b) {
 }
 ```
 
+else if
+
+```
+var b = "";
+
+if(a == 1) {
+  b = "a"
+} else if(a == 2) {
+  b = "b"
+} else if(a == 3) {
+  b = "c"
+} else if(a == 4) {
+  b = "d"
+} else {
+  b = "other"
+}
+```
+
 > 代码块需要用 {} 扩起来，else 语句可以省略。
 
 * 函数方式

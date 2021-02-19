@@ -845,14 +845,26 @@ static ret_t fexpr_parse_block(fscript_parser_t* parser, fscript_func_call_t* ac
   return RET_OK;
 }
 
+static ret_t fexpr_parse_function(fscript_parser_t* parser, value_t* result);
+
 static ret_t fexpr_parse_if(fscript_parser_t* parser, fscript_func_call_t* acall) {
   token_t* t = NULL;
   fexpr_parse_block(parser, acall);
   t = fscript_parser_get_token(parser);
 
   if (t != NULL && t->type == TOKEN_ID && tk_str_eq(t->token, "else")) {
-    fscript_parser_expect_token(parser, TOKEN_LBRACKET, "expect \"{\"");
-    return fexpr_parse_block(parser, acall);
+    t = fscript_parser_get_token(parser);
+    if (t != NULL && t->type == TOKEN_FUNC && tk_str_eq(t->token, "if")) {
+      value_t result;
+      fscript_parser_unget_token(parser);
+      fexpr_parse_function(parser, &result);
+      func_args_push(&(acall->args), &result);
+      return RET_OK;
+    } else {
+      fscript_parser_unget_token(parser);
+      fscript_parser_expect_token(parser, TOKEN_LBRACKET, "expect \"{\"");
+      return fexpr_parse_block(parser, acall);
+    }
   } else {
     fscript_parser_unget_token(parser);
     return RET_OK;
