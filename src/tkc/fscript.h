@@ -92,6 +92,7 @@ typedef struct _fscript_t {
   fscript_func_call_t* error_func;
   bool_t breaked;
   bool_t continued;
+  bool_t returned;
   uint8_t while_count;
 } fscript_t;
 

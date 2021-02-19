@@ -268,7 +268,13 @@ static ret_t fscript_eval_arg(fscript_t* fscript, fscript_func_call_t* iter, uin
           s->type = save_type;
           return RET_OK;
         }
+      } else if (tk_str_eq(name, "return")) {
+        fscript->returned = TRUE;
+        s->type = save_type;
+        value_set_int(d, 0);
+        return RET_OK;
       }
+
       if (fscript_get_var(fscript, name, d) != RET_OK) {
         if (name == NULL || *name != '$') {
           /*if it is not $var, consider id as string*/
@@ -354,7 +360,8 @@ static ret_t fscript_exec_ext_func(fscript_t* fscript, fscript_func_call_t* iter
   return_value_if_fail((args.args != NULL || args.size == 0), RET_OOM);
   for (i = 0; i < iter->args.size; i++) {
     ret = fscript_eval_arg(fscript, iter, i, args.args + i);
-    if (fscript->breaked || fscript->continued) {
+    if (fscript->breaked || fscript->continued || fscript->returned) {
+      value_set_int(result, 0);
       func_args_deinit(&args);
       return RET_OK;
     }
@@ -387,6 +394,9 @@ ret_t fscript_exec(fscript_t* fscript, value_t* result) {
     return_value_if_fail(iter->func != NULL, RET_FAIL);
     value_reset(result);
     return_value_if_fail(fscript_exec_func(fscript, iter, result) == RET_OK, RET_FAIL);
+    if (fscript->returned) {
+      break;
+    }
     iter = iter->next;
   }
 

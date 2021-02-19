@@ -1,6 +1,7 @@
 # 最新动态
 
 2021/02/19
+  * fscript支持return语句。
   * fscript支持else if语句。
 
 2021/02/05

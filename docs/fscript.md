@@ -173,6 +173,18 @@ print(join(",", 1, 2, 3))
 print(join(",",1,2,3,4), join(";",5,6,7,8))
 ```
 
+### 提前返回(return)
+
+```
+var a = 1;
+if(a == 1) {
+  print("return");
+  return;
+} else {
+  print("end");
+}
+```
+
 ### 条件执行
 
 * 语句方式
