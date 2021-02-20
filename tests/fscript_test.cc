@@ -159,6 +159,45 @@ TEST(FScript, number) {
   OBJECT_UNREF(obj);
 }
 
+TEST(FScript, one_of) {
+  value_t v;
+  object_t* obj = object_default_create();
+
+  fscript_eval(obj, "one_of(\"aa;bb;cc\", 0)", &v);
+  ASSERT_STREQ("aa", value_str(&v));
+  value_reset(&v);
+
+  fscript_eval(obj, "one_of(\"aa;bb;cc\", 1)", &v);
+  ASSERT_STREQ("bb", value_str(&v));
+  value_reset(&v);
+
+  fscript_eval(obj, "one_of(\"aa;bb;cc\", 2)", &v);
+  ASSERT_STREQ("cc", value_str(&v));
+  value_reset(&v);
+
+  fscript_eval(obj, "one_of(\"aa;bb;cc\", 3)", &v);
+  ASSERT_STREQ("", value_str(&v));
+  value_reset(&v);
+
+  fscript_eval(obj, "one_of(\"aa.bb.cc\", 0,\".\")", &v);
+  ASSERT_STREQ("aa", value_str(&v));
+  value_reset(&v);
+
+  fscript_eval(obj, "one_of(\"aa.bb.cc\", 1,\".\")", &v);
+  ASSERT_STREQ("bb", value_str(&v));
+  value_reset(&v);
+
+  fscript_eval(obj, "one_of(\"aa.bb.cc\", 2,\".\")", &v);
+  ASSERT_STREQ("cc", value_str(&v));
+  value_reset(&v);
+
+  fscript_eval(obj, "one_of(\"aa.bb.cc\", 3,\".\")", &v);
+  ASSERT_STREQ("", value_str(&v));
+  value_reset(&v);
+
+  OBJECT_UNREF(obj);
+}
+
 TEST(FScript, if1) {
   value_t v;
   object_t* obj = object_default_create();

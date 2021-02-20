@@ -1402,6 +1402,51 @@ static ret_t func_str(fscript_t* fscript, fscript_args_t* args, value_t* result)
   return RET_OK;
 }
 
+static ret_t func_one_of(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  char sep = ';';
+  int32_t index = 0;
+  const char* strs = NULL;
+  const char* start = NULL;
+
+  value_set_str(result, "");
+  FSCRIPT_FUNC_CHECK(args->size >= 2, RET_BAD_PARAMS);
+  FSCRIPT_FUNC_CHECK(args->args[0].type == VALUE_TYPE_STRING, RET_BAD_PARAMS);
+  strs = value_str(args->args);
+  FSCRIPT_FUNC_CHECK(strs != NULL, RET_BAD_PARAMS);
+
+  if (args->size > 2 && args->args[2].type == VALUE_TYPE_STRING) {
+    const char* p = value_str(args->args + 2);
+    if (p != NULL) {
+      sep = *p;
+    }
+  }
+
+  start = strs;
+  index = value_int(args->args + 1);
+
+  while (index > 0) {
+    while (*start && *start != sep) {
+      start++;
+    }
+    if (*start == '\0') {
+      break;
+    }
+    index--;
+    start++;
+  }
+
+  if (start != NULL) {
+    const char* end = strchr(start, sep);
+    if (end != NULL) {
+      value_dup_str_with_len(result, start, end - start);
+    } else {
+      value_dup_str(result, start);
+    }
+  }
+
+  return RET_OK;
+}
+
 static ret_t func_join(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   uint32_t i = 0;
   char buff[64];
@@ -1874,6 +1919,7 @@ static const func_entry_t s_builtin_funcs[] = {
     {"and", func_and, 2},
     {"exec", func_exec, 2},
     {"join", func_join, 8},
+    {"one_of", func_one_of, 3},
     {"if", func_if, 3},
     {"while", func_while, 10},
     {"int", func_int, 1},

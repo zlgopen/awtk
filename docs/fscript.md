@@ -728,6 +728,30 @@ join(seperator, s1, s2, s3...) => str
 join(",", 1, 2, 3, "abc")
 ```
 
+#### one_of
+
+> 从字符串数组中取出第N个字符串
+
+----------------------------
+
+##### 原型
+
+```
+one_of(str_array, index, sep) => str
+```
+> sep为分隔符，默认为英文分号(;)。
+
+#### 示例
+
+```
+one_of("aa;bb;cc", 0) # => aa
+one_of("aa;bb;cc", 1) # => bb
+one_of("aa;bb;cc", 2) # => cc
+
+one_of("aa.bb.cc", 0, ".") # ==> aa
+
+```
+
 #### len
 
 > 取字符串的长度。
