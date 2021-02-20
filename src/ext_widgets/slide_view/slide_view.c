@@ -24,8 +24,11 @@
 #include "base/timer.h"
 #include "tkc/easing.h"
 #include "slide_view/slide_view.h"
+#include "widgets/default_focused_child.inc"
 #include "widget_animators/widget_animator_scroll.h"
 
+static ret_t slide_view_save_target(widget_t* widget);
+static ret_t slide_view_restore_target(widget_t* widget);
 static ret_t slide_view_set_active_no_animate(widget_t* widget, uint32_t active);
 
 static bool_t anim_hint_is_overlap(slide_view_t* slide_view) {
@@ -241,7 +244,11 @@ static ret_t slide_view_on_event(widget_t* widget, event_t* e) {
   }
 
   switch (type) {
-    case EVT_POINTER_DOWN:
+    case EVT_BLUR: {
+      slide_view_save_target(widget);
+      break;
+    }
+    case EVT_POINTER_DOWN: {
       slide_view->pressed = TRUE;
       widget_grab(widget->parent, widget);
       slide_view_on_pointer_down(slide_view, (pointer_event_t*)e);
@@ -249,6 +256,7 @@ static ret_t slide_view_on_event(widget_t* widget, event_t* e) {
       slide_view->next = slide_view_get_next(slide_view);
 
       break;
+    }
     case EVT_POINTER_UP: {
       if (slide_view->pressed) {
         if (slide_view->dragged) {
@@ -703,12 +711,19 @@ TK_DECL_VTABLE(slide_view) = {.size = sizeof(slide_view_t),
                               .on_paint_self = slide_view_on_paint_self,
                               .on_destroy = slide_view_on_destroy};
 
-static ret_t slide_view_on_target_destroy(void* ctx, event_t* evt) {
-  widget_t* view = WIDGET(ctx);
+static ret_t slide_view_on_idle_init_save_target(const idle_info_t* idle) {
+  slide_view_t* slide_view = NULL;
+  return_value_if_fail(idle != NULL, RET_BAD_PARAMS);
+  slide_view = SLIDE_VIEW(idle->ctx);
 
-  widget_set_prop_pointer(view, "save_target", NULL);
+  slide_view_restore_target(WIDGET(slide_view));
+  slide_view->init_idle_id = TK_INVALID_ID;
 
-  return RET_REMOVE;
+  return RET_OK;
+}
+
+static bool_t slide_view_target_is_slide_view(widget_t* target) {
+  return target->vt != NULL && tk_str_eq(target->vt->type, WIDGET_TYPE_SLIDE_VIEW);
 }
 
 static ret_t slide_view_save_target(widget_t* widget) {
@@ -725,10 +740,22 @@ static ret_t slide_view_save_target(widget_t* widget) {
     }
 
     if (target != NULL) {
-      widget_set_prop_pointer(active_view, "save_target", target);
-      widget_on(target, EVT_DESTROY, slide_view_on_target_destroy, active_view);
+      default_focused_child_set_save_target(widget, active_view, slide_view_target_is_slide_view);
     }
   }
+
+  return RET_OK;
+}
+
+
+static ret_t slide_view_on_idle_set_target_focused(const idle_info_t* idle) {
+  slide_view_t* slide_view = NULL;
+  return_value_if_fail(idle != NULL, RET_BAD_PARAMS);
+  slide_view = SLIDE_VIEW(idle->ctx);
+
+  default_focused_child_set_target_focused(&(slide_view->str_target), WIDGET(slide_view));
+
+  slide_view->focused_idle_id = TK_INVALID_ID;
 
   return RET_OK;
 }
@@ -741,31 +768,17 @@ static ret_t slide_view_restore_target(widget_t* widget) {
   active_view = widget_get_child(widget, slide_view->active);
 
   if (active_view != NULL) {
-    target = WIDGET(widget_get_prop_pointer(active_view, "save_target"));
+    target = default_focused_child_get_save_target(widget, active_view);
 
-    if (target == NULL || target->parent == NULL) {
-      const char* default_focused_child =
-          widget_get_prop_str(active_view, "default_focused_child", NULL);
-      if (default_focused_child != NULL) {
-        target = widget_lookup(active_view, default_focused_child, TRUE);
-        if (target == NULL) {
-          target = widget_lookup_by_type(active_view, default_focused_child, TRUE);
-        }
-      }
-    }
-
-    if (target == NULL || target->parent == NULL) {
+    if (target == NULL || target->parent == NULL || target == widget) {
       target = active_view;
     }
-    widget_off_by_func(target, EVT_DESTROY, slide_view_on_target_destroy, active_view);
-
-    log_debug("target=%s\n", target->vt->type);
-    while (target->parent != NULL) {
-      target->parent->target = target;
-      target->parent->key_target = target;
-      target = target->parent;
-      if (target == widget) {
-        break;
+    if (slide_view_target_is_slide_view(target)) {
+      slide_view_restore_target(target);
+    } else {
+      default_focused_child_save_target_to_string(&(slide_view->str_target), target, widget);
+      if (slide_view->focused_idle_id == TK_INVALID_ID) {
+        slide_view->focused_idle_id = idle_add(slide_view_on_idle_set_target_focused, widget);
       }
     }
   }
@@ -876,6 +889,9 @@ widget_t* slide_view_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   slide_view->loop = FALSE;
   slide_view->auto_play = 0;
   slide_view->vertical = FALSE;
+
+  str_init(&(slide_view->str_target), DEFAULT_FOCUSED_CHILD_SAVE_TARGET_TAG_LENGT);
+  slide_view->init_idle_id = idle_add(slide_view_on_idle_init_save_target, widget);
 
   return widget;
 }

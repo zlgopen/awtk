@@ -122,6 +122,11 @@ typedef struct _slide_view_t {
   bool_t pressed;
   velocity_t velocity;
 
+  /* for save focused child */
+  str_t str_target;
+  uint32_t init_idle_id;
+  uint32_t focused_idle_id;
+
   /*for animation*/
   widget_t* prev;
   widget_t* next;
