@@ -302,6 +302,19 @@ TEST(Ini, last_first) {
   conf_doc_destroy(doc);
 }
 
+TEST(Ini, empty) {
+  value_t v;
+  conf_doc_t* doc = conf_doc_load_ini("[hello]\na=\nb=2\nc=3\n");
+  ASSERT_EQ(conf_doc_get(doc, "hello.a", &v), RET_OK);
+  ASSERT_STREQ(value_str(&v), "");
+  ASSERT_EQ(conf_doc_get(doc, "hello.b", &v), RET_OK);
+  ASSERT_STREQ(value_str(&v), "2");
+  ASSERT_EQ(conf_doc_get(doc, "hello.c", &v), RET_OK);
+  ASSERT_STREQ(value_str(&v), "3");
+
+  conf_doc_destroy(doc);
+}
+
 TEST(Ini, move_up) {
   value_t v;
   conf_doc_t* doc = conf_doc_load_ini("[hello]\n[ world ]\n[awtk]\nname=aaa\n");

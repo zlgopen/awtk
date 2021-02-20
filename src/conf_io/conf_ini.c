@@ -126,9 +126,14 @@ conf_doc_t* conf_doc_load_ini(const char* data) {
         break;
       }
       case STATE_BEFORE_VALUE: {
-        if (!isspace(c)) {
+        if (c != ' ' && c != '\t') {
           state = STATE_VALUE;
-          str_set_with_len(s, &c, 1);
+          if (c == '\r' || c == '\n') {
+            str_set(s, "");
+            p -= 1;
+          } else {
+            str_set_with_len(s, &c, 1);
+          }
         }
 
         break;
