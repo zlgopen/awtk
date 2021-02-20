@@ -470,6 +470,7 @@
 
 ret_t assets_init(void) {
   assets_manager_t* am = assets_manager();
+  assets_manager_set_theme(am, "default");
 
 #ifdef WITH_FS_RES
   assets_manager_preload(am, ASSET_TYPE_FONT, "default");

@@ -830,8 +830,9 @@ def gen_assets_c_of_one_theme(with_multi_theme = True):
     result += '\n'
 
     result += 'ret_t ' + func_name + '(void) {\n'
-    result += '  assets_manager_t* am = assets_manager();\n\n'
-    result += ''
+    result += '  assets_manager_t* am = assets_manager();\n'
+    result += '  assets_manager_set_theme(am, "' + THEME + '");\n'
+    result += '\n'
 
     result += '#ifdef WITH_FS_RES\n'
     result += '  assets_manager_preload(am, ASSET_TYPE_FONT, "default");\n'
