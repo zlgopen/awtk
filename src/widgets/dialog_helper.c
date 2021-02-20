@@ -22,6 +22,7 @@
 #include "widgets/label.h"
 #include "base/dialog.h"
 #include "widgets/button.h"
+#include "base/style_factory.h"
 #include "widgets/dialog_title.h"
 #include "widgets/dialog_client.h"
 
@@ -83,7 +84,29 @@ static ret_t dialog_get_size_limits(rect_t* r) {
   return RET_OK;
 }
 
-static widget_t* dialog_create_label(const char* text) {
+static ret_t dialog_create_label_load_style(widget_t* widget, const char* theme_name) {
+  assets_manager_t* am = assets_manager();
+  const asset_info_t* res_theme = assets_manager_ref(am, ASSET_TYPE_STYLE, theme_name);
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  if (res_theme != NULL) {
+    theme_t* theme = theme_default_create(res_theme->data);
+    widget->astyle = style_factory_create_style(style_factory(), theme_get_style_type(theme));
+    style_update_state(widget->astyle, theme, widget->vt->type, NULL, WIDGET_STATE_NORMAL);
+  }
+
+  return RET_OK;
+}
+
+static ret_t dialog_create_label_unload_style(widget_t* widget) {
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+  style_destroy(widget->astyle);
+  widget->astyle = NULL;
+
+  return RET_OK;
+}
+
+static widget_t* dialog_create_label(const char* text, const char* theme_name) {
   rect_t r;
   widget_t* label = NULL;
 
@@ -91,12 +114,14 @@ static widget_t* dialog_create_label(const char* text) {
 
   label = label_create(NULL, 0, 0, 0, 0);
   return_value_if_fail(label != NULL, NULL);
-
+  dialog_create_label_load_style(label, theme_name);
   if (text != NULL) {
     widget_set_tr_text(label, text);
+    label_set_line_wrap(label, TRUE);
+    label_set_word_wrap(label, TRUE);
   }
   label_resize_to_content(label, r.x, r.w, r.y, r.h);
-
+  dialog_create_label_unload_style(label);
   return label;
 }
 
@@ -119,7 +144,7 @@ ret_t dialog_info_ex(const char* text, const char* title_text, const char* theme
   widget_t* client = NULL;
   return_value_if_fail(text != NULL, RET_BAD_PARAMS);
 
-  label = dialog_create_label(text);
+  label = dialog_create_label(text, theme);
   return_value_if_fail(label != NULL, RET_OOM);
 
   tk_snprintf(params, sizeof(params) - 1, "default(x=10, y=10, w=%d, h=%d)", label->w, label->h);
@@ -165,6 +190,7 @@ ret_t dialog_warn(const char* title, const char* text) {
   return dialog_info_ex(text, title, "dialog_warn");
 }
 
+#define DIALOG_CONFIRM_NAME "dialog_confirm"
 ret_t dialog_confirm(const char* stitle, const char* text) {
   uint32_t w = 0;
   uint32_t h = 0;
@@ -178,7 +204,7 @@ ret_t dialog_confirm(const char* stitle, const char* text) {
   return_value_if_fail(text != NULL, RET_BAD_PARAMS);
 
   stitle = stitle != NULL ? stitle : "Confirm";
-  label = dialog_create_label(text);
+  label = dialog_create_label(text, DIALOG_CONFIRM_NAME);
   return_value_if_fail(label != NULL, RET_OOM);
 
   tk_snprintf(params, sizeof(params) - 1, "default(x=10, y=10, w=%d, h=%d)", label->w, label->h);
@@ -187,7 +213,7 @@ ret_t dialog_confirm(const char* stitle, const char* text) {
   h = label->h + 90;
   w = tk_max(label->w, 128) + 40;
   dialog = dialog_create_simple(NULL, 0, 0, w, h);
-  widget_set_prop_str(dialog, WIDGET_PROP_THEME, "dialog_confirm");
+  widget_set_prop_str(dialog, WIDGET_PROP_THEME, DIALOG_CONFIRM_NAME);
   widget_set_prop_str(dialog, WIDGET_PROP_HIGHLIGHT, "default(alpha=40)");
 
   client = dialog_get_client(dialog);
