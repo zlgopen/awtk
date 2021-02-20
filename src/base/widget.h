@@ -1749,6 +1749,16 @@ bool_t widget_is_popup(widget_t* widget);
 bool_t widget_is_overlay(widget_t* widget);
 
 /**
+ * @method widget_is_opened_dialog
+ * 检查控件弹出对话框控件是否已经打开了（而非挂起状态）。
+ *
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @return {bool_t} 返回FALSE表示不是，否则表示是。
+ */
+bool_t widget_is_opened_dialog(widget_t* widget);
+
+/**
  * @method widget_is_opened_popup
  * 检查控件弹出窗口控件是否已经打开了（而非挂起状态）。
  *

@@ -1,4 +1,4 @@
-<dialog theme="dialog" style="custom" highlight="default(alpha=40)" 
+<dialog theme="dialog" style="custom" highlight="default(alpha=100)" 
   x="c" y="m" w="80%" h="220">
   <dialog_title style="custom" x="0" y="0" w="100%" h="30" text="Hello AWTK" >
     <draggable drag_window="true"/>
@@ -6,7 +6,7 @@
   <dialog_client style="custom" x="0" y="bottom" w="100%" h="-30">
     <label x="center" y="middle:-20" w="200" h="30" text="AWTK is cool!"/>
     <button name="reload_theme" x="center" y="middle:20" w="80%" h="30" text="Test Change Theme"/>
-    <button style="green_btn" name="quit" x="10" y="bottom:10" w="40%" h="30" text="确定"/>
+    <button style="green_btn" name="open:menu_point" x="10" y="bottom:10" w="40%" h="30" text="打开菜单"/>
     <button style="red_btn" name="quit" x="right:10" y="bottom:10" w="40%" h="30" text="取消"/>
   </dialog_client>
 </dialog>

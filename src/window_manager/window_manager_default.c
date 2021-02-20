@@ -354,7 +354,9 @@ static ret_t window_manager_create_animator(window_manager_default_t* wm, widget
     }
   } else {
     widget_invalidate_force(prev_win, NULL);
-    window_manager_prepare_dialog_highlighter(WIDGET(wm), prev_win, curr_win);
+    if (widget_get_prop(curr_win, WIDGET_PROP_HIGHLIGHT, &v) == RET_OK) {
+      window_manager_prepare_dialog_highlighter(WIDGET(wm), prev_win, curr_win);
+    }
   }
 
   return wm->animating ? RET_OK : RET_FAIL;
@@ -711,7 +713,7 @@ static ret_t window_manager_animate_done_set_window_foreground(widget_t* widget,
     is_set = FALSE;
   }
 
-  if (is_set) {
+  if (is_set && (widget_is_normal_window(iter) || i + 1 == widget->children->size)) {
     window_manager_dispatch_window_event(iter, EVT_WINDOW_TO_FOREGROUND);
   }
   WIDGET_FOR_EACH_CHILD_END()
@@ -975,7 +977,8 @@ static ret_t window_manager_default_on_paint_children(widget_t* widget, canvas_t
   /*paint dialog and other*/
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
   if (i >= start && iter->visible) {
-    if (!widget_is_system_bar(iter) && !widget_is_normal_window(iter)) {
+    if ((!widget_is_system_bar(iter) && !widget_is_normal_window(iter)) || 
+        (wm->dialog_highlighter != NULL && wm->dialog_highlighter->dialog != NULL && widget_is_normal_window(iter))) {
       widget_paint(iter, c);
     }
   }
