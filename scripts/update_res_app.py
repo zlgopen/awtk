@@ -137,6 +137,8 @@ def on_generate_res_event():
         if hasattr(generate_res, 'on_generate_res_after'):
            common.on_generate_res_after(generate_res.on_generate_res_after)
 
+def getopt(args):
+    return common.get_args(args);
 
 def run(awtk_root, is_excluded_file_handler = None):
     global DPI
@@ -149,6 +151,16 @@ def run(awtk_root, is_excluded_file_handler = None):
     global OUTPUT_ROOT
     global IS_GENERATE_INC_RES
     global IS_GENERATE_INC_BITMAP
+
+    GDPI=''
+    IMAGEGEN_OPTIONS=''
+    sys_args = common.get_args(sys.argv[1:])
+    if len(sys_args) > 0 :
+        common.set_action(sys_args[0])
+        if len(sys_args) > 1:
+            GDPI = sys_args[1]
+        if len(sys_args) > 2:
+            IMAGEGEN_OPTIONS = sys_args[2]
 
     AWTK_ROOT = awtk_root
     APP_ROOT = common.getcwd()
@@ -180,6 +192,12 @@ def run(awtk_root, is_excluded_file_handler = None):
         print('Not found theme.')
         print('For details, please read scripts/README.md.')
     else:
+        if GDPI != '':
+           DPI = GDPI
+        if IMAGEGEN_OPTIONS != '':
+            for theme in THEMES :
+                theme["imagegen_options"] = IMAGEGEN_OPTIONS
+
         common.init(AWTK_ROOT, ASSETS_ROOT, THEMES, ASSET_C, OUTPUT_ROOT)
         common.set_tools_dir(TOOLS_ROOT)
         common.set_dpi(DPI)

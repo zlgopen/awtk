@@ -6,7 +6,6 @@ import copy
 import glob
 import shutil
 import platform
-from PIL import Image
 
 ###########################
 DPI = 'x1'
@@ -39,6 +38,9 @@ OS_NAME = platform.system()
 def get_action():
     return ACTION
 
+def set_action(action):
+    global ACTION
+    ACTION = action
 
 def on_generate_res_before(handler):
     global ON_GENERATE_RES_BEFORE
@@ -1001,6 +1003,7 @@ def gen_res_web_c():
 
 
 def gen_res_json_one(res_type, files):
+    from PIL import Image
     result = "\n  " + res_type + ': [\n'
     for f in files:
         uri = f.replace(os.getcwd(), "")[1:]
@@ -1149,30 +1152,33 @@ def clean_res():
         remove_dir(ASSET_C)
     print('=========================================================')
 
+def get_args(args) :
+    list_args = []
+    for arg in args:
+        if arg.startswith('--') :
+            continue
+        list_args.append(arg)
+    return list_args
+
+def show_usage_imlp():
+    args = ' action[clean|web|json|all|font|image|ui|style|string|script|data|xml|assets.c] dpi[x1|x2] image_options[rgba|bgra+bgr565|mono] awtk_root[--awtk_root=XXXXX]'
+    print('=========================================================')
+    print('Usage: python '+sys.argv[0] + args)
+    print('Example:')
+    print('python ' + sys.argv[0] + ' all')
+    print('python ' + sys.argv[0] + ' clean')
+    print('python ' + sys.argv[0] + ' style --awtk_root=XXXXX ')
+    print('python ' + sys.argv[0] + ' all x1 bgra+bgr565')
+    print('python ' + sys.argv[0] + ' all x1 bgra+bgr565 --awtk_root=XXXXX')
+    print('=========================================================')
+    sys.exit(0)
 
 def show_usage():
-    global DPI
-    global ACTION
-    global IMAGEGEN_OPTIONS
-    args = ' action[clean|web|json|all|font|image|ui|style|string|script|data|xml|assets.c] dpi[x1|x2] image_options[rgba|bgra+bgr565|mono]'
     if len(sys.argv) == 1:
-        print('=========================================================')
-        print('Usage: python '+sys.argv[0] + args)
-        print('Example:')
-        print('python ' + sys.argv[0] + ' all')
-        print('python ' + sys.argv[0] + ' clean')
-        print('python ' + sys.argv[0] + ' style')
-        print('python ' + sys.argv[0] + ' all x1 bgra+bgr565')
-        print('=========================================================')
-        sys.exit(0)
+        show_usage_imlp();
     else:
-        ACTION = sys.argv[1]
-
-        if len(sys.argv) > 2:
-            DPI = sys.argv[2]
-
-        if len(sys.argv) > 3:
-            IMAGEGEN_OPTIONS = sys.argv[3]
-
+        sys_args = get_args(sys.argv[1:])
+        if len(sys_args) == 0 :
+            show_usage_imlp()
 
 show_usage()
