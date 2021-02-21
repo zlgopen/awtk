@@ -108,6 +108,7 @@ ret_t fscript_date_time_register(void) {
   ENSURE(fscript_register_func("time_now_us", func_time_now_us) == RET_OK);
   ENSURE(fscript_register_func("time_now_ms", func_time_now_ms) == RET_OK);
   ENSURE(fscript_register_func("time_now_s", func_time_now_s) == RET_OK);
+  ENSURE(fscript_register_func("time_now", func_time_now_s) == RET_OK);
   ENSURE(fscript_register_func("is_leap_year", func_year_is_leap) == RET_OK);
   ENSURE(fscript_register_func("get_days_of_month", func_get_days_of_month) == RET_OK);
 
