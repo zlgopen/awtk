@@ -49,7 +49,7 @@ typedef struct _style_const_t {
  *
  * @return {style_t*} 返回style对象。
  */
-style_t* style_const_create();
+style_t* style_const_create(void);
 
 END_C_DECLS
 
