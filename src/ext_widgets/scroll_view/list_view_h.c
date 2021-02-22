@@ -108,8 +108,6 @@ static ret_t list_view_h_on_scroll_view_layout_children(widget_t* widget) {
   int32_t x_margin = 0;
   int32_t max_w = 0;
   int32_t virtual_w = widget->w;
-  int32_t n = widget->children->size;
-  widget_t** children = (widget_t**)(widget->children->elms);
 
   if (widget->children_layout != NULL) {
     children_layouter_layout(widget->children_layout, widget);
@@ -127,8 +125,8 @@ static ret_t list_view_h_on_scroll_view_layout_children(widget_t* widget) {
   }
 
   if (widget->children != NULL) {
-    for (i = 0; i < n; i++) {
-      widget_t* iter = children[i];
+    for (i = 0; i < widget->children->size; i++) {
+      widget_t* iter = (widget_t*)darray_get(widget->children, i);
 
       if (widget->children_layout == NULL) {
         widget_move_resize(iter, x, y, w, h);
