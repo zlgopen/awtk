@@ -32,7 +32,6 @@ static bool_t pages_target_is_page(widget_t* target) {
 }
 
 static ret_t pages_save_target(widget_t* widget) {
-  widget_t* target = NULL;
   pages_t* pages = PAGES(widget);
   return_value_if_fail(pages != NULL, RET_BAD_PARAMS);
 
