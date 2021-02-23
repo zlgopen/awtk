@@ -467,6 +467,9 @@ static void xml_parser_on_text(XmlParser* parser) {
 
     if (end >= start) {
       xml_builder_on_text(parser->builder, start, end - start + 1);
+    } else if (start == parser->text.str + parser->text.size) {
+      /* support <![CDATA[]]> grammar */
+      xml_builder_on_text(parser->builder, start, 0);
     }
   }
 }
