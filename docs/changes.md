@@ -5,7 +5,8 @@
   * 增加tk\_expr\_eval。
   * 修改csv\_row\_to\_str行尾多分隔符的问题（感谢林福提供）。 
   * 增加 xml 的 CDATA的值为空的语法支持（感谢智明提供补丁）。 
-  * combox 修改大小后导致字体偏移和修改了 tips_text 默认左对齐（感谢智明提供补丁）。 
+  * combox 修改大小后导致字体偏移和修改了 tips\_text 默认左对齐（感谢智明提供补丁）。 
+  * 增加TK\_DEFAULT\_WAIT\_TIME，用来控制event source manager中select最长等待时间。
 
 2021/02/22
   * 修改stm32上编译警告。

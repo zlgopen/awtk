@@ -126,8 +126,8 @@ uint32_t event_source_manager_get_wakeup_time(event_source_manager_t* manager) {
       }
     }
   } else {
-    wakeup_time = 16;
+    wakeup_time = TK_DEFAULT_WAIT_TIME;
   }
 
-  return tk_min(16, wakeup_time);
+  return tk_min(TK_DEFAULT_WAIT_TIME, wakeup_time);
 }

@@ -404,4 +404,8 @@ typedef struct _event_source_manager_t event_source_manager_t;
 #define TK_TOGGLE_BIT(v, n) ((v) ^= (1UL << (n)))
 #define TK_TEST_BIT(v, n) (((v) >> (n)) & 1U)
 
+#ifndef TK_DEFAULT_WAIT_TIME
+#define TK_DEFAULT_WAIT_TIME 16
+#endif/*TK_DEFAULT_WAIT_TIME*/
+
 #endif /*TYPES_DEF_H*/
