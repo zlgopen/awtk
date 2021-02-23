@@ -176,6 +176,16 @@ ret_t fscript_register_func(const char* name, fscript_func_t func);
  */
 ret_t fscript_global_deinit(void);
 
+/**
+ * @method tk_expr_eval
+ * 对fscript的简单包装。
+ * 
+ * @param {const char*} expr 表达式。
+ *
+ * @return {double} 返回表达式的值。
+ */
+double tk_expr_eval(const char* expr);
+
 /*注册自定义函数时，属性名的前缀。*/
 #define STR_FSCRIPT_FUNCTION_PREFIX "function."
 

@@ -2040,3 +2040,16 @@ ret_t fscript_register_func(const char* name, fscript_func_t func) {
 
   return object_set_prop_pointer(s_global_funcs, name, (void*)func);
 }
+
+double tk_expr_eval(const char* expr) {
+  value_t v;
+  object_t* obj = NULL;
+  value_set_double(&v, 0);
+  return_value_if_fail(expr != NULL, 0);
+
+  obj = object_default_create();
+  fscript_eval(obj, expr, &v);
+  OBJECT_UNREF(obj);
+
+  return value_double(&v);
+}
