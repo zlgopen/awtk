@@ -322,7 +322,6 @@ static ret_t combo_box_on_event(widget_t* widget, event_t* e) {
     case EVT_MOVE_RESIZE: {
       if (edit_get_right_margin(widget) == 0) {
         edit->right_margin = widget->h;
-        edit->left_margin = 4;
       }
       break;
     }
@@ -398,9 +397,9 @@ widget_t* combo_box_create_self(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h
   combo_box_t* combo_box = COMBO_BOX(widget);
   edit_t* edit = EDIT(WIDGET(combo_box));
   return_value_if_fail(combo_box != NULL && edit != NULL, NULL);
-  edit->margin = 0;
-  edit->left_margin = 0;
-  edit->right_margin = 0;
+  widget_set_prop_int(widget, WIDGET_PROP_MARGIN, 0);
+  widget_set_prop_int(widget, WIDGET_PROP_LEFT_MARGIN, 0);
+  widget_set_prop_int(widget, WIDGET_PROP_RIGHT_MARGIN, 0);
   str_init(&(combo_box->text), 32);
   combo_box->localize_options = TRUE;
 
