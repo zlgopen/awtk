@@ -365,6 +365,7 @@ csv_row_t* csv_rows_append(csv_rows_t* rows);
 csv_row_t* csv_rows_insert(csv_rows_t* rows, uint32_t row);
 csv_row_t* csv_rows_get(csv_rows_t* rows, uint32_t row);
 ret_t csv_rows_reset(csv_rows_t* rows);
+ret_t csv_row_to_str(csv_row_t* row, str_t* str, char sep);
 ret_t csv_row_set_data(csv_row_t* row, const char* data, char sep);
 
 END_C_DECLS

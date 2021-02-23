@@ -103,6 +103,12 @@ ret_t csv_row_to_str(csv_row_t* row, str_t* str, char sep) {
     i += strlen(p) + 1;
   }
 
+  if (str->size > 0) {
+    /*remove last seperator*/
+    str->size--;
+    str->str[str->size] = '\0';
+  }
+
   str_append(str, "\r\n");
 
   return RET_OK;
