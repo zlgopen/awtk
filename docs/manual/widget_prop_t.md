@@ -11,6 +11,12 @@
 | WIDGET\_PROP\_Y | Y坐标。 |
 | WIDGET\_PROP\_W | 宽度。 |
 | WIDGET\_PROP\_H | 高度。 |
+| WIDGET\_PROP\_DESIGN\_W | 窗口设计时宽度。 |
+| WIDGET\_PROP\_DESIGN\_H | 窗口设计时宽度。 |
+| WIDGET\_PROP\_AUTO\_SCALE\_CHILDREN\_X | 窗口大小与设计时大小不同时，是否自动调整子控件的x坐标。 |
+| WIDGET\_PROP\_AUTO\_SCALE\_CHILDREN\_Y | 窗口大小与设计时大小不同时，是否自动调整子控件的y坐标。 |
+| WIDGET\_PROP\_AUTO\_SCALE\_CHILDREN\_W | 窗口大小与设计时大小不同时，是否自动调整子控件的宽度。 |
+| WIDGET\_PROP\_AUTO\_SCALE\_CHILDREN\_H | 窗口大小与设计时大小不同时，是否自动调整子控件的高度。 |
 | WIDGET\_PROP\_INPUTING | inputing。 |
 | WIDGET\_PROP\_ALWAYS\_ON\_TOP | always on top。 |
 | WIDGET\_PROP\_CARET\_X | caret x。 |

@@ -33,6 +33,7 @@ slist_destroy(slist);
 | <a href="#slist_t_slist_foreach">slist\_foreach</a> | 遍历元素。 |
 | <a href="#slist_t_slist_head_pop">slist\_head\_pop</a> | 弹出第一个元素。 |
 | <a href="#slist_t_slist_init">slist\_init</a> | 初始化slist对象 |
+| <a href="#slist_t_slist_insert">slist\_insert</a> | 插入一个元素。 |
 | <a href="#slist_t_slist_prepend">slist\_prepend</a> | 在头部追加一个元素。 |
 | <a href="#slist_t_slist_remove">slist\_remove</a> | 删除第一个满足条件的元素。 |
 | <a href="#slist_t_slist_remove_all">slist\_remove\_all</a> | 删除全部元素。 |
@@ -225,6 +226,27 @@ slist_t* slist_init (slist_t* slist, tk_destroy_t destroy, tk_compare_t compare)
 | slist | slist\_t* | 单向链表对象。 |
 | destroy | tk\_destroy\_t | 元素销毁函数。 |
 | compare | tk\_compare\_t | 元素比较函数。 |
+#### slist\_insert 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="slist_t_slist_insert">插入一个元素。
+
+* 函数原型：
+
+```
+ret_t slist_insert (slist_t* slist, uint32_t index, void* data);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| slist | slist\_t* | 单向链表对象。 |
+| index | uint32\_t | 位置序数。 |
+| data | void* | 待追加的元素。 |
 #### slist\_prepend 函数
 -----------------------
 

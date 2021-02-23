@@ -8,6 +8,7 @@
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
 | <a href="#utils_t_compare_always_equal">compare\_always\_equal</a> | 始终返回相等。 |
+| <a href="#utils_t_data_url_copy">data\_url\_copy</a> | 将数据从源URL拷贝到目标URL。 |
 | <a href="#utils_t_default_destroy">default\_destroy</a> | 缺省的destroy函数。释放data指向的内存。 |
 | <a href="#utils_t_dummy_destroy">dummy\_destroy</a> | 空的destroy函数。 |
 | <a href="#utils_t_filename_to_name">filename\_to\_name</a> | 从完整文件名中获取文件名。 |
@@ -19,6 +20,7 @@
 | <a href="#utils_t_tk_atof">tk\_atof</a> | 将字符串转换为浮点类型。 |
 | <a href="#utils_t_tk_atoi">tk\_atoi</a> | 将字符串转换为整型数。 |
 | <a href="#utils_t_tk_atol">tk\_atol</a> | 将字符串转换为整型。 |
+| <a href="#utils_t_tk_atoul">tk\_atoul</a> | 将字符串转换为整型。 |
 | <a href="#utils_t_tk_ftoa">tk\_ftoa</a> | 将浮点型转换为字符串。 |
 | <a href="#utils_t_tk_is_valid_name">tk\_is\_valid\_name</a> | 判断是否是有效的属性名。 |
 | <a href="#utils_t_tk_itoa">tk\_itoa</a> | 将整型转换为字符串。 |
@@ -78,6 +80,26 @@ int compare_always_equal (const void* a, const void* b);
 | 返回值 | int | 始终返回0。 |
 | a | const void* | 数据a。 |
 | b | const void* | 数据b。 |
+#### data\_url\_copy 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_data_url_copy">将数据从源URL拷贝到目标URL。
+
+* 函数原型：
+
+```
+ret_t data_url_copy (const char* dst_url, const char* src_url);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| dst\_url | const char* | 目标URL。 |
+| src\_url | const char* | 源URL。 |
 #### default\_destroy 函数
 -----------------------
 
@@ -288,14 +310,33 @@ int tk_atoi (const char* str);
 * 函数原型：
 
 ```
-int tk_atol (const char* str);
+int64_t tk_atol (const char* str);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | int | 返回转换后的整型。 |
+| 返回值 | int64\_t | 返回转换后的整型。 |
+| str | const char* | 要转换为整型的字符串。 |
+#### tk\_atoul 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_atoul">将字符串转换为整型。
+
+* 函数原型：
+
+```
+uint64_t tk_atoul (const char* str);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint64\_t | 返回转换后的整型。 |
 | str | const char* | 要转换为整型的字符串。 |
 #### tk\_ftoa 函数
 -----------------------
@@ -563,7 +604,7 @@ int tk_snprintf (char* str, size_t size, const char* format);
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | int | 返回格式化后的字符串长度+1。 |
+| 返回值 | int | 返回格式化后的字符串长度。 |
 | str | char* | 目标字符串。 |
 | size | size\_t | 拷贝字节数。 |
 | format | const char* | 格式化字符串。 |
@@ -930,7 +971,7 @@ int tk_vsnprintf (char* str, size_t size, const char* format, va_list ap);
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | int | 返回格式化后的字符串长度+1。 |
+| 返回值 | int | 返回格式化后的字符串长度。 |
 | str | char* | 目标字符串。 |
 | size | size\_t | 拷贝字节数。 |
 | format | const char* | 格式化字符串。 |

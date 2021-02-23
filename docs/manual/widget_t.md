@@ -101,12 +101,14 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | <a href="#widget_t_widget_get_prop_pointer">widget\_get\_prop\_pointer</a> | 获取指针格式的属性。 |
 | <a href="#widget_t_widget_get_prop_str">widget\_get\_prop\_str</a> | 获取字符串格式的属性。 |
 | <a href="#widget_t_widget_get_state_for_style">widget\_get\_state\_for\_style</a> | 把控件的状态转成获取style选要的状态，一般只在子类中使用。 |
+| <a href="#widget_t_widget_get_style_type">widget\_get\_style\_type</a> | 获取 widget 对应风格类型 |
 | <a href="#widget_t_widget_get_text">widget\_get\_text</a> | 获取控件的文本。 |
 | <a href="#widget_t_widget_get_text_utf8">widget\_get\_text\_utf8</a> | 获取控件的文本。 |
 | <a href="#widget_t_widget_get_type">widget\_get\_type</a> | 获取当前控件的类型名称。 |
 | <a href="#widget_t_widget_get_value">widget\_get\_value</a> | 获取控件的值。只是对widget\_get\_prop的包装，值的意义由子类控件决定。 |
 | <a href="#widget_t_widget_get_window">widget\_get\_window</a> | 获取当前控件所在的窗口。 |
 | <a href="#widget_t_widget_get_window_manager">widget\_get\_window\_manager</a> | 获取当前的窗口管理器。 |
+| <a href="#widget_t_widget_get_window_theme">widget\_get\_window\_theme</a> | 获取控件的窗口主题 |
 | <a href="#widget_t_widget_grab">widget\_grab</a> | 让指定子控件抓住事件。 |
 | <a href="#widget_t_widget_index_of">widget\_index\_of</a> | 获取控件在父控件中的索引编号。 |
 | <a href="#widget_t_widget_init">widget\_init</a> | 初始化控件。仅在子类控件构造函数中使用。 |
@@ -119,11 +121,13 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | <a href="#widget_t_widget_is_instance_of">widget\_is\_instance\_of</a> | 检查控件是否是指定的类型。 |
 | <a href="#widget_t_widget_is_keyboard">widget\_is\_keyboard</a> | 判断当前控件是否是keyboard。 |
 | <a href="#widget_t_widget_is_normal_window">widget\_is\_normal\_window</a> | 检查控件是否是普通窗口类型。 |
+| <a href="#widget_t_widget_is_opened_dialog">widget\_is\_opened\_dialog</a> | 检查控件弹出对话框控件是否已经打开了（而非挂起状态）。 |
 | <a href="#widget_t_widget_is_opened_popup">widget\_is\_opened\_popup</a> | 检查控件弹出窗口控件是否已经打开了（而非挂起状态）。 |
 | <a href="#widget_t_widget_is_overlay">widget\_is\_overlay</a> | 检查控件是否是overlay窗口类型。 |
 | <a href="#widget_t_widget_is_parent_of">widget\_is\_parent\_of</a> | 判断当前控件是否是指定控件的父控件(包括非直系)。 |
 | <a href="#widget_t_widget_is_point_in">widget\_is\_point\_in</a> | 判断一个点是否在控件内。 |
 | <a href="#widget_t_widget_is_popup">widget\_is\_popup</a> | 检查控件是否是弹出窗口类型。 |
+| <a href="#widget_t_widget_is_style_exist">widget\_is\_style\_exist</a> | 查询指定的style是否存在。 |
 | <a href="#widget_t_widget_is_system_bar">widget\_is\_system\_bar</a> | 检查控件是否是system bar类型。 |
 | <a href="#widget_t_widget_is_window">widget\_is\_window</a> | 判断当前控件是否是窗口。 |
 | <a href="#widget_t_widget_is_window_manager">widget\_is\_window\_manager</a> | 判断当前控件是否是窗口管理器。 |
@@ -131,6 +135,7 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | <a href="#widget_t_widget_layout">widget\_layout</a> | 布局当前控件及子控件。 |
 | <a href="#widget_t_widget_layout_children">widget\_layout\_children</a> | layout子控件。 |
 | <a href="#widget_t_widget_load_asset">widget\_load\_asset</a> | 加载资源。 |
+| <a href="#widget_t_widget_load_asset_ex">widget\_load\_asset\_ex</a> | 加载资源。 |
 | <a href="#widget_t_widget_load_image">widget\_load\_image</a> | 加载图片。 |
 | <a href="#widget_t_widget_lookup">widget\_lookup</a> | 查找指定名称的子控件(返回第一个)。 |
 | <a href="#widget_t_widget_lookup_by_type">widget\_lookup\_by\_type</a> | 查找指定类型的子控件(返回第一个)。 |
@@ -205,6 +210,7 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | <a href="#widget_t_widget_to_global">widget\_to\_global</a> | 将控件内的本地坐标转换成全局坐标。 |
 | <a href="#widget_t_widget_to_local">widget\_to\_local</a> | 将屏幕坐标转换成控件内的本地坐标，即相对于控件左上角的坐标。 |
 | <a href="#widget_t_widget_to_screen">widget\_to\_screen</a> | 将控件内的本地坐标转换成屏幕上的坐标。 |
+| <a href="#widget_t_widget_to_screen_ex">widget\_to\_screen\_ex</a> | 将控件内的本地坐标根据祖父级控件转换成相对于祖父级控件的屏幕相对坐标。 |
 | <a href="#widget_t_widget_to_xml">widget\_to\_xml</a> | 将widget转换成xml。 |
 | <a href="#widget_t_widget_ungrab">widget\_ungrab</a> | 让指定子控件放弃抓住事件。 |
 | <a href="#widget_t_widget_unload_asset">widget\_unload\_asset</a> | 卸载资源。 |
@@ -1366,6 +1372,25 @@ const char* widget_get_state_for_style (widget_t* widget, bool_t active, bool_t 
 | widget | widget\_t* | widget对象。 |
 | active | bool\_t | 控件是否为当前项。 |
 | checked | bool\_t | 控件是否为选中项。 |
+#### widget\_get\_style\_type 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_get_style_type">获取 widget 对应风格类型
+
+* 函数原型：
+
+```
+const char* widget_get_style_type (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const char* | 返回 widget 的对应风格类型。 |
+| widget | widget\_t* | widget对象。 |
 #### widget\_get\_text 函数
 -----------------------
 
@@ -1494,6 +1519,27 @@ widget_t* widget_get_window_manager (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | widget\_t* | 窗口管理器对象。 |
 | widget | widget\_t* | 控件对象。 |
+#### widget\_get\_window\_theme 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_get_window_theme">获取控件的窗口主题
+
+* 函数原型：
+
+```
+ret_t widget_get_window_theme (widget_t* widget, theme_t** win_theme, theme_t** default_theme);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| win\_theme | theme\_t** | 返回窗口主题。 |
+| default\_theme | theme\_t** | 返回全局默认主题。 |
 #### widget\_grab 函数
 -----------------------
 
@@ -1748,6 +1794,25 @@ bool_t widget_is_normal_window (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | bool\_t | 返回FALSE表示不是，否则表示是。 |
 | widget | widget\_t* | widget对象。 |
+#### widget\_is\_opened\_dialog 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_is_opened_dialog">检查控件弹出对话框控件是否已经打开了（而非挂起状态）。
+
+* 函数原型：
+
+```
+bool_t widget_is_opened_dialog (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回FALSE表示不是，否则表示是。 |
+| widget | widget\_t* | widget对象。 |
 #### widget\_is\_opened\_popup 函数
 -----------------------
 
@@ -1847,6 +1912,27 @@ bool_t widget_is_popup (widget_t* widget);
 | -------- | ----- | --------- |
 | 返回值 | bool\_t | 返回FALSE表示不是，否则表示是。 |
 | widget | widget\_t* | widget对象。 |
+#### widget\_is\_style\_exist 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_is_style_exist">查询指定的style是否存在。
+
+* 函数原型：
+
+```
+bool_t widget_is_style_exist (widget_t* widget, const char* style_name, const char* state_name);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 存在返回 TRUE，不存在返回 FALSE。 |
+| widget | widget\_t* | 控件对象。 |
+| style\_name | const char* | style的名称（如果为 NULL，则默认为 default）。 |
+| state\_name | const char* | state的名称（如果为 NULL，则默认为 normal）。 |
 #### widget\_is\_system\_bar 函数
 -----------------------
 
@@ -1989,6 +2075,36 @@ const asset_info_t* widget_load_asset (widget_t* widget, asset_type_t type, cons
 | 返回值 | const asset\_info\_t* | 返回资源句柄。 |
 | widget | widget\_t* | 控件对象。 |
 | type | asset\_type\_t | 资源类型。 |
+| name | const char* | 资源名。 |
+#### widget\_load\_asset\_ex 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_load_asset_ex">加载资源。
+
+使用示例：
+
+```c
+const asset_info_t* asset = widget_load_asset_ex(widget, ASSET_TYPE_IMAGE, ASSET_TYPE_IMAGE_BSVG, "mysvg");
+...
+widget_unload_asset(widget, asset);
+```
+
+* 函数原型：
+
+```
+const asset_info_t* widget_load_asset_ex (widget_t* widget, asset_type_t type, uint16_t subtype, const char* name);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const asset\_info\_t* | 返回资源句柄。 |
+| widget | widget\_t* | 控件对象。 |
+| type | asset\_type\_t | 资源类型。 |
+| subtype | uint16\_t | 资源子类型。 |
 | name | const char* | 资源名。 |
 #### widget\_load\_image 函数
 -----------------------
@@ -3582,6 +3698,28 @@ ret_t widget_to_screen (widget_t* widget, point_t* p);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
+| p | point\_t* | 坐标点。 |
+#### widget\_to\_screen\_ex 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="widget_t_widget_to_screen_ex">将控件内的本地坐标根据祖父级控件转换成相对于祖父级控件的屏幕相对坐标。
+备注：如果 parent 不是 widget 控件的父级或者祖父级话，该函数会退化为 widget_to_screen 函数。
+
+* 函数原型：
+
+```
+ret_t widget_to_screen_ex (widget_t* widget, widget_t* parent, point_t* p);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| parent | widget\_t* | 祖父级控。 |
 | p | point\_t* | 坐标点。 |
 #### widget\_to\_xml 函数
 -----------------------

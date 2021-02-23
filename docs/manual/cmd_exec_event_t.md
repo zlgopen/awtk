@@ -17,7 +17,7 @@
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#cmd_exec_event_t_args">args</a> | const char* | 命令的参数。 |
-| <a href="#cmd_exec_event_t_can_exec">can\_exec</a> | bool\_t | 执行结果(适用于CAN_EXEC)。 |
+| <a href="#cmd_exec_event_t_can_exec">can\_exec</a> | bool\_t | 标识命令是否可以执行(适用于CAN_EXEC)。 |
 | <a href="#cmd_exec_event_t_name">name</a> | const char* | 命令的名称。 |
 | <a href="#cmd_exec_event_t_result">result</a> | ret\_t | 执行结果(适用于EXECED)。 |
 #### cmd\_exec\_event\_cast 函数
@@ -74,7 +74,7 @@ event_t* cmd_exec_event_init (cmd_exec_event_t* event, uint32_t type, const char
 | 可脚本化   | 是 |
 #### can\_exec 属性
 -----------------------
-> <p id="cmd_exec_event_t_can_exec">执行结果(适用于CAN_EXEC)。
+> <p id="cmd_exec_event_t_can_exec">标识命令是否可以执行(适用于CAN_EXEC)。
 
 * 类型：bool\_t
 

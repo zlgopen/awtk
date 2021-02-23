@@ -49,9 +49,11 @@ ui      UI描述数据。
 | <a href="#assets_manager_t_assets_manager_get_res_root">assets\_manager\_get\_res\_root</a> | 获取资源所在的目录(其下目录结构请参考demos)。 |
 | <a href="#assets_manager_t_assets_manager_init">assets\_manager\_init</a> | 初始化资源管理器。 |
 | <a href="#assets_manager_t_assets_manager_load">assets\_manager\_load</a> | 从文件系统中加载指定的资源，并缓存到内存中。在定义了宏WITH\_FS\_RES时才生效。 |
+| <a href="#assets_manager_t_assets_manager_load_ex">assets\_manager\_load\_ex</a> | 从文件系统中加载指定的资源，并缓存到内存中。在定义了宏WITH\_FS\_RES时才生效。 |
 | <a href="#assets_manager_t_assets_manager_load_file">assets\_manager\_load\_file</a> | 获取path里的资源。 |
 | <a href="#assets_manager_t_assets_manager_preload">assets\_manager\_preload</a> | 从文件系统中加载指定的资源，并缓存到内存中。在定义了宏WITH\_FS\_RES时才生效。 |
 | <a href="#assets_manager_t_assets_manager_ref">assets\_manager\_ref</a> | 在资源管理器的缓存中查找指定的资源并引用它，如果缓存中不存在，尝试加载该资源。 |
+| <a href="#assets_manager_t_assets_manager_ref_ex">assets\_manager\_ref\_ex</a> | 在资源管理器的缓存中查找指定的资源并引用它，如果缓存中不存在，尝试加载该资源。 |
 | <a href="#assets_manager_t_assets_manager_set">assets\_manager\_set</a> | 设置缺省资源管理器。 |
 | <a href="#assets_manager_t_assets_manager_set_custom_build_asset_dir">assets\_manager\_set\_custom\_build\_asset\_dir</a> | 设置一个函数，该函数用于生成资源路径。 |
 | <a href="#assets_manager_t_assets_manager_set_custom_load_asset">assets\_manager\_set\_custom\_load\_asset</a> | 设置一个函数，该函数用于实现自定义加载资源。 |
@@ -229,7 +231,7 @@ ret_t assets_manager_destroy (assets_manager_t* am);
 * 函数原型：
 
 ```
-asset_info_t* assets_manager_find_in_cache (assets_manager_t* am, asset_type_t type, char* name);
+asset_info_t* assets_manager_find_in_cache (assets_manager_t* am, asset_type_t type, uint16_t subtype, char* name);
 ```
 
 * 参数说明：
@@ -239,6 +241,7 @@ asset_info_t* assets_manager_find_in_cache (assets_manager_t* am, asset_type_t t
 | 返回值 | asset\_info\_t* | 返回资源。 |
 | am | assets\_manager\_t* | asset manager对象。 |
 | type | asset\_type\_t | 资源的类型。 |
+| subtype | uint16\_t | 资源的子类型。 |
 | name | char* | 资源的名称。 |
 #### assets\_manager\_get\_res\_root 函数
 -----------------------
@@ -299,6 +302,28 @@ asset_info_t* assets_manager_load (assets_manager_t* am, asset_type_t type, char
 | 返回值 | asset\_info\_t* | 返回资源。 |
 | am | assets\_manager\_t* | asset manager对象。 |
 | type | asset\_type\_t | 资源的类型。 |
+| name | char* | 资源的名称。 |
+#### assets\_manager\_load\_ex 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="assets_manager_t_assets_manager_load_ex">从文件系统中加载指定的资源，并缓存到内存中。在定义了宏WITH\_FS\_RES时才生效。
+
+* 函数原型：
+
+```
+asset_info_t* assets_manager_load_ex (assets_manager_t* am, asset_type_t type, asset_type_t type, char* name);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | asset\_info\_t* | 返回资源。 |
+| am | assets\_manager\_t* | asset manager对象。 |
+| type | asset\_type\_t | 资源的类型。 |
+| type | asset\_type\_t | 资源的子类型。 |
 | name | char* | 资源的名称。 |
 #### assets\_manager\_load\_file 函数
 -----------------------
@@ -362,6 +387,28 @@ asset_info_t* assets_manager_ref (assets_manager_t* am, asset_type_t type, char*
 | 返回值 | asset\_info\_t* | 返回资源。 |
 | am | assets\_manager\_t* | asset manager对象。 |
 | type | asset\_type\_t | 资源的类型。 |
+| name | char* | 资源的名称。 |
+#### assets\_manager\_ref\_ex 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="assets_manager_t_assets_manager_ref_ex">在资源管理器的缓存中查找指定的资源并引用它，如果缓存中不存在，尝试加载该资源。
+
+* 函数原型：
+
+```
+asset_info_t* assets_manager_ref_ex (assets_manager_t* am, asset_type_t type, uint16_t subtype, char* name);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | asset\_info\_t* | 返回资源。 |
+| am | assets\_manager\_t* | asset manager对象。 |
+| type | asset\_type\_t | 资源的类型。 |
+| subtype | uint16\_t | 资源的子类型。 |
 | name | char* | 资源的名称。 |
 #### assets\_manager\_set 函数
 -----------------------

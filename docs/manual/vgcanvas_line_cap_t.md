@@ -8,3 +8,4 @@
 | -------- | ------- | 
 | VGCANVAS\_LINE\_CAP\_ROUND | 圆头。 |
 | VGCANVAS\_LINE\_CAP\_SQUARE | 方头。 |
+| VGCANVAS\_LINE\_CAP\_BUTT | 平头。 |

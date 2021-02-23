@@ -11,6 +11,7 @@ stb主要用于加载矢量字体(如truetype)，它功能强大，体积小巧�
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#font_loader_stb_t_fargs_get_data_and_size">fargs\_get\_data\_and\_size</a> | 从参数中获取数据和长度。 |
 | <a href="#font_loader_stb_t_font_loader_stb">font\_loader\_stb</a> | 获取stb字体加载器对象。 |
 | <a href="#font_loader_stb_t_font_stb_create">font\_stb\_create</a> | 创建stb字体对象。 |
 | <a href="#font_loader_stb_t_fscript_app_conf_register">fscript\_app\_conf\_register</a> | 注册app_conf函数。 |
@@ -34,6 +35,27 @@ stb主要用于加载矢量字体(如truetype)，它功能强大，体积小巧�
 | <a href="#font_loader_stb_t_fscript_typed_array_register">fscript\_typed\_array\_register</a> | 注册typed array函数。 |
 | <a href="#font_loader_stb_t_fscript_wbuffer_register">fscript\_wbuffer\_register</a> | 注册wbuffer相关函数。 |
 | <a href="#font_loader_stb_t_fscript_widget_register">fscript\_widget\_register</a> | 注册widget函数。 |
+#### fargs\_get\_data\_and\_size 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="font_loader_stb_t_fargs_get_data_and_size">从参数中获取数据和长度。
+
+* 函数原型：
+
+```
+ret_t fargs_get_data_and_size (fscript_args_t* args, const uint8_t** , uint32_t* ret_size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| args | fscript\_args\_t* | 参数。 |
+|  | const uint8\_t** | 。 |
+| ret\_size | uint32\_t* | 返回数据的长度。 |
 #### font\_loader\_stb 函数
 -----------------------
 

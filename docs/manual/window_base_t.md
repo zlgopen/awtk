@@ -32,8 +32,14 @@
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#window_base_t_assets_manager">assets\_manager</a> | assets\_manager\_t* | 获取资源管理器对象。 |
+| <a href="#window_base_t_auto_scale_children_h">auto\_scale\_children\_h</a> | bool\_t | 窗口大小与设计时大小不同时，是否自动调整子控件的高度。 |
+| <a href="#window_base_t_auto_scale_children_w">auto\_scale\_children\_w</a> | bool\_t | 窗口大小与设计时大小不同时，是否自动调整子控件的宽度。 |
+| <a href="#window_base_t_auto_scale_children_x">auto\_scale\_children\_x</a> | bool\_t | 窗口大小与设计时大小不同时，是否自动调整子控件的x坐标。 |
+| <a href="#window_base_t_auto_scale_children_y">auto\_scale\_children\_y</a> | bool\_t | 窗口大小与设计时大小不同时，是否自动调整子控件的y坐标。 |
 | <a href="#window_base_t_closable">closable</a> | window\_closable\_t | 收到EVT_REQUEST_CLOSE_WINDOW是否自动关闭窗口。 |
 | <a href="#window_base_t_close_anim_hint">close\_anim\_hint</a> | char* | 关闭窗口动画的名称。 |
+| <a href="#window_base_t_design_h">design\_h</a> | uint16\_t | 设计时高度。 |
+| <a href="#window_base_t_design_w">design\_w</a> | uint16\_t | 设计时宽度。 |
 | <a href="#window_base_t_disable_anim">disable\_anim</a> | bool\_t | 禁用窗口动画。 |
 | <a href="#window_base_t_font_manager">font\_manager</a> | font\_manager\_t* | 获取字体管理器对象。 |
 | <a href="#window_base_t_image_manager">image\_manager</a> | image\_manager\_t* | 获取图片管理器对象。 |
@@ -276,6 +282,70 @@ ret_t window_base_set_prop (widget_t* widget, const char* name, const value_t* v
 | 可直接读取 | 否 |
 | 可直接修改 | 否 |
 | 可通过widget\_get\_prop读取 | 是 |
+#### auto\_scale\_children\_h 属性
+-----------------------
+> <p id="window_base_t_auto_scale_children_h">窗口大小与设计时大小不同时，是否自动调整子控件的高度。
+
+* 类型：bool\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### auto\_scale\_children\_w 属性
+-----------------------
+> <p id="window_base_t_auto_scale_children_w">窗口大小与设计时大小不同时，是否自动调整子控件的宽度。
+
+* 类型：bool\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### auto\_scale\_children\_x 属性
+-----------------------
+> <p id="window_base_t_auto_scale_children_x">窗口大小与设计时大小不同时，是否自动调整子控件的x坐标。
+
+* 类型：bool\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### auto\_scale\_children\_y 属性
+-----------------------
+> <p id="window_base_t_auto_scale_children_y">窗口大小与设计时大小不同时，是否自动调整子控件的y坐标。
+
+* 类型：bool\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### closable 属性
 -----------------------
 > <p id="window_base_t_closable">收到EVT_REQUEST_CLOSE_WINDOW是否自动关闭窗口。
@@ -306,6 +376,38 @@ ret_t window_base_set_prop (widget_t* widget, const char* name, const value_t* v
 请参考[窗口动画](https://github.com/zlgopen/awtk/blob/master/docs/window_animator.md)
 
 * 类型：char*
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### design\_h 属性
+-----------------------
+> <p id="window_base_t_design_h">设计时高度。
+
+* 类型：uint16\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### design\_w 属性
+-----------------------
+> <p id="window_base_t_design_w">设计时宽度。
+
+* 类型：uint16\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

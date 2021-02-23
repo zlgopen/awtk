@@ -58,6 +58,7 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | <a href="#window_t_window_create_default">window\_create\_default</a> | 以缺省的方式创建window对象。 |
 | <a href="#window_t_window_open">window\_open</a> | 从资源文件中加载并创建window_base对象。本函数在ui_loader/ui_builder_default里实现。 |
 | <a href="#window_t_window_open_and_close">window\_open\_and\_close</a> | 从资源文件中加载并创建window对象。本函数在ui_loader/ui_builder_default里实现。 |
+| <a href="#window_t_window_set_auto_scale_children">window\_set\_auto\_scale\_children</a> | 当设计分辨率和实际分辨率不一致时，自动调整子控件的位置和大小。 |
 | <a href="#window_t_window_set_fullscreen">window\_set\_fullscreen</a> | 设置为全屏窗口。 |
 ### 属性
 <p id="window_t_properties">
@@ -312,6 +313,29 @@ widget_t* window_open_and_close (const char* name, widget_t* to_close);
 | 返回值 | widget\_t* | 对象。 |
 | name | const char* | window的名称。 |
 | to\_close | widget\_t* | 关闭该窗口。 |
+#### window\_set\_auto\_scale\_children 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_t_window_set_auto_scale_children">当设计分辨率和实际分辨率不一致时，自动调整子控件的位置和大小。
+
+> 当子控件有self_layout参数或者子控件的父控件有children_layout参数时，不会自动调整。
+
+* 函数原型：
+
+```
+ret_t window_set_auto_scale_children (widget_t* widget, uint32_t design_w, uint32_t design_h);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | window对象。 |
+| design\_w | uint32\_t | 设计时宽度。 |
+| design\_h | uint32\_t | 设计时高度。 |
 #### window\_set\_fullscreen 函数
 -----------------------
 
@@ -319,7 +343,7 @@ widget_t* window_open_and_close (const char* name, widget_t* to_close);
 
 > <p id="window_t_window_set_fullscreen">设置为全屏窗口。
 
->这里全屏是指与LCD相同大小，而非让SDL窗口全屏。
+>如果app_type是SIMULATOR，全屏是指与LCD相同大小，而非让SDL窗口全屏。
 
 * 函数原型：
 

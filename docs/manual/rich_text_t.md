@@ -66,7 +66,6 @@ widget_set_self_layout_params(rich_text, "center", "middle", "100%", "100%");
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#rich_text_t_line_gap">line\_gap</a> | uint32\_t | 行间距。 |
-| <a href="#rich_text_t_margin">margin</a> | uint32\_t | 边距。 |
 | <a href="#rich_text_t_need_reset">need\_reset</a> | bool\_t | 标识控件是否需要重新绘图。 |
 | <a href="#rich_text_t_yoffset">yoffset</a> | int32\_t | y偏移。 |
 | <a href="#rich_text_t_yslidable">yslidable</a> | bool\_t | 标识控件是否允许上下拖动。 |
@@ -155,22 +154,6 @@ ret_t rich_text_set_yslidable (widget_t* widget, bool_t yslidable);
 #### line\_gap 属性
 -----------------------
 > <p id="rich_text_t_line_gap">行间距。
-
-* 类型：uint32\_t
-
-| 特性 | 是否支持 |
-| -------- | ----- |
-| 可直接读取 | 是 |
-| 可直接修改 | 否 |
-| 可持久化   | 是 |
-| 可脚本化   | 是 |
-| 可在IDE中设置 | 是 |
-| 可在XML中设置 | 是 |
-| 可通过widget\_get\_prop读取 | 是 |
-| 可通过widget\_set\_prop修改 | 是 |
-#### margin 属性
------------------------
-> <p id="rich_text_t_margin">边距。
 
 * 类型：uint32\_t
 

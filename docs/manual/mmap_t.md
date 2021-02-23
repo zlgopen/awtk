@@ -26,7 +26,7 @@
 * 函数原型：
 
 ```
-mmap_t* mmap_create (mmap_t* mmap, const char* filename, bool_t writable, bool_t shared);
+mmap_t* mmap_create (const char* filename, bool_t writable, bool_t shared);
 ```
 
 * 参数说明：
@@ -34,7 +34,6 @@ mmap_t* mmap_create (mmap_t* mmap, const char* filename, bool_t writable, bool_t
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | mmap\_t* | mmap对象本身。 |
-| mmap | mmap\_t* | mmap对象。 |
 | filename | const char* | 文件名。 |
 | writable | bool\_t | 是否可写。 |
 | shared | bool\_t | 是否共享。 |

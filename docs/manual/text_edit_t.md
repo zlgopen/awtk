@@ -603,7 +603,7 @@ ret_t text_edit_set_select (text_edit_t* text_edit, uint32_t start, uint32_t end
 * 函数原型：
 
 ```
-ret_t text_edit_set_tips (text_edit_t* text_edit, const char* tips);
+ret_t text_edit_set_tips (text_edit_t* text_edit, const char* tips, bool_t mlines);
 ```
 
 * 参数说明：
@@ -613,6 +613,7 @@ ret_t text_edit_set_tips (text_edit_t* text_edit, const char* tips);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | text\_edit | text\_edit\_t* | text\_edit对象。 |
 | tips | const char* | 提示信息。 |
+| mlines | bool\_t | 提示信息是否多行显示。 |
 #### text\_edit\_set\_wrap\_word 函数
 -----------------------
 

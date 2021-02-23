@@ -57,6 +57,7 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L4
 | <a href="#text_selector_t_text_selector_set_loop_options">text\_selector\_set\_loop\_options</a> | 设置是否循环选项。 |
 | <a href="#text_selector_t_text_selector_set_options">text\_selector\_set\_options</a> | 设置选项。 |
 | <a href="#text_selector_t_text_selector_set_range_options">text\_selector\_set\_range\_options</a> | 设置一系列的整数选项。 |
+| <a href="#text_selector_t_text_selector_set_range_options_ex">text\_selector\_set\_range\_options\_ex</a> | 设置一系列的整数选项。 |
 | <a href="#text_selector_t_text_selector_set_selected_index">text\_selector\_set\_selected\_index</a> | 设置第index个选项为当前选中的选项。 |
 | <a href="#text_selector_t_text_selector_set_text">text\_selector\_set\_text</a> | 设置text_selector的文本。 |
 | <a href="#text_selector_t_text_selector_set_value">text\_selector\_set\_value</a> | 设置text_selector的值。 |
@@ -321,6 +322,29 @@ ret_t text_selector_set_range_options (widget_t* widget, int32_t start, uint32_t
 | start | int32\_t | 起始值。 |
 | nr | uint32\_t | 个数。 |
 | step | int32\_t | 步长。 |
+#### text\_selector\_set\_range\_options\_ex 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="text_selector_t_text_selector_set_range_options_ex">设置一系列的整数选项。
+
+* 函数原型：
+
+```
+ret_t text_selector_set_range_options_ex (widget_t* widget, int32_t start, uint32_t nr, int32_t step, const char* format);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | text\_selector对象。 |
+| start | int32\_t | 起始值。 |
+| nr | uint32\_t | 个数。 |
+| step | int32\_t | 步长。 |
+| format | const char* | 选项的格式化。 |
 #### text\_selector\_set\_selected\_index 函数
 -----------------------
 

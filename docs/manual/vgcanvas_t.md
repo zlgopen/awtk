@@ -43,17 +43,21 @@ vgcanvas_restore(vg);
 | <a href="#vgcanvas_t_vgcanvas_begin_frame">vgcanvas\_begin\_frame</a> | 开始绘制，系统内部调用。 |
 | <a href="#vgcanvas_t_vgcanvas_begin_path">vgcanvas\_begin\_path</a> | 清除之前的路径，并重新开始一条路径。 |
 | <a href="#vgcanvas_t_vgcanvas_bezier_to">vgcanvas\_bezier\_to</a> | 生成一条三次贝塞尔曲线。 |
+| <a href="#vgcanvas_t_vgcanvas_bind_fbo">vgcanvas\_bind\_fbo</a> | 绑定 fbo 对象。 |
 | <a href="#vgcanvas_t_vgcanvas_cast">vgcanvas\_cast</a> | 转换为vgcanvas对象(供脚本语言使用)。 |
 | <a href="#vgcanvas_t_vgcanvas_clear_cache">vgcanvas\_clear\_cache</a> | 释放vgcanvas对象的缓冲数据。 |
 | <a href="#vgcanvas_t_vgcanvas_clear_rect">vgcanvas\_clear\_rect</a> | 用颜色清除指定矩形区域。 |
 | <a href="#vgcanvas_t_vgcanvas_clip_rect">vgcanvas\_clip\_rect</a> | 矩形裁剪。 |
 | <a href="#vgcanvas_t_vgcanvas_close_path">vgcanvas\_close\_path</a> | 闭合路径。 |
 | <a href="#vgcanvas_t_vgcanvas_create">vgcanvas\_create</a> | 创建vgcanvas。 |
+| <a href="#vgcanvas_t_vgcanvas_create_fbo">vgcanvas\_create\_fbo</a> | 创建 fbo 对象。 |
 | <a href="#vgcanvas_t_vgcanvas_destroy">vgcanvas\_destroy</a> | 销毁vgcanvas对象。 |
+| <a href="#vgcanvas_t_vgcanvas_destroy_fbo">vgcanvas\_destroy\_fbo</a> | 销毁 fbo 对象。 |
 | <a href="#vgcanvas_t_vgcanvas_draw_icon">vgcanvas\_draw\_icon</a> | 绘制图标。 |
 | <a href="#vgcanvas_t_vgcanvas_draw_image">vgcanvas\_draw\_image</a> | 绘制图片。 |
 | <a href="#vgcanvas_t_vgcanvas_ellipse">vgcanvas\_ellipse</a> | 生成一个椭圆路径。 |
 | <a href="#vgcanvas_t_vgcanvas_end_frame">vgcanvas\_end\_frame</a> | 结束绘制。系统内部调用。 |
+| <a href="#vgcanvas_t_vgcanvas_fbo_to_bitmap">vgcanvas\_fbo\_to\_bitmap</a> | 把 fbo 对象的数据拷贝到 bitmap 中。 |
 | <a href="#vgcanvas_t_vgcanvas_fill">vgcanvas\_fill</a> | 填充多边形。 |
 | <a href="#vgcanvas_t_vgcanvas_fill_text">vgcanvas\_fill\_text</a> | 绘制文本。 |
 | <a href="#vgcanvas_t_vgcanvas_flush">vgcanvas\_flush</a> | flush |
@@ -99,6 +103,7 @@ vgcanvas_restore(vg);
 | <a href="#vgcanvas_t_vgcanvas_stroke">vgcanvas\_stroke</a> | 画线。 |
 | <a href="#vgcanvas_t_vgcanvas_transform">vgcanvas\_transform</a> | 变换矩阵。 |
 | <a href="#vgcanvas_t_vgcanvas_translate">vgcanvas\_translate</a> | 平移。 |
+| <a href="#vgcanvas_t_vgcanvas_unbind_fbo">vgcanvas\_unbind\_fbo</a> | 解开绑定 fbo 对象。 |
 ### 属性
 <p id="vgcanvas_t_properties">
 
@@ -233,6 +238,26 @@ ret_t vgcanvas_bezier_to (vgcanvas_t* vg, float_t cp1x, float_t cp1y, float_t cp
 | cp2y | float\_t | 控制点3y坐标。 |
 | x | float\_t | x坐标。 |
 | y | float\_t | y坐标。 |
+#### vgcanvas\_bind\_fbo 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="vgcanvas_t_vgcanvas_bind_fbo">绑定 fbo 对象。
+
+* 函数原型：
+
+```
+ret_t vgcanvas_bind_fbo (vgcanvas_t* vg, framebuffer_object_t* fbo);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| vg | vgcanvas\_t* | vgcanvas对象。 |
+| fbo | framebuffer\_object\_t* | 需要创建 fbo 的对象。 |
 #### vgcanvas\_cast 函数
 -----------------------
 
@@ -362,6 +387,29 @@ vgcanvas_t* vgcanvas_create (uint32_t w, uint32_t h, uint32_t stride, bitmap_for
 | stride | uint32\_t | 一行占用的字节数。 |
 | format | bitmap\_format\_t | 如果data是framebuffer，format指定data的格式。 |
 | data | void* | framebuffer或其它ctx。 |
+#### vgcanvas\_create\_fbo 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="vgcanvas_t_vgcanvas_create_fbo">创建 fbo 对象。
+
+* 函数原型：
+
+```
+ret_t vgcanvas_create_fbo (vgcanvas_t* vg, uint32_t w, uint32_t h, bool_t custom_draw_model, framebuffer_object_t* fbo);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| vg | vgcanvas\_t* | vgcanvas对象。 |
+| w | uint32\_t | fbo 对象的宽。 |
+| h | uint32\_t | fbo 对象的高。 |
+| custom\_draw\_model | bool\_t | 是否脱离 awtk 默认的 OpenGL 绘图方法。 |
+| fbo | framebuffer\_object\_t* | 需要创建 fbo 的对象。 |
 #### vgcanvas\_destroy 函数
 -----------------------
 
@@ -381,6 +429,26 @@ ret_t vgcanvas_destroy (vgcanvas_t* vg);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
+#### vgcanvas\_destroy\_fbo 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="vgcanvas_t_vgcanvas_destroy_fbo">销毁 fbo 对象。
+
+* 函数原型：
+
+```
+ret_t vgcanvas_destroy_fbo (vgcanvas_t* vg, framebuffer_object_t* fbo);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| vg | vgcanvas\_t* | vgcanvas对象。 |
+| fbo | framebuffer\_object\_t* | 需要创建 fbo 的对象。 |
 #### vgcanvas\_draw\_icon 函数
 -----------------------
 
@@ -481,6 +549,28 @@ ret_t vgcanvas_end_frame (vgcanvas_t* vg);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | vg | vgcanvas\_t* | vgcanvas对象。 |
+#### vgcanvas\_fbo\_to\_bitmap 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="vgcanvas_t_vgcanvas_fbo_to_bitmap">把 fbo 对象的数据拷贝到 bitmap 中。
+
+* 函数原型：
+
+```
+ret_t vgcanvas_fbo_to_bitmap (vgcanvas_t* vg, framebuffer_object_t* fbo, bitmap_t* img, const rect_t* r);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| vg | vgcanvas\_t* | vgcanvas对象。 |
+| fbo | framebuffer\_object\_t* | 需要创建 fbo 的对象。 |
+| img | bitmap\_t* | 输出的 bitmap 的对象。 |
+| r | const rect\_t* | 需要拷贝的区域。 |
 #### vgcanvas\_fill 函数
 -----------------------
 
@@ -1450,6 +1540,26 @@ ret_t vgcanvas_translate (vgcanvas_t* vg, float_t x, float_t y);
 | vg | vgcanvas\_t* | vgcanvas对象。 |
 | x | float\_t | x方向偏移。 |
 | y | float\_t | y方向偏移。 |
+#### vgcanvas\_unbind\_fbo 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="vgcanvas_t_vgcanvas_unbind_fbo">解开绑定 fbo 对象。
+
+* 函数原型：
+
+```
+ret_t vgcanvas_unbind_fbo (vgcanvas_t* vg, framebuffer_object_t* fbo);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| vg | vgcanvas\_t* | vgcanvas对象。 |
+| fbo | framebuffer\_object\_t* | 需要创建 fbo 的对象。 |
 #### anti\_alias 属性
 -----------------------
 > <p id="vgcanvas_t_anti_alias">是否启用反走样功能。

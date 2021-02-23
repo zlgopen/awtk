@@ -38,6 +38,7 @@ darray_destroy(darray);
 | <a href="#darray_t_darray_get">darray\_get</a> | 获取指定序数的元素。 |
 | <a href="#darray_t_darray_head">darray\_head</a> | 返回第一个元素。 |
 | <a href="#darray_t_darray_init">darray\_init</a> | 初始化darray对象。 |
+| <a href="#darray_t_darray_insert">darray\_insert</a> | 插入一个元素。 |
 | <a href="#darray_t_darray_pop">darray\_pop</a> | 弹出最后一个元素。 |
 | <a href="#darray_t_darray_push">darray\_push</a> | 在尾巴追加一个元素。 |
 | <a href="#darray_t_darray_remove">darray\_remove</a> | 删除第一个满足条件的元素。 |
@@ -348,6 +349,27 @@ darray_t* darray_init (darray_t* darray, uint32_t capacity, tk_destroy_t destroy
 | capacity | uint32\_t | 数组的初始容量。 |
 | destroy | tk\_destroy\_t | 元素销毁函数。 |
 | compare | tk\_compare\_t | 元素比较函数。 |
+#### darray\_insert 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="darray_t_darray_insert">插入一个元素。
+
+* 函数原型：
+
+```
+ret_t darray_insert (darray_t* darray, uint32_t index, void* data);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| darray | darray\_t* | 数组对象。 |
+| index | uint32\_t | 位置序数。 |
+| data | void* | 待插入的元素。 |
 #### darray\_pop 函数
 -----------------------
 

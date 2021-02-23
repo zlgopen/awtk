@@ -42,6 +42,7 @@ wbuffer_deinit(&wbuffer);
 | <a href="#wbuffer_t_wbuffer_write_binary">wbuffer\_write\_binary</a> | 写入指定长度的二进制数据。 |
 | <a href="#wbuffer_t_wbuffer_write_double">wbuffer\_write\_double</a> | 写入double数据。 |
 | <a href="#wbuffer_t_wbuffer_write_float">wbuffer\_write\_float</a> | 写入float数据。 |
+| <a href="#wbuffer_t_wbuffer_write_int32">wbuffer\_write\_int32</a> | 写入int32数据。 |
 | <a href="#wbuffer_t_wbuffer_write_string">wbuffer\_write\_string</a> | 写入字符串。 |
 | <a href="#wbuffer_t_wbuffer_write_uint16">wbuffer\_write\_uint16</a> | 写入uint16数据。 |
 | <a href="#wbuffer_t_wbuffer_write_uint32">wbuffer\_write\_uint32</a> | 写入uint32数据。 |
@@ -254,6 +255,26 @@ ret_t wbuffer_write_float (wbuffer_t* wbuffer, float value);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | wbuffer | wbuffer\_t* | wbuffer对象。 |
 | value | float | 要写入的数据。 |
+#### wbuffer\_write\_int32 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="wbuffer_t_wbuffer_write_int32">写入int32数据。
+
+* 函数原型：
+
+```
+ret_t wbuffer_write_int32 (wbuffer_t* wbuffer, int32_t value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| wbuffer | wbuffer\_t* | wbuffer对象。 |
+| value | int32\_t | 要写入的数据。 |
 #### wbuffer\_write\_string 函数
 -----------------------
 

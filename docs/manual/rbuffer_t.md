@@ -30,6 +30,7 @@ rbuffer_read_string(&rbuffer, &str);
 | <a href="#rbuffer_t_rbuffer_read_binary">rbuffer\_read\_binary</a> | 读取指定长度的二进制数据。 |
 | <a href="#rbuffer_t_rbuffer_read_double">rbuffer\_read\_double</a> | 读取double数据。 |
 | <a href="#rbuffer_t_rbuffer_read_float">rbuffer\_read\_float</a> | 读取float数据。 |
+| <a href="#rbuffer_t_rbuffer_read_int32">rbuffer\_read\_int32</a> | 读取int32数据。 |
 | <a href="#rbuffer_t_rbuffer_read_string">rbuffer\_read\_string</a> | 读取字符串。 |
 | <a href="#rbuffer_t_rbuffer_read_uint16">rbuffer\_read\_uint16</a> | 读取uint16数据。 |
 | <a href="#rbuffer_t_rbuffer_read_uint32">rbuffer\_read\_uint32</a> | 读取uint32数据。 |
@@ -206,6 +207,26 @@ ret_t rbuffer_read_float (rbuffer_t* rbuffer, float* value);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | rbuffer | rbuffer\_t* | rbuffer对象。 |
 | value | float* | 返回读取的数据。 |
+#### rbuffer\_read\_int32 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="rbuffer_t_rbuffer_read_int32">读取int32数据。
+
+* 函数原型：
+
+```
+ret_t rbuffer_read_int32 (rbuffer_t* rbuffer, int32_t* value);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| rbuffer | rbuffer\_t* | rbuffer对象。 |
+| value | int32\_t* | 返回读取的数据。 |
 #### rbuffer\_read\_string 函数
 -----------------------
 

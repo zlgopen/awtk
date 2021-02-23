@@ -40,7 +40,7 @@ style_factory_t* style_factory ();
 * 函数原型：
 
 ```
-style_t* style_factory_create_style (style_factory_t* factory, widget_t* widget);
+style_t* style_factory_create_style (style_factory_t* factory, const char* style_type);
 ```
 
 * 参数说明：
@@ -49,7 +49,7 @@ style_t* style_factory_create_style (style_factory_t* factory, widget_t* widget)
 | -------- | ----- | --------- |
 | 返回值 | style\_t* | 返回style对象。 |
 | factory | style\_factory\_t* | factory对象。 |
-| widget | widget\_t* | 控件对象。 |
+| style\_type | const char* | style类型。 |
 #### style\_factory\_set 函数
 -----------------------
 

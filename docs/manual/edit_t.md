@@ -98,22 +98,18 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | -------- | ----- | ------------ | 
 | <a href="#edit_t_action_text">action\_text</a> | char* | 软键盘上action按钮的文本。内置取值有： |
 | <a href="#edit_t_auto_fix">auto\_fix</a> | bool\_t | 输入无效时，是否自动改正。 |
-| <a href="#edit_t_bottom_margin">bottom\_margin</a> | uint8\_t | 下边距。 |
 | <a href="#edit_t_cancelable">cancelable</a> | bool\_t | 是否支持撤销编辑。如果为TRUE，在失去焦点之前可以撤销所有修改(恢复获得焦点之前的内容)。 |
 | <a href="#edit_t_close_im_when_blured">close\_im\_when\_blured</a> | bool\_t | 是否在失去焦点时关闭输入法(默认是)。 |
 | <a href="#edit_t_input_type">input\_type</a> | input\_type\_t | 输入类型。 |
 | <a href="#edit_t_keyboard">keyboard</a> | char* | 自定义软键盘名称。AWTK优先查找keyboard属性设置的键盘文件名（该键盘的XML文件需要在default\raw\ui目录下存在），如果keyboard为空就找input_type设置的键盘类型 |
-| <a href="#edit_t_left_margin">left\_margin</a> | uint8\_t | 左边距。 |
 | <a href="#edit_t_max">max</a> | double | 最大值或最大长度。 |
 | <a href="#edit_t_min">min</a> | double | 最小值或最小长度。 |
 | <a href="#edit_t_open_im_when_focused">open\_im\_when\_focused</a> | bool\_t | 获得焦点时打开输入法。 |
 | <a href="#edit_t_password_visible">password\_visible</a> | bool\_t | 密码是否可见。 |
 | <a href="#edit_t_readonly">readonly</a> | bool\_t | 编辑器是否为只读。 |
-| <a href="#edit_t_right_margin">right\_margin</a> | uint8\_t | 右边距。 |
 | <a href="#edit_t_select_none_when_focused">select\_none\_when\_focused</a> | bool\_t | 获得焦点时不选中文本。 |
 | <a href="#edit_t_step">step</a> | double | 步长。 |
 | <a href="#edit_t_tips">tips</a> | char* | 输入提示。 |
-| <a href="#edit_t_top_margin">top\_margin</a> | uint8\_t | 上边距。 |
 | <a href="#edit_t_tr_tips">tr\_tips</a> | char* | 保存用于翻译的提示信息。 |
 ### 事件
 <p id="edit_t_events">
@@ -753,22 +749,6 @@ ret_t edit_set_tr_tips (widget_t* widget, const char* tr_tips);
 | 可在XML中设置 | 是 |
 | 可通过widget\_get\_prop读取 | 是 |
 | 可通过widget\_set\_prop修改 | 是 |
-#### bottom\_margin 属性
------------------------
-> <p id="edit_t_bottom_margin">下边距。
-
-* 类型：uint8\_t
-
-| 特性 | 是否支持 |
-| -------- | ----- |
-| 可直接读取 | 是 |
-| 可直接修改 | 否 |
-| 可持久化   | 是 |
-| 可脚本化   | 是 |
-| 可在IDE中设置 | 是 |
-| 可在XML中设置 | 是 |
-| 可通过widget\_get\_prop读取 | 是 |
-| 可通过widget\_set\_prop修改 | 是 |
 #### cancelable 属性
 -----------------------
 > <p id="edit_t_cancelable">是否支持撤销编辑。如果为TRUE，在失去焦点之前可以撤销所有修改(恢复获得焦点之前的内容)。
@@ -825,22 +805,6 @@ ret_t edit_set_tr_tips (widget_t* widget, const char* tr_tips);
 > <p id="edit_t_keyboard">自定义软键盘名称。AWTK优先查找keyboard属性设置的键盘文件名（该键盘的XML文件需要在default\raw\ui目录下存在），如果keyboard为空就找input_type设置的键盘类型
 
 * 类型：char*
-
-| 特性 | 是否支持 |
-| -------- | ----- |
-| 可直接读取 | 是 |
-| 可直接修改 | 否 |
-| 可持久化   | 是 |
-| 可脚本化   | 是 |
-| 可在IDE中设置 | 是 |
-| 可在XML中设置 | 是 |
-| 可通过widget\_get\_prop读取 | 是 |
-| 可通过widget\_set\_prop修改 | 是 |
-#### left\_margin 属性
------------------------
-> <p id="edit_t_left_margin">左边距。
-
-* 类型：uint8\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |
@@ -934,22 +898,6 @@ ret_t edit_set_tr_tips (widget_t* widget, const char* tr_tips);
 | 可在XML中设置 | 是 |
 | 可通过widget\_get\_prop读取 | 是 |
 | 可通过widget\_set\_prop修改 | 是 |
-#### right\_margin 属性
------------------------
-> <p id="edit_t_right_margin">右边距。
-
-* 类型：uint8\_t
-
-| 特性 | 是否支持 |
-| -------- | ----- |
-| 可直接读取 | 是 |
-| 可直接修改 | 否 |
-| 可持久化   | 是 |
-| 可脚本化   | 是 |
-| 可在IDE中设置 | 是 |
-| 可在XML中设置 | 是 |
-| 可通过widget\_get\_prop读取 | 是 |
-| 可通过widget\_set\_prop修改 | 是 |
 #### select\_none\_when\_focused 属性
 -----------------------
 > <p id="edit_t_select_none_when_focused">获得焦点时不选中文本。
@@ -990,22 +938,6 @@ ret_t edit_set_tr_tips (widget_t* widget, const char* tr_tips);
 > <p id="edit_t_tips">输入提示。
 
 * 类型：char*
-
-| 特性 | 是否支持 |
-| -------- | ----- |
-| 可直接读取 | 是 |
-| 可直接修改 | 否 |
-| 可持久化   | 是 |
-| 可脚本化   | 是 |
-| 可在IDE中设置 | 是 |
-| 可在XML中设置 | 是 |
-| 可通过widget\_get\_prop读取 | 是 |
-| 可通过widget\_set\_prop修改 | 是 |
-#### top\_margin 属性
------------------------
-> <p id="edit_t_top_margin">上边距。
-
-* 类型：uint8\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |
