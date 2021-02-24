@@ -50,7 +50,7 @@ timer_manager_t* timer_manager_init(timer_manager_t* timer_manager, timer_get_ti
   timer_manager->next_timer_id = TK_INVALID_ID + 1;
   timer_manager->last_dispatch_time = get_time();
   timer_manager->get_time = get_time;
-  slist_init(&(timer_manager->timers), (tk_destroy_t)object_unref, timer_info_compare);
+  slist_init(&(timer_manager->timers), (tk_destroy_t)object_unref, timer_info_compare_by_id);
 
   return timer_manager;
 }
@@ -80,14 +80,33 @@ ret_t timer_manager_append(timer_manager_t* timer_manager, timer_info_t* timer) 
 
 uint32_t timer_manager_add(timer_manager_t* timer_manager, timer_func_t on_timer, void* ctx,
                            uint32_t duration) {
+  return timer_manager_add_with_type(timer_manager, on_timer, ctx, duration, TIMER_INFO_NORMAL);
+}
+
+uint32_t timer_manager_add_with_type(timer_manager_t* timer_manager, timer_func_t on_timer, void* ctx,
+                           uint32_t duration, uint16_t timer_info_type) {
   timer_info_t* timer = NULL;
   return_value_if_fail(on_timer != NULL, TK_INVALID_ID);
   return_value_if_fail(timer_manager != NULL, TK_INVALID_ID);
 
-  timer = timer_info_create(timer_manager, on_timer, ctx, duration);
+  timer = timer_info_create(timer_manager, on_timer, ctx, duration, timer_info_type);
   return_value_if_fail(timer != NULL, TK_INVALID_ID);
 
   return timer->id;
+}
+
+ret_t timer_manager_all_remove_by_ctx_and_type(timer_manager_t* timer_manager, uint16_t type, void* ctx) {
+  timer_info_t timer;
+  return_value_if_fail(timer_manager != NULL, RET_BAD_PARAMS);
+
+  return slist_remove_with_compare(&(timer_manager->timers), timer_info_init_dummy_with_ctx_and_type(&timer, type, ctx), timer_info_compare_by_ctx_and_type, -1);
+}
+
+ret_t timer_manager_all_remove_by_ctx(timer_manager_t* timer_manager, void* ctx) {
+  timer_info_t timer;
+  return_value_if_fail(timer_manager != NULL, RET_BAD_PARAMS);
+
+  return slist_remove_with_compare(&(timer_manager->timers), ctx, timer_info_compare_by_ctx, -1);
 }
 
 ret_t timer_manager_remove(timer_manager_t* timer_manager, uint32_t timer_id) {

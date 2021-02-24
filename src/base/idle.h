@@ -87,6 +87,16 @@ ret_t idle_queue(idle_func_t on_idle, void* ctx);
 ret_t idle_remove(uint32_t idle_id);
 
 /**
+ * @method idle_remove_all_by_ctx
+ * 根据上下文删除所有对应的idle。
+ * @annotation ["scriptable", "static"]
+ * @param {void*} ctx idle回调函数的上下文
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t idle_remove_all_by_ctx(void* ctx);
+
+/**
  * @method idle_find
  * 查找指定ID的idle。
  * @annotation ["private"]
@@ -125,6 +135,9 @@ uint32_t idle_count(void);
 
 /*internal use*/
 bool_t idle_exist(idle_func_t on_idle, void* ctx);
+ret_t idle_remove_all_by_ctx_and_type(uint32_t type, void* ctx);
+uint32_t idle_add_with_type(idle_func_t on_idle, void* ctx, uint32_t type);
+
 
 END_C_DECLS
 

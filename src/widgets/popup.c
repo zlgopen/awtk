@@ -151,11 +151,11 @@ static ret_t popup_on_event(widget_t* widget, event_t* e) {
             close_window = TRUE;
           }
         } else if (!popup->close_when_click) {
-          idle_add(popup_idle_check_if_need_set_background_state, widget);
+          widget_add_idle(widget, popup_idle_check_if_need_set_background_state);
         }
 
         if (close_window) {
-          idle_add(popup_idle_window_close, widget);
+          widget_add_idle(widget, popup_idle_window_close);
         }
       }
 

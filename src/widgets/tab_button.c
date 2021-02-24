@@ -343,7 +343,7 @@ widget_t* tab_button_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 
   tab_button_set_value_only(widget, FALSE);
 
-  idle_add(tab_button_open_idle_func, widget);
+  widget_add_idle(widget, tab_button_open_idle_func);
 
   return widget;
 }

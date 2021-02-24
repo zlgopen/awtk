@@ -34,6 +34,11 @@ typedef struct _idle_manager_t idle_manager_t;
 
 typedef ret_t (*idle_func_t)(const idle_info_t* idle);
 
+typedef enum _idle_info_type_t {
+  IDLE_INFO_NORMAL = 0,
+  IDLE_INFO_WIDGET_ADD,
+} idle_info_type_t;
+
 /**
  * @class idle_info_t
  * @parent object_t
@@ -84,6 +89,7 @@ struct _idle_info_t {
   /*private*/
   uint32_t dispatch_id;
   bool_t busy;
+  uint16_t idle_info_type;
 };
 
 /**
@@ -97,11 +103,14 @@ struct _idle_info_t {
 idle_info_t* idle_info_cast(idle_info_t* idle);
 
 /*internal use*/
-int idle_info_compare(const void* a, const void* b);
+int idle_info_compare_by_id(const void* a, const void* b);
+int idle_info_compare_by_ctx(const void* a, const void* b);
+int idle_info_compare_by_ctx_and_type(const void* a, const void* b);
 idle_info_t* idle_info_init_dummy(idle_info_t* idle, uint32_t id);
+idle_info_t* idle_info_init_dummy_with_ctx_and_type(idle_info_t* idle, uint16_t idle_info_type, void* ctx);
 ret_t idle_info_on_idle(idle_info_t* idle, uint32_t dispatch_id);
 bool_t idle_info_is_available(idle_info_t* idle, uint32_t dispatch_id);
-idle_info_t* idle_info_create(idle_manager_t* idle_manager, idle_func_t on_idle, void* ctx);
+idle_info_t* idle_info_create(idle_manager_t* idle_manager, idle_func_t on_idle, void* ctx, uint16_t idle_info_type);
 
 #define IDLE_INFO(o) ((idle_info_t*)(o))
 

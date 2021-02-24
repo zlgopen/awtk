@@ -45,7 +45,7 @@ idle_manager_t* idle_manager_init(idle_manager_t* idle_manager) {
   return_value_if_fail(idle_manager != NULL, NULL);
 
   idle_manager->next_idle_id = TK_INVALID_ID + 1;
-  slist_init(&(idle_manager->idles), (tk_destroy_t)object_unref, idle_info_compare);
+  slist_init(&(idle_manager->idles), (tk_destroy_t)object_unref, idle_info_compare_by_id);
 
   return idle_manager;
 }
@@ -60,6 +60,19 @@ ret_t idle_manager_remove_all(idle_manager_t* idle_manager) {
   return_value_if_fail(idle_manager != NULL, RET_BAD_PARAMS);
 
   return slist_remove_all(&(idle_manager->idles));
+}
+
+ret_t idle_manager_remove_all_by_ctx_and_type(idle_manager_t* idle_manager, uint16_t type, void* ctx) {
+  idle_info_t idle;
+  return_value_if_fail(idle_manager != NULL, RET_BAD_PARAMS);
+
+  return slist_remove_with_compare(&(idle_manager->idles), idle_info_init_dummy_with_ctx_and_type(&idle, type, ctx), idle_info_compare_by_ctx_and_type, -1);
+}
+
+ret_t idle_manager_remove_all_by_ctx(idle_manager_t* idle_manager, void* ctx) {
+  return_value_if_fail(idle_manager != NULL, RET_BAD_PARAMS);
+
+  return slist_remove_with_compare(&(idle_manager->idles), ctx, idle_info_compare_by_ctx, -1);
 }
 
 ret_t idle_manager_destroy(idle_manager_t* idle_manager) {
@@ -78,11 +91,15 @@ ret_t idle_manager_append(idle_manager_t* idle_manager, idle_info_t* idle) {
 }
 
 uint32_t idle_manager_add(idle_manager_t* idle_manager, idle_func_t on_idle, void* ctx) {
+  return idle_manager_add_with_type(idle_manager, on_idle, ctx, IDLE_INFO_NORMAL);
+}
+
+uint32_t idle_manager_add_with_type(idle_manager_t* idle_manager, idle_func_t on_idle, void* ctx, uint32_t type) {
   idle_info_t* idle = NULL;
   return_value_if_fail(on_idle != NULL, TK_INVALID_ID);
   return_value_if_fail(idle_manager != NULL, TK_INVALID_ID);
 
-  idle = idle_info_create(idle_manager, on_idle, ctx);
+  idle = idle_info_create(idle_manager, on_idle, ctx, type);
   return_value_if_fail(idle != NULL, TK_INVALID_ID);
 
   return idle->id;

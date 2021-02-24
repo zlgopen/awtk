@@ -120,6 +120,16 @@ ret_t idle_manager_dispatch(idle_manager_t* idle_manager);
 ret_t idle_manager_remove_all(idle_manager_t* idle_manager);
 
 /**
+ * @method idle_manager_remove_all
+ * 根据上下文删除所有符合条件的idle。
+ * @param {idle_manager_t*} idle_manager idle_manager_t管理器对象。
+ * @param {void*} ctx idle回调函数的上下文。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t idle_manager_remove_all_by_ctx(idle_manager_t* idle_manager, void* ctx);
+
+/**
  * @method idle_manager_remove
  * 根据idle_id删除idle。
  * @param {idle_manager_t*} idle_manager idle_manager_t管理器对象。
@@ -160,6 +170,9 @@ const idle_info_t* idle_manager_find(idle_manager_t* idle_manager, uint32_t idle
  */
 uint32_t idle_manager_add(idle_manager_t* idle_manager, idle_func_t on_idle, void* ctx);
 
+/*internal use*/
+ret_t idle_manager_remove_all_by_ctx_and_type(idle_manager_t* idle_manager, uint16_t type, void* ctx);
+uint32_t idle_manager_add_with_type(idle_manager_t* idle_manager, idle_func_t on_idle, void* ctx, uint32_t type);
 bool_t idle_manager_exist(idle_manager_t* idle_manager, idle_func_t on_idle, void* ctx);
 
 END_C_DECLS

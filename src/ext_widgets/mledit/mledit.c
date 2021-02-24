@@ -672,8 +672,7 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
         if (mledit->open_im_when_focused) {
           mledit_request_input_method(widget);
         }
-
-        idle_add(mledit_focus_set_cursor, mledit);
+        widget_add_idle(widget, mledit_focus_set_cursor);
       }
       mledit_save_text(widget);
       break;

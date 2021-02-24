@@ -1941,6 +1941,16 @@ ret_t widget_remove_timer(widget_t* widget, uint32_t timer_id);
 uint32_t widget_add_idle(widget_t* widget, idle_func_t on_idle);
 
 /**
+ * @method widget_remove_idle
+ * 删除指定的idle。
+ * @param {widget_t*} widget 控件对象。
+ * @param {uint32_t} idle_id idleID。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_remove_idle(widget_t* widget, uint32_t idle_id);
+
+/**
  * @method widget_load_image
  * 加载图片。
  * 返回的bitmap对象只在当前调用有效，请不保存对bitmap对象的引用。

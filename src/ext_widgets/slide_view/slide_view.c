@@ -683,6 +683,12 @@ static ret_t slide_view_on_destroy(widget_t* widget) {
   slide_view_t* slide_view = SLIDE_VIEW(widget);
   return_value_if_fail(widget != NULL && slide_view != NULL, RET_BAD_PARAMS);
 
+  if (slide_view->init_idle_id != TK_INVALID_ID) {
+    idle_remove(slide_view->init_idle_id);
+  }
+  if (slide_view->focused_idle_id != TK_INVALID_ID) {
+    idle_remove(slide_view->focused_idle_id);
+  }
   if (slide_view->timer_id) {
     timer_remove(slide_view->timer_id);
     slide_view->timer_id = 0;

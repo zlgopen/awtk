@@ -94,7 +94,7 @@ static ret_t image_animation_on_paint_self(widget_t* widget, canvas_t* c) {
 
       if (image_animation->unload_after_paint) {
         image_animation->image_buffer = (bitmap.buffer);
-        idle_add(on_idle_unload_image, widget);
+        widget_add_idle(widget, on_idle_unload_image);
       }
     }
   }

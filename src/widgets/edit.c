@@ -535,7 +535,7 @@ static ret_t edit_on_focused(widget_t* widget) {
     edit_request_input_method(widget);
 
     if (!edit->select_none_when_focused) {
-      idle_add(edit_select_all_async, edit);
+      widget_add_idle(widget, edit_select_all_async);
     }
   }
   edit_update_status(widget);
@@ -1734,7 +1734,7 @@ widget_t* edit_create_ex(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy
 
   edit_update_status(widget);
   edit->timer_id = TK_INVALID_ID;
-  edit->idle_id = idle_add(edit_hook_children_button_and_check_valid_value, edit);
+  edit->idle_id = widget_add_idle(widget, edit_hook_children_button_and_check_valid_value);
 
   edit->model = text_edit_create(widget, TRUE);
   ENSURE(edit->model != NULL);

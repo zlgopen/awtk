@@ -72,29 +72,40 @@ void* slist_find(slist_t* slist, void* ctx) {
   return NULL;
 }
 
-ret_t slist_remove(slist_t* slist, void* ctx) {
+ret_t slist_remove_with_compare(slist_t* slist, void* ctx, tk_compare_t compare, int32_t remove_size) {
+  int32_t n = remove_size;
   slist_node_t* iter = NULL;
   slist_node_t* prev = NULL;
+  slist_node_t* next = NULL;
   return_value_if_fail(slist != NULL, RET_BAD_PARAMS);
 
   iter = slist->first;
   prev = slist->first;
   while (iter != NULL) {
-    if (slist->compare(iter->data, ctx) == 0) {
+    if (compare(iter->data, ctx) == 0) {
       if (iter == slist->first) {
         slist->first = slist->first->next;
       } else {
         prev->next = iter->next;
       }
+      next = iter->next;
       slist_node_destroy(iter, slist->destroy);
-
-      return RET_OK;
+      iter = next;
+      n--;
+      if (n == 0) {
+        return RET_OK;
+      }
+    } else {
+      prev = iter;
+      iter = iter->next;
     }
-    prev = iter;
-    iter = iter->next;
   }
 
-  return RET_NOT_FOUND;
+    return remove_size == n ? RET_NOT_FOUND : RET_OK;
+}
+
+ret_t slist_remove(slist_t* slist, void* ctx) {
+  return slist_remove_with_compare(slist, ctx, slist->compare, 1);
 }
 
 ret_t slist_append(slist_t* slist, void* data) {

@@ -33,8 +33,20 @@ uint32_t timer_add(timer_func_t on_timer, void* ctx, uint32_t duration) {
   return timer_manager_add(timer_manager(), on_timer, ctx, duration);
 }
 
+uint32_t timer_add_with_type(timer_func_t on_timer, void* ctx, uint32_t duration, uint16_t type) {
+  return timer_manager_add_with_type(timer_manager(), on_timer, ctx, duration, type);
+}
+
 ret_t timer_remove(uint32_t timer_id) {
   return timer_manager_remove(timer_manager(), timer_id);
+}
+
+ret_t timer_remove_all_by_ctx_and_type(uint16_t type, void* ctx) {
+  return timer_manager_all_remove_by_ctx_and_type(timer_manager(), type, ctx);
+}
+
+ret_t timer_remove_all_by_ctx(void* ctx) {
+  return timer_manager_all_remove_by_ctx(timer_manager(), ctx);
 }
 
 ret_t timer_reset(uint32_t timer_id) {

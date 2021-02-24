@@ -216,14 +216,14 @@ static ret_t file_browser_view_on_item_clicked(void* ctx, event_t* e) {
 
   if (tk_str_eq(target->name, FILE_BROWSER_VIEW_RETURN_UP)) {
     file_browser_up(file_browser_view->fb);
-    idle_add(file_browser_view_reload_in_idle, file_browser_view);
+    widget_add_idle(WIDGET(file_browser_view), file_browser_view_reload_in_idle);
   } else if (tk_str_eq(target->name, FILE_BROWSER_VIEW_FOLDER)) {
     uint32_t index = widget_index_of(target);
     fb_item_t* info = file_browser_get_item(file_browser_view->fb, index - 1);
     return_value_if_fail(info != NULL, RET_FAIL);
 
     file_browser_enter(file_browser_view->fb, info->name);
-    idle_add(file_browser_view_reload_in_idle, file_browser_view);
+    widget_add_idle(WIDGET(file_browser_view), file_browser_view_reload_in_idle);
   } else {
     uint32_t index = widget_index_of(target);
     fb_item_t* info = file_browser_get_item(file_browser_view->fb, index - 1);

@@ -96,6 +96,16 @@ ret_t timer_queue(timer_func_t on_timer, void* ctx, uint32_t duration);
 ret_t timer_remove(uint32_t timer_id);
 
 /**
+ * @method timer_remove_all_by_ctx
+ * 根据上下文删除所有对应的timer。
+ * @annotation ["scriptable", "static"]
+ * @param {void*} ctx timer回调函数的上下文。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t timer_remove_all_by_ctx(void* ctx);
+
+/**
  * @method timer_reset
  * 重置指定的timer，重置之后定时器重新开始计时。
  * @annotation ["scriptable", "static"]
@@ -182,6 +192,10 @@ uint32_t timer_count(void);
  * @return {uint32_t} 返回最近的timer到期时间。
  */
 uint32_t timer_next_time(void);
+
+/*internal use*/
+ret_t timer_remove_all_by_ctx_and_type(uint16_t type, void* ctx);
+uint32_t timer_add_with_type(timer_func_t on_timer, void* ctx, uint32_t duration, uint16_t type);
 
 END_C_DECLS
 
