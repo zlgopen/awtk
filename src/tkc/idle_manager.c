@@ -98,7 +98,7 @@ uint32_t idle_manager_add(idle_manager_t* idle_manager, idle_func_t on_idle, voi
 }
 
 uint32_t idle_manager_add_with_type(idle_manager_t* idle_manager, idle_func_t on_idle, void* ctx,
-                                    uint32_t type) {
+                                    uint16_t type) {
   idle_info_t* idle = NULL;
   return_value_if_fail(on_idle != NULL, TK_INVALID_ID);
   return_value_if_fail(idle_manager != NULL, TK_INVALID_ID);
