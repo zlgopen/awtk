@@ -1,8 +1,10 @@
 # 最新动态
 
 2021/02/24
-  * 修复widget\_add\_idle函数和widget\_add\_time函数内存泄露的问题和修复多个控件的idle上下文widget被释放的问题（感谢智明提供补丁）。  
+  * 修复更新风格类型失败的问题（感谢智明提供补丁）
   * scripts.app\_helper 增加use\_std\_cxx指定c++编译器的版本。
+  * 修复widget\_add\_idle函数和widget\_add\_time函数内存泄露的问题和修复多个控件的idle上下文widget被释放的问题（感谢智明提供补丁）。  
+  * 修复调用退出程序时候调用window\_manager\_close\_all函数无法触发keyboard销毁事件无法清除idle回调函数导致idle回调中出现野指针的问题（感谢智明提供补丁）
 
 2021/02/23
   * 更新文档。
