@@ -31,7 +31,7 @@
 #include "ui_loader/ui_builder_default.h"
 
 static ret_t input_method_default_on_edit_destroy(void* ctx, event_t* e);
-static ret_t input_method_default_on_keyboard_destroy(void* ctx, event_t* e);
+static ret_t input_method_default_on_keyboard_destroy(widget_t* widget, void* ctx);
 
 static const char* input_type_to_keyboard_name(int32_t input_type) {
   const char* keyboard = NULL;
@@ -202,7 +202,7 @@ static ret_t input_type_open_keyboard(input_method_t* im, const char* keyboard_n
 
   im->busy = TRUE;
   widget_on(im->keyboard, EVT_WINDOW_OPEN, input_method_default_on_keyboard_open, im);
-  widget_on(im->keyboard, EVT_DESTROY, input_method_default_on_keyboard_destroy, im);
+  keyboard_set_destroy_func_for_iput_method(im->keyboard, input_method_default_on_keyboard_destroy, im);
 
   if ((p.y + widget->h) > im->keyboard->y) {
     im->win = win;
@@ -317,8 +317,7 @@ static ret_t input_method_default_ensure_suggest_words(input_method_t* im) {
   return RET_OK;
 }
 
-static ret_t input_method_default_on_keyboard_destroy(void* ctx, event_t* e) {
-  widget_t* widget = WIDGET(e->target);
+static ret_t input_method_default_on_keyboard_destroy(widget_t* widget, void* ctx) {
   input_method_t* im = (input_method_t*)ctx;
 
   if (im->keyboard == widget) {

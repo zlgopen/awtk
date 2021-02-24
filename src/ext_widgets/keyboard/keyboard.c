@@ -41,6 +41,11 @@ static const char* s_keyboard_properties[] = {WIDGET_PROP_ANIM_HINT, WIDGET_PROP
 static ret_t keyboard_on_destroy(widget_t* widget) {
   keyboard_t* keyboard = KEYBOARD(widget);
   return_value_if_fail(keyboard != NULL, RET_BAD_PARAMS);
+
+  if (keyboard->keyboard_on_destroy_for_iput_method != NULL) {
+    keyboard->keyboard_on_destroy_for_iput_method(widget, keyboard->keyboard_on_destroy_for_iput_method_ctx);
+  }
+
   input_method_off(input_method(), keyboard->action_info_id);
   darray_deinit(&(keyboard->action_buttons));
   str_reset(&(keyboard->temp));
@@ -361,6 +366,16 @@ ret_t keyboard_close(widget_t* widget) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   return window_manager_close_window(widget->parent, widget);
+}
+
+ret_t keyboard_set_destroy_func_for_iput_method(widget_t* widget, keyboard_on_destroy_for_iput_method_t func, void* ctx) {
+  keyboard_t* keyboard = KEYBOARD(widget);
+  return_value_if_fail(keyboard != NULL && func != NULL && ctx != NULL, RET_BAD_PARAMS);
+
+  keyboard->keyboard_on_destroy_for_iput_method = func;
+  keyboard->keyboard_on_destroy_for_iput_method_ctx = ctx;
+
+  return RET_OK;
 }
 
 widget_t* keyboard_cast(widget_t* widget) {

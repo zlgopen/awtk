@@ -124,8 +124,13 @@ BEGIN_C_DECLS
  *
  */
 
+typedef ret_t (*keyboard_on_destroy_for_iput_method_t)(widget_t* widget, void* ctx);
+
 typedef struct _keyboard_t {
   window_base_t window;
+
+  void* keyboard_on_destroy_for_iput_method_ctx;
+  keyboard_on_destroy_for_iput_method_t keyboard_on_destroy_for_iput_method;
 
   /*private*/
   widget_t* last_click_button;
@@ -169,6 +174,18 @@ ret_t keyboard_close(widget_t* parent);
  * @return {widget_t*} keyboard对象。
  */
 widget_t* keyboard_cast(widget_t* widget);
+
+/**
+ * @method keyboard_set_destroy_func_for_iput_method
+ * 设置释放 keyboard 的时候给 input_method 回调事件
+ * @annotation ["deconstructor"]
+ * @param {widget_t*} widget keyboard对象。
+ * @param {keyboard_on_destroy_for_iput_method_t} func 回调函数。
+ * @param {void*} ctx 回调函数上下文
+ *
+ * @return {widget_t*} keyboard对象。
+ */
+ret_t keyboard_set_destroy_func_for_iput_method(widget_t* widget, keyboard_on_destroy_for_iput_method_t func, void* ctx);
 
 #define KEYBOARD(widget) ((keyboard_t*)(keyboard_cast(WIDGET(widget))))
 
