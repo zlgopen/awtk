@@ -406,6 +406,6 @@ typedef struct _event_source_manager_t event_source_manager_t;
 
 #ifndef TK_DEFAULT_WAIT_TIME
 #define TK_DEFAULT_WAIT_TIME 16
-#endif/*TK_DEFAULT_WAIT_TIME*/
+#endif /*TK_DEFAULT_WAIT_TIME*/
 
 #endif /*TYPES_DEF_H*/

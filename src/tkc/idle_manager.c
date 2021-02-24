@@ -62,11 +62,14 @@ ret_t idle_manager_remove_all(idle_manager_t* idle_manager) {
   return slist_remove_all(&(idle_manager->idles));
 }
 
-ret_t idle_manager_remove_all_by_ctx_and_type(idle_manager_t* idle_manager, uint16_t type, void* ctx) {
+ret_t idle_manager_remove_all_by_ctx_and_type(idle_manager_t* idle_manager, uint16_t type,
+                                              void* ctx) {
   idle_info_t idle;
   return_value_if_fail(idle_manager != NULL, RET_BAD_PARAMS);
 
-  return slist_remove_with_compare(&(idle_manager->idles), idle_info_init_dummy_with_ctx_and_type(&idle, type, ctx), idle_info_compare_by_ctx_and_type, -1);
+  return slist_remove_with_compare(&(idle_manager->idles),
+                                   idle_info_init_dummy_with_ctx_and_type(&idle, type, ctx),
+                                   idle_info_compare_by_ctx_and_type, -1);
 }
 
 ret_t idle_manager_remove_all_by_ctx(idle_manager_t* idle_manager, void* ctx) {
@@ -94,7 +97,8 @@ uint32_t idle_manager_add(idle_manager_t* idle_manager, idle_func_t on_idle, voi
   return idle_manager_add_with_type(idle_manager, on_idle, ctx, IDLE_INFO_NORMAL);
 }
 
-uint32_t idle_manager_add_with_type(idle_manager_t* idle_manager, idle_func_t on_idle, void* ctx, uint32_t type) {
+uint32_t idle_manager_add_with_type(idle_manager_t* idle_manager, idle_func_t on_idle, void* ctx,
+                                    uint32_t type) {
   idle_info_t* idle = NULL;
   return_value_if_fail(on_idle != NULL, TK_INVALID_ID);
   return_value_if_fail(idle_manager != NULL, TK_INVALID_ID);

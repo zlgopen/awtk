@@ -83,8 +83,8 @@ uint32_t timer_manager_add(timer_manager_t* timer_manager, timer_func_t on_timer
   return timer_manager_add_with_type(timer_manager, on_timer, ctx, duration, TIMER_INFO_NORMAL);
 }
 
-uint32_t timer_manager_add_with_type(timer_manager_t* timer_manager, timer_func_t on_timer, void* ctx,
-                           uint32_t duration, uint16_t timer_info_type) {
+uint32_t timer_manager_add_with_type(timer_manager_t* timer_manager, timer_func_t on_timer,
+                                     void* ctx, uint32_t duration, uint16_t timer_info_type) {
   timer_info_t* timer = NULL;
   return_value_if_fail(on_timer != NULL, TK_INVALID_ID);
   return_value_if_fail(timer_manager != NULL, TK_INVALID_ID);
@@ -95,11 +95,14 @@ uint32_t timer_manager_add_with_type(timer_manager_t* timer_manager, timer_func_
   return timer->id;
 }
 
-ret_t timer_manager_all_remove_by_ctx_and_type(timer_manager_t* timer_manager, uint16_t type, void* ctx) {
+ret_t timer_manager_all_remove_by_ctx_and_type(timer_manager_t* timer_manager, uint16_t type,
+                                               void* ctx) {
   timer_info_t timer;
   return_value_if_fail(timer_manager != NULL, RET_BAD_PARAMS);
 
-  return slist_remove_with_compare(&(timer_manager->timers), timer_info_init_dummy_with_ctx_and_type(&timer, type, ctx), timer_info_compare_by_ctx_and_type, -1);
+  return slist_remove_with_compare(&(timer_manager->timers),
+                                   timer_info_init_dummy_with_ctx_and_type(&timer, type, ctx),
+                                   timer_info_compare_by_ctx_and_type, -1);
 }
 
 ret_t timer_manager_all_remove_by_ctx(timer_manager_t* timer_manager, void* ctx) {

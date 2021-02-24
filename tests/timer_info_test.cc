@@ -20,7 +20,10 @@ TEST(TimerInfo, basic) {
   ASSERT_EQ(timer_info_compare_by_ctx(timer, NULL), 0);
 
   ASSERT_EQ(timer_info_compare_by_ctx_and_type(timer, timer), 0);
-  ASSERT_EQ(timer_info_compare_by_ctx_and_type(timer, timer_info_init_dummy_with_ctx_and_type(&dummy, timer->timer_info_type, timer->ctx)), 0);
+  ASSERT_EQ(
+      timer_info_compare_by_ctx_and_type(timer, timer_info_init_dummy_with_ctx_and_type(
+                                                    &dummy, timer->timer_info_type, timer->ctx)),
+      0);
 
   object_unref((object_t*)timer);
 }

@@ -72,7 +72,8 @@ void* slist_find(slist_t* slist, void* ctx) {
   return NULL;
 }
 
-ret_t slist_remove_with_compare(slist_t* slist, void* ctx, tk_compare_t compare, int32_t remove_size) {
+ret_t slist_remove_with_compare(slist_t* slist, void* ctx, tk_compare_t compare,
+                                int32_t remove_size) {
   int32_t n = remove_size;
   slist_node_t* iter = NULL;
   slist_node_t* prev = NULL;
@@ -101,7 +102,7 @@ ret_t slist_remove_with_compare(slist_t* slist, void* ctx, tk_compare_t compare,
     }
   }
 
-    return remove_size == n ? RET_NOT_FOUND : RET_OK;
+  return remove_size == n ? RET_NOT_FOUND : RET_OK;
 }
 
 ret_t slist_remove(slist_t* slist, void* ctx) {

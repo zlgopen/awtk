@@ -576,7 +576,7 @@ widget_t* window_manager_find_target(widget_t* widget, void* win, xy_t x, xy_t y
     return iter;
   }
 
-  if ((widget_is_dialog(iter) && widget_is_opened_dialog(iter)) || 
+  if ((widget_is_dialog(iter) && widget_is_opened_dialog(iter)) ||
       (widget_is_popup(iter) && widget_is_opened_popup(iter))) {
     return iter;
   }

@@ -132,7 +132,8 @@ ret_t slist_remove(slist_t* slist, void* ctx);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t slist_remove_with_compare(slist_t* slist, void* ctx, tk_compare_t compare, int32_t remove_size);
+ret_t slist_remove_with_compare(slist_t* slist, void* ctx, tk_compare_t compare,
+                                int32_t remove_size);
 
 /**
  * @method slist_remove_all

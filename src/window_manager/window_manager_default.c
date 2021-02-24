@@ -977,8 +977,9 @@ static ret_t window_manager_default_on_paint_children(widget_t* widget, canvas_t
   /*paint dialog and other*/
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
   if (i >= start && iter->visible) {
-    if ((!widget_is_system_bar(iter) && !widget_is_normal_window(iter)) || 
-        (wm->dialog_highlighter != NULL && wm->dialog_highlighter->dialog != NULL && widget_is_normal_window(iter))) {
+    if ((!widget_is_system_bar(iter) && !widget_is_normal_window(iter)) ||
+        (wm->dialog_highlighter != NULL && wm->dialog_highlighter->dialog != NULL &&
+         widget_is_normal_window(iter))) {
       widget_paint(iter, c);
     }
   }

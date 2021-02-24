@@ -753,7 +753,6 @@ static ret_t slide_view_save_target(widget_t* widget) {
   return RET_OK;
 }
 
-
 static ret_t slide_view_on_idle_set_target_focused(const idle_info_t* idle) {
   slide_view_t* slide_view = NULL;
   return_value_if_fail(idle != NULL, RET_BAD_PARAMS);

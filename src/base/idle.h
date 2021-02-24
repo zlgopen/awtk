@@ -138,7 +138,6 @@ bool_t idle_exist(idle_func_t on_idle, void* ctx);
 ret_t idle_remove_all_by_ctx_and_type(uint32_t type, void* ctx);
 uint32_t idle_add_with_type(idle_func_t on_idle, void* ctx, uint32_t type);
 
-
 END_C_DECLS
 
 #endif /*TK_IDLE_H*/

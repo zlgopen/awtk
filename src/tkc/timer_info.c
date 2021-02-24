@@ -88,7 +88,8 @@ int timer_info_compare_by_ctx_and_type(const void* a, const void* b) {
   return -1;
 }
 
-timer_info_t* timer_info_init_dummy_with_ctx_and_type(timer_info_t* timer, uint16_t type, void* ctx) {
+timer_info_t* timer_info_init_dummy_with_ctx_and_type(timer_info_t* timer, uint16_t type,
+                                                      void* ctx) {
   return_value_if_fail(timer != NULL, NULL);
   memset(timer, 0x00, sizeof(timer_info_t));
 
