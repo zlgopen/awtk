@@ -21,6 +21,8 @@ DEPENDS_LIBS = [
 helper.set_deps(DEPENDS_LIBS)
 ```
 
+> 注意：helper.set\_deps 一定要在 helper.call 之前调用。
+
 ## 依赖描述内容
 
 * root 第三方库的根目录。建议使用相对于应用程序的相对路径。
