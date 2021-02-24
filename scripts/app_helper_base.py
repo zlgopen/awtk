@@ -137,6 +137,12 @@ class AppHelperBase:
             self.APP_CCFLAGS += APP_CCFLAGS
         return self
 
+    def use_std_cxx(self, VERSION):
+      if platform.system() == 'Windows':
+        self.APP_CXXFLAGS += ' /std:c++'+str(VERSION)+' '
+      else:
+        self.APP_CXXFLAGS += ' -std=c++'+str(VERSION)+' '
+
     def add_cxxflags(self, APP_CXXFLAGS):
         self.APP_CXXFLAGS += APP_CXXFLAGS
         return self

@@ -2,6 +2,7 @@
 
 2021/02/24
   * 修复widget\_add\_idle函数和widget\_add\_time函数内存泄露的问题和修复多个控件的idle上下文widget被释放的问题（感谢智明提供补丁）。  
+  * scripts.app\_helper 增加use\_std\_cxx指定c++编译器的版本。
 
 2021/02/23
   * 更新文档。
