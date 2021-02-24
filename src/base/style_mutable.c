@@ -440,6 +440,9 @@ static const char* style_mutable_get_style_state(style_t* s) {
 static const char* style_mutable_get_style_type(style_t* s) {
   style_mutable_t* style = (style_mutable_t*)s;
   return_value_if_fail(style != NULL, NULL);
+  if (style->default_style == NULL) {
+    return NULL;
+  }
   return style_get_style_type(style->default_style);
 }
 
