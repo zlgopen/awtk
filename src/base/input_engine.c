@@ -27,7 +27,9 @@ ret_t input_engine_init(input_engine_t* engine) {
   ret_t ret = RET_OK;
   return_value_if_fail(engine != NULL, RET_BAD_PARAMS);
   wbuffer_init_extendable(&(engine->candidates));
-  wbuffer_extend_capacity(&(engine->candidates), TK_IM_DEFAULT_MAX_CANDIDATE_CHARS);
+  if (TK_IM_MAX_CANDIDATE_CHARS != 0) {
+    wbuffer_extend_capacity(&(engine->candidates), TK_IM_MAX_CANDIDATE_CHARS);
+  }
 
   if (engine->init) {
     ret = engine->init(engine);
@@ -55,6 +57,9 @@ ret_t input_engine_reset_candidates(input_engine_t* engine) {
 
 ret_t input_engine_add_candidate(input_engine_t* engine, const char* str) {
   return_value_if_fail(engine != NULL && str != NULL, RET_BAD_PARAMS);
+  if (TK_IM_MAX_CANDIDATE_CHARS != 0 && engine->candidates.cursor + strlen(str) + 2 > engine->candidates.capacity) {
+    return RET_FAIL;
+  }
   engine->candidates_nr++;
   return wbuffer_write_string(&(engine->candidates), str);
 }
@@ -62,7 +67,7 @@ ret_t input_engine_add_candidate(input_engine_t* engine, const char* str) {
 ret_t input_engine_add_candidates_from_char(input_engine_t* engine, const wchar_t** table, char c) {
 #if defined(WITH_IME_T9) || defined(WITH_IME_T9EXT) || defined(WITH_IME_SPINYIN)
   return_value_if_fail(engine != NULL && table != NULL, RET_BAD_PARAMS);
-  engine->candidates_nr += ime_utils_add_chars(&(engine->candidates), table, c);
+  engine->candidates_nr += ime_utils_add_chars(&(engine->candidates), table, c, TK_IM_MAX_CANDIDATE_CHARS == 0);
   return RET_OK;
 #else
   return RET_NOT_IMPL;
@@ -75,7 +80,7 @@ ret_t input_engine_add_candidates_from_string(input_engine_t* engine, const tabl
   return_value_if_fail(engine != NULL && items != NULL && items_nr > 0 && key != NULL,
                        RET_BAD_PARAMS);
   engine->candidates_nr +=
-      ime_utils_table_search(items, items_nr, key, &(engine->candidates), exact);
+      ime_utils_table_search(items, items_nr, key, &(engine->candidates), exact, TK_IM_MAX_CANDIDATE_CHARS == 0);
   return RET_OK;
 #else
   return RET_NOT_IMPL;

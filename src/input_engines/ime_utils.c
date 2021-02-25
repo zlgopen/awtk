@@ -58,8 +58,16 @@ static uint32_t ime_utils_count_words(const char** words) {
   return n;
 }
 
+ret_t ime_utils_add_candidate(wbuffer_t* wbuffer, const char* str, bool_t extendable) {
+  return_value_if_fail(wbuffer != NULL && str != NULL, RET_BAD_PARAMS);
+  if (!extendable && wbuffer->cursor + strlen(str) + 2 > wbuffer->capacity) {
+    return RET_FAIL;
+  }
+  return wbuffer_write_string(wbuffer, str);
+}
+
 uint32_t ime_utils_table_search(const table_entry_t* items, uint32_t items_nr, const char* key,
-                                wbuffer_t* result, bool_t exact) {
+                                wbuffer_t* result, bool_t exact, bool_t result_extendable) {
   uint32_t i = 0;
   uint32_t nr = 0;
   int32_t found = 0;
@@ -78,14 +86,14 @@ uint32_t ime_utils_table_search(const table_entry_t* items, uint32_t items_nr, c
     iter = items + found;
 
     if (key_len > 1 && iter->memo != NULL) {
-      if (wbuffer_write_string(result, iter->memo) == RET_OK) {
+      if (ime_utils_add_candidate(result, iter->memo, result_extendable) == RET_OK) {
         nr++;
       }
     }
 
     while (iter->words[i] != NULL) {
       if (!tk_str_eq(iter->memo, iter->words[i]) &&
-          wbuffer_write_string(result, iter->words[i]) != RET_OK) {
+          ime_utils_add_candidate(result, iter->words[i], result_extendable) != RET_OK) {
         break;
       }
       i++;
@@ -107,7 +115,7 @@ uint32_t ime_utils_table_search(const table_entry_t* items, uint32_t items_nr, c
 
     iter = items + found;
     if (key_len > 1 && iter->memo != NULL) {
-      if (wbuffer_write_string(result, iter->memo) == RET_OK) {
+      if (ime_utils_add_candidate(result, iter->memo, result_extendable) == RET_OK) {
         nr++;
       }
     }
@@ -126,7 +134,7 @@ uint32_t ime_utils_table_search(const table_entry_t* items, uint32_t items_nr, c
         iter = items + k;
         if (strncmp(iter->key, key, key_len) == 0) {
           if (ime_utils_count_words(iter->words) > i) {
-            if (wbuffer_write_string(result, iter->words[i]) != RET_OK) {
+            if (ime_utils_add_candidate(result, iter->words[i], result_extendable) != RET_OK) {
               return nr;
             }
             nr++;
@@ -141,7 +149,7 @@ uint32_t ime_utils_table_search(const table_entry_t* items, uint32_t items_nr, c
   return nr;
 }
 
-uint32_t ime_utils_add_chars(wbuffer_t* wb, const wchar_t** table, char c) {
+uint32_t ime_utils_add_chars(wbuffer_t* wb, const wchar_t** table, char c, bool_t wb_extendable) {
   char str[8];
   uint32_t n = 0;
   const wchar_t* p = NULL;
@@ -153,7 +161,7 @@ uint32_t ime_utils_add_chars(wbuffer_t* wb, const wchar_t** table, char c) {
     memset(str, 0x00, sizeof(str));
     tk_utf8_from_utf16_ex(p, 1, str, sizeof(str));
 
-    if (wbuffer_write_string(wb, str) != RET_OK) {
+    if (ime_utils_add_candidate(wb, str, wb_extendable) != RET_OK) {
       break;
     }
     n++;

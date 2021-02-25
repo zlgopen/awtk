@@ -358,7 +358,7 @@ static const char* input_engine_t9ext_get_lang(input_engine_t* engine) {
 static ret_t input_engine_t9ext_init(input_engine_t* engine) {
   input_engine_t9ext_t* t9 = (input_engine_t9ext_t*)engine;
   return_value_if_fail(engine != NULL && t9 != NULL, RET_BAD_PARAMS);
-  wbuffer_init_extendable_ex(&(t9->pre_candidates), TK_IM_DEFAULT_MAX_CANDIDATE_CHARS);
+  wbuffer_init_extendable_ex(&(t9->pre_candidates), TK_IM_MAX_CANDIDATE_CHARS);
   return RET_OK;
 }
 
