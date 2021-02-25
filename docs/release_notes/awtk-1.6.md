@@ -236,5 +236,7 @@
 ### 6. 新增相关项目
 
   * 增加 [vscode 实时预览插件](https://github.com/zlgopen/awtk-vscode-plugin)。
+  * 增加录音功能[awtk-media-player](https://github.com/zlgopen/awtk-media-player) 
+  * 增加 [awtk-openxlsx](https://github.com/zlgopen/awtk-openxlsx)
 
 > 欢迎广大开发者一起参与开发：[生态共建计划](../awtk_ecology.md)。
