@@ -690,12 +690,15 @@ ret_t window_manager_end_wait_pointer_cursor(widget_t* widget) {
 ret_t window_manager_close_all(widget_t* widget) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
-  if (iter->emitter != NULL) {
-    emitter_disable(iter->emitter);
-  }
-  window_manager_close_window_force(widget, iter);
-  WIDGET_FOR_EACH_CHILD_END();
+  do {
+    uint32_t nr = widget_count_children(widget);
+    if (nr > 0) {
+      widget_t* win = widget_get_child(widget, nr - 1);
+      window_manager_close_window_force(widget, win);
+    } else {
+      break;
+    }
+  } while (TRUE);
 
   return RET_OK;
 }
