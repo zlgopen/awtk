@@ -2,51 +2,51 @@
 
 2021/02/25
   * 修改 TK\_IM\_MAX\_CANDIDATE\_CHARS 为 0 的时候候选字长度才动态扩张的功能（发现之前的是默认候选字长度动态扩张的，应该改为不动态扩张才对，需要设置 TK\_IM\_MAX\_CANDIDATE\_CHARS 为 0 才动态扩张的）（感谢智明提供补丁）
-  * 重新实现window\_manager\_close\_all 允许窗口触发事件，同时避免在窗口关闭事件中关闭其它窗口的问题。
-  * 修改默认输入法，在keyboard关闭时清除状态而不是销毁的时候，因为EVT\_DESTROY可能会异步执行。
-  * 修改system_bar在没有顶层窗口时的警告。
+  * 重新实现 window\_manager\_close\_all 允许窗口触发事件，同时避免在窗口关闭事件中关闭其它窗口的问题。
+  * 修改默认输入法，在 keyboard 关闭时清除状态而不是销毁的时候，因为 EVT\_DESTROY 可能会异步执行。
+  * 修改 system_bar 在没有顶层窗口时的警告。
 
 2021/02/24
   * 修复更新风格类型失败的问题（感谢智明提供补丁）
-  * scripts.app\_helper 增加use\_std\_cxx指定c++编译器的版本。
-  * 修复widget\_add\_idle函数和widget\_add\_time函数内存泄露的问题和修复多个控件的idle上下文widget被释放的问题（感谢智明提供补丁）。  
-  * 修复调用退出程序时候调用window\_manager\_close\_all函数无法触发keyboard销毁事件无法清除idle回调函数导致idle回调中出现野指针的问题（感谢智明提供补丁）
+  * scripts.app\_helper 增加 use\_std\_cxx 指定 c++编译器的版本。
+  * 修复 widget\_add\_idle 函数和 widget\_add\_time 函数内存泄露的问题和修复多个控件的 idle 上下文 widget 被释放的问题（感谢智明提供补丁）。  
+  * 修复调用退出程序时候调用 window\_manager\_close\_all 函数无法触发 keyboard 销毁事件无法清除 idle 回调函数导致 idle 回调中出现野指针的问题（感谢智明提供补丁）
 
 2021/02/23
   * 更新文档。
-  * 增加tk\_expr\_eval。
-  * 修改csv\_row\_to\_str行尾多分隔符的问题（感谢林福提供）。 
-  * 增加 xml 的 CDATA的值为空的语法支持（感谢智明提供补丁）。 
+  * 增加 tk\_expr\_eval。
+  * 修改 csv\_row\_to\_str 行尾多分隔符的问题（感谢林福提供）。 
+  * 增加 xml 的 CDATA 的值为空的语法支持（感谢智明提供补丁）。 
   * combox 修改大小后导致字体偏移和修改了 tips\_text 默认左对齐（感谢智明提供补丁）。 
-  * 增加TK\_DEFAULT\_WAIT\_TIME，用来控制event source manager中select最长等待时间。
+  * 增加 TK\_DEFAULT\_WAIT\_TIME，用来控制 event source manager 中 select 最长等待时间。
 
 2021/02/22
-  * 修改stm32上编译警告。
-  * 修复list\_view\_h空子集的时候崩溃的问（感谢智明提供补丁）。 
+  * 修改 stm32 上编译警告。
+  * 修复 list\_view\_h 空子集的时候崩溃的问（感谢智明提供补丁）。 
 
 2021/02/20
-  * 完善编译脚本(感谢雨欣提供补丁)
-  * 修复ini的值为空的问题。
-  * fscript增加one\_of函数。
+  * 完善编译脚本（感谢雨欣提供补丁）
+  * 修复 ini 的值为空的问题。
+  * fscript 增加 one\_of 函数。
   * 修复 slide\_view 保存焦点不正常的问题以及完善和统一 slide\_view 和 pages 控件的保存焦点的代码（感谢智明提供补丁）。
   * 修复创建 dialog 的时候没有根据 label 的风格来计算大小的导致显示不正常问题（感谢智明提供补丁）。
   * 修复在高亮背景的对话框中打开 popup 窗口导致高亮失效的问题以及修复了在对话框中打开另外的窗口后切换到指定窗口导致对话框截获 system\_bar 的消息问题（感谢智明提供补丁）。
   * 修复 awtk 搜索目录和生成不同主题的时候生成的资源不正确的问题（感谢智明提供补丁）
 
 2021/02/19
-  * fscript支持return语句。
-  * fscript支持else if语句。
+  * fscript 支持 return 语句。
+  * fscript 支持 else if 语句。
 
 2021/02/05
-  * 修改awtk-web编译错误（感谢智明提供补丁）
+  * 修改 awtk-web 编译错误（感谢智明提供补丁）
 
 2021/02/04
-  * 重构pages（感谢智明提供补丁）
-  * 增加函数str\_decode\_hex (感谢林福提供)。
+  * 重构 pages（感谢智明提供补丁）
+  * 增加函数 str\_decode\_hex （感谢林福提供）。
   * 增加函数 window\_set\_auto\_scale\_children。
   * 重命名 auto\_scale\_xxx 为 auto\_scale\_children\_xxx。
-  * 增加 network\_interface 接口及linux平台实现(感谢国文提供)。
-  * 增加[《如何根据实际分辨率自动调整窗口中子控件的位置大小》](how_to_auto_scale_children.md)
+  * 增加 network\_interface 接口及 linux 平台实现（感谢国文提供）。
+  * 增加 [《如何根据实际分辨率自动调整窗口中子控件的位置大小》](how_to_auto_scale_children.md)
 
 2021/02/03
   * 修复缺少 SDL 线程函数的声明的问题（感谢智明提供补丁）
