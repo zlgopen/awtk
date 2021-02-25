@@ -98,10 +98,12 @@ static ret_t system_bar_on_top_window_changed(void* ctx, event_t* e) {
   window_event_t* evt = (window_event_t*)e;
   widget_t* top_window = evt->window;
 
-  widget_off_by_ctx(top_window, ctx);
-  system_bar_update_title(widget, top_window);
-  system_bar_update_close(widget, top_window);
-  widget_on(top_window, EVT_PROP_CHANGED, system_bar_on_top_window_prop_changed, ctx);
+  if (top_window != NULL) {
+    widget_off_by_ctx(top_window, ctx);
+    system_bar_update_title(widget, top_window);
+    system_bar_update_close(widget, top_window);
+    widget_on(top_window, EVT_PROP_CHANGED, system_bar_on_top_window_prop_changed, ctx);
+  }
 
   return RET_OK;
 }
