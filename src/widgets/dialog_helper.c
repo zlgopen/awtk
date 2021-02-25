@@ -93,6 +93,8 @@ static ret_t dialog_create_label_load_style(widget_t* widget, const char* theme_
     theme_t* theme = theme_default_create(res_theme->data);
     widget->astyle = style_factory_create_style(style_factory(), theme_get_style_type(theme));
     style_update_state(widget->astyle, theme, widget->vt->type, NULL, WIDGET_STATE_NORMAL);
+    assets_manager_unref(am, res_theme);
+    theme_destroy(theme);
   }
 
   return RET_OK;

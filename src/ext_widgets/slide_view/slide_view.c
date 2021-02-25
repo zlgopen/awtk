@@ -694,7 +694,7 @@ static ret_t slide_view_on_destroy(widget_t* widget) {
     slide_view->timer_id = 0;
   }
   TKMEM_FREE(slide_view->anim_hint);
-
+  str_reset(&(slide_view->str_target));
   return RET_OK;
 }
 

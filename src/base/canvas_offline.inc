@@ -451,6 +451,7 @@ ret_t canvas_offline_destroy(canvas_t* canvas) {
   fbo = ((canvas_offline_gpu_t*)canvas)->fbo;
   if (fbo != NULL) {
     vgcanvas_destroy_fbo(vg, fbo);
+    TKMEM_FREE(fbo);
   }
 #else
   system_info_set_lcd_w(info, ((canvas_offline_t*)canvas)->lcd_w);
