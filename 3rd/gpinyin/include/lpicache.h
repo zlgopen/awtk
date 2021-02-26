@@ -37,6 +37,7 @@ class LpiCache {
   ~LpiCache();
 
   static LpiCache& get_instance();
+  static void free_instance();
 
   // Test if the LPI list of the given splid  has been cached.
   // If splid is a full spelling id, it returns false, because we only cache

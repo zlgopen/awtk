@@ -46,6 +46,7 @@ MatrixSearch::MatrixSearch() {
 }
 
 MatrixSearch::~MatrixSearch() {
+  LpiCache::free_instance();
   free_resource();
 }
 

@@ -35,6 +35,13 @@ LpiCache::~LpiCache() {
   if (NULL != lpi_cache_len_) delete[] lpi_cache_len_;
 }
 
+void LpiCache::free_instance() {
+  if (instance_ != NULL) {
+    delete instance_;
+    instance_ = NULL;
+  }
+}
+
 LpiCache& LpiCache::get_instance() {
   if (NULL == instance_) {
     instance_ = new LpiCache();
