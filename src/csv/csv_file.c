@@ -95,7 +95,7 @@ ret_t csv_row_to_str(csv_row_t* row, str_t* str, char sep) {
   return_value_if_fail(row != NULL && str != NULL, RET_BAD_PARAMS);
 
   str_set(str, "");
-  while ((i + 1) < row->size) {
+  while (i < row->size) {
     const char* p = row->buff + i;
     csv_col_to_str(str, p, sep);
     str_append_char(str, sep);
