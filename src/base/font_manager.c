@@ -158,7 +158,7 @@ font_t* font_manager_load(font_manager_t* fm, const char* name, uint32_t size) {
 
 font_t* font_manager_get_font(font_manager_t* fm, const char* name, font_size_t size) {
   font_t* font = NULL;
-
+  const char* default_font = system_info()->default_font;
   name = system_info_fix_font_name(name);
   return_value_if_fail(fm != NULL, NULL);
 
@@ -167,12 +167,9 @@ font_t* font_manager_get_font(font_manager_t* fm, const char* name, font_size_t 
     font = font_manager_load(fm, name, size);
     if (font != NULL) {
       font_manager_add_font(fm, font);
+    } else if (tk_str_cmp(name, default_font) != 0) {
+      font = font_manager_get_font(fm, default_font, size);
     }
-  }
-
-  if (font == NULL && fm->fonts.size > 0) {
-    font_t** fonts = (font_t**)fm->fonts.elms;
-    font = fonts[0];
   }
 
   return font;

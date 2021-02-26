@@ -622,7 +622,7 @@ static ret_t canvas_draw_text_impl(canvas_t* c, const wchar_t* str, uint32_t nr,
   font_vmetrics_t vmetrics = font_get_vmetrics(c->font, c->font_size);
   font_size_t font_size = c->font_size;
   int32_t baseline = vmetrics.ascent;
-
+  return_value_if_fail(c->font != NULL, RET_BAD_PARAMS);
   for (i = 0; i < nr; i++) {
     wchar_t chr = str[i];
 

@@ -360,8 +360,6 @@ static ret_t vgcanvas_nanovg_set_font(vgcanvas_t* vgcanvas, const char* name) {
     }
   }
 
-  return_value_if_fail(font_id >= 0, RET_FAIL);
-
   canvas->font_id = font_id;
   nvgFontFaceId(vg, font_id);
 
