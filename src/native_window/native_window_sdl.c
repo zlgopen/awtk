@@ -163,10 +163,6 @@ static ret_t native_window_sdl_close(native_window_t* win) {
     SDL_DestroyRenderer(sdl->render);
   }
 
-  if (sdl->window != NULL) {
-    SDL_DestroyWindow(sdl->window);
-  }
-
   if (sdl->context != NULL) {
     SDL_GL_DeleteContext(sdl->context);
   }
@@ -605,6 +601,13 @@ ret_t native_window_sdl_init(bool_t shared, uint32_t w, uint32_t h) {
 
 ret_t native_window_sdl_deinit(void) {
   if (s_shared_win != NULL) {
+    native_window_sdl_t* sdl = NATIVE_WINDOW_SDL(s_shared_win);
+
+    if (sdl->cursor_surface != NULL) {
+      SDL_FreeSurface(sdl->cursor_surface);
+      sdl->cursor_surface = NULL;
+    }
+
     object_unref(OBJECT(s_shared_win));
     s_shared_win = NULL;
   }

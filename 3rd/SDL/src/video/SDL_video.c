@@ -2871,6 +2871,7 @@ SDL_VideoQuit(void)
         _this->displays = NULL;
         _this->num_displays = 0;
     }
+    SDL_TLSCleanup();
     SDL_free(_this->clipboard_text);
     _this->clipboard_text = NULL;
     _this->free(_this);
