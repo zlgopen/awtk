@@ -51,7 +51,18 @@ static ret_t font_dummy_get_glyph(font_t* f, wchar_t chr, uint16_t font_size, gl
 static bool_t font_dummy_match(font_t* f, const char* name, uint16_t font_size) {
   font_dummy_t* font = (font_dummy_t*)f;
 
-  return font->font_size == font_size;
+  return tk_str_cmp(f->name, name) == 0 && font->font_size == font_size;
+}
+
+static font_dummy_t s_font_default;
+font_t* font_dummy_default(const char* name, uint16_t size) {
+  s_font_default.font_size = size;
+  s_font_default.base.match = font_dummy_match;
+  s_font_default.base.get_glyph = font_dummy_get_glyph;
+
+  tk_strncpy(s_font_default.base.name, name, TK_NAME_LEN);
+
+  return &s_font_default.base;
 }
 
 static font_dummy_t s_font0;
