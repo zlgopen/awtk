@@ -202,7 +202,7 @@ static ret_t input_type_open_keyboard(input_method_t* im, const char* keyboard_n
 
   im->busy = TRUE;
   widget_on(im->keyboard, EVT_WINDOW_OPEN, input_method_default_on_keyboard_open, im);
-  widget_on(im->keyboard, EVT_WINDOW_CLOSE, input_method_default_on_keyboard_close, im);
+  widget_on(im->keyboard, EVT_DESTROY, input_method_default_on_keyboard_close, im);
 
   if ((p.y + widget->h) > im->keyboard->y) {
     im->win = win;
