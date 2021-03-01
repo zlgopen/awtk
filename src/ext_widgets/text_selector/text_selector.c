@@ -740,6 +740,11 @@ ret_t text_selector_reset_options(widget_t* widget) {
   text_selector_t* text_selector = TEXT_SELECTOR(widget);
   return_value_if_fail(text_selector != NULL, RET_BAD_PARAMS);
 
+  if (text_selector->wa != NULL) {
+    widget_animator_destroy(text_selector->wa);
+    text_selector->wa = NULL;
+  }
+
   iter = text_selector->option_items;
   while (iter != NULL) {
     next = iter->next;
@@ -750,6 +755,7 @@ ret_t text_selector_reset_options(widget_t* widget) {
   }
   text_selector->option_items = NULL;
   TKMEM_FREE(text_selector->options);
+  widget_invalidate(widget, NULL);
 
   return RET_OK;
 }
