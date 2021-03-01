@@ -826,6 +826,10 @@ static ret_t slide_view_set_active_animate(widget_t* widget, uint32_t active) {
   uint32_t old_active = 0;
   slide_view_t* slide_view = SLIDE_VIEW(widget);
   return_value_if_fail(slide_view != NULL, RET_BAD_PARAMS);
+  if (slide_view->animating) {
+    log_warn("slide_view is animating, so slide_view is busy!\r\n");
+    return RET_BUSY;
+  }
   old_active = slide_view->active;
 
   if (old_active < active) {

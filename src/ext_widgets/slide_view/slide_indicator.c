@@ -798,18 +798,13 @@ ret_t slide_indicator_set_value(widget_t* widget, uint32_t value) {
 
   if (slide_indicator->value != value) {
     value_t v;
+    ret_t ret = RET_OK;
     value_change_event_t evt;
     value_change_event_init(&evt, EVT_VALUE_WILL_CHANGE, widget);
     value_set_uint32(&(evt.old_value), slide_indicator->value);
     value_set_uint32(&(evt.new_value), value);
 
     if (widget_dispatch(widget, (event_t*)&evt) != RET_STOP) {
-      slide_indicator->value = value;
-      evt.e.type = EVT_VALUE_CHANGED;
-      widget_dispatch(widget, (event_t*)&evt);
-      widget_dispatch_simple_event(widget, EVT_PAGE_CHANGED);
-      widget_invalidate(widget, NULL);
-
       if (slide_indicator->indicated_widget != NULL) {
         if (widget_get_prop(slide_indicator->indicated_widget, WIDGET_PROP_CURR_PAGE, &v) !=
             RET_OK) {
@@ -818,8 +813,18 @@ ret_t slide_indicator_set_value(widget_t* widget, uint32_t value) {
         if (value != value_int(&v)) {
           value_t v1;
           value_set_int(&v1, value);
-          widget_set_prop(slide_indicator->indicated_widget, WIDGET_PROP_CURR_PAGE, &v1);
+          ret = widget_set_prop(slide_indicator->indicated_widget, WIDGET_PROP_CURR_PAGE, &v1);
+        } else {
+          ret = RET_FAIL;
         }
+      }
+
+      if (ret == RET_OK) {
+        slide_indicator->value = value;
+        evt.e.type = EVT_VALUE_CHANGED;
+        widget_dispatch(widget, (event_t*)&evt);
+        widget_dispatch_simple_event(widget, EVT_PAGE_CHANGED);
+        widget_invalidate(widget, NULL);
       }
     }
   }
