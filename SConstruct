@@ -41,7 +41,6 @@ SConscriptFiles=awtk.NANOVG_BACKEND_PROJS + [
   'tools/image_dither/SConscript',
   'tools/res_gen/SConscript', 
   'tools/str_gen/SConscript', 
-  'tools/ui_gen/qt_to_xml/SConscript',
   'tools/ui_gen/xml_to_ui/SConscript',
   'tools/svg_gen/SConscript',
   'demos/SConscript', 

@@ -1,6 +1,6 @@
 # AWTK 中的界面描述数据
 
-AWTK 可以直接加载 XML 格式的和二进制格式的界面描述数据，从性能和资源开销的角度考虑，二进制格式是更好的选择，AWTK 提供了工具将 XML 格式转换成二进制格式的界面描述数据，也提供了将 QT 的 UI 文件转换成 AWTK XML 格式的界面描述文件的工具，其工作流程如下：
+AWTK 可以直接加载 XML 格式的和二进制格式的界面描述数据，从性能和资源开销的角度考虑，二进制格式是更好的选择，AWTK 提供了工具将 XML 格式转换成二进制格式的界面描述数据，其工作流程如下：
 
 ![](images/ui_desc.png)
 
@@ -143,11 +143,3 @@ assets_manager_add((const asset_info_t*)ui_window1);
   widget_child_on(win, "cancel", EVT_CLICK, on_cancel, win);
 ```
 
-## 二、将 Qt 的 UI 文件转成 AWTK UI XML 文件（目前不成熟）。
-
-转换工具在 bin/qt\_to\_xml 目录下，使用方法：
-
-```
-Usage: ./bin/qt_to_xml in_filename out_filename
-   Ex: ./bin/qt_to_xml demo1.ui demo1.xml
-```

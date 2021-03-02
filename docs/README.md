@@ -22,7 +22,6 @@
 * [AWTK 中的输入法](input_method.md)
 * [AWTK 硬件资源需求评估](hardware_req.md)
 * [AWTK 中的一些惯例](conventions.md)
-* [使用 Qt Designer 构建 AWTK 的界面](qt-designer.md)
 * [对话框高亮策略](dialog_highlight.md)
 * [控件焦点相关问题](widget_focus.md)
 * [AWTK 中的颜色格式](color_format.md)

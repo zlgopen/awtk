@@ -1,5 +1,8 @@
 # 最新动态
 
+2020/03/02
+ * 删除将QT XML生成AWTK UI的转换工具（感谢陈谭提供补丁）。
+
 2020/03/01
  * 修复slide\_view通过indicator快速切换page的时候导致有概 率出现播放动画异常（感谢智明提供补丁）
  * 修复text\_selector在播放动画的时候调用text\_selector\_reset\_options会导致崩溃的问题（感谢智明提供补丁）

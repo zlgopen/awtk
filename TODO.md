@@ -21,7 +21,6 @@
 * api doc
 * 基本 layout 功能
 * 极速模式
-* Qt 界面文件转换器
 * stm32 移植
 * draw 9patch image
 * draw 3patch\_h image
