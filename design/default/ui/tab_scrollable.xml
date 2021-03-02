@@ -7,15 +7,15 @@
   <pages x="c" y="42" w="90%" h="-60" value="1">
     <view w="100%" h="100%">
       <label x="c" y="m" w="100%" h="60" text="General" /> 
-      <button name="close" x="c" y="bottom:100" w="80" h="40" text="Close" />
+      <button name="close" x="c" y="bottom:100" w="80" h="40" tr_text="Close" />
     </view>
     <view w="100%" h="100%">
       <label x="c" y="m" w="100%" h="60" text="Network" /> 
-      <button name="close" x="c" y="bottom:100" w="80" h="40" text="Close" />
+      <button name="close" x="c" y="bottom:100" w="80" h="40" tr_text="Close" />
     </view>
     <view name="clone_view" w="100%" h="100%">
       <label x="c" y="m" w="100%" h="60" text="Security" /> 
-      <button name="clone_tab" x="c" y="bottom:100" w="80" h="40" text="Clone" />
+      <button name="clone_tab" x="c" y="bottom:100" w="80" h="40" tr_text="Clone" />
     </view>
   </pages>
 </window>

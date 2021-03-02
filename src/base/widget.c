@@ -3409,7 +3409,10 @@ static ret_t widget_copy_base_props(widget_t* widget, widget_t* other) {
   if (other->text.str != NULL) {
     widget_set_text(widget, other->text.str);
   }
-  widget->tr_text = tk_str_copy(widget->tr_text, other->tr_text);
+
+  if (other->tr_text != NULL) {
+    widget_set_tr_text(widget, other->tr_text);
+  }
 
   widget->enable = other->enable;
   widget->visible = other->visible;

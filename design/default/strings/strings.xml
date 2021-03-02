@@ -1,3 +1,8 @@
+<string name="Clone">
+<language name="en_US">Clone</language>
+<language name="zh_CN">克隆</language>
+</string>
+
 <string name="ok">
 <language name="en_US">OK</language>
 <language name="zh_CN">确定</language>

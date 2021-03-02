@@ -2,6 +2,7 @@
 
 2020/03/02
  * 删除将QT XML生成AWTK UI的转换工具（感谢陈谭提供补丁）。
+ * 修复widget\_clone处理tr\_text的BUG(感谢网友Eagle提供补丁)。
 
 2020/03/01
  * 修复slide\_view通过indicator快速切换page的时候导致有概 率出现播放动画异常（感谢智明提供补丁）
