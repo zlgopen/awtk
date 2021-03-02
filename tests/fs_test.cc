@@ -154,3 +154,44 @@ TEST(Fs, create_dir_r) {
   ASSERT_EQ(fs_remove_dir_r(os_fs(), "a"), RET_OK);
   ASSERT_EQ(fs_dir_exist(os_fs(), "a"), FALSE);
 }
+
+TEST(Fs, copy_file) {
+  const char* src = "./test.txt";
+  const char* dst = "./a/b/test.txt";
+
+  ASSERT_EQ(file_write(src, "hello", 5), RET_OK);
+  ASSERT_EQ(file_exist(src), TRUE);
+  ASSERT_EQ(file_exist(dst), FALSE);
+
+  ASSERT_EQ(fs_copy_file(os_fs(), src, dst), RET_OK);
+  ASSERT_EQ(fs_remove_dir_r(os_fs(), "a"), RET_OK);
+
+  dst = "test1.txt";
+  ASSERT_EQ(fs_copy_file(os_fs(), src, dst), RET_OK);
+  ASSERT_EQ(file_remove(src), RET_OK);
+  ASSERT_EQ(file_remove(dst), RET_OK);;
+  
+  ASSERT_EQ(file_exist(src), FALSE);
+  ASSERT_EQ(file_exist(dst), FALSE);
+}
+
+TEST(Fs, copy_dir) {
+  const char* src = "./a";
+  const char* dst = "./b";
+  
+  ASSERT_EQ(fs_create_dir_r(os_fs(), "./a/a1"), RET_OK);
+  ASSERT_EQ(fs_create_dir_r(os_fs(), "./a/a2"), RET_OK);
+  ASSERT_EQ(fs_create_dir_r(os_fs(), "./a/a3/a4"), RET_OK);
+  ASSERT_EQ(file_write("./a/a3/a4/test.txt", "hello", 5), RET_OK);
+
+  ASSERT_EQ(fs_copy_dir(os_fs(), src, dst), RET_OK);
+  ASSERT_EQ(dir_exist("./b"), TRUE);
+  ASSERT_EQ(dir_exist("./b/a1"), TRUE);
+  ASSERT_EQ(dir_exist("./b/a2"), TRUE);
+  ASSERT_EQ(dir_exist("./b/a3"), TRUE);
+  ASSERT_EQ(file_exist("./b/a3/a4/test.txt"), TRUE);
+
+  ASSERT_EQ(fs_remove_dir_r(os_fs(), "a"), RET_OK);
+  ASSERT_EQ(fs_remove_dir_r(os_fs(), "b"), RET_OK);
+}
+
