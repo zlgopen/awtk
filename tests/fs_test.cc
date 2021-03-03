@@ -169,8 +169,9 @@ TEST(Fs, copy_file) {
   dst = "test1.txt";
   ASSERT_EQ(fs_copy_file(os_fs(), src, dst), RET_OK);
   ASSERT_EQ(file_remove(src), RET_OK);
-  ASSERT_EQ(file_remove(dst), RET_OK);;
-  
+  ASSERT_EQ(file_remove(dst), RET_OK);
+  ;
+
   ASSERT_EQ(file_exist(src), FALSE);
   ASSERT_EQ(file_exist(dst), FALSE);
 }
@@ -178,7 +179,7 @@ TEST(Fs, copy_file) {
 TEST(Fs, copy_dir) {
   const char* src = "./a";
   const char* dst = "./b";
-  
+
   ASSERT_EQ(fs_create_dir_r(os_fs(), "./a/a1"), RET_OK);
   ASSERT_EQ(fs_create_dir_r(os_fs(), "./a/a2"), RET_OK);
   ASSERT_EQ(fs_create_dir_r(os_fs(), "./a/a3/a4"), RET_OK);
@@ -194,4 +195,3 @@ TEST(Fs, copy_dir) {
   ASSERT_EQ(fs_remove_dir_r(os_fs(), "a"), RET_OK);
   ASSERT_EQ(fs_remove_dir_r(os_fs(), "b"), RET_OK);
 }
-
