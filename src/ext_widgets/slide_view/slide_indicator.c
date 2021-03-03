@@ -38,6 +38,7 @@
 static ret_t slide_indicator_reset_indicated_widget(widget_t* widget);
 static ret_t slide_indicator_reset_indicated_widget(widget_t* widget);
 static ret_t slide_indicator_set_indicated_widget(widget_t* widget, widget_t* target);
+static ret_t slide_indicator_set_value_impl(widget_t* widget, uint32_t value, bool_t is_on_event);
 
 #define _RADIAN(cx, cy, x, y) atan2(-y + (cy), x - (cx))
 #define _DISTANCE(x1, y1, x2, y2) sqrt((x1 - (x2)) * (x1 - (x2)) + (y1 - (y2)) * (y1 - (y2)))
@@ -491,7 +492,7 @@ static ret_t slide_indicator_target_on_value_changed(void* ctx, event_t* e) {
   }
 
   if (slide_indicator->value != value_int(&v)) {
-    slide_indicator_set_value(indicator, value_int(&v));
+    slide_indicator_set_value_impl(indicator, value_int(&v), TRUE);
   }
 
   if (widget_get_prop(widget, WIDGET_PROP_PAGE_MAX_NUMBER, &v) != RET_OK) {
@@ -793,6 +794,10 @@ widget_t* slide_indicator_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t 
 }
 
 ret_t slide_indicator_set_value(widget_t* widget, uint32_t value) {
+  return slide_indicator_set_value_impl(widget, value, FALSE);
+}
+
+static ret_t slide_indicator_set_value_impl(widget_t* widget, uint32_t value, bool_t is_on_event) {
   slide_indicator_t* slide_indicator = SLIDE_INDICATOR(widget);
   return_value_if_fail(slide_indicator != NULL, RET_BAD_PARAMS);
 
@@ -805,7 +810,7 @@ ret_t slide_indicator_set_value(widget_t* widget, uint32_t value) {
     value_set_uint32(&(evt.new_value), value);
 
     if (widget_dispatch(widget, (event_t*)&evt) != RET_STOP) {
-      if (slide_indicator->indicated_widget != NULL) {
+      if (slide_indicator->indicated_widget != NULL && !is_on_event) {
         if (widget_get_prop(slide_indicator->indicated_widget, WIDGET_PROP_CURR_PAGE, &v) !=
             RET_OK) {
           widget_get_prop(slide_indicator->indicated_widget, WIDGET_PROP_VALUE, &v);

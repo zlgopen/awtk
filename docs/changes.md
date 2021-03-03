@@ -1,5 +1,8 @@
 # 最新动态
 
+2020/03/03
+ * 修复slide indicator没有更新的问题（感谢智明提供补丁）
+
 2020/03/02
  * 删除将QT XML生成AWTK UI的转换工具（感谢陈谭提供补丁）。
  * 修复widget\_clone处理tr\_text的BUG(感谢网友Eagle提供补丁)。
