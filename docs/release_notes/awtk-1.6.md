@@ -217,14 +217,15 @@
   * 支持自动根据屏幕大小自动缩放控件的位置和大小。
 
 ### 4. 新增重要 API
-  * 增加 data\_reader\_mem。
-  * 增加 data\_writer\_wbuffer。
-  * 增加 conf\_ini\_create。
-  * 增加 conf\_json\_create。
-  * 增加 conf\_ubjson\_create。
-  * 增加 str\_encode\_hex。
-  * 增加 timer\_resume/timer\_suspend。
+  * 增加 str\_encode\_hex
+  * 增加 data\_reader\_mem
+  * 增加 data\_writer\_wbuffer
+  * 增加 conf\_ini\_create
+  * 增加 conf\_json\_create
+  * 增加 conf\_ubjson\_create
+  * 增加 timer\_resume/timer\_suspend
   * 增加 window\_manager\_switch\_to
+  * 增加 fs\_copy\_file、fs\_copy\_dir和dir\_exist
   * 增加 fs\_get\_temp\_path、fs\_remove\_dir\_r、fs\_create\_dir\_r 和 fs\_change\_dir
 
 ### 5. 新增控件
