@@ -111,6 +111,7 @@ static ret_t main_loop_sdl2_dispatch_multi_gesture_event(main_loop_simple_t* loo
 }
 
 static ret_t main_loop_sdl2_dispatch_mouse_event(main_loop_simple_t* loop, SDL_Event* sdl_event) {
+  key_event_t key_event;
   pointer_event_t event;
   int type = sdl_event->type;
   widget_t* widget = loop->base.wm;
@@ -128,6 +129,9 @@ static ret_t main_loop_sdl2_dispatch_mouse_event(main_loop_simple_t* loop, SDL_E
 
         SDL_CaptureMouse(TRUE);
         window_manager_dispatch_input_event(widget, (event_t*)&event);
+      } else if (sdl_event->button.button == 2) {
+        key_event_init(&key_event, EVT_KEY_DOWN, widget, TK_KEY_WHEEL);
+        window_manager_dispatch_input_event(widget, (event_t*)&key_event);
       }
       break;
     }
@@ -148,6 +152,9 @@ static ret_t main_loop_sdl2_dispatch_mouse_event(main_loop_simple_t* loop, SDL_E
         event.button = sdl_event->button.button;
         event.e.native_window_handle = SDL_GetWindowFromID(sdl_event->button.windowID);
         window_manager_dispatch_input_event(widget, (event_t*)&event);
+      } else if (sdl_event->button.button == 2) {
+        key_event_init(&key_event, EVT_KEY_UP, widget, TK_KEY_WHEEL);
+        window_manager_dispatch_input_event(widget, (event_t*)&key_event);
       }
       break;
     }

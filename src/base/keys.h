@@ -879,6 +879,11 @@ typedef enum _key_code_t {
    */
   TK_KEY_CANCEL = 0x20 + 167,
 #endif
+  /**
+   * @const TK_KEY_WHEEL
+   * TK_KEY_WHEEL
+   */
+  TK_KEY_WHEEL = 0x20 + 168,
 } key_code_t;
 
 #ifndef TK_KEY_CLOSE_INPUT_METHOD
