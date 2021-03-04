@@ -353,6 +353,9 @@ static ret_t children_layouter_list_view_for_list_view_set_scroll_bar_info(widge
 
   scroll_bar_set_params(widget, virtual_h, item_height);
   if (scroll_bar_is_mobile(widget)) {
+    if (widget->h > virtual_h) {
+      scroll_bar_set_params(widget, widget->h, item_height);
+    }
     widget_set_visible_only(widget, FALSE);
   } else {
     if (scroll_view->h >= virtual_h) {

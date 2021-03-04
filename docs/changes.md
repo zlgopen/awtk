@@ -2,6 +2,7 @@
 
 2020/03/04
  * 修复在 mac 上面的 OpenGL 模式下 lcd 旋转窗口动画的问题 （感谢智明提供补丁）
+ * 修改list\_view设置scroll\_bar\_mobile的虚拟高最低为widget高度（感谢智明提供补丁） 
  * 增加右键和中键的触发事件（在 demoui 中加入了点击中键会打印信息出来测试，右键的话还会触发 EVT\_CONTEXT\_MENU 事件，中键会触发 EVT\_KEY\_UP/DOWN 事件) （感谢智明提供补丁）
 
 
