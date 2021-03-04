@@ -409,6 +409,13 @@ int main(int arg, char **argv)
 ////   link with the C runtime library.
 
 #ifdef STB_TRUETYPE_IMPLEMENTATION
+   // #define your own STBTT_MAX_SCANLINE_EDGES to save all edges on a scanline
+   #define STBTT_DEFAULT_MAX_SCANLINE_EDGES 400
+
+   #ifndef STBTT_MAX_SCANLINE_EDGES
+   #define STBTT_MAX_SCANLINE_EDGES STBTT_DEFAULT_MAX_SCANLINE_EDGES
+   #endif
+
    // #define your own (u)stbtt_int8/16/32 before including to override this
    #ifndef stbtt_uint8
    typedef unsigned char   stbtt_uint8;
@@ -421,6 +428,12 @@ int main(int arg, char **argv)
 
    typedef char stbtt__check_size32[sizeof(stbtt_int32)==4 ? 1 : -1];
    typedef char stbtt__check_size16[sizeof(stbtt_int16)==2 ? 1 : -1];
+
+   // #define your own STBTT_printf() to avoid stdio.h
+   #ifndef STBTT_printf
+   #include <stdio.h>
+   #define STBTT_printf(x)  printf(x)
+   #endif
 
    // e.g. #define your own STBTT_ifloor/STBTT_iceil() to avoid math.h
    #ifndef STBTT_ifloor
@@ -896,7 +909,7 @@ typedef struct
 } stbtt__bitmap;
 
 // rasterize a shape with quadratic beziers into a bitmap
-STBTT_DEF void stbtt_Rasterize(stbtt__bitmap *result,        // 1-channel bitmap to draw into
+STBTT_DEF int stbtt_Rasterize(stbtt__bitmap *result,        // 1-channel bitmap to draw into
                                float flatness_in_pixels,     // allowable error of curve in pixels
                                stbtt_vertex *vertices,       // array of vertices defining shape
                                int num_verts,                // number of vertices in above array
@@ -2655,6 +2668,7 @@ typedef struct stbtt__hheap
    struct stbtt__hheap_chunk *head;
    void   *first_free;
    int    num_remaining_in_head_chunk;
+   int    num_allocated_head_chunk;
 } stbtt__hheap;
 
 static void *stbtt__hheap_alloc(stbtt__hheap *hh, size_t size, void *userdata)
@@ -2665,13 +2679,18 @@ static void *stbtt__hheap_alloc(stbtt__hheap *hh, size_t size, void *userdata)
       return p;
    } else {
       if (hh->num_remaining_in_head_chunk == 0) {
-         int count = (size < 32 ? 2000 : size < 128 ? 800 : 100);
-         stbtt__hheap_chunk *c = (stbtt__hheap_chunk *) STBTT_malloc(sizeof(stbtt__hheap_chunk) + size * count, userdata);
+         int num_allocated = hh->num_allocated_head_chunk;
+         int count = (STBTT_MAX_SCANLINE_EDGES > 0 ? (num_allocated == 0 ? STBTT_MAX_SCANLINE_EDGES : 0) : (size < 32 ? 400 : 100));
+         stbtt__hheap_chunk *c = NULL;
+         if(count > 0){
+            c = (stbtt__hheap_chunk *) STBTT_malloc(sizeof(stbtt__hheap_chunk) + size * count, userdata);
+         }
          if (c == NULL)
             return NULL;
          c->next = hh->head;
          hh->head = c;
          hh->num_remaining_in_head_chunk = count;
+         hh->num_allocated_head_chunk++;
       }
       --hh->num_remaining_in_head_chunk;
       return (char *) (hh->head) + sizeof(stbtt__hheap_chunk) + size * hh->num_remaining_in_head_chunk;
@@ -2725,9 +2744,12 @@ typedef struct stbtt__active_edge
 static stbtt__active_edge *stbtt__new_active(stbtt__hheap *hh, stbtt__edge *e, int off_x, float start_point, void *userdata)
 {
    stbtt__active_edge *z = (stbtt__active_edge *) stbtt__hheap_alloc(hh, sizeof(*z), userdata);
+   if (z == NULL) {
+      STBTT_printf("STBTT get glyph failed : Cannot allocate memory!\n");
+      return NULL;
+   }
    float dxdy = (e->x1 - e->x0) / (e->y1 - e->y0);
-   STBTT_assert(z != NULL);
-   if (!z) return z;
+   //STBTT_assert(z != NULL);
    
    // round dx down to avoid overshooting
    if (dxdy < 0)
@@ -2747,10 +2769,14 @@ static stbtt__active_edge *stbtt__new_active(stbtt__hheap *hh, stbtt__edge *e, i
 static stbtt__active_edge *stbtt__new_active(stbtt__hheap *hh, stbtt__edge *e, int off_x, float start_point, void *userdata)
 {
    stbtt__active_edge *z = (stbtt__active_edge *) stbtt__hheap_alloc(hh, sizeof(*z), userdata);
+   if (z == NULL) {
+      STBTT_printf("STBTT get glyph failed : Cannot allocate memory!\n");
+      return NULL;
+   }
    float dxdy = (e->x1 - e->x0) / (e->y1 - e->y0);
-   STBTT_assert(z != NULL);
+   //STBTT_assert(z != NULL);
    //STBTT_assert(e->y0 <= start_point);
-   if (!z) return z;
+
    z->fdx = dxdy;
    z->fdy = dxdy != 0.0f ? (1.0f/dxdy) : 0.0f;
    z->fx = e->x0 + dxdy * (start_point - e->y0);
@@ -2811,9 +2837,9 @@ static void stbtt__fill_active_edges(unsigned char *scanline, int len, stbtt__ac
    }
 }
 
-static void stbtt__rasterize_sorted_edges(stbtt__bitmap *result, stbtt__edge *e, int n, int vsubsample, int off_x, int off_y, void *userdata)
+static int stbtt__rasterize_sorted_edges(stbtt__bitmap *result, stbtt__edge *e, int n, int vsubsample, int off_x, int off_y, void *userdata)
 {
-   stbtt__hheap hh = { 0, 0, 0 };
+   stbtt__hheap hh = { 0, 0, 0 ,0 };
    stbtt__active_edge *active = NULL;
    int y,j=0;
    int max_weight = (255 / vsubsample);  // weight per vertical scanline
@@ -2890,6 +2916,11 @@ static void stbtt__rasterize_sorted_edges(stbtt__bitmap *result, stbtt__edge *e,
                      z->next = p->next;
                      p->next = z;
                   }
+               } else {
+                  stbtt__hheap_cleanup(&hh, userdata);
+                  if (scanline != scanline_data)
+                     STBTT_free(scanline, userdata);
+                  return 0;;
                }
             }
             ++e;
@@ -2909,6 +2940,7 @@ static void stbtt__rasterize_sorted_edges(stbtt__bitmap *result, stbtt__edge *e,
 
    if (scanline != scanline_data)
       STBTT_free(scanline, userdata);
+   return 1;
 }
 
 #elif STBTT_RASTERIZER_VERSION == 2
@@ -3114,9 +3146,9 @@ static void stbtt__fill_active_edges_new(float *scanline, float *scanline_fill, 
 }
 
 // directly AA rasterize edges w/o supersampling
-static void stbtt__rasterize_sorted_edges(stbtt__bitmap *result, stbtt__edge *e, int n, int vsubsample, int off_x, int off_y, void *userdata)
+static int stbtt__rasterize_sorted_edges(stbtt__bitmap *result, stbtt__edge *e, int n, int vsubsample, int off_x, int off_y, void *userdata)
 {
-   stbtt__hheap hh = { 0, 0, 0 };
+   stbtt__hheap hh = { 0, 0, 0, 0 };
    stbtt__active_edge *active = NULL;
    int y,j=0, i;
    float scanline_data[129], *scanline, *scanline2;
@@ -3171,6 +3203,11 @@ static void stbtt__rasterize_sorted_edges(stbtt__bitmap *result, stbtt__edge *e,
                // insert at front
                z->next = active;
                active = z;
+            } else {
+               stbtt__hheap_cleanup(&hh, userdata);
+               if (scanline != scanline_data)
+                  STBTT_free(scanline, userdata);
+               return 0;
             }
          }
          ++e;
@@ -3209,6 +3246,7 @@ static void stbtt__rasterize_sorted_edges(stbtt__bitmap *result, stbtt__edge *e,
 
    if (scanline != scanline_data)
       STBTT_free(scanline, userdata);
+   return 1;
 }
 #else
 #error "Unrecognized value of STBTT_RASTERIZER_VERSION"
@@ -3307,7 +3345,7 @@ typedef struct
    float x,y;
 } stbtt__point;
 
-static void stbtt__rasterize(stbtt__bitmap *result, stbtt__point *pts, int *wcount, int windings, float scale_x, float scale_y, float shift_x, float shift_y, int off_x, int off_y, int invert, void *userdata)
+static int stbtt__rasterize(stbtt__bitmap *result, stbtt__point *pts, int *wcount, int windings, float scale_x, float scale_y, float shift_x, float shift_y, int off_x, int off_y, int invert, void *userdata)
 {
    float y_scale_inv = invert ? -scale_y : scale_y;
    stbtt__edge *e;
@@ -3327,7 +3365,7 @@ static void stbtt__rasterize(stbtt__bitmap *result, stbtt__point *pts, int *wcou
       n += wcount[i];
 
    e = (stbtt__edge *) STBTT_malloc(sizeof(*e) * (n+1), userdata); // add an extra one as a sentinel
-   if (e == 0) return;
+   if (e == 0) return 0;
    n = 0;
 
    m=0;
@@ -3359,9 +3397,10 @@ static void stbtt__rasterize(stbtt__bitmap *result, stbtt__point *pts, int *wcou
    stbtt__sort_edges(e, n);
 
    // now, traverse the scanlines and find the intersections on each scanline, use xor winding rule
-   stbtt__rasterize_sorted_edges(result, e, n, vsubsample, off_x, off_y, userdata);
+   int ret = stbtt__rasterize_sorted_edges(result, e, n, vsubsample, off_x, off_y, userdata);
 
    STBTT_free(e, userdata);
+   return ret;
 }
 
 static void stbtt__add_point(stbtt__point *points, int n, float x, float y)
@@ -3512,17 +3551,19 @@ error:
    return NULL;
 }
 
-STBTT_DEF void stbtt_Rasterize(stbtt__bitmap *result, float flatness_in_pixels, stbtt_vertex *vertices, int num_verts, float scale_x, float scale_y, float shift_x, float shift_y, int x_off, int y_off, int invert, void *userdata)
+STBTT_DEF int stbtt_Rasterize(stbtt__bitmap *result, float flatness_in_pixels, stbtt_vertex *vertices, int num_verts, float scale_x, float scale_y, float shift_x, float shift_y, int x_off, int y_off, int invert, void *userdata)
 {
    float scale            = scale_x > scale_y ? scale_y : scale_x;
    int winding_count      = 0;
    int *winding_lengths   = NULL;
+   int ret                = 0;
    stbtt__point *windings = stbtt_FlattenCurves(vertices, num_verts, flatness_in_pixels / scale, &winding_lengths, &winding_count, userdata);
    if (windings) {
-      stbtt__rasterize(result, windings, winding_lengths, winding_count, scale_x, scale_y, shift_x, shift_y, x_off, y_off, invert, userdata);
+      ret = stbtt__rasterize(result, windings, winding_lengths, winding_count, scale_x, scale_y, shift_x, shift_y, x_off, y_off, invert, userdata);
       STBTT_free(winding_lengths, userdata);
       STBTT_free(windings, userdata);
    }
+   return ret;
 }
 
 STBTT_DEF void stbtt_FreeBitmap(unsigned char *bitmap, void *userdata)
@@ -3563,7 +3604,10 @@ STBTT_DEF unsigned char *stbtt_GetGlyphBitmapSubpixel(const stbtt_fontinfo *info
       if (gbm.pixels) {
          gbm.stride = gbm.w;
 
-         stbtt_Rasterize(&gbm, 0.35f, vertices, num_verts, scale_x, scale_y, shift_x, shift_y, ix0, iy0, 1, info->userdata);
+         if(!stbtt_Rasterize(&gbm, 0.35f, vertices, num_verts, scale_x, scale_y, shift_x, shift_y, ix0, iy0, 1, info->userdata)){
+            STBTT_free(gbm.pixels, info->userdata);
+            gbm.pixels = NULL;
+         }
       }
    }
    STBTT_free(vertices, info->userdata);
