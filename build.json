@@ -4,6 +4,7 @@
   "assets": "res/assets",
   "author": "xianjimli@hotmail.com",
   "copyright": "Guangzhou ZHIYUAN Electronics Co.,Ltd.",
+  "themes":["default", "dark"],
   "web": {
     "app_type": "c",
     "assets": "design",
@@ -23,6 +24,7 @@
       "demos/demo_ui_app.c",
       "demos/vg_common.inc",
       "res/assets.inc",
+      "res/assets/__assets_dark.inc",
       "res/assets/__assets_default.inc"
     ]
   },
@@ -33,6 +35,7 @@
       "demos/demo_ui_app.c",
       "demos/vg_common.inc",
       "res/assets.inc",
+      "res/assets/__assets_dark.inc",
       "res/assets/__assets_default.inc"
     ]
   }
