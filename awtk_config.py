@@ -188,7 +188,7 @@ elif OS_NAME == 'Linux':
   else:
     OS_FLAGS = OS_FLAGS + ' -DWITH_64BIT_CPU '
 
-  OS_LINKFLAGS=' -Wl,-rpath=' + os.path.abspath(TK_LIB_DIR) + ' '
+  OS_LINKFLAGS=' -Wl,-rpath=./bin -Wl,-rpath=./ '
   AWTK_DLL_DEPS_LIBS = NANOVG_BACKEND_LIBS + ['SDL2', 'glad'] + OS_LIBS
   OS_WHOLE_ARCHIVE =' -Wl,--whole-archive -lawtk_global -lextwidgets -lwidgets -lbase -lgpinyin -lstreams -lconf_io -lhal -lcsv -lubjson -lcompressors -lfribidi -lminiz -ltkc_static -llinebreak -Wl,--no-whole-archive'
 
@@ -218,7 +218,7 @@ elif OS_NAME == 'Windows':
   elif TOOLS_NAME == 'mingw' :
     OS_LIBS=['kernel32', 'gdi32', 'user32', 'winmm','imm32','version','shell32','ole32','Oleaut32','Advapi32','oleaut32','uuid','stdc++',"ws2_32"]
     OS_FLAGS='-DMINGW -DWINDOWS -D_CONSOLE -g -Wall'
-    OS_LINKFLAGS=' -Wl,-rpath=' + os.path.abspath(TK_LIB_DIR) + ' '
+    OS_LINKFLAGS=' -Wl,-rpath=./bin -Wl,-rpath=./ '
     COMMON_CFLAGS=COMMON_CFLAGS+' -std=gnu99 '
     COMMON_CCFLAGS=COMMON_CCFLAGS+' -U__FLT_EVAL_METHOD__ -D__FLT_EVAL_METHOD__=0 -DUNICODE -DDECLSPEC=  ' 
     OS_WHOLE_ARCHIVE =' -Wl,--whole-archive -lawtk_global -lextwidgets -lwidgets -lbase -lgpinyin -lstreams -lconf_io -lhal -lcsv -lubjson -lcompressors -lfribidi -lminiz -ltkc_static -llinebreak -Wl,--no-whole-archive'
