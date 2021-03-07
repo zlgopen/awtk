@@ -215,7 +215,7 @@ static const key_type_value_t keys_type_name_value[] = {
     {"RIGHTBRACE", 0, TK_KEY_RIGHTBRACE},
     {"BACK", 0, TK_KEY_BACK},
     {"CANCEL", 0, TK_KEY_CANCEL},
-#ifdef SDL2
+#ifdef WITH_SDL
     {"PRINTSCREEN", 0, TK_KEY_PRINTSCREEN},
     {"SCROLLLOCK", 0, TK_KEY_SCROLLLOCK},
     {"PAUSE", 0, TK_KEY_PAUSE},
@@ -294,7 +294,7 @@ static const key_type_value_t keys_type_name_value[] = {
     {"APP1", 0, TK_KEY_APP1},
     {"APP2", 0, TK_KEY_APP2},
 
-#endif /*SDL2*/
+#endif /*WITH_SDL*/
     {"LCTRL", 0, TK_KEY_LCTRL},
     {"RCTRL", 0, TK_KEY_RCTRL},
     {"LSHIFT", 0, TK_KEY_LSHIFT},

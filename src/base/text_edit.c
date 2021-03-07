@@ -997,7 +997,7 @@ ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
   layout_info = &(impl->layout_info);
 
   switch (key) {
-#ifdef SDL2
+#ifdef WITH_SDL
     case TK_KEY_KP_DIVIDE:
     case TK_KEY_KP_MULTIPLY:
     case TK_KEY_KP_MINUS:

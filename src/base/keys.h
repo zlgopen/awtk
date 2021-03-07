@@ -533,7 +533,7 @@ typedef enum _key_code_t {
    * TK_KEY_RIGHTBRACE
    */
   TK_KEY_RIGHTBRACE = ')',
-#ifdef SDL2
+#ifdef WITH_SDL
   TK_KEY_CAPSLOCK = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_CAPSLOCK),
 
   TK_KEY_F1 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_F1),
@@ -899,11 +899,11 @@ typedef enum _key_code_t {
 #endif /*TK_KEY_TOGGLE_INPUT_METHOD*/
 
 static inline bool_t key_code_is_enter(int key) {
-#ifdef SDL2
+#ifdef WITH_SDL
   return (key == TK_KEY_RETURN || key == TK_KEY_KP_ENTER);
 #else
   return key == TK_KEY_RETURN;
-#endif /*SDL2*/
+#endif /*WITH_SDL*/
 }
 
 END_C_DECLS
