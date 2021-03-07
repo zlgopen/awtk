@@ -43,9 +43,10 @@
 #endif /*HAS_AWTK_CONFIG*/
 
 #if defined(WIN32) || defined(LINUX) || defined(MACOS) || defined(ANDROID) || defined(IOS)
-
 #define WITH_SOCKET 1
+#endif /*WIN32 || MACOS || LINUX || IOS || ANDROID*/
 
+#ifdef WITH_SOCKET
 #ifdef WIN32
 #define WIN32_LEAN_AND_MEAN 1
 #include <windows.h>
@@ -63,9 +64,7 @@ typedef int socklen_t;
 #include <sys/time.h>
 #include <sys/types.h>
 #endif /*WIN32*/
-
-#endif /*WIN32 || MACOS || LINUX || IOS || ANDROID*/
-
+#endif/*WITH_SOCKET*/
 #ifdef __cplusplus
 #define BEGIN_C_DECLS extern "C" {
 #define END_C_DECLS }
