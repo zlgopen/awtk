@@ -3,6 +3,7 @@
 2020/03/07
  * 用WITH\_SDL代替SDL2，没有必要同时使用两个宏。
  * 完善window\_manager\_back\_to\_home\_async，处理遇到模态对话框时触发assert的问题。
+ * 修复window\_manager\_default vtable初始化顺序。
 
 2020/03/06
  * 完善build.json，支持多主题。

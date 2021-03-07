@@ -1390,29 +1390,29 @@ static ret_t window_manager_default_dispatch_native_window_event(widget_t* widge
 }
 
 static window_manager_vtable_t s_window_manager_self_vtable = {
+    .switch_to = window_manager_default_switch_to,
     .paint = window_manager_default_paint,
     .post_init = window_manager_default_post_init,
     .set_cursor = window_manager_default_set_cursor,
     .open_window = window_manager_default_open_window,
-    .get_pointer = window_manager_default_get_pointer,
-    .is_animating = window_manager_default_is_animating,
     .close_window = window_manager_default_close_window,
-    .switch_to = window_manager_default_switch_to,
     .set_show_fps = window_manager_default_set_show_fps,
     .get_prev_window = window_manager_default_get_prev_window,
     .close_window_force = window_manager_default_close_window_force,
     .dispatch_input_event = window_manager_default_dispatch_input_event,
     .dispatch_native_window_event = window_manager_default_dispatch_native_window_event,
+    .set_screen_saver_time = window_manager_default_set_screen_saver_time,
+    .get_pointer = window_manager_default_get_pointer,
+    .is_animating = window_manager_default_is_animating,
     .snap_curr_window = window_manager_default_snap_curr_window,
     .snap_prev_window = window_manager_default_snap_prev_window,
     .get_dialog_highlighter = window_manager_default_get_dialog_highlighter,
-    .set_screen_saver_time = window_manager_default_set_screen_saver_time,
     .resize = window_manager_default_resize};
 
 static const widget_vtable_t s_window_manager_vtable = {
     .size = sizeof(window_manager_t),
-    .is_window_manager = TRUE,
     .type = WIDGET_TYPE_WINDOW_MANAGER,
+    .is_window_manager = TRUE,
     .set_prop = window_manager_default_set_prop,
     .get_prop = window_manager_default_get_prop,
     .on_event = window_manager_default_on_event,
