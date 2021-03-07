@@ -1,5 +1,12 @@
 # 最新动态
 
+2020/03/07
+ * 完善window\_manager\_back\_to\_home\_async，处理遇到模态对话框时触发assert的问题。
+
+2020/03/06
+ * 完善build.json，支持多主题。
+ * 完善编译脚本，支持rpath。
+
 2020/03/04
  * 修复在 mac 上面的 OpenGL 模式下 lcd 旋转窗口动画的问题 （感谢智明提供补丁）
  * 修改list\_view设置scroll\_bar\_mobile的虚拟高最低为widget高度（感谢智明提供补丁） 
