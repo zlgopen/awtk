@@ -1,5 +1,8 @@
 # 最新动态
 
+2020/03/10
+ * 修复dialog\_info等内置对话框显示翻译文本时label大小异常的问题(感谢雨欣提供补丁)
+
 2020/03/07
  * 用WITH\_SDL代替SDL2，没有必要同时使用两个宏。
  * 完善window\_manager\_back\_to\_home\_async，处理遇到模态对话框时触发assert的问题。

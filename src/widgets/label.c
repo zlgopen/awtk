@@ -127,8 +127,14 @@ static wh_t label_get_text_line_max_w(widget_t* widget, canvas_t* c) {
   wh_t line_w = 0;
   wh_t line_max_w = 0;
   uint32_t start = 0, n = 0;
-  wchar_t* str = widget->text.str;
-  uint32_t size = widget->text.size;
+  wstr_t s;
+  wstr_init(&s, 0);
+
+  const char* utf8 = locale_info_tr(locale_info(), widget->tr_text);
+  return_value_if_fail(wstr_set_utf8(&s, utf8) == RET_OK, 0);
+
+  wchar_t* str = s.str;
+  uint32_t size = s.size;
 
   for (i = 0; i < size; i++) {
     wchar_t chr = str[i];
@@ -142,7 +148,7 @@ static wh_t label_get_text_line_max_w(widget_t* widget, canvas_t* c) {
       }
     }
   }
-
+  wstr_reset(&s);
   return line_max_w;
 }
 
