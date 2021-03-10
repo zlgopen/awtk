@@ -38,7 +38,6 @@ typedef struct _vgcanvas_nanovg_t {
 
 #include "texture.inc"
 #include "vgcanvas_nanovg_bgfx.inc"
-#include "vgcanvas_nanovg.inc"
 
 vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_format_t format,
                             void* win) {
@@ -54,6 +53,7 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_form
   nanovg->window = window;
   nanovg->base.ratio = info.ratio;
 
+  vgcanvas_nanovg_init((vgcanvas_t*)nanovg);
   nanovg->vg = nvgCreateBGFX(1, 0, fw, fh, info->handle);
 
   if (nanovg->vg == NULL) {

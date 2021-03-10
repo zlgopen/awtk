@@ -41,7 +41,6 @@ typedef struct _vgcanvas_nanovg_t {
 } vgcanvas_nanovg_t;
 
 #include "vgcanvas_nanovg_soft.inc"
-#include "vgcanvas_nanovg.inc"
 
 vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_format_t format,
                             void* data) {
@@ -56,6 +55,8 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_form
   nanovg->base.format = format;
   nanovg->base.stride = stride;
   nanovg->base.buff = (uint32_t*)data;
+
+  vgcanvas_nanovg_init((vgcanvas_t*)nanovg);
 
 #if defined(WITH_NANOVG_AGG)
   nanovg->vg = nvgCreateAGG(w, h, stride, f, (uint8_t*)data);

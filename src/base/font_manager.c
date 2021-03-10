@@ -66,12 +66,19 @@ font_manager_t* font_manager_init(font_manager_t* fm, font_loader_t* loader) {
   return fm;
 }
 
-ret_t font_manager_on_clear_cache(void* ctx, event_t* e) {
+static ret_t font_manager_on_asset_events(void* ctx, event_t* e) {
   assets_event_t* evt = (assets_event_t*)e;
   font_manager_t* fm = (font_manager_t*)ctx;
+
   if (evt->type == ASSET_TYPE_FONT) {
-    font_manager_unload_all(fm);
+    asset_info_t* info = evt->asset_info;
+    if (e->type == EVT_ASSET_MANAGER_CLEAR_CACHE) {
+      font_manager_unload_all(fm);
+    } else if (e->type == EVT_ASSET_MANAGER_UNLOAD_ASSET) {
+      font_manager_unload_font(fm, info->name, 0);
+    }
   }
+
   return RET_OK;
 }
 
@@ -81,8 +88,10 @@ ret_t font_manager_set_assets_manager(font_manager_t* fm, assets_manager_t* am) 
   if (fm->assets_manager != NULL && fm->assets_manager != am) {
     emitter_off_by_ctx(EMITTER(fm->assets_manager), fm);
   }
+
   if (am != NULL && fm->assets_manager != am) {
-    emitter_on(EMITTER(am), EVT_ASSET_MANAGER_CLEAR_CACHE, font_manager_on_clear_cache, fm);
+    emitter_on(EMITTER(am), EVT_ASSET_MANAGER_CLEAR_CACHE, font_manager_on_asset_events, fm);
+    emitter_on(EMITTER(am), EVT_ASSET_MANAGER_UNLOAD_ASSET, font_manager_on_asset_events, fm);
   }
 
   fm->assets_manager = am;
@@ -176,7 +185,7 @@ font_t* font_manager_get_font(font_manager_t* fm, const char* name, font_size_t 
 }
 
 ret_t font_manager_unload_font(font_manager_t* fm, const char* name, font_size_t size) {
-  font_t* font = NULL;
+  ret_t ret = RET_OK;
   font_cmp_info_t info = {name, size};
 
 #if WITH_BITMAP_FONT
@@ -187,18 +196,16 @@ ret_t font_manager_unload_font(font_manager_t* fm, const char* name, font_size_t
   name = system_info_fix_font_name(name);
   return_value_if_fail(fm != NULL, RET_FAIL);
 
-  font = font_manager_lookup(fm, name, size);
-  return_value_if_fail(font != NULL, RET_NOT_FOUND);
-
 #if WITH_BITMAP_FONT
   info_bitmap.name = font_manager_fix_bitmap_font_name(font_name, name, size);
   info_bitmap.size = size;
-  if (darray_remove(&(fm->fonts), &info_bitmap) == RET_OK) {
-    return RET_OK;
-  }
+  ret = darray_remove(&(fm->fonts), &info_bitmap);
 #endif
 
-  return darray_remove(&(fm->fonts), &info);
+  ret = darray_remove(&(fm->fonts), &info);
+  assets_manager_clear_cache_ex(assets_manager(), ASSET_TYPE_FONT, name);
+
+  return ret;
 }
 
 ret_t font_manager_unload_all(font_manager_t* fm) {

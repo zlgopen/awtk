@@ -1,4 +1,5 @@
 ﻿#include "tkc/utils.h"
+#include "vgcanvas_nanovg.inc" 
 
 static ret_t vgcanvas_nanovg_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h, uint32_t stride,
                                     bitmap_format_t format, void* data) {
@@ -340,6 +341,7 @@ static ret_t vgcanvas_nanovg_destroy(vgcanvas_t* vgcanvas) {
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
   NVGcontext* vg = canvas->vg;
 
+  vgcanvas_nanovg_deinit(vgcanvas);
 #if defined(WITH_NANOVG_GL3)
   nvgDeleteGL3(vg);
 #elif defined(WITH_NANOVG_GLES2)

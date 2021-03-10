@@ -42,7 +42,28 @@ static int asset_cache_cmp_type(const void* a, const void* b) {
   return aa->type - bb->type;
 }
 
+static int asset_cache_cmp_type_and_name(const void* a, const void* b) {
+  const asset_info_t* aa = (const asset_info_t*)a;
+  const asset_info_t* bb = (const asset_info_t*)b;
+
+  if (aa->is_in_rom) {
+    return -1;
+  }
+
+  if (aa->type == bb->type) {
+    return tk_str_cmp(aa->name, bb->name);
+  } else {
+    return aa->type - bb->type;
+  }
+}
+
 static assets_manager_t* s_assets_manager = NULL;
+
+static ret_t assets_manager_dispatch_event(assets_manager_t* am, int32_t etype,
+                                           asset_info_t* info) {
+  assets_event_t e;
+  return emitter_dispatch(EMITTER(am), assets_event_init(&e, am, etype, info->type, info));
+}
 
 static locale_info_t* assets_manager_get_locale_info(assets_manager_t* am) {
   return_value_if_fail(am != NULL, NULL);
@@ -502,7 +523,6 @@ asset_info_t* assets_manager_load(assets_manager_t* am, asset_type_t type, const
 
 asset_info_t* assets_manager_load_ex(assets_manager_t* am, asset_type_t type, uint16_t subtype,
                                      const char* name) {
-  assets_event_t e;
   asset_info_t* info = NULL;
   return_value_if_fail(am != NULL && name != NULL, NULL);
 
@@ -511,8 +531,7 @@ asset_info_t* assets_manager_load_ex(assets_manager_t* am, asset_type_t type, ui
   }
   info = assets_manager_load_impl(am, type, subtype, name);
   if (info != NULL) {
-    emitter_dispatch(EMITTER(am), assets_event_init(&e, am, EVT_ASSET_MANAGER_LOAD_ASSET,
-                                                    (asset_type_t)(info->type), info));
+    assets_manager_dispatch_event(am, EVT_ASSET_MANAGER_LOAD_ASSET, info);
   }
   return info;
 }
@@ -699,32 +718,60 @@ const asset_info_t* assets_manager_ref_ex(assets_manager_t* am, asset_type_t typ
 }
 
 ret_t assets_manager_unref(assets_manager_t* am, const asset_info_t* info) {
-  assets_event_t e;
   return_value_if_fail(info != NULL, RET_BAD_PARAMS);
 
   if (am == NULL) {
     /*asset manager was destroied*/
     return RET_OK;
   }
+
   if (info->refcount == 1) {
-    emitter_dispatch(EMITTER(am),
-                     assets_event_init(&e, am, EVT_ASSET_MANAGER_UNLOAD_ASSET,
-                                       (asset_type_t)(info->type), (asset_info_t*)info));
+    assets_manager_dispatch_event(am, EVT_ASSET_MANAGER_UNLOAD_ASSET, (asset_info_t*)info);
   }
+
   return asset_info_unref((asset_info_t*)info);
 }
 
+ret_t assets_manager_clear_cache_ex(assets_manager_t* am, asset_type_t type, const char* name) {
+  int32_t size = 0;
+  asset_info_t info;
+  ret_t ret = RET_OK;
+  return_value_if_fail(am != NULL && name != NULL, RET_BAD_PARAMS);
+
+  memset(&info, 0x00, sizeof(info));
+  if (assets_manager_find_in_cache(am, type, 0, name) == NULL) {
+    return RET_NOT_FOUND;
+  }
+
+  info.type = type;
+  tk_strncpy_s(info.name, sizeof(info.name), name, strlen(name));
+
+  size = am->assets.size;
+  ret = darray_remove_all(&(am->assets), asset_cache_cmp_type_and_name, &info);
+
+  if (am->assets.size < size) {
+    assets_manager_dispatch_event(am, EVT_ASSET_MANAGER_UNLOAD_ASSET, &info);
+  }
+
+  return ret;
+}
+
 ret_t assets_manager_clear_cache(assets_manager_t* am, asset_type_t type) {
-  assets_event_t e;
+  int32_t size = 0;
   asset_info_t info;
   ret_t ret = RET_OK;
 
   memset(&info, 0x00, sizeof(info));
   info.type = type;
   return_value_if_fail(am != NULL, RET_BAD_PARAMS);
+
+  size = am->assets.size;
   ret = darray_remove_all(&(am->assets), NULL, &info);
-  emitter_dispatch(EMITTER(am),
-                   assets_event_init(&e, am, EVT_ASSET_MANAGER_CLEAR_CACHE, type, NULL));
+
+  if (am->assets.size < size) {
+    assets_manager_dispatch_event(am, EVT_ASSET_MANAGER_CLEAR_CACHE, &info);
+  }
+
   return ret;
 }
 

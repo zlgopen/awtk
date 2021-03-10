@@ -1,13 +1,57 @@
 ﻿#include "nanovg.h"
 #include "tkc/mem.h"
 #include "tkc/utf8.h"
+#include "base/events.h"
 #include "base/vgcanvas.h"
 #include "base/system_info.h"
 #include "base/image_manager.h"
 #include "base/font_manager.h"
 #include "base/assets_manager.h"
 
+static ret_t vgcanvas_nanovg_destroy(vgcanvas_t* vgcanvas);
+static ret_t vgcanvas_nanovg_end_frame(vgcanvas_t* vgcanvas);
 static ret_t vgcanvas_nanovg_set_antialias(vgcanvas_t* vgcanvas, bool_t value);
+static ret_t vgcanvas_nanovg_destroy_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo);
+static ret_t vgcanvas_nanovg_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h, uint32_t stride,
+                                    bitmap_format_t format, void* data);
+static ret_t vgcanvas_nanovg_begin_frame(vgcanvas_t* vgcanvas, const rect_t* dirty_rect);
+static ret_t vgcanvas_nanovg_create_fbo(vgcanvas_t* vgcanvas, uint32_t w, uint32_t h,
+                                        bool_t custom_draw_model, framebuffer_object_t* fbo);
+static ret_t vgcanvas_nanovg_bind_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo);
+static ret_t vgcanvas_nanovg_unbind_fbo(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo);
+static ret_t vgcanvas_nanovg_fbo_to_bitmap(vgcanvas_t* vgcanvas, framebuffer_object_t* fbo,
+                                           bitmap_t* img, const rect_t* r);
+
+static ret_t vgcanvas_nanovg_on_asset_events(void* ctx, event_t* e) {
+  NVGcontext* vg = ((vgcanvas_nanovg_t*)ctx)->vg;
+  assets_event_t* evt = (assets_event_t*)e;
+
+  if (evt->type == ASSET_TYPE_FONT) {
+    asset_info_t* info = evt->asset_info;
+    if (e->type == EVT_ASSET_MANAGER_CLEAR_CACHE) {
+      nvgDeleteFontByName(vg, NULL);
+    } else if (e->type == EVT_ASSET_MANAGER_UNLOAD_ASSET) {
+      nvgDeleteFontByName(vg, info->name);
+    }
+  }
+
+  return RET_OK;
+}
+
+static ret_t vgcanvas_nanovg_init(vgcanvas_t* vgcanvas) {
+  emitter_t* emitter = EMITTER(assets_manager());
+  emitter_on(emitter, EVT_ASSET_MANAGER_CLEAR_CACHE, vgcanvas_nanovg_on_asset_events, vgcanvas);
+  emitter_on(emitter, EVT_ASSET_MANAGER_UNLOAD_ASSET, vgcanvas_nanovg_on_asset_events, vgcanvas);
+
+  return RET_OK;
+}
+
+static ret_t vgcanvas_nanovg_deinit(vgcanvas_t* vgcanvas) {
+  emitter_t* emitter = EMITTER(assets_manager());
+  emitter_off_by_ctx(emitter, vgcanvas);
+
+  return RET_OK;
+}
 
 static ret_t vgcanvas_nanovg_reset(vgcanvas_t* vgcanvas) {
   /*TODO: unload fonts*/

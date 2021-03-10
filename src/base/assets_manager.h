@@ -260,7 +260,7 @@ const asset_info_t* assets_manager_find_in_cache(assets_manager_t* am, asset_typ
  * 从文件系统中加载指定的资源，并缓存到内存中。在定义了宏WITH\_FS\_RES时才生效。
  * @param {assets_manager_t*} am asset manager对象。
  * @param {asset_type_t} type 资源的类型。
- * @param {char*} name 资源的名称。
+ * @param {const char*} name 资源的名称。
  *
  * @return {asset_info_t*} 返回资源。
  */
@@ -340,6 +340,17 @@ ret_t assets_manager_set_custom_load_asset(assets_manager_t* am,
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t assets_manager_clear_cache(assets_manager_t* am, asset_type_t type);
+
+/**
+ * @method assets_manager_clear_cache_ex
+ * 清除指定类型和名称的缓存。
+ * @param {assets_manager_t*} am asset manager对象。
+ * @param {asset_type_t} type 资源的类型。
+ * @param {const char*} name 资源的名称。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t assets_manager_clear_cache_ex(assets_manager_t* am, asset_type_t type, const char* name);
 
 /**
  * @method assets_manager_clear_all

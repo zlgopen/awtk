@@ -2,6 +2,7 @@
 
 2020/03/10
  * 增加输入类型INPUT\_ASCII，用于输入纯英文字符。
+ * 修复font\_manager\_unload\_font在OpenGL模式下不能卸载字体的问题。
  * 修复dialog\_info等内置对话框显示翻译文本时label大小异常的问题(感谢雨欣提供补丁)
 
 2020/03/07

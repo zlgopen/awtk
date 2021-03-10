@@ -1,5 +1,6 @@
 #include "tkc/utils.h"
 #include "base/types_def.h"
+#include "vgcanvas_nanovg.inc" 
 
 static enum NVGtexture bitmap_format_to_nanovg(bitmap_format_t format) {
   enum NVGtexture f = NVG_TEXTURE_BGRA;
@@ -190,6 +191,7 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
 static ret_t vgcanvas_nanovg_destroy(vgcanvas_t* vgcanvas) {
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
 
+  vgcanvas_nanovg_deinit(vgcanvas);
   nvgDeleteInternal(canvas->vg);
   TKMEM_FREE(vgcanvas);
 

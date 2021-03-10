@@ -364,7 +364,6 @@ static vgcanvas_nanovg_offline_fb_t* vgcanvas_create_offline_fb(uint32_t width, 
 
 #include "texture.inc"
 #include "vgcanvas_nanovg_gl.inc"
-#include "vgcanvas_nanovg.inc"
 
 vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_format_t format,
                             void* win) {
@@ -381,6 +380,8 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_form
   nanovg->base.vt = &vt;
   nanovg->window = window;
   nanovg->base.ratio = info.ratio;
+
+  vgcanvas_nanovg_init((vgcanvas_t*)nanovg);
 
 #if defined(WITH_NANOVG_GL3)
   nanovg->vg = nvgCreateGL3(NVG_ANTIALIAS | NVG_STENCIL_STROKES);
