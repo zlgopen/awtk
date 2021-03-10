@@ -6,7 +6,7 @@
     <disable    bg_color="gray" text_color="#d0d0d0" />
   </style>
   
-  <style name="candidates" text_color="black">
+  <style name="candidates" text_color="black" margin="3">
     <normal  />
     <pressed    bg_color="#c0c0c0" border_color="#a0a0a0"/>
     <over       bg_color="#e0e0e0" border_color="#a0a0a0"/>
