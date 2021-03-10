@@ -8,6 +8,8 @@
 #include "base/font_manager.h"
 #include "base/assets_manager.h"
 
+static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img);
+
 static ret_t vgcanvas_nanovg_destroy(vgcanvas_t* vgcanvas);
 static ret_t vgcanvas_nanovg_end_frame(vgcanvas_t* vgcanvas);
 static ret_t vgcanvas_nanovg_set_antialias(vgcanvas_t* vgcanvas, bool_t value);
