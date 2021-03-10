@@ -112,7 +112,12 @@ typedef enum _input_type_t {
    * @const INPUT_CUSTOM_PASSWORD
    * 使用自定义的密码软键盘。字符串属性值：custom_password
    */
-  INPUT_CUSTOM_PASSWORD
+  INPUT_CUSTOM_PASSWORD,
+  /**
+   * @const INPUT_ASCII
+   * 纯英文文本。字符串属性值：ascii
+   */
+  INPUT_ASCII,
 } input_type_t;
 
 /**

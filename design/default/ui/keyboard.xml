@@ -10,6 +10,10 @@
       <edit w="70%" text="" tips="desc" focused="true"  action_text="next"/>
      </list_item>
      <list_item style="empty" children_layout="default(r=1,c=0,ym=1)">
+      <label w="30%" text="ASCII"/>
+      <edit w="70%" text="" tips="ascii" input_type="ascii" focused="true"  action_text="next"/>
+     </list_item>
+     <list_item style="empty" children_layout="default(r=1,c=0,ym=1)">
       <label w="30%" text="Int"/>
       <edit w="70%" text="" tips="int" input_type="int"/>
      </list_item>

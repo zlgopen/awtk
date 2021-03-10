@@ -51,6 +51,7 @@ static const key_type_value_t input_type_name_value[] = {
     {"ipv4", 0, INPUT_IPV4},
     {"custom", 0, INPUT_CUSTOM},
     {"custom_password", 0, INPUT_CUSTOM_PASSWORD},
+    {"ascii", 0, INPUT_ASCII},
 };
 
 static const key_type_value_t align_h_name_value[] = {

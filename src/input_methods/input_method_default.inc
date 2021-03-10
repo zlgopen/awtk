@@ -74,6 +74,7 @@ static const char* input_type_to_keyboard_name(int32_t input_type) {
       break;
     }
     case INPUT_EMAIL:
+    case INPUT_ASCII:
     case INPUT_PASSWORD: {
       keyboard = "kb_ascii";
       break;
