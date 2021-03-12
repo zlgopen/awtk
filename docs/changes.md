@@ -1,5 +1,8 @@
 # 最新动态
 
+2020/03/13
+ * 修复 label\_get\_text\_line\_max\_w 接口在tr\_text属性为空调用失败的问题(感谢雨欣提供补丁)
+
 2020/03/10
  * 增加输入类型INPUT\_ASCII，用于输入纯英文字符。
  * 修复font\_manager\_unload\_font在OpenGL模式下不能卸载字体的问题。

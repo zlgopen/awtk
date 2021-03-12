@@ -130,8 +130,12 @@ static wh_t label_get_text_line_max_w(widget_t* widget, canvas_t* c) {
   wstr_t s;
   wstr_init(&s, 0);
 
-  const char* utf8 = locale_info_tr(locale_info(), widget->tr_text);
-  return_value_if_fail(wstr_set_utf8(&s, utf8) == RET_OK, 0);
+  if (widget->tr_text) {
+    const char* utf8 = locale_info_tr(locale_info(), widget->tr_text);
+    return_value_if_fail(wstr_set_utf8(&s, utf8) == RET_OK, 0);
+  } else if (widget->text.size) {
+    return_value_if_fail(wstr_set(&s, widget->text.str) == RET_OK, 0)
+  }
 
   wchar_t* str = s.str;
   uint32_t size = s.size;
