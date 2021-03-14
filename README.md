@@ -328,6 +328,8 @@ npm install -g glob
 
 * [Examples for Custom Widgets: Table View](https://github.com/zlgopen/awtk-widget-table-view)
 
+* [Examples for Custom Widgets: HTML View](https://github.com/zlgopen/awtk-widget-html-view)
+
 * [Examples for Custom Widgets: ios/android like list item](https://github.com/zlgopen/awtk-widget-slidable-row)
 
 * [Examples for Custom Widgets: VLabel](https://github.com/zlgopen/awtk-widget-vlabel)

@@ -332,6 +332,8 @@ npm install -g glob
 
 * [扩展控件实例：表格视图](https://github.com/zlgopen/awtk-widget-table-view)
 
+* [扩展控件实例：HTML 视图](https://github.com/zlgopen/awtk-widget-html-view)
+
 * [扩展控件实例：垂直文本](https://github.com/zlgopen/awtk-widget-vlabel)
 
 * [扩展控件实例：仿微信列表项](https://github.com/zlgopen/awtk-widget-slidable-row)

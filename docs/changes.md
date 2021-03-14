@@ -1,5 +1,8 @@
 # 最新动态
 
+2020/03/14
+ * 增加 [HTML View](https://github.com/zlgopen/awtk-widget-html-view)
+
 2020/03/13
  * 修复 label\_get\_text\_line\_max\_w 接口在tr\_text属性为空调用失败的问题(感谢雨欣提供补丁)
 
