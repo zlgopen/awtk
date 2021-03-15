@@ -141,7 +141,7 @@ typedef struct _network_interface_vtable_t {
  */
 struct _network_interface_t {
   const network_interface_vtable_t* vt;
-  char* interface;
+  char* interface_name;
   network_interface_type_t type;
 };
 

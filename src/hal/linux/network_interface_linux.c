@@ -44,7 +44,7 @@ static ret_t network_interface_linux_enable(network_interface_t* interface) {
   char command[128];
   int ret;
   return_value_if_fail(interface != NULL, RET_FAIL);
-  snprintf(command, sizeof(command), "ifconfig %s up", interface->interface);
+  snprintf(command, sizeof(command), "ifconfig %s up", interface->interface_name);
   ret = system(command);
   if (WEXITSTATUS(ret) != 0) return RET_FAIL;
   return RET_OK;
@@ -54,7 +54,7 @@ static ret_t network_interface_linux_disable(network_interface_t* interface) {
   char command[128];
   int ret;
   return_value_if_fail(interface != NULL, RET_FAIL);
-  snprintf(command, sizeof(command), "ifconfig %s down", interface->interface);
+  snprintf(command, sizeof(command), "ifconfig %s down", interface->interface_name);
   ret = system(command);
   if (WEXITSTATUS(ret) != 0) return RET_FAIL;
   return RET_OK;
@@ -69,7 +69,7 @@ static char* network_interface_linux_get_ipaddr(network_interface_t* interface) 
 
   int fd = socket(PF_INET, SOCK_DGRAM, 0);
   return_value_if_fail(fd > 0, NULL);
-  strcpy(ifr.ifr_name, interface->interface);
+  strcpy(ifr.ifr_name, interface->interface_name);
   if (ioctl(fd, SIOCGIFADDR, &ifr) < 0) {
     close(fd);
     return NULL;
@@ -92,7 +92,7 @@ static char* network_interface_linux_get_macaddr(network_interface_t* interface)
 
   fd = socket(PF_INET, SOCK_DGRAM, 0);
   return_value_if_fail(fd > 0, NULL);
-  strcpy(ifr.ifr_name, interface->interface);
+  strcpy(ifr.ifr_name, interface->interface_name);
   if (ioctl(fd, SIOCGIFHWADDR, &ifr) < 0) {
     close(fd);
     return NULL;
@@ -110,7 +110,8 @@ static int network_interface_linux_eth_get_status(network_interface_t* interface
   char carrier_path[128];
   char carrier;
   int fd;
-  snprintf(carrier_path, sizeof(carrier_path), "/sys/class/net/%s/carrier", interface->interface);
+  snprintf(carrier_path, sizeof(carrier_path), "/sys/class/net/%s/carrier",
+           interface->interface_name);
   fd = open(carrier_path, O_RDONLY);
   return_value_if_fail(fd > 0, -1);
   if (read(fd, &carrier, 1) <= 0) {
@@ -129,7 +130,7 @@ static int network_interface_linux_eth_get_quality(network_interface_t* interfac
   int fd;
   char speed[12];
   int val;
-  snprintf(speed_path, sizeof(speed_path), "/sys/class/net/%s/speed", interface->interface);
+  snprintf(speed_path, sizeof(speed_path), "/sys/class/net/%s/speed", interface->interface_name);
   fd = open(speed_path, O_RDONLY);
   return_value_if_fail(fd > 0, -1);
   if (read(fd, speed, sizeof(speed)) <= 0) {
@@ -146,8 +147,8 @@ static ret_t network_interface_linux_set_ipaddr(network_interface_t* interface, 
   char command[128];
   int ret;
   return_value_if_fail(interface != NULL, RET_FAIL);
-  snprintf(command, sizeof(command), "ifconfig %s  %s netmask %s", interface->interface, ipaddr,
-           netmask);
+  snprintf(command, sizeof(command), "ifconfig %s  %s netmask %s", interface->interface_name,
+           ipaddr, netmask);
   ret = system(command);
   if (WEXITSTATUS(ret) != 0) return RET_FAIL;
   return RET_OK;
@@ -167,7 +168,7 @@ static ret_t network_interface_linux_set_dhcp(network_interface_t* interface) {
   char command[128];
   int ret;
   return_value_if_fail(interface != NULL, RET_FAIL);
-  snprintf(command, sizeof(command), "udhcpc -i %s &", interface->interface);
+  snprintf(command, sizeof(command), "udhcpc -i %s &", interface->interface_name);
   ret = system(command);
   if (WEXITSTATUS(ret) != 0) return RET_FAIL;
   return RET_OK;
@@ -211,7 +212,7 @@ static int network_interface_linux_mobile_get_quality(network_interface_t* inter
 
 static void network_interface_linux_destroy(network_interface_t* interface) {
   network_interface_linux_t* linux_network_interface = (network_interface_linux_t*)interface;
-  TKMEM_FREE(interface->interface);
+  TKMEM_FREE(interface->interface_name);
   TKMEM_FREE(interface);
   if (linux_network_interface->ipaddr != NULL) TKMEM_FREE(linux_network_interface->ipaddr);
   if (linux_network_interface->macaddr != NULL) TKMEM_FREE(linux_network_interface->macaddr);

@@ -1,5 +1,8 @@
 # 最新动态
 
+2020/03/16
+ * hal 网络接口增加windows实现(感谢忠吉提供)
+
 2020/03/14
  * 增加 [HTML View](https://github.com/zlgopen/awtk-widget-html-view)
 
