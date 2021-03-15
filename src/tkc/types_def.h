@@ -64,7 +64,7 @@ typedef int socklen_t;
 #include <sys/time.h>
 #include <sys/types.h>
 #endif /*WIN32*/
-#endif/*WITH_SOCKET*/
+#endif /*WITH_SOCKET*/
 #ifdef __cplusplus
 #define BEGIN_C_DECLS extern "C" {
 #define END_C_DECLS }
