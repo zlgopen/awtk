@@ -79,11 +79,18 @@ typedef struct _progress_circle_t {
   float_t value;
 
   /**
-   * @property {uint32_t} max
+   * @property {float_t} max
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 最大值(缺省为100)。
    */
-  uint32_t max;
+  float_t max;
+
+  /**
+   * @property {char*} format
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 数值到字符串转换时的格式，缺省为"%d"。
+   */
+  char* format;
 
   /**
    * @property {int32_t} start_angle
@@ -98,13 +105,6 @@ typedef struct _progress_circle_t {
    * 环线的厚度(缺省为8)。
    */
   uint32_t line_width;
-
-  /**
-   * @property {char*} unit
-   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 单元(缺省无)。
-   */
-  char* unit;
 
   /**
    * @property {char*} line_cap
@@ -189,6 +189,17 @@ ret_t progress_circle_set_value(widget_t* widget, float_t value);
 ret_t progress_circle_set_max(widget_t* widget, uint32_t max);
 
 /**
+ * @method progress_circle_set_format
+ * 设置格式。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget progress_circle对象。
+ * @param {const char*} format 格式。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t progress_circle_set_format(widget_t* widget, const char* format);
+
+/**
  * @method progress_circle_set_line_width
  * 设置环线的厚度。
  *
@@ -211,18 +222,6 @@ ret_t progress_circle_set_line_width(widget_t* widget, uint32_t line_width);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t progress_circle_set_start_angle(widget_t* widget, int32_t start_angle);
-
-/**
- * @method progress_circle_set_unit
- * 设置单位。
- *
- * @annotation ["scriptable"]
- * @param {widget_t*} widget 控件对象。
- * @param {const char*}  unit 单位。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t progress_circle_set_unit(widget_t* widget, const char* unit);
 
 /**
  * @method progress_circle_set_line_cap
@@ -260,7 +259,6 @@ ret_t progress_circle_set_show_text(widget_t* widget, bool_t show_text);
  */
 ret_t progress_circle_set_counter_clock_wise(widget_t* widget, bool_t counter_clock_wise);
 
-#define PROGRESS_CIRCLE_PROP_UNIT "unit"
 #define PROGRESS_CIRCLE_PROP_LINE_CAP "line_cap"
 #define PROGRESS_CIRCLE_PROP_LINE_WIDTH "line_width"
 #define PROGRESS_CIRCLE_PROP_START_ANGLE "start_angle"

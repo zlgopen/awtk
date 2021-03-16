@@ -85,6 +85,15 @@ static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
   widget_fill_fg_rect(widget, c, &r, draw_type);
 
   if (progress_bar->show_text) {
+    char s[TK_NUM_MAX_LEN + TK_NUM_MAX_LEN + 1];
+    const char* format = progress_bar->format != NULL ? progress_bar->format : "%d";
+    if (strchr(format, 'd') != NULL || strchr(format, 'x') != NULL || strchr(format, 'X') != NULL) {
+      tk_snprintf(s, sizeof(s), format, tk_roundi(progress_bar->value));
+    } else {
+      tk_snprintf(s, sizeof(s), format, progress_bar->value);
+    }
+
+    wstr_set_utf8(&(widget->text), s);
     return widget_paint_helper(widget, c, NULL, NULL);
   }
 
@@ -152,6 +161,15 @@ ret_t progress_bar_set_reverse(widget_t* widget, bool_t reverse) {
   return widget_invalidate(widget, NULL);
 }
 
+static ret_t progress_bar_on_destroy(widget_t* widget) {
+  progress_bar_t* progress_bar = PROGRESS_BAR(widget);
+  return_value_if_fail(widget != NULL && progress_bar != NULL, RET_BAD_PARAMS);
+
+  TKMEM_FREE(progress_bar->format);
+
+  return RET_OK;
+}
+
 static ret_t progress_bar_get_prop(widget_t* widget, const char* name, value_t* v) {
   progress_bar_t* progress_bar = PROGRESS_BAR(widget);
   return_value_if_fail(progress_bar != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
@@ -161,6 +179,9 @@ static ret_t progress_bar_get_prop(widget_t* widget, const char* name, value_t* 
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_MAX)) {
     value_set_float(v, progress_bar->max);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_FORMAT)) {
+    value_set_str(v, progress_bar->format);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_VERTICAL)) {
     value_set_bool(v, progress_bar->vertical);
@@ -183,6 +204,8 @@ static ret_t progress_bar_set_prop(widget_t* widget, const char* name, const val
     return progress_bar_set_value(widget, value_float(v));
   } else if (tk_str_eq(name, WIDGET_PROP_MAX)) {
     return progress_bar_set_max(widget, value_float(v));
+  } else if (tk_str_eq(name, WIDGET_PROP_FORMAT)) {
+    return progress_bar_set_format(widget, value_str(v));
   } else if (tk_str_eq(name, WIDGET_PROP_VERTICAL)) {
     return progress_bar_set_vertical(widget, value_bool(v));
   } else if (tk_str_eq(name, WIDGET_PROP_SHOW_TEXT)) {
@@ -194,8 +217,9 @@ static ret_t progress_bar_set_prop(widget_t* widget, const char* name, const val
   return RET_NOT_FOUND;
 }
 
-static const char* s_progress_bar_clone_properties[] = {
-    WIDGET_PROP_VALUE, WIDGET_PROP_MAX, WIDGET_PROP_VERTICAL, WIDGET_PROP_SHOW_TEXT, NULL};
+static const char* s_progress_bar_clone_properties[] = {WIDGET_PROP_VALUE,     WIDGET_PROP_MAX,
+                                                        WIDGET_PROP_FORMAT,    WIDGET_PROP_VERTICAL,
+                                                        WIDGET_PROP_SHOW_TEXT, NULL};
 TK_DECL_VTABLE(progress_bar) = {.size = sizeof(progress_bar_t),
                                 .type = WIDGET_TYPE_PROGRESS_BAR,
                                 .clone_properties = s_progress_bar_clone_properties,
@@ -203,6 +227,7 @@ TK_DECL_VTABLE(progress_bar) = {.size = sizeof(progress_bar_t),
                                 .create = progress_bar_create,
                                 .on_paint_self = progress_bar_on_paint_self,
                                 .on_paint_background = widget_on_paint_null,
+                                .on_destroy = progress_bar_on_destroy,
                                 .get_prop = progress_bar_get_prop,
                                 .set_prop = progress_bar_set_prop};
 
@@ -237,4 +262,13 @@ ret_t progress_bar_set_max(widget_t* widget, float_t max) {
   }
 
   return RET_OK;
+}
+
+ret_t progress_bar_set_format(widget_t* widget, const char* format) {
+  progress_bar_t* progress_bar = PROGRESS_BAR(widget);
+  return_value_if_fail(progress_bar != NULL && format != NULL, RET_BAD_PARAMS);
+
+  progress_bar->format = tk_str_copy(progress_bar->format, format);
+
+  return widget_invalidate(widget, NULL);
 }

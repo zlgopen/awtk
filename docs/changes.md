@@ -3,6 +3,7 @@
 2020/03/17
  * 完善 linux-fb 的 egl 适配（感谢智明提供补丁）
  * 增加文档 [在 windows 下使用 gcc 编译 AWTK](mingw.md)
+ * 为 progress\_bar 控件和 progress\_circle 控件添加 format 属性，方便用户可以自行格式化显示文本（感谢雨欣提供补丁）
 
 2020/03/16
  * hal 网络接口增加 windows 实现（感谢忠吉提供）

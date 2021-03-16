@@ -41,9 +41,9 @@ TEST(ProgressCircle, basic) {
   ASSERT_EQ(widget_get_prop(s, PROGRESS_CIRCLE_PROP_COUNTER_CLOCK_WISE, &v2), RET_OK);
   ASSERT_EQ(value_bool(&v1), value_bool(&v2));
 
-  value_set_str(&v1, "C");
-  ASSERT_EQ(widget_set_prop(s, PROGRESS_CIRCLE_PROP_UNIT, &v1), RET_OK);
-  ASSERT_EQ(widget_get_prop(s, PROGRESS_CIRCLE_PROP_UNIT, &v2), RET_OK);
+  value_set_str(&v1, "%02.2f");
+  ASSERT_EQ(widget_set_prop(s, WIDGET_PROP_FORMAT, &v1), RET_OK);
+  ASSERT_EQ(widget_get_prop(s, WIDGET_PROP_FORMAT, &v2), RET_OK);
   ASSERT_EQ(string(value_str(&v1)), string(value_str(&v2)));
 
   widget_destroy(s);

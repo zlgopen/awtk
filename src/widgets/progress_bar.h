@@ -82,6 +82,14 @@ typedef struct _progress_bar_t {
    * 最大值(缺省为100)。
    */
   float_t max;
+
+  /**
+   * @property {char*} format
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 数值到字符串转换时的格式，缺省为"%d"。
+   */
+  char* format;
+
   /**
    * @property {bool_t} vertical
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
@@ -158,6 +166,17 @@ ret_t progress_bar_set_value(widget_t* widget, float_t value);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t progress_bar_set_max(widget_t* widget, float_t max);
+
+/**
+ * @method progress_bar_set_format
+ * 设置格式。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget progress_bar对象。
+ * @param {const char*} format 格式。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t progress_bar_set_format(widget_t* widget, const char* format);
 
 /**
  * @method progress_bar_set_vertical

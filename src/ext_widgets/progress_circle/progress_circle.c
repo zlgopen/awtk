@@ -116,8 +116,12 @@ static ret_t progress_circle_on_paint_self(widget_t* widget, canvas_t* c) {
   color = style_get_color(style, STYLE_ID_TEXT_COLOR, trans);
   if (progress_circle->show_text && color.rgba.a) {
     char s[TK_NUM_MAX_LEN + TK_NUM_MAX_LEN + 1];
-    const char* unit = progress_circle->unit != NULL ? progress_circle->unit : "";
-    tk_snprintf(s, sizeof(s), "%u%s", (uint32_t)(progress_circle->value), unit);
+    const char* format = progress_circle->format != NULL ? progress_circle->format : "%d";
+    if (strchr(format, 'd') != NULL || strchr(format, 'x') != NULL || strchr(format, 'X') != NULL) {
+      tk_snprintf(s, sizeof(s), format, tk_roundi(progress_circle->value));
+    } else {
+      tk_snprintf(s, sizeof(s), format, progress_circle->value);
+    }
 
     wstr_set_utf8(&(widget->text), s);
     widget_paint_helper(widget, c, NULL, NULL);
@@ -174,15 +178,6 @@ ret_t progress_circle_set_start_angle(widget_t* widget, int32_t start_angle) {
   return widget_invalidate(widget, NULL);
 }
 
-ret_t progress_circle_set_unit(widget_t* widget, const char* unit) {
-  progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
-  return_value_if_fail(progress_circle != NULL, RET_BAD_PARAMS);
-
-  progress_circle->unit = tk_str_copy(progress_circle->unit, unit);
-
-  return widget_invalidate(widget, NULL);
-}
-
 ret_t progress_circle_set_line_cap(widget_t* widget, const char* line_cap) {
   progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
   return_value_if_fail(progress_circle != NULL, RET_BAD_PARAMS);
@@ -214,7 +209,7 @@ static ret_t progress_circle_on_destroy(widget_t* widget) {
   progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
   return_value_if_fail(widget != NULL && progress_circle != NULL, RET_BAD_PARAMS);
 
-  TKMEM_FREE(progress_circle->unit);
+  TKMEM_FREE(progress_circle->format);
   TKMEM_FREE(progress_circle->line_cap);
 
   return RET_OK;
@@ -230,11 +225,11 @@ static ret_t progress_circle_get_prop(widget_t* widget, const char* name, value_
   } else if (tk_str_eq(name, WIDGET_PROP_MAX)) {
     value_set_uint32(v, progress_circle->max);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_FORMAT)) {
+    value_set_str(v, progress_circle->format);
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_SHOW_TEXT)) {
     value_set_bool(v, progress_circle->show_text);
-    return RET_OK;
-  } else if (tk_str_eq(name, PROGRESS_CIRCLE_PROP_UNIT)) {
-    value_set_str(v, progress_circle->unit);
     return RET_OK;
   } else if (tk_str_eq(name, PROGRESS_CIRCLE_PROP_LINE_CAP)) {
     value_set_str(v, progress_circle->line_cap);
@@ -260,6 +255,8 @@ static ret_t progress_circle_set_prop(widget_t* widget, const char* name, const 
     return progress_circle_set_value(widget, value_float(v));
   } else if (tk_str_eq(name, WIDGET_PROP_MAX)) {
     return progress_circle_set_max(widget, value_int(v));
+  } else if (tk_str_eq(name, WIDGET_PROP_FORMAT)) {
+    return progress_circle_set_format(widget, value_str(v));
   } else if (tk_str_eq(name, WIDGET_PROP_SHOW_TEXT)) {
     return progress_circle_set_show_text(widget, value_bool(v));
   } else if (tk_str_eq(name, PROGRESS_CIRCLE_PROP_COUNTER_CLOCK_WISE)) {
@@ -268,8 +265,6 @@ static ret_t progress_circle_set_prop(widget_t* widget, const char* name, const 
     return progress_circle_set_line_width(widget, value_int(v));
   } else if (tk_str_eq(name, PROGRESS_CIRCLE_PROP_START_ANGLE)) {
     return progress_circle_set_start_angle(widget, value_int(v));
-  } else if (tk_str_eq(name, PROGRESS_CIRCLE_PROP_UNIT)) {
-    return progress_circle_set_unit(widget, value_str(v));
   } else if (tk_str_eq(name, PROGRESS_CIRCLE_PROP_LINE_CAP)) {
     return progress_circle_set_line_cap(widget, value_str(v));
   }
@@ -279,10 +274,10 @@ static ret_t progress_circle_set_prop(widget_t* widget, const char* name, const 
 
 static const char* s_progress_circle_clone_properties[] = {WIDGET_PROP_VALUE,
                                                            WIDGET_PROP_MAX,
+                                                           WIDGET_PROP_FORMAT,
                                                            PROGRESS_CIRCLE_PROP_COUNTER_CLOCK_WISE,
                                                            PROGRESS_CIRCLE_PROP_LINE_WIDTH,
                                                            PROGRESS_CIRCLE_PROP_START_ANGLE,
-                                                           PROGRESS_CIRCLE_PROP_UNIT,
                                                            WIDGET_PROP_SHOW_TEXT,
                                                            NULL};
 TK_DECL_VTABLE(progress_circle) = {.size = sizeof(progress_circle_t),
@@ -315,4 +310,13 @@ widget_t* progress_circle_cast(widget_t* widget) {
   return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, progress_circle), NULL);
 
   return widget;
+}
+
+ret_t progress_circle_set_format(widget_t* widget, const char* format) {
+  progress_circle_t* progress_circle = PROGRESS_CIRCLE(widget);
+  return_value_if_fail(progress_circle != NULL && format != NULL, RET_BAD_PARAMS);
+
+  progress_circle->format = tk_str_copy(progress_circle->format, format);
+
+  return widget_invalidate(widget, NULL);
 }
