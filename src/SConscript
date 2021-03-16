@@ -116,6 +116,7 @@ if OS_NAME == 'Windows':
     TKC_DEPS_LIBS= TKC_STATIC_LIBS + ['SDL2', 'user32','winmm.lib','advapi32.lib','shell32.lib', 'ole32.lib']
     TKC_LINKFLAGS += ' /DEF:"dllexports/tkc.def" '
   elif TOOLS_NAME == 'mingw':
+    TKC_DEPS_LIBS= TKC_STATIC_LIBS + ['SDL2', 'user32','winmm','advapi32','shell32', 'ole32', 'ws2_32','Gdi32','Imm32', 'Version', 'OleAut32', 'UUID']
     TKC_LINKFLAGS += TKC_LINK_ALL
 elif OS_NAME == 'Darwin':
   TKC_DEPS_LIBS= TKC_STATIC_LIBS

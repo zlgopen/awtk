@@ -1,56 +1,57 @@
 # 最新动态
 
 2020/03/17
- * 完善linux-fb的egl适配（感谢智明提供补丁）
+ * 完善 linux-fb 的 egl 适配（感谢智明提供补丁）
+ * 增加文档 [在 windows 下使用 gcc 编译 AWTK](mingw.md)
 
 2020/03/16
- * hal 网络接口增加windows实现(感谢忠吉提供)
+ * hal 网络接口增加 windows 实现（感谢忠吉提供）
 
 2020/03/14
  * 增加 [HTML View](https://github.com/zlgopen/awtk-widget-html-view)
 
 2020/03/13
- * 修复 label\_get\_text\_line\_max\_w 接口在tr\_text属性为空调用失败的问题(感谢雨欣提供补丁)
+ * 修复 label\_get\_text\_line\_max\_w 接口在 tr\_text 属性为空调用失败的问题（感谢雨欣提供补丁）
 
 2020/03/10
- * 增加输入类型INPUT\_ASCII，用于输入纯英文字符。
- * 修复font\_manager\_unload\_font在OpenGL模式下不能卸载字体的问题。
- * 修复dialog\_info等内置对话框显示翻译文本时label大小异常的问题(感谢雨欣提供补丁)
+ * 增加输入类型 INPUT\_ASCII，用于输入纯英文字符。
+ * 修复 font\_manager\_unload\_font 在 OpenGL 模式下不能卸载字体的问题。
+ * 修复 dialog\_info 等内置对话框显示翻译文本时 label 大小异常的问题（感谢雨欣提供补丁）
 
 2020/03/07
- * 用WITH\_SDL代替SDL2，没有必要同时使用两个宏。
- * 完善window\_manager\_back\_to\_home\_async，处理遇到模态对话框时触发assert的问题。
- * 修复window\_manager\_default vtable初始化顺序。
+ * 用 WITH\_SDL 代替 SDL2，没有必要同时使用两个宏。
+ * 完善 window\_manager\_back\_to\_home\_async，处理遇到模态对话框时触发 assert 的问题。
+ * 修复 window\_manager\_default vtable 初始化顺序。
 
 2020/03/06
- * 完善build.json，支持多主题。
- * 完善编译脚本，支持rpath。
+ * 完善 build.json，支持多主题。
+ * 完善编译脚本，支持 rpath。
 
 2020/03/04
  * 修复在 mac 上面的 OpenGL 模式下 lcd 旋转窗口动画的问题 （感谢智明提供补丁）
- * 修改list\_view设置scroll\_bar\_mobile的虚拟高最低为widget高度（感谢智明提供补丁） 
- * 增加右键和中键的触发事件（在 demoui 中加入了点击中键会打印信息出来测试，右键的话还会触发 EVT\_CONTEXT\_MENU 事件，中键会触发 EVT\_KEY\_UP/DOWN 事件) （感谢智明提供补丁）
- * 修改stb\_truetype缓冲机制避免由于内存不足导致程序崩溃的现象并添加相关文档(感谢雨欣提供补丁)
- * 修复demoui在VS中编译报错的问题(感谢雨欣提供补丁)
+ * 修改 list\_view 设置 scroll\_bar\_mobile 的虚拟高最低为 widget 高度（感谢智明提供补丁） 
+ * 增加右键和中键的触发事件（在 demoui 中加入了点击中键会打印信息出来测试，右键的话还会触发 EVT\_CONTEXT\_MENU 事件，中键会触发 EVT\_KEY\_UP/DOWN 事件） （感谢智明提供补丁）
+ * 修改 stb\_truetype 缓冲机制避免由于内存不足导致程序崩溃的现象并添加相关文档（感谢雨欣提供补丁）
+ * 修复 demoui 在 VS 中编译报错的问题（感谢雨欣提供补丁）
 
 2020/03/03
- * 修复slide indicator没有更新的问题（感谢智明提供补丁）
+ * 修复 slide indicator 没有更新的问题（感谢智明提供补丁）
 
 2020/03/02
- * 删除将QT XML生成AWTK UI的转换工具（感谢陈谭提供补丁）。
- * 修复widget\_clone处理tr\_text的BUG(感谢网友Eagle提供补丁)。
- * 增加函数fs\_copy\_file、fs\_copy\_dir和dir\_exist。
+ * 删除将 QT XML 生成 AWTK UI 的转换工具（感谢陈谭提供补丁）。
+ * 修复 widget\_clone 处理 tr\_text 的 BUG（感谢网友 Eagle 提供补丁）。
+ * 增加函数 fs\_copy\_file、fs\_copy\_dir 和 dir\_exist。
 
 2020/03/01
- * 修复slide\_view通过indicator快速切换page的时候导致有概 率出现播放动画异常（感谢智明提供补丁）
- * 修复text\_selector在播放动画的时候调用text\_selector\_reset\_options会导致崩溃的问题（感谢智明提供补丁）
+ * 修复 slide\_view 通过 indicator 快速切换 page 的时候导致有概 率出现播放动画异常（感谢智明提供补丁）
+ * 修复 text\_selector 在播放动画的时候调用 text\_selector\_reset\_options 会导致崩溃的问题（感谢智明提供补丁）
 
 2020/02/27
- * 修复缺省输入法改用CLOSE事件造成崩溃的问题（感谢智明提供补丁）
+ * 修复缺省输入法改用 CLOSE 事件造成崩溃的问题（感谢智明提供补丁）
 
 2020/02/26
- * 修复 SD L内存泄露的问题（感谢智明提供补丁）
- * 修复csv\_row\_to\_str（感谢林福提供补丁)
+ * 修复 SD L 内存泄露的问题（感谢智明提供补丁）
+ * 修复 csv\_row\_to\_str（感谢林福提供补丁）
  * 修改退出 gpinyin 的时候释放缓存句柄，以免出现内存泄露的问题（感谢智明提供补丁）
  * 修复找不到字库导致使用非默认的字库显示的问题，统一修了查找字库的逻辑为先找指定的字库，如果找不到就找默认的字库，如果都找不到就返回 NULL，字体就不显示了。（感谢智明提供补丁）
 

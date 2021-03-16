@@ -47,6 +47,7 @@
 * [编写跨平台的代码](cross_platform_programming.md)
 * [应用程序的类型](app_type.md)
 * [如何引用第三方库](how_to_use_3rd_libs.md)
+* [在 windows 下使用 gcc 编译 AWTK](mingw.md)
 
 ### 2.HowTos
 * [AWTK 调试技巧](debug_tips.md)
