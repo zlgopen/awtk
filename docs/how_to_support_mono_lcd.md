@@ -54,3 +54,11 @@ python scripts/update_res.py all x1 mono
 ./bin/preview_ui design/default/ui/mono_test.xml 
 ```
 
+## 参考：
+
+* [免费像素字体](https://www.uisdc.com/25-pixel-fonts)
+
+* [Unifont点阵黑：一款超大字符集免费商用像素字体](https://www.maoken.com/freefonts/3747.html)
+
+
+
