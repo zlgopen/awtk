@@ -40,6 +40,7 @@ typedef struct _native_window_fb_gl_t {
   float_t ratio;
   native_window_swap_buffer_t swap_buffer;
   native_window_gl_make_current_t make_current;
+  native_window_destroy_t destroy;
   canvas_t canvas;
 } native_window_fb_gl_t;
 
@@ -60,6 +61,14 @@ ret_t native_window_fb_gl_set_make_current_func(native_window_t* win,
   native_window_fb_gl_t* fb_gl = NATIVE_WINDOW_FB_GL(win);
   return_value_if_fail(fb_gl != NULL && make_current != NULL, RET_BAD_PARAMS);
   fb_gl->make_current = make_current;
+  return RET_OK;
+}
+
+ret_t native_window_fb_gl_set_destroy_func(native_window_t* win,
+                                                native_window_destroy_t destroy) {
+  native_window_fb_gl_t* fb_gl = NATIVE_WINDOW_FB_GL(win);
+  return_value_if_fail(fb_gl != NULL && destroy != NULL, RET_BAD_PARAMS);
+  fb_gl->destroy = destroy;
   return RET_OK;
 }
 
@@ -127,11 +136,15 @@ static ret_t native_window_fb_gl_get_prop(object_t* obj, const char* name, value
 }
 
 static ret_t native_window_fb_gl_on_destroy(object_t* obj) {
-  native_window_fb_gl_t* raw = NATIVE_WINDOW_FB_GL(obj);
-  lcd_t* lcd = raw->canvas.lcd;
+  native_window_fb_gl_t* fb_gl = NATIVE_WINDOW_FB_GL(obj);
+  lcd_t* lcd = fb_gl->canvas.lcd;
 
-  canvas_reset(&(raw->canvas));
+  canvas_reset(&(fb_gl->canvas));
   lcd_destroy(lcd);
+
+  if (fb_gl->destroy != NULL) {
+    return fb_gl->destroy(NATIVE_WINDOW(fb_gl));
+  }
 
   return RET_OK;
 }

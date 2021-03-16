@@ -27,6 +27,8 @@
 
 BEGIN_C_DECLS
 
+typedef ret_t (*native_window_destroy_t)(native_window_t* win);
+
 ret_t native_window_fb_gl_deinit(void);
 native_window_t* native_window_fb_gl_init(uint32_t w, uint32_t h, float_t ratio);
 
@@ -35,6 +37,9 @@ ret_t native_window_fb_gl_set_swap_buffer_func(native_window_t* win,
 
 ret_t native_window_fb_gl_set_make_current_func(native_window_t* win,
                                                 native_window_gl_make_current_t make_current);
+
+ret_t native_window_fb_gl_set_destroy_func(native_window_t* win,
+                                                native_window_destroy_t destroy);
 
 END_C_DECLS
 
