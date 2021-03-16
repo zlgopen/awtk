@@ -274,7 +274,7 @@ network_interface_t* network_interface_create(const char* interface,
   network_interface_linux_t* linux_network_interface = TKMEM_ZALLOC(network_interface_linux_t);
   return_value_if_fail(linux_network_interface != NULL, NULL);
 
-  linux_network_interface->network_interface.interface = tk_strdup(interface);
+  linux_network_interface->network_interface.interface_name = tk_strdup(interface);
   linux_network_interface->network_interface.type = type;
   linux_network_interface->ipaddr = NULL;
   linux_network_interface->macaddr = NULL;
