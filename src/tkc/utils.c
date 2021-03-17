@@ -220,6 +220,16 @@ double tk_atof(const char* str) {
   return atof(str);
 }
 
+int32_t tk_strtoi(const char* str, const char** end, int base) {
+  long ret = tk_strtol(str, end, base);
+  if (ret > INT32_MAX) {
+    ret = INT32_MAX;
+  } else if (ret < INT32_MIN) {
+    ret = INT32_MIN;
+  }
+  return (int32_t)ret;
+}
+
 long tk_strtol(const char* str, const char** end, int base) {
   return_value_if_fail(str != NULL, 0);
 
@@ -246,14 +256,14 @@ const char* tk_itoa(char* str, int len, int n) {
 #define IS_HEX_NUM(s) (s[0] == '0' && (s[1] == 'x' || s[1] == 'X'))
 #define IS_BIN_NUM(s) (s[0] == '0' && (s[1] == 'b' || s[1] == 'B'))
 
-int tk_atoi(const char* str) {
+int32_t tk_atoi(const char* str) {
   return_value_if_fail(str != NULL, 0);
   if (IS_HEX_NUM(str)) {
-    return tk_strtol(str + 2, NULL, 16);
+    return tk_strtoi(str + 2, NULL, 16);
   } else if (IS_BIN_NUM(str)) {
-    return tk_strtol(str + 2, NULL, 2);
+    return tk_strtoi(str + 2, NULL, 2);
   } else {
-    return tk_strtol(str, NULL, 10);
+    return tk_strtoi(str, NULL, 10);
   }
 }
 

@@ -42,9 +42,9 @@ BEGIN_C_DECLS
  *
  * @param {const char*} str 要转换为整型数的字符串。
  *
- * @return {int} 返回转换后的整型。
+ * @return {int32_t} 返回转换后的整型。
  */
-int tk_atoi(const char* str);
+int32_t tk_atoi(const char* str);
 
 /**
  * @method tk_atol
@@ -195,6 +195,19 @@ const char* tk_itoa(char* str, int len, int n);
  * @return {const char*} 返回字符串。
  */
 const char* tk_ftoa(char* str, int len, double f);
+
+/**
+ * @method tk_strtoi
+ *
+ * 将字符串转换为整型。
+ *
+ * @param {const char*} str 要转换为整型的字符串。
+ * @param {const char**} end 对类型char*的对象的引用。
+ * @param {int} base 基数。
+ *
+ * @return {int32_t} 返回转换后的整型。
+ */
+int32_t tk_strtoi(const char* str, const char** end, int base);
 
 /**
  * @method tk_strtol
