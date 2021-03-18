@@ -203,7 +203,7 @@ static const style_vtable_t style_const_vt = {
     .set_style_data = style_const_set_style_data,
     .destroy = style_const_destroy};
 
-style_t* style_const_create() {
+style_t* style_const_create(void) {
   style_const_t* style = TKMEM_ZALLOC(style_const_t);
   return_value_if_fail(style != NULL, NULL);
 

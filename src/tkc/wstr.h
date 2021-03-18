@@ -299,8 +299,6 @@ uint32_t wstr_count_char(wstr_t* str, wchar_t c);
  */
 ret_t wstr_reset(wstr_t* str);
 
-wchar_t* wcsdup(const wchar_t* s);
-
 /**
  * @method wcs_chr
  * 查找字符位置
@@ -353,6 +351,10 @@ size_t wcs_len(const wchar_t* s);
  * @return {wchar_t*} 返回新的字符串地址。
  */
 wchar_t* wcs_dup(const wchar_t* s);
+
+#ifdef WITH_WCSXXX
+wchar_t* wcsdup(const wchar_t* s);
+#endif/*WITH_WCSXXX*/
 
 END_C_DECLS
 

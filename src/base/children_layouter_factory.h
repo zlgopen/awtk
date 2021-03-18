@@ -95,8 +95,6 @@ children_layouter_t* children_layouter_factory_create_layouter(children_layouter
  */
 ret_t children_layouter_factory_destroy(children_layouter_factory_t* factory);
 
-children_layouter_t* children_layouter_create(const char* params);
-
 END_C_DECLS
 
 #endif /*TK_CHILDREN_LAYOUTER_FACTORY_H*/

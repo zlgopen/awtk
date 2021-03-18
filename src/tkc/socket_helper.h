@@ -40,7 +40,7 @@ BEGIN_C_DECLS
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t socket_init();
+ret_t socket_init(void);
 
 /**
  * @method socket_deinit
@@ -49,7 +49,7 @@ ret_t socket_init();
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t socket_deinit();
+ret_t socket_deinit(void);
 
 /**
  * @method socket_close
