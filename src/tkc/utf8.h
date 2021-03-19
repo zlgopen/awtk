@@ -86,6 +86,20 @@ char* tk_utf8_from_utf16_ex(const wchar_t* in, uint32_t in_size, char* out, uint
  */
 wchar_t* tk_utf8_to_utf16(const char* str, wchar_t* out, uint32_t size);
 
+/**
+ * @method tk_utf8_to_utf16_ex
+ *
+ * 将char类型转换为wchar_t类型。
+ *
+ * @param {const char*} str str。
+ * @param {uint32_t} size 缓冲区大小。
+ * @param {const wchar_t*} out 返回结果缓冲区。
+ * @param {uint32_t} out_size 缓冲区大小。
+ *
+ * @return {wchar_t*} 值。
+ */
+wchar_t* tk_utf8_to_utf16_ex(const char* str, uint32_t size, wchar_t* out, uint32_t out_size);
+
 END_C_DECLS
 
 #endif /*TK_UTF8_H*/

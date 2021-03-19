@@ -107,6 +107,17 @@ ret_t wstr_clear(wstr_t* str);
 ret_t wstr_set_utf8(wstr_t* str, const char* text);
 
 /**
+ * @method wstr_set_utf8_with_len
+ * 设置UTF8字符串。
+ * @param {wstr_t*} str str对象。
+ * @param {char*} text 要设置的字符串。
+ * @param {uint32_t} len 长度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t wstr_set_utf8_with_len(wstr_t* str, const char* text, uint32_t len);
+
+/**
  * @method wstr_get_utf8
  * 获取UTF8字符串。
  * @param {wstr_t*} str str对象。

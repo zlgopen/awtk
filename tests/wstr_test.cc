@@ -353,3 +353,31 @@ TEST(WStr, count) {
   ASSERT_EQ(wstr_count_char(&str, '1'), 2);
   wstr_reset(&str);
 }
+
+TEST(WStr, set_utf8_with_len) {
+  wstr_t str;
+
+  wstr_init(&str, 0);
+  ASSERT_EQ(wstr_set_utf8_with_len(&str, "123123", 0), RET_OK);
+  ASSERT_EQ(str.size, 0);
+  ASSERT_EQ(wcscmp(str.str, L""), 0);
+  
+  ASSERT_EQ(wstr_set_utf8_with_len(&str, "123123", 1), RET_OK);
+  ASSERT_EQ(str.size, 1);
+  ASSERT_EQ(wcscmp(str.str, L"1"), 0);
+  
+  ASSERT_EQ(wstr_set_utf8_with_len(&str, "123123", 3), RET_OK);
+  ASSERT_EQ(str.size, 3);
+  ASSERT_EQ(wcscmp(str.str, L"123"), 0);
+  
+  ASSERT_EQ(wstr_set_utf8_with_len(&str, "123123", 6), RET_OK);
+  ASSERT_EQ(str.size, 6);
+  ASSERT_EQ(wcscmp(str.str, L"123123"), 0);
+  
+  ASSERT_EQ(wstr_set_utf8_with_len(&str, "123123", 6), RET_OK);
+  ASSERT_EQ(str.size, 6);
+  ASSERT_EQ(wcscmp(str.str, L"123123"), 0);
+
+  wstr_reset(&str);
+}
+
