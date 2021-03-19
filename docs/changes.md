@@ -1,5 +1,9 @@
 # 最新动态
 
+2020/03/19
+ * 修复list view layout内存泄漏（感谢兆坤提供补丁）
+ * 增加 tk\_utf8\_from\_utf16\_ex 和 wstr\_set\_utf8\_with\_len。
+
 2020/03/18
  * 修复在linux64位平台下，因为long和int长度不同 而导致字符串转整形错误的问题（感谢兆坤提供补丁）
 

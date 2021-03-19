@@ -485,6 +485,7 @@ static ret_t children_layouter_list_view_for_list_view_h_layout(children_layoute
       widget_layout(iter);
     }
     scroll_view_set_virtual_w(list_view_h->scroll_view, virtual_w);
+    darray_deinit(&children_for_layout);
   }
 
   return RET_OK;
