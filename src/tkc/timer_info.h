@@ -64,6 +64,14 @@ struct _timer_info_t {
    *
    */
   void* ctx;
+  
+  /**
+   * @property {void*} extra_ctx
+   * @annotation ["readable", "scriptable"]
+   * 定时器回调函数的上下文
+   *
+   */
+  void* extra_ctx;
 
   /**
    * @property {uint32_t} id
