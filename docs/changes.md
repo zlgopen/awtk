@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/03/24
+ * 修复file\_browser\_view控件返回上级目录时将文件夹显示为文件的问题（感谢雨欣提供补丁）
+
 2021/03/19
  * 修复list view layout内存泄漏（感谢兆坤提供补丁）
  * 增加 tk\_utf8\_from\_utf16\_ex 和 wstr\_set\_utf8\_with\_len。

@@ -292,7 +292,7 @@ static widget_t* file_browser_view_create_folder_item(widget_t* widget) {
   file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
   return_value_if_fail(file_browser_view != NULL, NULL);
   container = file_browser_view->container;
-  cache = &(file_browser_view->file_items_cache);
+  cache = &(file_browser_view->folder_items_cache);
 
   if (cache->size > 0) {
     item = WIDGET(darray_pop(cache));
