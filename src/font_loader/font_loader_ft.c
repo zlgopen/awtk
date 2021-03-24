@@ -69,7 +69,7 @@ static ret_t font_ft_get_glyph(font_t* f, wchar_t c, font_size_t font_size, glyp
   ft_fontinfo* sf = &(font->ft_font);
   FT_Glyph glyph;
   FT_GlyphSlot glyf;
-  uint32_t flags = FT_LOAD_DEFAULT | FT_LOAD_RENDER;
+  uint32_t flags = FT_LOAD_DEFAULT | FT_LOAD_RENDER | FT_LOAD_NO_AUTOHINT | FT_OUTLINE_HIGH_PRECISION;
 
   g->data = NULL;
   if (glyph_cache_lookup(&(font->cache), c, font_size, g) == RET_OK) {
@@ -162,7 +162,8 @@ static ret_t destroy_glyph(void* data) {
   return glyph_ft_destory((glyph_ft_t*)(data));
 }
 
-font_t* font_ft_create_ex(const char* name, const uint8_t* buff, uint32_t size, bool_t mono) {
+static font_t* font_ft_create_ex(const char* name, const uint8_t* buff, uint32_t size,
+                                 bool_t mono) {
   font_ft_t* f = NULL;
   return_value_if_fail(buff != NULL && name != NULL, NULL);
 
@@ -233,7 +234,7 @@ static font_t* font_ft_load_mono(font_loader_t* loader, const char* name, const 
   return font_ft_create_ex(name, buff, buff_size, TRUE);
 }
 
-font_loader_t* font_loader_mono_ft(void) {
+font_loader_t* font_loader_ft_mono(void) {
   static font_loader_t loader;
   loader.type = ASSET_TYPE_FONT_TTF;
   loader.load = font_ft_load_mono;

@@ -60,6 +60,29 @@ font_loader_t* font_loader_stb(void);
  */
 font_t* font_stb_create(const char* name, const uint8_t* buff, uint32_t size);
 
+/**
+ * @method font_loader_stb_mono
+ * @annotation ["constructor"]
+ *
+ * 获取stb mono字体加载器对象。
+ *
+ * @return {font_loader_t*} 返回字体加载器对象。
+ */
+font_loader_t* font_loader_stb_mono(void);
+
+/**
+ * @method font_stb_mono_create
+ * @annotation ["static"]
+ *
+ * 创建stb mono字体对象。
+ * @param {const char*} name 字体名称。
+ * @param {const uint8_t* buff} 字体数据。
+ * @param {uint32_t} size 字体数据长度。
+ *
+ * @return {font_t*} 返回字体对象。
+ */
+font_t* font_stb_mono_create(const char* name, const uint8_t* buff, uint32_t size);
+
 END_C_DECLS
 
 #endif /*TK_FONT_LOADER_STB_H*/
