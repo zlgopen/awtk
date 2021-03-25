@@ -22,3 +22,6 @@ env.Program(os.path.join(BIN_DIR, 'serial_send'), ['tools/serial_send.c'], LIBS=
 env.Program(os.path.join(BIN_DIR, 'serial_at'), ['tools/serial_at.c'], LIBS=LIBS);
 env.Program(os.path.join(BIN_DIR, 'shdlc_send'), ['tools/shdlc_send.c'], LIBS=LIBS);
 env.Program(os.path.join(BIN_DIR, 'shdlc_recv'), ['tools/shdlc_recv.c'], LIBS=LIBS);
+
+env.Program(os.path.join(BIN_DIR, 'https_client'), ['tools/https_client.c'], LIBS=LIBS);
+env.Program(os.path.join(BIN_DIR, 'https_server'), ['tools/https_server.c'], LIBS=LIBS);

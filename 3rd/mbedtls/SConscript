@@ -1,0 +1,15 @@
+import os
+import platform
+
+env=DefaultEnvironment().Clone()
+LIB_DIR=os.environ['LIB_DIR'];
+
+SOURCES = Glob('library/*.c') + [
+  "3rdparty/everest/library/everest.c",
+  "3rdparty/everest/library/x25519.c",
+  "3rdparty/everest/library/Hacl_Curve25519_joined.c"
+]
+
+env.Library(os.path.join(LIB_DIR, 'mbedtls'), Glob('library/*.c'))
+
+

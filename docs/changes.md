@@ -1,6 +1,8 @@
 # 最新动态
 
+
 2021/03/25
+ * 合并mbedtls分支，增加基于mbedtls的io stream
  * 增加文档[优化 freetype 解析矢量字体的显示效果](optimation_freetype_gray_font.md) （感谢雨欣提供）
  * 增加文档[优化 stb\_truetype 在 mono 模式下的字体显示效果](optimation_stb_truetype_mono_font.md) （感谢雨欣提供）
 
