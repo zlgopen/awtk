@@ -91,6 +91,8 @@
 ### 3. 内部原理
 * [AWTK 脚本绑定原理](script_binding.md)
 * [AWTK 内存分配器](mem_alloactor.md)
+* [优化 freetype 解析矢量字体的显示效果](optimation_freetype_gray_font.md)
+* [优化 stb\_truetype 在 mono 模式下的字体显示效果](optimation_stb_truetype_mono_font.md)
 
 ### 4. 移植文档
 * [嵌入式平台移植注意事项](porting_common.md)

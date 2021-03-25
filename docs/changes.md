@@ -1,5 +1,9 @@
 # 最新动态
 
+2021/03/25
+ * 增加文档[优化 freetype 解析矢量字体的显示效果](optimation_freetype_gray_font.md) （感谢雨欣提供）
+ * 增加文档[优化 stb\_truetype 在 mono 模式下的字体显示效果](optimation_stb_truetype_mono_font.md) （感谢雨欣提供）
+
 2021/03/24
  * 修复file\_browser\_view控件返回上级目录时将文件夹显示为文件的问题（感谢雨欣提供补丁）
  * 优化freetype获取灰度图字模型的效果，添加stb二值化字模的功能并在mono模式下默认使用stb（感谢雨欣提供补丁）
