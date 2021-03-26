@@ -1,6 +1,9 @@
 # 最新动态
 
 
+2021/03/26
+ * 完善文档how\_to\_use\_action\_text.md。
+
 2021/03/25
  * 合并mbedtls分支，增加基于mbedtls的io stream
  * 增加文档[优化 freetype 解析矢量字体的显示效果](optimation_freetype_gray_font.md) （感谢雨欣提供）

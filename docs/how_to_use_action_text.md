@@ -24,6 +24,23 @@ action\_text 可以通过 strings.xml 中文本进行翻译，所以用小写英
 * next 将焦点切换到下一个控件。
 * done 完成，关闭软键盘。
 
+```xml
+<string name="return">
+ <language name="en_US">Return</language>
+ <language name="zh_CN">回车</language>
+</string>
+
+<string name="next">
+ <language name="en_US">Next</language>
+ <language name="zh_CN">下一个</language>
+</string>
+
+<string name="done">
+ <language name="en_US">Done</language>
+ <language name="zh_CN">完成</language>
+</string>
+```
+
 ## 3. 事件处理
 
 如果你想自己处理 action 按键按下的事件，可以注册编辑器的 EVT\_IM\_ACTION 事件。
