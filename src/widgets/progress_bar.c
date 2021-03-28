@@ -25,10 +25,10 @@
 #include "base/image_manager.h"
 #include "widgets/progress_bar.h"
 
-static float_t progress_bar_get_progress(widget_t* widget) {
+static double progress_bar_get_progress(widget_t* widget) {
   progress_bar_t* progress_bar = PROGRESS_BAR(widget);
   return_value_if_fail(progress_bar != NULL, 0);
-  float_t range = progress_bar->max > 0 ? progress_bar->max : 100;
+  double range = progress_bar->max > 0 ? progress_bar->max : 100;
 
   range = tk_max(range, progress_bar->value);
 
@@ -36,7 +36,7 @@ static float_t progress_bar_get_progress(widget_t* widget) {
 }
 
 uint32_t progress_bar_get_percent(widget_t* widget) {
-  float_t percent = progress_bar_get_progress(widget) * 100;
+  double percent = progress_bar_get_progress(widget) * 100;
 
   return tk_roundi(percent);
 }
@@ -48,7 +48,7 @@ static ret_t progress_bar_on_paint_self(widget_t* widget, canvas_t* c) {
   uint32_t radius = style_get_int(style, STYLE_ID_ROUND_RADIUS, 0);
   const char* bg_image = style_get_str(style, STYLE_ID_BG_IMAGE, NULL);
   image_draw_type_t draw_type = progress_bar->vertical ? IMAGE_DRAW_PATCH3_Y : IMAGE_DRAW_PATCH3_X;
-  float_t progress = progress_bar_get_progress(widget);
+  double progress = progress_bar_get_progress(widget);
   uint32_t progress_w = widget->w * progress;
   uint32_t progress_h = widget->h * progress;
   bool_t reverse = progress_bar->reverse;
@@ -112,7 +112,7 @@ static ret_t progress_bar_update_text(widget_t* widget) {
   return widget_set_text_utf8(widget, str);
 }
 
-ret_t progress_bar_set_value(widget_t* widget, float_t value) {
+ret_t progress_bar_set_value(widget_t* widget, double value) {
   progress_bar_t* progress_bar = PROGRESS_BAR(widget);
   return_value_if_fail(progress_bar != NULL, RET_BAD_PARAMS);
 
@@ -250,7 +250,7 @@ widget_t* progress_bar_cast(widget_t* widget) {
   return widget;
 }
 
-ret_t progress_bar_set_max(widget_t* widget, float_t max) {
+ret_t progress_bar_set_max(widget_t* widget, double max) {
   progress_bar_t* progress_bar = PROGRESS_BAR(widget);
   return_value_if_fail(progress_bar != NULL, RET_BAD_PARAMS);
 

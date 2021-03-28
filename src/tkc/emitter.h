@@ -119,7 +119,7 @@ ret_t emitter_dispatch(emitter_t* emitter, event_t* e);
  * > 对emitter_dispatch的包装，分发一个简单的事件。
  * @annotation ["scriptable"]
  * @param {emitter_t*} emitter emitter对象。
- * @param {event_type_t} type 事件类型。
+ * @param {uint32_t} type 事件类型。
  * @return {ret_t}
  *  如果当前分发的回调函数返回RET_STOP，dispatch中断分发，并返回RET_STOP，否则返回RET_OK。
  */

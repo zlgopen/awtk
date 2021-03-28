@@ -81,3 +81,9 @@ const char* color_rgba_str(color_t c, char str[TK_COLOR_RGBA_LEN + 1]) {
 
   return str;
 }
+
+uint32_t color_get_color(color_t* c) {
+  return_value_if_fail(c != NULL, 0);
+
+  return c->color;
+}

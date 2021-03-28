@@ -77,25 +77,25 @@ typedef struct _window_base_t {
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 窗口大小与设计时大小不同时，是否自动调整子控件的x坐标。
    */
-  uint16_t auto_scale_children_x : 1;
+  bool_t auto_scale_children_x;
   /**
    * @property {bool_t} auto_scale_children_y
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 窗口大小与设计时大小不同时，是否自动调整子控件的y坐标。
    */
-  uint16_t auto_scale_children_y : 1;
+  bool_t auto_scale_children_y;
   /**
    * @property {bool_t} auto_scale_children_w
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 窗口大小与设计时大小不同时，是否自动调整子控件的宽度。
    */
-  uint16_t auto_scale_children_w : 1;
+  bool_t auto_scale_children_w;
   /**
    * @property {bool_t} auto_scale_children_h
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 窗口大小与设计时大小不同时，是否自动调整子控件的高度。
    */
-  uint16_t auto_scale_children_h : 1;
+  bool_t auto_scale_children_h;
 
   /**
    * @property {bool_t} disable_anim

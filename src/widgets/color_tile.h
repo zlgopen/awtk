@@ -132,6 +132,26 @@ ret_t color_tile_set_border_color(widget_t* widget, const char* color);
  */
 ret_t color_tile_set_value(widget_t* widget, color_t color);
 
+/**
+ * @method color_tile_get_bg_color
+ * 获取背景颜色。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {const char*} 返回背景颜色。
+ */
+const char* color_tile_get_bg_color(widget_t* widget);
+
+/**
+ * @method color_tile_get_border_color
+ * 获取边框颜色。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {const char*} 返回边框颜色。
+ */
+const char* color_tile_get_border_color(widget_t* widget);
+
 #define COLOR_TILE(widget) ((color_tile_t*)(color_tile_cast(WIDGET(widget))))
 
 /*public for subclass and runtime type check*/

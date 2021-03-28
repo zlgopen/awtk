@@ -215,3 +215,17 @@ ret_t color_tile_set_value(widget_t* widget, color_t color) {
 
   return RET_OK;
 }
+
+const char* color_tile_get_bg_color(widget_t* widget) {
+  color_tile_t* color_tile = COLOR_TILE(widget);
+  return_value_if_fail(color_tile != NULL, NULL);
+
+  return color_tile->bg_color;
+}
+
+const char* color_tile_get_border_color(widget_t* widget) {
+  color_tile_t* color_tile = COLOR_TILE(widget);
+  return_value_if_fail(color_tile != NULL, NULL);
+
+  return color_tile->border_color;
+}

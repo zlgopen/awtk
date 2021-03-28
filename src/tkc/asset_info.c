@@ -118,3 +118,15 @@ ret_t asset_info_ref(asset_info_t* info) {
 
   return RET_OK;
 }
+
+uint16_t asset_info_get_type(asset_info_t* info) {
+  return_value_if_fail(info != NULL, ASSET_TYPE_NONE);
+
+  return info->type;
+}
+
+const char* asset_info_get_name(asset_info_t* info) {
+  return_value_if_fail(info != NULL, NULL);
+
+  return info->name;
+}

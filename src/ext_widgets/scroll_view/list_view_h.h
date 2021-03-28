@@ -112,7 +112,7 @@ ret_t list_view_h_set_item_width(widget_t* widget, int32_t item_width);
  * 设置列表项的间距。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {int32_t} spacing 列表项的间距。
+ * @param {bool_t} spacing 列表项的间距。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

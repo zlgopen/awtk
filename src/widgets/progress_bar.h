@@ -71,17 +71,17 @@ BEGIN_C_DECLS
 typedef struct _progress_bar_t {
   widget_t widget;
   /**
-   * @property {float_t} value
+   * @property {double} value
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 进度条的值[0-max]。
    */
-  float_t value;
+  double value;
   /**
-   * @property {float_t} max
+   * @property {double} max
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 最大值(缺省为100)。
    */
-  float_t max;
+  double max;
 
   /**
    * @property {char*} format
@@ -149,11 +149,11 @@ widget_t* progress_bar_cast(widget_t* widget);
  * 设置进度条的进度。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {float_t}  value 进度
+ * @param {double}  value 进度
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t progress_bar_set_value(widget_t* widget, float_t value);
+ret_t progress_bar_set_value(widget_t* widget, double value);
 
 /**
  * @method progress_bar_set_max
@@ -161,11 +161,11 @@ ret_t progress_bar_set_value(widget_t* widget, float_t value);
  *
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {uint32_t}  max 最大值。
+ * @param {double}  max 最大值。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t progress_bar_set_max(widget_t* widget, float_t max);
+ret_t progress_bar_set_max(widget_t* widget, double max);
 
 /**
  * @method progress_bar_set_format

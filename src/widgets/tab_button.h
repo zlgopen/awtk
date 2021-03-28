@@ -161,7 +161,7 @@ widget_t* tab_button_cast(widget_t* widget);
  * 设置为当前标签。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget tab_button对象。
- * @param {uint32_t}  value 是否为当前标签。
+ * @param {bool_t}  value 是否为当前标签。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

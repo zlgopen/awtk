@@ -19,6 +19,7 @@
  *
  */
 
+#include "tkc/mem.h"
 #include "tkc/utf8.h"
 
 /*UTF8-related functions are copied from glib.*/
@@ -264,3 +265,19 @@ wchar_t* tk_utf8_to_utf16_ex(const char* str, uint32_t size, wchar_t* out, uint3
   return out;
 }
 
+char* tk_utf8_dup_utf16(const wchar_t* in, int32_t size) {
+  char* out = NULL;
+  uint32_t out_size = 0;
+  return_value_if_fail(in != NULL, NULL);
+
+  if (size < 0) {
+    size = wcslen(in);
+  }
+
+  out_size = size * 4 + 1;
+  out = TKMEM_ALLOC(out_size);
+  return_value_if_fail(out != NULL, NULL);
+  memset(out, 0x00, out_size);
+
+  return tk_utf8_from_utf16_ex(in, size, out, out_size - 1);
+}

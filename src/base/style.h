@@ -422,7 +422,6 @@ ret_t style_set(style_t* s, const char* state, const char* name, const value_t* 
 /**
  * @method style_set_style_data
  * 把风格对象数据设置到风格对象中
- * @annotation ["scriptable"]
  * @param {style_t*} s style对象。
  * @param {const uint8_t*} data 风格对象数据
  * @param {const char*} state 风格状态

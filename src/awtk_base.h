@@ -21,6 +21,7 @@
 
 #ifndef TK_BASE_H
 #define TK_BASE_H
+#include "base/bidi.h"
 #include "base/ui_feedback.h"
 #include "base/assets_manager.h"
 #include "base/awtk_config_sample.h"

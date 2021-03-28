@@ -100,6 +100,19 @@ wchar_t* tk_utf8_to_utf16(const char* str, wchar_t* out, uint32_t size);
  */
 wchar_t* tk_utf8_to_utf16_ex(const char* str, uint32_t size, wchar_t* out, uint32_t out_size);
 
+/**
+ * @method tk_utf8_dup_utf16
+ *
+ * 把ucs字符串转成UTF8字符串。
+ * > 由调用者释放返回的指针。
+ *
+ * @param {const wchar_t*} in 输入字符串。
+ * @param {int32_t} size 字符串长度。
+ *
+ * @return {char*} 返回UTF8字符串。
+ */
+char* tk_utf8_dup_utf16(const wchar_t* in, int32_t size);
+
 END_C_DECLS
 
 #endif /*TK_UTF8_H*/

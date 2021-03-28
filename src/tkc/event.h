@@ -151,6 +151,17 @@ typedef ret_t (*event_func_t)(void* ctx, event_t* e);
 event_t* event_cast(event_t* event);
 
 /**
+ * @method event_get_type
+ * 获取event类型。 
+ * @annotation ["scriptable"]
+ * @param {event_t*} event event对象。
+ *
+ * @return {int}  返回event类型。
+ */
+int event_get_type(event_t* event);
+
+
+/**
  * @method event_create
  * @annotation ["constructor", "scriptable", "gc"]
  * 创建event对象。

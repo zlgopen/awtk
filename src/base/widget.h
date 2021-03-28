@@ -897,6 +897,86 @@ ret_t widget_set_tr_text(widget_t* widget, const char* text);
 int32_t widget_get_value(widget_t* widget);
 
 /**
+ * @method widget_get_enable
+ * 获取控件enable属性值。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {bool_t} 返回enable。
+ */
+bool_t widget_get_enable(widget_t* widget);
+
+/**
+ * @method widget_get_floating
+ * 获取控件floating属性值。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {bool_t} 返回floating。
+ */
+bool_t widget_get_floating(widget_t* widget);
+
+/**
+ * @method widget_get_auto_adjust_size
+ * 获取控件auto_adjust_size属性值。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {bool_t} 返回auto_adjust_size。
+ */
+bool_t widget_get_auto_adjust_size(widget_t* widget);
+
+/**
+ * @method widget_get_with_focus_state
+ * 获取控件with_focus_state属性值。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {bool_t} 返回with_focus_state。
+ */
+bool_t widget_get_with_focus_state(widget_t* widget);
+
+/**
+ * @method widget_get_focusable
+ * 获取控件focusable属性值。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {bool_t} 返回focusable。
+ */
+bool_t widget_get_focusable(widget_t* widget);
+
+/**
+ * @method widget_get_sensitive
+ * 获取控件sensitive属性值。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {bool_t} 返回sensitive。
+ */
+bool_t widget_get_sensitive(widget_t* widget);
+
+/**
+ * @method widget_get_visible
+ * 获取控件visible属性值。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {bool_t} 返回visible。
+ */
+bool_t widget_get_visible(widget_t* widget);
+
+/**
+ * @method widget_get_feedback
+ * 获取控件feedback属性值。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {bool_t} 返回feedback。
+ */
+bool_t widget_get_feedback(widget_t* widget);
+
+/**
  * @method widget_get_text
  * 获取控件的文本。
  * 只是对widget\_get\_prop的包装，文本的意义由子类控件决定。
@@ -1333,7 +1413,11 @@ widget_t* widget_lookup_by_type(widget_t* widget, const char* type, bool_t recur
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 /*为了避免脚本绑定时冲突，去掉了recursive参数。为了兼容旧版本，只好改成可变参数。*/
+#ifdef AWTK_GO
+ret_t widget_set_visible(widget_t* widget, bool_t visible);
+#else
 ret_t widget_set_visible(widget_t* widget, bool_t visible, ...);
+#endif/*AWTK_GO*/
 
 /**
  * @method widget_set_visible_only

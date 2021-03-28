@@ -506,19 +506,19 @@ typedef struct _wheel_event_t {
    * @annotation ["readable", "scriptable"]
    * alt键是否按下。
    */
-  uint8_t alt : 1;
+  bool_t alt;
   /**
    * @property {bool_t} ctrl
    * @annotation ["readable", "scriptable"]
    * ctrl键是否按下。
    */
-  uint8_t ctrl : 1;
+  bool_t ctrl;
   /**
    * @property {bool_t} shift
    * @annotation ["readable", "scriptable"]
    * shift键是否按下。
    */
-  uint8_t shift : 1;
+  bool_t shift;
 } wheel_event_t;
 
 /**
@@ -657,38 +657,38 @@ typedef struct _pointer_event_t {
    * @annotation ["readable", "scriptable"]
    * 指针是否按下。
    */
-  uint8_t pressed : 1;
+  bool_t pressed;
 
   /**
    * @property {bool_t} alt
    * @annotation ["readable", "scriptable"]
    * alt键是否按下。
    */
-  uint8_t alt : 1;
+  bool_t alt;
   /**
    * @property {bool_t} ctrl
    * @annotation ["readable", "scriptable"]
    * ctrl键是否按下。
    */
-  uint8_t ctrl : 1;
+  bool_t ctrl;
   /**
    * @property {bool_t} cmd
    * @annotation ["readable", "scriptable"]
    * cmd键是否按下。
    */
-  uint8_t cmd : 1;
+  bool_t cmd;
   /**
    * @property {bool_t} menu
    * @annotation ["readable", "scriptable"]
    * menu键是否按下。
    */
-  uint8_t menu : 1;
+  bool_t menu;
   /**
    * @property {bool_t} shift
    * @annotation ["readable", "scriptable"]
    * shift键是否按下。
    */
-  uint8_t shift : 1;
+  bool_t shift;
 } pointer_event_t;
 
 /**
@@ -734,75 +734,75 @@ typedef struct _key_event_t {
    * @annotation ["readable", "scriptable"]
    * alt键是否按下。
    */
-  uint32_t alt : 1;
+  bool_t alt;
   /**
    * @property {bool_t} lalt
    * @annotation ["readable", "scriptable"]
    * left alt键是否按下。
    */
-  uint32_t lalt : 1;
+  bool_t lalt;
   /**
    * @property {bool_t} ralt
    * @annotation ["readable", "scriptable"]
    * right alt键是否按下。
    */
-  uint32_t ralt : 1;
+  bool_t ralt;
   /**
    * @property {bool_t} ctrl
    * @annotation ["readable", "scriptable"]
    * right alt键是否按下。
    * ctrl键是否按下。
    */
-  uint32_t ctrl : 1;
+  bool_t ctrl;
   /**
    * @property {bool_t} lctrl
    * @annotation ["readable", "scriptable"]
    * left ctrl键是否按下。
    */
-  uint32_t lctrl : 1;
+  bool_t lctrl;
   /**
    * @property {bool_t} rctrl
    * @annotation ["readable", "scriptable"]
    * right ctrl键是否按下。
    */
-  uint32_t rctrl : 1;
+  bool_t rctrl;
   /**
    * @property {bool_t} shift
    * @annotation ["readable", "scriptable"]
    * shift键是否按下。
    */
-  uint32_t shift : 1;
+  bool_t shift;
   /**
    * @property {bool_t} lshift
    * @annotation ["readable", "scriptable"]
    * left shift键是否按下。
    */
-  uint32_t lshift : 1;
+  bool_t lshift;
   /**
    * @property {bool_t} rshift
    * @annotation ["readable", "scriptable"]
    * right shift键是否按下。
    */
-  uint32_t rshift : 1;
+  bool_t rshift;
   /**
    * @property {bool_t} cmd
    * @annotation ["readable", "scriptable"]
    * left shift键是否按下。
    * cmd/win键是否按下。
    */
-  uint32_t cmd : 1;
+  bool_t cmd;
   /**
    * @property {bool_t} menu
    * @annotation ["readable", "scriptable"]
    * menu键是否按下。
    */
-  uint32_t menu : 1;
+  bool_t menu;
   /**
    * @property {bool_t} capslock
    * @annotation ["readable", "scriptable"]
    * capslock键是否按下。
    */
-  uint32_t capslock : 1;
+  bool_t capslock;
 } key_event_t;
 
 /**
@@ -974,7 +974,6 @@ event_t* multi_gesture_event_init(multi_gesture_event_t* event, void* target, in
 
 /**
  * @class assets_event_t
- * @annotation ["scriptable"]
  * @parent event_t
  * 资源事件，由资源管理器触发。
  */
@@ -982,20 +981,20 @@ typedef struct _assets_event_t {
   event_t e;
   /**
    * @property {asset_type_t} type 
-   * @annotation ["readable", "scriptable"]
+   * @annotation ["readable"]
    * 触发事件的资源类型
    */
   asset_type_t type;
   /**
    * @property {asset_info_t*} asset_info 
-   * @annotation ["readable", "scriptable"]
+   * @annotation ["readable"]
    * 触发事件的资源对象
    */
   asset_info_t* asset_info;
 } assets_event_t;
 
 /**
- * @method window_event_init
+ * @method assets_event_init
  * 初始化事件。
  * @param {window_event_t*} event event对象。
  * @param {assets_manager_t*} am 事件目标资源管理器。

@@ -1,4 +1,5 @@
-﻿#include "tkc/utf8.h"
+﻿#include "tkc/mem.h"
+#include "tkc/utf8.h"
 #include "gtest/gtest.h"
 
 TEST(Utf8, ascii) {
@@ -45,4 +46,13 @@ TEST(Utf8, chinese) {
 
   dump_utf8(res_str);
   dump_unicode(res_wstr);
+}
+
+TEST(Utf8, dup) {
+  const char* str = "中文";
+  const wchar_t* wstr = L"中文";
+
+  char* text = tk_utf8_dup_utf16(wstr, -1);
+  ASSERT_STREQ(str, text);
+  TKMEM_FREE(text);
 }

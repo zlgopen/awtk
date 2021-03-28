@@ -4507,3 +4507,51 @@ bool_t widget_is_direct_parent_of(widget_t* widget, widget_t* child) {
 
   return child->parent == widget;
 }
+
+bool_t widget_get_enable(widget_t* widget) {
+  return_value_if_fail(widget != NULL, FALSE);
+  
+  return widget->enable;
+}
+
+bool_t widget_get_floating(widget_t* widget) {
+  return_value_if_fail(widget != NULL, FALSE);
+  
+  return widget->floating;
+}
+
+bool_t widget_get_auto_adjust_size(widget_t* widget) {
+  return_value_if_fail(widget != NULL, FALSE);
+  
+  return widget->auto_adjust_size;
+}
+
+bool_t widget_get_with_focus_state(widget_t* widget) {
+  return_value_if_fail(widget != NULL, FALSE);
+  
+  return widget->with_focus_state;
+}
+
+bool_t widget_get_focusable(widget_t* widget) {
+  return_value_if_fail(widget != NULL, FALSE);
+  
+  return widget->focusable;
+}
+
+bool_t widget_get_sensitive(widget_t* widget) {
+  return_value_if_fail(widget != NULL, FALSE);
+  
+  return widget->sensitive;
+}
+
+bool_t widget_get_visible(widget_t* widget) {
+  return_value_if_fail(widget != NULL, FALSE);
+  
+  return widget->visible;
+}
+
+bool_t widget_get_feedback(widget_t* widget) {
+  return_value_if_fail(widget != NULL, FALSE);
+  
+  return widget->feedback;
+}

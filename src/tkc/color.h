@@ -183,6 +183,21 @@ uint8_t color_b(color_t* c);
 uint8_t color_a(color_t* c);
 
 /**
+ * @method color_get_color
+ *
+ * 获取颜色值。
+ *
+ * > 主要供脚本语言使用。
+ *
+ * @annotation ["scriptable"]
+ * @param {color_t*} c color对象。
+ *
+ * @return {uint32_t} 返回颜色值。
+ *
+ */
+uint32_t color_get_color(color_t* c);
+
+/**
  * @method color_cast
  * 转换为color对象。
  *
