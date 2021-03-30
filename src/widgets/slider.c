@@ -162,6 +162,7 @@ static ret_t slider_on_paint_self(widget_t* widget, canvas_t* c) {
   draw_type = slider->vertical ? IMAGE_DRAW_PATCH3_Y : IMAGE_DRAW_PATCH3_X;
 
   if (slider->vertical) {
+    bar_size = tk_min(bar_size, widget->w);
     br.w = bar_size;
     br.x = (widget->w - br.w) / 2;
     br.h = (radius || bg_image != NULL) ? (widget->h - dr->h) : dr->y;
@@ -172,6 +173,7 @@ static ret_t slider_on_paint_self(widget_t* widget, canvas_t* c) {
     fr.h = widget->h - dr->h - dr->y;
     fr.y = dr->y + dr->h / 2;
   } else {
+    bar_size = tk_min(bar_size, widget->h);
     br.w = (radius || bg_image != NULL) ? (widget->w - dr->w) : (widget->w - dr->w - dr->x);
     br.x = (radius || bg_image != NULL) ? (dr->w / 2) : (dr->x + dr->w / 2);
     br.h = bar_size;
