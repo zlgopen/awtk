@@ -76,6 +76,7 @@ typedef struct _mutable_image_t {
   image_base_t image_base;
 
   /*private*/
+  uint32_t timer_id;
   void* prepare_image_ctx;
   mutable_image_prepare_image_t prepare_image;
 

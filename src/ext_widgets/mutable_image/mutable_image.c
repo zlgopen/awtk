@@ -121,6 +121,16 @@ ret_t mutable_image_on_destroy(widget_t* widget) {
   return image_base_on_destroy(widget);
 }
 
+ret_t mutable_image_on_attach_parent(widget_t* widget, widget_t* parent) {
+  widget_t* win = widget_get_window(parent);
+  mutable_image_t* mutable_image = MUTABLE_IMAGE(widget);
+  return_value_if_fail(mutable_image != NULL, RET_BAD_PARAMS);
+  if (widget_is_designing_window(win)) {
+    widget_remove_timer(widget, mutable_image->timer_id);
+  }
+  return RET_OK;
+}
+
 TK_DECL_VTABLE(mutable_image) = {.size = sizeof(mutable_image_t),
                                  .type = WIDGET_TYPE_MUTABLE_IMAGE,
                                  .clone_properties = s_mutable_image_clone_properties,
@@ -130,6 +140,7 @@ TK_DECL_VTABLE(mutable_image) = {.size = sizeof(mutable_image_t),
                                  .on_event = image_base_on_event,
                                  .on_paint_self = mutable_image_on_paint_self,
                                  .on_paint_background = widget_on_paint_null,
+                                 .on_attach_parent = mutable_image_on_attach_parent,
                                  .set_prop = image_base_set_prop,
                                  .get_prop = image_base_get_prop};
 
@@ -146,12 +157,17 @@ widget_t* mutable_image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
 
   mutable_image_init(widget);
 
+  if (parent != NULL && widget != NULL) {
+    mutable_image_on_attach_parent(widget, parent);
+  }
   return widget;
 }
 
 widget_t* mutable_image_init(widget_t* widget) {
+  mutable_image_t* mutable_image = MUTABLE_IMAGE(widget);
+  return_value_if_fail(mutable_image != NULL, NULL);
   image_base_init(widget);
-  widget_add_timer(widget, mutable_image_invalidate, 16);
+  mutable_image->timer_id = widget_add_timer(widget, mutable_image_invalidate, 16);
 
   return widget;
 }
