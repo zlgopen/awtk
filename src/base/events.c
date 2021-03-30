@@ -24,7 +24,7 @@
 
 wheel_event_t* wheel_event_cast(event_t* event) {
   return_value_if_fail(event != NULL, NULL);
-  return_value_if_fail(event->type == EVT_WHEEL, NULL);
+  return_value_if_fail(event->type == EVT_WHEEL || event->type == EVT_WHEEL_BEFORE_CHILDREN, NULL);
   return_value_if_fail(event->size == sizeof(wheel_event_t), NULL);
 
   return (wheel_event_t*)event;
