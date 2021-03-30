@@ -4,6 +4,7 @@
  * 修复 slider 控件的 bar\_size 属性过大画面不正常的问题（感谢智明提供补丁）
  * 修改 mutable\_image 支持在 desiger 界面上面不刷新的功能（感谢智明提供补丁）
  * 修复WHEEL\_BEFORE\_CHILDREN事件无法通过wheel\_event\_cast转换的问题（感谢福明提供补丁）
+ * 修改调用edit\_set\_text等函数后没有重绘的问题。
 
 2021/03/28
   * 修改一些注释错误。

@@ -1260,7 +1260,7 @@ static ret_t edit_set_text(widget_t* widget, const value_t* v) {
 
   wstr_reset(&str);
 
-  return RET_OK;
+  return widget_invalidate_force(widget, NULL);
 }
 
 ret_t edit_set_prop(widget_t* widget, const char* name, const value_t* v) {
