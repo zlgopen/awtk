@@ -1,27 +1,31 @@
 # 最新动态
 
+2021/03/29
+ * 修复 slider 控件的 bar\_size 属性过大画面不正常的问题（感谢智明提供补丁）
+ * 修改 mutable\_image 支持在 desiger 界面上面不刷新的功能（感谢智明提供补丁）
+
 2021/03/28
   * 修改一些注释错误。
-  * 修改部分代码，方便在Go语言中调用(Go不支持位域，无法访问union成员，type是关键字)。
+  * 修改部分代码，方便在 Go 语言中调用 (Go 不支持位域，无法访问 union 成员，type 是关键字）。
 
 2021/03/26
- * 完善文档how\_to\_use\_action\_text.md。
+ * 完善文档 how\_to\_use\_action\_text.md。
 
 2021/03/25
- * 合并mbedtls分支，增加基于mbedtls的io stream
- * 增加文档[优化 freetype 解析矢量字体的显示效果](optimation_freetype_gray_font.md) （感谢雨欣提供）
- * 增加文档[优化 stb\_truetype 在 mono 模式下的字体显示效果](optimation_stb_truetype_mono_font.md) （感谢雨欣提供）
+ * 合并 mbedtls 分支，增加基于 mbedtls 的 io stream
+ * 增加文档 [优化 freetype 解析矢量字体的显示效果](optimation_freetype_gray_font.md) （感谢雨欣提供）
+ * 增加文档 [优化 stb\_truetype 在 mono 模式下的字体显示效果](optimation_stb_truetype_mono_font.md) （感谢雨欣提供）
 
 2021/03/24
- * 修复file\_browser\_view控件返回上级目录时将文件夹显示为文件的问题（感谢雨欣提供补丁）
- * 优化freetype获取灰度图字模型的效果，添加stb二值化字模的功能并在mono模式下默认使用stb（感谢雨欣提供补丁）
+ * 修复 file\_browser\_view 控件返回上级目录时将文件夹显示为文件的问题（感谢雨欣提供补丁）
+ * 优化 freetype 获取灰度图字模型的效果，添加 stb 二值化字模的功能并在 mono 模式下默认使用 stb（感谢雨欣提供补丁）
 
 2021/03/19
- * 修复list view layout内存泄漏（感谢兆坤提供补丁）
+ * 修复 list view layout 内存泄漏（感谢兆坤提供补丁）
  * 增加 tk\_utf8\_from\_utf16\_ex 和 wstr\_set\_utf8\_with\_len。
 
 2021/03/18
- * 修复在linux64位平台下，因为long和int长度不同 而导致字符串转整形错误的问题（感谢兆坤提供补丁）
+ * 修复在 linux64 位平台下，因为 long 和 int 长度不同 而导致字符串转整形错误的问题（感谢兆坤提供补丁）
 
 2021/03/17
  * 完善 linux-fb 的 egl 适配（感谢智明提供补丁）
