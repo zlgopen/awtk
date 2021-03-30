@@ -160,7 +160,6 @@ ret_t timer_set_on_destroy(uint32_t timer_id, tk_destroy_t on_destroy, void* on_
 /**
  * @method timer_find
  * 查找指定ID的timer。
- * @annotation ["private"]
  *
  * @return {timer_info_t*} 返回timer的信息。
  */

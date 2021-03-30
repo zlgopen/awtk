@@ -99,7 +99,6 @@ ret_t idle_remove_all_by_ctx(void* ctx);
 /**
  * @method idle_find
  * 查找指定ID的idle。
- * @annotation ["private"]
  *
  * @return {idle_info_t*} 返回idle的信息。
  */
