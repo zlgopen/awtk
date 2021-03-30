@@ -248,7 +248,7 @@ typedef enum _ret_t {
 #define MAX_PATH 255
 #endif /*MAX_PATH*/
 
-#if defined(WIN32)
+#if defined(WIN32) && !defined(MINGW)
 #define TK_PATH_SEP '\\'
 #ifndef snprintf
 #define snprintf _snprintf
