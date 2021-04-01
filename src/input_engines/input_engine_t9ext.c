@@ -176,8 +176,8 @@ static ret_t input_engine_t9ext_search_alpha(input_engine_t* engine, char c,
   input_engine_t9ext_commit_char(engine, table[i][t9->index]);
   engine->keys.size = 0;
 
-  wbuffer_reset(&(t9->pre_candidates));
-  t9->pre_candidates_nr = ime_utils_add_chars(&(t9->pre_candidates), table, c);
+  wbuffer_rewind(&(t9->pre_candidates));
+  t9->pre_candidates_nr = ime_utils_add_chars(&(t9->pre_candidates), table, c, FALSE);
   input_method_dispatch_pre_candidates(engine->im, (const char*)(t9->pre_candidates.data),
                                        t9->pre_candidates_nr, t9->index);
 
@@ -203,7 +203,7 @@ static ret_t input_engine_t9ext_search_zh(input_engine_t* engine, const char* ke
     const table_entry_t* items = s_t9ext_numbers_pinyin;
     uint32_t items_nr = ARRAY_SIZE(s_t9ext_numbers_pinyin);
 
-    wbuffer_reset(&(t9->pre_candidates));
+    wbuffer_rewind(&(t9->pre_candidates));
 
     first = (const char*)(t9->pre_candidates.data);
     if (keys_size == 1) {
@@ -214,7 +214,7 @@ static ret_t input_engine_t9ext_search_zh(input_engine_t* engine, const char* ke
     }
 
     t9->pre_candidates_nr +=
-        ime_utils_table_search(items, items_nr, keys, &(t9->pre_candidates), FALSE);
+        ime_utils_table_search(items, items_nr, keys, &(t9->pre_candidates), FALSE, FALSE);
     if (t9->pre_candidates_nr == 0) {
       t9->pre_candidates_nr = 1;
       wbuffer_write_string(&(t9->pre_candidates), keys);
@@ -281,7 +281,7 @@ static ret_t input_engine_t9ext_search(input_engine_t* engine, const char* keys)
     default: {
       if (keys[0] == '1') {
         t9->pre_candidates_nr = 1;
-        wbuffer_reset(&(t9->pre_candidates));
+        wbuffer_rewind(&(t9->pre_candidates));
         wbuffer_write_string(&(t9->pre_candidates), keys);
         input_engine_reset_input(engine);
         input_method_dispatch_pre_candidates(engine->im, (const char*)(t9->pre_candidates.data),
@@ -358,7 +358,8 @@ static const char* input_engine_t9ext_get_lang(input_engine_t* engine) {
 static ret_t input_engine_t9ext_init(input_engine_t* engine) {
   input_engine_t9ext_t* t9 = (input_engine_t9ext_t*)engine;
   return_value_if_fail(engine != NULL && t9 != NULL, RET_BAD_PARAMS);
-  wbuffer_init_extendable_ex(&(t9->pre_candidates), TK_IM_MAX_CANDIDATE_CHARS);
+  wbuffer_init_extendable(&(t9->pre_candidates));
+  wbuffer_extend_capacity(&(t9->pre_candidates), TK_IM_MAX_CANDIDATE_CHARS);
   return RET_OK;
 }
 
