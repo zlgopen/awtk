@@ -20,15 +20,15 @@
       auto_play="true" interval="50" delay="1000"/>
     <image_animation image="ani" start_index="1" end_index="12" format="%s%x" 
       auto_play="true" interval="50" delay="1100"/>
-    <image_animation image="ani" start_index="1" end_index="12" format="%s%x" 
+    <image_animation image="ani" sequence="123456789abc"
       auto_play="true" interval="50" delay="1200"/>
     
-    <image_animation image="ani" start_index="1" end_index="12" format="%s%x" 
+    <image_animation image="ani" reverse="true" start_index="1" end_index="12" format="%s%x" 
       auto_play="true" interval="50" delay="1300"/>
-    <image_animation image="ani" start_index="1" end_index="12" format="%s%x" 
+    <image_animation image="ani" reverse="true" sequence="123456789abc"
       auto_play="true" interval="50" delay="1400"/>
     <image_animation image="ani" start_index="1" end_index="12" format="%s%x" 
-      auto_play="true" interval="50" delay="1500"/>
+      show_when_done="true" loop="false" auto_play="true" interval="500" delay="1500"/>
 
     <!-- 13-100 not exist, so pause to play for some time. -->
     <image_animation image="ani" start_index="1" end_index="100" format="%s%x" 
