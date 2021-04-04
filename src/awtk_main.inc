@@ -60,8 +60,14 @@ END_C_DECLS
 #include "base/asset_loader_zip.h"
 
 #ifdef USE_GUI_MAIN
+int gui_app_start_ex(int lcd_w, int lcd_h, const char* res_root);
+
 int gui_app_start(int lcd_w, int lcd_h) {
-  tk_init(lcd_w, lcd_h, APP_MOBILE, APP_NAME, APP_RES_ROOT);
+  return gui_app_start_ex(lcd_w, lcd_h, APP_RES_ROOT);
+}
+
+int gui_app_start_ex(int lcd_w, int lcd_h, const char* res_root) {
+  tk_init(lcd_w, lcd_h, APP_MOBILE, APP_NAME, res_root);
 #elif defined(MOBILE_APP) && defined(WITH_SDL)
 int SDL_main(int argc, char* argv[]) {
   int32_t lcd_w = 0;
