@@ -19,6 +19,7 @@
  *
  */
 
+#ifdef WITH_MBEDTLS
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN 1
 #endif /*WIN32_LEAN_AND_MEAN*/
@@ -98,3 +99,4 @@ tk_iostream_t* tk_iostream_mbedtls_create(mbedtls_conn_t* conn) {
 
   return TK_IOSTREAM(obj);
 }
+#endif/*WITH_MBEDTLS*/

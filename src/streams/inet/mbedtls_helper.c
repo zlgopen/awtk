@@ -1,3 +1,5 @@
+#ifdef WITH_MBEDTLS
+
 #include "tkc/utils.h"
 #include "mbedtls_helper.h"
 
@@ -20,3 +22,5 @@ ret_t mbedtls_conn_destroy(mbedtls_conn_t* conn) {
 
   return RET_OK;
 }
+
+#endif/*WITH_MBEDTLS*/

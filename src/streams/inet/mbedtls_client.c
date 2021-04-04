@@ -1,3 +1,5 @@
+#ifdef WITH_MBEDTLS
+
 #include "tkc/mem.h"
 #include "tkc/utils.h"
 #include "mbedtls_client.h"
@@ -148,3 +150,4 @@ error:
 
   return NULL;
 }
+#endif/*WITH_MBEDTLS*/

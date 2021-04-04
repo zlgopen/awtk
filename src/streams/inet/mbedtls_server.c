@@ -1,6 +1,9 @@
+#ifdef WITH_MBEDTLS
+
 #include "tkc/mem.h"
 #include "tkc/utils.h"
 #include "mbedtls_server.h"
+
 
 static ret_t mbedtls_conn_server_destroy(mbedtls_conn_t* conn) {
   int ret = 0;
@@ -190,3 +193,4 @@ ret_t mbedtls_server_destroy(mbedtls_server_t* server) {
 
   return RET_OK;
 }
+#endif/*WITH_MBEDTLS*/
