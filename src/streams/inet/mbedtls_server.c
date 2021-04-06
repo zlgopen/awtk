@@ -4,7 +4,6 @@
 #include "tkc/utils.h"
 #include "mbedtls_server.h"
 
-
 static ret_t mbedtls_conn_server_destroy(mbedtls_conn_t* conn) {
   int ret = 0;
   mbedtls_conn_server_t* server_conn = (mbedtls_conn_server_t*)conn;
@@ -34,7 +33,7 @@ mbedtls_conn_t* mbedtls_server_accept(mbedtls_server_t* server) {
 
   mbedtls_net_init(&(server_conn->client_fd));
   mbedtls_ssl_init(&(conn->ssl));
-  
+
   if ((ret = mbedtls_ssl_setup(&(conn->ssl), &(server->conf))) != 0) {
     log_debug(" failed\n  ! mbedtls_ssl_setup returned %d\n\n", ret);
     goto error;
@@ -61,16 +60,17 @@ mbedtls_conn_t* mbedtls_server_accept(mbedtls_server_t* server) {
 
   log_debug(" ok\n");
   return conn;
-  
+
 error:
   mbedtls_conn_server_destroy(conn);
 
   return NULL;
 }
 
-mbedtls_server_t* mbedtls_server_create(const char* port, const uint8_t* srv_crt, uint32_t srv_crt_len,
-                                        const uint8_t* srv_key, uint32_t srv_key_len,
-                                        const uint8_t* cas_pem, uint32_t cas_pem_len) {
+mbedtls_server_t* mbedtls_server_create(const char* port, const uint8_t* srv_crt,
+                                        uint32_t srv_crt_len, const uint8_t* srv_key,
+                                        uint32_t srv_key_len, const uint8_t* cas_pem,
+                                        uint32_t cas_pem_len) {
   int ret = 0;
   mbedtls_server_t* server = NULL;
   const char* pers = TK_MBEDTLS_PERS;
@@ -193,4 +193,4 @@ ret_t mbedtls_server_destroy(mbedtls_server_t* server) {
 
   return RET_OK;
 }
-#endif/*WITH_MBEDTLS*/
+#endif /*WITH_MBEDTLS*/

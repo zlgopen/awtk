@@ -64,10 +64,11 @@ static ret_t tk_istream_mbedtls_get_prop(object_t* obj, const char* name, value_
   return RET_NOT_FOUND;
 }
 
-static const object_vtable_t s_tk_istream_mbedtls_vtable = {.type = "tk_istream_mbedtls",
-                                                        .desc = "tk_istream_mbedtls",
-                                                        .size = sizeof(tk_istream_mbedtls_t),
-                                                        .get_prop = tk_istream_mbedtls_get_prop};
+static const object_vtable_t s_tk_istream_mbedtls_vtable = {
+    .type = "tk_istream_mbedtls",
+    .desc = "tk_istream_mbedtls",
+    .size = sizeof(tk_istream_mbedtls_t),
+    .get_prop = tk_istream_mbedtls_get_prop};
 
 tk_istream_t* tk_istream_mbedtls_create(mbedtls_ssl_context* ssl) {
   object_t* obj = NULL;
@@ -94,4 +95,4 @@ tk_istream_mbedtls_t* tk_istream_mbedtls_cast(tk_istream_t* s) {
   return (tk_istream_mbedtls_t*)s;
 }
 
-#endif/*WITH_MBEDTLS*/
+#endif /*WITH_MBEDTLS*/

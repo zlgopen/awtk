@@ -96,7 +96,8 @@ uint32_t timer_next_time(void) {
 
 #include "base/main_loop.h"
 
-ret_t timer_queue_ex(timer_func_t on_timer, void* ctx, uint32_t duration, tk_destroy_t on_destroy, void* on_destroy_ctx) {
+ret_t timer_queue_ex(timer_func_t on_timer, void* ctx, uint32_t duration, tk_destroy_t on_destroy,
+                     void* on_destroy_ctx) {
 #ifdef AWTK_WEB
   timer_add(on_timer, ctx, duration);
 

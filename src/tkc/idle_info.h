@@ -62,7 +62,7 @@ struct _idle_info_t {
    * idle回调函数上下文。
    */
   void* ctx;
-  
+
   /**
    * @property {void*} extra_ctx
    * @annotation ["readable", "scriptable"]

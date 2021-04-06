@@ -98,7 +98,8 @@ ret_t timer_queue(timer_func_t on_timer, void* ctx, uint32_t duration);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t timer_queue_ex(timer_func_t on_timer, void* ctx, uint32_t duration, tk_destroy_t on_destroy, void* on_destroy_ctx);
+ret_t timer_queue_ex(timer_func_t on_timer, void* ctx, uint32_t duration, tk_destroy_t on_destroy,
+                     void* on_destroy_ctx);
 
 /**
  * @method timer_remove

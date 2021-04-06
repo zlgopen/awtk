@@ -8,10 +8,10 @@ int main(int argc, char* argv[]) {
   const char* request = "GET / HTTP/1.1\r\nHost: localhost\r\n";
 
   platform_prepare();
-  conn = mbedtls_conn_client_create("localhost", "4433", 
-      (const uint8_t*)mbedtls_test_cas_pem, mbedtls_test_cas_pem_len);
+  conn = mbedtls_conn_client_create("localhost", "4433", (const uint8_t*)mbedtls_test_cas_pem,
+                                    mbedtls_test_cas_pem_len);
 
-  if(conn != NULL) {
+  if (conn != NULL) {
     char buff[1024] = {0};
     tk_iostream_t* io = tk_iostream_mbedtls_create(conn);
     tk_istream_t* in = tk_iostream_get_istream(io);

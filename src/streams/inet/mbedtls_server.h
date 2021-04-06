@@ -25,10 +25,10 @@ typedef struct _mbedtls_conn_server_t {
   mbedtls_server_t* server;
 } mbedtls_conn_server_t;
 
-mbedtls_server_t* mbedtls_server_create(const char* port, 
-  const uint8_t* srv_crt, uint32_t srv_crt_len,
-  const uint8_t* srv_key, uint32_t srv_key_len,
-  const uint8_t* cas_pem, uint32_t cas_pem_len);
+mbedtls_server_t* mbedtls_server_create(const char* port, const uint8_t* srv_crt,
+                                        uint32_t srv_crt_len, const uint8_t* srv_key,
+                                        uint32_t srv_key_len, const uint8_t* cas_pem,
+                                        uint32_t cas_pem_len);
 
 mbedtls_conn_t* mbedtls_server_accept(mbedtls_server_t* server);
 

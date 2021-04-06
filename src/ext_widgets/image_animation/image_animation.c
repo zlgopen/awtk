@@ -33,7 +33,7 @@ static ret_t image_animation_play_to_done(image_animation_t* image_animation) {
     image_animation->index = -1;
   }
   image_animation->playing = FALSE;
-  
+
   return RET_OK;
 }
 
@@ -44,12 +44,13 @@ ret_t image_animation_get_image_name(image_animation_t* image_animation,
   if (image_animation->sequence != NULL) {
     uint32_t len = strlen(image_animation->sequence);
     tk_strncpy(name, image_animation->image, TK_NAME_LEN);
-    image_animation->index =
-        image_animation->index >= len ? 0 : image_animation->index;
-    index = image_animation->reverse ? len - image_animation->index - 1: image_animation->index;
+    image_animation->index = image_animation->index >= len ? 0 : image_animation->index;
+    index = image_animation->reverse ? len - image_animation->index - 1 : image_animation->index;
     name[strlen(name)] = image_animation->sequence[index];
   } else {
-    index = image_animation->reverse ? image_animation->end_index + image_animation->start_index - image_animation->index : image_animation->index;
+    index = image_animation->reverse
+                ? image_animation->end_index + image_animation->start_index - image_animation->index
+                : image_animation->index;
     const char* format = image_animation->format ? image_animation->format : "%s%d";
     tk_snprintf(name, TK_NAME_LEN, format, image_animation->image, index);
   }

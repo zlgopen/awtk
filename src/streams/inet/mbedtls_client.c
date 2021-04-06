@@ -18,19 +18,19 @@ static ret_t mbedtls_conn_client_destroy(mbedtls_conn_t* conn) {
   return RET_OK;
 }
 
-mbedtls_conn_t* mbedtls_conn_client_create(const char* host, const char* port, const uint8_t* cas_pem,
-                                     uint32_t cas_pem_len) {
- int ret = 0;
- int flags = 0;
- mbedtls_conn_t* conn = NULL;
- const char* pers = TK_MBEDTLS_PERS;
- mbedtls_conn_client_t* client = NULL;
- return_value_if_fail(host != NULL && port != NULL, NULL);
- client = TKMEM_ZALLOC(mbedtls_conn_client_t);
- return_value_if_fail(client != NULL, NULL);
- conn = (mbedtls_conn_t*)client;
+mbedtls_conn_t* mbedtls_conn_client_create(const char* host, const char* port,
+                                           const uint8_t* cas_pem, uint32_t cas_pem_len) {
+  int ret = 0;
+  int flags = 0;
+  mbedtls_conn_t* conn = NULL;
+  const char* pers = TK_MBEDTLS_PERS;
+  mbedtls_conn_client_t* client = NULL;
+  return_value_if_fail(host != NULL && port != NULL, NULL);
+  client = TKMEM_ZALLOC(mbedtls_conn_client_t);
+  return_value_if_fail(client != NULL, NULL);
+  conn = (mbedtls_conn_t*)client;
 
- conn->destroy = mbedtls_conn_client_destroy;
+  conn->destroy = mbedtls_conn_client_destroy;
 
 #if defined(MBEDTLS_DEBUG_C)
   mbedtls_debug_set_threshold(DEBUG_LEVEL);
@@ -59,10 +59,9 @@ mbedtls_conn_t* mbedtls_conn_client_create(const char* host, const char* port, c
   /*
    * 0. Initialize certificates
    */
-   if(cas_pem != NULL) {
+  if (cas_pem != NULL) {
     log_debug("  . Loading the CA root certificate ...");
-    ret = mbedtls_x509_crt_parse(&(client->cacert), (const unsigned char*)cas_pem,
-                                 cas_pem_len);
+    ret = mbedtls_x509_crt_parse(&(client->cacert), (const unsigned char*)cas_pem, cas_pem_len);
     if (ret < 0) {
       log_debug(" failed\n  !  mbedtls_x509_crt_parse returned -0x%x\n\n", (unsigned int)-ret);
       goto error;
@@ -74,8 +73,7 @@ mbedtls_conn_t* mbedtls_conn_client_create(const char* host, const char* port, c
    * 1. Start the connection
    */
   log_debug("  . Connecting to tcp/%s/%s...", host, port);
-  if ((ret = mbedtls_net_connect(&(client->server_fd), host, port, MBEDTLS_NET_PROTO_TCP)) !=
-      0) {
+  if ((ret = mbedtls_net_connect(&(client->server_fd), host, port, MBEDTLS_NET_PROTO_TCP)) != 0) {
     log_debug(" failed\n  ! mbedtls_net_connect returned %d\n\n", ret);
     goto error;
   }
@@ -87,7 +85,8 @@ mbedtls_conn_t* mbedtls_conn_client_create(const char* host, const char* port, c
    */
   log_debug("  . Setting up the SSL/TLS structure...");
 
-  if ((ret = mbedtls_ssl_config_defaults(&(client->conf), MBEDTLS_SSL_IS_CLIENT, MBEDTLS_SSL_TRANSPORT_STREAM,
+  if ((ret = mbedtls_ssl_config_defaults(&(client->conf), MBEDTLS_SSL_IS_CLIENT,
+                                         MBEDTLS_SSL_TRANSPORT_STREAM,
                                          MBEDTLS_SSL_PRESET_DEFAULT)) != 0) {
     log_debug(" failed\n  ! mbedtls_ssl_config_defaults returned %d\n\n", ret);
     goto error;
@@ -150,4 +149,4 @@ error:
 
   return NULL;
 }
-#endif/*WITH_MBEDTLS*/
+#endif /*WITH_MBEDTLS*/

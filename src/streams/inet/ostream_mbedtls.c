@@ -27,13 +27,14 @@
 #include "tkc/mem.h"
 #include "streams/inet/ostream_mbedtls.h"
 
-static int32_t tk_ostream_mbedtls_write(tk_ostream_t* stream, const uint8_t* buff, uint32_t max_size) {
+static int32_t tk_ostream_mbedtls_write(tk_ostream_t* stream, const uint8_t* buff,
+                                        uint32_t max_size) {
   int32_t ret = 0;
   tk_ostream_mbedtls_t* ostream_mbedtls = TK_OSTREAM_MBEDTLS(stream);
 
   ret = mbedtls_ssl_write(ostream_mbedtls->ssl, buff, max_size);
   if (ret <= 0) {
-    if( ret != MBEDTLS_ERR_SSL_WANT_READ && ret != MBEDTLS_ERR_SSL_WANT_WRITE ) {
+    if (ret != MBEDTLS_ERR_SSL_WANT_READ && ret != MBEDTLS_ERR_SSL_WANT_WRITE) {
       perror("send");
       ostream_mbedtls->is_broken = TRUE;
     }
@@ -56,10 +57,11 @@ static ret_t tk_ostream_mbedtls_get_prop(object_t* obj, const char* name, value_
   return RET_NOT_FOUND;
 }
 
-static const object_vtable_t s_tk_ostream_mbedtls_vtable = {.type = "tk_ostream_mbedtls",
-                                                        .desc = "tk_ostream_mbedtls",
-                                                        .size = sizeof(tk_ostream_mbedtls_t),
-                                                        .get_prop = tk_ostream_mbedtls_get_prop};
+static const object_vtable_t s_tk_ostream_mbedtls_vtable = {
+    .type = "tk_ostream_mbedtls",
+    .desc = "tk_ostream_mbedtls",
+    .size = sizeof(tk_ostream_mbedtls_t),
+    .get_prop = tk_ostream_mbedtls_get_prop};
 
 tk_ostream_t* tk_ostream_mbedtls_create(mbedtls_ssl_context* ssl) {
   object_t* obj = NULL;
@@ -73,7 +75,7 @@ tk_ostream_t* tk_ostream_mbedtls_create(mbedtls_ssl_context* ssl) {
   return_value_if_fail(ostream_mbedtls != NULL, NULL);
 
   ostream_mbedtls->ssl = ssl;
-  ostream_mbedtls->sock = bio->fd; 
+  ostream_mbedtls->sock = bio->fd;
   TK_OSTREAM(obj)->write = tk_ostream_mbedtls_write;
 
   return TK_OSTREAM(obj);
@@ -85,4 +87,4 @@ tk_ostream_mbedtls_t* tk_ostream_mbedtls_cast(tk_ostream_t* s) {
   return (tk_ostream_mbedtls_t*)s;
 }
 
-#endif/*WITH_MBEDTLS*/
+#endif /*WITH_MBEDTLS*/

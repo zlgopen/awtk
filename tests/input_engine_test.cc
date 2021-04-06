@@ -233,8 +233,7 @@ TEST(input_engine, add_candidates) {
                                           ARRAY_SIZE(s_pinyin_chinese_items), key_str, FALSE);
   ASSERT_EQ(im->engine->candidates_nr, 63);
   ASSERT_EQ(im->engine->candidates.data != NULL, TRUE);
-  ASSERT_EQ(check_candidates_from_char((const char*)(im->engine->candidates.data), py_ji,
-                                       63),
+  ASSERT_EQ(check_candidates_from_char((const char*)(im->engine->candidates.data), py_ji, 63),
             TRUE);
 #endif
 

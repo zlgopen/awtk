@@ -64,7 +64,7 @@ struct _timer_info_t {
    *
    */
   void* ctx;
-  
+
   /**
    * @property {void*} extra_ctx
    * @annotation ["readable", "scriptable"]

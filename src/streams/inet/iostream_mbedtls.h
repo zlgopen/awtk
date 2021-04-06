@@ -40,7 +40,7 @@ typedef struct _tk_iostream_mbedtls_t tk_iostream_mbedtls_t;
 struct _tk_iostream_mbedtls_t {
   tk_iostream_t iostream;
 
-  mbedtls_conn_t* conn; 
+  mbedtls_conn_t* conn;
   tk_istream_t* istream;
   tk_ostream_t* ostream;
 };
@@ -57,10 +57,8 @@ struct _tk_iostream_mbedtls_t {
  */
 tk_iostream_t* tk_iostream_mbedtls_create(mbedtls_conn_t* conn);
 
-
 #define TK_IOSTREAM_MBEDTLS(obj) ((tk_iostream_mbedtls_t*)(obj))
 
 END_C_DECLS
 
 #endif /*TK_IOSTREAM_MBEDTLS_H*/
-

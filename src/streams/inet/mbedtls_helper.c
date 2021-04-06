@@ -16,11 +16,11 @@ void mbedtls_awtk_debug(void* ctx, int level, const char* file, int line, const 
 ret_t mbedtls_conn_destroy(mbedtls_conn_t* conn) {
   return_value_if_fail(conn != NULL, RET_BAD_PARAMS);
 
-  if(conn->destroy != NULL) {
+  if (conn->destroy != NULL) {
     conn->destroy(conn);
   }
 
   return RET_OK;
 }
 
-#endif/*WITH_MBEDTLS*/
+#endif /*WITH_MBEDTLS*/

@@ -365,7 +365,7 @@ wchar_t* wcs_dup(const wchar_t* s);
 
 #ifdef WITH_WCSXXX
 wchar_t* wcsdup(const wchar_t* s);
-#endif/*WITH_WCSXXX*/
+#endif /*WITH_WCSXXX*/
 
 END_C_DECLS
 

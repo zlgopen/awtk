@@ -54,7 +54,7 @@ static ret_t tk_iostream_mbedtls_get_prop(object_t* obj, const char* name, value
 static ret_t tk_iostream_mbedtls_on_destroy(object_t* obj) {
   tk_iostream_mbedtls_t* iostream_mbedtls = TK_IOSTREAM_MBEDTLS(obj);
 
-  if(iostream_mbedtls->conn != NULL) {
+  if (iostream_mbedtls->conn != NULL) {
     mbedtls_conn_destroy(iostream_mbedtls->conn);
   }
 
@@ -99,4 +99,4 @@ tk_iostream_t* tk_iostream_mbedtls_create(mbedtls_conn_t* conn) {
 
   return TK_IOSTREAM(obj);
 }
-#endif/*WITH_MBEDTLS*/
+#endif /*WITH_MBEDTLS*/

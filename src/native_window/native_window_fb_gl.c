@@ -64,8 +64,7 @@ ret_t native_window_fb_gl_set_make_current_func(native_window_t* win,
   return RET_OK;
 }
 
-ret_t native_window_fb_gl_set_destroy_func(native_window_t* win,
-                                                native_window_destroy_t destroy) {
+ret_t native_window_fb_gl_set_destroy_func(native_window_t* win, native_window_destroy_t destroy) {
   native_window_fb_gl_t* fb_gl = NATIVE_WINDOW_FB_GL(win);
   return_value_if_fail(fb_gl != NULL && destroy != NULL, RET_BAD_PARAMS);
   fb_gl->destroy = destroy;

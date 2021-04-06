@@ -31,16 +31,16 @@
 #else
 #include <stdio.h>
 #include <stdlib.h>
-#define mbedtls_calloc     calloc
-#define mbedtls_free       free
-#define mbedtls_time       time
-#define mbedtls_time_t     time_t
-#define mbedtls_printf     printf
-#define mbedtls_fprintf    fprintf
-#define mbedtls_snprintf   snprintf
-#define mbedtls_exit            exit
-#define MBEDTLS_EXIT_SUCCESS    EXIT_SUCCESS
-#define MBEDTLS_EXIT_FAILURE    EXIT_FAILURE
+#define mbedtls_calloc calloc
+#define mbedtls_free free
+#define mbedtls_time time
+#define mbedtls_time_t time_t
+#define mbedtls_printf printf
+#define mbedtls_fprintf fprintf
+#define mbedtls_snprintf snprintf
+#define mbedtls_exit exit
+#define MBEDTLS_EXIT_SUCCESS EXIT_SUCCESS
+#define MBEDTLS_EXIT_FAILURE EXIT_FAILURE
 #endif
 
 #include "mbedtls/net_sockets.h"
@@ -83,7 +83,7 @@ ret_t mbedtls_conn_destroy(mbedtls_conn_t* conn);
 
 #ifndef TK_MBEDTLS_PERS
 #define TK_MBEDTLS_PERS "awtk_pers"
-#endif/*TK_MBEDTLS_PERS*/
+#endif /*TK_MBEDTLS_PERS*/
 
 void mbedtls_awtk_debug(void* ctx, int level, const char* file, int line, const char* str);
 

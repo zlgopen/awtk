@@ -160,7 +160,6 @@ event_t* event_cast(event_t* event);
  */
 int event_get_type(event_t* event);
 
-
 /**
  * @method event_create
  * @annotation ["constructor", "scriptable", "gc"]

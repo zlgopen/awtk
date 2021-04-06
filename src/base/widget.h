@@ -1417,7 +1417,7 @@ widget_t* widget_lookup_by_type(widget_t* widget, const char* type, bool_t recur
 ret_t widget_set_visible(widget_t* widget, bool_t visible);
 #else
 ret_t widget_set_visible(widget_t* widget, bool_t visible, ...);
-#endif/*AWTK_GO*/
+#endif /*AWTK_GO*/
 
 /**
  * @method widget_set_visible_only

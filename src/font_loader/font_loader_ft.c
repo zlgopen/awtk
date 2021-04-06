@@ -69,7 +69,8 @@ static ret_t font_ft_get_glyph(font_t* f, wchar_t c, font_size_t font_size, glyp
   ft_fontinfo* sf = &(font->ft_font);
   FT_Glyph glyph;
   FT_GlyphSlot glyf;
-  uint32_t flags = FT_LOAD_DEFAULT | FT_LOAD_RENDER | FT_LOAD_NO_AUTOHINT | FT_OUTLINE_HIGH_PRECISION;
+  uint32_t flags =
+      FT_LOAD_DEFAULT | FT_LOAD_RENDER | FT_LOAD_NO_AUTOHINT | FT_OUTLINE_HIGH_PRECISION;
 
   g->data = NULL;
   if (glyph_cache_lookup(&(font->cache), c, font_size, g) == RET_OK) {
