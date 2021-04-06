@@ -162,12 +162,18 @@ static ret_t main_loop_dispatch_events(main_loop_simple_t* loop) {
       case EVT_KEY_UP:
         window_manager_dispatch_input_event(widget, (event_t*)&(r.key_event));
         break;
-      case REQ_ADD_IDLE:
-        idle_add(r.add_idle.func, r.add_idle.e.target);
-        break;
-      case REQ_ADD_TIMER:
-        timer_add(r.add_timer.func, r.add_timer.e.target, r.add_timer.duration);
-        break;
+      case REQ_ADD_IDLE: {
+        uint32_t id = idle_add(r.add_idle.func, r.add_idle.e.target);
+        if (id != TK_INVALID_ID && r.add_idle.on_destroy != NULL) {
+          idle_set_on_destroy(id, r.add_idle.on_destroy, r.add_idle.on_destroy_ctx);
+        }
+      } break;
+      case REQ_ADD_TIMER: {
+        uint32_t id = timer_add(r.add_timer.func, r.add_timer.e.target, r.add_timer.duration);
+        if (id != TK_INVALID_ID && r.add_timer.on_destroy != NULL) {
+          timer_set_on_destroy(id, r.add_timer.on_destroy, r.add_timer.on_destroy_ctx);
+        }
+      } break;
       case EVT_MULTI_GESTURE:
         window_manager_dispatch_input_event(widget, (event_t*)&(r.multi_gesture_event));
         break;

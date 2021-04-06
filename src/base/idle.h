@@ -77,6 +77,19 @@ uint32_t idle_add(idle_func_t on_idle, void* ctx);
 ret_t idle_queue(idle_func_t on_idle, void* ctx);
 
 /**
+ * @method idle_queue_ex
+ * 用于非GUI线程增加一个idle，本函数向主循环的事件队列中发送一个增加idle的请求。
+ * @annotation ["static"]
+ * @param {idle_func_t} on_idle idle回调函数。
+ * @param {void*} ctx idle回调函数的上下文。
+ * @param {tk_destroy_t} on_destroy 回调函数。
+ * @param {void*} on_destroy_ctx 回调函数上下文。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t idle_queue_ex(idle_func_t on_idle, void* ctx, tk_destroy_t on_destroy, void* on_destroy_ctx);
+
+/**
  * @method idle_remove
  * 删除指定的idle。
  * @annotation ["scriptable", "static"]

@@ -33,12 +33,16 @@ enum { REQ_ADD_IDLE = EVT_REQ_START, REQ_ADD_TIMER };
 typedef struct _add_idle_t {
   event_t e;
   idle_func_t func;
+  tk_destroy_t on_destroy;
+  void* on_destroy_ctx;
 } add_idle_t;
 
 typedef struct _add_timer_t {
   event_t e;
   timer_func_t func;
   uint32_t duration;
+  tk_destroy_t on_destroy;
+  void* on_destroy_ctx;
 } add_timer_t;
 
 typedef union _event_queue_req_t {

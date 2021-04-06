@@ -75,12 +75,27 @@ void* test_thread2(void* args) {
   return NULL;
 }
 
+static ret_t on_idle_destroy(void* ctx) {
+  idle_info_t* info = (idle_info_t*)ctx;
+  log_debug("on_idle_destroy:%p\n", info);
+
+  return RET_OK;
+}
+
+static ret_t on_idle_once(const idle_info_t* idle) {
+  update_progress_bar(WIDGET(idle->ctx));
+
+  return RET_REMOVE;
+}
+
 static ret_t on_idle(const idle_info_t* idle) {
   return update_progress_bar(WIDGET(idle->ctx));
 }
 
 void* test_thread3(void* args) {
   int nr = 500000;
+  idle_queue_ex(on_idle_once, args, on_idle_destroy, NULL);
+
   while ((nr-- > 0) && (!s_app_quit)) {
     idle_queue(on_idle, args);
     sleep_ms(30);

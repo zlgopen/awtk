@@ -61,7 +61,7 @@ uint32_t idle_count(void) {
 
 #include "base/main_loop.h"
 
-ret_t idle_queue(idle_func_t on_idle, void* ctx) {
+ret_t idle_queue_ex(idle_func_t on_idle, void* ctx, tk_destroy_t on_destroy, void* on_destroy_ctx) {
 #ifdef AWTK_WEB
   idle_add(on_idle, ctx);
 
@@ -71,9 +71,15 @@ ret_t idle_queue(idle_func_t on_idle, void* ctx) {
   r.add_idle.func = on_idle;
   r.add_idle.e.target = ctx;
   r.add_idle.e.type = REQ_ADD_IDLE;
+  r.add_idle.on_destroy = on_destroy;
+  r.add_idle.on_destroy_ctx = on_destroy_ctx;
 
   return main_loop_queue_event(main_loop(), &r);
 #endif /*AWTK_WEB*/
+}
+
+ret_t idle_queue(idle_func_t on_idle, void* ctx) {
+  return idle_queue_ex(on_idle, ctx, NULL, NULL);
 }
 
 ret_t idle_set_on_destroy(uint32_t idle_id, tk_destroy_t on_destroy, void* on_destroy_ctx) {

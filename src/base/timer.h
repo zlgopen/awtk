@@ -86,6 +86,21 @@ uint32_t timer_add(timer_func_t on_timer, void* ctx, uint32_t duration);
 ret_t timer_queue(timer_func_t on_timer, void* ctx, uint32_t duration);
 
 /**
+ * @method timer_queue_ex
+ * 用于非GUI线程增加一个timer，本函数向主循环的事件队列中发送一个增加timer的请求。
+ * @annotation ["static"]
+ * @param {timer_func_t} on_timer
+ * timer回调函数，回调函数返回RET_REPEAT，则下次继续执行，否则自动移出。
+ * @param {void*} ctx timer回调函数的上下文。
+ * @param {uint32_t} duration 时间。
+ * @param {tk_destroy_t} on_destroy 回调函数。
+ * @param {void*} on_destroy_ctx 回调函数上下文。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t timer_queue_ex(timer_func_t on_timer, void* ctx, uint32_t duration, tk_destroy_t on_destroy, void* on_destroy_ctx);
+
+/**
  * @method timer_remove
  * 删除指定的timer。
  * @annotation ["scriptable", "static"]

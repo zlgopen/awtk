@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/04/06
+  * add idle\_queue\_ex/timer\_queue\_ex for script binding.
+
 2021/04/04
   * 增加 gui\_app\_start\_ex，方便嵌入式系统指定资源路径。
   * 增加 WITH\_MBEDTLS控制是否编译stream\_mbedtls。
