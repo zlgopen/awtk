@@ -125,6 +125,7 @@ typedef struct _hscroll_label_t {
   int32_t text_w;
 
   /*private*/
+  int32_t old_text_w;
   uint32_t timer_id;
   uint32_t elapsed;
   bool_t paused;

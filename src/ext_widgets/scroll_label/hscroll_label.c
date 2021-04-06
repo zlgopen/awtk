@@ -40,6 +40,12 @@ static ret_t hscroll_label_do_paint_self(widget_t* widget, canvas_t* c, uint32_t
   hscroll_label_t* hscroll_label = HSCROLL_LABEL(widget);
 
   hscroll_label->text_w = canvas_measure_text(c, text->str, text->size);
+  if (hscroll_label->text_w != hscroll_label->old_text_w) {
+    if (tk_str_eq(widget->state, WIDGET_STATE_FOCUSED)) {
+      hscroll_label_start(widget);
+    }
+    hscroll_label->old_text_w = hscroll_label->text_w;
+  }
   if (w < hscroll_label->text_w && hscroll_label->ellipses && !hscroll_label_is_running(widget)) {
     r = rect_init(left_margin, 0, w, widget->h);
 
@@ -330,6 +336,10 @@ static ret_t hscroll_label_on_timer(const timer_info_t* info) {
     if (hscroll_label->yoyo) {
       hscroll_label->reversed = !hscroll_label->reversed;
     }
+  }
+
+  if (ret != RET_REPEAT) {
+    hscroll_label->timer_id = TK_INVALID_ID;
   }
 
   return ret;
