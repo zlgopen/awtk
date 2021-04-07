@@ -20,7 +20,7 @@
       <button focusable="true" name="open:digit_clock" text="Digit Clock"/>
       <button focusable="true" name="open:locale" text="Locale"/>
       <button focusable="true" name="open:images" text="Image"/>
-      <button focusable="true" name="open:guage" text="Guage"/>
+      <button focusable="true" name="open:gauge" text="Gauge"/>
       <button focusable="true" name="open:switch" text="Switch"/>
       <button focusable="true" name="open:text_selector" text="Selector"/>
       <button focusable="true" name="open:image_animation" text="Image Animation"/>

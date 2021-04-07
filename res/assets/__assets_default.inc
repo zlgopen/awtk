@@ -13,13 +13,13 @@
 #include "default/inc/styles/tab_bottom.data"
 #include "default/inc/styles/calibration.data"
 #include "default/inc/styles/tab_list.data"
+#include "default/inc/styles/gauge.data"
 #include "default/inc/styles/list_view_dynamic.data"
 #include "default/inc/styles/default.data"
 #include "default/inc/styles/system_bar_bottom.data"
 #include "default/inc/styles/big_font.data"
 #include "default/inc/styles/tab_top_compact.data"
 #include "default/inc/styles/dialog_info.data"
-#include "default/inc/styles/guage.data"
 #include "default/inc/styles/file_browser.data"
 #include "default/inc/styles/dialog_confirm.data"
 #include "default/inc/styles/dialog.data"
@@ -103,6 +103,7 @@
 #include "default/inc/ui/tab_list.data"
 #include "default/inc/ui/animator.data"
 #include "default/inc/ui/slide_down.data"
+#include "default/inc/ui/gauge.data"
 #include "default/inc/ui/file_chooser_for_open.data"
 #include "default/inc/ui/scroll_view_h.data"
 #include "default/inc/ui/list_view_dynamic.data"
@@ -130,7 +131,6 @@
 #include "default/inc/ui/slide_view_h1.data"
 #include "default/inc/ui/basic.data"
 #include "default/inc/ui/auto_play.data"
-#include "default/inc/ui/guage.data"
 #include "default/inc/ui/desktop.data"
 #include "default/inc/ui/file_browser.data"
 #include "default/inc/ui/color_picker_full.data"
@@ -232,7 +232,6 @@
 #include "default/inc/images/num_2.res"
 #include "default/inc/images/en.res"
 #include "default/inc/images/slider_drag_o.res"
-#include "default/inc/images/guage_bg.res"
 #include "default/inc/images/battery_3.res"
 #include "default/inc/images/num_3.res"
 #include "default/inc/images/ani2.res"
@@ -250,6 +249,7 @@
 #include "default/inc/images/question.res"
 #include "default/inc/images/discovery_active.res"
 #include "default/inc/images/dot.res"
+#include "default/inc/images/gauge_bg.res"
 #include "default/inc/images/shifton.res"
 #include "default/inc/images/check.res"
 #include "default/inc/images/cursor.res"
@@ -273,7 +273,7 @@
 #include "default/inc/images/2.res"
 #include "default/inc/images/slider_bg.res"
 #include "default/inc/images/right_on.res"
-#include "default/inc/images/guage_pointer.res"
+#include "default/inc/images/gauge_pointer.res"
 #include "default/inc/images/flag_US.res"
 #include "default/inc/images/left_off.res"
 #include "default/inc/images/1.res"
@@ -326,6 +326,7 @@
 #include "default/inc/images/progress_circle.data"
 #include "default/inc/images/muted.data"
 #include "default/inc/images/file.data"
+#include "default/inc/images/gauge_bg.data"
 #include "default/inc/images/num_8.data"
 #include "default/inc/images/earth.data"
 #include "default/inc/images/flag_none.data"
@@ -348,7 +349,6 @@
 #include "default/inc/images/question.data"
 #include "default/inc/images/invisible.data"
 #include "default/inc/images/image_packed_fg.data"
-#include "default/inc/images/guage_bg.data"
 #include "default/inc/images/num_5.data"
 #include "default/inc/images/num_dot.data"
 #include "default/inc/images/arrow_right_n.data"
@@ -383,7 +383,6 @@
 #include "default/inc/images/anic.data"
 #include "default/inc/images/ani8.data"
 #include "default/inc/images/active_dot.data"
-#include "default/inc/images/guage_pointer.data"
 #include "default/inc/images/close_d.data"
 #include "default/inc/images/right_off.data"
 #include "default/inc/images/unmuted.data"
@@ -433,6 +432,7 @@
 #include "default/inc/images/play_n.data"
 #include "default/inc/images/slider_drag.data"
 #include "default/inc/images/unchecked.data"
+#include "default/inc/images/gauge_pointer.data"
 #include "default/inc/images/green_btn_n.data"
 #include "default/inc/images/red_btn_n.data"
 #include "default/inc/images/slider_drag_p.data"
@@ -488,13 +488,13 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, style_tab_bottom);
   assets_manager_add(am, style_calibration);
   assets_manager_add(am, style_tab_list);
+  assets_manager_add(am, style_gauge);
   assets_manager_add(am, style_list_view_dynamic);
   assets_manager_add(am, style_default);
   assets_manager_add(am, style_system_bar_bottom);
   assets_manager_add(am, style_big_font);
   assets_manager_add(am, style_tab_top_compact);
   assets_manager_add(am, style_dialog_info);
-  assets_manager_add(am, style_guage);
   assets_manager_add(am, style_file_browser);
   assets_manager_add(am, style_dialog_confirm);
   assets_manager_add(am, style_dialog);
@@ -578,6 +578,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, ui_tab_list);
   assets_manager_add(am, ui_animator);
   assets_manager_add(am, ui_slide_down);
+  assets_manager_add(am, ui_gauge);
   assets_manager_add(am, ui_file_chooser_for_open);
   assets_manager_add(am, ui_scroll_view_h);
   assets_manager_add(am, ui_list_view_dynamic);
@@ -605,7 +606,6 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, ui_slide_view_h1);
   assets_manager_add(am, ui_basic);
   assets_manager_add(am, ui_auto_play);
-  assets_manager_add(am, ui_guage);
   assets_manager_add(am, ui_desktop);
   assets_manager_add(am, ui_file_browser);
   assets_manager_add(am, ui_color_picker_full);
@@ -706,7 +706,6 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, image_num_2);
   assets_manager_add(am, image_en);
   assets_manager_add(am, image_slider_drag_o);
-  assets_manager_add(am, image_guage_bg);
   assets_manager_add(am, image_battery_3);
   assets_manager_add(am, image_num_3);
   assets_manager_add(am, image_ani2);
@@ -724,6 +723,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, image_question);
   assets_manager_add(am, image_discovery_active);
   assets_manager_add(am, image_dot);
+  assets_manager_add(am, image_gauge_bg);
   assets_manager_add(am, image_shifton);
   assets_manager_add(am, image_check);
   assets_manager_add(am, image_cursor);
@@ -747,7 +747,7 @@ ret_t assets_init_default(void) {
   assets_manager_add(am, image_2);
   assets_manager_add(am, image_slider_bg);
   assets_manager_add(am, image_right_on);
-  assets_manager_add(am, image_guage_pointer);
+  assets_manager_add(am, image_gauge_pointer);
   assets_manager_add(am, image_flag_US);
   assets_manager_add(am, image_left_off);
   assets_manager_add(am, image_1);
