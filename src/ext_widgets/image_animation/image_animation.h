@@ -149,6 +149,16 @@ typedef struct _image_animation_t {
 } image_animation_t;
 
 /**
+ * @event {event_t} EVT_ANIM_ONCE
+ * 使能循环播放时，控件动画完成一次事件。
+ */
+
+/**
+ * @event {event_t} EVT_ANIM_END
+ * 控件动画完成事件。
+ */
+
+/**
  * @method image_animation_create
  * @annotation ["constructor", "scriptable"]
  * 创建image_animation对象

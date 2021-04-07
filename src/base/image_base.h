@@ -112,6 +112,11 @@ typedef struct _image_base_t {
 } image_base_t;
 
 /**
+ * @event {pointer_event_t} EVT_CLICK
+ * 点击事件。
+ */
+
+/**
  * @method image_base_set_image
  * 设置控件的图片名称。
  *

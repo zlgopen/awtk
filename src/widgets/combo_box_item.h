@@ -56,6 +56,11 @@ typedef struct _combo_box_item_t {
 } combo_box_item_t;
 
 /**
+ * @event {pointer_event_t} EVT_CLICK
+ * 点击事件。
+ */
+
+/**
  * @event {event_t} EVT_VALUE_WILL_CHANGE
  * 值(勾选状态)即将改变事件。
  */

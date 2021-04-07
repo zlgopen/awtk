@@ -72,6 +72,21 @@ typedef struct _dragger_t {
 } dragger_t;
 
 /**
+ * @event {event_t} EVT_DRAG_START
+ * 开始拖动事件。
+ */
+
+/**
+ * @event {event_t} EVT_DRAG
+ * 拖动事件。
+ */
+
+/**
+ * @event {event_t} EVT_DRAG_END
+ * 结束拖动事件。
+ */
+
+/**
  * @method dragger_create
  * 创建dragger对象。
  * @annotation ["constructor", "scriptable"]

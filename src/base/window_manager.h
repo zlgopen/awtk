@@ -87,7 +87,7 @@ typedef struct _window_manager_vtable_t {
 /**
  * @class window_manager_t
  * @parent widget_t
- * @annotation ["scriptable"]
+ * @annotation ["scriptable","widget"]
  * 窗口管理器。
  */
 typedef struct _window_manager_t {
@@ -107,6 +107,21 @@ typedef struct _window_manager_t {
   bool_t show_waiting_pointer_cursor;
   const window_manager_vtable_t* vt;
 } window_manager_t;
+
+/**
+ * @event {window_event_t} EVT_TOP_WINDOW_CHANGED
+ * 顶层窗口改变的事件。
+ */
+
+/**
+ * @event {window_event_t} EVT_SCREEN_SAVER
+ * 在指定的时间内(WITH_SCREEN_SAVER_TIME)，没有用户输入事件，由窗口管理器触发。
+ */
+
+/**
+ * @event {event_t} EVT_ORIENTATION_CHANGED
+ * 屏幕旋转事件。
+ */
 
 /**
  * @method window_manager

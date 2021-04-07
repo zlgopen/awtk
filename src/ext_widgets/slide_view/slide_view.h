@@ -144,6 +144,11 @@ typedef struct _slide_view_t {
  */
 
 /**
+ * @event {event_t} EVT_PAGE_CHANGED
+ * 页面改变事件。
+ */
+
+/**
  * @method slide_view_create
  * 创建slide_view对象
  * @annotation ["constructor", "scriptable"]

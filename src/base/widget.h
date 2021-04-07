@@ -557,6 +557,31 @@ struct _widget_t {
  */
 
 /**
+ * @event {event_t} EVT_THEME_CHANGED
+ * 主题变化事件。
+ */
+
+/**
+ * @event {event_t} EVT_FOCUS
+ * 控件得到焦点时触发。
+ */
+
+/**
+ * @event {event_t} EVT_BLUR
+ * 控件失去焦点时触发。
+ */
+
+/**
+ * @event {event_t} EVT_WIDGET_ADD_CHILD
+ * 控件加载新的子控件。
+ */
+
+/**
+ * @event {event_t} EVT_WIDGET_REMOVE_CHILD
+ * 控件移除子控件。
+ */
+
+/**
  * @event {prop_change_event_t} EVT_PROP_WILL_CHANGE
  * 控件属性改变前触发(通过set_prop设置属性，才会触发)。
  */
@@ -564,6 +589,11 @@ struct _widget_t {
 /**
  * @event {prop_change_event_t} EVT_PROP_CHANGED
  * 控件属性改变后触发(通过set_prop设置属性，才会触发)。
+ */
+
+/**
+ * @event {paint_event_t} EVT_PAINT
+ * 控件绘制时触发。
  */
 
 /**
@@ -577,13 +607,13 @@ struct _widget_t {
  */
 
 /**
- * @event {event_t} EVT_FOCUS
- * 控件得到焦点时触发。
+ * @event {paint_event_t} EVT_PAINT_DONE
+ * 控件绘制完成时(canvas状态已经恢复)触发。
  */
 
 /**
- * @event {event_t} EVT_BLUR
- * 控件失去焦点时触发。
+ * @event {wheel_event_t} EVT_WHEEL_BEFORE_CHILDREN
+ * 鼠标滚轮事件，在子控件处理之前触发。
  */
 
 /**
@@ -602,13 +632,28 @@ struct _widget_t {
  */
 
 /**
- * @event {pointer_event_t} EVT_KEY_DOWN
+ * @event {key_event_t} EVT_KEY_DOWN_BEFORE_CHILDREN
+ * 键按下事件，在子控件处理之前触发。
+ */
+
+/**
+ * @event {key_event_t} EVT_KEY_DOWN
  * 键按下事件。
  */
 
 /**
- * @event {pointer_event_t} EVT_KEY_UP
+ * @event {key_event_t} EVT_KEY_UP_BEFORE_CHILDREN
+ * 键释放事件，在子控件处理之前触发。
+ */
+
+/**
+ * @event {key_event_t} EVT_KEY_UP
  * 键释放事件。
+ */
+
+/**
+ * @event {pointer_event_t} EVT_POINTER_DOWN_BEFORE_CHILDREN
+ * 指针设备按下事件，在子控件处理之前触发。
  */
 
 /**
@@ -627,8 +672,18 @@ struct _widget_t {
  */
 
 /**
+ * @event {pointer_event_t} EVT_POINTER_MOVE_BEFORE_CHILDREN
+ * 指针设备移动事件，在子控件处理之前触发。
+ */
+
+/**
  * @event {pointer_event_t} EVT_POINTER_UP
  * 指针设备释放事件。
+ */
+
+/**
+ * @event {pointer_event_t} EVT_POINTER_UP_BEFORE_CHILDREN
+ * 指针设备释放事件，在子控件处理之前触发。
  */
 
 /**

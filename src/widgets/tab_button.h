@@ -133,6 +133,11 @@ typedef struct _tab_button_t {
  */
 
 /**
+ * @event {pointer_event_t} EVT_CLICK
+ * 点击事件。
+ */
+
+/**
  * @method tab_button_create
  * 创建tab_button对象
  * @annotation ["constructor", "scriptable"]

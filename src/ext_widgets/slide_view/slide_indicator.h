@@ -187,6 +187,21 @@ typedef struct _slide_indicator_t {
 } slide_indicator_t;
 
 /**
+ * @event {event_t} EVT_VALUE_WILL_CHANGE
+ * 值(当前页的序号)即将改变事件。
+ */
+
+/**
+ * @event {event_t} EVT_VALUE_CHANGED
+ * 值(当前页的序号)改变事件。
+ */
+
+/**
+ * @event {event_t} EVT_PAGE_CHANGED
+ * 页面改变事件。
+ */
+
+/**
  * @method slide_indicator_create
  * 创建slide_indicator对象
  * @annotation ["constructor", "scriptable"]

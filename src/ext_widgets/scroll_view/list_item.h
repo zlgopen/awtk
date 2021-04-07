@@ -89,6 +89,11 @@ typedef struct _list_item_t {
 } list_item_t;
 
 /**
+ * @event {pointer_event_t} EVT_CLICK
+ * 点击事件。
+ */
+
+/**
  * @method list_item_create
  * @annotation ["constructor", "scriptable"]
  * 创建list_item对象

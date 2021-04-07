@@ -103,6 +103,16 @@ typedef struct _scroll_bar_t {
 } scroll_bar_t;
 
 /**
+ * @event {event_t} EVT_VALUE_WILL_CHANGE
+ * 值(滚动值)即将改变事件。
+ */
+
+/**
+ * @event {event_t} EVT_VALUE_CHANGED
+ * 值(滚动值)改变事件。
+ */
+
+/**
  * @method scroll_bar_create
  * 创建scroll_bar对象
  *

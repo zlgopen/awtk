@@ -55,6 +55,11 @@ typedef struct _color_component_t {
 } color_component_t;
 
 /**
+ * @event {event_t} EVT_VALUE_CHANGING
+ * 颜色正在改变事件。
+ */
+
+/**
  * @method color_component_create
  * 创建color_component对象
  * @annotation ["constructor"]

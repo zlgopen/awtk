@@ -112,6 +112,11 @@ typedef struct _check_button_t {
  */
 
 /**
+ * @event {pointer_event_t} EVT_CLICK
+ * 点击事件。
+ */
+
+/**
  * @method check_button_create
  * 创建多选按钮对象
  * @annotation ["constructor", "scriptable"]

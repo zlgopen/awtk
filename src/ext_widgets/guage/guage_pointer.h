@@ -97,6 +97,16 @@ typedef struct _guage_pointer_t {
 } guage_pointer_t;
 
 /**
+ * @event {event_t} EVT_VALUE_WILL_CHANGE
+ * 值(角度)即将改变事件。
+ */
+
+/**
+ * @event {event_t} EVT_VALUE_CHANGED
+ * 值(角度)改变事件。
+ */
+
+/**
  * @method guage_pointer_create
  * 创建guage_pointer对象
  * @annotation ["constructor", "scriptable"]

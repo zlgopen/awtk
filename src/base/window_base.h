@@ -273,6 +273,21 @@ typedef struct _window_base_t {
  * 窗口关闭事件。
  */
 
+/**
+ * @event {event_t} EVT_WINDOW_LOAD
+ * 窗口加载完成事件。
+ */
+
+/**
+ * @event {event_t} EVT_REQUEST_CLOSE_WINDOW
+ * 请求关闭窗口的事件。
+ */
+
+/**
+ * @event {event_t} EVT_LOCALE_CHANGED
+ * locale改变的事件。
+ */
+
 /*for sub class*/
 
 /**
