@@ -1,0 +1,21 @@
+<window style="dark" anim_hint="htranslate" >
+  <gauge x="c" y="10" w="240" h="240" image="gauge_bg" >
+    <gauge_pointer x="c" y="50" w="24" h="140" value="-128" image="gauge_pointer" 
+        animation="value(from=-128, to=128, yoyo_times=6, duration=3000, delay=1000, auto_destroy=false)"/>
+  </gauge>
+   
+   <gauge x="c" y="bottom:60" w="240" h="240" image="gauge_bg" >
+    <gauge_pointer x="c" y="50" w="12" h="140" value="-128" 
+        animation="value(from=-128, to=128, yoyo_times=1000, duration=3000, delay=1000)"/>
+    <gauge_pointer x="c" y="50" w="12" h="140" value="-128" image="pointer"  
+        animation="value(from=-128, to=128, yoyo_times=1000, duration=3000)"/>
+  </gauge>
+
+
+  <view x="0" y="bottom:10" w="100%" h="40" children_layout="default(r=1,c=4,s=5,m=5)">
+    <button name="start" text="Start"/>
+    <button name="pause" text="Pause"/>
+    <button name="stop" text="Stop"/>
+    <button name="close" text="Close"/>
+  </view>
+</window>
