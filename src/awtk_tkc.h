@@ -95,5 +95,6 @@
 #include "tkc/value_desc.h"
 #include "tkc/waitable_action_queue.h"
 #include "tkc/wstr.h"
+#include "tkc/rlog.h"
 
 #endif /*TK_TKC_H*/
