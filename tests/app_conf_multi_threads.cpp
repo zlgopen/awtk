@@ -8,7 +8,7 @@
 #include "base/data_reader_asset.h"
 #include "conf_io/app_conf_init_json.h"
 
-#define NR 1000
+#define NR 10000
 
 static void* work_thread(void* args) {
   uint32_t i = 0;

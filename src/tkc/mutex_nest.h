@@ -33,8 +33,8 @@ BEGIN_C_DECLS
 typedef struct _tk_mutex_nest_t {
   /*private*/
   tk_mutex_t* mutex;
-  uint64_t owner;
-  int32_t ref;
+  volatile uint64_t owner;
+  volatile int32_t ref;
 } tk_mutex_nest_t;
 
 /**
