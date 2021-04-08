@@ -27,6 +27,7 @@
 
 BEGIN_C_DECLS
 
+typedef bool_t (*mutable_image_need_redraw_t)(void* ctx);
 typedef ret_t (*mutable_image_prepare_image_t)(void* ctx, bitmap_t* image);
 typedef bitmap_t* (*mutable_image_create_image_t)(void* ctx, bitmap_format_t format,
                                                   bitmap_t* old_image);
@@ -79,6 +80,9 @@ typedef struct _mutable_image_t {
   uint32_t timer_id;
   void* prepare_image_ctx;
   mutable_image_prepare_image_t prepare_image;
+  
+  void* need_redraw_ctx;
+  mutable_image_need_redraw_t need_redraw;
 
   void* create_image_ctx;
   mutable_image_create_image_t create_image;
@@ -101,6 +105,21 @@ typedef struct _mutable_image_t {
  * @return {widget_t*} 对象。
  */
 widget_t* mutable_image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
+
+/**
+ * @method mutable_image_set_need_redraw
+ * 设置need_redraw回调函数。
+ *
+ * 缺省每16ms刷新一次。但有时只是在变化时刷新，所以提供一个回调函数由用户决定是否需要重绘。
+ *
+ * @param {widget_t*} widget mutable_image对象。
+ * @param {mutable_image_need_redraw_t} need_redraw 检查是否需要重绘的回调函数。
+ * @param {void*} need_redraw_ctx need_redraw回调函数的上下文。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t mutable_image_set_need_redraw(widget_t* widget, mutable_image_need_redraw_t need_redraw,
+                                      void* need_redraw_ctx);
 
 /**
  * @method mutable_image_set_prepare_image

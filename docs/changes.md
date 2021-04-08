@@ -2,6 +2,7 @@
 
 2021/04/08
   * 修复mutex\_nest中的BUG。
+  * mutable\_image增加mutable\_image\_set\_need\_redraw。
 
 2021/04/07
   * 完善控件API注释中的事件（感谢培煌提供补丁)。
