@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/04/09
+  * 修复combox一开始没有text的时候不显示选项的问题（感谢智明提供补丁）
+
 2021/04/08
   * 修复mutex\_nest中的BUG。
   * mutable\_image增加mutable\_image\_set\_need\_redraw。

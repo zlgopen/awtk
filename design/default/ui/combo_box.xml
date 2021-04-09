@@ -6,7 +6,7 @@
   </combo_box>
   <combo_box left_margin="6" open_window="color" readonly="true" x="10" y="50" w="200" h="30" text="red"/>
 
-  <combo_box readonly="true" x="5" y="bottom:5" w="45%" h="30" tr_text="ok" options="1:ok;2:cancel;"/>
+  <combo_box readonly="true" x="5" y="bottom:5" w="45%" h="30" options="1:ok;2:cancel;"/>
   <combo_box open_window="language" readonly="true" x="5" y="bottom:50" w="45%" h="30" tr_text="english"/>
   
   <combo_box readonly="true" x="right:5" y="bottom:5" w="45%" h="30" text="ok" 
