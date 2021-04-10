@@ -166,9 +166,8 @@ typedef struct _sized_str_t {
  *
  */
 struct _value_t {
-  uint8_t type : 7;
-  uint8_t free_handle : 1;
-
+  uint32_t type : 8;
+  uint32_t free_handle : 1;
   union {
     int8_t i8;
     uint8_t u8;
