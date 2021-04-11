@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   fs.h
  * Author: AWTK Develop Team
  * Brief:  simple fs api
@@ -477,17 +477,31 @@ ret_t fs_build_user_storage_file_name(char filename[MAX_PATH + 1], const char* a
 #include "tkc/tokenizer.h"
 
 ret_t fs_create_dir_r(fs_t* fs, const char* name) {
+  int32_t len = 0;
   char path[MAX_PATH + 1];
   tokenizer_t tokenizer;
   tokenizer_t* t = NULL;
   return_value_if_fail(fs != NULL && name != NULL, RET_BAD_PARAMS);
   t = tokenizer_init(&tokenizer, name, strlen(name), "/\\");
   return_value_if_fail(t != NULL, RET_BAD_PARAMS);
+
   while (tokenizer_has_more(t)) {
     tokenizer_next(t);
-    tk_strncpy(path, name, tk_min(MAX_PATH, t->cursor));
+
+    len = tk_min(MAX_PATH, t->cursor);
+    tk_strncpy(path, name, len);
+  
+    if (len > 0) {
+      if (path[len-1] == '/' || path[len-1] == '\\') {
+        path[len-1] = '\0';
+      } 
+    }
+  
     if (!fs_dir_exist(fs, path)) {
-      fs_create_dir(fs, path);
+      if (fs_create_dir(fs, path) != RET_OK) {
+        log_debug("create %s failed\n", path);
+        break;
+     }
     }
   }
   tokenizer_deinit(t);
