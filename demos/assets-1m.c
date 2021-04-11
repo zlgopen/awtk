@@ -15,7 +15,7 @@
 #include "../res/assets/default/inc/styles/default.data"
 #include "../res/assets/default/inc/styles/tab_top_compact.data"
 #include "../res/assets/default/inc/styles/dialog_info.data"
-#include "../res/assets/default/inc/styles/guage.data"
+#include "../res/assets/default/inc/styles/gauge.data"
 #include "../res/assets/default/inc/styles/dialog_confirm.data"
 #include "../res/assets/default/inc/styles/dialog.data"
 #include "../res/assets/default/inc/styles/tab_top.data"
@@ -62,7 +62,7 @@
 #include "../res/assets/default/inc/ui/memtest.data"
 #include "../res/assets/default/inc/ui/slide_view_h2.data"
 #include "../res/assets/default/inc/ui/slide_view_v_loop.data"
-#include "../res/assets/default/inc/ui/language.data"
+#include "../res/assets/default/inc/ui/langauge.data"
 #include "../res/assets/default/inc/ui/kb_float.data"
 #include "../res/assets/default/inc/ui/htranslate.data"
 #include "../res/assets/default/inc/ui/list_view_vh.data"
@@ -86,7 +86,7 @@
 #include "../res/assets/default/inc/ui/stroke_gradient.data"
 #include "../res/assets/default/inc/ui/slide_view_h1.data"
 #include "../res/assets/default/inc/ui/basic.data"
-#include "../res/assets/default/inc/ui/guage.data"
+#include "../res/assets/default/inc/ui/gauge.data"
 #include "../res/assets/default/inc/ui/color_picker_full.data"
 #include "../res/assets/default/inc/ui/dialog1.data"
 #include "../res/assets/default/inc/ui/fade.data"
@@ -182,7 +182,7 @@
 #include "../res/assets/default/inc/images/play_p.res"
 #include "../res/assets/default/inc/images/slider_bg.res"
 #include "../res/assets/default/inc/images/right_on.res"
-#include "../res/assets/default/inc/images/guage_pointer.res"
+#include "../res/assets/default/inc/images/gauge_pointer.res"
 #include "../res/assets/default/inc/images/left_off.res"
 #include "../res/assets/default/inc/images/red_btn_o.res"
 #include "../res/assets/default/inc/images/slider_drag.res"
@@ -263,7 +263,7 @@
 #include "../res/assets/default/inc/images/num_3.data"
 #include "../res/assets/default/inc/images/msg_active.data"
 #include "../res/assets/default/inc/images/active_dot.data"
-#include "../res/assets/default/inc/images/guage_pointer.data"
+#include "../res/assets/default/inc/images/gauge_pointer.data"
 #include "../res/assets/default/inc/images/close_d.data"
 #include "../res/assets/default/inc/images/right_off.data"
 #include "../res/assets/default/inc/images/unmuted.data"
@@ -376,7 +376,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_memtest);
   assets_manager_add(am, ui_slide_view_h2);
   assets_manager_add(am, ui_slide_view_v_loop);
-  assets_manager_add(am, ui_language);
+  assets_manager_add(am, ui_langauge);
   assets_manager_add(am, ui_kb_float);
   assets_manager_add(am, ui_htranslate);
   assets_manager_add(am, ui_list_view_vh);
@@ -400,7 +400,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_stroke_gradient);
   assets_manager_add(am, ui_slide_view_h1);
   assets_manager_add(am, ui_basic);
-  assets_manager_add(am, ui_guage);
+  assets_manager_add(am, ui_gauge);
   assets_manager_add(am, ui_color_picker_full);
   assets_manager_add(am, ui_dialog1);
   assets_manager_add(am, ui_fade);
@@ -473,7 +473,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, image_num_3);
   assets_manager_add(am, image_msg_active);
   assets_manager_add(am, image_active_dot);
-  assets_manager_add(am, image_guage_pointer);
+  assets_manager_add(am, image_gauge_pointer);
   assets_manager_add(am, image_close_d);
   assets_manager_add(am, image_right_off);
   assets_manager_add(am, image_unmuted);
@@ -539,7 +539,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, style_default);
   assets_manager_add(am, style_tab_top_compact);
   assets_manager_add(am, style_dialog_info);
-  assets_manager_add(am, style_guage);
+  assets_manager_add(am, style_gauge);
   assets_manager_add(am, style_dialog_confirm);
   assets_manager_add(am, style_dialog);
   assets_manager_add(am, style_tab_top);
