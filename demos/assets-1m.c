@@ -62,7 +62,7 @@
 #include "../res/assets/default/inc/ui/memtest.data"
 #include "../res/assets/default/inc/ui/slide_view_h2.data"
 #include "../res/assets/default/inc/ui/slide_view_v_loop.data"
-#include "../res/assets/default/inc/ui/langauge.data"
+#include "../res/assets/default/inc/ui/language.data"
 #include "../res/assets/default/inc/ui/kb_float.data"
 #include "../res/assets/default/inc/ui/htranslate.data"
 #include "../res/assets/default/inc/ui/list_view_vh.data"
@@ -376,7 +376,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_memtest);
   assets_manager_add(am, ui_slide_view_h2);
   assets_manager_add(am, ui_slide_view_v_loop);
-  assets_manager_add(am, ui_langauge);
+  assets_manager_add(am, ui_language);
   assets_manager_add(am, ui_kb_float);
   assets_manager_add(am, ui_htranslate);
   assets_manager_add(am, ui_list_view_vh);
