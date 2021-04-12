@@ -1,0 +1,22 @@
+import os
+import copy
+import awtk_config as awtk
+
+BIN_DIR=os.environ['BIN_DIR'];
+LIB_DIR=os.environ['LIB_DIR'];
+
+env=DefaultEnvironment().Clone()
+
+
+LIBS=awtk.STATIC_LIBS
+
+env.Program(os.path.join(BIN_DIR, 'udp_send'), ['udp_send.c'], LIBS=LIBS);
+env.Program(os.path.join(BIN_DIR, 'udp_recv'), ['udp_recv.c'], LIBS=LIBS);
+env.Program(os.path.join(BIN_DIR, 'serial_echo'), ['serial_echo.c'], LIBS=LIBS);
+env.Program(os.path.join(BIN_DIR, 'serial_send'), ['serial_send.c'], LIBS=LIBS);
+env.Program(os.path.join(BIN_DIR, 'serial_at'), ['serial_at.c'], LIBS=LIBS);
+env.Program(os.path.join(BIN_DIR, 'shdlc_send'), ['shdlc_send.c'], LIBS=LIBS);
+env.Program(os.path.join(BIN_DIR, 'shdlc_recv'), ['shdlc_recv.c'], LIBS=LIBS);
+
+env.Program(os.path.join(BIN_DIR, 'https_client'), ['https_client.c'], LIBS=LIBS);
+env.Program(os.path.join(BIN_DIR, 'https_server'), ['https_server.c'], LIBS=LIBS);
