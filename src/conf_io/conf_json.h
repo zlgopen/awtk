@@ -90,7 +90,7 @@ conf_doc_t* conf_doc_load_json(const char* data, int32_t size);
  * @param {conf_doc_t*} doc doc对象。
  * @param {str_t*} str 保存结果。
  * 
- * @return {object_t*} 返回配置对象。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败
  */
 ret_t conf_doc_save_json(conf_doc_t* doc, str_t* str);
 
