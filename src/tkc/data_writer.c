@@ -36,6 +36,13 @@ ret_t data_writer_truncate(data_writer_t* writer, uint64_t size) {
   return writer->vt->truncate(writer, size);
 }
 
+ret_t data_writer_flush(data_writer_t* writer) {
+  return_value_if_fail(writer != NULL && writer->vt != NULL && writer->vt->flush != NULL,
+                       RET_BAD_PARAMS);
+
+  return writer->vt->flush(writer);
+}
+
 ret_t data_writer_destroy(data_writer_t* writer) {
   return_value_if_fail(writer != NULL && writer->vt != NULL && writer->vt->destroy != NULL,
                        RET_BAD_PARAMS);
