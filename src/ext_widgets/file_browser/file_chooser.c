@@ -45,6 +45,14 @@ ret_t file_chooser_set_init_dir(file_chooser_t* chooser, const char* init_dir) {
   return RET_OK;
 }
 
+ret_t file_chooser_set_top_dir(file_chooser_t* chooser, const char* top_dir) {
+  return_value_if_fail(chooser != NULL, RET_BAD_PARAMS);
+
+  chooser->top_dir = tk_str_copy(chooser->top_dir, top_dir);
+
+  return RET_OK;
+}
+
 ret_t file_chooser_set_filter(file_chooser_t* chooser, const char* filter) {
   return_value_if_fail(chooser != NULL, RET_BAD_PARAMS);
 
@@ -116,6 +124,11 @@ ret_t file_chooser_choose(file_chooser_t* chooser) {
       file_browser_view_set_init_dir(file_browser_view, chooser->init_dir);
     }
   }
+
+  if (chooser->top_dir != NULL) {
+    file_browser_view_set_top_dir(file_browser_view, chooser->top_dir);
+  }
+
   file_browser_view_reload(file_browser_view);
 
   if (widget_is_dialog(win)) {
@@ -175,6 +188,7 @@ ret_t file_chooser_destroy(file_chooser_t* chooser) {
 
   TKMEM_FREE(chooser->filter);
   TKMEM_FREE(chooser->init_dir);
+  TKMEM_FREE(chooser->top_dir);
   emitter_deinit(EMITTER(chooser));
 
   TKMEM_FREE(chooser);

@@ -39,6 +39,12 @@ typedef struct _file_chooser_t {
    * 初始目录。
    */
   char* init_dir;
+  
+  /**
+   * @property {char*} top_dir
+   * 最顶层目录。到达本目录后，不允许往上。
+   */
+  char* top_dir;
 
   /**
    * @property {char*} filter
@@ -100,6 +106,17 @@ file_chooser_t* file_chooser_create(void);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t file_chooser_set_init_dir(file_chooser_t* chooser, const char* init_dir);
+
+/**
+ * @method file_chooser_set_top_dir
+ * 设置初始目录。
+ * @annotation ["scriptable"]
+ * @param {file_chooser_t*} chooser file_chooser对象。
+ * @param {const char*} top_dir 初始目录
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t file_chooser_set_top_dir(file_chooser_t* chooser, const char* top_dir);
 
 /**
  * @method file_chooser_set_filter

@@ -53,6 +53,7 @@ static ret_t on_file_save(void* ctx, event_t* e) {
   emitter_on(EMITTER(chooser), EVT_DONE, tk_on_choose_file_result, ctx);
 
   file_chooser_set_init_dir(chooser, "../");
+  file_chooser_set_top_dir(chooser, "../");
 
   return file_chooser_choose_file_for_save(chooser);
 }
