@@ -161,3 +161,32 @@ TEST(Path, replace_extname) {
   ASSERT_EQ(path_replace_extname(result, sizeof(result), filename, "abc"), RET_OK);
   ASSERT_STREQ(normalize_path_str(result), "a/b/test.abc");
 }
+
+TEST(Path, path_remove_last_slash) {
+  char result[MAX_PATH + 1];
+  strcpy(result, "./a/");
+  ASSERT_EQ(path_remove_last_slash(result), RET_OK);
+  ASSERT_STREQ(result, "./a");
+  
+  strcpy(result, "./a\\");
+  ASSERT_EQ(path_remove_last_slash(result), RET_OK);
+  ASSERT_STREQ(result, "./a");
+  
+  strcpy(result, "./");
+  ASSERT_EQ(path_remove_last_slash(result), RET_OK);
+  ASSERT_STREQ(result, ".");
+
+  strcpy(result, "/");
+  ASSERT_EQ(path_remove_last_slash(result), RET_OK);
+  ASSERT_STREQ(result, "/");
+  
+  strcpy(result, "////");
+  ASSERT_EQ(path_remove_last_slash(result), RET_OK);
+  ASSERT_STREQ(result, "/");
+  
+  strcpy(result, "/a/b//");
+  ASSERT_EQ(path_remove_last_slash(result), RET_OK);
+  ASSERT_STREQ(result, "/a/b");
+  
+  ASSERT_NE(path_remove_last_slash(NULL), RET_OK);
+}

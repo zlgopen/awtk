@@ -1,5 +1,5 @@
 <dialog anim_hint="htranslate" theme="file_browser" text= "Choose..." w="100%" h="100%">
-	<file_browser_view x="0" y="0" w="100%" h="100%" init_dir="./">
+	<file_browser_view x="0" y="0" w="100%" h="100%" init_dir="./" top_dir="./">
 		<list_view x="0" y="0" w="100%" h="-90" item_height="40">
 			<scroll_view name="container" x="0" y="0" w="100%" h="100%">
 				<list_item name="return_up" style="odd_clickable" children_layout="default(rows=1,cols=0)">

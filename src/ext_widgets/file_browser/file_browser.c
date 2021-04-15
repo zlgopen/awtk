@@ -113,6 +113,27 @@ ret_t file_browser_set_cwd(file_browser_t* fb, const char* cwd) {
   return RET_OK;
 }
 
+ret_t file_browser_set_top_dir(file_browser_t* fb, const char* top_dir) {
+  char path[MAX_PATH + 1];
+  return_value_if_fail(fb != NULL && top_dir != NULL, RET_BAD_PARAMS);
+  assert(strlen(top_dir) <= MAX_PATH);
+
+  memset(path, 0x00, sizeof(path));
+  if (path_is_abs(top_dir)) {
+    path_normalize(top_dir, path, MAX_PATH);
+  } else {
+    char abs_path[MAX_PATH + 1];
+    memset(abs_path, 0x00, sizeof(path));
+    return_value_if_fail(path_abs(top_dir, abs_path, MAX_PATH) == RET_OK, RET_BAD_PARAMS);
+    path_normalize(abs_path, path, MAX_PATH);
+  }
+
+  fb->top_dir = tk_str_copy(fb->top_dir, path);
+  path_remove_last_slash(fb->top_dir);
+
+  return RET_OK;
+}
+
 ret_t file_browser_create_dir(file_browser_t* fb, const char* name) {
   char fullpath[MAX_PATH + 1];
   fb_item_t* item = file_browser_find_item(fb, name);
@@ -253,6 +274,12 @@ ret_t file_browser_enter(file_browser_t* fb, const char* dir) {
 ret_t file_browser_up(file_browser_t* fb) {
   char* p = NULL;
   return_value_if_fail(fb != NULL, RET_BAD_PARAMS);
+
+  if (fb->top_dir != NULL) {
+    if (strstr(fb->top_dir, fb->cwd) != NULL) {
+      return RET_FAIL;
+    }
+  }
 
   p = strrchr(fb->cwd, TK_PATH_SEP);
   while (p != NULL && (p[1] == '\0' || (p[1] == '.' && p[2] == '\0'))) {
@@ -491,6 +518,7 @@ ret_t file_browser_destroy(file_browser_t* fb) {
     }
     TKMEM_FREE(fb->items);
   }
+  TKMEM_FREE(fb->top_dir);
 
   TKMEM_FREE(fb);
 

@@ -91,6 +91,13 @@ typedef struct _file_browser_t {
    */
   char cwd[MAX_PATH + 1];
 
+  /**
+   * @property {char*} top_dir
+   * @annotation ["readable"]
+   * 最顶层目录。到达本目录后，不允许往上。
+   */
+  char* top_dir;
+
   /*private*/
   fs_t* fs;
   fb_item_t* items;
@@ -124,6 +131,17 @@ file_browser_t* file_browser_create(fs_t* fs);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t file_browser_set_cwd(file_browser_t* fb, const char* cwd);
+
+/**
+ * @method file_browser_set_top_dir
+ * 设置顶层目录。
+ * 
+ * @param {file_browser_t*} fb file browser对象。
+ * @param {const char*} top_dir 顶层目录。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t file_browser_set_top_dir(file_browser_t* fb, const char* top_dir);
 
 /**
  * @method file_browser_create_dir

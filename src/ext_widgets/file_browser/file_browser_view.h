@@ -78,6 +78,13 @@ typedef struct _file_browser_view_t {
   char* init_dir;
 
   /**
+   * @property {char*} top_dir
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 最顶层目录。到达本目录后，不允许往上。
+   */
+  char* top_dir;
+
+  /**
    * @property {char*} filter
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 过滤规则。
@@ -168,6 +175,17 @@ widget_t* file_browser_view_cast(widget_t* widget);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t file_browser_view_set_init_dir(widget_t* widget, const char* init_dir);
+
+/**
+ * @method file_browser_view_set_top_dir
+ * 设置 顶层文件夹。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {const char*} top_dir 初始文件夹。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t file_browser_view_set_top_dir(widget_t* widget, const char* top_dir);
 
 /**
  * @method file_browser_view_set_filter
@@ -287,6 +305,7 @@ ret_t file_browser_view_create_file(widget_t* widget, const char* name, const ch
 
 #define FILE_BROWSER_VIEW_PROP_SORT_BY "sort_by"
 #define FILE_BROWSER_VIEW_PROP_INIT_DIR "init_dir"
+#define FILE_BROWSER_VIEW_PROP_TOP_DIR "top_dir"
 #define FILE_BROWSER_VIEW_PROP_SORT_ASCENDING "sort_ascending"
 #define FILE_BROWSER_VIEW_PROP_SHOW_CHECK_BUTTON "show_check_button"
 #define FILE_BROWSER_VIEW_PROP_IGNORE_HIDDEN_FILES "ignore_hidden_files"

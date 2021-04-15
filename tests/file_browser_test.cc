@@ -324,3 +324,46 @@ TEST(FileBrowser, compare_dir_file) {
   ASSERT_EQ(fb_compare_by_type_dec(&b, &a) > 0, TRUE);
   ASSERT_EQ(fb_compare_by_type_dec(&a, &a) == 0, TRUE);
 }
+
+TEST(FileBrowser, top_dir) {
+  char cwd[MAX_PATH + 1];
+  file_browser_t* fb = file_browser_create(os_fs());
+
+  fs_get_cwd(os_fs(), cwd);
+
+  ASSERT_EQ(file_browser_set_top_dir(fb, "./"), RET_OK);
+  ASSERT_STREQ(fb->top_dir, cwd);
+
+  ASSERT_EQ(file_browser_set_cwd(fb, "./tests/fbtest"), RET_OK);
+  ASSERT_EQ(file_browser_create_dir(fb, "a"), RET_OK);
+  ASSERT_EQ(file_browser_create_file(fb, "a.txt", "hello", 5), RET_OK);
+  ASSERT_EQ(file_browser_create_file(fb, "a1.txt", "world", 5), RET_OK);
+  ASSERT_EQ(file_browser_refresh(fb), RET_OK);
+  ASSERT_EQ(file_browser_get_items_nr(fb), 3);
+
+  ASSERT_EQ(file_browser_enter(fb, "a"), RET_OK);
+  ASSERT_EQ(file_browser_get_items_nr(fb), 0);
+
+  ASSERT_EQ(file_browser_create_dir(fb, "b"), RET_OK);
+  ASSERT_EQ(file_browser_create_file(fb, "b.txt", "hello", 5), RET_OK);
+  ASSERT_EQ(file_browser_refresh(fb), RET_OK);
+  ASSERT_EQ(file_browser_get_items_nr(fb), 2);
+
+  ASSERT_EQ(file_browser_remove(fb, "b"), RET_OK);
+  ASSERT_EQ(file_browser_remove(fb, "b.txt"), RET_OK);
+  ASSERT_EQ(file_browser_up(fb), RET_OK);
+  ASSERT_EQ(file_browser_get_items_nr(fb), 3);
+
+  ASSERT_EQ(file_browser_remove(fb, "a"), RET_OK);
+  ASSERT_EQ(file_browser_remove(fb, "a.txt"), RET_OK);
+  ASSERT_EQ(file_browser_remove(fb, "a1.txt"), RET_OK);
+  ASSERT_EQ(file_browser_refresh(fb), RET_OK);
+  ASSERT_EQ(file_browser_get_items_nr(fb), 0);
+
+  ASSERT_EQ(file_browser_up(fb), RET_OK);
+  ASSERT_EQ(file_browser_up(fb), RET_OK);
+  ASSERT_NE(file_browser_up(fb), RET_OK);
+  ASSERT_NE(file_browser_up(fb), RET_OK);
+
+  file_browser_destroy(fb);
+}

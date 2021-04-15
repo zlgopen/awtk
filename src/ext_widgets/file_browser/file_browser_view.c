@@ -35,6 +35,16 @@
 
 ret_t file_browser_view_reload(widget_t* widget);
 
+ret_t file_browser_view_set_top_dir(widget_t* widget, const char* top_dir) {
+  file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
+  return_value_if_fail(file_browser_view != NULL, RET_BAD_PARAMS);
+
+  file_browser_view->top_dir = tk_str_copy(file_browser_view->top_dir, top_dir);
+  file_browser_set_top_dir(file_browser_view->fb, top_dir);
+
+  return RET_OK;
+}
+
 ret_t file_browser_view_set_init_dir(widget_t* widget, const char* init_dir) {
   file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(widget);
   return_value_if_fail(file_browser_view != NULL, RET_BAD_PARAMS);
@@ -135,6 +145,9 @@ static ret_t file_browser_view_get_prop(widget_t* widget, const char* name, valu
   if (tk_str_eq(FILE_BROWSER_VIEW_PROP_INIT_DIR, name)) {
     value_set_str(v, file_browser_view->init_dir);
     return RET_OK;
+  } else if (tk_str_eq(FILE_BROWSER_VIEW_PROP_TOP_DIR, name)) {
+    value_set_str(v, file_browser_view->top_dir);
+    return RET_OK;
   } else if (tk_str_eq(FILE_BROWSER_VIEW_PROP_IGNORE_HIDDEN_FILES, name)) {
     file_browser_view_set_ignore_hidden_files(widget, value_bool(v));
     return RET_OK;
@@ -157,6 +170,9 @@ static ret_t file_browser_view_set_prop(widget_t* widget, const char* name, cons
 
   if (tk_str_eq(FILE_BROWSER_VIEW_PROP_INIT_DIR, name)) {
     file_browser_view_set_init_dir(widget, value_str(v));
+    return RET_OK;
+  } else if (tk_str_eq(FILE_BROWSER_VIEW_PROP_TOP_DIR, name)) {
+    file_browser_view_set_top_dir(widget, value_str(v));
     return RET_OK;
   } else if (tk_str_eq(FILE_BROWSER_VIEW_PROP_IGNORE_HIDDEN_FILES, name)) {
     file_browser_view_set_ignore_hidden_files(widget, value_bool(v));
@@ -182,6 +198,7 @@ static ret_t file_browser_view_on_destroy(widget_t* widget) {
   TKMEM_FREE(file_browser_view->filter);
   TKMEM_FREE(file_browser_view->sort_by);
   TKMEM_FREE(file_browser_view->init_dir);
+  TKMEM_FREE(file_browser_view->top_dir);
   file_browser_destroy(file_browser_view->fb);
 
   widget_destroy(file_browser_view->file_template);

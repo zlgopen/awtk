@@ -194,6 +194,17 @@ ret_t path_app_root(char path[MAX_PATH + 1]);
  */
 bool_t path_exist(const char* path);
 
+/**
+ * @method path_remove_last_slash
+ *
+ * 去掉后面的/和\\字符。
+ *
+ * @param {const char*} path 目录。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t path_remove_last_slash(char* path);
+
 END_C_DECLS
 
 #endif /*TK_PATH_H*/

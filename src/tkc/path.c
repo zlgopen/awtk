@@ -286,3 +286,20 @@ ret_t path_replace_extname(char* result, int32_t size, const char* filename, con
 
   return RET_OK;
 }
+
+ret_t path_remove_last_slash(char* path) {
+  char* p = NULL;
+  return_value_if_fail(path != NULL, RET_BAD_PARAMS);
+
+  p = path + strlen(path) - 1;
+  while (p > path) {
+    if (*p == '/' || *p == '\\') {
+      *p = '\0';
+      p--;
+    } else {
+      break;
+    }
+  }
+
+  return RET_OK;
+}
