@@ -8,3 +8,14 @@
     <empty_focus bg_color="#404040" text_color="#a0a0a0" />
   </style>
 </edit>
+
+<edit>
+  <style name="center" fg_color="orange" text_color="white" text_align_h="center">
+    <normal     bg_color="#404040" />
+    <focused    bg_color="#404040" />
+    <disable    bg_color="gray" text_color="#d0d0d0" />
+    <error      bg_color="#404040" text_color="red" />
+    <empty      bg_color="#404040" text_color="#a0a0a0" />
+    <empty_focus bg_color="#404040" text_color="#a0a0a0" />
+  </style>
+</edit>

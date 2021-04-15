@@ -33,11 +33,20 @@
 
      <list_item style="empty" children_layout="default(r=1,c=0,ym=1)">
       <label w="30%" text="Age"/>
-      <edit w="70%" left_margin="34" right_margin="34" tips="uint(0-150)" input_type="uint" min="0" max="150" step="1" auto_fix="true">
+      <edit style="center" w="70%" left_margin="34" right_margin="34" tips="uint(0-150)" input_type="uint" min="0" max="150" step="1" auto_fix="true">
         <button name="dec" repeat="300" style="spinbox_left" x="0" y="0" w="30" h="100%" />
         <button name="inc" repeat="300" style="spinbox_right" x="right" y="bottom" w="30" h="100%" />
       </edit>
      </list_item>
+     
+     <list_item style="empty" children_layout="default(r=1,c=0,ym=1)">
+      <label w="30%" text="Weight"/>
+      <edit style="center" w="70%" left_margin="34" right_margin="34" tips="uint(0-150)" input_type="uint" min="0" max="150" step="1" auto_fix="true">
+        <button name="dec" repeat="300" style="spinbox_left" x="0" y="0" w="30" h="100%" />
+        <button name="inc" repeat="300" style="spinbox_right" x="right" y="bottom" w="30" h="100%" />
+      </edit>
+     </list_item>
+
      <list_item style="empty" children_layout="default(r=1,c=0,ym=1)">
       <label w="30%" text="Password"/>
       <edit w="70%" right_margin="30" input_type="password" action_text="next">
