@@ -107,6 +107,7 @@ ret_t file_browser_set_cwd(file_browser_t* fb, const char* cwd) {
     return_value_if_fail(path_abs(cwd, path, MAX_PATH) == RET_OK, RET_BAD_PARAMS);
     path_normalize(path, fb->cwd, MAX_PATH);
   }
+  path_remove_last_slash(fb->cwd);
 
   file_browser_refresh(fb);
 

@@ -367,3 +367,21 @@ TEST(FileBrowser, top_dir) {
 
   file_browser_destroy(fb);
 }
+
+TEST(FileBrowser, top_dir1) {
+  char cwd[MAX_PATH + 1];
+  file_browser_t* fb = file_browser_create(os_fs());
+
+  fs_get_cwd(os_fs(), cwd);
+
+  ASSERT_EQ(file_browser_set_cwd(fb, "./"), RET_OK);
+  ASSERT_EQ(file_browser_set_top_dir(fb, "./"), RET_OK);
+  ASSERT_STREQ(fb->top_dir, cwd);
+
+  ASSERT_NE(file_browser_up(fb), RET_OK);
+  ASSERT_EQ(file_browser_enter(fb, "src"), RET_OK);
+  ASSERT_EQ(file_browser_up(fb), RET_OK);
+  ASSERT_NE(file_browser_up(fb), RET_OK);
+
+  file_browser_destroy(fb);
+}
