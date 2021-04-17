@@ -413,6 +413,9 @@ class IDLGen {
 
   saveResult(filename) {
     const str = JSON.stringify(this.result, null, '  ');
+    if (!fs.existsSync(path.dirname(filename))) {
+      fs.mkdirSync(path.dirname(filename), {recursive: true});
+    }
     fs.writeFileSync(filename, str);
   }
 
