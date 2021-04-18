@@ -162,10 +162,10 @@ typedef struct _fscript_parser_t {
 
   char c;
   str_t temp;
-  char* error;
   uint16_t row;
   uint16_t col;
   fscript_func_call_t* first;
+  fscript_parser_error_t* error;
 } fscript_parser_t;
 
 static ret_t fexpr_parse(fscript_parser_t* parser, value_t* result);
@@ -419,12 +419,14 @@ ret_t fscript_destroy(fscript_t* fscript) {
   return RET_OK;
 }
 
-static ret_t fscript_parser_init(fscript_parser_t* parser, object_t* obj, const char* str) {
+static ret_t fscript_parser_init(fscript_parser_t* parser, object_t* obj, const char* str,
+                                 fscript_parser_error_t* error) {
   memset(parser, 0x00, sizeof(fscript_parser_t));
 
   parser->obj = obj;
   parser->str = str;
   parser->cursor = str;
+  parser->error = error;
   str_init(&(parser->temp), 64);
 
   return RET_OK;
@@ -432,7 +434,6 @@ static ret_t fscript_parser_init(fscript_parser_t* parser, object_t* obj, const 
 
 static ret_t fscript_parser_deinit(fscript_parser_t* parser) {
   str_reset(&(parser->temp));
-  TKMEM_FREE(parser->error);
   fscript_func_call_destroy(parser->first);
   return RET_OK;
 }
@@ -470,7 +471,14 @@ static ret_t fscript_parser_unget_char(fscript_parser_t* parser, char c) {
 static ret_t fscript_parser_set_error(fscript_parser_t* parser, const char* str) {
   return_value_if_fail(parser != NULL && str != NULL, RET_BAD_PARAMS);
 
-  parser->error = tk_str_copy(parser->error, str);
+  if (parser->error != NULL) {
+    parser->error->row = parser->row;
+    parser->error->col = parser->col;
+    parser->error->offset = parser->cursor - parser->str;
+    parser->error->message = tk_str_copy(parser->error->message, str);
+    parser->error->token = tk_str_copy(parser->error->token, parser->token.token);
+  }
+
   log_warn("code: \"%s\"\n", parser->str);
   log_warn("token: \"%s\"\n", parser->token.token);
   log_warn("at line(%u) col (%u): %s\n", parser->row, parser->col, str);
@@ -1242,13 +1250,44 @@ static ret_t fscript_parse_statements(fscript_parser_t* parser, fscript_func_cal
   return RET_OK;
 }
 
+fscript_parser_error_t* fscript_parser_error_init(fscript_parser_error_t* error) {
+  return_value_if_fail(error != NULL, NULL);
+  memset(error, 0x00, sizeof(fscript_parser_error_t));
+
+  return error;
+}
+
+ret_t fscript_parser_error_deinit(fscript_parser_error_t* error) {
+  return_value_if_fail(error != NULL, RET_BAD_PARAMS);
+  TKMEM_FREE(error->token);
+  TKMEM_FREE(error->message);
+
+  return RET_OK;
+}
+
+ret_t fscript_syntax_check(object_t* obj, const char* script, fscript_parser_error_t* error) {
+  ret_t ret = RET_OK;
+  fscript_parser_t parser;
+  return_value_if_fail(obj != NULL && script != NULL && error != NULL, RET_BAD_PARAMS);
+  fscript_parser_error_init(error);
+  fscript_parser_init(&parser, obj, script, error);
+
+  parser.first = fscript_func_call_create(&parser, "expr", 4);
+  ret = fscript_parse_statements(&parser, parser.first);
+  fscript_parser_deinit(&parser);
+
+  return RET_OK;
+}
+
 fscript_t* fscript_create(object_t* obj, const char* expr) {
   ret_t ret = RET_OK;
   fscript_parser_t parser;
   fscript_t* fscript = NULL;
+  fscript_parser_error_t error;
   return_value_if_fail(expr != NULL, NULL);
 
-  fscript_parser_init(&parser, obj, expr);
+  fscript_parser_error_init(&error);
+  fscript_parser_init(&parser, obj, expr, &error);
   parser.first = fscript_func_call_create(&parser, "expr", 4);
   ret = fscript_parse_statements(&parser, parser.first);
   if (ret == RET_OK) {
@@ -1258,6 +1297,7 @@ fscript_t* fscript_create(object_t* obj, const char* expr) {
     log_warn("parser error:%s\n", expr);
     fscript_parser_deinit(&parser);
   }
+  fscript_parser_error_deinit(&error);
 
   return fscript;
 }

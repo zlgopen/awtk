@@ -57,6 +57,58 @@ struct _fscript_func_call_t;
 typedef struct _fscript_func_call_t fscript_func_call_t;
 
 /**
+ * @class fscript_parser_error_t
+ * 
+ * 解析错误信息。
+ *
+ */
+typedef struct _fscript_parser_error_t {
+  /**
+   * @property {int} row
+   * @annotation ["readable"]
+   * 出现错误的代码行。
+   */
+  int row;
+  /**
+   * @property {int} col
+   * @annotation ["readable"]
+   * 出现错误的代码列。
+   */
+  int col;
+
+  /**
+   * @property {int} offset
+   * @annotation ["readable"]
+   * 出现错误的代码偏移。
+   */
+  int offset;
+
+  /**
+   * @property {char*} message
+   * @annotation ["readable"]
+   * 错误信息。
+   */
+  char* message;
+  
+  /**
+   * @property {char*} token
+   * @annotation ["readable"]
+   * 当前的token。
+   */
+  char* token;
+} fscript_parser_error_t;
+
+/**
+ * @metho fscript_parser_error_deinit
+ * 释放error对象中的资源。
+ *
+ * @param {fscript_parser_error_t*} error 解析错误信息。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t fscript_parser_error_deinit(fscript_parser_error_t* error);
+
+/**
  * @class fscript_t
  * @annotation ["fake"]
  * 
@@ -107,6 +159,25 @@ typedef ret_t (*fscript_func_t)(fscript_t* fscript, fscript_args_t* args, value_
  * @return {fscript_t*} 返回fscript对象。
  */
 fscript_t* fscript_create(object_t* obj, const char* script);
+
+/**
+ * @method fscript_syntax_check
+ * 解析代码，分析是否有语法错误。
+ *
+ * 示例：
+ * ```c
+ * fscript_parser_error_t error;
+ * fscript_syntax_check(obj, "1+1", &error);
+ * fscript_parser_error_deinit(&error);
+ *```
+ *
+ * @param {object_t*} obj 脚本执行上下文。
+ * @param {const char*} script 脚本代码。
+ * @param {fscript_parser_error_t*} error 用于返回错误信息。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t fscript_syntax_check(object_t* obj, const char* script, fscript_parser_error_t* error);
 
 /**
  * @method fscript_exec

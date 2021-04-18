@@ -1182,3 +1182,28 @@ TEST(FExr, while_statement3) {
 
   OBJECT_UNREF(obj);
 }
+
+TEST(FExr, syntax_check) {
+  object_t* obj = object_default_create();
+  fscript_parser_error_t error;
+  fscript_syntax_check(obj, "1", &error);
+  ASSERT_EQ(error.message, (const char*)NULL);
+  fscript_parser_error_deinit(&error);
+  
+  fscript_syntax_check(obj, "(1+1", &error);
+  ASSERT_STREQ(error.message, "expect )");
+  ASSERT_EQ(error.row, 0);
+  ASSERT_EQ(error.col, 4);
+  ASSERT_EQ(error.offset, 4);
+  
+  fscript_syntax_check(obj, "1+1)", &error);
+  ASSERT_STREQ(error.token, ")");
+  ASSERT_STREQ(error.message, "unexpected token\n");
+  ASSERT_EQ(error.row, 0);
+  ASSERT_EQ(error.col, 4);
+  ASSERT_EQ(error.offset, 4);
+
+  fscript_parser_error_deinit(&error);
+
+  OBJECT_UNREF(obj);
+}
