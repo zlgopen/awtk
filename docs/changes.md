@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/04/19
+  * 修复bitmap\_clone。
+
 2021/04/18
   * 增加函数fscript\_syntax\_check（感谢福明提供补丁）
 

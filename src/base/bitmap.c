@@ -553,21 +553,21 @@ ret_t bitmap_premulti_alpha(bitmap_t* bitmap) {
 
 bitmap_t* bitmap_clone(bitmap_t* bitmap) {
   bitmap_t* b = NULL;
-  return_value_if_fail(bitmap != NULL, NULL);
+  return_value_if_fail(bitmap != NULL && bitmap->buffer != NULL, NULL);
 
   b = bitmap_create_ex(bitmap->w, bitmap->h, bitmap->line_length,
                        (bitmap_format_t)(bitmap->format));
   return_value_if_fail(b != NULL, NULL);
 
   if (b->buffer != NULL) {
-    b->name = bitmap->name;
-    if (bitmap_alloc_data(b) == RET_OK) {
-      uint8_t* s = bitmap_lock_buffer_for_read(bitmap);
-      uint8_t* d = bitmap_lock_buffer_for_write(b);
+    uint8_t* s = bitmap_lock_buffer_for_read(bitmap);
+    uint8_t* d = bitmap_lock_buffer_for_write(b);
+    if (s != NULL && d != NULL) {
       memcpy((char*)(d), s, b->line_length * b->h);
-      bitmap_unlock_buffer(bitmap);
-      bitmap_unlock_buffer(b);
     }
+    bitmap_unlock_buffer(bitmap);
+    bitmap_unlock_buffer(b);
+    b->name = bitmap->name;
   }
 
   return b;
