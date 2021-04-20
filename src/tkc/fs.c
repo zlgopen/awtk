@@ -490,18 +490,18 @@ ret_t fs_create_dir_r(fs_t* fs, const char* name) {
 
     len = tk_min(MAX_PATH, t->cursor);
     tk_strncpy(path, name, len);
-  
+
     if (len > 0) {
-      if (path[len-1] == '/' || path[len-1] == '\\') {
-        path[len-1] = '\0';
-      } 
+      if (path[len - 1] == '/' || path[len - 1] == '\\') {
+        path[len - 1] = '\0';
+      }
     }
-  
+
     if (!fs_dir_exist(fs, path)) {
       if (fs_create_dir(fs, path) != RET_OK) {
         log_debug("create %s failed\n", path);
         break;
-     }
+      }
     }
   }
   tokenizer_deinit(t);

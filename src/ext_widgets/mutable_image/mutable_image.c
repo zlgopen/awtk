@@ -148,7 +148,8 @@ static ret_t mutable_image_invalidate(const timer_info_t* info) {
   widget_t* widget = WIDGET(info->ctx);
   mutable_image_t* mutable_image = MUTABLE_IMAGE(widget);
 
-  if(mutable_image->need_redraw == NULL || mutable_image->need_redraw(mutable_image->need_redraw_ctx)) {
+  if (mutable_image->need_redraw == NULL ||
+      mutable_image->need_redraw(mutable_image->need_redraw_ctx)) {
     widget_invalidate_force(WIDGET(info->ctx), NULL);
   }
 
@@ -189,7 +190,7 @@ ret_t mutable_image_set_prepare_image(widget_t* widget, mutable_image_prepare_im
 }
 
 ret_t mutable_image_set_need_redraw(widget_t* widget, mutable_image_need_redraw_t need_redraw,
-                                      void* need_redraw_ctx) {
+                                    void* need_redraw_ctx) {
   mutable_image_t* mutable_image = MUTABLE_IMAGE(widget);
   return_value_if_fail(mutable_image != NULL && need_redraw != NULL, RET_BAD_PARAMS);
 
