@@ -498,14 +498,24 @@ ret_t edit_set_focus(widget_t* widget, bool_t focus);
 
 /**
  * @method edit_set_cursor
- * 设置输入框的光标坐标。
+ * 设置输入框的光标位置。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
- * @param {uint32_t} cursor 是否为焦点。
+ * @param {uint32_t} cursor 光标位置。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t edit_set_cursor(widget_t* widget, uint32_t cursor);
+
+/**
+ * @method edit_get_cursor
+ * 获取输入框的光标位置。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ *
+ * @return {ret_t} 返回光标位置。
+ */
+uint32_t edit_get_cursor(widget_t* widget);
 
 /**
  * @method edit_set_is_valid_char
@@ -578,6 +588,29 @@ ret_t edit_set_dec_value(widget_t* widget, edit_dec_value_t dec_value);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t edit_set_pre_input(widget_t* widget, edit_pre_input_t pre_input);
+
+/**
+ * @method edit_set_select
+ * 选择指定范围的文本。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {uint32_t} start 起始偏移。
+ * @param {uint32_t} end 结束偏移。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t edit_set_select(widget_t* widget, uint32_t start, uint32_t end);
+
+/**
+ * @method edit_get_selected_text
+ * 获取选中的文本。
+ * 使用完后需调用 TKMEM_FREE() 进行释放文本占有内存。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ *
+ * @return {char*} 返回选中文本。
+ */
+char* edit_get_selected_text(widget_t* widget);
 
 #define EDIT(widget) ((edit_t*)(edit_cast(WIDGET(widget))))
 

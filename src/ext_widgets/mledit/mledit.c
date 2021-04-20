@@ -509,11 +509,37 @@ ret_t mledit_set_cursor(widget_t* widget, uint32_t cursor) {
   return text_edit_set_cursor(mledit->model, cursor);
 }
 
+uint32_t mledit_get_cursor(widget_t* widget) {
+  mledit_t* mledit = MLEDIT(widget);
+  return_value_if_fail(widget != NULL && mledit != NULL, 0);
+
+  return text_edit_get_cursor(mledit->model);
+}
+
 ret_t mledit_set_scroll_line(widget_t* widget, uint32_t scroll_line) {
   mledit_t* mledit = MLEDIT(widget);
   return_value_if_fail(widget != NULL && mledit != NULL, RET_BAD_PARAMS);
   mledit->scroll_line = scroll_line;
   return RET_OK;
+}
+
+ret_t mledit_scroll_to_offset(widget_t* widget, uint32_t offset) {
+  mledit_t* mledit = MLEDIT(widget);
+  int32_t scroll_y = 0;
+  scroll_bar_t* vscroll_bar = widget_lookup_by_type(widget, WIDGET_TYPE_SCROLL_BAR_DESKTOP, TRUE);
+
+  return_value_if_fail(mledit != NULL && mledit->model != NULL, RET_BAD_PARAMS);
+
+  scroll_y = text_edit_get_height(mledit->model, offset);
+
+  if (vscroll_bar != NULL) {
+    text_edit_state_t state = {0};
+    text_edit_get_state(mledit->model, &state);
+
+    scroll_y = tk_min(scroll_y, tk_max(vscroll_bar->virtual_size - vscroll_bar->widget.h, 0));
+  }
+
+  return text_edit_set_offset(mledit->model, 0, scroll_y);
 }
 
 static ret_t mledit_focus_set_cursor(const idle_info_t* info) {
@@ -819,6 +845,20 @@ ret_t mledit_set_close_im_when_blured(widget_t* widget, bool_t close_im_when_blu
   mledit->close_im_when_blured = close_im_when_blured;
 
   return RET_OK;
+}
+
+ret_t mledit_set_select(widget_t* widget, uint32_t start, uint32_t end) {
+  mledit_t* mledit = MLEDIT(widget);
+  return_value_if_fail(mledit != NULL && mledit->model != NULL, RET_BAD_PARAMS);
+
+  return text_edit_set_select(mledit->model, start, end);
+}
+
+char* mledit_get_selected_text(widget_t* widget) {
+  mledit_t* mledit = MLEDIT(widget);
+  return_value_if_fail(mledit != NULL && mledit->model != NULL, NULL);
+
+  return text_edit_get_selected_text(mledit->model);
 }
 
 static ret_t mledit_on_add_child(widget_t* widget, widget_t* child) {

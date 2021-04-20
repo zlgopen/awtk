@@ -269,6 +269,16 @@ ret_t mledit_set_keyboard(widget_t* widget, const char* keyboard);
 ret_t mledit_set_cursor(widget_t* widget, uint32_t cursor);
 
 /**
+ * @method mledit_get_cursor
+ * 获取编辑器光标位置。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ *
+ * @return {uint32_t} 返回光标位置。
+ */
+uint32_t mledit_get_cursor(widget_t* widget);
+
+/**
  * @method mledit_set_scroll_line
  * 设置编辑器滚动速度。
  * @annotation ["scriptable"]
@@ -278,6 +288,17 @@ ret_t mledit_set_cursor(widget_t* widget, uint32_t cursor);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t mledit_set_scroll_line(widget_t* widget, uint32_t scroll_line);
+
+/**
+ * @method mledit_scroll_to_offset
+ * 设置编辑器滚动到指定偏移位置。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {uint32_t} offset 偏移位置。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t mledit_scroll_to_offset(widget_t* widget, uint32_t offset);
 
 /**
  * @method mledit_set_open_im_when_focused
@@ -305,6 +326,29 @@ ret_t mledit_set_open_im_when_focused(widget_t* widget, bool_t open_im_when_focu
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t mledit_set_close_im_when_blured(widget_t* widget, bool_t close_im_when_blured);
+
+/**
+ * @method mledit_set_select
+ * 选择编辑器中指定范围的文本。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {uint32_t} start 起始偏移。
+ * @param {uint32_t} end 结束偏移。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t mledit_set_select(widget_t* widget, uint32_t start, uint32_t end);
+
+/**
+ * @method mledit_get_selected_text
+ * 获取选中的文本。
+ * 使用完后需调用 TKMEM_FREE() 进行释放文本占有内存。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ *
+ * @return {char*} 返回选中文本。
+ */
+char* mledit_get_selected_text(widget_t* widget);
 
 /**
  * @method mledit_cast

@@ -33,6 +33,7 @@
 
 #define CHAR_SPACING 1
 #define FONT_BASELINE 1.25f
+#define CHAR_IS_LINE_BREAK(c) ((c) == '\r' || (c) == '\n')
 #define STB_TEXTEDIT_CHARTYPE wchar_t
 #define STB_TEXTEDIT_NEWLINE (wchar_t)('\n')
 #define STB_TEXTEDIT_STRING text_edit_t
@@ -406,7 +407,7 @@ static ret_t text_edit_layout_impl(text_edit_t* text_edit) {
     text_edit_set_caret_pos(impl, iter->x, offset ? impl->line_height * (i - 1) : 0, c->font_size);
   } else if (offset < size) {
     text->size = offset;
-    text->str[offset] = 0;
+    text->str[offset] = L'\0';
   }
 
   impl->rows->size = i;
@@ -494,7 +495,7 @@ static ret_t text_edit_paint_tips_mlines_text(text_edit_t* text_edit, canvas_t* 
     }
 
     for (size = 0; size < p->line_size; size++) {
-      if (p->line[size] == '\r' || p->line[size] == '\n') {
+      if (CHAR_IS_LINE_BREAK(p->line[size])) {
         break;
       }
     }
@@ -786,21 +787,21 @@ static int text_edit_insert(STB_TEXTEDIT_STRING* str, int pos, STB_TEXTEDIT_CHAR
 #define STB_TEXTEDIT_K_SHIFT 0x40000000
 #define STB_TEXTEDIT_K_CONTROL 0x20000000
 #define STB_TEXTEDIT_K_LEFT (KEYDOWN_BIT | 1)
-#define STB_TEXTEDIT_K_RIGHT (KEYDOWN_BIT | 2)  // VK_RIGHT
-#define STB_TEXTEDIT_K_UP (KEYDOWN_BIT | 3)  // VK_UP
-#define STB_TEXTEDIT_K_DOWN (KEYDOWN_BIT | 4)  // VK_DOWN
+#define STB_TEXTEDIT_K_RIGHT (KEYDOWN_BIT | 2)      // VK_RIGHT
+#define STB_TEXTEDIT_K_UP (KEYDOWN_BIT | 3)         // VK_UP
+#define STB_TEXTEDIT_K_DOWN (KEYDOWN_BIT | 4)       // VK_DOWN
 #define STB_TEXTEDIT_K_LINESTART (KEYDOWN_BIT | 5)  // VK_HOME
-#define STB_TEXTEDIT_K_LINEEND (KEYDOWN_BIT | 6)  // VK_END
+#define STB_TEXTEDIT_K_LINEEND (KEYDOWN_BIT | 6)    // VK_END
 #define STB_TEXTEDIT_K_TEXTSTART (STB_TEXTEDIT_K_LINESTART | STB_TEXTEDIT_K_CONTROL)
 #define STB_TEXTEDIT_K_TEXTEND (STB_TEXTEDIT_K_LINEEND | STB_TEXTEDIT_K_CONTROL)
-#define STB_TEXTEDIT_K_DELETE (KEYDOWN_BIT | 7)  // VK_DELETE
+#define STB_TEXTEDIT_K_DELETE (KEYDOWN_BIT | 7)     // VK_DELETE
 #define STB_TEXTEDIT_K_BACKSPACE (KEYDOWN_BIT | 8)  // VK_BACKSPACE
 #define STB_TEXTEDIT_K_UNDO (KEYDOWN_BIT | STB_TEXTEDIT_K_CONTROL | 'z')
 #define STB_TEXTEDIT_K_REDO (KEYDOWN_BIT | STB_TEXTEDIT_K_CONTROL | 'y')
 #define STB_TEXTEDIT_K_INSERT (KEYDOWN_BIT | 9)  // VK_INSERT
 #define STB_TEXTEDIT_K_WORDLEFT (STB_TEXTEDIT_K_LEFT | STB_TEXTEDIT_K_CONTROL)
 #define STB_TEXTEDIT_K_WORDRIGHT (STB_TEXTEDIT_K_RIGHT | STB_TEXTEDIT_K_CONTROL)
-#define STB_TEXTEDIT_K_PGUP (KEYDOWN_BIT | 10)  // VK_PGUP -- not implemented
+#define STB_TEXTEDIT_K_PGUP (KEYDOWN_BIT | 10)    // VK_PGUP -- not implemented
 #define STB_TEXTEDIT_K_PGDOWN (KEYDOWN_BIT | 11)  // VK_PGDOWN -- not implemented
 
 #define STB_TEXTEDIT_IMPLEMENTATION 1
@@ -862,6 +863,20 @@ ret_t text_edit_set_max_rows(text_edit_t* text_edit, uint32_t max_rows) {
   }
 
   return RET_OK;
+}
+
+uint32_t text_edit_get_height(text_edit_t* text_edit, uint32_t offset) {
+  DECL_IMPL(text_edit);
+  return_value_if_fail(text_edit != NULL, 0);
+
+  for (uint32_t i = 0; i < impl->rows->size; i++) {
+    row_info_t* iter = impl->rows->info + i;
+    if (offset < iter->offset + iter->length) {
+      return impl->line_height * i;
+    }
+  }
+
+  return impl->line_height * (impl->rows->size - 1);
 }
 
 ret_t text_edit_set_canvas(text_edit_t* text_edit, canvas_t* canvas) {
@@ -1171,6 +1186,26 @@ ret_t text_edit_copy(text_edit_t* text_edit) {
   }
 
   return RET_OK;
+}
+
+char* text_edit_get_selected_text(text_edit_t* text_edit) {
+  uint32_t size = 0;
+  text_edit_state_t state = {0};
+  char* ret = NULL;
+  DECL_IMPL(text_edit);
+  return_value_if_fail(text_edit != NULL, NULL);
+
+  text_edit_get_state(text_edit, &state);
+  size = state.select_end - state.select_start;
+
+  if (size > 0) {
+    ret = TKMEM_ZALLOCN(char, size + 1);
+    return_value_if_fail(ret != NULL, NULL);
+
+    tk_utf8_from_utf16_ex(text_edit->widget->text.str + state.select_start, size, ret, size + 1);
+  }
+
+  return ret;
 }
 
 ret_t text_edit_cut(text_edit_t* text_edit) {

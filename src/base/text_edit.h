@@ -143,6 +143,16 @@ ret_t text_edit_cut(text_edit_t* text_edit);
 ret_t text_edit_copy(text_edit_t* text_edit);
 
 /**
+ * @method text_edit_get_selected_text
+ * 获取选中文本。
+ * 使用完后需调用 TKMEM_FREE() 进行释放文本占有内存。
+ * @param {text_edit_t*} text_edit text_edit对象。
+ *
+ * @return {char*} 返回选中文本。
+ */
+char* text_edit_get_selected_text(text_edit_t* text_edit);
+
+/**
  * @method text_edit_key_down
  * 处理按键事件。
  * @param {text_edit_t*} text_edit text_edit对象。
@@ -258,6 +268,16 @@ ret_t text_edit_set_caret_visible(text_edit_t* text_edit, bool_t caret_visible);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t text_edit_set_max_rows(text_edit_t* text_edit, uint32_t max_rows);
+
+/**
+ * @method text_edit_get_height
+ * 获取偏移字符位置高度。
+ * @param {text_edit_t*} text_edit text_edit对象。
+ * @param {uint32_t} offset 偏移位置。
+ *
+ * @return {uint32_t} 返回偏移位置字符所在行数，返回 0 时表示失败。
+ */
+uint32_t text_edit_get_height(text_edit_t* text_edit, uint32_t offset);
 
 /**
  * @method text_edit_set_mask

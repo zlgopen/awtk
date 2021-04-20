@@ -1393,6 +1393,13 @@ ret_t edit_set_cursor(widget_t* widget, uint32_t cursor) {
   return text_edit_set_cursor(edit->model, cursor);
 }
 
+uint32_t edit_get_cursor(widget_t* widget) {
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(edit != NULL && edit->model != NULL, 0);
+
+  return text_edit_get_cursor(edit->model);
+}
+
 static ret_t edit_add_float(edit_t* edit, double delta) {
   double v = 0;
   wstr_t* text = NULL;
@@ -1809,6 +1816,20 @@ ret_t edit_set_pre_input(widget_t* widget, edit_pre_input_t pre_input) {
   edit->pre_input = pre_input;
 
   return RET_OK;
+}
+
+ret_t edit_set_select(widget_t* widget, uint32_t start, uint32_t end) {
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(edit != NULL && edit->model != NULL, RET_BAD_PARAMS);
+
+  return text_edit_set_select(edit->model, start, end);
+}
+
+char* edit_get_selected_text(widget_t* widget) {
+  edit_t* edit = EDIT(widget);
+  return_value_if_fail(edit != NULL && edit->model != NULL, NULL);
+
+  return text_edit_get_selected_text(edit->model);
 }
 
 ret_t edit_pre_input_with_sep(widget_t* widget, uint32_t key, char sep) {
