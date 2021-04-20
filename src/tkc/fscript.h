@@ -99,7 +99,7 @@ typedef struct _fscript_parser_error_t {
 } fscript_parser_error_t;
 
 /**
- * @metho fscript_parser_error_deinit
+ * @method fscript_parser_error_deinit
  * 释放error对象中的资源。
  *
  * @param {fscript_parser_error_t*} error 解析错误信息。
