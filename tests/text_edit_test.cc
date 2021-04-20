@@ -4,6 +4,9 @@
 #include "base/text_edit.h"
 #include "base/clip_board.h"
 #include "base/window_manager.h"
+#include "base/window.h"
+#include "lcd/lcd_mem_rgba8888.h"
+
 
 TEST(TextEdit, basic) {
   str_t str;
@@ -11,7 +14,6 @@ TEST(TextEdit, basic) {
   text_edit_state_t state;
   widget_t* w = mledit_create(NULL, 10, 20, 30, 40);
   text_edit_t* text_edit = text_edit_create(w, FALSE);
-  text_edit_set_canvas(text_edit, widget_get_canvas(w));
 
   str_init(&str, 0);
 
@@ -51,4 +53,75 @@ TEST(TextEdit, basic) {
   str_reset(&str);
   widget_destroy(w);
   text_edit_destroy(text_edit);
+}
+
+TEST(TextEdit, cursor) {
+  const char* str = "it is ok";
+  widget_t* w = mledit_create(NULL, 10, 20, 30, 40);
+  text_edit_t* text_edit = text_edit_create(w, FALSE);
+  widget_set_text_utf8(w, str);
+  
+  ASSERT_EQ(text_edit_set_cursor(text_edit, 0), RET_OK);
+  ASSERT_EQ(text_edit_get_cursor(text_edit), 0);
+
+  ASSERT_EQ(text_edit_set_cursor(text_edit, 5), RET_OK);
+  ASSERT_EQ(text_edit_get_cursor(text_edit), 5);
+  
+  ASSERT_EQ(text_edit_set_cursor(text_edit, 500), RET_OK);
+  ASSERT_EQ(text_edit_get_cursor(text_edit), strlen(str));
+
+  widget_destroy(w);
+  text_edit_destroy(text_edit);
+}
+
+TEST(TextEdit, select) {
+  char* select = NULL;
+  const char* str = "it is ok";
+  widget_t* w = mledit_create(NULL, 10, 20, 30, 40);
+  text_edit_t* text_edit = text_edit_create(w, FALSE);
+  widget_set_text_utf8(w, str);
+  
+  ASSERT_EQ(text_edit_set_select(text_edit, 0, 0), RET_OK);
+  select = text_edit_get_selected_text(text_edit);
+  ASSERT_STREQ(select, NULL);
+  
+  ASSERT_EQ(text_edit_set_select(text_edit, 0, 3), RET_OK);
+  select = text_edit_get_selected_text(text_edit);
+  ASSERT_STREQ(select, "it ");
+  TKMEM_FREE(select);
+
+  ASSERT_EQ(text_edit_set_select(text_edit, 2, 5), RET_OK);
+  select = text_edit_get_selected_text(text_edit);
+  ASSERT_STREQ(select, " is");
+  TKMEM_FREE(select);
+  
+  ASSERT_EQ(text_edit_set_select(text_edit, 2, 50), RET_OK);
+  select = text_edit_get_selected_text(text_edit);
+  ASSERT_STREQ(select, " is ok");
+  TKMEM_FREE(select);
+  
+  widget_destroy(w);
+  text_edit_destroy(text_edit);
+}
+
+TEST(TextEdit, get_height) {
+  canvas_t c;
+  lcd_t* lcd = lcd_mem_rgba8888_create(100, 100, TRUE);
+  canvas_init(&c, lcd, font_manager());
+  const char* str = "it\nis\nok\nsecond line";
+  widget_t* win = window_create(NULL, 0, 0, 0,0);
+  widget_t* w = mledit_create(win, 10, 20, 30, 40);
+  text_edit_t* text_edit = text_edit_create(w, FALSE);
+
+  widget_set_text_utf8(w, str);
+  widget_set_prop_pointer(win, WIDGET_PROP_CANVAS, &c);
+  text_edit_set_canvas(text_edit, widget_get_canvas(w));
+  widget_set_prop_pointer(win, WIDGET_PROP_CANVAS, NULL);
+  
+  ASSERT_EQ(text_edit_get_height(text_edit, 0), 0);
+  ASSERT_EQ(text_edit_get_height(text_edit, 4), 22);
+
+  widget_destroy(win);
+  text_edit_destroy(text_edit);
+
 }
