@@ -10,7 +10,7 @@
       animation="value(from=0, to=300, yoyo_times=1000, duration=3000, easing=sin_inout)" />
 
     <progress_circle style="image" max="100" show_text="true" start_angle="90" start_angle="-225"  
-      counter_clock_wise="true" unit="%"
+      counter_clock_wise="true" format="%d%%"
       animation="value(from=10, to=100, yoyo_times=1000, duration=3000, easing=sin_inout)" />
    </view>
    
