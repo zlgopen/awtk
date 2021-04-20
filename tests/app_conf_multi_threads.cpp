@@ -13,18 +13,17 @@
 static void* work_thread(void* args) {
   uint32_t i = 0;
   uint32_t id = (uint32_t)tk_pointer_to_int(args);
-  
+
   log_debug("%u start\n", id);
-  for(i = 0; i < NR; i++) {
+  for (i = 0; i < NR; i++) {
     app_conf_set_int("test.int", i);
     app_conf_set_double("test.int", i);
     app_conf_set_str("test.str", "foo");
     log_debug("%u run %u\n", id, i);
   }
- 
+
   return NULL;
 }
-
 
 int main(int argc, char* argv[]) {
   uint32_t i = 0;
@@ -43,12 +42,12 @@ int main(int argc, char* argv[]) {
   app_conf_set_int("test.int", 100);
   app_conf_save();
 
-  for(i = 0; i < ARRAY_SIZE(threads); i++) {
+  for (i = 0; i < ARRAY_SIZE(threads); i++) {
     threads[i] = tk_thread_create(work_thread, tk_pointer_from_int(i));
     tk_thread_start(threads[i]);
   }
-  
-  for(i = 0; i < ARRAY_SIZE(threads); i++) {
+
+  for (i = 0; i < ARRAY_SIZE(threads); i++) {
     tk_thread_join(threads[i]);
     tk_thread_destroy(threads[i]);
     log_debug("%u stop\n", i);

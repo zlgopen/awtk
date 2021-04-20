@@ -137,21 +137,21 @@ TEST(Bitmap, mono_from_rgba) {
 }
 
 TEST(Bitmap, clone) {
- bitmap_t* b = bitmap_create_ex(10, 20, 0, BITMAP_FMT_BGRA8888);
- uint8_t* buff = bitmap_lock_buffer_for_write(b);
- memset(buff, 0x12, b->w * b->h * 4);
- bitmap_unlock_buffer(b);
- bitmap_t* b1 = bitmap_clone(b);
- bitmap_destroy(b);
- ASSERT_EQ(b1->w, 10);
- ASSERT_EQ(b1->h, 20);
- ASSERT_EQ(b1->format, BITMAP_FMT_BGRA8888);
- buff = bitmap_lock_buffer_for_write(b1);
- ASSERT_EQ(buff[0], 0x12);
- ASSERT_EQ(buff[1], 0x12);
- ASSERT_EQ(buff[2], 0x12);
- ASSERT_EQ(buff[3], 0x12);
- bitmap_unlock_buffer(b1);
+  bitmap_t* b = bitmap_create_ex(10, 20, 0, BITMAP_FMT_BGRA8888);
+  uint8_t* buff = bitmap_lock_buffer_for_write(b);
+  memset(buff, 0x12, b->w * b->h * 4);
+  bitmap_unlock_buffer(b);
+  bitmap_t* b1 = bitmap_clone(b);
+  bitmap_destroy(b);
+  ASSERT_EQ(b1->w, 10);
+  ASSERT_EQ(b1->h, 20);
+  ASSERT_EQ(b1->format, BITMAP_FMT_BGRA8888);
+  buff = bitmap_lock_buffer_for_write(b1);
+  ASSERT_EQ(buff[0], 0x12);
+  ASSERT_EQ(buff[1], 0x12);
+  ASSERT_EQ(buff[2], 0x12);
+  ASSERT_EQ(buff[3], 0x12);
+  bitmap_unlock_buffer(b1);
 
- bitmap_destroy(b1);
+  bitmap_destroy(b1);
 }

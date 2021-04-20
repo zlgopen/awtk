@@ -80,7 +80,7 @@ typedef struct _mutable_image_t {
   uint32_t timer_id;
   void* prepare_image_ctx;
   mutable_image_prepare_image_t prepare_image;
-  
+
   void* need_redraw_ctx;
   mutable_image_need_redraw_t need_redraw;
 
@@ -119,7 +119,7 @@ widget_t* mutable_image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t mutable_image_set_need_redraw(widget_t* widget, mutable_image_need_redraw_t need_redraw,
-                                      void* need_redraw_ctx);
+                                    void* need_redraw_ctx);
 
 /**
  * @method mutable_image_set_prepare_image

@@ -89,7 +89,7 @@ typedef struct _fscript_parser_error_t {
    * 错误信息。
    */
   char* message;
-  
+
   /**
    * @property {char*} token
    * @annotation ["readable"]

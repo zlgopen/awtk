@@ -39,7 +39,7 @@ typedef struct _file_chooser_t {
    * 初始目录。
    */
   char* init_dir;
-  
+
   /**
    * @property {char*} top_dir
    * 最顶层目录。到达本目录后，不允许往上。

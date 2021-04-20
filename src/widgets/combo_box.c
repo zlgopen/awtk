@@ -317,7 +317,7 @@ static ret_t combo_box_on_event(widget_t* widget, event_t* e) {
         combo_box_sync_index_to_value(widget, combo_box->selected_index);
       }
 
-      if (widget->text.size == 0 && widget->tr_text == NULL){
+      if (widget->text.size == 0 && widget->tr_text == NULL) {
         combo_box_set_selected_index(widget, 0);
       }
       break;
