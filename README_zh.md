@@ -132,6 +132,7 @@
 [AWTK](README.md) 本身是用 C 语言开发的，可以通过 IDL 生成各种脚本语言的绑定。生成的绑定代码不是简单的把 C 语言的 API 映射到脚本语言，而是生成脚本语言原生代码风格的 API。目前支持以下语言 （以后根据需要增加）：
 
 * C
+* Go
 * C++
 * lua
 * java
@@ -277,6 +278,8 @@ npm install -g glob
 * [AWTK 绑定代码生成器](https://github.com/zlgopen/awtk-binding)
 
 * [LUA 绑定](https://github.com/zlgopen/awtk-lua)
+
+* [Go 绑定](https://github.com/zlgopen/awtk-go)
 
 * [C++ 绑定](https://github.com/zlgopen/awtk-cpp)
 
