@@ -351,6 +351,8 @@ npm install -g glob
 
 * [扩展控件实例：圆形滑块](https://github.com/longyuwlz/awtk_slider_circle)
 
+* [扩展控件实例：手势密码控件](https://gitee.com/zhangzhongji/awtk-widget-gesture-lock)
+
 ## 九、文档
 
 * [开发文档](docs/README.md)

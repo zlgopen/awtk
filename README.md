@@ -347,6 +347,8 @@ The third party provides:
 
 * [Examples for Custom Widgets: Circle Sliders](https://github.com/longyuwlz/awtk_slider_circle)
 
+* [Examples for Custom Widgets: Gesture Lock](https://gitee.com/zhangzhongji/awtk-widget-gesture-lock)
+
 
 ## IX. Documentation
 
