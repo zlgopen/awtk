@@ -26,6 +26,7 @@ TEST(ThemeGen, basic0) {
   ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_NORMAL), RET_OK);
   ASSERT_EQ(style_get_int(s, STYLE_ID_MARGIN, 0), -10);
   ASSERT_EQ(style_get_uint(s, STYLE_ID_BG_COLOR, 0), 0xfffcfbfa);
+  style_destroy(s);
 }
 
 TEST(ThemeGen, basic1) {
@@ -49,6 +50,7 @@ TEST(ThemeGen, basic1) {
   ASSERT_EQ(style_get_uint(s, STYLE_ID_FG_COLOR, 0), 0xff443322);
   ASSERT_EQ(style_get_int(s, STYLE_ID_FONT_SIZE, 0), 12);
   ASSERT_EQ(style_get_str(s, STYLE_ID_FONT_NAME, ""), string("sans"));
+  style_destroy(s);
 }
 
 TEST(ThemeGen, basic2) {
@@ -74,6 +76,7 @@ TEST(ThemeGen, basic2) {
   ASSERT_EQ(style_get_uint(s, STYLE_ID_FG_COLOR, 0), 0xff443322);
   ASSERT_EQ(style_get_int(s, STYLE_ID_FONT_SIZE, 0), 12);
   ASSERT_EQ(style_get_str(s, STYLE_ID_FONT_NAME, ""), string("sans"));
+  style_destroy(s);
 }
 
 TEST(ThemeGen, basic3) {
@@ -110,6 +113,7 @@ TEST(ThemeGen, basic3) {
   ASSERT_EQ(style_get_uint(s, STYLE_ID_FG_COLOR, 0), 0xff443322);
   ASSERT_EQ(style_get_int(s, STYLE_ID_FONT_SIZE, 0), 12);
   ASSERT_EQ(style_get_str(s, STYLE_ID_FONT_NAME, ""), string("sans"));
+  style_destroy(s);
 }
 
 TEST(ThemeGen, basic4) {
@@ -150,6 +154,7 @@ TEST(ThemeGen, basic4) {
   ASSERT_EQ(style_get_uint(s, STYLE_ID_FG_COLOR, 0), 0xff553322);
   ASSERT_EQ(style_get_int(s, STYLE_ID_FONT_SIZE, 0), 12);
   ASSERT_EQ(style_get_str(s, STYLE_ID_FONT_NAME, ""), string("sans"));
+  style_destroy(s);
 }
 
 TEST(ThemeGen, state) {
@@ -177,6 +182,7 @@ TEST(ThemeGen, state) {
   ASSERT_EQ(style_data != NULL, true);
   ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_PRESSED), RET_OK);
   ASSERT_EQ(style_get_int(s, STYLE_ID_BG_COLOR, 0), 0xff00ffff);
+  style_destroy(s);
 }
 
 TEST(ThemeGen, style_type) {
@@ -197,6 +203,7 @@ TEST(ThemeGen, style_type) {
 
   style_data = theme_find_style(&theme, WIDGET_TYPE_BUTTON, "yellow", WIDGET_STATE_PRESSED);
   ASSERT_EQ(style_data != NULL, true);
+  style_destroy(s);
 }
 
 TEST(ThemeGen, inher) {
@@ -224,6 +231,7 @@ TEST(ThemeGen, inher) {
   ASSERT_EQ(style_get_int(s, STYLE_ID_MARGIN, 0), -10);
   ASSERT_EQ(style_get_int(s, STYLE_ID_FONT_SIZE, 0), 14);
   ASSERT_EQ(style_get_str(s, STYLE_ID_FONT_NAME, ""), string("serif"));
+  style_destroy(s);
 }
 
 TEST(ThemeGen, cdata) {
@@ -247,6 +255,7 @@ TEST(ThemeGen, cdata) {
   ASSERT_EQ(style_get_int(s, STYLE_ID_FONT_SIZE, 0), 12);
   ASSERT_EQ(style_get_str(s, STYLE_ID_FONT_NAME, ""), string("sans"));
   ASSERT_EQ(style_get_uint(s, STYLE_ID_TEXT_COLOR, 0), 0xfffffefd);
+  style_destroy(s);
 }
 
 TEST(ThemeGen, border) {
@@ -291,6 +300,7 @@ TEST(ThemeGen, border) {
   style_data = theme_find_style(&theme, WIDGET_TYPE_BUTTON, TK_DEFAULT_STYLE, WIDGET_STATE_NORMAL);
   ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_NORMAL), RET_OK);
   ASSERT_EQ(style_get_int(s, STYLE_ID_BORDER, 0), BORDER_ALL);
+  style_destroy(s);
 }
 
 TEST(ThemeGen, active_state) {
@@ -341,6 +351,7 @@ TEST(ThemeGen, active_state) {
       theme_find_style(&theme, WIDGET_TYPE_TAB_BUTTON, "default", WIDGET_STATE_OVER_OF_ACTIVE);
   ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_OVER_OF_ACTIVE), RET_OK);
   ASSERT_EQ(style_get_color(s, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x66);
+  style_destroy(s);
 }
 
 TEST(ThemeGen, selected_state) {
@@ -392,4 +403,5 @@ TEST(ThemeGen, selected_state) {
       theme_find_style(&theme, WIDGET_TYPE_COMBO_BOX_ITEM, "default", WIDGET_STATE_OVER_OF_CHECKED);
   ASSERT_EQ(style_set_style_data(s, style_data, WIDGET_STATE_OVER_OF_CHECKED), RET_OK);
   ASSERT_EQ(style_get_color(s, STYLE_ID_TEXT_COLOR, def).rgba.r, 0x66);
+  style_destroy(s);
 }

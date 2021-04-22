@@ -1224,6 +1224,7 @@ static ret_t fscript_parse_statements(fscript_parser_t* parser, fscript_func_cal
 
   do {
     token_t* t = NULL;
+    value_set_int(&v, 0);
     ret = fexpr_parse(parser, &v);
     if (ret == RET_OK) {
       func_args_push(args, &v);
@@ -1243,6 +1244,12 @@ static ret_t fscript_parse_statements(fscript_parser_t* parser, fscript_func_cal
         break;
       }
     } else {
+      if (v.type == VALUE_TYPE_JSCRIPT_FUNC) {
+        fscript_func_call_destroy(value_func(&v));
+      } else {
+        value_reset(&v);
+      }
+
       break;
     }
   } while (parser->token.type != TOKEN_EOF);

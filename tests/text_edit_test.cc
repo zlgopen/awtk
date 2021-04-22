@@ -122,4 +122,6 @@ TEST(TextEdit, get_height) {
 
   widget_destroy(win);
   text_edit_destroy(text_edit);
+  canvas_reset(&c);
+  lcd_destroy(lcd);
 }

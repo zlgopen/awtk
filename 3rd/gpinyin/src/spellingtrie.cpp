@@ -91,12 +91,12 @@ SpellingTrie::~SpellingTrie() {
   }
 
   if (NULL != dumb_node_) {
-    delete[] dumb_node_;
+    delete dumb_node_;
     dumb_node_ = NULL;
   }
 
   if (NULL != splitter_node_) {
-    delete[] splitter_node_;
+    delete splitter_node_;
     splitter_node_ = NULL;
   }
 

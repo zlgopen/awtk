@@ -9,6 +9,7 @@ TEST(ConfJson, arr) {
 
   str_init(&str, 100);
   conf_doc_save_json(doc, &str);
+  str_reset(&str);
 
   ASSERT_EQ(conf_doc_get(doc, "[1]", &v), RET_OK);
   ASSERT_STREQ(value_str(&v), "abc");
@@ -24,7 +25,6 @@ TEST(ConfJson, arr) {
 
   str_init(&str, 100);
   conf_doc_save_json(doc, &str);
-
   str_reset(&str);
 
   conf_doc_destroy(doc);
@@ -52,6 +52,7 @@ TEST(ConfJson, arr1) {
 
   str_init(&str, 100);
   conf_doc_save_json(doc, &str);
+  str_reset(&str);
 
   ASSERT_EQ(conf_doc_get(doc, "wires.[0].[0]", &v), RET_OK);
   ASSERT_STREQ(value_str(&v), "f3233c29.cc714");

@@ -115,7 +115,8 @@ TEST(Theme, basic) {
   uint32_t name_nr = 5;
   theme_t t;
   const uint8_t* style_data;
-
+  
+  memset(&t,0x00,sizeof(t));
   GenThemeData(buff, sizeof(buff), state_nr, name_nr);
   t.data = buff;
 

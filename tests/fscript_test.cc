@@ -1195,6 +1195,7 @@ TEST(FExr, syntax_check) {
   ASSERT_EQ(error.row, 0);
   ASSERT_EQ(error.col, 4);
   ASSERT_EQ(error.offset, 4);
+  fscript_parser_error_deinit(&error);
 
   fscript_syntax_check(obj, "1+1)", &error);
   ASSERT_STREQ(error.token, ")");

@@ -100,13 +100,13 @@ class candidate_info_t {
   void deint() {
     if (candidates != NULL) {
       for (size_t i = 0; i < candidates_nr; i++) {
-        delete candidates[i];
+        delete[] candidates[i];
       }
       delete[] candidates;
       candidates = NULL;
     }
     if (char_candidates != NULL) {
-      delete char_candidates;
+      delete[] char_candidates;
       char_candidates = NULL;
     }
     char_number = 0;
