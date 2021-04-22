@@ -46,7 +46,8 @@ SConscriptFiles=awtk.NANOVG_BACKEND_PROJS + [
   'tools/ui_gen/xml_to_ui/SConscript',
   'tools/svg_gen/SConscript',
   'demos/SConscript', 
-  'tests/SConscript'
+  'tests/SConscript',
+  'src/hal/tools/network_shell/SConscript',
   ] + awtk.OS_PROJECTS
   
 os.environ['TK_ROOT'] = awtk.TK_ROOT;

@@ -1,0 +1,15 @@
+import os
+import platform
+
+env=DefaultEnvironment().Clone()
+
+BIN_DIR=os.environ['BIN_DIR'];
+LIB_DIR=os.environ['LIB_DIR'];
+
+OS_NAME = platform.system();
+
+if OS_NAME != 'Windows':
+    env['LIBS'] = ['readline'] + env['LIBS']
+    
+env.Program(os.path.join(BIN_DIR, 'network_shell'), Glob('*.c'))
+
