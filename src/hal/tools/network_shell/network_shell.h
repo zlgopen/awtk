@@ -35,6 +35,7 @@ BEGIN_C_DECLS
 
 /**
  * @method hal_shell_run
+ * @export none
  * 运行shell。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。

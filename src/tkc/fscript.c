@@ -1283,7 +1283,7 @@ ret_t fscript_syntax_check(object_t* obj, const char* script, fscript_parser_err
   ret = fscript_parse_statements(&parser, parser.first);
   fscript_parser_deinit(&parser);
 
-  return RET_OK;
+  return ret;
 }
 
 fscript_t* fscript_create(object_t* obj, const char* expr) {

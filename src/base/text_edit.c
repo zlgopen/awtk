@@ -1192,7 +1192,6 @@ char* text_edit_get_selected_text(text_edit_t* text_edit) {
   uint32_t size = 0;
   text_edit_state_t state = {0};
   char* ret = NULL;
-  DECL_IMPL(text_edit);
   return_value_if_fail(text_edit != NULL, NULL);
 
   text_edit_get_state(text_edit, &state);
