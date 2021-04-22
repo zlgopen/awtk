@@ -141,6 +141,24 @@ void tk_mem_dump(void);
 ret_t tk_mem_init(void* buffer, uint32_t size);
 
 /**
+ * @method tk_mem_init_ex
+ * @export none
+ * 初始化内存，支持多块不连续的内存。
+ * >最后一个参数必须为NULL。
+ *
+ * 示例：
+ * ```c
+ * tk_mem_init_ex(mem1, sizeof(mem1), mem2, sizeof(mem2), mem3, sizeof(mem3), NULL);
+ * ```
+ *
+ * @param {void*} buffer 内存地址。
+ * @param {uint32_t} size 内存长度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_mem_init_ex(void* buffer, uint32_t size, ...);
+
+/**
  * @method tk_mem_init_stage2
  * @export none
  * 初始化互斥和oom。

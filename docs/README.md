@@ -87,6 +87,7 @@
 * [如何使用 packed 图](how_to_use_packed_image.md)
 * [如何根据实际分辨率自动调整窗口中子控件的位置大小](how_to_auto_scale_children.md)
 * [如何修改 stb\_truetype 获取字模时申请的缓冲区大小](how_to_modify_stb_truetype_buffer_size.md)
+* [如何让内存管理器支持管理多块不连续的内存](how_to_support_multi_mem_block.md)
 
 ### 3. 内部原理
 * [AWTK 脚本绑定原理](script_binding.md)

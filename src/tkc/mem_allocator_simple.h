@@ -74,10 +74,8 @@ static void* tk_alloc_impl(mem_allocator_t* allocator, uint32_t s) {
   }
 
   if (iter == NULL) {
-    log_debug("%s: Out of memory(%d):\n", __FUNCTION__, (int)size);
+    return NULL;
   }
-
-  return_value_if_fail(iter != NULL, NULL);
 
   /*如果找到的空闲块刚好满足需求，就从空闲块链表中移出它*/
   if (iter->size < (size + MIN_SIZE)) {
@@ -262,6 +260,19 @@ static inline void mem_allocator_simple_free(mem_allocator_t* allocator, void* p
   tk_free_impl(allocator, ptr);
 }
 
+static inline bool_t mem_allocator_simple_is_valid(mem_allocator_t* allocator) {
+  mem_info_t* info = &(MEM_ALLOCATOR_SIMPLE(allocator)->info);
+
+  return info->buffer != NULL && info->size > 0;
+}
+
+static inline bool_t mem_allocator_simple_contains(mem_allocator_t* allocator, void* ptr) {
+  char* p = (char*)ptr;
+  mem_info_t* info = &(MEM_ALLOCATOR_SIMPLE(allocator)->info);
+
+  return (p >= info->buffer && (p - info->buffer) < info->size);
+}
+
 static inline ret_t mem_allocator_simple_dump(mem_allocator_t* allocator) {
   mem_info_t* info = &(MEM_ALLOCATOR_SIMPLE(allocator)->info);
   log_debug("used: %u(max=%u) bytes %u(max=%u) blocks\n", info->used_bytes, info->used_max_bytes,
@@ -270,6 +281,16 @@ static inline ret_t mem_allocator_simple_dump(mem_allocator_t* allocator) {
 
   return RET_OK;
 }
+
+static uint32_t mem_allocator_simple_get_mem_size(mem_allocator_t* allocator, void* ptr) {
+  free_node_t* free_iter = NULL;
+  return_value_if_fail(ptr != NULL, 0);
+
+  free_iter = (free_node_t*)((char*)ptr - sizeof(uint32_t));
+
+  return free_iter->size;
+}
+
 
 static inline ret_t mem_allocator_simple_destroy(mem_allocator_t* allocator) {
   allocator->vt = NULL;

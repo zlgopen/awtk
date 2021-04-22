@@ -235,4 +235,10 @@
  * #define WITH_LCD_CLEAR_ALPHA 1
  */
 
+/**
+ * 如果支持多块不连续的内存块，请定义内存块的数目。
+ * 
+ * #define TK_MAX_MEM_BLOCK_NR 4
+ */
+
 #endif /*AWTK_CONFIG_H*/

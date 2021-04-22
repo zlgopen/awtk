@@ -19,6 +19,7 @@
  *
  */
 
+#include <stdarg.h>
 #include "tkc/mem.h"
 #include "tkc/time_now.h"
 #include "tkc/mem_allocator_oom.h"
@@ -69,28 +70,25 @@ ret_t tk_mem_init_stage2(void) {
 
 #else /*non std memory manager*/
 #include "tkc/mem_allocator_lock.h"
-#include "tkc/mem_allocator_simple.h"
+#include "tkc/mem_allocator_composite.h"
 
 static mem_allocator_lock_t s_lock;
 
-static void* s_heap_start = NULL;
-static uint32_t s_heap_size = 0;
+static mem_allocator_pool_t pool;
+static mem_allocator_composite_t composite;
 
 bool_t tk_mem_is_valid_addr(void* addr) {
-  uint64_t start = (uint64_t)s_heap_start;
-  uint64_t end = start + s_heap_size;
-
-  return (((uint64_t)addr >= (uint64_t)start) && ((uint64_t)addr < end));
+  return mem_allocator_composite_is_valid_addr(MEM_ALLOCATOR(&composite), addr);
 }
 
-ret_t tk_mem_init(void* buffer, uint32_t size) {
-  static mem_allocator_simple_t simple;
-  static mem_allocator_pool_t pool;
+ret_t tk_mem_init_ex(void* buffer, uint32_t size, ...) {
+  va_list va;
+  va_start(va, size);
+  s_allocator = mem_allocator_composite_init_va(&composite, buffer, size, va);
+  va_end(va);
 
-  s_heap_size = size;
-  s_heap_start = buffer;
+  return_value_if_fail(s_allocator != NULL, RET_BAD_PARAMS);
 
-  s_allocator = mem_allocator_simple_init(&simple, buffer, size);
   if (size < 100 * 1024) {
     s_allocator = mem_allocator_pool_init(&pool, s_allocator, 100, 100, 80, 80, 32);
   } else if (size < 1000 * 1024) {
@@ -103,6 +101,10 @@ ret_t tk_mem_init(void* buffer, uint32_t size) {
 #endif /*ENABLE_MEM_LEAK_CHECK*/
 
   return s_allocator != NULL ? RET_OK : RET_FAIL;
+}
+
+ret_t tk_mem_init(void* buffer, uint32_t size) {
+  return tk_mem_init_ex(buffer, size, NULL, 0);
 }
 
 ret_t tk_mem_init_stage2(void) {

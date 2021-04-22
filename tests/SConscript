@@ -29,7 +29,6 @@ SOURCES = [
 ] + Glob('*.cc') + Glob('*.c')
 
 env.Program(os.path.join(BIN_DIR, 'runTest'), SOURCES);
-#env.Program(os.path.join(BIN_DIR, 'mem_test'), ["mem_test.cpp"])
 env.Program(os.path.join(BIN_DIR, 'recycle_test'), ["recycle_test.cpp"])
 env.Program(os.path.join(BIN_DIR, 'waitable_action_queue_test'), ["waitable_action_queue_test.cpp"])
 env.Program(os.path.join(BIN_DIR, 'waitable_ring_buffer_test'), ["waitable_ring_buffer_test.cpp"])
