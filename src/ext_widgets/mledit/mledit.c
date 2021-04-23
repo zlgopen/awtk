@@ -526,7 +526,7 @@ ret_t mledit_set_scroll_line(widget_t* widget, uint32_t scroll_line) {
 ret_t mledit_scroll_to_offset(widget_t* widget, uint32_t offset) {
   mledit_t* mledit = MLEDIT(widget);
   int32_t scroll_y = 0;
-  scroll_bar_t* vscroll_bar = widget_lookup_by_type(widget, WIDGET_TYPE_SCROLL_BAR_DESKTOP, TRUE);
+  scroll_bar_t* vscroll_bar = SCROLL_BAR(widget_lookup_by_type(widget, WIDGET_TYPE_SCROLL_BAR_DESKTOP, TRUE));
 
   return_value_if_fail(mledit != NULL && mledit->model != NULL, RET_BAD_PARAMS);
 
