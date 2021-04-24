@@ -87,7 +87,6 @@ void allocator_test_rand() {
 void allocator_test_composite0() {
   char mem1[100*1000];
   char mem2[1000*1000];
-  char* addr = NULL;  
   mem_allocator_composite_t composite;
   mem_allocator_t* allocator = mem_allocator_composite_init(&composite, mem1, sizeof(mem1), mem2, sizeof(mem2), NULL);
 
@@ -112,6 +111,11 @@ void allocator_test_composite1() {
   
   mem_allocator_free(allocator, addr);
   addr = mem_allocator_alloc(allocator, 16, __FUNCTION__, __LINE__);
+  assert(addr >= mem1);
+  assert(addr < (mem1 + sizeof(mem1)));
+  assert(mem_allocator_composite_is_valid_addr(allocator, addr));
+  
+  addr = mem_allocator_realloc(allocator, addr, 16, __FUNCTION__, __LINE__);
   assert(addr >= mem1);
   assert(addr < (mem1 + sizeof(mem1)));
   assert(mem_allocator_composite_is_valid_addr(allocator, addr));

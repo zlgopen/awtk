@@ -352,8 +352,6 @@ enum { TK_NAME_LEN = 31, TK_FUNC_NAME_LEN = 63 };
 #define tk_lfequal(f1, f2) (fabs((f1) - (f2)) < 0.0001)
 #define tk_fequal(f1, f2) (fabs((f1) - (f2)) < 0.0000001)
 
-#define TK_ROUND_TO(size, round_size) ((((size) + round_size - 1) / round_size) * round_size)
-
 #ifndef M_PI
 #define M_PI 3.1415926f
 #endif /*M_PI*/
@@ -398,7 +396,10 @@ typedef struct _event_source_manager_t event_source_manager_t;
 #endif /*EAGAIN*/
 
 #define TK_SET_NULL(p) (p) = NULL
-#define TK_ROUND_TO8(size) (((size + 7) >> 3) << 3)
+#define TK_ROUND_TO4(size) ((((size) + 3) >> 2) << 2)
+#define TK_ROUND_TO8(size) ((((size) + 7) >> 3) << 3)
+#define TK_ROUND_TO_MACH(size) ((sizeof(void*) == 4) ? TK_ROUND_TO4(size) : TK_ROUND_TO8(size))
+#define TK_ROUND_TO(size, round_size) ((((size) + (round_size) - 1) / (round_size)) * (round_size))
 
 #define TK_SET_BIT(v, n) ((v) |= 1UL << (n))
 #define TK_CLEAR_BIT(v, n) ((v) &= ~(1UL << (n)))

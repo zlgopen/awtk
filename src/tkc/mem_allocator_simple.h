@@ -56,9 +56,9 @@ typedef struct _mem_allocator_simple_t {
 
 #define MEM_ALLOCATOR_SIMPLE(allocator) ((mem_allocator_simple_t*)(allocator))
 
-#define MIN_SIZE TK_ROUND_TO8(sizeof(free_node_t))
+#define MIN_SIZE TK_ROUND_TO_MACH(sizeof(free_node_t))
 #define REAL_SIZE(size) \
-  TK_ROUND_TO8((size > sizeof(free_node_t) ? size : MIN_SIZE) + sizeof(uint32_t));
+  TK_ROUND_TO_MACH((size > sizeof(free_node_t) ? size : MIN_SIZE) + sizeof(uint32_t));
 
 static void* tk_alloc_impl(mem_allocator_t* allocator, uint32_t s) {
   mem_info_t* info = &(MEM_ALLOCATOR_SIMPLE(allocator)->info);
@@ -68,7 +68,7 @@ static void* tk_alloc_impl(mem_allocator_t* allocator, uint32_t s) {
 
   /*查找第一个满足条件的空闲块*/
   for (iter = info->free_list; iter != NULL; iter = iter->next) {
-    if (iter->size > size) {
+    if (iter->size >= size) {
       break;
     }
   }
@@ -209,8 +209,9 @@ static void tk_free_impl(mem_allocator_t* allocator, void* ptr) {
 static void* tk_realloc_impl(mem_allocator_t* allocator, void* ptr, uint32_t size) {
   void* new_ptr = NULL;
   if (ptr != NULL) {
+    uint32_t up_size = size + MIN_SIZE;
     uint32_t old_size = *(uint32_t*)((char*)ptr - sizeof(uint32_t)) - sizeof(uint32_t);
-    if (old_size >= size && old_size <= (size + MIN_SIZE)) {
+    if ((old_size >= size) && (old_size <= up_size)) {
       return ptr;
     }
 
