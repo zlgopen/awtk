@@ -4,6 +4,41 @@
 
 #include "tkc/mem_allocator_composite.h"
 
+static void allocator_test_simple(void) {
+  char buff[64];
+  void* addr1 = NULL;
+  void* addr2 = NULL;
+  mem_allocator_simple_t simple;
+  mem_allocator_t* allocator = mem_allocator_simple_init(&simple, buff, sizeof(buff));
+
+  assert(simple.info.buffer == buff);
+  assert(simple.info.size == sizeof(buff));
+  addr1 = mem_allocator_alloc(allocator, 10, __FUNCTION__, __LINE__);
+  assert(addr1 != NULL);
+  assert(simple.info.used_block_nr == 1);
+  
+  addr2 = mem_allocator_alloc(allocator, 10, __FUNCTION__, __LINE__);
+  assert(addr2 != NULL);
+  assert(simple.info.used_block_nr == 2);
+  
+  addr1 = mem_allocator_realloc(allocator, addr1, 12, __FUNCTION__, __LINE__);
+  assert(simple.info.used_block_nr == 2);
+  
+  addr2 = mem_allocator_realloc(allocator, addr2, 12, __FUNCTION__, __LINE__);
+  assert(simple.info.used_block_nr == 2);
+
+  mem_allocator_free(allocator, addr1);
+  assert(simple.info.used_block_nr == 1);
+  
+  mem_allocator_free(allocator, addr2);
+  assert(simple.info.used_block_nr == 0);
+  assert(simple.info.used_bytes == 0);
+  assert(simple.info.used_max_block_nr == 2);
+  assert(simple.info.free_list->size == sizeof(buff));
+
+  mem_allocator_destroy(allocator);
+}
+
 void allocator_test_basic_ex(mem_allocator_t* allocator) {
   uint32_t i = 0;
   void* addr = NULL;
@@ -166,4 +201,5 @@ void allocator_test() {
   allocator_test_composite1();
   allocator_test_basic();
   allocator_test_rand();
+  allocator_test_simple();
 }

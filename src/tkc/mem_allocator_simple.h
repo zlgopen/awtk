@@ -170,36 +170,35 @@ static void tk_free_impl(mem_allocator_t* allocator, void* ptr) {
 
   if (info->free_list == NULL) {
     info->free_list = free_iter;
+  } else {
+    /*根据内存块地址的大小，把它插入到适当的位置。*/
+    for (iter = info->free_list; iter != NULL; iter = iter->next) {
+      if ((char*)iter > (char*)free_iter) {
+        free_iter->next = iter;
+        free_iter->prev = iter->prev;
+        if (iter->prev != NULL) {
+          iter->prev->next = free_iter;
+        }
+        iter->prev = free_iter;
 
-    return;
-  }
-  /*根据内存块地址的大小，把它插入到适当的位置。*/
-  for (iter = info->free_list; iter != NULL; iter = iter->next) {
-    if ((char*)iter > (char*)free_iter) {
-      free_iter->next = iter;
-      free_iter->prev = iter->prev;
-      if (iter->prev != NULL) {
-        iter->prev->next = free_iter;
+        if (info->free_list == iter) {
+          info->free_list = free_iter;
+        }
+
+        break;
       }
-      iter->prev = free_iter;
 
-      if (info->free_list == iter) {
-        info->free_list = free_iter;
+      if (iter->next == NULL) {
+        iter->next = free_iter;
+        free_iter->prev = iter;
+
+        break;
       }
-
-      break;
     }
 
-    if (iter->next == NULL) {
-      iter->next = free_iter;
-      free_iter->prev = iter;
-
-      break;
-    }
+    /*对相邻居的内存进行合并*/
+    node_merge(info, free_iter);
   }
-
-  /*对相邻居的内存进行合并*/
-  node_merge(info, free_iter);
   info->used_block_nr--;
   info->used_bytes -= size;
 
