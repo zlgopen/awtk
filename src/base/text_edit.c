@@ -866,10 +866,11 @@ ret_t text_edit_set_max_rows(text_edit_t* text_edit, uint32_t max_rows) {
 }
 
 uint32_t text_edit_get_height(text_edit_t* text_edit, uint32_t offset) {
+  uint32_t i = 0;
   DECL_IMPL(text_edit);
   return_value_if_fail(text_edit != NULL, 0);
 
-  for (uint32_t i = 0; i < impl->rows->size; i++) {
+  for (i = 0; i < impl->rows->size; i++) {
     row_info_t* iter = impl->rows->info + i;
     if (offset < iter->offset + iter->length) {
       return impl->line_height * i;
