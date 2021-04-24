@@ -55,16 +55,17 @@ typedef struct _mem_allocator_simple_t {
 } mem_allocator_simple_t;
 
 #define MEM_ALLOCATOR_SIMPLE(allocator) ((mem_allocator_simple_t*)(allocator))
-
 #define MIN_SIZE TK_ROUND_TO_MACH(sizeof(free_node_t))
-#define REAL_SIZE(size) \
-  TK_ROUND_TO_MACH((size > sizeof(free_node_t) ? size : MIN_SIZE) + sizeof(uint32_t));
+
+static inline uint32_t real_size(uint32_t size) {
+  return size > MIN_SIZE ? size : MIN_SIZE;
+}
 
 static void* tk_alloc_impl(mem_allocator_t* allocator, uint32_t s) {
   mem_info_t* info = &(MEM_ALLOCATOR_SIMPLE(allocator)->info);
 
   free_node_t* iter = NULL;
-  uint32_t size = REAL_SIZE(s);
+  uint32_t size = TK_ROUND_TO_MACH(real_size(s + sizeof(uint32_t)));
 
   /*查找第一个满足条件的空闲块*/
   for (iter = info->free_list; iter != NULL; iter = iter->next) {
@@ -290,7 +291,6 @@ static uint32_t mem_allocator_simple_get_mem_size(mem_allocator_t* allocator, vo
 
   return free_iter->size;
 }
-
 
 static inline ret_t mem_allocator_simple_destroy(mem_allocator_t* allocator) {
   allocator->vt = NULL;
