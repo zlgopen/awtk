@@ -41,6 +41,7 @@ darray_t* darray_init(darray_t* darray, uint32_t capacity, tk_destroy_t destroy,
   return_value_if_fail(darray != NULL, NULL);
 
   darray->size = 0;
+  darray->capacity = 0;
   darray->elms = NULL;
   darray->destroy = destroy != NULL ? destroy : dummy_destroy;
   darray->compare = compare != NULL ? compare : pointer_compare;

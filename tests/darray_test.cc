@@ -22,6 +22,17 @@ TEST(DArrayTest, init) {
   darray_deinit(&darray);
 }
 
+TEST(DArrayTest, init0) {
+  darray_t darray;
+  darray_init(&darray, 0, NULL, NULL);
+
+  ASSERT_EQ(darray.size, 0);
+  ASSERT_EQ(darray.capacity, 0);
+  ASSERT_EQ(darray.elms == NULL, TRUE);
+
+  darray_deinit(&darray);
+}
+
 TEST(DArrayTest, insert) {
   darray_t darray;
   darray_init(&darray, 2, NULL, NULL);
