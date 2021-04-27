@@ -70,3 +70,13 @@ TEST(Label, word_wrap) {
 
   widget_destroy(l);
 }
+
+TEST(Label, max_w) {
+  widget_t* l = label_create(NULL, 10, 20, 30, 40);
+  ASSERT_EQ(LABEL(l)->word_wrap, FALSE);
+  ASSERT_EQ(widget_set_prop_int(l, WIDGET_PROP_MAX_W, 123), RET_OK);
+  ASSERT_EQ(widget_get_prop_int(l, WIDGET_PROP_MAX_W, 0), 123);
+  ASSERT_EQ(LABEL(l)->max_w, 123);
+
+  widget_destroy(l);
+}

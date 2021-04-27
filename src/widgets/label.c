@@ -209,6 +209,14 @@ ret_t label_set_length(widget_t* widget, int32_t length) {
   return widget_invalidate_force(widget, NULL);
 }
 
+ret_t label_set_max_w(widget_t* widget, int32_t max_w) {
+  label_t* label = LABEL(widget);
+  return_value_if_fail(label != NULL, RET_BAD_PARAMS);
+  label->max_w = max_w;
+
+  return widget_invalidate_force(widget, NULL);
+}
+
 ret_t label_set_line_wrap(widget_t* widget, bool_t line_wrap) {
   label_t* label = LABEL(widget);
   return_value_if_fail(label != NULL, RET_BAD_PARAMS);
@@ -237,6 +245,9 @@ static ret_t label_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_LENGTH)) {
     value_set_int(v, label->length);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_MAX_W)) {
+    value_set_int(v, label->max_w);
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_LINE_WRAP)) {
     value_set_bool(v, label->line_wrap);
     return RET_OK;
@@ -259,6 +270,8 @@ static ret_t label_set_prop(widget_t* widget, const char* name, const value_t* v
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_LENGTH)) {
     return label_set_length(widget, tk_roundi(value_float(v)));
+  } else if (tk_str_eq(name, WIDGET_PROP_MAX_W)) {
+    return label_set_max_w(widget, value_int(v));
   } else if (tk_str_eq(name, WIDGET_PROP_LINE_WRAP)) {
     return label_set_line_wrap(widget, value_bool(v));
   } else if (tk_str_eq(name, WIDGET_PROP_WORD_WRAP)) {
@@ -270,7 +283,8 @@ static ret_t label_set_prop(widget_t* widget, const char* name, const value_t* v
 
 static ret_t label_auto_adjust_size(widget_t* widget) {
   wh_t w = 0;
-  wh_t tmp_w = 0;
+  wh_t max_line_w = 0;
+  int32_t max_w = 0;
   int32_t margin = 0;
   int32_t spacer = 0;
   int32_t line_height = 0;
@@ -278,7 +292,12 @@ static ret_t label_auto_adjust_size(widget_t* widget) {
   line_parser_t p;
   label_t* label = LABEL(widget);
   canvas_t* c = widget_get_canvas(widget);
-  return_value_if_fail(label != NULL && c != NULL && widget->astyle != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(label != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(c != NULL && widget->astyle != NULL, RET_BAD_PARAMS);
+
+  if (!widget_is_window_created(widget)) {
+    return RET_OK;
+  }
 
   style = widget->astyle;
   margin = style_get_int(style, STYLE_ID_MARGIN, 2);
@@ -291,20 +310,33 @@ static ret_t label_auto_adjust_size(widget_t* widget) {
     return RET_OK;
   }
 
-  if (label->line_wrap) {
-    w = widget->w;
-    tmp_w = w - 2 * margin;
-  } else {
-    tmp_w = label_get_text_line_max_w(widget, c);
-    w = tmp_w + 2 * margin;
+  if (label->max_w != 0) {
+    max_w = label->max_w > 0 ? label->max_w : (widget->parent->w + label->max_w);
   }
 
-  return_value_if_fail(line_parser_init(&p, c, widget->text.str, widget->text.size, c->font_size,
-                                        tmp_w, label->line_wrap, label->word_wrap) == RET_OK,
-                       RET_BAD_PARAMS);
+  max_line_w = label_get_text_line_max_w(widget, c);
+  if (label->line_wrap) {
+    w = widget->w;
+    if (max_w != 0) {
+      w = max_line_w + 2 * margin;
+    }
+  } else {
+    w = max_line_w + 2 * margin;
+  }
+
+  if (max_w != 0) {
+    if (w > max_w) {
+      w = max_w;
+    }
+  }
+
+  return_value_if_fail(
+      line_parser_init(&p, c, widget->text.str, widget->text.size, c->font_size, w - 2 * margin,
+                       label->line_wrap, label->word_wrap) == RET_OK,
+      RET_BAD_PARAMS);
 
   widget->w = w;
-  widget->h = line_height * p.total_lines;
+  widget->h = line_height * p.total_lines + 2 * margin;
 
   return RET_OK;
 }
@@ -322,6 +354,12 @@ static ret_t label_on_event(widget_t* widget, event_t* e) {
         break;
       }
       break;
+    }
+    case EVT_WINDOW_WILL_OPEN: {
+      if (widget->auto_adjust_size) {
+        label_auto_adjust_size(widget);
+        break;
+      }
     }
     default:
       break;
