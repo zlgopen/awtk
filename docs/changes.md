@@ -4,7 +4,8 @@
   * 完善 label 对 auto adjust size 的处理。
   * 完善 line\_parser\_next，让空格在行尾。
   * 完善 label\_get\_text\_line\_max\_w，使用 line\_parser 确保使用同一种算法换行。
-
+  * 修复 windows 下，wstat 无法处理"c:"之类的路径的问题。
+  
 2021/04/26
   * 完善 darray（感谢兆坤提供补丁）
 

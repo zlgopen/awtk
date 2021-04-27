@@ -525,9 +525,19 @@ static ret_t fs_os_stat(fs_t* fs, const char* name, fs_stat_info_t* fst) {
 
 #if defined(WIN32) && !defined(MINGW)
   struct _stat64i32 st;
-  wchar_t* w_name = tk_wstr_dup_utf8(name);
-  stat_ret = _wstat(w_name, &st);
-  TKMEM_FREE(w_name);
+  if (strlen(name) == 2 && name[1] == ':') {
+    /*append slash*/
+    wchar_t wname[4];
+    wname[0] = name[0];
+    wname[1] = name[1];
+    wname[2] = '\\';
+    wname[3] = 0;
+    stat_ret = _wstat(wname, &st);
+  } else {
+    wchar_t* w_name = tk_wstr_dup_utf8(name);
+    stat_ret = _wstat(w_name, &st);
+    TKMEM_FREE(w_name);
+  }
 #else
   struct stat st;
   stat_ret = stat(name, &st);
