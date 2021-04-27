@@ -266,8 +266,9 @@ static ret_t input_method_default_show_keyboard(input_method_t* im) {
       open_anim = FALSE;
     }
   }
-
-  tk_strncpy(im->keyboard_name, keyboard_name, TK_NAME_LEN);
+  if (keyboard_name != NULL) {
+    tk_strncpy(im->keyboard_name, keyboard_name, TK_NAME_LEN);
+  }
 
   return input_type_open_keyboard(im, keyboard_name, open_anim);
 }
