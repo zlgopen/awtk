@@ -1,13 +1,15 @@
 # 最新动态
 
 2021/04/27
-  * 完善label对auto adjust size的处理。
+  * 完善 label 对 auto adjust size 的处理。
+  * 完善 line\_parser\_next，让空格在行尾。
+  * 完善 label\_get\_text\_line\_max\_w，使用 line\_parser 确保使用同一种算法换行。
 
 2021/04/26
-  * 完善darray(感谢兆坤提供补丁)
+  * 完善 darray（感谢兆坤提供补丁）
 
 2021/04/25
-  * 完善内存管理器(感谢王程提供补丁)
+  * 完善内存管理器（感谢王程提供补丁）
 
 2021/04/24
   * 完善内存管理器和测试程序。
@@ -15,69 +17,68 @@
 2021/04/22
   * 修改内存泄漏问题。
   * 内存管理器支持管理多块不连续的内存。
-  * 增加网络接口的命令行工具(感谢忠吉提供)。
+  * 增加网络接口的命令行工具（感谢忠吉提供）。
 
 2021/04/20
-  * 完善progress cirle demo（感谢雨欣提供补丁）
+  * 完善 progress cirle demo（感谢雨欣提供补丁）
   * 添加 获取光标位置 接口（感谢兆坤提供补丁）
   * 添加 选中一段文本 接口 （感谢兆坤提供补丁）
   * 添加 获取当前选中的文本 接口（感谢兆坤提供补丁）
   * 添加 滚动到指定偏移位置 接口（感谢兆坤提供补丁）
 
-
 2021/04/19
-  * 修复bitmap\_clone。
+  * 修复 bitmap\_clone。
 
 2021/04/18
-  * 增加函数fscript\_syntax\_check（感谢福明提供补丁）
+  * 增加函数 fscript\_syntax\_check（感谢福明提供补丁）
 
 2021/04/17
-  * 完善编译脚本(感谢朝泽提供补丁)。
+  * 完善编译脚本（感谢朝泽提供补丁）。
 
 2021/04/15
-  * 文件浏览器增加top\_dir属性用来限制用户up到更上层目录。
+  * 文件浏览器增加 top\_dir 属性用来限制用户 up 到更上层目录。
 
 2021/04/13
-  * 增加函数data\_writer\_flush。
+  * 增加函数 data\_writer\_flush。
 
 2021/04/11
   * 完善 fs\_create\_dir\_r。
-  * 快捷键格式修改为用下划线连接，如ctrl_s。（感谢福明提供补丁）
+  * 快捷键格式修改为用下划线连接，如 ctrl_s。（感谢福明提供补丁）
 
 2021/04/10
-  * 去掉value\_t对齐的限制。
+  * 去掉 value\_t 对齐的限制。
 
 2021/04/09
-  * 修复combox一开始没有text的时候不显示选项的问题（感谢智明提供补丁）
+  * 修复 combox 一开始没有 text 的时候不显示选项的问题（感谢智明提供补丁）
 
 2021/04/08
-  * 修复mutex\_nest中的BUG。
-  * mutable\_image增加mutable\_image\_set\_need\_redraw。
+  * 修复 mutex\_nest 中的 BUG。
+  * mutable\_image 增加 mutable\_image\_set\_need\_redraw。
 
 2021/04/07
-  * 完善控件API注释中的事件（感谢培煌提供补丁)。
-  * gauge拼写错误为guage，修改成正确拼写。XML和API做了兼容处理，两种写法都可以，新写的代码请用正确的拼写。
+  * 完善控件 API 注释中的事件（感谢培煌提供补丁）。
+  * gauge 拼写错误为 guage，修改成正确拼写。XML 和 API 做了兼容处理，两种写法都可以，新写的代码请用正确的拼写。
 
 2021/04/06
   * 增加 idle\_queue\_ex/timer\_queue\_ex 方便脚本绑定时使用。
-  * 增加 hscroll\_label检测焦点状态下长度变化重新播放动画的机制（感谢智明提供补丁）
+  * 增加 hscroll\_label 检测焦点状态下长度变化重新播放动画的机制（感谢智明提供补丁）
 
 2021/04/04
   * 增加 gui\_app\_start\_ex，方便嵌入式系统指定资源路径。
-  * 增加 WITH\_MBEDTLS控制是否编译stream\_mbedtls。
+  * 增加 WITH\_MBEDTLS 控制是否编译 stream\_mbedtls。
 
 2021/04/03
-  * 修复T9 测试失败的问题（感谢智明提供补丁）
-  * 完善image animation（感谢hantianheng提供补丁，感谢智明验证）
+  * 修复 T9 测试失败的问题（感谢智明提供补丁）
+  * 完善 image animation（感谢 hantianheng 提供补丁，感谢智明验证）
 
 2021/04/01
-  * 修复T9编译问题（感谢智明提供补丁）
+  * 修复 T9 编译问题（感谢智明提供补丁）
 
 2021/03/29
  * 修复 slider 控件的 bar\_size 属性过大画面不正常的问题（感谢智明提供补丁）
  * 修改 mutable\_image 支持在 desiger 界面上面不刷新的功能（感谢智明提供补丁）
- * 修复WHEEL\_BEFORE\_CHILDREN事件无法通过wheel\_event\_cast转换的问题（感谢福明提供补丁）
- * 修改调用edit\_set\_text等函数后没有重绘的问题。
+ * 修复 WHEEL\_BEFORE\_CHILDREN 事件无法通过 wheel\_event\_cast 转换的问题（感谢福明提供补丁）
+ * 修改调用 edit\_set\_text 等函数后没有重绘的问题。
 
 2021/03/28
   * 修改一些注释错误。

@@ -123,13 +123,12 @@ static ret_t label_on_paint_self(widget_t* widget, canvas_t* c) {
 }
 
 static wh_t label_get_text_line_max_w(widget_t* widget, canvas_t* c) {
-  uint32_t i = 0;
-  wh_t line_w = 0;
-  wh_t line_max_w = 0;
-  uint32_t start = 0, n = 0;
   wstr_t s;
-  wstr_init(&s, 0);
+  line_parser_t parser;
+  wh_t line_max_w = 0;
+  line_parser_t* p = &parser;
 
+  wstr_init(&s, 0);
   if (widget->tr_text) {
     const char* utf8 = locale_info_tr(locale_info(), widget->tr_text);
     return_value_if_fail(wstr_set_utf8(&s, utf8) == RET_OK, 0);
@@ -137,21 +136,18 @@ static wh_t label_get_text_line_max_w(widget_t* widget, canvas_t* c) {
     return_value_if_fail(wstr_set(&s, widget->text.str) == RET_OK, 0)
   }
 
-  wchar_t* str = s.str;
-  uint32_t size = s.size;
+  return_value_if_fail(
+      line_parser_init(p, c, s.str, s.size, c->font_size, 0xffff, FALSE, FALSE) == RET_OK,
+      RET_BAD_PARAMS);
 
-  for (i = 0; i < size; i++) {
-    wchar_t chr = str[i];
-    if (chr == '\r' || chr == '\n' || i == size - 1) {
-      n = i - start;
-      line_w = canvas_measure_text(c, str + start, n + 1);
-      line_max_w = tk_max(line_max_w, line_w);
-      start = i;
-      if (chr == '\r' && (i + 1) <= size && str[i + 1] == '\n') {
-        start++;
-      }
+  while (line_parser_next(p) == RET_OK) {
+    uint32_t line_w = 0;
+    line_w = canvas_measure_text(c, p->line, p->line_size);
+    if (line_w > line_max_w) {
+      line_max_w = line_w;
     }
   }
+
   wstr_reset(&s);
   return line_max_w;
 }
