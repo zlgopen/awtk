@@ -26,7 +26,7 @@
       break;
     }
     case LCD_ORIENTATION_270: {
-      dx = src->h - src_r->y;
+      dx = src->h - src_r->y - 1;
       dy = src_r->x;
       break;
     }
