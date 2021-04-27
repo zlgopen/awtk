@@ -1806,6 +1806,16 @@ bool_t widget_get_prop_bool(widget_t* widget, const char* name, bool_t defval);
 bool_t widget_is_window_opened(widget_t* widget);
 
 /**
+ * @method widget_is_window_created
+ * 判断窗口及子控件创建或加载是否完成。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {bool_t} 返回创建或加载是否完成。
+ */
+bool_t widget_is_window_created(widget_t* widget);
+
+/**
  * @method widget_is_parent_of
  * 判断当前控件是否是指定控件的父控件(包括非直系)。
  * @annotation ["scriptable"]

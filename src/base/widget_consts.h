@@ -66,6 +66,18 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_H "h"
 
 /**
+ * @const WIDGET_PROP_MAX_W
+ * 最大宽度。
+ */
+#define WIDGET_PROP_MAX_W "max_w"
+
+/**
+ * @const WIDGET_PROP_MAX_H
+ * 最大高度。
+ */
+#define WIDGET_PROP_MAX_H "max_h"
+
+/**
  * @const WIDGET_PROP_DESIGN_W
  * 窗口设计时宽度。
  */
@@ -1308,6 +1320,11 @@ typedef enum _window_stage_t {
    * 初始状态。
    */
   WINDOW_STAGE_NONE = 0,
+  /**
+   * @const WINDOW_STAGE_LOADED
+   * 从UI资源加载完成。
+   */
+  WINDOW_STAGE_LOADED,
   /**
    * @const WINDOW_STAGE_CREATED
    * 创建完成。

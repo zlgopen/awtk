@@ -260,6 +260,18 @@ bool_t widget_is_window_opened(widget_t* widget) {
   }
 }
 
+bool_t widget_is_window_created(widget_t* widget) {
+  widget_t* win = widget_get_window(widget);
+
+  if (win != NULL) {
+    int32_t stage = widget_get_prop_int(win, WIDGET_PROP_STAGE, WINDOW_STAGE_NONE);
+    return WINDOW_STAGE_OPENED == stage || WINDOW_STAGE_SUSPEND == stage ||
+           WINDOW_STAGE_LOADED == stage || WINDOW_STAGE_CREATED == stage;
+  } else {
+    return FALSE;
+  }
+}
+
 ret_t widget_get_window_theme(widget_t* widget, theme_t** win_theme, theme_t** default_theme) {
   value_t v;
   widget_t* win = widget_get_window(widget);
@@ -656,7 +668,9 @@ ret_t widget_set_auto_adjust_size(widget_t* widget, bool_t auto_adjust_size) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   widget->auto_adjust_size = auto_adjust_size;
-  widget_layout(widget);
+  if (widget_is_window_created(widget)) {
+    widget_layout(widget);
+  }
   return RET_OK;
 }
 

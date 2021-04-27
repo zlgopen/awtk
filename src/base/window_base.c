@@ -412,6 +412,7 @@ ret_t window_base_on_event(widget_t* widget, event_t* e) {
       widget_set_focused_internal(widget, TRUE);
     }
   } else if (e->type == EVT_WINDOW_LOAD) {
+    win->stage = WINDOW_STAGE_LOADED;
     if (win->design_w && win->design_h) {
       if (win->auto_scale_children_x || win->auto_scale_children_y || win->auto_scale_children_w ||
           win->auto_scale_children_h) {
