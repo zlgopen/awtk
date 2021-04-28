@@ -198,19 +198,19 @@ TEST(Fs, copy_dir) {
 
 #ifdef WIN32
 TEST(Fs, stat) {
-	fs_stat_info_t st;
-	ASSERT_EQ(fs_stat(os_fs(), "c:", &st), RET_OK);
-	ASSERT_EQ(fs_stat(os_fs(), "c:\\", &st), RET_OK);
-	ASSERT_EQ(fs_stat(os_fs(), "c://", &st), RET_OK);
+  fs_stat_info_t st;
+  ASSERT_EQ(fs_stat(os_fs(), "c:", &st), RET_OK);
+  ASSERT_EQ(fs_stat(os_fs(), "c:\\", &st), RET_OK);
+  ASSERT_EQ(fs_stat(os_fs(), "c://", &st), RET_OK);
 
-	ASSERT_EQ(fs_create_dir_r(os_fs(), "c:\\awtk_test\\test"), RET_OK);
-	ASSERT_EQ(dir_exist( "c:\\awtk_test\\test"), TRUE);
-	ASSERT_EQ(fs_remove_dir_r(os_fs(),  "c:\\awtk_test"), RET_OK);
-	ASSERT_EQ(dir_exist( "c:\\awtk_test"), FALSE);
-	
-	ASSERT_EQ(fs_create_dir_r(os_fs(), "c://awtk_test//test"), RET_OK);
-	ASSERT_EQ(dir_exist( "c:/awtk_test/test"), TRUE);
-	ASSERT_EQ(fs_remove_dir_r(os_fs(),  "c:/awtk_test"), RET_OK);
-	ASSERT_EQ(dir_exist( "c:/awtk_test"), FALSE);
+  ASSERT_EQ(fs_create_dir_r(os_fs(), "c:\\awtk_test\\test"), RET_OK);
+  ASSERT_EQ(dir_exist("c:\\awtk_test\\test"), TRUE);
+  ASSERT_EQ(fs_remove_dir_r(os_fs(), "c:\\awtk_test"), RET_OK);
+  ASSERT_EQ(dir_exist("c:\\awtk_test"), FALSE);
+
+  ASSERT_EQ(fs_create_dir_r(os_fs(), "c://awtk_test//test"), RET_OK);
+  ASSERT_EQ(dir_exist("c:/awtk_test/test"), TRUE);
+  ASSERT_EQ(fs_remove_dir_r(os_fs(), "c:/awtk_test"), RET_OK);
+  ASSERT_EQ(dir_exist("c:/awtk_test"), FALSE);
 }
-#endif/*WIN32*/
+#endif /*WIN32*/

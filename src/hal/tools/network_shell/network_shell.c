@@ -33,7 +33,7 @@
 
 static char* command_generator(const char* text, int state);
 static char** command_completion(const char* text, int start, int end) {
-char** matches = NULL;
+  char** matches = NULL;
 
   if (start == 0) {
     matches = rl_completion_matches(text, command_generator);
@@ -105,149 +105,161 @@ typedef struct _cmd_entry_t {
 
 //网卡接口使能函数。
 static ret_t func_network_interface_enable(network_interface_t* interface, tokenizer_t* tokenizer) {
-    ret_t ret = RET_FAIL;
-    ret = network_interface_enable(interface);
-    log_debug("%s:%s\n", __FUNCTION__, ret == RET_OK ? "OK" : "FAIL");
-    return RET_OK;
+  ret_t ret = RET_FAIL;
+  ret = network_interface_enable(interface);
+  log_debug("%s:%s\n", __FUNCTION__, ret == RET_OK ? "OK" : "FAIL");
+  return RET_OK;
 }
 
 //网卡接口禁能函数。
-static ret_t func_network_interface_disable(network_interface_t* interface, tokenizer_t* tokenizer) {
-    ret_t ret = RET_FAIL;
-    ret = network_interface_disable(interface);
-    log_debug("%s:%s\n", __FUNCTION__, ret == RET_OK ? "OK" : "FAIL");
-    return RET_OK;
+static ret_t func_network_interface_disable(network_interface_t* interface,
+                                            tokenizer_t* tokenizer) {
+  ret_t ret = RET_FAIL;
+  ret = network_interface_disable(interface);
+  log_debug("%s:%s\n", __FUNCTION__, ret == RET_OK ? "OK" : "FAIL");
+  return RET_OK;
 }
 
 //网卡接口获取IP地址。
-static ret_t func_network_interface_get_ipaddr(network_interface_t* interface, tokenizer_t* tokenizer) {
-    char* ip = NULL;
-    ip = network_interface_get_ipaddr(interface);
-    log_debug("%s:%s\n", __FUNCTION__, ip != NULL ? ip : "FAIL");
+static ret_t func_network_interface_get_ipaddr(network_interface_t* interface,
+                                               tokenizer_t* tokenizer) {
+  char* ip = NULL;
+  ip = network_interface_get_ipaddr(interface);
+  log_debug("%s:%s\n", __FUNCTION__, ip != NULL ? ip : "FAIL");
 
-    return RET_OK;
+  return RET_OK;
 }
 
 //网卡接口获取MAC地址。
-static ret_t func_network_interface_get_macaddr(network_interface_t* interface, tokenizer_t* tokenizer) {
-    char* mac = NULL;
-    mac = network_interface_get_macaddr(interface);
-    log_debug("%s:%s\n", __FUNCTION__, mac != NULL ? mac : "FAIL");
-    return RET_OK;
+static ret_t func_network_interface_get_macaddr(network_interface_t* interface,
+                                                tokenizer_t* tokenizer) {
+  char* mac = NULL;
+  mac = network_interface_get_macaddr(interface);
+  log_debug("%s:%s\n", __FUNCTION__, mac != NULL ? mac : "FAIL");
+  return RET_OK;
 }
 
 //网卡接口获取状态。
-static ret_t func_network_interface_get_status(network_interface_t* interface, tokenizer_t* tokenizer) {
-    int status = 0;
-    status = network_interface_get_status(interface);
-    log_debug("%s:%d\n", __FUNCTION__, status);
-    return RET_OK;
+static ret_t func_network_interface_get_status(network_interface_t* interface,
+                                               tokenizer_t* tokenizer) {
+  int status = 0;
+  status = network_interface_get_status(interface);
+  log_debug("%s:%d\n", __FUNCTION__, status);
+  return RET_OK;
 }
 
 //网卡接口获取通信质量。
-static ret_t func_network_interface_get_quality(network_interface_t* interface, tokenizer_t* tokenizer) {
-    int quality = 0;
-    quality = network_interface_get_quality(interface);
-    log_debug("%s:%d\n", __FUNCTION__, quality);
-    return RET_OK;
+static ret_t func_network_interface_get_quality(network_interface_t* interface,
+                                                tokenizer_t* tokenizer) {
+  int quality = 0;
+  quality = network_interface_get_quality(interface);
+  log_debug("%s:%d\n", __FUNCTION__, quality);
+  return RET_OK;
 }
 
 //网卡接口设置IP地址。
-static ret_t func_network_interface_set_ipaddr(network_interface_t* interface, tokenizer_t* tokenizer) {
-    ret_t ret = RET_FAIL;
-    char* ipaddr = tk_strdup(tokenizer_next(tokenizer));
-    char* netmask = tk_strdup(tokenizer_next(tokenizer));
-    return_value_if_fail(ipaddr != NULL && netmask != NULL, RET_BAD_PARAMS);
+static ret_t func_network_interface_set_ipaddr(network_interface_t* interface,
+                                               tokenizer_t* tokenizer) {
+  ret_t ret = RET_FAIL;
+  char* ipaddr = tk_strdup(tokenizer_next(tokenizer));
+  char* netmask = tk_strdup(tokenizer_next(tokenizer));
+  return_value_if_fail(ipaddr != NULL && netmask != NULL, RET_BAD_PARAMS);
 
-    ret = network_interface_set_ipaddr(interface, ipaddr, netmask);
+  ret = network_interface_set_ipaddr(interface, ipaddr, netmask);
 
-    log_debug("%s:%s\n", __FUNCTION__, ret == RET_OK ? "OK" : "FAIL");
-    TKMEM_FREE(ipaddr);
-    TKMEM_FREE(netmask);
-    
-    return RET_OK;
+  log_debug("%s:%s\n", __FUNCTION__, ret == RET_OK ? "OK" : "FAIL");
+  TKMEM_FREE(ipaddr);
+  TKMEM_FREE(netmask);
+
+  return RET_OK;
 }
 
 //网卡接口设置DNS。
-static ret_t func_network_interface_set_dns(network_interface_t* interface, tokenizer_t* tokenizer) {
-    ret_t ret = RET_FAIL;
-    char* dns = tk_strdup(tokenizer_next(tokenizer));
-    return_value_if_fail(dns != NULL, RET_BAD_PARAMS);
+static ret_t func_network_interface_set_dns(network_interface_t* interface,
+                                            tokenizer_t* tokenizer) {
+  ret_t ret = RET_FAIL;
+  char* dns = tk_strdup(tokenizer_next(tokenizer));
+  return_value_if_fail(dns != NULL, RET_BAD_PARAMS);
 
-    ret = network_interface_set_dns(interface, dns);
+  ret = network_interface_set_dns(interface, dns);
 
-    log_debug("%s:%s\n", __FUNCTION__, ret == RET_OK ? "OK" : "FAIL");
-    TKMEM_FREE(dns);
-    
-    return RET_OK;
+  log_debug("%s:%s\n", __FUNCTION__, ret == RET_OK ? "OK" : "FAIL");
+  TKMEM_FREE(dns);
+
+  return RET_OK;
 }
 
 //网卡接口设置dhcp。
-static ret_t func_network_interface_set_dhcp(network_interface_t* interface, tokenizer_t* tokenizer) {
-    ret_t ret = RET_FAIL;
-    ret = network_interface_set_dhcp(interface);
-    log_debug("%s:%s\n", __FUNCTION__, ret == RET_OK ? "OK" : "FAIL");
-    return RET_OK;
+static ret_t func_network_interface_set_dhcp(network_interface_t* interface,
+                                             tokenizer_t* tokenizer) {
+  ret_t ret = RET_FAIL;
+  ret = network_interface_set_dhcp(interface);
+  log_debug("%s:%s\n", __FUNCTION__, ret == RET_OK ? "OK" : "FAIL");
+  return RET_OK;
 }
 
 //网卡接口设置网关
-static ret_t func_network_interface_set_gateway(network_interface_t* interface, tokenizer_t* tokenizer) {
-    ret_t ret = RET_FAIL;
-    char* gateway = tk_strdup(tokenizer_next(tokenizer));
-    char* dev = tk_strdup(tokenizer_next(tokenizer));
-    return_value_if_fail(gateway != NULL && dev != NULL, RET_BAD_PARAMS);
+static ret_t func_network_interface_set_gateway(network_interface_t* interface,
+                                                tokenizer_t* tokenizer) {
+  ret_t ret = RET_FAIL;
+  char* gateway = tk_strdup(tokenizer_next(tokenizer));
+  char* dev = tk_strdup(tokenizer_next(tokenizer));
+  return_value_if_fail(gateway != NULL && dev != NULL, RET_BAD_PARAMS);
 
-    ret = network_interface_set_gateway(interface, gateway, dev);
+  ret = network_interface_set_gateway(interface, gateway, dev);
 
-    log_debug("%s:%s\n", __FUNCTION__, ret == RET_OK ? "OK" : "FAIL");
-    TKMEM_FREE(gateway);
-    TKMEM_FREE(dev);
-    
-    return RET_OK;
+  log_debug("%s:%s\n", __FUNCTION__, ret == RET_OK ? "OK" : "FAIL");
+  TKMEM_FREE(gateway);
+  TKMEM_FREE(dev);
+
+  return RET_OK;
 }
 
 //网卡接口设置WIFI STA模式。
-static ret_t func_network_interface_set_wifi_sta(network_interface_t* interface, tokenizer_t* tokenizer) {
-    ret_t ret = RET_FAIL;
-    char* essid = tk_strdup(tokenizer_next(tokenizer));
-    char* passwd = tk_strdup(tokenizer_next(tokenizer));
-    char* auth = tk_strdup(tokenizer_next(tokenizer));
-    return_value_if_fail(essid != NULL && passwd && auth != NULL, RET_BAD_PARAMS);
+static ret_t func_network_interface_set_wifi_sta(network_interface_t* interface,
+                                                 tokenizer_t* tokenizer) {
+  ret_t ret = RET_FAIL;
+  char* essid = tk_strdup(tokenizer_next(tokenizer));
+  char* passwd = tk_strdup(tokenizer_next(tokenizer));
+  char* auth = tk_strdup(tokenizer_next(tokenizer));
+  return_value_if_fail(essid != NULL && passwd && auth != NULL, RET_BAD_PARAMS);
 
-    ret = network_interface_set_wifi_sta(interface, essid, passwd, tk_atoi(auth));
+  ret = network_interface_set_wifi_sta(interface, essid, passwd, tk_atoi(auth));
 
-    log_debug("%s:%s\n", __FUNCTION__, ret == RET_OK ? "OK" : "FAIL");
-    TKMEM_FREE(essid);
-    TKMEM_FREE(passwd);
-    TKMEM_FREE(auth);
-    
-    return RET_OK;
+  log_debug("%s:%s\n", __FUNCTION__, ret == RET_OK ? "OK" : "FAIL");
+  TKMEM_FREE(essid);
+  TKMEM_FREE(passwd);
+  TKMEM_FREE(auth);
+
+  return RET_OK;
 }
 
 //网卡接口设置WIFI AP模式。
-static ret_t func_network_interface_set_wifi_ap(network_interface_t* interface, tokenizer_t* tokenizer) {
-    ret_t ret = RET_FAIL;
-    char* essid = tk_strdup(tokenizer_next(tokenizer));
-    char* passwd = tk_strdup(tokenizer_next(tokenizer));
-    char* auth = tk_strdup(tokenizer_next(tokenizer));
-    char* channel = tk_strdup(tokenizer_next(tokenizer));
-    char* freq = tk_strdup(tokenizer_next(tokenizer));
-    char* hidden = tk_strdup(tokenizer_next(tokenizer));
-    return_value_if_fail(essid != NULL && passwd != NULL &&
-    auth != NULL && channel != NULL &&
-    freq != NULL && hidden != NULL, RET_BAD_PARAMS);
+static ret_t func_network_interface_set_wifi_ap(network_interface_t* interface,
+                                                tokenizer_t* tokenizer) {
+  ret_t ret = RET_FAIL;
+  char* essid = tk_strdup(tokenizer_next(tokenizer));
+  char* passwd = tk_strdup(tokenizer_next(tokenizer));
+  char* auth = tk_strdup(tokenizer_next(tokenizer));
+  char* channel = tk_strdup(tokenizer_next(tokenizer));
+  char* freq = tk_strdup(tokenizer_next(tokenizer));
+  char* hidden = tk_strdup(tokenizer_next(tokenizer));
+  return_value_if_fail(essid != NULL && passwd != NULL && auth != NULL && channel != NULL &&
+                           freq != NULL && hidden != NULL,
+                       RET_BAD_PARAMS);
 
-    ret = network_interface_set_wifi_ap(interface, essid, passwd, tk_atoi(auth), tk_atoi(channel), tk_atoi(freq), tk_atoi(hidden));
+  ret = network_interface_set_wifi_ap(interface, essid, passwd, tk_atoi(auth), tk_atoi(channel),
+                                      tk_atoi(freq), tk_atoi(hidden));
 
-    log_debug("%s:%s\n", __FUNCTION__, ret == RET_OK ? "OK" : "FAIL");
-    TKMEM_FREE(essid);
-    TKMEM_FREE(passwd);
-    TKMEM_FREE(auth);
-    TKMEM_FREE(channel);
-    TKMEM_FREE(freq);
-    TKMEM_FREE(hidden);
-    
-    return RET_OK;
+  log_debug("%s:%s\n", __FUNCTION__, ret == RET_OK ? "OK" : "FAIL");
+  TKMEM_FREE(essid);
+  TKMEM_FREE(passwd);
+  TKMEM_FREE(auth);
+  TKMEM_FREE(channel);
+  TKMEM_FREE(freq);
+  TKMEM_FREE(hidden);
+
+  return RET_OK;
 }
 
 static ret_t func_quit(network_interface_t* interface, tokenizer_t* tokenizer) {
@@ -258,16 +270,26 @@ static ret_t func_help(network_interface_t* interface, tokenizer_t* tokenizer);
 static const cmd_entry_t s_cmds[] = {
     {"enable", "e", "Enable network interface", "enable", func_network_interface_enable},
     {"disable", "d", "Disable network interface", "disable", func_network_interface_disable},
-    {"get_ip", "ip", "Get IP address of network interface", "get_ip", func_network_interface_get_ipaddr},
-    {"get_mac", "mac", "Get mac address of network interface", "get_mac", func_network_interface_get_macaddr},
-    {"get_status", "s", "Get status of network interface", "get_status", func_network_interface_get_status},
-    {"get_quality", "qua", "Get quality of network interface", "get_quality", func_network_interface_get_quality},
-    {"set_ip", "sip", "Set IP address of network interface", "set_ip ip_address netmask", func_network_interface_set_ipaddr},
-    {"set_dns", "sdns", "Set dns of network interface", "set_dns dns", func_network_interface_set_dns},
-    {"set_dhcp", "dhcp", "Enable dhcp of network interface", "set_dhcp", func_network_interface_set_dhcp},
-    {"set_gateway", "sgw", "Set gateway of network interface", "set_gateway gateway dev_name", func_network_interface_set_gateway},
-    {"set_wifi_sta", "ssta", "Set wifi sta of network interface", "set_wifi_sta essid passwd auth", func_network_interface_set_wifi_sta},
-    {"set_wifi_ap", "sap", "Set wifi ap of network interface", "set_wifi_ap essid passwd auth channel freq hidden", func_network_interface_set_wifi_ap},
+    {"get_ip", "ip", "Get IP address of network interface", "get_ip",
+     func_network_interface_get_ipaddr},
+    {"get_mac", "mac", "Get mac address of network interface", "get_mac",
+     func_network_interface_get_macaddr},
+    {"get_status", "s", "Get status of network interface", "get_status",
+     func_network_interface_get_status},
+    {"get_quality", "qua", "Get quality of network interface", "get_quality",
+     func_network_interface_get_quality},
+    {"set_ip", "sip", "Set IP address of network interface", "set_ip ip_address netmask",
+     func_network_interface_set_ipaddr},
+    {"set_dns", "sdns", "Set dns of network interface", "set_dns dns",
+     func_network_interface_set_dns},
+    {"set_dhcp", "dhcp", "Enable dhcp of network interface", "set_dhcp",
+     func_network_interface_set_dhcp},
+    {"set_gateway", "sgw", "Set gateway of network interface", "set_gateway gateway dev_name",
+     func_network_interface_set_gateway},
+    {"set_wifi_sta", "ssta", "Set wifi sta of network interface", "set_wifi_sta essid passwd auth",
+     func_network_interface_set_wifi_sta},
+    {"set_wifi_ap", "sap", "Set wifi ap of network interface",
+     "set_wifi_ap essid passwd auth channel freq hidden", func_network_interface_set_wifi_ap},
     {"quit", "q", "Quit loop", "quit", func_quit},
     {NULL, NULL, NULL}};
 
@@ -326,13 +348,15 @@ static ret_t register_functions(object_t* obj) {
   return RET_OK;
 }
 
-static ret_t network_shell_exec(network_interface_t* network_interface, object_t* obj, const char* line) {
+static ret_t network_shell_exec(network_interface_t* network_interface, object_t* obj,
+                                const char* line) {
   tokenizer_t t;
   ret_t ret = RET_OK;
   const char* name = NULL;
   cmd_line_func_t func = NULL;
 
-  return_value_if_fail(network_interface != NULL && network_interface->vt != NULL && line != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(network_interface != NULL && network_interface->vt != NULL && line != NULL,
+                       RET_BAD_PARAMS);
   tokenizer_init(&t, line, strlen(line), " \t\r\n");
 
   name = tokenizer_next(&t);

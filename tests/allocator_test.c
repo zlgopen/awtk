@@ -16,20 +16,20 @@ static void allocator_test_simple(void) {
   addr1 = mem_allocator_alloc(allocator, 10, __FUNCTION__, __LINE__);
   assert(addr1 != NULL);
   assert(simple.info.used_block_nr == 1);
-  
+
   addr2 = mem_allocator_alloc(allocator, 10, __FUNCTION__, __LINE__);
   assert(addr2 != NULL);
   assert(simple.info.used_block_nr == 2);
-  
+
   addr1 = mem_allocator_realloc(allocator, addr1, 12, __FUNCTION__, __LINE__);
   assert(simple.info.used_block_nr == 2);
-  
+
   addr2 = mem_allocator_realloc(allocator, addr2, 12, __FUNCTION__, __LINE__);
   assert(simple.info.used_block_nr == 2);
 
   mem_allocator_free(allocator, addr1);
   assert(simple.info.used_block_nr == 1);
-  
+
   mem_allocator_free(allocator, addr2);
   assert(simple.info.used_block_nr == 0);
   assert(simple.info.used_bytes == 0);
@@ -57,7 +57,6 @@ void allocator_test_basic_ex(mem_allocator_t* allocator) {
   for (i = 0; i < ARRAY_SIZE(addrs); i++) {
     mem_allocator_free(allocator, addrs[i]);
   }
-
 }
 
 void allocator_test_basic() {
@@ -120,10 +119,11 @@ void allocator_test_rand() {
 }
 
 void allocator_test_composite0() {
-  char mem1[100*1000];
-  char mem2[1000*1000];
+  char mem1[100 * 1000];
+  char mem2[1000 * 1000];
   mem_allocator_composite_t composite;
-  mem_allocator_t* allocator = mem_allocator_composite_init(&composite, mem1, sizeof(mem1), mem2, sizeof(mem2), NULL);
+  mem_allocator_t* allocator =
+      mem_allocator_composite_init(&composite, mem1, sizeof(mem1), mem2, sizeof(mem2), NULL);
 
   allocator_test_basic_ex(allocator);
   allocator_test_rand_ex(allocator);
@@ -134,44 +134,45 @@ void allocator_test_composite1() {
   char mem1[36];
   char mem2[64];
   char mem3[1280];
-  char* addr = NULL;  
+  char* addr = NULL;
   mem_allocator_composite_t composite;
-  mem_allocator_t* allocator = mem_allocator_composite_init(&composite,  mem1, sizeof(mem1), mem2, sizeof(mem2), mem3, sizeof(mem3), NULL);
- 
+  mem_allocator_t* allocator = mem_allocator_composite_init(&composite, mem1, sizeof(mem1), mem2,
+                                                            sizeof(mem2), mem3, sizeof(mem3), NULL);
+
   /*mem1*/
   addr = mem_allocator_alloc(allocator, 16, __FUNCTION__, __LINE__);
   assert(addr >= mem1);
   assert(addr < (mem1 + sizeof(mem1)));
   assert(mem_allocator_composite_is_valid_addr(allocator, addr));
-  
+
   mem_allocator_free(allocator, addr);
   addr = mem_allocator_alloc(allocator, 16, __FUNCTION__, __LINE__);
   assert(addr >= mem1);
   assert(addr < (mem1 + sizeof(mem1)));
   assert(mem_allocator_composite_is_valid_addr(allocator, addr));
-  
+
   addr = mem_allocator_realloc(allocator, addr, 16, __FUNCTION__, __LINE__);
   assert(addr >= mem1);
   assert(addr < (mem1 + sizeof(mem1)));
   assert(mem_allocator_composite_is_valid_addr(allocator, addr));
-  
-  addr = mem_allocator_realloc(allocator, addr, 16+2, __FUNCTION__, __LINE__);
+
+  addr = mem_allocator_realloc(allocator, addr, 16 + 2, __FUNCTION__, __LINE__);
   assert(addr >= mem1);
   assert(addr < (mem1 + sizeof(mem1)));
   assert(mem_allocator_composite_is_valid_addr(allocator, addr));
- 
+
   /*mem2*/
   addr = mem_allocator_alloc(allocator, 36, __FUNCTION__, __LINE__);
   assert(addr >= mem2);
   assert(addr < (mem2 + sizeof(mem2)));
   assert(mem_allocator_composite_is_valid_addr(allocator, addr));
-  
+
   mem_allocator_free(allocator, addr);
   addr = mem_allocator_alloc(allocator, 36, __FUNCTION__, __LINE__);
   assert(addr >= mem2);
   assert(addr < (mem2 + sizeof(mem2)));
   assert(mem_allocator_composite_is_valid_addr(allocator, addr));
-  
+
   addr = mem_allocator_realloc(allocator, addr, 30, __FUNCTION__, __LINE__);
   assert(addr >= mem2);
   assert(addr < (mem2 + sizeof(mem2)));
@@ -181,14 +182,14 @@ void allocator_test_composite1() {
   addr = mem_allocator_alloc(allocator, 66, __FUNCTION__, __LINE__);
   assert(addr >= mem3);
   assert(addr < (mem3 + sizeof(mem3)));
-  
+
   mem_allocator_free(allocator, addr);
   addr = mem_allocator_alloc(allocator, 66, __FUNCTION__, __LINE__);
   assert(addr >= mem3);
   assert(addr < (mem3 + sizeof(mem3)));
   assert(mem_allocator_composite_is_valid_addr(allocator, addr));
-  
-  addr = mem_allocator_realloc(allocator, addr, 66+2, __FUNCTION__, __LINE__);
+
+  addr = mem_allocator_realloc(allocator, addr, 66 + 2, __FUNCTION__, __LINE__);
   assert(addr >= mem3);
   assert(addr < (mem3 + sizeof(mem3)));
   assert(mem_allocator_composite_is_valid_addr(allocator, addr));

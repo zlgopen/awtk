@@ -22,7 +22,7 @@ static network_interface_t* network_interface_create_with_args(int argc, char* a
   int interface_type = 0;
   network_interface_t* network_interface = NULL;
 
-  if(argc < 3) {
+  if (argc < 3) {
     show_help(argc, argv);
     exit(0);
     return NULL;

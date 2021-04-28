@@ -62,7 +62,8 @@ static assets_manager_t* s_assets_manager = NULL;
 static ret_t assets_manager_dispatch_event(assets_manager_t* am, int32_t etype,
                                            asset_info_t* info) {
   assets_event_t e;
-  return emitter_dispatch(EMITTER(am), assets_event_init(&e, am, etype, (asset_type_t)(info->type), info));
+  return emitter_dispatch(EMITTER(am),
+                          assets_event_init(&e, am, etype, (asset_type_t)(info->type), info));
 }
 
 static locale_info_t* assets_manager_get_locale_info(assets_manager_t* am) {

@@ -399,7 +399,7 @@ typedef struct _event_source_manager_t event_source_manager_t;
 #define TK_ROUND_TO4(size) ((((size) + 3) >> 2) << 2)
 #define TK_ROUND_TO8(size) ((((size) + 7) >> 3) << 3)
 #define TK_ROUND_TO_MACH(size) ((sizeof(void*) == 4) ? TK_ROUND_TO4(size) : TK_ROUND_TO8(size))
-#define TK_ROUND_TO(size, round_size) ((((size) + (round_size) - 1) / (round_size)) * (round_size))
+#define TK_ROUND_TO(size, round_size) ((((size) + (round_size)-1) / (round_size)) * (round_size))
 
 #define TK_SET_BIT(v, n) ((v) |= 1UL << (n))
 #define TK_CLEAR_BIT(v, n) ((v) &= ~(1UL << (n)))
