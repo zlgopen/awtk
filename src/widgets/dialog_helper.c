@@ -34,6 +34,7 @@ widget_t* dialog_create_simple(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
   return_value_if_fail(dialog != NULL, NULL);
 
   title = dialog_title_create(widget, 0, 0, 0, 0);
+  widget_set_name(title, "title");
   widget_set_self_layout_params(title, "0", "0", "100%", "30");
 
   client = dialog_client_create(widget, 0, 0, 0, 0);
@@ -165,9 +166,11 @@ ret_t dialog_info_ex(const char* text, const char* title_text, const char* theme
   widget_add_child(client, label);
 
   ok = button_create(client, 0, 0, 0, 0);
+  widget_set_name(ok, "ok");
   widget_set_tr_text(ok, "OK");
   widget_set_focused(ok, TRUE);
   widget_set_focusable(ok, TRUE);
+  widget_use_style(ok, OK_STYLE_NAME);
   widget_set_self_layout(ok, "default(x=c, y=bottom:10, w=50%, h=30)");
   widget_on(ok, EVT_CLICK, on_ok_to_quit, dialog);
 
@@ -225,6 +228,7 @@ ret_t dialog_confirm(const char* stitle, const char* text) {
   widget_add_child(client, label);
 
   ok = button_create(client, 0, 0, 0, 0);
+  widget_set_name(ok, "ok");
   widget_set_tr_text(ok, "OK");
   widget_set_focused(ok, TRUE);
   widget_set_focusable(ok, TRUE);
@@ -233,6 +237,7 @@ ret_t dialog_confirm(const char* stitle, const char* text) {
   widget_on(ok, EVT_CLICK, on_ok_to_quit, dialog);
 
   cancel = button_create(client, 0, 0, 0, 0);
+  widget_set_name(cancel, "cancel");
   widget_set_focusable(cancel, TRUE);
   widget_set_tr_text(cancel, "Cancel");
   widget_use_style(cancel, CANCEL_STYLE_NAME);
