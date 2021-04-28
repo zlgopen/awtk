@@ -1,4 +1,4 @@
-/*
+﻿/*
  *  Common code for SSL test programs
  *
  *  Copyright The Mbed TLS Contributors

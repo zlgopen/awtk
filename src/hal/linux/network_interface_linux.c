@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   network_interface_linux.c
  * Author: AWTK Develop Team
  * Brief: network_interface for linux

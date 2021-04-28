@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   app_conf_init.h
  * Author: AWTK Develop Team
  * Brief:  init config for app

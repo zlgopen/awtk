@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   cond_var_null.c
  * Author: AWTK Develop Team
  * Brief:  cond_var do nothing

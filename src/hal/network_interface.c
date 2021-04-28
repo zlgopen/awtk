@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   network_interface.c
  * Author: AWTK Develop Team
  * Brief: network_interface 

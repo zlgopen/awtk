@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   conf_json.c
  * Author: AWTK Develop Team
  * Brief:  json 

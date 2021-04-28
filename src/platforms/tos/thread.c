@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   thread.c
  * Author: AWTK Develop Team
  * Brief:  thread on cmsis_os
