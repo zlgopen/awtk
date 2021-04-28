@@ -513,7 +513,7 @@ ret_t edit_set_cursor(widget_t* widget, uint32_t cursor);
  * @annotation ["scriptable"]
  * @param {widget_t*} widget widget对象。
  *
- * @return {ret_t} 返回光标位置。
+ * @return {uint32_t} 返回光标位置。
  */
 uint32_t edit_get_cursor(widget_t* widget);
 
