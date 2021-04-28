@@ -25,9 +25,12 @@ def joinPath(root, subdir):
 
 TK_ROOT=os.path.dirname(os.path.normpath(os.path.abspath(__file__)))
 
-WIN32_AWTK_RES=os.path.join(TK_ROOT, 'win32_res/awtk.res');
+WIN32_AWTK_RES='win32_res/awtk.res';
+if not os.path.exists(WIN32_AWTK_RES):
+  WIN32_AWTK_RES=os.path.join(TK_ROOT, 'win32_res/awtk.res');
 
 print('TK_ROOT: ' + TK_ROOT);
+print('WIN32_AWTK_RES: ' + WIN32_AWTK_RES);
 
 TK_SRC        = joinPath(TK_ROOT, 'src')
 TK_BIN_DIR    = joinPath(TK_ROOT, 'bin')

@@ -2,6 +2,7 @@
 
 2021/04/28
   * 重构 label 并完善对 margin 的支持。
+  * 完善 Windows 下应用程序图标的支持(感谢陈谭提供补丁)。
 
 2021/04/27
   * 完善 label 对 auto adjust size 的处理。
