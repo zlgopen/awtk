@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/04/28
+  * 重构 label 并完善对 margin 的支持。
+
 2021/04/27
   * 完善 label 对 auto adjust size 的处理。
   * 完善 line\_parser\_next，让空格在行尾。

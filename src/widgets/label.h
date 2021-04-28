@@ -87,14 +87,15 @@ typedef struct _label_t {
   /**
    * @property {bool_t} line_wrap
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 是否自动换行。
+   * 是否自动换行(默认FALSE)。
    */
   bool_t line_wrap;
 
   /**
    * @property {bool_t} word_wrap
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
-   * 是否允许整个单词换行。(需要开启自动换行才有效果)
+   * 是否允许整个单词换行(默认FALSE)。
+   * > 需要开启自动换行才有效果
    */
   bool_t word_wrap;
 
@@ -123,7 +124,7 @@ widget_t* label_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 
 /**
  * @method label_set_length
- * 设置显示字符的个数(小余0时全部显示)。。
+ * 设置显示字符的个数(小余0时全部显示)。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
  * @param {int32_t}  length 最大可显示字符个数。

@@ -2846,6 +2846,15 @@ ret_t widget_end_wait_pointer_cursor(widget_t* widget);
 ret_t widget_set_style(widget_t* widget, const char* state_and_name, const value_t* value);
 
 /**
+ * @method widget_get_content_area
+ * 获取widget去掉margin之外的区域。
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {rect_t} 返回去掉margin之外的区域。
+ */
+rect_t widget_get_content_area(widget_t* widget);
+
+/**
  * @method widget_calc_icon_text_rect
  * 计算icon text的位置。
  * 

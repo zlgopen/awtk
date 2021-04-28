@@ -4569,3 +4569,24 @@ bool_t widget_get_feedback(widget_t* widget) {
 
   return widget->feedback;
 }
+
+rect_t widget_get_content_area(widget_t* widget) {
+  if (widget != NULL && widget->astyle != NULL) {
+    style_t* style = widget->astyle;
+    int32_t margin = style_get_int(style, STYLE_ID_MARGIN, 2);
+    int32_t margin_top = style_get_int(style, STYLE_ID_MARGIN_TOP, margin);
+    int32_t margin_left = style_get_int(style, STYLE_ID_MARGIN_LEFT, margin);
+    int32_t margin_right = style_get_int(style, STYLE_ID_MARGIN_RIGHT, margin);
+    int32_t margin_bottom = style_get_int(style, STYLE_ID_MARGIN_BOTTOM, margin);
+    int32_t w = widget->w - margin_left - margin_right;
+    int32_t h = widget->h - margin_top - margin_bottom;
+
+    return rect_init(margin_left, margin_top, w, h);
+  } else {
+    if (widget != NULL) {
+      return rect_init(0, 0, widget->w, widget->h);
+    } else {
+      return rect_init(0, 0, 0, 0);
+    }
+  }
+}
