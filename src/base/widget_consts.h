@@ -66,12 +66,6 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_H "h"
 
 /**
- * @const WIDGET_PROP_MAX_W
- * 最大宽度。
- */
-#define WIDGET_PROP_MAX_W "max_w"
-
-/**
  * @const WIDGET_PROP_MAX_H
  * 最大高度。
  */
