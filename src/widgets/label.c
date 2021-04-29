@@ -113,21 +113,13 @@ static ret_t label_on_paint_self(widget_t* widget, canvas_t* c) {
 }
 
 static wh_t label_get_text_line_max_w(widget_t* widget, canvas_t* c) {
-  wstr_t s;
-  line_parser_t parser;
   wh_t line_max_w = 0;
+  line_parser_t parser;
   line_parser_t* p = &parser;
-
-  wstr_init(&s, 0);
-  if (widget->tr_text) {
-    const char* utf8 = locale_info_tr(locale_info(), widget->tr_text);
-    return_value_if_fail(wstr_set_utf8(&s, utf8) == RET_OK, 0);
-  } else if (widget->text.size) {
-    return_value_if_fail(wstr_set(&s, widget->text.str) == RET_OK, 0)
-  }
+  wstr_t* str = &(widget->text);
 
   return_value_if_fail(
-      line_parser_init(p, c, s.str, s.size, c->font_size, 0xffff, FALSE, FALSE) == RET_OK,
+      line_parser_init(p, c, str->str, str->size, c->font_size, 0xffff, FALSE, FALSE) == RET_OK,
       RET_BAD_PARAMS);
 
   while (line_parser_next(p) == RET_OK) {
@@ -138,7 +130,6 @@ static wh_t label_get_text_line_max_w(widget_t* widget, canvas_t* c) {
     }
   }
 
-  wstr_reset(&s);
   return line_max_w;
 }
 
