@@ -25,6 +25,7 @@
 #include "tkc/utf8.h"
 #include "tkc/utils.h"
 #include "tkc/line_parser.h"
+#include "tkc/darray.h"
 #include "base/events.h"
 #include "base/text_edit.h"
 #include "base/line_break.h"
@@ -63,17 +64,24 @@ typedef struct _text_layout_info_t {
   uint32_t margin_b;
 } text_layout_info_t;
 
-typedef struct _row_info_t {
+typedef struct _line_info_t {
+  uint16_t x;
   uint32_t offset;
   uint16_t length;
   uint16_t text_w;
-  uint16_t x;
+} line_info_t;
+
+typedef struct _row_info_t {
+  uint16_t length;
+  uint32_t line_num;
+  darray_t info;
 } row_info_t;
 
 typedef struct _rows_t {
   uint32_t size;
   uint32_t capacity;
-  row_info_t info[1];
+  uint32_t* row_line;
+  row_info_t row[1];
 } rows_t;
 
 typedef struct _text_edit_impl_t {
@@ -81,12 +89,14 @@ typedef struct _text_edit_impl_t {
   STB_TexteditState state;
 
   rows_t* rows;
+  uint32_t max_chars;
   point_t caret;
   bool_t wrap_word;
   bool_t single_line;
   bool_t caret_visible;
   uint32_t line_height;
   uint32_t last_line_number;
+  uint32_t last_row_number;
   text_layout_info_t layout_info;
 
   bool_t preedit;
@@ -106,7 +116,7 @@ typedef struct _text_edit_impl_t {
 #define DECL_IMPL(te) text_edit_impl_t* impl = (text_edit_impl_t*)(te)
 
 static ret_t text_edit_notify(text_edit_t* text_edit);
-static int32_t text_edit_calc_x(text_edit_t* text_edit, row_info_t* iter);
+static int32_t text_edit_calc_x(text_edit_t* text_edit, line_info_t* iter);
 
 static align_h_t widget_get_text_align_h(widget_t* widget) {
   return (align_h_t)style_get_int(widget->astyle, STYLE_ID_TEXT_ALIGN_H, ALIGN_H_LEFT);
@@ -145,21 +155,34 @@ static ret_t widget_get_text_layout_info(widget_t* widget, text_layout_info_t* i
 static rows_t* rows_create(uint32_t capacity) {
   uint32_t msize = sizeof(rows_t) + capacity * sizeof(row_info_t);
   rows_t* rows = (rows_t*)TKMEM_ALLOC(msize);
+  uint32_t i = 0;
   return_value_if_fail(rows != NULL, NULL);
 
   memset(rows, 0x00, msize);
+  for (i = 0; i < capacity; i++) {
+    darray_init(&rows->row[i].info, 4, default_destroy, NULL);
+    darray_push(&rows->row[i].info, TKMEM_ZALLOC(line_info_t));
+    rows->row[i].line_num = 1;
+  }
+
+  rows->row_line = TKMEM_ZALLOCN(uint32_t, capacity);
   rows->capacity = capacity;
 
   return rows;
 }
 
-static row_info_t* rows_find_by_offset(rows_t* rows, uint32_t offset) {
+static line_info_t* line_find_by_offset(rows_t* rows, uint32_t offset) {
   uint32_t i = 0;
+  return_value_if_fail(rows != NULL, NULL);
 
   for (i = 0; i < rows->size; i++) {
-    row_info_t* iter = rows->info + i;
-    if (iter->offset == offset) {
-      return iter;
+    uint32_t j = 0;
+    row_info_t* row = rows->row + i;
+    for (j = 0; j < row->line_num; j++) {
+      line_info_t* line = (line_info_t*)darray_get(&row->info, j);
+      if (line->offset == offset) {
+        return line;
+      }
     }
   }
 
@@ -167,8 +190,13 @@ static row_info_t* rows_find_by_offset(rows_t* rows, uint32_t offset) {
 }
 
 static ret_t rows_destroy(rows_t* rows) {
+  uint32_t i = 0;
   return_value_if_fail(rows != NULL, RET_BAD_PARAMS);
 
+  for (i = 0; i < rows->capacity; i++) {
+    darray_deinit(&rows->row[i].info);
+  }
+  TKMEM_FREE(rows->row_line);
   TKMEM_FREE(rows);
 
   return RET_OK;
@@ -189,6 +217,10 @@ static ret_t text_edit_set_caret_pos(text_edit_impl_t* impl, uint32_t x, uint32_
 
   impl->caret.x = x;
   impl->caret.y = y;
+
+  if (y + font_size < layout_info->h) {
+    layout_info->oy = 0;
+  }
 
   if (view_top > caret_top) {
     layout_info->oy = caret_top - layout_info->margin_t;
@@ -236,7 +268,7 @@ static uint32_t text_edit_measure_text(canvas_t* c, wchar_t* str, wchar_t mask_c
 }
 
 static row_info_t* text_edit_single_line_layout_line(text_edit_t* text_edit, uint32_t row_num,
-                                                     uint32_t offset) {
+                                                     uint32_t line_index, uint32_t offset) {
   uint32_t y = 0;
   uint32_t caret_x = 0;
   uint32_t view_left = 0;
@@ -245,20 +277,25 @@ static row_info_t* text_edit_single_line_layout_line(text_edit_t* text_edit, uin
   canvas_t* c = GET_CANVAS(text_edit);
   wstr_t* text = &(text_edit->widget->text);
   STB_TexteditState* state = &(impl->state);
-  row_info_t* row = impl->rows->info + row_num;
+  row_info_t* row = impl->rows->row + row_num;
   wchar_t mask_char = impl->mask ? impl->mask_char : 0;
   text_layout_info_t* layout_info = &(impl->layout_info);
   align_h_t align_h = widget_get_text_align_h(text_edit->widget);
   uint32_t text_w = text_edit_measure_text(c, text->str, mask_char, text->size);
   uint32_t caret_text_w = text_edit_measure_text(c, text->str, mask_char, state->cursor);
+  line_info_t* line = (line_info_t*)darray_head(&row->info);
 
+  (uint32_t) line_index;
   assert(offset == 0 && row_num == 0);
-  memset(row, 0x00, sizeof(row_info_t));
 
-  row->offset = 0;
-  row->text_w = text_w;
-  row->length = text->size;
-  row->x = text_edit_calc_x(text_edit, row);
+  memset(row, 0x00, sizeof(row_info_t) - sizeof(darray_t));
+
+  row->line_num = 1;
+  line->offset = 0;
+  line->text_w = text_w;
+  line->length = text->size;
+  row->length = line->length;
+  line->x = text_edit_calc_x(text_edit, line);
   layout_info->virtual_h = tk_max(y, layout_info->widget_h);
 
   caret_x = caret_text_w;
@@ -279,7 +316,7 @@ static row_info_t* text_edit_single_line_layout_line(text_edit_t* text_edit, uin
 }
 
 static row_info_t* text_edit_multi_line_layout_line(text_edit_t* text_edit, uint32_t row_num,
-                                                    uint32_t offset) {
+                                                    uint32_t line_index, uint32_t offset) {
   uint32_t i = 0;
   uint32_t x = 0;
   DECL_IMPL(text_edit);
@@ -287,14 +324,19 @@ static row_info_t* text_edit_multi_line_layout_line(text_edit_t* text_edit, uint
   canvas_t* c = GET_CANVAS(text_edit);
   wstr_t* text = &(text_edit->widget->text);
   STB_TexteditState* state = &(impl->state);
-  row_info_t* row = impl->rows->info + row_num;
+  row_info_t* row = impl->rows->row + row_num;
   uint32_t line_height = impl->line_height;
-  uint32_t y = line_height * row_num;
+  uint32_t y = line_index * line_height;
+  uint32_t y0 = y;
+  uint32_t offset0 = offset;
   uint32_t last_breakable_i = 0;
   uint32_t last_breakable_x = 0;
+  line_info_t* last_line = NULL;
   text_layout_info_t* layout_info = &(impl->layout_info);
 
-  memset(row, 0x00, sizeof(row_info_t));
+  memset(row, 0x00, sizeof(row_info_t) - sizeof(darray_t));
+  row->line_num = 1;
+
   for (i = offset; i < text->size; i++) {
     wchar_t* p = text->str + i;
     break_type_t word_break = LINE_BREAK_NO;
@@ -317,11 +359,31 @@ static row_info_t* text_edit_multi_line_layout_line(text_edit_t* text_edit, uint
         if (last_breakable_x > 0) {
           i = last_breakable_i + 1;
           x = last_breakable_x;
+          last_breakable_x = 0;
         }
         if (i == offset) {
           i++;
         }
-        break;
+
+        last_line = (line_info_t*)darray_get(&row->info, row->line_num - 1);
+        memset(last_line, 0x00, sizeof(line_info_t));
+        last_line->text_w = x;
+        last_line->offset = offset;
+        last_line->length = i - offset;
+
+        row->line_num++;
+        if (row->info.size < row->line_num) {
+          darray_push(&row->info, TKMEM_ZALLOC(line_info_t));
+        }
+
+        p = text->str + i;
+        char_w = canvas_measure_text(c, p, 1) + CHAR_SPACING;
+
+        x = char_w;
+        y += line_height;
+        offset = i;
+        line_index++;
+        continue;
       }
 
       x += char_w;
@@ -335,6 +397,10 @@ static row_info_t* text_edit_multi_line_layout_line(text_edit_t* text_edit, uint
     }
   }
 
+  while (row->info.size > row->line_num) {
+    row->info.destroy(darray_pop(&row->info));
+  }
+
   if (i == state->cursor && state->cursor == text->size) {
     if (last_char == STB_TEXTEDIT_NEWLINE) {
       text_edit_set_caret_pos(impl, 0, y + line_height, c->font_size);
@@ -344,26 +410,32 @@ static row_info_t* text_edit_multi_line_layout_line(text_edit_t* text_edit, uint
   }
 
   if (last_char == STB_TEXTEDIT_NEWLINE) {
-    impl->last_line_number = row_num + 1;
+    impl->last_row_number = row_num + 1;
+    impl->last_line_number = line_index + 1;
   } else {
-    impl->last_line_number = row_num;
+    impl->last_row_number = row_num;
+    impl->last_line_number = line_index;
   }
 
-  row->text_w = x;
-  row->offset = offset;
-  row->length = i - offset;
-  layout_info->virtual_h = tk_max(y, layout_info->widget_h);
+  last_line = (line_info_t*)darray_get(&row->info, row->line_num - 1);
+  memset(last_line, 0x00, sizeof(line_info_t));
+  last_line->text_w = x;
+  last_line->offset = offset;
+  last_line->length = i - offset;
+
+  row->length = i - offset0;
+  layout_info->virtual_h = tk_max(y0, layout_info->widget_h);
 
   return row;
 }
 
 static row_info_t* text_edit_layout_line(text_edit_t* text_edit, uint32_t row_num,
-                                         uint32_t offset) {
+                                         uint32_t line_index, uint32_t offset) {
   DECL_IMPL(text_edit);
   if (impl->single_line) {
-    return text_edit_single_line_layout_line(text_edit, row_num, offset);
+    return text_edit_single_line_layout_line(text_edit, row_num, line_index, offset);
   } else {
-    return text_edit_multi_line_layout_line(text_edit, row_num, offset);
+    return text_edit_multi_line_layout_line(text_edit, row_num, line_index, offset);
   }
 }
 
@@ -378,6 +450,7 @@ static ret_t text_edit_layout_impl(text_edit_t* text_edit) {
   uint32_t size = text_edit->widget->text.size;
   text_layout_info_t* layout_info = &(impl->layout_info);
   uint32_t char_w = canvas_measure_text(c, text->str, 1) + CHAR_SPACING;
+  uint32_t line_index = 0;
   impl->caret.x = 0;
   impl->caret.y = 0;
   impl->rows->size = 0;
@@ -393,19 +466,16 @@ static ret_t text_edit_layout_impl(text_edit_t* text_edit) {
   }
 
   while ((offset < size || size == 0) && i < max_rows) {
-    iter = text_edit_layout_line(text_edit, i, offset);
+    iter = text_edit_layout_line(text_edit, i, line_index, offset);
     if (iter == NULL || iter->length == 0) {
       break;
     }
+    line_index += iter->line_num;
     offset += iter->length;
     i++;
   }
 
-  if (impl->state.cursor > offset && !impl->single_line) {
-    impl->state.cursor = offset;
-    impl->last_line_number = max_rows;
-    text_edit_set_caret_pos(impl, iter->x, offset ? impl->line_height * (i - 1) : 0, c->font_size);
-  } else if (offset < size) {
+  if (offset < size) {
     text->size = offset;
     text->str[offset] = L'\0';
   }
@@ -431,7 +501,7 @@ static void text_edit_layout_for_stb(StbTexteditRow* row, STB_TEXTEDIT_STRING* s
   canvas_t* c = GET_CANVAS(str);
   if (c == NULL) return;
   uint32_t font_size = c->font_size;
-  row_info_t* info = rows_find_by_offset(impl->rows, offset);
+  line_info_t* info = line_find_by_offset(impl->rows, offset);
 
   if (info != NULL) {
     row->x0 = info->x;
@@ -533,7 +603,7 @@ static ret_t text_edit_paint_tips_text(text_edit_t* text_edit, canvas_t* c) {
   return RET_OK;
 }
 
-static int32_t text_edit_calc_x(text_edit_t* text_edit, row_info_t* iter) {
+static int32_t text_edit_calc_x(text_edit_t* text_edit, line_info_t* iter) {
   DECL_IMPL(text_edit);
   canvas_t* c = GET_CANVAS(text_edit);
   widget_t* widget = text_edit->widget;
@@ -560,7 +630,7 @@ static int32_t text_edit_calc_x(text_edit_t* text_edit, row_info_t* iter) {
   return 0;
 }
 
-static ret_t text_edit_paint_line(text_edit_t* text_edit, canvas_t* c, row_info_t* iter,
+static ret_t text_edit_paint_line(text_edit_t* text_edit, canvas_t* c, line_info_t* iter,
                                   uint32_t y) {
   uint32_t x = 0;
   uint32_t k = 0;
@@ -638,8 +708,6 @@ static ret_t text_edit_paint_line(text_edit_t* text_edit, canvas_t* c, row_info_
 }
 
 static ret_t text_edit_paint_real_text(text_edit_t* text_edit, canvas_t* c) {
-  uint32_t i = 0;
-  uint32_t y = 0;
   DECL_IMPL(text_edit);
   rows_t* rows = impl->rows;
   uint32_t line_height = impl->line_height;
@@ -647,14 +715,21 @@ static ret_t text_edit_paint_real_text(text_edit_t* text_edit, canvas_t* c) {
   uint32_t view_top = layout_info->oy + layout_info->margin_t;
   uint32_t view_bottom = layout_info->oy + layout_info->margin_t + layout_info->h;
 
+  uint32_t i = 0;
+  uint32_t k = 0;
   for (i = 0; i < rows->size; i++) {
-    row_info_t* iter = rows->info + i;
+    uint32_t j =0;
+    row_info_t* row = rows->row + i;
+
+    for (j = 0; j < row->line_num; j++, k++) {
+      line_info_t* line = (line_info_t*)darray_get(&row->info, j);
+      uint32_t y = 0;
 
     if (impl->single_line) {
       y = (layout_info->h - c->font_size) / 2 + layout_info->margin_t;
 
     } else {
-      y = i * line_height + layout_info->margin_t;
+        y = k * line_height + layout_info->margin_t;
     }
 
     if ((y + c->font_size) < view_top) {
@@ -665,7 +740,8 @@ static ret_t text_edit_paint_real_text(text_edit_t* text_edit, canvas_t* c) {
       break;
     }
 
-    text_edit_paint_line(text_edit, c, iter, y);
+      text_edit_paint_line(text_edit, c, line, y);
+    }
   }
 
   return RET_OK;
@@ -768,10 +844,38 @@ static int text_edit_get_char_width(STB_TEXTEDIT_STRING* str, int pos, int offse
 
 static int text_edit_insert(STB_TEXTEDIT_STRING* str, int pos, STB_TEXTEDIT_CHARTYPE* newtext,
                             int num) {
+  bool_t ret = FALSE;
   wstr_t* text = &(str->widget->text);
-  wstr_insert(text, pos, newtext, num);
+  DECL_IMPL(str);
+  uint32_t line_break_num = impl->rows->capacity > impl->last_row_number
+                                ? impl->rows->capacity - impl->last_row_number
+                                : 0;
+  uint32_t i = 0;
 
-  return TRUE;
+  for (i = 0; i < num; i++) {
+    if (i + 1 < num && TWINS_WCHAR_IS_LINE_BREAK(newtext[i], newtext[i + 1])) {
+      line_break_num--;
+      i++;
+    } else if (WCHAR_IS_LINE_BREAK(newtext[i])) {
+      line_break_num--;
+    }
+    if (line_break_num == 0) {
+      num = i;
+      break;
+    }
+  }
+
+  if (impl->max_chars > 0) {
+    uint32_t surplus_char = impl->max_chars > text->size ? impl->max_chars - text->size : 0;
+    num = tk_min(num, surplus_char);
+  }
+
+  if (num > 0) {
+  wstr_insert(text, pos, newtext, num);
+    ret = TRUE;
+  }
+
+  return (int)ret;
 }
 
 #define KEYDOWN_BIT 0x80000000
@@ -865,19 +969,54 @@ ret_t text_edit_set_max_rows(text_edit_t* text_edit, uint32_t max_rows) {
   return RET_OK;
 }
 
+ret_t text_edit_set_max_chars(text_edit_t* text_edit, uint32_t max_chars) {
+  DECL_IMPL(text_edit);
+  return_value_if_fail(text_edit != NULL, RET_BAD_PARAMS);
+
+  impl->max_chars = max_chars;
+
+  return RET_OK;
+}
+
 uint32_t text_edit_get_height(text_edit_t* text_edit, uint32_t offset) {
   uint32_t i = 0;
+  uint32_t k = 0;
   DECL_IMPL(text_edit);
   return_value_if_fail(text_edit != NULL, 0);
 
   for (i = 0; i < impl->rows->size; i++) {
-    row_info_t* iter = impl->rows->info + i;
-    if (offset < iter->offset + iter->length) {
-      return impl->line_height * i;
+    uint32_t j = 0;
+    row_info_t* row = impl->rows->row + i;
+    for (j = 0; j < row->line_num; j++, k++) {
+      line_info_t* line = (line_info_t*)darray_get(&row->info, j);
+      if (offset < line->offset + line->length) {
+        return impl->line_height * k;
+      }
     }
   }
 
-  return impl->line_height * (impl->rows->size - 1);
+  return impl->line_height * (k > 1) ? k - 1 : 0;
+}
+
+const uint32_t* text_edit_get_rows_line(text_edit_t* text_edit) {
+  uint32_t* rows_line = NULL;
+  uint32_t size = 0;
+  DECL_IMPL(text_edit);
+  return_value_if_fail(text_edit != NULL && impl != NULL && impl->rows != NULL, NULL);
+
+  size = impl->rows->capacity;
+
+  if (size) {
+    uint32_t i = 0;
+    rows_line = impl->rows->row_line;
+    memset(rows_line, 0x00, sizeof(uint32_t) * size);
+
+    for (i = 0; i < impl->rows->size; i++) {
+      rows_line[i] = impl->rows->row[i].line_num;
+    }
+  }
+
+  return rows_line;
 }
 
 ret_t text_edit_set_canvas(text_edit_t* text_edit, canvas_t* canvas) {
@@ -1020,6 +1159,7 @@ ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
     case TK_KEY_KP_PLUS:
     case TK_KEY_KP_PERIOD:
     case TK_KEY_NUMLOCKCLEAR:
+    case TK_KEY_CAPSLOCK:
     case TK_KEY_KP_0:
     case TK_KEY_KP_1:
     case TK_KEY_KP_2:
@@ -1347,12 +1487,14 @@ ret_t text_edit_get_state(text_edit_t* text_edit, text_edit_state_t* state) {
   state->virtual_w = impl->layout_info.virtual_w;
   state->virtual_h = impl->layout_info.virtual_h;
   state->rows = impl->rows->size;
+  state->max_chars = impl->max_chars;
   state->caret = impl->caret;
   state->preedit = impl->preedit;
   state->line_height = impl->line_height;
 
   state->cursor = impl->state.cursor;
   state->max_rows = impl->rows->capacity;
+  state->last_row_number = impl->last_row_number;
   state->last_line_number = impl->last_line_number;
 
   state->select_start = tk_min(impl->state.select_start, impl->state.select_end);

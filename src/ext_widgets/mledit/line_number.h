@@ -72,6 +72,8 @@ typedef struct _line_number_t {
   int32_t line_height;
   int32_t top_margin;
   int32_t bottom_margin;
+  uint32_t* rows_line;
+  uint32_t rows_line_len;
 } line_number_t;
 
 /**
@@ -131,6 +133,18 @@ ret_t line_number_set_line_height(widget_t* widget, int32_t line_height);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t line_number_set_yoffset(widget_t* widget, int32_t yoffset);
+
+/**
+ * @method line_number_set_yoffset
+ * 设置每一行占多少倍的行高。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {const uint32_t*}  rows_line 每一行占多少倍的行高数组。
+ * @param {uint32_t}  len 数组大小。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t line_number_set_rows_line(widget_t* widget, const uint32_t* rows_line, uint32_t len);
 
 /**
  * @method line_number_cast

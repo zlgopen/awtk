@@ -171,6 +171,17 @@ ret_t mledit_set_max_lines(widget_t* widget, uint32_t max_lines) {
   return RET_OK;
 }
 
+ret_t mledit_set_max_chars(widget_t* widget, uint32_t max_chars) {
+  mledit_t* mledit = MLEDIT(widget);
+  return_value_if_fail(mledit != NULL, RET_BAD_PARAMS);
+
+  mledit->max_chars = max_chars;
+  text_edit_set_max_chars(mledit->model, max_chars);
+  text_edit_layout(mledit->model);
+
+  return RET_OK;
+}
+
 static ret_t mledit_get_prop(widget_t* widget, const char* name, value_t* v) {
   mledit_t* mledit = MLEDIT(widget);
   return_value_if_fail(mledit != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
@@ -185,6 +196,9 @@ static ret_t mledit_get_prop(widget_t* widget, const char* name, value_t* v) {
     return RET_OK;
   } else if (tk_str_eq(name, MLEDIT_PROP_MAX_LINES)) {
     value_set_int(v, mledit->max_lines);
+    return RET_OK;
+  } else if (tk_str_eq(name, MLEDIT_PROP_MAX_CHARS)) {
+    value_set_int(v, mledit->max_chars);
     return RET_OK;
   } else if (tk_str_eq(name, MLEDIT_PROP_SCROLL_LINE)) {
     value_set_int(v, mledit->scroll_line);
@@ -312,6 +326,9 @@ static ret_t mledit_set_prop(widget_t* widget, const char* name, const value_t* 
     return RET_OK;
   } else if (tk_str_eq(name, MLEDIT_PROP_MAX_LINES)) {
     mledit_set_max_lines(widget, value_int(v));
+    return RET_OK;
+  } else if (tk_str_eq(name, MLEDIT_PROP_MAX_CHARS)) {
+    mledit_set_max_chars(widget, value_int(v));
     return RET_OK;
   } else if (tk_str_eq(name, MLEDIT_PROP_SCROLL_LINE)) {
     mledit_set_scroll_line(widget, value_int(v));
@@ -742,6 +759,37 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       widget_invalidate(widget, NULL);
       break;
     }
+    case EVT_WIDGET_LOAD: {
+      uint32_t max_size = widget->text.size;
+      uint32_t line_break_num = mledit->max_lines;
+      uint32_t i = 0;
+
+      for (i = 0; i < max_size; i++) {
+        if (i + 1 < max_size &&
+            TWINS_WCHAR_IS_LINE_BREAK(widget->text.str[i], widget->text.str[i + 1])) {
+          line_break_num--;
+          i++;
+        } else if (WCHAR_IS_LINE_BREAK(widget->text.str[i])) {
+          line_break_num--;
+        }
+        if (line_break_num == 0) {
+          max_size = i;
+          break;
+        }
+      }
+
+      if (mledit->max_chars != 0) {
+        max_size = tk_min(max_size, mledit->max_chars);
+      }
+
+      if (max_size != widget->text.size) {
+        char* text = TKMEM_ZALLOCN(char, widget->text.size);
+        wstr_get_utf8(&widget->text, text, widget->text.size + 1);
+        text[max_size] = '\0';
+        widget_set_text_utf8(widget, text);
+        TKMEM_FREE(text);
+      }
+    }
     default:
       break;
   }
@@ -765,6 +813,11 @@ static ret_t mledit_sync_line_number(widget_t* widget, text_edit_state_t* state)
   widget_t* line_number = widget_lookup_by_type(widget, WIDGET_TYPE_LINE_NUMBER, TRUE);
   return_value_if_fail(mledit != NULL, RET_BAD_PARAMS);
   if (line_number != NULL) {
+    const uint32_t* rows_line = text_edit_get_rows_line(mledit->model);
+    if (rows_line != NULL) {
+      line_number_set_rows_line(line_number, rows_line, state->max_rows);
+    }
+
     line_number_set_yoffset(line_number, state->oy);
     line_number_set_line_height(line_number, state->line_height);
     line_number_set_top_margin(line_number, mledit->top_margin);
@@ -901,6 +954,7 @@ const char* s_mledit_properties[] = {WIDGET_PROP_READONLY,
                                      WIDGET_PROP_OPEN_IM_WHEN_FOCUSED,
                                      WIDGET_PROP_CLOSE_IM_WHEN_BLURED,
                                      MLEDIT_PROP_MAX_LINES,
+                                     MLEDIT_PROP_MAX_CHARS,
                                      MLEDIT_PROP_WRAP_WORD,
                                      MLEDIT_PROP_SCROLL_LINE,
                                      NULL};
@@ -929,6 +983,8 @@ widget_t* mledit_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
 
   mledit->model = text_edit_create(widget, FALSE);
   ENSURE(mledit->model != NULL);
+
+  mledit->wrap_word = TRUE;
   mledit->margin = 1;
   mledit->top_margin = 0;
   mledit->left_margin = 0;

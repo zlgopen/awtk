@@ -125,3 +125,28 @@ TEST(TextEdit, get_height) {
   canvas_reset(&c);
   lcd_destroy(lcd);
 }
+
+TEST(TextEdit, get_rows_line) {
+  canvas_t c;
+  lcd_t* lcd = lcd_mem_rgba8888_create(150, 150, TRUE);
+  canvas_init(&c, lcd, font_manager());
+  const char* str = "1\n222222222222";
+  widget_t* win = window_create(NULL, 0, 0, 0, 0);
+  widget_t* w = mledit_create(win, 10, 20, 100, 100);
+  text_edit_t* text_edit = text_edit_create(w, FALSE);
+
+  widget_set_text_utf8(w, str);
+  widget_set_prop_pointer(win, WIDGET_PROP_CANVAS, &c);
+  text_edit_set_canvas(text_edit, widget_get_canvas(w));
+  widget_set_prop_pointer(win, WIDGET_PROP_CANVAS, NULL);
+
+  const uint32_t* rows_line = text_edit_get_rows_line(text_edit);
+
+  ASSERT_EQ(rows_line[0], 1);
+  ASSERT_EQ(rows_line[1], 2);
+
+  widget_destroy(win);
+  text_edit_destroy(text_edit);
+  canvas_reset(&c);
+  lcd_destroy(lcd);
+}

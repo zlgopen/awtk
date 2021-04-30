@@ -36,6 +36,9 @@ BEGIN_C_DECLS
     }                                                                  \
   }
 
+#define WCHAR_IS_LINE_BREAK(c) ((c) == (wchar_t)'\r' || (c) == (wchar_t)'\n')
+#define TWINS_WCHAR_IS_LINE_BREAK(c1, c2) ((c1) == (wchar_t)'\r' && (c2) == (wchar_t)'\n')
+
 /**
  * @class text_edit_state_t
  */
@@ -49,8 +52,10 @@ typedef struct _text_edit_state_t {
   point_t caret;
   uint32_t cursor;
   uint32_t max_rows;
+  uint32_t max_chars;
   uint32_t select_start;
   uint32_t select_end;
+  uint32_t last_row_number;
   uint32_t last_line_number;
 
   bool_t mask;
@@ -270,14 +275,33 @@ ret_t text_edit_set_caret_visible(text_edit_t* text_edit, bool_t caret_visible);
 ret_t text_edit_set_max_rows(text_edit_t* text_edit, uint32_t max_rows);
 
 /**
+ * @method text_edit_set_max_chars
+ * 设置最大字符数（0 为不限制字符）。
+ * @param {text_edit_t*} text_edit text_edit对象。
+ * @param {uint32_t} max_chars 最大行数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t text_edit_set_max_chars(text_edit_t* text_edit, uint32_t max_chars);
+
+/**
  * @method text_edit_get_height
  * 获取偏移字符位置高度。
  * @param {text_edit_t*} text_edit text_edit对象。
  * @param {uint32_t} offset 偏移位置。
  *
- * @return {uint32_t} 返回偏移位置字符所在行数，返回 0 时表示失败。
+ * @return {uint32_t} 返回偏移位置字符位置高度。
  */
 uint32_t text_edit_get_height(text_edit_t* text_edit, uint32_t offset);
+
+/**
+ * @method text_edit_get_rows_line
+ * 获取每一个 row 占用多少个 line（数组大小为最大行数）。
+ * @param {text_edit_t*} text_edit text_edit对象。
+ *
+ * @return {const uint32_t*} 返回每一个 row 占用多少个 line 数组。
+ */
+const uint32_t* text_edit_get_rows_line(text_edit_t* text_edit);
 
 /**
  * @method text_edit_set_mask

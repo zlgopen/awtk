@@ -25,6 +25,18 @@
 #include "base/widget_vtable.h"
 #include "base/window_manager.h"
 
+static uint32_t line_number_get_line_num(line_number_t* line_number, uint32_t line) {
+  uint32_t line_num;
+
+  if (line_number->rows_line == NULL || line >= line_number->rows_line_len) {
+    line_num = 1;
+  } else {
+    line_num = tk_max(line_number->rows_line[line], 1);
+  }
+
+  return line_num;
+}
+
 static ret_t line_number_do_paint_self(widget_t* widget, canvas_t* c) {
   uint32_t y = 0;
   uint32_t x = 2;
@@ -40,10 +52,15 @@ static ret_t line_number_do_paint_self(widget_t* widget, canvas_t* c) {
   return_value_if_fail(line_height > 0, RET_BAD_PARAMS);
 
   if (style_is_valid(widget->astyle)) {
+    uint32_t line_index = 0;
     widget_prepare_text_style(widget, c);
 
     while (1) {
-      y = line_height * line + line_number->top_margin;
+      if (line > 0) {
+        line_index += line_number_get_line_num(line_number, line - 1);
+      }
+
+      y = line_height * line_index + line_number->top_margin;
       if ((y + line_height) < yoffset) {
         line++;
         continue;
@@ -117,6 +134,32 @@ ret_t line_number_set_bottom_margin(widget_t* widget, int32_t bottom_margin) {
   return widget_invalidate_force(widget, NULL);
 }
 
+ret_t line_number_set_rows_line(widget_t* widget, const uint32_t* rows_line, uint32_t len) {
+  line_number_t* line_number = LINE_NUMBER(widget);
+  return_value_if_fail(line_number != NULL && rows_line != NULL && len > 0, RET_BAD_PARAMS);
+
+  if (line_number->rows_line == NULL || line_number->rows_line_len != len) {
+    line_number->rows_line = TKMEM_REALLOCT(uint32_t, line_number->rows_line, len);
+    return_value_if_fail(line_number->rows_line != NULL, (line_number->rows_line_len = 0, RET_OOM));
+    line_number->rows_line_len = len;
+  }
+  memcpy(line_number->rows_line, rows_line, sizeof(uint32_t) * len);
+
+  return widget_invalidate_force(widget, NULL);
+}
+
+static ret_t line_number_on_destroy(widget_t* widget) {
+  line_number_t* line_number = LINE_NUMBER(widget);
+  return_value_if_fail(line_number != NULL, RET_BAD_PARAMS);
+
+  if (line_number->rows_line != NULL) {
+    TKMEM_FREE(line_number->rows_line);
+    line_number->rows_line_len = 0;
+  }
+
+  return RET_OK;
+}
+
 static ret_t line_number_get_prop(widget_t* widget, const char* name, value_t* v) {
   line_number_t* line_number = LINE_NUMBER(widget);
   return_value_if_fail(line_number != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
@@ -137,7 +180,8 @@ TK_DECL_VTABLE(line_number) = {.size = sizeof(line_number_t),
                                .create = line_number_create,
                                .set_prop = line_number_set_prop,
                                .get_prop = line_number_get_prop,
-                               .on_paint_self = line_number_on_paint_self};
+                               .on_paint_self = line_number_on_paint_self,
+                               .on_destroy = line_number_on_destroy};
 
 widget_t* line_number_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   widget_t* widget = widget_create(parent, TK_REF_VTABLE(line_number), x, y, w, h);

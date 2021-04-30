@@ -86,6 +86,13 @@ typedef struct _mledit_t {
   uint32_t max_lines;
 
   /**
+   * @property {uint32_t} max_lines
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 最大字符数。
+   */
+  uint32_t max_chars;
+
+  /**
    * @property {bool_t} wrap_word
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 是否自动折行。
@@ -222,6 +229,17 @@ ret_t mledit_set_wrap_word(widget_t* widget, bool_t wrap_word);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t mledit_set_max_lines(widget_t* widget, uint32_t max_lines);
+
+/**
+ * @method mledit_set_max_chars
+ * 设置编辑器的最大字符数（0 为不限制字符数）。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ * @param {uint32_t} max_chars 最大字符数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t mledit_set_max_chars(widget_t* widget, uint32_t max_chars);
 
 /**
  * @method mledit_set_tips
@@ -363,6 +381,7 @@ widget_t* mledit_cast(widget_t* widget);
 #define WIDGET_TYPE_MLEDIT "mledit"
 
 #define MLEDIT_PROP_MAX_LINES "max_lines"
+#define MLEDIT_PROP_MAX_CHARS "max_chars"
 #define MLEDIT_PROP_WRAP_WORD "wrap_word"
 #define MLEDIT_PROP_SCROLL_LINE "scroll_line"
 #define MLEDIT(widget) ((mledit_t*)(mledit_cast(WIDGET(widget))))
