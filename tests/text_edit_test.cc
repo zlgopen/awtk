@@ -140,7 +140,7 @@ TEST(TextEdit, get_rows_line) {
   text_edit_set_canvas(text_edit, widget_get_canvas(w));
   widget_set_prop_pointer(win, WIDGET_PROP_CANVAS, NULL);
 
-  const uint32_t* rows_line = text_edit_get_rows_line(text_edit);
+  const uint32_t* rows_line = text_edit_get_lines_of_each_row(text_edit);
 
   ASSERT_EQ(rows_line[0], 1);
   ASSERT_EQ(rows_line[1], 2);

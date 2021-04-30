@@ -295,13 +295,13 @@ ret_t text_edit_set_max_chars(text_edit_t* text_edit, uint32_t max_chars);
 uint32_t text_edit_get_height(text_edit_t* text_edit, uint32_t offset);
 
 /**
- * @method text_edit_get_rows_line
- * 获取每一个 row 占用多少个 line（数组大小为最大行数）。
+ * @method text_edit_get_lines_of_each_row
+ * 获取每一个逻辑行(row)占几个物理行(line)。
  * @param {text_edit_t*} text_edit text_edit对象。
  *
  * @return {const uint32_t*} 返回每一个 row 占用多少个 line 数组。
  */
-const uint32_t* text_edit_get_rows_line(text_edit_t* text_edit);
+const uint32_t* text_edit_get_lines_of_each_row(text_edit_t* text_edit);
 
 /**
  * @method text_edit_set_mask

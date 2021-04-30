@@ -813,9 +813,9 @@ static ret_t mledit_sync_line_number(widget_t* widget, text_edit_state_t* state)
   widget_t* line_number = widget_lookup_by_type(widget, WIDGET_TYPE_LINE_NUMBER, TRUE);
   return_value_if_fail(mledit != NULL, RET_BAD_PARAMS);
   if (line_number != NULL) {
-    const uint32_t* rows_line = text_edit_get_rows_line(mledit->model);
-    if (rows_line != NULL) {
-      line_number_set_rows_line(line_number, rows_line, state->max_rows);
+    const uint32_t* lines_of_each_row = text_edit_get_lines_of_each_row(mledit->model);
+    if (lines_of_each_row != NULL) {
+      line_number_set_lines_of_each_row(line_number, lines_of_each_row, state->max_rows);
     }
 
     line_number_set_yoffset(line_number, state->oy);

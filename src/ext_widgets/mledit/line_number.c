@@ -28,10 +28,10 @@
 static uint32_t line_number_get_line_num(line_number_t* line_number, uint32_t line) {
   uint32_t line_num;
 
-  if (line_number->rows_line == NULL || line >= line_number->rows_line_len) {
+  if (line_number->lines_of_each_row == NULL || line >= line_number->lines_of_each_row_len) {
     line_num = 1;
   } else {
-    line_num = tk_max(line_number->rows_line[line], 1);
+    line_num = tk_max(line_number->lines_of_each_row[line], 1);
   }
 
   return line_num;
@@ -134,16 +134,16 @@ ret_t line_number_set_bottom_margin(widget_t* widget, int32_t bottom_margin) {
   return widget_invalidate_force(widget, NULL);
 }
 
-ret_t line_number_set_rows_line(widget_t* widget, const uint32_t* rows_line, uint32_t len) {
+ret_t line_number_set_lines_of_each_row(widget_t* widget, const uint32_t* lines_of_each_row, uint32_t len) {
   line_number_t* line_number = LINE_NUMBER(widget);
-  return_value_if_fail(line_number != NULL && rows_line != NULL && len > 0, RET_BAD_PARAMS);
+  return_value_if_fail(line_number != NULL && lines_of_each_row != NULL && len > 0, RET_BAD_PARAMS);
 
-  if (line_number->rows_line == NULL || line_number->rows_line_len != len) {
-    line_number->rows_line = TKMEM_REALLOCT(uint32_t, line_number->rows_line, len);
-    return_value_if_fail(line_number->rows_line != NULL, (line_number->rows_line_len = 0, RET_OOM));
-    line_number->rows_line_len = len;
+  if (line_number->lines_of_each_row == NULL || line_number->lines_of_each_row_len != len) {
+    line_number->lines_of_each_row = TKMEM_REALLOCT(uint32_t, line_number->lines_of_each_row, len);
+    return_value_if_fail(line_number->lines_of_each_row != NULL, (line_number->lines_of_each_row_len = 0, RET_OOM));
+    line_number->lines_of_each_row_len = len;
   }
-  memcpy(line_number->rows_line, rows_line, sizeof(uint32_t) * len);
+  memcpy(line_number->lines_of_each_row, lines_of_each_row, sizeof(uint32_t) * len);
 
   return widget_invalidate_force(widget, NULL);
 }
@@ -152,9 +152,9 @@ static ret_t line_number_on_destroy(widget_t* widget) {
   line_number_t* line_number = LINE_NUMBER(widget);
   return_value_if_fail(line_number != NULL, RET_BAD_PARAMS);
 
-  if (line_number->rows_line != NULL) {
-    TKMEM_FREE(line_number->rows_line);
-    line_number->rows_line_len = 0;
+  if (line_number->lines_of_each_row != NULL) {
+    TKMEM_FREE(line_number->lines_of_each_row);
+    line_number->lines_of_each_row_len = 0;
   }
 
   return RET_OK;

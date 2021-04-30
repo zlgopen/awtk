@@ -285,7 +285,6 @@ static row_info_t* text_edit_single_line_layout_line(text_edit_t* text_edit, uin
   uint32_t caret_text_w = text_edit_measure_text(c, text->str, mask_char, state->cursor);
   line_info_t* line = (line_info_t*)darray_head(&row->info);
 
-  (uint32_t) line_index;
   assert(offset == 0 && row_num == 0);
 
   memset(row, 0x00, sizeof(row_info_t) - sizeof(darray_t));
@@ -995,11 +994,11 @@ uint32_t text_edit_get_height(text_edit_t* text_edit, uint32_t offset) {
     }
   }
 
-  return impl->line_height * (k > 1) ? k - 1 : 0;
+  return impl->line_height * ((k > 1) ? k - 1 : 0);
 }
 
-const uint32_t* text_edit_get_rows_line(text_edit_t* text_edit) {
-  uint32_t* rows_line = NULL;
+const uint32_t* text_edit_get_lines_of_each_row(text_edit_t* text_edit) {
+  uint32_t* lines_of_each_row = NULL;
   uint32_t size = 0;
   DECL_IMPL(text_edit);
   return_value_if_fail(text_edit != NULL && impl != NULL && impl->rows != NULL, NULL);
@@ -1008,15 +1007,15 @@ const uint32_t* text_edit_get_rows_line(text_edit_t* text_edit) {
 
   if (size) {
     uint32_t i = 0;
-    rows_line = impl->rows->row_line;
-    memset(rows_line, 0x00, sizeof(uint32_t) * size);
+    lines_of_each_row = impl->rows->row_line;
+    memset(lines_of_each_row, 0x00, sizeof(uint32_t) * size);
 
     for (i = 0; i < impl->rows->size; i++) {
-      rows_line[i] = impl->rows->row[i].line_num;
+      lines_of_each_row[i] = impl->rows->row[i].line_num;
     }
   }
 
-  return rows_line;
+  return lines_of_each_row;
 }
 
 ret_t text_edit_set_canvas(text_edit_t* text_edit, canvas_t* canvas) {
