@@ -4,6 +4,7 @@
   * image value支持支持水平和垂直对齐。
   * image value支持scale/scale\_w/scale\_h/scale\_auto
   * image value支持margin\_left/margin\_right/margin\_top/margin\_bottom。
+  * 完善mledit/line\_number（感谢兆坤提供补丁）
 
 2021/04/29
   * 重构内置对话框的代码。
