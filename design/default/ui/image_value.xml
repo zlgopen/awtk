@@ -1,12 +1,38 @@
-<window anim_hint="htranslate">
-  <view x="0" y="0" w="100%" h="100%" children_layout="default(c=2,r=3)">
+<window anim_hint="htranslate" theme="image_value">
+  <view x="0" y="0" w="100%" h="100%" children_layout="default(c=3,r=8)">
     <image_value  value="0" image="battery_" click_add_delta="1" min="0" max="5"/>
-    
     <image_value  value="0" image="battery_"
       animation="value(from=0, to=5, duration=10000)"/>
-    
     <image_value  value="0" format="%02d" image="num_"
       animation="value(from=10, to=100, duration=100000)"/>
+    
+    <image_value  value="0" format="%02d" image="num_" style="left_top"
+      animation="value(from=10, to=100, duration=100000)"/>
+    <image_value  value="0" format="%02d" image="num_" style="left_middle"
+      animation="value(from=10, to=100, duration=100000)"/>
+    <image_value  value="0" format="%02d" image="num_" style="left_bottom"
+      animation="value(from=10, to=100, duration=100000)"/>
+    
+    <image_value  value="0" format="%02d" image="num_" style="center_top"
+      animation="value(from=10, to=100, duration=100000)"/>
+    <image_value  value="0" format="%02d" image="num_" style="center_middle"
+      animation="value(from=10, to=100, duration=100000)"/>
+    <image_value  value="0" format="%02d" image="num_" style="center_bottom"
+      animation="value(from=10, to=100, duration=100000)"/>
+    
+    <image_value  value="0" format="%02d" image="num_" style="right_top"
+      animation="value(from=10, to=100, duration=100000)"/>
+    <image_value  value="0" format="%02d" image="num_" style="right_middle"
+      animation="value(from=10, to=100, duration=100000)"/>
+    <image_value  value="0" format="%02d" image="num_" style="right_bottom"
+      animation="value(from=10, to=100, duration=100000)"/>
+    
+    <image_value  value="0" format="%02d" image="num_" style="scale_h"
+      animation="value(from=10, to=1000, duration=10000)"/>
+    <image_value  value="0" format="%02d" image="num_" style="scale"
+      animation="value(from=10, to=1000, duration=10000)"/>
+    <image_value  value="0" format="%02d" image="num_" style="scale_auto"
+      animation="value(from=10, to=1000, duration=10000)"/>
     
     <image_value  value="0" format="%04d" image="num_"
       animation="value(from=10, to=10000, duration=100000)"/>

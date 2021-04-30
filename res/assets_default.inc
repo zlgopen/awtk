@@ -22,6 +22,7 @@
 #include "assets/default/inc/styles/dialog_info.data"
 #include "assets/default/inc/styles/file_browser.data"
 #include "assets/default/inc/styles/dialog_confirm.data"
+#include "assets/default/inc/styles/image_value.data"
 #include "assets/default/inc/styles/dialog.data"
 #include "assets/default/inc/styles/tab_top.data"
 #include "assets/default/inc/styles/button.data"
@@ -497,6 +498,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, style_dialog_info);
   assets_manager_add(am, style_file_browser);
   assets_manager_add(am, style_dialog_confirm);
+  assets_manager_add(am, style_image_value);
   assets_manager_add(am, style_dialog);
   assets_manager_add(am, style_tab_top);
   assets_manager_add(am, style_button);

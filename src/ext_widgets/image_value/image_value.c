@@ -26,10 +26,18 @@
 static ret_t image_value_draw_images(widget_t* widget, canvas_t* c, bitmap_t* bitmap, uint32_t nr) {
   int32_t x = 0;
   int32_t y = 0;
-  uint32_t i = 0;
-  uint32_t w = 0;
-  uint32_t h = 0;
+  int32_t i = 0;
+  int32_t w = 0;
+  int32_t h = 0;
+  float scale_w = 1;
+  float scale_h = 1;
   float_t ratio = c->lcd->ratio;
+  style_t* style = widget->astyle;
+  rect_t content_r = widget_get_content_area(widget);
+  int32_t align_v = style_get_int(style, STYLE_ID_TEXT_ALIGN_V, ALIGN_V_MIDDLE);
+  int32_t align_h = style_get_int(style, STYLE_ID_TEXT_ALIGN_H, ALIGN_H_CENTER);
+  image_draw_type_t draw_type =
+      style_get_int(style, STYLE_ID_FG_IMAGE_DRAW_TYPE, IMAGE_DRAW_DEFAULT);
 
   for (i = 0; i < nr; i++) {
     bitmap_t* b = bitmap + i;
@@ -41,13 +49,71 @@ static ret_t image_value_draw_images(widget_t* widget, canvas_t* c, bitmap_t* bi
 
   w = w / ratio;
   h = h / ratio;
-  x = (widget->w - w) >> 1;
-  y = (widget->h - h) >> 1;
+  return_value_if_fail(w > 0 && h > 0 && content_r.w > 0 && content_r.h > 0, RET_BAD_PARAMS);
+
+  scale_h = (float)(content_r.h) / (float)h;
+  scale_w = (float)(content_r.w) / (float)w;
+  switch (draw_type) {
+    case IMAGE_DRAW_SCALE_AUTO: {
+      scale_w = tk_min(scale_w, scale_h);
+      scale_h = scale_w;
+      break;
+    }
+    case IMAGE_DRAW_SCALE_W: {
+      scale_h = scale_w;
+      break;
+    }
+    case IMAGE_DRAW_SCALE_H: {
+      scale_w = scale_h;
+      break;
+    }
+    case IMAGE_DRAW_SCALE: {
+      break;
+    }
+    default: {
+      scale_w = 1;
+      scale_h = 1;
+      break;
+    }
+  }
+
+  w = scale_w * w;
+  h = scale_h * h;
+
+  switch (align_h) {
+    case ALIGN_H_LEFT: {
+      x = content_r.x;
+      break;
+    }
+    case ALIGN_H_RIGHT: {
+      x = content_r.x + content_r.w - w;
+      break;
+    }
+    default: {
+      x = (widget->w - w) / 2;
+      break;
+    }
+  }
+
+  switch (align_v) {
+    case ALIGN_V_TOP: {
+      y = content_r.y;
+      break;
+    }
+    case ALIGN_V_BOTTOM: {
+      y = content_r.y + content_r.h - h;
+      break;
+    }
+    default: {
+      y = (widget->h - h) / 2;
+      break;
+    }
+  }
 
   for (i = 0; i < nr; i++) {
     bitmap_t* b = bitmap + i;
     rect_t s = rect_init(0, 0, b->w, b->h);
-    rect_t d = rect_init(x, y, b->w / ratio, b->h / ratio);
+    rect_t d = rect_init(x, y, scale_w * b->w / ratio, scale_h * b->h / ratio);
 
     canvas_draw_image(c, b, &s, &d);
 

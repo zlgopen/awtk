@@ -1,5 +1,10 @@
 # 最新动态
 
+2021/04/30
+  * image value支持支持水平和垂直对齐。
+  * image value支持scale/scale\_w/scale\_h/scale\_auto
+  * image value支持margin\_left/margin\_right/margin\_top/margin\_bottom。
+
 2021/04/29
   * 重构内置对话框的代码。
   * 重构 label 去掉不需要的代码。

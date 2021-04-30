@@ -1,0 +1,48 @@
+
+<image_value>
+  <style name="left_top">
+    <normal text_align_h="left" text_align_v="top" border_color="#a0a0a0" margin="4" />
+  </style>
+  <style name="left_middle">
+    <normal text_align_h="left" text_align_v="middle" border_color="#a0a0a0" margin="4" />
+  </style>
+  <style name="left_bottom">
+    <normal text_align_h="left" text_align_v="bottom" border_color="#a0a0a0" margin="4" />
+  </style>
+  
+  <style name="center_top">
+    <normal text_align_h="center" text_align_v="top" border_color="#a0a0a0" margin="4" />
+  </style>
+  <style name="center_middle">
+    <normal text_align_h="center" text_align_v="middle" border_color="#a0a0a0" margin="4" />
+  </style>
+  <style name="center_bottom">
+    <normal text_align_h="center" text_align_v="bottom" border_color="#a0a0a0" margin="4" />
+  </style>
+  
+  <style name="right_top">
+    <normal text_align_h="right" text_align_v="top" border_color="#a0a0a0" margin="4" />
+  </style>
+  <style name="right_middle">
+    <normal text_align_h="right" text_align_v="middle" border_color="#a0a0a0" margin="4" />
+  </style>
+  <style name="right_bottom">
+    <normal text_align_h="right" text_align_v="bottom" border_color="#a0a0a0" margin="4" />
+  </style>
+  
+  <style name="scale">
+    <normal fg_image_draw_type="scale" border_color="#a0a0a0" margin="4" />
+  </style>
+
+  <style name="scale_w">
+    <normal fg_image_draw_type="scale_w" border_color="#a0a0a0" margin="4" />
+  </style>
+  
+  <style name="scale_h">
+    <normal fg_image_draw_type="scale_h" border_color="#a0a0a0" margin="4" />
+  </style>
+
+  <style name="scale_auto">
+    <normal fg_image_draw_type="scale_auto" border_color="#a0a0a0" margin="4" />
+  </style>
+</image_value>

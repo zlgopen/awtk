@@ -23,6 +23,7 @@ extern TK_CONST_DATA_ALIGN(const unsigned char style_tab_top_compact[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char style_dialog_info[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char style_file_browser[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char style_dialog_confirm[]);
+extern TK_CONST_DATA_ALIGN(const unsigned char style_image_value[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char style_dialog[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char style_tab_top[]);
 extern TK_CONST_DATA_ALIGN(const unsigned char style_button[]);
@@ -498,6 +499,7 @@ ret_t assets_init_dark(void) {
   assets_manager_add(am, style_dialog_info);
   assets_manager_add(am, style_file_browser);
   assets_manager_add(am, style_dialog_confirm);
+  assets_manager_add(am, style_image_value);
   assets_manager_add(am, style_dialog);
   assets_manager_add(am, style_tab_top);
   assets_manager_add(am, style_button);
