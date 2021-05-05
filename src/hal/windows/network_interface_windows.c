@@ -26,6 +26,12 @@
 #include "tkc/object_default.h"
 #include "hal/network_interface.h"
 
+#ifdef MINGW
+network_interface_t* network_interface_create(const char* interface_name,
+                                              network_interface_type_t type) {
+  return NULL;
+}
+#else
 #include <stdio.h>
 #include <WinSock2.h>
 #include <Iphlpapi.h>
@@ -912,3 +918,4 @@ network_interface_t* network_interface_create(const char* interface_name,
 
   return (network_interface_t*)windows_network_interface;
 }
+#endif/*WIN*/
