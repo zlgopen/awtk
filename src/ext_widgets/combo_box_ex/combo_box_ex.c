@@ -28,7 +28,7 @@
 #include "ext_widgets/combo_box_ex/combo_box_ex.h"
 
 #define COMBO_BOX_EX_DEFAULT_MAXNR 5
-#define COMBO_BOX_EX_DEFAULT_MARGIN 2
+#define COMBO_BOX_EX_DEFAULT_MARGIN 1
 
 static ret_t combo_box_ex_create_popup_items(combo_box_t* combo_box, widget_t* parent) {
   combo_box_option_t* iter = NULL;
@@ -82,6 +82,10 @@ static ret_t combo_box_ex_on_layout_children_for_combobox_popup(widget_t* widget
 
 static widget_t* combo_box_ex_create_scroll_popup(combo_box_t* combo_box) {
   value_t v;
+  widget_t* win = NULL;
+  widget_t* list_view = NULL;
+  widget_t* scroll_view = NULL;
+  widget_t* scroll_bar = NULL;
   widget_t* widget = WIDGET(combo_box);
   int32_t margin = COMBO_BOX_EX_DEFAULT_MARGIN;
   int32_t item_height = combo_box->item_height;
@@ -95,19 +99,23 @@ static widget_t* combo_box_ex_create_scroll_popup(combo_box_t* combo_box) {
   }
 
   // create popup
-  widget_t* win = popup_create(NULL, 0, 0, w, h);
+  win = popup_create(NULL, 0, 0, w, h);
   value_set_bool(&v, TRUE);
   widget_set_prop(win, WIDGET_PROP_CLOSE_WHEN_CLICK_OUTSIDE, &v);
+  widget_set_prop_str(win, WIDGET_PROP_THEME, "combobox_ex_popup");
+
+  w -= 2 * margin;
+  h -= 2 * margin;
 
   // create list view
-  widget_t* list_view = list_view_create(win, 0, 0, w, h);
+  list_view = list_view_create(win, margin, margin, w, h);
   widget_set_prop(list_view, WIDGET_PROP_AUTO_HIDE_SCROLL_BAR, &v);
   value_set_int32(&v, item_height);
   widget_set_prop(list_view, WIDGET_PROP_ITEM_HEIGHT, &v);
   // create scroll view
-  widget_t* scroll_view = scroll_view_create(list_view, 0, 0, -12, h);
-  widget_t* scroll_bar = scroll_bar_create(list_view, 0, 0, 0, 0);
-  widget_set_self_layout(scroll_bar, "default(x=right, y=0,w=12, h=100%%)");
+  scroll_view = scroll_view_create(list_view, 0, 0, -12, h);
+  scroll_bar = scroll_bar_create(list_view, 0, 0, 0, 0);
+  widget_set_self_layout(scroll_bar, "default(x=right, y=0,w=12, h=100%)");
 
   widget_use_style(win, "combobox_popup");
   combo_box_ex_create_popup_items(combo_box, scroll_view);

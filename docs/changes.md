@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/05/06
+  * 完善combo\_box/combo\_box\_ex。
+
 2021/04/30
   * image value支持支持水平和垂直对齐。
   * image value支持scale/scale\_w/scale\_h/scale\_auto

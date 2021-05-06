@@ -1,10 +1,11 @@
 <window anim_hint="htranslate">
-  <combo_box left_margin="6" right_margin="30" x="10" y="5" w="200" h="30" text="left" 
+  <combo_box right_margin="30" x="10" y="5" w="200" h="30" text="left" 
     open_im_when_focused="false"
     options="left;center;right;">
     <button style="combobox_down" x="right:5" y="middle" w="20" h="20"/>
   </combo_box>
-  <combo_box left_margin="6" open_window="color" readonly="true" x="10" y="50" w="200" h="30" text="red"/>
+  <combo_box open_window="color" readonly="true" x="10" y="50" w="200" h="30" text="red"/>
+  <combo_box_ex x="10" y="100" w="200" h="30" options="1;2;3;4;5;6;7;8;9;0;11;22;33;44;55"/>
 
   <combo_box readonly="true" x="5" y="bottom:5" w="45%" h="30" options="1:ok;2:cancel;"/>
   <combo_box open_window="language" readonly="true" x="5" y="bottom:50" w="45%" h="30" tr_text="english"/>

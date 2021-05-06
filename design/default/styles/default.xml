@@ -479,7 +479,7 @@
 </tab_button_group>
 
 <combo_box>
-  <style name="default" border_color="#a0a0a0"  text_color="black" text_align_h="left">
+  <style name="default" border_color="#a0a0a0"  text_color="black" text_align_h="left" margin_left="4" margin_right="30">
     <normal     bg_color="#f0f0f0" />
     <focused    bg_color="#f0f0f0" border_color="black"/>
     <disable    bg_color="gray" text_color="#d0d0d0" />
@@ -489,7 +489,7 @@
 </combo_box>
 
 <combo_box_ex>
-  <style name="default" border_color="#a0a0a0"  text_color="black" text_align_h="left">
+  <style name="default" border_color="#a0a0a0"  text_color="black" text_align_h="left" margin_left="4" margin_right="30">
     <normal     bg_color="#f0f0f0" />
     <focused    bg_color="#f0f0f0" border_color="black"/>
     <disable    bg_color="gray" text_color="#d0d0d0" />

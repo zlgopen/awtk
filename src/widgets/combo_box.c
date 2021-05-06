@@ -29,7 +29,7 @@
 #include "tkc/tokenizer.h"
 #include "widgets/combo_box_item.h"
 
-#define COMBO_BOX_DEFAULT_MARGIN 2
+#define COMBO_BOX_DEFAULT_MARGIN 1
 
 static ret_t combo_box_on_button_click(void* ctx, event_t* e);
 static ret_t combo_box_sync_index_to_value(widget_t* widget, uint32_t index);
@@ -498,6 +498,7 @@ static widget_t* combo_box_create_popup(combo_box_t* combo_box) {
 
   value_set_bool(&v, TRUE);
   widget_set_prop(win, WIDGET_PROP_CLOSE_WHEN_CLICK_OUTSIDE, &v);
+  widget_set_prop_str(win, WIDGET_PROP_THEME, "combobox_popup");
 
   tk_snprintf(params, sizeof(params) - 1, "default(m=%d, r=%d c=%d)", margin, nr, 1);
   widget_set_children_layout(win, params);
