@@ -59,6 +59,8 @@ ret_t main_loop_post_multi_gesture_event(main_loop_t* l, multi_gesture_event_t* 
 
   memcpy(&evt, event, sizeof(multi_gesture_event_t));
 
+  evt.e.time = time_now_ms();
+  evt.e.size = sizeof(multi_gesture_event_t);
   r.multi_gesture_event = evt;
 
   return main_loop_queue_event(l, &r);
@@ -77,6 +79,7 @@ ret_t main_loop_post_pointer_event(main_loop_t* l, bool_t pressed, xy_t x, xy_t 
   event.y = y;
   event.button = 0;
   event.e.time = time_now_ms();
+  event.e.size = sizeof(pointer_event_t);
 
   if (pressed) {
     loop->last_x = x;
@@ -121,6 +124,8 @@ ret_t main_loop_post_key_event(main_loop_t* l, bool_t pressed, uint8_t key) {
 
   loop->last_key = key;
   event.key = key;
+  event.e.time = time_now_ms();
+  event.e.size = sizeof(key_event_t);
 
   if (pressed) {
     loop->key_pressed = TRUE;
