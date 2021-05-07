@@ -723,27 +723,27 @@ static ret_t text_edit_paint_real_text(text_edit_t* text_edit, canvas_t* c) {
   uint32_t i = 0;
   uint32_t k = 0;
   for (i = 0; i < rows->size; i++) {
-    uint32_t j =0;
+    uint32_t j = 0;
     row_info_t* row = rows->row + i;
 
     for (j = 0; j < row->line_num; j++, k++) {
       line_info_t* line = (line_info_t*)darray_get(&row->info, j);
       uint32_t y = 0;
 
-    if (impl->single_line) {
-      y = (layout_info->h - c->font_size) / 2 + layout_info->margin_t;
+      if (impl->single_line) {
+        y = (layout_info->h - c->font_size) / 2 + layout_info->margin_t;
 
-    } else {
+      } else {
         y = k * line_height + layout_info->margin_t;
-    }
+      }
 
-    if ((y + c->font_size) < view_top) {
-      continue;
-    }
+      if ((y + c->font_size) < view_top) {
+        continue;
+      }
 
-    if (y > view_bottom) {
-      break;
-    }
+      if (y > view_bottom) {
+        break;
+      }
 
       text_edit_paint_line(text_edit, c, line, y);
     }
@@ -876,7 +876,7 @@ static int text_edit_insert(STB_TEXTEDIT_STRING* str, int pos, STB_TEXTEDIT_CHAR
   }
 
   if (num > 0) {
-  wstr_insert(text, pos, newtext, num);
+    wstr_insert(text, pos, newtext, num);
     ret = TRUE;
   }
 

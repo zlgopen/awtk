@@ -143,7 +143,8 @@ ret_t line_number_set_yoffset(widget_t* widget, int32_t yoffset);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t line_number_set_lines_of_each_row(widget_t* widget, const uint32_t* lines_of_each_row, uint32_t len);
+ret_t line_number_set_lines_of_each_row(widget_t* widget, const uint32_t* lines_of_each_row,
+                                        uint32_t len);
 
 /**
  * @method line_number_cast

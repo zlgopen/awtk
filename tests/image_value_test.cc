@@ -169,84 +169,97 @@ TEST(ImageValue, paint) {
   widget_set_prop_str(w, WIDGET_PROP_IMAGE, "num_");
 
   widget_on_paint_self(w, &c);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "bf();dg(0,0,30,48,55,16,30,48);dg(0,0,30,48,85,16,30,48);dg(0,0,30,48,115,16,30,48);");
+  ASSERT_EQ(lcd_log_get_commands(lcd),
+            "bf();dg(0,0,30,48,55,16,30,48);dg(0,0,30,48,85,16,30,48);dg(0,0,30,48,115,16,30,48);");
   lcd_log_reset(lcd);
-  
+
   widget_set_style_str(w, "text_align_h", "left");
   widget_set_style_str(w, "text_align_v", "top");
   widget_on_paint_self(w, &c);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "dg(0,0,30,48,2,2,30,48);dg(0,0,30,48,32,2,30,48);dg(0,0,30,48,62,2,30,48);");
+  ASSERT_EQ(lcd_log_get_commands(lcd),
+            "dg(0,0,30,48,2,2,30,48);dg(0,0,30,48,32,2,30,48);dg(0,0,30,48,62,2,30,48);");
   lcd_log_reset(lcd);
 
   widget_set_style_str(w, "text_align_h", "left");
   widget_set_style_str(w, "text_align_v", "middle");
   widget_on_paint_self(w, &c);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "dg(0,0,30,48,2,16,30,48);dg(0,0,30,48,32,16,30,48);dg(0,0,30,48,62,16,30,48);");
+  ASSERT_EQ(lcd_log_get_commands(lcd),
+            "dg(0,0,30,48,2,16,30,48);dg(0,0,30,48,32,16,30,48);dg(0,0,30,48,62,16,30,48);");
   lcd_log_reset(lcd);
-  
+
   widget_set_style_str(w, "text_align_h", "left");
   widget_set_style_str(w, "text_align_v", "bottom");
   widget_on_paint_self(w, &c);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "dg(0,0,30,48,2,30,30,48);dg(0,0,30,48,32,30,30,48);dg(0,0,30,48,62,30,30,48);");
+  ASSERT_EQ(lcd_log_get_commands(lcd),
+            "dg(0,0,30,48,2,30,30,48);dg(0,0,30,48,32,30,30,48);dg(0,0,30,48,62,30,30,48);");
   lcd_log_reset(lcd);
-  
-  
+
   widget_set_style_str(w, "text_align_h", "center");
   widget_set_style_str(w, "text_align_v", "top");
   widget_on_paint_self(w, &c);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "dg(0,0,30,48,55,2,30,48);dg(0,0,30,48,85,2,30,48);dg(0,0,30,48,115,2,30,48);");
+  ASSERT_EQ(lcd_log_get_commands(lcd),
+            "dg(0,0,30,48,55,2,30,48);dg(0,0,30,48,85,2,30,48);dg(0,0,30,48,115,2,30,48);");
   lcd_log_reset(lcd);
 
   widget_set_style_str(w, "text_align_h", "center");
   widget_set_style_str(w, "text_align_v", "middle");
   widget_on_paint_self(w, &c);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "dg(0,0,30,48,55,16,30,48);dg(0,0,30,48,85,16,30,48);dg(0,0,30,48,115,16,30,48);");
+  ASSERT_EQ(lcd_log_get_commands(lcd),
+            "dg(0,0,30,48,55,16,30,48);dg(0,0,30,48,85,16,30,48);dg(0,0,30,48,115,16,30,48);");
   lcd_log_reset(lcd);
-  
+
   widget_set_style_str(w, "text_align_h", "center");
   widget_set_style_str(w, "text_align_v", "bottom");
   widget_on_paint_self(w, &c);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "dg(0,0,30,48,55,30,30,48);dg(0,0,30,48,85,30,30,48);dg(0,0,30,48,115,30,30,48);");
+  ASSERT_EQ(lcd_log_get_commands(lcd),
+            "dg(0,0,30,48,55,30,30,48);dg(0,0,30,48,85,30,30,48);dg(0,0,30,48,115,30,30,48);");
   lcd_log_reset(lcd);
 
   widget_set_style_str(w, "text_align_h", "right");
   widget_set_style_str(w, "text_align_v", "top");
   widget_on_paint_self(w, &c);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "dg(0,0,30,48,108,2,30,48);dg(0,0,30,48,138,2,30,48);dg(0,0,30,48,168,2,30,48);");
+  ASSERT_EQ(lcd_log_get_commands(lcd),
+            "dg(0,0,30,48,108,2,30,48);dg(0,0,30,48,138,2,30,48);dg(0,0,30,48,168,2,30,48);");
   lcd_log_reset(lcd);
 
   widget_set_style_str(w, "text_align_h", "right");
   widget_set_style_str(w, "text_align_v", "middle");
   widget_on_paint_self(w, &c);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "dg(0,0,30,48,108,16,30,48);dg(0,0,30,48,138,16,30,48);dg(0,0,30,48,168,16,30,48);");
+  ASSERT_EQ(lcd_log_get_commands(lcd),
+            "dg(0,0,30,48,108,16,30,48);dg(0,0,30,48,138,16,30,48);dg(0,0,30,48,168,16,30,48);");
   lcd_log_reset(lcd);
-  
+
   widget_set_style_str(w, "text_align_h", "right");
   widget_set_style_str(w, "text_align_v", "bottom");
   widget_on_paint_self(w, &c);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "dg(0,0,30,48,108,30,30,48);dg(0,0,30,48,138,30,30,48);dg(0,0,30,48,168,30,30,48);");
+  ASSERT_EQ(lcd_log_get_commands(lcd),
+            "dg(0,0,30,48,108,30,30,48);dg(0,0,30,48,138,30,30,48);dg(0,0,30,48,168,30,30,48);");
   lcd_log_reset(lcd);
-  
+
   widget_set_style_str(w, "text_align_h", "center");
   widget_set_style_str(w, "text_align_v", "middle");
   widget_set_style_str(w, "fg_image_draw_type", "scale");
   widget_on_paint_self(w, &c);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "dg(0,0,30,48,2,2,65,76);dg(0,0,30,48,67,2,65,76);dg(0,0,30,48,132,2,65,76);");
+  ASSERT_EQ(lcd_log_get_commands(lcd),
+            "dg(0,0,30,48,2,2,65,76);dg(0,0,30,48,67,2,65,76);dg(0,0,30,48,132,2,65,76);");
   lcd_log_reset(lcd);
-  
+
   widget_set_style_str(w, "fg_image_draw_type", "scale_w");
   widget_on_paint_self(w, &c);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "dg(0,5,30,42,2,0,65,92);dg(0,5,30,42,67,0,65,92);dg(0,5,30,42,132,0,65,92);");
+  ASSERT_EQ(lcd_log_get_commands(lcd),
+            "dg(0,5,30,42,2,0,65,92);dg(0,5,30,42,67,0,65,92);dg(0,5,30,42,132,0,65,92);");
   lcd_log_reset(lcd);
-  
+
   widget_set_style_str(w, "fg_image_draw_type", "scale_h");
   widget_on_paint_self(w, &c);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "dg(0,0,30,48,29,2,47,76);dg(0,0,30,48,76,2,47,76);dg(0,0,30,48,123,2,47,76);");
+  ASSERT_EQ(lcd_log_get_commands(lcd),
+            "dg(0,0,30,48,29,2,47,76);dg(0,0,30,48,76,2,47,76);dg(0,0,30,48,123,2,47,76);");
   lcd_log_reset(lcd);
-  
+
   widget_set_style_str(w, "fg_image_draw_type", "scale_auto");
   widget_on_paint_self(w, &c);
-  ASSERT_EQ(lcd_log_get_commands(lcd), "dg(0,0,30,48,29,2,47,76);dg(0,0,30,48,76,2,47,76);dg(0,0,30,48,123,2,47,76);");
+  ASSERT_EQ(lcd_log_get_commands(lcd),
+            "dg(0,0,30,48,29,2,47,76);dg(0,0,30,48,76,2,47,76);dg(0,0,30,48,123,2,47,76);");
   lcd_log_reset(lcd);
 
   canvas_end_frame(&c);

@@ -918,4 +918,4 @@ network_interface_t* network_interface_create(const char* interface_name,
 
   return (network_interface_t*)windows_network_interface;
 }
-#endif/*WIN*/
+#endif /*WIN*/

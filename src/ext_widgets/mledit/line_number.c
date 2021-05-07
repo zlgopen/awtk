@@ -134,13 +134,15 @@ ret_t line_number_set_bottom_margin(widget_t* widget, int32_t bottom_margin) {
   return widget_invalidate_force(widget, NULL);
 }
 
-ret_t line_number_set_lines_of_each_row(widget_t* widget, const uint32_t* lines_of_each_row, uint32_t len) {
+ret_t line_number_set_lines_of_each_row(widget_t* widget, const uint32_t* lines_of_each_row,
+                                        uint32_t len) {
   line_number_t* line_number = LINE_NUMBER(widget);
   return_value_if_fail(line_number != NULL && lines_of_each_row != NULL && len > 0, RET_BAD_PARAMS);
 
   if (line_number->lines_of_each_row == NULL || line_number->lines_of_each_row_len != len) {
     line_number->lines_of_each_row = TKMEM_REALLOCT(uint32_t, line_number->lines_of_each_row, len);
-    return_value_if_fail(line_number->lines_of_each_row != NULL, (line_number->lines_of_each_row_len = 0, RET_OOM));
+    return_value_if_fail(line_number->lines_of_each_row != NULL,
+                         (line_number->lines_of_each_row_len = 0, RET_OOM));
     line_number->lines_of_each_row_len = len;
   }
   memcpy(line_number->lines_of_each_row, lines_of_each_row, sizeof(uint32_t) * len);
