@@ -106,8 +106,6 @@ ret_t check_button_set_value(widget_t* widget, bool_t value) {
   check_button_t* check_button = CHECK_BUTTON(widget);
   return_value_if_fail(check_button != NULL, RET_BAD_PARAMS);
 
-  check_button_set_value_only(widget, value);
-
   if (check_button->radio && widget->parent != NULL && value) {
     widget_t* parent = widget->parent;
 
@@ -117,6 +115,7 @@ ret_t check_button_set_value(widget_t* widget, bool_t value) {
     }
     WIDGET_FOR_EACH_CHILD_END();
   }
+  check_button_set_value_only(widget, value);
 
   return RET_OK;
 }
