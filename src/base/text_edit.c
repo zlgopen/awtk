@@ -218,10 +218,6 @@ static ret_t text_edit_set_caret_pos(text_edit_impl_t* impl, uint32_t x, uint32_
   impl->caret.x = x;
   impl->caret.y = y;
 
-  if (y + font_size < layout_info->h) {
-    layout_info->oy = 0;
-  }
-
   if (view_top > caret_top) {
     layout_info->oy = caret_top - layout_info->margin_t;
   }
@@ -428,6 +424,14 @@ static row_info_t* text_edit_multi_line_layout_line(text_edit_t* text_edit, uint
   return row;
 }
 
+static ret_t text_edit_fix_oy(text_edit_impl_t* impl) {
+  text_layout_info_t* layout_info = &(impl->layout_info);
+  if ((impl->last_line_number + 1) * impl->line_height < layout_info->h) {
+    layout_info->oy = 0;
+  }
+  return RET_OK;
+}
+
 static row_info_t* text_edit_layout_line(text_edit_t* text_edit, uint32_t row_num,
                                          uint32_t line_index, uint32_t offset) {
   DECL_IMPL(text_edit);
@@ -480,6 +484,8 @@ static ret_t text_edit_layout_impl(text_edit_t* text_edit) {
   }
 
   impl->rows->size = i;
+
+  text_edit_fix_oy(impl);
 
   text_edit_notify(text_edit);
 
