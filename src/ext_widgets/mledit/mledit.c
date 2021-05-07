@@ -623,8 +623,14 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
     case EVT_KEY_DOWN: {
       key_event_t* evt = (key_event_t*)e;
       int32_t key = evt->key;
+#ifdef MACOS
+      bool_t is_control = evt->cmd;
+#else
+      bool_t is_control = evt->ctrl;
+#endif
+
       if (mledit->readonly) {
-        if (evt->ctrl && (key == TK_KEY_C || key == TK_KEY_c)) {
+        if (is_control && (key == TK_KEY_C || key == TK_KEY_c)) {
           log_debug("copy\n");
         } else {
           break;

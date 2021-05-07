@@ -86,7 +86,7 @@ typedef struct _mledit_t {
   uint32_t max_lines;
 
   /**
-   * @property {uint32_t} max_lines
+   * @property {uint32_t} max_chars
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 最大字符数。
    */
