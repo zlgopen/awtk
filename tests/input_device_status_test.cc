@@ -146,31 +146,28 @@ TEST(InputDeviceStatus, pointer) {
   widget_on(w, EVT_POINTER_MOVE, on_event, w);
   widget_on(w, EVT_POINTER_UP, on_event, w);
 
-  e.x = 10;
-  e.y = 20;
+  pointer_event_init(&e, EVT_POINTER_DOWN, NULL, 10, 20);
   e.pressed = TRUE;
-  e.e = event_init(EVT_POINTER_DOWN, NULL);
   input_device_status_on_input_event(ids, w, (event_t*)(&e));
+
   ASSERT_EQ(ids->last_x, e.x);
   ASSERT_EQ(ids->last_y, e.y);
   ASSERT_EQ(ids->pressed, TRUE);
   ASSERT_EQ(s_log, "pointerdown");
 
-  e.x = 20;
-  e.y = 30;
+  pointer_event_init(&e, EVT_POINTER_MOVE, NULL, 20, 30);
   e.pressed = TRUE;
-  e.e = event_init(EVT_POINTER_MOVE, NULL);
   input_device_status_on_input_event(ids, w, (event_t*)(&e));
+
   ASSERT_EQ(ids->last_x, e.x);
   ASSERT_EQ(ids->last_y, e.y);
   ASSERT_EQ(ids->pressed, TRUE);
   ASSERT_EQ(s_log, "pointermove");
 
-  e.x = 30;
-  e.y = 40;
+  pointer_event_init(&e, EVT_POINTER_UP, NULL, 30, 40);
   e.pressed = TRUE;
-  e.e = event_init(EVT_POINTER_UP, NULL);
   input_device_status_on_input_event(ids, w, (event_t*)(&e));
+
   ASSERT_EQ(ids->last_x, e.x);
   ASSERT_EQ(ids->last_y, e.y);
   ASSERT_EQ(ids->pressed, FALSE);

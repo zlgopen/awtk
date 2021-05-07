@@ -2,6 +2,7 @@
 
 2021/05/07
   * 完善mledit（感谢兆坤提供补丁）
+  * 重构button和相关测试。
 
 2021/05/06
   * 完善combo\_box/combo\_box\_ex。
