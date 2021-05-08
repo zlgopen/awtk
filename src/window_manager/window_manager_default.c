@@ -102,7 +102,7 @@ static widget_t* window_manager_find_prev_window(widget_t* widget) {
   return NULL;
 }
 
-static widget_t* window_manager_find_prev_any_window(widget_t* widget) {
+static widget_t* window_manager_find_prev_normal_window(widget_t* widget) {
   return_value_if_fail(widget != NULL, NULL);
 
   if (widget->children != NULL && widget->children->size >= 2) {
@@ -305,7 +305,7 @@ static ret_t window_manager_prepare_dialog_highlighter(widget_t* widget, widget_
 }
 
 static ret_t window_manager_create_highlighter(widget_t* widget, widget_t* curr_win) {
-  widget_t* prev_win = window_manager_find_prev_any_window(widget);
+  widget_t* prev_win = window_manager_find_prev_normal_window(widget);
   window_manager_prepare_dialog_highlighter(widget, prev_win, curr_win);
   return RET_OK;
 }
@@ -314,7 +314,7 @@ static ret_t window_manager_create_animator(window_manager_default_t* wm, widget
                                             bool_t open) {
   value_t v;
   const char* anim_hint = NULL;
-  widget_t* prev_win = window_manager_find_prev_any_window(WIDGET(wm));
+  widget_t* prev_win = window_manager_find_prev_normal_window(WIDGET(wm));
   const char* key = open ? WIDGET_PROP_OPEN_ANIM_HINT : WIDGET_PROP_CLOSE_ANIM_HINT;
 
   if (prev_win == curr_win || prev_win == NULL) {
@@ -773,6 +773,8 @@ static ret_t window_manager_animate_done(widget_t* widget) {
     wm->ignore_user_input = FALSE;
 
     if (is_open) {
+      /*此时前一个窗口并非是真正的前一个窗口，而是前一个normal窗口，所以这里重新找真正的前一个窗口*/
+      prev_win = window_manager_find_prev_window(WIDGET(wm));
       /* 结束打开窗口动画后 */
       if (!curr_win_is_keyboard) {
         window_manager_dispatch_window_event(prev_win, EVT_WINDOW_TO_BACKGROUND);
