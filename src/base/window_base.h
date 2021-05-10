@@ -400,6 +400,16 @@ widget_t* window_base_cast(widget_t* widget);
 /*public for subclass and runtime type check*/
 TK_EXTERN_VTABLE(window_base);
 
+/*public for test*/
+/**
+ * @method window_base_auto_scale_children 
+ * 根据参数自动缩放子控件。 
+ * @param {widget_t*} widget window_base对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t window_base_auto_scale_children(widget_t* widget);
+
 END_C_DECLS
 
 #endif /*TK_WINDOW_BASE_H*/

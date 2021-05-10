@@ -365,7 +365,7 @@ static ret_t window_base_auto_scale_children_child(void* ctx, const void* data) 
   return RET_OK;
 }
 
-static ret_t window_base_auto_scale_children(widget_t* widget) {
+ret_t window_base_auto_scale_children(widget_t* widget) {
   auto_resize_info_t info;
   window_base_t* win = WINDOW_BASE(widget);
   return_value_if_fail(win->design_w > 0 && win->design_h > 0, RET_BAD_PARAMS);
