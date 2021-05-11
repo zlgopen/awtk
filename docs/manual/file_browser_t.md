@@ -20,6 +20,7 @@
 | <a href="#file_browser_t_file_browser_set_cwd">file\_browser\_set\_cwd</a> | 设置当前目录。 |
 | <a href="#file_browser_t_file_browser_set_filter">file\_browser\_set\_filter</a> | 设置过滤函数。 |
 | <a href="#file_browser_t_file_browser_set_ignore_hidden_files">file\_browser\_set\_ignore\_hidden\_files</a> | 设置是否忽略隐藏文件。 |
+| <a href="#file_browser_t_file_browser_set_top_dir">file\_browser\_set\_top\_dir</a> | 设置顶层目录。 |
 | <a href="#file_browser_t_file_browser_sort_by_mtime">file\_browser\_sort\_by\_mtime</a> | 按修改时间排序。 |
 | <a href="#file_browser_t_file_browser_sort_by_name">file\_browser\_sort\_by\_name</a> | 按名称排序。 |
 | <a href="#file_browser_t_file_browser_sort_by_size">file\_browser\_sort\_by\_size</a> | 按大小排序。 |
@@ -31,6 +32,7 @@
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#file_browser_t_cwd">cwd</a> | char* | 当前路径。 |
+| <a href="#file_browser_t_top_dir">top\_dir</a> | char* | 最顶层目录。到达本目录后，不允许往上。 |
 #### file\_browser\_create 函数
 -----------------------
 
@@ -289,6 +291,26 @@ ret_t file_browser_set_ignore_hidden_files (file_browser_t* fb, bool_t ignore_hi
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | fb | file\_browser\_t* | file browser对象。 |
 | ignore\_hidden\_files | bool\_t | 是否忽略隐藏文件。 |
+#### file\_browser\_set\_top\_dir 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="file_browser_t_file_browser_set_top_dir">设置顶层目录。
+
+* 函数原型：
+
+```
+ret_t file_browser_set_top_dir (file_browser_t* fb, const char* top_dir);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| fb | file\_browser\_t* | file browser对象。 |
+| top\_dir | const char* | 顶层目录。 |
 #### file\_browser\_sort\_by\_mtime 函数
 -----------------------
 
@@ -391,6 +413,16 @@ ret_t file_browser_up (file_browser_t* fb);
 #### cwd 属性
 -----------------------
 > <p id="file_browser_t_cwd">当前路径。
+
+* 类型：char*
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+#### top\_dir 属性
+-----------------------
+> <p id="file_browser_t_top_dir">最顶层目录。到达本目录后，不允许往上。
 
 * 类型：char*
 

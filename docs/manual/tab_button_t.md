@@ -88,6 +88,7 @@ tab\_button\_t是[widget\_t](widget_t.md)的子类控件，widget\_t的函数均
 | -------- | ----- | ------- | 
 | EVT\_VALUE\_WILL\_CHANGE | event\_t | 值(激活状态)即将改变事件。 |
 | EVT\_VALUE\_CHANGED | event\_t | 值(激活状态)改变事件。 |
+| EVT\_CLICK | pointer\_event\_t | 点击事件。 |
 #### tab\_button\_cast 函数
 -----------------------
 
@@ -200,7 +201,7 @@ ret_t tab_button_set_load_ui (widget_t* widget, char* name);
 * 函数原型：
 
 ```
-ret_t tab_button_set_value (widget_t* widget, uint32_t value);
+ret_t tab_button_set_value (widget_t* widget, bool_t value);
 ```
 
 * 参数说明：
@@ -209,7 +210,7 @@ ret_t tab_button_set_value (widget_t* widget, uint32_t value);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | tab\_button对象。 |
-| value | uint32\_t | 是否为当前标签。 |
+| value | bool\_t | 是否为当前标签。 |
 #### active\_icon 属性
 -----------------------
 > <p id="tab_button_t_active_icon">当前项的图标的名称。

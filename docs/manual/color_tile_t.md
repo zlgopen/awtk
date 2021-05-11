@@ -34,6 +34,8 @@ color_tile_set_bg_color(color_tile, "red");
 | -------- | ------------ | 
 | <a href="#color_tile_t_color_tile_cast">color\_tile\_cast</a> | 转换为color_tile对象(供脚本语言使用)。 |
 | <a href="#color_tile_t_color_tile_create">color\_tile\_create</a> | 创建color_tile对象 |
+| <a href="#color_tile_t_color_tile_get_bg_color">color\_tile\_get\_bg\_color</a> | 获取背景颜色。 |
+| <a href="#color_tile_t_color_tile_get_border_color">color\_tile\_get\_border\_color</a> | 获取边框颜色。 |
 | <a href="#color_tile_t_color_tile_set_bg_color">color\_tile\_set\_bg\_color</a> | 设置背景颜色。 |
 | <a href="#color_tile_t_color_tile_set_border_color">color\_tile\_set\_border\_color</a> | 设置边框颜色。 |
 | <a href="#color_tile_t_color_tile_set_value">color\_tile\_set\_value</a> | 设置背景颜色。 |
@@ -44,6 +46,13 @@ color_tile_set_bg_color(color_tile, "red");
 | -------- | ----- | ------------ | 
 | <a href="#color_tile_t_bg_color">bg\_color</a> | const char* | 背景颜色。 |
 | <a href="#color_tile_t_border_color">border\_color</a> | const char* | 边框颜色。 |
+### 事件
+<p id="color_tile_t_events">
+
+| 事件名称 | 类型  | 说明 | 
+| -------- | ----- | ------- | 
+| EVT\_VALUE\_WILL\_CHANGE | event\_t | 值(颜色)即将改变事件。 |
+| EVT\_VALUE\_CHANGED | event\_t | 值(颜色)改变事件。 |
 #### color\_tile\_cast 函数
 -----------------------
 
@@ -86,6 +95,44 @@ widget_t* color_tile_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### color\_tile\_get\_bg\_color 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="color_tile_t_color_tile_get_bg_color">获取背景颜色。
+
+* 函数原型：
+
+```
+const char* color_tile_get_bg_color (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const char* | 返回背景颜色。 |
+| widget | widget\_t* | 控件对象。 |
+#### color\_tile\_get\_border\_color 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="color_tile_t_color_tile_get_border_color">获取边框颜色。
+
+* 函数原型：
+
+```
+const char* color_tile_get_border_color (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const char* | 返回边框颜色。 |
+| widget | widget\_t* | 控件对象。 |
 #### color\_tile\_set\_bg\_color 函数
 -----------------------
 

@@ -64,13 +64,15 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | -------- | ------------ | 
 | <a href="#edit_t_edit_cast">edit\_cast</a> | 转换为edit对象(供脚本语言使用)。 |
 | <a href="#edit_t_edit_create">edit\_create</a> | 创建edit对象 |
+| <a href="#edit_t_edit_get_cursor">edit\_get\_cursor</a> | 获取输入框的光标位置。 |
 | <a href="#edit_t_edit_get_double">edit\_get\_double</a> | 获取double类型的值。 |
 | <a href="#edit_t_edit_get_int">edit\_get\_int</a> | 获取int类型的值。 |
+| <a href="#edit_t_edit_get_selected_text">edit\_get\_selected\_text</a> | 获取选中的文本。 |
 | <a href="#edit_t_edit_set_action_text">edit\_set\_action\_text</a> | 设置软键盘上action按钮的文本。 |
 | <a href="#edit_t_edit_set_auto_fix">edit\_set\_auto\_fix</a> | 设置编辑器是否为自动改正。 |
 | <a href="#edit_t_edit_set_cancelable">edit\_set\_cancelable</a> | 设置编辑器是否为可撤销修改。 |
 | <a href="#edit_t_edit_set_close_im_when_blured">edit\_set\_close\_im\_when\_blured</a> | 设置编辑器是否在失去焦点时关闭输入法。 |
-| <a href="#edit_t_edit_set_cursor">edit\_set\_cursor</a> | 设置输入框的光标坐标。 |
+| <a href="#edit_t_edit_set_cursor">edit\_set\_cursor</a> | 设置输入框的光标位置。 |
 | <a href="#edit_t_edit_set_dec_value">edit\_set\_dec\_value</a> | 设置减少值的回调函数。 |
 | <a href="#edit_t_edit_set_double">edit\_set\_double</a> | 设置double类型的值。 |
 | <a href="#edit_t_edit_set_fix_value">edit\_set\_fix\_value</a> | 设置修正输入内容的回调函数。 |
@@ -87,6 +89,7 @@ default](https://github.com/zlgopen/awtk/blob/master/design/default/styles/defau
 | <a href="#edit_t_edit_set_password_visible">edit\_set\_password\_visible</a> | 当编辑器输入类型为密码时，设置密码是否可见。 |
 | <a href="#edit_t_edit_set_pre_input">edit\_set\_pre\_input</a> | 设置预输入处的回调函数。 |
 | <a href="#edit_t_edit_set_readonly">edit\_set\_readonly</a> | 设置编辑器是否为只读。 |
+| <a href="#edit_t_edit_set_select">edit\_set\_select</a> | 选择指定范围的文本。 |
 | <a href="#edit_t_edit_set_select_none_when_focused">edit\_set\_select\_none\_when\_focused</a> | 设置编辑器是否在获得焦点时不选中文本。 |
 | <a href="#edit_t_edit_set_text_limit">edit\_set\_text\_limit</a> | 设置为文本输入及其长度限制，不允许输入超过max个字符，少于min个字符时进入error状态。 |
 | <a href="#edit_t_edit_set_tips">edit\_set\_tips</a> | 设置编辑器的输入提示。 |
@@ -160,6 +163,25 @@ widget_t* edit_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### edit\_get\_cursor 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="edit_t_edit_get_cursor">获取输入框的光标位置。
+
+* 函数原型：
+
+```
+uint32_t edit_get_cursor (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint32\_t | 返回光标位置。 |
+| widget | widget\_t* | widget对象。 |
 #### edit\_get\_double 函数
 -----------------------
 
@@ -197,6 +219,26 @@ int32_t edit_get_int (widget_t* widget);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | int32\_t | 返回int的值。 |
+| widget | widget\_t* | widget对象。 |
+#### edit\_get\_selected\_text 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="edit_t_edit_get_selected_text">获取选中的文本。
+使用完后需调用 TKMEM_FREE() 进行释放文本占有内存。
+
+* 函数原型：
+
+```
+char* edit_get_selected_text (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | char* | 返回选中文本。 |
 | widget | widget\_t* | widget对象。 |
 #### edit\_set\_action\_text 函数
 -----------------------
@@ -283,7 +325,7 @@ ret_t edit_set_close_im_when_blured (widget_t* widget, bool_t close_im_when_blur
 
 * 函数功能：
 
-> <p id="edit_t_edit_set_cursor">设置输入框的光标坐标。
+> <p id="edit_t_edit_set_cursor">设置输入框的光标位置。
 
 * 函数原型：
 
@@ -297,7 +339,7 @@ ret_t edit_set_cursor (widget_t* widget, uint32_t cursor);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
-| cursor | uint32\_t | 是否为焦点。 |
+| cursor | uint32\_t | 光标位置。 |
 #### edit\_set\_dec\_value 函数
 -----------------------
 
@@ -631,6 +673,27 @@ ret_t edit_set_readonly (widget_t* widget, bool_t readonly);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
 | readonly | bool\_t | 只读。 |
+#### edit\_set\_select 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="edit_t_edit_set_select">选择指定范围的文本。
+
+* 函数原型：
+
+```
+ret_t edit_set_select (widget_t* widget, uint32_t start, uint32_t end);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | widget对象。 |
+| start | uint32\_t | 起始偏移。 |
+| end | uint32\_t | 结束偏移。 |
 #### edit\_set\_select\_none\_when\_focused 函数
 -----------------------
 

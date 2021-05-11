@@ -25,6 +25,7 @@ TKMEM_FREE(str);
 | -------- | ------------ | 
 | <a href="#tk_mem_t_tk_mem_dump">tk\_mem\_dump</a> | 显示内存信息。 |
 | <a href="#tk_mem_t_tk_mem_init">tk\_mem\_init</a> | 初始化内存。 |
+| <a href="#tk_mem_t_tk_mem_init_ex">tk\_mem\_init\_ex</a> | 初始化内存，支持多块不连续的内存。 |
 | <a href="#tk_mem_t_tk_mem_init_stage2">tk\_mem\_init\_stage2</a> | 初始化互斥和oom。 |
 | <a href="#tk_mem_t_tk_mem_is_valid_addr">tk\_mem\_is\_valid\_addr</a> | 检查给定的地址是否是一个有效的heap地址。 |
 | <a href="#tk_mem_t_TKMEM_ALLOC">TKMEM\_ALLOC</a> | 分配一块内存。 |
@@ -60,6 +61,32 @@ void tk_mem_dump ();
 
 ```
 ret_t tk_mem_init (void* buffer, uint32_t size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| buffer | void* | 内存地址。 |
+| size | uint32\_t | 内存长度。 |
+#### tk\_mem\_init\_ex 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="tk_mem_t_tk_mem_init_ex">初始化内存，支持多块不连续的内存。
+>最后一个参数必须为NULL。
+
+示例：
+```c
+tk_mem_init_ex(mem1, sizeof(mem1), mem2, sizeof(mem2), mem3, sizeof(mem3), NULL);
+```
+
+* 函数原型：
+
+```
+ret_t tk_mem_init_ex (void* buffer, uint32_t size);
 ```
 
 * 参数说明：

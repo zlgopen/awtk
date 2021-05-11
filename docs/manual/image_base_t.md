@@ -46,6 +46,12 @@
 | <a href="#image_base_t_scale_y">scale\_y</a> | float\_t | 控件在Y方向上的缩放比例。 |
 | <a href="#image_base_t_selectable">selectable</a> | bool\_t | 是否设置选中状态。 |
 | <a href="#image_base_t_selected">selected</a> | bool\_t | 当前是否被选中。 |
+### 事件
+<p id="image_base_t_events">
+
+| 事件名称 | 类型  | 说明 | 
+| -------- | ----- | ------- | 
+| EVT\_CLICK | pointer\_event\_t | 点击事件。 |
 #### image\_base\_cast 函数
 -----------------------
 

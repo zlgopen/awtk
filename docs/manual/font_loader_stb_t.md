@@ -13,7 +13,9 @@ stb主要用于加载矢量字体(如truetype)，它功能强大，体积小巧�
 | -------- | ------------ | 
 | <a href="#font_loader_stb_t_fargs_get_data_and_size">fargs\_get\_data\_and\_size</a> | 从参数中获取数据和长度。 |
 | <a href="#font_loader_stb_t_font_loader_stb">font\_loader\_stb</a> | 获取stb字体加载器对象。 |
+| <a href="#font_loader_stb_t_font_loader_stb_mono">font\_loader\_stb\_mono</a> | 获取stb mono字体加载器对象。 |
 | <a href="#font_loader_stb_t_font_stb_create">font\_stb\_create</a> | 创建stb字体对象。 |
+| <a href="#font_loader_stb_t_font_stb_mono_create">font\_stb\_mono\_create</a> | 创建stb mono字体对象。 |
 | <a href="#font_loader_stb_t_fscript_app_conf_register">fscript\_app\_conf\_register</a> | 注册app_conf函数。 |
 | <a href="#font_loader_stb_t_fscript_array_register">fscript\_array\_register</a> | 注册typed array函数。 |
 | <a href="#font_loader_stb_t_fscript_bits_register">fscript\_bits\_register</a> | 注册数学函数。 |
@@ -74,6 +76,24 @@ font_loader_t* font_loader_stb ();
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | font\_loader\_t* | 返回字体加载器对象。 |
+#### font\_loader\_stb\_mono 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="font_loader_stb_t_font_loader_stb_mono">获取stb mono字体加载器对象。
+
+* 函数原型：
+
+```
+font_loader_t* font_loader_stb_mono ();
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | font\_loader\_t* | 返回字体加载器对象。 |
 #### font\_stb\_create 函数
 -----------------------
 
@@ -85,6 +105,27 @@ font_loader_t* font_loader_stb ();
 
 ```
 font_t* font_stb_create (const char* name, const uint8_t* buff , uint32_t size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | font\_t* | 返回字体对象。 |
+| name | const char* | 字体名称。 |
+|  | const uint8\_t* buff | 。 |
+| size | uint32\_t | 字体数据长度。 |
+#### font\_stb\_mono\_create 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="font_loader_stb_t_font_stb_mono_create">创建stb mono字体对象。
+
+* 函数原型：
+
+```
+font_t* font_stb_mono_create (const char* name, const uint8_t* buff , uint32_t size);
 ```
 
 * 参数说明：

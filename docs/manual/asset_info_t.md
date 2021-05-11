@@ -10,6 +10,8 @@
 | <a href="#asset_info_t_asset_info_create">asset\_info\_create</a> | 创建asset_info对象。 |
 | <a href="#asset_info_t_asset_info_destroy">asset\_info\_destroy</a> | 销毁asset_info对象。 |
 | <a href="#asset_info_t_asset_info_get_formatted_name">asset\_info\_get\_formatted\_name</a> | 把资源名字格式化为符合标准长度的字符串。 |
+| <a href="#asset_info_t_asset_info_get_name">asset\_info\_get\_name</a> | 获取名称。 |
+| <a href="#asset_info_t_asset_info_get_type">asset\_info\_get\_type</a> | 获取类型。 |
 | <a href="#asset_info_t_asset_info_ref">asset\_info\_ref</a> | 增加asset_info对象的引用计数。 |
 | <a href="#asset_info_t_asset_info_unref">asset\_info\_unref</a> | 减少asset_info对象的引用计数。 |
 ### 属性
@@ -85,6 +87,44 @@ ret_t asset_info_get_formatted_name (const char* name);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回格式化后的名字。 |
 | name | const char* | 未格式化名字。 |
+#### asset\_info\_get\_name 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="asset_info_t_asset_info_get_name">获取名称。
+
+* 函数原型：
+
+```
+const char* asset_info_get_name (asset_info_t* info);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const char* | 返回名称。 |
+| info | asset\_info\_t* | asset\_info对象。 |
+#### asset\_info\_get\_type 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="asset_info_t_asset_info_get_type">获取类型。
+
+* 函数原型：
+
+```
+uint16_t asset_info_get_type (asset_info_t* info);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint16\_t | 返回类型。 |
+| info | asset\_info\_t* | asset\_info对象。 |
 #### asset\_info\_ref 函数
 -----------------------
 

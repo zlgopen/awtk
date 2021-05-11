@@ -20,6 +20,7 @@
 | <a href="#file_chooser_t_file_chooser_is_aborted">file\_chooser\_is\_aborted</a> | 用户是否取消了选择。 |
 | <a href="#file_chooser_t_file_chooser_set_filter">file\_chooser\_set\_filter</a> | 设置过滤规则。 |
 | <a href="#file_chooser_t_file_chooser_set_init_dir">file\_chooser\_set\_init\_dir</a> | 设置初始目录。 |
+| <a href="#file_chooser_t_file_chooser_set_top_dir">file\_chooser\_set\_top\_dir</a> | 设置初始目录。 |
 ### 属性
 <p id="file_chooser_t_properties">
 
@@ -32,6 +33,7 @@
 | <a href="#file_chooser_t_init_dir">init\_dir</a> | char* | 初始目录。 |
 | <a href="#file_chooser_t_on_done">on\_done</a> | tk\_on\_done\_t | 接受结果的回调函数。 |
 | <a href="#file_chooser_t_on_done_ctx">on\_done\_ctx</a> | void* | 用户数据。 |
+| <a href="#file_chooser_t_top_dir">top\_dir</a> | char* | 最顶层目录。到达本目录后，不允许往上。 |
 #### file\_chooser\_cast 函数
 -----------------------
 
@@ -243,6 +245,26 @@ ret_t file_chooser_set_init_dir (file_chooser_t* chooser, const char* init_dir);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | chooser | file\_chooser\_t* | file\_chooser对象。 |
 | init\_dir | const char* | 初始目录 |
+#### file\_chooser\_set\_top\_dir 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="file_chooser_t_file_chooser_set_top_dir">设置初始目录。
+
+* 函数原型：
+
+```
+ret_t file_chooser_set_top_dir (file_chooser_t* chooser, const char* top_dir);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| chooser | file\_chooser\_t* | file\_chooser对象。 |
+| top\_dir | const char* | 初始目录 |
 #### aborted 属性
 -----------------------
 > <p id="file_chooser_t_aborted">是否取消了选择。
@@ -284,4 +306,10 @@ ret_t file_chooser_set_init_dir (file_chooser_t* chooser, const char* init_dir);
 > <p id="file_chooser_t_on_done_ctx">用户数据。
 
 * 类型：void*
+
+#### top\_dir 属性
+-----------------------
+> <p id="file_chooser_t_top_dir">最顶层目录。到达本目录后，不允许往上。
+
+* 类型：char*
 

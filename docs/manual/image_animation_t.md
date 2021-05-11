@@ -52,7 +52,9 @@ demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/image_animation.
 | <a href="#image_animation_t_image_animation_set_interval">image\_animation\_set\_interval</a> | 设置播放间隔时间。 |
 | <a href="#image_animation_t_image_animation_set_loop">image\_animation\_set\_loop</a> | 设置是否循环播放。 |
 | <a href="#image_animation_t_image_animation_set_range_sequence">image\_animation\_set\_range\_sequence</a> | 设置播放序列。比如image为"fire"，start_index为0, end_index为99, 将依次播放"fire0", ..., |
+| <a href="#image_animation_t_image_animation_set_reverse">image\_animation\_set\_reverse</a> | 设置是否倒序播放。 |
 | <a href="#image_animation_t_image_animation_set_sequence">image\_animation\_set\_sequence</a> | 设置播放序列。比如image为"fire"，sequence为"12223", 将依次播放"fire1", "fire2", "fire2", "fire2", |
+| <a href="#image_animation_t_image_animation_set_show_when_done">image\_animation\_set\_show\_when\_done</a> | 设置结束播放后是否保持显示最后一帧。 |
 | <a href="#image_animation_t_image_animation_set_unload_after_paint">image\_animation\_set\_unload\_after\_paint</a> | 设置绘制完成后unload图片，以释放内存空间。 |
 | <a href="#image_animation_t_image_animation_stop">image\_animation\_stop</a> | 停止(并重置index为-1)。 |
 ### 属性
@@ -67,9 +69,18 @@ demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/image_animation.
 | <a href="#image_animation_t_image">image</a> | char* | 图片名称的前缀。 |
 | <a href="#image_animation_t_interval">interval</a> | uint32\_t | 每张图片播放的时间(毫秒)。 |
 | <a href="#image_animation_t_loop">loop</a> | bool\_t | 是否循环播放。 |
+| <a href="#image_animation_t_reverse">reverse</a> | bool\_t | 是否倒序播放。 |
 | <a href="#image_animation_t_sequence">sequence</a> | char* | 播放的序列，字符可选值为数字和英文大小写字母，字符可以重复。如：0123456789或者123123abcd。 |
+| <a href="#image_animation_t_show_when_done">show\_when\_done</a> | bool\_t | 结束后是否继续显示最后一帧。 |
 | <a href="#image_animation_t_start_index">start\_index</a> | uint32\_t | 图片起始序数。 |
 | <a href="#image_animation_t_unload_after_paint">unload\_after\_paint</a> | bool\_t | 绘制完成后unload图片，以释放内存空间。 |
+### 事件
+<p id="image_animation_t_events">
+
+| 事件名称 | 类型  | 说明 | 
+| -------- | ----- | ------- | 
+| EVT\_ANIM\_ONCE | event\_t | 使能循环播放时，控件动画完成一次事件。 |
+| EVT\_ANIM\_END | event\_t | 控件动画完成事件。 |
 #### image\_animation\_cast 函数
 -----------------------
 
@@ -339,6 +350,26 @@ ret_t image_animation_set_range_sequence (widget_t* widget, uint32_t start_index
 | widget | widget\_t* | image\_animation对象。 |
 | start\_index | uint32\_t | 图片起始序数。 |
 | end\_index | uint32\_t | 图片结束序数。 |
+#### image\_animation\_set\_reverse 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="image_animation_t_image_animation_set_reverse">设置是否倒序播放。
+
+* 函数原型：
+
+```
+ret_t image_animation_set_reverse (widget_t* widget, bool_t reverse);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | image\_animation对象。 |
+| reverse | bool\_t | 是否倒序播放。 |
 #### image\_animation\_set\_sequence 函数
 -----------------------
 
@@ -360,6 +391,26 @@ ret_t image_animation_set_sequence (widget_t* widget, const char* sequence);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | image\_animation对象。 |
 | sequence | const char* | 播放序列。 |
+#### image\_animation\_set\_show\_when\_done 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="image_animation_t_image_animation_set_show_when_done">设置结束播放后是否保持显示最后一帧。
+
+* 函数原型：
+
+```
+ret_t image_animation_set_show_when_done (widget_t* widget, bool_t show_when_done);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | image\_animation对象。 |
+| show\_when\_done | bool\_t | 是否继续显示最后一帧。 |
 #### image\_animation\_set\_unload\_after\_paint 函数
 -----------------------
 
@@ -511,11 +562,43 @@ ret_t image_animation_stop (widget_t* widget);
 | 可在XML中设置 | 是 |
 | 可通过widget\_get\_prop读取 | 是 |
 | 可通过widget\_set\_prop修改 | 是 |
+#### reverse 属性
+-----------------------
+> <p id="image_animation_t_reverse">是否倒序播放。
+
+* 类型：bool\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### sequence 属性
 -----------------------
 > <p id="image_animation_t_sequence">播放的序列，字符可选值为数字和英文大小写字母，字符可以重复。如：0123456789或者123123abcd。
 
 * 类型：char*
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### show\_when\_done 属性
+-----------------------
+> <p id="image_animation_t_show_when_done">结束后是否继续显示最后一帧。
+
+* 类型：bool\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

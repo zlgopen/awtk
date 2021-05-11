@@ -19,6 +19,12 @@ COLOR_PICKER_CHILD_H: 水平为同色，垂直为Hue(递减)。
 | <a href="#color_component_t_color_component_get_v">color\_component\_get\_v</a> | 获取v分量。 |
 | <a href="#color_component_t_color_component_set_color">color\_component\_set\_color</a> | 设置颜色。 |
 | <a href="#color_component_t_color_component_set_hsv">color\_component\_set\_hsv</a> | 设置颜色。 |
+### 事件
+<p id="color_component_t_events">
+
+| 事件名称 | 类型  | 说明 | 
+| -------- | ----- | ------- | 
+| EVT\_VALUE\_CHANGING | event\_t | 颜色正在改变事件。 |
 #### color\_component\_cast 函数
 -----------------------
 

@@ -14,6 +14,7 @@
 | <a href="#color_t_color_destroy">color\_destroy</a> | 销毁color对象。 |
 | <a href="#color_t_color_from_str">color\_from\_str</a> | 创建color对象。 |
 | <a href="#color_t_color_g">color\_g</a> | 获取绿色通道的值。 |
+| <a href="#color_t_color_get_color">color\_get\_color</a> | 获取颜色值。 |
 | <a href="#color_t_color_hex_str">color\_hex\_str</a> | 获取16进制格式表示的颜色 |
 | <a href="#color_t_color_init">color\_init</a> | 初始化颜色对象。 |
 | <a href="#color_t_color_r">color\_r</a> | 获取红色通道的值。 |
@@ -174,6 +175,27 @@ uint8_t color_g (color_t* c);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | uint8\_t | 返回绿色通道的值。 |
+| c | color\_t* | color对象。 |
+#### color\_get\_color 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="color_t_color_get_color">获取颜色值。
+
+> 主要供脚本语言使用。
+
+* 函数原型：
+
+```
+uint32_t color_get_color (color_t* c);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint32\_t | 返回颜色值。 |
 | c | color\_t* | color对象。 |
 #### color\_hex\_str 函数
 -----------------------

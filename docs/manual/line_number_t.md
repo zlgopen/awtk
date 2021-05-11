@@ -44,6 +44,7 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L5
 | <a href="#line_number_t_line_number_set_line_height">line\_number\_set\_line\_height</a> | 设置行高。 |
 | <a href="#line_number_t_line_number_set_top_margin">line\_number\_set\_top\_margin</a> | 设置顶部边距。 |
 | <a href="#line_number_t_line_number_set_yoffset">line\_number\_set\_yoffset</a> | 设置y偏移。 |
+| <a href="#line_number_t_line_number_set_yoffset">line\_number\_set\_yoffset</a> | 设置每一个逻辑行(row)占几个物理行(line)。 |
 #### line\_number\_cast 函数
 -----------------------
 
@@ -166,3 +167,24 @@ ret_t line_number_set_yoffset (widget_t* widget, int32_t yoffset);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | yoffset | int32\_t | 行高。 |
+#### line\_number\_set\_yoffset 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="line_number_t_line_number_set_yoffset">设置每一个逻辑行(row)占几个物理行(line)。
+
+* 函数原型：
+
+```
+ret_t line_number_set_yoffset (widget_t* widget, const uint32_t* lines_of_each_row, uint32_t len);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| lines\_of\_each\_row | const uint32\_t* | 每一个逻辑行占几个物理行。 |
+| len | uint32\_t | 数组大小(逻辑行数)。 |

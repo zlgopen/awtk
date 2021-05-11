@@ -41,6 +41,14 @@
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#window_manager_t_global_emitter">global\_emitter</a> | emitter\_t* | 全局事情分发器。 |
+### 事件
+<p id="window_manager_t_events">
+
+| 事件名称 | 类型  | 说明 | 
+| -------- | ----- | ------- | 
+| EVT\_TOP\_WINDOW\_CHANGED | window\_event\_t | 顶层窗口改变的事件。 |
+| EVT\_SCREEN\_SAVER | window\_event\_t | 在指定的时间内(WITH\_SCREEN\_SAVER\_TIME)，没有用户输入事件，由窗口管理器触发。 |
+| EVT\_ORIENTATION\_CHANGED | event\_t | 屏幕旋转事件。 |
 #### window\_manager 函数
 -----------------------
 

@@ -11,6 +11,7 @@
 | -------- | ------------ | 
 | <a href="#data_writer_t_data_writer_clear">data\_writer\_clear</a> | 清除指定URL的数据。 |
 | <a href="#data_writer_t_data_writer_destroy">data\_writer\_destroy</a> | 销毁writer对象。 |
+| <a href="#data_writer_t_data_writer_flush">data\_writer\_flush</a> | flush数据。 |
 | <a href="#data_writer_t_data_writer_truncate">data\_writer\_truncate</a> | 截去指定长度之后的数据。 |
 | <a href="#data_writer_t_data_writer_write">data\_writer\_write</a> | 在指定位置写入数据。 |
 #### data\_writer\_clear 函数
@@ -43,6 +44,25 @@ ret_t data_writer_clear (const char* url);
 
 ```
 ret_t data_writer_destroy (data_writer_t* writer);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| writer | data\_writer\_t* | writer对象。 |
+#### data\_writer\_flush 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="data_writer_t_data_writer_flush">flush数据。
+
+* 函数原型：
+
+```
+ret_t data_writer_flush (data_writer_t* writer);
 ```
 
 * 参数说明：

@@ -137,3 +137,4 @@ key code。
 | TK\_KEY\_COMMAND | TK\_KEY\_COMMAND |
 | TK\_KEY\_BACK | TK\_KEY\_BACK |
 | TK\_KEY\_CANCEL | TK\_KEY\_CANCEL |
+| TK\_KEY\_WHEEL | TK\_KEY\_WHEEL |

@@ -16,6 +16,7 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#window_base_t_window_base_auto_scale_children">window\_base\_auto\_scale\_children</a> | 根据参数自动缩放子控件。 |
 | <a href="#window_base_t_window_base_cast">window\_base\_cast</a> | 转换为window_base对象(供脚本语言使用)。 |
 | <a href="#window_base_t_window_base_create">window\_base\_create</a> | 创建window base对象。 |
 | <a href="#window_base_t_window_base_get_prop">window\_base\_get\_prop</a> | 窗口get_prop函数的缺省实现。 |
@@ -64,6 +65,28 @@
 | EVT\_WINDOW\_TO\_BACKGROUND | event\_t | 窗口被切换到后台事件。 打开新窗口时，当前窗口被切换到后台时，对当前窗口触发本事件。 |
 | EVT\_WINDOW\_TO\_FOREGROUND | event\_t | 窗口被切换到前台事件。 关闭当前窗口时，前一个窗口被切换到前台时，对前一个窗口触发本事件。 |
 | EVT\_WINDOW\_CLOSE | event\_t | 窗口关闭事件。 |
+| EVT\_WINDOW\_LOAD | event\_t | 窗口加载完成事件。 |
+| EVT\_REQUEST\_CLOSE\_WINDOW | event\_t | 请求关闭窗口的事件。 |
+| EVT\_LOCALE\_CHANGED | event\_t | locale改变的事件。 |
+#### window\_base\_auto\_scale\_children 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="window_base_t_window_base_auto_scale_children">根据参数自动缩放子控件。
+
+* 函数原型：
+
+```
+ret_t window_base_auto_scale_children (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | window\_base对象。 |
 #### window\_base\_cast 函数
 -----------------------
 

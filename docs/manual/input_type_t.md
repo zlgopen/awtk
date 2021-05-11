@@ -21,3 +21,4 @@
 | INPUT\_TIME\_FULL | 时间(时分秒，如：12:00:00)。字符串属性值：time\_full |
 | INPUT\_CUSTOM | 使用自定义的软键盘(如计算器等应用不希望弹出系统软键盘)。字符串属性值：custom |
 | INPUT\_CUSTOM\_PASSWORD | 使用自定义的密码软键盘。字符串属性值：custom\_password |
+| INPUT\_ASCII | 纯英文文本。字符串属性值：ascii |

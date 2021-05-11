@@ -7,6 +7,7 @@
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#fs_t_dir_exist">dir\_exist</a> | 判断目录是否存在。 |
 | <a href="#fs_t_file_exist">file\_exist</a> | 判断文件是否存在。 |
 | <a href="#fs_t_file_get_size">file\_get\_size</a> | 获取文件大小。 |
 | <a href="#fs_t_file_read">file\_read</a> | 读取文件的全部内容。 |
@@ -15,6 +16,8 @@
 | <a href="#fs_t_file_write">file\_write</a> | 写入文件。 |
 | <a href="#fs_t_fs_build_user_storage_file_name">fs\_build\_user\_storage\_file\_name</a> | 生成一个保存数据文件的完整路径的文件名。 |
 | <a href="#fs_t_fs_change_dir">fs\_change\_dir</a> | 修改当前目录。 |
+| <a href="#fs_t_fs_copy_dir">fs\_copy\_dir</a> | 拷贝目录。 |
+| <a href="#fs_t_fs_copy_file">fs\_copy\_file</a> | 拷贝文件。 |
 | <a href="#fs_t_fs_create_dir">fs\_create\_dir</a> | 创建目录。 |
 | <a href="#fs_t_fs_create_dir_r">fs\_create\_dir\_r</a> | 递归创建目录。 |
 | <a href="#fs_t_fs_dir_exist">fs\_dir\_exist</a> | 判断目录是否存在。 |
@@ -34,6 +37,25 @@
 | <a href="#fs_t_fs_remove_file">fs\_remove\_file</a> | 刪除文件。 |
 | <a href="#fs_t_fs_stat">fs\_stat</a> | 获取文件信息。 |
 | <a href="#fs_t_os_fs">os\_fs</a> | 获取缺省的文件系统对象。 |
+#### dir\_exist 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="fs_t_dir_exist">判断目录是否存在。
+
+* 函数原型：
+
+```
+bool_t dir_exist (const char* name);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | bool\_t | 返回TRUE表示成功，否则表示失败。 |
+| name | const char* | 目录名。 |
 #### file\_exist 函数
 -----------------------
 
@@ -195,6 +217,48 @@ ret_t fs_change_dir (fs_t* fs, const char* name);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | fs | fs\_t* | 文件系统对象，一般赋值为os\_fs()。 |
 | name | const char* | 目录名称。 |
+#### fs\_copy\_dir 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="fs_t_fs_copy_dir">拷贝目录。
+
+* 函数原型：
+
+```
+ret_t fs_copy_dir (fs_t* fs, const char* src, const char* dst);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| fs | fs\_t* | 文件系统对象，一般赋值为os\_fs()。 |
+| src | const char* | 源目录。 |
+| dst | const char* | 目标目录。 |
+#### fs\_copy\_file 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="fs_t_fs_copy_file">拷贝文件。
+
+* 函数原型：
+
+```
+ret_t fs_copy_file (fs_t* fs, const char* src, const char* dst);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| fs | fs\_t* | 文件系统对象，一般赋值为os\_fs()。 |
+| src | const char* | 源文件名。 |
+| dst | const char* | 目标文件名。 |
 #### fs\_create\_dir 函数
 -----------------------
 

@@ -27,6 +27,7 @@ ComboBox Item控件。
 
 | 事件名称 | 类型  | 说明 | 
 | -------- | ----- | ------- | 
+| EVT\_CLICK | pointer\_event\_t | 点击事件。 |
 | EVT\_VALUE\_WILL\_CHANGE | event\_t | 值(勾选状态)即将改变事件。 |
 | EVT\_VALUE\_CHANGED | event\_t | 值(勾选状态)改变事件。 |
 #### combo\_box\_item\_cast 函数

@@ -14,6 +14,9 @@
 | <a href="#text_edit_t_text_edit_destroy">text\_edit\_destroy</a> | 销毁text_edit对象。 |
 | <a href="#text_edit_t_text_edit_drag">text\_edit\_drag</a> | 处理拖动事件。 |
 | <a href="#text_edit_t_text_edit_get_cursor">text\_edit\_get\_cursor</a> | 获取光标位置。 |
+| <a href="#text_edit_t_text_edit_get_height">text\_edit\_get\_height</a> | 获取偏移字符位置高度。 |
+| <a href="#text_edit_t_text_edit_get_lines_of_each_row">text\_edit\_get\_lines\_of\_each\_row</a> | 获取每一个逻辑行(row)占几个物理行(line)。 |
+| <a href="#text_edit_t_text_edit_get_selected_text">text\_edit\_get\_selected\_text</a> | 获取选中文本。 |
 | <a href="#text_edit_t_text_edit_get_state">text\_edit\_get\_state</a> | 获取编辑器的状态。 |
 | <a href="#text_edit_t_text_edit_invert_caret_visible">text\_edit\_invert\_caret\_visible</a> | 如果caret可见，将其设置为不可见。 如果caret不可见，将其设置为可见。 |
 | <a href="#text_edit_t_text_edit_key_down">text\_edit\_key\_down</a> | 处理按键事件。 |
@@ -31,6 +34,7 @@
 | <a href="#text_edit_t_text_edit_set_cursor">text\_edit\_set\_cursor</a> | 设置光标位置。 |
 | <a href="#text_edit_t_text_edit_set_mask">text\_edit\_set\_mask</a> | 设置是否马赛克字符(用于密码)。 |
 | <a href="#text_edit_t_text_edit_set_mask_char">text\_edit\_set\_mask\_char</a> | 设置马赛克字符。 |
+| <a href="#text_edit_t_text_edit_set_max_chars">text\_edit\_set\_max\_chars</a> | 设置最大字符数（0 为不限制字符）。 |
 | <a href="#text_edit_t_text_edit_set_max_rows">text\_edit\_set\_max\_rows</a> | 设置最大行数。 |
 | <a href="#text_edit_t_text_edit_set_offset">text\_edit\_set\_offset</a> | 设置滚动偏移。 |
 | <a href="#text_edit_t_text_edit_set_on_state_changed">text\_edit\_set\_on\_state\_changed</a> | 设置状态改变回调函数。 |
@@ -175,6 +179,65 @@ uin32_t text_edit_get_cursor (text_edit_t* text_edit);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | uin32\_t | 返回光标的位置。 |
+| text\_edit | text\_edit\_t* | text\_edit对象。 |
+#### text\_edit\_get\_height 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="text_edit_t_text_edit_get_height">获取偏移字符位置高度。
+
+* 函数原型：
+
+```
+uint32_t text_edit_get_height (text_edit_t* text_edit, uint32_t offset);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint32\_t | 返回偏移位置字符位置高度。 |
+| text\_edit | text\_edit\_t* | text\_edit对象。 |
+| offset | uint32\_t | 偏移位置。 |
+#### text\_edit\_get\_lines\_of\_each\_row 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="text_edit_t_text_edit_get_lines_of_each_row">获取每一个逻辑行(row)占几个物理行(line)。
+
+* 函数原型：
+
+```
+const uint32_t* text_edit_get_lines_of_each_row (text_edit_t* text_edit);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | const uint32\_t* | 返回每一个 row 占用多少个 line 数组。 |
+| text\_edit | text\_edit\_t* | text\_edit对象。 |
+#### text\_edit\_get\_selected\_text 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="text_edit_t_text_edit_get_selected_text">获取选中文本。
+使用完后需调用 TKMEM_FREE() 进行释放文本占有内存。
+
+* 函数原型：
+
+```
+char* text_edit_get_selected_text (text_edit_t* text_edit);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | char* | 返回选中文本。 |
 | text\_edit | text\_edit\_t* | text\_edit对象。 |
 #### text\_edit\_get\_state 函数
 -----------------------
@@ -510,6 +573,26 @@ ret_t text_edit_set_mask_char (text_edit_t* text_edit, wchar_t mask_char);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | text\_edit | text\_edit\_t* | text\_edit对象。 |
 | mask\_char | wchar\_t | 马赛克字符。 |
+#### text\_edit\_set\_max\_chars 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="text_edit_t_text_edit_set_max_chars">设置最大字符数（0 为不限制字符）。
+
+* 函数原型：
+
+```
+ret_t text_edit_set_max_chars (text_edit_t* text_edit, uint32_t max_chars);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| text\_edit | text\_edit\_t* | text\_edit对象。 |
+| max\_chars | uint32\_t | 最大行数。 |
 #### text\_edit\_set\_max\_rows 函数
 -----------------------
 

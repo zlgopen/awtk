@@ -56,6 +56,7 @@ https://github.com/zlgopen/awtk/blob/master/design/default/ui/file_chooser_for_o
 | <a href="#file_browser_view_t_file_browser_view_set_show_check_button">file\_browser\_view\_set\_show\_check\_button</a> | 设置 是否显示checkbutton。 |
 | <a href="#file_browser_view_t_file_browser_view_set_sort_ascending">file\_browser\_view\_set\_sort\_ascending</a> | 设置 是否为升序排序。 |
 | <a href="#file_browser_view_t_file_browser_view_set_sort_by">file\_browser\_view\_set\_sort\_by</a> | 设置 排序方式。可选值(name, size, mtime, type)。 |
+| <a href="#file_browser_view_t_file_browser_view_set_top_dir">file\_browser\_view\_set\_top\_dir</a> | 设置 顶层文件夹。 |
 ### 属性
 <p id="file_browser_view_t_properties">
 
@@ -67,6 +68,13 @@ https://github.com/zlgopen/awtk/blob/master/design/default/ui/file_chooser_for_o
 | <a href="#file_browser_view_t_show_check_button">show\_check\_button</a> | bool\_t | 是否显示checkbutton。 |
 | <a href="#file_browser_view_t_sort_ascending">sort\_ascending</a> | bool\_t | 是否为升序排序。 |
 | <a href="#file_browser_view_t_sort_by">sort\_by</a> | char* | 排序方式。可选值(name, size, mtime, type)。 |
+| <a href="#file_browser_view_t_top_dir">top\_dir</a> | char* | 最顶层目录。到达本目录后，不允许往上。 |
+### 事件
+<p id="file_browser_view_t_events">
+
+| 事件名称 | 类型  | 说明 | 
+| -------- | ----- | ------- | 
+| EVT\_VALUE\_CHANGED | event\_t | 值(当前显示目录)改变事件。 |
 #### file\_browser\_view\_cast 函数
 -----------------------
 
@@ -332,6 +340,26 @@ ret_t file_browser_view_set_sort_by (widget_t* widget, const char* sort_by);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
 | sort\_by | const char* | 排序方式。可选值(name, size, mtime, type)。 |
+#### file\_browser\_view\_set\_top\_dir 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="file_browser_view_t_file_browser_view_set_top_dir">设置 顶层文件夹。
+
+* 函数原型：
+
+```
+ret_t file_browser_view_set_top_dir (widget_t* widget, const char* top_dir);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | widget对象。 |
+| top\_dir | const char* | 初始文件夹。 |
 #### filter 属性
 -----------------------
 > <p id="file_browser_view_t_filter">过滤规则。
@@ -415,6 +443,22 @@ ret_t file_browser_view_set_sort_by (widget_t* widget, const char* sort_by);
 #### sort\_by 属性
 -----------------------
 > <p id="file_browser_view_t_sort_by">排序方式。可选值(name, size, mtime, type)。
+
+* 类型：char*
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### top\_dir 属性
+-----------------------
+> <p id="file_browser_view_t_top_dir">最顶层目录。到达本目录后，不允许往上。
 
 * 类型：char*
 

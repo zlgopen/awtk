@@ -11,6 +11,7 @@
 | WIDGET\_PROP\_Y | Y坐标。 |
 | WIDGET\_PROP\_W | 宽度。 |
 | WIDGET\_PROP\_H | 高度。 |
+| WIDGET\_PROP\_MAX\_H | 最大高度。 |
 | WIDGET\_PROP\_DESIGN\_W | 窗口设计时宽度。 |
 | WIDGET\_PROP\_DESIGN\_H | 窗口设计时宽度。 |
 | WIDGET\_PROP\_AUTO\_SCALE\_CHILDREN\_X | 窗口大小与设计时大小不同时，是否自动调整子控件的x坐标。 |
@@ -103,7 +104,7 @@
 | WIDGET\_PROP\_GRAB\_KEYS | 让窗口管理器直接把按键发给自己。 |
 | WIDGET\_PROP\_ROW | 行数或每行的高度。 |
 | WIDGET\_PROP\_STATE\_FOR\_STYLE | 控件状态。 |
-| WIDGET\_PROP\_THEME | 窗口窗体样式名称。 |
+| WIDGET\_PROP\_THEME | 窗体样式名称。 |
 | WIDGET\_PROP\_STAGE | window stage |
 | WIDGET\_PROP\_IMAGE\_MANAGER | 图片管理器。 |
 | WIDGET\_PROP\_ASSETS\_MANAGER | 资源管理器。 |

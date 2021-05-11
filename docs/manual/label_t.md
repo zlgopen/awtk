@@ -51,8 +51,9 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L1
 | <a href="#label_t_label_cast">label\_cast</a> | 转换为label对象(供脚本语言使用)。 |
 | <a href="#label_t_label_create">label\_create</a> | 创建label对象 |
 | <a href="#label_t_label_resize_to_content">label\_resize\_to\_content</a> | 根据文本内容调节控件大小。 |
-| <a href="#label_t_label_set_length">label\_set\_length</a> | 设置显示字符的个数(小余0时全部显示)。。 |
+| <a href="#label_t_label_set_length">label\_set\_length</a> | 设置显示字符的个数(小余0时全部显示)。 |
 | <a href="#label_t_label_set_line_wrap">label\_set\_line\_wrap</a> | 设置是否自动换行。 |
+| <a href="#label_t_label_set_max_w">label\_set\_max\_w</a> | 设置max_w。 |
 | <a href="#label_t_label_set_word_wrap">label\_set\_word\_wrap</a> | 设置是否允许整个单词换行。(需要开启自动换行才有效果) |
 ### 属性
 <p id="label_t_properties">
@@ -60,8 +61,9 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L1
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#label_t_length">length</a> | int32\_t | 显示字符的个数(小余0时全部显示)。 |
-| <a href="#label_t_line_wrap">line\_wrap</a> | bool\_t | 是否自动换行。 |
-| <a href="#label_t_word_wrap">word\_wrap</a> | bool\_t | 是否允许整个单词换行。(需要开启自动换行才有效果) |
+| <a href="#label_t_line_wrap">line\_wrap</a> | bool\_t | 是否自动换行(默认FALSE)。 |
+| <a href="#label_t_max_w">max\_w</a> | int32\_t | 当auto_adjust_size为TRUE时，用于控制控件的最大宽度，超出该宽度后才自动换行。 |
+| <a href="#label_t_word_wrap">word\_wrap</a> | bool\_t | 是否允许整个单词换行(默认FALSE)。 |
 #### label\_cast 函数
 -----------------------
 
@@ -132,7 +134,7 @@ ret_t label_resize_to_content (widget_t* widget, uint32_t min_w, uint32_t max_w,
 
 * 函数功能：
 
-> <p id="label_t_label_set_length">设置显示字符的个数(小余0时全部显示)。。
+> <p id="label_t_label_set_length">设置显示字符的个数(小余0时全部显示)。
 
 * 函数原型：
 
@@ -167,6 +169,26 @@ ret_t label_set_line_wrap (widget_t* widget, bool_t line_wrap);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
 | line\_wrap | bool\_t | 是否自动换行。 |
+#### label\_set\_max\_w 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="label_t_label_set_max_w">设置max_w。
+
+* 函数原型：
+
+```
+ret_t label_set_max_w (widget_t* widget, int32_t max_w);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | 控件对象。 |
+| max\_w | int32\_t | 最大宽度。 |
 #### label\_set\_word\_wrap 函数
 -----------------------
 
@@ -206,7 +228,7 @@ ret_t label_set_word_wrap (widget_t* widget, bool_t word_wrap);
 | 可通过widget\_set\_prop修改 | 是 |
 #### line\_wrap 属性
 -----------------------
-> <p id="label_t_line_wrap">是否自动换行。
+> <p id="label_t_line_wrap">是否自动换行(默认FALSE)。
 
 * 类型：bool\_t
 
@@ -220,9 +242,27 @@ ret_t label_set_word_wrap (widget_t* widget, bool_t word_wrap);
 | 可在XML中设置 | 是 |
 | 可通过widget\_get\_prop读取 | 是 |
 | 可通过widget\_set\_prop修改 | 是 |
+#### max\_w 属性
+-----------------------
+> <p id="label_t_max_w">当auto_adjust_size为TRUE时，用于控制控件的最大宽度，超出该宽度后才自动换行。
+>为0表示忽略该参数。小于0时取父控件宽度加上max_w。
+
+* 类型：int32\_t
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
 #### word\_wrap 属性
 -----------------------
-> <p id="label_t_word_wrap">是否允许整个单词换行。(需要开启自动换行才有效果)
+> <p id="label_t_word_wrap">是否允许整个单词换行(默认FALSE)。
+> 需要开启自动换行才有效果
 
 * 类型：bool\_t
 

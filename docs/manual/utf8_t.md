@@ -19,9 +19,32 @@ tk_utf8_from_utf16(wstr, res_str, ARRAY_SIZE(res_str));
 
 | 函数名称 | 说明 | 
 | -------- | ------------ | 
+| <a href="#utf8_t_tk_utf8_dup_utf16">tk\_utf8\_dup\_utf16</a> | 把ucs字符串转成UTF8字符串。 |
 | <a href="#utf8_t_tk_utf8_from_utf16">tk\_utf8\_from\_utf16</a> | 把ucs字符串转成UTF8字符串。 |
 | <a href="#utf8_t_tk_utf8_from_utf16_ex">tk\_utf8\_from\_utf16\_ex</a> | 把ucs字符串转成UTF8字符串。 |
 | <a href="#utf8_t_tk_utf8_to_utf16">tk\_utf8\_to\_utf16</a> | 将char类型转换为wchar_t类型。 |
+| <a href="#utf8_t_tk_utf8_to_utf16_ex">tk\_utf8\_to\_utf16\_ex</a> | 将char类型转换为wchar_t类型。 |
+#### tk\_utf8\_dup\_utf16 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utf8_t_tk_utf8_dup_utf16">把ucs字符串转成UTF8字符串。
+> 由调用者释放返回的指针。
+
+* 函数原型：
+
+```
+char* tk_utf8_dup_utf16 (const wchar_t* in, int32_t size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | char* | 返回UTF8字符串。 |
+| in | const wchar\_t* | 输入字符串。 |
+| size | int32\_t | 字符串长度。 |
 #### tk\_utf8\_from\_utf16 函数
 -----------------------
 
@@ -86,3 +109,25 @@ wchar_t* tk_utf8_to_utf16 (const char* str, const wchar_t* out, uint32_t size);
 | str | const char* | str。 |
 | out | const wchar\_t* | 返回结果缓冲区。 |
 | size | uint32\_t | 缓冲区大小。 |
+#### tk\_utf8\_to\_utf16\_ex 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utf8_t_tk_utf8_to_utf16_ex">将char类型转换为wchar_t类型。
+
+* 函数原型：
+
+```
+wchar_t* tk_utf8_to_utf16_ex (const char* str, uint32_t size, const wchar_t* out, uint32_t out_size);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | wchar\_t* | 值。 |
+| str | const char* | str。 |
+| size | uint32\_t | 缓冲区大小。 |
+| out | const wchar\_t* | 返回结果缓冲区。 |
+| out\_size | uint32\_t | 缓冲区大小。 |

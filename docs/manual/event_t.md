@@ -10,6 +10,7 @@
 | <a href="#event_t_event_cast">event\_cast</a> | 转换为event对象。 |
 | <a href="#event_t_event_create">event\_create</a> | 创建event对象。 |
 | <a href="#event_t_event_destroy">event\_destroy</a> | 销毁事件对象。 |
+| <a href="#event_t_event_get_type">event\_get\_type</a> | 获取event类型。 |
 | <a href="#event_t_event_init">event\_init</a> | 初始化事件。 |
 ### 属性
 <p id="event_t_properties">
@@ -82,6 +83,25 @@ ret_t event_destroy (event_t* event);
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| event | event\_t* | event对象。 |
+#### event\_get\_type 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="event_t_event_get_type">获取event类型。
+
+* 函数原型：
+
+```
+int event_get_type (event_t* event);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | int | 返回event类型。 |
 | event | event\_t* | event对象。 |
 #### event\_init 函数
 -----------------------

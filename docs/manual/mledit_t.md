@@ -33,15 +33,20 @@ time\_clock一般不需要设置style。
 | -------- | ------------ | 
 | <a href="#mledit_t_mledit_cast">mledit\_cast</a> | 转换为mledit对象(供脚本语言使用)。 |
 | <a href="#mledit_t_mledit_create">mledit\_create</a> | 创建mledit对象 |
+| <a href="#mledit_t_mledit_get_cursor">mledit\_get\_cursor</a> | 获取编辑器光标位置。 |
+| <a href="#mledit_t_mledit_get_selected_text">mledit\_get\_selected\_text</a> | 获取选中的文本。 |
+| <a href="#mledit_t_mledit_scroll_to_offset">mledit\_scroll\_to\_offset</a> | 设置编辑器滚动到指定偏移位置。 |
 | <a href="#mledit_t_mledit_set_cancelable">mledit\_set\_cancelable</a> | 设置编辑器是否为可撤销修改。 |
 | <a href="#mledit_t_mledit_set_close_im_when_blured">mledit\_set\_close\_im\_when\_blured</a> | 设置编辑器是否在失去焦点时关闭输入法。 |
 | <a href="#mledit_t_mledit_set_cursor">mledit\_set\_cursor</a> | 设置编辑器光标位置。 |
 | <a href="#mledit_t_mledit_set_focus">mledit\_set\_focus</a> | 设置为焦点。 |
 | <a href="#mledit_t_mledit_set_keyboard">mledit\_set\_keyboard</a> | 设置自定义软键盘名称。 |
+| <a href="#mledit_t_mledit_set_max_chars">mledit\_set\_max\_chars</a> | 设置编辑器的最大字符数（0 为不限制字符数）。 |
 | <a href="#mledit_t_mledit_set_max_lines">mledit\_set\_max\_lines</a> | 设置编辑器的最大行数。 |
 | <a href="#mledit_t_mledit_set_open_im_when_focused">mledit\_set\_open\_im\_when\_focused</a> | 设置编辑器是否在获得焦点时打开输入法。 |
 | <a href="#mledit_t_mledit_set_readonly">mledit\_set\_readonly</a> | 设置编辑器是否为只读。 |
 | <a href="#mledit_t_mledit_set_scroll_line">mledit\_set\_scroll\_line</a> | 设置编辑器滚动速度。 |
+| <a href="#mledit_t_mledit_set_select">mledit\_set\_select</a> | 选择编辑器中指定范围的文本。 |
 | <a href="#mledit_t_mledit_set_tips">mledit\_set\_tips</a> | 设置编辑器的输入提示。 |
 | <a href="#mledit_t_mledit_set_tr_tips">mledit\_set\_tr\_tips</a> | 获取翻译之后的文本，然后调用mledit_set_tips。 |
 | <a href="#mledit_t_mledit_set_wrap_word">mledit\_set\_wrap\_word</a> | 设置编辑器是否自动折行。 |
@@ -53,6 +58,7 @@ time\_clock一般不需要设置style。
 | <a href="#mledit_t_cancelable">cancelable</a> | bool\_t | 是否支持撤销编辑。如果为TRUE，在失去焦点之前可以撤销所有修改(恢复获得焦点之前的内容)。 |
 | <a href="#mledit_t_close_im_when_blured">close\_im\_when\_blured</a> | bool\_t | 是否在失去焦点时关闭输入法(默认是)。 |
 | <a href="#mledit_t_keyboard">keyboard</a> | char* | 自定义软键盘名称。 |
+| <a href="#mledit_t_max_chars">max\_chars</a> | uint32\_t | 最大字符数。 |
 | <a href="#mledit_t_max_lines">max\_lines</a> | uint32\_t | 最大行数。 |
 | <a href="#mledit_t_open_im_when_focused">open\_im\_when\_focused</a> | bool\_t | 获得焦点时打开输入法。 |
 | <a href="#mledit_t_readonly">readonly</a> | bool\_t | 编辑器是否为只读。 |
@@ -109,6 +115,65 @@ widget_t* mledit_create (widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
 | y | xy\_t | y坐标 |
 | w | wh\_t | 宽度 |
 | h | wh\_t | 高度 |
+#### mledit\_get\_cursor 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="mledit_t_mledit_get_cursor">获取编辑器光标位置。
+
+* 函数原型：
+
+```
+uint32_t mledit_get_cursor (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | uint32\_t | 返回光标位置。 |
+| widget | widget\_t* | widget对象。 |
+#### mledit\_get\_selected\_text 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="mledit_t_mledit_get_selected_text">获取选中的文本。
+使用完后需调用 TKMEM_FREE() 进行释放文本占有内存。
+
+* 函数原型：
+
+```
+char* mledit_get_selected_text (widget_t* widget);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | char* | 返回选中文本。 |
+| widget | widget\_t* | widget对象。 |
+#### mledit\_scroll\_to\_offset 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="mledit_t_mledit_scroll_to_offset">设置编辑器滚动到指定偏移位置。
+
+* 函数原型：
+
+```
+ret_t mledit_scroll_to_offset (widget_t* widget, uint32_t offset);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | widget对象。 |
+| offset | uint32\_t | 偏移位置。 |
 #### mledit\_set\_cancelable 函数
 -----------------------
 
@@ -209,6 +274,26 @@ ret_t mledit_set_keyboard (widget_t* widget, char* keyboard);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
 | keyboard | char* | 键盘名称(相应UI资源必须存在)。 |
+#### mledit\_set\_max\_chars 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="mledit_t_mledit_set_max_chars">设置编辑器的最大字符数（0 为不限制字符数）。
+
+* 函数原型：
+
+```
+ret_t mledit_set_max_chars (widget_t* widget, uint32_t max_chars);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | widget对象。 |
+| max\_chars | uint32\_t | 最大字符数。 |
 #### mledit\_set\_max\_lines 函数
 -----------------------
 
@@ -292,6 +377,27 @@ ret_t mledit_set_scroll_line (widget_t* widget, uint32_t scroll_line);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | widget对象。 |
 | scroll\_line | uint32\_t | 滚动行数。 |
+#### mledit\_set\_select 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="mledit_t_mledit_set_select">选择编辑器中指定范围的文本。
+
+* 函数原型：
+
+```
+ret_t mledit_set_select (widget_t* widget, uint32_t start, uint32_t end);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | widget对象。 |
+| start | uint32\_t | 起始偏移。 |
+| end | uint32\_t | 结束偏移。 |
 #### mledit\_set\_tips 函数
 -----------------------
 
@@ -392,6 +498,22 @@ ret_t mledit_set_wrap_word (widget_t* widget, bool_t wrap_word);
 > <p id="mledit_t_keyboard">自定义软键盘名称。
 
 * 类型：char*
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可持久化   | 是 |
+| 可脚本化   | 是 |
+| 可在IDE中设置 | 是 |
+| 可在XML中设置 | 是 |
+| 可通过widget\_get\_prop读取 | 是 |
+| 可通过widget\_set\_prop修改 | 是 |
+#### max\_chars 属性
+-----------------------
+> <p id="mledit_t_max_chars">最大字符数。
+
+* 类型：uint32\_t
 
 | 特性 | 是否支持 |
 | -------- | ----- |

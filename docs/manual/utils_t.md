@@ -48,6 +48,7 @@
 | <a href="#utils_t_tk_strncpy">tk\_strncpy</a> | 将src所指向的字符串复制到dst，最多复制len个字符串，并在[len]位置添加'\0'。 |
 | <a href="#utils_t_tk_strncpy_s">tk\_strncpy\_s</a> | 将src所指向的字符串复制到dst，最多复制min(dst_len-1, src_len)个字符串，并在[len]位置添加'\0'。 |
 | <a href="#utils_t_tk_strndup">tk\_strndup</a> | 字符串拷贝函数，最多复制len个字符串。 |
+| <a href="#utils_t_tk_strtoi">tk\_strtoi</a> | 将字符串转换为整型。 |
 | <a href="#utils_t_tk_strtol">tk\_strtol</a> | 将字符串转换为长整型。 |
 | <a href="#utils_t_tk_strtoll">tk\_strtoll</a> | 将字符串转换为长整型。 |
 | <a href="#utils_t_tk_under_score_to_camel">tk\_under\_score\_to\_camel</a> | 将下划线名字转成驼峰名字。 |
@@ -291,14 +292,14 @@ double tk_atof (const char* str);
 * 函数原型：
 
 ```
-int tk_atoi (const char* str);
+int32_t tk_atoi (const char* str);
 ```
 
 * 参数说明：
 
 | 参数 | 类型 | 说明 |
 | -------- | ----- | --------- |
-| 返回值 | int | 返回转换后的整型。 |
+| 返回值 | int32\_t | 返回转换后的整型。 |
 | str | const char* | 要转换为整型数的字符串。 |
 #### tk\_atol 函数
 -----------------------
@@ -891,6 +892,27 @@ char* tk_strndup (const char* str, uint32_t len);
 | 返回值 | char* | 返回指向的复制字符串指针，如果失败则返回NULL。 |
 | str | const char* | 原字符串。 |
 | len | uint32\_t | 要复制的字符串个数。 |
+#### tk\_strtoi 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="utils_t_tk_strtoi">将字符串转换为整型。
+
+* 函数原型：
+
+```
+int32_t tk_strtoi (const char* str, const char** end, int base);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | int32\_t | 返回转换后的整型。 |
+| str | const char* | 要转换为整型的字符串。 |
+| end | const char** | 对类型char*的对象的引用。 |
+| base | int | 基数。 |
 #### tk\_strtol 函数
 -----------------------
 

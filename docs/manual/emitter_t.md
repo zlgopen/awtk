@@ -164,7 +164,7 @@ ret_t emitter_dispatch (emitter_t* emitter, event_t* e);
 * 函数原型：
 
 ```
-ret_t emitter_dispatch_simple_event (emitter_t* emitter, event_type_t type);
+ret_t emitter_dispatch_simple_event (emitter_t* emitter, uint32_t type);
 ```
 
 * 参数说明：
@@ -173,7 +173,7 @@ ret_t emitter_dispatch_simple_event (emitter_t* emitter, event_type_t type);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t |  |
 | emitter | emitter\_t* | emitter对象。 |
-| type | event\_type\_t | 事件类型。 |
+| type | uint32\_t | 事件类型。 |
 #### emitter\_enable 函数
 -----------------------
 

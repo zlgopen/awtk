@@ -68,6 +68,14 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L3
 | <a href="#slide_indicator_t_size">size</a> | uint32\_t | 指示器的大小。 |
 | <a href="#slide_indicator_t_spacing">spacing</a> | float\_t | 指示器的中心之间的间距（圆弧显示时，间距的单位为弧度，否则为像素）。 |
 | <a href="#slide_indicator_t_value">value</a> | uint32\_t | 值(缺省为0)。 |
+### 事件
+<p id="slide_indicator_t_events">
+
+| 事件名称 | 类型  | 说明 | 
+| -------- | ----- | ------- | 
+| EVT\_VALUE\_WILL\_CHANGE | event\_t | 值(当前页的序号)即将改变事件。 |
+| EVT\_VALUE\_CHANGED | event\_t | 值(当前页的序号)改变事件。 |
+| EVT\_PAGE\_CHANGED | event\_t | 页面改变事件。 |
 #### slide\_indicator\_cast 函数
 -----------------------
 

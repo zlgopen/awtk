@@ -9,6 +9,7 @@
 | -------- | ------------ | 
 | <a href="#timer_manager_t_timer_manager">timer\_manager</a> | 获取缺省的定时器管理器。 |
 | <a href="#timer_manager_t_timer_manager_add">timer\_manager\_add</a> | 添加定时器。 |
+| <a href="#timer_manager_t_timer_manager_all_remove_by_ctx">timer\_manager\_all\_remove\_by\_ctx</a> | 根据上下文删除所有对应的定时器。 |
 | <a href="#timer_manager_t_timer_manager_append">timer\_manager\_append</a> | 追加定时器。 |
 | <a href="#timer_manager_t_timer_manager_count">timer\_manager\_count</a> | 返回定时器的个数。 |
 | <a href="#timer_manager_t_timer_manager_create">timer\_manager\_create</a> | 创建定时器管理器。 |
@@ -60,6 +61,26 @@ uint32_t timer_manager_add (timer_manager_t* timer_manager, timer_func_t* on_tim
 | on\_timer | timer\_func\_t* | timer回调函数。 |
 | ctx | void* | timer回调函数的上下文。 |
 | duration | uint32\_t | 时间。 |
+#### timer\_manager\_all\_remove\_by\_ctx 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="timer_manager_t_timer_manager_all_remove_by_ctx">根据上下文删除所有对应的定时器。
+
+* 函数原型：
+
+```
+ret_t timer_manager_all_remove_by_ctx (timer_manager_t* timer_manager, void* ctx);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| timer\_manager | timer\_manager\_t* | 定时器管理器对象。 |
+| ctx | void* | timer回调函数的上下文。 |
 #### timer\_manager\_append 函数
 -----------------------
 

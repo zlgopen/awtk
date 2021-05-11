@@ -55,6 +55,12 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L3
 | -------- | ------------ | 
 | <a href="#list_item_t_list_item_cast">list\_item\_cast</a> | 转换为list_item对象(供脚本语言使用)。 |
 | <a href="#list_item_t_list_item_create">list\_item\_create</a> | 创建list_item对象 |
+### 事件
+<p id="list_item_t_events">
+
+| 事件名称 | 类型  | 说明 | 
+| -------- | ----- | ------- | 
+| EVT\_CLICK | pointer\_event\_t | 点击事件。 |
 #### list\_item\_cast 函数
 -----------------------
 

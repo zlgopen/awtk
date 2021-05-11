@@ -16,6 +16,8 @@
 | <a href="#fscript_t_fscript_global_init">fscript\_global\_init</a> | 全局初始化。 |
 | <a href="#fscript_t_fscript_register_func">fscript\_register\_func</a> | 注册全局自定义函数。 |
 | <a href="#fscript_t_fscript_set_error">fscript\_set\_error</a> | 用于扩展函数设置遇到的错误。 |
+| <a href="#fscript_t_fscript_syntax_check">fscript\_syntax\_check</a> | 解析代码，分析是否有语法错误。 |
+| <a href="#fscript_t_tk_expr_eval">tk\_expr\_eval</a> | 对fscript的简单包装。 |
 ### 属性
 <p id="fscript_t_properties">
 
@@ -182,6 +184,53 @@ ret_t fscript_set_error (fscript_t* fscript, ret_t code, const char* func, const
 | code | ret\_t | 错误码。 |
 | func | const char* | 函数名。 |
 | message | const char* | 错误消息。 |
+#### fscript\_syntax\_check 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="fscript_t_fscript_syntax_check">解析代码，分析是否有语法错误。
+
+示例：
+```c
+fscript_parser_error_t error;
+fscript_syntax_check(obj, "1+1", &error);
+fscript_parser_error_deinit(&error);
+```
+
+* 函数原型：
+
+```
+ret_t fscript_syntax_check (object_t* obj, const char* script, fscript_parser_error_t* error);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| obj | object\_t* | 脚本执行上下文。 |
+| script | const char* | 脚本代码。 |
+| error | fscript\_parser\_error\_t* | 用于返回错误信息。 |
+#### tk\_expr\_eval 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="fscript_t_tk_expr_eval">对fscript的简单包装。
+
+* 函数原型：
+
+```
+double tk_expr_eval (const char* expr);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | double | 返回表达式的值。 |
+| expr | const char* | 表达式。 |
 #### fast\_vars 属性
 -----------------------
 > <p id="fscript_t_fast_vars">快速访问变量。在脚本可以用a/b/c/d来访问，需要优化时使用。

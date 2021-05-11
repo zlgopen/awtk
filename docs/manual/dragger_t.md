@@ -23,6 +23,14 @@ dragger控件。
 | <a href="#dragger_t_x_min">x\_min</a> | xy\_t | x坐标的最小值。 |
 | <a href="#dragger_t_y_max">y\_max</a> | xy\_t | y坐标的最大值。 |
 | <a href="#dragger_t_y_min">y\_min</a> | xy\_t | y坐标的最小值。 |
+### 事件
+<p id="dragger_t_events">
+
+| 事件名称 | 类型  | 说明 | 
+| -------- | ----- | ------- | 
+| EVT\_DRAG\_START | event\_t | 开始拖动事件。 |
+| EVT\_DRAG | event\_t | 拖动事件。 |
+| EVT\_DRAG\_END | event\_t | 结束拖动事件。 |
 #### dragger\_cast 函数
 -----------------------
 

@@ -7,6 +7,7 @@
 | 名称 | 说明 | 
 | -------- | ------- | 
 | WINDOW\_STAGE\_NONE | 初始状态。 |
+| WINDOW\_STAGE\_LOADED | 从UI资源加载完成。 |
 | WINDOW\_STAGE\_CREATED | 创建完成。 |
 | WINDOW\_STAGE\_OPENED | 窗口已经打开(窗口打开动画完成后) |
 | WINDOW\_STAGE\_CLOSED | 窗口已关闭。 |

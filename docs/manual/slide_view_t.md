@@ -76,6 +76,7 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L4
 | -------- | ----- | ------- | 
 | EVT\_VALUE\_WILL\_CHANGE | event\_t | 值(当前页)即将改变事件。 |
 | EVT\_VALUE\_CHANGED | event\_t | 值(当前页)改变事件。 |
+| EVT\_PAGE\_CHANGED | event\_t | 页面改变事件。 |
 #### slide\_view\_cast 函数
 -----------------------
 

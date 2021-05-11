@@ -18,6 +18,7 @@
 | <a href="#path_t_path_extname">path\_extname</a> | 返回文件扩展名。 |
 | <a href="#path_t_path_is_abs">path\_is\_abs</a> | 判断路径是否为绝对路径。 |
 | <a href="#path_t_path_normalize">path\_normalize</a> | 规范路径字符形式。 |
+| <a href="#path_t_path_remove_last_slash">path\_remove\_last\_slash</a> | 去掉后面的/和\\字符。 |
 | <a href="#path_t_path_replace_basename">path\_replace\_basename</a> | 替换文件名。 |
 | <a href="#path_t_path_replace_extname">path\_replace\_extname</a> | 替换文件扩展名。 |
 #### path\_abs 函数
@@ -242,6 +243,25 @@ ret_t path_normalize (const char* path* path, char* result, uint32_t size);
 | path | const char* path* | 路径。 |
 | result | char* | 用于返回规范后的路径。 |
 | size | uint32\_t | 缓冲区大小。 |
+#### path\_remove\_last\_slash 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="path_t_path_remove_last_slash">去掉后面的/和\\字符。
+
+* 函数原型：
+
+```
+ret_t path_remove_last_slash (const char* path);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| path | const char* | 目录。 |
 #### path\_replace\_basename 函数
 -----------------------
 

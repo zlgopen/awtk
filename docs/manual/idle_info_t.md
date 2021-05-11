@@ -16,6 +16,7 @@
 | 属性名称 | 类型 | 说明 | 
 | -------- | ----- | ------------ | 
 | <a href="#idle_info_t_ctx">ctx</a> | void* | idle回调函数上下文。 |
+| <a href="#idle_info_t_extra_ctx">extra\_ctx</a> | void* | idle回调函数上下文。 |
 | <a href="#idle_info_t_id">id</a> | uint32\_t | idle的ID |
 | <a href="#idle_info_t_on_destroy">on\_destroy</a> | tk\_destroy\_t | idle销毁时的回调函数。 |
 | <a href="#idle_info_t_on_destroy_ctx">on\_destroy\_ctx</a> | tk\_destroy\_t | idle销毁时的回调函数的上下文。 |
@@ -42,6 +43,17 @@ idle_info_t* idle_info_cast (idle_info_t* idle);
 #### ctx 属性
 -----------------------
 > <p id="idle_info_t_ctx">idle回调函数上下文。
+
+* 类型：void*
+
+| 特性 | 是否支持 |
+| -------- | ----- |
+| 可直接读取 | 是 |
+| 可直接修改 | 否 |
+| 可脚本化   | 是 |
+#### extra\_ctx 属性
+-----------------------
+> <p id="idle_info_t_extra_ctx">idle回调函数上下文。
 
 * 类型：void*
 

@@ -18,6 +18,7 @@ idle_manager_t管理器。
 | <a href="#idle_manager_t_idle_manager_init">idle\_manager\_init</a> | 初始化idle_manager_t管理器。 |
 | <a href="#idle_manager_t_idle_manager_remove">idle\_manager\_remove</a> | 根据idle_id删除idle。 |
 | <a href="#idle_manager_t_idle_manager_remove_all">idle\_manager\_remove\_all</a> | 删除全部idle。 |
+| <a href="#idle_manager_t_idle_manager_remove_all">idle\_manager\_remove\_all</a> | 根据上下文删除所有符合条件的idle。 |
 | <a href="#idle_manager_t_idle_manager_set">idle\_manager\_set</a> | 设置缺省的idle_manager_t管理器。 |
 #### idle\_manager 函数
 -----------------------
@@ -231,6 +232,26 @@ ret_t idle_manager_remove_all (idle_manager_t* idle_manager);
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | idle\_manager | idle\_manager\_t* | idle\_manager\_t管理器对象。 |
+#### idle\_manager\_remove\_all 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="idle_manager_t_idle_manager_remove_all">根据上下文删除所有符合条件的idle。
+
+* 函数原型：
+
+```
+ret_t idle_manager_remove_all (idle_manager_t* idle_manager, void* ctx);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| idle\_manager | idle\_manager\_t* | idle\_manager\_t管理器对象。 |
+| ctx | void* | idle回调函数的上下文。 |
 #### idle\_manager\_set 函数
 -----------------------
 

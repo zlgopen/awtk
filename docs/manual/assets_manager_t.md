@@ -42,6 +42,7 @@ ui      UI描述数据。
 | <a href="#assets_manager_t_assets_manager_add_data">assets\_manager\_add\_data</a> | 向资源管理器中增加一个资源data。 |
 | <a href="#assets_manager_t_assets_manager_clear_all">assets\_manager\_clear\_all</a> | 清除全部缓存的资源。 |
 | <a href="#assets_manager_t_assets_manager_clear_cache">assets\_manager\_clear\_cache</a> | 清除指定类型的缓存。 |
+| <a href="#assets_manager_t_assets_manager_clear_cache_ex">assets\_manager\_clear\_cache\_ex</a> | 清除指定类型和名称的缓存。 |
 | <a href="#assets_manager_t_assets_manager_create">assets\_manager\_create</a> | 创建资源管理器。 |
 | <a href="#assets_manager_t_assets_manager_deinit">assets\_manager\_deinit</a> | 释放全部资源。 |
 | <a href="#assets_manager_t_assets_manager_destroy">assets\_manager\_destroy</a> | 释放全部资源并销毁asset manager对象。 |
@@ -164,6 +165,27 @@ ret_t assets_manager_clear_cache (assets_manager_t* am, asset_type_t type);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | am | assets\_manager\_t* | asset manager对象。 |
 | type | asset\_type\_t | 资源的类型。 |
+#### assets\_manager\_clear\_cache\_ex 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="assets_manager_t_assets_manager_clear_cache_ex">清除指定类型和名称的缓存。
+
+* 函数原型：
+
+```
+ret_t assets_manager_clear_cache_ex (assets_manager_t* am, asset_type_t type, const char* name);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| am | assets\_manager\_t* | asset manager对象。 |
+| type | asset\_type\_t | 资源的类型。 |
+| name | const char* | 资源的名称。 |
 #### assets\_manager\_create 函数
 -----------------------
 
@@ -292,7 +314,7 @@ assets_manager_t* assets_manager_init (assets_manager_t* am, uint32_t init_nr);
 * 函数原型：
 
 ```
-asset_info_t* assets_manager_load (assets_manager_t* am, asset_type_t type, char* name);
+asset_info_t* assets_manager_load (assets_manager_t* am, asset_type_t type, const char* name);
 ```
 
 * 参数说明：
@@ -302,7 +324,7 @@ asset_info_t* assets_manager_load (assets_manager_t* am, asset_type_t type, char
 | 返回值 | asset\_info\_t* | 返回资源。 |
 | am | assets\_manager\_t* | asset manager对象。 |
 | type | asset\_type\_t | 资源的类型。 |
-| name | char* | 资源的名称。 |
+| name | const char* | 资源的名称。 |
 #### assets\_manager\_load\_ex 函数
 -----------------------
 

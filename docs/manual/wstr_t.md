@@ -40,6 +40,7 @@ wstr_reset(&s);
 | <a href="#wstr_t_wstr_reset">wstr\_reset</a> | 重置字符串为空。 |
 | <a href="#wstr_t_wstr_set">wstr\_set</a> | 设置字符串。 |
 | <a href="#wstr_t_wstr_set_utf8">wstr\_set\_utf8</a> | 设置UTF8字符串。 |
+| <a href="#wstr_t_wstr_set_utf8_with_len">wstr\_set\_utf8\_with\_len</a> | 设置UTF8字符串。 |
 | <a href="#wstr_t_wstr_to_float">wstr\_to\_float</a> | 将字符串转成浮点数。 |
 | <a href="#wstr_t_wstr_to_int">wstr\_to\_int</a> | 将字符串转成整数。 |
 | <a href="#wstr_t_wstr_trim_float_zero">wstr\_trim\_float\_zero</a> | 去掉浮点数小数点尾部的零。 |
@@ -454,6 +455,27 @@ ret_t wstr_set_utf8 (wstr_t* str, char* text);
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | str | wstr\_t* | str对象。 |
 | text | char* | 要设置的字符串。 |
+#### wstr\_set\_utf8\_with\_len 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="wstr_t_wstr_set_utf8_with_len">设置UTF8字符串。
+
+* 函数原型：
+
+```
+ret_t wstr_set_utf8_with_len (wstr_t* str, char* text, uint32_t len);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| str | wstr\_t* | str对象。 |
+| text | char* | 要设置的字符串。 |
+| len | uint32\_t | 长度。 |
 #### wstr\_to\_float 函数
 -----------------------
 

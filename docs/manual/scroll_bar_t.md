@@ -64,6 +64,13 @@ https://github.com/zlgopen/awtk/blob/master/design/default/styles/default.xml#L3
 | <a href="#scroll_bar_t_row">row</a> | int32\_t | 行的高度。 |
 | <a href="#scroll_bar_t_value">value</a> | int32\_t | 当前的值。 |
 | <a href="#scroll_bar_t_virtual_size">virtual\_size</a> | int32\_t | 虚拟宽度或高度。 |
+### 事件
+<p id="scroll_bar_t_events">
+
+| 事件名称 | 类型  | 说明 | 
+| -------- | ----- | ------- | 
+| EVT\_VALUE\_WILL\_CHANGE | event\_t | 值(滚动值)即将改变事件。 |
+| EVT\_VALUE\_CHANGED | event\_t | 值(滚动值)改变事件。 |
 #### scroll\_bar\_add\_delta 函数
 -----------------------
 

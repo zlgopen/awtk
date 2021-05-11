@@ -49,6 +49,7 @@ https://github.com/zlgopen/awtk-c-demos/blob/master/demos/mutable_image.c)
 | <a href="#mutable_image_t_mutable_image_on_paint_self">mutable\_image\_on\_paint\_self</a> | mutable_image 的绘制函数 （提供给继承的子类使用的） |
 | <a href="#mutable_image_t_mutable_image_set_create_image">mutable\_image\_set\_create\_image</a> | 设置create_image回调函数。 |
 | <a href="#mutable_image_t_mutable_image_set_framebuffer">mutable\_image\_set\_framebuffer</a> | 设置framebuffer(当硬件支持多层合成时才用)。 |
+| <a href="#mutable_image_t_mutable_image_set_need_redraw">mutable\_image\_set\_need\_redraw</a> | 设置need_redraw回调函数。 |
 | <a href="#mutable_image_t_mutable_image_set_prepare_image">mutable\_image\_set\_prepare\_image</a> | 设置prepare_image回调函数。 |
 #### mutable\_image\_cast 函数
 -----------------------
@@ -197,6 +198,29 @@ ret_t mutable_image_set_framebuffer (widget_t* widget, uint32_t w, uint32_t h, b
 | h | uint32\_t | framebuffer高度。 |
 | format | bitmap\_format\_t | framebuffer的格式。 |
 | buff | uint8\_t* | framebuffer内存。 |
+#### mutable\_image\_set\_need\_redraw 函数
+-----------------------
+
+* 函数功能：
+
+> <p id="mutable_image_t_mutable_image_set_need_redraw">设置need_redraw回调函数。
+
+缺省每16ms刷新一次。但有时只是在变化时刷新，所以提供一个回调函数由用户决定是否需要重绘。
+
+* 函数原型：
+
+```
+ret_t mutable_image_set_need_redraw (widget_t* widget, mutable_image_need_redraw_t need_redraw, void* need_redraw_ctx);
+```
+
+* 参数说明：
+
+| 参数 | 类型 | 说明 |
+| -------- | ----- | --------- |
+| 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
+| widget | widget\_t* | mutable\_image对象。 |
+| need\_redraw | mutable\_image\_need\_redraw\_t | 检查是否需要重绘的回调函数。 |
+| need\_redraw\_ctx | void* | need\_redraw回调函数的上下文。 |
 #### mutable\_image\_set\_prepare\_image 函数
 -----------------------
 

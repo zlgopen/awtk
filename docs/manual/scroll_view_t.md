@@ -78,6 +78,7 @@ widget_t* scroll_view = scroll_view_create(win, 0, 0, 0, 0);
 | EVT\_SCROLL\_START | event\_t | 开始滚动事件。 |
 | EVT\_SCROLL\_END | event\_t | 结束滚动事件。 |
 | EVT\_SCROLL | event\_t | 滚动事件。 |
+| EVT\_PAGE\_CHANGED | event\_t | 页面改变事件。 |
 #### scroll\_view\_cast 函数
 -----------------------
 
