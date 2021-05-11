@@ -4,6 +4,7 @@
   * 完善dialog\_helper。
   * 完善WINDOW\_CLOSABLE\_CONFIRM的处理。
   * 增加widget\_back/widget\_back\_to\_home。
+  * 完善定时关闭的popup: 有用户操作后重新开始计时。
   * 为了避免歧义，将styles资源名称由“主题”改为“窗体样式”（感谢雨欣提供补丁)。
 
 2021/05/08

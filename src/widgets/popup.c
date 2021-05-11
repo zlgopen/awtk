@@ -82,6 +82,17 @@ static ret_t popup_idle_window_close(const idle_info_t* idle) {
   return RET_REMOVE;
 }
 
+static ret_t popup_update_close_timer(widget_t* widget) {
+  popup_t* popup = POPUP(widget);
+  return_value_if_fail(popup && widget != NULL, RET_BAD_PARAMS);
+
+  if (popup->timer_id != TK_INVALID_ID && popup->close_when_timeout > 0) {
+    timer_modify(popup->timer_id, popup->close_when_timeout);
+  }
+
+  return RET_OK;
+}
+
 static ret_t popup_on_event(widget_t* widget, event_t* e) {
   uint16_t type = e->type;
   popup_t* popup = POPUP(widget);
@@ -123,6 +134,19 @@ static ret_t popup_on_event(widget_t* widget, event_t* e) {
         }
       }
 
+      break;
+    }
+    default:
+      break;
+  }
+
+  switch (type) {
+    case EVT_POINTER_DOWN:
+    case EVT_POINTER_MOVE:
+    case EVT_POINTER_UP:
+    case EVT_KEY_DOWN:
+    case EVT_KEY_UP: {
+      popup_update_close_timer(widget);
       break;
     }
     default:
