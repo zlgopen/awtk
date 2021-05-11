@@ -743,6 +743,26 @@ int32_t widget_index_of(widget_t* widget);
 ret_t widget_close_window(widget_t* widget);
 
 /**
+ * @method widget_back
+ * 请求返回到前一个窗口。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_back(widget_t* widget);
+
+/**
+ * @method widget_back_to_home
+ * 请求返回到home窗口。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget widget对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_back_to_home(widget_t* widget);
+
+/**
  * @method widget_move
  * 移动控件。
  * @annotation ["scriptable"]

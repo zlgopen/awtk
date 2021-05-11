@@ -4327,6 +4327,20 @@ ret_t widget_close_window(widget_t* widget) {
   return window_manager_close_window(win->parent, win);
 }
 
+ret_t widget_back(widget_t* widget) {
+  widget_t* wm = widget_get_window_manager(widget);
+  return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
+
+  return window_manager_back(wm);
+}
+
+ret_t widget_back_to_home(widget_t* widget) {
+  widget_t* wm = widget_get_window_manager(widget);
+  return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
+
+  return window_manager_back_to_home(wm);
+}
+
 #if defined(FRAGMENT_FRAME_BUFFER_SIZE)
 bitmap_t* widget_take_snapshot_rect(widget_t* widget, const rect_t* r) {
   log_warn("not supported yet\n");
