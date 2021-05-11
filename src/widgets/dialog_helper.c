@@ -119,6 +119,7 @@ ret_t dialog_simple_show(const char* stitle, const char* scontent, const char* t
   widget_set_prop_str(widget, WIDGET_PROP_THEME, theme);
   widget_set_prop_str(widget, WIDGET_PROP_HIGHLIGHT, "default(alpha=40)");
 
+  widget_set_text_utf8(dialog, stitle);
   title = dialog_title_create(widget, 0, 0, 0, 0);
   goto_error_if_fail(title != NULL);
 
