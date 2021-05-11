@@ -33,7 +33,7 @@ image_set_draw_type(img, IMAGE_DRAW_CENTER);
 </window>
 ```
 
-## 四、在主题中使用(适用于所有控件的背景)
+## 四、在窗体样式中使用(适用于所有控件的背景)
 
 ```
 <progress_bar>

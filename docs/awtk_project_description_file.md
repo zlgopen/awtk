@@ -97,7 +97,7 @@ type 是可选的，表示项目类型，缺省为“PROJECT_WIDGETS_APPLICATION
 
 * PROJECT_CUSTOM_WIDGET 表示自定义控件库，可导入 Designer，安装到项目后可以像内置控件一样编辑并实时预览显示效果；
 
-* ROJECT_THEME 表示应用程序主题，可导入 Designer 并应用到不同的项目；
+* PROJECT_THEME 表示应用程序主题，可导入 Designer 并应用到不同的项目；
 
 * PROJECT_UI_SNIPPET 表示界面片段，可导入 Designer 并应用到不同的项目。
 

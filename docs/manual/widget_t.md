@@ -108,7 +108,7 @@ widget_on(button, EVT_CLICK, on_click, NULL);
 | <a href="#widget_t_widget_get_value">widget\_get\_value</a> | 获取控件的值。只是对widget\_get\_prop的包装，值的意义由子类控件决定。 |
 | <a href="#widget_t_widget_get_window">widget\_get\_window</a> | 获取当前控件所在的窗口。 |
 | <a href="#widget_t_widget_get_window_manager">widget\_get\_window\_manager</a> | 获取当前的窗口管理器。 |
-| <a href="#widget_t_widget_get_window_theme">widget\_get\_window\_theme</a> | 获取控件的窗口主题 |
+| <a href="#widget_t_widget_get_window_theme">widget\_get\_window\_theme</a> | 获取控件的窗口窗体样式 |
 | <a href="#widget_t_widget_grab">widget\_grab</a> | 让指定子控件抓住事件。 |
 | <a href="#widget_t_widget_index_of">widget\_index\_of</a> | 获取控件在父控件中的索引编号。 |
 | <a href="#widget_t_widget_init">widget\_init</a> | 初始化控件。仅在子类控件构造函数中使用。 |
@@ -1524,7 +1524,7 @@ widget_t* widget_get_window_manager (widget_t* widget);
 
 * 函数功能：
 
-> <p id="widget_t_widget_get_window_theme">获取控件的窗口主题
+> <p id="widget_t_widget_get_window_theme">获取控件的窗口窗体样式
 
 * 函数原型：
 
@@ -1538,8 +1538,8 @@ ret_t widget_get_window_theme (widget_t* widget, theme_t** win_theme, theme_t** 
 | -------- | ----- | --------- |
 | 返回值 | ret\_t | 返回RET\_OK表示成功，否则表示失败。 |
 | widget | widget\_t* | 控件对象。 |
-| win\_theme | theme\_t** | 返回窗口主题。 |
-| default\_theme | theme\_t** | 返回全局默认主题。 |
+| win\_theme | theme\_t** | 返回窗口窗体样式。 |
+| default\_theme | theme\_t** | 返回全局默认窗体样式。 |
 #### widget\_grab 函数
 -----------------------
 

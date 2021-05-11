@@ -625,7 +625,7 @@ BEGIN_C_DECLS
 
 /**
  * @const WIDGET_PROP_THEME
- * 窗口主题名称。
+ * 窗体样式名称。
  */
 #define WIDGET_PROP_THEME "theme"
 
@@ -661,13 +661,13 @@ BEGIN_C_DECLS
 
 /**
  * @const WIDGET_PROP_THEME_OBJ
- * 窗口的主题对象。
+ * 窗口的窗体样式对象。
  */
 #define WIDGET_PROP_THEME_OBJ "theme_obj"
 
 /**
  * @const WIDGET_PROP_DEFAULT_THEME_OBJ
- * 缺省的主题对象。
+ * 缺省的窗体样式对象。
  */
 #define WIDGET_PROP_DEFAULT_THEME_OBJ "default_theme_obj"
 

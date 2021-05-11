@@ -88,7 +88,7 @@ demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/combo_box.c)
 </combo_box>
 ```
 
-* 1.combobox的下拉按钮的style名称为combobox_down，可以在主题文件中设置。
+* 1.combobox的下拉按钮的style名称为combobox_down，可以在窗体样式文件中设置。
 
 ```xml
 <button>
@@ -100,7 +100,7 @@ demo](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/combo_box.c)
 </button>
 ```
 
-* 2.combobox的弹出popup窗口的style名称为combobox_popup，可以在主题文件中设置。
+* 2.combobox的弹出popup窗口的style名称为combobox_popup，可以在窗体样式文件中设置。
 
 ```xml
 <popup>

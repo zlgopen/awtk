@@ -850,10 +850,10 @@ ret_t widget_set_text(widget_t* widget, const wchar_t* text);
 
 /**
  * @method widget_get_window_theme
- * 获取控件的窗口主题
+ * 获取控件的窗体样式。
  * @param {widget_t*} widget 控件对象。
- * @param {theme_t**}  win_theme 返回窗口主题。
- * @param {theme_t**}  default_theme 返回全局默认主题。
+ * @param {theme_t**}  win_theme 返回窗体样式。
+ * @param {theme_t**}  default_theme 返回全局默认窗体样式。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

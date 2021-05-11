@@ -18,7 +18,7 @@ python ./scripts/update_res.py all x1 bgra+bgr565
 * font 仅生成有变化的字体资源。
 * image 仅生成有变化的图像资源。
 * ui 仅生成有变化的UI资源。
-* style 仅生成有变化的主题资源。
+* style 仅生成有变化的窗体样式资源。
 * string 仅生成有变化的字符串资源。
 
 > 除非你清楚你在做什么，指定第一个参数就可以了。

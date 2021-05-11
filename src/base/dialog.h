@@ -330,7 +330,7 @@ bool_t dialog_is_modal(widget_t* widget);
  * @method dialog_toast
  * 显示『短暂提示信息』对话框。
  *
- * 主题由dialog_toast.xml文件决定。
+ * 窗体样式由dialog_toast.xml文件决定。
  *
  * @annotation ["static", "scriptable"]
  * @param {const char*} text 文本内容。
@@ -344,7 +344,7 @@ ret_t dialog_toast(const char* text, uint32_t duration);
  * @method dialog_info
  * 显示『提示信息』对话框。
  *
- * 主题由dialog_info.xml文件决定。
+ * 窗体样式由dialog_info.xml文件决定。
  *
  * @annotation ["static", "scriptable"]
  * @param {const char*} title 标题。
@@ -358,7 +358,7 @@ ret_t dialog_info(const char* title, const char* text);
  * @method dialog_warn
  * 显示『警告』对话框。
  *
- * 主题由dialog_warn.xml文件决定。
+ * 窗体样式由dialog_warn.xml文件决定。
  *
  * @annotation ["static", "scriptable"]
  * @param {const char*} title 标题。
@@ -372,7 +372,7 @@ ret_t dialog_warn(const char* title, const char* text);
  * @method dialog_confirm
  * 显示『确认』对话框。
  *
- * 主题由dialog_confirm.xml文件决定。
+ * 窗体样式由dialog_confirm.xml文件决定。
  *
  * @annotation ["static", "scriptable"]
  * @param {const char*} title 标题。

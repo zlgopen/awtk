@@ -137,12 +137,12 @@
 
 * [locale\_info](manual/locale_info_t.md) 本地化信息。
 
-#### 4. 主题
+#### 4. 窗体样式
 
 ![style\_overview](images/style_overview.png)
 
 * [style](manual/style_t.md) style 接口。
-* [theme](manual/theme_t.md) 常量主题数据。
+* [theme](manual/theme_t.md) 常量窗体样式数据。
 * [style\_factory](manual/style_factory_t.md) style 工厂。
 * [style\_const](manual/style_const_t.md) 只读的 style。
 * [style\_mutable](manual/style_mutable_t.md) 可修改的 style。

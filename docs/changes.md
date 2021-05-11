@@ -1,9 +1,10 @@
 # 最新动态
 
 2021/05/11
-  * 增加widget\_back/widget\_back\_to\_home。
-  * 完善WINDOW\_CLOSABLE\_CONFIRM的处理。
   * 完善dialog\_helper。
+  * 完善WINDOW\_CLOSABLE\_CONFIRM的处理。
+  * 增加widget\_back/widget\_back\_to\_home。
+  * 为了避免歧义，将styles资源名称由“主题”改为“窗体样式”（感谢雨欣提供补丁)。
 
 2021/05/08
   * 重构popup和相关测试。

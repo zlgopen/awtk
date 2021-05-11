@@ -52,8 +52,8 @@
 | <a href="#window_base_t_open_anim_hint">open\_anim\_hint</a> | char* | 打开窗口动画的名称。 |
 | <a href="#window_base_t_single_instance">single\_instance</a> | bool\_t | 单例。如果窗口存在，先关闭再打开。 |
 | <a href="#window_base_t_stage">stage</a> | char* | 窗口当前处于的状态。 |
-| <a href="#window_base_t_theme">theme</a> | char* | 主题资源的名称。 |
-| <a href="#window_base_t_theme_obj">theme\_obj</a> | theme\_t* | 窗口的常量主题数据。 |
+| <a href="#window_base_t_theme">theme</a> | char* | 窗体样式资源的名称。 |
+| <a href="#window_base_t_theme_obj">theme\_obj</a> | theme\_t* | 窗口的常量窗体样式数据。 |
 ### 事件
 <p id="window_base_t_events">
 
@@ -617,10 +617,10 @@ ret_t window_base_set_prop (widget_t* widget, const char* name, const value_t* v
 | 可通过widget\_get\_prop读取 | 是 |
 #### theme 属性
 -----------------------
-> <p id="window_base_t_theme">主题资源的名称。
-每个窗口都可以有独立的主题文件，如果没指定，则使用系统缺省的主题文件。
-主题是一个XML文件，放在assets/raw/styles目录下。
-请参考[主题](https://github.com/zlgopen/awtk/blob/master/docs/theme.md)
+> <p id="window_base_t_theme">窗体样式资源的名称。
+每个窗口都可以有独立的窗体样式文件，如果没指定，则使用系统缺省的窗体样式文件。
+窗体样式是一个XML文件，放在assets/raw/styles目录下。
+请参考[窗体样式](https://github.com/zlgopen/awtk/blob/master/docs/theme.md)
 
 * 类型：char*
 
@@ -636,10 +636,10 @@ ret_t window_base_set_prop (widget_t* widget, const char* name, const value_t* v
 | 可通过widget\_set\_prop修改 | 是 |
 #### theme\_obj 属性
 -----------------------
-> <p id="window_base_t_theme_obj">窗口的常量主题数据。
+> <p id="window_base_t_theme_obj">窗口的常量窗体样式数据。
 
 >
-把主题管理器对象与窗口关联起来，是为了解决UI设计器与被设计的窗口需要从不同的位置加载主题资源的问题。
+把窗体样式管理器对象与窗口关联起来，是为了解决UI设计器与被设计的窗口需要从不同的位置加载窗体样式资源的问题。
 
 * 类型：theme\_t*
 

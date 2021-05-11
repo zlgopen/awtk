@@ -57,7 +57,7 @@ typedef enum _asset_type_t {
 
   /**
    * @const ASSET_TYPE_STYLE
-   * 主题资源。
+   * 窗体样式资源。
    */
   ASSET_TYPE_STYLE,
 

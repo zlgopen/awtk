@@ -10,7 +10,7 @@ overlay窗口有点类似于非模态的dialog，但是它位置和大小是完�
 
 overlay\_t是[window\_base\_t](window_base_t.md)的子类控件，window\_base\_t的函数均适用于overlay\_t控件。
 
-在xml中使用"overlay"标签创建窗口。需要指定坐标和大小，可以指定主题和动画名称。如：
+在xml中使用"overlay"标签创建窗口。需要指定坐标和大小，可以指定窗体样式和动画名称。如：
 
 ```xml
 <overlay theme="basic" x="100" y="100" w="200" h="300">

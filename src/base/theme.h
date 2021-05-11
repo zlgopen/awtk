@@ -42,9 +42,9 @@ typedef const char* (*theme_get_style_type_t)(theme_t* theme);
 /**
  * @class theme_t
  * @annotation ["scriptable"]
- * 主题。
+ * 窗体样式。
  *
- * 负责管理缺省的主题数据，方便实现style\_const。
+ * 负责管理缺省的窗体样式数据，方便实现style\_const。
  *
  */
 struct _theme_t {
@@ -59,17 +59,17 @@ struct _theme_t {
 
 /**
  * @method theme
- * 获取缺省的主题对象。
+ * 获取缺省的窗体样式对象。
  * @alias theme_instance
  * @annotation ["constructor", "scriptable"]
- * @return {theme_t*} 返回主题对象。
+ * @return {theme_t*} 返回窗体样式对象。
  */
 theme_t* theme(void);
 
 /**
  * @method theme_set
- * 设置缺省的主题对象。
- * @param {theme_t*} theme 主题对象。
+ * 设置缺省的窗体样式对象。
+ * @param {theme_t*} theme 窗体样式对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -77,18 +77,18 @@ ret_t theme_set(theme_t* theme);
 
 /**
  * @method theme_default_create
- * 创建主题对象。
+ * 创建窗体样式对象。
  * @annotation ["constructor"]
- * @param {const uint8_t*} data 主题数据。
+ * @param {const uint8_t*} data 窗体样式数据。
  *
- * @return {theme_t*} 返回主题对象。
+ * @return {theme_t*} 返回窗体样式对象。
  */
 theme_t* theme_default_create(const uint8_t* data);
 
 /**
  * @method theme_find_style
  * 查找满足条件的style。
- * @param {theme_t*} theme 主题对象。
+ * @param {theme_t*} theme 窗体样式对象。
  * @param {const char*} widget_type 控件的类型名。
  * @param {const char*} name style的名称。
  * @param {const char*} widget_state 控件的状态。
@@ -100,8 +100,8 @@ const uint8_t* theme_find_style(theme_t* theme, const char* widget_type, const c
 
 /**
  * @method theme_get_style_type
- * 获取主题的风格类型。
- * @param {theme_t*} theme 主题对象。
+ * 获取窗体样式的风格类型。
+ * @param {theme_t*} theme 窗体样式对象。
  *
  * @return {const char*} 返回风格类型。
  */
@@ -109,9 +109,9 @@ const char* theme_get_style_type(theme_t* theme);
 
 /**
  * @method theme_set_theme_data
- * 设置主题的数据。
- * @param {theme_t*} theme 主题对象。
- * @param {const uint8_t*} data 主题数据。
+ * 设置窗体样式的数据。
+ * @param {theme_t*} theme 窗体样式对象。
+ * @param {const uint8_t*} data 窗体样式数据。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
@@ -119,8 +119,8 @@ ret_t theme_set_theme_data(theme_t* theme, const uint8_t* data);
 
 /**
  * @method theme_destroy
- * 析构并释放主题对象。
- * @param {theme_t*} theme 主题对象。
+ * 析构并释放窗体样式对象。
+ * @param {theme_t*} theme 窗体样式对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */

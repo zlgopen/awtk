@@ -51,7 +51,7 @@
 
 * 通过脏矩算法只更新变化的部分。
 * 支持 3 FrameBuffer 让界面以最高帧率运行（可选）。
-* UI 描述文件和主题文件使用高效的二进制格式，解析在瞬间完成。
+* UI 描述文件和窗体样式文件使用高效的二进制格式，解析在瞬间完成。
 * 支持各种 GPU 加速接口。如 OpenGL、DirectX、Vulkan 和 Metal 等。
 * 支持嵌入式平台的各种 2D 加速接口。目前 STM32 的 DMA2D 和 NXP 的 PXP 接口，厂家可以轻松扩展自己的加速接口。
 
@@ -78,7 +78,7 @@
 * 支持控件动画
 * 支持高清屏。
 * 支持界面描述文件。
-* 支持主题描述文件。
+* 支持窗体样式描述文件。
 * 支持控件布局策略。
 * 支持对话框高亮策略。
 * 丰富的辅助工具。
@@ -151,7 +151,7 @@
   * 将 ListView 的布局策略放到 children\_layouter\_list\_view 中，并支持边距和间距等参数。
   * children\_layouter\_list\_view 增加 keep\_disable 和 keep\_invisible 参数。
   * children\_layouter\_default 增加 keep\_disable 和 keep\_invisible 参数。
-  * 缺省启用 style mutable，具体用法请参考主题文档。
+  * 缺省启用 style mutable，具体用法请参考窗体样式文档。
   * 增加 style border\_width
   * 支持动态修改屏保时间。
   * 增加 app_root 自动检测。
