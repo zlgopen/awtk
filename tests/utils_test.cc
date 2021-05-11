@@ -10,6 +10,7 @@ using std::string;
 TEST(Utils, basic) {
   char str[32];
 
+  ASSERT_EQ(tk_atoi("0015"), 15);
   ASSERT_EQ(tk_atoi("100"), 100);
   ASSERT_EQ(tk_atoi("0xff"), 0xff);
   ASSERT_EQ(tk_atoi("0x1"), 0x1);
