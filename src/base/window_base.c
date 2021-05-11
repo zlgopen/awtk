@@ -398,6 +398,7 @@ ret_t window_set_auto_scale_children(widget_t* widget, uint32_t design_w, uint32
 }
 
 ret_t window_base_on_event(widget_t* widget, event_t* e) {
+  ret_t ret = RET_OK;
   window_base_t* win = WINDOW_BASE(widget);
   return_value_if_fail(widget != NULL && win != NULL, RET_BAD_PARAMS);
 
@@ -427,6 +428,10 @@ ret_t window_base_on_event(widget_t* widget, event_t* e) {
     log_debug("EVT_REQUEST_CLOSE_WINDOW\n");
     if (win->closable == WINDOW_CLOSABLE_YES) {
       window_close(widget);
+    }
+
+    if (win->closable != WINDOW_CLOSABLE_CONFIRM) {
+      ret = RET_STOP;
     }
   } else if (e->type == EVT_WINDOW_TO_FOREGROUND) {
     win->stage = WINDOW_STAGE_OPENED;
@@ -468,7 +473,7 @@ ret_t window_base_on_event(widget_t* widget, event_t* e) {
     }
   }
 
-  return RET_OK;
+  return ret;
 }
 
 widget_t* window_base_create(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_t y, wh_t w,
