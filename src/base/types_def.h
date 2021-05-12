@@ -349,6 +349,7 @@ typedef struct _system_info_t system_info_t;
 #define WITHOUT_LAYOUT 1
 #define WITHOUT_CLIPBOARD 1
 #define WITHOUT_EXT_WIDGETS 1
+#define WITHOUT_ROUNDED_RECT 1
 #define WITHOUT_INPUT_METHOD 1
 #define WITHOUT_WINDOW_ANIMATORS 1
 #define WITHOUT_WIDGET_ANIMATORS 1

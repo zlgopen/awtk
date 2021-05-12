@@ -1543,18 +1543,12 @@ ret_t canvas_draw_image_ex(canvas_t* c, bitmap_t* img, image_draw_type_t draw_ty
   rect_t r_fix;
   rect_t* dst = canvas_fix_rect(dst_in, &r_fix);
   return_value_if_fail(c != NULL && img != NULL && dst != NULL, RET_BAD_PARAMS);
-
   switch (draw_type) {
     case IMAGE_DRAW_DEFAULT:
       src = rect_init(0, 0, tk_min(dst->w, img->w), tk_min(dst->h, img->h));
       dst->w = src.w;
       dst->h = src.h;
       return canvas_draw_image(c, img, &src, dst);
-    case IMAGE_DRAW_ICON: {
-      xy_t cx = dst->x + (dst->w >> 1);
-      xy_t cy = dst->y + (dst->h >> 1);
-      return canvas_draw_icon(c, img, cx, cy);
-    }
     case IMAGE_DRAW_CENTER:
       return canvas_draw_image_center(c, img, dst);
     case IMAGE_DRAW_SCALE:
@@ -1565,6 +1559,12 @@ ret_t canvas_draw_image_ex(canvas_t* c, bitmap_t* img, image_draw_type_t draw_ty
     case IMAGE_DRAW_SCALE_DOWN: {
       rect_t src = rect_init(0, 0, img->w, img->h);
       return canvas_draw_image_scale_down(c, img, &src, dst);
+    }
+#ifndef AWTK_LITE
+    case IMAGE_DRAW_ICON: {
+      xy_t cx = dst->x + (dst->w >> 1);
+      xy_t cy = dst->y + (dst->h >> 1);
+      return canvas_draw_icon(c, img, cx, cy);
     }
     case IMAGE_DRAW_SCALE_W:
       return canvas_draw_image_scale_w(c, img, dst);
@@ -1594,6 +1594,7 @@ ret_t canvas_draw_image_ex(canvas_t* c, bitmap_t* img, image_draw_type_t draw_ty
       return canvas_draw_image_repeat3_x(c, img, dst);
     case IMAGE_DRAW_REPEAT3_Y:
       return canvas_draw_image_repeat3_y(c, img, dst);
+#endif/*AWTK_LITE*/
     default:
       return canvas_draw_image_center(c, img, dst);
   }
@@ -1973,6 +1974,7 @@ ret_t canvas_get_text_metrics(canvas_t* c, float_t* ascent, float_t* descent, fl
   }
 }
 
+#ifndef WITHOUT_ROUNDED_RECT
 #include "ffr_draw_rounded_rect.inc"
 
 ret_t canvas_fill_rounded_rect(canvas_t* c, const rect_t* r, const rect_t* bg_r,
@@ -2000,5 +2002,40 @@ ret_t canvas_stroke_rounded_rect_ex(canvas_t* c, const rect_t* r, const rect_t* 
   return ffr_draw_stroke_rounded_rect_ex(c, r, bg_r, color, radius_tl, radius_tr, radius_bl,
                                          radius_br, border_width, border_model);
 }
+
+#else
+ret_t canvas_fill_rounded_rect(canvas_t* c, const rect_t* r, const rect_t* bg_r,
+                               const color_t* color, uint32_t radius) {
+
+	canvas_set_fill_color(c, *color);
+  canvas_fill_rect(c, r->x, r->y, r->w, r->h);
+
+  return RET_OK;
+}
+
+ret_t canvas_stroke_rounded_rect(canvas_t* c, const rect_t* r, const rect_t* bg_r,
+                                 const color_t* color, uint32_t radius, uint32_t border_width) {
+	canvas_set_stroke_color(c, *color);
+  canvas_stroke_rect(c, r->x, r->y, r->w, r->h);
+  return RET_OK;
+}
+
+ret_t canvas_fill_rounded_rect_ex(canvas_t* c, const rect_t* r, const rect_t* bg_r,
+                                  const color_t* color, uint32_t radius_tl, uint32_t radius_tr,
+                                  uint32_t radius_bl, uint32_t radius_br) {
+	canvas_set_fill_color(c, *color);
+  canvas_fill_rect(c, r->x, r->y, r->w, r->h);
+  return RET_OK;
+}
+
+ret_t canvas_stroke_rounded_rect_ex(canvas_t* c, const rect_t* r, const rect_t* bg_r,
+                                    const color_t* color, uint32_t radius_tl, uint32_t radius_tr,
+                                    uint32_t radius_bl, uint32_t radius_br, uint32_t border_width,
+                                    int32_t border_model) {
+	canvas_set_stroke_color(c, *color);
+  canvas_stroke_rect(c, r->x, r->y, r->w, r->h);
+  return RET_OK;
+}
+#endif/*WITHOUT_ROUNDED_RECT*/
 
 #include "canvas_offline.inc"

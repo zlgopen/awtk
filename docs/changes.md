@@ -2,6 +2,7 @@
 
 2021/05/12
   * 完善mledit（感谢兆坤提供补丁）
+	* 针对AWTK\_LITE优化canvas.c。
   * 完善popup，使用widget\_add\_timer代替timer\_add，以便窗口关闭时销毁timer。
 
 2021/05/11
