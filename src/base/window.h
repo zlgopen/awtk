@@ -77,7 +77,7 @@ typedef struct _window_t {
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 是否全屏。
    *
-   *>这里全屏是指与LCD相同大小，而非让SDL窗口全屏。
+   *>对于模拟器，全屏是让窗口和LCD具有相同大小，而非让SDL窗口全屏。
    */
   bool_t fullscreen;
 } window_t;
