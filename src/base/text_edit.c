@@ -1157,7 +1157,6 @@ ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
   layout_info = &(impl->layout_info);
 
   switch (key) {
-    case TK_KEY_WHEEL:
 #ifdef WITH_SDL
     case TK_KEY_KP_DIVIDE:
     case TK_KEY_KP_MULTIPLY:
@@ -1273,7 +1272,8 @@ ret_t text_edit_key_down(text_edit_t* text_edit, key_event_t* evt) {
     case TK_KEY_LALT:
     case TK_KEY_RALT:
     case TK_KEY_COMMAND:
-    case TK_KEY_MENU: {
+    case TK_KEY_MENU:
+    case TK_KEY_WHEEL: {
       return RET_OK;
     }
     default: {
