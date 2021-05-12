@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/05/12
+  * 完善mledit（感谢兆坤提供补丁）
+
 2021/05/11
   * 完善dialog\_helper。
   * 完善WINDOW\_CLOSABLE\_CONFIRM的处理。
