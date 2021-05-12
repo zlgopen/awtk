@@ -220,7 +220,7 @@ ret_t popup_set_close_when_timeout(widget_t* widget, uint32_t close_when_timeout
   }
 
   if (close_when_timeout > 0) {
-    popup->timer_id = timer_add(popup_on_timeout, widget, close_when_timeout);
+    popup->timer_id = widget_add_timer(widget, popup_on_timeout, close_when_timeout);
   }
 
   return RET_OK;
