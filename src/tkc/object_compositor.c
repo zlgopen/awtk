@@ -35,7 +35,7 @@ static ret_t object_compositor_on_destroy(object_t* obj) {
   return_value_if_fail(obj1 != NULL && obj2 != NULL, RET_BAD_PARAMS);
 
   emitter_off_by_ctx(obj1, o);
-  emitter_off_by_ctx(obj1, o);
+  emitter_off_by_ctx(obj2, o);
   OBJECT_UNREF(o->obj1);
   OBJECT_UNREF(o->obj2);
 
