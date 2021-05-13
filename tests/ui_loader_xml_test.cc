@@ -56,6 +56,7 @@ TEST(UILoaderXML, attr) {
   ASSERT_EQ(ui_loader_load(loader, (const uint8_t*)str, strlen(str), builder), RET_OK);
 
   ASSERT_EQ(builder->root != NULL, true);
+  widget_layout(builder->root);
   b1 = widget_lookup(builder->root, "b1", TRUE);
   ASSERT_EQ(b1 != NULL, true);
   ASSERT_EQ(b1->x, 10);

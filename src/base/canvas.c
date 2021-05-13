@@ -1594,7 +1594,7 @@ ret_t canvas_draw_image_ex(canvas_t* c, bitmap_t* img, image_draw_type_t draw_ty
       return canvas_draw_image_repeat3_x(c, img, dst);
     case IMAGE_DRAW_REPEAT3_Y:
       return canvas_draw_image_repeat3_y(c, img, dst);
-#endif/*AWTK_LITE*/
+#endif /*AWTK_LITE*/
     default:
       return canvas_draw_image_center(c, img, dst);
   }
@@ -2006,8 +2006,7 @@ ret_t canvas_stroke_rounded_rect_ex(canvas_t* c, const rect_t* r, const rect_t* 
 #else
 ret_t canvas_fill_rounded_rect(canvas_t* c, const rect_t* r, const rect_t* bg_r,
                                const color_t* color, uint32_t radius) {
-
-	canvas_set_fill_color(c, *color);
+  canvas_set_fill_color(c, *color);
   canvas_fill_rect(c, r->x, r->y, r->w, r->h);
 
   return RET_OK;
@@ -2015,7 +2014,7 @@ ret_t canvas_fill_rounded_rect(canvas_t* c, const rect_t* r, const rect_t* bg_r,
 
 ret_t canvas_stroke_rounded_rect(canvas_t* c, const rect_t* r, const rect_t* bg_r,
                                  const color_t* color, uint32_t radius, uint32_t border_width) {
-	canvas_set_stroke_color(c, *color);
+  canvas_set_stroke_color(c, *color);
   canvas_stroke_rect(c, r->x, r->y, r->w, r->h);
   return RET_OK;
 }
@@ -2023,7 +2022,7 @@ ret_t canvas_stroke_rounded_rect(canvas_t* c, const rect_t* r, const rect_t* bg_
 ret_t canvas_fill_rounded_rect_ex(canvas_t* c, const rect_t* r, const rect_t* bg_r,
                                   const color_t* color, uint32_t radius_tl, uint32_t radius_tr,
                                   uint32_t radius_bl, uint32_t radius_br) {
-	canvas_set_fill_color(c, *color);
+  canvas_set_fill_color(c, *color);
   canvas_fill_rect(c, r->x, r->y, r->w, r->h);
   return RET_OK;
 }
@@ -2032,10 +2031,10 @@ ret_t canvas_stroke_rounded_rect_ex(canvas_t* c, const rect_t* r, const rect_t* 
                                     const color_t* color, uint32_t radius_tl, uint32_t radius_tr,
                                     uint32_t radius_bl, uint32_t radius_br, uint32_t border_width,
                                     int32_t border_model) {
-	canvas_set_stroke_color(c, *color);
+  canvas_set_stroke_color(c, *color);
   canvas_stroke_rect(c, r->x, r->y, r->w, r->h);
   return RET_OK;
 }
-#endif/*WITHOUT_ROUNDED_RECT*/
+#endif /*WITHOUT_ROUNDED_RECT*/
 
 #include "canvas_offline.inc"

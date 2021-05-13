@@ -28,21 +28,24 @@
 ret_t widget_auto_adjust_size(widget_t* widget) {
   int32_t w = 0;
   int32_t h = 0;
+  int32_t right = 0;
+  int32_t bottom = 0;
   int32_t margin = 0;
+  int32_t margin_right = 0;
+  int32_t margin_bottom = 0;
   style_t* style = NULL;
-  event_t e = event_init(EVT_WILL_RESIZE, widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
-  style = widget->astyle;
-  widget_dispatch(widget, &e);
-  widget_invalidate_force(widget, NULL);
 
+  style = widget->astyle;
   if (style != NULL) {
-    margin = style_get_int(style, STYLE_ID_MARGIN, margin);
+    margin = style_get_int(style, STYLE_ID_MARGIN, 2);
+    margin_right = style_get_int(style, STYLE_ID_MARGIN_RIGHT, margin);
+    margin_bottom = style_get_int(style, STYLE_ID_MARGIN_BOTTOM, margin);
   }
 
   WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
-  int32_t right = iter->x + iter->w + margin;
-  int32_t bottom = iter->y + iter->h + margin;
+  right = iter->x + iter->w + margin_right;
+  bottom = iter->y + iter->h + margin_bottom;
   if (right > w) {
     w = right;
   }
@@ -52,14 +55,8 @@ ret_t widget_auto_adjust_size(widget_t* widget) {
   WIDGET_FOR_EACH_CHILD_END();
 
   if (w != 0 && h != 0) {
-    widget->w = w;
-    widget->h = h;
+    widget_resize(widget, w, h);
   }
-
-  widget_invalidate_force(widget, NULL);
-
-  e.type = EVT_RESIZE;
-  widget_dispatch(widget, &e);
 
   return RET_OK;
 }
@@ -71,6 +68,7 @@ ret_t widget_layout(widget_t* widget) {
   if (widget->auto_adjust_size) {
     widget_auto_adjust_size(widget);
   }
+  widget->need_relayout = FALSE;
 
   return RET_OK;
 }

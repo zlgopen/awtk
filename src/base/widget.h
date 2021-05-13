@@ -73,6 +73,7 @@ typedef ret_t (*widget_on_remove_child_t)(widget_t* widget, widget_t* child);
 typedef ret_t (*widget_on_attach_parent_t)(widget_t* widget, widget_t* parent);
 typedef ret_t (*widget_on_detach_parent_t)(widget_t* widget, widget_t* parent);
 typedef ret_t (*widget_on_layout_children_t)(widget_t* widget);
+typedef ret_t (*widget_auto_adjust_size_t)(widget_t* widget);
 typedef ret_t (*widget_get_prop_t)(widget_t* widget, const char* name, value_t* v);
 typedef ret_t (*widget_get_prop_default_value_t)(widget_t* widget, const char* name, value_t* v);
 typedef ret_t (*widget_set_prop_t)(widget_t* widget, const char* name, const value_t* v);
@@ -166,6 +167,7 @@ struct _widget_vtable_t {
   widget_invalidate_t invalidate;
   widget_find_target_t find_target;
   widget_is_point_in_t is_point_in;
+  widget_auto_adjust_size_t auto_adjust_size;
   widget_get_prop_default_value_t get_prop_default_value;
 
   widget_on_copy_t on_copy;
@@ -391,6 +393,12 @@ struct _widget_t {
    * 标识控件是否需要重新layout子控件。
    */
   uint8_t need_relayout_children : 1;
+  /**
+   * @property {bool_t} need_relayout
+   * @annotation ["readable"]
+   * 标识控件是否需要重新layout控件。
+   */
+  uint8_t need_relayout : 1;
   /**
    * @property {bool_t} need_update_style
    * @annotation ["readable"]
@@ -2771,6 +2779,15 @@ bool_t widget_is_instance_of(widget_t* widget, const widget_vtable_t* vt);
  *  @return {ret_t} 返回。
  */
 ret_t widget_set_need_relayout_children(widget_t* widget);
+
+/**
+ * @method widget_set_need_relayout
+ * 设置控件需要relayout标识。
+ * @param {widget_t*} widget 控件对象。
+ *
+ *  @return {ret_t} 返回。
+ */
+ret_t widget_set_need_relayout(widget_t* widget);
 
 /**
  * @method widget_ensure_visible_in_viewport

@@ -19,6 +19,7 @@
  *
  */
 
+#include "base/widget.h"
 #include "base/self_layouter.h"
 
 const char* self_layouter_to_string(self_layouter_t* layouter) {
@@ -33,6 +34,10 @@ const char* self_layouter_to_string(self_layouter_t* layouter) {
 
 ret_t self_layouter_layout(self_layouter_t* layouter, widget_t* widget, rect_t* area) {
   if (layouter == NULL) {
+    if (widget->vt->auto_adjust_size != NULL) {
+      widget->vt->auto_adjust_size(widget);
+    }
+
     return RET_FAIL;
   }
 

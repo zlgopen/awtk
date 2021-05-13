@@ -303,6 +303,10 @@ static ret_t children_layouter_default_layout(children_layouter_t* layouter, wid
       }
     }
 
+    if (widget->auto_adjust_size) {
+      widget_auto_adjust_size(widget);
+    }
+
     for (i = 0; i < n; i++) {
       iter = children[i];
       children_w += iter->w + spacing;
@@ -343,6 +347,10 @@ static ret_t children_layouter_default_layout(children_layouter_t* layouter, wid
       if (self_layouter_default_is_valid(iter->self_layout)) {
         widget_layout_self_with_rect(iter->self_layout, iter, &area);
       }
+    }
+
+    if (widget->auto_adjust_size) {
+      widget_auto_adjust_size(widget);
     }
 
     for (i = 0; i < n; i++) {

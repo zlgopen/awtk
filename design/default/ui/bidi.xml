@@ -1,15 +1,15 @@
 ﻿<window anim_hint="htranslate" text="hscroll_label" children_layout="default(c=1,h=30,xm=10,s=5)">
-  <label text="الصين" style:font_size="30" style:font_name="trado"/>
-  <label text="مصر" style:font_size="30" style:font_name="trado"/>
-  <label text="الظلال أخفى القمر." style:font_size="30" style:font_name="trado"/>
-  <label text="bahrain مصر kuwait" style:font_size="30" style:font_name="trado"/>
-  <label text="الإنسانية إلى شمال غربي سوريا عبر تركيا." style:font_size="30" style:font_name="trado"/>
-  <label text="جامعة كولومبيا عام 2013." style:font_size="30" style:font_name="trado"/>
-  <label text="10 يوليو/ تموز 2020" style:font_size="30" style:font_name="trado"/>
-  <label text="1. جامعة كولومبيا عام." style:font_size="30" style:font_name="trado" bidi="lro"/>
+  <label text="الصين" style:font_size="24" style:font_name="trado"/>
+  <label text="مصر" style:font_size="24" style:font_name="trado"/>
+  <label text="الظلال أخفى القمر." style:font_size="24" style:font_name="trado"/>
+  <label text="bahrain مصر kuwait" style:font_size="24" style:font_name="trado"/>
+  <label text="الإنسانية إلى شمال غربي سوريا عبر تركيا." style:font_size="24" style:font_name="trado"/>
+  <label text="جامعة كولومبيا عام 2013." style:font_size="24" style:font_name="trado"/>
+  <label text="10 يوليو/ تموز 2020" style:font_size="24" style:font_name="trado"/>
+  <label text="1. جامعة كولومبيا عام." style:font_size="24" style:font_name="trado" bidi="lro"/>
 	<hscroll_label name="h3" text="وإذا فاز بثلاثة منها فقط، يستطيع تحطيم رقم السيتي في 2018. أما إذا فاز بالأربعة، فسوف يحطم الرقم بفارق" 
-    style:font_size="30" style:font_name="trado" 
-    style:focused:font_size="30" style:focused:font_name="trado" 
+    style:font_size="24" style:font_name="trado" 
+    style:focused:font_size="24" style:focused:font_name="trado" 
     ellipses="true"
     focusable="true"
     only_focus="true"

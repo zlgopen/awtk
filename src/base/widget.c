@@ -1616,7 +1616,9 @@ ret_t widget_paint(widget_t* widget, canvas_t* c) {
     return RET_OK;
   }
 
-  if (widget->need_relayout_children) {
+  if (widget->need_relayout) {
+    widget_layout(widget);
+  } else if (widget->need_relayout_children) {
     widget_layout_children(widget);
   }
 
@@ -3193,6 +3195,7 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t*
   widget->focusable = FALSE;
   widget->with_focus_state = FALSE;
   widget->dirty_rect_tolerance = 4;
+  widget->need_relayout = FALSE;
   widget->need_relayout_children = TRUE;
   widget->need_update_style = TRUE;
 
@@ -4129,6 +4132,14 @@ bool_t widget_is_window_manager(widget_t* widget) {
   return_value_if_fail(widget != NULL && widget->vt != NULL, FALSE);
 
   return widget->vt->is_window_manager;
+}
+
+ret_t widget_set_need_relayout(widget_t* widget) {
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  widget->need_relayout = TRUE;
+
+  return RET_OK;
 }
 
 ret_t widget_set_need_relayout_children(widget_t* widget) {

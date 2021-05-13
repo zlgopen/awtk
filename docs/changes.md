@@ -1,5 +1,9 @@
 # 最新动态
 
+2021/05/13
+  * 完善和优化layout处理流程。
+  * 完善layout中auto adjust size的处理。
+
 2021/05/12
   * 完善mledit（感谢兆坤提供补丁）
 	* 针对AWTK\_LITE优化canvas.c。

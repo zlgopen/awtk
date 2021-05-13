@@ -26,8 +26,6 @@
 #include "base/widget_vtable.h"
 #include "base/window_manager.h"
 
-static ret_t label_auto_adjust_size(widget_t* widget);
-
 static ret_t label_paint_text_mlines(widget_t* widget, canvas_t* c, line_parser_t* p, int32_t x,
                                      int32_t y, int32_t w, int32_t h) {
   int32_t top = y;
@@ -194,11 +192,9 @@ static ret_t label_get_prop(widget_t* widget, const char* name, value_t* v) {
 static ret_t label_set_prop(widget_t* widget, const char* name, const value_t* v) {
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
+  widget_set_need_relayout(widget);
   if (tk_str_eq(name, WIDGET_PROP_VALUE) || tk_str_eq(name, WIDGET_PROP_TEXT)) {
     wstr_from_value(&(widget->text), v);
-    if (widget->auto_adjust_size) {
-      label_auto_adjust_size(widget);
-    }
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_LENGTH)) {
     return label_set_length(widget, tk_roundi(value_float(v)));
@@ -278,6 +274,7 @@ static ret_t label_auto_adjust_size(widget_t* widget) {
   canvas_t* c = widget_get_canvas(widget);
   return_value_if_fail(c != NULL, RET_BAD_PARAMS);
   return_value_if_fail(label != NULL && widget->astyle != NULL, RET_BAD_PARAMS);
+
   if (!widget->auto_adjust_size || !widget_is_window_created(widget)) {
     return RET_OK;
   }
@@ -306,11 +303,7 @@ static ret_t label_on_event(widget_t* widget, event_t* e) {
   switch (type) {
     case EVT_RESIZE:
     case EVT_MOVE_RESIZE: {
-      label_auto_adjust_size(widget);
-      break;
-    }
-    case EVT_WINDOW_WILL_OPEN: {
-      label_auto_adjust_size(widget);
+      widget_set_need_relayout(widget);
       break;
     }
     default:
@@ -332,6 +325,7 @@ TK_DECL_VTABLE(label) = {.size = sizeof(label_t),
                          .set_prop = label_set_prop,
                          .get_prop = label_get_prop,
                          .on_event = label_on_event,
+                         .auto_adjust_size = label_auto_adjust_size,
                          .on_paint_self = label_on_paint_self};
 
 widget_t* label_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {

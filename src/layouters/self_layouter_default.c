@@ -363,14 +363,29 @@ ret_t widget_layout_self_with_rect(self_layouter_t* layouter, widget_t* widget, 
   return_value_if_fail(widget != NULL && area != NULL, RET_BAD_PARAMS);
 
   if (self_layouter_default_is_valid(layouter)) {
-    if (widget->auto_adjust_size && widget_get_prop_int(widget, WIDGET_PROP_MAX_W, 0) != 0) {
-      /*强制使用根据内容计算的宽度。*/
-      if (l->w_attr != W_ATTR_PERCENT) {
-        l->w_attr = W_ATTR_UNDEF;
-      }
+    bool_t has_max_w =
+        (widget->auto_adjust_size && widget_get_prop_int(widget, WIDGET_PROP_MAX_W, 0) != 0);
+
+    /*如果有指定max_w，需要在layout之前，先计算需要的高宽。*/
+    if (has_max_w && widget->vt->auto_adjust_size != NULL) {
+      widget->vt->auto_adjust_size(widget);
+      r.w = widget->w;
+      r.h = widget->h;
+      l->w_attr = W_ATTR_UNDEF;
+      l->h_attr = H_ATTR_UNDEF;
     }
 
     widget_layout_calc(l, &r, area->w, area->h);
+
+    /*如果没有指定max_w，需要在layout之后，根据layout的高宽计算实际需要的高宽。*/
+    if (!has_max_w && widget->vt->auto_adjust_size != NULL) {
+      widget->w = r.w;
+      widget->h = r.h;
+      widget->vt->auto_adjust_size(widget);
+      r.w = widget->w;
+      r.h = widget->h;
+    }
+
     widget_move_resize(widget, r.x + area->x, r.y + area->y, r.w, r.h);
 
     return RET_OK;

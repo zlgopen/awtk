@@ -213,12 +213,11 @@ static ret_t children_layouter_list_view_for_list_view_children_layout_h(
   children = (widget_t**)children_for_layout->elms;
   for (i = 0; i < n; i++) {
     widget_t* iter = children[i];
-    if (iter->self_layout != NULL) {
-      widget_layout_self(iter);
+
+    if (iter->w == 0) {
+      iter->w = iter->parent->w;
     }
-    if (iter->auto_adjust_size) {
-      widget_auto_adjust_size(iter);
-    }
+    widget_layout(iter);
 
     h = item_height;
     if (h <= 0) {
