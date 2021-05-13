@@ -47,7 +47,7 @@ static ret_t event_source_manager_default_dispatch_fds(event_source_manager_t* m
   uint32_t i = 0;
   int32_t fd = 0;
   int32_t ret = 0;
-  int32_t max_fd = 0;
+  int32_t max_fd = -1;
   struct timeval tv = {0, 0};
   event_source_t* iter = NULL;
   event_source_t** sources = NULL;
@@ -70,7 +70,7 @@ static ret_t event_source_manager_default_dispatch_fds(event_source_manager_t* m
     }
   }
 
-  if (max_fd == 0) {
+  if (max_fd < 0) {
     return RET_OK;
   }
 
