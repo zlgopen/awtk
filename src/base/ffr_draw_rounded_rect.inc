@@ -138,13 +138,13 @@ typedef struct _frr_draw_arc_info_table_t {
       c1.a = 0xff;                                                                                        \
     } else {                                                                                              \
       uint8_t out_a = 0x0;                                                                                \
-      uint8_t fg_a = (c2.a * a) >> 8;                                                                     \
-      FFR_LIMIT_UINT8(a + fg_a - ((a * fg_a) >> 8), out_a);                                               \
+      uint8_t fg_a = c2.a;                                                                                \
+      FFR_LIMIT_UINT8(a + c2.a - ((a * c2.a) >> 8), out_a);                                               \
       if(out_a > 0) {                                                                                     \
-        uint8_t d_a = (a * (0xff - fg_a)) >> 8;                                                           \
-        c1.r = (c1.r * d_a + c2.r * fg_a) / out_a;                                                        \
-        c1.g = (c1.g * d_a + c2.g * fg_a) / out_a;                                                        \
-        c1.b = (c1.b * d_a + c2.b * fg_a) / out_a;                                                        \
+        uint8_t d_a = (c2.a * (0xff - a)) >> 8;                                                           \
+        c1.r = (c1.r * a + c2.r * d_a) / out_a;                                                           \
+        c1.g = (c1.g * a + c2.g * d_a) / out_a;                                                           \
+        c1.b = (c1.b * a + c2.b * d_a) / out_a;                                                           \
         c1.a = out_a;                                                                                     \
       } else {                                                                                            \
         c1.r = c1.g = c1.b = c1.a = 0x0;                                                                  \
