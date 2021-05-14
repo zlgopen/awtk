@@ -138,7 +138,6 @@ typedef struct _frr_draw_arc_info_table_t {
       c1.a = 0xff;                                                                                        \
     } else {                                                                                              \
       uint8_t out_a = 0x0;                                                                                \
-      uint8_t fg_a = c2.a;                                                                                \
       FFR_LIMIT_UINT8(a + c2.a - ((a * c2.a) >> 8), out_a);                                               \
       if(out_a > 0) {                                                                                     \
         uint8_t d_a = (c2.a * (0xff - a)) >> 8;                                                           \
