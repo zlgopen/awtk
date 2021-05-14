@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/05/14
+  * switch支持click事件，支持space/return触发。
+
 2021/05/13
   * 完善和优化layout处理流程。
   * 完善layout中auto adjust size的处理。

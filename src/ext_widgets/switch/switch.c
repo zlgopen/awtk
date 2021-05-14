@@ -104,20 +104,17 @@ static ret_t switch_on_pointer_up(switch_t* aswitch, pointer_event_t* e) {
 
   if (e->x == aswitch->xdown) {
     /*click*/
-    if (aswitch->value) {
-      xoffset_end = max_xoffset;
-    } else {
-      xoffset_end = min_xoffset;
-    }
+    pointer_event_t click;
+    widget_dispatch(widget, pointer_event_init(&click, EVT_CLICK, widget, e->x, e->y));
   } else {
     if (xoffset_end < max_xoffset / 2) {
       xoffset_end = min_xoffset;
     } else {
       xoffset_end = max_xoffset;
     }
-  }
 
-  switch_scroll_to(widget, xoffset_end);
+    switch_scroll_to(widget, xoffset_end);
+  }
 
   return RET_OK;
 }
@@ -153,6 +150,11 @@ static ret_t switch_on_event(widget_t* widget, event_t* e) {
       } else {
         aswitch->xoffset = aswitch->xoffset_save;
       }
+      break;
+    }
+    case EVT_CLICK: {
+      int max_xoffset = aswitch->max_xoffset_ratio * widget->w;
+      switch_scroll_to(widget, aswitch->value ? max_xoffset : 0);
       break;
     }
     case EVT_POINTER_MOVE: {
@@ -422,6 +424,8 @@ TK_DECL_VTABLE(switch) = {
     .inputable = TRUE,
     .size = sizeof(switch_t),
     .type = WIDGET_TYPE_SWITCH,
+    .space_key_to_activate = TRUE,
+    .return_key_to_activate = TRUE,
     .clone_properties = s_switch_properties,
     .persistent_properties = s_switch_properties,
     .parent = TK_PARENT_VTABLE(widget),

@@ -94,6 +94,11 @@ typedef struct _switch_t {
 } switch_t;
 
 /**
+ * @event {pointer_event_t} EVT_CLICK
+ * 点击事件。
+ */
+
+/**
  * @event {event_t} EVT_VALUE_WILL_CHANGE
  * 值(开关状态)即将改变事件。
  */
