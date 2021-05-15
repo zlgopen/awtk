@@ -173,6 +173,17 @@ int event_get_type(event_t* event);
 event_t* event_create(uint32_t type);
 
 /**
+ * @method event_clone
+ * @annotation ["constructor"]
+ * clone事件对象。
+ *
+ * @param {event_t*} event event对象。
+ *
+ * @return {event_t*} 返回事件对象。
+ */
+event_t* event_clone(event_t* event);
+
+/**
  * @method event_destroy
  * 销毁事件对象。
  *

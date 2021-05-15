@@ -49,6 +49,17 @@ event_t* event_create(uint32_t type) {
   return e;
 }
 
+event_t* event_clone(event_t* event) {
+  event_t* e = NULL;
+  return_value_if_fail(event != NULL, NULL);
+  e = TKMEM_ALLOC(event->size);
+  return_value_if_fail(e != NULL, NULL);
+
+  memcpy(e, event, event->size);
+
+  return e;
+}
+
 ret_t event_destroy(event_t* event) {
   return_value_if_fail(event != NULL, RET_BAD_PARAMS);
 
@@ -159,3 +170,4 @@ int event_get_type(event_t* event) {
   return_value_if_fail(event != NULL, EVT_NONE);
   return event->type;
 }
+
