@@ -217,6 +217,10 @@ static ret_t children_layouter_list_view_for_list_view_children_layout_h(
     if (iter->w == 0) {
       iter->w = iter->parent->w;
     }
+    if (iter->h == 0) {
+      iter->h = item_height;
+    }
+
     widget_layout(iter);
 
     h = item_height;
