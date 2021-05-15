@@ -3,6 +3,7 @@
 2021/05/15
   * 完善圆角矩形（感谢智明提供补丁）
   * 修改label高度的限制条件。
+  * 完善widget\_set\_need\_relayout。
 
 2021/05/14
   * switch支持click事件，支持space/return触发。

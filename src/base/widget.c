@@ -4138,6 +4138,11 @@ ret_t widget_set_need_relayout(widget_t* widget) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   widget->need_relayout = TRUE;
+  if (widget->parent != NULL) {
+    if (widget->parent->auto_adjust_size || widget->parent->children_layout != NULL) {
+      widget_set_need_relayout(widget->parent);
+    }
+  }
 
   return RET_OK;
 }
