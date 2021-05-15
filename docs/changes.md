@@ -4,6 +4,9 @@
   * 完善圆角矩形（感谢智明提供补丁）
   * 修改label高度的限制条件。
   * 完善widget\_set\_need\_relayout。
+  * 增加函数event\_clone
+  * 增加函数widget\_dispatch\_async
+  * 异步分发space/return触发的click事件。
 
 2021/05/14
   * switch支持click事件，支持space/return触发。

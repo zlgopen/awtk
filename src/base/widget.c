@@ -1192,6 +1192,31 @@ ret_t widget_dispatch(widget_t* widget, event_t* e) {
   return ret;
 }
 
+static ret_t dispatch_in_idle(const idle_info_t* info) {
+  event_t* e = (event_t*)(info->ctx);
+  widget_t* widget = WIDGET(e->target);
+
+  widget_dispatch(widget, e);
+  widget_unref(widget);
+  event_destroy(e);
+
+  return RET_REMOVE;
+}
+
+ret_t widget_dispatch_async(widget_t* widget, event_t* e) {
+  event_t* evt = NULL;
+  return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(e->target == widget, RET_BAD_PARAMS);
+
+  evt = event_clone(e);
+  return_value_if_fail(evt != NULL, RET_OOM);
+
+  widget_ref(widget);
+  idle_add(dispatch_in_idle, evt);
+
+  return RET_OK;
+}
+
 static ret_t widget_dispatch_callback(void* ctx, const void* data) {
   widget_t* widget = WIDGET(data);
 
@@ -2476,7 +2501,7 @@ static ret_t widget_on_keyup_impl(widget_t* widget, key_event_t* e) {
     } else {
       widget_set_state(widget, WIDGET_STATE_NORMAL);
     }
-    widget_dispatch(widget, pointer_event_init(&click, EVT_CLICK, widget, 0, 0));
+    widget_dispatch_async(widget, pointer_event_init(&click, EVT_CLICK, widget, 0, 0));
 
     ret = RET_STOP;
   } else if (widget_is_move_focus_next_key(widget, e)) {

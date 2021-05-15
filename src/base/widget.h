@@ -1676,6 +1676,16 @@ ret_t widget_draw_text_in_rect(widget_t* widget, canvas_t* c, const wchar_t* str
 ret_t widget_dispatch(widget_t* widget, event_t* e);
 
 /**
+ * @method widget_dispatch_async
+ * 异步分发一个事件。
+ * @param {widget_t*} widget 控件对象。
+ * @param {event_t*} e 事件。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_dispatch_async(widget_t* widget, event_t* e);
+
+/**
  * @method widget_dispatch_simple_event
  * 分发一个简单事件。
  * @param {widget_t*} widget 控件对象。
