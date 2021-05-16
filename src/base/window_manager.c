@@ -257,14 +257,7 @@ ret_t window_manager_close_window_force(widget_t* widget, widget_t* window) {
 }
 
 ret_t window_manager_check_and_layout(widget_t* widget) {
-  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
-  if (iter->need_relayout_children) {
-    widget_layout_children(iter);
-  } else {
-    window_manager_check_and_layout(iter);
-  }
-  WIDGET_FOR_EACH_CHILD_END()
-
+  /*TODO: remove*/
   return RET_OK;
 }
 

@@ -37,6 +37,7 @@ ret_t window_base_on_paint_self(widget_t* widget, canvas_t* c) {
 }
 
 ret_t window_base_on_paint_begin(widget_t* widget, canvas_t* c) {
+  window_base_t* win = WINDOW_BASE(widget);
   font_manager_t* fm = widget_get_font_manager(widget);
   image_manager_t* imm = widget_get_image_manager(widget);
   assets_manager_t* am = widget_get_assets_manager(widget);
@@ -45,12 +46,17 @@ ret_t window_base_on_paint_begin(widget_t* widget, canvas_t* c) {
   canvas_set_assets_manager(c, am);
   image_manager_set_assets_manager(imm, am);
 
+  if (win->need_relayout) {
+    widget_layout(widget);
+  }
+
   return RET_OK;
 }
 
 ret_t window_base_on_paint_end(widget_t* widget, canvas_t* c) {
-  (void)widget;
-  (void)c;
+  window_base_t* win = WINDOW_BASE(widget);
+  win->need_relayout = FALSE;
+
   return RET_OK;
 }
 
@@ -506,6 +512,15 @@ widget_t* window_base_create(widget_t* parent, const widget_vtable_t* vt, xy_t x
   win->move_focus_prev_key = tk_strdup(TK_KEY_MOVE_FOCUS_PREV);
 
   return widget;
+}
+
+ret_t window_base_set_need_relayout(widget_t* widget, bool_t need_relayout) {
+  window_base_t* win = WINDOW_BASE(widget);
+  return_value_if_fail(win != NULL, RET_BAD_PARAMS);
+
+  win->need_relayout = need_relayout;
+
+  return RET_OK;
 }
 
 ret_t window_close_force(widget_t* widget) {

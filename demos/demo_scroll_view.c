@@ -110,8 +110,6 @@ static ret_t scroll_view_offset_changed(void* ctx, event_t* e) {
 
 static ret_t install_one(void* ctx, const void* iter) {
   widget_t* widget = WIDGET(iter);
-  widget_t* win = widget_get_window(ctx);
-
   if (widget->name != NULL) {
     const char* name = widget->name;
     if (strstr(name, BUTTON_SET_FOCUSE_STRING) != NULL) {

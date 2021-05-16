@@ -170,4 +170,3 @@ int event_get_type(event_t* event) {
   return_value_if_fail(event != NULL, EVT_NONE);
   return event->type;
 }
-

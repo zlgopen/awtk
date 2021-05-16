@@ -246,6 +246,7 @@ typedef struct _window_base_t {
   native_window_t* native_window;
   widget_t* save_focus_widget;
   uint32_t grab_count_when_to_foreground;
+  bool_t need_relayout;
 } window_base_t;
 
 /**
@@ -394,6 +395,16 @@ widget_t* window_base_create(widget_t* parent, const widget_vtable_t* vt, xy_t x
  * @return {widget_t*} window_base对象。
  */
 widget_t* window_base_cast(widget_t* widget);
+
+/**
+ * @method window_base_set_need_relayout
+ * 设置是否需要relayout
+ * @param {widget_t*} widget window_base对象。
+ * @param {bool_t} need_relayout
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。。
+ */
+ret_t window_base_set_need_relayout(widget_t* widget, bool_t need_relayout);
 
 #define WINDOW_BASE(widget) ((window_base_t*)(window_base_cast(WIDGET(widget))))
 

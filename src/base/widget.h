@@ -388,18 +388,6 @@ struct _widget_t {
    */
   uint8_t floating : 1;
   /**
-   * @property {bool_t} need_relayout_children
-   * @annotation ["readable"]
-   * 标识控件是否需要重新layout子控件。
-   */
-  uint8_t need_relayout_children : 1;
-  /**
-   * @property {bool_t} need_relayout
-   * @annotation ["readable"]
-   * 标识控件是否需要重新layout控件。
-   */
-  uint8_t need_relayout : 1;
-  /**
    * @property {bool_t} need_update_style
    * @annotation ["readable"]
    * 标识控件是否需要update style。

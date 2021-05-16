@@ -68,7 +68,6 @@ ret_t widget_layout(widget_t* widget) {
   if (widget->auto_adjust_size) {
     widget_auto_adjust_size(widget);
   }
-  widget->need_relayout = FALSE;
 
   return RET_OK;
 }
@@ -110,7 +109,6 @@ ret_t widget_layout_children_default(widget_t* widget) {
 ret_t widget_layout_children(widget_t* widget) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
-  widget->need_relayout_children = FALSE;
   if (widget->vt->on_layout_children != NULL) {
     return widget->vt->on_layout_children(widget);
   } else {

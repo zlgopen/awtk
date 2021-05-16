@@ -43,6 +43,7 @@
 #include "base/style_factory.h"
 #include "base/widget_animator_manager.h"
 #include "base/widget_animator_factory.h"
+#include "base/window_base.h"
 #include "blend/image_g2d.h"
 
 #define return_if_equal(p, value) \
@@ -1641,12 +1642,6 @@ ret_t widget_paint(widget_t* widget, canvas_t* c) {
     return RET_OK;
   }
 
-  if (widget->need_relayout) {
-    widget_layout(widget);
-  } else if (widget->need_relayout_children) {
-    widget_layout_children(widget);
-  }
-
   if (widget->need_update_style) {
     widget_update_style(widget);
   }
@@ -3220,8 +3215,6 @@ widget_t* widget_init(widget_t* widget, widget_t* parent, const widget_vtable_t*
   widget->focusable = FALSE;
   widget->with_focus_state = FALSE;
   widget->dirty_rect_tolerance = 4;
-  widget->need_relayout = FALSE;
-  widget->need_relayout_children = TRUE;
   widget->need_update_style = TRUE;
 
   if (parent) {
@@ -4160,26 +4153,15 @@ bool_t widget_is_window_manager(widget_t* widget) {
 }
 
 ret_t widget_set_need_relayout(widget_t* widget) {
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
-
-  widget->need_relayout = TRUE;
-  if (widget->parent != NULL) {
-    if (widget->parent->auto_adjust_size || widget->parent->children_layout != NULL) {
-      widget_set_need_relayout(widget->parent);
-    }
+  widget_t* win = widget_get_window(widget);
+  if (win != NULL) {
+    return window_base_set_need_relayout(win, TRUE);
   }
-
   return RET_OK;
 }
 
 ret_t widget_set_need_relayout_children(widget_t* widget) {
-  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
-
-  if (!widget->destroying && widget->children != NULL && widget->children->size > 0) {
-    widget->need_relayout_children = TRUE;
-  }
-
-  return RET_OK;
+  return widget_set_need_relayout(widget);
 }
 
 static ret_t widget_ensure_style_mutable(widget_t* widget) {
