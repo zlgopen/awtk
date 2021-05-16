@@ -155,18 +155,22 @@ TEST(Button, activate) {
 
   widget_on_keydown(w, (key_event_t*)key_event_init(&e, EVT_KEY_DOWN, w, TK_KEY_SPACE));
   widget_on_keyup(w, (key_event_t*)key_event_init(&e, EVT_KEY_UP, w, TK_KEY_SPACE));
+  idle_dispatch();
   ASSERT_EQ(count, 1);
 
   widget_on_keydown(w, (key_event_t*)key_event_init(&e, EVT_KEY_DOWN, w, TK_KEY_SPACE));
   widget_on_keyup(w, (key_event_t*)key_event_init(&e, EVT_KEY_UP, w, TK_KEY_SPACE));
+  idle_dispatch();
   ASSERT_EQ(count, 2);
 
   widget_on_keydown(w, (key_event_t*)key_event_init(&e, EVT_KEY_DOWN, w, TK_KEY_RETURN));
   widget_on_keyup(w, (key_event_t*)key_event_init(&e, EVT_KEY_UP, w, TK_KEY_RETURN));
+  idle_dispatch();
   ASSERT_EQ(count, 3);
 
   widget_on_keydown(w, (key_event_t*)key_event_init(&e, EVT_KEY_DOWN, w, TK_KEY_RETURN));
   widget_on_keyup(w, (key_event_t*)key_event_init(&e, EVT_KEY_UP, w, TK_KEY_RETURN));
+  idle_dispatch();
   ASSERT_EQ(count, 4);
 
   widget_destroy(w);

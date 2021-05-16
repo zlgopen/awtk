@@ -354,10 +354,10 @@ lcd_t* lcd_profile_create(lcd_t* impl) {
   lcd = (lcd_t*)TKMEM_ZALLOC(lcd_profile_t);
   return_value_if_fail(lcd != NULL, NULL);
 
-  lcd->w = impl->w;
-  lcd->h = impl->h;
   lcd->type = impl->type;
   lcd->ratio = impl->ratio;
+  lcd->w = lcd_get_width(impl);
+  lcd->h = lcd_get_height(impl);
   LCD_PROFILE(lcd)->impl = impl;
   lcd->support_dirty_rect = impl->support_dirty_rect;
 

@@ -131,7 +131,7 @@ ret_t window_manager_default_snap_curr_window(widget_t* widget, widget_t* curr_w
   r = rect_init(curr_win->x, curr_win->y, curr_win->w, curr_win->h);
 
   canvas_save(c);
-  canvas = canvas_offline_create(c->lcd->w, c->lcd->h, lcd_get_desired_bitmap_format(c->lcd));
+  canvas = canvas_offline_create(canvas_get_width(c), canvas_get_height(c), lcd_get_desired_bitmap_format(c->lcd));
   canvas_offline_begin_draw(canvas);
   canvas_set_clip_rect(canvas, &r);
   ENSURE(widget_on_paint_background(widget, canvas) == RET_OK);
@@ -194,7 +194,7 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
   r = rect_init(prev_win->x, prev_win->y, prev_win->w, prev_win->h);
 
   canvas_save(c);
-  canvas = canvas_offline_create(c->lcd->w, c->lcd->h, lcd_get_desired_bitmap_format(c->lcd));
+  canvas = canvas_offline_create(canvas_get_width(c), canvas_get_height(c), lcd_get_desired_bitmap_format(c->lcd));
   canvas_offline_begin_draw(canvas);
   canvas_set_clip_rect(canvas, &r);
   ENSURE(widget_on_paint_background(widget, canvas) == RET_OK);

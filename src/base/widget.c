@@ -4287,7 +4287,7 @@ ret_t widget_reset_canvas(widget_t* widget) {
   rect_t rect;
   canvas_t* c = widget_get_canvas(widget);
   return_value_if_fail(c != NULL, RET_BAD_PARAMS);
-  rect = rect_init(0, 0, c->lcd->w, c->lcd->h);
+  rect = rect_init(0, 0, canvas_get_width(c), canvas_get_height(c));
   canvas_set_clip_rect(c, &rect);
 
   c->font = NULL;
