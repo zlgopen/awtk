@@ -83,7 +83,7 @@ static ret_t style_const_apply_layout(style_t* s, widget_t* widget) {
   if (self_layout != NULL || children_layout != NULL) {
     if (self_layout != NULL) {
       widget_set_self_layout(widget, self_layout);
-      widget_set_need_relayout_children(widget->parent);
+      widget_set_need_relayout(widget);
     }
 
     if (children_layout != NULL) {
