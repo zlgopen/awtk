@@ -424,6 +424,8 @@ ret_t window_base_on_event(widget_t* widget, event_t* e) {
   } else if (e->type == EVT_WINDOW_LOAD) {
     win->stage = WINDOW_STAGE_LOADED;
     window_base_load_theme_obj(widget);
+    widget_layout(widget);
+
     if (win->design_w && win->design_h) {
       if (win->auto_scale_children_x || win->auto_scale_children_y || win->auto_scale_children_w ||
           win->auto_scale_children_h) {
