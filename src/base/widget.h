@@ -2846,7 +2846,7 @@ font_manager_t* widget_get_font_manager(widget_t* widget);
  * 更新鼠标指针。
  * @param {widget_t*} widget 控件对象。
  *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_update_pointer_cursor(widget_t* widget);
 
@@ -2856,7 +2856,7 @@ ret_t widget_update_pointer_cursor(widget_t* widget);
  * @param {widget_t*} widget 控件对象。
  * @param {bool_t} ignore_user_input 是否忽略用户输入。
  *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_begin_wait_pointer_cursor(widget_t* widget, bool_t ignore_user_input);
 
@@ -2865,7 +2865,7 @@ ret_t widget_begin_wait_pointer_cursor(widget_t* widget, bool_t ignore_user_inpu
  * 结束等待鼠标指针。
  * @param {widget_t*} widget 控件对象。
  *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_end_wait_pointer_cursor(widget_t* widget);
 
@@ -2876,7 +2876,7 @@ ret_t widget_end_wait_pointer_cursor(widget_t* widget);
  * @param {const char*} state_and_name 样式对应类型与名字。
  * @param {const value_t*} value 值。
  *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_set_style(widget_t* widget, const char* state_and_name, const value_t* value);
 
@@ -2893,7 +2893,7 @@ rect_t widget_get_content_area(widget_t* widget);
  * @method widget_calc_icon_text_rect
  * 计算icon text的位置。
  * 
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_calc_icon_text_rect(const rect_t* ir, int32_t font_size, float_t text_size,
                                  int32_t icon_at, uint32_t img_w, uint32_t img_h, int32_t spacer,
@@ -2910,7 +2910,7 @@ ret_t widget_calc_icon_text_rect(const rect_t* ir, int32_t font_size, float_t te
  * @param {bool_t} auto_scale_children_w 缩放子控件的宽度。
  * @param {bool_t} auto_scale_children_h 缩放子控件的高度。
  *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_auto_scale_children(widget_t* widget, int32_t design_w, int32_t design_h,
                                  bool_t auto_scale_children_x, bool_t auto_scale_children_y,
@@ -2921,9 +2921,39 @@ ret_t widget_auto_scale_children(widget_t* widget, int32_t design_w, int32_t des
  * 设置需要更新Style。
  * @param {widget_t*} widget 控件对象。
  * 
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_set_need_update_style(widget_t* widget);
+
+/**
+ * @method widget_on_pointer_down_children
+ * 处理子控件的pointer down事件。
+ * @param {widget_t*} widget 控件对象。
+ * @param {pointer_event_t*} e 事件对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_on_pointer_down_children(widget_t* widget, pointer_event_t* e);
+
+/**
+ * @method widget_on_pointer_move_children
+ * 处理子控件的pointer move事件。
+ * @param {widget_t*} widget 控件对象。
+ * @param {pointer_event_t*} e 事件对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_on_pointer_move_children(widget_t* widget, pointer_event_t* e);
+
+/**
+ * @method widget_on_pointer_up_children
+ * 处理子控件的pointer up事件。
+ * @param {widget_t*} widget 控件对象。
+ * @param {pointer_event_t*} e 事件对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_on_pointer_up_children(widget_t* widget, pointer_event_t* e);
 
 /*public for subclass*/
 TK_EXTERN_VTABLE(widget);

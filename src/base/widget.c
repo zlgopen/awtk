@@ -2690,7 +2690,7 @@ static ret_t widget_on_pointer_down_before_children(widget_t* widget, pointer_ev
   return widget_on_event_before_children(widget, (event_t*)e);
 }
 
-static ret_t widget_on_pointer_down_children(widget_t* widget, pointer_event_t* e) {
+ret_t widget_on_pointer_down_children(widget_t* widget, pointer_event_t* e) {
   ret_t ret = RET_OK;
   widget_t* target = widget_find_target(widget, e->x, e->y);
 
@@ -2771,7 +2771,7 @@ static ret_t widget_on_pointer_move_before_children(widget_t* widget, pointer_ev
   return widget_on_event_before_children(widget, (event_t*)e);
 }
 
-static ret_t widget_on_pointer_move_children(widget_t* widget, pointer_event_t* e) {
+ret_t widget_on_pointer_move_children(widget_t* widget, pointer_event_t* e) {
   ret_t ret = RET_OK;
   widget_t* target = widget_find_target(widget, e->x, e->y);
 
@@ -2852,7 +2852,7 @@ static ret_t widget_on_pointer_up_before_children(widget_t* widget, pointer_even
   return widget_on_event_before_children(widget, (event_t*)e);
 }
 
-static ret_t widget_on_pointer_up_children(widget_t* widget, pointer_event_t* e) {
+ret_t widget_on_pointer_up_children(widget_t* widget, pointer_event_t* e) {
   ret_t ret = RET_OK;
 
   widget_t* target = widget_find_target(widget, e->x, e->y);
