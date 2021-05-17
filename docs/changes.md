@@ -1,7 +1,9 @@
 # 最新动态
 
 2021/05/17
+  * 完善文档。
   * 增加widget\_auto\_scale\_children。
+  * 将widget\_on\_pointer\_xxx\_children公开。
 
 2021/05/16
   * 完善layout处理流程。
