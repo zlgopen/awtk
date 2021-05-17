@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/05/17
+  * 增加widget\_auto\_scale\_children。
+
 2021/05/16
   * 完善layout处理流程。
   * 重构封装获取lcd大小的代码。

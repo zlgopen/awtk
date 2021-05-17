@@ -4627,3 +4627,56 @@ rect_t widget_get_content_area(widget_t* widget) {
     }
   }
 }
+
+typedef struct _auto_resize_info_t {
+  float hscale;
+  float vscale;
+  widget_t* widget;
+  bool_t auto_scale_children_x;
+  bool_t auto_scale_children_y;
+  bool_t auto_scale_children_w;
+  bool_t auto_scale_children_h;
+} auto_resize_info_t;
+
+static ret_t widget_auto_scale_children_child(void* ctx, const void* data) {
+  auto_resize_info_t* info = (auto_resize_info_t*)ctx;
+  widget_t* widget = WIDGET(data);
+
+  if (widget != info->widget) {
+    if (widget->parent->children_layout == NULL && widget->self_layout == NULL) {
+      if (info->auto_scale_children_x) {
+        widget->x *= info->hscale;
+      }
+      if (info->auto_scale_children_w) {
+        widget->w *= info->hscale;
+      }
+      if (info->auto_scale_children_y) {
+        widget->y *= info->vscale;
+      }
+      if (info->auto_scale_children_h) {
+        widget->h *= info->vscale;
+      }
+    }
+  }
+
+  return RET_OK;
+}
+
+ret_t widget_auto_scale_children(widget_t* widget, int32_t design_w, int32_t design_h,
+                                 bool_t auto_scale_children_x, bool_t auto_scale_children_y,
+                                 bool_t auto_scale_children_w, bool_t auto_scale_children_h) {
+  auto_resize_info_t info;
+  return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
+
+  info.widget = widget;
+  info.hscale = (float)(widget->w) / (float)(design_w);
+  info.vscale = (float)(widget->h) / (float)(design_h);
+  info.auto_scale_children_x = auto_scale_children_x;
+  info.auto_scale_children_y = auto_scale_children_y;
+  info.auto_scale_children_w = auto_scale_children_w;
+  info.auto_scale_children_h = auto_scale_children_h;
+
+  widget_foreach(widget, widget_auto_scale_children_child, &info);
+
+  return RET_OK;
+}

@@ -2900,6 +2900,23 @@ ret_t widget_calc_icon_text_rect(const rect_t* ir, int32_t font_size, float_t te
                                  rect_t* r_text, rect_t* r_icon);
 
 /**
+ * @method widget_auto_scale_children
+ * 根据缩放子控件的位置和大小。
+ * @param {widget_t*} widget 控件对象。
+ * @param {int32_t} design_w 设置时的宽度。
+ * @param {int32_t} design_h 设置时的高度。
+ * @param {bool_t} auto_scale_children_x 缩放子控件的x坐标。
+ * @param {bool_t} auto_scale_children_y 缩放子控件的y坐标。
+ * @param {bool_t} auto_scale_children_w 缩放子控件的宽度。
+ * @param {bool_t} auto_scale_children_h 缩放子控件的高度。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。。
+ */
+ret_t widget_auto_scale_children(widget_t* widget, int32_t design_w, int32_t design_h,
+                                 bool_t auto_scale_children_x, bool_t auto_scale_children_y,
+                                 bool_t auto_scale_children_w, bool_t auto_scale_children_h);
+
+/**
  * @method widget_set_need_update_style
  * 设置需要更新Style。
  * @param {widget_t*} widget 控件对象。

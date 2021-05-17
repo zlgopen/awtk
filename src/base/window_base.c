@@ -346,56 +346,13 @@ static widget_t* window_base_get_key_target_leaf(widget_t* widget) {
   return iter;
 }
 
-typedef struct _auto_resize_info_t {
-  widget_t* window;
-  float hscale;
-  float vscale;
-  bool_t auto_scale_children_x;
-  bool_t auto_scale_children_y;
-  bool_t auto_scale_children_w;
-  bool_t auto_scale_children_h;
-} auto_resize_info_t;
-
-static ret_t window_base_auto_scale_children_child(void* ctx, const void* data) {
-  auto_resize_info_t* info = (auto_resize_info_t*)ctx;
-  widget_t* widget = WIDGET(data);
-
-  if (widget != info->window) {
-    if (widget->parent->children_layout == NULL && widget->self_layout == NULL) {
-      if (info->auto_scale_children_x) {
-        widget->x *= info->hscale;
-      }
-      if (info->auto_scale_children_w) {
-        widget->w *= info->hscale;
-      }
-      if (info->auto_scale_children_y) {
-        widget->y *= info->vscale;
-      }
-      if (info->auto_scale_children_h) {
-        widget->h *= info->vscale;
-      }
-    }
-  }
-
-  return RET_OK;
-}
-
 ret_t window_base_auto_scale_children(widget_t* widget) {
-  auto_resize_info_t info;
   window_base_t* win = WINDOW_BASE(widget);
   return_value_if_fail(win->design_w > 0 && win->design_h > 0, RET_BAD_PARAMS);
 
-  info.window = widget;
-  info.hscale = (float)(win->widget.w) / (float)(win->design_w);
-  info.vscale = (float)(win->widget.h) / (float)(win->design_h);
-  info.auto_scale_children_x = win->auto_scale_children_x;
-  info.auto_scale_children_y = win->auto_scale_children_y;
-  info.auto_scale_children_w = win->auto_scale_children_w;
-  info.auto_scale_children_h = win->auto_scale_children_h;
-
-  widget_foreach(widget, window_base_auto_scale_children_child, &info);
-
-  return RET_OK;
+  return widget_auto_scale_children(widget, win->design_w, win->design_h,
+                                    win->auto_scale_children_x, win->auto_scale_children_y,
+                                    win->auto_scale_children_w, win->auto_scale_children_h);
 }
 
 ret_t window_set_auto_scale_children(widget_t* widget, uint32_t design_w, uint32_t design_h) {
