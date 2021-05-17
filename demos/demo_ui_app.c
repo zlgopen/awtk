@@ -348,6 +348,12 @@ static ret_t on_fullscreen(void* ctx, event_t* e) {
   return RET_OK;
 }
 
+static ret_t on_unload_image(void* ctx, event_t* e) {
+  image_manager_unload_unused(image_manager(), 0);
+
+  return RET_OK;
+}
+
 static ret_t on_close(void* ctx, event_t* e) {
   widget_t* win = WIDGET(ctx);
   (void)e;
@@ -673,6 +679,8 @@ static ret_t install_one(void* ctx, const void* iter) {
       widget_on(widget, EVT_CLICK, on_close, win);
     } else if (tk_str_eq(name, "fullscreen")) {
       widget_on(widget, EVT_CLICK, on_fullscreen, widget);
+    } else if (tk_str_eq(name, "unload_image")) {
+      widget_on(widget, EVT_CLICK, on_unload_image, widget);
     } else if (tk_str_eq(name, "start")) {
       widget_on(widget, EVT_CLICK, on_start, win);
     } else if (tk_str_eq(name, "pause")) {

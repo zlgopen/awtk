@@ -1,7 +1,7 @@
 <window anim_hint="htranslate">
   <column style="buttons">
     <button name="open:dialog1" style="round" enable_long_press="true" text="Long Press"/>
-    <button style="red_btn" text="Text"/>
+    <button style="red_btn" text="Unload images" name="unload_image"/>
     <button style="round_top" text="Fullscreen" name="fullscreen"/>
     <button style="round_bottom">
       <label y="0" x="0" w="100%" h="100%" text="Text"/>
