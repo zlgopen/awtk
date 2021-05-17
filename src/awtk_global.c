@@ -153,7 +153,9 @@ ret_t tk_init_internal(void) {
   font_loader_t* font_loader = NULL;
 
   s_ui_thread_id = tk_thread_self();
+#ifndef AWTK_LITE
   fscript_global_init();
+#endif
 #ifdef WITH_FSCRIPT_EXT
   fscript_ext_init();
 #endif /*WITH_FSCRIPT_EXT*/
@@ -322,8 +324,9 @@ ret_t tk_deinit_internal(void) {
 #endif /*WITH_DATA_READER_WRITER*/
 
   system_info_deinit();
+#ifndef AWTK_LITE
   fscript_global_deinit();
-
+#endif
   return RET_OK;
 }
 

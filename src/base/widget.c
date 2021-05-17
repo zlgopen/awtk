@@ -1720,6 +1720,7 @@ static ret_t widget_on_ungrab_keys(void* ctx, event_t* e) {
 }
 
 static ret_t widget_exec_code(void* ctx, event_t* evt) {
+#ifndef AWTK_LITE
   value_t v;
   value_t result;
   ret_t ret = RET_OK;
@@ -1784,6 +1785,9 @@ static ret_t widget_exec_code(void* ctx, event_t* evt) {
   OBJECT_UNREF(obj);
 
   return ret;
+#else
+  return RET_OK;
+#endif
 }
 
 static ret_t widget_free_code(void* ctx, event_t* evt) {

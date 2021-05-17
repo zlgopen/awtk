@@ -4,6 +4,7 @@
   * 完善文档。
   * 增加widget\_auto\_scale\_children。
   * 将widget\_on\_pointer\_xxx\_children公开。
+  * 为AWTK\_LITE优化大小（感谢智明提供补丁）
 
 2021/05/16
   * 完善layout处理流程。

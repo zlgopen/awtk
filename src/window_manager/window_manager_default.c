@@ -117,6 +117,7 @@ static widget_t* window_manager_find_prev_normal_window(widget_t* widget) {
 }
 
 ret_t window_manager_default_snap_curr_window(widget_t* widget, widget_t* curr_win, bitmap_t* img) {
+#ifndef WITHOUT_WINDOW_ANIMATORS
   canvas_t* c = NULL;
   rect_t r = {0};
   canvas_t* canvas = NULL;
@@ -141,10 +142,11 @@ ret_t window_manager_default_snap_curr_window(widget_t* widget, widget_t* curr_w
   ENSURE(canvas_offline_destroy(canvas) == RET_OK);
   img->flags |= BITMAP_FLAG_OPAQUE;
   canvas_restore(c);
-
+#endif
   return RET_OK;
 }
 
+#ifndef WITHOUT_WINDOW_ANIMATORS
 static ret_t window_manager_default_snap_prev_window_draw_dialog_highlighter_and_get_alpha(
     widget_t* widget, canvas_t* c, uint8_t* alpha) {
   value_t v;
@@ -166,8 +168,10 @@ static ret_t window_manager_default_snap_prev_window_draw_dialog_highlighter_and
   }
   return RET_FAIL;
 }
+#endif
 
 ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_win, bitmap_t* img) {
+#ifndef WITHOUT_WINDOW_ANIMATORS
   rect_t r = {0};
   canvas_t* c = NULL;
   canvas_t* canvas = NULL;
@@ -235,6 +239,7 @@ ret_t window_manager_default_snap_prev_window(widget_t* widget, widget_t* prev_w
     dialog_highlighter_set_bg_clip_rect(dialog_highlighter, &r);
   }
   wm->curr_win = NULL;
+#endif
   return RET_OK;
 }
 

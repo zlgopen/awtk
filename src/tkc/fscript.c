@@ -14,6 +14,8 @@
  *
  */
 
+#include "base/types_def.h"
+#ifndef AWTK_LITE
 #include "tkc/mem.h"
 #include "tkc/utils.h"
 #include "tkc/fscript.h"
@@ -2100,3 +2102,5 @@ double tk_expr_eval(const char* expr) {
 
   return value_double(&v);
 }
+
+#endif
