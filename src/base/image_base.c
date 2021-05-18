@@ -30,29 +30,45 @@ ret_t image_base_on_event(widget_t* widget, event_t* e) {
 
   switch (type) {
     case EVT_POINTER_DOWN:
+      image->pressed = TRUE;
+      widget_grab(widget->parent, widget);
+
       if (image->clickable) {
         widget_set_state(widget, WIDGET_STATE_PRESSED);
         widget_invalidate(widget, NULL);
       }
       break;
     case EVT_POINTER_UP: {
-      if (image->clickable) {
-        pointer_event_t evt = *(pointer_event_t*)e;
-        evt.e = event_init(EVT_CLICK, widget);
-        evt.e.size = sizeof(pointer_event_t);
-        widget_dispatch(widget, (event_t*)&evt);
-      }
+      if (image->pressed) {
+        if (image->clickable || image->selectable) {
+          pointer_event_t evt;
+          widget_dispatch(widget, pointer_event_init(&evt, EVT_CLICK, widget, 0, 0));
+        }
 
+        if (!image->selectable) {
+          widget_set_state(widget, WIDGET_STATE_NORMAL);
+        }
+        widget_ungrab(widget->parent, widget);
+      }
+      break;
+    }
+    case EVT_CLICK: {
       if (image->selectable) {
         image->selected = !image->selected;
+        widget_set_state(widget, image->selected ? WIDGET_STATE_SELECTED : WIDGET_STATE_NORMAL);
       }
+      widget_invalidate(widget, NULL);
+      break;
+    }
+    case EVT_POINTER_DOWN_ABORT: {
+      image->pressed = FALSE;
+      widget_ungrab(widget->parent, widget);
 
-      if (image->selected) {
-        widget_set_state(widget, WIDGET_STATE_SELECTED);
+      if (image->selectable) {
+        widget_set_state(widget, image->selected ? WIDGET_STATE_SELECTED : WIDGET_STATE_NORMAL);
       } else {
         widget_set_state(widget, WIDGET_STATE_NORMAL);
       }
-      widget_invalidate(widget, NULL);
       break;
     }
     default:

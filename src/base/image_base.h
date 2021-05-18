@@ -109,6 +109,9 @@ typedef struct _image_base_t {
    * 当前是否被选中。
    */
   bool_t selected;
+
+  /*private*/
+  bool_t pressed;
 } image_base_t;
 
 /**
