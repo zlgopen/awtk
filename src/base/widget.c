@@ -1021,8 +1021,26 @@ static widget_t* widget_lookup_child(widget_t* widget, const char* name) {
 }
 
 widget_t* widget_child(widget_t* widget, const char* path) {
-  /*TODO*/
   return widget_lookup_child(widget, path);
+}
+
+widget_t* widget_get_focused_widget(widget_t* widget) {
+  widget_t* iter = NULL;
+  widget_t* win = widget_get_window(widget);
+  return_value_if_fail(win != NULL, NULL);
+
+  iter = win->key_target;
+  for (iter = win->key_target; iter != NULL; iter = iter->key_target) {
+    if (iter->focusable && iter->focused) {
+      return iter;
+    }
+
+    if (iter->key_target == NULL) {
+      return iter;
+    }
+  }
+
+  return NULL;
 }
 
 static widget_t* widget_lookup_all(widget_t* widget, const char* name) {

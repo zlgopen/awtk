@@ -709,6 +709,16 @@ int32_t widget_count_children(widget_t* widget);
 widget_t* widget_get_child(widget_t* widget, int32_t index);
 
 /**
+ * @method widget_get_focused_widget
+ * 获取当前窗口中的焦点控件。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ *
+ * @return {widget_t*} 焦点控件。
+ */
+widget_t* widget_get_focused_widget(widget_t* widget);
+
+/**
  * @method widget_get_native_window
  * 获取原生窗口对象。
  * @annotation ["scriptable"]

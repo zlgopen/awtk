@@ -1,6 +1,7 @@
 ﻿#include "base/window.h"
 #include "base/canvas.h"
 #include "base/widget.h"
+#include "widgets/button.h"
 #include "font_dummy.h"
 #include "lcd_log.h"
 #include "gtest/gtest.h"
@@ -112,6 +113,32 @@ TEST(Window, font_manager) {
   widget_t* w = window_create(NULL, 10, 20, 30, 40);
 
   ASSERT_EQ(widget_get_font_manager(w), font_manager());
+
+  widget_destroy(w);
+}
+
+TEST(Window, focused_widget) {
+  widget_t* w = window_create(NULL, 0, 0, 300, 400);
+  widget_t* b = button_create(w, 0, 0, 60, 30);
+  widget_set_focusable(b, TRUE);
+  widget_set_name(b, "b1");
+  
+  b = button_create(w, 0, 30, 60, 30);
+  widget_set_focusable(b, TRUE);
+  widget_set_name(b, "b2");
+  
+  b = button_create(w, 0, 30, 60, 30);
+  widget_set_focusable(b, TRUE);
+  widget_set_name(b, "b3");
+
+  widget_focus_first(w);
+  ASSERT_STREQ(widget_get_focused_widget(b)->name, "b1");
+
+  widget_focus_next(widget_get_focused_widget(b));
+  ASSERT_STREQ(widget_get_focused_widget(b)->name, "b2");
+
+  widget_focus_next(widget_get_focused_widget(b));
+  ASSERT_STREQ(widget_get_focused_widget(b)->name, "b3");
 
   widget_destroy(w);
 }
