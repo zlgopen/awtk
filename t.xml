@@ -1,0 +1,6 @@
+<window text="Children Layout">
+  <view name="view" w="100%" h="50%" children_layout="default(r=3,c=3,xm=2,ym=3,s=5)">
+    <button name="2x2" focusable="true" focused="true" text="2x2"/>
+  </view>
+
+</window>

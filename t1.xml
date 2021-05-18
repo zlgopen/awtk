@@ -1,0 +1,15 @@
+<popup style="popup_s1" x="140" y="b" w="300" h="460" theme="window_custom">
+       <view x="10" y="20" w="-20" h="-40">
+         
+         <button name ="btn_blue_color" x="50" y="60" w="-50" h="60" style="empty" children_layout="default(xm=10,r=1,c=2)">
+           <label y="middle" w="100" h="50" name="label_blue" tr_text="blue" style="text_align_left_white"/>
+           <label y="middle" w="60" h="40" style="blue_color_tile" text="aaa"/>
+         </button>
+
+         <button name ="btn_red_color" x="50" y="120" w="-50" h="60" style="empty" children_layout="default(xm=10,r=1,c=2)">
+           <label y="middle" w="100" h="50" name="label_red" tr_text="red" style="text_align_left_white"/>
+           <label y="middle" w="60" h="40" style="red_color_tile" text="bbb"/>
+         </button>
+
+       </view>
+</popup>

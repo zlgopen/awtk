@@ -79,6 +79,14 @@ BEGIN_C_DECLS
 typedef struct _gif_image_t {
   image_base_t image_base;
 
+  /**
+   * @property {bool_t} running
+   * @annotation ["readable"]
+   * 是否正在运行。
+   *
+   */
+  bool_t running;
+
   /*private*/
   uint32_t index;
   uint32_t delay;
@@ -98,6 +106,36 @@ typedef struct _gif_image_t {
  * @return {widget_t*} 对象。
  */
 widget_t* gif_image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h);
+
+/**
+ * @method gif_image_play
+ * 播放。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget gif_image对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t gif_image_play(widget_t* widget);
+
+/**
+ * @method gif_image_stop
+ * 停止(并重置index为-1)。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget gif_image对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t gif_image_stop(widget_t* widget);
+
+/**
+ * @method gif_image_pause
+ * 暂停。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget gif_image对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t gif_image_pause(widget_t* widget);
 
 /**
  * @method gif_image_cast

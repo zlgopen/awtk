@@ -4,6 +4,7 @@
   * 完善image事件处理和测试。
   * 增加函数widget\_get\_focused\_widget。
   * 为AWTK\_LITE优化大小（感谢智明提供补丁）
+  * 完善gif，增加gif\_image\_play/gif\_image\_stop/gif\_image\_pause。
 
 2021/05/17
   * 完善文档。

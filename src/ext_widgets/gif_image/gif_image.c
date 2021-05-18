@@ -42,7 +42,10 @@ static ret_t gif_image_on_timer(const timer_info_t* info) {
   gif_image_t* image = GIF_IMAGE(info->ctx);
   return_value_if_fail(image != NULL, RET_BAD_PARAMS);
 
-  image->index++;
+  if (image->running) {
+    image->index++;
+  }
+
   if (WIDGET(image)->visible) {
     widget_invalidate_force(WIDGET(image), NULL);
   }
@@ -153,8 +156,39 @@ static ret_t gif_image_on_destroy(widget_t* widget) {
   return image_base_on_destroy(widget);
 }
 
+ret_t gif_image_play(widget_t* widget) {
+  gif_image_t* gif_image = GIF_IMAGE(widget);
+  return_value_if_fail(gif_image != NULL, RET_BAD_PARAMS);
+
+  gif_image->running = TRUE;
+
+  return RET_OK;
+}
+
+ret_t gif_image_pause(widget_t* widget) {
+  gif_image_t* gif_image = GIF_IMAGE(widget);
+  return_value_if_fail(gif_image != NULL, RET_BAD_PARAMS);
+
+  gif_image->running = FALSE;
+
+  return RET_OK;
+}
+
+ret_t gif_image_stop(widget_t* widget) {
+  gif_image_t* gif_image = GIF_IMAGE(widget);
+  return_value_if_fail(gif_image != NULL, RET_BAD_PARAMS);
+
+  gif_image->index = 0;
+  gif_image->running = FALSE;
+
+  return RET_OK;
+}
+
+
 TK_DECL_VTABLE(gif_image) = {.size = sizeof(gif_image_t),
                              .type = WIDGET_TYPE_GIF_IMAGE,
+                         .space_key_to_activate = TRUE,
+                         .return_key_to_activate = TRUE,
                              .clone_properties = s_gif_image_properties,
                              .persistent_properties = s_gif_image_properties,
                              .parent = TK_PARENT_VTABLE(image_base),
@@ -173,6 +207,7 @@ widget_t* gif_image_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   return_value_if_fail(gif_image != NULL, NULL);
 
   image_base_init(widget);
+  gif_image_play(widget);
 
   return widget;
 }

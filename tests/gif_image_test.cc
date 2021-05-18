@@ -26,3 +26,21 @@ TEST(GifImage, cast) {
 
   widget_destroy(w);
 }
+
+TEST(GifImage, state) {
+  widget_t* w = window_create(NULL, 0, 0, 0, 0);
+  widget_t* img = gif_image_create(w, 0, 0, 100, 100);
+
+  ASSERT_EQ(GIF_IMAGE(img)->running, TRUE);
+
+  gif_image_stop(img);
+  ASSERT_EQ(GIF_IMAGE(img)->running, FALSE);
+
+  gif_image_play(img);
+  ASSERT_EQ(GIF_IMAGE(img)->running, TRUE);
+  
+  gif_image_pause(img);
+  ASSERT_EQ(GIF_IMAGE(img)->running, FALSE);
+
+  widget_destroy(w);
+}
