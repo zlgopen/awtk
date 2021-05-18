@@ -612,7 +612,12 @@ ret_t assets_manager_set_locale_info(assets_manager_t* am, locale_info_t* locale
 ret_t assets_manager_add(assets_manager_t* am, const void* info) {
   const asset_info_t* r = (const asset_info_t*)info;
   return_value_if_fail(am != NULL && info != NULL, RET_BAD_PARAMS);
-
+#if LOAD_ASSET_WITH_MMAP
+  if (r->is_in_rom) {
+    // 不支持添加非 mmap 资源的外部资源。
+    assert(!" mmap model not supported assets this is in rom ");
+  }
+#endif
   asset_info_ref((asset_info_t*)r);
   return darray_push(&(am->assets), (void*)r);
 }
