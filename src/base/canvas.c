@@ -2037,4 +2037,6 @@ ret_t canvas_stroke_rounded_rect_ex(canvas_t* c, const rect_t* r, const rect_t* 
 }
 #endif /*WITHOUT_ROUNDED_RECT*/
 
+#ifndef AWTK_LITE
 #include "canvas_offline.inc"
+#endif
