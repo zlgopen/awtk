@@ -304,7 +304,7 @@ pip3 install Pillow
 alias python=python3
 ```
 
-#### 22. 如何让用户不可以调整desktop应用程序的窗口大小。 
+#### 23. 如何让用户不可以调整desktop应用程序的窗口大小。 
 
 在 awtk\_config.py 中定义宏 NATIVE\_WINDOW\_NOT\_RESIZABLE，重新编译即可：
 
