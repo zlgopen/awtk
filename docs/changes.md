@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/05/19
+  * 增加宏NATIVE\_WINDOW\_NOT\_RESIZABLE，用于禁止用户调整desktop应用程序的窗口大小。
+
 2021/05/18
   * 完善image事件处理和测试。
   * 增加函数widget\_get\_focused\_widget。
