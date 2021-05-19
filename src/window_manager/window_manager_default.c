@@ -79,6 +79,11 @@ static ret_t window_manager_start_or_reset_screen_saver_timer(window_manager_def
     } else {
       timer_modify(wm->screen_saver_timer_id, wm->screen_saver_time);
     }
+  } else {
+    if (wm->screen_saver_timer_id != TK_INVALID_ID) {
+      timer_remove(wm->screen_saver_timer_id);
+      wm->screen_saver_timer_id = TK_INVALID_ID;
+    }
   }
 
   return RET_OK;
