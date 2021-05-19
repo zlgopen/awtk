@@ -2983,10 +2983,28 @@ ret_t widget_set_focused_internal(widget_t* widget, bool_t focused);
 ret_t widget_remove_child_prepare(widget_t* widget, widget_t* child);
 
 /*public for input_device_status*/
+/**
+ * @method widget_on_keydown
+ * 处理key down事件。
+ * @param {widget_t*} widget 控件对象。
+ * @param {key_event_t*} e 事件对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t widget_on_keydown(widget_t* widget, key_event_t* e);
+
+/**
+ * @method widget_on_keyup
+ * 处理key up事件。
+ * @param {widget_t*} widget 控件对象。
+ * @param {key_event_t*} e 事件对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_on_keyup(widget_t* widget, key_event_t* e);
+
 ret_t widget_on_wheel(widget_t* widget, wheel_event_t* e);
 ret_t widget_on_multi_gesture(widget_t* widget, multi_gesture_event_t* e);
-ret_t widget_on_keyup(widget_t* widget, key_event_t* e);
 ret_t widget_on_pointer_down(widget_t* widget, pointer_event_t* e);
 ret_t widget_on_pointer_move(widget_t* widget, pointer_event_t* e);
 ret_t widget_on_pointer_up(widget_t* widget, pointer_event_t* e);
