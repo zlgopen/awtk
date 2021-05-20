@@ -1,7 +1,8 @@
 # 最新动态
 
 2021/05/20
-  * Window支持EVT_PAINT事件。
+  * Window支持EVT\_PAINT事件。
+  * 完善widget\_to\_xml。
 
 2021/05/19
   * 增加宏NATIVE\_WINDOW\_NOT\_RESIZABLE，用于禁止用户调整desktop应用程序的窗口大小。

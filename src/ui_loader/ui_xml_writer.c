@@ -34,10 +34,35 @@ static ret_t str_write_n_char(str_t* str, char c, uint32_t nr) {
 }
 
 static ret_t ui_xml_writer_write_prop(str_t* str, const char* name, const char* value) {
+  const char* p = value;
   return_value_if_fail(str_append(str, " ") == RET_OK, RET_OOM);
   return_value_if_fail(str_append(str, name) == RET_OK, RET_OOM);
   return_value_if_fail(str_append(str, "=\"") == RET_OK, RET_OOM);
-  return_value_if_fail(str_append(str, value) == RET_OK, RET_OOM);
+
+  for (p = value; *p; p++) {
+    char c = *p;
+    switch (c) {
+      case '"': {
+        return_value_if_fail(str_append(str, "&quot;") == RET_OK, RET_OOM);
+        break;
+      }
+      case '<': {
+        return_value_if_fail(str_append(str, "&lt;") == RET_OK, RET_OOM);
+        break;
+      }
+      case '>': {
+        return_value_if_fail(str_append(str, "&gt;") == RET_OK, RET_OOM);
+        break;
+      }
+      case '&': {
+        return_value_if_fail(str_append(str, "&amp;") == RET_OK, RET_OOM);
+        break;
+      }
+      default: {
+        return_value_if_fail(str_append_char(str, c) == RET_OK, RET_OOM);
+      }
+    }
+  }
   return_value_if_fail(str_append(str, "\"") == RET_OK, RET_OOM);
 
   return RET_OK;
@@ -75,6 +100,10 @@ static ret_t ui_xml_writer_on_widget_start(ui_builder_t* b, const widget_desc_t*
 
 static ret_t ui_xml_writer_on_widget_prop(ui_builder_t* b, const char* name, const char* value) {
   ui_xml_writer_t* writer = (ui_xml_writer_t*)b;
+
+  if (name == NULL || value == NULL) {
+    return RET_OK;
+  }
 
   return ui_xml_writer_write_prop(writer->str, name, value);
 }
