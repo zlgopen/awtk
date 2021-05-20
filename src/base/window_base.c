@@ -33,6 +33,9 @@
 ret_t window_close(widget_t* widget);
 
 ret_t window_base_on_paint_self(widget_t* widget, canvas_t* c) {
+  paint_event_t e;
+  widget_dispatch(widget, paint_event_init(&e, EVT_PAINT, widget, c));
+
   return RET_OK;
 }
 
