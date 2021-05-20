@@ -70,7 +70,13 @@ static inline void* mem_allocator_oom_alloc(mem_allocator_t* allocator, uint32_t
   mem_allocator_t* impl = MEM_ALLOCATOR_OOM(allocator)->impl;
 
   do {
-    addr = mem_allocator_alloc(impl, size, func, line);
+    /*用于测试OOM，正常情况不会分配4G大小的内存块，用它做测试是安全的*/
+    if (size == 0xffffffff) {
+      addr = NULL;
+    } else {
+      addr = mem_allocator_alloc(impl, size, func, line);
+    }
+
     if (addr != NULL) {
       break;
     }

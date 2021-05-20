@@ -167,6 +167,10 @@ static ret_t main_loop_dispatch_events(main_loop_simple_t* loop) {
       case EVT_KEY_UP:
         window_manager_dispatch_input_event(widget, (event_t*)&(r.key_event));
         break;
+      case REQ_EXEC_IN_UI: {
+        r.exec_in_ui.info.func(&(r.exec_in_ui.info));
+        break;
+      }
       case REQ_ADD_IDLE: {
         uint32_t id = idle_add(r.add_idle.func, r.add_idle.e.target);
         if (id != TK_INVALID_ID && r.add_idle.on_destroy != NULL) {

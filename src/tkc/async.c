@@ -56,7 +56,10 @@ static ret_t qaction_async_on_event(qaction_t* action, event_t* event) {
 
   if (event->type == EVT_DONE) {
     done_event_t* e = (done_event_t*)event;
-    info->on_result(info->ctx, e->result);
+    if (info->on_result != NULL) {
+      info->on_result(info->ctx, e->result);
+    }
+
     qaction_destroy(action);
   }
 

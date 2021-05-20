@@ -400,6 +400,7 @@ ret_t window_base_on_event(widget_t* widget, event_t* e) {
     }
   } else if (e->type == EVT_WINDOW_CLOSE) {
     win->stage = WINDOW_STAGE_CLOSED;
+    widget_off_by_ctx(window_manager(), widget);
   } else if (e->type == EVT_THEME_CHANGED) {
     window_base_reload_theme_obj(widget);
   } else if (e->type == EVT_REQUEST_CLOSE_WINDOW) {

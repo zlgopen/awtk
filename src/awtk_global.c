@@ -130,7 +130,7 @@ ret_t tk_init_assets(void) {
   return RET_OK;
 }
 
-static ret_t awtk_mem_on_out_of_memory(void* ctx, uint32_t tried_times, uint32_t need_size) {
+static ret_t tk_clear_cache_when_oom(uint32_t tried_times) {
   if (tried_times == 1) {
     image_manager_unload_unused(image_manager(), 10);
     font_manager_shrink_cache(font_manager(), 10);
@@ -144,6 +144,37 @@ static ret_t awtk_mem_on_out_of_memory(void* ctx, uint32_t tried_times, uint32_t
   } else {
     event_t e = event_init(EVT_OUT_OF_MEMORY, NULL);
     widget_dispatch(window_manager(), &e);
+  }
+
+  return RET_OK;
+}
+
+static tk_semaphore_t* s_clear_cache_semaphore = NULL;
+
+static ret_t exec_clear_cache(exec_info_t* info) {
+  uint32_t tried_times = (uint32_t)tk_pointer_to_int(info->ctx);
+
+  tk_clear_cache_when_oom(tried_times);
+  tk_semaphore_post(s_clear_cache_semaphore);
+  log_debug("clear cache: %u\n", tried_times);
+
+  return RET_REMOVE;
+}
+
+static ret_t awtk_mem_on_out_of_memory(void* ctx, uint32_t tried_times, uint32_t need_size) {
+  if (tk_is_ui_thread()) {
+    tk_clear_cache_when_oom(tried_times);
+  } else {
+    event_queue_req_t req;
+    memset(&req, 0x00, sizeof(req));
+    req.exec_in_ui.e.type = REQ_EXEC_IN_UI;
+    req.exec_in_ui.info.func = exec_clear_cache;
+    req.exec_in_ui.info.ctx = tk_pointer_from_int(tried_times);
+
+    log_debug("req clear cache begin: %u\n", tried_times);
+    main_loop_queue_event(main_loop(), &req);
+    tk_semaphore_wait(s_clear_cache_semaphore, 10000);
+    log_debug("req clear cache done: %u\n", tried_times);
   }
 
   return RET_OK;
@@ -235,6 +266,7 @@ ret_t tk_init_internal(void) {
 
   tk_widgets_init();
   tk_mem_set_on_out_of_memory(awtk_mem_on_out_of_memory, NULL);
+  s_clear_cache_semaphore = tk_semaphore_create(0, "clear_cache");
 
   return RET_OK;
 }
@@ -327,6 +359,8 @@ ret_t tk_deinit_internal(void) {
 #ifndef AWTK_LITE
   fscript_global_deinit();
 #endif
+  tk_semaphore_destroy(s_clear_cache_semaphore);
+
   return RET_OK;
 }
 
