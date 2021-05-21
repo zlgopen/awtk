@@ -168,9 +168,10 @@ TEST(ImageValue, paint) {
   widget_set_prop_str(w, WIDGET_PROP_FORMAT, "%02d");
   widget_set_prop_str(w, WIDGET_PROP_IMAGE, "num_");
 
+  lcd_log_reset(lcd);
   widget_on_paint_self(w, &c);
   ASSERT_EQ(lcd_log_get_commands(lcd),
-            "bf();dg(0,0,30,48,55,16,30,48);dg(0,0,30,48,85,16,30,48);dg(0,0,30,48,115,16,30,48);");
+            "dg(0,0,30,48,55,16,30,48);dg(0,0,30,48,85,16,30,48);dg(0,0,30,48,115,16,30,48);");
   lcd_log_reset(lcd);
 
   widget_set_style_str(w, "text_align_h", "left");
