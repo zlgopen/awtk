@@ -1339,3 +1339,26 @@ TEST(Widget, is_focusable) {
 
   widget_destroy(w);
 }
+
+TEST(Widget, strongly_foucs) {
+  pointer_event_t e;
+  widget_t* w = window_create(NULL, 0, 0, 400, 300);
+  widget_t* b1 = button_create(w, 0, 50, 100, 30);
+  widget_t* b2 = button_create(w, 0, 100, 100, 30);
+  widget_t* b3 = button_create(w, 0, 150, 100, 30);
+
+  widget_set_focusable(b1, TRUE);
+  widget_set_focusable(b2, TRUE);
+
+  widget_set_focused(b1, TRUE);
+  ASSERT_EQ(b1->focused, TRUE);
+
+  widget_on_pointer_down(w, (pointer_event_t*)pointer_event_init(&e, EVT_POINTER_DOWN, w, 10, 10));
+  ASSERT_EQ(b1->focused, FALSE);
+
+  widget_set_focused(b1, TRUE);
+  widget_set_prop_bool(w, WIDGET_PROP_STRONGLY_FOCUS, TRUE);
+  widget_on_pointer_down(w, (pointer_event_t*)pointer_event_init(&e, EVT_POINTER_DOWN, w, 10, 10));
+  ASSERT_EQ(b1->focused, TRUE);
+}
+

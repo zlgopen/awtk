@@ -204,6 +204,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_SINGLE_INSTANCE "single_instance"
 
 /**
+ * @const WIDGET_PROP_STRONGLY_FOCUS
+ * 点击非focusable控件时，是否让当前焦点控件失去焦点。比如点击窗口空白区域，是否让编辑器失去焦点。 
+ */
+#define WIDGET_PROP_STRONGLY_FOCUS "strongly_focus"
+
+/**
  * @const WIDGET_PROP_CHILDREN_LAYOUT
  * 子控件布局参数。
  */

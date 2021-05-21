@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/05/21
+  * 窗口增加属性strongly_focus。点击非focusable控件时，用于控制是否让当前焦点控件失去焦点。
+
 2021/05/20
   * Window支持EVT\_PAINT事件。
   * 完善widget\_to\_xml。

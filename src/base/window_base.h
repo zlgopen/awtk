@@ -239,6 +239,13 @@ typedef struct _window_base_t {
    * 单例。如果窗口存在，先关闭再打开。
    */
   bool_t single_instance;
+  
+  /**
+   * @property {bool_t} strongly_focus
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 点击非focusable控件时，是否让当前焦点控件失去焦点。比如点击窗口空白区域，是否让编辑器失去焦点。 
+   */
+  bool_t strongly_focus;
 
   /*private*/
   const asset_info_t* res_theme;

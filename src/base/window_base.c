@@ -195,6 +195,9 @@ ret_t window_base_get_prop(widget_t* widget, const char* name, value_t* v) {
   } else if (tk_str_eq(name, WIDGET_PROP_SINGLE_INSTANCE)) {
     value_set_bool(v, window_base->single_instance);
     return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_STRONGLY_FOCUS)) {
+    value_set_bool(v, window_base->strongly_focus);
+    return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_DESIGN_W)) {
     value_set_uint32(v, window_base->design_w);
     return RET_OK;
@@ -263,6 +266,9 @@ ret_t window_base_set_prop(widget_t* widget, const char* name, const value_t* v)
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_SINGLE_INSTANCE)) {
     window_base->single_instance = value_bool(v);
+    return RET_OK;
+  } else if (tk_str_eq(name, WIDGET_PROP_STRONGLY_FOCUS)) {
+    window_base->strongly_focus = value_bool(v);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_DESIGN_W)) {
     window_base->design_w = value_uint32(v);
@@ -511,6 +517,7 @@ static const char* s_window_base_properties[] = {WIDGET_PROP_ANIM_HINT,
                                                  WIDGET_PROP_MOVE_FOCUS_LEFT_KEY,
                                                  WIDGET_PROP_MOVE_FOCUS_RIGHT_KEY,
                                                  WIDGET_PROP_SINGLE_INSTANCE,
+                                                 WIDGET_PROP_STRONGLY_FOCUS,
                                                  WIDGET_PROP_DESIGN_W,
                                                  WIDGET_PROP_DESIGN_H,
                                                  WIDGET_PROP_AUTO_SCALE_CHILDREN_X,

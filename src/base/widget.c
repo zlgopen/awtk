@@ -67,6 +67,15 @@ static ret_t widget_on_paint_end(widget_t* widget, canvas_t* c);
 typedef widget_t* (*widget_find_wanted_focus_widget_t)(widget_t* widget, darray_t* all_focusable);
 static ret_t widget_move_focus(widget_t* widget, widget_find_wanted_focus_widget_t find);
 
+static bool_t widget_is_strongly_focus(widget_t* widget) {
+  widget_t* win = widget_get_window(widget);
+  if (win != NULL) {
+    return WINDOW_BASE(win)->strongly_focus;
+  } else {
+    return FALSE;
+  }
+}
+
 ret_t widget_set_need_update_style(widget_t* widget) {
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
@@ -2718,13 +2727,15 @@ ret_t widget_on_pointer_down_children(widget_t* widget, pointer_event_t* e) {
 
   if (target != NULL && target->enable && target->sensitive) {
     if (!(widget_is_keyboard(target))) {
-      if (!target->focused) {
-        widget_set_focused_internal(target, TRUE);
-      } else {
-        widget->key_target = target;
+      if (widget_is_focusable(target) || !widget_is_strongly_focus(widget)) {
+        if (!target->focused) {
+          widget_set_focused_internal(target, TRUE);
+        } else {
+          widget->key_target = target;
+        }
       }
     }
-  } else if (widget->key_target) {
+  } else if (widget->key_target && !widget_is_strongly_focus(widget)) {
     widget_set_focused_internal(widget->key_target, FALSE);
   }
   return_if_equal(ret, RET_STOP);
