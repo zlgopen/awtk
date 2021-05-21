@@ -220,6 +220,22 @@ ret_t bitmap_init_from_rgba(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_for
                             const uint8_t* data, uint32_t comp);
 
 /**
+ * @method bitmap_init_from_bgra
+ * 初始化图片。
+ * @param {bitmap_t*} bitmap bitmap对象。
+ * @param {uint32_t} w 宽度。
+ * @param {uint32_t} h 高度。
+ * @param {bitmap_format_t} format 格式。
+ * @param {const uint8_t*} data
+ * 数据。3通道时为BGR888格式，4通道时为BGRA888格式(内部拷贝该数据，不会引用，调用者自行释放)。
+ * @param {uint32_t} comp 颜色通道数(目前支持3(bgr)和4(bgra))。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t bitmap_init_from_bgra(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t format,
+                            const uint8_t* data, uint32_t comp);
+
+/**
  * @method bitmap_init
  * 初始化图片。
  * @param {bitmap_t*} bitmap bitmap对象。

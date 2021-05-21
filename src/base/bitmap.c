@@ -417,6 +417,40 @@ bool_t rgba_data_is_opaque(const uint8_t* data, uint32_t w, uint32_t h, uint8_t 
   return TRUE;
 }
 
+ret_t bitmap_init_from_bgra(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t format,
+                            const uint8_t* data, uint32_t comp) {
+  return_value_if_fail(bitmap != NULL && data != NULL && (comp == 3 || comp == 4), RET_BAD_PARAMS);
+
+  memset(bitmap, 0x00, sizeof(bitmap_t));
+
+  bitmap->w = w;
+  bitmap->h = h;
+  bitmap->format = format;
+  bitmap_set_line_length(bitmap, 0);
+  bitmap->flags = BITMAP_FLAG_IMMUTABLE;
+  return_value_if_fail(bitmap_alloc_data(bitmap) == RET_OK, RET_OOM);
+
+  if (rgba_data_is_opaque(data, w, h, comp)) {
+    bitmap->flags |= BITMAP_FLAG_OPAQUE;
+  }
+
+  if (format == BITMAP_FMT_BGRA8888) {
+    return bitmap_init_rgba8888(bitmap, w, h, data, comp);
+  } else if (format == BITMAP_FMT_RGBA8888) {
+    return bitmap_init_bgra8888(bitmap, w, h, data, comp);
+  } else if (format == BITMAP_FMT_BGR565) {
+    return bitmap_init_rgb565(bitmap, w, h, data, comp);
+  } else if (format == BITMAP_FMT_RGB565) {
+    return bitmap_init_bgr565(bitmap, w, h, data, comp);
+  } else if (format == BITMAP_FMT_MONO) {
+    return bitmap_init_mono(bitmap, w, h, data, comp);
+  } else if (format == BITMAP_FMT_GRAY) {
+    return bitmap_init_gray(bitmap, w, h, data, comp);
+  } else {
+    return RET_NOT_IMPL;
+  }
+}
+
 ret_t bitmap_init_from_rgba(bitmap_t* bitmap, uint32_t w, uint32_t h, bitmap_format_t format,
                             const uint8_t* data, uint32_t comp) {
   return_value_if_fail(bitmap != NULL && data != NULL && (comp == 3 || comp == 4), RET_BAD_PARAMS);
