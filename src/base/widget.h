@@ -3009,6 +3009,7 @@ ret_t widget_on_pointer_down(widget_t* widget, pointer_event_t* e);
 ret_t widget_on_pointer_move(widget_t* widget, pointer_event_t* e);
 ret_t widget_on_pointer_up(widget_t* widget, pointer_event_t* e);
 ret_t widget_on_context_menu(widget_t* widget, pointer_event_t* e);
+bool_t widget_is_focusable(widget_t* widget);
 
 #define WIDGET_EXEC_START_ANIMATOR "start_animator"
 #define WIDGET_EXEC_STOP_ANIMATOR "stop_animator"

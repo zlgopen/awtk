@@ -1319,3 +1319,23 @@ TEST(Widget, get_text_utf8) {
 
   widget_destroy(w);
 }
+
+TEST(Widget, is_focusable) {
+  char text[32];
+  widget_t* w = button_create(NULL, 0, 0, 0, 0);
+  ASSERT_EQ(widget_is_focusable(w), FALSE);
+  widget_set_focusable(w, TRUE);
+  ASSERT_EQ(widget_is_focusable(w), TRUE);
+
+  widget_set_enable(w, FALSE);
+  ASSERT_EQ(widget_is_focusable(w), FALSE);
+  widget_set_enable(w, TRUE);
+  ASSERT_EQ(widget_is_focusable(w), TRUE);
+  
+  widget_set_sensitive(w, FALSE);
+  ASSERT_EQ(widget_is_focusable(w), FALSE);
+  widget_set_sensitive(w, TRUE);
+  ASSERT_EQ(widget_is_focusable(w), TRUE);
+
+  widget_destroy(w);
+}

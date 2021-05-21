@@ -154,10 +154,10 @@ static bool_t widget_with_focus_state(widget_t* widget) {
   return value_bool(&v);
 }
 
-static bool_t widget_is_focusable(widget_t* widget) {
+bool_t widget_is_focusable(widget_t* widget) {
   return_value_if_fail(widget != NULL && widget->vt != NULL, FALSE);
 
-  if (!widget->visible || !widget->sensitive) {
+  if (!widget->visible || !widget->sensitive || !widget->enable) {
     return FALSE;
   }
 
@@ -2716,7 +2716,7 @@ ret_t widget_on_pointer_down_children(widget_t* widget, pointer_event_t* e) {
   ret_t ret = RET_OK;
   widget_t* target = widget_find_target(widget, e->x, e->y);
 
-  if (target != NULL && target->enable) {
+  if (target != NULL && target->enable && target->sensitive) {
     if (!(widget_is_keyboard(target))) {
       if (!target->focused) {
         widget_set_focused_internal(target, TRUE);
