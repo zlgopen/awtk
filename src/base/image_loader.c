@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   image_loader.h
  * Author: AWTK Develop Team
  * Brief:  image_loader interface
@@ -28,7 +28,7 @@ ret_t image_loader_load(image_loader_t* loader, const asset_info_t* asset, bitma
   return loader->load(loader, asset, bitmap);
 }
 
-#define MAX_IMAGE_LOADERS 3
+#define MAX_IMAGE_LOADERS 5
 static image_loader_t* s_image_loaders[MAX_IMAGE_LOADERS];
 
 ret_t image_loader_register(image_loader_t* loader) {
@@ -60,10 +60,10 @@ ret_t image_loader_unregister(image_loader_t* loader) {
 }
 
 ret_t image_loader_load_image(const asset_info_t* asset, bitmap_t* bitmap) {
-  uint32_t i = 0;
+  int32_t i = ARRAY_SIZE(s_image_loaders) - 1;
   return_value_if_fail(asset != NULL && bitmap != NULL, RET_BAD_PARAMS);
 
-  for (i = 0; i < ARRAY_SIZE(s_image_loaders); i++) {
+  for (; i >= 0; i--) {
     image_loader_t* loader = s_image_loaders[i];
 
     if (loader != NULL && image_loader_load(loader, asset, bitmap) == RET_OK) {
