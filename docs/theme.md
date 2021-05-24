@@ -81,6 +81,8 @@ AWTK 的窗体样式按控件进行分类，每种控件可以有多种不同的
 * border\_width 边框线宽（仅在定义 WITH\_VGCANVAS 时有效）。
 * self\_layout 自身布局参数。请参考 [控件布局参数文档](layout.md)
 * children\_layout 子控件布局参数。请参考 [控件布局参数文档](layout.md)
+* focusable 是否支持焦点停留。
+* feedback 是否支持feedback。
 
 > 颜色可使用标准名称，#开头的 16 进制值和 rgba 合成的值。
 

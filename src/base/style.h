@@ -279,6 +279,18 @@ BEGIN_C_DECLS
  */
 #define STYLE_ID_SELF_LAYOUT "self_layout"
 
+/**
+ * @const STYLE_ID_FOCUSABLE
+ * 是否支持焦点停留。
+ */
+#define STYLE_ID_FOCUSABLE "focusable"
+
+/**
+ * @const STYLE_ID_FEEDBACK
+ * 是否启用按键音、触屏音和震动等反馈。
+ */
+#define STYLE_ID_FEEDBACK "feedback"
+
 struct _style_t;
 typedef struct _style_t style_t;
 

@@ -76,9 +76,11 @@ static const void* widget_get_const_style_data(widget_t* widget, style_t* s) {
   return data;
 }
 
-static ret_t style_const_apply_layout(style_t* s, widget_t* widget) {
+static ret_t style_const_apply_props(style_t* s, widget_t* widget) {
   const char* self_layout = style_get_str(s, STYLE_ID_SELF_LAYOUT, NULL);
   const char* children_layout = style_get_str(s, STYLE_ID_CHILDREN_LAYOUT, NULL);
+  const char* focusable = style_get_str(s, STYLE_ID_FOCUSABLE, NULL);
+  const char* feedback = style_get_str(s, STYLE_ID_FEEDBACK, NULL);
 
   if (self_layout != NULL || children_layout != NULL) {
     if (self_layout != NULL) {
@@ -90,6 +92,14 @@ static ret_t style_const_apply_layout(style_t* s, widget_t* widget) {
       widget_set_children_layout(widget, children_layout);
       widget_set_need_relayout_children(widget);
     }
+  }
+
+  if (focusable != NULL) {
+    widget->focusable = *focusable == 'T' || *focusable == 't';
+  }
+  
+  if (feedback != NULL) {
+    widget->feedback = *feedback == 'T' || *feedback == 't';
   }
 
   return RET_OK;
@@ -106,7 +116,7 @@ static ret_t style_const_notify_widget_state_changed(style_t* s, widget_t* widge
   style->data = widget_get_const_style_data(widget, s);
 
   if (old_data != style->data) {
-    style_const_apply_layout(s, widget);
+    style_const_apply_props(s, widget);
   }
 
   return RET_OK;
