@@ -83,7 +83,7 @@ static ret_t edit_commit_text(widget_t* widget) {
   return RET_OK;
 }
 
-static ret_t edit_dispatch_event(widget_t* widget, event_type_t type) {
+static ret_t edit_dispatch_value_change_event(widget_t* widget, event_type_t type) {
   value_change_event_t evt;
   value_change_event_init(&evt, type, widget);
   value_set_wstr(&(evt.old_value), widget->text.str);
@@ -282,7 +282,7 @@ ret_t edit_input_char(widget_t* widget, wchar_t c) {
     }
 
     ret = edit_do_input_char(widget, c);
-    edit_dispatch_event(widget, EVT_VALUE_CHANGING);
+    edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGING);
   }
 
   return ret;
@@ -633,7 +633,7 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
     }
 
     if (key != TK_KEY_LEFT && key != TK_KEY_RIGHT && key != TK_KEY_HOME && key != TK_KEY_END) {
-      edit_dispatch_event(widget, EVT_VALUE_CHANGING);
+      edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGING);
     }
   } else if (key < 128 && isprint(key)) {
     app_type_t app_type = system_info()->app_type;
@@ -804,7 +804,7 @@ ret_t edit_on_event(widget_t* widget, event_t* e) {
       edit_update_status(widget);
       edit_check_valid_value(widget);
       text_edit_unselect(edit->model);
-      edit_dispatch_event(widget, EVT_VALUE_CHANGED);
+      edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGED);
       edit_commit_text(widget);
       break;
     }
@@ -1081,6 +1081,17 @@ ret_t edit_set_keyboard(widget_t* widget, const char* keyboard) {
   return RET_OK;
 }
 
+static bool_t widget_has_uint_min_max(widget_t* widget) {
+  edit_t* edit = EDIT(widget);
+  input_type_t input_type = INPUT_TEXT;
+  return_value_if_fail(edit != NULL, FALSE);
+
+  input_type = edit->input_type;
+  
+  return input_type == INPUT_TEXT || input_type == INPUT_ASCII || input_type == INPUT_PASSWORD 
+    || input_type == INPUT_EMAIL || input_type == INPUT_UINT;
+}
+
 ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
   edit_t* edit = EDIT(widget);
   input_type_t input_type = INPUT_TEXT;
@@ -1088,9 +1099,9 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
 
   input_type = edit->input_type;
   if (tk_str_eq(name, WIDGET_PROP_MIN)) {
-    if (input_type == INPUT_INT || input_type == INPUT_UINT) {
+    if (input_type == INPUT_INT) {
       value_set_int(v, edit->min);
-    } else if (input_type == INPUT_TEXT) {
+    } else if (widget_has_uint_min_max(widget)) {
       value_set_uint32(v, edit->min);
     } else if (input_type == INPUT_FLOAT || input_type == INPUT_UFLOAT) {
       value_set_double(v, edit->min);
@@ -1099,9 +1110,9 @@ ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {
     }
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_MAX)) {
-    if (input_type == INPUT_INT || input_type == INPUT_UINT) {
+    if (input_type == INPUT_INT) {
       value_set_int(v, edit->max);
-    } else if (input_type == INPUT_TEXT) {
+    } else if (widget_has_uint_min_max(widget)) {
       value_set_uint32(v, edit->max);
     } else if (input_type == INPUT_FLOAT || input_type == INPUT_UFLOAT) {
       value_set_double(v, edit->max);
@@ -1253,7 +1264,7 @@ static ret_t edit_set_text(widget_t* widget, const value_t* v) {
     wstr_set(&(widget->text), str.str);
 
     text_edit_set_cursor(edit->model, widget->text.size);
-    edit_dispatch_event(widget, EVT_VALUE_CHANGED);
+    edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGED);
     edit_update_status(widget);
     edit_check_valid_value(widget);
   }
@@ -1423,7 +1434,7 @@ static ret_t edit_add_float(edit_t* edit, double delta) {
   }
 
   wstr_trim_float_zero(text);
-  edit_dispatch_event(widget, EVT_VALUE_CHANGING);
+  edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGING);
 
   return RET_OK;
 }
@@ -1449,7 +1460,7 @@ static ret_t edit_add_int(edit_t* edit, int delta) {
   }
 
   wstr_from_int(text, v);
-  edit_dispatch_event(widget, EVT_VALUE_CHANGING);
+  edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGING);
 
   return RET_OK;
 }
@@ -1916,7 +1927,7 @@ ret_t edit_add_value_with_sep(widget_t* widget, int delta, char sep) {
   }
 
   text_edit_set_select(edit->model, cursor, cursor + 1);
-  edit_dispatch_event(widget, EVT_VALUE_CHANGING);
+  edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGING);
 
   return widget_invalidate_force(widget, NULL);
 }
