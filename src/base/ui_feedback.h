@@ -60,6 +60,16 @@ ret_t ui_feedback_request(widget_t* widget, event_t* evt);
  */
 ret_t ui_feedback_init(ui_on_feedback_t on_feedback, void* ctx);
 
+/**
+ * @method ui_feedback_deinit
+ * ~初始化。
+ *
+ * @annotation ["static"]
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t ui_feedback_deinit(void);
+
 END_C_DECLS
 
 #endif /*TK_UI_FEEDBACK_H*/

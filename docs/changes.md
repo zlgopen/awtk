@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/05/25
+  * 增加ui\_feedback\_deinit。
+
 2021/05/23
   * style支持feedback/focusable。
 

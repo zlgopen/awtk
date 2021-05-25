@@ -40,3 +40,10 @@ ret_t ui_feedback_init(ui_on_feedback_t on_feedback, void* ctx) {
 
   return RET_OK;
 }
+
+ret_t ui_feedback_deinit(void) {
+  s_on_feedback = NULL;
+  s_on_feedback_ctx = NULL;
+
+  return RET_OK;
+}
