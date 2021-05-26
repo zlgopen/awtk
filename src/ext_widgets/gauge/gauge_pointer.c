@@ -30,15 +30,15 @@
 
 #define ANCHOR_PX_STR_LEN 2
 
-ret_t gauge_pointer_set_angle(widget_t* widget, int32_t angle) {
+ret_t gauge_pointer_set_angle(widget_t* widget, float_t angle) {
   gauge_pointer_t* gauge_pointer = GAUGE_POINTER(widget);
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
   if (gauge_pointer->angle != angle) {
     value_change_event_t evt;
     value_change_event_init(&evt, EVT_VALUE_WILL_CHANGE, widget);
-    value_set_uint32(&(evt.old_value), gauge_pointer->angle);
-    value_set_uint32(&(evt.new_value), angle);
+    value_set_float(&(evt.old_value), gauge_pointer->angle);
+    value_set_float(&(evt.new_value), angle);
 
     if (widget_dispatch(widget, (event_t*)&evt) != RET_STOP) {
       gauge_pointer->angle = angle;
@@ -153,7 +153,7 @@ static ret_t gauge_pointer_get_prop(widget_t* widget, const char* name, value_t*
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, GAUGE_POINTER_PROP_ANGLE) || tk_str_eq(name, WIDGET_PROP_VALUE)) {
-    value_set_int(v, gauge_pointer->angle);
+    value_set_float(v, gauge_pointer->angle);
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_IMAGE)) {
     value_set_str(v, gauge_pointer->image);
@@ -173,7 +173,7 @@ static ret_t gauge_pointer_set_prop(widget_t* widget, const char* name, const va
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, GAUGE_POINTER_PROP_ANGLE) || tk_str_eq(name, WIDGET_PROP_VALUE)) {
-    return gauge_pointer_set_angle(widget, value_int(v));
+    return gauge_pointer_set_angle(widget, value_float(v));
   } else if (tk_str_eq(name, WIDGET_PROP_IMAGE)) {
     return gauge_pointer_set_image(widget, value_str(v));
   } else if (tk_str_eq(name, WIDGET_PROP_ANCHOR_X)) {

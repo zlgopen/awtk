@@ -62,11 +62,11 @@ typedef struct _gauge_pointer_t {
   widget_t widget;
 
   /**
-   * @property {int32_t} angle
+   * @property {float_t} angle
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 指针角度。12点钟方向为0度，顺时钟方向为正，单位为度。
    */
-  int32_t angle;
+  float_t angle;
 
   /**
    * @property {char*} image
@@ -135,11 +135,11 @@ widget_t* gauge_pointer_cast(widget_t* widget);
  * 设置指针角度。12点钟方向为0度，顺时钟方向为正，单位为度。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 控件对象。
- * @param {int32_t} angle 指针角度。
+ * @param {float_t} angle 指针角度。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t gauge_pointer_set_angle(widget_t* widget, int32_t angle);
+ret_t gauge_pointer_set_angle(widget_t* widget, float_t angle);
 
 /**
  * @method gauge_pointer_set_image

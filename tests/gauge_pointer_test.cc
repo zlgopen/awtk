@@ -30,6 +30,9 @@ TEST(GuagePointer, set_angle) {
   EXPECT_TRUE(gauge_pointer_set_angle(gauge_pointer, -10) == RET_OK);
 
   EXPECT_TRUE(gauge_pointer_set_angle(gauge_pointer, 370) == RET_OK);
+  
+  EXPECT_TRUE(gauge_pointer_set_angle(gauge_pointer, 10.5) == RET_OK);
+  EXPECT_TRUE(gauge_pointer_tmp->angle == 10.5);
 
   widget_destroy(w);
   idle_dispatch();
