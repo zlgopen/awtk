@@ -26,12 +26,18 @@ static ret_t window_animator_fade_draw_curr(window_animator_t* wa) {
   widget_t* win = wa->curr_win;
 
   uint8_t global_alpha = wa->percent * 0xff;
+#ifndef WITHOUT_WINDOW_ANIMATOR_CACHE
   rect_t dst = rect_init(win->x, win->y, win->w, win->h);
   rect_t src = rect_init(win->x, win->y, win->w, win->h);
 
   lcd_set_global_alpha(c->lcd, global_alpha);
 
   return lcd_draw_image(c->lcd, &(wa->curr_img), rect_scale(&src, wa->ratio), &dst);
+#else
+  lcd_set_global_alpha(c->lcd, global_alpha);
+
+  return widget_paint(win, c);
+#endif/*WITHOUT_WINDOW_ANIMATOR_CACHE*/
 }
 
 static const window_animator_vtable_t s_window_animator_fade_vt = {

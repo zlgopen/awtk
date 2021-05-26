@@ -40,10 +40,17 @@ static ret_t window_animator_vtranslate_draw_prev(window_animator_t* wa) {
   float_t y = tk_roundi(curr_win->h * percent);
   float_t h = win->h - y;
 
+#ifndef WITHOUT_WINDOW_ANIMATOR_CACHE
   rect_t src = rect_init(win->x, y + win->y, win->w, h);
   rect_t dst = rect_init(win->x, win->y, win->w, h);
 
   return lcd_draw_image(c->lcd, &(wa->prev_img), rect_scale(&src, wa->ratio), &dst);
+#else
+  canvas_translate(c, 0, -y);
+  widget_paint(win, c);
+  canvas_untranslate(c, 0, -y);
+  return RET_OK;
+#endif/*WITHOUT_WINDOW_ANIMATOR_CACHE*/
 }
 
 static ret_t window_animator_vtranslate_draw_curr(window_animator_t* wa) {
@@ -53,10 +60,19 @@ static ret_t window_animator_vtranslate_draw_curr(window_animator_t* wa) {
   float_t h = tk_roundi(win->h * percent);
   float_t y = win->parent->h - h;
 
+#ifndef WITHOUT_WINDOW_ANIMATOR_CACHE
   rect_t src = rect_init(win->x, win->y, win->w, h);
   rect_t dst = rect_init(win->x, y, win->w, h);
 
   return lcd_draw_image(c->lcd, &(wa->curr_img), rect_scale(&src, wa->ratio), &dst);
+#else
+  y = win->h * (1-percent);
+  canvas_translate(c, 0, y);
+  widget_paint(win, c);
+  canvas_untranslate(c, 0, y);
+
+  return RET_OK;
+#endif/*WITHOUT_WINDOW_ANIMATOR_CACHE*/
 }
 
 static const window_animator_vtable_t s_window_animator_vtranslate_vt = {

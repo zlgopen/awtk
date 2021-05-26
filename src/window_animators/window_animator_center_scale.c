@@ -21,14 +21,21 @@
 
 #include "window_animators/window_animator_center_scale.h"
 
+#ifdef WITH_NANOVG_GPU
+#define START_PERCENT  0.5f
+#else
+#define START_PERCENT  0.9f
+#endif
+
 static ret_t window_animator_center_scale_update_percent(window_animator_t* wa) {
+
   if (wa->open) {
-    wa->percent = 0.9f + 0.1f * wa->easing(wa->time_percent);
+    wa->percent = START_PERCENT + (1-START_PERCENT) * wa->easing(wa->time_percent);
     if (wa->easing(wa->time_percent) == 0) {
       wa->percent = 0;
     }
   } else {
-    wa->percent = 1.0f - 0.1f * wa->easing(wa->time_percent);
+    wa->percent = 1.0f - (1-START_PERCENT) * wa->easing(wa->time_percent);
   }
 
   return RET_OK;
@@ -39,6 +46,7 @@ static ret_t window_animator_center_scale_draw_curr(window_animator_t* wa) {
   widget_t* win = wa->curr_win;
   float_t scale = wa->percent;
 
+#ifndef WITHOUT_WINDOW_ANIMATOR_CACHE
   rect_t src = rect_init(win->x, win->y, win->w, win->h);
   rect_t dst = rect_init(0, 0, win->w * scale, win->h * scale);
 
@@ -53,6 +61,27 @@ static ret_t window_animator_center_scale_draw_curr(window_animator_t* wa) {
   dst.y = win->y + ((win->h - dst.h) >> 1);
 
   return lcd_draw_image(c->lcd, &(wa->curr_img), rect_scale(&src, wa->ratio), &dst);
+#else
+#ifdef WITH_NANOVG_GPU
+  vgcanvas_t* vg = canvas_get_vgcanvas(c);
+  float x = win->x + (win->w/2);
+  float y = win->y + (win->h/2);
+  float alpha = 1-(1-scale) / (1 - START_PERCENT);
+
+  vgcanvas_save(vg);
+  vgcanvas_translate(vg, x, y);
+  vgcanvas_scale(vg, scale, scale);
+  vgcanvas_translate(vg, -x, -y);
+  vgcanvas_set_global_alpha(vg, alpha);
+  widget_paint(win, c);
+  vgcanvas_restore(vg);
+  return RET_OK;
+#else
+  assert(!"not supported");
+  return RET_FAIL;
+#endif/*WITH_NANOVG_GPU*/
+
+#endif/*WITHOUT_WINDOW_ANIMATOR_CACHE*/
 }
 
 static const window_animator_vtable_t s_window_animator_center_scale_vt = {

@@ -33,6 +33,7 @@ ret_t window_animator_to_bottom_draw_curr(window_animator_t* wa) {
   canvas_t* c = wa->canvas;
   widget_t* win = wa->curr_win;
   float_t percent = wa->percent;
+#ifndef WITHOUT_WINDOW_ANIMATOR_CACHE
   int32_t y = win->y;
   int32_t h = tk_roundi(win->h * percent);
 
@@ -44,12 +45,20 @@ ret_t window_animator_to_bottom_draw_curr(window_animator_t* wa) {
   }
 
   return lcd_draw_image(c->lcd, &(wa->curr_img), rect_scale(&src, wa->ratio), &dst);
+#else
+  int32_t y = -win->h * (1-percent);
+  canvas_translate(c, 0, y);
+  widget_paint(win, c);
+  canvas_untranslate(c, 0, y);
+  return RET_OK;
+#endif/*WITHOUT_WINDOW_ANIMATOR_CACHE*/
 }
 
 ret_t window_animator_to_top_draw_curr(window_animator_t* wa) {
   canvas_t* c = wa->canvas;
   widget_t* win = wa->curr_win;
   float_t percent = wa->percent;
+#ifndef WITHOUT_WINDOW_ANIMATOR_CACHE
   int32_t y = win->y + tk_roundi(win->h * (1 - percent));
   int32_t h = win->y + win->h - y;
 
@@ -61,12 +70,20 @@ ret_t window_animator_to_top_draw_curr(window_animator_t* wa) {
   }
 
   return lcd_draw_image(c->lcd, &(wa->curr_img), rect_scale(&src, wa->ratio), &dst);
+#else
+  int32_t y = win->h * (1-percent);
+  canvas_translate(c, 0, y);
+  widget_paint(win, c);
+  canvas_untranslate(c, 0, y);
+  return RET_OK;
+#endif/*WITHOUT_WINDOW_ANIMATOR_CACHE*/
 }
 
 ret_t window_animator_to_left_draw_curr(window_animator_t* wa) {
   canvas_t* c = wa->canvas;
   widget_t* win = wa->curr_win;
   float_t percent = wa->percent;
+#ifndef WITHOUT_WINDOW_ANIMATOR_CACHE
   int32_t x = win->x + tk_roundi(win->w * (1 - percent));
   int32_t w = win->x + win->w - x;
 
@@ -78,14 +95,22 @@ ret_t window_animator_to_left_draw_curr(window_animator_t* wa) {
   }
 
   return lcd_draw_image(c->lcd, &(wa->curr_img), rect_scale(&src, wa->ratio), &dst);
+#else
+  int32_t x = -win->w * (1-percent);
+
+  canvas_translate(c, x, 0);
+  widget_paint(win, c);
+  canvas_untranslate(c, x, 0);
+  return RET_OK;
+#endif/*WITHOUT_WINDOW_ANIMATOR_CACHE*/
 }
 
 ret_t window_animator_to_right_draw_curr(window_animator_t* wa) {
   canvas_t* c = wa->canvas;
   widget_t* win = wa->curr_win;
   float_t percent = wa->percent;
+#ifndef WITHOUT_WINDOW_ANIMATOR_CACHE
   int32_t x = win->x;
-
   int32_t w = tk_roundi(win->w * percent);
   rect_t src = rect_init(win->x + win->w - w, win->y, w, win->h);
   rect_t dst = rect_init(x, win->y, w, win->h);
@@ -95,6 +120,14 @@ ret_t window_animator_to_right_draw_curr(window_animator_t* wa) {
   }
 
   return lcd_draw_image(c->lcd, &(wa->curr_img), rect_scale(&src, wa->ratio), &dst);
+#else
+  int32_t x = win->w * (1-percent);
+
+  canvas_translate(c, x, 0);
+  widget_paint(win, c);
+  canvas_untranslate(c, x, 0);
+  return RET_OK;
+#endif/*WITHOUT_WINDOW_ANIMATOR_CACHE*/
 }
 
 static ret_t window_animator_paint_system_bar(window_animator_t* wa);
@@ -103,10 +136,12 @@ static ret_t window_animator_draw_prev_window(window_animator_t* wa);
 static ret_t window_animator_draw_curr_window(window_animator_t* wa);
 
 static ret_t window_animator_open_destroy(window_animator_t* wa) {
+#ifndef WITHOUT_WINDOW_ANIMATOR_CACHE
   if (wa->dialog_highlighter == NULL) {
     bitmap_destroy(&(wa->prev_img));
   }
   bitmap_destroy(&(wa->curr_img));
+#endif/*WITHOUT_WINDOW_ANIMATOR_CACHE*/
 
   memset(wa, 0x00, sizeof(window_animator_t));
   TKMEM_FREE(wa);
@@ -195,9 +230,11 @@ ret_t window_animator_prepare(window_animator_t* wa, canvas_t* c, widget_t* prev
   wa->duration = wa->duration ? wa->duration : 500;
 
   window_animator_init(wa);
+#ifndef WITHOUT_WINDOW_ANIMATOR_CACHE
   window_manager_snap_prev_window(wm, prev_win, &(wa->prev_img));
   window_manager_snap_curr_window(wm, curr_win, &(wa->curr_img));
   wa->dialog_highlighter = window_manager_get_dialog_highlighter(wm);
+#endif/*WITHOUT_WINDOW_ANIMATOR_CACHE*/
 
   return RET_OK;
 }
@@ -271,22 +308,34 @@ ret_t window_animator_overlap_default_draw_prev(window_animator_t* wa) {
   canvas_t* c = wa->canvas;
   widget_t* win = wa->prev_win;
 
+#ifndef WITHOUT_WINDOW_ANIMATOR_CACHE
   rect_t src = rect_init(win->x, win->y, win->w, win->h);
   rect_t dst = rect_init(win->x, win->y, win->w, win->h);
 
   return lcd_draw_image(c->lcd, &(wa->prev_img), rect_scale(&src, wa->ratio), &dst);
+#else
+  widget_paint(win, c);
+  return RET_OK;
+#endif/*WITHOUT_WINDOW_ANIMATOR_CACHE*/
 }
 
 ret_t window_animator_begin_frame(window_animator_t* wa) {
-  return_value_if_fail(wa != NULL, RET_OK);
+  return_value_if_fail(wa != NULL && wa->vt != NULL, RET_OK);
 
   ENSURE(canvas_begin_frame(wa->canvas, NULL, LCD_DRAW_ANIMATION) == RET_OK);
+  if (!tk_str_eq(wa->vt->type, WINDOW_ANIMATOR_VTRANSLATE)) {
+    window_animator_paint_system_bar(wa);
+  }
 
-  return window_animator_paint_system_bar(wa);
+  return RET_OK;
 }
 
 ret_t window_animator_end_frame(window_animator_t* wa) {
-  canvas_end_frame(wa->canvas);
+  return_value_if_fail(wa != NULL && wa->vt != NULL, RET_OK);
 
-  return RET_OK;
+  if (tk_str_eq(wa->vt->type, WINDOW_ANIMATOR_VTRANSLATE)) {
+    window_animator_paint_system_bar(wa);
+  }
+  
+  return canvas_end_frame(wa->canvas);
 }

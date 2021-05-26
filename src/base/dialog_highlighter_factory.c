@@ -89,6 +89,7 @@ ret_t dialog_highlighter_on_dialog_destroy(void* ctx, event_t* e) {
 
 dialog_highlighter_t* dialog_highlighter_factory_create_highlighter(
     dialog_highlighter_factory_t* factory, const char* args, widget_t* dialog) {
+#ifndef WITHOUT_DIALOG_HIGHLIGHTER
   object_t* args_obj = NULL;
   dialog_highlighter_t* h = NULL;
   const creator_item_t* iter = NULL;
@@ -110,6 +111,9 @@ dialog_highlighter_t* dialog_highlighter_factory_create_highlighter(
   }
 
   return h;
+#else
+  return NULL;
+#endif/*WITHOUT_DIALOG_HIGHLIGHTER*/
 }
 
 ret_t dialog_highlighter_factory_set(dialog_highlighter_factory_t* factory) {

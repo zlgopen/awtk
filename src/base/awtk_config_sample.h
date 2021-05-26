@@ -241,4 +241,12 @@
  * #define TK_MAX_MEM_BLOCK_NR 4
  */
 
+/**
+ * 用于控制窗口动画是否使用缓存。开启后可以降低内存需求(减少2倍framebuffer大小的内存)，在下面情况可以开启：
+ * 1. 界面简单，绘制够速度。
+ * 2. CPU速度够快(或者带有GPU)。
+ *
+ * #define WITHOUT_WINDOW_ANIMATOR_CACHE 1
+ */
+
 #endif /*AWTK_CONFIG_H*/

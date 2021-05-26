@@ -133,9 +133,10 @@ struct _window_animator_t {
   widget_t* prev_win;
   widget_t* curr_win;
 
+#ifndef WITHOUT_WINDOW_ANIMATOR_CACHE
   bitmap_t prev_img;
   bitmap_t curr_img;
-
+#endif/*WITHOUT_WINDOW_ANIMATOR_CACHE*/
   bool_t open;
   float_t ratio;
   float_t percent;
