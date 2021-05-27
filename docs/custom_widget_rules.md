@@ -122,6 +122,25 @@ ret_t number_label_set_format(widget_t* widget, const char* format);
   char* format;
 ```
 
+> 如果修改某个属性会 EVT\_VALUE\_CHANGED 事件，请支持通过 WIDGET\_PROP\_VALUE 访问该属性。
+
+比如，手势密码控件的 password 属性，是用户可以输入的，修改 password 触发 EVT\_VALUE\_CHANGED 事件，那么在 get_prop/set_prop 里要允许通过 WIDGET\_PROP\_VALUE 访问 password 属性。
+
+```c
+static ret_t gesture_lock_get_prop(widget_t* widget, const char* name, value_t* v) {
+  gesture_lock_t* gesture_lock = GESTURE_LOCK(widget);
+  return_value_if_fail(gesture_lock != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
+  ret_t ret = RET_NOT_FOUND;
+
+  if (tk_str_eq(name, GESTURE_LOCK_PROP_PASSWORD) || tk_str_eq(name, WIDGET_PROP_VALUE)) {
+    value_set_str(v, gesture_lock->password);
+    ret = RET_OK;
+  }
+
+  return ret;
+}
+```
+
 ### 2.4 事件名
 
 如果控件有自定义的事件，事件名以"EVT"为前缀，使用大写的英文单词，单词之间用下划线连接。
@@ -161,7 +180,7 @@ ret_t number_label_register(void);
 
 ### 2.7 获取支持的渲染模式的函数名
 
-目前可选的渲染模式有OpenGL、AGGE-BGR565、AGGE-BGRA8888、AGGE-MONO；默认支持全部模式，模式之间以“|”间隔，可根据实际情况修改。
+目前可选的渲染模式有 OpenGL、AGGE-BGR565、AGGE-BGRA8888、AGGE-MONO；默认支持全部模式，模式之间以“|”间隔，可根据实际情况修改。
 
 获取支持的渲染模式的函数名必须以动态库名为前缀，加上"_supported_render_mode"。该函数无参数，并返回 const char*。
 
@@ -230,23 +249,23 @@ node ../awtk/tools/dll_def_gen/index.js idl/idl.json src/number_label.def
 > 上述版本号对应发布的 AWTK 中 component.json 文件中的 "release_id"
 > 注意：如果没有显式设置，则认为兼容所有版本。
 
-## 6. Designer新建控件的初始状态
+## 6. Designer 新建控件的初始状态
 
-默认情况下，从Designer的控件列表的自定义分组中拖出一个控件，其属性为控件 create 时的初值，样式为全透明。
+默认情况下，从 Designer 的控件列表的自定义分组中拖出一个控件，其属性为控件 create 时的初值，样式为全透明。
 
-如果需要指定新建控件的初始状态，可以在控件的class注释上补充如下格式的注释。
+如果需要指定新建控件的初始状态，可以在控件的 class 注释上补充如下格式的注释。
 
 ```c
 /**
 ...
  * ```xml
  * <!-- ui -->
- * 控件初始属性的xml描述（如果描述中包含子控件，会同时创建）
+ * 控件初始属性的 xml 描述（如果描述中包含子控件，会同时创建）
  * ```
 ...
  * ```xml
  * <!-- style -->
- * 控件默认样式的xml描述（如果描述中包含其它控件的样式，会同时添加到default.xml样式文件）
+ * 控件默认样式的 xml 描述（如果描述中包含其它控件的样式，会同时添加到 default.xml 样式文件）
  * ```
 ...
  */
@@ -261,14 +280,14 @@ node ../awtk/tools/dll_def_gen/index.js idl/idl.json src/number_label.def
  * @annotation ["scriptable","design","widget"]
  * 数值文本控件。
  *
- * 在xml中使用"number\_label"标签创建数值文本控件。如：
+ * 在 xml 中使用"number\_label"标签创建数值文本控件。如：
  *
  * ```xml
  * <!-- ui -->
  * <number_label x="c" y="50" w="24" h="100" value="40" format="%.4lf" decimal_font_size_scale="0.5"/>
  * ```
  *
- * 可用通过style来设置控件的显示风格，如字体的大小和颜色等等。如：
+ * 可用通过 style 来设置控件的显示风格，如字体的大小和颜色等等。如：
  * 
  * ```xml
  * <!-- style -->
@@ -284,11 +303,11 @@ node ../awtk/tools/dll_def_gen/index.js idl/idl.json src/number_label.def
  */
 ```
 
-> Designer新建控件时会根据上述描述初始化控件的属性及样式，但会忽略x、y属性。
+> Designer 新建控件时会根据上述描述初始化控件的属性及样式，但会忽略 x、y 属性。
 
-## 7. Designer中的图标
+## 7. Designer 中的图标
 
-如果需要修改自定义控件在Designer中的图标，请将图标存放到指定位置。
+如果需要修改自定义控件在 Designer 中的图标，请将图标存放到指定位置。
 
 ### 7.1 库的图标
 
