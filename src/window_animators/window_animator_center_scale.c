@@ -22,20 +22,19 @@
 #include "window_animators/window_animator_center_scale.h"
 
 #ifdef WITH_NANOVG_GPU
-#define START_PERCENT  0.5f
+#define START_PERCENT 0.5f
 #else
-#define START_PERCENT  0.9f
+#define START_PERCENT 0.9f
 #endif
 
 static ret_t window_animator_center_scale_update_percent(window_animator_t* wa) {
-
   if (wa->open) {
-    wa->percent = START_PERCENT + (1-START_PERCENT) * wa->easing(wa->time_percent);
+    wa->percent = START_PERCENT + (1 - START_PERCENT) * wa->easing(wa->time_percent);
     if (wa->easing(wa->time_percent) == 0) {
       wa->percent = 0;
     }
   } else {
-    wa->percent = 1.0f - (1-START_PERCENT) * wa->easing(wa->time_percent);
+    wa->percent = 1.0f - (1 - START_PERCENT) * wa->easing(wa->time_percent);
   }
 
   return RET_OK;
@@ -64,9 +63,9 @@ static ret_t window_animator_center_scale_draw_curr(window_animator_t* wa) {
 #else
 #ifdef WITH_NANOVG_GPU
   vgcanvas_t* vg = canvas_get_vgcanvas(c);
-  float x = win->x + (win->w/2);
-  float y = win->y + (win->h/2);
-  float alpha = 1-(1-scale) / (1 - START_PERCENT);
+  float x = win->x + (win->w / 2);
+  float y = win->y + (win->h / 2);
+  float alpha = 1 - (1 - scale) / (1 - START_PERCENT);
 
   vgcanvas_save(vg);
   vgcanvas_translate(vg, x, y);
@@ -79,9 +78,9 @@ static ret_t window_animator_center_scale_draw_curr(window_animator_t* wa) {
 #else
   assert(!"not supported");
   return RET_FAIL;
-#endif/*WITH_NANOVG_GPU*/
+#endif /*WITH_NANOVG_GPU*/
 
-#endif/*WITHOUT_WINDOW_ANIMATOR_CACHE*/
+#endif /*WITHOUT_WINDOW_ANIMATOR_CACHE*/
 }
 
 static const window_animator_vtable_t s_window_animator_center_scale_vt = {

@@ -50,7 +50,7 @@ static ret_t window_animator_vtranslate_draw_prev(window_animator_t* wa) {
   widget_paint(win, c);
   canvas_untranslate(c, 0, -y);
   return RET_OK;
-#endif/*WITHOUT_WINDOW_ANIMATOR_CACHE*/
+#endif /*WITHOUT_WINDOW_ANIMATOR_CACHE*/
 }
 
 static ret_t window_animator_vtranslate_draw_curr(window_animator_t* wa) {
@@ -66,13 +66,13 @@ static ret_t window_animator_vtranslate_draw_curr(window_animator_t* wa) {
 
   return lcd_draw_image(c->lcd, &(wa->curr_img), rect_scale(&src, wa->ratio), &dst);
 #else
-  y = win->h * (1-percent);
+  y = win->h * (1 - percent);
   canvas_translate(c, 0, y);
   widget_paint(win, c);
   canvas_untranslate(c, 0, y);
 
   return RET_OK;
-#endif/*WITHOUT_WINDOW_ANIMATOR_CACHE*/
+#endif /*WITHOUT_WINDOW_ANIMATOR_CACHE*/
 }
 
 static const window_animator_vtable_t s_window_animator_vtranslate_vt = {

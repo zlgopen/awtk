@@ -64,7 +64,8 @@ ret_t stb_load_image(int32_t subtype, const uint8_t* buff, uint32_t buff_size, b
   if (subtype != ASSET_TYPE_IMAGE_GIF) {
     uint8_t* data = NULL;
     int out_channel_order;
-    uint8_t* stb_data = stbi_load_from_memory_ex(buff, buff_size, &w, &h, &n, &out_channel_order, 0);
+    uint8_t* stb_data =
+        stbi_load_from_memory_ex(buff, buff_size, &w, &h, &n, &out_channel_order, 0);
     return_value_if_fail(stb_data != NULL, RET_FAIL);
 
     if (n == 2) {
@@ -74,11 +75,11 @@ ret_t stb_load_image(int32_t subtype, const uint8_t* buff, uint32_t buff_size, b
       data = stb_data;
     }
 #ifdef WITH_LCD_MONO
-      if (out_channel_order == STBI_ORDER_RGB) {
-        ret = bitmap_init_from_rgba(image, w, h, BITMAP_FMT_MONO, data, n);
-      } else {
-        ret = bitmap_init_from_bgra(image, w, h, BITMAP_FMT_MONO, data, n);
-      }
+    if (out_channel_order == STBI_ORDER_RGB) {
+      ret = bitmap_init_from_rgba(image, w, h, BITMAP_FMT_MONO, data, n);
+    } else {
+      ret = bitmap_init_from_bgra(image, w, h, BITMAP_FMT_MONO, data, n);
+    }
 #else
     if (out_channel_order == STBI_ORDER_RGB) {
       if (enable_bgr565 && rgba_data_is_opaque(data, w, h, n)) {

@@ -122,11 +122,11 @@ TEST(Window, focused_widget) {
   widget_t* b = button_create(w, 0, 0, 60, 30);
   widget_set_focusable(b, TRUE);
   widget_set_name(b, "b1");
-  
+
   b = button_create(w, 0, 30, 60, 30);
   widget_set_focusable(b, TRUE);
   widget_set_name(b, "b2");
-  
+
   b = button_create(w, 0, 30, 60, 30);
   widget_set_focusable(b, TRUE);
   widget_set_name(b, "b3");

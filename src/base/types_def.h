@@ -359,7 +359,7 @@ typedef struct _system_info_t system_info_t;
 
 #ifdef WITHOUT_WINDOW_ANIMATOR_CACHE
 #define WITHOUT_DIALOG_HIGHLIGHTER 1
-#endif/*WITHOUT_WINDOW_ANIMATOR_CACHE*/
+#endif /*WITHOUT_WINDOW_ANIMATOR_CACHE*/
 
 /**
  * @enum bitmap_format_t

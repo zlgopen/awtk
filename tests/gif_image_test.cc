@@ -38,7 +38,7 @@ TEST(GifImage, state) {
 
   gif_image_play(img);
   ASSERT_EQ(GIF_IMAGE(img)->running, TRUE);
-  
+
   gif_image_pause(img);
   ASSERT_EQ(GIF_IMAGE(img)->running, FALSE);
 

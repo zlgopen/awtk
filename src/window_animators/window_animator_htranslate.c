@@ -49,7 +49,7 @@ static ret_t window_animator_htranslate_draw_prev(window_animator_t* wa) {
   widget_paint(win, c);
   canvas_untranslate(c, -x, 0);
   return RET_OK;
-#endif/*WITHOUT_WINDOW_ANIMATOR_CACHE*/
+#endif /*WITHOUT_WINDOW_ANIMATOR_CACHE*/
 }
 
 static ret_t window_animator_htranslate_draw_curr(window_animator_t* wa) {
@@ -70,7 +70,7 @@ static ret_t window_animator_htranslate_draw_curr(window_animator_t* wa) {
   canvas_untranslate(c, x, 0);
 
   return RET_OK;
-#endif/*WITHOUT_WINDOW_ANIMATOR_CACHE*/
+#endif /*WITHOUT_WINDOW_ANIMATOR_CACHE*/
 }
 
 static const window_animator_vtable_t s_window_animator_htranslate_vt = {

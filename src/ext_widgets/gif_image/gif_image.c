@@ -184,11 +184,10 @@ ret_t gif_image_stop(widget_t* widget) {
   return RET_OK;
 }
 
-
 TK_DECL_VTABLE(gif_image) = {.size = sizeof(gif_image_t),
                              .type = WIDGET_TYPE_GIF_IMAGE,
-                         .space_key_to_activate = TRUE,
-                         .return_key_to_activate = TRUE,
+                             .space_key_to_activate = TRUE,
+                             .return_key_to_activate = TRUE,
                              .clone_properties = s_gif_image_properties,
                              .persistent_properties = s_gif_image_properties,
                              .parent = TK_PARENT_VTABLE(image_base),

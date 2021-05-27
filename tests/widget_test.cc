@@ -1330,7 +1330,7 @@ TEST(Widget, is_focusable) {
   ASSERT_EQ(widget_is_focusable(w), FALSE);
   widget_set_enable(w, TRUE);
   ASSERT_EQ(widget_is_focusable(w), TRUE);
-  
+
   widget_set_sensitive(w, FALSE);
   ASSERT_EQ(widget_is_focusable(w), FALSE);
   widget_set_sensitive(w, TRUE);
@@ -1388,4 +1388,3 @@ TEST(Widget, update_style4) {
 
   widget_destroy(w);
 }
-

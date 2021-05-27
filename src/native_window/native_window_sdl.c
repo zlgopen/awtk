@@ -474,7 +474,7 @@ static native_window_t* native_window_create_internal(const char* title, uint32_
   if (system_info()->app_type == APP_DESKTOP) {
     flags |= SDL_WINDOW_RESIZABLE;
   }
-#endif/*NATIVE_WINDOW_NOT_RESIZABLE*/    
+#endif /*NATIVE_WINDOW_NOT_RESIZABLE*/
 
 #ifndef WITH_NANOVG_SOFT
   flags |= SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI;

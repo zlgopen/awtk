@@ -37,7 +37,7 @@ static ret_t window_animator_fade_draw_curr(window_animator_t* wa) {
   lcd_set_global_alpha(c->lcd, global_alpha);
 
   return widget_paint(win, c);
-#endif/*WITHOUT_WINDOW_ANIMATOR_CACHE*/
+#endif /*WITHOUT_WINDOW_ANIMATOR_CACHE*/
 }
 
 static const window_animator_vtable_t s_window_animator_fade_vt = {

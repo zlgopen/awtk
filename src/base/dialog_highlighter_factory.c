@@ -113,7 +113,7 @@ dialog_highlighter_t* dialog_highlighter_factory_create_highlighter(
   return h;
 #else
   return NULL;
-#endif/*WITHOUT_DIALOG_HIGHLIGHTER*/
+#endif /*WITHOUT_DIALOG_HIGHLIGHTER*/
 }
 
 ret_t dialog_highlighter_factory_set(dialog_highlighter_factory_t* factory) {

@@ -1087,9 +1087,9 @@ static bool_t widget_has_uint_min_max(widget_t* widget) {
   return_value_if_fail(edit != NULL, FALSE);
 
   input_type = edit->input_type;
-  
-  return input_type == INPUT_TEXT || input_type == INPUT_ASCII || input_type == INPUT_PASSWORD 
-    || input_type == INPUT_EMAIL || input_type == INPUT_UINT;
+
+  return input_type == INPUT_TEXT || input_type == INPUT_ASCII || input_type == INPUT_PASSWORD ||
+         input_type == INPUT_EMAIL || input_type == INPUT_UINT;
 }
 
 ret_t edit_get_prop(widget_t* widget, const char* name, value_t* v) {

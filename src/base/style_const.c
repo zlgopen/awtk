@@ -97,7 +97,7 @@ static ret_t style_const_apply_props(style_t* s, widget_t* widget) {
   if (focusable != NULL) {
     widget->focusable = *focusable == 'T' || *focusable == 't';
   }
-  
+
   if (feedback != NULL) {
     widget->feedback = *feedback == 'T' || *feedback == 't';
   }

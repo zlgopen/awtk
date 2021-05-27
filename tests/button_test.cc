@@ -185,7 +185,9 @@ TEST(Button, to_xml) {
   widget_set_text_utf8(w1, "<>&\"");
   widget_to_xml(w1, &str);
   log_debug("w1:%s\n", str.str);
-  ASSERT_STREQ(str.str, "<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>\r\n<button x=\"10\" y=\"20\" w=\"30\" h=\"40\" text=\"&lt;&gt;&amp;&quot;\">\n</button>\n");
+  ASSERT_STREQ(str.str,
+               "<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>\r\n<button x=\"10\" "
+               "y=\"20\" w=\"30\" h=\"40\" text=\"&lt;&gt;&amp;&quot;\">\n</button>\n");
   widget_destroy(w1);
 
   str_reset(&str);

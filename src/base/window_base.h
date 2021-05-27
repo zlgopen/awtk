@@ -239,7 +239,7 @@ typedef struct _window_base_t {
    * 单例。如果窗口存在，先关闭再打开。
    */
   bool_t single_instance;
-  
+
   /**
    * @property {bool_t} strongly_focus
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
