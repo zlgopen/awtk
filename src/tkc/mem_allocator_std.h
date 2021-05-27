@@ -24,6 +24,18 @@
 
 #include "tkc/mem_allocator.h"
 
+#ifdef MACOS
+#include <malloc/malloc.h>
+#define msize(ptr) malloc_size(ptr)
+#elif defined(WIN32) && !defined(MINGW)
+#define msize(ptr) _msize(ptr)
+#elif defined(LINUX)
+#include <malloc.h>
+#define msize(ptr) malloc_usable_size(ptr)
+#elif !defined(msize)
+#define msize(ptr) 0
+#endif
+
 BEGIN_C_DECLS
 
 /**
@@ -33,22 +45,74 @@ BEGIN_C_DECLS
  * 将标准的C的内存分配函数包装成内存分配器。 
  * 
  */
+typedef struct _mem_allocator_std_t {
+  mem_allocator_t allocator;
+  uint32_t max_used_nr;
+  uint32_t max_used_size;
+  uint32_t used_nr;
+  uint32_t used_size;
+} mem_allocator_std_t;
+
+static ret_t mem_allocator_std_update_status(mem_allocator_std_t* std_allocator) {
+  if (std_allocator->used_size > std_allocator->max_used_size) {
+    std_allocator->max_used_size = std_allocator->used_size;
+  }
+
+  if (std_allocator->used_nr > std_allocator->max_used_nr) {
+    std_allocator->max_used_nr = std_allocator->used_nr;
+  }
+
+  return RET_OK;
+}
 
 static inline void* mem_allocator_std_alloc(mem_allocator_t* allocator, uint32_t size,
                                             const char* func, uint32_t line) {
-  return malloc(size);
+  void* ptr = malloc(size);
+  mem_allocator_std_t* std_allocator = (mem_allocator_std_t*)allocator;
+
+  if (ptr != NULL) {
+    std_allocator->used_nr++;
+    std_allocator->used_size += size;
+    mem_allocator_std_update_status(std_allocator);
+  }
+
+  return ptr;
 }
 
 static inline void* mem_allocator_std_realloc(mem_allocator_t* allocator, void* ptr, uint32_t size,
                                               const char* func, uint32_t line) {
-  return realloc(ptr, size);
+  size_t old_size = ptr != NULL ? msize(ptr) : 0;
+  mem_allocator_std_t* std_allocator = (mem_allocator_std_t*)allocator;
+  void* new_ptr = realloc(ptr, size);
+
+  if (new_ptr != NULL) {
+    if (ptr != NULL) {
+      std_allocator->used_size += size - old_size;
+    } else {
+      std_allocator->used_nr++;
+      std_allocator->used_size += size;
+    }
+    mem_allocator_std_update_status(std_allocator);
+  }
+
+  return new_ptr;
 }
 
 static inline void mem_allocator_std_free(mem_allocator_t* allocator, void* ptr) {
-  free(ptr);
+  mem_allocator_std_t* std_allocator = (mem_allocator_std_t*)allocator;
+
+  if (ptr != NULL) {
+    size_t size = msize(ptr);
+    free(ptr);
+    std_allocator->used_nr--;
+    std_allocator->used_size -= size;
+  }
 }
 
 static inline ret_t mem_allocator_std_dump(mem_allocator_t* allocator) {
+  mem_allocator_std_t* std_allocator = (mem_allocator_std_t*)allocator;
+  log_debug("used_nr=%u used_size=%u max_used_nr=%u max_used_size=%u\n", 
+    std_allocator->used_nr, std_allocator->used_size, std_allocator->max_used_nr, std_allocator->max_used_size);
   return RET_OK;
 }
 
@@ -64,11 +128,12 @@ static const mem_allocator_vtable_t s_mem_allocator_std_vtable = {
     .dump = mem_allocator_std_dump,
     .destroy = mem_allocator_std_destroy};
 
-static inline mem_allocator_t* mem_allocator_std_init(mem_allocator_t* allocator) {
+static inline mem_allocator_t* mem_allocator_std_init(mem_allocator_std_t* allocator) {
   return_value_if_fail(allocator != NULL, NULL);
-  allocator->vt = &s_mem_allocator_std_vtable;
+  memset(allocator, 0x00, sizeof(mem_allocator_std_t));
+  allocator->allocator.vt = &s_mem_allocator_std_vtable;
 
-  return allocator;
+  return (mem_allocator_t*)allocator;
 }
 
 END_C_DECLS

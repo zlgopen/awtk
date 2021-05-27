@@ -132,6 +132,8 @@ static void open_window(const char* name, widget_t* to_close) {
       window_manager_back_to_home(window_manager());
     }
   }
+
+  tk_mem_dump();
 }
 
 static ret_t on_paint_linear_gradient(void* ctx, event_t* e) {

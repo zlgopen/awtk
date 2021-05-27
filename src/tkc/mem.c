@@ -49,7 +49,7 @@ bool_t tk_mem_is_valid_addr(void* addr) {
 }
 
 static mem_allocator_t* mem_allocator_get(void) {
-  static mem_allocator_t std;
+  static mem_allocator_std_t std;
   if (s_allocator != NULL) {
     return s_allocator;
   }
