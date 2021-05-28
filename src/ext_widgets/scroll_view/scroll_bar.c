@@ -580,6 +580,7 @@ ret_t scroll_bar_scroll_to(widget_t* widget, int32_t value, int32_t duration) {
     return RET_OK;
   }
 
+#ifndef WITHOUT_WIDGET_ANIMATORS
   scroll_bar->wa_value = widget_animator_value_create(widget, duration, 0, EASING_SIN_INOUT);
   return_value_if_fail(scroll_bar->wa_value != NULL, RET_OOM);
   widget_animator_value_set_params(scroll_bar->wa_value, scroll_bar->value, value);
@@ -592,6 +593,10 @@ ret_t scroll_bar_scroll_to(widget_t* widget, int32_t value, int32_t duration) {
   } else {
     scroll_bar->wa_opactiy = NULL;
   }
+#else
+  scroll_bar_set_value(widget, value);
+  scroll_bar_on_value_animate_end(widget, NULL); 
+#endif
 
   return RET_OK;
 }
@@ -701,6 +706,8 @@ widget_t* scroll_bar_cast(widget_t* widget) {
 ret_t scroll_bar_hide_by_opacity_animation(widget_t* widget, int32_t duration, int32_t delay) {
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
   return_value_if_fail(scroll_bar != NULL, RET_BAD_PARAMS);
+
+#ifndef WITHOUT_WIDGET_ANIMATORS
   if (scroll_bar->wa_opactiy != NULL) {
     widget_animator_destroy(scroll_bar->wa_opactiy);
     scroll_bar->wa_opactiy = NULL;
@@ -711,6 +718,11 @@ ret_t scroll_bar_hide_by_opacity_animation(widget_t* widget, int32_t duration, i
                      scroll_bar);
   widget_animator_opacity_set_params(scroll_bar->wa_opactiy, widget->opacity, 0);
   widget_animator_start(scroll_bar->wa_opactiy);
+#else
+  widget->opacity = 0;
+  scroll_bar_on_opactiy_animate_end(widget, NULL);
+#endif/*WITHOUT_WIDGET_ANIMATORS*/
+
   return RET_OK;
 }
 

@@ -155,9 +155,10 @@ static ret_t slide_view_on_scroll_done(void* ctx, event_t* e) {
 
 static ret_t slide_view_animate_to(slide_view_t* slide_view, int32_t xoffset, int32_t yoffset,
                                    int32_t xoffset_end, int32_t yoffset_end) {
-  widget_animator_t* a = NULL;
   widget_t* widget = WIDGET(slide_view);
 
+#ifndef WITHOUT_WIDGET_ANIMATORS
+  widget_animator_t* a = NULL;
   a = widget_animator_scroll_create(widget, TK_ANIMATING_TIME, 0, EASING_SIN_INOUT);
   return_value_if_fail(a != NULL, RET_OOM);
 
@@ -165,7 +166,13 @@ static ret_t slide_view_animate_to(slide_view_t* slide_view, int32_t xoffset, in
   widget_animator_on(a, EVT_ANIM_END, slide_view_on_scroll_done, slide_view);
   widget_animator_start(a);
   slide_view->animating = TRUE;
-
+#else
+  slide_view->dragged = FALSE;
+  slide_view->animating = FALSE;
+  slide_view->xoffset = xoffset_end;
+  slide_view->yoffset = yoffset_end;
+  slide_view_on_scroll_done(widget, NULL); 
+#endif/*WITHOUT_WIDGET_ANIMATORS*/
   return RET_OK;
 }
 

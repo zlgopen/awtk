@@ -573,13 +573,17 @@ static ret_t text_selector_scroll_to(widget_t* widget, int32_t yoffset_end) {
     return RET_OK;
   }
 
+#ifndef WITHOUT_WIDGET_ANIMATORS
   text_selector->wa = widget_animator_scroll_create(widget, TK_ANIMATING_TIME, 0, EASING_SIN_INOUT);
   return_value_if_fail(text_selector->wa != NULL, RET_OOM);
 
   widget_animator_scroll_set_params(text_selector->wa, 0, yoffset, 0, yoffset_end);
   widget_animator_on(text_selector->wa, EVT_ANIM_END, text_selector_on_scroll_done, text_selector);
   widget_animator_start(text_selector->wa);
-
+#else
+  text_selector->yoffset = yoffset_end;
+  text_selector_on_scroll_done(widget, NULL);
+#endif/*WITHOUT_WIDGET_ANIMATORS*/
   return RET_OK;
 }
 
