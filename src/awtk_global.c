@@ -65,9 +65,9 @@
 #include "window_animators/window_animator_builtins.h"
 #endif /*WITHOUT_WINDOW_ANIMATORS*/
 
-#ifndef WITHOUT_WIDGET_ANIMATORS
+#ifndef WITHOUT_DIALOG_HIGHLIGHTER
 #include "dialog_highlighters/dialog_highlighter_builtins.h"
-#endif /*WITHOUT_WIDGET_ANIMATORS*/
+#endif /*WITHOUT_DIALOG_HIGHLIGHTER*/
 
 #ifndef WITHOUT_CLIPBOARD
 #ifdef WITH_SDL
