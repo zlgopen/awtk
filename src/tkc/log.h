@@ -78,6 +78,8 @@ log_level_t log_get_log_level(void);
  */
 ret_t log_set_log_level(log_level_t log_level);
 
+int32_t log_dummy(const char* fmt, ...);
+
 /**
  * @method log_debug
  * @export none
@@ -198,11 +200,20 @@ void awtk_ios_log(const char* message, ...);
   if (log_get_log_level() <= LOG_LEVEL_WARN) printf(format, ##args)
 #define log_error(format, args...) \
   if (log_get_log_level() <= LOG_LEVEL_ERROR) printf(format, ##args)
+#elif defined(log_impl)
+#define log_debug(format, args...) \
+  if (log_get_log_level() <= LOG_LEVEL_DEBUG) log_impl(format, ##args)
+#define log_info(format, args...) \
+  if (log_get_log_level() <= LOG_LEVEL_INFO) log_impl(format, ##args)
+#define log_warn(format, args...) \
+  if (log_get_log_level() <= LOG_LEVEL_WARN) log_impl(format, ##args)
+#define log_error(format, args...) \
+  if (log_get_log_level() <= LOG_LEVEL_ERROR) log_impl(format, ##args)
 #else
-#define log_debug(format, args...)
-#define log_info(format, args...)
-#define log_warn(format, args...)
-#define log_error(format, args...)
+#define log_debug(format, args...) log_dummy(format,  ##args)
+#define log_info(format, args...) log_dummy(format,  ##args)
+#define log_warn(format, args...) log_dummy(format,  ##args)
+#define log_error(format, args...) log_dummy(format,  ##args)
 #endif
 
 END_C_DECLS
