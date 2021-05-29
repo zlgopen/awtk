@@ -1,6 +1,10 @@
 # 最新动态
 
 2021/05/28
+	* 增加log\_dummy函数，方便在没有真正的log函数时设置断点调试。
+	* 由于mem.c中导出了malloc等函数，没有必要重载new/delete等操作符，所以去掉misc/new.cpp|.hpp中的代码，但为了兼容保留文件。
+
+2021/05/28
   * 修改scroll view/scroll bar/text selector/switch/slide view，在不启用控件动画时也可以使用。
   * 增加EXPORT\_STD\_MALLOC，用于在没有定义HAS\_STD\_MALLOC时，是否将AWTK内存分配函数封装成标准C的内存分配函数。
   * 修复在win7平台下由于SDL_Init和SDL_OpenAudioDevice不在同一线程中调用导致音频设备打开失败的问题。(感谢兆坤提供补丁)

@@ -5,7 +5,10 @@
 #include <cstddef>
 #include "tkc/mem.h"
 
-#ifndef HAS_STD_MALLOC
+/*
+ * 由于mem.c中导出了malloc等函数，没有必要重载new/delete等操作符，所以去掉misc/new.cpp|.hpp中的代码，但为了兼容保留文件。
+*/
+#if 0
 
 #if __cplusplus < 201103L || defined(__ARMCC_VERSION)
 #define __TK_THROW_BAD_ALLOC throw(std::bad_alloc)
