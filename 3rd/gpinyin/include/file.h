@@ -2,7 +2,6 @@
 #define TK_FILE_H
 
 #include "tkc/mem.h"
-#include "misc/new.hpp"
 
 #ifdef ___BUILD_MODEL___
 #include <stdio.h>

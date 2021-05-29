@@ -197,11 +197,12 @@ ret_t platform_prepare(void) {
   stm_time_init();
 
 #ifndef HAS_STD_MALLOC
-  static uint32_t s_heap_mem1[10 * 1024];
-  static uint32_t s_heap_mem2[1 * 1024 * 1024];
-  static uint32_t s_heap_mem3[3 * 1024 * 1024];
-  tk_mem_init_ex(s_heap_mem1, sizeof(s_heap_mem1), s_heap_mem2, sizeof(s_heap_mem2), s_heap_mem3,
-                 sizeof(s_heap_mem3), NULL);
+#ifndef TK_HEAP_MEM_SIZE
+#define TK_HEAP_MEM_SIZE 12 * 1024 * 1024
+#endif/*TK_HEAP_MEM_SIZE*/
+
+  static uint32_t s_heap_mem[TK_HEAP_MEM_SIZE/4];
+  tk_mem_init(s_heap_mem, sizeof(s_heap_mem));
 #endif /*HAS_STD_MALLOC*/
 
   date_time_global_init_ex(&s_date_time_vtable);
