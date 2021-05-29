@@ -1,7 +1,7 @@
 /**
  * File:   mutex.c
  * Author: AWTK Develop Team
- * Brief:  mutex base on tos_mutex
+ * Brief:  mutex base on freertos
  *
  * Copyright (c) 2018 - 2021  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
@@ -74,3 +74,4 @@ ret_t tk_mutex_destroy(tk_mutex_t* mutex) {
 
   return RET_OK;
 }
+

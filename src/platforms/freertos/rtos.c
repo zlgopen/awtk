@@ -1,7 +1,7 @@
 /**
  * File:   rtos.c
  * Author: AWTK Develop Team
- * Brief:  rtos
+ * Brief:  rtos for freertos
  *
  * Copyright (c) 2018 - 2021  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
@@ -21,13 +21,11 @@
 
 #include "FreeRTOS.h"
 #include "task.h"
-
 #include "platforms/common/rtos.h"
 
 static bool_t s_is_running = FALSE;
 
 ret_t rtos_init(void) {
-
   return RET_OK;
 }
 
@@ -40,11 +38,17 @@ ret_t rtos_start(void) {
   return RET_OK;
 }
 
+/*implemented in port.c*/
+void xPortSysTickHandler( void );
+
+/* 
+ * modify FreeRTOSConfig.h remove the following line
+ * #define xPortSysTickHandler SysTick_Handler
+ */
+
 void rtos_tick(void) {
   if(s_is_running) {
-    __disable_irq();
     xPortSysTickHandler();
-    __enable_irq();
   }
 }
 

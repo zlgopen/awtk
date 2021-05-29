@@ -1,7 +1,7 @@
 /**
  * File:   thread.c
  * Author: AWTK Develop Team
- * Brief:  thread on cmsis_os
+ * Brief:  thread on freertos
  *
  * Copyright (c) 2018 - 2021  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
@@ -139,3 +139,4 @@ ret_t tk_thread_destroy(tk_thread_t* thread) {
 uint64_t tk_thread_self(void) {
   return (uint64_t)xTaskGetCurrentTaskHandle();
 }
+

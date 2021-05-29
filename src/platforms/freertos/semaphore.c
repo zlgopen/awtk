@@ -1,7 +1,7 @@
 /**
  * File:   semaphore.c
  * Author: AWTK Develop Team
- * Brief:  semaphore
+ * Brief:  semaphore base on freertos
  *
  * Copyright (c) 2018 - 2021  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
