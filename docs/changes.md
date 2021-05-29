@@ -3,6 +3,7 @@
 2021/05/28
 	* 增加log\_dummy函数，方便在没有真正的log函数时设置断点调试。
 	* 由于mem.c中导出了malloc等函数，没有必要重载new/delete等操作符，所以去掉misc/new.cpp|.hpp中的代码，但为了兼容保留文件。
+	* 完善文档。
 
 2021/05/28
   * 修改scroll view/scroll bar/text selector/switch/slide view，在不启用控件动画时也可以使用。
