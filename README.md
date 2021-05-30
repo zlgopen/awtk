@@ -309,6 +309,8 @@ npm install -g glob
 
 * [Auto Test Engine](https://github.com/zlgopen/awtk-ui-automation)
 
+* [Regression Test](https://github.com/zlgopen/awtk-regression-test)
+
 * [Demonstration Codes with C Program](https://github.com/zlgopen/awtk-c-demos)
 
 * [Wonderful Examples](https://github.com/zlgopen/awtk-examples)

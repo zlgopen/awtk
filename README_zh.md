@@ -313,6 +313,8 @@ npm install -g glob
 
 * [自动测试引擎](https://github.com/zlgopen/awtk-ui-automation)
 
+* [回归测试](https://github.com/zlgopen/awtk-regression-test)
+
 * [C 示例代码](https://github.com/zlgopen/awtk-c-demos)
 
 * [精彩示例](https://github.com/zlgopen/awtk-examples)
