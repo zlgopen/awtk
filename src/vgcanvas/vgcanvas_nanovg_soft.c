@@ -25,6 +25,8 @@
 #include "base/vgcanvas.h"
 #include "base/image_manager.h"
 
+#ifdef WITH_VGCANVAS
+
 #ifdef WITH_NANOVG_AGGE
 #include "agge/nanovg_agge.h"
 #elif defined(WITH_NANOVG_AGG)
@@ -68,3 +70,4 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_form
 
   return &(nanovg->base);
 }
+#endif

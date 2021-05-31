@@ -22,6 +22,8 @@
 #include "tkc/mem.h"
 #include "base/vgcanvas.h"
 
+#ifndef WITH_VGCANVAS
+
 vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_format_t format,
                             void* data) {
   (void)w;
@@ -30,3 +32,4 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_form
   (void)data;
   return NULL;
 }
+#endif
