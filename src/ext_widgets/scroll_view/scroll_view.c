@@ -268,7 +268,7 @@ ret_t scroll_view_scroll_to(widget_t* widget, int32_t xoffset_end, int32_t yoffs
   scroll_view->xoffset = xoffset_end;
   scroll_view->yoffset = yoffset_end;
   scroll_view_on_scroll_done(widget, NULL);
-#endif/*WITHOUT_WIDGET_ANIMATORS*/
+#endif /*WITHOUT_WIDGET_ANIMATORS*/
   return RET_OK;
 }
 
@@ -310,7 +310,7 @@ static ret_t scroll_view_on_pointer_up(scroll_view_t* scroll_view, pointer_event
 #else
     int yv = 0;
     int xv = 0;
-#endif/*WITHOUT_WIDGET_ANIMATORS*/
+#endif /*WITHOUT_WIDGET_ANIMATORS*/
     if (scroll_view->wa != NULL) {
       widget_animator_scroll_t* wa = (widget_animator_scroll_t*)scroll_view->wa;
       int32_t dx = wa->x_to - scroll_view->xoffset;

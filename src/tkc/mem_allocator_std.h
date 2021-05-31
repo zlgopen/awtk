@@ -115,8 +115,8 @@ static inline void mem_allocator_std_free(mem_allocator_t* allocator, void* ptr)
 
 static inline ret_t mem_allocator_std_dump(mem_allocator_t* allocator) {
   mem_allocator_std_t* std_allocator = (mem_allocator_std_t*)allocator;
-  log_debug("used_nr=%u used_size=%u max_used_nr=%u max_used_size=%u\n", 
-    std_allocator->used_nr, std_allocator->used_size, std_allocator->max_used_nr, std_allocator->max_used_size);
+  log_debug("used_nr=%u used_size=%u max_used_nr=%u max_used_size=%u\n", std_allocator->used_nr,
+            std_allocator->used_size, std_allocator->max_used_nr, std_allocator->max_used_size);
   return RET_OK;
 }
 

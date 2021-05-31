@@ -33,7 +33,7 @@ tk_mutex_t* tk_mutex_create() {
   tk_mutex_t* mutex = TKMEM_ZALLOC(tk_mutex_t);
   return_value_if_fail(mutex != NULL, NULL);
 
-	mutex->mutex = xSemaphoreCreateMutex();
+  mutex->mutex = xSemaphoreCreateMutex();
   if (mutex->mutex == NULL) {
     TKMEM_FREE(mutex);
   }
@@ -44,7 +44,7 @@ tk_mutex_t* tk_mutex_create() {
 ret_t tk_mutex_lock(tk_mutex_t* mutex) {
   return_value_if_fail(mutex != NULL, RET_BAD_PARAMS);
 
-  return_value_if_fail( xSemaphoreTake( mutex->mutex, 0xffffff ) == pdTRUE, RET_FAIL);
+  return_value_if_fail(xSemaphoreTake(mutex->mutex, 0xffffff) == pdTRUE, RET_FAIL);
 
   return RET_OK;
 }
@@ -52,7 +52,7 @@ ret_t tk_mutex_lock(tk_mutex_t* mutex) {
 ret_t tk_mutex_try_lock(tk_mutex_t* mutex) {
   return_value_if_fail(mutex != NULL, RET_BAD_PARAMS);
 
-  return_value_if_fail( xSemaphoreTake( mutex->mutex, 0) == pdTRUE, RET_FAIL);
+  return_value_if_fail(xSemaphoreTake(mutex->mutex, 0) == pdTRUE, RET_FAIL);
 
   return RET_OK;
 }
@@ -60,7 +60,7 @@ ret_t tk_mutex_try_lock(tk_mutex_t* mutex) {
 ret_t tk_mutex_unlock(tk_mutex_t* mutex) {
   return_value_if_fail(mutex != NULL, RET_BAD_PARAMS);
 
-  return_value_if_fail( xSemaphoreGive( mutex->mutex) == pdTRUE, RET_FAIL);
+  return_value_if_fail(xSemaphoreGive(mutex->mutex) == pdTRUE, RET_FAIL);
 
   return RET_OK;
 }
@@ -68,10 +68,9 @@ ret_t tk_mutex_unlock(tk_mutex_t* mutex) {
 ret_t tk_mutex_destroy(tk_mutex_t* mutex) {
   return_value_if_fail(mutex != NULL, RET_BAD_PARAMS);
 
-	vSemaphoreDelete(mutex->mutex);
+  vSemaphoreDelete(mutex->mutex);
   memset(mutex, 0x00, sizeof(tk_mutex_t));
   TKMEM_FREE(mutex);
 
   return RET_OK;
 }
-

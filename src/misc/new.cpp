@@ -6,7 +6,6 @@
 #if 0
 #define MAX_SIZE 2 * 1024 * 1024
 
-
 #ifndef WITH_SDL
 void* operator new(std::size_t size) __TK_THROW_BAD_ALLOC {
   if (size >= MAX_SIZE) {

@@ -210,10 +210,10 @@ void awtk_ios_log(const char* message, ...);
 #define log_error(format, args...) \
   if (log_get_log_level() <= LOG_LEVEL_ERROR) log_impl(format, ##args)
 #else
-#define log_debug(format, args...) log_dummy(format,  ##args)
-#define log_info(format, args...) log_dummy(format,  ##args)
-#define log_warn(format, args...) log_dummy(format,  ##args)
-#define log_error(format, args...) log_dummy(format,  ##args)
+#define log_debug(format, args...) log_dummy(format, ##args)
+#define log_info(format, args...) log_dummy(format, ##args)
+#define log_warn(format, args...) log_dummy(format, ##args)
+#define log_error(format, args...) log_dummy(format, ##args)
 #endif
 
 END_C_DECLS

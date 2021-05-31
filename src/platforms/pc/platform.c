@@ -199,9 +199,9 @@ ret_t platform_prepare(void) {
 #ifndef HAS_STD_MALLOC
 #ifndef TK_HEAP_MEM_SIZE
 #define TK_HEAP_MEM_SIZE 12 * 1024 * 1024
-#endif/*TK_HEAP_MEM_SIZE*/
+#endif /*TK_HEAP_MEM_SIZE*/
 
-  static uint32_t s_heap_mem[TK_HEAP_MEM_SIZE/4];
+  static uint32_t s_heap_mem[TK_HEAP_MEM_SIZE / 4];
   tk_mem_init(s_heap_mem, sizeof(s_heap_mem));
 #endif /*HAS_STD_MALLOC*/
 

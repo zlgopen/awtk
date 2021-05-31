@@ -26,6 +26,6 @@ log_level_t log_get_log_level(void) {
   return s_log_level;
 }
 
-int32_t log_dummy(const char* fmt, ...){
-	return 0;
+int32_t log_dummy(const char* fmt, ...) {
+  return 0;
 }

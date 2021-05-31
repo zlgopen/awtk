@@ -30,16 +30,16 @@ ret_t rtos_init(void) {
 }
 
 ret_t rtos_start(void) {
- 	if(!s_is_running) {
-		s_is_running = TRUE;
-		vTaskStartScheduler();
-	}
+  if (!s_is_running) {
+    s_is_running = TRUE;
+    vTaskStartScheduler();
+  }
 
   return RET_OK;
 }
 
 /*implemented in port.c*/
-void xPortSysTickHandler( void );
+void xPortSysTickHandler(void);
 
 /* 
  * modify FreeRTOSConfig.h remove the following line
@@ -47,18 +47,17 @@ void xPortSysTickHandler( void );
  */
 
 void rtos_tick(void) {
-  if(s_is_running) {
+  if (s_is_running) {
     xPortSysTickHandler();
   }
 }
 
 void rtos_delay(uint32_t ms) {
-	uint32_t ticks = ms * portTICK_PERIOD_MS;
+  uint32_t ticks = ms * portTICK_PERIOD_MS;
 
-	vTaskDelay(ticks);
+  vTaskDelay(ticks);
 }
 
 bool_t rtos_is_running(void) {
   return s_is_running;
 }
-

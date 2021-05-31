@@ -171,8 +171,8 @@ static ret_t slide_view_animate_to(slide_view_t* slide_view, int32_t xoffset, in
   slide_view->animating = FALSE;
   slide_view->xoffset = xoffset_end;
   slide_view->yoffset = yoffset_end;
-  slide_view_on_scroll_done(widget, NULL); 
-#endif/*WITHOUT_WIDGET_ANIMATORS*/
+  slide_view_on_scroll_done(widget, NULL);
+#endif /*WITHOUT_WIDGET_ANIMATORS*/
   return RET_OK;
 }
 

@@ -103,10 +103,10 @@ tk_thread_t* tk_thread_create(tk_thread_entry_t entry, void* args) {
 ret_t tk_thread_start(tk_thread_t* thread) {
   return_value_if_fail(thread != NULL && !thread->running, RET_BAD_PARAMS);
 
-  xTaskCreate(tk_thread_entry, thread->name, thread->stack_size, thread, 
-  		thread->priority, &(thread->task));
+  xTaskCreate(tk_thread_entry, thread->name, thread->stack_size, thread, thread->priority,
+              &(thread->task));
 
-	if(thread->task == NULL) {
+  if (thread->task == NULL) {
     return RET_FAIL;
   } else {
     return RET_OK;
@@ -139,4 +139,3 @@ ret_t tk_thread_destroy(tk_thread_t* thread) {
 uint64_t tk_thread_self(void) {
   return (uint64_t)xTaskGetCurrentTaskHandle();
 }
-

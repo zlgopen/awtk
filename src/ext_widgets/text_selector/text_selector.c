@@ -583,7 +583,7 @@ static ret_t text_selector_scroll_to(widget_t* widget, int32_t yoffset_end) {
 #else
   text_selector->yoffset = yoffset_end;
   text_selector_on_scroll_done(widget, NULL);
-#endif/*WITHOUT_WIDGET_ANIMATORS*/
+#endif /*WITHOUT_WIDGET_ANIMATORS*/
   return RET_OK;
 }
 

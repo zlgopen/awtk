@@ -595,7 +595,7 @@ ret_t scroll_bar_scroll_to(widget_t* widget, int32_t value, int32_t duration) {
   }
 #else
   scroll_bar_set_value(widget, value);
-  scroll_bar_on_value_animate_end(widget, NULL); 
+  scroll_bar_on_value_animate_end(widget, NULL);
 #endif
 
   return RET_OK;
@@ -721,7 +721,7 @@ ret_t scroll_bar_hide_by_opacity_animation(widget_t* widget, int32_t duration, i
 #else
   widget->opacity = 0;
   scroll_bar_on_opactiy_animate_end(widget, NULL);
-#endif/*WITHOUT_WIDGET_ANIMATORS*/
+#endif /*WITHOUT_WIDGET_ANIMATORS*/
 
   return RET_OK;
 }

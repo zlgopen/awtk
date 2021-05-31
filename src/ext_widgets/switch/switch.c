@@ -88,7 +88,7 @@ static ret_t switch_scroll_to(widget_t* widget, int32_t xoffset_end) {
 #else
   aswitch->xoffset = xoffset_end;
   switch_on_scroll_done(widget, NULL);
-#endif/*WITHOUT_WIDGET_ANIMATORS*/
+#endif /*WITHOUT_WIDGET_ANIMATORS*/
 
   return RET_OK;
 }
