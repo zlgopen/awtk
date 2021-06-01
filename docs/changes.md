@@ -1,6 +1,9 @@
 # 最新动态
 
 2021/06/01
+  * 修复text selector通过widget\_get\_text返回NULL的问题。
+
+2021/05/31
   * 完善vgcanvas\_null/vgcanvas\_nanovg\_soft的编译宏，方便制作keil的pack(感谢静儒提供补丁)
 
 2021/05/28

@@ -31,6 +31,7 @@
 #include "text_selector/text_selector.h"
 #include "widget_animators/widget_animator_scroll.h"
 
+static const wchar_t* text_selector_get_wtext(widget_t* widget);
 static ret_t text_selector_set_all_options_localize_text(widget_t* widget);
 static ret_t text_selector_sync_yoffset_with_selected_index(text_selector_t* text_selector);
 
@@ -371,7 +372,7 @@ static ret_t text_selector_get_prop(widget_t* widget, const char* name, value_t*
   return_value_if_fail(widget != NULL && text_selector != NULL, RET_BAD_PARAMS);
 
   if (tk_str_eq(name, WIDGET_PROP_TEXT)) {
-    value_set_str(v, text_selector_get_text(widget));
+    value_set_wstr(v, text_selector_get_wtext(widget));
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_VALUE)) {
     value_set_int(v, text_selector_get_value(widget));
@@ -945,20 +946,23 @@ ret_t text_selector_set_value(widget_t* widget, int32_t value) {
   return text_selector_set_selected_index(widget, index);
 }
 
-const char* text_selector_get_text(widget_t* widget) {
+static const wchar_t* text_selector_get_wtext(widget_t* widget) {
   text_selector_option_t* option = NULL;
   text_selector_t* text_selector = TEXT_SELECTOR(widget);
   return_value_if_fail(text_selector != NULL, NULL);
 
   option = text_selector_get_option(widget, text_selector->selected_index);
 
-  if (option != NULL) {
-    str_from_wstr(&(text_selector->text), option->text.str);
+  return option != NULL ? option->text.str : NULL;
+}
 
-    return text_selector->text.str;
-  }
+const char* text_selector_get_text(widget_t* widget) {
+  text_selector_t* text_selector = TEXT_SELECTOR(widget);
+  return_value_if_fail(text_selector != NULL, NULL);
 
-  return NULL;
+  str_from_wstr(&(text_selector->text), text_selector_get_wtext(widget));
+
+  return text_selector->text.str;
 }
 
 ret_t text_selector_set_text(widget_t* widget, const char* text) {
