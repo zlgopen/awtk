@@ -187,12 +187,12 @@ typedef struct _slide_indicator_t {
 } slide_indicator_t;
 
 /**
- * @event {event_t} EVT_VALUE_WILL_CHANGE
+ * @event {value_change_event_t} EVT_VALUE_WILL_CHANGE
  * 值(当前页的序号)即将改变事件。
  */
 
 /**
- * @event {event_t} EVT_VALUE_CHANGED
+ * @event {value_change_event_t} EVT_VALUE_CHANGED
  * 值(当前页的序号)改变事件。
  */
 

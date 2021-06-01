@@ -234,12 +234,12 @@ typedef struct _edit_t {
 } edit_t;
 
 /**
- * @event {event_t} EVT_VALUE_CHANGING
+ * @event {value_change_event_t} EVT_VALUE_CHANGING
  * 文本正在改变事件(编辑中)。
  */
 
 /**
- * @event {event_t} EVT_VALUE_CHANGED
+ * @event {value_change_event_t} EVT_VALUE_CHANGED
  * 文本改变事件。
  */
 

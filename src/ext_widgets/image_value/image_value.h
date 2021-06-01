@@ -118,12 +118,12 @@ typedef struct _image_value_t {
 } image_value_t;
 
 /**
- * @event {event_t} EVT_VALUE_WILL_CHANGE
+ * @event {value_change_event_t} EVT_VALUE_WILL_CHANGE
  * 值即将改变事件(click_add_delta为非0时，点击触发)。
  */
 
 /**
- * @event {event_t} EVT_VALUE_CHANGED
+ * @event {value_change_event_t} EVT_VALUE_CHANGED
  * 值改变事件(click_add_delta为非0时，点击触发)。
  */
 

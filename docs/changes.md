@@ -2,6 +2,7 @@
 
 2021/06/01
   * 修复text selector通过widget\_get\_text返回NULL的问题。
+  * 完善控件EVT\_VALUE\_CHANGED/EVT\_VALUE\_WILL\_CHANGE事件的文档。
 
 2021/05/31
   * 完善vgcanvas\_null/vgcanvas\_nanovg\_soft的编译宏，方便制作keil的pack(感谢静儒提供补丁)

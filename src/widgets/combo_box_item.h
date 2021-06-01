@@ -61,12 +61,12 @@ typedef struct _combo_box_item_t {
  */
 
 /**
- * @event {event_t} EVT_VALUE_WILL_CHANGE
+ * @event {value_change_event_t} EVT_VALUE_WILL_CHANGE
  * 值(勾选状态)即将改变事件。
  */
 
 /**
- * @event {event_t} EVT_VALUE_CHANGED
+ * @event {value_change_event_t} EVT_VALUE_CHANGED
  * 值(勾选状态)改变事件。
  */
 

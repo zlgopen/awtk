@@ -134,12 +134,12 @@ typedef struct _slide_view_t {
 } slide_view_t;
 
 /**
- * @event {event_t} EVT_VALUE_WILL_CHANGE
+ * @event {value_change_event_t} EVT_VALUE_WILL_CHANGE
  * 值(当前页)即将改变事件。
  */
 
 /**
- * @event {event_t} EVT_VALUE_CHANGED
+ * @event {value_change_event_t} EVT_VALUE_CHANGED
  * 值(当前页)改变事件。
  */
 

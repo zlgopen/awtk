@@ -227,6 +227,7 @@ static ret_t file_browser_view_reload_in_idle(const idle_info_t* info) {
 }
 
 static ret_t file_browser_view_on_item_clicked(void* ctx, event_t* e) {
+  value_change_event_t changed;
   widget_t* target = WIDGET(e->target);
   file_browser_view_t* file_browser_view = FILE_BROWSER_VIEW(ctx);
   return_value_if_fail(target != NULL && file_browser_view != NULL, RET_BAD_PARAMS);
@@ -251,7 +252,9 @@ static ret_t file_browser_view_on_item_clicked(void* ctx, event_t* e) {
     }
   }
 
-  widget_dispatch_simple_event(WIDGET(ctx), EVT_VALUE_CHANGED);
+  value_change_event_init(&changed, EVT_VALUE_CHANGED, ctx);
+  value_set_str(&(changed.new_value), file_browser_view->cwd);
+  widget_dispatch(WIDGET(ctx), (event_t*)&changed);
 
   return RET_OK;
 }

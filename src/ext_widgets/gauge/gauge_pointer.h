@@ -97,12 +97,12 @@ typedef struct _gauge_pointer_t {
 } gauge_pointer_t;
 
 /**
- * @event {event_t} EVT_VALUE_WILL_CHANGE
+ * @event {value_change_event_t} EVT_VALUE_WILL_CHANGE
  * 值(角度)即将改变事件。
  */
 
 /**
- * @event {event_t} EVT_VALUE_CHANGED
+ * @event {value_change_event_t} EVT_VALUE_CHANGED
  * 值(角度)改变事件。
  */
 

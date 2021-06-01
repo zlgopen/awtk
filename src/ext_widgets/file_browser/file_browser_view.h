@@ -137,7 +137,7 @@ typedef struct _file_browser_view_t {
 } file_browser_view_t;
 
 /**
- * @event {event_t} EVT_VALUE_CHANGED
+ * @event {value_change_event_t} EVT_VALUE_CHANGED
  * 值(当前显示目录)改变事件。
  */
 

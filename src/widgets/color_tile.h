@@ -78,12 +78,12 @@ typedef struct _color_tile_t {
 } color_tile_t;
 
 /**
- * @event {event_t} EVT_VALUE_WILL_CHANGE
+ * @event {value_change_event_t} EVT_VALUE_WILL_CHANGE
  * 值(颜色)即将改变事件。
  */
 
 /**
- * @event {event_t} EVT_VALUE_CHANGED
+ * @event {value_change_event_t} EVT_VALUE_CHANGED
  * 值(颜色)改变事件。
  */
 

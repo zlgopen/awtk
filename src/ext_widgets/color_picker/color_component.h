@@ -55,7 +55,7 @@ typedef struct _color_component_t {
 } color_component_t;
 
 /**
- * @event {event_t} EVT_VALUE_CHANGING
+ * @event {value_change_event_t} EVT_VALUE_CHANGING
  * 颜色正在改变事件。
  */
 
