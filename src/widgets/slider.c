@@ -197,6 +197,7 @@ static ret_t slider_pointer_up_cleanup(widget_t* widget) {
   slider_t* slider = SLIDER(widget);
   return_value_if_fail(widget != NULL && slider != NULL, RET_BAD_PARAMS);
 
+  slider->pressed = FALSE;
   slider->dragging = FALSE;
   widget_ungrab(widget->parent, widget);
   widget_set_state(widget, WIDGET_STATE_NORMAL);
@@ -272,6 +273,7 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
         widget_invalidate(widget, NULL);
       }
       slider->down = p;
+      slider->pressed = TRUE;
       slider->saved_value = slider->value;
       ret = slider->dragging ? RET_STOP : RET_OK;
       break;
@@ -305,7 +307,23 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
     case EVT_POINTER_UP: {
       if (slider->dragging) {
         slider_set_value_internal(widget, slider->value, EVT_VALUE_CHANGED, TRUE);
+      } else if(slider->pressed) {
+        double value = 0;
+        double range = slider->max - slider->min;
+        pointer_event_t* evt = (pointer_event_t*)e;
+        point_t p = {evt->x, evt->y};
+
+        widget_to_local(widget, &p);
+        if (slider->vertical) {
+          value = slider->min + range - range * p.y / widget->h;
+        } else {
+          value = slider->min + range * p.x / widget->w;
+        }
+
+        value = tk_clamp(value, slider->min, slider->max);
+        slider_set_value(widget, value);
       }
+
       slider_pointer_up_cleanup(widget);
       break;
     }

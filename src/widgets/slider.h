@@ -137,6 +137,7 @@ typedef struct _slider_t {
   bool_t slide_with_bar;
 
   /*private*/
+  bool_t pressed;
   bool_t dragging;
   double saved_value;
   point_t down;
