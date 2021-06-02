@@ -1,25 +1,30 @@
 # 最新动态
 
+2021/06/02
+  * 限制在 SDL 的 pc 模拟下才可以调用 msize（感谢智明提供补丁） 
+  * 增加离线画布在 linux-fb 下支持 24 位色的功能（感谢智明提供补丁）
+  * 修改当内存小于 32kb 则不分配内存池，如果内存很少的话，其实没有必要开辟一块内存池了，因为这个时候内存池反而占用了一大块的无法使用的内存碎片了（感谢智明提供补丁）。
+
 2021/06/01
-  * 修复text selector通过widget\_get\_text返回NULL的问题。
-  * 完善控件EVT\_VALUE\_CHANGED/EVT\_VALUE\_WILL\_CHANGE事件的文档。
-  * 完善slider，支持点击修改。
+  * 修复 text selector 通过 widget\_get\_text 返回 NULL 的问题。
+  * 完善控件 EVT\_VALUE\_CHANGED/EVT\_VALUE\_WILL\_CHANGE 事件的文档。
+  * 完善 slider，支持点击修改。
 
 2021/05/31
-  * 完善vgcanvas\_null/vgcanvas\_nanovg\_soft的编译宏，方便制作keil的pack(感谢静儒提供补丁)
+  * 完善 vgcanvas\_null/vgcanvas\_nanovg\_soft 的编译宏，方便制作 keil 的 pack（感谢静儒提供补丁）
 
 2021/05/28
-	* 增加log\_dummy函数，方便在没有真正的log函数时设置断点调试。
-	* 由于mem.c中导出了malloc等函数，没有必要重载new/delete等操作符，所以去掉misc/new.cpp|.hpp中的代码，但为了兼容保留文件。
+	* 增加 log\_dummy 函数，方便在没有真正的 log 函数时设置断点调试。
+	* 由于 mem.c 中导出了 malloc 等函数，没有必要重载 new/delete 等操作符，所以去掉 misc/new.cpp|.hpp 中的代码，但为了兼容保留文件。
 	* 完善文档。
 
 2021/05/28
-  * 修改scroll view/scroll bar/text selector/switch/slide view，在不启用控件动画时也可以使用。
-  * 增加EXPORT\_STD\_MALLOC，用于在没有定义HAS\_STD\_MALLOC时，是否将AWTK内存分配函数封装成标准C的内存分配函数。
-  * 修复在win7平台下由于SDL_Init和SDL_OpenAudioDevice不在同一线程中调用导致音频设备打开失败的问题。(感谢兆坤提供补丁)
+  * 修改 scroll view/scroll bar/text selector/switch/slide view，在不启用控件动画时也可以使用。
+  * 增加 EXPORT\_STD\_MALLOC，用于在没有定义 HAS\_STD\_MALLOC 时，是否将 AWTK 内存分配函数封装成标准 C 的内存分配函数。
+  * 修复在 win7 平台下由于 SDL_Init 和 SDL_OpenAudioDevice 不在同一线程中调用导致音频设备打开失败的问题。（感谢兆坤提供补丁）
 
 2021/05/27
-  * 完善std mem alloctor，增加内存使用统计。
+  * 完善 std mem alloctor，增加内存使用统计。
   * 完善自定义控件文档。
   
 2021/05/26
@@ -27,91 +32,91 @@
   * 增加宏 WITHOUT\_WINDOW\_ANIMATOR\_CACHE 用于控制窗口动画是否使用缓存。如果内存紧缺，又希望启用窗口动画，可以打开本宏。
 
 2021/05/25
-  * 完善edit。
-  * 增加ui\_feedback\_deinit。
+  * 完善 edit。
+  * 增加 ui\_feedback\_deinit。
 
 2021/05/23
-  * style支持feedback/focusable。
+  * style 支持 feedback/focusable。
 
 2021/05/22
   * 完善图片解码器，优先使用用户自定义的解码器（感谢智明提供补丁）。
-  * stb支持外部硬件加速yuv转rgb的宏和函数（感谢智明提供补丁）。
+  * stb 支持外部硬件加速 yuv 转 rgb 的宏和函数（感谢智明提供补丁）。
 
 2021/05/21
-  * 窗口增加属性strongly_focus。点击非focusable控件时，用于控制是否让当前焦点控件失去焦点。
+  * 窗口增加属性 strongly_focus。点击非 focusable 控件时，用于控制是否让当前焦点控件失去焦点。
 
 2021/05/20
-  * Window支持EVT\_PAINT事件。
-  * 完善widget\_to\_xml。
-  * 完善后台线程OOM的处理和测试。
+  * Window 支持 EVT\_PAINT 事件。
+  * 完善 widget\_to\_xml。
+  * 完善后台线程 OOM 的处理和测试。
 
 2021/05/19
-  * 增加宏NATIVE\_WINDOW\_NOT\_RESIZABLE，用于禁止用户调整desktop应用程序的窗口大小。
-  * 修复设置屏保时间为0时候不能马上退出屏保的问题（感谢智明提供补丁）
+  * 增加宏 NATIVE\_WINDOW\_NOT\_RESIZABLE，用于禁止用户调整 desktop 应用程序的窗口大小。
+  * 修复设置屏保时间为 0 时候不能马上退出屏保的问题（感谢智明提供补丁）
 
 2021/05/18
-  * 完善image事件处理和测试。
-  * 增加函数widget\_get\_focused\_widget。
-  * 为AWTK\_LITE优化大小（感谢智明提供补丁）
-  * 增加禁止在mmap模式下增加外部include的资源（感谢智明提供补丁）
-  * 完善gif，增加gif\_image\_play/gif\_image\_stop/gif\_image\_pause。
+  * 完善 image 事件处理和测试。
+  * 增加函数 widget\_get\_focused\_widget。
+  * 为 AWTK\_LITE 优化大小（感谢智明提供补丁）
+  * 增加禁止在 mmap 模式下增加外部 include 的资源（感谢智明提供补丁）
+  * 完善 gif，增加 gif\_image\_play/gif\_image\_stop/gif\_image\_pause。
 
 2021/05/17
   * 完善文档。
-  * 增加widget\_auto\_scale\_children。
-  * 将widget\_on\_pointer\_xxx\_children公开。
-  * 为AWTK\_LITE优化大小（感谢智明提供补丁）
+  * 增加 widget\_auto\_scale\_children。
+  * 将 widget\_on\_pointer\_xxx\_children 公开。
+  * 为 AWTK\_LITE 优化大小（感谢智明提供补丁）
 
 2021/05/16
-  * 完善layout处理流程。
-  * 重构封装获取lcd大小的代码。
+  * 完善 layout 处理流程。
+  * 重构封装获取 lcd 大小的代码。
 
 2021/05/15
   * 完善圆角矩形（感谢智明提供补丁）
-  * 修改label高度的限制条件。
-  * 完善widget\_set\_need\_relayout。
-  * 增加函数event\_clone
-  * 增加函数widget\_dispatch\_async
-  * 异步分发space/return触发的click事件。
+  * 修改 label 高度的限制条件。
+  * 完善 widget\_set\_need\_relayout。
+  * 增加函数 event\_clone
+  * 增加函数 widget\_dispatch\_async
+  * 异步分发 space/return 触发的 click 事件。
 
 2021/05/14
-  * switch支持click事件，支持space/return触发。
+  * switch 支持 click 事件，支持 space/return 触发。
   * 修复圆角矩形的多次半透叠加后出现颜色不对的问题（感谢智明提供补丁）
 
 2021/05/13
-  * 完善和优化layout处理流程。
-  * 完善layout中auto adjust size的处理。
-  * 完善event\_source\_manager\_default\_dispatch\_fds(感谢林福提供补丁)。
-  * 完善object\_compositor\_on\_destroy（感谢zhujun19790920提供补丁)。
+  * 完善和优化 layout 处理流程。
+  * 完善 layout 中 auto adjust size 的处理。
+  * 完善 event\_source\_manager\_default\_dispatch\_fds（感谢林福提供补丁）。
+  * 完善 object\_compositor\_on\_destroy（感谢 zhujun19790920 提供补丁）。
 
 2021/05/12
-  * 完善mledit（感谢兆坤提供补丁）
-	* 针对AWTK\_LITE优化canvas.c。
-  * 完善popup，使用widget\_add\_timer代替timer\_add，以便窗口关闭时销毁timer。
+  * 完善 mledit（感谢兆坤提供补丁）
+	* 针对 AWTK\_LITE 优化 canvas.c。
+  * 完善 popup，使用 widget\_add\_timer 代替 timer\_add，以便窗口关闭时销毁 timer。
 
 2021/05/11
-  * 完善dialog\_helper。
-  * 完善WINDOW\_CLOSABLE\_CONFIRM的处理。
-  * 增加widget\_back/widget\_back\_to\_home。
-  * 完善定时关闭的popup: 有用户操作后重新开始计时。
-  * 为了避免歧义，将styles资源名称由“主题”改为“窗体样式”（感谢雨欣提供补丁)。
+  * 完善 dialog\_helper。
+  * 完善 WINDOW\_CLOSABLE\_CONFIRM 的处理。
+  * 增加 widget\_back/widget\_back\_to\_home。
+  * 完善定时关闭的 popup: 有用户操作后重新开始计时。
+  * 为了避免歧义，将 styles 资源名称由“主题”改为“窗体样式”（感谢雨欣提供补丁）。
 
 2021/05/08
-  * 重构popup和相关测试。
+  * 重构 popup 和相关测试。
 
 2021/05/07
-  * 完善mledit（感谢兆坤提供补丁）
-  * 重构button和相关测试。
-  * 重构check\_button和相关测试。
+  * 完善 mledit（感谢兆坤提供补丁）
+  * 重构 button 和相关测试。
+  * 重构 check\_button 和相关测试。
 
 2021/05/06
-  * 完善combo\_box/combo\_box\_ex。
+  * 完善 combo\_box/combo\_box\_ex。
 
 2021/04/30
-  * image value支持支持水平和垂直对齐。
-  * image value支持scale/scale\_w/scale\_h/scale\_auto
-  * image value支持margin\_left/margin\_right/margin\_top/margin\_bottom。
-  * 完善mledit/line\_number（感谢兆坤提供补丁）
+  * image value 支持支持水平和垂直对齐。
+  * image value 支持 scale/scale\_w/scale\_h/scale\_auto
+  * image value 支持 margin\_left/margin\_right/margin\_top/margin\_bottom。
+  * 完善 mledit/line\_number（感谢兆坤提供补丁）
 
 2021/04/29
   * 重构内置对话框的代码。
@@ -119,7 +124,7 @@
 
 2021/04/28
   * 重构 label 并完善对 margin 的支持。
-  * 完善 Windows 下应用程序图标的支持(感谢陈谭提供补丁)。
+  * 完善 Windows 下应用程序图标的支持（感谢陈谭提供补丁）。
 
 2021/04/27
   * 完善 label 对 auto adjust size 的处理。
