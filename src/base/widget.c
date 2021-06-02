@@ -1145,9 +1145,7 @@ ret_t widget_set_visible_only(widget_t* widget, bool_t visible) {
 }
 
 ret_t widget_set_visible(widget_t* widget, bool_t visible, ...) {
-  widget_set_visible_self(widget, visible);
-
-  return widget_invalidate(widget, NULL);
+  return widget_set_visible_self(widget, visible);
 }
 
 widget_t* widget_find_target(widget_t* widget, xy_t x, xy_t y) {
