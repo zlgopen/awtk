@@ -69,7 +69,10 @@ ret_t input_method_off(input_method_t* im, uint32_t id) {
 
 ret_t input_method_request(input_method_t* im, widget_t* widget) {
   return_value_if_fail(im != NULL && im->request != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(!(im->busy), RET_FAIL);
+  
+  if (im->busy) {
+    return RET_FAIL;
+  }
 
   if (im->widget == widget) {
     return RET_OK;

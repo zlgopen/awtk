@@ -320,12 +320,6 @@ ret_t tk_deinit_internal(void) {
   dialog_highlighter_factory_set(NULL);
 #endif /*WITHOUT_DIALOG_HIGHLIGHTER*/
 
-  timer_manager_destroy(timer_manager());
-  timer_manager_set(NULL);
-
-  idle_manager_destroy(idle_manager());
-  idle_manager_set(NULL);
-
 #ifndef WITHOUT_WINDOW_ANIMATORS
   window_animator_factory_destroy(window_animator_factory());
   window_animator_factory_set(NULL);
@@ -335,6 +329,12 @@ ret_t tk_deinit_internal(void) {
   widget_animator_manager_destroy(widget_animator_manager());
   widget_animator_manager_set(NULL);
 #endif /*WITHOUT_WIDGET_ANIMATORS*/
+  
+  timer_manager_destroy(timer_manager());
+  timer_manager_set(NULL);
+
+  idle_manager_destroy(idle_manager());
+  idle_manager_set(NULL);
 
   theme_destroy(theme());
   theme_set(NULL);

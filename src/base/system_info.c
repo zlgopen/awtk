@@ -58,6 +58,10 @@ ret_t system_info_set_app_root(system_info_t* info, const char* app_root) {
 
 static ret_t system_info_normalize_app_root_try_default(system_info_t* info,
                                                         const char* app_root_default) {
+  if (app_root_default == NULL) {
+    app_root_default = "./";
+  }
+
   if (app_root_is_valid(app_root_default)) {
     return system_info_set_app_root(info, app_root_default);
   } else if (!path_is_abs(app_root_default)) {

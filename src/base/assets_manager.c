@@ -724,9 +724,7 @@ const asset_info_t* assets_manager_ref_ex(assets_manager_t* am, asset_type_t typ
 }
 
 ret_t assets_manager_unref(assets_manager_t* am, const asset_info_t* info) {
-  return_value_if_fail(info != NULL, RET_BAD_PARAMS);
-
-  if (am == NULL) {
+  if (am == NULL || info == NULL) {
     /*asset manager was destroied*/
     return RET_OK;
   }

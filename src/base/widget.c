@@ -589,6 +589,10 @@ ret_t widget_create_animator(widget_t* widget, const char* animation) {
       tk_strncpy(params, start, sizeof(params) - 1);
     }
 
+    if (!*params) {
+      break;
+    }
+
     return_value_if_fail(widget_animator_create(widget, params) != NULL, RET_BAD_PARAMS);
 
     if (end == NULL) {
@@ -1724,7 +1728,7 @@ static widget_t* widget_get_top_widget_grab_key(widget_t* widget) {
   WIDGET_FOR_EACH_CHILD_BEGIN_R(widget, iter, i)
   value_t v;
   widget_t* widget_grab_key = widget_get_top_widget_grab_key(iter);
-  if (widget_grab_key == NULL && iter != NULL && iter->visible) {
+  if (widget_grab_key == NULL && iter != NULL && iter->visible && iter->custom_props != NULL) {
     ret_t ret = object_get_prop(iter->custom_props, WIDGET_PROP_GRAB_KEYS, &v);
     if (ret == RET_OK && value_bool(&v)) {
       return iter;
@@ -3394,8 +3398,10 @@ int32_t widget_count_children(widget_t* widget) {
 }
 
 widget_t* widget_get_child(widget_t* widget, int32_t index) {
-  return_value_if_fail(widget != NULL && widget->children != NULL, NULL);
-  return_value_if_fail(index < widget->children->size, NULL);
+  return_value_if_fail(widget != NULL, NULL);
+  if (widget->children == NULL || index >= widget->children->size) {
+    return NULL;
+  }
 
   return WIDGET(widget->children->elms[index]);
 }

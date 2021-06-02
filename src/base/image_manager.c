@@ -142,7 +142,11 @@ ret_t image_manager_lookup(image_manager_t* imm, const char* name, bitmap_t* ima
 ret_t image_manager_update_specific(image_manager_t* imm, bitmap_t* image) {
   bitmap_cache_t info;
   bitmap_cache_t* iter = NULL;
-  return_value_if_fail(imm != NULL && image != NULL, RET_BAD_PARAMS);
+  return_value_if_fail(image != NULL, RET_BAD_PARAMS);
+
+  if (imm == NULL) {
+    return RET_FAIL;
+  }
 
   if (image->image_manager != NULL) {
     imm = image->image_manager;
