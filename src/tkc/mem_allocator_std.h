@@ -24,6 +24,7 @@
 
 #include "tkc/mem_allocator.h"
 
+#ifdef WITH_SDL
 #ifdef MACOS
 #include <malloc/malloc.h>
 #define msize(ptr) malloc_size(ptr)
@@ -33,6 +34,9 @@
 #include <malloc.h>
 #define msize(ptr) malloc_usable_size(ptr)
 #elif !defined(msize)
+#define msize(ptr) 0
+#endif
+#else
 #define msize(ptr) 0
 #endif
 
