@@ -649,10 +649,6 @@ ret_t scroll_bar_set_value_only(widget_t* widget, int32_t value) {
 
   scroll_bar->value = value;
 
-  if (!scroll_bar_is_mobile(widget)) {
-    widget_set_need_relayout_children(widget);
-  }
-
   return RET_OK;
 }
 
