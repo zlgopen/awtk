@@ -47,6 +47,8 @@ typedef struct _self_layouter_menu_t {
   uint8_t x_attr;
   uint8_t y_attr;
   uint8_t position;
+
+  bool_t inited;
   point_t pressed;
   rect_t trigger_widget_rect;
 } self_layouter_menu_t;

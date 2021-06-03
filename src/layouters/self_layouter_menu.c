@@ -337,7 +337,10 @@ ret_t self_layouter_menu_layout(self_layouter_t* layouter, widget_t* widget, rec
   return_value_if_fail(widget != NULL && widget->parent != NULL, RET_BAD_PARAMS);
   return_value_if_fail(widget_is_window(widget), RET_BAD_PARAMS);
 
-  widget_layout_self_get_trigger(layouter, &(l->pressed), &(l->trigger_widget_rect));
+  if(!l->inited) {
+    widget_layout_self_get_trigger(layouter, &(l->pressed), &(l->trigger_widget_rect));
+    l->inited = TRUE;
+  }
 
   return widget_layout_self_menu_with_rect(layouter, widget, area);
 }
