@@ -46,11 +46,11 @@ static ret_t ubjson_writer_write_marker(ubjson_writer_t* writer, uint8_t marker)
 static ret_t ubjson_writer_write_key_len(ubjson_writer_t* writer, const char* value, uint32_t len) {
   return_value_if_fail(writer != NULL && value != NULL, RET_BAD_PARAMS);
 
-  if (len < 128) {
+  if (len < INT8_MAX) {
     ubjson_writer_write_int8(writer, (int8_t)len);
-  } else if (len < 0xefff) {
+  } else if (len < INT16_MAX) {
     ubjson_writer_write_int16(writer, (int16_t)len);
-  } else if (len < 0xefffffff) {
+  } else if (len < INT_MAX) {
     ubjson_writer_write_int32(writer, (int32_t)len);
   } else {
     return RET_BAD_PARAMS;
