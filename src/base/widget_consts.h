@@ -738,6 +738,12 @@ BEGIN_C_DECLS
 #define WIDGET_PROP_ANIMATABLE "animatable"
 
 /**
+ * @const WIDGET_PROP_AUTO_HIDE
+ * 是否自动隐藏。
+ */
+#define WIDGET_PROP_AUTO_HIDE "auto_hide"
+
+/**
  * @const WIDGET_PROP_AUTO_HIDE_SCROLL_BAR
  * 是否自动隐藏滚动条。
  */

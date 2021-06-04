@@ -359,7 +359,10 @@ static ret_t children_layouter_list_view_for_list_view_set_scroll_bar_info(widge
     if (widget->h > virtual_h) {
       scroll_bar_set_params(widget, widget->h, item_height);
     }
-    widget_set_visible_only(widget, FALSE);
+
+    if (SCROLL_BAR(widget)->auto_hide) {
+      widget_set_visible_only(widget, FALSE);
+    }
   } else {
     if (scroll_view->h >= virtual_h) {
       scroll_bar_set_value(widget, 0);

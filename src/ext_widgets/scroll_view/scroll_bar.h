@@ -95,6 +95,12 @@ typedef struct _scroll_bar_t {
    * 滚动时是否启用动画。
    */
   bool_t animatable;
+  /**
+   * @property {bool_t} auto_hide
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 是否自动隐藏(仅对mobile风格的滚动条有效)。
+   */
+  bool_t auto_hide;
 
   /*private*/
   widget_t* dragger;
@@ -234,6 +240,20 @@ ret_t scroll_bar_scroll_delta(widget_t* widget, int32_t delta);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t scroll_bar_set_value_only(widget_t* widget, int32_t value);
+
+/**
+ * @method scroll_bar_set_auto_hide
+ * 设置auto_hide属性。
+ *
+ *>仅对mobile风格的滚动条有效
+ *
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget scroll_bar控件。
+ * @param {bool_t} auto_hide 值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t scroll_bar_set_auto_hide(widget_t* widget, bool_t auto_hide);
 
 /**
  * @method scroll_bar_is_mobile

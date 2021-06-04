@@ -64,3 +64,17 @@ TEST(ScrollBar, cast) {
 
   widget_destroy(w);
 }
+
+TEST(ScrollBar, auto_hide) {
+  widget_t* w = scroll_bar_create_mobile(NULL, 10, 20, 30, 40);
+
+  ASSERT_EQ(SCROLL_BAR(w)->auto_hide, TRUE);
+  scroll_bar_set_auto_hide(w, FALSE);
+  ASSERT_EQ(SCROLL_BAR(w)->auto_hide, FALSE);
+
+  ASSERT_EQ(widget_set_prop_bool(w, WIDGET_PROP_AUTO_HIDE, TRUE), RET_OK);
+  ASSERT_EQ(SCROLL_BAR(w)->auto_hide, TRUE);
+  ASSERT_EQ(widget_get_prop_bool(w, WIDGET_PROP_AUTO_HIDE, FALSE), TRUE);
+
+  widget_destroy(w);
+}
