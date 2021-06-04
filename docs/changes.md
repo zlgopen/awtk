@@ -2,6 +2,8 @@
 
 2021/06/04
   * scroll bar mobile支持auto\_hide属性。
+  * 完善scroll bar mobile支持圆角。
+
 2021/06/03
   * 完善 scroll bar。
   * 完善 menu layout。
