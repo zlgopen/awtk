@@ -598,7 +598,7 @@ ret_t scroll_bar_scroll_to(widget_t* widget, int32_t value, int32_t duration) {
   widget_animator_on(scroll_bar->wa_value, EVT_ANIM_END, scroll_bar_on_value_animate_end,
                      scroll_bar);
 
-  if (scroll_bar_is_mobile(widget) && scroll_bar->auto_hide) {
+  if (scroll_bar_is_mobile(widget)) {
     scroll_bar_hide_by_opacity_animation(widget, duration, duration);
   } else {
     scroll_bar->wa_opactiy = NULL;
@@ -716,6 +716,10 @@ widget_t* scroll_bar_cast(widget_t* widget) {
 ret_t scroll_bar_hide_by_opacity_animation(widget_t* widget, int32_t duration, int32_t delay) {
   scroll_bar_t* scroll_bar = SCROLL_BAR(widget);
   return_value_if_fail(scroll_bar != NULL, RET_BAD_PARAMS);
+  
+  if (scroll_bar_is_mobile(widget) && !scroll_bar->auto_hide) {
+    return RET_OK;
+  }
 
 #ifndef WITHOUT_WIDGET_ANIMATORS
   if (scroll_bar->wa_opactiy != NULL) {
