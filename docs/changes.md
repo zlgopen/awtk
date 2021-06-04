@@ -2,7 +2,8 @@
 
 2021/06/04
   * scroll bar mobile支持auto\_hide属性。
-  * 完善scroll bar mobile支持圆角。
+  * 完善 scroll bar mobile 支持圆角。
+  * 修复 hscroll\_label 在一开始未显示的 page 中无法自动滚动的问题（感谢智明提供补丁）
 
 2021/06/03
   * 完善 scroll bar。

@@ -25,6 +25,8 @@
 #include "base/widget_vtable.h"
 #include "scroll_label/hscroll_label.h"
 
+static ret_t hscroll_label_check_and_start(widget_t* widget);
+
 static bool_t hscroll_label_is_running(widget_t* widget) {
   hscroll_label_t* hscroll_label = HSCROLL_LABEL(widget);
   return_value_if_fail(hscroll_label != NULL, RET_BAD_PARAMS);
@@ -43,6 +45,8 @@ static ret_t hscroll_label_do_paint_self(widget_t* widget, canvas_t* c, uint32_t
   if (hscroll_label->text_w != hscroll_label->old_text_w) {
     if (tk_str_eq(widget->state, WIDGET_STATE_FOCUSED)) {
       hscroll_label_start(widget);
+    } else {
+      hscroll_label_check_and_start(widget);
     }
     hscroll_label->old_text_w = hscroll_label->text_w;
   }
@@ -270,12 +274,9 @@ ret_t hscroll_label_step(widget_t* widget) {
   return ret;
 }
 
-static ret_t hscroll_label_on_timer_start(const timer_info_t* info) {
-  widget_t* widget = WIDGET(info->ctx);
+static ret_t hscroll_label_check_and_start(widget_t* widget) {
   hscroll_label_t* hscroll_label = HSCROLL_LABEL(widget);
-  return_value_if_fail(hscroll_label != NULL, RET_BAD_PARAMS);
-  hscroll_label->timer_id = TK_INVALID_ID;
-
+  return_value_if_fail(widget != NULL && hscroll_label != NULL, RET_BAD_PARAMS);
   if (hscroll_label->only_focus) {
     if (widget->focused) {
       hscroll_label_start(widget);
@@ -287,6 +288,16 @@ static ret_t hscroll_label_on_timer_start(const timer_info_t* info) {
   } else {
     hscroll_label_start(widget);
   }
+  return RET_OK;
+}
+
+static ret_t hscroll_label_on_timer_start(const timer_info_t* info) {
+  widget_t* widget = WIDGET(info->ctx);
+  hscroll_label_t* hscroll_label = HSCROLL_LABEL(widget);
+  return_value_if_fail(hscroll_label != NULL, RET_BAD_PARAMS);
+  hscroll_label->timer_id = TK_INVALID_ID;
+
+  hscroll_label_check_and_start(widget);
   widget_invalidate_force(widget, NULL);
 
   return RET_REMOVE;
