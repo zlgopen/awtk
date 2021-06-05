@@ -150,6 +150,7 @@ static ret_t switch_on_event(widget_t* widget, event_t* e) {
     case EVT_POINTER_UP: {
       aswitch->pressed = FALSE;
       if (!aswitch->point_down_aborted) {
+        switch_on_pointer_move(aswitch, (pointer_event_t*)e);
         switch_on_pointer_up(aswitch, (pointer_event_t*)e);
         widget_ungrab(widget->parent, widget);
       } else {
