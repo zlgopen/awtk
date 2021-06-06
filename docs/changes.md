@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/06/06
+  * 重构widget部分代码。
+
 2021/06/05
   * 完善switch控件。修复滑动太快，pointer down和pointer up之间没有move事件的问题。
 
