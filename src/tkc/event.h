@@ -132,6 +132,11 @@ typedef struct _event_t {
    */
   void* target;
 
+  /**
+   * @property {void*} native_window_handle
+   * @annotation ["readable"]
+   * 原生窗口句柄。
+   */
   void* native_window_handle;
 } event_t;
 
