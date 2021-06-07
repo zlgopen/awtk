@@ -213,7 +213,7 @@ void awtk_ios_log(const char* message, ...);
 #define log_debug(format, args...)
 #define log_info(format, args...)
 #define log_warn(format, args...)
-#define log_error(format, args...) 
+#define log_error(format, args...)
 #endif
 
 END_C_DECLS

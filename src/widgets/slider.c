@@ -307,7 +307,7 @@ static ret_t slider_on_event(widget_t* widget, event_t* e) {
     case EVT_POINTER_UP: {
       if (slider->dragging) {
         slider_set_value_internal(widget, slider->value, EVT_VALUE_CHANGED, TRUE);
-      } else if(slider->pressed) {
+      } else if (slider->pressed) {
         double value = 0;
         double range = slider->max - slider->min;
         pointer_event_t* evt = (pointer_event_t*)e;

@@ -329,7 +329,7 @@ ret_t tk_deinit_internal(void) {
   widget_animator_manager_destroy(widget_animator_manager());
   widget_animator_manager_set(NULL);
 #endif /*WITHOUT_WIDGET_ANIMATORS*/
-  
+
   timer_manager_destroy(timer_manager());
   timer_manager_set(NULL);
 
