@@ -166,7 +166,7 @@ event_t* cmd_exec_event_init(cmd_exec_event_t* event, uint32_t type, const char*
   return (event_t*)(event);
 }
 
-int event_get_type(event_t* event) {
+uint32_t event_get_type(event_t* event) {
   return_value_if_fail(event != NULL, EVT_NONE);
   return event->type;
 }
