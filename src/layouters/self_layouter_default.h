@@ -42,10 +42,10 @@ typedef struct _self_layouter_default_t {
   uint8_t y_attr;
   uint8_t w_attr;
   uint8_t h_attr;
-  xy_t x;
-  xy_t y;
-  wh_t w;
-  wh_t h;
+  double x;
+  double y;
+  double w;
+  double h;
 } self_layouter_default_t;
 
 /**
