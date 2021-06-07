@@ -253,8 +253,10 @@ static ret_t file_browser_view_on_item_clicked(void* ctx, event_t* e) {
   }
 
   value_change_event_init(&changed, EVT_VALUE_CHANGED, ctx);
-  value_set_str(&(changed.new_value), file_browser_view->cwd);
+  value_set_str(&(changed.new_value), file_browser_view->fb->cwd);
   widget_dispatch(WIDGET(ctx), (event_t*)&changed);
+
+  log_debug("cwd: %s\n", value_str(&(changed.new_value)));
 
   return RET_OK;
 }
