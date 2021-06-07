@@ -2,6 +2,7 @@
 
 2021/06/07
   * 重构和完善文档。
+  * 完善mmap.c(感谢陈谭提供补丁)
   * 完善release脚本拷贝自定义控件的动态库。
   * 完善file browser view的value changed事件(感谢智明提供补丁) 
 

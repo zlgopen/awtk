@@ -23,6 +23,7 @@
 #include "tkc/mem.h"
 #include "tkc/utils.h"
 #include "tkc/mmap.h"
+#include "tkc/utf8.h"
 
 #ifndef WIN32
 #include <sys/types.h>
