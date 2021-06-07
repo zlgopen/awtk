@@ -12,13 +12,14 @@ ASSETS_DIR = 'assets'
 OUTPUT_DIR = 'release'
 CWD = os.getcwd()
 OS_NAME = platform.system();
-if OS_NAME == 'Darwin':
-  AWTK_DLL='libawtk.dylib'
-elif OS_NAME == 'Linux':
-  AWTK_DLL='libawtk.so'
-elif OS_NAME == 'Windows':
-  AWTK_DLL='awtk.dll'
 
+def getShareLibExt(): 
+  if OS_NAME == 'Darwin':
+    return 'dylib'
+  elif OS_NAME == 'Windows':
+    return 'dll'
+  else:
+    return 'so'
 
 def init(exe, assets_root, bin_root):
     global BIN_DIR
@@ -100,9 +101,13 @@ def copyFiles(src_root_dir, src, dst_root_dir, dst, ignore_files=[]):
 def copyExe():
     output_bin_dir = joinPath(OUTPUT_DIR, 'bin')
     copyFile(BIN_DIR, EXE_NAME, output_bin_dir, EXE_NAME)
-    copyFile(BIN_DIR, AWTK_DLL, output_bin_dir, AWTK_DLL)
-  
     os.chmod(joinPath(output_bin_dir, EXE_NAME), 0o755)
+
+    sharelibs = glob.glob(BIN_DIR + "/*."+getShareLibExt());
+    for filename in sharelibs:
+       basename = os.path.basename(filename)
+       copyFile(BIN_DIR, basename, output_bin_dir, basename)
+       os.chmod(joinPath(output_bin_dir, basename), 0o755)
 
 def copyAssets():
     copyFiles(ASSETS_DIR, '', OUTPUT_DIR, 'assets/')	
