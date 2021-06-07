@@ -450,7 +450,7 @@ TEST(SelfLayoutDefault, double_percent3) {
 
   ASSERT_EQ(b->w, 303);
   ASSERT_EQ(b->h, 404);
-  ASSERT_EQ(b->x, (1000 - 101)/2);
+  ASSERT_EQ(b->x, 450);
   ASSERT_EQ(b->y, 500);
   ASSERT_EQ(string(self_layouter_to_string(layouter)), string(layout_params));
 

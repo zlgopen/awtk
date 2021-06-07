@@ -368,10 +368,10 @@ static ret_t widget_layout_calc(self_layouter_default_t* layout, rect_t* r, wh_t
     }
   }
 
-  r->x = x;
-  r->y = y;
-  r->w = w;
-  r->h = h;
+  r->x = tk_roundi(x);
+  r->y = tk_roundi(y);
+  r->w = tk_roundi(w);
+  r->h = tk_roundi(h);
 
   return RET_OK;
 }
