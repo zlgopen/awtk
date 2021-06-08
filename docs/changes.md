@@ -1,6 +1,7 @@
 # 最新动态
 
 2021/06/08
+  * 完善编译脚本(感谢兆坤提供补丁)
   * 完善slide view，垂直slide view用上下键切换页面。
   * 完善slide view，处理滑动太快，中间没有move事件的问题。
 
@@ -8,8 +9,8 @@
   * 重构和完善文档。
   * 完善mmap.c(感谢陈谭提供补丁)
   * 完善release脚本拷贝自定义控件的动态库。
-  * 完善file browser view的value changed事件(感谢智明提供补丁) 
   * self layout default的百分比使用浮点数。
+  * 完善file browser view的value changed事件(感谢智明提供补丁) 
 
 2021/06/06
   * 重构widget部分代码。

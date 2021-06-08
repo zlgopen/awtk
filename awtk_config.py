@@ -184,7 +184,7 @@ if OS_NAME == 'Darwin':
 elif OS_NAME == 'Linux':
   TOOLS_NAME = ''
   OS_FLAGS='-g -Wall -fPIC ' 
-  OS_LIBS = ['GL', 'gtk-3','gdk-3','Xext', 'X11', 'sndio','stdc++', 'pthread', 'm', 'dl', 'asound']
+  OS_LIBS = ['GL', 'gtk-3','gdk-3','Xext', 'X11', 'sndio','stdc++', 'asound', 'pthread', 'm', 'dl']
   COMMON_CFLAGS=COMMON_CFLAGS+' -std=gnu99 '
   COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DLINUX -DHAS_PTHREAD'
   COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DSDL_REAL_API -DSDL_TIMER_UNIX -DSDL_VIDEO_DRIVER_X11 -DSDL_VIDEO_DRIVER_X11_SUPPORTS_GENERIC_EVENTS '
