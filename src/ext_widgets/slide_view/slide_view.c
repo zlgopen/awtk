@@ -304,6 +304,9 @@ static ret_t slide_view_on_event(widget_t* widget, event_t* e) {
           pointer_event_init(&abort, EVT_POINTER_DOWN_ABORT, widget, evt->x, evt->y);
           widget_dispatch_event_to_target_recursive(widget, (event_t*)(&abort));
           slide_view->dragged = TRUE;
+
+          slide_view_on_pointer_move(slide_view, evt);
+          widget_invalidate(widget, NULL);
         }
       }
 
@@ -311,12 +314,22 @@ static ret_t slide_view_on_event(widget_t* widget, event_t* e) {
     }
     case EVT_KEY_UP: {
       key_event_t* evt = (key_event_t*)e;
-      if (evt->key == TK_KEY_LEFT) {
-        ret = RET_STOP;
-        slide_view_activate_prev(slide_view);
-      } else if (evt->key == TK_KEY_RIGHT) {
-        ret = RET_STOP;
-        slide_view_activate_next(slide_view);
+      if (slide_view->vertical) {
+        if (evt->key == TK_KEY_UP || evt->key == TK_KEY_PAGEUP) {
+          ret = RET_STOP;
+          slide_view_activate_prev(slide_view);
+        } else if (evt->key == TK_KEY_DOWN || evt->key == TK_KEY_PAGEDOWN) {
+          ret = RET_STOP;
+          slide_view_activate_next(slide_view);
+        }
+      } else {
+        if (evt->key == TK_KEY_LEFT) {
+          ret = RET_STOP;
+          slide_view_activate_prev(slide_view);
+        } else if (evt->key == TK_KEY_RIGHT) {
+          ret = RET_STOP;
+          slide_view_activate_next(slide_view);
+        }
       }
     }
     default:
