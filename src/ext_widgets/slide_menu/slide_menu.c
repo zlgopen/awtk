@@ -493,6 +493,16 @@ static ret_t slide_menu_scroll_to(widget_t* widget, int32_t xoffset_end) {
   return RET_OK;
 }
 
+static ret_t slide_menu_scroll_to_prev(widget_t* widget) {
+  slide_menu_t* slide_menu = SLIDE_MENU(widget);
+  return slide_menu_scroll_to(widget, slide_menu->xoffset + widget->h);
+}
+
+static ret_t slide_menu_scroll_to_next(widget_t* widget) {
+  slide_menu_t* slide_menu = SLIDE_MENU(widget);
+  return slide_menu_scroll_to(widget, slide_menu->xoffset - widget->h);
+}
+
 static ret_t slide_menu_on_pointer_up(slide_menu_t* slide_menu, pointer_event_t* e) {
   int32_t xoffset_end = 0;
   point_t p = {e->x, e->y};
@@ -590,6 +600,17 @@ static ret_t slide_menu_on_event(widget_t* widget, event_t* e) {
         }
       }
       ret = slide_menu->dragged ? RET_STOP : RET_OK;
+      break;
+    }
+    case EVT_KEY_UP: {
+      key_event_t* evt = (key_event_t*)e;
+      if (evt->key == TK_KEY_LEFT) {
+        slide_menu_scroll_to_prev(widget);
+        ret = RET_STOP;
+      } else if (evt->key == TK_KEY_RIGHT) {
+        ret = RET_STOP;
+        slide_menu_scroll_to_next(widget);
+      }
       break;
     }
     default:
