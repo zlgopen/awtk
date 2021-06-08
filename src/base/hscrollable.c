@@ -274,8 +274,13 @@ ret_t hscrollable_set_prop(hscrollable_t* hscrollable, const char* name, const v
   } else if (tk_str_eq(name, WIDGET_PROP_XSLIDABLE)) {
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_XOFFSET)) {
-    hscrollable->xoffset = value_int(v);
-    widget_invalidate_force(hscrollable_get_widget(hscrollable), NULL);
+    if (hscrollable->wa != NULL) {
+      hscrollable->xoffset = value_int(v);
+      widget_invalidate_force(hscrollable_get_widget(hscrollable), NULL);
+    } else {
+      hscrollable->xoffset_end = value_int(v);
+      hscrollable_scroll_to(hscrollable, hscrollable->xoffset_end, 300);
+    }
     return RET_OK;
   } else if (tk_str_eq(name, WIDGET_PROP_YOFFSET)) {
     return RET_OK;
