@@ -63,8 +63,8 @@ ret_t application_exit() {
   return RET_OK;
 }
 
-#define LCD_WIDTH 400
-#define LCD_HEGHT 400
+#define LCD_WIDTH 800
+#define LCD_HEGHT 600
 #define APP_TYPE APP_DESKTOP
 
 #ifdef WITH_FS_RES

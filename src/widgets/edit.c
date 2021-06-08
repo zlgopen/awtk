@@ -637,7 +637,7 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
     }
   } else if (key < 128 && isprint(key)) {
     app_type_t app_type = system_info()->app_type;
-    if (app_type != APP_DESKTOP && app_type != APP_MOBILE) {
+    if (!input_method_is_native(input_method())) {
       edit_input_char(widget, (wchar_t)key);
     }
   } else {

@@ -59,6 +59,7 @@ input_method_t* input_method_sdl_create(void) {
   input_method_t* im = TKMEM_ZALLOC(input_method_t);
   return_value_if_fail(im != NULL, NULL);
 
+  im->is_native = TRUE;
   im->request = input_method_sdl_request;
   im->destroy = input_method_sdl_destroy;
 

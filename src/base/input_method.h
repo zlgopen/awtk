@@ -231,6 +231,13 @@ typedef struct _im_candidates_event_t {
  */
 struct _input_method_t {
   /**
+   * @property {bool_t} is_native
+   * @annotation ["readable"]
+   * 是否是原生输入法。
+   */
+   bool_t is_native;
+
+  /**
    * @property {widget_t*} widget
    * @annotation ["private"]
    * 当前的焦点控件。
@@ -518,6 +525,16 @@ ret_t input_method_dispatch_pre_candidates(input_method_t* im, const char* strs,
  * @return {input_method_t*} 成功返回输入法对象，失败返回NULL。
  */
 input_method_t* input_method_create(void);
+
+/**
+ * @method input_method_is_native
+ * 是否是平台原生输入法。
+ *
+ * @param {input_method_t*} im 输入法对象。
+ *
+ * @return {bool_t} 返回TRUE表示是原生输入法，否则表示不是。
+ */
+bool_t input_method_is_native(input_method_t* im);
 
 /**
  * @method input_method_destroy
