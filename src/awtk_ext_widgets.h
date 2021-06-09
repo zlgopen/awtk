@@ -22,6 +22,7 @@
 #ifndef AWTK_EXT_WIDGETS_H
 #define AWTK_EXT_WIDGETS_H
 
+#include "vpage/vpage.h"
 #include "switch/switch.h"
 #include "gauge/gauge.h"
 #include "gauge/gauge_pointer.h"

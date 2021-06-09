@@ -1,0 +1,65 @@
+<window text="VPage V Translate">
+  <pages name="pages" x="31%" y="0" w="68%" h="100%" style="at_top">
+    <vpage name="page1" w="100%" h="100%" ui_asset="tab_button_view_page1" anim_hint="vtranslate" />
+    <vpage name="page2" w="100%" h="100%" ui_asset="tab_button_view_page2" anim_hint="vtranslate" />
+    <vpage name="page3" w="100%" h="100%" anim_hint="vtranslate" >
+      <label x="c" y="m" w="200" h="30" text="page3" />
+      <button x="c" y="b:10" w="128" h="30" text="close" on:click="back()"/>
+    </vpage>
+    <vpage name="page4" w="100%" h="100%" anim_hint="vtranslate" >
+      <label x="c" y="m" w="200" h="30" text="page4" />
+      <button x="c" y="b:10" w="128" h="30" text="close" on:click="back()"/>
+    </vpage>
+    <vpage w="100%" h="100%" anim_hint="vtranslate" >
+      <label x="c" y="m" w="200" h="30" text="page5" />
+      <button x="c" y="b:10" w="128" h="30" text="close" on:click="back()"/>
+    </vpage>
+    <vpage w="100%" h="100%" anim_hint="vtranslate" >
+      <label x="c" y="m" w="200" h="30" text="page6" />
+      <button x="c" y="b:10" w="128" h="30" text="close" on:click="back()"/>
+    </vpage>
+    <vpage w="100%" h="100%" anim_hint="vtranslate" >
+      <label x="c" y="m" w="200" h="30" text="page7" />
+      <button x="c" y="b:10" w="128" h="30" text="close" on:click="back()"/>
+    </vpage>
+    <vpage w="100%" h="100%" anim_hint="vtranslate" >
+      <label x="c" y="m" w="200" h="30" text="page8" />
+      <button x="c" y="b:10" w="128" h="30" text="close" on:click="back()"/>
+    </vpage>
+    <vpage w="100%" h="100%" anim_hint="vtranslate" >
+      <label x="c" y="m" w="200" h="30" text="page9" />
+      <button x="c" y="b:10" w="128" h="30" text="close" on:click="back()"/>
+    </vpage>
+    <vpage w="100%" h="100%" anim_hint="vtranslate" >
+      <label x="c" y="m" w="200" h="30" text="page10" />
+      <button x="c" y="b:10" w="128" h="30" text="close" on:click="back()"/>
+    </vpage>
+    <vpage w="100%" h="100%" anim_hint="vtranslate" >
+      <label x="c" y="m" w="200" h="30" text="page11" />
+      <button x="c" y="b:10" w="128" h="30" text="close" on:click="back()"/>
+    </vpage>
+    <vpage w="100%" h="100%" anim_hint="vtranslate" >
+      <label x="c" y="m" w="200" h="30" text="page12" />
+      <button x="c" y="b:10" w="128" h="30" text="close" on:click="back()"/>
+    </vpage>
+  </pages>
+
+  <list_view x="0" y="0" w="30%" h="100%" item_height="40" auto_hide_scroll_bar="true">
+    <scroll_view name="view" x="0"  y="0" w="-12" h="100%">
+      <tab_button name="b1" text="page1" value="true" />
+      <tab_button name="b2" text="page2" />
+      <tab_button name="b3" text="page3" />
+      <tab_button name="b4" text="page4" />
+      <tab_button name="b5" text="page5" />
+      <tab_button name="b6" text="page6" />
+      <tab_button name="b7" text="page7" />
+      <tab_button name="b8" text="page8" />
+      <tab_button name="b9" text="page9" />
+      <tab_button name="b10" text="page10" />
+      <tab_button name="b11" text="page11" />
+      <tab_button name="b12" text="page12" />
+    </scroll_view>
+    <scroll_bar_d name="bar" x="right" y="0" w="12" h="100%" value="0"/>
+  </list_view>
+
+</window>

@@ -19,7 +19,16 @@
  *
  */
 
+#if defined(WITH_SDL)
+
+#ifndef WITH_WIDGET_VPAGE
+#define WITH_WIDGET_VPAGE
+#endif /*WITH_WIDGET_VPAGE*/
+
+#endif /*WITH_SDL*/
+
 #include "ext_widgets.h"
+#include "vpage/vpage.h"
 #include "switch/switch.h"
 #include "gauge/gauge.h"
 #include "mledit/mledit.h"
@@ -110,6 +119,11 @@ ret_t tk_ext_widgets_init(void) {
 
   widget_factory_register(f, "guage", gauge_create);
   widget_factory_register(f, "guage_pointer", gauge_pointer_create);
+
+#ifdef WITH_WIDGET_VPAGE
+  widget_factory_register(f, WIDGET_TYPE_VPAGE, vpage_create);
+#endif /*WITH_WIDGET_VPAGE*/
+
 #ifdef TK_FILE_BROWSER_VIEW_H
   widget_factory_register(f, WIDGET_TYPE_FILE_BROWSER_VIEW, file_browser_view_create);
 #endif /*TK_FILE_BROWSER_VIEW_H*/

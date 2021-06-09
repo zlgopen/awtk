@@ -4,6 +4,7 @@
   * 重构pages。
   * 修复ui\_builder不能重入的问题。
   * 增加window\_manager\_set\_ignore\_input\_events。
+  * 增加vpage扩展控件(配合pages控件使用，可以自动加载/卸载页面, 并提供入场/出场动画)
 
 2021/06/08
   * 完善编译脚本(感谢兆坤提供补丁)
