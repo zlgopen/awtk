@@ -19,7 +19,7 @@
  *
  */
 
-#if defined(WITH_SDL)
+#if defined(WITH_SDL) || defined(LINUX)
 
 #ifndef WITH_WIDGET_VPAGE
 #define WITH_WIDGET_VPAGE
