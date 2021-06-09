@@ -1024,6 +1024,7 @@ TEST(Widget, move_focus_pages) {
   widget_set_prop_bool(b2, WIDGET_PROP_FOCUSABLE, TRUE);
   widget_set_prop_bool(b3, WIDGET_PROP_FOCUSABLE, TRUE);
 
+  pages_set_active(pages, 0);
   widget_focus_first(w);
   ASSERT_EQ(b0->focused, TRUE);
   ASSERT_EQ(widget_focus_next(b0), RET_OK);

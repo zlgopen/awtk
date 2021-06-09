@@ -83,6 +83,15 @@ static ret_t pages_restore_target(widget_t* widget) {
   return RET_OK;
 }
 
+static ret_t pages_show_active(widget_t* widget) {
+  pages_t* pages = PAGES(widget);
+  WIDGET_FOR_EACH_CHILD_BEGIN(widget, iter, i)
+  widget_set_visible(iter, i == pages->active);
+  WIDGET_FOR_EACH_CHILD_END()
+
+  return RET_OK;
+}
+
 ret_t pages_set_active(widget_t* widget, uint32_t index) {
   pages_t* pages = PAGES(widget);
   return_value_if_fail(pages != NULL, RET_BAD_PARAMS);
@@ -97,6 +106,7 @@ ret_t pages_set_active(widget_t* widget, uint32_t index) {
 
     if (widget_dispatch(widget, (event_t*)&evt) != RET_STOP) {
       pages->active = index;
+      pages_show_active(widget);
       evt.e.type = EVT_VALUE_CHANGED;
       widget_dispatch(widget, (event_t*)&evt);
       widget_invalidate(widget, NULL);
@@ -132,21 +142,6 @@ static widget_t* pages_find_target(widget_t* widget, xy_t x, xy_t y) {
   return widget_get_child(widget, pages->active);
 }
 
-static ret_t pages_on_paint_children(widget_t* widget, canvas_t* c) {
-  widget_t* active = NULL;
-  pages_t* pages = PAGES(widget);
-  return_value_if_fail(widget != NULL && pages != NULL, RET_BAD_PARAMS);
-
-  if (widget->children == NULL || widget->children->size == 0) {
-    return RET_OK;
-  }
-
-  active = widget_get_child(widget, pages->active);
-  return_value_if_fail(active != NULL, RET_BAD_PARAMS);
-
-  return widget_paint(active, c);
-}
-
 static ret_t pages_get_prop(widget_t* widget, const char* name, value_t* v) {
   pages_t* pages = PAGES(widget);
   return_value_if_fail(pages != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
@@ -172,7 +167,16 @@ static ret_t pages_set_prop(widget_t* widget, const char* name, const value_t* v
 static ret_t pages_on_event(widget_t* widget, event_t* e) {
   uint16_t type = e->type;
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
+
   switch (type) {
+    case EVT_WINDOW_WILL_OPEN: {
+      if (PAGES(widget)->active >= widget_count_children(widget)) {
+        pages_set_active(widget, 0);
+      } else {
+        pages_show_active(widget);
+      }
+      break;
+    }
     case EVT_BLUR: {
       pages_save_target(widget);
       break;
@@ -220,7 +224,6 @@ TK_DECL_VTABLE(pages) = {.size = sizeof(pages_t),
                          .create = pages_create,
                          .on_paint_self = widget_on_paint_null,
                          .find_target = pages_find_target,
-                         .on_paint_children = pages_on_paint_children,
                          .on_event = pages_on_event,
                          .get_prop = pages_get_prop,
                          .set_prop = pages_set_prop,
@@ -232,6 +235,8 @@ widget_t* pages_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {
   return_value_if_fail(pages != NULL, NULL);
   str_init(&(pages->str_target), DEFAULT_FOCUSED_CHILD_SAVE_TARGET_TAG_LENGT);
   pages->init_idle_id = idle_add(pages_on_idle_init_save_target, widget);
+  pages->active = 0xffffffff;
+
   return widget;
 }
 

@@ -31,7 +31,10 @@ TEST(Pages, basic) {
   widget_on(pages, EVT_VALUE_CHANGED, pages_on_change, &str);
   widget_on(pages, EVT_VALUE_WILL_CHANGE, pages_on_change, &str);
 
+
+  pages_set_active(pages, 0);
   ASSERT_EQ(PAGES(pages)->active, 0);
+  str ="";
 
   pages_set_active(pages, 1);
   ASSERT_EQ(PAGES(pages)->active, 1);
