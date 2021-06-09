@@ -235,7 +235,7 @@ struct _input_method_t {
    * @annotation ["readable"]
    * 是否是原生输入法。
    */
-   bool_t is_native;
+  bool_t is_native;
 
   /**
    * @property {widget_t*} widget

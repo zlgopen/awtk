@@ -1,5 +1,10 @@
 # 最新动态
 
+2021/06/09
+  * 重构pages。
+  * 修复ui\_builder不能重入的问题。
+  * 增加window\_manager\_set\_ignore\_input\_events。
+
 2021/06/08
   * 完善编译脚本(感谢兆坤提供补丁)
   * 完善slide menu，支持用左右键切换。
