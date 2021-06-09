@@ -7,7 +7,7 @@ TEST(UILoaderXML, basic) {
   widget_t* ok = NULL;
   widget_t* cancel = NULL;
   ui_loader_t* loader = xml_ui_loader();
-  ui_builder_t* builder = ui_builder_default("");
+  ui_builder_t* builder = ui_builder_default_create("");
   const char* str =
       "<dialog x=\"0\" y=\"0\" w=\"400\" h=\"300\">\
       <dialog_title style=\"default\" x=\"0\" y=\"0\" w=\"100%\" h=\"30\" text=\"Hello AWTK\" /> \
@@ -34,6 +34,7 @@ TEST(UILoaderXML, basic) {
   ASSERT_EQ(strcmp(widget_get_child(DIALOG(builder->root)->client, 1)->name, "cancel"), 0);
 
   widget_destroy(builder->root);
+  ui_builder_destroy(builder);
 }
 
 TEST(UILoaderXML, attr) {
@@ -42,7 +43,7 @@ TEST(UILoaderXML, attr) {
   widget_t* b3 = NULL;
   widget_t* b4 = NULL;
   ui_loader_t* loader = xml_ui_loader();
-  ui_builder_t* builder = ui_builder_default("");
+  ui_builder_t* builder = ui_builder_default_create("");
   const char* str =
       "<dialog margin=\"0\" x=\"0\" y=\"0\" w=\"400\" h=\"300\">\
       <dialog_client style=\"border\" x=\"0\" y=\"bottom\" w=\"100%\" h=\"-30\">\
@@ -57,6 +58,7 @@ TEST(UILoaderXML, attr) {
 
   ASSERT_EQ(builder->root != NULL, true);
   widget_layout(builder->root);
+  ui_builder_destroy(builder);
   b1 = widget_lookup(builder->root, "b1", TRUE);
   ASSERT_EQ(b1 != NULL, true);
   ASSERT_EQ(b1->x, 10);
@@ -95,7 +97,7 @@ TEST(UILoaderXML, attr) {
 TEST(UILoaderXML, prop1) {
   widget_t* root = NULL;
   ui_loader_t* loader = xml_ui_loader();
-  ui_builder_t* builder = ui_builder_default("");
+  ui_builder_t* builder = ui_builder_default_create("");
   const char* str =
       "<dialog>\
       <property name=\"x\">1</property>\
@@ -116,13 +118,14 @@ TEST(UILoaderXML, prop1) {
   ASSERT_EQ(root->h, 4);
   ASSERT_STREQ(root->tr_text, "123<abc>123");
 
+  ui_builder_destroy(builder);
   widget_destroy(root);
 }
 
 TEST(UILoaderXML, prop2) {
   widget_t* root = NULL;
   ui_loader_t* loader = xml_ui_loader();
-  ui_builder_t* builder = ui_builder_default("");
+  ui_builder_t* builder = ui_builder_default_create("");
   const char* str =
       "<dialog>\
       <property name=\"x\">1</property>\
@@ -145,4 +148,5 @@ TEST(UILoaderXML, prop2) {
   ASSERT_STREQ(root->tr_text, "123<abc>123");
 
   widget_destroy(root);
+  ui_builder_destroy(builder);
 }

@@ -46,6 +46,7 @@ static ret_t refresh_in_timer(const timer_info_t* info) {
 widget_t* preview_ui(const char* filename) {
   str_t s;
   uint32_t size = 0;
+  widget_t* root = NULL;
   char name[TK_NAME_LEN + 1];
   ui_builder_t* builder = NULL;
   uint8_t* content = NULL;
@@ -62,7 +63,7 @@ widget_t* preview_ui(const char* filename) {
   }
 
   filename_to_name(filename, name, TK_NAME_LEN);
-  builder = ui_builder_default(name);
+  builder = ui_builder_default_create(name);
   printf("preview %s\n", filename);
   return_value_if_fail(content != NULL, NULL);
   ui_loader_load(loader, content, size, builder);
@@ -86,7 +87,10 @@ widget_t* preview_ui(const char* filename) {
     str_reset(&s);
   }
 
-  return builder->root;
+  root = builder->root;
+  ui_builder_destroy(builder);
+
+  return root;
 }
 
 #include "tkc/path.h"

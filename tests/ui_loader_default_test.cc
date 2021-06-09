@@ -19,7 +19,7 @@ TEST(UILoader, basic) {
   widget_desc_t desc;
   ui_binary_writer_t ui_binary_writer;
   ui_loader_t* loader = default_ui_loader();
-  ui_builder_t* builder = ui_builder_default("");
+  ui_builder_t* builder = ui_builder_default_create("");
   ui_builder_t* writer =
       ui_binary_writer_init(&ui_binary_writer, wbuffer_init(&wbuffer, data, sizeof(data)));
 
@@ -78,6 +78,7 @@ TEST(UILoader, basic) {
   ASSERT_EQ(strcmp(widget_get_child(DIALOG(builder->root)->client, 1)->name, "cancel"), 0);
 
   widget_destroy(builder->root);
+  ui_builder_destroy(builder);
 }
 
 TEST(UILoader, ext) {
@@ -88,7 +89,7 @@ TEST(UILoader, ext) {
   widget_desc_t desc;
   ui_binary_writer_t ui_binary_writer;
   ui_loader_t* loader = default_ui_loader();
-  ui_builder_t* builder = ui_builder_default("");
+  ui_builder_t* builder = ui_builder_default_create("");
   ui_builder_t* writer =
       ui_binary_writer_init(&ui_binary_writer, wbuffer_init(&wbuffer, data, sizeof(data)));
 
@@ -137,4 +138,5 @@ TEST(UILoader, ext) {
   ASSERT_EQ(cancel->h, 40);
 
   widget_destroy(builder->root);
+  ui_builder_destroy(builder);
 }

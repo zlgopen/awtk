@@ -65,3 +65,13 @@ ret_t ui_builder_on_end(ui_builder_t* b) {
     return RET_OK;
   }
 }
+
+ret_t ui_builder_destroy(ui_builder_t* b) {
+  return_value_if_fail(b != NULL, RET_BAD_PARAMS);
+
+  if (b->destroy) {
+    return b->destroy(b);
+  } else {
+    return RET_OK;
+  }
+}

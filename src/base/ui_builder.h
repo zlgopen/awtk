@@ -41,6 +41,7 @@ typedef ret_t (*ui_builder_on_widget_prop_t)(ui_builder_t* b, const char* name, 
 typedef ret_t (*ui_builder_on_widget_prop_end_t)(ui_builder_t* b);
 typedef ret_t (*ui_builder_on_widget_end_t)(ui_builder_t* b);
 typedef ret_t (*ui_builder_on_end_t)(ui_builder_t* b);
+typedef ret_t (*ui_builder_destroy_t)(ui_builder_t* b);
 
 /**
  * @class ui_builder_t
@@ -70,6 +71,7 @@ struct _ui_builder_t {
   ui_builder_on_widget_prop_end_t on_widget_prop_end;
   ui_builder_on_widget_end_t on_widget_end;
   ui_builder_on_end_t on_end;
+  ui_builder_destroy_t destroy;
   widget_t* root;
   widget_t* widget;
   const char* name;
@@ -143,6 +145,17 @@ ret_t ui_builder_on_start(ui_builder_t* builder);
  *
  */
 ret_t ui_builder_on_end(ui_builder_t* builder);
+
+/**
+ * @method ui_builder_destroy
+ * 销毁builder。
+ *
+ * @param {ui_builder_t*} builder builder对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ *
+ */
+ret_t ui_builder_destroy(ui_builder_t* builder);
 
 #define UI_DATA_MAGIC 0x11221212
 

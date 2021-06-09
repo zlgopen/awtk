@@ -96,17 +96,22 @@ static ret_t ui_builder_default_on_end(ui_builder_t* b) {
   return RET_OK;
 }
 
-static ui_builder_t s_ui_builder;
+static ret_t ui_builder_default_destroy(ui_builder_t* b) {
+  TKMEM_FREE(b);
+  return RET_OK;
+}
 
-ui_builder_t* ui_builder_default(const char* name) {
-  memset(&s_ui_builder, 0x00, sizeof(ui_builder_t));
+ui_builder_t* ui_builder_default_create(const char* name) {
+  ui_builder_t* builder = TKMEM_ZALLOC(ui_builder_t);
+  return_value_if_fail(builder != NULL, NULL);
 
-  s_ui_builder.on_widget_start = ui_builder_default_on_widget_start;
-  s_ui_builder.on_widget_prop = ui_builder_default_on_widget_prop;
-  s_ui_builder.on_widget_prop_end = ui_builder_default_on_widget_prop_end;
-  s_ui_builder.on_widget_end = ui_builder_default_on_widget_end;
-  s_ui_builder.on_end = ui_builder_default_on_end;
-  s_ui_builder.name = name;
+  builder->on_widget_start = ui_builder_default_on_widget_start;
+  builder->on_widget_prop = ui_builder_default_on_widget_prop;
+  builder->on_widget_prop_end = ui_builder_default_on_widget_prop_end;
+  builder->on_widget_end = ui_builder_default_on_widget_end;
+  builder->on_end = ui_builder_default_on_end;
+  builder->destroy = ui_builder_default_destroy;
+  builder->name = name;
 
-  return &s_ui_builder;
+  return builder;
 }
