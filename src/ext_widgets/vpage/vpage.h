@@ -77,30 +77,6 @@ typedef struct _vpage_t {
 } vpage_t;
 
 /**
- * @enum vpage_event_t
- * @annotation ["scriptable"]
- * @prefix EVT_
- * 虚拟页面的事件。
- */
-typedef enum _vpage_event_t {
-  /**
-   * @const EVT_VPAGE_WILL_OPEN
-   * 页面即将打开(动画前)。
-   */
-  EVT_VPAGE_WILL_OPEN = EVT_USER_START + 100,
-  /**
-   * @const EVT_VPAGE_OPEN
-   * 页面打开完成(动画后)。
-   */
-  EVT_VPAGE_OPEN,
-  /**
-   * @const EVT_VPAGE_CLOSE
-   * 页面已经关闭(动画后)。
-   */
-  EVT_VPAGE_CLOSE
-} vpage_event_t;
-
-/**
  * @event {event_t} EVT_VPAGE_WILL_OPEN
  * 页面即将打开(动画前)。
  */
@@ -160,6 +136,30 @@ ret_t vpage_set_ui_asset(widget_t* widget, const char* ui_asset);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t vpage_set_anim_hint(widget_t* widget, const char* anim_hint);
+
+/**
+ * @enum vpage_event_t
+ * @annotation ["scriptable"]
+ * @prefix EVT_
+ * 虚拟页面的事件。
+ */
+typedef enum _vpage_event_t {
+  /**
+   * @const EVT_VPAGE_WILL_OPEN
+   * 页面即将打开(动画前)。
+   */
+  EVT_VPAGE_WILL_OPEN = EVT_USER_START + 100,
+  /**
+   * @const EVT_VPAGE_OPEN
+   * 页面打开完成(动画后)。
+   */
+  EVT_VPAGE_OPEN,
+  /**
+   * @const EVT_VPAGE_CLOSE
+   * 页面已经关闭(动画后)。
+   */
+  EVT_VPAGE_CLOSE
+} vpage_event_t;
 
 #define VPAGE_PROP_UI_ASSET "ui_asset"
 
