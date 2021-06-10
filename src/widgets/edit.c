@@ -588,8 +588,11 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
   uint32_t key = e->key;
   edit_t* edit = EDIT(widget);
   return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
-  if (edit_pre_input(widget, key) == RET_STOP) {
-    return RET_STOP;
+
+  if (!e->cmd && !e->ctrl) {
+    if (edit_pre_input(widget, key) == RET_STOP) {
+      return RET_STOP;
+    }
   }
 
   if (key == TK_KEY_TAB) {
