@@ -1849,12 +1849,26 @@ ret_t edit_pre_input_with_sep(widget_t* widget, uint32_t key, char sep) {
   edit_t* edit = EDIT(widget);
   return_value_if_fail(edit != NULL && widget != NULL, RET_BAD_PARAMS);
 
+  if (key == TK_KEY_UP || key == TK_KEY_DOWN) {
+    return RET_OK;
+  }
+
   text = &(widget->text);
   text_edit_get_state(edit->model, &state);
   if (state.select_start < state.select_end) {
     uint32_t i = 0;
     wchar_t* s = text->str + state.select_start;
     wchar_t* d = text->str + state.select_start;
+
+    if (key == TK_KEY_LEFT) {
+      text_edit_unselect(edit->model);
+      text_edit_set_cursor(edit->model, state.select_start);
+      return RET_STOP;
+    } else if (key == TK_KEY_RIGHT) {
+      text_edit_unselect(edit->model);
+      text_edit_set_cursor(edit->model, state.select_end);
+      return RET_STOP;
+    }
 
     for (i = state.select_start; i < state.select_end; i++, s++) {
       if (*s == sep) {
