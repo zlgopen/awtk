@@ -636,7 +636,6 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
       edit_dispatch_value_change_event(widget, EVT_VALUE_CHANGING);
     }
   } else if (key < 128 && isprint(key)) {
-    app_type_t app_type = system_info()->app_type;
     if (!input_method_is_native(input_method())) {
       edit_input_char(widget, (wchar_t)key);
     }

@@ -2451,6 +2451,10 @@ ret_t widget_on_keydown(widget_t* widget, key_event_t* e) {
   uint32_t key = e->key;
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
 
+  if (widget_on_keydown_general(widget, e) == RET_STOP) {
+    return RET_OK;
+  }
+
   widget_ref(widget);
   widget_map_key(widget, e);
   if (e->e.type == EVT_KEY_DOWN) {
@@ -2460,9 +2464,6 @@ ret_t widget_on_keydown(widget_t* widget, key_event_t* e) {
     }
 
     e->key = key;
-    if (ret != RET_STOP) {
-      ret = widget_on_keydown_general(widget, e);
-    }
   } else if (e->e.type == EVT_KEY_LONG_PRESS) {
     return_value_if_equal(widget_on_keydown_children(widget, e), RET_STOP);
     ret = widget_on_keydown_after_children(widget, e);
