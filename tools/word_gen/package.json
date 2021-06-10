@@ -9,8 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "crawler": "^1.2.1",
-    "novel-segment": "^2.5.4",
+    "crawler": "^1.3.0",
+    "novel-segment": "^2.7.59",
     "url": "^0.11.0"
   }
 }
