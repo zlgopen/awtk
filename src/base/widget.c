@@ -2452,7 +2452,7 @@ ret_t widget_on_keydown(widget_t* widget, key_event_t* e) {
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
 
   if (widget_on_keydown_general(widget, e) == RET_STOP) {
-    return RET_OK;
+    return RET_STOP;
   }
 
   widget_ref(widget);
