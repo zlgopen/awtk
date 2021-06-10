@@ -1888,6 +1888,29 @@ ret_t edit_pre_input_with_sep(widget_t* widget, uint32_t key, char sep) {
     if (key == TK_KEY_BACKSPACE || key == TK_KEY_DELETE) {
       return RET_STOP;
     }
+  } else if (text->size > 1) {
+    int32_t i = 0;
+    if (state.cursor > 1 && text->str[state.cursor - 1] == sep && key == TK_KEY_LEFT) {
+      /*select prev part*/
+      for (i = state.cursor - 2; i >= 0; i--) {
+        if (text->str[i] == sep) {
+          break;
+        }
+      }
+      text_edit_set_cursor(edit->model, state.cursor - 1);
+      text_edit_set_select(edit->model, i + 1, state.cursor - 1);
+      return RET_STOP;
+    } else if (key == TK_KEY_RIGHT && text->str[state.cursor] == sep) {
+      /*select next part*/
+      for (i = state.cursor + 1; i < text->size; i++) {
+        if (text->str[i] == sep) {
+          break;
+        }
+      }
+      text_edit_set_cursor(edit->model, state.cursor + 1);
+      text_edit_set_select(edit->model, state.cursor + 1, i);
+      return RET_STOP;
+    }
   }
 
   if (key == TK_KEY_BACKSPACE && state.cursor > 0) {
