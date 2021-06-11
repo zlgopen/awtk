@@ -2672,7 +2672,7 @@ ret_t widget_set_style_str(widget_t* widget, const char* state_and_name, const c
  * 在下面这个例子中，R=0x11 G=0x22 B=0x33 A=0xFF
  * 
  * ```c
- *  widget_set_style_color(label, "style:normal:bg_color", 0xFF332211);
+ *  widget_set_style_color(label, "normal:bg_color", 0xFF332211);
  * ```
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
