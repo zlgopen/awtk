@@ -2966,6 +2966,16 @@ ret_t widget_on_pointer_move_children(widget_t* widget, pointer_event_t* e);
  */
 ret_t widget_on_pointer_up_children(widget_t* widget, pointer_event_t* e);
 
+/**
+ * @method widget_is_change_focus_key
+ * 是否是切换焦点的键。
+ * @param {widget_t*} widget 控件对象。
+ * @param {key_event_t*} e 事件对象。
+ *
+ * @return {bool_t} 返回TRUE表示是，否则表示否。
+ */
+bool_t widget_is_change_focus_key(widget_t* widget, key_event_t* e);
+
 /*public for subclass*/
 TK_EXTERN_VTABLE(widget);
 const char* const* widget_get_persistent_props(void);

@@ -2387,6 +2387,15 @@ static bool_t widget_is_move_focus_right_key(widget_t* widget, key_event_t* e) {
   return widget_match_key(widget, WIDGET_PROP_MOVE_FOCUS_RIGHT_KEY, e);
 }
 
+bool_t widget_is_change_focus_key(widget_t* widget, key_event_t* e) {
+  return widget_is_move_focus_prev_key(widget, e)
+    || widget_is_move_focus_next_key(widget, e)
+    || widget_is_move_focus_up_key(widget, e)
+    || widget_is_move_focus_down_key(widget, e)
+    || widget_is_move_focus_left_key(widget, e)
+    || widget_is_move_focus_right_key(widget, e);
+}
+
 static ret_t widget_on_keydown_general(widget_t* widget, key_event_t* e) {
   ret_t ret = RET_OK;
   if (!widget_is_window_manager(widget)) {
@@ -2451,10 +2460,6 @@ ret_t widget_on_keydown(widget_t* widget, key_event_t* e) {
   uint32_t key = e->key;
   return_value_if_fail(widget != NULL && e != NULL, RET_BAD_PARAMS);
 
-  if (widget_on_keydown_general(widget, e) == RET_STOP) {
-    return RET_STOP;
-  }
-
   widget_ref(widget);
   widget_map_key(widget, e);
   if (e->e.type == EVT_KEY_DOWN) {
@@ -2464,6 +2469,9 @@ ret_t widget_on_keydown(widget_t* widget, key_event_t* e) {
     }
 
     e->key = key;
+    if (ret != RET_STOP) {
+      ret = widget_on_keydown_general(widget, e);
+    }
   } else if (e->e.type == EVT_KEY_LONG_PRESS) {
     return_value_if_equal(widget_on_keydown_children(widget, e), RET_STOP);
     ret = widget_on_keydown_after_children(widget, e);
