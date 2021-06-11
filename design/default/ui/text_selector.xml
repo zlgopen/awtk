@@ -1,8 +1,8 @@
 <window anim_hint="htranslate">
   <row  x="10" y="30" w="100%" h="150" children_layout="default(row=1,col=3)">
-    <text_selector style="image" options="2000-2050" selected_index="9"/> 
-    <text_selector options="1-12-%02d" selected_index="8" loop_options="true"/>
-    <text_selector options="1-31-%02d" selected_index="9"/>
+    <text_selector style="image" options="2000-2050" selected_index="0" loop_options="true" animating_time="200" /> 
+    <text_selector options="1-12-%02d" loop_options="true" selected_index="0" animation="selected_index(from=12, to=0, repeat_times=0, easing=linear, duration=12000)" />
+    <text_selector options="1-31-%02d" loop_options="true" selected_index="0" animation="selected_index(from=0, to=31, repeat_times=0, easing=linear, duration=30000)" />
   </row>
   <button name="close" x="center" y="middle" w="50%" h="30" text="close"/>
   <row  x="10" y="bottom:30" w="100%" h="90" children_layout="default(row=1,col=3)">

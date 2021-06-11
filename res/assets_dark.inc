@@ -34,6 +34,7 @@
 #include "assets/default/inc/ui/kb_ascii.data"
 #include "assets/default/inc/ui/vgcanvas.data"
 #include "assets/default/inc/ui/rich_text1.data"
+#include "assets/default/inc/ui/vpage_vtrans.data"
 #include "assets/default/inc/ui/menu_point.data"
 #include "assets/default/inc/ui/slide_menu.data"
 #include "assets/default/inc/ui/radial_gradient.data"
@@ -510,6 +511,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, ui_kb_ascii);
   assets_manager_add(am, ui_vgcanvas);
   assets_manager_add(am, ui_rich_text1);
+  assets_manager_add(am, ui_vpage_vtrans);
   assets_manager_add(am, ui_menu_point);
   assets_manager_add(am, ui_slide_menu);
   assets_manager_add(am, ui_radial_gradient);

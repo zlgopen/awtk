@@ -6,6 +6,8 @@
   * 完善edit对自动测试的支持。
   * 重构clip view，将clip函数抽取出来方便重用。
   * 增加data\_time\_format注释，导出相关函数(感谢雨欣提供补丁)
+  * 修复 widget\_set\_style\_color 函数的说明错误问题(感谢智明提供补丁)
+  * 增加 text\_selector 控件设置 value 会触发动画滚动效果(感谢智明提供补丁)
 
 2021/06/10
   * 完善编辑器对左右键的处理。

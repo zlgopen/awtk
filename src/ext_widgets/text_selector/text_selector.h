@@ -112,6 +112,13 @@ typedef struct _text_selector_t {
   float_t yspeed_scale;
 
   /**
+   * @property {uint32_t} animating_time
+   * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
+   * 滚动动画播放时间。(单位毫秒)
+   */
+  uint32_t animating_time;
+
+  /**
    * @property {bool_t} localize_options
    * @annotation ["set_prop","get_prop","readable","persitent","design","scriptable"]
    * 是否本地化(翻译)选项(缺省为FALSE)。
@@ -137,6 +144,7 @@ typedef struct _text_selector_t {
   int32_t draw_widget_y;
   int32_t draw_widget_h;
   uint32_t locale_info_id;
+  int32_t last_selected_index;
   text_selector_option_t* option_items;
 } text_selector_t;
 
@@ -353,10 +361,22 @@ ret_t text_selector_set_loop_options(widget_t* widget, bool_t loop_options);
  */
 ret_t text_selector_set_yspeed_scale(widget_t* widget, float_t yspeed_scale);
 
+/**
+ * @method text_selector_set_animating_time
+ * 设置滚动动画播放时间。
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {uint32_t} animating_time 滚动动画播放时间。(单位毫秒)
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t text_selector_set_animating_time(widget_t* widget, uint32_t animating_time);
+
 #define TEXT_SELECTOR_PROP_VISIBLE_NR "visible_nr"
 #define WIDGET_TYPE_TEXT_SELECTOR "text_selector"
 #define TEXT_SELECTOR_PROP_LOOP_OPTIONS "loop_options"
 #define TEXT_SELECTOR_PROP_Y_SPEED_SCALE "yspeed_scale"
+#define TEXT_SELECTOR_PROP_ANIMATION_TIME "animating_time"
 #define TEXT_SELECTOR(widget) ((text_selector_t*)(text_selector_cast(WIDGET(widget))))
 
 /*public for subclass and runtime type check*/
