@@ -68,7 +68,7 @@ static ret_t label_paint_text_mlines(widget_t* widget, canvas_t* c, line_parser_
       }
     }
 
-    canvas_draw_text_in_rect(c, p->line, size, &r);
+    widget_draw_text_in_rect(widget, c, p->line, size, &r, FALSE);
 
     y += line_height;
   }
