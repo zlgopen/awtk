@@ -53,6 +53,7 @@ BEGIN_C_DECLS
 typedef ret_t (*widget_invalidate_t)(widget_t* widget, const rect_t* r);
 typedef ret_t (*widget_on_event_t)(widget_t* widget, event_t* e);
 typedef ret_t (*widget_on_event_before_children_t)(widget_t* widget, event_t* e);
+typedef ret_t (*widget_on_paint_t)(widget_t* widget, canvas_t* c);
 typedef ret_t (*widget_on_paint_background_t)(widget_t* widget, canvas_t* c);
 typedef ret_t (*widget_on_paint_self_t)(widget_t* widget, canvas_t* c);
 typedef ret_t (*widget_on_paint_children_t)(widget_t* widget, canvas_t* c);

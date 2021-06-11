@@ -26,6 +26,8 @@
 
 BEGIN_C_DECLS
 
+/*widget 虚函数的缺省实现，用于辅助实现子控件*/
+
 /**
  * @method widget_invalidate_default
  * awtk默认的invalidate接口。
@@ -38,23 +40,67 @@ BEGIN_C_DECLS
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_invalidate_default(widget_t* widget, const rect_t* rect);
+
 /**
  * @method widget_on_event_default
  * @annotation ["global"]
  */
 ret_t widget_on_event_default(widget_t* widget, event_t* e);
+
+/**
+ * @method widget_on_paint_null
+ * 空的paint函数。
+ * @annotation ["global"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {canvas_t*} c 画布对象。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ *
+ */
+ret_t widget_on_paint_null(widget_t* widget, canvas_t* c);
+
 /**
  * @method widget_on_paint_self_default
+ * 绘制控件自身的缺省实现。
  * @annotation ["global"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {canvas_t*} c 画布对象。
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_on_paint_self_default(widget_t* widget, canvas_t* c);
+
+/**
+ * @method widget_on_paint_children_clip
+ * 绘制子控件带clip功能的实现。
+ * @annotation ["global"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {canvas_t*} c 画布对象。
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_on_paint_children_clip(widget_t* widget, canvas_t* c);
+
+/**
+ * @method widget_paint_with_clip
+ * 根据当前widget进行clip，然后调用on_paint回调函数进行绘制。
+ *
+ * @annotation ["global"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {canvas_t*} c 画布对象。
+ * @param (widget_on_paint_t} on_paint 绘制的回调函数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t widget_paint_with_clip(widget_t* widget, canvas_t* c, widget_on_paint_t on_paint);
+
 /**
  * @method widget_on_paint_children_default
+ * 绘制子控件的缺省实现。
  * @annotation ["global"]
+ * @param {widget_t*} widget 控件对象。
+ * @param {canvas_t*} c 画布对象。
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t widget_on_paint_children_default(widget_t* widget, canvas_t* c);
+
 /**
  * @method widget_on_keydown_default
  * @annotation ["global"]
@@ -123,15 +169,6 @@ const widget_vtable_t* widget_vtable_default(void);
 ret_t widget_grab_default(widget_t* widget, widget_t* child);
 ret_t widget_ungrab_default(widget_t* widget, widget_t* child);
 ret_t widget_destroy_default(widget_t* widget);
-
-/**
- * @method widget_on_paint_null
- * 
- * @annotation ["global"]
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- *
- */
-ret_t widget_on_paint_null(widget_t* widget, canvas_t* c);
 
 END_C_DECLS
 
