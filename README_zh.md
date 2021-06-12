@@ -343,6 +343,8 @@ npm install -g glob
 
 * [扩展控件实例：仿微信列表项](https://github.com/zlgopen/awtk-widget-slidable-row)
 
+* [扩展控件实例：Lottie动画](https://github.com/zlgopen/awtk-widget-rlottie)
+
 * [自定义字体加载器：加载部分字体](https://github.com/zlgopen/awtk-custom-font-loader)
 
 第三方提供：

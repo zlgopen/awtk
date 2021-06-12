@@ -339,6 +339,8 @@ npm install -g glob
 
 * [Examples for Custom Widgets: VLabel](https://github.com/zlgopen/awtk-widget-vlabel)
 
+* [Examples for Custom Widgets: rlottie](https://github.com/zlgopen/awtk-widget-rlottie)
+
 * [Examples for Custom Font Loader](https://github.com/zlgopen/awtk-custom-font-loader)
 
 The third party provides: 
