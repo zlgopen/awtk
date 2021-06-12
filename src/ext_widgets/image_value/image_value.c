@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   image_value.h
  * Author: AWTK Develop Team
  * Brief:  image_value
@@ -37,7 +37,7 @@ static ret_t image_value_draw_images(widget_t* widget, canvas_t* c, bitmap_t* bi
   int32_t align_v = style_get_int(style, STYLE_ID_TEXT_ALIGN_V, ALIGN_V_MIDDLE);
   int32_t align_h = style_get_int(style, STYLE_ID_TEXT_ALIGN_H, ALIGN_H_CENTER);
   image_draw_type_t draw_type =
-      style_get_int(style, STYLE_ID_FG_IMAGE_DRAW_TYPE, IMAGE_DRAW_DEFAULT);
+      (image_draw_type_t)style_get_int(style, STYLE_ID_FG_IMAGE_DRAW_TYPE, IMAGE_DRAW_DEFAULT);
 
   for (i = 0; i < nr; i++) {
     bitmap_t* b = bitmap + i;

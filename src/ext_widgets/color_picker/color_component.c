@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   color_component.
  * Author: AWTK Develop Team
  * Brief:  color_component

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   text_selector.h
  * Author: AWTK Develop Team
  * Brief:  text_selector
@@ -510,7 +510,7 @@ static ret_t text_selector_sync_selected_index_with_yoffset(text_selector_t* tex
   return text_selector_set_selected_index_only(text_selector, selected_index);
 }
 
-static ret_t text_selector_get_yoffset_for_selected_index(text_selector_t* text_selector, int32_t mid_index, int32_t item_height) {
+static int32_t text_selector_get_yoffset_for_selected_index(text_selector_t* text_selector, int32_t mid_index, int32_t item_height) {
   int32_t yoffset = 0;
   if (text_selector->loop_options) {
     int32_t options_nr = text_selector_count_options(WIDGET(text_selector));

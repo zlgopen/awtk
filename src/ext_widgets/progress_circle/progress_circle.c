@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   progress_circle.c
  * Author: AWTK Develop Team
  * Brief:  progress_circle

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   vpage.c
  * Author: AWTK Develop Team
  * Brief:  虚拟页面(根据情况自动加载/卸载页面)。
@@ -223,7 +223,9 @@ static ret_t vpage_on_current_page_changed(void* ctx, event_t* e) {
 }
 
 static ret_t vpage_on_attach_parent(widget_t* widget, widget_t* parent) {
-  return widget_on(parent, EVT_VALUE_CHANGED, vpage_on_current_page_changed, widget);
+  widget_on(parent, EVT_VALUE_CHANGED, vpage_on_current_page_changed, widget);
+  
+  return RET_OK;
 }
 
 static ret_t vpage_on_detach_parent(widget_t* widget, widget_t* parent) {
