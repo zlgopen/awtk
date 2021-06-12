@@ -93,6 +93,7 @@
 * nodejs 绑定
 * quickjs 绑定
 * lua 绑定
+* go 绑定
 * 用 AWTK 实现界面编辑器
 * MVVM 支持
 * python 绑定
@@ -103,11 +104,13 @@
 * 支持文本双向排版
 * 支持 appuim 自动测试
 * table view
+* Lottie动画
+* 多点触摸和手势识别
+* tab控件动画(vpage)
 
 ## 短期计划（顺序不定）
 * tree view
 * drag & drop
-* 多点触摸和手势识别
 
 ## 长期计划
 * Accessibility
@@ -115,6 +118,5 @@
 * 支持 vue.js
 * 支持粒子产生器
 * 支持骨骼动画
-* flash 播放器支持
 * 小程序版本
 * 多进程支持
