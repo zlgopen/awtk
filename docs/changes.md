@@ -4,6 +4,7 @@
   * edit不再用左右键切换焦点。 
   * 完善is\_same\_col/is\_same\_row的算法。
   * 完善font manager字体卸载(感谢智明提供补丁)
+  * 完善canvas\_draw\_text\_bidi\_in\_rect对空行的处理。
 
 2021/06/11
   * 修改一些编译警告。 

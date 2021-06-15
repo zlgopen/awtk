@@ -1854,6 +1854,10 @@ ret_t canvas_draw_text_bidi_in_rect(canvas_t* c, const wchar_t* str, uint32_t nr
   ret_t ret = RET_FAIL;
   return_value_if_fail(c != NULL && str != NULL && r_in != NULL, RET_BAD_PARAMS);
 
+  if (nr == 0) {
+    return RET_OK;
+  }
+
   bidi_init(&b, FALSE, FALSE, bidi_type_from_name(bidi_type));
   if (bidi_log2vis(&b, str, nr) == RET_OK) {
     float_t text_w = canvas_measure_text(c, b.vis_str, b.vis_str_size);

@@ -15,7 +15,10 @@
     only_focus="true"
   />
   
-  <label x="0" y="b:90" w="100%" h="60" text="إنذار 
+  <label x="0" y="b:60" w="50%" h="90" text="
+  إنذار 
+مجموعة" style:font_size="24" style:font_name="trado" floating="true"/>
+  <label x="r" y="b:60" w="50%" h="90" text="إنذار 
 مجموعة" style:font_size="24" style:font_name="trado" floating="true"/>
 
   <button name="close" self_layout="default(x=center,y=b:10,w=50%,h=30)" 
