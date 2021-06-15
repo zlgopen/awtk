@@ -1,5 +1,9 @@
 # 最新动态
 
+2021/06/15
+  * edit不再用左右键切换焦点。 
+  * 完善is\_same\_col/is\_same\_row的算法。
+
 2021/06/11
   * 修改一些编译警告。 
   * 增加文档 [如何使用keil的AC6工具链编译](how_to_build_with_keil_ac6.md)
