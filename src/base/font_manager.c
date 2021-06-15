@@ -203,7 +203,9 @@ ret_t font_manager_unload_font(font_manager_t* fm, const char* name, font_size_t
 #endif
 
   ret = darray_remove(&(fm->fonts), &info);
-  assets_manager_clear_cache_ex(assets_manager(), ASSET_TYPE_FONT, name);
+  if (ret == RET_OK) {
+    assets_manager_clear_cache_ex(assets_manager(), ASSET_TYPE_FONT, name);
+  }
 
   return ret;
 }

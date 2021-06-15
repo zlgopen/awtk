@@ -52,6 +52,10 @@ TEST(FontManager, loader) {
 
 TEST(FontManager, unload) {
   font_manager_t font_manager;
+  emitter_t* emitter = EMITTER(assets_manager());
+  if (emitter_size(emitter) > 0) {
+    emitter_off_by_tag(emitter, 0);
+  }
 
   font_manager_init(&font_manager, font_loader_truetype());
   font_manager_set_assets_manager(&font_manager, assets_manager());
