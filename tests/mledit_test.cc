@@ -143,3 +143,19 @@ TEST(MLEdit, close_im_when_blured) {
 
   widget_destroy(w1);
 }
+
+TEST(MLEdit, keys) {
+  key_event_t key;
+  widget_t* e = mledit_create(NULL, 10, 20, 30, 40);
+
+  key_event_init(&key, EVT_KEY_DOWN, e, TK_KEY_ESCAPE);
+  ASSERT_EQ(widget_dispatch(e, (event_t*)&key), RET_OK);
+
+  key_event_init(&key, EVT_KEY_DOWN, e, TK_KEY_F1);
+  ASSERT_EQ(widget_dispatch(e, (event_t*)&key), RET_OK);
+  
+  key_event_init(&key, EVT_KEY_DOWN, e, TK_KEY_F10);
+  ASSERT_EQ(widget_dispatch(e, (event_t*)&key), RET_OK);
+  
+  widget_destroy(e);
+}

@@ -595,7 +595,7 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
     }
   }
 
-  if (key == TK_KEY_TAB) {
+  if (key == TK_KEY_TAB || key == TK_KEY_ESCAPE || (key >= TK_KEY_F1 && key <= TK_KEY_F24)) {
     return RET_OK;
   } else if (key == TK_KEY_LEFT || key == TK_KEY_RIGHT) {
     uint32_t cursor = text_edit_get_cursor(edit->model);
@@ -667,6 +667,7 @@ static ret_t edit_on_key_up(widget_t* widget, key_event_t* e) {
   ret_t ret = RET_OK;
   edit_t* edit = EDIT(widget);
   return_value_if_fail(edit != NULL, RET_BAD_PARAMS);
+
   if (key_code_is_enter(key)) {
     if (edit->timer_id == TK_INVALID_ID) {
       edit_on_focused(widget);

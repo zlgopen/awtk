@@ -577,3 +577,19 @@ TEST(Edit, is_valid_email) {
   widget_destroy(e);
   idle_dispatch();
 }
+
+TEST(Edit, keys) {
+  key_event_t key;
+  widget_t* e = edit_create(NULL, 10, 20, 30, 40);
+
+  key_event_init(&key, EVT_KEY_DOWN, e, TK_KEY_ESCAPE);
+  ASSERT_EQ(widget_dispatch(e, (event_t*)&key), RET_OK);
+
+  key_event_init(&key, EVT_KEY_DOWN, e, TK_KEY_F1);
+  ASSERT_EQ(widget_dispatch(e, (event_t*)&key), RET_OK);
+  
+  key_event_init(&key, EVT_KEY_DOWN, e, TK_KEY_F10);
+  ASSERT_EQ(widget_dispatch(e, (event_t*)&key), RET_OK);
+  
+  widget_destroy(e);
+}
