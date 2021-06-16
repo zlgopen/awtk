@@ -628,7 +628,7 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
 #else
       bool_t is_control = evt->ctrl;
 #endif
-      if (key == TK_KEY_ESCAPE || (key >= TK_KEY_F1 && key <= TK_KEY_F24)) {
+      if (key == TK_KEY_ESCAPE || (key >= TK_KEY_F1 && key <= TK_KEY_F12)) {
         break;
       }
 
@@ -697,7 +697,7 @@ static ret_t mledit_on_event(widget_t* widget, event_t* e) {
       key_event_t* evt = key_event_cast(e);
       int32_t key = evt->key;
 
-      if (key == TK_KEY_ESCAPE || (key >= TK_KEY_F1 && key <= TK_KEY_F24)) {
+      if (key == TK_KEY_ESCAPE || (key >= TK_KEY_F1 && key <= TK_KEY_F12)) {
         break;
       }
 
