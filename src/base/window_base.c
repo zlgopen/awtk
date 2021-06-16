@@ -462,10 +462,80 @@ ret_t window_base_on_event(widget_t* widget, event_t* e) {
   return ret;
 }
 
+static ret_t window_on_keydown_before_children(void* ctx, event_t* e) {
+  widget_t* win = WIDGET(ctx);
+  key_event_t* evt = key_event_cast(e);
+  window_base_t* base = WINDOW_BASE(win);
+  widget_t* focus = widget_get_focused_widget(win);
+  keyboard_type_t keyboard_type = system_info()->keyboard_type;
+  bool_t moving_focus_mode = base->moving_focus_mode;
+
+  if (focus != NULL) {
+    if (focus->vt->return_key_to_activate) {
+      /*对于按钮等通过回车键激活控件，方向键始终用于切换焦点*/
+      base->moving_focus_mode = TRUE;
+    } else {
+      /*其它控件，回车键用于切换模式*/
+      if (evt->key == TK_KEY_RETURN) {
+        base->moving_focus_mode = !base->moving_focus_mode;
+        log_debug("change moving_focus_mode:%d\n", base->moving_focus_mode);
+        return RET_OK;
+      }
+    }
+
+    if (moving_focus_mode) {
+      if (keyboard_type == KEYBOARD_3KEYS) {
+        switch (evt->key) {
+          case TK_KEY_LEFT:
+          case TK_KEY_UP: {
+            widget_focus_prev(focus);
+            break;
+          }
+          case TK_KEY_RIGHT:
+          case TK_KEY_DOWN: {
+            widget_focus_next(focus);
+            return RET_STOP;
+          }
+          default:
+            break;
+        }
+      } else {
+        switch (evt->key) {
+          case TK_KEY_LEFT: {
+            widget_focus_left(focus);
+            return RET_STOP;
+          }
+          case TK_KEY_RIGHT: {
+            widget_focus_right(focus);
+            return RET_STOP;
+          }
+          case TK_KEY_UP: {
+            widget_focus_up(focus);
+            return RET_STOP;
+          }
+          case TK_KEY_DOWN: {
+            widget_focus_down(focus);
+            return RET_STOP;
+          }
+          default:
+            break;
+        }
+      }
+    }
+  }
+
+  return RET_OK;
+}
+
+ret_t window_enable_35keys_mode(widget_t* win) {
+  return widget_on(win, EVT_KEY_DOWN_BEFORE_CHILDREN, window_on_keydown_before_children, win);
+}
+
 widget_t* window_base_create(widget_t* parent, const widget_vtable_t* vt, xy_t x, xy_t y, wh_t w,
                              wh_t h) {
   widget_t* widget = widget_create(NULL, vt, x, y, w, h);
   window_base_t* win = WINDOW_BASE(widget);
+  keyboard_type_t keyboard_type = system_info()->keyboard_type;
 
   return_value_if_fail(win != NULL, NULL);
 
@@ -477,6 +547,9 @@ widget_t* window_base_create(widget_t* parent, const widget_vtable_t* vt, xy_t x
   win->stage = WINDOW_STAGE_NONE;
   win->move_focus_next_key = tk_strdup(TK_KEY_MOVE_FOCUS_NEXT);
   win->move_focus_prev_key = tk_strdup(TK_KEY_MOVE_FOCUS_PREV);
+  if (keyboard_type == KEYBOARD_3KEYS || keyboard_type == KEYBOARD_5KEYS) {
+    window_enable_35keys_mode(widget);
+  }
 
   return widget;
 }

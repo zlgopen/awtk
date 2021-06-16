@@ -25,6 +25,35 @@
 #include "tkc/types_def.h"
 
 /**
+ * @enum keyboard_type_t
+ * 键盘的类型
+ */
+typedef enum _keyboard_type_t {
+  /**
+   * @const KEYBOARD_NONE
+   * 无键盘。
+   */
+  KEYBOARD_NONE = 0,
+  /**
+   * @const KEYBOARD_NORMAL
+   * 正常键盘。
+   */
+  KEYBOARD_NORMAL,
+  /**
+   * @const KEYBOARD_3KEYS
+   * 3键(RETURN+上下键，附加数字键等)。
+   * > RETURN键用于切换模式：焦点模式下，上下键用于切换焦点，非焦点模式下，上下键用于切修改控件的值。
+   */
+  KEYBOARD_3KEYS,
+  /**
+   * @const KEYBOARD_5KEYS
+   * 5键(RETURN+上下左右键，附加数字键等)。
+   * > RETURN键用于切换模式：焦点模式下，上下键用于切换焦点，非焦点模式下，上下键用于切修改控件的值。
+   */
+  KEYBOARD_5KEYS
+} keyboard_type_t;
+
+/**
  * @enum lcd_orientation_t
  * LCD旋转角度。
  */

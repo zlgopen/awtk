@@ -270,6 +270,7 @@ system_info_t* system_info_create(app_type_t app_type, const char* app_name, con
 
   info->font_scale = 1;
   info->device_pixel_ratio = 1;
+  info->keyboard_type = KEYBOARD_NORMAL;
   system_info_set_app_info(info, app_type, app_name, app_root);
 
   return info;
@@ -311,6 +312,14 @@ ret_t system_info_set_lcd_orientation(system_info_t* info, lcd_orientation_t lcd
   return_value_if_fail(info != NULL, RET_BAD_PARAMS);
 
   info->lcd_orientation = lcd_orientation;
+
+  return RET_OK;
+}
+
+ret_t system_info_set_keyboard_type(system_info_t* info, keyboard_type_t keyboard_type) {
+  return_value_if_fail(info != NULL, RET_BAD_PARAMS);
+
+  info->keyboard_type = keyboard_type;
 
   return RET_OK;
 }

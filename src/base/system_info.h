@@ -83,6 +83,13 @@ struct _system_info_t {
    * 显示屏的旋转角度。
    */
   lcd_orientation_t lcd_orientation;
+  
+  /**
+   * @property {keyboard_type_t} keyboard_type
+   * @annotation ["readable"]
+   * 键盘类型。
+   */
+  keyboard_type_t keyboard_type;
 
   /**
    * @property {const char*} device_orientation
@@ -236,6 +243,17 @@ ret_t system_info_set_lcd_type(system_info_t* info, lcd_type_t lcd_type);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t system_info_set_lcd_orientation(system_info_t* info, lcd_orientation_t lcd_orientation);
+
+/**
+ * @method system_info_set_keyboard_type
+ * 设置键盘类型。
+ *
+ * @param {system_info_t* info} info system_info对象。
+ * @param {keyboard_type_t} keyboard_type 键盘类型。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t system_info_set_keyboard_type(system_info_t* info, keyboard_type_t keyboard_type);
 
 /**
  * @method system_info_set_device_pixel_ratio
