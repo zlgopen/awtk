@@ -30,8 +30,8 @@
 BEGIN_C_DECLS
 
 /**
- * @class data_time_format
- * @annotation ["scriptable"]
+ * @class date_time_format_t
+ * @annotation ["fake"]
  * 格式化日期时间。
  *
  * 格式规则：
