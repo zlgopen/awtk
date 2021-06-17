@@ -84,12 +84,13 @@ ret_t widget_on_paint_children_clip(widget_t* widget, canvas_t* c);
  *
  * @annotation ["global"]
  * @param {widget_t*} widget 控件对象。
+ * @param {rect_t*} clip clip区域(为NULL时使用widget的区域)。
  * @param {canvas_t*} c 画布对象。
  * @param (widget_on_paint_t} on_paint 绘制的回调函数。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t widget_paint_with_clip(widget_t* widget, canvas_t* c, widget_on_paint_t on_paint);
+ret_t widget_paint_with_clip(widget_t* widget, rect_t* clip, canvas_t* c, widget_on_paint_t on_paint);
 
 /**
  * @method widget_on_paint_children_default
