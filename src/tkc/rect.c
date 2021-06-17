@@ -43,10 +43,29 @@ ret_t rect_merge(rect_t* dr, const rect_t* r) {
   return RET_OK;
 }
 
-bool_t rect_contains(rect_t* r, xy_t x, xy_t y) {
+bool_t rect_contains(const rect_t* r, xy_t x, xy_t y) {
   return_value_if_fail(r != NULL, FALSE);
 
   return (x >= r->x && x < (r->x + r->w)) && (y >= r->y && y < (r->y + r->h));
+}
+
+bool_t rect_has_intersect(const rect_t* r1, const rect_t* r2) {
+  xy_t right1 = 0;
+  xy_t right2 = 0;
+  xy_t bottom1 = 0;
+  xy_t bottom2 = 0;
+  return_value_if_fail(r1 != NULL && r2 != NULL, FALSE);
+
+  right1 = r1->x + r1->w - 1;
+  right2 = r2->x + r2->w - 1;
+  bottom1 = r1->y + r1->h - 1;
+  bottom2 = r2->y + r2->h - 1;
+
+  if(right1 < r2->x || right2 < r1->x || bottom1 < r2->y || bottom2 < r1->y) {
+    return FALSE;
+  }
+
+  return TRUE;
 }
 
 rect_t rect_init(xy_t x, xy_t y, wh_t w, wh_t h) {

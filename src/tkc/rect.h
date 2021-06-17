@@ -198,13 +198,13 @@ ret_t rect_merge(rect_t* dst_r, const rect_t* r);
  * @method rect_contains
  * 判断指定的点在rect范围内。
  *
- * @param {rect_t*} r rect对象。
+ * @param {const rect_t*} r rect对象。
  * @param {xy_t} x x坐标。
  * @param {xy_t} y y坐标。
  *
  * @return {bool_t} 返回在rect范围内。
  */
-bool_t rect_contains(rect_t* r, xy_t x, xy_t y);
+bool_t rect_contains(const rect_t* r, xy_t x, xy_t y);
 
 /**
  * @method rect_fix
@@ -226,6 +226,17 @@ rect_t rect_fix(rect_t* r, wh_t max_w, wh_t max_h);
  * @return {rect_t} 返回交集。
  */
 rect_t rect_intersect(const rect_t* r1, const rect_t* r2);
+
+/**
+ * @method rect_has_intersect
+ * 判断两个rect的是否存在交集。
+ *
+ * @param {const rect_t*} r1 rect对象。
+ * @param {const rect_t*} r2 rect对象。
+ *
+ * @return {bool_t} 返回TRUE表示存在，否则表示不存在。
+ */
+bool_t rect_has_intersect(const rect_t* r1, const rect_t* r2);
 
 END_C_DECLS
 
