@@ -156,6 +156,7 @@ TEST(AssetsManager, load_assets_refcount) {
   assets_manager_t* rm = assets_manager_create(10);
 
   ASSERT_EQ(load_assets_refcount_is_no_problem(rm, ASSET_TYPE_UI, "main"), TRUE);
+  ASSERT_EQ(load_assets_refcount_is_no_problem(rm, ASSET_TYPE_IMAGE, "0"), TRUE);
   ASSERT_EQ(load_assets_refcount_is_no_problem(rm, ASSET_TYPE_IMAGE, "earth"), TRUE);
   ASSERT_EQ(load_assets_refcount_is_no_problem(rm, ASSET_TYPE_SCRIPT, "dummy"), TRUE);
   ASSERT_EQ(load_assets_refcount_is_no_problem(rm, ASSET_TYPE_XML, "test"), TRUE);
@@ -166,6 +167,7 @@ TEST(AssetsManager, load_assets_refcount) {
   ASSERT_EQ(load_assets_refcount_is_no_problem(rm, ASSET_TYPE_STRINGS, "zh_CN"), TRUE);
 
   ASSERT_EQ(file_path_load_assets_refcount_is_no_problem(rm, ASSET_TYPE_UI, "main.bin"), TRUE);
+  ASSERT_EQ(file_path_load_assets_refcount_is_no_problem(rm, ASSET_TYPE_IMAGE, "0"), TRUE);
   ASSERT_EQ(file_path_load_assets_refcount_is_no_problem(rm, ASSET_TYPE_IMAGE, "earth.png"), TRUE);
   ASSERT_EQ(file_path_load_assets_refcount_is_no_problem(rm, ASSET_TYPE_SCRIPT, "dummy.js"), TRUE);
   ASSERT_EQ(file_path_load_assets_refcount_is_no_problem(rm, ASSET_TYPE_XML, "test.xml"), TRUE);
