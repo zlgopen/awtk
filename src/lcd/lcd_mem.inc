@@ -274,18 +274,6 @@ static vgcanvas_t* lcd_mem_get_vgcanvas(lcd_t* lcd) {
   return mem->vgcanvas;
 }
 
-static ret_t lcd_mem_take_snapshot(lcd_t* lcd, bitmap_t* img, bool_t auto_rotate) {
-  bitmap_t fb;
-  lcd_mem_init_drawing_fb(lcd, &fb);
-
-  rect_t r = rect_init(0, 0, fb.w, fb.h);
-  return_value_if_fail(bitmap_init(img, fb.w, fb.h, (bitmap_format_t)(fb.format), NULL) == RET_OK,
-                       RET_OOM);
-
-  img->flags = BITMAP_FLAG_OPAQUE;
-  return image_copy(img, &fb, &r, 0, 0);
-}
-
 static ret_t lcd_mem_flush(lcd_t* lcd) {
   bitmap_t online_fb;
   bitmap_t offline_fb;
@@ -357,6 +345,21 @@ static bitmap_format_t lcd_mem_get_desired_bitmap_format(lcd_t* lcd) {
   return mem->format;
 }
 
+static ret_t lcd_mem_set_line_length_impl(lcd_t* lcd, uint32_t line_length) {
+  lcd_mem_t* mem = ((lcd_mem_t*)lcd);
+  return_value_if_fail(mem != NULL, RET_BAD_PARAMS);
+  mem->line_length = line_length;
+  mem->online_line_length = line_length;
+  return RET_OK;
+}
+
+static ret_t lcd_mem_set_vgcanvas(lcd_t* lcd, vgcanvas_t* vgcanvas) {
+  lcd_mem_t* mem = ((lcd_mem_t*)lcd);
+  return_value_if_fail(mem != NULL, RET_BAD_PARAMS);
+  mem->vgcanvas = vgcanvas;
+  return RET_OK;
+}
+
 static lcd_t* lcd_mem_create(wh_t w, wh_t h, bool_t alloc) {
   lcd_t* base = NULL;
   system_info_t* info = system_info();
@@ -384,12 +387,13 @@ static lcd_t* lcd_mem_create(wh_t w, wh_t h, bool_t alloc) {
   base->draw_points = lcd_mem_draw_points;
   base->get_point_color = lcd_mem_get_point_color;
   base->get_vgcanvas = lcd_mem_get_vgcanvas;
-  base->take_snapshot = lcd_mem_take_snapshot;
   base->get_desired_bitmap_format = lcd_mem_get_desired_bitmap_format;
   base->end_frame = lcd_mem_end_frame;
   base->destroy = lcd_mem_destroy;
   base->resize = lcd_mem_resize;
   base->flush = lcd_mem_flush;
+  base->set_vgcanvas = lcd_mem_set_vgcanvas;
+  base->set_line_length = lcd_mem_set_line_length_impl;
 
   base->w = w;
   base->h = h;

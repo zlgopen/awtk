@@ -134,15 +134,15 @@ ret_t canvas_set_assets_manager(canvas_t* c, assets_manager_t* assets_manager) {
 ret_t canvas_get_clip_rect(canvas_t* c, rect_t* r) {
   return_value_if_fail(c != NULL && r != NULL, RET_BAD_PARAMS);
 
+  r->x = c->clip_left;
+  r->y = c->clip_top;
+  r->w = c->clip_right - c->clip_left + 1;
+  r->h = c->clip_bottom - c->clip_top + 1;
+
   if (c->lcd->get_clip_rect != NULL) {
     return lcd_get_clip_rect(c->lcd, r);
-  } else {
-    r->x = c->clip_left;
-    r->y = c->clip_top;
-    r->w = c->clip_right - c->clip_left + 1;
-    r->h = c->clip_bottom - c->clip_top + 1;
-    return RET_OK;
   }
+  return RET_OK;
 }
 
 ret_t canvas_set_clip_rect(canvas_t* c, const rect_t* r_in) {
@@ -351,6 +351,7 @@ ret_t canvas_begin_frame(canvas_t* c, const rect_t* dirty_rect, lcd_draw_mode_t 
   c->oy = 0;
 
   canvas_set_global_alpha(c, 0xff);
+  lcd_set_canvas(c->lcd, c);
   if (c->lcd->support_dirty_rect) {
     ret = lcd_begin_frame(c->lcd, dirty_rect, draw_mode);
   } else {

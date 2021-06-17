@@ -146,12 +146,6 @@ static ret_t lcd_mem_special_destroy(lcd_t* lcd) {
   return RET_OK;
 }
 
-static ret_t lcd_mem_special_take_snapshot(lcd_t* lcd, bitmap_t* img, bool_t auto_rotate) {
-  lcd_mem_special_t* special = (lcd_mem_special_t*)lcd;
-
-  return lcd_take_snapshot((lcd_t*)(special->lcd_mem), img, auto_rotate);
-}
-
 static bitmap_format_t lcd_mem_special_get_desired_bitmap_format(lcd_t* lcd) {
   lcd_mem_special_t* special = (lcd_mem_special_t*)lcd;
 
@@ -222,6 +216,14 @@ static ret_t lcd_mem_special_resize(lcd_t* lcd, wh_t w, wh_t h, uint32_t line_le
   return RET_OK;
 }
 
+static ret_t lcd_mem_special_set_line_length(lcd_t* lcd, uint32_t line_length) {
+  lcd_mem_special_t* special = (lcd_mem_special_t*)lcd;
+  return_value_if_fail(special != NULL, RET_BAD_PARAMS);
+  special->lcd_mem->line_length = line_length;
+  special->lcd_mem->online_line_length = line_length;
+  return RET_OK;
+}
+
 lcd_t* lcd_mem_special_create(wh_t w, wh_t h, bitmap_format_t fmt, lcd_flush_t on_flush,
                               lcd_resize_t on_resize, lcd_destroy_t on_destroy, void* ctx) {
   lcd_mem_special_t* special = TKMEM_ZALLOC(lcd_mem_special_t);
@@ -257,12 +259,12 @@ lcd_t* lcd_mem_special_create(wh_t w, wh_t h, bitmap_format_t fmt, lcd_flush_t o
   lcd->get_point_color = lcd_mem_special_get_point_color;
   lcd->end_frame = lcd_mem_special_end_frame;
   lcd->get_vgcanvas = lcd_mem_special_get_vgcanvas;
-  lcd->take_snapshot = lcd_mem_special_take_snapshot;
   lcd->set_global_alpha = lcd_mem_special_set_global_alpha;
   lcd->get_desired_bitmap_format = lcd_mem_special_get_desired_bitmap_format;
   lcd->resize = lcd_mem_special_resize;
   lcd->flush = lcd_mem_special_flush;
   lcd->destroy = lcd_mem_special_destroy;
+  lcd->set_line_length = lcd_mem_special_set_line_length;
 
   return lcd;
 }

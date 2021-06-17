@@ -262,18 +262,6 @@ static vgcanvas_t* lcd_profile_get_vgcanvas(lcd_t* lcd) {
   return lcd_get_vgcanvas(profile->impl);
 }
 
-static ret_t lcd_profile_take_snapshot(lcd_t* lcd, bitmap_t* img, bool_t auto_rotate) {
-  ret_t ret = RET_OK;
-
-  uint32_t cost = 0;
-  uint64_t start = time_now_ms();
-  lcd_profile_t* profile = LCD_PROFILE(lcd);
-  ret = lcd_take_snapshot(profile->impl, img, auto_rotate);
-  cost = time_now_ms() - start;
-
-  return ret;
-}
-
 static bitmap_format_t lcd_profile_get_desired_bitmap_format(lcd_t* lcd) {
   lcd_profile_t* profile = LCD_PROFILE(lcd);
 
@@ -430,10 +418,6 @@ lcd_t* lcd_profile_create(lcd_t* impl) {
 
   if (impl->get_vgcanvas != NULL) {
     lcd->get_vgcanvas = lcd_profile_get_vgcanvas;
-  }
-
-  if (impl->take_snapshot != NULL) {
-    lcd->take_snapshot = lcd_profile_take_snapshot;
   }
 
   if (impl->get_desired_bitmap_format != NULL) {

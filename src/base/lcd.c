@@ -25,6 +25,11 @@
 #include "tkc/time_now.h"
 #include "base/system_info.h"
 
+bool_t lcd_is_compositor(lcd_t* lcd) {
+  return_value_if_fail(lcd != NULL, FALSE);
+  return lcd->type == LCD_COMPOSITOR;
+}
+
 ret_t lcd_begin_frame(lcd_t* lcd, const rect_t* dirty_rect, lcd_draw_mode_t draw_mode) {
   return_value_if_fail(lcd != NULL && lcd->begin_frame != NULL, RET_BAD_PARAMS);
 
@@ -40,6 +45,27 @@ ret_t lcd_begin_frame(lcd_t* lcd, const rect_t* dirty_rect, lcd_draw_mode_t draw
   }
 
   return lcd->begin_frame(lcd, dirty_rect);
+}
+
+ret_t lcd_set_canvas(lcd_t* lcd, canvas_t* c) {
+  return_value_if_fail(lcd != NULL, RET_BAD_PARAMS);
+  if (lcd->set_canvas != NULL) {
+    lcd->set_canvas(lcd, c);
+  }
+  return RET_OK;
+}
+
+ret_t lcd_get_dirty_rect(lcd_t* lcd, rect_t* r) {
+  return_value_if_fail(lcd != NULL, RET_BAD_PARAMS);
+  if (lcd->get_dirty_rect != NULL) {
+    return lcd->get_dirty_rect(lcd, r);
+  } else {
+    r->x = lcd->dirty_rect.x;
+    r->y = lcd->dirty_rect.y;
+    r->w = lcd->dirty_rect.w;
+    r->h = lcd->dirty_rect.h;
+  }
+  return RET_OK;
 }
 
 ret_t lcd_set_clip_rect(lcd_t* lcd, const rect_t* rect) {
@@ -288,12 +314,6 @@ vgcanvas_t* lcd_get_vgcanvas(lcd_t* lcd) {
   return NULL;
 }
 
-ret_t lcd_take_snapshot(lcd_t* lcd, bitmap_t* img, bool_t auto_rotate) {
-  return_value_if_fail(lcd != NULL && lcd->take_snapshot != NULL, RET_BAD_PARAMS);
-
-  return lcd->take_snapshot(lcd, img, auto_rotate);
-}
-
 bitmap_format_t lcd_get_desired_bitmap_format(lcd_t* lcd) {
   return_value_if_fail(lcd != NULL && lcd->get_desired_bitmap_format != NULL, BITMAP_FMT_BGR565);
 
@@ -337,3 +357,28 @@ ret_t lcd_get_text_metrics(lcd_t* lcd, float_t* ascent, float_t* descent, float_
 
   return lcd->get_text_metrics(lcd, ascent, descent, line_hight);
 }
+
+lcd_type_t lcd_get_curr_lcd_type(lcd_t* lcd) {
+  return_value_if_fail(lcd != NULL, LCD_FRAMEBUFFER);
+  if (lcd->get_curr_lcd_type != NULL) {
+    return (lcd_type_t)lcd->get_curr_lcd_type(lcd);
+  }
+  return lcd->type;
+}
+
+ret_t lcd_set_vgcanvas(lcd_t* lcd, vgcanvas_t* vgcanvas) {
+  return_value_if_fail(lcd != NULL, RET_BAD_PARAMS);
+  if (lcd->set_vgcanvas != NULL) {
+    return lcd->set_vgcanvas(lcd, vgcanvas);
+  }
+  return RET_FAIL;
+}
+
+ret_t lcd_set_line_length(lcd_t* lcd, uint32_t line_length) {
+  return_value_if_fail(lcd != NULL, RET_BAD_PARAMS);
+  if (lcd->set_line_length != NULL) {
+    return lcd->set_line_length(lcd, line_length);
+  }
+  return RET_FAIL;
+}
+

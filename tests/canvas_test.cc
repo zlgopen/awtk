@@ -7,6 +7,7 @@
 
 TEST(Canvas, draw_hline) {
   rect_t r;
+  rect_t r1;
   canvas_t c;
   font_manager_t font_manager;
   lcd_t* lcd = lcd_log_init(800, 600);
@@ -15,6 +16,12 @@ TEST(Canvas, draw_hline) {
 
   r = rect_init(100, 100, 200, 200);
   canvas_begin_frame(&c, &r, LCD_DRAW_NORMAL);
+
+  ASSERT_EQ(canvas_get_clip_rect(&c, &r1), RET_OK);
+  ASSERT_EQ(r.x, r1.x);
+  ASSERT_EQ(r.y, r1.y);
+  ASSERT_EQ(r.w, r1.w);
+  ASSERT_EQ(r.h, r1.h);
 
   lcd_log_reset(lcd);
   canvas_draw_hline(&c, 90, 110, 40);
