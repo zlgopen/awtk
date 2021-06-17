@@ -54,11 +54,11 @@ static ret_t keyboard_on_event(widget_t* widget, event_t* e) {
   if (e->type == EVT_KEY_DOWN || e->type == EVT_KEY_UP) {
     key_event_t* evt = (key_event_t*)e;
     /*goto here only when grab_keys=true*/
-    if(evt->key == TK_KEY_LEFT || evt->key == TK_KEY_RIGHT 
-      || evt->key == TK_KEY_DOWN || evt->key == TK_KEY_UP) {
+    if (evt->key == TK_KEY_LEFT || evt->key == TK_KEY_RIGHT || evt->key == TK_KEY_DOWN ||
+        evt->key == TK_KEY_UP) {
       /*let window move focus*/
       return RET_OK;
-      }
+    }
 
     if (e->type == EVT_KEY_DOWN) {
       keyboard->key_down = evt->key;
@@ -247,7 +247,7 @@ static ret_t keyboard_on_button_click(void* ctx, event_t* e) {
     hard_key += strlen(STR_HARD_KEY_PREFIX);
     kv = keys_type_find(hard_key);
     return_value_if_fail(kv != NULL, RET_BAD_PARAMS);
-  
+
     window_manager_dispatch_input_event(wm, key_event_init(&evt, EVT_KEY_DOWN, wm, kv->value));
     window_manager_dispatch_input_event(wm, key_event_init(&evt, EVT_KEY_UP, wm, kv->value));
 
