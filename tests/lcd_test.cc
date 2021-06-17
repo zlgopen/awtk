@@ -40,7 +40,7 @@ TEST(lcd, base) {
   lcd.set_line_length = lcd_log_set_line_length;
 
   ASSERT_EQ(lcd_is_compositor(&lcd) == TRUE, true);
-  ASSERT_EQ(lcd_get_curr_lcd_type(&lcd) == LCD_COMPOSITOR, true);
+  ASSERT_EQ(lcd_get_type(&lcd) == LCD_COMPOSITOR, true);
   ASSERT_EQ(lcd_set_line_length(&lcd, 100), RET_OK);
   ASSERT_EQ(s_line_length, 100);
   

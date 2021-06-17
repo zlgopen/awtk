@@ -819,7 +819,7 @@ static void ffr_draw_rounded_rect_draw_fill_with_canvas(canvas_t* c, const rect_
 }
 
 static ret_t ffr_draw_fill_rounded_rect(canvas_t* c, const rect_t* r, color_t color, uint32_t radius_tl, uint32_t radius_tr, uint32_t radius_bl, uint32_t radius_br) {
-  lcd_type_t lcd_type = lcd_get_curr_lcd_type(c->lcd);
+  lcd_type_t lcd_type = lcd_get_type(c->lcd);
   bool_t is_cpu_lcd = lcd_type != LCD_VGCANVAS && lcd_type != LCD_REGISTER;
   uint32_t radius = radius_tl != 0 ? radius_tl : (radius_tr != 0 ? radius_tr : (radius_bl != 0 ? radius_bl : radius_br));
   if (is_cpu_lcd && radius != 0 && ffr_draw_rounded_radius_equal(radius_tl, radius_tr, radius_bl, radius_br)) {
@@ -992,7 +992,7 @@ static void ffr_draw_rounded_rect_draw_stroke_with_canvas(canvas_t* c, const rec
 
 static ret_t ffr_draw_stroke_rounded_rect(canvas_t* c, const rect_t* r, color_t color, uint32_t radius_tl, uint32_t radius_tr, uint32_t radius_bl, uint32_t radius_br,
                                             uint32_t border_width, int32_t border_model) {
-  lcd_type_t lcd_type = lcd_get_curr_lcd_type(c->lcd);
+  lcd_type_t lcd_type = lcd_get_type(c->lcd);
   bool_t is_cpu_lcd = lcd_type != LCD_VGCANVAS && lcd_type != LCD_REGISTER;
   uint32_t radius = radius_tl != 0 ? radius_tl : (radius_tr != 0 ? radius_tr : (radius_bl != 0 ? radius_bl : radius_br));
   if (is_cpu_lcd && border_width == 1 && radius != 0 && ffr_draw_rounded_radius_equal(radius_tl, radius_tr, radius_bl, radius_br)) {

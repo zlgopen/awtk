@@ -43,7 +43,7 @@ struct _canvas_t;
 typedef struct _lcd_t lcd_t;
 typedef struct _canvas_t canvas_t;
 
-typedef int32_t (*lcd_get_curr_lcd_type_t)(lcd_t* lcd);
+typedef int32_t (*lcd_get_type_t)(lcd_t* lcd);
 typedef ret_t (*lcd_set_vgcanvas_t)(lcd_t* lcd, vgcanvas_t* vg);
 typedef ret_t (*lcd_set_line_length_t)(lcd_t* lcd, uint32_t line_length);
 typedef ret_t (*lcd_set_canvas_t)(lcd_t* lcd, canvas_t* c);
@@ -208,7 +208,7 @@ struct _lcd_t {
   lcd_get_desired_bitmap_format_t get_desired_bitmap_format;
   lcd_set_vgcanvas_t set_vgcanvas;
   lcd_set_line_length_t set_line_length;
-  lcd_get_curr_lcd_type_t get_curr_lcd_type;
+  lcd_get_type_t get_type;
   lcd_get_dirty_rect_t get_dirty_rect;
   lcd_set_canvas_t set_canvas;
   lcd_resize_t resize;
@@ -648,13 +648,13 @@ ret_t lcd_end_frame(lcd_t* lcd);
 ret_t lcd_get_text_metrics(lcd_t* lcd, float_t* ascent, float_t* descent, float_t* line_hight);
 
 /**
- * @method lcd_get_curr_lcd_type
+ * @method lcd_get_type
  * 获取 lcd 类型。
  * @param {lcd_t*} lcd lcd对象。
  *
  * @return {lcd_type_t} 返回 lcd_type。
  */
-lcd_type_t lcd_get_curr_lcd_type(lcd_t* lcd);
+lcd_type_t lcd_get_type(lcd_t* lcd);
 
 /**
  * @method lcd_set_vgcanvas

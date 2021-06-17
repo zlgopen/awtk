@@ -358,10 +358,10 @@ ret_t lcd_get_text_metrics(lcd_t* lcd, float_t* ascent, float_t* descent, float_
   return lcd->get_text_metrics(lcd, ascent, descent, line_hight);
 }
 
-lcd_type_t lcd_get_curr_lcd_type(lcd_t* lcd) {
+lcd_type_t lcd_get_type(lcd_t* lcd) {
   return_value_if_fail(lcd != NULL, LCD_FRAMEBUFFER);
-  if (lcd->get_curr_lcd_type != NULL) {
-    return (lcd_type_t)lcd->get_curr_lcd_type(lcd);
+  if (lcd->get_type != NULL) {
+    return (lcd_type_t)lcd->get_type(lcd);
   }
   return lcd->type;
 }
