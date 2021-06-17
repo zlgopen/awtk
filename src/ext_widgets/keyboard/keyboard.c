@@ -54,6 +54,13 @@ static ret_t keyboard_on_event(widget_t* widget, event_t* e) {
   if (e->type == EVT_KEY_DOWN || e->type == EVT_KEY_UP) {
     key_event_t* evt = (key_event_t*)e;
     /*goto here only when grab_keys=true*/
+    if(evt->key == TK_KEY_LEFT || evt->key == TK_KEY_RIGHT 
+      || evt->key == TK_KEY_DOWN || evt->key == TK_KEY_UP
+      || evt->key == TK_KEY_ESCAPE || evt->key == TK_KEY_BACKSPACE
+      || evt->key == TK_KEY_DELETE || evt->key == TK_KEY_RETURN) {
+      return RET_OK;
+      }
+
     if (e->type == EVT_KEY_DOWN) {
       keyboard->key_down = evt->key;
     } else {
@@ -236,13 +243,14 @@ static ret_t keyboard_on_button_click(void* ctx, event_t* e) {
     return keyboard_set_active_page(button, page_name + strlen(STR_PAGE_PREFIX));
   } else if (hard_key != NULL) {
     const key_type_value_t* kv = NULL;
-    key_event_t key_event;
+    key_event_t evt;
+    widget_t* wm = window_manager();
     hard_key += strlen(STR_HARD_KEY_PREFIX);
     kv = keys_type_find(hard_key);
     return_value_if_fail(kv != NULL, RET_BAD_PARAMS);
-
-    widget_dispatch(window_manager(), key_event_init(&key_event, EVT_KEY_DOWN, NULL, kv->value));
-    widget_dispatch(window_manager(), key_event_init(&key_event, EVT_KEY_UP, NULL, kv->value));
+  
+    window_manager_dispatch_input_event(wm, key_event_init(&evt, EVT_KEY_DOWN, wm, kv->value));
+    window_manager_dispatch_input_event(wm, key_event_init(&evt, EVT_KEY_UP, wm, kv->value));
 
     return RET_OK;
   } else if (key != NULL) {
