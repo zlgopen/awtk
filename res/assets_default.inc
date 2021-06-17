@@ -277,6 +277,7 @@
 #include "assets/default/inc/images/right_on.res"
 #include "assets/default/inc/images/gauge_pointer.res"
 #include "assets/default/inc/images/flag_US.res"
+#include "assets/default/inc/images/0.res"
 #include "assets/default/inc/images/left_off.res"
 #include "assets/default/inc/images/1.res"
 #include "assets/default/inc/images/progress_circle.res"
@@ -321,6 +322,7 @@
 #include "assets/default/inc/images/arrow_right_o.data"
 #include "assets/default/inc/images/image_packed_bg.data"
 #include "assets/default/inc/images/num_4.data"
+#include "assets/default/inc/images/0.data"
 #include "assets/default/inc/images/close_o.data"
 #include "assets/default/inc/images/battery_1.data"
 #include "assets/default/inc/images/slider_bg.data"
@@ -753,6 +755,7 @@ ret_t assets_init(void) {
   assets_manager_add(am, image_right_on);
   assets_manager_add(am, image_gauge_pointer);
   assets_manager_add(am, image_flag_US);
+  assets_manager_add(am, image_0);
   assets_manager_add(am, image_left_off);
   assets_manager_add(am, image_1);
   assets_manager_add(am, image_progress_circle);
