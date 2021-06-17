@@ -267,6 +267,8 @@ typedef enum _app_type_t {
 #endif
 #endif /*TK_MAX_FPS*/
 
+#define TK_MAX_SLEEP_TIME (1000 / TK_MAX_FPS)
+
 /* alpha 大于 TK_OPACITY_ALPHA 的颜色认为是不透明颜色，不进行alpha混合。*/
 #define TK_OPACITY_ALPHA 0xfa
 

@@ -97,7 +97,7 @@ widget_animator_manager_t* widget_animator_manager_init(widget_animator_manager_
   return_value_if_fail(am != NULL, NULL);
 
   am->time_scale = 1;
-  am->timer_id = timer_add(widget_animator_manager_on_timer, am, 1000 / 60);
+  am->timer_id = timer_add(widget_animator_manager_on_timer, am, TK_MAX_SLEEP_TIME);
 
   return am;
 }
