@@ -55,9 +55,8 @@ static ret_t keyboard_on_event(widget_t* widget, event_t* e) {
     key_event_t* evt = (key_event_t*)e;
     /*goto here only when grab_keys=true*/
     if(evt->key == TK_KEY_LEFT || evt->key == TK_KEY_RIGHT 
-      || evt->key == TK_KEY_DOWN || evt->key == TK_KEY_UP
-      || evt->key == TK_KEY_ESCAPE || evt->key == TK_KEY_BACKSPACE
-      || evt->key == TK_KEY_DELETE || evt->key == TK_KEY_RETURN) {
+      || evt->key == TK_KEY_DOWN || evt->key == TK_KEY_UP) {
+      /*let window move focus*/
       return RET_OK;
       }
 
