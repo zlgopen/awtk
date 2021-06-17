@@ -87,8 +87,6 @@ ret_t main_loop_recv_event(main_loop_t* l, event_queue_req_t* r) {
 #include "base/timer.h"
 #include "base/window_manager.h"
 
-#define TK_MAX_SLEEP_TIME (1000 / TK_MAX_FPS)
-
 ret_t main_loop_sleep_default(main_loop_t* l) {
   uint64_t now = time_now_ms();
   uint32_t gap = now - l->last_loop_time;
