@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/06/17
+  * 完善awtk\_main.inc（感谢朝泽提供补丁）
+
 2021/06/16
   * 支持[极简键盘 (3 键键盘、5 键键盘和旋转按钮）](docs/how_to_support_5keys_3keys.md)
   * edit/mledit不处理escape和功能键。 

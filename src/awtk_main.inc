@@ -78,7 +78,9 @@ int SDL_main(int argc, char* argv[]) {
 #elif defined(WIN32) && !defined(MINGW)
 #include <windows.h>
 #include <combaseapi.h>
+#ifndef MAX_ARGV
 #define MAX_ARGV 7
+#endif
 
 static void command_line_to_argv(char* lpcmdline, char* argv[MAX_ARGV], int32_t* argc) {
   int32_t i = 1;
