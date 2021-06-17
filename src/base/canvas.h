@@ -28,9 +28,6 @@
 
 BEGIN_C_DECLS
 
-struct _canvas_t;
-typedef struct _canvas_t canvas_t;
-
 /**
  * @class canvas_t
  * @annotation ["scriptable"]

@@ -38,11 +38,6 @@ typedef struct _draw_image_info_t {
   matrix_t matrix;
 } draw_image_info_t;
 
-struct _lcd_t;
-struct _canvas_t;
-typedef struct _lcd_t lcd_t;
-typedef struct _canvas_t canvas_t;
-
 typedef int32_t (*lcd_get_type_t)(lcd_t* lcd);
 typedef ret_t (*lcd_set_vgcanvas_t)(lcd_t* lcd, vgcanvas_t* vg);
 typedef ret_t (*lcd_set_line_length_t)(lcd_t* lcd, uint32_t line_length);
