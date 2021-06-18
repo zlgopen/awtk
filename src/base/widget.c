@@ -4482,13 +4482,11 @@ bitmap_t* widget_take_snapshot_rect(widget_t* widget, const rect_t* r) {
   buff = bitmap_lock_buffer_for_write(bitmap);
   lcd = lcd_mem_rgba8888_create_single_fb(w, h, buff);
   if (lcd != NULL) {
-    ((lcd_mem_t*)lcd)->vgcanvas = canvas_get_vgcanvas(c);
     canvas_init(&canvas, lcd, font_manager());
     canvas_begin_frame(&canvas, r, LCD_DRAW_OFFLINE);
     widget_paint(widget, &canvas);
     canvas_end_frame(&canvas);
     canvas_reset(&canvas);
-    ((lcd_mem_t*)lcd)->vgcanvas = NULL;
     lcd_destroy(lcd);
   }
 

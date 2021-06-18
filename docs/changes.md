@@ -1,5 +1,7 @@
 # 最新动态
 
+2021/06/18
+  * 把截屏函数和离线画布都改用多 vg 的模式（感谢智明提供补丁)
 2021/06/17
   * 增加rect\_has\_intersect。
   * 完善widget\_paint\_with\_clip。
