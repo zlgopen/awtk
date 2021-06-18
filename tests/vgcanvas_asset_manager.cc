@@ -107,6 +107,18 @@ TEST(Vgcanvas_asset_manager, image) {
   ASSERT_EQ(ctx, image_ctx1);
   ASSERT_EQ(ret, RET_OK);
 
+  ASSERT_EQ(vgcanvas_asset_manager_remove_image(vgcanvas_asset_manager(), vg1, NULL), RET_OK);
+  ASSERT_EQ(s_specific_by_vg1, image_ctx1);
+  s_specific_by_vg1 = 0;
+
+  vgcanvas_asset_manager_get_image_specific(vgcanvas_asset_manager(), vg1, &image, &ret);
+  ASSERT_EQ(ret, RET_FAIL);
+
+
+  ASSERT_EQ(vgcanvas_asset_manager_add_image(vgcanvas_asset_manager(), vg1, &image,
+                                             tk_pointer_from_int(image_ctx1)),
+            RET_OK);
+
   ASSERT_EQ(vgcanvas_asset_manager_add_image(vgcanvas_asset_manager(), vg3, &image,
                                              tk_pointer_from_int(image_ctx3)),
             RET_OK);
@@ -193,16 +205,16 @@ TEST(Vgcanvas_asset_manager, font) {
                                             tk_pointer_from_int(font_ctx3)),
             RET_OK);
 
-  vgcanvas_asset_manager_remove_font(vgcanvas_asset_manager(), "default");
-  ASSERT_EQ(s_specific_by_vg1, font_ctx1);
+  vgcanvas_asset_manager_remove_font(vgcanvas_asset_manager(), vg3, "default");
+  ASSERT_EQ(s_specific_by_vg1, 0);
   ASSERT_EQ(s_specific_by_vg2, 0);
   ASSERT_EQ(s_specific_by_vg3, font_ctx3);
-  s_specific_by_vg1 = 0;
   s_specific_by_vg3 = 0;
 
   ctx = tk_pointer_to_int(
       vgcanvas_asset_manager_get_font_ctx(vgcanvas_asset_manager(), vg1, "default", &ret));
-  ASSERT_EQ(ret, RET_FAIL);
+  ASSERT_EQ(ctx, font_ctx1);
+  ASSERT_EQ(ret, RET_OK);
 
   ctx = tk_pointer_to_int(
       vgcanvas_asset_manager_get_font_ctx(vgcanvas_asset_manager(), vg2, "default", &ret));
@@ -210,6 +222,14 @@ TEST(Vgcanvas_asset_manager, font) {
 
   ctx = tk_pointer_to_int(
       vgcanvas_asset_manager_get_font_ctx(vgcanvas_asset_manager(), vg3, "default", &ret));
+  ASSERT_EQ(ret, RET_FAIL);
+
+  vgcanvas_asset_manager_remove_font(vgcanvas_asset_manager(), vg1, NULL);
+  ASSERT_EQ(s_specific_by_vg1, font_ctx1);
+  s_specific_by_vg1 = 0;
+
+  ctx = tk_pointer_to_int(
+      vgcanvas_asset_manager_get_font_ctx(vgcanvas_asset_manager(), vg1, "default", &ret));
   ASSERT_EQ(ret, RET_FAIL);
 
   ASSERT_EQ(vgcanvas_asset_manager_destroy(vgcanvas_asset_manager()), RET_OK);

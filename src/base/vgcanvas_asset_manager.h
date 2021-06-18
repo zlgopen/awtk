@@ -110,6 +110,19 @@ ret_t vgcanvas_asset_manager_add_image(vgcanvas_asset_manager_t* vgcanvas_asset_
                                        bitmap_t* img, void* specific);
 
 /**
+ * @method vgcanvas_asset_manager_remove_image
+ * 移除贴图资源
+ * 备注：如果 bitmap 对象为 NULL，则移除该 vg 对象下的所有贴图。
+ * @param {vgcanvas_asset_manager_t*} vgcanvas_asset_manager 矢量画布资源管理器。
+ * @param {void*} vg 使用该字库的矢量画布对象
+ * @param {const char*} image_name 贴图名字。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t vgcanvas_asset_manager_remove_image(vgcanvas_asset_manager_t* vgcanvas_asset_manager, void* vg,
+                                          const char* image_name);
+
+/**
  * @method vgcanvas_asset_manager_get_font_ctx
  * 获取字库的相关上下文
  *
@@ -139,14 +152,15 @@ ret_t vgcanvas_asset_manager_add_font(vgcanvas_asset_manager_t* vgcanvas_asset_m
 
 /**
  * @method vgcanvas_asset_manager_remove_font
- * 移除一个字库资源
- *
+ * 移除字库资源
+ * 备注：如果字库名字为 NULL，则移除该 vg 对象下的所有字库。
  * @param {vgcanvas_asset_manager_t*} vgcanvas_asset_manager 矢量画布资源管理器。
+ * @param {void*} vg 使用该字库的矢量画布对象
  * @param {const char*} font_name 字库名称。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t vgcanvas_asset_manager_remove_font(vgcanvas_asset_manager_t* vgcanvas_asset_manager,
+ret_t vgcanvas_asset_manager_remove_font(vgcanvas_asset_manager_t* vgcanvas_asset_manager, void* vg,
                                          const char* font_name);
 
 /**

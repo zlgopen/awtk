@@ -101,6 +101,15 @@ static int vgcanvas_asset_manager_font_list_compare(const void* a, const void* b
   return 1;
 }
 
+static int vgcanvas_asset_manager_font_list_compare_by_vg_id(const void* a, const void* b) {
+  vgcanvas_asset_font_t* font = (vgcanvas_asset_font_t*)a;
+  vgcanvas_asset_ctx_t* ctx = (vgcanvas_asset_ctx_t*)darray_find(&(font->font_ctx_list), (void*)b);
+  if (ctx != NULL) {
+    return 0;
+  }
+  return 1;
+}
+
 static ret_t vgcanvas_asset_manager_font_ctx_list_destroy(void* data) {
   vgcanvas_asset_font_ctx_t* font_ctx = (vgcanvas_asset_font_ctx_t*)data;
   vgcanvas_asset_manager_t* vgcanvas_asset_manager = font_ctx->base.vgcanvas_asset_manager;
@@ -128,6 +137,24 @@ static int vgcanvas_asset_manager_image_list_compare(const void* a, const void* 
   bitmap_t* img = (bitmap_t*)b;
   vgcanvas_asset_image_t* image = (vgcanvas_asset_image_t*)a;
   if (tk_str_eq(image->image_name, img->name)) {
+    return 0;
+  }
+  return 1;
+}
+
+static int vgcanvas_asset_manager_image_list_compare_by_image_name(const void* a, const void* b) {
+  const char* img_name = (const char*)b;
+  vgcanvas_asset_image_t* image = (vgcanvas_asset_image_t*)a;
+  if (tk_str_eq(image->image_name, img_name)) {
+    return 0;
+  }
+  return 1;
+}
+
+static int vgcanvas_asset_manager_image_list_compare_by_vg_id(const void* a, const void* b) {
+  vgcanvas_asset_image_t* image = (vgcanvas_asset_image_t*)a;
+  vgcanvas_asset_ctx_t* ctx = (vgcanvas_asset_ctx_t*)darray_find(&(image->image_ctx_list), (void*)b);
+  if (ctx != NULL) {
     return 0;
   }
   return 1;
@@ -285,6 +312,37 @@ error :
   return RET_OOM;
 }
 
+ret_t vgcanvas_asset_manager_remove_image(vgcanvas_asset_manager_t* vgcanvas_asset_manager, void* vg, const char* image_name) {
+  vgcanvas_asset_vg_t* vg_data = NULL;
+  return_value_if_fail(vgcanvas_asset_manager != NULL, RET_BAD_PARAMS);
+  vg_data = (vgcanvas_asset_vg_t*)vgcanvas_asset_manager_darray_find_index(&(vgcanvas_asset_manager->vg_list), vgcanvas_asset_manager_vg_list_compare, vg);
+  return_value_if_fail(vg_data != NULL, RET_NOT_FOUND);
+
+  if (image_name == NULL) {
+    uint32_t i;
+    darray_t list;
+    darray_init(&list, vgcanvas_asset_manager->image_list.size, NULL, NULL);
+    darray_find_all(&(vgcanvas_asset_manager->image_list), vgcanvas_asset_manager_image_list_compare_by_vg_id, tk_pointer_from_int(vg_data->vg_id), &list);
+    for (i = 0; i < list.size; i++) {
+      vgcanvas_asset_image_t* image = (vgcanvas_asset_image_t*)darray_get(&list, i);
+      if (image != NULL) {
+        vgcanvas_asset_manager_remove_image(vgcanvas_asset_manager, vg, image->image_name);
+      }
+    }
+    darray_deinit(&list);
+  } else {
+    vgcanvas_asset_image_t* image = (vgcanvas_asset_image_t*)vgcanvas_asset_manager_darray_find_index(&(vgcanvas_asset_manager->image_list), vgcanvas_asset_manager_image_list_compare_by_image_name, (void*)image_name);
+    if (image != NULL) {
+      int32_t index = darray_find_index(&(image->image_ctx_list), tk_pointer_from_int(vg_data->vg_id));
+      darray_remove_index(&(image->image_ctx_list), index);
+      if (image->image_ctx_list.size == 0) {
+        darray_remove(&(vgcanvas_asset_manager->image_list), image);
+      }
+    }
+  }
+  return RET_OK;
+}
+
 const void* vgcanvas_asset_manager_get_font_ctx(vgcanvas_asset_manager_t* vgcanvas_asset_manager, void* vg, const char* font_name, ret_t* reuslt) {
   int32_t i = 0;
   int32_t size = 0;
@@ -351,15 +409,32 @@ error :
   return RET_OOM;
 }
 
-ret_t vgcanvas_asset_manager_remove_font(vgcanvas_asset_manager_t* vgcanvas_asset_manager, const char* font_name) {
+ret_t vgcanvas_asset_manager_remove_font(vgcanvas_asset_manager_t* vgcanvas_asset_manager, void* vg, const char* font_name) {
+  vgcanvas_asset_vg_t* vg_data = NULL;
   return_value_if_fail(vgcanvas_asset_manager != NULL, RET_BAD_PARAMS);
+  vg_data = (vgcanvas_asset_vg_t*)vgcanvas_asset_manager_darray_find_index(&(vgcanvas_asset_manager->vg_list), vgcanvas_asset_manager_vg_list_compare, vg);
+  return_value_if_fail(vg_data != NULL, RET_NOT_FOUND);
 
   if (font_name == NULL) {
-    darray_clear(&(vgcanvas_asset_manager->font_list));
+    uint32_t i;
+    darray_t list;
+    darray_init(&list, vgcanvas_asset_manager->font_list.size, NULL, NULL);
+    darray_find_all(&(vgcanvas_asset_manager->font_list), vgcanvas_asset_manager_font_list_compare_by_vg_id, tk_pointer_from_int(vg_data->vg_id), &list);
+    for (i = 0; i < list.size; i++) {
+      vgcanvas_asset_font_t* font = (vgcanvas_asset_font_t*)darray_get(&list, i);
+      if (font != NULL) {
+        vgcanvas_asset_manager_remove_font(vgcanvas_asset_manager, vg, font->font_name);
+      }
+    }
+    darray_deinit(&list);
   } else {
     vgcanvas_asset_font_t* font = (vgcanvas_asset_font_t*)vgcanvas_asset_manager_darray_find_index(&(vgcanvas_asset_manager->font_list), vgcanvas_asset_manager_font_list_compare, (void*)font_name);
     if (font != NULL) {
-      darray_remove(&(vgcanvas_asset_manager->font_list), font);
+      int32_t index = darray_find_index(&(font->font_ctx_list), tk_pointer_from_int(vg_data->vg_id));
+      darray_remove_index(&(font->font_ctx_list), index);
+      if (font->font_ctx_list.size == 0) {
+        darray_remove(&(vgcanvas_asset_manager->font_list), font);
+      }
     }
   }
   return RET_OK;

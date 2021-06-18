@@ -32,9 +32,9 @@ static ret_t vgcanvas_nanovg_on_asset_events(void* ctx, event_t* e) {
   if (evt->type == ASSET_TYPE_FONT) {
     asset_info_t* info = evt->asset_info;
     if (e->type == EVT_ASSET_MANAGER_CLEAR_CACHE) {
-      vgcanvas_asset_manager_remove_font(vgcanvas_asset_manager(), NULL);
+      vgcanvas_asset_manager_remove_font(vgcanvas_asset_manager(), ctx, NULL);
     } else if (e->type == EVT_ASSET_MANAGER_UNLOAD_ASSET) {
-      vgcanvas_asset_manager_remove_font(vgcanvas_asset_manager(), info->name);
+      vgcanvas_asset_manager_remove_font(vgcanvas_asset_manager(), ctx, info->name);
     }
   }
 
@@ -72,6 +72,7 @@ static ret_t vgcanvas_nanovg_reset(vgcanvas_t* vgcanvas) {
   /*TODO: unload fonts*/
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
   nvgDeleteFontByName(vg, NULL);
+  vgcanvas_asset_manager_remove_font(vgcanvas_asset_manager(), vgcanvas, NULL);
   return RET_OK;
 }
 
@@ -686,6 +687,9 @@ static ret_t vgcanvas_nanovg_clear_cache(vgcanvas_t* vgcanvas) {
 
   nvgClearCache(vg);
   nvgDeleteFontByName(vg, NULL);
+  vgcanvas_asset_manager_remove_font(vgcanvas_asset_manager(), vgcanvas, NULL);
+  vgcanvas_asset_manager_remove_image(vgcanvas_asset_manager(), vgcanvas, NULL);
+  
   return RET_OK;
 }
 
