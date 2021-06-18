@@ -290,7 +290,6 @@ struct _lcd_t {
    */
   bool_t support_dirty_rect;
 
-
   /*private*/
   rect_t fps_rect;
   rect_t dirty_rect;

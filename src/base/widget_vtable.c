@@ -229,7 +229,8 @@ ret_t widget_on_paint_null(widget_t* widget, canvas_t* c) {
   return RET_OK;
 }
 
-ret_t widget_paint_with_clip(widget_t* widget, rect_t* clip, canvas_t* c, widget_on_paint_t on_paint) {
+ret_t widget_paint_with_clip(widget_t* widget, rect_t* clip, canvas_t* c,
+                             widget_on_paint_t on_paint) {
   rect_t r = {0};
   rect_t r_save = {0};
   rect_t r_vg_save = {0};

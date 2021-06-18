@@ -83,7 +83,7 @@ struct _system_info_t {
    * 显示屏的旋转角度。
    */
   lcd_orientation_t lcd_orientation;
-  
+
   /**
    * @property {keyboard_type_t} keyboard_type
    * @annotation ["readable"]

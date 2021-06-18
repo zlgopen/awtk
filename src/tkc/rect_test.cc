@@ -75,7 +75,7 @@ TEST(Rect, has_intersect) {
   r2 = rect_init(0, 0, 10, 10);
   r1 = rect_init(10, 10, 10, 10);
   ASSERT_EQ(rect_has_intersect(&r1, &r2), FALSE);
-  
+
   r1 = rect_init(20, 20, 10, 10);
   r2 = rect_init(10, 10, 10, 10);
   ASSERT_EQ(rect_has_intersect(&r1, &r2), FALSE);
@@ -89,21 +89,21 @@ TEST(Rect, has_intersect) {
   r2 = rect_init(0, 0, 15, 15);
   r1 = rect_init(10, 10, 10, 10);
   ASSERT_EQ(rect_has_intersect(&r1, &r2), TRUE);
-  
+
   r1 = rect_init(15, 5, 10, 10);
   r2 = rect_init(10, 10, 10, 10);
   ASSERT_EQ(rect_has_intersect(&r1, &r2), TRUE);
   r2 = rect_init(15, 5, 10, 10);
   r1 = rect_init(10, 10, 10, 10);
   ASSERT_EQ(rect_has_intersect(&r1, &r2), TRUE);
-  
+
   r1 = rect_init(5, 15, 10, 10);
   r2 = rect_init(10, 10, 10, 10);
   ASSERT_EQ(rect_has_intersect(&r1, &r2), TRUE);
   r2 = rect_init(5, 15, 10, 10);
   r1 = rect_init(10, 10, 10, 10);
   ASSERT_EQ(rect_has_intersect(&r1, &r2), TRUE);
-  
+
   r1 = rect_init(15, 15, 10, 10);
   r2 = rect_init(10, 10, 10, 10);
   ASSERT_EQ(rect_has_intersect(&r1, &r2), TRUE);

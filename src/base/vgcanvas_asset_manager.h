@@ -40,7 +40,8 @@ typedef struct _vgcanvas_asset_manager_t {
 } vgcanvas_asset_manager_t;
 
 typedef ret_t (*vgcanvas_asset_manager_bitmap_destroy_t)(void* vg, void* specific);
-typedef ret_t (*vgcanvas_asset_manager_font_destroy_t)(void* vg, const char* font_name, void* specific);
+typedef ret_t (*vgcanvas_asset_manager_font_destroy_t)(void* vg, const char* font_name,
+                                                       void* specific);
 
 /**
  * @method vgcanvas_asset_manager
@@ -91,7 +92,8 @@ ret_t vgcanvas_asset_manager_destroy(vgcanvas_asset_manager_t* vgcanvas_asset_ma
  *
  * @return {const void*} 返回特殊上下文。
  */
-const void* vgcanvas_asset_manager_get_image_specific(vgcanvas_asset_manager_t* vgcanvas_asset_manager, void* vg, bitmap_t* img, ret_t* reuslt);
+const void* vgcanvas_asset_manager_get_image_specific(
+    vgcanvas_asset_manager_t* vgcanvas_asset_manager, void* vg, bitmap_t* img, ret_t* reuslt);
 
 /**
  * @method vgcanvas_asset_manager_add_image
@@ -104,7 +106,8 @@ const void* vgcanvas_asset_manager_get_image_specific(vgcanvas_asset_manager_t* 
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t vgcanvas_asset_manager_add_image(vgcanvas_asset_manager_t* vgcanvas_asset_manager, void* vg, bitmap_t* img, void* specific);
+ret_t vgcanvas_asset_manager_add_image(vgcanvas_asset_manager_t* vgcanvas_asset_manager, void* vg,
+                                       bitmap_t* img, void* specific);
 
 /**
  * @method vgcanvas_asset_manager_get_font_ctx
@@ -117,7 +120,8 @@ ret_t vgcanvas_asset_manager_add_image(vgcanvas_asset_manager_t* vgcanvas_asset_
  *
  * @return {const void*} 返回上下文。
  */
-const void* vgcanvas_asset_manager_get_font_ctx(vgcanvas_asset_manager_t* vgcanvas_asset_manager, void* vg, const char* font_name, ret_t* reuslt);
+const void* vgcanvas_asset_manager_get_font_ctx(vgcanvas_asset_manager_t* vgcanvas_asset_manager,
+                                                void* vg, const char* font_name, ret_t* reuslt);
 
 /**
  * @method vgcanvas_asset_manager_add_font
@@ -130,7 +134,8 @@ const void* vgcanvas_asset_manager_get_font_ctx(vgcanvas_asset_manager_t* vgcanv
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t vgcanvas_asset_manager_add_font(vgcanvas_asset_manager_t* vgcanvas_asset_manager, void* vg, const char* font_name, void* ctx);
+ret_t vgcanvas_asset_manager_add_font(vgcanvas_asset_manager_t* vgcanvas_asset_manager, void* vg,
+                                      const char* font_name, void* ctx);
 
 /**
  * @method vgcanvas_asset_manager_remove_font
@@ -141,7 +146,8 @@ ret_t vgcanvas_asset_manager_add_font(vgcanvas_asset_manager_t* vgcanvas_asset_m
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t vgcanvas_asset_manager_remove_font(vgcanvas_asset_manager_t* vgcanvas_asset_manager, const char* font_name);
+ret_t vgcanvas_asset_manager_remove_font(vgcanvas_asset_manager_t* vgcanvas_asset_manager,
+                                         const char* font_name);
 
 /**
  * @method vgcanvas_asset_manager_add_vg
@@ -154,7 +160,9 @@ ret_t vgcanvas_asset_manager_remove_font(vgcanvas_asset_manager_t* vgcanvas_asse
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t vgcanvas_asset_manager_add_vg(vgcanvas_asset_manager_t* vgcanvas_asset_manager, void* vg, vgcanvas_asset_manager_bitmap_destroy_t bitmap_destroy, vgcanvas_asset_manager_font_destroy_t font_destroy);
+ret_t vgcanvas_asset_manager_add_vg(vgcanvas_asset_manager_t* vgcanvas_asset_manager, void* vg,
+                                    vgcanvas_asset_manager_bitmap_destroy_t bitmap_destroy,
+                                    vgcanvas_asset_manager_font_destroy_t font_destroy);
 
 /**
  * @method vgcanvas_asset_manager_remove_vg

@@ -228,7 +228,8 @@ ret_t tk_init_internal(void) {
   return_value_if_fail(input_method_set(input_method_create()) == RET_OK, RET_FAIL);
 #endif /*WITHOUT_INPUT_METHOD*/
 #ifdef WITH_VGCANVAS
-  return_value_if_fail(vgcanvas_asset_manager_set(vgcanvas_asset_manager_create()) == RET_OK, RET_FAIL);
+  return_value_if_fail(vgcanvas_asset_manager_set(vgcanvas_asset_manager_create()) == RET_OK,
+                       RET_FAIL);
 #endif
   return_value_if_fail(locale_info_set(locale_info_create(NULL, NULL)) == RET_OK, RET_FAIL);
   return_value_if_fail(font_manager_set(font_manager_create(font_loader)) == RET_OK, RET_FAIL);

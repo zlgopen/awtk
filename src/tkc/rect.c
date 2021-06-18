@@ -61,7 +61,7 @@ bool_t rect_has_intersect(const rect_t* r1, const rect_t* r2) {
   bottom1 = r1->y + r1->h - 1;
   bottom2 = r2->y + r2->h - 1;
 
-  if(right1 < r2->x || right2 < r1->x || bottom1 < r2->y || bottom2 < r1->y) {
+  if (right1 < r2->x || right2 < r1->x || bottom1 < r2->y || bottom2 < r1->y) {
     return FALSE;
   }
 

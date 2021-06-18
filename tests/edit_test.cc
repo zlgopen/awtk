@@ -587,9 +587,9 @@ TEST(Edit, keys) {
 
   key_event_init(&key, EVT_KEY_DOWN, e, TK_KEY_F1);
   ASSERT_EQ(widget_dispatch(e, (event_t*)&key), RET_OK);
-  
+
   key_event_init(&key, EVT_KEY_DOWN, e, TK_KEY_F10);
   ASSERT_EQ(widget_dispatch(e, (event_t*)&key), RET_OK);
-  
+
   widget_destroy(e);
 }

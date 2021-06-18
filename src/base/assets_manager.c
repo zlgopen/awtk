@@ -236,7 +236,7 @@ static asset_info_t* try_load_image(assets_manager_t* am, const char* theme, con
       subpath = "images/svg";
       break;
     }
-    case ASSET_TYPE_IMAGE_OTHER : {
+    case ASSET_TYPE_IMAGE_OTHER: {
       extname = "";
       break;
     }

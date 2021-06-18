@@ -2388,12 +2388,9 @@ static bool_t widget_is_move_focus_right_key(widget_t* widget, key_event_t* e) {
 }
 
 bool_t widget_is_change_focus_key(widget_t* widget, key_event_t* e) {
-  return widget_is_move_focus_prev_key(widget, e)
-    || widget_is_move_focus_next_key(widget, e)
-    || widget_is_move_focus_up_key(widget, e)
-    || widget_is_move_focus_down_key(widget, e)
-    || widget_is_move_focus_left_key(widget, e)
-    || widget_is_move_focus_right_key(widget, e);
+  return widget_is_move_focus_prev_key(widget, e) || widget_is_move_focus_next_key(widget, e) ||
+         widget_is_move_focus_up_key(widget, e) || widget_is_move_focus_down_key(widget, e) ||
+         widget_is_move_focus_left_key(widget, e) || widget_is_move_focus_right_key(widget, e);
 }
 
 static ret_t widget_on_keydown_general(widget_t* widget, key_event_t* e) {
@@ -3960,16 +3957,14 @@ static bool_t is_same_row(const rect_t* r1, const rect_t* r2) {
   int32_t cy1 = r1->y + r1->h / 2;
   int32_t cy2 = r2->y + r2->h / 2;
 
-  return (cy2 >= r1->y && cy2 < (r1->y + r1->h)) || 
-    (cy1 >= r2->y && cy1 < (r2->y + r2->h));
+  return (cy2 >= r1->y && cy2 < (r1->y + r1->h)) || (cy1 >= r2->y && cy1 < (r2->y + r2->h));
 }
 
 static bool_t is_same_col(const rect_t* r1, const rect_t* r2) {
   int32_t cx1 = r1->x + r1->w / 2;
   int32_t cx2 = r2->x + r2->w / 2;
 
-  return (cx2 >= r1->x && cx2 < (r1->x + r1->w)) || 
-    (cx1 >= r2->x && cx1 < (r2->x + r2->w));
+  return (cx2 >= r1->x && cx2 < (r1->x + r1->w)) || (cx1 >= r2->x && cx1 < (r2->x + r2->w));
 }
 
 static uint32_t distance2(const rect_t* r1, const rect_t* r2) {

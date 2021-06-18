@@ -520,5 +520,4 @@ typedef struct _canvas_t canvas_t;
 struct _lcd_t;
 typedef struct _lcd_t lcd_t;
 
-
 #endif /*TK_TYPES_DEF_H*/

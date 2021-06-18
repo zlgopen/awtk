@@ -43,7 +43,7 @@ TEST(lcd, base) {
   ASSERT_EQ(lcd_get_type(&lcd) == LCD_COMPOSITOR, true);
   ASSERT_EQ(lcd_set_line_length(&lcd, 100), RET_OK);
   ASSERT_EQ(s_line_length, 100);
-  
+
   ASSERT_EQ(lcd_set_canvas(&lcd, (canvas_t*)tk_pointer_from_int(0xee)), RET_OK);
   ASSERT_EQ(s_canvas_ptr, 0xee);
 

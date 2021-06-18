@@ -90,7 +90,8 @@ ret_t widget_on_paint_children_clip(widget_t* widget, canvas_t* c);
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t widget_paint_with_clip(widget_t* widget, rect_t* clip, canvas_t* c, widget_on_paint_t on_paint);
+ret_t widget_paint_with_clip(widget_t* widget, rect_t* clip, canvas_t* c,
+                             widget_on_paint_t on_paint);
 
 /**
  * @method widget_on_paint_children_default

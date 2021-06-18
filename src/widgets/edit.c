@@ -607,7 +607,7 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
       return RET_STOP;
     }
   } else if (key == TK_KEY_DOWN) {
-    if(widget_is_change_focus_key(widget, e)) {
+    if (widget_is_change_focus_key(widget, e)) {
       return RET_OK;
     }
 
@@ -618,7 +618,7 @@ static ret_t edit_on_key_down(widget_t* widget, key_event_t* e) {
     }
     return RET_STOP;
   } else if (key == TK_KEY_UP) {
-    if(widget_is_change_focus_key(widget, e)) {
+    if (widget_is_change_focus_key(widget, e)) {
       return RET_OK;
     }
 

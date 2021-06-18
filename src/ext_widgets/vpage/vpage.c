@@ -224,7 +224,7 @@ static ret_t vpage_on_current_page_changed(void* ctx, event_t* e) {
 
 static ret_t vpage_on_attach_parent(widget_t* widget, widget_t* parent) {
   widget_on(parent, EVT_VALUE_CHANGED, vpage_on_current_page_changed, widget);
-  
+
   return RET_OK;
 }
 

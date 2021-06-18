@@ -34,7 +34,8 @@
 static const wchar_t* text_selector_get_wtext(widget_t* widget);
 static ret_t text_selector_set_all_options_localize_text(widget_t* widget);
 static ret_t text_selector_scroll_to(widget_t* widget, int32_t yoffset_end);
-static ret_t text_selector_sync_yoffset_with_selected_index(text_selector_t* text_selector, bool_t is_anim);
+static ret_t text_selector_sync_yoffset_with_selected_index(text_selector_t* text_selector,
+                                                            bool_t is_anim);
 
 const char* s_text_selector_properties[] = {WIDGET_PROP_TEXT,
                                             WIDGET_PROP_VALUE,
@@ -510,12 +511,15 @@ static ret_t text_selector_sync_selected_index_with_yoffset(text_selector_t* tex
   return text_selector_set_selected_index_only(text_selector, selected_index);
 }
 
-static int32_t text_selector_get_yoffset_for_selected_index(text_selector_t* text_selector, int32_t mid_index, int32_t item_height) {
+static int32_t text_selector_get_yoffset_for_selected_index(text_selector_t* text_selector,
+                                                            int32_t mid_index,
+                                                            int32_t item_height) {
   int32_t yoffset = 0;
   if (text_selector->loop_options) {
     int32_t options_nr = text_selector_count_options(WIDGET(text_selector));
     int32_t n = options_nr >> 1;
-    int32_t d = n - tk_abs(tk_abs(text_selector->selected_index - text_selector->last_selected_index) - n);
+    int32_t d =
+        n - tk_abs(tk_abs(text_selector->selected_index - text_selector->last_selected_index) - n);
     yoffset = text_selector->yoffset;
     if (text_selector->selected_index > text_selector->last_selected_index) {
       if (text_selector->selected_index - d == text_selector->last_selected_index) {
@@ -524,7 +528,8 @@ static int32_t text_selector_get_yoffset_for_selected_index(text_selector_t* tex
         yoffset -= (d * item_height);
       }
     } else {
-      if ((text_selector->last_selected_index + d + 1) % options_nr == text_selector->selected_index) {
+      if ((text_selector->last_selected_index + d + 1) % options_nr ==
+          text_selector->selected_index) {
         yoffset += ((d + 1) * item_height);
       } else {
         yoffset -= (d * item_height);
@@ -536,12 +541,14 @@ static int32_t text_selector_get_yoffset_for_selected_index(text_selector_t* tex
   return yoffset;
 }
 
-static ret_t text_selector_sync_yoffset_with_selected_index(text_selector_t* text_selector, bool_t is_anim) {
+static ret_t text_selector_sync_yoffset_with_selected_index(text_selector_t* text_selector,
+                                                            bool_t is_anim) {
   widget_t* widget = WIDGET(text_selector);
   int32_t mid_index = text_selector->visible_nr / 2;
   int32_t item_height = text_selector->draw_widget_h / text_selector->visible_nr;
   if (is_anim && !widget->loading) {
-    int32_t yoffset = text_selector_get_yoffset_for_selected_index(text_selector, mid_index, item_height);
+    int32_t yoffset =
+        text_selector_get_yoffset_for_selected_index(text_selector, mid_index, item_height);
     if (text_selector->wa != NULL) {
       widget_animator_destroy(text_selector->wa);
       text_selector->wa = NULL;
@@ -614,7 +621,8 @@ static ret_t text_selector_scroll_to(widget_t* widget, int32_t yoffset_end) {
   }
 
 #ifndef WITHOUT_WIDGET_ANIMATORS
-  text_selector->wa = widget_animator_scroll_create(widget, text_selector->animating_time, 0, EASING_SIN_INOUT);
+  text_selector->wa =
+      widget_animator_scroll_create(widget, text_selector->animating_time, 0, EASING_SIN_INOUT);
   return_value_if_fail(text_selector->wa != NULL, RET_OOM);
 
   widget_animator_scroll_set_params(text_selector->wa, 0, yoffset, 0, yoffset_end);

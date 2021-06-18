@@ -381,4 +381,3 @@ ret_t lcd_set_line_length(lcd_t* lcd, uint32_t line_length) {
   }
   return RET_FAIL;
 }
-
