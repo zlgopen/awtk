@@ -365,6 +365,24 @@ static vgcanvas_nanovg_offline_fb_t* vgcanvas_create_offline_fb(uint32_t width, 
 #include "texture.inc"
 #include "vgcanvas_nanovg_gl.inc"
 
+static ret_t vgcanvas_asset_manager_nanovg_font_destroy(void* vg, const char* font_name, void* specific) {
+  int32_t id = tk_pointer_to_int(specific);
+  vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vg;
+  if (canvas != NULL && canvas->vg != NULL && id >= 0) {
+    nvgDeleteFontByName(canvas->vg, font_name);
+  }
+  return RET_OK;
+}
+
+static ret_t vgcanvas_asset_manager_nanovg_bitmap_destroy(void* vg, void* specific) {
+  int32_t id = tk_pointer_to_int(specific);
+  vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vg;
+  if (canvas != NULL && canvas->vg != NULL && id >= 0) {
+    nvgDeleteImage(canvas->vg, id);
+  }
+  return RET_OK;
+}
+
 vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_format_t format,
                             void* win) {
   native_window_info_t info;
@@ -398,5 +416,6 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_form
   nanovg->shader_program = vgcanvas_create_init_screen_shader();
   nanovg->offline_fb = vgcanvas_create_offline_fb(w * info.ratio, h * info.ratio);
 
+  vgcanvas_asset_manager_add_vg(vgcanvas_asset_manager(), &(nanovg->base), vgcanvas_asset_manager_nanovg_bitmap_destroy, vgcanvas_asset_manager_nanovg_font_destroy);
   return &(nanovg->base);
 }

@@ -7,6 +7,7 @@
 #include "base/image_manager.h"
 #include "base/font_manager.h"
 #include "base/assets_manager.h"
+#include "base/vgcanvas_asset_manager.h"
 
 static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img);
 
@@ -31,9 +32,9 @@ static ret_t vgcanvas_nanovg_on_asset_events(void* ctx, event_t* e) {
   if (evt->type == ASSET_TYPE_FONT) {
     asset_info_t* info = evt->asset_info;
     if (e->type == EVT_ASSET_MANAGER_CLEAR_CACHE) {
-      nvgDeleteFontByName(vg, NULL);
+      vgcanvas_asset_manager_remove_font(vgcanvas_asset_manager(), NULL);
     } else if (e->type == EVT_ASSET_MANAGER_UNLOAD_ASSET) {
-      nvgDeleteFontByName(vg, info->name);
+      vgcanvas_asset_manager_remove_font(vgcanvas_asset_manager(), info->name);
     }
   }
 
@@ -41,10 +42,22 @@ static ret_t vgcanvas_nanovg_on_asset_events(void* ctx, event_t* e) {
 }
 
 static ret_t vgcanvas_nanovg_init(vgcanvas_t* vgcanvas) {
-  emitter_t* emitter = EMITTER(assets_manager());
-  emitter_on(emitter, EVT_ASSET_MANAGER_CLEAR_CACHE, vgcanvas_nanovg_on_asset_events, vgcanvas);
-  emitter_on(emitter, EVT_ASSET_MANAGER_UNLOAD_ASSET, vgcanvas_nanovg_on_asset_events, vgcanvas);
+  (void)vgcanvas;
+  return RET_OK;
+}
 
+static ret_t vgcanvas_nanovg_set_assets_manager(vgcanvas_t* vg, assets_manager_t* assets_manager) {
+  return_value_if_fail(vg != NULL, RET_BAD_PARAMS);
+
+  if (vg->assets_manager != NULL && vg->assets_manager != assets_manager) {
+    emitter_off_by_ctx(EMITTER(vg->assets_manager), vg);
+  }
+  if (assets_manager != NULL && vg->assets_manager != assets_manager) {
+    emitter_t* emitter = EMITTER(assets_manager);
+    emitter_on(emitter, EVT_ASSET_MANAGER_CLEAR_CACHE, vgcanvas_nanovg_on_asset_events, vg);
+    emitter_on(emitter, EVT_ASSET_MANAGER_UNLOAD_ASSET, vgcanvas_nanovg_on_asset_events, vg);
+  }
+  vg->assets_manager = assets_manager;
   return RET_OK;
 }
 
@@ -370,12 +383,14 @@ static ret_t vgcanvas_nanovg_set_font_size(vgcanvas_t* vgcanvas, float_t size) {
 
 static ret_t vgcanvas_nanovg_set_font(vgcanvas_t* vgcanvas, const char* name) {
   int font_id = 0;
+  ret_t reuslt = RET_FAIL;
   NVGcontext* vg = ((vgcanvas_nanovg_t*)vgcanvas)->vg;
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
   return_value_if_fail(name && *name, RET_BAD_PARAMS);
 
-  font_id = nvgFindFont(vg, name);
-  if (font_id < 0) {
+  font_id = tk_pointer_to_int(vgcanvas_asset_manager_get_font_ctx(vgcanvas_asset_manager(), vgcanvas, name, &reuslt));
+
+  if (reuslt != RET_OK) {
     assets_manager_t* am = vgcanvas->assets_manager ? vgcanvas->assets_manager : assets_manager();
     const asset_info_t* r = assets_manager_ref(am, ASSET_TYPE_FONT, name);
 
@@ -404,6 +419,7 @@ static ret_t vgcanvas_nanovg_set_font(vgcanvas_t* vgcanvas, const char* name) {
     if (r != NULL) {
       assets_manager_unref(am, r);
     }
+    vgcanvas_asset_manager_add_font(vgcanvas_asset_manager(), vgcanvas, name, tk_pointer_from_int(font_id));
   }
 
   canvas->font_id = font_id;
@@ -676,6 +692,7 @@ static ret_t vgcanvas_nanovg_clear_cache(vgcanvas_t* vgcanvas) {
 static const vgcanvas_vtable_t vt = {
     .reinit = vgcanvas_nanovg_reinit,
     .begin_frame = vgcanvas_nanovg_begin_frame,
+    .set_assets_manager = vgcanvas_nanovg_set_assets_manager,
     .reset = vgcanvas_nanovg_reset,
     .reset_curr_state = vgcanvas_nanovg_reset_curr_state,
     .flush = vgcanvas_nanovg_flush,

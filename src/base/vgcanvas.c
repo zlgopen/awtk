@@ -28,7 +28,11 @@
 ret_t vgcanvas_set_assets_manager(vgcanvas_t* vg, assets_manager_t* assets_manager) {
   return_value_if_fail(vg != NULL, RET_BAD_PARAMS);
 
-  vg->assets_manager = assets_manager;
+  if (vg->vt->set_assets_manager != NULL) {
+    return vg->vt->set_assets_manager(vg, assets_manager);
+  } else {
+    vg->assets_manager = assets_manager;
+  }
 
   return RET_OK;
 }

@@ -68,6 +68,8 @@ vgcanvas_t* vgcanvas_create(uint32_t w, uint32_t h, uint32_t stride, bitmap_form
   assert(!"not support backend");
 #endif
 
+  vgcanvas_nanovg_soft_set_asset_manager(&(nanovg->base));
+
   return &(nanovg->base);
 }
 #endif

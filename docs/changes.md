@@ -2,6 +2,8 @@
 
 2021/06/18
   * 把截屏函数和离线画布都改用多 vg 的模式（感谢智明提供补丁)
+  * 增加 vgcanvas\_asset\_manager 的机制，来保证不同 vg 公用同一份资源时候不会出现问题（感谢智明提供补丁）
+
 2021/06/17
   * 增加rect\_has\_intersect。
   * 完善widget\_paint\_with\_clip。

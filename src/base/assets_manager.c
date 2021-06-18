@@ -26,6 +26,7 @@
 #include "base/locale_info.h"
 #include "base/system_info.h"
 #include "base/assets_manager.h"
+#include "base/vgcanvas_asset_manager.inc"
 
 #define RAW_DIR "raw"
 #define ASSETS_DIR "assets"

@@ -37,6 +37,10 @@
 #include "base/assets_manager.h"
 #include "fscript_ext/fscript_ext.h"
 
+#ifdef WITH_VGCANVAS
+#include "base/vgcanvas_asset_manager.h"
+#endif
+
 #ifdef WITH_DATA_READER_WRITER
 #include "tkc/data_reader_factory.h"
 #include "tkc/data_writer_factory.h"
@@ -223,6 +227,9 @@ ret_t tk_init_internal(void) {
 #ifndef WITHOUT_INPUT_METHOD
   return_value_if_fail(input_method_set(input_method_create()) == RET_OK, RET_FAIL);
 #endif /*WITHOUT_INPUT_METHOD*/
+#ifdef WITH_VGCANVAS
+  return_value_if_fail(vgcanvas_asset_manager_set(vgcanvas_asset_manager_create()) == RET_OK, RET_FAIL);
+#endif
   return_value_if_fail(locale_info_set(locale_info_create(NULL, NULL)) == RET_OK, RET_FAIL);
   return_value_if_fail(font_manager_set(font_manager_create(font_loader)) == RET_OK, RET_FAIL);
   return_value_if_fail(font_manager_set_assets_manager(font_manager(), assets_manager()) == RET_OK,
@@ -347,6 +354,11 @@ ret_t tk_deinit_internal(void) {
 
   assets_manager_destroy(assets_manager());
   assets_manager_set(NULL);
+
+#ifdef WITH_VGCANVAS
+  vgcanvas_asset_manager_destroy(vgcanvas_asset_manager());
+  vgcanvas_asset_manager_set(NULL);
+#endif
 
 #ifdef WITH_DATA_READER_WRITER
   data_writer_factory_destroy(data_writer_factory());

@@ -1,19 +1,6 @@
 ﻿#include "tkc/utils.h"
 #include "base/types_def.h"
-
-static ret_t nanovg_on_bitmap_destroy(bitmap_t* img) {
-  int32_t id = tk_pointer_to_int(img->specific);
-  NVGcontext* vg = (NVGcontext*)(img->specific_ctx);
-
-  if (vg != NULL && id >= 0) {
-    nvgDeleteImage(vg, id);
-  }
-  img->specific = NULL;
-  img->specific_ctx = NULL;
-  img->specific_destroy = NULL;
-
-  return RET_OK;
-}
+#include "base/vgcanvas_asset_manager.h"
 
 static int vgcanvas_nanovg_bitmap_flag_to_NVGimageFlags(bitmap_flag_t flags) {
 
@@ -31,15 +18,19 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
   uint8_t* img_data = bitmap_lock_buffer_for_read(img);
 
   if (img->flags & BITMAP_FLAG_TEXTURE) {
-    i = tk_pointer_to_int(img->specific);
+    ret_t reuslt = RET_FAIL;
+    const void* specific = vgcanvas_asset_manager_get_image_specific(vgcanvas_asset_manager(), (vgcanvas_t*)canvas, img, &reuslt);
+    if (reuslt == RET_OK) {
+      i = tk_pointer_to_int(specific);
 
-    if (img->flags & BITMAP_FLAG_CHANGED) {
-      img->flags &= (~(BITMAP_FLAG_CHANGED));
-      nvgUpdateImage(canvas->vg, i, img_data);
+      if (img->flags & BITMAP_FLAG_CHANGED) {
+        img->flags &= (~(BITMAP_FLAG_CHANGED));
+        nvgUpdateImage(canvas->vg, i, img_data);
+      }
+      bitmap_unlock_buffer(img);
+
+      return i;
     }
-    bitmap_unlock_buffer(img);
-
-    return i;
   }
 
   flag = (int)vgcanvas_nanovg_bitmap_flag_to_NVGimageFlags((bitmap_flag_t)(img->flags));
@@ -66,10 +57,7 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
 
   if (i >= 0) {
     img->flags |= BITMAP_FLAG_TEXTURE;
-    img->specific = tk_pointer_from_int(i);
-    img->specific_ctx = canvas->vg;
-    img->specific_destroy = nanovg_on_bitmap_destroy;
-    image_manager_update_specific(img->image_manager, img);
+    vgcanvas_asset_manager_add_image(vgcanvas_asset_manager(), (vgcanvas_t*)canvas, img, tk_pointer_from_int(i));
   }
   bitmap_unlock_buffer(img);
 

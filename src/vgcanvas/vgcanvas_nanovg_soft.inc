@@ -1,6 +1,16 @@
 #include "tkc/utils.h"
 #include "base/types_def.h"
 #include "vgcanvas_nanovg.inc" 
+#include "base/vgcanvas_asset_manager.h"
+
+static ret_t vgcanvas_asset_manager_nanovg_font_destroy(void* vg, const char* font_name, void* specific) {
+  int32_t id = tk_pointer_to_int(specific);
+  vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vg;
+  if (canvas != NULL && canvas->vg != NULL && id >= 0) {
+    nvgDeleteFontByName(canvas->vg, font_name);
+  }
+  return RET_OK;
+}
 
 static enum NVGtexture bitmap_format_to_nanovg(bitmap_format_t format) {
   enum NVGtexture f = NVG_TEXTURE_BGRA;
@@ -111,19 +121,13 @@ static int vgcanvas_nanovg_bitmap_flag_to_NVGimageFlags(bitmap_flag_t flags) {
   return NVG_IMAGE_NEAREST;
 }
 
-static ret_t vgcanvas_nanovg_on_bitmap_destroy(bitmap_t* img) {
-  vgcanvas_nanovg_soft_texture_t* texture = (vgcanvas_nanovg_soft_texture_t*)img->specific;
-  NVGcontext* vg = (NVGcontext*)(img->specific_ctx);
-
-  if (vg != NULL && texture->id >= 0) {
-    nvgDeleteImage(vg, texture->id);
-    TKMEM_FREE(texture);
+static ret_t vgcanvas_asset_manager_nanovg_bitmap_destroy(void* vg, void* specific) {
+  vgcanvas_nanovg_soft_texture_t* texture = (vgcanvas_nanovg_soft_texture_t*)specific;
+  vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vg;
+  if (canvas != NULL && canvas->vg != NULL) {
+    nvgDeleteImage(canvas->vg, texture->id);
   }
-
-  img->specific = NULL;
-  img->specific_ctx = NULL;
-  img->specific_destroy = NULL;
-
+  TKMEM_FREE(texture);
   return RET_OK;
 }
 
@@ -136,10 +140,14 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
 
   if (img->flags & BITMAP_FLAG_TEXTURE) {
     if (img->specific != 0) {
-      texture = (vgcanvas_nanovg_soft_texture_t*)img->specific;
-      i = nvgFindTextureRaw(canvas->vg, texture->data);
-      if (i > 0) {
-        return i;
+      ret_t reuslt = RET_FAIL;
+      const void* specific = vgcanvas_asset_manager_get_image_specific(vgcanvas_asset_manager(), (vgcanvas_t*)canvas, img, &reuslt);
+      if (reuslt == RET_OK && specific != NULL) {
+        const vgcanvas_nanovg_soft_texture_t* tmp = (const vgcanvas_nanovg_soft_texture_t*)specific;
+        i = nvgFindTextureRaw(canvas->vg, tmp->data);
+        if (i > 0) {
+          return i;
+        }
       }
     }
   }
@@ -176,21 +184,30 @@ static int vgcanvas_nanovg_ensure_image(vgcanvas_nanovg_t* canvas, bitmap_t* img
     texture->id = i;
     texture->data = img_data;
 
-    img->specific = texture;
-    img->specific_ctx = canvas->vg;
     img->flags |= BITMAP_FLAG_TEXTURE;
-    img->specific_destroy = vgcanvas_nanovg_on_bitmap_destroy;
-
-    image_manager_update_specific(img->image_manager, img);
+    vgcanvas_asset_manager_add_image(vgcanvas_asset_manager(), (vgcanvas_t*)canvas, img, texture);
   }
   bitmap_unlock_buffer(img);
 
   return i;
 }
 
+static ret_t vgcanvas_nanovg_soft_set_asset_manager(vgcanvas_t* vg) {
+  return_value_if_fail(vg != NULL, RET_BAD_PARAMS);
+  vgcanvas_asset_manager_add_vg(vgcanvas_asset_manager(), vg, vgcanvas_asset_manager_nanovg_bitmap_destroy, vgcanvas_asset_manager_nanovg_font_destroy);
+  return RET_OK;
+}
+
+static ret_t vgcanvas_nanovg_soft_close_asset_manager(vgcanvas_t* vg) {
+  return_value_if_fail(vg != NULL, RET_BAD_PARAMS);
+  vgcanvas_asset_manager_remove_vg(vgcanvas_asset_manager(), vg);
+  return RET_OK;
+}
+
+
 static ret_t vgcanvas_nanovg_destroy(vgcanvas_t* vgcanvas) {
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
-
+  vgcanvas_nanovg_soft_close_asset_manager(vgcanvas);
   vgcanvas_nanovg_deinit(vgcanvas);
   nvgDeleteInternal(canvas->vg);
   TKMEM_FREE(vgcanvas);

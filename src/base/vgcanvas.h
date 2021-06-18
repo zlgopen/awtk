@@ -51,6 +51,7 @@ typedef ret_t (*vgcanvas_reinit_t)(vgcanvas_t* vg, uint32_t w, uint32_t h, uint3
 typedef ret_t (*vgcanvas_begin_frame_t)(vgcanvas_t* vg, const rect_t* dirty_rect);
 typedef ret_t (*vgcanvas_end_frame_t)(vgcanvas_t* vg);
 
+typedef ret_t (*vgcanvas_set_assets_manager_t)(vgcanvas_t* vg, assets_manager_t* assets_manager);
 typedef ret_t (*vgcanvas_reset_t)(vgcanvas_t* vg);
 typedef ret_t (*vgcanvas_flush_t)(vgcanvas_t* vg);
 typedef ret_t (*vgcanvas_reset_curr_state_t)(vgcanvas_t* vg);
@@ -148,6 +149,7 @@ typedef struct _vgcanvas_vtable_t {
   vgcanvas_reinit_t reinit;
 
   vgcanvas_begin_frame_t begin_frame;
+  vgcanvas_set_assets_manager_t set_assets_manager;
   vgcanvas_reset_t reset;
   vgcanvas_flush_t flush;
   vgcanvas_clear_rect_t clear_rect;
