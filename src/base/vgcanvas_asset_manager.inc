@@ -28,7 +28,7 @@
 #include "base/image_manager.h"
 #include "base/vgcanvas_asset_manager.h"
 
-#ifdef WITH_VGCANVAS
+// #ifdef WITH_VGCANVAS
 
 #define VGCANVAS_ASSET_MANAGER_DARRAY_INIT_NUMBER 20
 
@@ -55,7 +55,7 @@ typedef struct _vgcanvas_asset_font_t {
 } vgcanvas_asset_font_t;
 
 typedef struct _vgcanvas_asset_image_t {
-  char* image_name;
+  graphic_buffer_t* buffer;
   darray_t image_ctx_list;
   vgcanvas_asset_manager_t* vgcanvas_asset_manager;
 } vgcanvas_asset_image_t;
@@ -126,29 +126,15 @@ static ret_t vgcanvas_asset_manager_font_ctx_list_destroy(void* data) {
 static ret_t vgcanvas_asset_manager_image_list_destroy(void* data) {
   vgcanvas_asset_image_t* image = (vgcanvas_asset_image_t*)data;
   darray_deinit(&(image->image_ctx_list));  
-  if (image->image_name != NULL) {
-    TKMEM_FREE(image->image_name)
-  }
+  image->buffer = NULL;
   TKMEM_FREE(image);
   return RET_OK;
 }
 
 static int vgcanvas_asset_manager_image_list_compare(const void* a, const void* b) {
-  bitmap_t* img = (bitmap_t*)b;
+  graphic_buffer_t* buffer = (graphic_buffer_t*)b;
   vgcanvas_asset_image_t* image = (vgcanvas_asset_image_t*)a;
-  if (tk_str_eq(image->image_name, img->name)) {
-    return 0;
-  }
-  return 1;
-}
-
-static int vgcanvas_asset_manager_image_list_compare_by_image_name(const void* a, const void* b) {
-  const char* img_name = (const char*)b;
-  vgcanvas_asset_image_t* image = (vgcanvas_asset_image_t*)a;
-  if (tk_str_eq(image->image_name, img_name)) {
-    return 0;
-  }
-  return 1;
+  return (char*)(image->buffer) - (char*)(buffer);
 }
 
 static int vgcanvas_asset_manager_image_list_compare_by_vg_id(const void* a, const void* b) {
@@ -256,7 +242,7 @@ const void* vgcanvas_asset_manager_get_image_specific(vgcanvas_asset_manager_t* 
   if (vg_data != NULL) {
     for (i = 0; i < size; i++) {
       vgcanvas_asset_image_t* image = (vgcanvas_asset_image_t*)darray_get(darray, i);
-      if (tk_str_eq(image->image_name, img->name)) {
+      if (image->buffer == img->buffer) {
         int32_t image_ctx_id = darray_find_index(&(image->image_ctx_list), tk_pointer_from_int(vg_data->vg_id));
         if (image_ctx_id >= 0) {
           vgcanvas_asset_ctx_t* image_ctx = (vgcanvas_asset_ctx_t*)darray_get(&(image->image_ctx_list), image_ctx_id);
@@ -286,12 +272,12 @@ ret_t vgcanvas_asset_manager_add_image(vgcanvas_asset_manager_t* vgcanvas_asset_
   ctx->base.vgcanvas_asset_manager = vgcanvas_asset_manager;
   ctx->bitmap_destroy = vg_data->bitmap_destroy;
 
-  image = (vgcanvas_asset_image_t*)vgcanvas_asset_manager_darray_find_index(&(vgcanvas_asset_manager->image_list), vgcanvas_asset_manager_image_list_compare, img);
+  image = (vgcanvas_asset_image_t*)vgcanvas_asset_manager_darray_find_index(&(vgcanvas_asset_manager->image_list), vgcanvas_asset_manager_image_list_compare, img->buffer);
   if (image == NULL) {
     image = TKMEM_ZALLOC(vgcanvas_asset_image_t);
     goto_error_if_fail(image != NULL);
     
-    image->image_name = tk_str_copy(NULL, img->name);
+    image->buffer = img->buffer;
     image->vgcanvas_asset_manager = vgcanvas_asset_manager;
     darray_init(&(image->image_ctx_list), VGCANVAS_ASSET_MANAGER_DARRAY_INIT_NUMBER, vgcanvas_asset_manager_image_ctx_list_destroy, vgcanvas_asset_manager_ctx_list_compare);
 
@@ -312,13 +298,25 @@ error :
   return RET_OOM;
 }
 
-ret_t vgcanvas_asset_manager_remove_image(vgcanvas_asset_manager_t* vgcanvas_asset_manager, void* vg, const char* image_name) {
+static ret_t vgcanvas_asset_manager_remove_image_impl(vgcanvas_asset_manager_t* vgcanvas_asset_manager, vgcanvas_asset_vg_t* vg_data, graphic_buffer_t* buffer) {
+  vgcanvas_asset_image_t* image = (vgcanvas_asset_image_t*)vgcanvas_asset_manager_darray_find_index(&(vgcanvas_asset_manager->image_list), vgcanvas_asset_manager_image_list_compare, (void*)buffer);
+  if (image != NULL) {
+    int32_t index = darray_find_index(&(image->image_ctx_list), tk_pointer_from_int(vg_data->vg_id));
+    darray_remove_index(&(image->image_ctx_list), index);
+    if (image->image_ctx_list.size == 0) {
+      darray_remove(&(vgcanvas_asset_manager->image_list), image);
+    }
+  }
+  return RET_OK;
+}
+
+ret_t vgcanvas_asset_manager_remove_image(vgcanvas_asset_manager_t* vgcanvas_asset_manager, void* vg, bitmap_t* img) {
   vgcanvas_asset_vg_t* vg_data = NULL;
   return_value_if_fail(vgcanvas_asset_manager != NULL, RET_BAD_PARAMS);
   vg_data = (vgcanvas_asset_vg_t*)vgcanvas_asset_manager_darray_find_index(&(vgcanvas_asset_manager->vg_list), vgcanvas_asset_manager_vg_list_compare, vg);
   return_value_if_fail(vg_data != NULL, RET_NOT_FOUND);
 
-  if (image_name == NULL) {
+  if (img == NULL) {
     uint32_t i;
     darray_t list;
     darray_init(&list, vgcanvas_asset_manager->image_list.size, NULL, NULL);
@@ -326,19 +324,12 @@ ret_t vgcanvas_asset_manager_remove_image(vgcanvas_asset_manager_t* vgcanvas_ass
     for (i = 0; i < list.size; i++) {
       vgcanvas_asset_image_t* image = (vgcanvas_asset_image_t*)darray_get(&list, i);
       if (image != NULL) {
-        vgcanvas_asset_manager_remove_image(vgcanvas_asset_manager, vg, image->image_name);
+        vgcanvas_asset_manager_remove_image_impl(vgcanvas_asset_manager, vg_data, image->buffer);
       }
     }
     darray_deinit(&list);
   } else {
-    vgcanvas_asset_image_t* image = (vgcanvas_asset_image_t*)vgcanvas_asset_manager_darray_find_index(&(vgcanvas_asset_manager->image_list), vgcanvas_asset_manager_image_list_compare_by_image_name, (void*)image_name);
-    if (image != NULL) {
-      int32_t index = darray_find_index(&(image->image_ctx_list), tk_pointer_from_int(vg_data->vg_id));
-      darray_remove_index(&(image->image_ctx_list), index);
-      if (image->image_ctx_list.size == 0) {
-        darray_remove(&(vgcanvas_asset_manager->image_list), image);
-      }
-    }
+    return vgcanvas_asset_manager_remove_image_impl(vgcanvas_asset_manager, vg_data, img->buffer);
   }
   return RET_OK;
 }
@@ -463,4 +454,4 @@ ret_t vgcanvas_asset_manager_remove_vg(vgcanvas_asset_manager_t* vgcanvas_asset_
   vg_data = (vgcanvas_asset_vg_t*)vgcanvas_asset_manager_darray_find_index(&(vgcanvas_asset_manager->vg_list), vgcanvas_asset_manager_vg_list_compare, vg);
   return darray_remove(&(vgcanvas_asset_manager->vg_list), vg_data);
 }
-#endif
+// #endif

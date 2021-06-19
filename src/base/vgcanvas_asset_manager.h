@@ -115,12 +115,12 @@ ret_t vgcanvas_asset_manager_add_image(vgcanvas_asset_manager_t* vgcanvas_asset_
  * 备注：如果 bitmap 对象为 NULL，则移除该 vg 对象下的所有贴图。
  * @param {vgcanvas_asset_manager_t*} vgcanvas_asset_manager 矢量画布资源管理器。
  * @param {void*} vg 使用该字库的矢量画布对象
- * @param {const char*} image_name 贴图名字。
+ * @param {bitmap_t*} img 贴图对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t vgcanvas_asset_manager_remove_image(vgcanvas_asset_manager_t* vgcanvas_asset_manager, void* vg,
-                                          const char* image_name);
+                                          bitmap_t* img);
 
 /**
  * @method vgcanvas_asset_manager_get_font_ctx
