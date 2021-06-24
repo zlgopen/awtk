@@ -29,6 +29,92 @@
 #include "base/assets_manager.h"
 
 #define ANCHOR_PX_STR_LEN 2
+#define DEFAULT_POINTER_SIZE 0.6f
+
+float_t gauge_pointer_get_anchor_for_str(float_t max_size, const char* anchor);
+
+static rect_t gauge_pointer_calc_dirty_rect(widget_t* widget, int32_t img_w, int32_t img_h) {
+  xy_t x = 0;
+  xy_t y = 0;
+  matrix_t m;
+  xy_t min_x = 0;
+  xy_t min_y = 0;
+  xy_t max_x = 0;
+  xy_t max_y = 0;
+  int32_t w = img_w;
+  int32_t h = img_h;
+  int32_t ox = widget->x;
+  int32_t oy = widget->y;
+  gauge_pointer_t* gauge_pointer = GAUGE_POINTER(widget);
+  float_t rotation = TK_D2R(gauge_pointer->angle);
+  float_t anchor_x = gauge_pointer_get_anchor_for_str(widget->w, gauge_pointer->anchor_x);
+  float_t anchor_y = gauge_pointer_get_anchor_for_str(widget->h, gauge_pointer->anchor_y);
+
+  matrix_init(&m);
+  matrix_translate(&m, ox, oy);
+  matrix_translate(&m, anchor_x, anchor_y);
+  matrix_rotate(&m, rotation);
+  matrix_translate(&m, -anchor_x, -anchor_y);
+
+  matrix_transform_point(&m, 0, 0, &(x), &(y));
+  min_x = x;
+  max_x = x;
+  min_y = y;
+  max_y = y;
+
+  matrix_transform_point(&m, w, 0, &(x), &(y));
+  min_x = tk_min(min_x, x);
+  max_x = tk_max(max_x, x);
+  min_y = tk_min(min_y, y);
+  max_y = tk_max(max_y, y);
+
+  matrix_transform_point(&m, 0, h, &(x), &(y));
+  min_x = tk_min(min_x, x);
+  max_x = tk_max(max_x, x);
+  min_y = tk_min(min_y, y);
+  max_y = tk_max(max_y, y);
+
+  matrix_transform_point(&m, w, h, &(x), &(y));
+  min_x = tk_min(min_x, x);
+  max_x = tk_max(max_x, x);
+  min_y = tk_min(min_y, y);
+  max_y = tk_max(max_y, y);
+
+  return rect_init(min_x, min_y, max_x - min_x, max_y - min_y);
+}
+
+static ret_t gauge_pointer_invalidate(widget_t* widget, const rect_t* rect) {
+  rect_t r;
+  int32_t w = 0;
+  int32_t h = 0;
+  widget_t* parent = widget->parent;
+  gauge_pointer_t* gauge_pointer = GAUGE_POINTER(widget);
+
+  if (gauge_pointer->bsvg_asset != NULL || gauge_pointer->image == NULL) {
+    if (gauge_pointer->bsvg_asset != NULL) {
+      bsvg_t bsvg;
+      const asset_info_t* asset = gauge_pointer->bsvg_asset;
+    
+      bsvg_init(&bsvg, (const uint32_t*)asset->data, asset->size);
+      w = bsvg.header->w;
+      h = bsvg.header->h;
+    } else {
+      w = widget->w;
+      h = widget->h * DEFAULT_POINTER_SIZE * 1.2f;
+    }
+  } else {
+    bitmap_t bitmap;
+    if (widget_load_image(widget, gauge_pointer->image, &bitmap) == RET_OK) {
+      w =  bitmap.w;
+      h =  bitmap.h;
+    } else {
+      return RET_OK;
+    }
+  }
+  
+  r = gauge_pointer_calc_dirty_rect(widget, w, h);
+  return widget_invalidate(parent, &r);
+}
 
 ret_t gauge_pointer_set_angle(widget_t* widget, float_t angle) {
   gauge_pointer_t* gauge_pointer = GAUGE_POINTER(widget);
@@ -40,15 +126,12 @@ ret_t gauge_pointer_set_angle(widget_t* widget, float_t angle) {
     value_set_float(&(evt.old_value), gauge_pointer->angle);
     value_set_float(&(evt.new_value), angle);
 
+    widget_invalidate(widget, NULL);
     if (widget_dispatch(widget, (event_t*)&evt) != RET_STOP) {
       gauge_pointer->angle = angle;
       evt.e.type = EVT_VALUE_CHANGED;
       widget_dispatch(widget, (event_t*)&evt);
-      if (widget->parent != NULL) {
-        widget_invalidate(widget->parent, NULL);
-      } else {
-        widget_invalidate(widget, NULL);
-      }
+      widget_invalidate(widget, NULL);
     }
   }
 
@@ -214,7 +297,7 @@ static ret_t gauge_pointer_paint_default(widget_t* widget, vgcanvas_t* vg) {
 
   vgcanvas_begin_path(vg);
   vgcanvas_move_to(vg, cx, 0);
-  vgcanvas_line_to(vg, cx, cx + h * 0.6f);
+  vgcanvas_line_to(vg, cx, cx + h * DEFAULT_POINTER_SIZE);
   vgcanvas_set_line_width(vg, 2);
   vgcanvas_set_stroke_color(vg, bg);
   vgcanvas_stroke(vg);
@@ -279,12 +362,14 @@ TK_DECL_VTABLE(gauge_pointer) = {.size = sizeof(gauge_pointer_t),
                                  .type = WIDGET_TYPE_GAUGE_POINTER,
                                  .clone_properties = s_gauge_pointer_properties,
                                  .persistent_properties = s_gauge_pointer_properties,
+                                 .allow_draw_outside = TRUE,
                                  .parent = TK_PARENT_VTABLE(widget),
                                  .create = gauge_pointer_create,
                                  .on_paint_self = gauge_pointer_on_paint_self,
                                  .on_paint_background = widget_on_paint_null,
                                  .set_prop = gauge_pointer_set_prop,
                                  .get_prop = gauge_pointer_get_prop,
+                                 .invalidate = gauge_pointer_invalidate,
                                  .on_destroy = gauge_pointer_on_destroy};
 
 widget_t* gauge_pointer_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h) {

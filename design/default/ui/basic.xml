@@ -18,7 +18,7 @@
 
   <slider name="slider" x="10" y="116" w="-20" h="20" value="40" focusable="true"/>
   <progress_bar name="bar1" x="10" y="142" w="-20" h="16" value="40" show_text="true"/>
-  <progress_bar name="bar2" x="right:10" y="160" w="20" h="118" value="20" vertical="true"/>
+  <progress_bar name="bar2" x="r:10" y="b:10" w="20" h="118" value="20" vertical="true"/>
 
   <row x="0" y="180" w="-50" h="90" children_layout="default(r=1,c=2,m=2)">
     <column children_layout="default(r=3,c=1,ym=2,s=10)" >

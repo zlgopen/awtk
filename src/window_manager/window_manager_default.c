@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   window_manager_default.c
  * Author: AWTK Develop Team
  * Brief:  default window manager
@@ -31,6 +31,7 @@
 #include "base/system_info.h"
 #include "base/image_manager.h"
 #include "base/canvas_offline.h"
+#include "base/dirty_rects.inc"
 #include "base/dialog_highlighter_factory.h"
 #include "window_manager/window_manager_default.h"
 
@@ -649,7 +650,7 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
     window_manager_default_invalidate(widget, &fps_rect);
   }
 #ifdef FRAGMENT_FRAME_BUFFER_SIZE
-  if (wm->native_window->dirty_rect.w > 0 && wm->native_window->dirty_rect.h > 0) {
+  if (wm->native_window->dirty_rects.max.w > 0 && wm->native_window->dirty_rects.max.h > 0) {
     rect_t r = native_window_calc_dirty_rect(wm->native_window);
     if (r.w > 0 && r.h > 0) {
       assert(r.w <= FRAGMENT_FRAME_BUFFER_SIZE);
@@ -671,7 +672,7 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
         canvas_t* c = native_window_get_canvas(wm->native_window);
         canvas_begin_frame(c, &r, LCD_DRAW_NORMAL);
         wm->native_window->dirty = TRUE;
-        ENSURE(widget_paint(WIDGET(wm), c) == RET_OK);
+        widget_paint(WIDGET(wm), c);
         window_manager_paint_cursor(widget, c);
         canvas_end_frame(c);
       }
@@ -687,7 +688,7 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
       canvas_set_fill_color(c, bg);
       canvas_fill_rect(c, 0, 0, widget->w, widget->h);
     } else {
-      ENSURE(widget_paint(WIDGET(wm), c) == RET_OK);
+      dirty_rects_paint(&(wm->native_window->dirty_rects), WIDGET(wm), c, widget_paint);
     }
     window_manager_paint_cursor(widget, c);
     native_window_end_frame(wm->native_window);

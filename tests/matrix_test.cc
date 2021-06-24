@@ -70,3 +70,41 @@ TEST(Matrix, all) {
   ASSERT_EQ(x, -76);
   ASSERT_EQ(y, 44);
 }
+
+TEST(Matrix, basic1) {
+  xy_t x = 0;
+  xy_t y = 0;
+  xy_t ox = 0;
+  xy_t oy = 0;
+  matrix_t m;
+
+  matrix_init(&m);
+  matrix_translate(&m, ox, oy);
+  matrix_translate(&m, 50, 50);
+  matrix_rotate(&m, 3.14159 / 2);
+  matrix_translate(&m, -50, -50);
+
+  matrix_transform_point(&m, ox+50, oy, &x, &y);
+
+  ASSERT_EQ(x, 100);
+  ASSERT_EQ(y, 50);
+}
+
+TEST(Matrix, basic2) {
+  xy_t x = 0;
+  xy_t y = 0;
+  xy_t ox = 0;
+  xy_t oy = 10;
+  matrix_t m;
+
+  matrix_init(&m);
+  matrix_translate(&m, ox, oy);
+  matrix_translate(&m, 50, 50);
+  matrix_rotate(&m, 3.14159 / 2);
+  matrix_translate(&m, -50, -50);
+
+  matrix_transform_point(&m, 50, 0, &x, &y);
+
+  ASSERT_EQ(x, 100);
+  ASSERT_EQ(y, 60);
+}

@@ -107,15 +107,19 @@ ret_t widget_on_paint_children_default(widget_t* widget, canvas_t* c) {
     continue;
   }
 
-  /* int32_t left = c->ox + iter->x;
-  int32_t top = c->oy + iter->y;
-  int32_t bottom = top + iter->h;
-  int32_t right = left + iter->w;
-  if (left > c->clip_right || right < c->clip_left || top > c->clip_bottom ||
-      bottom < c->clip_top) {
-    iter->dirty = FALSE;
-    continue;
-  }*/
+  if (!(iter->vt->allow_draw_outside)) {
+    int32_t tolerance = widget->dirty_rect_tolerance;
+    int32_t left = c->ox + iter->x - tolerance;
+    int32_t top = c->oy + iter->y - tolerance;
+    int32_t bottom = top + iter->h + 2 * tolerance;
+    int32_t right = left + iter->w + 2 * tolerance;
+
+    if (left > c->clip_right || right < c->clip_left || top > c->clip_bottom ||
+        bottom < c->clip_top) {
+      iter->dirty = FALSE;
+      continue;
+    }
+  }
 
   widget_paint(iter, c);
   WIDGET_FOR_EACH_CHILD_END();

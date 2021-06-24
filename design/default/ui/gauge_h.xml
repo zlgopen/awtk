@@ -1,0 +1,23 @@
+<window style="dark" anim_hint="htranslate" >
+  <view w="100%" h="100%" children_layout="default(r=1,c=2,s=5,m=5)">
+  <gauge image="gauge_bg" >
+  	<image_value  x="c" y="m" w="100" h="40" value="0" format="%02d" image="num_"
+      animation="value(from=10, to=100, yoyo_times=600, duration=1000)"/>
+    <gauge_pointer x="c" y="m" w="24" h="120" value="-128" image="meter_pointer" 
+        animation="value(from=-128, to=128, yoyo_times=10, duration=3000, delay=1000, auto_destroy=false)"/>
+  </gauge>
+  <gauge image="gauge_bg">
+  	<image_value  x="c" y="m" w="100" h="40" value="0" format="%02d" image="num_"
+      animation="value(from=10, to=100, yoyo_times=600, duration=1000)"/>
+    <gauge_pointer x="c" y="m" w="24" h="120" value="-128" image="pointer" 
+        animation="value(from=-128, to=128, yoyo_times=10, duration=3000, delay=1000, auto_destroy=false)"/>
+  </gauge>
+  </view>
+
+  <view x="0" y="bottom:10" w="100%" h="40" children_layout="default(r=1,c=4,s=5,m=5)">
+    <button name="start" text="Start"/>
+    <button name="pause" text="Pause"/>
+    <button name="stop" text="Stop"/>
+    <button name="close" text="Close"/>
+  </view>
+</window>

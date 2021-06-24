@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   lcd_mem.c
  * Author: Li XianJing <xianjimli@hotmail.com>
  * Brief:  mem implemented lcd interface
@@ -78,7 +78,7 @@ static ret_t lcd_mem_begin_frame(lcd_t* lcd, const rect_t* dirty_rect) {
 #if WITH_LCD_CLEAR_ALPHA
   rect_t r;
   bitmap_t fb;
-  
+
   if (lcd->draw_mode == LCD_DRAW_OFFLINE || dirty_rect == NULL) {
     r = rect_init(0, 0, lcd->w, lcd->h);
   } else {
@@ -277,12 +277,17 @@ static vgcanvas_t* lcd_mem_get_vgcanvas(lcd_t* lcd) {
 static ret_t lcd_mem_flush(lcd_t* lcd) {
   bitmap_t online_fb;
   bitmap_t offline_fb;
+  lcd_mem_t* mem = (lcd_mem_t*)lcd;
   const rect_t* r = &(lcd->dirty_rect);
   system_info_t* info = system_info();
   lcd_orientation_t o = info->lcd_orientation;
 
   lcd_mem_init_drawing_fb(lcd, &offline_fb);
   lcd_mem_init_online_fb(lcd, &online_fb, o);
+
+  if (mem->wait_vbi != NULL) {
+    mem->wait_vbi(mem->wait_vbi_ctx);
+  }
 
   if (o == LCD_ORIENTATION_0) {
     return image_copy(&online_fb, &offline_fb, r, r->x, r->y);

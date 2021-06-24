@@ -25,9 +25,14 @@ static ret_t on_timer(const timer_info_t* timer) {
   widget_t* win = WIDGET(timer->ctx);
   widget_t* progress_bar = widget_lookup(win, "bar1", TRUE);
 
-  float_t value = ((int)(PROGRESS_BAR(progress_bar)->value + 5)) % 100;
+  float_t value = ((int)(PROGRESS_BAR(progress_bar)->value + 2)) % 100;
   progress_bar_set_value(progress_bar, value);
 
+  progress_bar = widget_lookup(win, "bar2", TRUE);
+
+  value = ((int)(PROGRESS_BAR(progress_bar)->value + 2)) % 100;
+  progress_bar_set_value(progress_bar, value);
+  
   return RET_REPEAT;
 }
 
@@ -74,7 +79,7 @@ ret_t application_init() {
   (void)system_bar;
   widget_set_prop_str(win, WIDGET_PROP_CLICKABLE, "no");
 
-  widget_add_timer(win, on_timer, 1000);
+  widget_add_timer(win, on_timer, 200);
   widget_child_on(win, "inc_value", EVT_CLICK, on_inc, win);
   widget_child_on(win, "dec_value", EVT_CLICK, on_dec, win);
   widget_child_on(win, "close", EVT_CLICK, on_close, win);
