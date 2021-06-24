@@ -114,7 +114,6 @@ TEST(Vgcanvas_asset_manager, image) {
   vgcanvas_asset_manager_get_image_specific(vgcanvas_asset_manager(), vg1, &image, &ret);
   ASSERT_EQ(ret, RET_FAIL);
 
-
   ASSERT_EQ(vgcanvas_asset_manager_add_image(vgcanvas_asset_manager(), vg1, &image,
                                              tk_pointer_from_int(image_ctx1)),
             RET_OK);

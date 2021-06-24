@@ -94,7 +94,7 @@ static ret_t gauge_pointer_invalidate(widget_t* widget, const rect_t* rect) {
     if (gauge_pointer->bsvg_asset != NULL) {
       bsvg_t bsvg;
       const asset_info_t* asset = gauge_pointer->bsvg_asset;
-    
+
       bsvg_init(&bsvg, (const uint32_t*)asset->data, asset->size);
       w = bsvg.header->w;
       h = bsvg.header->h;
@@ -105,13 +105,13 @@ static ret_t gauge_pointer_invalidate(widget_t* widget, const rect_t* rect) {
   } else {
     bitmap_t bitmap;
     if (widget_load_image(widget, gauge_pointer->image, &bitmap) == RET_OK) {
-      w =  bitmap.w;
-      h =  bitmap.h;
+      w = bitmap.w;
+      h = bitmap.h;
     } else {
       return RET_OK;
     }
   }
-  
+
   r = gauge_pointer_calc_dirty_rect(widget, w, h);
   return widget_invalidate(parent, &r);
 }

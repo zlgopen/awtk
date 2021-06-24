@@ -32,7 +32,7 @@ static ret_t on_timer(const timer_info_t* timer) {
 
   value = ((int)(PROGRESS_BAR(progress_bar)->value + 2)) % 100;
   progress_bar_set_value(progress_bar, value);
-  
+
   return RET_REPEAT;
 }
 

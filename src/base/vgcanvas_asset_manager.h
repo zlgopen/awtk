@@ -119,8 +119,8 @@ ret_t vgcanvas_asset_manager_add_image(vgcanvas_asset_manager_t* vgcanvas_asset_
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t vgcanvas_asset_manager_remove_image(vgcanvas_asset_manager_t* vgcanvas_asset_manager, void* vg,
-                                          bitmap_t* img);
+ret_t vgcanvas_asset_manager_remove_image(vgcanvas_asset_manager_t* vgcanvas_asset_manager,
+                                          void* vg, bitmap_t* img);
 
 /**
  * @method vgcanvas_asset_manager_get_font_ctx

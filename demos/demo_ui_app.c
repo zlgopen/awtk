@@ -778,7 +778,7 @@ static ret_t show_preload_res_window() {
   uint32_t interval = 500 / ARRAY_SIZE(s_preload_res);
   widget_t* win = window_open("preload");
   window_manager_set_show_fps(window_manager(), TRUE);
-  
+
   timer_add(timer_preload, win, interval);
 
   return RET_OK;

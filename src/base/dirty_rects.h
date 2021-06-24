@@ -79,11 +79,11 @@ typedef struct _dirty_rects_t {
 static inline ret_t dirty_rects_reset(dirty_rects_t* dirty_rects) {
   return_value_if_fail(dirty_rects != NULL, RET_BAD_PARAMS);
   memset(dirty_rects, 0x00, sizeof(dirty_rects_t));
-/*
+  /*
   dirty_rects->debug = TRUE;
   dirty_rects->profile = TRUE;
   dirty_rects->disable_multiple = TRUE;
-*/  
+*/
 
   return RET_OK;
 }

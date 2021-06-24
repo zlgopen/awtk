@@ -84,7 +84,7 @@ TEST(Matrix, basic1) {
   matrix_rotate(&m, 3.14159 / 2);
   matrix_translate(&m, -50, -50);
 
-  matrix_transform_point(&m, ox+50, oy, &x, &y);
+  matrix_transform_point(&m, ox + 50, oy, &x, &y);
 
   ASSERT_EQ(x, 100);
   ASSERT_EQ(y, 50);
