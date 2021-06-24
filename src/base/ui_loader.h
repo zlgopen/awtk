@@ -87,6 +87,19 @@ ret_t ui_loader_load(ui_loader_t* loader, const uint8_t* data, uint32_t size,
  */
 widget_t* ui_loader_load_widget(const char* name);
 
+/**
+ * @method ui_loader_load_widget_with_parent
+ *
+ * 从指定的资源加载widget对象，并为widget对象指定父控件对象，通常用于加载非窗口的widget。
+ *
+ * @param {const char*} name 资源名。
+ * @param {widget_t*} parent 父控件对象。
+ *
+ * @return {widget_t*} 返回widget对象。
+ *
+ */
+widget_t* ui_loader_load_widget_with_parent(const char* name, widget_t* parent);
+
 END_C_DECLS
 
 #endif /*TK_UI_LOADER_H*/
