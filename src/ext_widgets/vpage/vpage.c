@@ -107,10 +107,10 @@ static ret_t vpage_on_enter_animation_done(void* ctx, event_t* e) {
 }
 
 static ret_t vpage_on_enter(widget_t* widget, uint32_t index, uint32_t old_index) {
+  uint32_t nr = 0;
+  bool_t can_animate = 0;
   vpage_t* vpage = VPAGE(widget);
   widget_animator_t* am = NULL;
-  uint32_t nr;
-  bool_t can_animate;
   return_value_if_fail(vpage != NULL, RET_BAD_PARAMS);
 
   nr = widget_count_children(widget->parent);
