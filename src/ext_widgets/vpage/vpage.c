@@ -28,6 +28,10 @@
 
 #include "vpage.h"
 
+#define PROP_VPAGE_ANIMATOR "vpage_animator"
+
+static ret_t vpage_on_leave_animation_done(void* ctx, event_t* e);
+
 ret_t vpage_set_ui_asset(widget_t* widget, const char* ui_asset) {
   vpage_t* vpage = VPAGE(widget);
   return_value_if_fail(vpage != NULL, RET_BAD_PARAMS);
@@ -97,28 +101,20 @@ static ret_t vpage_on_enter_done(widget_t* widget) {
 }
 
 static ret_t vpage_on_enter_animation_done(void* ctx, event_t* e) {
-  return vpage_on_enter_done(WIDGET(ctx));
+  widget_t* widget = WIDGET(ctx);
+  widget_set_prop_pointer(widget, PROP_VPAGE_ANIMATOR, NULL);
+  return vpage_on_enter_done(widget);
 }
 
 static ret_t vpage_on_enter(widget_t* widget, uint32_t index, uint32_t old_index) {
   vpage_t* vpage = VPAGE(widget);
   widget_animator_t* am = NULL;
-  uint32_t nr = widget_count_children(widget->parent);
-  bool_t can_animate = old_index < nr && widget_is_window_opened(widget);
+  uint32_t nr;
+  bool_t can_animate;
+  return_value_if_fail(vpage != NULL, RET_BAD_PARAMS);
 
-  if (vpage->ui_asset != NULL) {
-    widget_t* children = ui_loader_load_widget(vpage->ui_asset);
-    event_t will_open = event_init(EVT_WINDOW_WILL_OPEN, children);
-    return_value_if_fail(children != NULL, RET_BAD_PARAMS);
-
-    widget_add_child(widget, children);
-    /*some widget depends on will open to initialize*/
-    widget_dispatch_recursive(children, &will_open);
-  }
-
-  widget_set_visible(widget, TRUE);
-  vpage_dispatch_event(widget, EVT_VPAGE_WILL_OPEN);
-  window_manager_set_ignore_input_events(window_manager(), FALSE);
+  nr = widget_count_children(widget->parent);
+  can_animate = old_index < nr && widget_is_window_opened(widget);
 
   if (vpage->anim_hint != NULL && can_animate) {
     if (tk_str_eq(vpage->anim_hint, "htranslate")) {
@@ -137,11 +133,36 @@ static ret_t vpage_on_enter(widget_t* widget, uint32_t index, uint32_t old_index
       }
     }
     if (am != NULL) {
-      widget_animator_start(am);
+      widget_animator_t* am_old =
+          (widget_animator_t*)widget_get_prop_pointer(widget, PROP_VPAGE_ANIMATOR);
+      if (am_old) {
+        widget_animator_destroy(am_old);
+        vpage_on_leave_animation_done(widget, NULL);
+      }
+      widget_set_prop_pointer(widget, PROP_VPAGE_ANIMATOR, (void*)am);
       widget_animator_on(am, EVT_ANIM_END, vpage_on_enter_animation_done, widget);
-    } else {
-      vpage_on_enter_done(widget);
     }
+  }
+
+  if (vpage->ui_asset != NULL) {
+    widget_t* children = ui_loader_load_widget_with_parent(vpage->ui_asset, widget);
+    event_t will_open = event_init(EVT_WINDOW_WILL_OPEN, children);
+    if (children == NULL) {
+      if (am != NULL) {
+        widget_animator_destroy(am);
+      }
+      return RET_FAIL;
+    }
+    /*some widget depends on will open to initialize*/
+    widget_dispatch_recursive(children, &will_open);
+  }
+
+  widget_set_visible(widget, TRUE);
+  vpage_dispatch_event(widget, EVT_VPAGE_WILL_OPEN);
+  window_manager_set_ignore_input_events(window_manager(), FALSE);
+
+  if (am != NULL) {
+    widget_animator_start(am);
   } else {
     vpage_on_enter_done(widget);
   }
@@ -164,12 +185,14 @@ static ret_t vpage_on_leave_done(widget_t* widget) {
 }
 
 static ret_t vpage_on_leave_animation_done(void* ctx, event_t* e) {
-  vpage_on_leave_done(WIDGET(ctx));
-  return RET_OK;
+  widget_t* widget = WIDGET(ctx);
+  widget_set_prop_pointer(widget, PROP_VPAGE_ANIMATOR, NULL);
+  return vpage_on_leave_done(widget);
 }
 
 static ret_t vpage_on_leave(widget_t* widget, uint32_t index, uint32_t new_index) {
   vpage_t* vpage = VPAGE(widget);
+  return_value_if_fail(vpage != NULL, RET_BAD_PARAMS);
 
   if (vpage->anim_hint != NULL) {
     widget_animator_t* am = NULL;
@@ -191,10 +214,17 @@ static ret_t vpage_on_leave(widget_t* widget, uint32_t index, uint32_t new_index
     }
 
     if (am != NULL) {
-      widget_animator_start(am);
+      widget_animator_t* am_old =
+          (widget_animator_t*)widget_get_prop_pointer(widget, PROP_VPAGE_ANIMATOR);
+      if (am_old) {
+        widget_animator_destroy(am_old);
+        vpage_on_enter_animation_done(widget, NULL);
+      }
       widget_set_visible(widget, TRUE);
       window_manager_set_ignore_input_events(window_manager(), TRUE);
+      widget_set_prop_pointer(widget, PROP_VPAGE_ANIMATOR, (void*)am);
       widget_animator_on(am, EVT_ANIM_END, vpage_on_leave_animation_done, widget);
+      widget_animator_start(am);
     } else {
       vpage_on_leave_done(widget);
     }
@@ -212,11 +242,12 @@ static ret_t vpage_on_current_page_changed(void* ctx, event_t* e) {
   uint32_t new_index = value_uint32(&(evt->new_value));
   uint32_t index = widget_index_of(widget);
 
-  log_debug("%u -> %u %u\n", old_index, new_index, index);
   if (old_index == index) {
     vpage_on_leave(widget, index, new_index);
+    log_debug("leave vpage: %u\r\n", index);
   } else if (new_index == index) {
     vpage_on_enter(widget, index, old_index);
+    log_debug("enter vpage: %u\r\n", index);
   }
 
   return RET_OK;
