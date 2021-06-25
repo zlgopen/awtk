@@ -38,6 +38,14 @@ ret_t layer_set_name(layer_t* layer, const char* name) {
   return RET_OK;
 }
 
+ret_t layer_set_show_fps(layer_t* layer, bool_t show_fps) {
+  return_value_if_fail(layer != NULL, RET_BAD_PARAMS);
+
+  layer->show_fps = show_fps;
+
+  return RET_OK;
+}
+
 ret_t layer_set_x(layer_t* layer, uint32_t x) {
   return_value_if_fail(layer != NULL, RET_BAD_PARAMS);
 
@@ -58,9 +66,9 @@ ret_t layer_set_max_fps(layer_t* layer, uint32_t max_fps) {
   return_value_if_fail(layer != NULL, RET_BAD_PARAMS);
 
   layer->max_fps = max_fps;
-  if(layer->timer_id != TK_INVALID_ID) {
-    uint32_t duration = 1000/layer->max_fps;
-    timer_modify(layer->timer_id, duration); 
+  if (layer->timer_id != TK_INVALID_ID) {
+    uint32_t duration = 1000 / layer->max_fps;
+    timer_modify(layer->timer_id, duration);
   }
 
   return RET_OK;
@@ -132,7 +140,7 @@ static ret_t layer_deinit(layer_t* layer) {
   TKMEM_FREE(layer->name);
   darray_deinit(&(layer->windows));
   dirty_rects_deinit(&(layer->dirty_rects));
-  if(layer->timer_id != TK_INVALID_ID) {
+  if (layer->timer_id != TK_INVALID_ID) {
     timer_remove(layer->timer_id);
   }
 
@@ -151,14 +159,15 @@ static const object_vtable_t s_layer_vtable = {.type = "layer",
                                                .get_prop = layer_get_prop_obj,
                                                .set_prop = layer_set_prop_obj};
 
-static layer_t* layer_init(layer_t* layer, const char* name, canvas_t* canvas, uint32_t x, uint32_t y,
-                           uint32_t max_fps) {
+static layer_t* layer_init(layer_t* layer, const char* name, canvas_t* canvas, uint32_t x,
+                           uint32_t y, uint32_t max_fps) {
   return_value_if_fail(layer != NULL, NULL);
 
   layer->x = x;
   layer->y = y;
   layer->canvas = canvas;
   layer->max_fps = max_fps;
+  fps_init(&(layer->fps));
   dirty_rects_init(&(layer->dirty_rects));
   darray_init(&(layer->windows), 0, NULL, NULL);
   layer->name = tk_str_copy(layer->name, name);
@@ -166,7 +175,8 @@ static layer_t* layer_init(layer_t* layer, const char* name, canvas_t* canvas, u
   return layer;
 }
 
-layer_t* layer_create(const char* name, canvas_t* canvas, uint32_t x, uint32_t y, uint32_t max_fps) {
+layer_t* layer_create(const char* name, canvas_t* canvas, uint32_t x, uint32_t y,
+                      uint32_t max_fps) {
   object_t* o = object_create(&s_layer_vtable);
   return_value_if_fail(o != NULL, NULL);
 
@@ -183,7 +193,7 @@ ret_t layer_remove_layer_window(layer_t* layer, widget_t* widget) {
   return_value_if_fail(layer != NULL && widget != NULL, RET_BAD_PARAMS);
 
   darray_remove_all(&(layer->windows), NULL, widget);
-  
+
   return RET_OK;
 }
 
@@ -205,9 +215,12 @@ ret_t layer_paint(layer_t* layer) {
   rect_t r = layer->dirty_rects.max;
   bool_t dirty = r.w > 0 && r.h > 0;
 
-  if(arr->size > 0 && dirty) {
-    canvas_begin_frame(c, &r, LCD_DRAW_NORMAL); 
-    for(i = 0; i < arr->size; i++) {
+  fps_inc(&(layer->fps));
+  if (arr->size > 0 && dirty) {
+    canvas_set_fps(c, layer->show_fps, fps_get(&(layer->fps)));
+
+    canvas_begin_frame(c, &r, LCD_DRAW_NORMAL);
+    for (i = 0; i < arr->size; i++) {
       widget_t* iter = WIDGET(arr->elms[i]);
 
       iter->visible = TRUE;
@@ -223,6 +236,10 @@ ret_t layer_paint(layer_t* layer) {
   }
 
   dirty_rects_reset(&(layer->dirty_rects));
+  if (layer->show_fps) {
+    r = rect_init(0, 0, 80, 30);
+    layer_invalidate(layer, &r);
+  }
 
   return RET_OK;
 }
@@ -245,11 +262,10 @@ ret_t layer_start(layer_t* layer) {
   return_value_if_fail(layer->max_fps > 0, RET_BAD_PARAMS);
   return_value_if_fail(layer->timer_id == TK_INVALID_ID, RET_BAD_PARAMS);
 
-  duration = 1000/layer->max_fps;
+  duration = 1000 / layer->max_fps;
   layer->timer_id = timer_add(layer_on_timer, layer, duration);
 
   log_debug("layer %s started duration=%d\n", layer->name, duration);
 
   return RET_OK;
 }
-

@@ -33,16 +33,17 @@ static ret_t layers_init(void) {
   layer_manager_set(layer_manager);
 
   s_canvas_fast = create_fast_canvas(300, 460);
-  layer = layer_create("fast", s_canvas_fast, 10, 10, 60); 
+  layer = layer_create("fast", s_canvas_fast, 10, 10, 60);
   assert(layer != NULL);
   layer_manager_add(layer_manager, layer);
   layer_start(layer);
-  
+  layer_set_show_fps(layer, TRUE);
+
   return RET_OK;
 }
 
 static ret_t layers_deinit(void) {
-  if(s_canvas_fast != NULL) {
+  if (s_canvas_fast != NULL) {
     canvas_reset(s_canvas_fast);
   }
   layer_manager_destroy(layer_manager());
@@ -56,6 +57,7 @@ ret_t application_init() {
 
   layers_init();
   window_open("system_bar");
+  window_open("main");
   win = window_open("layer_window");
 
   return RET_OK;

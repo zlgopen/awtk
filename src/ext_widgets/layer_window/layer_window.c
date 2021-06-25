@@ -56,7 +56,7 @@ static ret_t layer_window_invalidate(widget_t* widget, const rect_t* rect) {
   rect_t r = rect != NULL ? *rect : rect_init(0, 0, widget->w, widget->h);
   layer_t* layer = layer_manager_find(layer_manager(), layer_window->layer_name);
   return_value_if_fail(layer != NULL, RET_BAD_PARAMS);
-  
+
   r.x += widget->x - layer->x;
   r.y += widget->y - layer->y;
 

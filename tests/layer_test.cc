@@ -29,7 +29,7 @@ TEST(Layer, dirty_rect) {
   ASSERT_EQ(layer_invalidate(layer, &r), RET_OK);
   ASSERT_EQ(layer->dirty_rects.max.w, 30);
   ASSERT_EQ(layer->dirty_rects.max.h, 40);
-  
+
   r = rect_init(10, 20, 40, 50);
   ASSERT_EQ(layer_invalidate(layer, &r), RET_OK);
   ASSERT_EQ(layer->dirty_rects.max.w, 40);
@@ -54,33 +54,33 @@ TEST(Layer, windows) {
   ASSERT_EQ(layer_invalidate(layer, &r), RET_OK);
   ASSERT_EQ(layer->dirty_rects.max.w, 30);
   ASSERT_EQ(layer->dirty_rects.max.h, 40);
-  
+
   ASSERT_EQ(layer_add_layer_window(layer, b1), RET_OK);
-  ASSERT_EQ(layer->windows.size , 1);
+  ASSERT_EQ(layer->windows.size, 1);
   ASSERT_EQ(layer_add_layer_window(layer, b1), RET_OK);
-  ASSERT_EQ(layer->windows.size , 1);
+  ASSERT_EQ(layer->windows.size, 1);
   ASSERT_EQ(layer_add_layer_window(layer, b1), RET_OK);
-  ASSERT_EQ(layer->windows.size , 1);
-  
+  ASSERT_EQ(layer->windows.size, 1);
+
   ASSERT_EQ(layer_add_layer_window(layer, b2), RET_OK);
-  ASSERT_EQ(layer->windows.size , 2);
-  
+  ASSERT_EQ(layer->windows.size, 2);
+
   ASSERT_EQ(layer_remove_layer_window(layer, b2), RET_OK);
-  ASSERT_EQ(layer->windows.size , 1);
-  
+  ASSERT_EQ(layer->windows.size, 1);
+
   ASSERT_EQ(layer_remove_layer_window(layer, b1), RET_OK);
-  ASSERT_EQ(layer->windows.size , 0);
-  
+  ASSERT_EQ(layer->windows.size, 0);
+
   ASSERT_EQ(layer_add_layer_window(layer, b1), RET_OK);
   ASSERT_EQ(layer_add_layer_window(layer, b2), RET_OK);
-  ASSERT_EQ(layer->windows.size , 2);
+  ASSERT_EQ(layer->windows.size, 2);
 
   widget_destroy(b1);
   idle_dispatch();
-  ASSERT_EQ(layer->windows.size , 1);
+  ASSERT_EQ(layer->windows.size, 1);
   widget_destroy(b2);
   idle_dispatch();
-  ASSERT_EQ(layer->windows.size , 0);
+  ASSERT_EQ(layer->windows.size, 0);
 
   ASSERT_EQ(layer_paint(layer), RET_OK);
   ASSERT_EQ(layer->dirty_rects.max.w, 0);
@@ -88,4 +88,3 @@ TEST(Layer, windows) {
 
   OBJECT_UNREF(layer);
 }
-

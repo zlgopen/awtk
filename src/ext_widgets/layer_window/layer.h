@@ -21,6 +21,7 @@
 #ifndef TK_LAYER_H
 #define TK_LAYER_H
 
+#include "tkc/fps.h"
 #include "tkc/object.h"
 #include "base/widget.h"
 #include "base/dirty_rects.h"
@@ -34,7 +35,7 @@ BEGIN_C_DECLS
  */
 typedef struct _layer_t {
   object_t object;
-  
+
   /**
    * @property {char*} name
    * @annotation ["readable"]
@@ -64,12 +65,13 @@ typedef struct _layer_t {
   uint32_t max_fps;
 
   /*private*/
+  fps_t fps;
+  bool_t show_fps;
   canvas_t* canvas;
   uint32_t timer_id;
   darray_t windows;
   dirty_rects_t dirty_rects;
 } layer_t;
-
 
 /**
  * @method layer_set_name
@@ -80,6 +82,16 @@ typedef struct _layer_t {
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t layer_set_name(layer_t* layer, const char* name);
+
+/**
+ * @method layer_set_show_fps
+ * 设置是否显示FPS。
+ * @param {layer_t*} layer layer对象。
+ * @param {bool_t} show_fps 是否显示FPS。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t layer_set_show_fps(layer_t* layer, bool_t show_fps);
 
 /**
  * @method layer_set_x
@@ -175,4 +187,4 @@ ret_t layer_paint(layer_t* layer);
 
 END_C_DECLS
 
-#endif/*TK_LAYER_H*/
+#endif /*TK_LAYER_H*/

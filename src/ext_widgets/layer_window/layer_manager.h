@@ -28,7 +28,7 @@ BEGIN_C_DECLS
 
 #ifndef TK_MAX_LAYERS_NR
 #define TK_MAX_LAYERS_NR 5
-#endif/*TK_MAX_LAYERS_NR*/
+#endif /*TK_MAX_LAYERS_NR*/
 
 /**
  * @class layer_manager_t 
@@ -104,4 +104,4 @@ ret_t layer_manager_set(layer_manager_t* layer_manager);
 
 END_C_DECLS
 
-#endif/*TK_LAYER_MANAGER_H*/
+#endif /*TK_LAYER_MANAGER_H*/
