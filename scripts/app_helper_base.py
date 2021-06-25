@@ -446,7 +446,7 @@ class AppHelperBase:
                     'ccflags': '-DWITH_MVVM -DWITH_JERRYSCRIPT',
                     'root' : self.MVVM_ROOT,
                     'shared_libs': ['mvvm'],
-                    'static_libs': ['jerryscript']
+                    'static_libs': []
                 }]
             else:
                 DEPENDS_LIBS += [{
