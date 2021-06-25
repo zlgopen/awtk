@@ -27,7 +27,7 @@
 
 #include "layer_window/layer.h"
 
-layer_t* layer_cast(object_t* obj);
+static layer_t* layer_cast(object_t* obj);
 #define LAYER(obj) layer_cast(OBJECT(obj))
 
 ret_t layer_set_name(layer_t* layer, const char* name) {
@@ -58,6 +58,10 @@ ret_t layer_set_max_fps(layer_t* layer, uint32_t max_fps) {
   return_value_if_fail(layer != NULL, RET_BAD_PARAMS);
 
   layer->max_fps = max_fps;
+  if(layer->timer_id != TK_INVALID_ID) {
+    uint32_t duration = 1000/layer->max_fps;
+    timer_modify(layer->timer_id, duration); 
+  }
 
   return RET_OK;
 }
@@ -126,8 +130,11 @@ static ret_t layer_deinit(layer_t* layer) {
   return_value_if_fail(layer != NULL, RET_BAD_PARAMS);
 
   TKMEM_FREE(layer->name);
-  darray_deinit(&(layer->widgets));
+  darray_deinit(&(layer->windows));
   dirty_rects_deinit(&(layer->dirty_rects));
+  if(layer->timer_id != TK_INVALID_ID) {
+    timer_remove(layer->timer_id);
+  }
 
   return RET_OK;
 }
@@ -153,7 +160,7 @@ static layer_t* layer_init(layer_t* layer, const char* name, canvas_t* canvas, u
   layer->canvas = canvas;
   layer->max_fps = max_fps;
   dirty_rects_init(&(layer->dirty_rects));
-  darray_init(&(layer->widgets), 0, NULL, NULL);
+  darray_init(&(layer->windows), 0, NULL, NULL);
   layer->name = tk_str_copy(layer->name, name);
 
   return layer;
@@ -172,69 +179,49 @@ layer_t* layer_cast(object_t* obj) {
   return (layer_t*)(obj);
 }
 
-static ret_t layer_on_widget_destroy(void* ctx, event_t* e) {
-  layer_t* layer = LAYER(ctx);
-  widget_t* widget = WIDGET(e->target);
-
-  darray_remove_all(&(layer->widgets), NULL, widget);
-
-  return RET_REMOVE;
-}
-
-ret_t layer_remove_widget(layer_t* layer, widget_t* widget) {
+ret_t layer_remove_layer_window(layer_t* layer, widget_t* widget) {
   return_value_if_fail(layer != NULL && widget != NULL, RET_BAD_PARAMS);
 
-  widget_off_by_ctx(widget, layer);
-  darray_remove_all(&(layer->widgets), NULL, widget);
+  darray_remove_all(&(layer->windows), NULL, widget);
   
   return RET_OK;
 }
 
-ret_t layer_add_widget(layer_t* layer, widget_t* widget) {
+ret_t layer_add_layer_window(layer_t* layer, widget_t* widget) {
   return_value_if_fail(layer != NULL && widget != NULL, RET_BAD_PARAMS);
-  layer_remove_widget(layer, widget);
-  widget_on(widget, EVT_DESTROY, layer_on_widget_destroy, layer);
 
-  return darray_push(&(layer->widgets), widget);
+  darray_remove_all(&(layer->windows), NULL, widget);
+  return darray_push(&(layer->windows), widget);
 }
 
-ret_t layer_paint_widget(layer_t* layer, widget_t* widget, canvas_t* c) {
-  uint32_t ox = 0;
-  uint32_t oy = 0;
-  point_t p = {0, 0};
-  dirty_rects_t* dirty_rects = &(layer->dirty_rects);
-
-  widget_to_screen(widget, &p);
-  ox = -layer->x;
-  oy = -layer->y;
- 
-  canvas_translate(c, ox, oy);
-  dirty_rects_paint(dirty_rects, widget, c, widget_paint);
-  canvas_untranslate(c, ox, oy);
-
-  return RET_OK;
+static ret_t layer_paint_widget(layer_t* layer, widget_t* widget, canvas_t* c) {
+  return dirty_rects_paint(&(layer->dirty_rects), widget, c, widget_paint);
 }
 
 ret_t layer_paint(layer_t* layer) {
   uint32_t i = 0;
   canvas_t* c = layer->canvas;
-  darray_t* arr = &(layer->widgets);
+  darray_t* arr = &(layer->windows);
   rect_t r = layer->dirty_rects.max;
   bool_t dirty = r.w > 0 && r.h > 0;
 
   if(arr->size > 0 && dirty) {
-    log_debug("layer_paint: %d %d %d %d\n", r.x, r.y, r.w, r.h);
     canvas_begin_frame(c, &r, LCD_DRAW_NORMAL); 
     for(i = 0; i < arr->size; i++) {
       widget_t* iter = WIDGET(arr->elms[i]);
 
       iter->visible = TRUE;
+      iter->x -= layer->x;
+      iter->y -= layer->y;
       layer_paint_widget(layer, iter, c);
       iter->visible = FALSE;
+      iter->x += layer->x;
+      iter->y += layer->y;
     }
 
     canvas_end_frame(c);
   }
+
   dirty_rects_reset(&(layer->dirty_rects));
 
   return RET_OK;
@@ -243,7 +230,6 @@ ret_t layer_paint(layer_t* layer) {
 ret_t layer_invalidate(layer_t* layer, const rect_t* rect) {
   return_value_if_fail(layer != NULL && rect != NULL, RET_BAD_PARAMS);
 
-  log_debug("layer_invalidate: %d %d %d %d\n", rect->x, rect->y, rect->w, rect->h);
   return dirty_rects_add(&(layer->dirty_rects), rect);
 }
 

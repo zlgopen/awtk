@@ -117,7 +117,10 @@ ret_t tk_ext_widgets_init(void) {
   widget_factory_register(f, WIDGET_TYPE_HSCROLL_LABEL, hscroll_label_create);
   widget_factory_register(f, WIDGET_TYPE_COMBO_BOX_EX, combo_box_ex_create);
   widget_factory_register(f, WIDGET_TYPE_DRAGGABLE, draggable_create);
+
+#if defined(WITH_MULTI_LAYERS) || defined(WITH_SDL)
   widget_factory_register(f, WIDGET_TYPE_LAYER_WINDOW, layer_window_create);
+#endif
 
   widget_factory_register(f, "guage", gauge_create);
   widget_factory_register(f, "guage_pointer", gauge_pointer_create);

@@ -1,5 +1,4 @@
-﻿
-/**
+﻿/**
  * File:   layer.h
  * Author: AWTK Develop Team
  * Brief:  LCD layer。
@@ -67,7 +66,7 @@ typedef struct _layer_t {
   /*private*/
   canvas_t* canvas;
   uint32_t timer_id;
-  darray_t widgets;
+  darray_t windows;
   dirty_rects_t dirty_rects;
 } layer_t;
 
@@ -112,12 +111,11 @@ ret_t layer_set_y(layer_t* layer, uint32_t y);
  */
 ret_t layer_set_max_fps(layer_t* layer, uint32_t max_fps);
 
-
-#define LAYER_PROP_NAME "name"
 #define LAYER_PROP_X "x"
 #define LAYER_PROP_Y "y"
 #define LAYER_PROP_W "w"
 #define LAYER_PROP_H "h"
+#define LAYER_PROP_NAME "name"
 #define LAYER_PROP_MAX_FPS "max_fps"
 
 /**
@@ -134,24 +132,24 @@ ret_t layer_set_max_fps(layer_t* layer, uint32_t max_fps);
 layer_t* layer_create(const char* name, canvas_t* canvas, uint32_t x, uint32_t y, uint32_t max_fps);
 
 /**
- * @method layer_add_widget
- * 增加widget。
+ * @method layer_add_layer_window
+ * 增加layer window。
  * @param {layer_t*} layer layer对象。
  * @param {widget_t*} widget widget对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t layer_add_widget(layer_t* layer, widget_t* widget);
+ret_t layer_add_layer_window(layer_t* layer, widget_t* widget);
 
 /**
- * @method layer_remove_widget
- * 移除widget。
+ * @method layer_remove_layer_window
+ * 移除layer window。
  * @param {layer_t*} layer layer对象。
  * @param {widget_t*} widget widget对象。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t layer_remove_widget(layer_t* layer, widget_t* widget);
+ret_t layer_remove_layer_window(layer_t* layer, widget_t* widget);
 
 /**
  * @method layer_invalidate

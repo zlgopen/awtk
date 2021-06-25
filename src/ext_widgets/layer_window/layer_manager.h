@@ -1,5 +1,4 @@
-﻿
-/**
+﻿/**
  * File:   layer_manager.h
  * Author: AWTK Develop Team
  * Brief:  LCD layer manager。

@@ -26,8 +26,6 @@
 #include "layer_window/layer_manager.h"
 #include "layer_window/layer_window.h"
 
-#define WITH_MULTI_LAYERS 1
-
 static ret_t layer_window_set_prop(widget_t* widget, const char* name, const value_t* v) {
   return_value_if_fail(widget != NULL && name != NULL && v != NULL, RET_BAD_PARAMS);
 
@@ -59,8 +57,8 @@ static ret_t layer_window_invalidate(widget_t* widget, const rect_t* rect) {
   layer_t* layer = layer_manager_find(layer_manager(), layer_window->layer_name);
   return_value_if_fail(layer != NULL, RET_BAD_PARAMS);
   
-  r.x += widget->x;
-  r.y += widget->y;
+  r.x += widget->x - layer->x;
+  r.y += widget->y - layer->y;
 
   return layer_invalidate(layer, &r);
 #else
@@ -78,13 +76,13 @@ static ret_t layer_window_on_event(widget_t* widget, event_t* e) {
       layer_t* layer = layer_manager_find(layer_manager(), layer_window->layer_name);
       assert(layer != NULL);
       widget->visible = FALSE;
-      layer_add_widget(layer, widget);
+      layer_add_layer_window(layer, widget);
       break;
     }
     case EVT_WINDOW_CLOSE: {
       layer_t* layer = layer_manager_find(layer_manager(), layer_window->layer_name);
       assert(layer != NULL);
-      layer_remove_widget(layer, widget);
+      layer_remove_layer_window(layer, widget);
       break;
     }
     default:

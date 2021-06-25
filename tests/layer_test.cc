@@ -42,7 +42,7 @@ TEST(Layer, dirty_rect) {
   OBJECT_UNREF(layer);
 }
 
-TEST(Layer, widgets) {
+TEST(Layer, windows) {
   canvas_t c;
   rect_t r = rect_init(10, 20, 30, 40);
   widget_t* b1 = button_create(NULL, 0, 0, 100, 30);
@@ -55,32 +55,32 @@ TEST(Layer, widgets) {
   ASSERT_EQ(layer->dirty_rects.max.w, 30);
   ASSERT_EQ(layer->dirty_rects.max.h, 40);
   
-  ASSERT_EQ(layer_add_widget(layer, b1), RET_OK);
-  ASSERT_EQ(layer->widgets.size , 1);
-  ASSERT_EQ(layer_add_widget(layer, b1), RET_OK);
-  ASSERT_EQ(layer->widgets.size , 1);
-  ASSERT_EQ(layer_add_widget(layer, b1), RET_OK);
-  ASSERT_EQ(layer->widgets.size , 1);
+  ASSERT_EQ(layer_add_layer_window(layer, b1), RET_OK);
+  ASSERT_EQ(layer->windows.size , 1);
+  ASSERT_EQ(layer_add_layer_window(layer, b1), RET_OK);
+  ASSERT_EQ(layer->windows.size , 1);
+  ASSERT_EQ(layer_add_layer_window(layer, b1), RET_OK);
+  ASSERT_EQ(layer->windows.size , 1);
   
-  ASSERT_EQ(layer_add_widget(layer, b2), RET_OK);
-  ASSERT_EQ(layer->widgets.size , 2);
+  ASSERT_EQ(layer_add_layer_window(layer, b2), RET_OK);
+  ASSERT_EQ(layer->windows.size , 2);
   
-  ASSERT_EQ(layer_remove_widget(layer, b2), RET_OK);
-  ASSERT_EQ(layer->widgets.size , 1);
+  ASSERT_EQ(layer_remove_layer_window(layer, b2), RET_OK);
+  ASSERT_EQ(layer->windows.size , 1);
   
-  ASSERT_EQ(layer_remove_widget(layer, b1), RET_OK);
-  ASSERT_EQ(layer->widgets.size , 0);
+  ASSERT_EQ(layer_remove_layer_window(layer, b1), RET_OK);
+  ASSERT_EQ(layer->windows.size , 0);
   
-  ASSERT_EQ(layer_add_widget(layer, b1), RET_OK);
-  ASSERT_EQ(layer_add_widget(layer, b2), RET_OK);
-  ASSERT_EQ(layer->widgets.size , 2);
+  ASSERT_EQ(layer_add_layer_window(layer, b1), RET_OK);
+  ASSERT_EQ(layer_add_layer_window(layer, b2), RET_OK);
+  ASSERT_EQ(layer->windows.size , 2);
 
   widget_destroy(b1);
   idle_dispatch();
-  ASSERT_EQ(layer->widgets.size , 1);
+  ASSERT_EQ(layer->windows.size , 1);
   widget_destroy(b2);
   idle_dispatch();
-  ASSERT_EQ(layer->widgets.size , 0);
+  ASSERT_EQ(layer->windows.size , 0);
 
   ASSERT_EQ(layer_paint(layer), RET_OK);
   ASSERT_EQ(layer->dirty_rects.max.w, 0);
