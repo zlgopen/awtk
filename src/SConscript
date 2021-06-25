@@ -50,7 +50,7 @@ elif os.environ['LCD'] == 'FB_GL':
 
 BASE_SOURCES += [
   'input_methods/input_method_creator.c'
-  ] + Glob('lcd/lcd_mem_*.c') ;
+  ] + Glob('lcd/lcd_mem_*.c')
 
 if VGCANVAS == 'CAIRO':
   BASE_SOURCES +=['vgcanvas/vgcanvas_cairo.c'];

@@ -64,6 +64,7 @@
 #include "mutable_image/mutable_image.h"
 #include "base/children_layouter_factory.h"
 #include "scroll_view/children_layouter_list_view.h"
+#include "layer_window/layer_window.h"
 
 #if defined(WITH_FS_RES) || defined(WITH_FS)
 #include "file_browser/file_browser_view.h"
@@ -116,6 +117,7 @@ ret_t tk_ext_widgets_init(void) {
   widget_factory_register(f, WIDGET_TYPE_HSCROLL_LABEL, hscroll_label_create);
   widget_factory_register(f, WIDGET_TYPE_COMBO_BOX_EX, combo_box_ex_create);
   widget_factory_register(f, WIDGET_TYPE_DRAGGABLE, draggable_create);
+  widget_factory_register(f, WIDGET_TYPE_LAYER_WINDOW, layer_window_create);
 
   widget_factory_register(f, "guage", gauge_create);
   widget_factory_register(f, "guage_pointer", gauge_pointer_create);

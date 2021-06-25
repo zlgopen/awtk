@@ -84,6 +84,8 @@ static inline ret_t dirty_rects_reset(dirty_rects_t* dirty_rects) {
   dirty_rects->profile = TRUE;
   dirty_rects->disable_multiple = TRUE;
 */
+  //dirty_rects->debug = TRUE;
+  dirty_rects->profile = TRUE;
 
   return RET_OK;
 }
