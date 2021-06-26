@@ -1,7 +1,8 @@
 # 最新动态
 
 2021/06/26
-  * 完善offline canvas
+  * 完善edit
+  * 完善offline canvas（感谢智明提供补丁）
   * 修改ui loader的内存问题（感谢朱俊提供补丁）
   * 增加window\_manager\_set\_max\_fps用于限制最大帧率。
 
