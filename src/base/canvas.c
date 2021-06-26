@@ -347,6 +347,10 @@ ret_t canvas_begin_frame(canvas_t* c, const rect_t* dirty_rect, lcd_draw_mode_t 
     c->began_frame = TRUE;
   }
 
+  if (c->begin_frame) {
+    return c->begin_frame(c, dirty_rect, draw_mode);
+  }
+
   c->ox = 0;
   c->oy = 0;
 
@@ -1411,6 +1415,10 @@ ret_t canvas_end_frame(canvas_t* c) {
     c->began_frame = FALSE;
   } else {
     return RET_OK;
+  }
+
+  if (c->end_frame != NULL) {
+    return c->end_frame(c);
   }
 
   canvas_draw_fps(c);
