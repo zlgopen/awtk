@@ -45,6 +45,7 @@ typedef struct _window_manager_default_t {
   uint32_t fps_time;
   uint32_t fps_count;
   uint32_t last_paint_cost;
+  uint32_t last_paint_time;
 
   widget_t* pending_close_window;
   widget_t* pending_open_window;
