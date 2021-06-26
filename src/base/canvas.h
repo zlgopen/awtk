@@ -28,6 +28,9 @@
 
 BEGIN_C_DECLS
 
+typedef ret_t (*canvas_end_frame_t)(canvas_t* c);
+typedef ret_t (*canvas_begin_frame_t)(canvas_t* c, const rect_t* dirty_rect, lcd_draw_mode_t draw_mode);
+
 /**
  * @class canvas_t
  * @annotation ["scriptable"]
@@ -157,6 +160,9 @@ struct _canvas_t {
   /*private*/
   /*确保begin_frame/end_frame配对使用*/
   bool_t began_frame;
+
+  canvas_end_frame_t end_frame;
+  canvas_begin_frame_t begin_frame;
 };
 
 /**

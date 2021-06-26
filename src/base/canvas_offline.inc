@@ -71,6 +71,15 @@ typedef struct _canvas_offline_gpu_t {
 
 #endif
 
+static ret_t canvas_offline_begin_frame(canvas_t* c, const rect_t* dirty_rect, lcd_draw_mode_t draw_mode) {
+  ret_t ret = RET_OK;
+  ret = canvas_offline_begin_draw(c);
+  return_value_if_fail(ret == RET_OK, ret);
+  ret = canvas_set_clip_rect(c, dirty_rect);
+  return_value_if_fail(ret == RET_OK, ret);
+  return RET_OK;
+}
+
 canvas_t* canvas_offline_create(uint32_t w, uint32_t h, bitmap_format_t format) {
   canvas_t* c = NULL;
   native_window_t* native_window = NULL;
@@ -146,10 +155,7 @@ canvas_t* canvas_offline_create(uint32_t w, uint32_t h, bitmap_format_t format) 
   canvas_set_assets_manager((canvas_t*)canvas, widget_get_assets_manager(window_manager()));
   canvas_set_global_alpha((canvas_t*)canvas, 0xff);
   vgcanvas_create_fbo(vg, w, h, FALSE, fbo);
-
-  return (canvas_t*)canvas;
 #else
-
   canvas = TKMEM_ZALLOC(canvas_offline_t);
   return_value_if_fail(canvas != NULL, NULL);
 
@@ -191,12 +197,14 @@ canvas_t* canvas_offline_create(uint32_t w, uint32_t h, bitmap_format_t format) 
     canvas_set_assets_manager(c_tmp, widget_get_assets_manager(window_manager()));
     canvas_set_global_alpha(&(canvas->base), 0xff);
     canvas_begin_frame(c_tmp, NULL, LCD_DRAW_OFFLINE);
-    return c_tmp;
   } else {
+    TKMEM_FREE(canvas);
     return NULL;
   }
-
 #endif
+  ((canvas_t*)canvas)->end_frame = canvas_offline_end_draw;
+  ((canvas_t*)canvas)->begin_frame = canvas_offline_begin_frame;
+  return (canvas_t*)canvas; 
 }
 #ifdef AWTK_WEB
 ret_t canvas_offline_clear_canvas(canvas_t* canvas) {
