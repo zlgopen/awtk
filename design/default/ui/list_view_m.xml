@@ -92,6 +92,12 @@
       <list_item style="odd_clickable" name="clone_self" text="Clone Self" />
       <list_item style="even_clickable" name="remove_self" text="Remove Self" />
       <list_item style="odd_clickable" name="remove_self" text="Remove Self" />
+      <list_item style="empty" h="60" children_layout="default(r=1,c=0,ym=1)">
+        <edit w="70%" tips="desc" action_text="next" text=""/>
+      </list_item>
+      <list_item style="even" children_layout="default(rows=1,cols=1,m=15)">
+        <edit w="70%" tips="desc" action_text="next" text=""/>
+      </list_item>
     </scroll_view>
     <scroll_bar_m name="bar" x="right" y="0" w="6" h="100%" value="0"/>
   </list_view>
