@@ -1,0 +1,24 @@
+{
+  "name":"foobar",
+  "date":"2021-06-15",
+  "team":"AWTK Develop Team",
+  "author":"Li XianJing <xianjimli@hotmail.com>",
+  "desc":"foobar",
+  "copyright":"Guangzhou ZHIYUAN Electronics Co.,Ltd.",
+  "parent": "object",
+  "includes":[],
+  "props": [
+    {
+      "name":"type",
+      "desc":"a int value",
+      "init_value":0,
+      "type":"uint32_t"
+    },
+    {
+      "name":"name",
+      "desc":"a string value",
+      "init_value":"NULL",
+      "type":"char*"
+    }
+  ]
+}
