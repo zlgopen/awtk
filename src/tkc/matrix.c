@@ -136,3 +136,12 @@ matrix_t* matrix_transform_point(matrix_t* m, xy_t x, xy_t y, xy_t* ox, xy_t* oy
 
   return m;
 }
+
+matrix_t* matrix_transform_pointf(matrix_t* m, float x, float y, float* ox, float* oy) {
+  float x1 = m->a0 * x + m->a2 * y + m->a4;
+  float y1 = m->a1 * x + m->a3 * y + m->a5;
+  *ox = x1;
+  *oy = y1;
+
+  return m;
+}
