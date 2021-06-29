@@ -159,6 +159,16 @@ matrix_t* matrix_transform_point(matrix_t* m, xy_t x, xy_t y, xy_t* out_x, xy_t*
  */
 matrix_t* matrix_transform_pointf(matrix_t* m, float x, float y, float* ox, float* oy);
 
+/**
+ * @method matrix_is_invertible
+ * 判断matrix是否可逆。
+ *
+ * @param {matrix_t*} m 矩阵对象。
+ *
+ * @return {bool_t} 返回TRUE表示可逆，否则表示不可逆。
+ */
+bool_t matrix_is_invertible(matrix_t* m);
+
 END_C_DECLS
 
 #endif /*TK_MATRIX_H*/
