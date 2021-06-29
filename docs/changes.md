@@ -1,5 +1,8 @@
 # 最新动态
 
+2021/06/29
+  * 增加vgcanvas\_clip\_path和基于cairo的实现。
+
 2021/06/28
   * 增加函数matrix\_transform\_pointf。
   * 增加一个生成object的框架代码的小工具。
