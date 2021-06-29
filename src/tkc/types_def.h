@@ -415,4 +415,12 @@ typedef struct _event_source_manager_t event_source_manager_t;
 #define TK_DEFAULT_WAIT_TIME 16
 #endif /*TK_DEFAULT_WAIT_TIME*/
 
+/*from cairo/cairo/cairoint.h*/
+#if _XOPEN_SOURCE >= 600 || defined (_ISOC99_SOURCE)
+#define TK_ISFINITE(x) isfinite (x)
+#else
+#define TK_ISFINITE(x) ((x) * (x) >= 0.) /* check for NaNs */
+#endif
+
+
 #endif /*TYPES_DEF_H*/
