@@ -26,6 +26,7 @@
 #include "cairo/cairo.h"
 #include "tkc/mem.h"
 #include "tkc/darray.h"
+#include "cairo/cairo-private.h"
 
 #define VG_CAIRO_CACHE_MAX_NUMBER 5
 
@@ -61,6 +62,9 @@ ret_t vgcanvas_cairo_begin_frame(vgcanvas_t* vgcanvas, const rect_t* dirty_rect)
   const rect_t* r = dirty_rect;
   vgcanvas_cairo_t* canvas = (vgcanvas_cairo_t*)vgcanvas;
   cairo_t* vg = canvas->vg;
+
+  cairo_identity_matrix(vg);
+  vg->status = CAIRO_STATUS_SUCCESS;
 
   cairo_new_path(vg);
   cairo_rectangle(vg, r->x, r->y, r->w, r->h);
@@ -221,6 +225,12 @@ static ret_t vgcanvas_cairo_transform(vgcanvas_t* vgcanvas, float_t a, float_t b
   cairo_t* vg = ((vgcanvas_cairo_t*)vgcanvas)->vg;
 
   cairo_matrix_init(&m, a, b, c, d, e, f);
+  if(cairo_matrix_invert(&m) != CAIRO_STATUS_SUCCESS) {
+    log_debug("invalid matrix: %f %f %f %f %f %f\n", a, b, c, d, e, f);
+    return RET_FAIL;
+  }
+  
+  cairo_matrix_init(&m, a, b, c, d, e, f);
   cairo_transform(vg, &m);
 
   return RET_OK;
@@ -328,6 +338,14 @@ static ret_t vgcanvas_cairo_clip_rect(vgcanvas_t* vgcanvas, float_t x, float_t y
 
   cairo_reset_clip(vg);
   cairo_rectangle(vg, x, y, w, h);
+  cairo_clip(vg);
+
+  return RET_OK;
+}
+
+static ret_t vgcanvas_cairo_clip_path(vgcanvas_t* vgcanvas) {
+  cairo_t* vg = ((vgcanvas_cairo_t*)vgcanvas)->vg;
+
   cairo_clip(vg);
 
   return RET_OK;
@@ -815,6 +833,7 @@ static const vgcanvas_vtable_t vt = {
     .translate = vgcanvas_cairo_translate,
     .transform = vgcanvas_cairo_transform,
     .set_transform = vgcanvas_cairo_set_transform,
+    .clip_path = vgcanvas_cairo_clip_path,
     .clip_rect = vgcanvas_cairo_clip_rect,
     .fill = vgcanvas_cairo_fill,
     .stroke = vgcanvas_cairo_stroke,
