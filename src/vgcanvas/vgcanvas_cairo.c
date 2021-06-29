@@ -225,11 +225,11 @@ static ret_t vgcanvas_cairo_transform(vgcanvas_t* vgcanvas, float_t a, float_t b
   cairo_t* vg = ((vgcanvas_cairo_t*)vgcanvas)->vg;
 
   cairo_matrix_init(&m, a, b, c, d, e, f);
-  if(cairo_matrix_invert(&m) != CAIRO_STATUS_SUCCESS) {
+  if (cairo_matrix_invert(&m) != CAIRO_STATUS_SUCCESS) {
     log_debug("invalid matrix: %f %f %f %f %f %f\n", a, b, c, d, e, f);
     return RET_FAIL;
   }
-  
+
   cairo_matrix_init(&m, a, b, c, d, e, f);
   cairo_transform(vg, &m);
 
@@ -666,6 +666,62 @@ static ret_t cairo_pattern_add_color_stop_color(cairo_pattern_t* pat, float_t of
   return RET_OK;
 }
 
+static cairo_pattern_t* vgcanvas_cairo_create_pattern_from_gradient(const vg_gradient_t* gradient) {
+  uint32_t i = 0;
+  cairo_pattern_t* pattern = NULL;
+
+  if (gradient->type == VG_GRADIENT_LINEAR) {
+    pattern = cairo_pattern_create_linear(sx, sy, ex, ey);
+  } else if (gradient->type == VG_GRADIENT_RADIAL) {
+    pattern = cairo_pattern_create_radial(cx, cy, inr, cx, cy, outr);
+  }
+  return_value_if_fail(pattern != NULL, NULL);
+
+  for (i = 0; i < gradient->nr; i++) {
+    vg_gradient_stop_t* iter = vg_gradient_get_stop(gradient, i);
+    cairo_pattern_add_color_stop_color(pattern, iter->offset, iter->color);
+  }
+
+  return pattern;
+}
+
+static ret_t vgcanvas_cairo_set_stroke_gradient(vgcanvas_t* vgcanvas,
+                                                const vg_gradient_t* gradient) {
+  cairo_t* vg = ((vgcanvas_cairo_t*)vgcanvas)->vg;
+  vgcanvas_cairo_t* canvas = (vgcanvas_cairo_t*)vgcanvas;
+
+  if (canvas->stroke_gradient != NULL) {
+    cairo_pattern_destroy(canvas->stroke_gradient);
+    canvas->stroke_gradient = NULL;
+  }
+
+  canvas->stroke_gradient = vgcanvas_cairo_create_pattern_from_gradient(gradient);
+  return_value_if_fail(canvas->stroke_gradient != NULL, RET_FAIL);
+
+  cairo_set_source(vg, canvas->stroke_gradient);
+  canvas->stroke_source_type = CAIRO_SOURCE_GRADIENT;
+
+  return RET_OK;
+}
+
+static ret_t vgcanvas_cairo_set_fill_gradient(vgcanvas_t* vgcanvas, const vg_gradient_t* gradient) {
+  cairo_t* vg = ((vgcanvas_cairo_t*)vgcanvas)->vg;
+  vgcanvas_cairo_t* canvas = (vgcanvas_cairo_t*)vgcanvas;
+
+  if (canvas->fill_gradient != NULL) {
+    cairo_pattern_destroy(canvas->fill_gradient);
+    canvas->fill_gradient = NULL;
+  }
+
+  canvas->fill_gradient = vgcanvas_cairo_create_pattern_from_gradient(gradient);
+  return_value_if_fail(canvas->fill_gradient != NULL, RET_FAIL);
+
+  cairo_set_source(vg, canvas->fill_gradient);
+  canvas->fill_source_type = CAIRO_SOURCE_GRADIENT;
+
+  return RET_OK;
+}
+
 static ret_t vgcanvas_cairo_set_stroke_linear_gradient(vgcanvas_t* vgcanvas, float_t sx, float_t sy,
                                                        float_t ex, float_t ey, color_t icolor,
                                                        color_t ocolor) {
@@ -854,6 +910,9 @@ static const vgcanvas_vtable_t vt = {
     .set_stroke_color = vgcanvas_cairo_set_stroke_color,
     .set_stroke_linear_gradient = vgcanvas_cairo_set_stroke_linear_gradient,
     .set_stroke_radial_gradient = vgcanvas_cairo_set_stroke_radial_gradient,
+    .set_stroke_gradient = vgcanvas_cairo_set_stroke_gradient,
+    .set_fill_gradient = vgcanvas_cairo_set_fill_gradient,
+
     .set_line_join = vgcanvas_cairo_set_line_join,
     .set_line_cap = vgcanvas_cairo_set_line_cap,
     .set_miter_limit = vgcanvas_cairo_set_miter_limit,

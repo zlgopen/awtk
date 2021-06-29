@@ -23,8 +23,8 @@
 #define TK_VG_CANVAS_H
 
 #include "tkc/rect.h"
-#include "base/types_def.h"
 #include "base/bitmap.h"
+#include "base/vg_gradient.h"
 
 BEGIN_C_DECLS
 
@@ -108,6 +108,10 @@ typedef ret_t (*vgcanvas_set_antialias_t)(vgcanvas_t* vg, bool_t value);
 typedef ret_t (*vgcanvas_set_global_alpha_t)(vgcanvas_t* vg, float_t alpha);
 typedef ret_t (*vgcanvas_set_line_width_t)(vgcanvas_t* vg, float_t value);
 typedef ret_t (*vgcanvas_set_fill_color_t)(vgcanvas_t* vg, color_t color);
+typedef ret_t (*vgcanvas_set_stroke_color_t)(vgcanvas_t* vg, color_t color);
+
+typedef ret_t (*vgcanvas_set_fill_gradient_t)(vgcanvas_t* vg, const vg_gradient_t* gradient);
+typedef ret_t (*vgcanvas_set_stroke_gradient_t)(vgcanvas_t* vg, const vg_gradient_t* gradient);
 
 typedef ret_t (*vgcanvas_set_fill_linear_gradient_t)(vgcanvas_t* vg, float_t sx, float_t sy,
                                                      float_t ex, float_t ey, color_t icolor,
@@ -116,7 +120,6 @@ typedef ret_t (*vgcanvas_set_fill_radial_gradient_t)(vgcanvas_t* vg, float_t cx,
                                                      float_t inr, float_t outr, color_t icolor,
                                                      color_t ocolor);
 
-typedef ret_t (*vgcanvas_set_stroke_color_t)(vgcanvas_t* vg, color_t color);
 typedef ret_t (*vgcanvas_set_stroke_linear_gradient_t)(vgcanvas_t* vg, float_t sx, float_t sy,
                                                        float_t ex, float_t ey, color_t icolor,
                                                        color_t ocolor);
@@ -200,6 +203,8 @@ typedef struct _vgcanvas_vtable_t {
   vgcanvas_set_stroke_color_t set_stroke_color;
   vgcanvas_set_stroke_linear_gradient_t set_stroke_linear_gradient;
   vgcanvas_set_stroke_radial_gradient_t set_stroke_radial_gradient;
+  vgcanvas_set_fill_gradient_t set_fill_gradient;
+  vgcanvas_set_stroke_gradient_t set_stroke_gradient;
   vgcanvas_set_line_join_t set_line_join;
   vgcanvas_set_line_cap_t set_line_cap;
   vgcanvas_set_miter_limit_t set_miter_limit;
@@ -1036,6 +1041,30 @@ ret_t vgcanvas_set_fill_color(vgcanvas_t* vg, color_t color);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t vgcanvas_set_fill_color_str(vgcanvas_t* vg, const char* color);
+
+/**
+ * @method vgcanvas_set_fill_gradient
+ * 设置填充颜色为渐变色。
+ *
+ *>目前只有部分backend支持(如cairo)。
+ * @param {vgcanvas_t*} vg vgcanvas对象。
+ * @param {vg_gradient_t*} gradient gradient对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t vgcanvas_set_fill_gradient(vgcanvas_t* vg, const vg_gradient_t* gradient);
+
+/**
+ * @method vgcanvas_set_stroke_gradient
+ * 设置线条颜色为渐变色。
+ *
+ *>目前只有部分backend支持(如cairo)。
+ * @param {vgcanvas_t*} vg vgcanvas对象。
+ * @param {vg_gradient_t*} gradient gradient对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t vgcanvas_set_stroke_gradient(vgcanvas_t* vg, const vg_gradient_t* gradient);
 
 /**
  * @method vgcanvas_set_fill_linear_gradient

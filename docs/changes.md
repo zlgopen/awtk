@@ -2,6 +2,7 @@
 
 2021/06/30
   * 还原vg资源管理器的宏 （感谢智明提供补丁）
+  * 增加vgcanvas\_set\_fill\_gradient/vgcanvas\_set\_fill\_gradient。
 
 2021/06/29
   * 增加vgcanvas\_clip\_path和基于cairo的实现。
