@@ -83,6 +83,7 @@ typedef ret_t (*vgcanvas_transform_t)(vgcanvas_t* vg, float_t a, float_t b, floa
 typedef ret_t (*vgcanvas_set_transform_t)(vgcanvas_t* vg, float_t a, float_t b, float_t c,
                                           float_t d, float_t e, float_t f);
 
+typedef ret_t (*vgcanvas_clip_path_t)(vgcanvas_t* vg);
 typedef ret_t (*vgcanvas_clip_rect_t)(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h);
 typedef ret_t (*vgcanvas_nanovg_intersect_clip_rect_t)(vgcanvas_t* vg, float_t* x, float_t* y,
                                                        float_t* w, float_t* h);
@@ -174,6 +175,7 @@ typedef struct _vgcanvas_vtable_t {
   vgcanvas_transform_t transform;
   vgcanvas_set_transform_t set_transform;
 
+  vgcanvas_clip_path_t clip_path;
   vgcanvas_clip_rect_t clip_rect;
   vgcanvas_nanovg_intersect_clip_rect_t intersect_clip_rect;
   vgcanvas_fill_t fill;
@@ -753,6 +755,16 @@ ret_t vgcanvas_transform(vgcanvas_t* vg, float_t a, float_t b, float_t c, float_
  */
 ret_t vgcanvas_set_transform(vgcanvas_t* vg, float_t a, float_t b, float_t c, float_t d, float_t e,
                              float_t f);
+/**
+ * @method vgcanvas_clip_path
+ * 使用当前的path裁剪。
+ *>目前只有部分backend支持(如cairo)。
+ * @annotation ["scriptable"]
+ * @param {vgcanvas_t*} vg vgcanvas对象。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t vgcanvas_clip_path(vgcanvas_t* vg);
 
 /**
  * @method vgcanvas_clip_rect

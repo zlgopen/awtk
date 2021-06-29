@@ -92,6 +92,12 @@ ret_t vgcanvas_translate(vgcanvas_t* vg, float_t x, float_t y) {
   return vg->vt->translate(vg, x, y);
 }
 
+ret_t vgcanvas_clip_path(vgcanvas_t* vg) {
+  return_value_if_fail(vg != NULL && vg->vt->clip_path != NULL, RET_BAD_PARAMS);
+
+  return vg->vt->clip_path(vg);
+}
+
 ret_t vgcanvas_clip_rect(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h) {
   return_value_if_fail(vg != NULL && vg->vt->clip_rect != NULL, RET_BAD_PARAMS);
 
