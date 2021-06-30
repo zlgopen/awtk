@@ -259,15 +259,10 @@ typedef enum _app_type_t {
 #define TK_DEFAULT_FONT_SIZE 18
 #endif /*TK_DEFAULT_FONT_SIZE*/
 
-#ifndef TK_MAX_FPS
-#if defined(LINUX) || defined(MACOS) || defined(WIN32)
 #define TK_MAX_FPS 60
-#else
-#define TK_MAX_FPS 100
-#endif
-#endif /*TK_MAX_FPS*/
+#define TK_MAX_LOOP_FPS 120
 
-#define TK_MAX_SLEEP_TIME (1000 / TK_MAX_FPS)
+#define TK_MAX_SLEEP_TIME (1000 / TK_MAX_LOOP_FPS)
 
 /* alpha 大于 TK_OPACITY_ALPHA 的颜色认为是不透明颜色，不进行alpha混合。*/
 #define TK_OPACITY_ALPHA 0xfa

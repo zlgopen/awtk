@@ -92,6 +92,12 @@ ret_t vgcanvas_translate(vgcanvas_t* vg, float_t x, float_t y) {
   return vg->vt->translate(vg, x, y);
 }
 
+ret_t vgcanvas_clip_path(vgcanvas_t* vg) {
+  return_value_if_fail(vg != NULL && vg->vt->clip_path != NULL, RET_BAD_PARAMS);
+
+  return vg->vt->clip_path(vg);
+}
+
 ret_t vgcanvas_clip_rect(vgcanvas_t* vg, float_t x, float_t y, float_t w, float_t h) {
   return_value_if_fail(vg != NULL && vg->vt->clip_rect != NULL, RET_BAD_PARAMS);
 
@@ -536,3 +542,47 @@ ret_t vgcanvas_clear_cache(vgcanvas_t* vg) {
 
   return vg->vt->clear_cache(vg);
 }
+
+ret_t vgcanvas_set_stroke_gradient(vgcanvas_t* vg, const vg_gradient_t* gradient) {
+  return_value_if_fail(vg != NULL && vg->vt != NULL && gradient != NULL, RET_BAD_PARAMS);
+
+  if (vg->vt->set_stroke_gradient == NULL) {
+    color_t c1 = vg_gradient_get_first_color((vg_gradient_t*)gradient);
+    color_t c2 = vg_gradient_get_last_color((vg_gradient_t*)gradient);
+    if (gradient->type == VG_GRADIENT_LINEAR) {
+      const vg_gradient_linear_info_t* info = &(gradient->info.linear);
+      return vgcanvas_set_stroke_linear_gradient(vg, info->sx, info->sy, info->ex, info->ey, c1,
+                                                 c2);
+    } else if (gradient->type == VG_GRADIENT_RADIAL) {
+      const vg_gradient_radial_info_t* info = &(gradient->info.radial);
+      return vgcanvas_set_stroke_radial_gradient(vg, info->x0, info->y0, info->r0, info->r1, c1,
+                                                 c2);
+    } else {
+      return RET_NOT_IMPL;
+    }
+  } else {
+    return vg->vt->set_stroke_gradient(vg, gradient);
+  }
+}
+
+ret_t vgcanvas_set_fill_gradient(vgcanvas_t* vg, const vg_gradient_t* gradient) {
+  return_value_if_fail(vg != NULL && vg->vt != NULL && gradient != NULL, RET_BAD_PARAMS);
+
+  if (vg->vt->set_fill_gradient == NULL) {
+    color_t c1 = vg_gradient_get_first_color((vg_gradient_t*)gradient);
+    color_t c2 = vg_gradient_get_last_color((vg_gradient_t*)gradient);
+    if (gradient->type == VG_GRADIENT_LINEAR) {
+      const vg_gradient_linear_info_t* info = &(gradient->info.linear);
+      return vgcanvas_set_fill_linear_gradient(vg, info->sx, info->sy, info->ex, info->ey, c1, c2);
+    } else if (gradient->type == VG_GRADIENT_RADIAL) {
+      const vg_gradient_radial_info_t* info = &(gradient->info.radial);
+      return vgcanvas_set_fill_radial_gradient(vg, info->x0, info->y0, info->r0, info->r1, c1, c2);
+    } else {
+      return RET_NOT_IMPL;
+    }
+  } else {
+    return vg->vt->set_fill_gradient(vg, gradient);
+  }
+}
+
+#include "vg_gradient.inc"

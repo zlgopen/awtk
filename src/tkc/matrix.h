@@ -145,6 +145,30 @@ matrix_t* matrix_rotate(matrix_t* m, float rad);
  */
 matrix_t* matrix_transform_point(matrix_t* m, xy_t x, xy_t y, xy_t* out_x, xy_t* out_y);
 
+/**
+ * @method matrix_transform_pointf
+ * 对点进行变换。
+ *
+ * @param {matrix_t*} m 矩阵对象。
+ * @param {float} x x
+ * @param {float} y y
+ * @param {float*} out_x out_x
+ * @param {float*} out_y out_y
+ *
+ * @return {matrix_t*} 矩阵对象。
+ */
+matrix_t* matrix_transform_pointf(matrix_t* m, float x, float y, float* ox, float* oy);
+
+/**
+ * @method matrix_is_invertible
+ * 判断matrix是否可逆。
+ *
+ * @param {matrix_t*} m 矩阵对象。
+ *
+ * @return {bool_t} 返回TRUE表示可逆，否则表示不可逆。
+ */
+bool_t matrix_is_invertible(matrix_t* m);
+
 END_C_DECLS
 
 #endif /*TK_MATRIX_H*/

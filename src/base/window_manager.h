@@ -39,6 +39,7 @@ typedef ret_t (*window_manager_close_window_force_t)(widget_t* widget, widget_t*
 typedef ret_t (*window_manager_paint_t)(widget_t* widget);
 typedef ret_t (*window_manager_dispatch_input_event_t)(widget_t* widget, event_t* e);
 typedef ret_t (*window_manager_set_show_fps_t)(widget_t* widget, bool_t show_fps);
+typedef ret_t (*window_manager_set_max_fps_t)(widget_t* widget, uint32_t max_fps);
 typedef ret_t (*window_manager_set_screen_saver_time_t)(widget_t* widget, uint32_t time);
 typedef ret_t (*window_manager_set_cursor_t)(widget_t* widget, const char* cursor);
 typedef ret_t (*window_manager_post_init_t)(widget_t* widget, wh_t w, wh_t h);
@@ -69,6 +70,7 @@ typedef struct _window_manager_vtable_t {
   window_manager_open_window_t open_window;
   window_manager_close_window_t close_window;
   window_manager_set_show_fps_t set_show_fps;
+  window_manager_set_max_fps_t set_max_fps;
   window_manager_get_top_window_t get_top_window;
   window_manager_get_prev_window_t get_prev_window;
   window_manager_close_window_force_t close_window_force;
@@ -106,6 +108,7 @@ typedef struct _window_manager_t {
   bool_t ignore_input_events;
   bool_t show_waiting_pointer_cursor;
   const window_manager_vtable_t* vt;
+  uint32_t max_fps;
 } window_manager_t;
 
 /**
@@ -315,6 +318,20 @@ ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t window_manager_set_show_fps(widget_t* widget, bool_t show_fps);
+
+/**
+ * @method window_manager_set_max_fps
+ * 限制最大帧率。
+ *
+ *> TK\_MAX\_LOOP\_FPS/max\_fps最好是整数，比如TK\_MAX\_LOOP\_FPS为120，max\_fps可取60/30/20/10等。
+ *
+ * @annotation ["scriptable"]
+ * @param {widget_t*} widget 窗口管理器对象。
+ * @param {uint32_t}  max_fps 最大帧率。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t window_manager_set_max_fps(widget_t* widget, uint32_t max_fps);
 
 /**
  * @method window_manager_set_ignore_input_events

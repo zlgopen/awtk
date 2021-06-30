@@ -1,7 +1,25 @@
 # 最新动态
 
+2021/06/30
+  * 还原vg资源管理器的宏 （感谢智明提供补丁）
+  * 增加vgcanvas\_set\_fill\_gradient/vgcanvas\_set\_fill\_gradient。
+
+2021/06/29
+  * 增加vgcanvas\_clip\_path和基于cairo的实现。
+
+2021/06/28
+  * 增加函数matrix\_transform\_pointf。
+  * 增加一个生成object的框架代码的小工具。
+  * 完善编辑脚本，APP支持输出到不同目录(感谢[ufbycd](https://github.com/ufbycd)提供补丁)。
+
+2021/06/27
+  * 修复输入法软键盘判断坐标的问题。
+
 2021/06/26
-  * 完善offline canvas
+  * 完善edit
+  * 完善offline canvas（感谢智明提供补丁）
+  * 修改ui loader的内存问题（感谢朱俊提供补丁）
+  * 增加window\_manager\_set\_max\_fps用于限制最大帧率。
 
 2021/06/25
   * 完善编译脚步（感谢雨欣提供补丁）

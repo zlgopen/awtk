@@ -642,6 +642,17 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
   uint64_t start_time = time_now_ms();
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
 
+  if (WINDOW_MANAGER(wm)->max_fps) {
+    uint32_t duration = 1000 / WINDOW_MANAGER(wm)->max_fps;
+    uint32_t elapsed_time = start_time - wm->last_paint_time;
+
+    /*如果时间未到，但是接近了也进行绘制。*/
+    elapsed_time = elapsed_time * 1.5;
+    if (elapsed_time < duration) {
+      return RET_OK;
+    }
+  }
+
   fps_inc(&(wm->fps));
   if (WINDOW_MANAGER(wm)->show_fps) {
     rect_t fps_rect = rect_init(0, 0, 60, 30);
@@ -692,7 +703,8 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
     native_window_end_frame(wm->native_window);
   }
 #endif
-  wm->last_paint_cost = time_now_ms() - start_time;
+  wm->last_paint_time = time_now_ms();
+  wm->last_paint_cost = wm->last_paint_time - start_time;
 
   return RET_OK;
 }
@@ -1421,7 +1433,10 @@ static const widget_vtable_t s_window_manager_vtable = {
 widget_t* window_manager_create(void) {
   window_manager_default_t* wm = TKMEM_ZALLOC(window_manager_default_t);
   return_value_if_fail(wm != NULL, NULL);
+
   wm->ready_animator = FALSE;
+  WINDOW_MANAGER(wm)->max_fps = TK_MAX_FPS;
+
   return window_manager_init(WINDOW_MANAGER(wm), &s_window_manager_vtable,
                              &s_window_manager_self_vtable);
 }

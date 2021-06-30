@@ -28,7 +28,7 @@
 #include "base/image_manager.h"
 #include "base/vgcanvas_asset_manager.h"
 
-// #ifdef WITH_VGCANVAS
+#ifdef WITH_VGCANVAS
 
 #define VGCANVAS_ASSET_MANAGER_DARRAY_INIT_NUMBER 20
 
@@ -454,4 +454,4 @@ ret_t vgcanvas_asset_manager_remove_vg(vgcanvas_asset_manager_t* vgcanvas_asset_
   vg_data = (vgcanvas_asset_vg_t*)vgcanvas_asset_manager_darray_find_index(&(vgcanvas_asset_manager->vg_list), vgcanvas_asset_manager_vg_list_compare, vg);
   return darray_remove(&(vgcanvas_asset_manager->vg_list), vg_data);
 }
-// #endif
+#endif

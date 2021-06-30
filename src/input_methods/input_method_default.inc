@@ -168,11 +168,11 @@ static bool_t is_key_board_overlap_edit(widget_t* keyboard, widget_t* edit) {
   point_t p = {0, 0};
   widget_to_screen(edit, &p);
 
-  if (p.x > keyboard->x && p.x < (keyboard->x + keyboard->w)) {
+  if (p.x >= keyboard->x && p.x < (keyboard->x + keyboard->w)) {
     return TRUE;
   }
 
-  if (keyboard->x > p.x && keyboard->x < (p.x + edit->w)) {
+  if (keyboard->x >= p.x && keyboard->x < (p.x + edit->w)) {
     return TRUE;
   }
 

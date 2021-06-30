@@ -232,10 +232,23 @@ static bool_t edit_is_valid_char_default(widget_t* widget, wchar_t c) {
       break;
     }
     default: {
-      if (text->size < edit->max) {
-        ret = TRUE;
+      ret = TRUE;
+      break;
+    }
+  }
+  
+  switch (edit->input_type) {
+    case INPUT_ASCII:
+    case INPUT_PHONE:
+    case INPUT_EMAIL:
+    case INPUT_TEXT:
+    case INPUT_PASSWORD: {
+      if (text->size >= edit->max) {
+        ret = FALSE;
       }
     }
+    default:
+      break;
   }
 
   wstr_reset(&tmp);
@@ -333,9 +346,11 @@ static bool_t edit_is_valid_value_default(widget_t* widget) {
   text = &(widget->text);
 
   switch (edit->input_type) {
+    case INPUT_ASCII:
+    case INPUT_PHONE:
     case INPUT_EMAIL:
-    case INPUT_PASSWORD:
-    case INPUT_TEXT: {
+    case INPUT_TEXT:
+    case INPUT_PASSWORD: {
       if (edit_is_size_valid(widget)) {
         if (edit->input_type == INPUT_EMAIL) {
           return wstr_count_char(text, '@') == 1;

@@ -3,6 +3,7 @@ import sys
 import json
 import shutil
 import platform
+from SCons import Script
 
 PLATFORM = platform.system()
 
@@ -160,6 +161,15 @@ class AppHelperBase:
         if plat == PLATFORM:
             self.APP_LINKFLAGS += APP_LINKFLAGS
         return self
+        
+    def SConscript(self, SConscriptFiles):
+        if not self.BUILD_DIR:
+            Script.SConscript(SConscriptFiles)
+        else:
+            for sc in SConscriptFiles:
+                dir = os.path.dirname(sc)
+                build_dir = os.path.join(self.BUILD_DIR, dir)
+                Script.SConscript(sc, variant_dir=build_dir, duplicate=False)
 
     def __init__(self, ARGUMENTS):
         APP_ROOT = os.path.normpath(os.getcwd())
@@ -172,15 +182,18 @@ class AppHelperBase:
         self.DEPENDS_LIBS = []
         self.GEN_IDL_DEF = True
         self.BUILD_SHARED = True
-        self.LINUX_FB = ARGUMENTS.get('LINUX_FB', '') != ''
+        self.LINUX_FB = ARGUMENTS.get('LINUX_FB', '') == 'true'
         self.AWTK_ROOT = self.getAwtkRoot()
         self.awtk = self.getAwtkConfig()
         self.AWTK_LIBS = self.awtk.LIBS
         self.AWTK_CFLAGS = self.awtk.CFLAGS
         self.AWTK_CCFLAGS = self.awtk.CCFLAGS
         self.APP_ROOT = APP_ROOT
-        self.APP_BIN_DIR = os.path.join(APP_ROOT, 'bin')
-        self.APP_LIB_DIR = os.path.join(APP_ROOT, 'lib')
+        self.BUILD_DIR = ARGUMENTS.get('BUILD_DIR', '')
+        self.BIN_DIR = os.path.join(self.BUILD_DIR, 'bin')
+        self.LIB_DIR = os.path.join(self.BUILD_DIR, 'lib')
+        self.APP_BIN_DIR = os.path.join(APP_ROOT, self.BIN_DIR)
+        self.APP_LIB_DIR = os.path.join(APP_ROOT, self.LIB_DIR)
         self.APP_SRC = os.path.join(APP_ROOT, 'src')
         self.APP_RES = os.path.join(APP_ROOT, 'res')
         self.APP_LIBS = []
@@ -201,6 +214,7 @@ class AppHelperBase:
         os.environ['BIN_DIR'] = self.APP_BIN_DIR
         os.environ['LIB_DIR'] = self.APP_LIB_DIR
         os.environ['LINUX_FB'] = 'false'
+        os.environ['BUILD_DIR'] = self.BUILD_DIR
         if self.LINUX_FB:
             os.environ['LINUX_FB'] = 'true'
 
@@ -279,7 +293,8 @@ class AppHelperBase:
 
         for iter in self.DEPENDS_LIBS:
             for so in iter['shared_libs']:
-                self.awtk.copySharedLib(iter['root'], self.APP_BIN_DIR, so)
+                src = os.path.join(iter['root'], self.BUILD_DIR)
+                self.awtk.copySharedLib(src, self.APP_BIN_DIR, so)
 
     def genIdlAndDef(self):
         if self.DEF_FILE:
@@ -311,6 +326,7 @@ class AppHelperBase:
         print('  THEME="default"')
         print('  SHARED=true')
         print('  LINUX_FB=false')
+        print('  BUILD_DIR=arm')
         sys.exit(0)
 
     def parseArgs(self, awtk, ARGUMENTS):
@@ -446,7 +462,7 @@ class AppHelperBase:
                     'ccflags': '-DWITH_MVVM -DWITH_JERRYSCRIPT',
                     'root' : self.MVVM_ROOT,
                     'shared_libs': ['mvvm'],
-                    'static_libs': []
+                    'static_libs': ['']
                 }]
             else:
                 DEPENDS_LIBS += [{
@@ -506,13 +522,12 @@ class AppHelperBase:
                     LIBPATH = LIBPATH + [join_path(iter['root'], f)]
             else:
                 if self.isBuildShared():
-                    LIBPATH += [join_path(iter['root'], 'bin')]
-                LIBPATH += [join_path(iter['root'], 'lib')]
+                    LIBPATH += [join_path(iter['root'], self.BIN_DIR)]
+                LIBPATH += [join_path(iter['root'], self.LIB_DIR)]
         LIBS = self.APP_LIBS + LIBS
 
-        self.prepare()
         if hasattr(awtk, 'CC'):
-            DefaultEnvironment(
+            env = DefaultEnvironment(
                 CC=awtk.CC,
                 CXX=awtk.CXX,
                 LD=awtk.LD,
@@ -531,7 +546,7 @@ class AppHelperBase:
                 OS_SUBSYSTEM_CONSOLE=awtk.OS_SUBSYSTEM_CONSOLE,
                 OS_SUBSYSTEM_WINDOWS=awtk.OS_SUBSYSTEM_WINDOWS)
         else:
-            DefaultEnvironment(
+            env = DefaultEnvironment(
                 TOOLS=APP_TOOLS,
                 CPPPATH=CPPPATH,
                 LINKFLAGS=LINKFLAGS,
@@ -543,3 +558,10 @@ class AppHelperBase:
                 TARGET_ARCH=awtk.TARGET_ARCH,
                 OS_SUBSYSTEM_CONSOLE=awtk.OS_SUBSYSTEM_CONSOLE,
                 OS_SUBSYSTEM_WINDOWS=awtk.OS_SUBSYSTEM_WINDOWS)
+        
+        def variant_SConscript(env, SConscriptFiles):
+            self.SConscript(SConscriptFiles)
+        env.AddMethod(variant_SConscript, "SConscript")
+    
+        self.prepare()
+        return env

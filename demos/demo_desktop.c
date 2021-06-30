@@ -37,8 +37,8 @@ static ret_t on_fullscreen(void* ctx, event_t* e) {
 }
 
 static ret_t on_click_enlarge(void* ctx, event_t* e) {
-  native_window_t* win = widget_get_native_window(WIDGET(e->target));
-  native_window_resize(win, 840, 800, TRUE);
+  
+  window_manager_resize(window_manager(), 840, 800);
 
   return RET_OK;
 }

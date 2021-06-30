@@ -292,10 +292,25 @@ ret_t window_manager_dispatch_input_event(widget_t* widget, event_t* e) {
 ret_t window_manager_set_show_fps(widget_t* widget, bool_t show_fps) {
   window_manager_t* wm = WINDOW_MANAGER(widget);
   return_value_if_fail(wm != NULL && wm->vt != NULL, RET_BAD_PARAMS);
-  return_value_if_fail(wm->vt->set_show_fps != NULL, RET_BAD_PARAMS);
 
   wm->show_fps = show_fps;
-  return wm->vt->set_show_fps(widget, show_fps);
+  if (wm->vt->set_show_fps != NULL) {
+    return wm->vt->set_show_fps(widget, show_fps);
+  } else {
+    return RET_OK;
+  }
+}
+
+ret_t window_manager_set_max_fps(widget_t* widget, uint32_t max_fps) {
+  window_manager_t* wm = WINDOW_MANAGER(widget);
+  return_value_if_fail(wm != NULL && wm->vt != NULL, RET_BAD_PARAMS);
+
+  wm->max_fps = max_fps;
+  if (wm->vt->set_max_fps != NULL) {
+    return wm->vt->set_max_fps(widget, max_fps);
+  } else {
+    return RET_OK;
+  }
 }
 
 ret_t window_manager_set_screen_saver_time(widget_t* widget, uint32_t time) {
