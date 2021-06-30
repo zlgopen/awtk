@@ -49,7 +49,9 @@ static color_t lcd_mono_get_point_color(lcd_t* lcd, xy_t x, xy_t y) {
   return c;
 }
 
-static ret_t lcd_mono_begin_frame(lcd_t* lcd, const rect_t* dirty_rect) {
+static ret_t lcd_mono_begin_frame(lcd_t* lcd, const dirty_rects_t* dirty_rects) {
+  const rect_t* dirty_rect = dirty_rects != NULL ? &(dirty_rects->max) : NULL;
+
   lcd->dirty_rect = *dirty_rect;
 
   return RET_OK;

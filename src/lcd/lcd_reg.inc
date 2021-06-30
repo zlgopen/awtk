@@ -49,7 +49,7 @@ static inline ret_t lcd_reg_write_data_fill(lcd_t* lcd, pixel_t data, wh_t w, wh
   return RET_OK;
 }
 
-static ret_t lcd_reg_begin_frame(lcd_t* lcd, const rect_t* dirty_rect) {
+static ret_t lcd_reg_begin_frame(lcd_t* lcd, const dirty_rects_t* dirty_rects) {
   lcd->dirty_rect = *dirty_rect;
 
   return RET_OK;

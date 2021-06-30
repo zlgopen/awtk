@@ -16,7 +16,9 @@ static ret_t lcd_log_set_canvas(lcd_t* lcd, canvas_t* c) {
   return RET_OK;
 }
 
-static ret_t lcd_log_begin_frame(lcd_t* lcd, const rect_t* dirty_rect) {
+static ret_t lcd_log_begin_frame(lcd_t* lcd, const dirty_rects_t* dirty_rects) {
+  const rect_t* dirty_rect = dirty_rects != NULL ? &(dirty_rects->max) : NULL;
+
   s_dirty_rect.x = dirty_rect->x;
   s_dirty_rect.y = dirty_rect->y;
   s_dirty_rect.w = dirty_rect->w;
@@ -47,7 +49,10 @@ TEST(lcd, base) {
   ASSERT_EQ(lcd_set_canvas(&lcd, (canvas_t*)tk_pointer_from_int(0xee)), RET_OK);
   ASSERT_EQ(s_canvas_ptr, 0xee);
 
-  ASSERT_EQ(lcd_begin_frame(&lcd, &r, LCD_DRAW_OFFLINE), RET_OK);
+  dirty_rects_t dr;
+  dirty_rects_init(&dr);
+  dirty_rects_add(&dr, &r);
+  ASSERT_EQ(lcd_begin_frame(&lcd, &dr, LCD_DRAW_OFFLINE), RET_OK);
   ASSERT_EQ(lcd_get_dirty_rect(&lcd, &r1), RET_OK);
 
   ASSERT_EQ(s_dirty_rect.x, r1.x);

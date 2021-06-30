@@ -116,8 +116,9 @@ ret_t native_window_begin_frame(native_window_t* win, lcd_draw_mode_t mode) {
   if (win->dirty_rects.max.w > 0 && win->dirty_rects.max.h > 0) {
     rect_t r = native_window_calc_dirty_rect(win);
     if (r.w > 0 && r.h > 0) {
+      const dirty_rects_t* dr = &(win->dirty_rects);
       canvas_t* c = native_window_get_canvas(win);
-      canvas_begin_frame(c, &r, mode);
+      canvas_begin_frame(c, dr, mode);
       win->dirty = TRUE;
 
       return RET_OK;

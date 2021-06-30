@@ -53,8 +53,8 @@ static ret_t lcd_vgcanvas_set_font_size(lcd_t* lcd, uint32_t size) {
   return vgcanvas_set_font_size(LCD(lcd)->canvas, size);
 }
 
-static ret_t lcd_vgcanvas_begin_frame(lcd_t* lcd, const rect_t* dirty_rect) {
-  return vgcanvas_begin_frame(LCD(lcd)->canvas, dirty_rect);
+static ret_t lcd_vgcanvas_begin_frame(lcd_t* lcd, const dirty_rects_t* dirty_rects) {
+  return vgcanvas_begin_frame(LCD(lcd)->canvas, dirty_rects);
 }
 
 static ret_t lcd_vgcanvas_set_clip_rect(lcd_t* lcd, const rect_t* r) {

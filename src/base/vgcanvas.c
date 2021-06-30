@@ -400,10 +400,10 @@ ret_t vgcanvas_set_miter_limit(vgcanvas_t* vg, float_t value) {
   return vg->vt->set_miter_limit(vg, value);
 }
 
-ret_t vgcanvas_begin_frame(vgcanvas_t* vg, const rect_t* dirty_rect) {
+ret_t vgcanvas_begin_frame(vgcanvas_t* vg, const dirty_rects_t* dirty_rects) {
   return_value_if_fail(vg != NULL && vg->vt->begin_frame != NULL, RET_BAD_PARAMS);
 
-  return vg->vt->begin_frame(vg, dirty_rect);
+  return vg->vt->begin_frame(vg, dirty_rects);
 }
 
 ret_t vgcanvas_save(vgcanvas_t* vg) {

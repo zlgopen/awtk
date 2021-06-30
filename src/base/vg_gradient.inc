@@ -40,7 +40,6 @@ vg_gradient_t* vg_gradient_init_radial(vg_gradient_t* gradient, float x0, float 
 }
 
 vg_gradient_t* vg_gradient_create_radial(float x0, float y0, float r0, float x1, float y1, float r1) {
-  vg_gradient_radial_info_t* info = NULL;
   vg_gradient_t* gradient = TKMEM_ZALLOC(vg_gradient_t);
   return_value_if_fail(gradient != NULL, NULL);
 
@@ -62,7 +61,6 @@ vg_gradient_t* vg_gradient_init_linear(vg_gradient_t* gradient, float sx, float 
 }
 
 vg_gradient_t* vg_gradient_create_linear(float sx, float sy, float ex, float ey) {
-  vg_gradient_linear_info_t* info = NULL;
   vg_gradient_t* gradient = TKMEM_ZALLOC(vg_gradient_t);
   return_value_if_fail(gradient != NULL, NULL);
 

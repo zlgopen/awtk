@@ -114,13 +114,14 @@ static inline void vgcanvas_nanovg_offline_fb_flush(vgcanvas_nanovg_t* canvas) {
   }
 }
 
-static ret_t vgcanvas_nanovg_begin_frame(vgcanvas_t* vgcanvas, const rect_t* dirty_rect) {
+static ret_t vgcanvas_nanovg_begin_frame(vgcanvas_t* vgcanvas, const dirty_rects_t* dirty_rects) {
   float_t angle = 0.0f;
   float_t anchor_x = 0.0f;
   float_t anchor_y = 0.0f;
 
   system_info_t* info = system_info();
   vgcanvas_nanovg_t* canvas = (vgcanvas_nanovg_t*)vgcanvas;
+  const rect_t* dirty_rect = dirty_rects != NULL ? &(dirty_rects->max) : NULL;
 
   native_window_gl_make_current(canvas->window);
 

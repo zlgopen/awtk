@@ -24,6 +24,7 @@
 
 #include "tkc/rect.h"
 #include "base/bitmap.h"
+#include "base/dirty_rects.h"
 #include "base/vg_gradient.h"
 
 BEGIN_C_DECLS
@@ -48,7 +49,7 @@ typedef struct _vgcanvas_t vgcanvas_t;
 
 typedef ret_t (*vgcanvas_reinit_t)(vgcanvas_t* vg, uint32_t w, uint32_t h, uint32_t stride,
                                    bitmap_format_t format, void* data);
-typedef ret_t (*vgcanvas_begin_frame_t)(vgcanvas_t* vg, const rect_t* dirty_rect);
+typedef ret_t (*vgcanvas_begin_frame_t)(vgcanvas_t* vg, const dirty_rects_t* dirty_rects);
 typedef ret_t (*vgcanvas_end_frame_t)(vgcanvas_t* vg);
 
 typedef ret_t (*vgcanvas_set_assets_manager_t)(vgcanvas_t* vg, assets_manager_t* assets_manager);
@@ -475,11 +476,11 @@ ret_t vgcanvas_flush(vgcanvas_t* vg);
  * 开始绘制，系统内部调用。
  *
  * @param {vgcanvas_t*} vg vgcanvas对象。
- * @param {const rect_t*} dirty_rect 需要绘制的区域。
+ * @param {const dirty_rects_t*} dirty_rects 需要绘制的区域。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t vgcanvas_begin_frame(vgcanvas_t* vg, const rect_t* dirty_rect);
+ret_t vgcanvas_begin_frame(vgcanvas_t* vg, const dirty_rects_t* dirty_rects);
 
 /**
  * @method vgcanvas_clear_rect

@@ -71,8 +71,9 @@ typedef struct _canvas_offline_gpu_t {
 
 #endif
 
-static ret_t canvas_offline_begin_frame(canvas_t* c, const rect_t* dirty_rect, lcd_draw_mode_t draw_mode) {
+static ret_t canvas_offline_begin_frame(canvas_t* c, const dirty_rects_t* dirty_rects, lcd_draw_mode_t draw_mode) {
   ret_t ret = RET_OK;
+  const rect_t* dirty_rect = dirty_rects != NULL ? &(dirty_rects->max) : NULL;
   ret = canvas_offline_begin_draw(c);
   return_value_if_fail(ret == RET_OK, ret);
   ret = canvas_set_clip_rect(c, dirty_rect);

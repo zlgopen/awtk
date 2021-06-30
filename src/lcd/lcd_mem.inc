@@ -74,7 +74,7 @@ static bitmap_t* lcd_mem_init_online_fb(lcd_t* lcd, bitmap_t* fb, lcd_orientatio
   return fb;
 }
 
-static ret_t lcd_mem_begin_frame(lcd_t* lcd, const rect_t* dirty_rect) {
+static ret_t lcd_mem_begin_frame(lcd_t* lcd, const dirty_rects_t* dirty_rects) {
 #if WITH_LCD_CLEAR_ALPHA
   rect_t r;
   bitmap_t fb;

@@ -40,7 +40,7 @@ typedef struct _lcd_mem_fragment_t {
   pixel_t buff[FRAGMENT_FRAME_BUFFER_SIZE];
 } lcd_mem_fragment_t;
 
-static ret_t lcd_mem_fragment_begin_frame(lcd_t* lcd, const rect_t* dirty_rect) {
+static ret_t lcd_mem_fragment_begin_frame(lcd_t* lcd, const dirty_rects_t* dirty_rects) {
   lcd_mem_fragment_t* mem = (lcd_mem_fragment_t*)lcd;
   uint32_t bpp = bitmap_get_bpp_of_format(LCD_FORMAT);
 

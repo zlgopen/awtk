@@ -58,7 +58,7 @@ typedef struct _vg_cairo_cache_t {
 
 static darray_t vg_cairo_cache;
 
-ret_t vgcanvas_cairo_begin_frame(vgcanvas_t* vgcanvas, const rect_t* dirty_rect) {
+ret_t vgcanvas_cairo_begin_frame(vgcanvas_t* vgcanvas, const dirty_rects_t* dirty_rects) {
   const rect_t* r = dirty_rect;
   vgcanvas_cairo_t* canvas = (vgcanvas_cairo_t*)vgcanvas;
   cairo_t* vg = canvas->vg;

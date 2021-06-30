@@ -638,9 +638,9 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
   uint32_t tmp_h = 0;
   uint32_t number = 0;
 #endif
-
   uint64_t start_time = time_now_ms();
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
+  dirty_rects_t* dirty_rects = &(wm->native_window->dirty_rects);
 
   if (WINDOW_MANAGER(wm)->max_fps) {
     uint32_t duration = 1000 / WINDOW_MANAGER(wm)->max_fps;
@@ -679,7 +679,7 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
         }
 
         canvas_t* c = native_window_get_canvas(wm->native_window);
-        canvas_begin_frame(c, &r, LCD_DRAW_NORMAL);
+        canvas_begin_frame(c, dirty_rects, LCD_DRAW_NORMAL);
         wm->native_window->dirty = TRUE;
         widget_paint(WIDGET(wm), c);
         window_manager_paint_cursor(widget, c);
@@ -697,7 +697,7 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
       canvas_set_fill_color(c, bg);
       canvas_fill_rect(c, 0, 0, widget->w, widget->h);
     } else {
-      dirty_rects_paint(&(wm->native_window->dirty_rects), WIDGET(wm), c, widget_paint);
+      dirty_rects_paint(dirty_rects, WIDGET(wm), c, widget_paint);
     }
     window_manager_paint_cursor(widget, c);
     native_window_end_frame(wm->native_window);

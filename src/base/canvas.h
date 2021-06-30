@@ -22,14 +22,15 @@
 #ifndef TK_CANVAS_H
 #define TK_CANVAS_H
 
+#include "base/lcd.h"
+#include "base/dirty_rects.h"
 #include "base/system_info.h"
 #include "base/font_manager.h"
-#include "base/lcd.h"
 
 BEGIN_C_DECLS
 
 typedef ret_t (*canvas_end_frame_t)(canvas_t* c);
-typedef ret_t (*canvas_begin_frame_t)(canvas_t* c, const rect_t* dirty_rect, lcd_draw_mode_t draw_mode);
+typedef ret_t (*canvas_begin_frame_t)(canvas_t* c, const dirty_rects_t* dirty_rects, lcd_draw_mode_t draw_mode);
 
 /**
  * @class canvas_t
@@ -762,12 +763,12 @@ ret_t canvas_get_text_metrics(canvas_t* canvas, float_t* ascent, float_t* descen
  * 绘制开始。
  *
  * @param {canvas_t*} c canvas对象。
- * @param {const rect_t*} dirty_rect 脏矩形。
+ * @param {const dirty_rects_t*} dirty_rects 脏矩形。
  * @param {lcd_draw_mode_t} draw_mode 绘制模式。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t canvas_begin_frame(canvas_t* c, const rect_t* dirty_rect, lcd_draw_mode_t draw_mode);
+ret_t canvas_begin_frame(canvas_t* c, const dirty_rects_t* dirty_rects, lcd_draw_mode_t draw_mode);
 
 /**
  * @method canvas_fill_rounded_rect

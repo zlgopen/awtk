@@ -33,7 +33,7 @@ static string itos(int v) {
   return string(str);
 }
 
-static ret_t lcd_log_begin_frame(lcd_t* lcd, const rect_t* dirty_rect) {
+static ret_t lcd_log_begin_frame(lcd_t* lcd, const dirty_rects_t* dirty_rects) {
   lcd_log_t* log = (lcd_log_t*)lcd;
   log->str += "bf();";
 

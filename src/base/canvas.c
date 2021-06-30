@@ -338,8 +338,9 @@ float_t canvas_measure_utf8(canvas_t* c, const char* str) {
   return ret;
 }
 
-ret_t canvas_begin_frame(canvas_t* c, const rect_t* dirty_rect, lcd_draw_mode_t draw_mode) {
+ret_t canvas_begin_frame(canvas_t* c, const dirty_rects_t* dirty_rects, lcd_draw_mode_t draw_mode) {
   ret_t ret = RET_OK;
+  const rect_t* dirty_rect = dirty_rects != NULL ? &(dirty_rects->max) : NULL;
   return_value_if_fail(c != NULL, RET_BAD_PARAMS);
   if (c->began_frame) {
     return RET_OK;
@@ -348,7 +349,7 @@ ret_t canvas_begin_frame(canvas_t* c, const rect_t* dirty_rect, lcd_draw_mode_t 
   }
 
   if (c->begin_frame) {
-    return c->begin_frame(c, dirty_rect, draw_mode);
+    return c->begin_frame(c, dirty_rects, draw_mode);
   }
 
   c->ox = 0;
@@ -357,7 +358,7 @@ ret_t canvas_begin_frame(canvas_t* c, const rect_t* dirty_rect, lcd_draw_mode_t 
   canvas_set_global_alpha(c, 0xff);
   lcd_set_canvas(c->lcd, c);
   if (c->lcd->support_dirty_rect) {
-    ret = lcd_begin_frame(c->lcd, dirty_rect, draw_mode);
+    ret = lcd_begin_frame(c->lcd, dirty_rects, draw_mode);
   } else {
     ret = lcd_begin_frame(c->lcd, NULL, draw_mode);
   }

@@ -26,6 +26,7 @@
 #include "base/font.h"
 #include "tkc/matrix.h"
 #include "base/bitmap.h"
+#include "base/dirty_rects.h"
 #include "base/vgcanvas.h"
 
 BEGIN_C_DECLS
@@ -44,7 +45,7 @@ typedef ret_t (*lcd_set_line_length_t)(lcd_t* lcd, uint32_t line_length);
 typedef ret_t (*lcd_set_canvas_t)(lcd_t* lcd, canvas_t* c);
 typedef ret_t (*lcd_get_dirty_rect_t)(lcd_t* lcd, rect_t* r);
 
-typedef ret_t (*lcd_begin_frame_t)(lcd_t* lcd, const rect_t* dirty_rect);
+typedef ret_t (*lcd_begin_frame_t)(lcd_t* lcd, const dirty_rects_t* dirty_rects);
 typedef ret_t (*lcd_set_clip_rect_t)(lcd_t* lcd, const rect_t* rect);
 typedef ret_t (*lcd_get_clip_rect_t)(lcd_t* lcd, rect_t* rect);
 typedef ret_t (*lcd_resize_t)(lcd_t* lcd, wh_t w, wh_t h, uint32_t line_length);
@@ -293,6 +294,7 @@ struct _lcd_t {
   /*private*/
   rect_t fps_rect;
   rect_t dirty_rect;
+  const dirty_rects_t* dirty_rects;
   void* impl_data;
 };
 
@@ -300,12 +302,12 @@ struct _lcd_t {
  * @method lcd_begin_frame
  * 准备绘制。
  * @param {lcd_t*} lcd lcd对象。
- * @param {const rect_t*} dirty_rect 需要绘制的区域。
+ * @param {const dirty_rects_t*} dirty_rects 需要绘制的区域。
  * @param {lcd_draw_mode_t} anim_mode 动画模式，如果可能，直接画到显存而不是离线的framebuffer。
  *
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
-ret_t lcd_begin_frame(lcd_t* lcd, const rect_t* dirty_rect, lcd_draw_mode_t draw_mode);
+ret_t lcd_begin_frame(lcd_t* lcd, const dirty_rects_t* dirty_rects, lcd_draw_mode_t draw_mode);
 
 /**
  * @method lcd_set_clip_rect

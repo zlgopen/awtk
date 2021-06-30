@@ -30,7 +30,8 @@ bool_t lcd_is_compositor(lcd_t* lcd) {
   return lcd->type == LCD_COMPOSITOR;
 }
 
-ret_t lcd_begin_frame(lcd_t* lcd, const rect_t* dirty_rect, lcd_draw_mode_t draw_mode) {
+ret_t lcd_begin_frame(lcd_t* lcd, const dirty_rects_t* dirty_rects, lcd_draw_mode_t draw_mode) {
+  const rect_t* dirty_rect = dirty_rects != NULL ? &(dirty_rects->max) : NULL;
   return_value_if_fail(lcd != NULL && lcd->begin_frame != NULL, RET_BAD_PARAMS);
 
   lcd->draw_mode = draw_mode;
@@ -43,8 +44,9 @@ ret_t lcd_begin_frame(lcd_t* lcd, const rect_t* dirty_rect, lcd_draw_mode_t draw
     lcd->dirty_rect = *dirty_rect;
     rect_fix(&(lcd->dirty_rect), lcd->w, lcd->h);
   }
+  lcd->dirty_rects = dirty_rects;
 
-  return lcd->begin_frame(lcd, dirty_rect);
+  return lcd->begin_frame(lcd, dirty_rects);
 }
 
 ret_t lcd_set_canvas(lcd_t* lcd, canvas_t* c) {

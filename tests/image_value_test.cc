@@ -163,7 +163,10 @@ TEST(ImageValue, paint) {
   canvas_init(&c, lcd, &font_manager);
   widget_t* w = image_value_create(NULL, 10, 10, 200, 80);
 
-  canvas_begin_frame(&c, &r, LCD_DRAW_NORMAL);
+  dirty_rects_t dr;
+  dirty_rects_init(&dr);
+  dirty_rects_add(&dr, &r);
+  canvas_begin_frame(&c, &dr, LCD_DRAW_NORMAL);
   widget_set_prop_int(w, WIDGET_PROP_VALUE, 100);
   widget_set_prop_str(w, WIDGET_PROP_FORMAT, "%02d");
   widget_set_prop_str(w, WIDGET_PROP_IMAGE, "num_");
