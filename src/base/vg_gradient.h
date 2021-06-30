@@ -34,7 +34,7 @@ BEGIN_C_DECLS
 
 /**
  * @enum vg_gradient_type_t
- * VG渐变色类型。
+ * 渐变色类型。
  */
 typedef enum _vg_gradient_type_t {
   /**
@@ -81,7 +81,7 @@ typedef struct _vg_gradient_t vg_gradient_t;
 
 /**
  * @class vg_gradient_radial_info_t
- * 线性渐变。
+ * 放射渐变。
  */
 typedef struct _vg_gradient_radial_info_t {
   /**
@@ -166,7 +166,12 @@ struct _vg_gradient_t {
    */
   vg_gradient_type_t type;
 
-  union {
+  /**
+   * @property {vg_gradient_info_t} info
+   * @annotation ["readable"]
+   * 信息。
+   */
+  union vg_gradient_info_t {
     vg_gradient_linear_info_t linear;
     vg_gradient_radial_info_t radial;
   } info;
