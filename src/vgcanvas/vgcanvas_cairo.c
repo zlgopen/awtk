@@ -671,9 +671,12 @@ static cairo_pattern_t* vgcanvas_cairo_create_pattern_from_gradient(const vg_gra
   cairo_pattern_t* pattern = NULL;
 
   if (gradient->type == VG_GRADIENT_LINEAR) {
-    pattern = cairo_pattern_create_linear(gradient->sx, gradient->sy, gradient->ex, gradient->ey);
+    vg_gradient_linear_info_t* info = &(gradient->info.linear);
+    pattern = cairo_pattern_create_linear(info->sx, info->sy, info->ex, info->ey);
   } else if (gradient->type == VG_GRADIENT_RADIAL) {
-    pattern = cairo_pattern_create_radial(gradient->sx, gradient->sy, gradient->ex, gradient->sx, gradient->sy, gradient->ey);
+    vg_gradient_radial_info_t* info = &(gradient->info.radial);
+    pattern =
+        cairo_pattern_create_radial(info->x0, info->y0, info->r0, info->x1, info->y1, info->r1);
   }
   return_value_if_fail(pattern != NULL, NULL);
 

@@ -23,31 +23,50 @@
 #include "tkc/mem.h"
 #include "vg_gradient.h"
 
-vg_gradient_t* vg_gradient_init(vg_gradient_t* gradient, vg_gradient_type_t type, float sx,
-                                float sy, float ex, float ey) {
+vg_gradient_t* vg_gradient_init_radial(vg_gradient_t* gradient, float x0, float y0, float r0, float x1, float y1, float r1) {
+  vg_gradient_radial_info_t* info = NULL;
   return_value_if_fail(gradient != NULL, NULL);
-  memset(gradient, 0x00, sizeof(vg_gradient_t));
-  gradient->sx = sx;
-  gradient->sy = sy;
-  gradient->ex = ex;
-  gradient->ey = ey;
-  gradient->type = type;
+ 
+  info = &(gradient->info.radial);
+  info->x0 = x0;
+  info->y0 = y0;
+  info->r0 = r0;
+  info->x1 = x1;
+  info->y1 = y1;
+  info->r1 = r1;
+  gradient->type = VG_GRADIENT_RADIAL;
 
   return gradient;
 }
 
-vg_gradient_t* vg_gradient_create_radial(float sx, float sy, float ex, float ey) {
+vg_gradient_t* vg_gradient_create_radial(float x0, float y0, float r0, float x1, float y1, float r1) {
+  vg_gradient_radial_info_t* info = NULL;
   vg_gradient_t* gradient = TKMEM_ZALLOC(vg_gradient_t);
   return_value_if_fail(gradient != NULL, NULL);
 
-  return vg_gradient_init(gradient, VG_GRADIENT_RADIAL, sx, sy, ex, ey);
+  return vg_gradient_init_radial(gradient, x0, y0, r0, x1, y1, r1);
+}
+
+vg_gradient_t* vg_gradient_init_linear(vg_gradient_t* gradient, float sx, float sy, float ex, float ey) {
+  vg_gradient_linear_info_t* info = NULL;
+  return_value_if_fail(gradient != NULL, NULL);
+
+  info = &(gradient->info.linear);
+  info->sx = sx;
+  info->sy = sy;
+  info->ex = ex;
+  info->ey = ey;
+  gradient->type = VG_GRADIENT_LINEAR;
+
+  return gradient;
 }
 
 vg_gradient_t* vg_gradient_create_linear(float sx, float sy, float ex, float ey) {
+  vg_gradient_linear_info_t* info = NULL;
   vg_gradient_t* gradient = TKMEM_ZALLOC(vg_gradient_t);
   return_value_if_fail(gradient != NULL, NULL);
 
-  return vg_gradient_init(gradient, VG_GRADIENT_LINEAR, sx, sy, ex, ey);
+  return vg_gradient_init_linear(gradient, sx, sy, ex, ey);
 }
 
 ret_t vg_gradient_add_stop(vg_gradient_t* gradient, color_t color, float offset) {
