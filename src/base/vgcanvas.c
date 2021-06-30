@@ -546,7 +546,7 @@ ret_t vgcanvas_clear_cache(vgcanvas_t* vg) {
 ret_t vgcanvas_set_stroke_gradient(vgcanvas_t* vg, const vg_gradient_t* gradient) {
   return_value_if_fail(vg != NULL && vg->vt != NULL && gradient != NULL, RET_BAD_PARAMS);
 
-  if (vg->vt->set_stroke_gradient != NULL) {
+  if (vg->vt->set_stroke_gradient == NULL) {
     color_t c1 = vg_gradient_get_first_color((vg_gradient_t*)gradient);
     color_t c2 = vg_gradient_get_last_color((vg_gradient_t*)gradient);
     if (gradient->type == VG_GRADIENT_LINEAR) {
@@ -568,7 +568,7 @@ ret_t vgcanvas_set_stroke_gradient(vgcanvas_t* vg, const vg_gradient_t* gradient
 ret_t vgcanvas_set_fill_gradient(vgcanvas_t* vg, const vg_gradient_t* gradient) {
   return_value_if_fail(vg != NULL && vg->vt != NULL && gradient != NULL, RET_BAD_PARAMS);
 
-  if (vg->vt->set_fill_gradient != NULL) {
+  if (vg->vt->set_fill_gradient == NULL) {
     color_t c1 = vg_gradient_get_first_color((vg_gradient_t*)gradient);
     color_t c2 = vg_gradient_get_last_color((vg_gradient_t*)gradient);
     if (gradient->type == VG_GRADIENT_LINEAR) {
