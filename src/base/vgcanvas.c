@@ -44,9 +44,12 @@ ret_t vgcanvas_reset(vgcanvas_t* vg) {
 }
 
 ret_t vgcanvas_reset_curr_state(vgcanvas_t* vg) {
-  return_value_if_fail(vg != NULL && vg->vt->reset_curr_state != NULL, RET_BAD_PARAMS);
-
-  return vg->vt->reset_curr_state(vg);
+  return_value_if_fail(vg != NULL, RET_BAD_PARAMS);
+  if (vg->vt->reset_curr_state != NULL) {
+    return vg->vt->reset_curr_state(vg);
+  } else {
+    return RET_NOT_IMPL;
+  }
 }
 
 ret_t vgcanvas_flush(vgcanvas_t* vg) {
