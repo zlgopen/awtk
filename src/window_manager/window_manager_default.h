@@ -22,6 +22,7 @@
 #ifndef TK_WINDOW_MANAGER_DEFAULT_H
 #define TK_WINDOW_MANAGER_DEFAULT_H
 
+#include "tkc/fps.h"
 #include "base/native_window.h"
 #include "base/window_manager.h"
 
@@ -41,9 +42,7 @@ typedef struct _window_manager_default_t {
   bool_t ignore_user_input;
   window_animator_t* animator;
 
-  uint32_t fps;
-  uint32_t fps_time;
-  uint32_t fps_count;
+  fps_t fps;
   uint32_t last_paint_cost;
   uint32_t last_paint_time;
 

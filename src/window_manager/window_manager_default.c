@@ -36,7 +36,6 @@
 #include "window_manager/window_manager_default.h"
 
 static ret_t window_manager_animate_done(widget_t* widget);
-static ret_t window_manager_default_inc_fps(widget_t* widget);
 static ret_t window_manager_default_update_fps(widget_t* widget);
 static ret_t window_manager_default_invalidate(widget_t* widget, const rect_t* r);
 static ret_t window_manager_default_get_client_r(widget_t* widget, rect_t* r);
@@ -654,8 +653,7 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
     }
   }
 
-  window_manager_default_inc_fps(widget);
-
+  fps_inc(&(wm->fps));
   if (WINDOW_MANAGER(wm)->show_fps) {
     rect_t fps_rect = rect_init(0, 0, 60, 30);
     window_manager_default_invalidate(widget, &fps_rect);
@@ -869,7 +867,7 @@ static ret_t window_manager_paint_animation(widget_t* widget, canvas_t* c) {
   ENSURE(window_animator_end_frame(wm->animator) == RET_OK);
 
   wm->last_paint_cost = time_now_ms() - start_time;
-  window_manager_default_inc_fps(widget);
+  fps_inc(&(wm->fps));
 
   if (ret == RET_DONE) {
     window_manager_animate_done(widget);
@@ -883,30 +881,12 @@ static ret_t window_manager_animate_done(widget_t* widget) {
 }
 #endif /*WITH_WINDOW_ANIMATORS*/
 
-static ret_t window_manager_default_inc_fps(widget_t* widget) {
-  window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
-
-  wm->fps_count++;
-
-  return RET_OK;
-}
-
 static ret_t window_manager_default_update_fps(widget_t* widget) {
   canvas_t* c = NULL;
-  uint32_t elapse = 0;
-  uint64_t now = time_now_ms();
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
 
-  elapse = now - wm->fps_time;
-  if (elapse >= 200) {
-    wm->fps = wm->fps_count * 1000 / elapse;
-
-    wm->fps_time = now;
-    wm->fps_count = 0;
-  }
-
   c = native_window_get_canvas(wm->native_window);
-  canvas_set_fps(c, WINDOW_MANAGER(wm)->show_fps, wm->fps);
+  canvas_set_fps(c, WINDOW_MANAGER(wm)->show_fps, fps_get(&(wm->fps)));
 
   return RET_OK;
 }
