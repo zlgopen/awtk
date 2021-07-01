@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   image_loader.h
  * Author: AWTK Develop Team
  * Brief:  image_loader interface
