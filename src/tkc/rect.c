@@ -68,13 +68,13 @@ bool_t rect_has_intersect(const rect_t* r1, const rect_t* r2) {
   return TRUE;
 }
 
-rect_t rect_init(xy_t x, xy_t y, wh_t w, wh_t h) {
-  rect_t r;
-  r.x = x;
-  r.y = y;
-  r.w = w;
-  r.h = h;
+rectf_t rectf_init(float x, float y, float w, float h) {
+  rectf_t r = {x, y, w, h};
+  return r;
+}
 
+rect_t rect_init(xy_t x, xy_t y, wh_t w, wh_t h) {
+  rect_t r = {x, y, w, h};
   return r;
 }
 

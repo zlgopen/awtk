@@ -69,6 +69,52 @@ typedef struct _pointf_t {
 } pointf_t;
 
 /**
+ * @class rectf_t
+ * @order -10
+ * @annotation ["scriptable"]
+ * 矩形。包括一个x坐标、y坐标、宽度和高度。
+ */
+typedef struct _rectf_t {
+  /**
+   * @property {float} x
+   * @annotation ["readable", "scriptable"]
+   * x坐标。
+   */
+  float x;
+  /**
+   * @property {float} y
+   * @annotation ["readable", "scriptable"]
+   * y坐标。
+   */
+  float y;
+  /**
+   * @property {float} w
+   * @annotation ["readable", "scriptable"]
+   * 宽度。
+   */
+  float w;
+  /**
+   * @property {float} h
+   * @annotation ["readable", "scriptable"]
+   * 高度。
+   */
+  float h;
+} rectf_t;
+
+/**
+ * @method rectf_init
+ * 初始化rectf对象。
+ *
+ * @param {float} x x坐标。
+ * @param {float} y y坐标。
+ * @param {float} w 宽度。
+ * @param {float} h 高度。
+ *
+ * @return {rectf_t} 返回rect对象。
+ */
+rectf_t rectf_init(float x, float y, float w, float h);
+
+/**
  * @class rect_t
  * @order -10
  * @annotation ["scriptable"]
