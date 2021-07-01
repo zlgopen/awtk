@@ -687,13 +687,14 @@ ret_t canvas_draw_utf8(canvas_t* c, const char* str, xy_t x, xy_t y) {
 }
 
 static ret_t canvas_do_draw_image(canvas_t* c, bitmap_t* img, const rect_t* s, const rect_t* d) {
-  rect_t src;
-  rect_t dst;
+  rectf_t src;
+  rectf_t dst;
 
   xy_t x = d->x;
   xy_t y = d->y;
   xy_t x2 = d->x + d->w - 1;
   xy_t y2 = d->y + d->h - 1;
+  vgcanvas_t* vg = canvas_get_vgcanvas(c);
 
   if (d->w <= 0 || d->h <= 0 || s->w <= 0 || s->h <= 0 || x > c->clip_right || x2 < c->clip_left ||
       y > c->clip_bottom || y2 < c->clip_top) {
@@ -721,7 +722,14 @@ static ret_t canvas_do_draw_image(canvas_t* c, bitmap_t* img, const rect_t* s, c
     return RET_OK;
   }
 
-  return lcd_draw_image(c->lcd, img, &src, &dst);
+  if ((src.w == dst.w && src.h == dst.h) || (src.w == img->w && src.h == img->h) || vg == NULL) {
+    rect_t isrc = rect_init(src.x, src.y, src.w, src.h);
+    rect_t idst = rect_init(dst.x, dst.y, dst.w, dst.h);
+    return lcd_draw_image(c->lcd, img, &isrc, &idst);
+  } else {
+    /*如果图片缩放，而且只是绘制部分，为了避免取整出现坐标异位，使用vgcanvas绘制。*/
+    return vgcanvas_draw_image(vg, img, src.x, src.y, src.w, src.h, dst.x, dst.y, dst.w, dst.h); 
+  }
 }
 
 ret_t canvas_draw_image(canvas_t* c, bitmap_t* img, const rect_t* src, const rect_t* dst_in) {
