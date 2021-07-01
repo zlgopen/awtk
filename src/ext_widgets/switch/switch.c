@@ -105,7 +105,7 @@ static ret_t switch_on_pointer_up(switch_t* aswitch, pointer_event_t* e) {
   max_xoffset = aswitch->max_xoffset_ratio * widget->w;
 
   velocity_update(v, e->e.time, e->x, e->y);
-  xoffset_end = aswitch->xoffset - v->yv;
+  xoffset_end = aswitch->xoffset - v->xv;
 
   if (e->x == aswitch->xdown) {
     /*click*/
@@ -150,8 +150,9 @@ static ret_t switch_on_event(widget_t* widget, event_t* e) {
     case EVT_POINTER_UP: {
       aswitch->pressed = FALSE;
       if (!aswitch->point_down_aborted) {
-        switch_on_pointer_move(aswitch, (pointer_event_t*)e);
-        switch_on_pointer_up(aswitch, (pointer_event_t*)e);
+        pointer_event_t* evt = (pointer_event_t*)e;
+        switch_on_pointer_move(aswitch, evt);
+        switch_on_pointer_up(aswitch, evt);
         widget_ungrab(widget->parent, widget);
       } else {
         aswitch->xoffset = aswitch->xoffset_save;
