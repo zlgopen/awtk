@@ -747,7 +747,7 @@ static ret_t timer_preload(const timer_info_t* timer) {
 #endif /*MOBILE_APP*/
 
     open_window("top", NULL);
-    open_window("main", win);
+    open_window("gauge_h", win);
 
     return RET_REMOVE;
   } else {

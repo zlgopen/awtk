@@ -721,7 +721,19 @@ ret_t canvas_draw_image_scale_down(canvas_t* c, bitmap_t* img, const rect_t* src
 ret_t canvas_draw_line(canvas_t* c, xy_t x1, xy_t y1, xy_t x2, xy_t y2);
 ret_t canvas_draw_char(canvas_t* c, wchar_t chr, xy_t x, xy_t y);
 ret_t canvas_draw_image_matrix(canvas_t* c, bitmap_t* img, matrix_t* matrix);
+
+/**
+ * @method canvas_set_fps
+ * 设置FPS。
+ *
+ * @param {canvas_t*} c canvas对象。
+ * @param {bool_t} show_fps 是否显示fps。
+ * @param {uint32_t} fps FPS。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
 ret_t canvas_set_fps(canvas_t* c, bool_t show_fps, uint32_t fps);
+
 /**
  * @method canvas_set_font_manager
  * 设置canvas的font_manager对象。
