@@ -17,7 +17,7 @@
  *
  */
 
-    /**
+/**
  * @method SDL_GetDefaultCursor
  *
  * @annotation ["global"]
@@ -127,3 +127,11 @@
  * @annotation ["global"]
  *
  */
+
+/**
+ * @method g_window_base_vtable
+ *
+ * @annotation ["global"]
+ *
+ */
+
