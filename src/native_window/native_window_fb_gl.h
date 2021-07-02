@@ -40,6 +40,8 @@ ret_t native_window_fb_gl_set_make_current_func(native_window_t* win,
 
 ret_t native_window_fb_gl_set_destroy_func(native_window_t* win, native_window_destroy_t destroy);
 
+lcd_t* native_window_get_lcd(native_window_t* win);
+
 END_C_DECLS
 
 #endif /*TK_NATIVE_WINDOW_FB_GL_H*/

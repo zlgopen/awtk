@@ -326,10 +326,10 @@ ret_t lcd_resize(lcd_t* lcd, wh_t w, wh_t h, uint32_t line_length) {
   lcd->h = h;
 
   if (lcd->resize != NULL) {
-    lcd->resize(lcd, w, h, line_length);
+    return lcd->resize(lcd, w, h, line_length);
   }
 
-  return RET_OK;
+  return RET_FAIL;
 }
 
 wh_t lcd_get_width(lcd_t* lcd) {

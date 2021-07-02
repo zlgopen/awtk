@@ -77,18 +77,6 @@ ret_t native_window_invalidate(native_window_t* win, const rect_t* r) {
   return dirty_rects_add(&(win->dirty_rects), r);
 }
 
-ret_t native_window_on_resized(native_window_t* win, wh_t w, wh_t h) {
-  lcd_t* lcd = NULL;
-  return_value_if_fail(win != NULL, RET_BAD_PARAMS);
-
-  lcd = native_window_get_canvas(win)->lcd;
-  return_value_if_fail(lcd != NULL, RET_BAD_PARAMS);
-
-  lcd_resize(lcd, w, h, 0);
-
-  return RET_OK;
-}
-
 ret_t native_window_gl_make_current(native_window_t* win) {
   return_value_if_fail(win != NULL && win->vt != NULL, RET_BAD_PARAMS);
   return_value_if_fail(win->vt->gl_make_current != NULL, RET_BAD_PARAMS);

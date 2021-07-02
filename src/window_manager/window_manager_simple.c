@@ -500,7 +500,6 @@ static ret_t window_manager_native_native_window_resized(widget_t* widget, void*
   }
 
   window_manager_simple_resize(widget, w, h);
-  native_window_on_resized(nw, w, h);
 
   return RET_OK;
 }

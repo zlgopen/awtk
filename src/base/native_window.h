@@ -249,7 +249,6 @@ ret_t native_window_end_frame(native_window_t* win);
 rect_t native_window_calc_dirty_rect(native_window_t* win);
 ret_t native_window_clear_dirty_rect(native_window_t* win);
 ret_t native_window_update_last_dirty_rect(native_window_t* win);
-ret_t native_window_on_resized(native_window_t* win, wh_t w, wh_t h);
 
 #define NATIVE_WINDOW(win) ((native_window_t*)(win))
 
