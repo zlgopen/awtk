@@ -78,6 +78,7 @@ static ret_t native_window_sdl_move(native_window_t* win, xy_t x, xy_t y) {
 }
 
 static ret_t native_window_sdl_resize(native_window_t* win, wh_t w, wh_t h) {
+  ret_t ret = RET_OK;
   native_window_info_t info;
   native_window_sdl_t* sdl = NATIVE_WINDOW_SDL(win);
 
@@ -88,16 +89,19 @@ static ret_t native_window_sdl_resize(native_window_t* win, wh_t w, wh_t h) {
 
 #if !defined(ANDROID) && !defined(IOS)
   if (system_info()->lcd_orientation == LCD_ORIENTATION_0 && (w != info.w || h != info.h)) {
+    lcd_t* lcd = sdl->canvas.lcd;
 #ifdef WIN32
     w = w * win->ratio;
     h = h * win->ratio;
 #endif /*WIN32*/
 
     SDL_SetWindowSize(sdl->window, w, h);
+
+    ret = lcd_resize(lcd, w, h, 0);
   }
 #endif /*ANDROID*/
 
-  return RET_OK;
+  return ret;
 }
 
 static ret_t native_window_sdl_minimize(native_window_t* win) {

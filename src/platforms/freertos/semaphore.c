@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   semaphore.c
  * Author: AWTK Develop Team
  * Brief:  semaphore base on freertos

@@ -608,6 +608,12 @@ TK_DECL_VTABLE(window_base) = {
 };
 
 widget_t* window_base_cast(widget_t* widget) {
+#ifdef WIN32
+  if (widget != NULL && widget->vt != NULL && widget->vt->is_window) {
+    return widget;
+  }
+#endif /*WIN32*/
+
   return_value_if_fail(WIDGET_IS_INSTANCE_OF(widget, window_base), NULL);
 
   return widget;

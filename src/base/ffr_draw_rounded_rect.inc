@@ -670,8 +670,6 @@ static void ffr_draw_rounded_rect_draw_info_init(frr_draw_info_t draw_infos[FRR_
   float_t w2 = 0.0f;
   float_t h1 = 0.0f;
   float_t h2 = 0.0f;
-  int32_t mid_lenght_v = 0;
-  int32_t mid_lenght_h = 0;
   uint32_t radius_list[FRR_VERTEXT_TYPE_COUNT] = {radius_tr, radius_tl, radius_bl, radius_br};
 
   memset(draw_infos, 0x0, sizeof(frr_draw_info_t) * FRR_VERTEXT_TYPE_COUNT);
@@ -694,8 +692,8 @@ static void ffr_draw_rounded_rect_draw_info_init(frr_draw_info_t draw_infos[FRR_
       continue;
     }
     draw_infos[i].radius = radius;
-    mid_lenght_v = ffr_get_rounded_rect_mid_length(radius, r->h, &w1, &h1, &(draw_infos[i].angle_v), TRUE);
-    mid_lenght_h = ffr_get_rounded_rect_mid_length(radius, r->w, &h2, &w2, &(draw_infos[i].angle_h), TRUE);
+    ffr_get_rounded_rect_mid_length(radius, r->h, &w1, &h1, &(draw_infos[i].angle_v), TRUE);
+    ffr_get_rounded_rect_mid_length(radius, r->w, &h2, &w2, &(draw_infos[i].angle_h), TRUE);
 
     for(j = i; j < FRR_VERTEXT_TYPE_COUNT; j++) {
       if (i != j && radius_list[j] == radius) {

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   vpage.c
  * Author: AWTK Develop Team
  * Brief:  虚拟页面(根据情况自动加载/卸载页面)。

@@ -50,4 +50,3 @@ widget_t* ui_loader_load_widget_with_parent(const char* name, widget_t* parent) 
 
   return root;
 }
-

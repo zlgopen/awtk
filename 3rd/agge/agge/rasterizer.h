@@ -15,7 +15,7 @@ namespace agge
 	public:
 		using vector_rasterizer::_1_shift;
 		using vector_rasterizer::scanline_cells;
-
+		rasterizer() : _start_x(), _start_y() {};
 	public:
 		using vector_rasterizer::reset;
 

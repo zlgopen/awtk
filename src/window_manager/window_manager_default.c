@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   window_manager_default.c
  * Author: AWTK Develop Team
  * Brief:  default window manager
@@ -1226,13 +1226,15 @@ static ret_t window_manager_default_layout_child(widget_t* widget, widget_t* win
 }
 
 static ret_t window_manager_default_resize(widget_t* widget, wh_t w, wh_t h) {
+  ret_t ret = RET_OK;
   rect_t r = rect_init(0, 0, w, h);
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
   return_value_if_fail(wm != NULL, RET_BAD_PARAMS);
 
-  widget_move_resize(widget, 0, 0, w, h);
+  ret = native_window_resize(wm->native_window, w, h, TRUE);
+  return_value_if_fail(ret == RET_OK, ret);
 
-  native_window_resize(wm->native_window, w, h, TRUE);
+  widget_move_resize(widget, 0, 0, w, h);
   native_window_invalidate(wm->native_window, &r);
   native_window_update_last_dirty_rect(wm->native_window);
 
@@ -1366,7 +1368,6 @@ static ret_t window_manager_default_native_window_resized(widget_t* widget, void
     h = w;
   }
 
-  native_window_on_resized(nw, w, h);
   if (widget->w == w && widget->h == h) {
     return RET_OK;
   }

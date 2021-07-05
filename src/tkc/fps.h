@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   fps.h
  * Author: AWTK Develop Team
  * Brief:  calculate fps

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * File:   image_value.h
  * Author: AWTK Develop Team
  * Brief:  image_value

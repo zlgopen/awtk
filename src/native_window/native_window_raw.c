@@ -20,6 +20,7 @@
  */
 
 #include "base/widget.h"
+#include "base/window_manager.h"
 #include "native_window/native_window_raw.h"
 
 typedef struct _native_window_raw_t {
@@ -36,13 +37,31 @@ static ret_t native_window_raw_move(native_window_t* win, xy_t x, xy_t y) {
   return RET_OK;
 }
 
-static ret_t native_window_raw_resize(native_window_t* win, wh_t w, wh_t h) {
-  native_window_raw_t* raw = NATIVE_WINDOW_RAW(win);
-  lcd_t* lcd = raw->canvas.lcd;
+static ret_t native_window_raw_on_resized_timer(const timer_info_t* info) {
+  widget_t* wm = window_manager();
+  native_window_t* win = NATIVE_WINDOW(info->ctx);
+  event_t e = event_init(EVT_NATIVE_WINDOW_RESIZED, NULL);
+  window_manager_dispatch_native_window_event(window_manager(), &e, win);
+  widget_set_need_relayout_children(wm);
+  widget_invalidate_force(wm, NULL);
 
-  if (lcd != NULL && lcd->resize != NULL) {
-    ret_t ret = lcd_resize(lcd, w, h, 0);
-    return_value_if_fail(ret != RET_OK, ret);
+  log_debug("on_resized_idle\n");
+  return RET_REMOVE;
+}
+
+static ret_t native_window_raw_resize(native_window_t* win, wh_t w, wh_t h) {
+  ret_t ret = RET_OK;
+  native_window_info_t info;
+  native_window_get_info(win, &info);
+
+  if (system_info()->lcd_orientation == LCD_ORIENTATION_0 && (w != info.w || h != info.h)) {
+    native_window_raw_t* raw = NATIVE_WINDOW_RAW(win);
+
+    ret = lcd_resize(raw->canvas.lcd, w, h, 0);
+    return_value_if_fail(ret == RET_OK, ret);
+    system_info_set_lcd_w(system_info(), w);
+    system_info_set_lcd_h(system_info(), h);
+    timer_add(native_window_raw_on_resized_timer, win, 100);
   }
 
   win->rect.w = w;
@@ -58,13 +77,13 @@ static canvas_t* native_window_raw_get_canvas(native_window_t* win) {
 }
 
 static ret_t native_window_raw_get_info(native_window_t* win, native_window_info_t* info) {
-  native_window_raw_t* raw = NATIVE_WINDOW_RAW(win);
+  system_info_t* s_info = system_info();
 
   info->x = 0;
   info->y = 0;
-  info->ratio = raw->canvas.lcd->ratio;
-  info->w = lcd_get_width(raw->canvas.lcd);
-  info->h = lcd_get_height(raw->canvas.lcd);
+  info->w = s_info->lcd_w;
+  info->h = s_info->lcd_h;
+  win->ratio = info->ratio = s_info->device_pixel_ratio;
 
   log_debug("ratio=%f %d %d\n", info->ratio, info->w, info->h);
 
