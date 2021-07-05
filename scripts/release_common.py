@@ -98,19 +98,35 @@ def copyFiles(src_root_dir, src, dst_root_dir, dst, ignore_files=[]):
         print('!!! copyFiles src NOT EXISTS: ' + s)
 
 
+def copySharedLib(src, dst):
+  if not os.path.exists(src):
+    print('copy shared lib: ' + src + ' is not exists.')
+  else:
+    files = os.listdir(src)
+    for file in files:
+      srcFilename = joinPath(src, file)
+      dstFilename = joinPath(dst, file)
+      if os.path.isdir(srcFilename):
+        if not os.path.exists(dstFilename):
+          os.makedirs(dstFilename)
+        copySharedLib(srcFilename, dstFilename)
+      else:
+        ext = '.' + getShareLibExt()
+        if file.endswith(ext):
+          print('copy shared lib: ' + srcFilename + ' ==> ' + dstFilename)
+          shutil.copy(srcFilename, dst)
+          os.chmod(dstFilename, 0o755)
+
+
 def copyExe():
     output_bin_dir = joinPath(OUTPUT_DIR, 'bin')
     copyFile(BIN_DIR, EXE_NAME, output_bin_dir, EXE_NAME)
+    copySharedLib(BIN_DIR, output_bin_dir)
+
     os.chmod(joinPath(output_bin_dir, EXE_NAME), 0o755)
 
-    sharelibs = glob.glob(BIN_DIR + "/*."+getShareLibExt());
-    for filename in sharelibs:
-       basename = os.path.basename(filename)
-       copyFile(BIN_DIR, basename, output_bin_dir, basename)
-       os.chmod(joinPath(output_bin_dir, basename), 0o755)
-
 def copyAssets():
-    copyFiles(ASSETS_DIR, '', OUTPUT_DIR, 'assets/')	
+    copyFiles(ASSETS_DIR, '', OUTPUT_DIR, 'assets/')
 
 def cleanFiles():
     d = joinPath(OUTPUT_DIR, 'assets/default/inc')
