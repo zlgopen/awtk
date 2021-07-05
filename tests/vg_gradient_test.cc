@@ -21,10 +21,10 @@ TEST(VGGradient, radial) {
 
   ASSERT_EQ(vg_gradient_get_stop(g, 0)->offset, 0);
   ASSERT_EQ(vg_gradient_get_stop(g, 0)->color.rgba.r, 0);
-  
+
   ASSERT_EQ(vg_gradient_get_stop(g, 1)->offset, 0.5);
   ASSERT_EQ(vg_gradient_get_stop(g, 1)->color.rgba.r, 1);
-  
+
   ASSERT_EQ(vg_gradient_get_stop(g, 2)->offset, 1);
   ASSERT_EQ(vg_gradient_get_stop(g, 2)->color.rgba.r, 2);
 
@@ -40,12 +40,12 @@ TEST(VGGradient, linear) {
   ASSERT_EQ(g->info.linear.ex, 30);
   ASSERT_EQ(g->info.linear.ey, 40);
 
-  for(i = 0; i < TK_GRADIENT_MAX_STOP_NR; i++) {
+  for (i = 0; i < TK_GRADIENT_MAX_STOP_NR; i++) {
     ASSERT_EQ(vg_gradient_add_stop(g, color_init(0, 0, 0, 0), 0.1 * i), RET_OK);
-    ASSERT_EQ(g->nr, i+1);
-    ASSERT_EQ((int)(vg_gradient_get_stop(g, i)->offset * 10), i );
+    ASSERT_EQ(g->nr, i + 1);
+    ASSERT_EQ((int)(vg_gradient_get_stop(g, i)->offset * 10), i);
   }
-  
+
   ASSERT_NE(vg_gradient_add_stop(g, color_init(0, 0, 0, 0), 0.1 * i), RET_OK);
 
   vg_gradient_destroy(g);

@@ -17,7 +17,7 @@
  *
  */
 
-/**
+    /**
  * @method SDL_GetDefaultCursor
  *
  * @annotation ["global"]
@@ -127,4 +127,3 @@
  * @annotation ["global"]
  *
  */
-

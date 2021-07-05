@@ -56,7 +56,7 @@ static ret_t native_window_raw_resize(native_window_t* win, wh_t w, wh_t h) {
 
   if (system_info()->lcd_orientation == LCD_ORIENTATION_0 && (w != info.w || h != info.h)) {
     native_window_raw_t* raw = NATIVE_WINDOW_RAW(win);
-    
+
     ret = lcd_resize(raw->canvas.lcd, w, h, 0);
     return_value_if_fail(ret == RET_OK, ret);
     system_info_set_lcd_w(system_info(), w);

@@ -103,7 +103,6 @@ static ret_t native_window_fb_gl_resize(native_window_t* win, wh_t w, wh_t h) {
   fb_gl->w = win->rect.w = w;
   fb_gl->h = win->rect.h = h;
   if (system_info()->lcd_orientation == LCD_ORIENTATION_0 && (w != info.w || h != info.h)) {
-    
     ret = lcd_resize(fb_gl->canvas.lcd, w, h, 0);
     return_value_if_fail(ret == RET_OK, ret);
     system_info_set_lcd_w(system_info(), w);

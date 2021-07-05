@@ -728,7 +728,7 @@ static ret_t canvas_do_draw_image(canvas_t* c, bitmap_t* img, const rect_t* s, c
     return lcd_draw_image(c->lcd, img, &isrc, &idst);
   } else {
     /*如果图片缩放，而且只是绘制部分，为了避免取整出现坐标异位，使用vgcanvas绘制。*/
-    return vgcanvas_draw_image(vg, img, src.x, src.y, src.w, src.h, dst.x, dst.y, dst.w, dst.h); 
+    return vgcanvas_draw_image(vg, img, src.x, src.y, src.w, src.h, dst.x, dst.y, dst.w, dst.h);
   }
 }
 

@@ -199,7 +199,8 @@ struct _vg_gradient_t {
  *
  * @return {vg_gradient_t*} 返回gradient对象。
  */
-vg_gradient_t* vg_gradient_create_radial(float x0, float y0, float r0, float x1, float y1, float r1);
+vg_gradient_t* vg_gradient_create_radial(float x0, float y0, float r0, float x1, float y1,
+                                         float r1);
 
 /**
  * @method vg_gradient_init_radial
@@ -214,8 +215,8 @@ vg_gradient_t* vg_gradient_create_radial(float x0, float y0, float r0, float x1,
  *
  * @return {vg_gradient_t*} 返回gradient对象。
  */
-vg_gradient_t* vg_gradient_init_radial(vg_gradient_t* gradient, float x0, float y0, float r0, float x1, float y1, float r1);
-
+vg_gradient_t* vg_gradient_init_radial(vg_gradient_t* gradient, float x0, float y0, float r0,
+                                       float x1, float y1, float r1);
 
 /**
  * @method vg_gradient_create_linear
@@ -241,7 +242,8 @@ vg_gradient_t* vg_gradient_create_linear(float sx, float sy, float ex, float ey)
  *
  * @return {vg_gradient_t*} 返回gradient对象。
  */
-vg_gradient_t* vg_gradient_init_linear(vg_gradient_t* gradient, float sx, float sy, float ex, float ey);
+vg_gradient_t* vg_gradient_init_linear(vg_gradient_t* gradient, float sx, float sy, float ex,
+                                       float ey);
 
 /**
  * @method vg_gradient_add_stop

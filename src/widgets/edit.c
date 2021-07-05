@@ -236,7 +236,7 @@ static bool_t edit_is_valid_char_default(widget_t* widget, wchar_t c) {
       break;
     }
   }
-  
+
   switch (edit->input_type) {
     case INPUT_ASCII:
     case INPUT_PHONE:
