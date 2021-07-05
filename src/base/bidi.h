@@ -180,7 +180,7 @@ static inline ret_t bidi_log2vis(bidi_t* bidi, const wchar_t* str, uint32_t size
   return RET_OK;
 }
 
-static bidi_type_t bidi_type_from_name(const char* name) {
+static inline bidi_type_t bidi_type_from_name(const char* name) {
   return BIDI_TYPE_AUTO;
 }
 
