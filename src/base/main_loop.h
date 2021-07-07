@@ -61,6 +61,7 @@ struct _main_loop_t {
   uint8_t quit_num;
   bool_t app_quited;
   uint32_t last_loop_time;
+  uint32_t curr_expected_sleep_time;
   widget_t* wm;
 };
 
@@ -119,6 +120,9 @@ ret_t main_loop_remove_event_source(main_loop_t* l, event_source_t* source);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t main_loop_remove_event_source_by_tag(main_loop_t* l, void* tag);
+
+/* private */
+ret_t main_loop_set_curr_expected_sleep_time(main_loop_t* l, uint32_t sleep_time);
 
 END_C_DECLS
 
