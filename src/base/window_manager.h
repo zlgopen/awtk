@@ -493,7 +493,8 @@ ret_t window_manager_on_theme_changed(widget_t* widget);
 ret_t window_manager_dispatch_top_window_changed(widget_t* widget);
 ret_t window_manager_dispatch_window_event(widget_t* window, event_type_t type);
 uint32_t window_manager_get_curr_expected_sleep_time(widget_t* widget);
-ret_t window_manager_set_curr_expected_sleep_time(widget_t* widget, uint32_t curr_expected_sleep_time);
+ret_t window_manager_set_curr_expected_sleep_time(widget_t* widget,
+                                                  uint32_t curr_expected_sleep_time);
 
 #define WINDOW_MANAGER(widget) ((window_manager_t*)(widget))
 

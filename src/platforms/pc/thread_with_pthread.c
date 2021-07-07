@@ -238,7 +238,7 @@ ret_t tk_semaphore_wait(tk_semaphore_t* semaphore, uint32_t timeout_ms) {
   if (timeout_ms == -1) {
     int retval;
     do {
-        retval = sem_wait(semaphore->sem);
+      retval = sem_wait(semaphore->sem);
     } while (retval < 0 && errno == EINTR);
 
     return_value_if_fail(retval == 0, RET_FAIL);
@@ -265,10 +265,10 @@ tryagain:
     return RET_OK;
   } else {
     switch (errno) {
-    case EINTR:
-      goto tryagain;
-    case ETIMEDOUT:
-      return RET_TIMEOUT;
+      case EINTR:
+        goto tryagain;
+      case ETIMEDOUT:
+        return RET_TIMEOUT;
     }
     return RET_FAIL;
   }

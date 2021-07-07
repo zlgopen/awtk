@@ -326,7 +326,7 @@ ret_t lcd_resize(lcd_t* lcd, wh_t w, wh_t h, uint32_t line_length) {
     if (lcd->resize(lcd, w, h, line_length) == RET_OK) {
       lcd->w = w;
       lcd->h = h;
-      return RET_OK; 
+      return RET_OK;
     }
   }
 
