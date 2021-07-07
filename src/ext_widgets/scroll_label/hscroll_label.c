@@ -502,7 +502,7 @@ widget_t* hscroll_label_create(widget_t* parent, xy_t x, xy_t y, wh_t w, wh_t h)
 
   hscroll_label->paused = FALSE;
 
-  hscroll_label->timer_id = timer_add(hscroll_label_on_timer_start, widget, 10);
+  hscroll_label->timer_id = TK_INVALID_ID;
 
   return widget;
 }
