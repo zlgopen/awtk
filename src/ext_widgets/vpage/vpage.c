@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   vpage.c
  * Author: AWTK Develop Team
  * Brief:  虚拟页面(根据情况自动加载/卸载页面)。
@@ -153,6 +153,7 @@ static ret_t vpage_on_enter(widget_t* widget, uint32_t index, uint32_t old_index
       }
       return RET_FAIL;
     }
+    widget_layout(children);
     /*some widget depends on will open to initialize*/
     widget_dispatch_recursive(children, &will_open);
   }
