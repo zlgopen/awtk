@@ -231,22 +231,47 @@ tk_semaphore_t* tk_semaphore_create(uint32_t value, const char* name) {
 }
 
 ret_t tk_semaphore_wait(tk_semaphore_t* semaphore, uint32_t timeout_ms) {
-  uint32_t start = time_now_ms();
+  struct timespec abstime;
+  struct timeval delta;
   return_value_if_fail(semaphore != NULL, RET_BAD_PARAMS);
 
-  do {
-    if (sem_trywait(semaphore->sem) == 0) {
-      return RET_OK;
-    }
+  if (timeout_ms == -1) {
+    int retval;
+    do {
+        retval = sem_wait(semaphore->sem);
+    } while (retval < 0 && errno == EINTR);
 
-    if ((time_now_ms() - start) >= timeout_ms) {
+    return_value_if_fail(retval == 0, RET_FAIL);
+    return RET_OK;
+  }
+
+#ifdef HAVE_CLOCK_GETTIME
+  clock_gettime(CLOCK_REALTIME, &abstime);
+  abstime.tv_nsec += (timeout_ms % 1000) * 1000000;
+  abstime.tv_sec += timeout_ms / 1000;
+#else
+  gettimeofday(&delta, NULL);
+  abstime.tv_sec = delta.tv_sec + (timeout_ms / 1000);
+  abstime.tv_nsec = (delta.tv_usec + (timeout_ms % 1000) * 1000) * 1000;
+#endif
+
+  if (abstime.tv_nsec > 1000000000) {
+    abstime.tv_sec += 1;
+    abstime.tv_nsec -= 1000000000;
+  }
+
+tryagain:
+  if (sem_timedwait(semaphore->sem, &abstime) == 0) {
+    return RET_OK;
+  } else {
+    switch (errno) {
+    case EINTR:
+      goto tryagain;
+    case ETIMEDOUT:
       return RET_TIMEOUT;
     }
-
-    sleep_ms(10);
-  } while (TRUE);
-
-  return RET_FAIL;
+    return RET_FAIL;
+  }
 }
 
 ret_t tk_semaphore_post(tk_semaphore_t* semaphore) {
