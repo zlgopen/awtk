@@ -201,6 +201,12 @@ ret_t tk_cond_wait(tk_cond_t* cond, tk_mutex_t* mutex) {
 #include "tkc/semaphore.h"
 #endif
 
+#if defined(APPLE) || defined(__APPLE__) || defined(IOS) || defined(MACOS)
+#undef HAVE_SEM_TIMEDWAIT
+#else
+#define HAVE_SEM_TIMEDWAIT
+#endif
+
 struct _tk_semaphore_t {
   sem_t* sem;
   char name[TK_NAME_LEN + 1];
@@ -231,8 +237,10 @@ tk_semaphore_t* tk_semaphore_create(uint32_t value, const char* name) {
 }
 
 ret_t tk_semaphore_wait(tk_semaphore_t* semaphore, uint32_t timeout_ms) {
+#ifdef HAVE_SEM_TIMEDWAIT
   struct timespec abstime;
   struct timeval delta;
+#endif/*HAVE_SEM_TIMEDWAIT*/
   return_value_if_fail(semaphore != NULL, RET_BAD_PARAMS);
 
   if (timeout_ms == -1) {
@@ -244,6 +252,8 @@ ret_t tk_semaphore_wait(tk_semaphore_t* semaphore, uint32_t timeout_ms) {
     return_value_if_fail(retval == 0, RET_FAIL);
     return RET_OK;
   }
+
+#ifdef HAVE_SEM_TIMEDWAIT
 
 #ifdef HAVE_CLOCK_GETTIME
   clock_gettime(CLOCK_REALTIME, &abstime);
@@ -272,6 +282,25 @@ tryagain:
     }
     return RET_FAIL;
   }
+#else // HAVE_SEM_TIMEDWAIT
+
+  uint32_t start = time_now_ms();
+  return_value_if_fail(semaphore != NULL, RET_BAD_PARAMS);
+
+  do {
+    if (sem_trywait(semaphore->sem) == 0) {
+      return RET_OK;
+    }
+
+    if ((time_now_ms() - start) >= timeout_ms) {
+      return RET_TIMEOUT;
+    }
+
+    sleep_ms(1);
+  } while (TRUE);
+
+  return RET_FAIL;
+#endif // HAVE_SEM_TIMEDWAIT
 }
 
 ret_t tk_semaphore_post(tk_semaphore_t* semaphore) {
