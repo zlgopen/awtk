@@ -594,9 +594,14 @@ static ret_t text_edit_paint_tips_text(text_edit_t* text_edit, canvas_t* c) {
       if (p.total_lines > 1) {
         text_edit_paint_tips_mlines_text(text_edit, c, &p);
       } else {
+
+        align_h_t align_h = c->text_align_h;
+        align_v_t align_v = c->text_align_v;
         rect_t r =
             rect_init(layout_info->margin_l, layout_info->margin_t, layout_info->w, layout_info->h);
+        canvas_set_text_align(c, align_h, ALIGN_V_TOP);
         canvas_draw_text_in_rect(c, text->str, text->size, &r);
+        canvas_set_text_align(c, align_h, align_v);
       }
     } else {
       rect_t r =
