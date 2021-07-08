@@ -679,11 +679,20 @@ ret_t lcd_set_line_length(lcd_t* lcd, uint32_t line_length);
  */
 ret_t lcd_destroy(lcd_t* lcd);
 
+/**
+ * @method lcd_get_dirty_rect
+ * 获取 lcd 对象的脏矩形。
+ * @param {lcd_t*} lcd lcd对象。
+ * @param {rect_t*} r 返回脏矩形。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t lcd_get_dirty_rect(lcd_t* lcd, rect_t* r);
+
 /* private */
 bool_t lcd_is_dirty(lcd_t* lcd);
 bool_t lcd_is_compositor(lcd_t* lcd);
 ret_t lcd_set_canvas(lcd_t* lcd, canvas_t* c);
-ret_t lcd_get_dirty_rect(lcd_t* lcd, rect_t* r);
 ret_t lcd_set_curr_lcd(lcd_t* lcd, uint32_t lcd_id);
 ret_t lcd_invalidate_by_id(lcd_t* lcd, const rect_t* r, uint32_t lcd_id);
 
