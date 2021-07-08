@@ -29,7 +29,10 @@
 #include "base/window.h"
 #include "tkc/tokenizer.h"
 #include "text_selector/text_selector.h"
+#include "base/widget_animator_manager.h"
 #include "widget_animators/widget_animator_scroll.h"
+
+#define TEXT_SELECTOR_WA_NAME "text_selector@wa"
 
 static const wchar_t* text_selector_get_wtext(widget_t* widget);
 static ret_t text_selector_set_all_options_localize_text(widget_t* widget);
@@ -625,6 +628,7 @@ static ret_t text_selector_scroll_to(widget_t* widget, int32_t yoffset_end) {
       widget_animator_scroll_create(widget, text_selector->animating_time, 0, EASING_SIN_INOUT);
   return_value_if_fail(text_selector->wa != NULL, RET_OOM);
 
+  widget_animator_set_name(text_selector->wa, TEXT_SELECTOR_WA_NAME);
   widget_animator_scroll_set_params(text_selector->wa, 0, yoffset, 0, yoffset_end);
   widget_animator_on(text_selector->wa, EVT_ANIM_END, text_selector_on_scroll_done, text_selector);
   widget_animator_start(text_selector->wa);
@@ -794,7 +798,11 @@ ret_t text_selector_reset_options(widget_t* widget) {
   return_value_if_fail(text_selector != NULL, RET_BAD_PARAMS);
 
   if (text_selector->wa != NULL) {
-    widget_animator_destroy(text_selector->wa);
+    widget_animator_t* ani = widget_animator_manager_find(widget_animator_manager(), text_selector,
+                                                          TEXT_SELECTOR_WA_NAME);
+    if (ani != NULL && text_selector->wa == ani) {
+      widget_animator_destroy(text_selector->wa);
+    }
     text_selector->wa = NULL;
   }
 
