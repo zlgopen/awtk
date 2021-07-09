@@ -40,8 +40,7 @@ BEGIN_C_DECLS
  *
  */
 typedef struct _lcd_mem_special_t {
-  lcd_t base;
-  lcd_mem_t* lcd_mem;
+  lcd_mem_t base;
   bitmap_format_t format;
 
   /*custom info*/

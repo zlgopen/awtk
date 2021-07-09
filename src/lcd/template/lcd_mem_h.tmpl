@@ -3,7 +3,7 @@
  * Author: AWTK Develop Team
  * Brief:  {fmt} mem lcd.
  *
- * Copyright (c) 2018 - 2019  Guangzhou ZHIYUAN Electronics Co.,Ltd.
+ * Copyright (c) 2018 - 2021  Guangzhou ZHIYUAN Electronics Co.,Ltd.
  *
  * this program is distributed in the hope that it will be useful,
  * but without any warranty; without even the implied warranty of
@@ -26,11 +26,81 @@
 
 BEGIN_C_DECLS
 
+/**
+ * @class lcd_mem_{fmt}_t
+ * @parent lcd_t
+ * @annotation ["fake"]
+ */
+
+/**
+ * @method lcd_mem_{fmt}_create
+ *
+ * 创建lcd对象。
+ *
+ * @param {wh_t} w 宽度。
+ * @param {wh_t} h 高度。
+ * @param {bool_t} alloc 是否分配内存。
+ *
+ * @return {lcd_t*} 返回lcd对象。
+ */
 lcd_t* lcd_mem_{fmt}_create(wh_t w, wh_t h, bool_t alloc);
+
+/**
+ * @method lcd_mem_{fmt}_create_single_fb
+ *
+ * 创建single fb lcd对象。
+ *
+ * @param {wh_t} w 宽度。
+ * @param {wh_t} h 高度。
+ * @param {uint8_t*} fbuff 帧率缓冲区。
+ *
+ * @return {lcd_t*} 返回lcd对象。
+ */
 lcd_t* lcd_mem_{fmt}_create_single_fb(wh_t w, wh_t h, uint8_t* fbuff);
+
+/**
+ * @method lcd_mem_{fmt}_create_double_fb
+ *
+ * 创建double fb lcd对象。
+ *
+ * @param {wh_t} w 宽度。
+ * @param {wh_t} h 高度。
+ * @param {uint8_t*} online_fb 在线帧率缓冲区。
+ * @param {uint8_t*} offline_fb 离线帧率缓冲区。
+ *
+ * @return {lcd_t*} 返回lcd对象。
+ */
 lcd_t* lcd_mem_{fmt}_create_double_fb(wh_t w, wh_t h, uint8_t* online_fb, uint8_t* offline_fb);
+
+/**
+ * @method lcd_mem_{fmt}_create_three_fb
+ * 
+ * 创建three fb lcd对象。
+ *
+ * @param {wh_t} w 宽度。
+ * @param {wh_t} h 高度。
+ * @param {uint8_t*} online_fb 在线帧率缓冲区。
+ * @param {uint8_t*} offline_fb 离线帧率缓冲区。
+ * @param {uint8_t*} next_fb 待显示的帧率缓冲区。
+ *
+ * @return {lcd_t*} 返回lcd对象。
+ */
 lcd_t* lcd_mem_{fmt}_create_three_fb(wh_t w, wh_t h, uint8_t* online_fb, uint8_t* offline_fb,
                                       uint8_t* next_fb);
+
+/**
+ * @method lcd_mem_{fmt}_init
+ *
+ * 创建lcd对象。
+ *
+ * @param {lcd_mem_t*} lcd 对象。
+ * @param {wh_t} w 宽度。
+ * @param {wh_t} h 高度。
+ * @param {bool_t} alloc 是否分配内存。
+ *
+ * @return {lcd_t*} 返回lcd对象。
+ */
+lcd_t* lcd_mem_{fmt}_init(lcd_mem_t* lcd, wh_t w, wh_t h, bool_t alloc);
 
 END_C_DECLS
 

@@ -73,6 +73,7 @@ static ret_t lcd_sdl2_flush(lcd_t* lcd) {
   void* addr = NULL;
   const rect_t* dr = &(lcd->dirty_rect);
   const rect_t* fps_r = &(lcd->fps_rect);
+  lcd_mem_t* lcd_mem = (lcd_mem_t*)lcd;
   lcd_mem_special_t* special = (lcd_mem_special_t*)lcd;
   special_info_t* info = (special_info_t*)(special->ctx);
 
@@ -85,7 +86,7 @@ static ret_t lcd_sdl2_flush(lcd_t* lcd) {
     SDL_LockTexture(info->texture, NULL, (void**)&(addr), &pitch);
     bitmap_init(&dst, lcd->w, lcd->h, special->format, addr);
     bitmap_set_line_length(&dst, pitch);
-    bitmap_init(&src, lcd->w, lcd->h, special->format, special->lcd_mem->offline_fb);
+    bitmap_init(&src, lcd->w, lcd->h, special->format, lcd_mem->offline_fb);
     image_copy(&dst, &src, dr, dr->x, dr->y);
     SDL_UnlockTexture(info->texture);
 
