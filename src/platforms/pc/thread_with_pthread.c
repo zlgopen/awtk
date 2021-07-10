@@ -240,7 +240,7 @@ ret_t tk_semaphore_wait(tk_semaphore_t* semaphore, uint32_t timeout_ms) {
 #ifdef HAVE_SEM_TIMEDWAIT
   struct timespec abstime;
   struct timeval delta;
-#endif/*HAVE_SEM_TIMEDWAIT*/
+#endif /*HAVE_SEM_TIMEDWAIT*/
   return_value_if_fail(semaphore != NULL, RET_BAD_PARAMS);
 
   if (timeout_ms == -1) {
@@ -282,7 +282,7 @@ tryagain:
     }
     return RET_FAIL;
   }
-#else // HAVE_SEM_TIMEDWAIT
+#else  // HAVE_SEM_TIMEDWAIT
 
   uint32_t start = time_now_ms();
   return_value_if_fail(semaphore != NULL, RET_BAD_PARAMS);
@@ -300,7 +300,7 @@ tryagain:
   } while (TRUE);
 
   return RET_FAIL;
-#endif // HAVE_SEM_TIMEDWAIT
+#endif  // HAVE_SEM_TIMEDWAIT
 }
 
 ret_t tk_semaphore_post(tk_semaphore_t* semaphore) {

@@ -30,7 +30,8 @@
 BEGIN_C_DECLS
 
 typedef ret_t (*canvas_end_frame_t)(canvas_t* c);
-typedef ret_t (*canvas_begin_frame_t)(canvas_t* c, const dirty_rects_t* dirty_rects, lcd_draw_mode_t draw_mode);
+typedef ret_t (*canvas_begin_frame_t)(canvas_t* c, const dirty_rects_t* dirty_rects,
+                                      lcd_draw_mode_t draw_mode);
 
 /**
  * @class canvas_t

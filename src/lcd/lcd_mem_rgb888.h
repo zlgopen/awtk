@@ -26,7 +26,6 @@
 
 BEGIN_C_DECLS
 
-
 /**
  * @class lcd_mem_rgb888_t
  * @parent lcd_t

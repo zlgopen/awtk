@@ -594,7 +594,6 @@ static ret_t text_edit_paint_tips_text(text_edit_t* text_edit, canvas_t* c) {
       if (p.total_lines > 1) {
         text_edit_paint_tips_mlines_text(text_edit, c, &p);
       } else {
-
         align_h_t align_h = c->text_align_h;
         align_v_t align_v = c->text_align_v;
         rect_t r =
