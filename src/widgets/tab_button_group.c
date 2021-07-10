@@ -71,7 +71,6 @@ static ret_t tab_button_group_on_layout_children_compact(widget_t* widget) {
   }
   WIDGET_FOR_EACH_CHILD_END();
 
-  hscrollable_set_xoffset(tab_button_group->hscrollable, 0);
   hscrollable_set_virtual_w(tab_button_group->hscrollable, x - 1);
   hscrollable_set_always_scrollable(tab_button_group->hscrollable, FALSE);
 

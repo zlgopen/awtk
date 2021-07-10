@@ -2,6 +2,7 @@
 
 2021/07/10
   * 将dirty\_rects通过begin\_frame传递到canvas和lcd。
+  * 完善tab\_button\_group（感谢智明提供补丁）
 
 2021/07/09
   * tokenizer\_next\_expr\_until添加了对"{}"和"[]"的处理（感谢朝泽提供补丁）
