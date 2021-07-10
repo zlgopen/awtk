@@ -72,9 +72,11 @@ rect_t native_window_calc_dirty_rect(native_window_t* win) {
 }
 
 ret_t native_window_invalidate(native_window_t* win, const rect_t* r) {
+  rect_t arect;
   return_value_if_fail(win != NULL, RET_BAD_PARAMS);
+  arect = rect_fix((rect_t*)r, win->rect.w, win->rect.h);
 
-  return dirty_rects_add(&(win->dirty_rects), r);
+  return dirty_rects_add(&(win->dirty_rects), &arect);
 }
 
 ret_t native_window_gl_make_current(native_window_t* win) {
