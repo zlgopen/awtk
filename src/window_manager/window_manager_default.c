@@ -644,11 +644,13 @@ static ret_t window_manager_paint_normal(widget_t* widget, canvas_t* c) {
 
   if (WINDOW_MANAGER(wm)->max_fps) {
     uint32_t duration = 1000 / WINDOW_MANAGER(wm)->max_fps;
-    uint32_t elapsed_time = start_time - wm->last_paint_time;
-
-    /*如果时间未到，但是接近了也进行绘制。*/
-    elapsed_time = elapsed_time * 1.5;
+    uint32_t elapsed_time = start_time - wm->last_paint_time + wm->last_paint_cost;
+    /* 
+     * 上一帧的绘图耗时加上各种事件触发耗时小于绘图间隔时间，则跳过绘图并且控制睡眠时间。
+     * 控制睡眠时间是为了防止睡眠时间过长导致减低绘图次数。
+     */
     if (elapsed_time < duration) {
+      window_manager_set_curr_expected_sleep_time(widget, duration - elapsed_time);
       return RET_OK;
     }
   }
@@ -899,6 +901,7 @@ static ret_t window_manager_default_paint(widget_t* widget) {
 
   canvas_set_global_alpha(c, 0xff);
   window_manager_default_update_fps(widget);
+  window_manager_set_curr_expected_sleep_time(widget, 0xFFFFFFFF);
 
 #ifdef WITH_WINDOW_ANIMATORS
   if (wm->animator != NULL) {
@@ -1354,7 +1357,6 @@ static ret_t window_manager_default_native_window_resized(widget_t* widget, void
   native_window_info_t ainfo;
   int32_t lcd_orientation = system_info()->lcd_orientation;
   window_manager_default_t* wm = WINDOW_MANAGER_DEFAULT(widget);
-  native_window_t* nw = WINDOW_MANAGER_DEFAULT(widget)->native_window;
 
   return_value_if_fail(native_window_get_info(wm->native_window, &ainfo) == RET_OK, RET_FAIL);
 

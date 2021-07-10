@@ -511,6 +511,7 @@ widget_t* window_manager_init(window_manager_t* wm, const widget_vtable_t* wvt,
   locale_info_on(locale_info(), EVT_LOCALE_CHANGED, wm_on_locale_changed, wm);
   wm->vt = vt;
   wm->global_emitter = emitter_create();
+  wm->curr_expected_sleep_time = 0xFFFFFFFF;
   widget_on(widget, EVT_DESTROY, window_manager_on_destroy, widget);
 
   return widget;
@@ -717,5 +718,19 @@ ret_t window_manager_set_ignore_input_events(widget_t* widget, bool_t ignore_inp
   return_value_if_fail(wm != NULL && wm->vt != NULL, RET_BAD_PARAMS);
   wm->ignore_input_events = ignore_input_events;
 
+  return RET_OK;
+}
+
+uint32_t window_manager_get_curr_expected_sleep_time(widget_t* widget) {
+  window_manager_t* wm = WINDOW_MANAGER(widget);
+  return_value_if_fail(wm != NULL && wm->vt != NULL, 0xFFFFFFFF);
+  return wm->curr_expected_sleep_time;
+}
+
+ret_t window_manager_set_curr_expected_sleep_time(widget_t* widget,
+                                                  uint32_t curr_expected_sleep_time) {
+  window_manager_t* wm = WINDOW_MANAGER(widget);
+  return_value_if_fail(wm != NULL && wm->vt != NULL, RET_BAD_PARAMS);
+  wm->curr_expected_sleep_time = curr_expected_sleep_time;
   return RET_OK;
 }

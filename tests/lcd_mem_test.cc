@@ -1,5 +1,6 @@
 ﻿#include "base/canvas.h"
 #include "gtest/gtest.h"
+#include "tkc/mem.h"
 #include "lcd/lcd_mem_bgr888.h"
 #include "lcd/lcd_mem_bgra8888.h"
 #include "lcd/lcd_mem_rgba8888.h"

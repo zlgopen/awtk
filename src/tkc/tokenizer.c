@@ -109,6 +109,31 @@ static ret_t tokenizer_skip_quoted_str(tokenizer_t* tokenizer) {
   return RET_OK;
 }
 
+static ret_t tokenizer_closing_bracket_until(tokenizer_t* tokenizer, char opening_bracket,
+                                             char closing_bracket) {
+  int32_t lparent = 1;
+
+  tokenizer->cursor++;
+  while (tokenizer->str[tokenizer->cursor]) {
+    char c = tokenizer->str[tokenizer->cursor];
+    if (c == '\"') {
+      tokenizer_skip_quoted_str(tokenizer);
+      continue;
+    } else if (c == opening_bracket) {
+      lparent++;
+    } else if (c == closing_bracket) {
+      lparent--;
+      if (lparent <= 0) {
+        tokenizer->cursor++;
+        break;
+      }
+    }
+    tokenizer->cursor++;
+  }
+
+  return RET_OK;
+}
+
 const char* tokenizer_next_expr_until(tokenizer_t* tokenizer, const char* str) {
   return_value_if_fail(tokenizer_skip_separator(tokenizer) == RET_OK && str != NULL, NULL);
 
@@ -123,24 +148,13 @@ const char* tokenizer_next_expr_until(tokenizer_t* tokenizer, const char* str) {
         tokenizer_skip_quoted_str(tokenizer);
         continue;
       } else if (c == '(') {
-        int32_t lparent = 1;
-        tokenizer->cursor++;
-        while (tokenizer->str[tokenizer->cursor]) {
-          c = tokenizer->str[tokenizer->cursor];
-          if (c == '\"') {
-            tokenizer_skip_quoted_str(tokenizer);
-            continue;
-          } else if (c == '(') {
-            lparent++;
-          } else if (c == ')') {
-            lparent--;
-            if (lparent <= 0) {
-              tokenizer->cursor++;
-              break;
-            }
-          }
-          tokenizer->cursor++;
-        }
+        tokenizer_closing_bracket_until(tokenizer, '(', ')');
+        continue;
+      } else if (c == '{') {
+        tokenizer_closing_bracket_until(tokenizer, '{', '}');
+        continue;
+      } else if (c == '[') {
+        tokenizer_closing_bracket_until(tokenizer, '[', ']');
         continue;
       }
 

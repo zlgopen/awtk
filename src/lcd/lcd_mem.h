@@ -72,6 +72,116 @@ static inline ret_t lcd_mem_set_wait_vbi(lcd_t* lcd, lcd_mem_wait_vbi_t wait_vbi
   return RET_OK;
 }
 
+/**
+ * @method lcd_mem_deinit
+ * 清除 lcd_mem 对象中的数据
+ * @export none
+ * @param {lcd_mem_t*} mem lcd_mem 对象。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+static ret_t lcd_mem_deinit(lcd_mem_t* mem) {
+  return_value_if_fail(mem != NULL && mem->base.begin_frame != NULL, RET_BAD_PARAMS);
+
+  if (mem->vgcanvas != NULL) {
+    vgcanvas_destroy(mem->vgcanvas);
+    mem->vgcanvas = NULL;
+  }
+
+  if (mem->own_offline_fb) {
+    TKMEM_FREE(mem->offline_fb);
+  }
+
+  graphic_buffer_destroy(mem->online_gb);
+  graphic_buffer_destroy(mem->offline_gb);
+
+  return RET_OK;
+}
+
+/**
+ * @method lcd_mem_set_offline_fb
+ * 设置 lcd_mem 对象中的 offline_fb
+ * @export none
+ * @param {lcd_mem_t*} mem lcd_mem 对象。
+ * @param {uint8_t*} offline_fb offline_fb 地址。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+static ret_t lcd_mem_set_offline_fb(lcd_mem_t* lcd, uint8_t* offline_fb) {
+  return_value_if_fail(lcd != NULL, RET_BAD_PARAMS);
+  lcd->offline_fb = offline_fb;
+  return RET_OK;
+}
+
+/**
+ * @method lcd_mem_get_offline_fb
+ * 获取 lcd_mem 对象中的 offline_fb
+ * @export none
+ * @param {lcd_mem_t*} mem lcd_mem 对象。
+ * 
+ * @return {uint8_t*} 返回 offline_fb 地址。
+ */
+static uint8_t* lcd_mem_get_offline_fb(lcd_mem_t* lcd) {
+  return_value_if_fail(lcd != NULL, NULL);
+  return lcd->offline_fb;
+}
+
+/**
+ * @method lcd_mem_set_online_fb
+ * 设置 lcd_mem 对象中的 online_fb
+ * @export none
+ * @param {lcd_mem_t*} mem lcd_mem 对象。
+ * @param {uint8_t*} online_fb online_fb 地址。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+static ret_t lcd_mem_set_online_fb(lcd_mem_t* lcd, uint8_t* online_fb) {
+  return_value_if_fail(lcd != NULL, RET_BAD_PARAMS);
+  lcd->online_fb = online_fb;
+  return RET_OK;
+}
+
+/**
+ * @method lcd_mem_get_online_fb
+ * 获取 lcd_mem 对象中的 online_fb
+ * @export none
+ * @param {lcd_mem_t*} mem lcd_mem 对象。
+ * 
+ * @return {uint8_t*} 返回 online_fb 地址。
+ */
+static uint8_t* lcd_mem_get_online_fb(lcd_mem_t* lcd) {
+  return_value_if_fail(lcd != NULL, NULL);
+  return lcd->online_fb;
+}
+
+/**
+ * @method lcd_mem_set_next_fb
+ * 设置 lcd_mem 对象中的 next_fb
+ * @export none
+ * @param {lcd_mem_t*} mem lcd_mem 对象。
+ * @param {uint8_t*} next_fb next_fb 地址。
+ * 
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+static ret_t lcd_mem_set_next_fb(lcd_mem_t* lcd, uint8_t* next_fb) {
+  return_value_if_fail(lcd != NULL, RET_BAD_PARAMS);
+  lcd->next_fb = next_fb;
+  return RET_OK;
+}
+
+/**
+ * @method lcd_mem_get_next_fb
+ * 获取 lcd_mem 对象中的 next_fb
+ * @export none
+ * @param {lcd_mem_t*} mem lcd_mem 对象。
+ * 
+ * @return {uint8_t*} 返回 next_fb 地址。
+ */
+static uint8_t* lcd_mem_get_next_fb(lcd_mem_t* lcd) {
+  return_value_if_fail(lcd != NULL, NULL);
+  return lcd->next_fb;
+}
+
 END_C_DECLS
 
 #endif /*TK_LCD_MEM_H*/

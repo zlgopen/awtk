@@ -104,7 +104,8 @@ static ret_t gauge_pointer_invalidate(widget_t* widget, const rect_t* rect) {
     }
   } else {
     bitmap_t bitmap;
-    if (widget_load_image(widget, gauge_pointer->image, &bitmap) == RET_OK) {
+    if (parent != NULL && !parent->destroying &&
+        widget_load_image(widget, gauge_pointer->image, &bitmap) == RET_OK) {
       w = bitmap.w;
       h = bitmap.h;
     } else {
@@ -154,7 +155,9 @@ float_t gauge_pointer_get_anchor_for_str(float_t max_size, const char* anchor) {
   float_t anchor_tmp = 0.0f;
   bool_t is_anchor_px = TRUE;
 
-  return_value_if_fail(anchor != NULL, 0);
+  if (anchor == NULL) {
+    return anchor_tmp;
+  }
 
   anchor_tmp = tk_atof(anchor);
   is_anchor_px = gauge_pointer_value_is_anchor_px(anchor);

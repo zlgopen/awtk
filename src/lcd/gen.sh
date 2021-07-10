@@ -12,7 +12,7 @@ function gen() {
 }
 
 if [ "$1" == "" ]; then
-  FMT="rgb565 bgr565 bgra5551 bgr888 bgra8888 rgba8888"
+  FMT="rgb565 bgr565 rgb888 bgr888 bgra8888 rgba8888"
 else
   FMT="$1"
 fi

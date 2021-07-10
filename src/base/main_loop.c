@@ -94,6 +94,7 @@ ret_t main_loop_sleep_default(main_loop_t* l) {
   int32_t least_sleep_time = gap > TK_MAX_SLEEP_TIME ? 0 : (TK_MAX_SLEEP_TIME - gap);
 
   sleep_time = tk_min(least_sleep_time, sleep_time);
+  sleep_time = tk_min(sleep_time, l->curr_expected_sleep_time);
   if (sleep_time > 0) {
     sleep_ms(sleep_time);
   }
@@ -151,4 +152,11 @@ ret_t main_loop_remove_event_source_by_tag(main_loop_t* l, void* tag) {
   return_value_if_fail(m != NULL, RET_BAD_PARAMS);
 
   return event_source_manager_remove_by_tag(m, tag);
+}
+
+ret_t main_loop_set_curr_expected_sleep_time(main_loop_t* l, uint32_t sleep_time) {
+  return_value_if_fail(l != NULL, RET_BAD_PARAMS);
+  l->curr_expected_sleep_time = sleep_time;
+
+  return RET_OK;
 }

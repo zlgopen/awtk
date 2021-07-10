@@ -109,6 +109,7 @@ typedef struct _window_manager_t {
   bool_t show_waiting_pointer_cursor;
   const window_manager_vtable_t* vt;
   uint32_t max_fps;
+  uint32_t curr_expected_sleep_time;
 } window_manager_t;
 
 /**
@@ -491,6 +492,9 @@ widget_t* window_manager_find_target(widget_t* widget, void* native_win, xy_t x,
 ret_t window_manager_on_theme_changed(widget_t* widget);
 ret_t window_manager_dispatch_top_window_changed(widget_t* widget);
 ret_t window_manager_dispatch_window_event(widget_t* window, event_type_t type);
+uint32_t window_manager_get_curr_expected_sleep_time(widget_t* widget);
+ret_t window_manager_set_curr_expected_sleep_time(widget_t* widget,
+                                                  uint32_t curr_expected_sleep_time);
 
 #define WINDOW_MANAGER(widget) ((window_manager_t*)(widget))
 

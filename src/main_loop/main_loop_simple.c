@@ -210,6 +210,7 @@ static ret_t main_loop_dispatch_input(main_loop_simple_t* loop) {
 }
 
 static ret_t main_loop_simple_step(main_loop_t* l) {
+  uint32_t curr_expected_sleep_time = 0xFFFFFFFF;
   main_loop_simple_t* loop = (main_loop_simple_t*)l;
 
   main_loop_dispatch_input(loop);
@@ -218,6 +219,9 @@ static ret_t main_loop_simple_step(main_loop_t* l) {
 
   window_manager_check_and_layout(loop->base.wm);
   window_manager_paint(loop->base.wm);
+
+  curr_expected_sleep_time = window_manager_get_curr_expected_sleep_time(loop->base.wm);
+  main_loop_set_curr_expected_sleep_time(l, curr_expected_sleep_time);
 
   return RET_OK;
 }

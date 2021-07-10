@@ -324,11 +324,12 @@ bitmap_format_t lcd_get_desired_bitmap_format(lcd_t* lcd) {
 
 ret_t lcd_resize(lcd_t* lcd, wh_t w, wh_t h, uint32_t line_length) {
   return_value_if_fail(lcd != NULL, RET_BAD_PARAMS);
-  lcd->w = w;
-  lcd->h = h;
-
   if (lcd->resize != NULL) {
-    return lcd->resize(lcd, w, h, line_length);
+    if (lcd->resize(lcd, w, h, line_length) == RET_OK) {
+      lcd->w = w;
+      lcd->h = h;
+      return RET_OK;
+    }
   }
 
   return RET_FAIL;

@@ -333,6 +333,19 @@ ret_t window_base_invalidate(widget_t* widget, const rect_t* rect) {
   native_window_t* nw = NULL;
   return_value_if_fail(widget != NULL, RET_BAD_PARAMS);
 
+  if (widget->parent != NULL) {
+    widget_t* top = window_manager_get_top_main_window(widget->parent);
+    if (top != widget) {
+      if (widget_index_of(widget) < widget_index_of(top)) {
+        if (widget->x >= top->x && widget->y >= top->y &&
+            (widget->x + widget->w) <= (top->x + top->w) &&
+            (widget->y + widget->h) <= (top->y + top->h)) {
+          return RET_OK;
+        }
+      }
+    }
+  }
+
   nw = (native_window_t*)widget_get_prop_pointer(widget, WIDGET_PROP_NATIVE_WINDOW);
   if (nw != NULL) {
     if (nw->shared) {
