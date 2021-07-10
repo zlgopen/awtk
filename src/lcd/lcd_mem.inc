@@ -76,17 +76,24 @@ static bitmap_t* lcd_mem_init_online_fb(lcd_t* lcd, bitmap_t* fb, lcd_orientatio
 
 static ret_t lcd_mem_begin_frame(lcd_t* lcd, const dirty_rects_t* dirty_rects) {
 #if WITH_LCD_CLEAR_ALPHA
-  rect_t r;
   bitmap_t fb;
-
-  if (lcd->draw_mode == LCD_DRAW_OFFLINE || dirty_rect == NULL) {
-    r = rect_init(0, 0, lcd->w, lcd->h);
-  } else {
-    r = rect_init(dirty_rect->x, dirty_rect->y, dirty_rect->w, dirty_rect->h);
-  }
-
   lcd_mem_init_drawing_fb(lcd, &fb);
-  return image_clear(&fb, &r, color_init(0x0, 0x0, 0x0, 0x0));
+
+  if (lcd->draw_mode == LCD_DRAW_OFFLINE || dirty_rects == NULL) {
+    rect_t r = rect_init(0, 0, lcd->w, lcd->h);
+    return image_clear(&fb, &r, color_init(0x0, 0x0, 0x0, 0x0));
+  } else {
+    if (dirty_rects->disable_multiple) {
+      return image_clear(&fb, (const rect_t*)&(dirty_rects->max), color_init(0x0, 0x0, 0x0, 0x0));
+    } else {
+      int32_t i = 0;
+      for (i = 0; i < dirty_rects->nr; i++) {
+        const rect_t* iter = dirty_rects->rects + i;
+        image_clear(&fb, iter, color_init(0x0, 0x0, 0x0, 0x0));
+      }
+      return RET_OK;
+    }
+  }
 #else
   return RET_OK;
 #endif

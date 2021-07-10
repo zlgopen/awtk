@@ -11,14 +11,50 @@ static ret_t vgcanvas_nanovg_reinit(vgcanvas_t* vg, uint32_t w, uint32_t h, uint
   return RET_OK;
 }
 
-static inline void vgcanvas_nanovg_set_offline_fb(vgcanvas_nanovg_t* canvas, uint32_t w,
-                                                  uint32_t h, const rect_t* dirty_rect) {
-  GLint default_fbo = 0;
-
-#if WITH_LCD_CLEAR_ALPHA
+static inline rect_t  vgcanvas_nanovg_get_dirty_rect(const rect_t* dirty_rect) {
   rect_t r;
+  uint32_t w, h;
   system_info_t* info = system_info();
-#endif
+  return_value_if_fail(info != NULL, rect_init(0, 0, 0, 0));
+  w = info->lcd_w * info->device_pixel_ratio;
+  h = info->lcd_h * info->device_pixel_ratio;
+  if (dirty_rect == NULL) {
+    switch (info->lcd_orientation) {
+      case LCD_ORIENTATION_0:
+        r = rect_init(0, 0, w, h);
+        break;
+      case LCD_ORIENTATION_90:
+        r = rect_init(w - h, h - w, h, w);
+        break;
+      case LCD_ORIENTATION_180:
+        r = rect_init(0, 0, w, h);
+        break;
+      case LCD_ORIENTATION_270:
+        r = rect_init(0, 0, h, w);
+        break;
+    }
+  } else {
+    switch (info->lcd_orientation) {
+      case LCD_ORIENTATION_0:
+        r = rect_init(dirty_rect->x, h - dirty_rect->h - dirty_rect->y, dirty_rect->w, dirty_rect->h);
+        break;
+      case LCD_ORIENTATION_90:
+        r = rect_init(w - dirty_rect->h - dirty_rect->y, h - dirty_rect->w - dirty_rect->x, dirty_rect->h, dirty_rect->w);
+        break;
+      case LCD_ORIENTATION_180:
+        r = rect_init(w - dirty_rect->w - dirty_rect->x, dirty_rect->y, dirty_rect->w, dirty_rect->h);
+        break;
+      case LCD_ORIENTATION_270:
+        r = rect_init(dirty_rect->y, dirty_rect->x, dirty_rect->h, dirty_rect->w);
+        break;
+    }
+  }
+  return r;
+}
+
+static inline void vgcanvas_nanovg_set_offline_fb(vgcanvas_nanovg_t* canvas, uint32_t w,
+                                                  uint32_t h, const dirty_rects_t* dirty_rects) {
+  GLint default_fbo = 0;
 
   vgcanvas_nanovg_offline_fb_t* offline_fb = canvas->offline_fb;
   if (offline_fb != NULL) {
@@ -39,29 +75,31 @@ static inline void vgcanvas_nanovg_set_offline_fb(vgcanvas_nanovg_t* canvas, uin
       // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 #if WITH_LCD_CLEAR_ALPHA
-      switch (info->lcd_orientation) {
-        case LCD_ORIENTATION_0:
-          r = rect_init(dirty_rect->x, h - dirty_rect->h - dirty_rect->y, dirty_rect->w, dirty_rect->h);
-          break;
-        case LCD_ORIENTATION_90:
-          r = rect_init(w - dirty_rect->h - dirty_rect->y, h - dirty_rect->w - dirty_rect->x, dirty_rect->h, dirty_rect->w);
-          break;
-        case LCD_ORIENTATION_180:
-          r = rect_init(w - dirty_rect->w - dirty_rect->x, dirty_rect->y, dirty_rect->w, dirty_rect->h);
-          break;
-        case LCD_ORIENTATION_270:
-          r = rect_init(dirty_rect->y, dirty_rect->x, dirty_rect->h, dirty_rect->w);
-          break;
-      }
-      
+    if (dirty_rects == NULL || dirty_rects->disable_multiple) {
+      const rect_t* dirty_rect = dirty_rects != NULL ? &(dirty_rects->max) : NULL;
+      rect_t r = vgcanvas_nanovg_get_dirty_rect(dirty_rect);
       // 把脏矩形的区域刷新为黑色透明度为0的颜色
       glScissor(r.x, r.y, r.w, r.h);
       glEnable(GL_SCISSOR_TEST);
       glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
       glDisable(GL_SCISSOR_TEST);
+    } else {
+      int32_t i = 0;
+      for (i = 0; i < dirty_rects->nr; i++) {
+        const rect_t* iter = dirty_rects->rects + i;
+        rect_t r = vgcanvas_nanovg_get_dirty_rect(iter);
+        // 把脏矩形的区域刷新为黑色透明度为0的颜色
+        glScissor(r.x, r.y, r.w, r.h);
+        glEnable(GL_SCISSOR_TEST);
+        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+        glDisable(GL_SCISSOR_TEST);
+      }
+
+    }
 #else
-      (void)dirty_rect;
+      (void)dirty_rects;
 #endif
 
     }
@@ -137,7 +175,7 @@ static ret_t vgcanvas_nanovg_begin_frame(vgcanvas_t* vgcanvas, const dirty_rects
   }
 
   vgcanvas_nanovg_set_offline_fb(canvas, info->lcd_w * info->device_pixel_ratio,
-                                 info->lcd_h * info->device_pixel_ratio, &canvas->base.dirty_rect);
+                                 info->lcd_h * info->device_pixel_ratio, dirty_rects);
 
   nvgBeginFrame(canvas->vg, info->lcd_w, info->lcd_h, info->device_pixel_ratio);
 
