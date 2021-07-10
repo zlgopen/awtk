@@ -321,7 +321,7 @@ static ret_t lcd_mem_destroy(lcd_t* lcd) {
   lcd_mem_t* mem = (lcd_mem_t*)lcd;
   return_value_if_fail(lcd->begin_frame != NULL, RET_BAD_PARAMS);
 
-  return_value_if_fail(lcd_mem_deinit(lcd) == RET_OK, RET_BAD_PARAMS);
+  return_value_if_fail(lcd_mem_deinit(mem) == RET_OK, RET_BAD_PARAMS);
 
   memset(lcd, 0x00, sizeof(lcd_mem_t));
   TKMEM_FREE(lcd);

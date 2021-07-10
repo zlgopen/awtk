@@ -26,7 +26,6 @@ static ret_t vgcanvas_nanovg_fbo_to_bitmap(vgcanvas_t* vgcanvas, framebuffer_obj
                                            bitmap_t* img, const rect_t* r);
 
 static ret_t vgcanvas_nanovg_on_asset_events(void* ctx, event_t* e) {
-  NVGcontext* vg = ((vgcanvas_nanovg_t*)ctx)->vg;
   assets_event_t* evt = (assets_event_t*)e;
 
   if (evt->type == ASSET_TYPE_FONT) {
