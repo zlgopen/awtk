@@ -274,7 +274,7 @@ ret_t locale_info_change(locale_info_t* locale_info, const char* language, const
 design/default/styles/keyboard.xml
 ```
 
-#### 21.如何处理：Cannot find module 'glob'
+#### 21. 如何处理：Cannot find module 'glob'
 
 一般来说，执行下面的命令即可：
 
@@ -282,33 +282,30 @@ design/default/styles/keyboard.xml
 npm install -g glob
 ```
 
-
-在Linux/MacOS上，有时仍然出现错误，可以通过下面的命令，设置NODE_PATH环境变量：
-
+在 Linux/MacOS 上，有时仍然出现错误，可以通过下面的命令，设置 NODE_PATH 环境变量：
 
 ```
 export NODE_PATH="$(npm root -g)"
 ```
 
-#### 22.如何处理 ImportError: No module named PIL
+#### 22. 如何处理 ImportError: No module named PIL
 
-这个需要安装Pillow模块(python)，运行下面的命令可以安装：
+这个需要安装 Pillow 模块 (python)，运行下面的命令可以安装：
 
 ```
 pip3 install Pillow
 ```
 
-如果系统同时安装了python2，可以加个alias。
+如果系统同时安装了 python2，可以加个 alias。
 
 ```
 alias python=python3
 ```
 
-#### 23. 如何让用户不可以调整desktop应用程序的窗口大小。 
+#### 23. 如何让用户不可以调整 desktop 应用程序的窗口大小。 
 
 在 awtk\_config.py 中定义宏 NATIVE\_WINDOW\_NOT\_RESIZABLE，重新编译即可：
 
 ```python
 COMMON_CCFLAGS=COMMON_CCFLAGS+' -DNATIVE_WINDOW_NOT_RESIZABLE=1 '
 ```
-

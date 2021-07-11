@@ -5,7 +5,7 @@
 > 本文前提：
 
 * 安装 node.js
-* 安装 python
+* 安装 python 3.x
 * awtk 编译环境
 * 在 bash 中运行
 
@@ -37,23 +37,7 @@ qr_register();
 }
 ```
 
-## 4. 更新 idl
-
-```
-cd awtk/tools/idl_gen 
-node index.js
-cd - 
-```
-
-## 5. 更新 def
-
-```
-cd awtk/tools/dll_def_gen
- node index.js
- cd -
-```
-
-## 6. 编译 awtk
+## 4. 编译 awtk
 
 ```
 cd awtk
@@ -61,7 +45,7 @@ scons -j2
 cd -
 ```
 
-### 7. 更新绑定代码
+### 5. 更新绑定代码
 
 ```
 git clone https://github.com/zlgopen/awtk-binding
@@ -70,7 +54,7 @@ cd awtk-binding
 cd -
 ```
 
-### 8. 同步绑定代码到需要的语言
+### 6. 同步绑定代码到需要的语言
 
 ```
 git clone https://github.com/zlgopen/awtk-jerryscript
@@ -79,7 +63,7 @@ cd awtk-jerryscript
 scons
 ```
 
-### 9. 注意
+### 7. 注意
 
  * 开发应用程序时记得拷贝自定义控件的 style 到资源中。
- * 如果代码下载太慢，可以从fastgit下载。
+ * 如果代码下载太慢，可以从 fastgit 下载。

@@ -61,4 +61,3 @@ widget_set_children_layout(w, "list_view(m=10,s=15)");
   <scroll_view name="view" x="0"  y="0" w="100%" h="100%" children_layout="list_view(m=10,s=15)">
 ```
 
-> 在不同平台下，命令运行方式有细微差别，请自行调整。
