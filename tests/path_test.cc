@@ -13,6 +13,14 @@ TEST(Path, basename) {
   ASSERT_EQ(string(result), string("test.bin"));
 }
 
+TEST(Path, extname_is) {
+  ASSERT_EQ(path_extname_is("test.bin", ".bin"), TRUE);
+  ASSERT_EQ(path_extname_is("test.Bin", ".bin"), TRUE);
+  ASSERT_EQ(path_extname_is("test.jpg", ".JPG"), TRUE);
+  ASSERT_EQ(path_extname_is("test.jpg", ".JPG"), TRUE);
+  ASSERT_EQ(path_extname_is("test.jpg", NULL), FALSE);
+}
+
 TEST(Path, extname) {
   char result[MAX_PATH + 1];
   ASSERT_EQ(path_extname("/a/test.bin", result, sizeof(result)), RET_OK);

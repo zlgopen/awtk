@@ -59,6 +59,22 @@ ret_t path_basename(const char* path, char* result, int32_t size);
 ret_t path_extname(const char* path, char* result, int32_t size);
 
 /**
+ * @method path_extname_is
+ *
+ * ```c
+ * assert(path_extname_is("test.jpg", ".jpg"));
+ * assert(path_extname_is("test.JPG", ".jpg"));
+ * ```
+ * 检查是否是指定的扩展名。
+ *
+ * @param {const char*} path 路径。
+ * @param {const char*} extname 扩展名。
+ *
+ * @return {bool_t} 返回TRUE表示是，否则表示不是。
+ */
+bool_t path_extname_is(const char* path, const char* extname);
+
+/**
  * @method path_dirname
  *
  * 返回目录。

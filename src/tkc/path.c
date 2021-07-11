@@ -303,3 +303,11 @@ ret_t path_remove_last_slash(char* path) {
 
   return RET_OK;
 }
+
+bool_t path_extname_is(const char* path, const char* extname) {
+  const char* p = NULL;
+  return_value_if_fail(path != NULL && extname != NULL, FALSE);
+
+  p = strrchr(path, '.');
+  return (p != NULL && tk_str_ieq(p, extname));
+}
