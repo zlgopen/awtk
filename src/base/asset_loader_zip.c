@@ -92,12 +92,15 @@ static asset_info_t* asset_loader_zip_load(asset_loader_t* loader, uint16_t type
                                            const char* path, const char* name) {
   size_t size = 0;
   void* data = NULL;
+  int file_index = 0;
   asset_info_t* info = NULL;
   asset_loader_zip_t* zip = (asset_loader_zip_t*)loader;
   const char* res_root = assets_manager_get_res_root(assets_manager());
   uint32_t res_root_len = res_root == NULL ? 0 : strlen(res_root);
-  const char* p = path + ((res_root_len == 0) ? 0 : (res_root_len + 1));
-  int file_index = mz_zip_reader_locate_file(&(zip->archive), p, NULL, 0);
+  const char* p = path + ((res_root_len == 0) ? 0 : (res_root_len));
+
+  while(*p == '/') p++;
+  file_index = mz_zip_reader_locate_file(&(zip->archive), p, NULL, 0);
 
   if (file_index < 0) {
     return NULL;

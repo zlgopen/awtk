@@ -83,7 +83,7 @@ AWTK 中的资源需要进行格式转换才能使用：
   image_manager_load(image_manager(), "earth", &img);
 ```
 
-> 不过通过更上层 widget 的函数去加载图片：
+> 或者通过更上层 widget 的函数去加载图片：
 
 ```
  bitmap_t bitmap;

@@ -173,6 +173,8 @@ int main(int argc, char* argv[]) {
 #endif
 
 #ifdef ASSETS_ZIP
+    assets_manager_set_res_root(assets_manager(), "");
+    log_debug("Load assets from zip: %s\n", ASSETS_ZIP);
     assets_manager_set_loader(assets_manager(), asset_loader_zip_create(ASSETS_ZIP));
 #endif /*ASSETS_ZIP*/
 

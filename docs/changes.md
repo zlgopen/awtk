@@ -1,5 +1,9 @@
 # 最新动态
 
+2021/07/11
+  * 增加函数 path\_extname\_is函数。
+  * 完善从zip文件加载资源的代码、工具和文档。
+
 2021/07/10
   * 将dirty\_rects通过begin\_frame传递到canvas和lcd。
   * 完善tab\_button\_group（感谢智明提供补丁）
