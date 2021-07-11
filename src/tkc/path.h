@@ -37,7 +37,7 @@ BEGIN_C_DECLS
  *
  * 返回文件名。
  *
- * @param {const char* path*} path 路径。
+ * @param {const char*} path 路径。
  * @param {char*} result 用于返回文件名。
  * @param {uint32_t} size 缓冲区大小。
  *
@@ -50,7 +50,7 @@ ret_t path_basename(const char* path, char* result, int32_t size);
  *
  * 返回文件扩展名。
  *
- * @param {const char* path*} path 路径。
+ * @param {const char*} path 路径。
  * @param {char*} result 用于返回文件扩展名。
  * @param {uint32_t} size 缓冲区大小。
  *
@@ -63,7 +63,7 @@ ret_t path_extname(const char* path, char* result, int32_t size);
  *
  * 返回目录。
  *
- * @param {const char* path*} path 路径。
+ * @param {const char*} path 路径。
  * @param {char*} result 用于返回目录。
  * @param {uint32_t} size 缓冲区大小。
  *
@@ -76,7 +76,7 @@ ret_t path_dirname(const char* path, char* result, int32_t size);
  *
  * 规范路径字符形式。
  *
- * @param {const char* path*} path 路径。
+ * @param {const char*} path 路径。
  * @param {char*} result 用于返回规范后的路径。
  * @param {uint32_t} size 缓冲区大小。
  *
@@ -89,7 +89,7 @@ ret_t path_normalize(const char* path, char* result, int32_t size);
  *
  * 返回绝对路径。
  *
- * @param {const char* path*} path 路径。
+ * @param {const char*} path 路径。
  * @param {char*} result 用于返回绝对路径。
  * @param {uint32_t} size 缓冲区大小。
  *
@@ -102,7 +102,7 @@ ret_t path_abs(const char* path, char* result, int32_t size);
  *
  * 判断路径是否为绝对路径。
  *
- * @param {const char* path*} path 路径。
+ * @param {const char*} path 路径。
  *
  * @return {ret_t} 返回FALSE表示不是绝对路径，否则表示是绝对路径。
  */
