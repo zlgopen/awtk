@@ -11,7 +11,7 @@ import scripts.app_helper as app
 helper = app.Helper(ARGUMENTS);
 helper.add_libs(['sqlite3']).add_cpppath([os.path.join(helper.APP_ROOT, '3rd')]).call(DefaultEnvironment)
 
-SConscript(['src/SConscript', '3rd/sqlite3/SConscript'])
+helper.SConscript(['src/SConscript', '3rd/sqlite3/SConscript'])
 ```
 
 ## 二、helper API 介绍
@@ -76,6 +76,8 @@ helper.add_platform_libs('Windows', ['ws2_32'])
 * add\_platform\_cxxflags  增加特定平台的需要的 C++预处理参数。
 
 * add\_platform\_linkflags 增加特定平台的需要的链接参数。
+
+> 所有路径均为列表(数组)格式。
 
 ## 三、注意事项
 
