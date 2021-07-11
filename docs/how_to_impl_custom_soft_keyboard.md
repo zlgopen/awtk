@@ -1,16 +1,16 @@
 # 如何实现自定义的软键盘
 
-有时需要把软键盘嵌入到窗口内部(比如计算器和密码输入等)，这时可以使用自定义软键盘。
+有时需要把软键盘嵌入到窗口内部（比如计算器和密码输入等），这时可以使用自定义软键盘。
 
-### 一、编辑器设置input_type为"custom"(它会禁止内置的软键盘)。
+### 一、编辑器设置 input_type 为"custom"（它会禁止内置的软键盘）。
 
 ```
 <edit x="c" y="10" w="90%" h="30" focused="true" input_type="custom" text="" />
 ```
 
-> 如果希望初始化时编辑器自动获的焦点，可以设置focused为true。
+> 如果希望初始化时编辑器自动获的焦点，可以设置 focused 为 true。
 
-### 二、软键盘的按钮放入一个view(任何容器控件均可)中，并将view的is\_keyboard设置为true。
+### 二、软键盘的按钮放入一个 view（任何容器控件均可）中，并将 view 的 is\_keyboard 设置为 true。
 
 ```
   <view y="60" x="c" w="90%" h="-60" is_keyboard="true" 
@@ -32,7 +32,7 @@
 
 ### 三、处理按钮事件
 
-#### 1.处理正常按键
+#### 1. 处理正常按键
 
 ```
 static ret_t on_send_key(void* ctx, event_t* e) {
@@ -48,7 +48,7 @@ static ret_t on_send_key(void* ctx, event_t* e) {
 
 ```
 
-#### 2.处理删除键
+#### 2. 处理删除键
 
 ```
 static ret_t on_backspace(void* ctx, event_t* e) {
@@ -58,9 +58,7 @@ static ret_t on_backspace(void* ctx, event_t* e) {
 }
 ```
 
-
->如果你不希望出现编辑器的光标，可以使用label控件代替edit控件，输入和删除时直接操作label的text。
-
+>如果你不希望出现编辑器的光标，可以使用 label 控件代替 edit 控件，输入和删除时直接操作 label 的 text。
 
 参考：
 

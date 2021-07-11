@@ -15,6 +15,7 @@ AWTK 也支持类似的功能，我们把它称为 action 键，在软键盘中�
 ## 2. 编辑器
 
 编辑器可以指定 action_text 属性，来修改软键盘上的 action 键上的文本：
+
 ```xml
 <edit w="70%" right_margin="30" input_type="password" action_text="next">
 ```

@@ -1,6 +1,6 @@
 # 如何隐藏滚动条的上下按钮
 
-在design/default/styles/default.xml中，去掉scroll\_down/scroll\_up按钮的style即可：
+在 design/default/styles/default.xml 中，去掉 scroll\_down/scroll\_up 按钮的 style 即可：
 
 ```xml
   <style name="scroll_down" border_color="#a0a0a0">
@@ -15,4 +15,3 @@
     <over       bg_color="#e0e0e0" icon="arrow_up_o"/>
   </style>
 ```
-

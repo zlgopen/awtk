@@ -70,4 +70,3 @@ ret_t widget_begin_end_pointer_cursor(widget_t* widget);
 ```
 
 [完整实例](https://github.com/zlgopen/awtk-c-demos/blob/master/demos/wait_cursor.c)
-

@@ -52,26 +52,6 @@ bitmap_t* canvas_offline_get_bitmap(canvas_t* canvas);
 
 ```c
 /**
- * @method canvas_offline_begin_draw
- * 设置离线 canvas 开始绘图
- *
- * @param {canvas_t*} canvas 离线 canvas 对象。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t canvas_offline_begin_draw(canvas_t* canvas);
-
-/**
- * @method canvas_offline_end_draw
- * 设置离线 canvas 结束绘图
- *
- * @param {canvas_t*} canvas 离线 canvas 对象。
- *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
- */
-ret_t canvas_offline_end_draw(canvas_t* canvas);
-
-/**
  * @method canvas_offline_clear_canvas
  * 把离线 canvas 清除所有数据，并把背景设置为全透明（注意：该离线 canvas 需要有透明通道）
  * 该函数调用前必须要先 canvas_offline_begin_draw 函数。
@@ -113,11 +93,11 @@ ret_t canvas_offline_flush_bitmap(canvas_t* canvas);
   bitmap_t* offline_bitmap = NULL;
 
   /* 开始离线 canvas 绘图 */
-  canvas_offline_begin_draw(canvas_offline);
+  canvas_begin_frame(canvas_offline);
   /* 把整个窗口绘制到离线的 canvas 中 */
   widget_paint(window_manager(), canvas_offline);
   /* 结束离线 canvas 绘图 */
-  canvas_offline_end_draw(canvas_offline);
+  canvas_end_frame(canvas_offline);
 
   /* 由于需要把 bitmap 保存为 png 文件，所以需要把显存中的数据回传到内存中 */
   canvas_offline_flush_bitmap(canvas_offline);
