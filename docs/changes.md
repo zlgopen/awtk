@@ -2,6 +2,7 @@
 
 2021/07/12
   * 完善文档。
+  * 完善 input\_method\_default，支持T9/T9EXT的默认键盘。
 
 2021/07/11
   * 增加函数 path\_extname\_is 函数。

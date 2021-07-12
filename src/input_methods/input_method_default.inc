@@ -30,6 +30,14 @@
 #include "base/window_manager.h"
 #include "ui_loader/ui_builder_default.h"
 
+#if defined(WITH_IME_T9)
+#define STR_DEFAULT_KEYBOARD "kb_default_t9"
+#elif defined(WITH_IME_T9EXT)
+#define STR_DEFAULT_KEYBOARD "kb_default_t9ext"
+#else
+#define STR_DEFAULT_KEYBOARD "kb_default"
+#endif
+
 static ret_t input_method_default_on_edit_destroy(void* ctx, event_t* e);
 static ret_t input_method_default_on_keyboard_close(void* ctx, event_t* e);
 
@@ -80,7 +88,7 @@ static const char* input_type_to_keyboard_name(int32_t input_type) {
       break;
     }
     default: {
-      keyboard = "kb_default";
+      keyboard = STR_DEFAULT_KEYBOARD;
       break;
     }
   }
@@ -197,7 +205,7 @@ static ret_t input_type_open_keyboard(input_method_t* im, const char* keyboard_n
   im->keyboard = window_open(keyboard_name);
   if (im->keyboard == NULL) {
     log_debug("Not found keyboard [%s], try default.\n", keyboard_name);
-    im->keyboard = window_open("kb_default");
+    im->keyboard = window_open(STR_DEFAULT_KEYBOARD);
   }
   return_value_if_fail(im->keyboard != NULL, RET_NOT_FOUND);
 
