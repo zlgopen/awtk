@@ -4,7 +4,7 @@
 
 ## 一、设置屏保定时器时间
 
-用函数window\_manager\_set\_screen\_saver\_time设置屏保时间。
+用函数 window\_manager\_set\_screen\_saver\_time 设置屏保时间。
 
 ```
 /**
@@ -12,9 +12,9 @@
  * 设置屏保时间。
  * @annotation ["scriptable"]
  * @param {widget_t*} widget 窗口管理器对象。
- * @param {uint32_t}  screen_saver_time 屏保时间(单位毫秒)。
+ * @param {uint32_t}  screen_saver_time 屏保时间（单位毫秒）。
  *
- * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ * @return {ret_t} 返回 RET_OK 表示成功，否则表示失败。
  */
 ret_t window_manager_set_screen_saver_time(widget_t* widget, uint32_t screen_saver_time);
 ```
@@ -63,4 +63,4 @@ ret_t application_init() {
 
 ```
 
-> 可以在XML设置window的fullscreen属性，让屏保窗口进入全屏状态。
+> 可以在 XML 设置 window 的 fullscreen 属性，让屏保窗口进入全屏状态。

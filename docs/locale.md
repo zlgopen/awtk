@@ -10,7 +10,7 @@
 
 我们采用 XML 文件 (UTF-8) 保存字符串的各个语言的对应关系，方便程序员和翻译人员进行编辑。如：
 
-```
+```xml
 <string name="ok">
 <language name="en_US">OK</language>
 <language name="zh_CN">确定</language>
@@ -250,8 +250,6 @@ demotr 提供了实时切换语言的示例，代码可以参考 demos/demo\_tr\
 ```xml
 <string name="&lt;&quot;en&amp;zh&quot;&gt;">
 <language name="en_US">&lt;&quot;en&amp;zh&quot;&gt;</language>
-<language name="zh_CN">&lt;&quot;英文&amp;中文&quot;&gt;</language>
+<language name="zh_CN">&lt;&quot; 英文&amp; 中文&quot;&gt;</language>
 </string>
 ```
-
-
