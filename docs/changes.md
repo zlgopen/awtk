@@ -2,6 +2,7 @@
 
 2021/07/12
   * 完善文档。
+  * 优化 layout。
   * 完善 input\_method\_default，支持T9/T9EXT的默认键盘。
   * 修复异步 layout 和同步 invalidate 造成部分控件不刷新的问题。
 

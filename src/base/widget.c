@@ -4198,7 +4198,11 @@ ret_t widget_set_need_relayout(widget_t* widget) {
 }
 
 ret_t widget_set_need_relayout_children(widget_t* widget) {
-  return widget_set_need_relayout(widget);
+  if (widget_count_children(widget) > 0) {
+    return widget_set_need_relayout(widget);
+  }
+
+  return RET_OK;
 }
 
 static ret_t widget_ensure_style_mutable(widget_t* widget) {
