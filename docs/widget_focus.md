@@ -122,3 +122,5 @@
 * [键名的定义：https://github.com/zlgopen/awtk/blob/master/src/base/enums.c](https://github.com/zlgopen/awtk/blob/master/src/base/enums.c#L99)。
 
 * [键值映射：https://github.com/zlgopen/awtk/blob/master/docs/map_key.md](https://github.com/zlgopen/awtk/blob/master/docs/map_key.md)
+
+* [如何支持极简键盘 (3 键键盘、5 键键盘和旋转按钮）](how_to_support_5keys_3keys.md )

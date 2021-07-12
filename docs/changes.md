@@ -1,105 +1,108 @@
 # 最新动态
 
+2021/07/12
+  * 完善文档。
+
 2021/07/11
-  * 增加函数 path\_extname\_is函数。
-  * 完善从zip文件加载资源的代码、工具和文档。
+  * 增加函数 path\_extname\_is 函数。
+  * 完善从 zip 文件加载资源的代码、工具和文档。
 
 2021/07/10
-  * 将dirty\_rects通过begin\_frame传递到canvas和lcd。
-  * 完善tab\_button\_group（感谢智明提供补丁）
+  * 将 dirty\_rects 通过 begin\_frame 传递到 canvas 和 lcd。
+  * 完善 tab\_button\_group（感谢智明提供补丁）
   * 修复开启了 WITH\_LCD\_CLEAR\_ALPHA 后使用透明窗口后，会导致刷新部分不正常的问题（感谢智明提供补丁）
 
 2021/07/09
-  * tokenizer\_next\_expr\_until添加了对"{}"和"[]"的处理（感谢朝泽提供补丁）
+  * tokenizer\_next\_expr\_until 添加了对"{}"和"[]"的处理（感谢朝泽提供补丁）
   * 修复在 SDL 的桌面模式下拉伸窗口不正常的问题（感谢智明提供补丁）
   * lcd\_mem 类增加一个 lcd\_mem\_init 函数（感谢智明提供补丁）
 
 2021/07/08
   * 修复不必要的警告（感谢兆坤提供补丁）
-  * 导出lcd\_get\_dirty\_rect（感谢智明提供补丁）
+  * 导出 lcd\_get\_dirty\_rect（感谢智明提供补丁）
   * 修复限制最高绘图帧率机制的问题（感谢智明提供补丁）
-  * 修改mledit输入提示对齐的问题（感谢智明提供补丁）。
+  * 修改 mledit 输入提示对齐的问题（感谢智明提供补丁）。
 
 2021/07/07
   * 窗口完全进入后台时不再绘制。
-  * 去除因hscroll_label重复增加定时器所导致的警告（感谢兆坤提供补丁）
-  * 补充vpage在打开页面时的widget_layout（感谢兆坤提供补丁）
+  * 去除因 hscroll_label 重复增加定时器所导致的警告（感谢兆坤提供补丁）
+  * 补充 vpage 在打开页面时的 widget_layout（感谢兆坤提供补丁）
   * 修复 lcd 的 resize 失败后导致的崩溃问题（感谢智明提供补丁）
   * 修复限制最高绘图帧率机制的问题（感谢智明提供补丁）
-  * 完善pthread实现的thread等待时不能及时响应（感谢陈谭提供补丁）。
+  * 完善 pthread 实现的 thread 等待时不能及时响应（感谢陈谭提供补丁）。
 
 2021/07/05
- * 完善release脚本（感谢朝泽提供补丁）
- * 完善csv file（感谢雨欣提供补丁）
+ * 完善 release 脚本（感谢朝泽提供补丁）
+ * 完善 csv file（感谢雨欣提供补丁）
  * 修复圆角矩形编译警告（感谢智明提供补丁）
 
 2021/07/02
  * 修复延迟动画刷新的问题（感谢智明提供补丁）
- * 修复agge的ras初始化的值不正常的问题（感谢智明提供补丁）
- * 修复linux-fb无法修改lcd分辨率问题（感谢智明提供补丁）
+ * 修复 agge 的 ras 初始化的值不正常的问题（感谢智明提供补丁）
+ * 修复 linux-fb 无法修改 lcd 分辨率问题（感谢智明提供补丁）
 
 2021/07/01
-  * 增加rectf\_t。
-  * 完善switch。
-  * 修复部分源文件的UTF-8 BOM标志（感谢陈谭提供补丁）。
-  * 完善canvas。如果图片缩放，而且只是绘制部分，为了避免取整出现坐标异位，使用vgcanvas绘制。
+  * 增加 rectf\_t。
+  * 完善 switch。
+  * 修复部分源文件的 UTF-8 BOM 标志（感谢陈谭提供补丁）。
+  * 完善 canvas。如果图片缩放，而且只是绘制部分，为了避免取整出现坐标异位，使用 vgcanvas 绘制。
 
 2021/06/30
-  * 将fps计算放到fps.h中。
-  * 还原vg资源管理器的宏 （感谢智明提供补丁）
-  * 增加vgcanvas\_set\_fill\_gradient/vgcanvas\_set\_fill\_gradient。
+  * 将 fps 计算放到 fps.h 中。
+  * 还原 vg 资源管理器的宏 （感谢智明提供补丁）
+  * 增加 vgcanvas\_set\_fill\_gradient/vgcanvas\_set\_fill\_gradient。
 
 2021/06/29
-  * 增加vgcanvas\_clip\_path和基于cairo的实现。
+  * 增加 vgcanvas\_clip\_path 和基于 cairo 的实现。
 
 2021/06/28
-  * 增加函数matrix\_transform\_pointf。
-  * 增加一个生成object的框架代码的小工具。
-  * 完善编辑脚本，APP支持输出到不同目录(感谢[ufbycd](https://github.com/ufbycd)提供补丁)。
+  * 增加函数 matrix\_transform\_pointf。
+  * 增加一个生成 object 的框架代码的小工具。
+  * 完善编辑脚本，APP 支持输出到不同目录（感谢 [ufbycd](https://github.com/ufbycd) 提供补丁）。
 
 2021/06/27
   * 修复输入法软键盘判断坐标的问题。
 
 2021/06/26
-  * 完善edit
-  * 完善offline canvas（感谢智明提供补丁）
-  * 修改ui loader的内存问题（感谢朱俊提供补丁）
-  * 增加window\_manager\_set\_max\_fps用于限制最大帧率。
+  * 完善 edit
+  * 完善 offline canvas（感谢智明提供补丁）
+  * 修改 ui loader 的内存问题（感谢朱俊提供补丁）
+  * 增加 window\_manager\_set\_max\_fps 用于限制最大帧率。
 
 2021/06/25
   * 完善编译脚步（感谢雨欣提供补丁）
 
 2021/06/24
   * 支持多个脏矩形。
-  * gauge\_pointer支持精确脏矩形(可大幅提高gauge界面的流畅度)。
-  * 页面切换速度比动画速度快时导致显示不正常问题（感谢兆坤提供补丁)。
-  * 消除ui\_loader\_load edit、mledit所产生的警告信息（感谢兆坤提供补丁)。
+  * gauge\_pointer 支持精确脏矩形（可大幅提高 gauge 界面的流畅度）。
+  * 页面切换速度比动画速度快时导致显示不正常问题（感谢兆坤提供补丁）。
+  * 消除 ui\_loader\_load edit、mledit 所产生的警告信息（感谢兆坤提供补丁）。
 
 2021/06/23
-  * 完善awtk\_config.py（感谢朝泽提供补丁）
-  * 完善awtk\_main.inc（感谢朝泽提供补丁）
+  * 完善 awtk\_config.py（感谢朝泽提供补丁）
+  * 完善 awtk\_main.inc（感谢朝泽提供补丁）
 
 2021/06/19
-  * 完善vgcanvas\_asset\_manager（感谢智明提供补丁）
+  * 完善 vgcanvas\_asset\_manager（感谢智明提供补丁）
 
 2021/06/18
-  * 把截屏函数和离线画布都改用多 vg 的模式（感谢智明提供补丁)
+  * 把截屏函数和离线画布都改用多 vg 的模式（感谢智明提供补丁）
   * 增加 vgcanvas\_asset\_manager 的机制，来保证不同 vg 公用同一份资源时候不会出现问题（感谢智明提供补丁）
 
 2021/06/17
-  * 增加rect\_has\_intersect。
-  * 完善widget\_paint\_with\_clip。
-  * 完善awtk\_main.inc（感谢朝泽提供补丁）
+  * 增加 rect\_has\_intersect。
+  * 完善 widget\_paint\_with\_clip。
+  * 完善 awtk\_main.inc（感谢朝泽提供补丁）
   * 修改控件动画的刷新时间和最高帧率绑定一起（感谢智明提供补丁）
-  * 增加lcd的接口并且完善其他的类型lcd的接口（感谢智明提供补丁）
-  * 修复圆角矩形依赖宏来判断lcd类型来打点的问题（感谢智明提供补丁）
+  * 增加 lcd 的接口并且完善其他的类型 lcd 的接口（感谢智明提供补丁）
+  * 修复圆角矩形依赖宏来判断 lcd 类型来打点的问题（感谢智明提供补丁）
   * 增加加载没有文件后缀的图片资源（感谢智明提供补丁）
-  * 完善keyboard对hard\_key的支持。
+  * 完善 keyboard 对 hard\_key 的支持。
 
 2021/06/16
-  * 支持[极简键盘 (3 键键盘、5 键键盘和旋转按钮）](docs/how_to_support_5keys_3keys.md)
-  * edit/mledit不处理escape和功能键。 
-  * 修复拼音输入法assert: https://github.com/zlgopen/awtk/issues/563
+  * 支持 [极简键盘 (3 键键盘、5 键键盘和旋转按钮）](docs/how_to_support_5keys_3keys.md)
+  * edit/mledit 不处理 escape 和功能键。 
+  * 修复拼音输入法 assert: https://github.com/zlgopen/awtk/issues/563
 
 2021/06/15
   * edit 不再用左右键切换焦点。 
