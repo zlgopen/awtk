@@ -49,17 +49,10 @@ ret_t window_base_on_paint_begin(widget_t* widget, canvas_t* c) {
   canvas_set_assets_manager(c, am);
   image_manager_set_assets_manager(imm, am);
 
-  if (win->need_relayout) {
-    widget_layout(widget);
-  }
-
   return RET_OK;
 }
 
 ret_t window_base_on_paint_end(widget_t* widget, canvas_t* c) {
-  window_base_t* win = WINDOW_BASE(widget);
-  win->need_relayout = FALSE;
-
   return RET_OK;
 }
 
