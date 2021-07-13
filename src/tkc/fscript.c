@@ -1,4 +1,4 @@
-﻿/**
+/**
  * File:   fscript.c
  * Author: AWTK Develop Team
  * Brief:  a simple functional script language
@@ -397,6 +397,7 @@ ret_t fscript_exec(fscript_t* fscript, value_t* result) {
     value_reset(result);
     return_value_if_fail(fscript_exec_func(fscript, iter, result) == RET_OK, RET_FAIL);
     if (fscript->returned) {
+      fscript->returned = FALSE;
       break;
     }
     iter = iter->next;
