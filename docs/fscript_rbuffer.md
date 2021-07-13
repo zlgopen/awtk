@@ -153,13 +153,13 @@ rbuffer_read_double(rbuffer) => double
 
 ### 14.rbuffer\_read\_string
 
-> 读取指定长度的字符串。
+> 读取字符串。
 ----------------------------
 
 #### 原型
 
 ```js
-rbuffer_read_string(rbuffer, size) => str
+rbuffer_read_string(rbuffer) => str
 ```
 
 ### 15.rbuffer\_read\_binary
