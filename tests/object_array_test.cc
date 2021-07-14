@@ -247,3 +247,55 @@ TEST(ObjectArray, insert) {
 
   object_unref(obj);
 }
+
+TEST(ObjectArray, index_of) {
+  value_t v;
+  object_t* obj = object_array_create();
+  
+  value_set_int(&v, 10);
+  ASSERT_EQ(object_array_index_of(obj, &v), -1);
+  
+  value_set_int(&v, 10);
+  ASSERT_EQ(object_array_last_index_of(obj, &v), -1);
+
+  value_set_int(&v, 10);
+  object_array_push(obj, &v);
+  ASSERT_EQ(object_array_index_of(obj, &v), 0);
+  ASSERT_EQ(object_array_last_index_of(obj, &v), 0);
+
+  value_set_int(&v, 20);
+  object_array_push(obj, &v);
+  value_set_int(&v, 30);
+  object_array_push(obj, &v);
+
+  value_set_int(&v, 30);
+  ASSERT_EQ(object_array_index_of(obj, &v), 2);
+  
+  value_set_int(&v, 10);
+  ASSERT_EQ(object_array_index_of(obj, &v), 0);
+  
+  value_set_int(&v, 50);
+  ASSERT_EQ(object_array_index_of(obj, &v), -1);
+  
+  value_set_int(&v, 10);
+  object_array_push(obj, &v);
+  value_set_int(&v, 20);
+  object_array_push(obj, &v);
+  value_set_int(&v, 30);
+  object_array_push(obj, &v);
+  
+  value_set_int(&v, 10);
+  ASSERT_EQ(object_array_last_index_of(obj, &v), 3);
+  
+  value_set_int(&v, 20);
+  ASSERT_EQ(object_array_last_index_of(obj, &v), 4);
+  
+  value_set_int(&v, 30);
+  ASSERT_EQ(object_array_last_index_of(obj, &v), 5);
+  
+  value_set_int(&v, 300);
+  ASSERT_EQ(object_array_last_index_of(obj, &v), -1);
+
+  object_unref(obj);
+}
+

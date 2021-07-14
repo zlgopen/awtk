@@ -150,6 +150,34 @@ ret_t object_array_insert(object_t* obj, uint32_t index, const value_t* v);
 ret_t object_array_push(object_t* obj, const value_t* v);
 
 /**
+ * @method object_array_index_of
+ *
+ * 查找元素出现的第一个位置。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj 对象。
+ * @param {const value_t*} v 值。
+ *
+ * @return {int32_t} 如果找到返回其位置，否则返回-1。
+ *
+ */
+int32_t object_array_index_of(object_t* obj, const value_t* v);
+
+/**
+ * @method object_array_last_index_of
+ *
+ * 查找元素出现的最后一个位置。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj 对象。
+ * @param {const value_t*} v 值。
+ *
+ * @return {int32_t} 如果找到返回其位置，否则返回-1。
+ *
+ */
+int32_t object_array_last_index_of(object_t* obj, const value_t* v);
+
+/**
  * @method object_array_remove
  *
  * 在指定位置删除一个元素。

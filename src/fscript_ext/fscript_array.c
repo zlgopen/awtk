@@ -17,12 +17,43 @@
 #include "tkc/fscript.h"
 #include "tkc/object_array.h"
 static ret_t func_array_create(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  uint32_t i = 0;
   object_t* obj = object_array_create();
   value_set_object(result, obj);
   result->free_handle = TRUE;
 
+  for (i = 0; i < args->size; i++) {
+    ret_t ret = object_array_push(obj, args->args + i);
+    if (ret != RET_OK) {
+      break;
+    }
+  }
+
   return RET_OK;
 }
+
+static ret_t func_array_create_with_repeated_value(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  uint32_t i = 0;
+  uint32_t n = 0;
+  object_t* obj = NULL;
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+  
+  obj = object_array_create();
+  value_set_object(result, obj);
+  return_value_if_fail(obj != NULL, RET_BAD_PARAMS);
+
+  result->free_handle = TRUE;
+  n = value_uint32(args->args + 1);
+  for (i = 0; i < n; i++) {
+    ret_t ret = object_array_push(obj, args->args);
+    if (ret != RET_OK) {
+      break;
+    }
+  }
+
+  return RET_OK;
+}
+
 
 static ret_t func_array_push(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   uint32_t i = 0;
@@ -108,6 +139,32 @@ static ret_t func_array_remove(fscript_t* fscript, fscript_args_t* args, value_t
   return RET_OK;
 }
 
+static ret_t func_array_index_of(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  object_t* obj = NULL;
+  object_array_t* arr = NULL;
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+  obj = value_object(args->args);
+  arr = OBJECT_ARRAY(obj);
+  return_value_if_fail(arr != NULL, RET_BAD_PARAMS);
+
+  value_set_int(result, object_array_index_of(obj, args->args + 1));
+
+  return RET_OK;
+}
+
+static ret_t func_array_last_index_of(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  object_t* obj = NULL;
+  object_array_t* arr = NULL;
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+  obj = value_object(args->args);
+  arr = OBJECT_ARRAY(obj);
+  return_value_if_fail(arr != NULL, RET_BAD_PARAMS);
+
+  value_set_int(result, object_array_last_index_of(obj, args->args + 1));
+
+  return RET_OK;
+}
+
 static ret_t func_array_clear(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   object_t* obj = NULL;
   object_array_t* arr = NULL;
@@ -162,12 +219,15 @@ static ret_t func_array_join(fscript_t* fscript, fscript_args_t* args, value_t* 
 
 ret_t fscript_array_register(void) {
   ENSURE(fscript_register_func("array_create", func_array_create) == RET_OK);
+  ENSURE(fscript_register_func("array_create_with_repeated_value", func_array_create_with_repeated_value) == RET_OK);
   ENSURE(fscript_register_func("array_push", func_array_push) == RET_OK);
   ENSURE(fscript_register_func("array_pop", func_array_pop) == RET_OK);
   ENSURE(fscript_register_func("array_get", func_array_get) == RET_OK);
   ENSURE(fscript_register_func("array_set", func_array_set) == RET_OK);
   ENSURE(fscript_register_func("array_insert", func_array_insert) == RET_OK);
   ENSURE(fscript_register_func("array_remove", func_array_remove) == RET_OK);
+  ENSURE(fscript_register_func("array_index_of", func_array_index_of) == RET_OK);
+  ENSURE(fscript_register_func("array_last_index_of", func_array_last_index_of) == RET_OK);
   ENSURE(fscript_register_func("array_clear", func_array_clear) == RET_OK);
   ENSURE(fscript_register_func("array_join", func_array_join) == RET_OK);
 

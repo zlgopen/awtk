@@ -142,6 +142,38 @@ static int32_t object_array_parse_index(const char* name) {
   }
 }
 
+int32_t object_array_index_of(object_t* obj, const value_t* v) {
+  int32_t i = 0;
+  object_array_t* o = OBJECT_ARRAY(obj);
+  return_value_if_fail(o != NULL, -1);
+
+  for (i = 0; i < o->size; i++) {
+    value_t* iter = o->props + i;
+    if (value_equal(iter, v)) {
+      return i;
+    }
+  }
+
+  return -1;
+}
+
+int32_t object_array_last_index_of(object_t* obj, const value_t* v) {
+  int32_t i = 0;
+  object_array_t* o = OBJECT_ARRAY(obj);
+  return_value_if_fail(o != NULL, -1);
+
+  if (o->size > 0) {
+    for (i = o->size - 1; i >= 0; i--) {
+      value_t* iter = o->props + i;
+      if (value_equal(iter, v)) {
+        return i;
+      }
+    }
+  }
+
+  return -1;
+}
+
 ret_t object_array_remove(object_t* obj, uint32_t index) {
   ret_t ret = RET_NOT_FOUND;
   object_array_t* o = OBJECT_ARRAY(obj);

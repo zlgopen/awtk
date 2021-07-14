@@ -1,5 +1,10 @@
 # 最新动态
 
+2021/07/14
+  * 增加object\_array\_index\_of及fscript的包装
+  * 增加object\_array\_last\_index\_of及fscript的包装
+  * 增加array\_create\_with\_repeated\_value
+
 2021/07/13
   * 修改编译警告（感谢智明提供补丁）
   * 完善 fscript 文档（感谢攀峰提供补丁）
