@@ -32,12 +32,13 @@ static ret_t func_array_create(fscript_t* fscript, fscript_args_t* args, value_t
   return RET_OK;
 }
 
-static ret_t func_array_create_with_repeated_value(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+static ret_t func_array_create_with_repeated_value(fscript_t* fscript, fscript_args_t* args,
+                                                   value_t* result) {
   uint32_t i = 0;
   uint32_t n = 0;
   object_t* obj = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
-  
+
   obj = object_array_create();
   value_set_object(result, obj);
   return_value_if_fail(obj != NULL, RET_BAD_PARAMS);
@@ -53,7 +54,6 @@ static ret_t func_array_create_with_repeated_value(fscript_t* fscript, fscript_a
 
   return RET_OK;
 }
-
 
 static ret_t func_array_push(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   uint32_t i = 0;
@@ -95,8 +95,8 @@ static ret_t func_array_set(fscript_t* fscript, fscript_args_t* args, value_t* r
   obj = value_object(args->args);
   arr = OBJECT_ARRAY(obj);
   return_value_if_fail(arr != NULL, RET_BAD_PARAMS);
-  
-  index =  value_int(args->args + 1);
+
+  index = value_int(args->args + 1);
   if (index < 0) {
     index += arr->size;
   }
@@ -116,7 +116,7 @@ static ret_t func_array_get(fscript_t* fscript, fscript_args_t* args, value_t* r
   arr = OBJECT_ARRAY(obj);
   return_value_if_fail(arr != NULL, RET_BAD_PARAMS);
 
-  index =  value_int(args->args + 1);
+  index = value_int(args->args + 1);
   if (index < 0) {
     index += arr->size;
   }
@@ -126,6 +126,7 @@ static ret_t func_array_get(fscript_t* fscript, fscript_args_t* args, value_t* r
 }
 
 static ret_t func_array_insert(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  int32_t index = 0;
   object_t* obj = NULL;
   object_array_t* arr = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 3, RET_BAD_PARAMS);
@@ -133,13 +134,19 @@ static ret_t func_array_insert(fscript_t* fscript, fscript_args_t* args, value_t
   arr = OBJECT_ARRAY(obj);
   return_value_if_fail(arr != NULL, RET_BAD_PARAMS);
 
-  value_set_bool(result,
-                 object_array_insert(obj, value_uint32(args->args + 1), args->args + 2) == RET_OK);
+  index = value_int(args->args + 1);
+  if (index < 0) {
+    index += arr->size;
+  }
+  return_value_if_fail(index >= 0, RET_BAD_PARAMS);
+
+  value_set_bool(result, object_array_insert(obj, index, args->args + 2) == RET_OK);
 
   return RET_OK;
 }
 
 static ret_t func_array_remove(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  int32_t index = 0;
   object_t* obj = NULL;
   object_array_t* arr = NULL;
   FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
@@ -147,7 +154,13 @@ static ret_t func_array_remove(fscript_t* fscript, fscript_args_t* args, value_t
   arr = OBJECT_ARRAY(obj);
   return_value_if_fail(arr != NULL, RET_BAD_PARAMS);
 
-  value_set_bool(result, object_array_remove(obj, value_uint32(args->args + 1)) == RET_OK);
+  index = value_int(args->args + 1);
+  if (index < 0) {
+    index += arr->size;
+  }
+  return_value_if_fail(index >= 0 && index < arr->size, RET_BAD_PARAMS);
+
+  value_set_bool(result, object_array_remove(obj, index) == RET_OK);
 
   return RET_OK;
 }
@@ -232,7 +245,8 @@ static ret_t func_array_join(fscript_t* fscript, fscript_args_t* args, value_t* 
 
 ret_t fscript_array_register(void) {
   ENSURE(fscript_register_func("array_create", func_array_create) == RET_OK);
-  ENSURE(fscript_register_func("array_create_with_repeated_value", func_array_create_with_repeated_value) == RET_OK);
+  ENSURE(fscript_register_func("array_create_with_repeated_value",
+                               func_array_create_with_repeated_value) == RET_OK);
   ENSURE(fscript_register_func("array_push", func_array_push) == RET_OK);
   ENSURE(fscript_register_func("array_pop", func_array_pop) == RET_OK);
   ENSURE(fscript_register_func("array_get", func_array_get) == RET_OK);
