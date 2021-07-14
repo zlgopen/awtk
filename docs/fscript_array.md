@@ -53,6 +53,8 @@ array_pop(array) => value
 array_get(array, index) => value
 ```
 
+> index 为负数时，从后往前取。比如-1表示最后一个元素。
+
 ### 5.array\_set
 
 > 修改指定位置的元素
@@ -63,6 +65,8 @@ array_get(array, index) => value
 ```js
 array_set(array, index, value) => bool
 ```
+
+> index 为负数时，从后往前取。比如-1表示最后一个元素。
 
 ### 6.array\_insert
 
