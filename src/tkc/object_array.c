@@ -175,16 +175,30 @@ int32_t object_array_last_index_of(object_t* obj, const value_t* v) {
 }
 
 ret_t object_array_remove(object_t* obj, uint32_t index) {
+  return object_array_get_and_remove(obj, index, NULL);
+}
+
+ret_t object_array_get_and_remove(object_t* obj, uint32_t index, value_t* v) {
   ret_t ret = RET_NOT_FOUND;
   object_array_t* o = OBJECT_ARRAY(obj);
   return_value_if_fail(o != NULL, RET_BAD_PARAMS);
+
   if (index < o->size) {
     value_t* iter = o->props + index;
-    value_reset(iter);
+    if (v != NULL) {
+      *v = *iter;
+      memset(iter, 0x00, sizeof(*iter));
+    } else {
+      value_reset(iter);
+    }
     ret = object_array_clean_invalid_props(obj);
   }
 
   return ret;
+}
+
+ret_t object_array_shift(object_t* obj, value_t* v) {
+  return object_array_get_and_remove(obj, 0, v);
 }
 
 static ret_t object_array_remove_prop(object_t* obj, const char* name) {
@@ -353,4 +367,89 @@ object_array_t* object_array_cast(object_t* obj) {
 
 ret_t object_array_unref(object_t* obj) {
   return object_unref(obj);
+}
+
+object_t* object_array_create_from_str(const char* str, const char* delim, value_type_t type) {
+  str_t s;
+  value_t v;
+  object_t* obj = NULL;
+  const char* p = NULL;
+  const char* end = NULL;
+  return_value_if_fail(str != NULL && delim != NULL && type != VALUE_TYPE_INVALID, NULL);
+  obj = object_array_create();
+  return_value_if_fail(obj != NULL, NULL);
+
+  if (str_init(&s, 100) == NULL) {
+    OBJECT_UNREF(obj);
+    return NULL;
+  }
+
+  p = str;
+  do {
+    end = strstr(p, delim);
+    if (end != NULL) {
+      str_set_with_len(&s, p, end - p);
+    } else {
+      str_set(&s, p);
+    }
+
+    switch(type) {
+      case VALUE_TYPE_UINT8: {
+        value_set_uint8(&v, tk_atoi(s.str));
+        break;
+      }
+      case VALUE_TYPE_UINT16: {
+        value_set_uint16(&v, tk_atoi(s.str));
+        break;
+      }
+      case VALUE_TYPE_UINT32: {
+        value_set_uint32(&v, tk_atoi(s.str));
+        break;
+      }
+      case VALUE_TYPE_UINT64: {
+        value_set_uint64(&v, tk_atoul(s.str));
+        break;
+      }
+      case VALUE_TYPE_INT8: {
+        value_set_int8(&v, tk_atoi(s.str));
+        break;
+      }
+      case VALUE_TYPE_INT16: {
+        value_set_int16(&v, tk_atoi(s.str));
+        break;
+      }
+      case VALUE_TYPE_INT32: {
+        value_set_int32(&v, tk_atoi(s.str));
+        break;
+      }
+      case VALUE_TYPE_INT64: {
+        value_set_int64(&v, tk_atoul(s.str));
+        break;
+      }
+      case VALUE_TYPE_FLOAT: {
+        value_set_float(&v, tk_atof(s.str));
+        break;
+      }
+      case VALUE_TYPE_FLOAT32: {
+        value_set_float32(&v, tk_atof(s.str));
+        break;
+      }
+      case VALUE_TYPE_DOUBLE: {
+        value_set_double(&v, tk_atof(s.str));
+        break;
+      }
+      default: {
+        value_set_str(&v, s.str);
+        break;
+      }
+    }
+    object_array_push(obj, &v);
+    if (end != NULL) {
+      p = end + strlen(delim);
+    }
+  } while (end != NULL && *p);
+
+  str_reset(&s);
+
+  return obj;
 }

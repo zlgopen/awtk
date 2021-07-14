@@ -87,6 +87,17 @@ static ret_t func_array_pop(fscript_t* fscript, fscript_args_t* args, value_t* r
   return object_array_pop(obj, result);
 }
 
+static ret_t func_array_shift(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  object_t* obj = NULL;
+  object_array_t* arr = NULL;
+  FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
+  obj = value_object(args->args);
+  arr = OBJECT_ARRAY(obj);
+  return_value_if_fail(arr != NULL, RET_BAD_PARAMS);
+
+  return object_array_shift(obj, result);
+}
+
 static ret_t func_array_set(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   int32_t index = 0;
   object_t* obj = NULL;
@@ -163,6 +174,24 @@ static ret_t func_array_remove(fscript_t* fscript, fscript_args_t* args, value_t
   value_set_bool(result, object_array_remove(obj, index) == RET_OK);
 
   return RET_OK;
+}
+
+static ret_t func_array_get_and_remove(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  int32_t index = 0;
+  object_t* obj = NULL;
+  object_array_t* arr = NULL;
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+  obj = value_object(args->args);
+  arr = OBJECT_ARRAY(obj);
+  return_value_if_fail(arr != NULL, RET_BAD_PARAMS);
+
+  index = value_int(args->args + 1);
+  if (index < 0) {
+    index += arr->size;
+  }
+  return_value_if_fail(index >= 0 && index < arr->size, RET_BAD_PARAMS);
+
+  return object_array_get_and_remove(obj, index, result);
 }
 
 static ret_t func_array_index_of(fscript_t* fscript, fscript_args_t* args, value_t* result) {
@@ -249,10 +278,12 @@ ret_t fscript_array_register(void) {
                                func_array_create_with_repeated_value) == RET_OK);
   ENSURE(fscript_register_func("array_push", func_array_push) == RET_OK);
   ENSURE(fscript_register_func("array_pop", func_array_pop) == RET_OK);
+  ENSURE(fscript_register_func("array_shift", func_array_shift) == RET_OK);
   ENSURE(fscript_register_func("array_get", func_array_get) == RET_OK);
   ENSURE(fscript_register_func("array_set", func_array_set) == RET_OK);
   ENSURE(fscript_register_func("array_insert", func_array_insert) == RET_OK);
   ENSURE(fscript_register_func("array_remove", func_array_remove) == RET_OK);
+  ENSURE(fscript_register_func("array_get_and_remove", func_array_get_and_remove) == RET_OK);
   ENSURE(fscript_register_func("array_index_of", func_array_index_of) == RET_OK);
   ENSURE(fscript_register_func("array_last_index_of", func_array_last_index_of) == RET_OK);
   ENSURE(fscript_register_func("array_clear", func_array_clear) == RET_OK);

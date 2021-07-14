@@ -50,7 +50,7 @@ TEST(ObjectArray, events) {
   ASSERT_EQ(object_set_prop(obj, "-1", value_set_int(&v, 50)), RET_OK);
   ASSERT_EQ(object_set_prop(obj, "-1", value_set_int(&v, 50)), RET_OK);
 
-  object_unref(obj);
+  OBJECT_UNREF(obj);
 
   ASSERT_EQ(log, "-1:-1:-1:-1:destroy:");
 }
@@ -136,7 +136,7 @@ TEST(ObjectArray, basic) {
   log = "";
   object_foreach_prop(obj, visit_dump, &log);
   ASSERT_EQ(log, "15");
-  object_unref(obj);
+  OBJECT_UNREF(obj);
 }
 
 TEST(ObjectArray, dup) {
@@ -155,8 +155,8 @@ TEST(ObjectArray, dup) {
   object_foreach_prop(dup, visit_dump, &log);
   ASSERT_EQ(log, "0123");
 
-  object_unref(obj);
-  object_unref(dup);
+  OBJECT_UNREF(obj);
+  OBJECT_UNREF(dup);
 }
 
 TEST(ObjectArray, path) {
@@ -196,13 +196,13 @@ TEST(ObjectArray, path) {
   ASSERT_NE(object_get_prop_by_path(root, "b.a.value", &v), RET_OK);
   ASSERT_NE(object_get_prop_by_path(root, "c.value", &v), RET_OK);
 
-  object_unref(root);
-  object_unref(obja);
-  object_unref(obja1);
-  object_unref(obja2);
-  object_unref(objb);
-  object_unref(objb1);
-  object_unref(objb2);
+  OBJECT_UNREF(root);
+  OBJECT_UNREF(obja);
+  OBJECT_UNREF(obja1);
+  OBJECT_UNREF(obja2);
+  OBJECT_UNREF(objb);
+  OBJECT_UNREF(objb1);
+  OBJECT_UNREF(objb2);
 }
 
 TEST(ObjectArray, insert) {
@@ -245,7 +245,7 @@ TEST(ObjectArray, insert) {
   ASSERT_EQ(object_array_remove(obj, 0), RET_OK);
   ASSERT_STREQ(object_get_prop_str(obj, "0"), "b");
 
-  object_unref(obj);
+  OBJECT_UNREF(obj);
 }
 
 TEST(ObjectArray, index_of) {
@@ -296,6 +296,135 @@ TEST(ObjectArray, index_of) {
   value_set_int(&v, 300);
   ASSERT_EQ(object_array_last_index_of(obj, &v), -1);
 
-  object_unref(obj);
+  OBJECT_UNREF(obj);
+}
+
+TEST(ObjectArray, shift) {
+  value_t v;
+  object_t* obj = object_array_create();
+  
+  value_set_int(&v, 10);
+  object_array_push(obj, &v);
+  value_set_int(&v, 20);
+  object_array_push(obj, &v);
+  value_set_int(&v, 30);
+  object_array_push(obj, &v);
+
+  ASSERT_EQ(object_array_shift(obj, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 10);
+  
+  ASSERT_EQ(object_array_shift(obj, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 20);
+  
+  ASSERT_EQ(object_array_shift(obj, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 30);
+
+  OBJECT_UNREF(obj);
+}
+
+TEST(ObjectArray, get_and_remove) {
+  value_t v;
+  object_t* obj = object_array_create();
+  
+  value_set_int(&v, 10);
+  object_array_push(obj, &v);
+  value_set_int(&v, 20);
+  object_array_push(obj, &v);
+  value_set_int(&v, 30);
+  object_array_push(obj, &v);
+
+  ASSERT_EQ(object_array_get_and_remove(obj, 1, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 20);
+  
+  ASSERT_EQ(object_array_get_and_remove(obj, 1, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 30);
+  
+  ASSERT_EQ(object_array_get_and_remove(obj, 0, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 10);
+  
+  ASSERT_NE(object_array_get_and_remove(obj, 0, &v), RET_OK);
+
+  OBJECT_UNREF(obj);
+}
+
+TEST(ObjectArray, create_from_str1) {
+  value_t v;
+  object_t* obj = object_array_create_from_str("1,2,3,4", ",", VALUE_TYPE_INT32);
+  object_array_t* o = OBJECT_ARRAY(obj);
+
+  ASSERT_EQ(o->size, 4);
+  ASSERT_EQ(object_array_get(obj, 0, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 1);
+  
+  ASSERT_EQ(object_array_get(obj, 1, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 2);
+  
+  ASSERT_EQ(object_array_get(obj, 2, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 3);
+  
+  ASSERT_EQ(object_array_get(obj, 3, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 4);
+
+  OBJECT_UNREF(obj);
+}
+
+TEST(ObjectArray, create_from_str2) {
+  value_t v;
+  object_t* obj = object_array_create_from_str("1, 2, 3, 4, ", ", ", VALUE_TYPE_INT32);
+  object_array_t* o = OBJECT_ARRAY(obj);
+
+  ASSERT_EQ(o->size, 4);
+  ASSERT_EQ(object_array_get(obj, 0, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 1);
+  
+  ASSERT_EQ(object_array_get(obj, 1, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 2);
+  
+  ASSERT_EQ(object_array_get(obj, 2, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 3);
+  
+  ASSERT_EQ(object_array_get(obj, 3, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 4);
+
+  OBJECT_UNREF(obj);
+}
+
+TEST(ObjectArray, create_from_str3) {
+  value_t v;
+  object_t* obj = object_array_create_from_str("1", ", ", VALUE_TYPE_INT32);
+  object_array_t* o = OBJECT_ARRAY(obj);
+
+  ASSERT_EQ(o->size, 1);
+  ASSERT_EQ(object_array_get(obj, 0, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 1);
+
+  OBJECT_UNREF(obj);
+}
+
+TEST(ObjectArray, create_from_str4) {
+  value_t v;
+  object_t* obj = object_array_create_from_str("1, ", ", ", VALUE_TYPE_INT32);
+  object_array_t* o = OBJECT_ARRAY(obj);
+
+  ASSERT_EQ(o->size, 1);
+  ASSERT_EQ(object_array_get(obj, 0, &v), RET_OK);
+  ASSERT_EQ(value_int(&v), 1);
+
+  OBJECT_UNREF(obj);
+}
+
+TEST(ObjectArray, create_from_str5) {
+  value_t v;
+  object_t* obj = object_array_create_from_str("abc,123", ",", VALUE_TYPE_INT32);
+  object_array_t* o = OBJECT_ARRAY(obj);
+
+  ASSERT_EQ(o->size, 2);
+  ASSERT_EQ(object_array_get(obj, 0, &v), RET_OK);
+  ASSERT_STREQ(value_str(&v), "abc");
+  
+  ASSERT_EQ(object_array_get(obj, 1, &v), RET_OK);
+  ASSERT_STREQ(value_str(&v), "123");
+
+  OBJECT_UNREF(obj);
 }
 

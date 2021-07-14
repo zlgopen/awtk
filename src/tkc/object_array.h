@@ -190,10 +190,26 @@ int32_t object_array_last_index_of(object_t* obj, const value_t* v);
  *
  */
 ret_t object_array_remove(object_t* obj, uint32_t index);
+
+/**
+ * @method object_array_get_and_remove
+ *
+ * 在指定位置删除一个元素，并返回它。
+ *
+ * @annotation ["scriptable"]
+ * @param {object_t*} obj 对象。
+ * @param {uint32_t} index  位置。
+ * @param {value_t*} v 用于返回值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ *
+ */
+ret_t object_array_get_and_remove(object_t* obj, uint32_t index, value_t* v);
+
 /**
  * @method object_array_pop
  *
- * 弹出一个元素。
+ * 弹出最后一个元素。
  * @param {object_t*} obj 对象。
  * @param {value_t*} v 返回值。
  *
@@ -201,6 +217,18 @@ ret_t object_array_remove(object_t* obj, uint32_t index);
  *
  */
 ret_t object_array_pop(object_t* obj, value_t* v);
+
+/**
+ * @method object_array_shift
+ *
+ * 弹出第一个元素。
+ * @param {object_t*} obj 对象。
+ * @param {value_t*} v 返回值。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ *
+ */
+ret_t object_array_shift(object_t* obj, value_t* v);
 
 /**
  * @method object_array_get
@@ -223,6 +251,19 @@ ret_t object_array_get(object_t* obj, uint32_t i, value_t* v);
  * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
  */
 ret_t object_array_set(object_t* obj, uint32_t i, const value_t* v);
+
+/**
+ * @method object_array_create_from_str
+ * @annotation ["constructor"]
+ *
+ * 通过字符串构建数组。
+ * @param {const char*} str 字符串
+ * @param {const char*} delim 分隔符。
+ * @param {value_type_t} type 类型。
+ *
+ * @return {object_t*} 返回object对象。
+ */
+object_t* object_array_create_from_str(const char* str, const char* delim, value_type_t type);
 
 object_array_t* object_array_cast(object_t* obj);
 #define OBJECT_ARRAY(obj) object_array_cast(obj)
