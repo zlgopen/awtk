@@ -4,6 +4,7 @@
   * 增加object\_array\_index\_of及fscript的包装
   * 增加object\_array\_last\_index\_of及fscript的包装
   * 增加array\_create\_with\_repeated\_value
+  * 完善fscript\_array。
 
 2021/07/13
   * 修改编译警告（感谢智明提供补丁）
