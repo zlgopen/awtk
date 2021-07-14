@@ -415,7 +415,7 @@ TEST(ObjectArray, create_from_str4) {
 
 TEST(ObjectArray, create_from_str5) {
   value_t v;
-  object_t* obj = object_array_create_from_str("abc,123", ",", VALUE_TYPE_INT32);
+  object_t* obj = object_array_create_from_str("abc,123", ",", VALUE_TYPE_STRING);
   object_array_t* o = OBJECT_ARRAY(obj);
 
   ASSERT_EQ(o->size, 2);
