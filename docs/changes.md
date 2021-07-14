@@ -1,22 +1,25 @@
 # 最新动态
 
+2021/07/15
+  * 完善 widget\_factory，允许覆盖之前注册的控件。
+
 2021/07/14
-  * 增加object\_shift及fscript的包装
-  * 增加object\_array\_index\_of及fscript的包装
-  * 增加object\_array\_last\_index\_of及fscript的包装
-  * 增加object\_array\_create\_from\_str及fscript的包装
-  * 增加object\_array\_get\_and\_remove及fscript的包装
-  * 增加array\_create\_with\_repeated\_value
+  * 增加 object\_shift 及 fscript 的包装
+  * 增加 object\_array\_index\_of 及 fscript 的包装
+  * 增加 object\_array\_last\_index\_of 及 fscript 的包装
+  * 增加 object\_array\_create\_from\_str 及 fscript 的包装
+  * 增加 object\_array\_get\_and\_remove 及 fscript 的包装
+  * 增加 array\_create\_with\_repeated\_value
 
 2021/07/13
   * 修改编译警告（感谢智明提供补丁）
   * 完善 fscript 文档（感谢攀峰提供补丁）
-  * 修复 fscript returned 没有重置的问题（感谢林福提供补丁)。
+  * 修复 fscript returned 没有重置的问题（感谢林福提供补丁）。
 
 2021/07/12
   * 完善文档。
   * 优化 layout。
-  * 完善 input\_method\_default，支持T9/T9EXT的默认键盘。
+  * 完善 input\_method\_default，支持 T9/T9EXT 的默认键盘。
   * 修复异步 layout 和同步 invalidate 造成部分控件不刷新的问题。
 
 2021/07/11

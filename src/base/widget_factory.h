@@ -22,9 +22,9 @@
 #ifndef TK_WIDGET_FACTORY_H
 #define TK_WIDGET_FACTORY_H
 
-#include "tkc/darray.h"
-#include "tkc/emitter.h"
 #include "base/widget.h"
+#include "tkc/emitter.h"
+#include "tkc/object_default.h"
 
 BEGIN_C_DECLS
 
@@ -37,11 +37,7 @@ BEGIN_C_DECLS
  * 用户注册自定义控件，可以获得内置控件同等待遇。
  *
  */
-typedef struct _widget_factory_t {
-  emitter_t emitter;
-  /*private*/
-  darray_t creators;
-} widget_factory_t;
+typedef object_t widget_factory_t;
 
 /**
  * @method widget_factory
