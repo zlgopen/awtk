@@ -14,6 +14,7 @@
  *
  */
 
+#include "tkc/utils.h"
 #include "tkc/fscript.h"
 
 #include "fscript_ext/fscript_ext.h"
@@ -68,6 +69,33 @@ static ret_t func_value_get_binary_size(fscript_t* fscript, fscript_args_t* args
   return RET_FAIL;
 }
 
+static ret_t func_index_of_ex(fscript_t* fscript, fscript_args_t* args, value_t* result, bool_t last) {
+  const char* p = NULL;
+  const char* str = NULL;
+  const char* substr = NULL;
+  FSCRIPT_FUNC_CHECK(args->size == 2, RET_BAD_PARAMS);
+  str = value_str(args->args);
+  substr = value_str(args->args+1);
+  return_value_if_fail(str != NULL && substr != NULL, RET_BAD_PARAMS);
+
+  p = last ? tk_strrstr(str, substr) : strstr(str, substr);
+  if(p != NULL) {
+    value_set_int32(result, p-str);
+  } else {
+    value_set_int32(result, -1);
+  }
+
+  return RET_OK;
+}
+
+static ret_t func_index_of(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  return func_index_of_ex(fscript, args, result, FALSE);
+}
+
+static ret_t func_last_index_of(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  return func_index_of_ex(fscript, args, result, TRUE);
+}
+
 static ret_t func_value_get_binary_data(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   FSCRIPT_FUNC_CHECK(args->size == 1, RET_BAD_PARAMS);
 
@@ -82,6 +110,8 @@ static ret_t func_value_get_binary_data(fscript_t* fscript, fscript_args_t* args
 }
 
 ret_t fscript_ext_init(void) {
+  ENSURE(fscript_register_func("index_of", func_index_of) == RET_OK);
+  ENSURE(fscript_register_func("last_index_of", func_last_index_of) == RET_OK);
   ENSURE(fscript_register_func("value_is_valid", func_value_is_valid) == RET_OK);
   ENSURE(fscript_register_func("value_is_null", func_value_is_null) == RET_OK);
   ENSURE(fscript_register_func("value_get_binary_data", func_value_get_binary_data) == RET_OK);
