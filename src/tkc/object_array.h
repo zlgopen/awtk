@@ -87,12 +87,12 @@ object_t* object_array_create(void);
  * 克隆对象。
  *
  * @annotation ["constructor"]
- * @param {object_array_t*} o 被克隆的对象。
+ * @param {object_t*} o 被克隆的对象。
  *
  * @return {object_t*} 返回object对象。
  *
  */
-object_t* object_array_clone(object_array_t* o);
+object_t* object_array_clone(object_t* o);
 
 /**
  * @method object_array_unref
@@ -253,17 +253,82 @@ ret_t object_array_get(object_t* obj, uint32_t i, value_t* v);
 ret_t object_array_set(object_t* obj, uint32_t i, const value_t* v);
 
 /**
- * @method object_array_create_from_str
+ * @method object_array_create_with_str
  * @annotation ["constructor"]
  *
  * 通过字符串构建数组。
  * @param {const char*} str 字符串
- * @param {const char*} delim 分隔符。
+ * @param {const char*} sep 分隔符。
  * @param {value_type_t} type 类型。
  *
  * @return {object_t*} 返回object对象。
  */
-object_t* object_array_create_from_str(const char* str, const char* delim, value_type_t type);
+object_t* object_array_create_with_str(const char* str, const char* sep, value_type_t type);
+
+/**
+ * @method object_array_join
+ * 使用分隔符把各个元素拼接起来。
+ * @param {object_t*} obj 数组对象。
+ * @param {const char*} sep 分隔符。
+ * @param {str_t*} result 生成的字符串。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_array_join(object_t* obj, const char* sep, str_t* result);
+
+/**
+ * @method object_array_dup
+ * @annotation ["constructor"]
+ *
+ * 复制部分或全部元素。
+ * @param {object_t*} obj 数组对象。
+ * @param {uint32_t} start 开始的位置。 
+ * @param {uint32_t} end 结束的位置(不包含)。 
+ *
+ * @return {object_t*} 返回object对象。
+ */
+object_t* object_array_dup(object_t* obj, uint32_t start, uint32_t end);
+
+/**
+ * @method object_array_sort
+ * 排序。
+ * @param {object_t*} obj 数组对象。
+ * @param {tk_compare_t} cmp 比较函数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_array_sort(object_t* obj, tk_compare_t cmp);
+
+/**
+ * @method object_array_sort_as_int
+ * 按整数排序。
+ * @param {object_t*} obj 数组对象。
+ * @param {bool_t} ascending 升序或降序。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_array_sort_as_int(object_t* obj, bool_t ascending);
+
+/**
+ * @method object_array_sort_as_double
+ * 按浮点数排序。
+ * @param {object_t*} obj 数组对象。
+ * @param {bool_t} ascending 升序或降序。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_array_sort_as_double(object_t* obj, bool_t ascending);
+
+/**
+ * @method object_array_sort_as_str
+ * 按字符串排序。
+ * @param {object_t*} obj 数组对象。
+ * @param {bool_t} ascending 升序或降序。
+ * @param {bool_t} ignore_case 是否忽略大小写。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t object_array_sort_as_str(object_t* obj, bool_t ascending, bool_t ignore_case);
 
 object_array_t* object_array_cast(object_t* obj);
 #define OBJECT_ARRAY(obj) object_array_cast(obj)

@@ -32,6 +32,71 @@ static ret_t func_array_create(fscript_t* fscript, fscript_args_t* args, value_t
   return RET_OK;
 }
 
+static value_type_t value_type_from_str(const char* type) {
+  if (type != NULL) {
+    if (*type == 'i') {
+      return VALUE_TYPE_INT32;
+    } else if (*type == 'd') {
+      return VALUE_TYPE_DOUBLE;
+    }
+  }
+
+  return VALUE_TYPE_STRING;
+}
+
+static ret_t func_array_create_with_str(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  object_t* obj = NULL;
+  const char* str = NULL;
+  const char* sep = NULL;
+  const char* type = NULL;
+  FSCRIPT_FUNC_CHECK(args->size >= 2, RET_BAD_PARAMS);
+
+  str = value_str(args->args);
+  sep = value_str(args->args + 1);
+  type = args->size > 2 ? value_str(args->args + 2) : NULL;
+
+  obj = object_array_create_with_str(str, sep, value_type_from_str(type));
+  value_set_object(result, obj);
+  return_value_if_fail(obj != NULL, RET_BAD_PARAMS);
+  result->free_handle = TRUE;
+
+  return RET_OK;
+}
+
+static ret_t func_array_dup(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  uint32_t start = 0;
+  uint32_t end = 0;
+  object_t* obj = NULL;
+  object_t* dup = NULL;
+  object_array_t* arr = NULL;
+  FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
+
+  obj = value_object(args->args);
+  arr = OBJECT_ARRAY(obj);
+  return_value_if_fail(arr != NULL, RET_BAD_PARAMS);
+
+  if (arr->size == 0) {
+    dup = object_array_clone(obj);
+  } else {
+    if (args->size == 1) {
+      start = 0;
+      end = arr->size;
+    } else if (args->size == 2) {
+      start = value_uint32(args->args + 1);
+      end = arr->size;
+    } else {
+      start = value_uint32(args->args + 1);
+      end = value_uint32(args->args + 2);
+    }
+    dup = object_array_dup(obj, start, end);
+  }
+  value_set_object(result, dup);
+  return_value_if_fail(dup != NULL, RET_BAD_PARAMS);
+  result->free_handle = TRUE;
+
+  return RET_OK;
+}
+
 static ret_t func_array_create_with_repeated_value(fscript_t* fscript, fscript_args_t* args,
                                                    value_t* result) {
   uint32_t i = 0;
@@ -233,11 +298,45 @@ static ret_t func_array_clear(fscript_t* fscript, fscript_args_t* args, value_t*
   return RET_OK;
 }
 
+static ret_t func_array_sort(fscript_t* fscript, fscript_args_t* args, value_t* result) {
+  ret_t ret = RET_OK;
+  object_t* obj = NULL;
+  bool_t ascending = TRUE;
+  bool_t ignore_case = FALSE;
+  object_array_t* arr = NULL;
+  FSCRIPT_FUNC_CHECK(args->size >= 1, RET_BAD_PARAMS);
+  obj = value_object(args->args);
+  arr = OBJECT_ARRAY(obj);
+  return_value_if_fail(arr != NULL, RET_BAD_PARAMS);
+
+  if (args->size > 1) {
+    ascending = value_bool(args->args + 1);
+  }
+  if (args->size > 2) {
+    ignore_case = value_bool(args->args + 2);
+  }
+
+  if (arr->size < 2) {
+    value_set_bool(result, ret == RET_OK);
+  } else {
+    value_t v;
+    object_array_get(obj, 0, &v);
+
+    if (v.type == VALUE_TYPE_STRING) {
+      ret = object_array_sort_as_str(obj, ascending, ignore_case);
+    } else if (v.type == VALUE_TYPE_INT32) {
+      ret = object_array_sort_as_int(obj, ascending);
+    } else {
+      ret = object_array_sort_as_double(obj, ascending);
+    }
+    value_set_bool(result, ret == RET_OK);
+  }
+
+  return RET_OK;
+}
+
 static ret_t func_array_join(fscript_t* fscript, fscript_args_t* args, value_t* result) {
   str_t str;
-  uint32_t i = 0;
-  char buff[64];
-  bool_t oom = FALSE;
   object_t* obj = NULL;
   const char* sep = NULL;
   object_array_t* arr = NULL;
@@ -248,21 +347,7 @@ static ret_t func_array_join(fscript_t* fscript, fscript_args_t* args, value_t* 
   sep = value_str(args->args + 1);
 
   str_init(&str, 100);
-  for (i = 0; i < arr->size; i++) {
-    value_t* v = arr->props + i;
-    if (i > 0 && sep != NULL) {
-      if (str_append(&str, sep) == RET_OOM) {
-        oom = TRUE;
-        break;
-      }
-    }
-    if (str_append(&str, value_str_ex(v, buff, sizeof(buff) - 1)) == RET_OOM) {
-      oom = TRUE;
-      break;
-    }
-  }
-
-  if (!oom) {
+  if (object_array_join(obj, sep, &str) == RET_OK) {
     value_set_str(result, str.str);
     result->free_handle = TRUE;
   } else {
@@ -274,6 +359,8 @@ static ret_t func_array_join(fscript_t* fscript, fscript_args_t* args, value_t* 
 
 ret_t fscript_array_register(void) {
   ENSURE(fscript_register_func("array_create", func_array_create) == RET_OK);
+  ENSURE(fscript_register_func("array_dup", func_array_dup) == RET_OK);
+  ENSURE(fscript_register_func("array_create_with_str", func_array_create_with_str) == RET_OK);
   ENSURE(fscript_register_func("array_create_with_repeated_value",
                                func_array_create_with_repeated_value) == RET_OK);
   ENSURE(fscript_register_func("array_push", func_array_push) == RET_OK);
@@ -288,6 +375,7 @@ ret_t fscript_array_register(void) {
   ENSURE(fscript_register_func("array_last_index_of", func_array_last_index_of) == RET_OK);
   ENSURE(fscript_register_func("array_clear", func_array_clear) == RET_OK);
   ENSURE(fscript_register_func("array_join", func_array_join) == RET_OK);
+  ENSURE(fscript_register_func("array_sort", func_array_sort) == RET_OK);
 
   return RET_OK;
 }

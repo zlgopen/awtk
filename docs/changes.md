@@ -2,12 +2,14 @@
 
 2021/07/15
   * 完善 widget\_factory，允许覆盖之前注册的控件。
+  * 增加 object\_array\_sort 及 fscript 的包装
+  * 增加 object\_array\_dup 及 fscript 的包装
 
 2021/07/14
-  * 增加 object\_shift 及 fscript 的包装
+  * 增加 object\_array\_shift 及 fscript 的包装
   * 增加 object\_array\_index\_of 及 fscript 的包装
   * 增加 object\_array\_last\_index\_of 及 fscript 的包装
-  * 增加 object\_array\_create\_from\_str 及 fscript 的包装
+  * 增加 object\_array\_create\_with\_str 及 fscript 的包装
   * 增加 object\_array\_get\_and\_remove 及 fscript 的包装
   * 增加 array\_create\_with\_repeated\_value
 
