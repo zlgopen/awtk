@@ -629,6 +629,7 @@ void* tk_pointer_from_int(int32_t v);
  * @method tk_str_toupper
  *
  * 将小写字母转换为大写字母。
+ * >修改传入的字符串。
  *
  * @param {char*} str 要被转换成大写字母的字符串。
  *
@@ -637,9 +638,22 @@ void* tk_pointer_from_int(int32_t v);
 char* tk_str_toupper(char* str);
 
 /**
+ * @method tk_str_totitle
+ *
+ * 将单词首字母转换为大写字母。
+ * >修改传入的字符串。
+ *
+ * @param {char*} str 被转换的字符串。
+ *
+ * @return {char*} 返回转换后的字符串。
+ */
+char* tk_str_totitle(char* str);
+
+/**
  * @method tk_str_tolower
  *
  * 将大写字母转换为小写字母。
+ * >修改传入的字符串。
  *
  * @param {char*} str 要被转换成小写字母的字符串。
  *

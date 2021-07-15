@@ -906,6 +906,24 @@ char* tk_str_toupper(char* str) {
   return str;
 }
 
+char* tk_str_totitle(char* str) {
+  char* p = str;
+  char* prev = str;
+  return_value_if_fail(str != NULL, NULL);
+
+  while (*p) {
+    if (isalpha(*p)) {
+      if (p == str || (!isalpha(*prev) && !isdigit(*prev))) {
+        *p = toupper(*p);
+      }
+    }
+    prev = p;
+    p++;
+  }
+
+  return str;
+}
+
 char* tk_str_tolower(char* str) {
   char* p = str;
   return_value_if_fail(str != NULL, NULL);
