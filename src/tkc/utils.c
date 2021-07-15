@@ -1127,3 +1127,47 @@ ret_t data_url_copy(const char* dst_url, const char* src_url) {
   return ret;
 }
 #endif /*WITH_DATA_READER_WRITER*/
+
+static void tk_quick_sort_impl(void** array, size_t left, size_t right, tk_compare_t cmp) {
+  size_t save_left = left;
+  size_t save_right = right;
+  void* x = array[left];
+
+  while (left < right) {
+    while (cmp(array[right], x) >= 0 && left < right) right--;
+    if (left != right) {
+      array[left] = array[right];
+      left++;
+    }
+
+    while (cmp(array[left], x) <= 0 && left < right) left++;
+    if (left != right) {
+      array[right] = array[left];
+      right--;
+    }
+  }
+  array[left] = x;
+
+  if (save_left < left) {
+    tk_quick_sort_impl(array, save_left, left - 1, cmp);
+  }
+
+  if (save_right > left) {
+    tk_quick_sort_impl(array, left + 1, save_right, cmp);
+  }
+
+  return;
+}
+
+ret_t tk_qsort(void** array, size_t nr, tk_compare_t cmp) {
+  ret_t ret = RET_OK;
+
+  return_value_if_fail(array != NULL && cmp != NULL, RET_BAD_PARAMS);
+
+  if (nr > 1) {
+    tk_quick_sort_impl(array, 0, nr - 1, cmp);
+  }
+
+  return ret;
+}
+

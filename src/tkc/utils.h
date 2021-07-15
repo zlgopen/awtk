@@ -695,6 +695,19 @@ ret_t object_to_json(object_t* obj, str_t* str);
  */
 ret_t data_url_copy(const char* dst_url, const char* src_url);
 
+/**
+ * @method tk_qsort
+ * 
+ * 快速排序。
+ *
+ * @param {void**} array 数据。
+ * @param {size_t} nr 元素个数。
+ * @param {tk_compare_t} cmp 比较函数。
+ *
+ * @return {ret_t} 返回RET_OK表示成功，否则表示失败。
+ */
+ret_t tk_qsort(void** array, size_t nr, tk_compare_t cmp);
+
 const char* tk_normalize_key_name(const char* name, char fixed_name[TK_NAME_LEN + 1]);
 
 /*public for test*/
