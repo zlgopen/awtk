@@ -1,9 +1,15 @@
 # 最新动态
 
+2021/07/16
+  * 增加tk\_str\_totitle。
+  * fscript ext增加 trim\_left/trim\_right/ulen/totitle/char\_at
+  * 增加[字符串扩展模块](fscript_str.md)
+
 2021/07/15
   * 完善 widget\_factory，允许覆盖之前注册的控件。
   * 增加 object\_array\_sort 及 fscript 的包装
   * 增加 object\_array\_dup 及 fscript 的包装
+  * fscript ext 增加 index\_of/last\_index\_of/char\_at
 
 2021/07/14
   * 增加 object\_array\_shift 及 fscript 的包装

@@ -1301,6 +1301,7 @@ runFScript 的第二个参数可以指定运行次数，方便测量某个函数
 
 ### 7. 扩展模块
 
+* [字符串扩展模块](fscript_str.md)
 * [位操作扩展模块](fscript_bits.md)
 * [数学扩展模块](fscript_math.md)
 * [CRC 扩展模块](fscript_crc.md)

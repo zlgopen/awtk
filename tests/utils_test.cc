@@ -523,3 +523,7 @@ TEST(Utils, strrstr) {
   ASSERT_EQ(tk_strrstr("abc"+1, "123") == NULL, true);
 }
 
+TEST(Utils, totitle) {
+  char str[] = "it is nice!";
+  ASSERT_STREQ(tk_str_totitle(str), "It Is Nice!");
+}
