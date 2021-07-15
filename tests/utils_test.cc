@@ -509,3 +509,17 @@ TEST(Utils, to_json) {
   OBJECT_UNREF(arr);
   OBJECT_UNREF(addr);
 }
+
+TEST(Utils, strrstr) {
+  const char* p = NULL;
+  ASSERT_STREQ(tk_strrstr("abc", "abc"), "abc");
+  ASSERT_STREQ(tk_strrstr("1abc", "abc"), "abc");
+  ASSERT_STREQ(tk_strrstr("1abc2", "abc"), "abc2");
+  ASSERT_STREQ(tk_strrstr("abc abc", "abc"), "abc");
+  ASSERT_STREQ(tk_strrstr("abc abc123", "abc"), "abc123");
+  ASSERT_STREQ(tk_strrstr("abc abc123aaabc", "abc"), "abc");
+  
+  ASSERT_EQ(tk_strrstr("abc"+1, "abc") == NULL, true);
+  ASSERT_EQ(tk_strrstr("abc"+1, "123") == NULL, true);
+}
+

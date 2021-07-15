@@ -1171,3 +1171,24 @@ ret_t tk_qsort(void** array, size_t nr, tk_compare_t cmp) {
   return ret;
 }
 
+const char* tk_strrstr(const char* str, const char* substr) {
+  char c = 0;
+  uint32_t len = 0;
+  const char* p = NULL;
+  const char* end = NULL;
+  return_value_if_fail(str != NULL && substr != NULL, NULL);
+
+  c = *substr;
+  len = strlen(substr);
+  end = str + strlen(str) - 1;
+
+  for (p = end; p >= str; p--) {
+    if (*p == c) {
+      if (strncmp(p, substr, len) == 0) {
+        return p;
+      }
+    }
+  }
+
+  return NULL;
+}

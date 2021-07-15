@@ -322,6 +322,18 @@ char* tk_strndup(const char* str, uint32_t len);
 uint32_t tk_strlen(const char* str);
 
 /**
+ * @method tk_strrstr
+ *
+ * 从后往前查找指定的字符串。
+ *
+ * @param {const char*} str 字符串。
+ * @param {const char*} substr 子字符串。
+ *
+ * @return {const char*} 返回字符串的位置或者NULL。
+ */
+const char* tk_strrstr(const char* str, const char* substr);
+
+/**
  * @method tk_str_append
  *
  * 字符串追加函数。
